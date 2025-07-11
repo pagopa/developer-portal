@@ -12,6 +12,7 @@ from typing import Annotated
 
 from src.calls import chatbot_generate, chatbot_mask_pii, chatbot_evaluate
 from src.app.models import Query, tables
+from src.modules.logger import get_logger
 from src.app.sessions import (
     current_user_id,
     find_or_create_session,
@@ -22,7 +23,7 @@ from src.app.sessions import (
 )
 
 
-logger = getLogger(__name__)
+LOGGER = get_logger(__name__)
 router = APIRouter()
 
 
@@ -36,7 +37,7 @@ def can_evaluate() -> bool:
 
 
 def count_queries_created_today() -> int:
-    today = datetime.datetime.utcnow().date().isoformat()
+    today = datetime.datetime.now(datetime.timezone.utc).date().isoformat()
 
     response = tables["queries"].query(
         IndexName="QueriesByCreatedAtDateIndex",
@@ -60,7 +61,7 @@ def backfill_created_at_date() -> None:
 
         tables["queries"].put_item(Item=item)
 
-    logger.info(f"Backfilled {len(items)} items with `createdAtDate`.")
+    LOGGER.info(f"Backfilled {len(items)} items with `createdAtDate`.")
 
 
 @router.post("/queries")
@@ -68,6 +69,7 @@ async def query_creation(
     query: Query,
     authorization: Annotated[str | None, Header()] = None,
 ):
+
     now = datetime.datetime.now(datetime.UTC)
     trace_id = str(uuid.uuid4())
     userId = current_user_id(authorization)

@@ -3,6 +3,7 @@ locals {
     aws_acm_certificate.website.domain_validation_options,
     aws_acm_certificate.auth.domain_validation_options,
     aws_acm_certificate.static_contents.domain_validation_options,
+    aws_acm_certificate.static_website.domain_validation_options,
   )
 }
 
@@ -24,9 +25,10 @@ resource "aws_route53_record" "certificate" {
 }
 
 // This Route53 record will point at our CloudFront distribution.
+
 resource "aws_route53_record" "www_website" {
   zone_id = var.hosted_zone_id
-  name    = format("www.%s", var.dns_domain_name)
+  name    = format("www.%s", local.domain_name_static_website)
   type    = "A"
 
   alias {
@@ -38,7 +40,7 @@ resource "aws_route53_record" "www_website" {
 
 resource "aws_route53_record" "website" {
   zone_id = var.hosted_zone_id
-  name    = var.dns_domain_name
+  name    = local.domain_name_static_website
   type    = "A"
 
   alias {

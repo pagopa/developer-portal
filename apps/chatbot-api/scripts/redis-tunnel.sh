@@ -8,8 +8,8 @@ REMOTE_PORT="6379"
 LOCAL_PORT="16379"
 
 # Load Redis ECS Region
-if [ -f .env ]; then 
-  export $(grep CHB_AWS_DEFAULT_REGION .env | xargs); 
+if [ -z "${CHB_AWS_DEFAULT_REGION+x}" ] && [ -f .env ]; then
+  export $(grep '^CHB_AWS_DEFAULT_REGION=' .env | xargs)
 fi
 
 # Get the ECS Task ARN

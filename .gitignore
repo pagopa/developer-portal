@@ -405,6 +405,7 @@ apps/chatbot-core/test.py
 !apps/chatbot-core/docker
 apps/chatbot-core/.env
 apps/chatbot-core/empty_htmls.json
+apps/chatbot-core/.google_service_account.json
 
 # chatbot-api
 apps/chatbot-api/index
