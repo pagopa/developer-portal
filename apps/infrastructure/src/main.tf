@@ -109,7 +109,14 @@ module "website" {
     instance_number = "01"
   }
 
+
+  vpc = {
+    id              = module.cms.vpc.id
+    private_subnets = module.cms.vpc.private_subnets
+  }
+
   next_public_soap_api_page_active = true
+
 }
 
 module "cms" {

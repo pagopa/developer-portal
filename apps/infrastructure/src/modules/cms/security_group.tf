@@ -15,6 +15,14 @@ resource "aws_security_group" "cms_lb" {
   }
 
   ingress {
+    protocol  = "tcp"
+    from_port = 8080
+    to_port   = 8080
+    #TODO: replace the cidr block with security group of the backend.
+    cidr_blocks = [module.vpc.vpc_cidr_block]
+  }
+
+  ingress {
     protocol    = "tcp"
     from_port   = 443
     to_port     = 443
@@ -33,6 +41,7 @@ resource "aws_security_group" "cms_lb" {
     create_before_destroy = true
   }
 }
+
 
 ### AWS ECS Security Group ###
 # Traffic to the ECS cluster should only come from the ALB

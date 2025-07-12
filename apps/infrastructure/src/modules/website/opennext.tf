@@ -114,6 +114,8 @@ module "opennext" {
   enable_alarms  = true
   alarms_actions = [aws_sns_topic.metric_alarm.arn]
 
+  vpc = var.vpc
+
 
   tags = var.tags
 
