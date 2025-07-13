@@ -4,12 +4,13 @@ on:
   workflow_dispatch:
     inputs:
       environment:
-        description: 'Generate release notes metadata for the given environment'
+        description: 'The environment used as target'
         type: choice
         required: true
         default: dev
         options:
           - dev
+          - uat
           - prod
 
 # These permissions are needed to interact with GitHub's OIDC Token endpoint
