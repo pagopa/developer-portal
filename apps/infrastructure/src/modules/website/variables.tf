@@ -125,6 +125,11 @@ variable "next_public_soap_api_page_active" {
   default     = false
 }
 
+variable "next_cms_interlan_alb_dns_name" {
+  type        = string
+  description = "The DNS name of the internal ALB for the CMS"
+}
+
 variable "vpc" {
   type = object({
     id              = string
