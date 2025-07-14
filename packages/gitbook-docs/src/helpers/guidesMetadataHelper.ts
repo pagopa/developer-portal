@@ -1,5 +1,3 @@
-import { sitePathFromS3Path } from './sitePathFromS3Path';
-
 export const URL_PARSING_METADATA_JSON_PATH =
   process.env.URL_PARSING_METADATA_JSON_PATH || 'url-parsing-metadata.json';
 export interface StrapiGuide {
@@ -21,18 +19,6 @@ export interface StrapiGuide {
       readonly dirName: string;
     }[];
   };
-}
-
-export function generateUrlPath(
-  filePath: string,
-  guideSlug: string,
-  productSlug: string,
-  versionName?: string
-): string {
-  const restOfPath = sitePathFromS3Path(filePath, undefined);
-  return [`/${productSlug}`, 'guides', guideSlug, versionName, restOfPath]
-    .filter(Boolean)
-    .join('/');
 }
 
 export type GuideInfo = {

@@ -13,11 +13,8 @@ import {
 } from '../helpers/s3Bucket.helper';
 import { extractTitleFromMarkdown } from '../helpers/extractTitle.helper';
 import { fetchFromStrapi } from '../helpers/fetchFromStrapi';
-import {
-  StrapiGuide,
-  GuideInfo,
-  generateUrlPath,
-} from '../helpers/guidesMetadataHelper';
+import { StrapiGuide, GuideInfo } from '../helpers/guidesMetadataHelper';
+import { sitePathFromS3Path } from '../helpers/sitePathFromS3Path';
 // Load environment variables from .env file
 dotenv.config();
 
@@ -27,6 +24,18 @@ const S3_GUIDE_METADATA_JSON_PATH =
   process.env.S3_GUIDE_METADATA_JSON_PATH || 'guides-metadata.json';
 
 const s3Client = makeS3Client();
+
+function generateUrlPath(
+  filePath: string,
+  guideSlug: string,
+  productSlug: string,
+  versionName?: string
+): string {
+  const restOfPath = sitePathFromS3Path(filePath, undefined);
+  return [`/${productSlug}`, 'guides', guideSlug, versionName, restOfPath]
+    .filter(Boolean)
+    .join('/');
+}
 
 async function convertGuideToSitemapItems(
   strapiGuides: StrapiGuide[]

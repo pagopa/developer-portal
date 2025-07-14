@@ -12,13 +12,11 @@ import { fetchFromStrapi } from '../helpers/fetchFromStrapi';
 import {
   StrapiGuide,
   GuideInfo,
-  generateUrlPath,
+  URL_PARSING_METADATA_JSON_PATH,
 } from '../helpers/guidesMetadataHelper';
+import { sitePathFromLocalPath } from '../helpers/sitePathFromLocalPath';
 // Load environment variables from .env file
 dotenv.config();
-
-const URL_PARSING_METADATA_JSON_PATH =
-  process.env.URL_PARSING_METADATA_JSON_PATH || 'url-parsing-metadata.json';
 
 export type UrlParsingItem = {
   dirName: string;
@@ -27,11 +25,25 @@ export type UrlParsingItem = {
     guideUrl: string;
   }[];
 };
+
+export function generateUrlPath(
+  filePath: string,
+  guideSlug: string,
+  productSlug: string,
+  versionName?: string
+): string {
+  const restOfPath = sitePathFromLocalPath(filePath, undefined);
+  return [`/${productSlug}`, 'guides', guideSlug, versionName, restOfPath]
+    .filter(Boolean)
+    .join('/');
+}
+
 async function getMarkdownFilesRecursively(dir: string): Promise<string[]> {
   const entries = await readdir(dir, { withFileTypes: true });
   const files = await Promise.all(
     entries.map(async (entry) => {
       const fullPath = path.join(dir, entry.name);
+      if (!fs.existsSync(fullPath)) return [];
       if (entry.isDirectory()) {
         return getMarkdownFilesRecursively(fullPath); // Ricorsione
       } else if (entry.isFile() && entry.name.endsWith('.md')) {
@@ -63,7 +75,10 @@ async function convertGuideToUrlParsingItems(
   for (const guideInfo of guideInfoList) {
     if (guideInfo.dirName) {
       const guideDir = path.join('devportal-docs', 'docs', guideInfo.dirName);
-
+      if (!fs.existsSync(guideDir)) {
+        console.warn(`Directory does not exist: ${guideDir}`);
+        continue;
+      }
       const guideFiles = await getMarkdownFilesRecursively(guideDir);
       const menuPath = guideFiles.find((file) =>
         file.includes(guideInfo.dirName + '/SUMMARY.md')
@@ -77,6 +92,7 @@ async function convertGuideToUrlParsingItems(
         if (parts.length <= 2) {
           continue;
         }
+        if (!fs.existsSync(filePath)) continue;
         const content = fs.readFileSync(filePath, 'utf8');
 
         if (menuPath && content) {
