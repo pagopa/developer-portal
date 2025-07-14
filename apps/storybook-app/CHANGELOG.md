@@ -1,5 +1,11 @@
 # storybook-app
 
+## 0.16.1
+
+### Patch Changes
+
+- 1d3b9df: Add Soap Api detail pages
+
 ## 0.16.0
 
 ### Minor Changes

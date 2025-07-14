@@ -1,5 +1,11 @@
 # chatbot
 
+## 6.0.0
+
+### Major Changes
+
+- 29518ce: Add ReAct agent
+
 ## 5.2.2
 
 ### Patch Changes
