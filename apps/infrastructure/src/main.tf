@@ -109,7 +109,16 @@ module "website" {
     instance_number = "01"
   }
 
+  next_cms_interlan_alb_dns_name = module.cms.internal_load_balancer.dns_name
+
+  vpc = {
+    id              = module.cms.vpc.id
+    private_subnets = module.cms.vpc.private_subnets
+  }
+
   next_public_soap_api_page_active = true
+
+
 }
 
 module "cms" {
