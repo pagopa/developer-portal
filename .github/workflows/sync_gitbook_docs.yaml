@@ -82,8 +82,6 @@ jobs:
           S3_BUCKET_NAME: devportal-${{ env.ENV_SHORT }}-website-static-content
           S3_DOC_EXTRACTION_BUCKET_NAME: ${{ vars.S3_DOC_EXTRACTION_BUCKET_NAME }}
           S3_PATH_TO_GITBOOK_DOCS: ${{ vars.S3_PATH_TO_GITBOOK_DOCS || 'devportal-docs/docs' }}
-          S3_ACCESS_KEY_ID: ${{ env.AWS_ACCESS_KEY_ID }}
-          S3_SECRET_ACCESS_KEY: ${{ env.AWS_SECRET_ACCESS_KEY }}
           STRAPI_ENDPOINT: ${{ vars.STRAPI_ENDPOINT }}
           STRAPI_API_TOKEN: ${{ secrets.STRAPI_API_TOKEN }}
           FETCH_FROM_STRAPI: ${{ vars.FETCH_FROM_STRAPI || 'true' }}
@@ -96,8 +94,6 @@ jobs:
           ENVIRONMENT: ${{ github.event_name == 'workflow_dispatch' && inputs.environment || 'dev' }}
           S3_BUCKET_NAME: devportal-${{ env.ENV_SHORT }}-website-static-content         
           S3_PATH_TO_GITBOOK_DOCS: ${{ vars.S3_PATH_TO_GITBOOK_DOCS || 'devportal-docs/docs' }}
-          S3_ACCESS_KEY_ID: ${{ env.AWS_ACCESS_KEY_ID }}
-          S3_SECRET_ACCESS_KEY: ${{ env.AWS_SECRET_ACCESS_KEY }}
           STRAPI_ENDPOINT: ${{ vars.STRAPI_ENDPOINT }}
           STRAPI_API_TOKEN: ${{ secrets.STRAPI_API_TOKEN }}
           FETCH_FROM_STRAPI: ${{ vars.FETCH_FROM_STRAPI || 'true' }}
@@ -111,8 +107,6 @@ jobs:
           S3_BUCKET_NAME: devportal-${{ env.ENV_SHORT }}-website-static-content
           S3_DOC_EXTRACTION_BUCKET_NAME: ${{ vars.S3_DOC_EXTRACTION_BUCKET_NAME }}
           S3_PATH_TO_GITBOOK_DOCS: ${{ vars.S3_PATH_TO_GITBOOK_DOCS || 'devportal-docs/docs' }}
-          S3_ACCESS_KEY_ID: ${{ secrets.S3_ACCESS_KEY_ID }}
-          S3_SECRET_ACCESS_KEY: ${{ secrets.S3_SECRET_ACCESS_KEY }}
           STRAPI_ENDPOINT: ${{ vars.STRAPI_ENDPOINT }}
           STRAPI_API_TOKEN: ${{ secrets.STRAPI_API_TOKEN }}
           FETCH_FROM_STRAPI: ${{ vars.FETCH_FROM_STRAPI || 'true' }}
