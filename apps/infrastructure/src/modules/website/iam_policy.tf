@@ -74,7 +74,8 @@ resource "aws_iam_policy" "deploy_website" {
         ]
         Effect = "Allow"
         Resource = [
-          aws_cloudfront_distribution.website.arn
+          aws_cloudfront_distribution.website.arn,
+          aws_cloudfront_distribution.static_contents.arn,
         ]
     }] : []))
   })
