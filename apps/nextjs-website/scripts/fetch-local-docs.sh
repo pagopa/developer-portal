@@ -12,4 +12,4 @@ mkdir -p docs
 rm -r -f docs/*
 # copy all necessary files to the docs folder
 cp -r .tmp-docs/docs/* docs/
-./scripts/include_replacer.sh ./docs
+./scripts/replace-include-tags.sh ./docs
