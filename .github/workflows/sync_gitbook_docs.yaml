@@ -49,7 +49,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Checkout devportal-docs repo
-        if: inputs.generate_metadata_only == true
+        if: inputs.generate_metadata_only == false
         uses: actions/checkout@v4
         with:
           repository: pagopa/devportal-docs
@@ -66,7 +66,7 @@ jobs:
         run: npm run compile
 
       - name: Replace include tags in docs
-        if: inputs.generate_metadata_only == true
+        if: inputs.generate_metadata_only == false
         run: |
           bash apps/nextjs-website/scripts/replace-include-tags.sh devportal-docs/docs
 
@@ -77,7 +77,7 @@ jobs:
           role_to_assume: ${{ secrets.DEPLOY_IAM_ROLE }}
 
       - name: Sync docs folder to S3
-        if: inputs.generate_metadata_only == true
+        if: inputs.generate_metadata_only == false
         working-directory: ./devportal-docs
         run: |    
           aws s3 sync docs s3://devportal-${{ env.ENV_SHORT }}-website-static-content/devportal-docs/docs --delete
