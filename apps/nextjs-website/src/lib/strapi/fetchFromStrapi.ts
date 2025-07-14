@@ -58,3 +58,44 @@ export const fetchFromStrapi = <A, O, I>(
         )()
     )
   );
+
+export const fetchFromStrapiNew = <T>(path: string, populate: string) =>
+  pipe(
+    R.ask<StrapiEnv>(),
+    R.map(
+      ({
+        config: {
+          STRAPI_ENDPOINT: strapiEndpoint,
+          STRAPI_API_TOKEN: strapiApiToken,
+        },
+        fetchFun,
+      }) =>
+        pipe(
+          // handle any promise result
+          TE.tryCatch(
+            () =>
+              fetchFun(`${strapiEndpoint}/api/${path}/?${populate}`, {
+                method: 'GET',
+                headers: {
+                  Authorization: `Bearer ${strapiApiToken}`,
+                },
+                cache: 'no-store',
+              }),
+            E.toError
+          ),
+          TE.chain((response) => {
+            if (response.status === 200) {
+              return TE.tryCatch(() => response.json(), E.toError);
+            } else {
+              return TE.left(makeError(response));
+            }
+          }),
+          TE.map((json) => json as T),
+          TE.fold(
+            // eslint-disable-next-line functional/no-promise-reject
+            (errors) => () => Promise.reject(errors),
+            (result) => () => Promise.resolve(result)
+          )
+        )()
+    )
+  );
