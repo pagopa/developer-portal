@@ -98,9 +98,9 @@ module "opennext" {
       NEXT_PUBLIC_COOKIE_DOMAIN_SCRIPT            = aws_ssm_parameter.cookie_domain_script.value
       NEXT_TELEMETRY_DISABLED                     = "1"
       PATH_TO_GITBOOK_DOCS                        = "docs"
-      S3_PATH_TO_GITBOOK_DOCS                     = "docs"
+      S3_PATH_TO_GITBOOK_DOCS                     = "devportal-docs/docs"
       S3_PATH_TO_GITBOOK_DOCS_ASSETS              = format("https://static-contents.%s/docs", var.dns_domain_name)
-      STRAPI_ENDPOINT                             = "https://cms.${var.dns_domain_name}"
+      STRAPI_ENDPOINT                             = "http://${var.next_cms_interlan_alb_dns_name}:8080"
       STRAPI_API_TOKEN                            = aws_ssm_parameter.strapi_api_token.value
       S3_BUCKET_NAME                              = aws_s3_bucket.website_standalone.bucket
       S3_GUIDE_METADATA_JSON_PATH                 = "guides-metadata.json"
@@ -113,6 +113,8 @@ module "opennext" {
 
   enable_alarms  = true
   alarms_actions = [aws_sns_topic.metric_alarm.arn]
+
+  vpc = var.vpc
 
 
   tags = var.tags
