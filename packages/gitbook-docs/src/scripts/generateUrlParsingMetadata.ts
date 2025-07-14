@@ -3,29 +3,20 @@
 /* eslint-disable functional/no-expression-statements */
 /* eslint-disable functional/immutable-data */
 /* eslint-disable functional/no-try-statements */
-import { loadEnvConfig } from '../helpers/s3Bucket.helper';
+import dotenv from 'dotenv';
 import { writeFile } from 'fs/promises';
 import * as fs from 'fs';
 import { readdir } from 'fs/promises';
 import path from 'path';
+import { fetchFromStrapi } from '../helpers/fetchFromStrapi';
 import {
-  fetchFromStrapi,
-  validateStrapiEnvironment,
-} from '../helpers/fetchFromStrapi';
-import {
-  GuideInfo,
   StrapiGuide,
-  generateUrlPath,
-} from './generateGuidesMetadata';
-
+  GuideInfo,
+  URL_PARSING_METADATA_JSON_PATH,
+} from '../helpers/guidesMetadataHelper';
+import { sitePathFromLocalPath } from '../helpers/sitePathFromLocalPath';
 // Load environment variables from .env file
-loadEnvConfig();
-
-// Validate environment variables
-validateStrapiEnvironment();
-
-const URL_PARSING_METADATA_JSON_PATH =
-  process.env.URL_PARSING_METADATA_JSON_PATH || 'url-parsing-metadata.json';
+dotenv.config();
 
 export type UrlParsingItem = {
   dirName: string;
@@ -35,6 +26,36 @@ export type UrlParsingItem = {
   }[];
 };
 
+export function generateUrlPath(
+  filePath: string,
+  guideSlug: string,
+  productSlug: string,
+  versionName?: string
+): string {
+  const restOfPath = sitePathFromLocalPath(filePath, undefined);
+  return [`/${productSlug}`, 'guides', guideSlug, versionName, restOfPath]
+    .filter(Boolean)
+    .join('/');
+}
+
+async function getMarkdownFilesRecursively(dir: string): Promise<string[]> {
+  const entries = await readdir(dir, { withFileTypes: true });
+  const files = await Promise.all(
+    entries.map(async (entry) => {
+      const fullPath = path.join(dir, entry.name);
+      if (!fs.existsSync(fullPath)) return [];
+      if (entry.isDirectory()) {
+        return getMarkdownFilesRecursively(fullPath); // Ricorsione
+      } else if (entry.isFile() && entry.name.endsWith('.md')) {
+        return [fullPath];
+      } else {
+        return [];
+      }
+    })
+  );
+
+  return files.flat();
+}
 async function convertGuideToUrlParsingItems(
   strapiGuides: StrapiGuide[]
 ): Promise<UrlParsingItem[]> {
@@ -52,41 +73,43 @@ async function convertGuideToUrlParsingItems(
 
   const items: UrlParsingItem[] = [];
   for (const guideInfo of guideInfoList) {
-    const guideDir = path.join('devportal-docs', 'docs', guideInfo.dirName);
-
-    const allFiles = await readdir(guideDir);
-    const guideFiles = allFiles
-      .filter((file) => file.endsWith('.md'))
-      .map((file) => path.join(guideDir, file));
-    const menuPath = guideFiles.find((file) =>
-      file.includes(guideInfo.dirName + '/SUMMARY.md')
-    );
-    const item = {
-      dirName: guideInfo.dirName,
-      guides: [] as { guidePath: string; guideUrl: string }[],
-    };
-    for (const filePath of guideFiles) {
-      const parts = filePath.split('/');
-      if (parts.length <= 2) {
+    if (guideInfo.dirName) {
+      const guideDir = path.join('devportal-docs', 'docs', guideInfo.dirName);
+      if (!fs.existsSync(guideDir)) {
+        console.warn(`Directory does not exist: ${guideDir}`);
         continue;
       }
-      const content = fs.readFileSync(filePath, 'utf8');
+      const guideFiles = await getMarkdownFilesRecursively(guideDir);
+      const menuPath = guideFiles.find((file) =>
+        file.includes(guideInfo.dirName + '/SUMMARY.md')
+      );
+      const item = {
+        dirName: guideInfo.dirName,
+        guides: [] as { guidePath: string; guideUrl: string }[],
+      };
+      for (const filePath of guideFiles) {
+        const parts = filePath.split('/');
+        if (parts.length <= 2) {
+          continue;
+        }
+        if (!fs.existsSync(filePath)) continue;
+        const content = fs.readFileSync(filePath, 'utf8');
 
-      if (menuPath && content) {
-        const path = generateUrlPath(
-          filePath,
-          guideInfo.guideSlug,
-          guideInfo.productSlug,
-          guideInfo.versionName,
-          guideInfo.dirName
-        );
-        item.guides.push({
-          guidePath: filePath || '',
-          guideUrl: path,
-        });
+        if (menuPath && content) {
+          const path = generateUrlPath(
+            filePath,
+            guideInfo.guideSlug,
+            guideInfo.productSlug,
+            guideInfo.versionName
+          );
+          item.guides.push({
+            guidePath: filePath || '',
+            guideUrl: path,
+          });
+        }
       }
+      items.push(item);
     }
-    items.push(item);
   }
   return items;
 }

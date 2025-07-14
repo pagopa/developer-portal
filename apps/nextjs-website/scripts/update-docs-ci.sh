@@ -2,6 +2,8 @@
 rm -rf ./docs
 mv ./checkout_path/docs .
 
+./scripts/replace-include-tags.sh ./docs
+
 # copy all the gitbook assets to public assets of nextjs-website
 dest='public/gitbook/'
 # create all the assets folder otherwise the copy will fail

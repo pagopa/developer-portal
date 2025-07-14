@@ -51,7 +51,6 @@ resource "aws_ecs_task_definition" "cms_task_def" {
       ac_base_url                = var.ac_integration_is_enabled ? var.ac_base_url_param : module.secret_cms_transfer_token_salt.ssm_parameter_arn
       ac_api_key                 = var.ac_integration_is_enabled ? var.ac_api_key_param : module.secret_cms_transfer_token_salt.ssm_parameter_arn
       ac_sender_url              = "https://${var.dns_domain_name}"
-      chb_strapi_api_key         = module.secret_chb_strapi_api_key.ssm_parameter_arn
   })
 }
 
@@ -86,5 +85,12 @@ module "cms_ecs_service" {
       container_name   = "cms-docker"
       container_port   = var.cms_app_port
     }
+    cms-load-balancer-internal = {
+      target_group_arn = module.cms_load_balancer_internal.target_groups["cms-target-group-internal"].arn
+      container_name   = "cms-docker"
+      container_port   = var.cms_app_port
+    }
   }
+
+
 }

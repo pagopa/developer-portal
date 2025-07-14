@@ -3,76 +3,39 @@
 /* eslint-disable functional/no-expression-statements */
 /* eslint-disable functional/immutable-data */
 /* eslint-disable functional/no-try-statements */
+import dotenv from 'dotenv';
+import { SitemapItem } from '../sitemapItem';
 import {
   downloadS3File,
   listS3Files,
   makeS3Client,
   writeSitemapJson,
-  loadEnvConfig,
-  validateS3Environment,
 } from '../helpers/s3Bucket.helper';
-import { SitemapItem } from '../sitemapItem';
 import { extractTitleFromMarkdown } from '../helpers/extractTitle.helper';
-import {
-  fetchFromStrapi,
-  validateStrapiEnvironment,
-} from '../helpers/fetchFromStrapi';
+import { fetchFromStrapi } from '../helpers/fetchFromStrapi';
+import { StrapiGuide, GuideInfo } from '../helpers/guidesMetadataHelper';
 import { sitePathFromS3Path } from '../helpers/sitePathFromS3Path';
-
 // Load environment variables from .env file
-loadEnvConfig();
+dotenv.config();
 
-// Validate environment variables
-validateStrapiEnvironment();
-const { s3BucketName } = validateS3Environment();
-
+const S3_BUCKET_NAME = process.env.S3_BUCKET_NAME;
 const S3_PATH_TO_GITBOOK_DOCS = process.env.S3_PATH_TO_GITBOOK_DOCS || 'docs';
 const S3_GUIDE_METADATA_JSON_PATH =
   process.env.S3_GUIDE_METADATA_JSON_PATH || 'guides-metadata.json';
 
 const s3Client = makeS3Client();
 
-export interface StrapiGuide {
-  id: number;
-  attributes: {
-    slug: string;
-    title: string;
-    product?: {
-      data?: {
-        attributes?: {
-          slug: string;
-        };
-      };
-    };
-    versions: {
-      id: number;
-      main: boolean;
-      version: string;
-      dirName: string;
-    }[];
-  };
-}
-
-export function generateUrlPath(
+function generateUrlPath(
   filePath: string,
   guideSlug: string,
   productSlug: string,
-  versionName?: string,
-  dirName?: string
+  versionName?: string
 ): string {
-  const restOfPath = sitePathFromS3Path(filePath, dirName);
+  const restOfPath = sitePathFromS3Path(filePath, undefined);
   return [`/${productSlug}`, 'guides', guideSlug, versionName, restOfPath]
     .filter(Boolean)
     .join('/');
 }
-
-export type GuideInfo = {
-  versionName: string;
-  isMainVersion: boolean;
-  dirName: string;
-  guideSlug: string;
-  productSlug: string;
-};
 
 async function convertGuideToSitemapItems(
   strapiGuides: StrapiGuide[]
@@ -94,7 +57,7 @@ async function convertGuideToSitemapItems(
     const guideFiles = (
       await listS3Files(
         `${S3_PATH_TO_GITBOOK_DOCS}/${guideInfo.dirName}`,
-        `${s3BucketName}`,
+        `${S3_BUCKET_NAME}`,
         s3Client
       )
     ).filter((file) => file.endsWith('.md'));
@@ -103,12 +66,12 @@ async function convertGuideToSitemapItems(
     );
     for (const filePath of guideFiles) {
       const parts = filePath.split('/');
-      if (parts.length <= 2) {
+      if (parts.length <= 2 || filePath.endsWith('/SUMMARY.md')) {
         continue;
       }
       const content = await downloadS3File(
         filePath,
-        `${s3BucketName}`,
+        `${S3_BUCKET_NAME}`,
         s3Client
       );
       const title = extractTitleFromMarkdown(content);
@@ -160,12 +123,11 @@ async function main() {
     await writeSitemapJson(
       sitemapItems,
       S3_GUIDE_METADATA_JSON_PATH,
-      `${s3BucketName}`,
+      `${S3_BUCKET_NAME}`,
       s3Client
     );
   } catch (error) {
     console.error('Error:', error);
-    process.exit(1); // Exit with error code for CI pipeline visibility
   }
 }
 

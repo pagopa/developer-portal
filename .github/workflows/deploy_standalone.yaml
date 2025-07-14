@@ -45,7 +45,7 @@ jobs:
   deploy:
     name: Deploy standalone website ${{ matrix.environment }}
     if: ${{ needs.setup.outputs.matrix != '' }}
-    runs-on: ubuntu-24.04
+    runs-on: codebuild-${{ matrix.environment }}-github-runner-${{ github.run_id }}-${{ github.run_attempt }}
     needs: [ setup ]
     
     strategy:
@@ -114,6 +114,11 @@ jobs:
         working-directory: apps/nextjs-website
         run: |
           aws s3 sync ./.open-next/cache s3://devportal-${{ env.ENV_SHORT }}-website-opnext-assets-01/_cache
+
+      - name: Clean up config files
+        working-directory: apps/nextjs-website/.open-next
+        run: |
+          find ./ -type f -name ".env" -delete
             
       - name: Deploy Lambda Server Function
         uses: ./.github/actions/deploy_lambda
@@ -178,5 +183,5 @@ jobs:
       - name: Invalidate CloudFront cache
         run: |
           aws cloudfront create-invalidation \
-            --distribution-id ${{ env.CLOUDFRONT_DISTRIBUTION_ID }} \
+            --distribution-id ${{ vars.OPENNEXT_CLOUDFRONT_DISTRIBUTION_ID }} \
             --paths "/*"

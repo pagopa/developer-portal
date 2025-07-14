@@ -405,6 +405,7 @@ apps/chatbot/test.py
 !apps/chatbot/docker
 apps/chatbot/.env
 apps/chatbot/empty_htmls.json
+apps/chatbot/.google_service_account.json
 
 /results
 

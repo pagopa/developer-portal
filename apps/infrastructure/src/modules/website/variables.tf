@@ -93,7 +93,7 @@ variable "mfa_code_duration_in_minutes" {
 variable "signup_allowed_email_domains" {
   type        = list(string)
   description = "List of allowed email domains for signup"
-  default     = ["pagopa.it", "uqido.com", "aizoongroup.com"]
+  default     = ["pagopa.it", "uqido.com", "aizoongroup.com", "dgsspa.com"]
 }
 
 variable "nextjs_version" {
@@ -111,4 +111,31 @@ variable "create_chatbot" {
   type        = bool
   description = "Defines if chatbot should be created"
   default     = false
+}
+
+variable "next_public_feedback_form_enabled" {
+  type        = bool
+  description = "Defines if the feedback form should be enabled"
+  default     = false
+}
+
+variable "next_public_soap_api_page_active" {
+  type        = bool
+  description = "Defines if the SOAP API page should be active"
+  default     = false
+}
+
+variable "next_cms_interlan_alb_dns_name" {
+  type        = string
+  description = "The DNS name of the internal ALB for the CMS"
+}
+
+variable "vpc" {
+  type = object({
+    id              = string
+    private_subnets = list(string)
+  })
+  default = null
+
+  description = "The VPC used to deploy the lambda functions in. Configure this only when you want the lambda to access private resources contained in the VPC."
 }
