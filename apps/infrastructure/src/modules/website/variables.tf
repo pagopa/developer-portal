@@ -124,3 +124,18 @@ variable "next_public_soap_api_page_active" {
   description = "Defines if the SOAP API page should be active"
   default     = false
 }
+
+variable "next_cms_interlan_alb_dns_name" {
+  type        = string
+  description = "The DNS name of the internal ALB for the CMS"
+}
+
+variable "vpc" {
+  type = object({
+    id              = string
+    private_subnets = list(string)
+  })
+  default = null
+
+  description = "The VPC used to deploy the lambda functions in. Configure this only when you want the lambda to access private resources contained in the VPC."
+}
