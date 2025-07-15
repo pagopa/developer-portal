@@ -59,9 +59,8 @@ jobs:
       - name: Compile packages
         run: npm run compile
 
-      - name: Replace include tags in docs
-        run: |
-          bash apps/nextjs-website/scripts/replace-include-tags.sh devportal-docs/docs
+      - name: Replace include tags and Urls in docs
+        run: npm run parse-docs -w gitbook-docs
 
       - name: Configure AWS Credentials
         uses: ./.github/actions/configure-aws-credentials
