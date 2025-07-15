@@ -59,6 +59,15 @@ jobs:
       - name: Setup Node.JS
         uses: ./.github/actions/setup-node
 
+      - name: Cache npm dependencies
+        id: cache-npm
+        uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-npm-
+
       - name: Install dependencies
         run: npm ci
 
