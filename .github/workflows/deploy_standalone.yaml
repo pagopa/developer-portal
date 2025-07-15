@@ -82,7 +82,7 @@ jobs:
       - name: Install dependencies
         run: |-
           npm config set cache ~/.npm
-          npm ci --audit=false --fund=false
+          npm ci --audit=false --fund=false --prefer-offline --max-parallel=5
 
       - name: Compile
         run: npm run compile
