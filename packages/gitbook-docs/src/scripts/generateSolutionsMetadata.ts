@@ -19,7 +19,8 @@ import { sitePathFromS3Path } from '../helpers/sitePathFromS3Path';
 dotenv.config();
 
 const S3_BUCKET_NAME = process.env.S3_BUCKET_NAME;
-const S3_PATH_TO_GITBOOK_DOCS = process.env.S3_PATH_TO_GITBOOK_DOCS || 'docs';
+const S3_PATH_TO_GITBOOK_DOCS =
+  process.env.S3_PATH_TO_GITBOOK_DOCS || 'devportal-docs/docs';
 const S3_SOLUTIONS_METADATA_JSON_PATH =
   process.env.S3_SOLUTIONS_METADATA_JSON_PATH || 'solutions-metadata.json';
 
