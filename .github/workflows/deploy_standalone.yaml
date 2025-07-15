@@ -67,6 +67,9 @@ jobs:
         with:
           submodules: recursive
 
+      - name: Setup Node.JS
+        uses: ./.github/actions/setup-node
+            
       - name: Cache npm dependencies
         id: cache-npm
         uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684
@@ -76,13 +79,10 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-npm-
 
-      - name: Setup Node.JS
-        uses: ./.github/actions/setup-node
-        with:
-          package_manager: npm
-
       - name: Install dependencies
-        run: npm ci --audit=false --fund=false
+        run: |-
+          npm config set cache ~/.npm
+          npm ci --audit=false --fund=false
 
       - name: Compile
         run: npm run compile
