@@ -4,19 +4,15 @@
 /* eslint-disable functional/immutable-data */
 /* eslint-disable functional/no-try-statements */
 
-type UrlParsingMetadata = {
-  dirName: string;
-  guides: {
-    guidePath: string;
-    guideUrl: string;
-  }[];
-};
+import {
+  DOCUMENTATION_PATH,
+  parseIncludesFromMarkdown,
+  parseUrlsFromMarkdown,
+  UrlParsingMetadata,
+} from '../helpers/documentationParsing.helper';
 
 const URL_PARSING_METADATA_JSON_PATH =
   process.env.URL_PARSING_METADATA_JSON_PATH || 'url-parsing-metadata.json';
-
-const DOCUMENTATION_PATH =
-  process.env.DOCUMENTATION_PATH || 'devportal-docs/docs';
 
 const metadata = loadMetadata(URL_PARSING_METADATA_JSON_PATH);
 
@@ -25,109 +21,6 @@ function loadMetadata(filePath: string): UrlParsingMetadata[] {
   const { readFileSync } = require('fs');
   const file = readFileSync(filePath, 'utf8');
   return JSON.parse(file);
-}
-
-async function parseIncludesFromMarkdown(
-  fileContent: string,
-  hashDir: string
-): Promise<string> {
-  if (!fileContent.includes('{% include')) {
-    return fileContent;
-  }
-  const regex = /{% include\s+['"]([^'"]+)['"]\s*%}/gs;
-  const matches = [...fileContent.matchAll(regex)];
-  // eslint-disable-next-line functional/no-let
-  let updatedFileContent = fileContent;
-  for (const match of matches) {
-    const replaceValue = await replaceIncludes(match[0], match[1], hashDir);
-    updatedFileContent = updatedFileContent.replace(match[0], replaceValue);
-  }
-  return updatedFileContent;
-}
-
-function parseUrlsFromMarkdown(
-  fileContent: string,
-  guideMetadata: UrlParsingMetadata | undefined
-): string {
-  const regex = /\[([^\]]+)\]\(([^)]+)\)/g;
-  const matches = [...fileContent.matchAll(regex)];
-  // eslint-disable-next-line functional/no-let
-  let updatedFileContent = fileContent;
-  for (const match of matches) {
-    const replace = replaceUrl(guideMetadata, match[2]);
-    updatedFileContent = updatedFileContent.replace(match[2] || '', replace);
-  }
-  return updatedFileContent;
-}
-
-async function replaceIncludes(
-  fullInclude: string,
-  pathToInclude: string,
-  hashDir: string
-): Promise<string> {
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const fs = require('fs');
-  const mappedIncludePath = mapIncludePath(pathToInclude, hashDir);
-  if (!fs.existsSync(mappedIncludePath)) {
-    return fullInclude;
-  }
-  const includeContent = (await fs.promises.readFile(
-    mappedIncludePath,
-    'utf8'
-  )) as string;
-  if (!includeContent || includeContent.length <= 0) {
-    return fullInclude;
-  }
-  return includeContent;
-}
-
-function mapIncludePath(includePath: string, hashDir: string): string {
-  // Normalize the path to use POSIX separators
-  const normalized = includePath.replace(/\\/g, '/');
-  // Match leading ../ segments followed by .gitbook/includes
-  const replaced = normalized.replace(
-    /^((\.\.\/)*)\.gitbook\/includes/,
-    DOCUMENTATION_PATH + `/${hashDir}/.gitbook/includes`
-  );
-  return replaced;
-}
-
-function replaceUrl(
-  metadata: UrlParsingMetadata | undefined,
-  value: string
-): string {
-  const splitValue = value
-    .replace(' "mention"', '')
-    .replace('README.md', '')
-    .split('/')
-    .filter((val) => {
-      return val != '';
-    });
-  const lastPart = splitValue.at(-1) || '';
-  const secondToLastPart = splitValue.at(-2) || '';
-  const name = lastPart.replace('.md', '');
-  if (name.length <= 1) {
-    return value;
-  }
-  if (metadata) {
-    const guides = metadata.guides.filter((guide) =>
-      guide.guidePath.includes(name)
-    );
-    if (guides.length <= 0) {
-      return value;
-    }
-    if (guides.length == 1) {
-      return guides[0].guideUrl || value;
-    } else {
-      const guide = guides.find((guide) =>
-        guide.guidePath.includes([secondToLastPart, lastPart].join('/'))
-      );
-
-      return guide?.guideUrl || value;
-    }
-  } else {
-    return value;
-  }
 }
 
 async function recursiveParseMarkdownFiles(
