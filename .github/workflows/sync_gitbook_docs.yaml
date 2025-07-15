@@ -59,12 +59,6 @@ jobs:
       - name: Setup Node.JS
         uses: ./.github/actions/setup-node
 
-      - name: Verify npm cache
-        run: |
-          mkdir -p ~/.npm
-          npm config set cache ~/.npm
-          npm cache verify
-
       - name: Cache npm dependencies
         id: cache-npm
         uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684
@@ -73,6 +67,12 @@ jobs:
           key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-npm-
+              
+      - name: Verify npm cache
+        run: |
+          mkdir -p ~/.npm
+          npm config set cache ~/.npm
+          npm cache verify
 
       - name: Install dependencies
         run: | 
