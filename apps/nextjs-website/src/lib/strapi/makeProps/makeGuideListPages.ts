@@ -16,7 +16,7 @@ export function makeGuideListPagesProps(
       ...attributes.guidesByCategory.map(({ category, guides }) => ({
         title: category,
         guides: _.compact(
-          guides.data.map((guide) => makeGuideProps(guide, product.slug))
+          guides.data.map((guide) => makeGuideCardProps(guide, product.slug))
         ),
       })),
     ];
@@ -40,7 +40,7 @@ export function makeGuideListPagesProps(
   });
 }
 
-function makeGuideProps(
+function makeGuideCardProps(
   guide: BaseGuide,
   productSlug: string
 ): GuideCardProps | null {
