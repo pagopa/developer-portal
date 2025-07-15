@@ -35,6 +35,7 @@ export function replaceUrl(
   const splitValue = value
     .replace(' "mention"', '')
     .replace('README.md', '')
+    .replace('.md', '')
     .split('/')
     .filter((val) => {
       return val != '';
@@ -78,27 +79,32 @@ export async function parseIncludesFromMarkdown(
   // eslint-disable-next-line functional/no-let
   let updatedFileContent = fileContent;
   for (const match of matches) {
-    const replaceValue = await replaceIncludes(match[0], match[1], hashDir);
+    const includeContent = await getIncludeContent(match[1], hashDir);
+    const replaceValue = await replaceIncludes(match[0], includeContent);
     updatedFileContent = updatedFileContent.replace(match[0], replaceValue);
   }
   return updatedFileContent;
 }
 
-export async function replaceIncludes(
-  fullInclude: string,
-  pathToInclude: string,
+export async function getIncludeContent(
+  includePath: string,
   hashDir: string
 ): Promise<string> {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
   const fs = require('fs');
-  const mappedIncludePath = mapIncludePath(pathToInclude, hashDir);
+  const mappedIncludePath = mapIncludePath(includePath, hashDir);
   if (!fs.existsSync(mappedIncludePath)) {
-    return fullInclude;
+    console.log('no file found for', mappedIncludePath);
+    return '';
   }
-  const includeContent = (await fs.promises.readFile(
-    mappedIncludePath,
-    'utf8'
-  )) as string;
+  return (await fs.promises.readFile(mappedIncludePath, 'utf8')) as string;
+}
+
+export async function replaceIncludes(
+  fullInclude: string,
+  includeContent: string
+): Promise<string> {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
   if (!includeContent || includeContent.length <= 0) {
     return fullInclude;
   }
