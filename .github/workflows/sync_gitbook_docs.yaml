@@ -76,6 +76,10 @@ jobs:
       - name: Compile packages
         run: npm run compile
 
+      - name: Generate UrlReplace metadata
+        if: inputs.generate_metadata_only == false
+        run: npm run generate-url-parsing-metadata -w gitbook-docs
+
       - name: Replace include tags in docs
         if: inputs.generate_metadata_only == false
         run: npm run parse-docs -w gitbook-docs
