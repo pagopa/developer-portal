@@ -11,8 +11,7 @@
     "start": "next start",
     "test": "jest -i",
     "update-docs": "./scripts/fetch-local-docs.sh",
-    "update-docs-ci": "./scripts/update-docs-ci.sh",
-    "parse-docs": "ts-node scripts/parseDocUrlsAndIncludes.ts"
+    "update-docs-ci": "./scripts/update-docs-ci.sh"
   },
   "dependencies": {
     "@apidevtools/swagger-parser": "^10.1.0",

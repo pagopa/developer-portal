@@ -31,8 +31,10 @@ async function parseIncludesFromMarkdown(
   fileContent: string,
   hashDir: string
 ): Promise<string> {
-  if (!fileContent.includes('{% include')) return fileContent;
-  const regex = /{% include\s+['"]([^'"]+)['"]\s*%}/g;
+  if (!fileContent.includes('{% include')) {
+    return fileContent;
+  }
+  const regex = /{% include\s+['"]([^'"]+)['"]\s*%}/gs;
   const matches = [...fileContent.matchAll(regex)];
   // eslint-disable-next-line functional/no-let
   let updatedFileContent = fileContent;
@@ -66,6 +68,9 @@ async function replaceIncludes(
   // eslint-disable-next-line @typescript-eslint/no-var-requires
   const fs = require('fs');
   const mappedIncludePath = mapIncludePath(pathToInclude, hashDir);
+  if (!fs.existsSync(mappedIncludePath)) {
+    return fullInclude;
+  }
   const includeContent = (await fs.promises.readFile(
     mappedIncludePath,
     'utf8'
@@ -73,7 +78,7 @@ async function replaceIncludes(
   if (!includeContent || includeContent.length <= 0) {
     return fullInclude;
   }
-  return fullInclude + '\n' + includeContent + '{% endinclude %}';
+  return includeContent;
 }
 
 function mapIncludePath(includePath: string, hashDir: string): string {
@@ -82,7 +87,7 @@ function mapIncludePath(includePath: string, hashDir: string): string {
   // Match leading ../ segments followed by .gitbook/includes
   const replaced = normalized.replace(
     /^((\.\.\/)*)\.gitbook\/includes/,
-    `./${hashDir}/.gitbook/includes`
+    DOCUMENTATION_PATH + `/${hashDir}/.gitbook/includes`
   );
   return replaced;
 }

@@ -24,7 +24,8 @@
     "generate-solutions-metadata": "ts-node src/scripts/generateSolutionsMetadata.ts",
     "generate-release-notes-metadata": "ts-node src/scripts/generateReleaseNotesMetadata.ts",
     "fetch-soap-api-from-strapi": "ts-node src/scripts/generateSoapApiRepositoriesList.ts",
-    "generate-url-parsing-metadata": "ts-node src/scripts/generateUrlParsingMetadata.ts"
+    "generate-url-parsing-metadata": "ts-node src/scripts/generateUrlParsingMetadata.ts",
+    "parse-docs": "ts-node src/scripts/parseDocUrlsAndIncludes.ts"
   },
   "dependencies": {
     "@markdoc/markdoc": "0.3.0",
