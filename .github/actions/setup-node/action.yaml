@@ -15,3 +15,5 @@ runs:
       with:
         node-version-file: '.node-version'
         cache: ${{ inputs.package_manager }}
+        cache-path: ${{ github.workspace }}/.npm-cache
+          

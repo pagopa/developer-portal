@@ -69,7 +69,9 @@ jobs:
             ${{ runner.os }}-npm-
 
       - name: Install dependencies
-        run: npm ci
+        run: | 
+          npm config set cache ${{ github.workspace }}/.npm-cache
+          npm ci
 
       - name: Compile packages
         run: npm run compile
