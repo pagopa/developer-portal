@@ -2,7 +2,6 @@ import * as t from 'io-ts';
 import { BaseProductWithRelationsCodec } from '@/lib/strapi/codecs/ProductCodec';
 import { BannerLinkCodec } from '@/lib/strapi/codecs/BannerLinkCodec';
 import { SEOCodec } from '@/lib/strapi/codecs/SeoCodec';
-import { PaginationCodec } from '@/lib/strapi/codecs/PaginationCodec';
 import { MediaAttributes } from '@/lib/strapi/types/media';
 import { Pagination } from '@/lib/strapi/types/pagination';
 
@@ -69,5 +68,5 @@ export type StrapiGuidePageData = {
 
 export type StrapiGuidesPaginated = {
   readonly data: ReadonlyArray<StrapiGuidePageData>;
-  readonly meta: t.TypeOf<typeof PaginationCodec>;
+  readonly meta: Pagination;
 };
