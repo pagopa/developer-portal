@@ -22,6 +22,11 @@ on:
           - guides
           - solutions
           - release_notes
+      generate_metadata_only:
+        description: 'Generate metadata only without syncing docs'
+        type: boolean
+        required: true
+        default: false
 
   # schedule:
   #   - cron: '0 23 * * *'  # Run daily at midnight UTC
@@ -44,6 +49,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Checkout devportal-docs repo
+        if: inputs.generate_metadata_only == false
         uses: actions/checkout@v4
         with:
           repository: pagopa/devportal-docs
@@ -59,7 +65,8 @@ jobs:
       - name: Compile packages
         run: npm run compile
 
-      - name: Replace include tags and Urls in docs
+      - name: Replace include tags in docs
+        if: inputs.generate_metadata_only == false
         run: npm run parse-docs -w gitbook-docs
 
       - name: Configure AWS Credentials
@@ -69,6 +76,7 @@ jobs:
           role_to_assume: ${{ secrets.DEPLOY_IAM_ROLE }}
 
       - name: Sync docs folder to S3
+        if: inputs.generate_metadata_only == false
         working-directory: ./devportal-docs
         run: |    
           aws s3 sync docs s3://devportal-${{ env.ENV_SHORT }}-website-static-content/devportal-docs/docs --delete
@@ -81,8 +89,6 @@ jobs:
           S3_BUCKET_NAME: devportal-${{ env.ENV_SHORT }}-website-static-content
           S3_DOC_EXTRACTION_BUCKET_NAME: ${{ vars.S3_DOC_EXTRACTION_BUCKET_NAME }}
           S3_PATH_TO_GITBOOK_DOCS: ${{ vars.S3_PATH_TO_GITBOOK_DOCS || 'devportal-docs/docs' }}
-          S3_ACCESS_KEY_ID: ${{ env.AWS_ACCESS_KEY_ID }}
-          S3_SECRET_ACCESS_KEY: ${{ env.AWS_SECRET_ACCESS_KEY }}
           STRAPI_ENDPOINT: ${{ vars.STRAPI_ENDPOINT }}
           STRAPI_API_TOKEN: ${{ secrets.STRAPI_API_TOKEN }}
           FETCH_FROM_STRAPI: ${{ vars.FETCH_FROM_STRAPI || 'true' }}
@@ -95,8 +101,6 @@ jobs:
           ENVIRONMENT: ${{ github.event_name == 'workflow_dispatch' && inputs.environment || 'dev' }}
           S3_BUCKET_NAME: devportal-${{ env.ENV_SHORT }}-website-static-content         
           S3_PATH_TO_GITBOOK_DOCS: ${{ vars.S3_PATH_TO_GITBOOK_DOCS || 'devportal-docs/docs' }}
-          S3_ACCESS_KEY_ID: ${{ env.AWS_ACCESS_KEY_ID }}
-          S3_SECRET_ACCESS_KEY: ${{ env.AWS_SECRET_ACCESS_KEY }}
           STRAPI_ENDPOINT: ${{ vars.STRAPI_ENDPOINT }}
           STRAPI_API_TOKEN: ${{ secrets.STRAPI_API_TOKEN }}
           FETCH_FROM_STRAPI: ${{ vars.FETCH_FROM_STRAPI || 'true' }}
@@ -110,8 +114,6 @@ jobs:
           S3_BUCKET_NAME: devportal-${{ env.ENV_SHORT }}-website-static-content
           S3_DOC_EXTRACTION_BUCKET_NAME: ${{ vars.S3_DOC_EXTRACTION_BUCKET_NAME }}
           S3_PATH_TO_GITBOOK_DOCS: ${{ vars.S3_PATH_TO_GITBOOK_DOCS || 'devportal-docs/docs' }}
-          S3_ACCESS_KEY_ID: ${{ secrets.S3_ACCESS_KEY_ID }}
-          S3_SECRET_ACCESS_KEY: ${{ secrets.S3_SECRET_ACCESS_KEY }}
           STRAPI_ENDPOINT: ${{ vars.STRAPI_ENDPOINT }}
           STRAPI_API_TOKEN: ${{ secrets.STRAPI_API_TOKEN }}
           FETCH_FROM_STRAPI: ${{ vars.FETCH_FROM_STRAPI || 'true' }}
