@@ -34,7 +34,11 @@ def lambda_handler(event, context):
             result = chatbot.mask_pii(payload.get("string", ""))
         case "evaluate":
             result = chatbot.evaluate(
-                evaluation_data=payload.get("evaluation_data", {})
+                query_str=payload.get("query_str", ""),
+                response_str=payload.get("response_str", ""),
+                retrieved_context=payload.get("retrieved_context", []),
+                trace_id=payload.get("trace_id", ""),
+                messages=payload.get("messages", None),
             )
         case _:
             return {"statusCode": 400, "error": "Invalid operation"}
