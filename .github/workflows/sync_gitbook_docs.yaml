@@ -78,8 +78,7 @@ jobs:
 
       - name: Replace include tags in docs
         if: inputs.generate_metadata_only == false
-        run: |
-          bash apps/nextjs-website/scripts/replace-include-tags.sh devportal-docs/docs
+        run: npm run parse-docs -w gitbook-docs
 
       - name: Configure AWS Credentials
         uses: ./.github/actions/configure-aws-credentials
