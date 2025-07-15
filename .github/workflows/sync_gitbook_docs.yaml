@@ -59,6 +59,12 @@ jobs:
       - name: Setup Node.JS
         uses: ./.github/actions/setup-node
 
+      - name: Verify npm cache
+        run: |
+          mkdir -p ~/.npm
+          npm config set cache ~/.npm
+          npm cache verify
+
       - name: Cache npm dependencies
         id: cache-npm
         uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684
@@ -70,7 +76,7 @@ jobs:
 
       - name: Install dependencies
         run: | 
-          npm config set cache ${{ github.workspace }}/.npm-cache
+          npm config set cache ~/.npm
           npm ci
 
       - name: Compile packages
