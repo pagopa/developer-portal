@@ -130,7 +130,7 @@ module "cms" {
   }
 
   environment       = var.environment
-  github_repository = var.github_repository
+  github_repository = var.github_cms_repository
   tags              = var.tags
 
   dns_domain_name           = var.dns_domain_name
