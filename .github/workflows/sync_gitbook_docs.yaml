@@ -67,13 +67,7 @@ jobs:
           key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-npm-
-              
-      - name: Verify npm cache
-        run: |
-          mkdir -p ~/.npm
-          npm config set cache ~/.npm
-          npm cache verify
-
+                                  
       - name: Install dependencies
         run: | 
           npm config set cache ~/.npm
