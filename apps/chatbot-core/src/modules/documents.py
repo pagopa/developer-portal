@@ -258,6 +258,8 @@ def get_guide_docs(
     driver_options.add_argument("--disable-gpu")
     driver_options.add_argument("--no-sandbox")
     driver_options.add_argument("--disable-dev-shm-usage")
+    driver_options.add_argument("--single-process")
+
 
     for file in tqdm.tqdm(html_files, total=len(html_files), desc="Getting guide docs"):
 

@@ -22,11 +22,12 @@ services:
         condition: service_started
       core:
         condition: service_started
+      core-create-vector-index:
+        condition: service_started
     networks:
       - ntw
 
   core:
-    # image: chatbot-core-main:0.1
     build:
       context: ../../chatbot-core
       dockerfile: ../chatbot-core/docker/lambda.main.Dockerfile
@@ -44,12 +45,14 @@ services:
       - ntw
 
   core-create-vector-index:
-    image: chatbot-core-create_vector_index:0.1
+    build:
+      context: ../../chatbot-core
+      dockerfile: ../chatbot-core/docker/lambda.create_vector_index.Dockerfile
     env_file: ../.env.local
     environment:
       - PYTHONPATH=/var/task
     volumes:
-      - ./files/nextjs-website/out:/app/build-devp/out
+      - ../../nextjs-website/out:/app/build-devp/out
     ports:
       - "8082:8080"
     depends_on:

@@ -19,7 +19,7 @@ def chatbot_generate(payload: dict) -> dict:
             "http://core:8080/2015-03-31/functions/function/invocations",
             json=lambda_event,
         )
-        logger.info(f"[calls] lambda generate response={response.json()}")
+        logger.info(f"[calls] lambda generate response={response}")
         response_json = response.json()
         response = response_json["result"]
     else:
@@ -70,7 +70,7 @@ def chatbot_evaluate(evaluation_data: dict) -> dict:
             "http://core:8080/2015-03-31/functions/function/invocations",
             json=lambda_event,
         )
-        logger.info(f"[calls] lambda evaluate response={response.json()}")
+        logger.info(f"[calls] lambda evaluate response={response}")
         response_json = response.json()
         response = response_json["result"]
     else:
