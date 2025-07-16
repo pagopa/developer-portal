@@ -20,7 +20,7 @@ WEBSITE_URL = os.getenv("CHB_WEBSITE_URL")
 class Judge:
     def __init__(
         self,
-        prompts: dict | None = None,
+        prompts: dict,
     ):
         self.condense_prompt_str = prompts["condense_prompt_evaluation_str"]
         self.llm = get_llm()
