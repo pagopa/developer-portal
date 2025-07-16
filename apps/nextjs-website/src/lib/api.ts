@@ -53,15 +53,13 @@ export async function getGuidePage(
     'guides',
     ...guidePaths,
   ].join('/');
-  const parsedGuidePage = manageUndefined(
-    await parseS3GuidePage({
-      guideProps,
-      guidePath,
-      guidesMetadata,
-      products,
-    })
-  );
-  return parsedGuidePage;
+
+  return await parseS3GuidePage({
+    guideProps,
+    guidePath,
+    guidesMetadata,
+    products,
+  });
 }
 
 export async function getGuide(
@@ -194,7 +192,7 @@ export async function getCaseHistory(caseHistorySlug?: string) {
 export async function getApiDataParams() {
   const props = (await getApiDataListPagesProps()).flatMap(
     (apiDataListPageProps) =>
-      apiDataListPageProps.apiRestDetailSlugs.map((apiDataSlug) => ({
+      apiDataListPageProps.apiDetailSlugs.map((apiDataSlug) => ({
         productSlug: apiDataListPageProps.product.slug,
         apiDataSlug,
       }))
@@ -236,12 +234,14 @@ export async function getReleaseNote(
   )}`;
   const releaseNotesMetadata = await getReleaseNotesMetadata();
 
-  const releaseNoteProps = manageUndefined(
-    await getReleaseNoteProps(
-      productSlug,
-      releaseNotesMetadata.find(({ path }) => path === releaseNotesPath)
-    )
+  const releaseNoteProps = await getReleaseNoteProps(
+    productSlug,
+    releaseNotesMetadata.find(({ path }) => path === releaseNotesPath)
   );
+
+  if (!releaseNoteProps) {
+    return undefined;
+  }
 
   return {
     ...releaseNoteProps,
@@ -284,14 +284,11 @@ export async function getSolutionDetail(
 ) {
   const solutionsMetadata = await getSolutionsMetadata();
 
-  return manageUndefined(
-    await getSolutionProps(
-      solutionSlug,
-      solutionsMetadata.find(
-        ({ path }) =>
-          path ===
-          `/solutions/${solutionSlug}/${solutionSubPathSlugs.join('/')}`
-      )
+  return await getSolutionProps(
+    solutionSlug,
+    solutionsMetadata.find(
+      ({ path }) =>
+        path === `/solutions/${solutionSlug}/${solutionSubPathSlugs.join('/')}`
     )
   );
 }

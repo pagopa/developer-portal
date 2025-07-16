@@ -1,0 +1,139 @@
+name: Sync GitBook Docs
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'The environment used as target'
+        type: choice
+        required: true
+        default: dev
+        options:
+          - dev
+          - uat
+          - prod
+      metadata_type:
+        description: 'Type of metadata to generate'
+        type: choice
+        required: true
+        default: all
+        options:
+          - all
+          - guides
+          - solutions
+          - release_notes
+      generate_metadata_only:
+        description: 'Generate metadata only without syncing docs'
+        type: boolean
+        required: true
+        default: false
+
+  # schedule:
+  #   - cron: '0 23 * * *'  # Run daily at midnight UTC
+
+# Permissions needed for AWS OIDC authentication
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  sync_gitbook_docs:
+    name: Sync gitbook Docs to S3 (manual on ${{ inputs.environment }})
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+    env:
+      ENV_SHORT: ${{ fromJSON('{"dev":"d","uat":"u","prod":"p"}')[inputs.environment] }}
+
+    steps:
+      - name: Checkout current repository
+        uses: actions/checkout@v4
+
+      - name: Checkout devportal-docs repo
+        if: inputs.generate_metadata_only == false
+        uses: actions/checkout@v4
+        with:
+          repository: pagopa/devportal-docs
+          ref: docs/from-gitbook
+          path: devportal-docs
+
+      - name: Setup Node.JS
+        uses: ./.github/actions/setup-node
+
+      - name: Cache npm dependencies
+        id: cache-npm
+        uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-npm-
+                                  
+      - name: Install dependencies
+        run: | 
+          npm config set cache ~/.npm
+          npm ci
+
+      - name: Compile packages
+        run: npm run compile
+
+      - name: Replace include tags in docs
+        if: inputs.generate_metadata_only == false
+        run: |
+          bash apps/nextjs-website/scripts/replace-include-tags.sh devportal-docs/docs
+
+      - name: Configure AWS Credentials
+        uses: ./.github/actions/configure-aws-credentials
+        with:
+          aws_region: eu-south-1
+          role_to_assume: ${{ secrets.DEPLOY_IAM_ROLE }}
+
+      - name: Sync docs folder to S3
+        if: inputs.generate_metadata_only == false
+        working-directory: ./devportal-docs
+        run: |    
+          aws s3 sync docs s3://devportal-${{ env.ENV_SHORT }}-website-static-content/devportal-docs/docs --delete
+      
+      
+      - name: Generate guides metadata      
+        if: inputs.metadata_type == 'guides' || inputs.metadata_type == 'all'
+        env:
+          ENVIRONMENT: ${{ github.event_name == 'workflow_dispatch' && inputs.environment || 'dev' }}
+          S3_BUCKET_NAME: devportal-${{ env.ENV_SHORT }}-website-static-content
+          S3_DOC_EXTRACTION_BUCKET_NAME: ${{ vars.S3_DOC_EXTRACTION_BUCKET_NAME }}
+          S3_PATH_TO_GITBOOK_DOCS: ${{ vars.S3_PATH_TO_GITBOOK_DOCS || 'devportal-docs/docs' }}
+          STRAPI_ENDPOINT: ${{ vars.STRAPI_ENDPOINT }}
+          STRAPI_API_TOKEN: ${{ secrets.STRAPI_API_TOKEN }}
+          FETCH_FROM_STRAPI: ${{ vars.FETCH_FROM_STRAPI || 'true' }}
+          NEXT_PUBLIC_COGNITO_REGION: ${{ vars.NEXT_PUBLIC_COGNITO_REGION || 'eu-south-1' }}
+        run: npm run generate-guides-metadata -w gitbook-docs
+        
+      - name: Generate solutions metadata      
+        if: inputs.metadata_type == 'solutions' || inputs.metadata_type == 'all'
+        env:
+          ENVIRONMENT: ${{ github.event_name == 'workflow_dispatch' && inputs.environment || 'dev' }}
+          S3_BUCKET_NAME: devportal-${{ env.ENV_SHORT }}-website-static-content         
+          S3_PATH_TO_GITBOOK_DOCS: ${{ vars.S3_PATH_TO_GITBOOK_DOCS || 'devportal-docs/docs' }}
+          STRAPI_ENDPOINT: ${{ vars.STRAPI_ENDPOINT }}
+          STRAPI_API_TOKEN: ${{ secrets.STRAPI_API_TOKEN }}
+          FETCH_FROM_STRAPI: ${{ vars.FETCH_FROM_STRAPI || 'true' }}
+          NEXT_PUBLIC_COGNITO_REGION: ${{ vars.NEXT_PUBLIC_COGNITO_REGION || 'eu-south-1' }}
+        run: npm run generate-solutions-metadata -w gitbook-docs
+        
+      - name: Generate release notes metadata
+        if: inputs.metadata_type == 'release_notes' || inputs.metadata_type == 'all'
+        env:
+          ENVIRONMENT: ${{ github.event_name == 'workflow_dispatch' && inputs.environment || 'dev' }}
+          S3_BUCKET_NAME: devportal-${{ env.ENV_SHORT }}-website-static-content
+          S3_DOC_EXTRACTION_BUCKET_NAME: ${{ vars.S3_DOC_EXTRACTION_BUCKET_NAME }}
+          S3_PATH_TO_GITBOOK_DOCS: ${{ vars.S3_PATH_TO_GITBOOK_DOCS || 'devportal-docs/docs' }}
+          STRAPI_ENDPOINT: ${{ vars.STRAPI_ENDPOINT }}
+          STRAPI_API_TOKEN: ${{ secrets.STRAPI_API_TOKEN }}
+          FETCH_FROM_STRAPI: ${{ vars.FETCH_FROM_STRAPI || 'true' }}
+          NEXT_PUBLIC_COGNITO_REGION: ${{ vars.NEXT_PUBLIC_COGNITO_REGION || 'eu-south-1' }}
+        run: npm run generate-release-notes-metadata -w gitbook-docs 
+
+      - name: Invalidate CloudFront asset bucket cache
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id ${{ vars.ASSET_BUCKET_CLOUDFRONT_DISTRIBUTION_ID }} \
+            --paths "/*"

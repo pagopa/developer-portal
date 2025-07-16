@@ -1,9 +1,5 @@
-/*
-  environment_variables = {
-    
-  }
 
-*/
+
 
 resource "aws_acm_certificate" "opennext" {
 
@@ -21,6 +17,7 @@ resource "aws_acm_certificate" "opennext" {
   }
 }
 
+/*
 resource "aws_route53_record" "opennext" {
   for_each = {
     for dvo in aws_acm_certificate.opennext.domain_validation_options : dvo.domain_name => {
@@ -37,10 +34,10 @@ resource "aws_route53_record" "opennext" {
   type            = each.value.type
   zone_id         = var.hosted_zone_id
 }
-
+*/
 
 resource "aws_ssm_parameter" "cookie_domain_script" {
-  name        = "COOKIE_DOMAIN_SCRIPT"
+  name        = "NEXT_PUBLIC_COOKIE_DOMAIN_SCRIPT"
   description = "Cookie domain script for OpenNext"
   type        = "SecureString"
   value       = "TODO"
@@ -73,8 +70,8 @@ module "opennext" {
   source = "github.com/pagopa/dx//infra/modules/aws_open_next?ref=opennext-module"
 
   custom_domain = {
-    domain_name         = local.opennext_domain
-    acm_certificate_arn = aws_acm_certificate.opennext.arn
+    domain_name         = var.dns_domain_name
+    acm_certificate_arn = aws_acm_certificate.website.arn
     hosted_zone_id      = var.hosted_zone_id
   }
 
@@ -83,6 +80,7 @@ module "opennext" {
 
   server = {
     environment_variables = {
+      COOKIE_DOMAIN_SCRIPT                        = aws_ssm_parameter.cookie_domain_script.value # TODO: this should be removed since it's a duplicate of NEXT_PUBLIC_COOKIE_DOMAIN_SCRIPT
       ENVIRONMENT                                 = var.environment
       FETCH_FROM_STRAPI                           = "true"
       NEXT_PUBLIC_CHATBOT_ACTIVE                  = var.create_chatbot ? "true" : "false"
@@ -97,23 +95,26 @@ module "opennext" {
       NEXT_PUBLIC_WEBSITE_NAME                    = "DevPortal"
       NEXT_PUBLIC_FEEDBACK_FORM_ENABLED           = var.next_public_feedback_form_enabled
       NEXT_PUBLIC_SOAP_API_PAGE_ACTIVE            = var.next_public_soap_api_page_active
+      NEXT_PUBLIC_COOKIE_DOMAIN_SCRIPT            = aws_ssm_parameter.cookie_domain_script.value
       NEXT_TELEMETRY_DISABLED                     = "1"
       PATH_TO_GITBOOK_DOCS                        = "docs"
-      S3_PATH_TO_GITBOOK_DOCS                     = "docs"
+      S3_PATH_TO_GITBOOK_DOCS                     = "devportal-docs/docs"
       S3_PATH_TO_GITBOOK_DOCS_ASSETS              = format("https://static-contents.%s/docs", var.dns_domain_name)
-      STRAPI_ENDPOINT                             = "https://cms.${var.dns_domain_name}"
-      COOKIE_DOMAIN_SCRIPT                        = aws_ssm_parameter.cookie_domain_script.value
+      STRAPI_ENDPOINT                             = "http://${var.next_cms_interlan_alb_dns_name}:8080"
       STRAPI_API_TOKEN                            = aws_ssm_parameter.strapi_api_token.value
       S3_BUCKET_NAME                              = aws_s3_bucket.website_standalone.bucket
       S3_GUIDE_METADATA_JSON_PATH                 = "guides-metadata.json"
       S3_RELEASE_NOTES_METADATA_JSON_PATH         = "release-notes-metadata.json"
       S3_SOLUTIONS_METADATA_JSON_PATH             = "solutions-metadata.json"
       STATIC_CONTENTS_URL                         = format("https://static-contents.%s", var.dns_domain_name)
+      S3_SOAP_API_METADATA_JSON_PATH              = "soap-api/soap-api-metadata.json"
     }
   }
 
   enable_alarms  = true
   alarms_actions = [aws_sns_topic.metric_alarm.arn]
+
+  vpc = var.vpc
 
 
   tags = var.tags

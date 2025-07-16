@@ -1,5 +1,44 @@
 # nextjs-website
 
+## 8.3.0
+
+### Minor Changes
+
+- a7c25ee: Manage error 500 correctly
+
+### Patch Changes
+
+- 10f945a: Fix replace_inlcude_tags script name
+
+## 8.2.0
+
+### Minor Changes
+
+- 1d3b9df: Add Soap Api detail pages
+
+### Patch Changes
+
+- 33cfa8f: Update title generation to remove duplicates
+- 808e870: Fix font size in guides and padding on the left menu
+- 62c4bbb: Avoid fetching the same file multiple times
+- b77d056: Fix intermittent build failures due to network request overload
+
+## 8.1.0
+
+### Minor Changes
+
+- 765b623: Add wsdl-viewer stylesheet to the public directory
+
+### Patch Changes
+
+- daab8fc: - Added configurable retry logic to `downloadFileAsText()` and `fetchMetadataFromCDN()` functions
+  - Implemented exponential backoff with configurable retry attempts and delay timing
+  - Added environment variables `CDN_RETRY_ATTEMPTS` (default: 3) and `CDN_RETRY_DELAY_MS` (default: 5000ms)
+  - Improved error handling and logging for CDN fetch failures
+  - Fixes issues where guide pages would show 404 errors when CloudFront cache was not warmed up
+- Updated dependencies [8164b76]
+  - gitbook-docs@0.5.1
+
 ## 8.0.0
 
 ### Major Changes
