@@ -73,7 +73,7 @@ class Judge:
             condense_prompt = self.condense_prompt_str.format(
                 chat_history=chat_history, query_str=query_str
             )
-            condense_query_response = asyncio_run(self.model.acomplete(condense_prompt))
+            condense_query_response = asyncio_run(self.llm.acomplete(condense_prompt))
             query_str = condense_query_response.text.strip()
 
         scores = self.evaluator.evaluate(
