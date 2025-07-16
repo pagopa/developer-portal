@@ -5,7 +5,6 @@ import { Done } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
 import {
   Alert,
-  Box,
   Button,
   Card,
   Snackbar,
@@ -18,6 +17,7 @@ import { useTranslations } from 'next-intl';
 import { useCallback, useState } from 'react';
 import ForumIcon from '@mui/icons-material/Forum';
 import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
+import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 
 const MAX_QUESTION_LENGTH = 240;
 
@@ -27,12 +27,14 @@ type WebinarQuestionsFormProps = {
   interaction: () => void;
   disabled?: boolean;
   webinarSlug: string;
+  isSmallScreen: boolean;
 };
 
 export const WebinarQuestionsForm = ({
   disabled = false,
   webinarSlug,
   interaction,
+  isSmallScreen,
 }: WebinarQuestionsFormProps) => {
   const t = useTranslations('webinar');
   const [error, setError] = useState<string | null>(null);
@@ -94,39 +96,57 @@ export const WebinarQuestionsForm = ({
           display: 'flex',
           flexDirection: 'column',
           minHeight: '264px',
-          width: '303px',
-          borderTopRightRadius: '16px',
+          width: isSmallScreen ? '100%' : '303px',
+          borderTopRightRadius: isSmallScreen ? 0 : '16px',
           borderBottomRightRadius: '16px',
           borderTopLeftRadius: 0,
-          borderBottomLeftRadius: 0,
+          borderBottomLeftRadius: isSmallScreen ? '16px' : 0,
           boxShadow: '0px 4px 9px 4px rgba(0, 43, 85, 0.1)',
         }}
       >
         <Stack
           direction='row'
           sx={{
-            p: '16px',
-            gap: '8px',
+            paddingX: '8px',
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'flex-start',
+            justifyContent: 'space-between',
             width: '100%',
-            height: '60px',
+            height: isSmallScreen ? '64px' : '60px',
             backgroundColor: palette.primary.main,
-            borderTopRightRadius: '16px',
+            borderTopRightRadius: isSmallScreen ? '0' : '16px',
           }}
         >
-          <ForumIcon width={'32px'} height={'32px'} sx={{ color: 'white' }} />
-          <Typography sx={{ color: 'white', fontWeight: 600, fontSize: 18 }}>
-            Question box
-          </Typography>
-          <Box width={'50px'} />
-          <Button
-            startIcon={<ArrowLeftIcon width={'32px'} height={'32px'} />}
-            onClick={() => interaction()}
-            sx={{ color: 'white', width: '55px' }}
+          <Stack
+            direction='row'
+            sx={{
+              gap: '8px',
+              height: '32px',
+              alignItems: 'center',
+              paddingLeft: '4px',
+            }}
           >
-            Riduci
+            <ForumIcon sx={{ color: 'white', width: '32px', height: '32px' }} />
+            <Typography sx={{ color: 'white', fontWeight: 600, fontSize: 18 }}>
+              {t('questionsForm.questionBox')}
+            </Typography>
+          </Stack>
+          <Button
+            startIcon={
+              isSmallScreen ? (
+                <ArrowDropUpIcon sx={{ width: '24px', height: '24px' }} />
+              ) : (
+                <ArrowLeftIcon sx={{ width: '24px', height: '24px' }} />
+              )
+            }
+            onClick={() => interaction()}
+            sx={{
+              color: 'white',
+              width: '55px',
+              fontSize: '12px',
+            }}
+          >
+            {t('questionsForm.reduce')}
           </Button>
         </Stack>
         <Stack

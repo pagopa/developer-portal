@@ -125,7 +125,10 @@
             "question": "Domanda",
             "submit": "Invia",
             "submitted": "Inviato",
-            "error": "Errore nell'invio, riprova più tardi."
+            "error": "Errore nell'invio, riprova più tardi.",
+            "reduce": "Riduci",
+            "expand": "Espandi",
+            "questionBox": "Question box"
         },
         "warnings": {
             "email": "Il giorno prima dell'evento riceverai una email con i dettagli.",
