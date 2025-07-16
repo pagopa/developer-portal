@@ -11,6 +11,7 @@ import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataS
 import { getItemFromPaths } from '@/helpers/structuredData.helpers';
 import { REVALIDATE_LONG_INTERVAL } from '@/config';
 import { getSolutionsMetadata } from '@/helpers/s3Metadata.helpers';
+import PageNotFound from '@/app/not-found';
 
 type SolutionDetailPageTemplateProps = {
   solution: SolutionTemplateProps;
@@ -69,11 +70,11 @@ const Page = async ({ params }: { params: Params }) => {
     params?.solutionSubPathSlugs
   );
 
-  const urlReplaceMap = await getUrlReplaceMapProps();
   if (!solutionProps) {
-    return null;
+    return <PageNotFound />;
   }
 
+  const urlReplaceMap = await getUrlReplaceMapProps();
   const solution = solutionProps;
   const page = solution.page;
   const source = solution.source;

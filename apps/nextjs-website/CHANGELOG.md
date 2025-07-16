@@ -1,5 +1,15 @@
 # nextjs-website
 
+## 8.3.0
+
+### Minor Changes
+
+- a7c25ee: Manage error 500 correctly
+
+### Patch Changes
+
+- 10f945a: Fix replace_inlcude_tags script name
+
 ## 8.2.0
 
 ### Minor Changes

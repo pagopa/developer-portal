@@ -14,6 +14,12 @@ variable "github_repository" {
   description = "The repository where the IaC workflows will run"
 }
 
+variable "github_cms_repository" {
+  type        = string
+  description = "The repository where the CMS workflows will run"
+  default     = "pagopa/developer-portal-cms"
+}
+
 variable "tags" {
   type = map(any)
   default = {
