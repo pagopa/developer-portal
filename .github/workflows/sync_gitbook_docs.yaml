@@ -91,7 +91,7 @@ jobs:
         if: inputs.generate_metadata_only == false
         working-directory: ./devportal-docs
         run: |    
-          aws s3 sync docs s3://devportal-${{ env.ENV_SHORT }}-website-static-content/devportal-docs/docs --delete
+          aws s3 sync docs s3://devportal-${{ env.ENV_SHORT }}-website-static-content/devportal-docs/docs --delete --size-only
       
       
       - name: Generate guides metadata      
