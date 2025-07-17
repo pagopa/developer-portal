@@ -15,10 +15,13 @@ export const withCache = async <T>(
   cache_expiry_in_seconds: number
 ): Promise<T> => {
   const now = Date.now();
+  // eslint-disable-next-line functional/no-expression-statements
   console.log('now', now);
   const cached = cacheStore.get(key);
 
+  // eslint-disable-next-line functional/no-expression-statements
   console.log('cached', cached);
+  // eslint-disable-next-line functional/no-expression-statements
   console.log('is cached?', cached && cached.expiry > now);
   // Check if we have valid cached data
   // if (cached && cached.expiry > now) {
