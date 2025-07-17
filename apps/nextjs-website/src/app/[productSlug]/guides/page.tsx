@@ -15,21 +15,12 @@ import {
   makeMetadata,
   makeMetadataFromStrapi,
 } from '@/helpers/metadata.helpers';
-import { getGuideListPagesProps } from '@/lib/cmsApi';
 import { SEO } from '@/lib/types/seo';
 import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
 import {
   breadcrumbItemByProduct,
   productToBreadcrumb,
 } from '@/helpers/structuredData.helpers';
-import { REVALIDATE_SHORT_INTERVAL } from '@/config';
-
-export const revalidate = REVALIDATE_SHORT_INTERVAL;
-export async function generateStaticParams() {
-  return (await getGuideListPagesProps()).map(({ product }) => ({
-    productSlug: product.slug,
-  }));
-}
 
 export type GuideListPageProps = {
   readonly product: Product;
