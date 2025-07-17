@@ -24,9 +24,9 @@ export const withCache = async <T>(
   // eslint-disable-next-line functional/no-expression-statements
   console.log('is cached?', cached && cached.expiry > now);
   // Check if we have valid cached data
-  // if (cached && cached.expiry > now) {
-  //   return cached.data as T;
-  // }
+  if (cached && cached.expiry > now) {
+    return cached.data as T;
+  }
 
   // If no cached data or expired, fetch and cache
   // eslint-disable-next-line functional/no-try-statements
