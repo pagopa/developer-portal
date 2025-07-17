@@ -1,0 +1,8 @@
+condense_prompt_evaluation_str: |
+  Given the following conversation between a user and an AI assistant and a follow up question from user, 
+  rephrase the follow up question to be a standalone question.
+
+  Chat History:
+  {chat_history}
+  Follow Up Input: {query_str}
+  Standalone question:
