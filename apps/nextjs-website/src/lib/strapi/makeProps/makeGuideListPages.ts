@@ -3,15 +3,15 @@ import { GuidesSectionProps } from '@/components/molecules/GuidesSection/GuidesS
 import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
 import { makeBaseProductWithoutLogoProps } from './makeProducts';
 import { GuideCardProps } from '@/components/molecules/GuideCard/GuideCard';
-import { BaseGuide, StrapiGuidesPaginated } from '@/lib/strapi/types/guide';
+import { BaseGuide } from '@/lib/strapi/types/guide';
 import _ from 'lodash';
+import { StrapiGuideListPaginated } from '@/lib/strapi/types/guideList';
 
 export function makeGuideListPagesProps(
-  strapiGuideListPages: StrapiGuidesPaginated
+  strapiGuideListPages: StrapiGuideListPaginated
 ): readonly GuideListPageProps[] {
   return strapiGuideListPages.data.map(({ attributes }) => {
     const product = makeBaseProductWithoutLogoProps(attributes.product.data);
-
     const guidesSections: readonly GuidesSectionProps[] = [
       ...attributes.guidesByCategory.map(({ category, guides }) => ({
         title: category,
@@ -21,7 +21,6 @@ export function makeGuideListPagesProps(
       })),
     ];
     return {
-      name: attributes.title,
       path: `/${attributes.product.data.attributes.slug}/guides`,
       product,
       abstract: {
@@ -36,7 +35,7 @@ export function makeGuideListPagesProps(
               makeBannerLinkProps
             ),
       seo: attributes.seo || undefined,
-    };
+    } satisfies GuideListPageProps;
   });
 }
 
@@ -44,23 +43,29 @@ function makeGuideCardProps(
   guide: BaseGuide,
   productSlug: string
 ): GuideCardProps | null {
+  if (!guide.attributes.slug) {
+    // eslint-disable-next-line functional/no-expression-statements
+    console.error('guide slug is missing:', guide);
+    return null;
+  }
+
   // eslint-disable-next-line functional/no-try-statements
   try {
     return {
       title: guide.attributes.title,
       description: {
-        title: 'guideListPage.cardSection.listItemsTitle', // this is translations path and it will be translated by the component
+        title: 'guideListPage.cardSection.listItemsTitle', // this is a translations path and it will be translated by the component
         listItems: guide.attributes.listItems.map(({ text }) => text),
         translate: true,
       },
       imagePath: guide.attributes.image.data.attributes.url,
       mobileImagePath: guide.attributes.mobileImage.data?.attributes.url,
       link: {
-        label: 'guideListPage.cardSection.linkLabel', // this is translations path and it will be translated by the component
+        label: 'guideListPage.cardSection.linkLabel', // this is a translations path and it will be translated by the component
         href: `/${productSlug}/guides/${guide.attributes.slug}`,
         translate: true,
       },
-    };
+    } satisfies GuideCardProps;
   } catch (error) {
     // eslint-disable-next-line functional/no-expression-statements
     console.error(error);

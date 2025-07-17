@@ -1,5 +1,5 @@
 import {
-  BaseProductWithRelationsCodec,
+  StrapiBaseProductWithRelations,
   StrapiProducts,
 } from '../codecs/ProductCodec';
 import { Product } from '../../types/product';
@@ -20,7 +20,7 @@ export function makeProductProps(product: StrapiProducts['data'][0]): Product {
 }
 
 function getApiDataListPageUrl(
-  product: BaseProductWithRelationsCodec
+  product: StrapiBaseProductWithRelations
 ): string | undefined {
   const apiDataList = product.attributes.api_data_list_page.data;
   // if there is no api data, return undefined
@@ -41,10 +41,12 @@ function getApiDataListPageUrl(
 }
 
 export function makeBaseProductWithoutLogoProps(
-  product: BaseProductWithRelationsCodec
+  product: StrapiBaseProductWithRelations
 ): Product {
   return {
-    ...product.attributes,
+    slug: product.attributes.slug,
+    name: product.attributes.name,
+    shortName: product.attributes.shortName,
     description: undefined,
     hasApiDataListPage:
       product.attributes.api_data_list_page.data &&
@@ -57,5 +59,5 @@ export function makeBaseProductWithoutLogoProps(
     hasQuickstartGuidePage: !!product.attributes.quickstart_guide.data,
     hasReleaseNotePage: !!product.attributes.release_note.data,
     bannerLinks: product.attributes.bannerLinks?.map(makeBannerLinkProps) || [],
-  };
+  } satisfies Product;
 }
