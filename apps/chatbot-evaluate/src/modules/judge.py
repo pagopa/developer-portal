@@ -18,15 +18,12 @@ WEBSITE_URL = os.getenv("CHB_WEBSITE_URL")
 
 
 class Judge:
-    def __init__(
-        self,
-        prompts: dict,
-    ):
+    def __init__(self, prompts: dict, provider: str = "google"):
         self.condense_prompt_str = prompts["condense_prompt_evaluation_str"]
-        self.llm = get_llm()
+        self.llm = get_llm(provider=provider)
         self.evaluator = Evaluator(
-            llm=get_llm(temperature=0.0),
-            embedder=get_embed_model(),
+            llm=get_llm(provider=provider, temperature=0.0),
+            embedder=get_embed_model(provider=provider),
         )
 
     def _messages_to_chathistory(
