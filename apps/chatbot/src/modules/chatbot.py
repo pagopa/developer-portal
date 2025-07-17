@@ -82,7 +82,7 @@ class Chatbot:
             identity_prompt=self.prompts["identity_prompt_str"],
             text_qa_template=self.qa_prompt_tmpl,
             refine_template=self.ref_prompt_tmpl,
-            react_system_str=self.prompts["react_system_template_str"],
+            react_system_str=self.prompts["react_system_header_str"],
             verbose=self.params["engine"]["verbose"],
         )
         self.instrumentor = LlamaIndexInstrumentor(

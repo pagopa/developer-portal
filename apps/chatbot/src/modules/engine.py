@@ -58,6 +58,7 @@ def get_engine(
         identity_prompt (str | None): Optional prompt for the agent's identity.
         text_qa_template (PromptTemplate | None): Optional template for text QA.
         refine_template (PromptTemplate | None): Optional template for refining context.
+        react_system_str (str | None): Optional system string for the ReAct agent.
         verbose (bool): Whether to enable verbose logging.
     Returns:
         ReActAgent: An agent that uses RAG (Retrieval-Augmented Generation) to answer questions.
