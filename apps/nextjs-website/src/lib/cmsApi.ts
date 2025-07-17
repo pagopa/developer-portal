@@ -56,7 +56,7 @@ const buildEnv = pipe(
   })
 );
 
-const CACHE_EXPIRY_IN_SECONDS = 900; // 15 minutes in seconds
+const CACHE_EXPIRY_IN_SECONDS = 60; // 1 minute in seconds
 
 export const getHomepageProps = async () => {
   return withCache(
