@@ -67,14 +67,6 @@ def backfill_created_at_date() -> None:
     LOGGER.info(f"Backfilled {len(items)} items with `createdAtDate`.")
 
 
-async def evaluate(evaluation_data: dict) -> dict:
-    if os.getenv("environment", "development") != "test":
-        evaluation_result = chatbot.evaluate(**evaluation_data)
-    else:
-        evaluation_result = {}
-    return evaluation_result
-
-
 @router.post("/queries")
 async def query_creation(
     background_tasks: BackgroundTasks,
