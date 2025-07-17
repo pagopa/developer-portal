@@ -14,12 +14,11 @@ from src.modules.monitor import add_langfuse_score
 LOGGER = get_logger(__name__)
 CWF = Path(__file__)
 ROOT = CWF.parent.parent.parent.absolute().__str__()
-WEBSITE_URL = os.getenv("CHB_WEBSITE_URL")
 
 
 class Judge:
     def __init__(self, prompts: dict, provider: str = "google"):
-        self.condense_prompt_str = prompts["condense_prompt_evaluation_str"]
+        self.condense_prompt_str = prompts["condense_prompt_str"]
         self.llm = get_llm(provider=provider)
         self.evaluator = Evaluator(
             llm=get_llm(provider=provider, temperature=0.0),
