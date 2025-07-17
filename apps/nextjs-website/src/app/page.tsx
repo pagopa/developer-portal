@@ -8,7 +8,6 @@ import {
   makeMetadata,
   makeMetadataFromStrapi,
 } from '@/helpers/metadata.helpers';
-import dynamic from 'next/dynamic';
 import { baseUrl } from '@/config';
 import { getHomepageProps } from '@/lib/cmsApi';
 import BlocksRendererClient from '@/components/molecules/BlocksRendererClient/BlocksRendererClient';
@@ -20,6 +19,8 @@ import { CardsGridProps } from '@/components/molecules/CardsGrid/CardsGrid';
 import { CtaSlideProps } from '@/components/atoms/CtaSlide/CtaSlide';
 import { Webinar } from '@/lib/types/webinar';
 import { SEO } from '@/lib/types/seo';
+import WebinarsSection from '@/components/organisms/WebinarsSection/WebinarsSection';
+import WebinarHeaderBanner from '@/components/atoms/WebinarHeaderBanner/WebinarHeaderBanner';
 
 type EcosystemSolutionsCtaProps = {
   readonly variant?: 'text' | 'contained' | 'outlined';
@@ -69,16 +70,6 @@ export async function generateMetadata(): Promise<Metadata> {
       });
 }
 
-const NotSsrWebinarHeaderBanner = dynamic(
-  () => import('@/components/atoms/WebinarHeaderBanner/WebinarHeaderBanner'),
-  { ssr: false }
-);
-
-const NotSsrWebinarsSection = dynamic(
-  () => import('@/components/organisms/WebinarsSection/WebinarsSection'),
-  { ssr: false }
-);
-
 const Home = async () => {
   const {
     webinars,
@@ -98,7 +89,7 @@ const Home = async () => {
     <>
       {structuredData}
       <ContentWrapper>
-        <NotSsrWebinarHeaderBanner webinars={[...webinars]} />
+        <WebinarHeaderBanner webinars={[...webinars]} />
 
         <HeroSwiper
           cards={hero.map((itemProp, index) => ({
@@ -120,7 +111,7 @@ const Home = async () => {
           />
         )}
         {ecosystem && <Ecosystem {...ecosystem} />}
-        <NotSsrWebinarsSection webinars={[...webinars]} />
+        <WebinarsSection webinars={[...webinars]} />
         <RelatedLinks
           title={comingsoonDocumentation.title}
           links={[...comingsoonDocumentation.links]}
