@@ -26,6 +26,8 @@ from langfuse.llama_index import LlamaIndexInstrumentor
 
 from src.modules.logger import get_logger
 from src.modules.models import get_llm, get_embed_model
+from src.modules.monitor import add_langfuse_score
+from src.modules.evaluator import Evaluator
 from src.modules.vector_database import load_index_redis
 from src.modules.engine import get_engine
 from src.modules.handlers import EventHandler
@@ -66,6 +68,7 @@ class Chatbot:
         self.params = params
         self.prompts = prompts
         self.pii = PresidioPII(config=params["config_presidio"])
+        self.judge = Evaluator()
         self.model = get_llm()
         self.embed_model = get_embed_model()
         self.qa_prompt_tmpl, self.ref_prompt_tmpl = self._get_prompt_templates()
