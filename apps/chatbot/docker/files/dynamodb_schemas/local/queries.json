@@ -26,6 +26,10 @@
     {
       "AttributeName": "createdAtDate",
       "AttributeType": "S"
+    },
+    {
+      "AttributeName": "expiresAt",
+      "AttributeType": "N"
     }
   ],
   "LocalSecondaryIndexes": [

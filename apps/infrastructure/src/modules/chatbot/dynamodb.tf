@@ -8,6 +8,8 @@ module "dynamodb_chatbot_queries" {
   hash_key                       = "sessionId"
   range_key                      = "id"
   server_side_encryption_enabled = true
+  ttl_attribute_name             = "expiresAt"
+  ttl_enabled                    = true
 
   attributes = [
     {
