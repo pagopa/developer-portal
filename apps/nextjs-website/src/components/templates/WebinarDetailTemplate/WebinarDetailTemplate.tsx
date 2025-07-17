@@ -82,10 +82,15 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
     <>
       <Box
         paddingTop={5}
-        style={{ backgroundImage: `url(${webinar.headerImage?.url})` }}
+        style={{
+          backgroundImage: `url(${webinar.headerImage?.url})`,
+          backgroundRepeat: 'no-repeat',
+          backgroundSize: 'cover',
+        }}
       >
         <EContainer>
           <ProductBreadcrumbs
+            textColor={'white'}
             breadcrumbs={[
               ...pageToBreadcrumbs('webinars', [
                 {
@@ -102,21 +107,9 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
           startDateTime={webinar.startDateTime}
           endDateTime={webinar.endDateTime}
           webinarState={webinarState}
+          textColor={'white'}
         >
           {subscribeToWebinarButton}
-          {isSubscribed && webinarState === WebinarState.future && (
-            <Typography
-              variant={'body2'}
-              sx={{
-                position: 'absolute',
-                bottom: '24px',
-                fontSize: '12px',
-                marginTop: 1,
-              }}
-            >
-              {t('warnings.email')}
-            </Typography>
-          )}
           {isSubscribed && webinarState === WebinarState.comingSoon && (
             <Typography
               variant={'body2'}

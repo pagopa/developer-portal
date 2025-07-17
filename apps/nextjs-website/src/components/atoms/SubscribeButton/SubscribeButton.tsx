@@ -9,6 +9,7 @@ import {
 import CheckIcon from '@mui/icons-material/Check';
 import { useTranslations } from 'next-intl';
 import React from 'react';
+import { Container } from '@mui/system';
 
 export type SubscribeButtonProps = {
   disabled?: boolean;
@@ -34,37 +35,44 @@ const SubscribeButton = ({
     <Box mt={4} display={'flex'} flexDirection={'row'} gap={2}>
       {isSubscribed ? (
         <>
-          <Typography
-            variant='body2'
-            fontWeight={'700'}
-            fontSize={'16px'}
-            display={'flex'}
-            flexDirection={'row'}
-            alignItems={'center'}
+          <Button
+            disabled={true}
+            variant='contained'
+            startIcon={
+              <CheckIcon sx={{ height: 24, width: 24, color: 'white' }} />
+            }
             sx={{
-              color: palette.text.secondary,
+              '&:disabled': {
+                backgroundColor: '#5CA85A',
+              },
             }}
           >
-            <CheckIcon
-              style={{ marginRight: 8, height: 24, width: 24 }}
-              color={'success'}
-            />
-            {t('subscribeButton.subscribedLabel')}
-          </Typography>
+            <Typography
+              variant='body2'
+              fontWeight={'700'}
+              fontSize={'16px'}
+              sx={{
+                color: 'white',
+              }}
+            >
+              {t('subscribeButton.subscribedLabel')}
+            </Typography>
+          </Button>
+
           <Button
-            color={'error'}
+            sx={{ color: 'white' }}
             startIcon={
               isLoading && (
                 <CircularProgress
                   size={24}
                   sx={{
-                    color: palette.text.disabled,
+                    color: 'white',
                   }}
                 />
               )
             }
             disabled={disabled || isLoading}
-            variant={'outlined'}
+            variant={'text'}
             onClick={onCancelSubscription}
           >
             {t('subscribeButton.unsubscribeLabel')}

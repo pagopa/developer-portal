@@ -13,9 +13,13 @@ import { BreadcrumbSegment } from '@/lib/types/path';
 
 type ProductBreadcrumbsProps = {
   breadcrumbs: BreadcrumbSegment[];
+  textColor?: string;
 };
 
-const ProductBreadcrumbs = ({ breadcrumbs }: ProductBreadcrumbsProps) => {
+const ProductBreadcrumbs = ({
+  breadcrumbs,
+  textColor = '',
+}: ProductBreadcrumbsProps) => {
   const theme = useTheme();
   const t = useTranslations();
   return (
@@ -28,10 +32,25 @@ const ProductBreadcrumbs = ({ breadcrumbs }: ProductBreadcrumbsProps) => {
         position: 'relative',
       }}
     >
-      <Breadcrumbs aria-label='breadcrumb'>
+      <Breadcrumbs
+        aria-label='breadcrumb'
+        separator={
+          <Typography
+            fontSize={16}
+            color={textColor || theme.palette.text.primary}
+          >
+            /
+          </Typography>
+        }
+      >
         {breadcrumbs.map((breadcrumb, index) => {
           return index === breadcrumbs.length - 1 ? (
-            <Typography key={index} fontSize={16} fontWeight={600}>
+            <Typography
+              key={index}
+              fontSize={16}
+              fontWeight={600}
+              color={textColor || theme.palette.text.primary}
+            >
               {breadcrumb.translate ? t(breadcrumb.name) : breadcrumb.name}
             </Typography>
           ) : (
@@ -41,7 +60,9 @@ const ProductBreadcrumbs = ({ breadcrumbs }: ProductBreadcrumbsProps) => {
               underline='hover'
               fontSize={16}
               color={
-                index === 0
+                textColor
+                  ? textColor
+                  : index === 0
                   ? theme.palette.text.primary
                   : theme.palette.text.disabled
               }
