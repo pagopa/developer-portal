@@ -9,7 +9,6 @@ import {
 import CheckIcon from '@mui/icons-material/Check';
 import { useTranslations } from 'next-intl';
 import React from 'react';
-import { Container } from '@mui/system';
 
 export type SubscribeButtonProps = {
   disabled?: boolean;
@@ -18,6 +17,7 @@ export type SubscribeButtonProps = {
   onSubscribe: () => Promise<null>;
   onCancelSubscription: () => Promise<null>;
   subscribeLabel?: string;
+  textColor?: string;
 };
 
 const SubscribeButton = ({
@@ -27,6 +27,7 @@ const SubscribeButton = ({
   onSubscribe,
   onCancelSubscription,
   subscribeLabel = 'default',
+  textColor = 'white',
 }: SubscribeButtonProps) => {
   const t = useTranslations('shared');
   const { palette } = useTheme();
@@ -60,7 +61,7 @@ const SubscribeButton = ({
           </Button>
 
           <Button
-            sx={{ color: 'white' }}
+            sx={{ color: textColor }}
             startIcon={
               isLoading && (
                 <CircularProgress

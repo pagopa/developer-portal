@@ -75,6 +75,7 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
         return null;
       }}
       webinarState={webinarState}
+      textColor={webinar.headerImage ? 'white' : palette.text.primary}
     />
   );
 
@@ -90,7 +91,7 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
       >
         <EContainer>
           <ProductBreadcrumbs
-            textColor={'white'}
+            textColor={webinar.headerImage ? 'white' : palette.text.primary}
             breadcrumbs={[
               ...pageToBreadcrumbs('webinars', [
                 {
@@ -107,7 +108,7 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
           startDateTime={webinar.startDateTime}
           endDateTime={webinar.endDateTime}
           webinarState={webinarState}
-          textColor={'white'}
+          textColor={webinar.headerImage ? 'white' : palette.text.primary}
         >
           {subscribeToWebinarButton}
           {isSubscribed && webinarState === WebinarState.comingSoon && (
