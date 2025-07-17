@@ -174,7 +174,6 @@ async function main() {
     );
 
     // TODO: remove when Strapi will manage Metadata
-    console.log('Response from Strapi:', responseJson);
     await writeSitemapJson(
       responseJson,
       SYNCED_GUIDES_RESPONSE_JSON_PATH,
@@ -183,10 +182,6 @@ async function main() {
     );
 
     // TODO: remove when Strapi will manage Metadata
-    console.log(
-      'Response from Guide List Pages from Strapi:',
-      guideListPagesResponse
-    );
     await writeSitemapJson(
       guideListPagesResponse,
       SYNCED_GUIDE_LIST_PAGES_RESPONSE_JSON_PATH,
