@@ -40,10 +40,3 @@ rds_cms_scaling_configuration = {
 create_chatbot            = true
 ac_integration_is_enabled = true
 docs_redirect_is_enabled  = true
-
-chatbot_models = {
-  provider   = "aws"
-  generation = "mistral.mistral-large-2402-v1:0"
-  embeddings = "amazon.titan-embed-text-v2:0"
-  reranker   = "amazon.rerank-v1:0"
-}

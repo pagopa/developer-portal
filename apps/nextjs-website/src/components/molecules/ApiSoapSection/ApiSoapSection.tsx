@@ -14,69 +14,56 @@ import { Product } from '@/lib/types/product';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
+import _ from 'lodash';
 
 export type ApiSoapSectionProps = {
   readonly product: Product;
-  readonly apisName: string;
-  readonly apisSlug: string;
-  readonly apiRepositoryUrl: string;
-  readonly apiUrls: {
-    name?: string;
-    url: string;
-  }[];
+  readonly apiName: string;
+  readonly apiSlug: string;
+  readonly apiRepositoryUrl?: string;
+  readonly apiUrls: readonly string[];
 };
 
 const ApiSoapSection = ({
   product,
-  apisName,
-  apisSlug,
+  apiName,
+  apiSlug,
   apiRepositoryUrl,
   apiUrls,
 }: ApiSoapSectionProps) => {
   const t = useTranslations();
   const { palette } = useTheme();
   const iframeRef = useRef<HTMLIFrameElement>(null);
-  const [selectedItemUrl, setSelectedItemUrl] = useState(apiUrls[0].url);
+  const [selectedItemUrl, setSelectedItemUrl] = useState(apiUrls[0]);
   const router = useRouter();
   const searchParams = useSearchParams();
-
-  useEffect(() => {
-    const iframe = iframeRef.current;
-
-    const resizeIframe = () => {
-      if (iframe && iframe.contentWindow?.document?.body) {
-        const newHeight = iframe.contentWindow.document.body.scrollHeight;
-        // eslint-disable-next-line functional/immutable-data
-        iframe.style.height = `${newHeight}px`;
-      }
-    };
-
-    iframe?.addEventListener('load', resizeIframe);
-
-    return () => {
-      iframe?.removeEventListener('load', resizeIframe);
-    };
-  }, []);
+  const apiMenuItems = apiUrls
+    .map((url) => ({
+      url: url,
+      // eslint-disable-next-line functional/immutable-data
+      name: _.split(_.split(url, '/').pop(), '.')[0] || '',
+    }))
+    .filter((item) => !!item.name);
 
   useEffect(() => {
     const specName = searchParams.get('spec');
     if (specName) {
       const decodedSpecName = decodeURIComponent(specName as string);
-      const spec = apiUrls.find((item) => item?.name === decodedSpecName);
+      const spec = apiMenuItems.find((item) => item?.name === decodedSpecName);
       if (spec) {
         setSelectedItemUrl(spec.url);
       }
     }
-  }, [searchParams, apiUrls]);
+  }, [searchParams, apiMenuItems]);
 
   const handleItemSelect = (urlItem: string) => {
     setSelectedItemUrl(urlItem);
 
-    const spec = apiUrls.find((item) => item?.url === urlItem);
+    const spec = apiMenuItems.find((item) => item?.url === urlItem);
 
-    if (apisName && spec?.name) {
+    if (spec?.name) {
       router.replace(
-        `/${product.slug}/api/${apisSlug}?spec=${encodeURIComponent(spec.name)}`
+        `/${product.slug}/api/${apiSlug}?spec=${encodeURIComponent(spec.name)}`
       );
     }
 
@@ -84,8 +71,10 @@ const ApiSoapSection = ({
   };
 
   const selectedApi = useMemo(
-    () => apiUrls.find((item) => item?.url === selectedItemUrl) || apiUrls[0],
-    [selectedItemUrl, apiUrls]
+    () =>
+      apiMenuItems.find((item) => item?.url === selectedItemUrl) ||
+      apiMenuItems[0],
+    [selectedItemUrl, apiMenuItems]
   );
   const borderColor = palette.divider;
 
@@ -97,7 +86,7 @@ const ApiSoapSection = ({
         height: '100vh',
       }}
     >
-      {apiUrls.length > 1 && apisName && (
+      {apiMenuItems.length > 1 && apiName && (
         <Stack
           id='soapApiStack'
           direction='row'
@@ -115,7 +104,7 @@ const ApiSoapSection = ({
               paddingTop: '2rem',
               position: 'sticky',
               top: 0,
-              height: 'calc(100% - 2rem)',
+              height: 'calc(100% - 1px)',
             }}
           >
             <Typography
@@ -128,10 +117,10 @@ const ApiSoapSection = ({
                 fontSize: '1rem',
               }}
             >
-              {apisName}
+              {apiName}
             </Typography>
             <MenuList dense>
-              {apiUrls.map((item) => (
+              {apiMenuItems.map((item) => (
                 <MenuItem
                   key={item.url}
                   onClick={() => handleItemSelect(item.url)}
@@ -194,34 +183,37 @@ const ApiSoapSection = ({
                 style={{
                   border: 'none',
                   width: '100%',
+                  height: '80vh',
                 }}
                 title={t('apiDataPage.soap.iframeTitle')}
               />
             </Box>
-            <Box
-              sx={{
-                paddingLeft: 20,
-                paddingBottom: 8,
-                paddingTop: 2,
-              }}
-            >
-              <LinkMui
-                component={Link}
-                underline='none'
-                href={apiRepositoryUrl}
-                target='_blank'
+            {apiRepositoryUrl && (
+              <Box
+                sx={{
+                  paddingLeft: 20,
+                  paddingBottom: 8,
+                  paddingTop: 2,
+                }}
               >
-                <Typography
-                  sx={{
-                    fontWeight: 600,
-                    fontSize: '0.625rem',
-                    textDecoration: 'underline',
-                  }}
+                <LinkMui
+                  component={Link}
+                  underline='none'
+                  href={apiRepositoryUrl}
+                  target='_blank'
                 >
-                  {t('apiDataPage.soap.repoLink')}
-                </Typography>
-              </LinkMui>
-            </Box>
+                  <Typography
+                    sx={{
+                      fontWeight: 600,
+                      fontSize: '1rem',
+                      textDecoration: 'underline',
+                    }}
+                  >
+                    {t('apiDataPage.soap.repoLink')}
+                  </Typography>
+                </LinkMui>
+              </Box>
+            )}
           </Stack>
         </Stack>
       )}

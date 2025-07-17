@@ -7,10 +7,10 @@ import yaml
 from boto3.dynamodb.conditions import Key
 from botocore.exceptions import BotoCoreError, ClientError
 from fastapi import HTTPException
-from logging import getLogger
 
 from src.modules.chatbot import Chatbot
 from src.modules.monitor import add_langfuse_score
+from src.modules.logger import get_logger
 from src.app.models import QueryFeedback, tables
 from src.app.jwt_check import verify_jwt
 
@@ -18,18 +18,18 @@ params = yaml.safe_load(open("config/params.yaml", "r"))
 prompts = yaml.safe_load(open("config/prompts.yaml", "r"))
 chatbot = Chatbot(params, prompts)
 
-logger = getLogger(__name__)
+LOGGER = get_logger(__name__)
 
 
 def current_user_id(authorization: str | None = None) -> str:
     if authorization is None:
-        logger.error("[current_user_id] Authorization header is missing, exit with 401")
+        LOGGER.error("[current_user_id] Authorization header is missing, exit with 401")
         raise HTTPException(status_code=401, detail="Unauthorized")
     else:
         token = authorization.split(" ")[1]
         decoded = verify_jwt(token)
         if decoded is False:
-            logger.error("[current_user_id] decoded is false, exit with 401")
+            LOGGER.error("[current_user_id] decoded is false, exit with 401")
             raise HTTPException(status_code=401, detail="Unauthorized")
         else:
             if "cognito:username" in decoded:
