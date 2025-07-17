@@ -47,6 +47,7 @@ def get_engine(
     identity_prompt: str | None = None,
     text_qa_template: PromptTemplate | None = None,
     refine_template: PromptTemplate | None = None,
+    react_system_str: str | None = None,
     verbose: bool = True,
 ) -> ReActAgent:
     """
@@ -121,7 +122,7 @@ def get_engine(
 
     obj_index = ObjectIndex.from_objects([identity_tool, query_engine_tool])
 
-    return ReActAgent(
+    agent = ReActAgent(
         name="rag_agent",
         description=(
             "A ReAct agent that uses RAG (Retrieval-Augmented Generation) to answer questions. "
@@ -131,3 +132,7 @@ def get_engine(
         llm=llm,
         verbose=verbose,
     )
+
+    agent.formatter.system_header = react_system_str
+
+    return agent

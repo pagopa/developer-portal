@@ -5,7 +5,7 @@ from typing import Union, Tuple, Optional, List, Any, Dict
 
 from llama_index.core import PromptTemplate
 from llama_index.core.async_utils import asyncio_run
-from llama_index.core.llms import ChatMessage, MessageRole
+from llama_index.core.llms import ChatMessage, MessageRole, TextBlock
 from llama_index.core.base.response.schema import (
     Response,
     StreamingResponse,
@@ -71,9 +71,7 @@ class Chatbot:
         self.model = get_llm()
         self.judge = Evaluator()
         self.embed_model = get_embed_model()
-        self.qa_prompt_tmpl, self.ref_prompt_tmpl, self.condense_prompt_tmpl = (
-            self._get_prompt_templates()
-        )
+        self.qa_prompt_tmpl, self.ref_prompt_tmpl = self._get_prompt_templates()
         self.index = load_index_redis(
             self.model,
             self.embed_model,
@@ -86,6 +84,7 @@ class Chatbot:
             identity_prompt=self.prompts["identity_prompt_str"],
             text_qa_template=self.qa_prompt_tmpl,
             refine_template=self.ref_prompt_tmpl,
+            react_system_str=self.prompts["react_system_template_str"],
             verbose=self.params["engine"]["verbose"],
         )
         self.instrumentor = LlamaIndexInstrumentor(
@@ -98,7 +97,7 @@ class Chatbot:
 
     def _get_prompt_templates(
         self,
-    ) -> Tuple[PromptTemplate, PromptTemplate, PromptTemplate]:
+    ) -> Tuple[PromptTemplate, PromptTemplate]:
 
         qa_prompt_tmpl = PromptTemplate(
             self.prompts["qa_prompt_str"],
@@ -117,15 +116,7 @@ class Chatbot:
             },
         )
 
-        condense_prompt_tmpl = PromptTemplate(
-            self.prompts["condense_prompt_str"],
-            template_var_mappings={
-                "chat_history": "chat_history",
-                "question": "question",
-            },
-        )
-
-        return qa_prompt_tmpl, ref_prompt_tmpl, condense_prompt_tmpl
+        return qa_prompt_tmpl, ref_prompt_tmpl
 
     def _get_response_json(self, engine_response: RESPONSE_TYPE) -> dict:
 
@@ -199,48 +190,65 @@ class Chatbot:
         return chat_history
 
     def _mask_trace(self, data: Any) -> Any:
-        """Mask PII recursively in data sent to Langfuse (without altering real output)."""
+        """
+        Masks PII by manually rebuilding objects to avoid broken __deepcopy__ methods.
+        Handles circular references by tracking visited object IDs.
+        """
 
-        if (
-            isinstance(data, (str, list, dict, tuple))
-            or isinstance(data, (QueryBundle, ChatMessage))
-            or isinstance(data, RESPONSE_TYPE)
-        ):
-            try:
-                masked_data = copy.deepcopy(data)
+        try:
+            if isinstance(data, str):
+                return self.mask_pii(data)
+            if isinstance(data, (int, float, bool)) or data is None:
+                return data
 
-                if isinstance(masked_data, str):
-                    return self.mask_pii(masked_data)
+            if isinstance(data, QueryBundle):
+                data.query_str = self.mask_pii(data.query_str)
+                return data
 
-                if isinstance(masked_data, QueryBundle):
-                    return self._mask_trace(masked_data.query_str)
+            if isinstance(data, dict):
+                return {k: self._mask_trace(v) for k, v in data.items()}
 
-                elif isinstance(masked_data, dict):
-                    return {k: self._mask_trace(v) for k, v in masked_data.items()}
+            if isinstance(data, list):
+                return [self._mask_trace(item) for item in data]
 
-                elif isinstance(masked_data, list):
-                    return [self._mask_trace(item) for item in masked_data]
+            if isinstance(data, tuple):
+                return tuple(self._mask_trace(item) for item in data)
 
-                elif isinstance(masked_data, tuple):
-                    return tuple(self._mask_trace(item) for item in masked_data)
+            if isinstance(data, (AgentInput, AgentSetup)):
+                new_obj = copy.deepcopy(data)
+                return self._mask_trace(new_obj.input)
 
-                elif isinstance(masked_data, ChatMessage):
-                    for i, block in enumerate(masked_data.blocks):
-                        data.blocks[i].text = self._mask_trace(block.text)
+            if isinstance(data, AgentOutput):
+                return self._mask_trace(data.response)
 
-                elif isinstance(masked_data, RESPONSE_TYPE):
-                    for field in vars(masked_data):
-                        value = getattr(masked_data, field)
-                        setattr(masked_data, field, self._mask_trace(value))
-                else:
-                    pass
+            if isinstance(data, ToolCallResult):
+                if data.tool_kwargs:
+                    data.tool_kwargs["input"] = self.mask_pii(data.tool_kwargs["input"])
 
-                return masked_data
+                data.tool_output.content = self.mask_pii(data.tool_output.content)
 
-            except Exception as e:
-                LOGGER.error("Masking failed:", e)
-        else:
-            return data
+                if isinstance(data.tool_output.raw_output, PydanticResponse):
+                    data.tool_output.raw_output.response.response = self.mask_pii(
+                        data.tool_output.raw_output.response.response
+                    )
+                if isinstance(data.tool_output.raw_output, str):
+                    data.tool_output.raw_output = self.mask_pii(
+                        data.tool_output.raw_output
+                    )
+                return data
+
+            if isinstance(data, ChatMessage):
+                new_obj = copy.deepcopy(data)
+                for block in new_obj.blocks:
+                    if isinstance(block, TextBlock):
+                        block.text = self.mask_pii(block.text)
+
+                return new_obj
+
+        except Exception as e:
+            LOGGER.error(f"Manual masking for {type(data).__name__} failed: {e}")
+
+        return data
 
     def chat_generate(
         self,
