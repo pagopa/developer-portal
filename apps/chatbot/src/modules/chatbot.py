@@ -35,7 +35,6 @@ from src.modules.monitor import (
     LANGFUSE_SECRET_KEY,
     LANGFUSE_HOST,
     LANGFUSE_CLIENT,
-    add_langfuse_score,
 )
 
 
@@ -269,7 +268,8 @@ class Chatbot:
 
             except Exception as e:
                 response_json = {
-                    "response": "Scusa, non posso elaborare la tua richiesta.\nProva a formulare una nuova domanda.",
+                    "response": "Scusa, non posso elaborare la tua richiesta.\n" +
+                    "Prova a formulare una nuova domanda.",
                     "products": ["none"],
                     "references": [],
                     "contexts": [],
