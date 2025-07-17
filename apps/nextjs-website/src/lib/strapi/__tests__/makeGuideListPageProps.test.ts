@@ -32,6 +32,35 @@ describe('makeGuideListPageProps', () => {
       })),
     });
   });
+
+  it('should return a single element array of type GuideListPageProps with guides without images', () => {
+    const guideListWithMissingImagesData = guideListWithMissingImages(
+      strapiGuideListPaginatedData
+    ) as unknown as StrapiGuideListPaginated;
+    const result = makeGuideListPagesProps(guideListWithMissingImagesData);
+    expect(result).toHaveLength(1);
+    expect(result[0]).toEqual({
+      ...guideListPageProps[0],
+      guidesSections: guideListPageProps[0].guidesSections.map((section) => ({
+        ...section,
+        guides: section.guides.map((guide) => ({
+          ...guide,
+          imagePath: undefined,
+          mobileImagePath: undefined,
+        })),
+      })),
+    });
+  });
+
+  it('should return a single element array of type GuideListPageProps with only one guide', () => {
+    const guideListWithInvalidData = guideListWithGuideWithUndefinedListItem(
+      strapiGuideListPaginatedData
+    ) as unknown as StrapiGuideListPaginated;
+    const result = makeGuideListPagesProps(guideListWithInvalidData);
+    expect(result).toHaveLength(1);
+    expect(result[0].guidesSections).toHaveLength(2);
+    expect(result[0].guidesSections?.[0].guides).toHaveLength(1);
+  });
 });
 
 function guideListWithMissingSlugs(guidesList: StrapiGuideListPaginated) {
@@ -48,9 +77,65 @@ function guideListWithMissingSlugs(guidesList: StrapiGuideListPaginated) {
               data: guidePerCategory.guides.data.map((guide) => ({
                 attributes: {
                   ...guide.attributes,
-                  slug: undefined, // Assign a default slug if missing
+                  slug: undefined,
                 },
               })),
+            },
+          })
+        ),
+      },
+    })),
+  };
+}
+
+function guideListWithMissingImages(guidesList: StrapiGuideListPaginated) {
+  return {
+    ...guidesList,
+    data: guidesList.data.map((guides) => ({
+      ...guides,
+      attributes: {
+        ...guides.attributes,
+        guidesByCategory: guides.attributes.guidesByCategory.map(
+          (guidePerCategory) => ({
+            ...guidePerCategory,
+            guides: {
+              data: guidePerCategory.guides.data.map((guide) => ({
+                attributes: {
+                  ...guide.attributes,
+                  image: undefined,
+                  mobileImage: undefined,
+                },
+              })),
+            },
+          })
+        ),
+      },
+    })),
+  };
+}
+
+function guideListWithGuideWithUndefinedListItem(
+  guidesList: StrapiGuideListPaginated
+) {
+  return {
+    ...guidesList,
+    data: guidesList.data.map((guides) => ({
+      ...guides,
+      attributes: {
+        ...guides.attributes,
+        guidesByCategory: guides.attributes.guidesByCategory.map(
+          (guidePerCategory) => ({
+            ...guidePerCategory,
+            guides: {
+              data: [
+                {
+                  attributes: {
+                    ...guidePerCategory.guides.data[0].attributes,
+                    listItems: undefined,
+                  },
+                },
+                ...guidePerCategory.guides.data.slice(1),
+              ],
             },
           })
         ),

@@ -58,8 +58,8 @@ function makeGuideCardProps(
         listItems: guide.attributes.listItems.map(({ text }) => text),
         translate: true,
       },
-      imagePath: guide.attributes.image.data.attributes.url,
-      mobileImagePath: guide.attributes.mobileImage.data?.attributes.url,
+      imagePath: guide.attributes.image?.data?.attributes?.url,
+      mobileImagePath: guide.attributes.mobileImage?.data?.attributes?.url,
       link: {
         label: 'guideListPage.cardSection.linkLabel', // this is a translations path and it will be translated by the component
         href: `/${productSlug}/guides/${guide.attributes.slug}`,
