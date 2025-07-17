@@ -30,7 +30,6 @@ from src.modules.vector_database import load_index_redis
 from src.modules.engine import get_engine
 from src.modules.handlers import EventHandler
 from src.modules.presidio import PresidioPII
-from src.modules.evaluator import Evaluator
 from src.modules.monitor import (
     LANGFUSE_PUBLIC_KEY,
     LANGFUSE_SECRET_KEY,
@@ -69,7 +68,6 @@ class Chatbot:
         self.prompts = prompts
         self.pii = PresidioPII(config=params["config_presidio"])
         self.model = get_llm()
-        self.judge = Evaluator()
         self.embed_model = get_embed_model()
         self.qa_prompt_tmpl, self.ref_prompt_tmpl = self._get_prompt_templates()
         self.index = load_index_redis(
@@ -298,35 +296,3 @@ class Chatbot:
                 final_response += "\n" + ref
 
         return final_response
-
-    def evaluate(
-        self,
-        query_str: str,
-        response_str: str,
-        retrieved_contexts: List[str],
-        trace_id: str,
-        messages: Optional[List[Dict[str, str]]] | None = None,
-    ) -> dict:
-
-        if messages is not None:
-            chat_history = self._messages_to_chathistory(messages)
-            condense_prompt = self.prompts["condense_prompt_evaluation_str"].format(
-                chat_history=chat_history, query_str=query_str
-            )
-            condense_query_response = asyncio_run(self.model.acomplete(condense_prompt))
-            query_str = condense_query_response.text.strip()
-
-        scores = self.judge.evaluate(
-            query_str=query_str,
-            response_str=response_str,
-            retrieved_contexts=retrieved_contexts,
-        )
-        for key, value in scores.items():
-            add_langfuse_score(
-                trace_id=trace_id,
-                name=key,
-                value=value,
-                data_type="NUMERIC",
-            )
-
-        return scores
