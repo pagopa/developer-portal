@@ -28,6 +28,9 @@ type WebinarQuestionsFormProps = {
   disabled?: boolean;
   webinarSlug: string;
   isSmallScreen: boolean;
+  question: string;
+  // eslint-disable-next-line functional/no-return-void
+  setQuestion: (text: string) => void;
 };
 
 export const WebinarQuestionsForm = ({
@@ -35,10 +38,11 @@ export const WebinarQuestionsForm = ({
   webinarSlug,
   interaction,
   isSmallScreen,
+  question,
+  setQuestion,
 }: WebinarQuestionsFormProps) => {
   const t = useTranslations('webinar');
   const [error, setError] = useState<string | null>(null);
-  const [question, setQuestion] = useState('');
   const [formState, setFormState] = useState<FormState>();
 
   const sendQuestion = useCallback(async () => {

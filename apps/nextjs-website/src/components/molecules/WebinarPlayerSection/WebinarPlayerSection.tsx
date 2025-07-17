@@ -28,6 +28,7 @@ const WebinarPlayerSection = ({
   const t = useTranslations('webinar');
   const { palette } = useTheme();
   const [showQuestionForm, setShowQuestionForm] = useState(false);
+  const [question, setQuestion] = useState('');
   const isSmallScreen = useMediaQuery('(max-width: 1000px)');
   return (
     webinar.playerSrc && (
@@ -64,6 +65,8 @@ const WebinarPlayerSection = ({
                     webinarSlug={webinar.slug}
                     disabled={webinarState != WebinarState.live}
                     isSmallScreen={isSmallScreen}
+                    question={question}
+                    setQuestion={setQuestion}
                   />
                 </Box>
               ) : (
