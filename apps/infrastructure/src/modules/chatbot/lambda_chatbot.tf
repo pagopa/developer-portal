@@ -302,7 +302,7 @@ resource "aws_iam_policy" "lambda_ssm_policy" {
 
 # IAM Policy SQS send messages
 
-resource "aws_iam_policy" "chatbot_evaluation_queue" {
+resource "aws_iam_policy" "chatbot_monitor_queue" {
   name        = "lambda-sqs-send"
   description = "Allow Lambda to send messages to SQS queue"
   policy = jsonencode({
@@ -311,7 +311,7 @@ resource "aws_iam_policy" "chatbot_evaluation_queue" {
       {
         Effect   = "Allow"
         Action   = "sqs:SendMessage"
-        Resource = aws_sqs_queue.chatbot_evaluation_queue.arn
+        Resource = aws_sqs_queue.chatbot_monitor_queue.arn
       }
     ]
   })
@@ -343,7 +343,7 @@ resource "aws_iam_role_policy_attachment" "lambda_vpc_policy_attachment" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
 }
 
-resource "aws_iam_role_policy_attachment" "chatbot_evaluation_queue" {
+resource "aws_iam_role_policy_attachment" "chatbot_monitor_queue" {
   role       = aws_iam_role.lambda_role.name
-  policy_arn = aws_iam_policy.chatbot_evaluation_queue.arn
+  policy_arn = aws_iam_policy.chatbot_monitor_queue.arn
 }
