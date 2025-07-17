@@ -1,12 +1,14 @@
 import datetime
 import nh3
+import json
 import os
 import uuid
+import boto3
 from botocore.exceptions import BotoCoreError, ClientError
 from boto3.dynamodb.conditions import Key
 from fastapi import APIRouter, BackgroundTasks, Header, HTTPException
 from typing import Annotated
-from src.app.models import Query, tables
+from src.app.models import Query, tables, AWS_DEFAULT_REGION
 from src.modules.logger import get_logger
 from src.app.sessions import (
     current_user_id,
@@ -20,6 +22,12 @@ from src.app.chatbot_init import chatbot
 
 LOGGER = get_logger(__name__)
 router = APIRouter()
+
+try:
+    sqs = boto3.resource("sqs", region_name=AWS_DEFAULT_REGION)
+    sqs_queue = sqs.get_queue_by_name(QueueName=os.getenv('SQS_QUEUE_NAME', 'default'))
+except ClientError as e:
+    print(f"Failed to get queue: {e}")
 
 
 def can_evaluate() -> bool:
@@ -100,7 +108,8 @@ async def query_creation(
             "trace_id": trace_id,
             "messages": messages,
         }
-        background_tasks.add_task(evaluate, evaluation_data=evaluation_data)
+        sqs_response = sqs_queue.send_message(MessageBody=json.dumps(evaluation_data))
+        LOGGER.info(f"sqs response: {sqs_response}")
 
     if query.queriedAt is None:
         queriedAt = now.isoformat()
