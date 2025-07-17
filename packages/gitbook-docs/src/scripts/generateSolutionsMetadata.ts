@@ -99,7 +99,7 @@ async function main() {
   try {
     console.log('Starting to process Markdown files...');
 
-    const strapiSolutions = await fetchFromStrapi<StrapiSolution>(
+    const { data: strapiSolutions } = await fetchFromStrapi<StrapiSolution>(
       'api/solutions?pagination[pageSize]=1000&pagination[page]=1'
     );
     console.log(`Fetched ${strapiSolutions.length} solutions from Strapi`);
