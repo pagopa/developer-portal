@@ -67,6 +67,18 @@ def backfill_created_at_date() -> None:
     LOGGER.info(f"Backfilled {len(items)} items with `createdAtDate`.")
 
 
+def get_final_response(response_json: dict) -> str:
+
+    final_response = response_json["response"]
+
+    if len(response_json["references"]) > 0:
+        final_response += "\n\nRif:"
+        for ref in response_json["references"]:
+            final_response += "\n" + ref
+
+    return final_response
+
+
 @router.post("/queries")
 async def query_creation(
     background_tasks: BackgroundTasks,
@@ -90,7 +102,7 @@ async def query_creation(
         user_id=user_id,
         messages=messages,
     )
-    answer = chatbot.get_final_response(answer_json)
+    answer = get_final_response(answer_json)
 
     if can_evaluate():
         evaluation_data = {

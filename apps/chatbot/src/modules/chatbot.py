@@ -285,14 +285,3 @@ class Chatbot:
         self.instrumentor.flush()
 
         return response_json
-
-    def get_final_response(self, response_json: dict) -> str:
-
-        final_response = response_json["response"]
-
-        if len(response_json["references"]) > 0:
-            final_response += "\n\nRif:"
-            for ref in response_json["references"]:
-                final_response += "\n" + ref
-
-        return final_response
