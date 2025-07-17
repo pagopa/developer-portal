@@ -120,10 +120,12 @@ async def query_creation(
         "badAnswer": False,
     }
 
+    answer_json_masked = answer_json.copy()
+    answer_json_masked["response"] = chatbot.mask_pii(answer_json_masked["response"])
     bodyToSave = bodyToReturn.copy()
     bodyToSave["question"] = chatbot.mask_pii(query.question)
-    bodyToSave["answer"] = chatbot.mask_pii(answer)
-    bodyToSave["topics"] = answer_json.get("topics", [])
+    bodyToSave["answer"] = chatbot.get_final_response(answer_json_masked)
+    bodyToSave["topics"] = answer_json_masked.get("topics", [])
     try:
         tables["queries"].put_item(Item=bodyToSave)
     except (BotoCoreError, ClientError) as e:
