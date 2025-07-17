@@ -21,6 +21,25 @@ services:
         condition: service_started
       motoserver:
         condition: service_started
+      evaluate:
+        condition: service_started
+    networks:
+      - ntw
+
+  evaluate:
+    build:
+      context: ../../chatbot-evaluate
+      dockerfile: ../chatbot-evaluate/docker/lambda.Dockerfile
+    env_file: ../.env.local
+    environment:
+      - PYTHONPATH=/var/task
+    ports:
+      - "8081:8080"
+    volumes:
+      - ../chatbot-evaluate:/app
+      - ~/.aws-lambda-rie/aws-lambda-rie:/usr/local/bin/aws-lambda-rie
+    entrypoint: ["/usr/local/bin/aws-lambda-rie", "python3"]
+    command: ["-m", "awslambdaric", "src.lambda_function.lambda_handler"]
     networks:
       - ntw
 
