@@ -65,7 +65,7 @@ describe('replaceIncludes', () => {
   });
   it('should export include file content', async () => {
     const ret = await getIncludeContent(
-      path.resolve(__dirname, 'testFile.md'),
+      path.resolve(__dirname, 'fixtures/reusable-content.md'),
       ''
     );
     expect(ret).toStrictEqual('This is a test');

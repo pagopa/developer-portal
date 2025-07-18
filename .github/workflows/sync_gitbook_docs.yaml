@@ -80,7 +80,7 @@ jobs:
         if: inputs.generate_metadata_only == false
         run: npm run generate-url-parsing-metadata -w gitbook-docs
 
-      - name: Replace include tags in docs
+      - name: Replace urls and include tags in docs
         if: inputs.generate_metadata_only == false
         run: npm run parse-docs -w gitbook-docs
 
