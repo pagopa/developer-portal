@@ -15,7 +15,6 @@ from ragas.metrics import (
 from langchain_core.callbacks import Callbacks
 
 from src.modules.logger import get_logger
-from src.modules.models import get_llm, get_embed_model
 
 
 LOGGER = get_logger(__name__)
@@ -64,13 +63,11 @@ class Evaluator:
 
     def __init__(
         self,
-        llm: BaseLLM | None = None,
-        embedder: BaseEmbedding | None = None,
+        llm: BaseLLM,
+        embedder: BaseEmbedding,
     ):
 
-        llm = llm if llm else get_llm(temperature=0.0)
         self.llm = RagasWrapper(llm=llm)
-        embedder = embedder if embedder else get_embed_model()
         self.embedder = LlamaIndexEmbeddingsWrapper(embeddings=embedder)
 
         self.response_relevancy = ResponseRelevancy(
