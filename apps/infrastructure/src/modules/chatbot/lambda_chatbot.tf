@@ -43,12 +43,12 @@ locals {
   }
 }
 
-# Diretta implementazione delle risorse che il modulo lambda creerebbe
+
 resource "aws_lambda_function" "chatbot_lambda" {
   function_name = "${local.prefix}-api-lambda"
   description   = "Lambda function running APIs of the Developer Portal Chatbot"
 
-  image_uri    = "${module.ecr.repository_url}:latest"
+  image_uri    = "${module.ecr["chatbot"].repository_url}:latest"
   package_type = "Image"
 
   timeout       = local.lambda_timeout
@@ -211,6 +211,49 @@ resource "aws_lambda_permission" "allow_eventbridge" {
 }
 
 # IAM Policy Resources
+
+resource "aws_iam_policy" "lambda_ecr_access" {
+  for_each = {
+    chatbot = module.ecr["chatbot"].repository_arn
+    monitor = module.ecr["monitor"].repository_arn
+  }
+
+  name        = "${each.key}-lambda-ecr-access"
+  description = "Allow Lambda to pull images from ECR ${each.key}"
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "ecr:ListTagsForResource",
+          "ecr:ListImages",
+          "ecr:GetRepositoryPolicy",
+          "ecr:GetLifecyclePolicyPreview",
+          "ecr:GetLifecyclePolicy",
+          "ecr:GetDownloadUrlForLayer",
+          "ecr:GetAuthorizationToken",
+          "ecr:DescribeRepositories",
+          "ecr:DescribeImages",
+          "ecr:DescribeImageScanFindings",
+          "ecr:BatchGetImage",
+          "ecr:BatchCheckLayerAvailability",
+        ]
+        Resource = each.value
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "ecr:GetAuthorizationToken"
+        ]
+        Resource = "*"
+      }
+    ]
+  })
+}
+
+
+
 resource "aws_iam_policy" "lambda_s3_bedrock_policy" {
   name = "chatbot-${var.environment}-api-lambda-s3-bedrock"
   policy = jsonencode({
@@ -338,6 +381,18 @@ resource "aws_iam_role_policy_attachment" "lambda_logs_policy_attachment" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
 }
 
+
+resource "aws_iam_role_policy_attachment" "lambda_chatbot_ecr_access_attach" {
+  role       = aws_lambda_function.chatbot_lambda.role
+  policy_arn = aws_iam_policy.lambda_ecr_access["chatbot"].arn
+}
+
+resource "aws_iam_role_policy_attachment" "lambda_chatbot_monitor_ecr_access_attach" {
+  role       = aws_lambda_function.chatbot_monitor_lambda.role
+  policy_arn = aws_iam_policy.lambda_ecr_access["monitor"].arn
+}
+
+
 resource "aws_iam_role_policy_attachment" "lambda_vpc_policy_attachment" {
   role       = aws_iam_role.lambda_role.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
@@ -346,4 +401,33 @@ resource "aws_iam_role_policy_attachment" "lambda_vpc_policy_attachment" {
 resource "aws_iam_role_policy_attachment" "chatbot_monitor_queue" {
   role       = aws_iam_role.lambda_role.name
   policy_arn = aws_iam_policy.chatbot_monitor_queue.arn
+}
+
+
+resource "aws_lambda_function" "chatbot_monitor_lambda" {
+  function_name = "${local.prefix}-monitor-lambda"
+  description   = "Lambda responsible injecting messages into langfuse"
+
+  image_uri    = "${module.ecr["monitor"].repository_url}:latest"
+  package_type = "Image"
+
+  timeout       = 60
+  memory_size   = 1024
+  architectures = ["x86_64"]
+  role          = aws_iam_role.lambda_role.arn
+
+  environment {
+    variables = {
+      CHB_AWS_SSM_LANGFUSE_PUBLIC_KEY = module.langfuse_public_key.ssm_parameter_name
+      CHB_AWS_SSM_LANGFUSE_SECRET_KEY = module.langfuse_secret_key.ssm_parameter_name
+      CHB_LANGFUSE_HOST               = "https://${local.priv_monitoring_host}"
+      AWS_REGION                      = var.aws_region
+    }
+  }
+
+  lifecycle {
+    ignore_changes = [
+      image_uri
+    ]
+  }
 }
