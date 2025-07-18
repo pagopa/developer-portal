@@ -67,7 +67,7 @@ async def evaluate(evaluation_data: dict) -> dict:
     return evaluation_result
 
 
-def get_final_response(self, response_str: str, references: List[str]) -> str:
+def get_final_response(response_str: str, references: List[str]) -> str:
 
     if len(references) > 0:
         response_str += "\n\nRif:"
