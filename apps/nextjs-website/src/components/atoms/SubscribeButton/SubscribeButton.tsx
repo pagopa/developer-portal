@@ -4,6 +4,7 @@ import {
   Button,
   CircularProgress,
   Typography,
+  useMediaQuery,
   useTheme,
 } from '@mui/material';
 import CheckIcon from '@mui/icons-material/Check';
@@ -31,9 +32,15 @@ const SubscribeButton = ({
 }: SubscribeButtonProps) => {
   const t = useTranslations('shared');
   const { palette } = useTheme();
+  const isSmallScreen = useMediaQuery('(max-width: 1000px)');
 
   return (
-    <Box mt={4} display={'flex'} flexDirection={'row'} gap={2}>
+    <Box
+      mt={4}
+      display={'flex'}
+      flexDirection={isSmallScreen ? 'column' : 'row'}
+      gap={2}
+    >
       {isSubscribed ? (
         <>
           <Button
