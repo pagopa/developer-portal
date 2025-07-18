@@ -24,7 +24,6 @@ export type ApiDataListPageTemplateProps = {
     readonly text: string;
     readonly ctaLabel?: string;
     readonly href?: string;
-    readonly externalUrl: boolean;
     readonly icon: string;
     readonly tags?: { label: string }[];
   }[];
