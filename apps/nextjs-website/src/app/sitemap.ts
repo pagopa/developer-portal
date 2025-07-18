@@ -55,7 +55,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Case histories
   const caseHistoryRoutes = caseHistories.map((history) => ({
     url: `${baseUrl}/case-histories/${history.slug}`,
-    lastModified: new Date(),
+    lastModified: new Date(history.updatedAt || new Date().toISOString()),
     changeFrequency: 'weekly' as const,
     priority: 0.7,
   }));
@@ -89,17 +89,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   ]);
 
   // API routes
-  const apiRoutes = apiDataParams.map(({ productSlug, apiDataSlug }) => ({
-    url: `${baseUrl}/${productSlug}/api/${apiDataSlug}`,
-    lastModified: new Date(),
-    changeFrequency: 'weekly' as const,
-    priority: 0.6,
-  }));
+  const apiRoutes = apiDataParams.map(
+    ({ productSlug, apiDataSlug, updatedAt }) => ({
+      url: `${baseUrl}/${productSlug}/api/${apiDataSlug}`,
+      lastModified: new Date(updatedAt || new Date().toISOString()),
+      changeFrequency: 'weekly' as const,
+      priority: 0.6,
+    })
+  );
 
   // Guide list pages
   const guidePagesRoutes = guideListPages.map((guide) => ({
     url: `${baseUrl}/${guide.product.slug}/guides`,
-    lastModified: new Date(),
+    lastModified: new Date(guide.updatedAt || new Date().toISOString()),
     changeFrequency: 'weekly' as const,
     priority: 0.6,
   }));
@@ -107,7 +109,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const tutorials = await getTutorialsProps();
   const tutorialRoutes = tutorials.map((tutorial) => ({
     url: `${baseUrl}${tutorial.path}`,
-    lastModified: new Date(),
+    lastModified: new Date(tutorial.updatedAt || new Date().toISOString()),
     changeFrequency: 'weekly' as const,
     priority: 0.6,
   }));
@@ -115,7 +117,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const webinars = await getWebinarsProps();
   const webinarRoutes = webinars.map((webinar) => ({
     url: `${baseUrl}/webinars/${webinar.slug}`,
-    lastModified: new Date(),
+    lastModified: new Date(webinar.updatedAt || new Date().toISOString()),
     changeFrequency: 'weekly' as const,
     priority: 0.6,
   }));
@@ -123,14 +125,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const solutions = await getSolutionsProps();
   const solutionRoutes = solutions.map((solution) => ({
     url: `${baseUrl}/solutions/${solution.slug}`,
-    lastModified: new Date(),
+    lastModified: new Date(solution.updatedAt || new Date().toISOString()),
     changeFrequency: 'weekly' as const,
     priority: 0.6,
   }));
 
   const solutionsDetailRoutes = solutions.map((solution) => ({
     url: `${baseUrl}/solutions/${solution.slug}/details`,
-    lastModified: new Date(),
+    lastModified: new Date(solution.updatedAt || new Date().toISOString()),
     changeFrequency: 'weekly' as const,
     priority: 0.6,
   }));

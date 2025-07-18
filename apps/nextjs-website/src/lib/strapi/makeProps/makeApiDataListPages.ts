@@ -58,6 +58,7 @@ export function makeApiDataListPagesProps(
         .filter((card) => card.title && !!card.tags),
       bannerLinks: attributes.bannerLinks.map(makeBannerLinkProps),
       seo: attributes.seo,
+      updatedAt: attributes.updatedAt.toISOString(),
     };
   });
 }

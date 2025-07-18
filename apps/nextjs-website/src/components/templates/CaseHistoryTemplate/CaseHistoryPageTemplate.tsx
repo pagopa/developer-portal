@@ -18,6 +18,7 @@ export type CaseHistoryPageTemplateProps = {
   slug: string;
   title: string;
   image?: Media;
+  updatedAt: string;
   description?: string;
   products: Pick<Product, 'logo' | 'slug' | 'name' | 'description'>[];
   parts: Part[];

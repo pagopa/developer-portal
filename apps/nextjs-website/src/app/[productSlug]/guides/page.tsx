@@ -39,6 +39,7 @@ export type GuideListPageProps = {
   };
   readonly guidesSections?: GuidesSectionProps[];
   readonly seo?: SEO;
+  readonly updatedAt?: string;
 } & ProductLayoutProps;
 
 export const generateMetadata = async (
