@@ -5,16 +5,20 @@ from src.modules.logger import get_logger
 
 
 LOGGER = get_logger(__name__)
-AWS_ACCESS_KEY_ID = os.getenv("CHB_AWS_ACCESS_KEY_ID")
-AWS_SECRET_ACCESS_KEY = os.getenv("CHB_AWS_SECRET_ACCESS_KEY")
-AWS_DEFAULT_REGION = os.getenv("CHB_AWS_DEFAULT_REGION")
-AWS_ENDPOINT_URL = os.getenv("CHB_AWS_SSM_ENDPOINT_URL", None)
+AWS_ACCESS_KEY_ID = os.getenv(
+    "CHB_AWS_ACCESS_KEY_ID", os.getenv("AWS_ACCESS_KEY_ID", None)
+)
+AWS_SECRET_ACCESS_KEY = os.getenv(
+    "CHB_AWS_SECRET_ACCESS_KEY", os.getenv("AWS_SECRET_ACCESS_KEY", None)
+)
+AWS_DEFAULT_REGION = os.getenv(
+    "CHB_AWS_DEFAULT_REGION", os.getenv("AWS_DEFAULT_REGION", None)
+)
 SSM_CLIENT = boto3.client(
     "ssm",
     aws_access_key_id=AWS_ACCESS_KEY_ID,
     aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
     region_name=AWS_DEFAULT_REGION,
-    endpoint_url=AWS_ENDPOINT_URL,
 )
 
 
@@ -27,8 +31,10 @@ def get_ssm_parameter(name: str | None, default: str | None = None) -> str | Non
     :return: The value of the requested parameter.
     """
 
+    LOGGER.info(f"get_ssm_parameter {name}...")
+
     if name is None:
-        name = "none-params-in-ssm"
+        name = "/none/param"
     try:
         # Get the requested parameter
         response = SSM_CLIENT.get_parameter(Name=name, WithDecryption=True)
@@ -37,7 +43,6 @@ def get_ssm_parameter(name: str | None, default: str | None = None) -> str | Non
         LOGGER.info(f"Parameter {name} not found in SSM, returning default: {default}")
         return default
 
-    LOGGER.info(f"SSM Parameter {name} retrieved.")
     return value
 
 

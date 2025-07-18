@@ -19,7 +19,7 @@ services:
         condition: service_started
       langfuse:
         condition: service_started
-      motoserver:
+      localstack :
         condition: service_started
       evaluate:
         condition: service_started
@@ -54,8 +54,6 @@ services:
       - ../../nextjs-website/out:/app/build-devp/out
     depends_on:
       redis:
-        condition: service_started
-      motoserver:
         condition: service_started
     networks:
       - ntw
@@ -122,10 +120,23 @@ services:
     networks:
       - ntw
 
-  motoserver:
-    image: motoserver/moto:5.1.0
+  localstack:
+    container_name: "${LOCALSTACK_DOCKER_NAME:-localstack-main}"
+    image: localstack/localstack:4.6.0
+    ports:
+      - "127.0.0.1:4566:4566"            # LocalStack Gateway
+      - "127.0.0.1:4510-4559:4510-4559"  # external services port range
+    environment:
+      # LocalStack configuration: https://docs.localstack.cloud/references/configuration/
+      - DEBUG=${DEBUG:-0}
+      - SERVICES=sqs,s3,ssm
+    volumes:
+      - "${LOCALSTACK_VOLUME_DIR:-./volume}:/var/lib/localstack"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - ./files/localstack/init:/etc/localstack/init
     networks:
       - ntw
+
 volumes:
   postgres_data:
     driver: local

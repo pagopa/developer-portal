@@ -24,10 +24,19 @@ LOGGER = get_logger(__name__)
 router = APIRouter()
 
 try:
-    sqs = boto3.resource("sqs", region_name=AWS_DEFAULT_REGION)
-    sqs_queue = sqs.get_queue_by_name(QueueName=os.getenv('SQS_QUEUE_NAME', 'default'))
+    sqs = boto3.resource(
+        "sqs",
+        region_name=AWS_DEFAULT_REGION,
+    )
+    queues = sqs.queues.all()
+    LOGGER.info(
+        f"sqs.get_queue_by_name({os.getenv('CHB_AWS_SQS_QUEUE_EVALUATE_NAME', 'chatbot-evaluate')})"
+    )
+    sqs_queue_evaluate = sqs.get_queue_by_name(
+        QueueName=os.getenv("CHB_AWS_SQS_QUEUE_EVALUATE_NAME", "chatbot-evaluate")
+    )
 except ClientError as e:
-    print(f"Failed to get queue: {e}")
+    LOGGER.error(f"Failed to get SQS queue: {e}")
 
 
 def can_evaluate() -> bool:
@@ -112,7 +121,9 @@ async def query_creation(
             "trace_id": trace_id,
             "messages": messages,
         }
-        sqs_response = sqs_queue.send_message(MessageBody=json.dumps(evaluation_data))
+        sqs_response = sqs_queue_evaluate.send_message(
+            MessageBody=json.dumps(evaluation_data)
+        )
         LOGGER.info(f"sqs response: {sqs_response}")
 
     if query.queriedAt is None:
@@ -137,7 +148,7 @@ async def query_creation(
     answer_json_masked["response"] = chatbot.mask_pii(answer_json_masked["response"])
     bodyToSave = bodyToReturn.copy()
     bodyToSave["question"] = chatbot.mask_pii(query.question)
-    bodyToSave["answer"] = chatbot.get_final_response(answer_json_masked)
+    bodyToSave["answer"] = get_final_response(answer_json_masked)
     bodyToSave["topics"] = answer_json_masked.get("products", [])
     try:
         tables["queries"].put_item(Item=bodyToSave)
