@@ -6,7 +6,7 @@ import uuid
 import boto3
 from botocore.exceptions import BotoCoreError, ClientError
 from boto3.dynamodb.conditions import Key
-from fastapi import APIRouter, BackgroundTasks, Header, HTTPException
+from fastapi import APIRouter, Header, HTTPException
 from typing import List, Annotated
 from src.app.models import Query, tables, AWS_DEFAULT_REGION
 from src.modules.logger import get_logger
@@ -88,7 +88,6 @@ def get_final_response(response_str: str, references: List[str]) -> str:
 
 @router.post("/queries")
 async def query_creation(
-    background_tasks: BackgroundTasks,
     query: Query,
     authorization: Annotated[str | None, Header()] = None,
 ):
