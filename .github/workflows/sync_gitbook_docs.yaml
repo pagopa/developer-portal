@@ -27,6 +27,11 @@ on:
         type: boolean
         required: true
         default: false
+      incremental_mode:
+        description: 'Run sync in incremental mode by checking only file size'
+        type: boolean
+        required: true
+        default: true
 
   # schedule:
   #   - cron: '0 23 * * *'  # Run daily at midnight UTC
@@ -91,7 +96,7 @@ jobs:
         if: inputs.generate_metadata_only == false
         working-directory: ./devportal-docs
         run: |    
-          aws s3 sync docs s3://devportal-${{ env.ENV_SHORT }}-website-static-content/devportal-docs/docs --delete
+          aws s3 sync docs s3://devportal-${{ env.ENV_SHORT }}-website-static-content/devportal-docs/docs --delete ${{ inputs.incremental_mode == true && ' --size-only' || '' }}
       
       
       - name: Generate guides metadata      
