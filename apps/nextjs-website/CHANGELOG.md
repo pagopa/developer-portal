@@ -1,5 +1,11 @@
 # nextjs-website
 
+## 8.3.1
+
+### Patch Changes
+
+- a5b2567: Add margin-bottom to File a GitBookContent component
+
 ## 8.3.0
 
 ### Minor Changes
