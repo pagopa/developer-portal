@@ -64,21 +64,18 @@ export async function generateMetadata({
       url: 'unknown',
     });
   }
-  const {
-    page: { path, title },
-    seo,
-  } = await getReleaseNote(
+  const props = await getReleaseNote(
     params?.productSlug,
     params?.releaseNoteSubPathSlugs
   );
 
-  if (seo) {
-    return makeMetadataFromStrapi(seo);
+  if (props?.seo) {
+    return makeMetadataFromStrapi(props?.seo);
   }
 
   return makeMetadata({
-    title,
-    url: path,
+    title: props?.page.title,
+    url: props?.page.path,
   });
 }
 
@@ -100,10 +97,19 @@ const ReleaseNotePage = async ({
   if (params.productSlug === 'unknown') {
     return <PageNotFound />;
   }
-  const { bannerLinks, page, path, product, seo, source, title, bodyConfig } =
-    await getReleaseNote(params.productSlug, params.releaseNoteSubPathSlugs);
+  const releaseNoteProps = await getReleaseNote(
+    params.productSlug,
+    params.releaseNoteSubPathSlugs
+  );
 
   const urlReplaceMap = await getUrlReplaceMapProps();
+
+  if (!releaseNoteProps) {
+    return <PageNotFound />;
+  }
+
+  const { bannerLinks, page, path, product, seo, source, title, bodyConfig } =
+    releaseNoteProps;
 
   const props = {
     ...page,
