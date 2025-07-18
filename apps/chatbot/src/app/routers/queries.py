@@ -7,7 +7,7 @@ import boto3
 from botocore.exceptions import BotoCoreError, ClientError
 from boto3.dynamodb.conditions import Key
 from fastapi import APIRouter, BackgroundTasks, Header, HTTPException
-from typing import Annotated
+from typing import List, Annotated
 from src.app.models import Query, tables, AWS_DEFAULT_REGION
 from src.modules.logger import get_logger
 from src.app.sessions import (
@@ -76,16 +76,14 @@ def backfill_created_at_date() -> None:
     LOGGER.info(f"Backfilled {len(items)} items with `createdAtDate`.")
 
 
-def get_final_response(response_json: dict) -> str:
+def get_final_response(response_str: str, references: List[str]) -> str:
 
-    final_response = response_json["response"]
+    if len(references) > 0:
+        response_str += "\n\nRif:"
+        for ref in references:
+            response_str += "\n" + ref
 
-    if len(response_json["references"]) > 0:
-        final_response += "\n\nRif:"
-        for ref in response_json["references"]:
-            final_response += "\n" + ref
-
-    return final_response
+    return response_str
 
 
 @router.post("/queries")
@@ -111,7 +109,10 @@ async def query_creation(
         user_id=user_id,
         messages=messages,
     )
-    answer = get_final_response(answer_json)
+    answer = get_final_response(
+        response_str=answer_json["response"],
+        references=answer_json["references"],
+    )
 
     if can_evaluate():
         evaluation_data = {
@@ -144,12 +145,13 @@ async def query_creation(
         "badAnswer": False,
     }
 
-    answer_json_masked = answer_json.copy()
-    answer_json_masked["response"] = chatbot.mask_pii(answer_json_masked["response"])
     bodyToSave = bodyToReturn.copy()
     bodyToSave["question"] = chatbot.mask_pii(query.question)
-    bodyToSave["answer"] = get_final_response(answer_json_masked)
-    bodyToSave["topics"] = answer_json_masked.get("products", [])
+    bodyToSave["answer"] = get_final_response(
+        response_str=chatbot.mask_pii(answer_json["response"]),
+        references=answer_json["references"],
+    )
+    bodyToSave["topics"] = answer_json.get("products", [])
     try:
         tables["queries"].put_item(Item=bodyToSave)
     except (BotoCoreError, ClientError) as e:

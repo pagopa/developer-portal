@@ -268,8 +268,8 @@ class Chatbot:
 
             except Exception as e:
                 response_json = {
-                    "response": "Scusa, non posso elaborare la tua richiesta.\n" +
-                    "Prova a formulare una nuova domanda.",
+                    "response": "Scusa, non posso elaborare la tua richiesta.\n"
+                    + "Prova a formulare una nuova domanda.",
                     "products": ["none"],
                     "references": [],
                     "contexts": [],
