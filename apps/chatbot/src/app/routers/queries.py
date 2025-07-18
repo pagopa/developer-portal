@@ -101,7 +101,7 @@ async def query_creation(
     user_id = hash_func(userId, salt)
     messages = [item.model_dump() for item in query.history] if query.history else None
 
-    answer_json = chatbot.chat_generate(
+    answer_json = await chatbot.chat_generate(
         query_str=query_str,
         trace_id=trace_id,
         session_id=session["id"],
