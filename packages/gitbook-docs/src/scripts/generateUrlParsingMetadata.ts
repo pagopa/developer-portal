@@ -80,9 +80,6 @@ async function convertGuideToUrlParsingItems(
         continue;
       }
       const guideFiles = await getMarkdownFilesRecursively(guideDir);
-      const menuPath = guideFiles.find((file) =>
-        file.includes(guideInfo.dirName + '/SUMMARY.md')
-      );
       const item = {
         dirName: guideInfo.dirName,
         guides: [] as { guidePath: string; guideUrl: string }[],
@@ -93,20 +90,17 @@ async function convertGuideToUrlParsingItems(
           continue;
         }
         if (!fs.existsSync(filePath)) continue;
-        const content = fs.readFileSync(filePath, 'utf8');
 
-        if (menuPath && content) {
-          const path = generateUrlPath(
-            filePath,
-            guideInfo.guideSlug,
-            guideInfo.productSlug,
-            guideInfo.versionName
-          );
-          item.guides.push({
-            guidePath: filePath || '',
-            guideUrl: path,
-          });
-        }
+        const path = generateUrlPath(
+          filePath,
+          guideInfo.guideSlug,
+          guideInfo.productSlug,
+          guideInfo.versionName
+        );
+        item.guides.push({
+          guidePath: filePath || '',
+          guideUrl: path,
+        });
       }
       items.push(item);
     }
