@@ -8,6 +8,9 @@ import { StrapiEnv } from '@/lib/strapi/StrapiEnv';
 import { makeError } from '../makeError';
 
 // Function to invoke in order to retrieve data from Strapi.
+/** @deprecated
+ * Use `fetchFromStrapiNew` instead, which does not require a codec.
+ */
 export const fetchFromStrapi = <A, O, I>(
   path: string,
   populate: string,
