@@ -145,8 +145,6 @@ async def query_creation(
         "badAnswer": False,
     }
 
-    answer_json_masked = answer_json.copy()
-    answer_json_masked["response"] = chatbot.mask_pii(answer_json_masked["response"])
     bodyToSave = bodyToReturn.copy()
     bodyToSave["question"] = chatbot.mask_pii(query.question)
     bodyToSave["answer"] = get_final_response(
