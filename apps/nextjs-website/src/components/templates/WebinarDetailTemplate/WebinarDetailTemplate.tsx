@@ -75,14 +75,23 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
         return null;
       }}
       webinarState={webinarState}
+      textColor={webinar.headerImage ? 'white' : palette.text.primary}
     />
   );
 
   return (
     <>
-      <Box paddingTop={5} style={{ backgroundColor: palette.grey[50] }}>
+      <Box
+        paddingTop={'20px'}
+        style={{
+          backgroundImage: `url(${webinar.headerImage?.url})`,
+          backgroundRepeat: 'no-repeat',
+          backgroundSize: 'cover',
+        }}
+      >
         <EContainer>
           <ProductBreadcrumbs
+            textColor={webinar.headerImage ? 'white' : palette.text.primary}
             breadcrumbs={[
               ...pageToBreadcrumbs('webinars', [
                 {
@@ -93,42 +102,30 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
             ]}
           />
         </EContainer>
+        <SummaryInformation
+          title={webinar.title}
+          description={webinar.description}
+          startDateTime={webinar.startDateTime}
+          endDateTime={webinar.endDateTime}
+          webinarState={webinarState}
+          textColor={webinar.headerImage ? 'white' : palette.text.primary}
+        >
+          {subscribeToWebinarButton}
+          {isSubscribed && webinarState === WebinarState.comingSoon && (
+            <Typography
+              variant={'body2'}
+              sx={{
+                position: 'absolute',
+                bottom: '24px',
+                fontSize: '12px',
+                marginTop: 1,
+              }}
+            >
+              {t('warnings.refresh')}
+            </Typography>
+          )}
+        </SummaryInformation>
       </Box>
-      <SummaryInformation
-        title={webinar.title}
-        description={webinar.description}
-        startDateTime={webinar.startDateTime}
-        endDateTime={webinar.endDateTime}
-        webinarState={webinarState}
-      >
-        {subscribeToWebinarButton}
-        {isSubscribed && webinarState === WebinarState.future && (
-          <Typography
-            variant={'body2'}
-            sx={{
-              position: 'absolute',
-              bottom: '24px',
-              fontSize: '12px',
-              marginTop: 1,
-            }}
-          >
-            {t('warnings.email')}
-          </Typography>
-        )}
-        {isSubscribed && webinarState === WebinarState.comingSoon && (
-          <Typography
-            variant={'body2'}
-            sx={{
-              position: 'absolute',
-              bottom: '24px',
-              fontSize: '12px',
-              marginTop: 1,
-            }}
-          >
-            {t('warnings.refresh')}
-          </Typography>
-        )}
-      </SummaryInformation>
       {user &&
         isSubscribed &&
         ![WebinarState.future, WebinarState.unknown].includes(webinarState) && (

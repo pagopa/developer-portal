@@ -28,6 +28,9 @@ export const webinarPopulate = {
     },
     questionsAndAnswers: '*',
     webinarCategory: { populate: ['icon'] },
+    headerImage: {
+      populate: ['image'],
+    },
   },
 };
 

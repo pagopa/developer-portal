@@ -1,10 +1,11 @@
 'use client';
 import React, { FC } from 'react';
-import { Stack, Typography, useTheme } from '@mui/material';
+import { Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
 import TimeSlot from '../TimeSlot/TimeSlot';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
 import LiveWebinarChip from '@/components/atoms/LiveWebinarChip/LiveWebinarChip';
 import { WebinarState } from '@/helpers/webinar.helpers';
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 
 export type SummaryInformationProps = {
   startDateTime?: string;
@@ -13,6 +14,7 @@ export type SummaryInformationProps = {
   description: string;
   webinarState: WebinarState;
   children?: React.ReactNode | React.ReactNode[];
+  textColor?: string;
 };
 
 const SummaryInformation: FC<SummaryInformationProps> = ({
@@ -22,11 +24,13 @@ const SummaryInformation: FC<SummaryInformationProps> = ({
   description,
   webinarState,
   children,
+  textColor = '',
 }) => {
   const { palette } = useTheme();
+  const isSmallScreen = useMediaQuery('(max-width: 1000px)');
 
   return (
-    <div style={{ backgroundColor: palette.grey[50] }}>
+    <div>
       <EContainer>
         <Stack
           sx={{
@@ -39,23 +43,59 @@ const SummaryInformation: FC<SummaryInformationProps> = ({
             width: '100%',
           }}
         >
+          {isSmallScreen ? null : (
+            <Stack
+              direction={'row'}
+              sx={{ alignContent: 'center', gap: '8px' }}
+            >
+              <CalendarTodayIcon
+                sx={{
+                  color: textColor,
+                  width: '24px',
+                  height: '24px',
+                  alignSelf: 'center',
+                }}
+              />
+              <Typography
+                variant='caption'
+                style={{
+                  fontWeight: 700,
+                  fontSize: '24px',
+                  color: textColor || palette.grey[600],
+                }}
+              >
+                {webinarState === WebinarState.live && <LiveWebinarChip />}
+                {![
+                  WebinarState.unknown,
+                  WebinarState.live,
+                  WebinarState.past,
+                ].includes(webinarState) && (
+                  <TimeSlot start={startDateTime} end={endDateTime} />
+                )}
+              </Typography>
+            </Stack>
+          )}
           <Typography
-            variant='caption'
-            style={{ fontWeight: 900, color: palette.grey[600] }}
+            style={{
+              fontWeight: 700,
+              fontStyle: 'bold',
+              fontSize: '38px',
+              marginTop: 16,
+              marginBottom: 32,
+              color: textColor || palette.text.primary,
+            }}
           >
-            {webinarState === WebinarState.live && <LiveWebinarChip />}
-            {![
-              WebinarState.unknown,
-              WebinarState.live,
-              WebinarState.past,
-            ].includes(webinarState) && (
-              <TimeSlot start={startDateTime} end={endDateTime} />
-            )}
-          </Typography>
-          <Typography variant='h5' style={{ marginTop: 16, marginBottom: 32 }}>
             {title}
           </Typography>
-          <Typography variant='body1'>{description}</Typography>
+          <Typography
+            sx={{
+              fontWeight: '400',
+              fontSize: '18px',
+              color: textColor || palette.text.secondary,
+            }}
+          >
+            {description}
+          </Typography>
           {children}
         </Stack>
       </EContainer>

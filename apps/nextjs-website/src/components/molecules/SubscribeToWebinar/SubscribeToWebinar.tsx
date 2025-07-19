@@ -14,6 +14,7 @@ export type SubscribeButtonProps = {
   setIsSubscribed: (isSubscribed: boolean) => null;
   handleErrorMessage?: (message: string) => null;
   webinarState: WebinarState;
+  textColor?: string;
 };
 
 const SubscribeToWebinar = ({
@@ -22,6 +23,7 @@ const SubscribeToWebinar = ({
   setIsSubscribed,
   handleErrorMessage,
   webinarState,
+  textColor = 'white',
 }: SubscribeButtonProps) => {
   const t = useTranslations('webinar');
   const [isLoading, setIsLoading] = useState(false);
@@ -148,6 +150,7 @@ const SubscribeToWebinar = ({
       onSubscribe={onSubscribeClick}
       onCancelSubscription={onUnsubscribe}
       subscribeLabel={subscribeLabelMap[webinarState]}
+      textColor={textColor}
     />
   );
 };
