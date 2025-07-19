@@ -34,6 +34,20 @@ rds_cms_scaling_configuration = {
   max_capacity = 3.0
 }
 
+cms_app_cpu    = "512"
+cms_app_memory = "1024"
+
+
+chatbot_ecs_monitoring = {
+  cpu    = 256
+  memory = 512
+}
+
+chatbot_ecs_redis = {
+  cpu    = 1024
+  memory = 6144
+}
+
 create_chatbot            = true
 ac_integration_is_enabled = true
 docs_redirect_is_enabled  = false
