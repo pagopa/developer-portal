@@ -20,7 +20,9 @@ async function main() {
   const outputPath = resolve(outputDir, 'soap-api-repositories.json');
   const strapiUrl =
     'api/apis-data/?populate[apiSoapDetail][populate][0]=slug&populate[apiSoapDetail][populate][1]=repositoryUrl&populate[apiSoapDetail][populate][2]=dirName&filters[apiSoapDetail][$null]=false';
-  const response = await fetchFromStrapi<StrapiSoapApiDetails>(strapiUrl);
+  const { data: response } = await fetchFromStrapi<StrapiSoapApiDetails>(
+    strapiUrl
+  );
 
   if (!response || response.length === 0) {
     console.error('No SOAP API entries found in Strapi.');

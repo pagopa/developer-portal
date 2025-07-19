@@ -109,12 +109,15 @@ async function main() {
   try {
     console.log('Starting to process Markdown files...');
 
-    const strapiGuides = await fetchFromStrapi<StrapiReleaseNote>(
-      'api/release-notes?populate[0]=product&pagination[pageSize]=1000&pagination[page]=1'
-    );
-    console.log(`Fetched ${strapiGuides.length} guides from Strapi`);
+    const { data: strapiReleaseNotes } =
+      await fetchFromStrapi<StrapiReleaseNote>(
+        'api/release-notes?populate[0]=product&pagination[pageSize]=1000&pagination[page]=1'
+      );
+    console.log(`Fetched ${strapiReleaseNotes.length} guides from Strapi`);
 
-    const sitemapItems = await convertReleaseNoteToSitemapItems(strapiGuides);
+    const sitemapItems = await convertReleaseNoteToSitemapItems(
+      strapiReleaseNotes
+    );
     console.log(`Converted guides to ${sitemapItems.length} sitemap items`);
 
     await writeSitemapJson(
