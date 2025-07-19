@@ -10,8 +10,6 @@ from src.modules.vector_database import build_index_redis
 logging.basicConfig(level=logging.INFO)
 
 
-DOCUMENTATION_DIR = os.getenv("CHB_DOCUMENTATION_DIR", "./PagoPADevPortal/out/")
-
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument(
@@ -29,7 +27,6 @@ if __name__ == "__main__":
     index = build_index_redis(
         model,
         embed_model,
-        documentation_dir=DOCUMENTATION_DIR,
         chunk_size=params["vector_index"]["chunk_size"],
         chunk_overlap=params["vector_index"]["chunk_overlap"],
     )
