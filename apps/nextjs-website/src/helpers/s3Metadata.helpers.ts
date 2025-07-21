@@ -119,9 +119,32 @@ export async function downloadFileAsText(
   return result;
 }
 
+async function fetchFromCDN(path: string) {
+  if (!staticContentsUrl) {
+    // eslint-disable-next-line functional/no-throw-statements
+    throw new Error(
+      'STATIC_CONTENTS_URL is not defined in the environment variables.'
+    );
+  }
+
+  const url = `${staticContentsUrl}/${path}`;
+  const response = await fetch(url, {
+    // Add timeout and other fetch options to prevent hanging
+    signal: AbortSignal.timeout(TIMEOUT_LIMIT), // 30 second timeout
+  });
+
+  if (!response || !response.ok) {
+    // eslint-disable-next-line functional/no-throw-statements
+    throw new Error('Response is null');
+  }
+
+  const json = await response.json();
+  return json;
+}
+
 export async function fetchResponseFromCDN(path: string) {
   // Check if we already have a request in progress for this path
-  const cacheKey = `fetchFromCDN:${path}`;
+  const cacheKey = `fetchResponseFromCDN:${path}`;
   if (requestCache.has(cacheKey)) {
     const result = await requestCache.get(cacheKey);
     return result;
@@ -130,29 +153,10 @@ export async function fetchResponseFromCDN(path: string) {
   // Create the request promise and cache it
   const requestPromise = withRetries(
     async () => {
-      if (!staticContentsUrl) {
-        // eslint-disable-next-line functional/no-throw-statements
-        throw new Error(
-          'STATIC_CONTENTS_URL is not defined in the environment variables.'
-        );
-      }
-
-      const url = `${staticContentsUrl}/${path}`;
-      const response = await fetch(url, {
-        // Add timeout and other fetch options to prevent hanging
-        signal: AbortSignal.timeout(TIMEOUT_LIMIT), // 30 second timeout
-      });
-
-      if (!response || !response.ok) {
-        // eslint-disable-next-line functional/no-throw-statements
-        throw new Error('Response is null');
-      }
-
-      const json = await response.json();
-      return json;
+      return await fetchFromCDN(path);
     },
-    `metadata fetch from ${path}`,
-    null
+    `response fetch from ${path}`,
+    undefined
   ).catch((error) => {
     // On failure, remove from cache to allow retries on subsequent calls
     requestCache.delete(cacheKey);
@@ -178,27 +182,7 @@ export async function fetchMetadataFromCDN<T>(
   // Create the request promise and cache it
   const requestPromise = withRetries(
     async () => {
-      if (!staticContentsUrl) {
-        // eslint-disable-next-line functional/no-throw-statements
-        throw new Error(
-          'STATIC_CONTENTS_URL is not defined in the environment variables.'
-        );
-      }
-
-      const url = `${staticContentsUrl}/${path}`;
-      const response = await fetch(url, {
-        // Add timeout and other fetch options to prevent hanging
-        signal: AbortSignal.timeout(TIMEOUT_LIMIT), // 30 second timeout
-      });
-
-      if (!response.ok) {
-        // eslint-disable-next-line functional/no-throw-statements
-        throw new Error(
-          `Failed to fetch metadata from ${url}: ${response.statusText}`
-        );
-      }
-
-      const bodyContent = await response.json();
+      const bodyContent = await fetchFromCDN(path);
       return bodyContent as readonly T[];
     },
     `metadata fetch from ${path}`,
