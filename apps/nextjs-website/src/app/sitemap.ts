@@ -7,6 +7,7 @@ import {
   getTutorialsProps,
   getWebinarsProps,
   getSolutionsProps,
+  getQuickStartGuidesProps,
 } from '@/lib/cmsApi';
 import { baseUrl } from '@/config';
 import {
@@ -18,6 +19,7 @@ import {
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Get dynamic paths
+  const quickStartParams = await getQuickStartGuidesProps();
   const apiDataParams = await getApiDataParams();
   const guideListPages = await getGuideListPagesProps();
   const caseHistories = await getCaseHistoriesProps();
@@ -52,6 +54,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
   ];
 
+  const quickStartRoutes = quickStartParams.map((quickStart) => ({
+    url: `${baseUrl}/${quickStart.product.slug}/quick-start`,
+    lastModified: new Date(quickStart.updatedAt || new Date().toISOString()),
+    changeFrequency: 'weekly' as const,
+    priority: 0.8,
+  }));
+
   // Case histories
   const caseHistoryRoutes = caseHistories.map((history) => ({
     url: `${baseUrl}/case-histories/${history.slug}`,
@@ -64,12 +73,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const productRoutes = productSlugs.flatMap((productSlug) => [
     {
       url: `${baseUrl}/${productSlug}/overview`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly' as const,
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/${productSlug}/quick-start`,
       lastModified: new Date(),
       changeFrequency: 'weekly' as const,
       priority: 0.8,
@@ -183,6 +186,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   return [
     ...routes,
+    ...quickStartRoutes,
     ...caseHistoryRoutes,
     ...productRoutes,
     ...apiRoutes,
