@@ -124,7 +124,7 @@
             "title": "Scrivi qui domande e commenti per la discussione finale (al massimo {maxLength} caratteri)",
             "question": "Domanda",
             "submit": "Invia",
-            "submitted": "Inviato",
+            "submitted": "Inviata",
             "error": "Errore nell'invio, riprova più tardi.",
             "reduce": "Riduci",
             "expand": "Espandi",
