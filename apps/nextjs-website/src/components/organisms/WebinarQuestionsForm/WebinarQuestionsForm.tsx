@@ -18,6 +18,9 @@ import { useCallback, useState } from 'react';
 import ForumIcon from '@mui/icons-material/Forum';
 import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
+import { WebinarState } from '@/helpers/webinar.helpers';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 
 const MAX_QUESTION_LENGTH = 240;
 
@@ -27,6 +30,7 @@ type WebinarQuestionsFormProps = {
   interaction: () => void;
   disabled?: boolean;
   webinarSlug: string;
+  webinarState: WebinarState;
   isSmallScreen: boolean;
   question: string;
   // eslint-disable-next-line functional/no-return-void
@@ -36,6 +40,7 @@ type WebinarQuestionsFormProps = {
 export const WebinarQuestionsForm = ({
   disabled = false,
   webinarSlug,
+  webinarState,
   interaction,
   isSmallScreen,
   question,
@@ -99,7 +104,7 @@ export const WebinarQuestionsForm = ({
         sx={{
           display: 'flex',
           flexDirection: 'column',
-          minHeight: '264px',
+          minHeight: '138px',
           width: isSmallScreen ? '100%' : '303px',
           borderTopRightRadius: isSmallScreen ? 0 : '16px',
           borderBottomRightRadius: '16px',
@@ -108,51 +113,65 @@ export const WebinarQuestionsForm = ({
           boxShadow: '0px 4px 9px 4px rgba(0, 43, 85, 0.1)',
         }}
       >
-        <Stack
-          direction='row'
-          sx={{
-            paddingX: '8px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            width: '100%',
-            height: isSmallScreen ? '64px' : '60px',
-            backgroundColor: palette.primary.main,
-            borderTopRightRadius: isSmallScreen ? '0' : '16px',
-          }}
-        >
-          <Stack
-            direction='row'
-            sx={{
-              gap: '8px',
-              height: '32px',
-              alignItems: 'center',
-              paddingLeft: '4px',
-            }}
-          >
-            <ForumIcon sx={{ color: 'white', width: '32px', height: '32px' }} />
-            <Typography sx={{ color: 'white', fontWeight: 600, fontSize: 18 }}>
-              {t('questionsForm.questionBox')}
-            </Typography>
-          </Stack>
-          <Button
-            startIcon={
-              isSmallScreen ? (
+        <Button
+          startIcon={
+            <Stack
+              direction='row'
+              sx={{
+                gap: '8px',
+                height: '32px',
+                alignItems: 'center',
+              }}
+            >
+              <ForumIcon
+                sx={{ color: 'white', width: '32px', height: '32px' }}
+              />
+              <Typography
+                sx={{ color: 'white', fontWeight: 600, fontSize: 18 }}
+              >
+                {t('questionsForm.questionBox')}
+              </Typography>
+            </Stack>
+          }
+          endIcon={
+            <Stack
+              direction='row'
+              sx={{
+                alignItems: 'center',
+                margin: 0,
+              }}
+            >
+              {isSmallScreen ? (
                 <ArrowDropUpIcon sx={{ width: '24px', height: '24px' }} />
               ) : (
                 <ArrowLeftIcon sx={{ width: '24px', height: '24px' }} />
-              )
-            }
-            onClick={() => interaction()}
-            sx={{
-              color: 'white',
-              width: '55px',
-              fontSize: '12px',
-            }}
-          >
-            {t('questionsForm.reduce')}
-          </Button>
-        </Stack>
+              )}
+
+              <Typography
+                sx={{
+                  color: 'white',
+                  fontWeight: 400,
+                  fontSize: 12,
+                }}
+              >
+                {t('questionsForm.reduce')}
+              </Typography>
+            </Stack>
+          }
+          variant='contained'
+          onClick={() => interaction()}
+          sx={{
+            width: '100%',
+            paddingX: '16px',
+            justifyContent: 'space-between',
+            height: isSmallScreen ? '64px' : '60px',
+            backgroundColor: palette.primary.main,
+            borderTopRightRadius: isSmallScreen ? '0' : '16px',
+            borderTopLeftRadius: 0,
+            borderBottomLeftRadius: 0,
+            borderBottomRightRadius: 0,
+          }}
+        />
         <Stack
           direction={'column'}
           sx={{
@@ -160,54 +179,86 @@ export const WebinarQuestionsForm = ({
             gap: '24px',
           }}
         >
-          <Typography
-            variant='body2'
-            sx={{ fontWeight: 600 }}
-            color={(theme) =>
-              disabled
-                ? theme.palette.text.disabled
-                : theme.palette.text.primary
-            }
-          >
-            {t('questionsForm.title', { maxLength: `${MAX_QUESTION_LENGTH}` })}
-          </Typography>
-
-          <TextField
-            disabled={disabled}
-            label={t('questionsForm.question')}
-            multiline
-            maxRows={6}
-            sx={{ flexGrow: 1, minHeight: '40px' }}
-            value={question}
-            variant='outlined'
-            onChange={handleChange}
-            onKeyDown={handleKeyDown}
-            inputProps={{ maxLength: MAX_QUESTION_LENGTH }}
-            helperText={
+          {webinarState === WebinarState.live ? (
+            <>
               <Typography
-                component='span'
-                color={(theme) => theme.palette.text.secondary}
-                fontSize={12}
-                fontWeight={600}
-                sx={{ display: 'flex', justifyContent: 'end' }}
+                variant='body2'
+                sx={{ fontWeight: 600 }}
+                color={(theme) =>
+                  disabled
+                    ? theme.palette.text.disabled
+                    : theme.palette.text.primary
+                }
               >
-                {question.length > 0 &&
-                  `${question.length} / ${MAX_QUESTION_LENGTH}`}
+                {t('questionsForm.title', {
+                  maxLength: `${MAX_QUESTION_LENGTH}`,
+                })}
               </Typography>
-            }
-          />
-          <LoadingButton
-            sx={{ alignSelf: 'start' }}
-            color='primary'
-            loadingPosition={hasFormState ? 'start' : undefined}
-            loading={formState === 'submitting'}
-            startIcon={startIcon}
-            disabled={btnDisabled}
-            variant={formState === 'submitted' ? 'text' : 'contained'}
-            onClick={handleSubmit}
-          >
-            <span>{btnLabel}</span>
-          </LoadingButton>
+              <TextField
+                disabled={disabled}
+                label={
+                  <Typography
+                    sx={{
+                      fontSize: 16,
+                      fontWeight: 400,
+                      color: palette.text.secondary,
+                    }}
+                  >
+                    {t('questionsForm.question')}
+                  </Typography>
+                }
+                size='small'
+                multiline
+                maxRows={6}
+                sx={{ flexGrow: 1, minHeight: '40px' }}
+                value={question}
+                variant='outlined'
+                onChange={handleChange}
+                onKeyDown={handleKeyDown}
+                inputProps={{
+                  maxLength: MAX_QUESTION_LENGTH,
+                  sx: { fontSize: 16, fontWeight: 400 },
+                }}
+                helperText={
+                  <Typography
+                    component='span'
+                    color={(theme) => theme.palette.text.secondary}
+                    fontSize={12}
+                    fontWeight={600}
+                    sx={{ display: 'flex', justifyContent: 'end' }}
+                  >
+                    {question.length > 0 &&
+                      `${question.length} / ${MAX_QUESTION_LENGTH}`}
+                  </Typography>
+                }
+              />
+              {question.length > 0 ? (
+                <LoadingButton
+                  sx={{ alignSelf: 'start', marginTop: '-24px' }}
+                  color='primary'
+                  loadingPosition={hasFormState ? 'start' : undefined}
+                  loading={formState === 'submitting'}
+                  startIcon={startIcon}
+                  disabled={btnDisabled}
+                  variant={formState === 'submitted' ? 'text' : 'contained'}
+                  onClick={handleSubmit}
+                >
+                  <span>{btnLabel}</span>
+                </LoadingButton>
+              ) : null}
+            </>
+          ) : (
+            <Typography
+              sx={{
+                color: '#A2ADB8',
+                fontWeight: 600,
+                fontSize: 16,
+                letterSpacing: '0.15px',
+              }}
+            >
+              {t('questionsForm.notLive')}
+            </Typography>
+          )}
         </Stack>
       </Card>
 

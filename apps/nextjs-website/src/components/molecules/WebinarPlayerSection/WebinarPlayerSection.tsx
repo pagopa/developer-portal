@@ -67,6 +67,7 @@ const WebinarPlayerSection = ({
                     isSmallScreen={isSmallScreen}
                     question={question}
                     setQuestion={setQuestion}
+                    webinarState={webinarState}
                   />
                 </Box>
               ) : (
