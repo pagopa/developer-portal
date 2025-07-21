@@ -62,13 +62,14 @@ def lambda_handler(event, context):
 
     results = []
     for record in event.get("Records", []):
+        body = record.get("body", {})
         results.append(
             JUDGE.evaluate(
-                query_str=event.get("query_str", ""),
-                response_str=event.get("response_str", ""),
-                retrieved_context=event.get("retrieved_context", []),
-                trace_id=event.get("trace_id", ""),
-                messages=event.get("messages", None),
+                query_str=body.get("query_str", ""),
+                response_str=body.get("response_str", ""),
+                retrieved_context=body.get("retrieved_context", []),
+                trace_id=body.get("trace_id", ""),
+                messages=body.get("messages", None),
             )
         )
 
