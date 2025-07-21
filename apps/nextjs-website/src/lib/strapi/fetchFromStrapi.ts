@@ -11,7 +11,7 @@ import { makeError } from '../makeError';
 /** @deprecated
  * Use `fetchFromStrapiNew` instead, which does not require a codec.
  */
-export const fetchFromStrapi = <A, O, I>(
+export const deprecatedFetchFromStrapi = <A, O, I>(
   path: string,
   populate: string,
   codec: t.Type<A, O, I>
@@ -62,7 +62,7 @@ export const fetchFromStrapi = <A, O, I>(
     )
   );
 
-export const fetchFromStrapiNew = <T>(path: string, populate: string) =>
+export const fetchFromStrapi = <T>(path: string, populate: string) =>
   pipe(
     R.ask<StrapiEnv>(),
     R.map(

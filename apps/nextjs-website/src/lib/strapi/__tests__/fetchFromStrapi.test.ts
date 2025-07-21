@@ -1,5 +1,5 @@
 import * as t from 'io-ts';
-import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
+import { deprecatedFetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
 
 const makeTestEnv = () => {
   const fetchMock = jest.fn();
@@ -67,7 +67,7 @@ describe('fetchFromStrapi', () => {
       statusText: 'OK',
       json: () => Promise.resolve(strapiResponses[200]),
     });
-    const actual = fetchFromStrapi('aPath', 'aPopulate', codec)(env);
+    const actual = deprecatedFetchFromStrapi('aPath', 'aPopulate', codec)(env);
     const expected = { data: { id: 1 } };
     expect(await actual).toStrictEqual(expected);
   });
@@ -78,7 +78,7 @@ describe('fetchFromStrapi', () => {
       statusText: 'Unauthorized',
       json: () => Promise.resolve(strapiResponses[401]),
     });
-    const actual = fetchFromStrapi('aPath', 'aPopulate', codec)(env);
+    const actual = deprecatedFetchFromStrapi('aPath', 'aPopulate', codec)(env);
     const expected = new Error('401 - Unauthorized');
     await expect(actual).rejects.toStrictEqual(expected);
   });
@@ -89,14 +89,14 @@ describe('fetchFromStrapi', () => {
       statusText: 'Not Found',
       json: () => Promise.resolve(strapiResponses[404]),
     });
-    const actual = fetchFromStrapi('aPath', 'aPopulate', codec)(env);
+    const actual = deprecatedFetchFromStrapi('aPath', 'aPopulate', codec)(env);
     const expected = new Error('404 - Not Found');
     await expect(actual).rejects.toStrictEqual(expected);
   });
   it('should return error given a reject', async () => {
     const { env, fetchMock } = makeTestEnv();
     fetchMock.mockRejectedValueOnce({});
-    const actual = fetchFromStrapi('aPath', 'aPopulate', codec)(env);
+    const actual = deprecatedFetchFromStrapi('aPath', 'aPopulate', codec)(env);
     const expected = new Error('[object Object]');
     await expect(actual).rejects.toStrictEqual(expected);
   });
@@ -107,7 +107,7 @@ describe('fetchFromStrapi', () => {
       statusText: 'OK',
       json: () => Promise.resolve(strapiResponses[200]),
     });
-    const actual = fetchFromStrapi('aPath', 'aPopulate', badCodec)(env);
+    const actual = deprecatedFetchFromStrapi('aPath', 'aPopulate', badCodec)(env);
     const expected = new Error(
       `Invalid value 1 supplied to '/data/id', expected type string`
     );

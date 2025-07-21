@@ -1,5 +1,5 @@
 import * as qs from 'qs';
-import { fetchFromStrapiNew } from '@/lib/strapi/fetchFromStrapi';
+import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
 import { productRelationsPopulate } from './fetchProducts';
 import { StrapiGuideListPaginated } from '@/lib/strapi/types/guideList';
 
@@ -21,7 +21,7 @@ const makeStrapiGuideListPopulate = () =>
     },
   });
 
-export const fetchGuideListPages = fetchFromStrapiNew<StrapiGuideListPaginated>(
+export const fetchGuideListPages = fetchFromStrapi<StrapiGuideListPaginated>(
   'guide-list-pages',
   makeStrapiGuideListPopulate()
 );

@@ -1,6 +1,6 @@
 import * as qs from 'qs';
 import { webinarPopulate } from '@/lib/strapi/fetches/fetchWebinars';
-import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
+import { deprecatedFetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
 import { HomepageCodec } from '@/lib/strapi/codecs/HomepageCodec';
 
 const makeStrapiHomepagePopulate = () =>
@@ -42,7 +42,7 @@ const makeStrapiHomepagePopulate = () =>
     },
   });
 
-export const fetchHomepage = fetchFromStrapi(
+export const fetchHomepage = deprecatedFetchFromStrapi(
   'homepage',
   makeStrapiHomepagePopulate(),
   HomepageCodec

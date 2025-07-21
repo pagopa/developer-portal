@@ -1,4 +1,4 @@
-import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
+import { deprecatedFetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
 import { ProductsCodec } from '@/lib/strapi/codecs/ProductCodec';
 import qs from 'qs';
 
@@ -23,7 +23,7 @@ const makeStrapiProductsPopulate = () =>
     ...productRelationsPopulate,
   });
 
-export const fetchProducts = fetchFromStrapi(
+export const fetchProducts = deprecatedFetchFromStrapi(
   'products',
   makeStrapiProductsPopulate(),
   ProductsCodec
