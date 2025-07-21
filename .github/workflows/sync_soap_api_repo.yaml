@@ -1,4 +1,4 @@
-name: SOAP API Repo Sync
+name: Sync SOAP API Repo
 
 on:
   workflow_dispatch:

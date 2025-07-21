@@ -1,5 +1,28 @@
 # nextjs-website
 
+## 8.3.0
+
+### Minor Changes
+
+- a7c25ee: Manage error 500 correctly
+
+### Patch Changes
+
+- 10f945a: Fix replace_inlcude_tags script name
+
+## 8.2.0
+
+### Minor Changes
+
+- 1d3b9df: Add Soap Api detail pages
+
+### Patch Changes
+
+- 33cfa8f: Update title generation to remove duplicates
+- 808e870: Fix font size in guides and padding on the left menu
+- 62c4bbb: Avoid fetching the same file multiple times
+- b77d056: Fix intermittent build failures due to network request overload
+
 ## 8.1.0
 
 ### Minor Changes

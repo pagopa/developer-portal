@@ -37,7 +37,7 @@ resource "aws_route53_record" "opennext" {
 */
 
 resource "aws_ssm_parameter" "cookie_domain_script" {
-  name        = "COOKIE_DOMAIN_SCRIPT"
+  name        = "NEXT_PUBLIC_COOKIE_DOMAIN_SCRIPT"
   description = "Cookie domain script for OpenNext"
   type        = "SecureString"
   value       = "TODO"
@@ -80,6 +80,7 @@ module "opennext" {
 
   server = {
     environment_variables = {
+      COOKIE_DOMAIN_SCRIPT                        = aws_ssm_parameter.cookie_domain_script.value # TODO: this should be removed since it's a duplicate of NEXT_PUBLIC_COOKIE_DOMAIN_SCRIPT
       ENVIRONMENT                                 = var.environment
       FETCH_FROM_STRAPI                           = "true"
       NEXT_PUBLIC_CHATBOT_ACTIVE                  = var.create_chatbot ? "true" : "false"
@@ -94,12 +95,12 @@ module "opennext" {
       NEXT_PUBLIC_WEBSITE_NAME                    = "DevPortal"
       NEXT_PUBLIC_FEEDBACK_FORM_ENABLED           = var.next_public_feedback_form_enabled
       NEXT_PUBLIC_SOAP_API_PAGE_ACTIVE            = var.next_public_soap_api_page_active
+      NEXT_PUBLIC_COOKIE_DOMAIN_SCRIPT            = aws_ssm_parameter.cookie_domain_script.value
       NEXT_TELEMETRY_DISABLED                     = "1"
       PATH_TO_GITBOOK_DOCS                        = "docs"
-      S3_PATH_TO_GITBOOK_DOCS                     = "docs"
+      S3_PATH_TO_GITBOOK_DOCS                     = "devportal-docs/docs"
       S3_PATH_TO_GITBOOK_DOCS_ASSETS              = format("https://static-contents.%s/docs", var.dns_domain_name)
-      STRAPI_ENDPOINT                             = "https://cms.${var.dns_domain_name}"
-      COOKIE_DOMAIN_SCRIPT                        = aws_ssm_parameter.cookie_domain_script.value
+      STRAPI_ENDPOINT                             = "http://${var.next_cms_interlan_alb_dns_name}:8080"
       STRAPI_API_TOKEN                            = aws_ssm_parameter.strapi_api_token.value
       S3_BUCKET_NAME                              = aws_s3_bucket.website_standalone.bucket
       S3_GUIDE_METADATA_JSON_PATH                 = "guides-metadata.json"
@@ -112,6 +113,8 @@ module "opennext" {
 
   enable_alarms  = true
   alarms_actions = [aws_sns_topic.metric_alarm.arn]
+
+  vpc = var.vpc
 
 
   tags = var.tags
