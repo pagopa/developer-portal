@@ -1,4 +1,4 @@
-name: Deploy Lambda assertion
+name: Deploy Lambda monitor
 
 on:
   push:
