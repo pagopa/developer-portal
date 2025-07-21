@@ -23,7 +23,6 @@ export function makeApiDataListPagesProps(
         .filter(Boolean) as readonly string[],
       cards: attributes.apiData.data
         .map((item) => ({
-          target: '_self' as const,
           tags: [
             {
               label: item.attributes.apiSoapDetail
