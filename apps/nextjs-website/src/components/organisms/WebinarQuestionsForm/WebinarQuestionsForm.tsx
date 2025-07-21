@@ -18,9 +18,9 @@ import { useCallback, useState } from 'react';
 import ForumIcon from '@mui/icons-material/Forum';
 import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
+import CheckIcon from '@mui/icons-material/Check';
 import { WebinarState } from '@/helpers/webinar.helpers';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import ArrowRightIcon from '@mui/icons-material/ArrowRight';
+import { styled } from '@mui/material/styles';
 
 const MAX_QUESTION_LENGTH = 240;
 
@@ -91,7 +91,9 @@ export const WebinarQuestionsForm = ({
   const { palette } = useTheme();
   const hasFormState = formState === 'submitting' || formState === 'submitted';
   const btnDisabled = !question || hasFormState || disabled;
-  const startIcon = hasFormState ? <Done /> : null;
+  const startIcon = hasFormState ? (
+    <CheckIcon sx={{ color: '#6CC66A' }} />
+  ) : null;
   const btnLabel =
     formState === 'submitted'
       ? t('questionsForm.submitted')
@@ -232,10 +234,17 @@ export const WebinarQuestionsForm = ({
                   </Typography>
                 }
               />
-              {question.length > 0 ? (
+              {question.length > 0 || formState === 'submitted' ? (
                 <LoadingButton
-                  sx={{ alignSelf: 'start', marginTop: '-24px' }}
-                  color='primary'
+                  sx={{
+                    alignSelf: 'start',
+                    marginTop: formState === 'submitted' ? 0 : '-24px',
+                    '&.Mui-disabled': {
+                      background:
+                        formState === 'submitted' ? 'white' : '#0073E6',
+                      color: formState === 'submitted' ? '#5C6F82' : 'white',
+                    },
+                  }}
                   loadingPosition={hasFormState ? 'start' : undefined}
                   loading={formState === 'submitting'}
                   startIcon={startIcon}
