@@ -119,6 +119,52 @@ export async function downloadFileAsText(
   return result;
 }
 
+export async function fetchResponseFromCDN(path: string) {
+  // Check if we already have a request in progress for this path
+  const cacheKey = `fetchFromCDN:${path}`;
+  if (requestCache.has(cacheKey)) {
+    const result = await requestCache.get(cacheKey);
+    return result;
+  }
+
+  // Create the request promise and cache it
+  const requestPromise = withRetries(
+    async () => {
+      if (!staticContentsUrl) {
+        // eslint-disable-next-line functional/no-throw-statements
+        throw new Error(
+          'STATIC_CONTENTS_URL is not defined in the environment variables.'
+        );
+      }
+
+      const url = `${staticContentsUrl}/${path}`;
+      const response = await fetch(url, {
+        // Add timeout and other fetch options to prevent hanging
+        signal: AbortSignal.timeout(TIMEOUT_LIMIT), // 30 second timeout
+      });
+
+      if (!response || !response.ok) {
+        // eslint-disable-next-line functional/no-throw-statements
+        throw new Error('Response is null');
+      }
+
+      const json = await response.json();
+      return json;
+    },
+    `metadata fetch from ${path}`,
+    null
+  ).catch((error) => {
+    // On failure, remove from cache to allow retries on subsequent calls
+    requestCache.delete(cacheKey);
+    // eslint-disable-next-line functional/no-throw-statements
+    throw error;
+  });
+
+  requestCache.set(cacheKey, requestPromise);
+  const result = await requestPromise;
+  return result;
+}
+
 export async function fetchMetadataFromCDN<T>(
   path: string
 ): Promise<readonly T[] | null> {

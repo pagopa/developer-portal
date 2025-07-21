@@ -62,40 +62,6 @@ export async function getGuidePage(
   });
 }
 
-export async function getGuide(
-  productSlug?: string,
-  productGuideSlugs?: ReadonlyArray<string>
-): Promise<GuidePage> {
-  if (!productSlug || !productGuideSlugs || productGuideSlugs?.length < 1) {
-    // eslint-disable-next-line functional/no-throw-statements
-    throw new Error('Product slug is missing');
-  }
-
-  const guides = await getGuideProps(productGuideSlugs, productSlug);
-  const guidePath = productGuideSlugs?.join('/');
-  const path = `/${productSlug}/guides/${guidePath}`;
-  const products = await getProducts();
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const guideDefinition: any = manageUndefined(
-    guides.find((guideDefinition) => {
-      return guideDefinition.page.path === path;
-    })
-  );
-
-  return {
-    ...guideDefinition,
-    products,
-    bodyConfig: {
-      isPageIndex: guideDefinition.page.isIndex,
-      pagePath: guideDefinition.page.path,
-      assetsPrefix: guideDefinition.source.assetsPrefix,
-      gitBookPagesWithTitle: [],
-      spaceToPrefix: [],
-    },
-  };
-}
-
 export function getGitBookSubPaths(path: string) {
   // the filter is to remove the first 3 elements of the path which are
   // an empty string (the path begins with a / symbol), the product slug and 'guides' hard-coded string
