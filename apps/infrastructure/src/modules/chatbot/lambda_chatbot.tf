@@ -212,14 +212,10 @@ resource "aws_lambda_permission" "allow_eventbridge" {
 
 # IAM Policy Resources
 
-resource "aws_iam_policy" "lambda_ecr_access" {
-  for_each = {
-    chatbot = module.ecr["chatbot"].repository_arn
-    monitor = module.ecr["monitor"].repository_arn
-  }
+resource "aws_iam_policy" "lambda_chatbot_ecr_access" {
 
-  name        = "${each.key}-lambda-ecr-access"
-  description = "Allow Lambda to pull images from ECR ${each.key}"
+  name        = "chatbot-lambda-ecr-access"
+  description = "Allow Lambda to pull images from ECR chatbot repositories"
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -239,7 +235,7 @@ resource "aws_iam_policy" "lambda_ecr_access" {
           "ecr:BatchGetImage",
           "ecr:BatchCheckLayerAvailability",
         ]
-        Resource = each.value
+        Resource = "*"
       },
       {
         Effect = "Allow"
@@ -383,15 +379,9 @@ resource "aws_iam_role_policy_attachment" "lambda_logs_policy_attachment" {
 
 
 resource "aws_iam_role_policy_attachment" "lambda_chatbot_ecr_access_attach" {
-  role       = aws_lambda_function.chatbot_lambda.role
-  policy_arn = aws_iam_policy.lambda_ecr_access["chatbot"].arn
+  role       = aws_iam_role.lambda_role.name
+  policy_arn = aws_iam_policy.lambda_chatbot_ecr_access.arn
 }
-
-resource "aws_iam_role_policy_attachment" "lambda_chatbot_monitor_ecr_access_attach" {
-  role       = aws_lambda_function.chatbot_monitor_lambda.role
-  policy_arn = aws_iam_policy.lambda_ecr_access["monitor"].arn
-}
-
 
 resource "aws_iam_role_policy_attachment" "lambda_vpc_policy_attachment" {
   role       = aws_iam_role.lambda_role.name
@@ -401,33 +391,4 @@ resource "aws_iam_role_policy_attachment" "lambda_vpc_policy_attachment" {
 resource "aws_iam_role_policy_attachment" "chatbot_monitor_queue" {
   role       = aws_iam_role.lambda_role.name
   policy_arn = aws_iam_policy.chatbot_monitor_queue.arn
-}
-
-
-resource "aws_lambda_function" "chatbot_monitor_lambda" {
-  function_name = "${local.prefix}-monitor-lambda"
-  description   = "Lambda responsible injecting messages into langfuse"
-
-  image_uri    = "${module.ecr["monitor"].repository_url}:latest"
-  package_type = "Image"
-
-  timeout       = 60
-  memory_size   = 1024
-  architectures = ["x86_64"]
-  role          = aws_iam_role.lambda_role.arn
-
-  environment {
-    variables = {
-      CHB_AWS_SSM_LANGFUSE_PUBLIC_KEY = module.langfuse_public_key.ssm_parameter_name
-      CHB_AWS_SSM_LANGFUSE_SECRET_KEY = module.langfuse_secret_key.ssm_parameter_name
-      CHB_LANGFUSE_HOST               = "https://${local.priv_monitoring_host}"
-      AWS_REGION                      = var.aws_region
-    }
-  }
-
-  lifecycle {
-    ignore_changes = [
-      image_uri
-    ]
-  }
 }
