@@ -26,17 +26,17 @@ from langfuse.llama_index import LlamaIndexInstrumentor
 
 from src.modules.logger import get_logger
 from src.modules.models import get_llm, get_embed_model
+from src.modules.monitor import add_langfuse_score
+from src.modules.evaluator import Evaluator
 from src.modules.vector_database import load_index_redis
 from src.modules.engine import get_engine
 from src.modules.handlers import EventHandler
 from src.modules.presidio import PresidioPII
-from src.modules.evaluator import Evaluator
 from src.modules.monitor import (
     LANGFUSE_PUBLIC_KEY,
     LANGFUSE_SECRET_KEY,
     LANGFUSE_HOST,
     LANGFUSE_CLIENT,
-    add_langfuse_score,
 )
 
 
@@ -68,8 +68,8 @@ class Chatbot:
         self.params = params
         self.prompts = prompts
         self.pii = PresidioPII(config=params["config_presidio"])
-        self.model = get_llm()
         self.judge = Evaluator()
+        self.model = get_llm()
         self.embed_model = get_embed_model()
         self.qa_prompt_tmpl, self.ref_prompt_tmpl = self._get_prompt_templates()
         self.index = load_index_redis(
@@ -84,7 +84,7 @@ class Chatbot:
             identity_prompt=self.prompts["identity_prompt_str"],
             text_qa_template=self.qa_prompt_tmpl,
             refine_template=self.ref_prompt_tmpl,
-            react_system_str=self.prompts["react_system_template_str"],
+            react_system_str=self.prompts["react_system_header_str"],
             verbose=self.params["engine"]["verbose"],
         )
         self.instrumentor = LlamaIndexInstrumentor(
