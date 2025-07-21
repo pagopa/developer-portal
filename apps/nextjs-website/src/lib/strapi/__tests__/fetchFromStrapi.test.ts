@@ -107,7 +107,11 @@ describe('fetchFromStrapi', () => {
       statusText: 'OK',
       json: () => Promise.resolve(strapiResponses[200]),
     });
-    const actual = deprecatedFetchFromStrapi('aPath', 'aPopulate', badCodec)(env);
+    const actual = deprecatedFetchFromStrapi(
+      'aPath',
+      'aPopulate',
+      badCodec
+    )(env);
     const expected = new Error(
       `Invalid value 1 supplied to '/data/id', expected type string`
     );
