@@ -102,6 +102,10 @@ async function main() {
     const strapiSolutions = await fetchFromStrapi<StrapiSolution>(
       'api/solutions?pagination[pageSize]=1000&pagination[page]=1'
     );
+    if (strapiSolutions instanceof Error) {
+      // eslint-disable-next-line functional/no-throw-statements
+      throw strapiSolutions;
+    }
     console.log(`Fetched ${strapiSolutions.length} solutions from Strapi`);
 
     const sitemapItems = await convertSolutionToSitemapItems(strapiSolutions);
@@ -114,7 +118,7 @@ async function main() {
       s3Client
     );
   } catch (error) {
-    console.error('Error:', error);
+    console.error('Error generating solutions metadata:', error);
   }
 }
 
