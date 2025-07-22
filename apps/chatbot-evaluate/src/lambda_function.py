@@ -1,5 +1,6 @@
 import os
 import yaml
+import json
 from pathlib import Path
 
 from src.modules.judge import Judge
@@ -62,7 +63,8 @@ def lambda_handler(event, context):
 
     results = []
     for record in event.get("Records", []):
-        body = record.get("body", {})
+        body = record.get("body", "{}")
+        body = json.loads(body)
         results.append(
             JUDGE.evaluate(
                 query_str=body.get("query_str", ""),
