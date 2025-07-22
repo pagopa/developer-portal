@@ -67,10 +67,10 @@ def lambda_handler(event, context):
         body = json.loads(body)
         results.append(
             JUDGE.evaluate(
+                trace_id=body.get("trace_id", ""),
                 query_str=body.get("query_str", ""),
                 response_str=body.get("response_str", ""),
-                retrieved_context=body.get("retrieved_context", []),
-                trace_id=body.get("trace_id", ""),
+                retrieved_contexts=body.get("retrieved_contexts", []),
                 messages=body.get("messages", None),
             )
         )
