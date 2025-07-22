@@ -82,7 +82,7 @@ jobs:
         # Registry (ECR). However, by activating this option, the deployment
         # process will proceed to the next steps even if the ECR image already
         # exists
-        continue-on-error: true
+        continue-on-error: false
         uses: docker/build-push-action@4a13e500e55cf31b7a5d59a38ab2040ab0f42f56 # v5.1.0
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
@@ -90,7 +90,7 @@ jobs:
           IMAGE_TAG: ${{ github.sha }}
         with:
             context: apps/chatbot-evaluate
-            file: apps/chatbot-evaluate/docker/app.Dockerfile
+            file: apps/chatbot-evaluate/docker/lambda.Dockerfile
             push: true
             tags: ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}
             provenance: false
