@@ -2,18 +2,17 @@
 /* eslint-disable functional/prefer-readonly-type */
 /* eslint-disable functional/no-try-statements */
 
-export async function fetchFromStrapi<T>(url: string): Promise<T[]> {
+export async function fetchFromStrapi<T>(url: string): Promise<T[] | Error> {
   try {
-    console.log('Fetching solutions from Strapi...');
+    console.log('Fetching from Strapi...');
     const strapiEndpoint = process.env.STRAPI_ENDPOINT;
     const strapiApiToken = process.env.STRAPI_API_TOKEN;
 
     if (!strapiEndpoint || !strapiApiToken) {
-      console.error('Missing Strapi configuration in environment variables');
-      return [];
+      return new Error('Missing Strapi configuration in environment variables');
     }
 
-    // Using pagination with a large page size to fetch all solutions in one request
+    // TODO: use pagination with a large page size to fetch all resources in one request
     const response = await fetch(`${strapiEndpoint}/${url}`, {
       headers: {
         Authorization: `Bearer ${strapiApiToken}`,
@@ -22,8 +21,8 @@ export async function fetchFromStrapi<T>(url: string): Promise<T[]> {
 
     if (!response.ok) {
       // eslint-disable-next-line functional/no-throw-statements
-      throw new Error(
-        `Failed to fetch solutions: ${response.status} ${response.statusText}`
+      return new Error(
+        `Failed to fetch: ${response.status} ${response.statusText}`
       );
     }
 
@@ -33,7 +32,7 @@ export async function fetchFromStrapi<T>(url: string): Promise<T[]> {
     );
     return output.data || [];
   } catch (error) {
-    console.error('Error fetching solutions from Strapi:', error);
-    return [];
+    console.error('Error fetching from Strapi:', error);
+    return error as Error;
   }
 }
