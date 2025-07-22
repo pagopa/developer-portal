@@ -5,7 +5,7 @@ import uuid
 from botocore.exceptions import BotoCoreError, ClientError
 from boto3.dynamodb.conditions import Key
 from fastapi import APIRouter, BackgroundTasks, Header, HTTPException
-from typing import Annotated
+from typing import List, Annotated
 from src.app.models import Query, tables
 from src.modules.logger import get_logger
 from src.app.sessions import (
@@ -32,7 +32,7 @@ def can_evaluate() -> bool:
 
 
 def count_queries_created_today() -> int:
-    today = datetime.datetime.utcnow().date().isoformat()
+    today = datetime.datetime.now(datetime.timezone.utc).date().isoformat()
 
     response = tables["queries"].query(
         IndexName="QueriesByCreatedAtDateIndex",
@@ -67,6 +67,16 @@ async def evaluate(evaluation_data: dict) -> dict:
     return evaluation_result
 
 
+def get_final_response(response_str: str, references: List[str]) -> str:
+
+    if len(references) > 0:
+        response_str += "\n\nRif:"
+        for ref in references:
+            response_str += "\n" + ref
+
+    return response_str
+
+
 @router.post("/queries")
 async def query_creation(
     background_tasks: BackgroundTasks,
@@ -90,7 +100,10 @@ async def query_creation(
         user_id=user_id,
         messages=messages,
     )
-    answer = chatbot.get_final_response(answer_json)
+    answer = get_final_response(
+        response_str=answer_json["response"],
+        references=answer_json["references"],
+    )
 
     if can_evaluate():
         evaluation_data = {
@@ -122,8 +135,11 @@ async def query_creation(
 
     bodyToSave = bodyToReturn.copy()
     bodyToSave["question"] = chatbot.mask_pii(query.question)
-    bodyToSave["answer"] = chatbot.mask_pii(answer)
-    bodyToSave["topics"] = answer_json.get("topics", [])
+    bodyToSave["answer"] = get_final_response(
+        response_str=chatbot.mask_pii(answer_json["response"]),
+        references=answer_json["references"],
+    )
+    bodyToSave["topics"] = answer_json.get("products", [])
     try:
         tables["queries"].put_item(Item=bodyToSave)
     except (BotoCoreError, ClientError) as e:
