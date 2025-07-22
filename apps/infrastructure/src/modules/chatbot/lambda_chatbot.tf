@@ -43,12 +43,12 @@ locals {
   }
 }
 
-# Diretta implementazione delle risorse che il modulo lambda creerebbe
+
 resource "aws_lambda_function" "chatbot_lambda" {
   function_name = "${local.prefix}-api-lambda"
   description   = "Lambda function running APIs of the Developer Portal Chatbot"
 
-  image_uri    = "${module.ecr.repository_url}:latest"
+  image_uri    = "${module.ecr["chatbot"].repository_url}:latest"
   package_type = "Image"
 
   timeout       = local.lambda_timeout
@@ -211,6 +211,45 @@ resource "aws_lambda_permission" "allow_eventbridge" {
 }
 
 # IAM Policy Resources
+
+resource "aws_iam_policy" "lambda_chatbot_ecr_access" {
+
+  name        = "chatbot-lambda-ecr-access"
+  description = "Allow Lambda to pull images from ECR chatbot repositories"
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "ecr:ListTagsForResource",
+          "ecr:ListImages",
+          "ecr:GetRepositoryPolicy",
+          "ecr:GetLifecyclePolicyPreview",
+          "ecr:GetLifecyclePolicy",
+          "ecr:GetDownloadUrlForLayer",
+          "ecr:GetAuthorizationToken",
+          "ecr:DescribeRepositories",
+          "ecr:DescribeImages",
+          "ecr:DescribeImageScanFindings",
+          "ecr:BatchGetImage",
+          "ecr:BatchCheckLayerAvailability",
+        ]
+        Resource = "*"
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "ecr:GetAuthorizationToken"
+        ]
+        Resource = "*"
+      }
+    ]
+  })
+}
+
+
+
 resource "aws_iam_policy" "lambda_s3_bedrock_policy" {
   name = "chatbot-${var.environment}-api-lambda-s3-bedrock"
   policy = jsonencode({
@@ -311,7 +350,7 @@ resource "aws_iam_policy" "chatbot_monitor_queue" {
       {
         Effect   = "Allow"
         Action   = "sqs:SendMessage"
-        Resource = aws_sqs_queue.chatbot_monitor_queue.arn
+        Resource = aws_sqs_queue.chatbot_evaluate_queue.arn
       }
     ]
   })
@@ -336,6 +375,12 @@ resource "aws_iam_role_policy_attachment" "lambda_ssm_policy_attachment" {
 resource "aws_iam_role_policy_attachment" "lambda_logs_policy_attachment" {
   role       = aws_iam_role.lambda_role.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+}
+
+
+resource "aws_iam_role_policy_attachment" "lambda_chatbot_ecr_access_attach" {
+  role       = aws_iam_role.lambda_role.name
+  policy_arn = aws_iam_policy.lambda_chatbot_ecr_access.arn
 }
 
 resource "aws_iam_role_policy_attachment" "lambda_vpc_policy_attachment" {

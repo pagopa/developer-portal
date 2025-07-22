@@ -26,8 +26,6 @@ from langfuse.llama_index import LlamaIndexInstrumentor
 
 from src.modules.logger import get_logger
 from src.modules.models import get_llm, get_embed_model
-from src.modules.monitor import add_langfuse_score
-from src.modules.evaluator import Evaluator
 from src.modules.vector_database import load_index_redis
 from src.modules.engine import get_engine
 from src.modules.handlers import EventHandler
@@ -68,7 +66,6 @@ class Chatbot:
         self.params = params
         self.prompts = prompts
         self.pii = PresidioPII(config=params["config_presidio"])
-        self.judge = Evaluator()
         self.model = get_llm()
         self.embed_model = get_embed_model()
         self.qa_prompt_tmpl, self.ref_prompt_tmpl = self._get_prompt_templates()
@@ -250,7 +247,7 @@ class Chatbot:
 
         return data
 
-    def chat_generate(
+    async def chat_generate(
         self,
         query_str: str,
         trace_id: str,
@@ -266,12 +263,13 @@ class Chatbot:
             trace_id=trace_id, session_id=session_id, user_id=user_id
         ) as trace:
             try:
-                engine_response = asyncio_run(self.engine.run(query_str, chat_history))
+                engine_response = await self.engine.run(query_str, chat_history)
                 response_json = self._get_response_json(engine_response)
 
             except Exception as e:
                 response_json = {
-                    "response": "Scusa, non posso elaborare la tua richiesta.\nProva a formulare una nuova domanda.",
+                    "response": "Scusa, non posso elaborare la tua richiesta.\n"
+                    + "Prova a formulare una nuova domanda.",
                     "products": ["none"],
                     "references": [],
                     "contexts": [],
@@ -287,46 +285,3 @@ class Chatbot:
         self.instrumentor.flush()
 
         return response_json
-
-    def get_final_response(self, response_json: dict) -> str:
-
-        final_response = response_json["response"]
-
-        if len(response_json["references"]) > 0:
-            final_response += "\n\nRif:"
-            for ref in response_json["references"]:
-                final_response += "\n" + ref
-
-        return final_response
-
-    def evaluate(
-        self,
-        query_str: str,
-        response_str: str,
-        retrieved_contexts: List[str],
-        trace_id: str,
-        messages: Optional[List[Dict[str, str]]] | None = None,
-    ) -> dict:
-
-        if messages is not None:
-            chat_history = self._messages_to_chathistory(messages)
-            condense_prompt = self.prompts["condense_prompt_evaluation_str"].format(
-                chat_history=chat_history, query_str=query_str
-            )
-            condense_query_response = asyncio_run(self.model.acomplete(condense_prompt))
-            query_str = condense_query_response.text.strip()
-
-        scores = self.judge.evaluate(
-            query_str=query_str,
-            response_str=response_str,
-            retrieved_contexts=retrieved_contexts,
-        )
-        for key, value in scores.items():
-            add_langfuse_score(
-                trace_id=trace_id,
-                name=key,
-                value=value,
-                data_type="NUMERIC",
-            )
-
-        return scores

@@ -72,16 +72,7 @@ moved {
   from = module.website.module.cloudfront_origin_latency_alarm["static"]
 }
 
-## Import ##
-/*
-import {
-  to = module.website.data.aws_ssm_parameter.cookie_domain_script
-  id = "COOKIE_DOMAIN_SCRIPT"
+moved {
+  to   = module.chatbot[0].module.ecr["chatbot"]
+  from = module.chatbot[0].module.ecr
 }
-
-import {
-  to = module.website.data.aws_ssm_parameter.strapi_api_token
-  id = "STRAPI_API_TOKEN"
-}
-
-*/
