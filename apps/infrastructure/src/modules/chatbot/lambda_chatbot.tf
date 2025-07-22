@@ -350,7 +350,7 @@ resource "aws_iam_policy" "chatbot_monitor_queue" {
       {
         Effect   = "Allow"
         Action   = "sqs:SendMessage"
-        Resource = aws_sqs_queue.chatbot_monitor_queue.arn
+        Resource = aws_sqs_queue.chatbot_evaluate_queue.arn
       }
     ]
   })

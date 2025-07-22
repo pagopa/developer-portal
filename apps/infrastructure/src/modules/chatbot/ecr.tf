@@ -3,8 +3,8 @@ locals {
     chatbot = {
       repository_name = "chatbot"
     }
-    monitor = {
-      repository_name = "monitor"
+    evaluate = {
+      repository_name = "evaluate"
     }
   }
 }
