@@ -32,7 +32,15 @@ resource "aws_iam_role_policy" "lambda_evaluate_policy" {
           "ecr:GetAuthorizationToken",
           "ecr:BatchCheckLayerAvailability",
           "ecr:GetDownloadUrlForLayer",
-          "ecr:BatchGetImage"
+          "ecr:BatchGetImage",
+          "ecr:ListTagsForResource",
+          "ecr:ListImages",
+          "ecr:GetRepositoryPolicy",
+          "ecr:GetLifecyclePolicyPreview",
+          "ecr:GetLifecyclePolicy",          
+          "ecr:DescribeRepositories",
+          "ecr:DescribeImages",
+          "ecr:DescribeImageScanFindings",      
         ]
         Effect   = "Allow"
         Resource = "*"
