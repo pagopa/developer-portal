@@ -5,15 +5,11 @@ from src.modules.logger import get_logger
 
 
 LOGGER = get_logger(__name__)
-AWS_ACCESS_KEY_ID = os.getenv(
-    "CHB_AWS_ACCESS_KEY_ID", os.getenv("AWS_ACCESS_KEY_ID", None)
-)
-AWS_SECRET_ACCESS_KEY = os.getenv(
-    "CHB_AWS_SECRET_ACCESS_KEY", os.getenv("AWS_SECRET_ACCESS_KEY", None)
-)
-AWS_DEFAULT_REGION = os.getenv(
-    "CHB_AWS_DEFAULT_REGION", os.getenv("AWS_DEFAULT_REGION", None)
-)
+AWS_ACCESS_KEY_ID = os.getenv("CHB_AWS_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = os.getenv("CHB_AWS_SECRET_ACCESS_KEY")
+AWS_DEFAULT_REGION = os.getenv("CHB_AWS_DEFAULT_REGION")
+AWS_ENDPOINT_URL = os.getenv("CHB_AWS_SSM_ENDPOINT_URL")
+
 SSM_CLIENT = boto3.client(
     "ssm",
     aws_access_key_id=AWS_ACCESS_KEY_ID,
