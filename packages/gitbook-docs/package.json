@@ -22,8 +22,7 @@
     "test": "jest -i",
     "generate-guides-metadata": "ts-node src/scripts/generateGuidesMetadata.ts",
     "generate-solutions-metadata": "ts-node src/scripts/generateSolutionsMetadata.ts",
-    "generate-release-notes-metadata": "ts-node src/scripts/generateReleaseNotesMetadata.ts",
-    "fetch-soap-api-from-strapi": "ts-node src/scripts/generateSoapApiRepositoriesList.ts"
+    "generate-release-notes-metadata": "ts-node src/scripts/generateReleaseNotesMetadata.ts"
   },
   "dependencies": {
     "@markdoc/markdoc": "0.3.0",
