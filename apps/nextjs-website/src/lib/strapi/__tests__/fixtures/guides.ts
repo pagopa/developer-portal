@@ -138,8 +138,8 @@ export const strapiGuideData = {
                     data: {
                       attributes: {
                         name: 'headset_78d50d9321_5bd20d1a6b.svg',
-                        alternativeText: '',
-                        caption: '',
+                        alternativeText: undefined,
+                        caption: undefined,
                         width: 24,
                         height: 24,
                         ext: '.svg',
@@ -183,8 +183,8 @@ export const strapiGuideData = {
                     data: {
                       attributes: {
                         name: 'feedback_1504fc4fbf.svg',
-                        alternativeText: '',
-                        caption: '',
+                        alternativeText: undefined,
+                        caption: undefined,
                         width: 24,
                         height: 24,
                         ext: '.svg',
@@ -351,6 +351,7 @@ export const guideProps = [
       name: 'SACI',
       slug: 'saci',
     },
+    seo: undefined,
     versions: [
       {
         main: true,
