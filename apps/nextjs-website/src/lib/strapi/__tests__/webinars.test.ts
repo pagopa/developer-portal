@@ -249,7 +249,9 @@ const makeStrapiResponseWithNullsJson = () => ({
         webinarCategory: {
           data: null,
         },
-        headerImage: mediaRasterJson,
+        headerImage: {
+          data: null,
+        },
       },
     },
   ],
