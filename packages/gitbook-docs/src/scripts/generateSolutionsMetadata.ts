@@ -119,6 +119,7 @@ async function main() {
     );
   } catch (error) {
     console.error('Error generating solutions metadata:', error);
+    process.exit(1);
   }
 }
 

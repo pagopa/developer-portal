@@ -96,7 +96,11 @@ async function convertGuideToSitemapItems(
     );
     for (const filePath of guideFiles) {
       const parts = filePath.split('/');
-      if (parts.length <= 2 || filePath.endsWith('/SUMMARY.md')) {
+      if (
+        parts.length <= 2 ||
+        filePath.endsWith('/SUMMARY.md') ||
+        filePath.includes('.gitbook/includes')
+      ) {
         continue;
       }
       const content = await downloadS3File(
@@ -163,6 +167,7 @@ async function main() {
     );
   } catch (error) {
     console.error('Error generating guides metadata:', error);
+    process.exit(1);
   }
 }
 
