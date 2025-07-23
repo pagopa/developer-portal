@@ -43,5 +43,6 @@ export function makeTutorialsProps(
             makeBannerLinkProps
           ),
     seo: attributes.seo,
+    updatedAt: attributes.updatedAt.toISOString(),
   }));
 }

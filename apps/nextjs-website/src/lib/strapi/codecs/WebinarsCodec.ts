@@ -66,6 +66,7 @@ export const WebinarCodec = t.strict({
     headerImage: t.strict({
       data: t.union([NullToUndefinedCodec, MediaCodec]),
     }),
+    updatedAt: tt.DateFromISOString,
   }),
 });
 

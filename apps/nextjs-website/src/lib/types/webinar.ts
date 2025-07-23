@@ -49,4 +49,5 @@ export type Webinar = {
   readonly seo?: SEO;
   readonly webinarCategory?: WebinarCategory;
   readonly headerImage?: Media;
+  readonly updatedAt: string;
 };

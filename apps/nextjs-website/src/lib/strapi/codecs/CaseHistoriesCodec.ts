@@ -12,6 +12,7 @@ const BaseCaseHistoryAttributesCodec = t.strict({
   title: t.string,
   description: t.union([NullToUndefinedCodec, t.string]),
   publishedAt: tt.DateFromISOString,
+  updatedAt: tt.DateFromISOString,
   image: t.union([
     NullToUndefinedCodec,
     t.strict({ data: t.union([NullToUndefinedCodec, MediaCodec]) }),
