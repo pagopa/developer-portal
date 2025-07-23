@@ -240,7 +240,7 @@ export const WebinarQuestionsForm = ({
                 <LoadingButton
                   sx={{
                     alignSelf: 'start',
-                    marginTop: formState === 'submitted' ? 0 : '-24px',
+                    marginTop: formState === 'submitted' ? '-6px' : '-24px',
                     color: 'white',
                     '&.Mui-disabled': {
                       background:
