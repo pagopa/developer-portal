@@ -18,10 +18,8 @@ interface StrapiSoapApiDetails {
 async function main() {
   const outputDir = process.env.OUTPUT_DIR || '__soap_tmp_output__';
   const outputPath = resolve(outputDir, 'soap-api-repositories.json');
-  const strapiUrl =
-    'api/apis-data/?populate[apiSoapDetail][populate][0]=slug&populate[apiSoapDetail][populate][1]=repositoryUrl&populate[apiSoapDetail][populate][2]=dirName&filters[apiSoapDetail][$null]=false';
   const { data: response } = await fetchFromStrapi<StrapiSoapApiDetails>(
-    strapiUrl
+    'api/apis-data/?populate[apiSoapDetail][populate][0]=slug&populate[apiSoapDetail][populate][1]=repositoryUrl&populate[apiSoapDetail][populate][2]=dirName&filters[apiSoapDetail][$null]=false'
   );
 
   if (!response || response.length === 0) {

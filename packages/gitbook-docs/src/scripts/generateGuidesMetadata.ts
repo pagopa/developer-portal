@@ -26,9 +26,12 @@ const S3_PATH_TO_GITBOOK_DOCS =
   process.env.S3_PATH_TO_GITBOOK_DOCS || 'devportal-docs/docs';
 const S3_GUIDE_METADATA_JSON_PATH =
   process.env.S3_GUIDE_METADATA_JSON_PATH || 'guides-metadata.json';
-const SYNCED_GUIDES_RESPONSE_JSON_PATH = 'synced-guides-response.json';
+const SYNCED_GUIDES_RESPONSE_JSON_PATH =
+  process.env.SYNCED_GUIDES_RESPONSE_JSON_PATH ||
+  'devportal-docs/synced-guides-response.json';
 const SYNCED_GUIDE_LIST_PAGES_RESPONSE_JSON_PATH =
-  'synced-guide-list-pages-response.json';
+  process.env.SYNCED_GUIDE_LIST_PAGES_RESPONSE_JSON_PATH ||
+  'devportal-docs/synced-guide-list-pages-response.json';
 
 const s3Client = makeS3Client();
 
