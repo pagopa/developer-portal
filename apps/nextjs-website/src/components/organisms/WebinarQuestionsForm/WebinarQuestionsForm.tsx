@@ -1,7 +1,6 @@
 'use client';
 import { snackbarAutoHideDurationMs } from '@/config';
 import { sendWebinarQuestion } from '@/lib/webinarApi';
-import { Done } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
 import {
   Alert,
@@ -14,20 +13,19 @@ import {
   useTheme,
 } from '@mui/material';
 import { useTranslations } from 'next-intl';
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import ForumIcon from '@mui/icons-material/Forum';
 import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import CheckIcon from '@mui/icons-material/Check';
 import { WebinarState } from '@/helpers/webinar.helpers';
-import { styled } from '@mui/material/styles';
 
 const MAX_QUESTION_LENGTH = 240;
 
 type FormState = 'submitting' | 'submitted' | undefined;
 type WebinarQuestionsFormProps = {
   // eslint-disable-next-line functional/no-return-void
-  interaction: () => void;
+  toggleFormVisibility: () => void;
   disabled?: boolean;
   webinarSlug: string;
   webinarState: WebinarState;
@@ -41,7 +39,7 @@ export const WebinarQuestionsForm = ({
   disabled = false,
   webinarSlug,
   webinarState,
-  interaction,
+  toggleFormVisibility,
   isSmallScreen,
   question,
   setQuestion,
@@ -94,6 +92,10 @@ export const WebinarQuestionsForm = ({
   const startIcon = hasFormState ? (
     <CheckIcon sx={{ color: '#6CC66A' }} />
   ) : null;
+  const isWebinarLive = useMemo(
+    () => [WebinarState.live].includes(webinarState),
+    [webinarState]
+  );
   const btnLabel =
     formState === 'submitted'
       ? t('questionsForm.submitted')
@@ -161,7 +163,7 @@ export const WebinarQuestionsForm = ({
             </Stack>
           }
           variant='contained'
-          onClick={() => interaction()}
+          onClick={() => toggleFormVisibility()}
           sx={{
             width: '100%',
             paddingX: '16px',
@@ -181,7 +183,7 @@ export const WebinarQuestionsForm = ({
             gap: '24px',
           }}
         >
-          {webinarState === WebinarState.live ? (
+          {isWebinarLive ? (
             <>
               <Typography
                 variant='body2'

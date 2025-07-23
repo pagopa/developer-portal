@@ -10,7 +10,7 @@ import {
 import VimeoPlayer from '@/components/atoms/VimeoPlayer/VimeoPlayer';
 import { WebinarQuestionsForm } from '@/components/organisms/WebinarQuestionsForm/WebinarQuestionsForm';
 import { WebinarState } from '@/helpers/webinar.helpers';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import ForumIcon from '@mui/icons-material/Forum';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
@@ -27,9 +27,13 @@ const WebinarPlayerSection = ({
 }: WebinarPlayerSectionProps) => {
   const t = useTranslations('webinar');
   const { palette } = useTheme();
-  const [showQuestionForm, setShowQuestionForm] = useState(false);
+  const [isQuestionFormExpanded, setIsQuestionFormExpanded] = useState(false);
   const [question, setQuestion] = useState('');
   const isSmallScreen = useMediaQuery('(max-width: 1000px)');
+  const isQuestionFormAvailable = useMemo(
+    () => [WebinarState.live, WebinarState.comingSoon].includes(webinarState),
+    [webinarState]
+  );
   return (
     webinar.playerSrc && (
       <div style={{ backgroundColor: palette.grey[50] }}>
@@ -48,19 +52,18 @@ const WebinarPlayerSection = ({
             <Box
               sx={{
                 width: {
-                  md: showQuestionForm ? '80%' : '100%',
+                  md: isQuestionFormExpanded ? '80%' : '100%',
                 },
               }}
             >
               <VimeoPlayer playerSrc={webinar.playerSrc} />
             </Box>
-            {webinarState === WebinarState.live ||
-            webinarState === WebinarState.comingSoon ? (
-              showQuestionForm ? (
+            {isQuestionFormAvailable ? (
+              isQuestionFormExpanded ? (
                 <Box>
                   <WebinarQuestionsForm
-                    interaction={() => {
-                      setShowQuestionForm(false);
+                    toggleFormVisibility={() => {
+                      setIsQuestionFormExpanded(false);
                     }}
                     webinarSlug={webinar.slug}
                     disabled={webinarState != WebinarState.live}
@@ -128,7 +131,7 @@ const WebinarPlayerSection = ({
                     </Stack>
                   }
                   variant='contained'
-                  onClick={() => setShowQuestionForm(true)}
+                  onClick={() => setIsQuestionFormExpanded(true)}
                   sx={{
                     paddingX: '16px',
                     justifyContent: 'space-between',
