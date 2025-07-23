@@ -20,14 +20,21 @@ async function main() {
   const outputPath = resolve(outputDir, 'soap-api-repositories.json');
   const strapiUrl =
     'api/apis-data/?populate[apiSoapDetail][populate][0]=slug&populate[apiSoapDetail][populate][1]=repositoryUrl&populate[apiSoapDetail][populate][2]=dirName&filters[apiSoapDetail][$null]=false';
-  const response = await fetchFromStrapi<StrapiSoapApiDetails>(strapiUrl);
+  const strapiSoapApiDetails = await fetchFromStrapi<StrapiSoapApiDetails>(
+    strapiUrl
+  );
 
-  if (!response || response.length === 0) {
+  if (strapiSoapApiDetails instanceof Error) {
+    // eslint-disable-next-line functional/no-throw-statements
+    throw strapiSoapApiDetails;
+  }
+
+  if (!strapiSoapApiDetails || strapiSoapApiDetails.length === 0) {
     console.error('No SOAP API entries found in Strapi.');
     process.exit(1);
   }
 
-  const soapApiDetails = response.map(
+  const soapApiDetails = strapiSoapApiDetails.map(
     (entry) => entry.attributes.apiSoapDetail
   );
   await mkdir(outputDir, { recursive: true });
