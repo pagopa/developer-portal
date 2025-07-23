@@ -243,8 +243,13 @@ export const WebinarQuestionsForm = ({
                     marginTop: formState === 'submitted' ? 0 : '-24px',
                     '&.Mui-disabled': {
                       background:
-                        formState === 'submitted' ? 'white' : theme.palette.primary.main,
-                      color: formState === 'submitted' ? theme.palette.text.secondary : 'white',
+                        formState === 'submitted'
+                          ? 'white'
+                          : palette.primary.main,
+                      color:
+                        formState === 'submitted'
+                          ? palette.text.secondary
+                          : 'white',
                     },
                   }}
                   loadingPosition={hasFormState ? 'start' : undefined}
@@ -261,7 +266,7 @@ export const WebinarQuestionsForm = ({
           ) : (
             <Typography
               sx={{
-                color: theme.palette.text.disabled,
+                color: palette.text.disabled,
                 fontWeight: 600,
                 fontSize: 16,
                 letterSpacing: '0.15px',
