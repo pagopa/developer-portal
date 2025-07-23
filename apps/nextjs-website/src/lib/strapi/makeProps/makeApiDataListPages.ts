@@ -2,7 +2,6 @@ import { ApiDataListPageTemplateProps } from '@/components/templates/ApiDataList
 import { StrapiApiDataListPages } from '../codecs/ApiDataListPagesCodec';
 import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
 import { makeBaseProductWithoutLogoProps } from './makeProducts';
-import { soapApiPageActive } from '@/config';
 
 export function makeApiDataListPagesProps(
   strapiApiDataListPages: StrapiApiDataListPages
@@ -24,36 +23,23 @@ export function makeApiDataListPagesProps(
         .filter(Boolean) as readonly string[],
       cards: attributes.apiData.data
         .map((item) => ({
-          target: soapApiPageActive
-            ? '_self'
-            : ((item.attributes.apiSoapUrl ? '_blank' : '_self') as
-                | '_blank'
-                | '_self'),
           tags: [
             {
-              label: soapApiPageActive
-                ? item.attributes.apiSoapDetail
-                  ? 'SOAP'
-                  : item.attributes.apiRestDetail
-                  ? 'REST'
-                  : ''
-                : item.attributes.apiSoapUrl
+              label: item.attributes.apiSoapDetail
                 ? 'SOAP'
-                : 'REST',
+                : item.attributes.apiRestDetail
+                ? 'REST'
+                : '',
             },
           ].filter((tag) => !!tag.label),
           title: item?.attributes?.title,
           text: item?.attributes?.description || '',
           icon: item?.attributes?.icon?.data?.attributes.url || '',
-          externalUrl: !!item.attributes.apiSoapUrl,
-          href: soapApiPageActive
-            ? `/${attributes.product.data?.attributes.slug}/api/${
-                item.attributes.apiRestDetail
-                  ? item.attributes.apiRestDetail?.slug
-                  : item.attributes.apiSoapDetail?.slug
-              }`
-            : item.attributes.apiSoapUrl ||
-              `/${attributes.product.data?.attributes.slug}/api/${item.attributes.apiRestDetail?.slug}`,
+          href: `/${attributes.product.data?.attributes.slug}/api/${
+            item.attributes.apiRestDetail
+              ? item.attributes.apiRestDetail?.slug
+              : item.attributes.apiSoapDetail?.slug
+          }`,
         }))
         .filter((card) => card.title && !!card.tags),
       bannerLinks: attributes.bannerLinks.map(makeBannerLinkProps),
