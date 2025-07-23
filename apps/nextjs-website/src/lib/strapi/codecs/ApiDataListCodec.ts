@@ -23,7 +23,6 @@ const BaseApiDataAttributesCodec = t.strict({
       specUrls: t.array(UrlCodec),
     }),
   ]),
-  apiSoapUrl: t.union([NullToUndefinedCodec, t.string]),
   apiSoapDetail: t.union([
     NullToUndefinedCodec,
     t.strict({
