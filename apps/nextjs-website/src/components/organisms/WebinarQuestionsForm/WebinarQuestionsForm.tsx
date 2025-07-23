@@ -244,7 +244,7 @@ export const WebinarQuestionsForm = ({
                     '&.Mui-disabled': {
                       background:
                         formState === 'submitted' ? 'white' : theme.palette.primary.main,
-                      color: formState === 'submitted' ? '#5C6F82' : 'white',
+                      color: formState === 'submitted' ? theme.palette.text.secondary : 'white',
                     },
                   }}
                   loadingPosition={hasFormState ? 'start' : undefined}
