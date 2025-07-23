@@ -51,7 +51,7 @@ const SubscribeButton = ({
             }
             sx={{
               '&:disabled': {
-                backgroundColor: '#5CA85A',
+                backgroundColor: theme.success.dark,
               },
             }}
           >
