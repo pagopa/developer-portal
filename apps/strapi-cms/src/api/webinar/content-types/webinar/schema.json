@@ -163,18 +163,6 @@
       "type": "relation",
       "relation": "oneToOne",
       "target": "api::webinar-category.webinar-category"
-    },
-    "headerImage": {
-      "allowedTypes": [
-        "images"
-      ],
-      "type": "media",
-      "multiple": false,
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      }
     }
   }
 }
