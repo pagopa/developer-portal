@@ -82,7 +82,7 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
   return (
     <>
       <Box
-        paddingTop={'20px'}
+        paddingY={'20px'}
         style={{
           backgroundImage: `url(${webinar.headerImage?.url})`,
           backgroundRepeat: 'no-repeat',
@@ -119,6 +119,7 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
                 bottom: '24px',
                 fontSize: '12px',
                 marginTop: 1,
+                color: webinar.headerImage ? 'white' : palette.text.primary,
               }}
             >
               {t('warnings.refresh')}

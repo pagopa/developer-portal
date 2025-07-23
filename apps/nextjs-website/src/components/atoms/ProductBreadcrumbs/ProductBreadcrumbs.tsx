@@ -34,14 +34,12 @@ const ProductBreadcrumbs = ({
     >
       <Breadcrumbs
         aria-label='breadcrumb'
-        separator={
-          <Typography
-            fontSize={16}
-            color={textColor || theme.palette.text.primary}
-          >
-            /
-          </Typography>
-        }
+        sx={{
+          '& .MuiBreadcrumbs-separator': {
+            fontSize: 16,
+            color: textColor || theme.palette.text.primary,
+          },
+        }}
       >
         {breadcrumbs.map((breadcrumb, index) => {
           return index === breadcrumbs.length - 1 ? (
@@ -60,11 +58,10 @@ const ProductBreadcrumbs = ({
               underline='hover'
               fontSize={16}
               color={
-                textColor
-                  ? textColor
-                  : index === 0
+                textColor ||
+                (index === 0
                   ? theme.palette.text.primary
-                  : theme.palette.text.disabled
+                  : theme.palette.text.disabled)
               }
               href={breadcrumb.path}
             >

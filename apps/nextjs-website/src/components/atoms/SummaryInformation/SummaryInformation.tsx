@@ -1,5 +1,5 @@
 'use client';
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 import { Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
 import TimeSlot from '../TimeSlot/TimeSlot';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
@@ -24,10 +24,14 @@ const SummaryInformation: FC<SummaryInformationProps> = ({
   description,
   webinarState,
   children,
-  textColor = '',
+  textColor,
 }) => {
   const { palette } = useTheme();
   const isSmallScreen = useMediaQuery('(max-width: 1000px)');
+  const showTimeSlot = useMemo(
+    () => !isSmallScreen && startDateTime && endDateTime,
+    [isSmallScreen, startDateTime, endDateTime]
+  );
 
   return (
     <div>
@@ -43,14 +47,14 @@ const SummaryInformation: FC<SummaryInformationProps> = ({
             width: '100%',
           }}
         >
-          {isSmallScreen ? null : (
+          {showTimeSlot ? (
             <Stack
               direction={'row'}
               sx={{ alignContent: 'center', gap: '8px' }}
             >
               <CalendarTodayIcon
                 sx={{
-                  color: textColor,
+                  color: textColor || palette.text.primary,
                   width: '24px',
                   height: '24px',
                   alignSelf: 'center',
@@ -74,7 +78,7 @@ const SummaryInformation: FC<SummaryInformationProps> = ({
                 )}
               </Typography>
             </Stack>
-          )}
+          ) : null}
           <Typography
             style={{
               fontWeight: 700,
