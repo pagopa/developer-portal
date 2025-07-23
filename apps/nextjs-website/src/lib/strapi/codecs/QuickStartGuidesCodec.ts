@@ -21,6 +21,7 @@ export const QuickStartGuideCodec = t.strict({
   id: t.number,
   attributes: t.strict({
     title: t.string,
+    updatedAt: tt.DateFromISOString,
     description: t.string,
     product: t.strict({ data: BaseProductWithRelationsCodec }),
     quickstartGuideItems: t.strict({ data: t.array(QuickStartGuideItemCodec) }),

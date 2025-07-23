@@ -26,6 +26,7 @@ export type ApiDataListPageTemplateProps = {
     readonly icon: string;
     readonly tags?: { label: string }[];
   }[];
+  readonly updatedAt: string;
   readonly bannerLinks: BannerLinkProps[];
   readonly theme?: Theme;
   readonly apiData: StrapiBaseApiDataList;

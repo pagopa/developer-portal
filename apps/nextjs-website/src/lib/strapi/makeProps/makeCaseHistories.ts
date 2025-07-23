@@ -8,6 +8,7 @@ export function makeCaseHistoriesProps(
 ): ReadonlyArray<CaseHistoryPageTemplateProps> {
   return strapiCaseHistories.data.map(({ attributes }) => ({
     ...attributes,
+    updatedAt: attributes.updatedAt.toISOString(),
     parts: [
       ...(attributes.parts
         .map((part) => makePartProps(part))

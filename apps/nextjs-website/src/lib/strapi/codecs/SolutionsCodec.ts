@@ -55,6 +55,7 @@ export const SolutionCodec = t.strict({
     BaseSolutionAttributesCodec,
     t.strict({
       publishedAt: tt.DateFromISOString,
+      updatedAt: tt.DateFromISOString,
       introductionToSteps: t.union([NullToUndefinedCodec, t.string]),
       steps: t.array(StepCodec),
       stats: t.array(StatCodec),
