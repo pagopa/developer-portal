@@ -18,7 +18,7 @@ type ProductBreadcrumbsProps = {
 
 const ProductBreadcrumbs = ({
   breadcrumbs,
-  textColor = '',
+  textColor,
 }: ProductBreadcrumbsProps) => {
   const theme = useTheme();
   const t = useTranslations();
