@@ -19,7 +19,8 @@ import { sitePathFromS3Path } from '../helpers/sitePathFromS3Path';
 dotenv.config();
 
 const S3_BUCKET_NAME = process.env.S3_BUCKET_NAME;
-const S3_PATH_TO_GITBOOK_DOCS = process.env.S3_PATH_TO_GITBOOK_DOCS || 'docs';
+const S3_PATH_TO_GITBOOK_DOCS =
+  process.env.S3_PATH_TO_GITBOOK_DOCS || 'devportal-docs/docs';
 const S3_RELEASE_NOTES_METADATA_JSON_PATH =
   process.env.S3_RELEASE_NOTES_METADATA_JSON_PATH ||
   'release-notes-metadata.json';
@@ -108,13 +109,24 @@ async function main() {
   try {
     console.log('Starting to process Markdown files...');
 
-    const strapiGuides = await fetchFromStrapi<StrapiReleaseNote>(
+    const strapiReleaseNotes = await fetchFromStrapi<StrapiReleaseNote>(
       'api/release-notes?populate[0]=product&pagination[pageSize]=1000&pagination[page]=1'
     );
-    console.log(`Fetched ${strapiGuides.length} guides from Strapi`);
 
-    const sitemapItems = await convertReleaseNoteToSitemapItems(strapiGuides);
-    console.log(`Converted guides to ${sitemapItems.length} sitemap items`);
+    if (strapiReleaseNotes instanceof Error) {
+      // eslint-disable-next-line functional/no-throw-statements
+      throw strapiReleaseNotes;
+    }
+    console.log(
+      `Fetched ${strapiReleaseNotes.length} release notes from Strapi`
+    );
+
+    const sitemapItems = await convertReleaseNoteToSitemapItems(
+      strapiReleaseNotes
+    );
+    console.log(
+      `Converted release notes to ${sitemapItems.length} sitemap items`
+    );
 
     await writeSitemapJson(
       sitemapItems,
@@ -123,7 +135,7 @@ async function main() {
       s3Client
     );
   } catch (error) {
-    console.error('Error:', error);
+    console.error('Error generating release notes metadata:', error);
   }
 }
 

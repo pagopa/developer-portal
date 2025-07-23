@@ -19,7 +19,8 @@ import { sitePathFromS3Path } from '../helpers/sitePathFromS3Path';
 dotenv.config();
 
 const S3_BUCKET_NAME = process.env.S3_BUCKET_NAME;
-const S3_PATH_TO_GITBOOK_DOCS = process.env.S3_PATH_TO_GITBOOK_DOCS || 'docs';
+const S3_PATH_TO_GITBOOK_DOCS =
+  process.env.S3_PATH_TO_GITBOOK_DOCS || 'devportal-docs/docs';
 const S3_GUIDE_METADATA_JSON_PATH =
   process.env.S3_GUIDE_METADATA_JSON_PATH || 'guides-metadata.json';
 
@@ -144,6 +145,11 @@ async function main() {
     const strapiGuides = await fetchFromStrapi<StrapiGuide>(
       'api/guides?populate[0]=product&populate[1]=versions&pagination[pageSize]=1000&pagination[page]=1'
     );
+
+    if (strapiGuides instanceof Error) {
+      // eslint-disable-next-line functional/no-throw-statements
+      throw strapiGuides;
+    }
     console.log(`Fetched ${strapiGuides.length} guides from Strapi`);
 
     const sitemapItems = await convertGuideToSitemapItems(strapiGuides);
@@ -156,7 +162,7 @@ async function main() {
       s3Client
     );
   } catch (error) {
-    console.error('Error:', error);
+    console.error('Error generating guides metadata:', error);
   }
 }
 

@@ -2,4 +2,4 @@
 "gitbook-docs": patch
 ---
 
-Add openapi tag parsing
+Fix generate metadata scripts

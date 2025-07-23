@@ -108,6 +108,17 @@ module "website" {
     app_name        = "website"
     instance_number = "01"
   }
+
+  next_cms_interlan_alb_dns_name = module.cms.internal_load_balancer.dns_name
+
+  vpc = {
+    id              = module.cms.vpc.id
+    private_subnets = module.cms.vpc.private_subnets
+  }
+
+  next_public_soap_api_page_active = true
+
+
 }
 
 module "cms" {
@@ -119,7 +130,7 @@ module "cms" {
   }
 
   environment       = var.environment
-  github_repository = var.github_repository
+  github_repository = var.github_cms_repository
   tags              = var.tags
 
   dns_domain_name           = var.dns_domain_name
