@@ -62,9 +62,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }));
 
   // Case histories
-  const caseHistoryRoutes = caseHistories.map((history) => ({
-    url: `${baseUrl}/case-histories/${history.slug}`,
-    lastModified: new Date(history.updatedAt || new Date().toISOString()),
+  const caseHistoryRoutes = caseHistories.map(({ slug, updatedAt }) => ({
+    url: `${baseUrl}/case-histories/${slug}`,
+    lastModified: new Date(updatedAt || new Date().toISOString()),
     changeFrequency: 'weekly' as const,
     priority: 0.7,
   }));
