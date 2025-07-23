@@ -241,6 +241,7 @@ export const WebinarQuestionsForm = ({
                   sx={{
                     alignSelf: 'start',
                     marginTop: formState === 'submitted' ? 0 : '-24px',
+                    color: 'white',
                     '&.Mui-disabled': {
                       background:
                         formState === 'submitted'
