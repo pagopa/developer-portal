@@ -22,9 +22,14 @@ import { useRouter } from 'next/navigation';
 type WebinarCardProps = {
   webinar: Webinar;
   handleErrorMessage?: (message: string) => null;
+  textColor?: string;
 };
 
-const WebinarCard = ({ webinar, handleErrorMessage }: WebinarCardProps) => {
+const WebinarCard = ({
+  webinar,
+  handleErrorMessage,
+  textColor,
+}: WebinarCardProps) => {
   const theme = useTheme();
   const router = useRouter();
   const t = useTranslations('webinar');
@@ -117,6 +122,7 @@ const WebinarCard = ({ webinar, handleErrorMessage }: WebinarCardProps) => {
                 }}
                 handleErrorMessage={handleErrorMessage}
                 webinarState={webinarState}
+                textColor={textColor}
               />
             )}
           </Box>
