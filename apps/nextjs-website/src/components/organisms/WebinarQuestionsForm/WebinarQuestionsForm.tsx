@@ -243,7 +243,7 @@ export const WebinarQuestionsForm = ({
                     marginTop: formState === 'submitted' ? 0 : '-24px',
                     '&.Mui-disabled': {
                       background:
-                        formState === 'submitted' ? 'white' : '#0073E6',
+                        formState === 'submitted' ? 'white' : theme.palette.primary.main,
                       color: formState === 'submitted' ? '#5C6F82' : 'white',
                     },
                   }}
