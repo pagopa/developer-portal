@@ -261,7 +261,7 @@ export const WebinarQuestionsForm = ({
           ) : (
             <Typography
               sx={{
-                color: '#A2ADB8',
+                color: theme.palette.text.disabled,
                 fontWeight: 600,
                 fontSize: 16,
                 letterSpacing: '0.15px',
