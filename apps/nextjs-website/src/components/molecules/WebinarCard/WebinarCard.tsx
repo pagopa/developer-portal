@@ -7,7 +7,8 @@ import {
   Card,
   CardContent,
   Stack,
-  Typography, useMediaQuery,
+  Typography,
+  useMediaQuery,
   useTheme,
 } from '@mui/material';
 import LinkButton from '@/components/atoms/LinkButton/LinkButton';
