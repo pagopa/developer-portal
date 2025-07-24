@@ -7,3 +7,5 @@ export const FeaturesCodec = t.strict({
   subtitle: t.union([NullToUndefinedCodec, t.string]),
   items: t.array(BannerLinkCodec),
 });
+
+export type StrapiFeatures = t.TypeOf<typeof FeaturesCodec>;

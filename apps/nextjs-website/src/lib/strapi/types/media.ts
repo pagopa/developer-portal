@@ -1,4 +1,4 @@
-export type Media = {
+export type MediaAttributes = {
   readonly name: string;
   readonly alternativeText?: string | null;
   readonly caption?: string | null;
@@ -10,6 +10,6 @@ export type Media = {
   readonly url: string;
 };
 
-export type MediaAttributes = {
-  readonly attributes: Media;
+export type Media = {
+  readonly attributes: MediaAttributes;
 };
