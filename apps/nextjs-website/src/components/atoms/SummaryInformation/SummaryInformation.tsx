@@ -1,11 +1,12 @@
 'use client';
-import React, { FC, useMemo } from 'react';
-import { Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
+import React, { FC } from 'react';
+import { Box, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
 import TimeSlot from '../TimeSlot/TimeSlot';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
 import LiveWebinarChip from '@/components/atoms/LiveWebinarChip/LiveWebinarChip';
 import { WebinarState } from '@/helpers/webinar.helpers';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
+import { dateOptions, defaultLocale } from '@/config';
 
 export type SummaryInformationProps = {
   startDateTime?: string;
@@ -28,10 +29,12 @@ const SummaryInformation: FC<SummaryInformationProps> = ({
 }) => {
   const { palette } = useTheme();
   const isSmallScreen = useMediaQuery('(max-width: 1000px)');
-  const showTimeSlot = useMemo(
-    () => !isSmallScreen && startDateTime && endDateTime,
-    [isSmallScreen, startDateTime, endDateTime]
-  );
+  const showTimeSlot =
+    !isSmallScreen &&
+    startDateTime &&
+    endDateTime &&
+    [WebinarState.future, WebinarState.comingSoon].includes(webinarState);
+  const showDateTag = endDateTime && webinarState === WebinarState.past;
 
   return (
     <div>
@@ -47,7 +50,8 @@ const SummaryInformation: FC<SummaryInformationProps> = ({
             width: '100%',
           }}
         >
-          {showTimeSlot ? (
+          {webinarState === WebinarState.live && <LiveWebinarChip />}
+          {showTimeSlot && (
             <Stack
               direction={'row'}
               sx={{ alignContent: 'center', gap: '8px' }}
@@ -68,17 +72,40 @@ const SummaryInformation: FC<SummaryInformationProps> = ({
                   color: textColor || palette.grey[600],
                 }}
               >
-                {webinarState === WebinarState.live && <LiveWebinarChip />}
-                {![
-                  WebinarState.unknown,
-                  WebinarState.live,
-                  WebinarState.past,
-                ].includes(webinarState) && (
-                  <TimeSlot start={startDateTime} end={endDateTime} />
-                )}
+                <TimeSlot start={startDateTime} end={endDateTime} />
               </Typography>
             </Stack>
-          ) : null}
+          )}
+          {showDateTag && (
+            <Stack
+              direction={'row'}
+              sx={{ alignContent: 'center', gap: '8px' }}
+            >
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  backgroundColor: palette.grey[200],
+                  padding: 0.5,
+                  borderRadius: '4px',
+                }}
+              >
+                <Typography
+                  variant='caption'
+                  style={{
+                    fontWeight: 600,
+                    fontSize: '14px',
+                    color: textColor || palette.grey[600],
+                  }}
+                >
+                  {new Date(endDateTime).toLocaleDateString(
+                    defaultLocale,
+                    dateOptions
+                  )}
+                </Typography>
+              </Box>
+            </Stack>
+          )}
           <Typography
             style={{
               fontWeight: 700,
