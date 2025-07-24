@@ -25,8 +25,7 @@ export const withCache = async <T>(
     cached && cached.expiry,
     cached && new Date(cached.expiry).toISOString()
   );
-  // eslint-disable-next-line functional/no-expression-statements
-  console.log('is cached?', cached && cached.expiry > now);
+
   // Check if we have valid cached data
   if (cached && cached.expiry > now) {
     return cached.data as T;
