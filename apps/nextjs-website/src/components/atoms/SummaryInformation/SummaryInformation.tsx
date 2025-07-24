@@ -1,6 +1,6 @@
 'use client';
 import React, { FC } from 'react';
-import { Box, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Stack, Typography, useTheme } from '@mui/material';
 import TimeSlot from '../TimeSlot/TimeSlot';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
 import LiveWebinarChip from '@/components/atoms/LiveWebinarChip/LiveWebinarChip';
@@ -28,9 +28,7 @@ const SummaryInformation: FC<SummaryInformationProps> = ({
   textColor,
 }) => {
   const { palette } = useTheme();
-  const isSmallScreen = useMediaQuery('(max-width: 1000px)');
   const showTimeSlot =
-    !isSmallScreen &&
     startDateTime &&
     endDateTime &&
     [WebinarState.future, WebinarState.comingSoon].includes(webinarState);
