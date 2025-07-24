@@ -113,7 +113,9 @@ async function main() {
       await fetchFromStrapi<StrapiReleaseNote>(
         'api/release-notes?populate[0]=product&pagination[pageSize]=1000&pagination[page]=1'
       );
-    console.log(`Fetched ${strapiReleaseNotes.length} guides from Strapi`);
+    console.log(
+      `Fetched ${strapiReleaseNotes.length} release notes from Strapi`
+    );
 
     const sitemapItems = await convertReleaseNoteToSitemapItems(
       strapiReleaseNotes
