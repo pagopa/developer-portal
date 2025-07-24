@@ -1,6 +1,6 @@
 'use client';
 import React, { FC } from 'react';
-import { Box, Stack, Typography, useTheme } from '@mui/material';
+import { Box, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
 import TimeSlot from '../TimeSlot/TimeSlot';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
 import LiveWebinarChip from '@/components/atoms/LiveWebinarChip/LiveWebinarChip';
@@ -28,6 +28,7 @@ const SummaryInformation: FC<SummaryInformationProps> = ({
   textColor,
 }) => {
   const { palette } = useTheme();
+  const isSmallScreen = useMediaQuery('(max-width: 1000px)');
   const showTimeSlot =
     startDateTime &&
     endDateTime &&
@@ -66,7 +67,7 @@ const SummaryInformation: FC<SummaryInformationProps> = ({
                 variant='caption'
                 style={{
                   fontWeight: 700,
-                  fontSize: '24px',
+                  fontSize: isSmallScreen ? '18px' : '24px',
                   color: textColor || palette.grey[600],
                 }}
               >
@@ -108,7 +109,7 @@ const SummaryInformation: FC<SummaryInformationProps> = ({
             style={{
               fontWeight: 700,
               fontStyle: 'bold',
-              fontSize: '38px',
+              fontSize: isSmallScreen ? '32px' : '38px',
               marginTop: 16,
               marginBottom: 32,
               color: textColor || palette.text.primary,
