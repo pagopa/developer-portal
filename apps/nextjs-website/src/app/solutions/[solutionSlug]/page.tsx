@@ -12,6 +12,14 @@ import { getItemFromPaths } from '@/helpers/structuredData.helpers';
 type Params = {
   solutionSlug: string;
 };
+// TODO: remove when solutions metadata will be managed in strapi
+export const revalidate = REVALIDATE_SHORT_INTERVAL;
+export async function generateStaticParams() {
+  const solutions = await getSolutionsProps();
+  return [...solutions].map(({ slug }) => ({
+    solutionSlug: slug,
+  }));
+}
 
 export async function generateMetadata({
   params,
