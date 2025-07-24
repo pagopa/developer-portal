@@ -10,6 +10,8 @@ import { SolutionTemplateProps } from '@/components/templates/SolutionTemplate/S
 import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
 import { getItemFromPaths } from '@/helpers/structuredData.helpers';
 import PageNotFound from '@/app/not-found';
+import { REVALIDATE_LONG_INTERVAL } from '@/config';
+import { getSolutionsMetadata } from '@/helpers/s3Metadata.helpers';
 
 type SolutionDetailPageTemplateProps = {
   solution: SolutionTemplateProps;

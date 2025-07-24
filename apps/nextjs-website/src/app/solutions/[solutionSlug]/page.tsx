@@ -3,11 +3,12 @@ import {
   makeMetadataFromStrapi,
 } from '@/helpers/metadata.helpers';
 import { Metadata } from 'next';
-import { baseUrl } from '@/config';
+import { baseUrl, REVALIDATE_SHORT_INTERVAL } from '@/config';
 import { getSolution } from '@/lib/api';
 import SolutionTemplate from '@/components/templates/SolutionTemplate/SolutionTemplate';
 import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
 import { getItemFromPaths } from '@/helpers/structuredData.helpers';
+import { getSolutionsProps } from '@/lib/cmsApi';
 
 type Params = {
   solutionSlug: string;
