@@ -58,12 +58,8 @@ const buildEnv = pipe(
   })
 );
 
-<<<<<<< HEAD
-const CACHE_EXPIRY_IN_SECONDS = 900; // 15 minutes in seconds
-const GUIDE_PAGE_CACHE_EXPIRY_IN_SECONDS = 10; // 10 seconds for guide pages
-=======
 const CACHE_EXPIRY_IN_SECONDS = 60; // 1 minute in seconds
->>>>>>> origin/main
+const GUIDE_PAGE_CACHE_EXPIRY_IN_SECONDS = 10; // 10 seconds for guide pages
 
 export const getHomepageProps = async () => {
   return withCache(
