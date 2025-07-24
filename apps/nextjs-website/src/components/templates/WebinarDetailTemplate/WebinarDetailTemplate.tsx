@@ -32,8 +32,7 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
   const [isSubscribed, setIsSubscribed] = useState(false);
   const { webinarState, setWebinar } = useWebinar();
   const showHeaderImage =
-    [WebinarState.future, WebinarState.comingSoon].includes(webinarState) &&
-    webinar.headerImage;
+    webinarState === WebinarState.future && webinar.headerImage;
 
   useEffect(() => {
     webinar && setWebinar(webinar);
