@@ -16,6 +16,9 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import ChatbotHistoryDetailLayout from '@/components/organisms/ChatbotHistoryDetailLayout/ChatbotHistoryDetailLayout';
 import { Query } from '@/lib/chatbot/queries';
 
+// Force dynamic rendering for the profile page
+export const revalidate = 0;
+
 const ChatbotHistory = () => {
   const t = useTranslations();
   const { user, loading } = useUser();
