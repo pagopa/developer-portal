@@ -96,7 +96,11 @@ async function convertGuideToSitemapItems(
     );
     for (const filePath of guideFiles) {
       const parts = filePath.split('/');
-      if (parts.length <= 2 || filePath.endsWith('/SUMMARY.md')) {
+      if (
+        parts.length <= 2 ||
+        filePath.endsWith('/SUMMARY.md') ||
+        filePath.includes('.gitbook/includes')
+      ) {
         continue;
       }
       const content = await downloadS3File(
@@ -145,6 +149,11 @@ async function main() {
     const strapiGuides = await fetchFromStrapi<StrapiGuide>(
       'api/guides?populate[0]=product&populate[1]=versions&pagination[pageSize]=1000&pagination[page]=1'
     );
+
+    if (strapiGuides instanceof Error) {
+      // eslint-disable-next-line functional/no-throw-statements
+      throw strapiGuides;
+    }
     console.log(`Fetched ${strapiGuides.length} guides from Strapi`);
 
     const sitemapItems = await convertGuideToSitemapItems(strapiGuides);
@@ -157,7 +166,8 @@ async function main() {
       s3Client
     );
   } catch (error) {
-    console.error('Error:', error);
+    console.error('Error generating guides metadata:', error);
+    process.exit(1);
   }
 }
 
