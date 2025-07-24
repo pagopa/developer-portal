@@ -26,6 +26,7 @@ export type QuickStartGuidePageProps = {
     readonly title: string;
     readonly description: string;
   };
+  readonly updatedAt?: string;
   readonly defaultStepAnchor?: string;
   readonly steps?: ReadonlyArray<Step>;
   readonly seo?: SEO;
