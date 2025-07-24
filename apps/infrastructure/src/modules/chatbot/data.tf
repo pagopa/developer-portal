@@ -181,7 +181,9 @@ resource "aws_iam_policy" "deploy_chatbot" {
           "ecr:InitiateLayerUpload",
           "ecr:BatchCheckLayerAvailability",
           "ecr:PutImage",
-          "ecr:BatchGetImage"
+          "ecr:BatchGetImage",
+          "ecr:GetRepositoryPolicy",
+          "ecr:SetRepositoryPolicy"
         ]
         Effect   = "Allow"
         Resource = "*"
