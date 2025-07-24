@@ -19,15 +19,14 @@ export type ApiDataListPageTemplateProps = {
   readonly product: Product;
   readonly apiDetailSlugs: readonly string[];
   readonly cards: {
-    readonly target?: '_blank' | '_self' | '_parent' | '_top';
     readonly title: string;
     readonly text: string;
     readonly ctaLabel?: string;
     readonly href?: string;
-    readonly externalUrl: boolean;
     readonly icon: string;
     readonly tags?: { label: string }[];
   }[];
+  readonly updatedAt: string;
   readonly bannerLinks: BannerLinkProps[];
   readonly theme?: Theme;
   readonly apiData: StrapiBaseApiDataList;

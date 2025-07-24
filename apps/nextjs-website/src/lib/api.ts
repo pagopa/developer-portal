@@ -195,6 +195,7 @@ export async function getApiDataParams() {
       apiDataListPageProps.apiDetailSlugs.map((apiDataSlug) => ({
         productSlug: apiDataListPageProps.product.slug,
         apiDataSlug,
+        updatedAt: apiDataListPageProps.updatedAt,
       }))
   );
 

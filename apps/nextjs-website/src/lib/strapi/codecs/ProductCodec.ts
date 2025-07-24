@@ -9,6 +9,13 @@ const BaseProductAttributesCodec = t.strict({
   slug: t.string,
 });
 
+const UrlCodec = t.strict({
+  id: t.number,
+  name: t.union([NullToUndefinedCodec, t.string]),
+  url: t.string,
+  hideTryIt: t.boolean,
+});
+
 // To avoid circular dependencies, we must use the following codec:
 const ApiDataListPageCodec = t.strict({
   data: t.union([
@@ -25,9 +32,17 @@ const ApiDataListPageCodec = t.strict({
                   NullToUndefinedCodec,
                   t.strict({
                     slug: t.string,
+                    specUrls: t.array(UrlCodec),
                   }),
                 ]),
-                apiSoapUrl: t.union([NullToUndefinedCodec, t.string]),
+                apiSoapDetail: t.union([
+                  NullToUndefinedCodec,
+                  t.strict({
+                    slug: t.string,
+                    repositoryUrl: t.string,
+                    dirName: t.string,
+                  }),
+                ]),
               }),
             })
           ),
