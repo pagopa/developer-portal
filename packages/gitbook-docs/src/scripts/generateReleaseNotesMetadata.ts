@@ -120,7 +120,7 @@ async function main() {
     process.exit(1);
   }
 
-  console.log(`Fetched ${strapiReleaseNotes.length} guides from Strapi`);
+  console.log(`Fetched ${strapiReleaseNotes.length} release notes from Strapi`);
 
   const sitemapItems = await convertReleaseNoteToSitemapItems(
     strapiReleaseNotes
