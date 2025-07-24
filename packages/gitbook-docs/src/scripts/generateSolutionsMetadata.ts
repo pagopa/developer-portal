@@ -67,7 +67,11 @@ async function convertSolutionToSitemapItems(
     );
     for (const filePath of solutionFiles) {
       const parts = filePath.split('/');
-      if (parts.length <= 2 || filePath.endsWith('/SUMMARY.md')) {
+      if (
+        parts.length <= 2 ||
+        filePath.endsWith('/SUMMARY.md') ||
+        filePath.includes('.gitbook/includes')
+      ) {
         continue;
       }
       const content = await downloadS3File(
