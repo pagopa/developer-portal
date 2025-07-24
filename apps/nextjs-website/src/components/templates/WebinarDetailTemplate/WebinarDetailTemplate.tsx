@@ -31,6 +31,9 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
   const { user } = useUser();
   const [isSubscribed, setIsSubscribed] = useState(false);
   const { webinarState, setWebinar } = useWebinar();
+  const showHeaderImage =
+    [WebinarState.future, WebinarState.comingSoon].includes(webinarState) &&
+    webinar.headerImage;
 
   useEffect(() => {
     webinar && setWebinar(webinar);
@@ -84,14 +87,17 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
       <Box
         paddingY={'20px'}
         style={{
-          backgroundImage: `url(${webinar.headerImage?.url})`,
+          backgroundColor: palette.grey[50],
+          backgroundImage: showHeaderImage
+            ? `url(${webinar.headerImage?.url})`
+            : 'none',
           backgroundRepeat: 'no-repeat',
           backgroundSize: 'cover',
         }}
       >
         <EContainer>
           <ProductBreadcrumbs
-            textColor={webinar.headerImage ? 'white' : palette.text.primary}
+            textColor={showHeaderImage ? 'white' : palette.text.primary}
             breadcrumbs={[
               ...pageToBreadcrumbs('webinars', [
                 {
@@ -108,7 +114,7 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
           startDateTime={webinar.startDateTime}
           endDateTime={webinar.endDateTime}
           webinarState={webinarState}
-          textColor={webinar.headerImage ? 'white' : palette.text.primary}
+          textColor={showHeaderImage ? 'white' : palette.text.primary}
         >
           {subscribeToWebinarButton}
           {isSubscribed && webinarState === WebinarState.comingSoon && (
@@ -119,7 +125,7 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
                 bottom: '24px',
                 fontSize: '12px',
                 marginTop: 1,
-                color: webinar.headerImage ? 'white' : palette.text.primary,
+                color: showHeaderImage ? 'white' : palette.text.primary,
               }}
             >
               {t('warnings.refresh')}
