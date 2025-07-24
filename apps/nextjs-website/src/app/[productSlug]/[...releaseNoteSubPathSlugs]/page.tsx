@@ -32,7 +32,7 @@ type ReleaseNotePageStaticParams = {
   productSlug: string;
   releaseNoteSubPathSlugs: string[];
 };
-
+// TODO: remove when release notes metadata will be managed in strapi
 export const revalidate = REVALIDATE_LONG_INTERVAL;
 
 const PRODUCT_SLUG_PATH_INDEX = 1;
@@ -52,7 +52,6 @@ export async function generateStaticParams(): Promise<
     });
   return releaseNoteParams;
 }
-
 export async function generateMetadata({
   params,
 }: {
