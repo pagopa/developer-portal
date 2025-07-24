@@ -7,7 +7,7 @@ import {
   Card,
   CardContent,
   Stack,
-  Typography,
+  Typography, useMediaQuery,
   useTheme,
 } from '@mui/material';
 import LinkButton from '@/components/atoms/LinkButton/LinkButton';
@@ -34,7 +34,7 @@ const WebinarCard = ({
   const router = useRouter();
   const t = useTranslations('webinar');
   const [isSubscribed, setIsSubscribed] = useState(false);
-
+  const isSmallScreen = useMediaQuery('(max-width: 1000px)');
   const { webinarState, setWebinar } = useWebinar();
 
   useEffect(() => {
@@ -130,7 +130,7 @@ const WebinarCard = ({
             <Typography
               variant={'body2'}
               sx={{
-                position: 'absolute',
+                position: isSmallScreen ? 'relative' : 'absolute',
                 bottom: '24px',
                 fontSize: '12px',
                 marginTop: 1,
@@ -143,7 +143,7 @@ const WebinarCard = ({
             <Typography
               variant={'body2'}
               sx={{
-                position: 'absolute',
+                position: isSmallScreen ? 'relative' : 'absolute',
                 bottom: '24px',
                 fontSize: '12px',
                 marginTop: 1,
