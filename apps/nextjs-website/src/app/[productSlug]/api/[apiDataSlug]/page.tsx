@@ -1,4 +1,4 @@
-import { getApiData, getApiDataParams } from '@/lib/api';
+import { getApiData } from '@/lib/api';
 import ProductLayout, {
   ProductLayoutProps,
 } from '@/components/organisms/ProductLayout/ProductLayout';
@@ -17,7 +17,6 @@ import {
   convertApiToStructuredDataSoftwareApplication,
   productToBreadcrumb,
 } from '@/helpers/structuredData.helpers';
-import { REVALIDATE_SHORT_INTERVAL } from '@/config';
 import ApiSection from '@/components/molecules/ApiSection/ApiSection';
 
 export type ApiDataPageProps = {
@@ -35,11 +34,6 @@ export type ApiDataPageProps = {
   readonly apiSoapUrlList: readonly string[];
   readonly seo?: SEO;
 } & ProductLayoutProps;
-
-export const revalidate = REVALIDATE_SHORT_INTERVAL;
-export async function generateStaticParams() {
-  return getApiDataParams();
-}
 
 export const generateMetadata = async (
   { params }: ApiDataParams,
