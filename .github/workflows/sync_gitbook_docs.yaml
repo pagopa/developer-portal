@@ -81,10 +81,13 @@ jobs:
       - name: Compile packages
         run: npm run compile
 
-      - name: Replace include tags in docs
+      - name: Generate UrlReplace metadata
         if: inputs.generate_metadata_only == false
-        run: |
-          bash apps/nextjs-website/scripts/replace-include-tags.sh devportal-docs/docs
+        run: npm run generate-url-parsing-metadata -w gitbook-docs
+
+      - name: Replace urls and include tags in docs
+        if: inputs.generate_metadata_only == false
+        run: npm run parse-docs -w gitbook-docs
 
       - name: Configure AWS Credentials
         uses: ./.github/actions/configure-aws-credentials
