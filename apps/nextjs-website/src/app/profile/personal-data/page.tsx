@@ -16,6 +16,9 @@ import { InfoCardProfile } from '@/components/molecules/InfoCard/InfoCardProfile
 import EmailFormWrapper from '@/components/organisms/EmailFormWrapper/EmailFormWrapper';
 import { companyRoles } from '@/config';
 
+// Force dynamic rendering for the profile page
+export const revalidate = 0;
+
 const PersonalData = () => {
   const t = useTranslations();
   const router = useRouter();

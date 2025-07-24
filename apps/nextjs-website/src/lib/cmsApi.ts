@@ -56,7 +56,7 @@ const buildEnv = pipe(
   })
 );
 
-const CACHE_EXPIRY_IN_SECONDS = 900; // 15 minutes in seconds
+const CACHE_EXPIRY_IN_SECONDS = 60; // 1 minute in seconds
 
 export const getHomepageProps = async () => {
   return withCache(
@@ -136,14 +136,17 @@ export const getQuickStartGuidesProps = async () => {
 };
 
 export const getUrlReplaceMapProps = async () => {
-  return withCache(
+  const result = await withCache(
     getCacheKey('getUrlReplaceMapProps'),
     async () => {
       const strapiUrlReplaceMap = await fetchUrlReplaceMap(buildEnv);
-      return makeUrlReplaceMap(strapiUrlReplaceMap);
+      const processed = makeUrlReplaceMap(strapiUrlReplaceMap);
+      return processed;
     },
     CACHE_EXPIRY_IN_SECONDS
   );
+
+  return result;
 };
 
 export const getApiDataListPagesProps = async () => {
@@ -257,11 +260,14 @@ export const getGuidePageProps = async (
   productSlug: string
 ) => {
   const strapiGuides = await fetchGuide(guideSlug, productSlug)(buildEnv);
+
   if (!strapiGuides || strapiGuides.data.length < 1) {
     // eslint-disable-next-line functional/no-throw-statements
     throw new Error('Failed to fetch data');
   }
+
   const guidesProps = makeGuidesProps(strapiGuides);
+
   return guidesProps[0];
 };
 
