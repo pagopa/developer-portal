@@ -63,6 +63,7 @@ export const WebinarCodec = t.strict({
     webinarCategory: t.strict({
       data: t.union([NullToUndefinedCodec, WebinarCategoryCodec]),
     }),
+    updatedAt: tt.DateFromISOString,
   }),
 });
 
