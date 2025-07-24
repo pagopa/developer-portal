@@ -118,7 +118,9 @@ async function main() {
     const sitemapItems = await convertReleaseNoteToSitemapItems(
       strapiReleaseNotes
     );
-    console.log(`Converted guides to ${sitemapItems.length} sitemap items`);
+    console.log(
+      `Converted release notes to ${sitemapItems.length} sitemap items`
+    );
 
     await writeSitemapJson(
       sitemapItems,
