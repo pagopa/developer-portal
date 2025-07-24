@@ -77,7 +77,7 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
         return null;
       }}
       webinarState={webinarState}
-      textColor={webinar.headerImage ? 'white' : palette.text.primary}
+      textColor={showHeaderImage ? 'white' : palette.text.primary}
     />
   );
 
