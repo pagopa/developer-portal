@@ -20,8 +20,6 @@ import {
   productToBreadcrumb,
 } from '@/helpers/structuredData.helpers';
 import PageNotFound from '@/app/not-found';
-// import { REVALIDATE_LONG_INTERVAL } from '@/config';
-// import { getGuidesMetadata } from '@/helpers/s3Metadata.helpers';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
