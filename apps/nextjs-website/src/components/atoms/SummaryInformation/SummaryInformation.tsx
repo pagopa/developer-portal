@@ -60,7 +60,7 @@ const SummaryInformation: FC<SummaryInformationProps> = ({
                   color: textColor || palette.text.primary,
                   width: '24px',
                   height: '24px',
-                  alignSelf: 'center',
+                  alignSelf: 'start',
                 }}
               />
               <Typography
