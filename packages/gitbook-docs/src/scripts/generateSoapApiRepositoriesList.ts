@@ -18,9 +18,19 @@ interface StrapiSoapApiDetails {
 async function main() {
   const outputDir = process.env.OUTPUT_DIR || '__soap_tmp_output__';
   const outputPath = resolve(outputDir, 'soap-api-repositories.json');
-  const { data: response } = await fetchFromStrapi<StrapiSoapApiDetails>(
-    'api/apis-data/?populate[apiSoapDetail][populate][0]=slug&populate[apiSoapDetail][populate][1]=repositoryUrl&populate[apiSoapDetail][populate][2]=dirName&filters[apiSoapDetail][$null]=false'
-  );
+
+  // eslint-disable-next-line functional/no-let
+  let response;
+  // eslint-disable-next-line functional/no-try-statements
+  try {
+    const { data } = await fetchFromStrapi<StrapiSoapApiDetails>(
+      'api/apis-data/?populate[apiSoapDetail][populate][0]=slug&populate[apiSoapDetail][populate][1]=repositoryUrl&populate[apiSoapDetail][populate][2]=dirName&filters[apiSoapDetail][$null]=false'
+    );
+    response = data;
+  } catch (error) {
+    console.error('Error fetching SOAP API data from Strapi:', error);
+    process.exit(1);
+  }
 
   if (!response || response.length === 0) {
     console.error('No SOAP API entries found in Strapi.');
