@@ -4,6 +4,7 @@ import { BannerLinkCodec } from './BannerLinkCodec';
 import { BaseApiDataListCodec } from './ApiDataListCodec';
 import { NullToUndefinedCodec } from './NullToUndefinedCodec';
 import { SEOCodec } from './SeoCodec';
+import * as tt from 'io-ts-types';
 
 export const ApiDataListPageCodec = t.strict({
   id: t.number,
@@ -13,6 +14,7 @@ export const ApiDataListPageCodec = t.strict({
     product: t.strict({
       data: BaseProductWithRelationsCodec,
     }),
+    updatedAt: tt.DateFromISOString,
     apiData: BaseApiDataListCodec,
     bannerLinks: t.array(BannerLinkCodec),
     seo: t.union([NullToUndefinedCodec, SEOCodec]),

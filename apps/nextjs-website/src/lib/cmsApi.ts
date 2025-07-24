@@ -58,8 +58,12 @@ const buildEnv = pipe(
   })
 );
 
+<<<<<<< HEAD
 const CACHE_EXPIRY_IN_SECONDS = 900; // 15 minutes in seconds
 const GUIDE_PAGE_CACHE_EXPIRY_IN_SECONDS = 10; // 10 seconds for guide pages
+=======
+const CACHE_EXPIRY_IN_SECONDS = 60; // 1 minute in seconds
+>>>>>>> origin/main
 
 export const getHomepageProps = async () => {
   return withCache(
@@ -139,14 +143,17 @@ export const getQuickStartGuidesProps = async () => {
 };
 
 export const getUrlReplaceMapProps = async () => {
-  return withCache(
+  const result = await withCache(
     getCacheKey('getUrlReplaceMapProps'),
     async () => {
       const strapiUrlReplaceMap = await fetchUrlReplaceMap(buildEnv);
-      return makeUrlReplaceMap(strapiUrlReplaceMap);
+      const processed = makeUrlReplaceMap(strapiUrlReplaceMap);
+      return processed;
     },
     CACHE_EXPIRY_IN_SECONDS
   );
+
+  return result;
 };
 
 export const getApiDataListPagesProps = async () => {

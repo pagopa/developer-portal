@@ -136,6 +136,7 @@ async function main() {
     );
   } catch (error) {
     console.error('Error generating release notes metadata:', error);
+    process.exit(1);
   }
 }
 

@@ -40,5 +40,6 @@ export function makeSolutionsProps(
       ),
     },
     seo: attributes.seo,
+    updatedAt: attributes.updatedAt.toISOString(),
   }));
 }
