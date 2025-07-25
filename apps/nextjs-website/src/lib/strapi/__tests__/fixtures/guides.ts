@@ -218,99 +218,78 @@ export const strapiGuideData = {
                         {
                           id: 156,
                           attributes: {
-                            apiSoapUrl:
-                              'https://github.com/pagopa/pagopa-api/tree/develop/wsdl',
                             apiRestDetail: undefined,
+                            apiSoapDetail: undefined,
                           },
                         },
                         {
                           id: 158,
                           attributes: {
-                            apiSoapUrl: undefined,
-                            apiRestDetail: {
-                              slug: 'gestione-posizioni-debitorie',
-                            },
+                            apiRestDetail: undefined,
+                            apiSoapDetail: undefined,
                           },
                         },
                         {
                           id: 157,
                           attributes: {
-                            apiSoapUrl: undefined,
-                            apiRestDetail: {
-                              slug: 'gestione-massiva-delle-posizioni-debitorie',
-                            },
+                            apiRestDetail: undefined,
+                            apiSoapDetail: undefined,
                           },
                         },
                         {
                           id: 159,
                           attributes: {
-                            apiSoapUrl: undefined,
-                            apiRestDetail: {
-                              slug: 'gpd-fdr',
-                            },
+                            apiRestDetail: undefined,
+                            apiSoapDetail: undefined,
                           },
                         },
                         {
                           id: 160,
                           attributes: {
-                            apiSoapUrl: undefined,
-                            apiRestDetail: {
-                              slug: 'gpd-recupero-receipt',
-                            },
+                            apiRestDetail: undefined,
+                            apiSoapDetail: undefined,
                           },
                         },
                         {
                           id: 170,
                           attributes: {
-                            apiSoapUrl: undefined,
-                            apiRestDetail: {
-                              slug: 'flussi-di-rendicontazione',
-                            },
+                            apiRestDetail: undefined,
+                            apiSoapDetail: undefined,
                           },
                         },
                         {
                           id: 167,
                           attributes: {
-                            apiSoapUrl: undefined,
-                            apiRestDetail: {
-                              slug: 'inserimento-posizioni-debitorie',
-                            },
+                            apiRestDetail: undefined,
+                            apiSoapDetail: undefined,
                           },
                         },
                         {
                           id: 168,
                           attributes: {
-                            apiSoapUrl: undefined,
-                            apiRestDetail: {
-                              slug: 'elenco-IBAN-stazioni',
-                            },
+                            apiRestDetail: undefined,
+                            apiSoapDetail: undefined,
                           },
                         },
                         {
                           id: 164,
                           attributes: {
-                            apiSoapUrl: undefined,
-                            apiRestDetail: {
-                              slug: 'pagamento-fe-ec',
-                            },
+                            apiRestDetail: undefined,
+                            apiSoapDetail: undefined,
                           },
                         },
                         {
                           id: 161,
                           attributes: {
-                            apiSoapUrl: undefined,
-                            apiRestDetail: {
-                              slug: 'recupero-receipt',
-                            },
+                            apiRestDetail: undefined,
+                            apiSoapDetail: undefined,
                           },
                         },
                         {
                           id: 162,
                           attributes: {
-                            apiSoapUrl: undefined,
-                            apiRestDetail: {
-                              slug: 'stampa-avvisi-pagamento',
-                            },
+                            apiRestDetail: undefined,
+                            apiSoapDetail: undefined,
                           },
                         },
                       ],
