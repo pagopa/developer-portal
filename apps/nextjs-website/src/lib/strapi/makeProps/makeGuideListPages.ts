@@ -35,8 +35,7 @@ export function makeGuideListPagesProps(
               makeBannerLinkProps
             ),
       seo: attributes.seo || undefined,
-      updatedAt: attributes.updatedAt.toISOString(),
-
+      updatedAt: new Date(attributes.updatedAt).toISOString(),
     } satisfies GuideListPageProps;
   });
 }

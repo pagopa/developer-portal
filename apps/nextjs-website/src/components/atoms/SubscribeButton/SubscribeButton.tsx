@@ -4,6 +4,7 @@ import {
   Button,
   CircularProgress,
   Typography,
+  useMediaQuery,
   useTheme,
 } from '@mui/material';
 import CheckIcon from '@mui/icons-material/Check';
@@ -17,6 +18,7 @@ export type SubscribeButtonProps = {
   onSubscribe: () => Promise<null>;
   onCancelSubscription: () => Promise<null>;
   subscribeLabel?: string;
+  textColor?: string;
 };
 
 const SubscribeButton = ({
@@ -26,45 +28,59 @@ const SubscribeButton = ({
   onSubscribe,
   onCancelSubscription,
   subscribeLabel = 'default',
+  textColor = 'white',
 }: SubscribeButtonProps) => {
   const t = useTranslations('shared');
   const { palette } = useTheme();
+  const isSmallScreen = useMediaQuery('(max-width: 1000px)');
 
   return (
-    <Box mt={4} display={'flex'} flexDirection={'row'} gap={2}>
+    <Box
+      mt={4}
+      display={'flex'}
+      flexDirection={isSmallScreen ? 'column' : 'row'}
+      gap={2}
+    >
       {isSubscribed ? (
         <>
-          <Typography
-            variant='body2'
-            fontWeight={'700'}
-            fontSize={'16px'}
-            display={'flex'}
-            flexDirection={'row'}
-            alignItems={'center'}
+          <Button
+            disabled={true}
+            variant='contained'
+            startIcon={
+              <CheckIcon sx={{ height: 24, width: 24, color: 'white' }} />
+            }
             sx={{
-              color: palette.text.secondary,
+              '&:disabled': {
+                backgroundColor: palette.success.dark,
+              },
             }}
           >
-            <CheckIcon
-              style={{ marginRight: 8, height: 24, width: 24 }}
-              color={'success'}
-            />
-            {t('subscribeButton.subscribedLabel')}
-          </Typography>
+            <Typography
+              variant='body2'
+              fontWeight={'700'}
+              fontSize={'16px'}
+              sx={{
+                color: 'white',
+              }}
+            >
+              {t('subscribeButton.subscribedLabel')}
+            </Typography>
+          </Button>
+
           <Button
-            color={'error'}
+            sx={{ color: textColor }}
             startIcon={
               isLoading && (
                 <CircularProgress
                   size={24}
                   sx={{
-                    color: palette.text.disabled,
+                    color: 'white',
                   }}
                 />
               )
             }
             disabled={disabled || isLoading}
-            variant={'outlined'}
+            variant={'text'}
             onClick={onCancelSubscription}
           >
             {t('subscribeButton.unsubscribeLabel')}
