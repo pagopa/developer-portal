@@ -8,6 +8,7 @@ import {
   CardContent,
   Stack,
   Typography,
+  useMediaQuery,
   useTheme,
 } from '@mui/material';
 import LinkButton from '@/components/atoms/LinkButton/LinkButton';
@@ -22,14 +23,19 @@ import { useRouter } from 'next/navigation';
 type WebinarCardProps = {
   webinar: Webinar;
   handleErrorMessage?: (message: string) => null;
+  textColor?: string;
 };
 
-const WebinarCard = ({ webinar, handleErrorMessage }: WebinarCardProps) => {
+const WebinarCard = ({
+  webinar,
+  handleErrorMessage,
+  textColor,
+}: WebinarCardProps) => {
   const theme = useTheme();
   const router = useRouter();
   const t = useTranslations('webinar');
   const [isSubscribed, setIsSubscribed] = useState(false);
-
+  const isSmallScreen = useMediaQuery('(max-width: 1000px)');
   const { webinarState, setWebinar } = useWebinar();
 
   useEffect(() => {
@@ -117,6 +123,7 @@ const WebinarCard = ({ webinar, handleErrorMessage }: WebinarCardProps) => {
                 }}
                 handleErrorMessage={handleErrorMessage}
                 webinarState={webinarState}
+                textColor={textColor}
               />
             )}
           </Box>
@@ -124,7 +131,7 @@ const WebinarCard = ({ webinar, handleErrorMessage }: WebinarCardProps) => {
             <Typography
               variant={'body2'}
               sx={{
-                position: 'absolute',
+                position: isSmallScreen ? 'relative' : 'absolute',
                 bottom: '24px',
                 fontSize: '12px',
                 marginTop: 1,
@@ -137,7 +144,7 @@ const WebinarCard = ({ webinar, handleErrorMessage }: WebinarCardProps) => {
             <Typography
               variant={'body2'}
               sx={{
-                position: 'absolute',
+                position: isSmallScreen ? 'relative' : 'absolute',
                 bottom: '24px',
                 fontSize: '12px',
                 marginTop: 1,

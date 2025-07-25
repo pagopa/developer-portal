@@ -22,9 +22,7 @@ import { makeApiDataListProps } from './strapi/makeProps/makeApiDataList';
 import { fetchApiDataList } from './strapi/fetches/fetchApiDataList';
 import { fetchProducts } from '@/lib/strapi/fetches/fetchProducts';
 import { makeProductsProps } from './strapi/makeProps/makeProducts';
-import { fetchGuideListPages } from './strapi/fetches/fetchGuideListPages';
 import { makeGuideListPagesProps } from './strapi/makeProps/makeGuideListPages';
-import { fetchGuide, fetchGuides } from './strapi/fetches/fetchGuides';
 import { makeGuidesProps } from './strapi/makeProps/makeGuides';
 import { fetchOverviews } from '@/lib/strapi/fetches/fetchOverviews';
 import { makeOverviewsProps } from '@/lib/strapi/makeProps/makeOverviews';
@@ -40,11 +38,15 @@ import {
   makeSolution as makeSolutionS3,
   makeReleaseNote as makeReleaseNoteS3,
 } from '@/helpers/makeS3Docs.helpers';
-// import { makeGuide, makeReleaseNote } from '@/helpers/makeDocs.helpers';
 import { secrets } from '@/config';
 import { fetchWebinarCategories } from '@/lib/strapi/fetches/fetchWebinarCategories';
 import { makeWebinarCategoriesProps } from '@/lib/strapi/makeProps/makeWebinarCategories';
-import { JsonMetadata } from '@/helpers/s3Metadata.helpers';
+import {
+  fetchResponseFromCDN,
+  JsonMetadata,
+} from '@/helpers/s3Metadata.helpers';
+import { StrapiGuideListPages } from './strapi/codecs/GuideListPagesCodec';
+import { StrapiGuides } from './strapi/codecs/GuidesCodec';
 
 // a BuildEnv instance ready to be used
 const buildEnv = pipe(
@@ -56,7 +58,8 @@ const buildEnv = pipe(
   })
 );
 
-const CACHE_EXPIRY_IN_SECONDS = 900; // 15 minutes in seconds
+const CACHE_EXPIRY_IN_SECONDS = 60; // 1 minute in seconds
+const GUIDE_PAGE_CACHE_EXPIRY_IN_SECONDS = 10; // 10 seconds for guide pages
 
 export const getHomepageProps = async () => {
   return withCache(
@@ -136,14 +139,17 @@ export const getQuickStartGuidesProps = async () => {
 };
 
 export const getUrlReplaceMapProps = async () => {
-  return withCache(
+  const result = await withCache(
     getCacheKey('getUrlReplaceMapProps'),
     async () => {
       const strapiUrlReplaceMap = await fetchUrlReplaceMap(buildEnv);
-      return makeUrlReplaceMap(strapiUrlReplaceMap);
+      const processed = makeUrlReplaceMap(strapiUrlReplaceMap);
+      return processed;
     },
     CACHE_EXPIRY_IN_SECONDS
   );
+
+  return result;
 };
 
 export const getApiDataListPagesProps = async () => {
@@ -216,39 +222,20 @@ export const getGuideListPagesProps = async () => {
   return withCache(
     getCacheKey('getGuideListPagesProps'),
     async () => {
-      const strapiGuideList = await fetchGuideListPages(buildEnv);
-      return makeGuideListPagesProps(strapiGuideList);
+      const strapiGuideList = (await fetchResponseFromCDN(
+        'synced-guide-list-pages-response.json'
+      )) as StrapiGuideListPages | undefined;
+      return strapiGuideList ? makeGuideListPagesProps(strapiGuideList) : [];
     },
     CACHE_EXPIRY_IN_SECONDS
   );
-};
-
-export const getGuidesProps = async () => {
-  return withCache(
-    getCacheKey('getGuidesPropsCache'),
-    async () => {
-      const strapiGuides = await fetchGuides(buildEnv);
-      return makeGuidesProps(strapiGuides);
-    },
-    CACHE_EXPIRY_IN_SECONDS
-  );
-};
-
-export const getGuides = async () => {
-  const strapiGuides = await fetchGuides(buildEnv);
-  return makeGuidesProps(strapiGuides);
 };
 
 export const getGuideProps = async (
   guidePaths: ReadonlyArray<string>,
   productSlug: string
 ) => {
-  const strapiGuides = await fetchGuide(guidePaths[0], productSlug)(buildEnv);
-  if (!strapiGuides || strapiGuides.data.length < 1) {
-    // eslint-disable-next-line functional/no-throw-statements
-    throw new Error('Failed to fetch data');
-  }
-  const guide = makeGuidesProps(strapiGuides)[0];
+  const guide = await getGuidePageProps(guidePaths[0], productSlug);
   return await makeGuideS3({ guideDefinition: guide, guidePaths });
 };
 
@@ -256,13 +243,28 @@ export const getGuidePageProps = async (
   guideSlug: string,
   productSlug: string
 ) => {
-  const strapiGuides = await fetchGuide(guideSlug, productSlug)(buildEnv);
-  if (!strapiGuides || strapiGuides.data.length < 1) {
-    // eslint-disable-next-line functional/no-throw-statements
-    throw new Error('Failed to fetch data');
-  }
-  const guidesProps = makeGuidesProps(strapiGuides);
-  return guidesProps[0];
+  return withCache(
+    getCacheKey('getGuidePageProps'),
+    async () => {
+      // TODO: restore this when Strapi will manage guides metadata
+      const strapiGuides = (await fetchResponseFromCDN(
+        'synced-guides-response.json'
+      )) as StrapiGuides | undefined;
+      // eslint-disable-next-line functional/no-expression-statements
+      const guides = strapiGuides ? makeGuidesProps(strapiGuides) : [];
+      const guide = guides.filter(
+        (g) => g.guide.slug === guideSlug && g.product.slug === productSlug
+      )[0];
+
+      if (!guide) {
+        // eslint-disable-next-line functional/no-throw-statements
+        throw new Error('Failed to fetch guide data');
+      }
+
+      return guide;
+    },
+    GUIDE_PAGE_CACHE_EXPIRY_IN_SECONDS
+  );
 };
 
 export const getSolutionProps = async (

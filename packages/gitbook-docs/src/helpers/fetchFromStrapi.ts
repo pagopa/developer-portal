@@ -1,38 +1,48 @@
 /* eslint-disable functional/no-expression-statements */
 /* eslint-disable functional/prefer-readonly-type */
-/* eslint-disable functional/no-try-statements */
+/* eslint-disable functional/no-throw-statements */
 
-export async function fetchFromStrapi<T>(url: string): Promise<T[] | Error> {
-  try {
-    console.log('Fetching from Strapi...');
-    const strapiEndpoint = process.env.STRAPI_ENDPOINT;
-    const strapiApiToken = process.env.STRAPI_API_TOKEN;
+// In case of an error, the error will be thrown
+export async function fetchFromStrapi<T>(
+  url: string
+): Promise<{ data: T[]; responseJson?: any }> {
+  const output = await fetchFromStrapiResponse(url);
+  console.log(
+    `Successfully fetched ${output.data?.length || 0} ${url} from Strapi`
+  );
+  return { data: output.data || [], responseJson: output };
+}
 
-    if (!strapiEndpoint || !strapiApiToken) {
-      return new Error('Missing Strapi configuration in environment variables');
-    }
+// In case of an error, the error will be thrown
+export async function getResponseFromStrapi(url: string) {
+  const output = await fetchFromStrapiResponse(url);
+  console.log(`Successfully fetched data from Strapi: ${url}`);
+  return output;
+}
 
-    // TODO: use pagination with a large page size to fetch all resources in one request
-    const response = await fetch(`${strapiEndpoint}/${url}`, {
-      headers: {
-        Authorization: `Bearer ${strapiApiToken}`,
-      },
-    });
+// In case of an error, the error will be thrown
+async function fetchFromStrapiResponse(url: string) {
+  console.log('Fetching solutions from Strapi...');
+  const strapiEndpoint = process.env.STRAPI_ENDPOINT;
+  const strapiApiToken = process.env.STRAPI_API_TOKEN;
 
-    if (!response.ok) {
-      // eslint-disable-next-line functional/no-throw-statements
-      return new Error(
-        `Failed to fetch: ${response.status} ${response.statusText}`
-      );
-    }
-
-    const output = await response.json();
-    console.log(
-      `Successfully fetched ${output.data?.length || 0} ${url} from Strapi`
-    );
-    return output.data || [];
-  } catch (error) {
-    console.error('Error fetching from Strapi:', error);
-    return error as Error;
+  if (!strapiEndpoint || !strapiApiToken) {
+    console.error('Missing Strapi configuration in environment variables');
+    throw new Error('Missing Strapi configuration in environment variables');
   }
+
+  // Using pagination with a large page size to fetch all solutions in one request
+  const response = await fetch(`${strapiEndpoint}/${url}`, {
+    headers: {
+      Authorization: `Bearer ${strapiApiToken}`,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error(
+      `Failed to fetch solutions: ${response.status} ${response.statusText}`
+    );
+  }
+
+  return await response.json();
 }
