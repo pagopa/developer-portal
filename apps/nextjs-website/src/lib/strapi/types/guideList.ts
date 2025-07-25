@@ -21,6 +21,7 @@ export type GuideListPage = {
     }>;
     readonly bannerLinks: ReadonlyArray<StrapiBannerLink>;
     readonly seo: t.TypeOf<typeof SEOCodec> | null;
+    readonly updatedAt: string;
   };
 };
 
