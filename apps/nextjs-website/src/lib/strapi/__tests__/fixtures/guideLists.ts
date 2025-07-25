@@ -2,6 +2,8 @@ import { StrapiGuideListPaginated } from '@/lib/strapi/types/guideList';
 import { GuideListPageProps } from '@/app/[productSlug]/guides/page';
 import { product } from '@/lib/strapi/__tests__/fixtures/product';
 
+const dateNow = new Date().toISOString();
+
 export const strapiEmptyGuideListPaginatedData = {
   data: [],
   meta: {
@@ -142,99 +144,88 @@ export const strapiGuideListPaginatedData = {
                         {
                           id: 156,
                           attributes: {
-                            apiSoapUrl:
-                              'https://github.com/pagopa/pagopa-api/tree/develop/wsdl',
                             apiRestDetail: undefined,
+                            apiSoapDetail: undefined,
                           },
                         },
                         {
                           id: 158,
                           attributes: {
-                            apiSoapUrl: undefined,
                             apiRestDetail: {
                               slug: 'gestione-posizioni-debitorie',
+                              specUrls: [
+                                {
+                                  id: 1,
+                                  name: 'Specifica API REST',
+                                  url: 'https://raw.githubusercontent.com/pagopa/pagopa-api/master/specs/gestione-posizioni-debitorie.yaml',
+                                  hideTryIt: false,
+                                },
+                              ],
                             },
+                            apiSoapDetail: undefined,
                           },
                         },
                         {
                           id: 157,
                           attributes: {
-                            apiSoapUrl: undefined,
-                            apiRestDetail: {
-                              slug: 'gestione-massiva-delle-posizioni-debitorie',
-                            },
+                            apiRestDetail: undefined,
+                            apiSoapDetail: undefined,
                           },
                         },
                         {
                           id: 159,
                           attributes: {
-                            apiSoapUrl: undefined,
-                            apiRestDetail: {
-                              slug: 'gpd-fdr',
-                            },
+                            apiRestDetail: undefined,
+                            apiSoapDetail: undefined,
                           },
                         },
                         {
                           id: 160,
                           attributes: {
-                            apiSoapUrl: undefined,
-                            apiRestDetail: {
-                              slug: 'gpd-recupero-receipt',
-                            },
+                            apiSoapDetail: undefined,
+                            apiRestDetail: undefined,
                           },
                         },
                         {
                           id: 170,
                           attributes: {
-                            apiSoapUrl: undefined,
-                            apiRestDetail: {
-                              slug: 'flussi-di-rendicontazione',
-                            },
+                            apiRestDetail: undefined,
+                            apiSoapDetail: undefined,
                           },
                         },
                         {
                           id: 167,
                           attributes: {
-                            apiSoapUrl: undefined,
-                            apiRestDetail: {
-                              slug: 'inserimento-posizioni-debitorie',
-                            },
+                            apiRestDetail: undefined,
+                            apiSoapDetail: undefined,
                           },
                         },
                         {
                           id: 168,
                           attributes: {
-                            apiSoapUrl: undefined,
-                            apiRestDetail: {
-                              slug: 'elenco-IBAN-stazioni',
-                            },
+                            apiRestDetail: undefined,
+                            apiSoapDetail: undefined,
                           },
                         },
                         {
                           id: 164,
                           attributes: {
-                            apiSoapUrl: undefined,
-                            apiRestDetail: {
-                              slug: 'pagamento-fe-ec',
-                            },
+                            apiRestDetail: undefined,
+                            apiSoapDetail: undefined,
                           },
                         },
                         {
                           id: 161,
                           attributes: {
-                            apiSoapUrl: undefined,
-                            apiRestDetail: {
-                              slug: 'recupero-receipt',
-                            },
+                            apiRestDetail: undefined,
+                            apiSoapDetail: undefined,
                           },
                         },
                         {
                           id: 162,
                           attributes: {
-                            apiSoapUrl: undefined,
-                            apiRestDetail: {
-                              slug: 'stampa-avvisi-pagamento',
-                            },
+                            apiRestDetail: undefined,
+                            apiSoapDetail: undefined,
                           },
                         },
                       ],
@@ -423,6 +414,7 @@ export const strapiGuideListPaginatedData = {
         ],
         bannerLinks: [],
         seo: null,
+        updatedAt: dateNow,
       },
     },
   ],
@@ -521,5 +513,7 @@ export const guideListPageProps = [
     ],
     product: product,
     bannerLinks: product.bannerLinks,
+    seo: undefined,
+    updatedAt: dateNow,
   },
 ] satisfies readonly GuideListPageProps[];
