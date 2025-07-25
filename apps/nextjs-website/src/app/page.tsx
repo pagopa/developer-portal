@@ -9,8 +9,12 @@ import {
   makeMetadataFromStrapi,
 } from '@/helpers/metadata.helpers';
 import dynamic from 'next/dynamic';
-import { baseUrl, REVALIDATE_SHORT_INTERVAL } from '@/config';
+import { baseUrl } from '@/config';
 import { getHomepageProps } from '@/lib/cmsApi';
+
+// Force dynamic rendering for the homepage
+export const revalidate = 0;
+
 import BlocksRendererClient from '@/components/molecules/BlocksRendererClient/BlocksRendererClient';
 import Ecosystem from '@/components/organisms/Ecosystem/Ecosystem';
 import ContentWrapper from '@/components/atoms/ContentWrapper/ContentWrapper';
@@ -78,8 +82,6 @@ const NotSsrWebinarsSection = dynamic(
   () => import('@/components/organisms/WebinarsSection/WebinarsSection'),
   { ssr: false }
 );
-
-export const revalidate = REVALIDATE_SHORT_INTERVAL;
 
 const Home = async () => {
   const {

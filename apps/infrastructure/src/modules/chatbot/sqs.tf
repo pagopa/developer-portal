@@ -1,4 +1,4 @@
-resource "aws_sqs_queue" "chatbot_monitor_queue" {
-  name = "${local.prefix}-monitor-queue"
+resource "aws_sqs_queue" "chatbot_evaluate_queue" {
+  name = "${local.prefix}-evaluate-queue"
 }
 
