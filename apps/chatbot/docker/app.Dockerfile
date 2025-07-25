@@ -1,4 +1,4 @@
-FROM public.ecr.aws/lambda/python:3.12
+FROM public.ecr.aws/lambda/python:3.12@sha256:f2be60960015b6788436b22d968c8aea87a67ca6f3d60a80248dc5cbea682907
 ARG DEBIAN_FRONTEND=noninteractive
 
 ENV PYTHONPATH=$LAMBDA_TASK_ROOT
