@@ -1,5 +1,5 @@
 import * as qs from 'qs';
-import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
+import { deprecatedFetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
 import { OverviewsCodec } from '@/lib/strapi/codecs/OverviewsCodec';
 import { productRelationsPopulate } from './fetchProducts';
 
@@ -45,7 +45,7 @@ const makeStrapiOverviewsPopulate = () =>
     },
   });
 
-export const fetchOverviews = fetchFromStrapi(
+export const fetchOverviews = deprecatedFetchFromStrapi(
   'overviews',
   makeStrapiOverviewsPopulate(),
   OverviewsCodec
