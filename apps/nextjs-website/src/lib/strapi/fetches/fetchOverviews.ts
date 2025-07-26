@@ -1,7 +1,7 @@
 import * as qs from 'qs';
 import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
-import { OverviewsCodec } from '@/lib/strapi/codecs/OverviewsCodec';
 import { productRelationsPopulate } from './fetchProducts';
+import { StrapiOverviews } from '@/lib/strapi/types/overviews';
 
 const makeStrapiOverviewsPopulate = () =>
   qs.stringify({
@@ -45,8 +45,7 @@ const makeStrapiOverviewsPopulate = () =>
     },
   });
 
-export const fetchOverviews = fetchFromStrapi(
+export const fetchOverviews = fetchFromStrapi<StrapiOverviews>(
   'overviews',
-  makeStrapiOverviewsPopulate(),
-  OverviewsCodec
+  makeStrapiOverviewsPopulate()
 );

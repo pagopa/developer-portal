@@ -1,4 +1,4 @@
-import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
+import { deprecatedFetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
 import { WebinarCategoriesCodec } from '@/lib/strapi/codecs/WebinarCategoryCodec';
 import qs from 'qs';
 
@@ -9,7 +9,7 @@ const makeStrapiWebinarCategoriesPopulate = () =>
     },
   });
 
-export const fetchWebinarCategories = fetchFromStrapi(
+export const fetchWebinarCategories = deprecatedFetchFromStrapi(
   'webinar-categories',
   makeStrapiWebinarCategoriesPopulate(),
   WebinarCategoriesCodec
