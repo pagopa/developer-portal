@@ -108,7 +108,7 @@ module "opennext" {
       S3_SOLUTIONS_METADATA_JSON_PATH             = "solutions-metadata.json"
       STATIC_CONTENTS_URL                         = format("https://static-contents.%s", var.dns_domain_name)
       S3_SOAP_API_METADATA_JSON_PATH              = "soap-api/soap-api-metadata.json"
-      ALLOW_CRAWLER                               = var.environment == "prod" ? "TRUE" : "FALSE"
+      ALLOW_CRAWLER                               = var.environment == "prod" ? "true" : "false"
     }
   }
 
