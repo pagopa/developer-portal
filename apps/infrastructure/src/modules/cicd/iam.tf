@@ -149,7 +149,7 @@ resource "aws_iam_role" "github_chatbot_reindex" {
   assume_role_policy = local.assume_role_policy_github
 }
 
-# Role to deploy lambda functions with github actions.
+# Role to reindex chatbot data with GitHub actions.
 resource "aws_iam_policy" "github_chatbot_reindex" {
   name        = "${local.prefix}-chatbot-reindex"
   description = "Policy to reindex chatbot data"
