@@ -142,3 +142,70 @@ resource "aws_iam_role_policy_attachment" "github_deploy_opennext" {
   role       = aws_iam_role.github_deploy_opennext.name
   policy_arn = aws_iam_policy.github_deploy_opennext.arn
 }
+
+resource "aws_iam_role_policy_attachment" "github_chatbot_reindex" {
+  role       = aws_iam_role.github_chatbot_reindex.name
+  policy_arn = aws_iam_policy.github_chatbot_reindex.arn
+}
+
+resource "aws_iam_role" "github_chatbot_reindex" {
+  name               = "${local.prefix}-deploy-chatbot-reindex"
+  description        = "Role to reindex chatbot data."
+  assume_role_policy = local.assume_role_policy_github
+}
+
+
+# Role to deploy lambda functions with github actions.
+resource "aws_iam_policy" "github_chatbot_reindex" {
+  name        = "${local.prefix}-chatbot-reindex"
+  description = "Policy to reindex chatbot data"
+
+  policy = jsonencode({
+
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "s3:PutObject",
+          "s3:GetObject",
+          "s3:PutObjectAcl",
+          "s3:DeleteObject"
+        ]
+        Effect = "Allow"
+        Resource = [
+          "${var.assets_opennext_bucket.arn}/*"
+        ]
+      },
+      {
+        Action = [
+          "s3:ListBucket"
+        ]
+        Effect = "Allow"
+        Resource = [
+          var.assets_opennext_bucket.arn
+        ]
+      },
+      {
+        Action = [
+          "ssm:GetParameter",
+          "ssm:PutParameter"
+        ]
+        Effect   = "Allow"
+        Resource = ["arn:aws:ssm:${var.aws_region}:${data.aws_caller_identity.current.account_id}:parameter/chatbot/*"]
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "bedrock:ApplyGuardrail",
+          "bedrock:ListGuardrails",
+          "bedrock:GetGuardrail",
+          "bedrock:InvokeModel",
+          "bedrock:InvokeModelWithResponseStream",
+          "bedrock:ListFoundationModels",
+          "bedrock:Rerank"
+        ]
+        Resource = ["*"]
+      }
+    ]
+  })
+}
