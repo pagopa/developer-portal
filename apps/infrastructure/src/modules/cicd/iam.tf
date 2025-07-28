@@ -143,17 +143,11 @@ resource "aws_iam_role_policy_attachment" "github_deploy_opennext" {
   policy_arn = aws_iam_policy.github_deploy_opennext.arn
 }
 
-resource "aws_iam_role_policy_attachment" "github_chatbot_reindex" {
-  role       = aws_iam_role.github_chatbot_reindex.name
-  policy_arn = aws_iam_policy.github_chatbot_reindex.arn
-}
-
 resource "aws_iam_role" "github_chatbot_reindex" {
   name               = "${local.prefix}-deploy-chatbot-reindex"
   description        = "Role to reindex chatbot data."
   assume_role_policy = local.assume_role_policy_github
 }
-
 
 # Role to deploy lambda functions with github actions.
 resource "aws_iam_policy" "github_chatbot_reindex" {
@@ -208,4 +202,9 @@ resource "aws_iam_policy" "github_chatbot_reindex" {
       }
     ]
   })
+}
+
+resource "aws_iam_role_policy_attachment" "github_chatbot_reindex" {
+  role       = aws_iam_role.github_chatbot_reindex.name
+  policy_arn = aws_iam_policy.github_chatbot_reindex.arn
 }
