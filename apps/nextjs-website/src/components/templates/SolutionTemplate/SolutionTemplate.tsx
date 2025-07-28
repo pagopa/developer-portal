@@ -57,6 +57,7 @@ export type SolutionTemplateProps = {
   solutionSlug: string;
   path?: string;
   seo?: SEO;
+  updatedAt?: string;
 };
 
 const SolutionTemplate = ({

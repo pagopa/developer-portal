@@ -1,4 +1,4 @@
-import { getTutorial, getTutorialPaths } from '@/lib/api';
+import { getTutorial } from '@/lib/api';
 import { Metadata } from 'next';
 import {
   makeMetadata,
@@ -10,21 +10,11 @@ import {
   breadcrumbItemByProduct,
   productToBreadcrumb,
 } from '@/helpers/structuredData.helpers';
-import { REVALIDATE_SHORT_INTERVAL } from '@/config';
 
 type Params = {
   productSlug: string;
   productTutorialPage: Array<string>;
 };
-
-export const revalidate = REVALIDATE_SHORT_INTERVAL;
-export async function generateStaticParams() {
-  const tutorialPaths = await getTutorialPaths();
-  return [...tutorialPaths].map(({ slug, tutorialPaths }) => ({
-    productSlug: slug,
-    productTutorialPage: tutorialPaths,
-  }));
-}
 
 export async function generateMetadata({
   params,

@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import {
   baseUrl,
   cookieCategory,
@@ -26,6 +27,8 @@ import Script from 'next/script';
 import { Titillium_Web } from 'next/font/google';
 import NextIntlContext from '@/components/atoms/NextIntlContext/NextIntlContext';
 import ChatbotProvider from '@/components/organisms/ChatbotProvider/ChatbotProvider';
+import { ErrorBoundary } from 'next/dist/client/components/error-boundary';
+import Error from './error';
 
 // TODO: remove PREVIOUS_MATOMO_TAG_MANAGER_SCRIPT script, usePreviousScript when the migration to the new tag manager is completed
 const PREVIOUS_MATOMO_TAG_MANAGER_SCRIPT =
@@ -86,10 +89,6 @@ export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
 };
 
-export function generateStaticParams() {
-  return [{ locale: 'en' }, { locale: 'it' }];
-}
-
 export default async function RootLayout({
   // Layouts must accept a children prop.
   // This will be populated with nested layouts or pages
@@ -143,7 +142,11 @@ export default async function RootLayout({
             <AuthProvider>
               <ChatbotProvider isChatbotVisible={isChatbotActive}>
                 <SiteHeader products={products} />
-                <main>{children}</main>
+                <ErrorBoundary
+                  errorComponent={Error}
+                >
+                  <main>{children}</main>
+                </ErrorBoundary>
                 <SiteFooter />
               </ChatbotProvider>
             </AuthProvider>

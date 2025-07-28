@@ -9,6 +9,7 @@ const File = ({ src, filename }: FileProps) => (
     sx={{
       p: 3,
       justifyContent: 'left',
+      marginBottom: 1,
       maxWidth: '100%',
       overflow: 'hidden',
       whiteSpace: 'pre-wrap',

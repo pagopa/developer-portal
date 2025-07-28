@@ -81,6 +81,7 @@ const FutureWebinarsShowcase = ({
                     setError(message);
                     return null;
                   }}
+                  textColor={theme.palette.text.primary}
                 />
               ))
             ) : (

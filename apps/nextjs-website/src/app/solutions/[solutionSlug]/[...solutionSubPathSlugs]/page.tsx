@@ -9,6 +9,7 @@ import { getUrlReplaceMapProps } from '@/lib/cmsApi';
 import { SolutionTemplateProps } from '@/components/templates/SolutionTemplate/SolutionTemplate';
 import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
 import { getItemFromPaths } from '@/helpers/structuredData.helpers';
+import PageNotFound from '@/app/not-found';
 import { REVALIDATE_LONG_INTERVAL } from '@/config';
 import { getSolutionsMetadata } from '@/helpers/s3Metadata.helpers';
 
@@ -26,7 +27,7 @@ type Params = {
   solutionSlug: string;
   solutionSubPathSlugs: string[];
 };
-
+// TODO: remove when solutions metadata will be managed in strapi
 export const revalidate = REVALIDATE_LONG_INTERVAL;
 
 const SOLUTION_SLUG_PATH_INDEX = 2;
@@ -69,11 +70,11 @@ const Page = async ({ params }: { params: Params }) => {
     params?.solutionSubPathSlugs
   );
 
-  const urlReplaceMap = await getUrlReplaceMapProps();
   if (!solutionProps) {
-    return null;
+    return <PageNotFound />;
   }
 
+  const urlReplaceMap = await getUrlReplaceMapProps();
   const solution = solutionProps;
   const page = solution.page;
   const source = solution.source;

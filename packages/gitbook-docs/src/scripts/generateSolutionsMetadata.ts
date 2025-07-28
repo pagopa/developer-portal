@@ -19,7 +19,8 @@ import { sitePathFromS3Path } from '../helpers/sitePathFromS3Path';
 dotenv.config();
 
 const S3_BUCKET_NAME = process.env.S3_BUCKET_NAME;
-const S3_PATH_TO_GITBOOK_DOCS = process.env.S3_PATH_TO_GITBOOK_DOCS || 'docs';
+const S3_PATH_TO_GITBOOK_DOCS =
+  process.env.S3_PATH_TO_GITBOOK_DOCS || 'devportal-docs/docs';
 const S3_SOLUTIONS_METADATA_JSON_PATH =
   process.env.S3_SOLUTIONS_METADATA_JSON_PATH || 'solutions-metadata.json';
 
@@ -66,7 +67,11 @@ async function convertSolutionToSitemapItems(
     );
     for (const filePath of solutionFiles) {
       const parts = filePath.split('/');
-      if (parts.length <= 2 || filePath.endsWith('/SUMMARY.md')) {
+      if (
+        parts.length <= 2 ||
+        filePath.endsWith('/SUMMARY.md') ||
+        filePath.includes('.gitbook/includes')
+      ) {
         continue;
       }
       const content = await downloadS3File(
@@ -95,26 +100,31 @@ async function convertSolutionToSitemapItems(
 }
 
 async function main() {
-  try {
-    console.log('Starting to process Markdown files...');
+  console.log('Starting to process Markdown files...');
 
-    const strapiSolutions = await fetchFromStrapi<StrapiSolution>(
+  // eslint-disable-next-line functional/no-let
+  let strapiSolutions;
+  try {
+    const { data } = await fetchFromStrapi<StrapiSolution>(
       'api/solutions?pagination[pageSize]=1000&pagination[page]=1'
     );
-    console.log(`Fetched ${strapiSolutions.length} solutions from Strapi`);
-
-    const sitemapItems = await convertSolutionToSitemapItems(strapiSolutions);
-    console.log(`Converted solutions to ${sitemapItems.length} sitemap items`);
-
-    await writeSitemapJson(
-      sitemapItems,
-      S3_SOLUTIONS_METADATA_JSON_PATH,
-      `${S3_BUCKET_NAME}`,
-      s3Client
-    );
+    strapiSolutions = data;
   } catch (error) {
-    console.error('Error:', error);
+    console.error('Error fetching solutions from Strapi:', error);
+    process.exit(1);
   }
+
+  console.log(`Fetched ${strapiSolutions.length} solutions from Strapi`);
+
+  const sitemapItems = await convertSolutionToSitemapItems(strapiSolutions);
+  console.log(`Converted solutions to ${sitemapItems.length} sitemap items`);
+
+  await writeSitemapJson(
+    sitemapItems,
+    S3_SOLUTIONS_METADATA_JSON_PATH,
+    `${S3_BUCKET_NAME}`,
+    s3Client
+  );
 }
 
 // Execute the function

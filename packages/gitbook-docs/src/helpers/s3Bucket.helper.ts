@@ -12,27 +12,41 @@ import {
 import { Readable } from 'stream';
 import { SitemapItem } from '../sitemapItem';
 
+type S3Credentials = {
+  readonly accessKeyId: string;
+  readonly secretAccessKey: string;
+  readonly sessionToken?: string;
+};
+
 export function makeS3Client(): S3Client {
   const S3_ACCESS_KEY_ID = process.env.S3_ACCESS_KEY_ID;
   const S3_SECRET_ACCESS_KEY = process.env.S3_SECRET_ACCESS_KEY;
   const S3_BUCKET_NAME = process.env.S3_BUCKET_NAME;
-  const AWS_REGION = process.env.NEXT_PUBLIC_COGNITO_REGION;
+
+  const region = process.env.NEXT_PUBLIC_COGNITO_REGION;
+  const credentials: S3Credentials | undefined =
+    !!S3_ACCESS_KEY_ID && !!S3_SECRET_ACCESS_KEY
+      ? {
+          accessKeyId: S3_ACCESS_KEY_ID,
+          secretAccessKey: S3_SECRET_ACCESS_KEY,
+          sessionToken: process.env.S3_SESSION_TOKEN,
+        }
+      : undefined;
 
   // Check if required environment variables are set
-  if (!S3_ACCESS_KEY_ID || !S3_SECRET_ACCESS_KEY || !S3_BUCKET_NAME) {
+  if (!S3_BUCKET_NAME) {
     console.error(
       'Missing required environment variables. Please check your .env file.'
     );
     process.exit(1);
   }
 
-  return new S3Client({
-    region: AWS_REGION,
-    credentials: {
-      accessKeyId: S3_ACCESS_KEY_ID,
-      secretAccessKey: S3_SECRET_ACCESS_KEY,
-    },
-  });
+  const s3 =
+    !!region && !!credentials
+      ? new S3Client({ region, credentials })
+      : new S3Client();
+
+  return s3;
 }
 
 // Function to list all objects in the S3 bucket with a specific prefix
@@ -115,7 +129,7 @@ export async function downloadS3File(
 }
 
 export async function writeSitemapJson(
-  items: SitemapItem[],
+  items: SitemapItem[] | any, // TODO: remove when Strapi will manage Metadata
   jsonPath: string,
   bucketName: string,
   client: S3Client

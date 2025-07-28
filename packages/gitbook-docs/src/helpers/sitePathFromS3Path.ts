@@ -5,7 +5,7 @@ export function sitePathFromS3Path(
   landingFile?: string
 ): string | undefined {
   const parts = s3Path.split('/');
-  const pathParts = parts.slice(2, parts.length - 1); // Skip "docs/dirName" and remove filename
+  const pathParts = parts.slice(3, parts.length - 1); // Skip "devportal-docs/docs/dirName" and remove filename
   const lastPart = parts[parts.length - 1];
 
   if (landingFile && pathParts.join('/') === landingFile) {
