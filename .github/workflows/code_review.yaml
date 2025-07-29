@@ -109,7 +109,7 @@ jobs:
         uses: ./.github/actions/build-nextjs-website
         with:
           path_to_gitbook_docs: ${{ github.workspace }}/apps/nextjs-website/docs
-          cookie_domain_script: ${{ secrets.COOKIE_DOMAIN_SCRIPT }}
+          cookie_domain_script: ${{ vars.NEXT_PUBLIC_COOKIE_DOMAIN_SCRIPT }}
           cookie_script_url: ${{ vars.NEXT_PUBLIC_COOKIE_SCRIPT_URL }}
           cookie_category: ${{ vars.NEXT_PUBLIC_COOKIE_CATEGORY }}
           use_new_cookie: ${{ vars.NEXT_PUBLIC_USE_NEW_COOKIE }}
