@@ -131,7 +131,7 @@ export async function downloadS3File(
 }
 
 export async function writeSitemapJson(
-  items: SitemapItem[],
+  items: SitemapItem[] | any, // TODO: remove when Strapi will manage Metadata
   jsonPath: string,
   bucketName: string,
   client: S3Client

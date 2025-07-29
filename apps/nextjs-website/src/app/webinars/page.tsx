@@ -6,6 +6,8 @@ import dynamic from 'next/dynamic';
 import Spinner from '@/components/atoms/Spinner/Spinner';
 import { getWebinarCategoriesProps } from '@/lib/cmsApi';
 
+export const revalidate = 0;
+
 export async function generateMetadata(): Promise<Metadata> {
   return makeMetadata({
     title: 'PagoPA DevPortal - Webinars',
@@ -18,7 +20,6 @@ export async function generateMetadata(): Promise<Metadata> {
 const NotSsrWebinarsTemplate = dynamic(
   () => import('@/components/organisms/WebinarsTemplate/WebinarsTemplate'),
   {
-    ssr: false,
     loading: () => <Spinner />,
   }
 );

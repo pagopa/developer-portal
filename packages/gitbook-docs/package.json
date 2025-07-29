@@ -29,6 +29,7 @@
   },
   "dependencies": {
     "@markdoc/markdoc": "0.3.0",
+    "dotenv": "^17.2.1",
     "emojibase-data": "^15.3.2",
     "fp-ts": "^2.13.1",
     "htmlparser2": "^9.0.0",

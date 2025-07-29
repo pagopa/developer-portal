@@ -19,21 +19,14 @@ import {
   breadcrumbItemByProduct,
   productToBreadcrumb,
 } from '@/helpers/structuredData.helpers';
-import { getQuickStartGuidesProps } from '@/lib/cmsApi';
-import { REVALIDATE_SHORT_INTERVAL } from '@/config';
 
-export const revalidate = REVALIDATE_SHORT_INTERVAL;
-export async function generateStaticParams() {
-  return (await getQuickStartGuidesProps()).map(({ product }) => ({
-    productSlug: product.slug,
-  }));
-}
 export type QuickStartGuidePageProps = {
   readonly product: Product;
   readonly abstract?: {
     readonly title: string;
     readonly description: string;
   };
+  readonly updatedAt?: string;
   readonly defaultStepAnchor?: string;
   readonly steps?: ReadonlyArray<Step>;
   readonly seo?: SEO;

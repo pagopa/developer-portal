@@ -48,4 +48,6 @@ export type Webinar = {
   readonly questionsAndAnswers?: readonly QuestionsAndAnswer[];
   readonly seo?: SEO;
   readonly webinarCategory?: WebinarCategory;
+  readonly headerImage?: Media;
+  readonly updatedAt: string;
 };
