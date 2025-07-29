@@ -85,6 +85,12 @@ jobs:
           s3_access_key_id: ${{ secrets.S3_ACCESS_KEY_ID }}
           s3_secret_access_key: ${{ secrets.S3_SECRET_ACCESS_KEY }}
           fetch_from_strapi: ${{ vars.FETCH_FROM_STRAPI }}
+      
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502
+        with:
+          role-to-assume: ${{ secrets.IAM_ROLE_CHATBOT_REINDEX }}
+          aws-region: eu-south-1
 
       - name: Chatbot Vector Index
         uses: ./.github/actions/chatbot

@@ -144,7 +144,7 @@ resource "aws_iam_role_policy_attachment" "github_deploy_opennext" {
 }
 
 resource "aws_iam_role" "github_chatbot_reindex" {
-  name               = "${local.prefix}-deploy-chatbot-reindex"
+  name               = "${local.prefix}-chatbot-reindex"
   description        = "Role to reindex chatbot data."
   assume_role_policy = local.assume_role_policy_github
 }
@@ -167,7 +167,9 @@ resource "aws_iam_policy" "github_chatbot_reindex" {
         ]
         Effect = "Allow"
         Resource = [
-          "${var.assets_opennext_bucket.arn}/*"
+          "${var.assets_opennext_bucket.arn}/*",
+          "${var.website_bucket.arn}/*",
+          "${var.website_standalone_bucket.arn}/*"
         ]
       },
       {
@@ -176,7 +178,9 @@ resource "aws_iam_policy" "github_chatbot_reindex" {
         ]
         Effect = "Allow"
         Resource = [
-          var.assets_opennext_bucket.arn
+          var.assets_opennext_bucket.arn,
+          var.website_bucket.arn,
+          var.website_standalone_bucket.arn
         ]
       },
       {
@@ -199,6 +203,13 @@ resource "aws_iam_policy" "github_chatbot_reindex" {
           "bedrock:Rerank"
         ]
         Resource = ["*"]
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "lambda:*"
+        ]
+        Resource = ["arn:aws:lambda:${var.aws_region}:${data.aws_caller_identity.current.account_id}:function:*chatbot*"]
       }
     ]
   })
