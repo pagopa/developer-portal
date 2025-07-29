@@ -375,39 +375,49 @@ def get_dynamic_docs(dynamic_urls: List[str]) -> List[Document]:
     for url in tqdm.tqdm(
         dynamic_urls, total=len(dynamic_urls), desc="Getting dynamic documents"
     ):
-        driver = webdriver.Chrome(options=driver_options, service=driver_service)
-        driver.get(url)
-        time.sleep(5)
-        title, text = html2markdown(driver.page_source)
-        driver.quit()
-        if (
-            text is not None
-            and text != ""
-            and text != "None"
-            and text
-            != (
-                "404\n\n#### Pagina non trovata\n\n"
-                "La pagina che stai cercando non esiste"
-            )
-        ):
-
-            text = re.sub(r"(?<=[\wÀ-ÿ])\n(?=[\wÀ-ÿ])", " ", text)
-            if title == "":
-                title = os.path.basename(url).replace("-", " ")
-
-            dynamic_docs.append(
-                Document(
-                    id_=url.replace(WEBSITE_URL, ""),
-                    text=text,
-                    metadata={
-                        "filepath": url.replace(WEBSITE_URL, ""),
-                        "title": title,
-                        "language": "it",
-                    },
+        try:
+            driver = webdriver.Chrome(options=driver_options, service=driver_service)
+            driver.get(url)
+            time.sleep(5)
+            title, text = html2markdown(driver.page_source)
+            driver.quit()
+            if (
+                text is not None
+                and text != ""
+                and text != "None"
+                and text
+                != (
+                    "404\n\n#### Pagina non trovata\n\n"
+                    "La pagina che stai cercando non esiste"
                 )
-            )
-        else:
+            ):
+
+                text = re.sub(r"(?<=[\wÀ-ÿ])\n(?=[\wÀ-ÿ])", " ", text)
+                if title == "":
+                    title = os.path.basename(url).replace("-", " ")
+
+                dynamic_docs.append(
+                    Document(
+                        id_=url.replace(WEBSITE_URL, ""),
+                        text=text,
+                        metadata={
+                            "filepath": url.replace(WEBSITE_URL, ""),
+                            "title": title,
+                            "language": "it",
+                        },
+                    )
+                )
+            else:
+                discarded_docs += 1
+                LOGGER.warning(f"Discarded {url} due to empty content or 404 error.")
+
+        except Exception as e:
             discarded_docs += 1
+            LOGGER.warning(f"Discarded {url} due to {e}.")
+            if driver:
+                driver.quit()
+            continue
+
     LOGGER.warning(
         f"Discarded {discarded_docs} dynamic documents due to empty content or 404 errors."
     )
