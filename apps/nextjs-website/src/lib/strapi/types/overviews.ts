@@ -7,7 +7,6 @@ import { StrapiProduct } from '@/lib/strapi/codecs/ProductCodec';
 import { StrapiBlocksContent } from '@/lib/strapi/codecs/BlocksContentCodec';
 import { StrapiBaseTutorial } from '@/lib/strapi/codecs/TutorialCodec';
 import { StrapiBannerLink } from '@/lib/strapi/types/bannerLink';
-import { StrapiFeature } from '@/lib/strapi/types/feature';
 import { StrapiNewsShowcase } from '@/lib/strapi/types/newsShowcase';
 
 export type StartInfo = {
@@ -22,6 +21,12 @@ export type StartInfoSection = {
   readonly bottomLabel?: string | null;
   readonly bottomLink?: Link | null;
   readonly items: readonly StartInfo[];
+};
+
+export type StrapiFeature = {
+  readonly title: string;
+  readonly subtitle?: string | null;
+  readonly items: ReadonlyArray<StrapiBannerLink>;
 };
 
 export type TutorialSection = {
