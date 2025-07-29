@@ -157,7 +157,7 @@ export const strapiOverviews: StrapiOverviews = {
                   title: 'News Item 1',
                   label: 'New',
                   comingSoon: false,
-                  publishedAt: dateNow,
+                  publishedAt: dateNow.toISOString(),
                   link: {
                     text: 'Read More',
                     href: '/news/item-1',
