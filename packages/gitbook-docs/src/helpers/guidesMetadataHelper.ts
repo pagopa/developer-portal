@@ -1,5 +1,3 @@
-export const URL_PARSING_METADATA_JSON_PATH =
-  process.env.URL_PARSING_METADATA_JSON_PATH || 'url-parsing-metadata.json';
 export interface StrapiGuide {
   readonly id: number;
   readonly attributes: {

@@ -9,14 +9,13 @@ import * as fs from 'fs';
 import { readdir } from 'fs/promises';
 import path from 'path';
 import { fetchFromStrapi } from '../helpers/fetchFromStrapi';
-import {
-  StrapiGuide,
-  GuideInfo,
-  URL_PARSING_METADATA_JSON_PATH,
-} from '../helpers/guidesMetadataHelper';
+import { StrapiGuide, GuideInfo } from '../helpers/guidesMetadataHelper';
 import { sitePathFromLocalPath } from '../helpers/sitePathFromLocalPath';
 // Load environment variables from .env file
 dotenv.config();
+
+const URL_PARSING_METADATA_JSON_PATH =
+  process.env.URL_PARSING_METADATA_JSON_PATH || 'url-parsing-metadata.json';
 
 export type UrlParsingItem = {
   dirName: string;
