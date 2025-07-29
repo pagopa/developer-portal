@@ -20,11 +20,11 @@ export function makeOverviewsProps(
       feature:
         (attributes.features && {
           title: attributes.features.title,
-          subtitle: attributes.features.subtitle,
+          subtitle: attributes.features.subtitle || undefined,
           items:
             attributes.features.items.map((item) => ({
               iconUrl: item.icon.data?.attributes.url,
-              content: item.content,
+              content: item.content || undefined,
               title: item.title || '',
             })) || [],
         }) ||
@@ -73,27 +73,29 @@ export function makeOverviewsProps(
       whatsNew:
         (attributes.whatsNew && {
           title: attributes.whatsNew.title,
-          subtitle: attributes.whatsNew.subTitle,
+          subtitle: attributes.whatsNew.subTitle || undefined,
           ...(attributes.whatsNew.link && {
             link: {
               text: attributes.whatsNew.link.text,
               url: attributes.whatsNew.link.href,
-              target: attributes.whatsNew.link.target,
+              target: attributes.whatsNew.link.target || undefined,
             },
           }),
           items: attributes.whatsNew.items.data.map((item) => ({
             comingSoon: item.attributes.comingSoon,
             title: item.attributes.title,
-            publishedAt: item.attributes.publishedAt,
-            label: item.attributes.label,
+            publishedAt: new Date(item.attributes.publishedAt),
+            label: item.attributes.label || undefined,
             link: {
               text: item.attributes.link.text,
               url: item.attributes.link.href,
-              target: item.attributes.link.target,
+              target: item.attributes.link.target || undefined,
             },
-            image:
-              item.attributes.image.data &&
-              item.attributes.image.data.attributes,
+            image: item.attributes.image?.data && {
+              url: item.attributes.image.data.attributes.url,
+              alternativeText:
+                item.attributes.image.data.attributes.alternativeText || '',
+            },
           })),
         }) ||
         undefined,
@@ -159,6 +161,6 @@ export function makeOverviewsProps(
               makeBannerLinkProps
             ),
       seo: attributes.seo || undefined,
-    };
+    } satisfies OverviewPageProps;
   });
 }

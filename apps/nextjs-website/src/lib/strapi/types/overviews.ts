@@ -4,11 +4,11 @@ import { Media } from '@/lib/strapi/types/media';
 import { Pagination } from '@/lib/strapi/types/pagination';
 import { StrapiSEO } from '@/lib/strapi/codecs/SeoCodec';
 import { StrapiProduct } from '@/lib/strapi/codecs/ProductCodec';
-import { StrapiFeatures } from '@/lib/strapi/codecs/FeaturesCodec';
 import { StrapiBlocksContent } from '@/lib/strapi/codecs/BlocksContentCodec';
-import { StrapiBannerLink } from '@/lib/strapi/codecs/BannerLinkCodec';
-import { NewsShowcase } from '@/lib/strapi/codecs/NewsShowcaseCodec';
 import { StrapiBaseTutorial } from '@/lib/strapi/codecs/TutorialCodec';
+import { StrapiBannerLink } from '@/lib/strapi/types/bannerLink';
+import { StrapiFeature } from '@/lib/strapi/types/feature';
+import { StrapiNewsShowcase } from '@/lib/strapi/types/newsShowcase';
 
 export type StartInfo = {
   readonly icon: { readonly data: Media };
@@ -64,7 +64,7 @@ export type Overview = {
     readonly publishedAt: string;
     readonly subtitle: string;
     readonly backgroundImage: { readonly data: Media };
-    readonly features?: StrapiFeatures | null;
+    readonly features?: StrapiFeature | null;
     readonly startInfoSection?: StartInfoSection | null;
     readonly tutorialSection?: TutorialSection | null;
     readonly postIntegration?: PostIntegration | null;
@@ -72,11 +72,13 @@ export type Overview = {
     readonly product: { readonly data: StrapiProduct };
     readonly bannerLinks: readonly StrapiBannerLink[];
     readonly seo?: StrapiSEO | null;
-    readonly whatsNew?: NewsShowcase | null;
+    readonly whatsNew?: StrapiNewsShowcase | null;
   };
 };
 
 export type StrapiOverviews = {
   readonly data: readonly Overview[];
-  readonly meta: Pagination;
+  readonly meta: {
+    readonly pagination: Pagination;
+  };
 };
