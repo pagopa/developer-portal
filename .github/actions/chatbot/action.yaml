@@ -43,7 +43,7 @@ runs:
       shell: bash
       run: |
         cd apps/chatbot
-        PYTHONPATH=. CHB_DOCUMENTATION_DIR=${{ github.workspace }}/apps/nextjs-website/out poetry run python src/modules/create_vector_index.py --params config/params.yaml
+        PYTHONPATH=. poetry run python src/modules/create_vector_index.py --params config/params.yaml
 
     - name: Restart backend lambda function
       env:
