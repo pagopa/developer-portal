@@ -17,6 +17,8 @@ export function parseUrlsFromMarkdown(
   fileContent: string,
   guideMetadata: UrlParsingMetadata | undefined
 ): string {
+  // Regex to match markdown links: [link text](url)
+  // Captures: [1] = link text, [2] = URL
   const regex = /\[([^\]]+)]\(([^)]+)\)/g;
   const matches = [...fileContent.matchAll(regex)];
   // eslint-disable-next-line functional/no-let
@@ -28,10 +30,13 @@ export function parseUrlsFromMarkdown(
   return updatedFileContent;
 }
 
+// Transforms a relative URL into an absolute URL by matching it against guide metadata.
+// Handles various markdown file extensions and path formats to find the correct guide URL.
 export function replaceUrl(
   metadata: UrlParsingMetadata | undefined,
   value: string
 ): string {
+  // Clean up the URL by removing mentions, README.md, and .md extensions
   const splitValue = value
     .replace(' "mention"', '')
     .replace('README.md', '')
@@ -43,10 +48,13 @@ export function replaceUrl(
   const lastPart = splitValue.at(-1) || '';
   const secondToLastPart = splitValue.at(-2) || '';
   const name = lastPart.replace('.md', '');
+
+  // Skip processing for very short names (likely not valid guide names)
   if (name.length <= 1) {
     return value;
   }
   if (metadata) {
+    // Find guides that contain the extracted name in their path
     const guides = metadata.guides.filter((guide) =>
       guide.guidePath.includes(name)
     );
@@ -56,6 +64,7 @@ export function replaceUrl(
     if (guides.length == 1) {
       return guides[0].guideUrl || value;
     } else {
+      // If multiple matches, try to find more specific match using parent directory
       const guide = guides.find((guide) =>
         guide.guidePath.includes([secondToLastPart, lastPart].join('/'))
       );
@@ -67,6 +76,7 @@ export function replaceUrl(
   }
 }
 
+// Processes markdown content to expand include directives.
 export async function parseIncludesFromMarkdown(
   fileContent: string,
   hashDir: string
@@ -74,6 +84,8 @@ export async function parseIncludesFromMarkdown(
   if (!fileContent.includes('{% include')) {
     return fileContent;
   }
+  // Regex to match Jekyll include syntax: {% include "filename" %}
+  // Captures: [1] = filename/path to include
   const regex = /{% include\s+['"]([^'"]+)['"]\s*%}/gs;
   const matches = [...fileContent.matchAll(regex)];
   // eslint-disable-next-line functional/no-let
@@ -100,6 +112,8 @@ export async function getIncludeContent(
   return (await fs.promises.readFile(mappedIncludePath, 'utf8')) as string;
 }
 
+// Replaces the include directive with the actual file content.
+// Returns the original directive if no content is available.
 export async function replaceIncludes(
   fullInclude: string,
   includeContent: string
@@ -111,6 +125,8 @@ export async function replaceIncludes(
   return includeContent;
 }
 
+// Maps relative include paths to absolute filesystem paths.
+// Handles GitBook-style include paths by replacing relative navigation with absolute paths.
 function mapIncludePath(includePath: string, hashDir: string): string {
   // Normalize the path to use POSIX separators
   const normalized = includePath.replace(/\\/g, '/');
