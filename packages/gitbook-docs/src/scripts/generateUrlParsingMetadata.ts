@@ -115,9 +115,11 @@ async function main() {
     const strapiGuides = await fetchFromStrapi<StrapiGuide>(
       'api/guides?populate[0]=product&populate[1]=versions&pagination[pageSize]=1000&pagination[page]=1'
     );
-    console.log(`Fetched ${strapiGuides.length} guides from Strapi`);
+    console.log(`Fetched ${strapiGuides.data.length} guides from Strapi`);
 
-    const urlParsingItems = await convertGuideToUrlParsingItems(strapiGuides);
+    const urlParsingItems = await convertGuideToUrlParsingItems(
+      strapiGuides.data
+    );
     console.log(
       `Converted guides to ${urlParsingItems.length} url parsing items`
     );
