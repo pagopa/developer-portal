@@ -14,6 +14,11 @@ on:
           - uat
           - prod
 
+  workflow_run:
+    workflows:
+      - Sync GitBook Docs
+    types: [completed]
+
   # Allows external webhook trigger
   repository_dispatch:
     types:
