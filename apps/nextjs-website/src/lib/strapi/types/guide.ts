@@ -1,8 +1,7 @@
-import * as t from 'io-ts';
 import { StrapiBaseProductWithRelations } from '@/lib/strapi/codecs/ProductCodec';
 import { StrapiBannerLink } from '@/lib/strapi/codecs/BannerLinkCodec';
-import { SEOCodec } from '@/lib/strapi/codecs/SeoCodec';
-import { MediaAttributes } from '@/lib/strapi/types/media';
+import { StrapiSEO } from '@/lib/strapi/codecs/SeoCodec';
+import { Media } from '@/lib/strapi/types/media';
 import { Pagination } from '@/lib/strapi/types/pagination';
 
 type GuideVersion = {
@@ -15,10 +14,10 @@ type BaseGuideAttributes = {
   readonly title: string;
   readonly slug: string;
   readonly image: {
-    readonly data: MediaAttributes;
+    readonly data: Media;
   };
   readonly mobileImage: {
-    readonly data: MediaAttributes;
+    readonly data: Media;
   };
   readonly listItems: ReadonlyArray<{
     readonly text: string;
@@ -36,7 +35,7 @@ export type Guide = {
       readonly data: StrapiBaseProductWithRelations;
     };
     readonly bannerLinks: ReadonlyArray<StrapiBannerLink>;
-    readonly seo: t.TypeOf<typeof SEOCodec> | null;
+    readonly seo: StrapiSEO | null;
   };
 };
 
