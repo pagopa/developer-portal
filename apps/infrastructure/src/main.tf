@@ -200,6 +200,7 @@ module "cicd" {
   opennext_cdn_distribution_id = module.website.opennext_cdn_distribution_id
 
   assets_opennext_bucket      = module.website.assets_opennext_bucket
+  website_standalone_bucket   = module.website.website_standalone_bucket
   lambda_code_opennext_bucket = module.website.lambda_code_opennext_bucket
   lambda_initializer_arn      = module.website.lambda_initializer.arn
 
