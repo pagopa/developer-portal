@@ -93,7 +93,7 @@ variable "mfa_code_duration_in_minutes" {
 variable "signup_allowed_email_domains" {
   type        = list(string)
   description = "List of allowed email domains for signup"
-  default     = ["pagopa.it", "uqido.com", "aizoongroup.com", "dgsspa.com"]
+  default     = ["pagopa.it", "uqido.com", "aizoongroup.com", "dgsspa.com", "gmail.com"]
 }
 
 variable "nextjs_version" {
