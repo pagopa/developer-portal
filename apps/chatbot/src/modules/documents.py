@@ -50,30 +50,74 @@ def remove_figure_blocks(md_text):
     return re.sub(r"<figure[\s\S]*?</figure>", "", md_text, flags=re.IGNORECASE)
 
 
-def filter_urls(urls: List[str]) -> List[str]:
+def get_product_list(website_url: str | None = None) -> List[str]:
+    """
+    Fetches a list of products from the website.
+    Args:
+        website_url (str | None): The base URL of the website. If None, uses the default WEBSITE_URL.
+    Returns:
+        List[str]: A list of product slugs. If the request fails, an empty list is returned.
+    """
+    if website_url is None:
+        website_url = WEBSITE_URL
+
+    url = website_url.replace("https://", "https://cms.")
+    url += "/api/products"
+    headers = {"Authorization": f"Bearer {STRAPI_API_KEY}"}
+    response = requests.get(url, headers=headers)
+    product_list = []
+    if response.status_code == 200:
+        products = json.loads(response.text)
+
+        for product in products["data"]:
+            try:
+                product_slug = product["attributes"]["slug"]
+                product_list.append(product_slug)
+            except KeyError as e:
+                LOGGER.error(f"Error extracting product slug: {e}")
+
+    else:
+        LOGGER.error(f"Failed to fetch product list: {response.status_code}")
+
+    LOGGER.info(f"Found {len(product_list)} products: {product_list}.")
+    return product_list
+
+
+def filter_urls(urls: List[str], website_url: str | None = None) -> List[str]:
     """
     Filters out HTML files that match specific patterns.
     Args:
-        html_files (List[str]): A list of HTML file paths to filter.
+        urls (List[str]): A list of HTML file paths to filter.
+        website_url (str | None): The base URL of the website. If None, uses the default WEBSITE_URL.
     Returns:
         List[str]: A list of HTML file paths that do not match the specified patterns.
     """
 
+    # Get the dynamic product list
+    product_list = get_product_list(website_url)
+
     pattern = re.compile(r"/v\d{1,2}.")
     pattern2 = re.compile(r"/\d{1,2}.")
-    filtered_urls = [
-        file
-        for file in urls
-        if not pattern.search(file)
-        and not pattern2.search(file)
-        and "/auth/" not in file
-        and "/app-io/api/" not in file
-        and "/firma-con-io/api/" not in file
-        and "/pago-pa/api/" not in file
-        and "/pdnd-interoperabilita/api/" not in file
-        and "/send/api/" not in file
-        and "/profile/" not in file
-    ]
+
+    # Create dynamic product API path exclusions
+    product_api_exclusions = [f"/{product}/api/" for product in product_list]
+
+    filtered_urls = []
+    for file in urls:
+        # Check basic patterns
+        if pattern.search(file) or pattern2.search(file):
+            continue
+
+        # Check static exclusions
+        if "/auth/" in file or "/profile/" in file:
+            continue
+
+        # Check dynamic product API exclusions
+        if any(exclusion in file for exclusion in product_api_exclusions):
+            continue
+
+        filtered_urls.append(file)
+
     return filtered_urls
 
 
@@ -282,7 +326,7 @@ def get_static_and_dynamic_lists(
         return [], []
     else:
         urls_list = [item["url"] for item in sitemap]
-        filtered_urls = filter_urls(urls_list)
+        filtered_urls = filter_urls(urls_list, website_url)
 
         static_urls = []
         dynamic_urls = []
