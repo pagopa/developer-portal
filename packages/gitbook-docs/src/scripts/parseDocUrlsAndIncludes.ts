@@ -52,7 +52,7 @@ async function recursiveParseMarkdownFiles(
       );
       const includesParsedFileContent = await parseIncludesFromMarkdown(
         urlParsedFileContent,
-        guideMetadata?.dirName || ''
+        fullPath
       );
       try {
         fs.writeFileSync(fullPath, includesParsedFileContent, 'utf8');

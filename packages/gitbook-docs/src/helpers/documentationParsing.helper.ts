@@ -3,6 +3,8 @@
 /* eslint-disable functional/no-expression-statements */
 /* eslint-disable functional/immutable-data */
 /* eslint-disable functional/no-try-statements */
+import path from 'path';
+
 export const DOCUMENTATION_PATH =
   process.env.DOCUMENTATION_PATH || 'devportal-docs/docs';
 export type UrlParsingMetadata = {
@@ -79,7 +81,7 @@ export function replaceUrl(
 // Processes markdown content to expand include directives.
 export async function parseIncludesFromMarkdown(
   fileContent: string,
-  hashDir: string
+  filePath: string
 ): Promise<string> {
   if (!fileContent.includes('{% include')) {
     return fileContent;
@@ -91,7 +93,7 @@ export async function parseIncludesFromMarkdown(
   // eslint-disable-next-line functional/no-let
   let updatedFileContent = fileContent;
   for (const match of matches) {
-    const includeContent = await getIncludeContent(match[1], hashDir);
+    const includeContent = await getIncludeContent(match[1], filePath);
     const replaceValue = await replaceIncludes(match[0], includeContent);
     updatedFileContent = updatedFileContent.replace(match[0], replaceValue);
   }
@@ -100,11 +102,11 @@ export async function parseIncludesFromMarkdown(
 
 export async function getIncludeContent(
   includePath: string,
-  hashDir: string
+  filePath: string
 ): Promise<string> {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
   const fs = require('fs');
-  const mappedIncludePath = mapIncludePath(includePath, hashDir);
+  const mappedIncludePath = mapIncludePath(includePath, filePath);
   if (!fs.existsSync(mappedIncludePath)) {
     console.log('no file found for', mappedIncludePath);
     return '';
@@ -127,12 +129,9 @@ export async function replaceIncludes(
 
 // Maps relative include paths to absolute filesystem paths.
 // Handles GitBook-style include paths by replacing relative navigation with absolute paths.
-function mapIncludePath(includePath: string, hashDir: string): string {
+function mapIncludePath(includePath: string, filePath: string): string {
   // Normalize the path to use POSIX separators
   const normalized = includePath.replace(/\\/g, '/');
   // Match leading ../ segments followed by .gitbook/includes
-  return normalized.replace(
-    /^((\.\.\/)*)\.gitbook\/includes/,
-    DOCUMENTATION_PATH + `/${hashDir}/.gitbook/includes`
-  );
+  return path.join(filePath, normalized);
 }
