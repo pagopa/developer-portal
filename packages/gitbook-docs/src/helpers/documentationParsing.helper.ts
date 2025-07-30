@@ -4,6 +4,7 @@
 /* eslint-disable functional/immutable-data */
 /* eslint-disable functional/no-try-statements */
 import path from 'path';
+import fs from 'fs';
 
 export const DOCUMENTATION_PATH =
   process.env.DOCUMENTATION_PATH || 'devportal-docs/docs';
@@ -108,6 +109,7 @@ export async function getIncludeContent(
   const fs = require('fs');
   const mappedIncludePath = mapIncludePath(includePath, filePath);
   if (!fs.existsSync(mappedIncludePath)) {
+    console.log('asd ', includePath, ' - ', filePath);
     console.log('no file found for', mappedIncludePath);
     return '';
   }
@@ -132,6 +134,6 @@ export async function replaceIncludes(
 function mapIncludePath(includePath: string, filePath: string): string {
   // Normalize the path to use POSIX separators
   const normalized = includePath.replace(/\\/g, '/');
-  // Match leading ../ segments followed by .gitbook/includes
-  return path.join(filePath, normalized);
+  // Join the directory of the current file with the normalized include path
+  return path.join(path.dirname(filePath), normalized);
 }
