@@ -166,7 +166,9 @@ const Chat = ({
               >
                 <ChatMessage
                   {...message}
-                  mustFillFeedbackForm={mustFillFeedbackForm}
+                  mustFillFeedbackForm={
+                    mustFillFeedbackForm && isFeedbackFormEnabled
+                  }
                   onToggleNegativeFeedback={(negativeFeedback) => {
                     setSessionId(message.sessionId);
                     setId(message.id);
