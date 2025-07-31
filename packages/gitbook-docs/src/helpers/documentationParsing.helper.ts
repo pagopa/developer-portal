@@ -30,6 +30,9 @@ export function parseUrlsFromMarkdown(
     const replace = replaceUrl(guideMetadata, match[2]);
     updatedFileContent = updatedFileContent.replace(match[2] || '', replace);
   }
+  if (matches.length > 0) {
+    console.log('Replaced URLs in directory: ', guideMetadata?.dirName);
+  }
   return updatedFileContent;
 }
 
@@ -97,6 +100,9 @@ export async function parseIncludesFromMarkdown(
     const includeContent = await getIncludeContent(match[1], filePath);
     const replaceValue = await replaceIncludes(match[0], includeContent);
     updatedFileContent = updatedFileContent.replace(match[0], replaceValue);
+  }
+  if (matches.length > 0) {
+    console.log('Replaced reusable contents in file: ', filePath);
   }
   return updatedFileContent;
 }
