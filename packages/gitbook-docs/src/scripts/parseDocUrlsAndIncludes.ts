@@ -48,7 +48,8 @@ async function recursiveParseMarkdownFiles(
       if (!guideMetadata) return;
       const urlParsedFileContent = parseUrlsFromMarkdown(
         await fs.promises.readFile(fullPath, 'utf8'),
-        guideMetadata
+        guideMetadata,
+        fullPath
       );
       const includesParsedFileContent = await parseIncludesFromMarkdown(
         urlParsedFileContent,
@@ -65,7 +66,9 @@ async function recursiveParseMarkdownFiles(
 
 async function main() {
   try {
+    console.log('Starting to parse documentation files...');
     await recursiveParseMarkdownFiles(DOCUMENTATION_PATH);
+    console.log('Documentation files parsed successfully.');
   } catch (error) {
     console.error('Error:', error);
     process.exit(1); // Exit with error code for CI pipeline visibility

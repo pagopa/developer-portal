@@ -18,7 +18,8 @@ export type UrlParsingMetadata = {
 
 export function parseUrlsFromMarkdown(
   fileContent: string,
-  guideMetadata: UrlParsingMetadata | undefined
+  guideMetadata: UrlParsingMetadata | undefined,
+  filePath?: string
 ): string {
   // Regex to match markdown links: [link text](url)
   // Captures: [1] = link text, [2] = URL
@@ -31,7 +32,7 @@ export function parseUrlsFromMarkdown(
     updatedFileContent = updatedFileContent.replace(match[2] || '', replace);
   }
   if (matches.length > 0) {
-    console.log('Replaced URLs in directory: ', guideMetadata?.dirName);
+    console.log('Replaced URLs in file: ', filePath || '');
   }
   return updatedFileContent;
 }
@@ -74,7 +75,6 @@ export function replaceUrl(
       const guide = guides.find((guide) =>
         guide.guidePath.includes([secondToLastPart, lastPart].join('/'))
       );
-
       return guide?.guideUrl || value;
     }
   } else {
@@ -115,7 +115,6 @@ export async function getIncludeContent(
   const fs = require('fs');
   const mappedIncludePath = mapIncludePath(includePath, filePath);
   if (!fs.existsSync(mappedIncludePath)) {
-    console.log('asd ', includePath, ' - ', filePath);
     console.log('no file found for', mappedIncludePath);
     return '';
   }
