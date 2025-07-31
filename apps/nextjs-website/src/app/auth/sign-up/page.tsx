@@ -10,10 +10,11 @@ import { SignUpUserData } from '@/lib/types/sign-up';
 import { useTranslations } from 'next-intl';
 import { generateSignUpData } from '@/helpers/auth.helpers';
 import { useAuthenticatedUserRedirect } from '@/helpers/user.helper';
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
 import { signUpAdvantages } from '@/config';
+import Spinner from '@/components/atoms/Spinner/Spinner';
 
-const SignUp = () => {
+const SignUpContent = () => {
   const loading = useAuthenticatedUserRedirect();
 
   const params = useSearchParams();
@@ -103,6 +104,14 @@ const SignUp = () => {
         </Grid>
       </Box>
     </>
+  );
+};
+
+const SignUp = () => {
+  return (
+    <Suspense fallback={<Spinner />}>
+      <SignUpContent />
+    </Suspense>
   );
 };
 

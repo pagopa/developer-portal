@@ -2,7 +2,7 @@
 import PageNotFound from '@/app/not-found';
 import { Auth } from 'aws-amplify';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import Spinner from '@/components/atoms/Spinner/Spinner';
 import ExpiredCode from '@/app/auth/expired-code/page';
 
@@ -12,7 +12,7 @@ enum State {
   error = 'error',
 }
 
-const EmailConfirmation = () => {
+const EmailConfirmationContent = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
   const code = searchParams.get('code');
@@ -53,6 +53,14 @@ const EmailConfirmation = () => {
     default:
       return <Spinner />;
   }
+};
+
+const EmailConfirmation = () => {
+  return (
+    <Suspense fallback={<Spinner />}>
+      <EmailConfirmationContent />
+    </Suspense>
+  );
 };
 
 export default EmailConfirmation;

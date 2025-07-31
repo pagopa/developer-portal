@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Suspense } from 'react';
 import Hero from '@/editorialComponents/Hero/Hero';
 import { useTranslations } from 'next-intl';
 import { Box, Grid, useMediaQuery, useTheme } from '@mui/material';
@@ -16,6 +16,7 @@ import MobileWebinarCategorySelector from '@/components/molecules/MobileWebinarC
 import DesktopWebinarCategorySelector from '@/components/molecules/DesktopWebinarCategorySelector/DesktopWebinarCategorySelector';
 import { WebinarCategory } from '@/lib/types/webinarCategory';
 import { useSearchParams } from 'next/navigation';
+import Spinner from '@/components/atoms/Spinner/Spinner';
 
 const CHECK_WEBINARS_INTERVAL_MS = 60 * 1000;
 
@@ -24,7 +25,10 @@ type WebinarsTemplateProps = {
   categories: readonly WebinarCategory[];
 };
 
-const WebinarsTemplate = ({ webinars, categories }: WebinarsTemplateProps) => {
+const WebinarsTemplateContent = ({
+  webinars,
+  categories,
+}: WebinarsTemplateProps) => {
   const t = useTranslations();
   const updatedCategories = [
     {
@@ -185,6 +189,14 @@ const WebinarsTemplate = ({ webinars, categories }: WebinarsTemplateProps) => {
         </>
       )}
     </>
+  );
+};
+
+const WebinarsTemplate = (props: WebinarsTemplateProps) => {
+  return (
+    <Suspense fallback={<Spinner />}>
+      <WebinarsTemplateContent {...props} />
+    </Suspense>
   );
 };
 

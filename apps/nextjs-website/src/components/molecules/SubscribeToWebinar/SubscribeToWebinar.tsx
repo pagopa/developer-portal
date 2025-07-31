@@ -1,5 +1,5 @@
 'use client';
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, Suspense } from 'react';
 import { useState } from 'react';
 import SubscribeButton from '../../atoms/SubscribeButton/SubscribeButton';
 import { useTranslations } from 'next-intl';
@@ -7,6 +7,7 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { WebinarState } from '@/helpers/webinar.helpers';
 import { subscribeToWebinar, unsubscribeToWebinar } from '@/lib/webinarApi';
 import { useUser } from '@/helpers/user.helper';
+import Spinner from '../../atoms/Spinner/Spinner';
 
 export type SubscribeButtonProps = {
   webinarSlug?: string;
@@ -17,7 +18,7 @@ export type SubscribeButtonProps = {
   textColor?: string;
 };
 
-const SubscribeToWebinar = ({
+const SubscribeToWebinarContent = ({
   webinarSlug,
   isSubscribed,
   setIsSubscribed,
@@ -152,6 +153,14 @@ const SubscribeToWebinar = ({
       subscribeLabel={subscribeLabelMap[webinarState]}
       textColor={textColor}
     />
+  );
+};
+
+const SubscribeToWebinar = (props: SubscribeButtonProps) => {
+  return (
+    <Suspense fallback={<Spinner />}>
+      <SubscribeToWebinarContent {...props} />
+    </Suspense>
   );
 };
 

@@ -2,7 +2,7 @@
 import LoginForm from '@/components/organisms/Auth/LoginForm';
 import ConfirmLogIn from '@/components/organisms/Auth/ConfirmLogin';
 import { Grid } from '@mui/material';
-import { useCallback, useState } from 'react';
+import { useCallback, useState, Suspense } from 'react';
 import { Auth } from 'aws-amplify';
 import { LoginSteps } from '@/lib/types/loginSteps';
 import { LoginFunction } from '@/lib/types/loginFunction';
@@ -11,8 +11,9 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import PageBackgroundWrapper from '@/components/atoms/PageBackgroundWrapper/PageBackgroundWrapper';
 import { SignInOpts } from '@aws-amplify/auth/lib/types';
 import AuthStatus from '@/components/organisms/Auth/AuthStatus';
+import Spinner from '@/components/atoms/Spinner/Spinner';
 
-const Login = () => {
+const LoginContent = () => {
   const router = useRouter();
   const [logInStep, setLogInStep] = useState(LoginSteps.LOG_IN);
   const [user, setUser] = useState(null);
@@ -99,6 +100,14 @@ const Login = () => {
         )}
       </Grid>
     </PageBackgroundWrapper>
+  );
+};
+
+const Login = () => {
+  return (
+    <Suspense fallback={<Spinner />}>
+      <LoginContent />
+    </Suspense>
   );
 };
 

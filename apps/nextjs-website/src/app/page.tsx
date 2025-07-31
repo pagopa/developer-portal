@@ -13,7 +13,7 @@ import { baseUrl } from '@/config';
 import { getHomepageProps } from '@/lib/cmsApi';
 
 // Force dynamic rendering for the homepage
-export const revalidate = 0;
+export const revalidate = false;
 
 import BlocksRendererClient from '@/components/molecules/BlocksRendererClient/BlocksRendererClient';
 import Ecosystem from '@/components/organisms/Ecosystem/Ecosystem';
