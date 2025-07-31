@@ -4,10 +4,9 @@
 /* eslint-disable functional/immutable-data */
 /* eslint-disable functional/no-try-statements */
 import path from 'path';
-import fs from 'fs';
 
 export const DOCUMENTATION_PATH =
-  process.env.DOCUMENTATION_PATH || 'devportal-docs/docs';
+  process.env.DOCUMENTATION_PATH || '../../devportal-docs/docs';
 export type UrlParsingMetadata = {
   dirName: string;
   guides: {

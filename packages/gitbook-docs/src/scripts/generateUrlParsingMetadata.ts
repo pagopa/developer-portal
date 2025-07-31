@@ -11,11 +11,13 @@ import path from 'path';
 import { fetchFromStrapi } from '../helpers/fetchFromStrapi';
 import { StrapiGuide, GuideInfo } from '../helpers/guidesMetadataHelper';
 import { sitePathFromLocalPath } from '../helpers/sitePathFromLocalPath';
+import { DOCUMENTATION_PATH } from '../helpers/documentationParsing.helper';
 // Load environment variables from .env file
 dotenv.config();
 
 const URL_PARSING_METADATA_JSON_PATH =
-  process.env.URL_PARSING_METADATA_JSON_PATH || 'url-parsing-metadata.json';
+  process.env.URL_PARSING_METADATA_JSON_PATH ||
+  '../../url-parsing-metadata.json';
 
 export type UrlParsingItem = {
   dirName: string;
@@ -73,7 +75,7 @@ async function convertGuideToUrlParsingItems(
   const items: UrlParsingItem[] = [];
   for (const guideInfo of guideInfoList) {
     if (guideInfo.dirName) {
-      const guideDir = path.join('devportal-docs', 'docs', guideInfo.dirName);
+      const guideDir = path.join(DOCUMENTATION_PATH, guideInfo.dirName);
       if (!fs.existsSync(guideDir)) {
         console.warn(`Directory does not exist: ${guideDir}`);
         continue;
@@ -109,6 +111,7 @@ async function convertGuideToUrlParsingItems(
 
 async function main() {
   try {
+    console.log(__dirname);
     console.log('Starting to process Markdown files...');
 
     const strapiGuides = await fetchFromStrapi<StrapiGuide>(

@@ -12,7 +12,8 @@ import {
 } from '../helpers/documentationParsing.helper';
 
 const URL_PARSING_METADATA_JSON_PATH =
-  process.env.URL_PARSING_METADATA_JSON_PATH || 'url-parsing-metadata.json';
+  process.env.URL_PARSING_METADATA_JSON_PATH ||
+  '../../url-parsing-metadata.json';
 
 const metadata = loadMetadata(URL_PARSING_METADATA_JSON_PATH);
 
