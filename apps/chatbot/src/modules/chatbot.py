@@ -250,7 +250,7 @@ class Chatbot:
 
         return data
 
-    async def chat_generate(
+    def chat_generate(
         self,
         query_str: str,
         trace_id: str,
@@ -266,7 +266,7 @@ class Chatbot:
             trace_id=trace_id, session_id=session_id, user_id=user_id
         ) as trace:
             try:
-                engine_response = await self.engine.run(query_str, chat_history)
+                engine_response = asyncio_run(self.engine.run(query_str, chat_history))
                 response_json = self._get_response_json(engine_response)
 
             except Exception as e:
