@@ -31,42 +31,13 @@ export class LinkAttr {
     // TODO: this cast will be removed when we can pass a custom type instead of Config
     const parseContentConfig = variables as ParseContentConfig;
     // Link to other spaces when start with http://localhost:5000, http://127.0.0.1:5000 or https://app.gitbook.com
-    const linkToSpacesRegex = new RegExp(
-      '^http(s)?:\\/\\/(?:localhost|127.0.0.1|app.gitbook.com)(:5000)?(\\/o\\/[\\w]*)?\\/s\\/(.*?)\\/?$',
-      'g'
-    );
 
     const { urlReplaces } = parseContentConfig;
     // Find the first key that match the url
     const rewriteKey = Object.keys(urlReplaces).find((key) =>
       value?.startsWith(key)
     );
-
-    if (value && !value.startsWith('http') && !value.startsWith('mailto:')) {
-      const isIndex = variables?.isPageIndex === true;
-      const pagePath = isIndex
-        ? variables.pagePath
-        : path.parse(variables?.pagePath).dir;
-      const href = path.join(pagePath, value);
-      return convertLink(href);
-    } else if (value?.match(linkToSpacesRegex)) {
-      // Normalize URL to <spaceId>/<pagePath>
-      const sanitizedSpacePagePath = value.replace(linkToSpacesRegex, '$4');
-      const spacePrefix = parseContentConfig.spaceToPrefix.find((elem) =>
-        sanitizedSpacePagePath.startsWith(elem.spaceId)
-      );
-      if (spacePrefix) {
-        return sanitizedSpacePagePath.replace(
-          spacePrefix.spaceId,
-          spacePrefix.pathPrefix
-        );
-      } else if (rewriteKey) {
-        const href = value.replace(rewriteKey, urlReplaces[rewriteKey]);
-        return convertLink(href);
-      } else {
-        return value;
-      }
-    } else if (value && rewriteKey) {
+    if (value && rewriteKey) {
       const href = value.replace(rewriteKey, urlReplaces[rewriteKey]);
       return convertLink(href);
     } else {
