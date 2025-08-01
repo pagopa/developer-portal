@@ -28,7 +28,7 @@ export function parseUrlsFromMarkdown(
   let updatedFileContent = fileContent;
   for (const match of matches) {
     const replace = replaceUrl(guideMetadata, match[2]);
-    updatedFileContent = updatedFileContent.replace(match[2] || '', replace);
+    updatedFileContent = updatedFileContent.replaceAll(match[2] || '', replace);
   }
   if (matches.length > 0) {
     console.log('Replaced URLs in file: ', filePath || '');
@@ -42,6 +42,7 @@ export function replaceUrl(
   metadata: UrlParsingMetadata | undefined,
   value: string
 ): string {
+  if (!metadata) return value;
   // Clean up the URL by removing mentions, README.md, and .md extensions
   const splitValue = value
     .replace(' "mention"', '')
@@ -59,25 +60,21 @@ export function replaceUrl(
   if (name.length <= 1) {
     return value;
   }
-  if (metadata) {
-    // Find guides that contain the extracted name in their path
-    const guides = metadata.guides.filter((guide) =>
-      guide.guidePath.includes(name)
-    );
-    if (guides.length <= 0) {
-      return value;
-    }
-    if (guides.length == 1) {
-      return guides[0].guideUrl || value;
-    } else {
-      // If multiple matches, try to find more specific match using parent directory
-      const guide = guides.find((guide) =>
-        guide.guidePath.includes([secondToLastPart, lastPart].join('/'))
-      );
-      return guide?.guideUrl || value;
-    }
-  } else {
+  // Find guides that contain the extracted name in their path
+  const guides = metadata.guides.filter((guide) =>
+    guide.guidePath.includes(name)
+  );
+  if (guides.length <= 0) {
     return value;
+  }
+  if (guides.length == 1) {
+    return guides[0].guideUrl || value;
+  } else {
+    // If multiple matches, try to find more specific match using parent directory
+    const guide = guides.find((guide) =>
+      guide.guidePath.includes([secondToLastPart, lastPart].join('/'))
+    );
+    return guide?.guideUrl || value;
   }
 }
 

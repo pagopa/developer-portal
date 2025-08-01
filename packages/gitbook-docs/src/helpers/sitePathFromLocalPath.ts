@@ -5,7 +5,7 @@ export function sitePathFromLocalPath(
   landingFile?: string
 ): string | undefined {
   const parts = path.split('/');
-  const pathParts = parts.slice(3, parts.length - 1); // Skip "docs/dirName" and remove filename
+  const pathParts = parts.slice(5, parts.length - 1); // Skip "docs/dirName" and remove filename
   const lastPart = parts[parts.length - 1];
 
   if (landingFile && pathParts.join('/') === landingFile) {
