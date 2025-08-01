@@ -49,7 +49,7 @@ export class LinkAttr {
 // eslint-disable-next-line functional/no-classes
 export class PrefixLinkAttr {
   readonly transform = (value: string | null, { variables }: Config) => {
-    if (value && !value.startsWith('http')) {
+    if (value && !value.startsWith('http') && !value.startsWith('/')) {
       const href = path.join(variables?.linkPrefix, value);
       return convertLink(href);
     } else return value;
@@ -62,7 +62,7 @@ export class SrcAttr {
     // Ignore any '../' (a.k.a parent directory of current directory)
     // The path.join('/', value) do the trick. It removes any '../' before join
     // it with assetsPrefix. E.g.: ../../../a/b => /a/b
-    value && !value.startsWith('http')
+    value && !value.startsWith('http') && !value.startsWith('/')
       ? `${variables?.assetsPrefix}${path.join('/', value)}`
       : value;
 }
