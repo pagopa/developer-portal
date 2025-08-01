@@ -42,7 +42,12 @@ export class LinkAttr {
       value?.startsWith(key)
     );
 
-    if (value && !value.startsWith('http') && !value.startsWith('mailto:')) {
+    if (
+      value &&
+      !value.startsWith('http') &&
+      !value.startsWith('mailto:') &&
+      !value.startsWith('/')
+    ) {
       const isIndex = variables?.isPageIndex === true;
       const pagePath = isIndex
         ? variables.pagePath
@@ -78,7 +83,7 @@ export class LinkAttr {
 // eslint-disable-next-line functional/no-classes
 export class PrefixLinkAttr {
   readonly transform = (value: string | null, { variables }: Config) => {
-    if (value && !value.startsWith('http')) {
+    if (value && !value.startsWith('http') && !value.startsWith('/')) {
       const href = path.join(variables?.linkPrefix, value);
       return convertLink(href);
     } else return value;
