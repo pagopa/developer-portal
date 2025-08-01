@@ -35,7 +35,7 @@ export type Guide = {
       readonly data: StrapiBaseProductWithRelations;
     };
     readonly bannerLinks: ReadonlyArray<StrapiBannerLink>;
-    readonly seo: StrapiSeo;
+    readonly seo?: StrapiSeo;
   };
 };
 

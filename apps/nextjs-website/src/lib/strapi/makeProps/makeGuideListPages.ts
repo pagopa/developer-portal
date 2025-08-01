@@ -34,7 +34,7 @@ export function makeGuideListPagesProps(
           : attributes.product.data.attributes.bannerLinks?.map(
               makeBannerLinkProps
             ),
-      seo: attributes.seo || undefined,
+      seo: attributes.seo,
       updatedAt: attributes.updatedAt,
     } satisfies GuideListPageProps;
   });

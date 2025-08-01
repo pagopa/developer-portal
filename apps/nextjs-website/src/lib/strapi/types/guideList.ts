@@ -19,7 +19,7 @@ export type GuideListPage = {
       };
     }>;
     readonly bannerLinks: ReadonlyArray<StrapiBannerLink>;
-    readonly seo: StrapiSeo;
+    readonly seo?: StrapiSeo;
     readonly updatedAt: string;
   };
 };

@@ -273,8 +273,8 @@ export const strapiGuideListPaginatedData = {
                       data: {
                         attributes: {
                           name: 'pagoPA Guide Manual.png',
-                          alternativeText: null,
-                          caption: null,
+                          alternativeText: undefined,
+                          caption: undefined,
                           width: 1156,
                           height: 580,
                           ext: '.png',
@@ -288,8 +288,8 @@ export const strapiGuideListPaginatedData = {
                       data: {
                         attributes: {
                           name: 'saci.png',
-                          alternativeText: null,
-                          caption: null,
+                          alternativeText: undefined,
+                          caption: undefined,
                           width: 1156,
                           height: 580,
                           ext: '.png',
@@ -323,8 +323,8 @@ export const strapiGuideListPaginatedData = {
                       data: {
                         attributes: {
                           name: 'sanp.png',
-                          alternativeText: null,
-                          caption: null,
+                          alternativeText: undefined,
+                          caption: undefined,
                           width: 1156,
                           height: 580,
                           ext: '.png',
@@ -338,8 +338,8 @@ export const strapiGuideListPaginatedData = {
                       data: {
                         attributes: {
                           name: 'sanp.png',
-                          alternativeText: null,
-                          caption: null,
+                          alternativeText: undefined,
+                          caption: undefined,
                           width: 1156,
                           height: 580,
                           ext: '.png',
@@ -380,8 +380,8 @@ export const strapiGuideListPaginatedData = {
                       data: {
                         attributes: {
                           name: 'guida-tecnica-sugli-avvisi-di-pagamento.png',
-                          alternativeText: null,
-                          caption: null,
+                          alternativeText: undefined,
+                          caption: undefined,
                           width: 1156,
                           height: 580,
                           ext: '.png',
@@ -395,8 +395,8 @@ export const strapiGuideListPaginatedData = {
                       data: {
                         attributes: {
                           name: 'guida-tecnica-sugli-avvisi-di-pagamento.png',
-                          alternativeText: null,
-                          caption: null,
+                          alternativeText: undefined,
+                          caption: undefined,
                           width: 1156,
                           height: 580,
                           ext: '.png',
@@ -413,7 +413,7 @@ export const strapiGuideListPaginatedData = {
           },
         ],
         bannerLinks: [],
-        seo: null,
+        seo: undefined,
         updatedAt: dateNow,
       },
     },
