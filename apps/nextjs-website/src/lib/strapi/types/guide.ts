@@ -1,8 +1,8 @@
 import { StrapiBaseProductWithRelations } from '@/lib/strapi/codecs/ProductCodec';
-import { StrapiBannerLink } from '@/lib/strapi/codecs/BannerLinkCodec';
-import { StrapiSEO } from '@/lib/strapi/codecs/SeoCodec';
 import { Media } from '@/lib/strapi/types/media';
 import { Pagination } from '@/lib/strapi/types/pagination';
+import { StrapiSeo } from '@/lib/strapi/types/seo';
+import { StrapiBannerLink } from '@/lib/strapi/types/bannerLink';
 
 type GuideVersion = {
   readonly main: boolean;
@@ -35,7 +35,7 @@ export type Guide = {
       readonly data: StrapiBaseProductWithRelations;
     };
     readonly bannerLinks: ReadonlyArray<StrapiBannerLink>;
-    readonly seo: StrapiSEO | null;
+    readonly seo: StrapiSeo;
   };
 };
 

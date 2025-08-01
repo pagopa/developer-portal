@@ -1,10 +1,10 @@
-import { StrapiBlocksContent } from '@/lib/strapi/codecs/BlocksContentCodec';
 import { Media } from '@/lib/strapi/types/media';
+import { BlocksContent } from '@strapi/blocks-react-renderer';
 
 export type StrapiBannerLink = {
   readonly id: number;
   readonly title?: string | null;
-  readonly content?: StrapiBlocksContent | null;
+  readonly content?: BlocksContent | null;
   readonly icon: { readonly data: Media };
   readonly theme: 'light' | 'dark';
 };

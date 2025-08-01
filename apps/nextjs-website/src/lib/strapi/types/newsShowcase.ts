@@ -7,15 +7,15 @@ type NewsItem = {
     readonly title: string;
     readonly link: Link;
     readonly publishedAt: string;
-    readonly image?: { readonly data: Media } | null;
-    readonly label?: string | null;
+    readonly image?: { readonly data: Media };
+    readonly label?: string;
   };
 };
 
 export type StrapiNewsShowcase = {
   readonly title: string;
-  readonly subTitle?: string | null;
-  readonly link?: Link | null;
+  readonly subTitle?: string;
+  readonly link?: Link;
   readonly items: {
     readonly data: ReadonlyArray<NewsItem>;
   };

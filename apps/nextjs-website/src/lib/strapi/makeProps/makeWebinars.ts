@@ -1,10 +1,10 @@
-import { StrapiWebinars } from '@/lib/strapi/codecs/WebinarsCodec';
 import { Webinar } from '../../types/webinar';
+import { StrapiWebinar, StrapiWebinars } from '@/lib/strapi/types/webinars';
 
 export type WebinarsProps = readonly Webinar[];
 
 export const makeWebinarFromStrapi = (
-  strapiWebinar: StrapiWebinars['data'][0]
+  strapiWebinar: StrapiWebinar
 ): Webinar => {
   return {
     ...strapiWebinar.attributes,
@@ -12,13 +12,12 @@ export const makeWebinarFromStrapi = (
       strapiWebinar.attributes.webinarSpeakers.data.length > 0
         ? strapiWebinar.attributes.webinarSpeakers.data.map((speaker) => ({
             ...speaker.attributes,
-            avatar: speaker.attributes.avatar.data?.attributes,
+            avatar: speaker.attributes.avatar?.data?.attributes,
           }))
         : undefined,
-    questionsAndAnswers:
-      strapiWebinar.attributes.questionsAndAnswers.length > 0
-        ? strapiWebinar.attributes.questionsAndAnswers
-        : undefined,
+    questionsAndAnswers: strapiWebinar.attributes.questionsAndAnswers?.length
+      ? strapiWebinar.attributes.questionsAndAnswers
+      : undefined,
     relatedResources: strapiWebinar.attributes.relatedResources
       ? {
           title: strapiWebinar.attributes.relatedResources.title,
@@ -26,11 +25,13 @@ export const makeWebinarFromStrapi = (
             strapiWebinar.attributes.relatedResources.resources || []
           ).map((resource) => ({
             ...resource,
-            image: resource.image.data?.attributes,
+            subtitle: resource.subtitle,
+            description: resource.description,
+            image: resource.image?.data?.attributes,
           })),
           downloadableDocuments: (
             strapiWebinar.attributes.relatedResources.downloadableDocuments
-              .data || []
+              ?.data || []
           ).map(({ attributes }) => ({
             title: attributes.caption || attributes.name,
             downloadLink: attributes.url,
@@ -39,15 +40,15 @@ export const makeWebinarFromStrapi = (
           })),
         }
       : undefined,
-    startDateTime: strapiWebinar.attributes.startDatetime?.toISOString(),
-    endDateTime: strapiWebinar.attributes.endDatetime?.toISOString(),
+    startDateTime: strapiWebinar.attributes.startDatetime,
+    endDateTime: strapiWebinar.attributes.endDatetime,
     subscribeCtaLabel: strapiWebinar.attributes.subscribeParagraphLabel,
     imagePath: strapiWebinar.attributes.coverImage.data.attributes.url,
     seo: strapiWebinar.attributes.seo,
-    webinarCategory: strapiWebinar.attributes.webinarCategory.data?.attributes,
-    headerImage: strapiWebinar.attributes.headerImage.data?.attributes,
-    updatedAt: strapiWebinar.attributes.updatedAt.toISOString(),
-  };
+    webinarCategory: strapiWebinar.attributes.webinarCategory?.data?.attributes,
+    headerImage: strapiWebinar.attributes.headerImage?.data?.attributes,
+    updatedAt: strapiWebinar.attributes.updatedAt,
+  } satisfies Webinar;
 };
 
 export function makeWebinarsProps(

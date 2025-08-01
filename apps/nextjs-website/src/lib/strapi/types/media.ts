@@ -1,9 +1,9 @@
 export type MediaAttributes = {
   readonly name: string;
-  readonly alternativeText?: string | null;
-  readonly caption?: string | null;
-  readonly width?: number | null;
-  readonly height?: number | null;
+  readonly alternativeText?: string;
+  readonly caption?: string;
+  readonly width?: number;
+  readonly height?: number;
   readonly size: number;
   readonly ext: string;
   readonly mime: string;
