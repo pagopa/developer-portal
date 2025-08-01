@@ -1,5 +1,5 @@
 import * as qs from 'qs';
-import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
+import { deprecatedFetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
 import { QuickStartGuidesCodec } from '@/lib/strapi/codecs/QuickStartGuidesCodec';
 import { productRelationsPopulate } from './fetchProducts';
 
@@ -22,7 +22,7 @@ const makeStrapiQuickStartGuidesPopulate = () =>
     },
   });
 
-export const fetchQuickStartGuides = fetchFromStrapi(
+export const fetchQuickStartGuides = deprecatedFetchFromStrapi(
   'quickstart-guides',
   makeStrapiQuickStartGuidesPopulate(),
   QuickStartGuidesCodec

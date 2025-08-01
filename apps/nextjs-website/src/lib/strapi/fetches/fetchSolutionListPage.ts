@@ -1,5 +1,5 @@
 import * as qs from 'qs';
-import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
+import { deprecatedFetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
 import { SolutionListPageCodec } from '@/lib/strapi/codecs/SolutionListPageCodec';
 
 const makeStrapiSolutionListPagePopulate = () =>
@@ -34,7 +34,7 @@ const makeStrapiSolutionListPagePopulate = () =>
     },
   });
 
-export const fetchSolutionListPage = fetchFromStrapi(
+export const fetchSolutionListPage = deprecatedFetchFromStrapi(
   'solution-list-page',
   makeStrapiSolutionListPagePopulate(),
   SolutionListPageCodec

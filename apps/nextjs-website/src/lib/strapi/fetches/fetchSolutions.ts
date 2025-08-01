@@ -1,6 +1,6 @@
 import * as qs from 'qs';
 import { webinarPopulate } from '@/lib/strapi/fetches/fetchWebinars';
-import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
+import { deprecatedFetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
 import { SolutionsCodec } from '@/lib/strapi/codecs/SolutionsCodec';
 
 const solutionsPopulate = {
@@ -33,7 +33,7 @@ const makeStrapiSolutionsPopulate = () =>
     ...solutionsPopulate,
   });
 
-export const fetchSolutions = fetchFromStrapi(
+export const fetchSolutions = deprecatedFetchFromStrapi(
   'solutions',
   makeStrapiSolutionsPopulate(),
   SolutionsCodec
@@ -48,7 +48,7 @@ const makeStrapiSolutionPopulate = (solutionSlug: string) =>
   });
 
 export const fetchSolution = (solutionSlug: string) =>
-  fetchFromStrapi(
+  deprecatedFetchFromStrapi(
     'solutions',
     makeStrapiSolutionPopulate(solutionSlug),
     SolutionsCodec
