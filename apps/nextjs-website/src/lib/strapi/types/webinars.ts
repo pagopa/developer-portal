@@ -1,5 +1,5 @@
 import { BlocksContent } from '@strapi/blocks-react-renderer';
-import { Media } from '@/lib/strapi/types/media';
+import { StrapiMedia } from '@/lib/strapi/types/media';
 import { Pagination } from '@/lib/strapi/types/pagination';
 import { RelatedLinks } from '@/lib/strapi/types/link';
 import { StrapiSeo } from '@/lib/strapi/types/seo';
@@ -12,7 +12,7 @@ type WebinarSpeaker = {
     readonly jobTitle: string;
     readonly publishedAt: string;
     readonly description?: BlocksContent;
-    readonly avatar: { readonly data?: Media };
+    readonly avatar: { readonly data?: StrapiMedia };
   };
 };
 
@@ -22,13 +22,13 @@ type Resource = {
   readonly linkHref: string;
   readonly subtitle?: string;
   readonly description?: BlocksContent;
-  readonly image: { readonly data?: Media };
+  readonly image: { readonly data?: StrapiMedia };
 };
 
 type RelatedResources = {
   readonly title: string;
   readonly resources?: readonly Resource[];
-  readonly downloadableDocuments?: { readonly data: readonly Media[] };
+  readonly downloadableDocuments?: { readonly data: readonly StrapiMedia[] };
 };
 
 type QuestionAndAnswer = {
@@ -44,7 +44,7 @@ export type StrapiWebinar = {
     readonly slug: string;
     readonly publishedAt: string;
     readonly isVisibleInList: boolean;
-    readonly coverImage: { readonly data: Media };
+    readonly coverImage: { readonly data: StrapiMedia };
     readonly bodyContent?: BlocksContent;
     readonly playerSrc?: string;
     readonly startDatetime?: string;
@@ -56,7 +56,7 @@ export type StrapiWebinar = {
     readonly questionsAndAnswers?: readonly QuestionAndAnswer[];
     readonly seo?: StrapiSeo;
     readonly webinarCategory?: { readonly data?: StrapiWebinarCategory };
-    readonly headerImage?: { readonly data?: Media };
+    readonly headerImage?: { readonly data?: StrapiMedia };
     readonly updatedAt: string;
   };
 };

@@ -1,11 +1,11 @@
-import { Media } from '@/lib/strapi/types/media';
+import { StrapiMedia } from '@/lib/strapi/types/media';
 import { Pagination } from '@/lib/strapi/types/pagination';
 
 export type StrapiWebinarCategory = {
   readonly id: number;
   readonly attributes: {
     readonly name: string;
-    readonly icon: { readonly data: Media };
+    readonly icon: { readonly data: StrapiMedia };
   };
 };
 

@@ -2,7 +2,7 @@ import { Speaker } from '@/lib/types/speaker';
 import { BlocksContent } from '@strapi/blocks-react-renderer';
 import { SEO } from './seo';
 import { WebinarCategory } from '@/lib/types/webinarCategory';
-import { MediaAttributes } from '@/lib/strapi/types/media';
+import { Media } from '@/lib/strapi/types/media';
 
 export type QuestionsAndAnswer = {
   readonly question: string;
@@ -26,7 +26,7 @@ export type Webinar = {
       readonly description?: BlocksContent;
       readonly linkText: string;
       readonly linkHref: string;
-      readonly image?: MediaAttributes;
+      readonly image?: Media;
     }[];
     readonly downloadableDocuments?: readonly {
       readonly title: string;
@@ -48,6 +48,6 @@ export type Webinar = {
   readonly questionsAndAnswers?: readonly QuestionsAndAnswer[];
   readonly seo?: SEO;
   readonly webinarCategory?: WebinarCategory;
-  readonly headerImage?: MediaAttributes;
+  readonly headerImage?: Media;
   readonly updatedAt: string;
 };

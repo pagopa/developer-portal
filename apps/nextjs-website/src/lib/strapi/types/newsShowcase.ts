@@ -1,5 +1,5 @@
 import { Link } from '@/lib/strapi/types/link';
-import { Media } from '@/lib/strapi/types/media';
+import { StrapiMedia } from '@/lib/strapi/types/media';
 
 type NewsItem = {
   readonly attributes: {
@@ -7,7 +7,7 @@ type NewsItem = {
     readonly title: string;
     readonly link: Link;
     readonly publishedAt: string;
-    readonly image?: { readonly data: Media };
+    readonly image?: { readonly data: StrapiMedia };
     readonly label?: string;
   };
 };

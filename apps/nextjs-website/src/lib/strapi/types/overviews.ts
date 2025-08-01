@@ -1,6 +1,6 @@
 import { BaseGuide } from '@/lib/strapi/types/guide';
 import { Link, RelatedLinks } from '@/lib/strapi/types/link';
-import { Media } from '@/lib/strapi/types/media';
+import { StrapiMedia } from '@/lib/strapi/types/media';
 import { Pagination } from '@/lib/strapi/types/pagination';
 import { StrapiProduct } from '@/lib/strapi/codecs/ProductCodec';
 import { StrapiBaseTutorial } from '@/lib/strapi/codecs/TutorialCodec';
@@ -10,7 +10,7 @@ import { BlocksContent } from '@strapi/blocks-react-renderer';
 import { StrapiSeo } from '@/lib/strapi/types/seo';
 
 export type StartInfo = {
-  readonly icon: { readonly data: Media };
+  readonly icon: { readonly data: StrapiMedia };
   readonly title: string;
   readonly description: string;
   readonly path: string;
@@ -40,8 +40,8 @@ export type CardProps = {
   readonly content: BlocksContent;
   readonly linkText: string;
   readonly linkHref: string;
-  readonly image: { readonly data: Media };
-  readonly mobileImage: { readonly data: Media };
+  readonly image: { readonly data: StrapiMedia };
+  readonly mobileImage: { readonly data: StrapiMedia };
 };
 
 export type ServiceModel = {
@@ -68,7 +68,7 @@ export type Overview = {
     readonly updatedAt: string;
     readonly publishedAt: string;
     readonly subtitle: string;
-    readonly backgroundImage: { readonly data: Media };
+    readonly backgroundImage: { readonly data: StrapiMedia };
     readonly features?: StrapiFeature;
     readonly startInfoSection?: StartInfoSection;
     readonly tutorialSection?: TutorialSection;

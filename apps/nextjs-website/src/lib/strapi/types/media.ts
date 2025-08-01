@@ -1,4 +1,4 @@
-export type MediaAttributes = {
+export type Media = {
   readonly name: string;
   readonly alternativeText?: string;
   readonly caption?: string;
@@ -10,6 +10,6 @@ export type MediaAttributes = {
   readonly url: string;
 };
 
-export type Media = {
-  readonly attributes: MediaAttributes;
+export type StrapiMedia = {
+  readonly attributes: Media;
 };
