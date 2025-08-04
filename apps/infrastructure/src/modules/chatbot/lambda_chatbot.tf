@@ -350,11 +350,7 @@ resource "aws_iam_policy" "chatbot_monitor_queue" {
     Statement = [
       {
         Effect   = "Allow"
-<<<<<<< HEAD
-        Action   = "sqs:SendMessage"
-=======
         Action   = ["sqs:SendMessage", "sqs:GetQueueUrl"]
->>>>>>> main
         Resource = aws_sqs_queue.chatbot_evaluate_queue.arn
       }
     ]

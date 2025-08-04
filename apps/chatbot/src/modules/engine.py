@@ -105,9 +105,9 @@ def get_engine(
         query_engine=query_engine,
         name="rag_tool",
         description=(
-            "A tool to answer questions using the RAG (Retrieval-Augmented Generation) "
-            "approach. It retrieves relevant information from the index and generates a "
-            "structured response."
+            "This tool is your primary resource for answering questions about PagoPA products and services. "
+            "Use it to find information on topics like 'app-io', 'piattaforma-pago-pa', 'send', 'pdnd', and 'firma-con-io'. "
+            "It can also answer general questions about the company and its offerings."
         ),
     )
 
@@ -121,15 +121,13 @@ def get_engine(
         description="Responds to identity or personality questions like 'Who are you?', 'What is your name?', 'I am ..., and you?', or similar.",
     )
 
-    obj_index = ObjectIndex.from_objects([identity_tool, query_engine_tool])
-
     agent = ReActAgent(
         name="rag_agent",
         description=(
             "A ReAct agent that uses RAG (Retrieval-Augmented Generation) to answer questions. "
             "It retrieves relevant information from the index and generates a structured response."
         ),
-        tool_retriever=obj_index.as_retriever(similarity_top_k=2),
+        tools=[query_engine_tool, identity_tool],
         llm=llm,
         verbose=verbose,
     )

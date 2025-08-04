@@ -37,17 +37,10 @@ resource "aws_iam_role_policy" "lambda_evaluate_policy" {
           "ecr:ListImages",
           "ecr:GetRepositoryPolicy",
           "ecr:GetLifecyclePolicyPreview",
-<<<<<<< HEAD
-          "ecr:GetLifecyclePolicy",          
-          "ecr:DescribeRepositories",
-          "ecr:DescribeImages",
-          "ecr:DescribeImageScanFindings",      
-=======
           "ecr:GetLifecyclePolicy",
           "ecr:DescribeRepositories",
           "ecr:DescribeImages",
           "ecr:DescribeImageScanFindings",
->>>>>>> main
         ]
         Effect   = "Allow"
         Resource = "*"
@@ -69,13 +62,10 @@ resource "aws_iam_role_policy" "lambda_evaluate_policy" {
         Effect = "Allow"
         Resource = [
           module.langfuse_public_key.ssm_parameter_arn,
-<<<<<<< HEAD
-=======
           module.langfuse_secret_key.ssm_parameter_arn,
           module.google_api_key_ssm_parameter.ssm_parameter_arn,
           module.langfuse_public_key.ssm_parameter_arn,
->>>>>>> main
-          module.langfuse_secret_key.ssm_parameter_arn
+          module.langfuse_secret_key.ssm_parameter_arn,
         ]
       },
       {
@@ -117,13 +107,10 @@ resource "aws_lambda_function" "chatbot_evaluate_lambda" {
       CHB_AWS_SSM_LANGFUSE_PUBLIC_KEY = module.langfuse_public_key.ssm_parameter_name
       CHB_AWS_SSM_LANGFUSE_SECRET_KEY = module.langfuse_secret_key.ssm_parameter_name
       CHB_LANGFUSE_HOST               = "https://${local.priv_monitoring_host}"
-<<<<<<< HEAD
-=======
       CHB_MODEL_TEMPERATURE           = 0
       CHB_AWS_SSM_GOOGLE_API_KEY      = module.google_api_key_ssm_parameter.ssm_parameter_name
       CHB_AWS_SSM_LANGFUSE_PUBLIC_KEY = module.langfuse_public_key.ssm_parameter_name
       CHB_AWS_SSM_LANGFUSE_SECRET_KEY = module.langfuse_secret_key.ssm_parameter_name
->>>>>>> main
     }
   }
 
