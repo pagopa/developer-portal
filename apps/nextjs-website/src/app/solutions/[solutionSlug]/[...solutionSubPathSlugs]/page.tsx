@@ -28,7 +28,7 @@ type Params = {
   solutionSubPathSlugs: string[];
 };
 // TODO: remove when solutions metadata will be managed in strapi
-export const revalidate = REVALIDATE_LONG_INTERVAL;
+// export const revalidate = REVALIDATE_LONG_INTERVAL;
 
 const SOLUTION_SLUG_PATH_INDEX = 2;
 const SOLUTION_SUB_PATH_INDEX = 3;
@@ -49,25 +49,29 @@ export async function generateStaticParams(): Promise<Params[]> {
 export async function generateMetadata({
   params,
 }: {
-  params: Params;
+  params: Promise<Params>;
 }): Promise<Metadata> {
+  const resolvedParams = await params;
   const props = await getSolutionDetail(
-    params?.solutionSlug,
-    params?.solutionSubPathSlugs
+    resolvedParams?.solutionSlug,
+    resolvedParams?.solutionSubPathSlugs
   );
 
   return makeMetadata({
     title: props?.title,
     url: props
-      ? `/solutions/${props?.slug}/${params.solutionSubPathSlugs.join('/')}`
+      ? `/solutions/${props?.slug}/${resolvedParams.solutionSubPathSlugs.join(
+          '/'
+        )}`
       : '',
   });
 }
 
-const Page = async ({ params }: { params: Params }) => {
+const Page = async ({ params }: { params: Promise<Params> }) => {
+  const resolvedParams = await params;
   const solutionProps = await getSolutionDetail(
-    params?.solutionSlug,
-    params?.solutionSubPathSlugs
+    resolvedParams?.solutionSlug,
+    resolvedParams?.solutionSubPathSlugs
   );
 
   if (!solutionProps) {
@@ -105,11 +109,11 @@ const Page = async ({ params }: { params: Params }) => {
       {
         name: page.title,
         item:
-          params?.solutionSubPathSlugs &&
+          resolvedParams?.solutionSubPathSlugs &&
           getItemFromPaths([
             'solutions',
             solution.slug,
-            ...params.solutionSubPathSlugs,
+            ...resolvedParams.solutionSubPathSlugs,
           ]),
       },
     ],
@@ -132,7 +136,7 @@ const Page = async ({ params }: { params: Params }) => {
               name: page.title,
               path: `/solutions/${
                 props.solution.slug
-              }/details/${params.solutionSubPathSlugs.join('/')}`,
+              }/details/${resolvedParams.solutionSubPathSlugs.join('/')}`,
             },
           ]),
         ]}

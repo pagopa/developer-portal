@@ -36,8 +36,9 @@ export async function generateMetadata(
   parent: ResolvingMetadata
 ): Promise<Metadata> {
   const resolvedParent = await parent;
+  const resolvedParams = await params;
   const { product, abstract, path, seo } = await getTutorialListPageProps(
-    params.productSlug
+    resolvedParams.productSlug
   );
 
   if (seo) {
@@ -54,7 +55,8 @@ export async function generateMetadata(
 }
 
 const TutorialsPage = async ({ params }: ProductParams) => {
-  const { productSlug } = params;
+  const resolvedParams = await params;
+  const { productSlug } = resolvedParams;
   const { abstract, bannerLinks, path, tutorials, seo, product } =
     await getTutorialListPageProps(productSlug);
 

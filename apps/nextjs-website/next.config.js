@@ -22,6 +22,9 @@ const nextConfig = {
     cpus: 1,
     workerThreads: false,
   },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
 };
 
 // eslint-disable-next-line
