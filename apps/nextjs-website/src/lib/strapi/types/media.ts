@@ -1,13 +1,13 @@
 export type Media = {
   readonly name: string;
-  readonly alternativeText?: string;
-  readonly caption?: string;
-  readonly width?: number;
-  readonly height?: number;
-  readonly size: number;
   readonly ext: string;
   readonly mime: string;
+  readonly size: number;
   readonly url: string;
+  readonly alternativeText?: string;
+  readonly caption?: string;
+  readonly height?: number;
+  readonly width?: number;
 };
 
 export type StrapiMedia = {
