@@ -19,11 +19,13 @@
   "devDependencies": {
     "@changesets/cli": "^2.27.1",
     "husky": "^8.0.3",
-    "turbo": "^1.13.4"
+    "turbo": "^2.5.5"
   },
   "dependencies": {
     "crypto-js": "^4.2.0",
     "elliptic": "^6.6.1",
     "koa": "^3.0.0"
-  }
+  },
+  "packageManager": "npm@9.8.1",
+  "name": "developer-portal"
 }

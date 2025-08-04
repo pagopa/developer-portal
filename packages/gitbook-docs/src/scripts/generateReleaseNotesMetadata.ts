@@ -75,7 +75,11 @@ async function convertReleaseNoteToSitemapItems(
     );
     for (const filePath of releaseNoteFiles) {
       const parts = filePath.split('/');
-      if (parts.length <= 2 || filePath.endsWith('/SUMMARY.md')) {
+      if (
+        parts.length <= 2 ||
+        filePath.endsWith('/SUMMARY.md') ||
+        filePath.includes('.gitbook/includes')
+      ) {
         continue;
       }
       const content = await downloadS3File(
@@ -106,26 +110,35 @@ async function convertReleaseNoteToSitemapItems(
 }
 
 async function main() {
-  try {
-    console.log('Starting to process Markdown files...');
+  console.log('Starting to process Markdown files...');
 
-    const strapiGuides = await fetchFromStrapi<StrapiReleaseNote>(
+  // eslint-disable-next-line functional/no-let
+  let strapiReleaseNotes;
+  try {
+    const { data } = await fetchFromStrapi<StrapiReleaseNote>(
       'api/release-notes?populate[0]=product&pagination[pageSize]=1000&pagination[page]=1'
     );
-    console.log(`Fetched ${strapiGuides.length} guides from Strapi`);
-
-    const sitemapItems = await convertReleaseNoteToSitemapItems(strapiGuides);
-    console.log(`Converted guides to ${sitemapItems.length} sitemap items`);
-
-    await writeSitemapJson(
-      sitemapItems,
-      S3_RELEASE_NOTES_METADATA_JSON_PATH,
-      `${S3_BUCKET_NAME}`,
-      s3Client
-    );
+    strapiReleaseNotes = data;
   } catch (error) {
-    console.error('Error:', error);
+    console.error('Error fetching release notes from Strapi:', error);
+    process.exit(1);
   }
+
+  console.log(`Fetched ${strapiReleaseNotes.length} release notes from Strapi`);
+
+  const sitemapItems = await convertReleaseNoteToSitemapItems(
+    strapiReleaseNotes
+  );
+  console.log(
+    `Converted release notes to ${sitemapItems.length} sitemap items`
+  );
+
+  await writeSitemapJson(
+    sitemapItems,
+    S3_RELEASE_NOTES_METADATA_JSON_PATH,
+    `${S3_BUCKET_NAME}`,
+    s3Client
+  );
 }
 
 // Execute the function

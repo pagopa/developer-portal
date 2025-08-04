@@ -2,6 +2,7 @@ import TermsOfServiceTemplate from '@/components/templates/TermsOfServiceTemplat
 import { baseUrl } from '@/config';
 import { makeMetadata } from '@/helpers/metadata.helpers';
 import { Metadata } from 'next';
+import ContentWrapper from '@/components/atoms/ContentWrapper/ContentWrapper';
 
 export async function generateMetadata(): Promise<Metadata> {
   return makeMetadata({
@@ -12,7 +13,11 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 const TermsOfService = () => {
-  return <TermsOfServiceTemplate />;
+  return (
+    <ContentWrapper>
+      <TermsOfServiceTemplate />
+    </ContentWrapper>
+  );
 };
 
 export default TermsOfService;

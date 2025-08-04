@@ -30,6 +30,7 @@ export function makeQuickStartGuidesProps(
         title: quickStart.attributes.title,
         description: quickStart.attributes.description,
       },
+      updatedAt: quickStart.attributes.updatedAt.toISOString(),
       defaultStepAnchor:
         quickStart.attributes.quickstartGuideItems.data[0].attributes.anchor,
       product: makeBaseProductWithoutLogoProps(

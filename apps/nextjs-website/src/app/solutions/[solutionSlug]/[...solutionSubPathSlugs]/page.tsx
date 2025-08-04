@@ -9,9 +9,9 @@ import { getUrlReplaceMapProps } from '@/lib/cmsApi';
 import { SolutionTemplateProps } from '@/components/templates/SolutionTemplate/SolutionTemplate';
 import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
 import { getItemFromPaths } from '@/helpers/structuredData.helpers';
+import PageNotFound from '@/app/not-found';
 import { REVALIDATE_LONG_INTERVAL } from '@/config';
 import { getSolutionsMetadata } from '@/helpers/s3Metadata.helpers';
-import PageNotFound from '@/app/not-found';
 
 type SolutionDetailPageTemplateProps = {
   solution: SolutionTemplateProps;
@@ -27,7 +27,7 @@ type Params = {
   solutionSlug: string;
   solutionSubPathSlugs: string[];
 };
-
+// TODO: remove when solutions metadata will be managed in strapi
 export const revalidate = REVALIDATE_LONG_INTERVAL;
 
 const SOLUTION_SLUG_PATH_INDEX = 2;
