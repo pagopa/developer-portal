@@ -18,7 +18,6 @@ import {
   makeMetadata,
   makeMetadataFromStrapi,
 } from '@/helpers/metadata.helpers';
-import { getOverviewsProps } from '@/lib/cmsApi';
 import { SEO } from '@/lib/types/seo';
 import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
 import {
@@ -28,18 +27,7 @@ import {
 import NewsShowcase, {
   NewsShowcaseProps,
 } from '@/components/organisms/NewsShowcase/NewsShowcase';
-import { REVALIDATE_SHORT_INTERVAL } from '@/config';
-
 const MAX_NUM_TUTORIALS_IN_OVERVIEW = 3;
-
-export const revalidate = REVALIDATE_SHORT_INTERVAL;
-export async function generateStaticParams() {
-  return (await getOverviewsProps())
-    .map(({ product }) => ({
-      productSlug: product.slug,
-    }))
-    .filter(({ productSlug }) => !!productSlug);
-}
 
 export type OverviewPageProps = {
   readonly path: string;

@@ -356,6 +356,9 @@ const makeStrapiResponseJson = () => ({
                         webinarCategory: {
                           data: null,
                         },
+                        headerImage: {
+                          data: null,
+                        },
                       },
                     },
                   ],
@@ -481,6 +484,9 @@ const makeStrapiResponseJson = () => ({
               relatedResources: null,
               seo: null,
               webinarCategory: {
+                data: null,
+              },
+              headerImage: {
                 data: null,
               },
             },

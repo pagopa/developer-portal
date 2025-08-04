@@ -60,3 +60,10 @@ output "lambda_initializer" {
 output "opennext_cdn_distribution_id" {
   value = module.opennext.cloudfront.distribution_id
 }
+
+output "website_standalone_bucket" {
+  value = {
+    name = aws_s3_bucket.website_standalone.id
+    arn  = aws_s3_bucket.website_standalone.arn
+  }
+}

@@ -1,10 +1,21 @@
 import { Webinar } from '@/lib/types/webinar';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
-import { Box, useTheme } from '@mui/material';
+import {
+  Box,
+  Button,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
 import VimeoPlayer from '@/components/atoms/VimeoPlayer/VimeoPlayer';
 import { WebinarQuestionsForm } from '@/components/organisms/WebinarQuestionsForm/WebinarQuestionsForm';
 import { WebinarState } from '@/helpers/webinar.helpers';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
+import ForumIcon from '@mui/icons-material/Forum';
+import ArrowRightIcon from '@mui/icons-material/ArrowRight';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import { Stack } from '@mui/system';
+import { useTranslations } from 'next-intl';
 
 type WebinarPlayerSectionProps = {
   webinar: Webinar;
@@ -14,13 +25,15 @@ const WebinarPlayerSection = ({
   webinar,
   webinarState,
 }: WebinarPlayerSectionProps) => {
+  const t = useTranslations('webinar');
   const { palette } = useTheme();
-
-  const showQuestionForm = useMemo(
+  const [isQuestionFormExpanded, setIsQuestionFormExpanded] = useState(false);
+  const [question, setQuestion] = useState('');
+  const isSmallScreen = useMediaQuery('(max-width: 1000px)');
+  const isQuestionFormAvailable = useMemo(
     () => [WebinarState.live, WebinarState.comingSoon].includes(webinarState),
     [webinarState]
   );
-
   return (
     webinar.playerSrc && (
       <div style={{ backgroundColor: palette.grey[50] }}>
@@ -32,27 +45,108 @@ const WebinarPlayerSection = ({
               justifyContent: 'left',
               alignContent: 'stretch',
               flexGrow: 1,
-              gap: 3,
+              gap: 0,
               marginBottom: 10,
             }}
           >
             <Box
               sx={{
                 width: {
-                  md: showQuestionForm ? '66%' : '100%',
+                  md: isQuestionFormExpanded ? '80%' : '100%',
                 },
               }}
             >
               <VimeoPlayer playerSrc={webinar.playerSrc} />
             </Box>
-            {showQuestionForm && (
-              <Box>
-                <WebinarQuestionsForm
-                  webinarSlug={webinar.slug}
-                  disabled={webinarState === WebinarState.comingSoon}
+            {isQuestionFormAvailable ? (
+              isQuestionFormExpanded ? (
+                <Box>
+                  <WebinarQuestionsForm
+                    toggleFormVisibility={() => {
+                      setIsQuestionFormExpanded(false);
+                    }}
+                    webinarSlug={webinar.slug}
+                    disabled={webinarState != WebinarState.live}
+                    isSmallScreen={isSmallScreen}
+                    question={question}
+                    setQuestion={setQuestion}
+                    webinarState={webinarState}
+                  />
+                </Box>
+              ) : (
+                <Button
+                  startIcon={
+                    <Stack
+                      direction='row'
+                      sx={{
+                        alignItems: 'center',
+                        gap: isSmallScreen ? '8px' : '0',
+                      }}
+                    >
+                      <ForumIcon
+                        style={{
+                          width: '32px',
+                          height: '32px',
+                        }}
+                      />
+                      {isSmallScreen ? (
+                        <Typography
+                          fontWeight={'600'}
+                          fontSize={'18px'}
+                          color={'white'}
+                        >
+                          {t('questionsForm.questionBox')}
+                        </Typography>
+                      ) : null}
+                    </Stack>
+                  }
+                  endIcon={
+                    <Stack
+                      direction='row'
+                      sx={{
+                        alignItems: 'center',
+                        margin: 0,
+                      }}
+                    >
+                      {isSmallScreen ? (
+                        <ArrowDropDownIcon
+                          style={{ width: '24px', height: '24px' }}
+                        />
+                      ) : (
+                        <ArrowRightIcon
+                          style={{ width: '24px', height: '24px' }}
+                        />
+                      )}
+                      {isSmallScreen ? (
+                        <Typography
+                          sx={{
+                            color: 'white',
+                            fontWeight: 400,
+                            fontSize: 12,
+                          }}
+                        >
+                          {t('questionsForm.expand')}
+                        </Typography>
+                      ) : null}
+                    </Stack>
+                  }
+                  variant='contained'
+                  onClick={() => setIsQuestionFormExpanded(true)}
+                  sx={{
+                    paddingX: '16px',
+                    justifyContent: 'space-between',
+                    width: isSmallScreen ? '100%' : '96px',
+                    height: '64px',
+                    borderTopRightRadius: isSmallScreen ? 0 : '16px',
+                    borderBottomRightRadius: '16px',
+                    borderBottomLeftRadius: isSmallScreen ? '16px' : 0,
+                    borderTopLeftRadius: 0,
+                    backgroundColor: palette.primary.main,
+                    boxShadow: '6px 4px 9px 4px rgba(0, 43, 85, 0.1)',
+                  }}
                 />
-              </Box>
-            )}
+              )
+            ) : null}
           </Box>
         </EContainer>
       </div>
