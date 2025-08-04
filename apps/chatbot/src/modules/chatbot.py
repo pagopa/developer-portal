@@ -3,6 +3,7 @@ import copy
 from pathlib import Path
 from typing import Union, Tuple, Optional, List, Any, Dict
 
+from langfuse import Langfuse
 from llama_index.core import PromptTemplate
 from llama_index.core.async_utils import asyncio_run
 from llama_index.core.llms import ChatMessage, MessageRole, TextBlock
@@ -25,19 +26,27 @@ from llama_index.core.schema import QueryBundle
 from langfuse.llama_index import LlamaIndexInstrumentor
 
 from src.modules.logger import get_logger
+from src.modules.utils import get_ssm_parameter
 from src.modules.models import get_llm, get_embed_model
 from src.modules.vector_database import load_index_redis
 from src.modules.engine import get_engine
 from src.modules.handlers import EventHandler
 from src.modules.presidio import PresidioPII
-from src.modules.monitor import (
-    LANGFUSE_PUBLIC_KEY,
-    LANGFUSE_SECRET_KEY,
-    LANGFUSE_HOST,
-    LANGFUSE_CLIENT,
+
+LANGFUSE_PUBLIC_KEY = get_ssm_parameter(
+    os.getenv("CHB_AWS_SSM_LANGFUSE_PUBLIC_KEY"),
+    os.getenv("LANGFUSE_INIT_PROJECT_PUBLIC_KEY"),
 )
-
-
+LANGFUSE_SECRET_KEY = get_ssm_parameter(
+    os.getenv("CHB_AWS_SSM_LANGFUSE_SECRET_KEY"),
+    os.getenv("LANGFUSE_INIT_PROJECT_SECRET_KEY"),
+)
+LANGFUSE_HOST = os.getenv("CHB_LANGFUSE_HOST")
+LANGFUSE_CLIENT = Langfuse(
+    public_key=LANGFUSE_PUBLIC_KEY,
+    secret_key=LANGFUSE_SECRET_KEY,
+    host=LANGFUSE_HOST,
+)
 LOGGER = get_logger(__name__)
 CWF = Path(__file__)
 ROOT = CWF.parent.parent.parent.absolute().__str__()
