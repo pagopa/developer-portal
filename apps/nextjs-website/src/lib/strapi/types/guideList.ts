@@ -1,8 +1,8 @@
-import { Pagination } from '@/lib/strapi/types/pagination';
 import { BaseGuide } from '@/lib/strapi/types/guide';
 import { StrapiBaseProductWithRelations } from '@/lib/strapi/codecs/ProductCodec';
 import { StrapiSeo } from '@/lib/strapi/types/seo';
 import { StrapiBannerLink } from '@/lib/strapi/types/bannerLink';
+import { Paginated } from '@/lib/strapi/types/paginated';
 
 export type GuideListPage = {
   readonly id: number;
@@ -24,9 +24,4 @@ export type GuideListPage = {
   };
 };
 
-export type StrapiGuideListPaginated = {
-  readonly data: ReadonlyArray<GuideListPage>;
-  readonly meta: {
-    readonly pagination: Pagination;
-  };
-};
+export type StrapiGuideLists = Paginated<GuideListPage>;

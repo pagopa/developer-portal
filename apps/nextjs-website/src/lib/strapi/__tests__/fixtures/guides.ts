@@ -1,4 +1,4 @@
-import { StrapiGuidesPaginated } from '@/lib/strapi/types/guide';
+import { StrapiGuides } from '@/lib/strapi/types/guide';
 import { GuideDefinition } from '@/helpers/makeDocs.helpers';
 import { product } from '@/lib/strapi/__tests__/fixtures/product';
 
@@ -12,7 +12,7 @@ export const strapiEmptyGuideData = {
       total: 0,
     },
   },
-} satisfies StrapiGuidesPaginated;
+} satisfies StrapiGuides;
 
 export const strapiGuideData = {
   data: [
@@ -321,7 +321,7 @@ export const strapiGuideData = {
       total: 1,
     },
   },
-} satisfies StrapiGuidesPaginated;
+} satisfies StrapiGuides;
 
 export const guideProps = [
   {

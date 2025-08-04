@@ -1,4 +1,4 @@
-import { StrapiGuideListPaginated } from '@/lib/strapi/types/guideList';
+import { StrapiGuideLists } from '@/lib/strapi/types/guideList';
 import { GuideListPageProps } from '@/app/[productSlug]/guides/page';
 import { product } from '@/lib/strapi/__tests__/fixtures/product';
 
@@ -14,7 +14,7 @@ export const strapiEmptyGuideListPaginatedData = {
       total: 0,
     },
   },
-} satisfies StrapiGuideListPaginated;
+} satisfies StrapiGuideLists;
 
 export const strapiGuideListPaginatedData = {
   data: [
@@ -426,7 +426,7 @@ export const strapiGuideListPaginatedData = {
       total: 1,
     },
   },
-} satisfies StrapiGuideListPaginated;
+} satisfies StrapiGuideLists;
 
 export const guideListPageProps = [
   {
