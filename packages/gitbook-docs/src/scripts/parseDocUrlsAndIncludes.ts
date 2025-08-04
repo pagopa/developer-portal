@@ -10,6 +10,7 @@ import {
   parseUrlsFromMarkdown,
   UrlParsingMetadata,
 } from '../helpers/documentationParsing.helper';
+import fs from 'fs';
 
 const URL_PARSING_METADATA_JSON_PATH =
   process.env.URL_PARSING_METADATA_JSON_PATH ||
@@ -47,17 +48,17 @@ async function recursiveParseMarkdownFiles(
       );
     } else if (item.isFile() && fullPath.endsWith('.md')) {
       if (!guideMetadata) return;
-      const urlParsedFileContent = parseUrlsFromMarkdown(
+      const includesParsedFileContent = await parseIncludesFromMarkdown(
         await fs.promises.readFile(fullPath, 'utf8'),
+        fullPath
+      );
+      const urlParsedFileContent = parseUrlsFromMarkdown(
+        includesParsedFileContent,
         guideMetadata,
         fullPath
       );
-      const includesParsedFileContent = await parseIncludesFromMarkdown(
-        urlParsedFileContent,
-        fullPath
-      );
       try {
-        fs.writeFileSync(fullPath, includesParsedFileContent, 'utf8');
+        fs.writeFileSync(fullPath, urlParsedFileContent, 'utf8');
       } catch (error) {
         console.error(`Error writing to file ${fullPath}:`, error);
       }
