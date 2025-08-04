@@ -118,8 +118,8 @@ def add_langfuse_score(
         LOGGER.info(
             f"Added score {name}: {value} in trace {trace_id}. Result: {result}"
         )
-        LOGGER.debug(f"Result attributes: {dir(result)}")
-        LOGGER.debug(f"Result dict: {getattr(result, '__dict__', str(result))}")
+        LOGGER.info(f"Result attributes: {dir(result)}")
+        LOGGER.info(f"Result dict: {getattr(result, '__dict__', str(result))}")
     except Exception as e:
         LOGGER.error(
             f"Error adding score {name} with value {value} to trace {trace_id}: {e}."
