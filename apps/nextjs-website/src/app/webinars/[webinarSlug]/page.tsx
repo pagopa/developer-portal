@@ -17,9 +17,10 @@ type Params = {
 export async function generateMetadata({
   params,
 }: {
-  params: Params;
+  params: Promise<Params>;
 }): Promise<Metadata> {
-  const webinar = await getWebinar(params?.webinarSlug);
+  const resolvedParams = await params;
+  const webinar = await getWebinar(resolvedParams?.webinarSlug);
 
   if (webinar.seo) {
     return makeMetadataFromStrapi(webinar.seo);
@@ -39,13 +40,13 @@ const NotSsrWebinarDetailTemplate = dynamic(
       '@/components/templates/WebinarDetailTemplate/WebinarDetailTemplate'
     ),
   {
-    ssr: false,
     loading: () => <Spinner />,
   }
 );
 
-const Page = async ({ params }: { params: Params }) => {
-  const webinar = await getWebinar(params?.webinarSlug);
+const Page = async ({ params }: { params: Promise<Params> }) => {
+  const resolvedParams = await params;
+  const webinar = await getWebinar(resolvedParams?.webinarSlug);
 
   const structuredData = generateStructuredDataScripts({
     breadcrumbsItems: [
