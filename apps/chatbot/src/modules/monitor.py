@@ -114,7 +114,7 @@ def add_langfuse_score(
         result = LANGFUSE_CLIENT.score(
             trace_id=trace_id,
             name=name,
-            value=float(value),
+            value=float(value) if value else 0.0,
             data_type=data_type,
             comment=comment,
         )
