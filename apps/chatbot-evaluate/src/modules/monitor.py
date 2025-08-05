@@ -37,7 +37,7 @@ def get_trace(trace_id: str, as_dict: bool = False) -> TraceWithFullDetails | di
         TraceWithFullDetails | dict: The trace object or its dictionary representation.
     """
 
-    LOGGER.warning(f"Getting trace {trace_id} from Langfuse")
+    LOGGER.info(f"Getting trace {trace_id} from Langfuse")
     try:
         trace = LANGFUSE_CLIENT.fetch_trace(trace_id)
         trace = trace.data
@@ -107,13 +107,11 @@ def add_langfuse_score(
         None
     """
 
-    trace = get_trace(trace_id=trace_id)
-
     try:
         result = LANGFUSE_CLIENT.score(
             trace_id=trace_id,
             name=name,
-            value=value,
+            value=float(value),
             data_type=data_type,
             comment=comment,
         )
