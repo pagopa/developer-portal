@@ -107,9 +107,6 @@ def add_langfuse_score(
         None
     """
 
-    trace = get_trace(trace_id=trace_id, as_dict=True)
-    LOGGER.info(f"trace: {trace}")
-
     try:
         result = LANGFUSE_CLIENT.score(
             trace_id=trace_id,
@@ -121,7 +118,6 @@ def add_langfuse_score(
         LOGGER.info(
             f"Added score {name}: {value} in trace {trace_id}. Result: {result}"
         )
-        LOGGER.info(f"Result attributes: {dir(result)}")
         LOGGER.info(f"Result dict: {getattr(result, '__dict__', str(result))}")
     except Exception as e:
         LOGGER.error(
