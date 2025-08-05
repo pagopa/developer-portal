@@ -429,11 +429,6 @@ def get_dynamic_docs(dynamic_urls: List[str]) -> List[Document]:
                 text is not None
                 and text != ""
                 and text != "None"
-                and text
-                != (
-                    "404\n\n#### Pagina non trovata\n\n"
-                    "La pagina che stai cercando non esiste"
-                )
             ):
 
                 text = re.sub(r"(?<=[\wÀ-ÿ])\n(?=[\wÀ-ÿ])", " ", text)
@@ -453,7 +448,7 @@ def get_dynamic_docs(dynamic_urls: List[str]) -> List[Document]:
                 )
             else:
                 discarded_docs += 1
-                LOGGER.warning(f"Discarded {url} due to empty content or 404 error.")
+                LOGGER.warning(f"Discarded {url} due to empty content.")
 
         except Exception as e:
             discarded_docs += 1
@@ -463,7 +458,7 @@ def get_dynamic_docs(dynamic_urls: List[str]) -> List[Document]:
             continue
 
     LOGGER.warning(
-        f"Discarded {discarded_docs} dynamic documents due to empty content or 404 errors."
+        f"Discarded {discarded_docs} dynamic documents due to empty content."
     )
 
     return dynamic_docs
