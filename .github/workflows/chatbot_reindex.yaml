@@ -54,35 +54,6 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502
         with:
-<<<<<<< HEAD
-=======
-          path_to_gitbook_docs: ${{ github.workspace }}/apps/nextjs-website/docs
-          cookie_domain_script: ${{ secrets.COOKIE_DOMAIN_SCRIPT }}
-          cookie_script_url: ${{ vars.NEXT_PUBLIC_COOKIE_SCRIPT_URL }}
-          cookie_category: ${{ vars.NEXT_PUBLIC_COOKIE_CATEGORY }}
-          use_new_cookie: ${{ vars.NEXT_PUBLIC_USE_NEW_COOKIE }}
-          allow_crawler: ${{ vars.ALLOW_CRAWLER }}
-          cognito_user_pool_id: ${{ secrets.NEXT_PUBLIC_COGNITO_USER_POOL_ID }}
-          cognito_identity_pool_id: ${{ secrets.NEXT_PUBLIC_COGNITO_IDENTITY_POOL_ID }}
-          cognito_app_client_id: ${{ secrets.NEXT_PUBLIC_COGNITO_USER_POOL_WEB_CLIENT_ID }}
-          chatbot_host: ${{ vars.NEXT_PUBLIC_CHATBOT_HOST }}
-          chat_max_history_messages: ${{ vars.NEXT_PUBLIC_CHAT_MAX_HISTORY_MESSAGES }}
-          website_name: ${{ vars.NEXT_PUBLIC_WEBSITE_NAME }}
-          organization_name: ${{ vars.NEXT_PUBLIC_ORGANIZATION_NAME }}
-          organization_logo: ${{ vars.NEXT_PUBLIC_ORGANIZATION_LOGO }}
-          organization_social_links: ${{ vars.NEXT_PUBLIC_ORGANIZATION_SOCIAL_LINKS }}
-          chatbot_active: ${{ vars.NEXT_PUBLIC_CHATBOT_ACTIVE }}
-          cognito_aws_region: 'eu-south-1'
-          strapi_endpoint: ${{ vars.STRAPI_ENDPOINT }}
-          strapi_api_token: ${{ secrets.STRAPI_API_TOKEN }}
-          s3_access_key_id: ${{ secrets.S3_ACCESS_KEY_ID }}
-          s3_secret_access_key: ${{ secrets.S3_SECRET_ACCESS_KEY }}
-          fetch_from_strapi: ${{ vars.FETCH_FROM_STRAPI }}
-      
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502
-        with:
->>>>>>> main
           role-to-assume: ${{ secrets.IAM_ROLE_CHATBOT_REINDEX }}
           aws-region: eu-south-1
 
