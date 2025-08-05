@@ -10,6 +10,7 @@ import {
   parseUrlsFromMarkdown,
   UrlParsingMetadata,
 } from '../helpers/documentationParsing.helper';
+import path from 'path';
 import fs from 'fs';
 
 const URL_PARSING_METADATA_JSON_PATH =
@@ -29,12 +30,6 @@ async function recursiveParseMarkdownFiles(
   dirPath: string,
   guideMetadata?: UrlParsingMetadata
 ) {
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const fs = require('fs');
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const path = require('path');
-  // eslint-disable-next-line functional/no-let
-
   const items = await fs.promises.readdir(dirPath, { withFileTypes: true });
 
   for (const item of items) {

@@ -46,7 +46,7 @@ async function getMarkdownFilesRecursively(dir: string): Promise<string[]> {
       const fullPath = path.join(dir, entry.name);
       if (!fs.existsSync(fullPath)) return [];
       if (entry.isDirectory()) {
-        return getMarkdownFilesRecursively(fullPath); // Ricorsione
+        return getMarkdownFilesRecursively(fullPath);
       } else if (entry.isFile() && entry.name.endsWith('.md')) {
         return [fullPath];
       } else {
