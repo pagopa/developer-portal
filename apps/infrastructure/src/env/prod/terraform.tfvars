@@ -25,6 +25,8 @@ dns_delegate_records = {
 
 use_custom_certificate = true
 
+cms_app_image_tag = "ff3a6722d7afe6d456fea68d4ff7fbc4c45c14a7"
+
 # CMS Strapi DNS
 dns_domain_name_cms = {
   "cms.developer.pagopa.it" = {
