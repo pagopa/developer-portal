@@ -1,5 +1,30 @@
 # nextjs-website
 
+## 8.4.0
+
+### Minor Changes
+
+- af887be: Update webinar question box
+- 64aae74: Update webinar detail header
+- 64aae74: Update webinar codec and fetch
+- 2e8fd69: Use synced responses json for guide list and guide page to avoid alignment issues
+- acf93ef: Remove soap api section feature flag and apiSoapUrl deprecated param
+
+### Patch Changes
+
+- 24f1e6e: Fix feedback button toggle when feedback form is not active
+- 82b9815: Update sitemap with lastmod from strapi
+- a21fd84: Homepage and overview dynamic
+- a5b2567: Add margin-bottom to File a GitBookContent component
+- 5a351f0: Fix populates for product and home page and align ProductCodec to ApiDataListCodec
+- a21fd84: Optimize guide page rendering by implementing dynamic rendering and parallelizing fetch or s3 and api resources
+- ec27f32: Add ContentWrapper to PrivacyPolicy and TermsOfService
+- 8f0a4b0: Update pipeline to manage response JSON for guides
+- Updated dependencies [1ccab24]
+- Updated dependencies [2fdcc36]
+- Updated dependencies [9656cda]
+  - gitbook-docs@0.5.2
+
 ## 8.3.0
 
 ### Minor Changes
