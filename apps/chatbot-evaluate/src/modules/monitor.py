@@ -107,6 +107,9 @@ def add_langfuse_score(
         None
     """
 
+    trace = get_trace(trace_id=trace_id, as_dict=True)
+    LOGGER.info(f"trace: {trace}")
+
     try:
         result = LANGFUSE_CLIENT.score(
             trace_id=trace_id,
@@ -124,5 +127,4 @@ def add_langfuse_score(
         LOGGER.error(
             f"Error adding score {name} with value {value} to trace {trace_id}: {e}."
         )
-        LOGGER.error(f"Add score {name}: {value} in trace {trace_id}. Result: {result}")
         raise e

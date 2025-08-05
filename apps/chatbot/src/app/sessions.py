@@ -9,6 +9,7 @@ from botocore.exceptions import BotoCoreError, ClientError
 from fastapi import HTTPException
 
 from src.modules.chatbot import Chatbot
+
 # TODO: use SQS from src.modules.monitor import add_langfuse_score
 from src.modules.logger import get_logger
 from src.app.models import QueryFeedback, tables
@@ -129,7 +130,8 @@ def get_user_session(userId: str, sessionId: str):
     item = dbResponse.get("Item")
     return item if item else None
 
-# TODO: use SQS 
+
+# TODO: use SQS
 def add_langfuse_score_query(query_id: str, query_feedback: QueryFeedback):
     return None
     # if query_feedback.badAnswer is not None:
