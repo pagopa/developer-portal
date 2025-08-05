@@ -105,12 +105,9 @@ def get_embed_model(
         AssertionError: If the provider is not 'aws', 'google', or 'mock'.
     """
 
-    if provider is None:
-        provider = PROVIDER
-    if model_id is None:
-        model_id = EMBED_MODEL_ID
-    if embed_batch_size is None:
-        embed_batch_size = EMBED_BATCH_SIZE
+    provider = provider or PROVIDER
+    model_id = model_id or MODEL_ID
+    embed_batch_size = embed_batch_size or EMBED_BATCH_SIZE
 
     if provider == "aws":
         from llama_index.embeddings.bedrock import BedrockEmbedding

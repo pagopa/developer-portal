@@ -107,8 +107,7 @@ def get_embed_model(
 
     provider = provider or PROVIDER
     model_id = model_id or MODEL_ID
-    temperature = temperature or MODEL_TEMPERATURE
-    max_tokens = max_tokens or MODEL_MAXTOKENS
+    embed_batch_size = embed_batch_size or EMBED_BATCH_SIZE
 
     if provider == "aws":
         from llama_index.embeddings.bedrock import BedrockEmbedding
