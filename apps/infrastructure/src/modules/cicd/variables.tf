@@ -97,7 +97,15 @@ variable "assets_opennext_bucket" {
   })
 
   description = "The S3 bucket used to store the assets"
+}
 
+variable "website_standalone_bucket" {
+  type = object({
+    name = string
+    arn  = string
+  })
+
+  description = "The S3 bucket used to store the website in standalone mode"
 }
 
 variable "lambda_code_opennext_bucket" {
