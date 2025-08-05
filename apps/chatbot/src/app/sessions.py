@@ -9,8 +9,7 @@ from botocore.exceptions import BotoCoreError, ClientError
 from fastapi import HTTPException
 
 from src.modules.chatbot import Chatbot
-
-# TODO: use SQS from src.modules.monitor import add_langfuse_score
+from src.modules.monitor import add_langfuse_score
 from src.modules.logger import get_logger
 from src.app.models import QueryFeedback, tables
 from src.app.jwt_check import verify_jwt
@@ -131,31 +130,29 @@ def get_user_session(userId: str, sessionId: str):
     return item if item else None
 
 
-# TODO: use SQS
 def add_langfuse_score_query(query_id: str, query_feedback: QueryFeedback):
-    return None
-    # if query_feedback.badAnswer is not None:
-    #     bad_answer = -1 if query_feedback.badAnswer else 0
-    #     add_langfuse_score(
-    #         trace_id=query_id,
-    #         name="user-feedback",
-    #         value=bad_answer,
-    #         comment=query_feedback.feedback.user_comment,
-    #         data_type="NUMERIC",
-    #     )
+    if query_feedback.badAnswer is not None:
+        bad_answer = -1 if query_feedback.badAnswer else 0
+        add_langfuse_score(
+            trace_id=query_id,
+            name="user-feedback",
+            value=bad_answer,
+            comment=query_feedback.feedback.user_comment,
+            data_type="NUMERIC",
+        )
 
-    # if query_feedback.feedback.user_response_relevancy is not None:
-    #     add_langfuse_score(
-    #         trace_id=query_id,
-    #         name="user-response-relevancy",
-    #         value=float(query_feedback.feedback.user_response_relevancy),
-    #         data_type="NUMERIC",
-    #     )
+    if query_feedback.feedback.user_response_relevancy is not None:
+        add_langfuse_score(
+            trace_id=query_id,
+            name="user-response-relevancy",
+            value=float(query_feedback.feedback.user_response_relevancy),
+            data_type="NUMERIC",
+        )
 
-    # if query_feedback.feedback.user_faithfullness is not None:
-    #     add_langfuse_score(
-    #         trace_id=query_id,
-    #         name="user-faithfullness",
-    #         value=float(query_feedback.feedback.user_faithfullness),
-    #         data_type="NUMERIC",
-    #     )
+    if query_feedback.feedback.user_faithfullness is not None:
+        add_langfuse_score(
+            trace_id=query_id,
+            name="user-faithfullness",
+            value=float(query_feedback.feedback.user_faithfullness),
+            data_type="NUMERIC",
+        )
