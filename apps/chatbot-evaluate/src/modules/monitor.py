@@ -1,4 +1,6 @@
 import os
+import logging
+
 from datetime import datetime
 from typing import Sequence, Literal
 
@@ -9,7 +11,7 @@ from langfuse.model import TraceWithFullDetails
 from src.modules.logger import get_logger
 from src.modules.utils import get_ssm_parameter
 
-
+logging.getLogger("langfuse").setLevel(logging.INFO)
 LOGGER = get_logger(__name__)
 LANGFUSE_PUBLIC_KEY = get_ssm_parameter(
     os.getenv("CHB_AWS_SSM_LANGFUSE_PUBLIC_KEY"),
@@ -24,6 +26,7 @@ LANGFUSE_CLIENT = Langfuse(
     public_key=LANGFUSE_PUBLIC_KEY,
     secret_key=LANGFUSE_SECRET_KEY,
     host=LANGFUSE_HOST,
+    debug=True,
 )
 
 
