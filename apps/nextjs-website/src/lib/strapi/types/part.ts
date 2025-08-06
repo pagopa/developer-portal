@@ -11,7 +11,15 @@ type AlertPart = {
 type ApiTesterAttribute = {
   readonly value: string;
   readonly label?: string;
-  readonly __component: 'parts.api-tester.attribute';
+};
+
+type ApiTesterPart = {
+  readonly requestDescription: string;
+  readonly requestAttributes: readonly ApiTesterAttribute[];
+  readonly requestCode: CodeBlockPart;
+  readonly responseDescription: string;
+  readonly responseCode: CodeBlockPart;
+  readonly __component: 'parts.api-tester';
 };
 
 type CkEditorPart = {
@@ -44,9 +52,9 @@ type QuotePart = {
   readonly __component: 'parts.quote';
 };
 
-export type Part =
+export type StrapiPart =
   | AlertPart
-  | ApiTesterAttribute
+  | ApiTesterPart
   | CkEditorPart
   | CodeBlockPart
   | EmbedHtmlPart

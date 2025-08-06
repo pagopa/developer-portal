@@ -2,12 +2,12 @@ import { BaseGuide } from '@/lib/strapi/types/guide';
 import { Link, RelatedLinks } from '@/lib/strapi/types/link';
 import { StrapiMedia } from '@/lib/strapi/types/media';
 import { StrapiProduct } from '@/lib/strapi/codecs/ProductCodec';
-import { StrapiBaseTutorial } from '@/lib/strapi/codecs/TutorialCodec';
 import { StrapiBannerLink } from '@/lib/strapi/types/bannerLink';
 import { StrapiNewsShowcase } from '@/lib/strapi/types/newsShowcase';
 import { BlocksContent } from '@strapi/blocks-react-renderer';
 import { StrapiSeo } from '@/lib/strapi/types/seo';
 import { Paginated } from '@/lib/strapi/types/paginated';
+import { BaseTutorial } from '@/lib/strapi/types/tutorial';
 
 export type StartInfo = {
   readonly icon: { readonly data: StrapiMedia };
@@ -32,7 +32,7 @@ export type StrapiFeature = {
 export type TutorialSection = {
   readonly title: string;
   readonly description: string;
-  readonly tutorials: { readonly data: readonly StrapiBaseTutorial[] };
+  readonly tutorials: { readonly data: readonly BaseTutorial[] };
 };
 
 export type CardProps = {

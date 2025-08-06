@@ -136,7 +136,7 @@ export const strapiOverviews: StrapiOverviews = {
                       },
                     },
                   },
-                  publishedAt: dateNow,
+                  publishedAt: dateNow.toISOString(),
                 },
               },
             ],

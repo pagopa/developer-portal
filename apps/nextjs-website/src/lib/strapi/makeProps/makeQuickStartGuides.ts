@@ -5,6 +5,7 @@ import { Step } from '../../types/step';
 import { makePartProps } from '@/lib/strapi/makeProps/makePart';
 import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
 import { makeBaseProductWithoutLogoProps } from './makeProducts';
+import { StrapiPart } from '@/lib/strapi/types/part';
 
 export type QuickStartGuidesPageProps = readonly QuickStartGuidePageProps[];
 
@@ -16,7 +17,7 @@ function makeStepFromQuickstartGuideItems(item: QuickstartGuideItem): Step {
     anchor: item.attributes.anchor,
     title: item.attributes.title,
     parts: item.attributes.parts
-      .map((part) => makePartProps(part))
+      .map((part) => makePartProps(part as StrapiPart))
       .filter((part) => !!part) as ReadonlyArray<Part>,
   };
 }
