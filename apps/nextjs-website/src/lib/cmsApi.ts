@@ -26,8 +26,8 @@ import { makeGuideListPagesProps } from './strapi/makeProps/makeGuideListPages';
 import { makeGuidesProps } from './strapi/makeProps/makeGuides';
 import { fetchOverviews } from '@/lib/strapi/fetches/fetchOverviews';
 import { makeOverviewsProps } from '@/lib/strapi/makeProps/makeOverviews';
-import { fetchTutorialListPages } from './strapi/fetches/fetchTutorialListPages';
-import { makeTutorialListPagesProps } from './strapi/makeProps/makeTutorialListPages';
+import { fetchTutorialsLists } from './strapi/fetches/fetchTutorialsLists';
+import { makeTutorialsPageProps } from './strapi/makeProps/makeTutorialList';
 import { fetchUrlReplaceMap } from './strapi/fetches/fetchUrlReplaceMap';
 import { makeUrlReplaceMap } from './strapi/makeProps/makeUrlReplaceMap';
 import { withCache, getCacheKey } from './cache';
@@ -120,8 +120,8 @@ export const getTutorialListPagesProps = async () => {
   return withCache(
     getCacheKey('getTutorialListPagesProps'),
     async () => {
-      const strapiTutorialListPages = await fetchTutorialListPages(buildEnv);
-      return makeTutorialListPagesProps(strapiTutorialListPages);
+      const strapiTutorialListPages = await fetchTutorialsLists(buildEnv);
+      return makeTutorialsPageProps(strapiTutorialListPages);
     },
     CACHE_EXPIRY_IN_SECONDS
   );
