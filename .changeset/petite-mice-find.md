@@ -2,4 +2,4 @@
 "chatbot": patch
 ---
 
-extract evaluate feature into a new lambda function
+Extract evaluate feature into a new lambda function
