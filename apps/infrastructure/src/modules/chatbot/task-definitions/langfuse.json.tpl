@@ -15,7 +15,9 @@
         "options": {
             "awslogs-group": "${log_group}",
             "awslogs-region": "${aws_region}",
-            "awslogs-stream-prefix": "${container_name}"
+            "awslogs-stream-prefix": "${container_name}",
+            "mode": "non-blocking",
+            "max-buffer-size": "1m"
             },
             "secretOptions": []
     },

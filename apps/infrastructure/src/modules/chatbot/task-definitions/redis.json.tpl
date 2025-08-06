@@ -16,7 +16,9 @@
         "options": {
             "awslogs-group": "${log_group}",
             "awslogs-region": "${aws_region}",
-            "awslogs-stream-prefix": "ecs-chatbot-redis"
+            "awslogs-stream-prefix": "ecs-chatbot-redis",
+            "mode": "non-blocking",
+            "max-buffer-size": "1m"
             },
             "secretOptions": []
     }

@@ -96,6 +96,7 @@ variable "ecs_redis" {
     memory    = number
     image_uri = string
     port      = number
+    image_tag = string
   })
   description = "Redis configuration for the AI chatbot"
 }
@@ -114,8 +115,11 @@ variable "api_gateway" {
   }
 }
 
+
+
+
 ################################################################################
-# ECS - Monitoring
+# ECS - monitoring
 ################################################################################
 
 variable "ecs_monitoring" {
@@ -124,6 +128,7 @@ variable "ecs_monitoring" {
     memory    = number
     image_uri = string
     port      = number
+    image_tag = string
   })
   description = "Langfuse configuration for the AI chatbot"
 }
