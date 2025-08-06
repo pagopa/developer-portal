@@ -27,7 +27,7 @@ import { makeGuidesProps } from './strapi/makeProps/makeGuides';
 import { fetchOverviews } from '@/lib/strapi/fetches/fetchOverviews';
 import { makeOverviewsProps } from '@/lib/strapi/makeProps/makeOverviews';
 import { fetchTutorialsLists } from './strapi/fetches/fetchTutorialsLists';
-import { makeTutorialsPageProps } from './strapi/makeProps/makeTutorialList';
+import { makeTutorialsPageProps } from './strapi/makeProps/makeTutorialsPageProps';
 import { fetchUrlReplaceMap } from './strapi/fetches/fetchUrlReplaceMap';
 import { makeUrlReplaceMap } from './strapi/makeProps/makeUrlReplaceMap';
 import { withCache, getCacheKey } from './cache';
