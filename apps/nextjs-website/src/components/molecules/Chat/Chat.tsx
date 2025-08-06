@@ -131,7 +131,7 @@ const Chat = ({
           </Stack>
         </Box>
       )}
-      {isFeedbackFormVisible ? (
+      {isFeedbackFormVisible && (
         <>
           <ChatbotFeedbackForm
             sessionId={sessionId}
@@ -147,7 +147,7 @@ const Chat = ({
             }}
           />
         </>
-      ) : null}
+      )}
       <>
         <Stack
           direction={'column'}
