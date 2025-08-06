@@ -89,6 +89,7 @@ const MobileUserInfo = ({ onClick }: MobileUserInfoProps) => {
               ></PersonOutline>
               <Typography
                 variant='body2'
+                noWrap
                 sx={{
                   color: palette.primary.dark,
                   fontSize: 18,

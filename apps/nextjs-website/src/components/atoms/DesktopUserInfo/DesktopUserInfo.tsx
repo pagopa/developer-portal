@@ -109,6 +109,7 @@ const DesktopUserInfo: FC = () => {
             ></PersonOutline>
             <Typography
               variant='body2'
+              noWrap
               sx={{
                 fontSize: 14,
                 fontWeight: 600,
