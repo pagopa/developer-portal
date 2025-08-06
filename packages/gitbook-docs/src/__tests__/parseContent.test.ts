@@ -169,6 +169,11 @@ describe('parseContent', () => {
         new Markdoc.Tag('Link', { href: '/to/s0/a/b' }, ['Guida']),
       ]),
     ]);
+    expect(parseContent('[Guida](/a/b)', config)).toStrictEqual([
+      new Markdoc.Tag('Paragraph', {}, [
+        new Markdoc.Tag('Link', { href: '/a/b' }, ['Guida']),
+      ]),
+    ]);
   });
 
   it('should parse br correctly', () => {
