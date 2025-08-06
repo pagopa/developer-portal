@@ -1,6 +1,6 @@
 import os
 import logging
-
+import numpy as np
 from datetime import datetime
 from typing import Sequence, Literal
 
@@ -110,11 +110,19 @@ def add_langfuse_score(
         None
     """
 
+    if value is None or np.isnan(value):
+        LOGGER.warning(
+            f"Value for score {name} is None or NaN, setting to 0.0 for trace {trace_id}."
+        )
+        value = 0.0
+    else:
+        value = float(value)
+
     try:
         result = LANGFUSE_CLIENT.score(
             trace_id=trace_id,
             name=name,
-            value=float(value) if value else 0.0,
+            value=value,
             data_type=data_type,
             comment=comment,
         )
