@@ -95,7 +95,7 @@ const Chat = ({
   const [queriesCount, setQueriesCount] = useState(0);
 
   useEffect(() => {
-    if (messages.length != queriesCount) {
+    if (messages.length !== queriesCount) {
       setQueriesCount(messages.length);
       if (scrollRef.current) {
         scrollRef.current.scrollIntoView({
