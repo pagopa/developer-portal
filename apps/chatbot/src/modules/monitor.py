@@ -25,7 +25,6 @@ LANGFUSE_CLIENT = Langfuse(
     public_key=LANGFUSE_PUBLIC_KEY,
     secret_key=LANGFUSE_SECRET_KEY,
     host=LANGFUSE_HOST,
-    debug=True,
 )
 
 
