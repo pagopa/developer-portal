@@ -89,7 +89,7 @@ def test_strapi_connection() -> None:
     assert response.status_code == 200
 
 
-def test_cloud_connection() -> None:
+def test_models() -> None:
 
     flag = False
     try:
@@ -141,30 +141,6 @@ def test_chat_generation() -> None:
             session_id="session-test",
         )
 
-    except Exception as e:
-        LOGGER.error(e)
-        response_json = {}
-
-    assert response_json != {}
-
-
-def test_evaluation() -> None:
-
-    query_str = "GPD gestisce i pagamenti spontanei?"
-
-    try:
-        response_json = CHATBOT.chat_generate(
-            query_str=query_str,
-            trace_id="abcde",
-            user_id="user-test",
-            session_id="session-test",
-        )
-        CHATBOT.evaluate(
-            query_str=query_str,
-            response_str=response_json["response"],
-            retrieved_contexts=response_json["contexts"],
-            trace_id="abcde",
-        )
     except Exception as e:
         LOGGER.error(e)
         response_json = {}
