@@ -5,7 +5,6 @@ from typing import Union, Tuple, Optional, List, Any, Dict
 
 from langfuse import Langfuse
 from llama_index.core import PromptTemplate
-from llama_index.core.async_utils import asyncio_run
 from llama_index.core.llms import ChatMessage, MessageRole, TextBlock
 from llama_index.core.base.response.schema import (
     Response,
