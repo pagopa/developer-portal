@@ -1,11 +1,13 @@
 import datetime
 import nh3
+import json
 import os
 import uuid
 from botocore.exceptions import BotoCoreError, ClientError
 from boto3.dynamodb.conditions import Key
-from fastapi import APIRouter, BackgroundTasks, Header, HTTPException
+from fastapi import APIRouter, Header, HTTPException
 from typing import List, Annotated
+from src.app.sqs_init import sqs_queue_evaluate
 from src.app.models import Query, tables
 from src.modules.logger import get_logger
 from src.app.sessions import (
@@ -59,14 +61,6 @@ def backfill_created_at_date() -> None:
     LOGGER.info(f"Backfilled {len(items)} items with `createdAtDate`.")
 
 
-async def evaluate(evaluation_data: dict) -> dict:
-    if os.getenv("environment", "development") != "test":
-        evaluation_result = chatbot.evaluate(**evaluation_data)
-    else:
-        evaluation_result = {}
-    return evaluation_result
-
-
 def get_final_response(response_str: str, references: List[str]) -> str:
 
     if len(references) > 0:
@@ -79,7 +73,6 @@ def get_final_response(response_str: str, references: List[str]) -> str:
 
 @router.post("/queries")
 async def query_creation(
-    background_tasks: BackgroundTasks,
     query: Query,
     authorization: Annotated[str | None, Header()] = None,
 ):
@@ -93,7 +86,7 @@ async def query_creation(
     user_id = hash_func(userId, salt)
     messages = [item.model_dump() for item in query.history] if query.history else None
 
-    answer_json = chatbot.chat_generate(
+    answer_json = await chatbot.chat_generate(
         query_str=query_str,
         trace_id=trace_id,
         session_id=session["id"],
@@ -113,7 +106,10 @@ async def query_creation(
             "trace_id": trace_id,
             "messages": messages,
         }
-        background_tasks.add_task(evaluate, evaluation_data=evaluation_data)
+        sqs_response = sqs_queue_evaluate.send_message(
+            MessageBody=json.dumps(evaluation_data)
+        )
+        LOGGER.info(f"sqs response: {sqs_response}")
 
     if query.queriedAt is None:
         queriedAt = now.isoformat()
