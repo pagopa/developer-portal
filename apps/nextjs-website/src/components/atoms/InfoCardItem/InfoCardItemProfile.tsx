@@ -133,6 +133,7 @@ export const InfoCardItemProfile = (
       {infoCardItem.value && infoCardItem.value != '' ? (
         <Typography
           noWrap
+          maxWidth={'100%'}
           minHeight={'24px'}
           fontSize={16}
           flexGrow={1}

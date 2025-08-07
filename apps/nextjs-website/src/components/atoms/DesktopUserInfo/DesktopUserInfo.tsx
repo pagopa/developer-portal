@@ -108,12 +108,12 @@ const DesktopUserInfo: FC = () => {
               }}
             ></PersonOutline>
             <Typography
-              variant='body2'
               noWrap
               sx={{
+                maxWidth: '300px',
                 fontSize: 14,
                 fontWeight: 600,
-                display: { xs: 'none', sm: 'flex' },
+                display: 'block',
               }}
             >
               {user.attributes.given_name} {user.attributes.family_name}
