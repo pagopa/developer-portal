@@ -39,8 +39,12 @@ const ChatbotFeedbackButton = ({
       >
         {feedbackGiven ? (
           <Tooltip
-            sx={{
-              display: 'block',
+            PopperProps={{
+              disablePortal: true,
+              sx: {
+                display: 'block',
+                whiteSpace: 'nowrap',
+              },
             }}
             open={true}
             placement='bottom'
