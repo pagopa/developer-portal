@@ -4,6 +4,7 @@ import yaml
 import boto3
 import requests
 from pathlib import Path
+from llama_index.core.async_utils import asyncio_run
 
 from src.modules.logger import get_logger
 from src.modules.utils import (
@@ -89,7 +90,7 @@ def test_strapi_connection() -> None:
     assert response.status_code == 200
 
 
-def test_cloud_connection() -> None:
+def test_models() -> None:
 
     flag = False
     try:
@@ -127,44 +128,24 @@ def test_chat_generation() -> None:
     query_str = "GPD gestisce i pagamenti spontanei?"
 
     try:
-        response_json = CHATBOT.chat_generate(
-            query_str=query_str,
-            trace_id="abcde",
-            user_id="user-test",
-            session_id="session-test",
+        response_json = asyncio_run(
+            CHATBOT.chat_generate(
+                query_str=query_str,
+                trace_id="abcde",
+                user_id="user-test",
+                session_id="session-test",
+            )
         )
-        response_json = CHATBOT.chat_generate(
-            query_str="sai dirmi di più?",
-            trace_id="fghik",
-            messages=[{"question": query_str, "answer": response_json["response"]}],
-            user_id="user-test",
-            session_id="session-test",
+        response_json = asyncio_run(
+            CHATBOT.chat_generate(
+                query_str="sai dirmi di più?",
+                trace_id="fghik",
+                messages=[{"question": query_str, "answer": response_json["response"]}],
+                user_id="user-test",
+                session_id="session-test",
+            )
         )
 
-    except Exception as e:
-        LOGGER.error(e)
-        response_json = {}
-
-    assert response_json != {}
-
-
-def test_evaluation() -> None:
-
-    query_str = "GPD gestisce i pagamenti spontanei?"
-
-    try:
-        response_json = CHATBOT.chat_generate(
-            query_str=query_str,
-            trace_id="abcde",
-            user_id="user-test",
-            session_id="session-test",
-        )
-        CHATBOT.evaluate(
-            query_str=query_str,
-            response_str=response_json["response"],
-            retrieved_contexts=response_json["contexts"],
-            trace_id="abcde",
-        )
     except Exception as e:
         LOGGER.error(e)
         response_json = {}

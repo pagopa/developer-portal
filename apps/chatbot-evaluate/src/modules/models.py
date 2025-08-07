@@ -31,7 +31,7 @@ def get_llm(
     Args:
         provider (str | None): The provider to use for the LLM. Defaults to the value of the `CHB_PROVIDER` environment variable.
         model_id (str | None): The model ID to use for the LLM. Defaults to the value of the `CHB_MODEL_ID` environment variable.
-        temperature (float | None): The temperature to use for the LLM. Defaults to the value of the `CHB_MODEL_TEMPERATURE` environment variable.
+        temperature (int | None): The temperature to use for the LLM. Defaults to the value of the `CHB_MODEL_TEMPERATURE` environment variable.
         max_tokens (int | None): The maximum number of tokens to generate for the LLM. Defaults to the value of the `CHB_MODEL_MAXTOKENS` environment variable.
     Returns:
         LLM: An instance of the LLM class configured with the specified model ID, temperature, and max tokens.
