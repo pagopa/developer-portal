@@ -28,7 +28,14 @@ export function parseUrlsFromMarkdown(
   let updatedFileContent = fileContent;
   for (const match of matches) {
     const replace = replaceUrl(guideMetadata, match[2]);
-    updatedFileContent = updatedFileContent.replaceAll(match[2] || '', replace);
+    updatedFileContent = updatedFileContent.replaceAll(
+      '(' + match[2] || '',
+      '(' + replace
+    );
+    updatedFileContent = updatedFileContent.replaceAll(
+      '"' + match[2] || '',
+      '"' + replace
+    );
   }
   if (matches.length > 0) {
     console.log('Replaced URLs in file: ', filePath || '');
