@@ -81,3 +81,18 @@ export function guideListWithGuideWithUndefinedListItem() {
     })),
   };
 }
+
+export function guideListWithGuideWithWrongDataType() {
+  const guidesList = strapiGuideListPaginatedData;
+  return {
+    ...guidesList,
+    data: guidesList.data.map((guides) => ({
+      ...guides,
+      attributes: {
+        ...guides.attributes,
+        title: 12345, // Wrong data type: it should be a string
+        description: 67890, // Wrong data type: it should be a string
+      },
+    })),
+  };
+}

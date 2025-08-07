@@ -6,7 +6,7 @@ import {
 } from '@/lib/strapi/__tests__/fixtures/guideLists';
 import { StrapiGuideListPaginated } from '@/lib/strapi/types/guideList';
 import {
-  guideListWithGuideWithUndefinedListItem,
+  guideListWithGuideWithUndefinedListItem, guideListWithGuideWithWrongDataType,
   guideListWithMissingImages,
   guideListWithMissingSlugs,
 } from '@/lib/strapi/__tests__/factories/guideLists';
@@ -62,5 +62,16 @@ describe('makeGuideListPageProps', () => {
     expect(result).toHaveLength(1);
     expect(result[0].guidesSections).toHaveLength(2);
     expect(result[0].guidesSections?.[0].guides).toHaveLength(1);
+  });
+
+  it('should return a single element array with abstract title and description as numbers', () => {
+    const guideListWithNumbers = guideListWithGuideWithWrongDataType() as any;
+
+    const result = makeGuideListPagesProps(guideListWithNumbers);
+    expect(result).toHaveLength(1);
+    expect(result[0].abstract).toEqual({
+      title: 12345,
+      description: 67890,
+    });
   });
 });
