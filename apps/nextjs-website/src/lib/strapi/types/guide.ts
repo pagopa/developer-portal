@@ -40,7 +40,7 @@ export type Guide = {
   };
 };
 
-export type StrapiGuidesPaginated = {
+export type StrapiGuides = {
   readonly data: ReadonlyArray<Guide>;
   readonly meta: {
     readonly pagination: Pagination;

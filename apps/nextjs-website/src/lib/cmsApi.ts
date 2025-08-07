@@ -45,8 +45,8 @@ import {
   fetchResponseFromCDN,
   JsonMetadata,
 } from '@/helpers/s3Metadata.helpers';
-import { StrapiGuideListPaginated } from '@/lib/strapi/types/guideList';
-import { StrapiGuidesPaginated } from '@/lib/strapi/types/guide';
+import { StrapiGuideListPages } from '@/lib/strapi/types/guideList';
+import { StrapiGuides } from '@/lib/strapi/types/guide';
 
 // a BuildEnv instance ready to be used
 const buildEnv = pipe(
@@ -224,7 +224,7 @@ export const getGuideListPagesProps = async () => {
     async () => {
       const strapiGuideList = (await fetchResponseFromCDN(
         'synced-guide-list-pages-response.json'
-      )) as StrapiGuideListPaginated | undefined;
+      )) as StrapiGuideListPages | undefined;
       return strapiGuideList ? makeGuideListPagesProps(strapiGuideList) : [];
     },
     CACHE_EXPIRY_IN_SECONDS
@@ -249,7 +249,7 @@ export const getGuidePageProps = async (
       // TODO: restore this when Strapi will manage guides metadata
       const strapiGuides = (await fetchResponseFromCDN(
         'synced-guides-response.json'
-      )) as StrapiGuidesPaginated | undefined;
+      )) as StrapiGuides | undefined;
       // eslint-disable-next-line functional/no-expression-statements
       const guides = strapiGuides ? makeGuidesProps(strapiGuides) : [];
       const guide = guides.filter(

@@ -25,7 +25,7 @@ export type GuideListPage = {
   };
 };
 
-export type StrapiGuideListPaginated = {
+export type StrapiGuideListPages = {
   readonly data: ReadonlyArray<GuideListPage>;
   readonly meta: {
     readonly pagination: Pagination;

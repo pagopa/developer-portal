@@ -1,7 +1,7 @@
-import { strapiGuideListPaginatedData } from '@/lib/strapi/__tests__/fixtures/guideLists';
+import { strapiGuideListPagesData } from '@/lib/strapi/__tests__/fixtures/guideLists';
 
 export function guideListWithMissingSlugs() {
-  const guidesList = strapiGuideListPaginatedData;
+  const guidesList = strapiGuideListPagesData;
   return {
     ...guidesList,
     data: guidesList.data.map((guides) => ({
@@ -27,7 +27,7 @@ export function guideListWithMissingSlugs() {
 }
 
 export function guideListWithMissingImages() {
-  const guidesList = strapiGuideListPaginatedData;
+  const guidesList = strapiGuideListPagesData;
   return {
     ...guidesList,
     data: guidesList.data.map((guides) => ({
@@ -54,7 +54,7 @@ export function guideListWithMissingImages() {
 }
 
 export function guideListWithGuideWithUndefinedListItem() {
-  const guidesList = strapiGuideListPaginatedData;
+  const guidesList = strapiGuideListPagesData;
   return {
     ...guidesList,
     data: guidesList.data.map((guides) => ({
@@ -83,7 +83,7 @@ export function guideListWithGuideWithUndefinedListItem() {
 }
 
 export function guideListWithGuideWithWrongDataType() {
-  const guidesList = strapiGuideListPaginatedData;
+  const guidesList = strapiGuideListPagesData;
   return {
     ...guidesList,
     data: guidesList.data.map((guides) => ({
