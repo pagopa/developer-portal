@@ -65,7 +65,7 @@ resource "aws_iam_role_policy" "lambda_evaluate_policy" {
           module.langfuse_secret_key.ssm_parameter_arn,
           module.google_api_key_ssm_parameter.ssm_parameter_arn,
           module.langfuse_public_key.ssm_parameter_arn,
-          module.langfuse_secret_key.ssm_parameter_arn
+          module.langfuse_secret_key.ssm_parameter_arn,
         ]
       },
       {
