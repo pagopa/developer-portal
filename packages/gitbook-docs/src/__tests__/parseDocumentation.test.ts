@@ -4,8 +4,6 @@ import {
   replaceIncludes,
 } from '../helpers/documentationParsing.helper';
 
-import path from 'path';
-
 const UrlParsingMetadata = {
   dirName: '',
   guides: [
@@ -65,7 +63,7 @@ describe('replaceIncludes', () => {
   });
   it('should export include file content', async () => {
     const ret = await getIncludeContent(
-      'fixtures/reusable-content.md',
+      '__tests__/fixtures/reusable-content.md',
       __dirname
     );
     expect(ret).toStrictEqual('This is a test');
