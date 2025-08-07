@@ -1,0 +1,84 @@
+import { StrapiTutorials } from '@/lib/strapi/types/tutorial';
+import { mediaJpeg } from '@/lib/strapi/__tests__/factories/media';
+import { product } from '@/lib/strapi/__tests__/fixtures/product';
+import { generateBannerLinks } from '@/lib/strapi/__tests__/factories/bannerLink';
+
+export const strapiTutorials: StrapiTutorials = {
+  data: [
+    {
+      attributes: {
+        title: 'Tutorial Title',
+        slug: 'tutorial-title',
+        publishedAt: '2024-01-01T00:00:00.000Z',
+        createdAt: '2024-01-01T00:00:00.000Z',
+        image: { data: mediaJpeg() },
+        locale: 'en-US',
+        product: {
+          data: {
+            attributes: {
+              ...product,
+              bannerLinks: generateBannerLinks(1),
+            },
+          },
+        },
+        parts: [
+          {
+            __component: 'parts.code-block',
+            code: 'console.log("Hello World");',
+            language: 'javascript',
+            showLineNumbers: true,
+          },
+        ],
+        bannerLinks: generateBannerLinks(1),
+        relatedLinks: {
+          title: 'Related Links',
+          links: [
+            {
+              text: 'Link 1',
+              href: '/link-1',
+            },
+          ],
+        },
+        seo: {
+          metaTitle: 'SEO Title',
+          metaDescription: 'SEO Description',
+        },
+        updatedAt: '2024-01-02T00:00:00.000Z',
+      },
+    },
+  ],
+  meta: {
+    pagination: {
+      page: 1,
+      pageSize: 25,
+      pageCount: 1,
+      total: 1,
+    },
+  },
+};
+
+const minimalStrapiTutorials: StrapiTutorials = {
+  data: [
+    {
+      attributes: {
+        title: 'Minimal Tutorial',
+        slug: 'minimal-tutorial',
+        image: { data: mediaJpeg() },
+        product: {
+          ...product,
+          bannerLinks: generateBannerLinks(1),
+        },
+        parts: [],
+        updatedAt: '2024-01-02T00:00:00.000Z',
+      } as any, // For brevity, omitting optional fields
+    },
+  ],
+  meta: {
+    pagination: {
+      page: 1,
+      pageSize: 25,
+      pageCount: 1,
+      total: 1,
+    },
+  },
+};

@@ -1,3 +1,5 @@
+import { StrapiMedia } from '@/lib/strapi/types/media';
+
 export const mediaVectorJson = {
   data: {
     id: 59,

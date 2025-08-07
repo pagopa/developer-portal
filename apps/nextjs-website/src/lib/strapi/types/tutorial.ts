@@ -1,6 +1,5 @@
 import { StrapiMedia } from '@/lib/strapi/types/media';
-import { BaseProduct } from '@/lib/strapi/types/product';
-import { StrapiProduct } from '@/lib/strapi/codecs/ProductCodec';
+import { BaseProductWithBannerLinks } from '@/lib/strapi/types/product';
 import { StrapiBannerLink } from '@/lib/strapi/types/bannerLink';
 import { RelatedLinks } from '@/lib/strapi/types/link';
 import { StrapiSeo } from '@/lib/strapi/types/seo';
@@ -16,17 +15,16 @@ export type BaseTutorial = {
       readonly data?: StrapiMedia;
     };
     readonly product: {
-      readonly data: BaseProduct;
+      readonly data: BaseProductWithBannerLinks;
     };
   };
 };
 
-export type Tutorial = {
-  readonly attributes: BaseTutorial['attributes'] & {
+export type Tutorial = BaseTutorial & {
+  readonly attributes: {
     readonly createdAt: string;
     readonly locale: string;
     readonly parts: readonly StrapiPart[];
-    readonly product: { readonly data: StrapiProduct };
     readonly updatedAt: string;
     readonly bannerLinks?: readonly StrapiBannerLink[];
     readonly relatedLinks?: RelatedLinks;
