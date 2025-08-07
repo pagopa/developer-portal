@@ -6,7 +6,8 @@ import {
 } from '@/lib/strapi/__tests__/fixtures/guideLists';
 import { StrapiGuideListPaginated } from '@/lib/strapi/types/guideList';
 import {
-  guideListWithGuideWithUndefinedListItem, guideListWithGuideWithWrongDataType,
+  guideListWithGuideWithUndefinedListItem,
+  guideListWithGuideWithWrongDataType,
   guideListWithMissingImages,
   guideListWithMissingSlugs,
 } from '@/lib/strapi/__tests__/factories/guideLists';
