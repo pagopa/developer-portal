@@ -56,29 +56,3 @@ export const strapiTutorials: StrapiTutorials = {
     },
   },
 };
-
-const minimalStrapiTutorials: StrapiTutorials = {
-  data: [
-    {
-      attributes: {
-        title: 'Minimal Tutorial',
-        slug: 'minimal-tutorial',
-        image: { data: mediaJpeg() },
-        product: {
-          ...product,
-          bannerLinks: generateBannerLinks(1),
-        },
-        parts: [],
-        updatedAt: '2024-01-02T00:00:00.000Z',
-      } as any, // For brevity, omitting optional fields
-    },
-  ],
-  meta: {
-    pagination: {
-      page: 1,
-      pageSize: 25,
-      pageCount: 1,
-      total: 1,
-    },
-  },
-};
