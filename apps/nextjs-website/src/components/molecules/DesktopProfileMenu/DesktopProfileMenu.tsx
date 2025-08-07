@@ -44,6 +44,7 @@ const DesktopProfileMenu = ({
         <Box sx={{ marginBottom: 8 }}>
           <Typography
             variant='h5'
+            noWrap
             sx={{
               padding: '0px 32px',
               verticalAlign: 'middle',

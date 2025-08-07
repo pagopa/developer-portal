@@ -89,11 +89,13 @@ const MobileUserInfo = ({ onClick }: MobileUserInfoProps) => {
               ></PersonOutline>
               <Typography
                 variant='body2'
+                noWrap
                 sx={{
+                  maxWidth: '200px',
                   color: palette.primary.dark,
                   fontSize: 18,
                   fontWeight: 600,
-                  display: 'flex',
+                  display: 'block',
                 }}
               >
                 {user.attributes.given_name} {user.attributes.family_name}
