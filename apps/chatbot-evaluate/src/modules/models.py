@@ -66,6 +66,7 @@ def get_embed_model(
     model_id: str | None = None,
     embed_batch_size: int | None = None,
     embed_dim: int | None = None,
+    task_type: str | None = None,
 ) -> BaseEmbedding:
     """
     Returns an instance of the embedding model based on the provider specified in the environment variable.
@@ -84,7 +85,8 @@ def get_embed_model(
     provider = provider or SETTINGS.provider
     model_id = model_id or SETTINGS.embed_model_id
     embed_batch_size = embed_batch_size or SETTINGS.embed_batch_size
-    embed_dim = embed_dim or SETTINGS.embedding_dim
+    embed_dim = embed_dim or SETTINGS.embed_dim
+    task_type = task_type or SETTINGS.embed_task_type
 
     if provider == "google":
         from llama_index.embeddings.google_genai import GoogleGenAIEmbedding
@@ -95,7 +97,7 @@ def get_embed_model(
             embed_batch_size=embed_batch_size,
             embedding_config=types.EmbedContentConfig(
                 output_dimensionality=embed_dim,
-                task_type="RETRIEVAL_DOCUMENT",
+                task_type=task_type,
             ),
         )
         LOGGER.info(f"{model_id} embedding model loaded successfully from Google!")

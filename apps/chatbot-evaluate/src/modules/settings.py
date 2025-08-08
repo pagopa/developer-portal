@@ -38,6 +38,7 @@ class ChatbotSettings(BaseSettings):
     embed_model_id: str = os.getenv(
         "CHB_EMBED_MODEL_ID", "text-multilingual-embedding-002"
     )
+    embed_task_type: str = "SEMANTIC_SIMILARITY"
     embedding_dim: int = int(os.getenv("CHB_EMBEDDING_DIM", "768"))
     max_tokens: int = os.getenv("CHB_MODEL_MAXTOKENS", "768")
     model_id: str = os.getenv("CHB_MODEL_ID", "gemini-2.5-flash")
