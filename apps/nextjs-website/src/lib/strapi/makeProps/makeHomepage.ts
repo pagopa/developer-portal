@@ -1,5 +1,5 @@
 import { StrapiHomepage } from '@/lib/strapi/codecs/HomepageCodec';
-import { makeWebinarFromStrapi } from './makeWebinars';
+import { deprecatedMakeWebinarFromStrapi } from './makeWebinars';
 import { HomepageProps } from '@/app/page';
 
 export const makeHomepageProps = (
@@ -64,7 +64,7 @@ export const makeHomepageProps = (
   seo: strapiHomepage?.data?.attributes?.seo,
   webinars: [
     ...strapiHomepage.data.attributes.webinars.data.map((webinar) =>
-      makeWebinarFromStrapi(webinar)
+      deprecatedMakeWebinarFromStrapi(webinar)
     ),
   ],
 });

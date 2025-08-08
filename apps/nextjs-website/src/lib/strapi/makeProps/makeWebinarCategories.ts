@@ -1,4 +1,7 @@
-import { StrapiWebinarCategories } from '@/lib/strapi/codecs/WebinarCategoryCodec';
+import {
+  StrapiWebinarCategories,
+  StrapiWebinarCategory,
+} from '@/lib/strapi/types/webinarCategory';
 import { WebinarCategory } from '@/lib/types/webinarCategory';
 
 export function makeWebinarCategoriesProps(
@@ -8,7 +11,7 @@ export function makeWebinarCategoriesProps(
 }
 
 export function makeWebinarCategoryProps(
-  webinarCategory: StrapiWebinarCategories['data'][0]
+  webinarCategory: StrapiWebinarCategory
 ): WebinarCategory {
   return {
     name: webinarCategory.attributes.name,
