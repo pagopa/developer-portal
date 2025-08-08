@@ -18,4 +18,4 @@ export type TutorialsList = {
   };
 };
 
-export type StrapiTutorialsLists = Paginated<TutorialsList>;
+export type StrapiGuideListPage = Paginated<TutorialsList>;
