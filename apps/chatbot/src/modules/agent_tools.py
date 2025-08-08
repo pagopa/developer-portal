@@ -10,6 +10,7 @@ from llama_index.core.tools import QueryEngineTool, FunctionTool
 
 from src.modules.settings import SETTINGS
 from src.modules.documents import get_product_list
+from src.modules.models import get_llm, get_embed_model
 
 
 PRODUCTS = get_product_list()
@@ -62,7 +63,10 @@ def get_query_engine_tool(
         AssertionError: If the provider is not 'google' or 'mock'.
     """
 
-    base_retriever = index.as_retriever(similarity_top_k=SETTINGS.similarity_topk)
+    base_retriever = index.as_retriever(
+        similarity_top_k=SETTINGS.similarity_topk,
+        embed_model=get_embed_model(task_type=SETTINGS.embed_task_qa),
+    )
     retriever = AutoMergingRetriever(
         base_retriever, index.storage_context, verbose=verbose
     )
@@ -97,7 +101,7 @@ def get_query_engine_tool(
         name="rag_tool",
         description=(
             "This tool is your primary resource for answering questions about PagoPA products and services. "
-            "Use it to find information on topics like 'app-io', 'piattaforma-pago-pa', 'send', 'pdnd', and 'firma-con-io'. "
+            f"Use it to find information on topics like: {PRODUCTS}. "
             "It can also answer general questions about the company and its offerings."
         ),
     )
@@ -114,7 +118,10 @@ def get_identity_tool(identity_prompt: str) -> FunctionTool:
     identity_tool = FunctionTool.from_defaults(
         fn=identity_fn,
         name="discovery_identity",
-        description="Responds to identity or personality questions like 'Who are you?', 'What is your name?', 'I am ..., and you?', or similar.",
+        description=(
+            "Responds to identity or personality questions like 'Who are you?', "
+            "'What is your name?', 'I am ..., and you?', or similar."
+        ),
     )
 
     return identity_tool

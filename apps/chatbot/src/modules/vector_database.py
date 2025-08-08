@@ -49,7 +49,7 @@ REDIS_SCHEMA = IndexSchema.from_dict(
                 "name": "vector",
                 "type": "vector",
                 "attrs": {
-                    "dims": SETTINGS.embedding_dim,
+                    "dims": SETTINGS.embed_dim,
                     "algorithm": "flat",
                     "distance_metric": "cosine",
                 },
@@ -111,7 +111,7 @@ def build_index_redis(
                         "name": "vector",
                         "type": "vector",
                         "attrs": {
-                            "dims": SETTINGS.embedding_dim,
+                            "dims": SETTINGS.embed_dim,
                             "algorithm": "flat",
                             "distance_metric": "cosine",
                         },

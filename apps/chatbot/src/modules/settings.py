@@ -41,16 +41,17 @@ class ChatbotSettings(BaseSettings):
 
     # RAG settings
     embed_batch_size: int = int(os.getenv("CHB_EMBED_BATCH_SIZE", "100"))
-    embed_model_id: str = os.getenv(
-        "CHB_EMBED_MODEL_ID", "text-multilingual-embedding-002"
-    )
-    embedding_dim: int = int(os.getenv("CHB_EMBEDDING_DIM", "768"))
+    embed_dim: int = int(os.getenv("CHB_EMBEDDING_DIM", "768"))
+    embed_model_id: str = os.getenv("CHB_EMBED_MODEL_ID", "gemini-embedding-001")
+    embed_task_docs: str = "RETRIEVAL_DOCUMENT"
+    embed_task_qa: str = "RETRIEVAL_QUERY"
     max_tokens: int = os.getenv("CHB_MODEL_MAXTOKENS", "768")
     model_id: str = os.getenv("CHB_MODEL_ID", "gemini-2.5-flash")
     provider: str = os.getenv("CHB_PROVIDER", "google")
     reranker_id: str = os.getenv("CHB_RERANKER_ID", "semantic-ranker-512-003")
-    temperature: float = float(os.getenv("CHB_MODEL_TEMPERATURE", "0.3"))
     similarity_topk: int = int(os.getenv("CHB_ENGINE_SIMILARITY_TOPK", "5"))
+    temperature_agent: float = 0.7
+    temperature_rag: float = float(os.getenv("CHB_MODEL_TEMPERATURE", "0.3"))
     use_async: bool = os.getenv("CHB_ENGINE_USE_ASYNC", "True").lower() == "true"
 
     # vector index and docs params

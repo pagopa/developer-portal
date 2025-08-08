@@ -36,7 +36,7 @@ def get_agent(
             "It retrieves relevant information from the index and generates a structured response."
         ),
         tools=[query_engine_tool, identity_tool],
-        llm=get_llm(temperature=0.7),
+        llm=get_llm(temperature=SETTINGS.temperature_agent),
     )
 
     agent.formatter.system_header = SETTINGS.react_system_str
