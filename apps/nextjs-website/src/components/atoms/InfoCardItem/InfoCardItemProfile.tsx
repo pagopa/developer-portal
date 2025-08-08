@@ -42,6 +42,7 @@ export const InfoCardItemProfile = (
           {infoCardItem.type === 'text' ? (
             infoCardItem.required ? (
               <RequiredTextField
+                inputProps={{ maxlength: 100 }}
                 label={infoCardItem.title}
                 value={infoCardItem.value ?? ''}
                 onChange={({ target: { value } }) => {
@@ -51,6 +52,7 @@ export const InfoCardItemProfile = (
               />
             ) : (
               <TextField
+                inputProps={{ maxlength: 100 }}
                 variant='outlined'
                 id={infoCardItem.title}
                 type={'text'}
@@ -130,6 +132,8 @@ export const InfoCardItemProfile = (
       </Typography>
       {infoCardItem.value && infoCardItem.value != '' ? (
         <Typography
+          noWrap
+          maxWidth={'100%'}
           minHeight={'24px'}
           fontSize={16}
           flexGrow={1}
