@@ -61,7 +61,7 @@ export function replaceUrl(
     });
   const lastPart = splitValue.at(-1) || '';
   const secondToLastPart = splitValue.at(-2) || '';
-  const name = lastPart.replace('.md', '');
+  const name = lastPart.replace('.md', '').split('#')[0];
 
   // Skip processing for very short names (likely not valid guide names)
   if (name.length <= 1) {
@@ -74,14 +74,16 @@ export function replaceUrl(
   if (guides.length <= 0) {
     return value;
   }
+  const subParts = value.includes('#') ? value.split('#').at(-1) : '';
+  const urlEnding = subParts && subParts.length > 0 ? '#' + subParts : '';
   if (guides.length == 1) {
-    return guides[0].guideUrl || value;
+    return guides[0].guideUrl + urlEnding || value;
   } else {
     // If multiple matches, try to find more specific match using parent directory
     const guide = guides.find((guide) =>
-      guide.guidePath.includes([secondToLastPart, lastPart].join('/'))
+      guide.guidePath.includes([secondToLastPart, name].join('/'))
     );
-    return guide?.guideUrl || value;
+    return guide?.guideUrl + urlEnding || value;
   }
 }
 
