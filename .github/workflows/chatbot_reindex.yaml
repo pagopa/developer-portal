@@ -68,8 +68,6 @@ jobs:
     if: github.event_name == 'workflow_run'
     runs-on: codebuild-${{ github.event.workflow_run.jobs.build.outputs.environment }}-github-runner-${{ github.run_id }}-${{ github.run_attempt }}
     strategy:
-      matrix:
-        environment: ${{ github.event.workflow_run.jobs.build.outputs.environment }}
       fail-fast: false
 
     environment: ${{ github.event.workflow_run.jobs.build.outputs.environment }}
