@@ -17,26 +17,16 @@ import xml.etree.ElementTree as ET
 from llama_index.core import Document
 
 from src.modules.logger import get_logger
-from src.modules.utils import get_ssm_parameter
+from src.modules.settings import SETTINGS
 
 
 logging.getLogger("botocore").setLevel(logging.ERROR)
 LOGGER = get_logger(__name__)
-WEBSITE_URL = os.getenv("CHB_WEBSITE_URL")
-STRAPI_API_KEY = get_ssm_parameter(
-    os.getenv("CHB_AWS_SSM_STRAPI_API_KEY"), os.getenv("CHB_STRAPI_API_KEY", "")
-)
-AWS_ACCESS_KEY_ID = os.getenv("CHB_AWS_ACCESS_KEY_ID")
-AWS_SECRET_ACCESS_KEY = os.getenv("CHB_AWS_SECRET_ACCESS_KEY")
-AWS_DEFAULT_REGION = os.getenv("CHB_AWS_DEFAULT_REGION")
 AWS_S3_CLIENT = boto3.client(
     "s3",
-    aws_access_key_id=AWS_ACCESS_KEY_ID,
-    aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
-    region_name=AWS_DEFAULT_REGION,
-)
-AWS_S3_BUCKET_NAME_STATIC_CONTENT = os.getenv(
-    "CHB_AWS_S3_BUCKET_NAME_STATIC_CONTENT", "devportal-d-website-static-content"
+    aws_access_key_id=SETTINGS.aws_access_key_id,
+    aws_secret_access_key=SETTINGS.aws_secret_access_key,
+    region_name=SETTINGS.aws_default_region,
 )
 
 
@@ -59,11 +49,11 @@ def get_product_list(website_url: str | None = None) -> List[str]:
         List[str]: A list of product slugs. If the request fails, an empty list is returned.
     """
     if website_url is None:
-        website_url = WEBSITE_URL
+        website_url = SETTINGS.website_url
 
     url = website_url.replace("https://", "https://cms.")
     url += "/api/products"
-    headers = {"Authorization": f"Bearer {STRAPI_API_KEY}"}
+    headers = {"Authorization": f"Bearer {SETTINGS.strapi_api_key}"}
     response = requests.get(url, headers=headers)
     product_list = []
     if response.status_code == 200:
@@ -131,7 +121,7 @@ def get_sitemap_urls(website_url: str | None = None) -> List[str]:
     """
 
     if website_url is None:
-        sitemap_url = f"{WEBSITE_URL}/sitemap.xml"
+        sitemap_url = f"{SETTINGS.website_url}/sitemap.xml"
     else:
         sitemap_url = f"{website_url}/sitemap.xml"
 
@@ -169,7 +159,7 @@ def read_file_from_s3(file_path: str) -> str:
     """
 
     response = AWS_S3_CLIENT.get_object(
-        Bucket=AWS_S3_BUCKET_NAME_STATIC_CONTENT,
+        Bucket=SETTINGS.bucket_static_content,
         Key=file_path,
     )
     text = response["Body"].read().decode("utf-8")
@@ -211,11 +201,11 @@ def get_apidata(website_url: str | None = None) -> dict:
         dict: Parsed JSON data from the API response.
     """
     if website_url is None:
-        url = WEBSITE_URL.replace("https://", "https://cms.")
+        url = SETTINGS.website_url.replace("https://", "https://cms.")
     else:
         url = website_url.replace("https://", "https://cms.")
     url += "/api/apis-data?populate[product]=*&populate[apiRestDetail][populate][specUrls]=*"
-    headers = {"Authorization": f"Bearer {STRAPI_API_KEY}"}
+    headers = {"Authorization": f"Bearer {SETTINGS.strapi_api_key}"}
 
     response = requests.get(url, headers=headers)
     LOGGER.info(f"Fetching API data from {url}")
@@ -291,15 +281,17 @@ def get_api_docs(website_url: str | None = None) -> list:
             api_slug = data["attributes"]["apiRestDetail"]["slug"]
             for spec_urls in data["attributes"]["apiRestDetail"]["specUrls"]:
                 api_txt = read_api_url(spec_urls["url"].strip())
-                api_url = os.path.join(WEBSITE_URL, product_slug, "api", api_slug)
+                api_url = os.path.join(
+                    SETTINGS.website_url, product_slug, "api", api_slug
+                )
                 if spec_urls["name"] is not None:
                     api_url += f"?spec={quote(spec_urls['name'])}"
                 docs.append(
                     Document(
-                        id_=api_url.replace(WEBSITE_URL, ""),
+                        id_=api_url.replace(SETTINGS.website_url, ""),
                         text=api_txt,
                         metadata={
-                            "filepath": api_url.replace(WEBSITE_URL, ""),
+                            "filepath": api_url.replace(SETTINGS.website_url, ""),
                             "title": title,
                         },
                     )
@@ -339,7 +331,7 @@ def get_static_and_dynamic_lists(
 
         for item in guides_metadata + release_notes_metadata + solutions_metadata:
 
-            url = WEBSITE_URL + item["path"]
+            url = SETTINGS.website_url + item["path"]
             if url in filtered_urls:
                 static_urls.append(
                     {
@@ -381,10 +373,10 @@ def get_static_docs(static_urls: List[dict]) -> List[Document]:
 
         static_docs.append(
             Document(
-                id_=url.replace(WEBSITE_URL, ""),
+                id_=url.replace(SETTINGS.website_url, ""),
                 text=text,
                 metadata={
-                    "filepath": url.replace(WEBSITE_URL, ""),
+                    "filepath": url.replace(SETTINGS.website_url, ""),
                     "title": title,
                     "language": "it",
                 },
@@ -425,11 +417,7 @@ def get_dynamic_docs(dynamic_urls: List[str]) -> List[Document]:
             time.sleep(5)
             title, text = html2markdown(driver.page_source)
             driver.quit()
-            if (
-                text is not None
-                and text != ""
-                and text != "None"
-            ):
+            if text is not None and text != "" and text != "None":
 
                 text = re.sub(r"(?<=[\wÀ-ÿ])\n(?=[\wÀ-ÿ])", " ", text)
                 if title == "":
@@ -437,10 +425,10 @@ def get_dynamic_docs(dynamic_urls: List[str]) -> List[Document]:
 
                 dynamic_docs.append(
                     Document(
-                        id_=url.replace(WEBSITE_URL, ""),
+                        id_=url.replace(SETTINGS.website_url, ""),
                         text=text,
                         metadata={
-                            "filepath": url.replace(WEBSITE_URL, ""),
+                            "filepath": url.replace(SETTINGS.website_url, ""),
                             "title": title,
                             "language": "it",
                         },
@@ -478,7 +466,7 @@ def get_documents(website_url: str | None = None) -> List[Document]:
     api_docs = get_api_docs(website_url)
     static_docs = get_static_docs(static_urls)
     dynamic_docs = get_dynamic_docs(dynamic_urls)
-    docs = static_docs + dynamic_docs + api_docs
+    docs = api_docs + static_docs + dynamic_docs
 
     LOGGER.info(f"Total number of fetched documents: {len(docs)}")
     return docs

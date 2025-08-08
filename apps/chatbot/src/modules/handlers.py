@@ -56,10 +56,20 @@ LLMS_COST = {
         "input_cost": 0.1 * 1.0e-6,
         "output_cost": 0.4 * 1.0e-6,
     },
+    "gemini-2.5-flash-lite": {
+        "input_cost": 0.1 * 1.0e-6,
+        "output_cost": 0.4 * 1.0e-6,
+    },
+    "gemini-2.5-flash": {
+        "input_cost": 0.1 * 1.0e-6,
+        "output_cost": 0.4 * 1.0e-6,
+    },
 }
 EMBEDDERS_COST = {
     "cohere.embed-multilingual-v3": 0.0001 * 1.0e-3,
     "text-embedding-004": 0,
+    "gemini-embedding-001": 0.15 * 1.0e-6,
+    "text-multilingual-embedding-002": 0.000025 * 1.0e-3,
 }
 RERANK_COST = {
     "amazon.rerank-v1:0": 0.001,

@@ -1,5 +1,3 @@
-import os
-import logging
 import numpy as np
 from datetime import datetime
 from typing import Sequence, Literal
@@ -9,22 +7,14 @@ from langfuse.api.resources.trace.types.traces import Traces
 from langfuse.model import TraceWithFullDetails
 
 from src.modules.logger import get_logger
-from src.modules.utils import get_ssm_parameter
+from src.modules.settings import SETTINGS
+
 
 LOGGER = get_logger(__name__)
-LANGFUSE_PUBLIC_KEY = get_ssm_parameter(
-    os.getenv("CHB_AWS_SSM_LANGFUSE_PUBLIC_KEY"),
-    os.getenv("LANGFUSE_INIT_PROJECT_PUBLIC_KEY"),
-)
-LANGFUSE_SECRET_KEY = get_ssm_parameter(
-    os.getenv("CHB_AWS_SSM_LANGFUSE_SECRET_KEY"),
-    os.getenv("LANGFUSE_INIT_PROJECT_SECRET_KEY"),
-)
-LANGFUSE_HOST = os.getenv("CHB_LANGFUSE_HOST")
 LANGFUSE_CLIENT = Langfuse(
-    public_key=LANGFUSE_PUBLIC_KEY,
-    secret_key=LANGFUSE_SECRET_KEY,
-    host=LANGFUSE_HOST,
+    public_key=SETTINGS.langfuse_public_key,
+    secret_key=SETTINGS.langfuse_secret_key,
+    host=SETTINGS.langfuse_host,
 )
 
 

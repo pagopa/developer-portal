@@ -28,6 +28,7 @@ COPY ./src ./src
 COPY ./config ./config
 COPY ./scripts ./scripts
 COPY ./notebooks ./notebooks
+COPY ./.google_service_account.json .
 
 RUN poetry config virtualenvs.create false
 RUN poetry install
