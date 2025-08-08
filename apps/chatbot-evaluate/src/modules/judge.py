@@ -9,6 +9,7 @@ from src.modules.logger import get_logger
 from src.modules.models import get_llm, get_embed_model
 from src.modules.evaluator import Evaluator
 from src.modules.monitor import add_langfuse_score
+from src.modules.settings import SETTINGS
 
 
 LOGGER = get_logger(__name__)
@@ -17,12 +18,12 @@ ROOT = CWF.parent.parent.parent.absolute().__str__()
 
 
 class Judge:
-    def __init__(self, prompts: dict, provider: str = "google"):
-        self.condense_prompt_str = prompts["condense_prompt_str"]
-        self.llm = get_llm(provider=provider)
+    def __init__(self):
+        self.condense_prompt_str = SETTINGS.condense_prompt_str
+        self.llm = get_llm(provider=SETTINGS.provider, temperature=0.0)
         self.evaluator = Evaluator(
-            llm=get_llm(provider=provider, temperature=0.0),
-            embedder=get_embed_model(provider=provider),
+            llm=self.llm,
+            embedder=get_embed_model(provider=SETTINGS.provider),
         )
 
     def _messages_to_chathistory(
