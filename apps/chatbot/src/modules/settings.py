@@ -5,26 +5,6 @@ from pydantic_settings import BaseSettings
 
 from src.modules.utils import get_ssm_parameter
 
-from dotenv import load_dotenv
-
-load_dotenv("/home/mdcir/developer-portal/apps/chatbot/.env.local")
-
-GOOGLE_SERVICE_ACCOUNT = get_ssm_parameter(
-    os.getenv("CHB_AWS_SSM_GOOGLE_SERVICE_ACCOUNT")
-)
-INDEX_ID = get_ssm_parameter(
-    os.getenv("CHB_AWS_SSM_LLAMAINDEX_INDEX_ID"), "default-index"
-)
-LANGFUSE_PUBLIC_KEY = get_ssm_parameter(
-    os.getenv("CHB_AWS_SSM_LANGFUSE_PUBLIC_KEY"),
-    os.getenv("LANGFUSE_INIT_PROJECT_PUBLIC_KEY"),
-)
-LANGFUSE_SECRET_KEY = get_ssm_parameter(
-    os.getenv("CHB_AWS_SSM_LANGFUSE_SECRET_KEY"),
-    os.getenv("LANGFUSE_INIT_PROJECT_SECRET_KEY"),
-)
-LANGFUSE_HOST = os.getenv("CHB_LANGFUSE_HOST")
-
 CWF = Path(__file__)
 ROOT = CWF.parent.parent.parent.absolute().__str__()
 PARAMS = yaml.safe_load(open(os.path.join(ROOT, "config", "params.yaml"), "r"))
@@ -43,13 +23,21 @@ class ChatbotSettings(BaseSettings):
         name=os.getenv("CHB_AWS_SSM_GOOGLE_API_KEY"),
         default=os.getenv("CHB_AWS_GOOGLE_API_KEY"),
     )
-    google_service_account: str = GOOGLE_SERVICE_ACCOUNT
+    google_service_account: str = get_ssm_parameter(
+        os.getenv("CHB_AWS_SSM_GOOGLE_SERVICE_ACCOUNT")
+    )
     strapi_api_key: str = get_ssm_parameter(
         os.getenv("CHB_AWS_SSM_STRAPI_API_KEY"), os.getenv("CHB_STRAPI_API_KEY", "")
     )
     langfuse_host: str = os.getenv("CHB_LANGFUSE_HOST")
-    langfuse_public_key: str = os.getenv("CHB_AWS_SSM_LANGFUSE_PUBLIC_KEY")
-    langfuse_secret_key: str = os.getenv("CHB_AWS_SSM_LANGFUSE_SECRET_KEY")
+    langfuse_public_key: str = get_ssm_parameter(
+        os.getenv("CHB_AWS_SSM_LANGFUSE_PUBLIC_KEY"),
+        os.getenv("LANGFUSE_INIT_PROJECT_PUBLIC_KEY"),
+    )
+    langfuse_secret_key: str = get_ssm_parameter(
+        os.getenv("CHB_AWS_SSM_LANGFUSE_SECRET_KEY"),
+        os.getenv("LANGFUSE_INIT_PROJECT_SECRET_KEY"),
+    )
 
     # RAG settings
     embed_batch_size: int = int(os.getenv("CHB_EMBED_BATCH_SIZE", "100"))
@@ -68,7 +56,9 @@ class ChatbotSettings(BaseSettings):
     # vector index and docs params
     chunk_overlap: int = PARAMS["vector_index"]["chunk_overlap"]
     chunk_size: int = PARAMS["vector_index"]["chunk_size"]
-    index_id: str = INDEX_ID
+    index_id: str = get_ssm_parameter(
+        os.getenv("CHB_AWS_SSM_LLAMAINDEX_INDEX_ID"), "default-index"
+    )
     presidio_config: dict = PARAMS["config_presidio"]
     bucket_static_content: str = os.getenv(
         "CHB_AWS_S3_BUCKET_NAME_STATIC_CONTENT", "devportal-d-website-static-content"
