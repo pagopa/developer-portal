@@ -18,6 +18,7 @@ export type UrlParsingMetadata = {
 export function parseUrlsFromMarkdown(
   fileContent: string,
   guideMetadata: UrlParsingMetadata | undefined,
+  metadata: UrlParsingMetadata[] = [],
   filePath?: string
 ): string {
   // Regex to match markdown links: [link text](url)
@@ -27,8 +28,15 @@ export function parseUrlsFromMarkdown(
   // eslint-disable-next-line functional/no-let
   let updatedFileContent = fileContent;
   for (const match of matches) {
-    const replace = replaceUrl(guideMetadata, match[2]);
-    updatedFileContent = updatedFileContent.replaceAll(match[2] || '', replace);
+    const replace = replaceUrl(guideMetadata, metadata, match[2]);
+    updatedFileContent = updatedFileContent.replaceAll(
+      '(' + match[2] || '',
+      '(' + replace
+    );
+    updatedFileContent = updatedFileContent.replaceAll(
+      '"' + match[2] || '',
+      '"' + replace
+    );
   }
   if (matches.length > 0) {
     console.log('Replaced URLs in file: ', filePath || '');
@@ -40,6 +48,7 @@ export function parseUrlsFromMarkdown(
 // Handles various markdown file extensions and path formats to find the correct guide URL.
 export function replaceUrl(
   metadata: UrlParsingMetadata | undefined,
+  fullMedatada: UrlParsingMetadata[] = [],
   value: string
 ): string {
   if (!metadata) return value;
@@ -54,7 +63,7 @@ export function replaceUrl(
     });
   const lastPart = splitValue.at(-1) || '';
   const secondToLastPart = splitValue.at(-2) || '';
-  const name = lastPart.replace('.md', '');
+  const name = lastPart.replace('.md', '').split('#')[0];
 
   // Skip processing for very short names (likely not valid guide names)
   if (name.length <= 1) {
@@ -65,16 +74,21 @@ export function replaceUrl(
     guide.guidePath.includes(name)
   );
   if (guides.length <= 0) {
-    return value;
+    const externalGuide = fullMedatada.filter((g) => g.dirName.includes(name));
+    if (externalGuide.length > 0) {
+      guides.push(...externalGuide[0].guides);
+    } else return value;
   }
+  const subParts = value.includes('#') ? value.split('#').at(-1) : '';
+  const urlEnding = subParts && subParts.length > 0 ? '#' + subParts : '';
   if (guides.length == 1) {
-    return guides[0].guideUrl || value;
+    return guides[0].guideUrl + urlEnding || value;
   } else {
     // If multiple matches, try to find more specific match using parent directory
     const guide = guides.find((guide) =>
-      guide.guidePath.includes([secondToLastPart, lastPart].join('/'))
+      guide.guidePath.includes([secondToLastPart, name].join('/'))
     );
-    return guide?.guideUrl || value;
+    return guide ? guide?.guideUrl + urlEnding : guides[0].guideUrl + urlEnding;
   }
 }
 

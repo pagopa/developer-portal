@@ -139,6 +139,7 @@ const MobileProfileMenu = ({ userFullName }: MobileProfileMenuProps) => {
           <DialogContent sx={{ px: 0 }}>
             <Typography
               variant='h6'
+              noWrap
               sx={{ fontSize: '22px', fontWeight: 700, padding: '12px 24px' }}
             >
               {userFullName}
