@@ -5,7 +5,7 @@ from llama_index.core.async_utils import asyncio_run
 
 from src.modules.logger import get_logger
 from src.modules.settings import SETTINGS
-from src.modules.vector_database import REDIS_CLIENT, INDEX_ID
+from src.modules.vector_database import REDIS_CLIENT
 from src.modules.models import get_llm, get_embed_model
 from src.modules.chatbot import Chatbot, LANGFUSE_CLIENT
 
@@ -41,7 +41,7 @@ def test_ssm_params() -> None:
             GOOGLE_JSON_ACCOUNT_INFO = json.loads(SETTINGS.google_service_account)
         assert GOOGLE_API_KEY is not None and GOOGLE_JSON_ACCOUNT_INFO is not None
 
-    assert INDEX_ID is not None
+    assert SETTINGS.index_id is not None
     assert SETTINGS.strapi_api_key is not None
 
 
