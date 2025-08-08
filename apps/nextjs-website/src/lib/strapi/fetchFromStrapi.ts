@@ -9,7 +9,7 @@ import { makeError } from '../makeError';
 
 // Function to invoke in order to retrieve data from Strapi.
 /** @deprecated
- * Use `fetchFromStrapiNew` instead, which does not require a codec.
+ * Use `fetchFromStrapi` instead, which does not require a codec.
  */
 export const deprecatedFetchFromStrapi = <A, O, I>(
   path: string,
