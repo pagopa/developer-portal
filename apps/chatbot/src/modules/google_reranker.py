@@ -19,14 +19,8 @@ from google.cloud import discoveryengine_v1 as discoveryengine
 from src.modules.settings import SETTINGS
 
 
-if SETTINGS.google_service_account is None:
-    with open("./.google_service_account.json", "r") as file:
-        GOOGLE_JSON_ACCOUNT_INFO = json.load(file)
-else:
-    GOOGLE_JSON_ACCOUNT_INFO = json.loads(SETTINGS.google_service_account)
-
 GOOGLE_CREDENTIALS = service_account.Credentials.from_service_account_info(
-    GOOGLE_JSON_ACCOUNT_INFO
+    SETTINGS.google_service_account
 )
 
 
@@ -66,7 +60,7 @@ class GoogleRerank(BaseNodePostprocessor):
             )
 
         self._ranking_config = self._client.ranking_config_path(
-            project=GOOGLE_JSON_ACCOUNT_INFO["project_id"],
+            project=SETTINGS.google_service_account["project_id"],
             location="global",
             ranking_config=ranking_config,
         )

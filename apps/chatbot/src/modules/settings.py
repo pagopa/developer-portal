@@ -1,4 +1,5 @@
 import os
+import json
 import yaml
 from pathlib import Path
 from pydantic_settings import BaseSettings
@@ -9,6 +10,16 @@ CWF = Path(__file__)
 ROOT = CWF.parent.parent.parent.absolute().__str__()
 PARAMS = yaml.safe_load(open(os.path.join(ROOT, "config", "params.yaml"), "r"))
 PROMPTS = yaml.safe_load(open(os.path.join(ROOT, "config", "prompts.yaml"), "r"))
+
+
+GOOGLE_SERVICE_ACCOUNT = get_ssm_parameter(
+    os.getenv("CHB_AWS_SSM_GOOGLE_SERVICE_ACCOUNT")
+)
+if GOOGLE_SERVICE_ACCOUNT is None:
+    with open(os.path.join(ROOT, ".google_service_account.json"), "r") as file:
+        GOOGLE_JSON_ACCOUNT_INFO = json.load(file)
+else:
+    GOOGLE_JSON_ACCOUNT_INFO = json.loads(GOOGLE_SERVICE_ACCOUNT)
 
 
 class ChatbotSettings(BaseSettings):
@@ -23,9 +34,7 @@ class ChatbotSettings(BaseSettings):
         name=os.getenv("CHB_AWS_SSM_GOOGLE_API_KEY"),
         default=os.getenv("CHB_AWS_GOOGLE_API_KEY"),
     )
-    google_service_account: str = get_ssm_parameter(
-        os.getenv("CHB_AWS_SSM_GOOGLE_SERVICE_ACCOUNT")
-    )
+    google_service_account: dict = GOOGLE_JSON_ACCOUNT_INFO
     strapi_api_key: str = get_ssm_parameter(
         os.getenv("CHB_AWS_SSM_STRAPI_API_KEY"), os.getenv("CHB_STRAPI_API_KEY", "")
     )

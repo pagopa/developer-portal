@@ -33,13 +33,8 @@ def test_aws_credentials() -> None:
 def test_ssm_params() -> None:
 
     if SETTINGS.provider == "google":
-        GOOGLE_API_KEY = SETTINGS.google_api_key
-        if SETTINGS.google_service_account is None:
-            with open("./.google_service_account.json", "r") as file:
-                GOOGLE_JSON_ACCOUNT_INFO = json.load(file)
-        else:
-            GOOGLE_JSON_ACCOUNT_INFO = json.loads(SETTINGS.google_service_account)
-        assert GOOGLE_API_KEY is not None and GOOGLE_JSON_ACCOUNT_INFO is not None
+        assert SETTINGS.google_api_key is not None
+        assert SETTINGS.google_service_account is not None
 
     assert SETTINGS.index_id is not None
     assert SETTINGS.strapi_api_key is not None
