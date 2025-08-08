@@ -2,14 +2,14 @@ import { Box, Stack, Typography, useTheme } from '@mui/material';
 import { BlocksContent, BlocksRenderer } from '@strapi/blocks-react-renderer';
 import Image from 'next/image';
 import IconWrapper from '../IconWrapper/IconWrapper';
-import { Media } from '@/lib/strapi/codecs/MediaCodec';
 import { FC } from 'react';
 import { Variant } from '@mui/material/styles/createTypography';
+import { MediaAttributes } from '@/lib/strapi/types/media';
 
 export type BannerLinkProps = {
   content?: BlocksContent;
   contentJustification?: string;
-  icon: Media;
+  icon: MediaAttributes;
   theme: 'light' | 'dark';
   title?: string;
   variant?: Variant;
