@@ -1,5 +1,3 @@
-import os
-from pathlib import Path
 from typing import Optional, List, Dict
 
 from llama_index.core.async_utils import asyncio_run
@@ -13,17 +11,15 @@ from src.modules.settings import SETTINGS
 
 
 LOGGER = get_logger(__name__)
-CWF = Path(__file__)
-ROOT = CWF.parent.parent.parent.absolute().__str__()
 
 
 class Judge:
     def __init__(self):
         self.condense_prompt_str = SETTINGS.condense_prompt_str
-        self.llm = get_llm(provider=SETTINGS.provider, temperature=0.0)
+        self.llm = get_llm(temperature=0.0)
         self.evaluator = Evaluator(
             llm=self.llm,
-            embedder=get_embed_model(provider=SETTINGS.provider),
+            embedder=get_embed_model(),
         )
 
     def _messages_to_chathistory(

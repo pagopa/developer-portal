@@ -71,7 +71,7 @@ class ChatbotSettings(BaseSettings):
     react_system_str: str = PROMPTS["react_system_header_str"]
     refine_prompt_str: str = PROMPTS["refine_prompt_str"]
 
-    # environment settings
+    # urls
     redis_url: str = os.getenv("CHB_REDIS_URL")
     website_url: str = os.getenv("CHB_WEBSITE_URL")
 
