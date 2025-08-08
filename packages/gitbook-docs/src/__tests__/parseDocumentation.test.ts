@@ -5,7 +5,7 @@ import {
 } from '../helpers/documentationParsing.helper';
 
 const UrlParsingMetadata = {
-  dirName: '',
+  dirName: 'test-hash',
   guides: [
     { guidePath: 'this-is-a-test', guideUrl: 'parsed-url' },
     { guidePath: 'parent/parse-this', guideUrl: 'parsed-url' },
@@ -16,6 +16,19 @@ const UrlParsingMetadata = {
     },
   ],
 };
+
+const GlobalMetadata = [
+  UrlParsingMetadata,
+  {
+    dirName: 'second-test',
+    guides: [
+      {
+        guidePath: 'other-documentation',
+        guideUrl: 'other-documentation-parsed-url',
+      },
+    ],
+  },
+];
 
 describe('parseUrlsFromMarkdown', () => {
   it('should parse url', () => {
@@ -62,6 +75,25 @@ describe('parseUrlsFromMarkdown', () => {
     );
     expect(res).toStrictEqual(
       'This is a test string [this-is-a-test](parsed-url-with-hashtag#ending)'
+    );
+  });
+  it('should parse url with hashtag', () => {
+    const res = parseUrlsFromMarkdown(
+      'This is a test string [this-is-a-test](guide-with-hashtag/this-will-be-parsed.md#ending)',
+      UrlParsingMetadata
+    );
+    expect(res).toStrictEqual(
+      'This is a test string [this-is-a-test](parsed-url-with-hashtag#ending)'
+    );
+  });
+  it('should parse url referencing another guide', () => {
+    const res = parseUrlsFromMarkdown(
+      'This is a test string [this-is-a-test](this-references-another-guide/second-test)',
+      UrlParsingMetadata,
+      GlobalMetadata
+    );
+    expect(res).toStrictEqual(
+      'This is a test string [this-is-a-test](other-documentation-parsed-url)'
     );
   });
 });
