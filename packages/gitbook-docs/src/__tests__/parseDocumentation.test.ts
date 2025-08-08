@@ -10,6 +10,10 @@ const UrlParsingMetadata = {
     { guidePath: 'this-is-a-test', guideUrl: 'parsed-url' },
     { guidePath: 'parent/parse-this', guideUrl: 'parsed-url' },
     { guidePath: 'other-parent/parse-this', guideUrl: 'different-parsed-url' },
+    {
+      guidePath: 'guide-with-hashtag/this-will-be-parsed',
+      guideUrl: 'parsed-url-with-hashtag',
+    },
   ],
 };
 
@@ -49,6 +53,15 @@ describe('parseUrlsFromMarkdown', () => {
     );
     expect(res).toStrictEqual(
       'This is a test string [this-is-a-test](parsed-url) and [this-is-a-test](different-parsed-url)'
+    );
+  });
+  it('should parse url with hashtag', () => {
+    const res = parseUrlsFromMarkdown(
+      'This is a test string [this-is-a-test](guide-with-hashtag/this-will-be-parsed.md#ending)',
+      UrlParsingMetadata
+    );
+    expect(res).toStrictEqual(
+      'This is a test string [this-is-a-test](parsed-url-with-hashtag#ending)'
     );
   });
 });
