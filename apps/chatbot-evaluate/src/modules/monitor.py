@@ -1,5 +1,3 @@
-import os
-import logging
 import numpy as np
 from datetime import datetime
 from typing import Sequence, Literal
@@ -9,8 +7,8 @@ from langfuse.api.resources.trace.types.traces import Traces
 from langfuse.model import TraceWithFullDetails
 
 from src.modules.logger import get_logger
-from src.modules.utils import get_ssm_parameter
 from src.modules.settings import SETTINGS
+
 
 LOGGER = get_logger(__name__)
 LANGFUSE_CLIENT = Langfuse(
