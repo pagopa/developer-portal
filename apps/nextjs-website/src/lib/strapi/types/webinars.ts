@@ -1,9 +1,9 @@
 import { BlocksContent } from '@strapi/blocks-react-renderer';
 import { StrapiMedia } from '@/lib/strapi/types/media';
-import { Pagination } from '@/lib/strapi/types/pagination';
 import { RelatedLinks } from '@/lib/strapi/types/link';
 import { StrapiSeo } from '@/lib/strapi/types/seo';
 import { StrapiWebinarCategory } from '@/lib/strapi/types/webinarCategory';
+import { Paginated } from '@/lib/strapi/types/paginated';
 
 type WebinarSpeaker = {
   readonly id: number;
@@ -61,9 +61,4 @@ export type StrapiWebinar = {
   };
 };
 
-export type StrapiWebinars = {
-  readonly data: readonly StrapiWebinar[];
-  readonly meta: {
-    readonly pagination: Pagination;
-  };
-};
+export type StrapiWebinars = Paginated<StrapiWebinar>;
