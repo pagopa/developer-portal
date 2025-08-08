@@ -77,6 +77,15 @@ describe('parseUrlsFromMarkdown', () => {
       'This is a test string [this-is-a-test](parsed-url-with-hashtag#ending)'
     );
   });
+  it('should parse url with hashtag', () => {
+    const res = parseUrlsFromMarkdown(
+      'This is a test string [this-is-a-test](guide-with-hashtag/this-will-be-parsed.md#ending)',
+      UrlParsingMetadata
+    );
+    expect(res).toStrictEqual(
+      'This is a test string [this-is-a-test](parsed-url-with-hashtag#ending)'
+    );
+  });
   it('should parse url referencing another guide', () => {
     const res = parseUrlsFromMarkdown(
       'This is a test string [this-is-a-test](this-references-another-guide/second-test)',
