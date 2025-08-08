@@ -50,6 +50,7 @@ async function recursiveParseMarkdownFiles(
       const urlParsedFileContent = parseUrlsFromMarkdown(
         includesParsedFileContent,
         guideMetadata,
+        metadata,
         fullPath
       );
       try {

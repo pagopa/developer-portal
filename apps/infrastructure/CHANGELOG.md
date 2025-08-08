@@ -1,5 +1,11 @@
 # infrastructure
 
+## 2.1.4
+
+### Patch Changes
+
+- a4a3541: Update references to old secret
+
 ## 2.1.3
 
 ### Patch Changes

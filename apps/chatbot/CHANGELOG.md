@@ -1,5 +1,15 @@
 # chatbot
 
+## 6.1.0
+
+### Minor Changes
+
+- 84272d6: Static documentation read from AWS S3, dynamic documentation from sitemap.xml
+
+### Patch Changes
+
+- 7b46882: Extract evaluate feature into a new lambda function
+
 ## 6.0.1
 
 ### Patch Changes
