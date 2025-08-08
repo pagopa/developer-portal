@@ -16,12 +16,12 @@ from llama_index.core.schema import MetadataMode, NodeWithScore, QueryBundle
 from google.oauth2 import service_account
 from google.cloud import discoveryengine_v1 as discoveryengine
 
+from src.modules.settings import SETTINGS
 from src.modules.utils import get_ssm_parameter
 
 
-GOOGLE_SERVICE_ACCOUNT = get_ssm_parameter(
-    name=os.getenv("CHB_AWS_SSM_GOOGLE_SERVICE_ACCOUNT")
-)
+GOOGLE_SERVICE_ACCOUNT = get_ssm_parameter(SETTINGS.google_service_account)
+
 if GOOGLE_SERVICE_ACCOUNT is None:
     with open("./.google_service_account.json", "r") as file:
         GOOGLE_JSON_ACCOUNT_INFO = json.load(file)
