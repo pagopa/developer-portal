@@ -1,5 +1,11 @@
 # nextjs-website
 
+## 8.5.1
+
+### Patch Changes
+
+- c2d3d47: Updated Next.js to version 14.2.30
+
 ## 8.5.0
 
 ### Minor Changes
