@@ -62,6 +62,7 @@ export function replaceUrl(
   const lastPart = splitValue.at(-1) || '';
   const secondToLastPart = splitValue.at(-2) || '';
   const name = lastPart.replace('.md', '').split('#')[0];
+
   // Skip processing for very short names (likely not valid guide names)
   if (name.length <= 1) {
     return value;
