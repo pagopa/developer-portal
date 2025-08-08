@@ -26,7 +26,7 @@ import { makeGuideListPagesProps } from './strapi/makeProps/makeGuideListPages';
 import { makeGuidesProps } from './strapi/makeProps/makeGuides';
 import { fetchOverviews } from '@/lib/strapi/fetches/fetchOverviews';
 import { makeOverviewsProps } from '@/lib/strapi/makeProps/makeOverviews';
-import { fetchTutorialsLists } from './strapi/fetches/fetchTutorialsLists';
+import { fetchTutorialsListPages } from './strapi/fetches/fetchTutorialsListPages';
 import { makeTutorialsPageProps } from './strapi/makeProps/makeTutorialsPageProps';
 import { fetchUrlReplaceMap } from './strapi/fetches/fetchUrlReplaceMap';
 import { makeUrlReplaceMap } from './strapi/makeProps/makeUrlReplaceMap';
@@ -120,7 +120,7 @@ export const getTutorialListPagesProps = async () => {
   return withCache(
     getCacheKey('getTutorialListPagesProps'),
     async () => {
-      const strapiTutorialListPages = await fetchTutorialsLists(buildEnv);
+      const strapiTutorialListPages = await fetchTutorialsListPages(buildEnv);
       return makeTutorialsPageProps(strapiTutorialListPages);
     },
     CACHE_EXPIRY_IN_SECONDS
@@ -139,17 +139,14 @@ export const getQuickStartGuidesProps = async () => {
 };
 
 export const getUrlReplaceMapProps = async () => {
-  const result = await withCache(
+  return withCache(
     getCacheKey('getUrlReplaceMapProps'),
     async () => {
       const strapiUrlReplaceMap = await fetchUrlReplaceMap(buildEnv);
-      const processed = makeUrlReplaceMap(strapiUrlReplaceMap);
-      return processed;
+      return makeUrlReplaceMap(strapiUrlReplaceMap);
     },
     CACHE_EXPIRY_IN_SECONDS
   );
-
-  return result;
 };
 
 export const getApiDataListPagesProps = async () => {

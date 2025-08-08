@@ -2,10 +2,10 @@ import { TutorialsPageProps } from '@/app/[productSlug]/tutorials/page';
 import { Tutorial } from '../../types/tutorialData';
 import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
 import { makeBaseProductWithoutLogoProps } from './makeProducts';
-import { StrapiGuideListPage } from '@/lib/strapi/types/tutorialsList';
+import { StrapiTutorialListPages } from '@/lib/strapi/types/tutorialsListPage';
 
 export function makeTutorialsPageProps(
-  strapiTutorialList: StrapiGuideListPage
+  strapiTutorialList: StrapiTutorialListPages
 ): readonly TutorialsPageProps[] {
   return strapiTutorialList.data.map(({ attributes }) => {
     const tutorials: readonly Tutorial[] = attributes.tutorials.data.map(

@@ -4,7 +4,7 @@ import { StrapiBaseProductWithRelations } from '@/lib/strapi/codecs/ProductCodec
 import { StrapiSeo } from '@/lib/strapi/types/seo';
 import { Paginated } from '@/lib/strapi/types/paginated';
 
-export type TutorialsList = {
+export type TutorialsListPage = {
   readonly id: number;
   readonly attributes: {
     readonly bannerLinks: readonly StrapiBannerLink[];
@@ -18,4 +18,4 @@ export type TutorialsList = {
   };
 };
 
-export type StrapiGuideListPage = Paginated<TutorialsList>;
+export type StrapiTutorialListPages = Paginated<TutorialsListPage>;
