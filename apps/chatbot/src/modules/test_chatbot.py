@@ -1,17 +1,9 @@
-import os
 import json
-import yaml
 import boto3
 import requests
-from pathlib import Path
 from llama_index.core.async_utils import asyncio_run
 
 from src.modules.logger import get_logger
-from src.modules.utils import (
-    get_ssm_parameter,
-    AWS_ACCESS_KEY_ID,
-    AWS_SECRET_ACCESS_KEY,
-)
 from src.modules.settings import SETTINGS
 from src.modules.vector_database import REDIS_CLIENT, INDEX_ID
 from src.modules.models import get_llm, get_embed_model
@@ -41,10 +33,7 @@ def test_aws_credentials() -> None:
 def test_ssm_params() -> None:
 
     if SETTINGS.provider == "google":
-        GOOGLE_API_KEY = get_ssm_parameter(
-            name=os.getenv("CHB_AWS_SSM_GOOGLE_API_KEY"),
-            default=os.getenv("CHB_AWS_GOOGLE_API_KEY"),
-        )
+        GOOGLE_API_KEY = SETTINGS.google_api_key
         if SETTINGS.google_service_account is None:
             with open("./.google_service_account.json", "r") as file:
                 GOOGLE_JSON_ACCOUNT_INFO = json.load(file)

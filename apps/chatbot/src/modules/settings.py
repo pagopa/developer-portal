@@ -9,7 +9,9 @@ from dotenv import load_dotenv
 
 load_dotenv("/home/mdcir/developer-portal/apps/chatbot/.env.local")
 
-
+GOOGLE_SERVICE_ACCOUNT = get_ssm_parameter(
+    os.getenv("CHB_AWS_SSM_GOOGLE_SERVICE_ACCOUNT")
+)
 INDEX_ID = get_ssm_parameter(
     os.getenv("CHB_AWS_SSM_LLAMAINDEX_INDEX_ID"), "default-index"
 )
@@ -41,7 +43,7 @@ class ChatbotSettings(BaseSettings):
         name=os.getenv("CHB_AWS_SSM_GOOGLE_API_KEY"),
         default=os.getenv("CHB_AWS_GOOGLE_API_KEY"),
     )
-    google_service_account: str = os.getenv("CHB_AWS_SSM_GOOGLE_SERVICE_ACCOUNT")
+    google_service_account: str = GOOGLE_SERVICE_ACCOUNT
     strapi_api_key: str = get_ssm_parameter(
         os.getenv("CHB_AWS_SSM_STRAPI_API_KEY"), os.getenv("CHB_STRAPI_API_KEY", "")
     )
@@ -63,9 +65,10 @@ class ChatbotSettings(BaseSettings):
     similarity_topk: int = int(os.getenv("CHB_ENGINE_SIMILARITY_TOPK", "5"))
     use_async: bool = os.getenv("CHB_ENGINE_USE_ASYNC", "True").lower() == "true"
 
-    # params
+    # vector index and docs params
     chunk_overlap: int = PARAMS["vector_index"]["chunk_overlap"]
     chunk_size: int = PARAMS["vector_index"]["chunk_size"]
+    index_id: str = INDEX_ID
     presidio_config: dict = PARAMS["config_presidio"]
     bucket_static_content: str = os.getenv(
         "CHB_AWS_S3_BUCKET_NAME_STATIC_CONTENT", "devportal-d-website-static-content"
@@ -78,7 +81,6 @@ class ChatbotSettings(BaseSettings):
     refine_prompt_str: str = PROMPTS["refine_prompt_str"]
 
     # environment settings
-    index_id: str = INDEX_ID
     redis_url: str = os.getenv("CHB_REDIS_URL")
     website_url: str = os.getenv("CHB_WEBSITE_URL")
 

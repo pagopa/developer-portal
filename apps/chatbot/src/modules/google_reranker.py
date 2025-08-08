@@ -17,16 +17,13 @@ from google.oauth2 import service_account
 from google.cloud import discoveryengine_v1 as discoveryengine
 
 from src.modules.settings import SETTINGS
-from src.modules.utils import get_ssm_parameter
 
 
-GOOGLE_SERVICE_ACCOUNT = get_ssm_parameter(SETTINGS.google_service_account)
-
-if GOOGLE_SERVICE_ACCOUNT is None:
+if SETTINGS.google_service_account is None:
     with open("./.google_service_account.json", "r") as file:
         GOOGLE_JSON_ACCOUNT_INFO = json.load(file)
 else:
-    GOOGLE_JSON_ACCOUNT_INFO = json.loads(GOOGLE_SERVICE_ACCOUNT)
+    GOOGLE_JSON_ACCOUNT_INFO = json.loads(SETTINGS.google_service_account)
 
 GOOGLE_CREDENTIALS = service_account.Credentials.from_service_account_info(
     GOOGLE_JSON_ACCOUNT_INFO
