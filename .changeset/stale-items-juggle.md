@@ -2,4 +2,4 @@
 "nextjs-website": patch
 ---
 
-Updated NextJs to version 14.2.30
+Updated Next.js to version 14.2.30
