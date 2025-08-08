@@ -157,6 +157,7 @@ jobs:
           aws cloudfront create-invalidation \
             --distribution-id ${{ vars.ASSET_BUCKET_CLOUDFRONT_DISTRIBUTION_ID }} \
             --paths "/*"
+
       - name: Set environment output
         id: setenv
         run: echo "environment=${{ inputs.environment }}" >> $GITHUB_OUTPUT
