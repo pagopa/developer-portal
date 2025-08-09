@@ -24,7 +24,7 @@ resource "aws_ecs_task_definition" "ecs_redis_task_def" {
     "${path.module}/task-definitions/redis.json.tpl",
     {
       container_name = local.redis_container_name
-      image          = var.ecs_redis.image_uri
+      image          = formant("%s:%s", var.ecs_redis.image_uri, var.ecs_redis.image_tag)
       fargate_cpu    = var.ecs_redis.cpu
       fargate_memory = var.ecs_redis.memory
       aws_region     = var.aws_region
@@ -126,7 +126,7 @@ resource "aws_ecs_task_definition" "monitoring_task_def" {
   container_definitions = templatefile(
     "${path.module}/task-definitions/langfuse.json.tpl",
     {
-      image          = var.ecs_monitoring.image_uri
+      image          = format("%s:%s", var.ecs_monitoring.image_uri, var.ecs_monitoring.image_tag)
       fargate_cpu    = var.ecs_monitoring.cpu
       fargate_memory = var.ecs_monitoring.memory
       container_port = var.ecs_monitoring.port
