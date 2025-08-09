@@ -37,19 +37,6 @@ resource "aws_iam_policy" "deploy_website" {
       {
         Effect = "Allow"
         Action = [
-          "bedrock:ApplyGuardrail",
-          "bedrock:ListGuardrails",
-          "bedrock:GetGuardrail",
-          "bedrock:InvokeModel",
-          "bedrock:InvokeModelWithResponseStream",
-          "bedrock:ListFoundationModels",
-          "bedrock:Rerank"
-        ]
-        Resource = ["*"]
-      },
-      {
-        Effect = "Allow"
-        Action = [
           "lambda:*"
         ]
         Resource = ["arn:aws:lambda:${var.aws_region}:${data.aws_caller_identity.current.account_id}:function:*chatbot*"]
@@ -190,19 +177,6 @@ resource "aws_iam_policy" "github_chatbot_reindex" {
         ]
         Effect   = "Allow"
         Resource = ["arn:aws:ssm:${var.aws_region}:${data.aws_caller_identity.current.account_id}:parameter/chatbot/*"]
-      },
-      {
-        Effect = "Allow"
-        Action = [
-          "bedrock:ApplyGuardrail",
-          "bedrock:ListGuardrails",
-          "bedrock:GetGuardrail",
-          "bedrock:InvokeModel",
-          "bedrock:InvokeModelWithResponseStream",
-          "bedrock:ListFoundationModels",
-          "bedrock:Rerank"
-        ]
-        Resource = ["*"]
       },
       {
         Effect = "Allow"
