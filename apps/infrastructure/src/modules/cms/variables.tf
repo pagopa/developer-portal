@@ -44,6 +44,12 @@ variable "cms_app_memory" {
   default     = "3072" ##### 3 GB RAM
 }
 
+# CMS Strapi Image Tag
+variable "cms_app_image_tag" {
+  description = "Docker image tag for the CMS Strapi application"
+  type        = string
+}
+
 # CMS Strapi DNS
 variable "dns_domain_name_cms" {
   description = "DNS domain name of the Developer Portal's CMS"

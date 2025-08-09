@@ -16,7 +16,7 @@ resource "aws_ecs_task_definition" "cms_task_def" {
   container_definitions = templatefile(
     "${path.module}/task-definitions/cms_app.json.tpl",
     {
-      image                      = module.ecr.repository_url
+      image                      = format("%s:%s", module.ecr.repository_url, var.cms_app_image_tag)
       fargate_cpu                = var.cms_app_cpu
       fargate_memory             = var.cms_app_memory
       aws_region                 = var.aws_region
