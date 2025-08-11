@@ -15,7 +15,7 @@
     "@types/aws-lambda": "^8.10.126",
     "@types/html-minifier": "^4.0.4",
     "@types/mjml": "^4.7.4",
-    "esbuild": "^0.19.5",
+    "esbuild": "^0.25.4",
     "eslint": "^8.40.0",
     "eslint-config-custom": "*",
     "jest": "^29.7.0",
