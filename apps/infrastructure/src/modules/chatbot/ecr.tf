@@ -17,6 +17,7 @@ module "ecr" {
   repository_image_scan_on_push     = "true"
   repository_image_tag_mutability   = "MUTABLE"
   repository_read_write_access_arns = []
+  attach_repository_policy          = false
   repository_lifecycle_policy = jsonencode({
     rules = [
       {
