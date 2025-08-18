@@ -1,11 +1,58 @@
 {
+    "devPortal": {
+        "company": "PagoPA",
+        "siteHeader": {
+            "label": "Menu",
+            "products": "Products",
+            "profile": "Profile",
+            "webinars": "Webinars",
+            "solutions": "Solutions"
+        },
+        "productHeader": {
+            "overview": "Overview",
+            "quickStartGuide": "Quick Start",
+            "api": "API",
+            "tutorials": "Tutorials",
+            "guides": "Guides and manuals",
+            "releaseNote": "Release notes"
+        },
+        "title": "DevPortal"
+    },
     "shared": {
-        "goToModel": "Go to model"
+        "goToModel": "Go to model",
+        "comingSoon": "Coming Soon",
+        "readTutorial": "Read tutorial",
+        "readStory": "Read story",
+        "moreInfo": "Learn more",
+        "version": "Version",
+        "copiedTooltip": "Copied",
+        "siteTitle": "PagoPA DevPortal",
+        "emailAddress": "Email address",
+        "password": "Password",
+        "goBack": "Go back",
+        "requiredFields": "* Required fields",
+        "firstName": "First name",
+        "lastName": "Last name",
+        "confirmPassword": "Confirm password",
+        "company": "Organization or Company Type",
+        "role": "Role",
+        "requiredFieldError": "This field cannot be empty",
+        "emailFieldError": "Enter a valid email address. Use only lowercase letters and do not use special characters",
+        "emailAlreadyTaken": "An account already exists for this email address",
+        "goToGuide": "Go to guide",
+        "edit": "Edit",
+        "cancel": "Cancel",
+        "yourData": "Profile",
+        "relatedLinks": "Useful links",
+        "downloadableDocuments": "Downloadable materials",
+        "download": "Download",
+        "topics": "Topics covered",
+        "repository": "Repository"
     },
     "swagger": {
         "errorCard": {
-            "header": "Oops, manca qualcosa.",
-            "message": "Non siamo riusciti a trovare la fonte originale per visualizzare questo contenuto."
+            "header": "Oops, something is missing.",
+            "message": "We couldn't find the original source to display this content."
         },
         "parameters": {
             "header": "Parameters",
@@ -25,12 +72,424 @@
         }
     },
     "webinar": {
+        "liveWebinar": "Live webinar",
         "subscriptionError": "Registration limit reached",
         "genericSubscriptionError": "Something went wrong, please try again later",
+        "goToWebinar": "Go to webinar",
         "whyParticipate": "Why participate?",
-        "speakers": "Speaker",
+        "speakers": "Speakers",
         "subscribe": "Subscribe",
-        "speakersTitle": "Who's talking",
-        "selectWebinarCategory": "Select a category:"
+        "speakersTitle": "Speakers",
+        "selectWebinarCategory": "Select a category:",
+        "questionList": {
+            "title": {
+                "highlightedQuestions": "Featured questions",
+                "questions": "Questions"
+            },
+            "hiddenByMe": "You have hidden this question",
+            "highlightedBy": "Featured by"
+        },
+        "questionsForm": {
+            "title": "Write questions and comments for the final discussion here (max {maxLength} characters)",
+            "question": "Question",
+            "submit": "Send",
+            "submitted": "Sent",
+            "error": "Error sending, please try again later.",
+            "reduce": "Reduce",
+            "expand": "Expand",
+            "questionBox": "Question box",
+            "notLive": "Once the event starts, you'll be able to write your questions here"
+        },
+        "warnings": {
+            "email": "The day before the event you'll receive an email with details.",
+            "goTo": "Connect to the webinar page at the event start time.",
+            "refresh": "Connect to this page at the event start time."
+        },
+        "webinarsSection": {
+            "description": "",
+            "noWebinars": "We're preparing the next events, check back later.",
+            "title": {
+                "dontLoseNext": "Don't miss the next webinar",
+                "dontLoseNextPlural": "Don't miss the next webinars",
+                "next": "Upcoming appointments",
+                "our": "Our webinars",
+                "participateTo": "Join our webinars",
+                "dedicatedWebinar": "Watch the dedicated webinar"
+            },
+            "solutionDescription": "PagoPA LAB webinars are training meetings where our team specialists illustrate all the steps of the digital public service management process, exploring the benefits of an integrated approach to platforms managed by PagoPA.",
+            "questionsAndAnswers": {
+                "anchorId": "questions-and-answers",
+                "title": "Answers to your questions",
+                "showMore": "Show more questions",
+                "showLess": "Show fewer questions"
+            },
+            "relatedResources": {
+                "title": "Related resources"
+            }
+        },
+        "view": "View",
+        "pastWebinars": {
+            "title": "Explore all webinars",
+            "description": "Explore topics related to integration with our products through expert guidance and advice from PagoPA professionals.",
+            "cta": "See all"
+        }
+    },
+    "webinars": {
+        "title": "Join live events and watch past webinars",
+        "subtitle": "With PagoPA DevPortal webinars you have the opportunity to explore topics related to integration with our products, through expert guidance and advice from our team.",
+        "nextWebinars": "Upcoming appointments",
+        "pastWebinars": "Past webinars",
+        "noWebinars": "There are no webinars for the selected category",
+        "all": "All"
+    },
+    "profile": {
+        "title": "Profile",
+        "agreements": {
+            "newsletter": {
+                "description": "Send me emails about product resources and updates. If this option is enabled, PagoPA will occasionally send you useful and relevant emails.",
+                "error": {
+                    "subscribe": "There was an error subscribing, please try again later or contact technical support.",
+                    "unsubscribe": "There was an error unsubscribing, please try again later or contact technical support."
+                },
+                "subscribe": "Subscribe",
+                "title": "Newsletter subscription",
+                "unsubscribe": "Unsubscribe"
+            },
+            "privacy": {
+                "basicData": "PagoPA collects basic personal data that allows you to create and use your DevPortal account. This data is collected during registration and profile updates. PagoPA ensures that your data is handled securely and justifies its use according to PagoPA's Privacy Policy. Your basic personal data will be retained as long as you have an active account on PagoPA DevPortal.",
+                "title": "Privacy",
+                "statement": {
+                    "text": "Our $labelOfLinkToReplace$ provides detailed information about your privacy rights.",
+                    "labelOfLinkToReplace": "Privacy Policy"
+                }
+            },
+            "title": "Consent and privacy"
+        },
+        "personalData": {
+            "save": "Confirm",
+            "cancel": "Cancel",
+            "title": "About you",
+            "dataSection": "Your data",
+            "accountSection": "Your account",
+            "deleteAccountSection": "Account Deletion",
+            "deleteAccount": {
+                "sectionLabel": "You can choose to delete your PagoPA DevPortal account at any time. Your data will be deleted from our systems.",
+                "buttonLabel": "Delete account",
+                "modalTitle": "Do you confirm you want to delete your account?",
+                "modalText": "If you delete your PagoPA DevPortal account, all your preferences and data will be deleted from our systems. This action is not reversible."
+            },
+            "deleteAccountButton": "Delete account",
+            "addField": "Enter",
+            "fields": {
+                "name": "First Name",
+                "surname": "Last Name",
+                "role": "Role",
+                "company": "Organization or Company Type",
+                "sector": "Sector",
+                "products": "Products of Interest",
+                "email": "Email Address",
+                "password": "Password"
+            }
+        },
+        "changePassword": {
+            "title": "Change password",
+            "currentPassword": "Current password",
+            "newPassword": "New password",
+            "confirmPassword": "Confirm password",
+            "wrongPassword": "The entered password is not correct",
+            "requiredCurrentPassword": "Current password is required",
+            "passwordsNotMatch": "Passwords do not match",
+            "passwordPolicy": "Does not meet requirements. Minimum 8 characters, at least one number, at least one uppercase letter and at least one special character",
+            "cancel": "Cancel",
+            "save": "Confirm",
+            "dialog": {
+                "title": "Password has been changed successfully",
+                "text": "Log in using the new password. If there are other browser windows with access to your account using the old password, make sure to close them.",
+                "confirmLabel": "Go to login"
+            }
+        },
+        "changeEmail": {
+            "cancel": "Cancel",
+            "save": "Confirm",
+            "title": "Change email address",
+            "notAuthorizedException": "The entered email address is not valid",
+            "wrongEmail": "The entered email address is not correct",
+            "dialog": {
+                "title": "Verify the new email address",
+                "text": "We have sent an email to the address you entered.\\nClick on the link contained within to verify it and associate it with your PagoPA DevPortal account.",
+                "confirmLabel": "Close"
+            }
+        },
+        "insert": "Enter",
+        "chatbot": {
+            "title": "Chatbot History",
+            "noSessions": "No chats found"
+        }
+    },
+    "auth": {
+        "logout": "Logout",
+        "login": {
+            "action": "Login",
+            "loginToYourAccount": "Login to your DevPortal account",
+            "rememberMe": "Remember me",
+            "forgotPassword": "Forgot your password?",
+            "noAccount": "Don't have an account?",
+            "noAccountError": "Incorrect username or password.",
+            "accountAlreadyConfirmed": {
+                "yourAccountIsAlreadyConfirmed": "You have already validated this email address",
+                "goToLogin": "Go to Login"
+            }
+        },
+        "confirmation": {
+            "title": "Verify your identity",
+            "body": "We sent a verification code to <b>{email}</b><br>The code expires in 15 minutes.",
+            "code": "Verification code",
+            "checkJunkMail": "Haven't received any email? Check spam or",
+            "continue": "Continue",
+            "ctaLabel": "Resend email",
+            "resendEmail": "Resend email"
+        },
+        "resendEmail": {
+            "label": "Resend email"
+        },
+        "signUp": {
+            "action": "Sign up",
+            "createYourAccount": "Create your account",
+            "passwordMismatchError": "Passwords don't match",
+            "confirmComunications": "Send me emails about product resources and updates. If this box is checked, PagoPA will occasionally send you useful and relevant emails. You can unsubscribe at any time.",
+            "acceptPolicy": "By clicking sign up you declare that you have read our <policy>privacy policy</policy> and our <terms>terms and conditions</terms>.",
+            "alreadyHaveAnAccount": "Already have an account?",
+            "whyCreateAccount": "Why sign up for PagoPA DevPortal",
+            "passwordError": "Does not meet requirements.",
+            "passwordPolicy": "Minimum 8 characters, at least one number, at least one uppercase letter and at least one special character",
+            "emailSent": "Email sent to {email}",
+            "advantages": {
+                "exclusive_contents": {
+                    "title": "Access exclusive content",
+                    "text": "Attend PagoPA webinars and interact with us on trending topics.",
+                    "isComingSoon": "false"
+                },
+                "product_updates": {
+                    "title": "Receive updates on our products",
+                    "text": "Don't miss any new content, guides or tutorials. You can choose to receive email updates about PagoPA products and technology integration.",
+                    "isComingSoon": "false"
+                },
+                "api_keys": {
+                    "title": "Generate, manage and use API Keys",
+                    "text": "Unlock the full potential of DevPortal with API Keys, Mocker, SDK and more.",
+                    "isComingSoon": "true"
+                },
+                "support": {
+                    "title": "Request support through a dedicated form",
+                    "text": "Easily approach the solutions you need and resolve difficulties with our help.",
+                    "isComingSoon": "true"
+                }
+            },
+            "companyRoles": {
+                "ente-pubblico": "Public Entity",
+                "partner-tecnologico": "Technology Partner",
+                "psp": "PSP",
+                "gestore-di-pubblico-servizio": "Public Service Manager",
+                "azienda-privata": "Private Company",
+                "altro": "Other"
+            }
+        },
+        "confirmSignUp": {
+            "title": "Confirm it's you",
+            "emailSent": "We sent an email to",
+            "clickToConfirm": "Click the button inside to verify it.",
+            "didntReceiveEmail": "Didn't receive the email? Check spam or",
+            "resendEmail": "Resend email",
+            "wrongEmail": "Is the email address wrong?"
+        },
+        "confirmLogin": {
+            "title": "Verify your identity",
+            "code": "Verification code",
+            "confirmationCodeSent": "We sent a verification code to",
+            "confirmationCodeExpires": "The code expires in 15 minutes.",
+            "checkJunkMail": "Haven't received any email? Check spam or",
+            "continue": "Continue",
+            "resendEmail": "Resend email",
+            "invalidCode": "The entered code is not correct",
+            "emptyCode": "Code is required"
+        },
+        "accountActivated": {
+            "goToLogin": "Go to login",
+            "welcomeMessage": "Welcome to PagoPA DevPortal.",
+            "yourAccountIsActive": "Your account is active"
+        },
+        "resetPassword": {
+            "body": "Enter your email address and we'll send you instructions to set a new password.",
+            "checkEmailEnd": "you'll receive an email with a link to set a new password.",
+            "checkEmailStart": "If an account exists associated with",
+            "checkEmailTitle": "Check email",
+            "emailFieldError": "Email address is not valid",
+            "goToLogin": "Back to login",
+            "invalidLinkError": "Link is not valid",
+            "newPassword": "Set a new password",
+            "passwordSet": "Password set successfully",
+            "rememberPassword": "Remember your password?",
+            "resendEmail": "Resend email",
+            "resendEmailPrompt": "Didn't receive the email? Check spam or",
+            "send": "Send",
+            "title": "Recover password",
+            "wrongEmail": "Is the email address wrong?"
+        },
+        "expiredCode": {
+            "expiredLink": "The link you used has expired",
+            "goToProfile": "Go to profile"
+        }
+    },
+    "homepage": {
+        "productsShowcaseTitle": "Discover our ecosystem",
+        "heroItems": {
+            "0": {
+                "title": "Everything you need to integrate with PagoPA products"
+            },
+            "1": {
+                "title": "Send legally valid communications with notification platform",
+                "ctaLabel": "Go to SEND"
+            },
+            "2": {
+                "title": "Request signatures on documents and contracts",
+                "ctaLabel": "Go to Sign with IO"
+            }
+        },
+        "webinarsSection": {
+            "description": "",
+            "title": "Join our webinars",
+            "link": {
+                "href": "#",
+                "label": "View all webinars"
+            }
+        }
+    },
+    "footer": {
+        "companyLink": {
+            "ariaLabel": "Link: go to PagoPA S.p.A. website"
+        },
+        "languages": {
+            "it": "Italian",
+            "en": "English"
+        },
+        "legalInfo": "<strong>PagoPA S.p.A.</strong> - Single-shareholder joint-stock company - Share capital of 1,000,000 euros fully paid-up - Registered office in Rome, Piazza Colonna 370, <br></br>ZIP 00187 - Registration number in Rome Companies Register, Tax Code and VAT 15376371009",
+        "followUs": {
+            "title": "Follow us on",
+            "links": {
+                "accessibility": {
+                    "ariaLabel": "Go to link: Accessibility",
+                    "label": "Accessibility"
+                }
+            }
+        },
+        "aboutUs": {
+            "title": "",
+            "links": {
+                "whoWeAre": {
+                    "ariaLabel": "Go to link: Who we are",
+                    "label": "Who we are"
+                },
+                "pnrr": {
+                    "ariaLabel": "Go to link: PNRR",
+                    "label": "PNRR"
+                },
+                "media": {
+                    "ariaLabel": "Go to link: Media",
+                    "label": "Media"
+                },
+                "workWithUs": {
+                    "ariaLabel": "Go to link: Work with us",
+                    "label": "Work with us"
+                }
+            }
+        },
+        "resources": {
+            "title": "Resources",
+            "links": {
+                "privacyPolicy": {
+                    "ariaLabel": "Go to link: Privacy Policy",
+                    "label": "Privacy Policy"
+                },
+                "termsOfService": {
+                    "ariaLabel": "Go to link: Terms and Conditions",
+                    "label": "Terms and Conditions"
+                },
+                "societaTrasparente": {
+                    "ariaLabel": "Go to link: Transparent Society",
+                    "label": "Transparent Society"
+                },
+                "disclosurePolicy": {
+                    "ariaLabel": "Go to link: Responsible Disclosure Policy",
+                    "label": "Responsible Disclosure Policy"
+                },
+                "model231": {
+                    "ariaLabel": "Go to link: Model 231",
+                    "label": "Model 231"
+                }
+            }
+        },
+        "services": {
+            "title": "PRODUCTS AND SERVICES",
+            "links": {
+                "appIO": {
+                    "ariaLabel": "Go to link: IO App",
+                    "label": "IO App"
+                },
+                "pagoPA": {
+                    "ariaLabel": "Go to link: pagoPA Platform",
+                    "label": "pagoPA Platform"
+                },
+                "centroStella": {
+                    "ariaLabel": "Go to link: Centro Stella",
+                    "label": "Centro Stella"
+                },
+                "checkIBAN": {
+                    "ariaLabel": "Go to link: Check IBAN",
+                    "label": "Check IBAN"
+                },
+                "send": {
+                    "ariaLabel": "Go to link: SEND - Digital Notification Service",
+                    "label": "SEND - Digital Notification Service"
+                },
+                "pdnd": {
+                    "ariaLabel": "Go to link: National Digital Data Platform - Interoperability",
+                    "label": "National Digital Data Platform - Interoperability"
+                }
+            }
+        }
+    },
+    "chatBot": {
+        "title": "Discovery",
+        "sessionTitle": "Session of ",
+        "writeNewMessagePlaceholder": "Write a new message",
+        "history": "History",
+        "chatHistory": "Chat history",
+        "delete": "Delete",
+        "feedbackGiven": "Feedback\\nrecorded",
+        "copied": "Copied",
+        "welcomeMessage": "**Welcome to Dev Portal!**\\n\\nI'm _Discovery_, your virtual assistant for technical documentation. I can help you with information about APIs, guides and more.\\n\\n_Note_: Discovery is in beta version, so some answers might not be accurate. Always verify important information with the official documentation.\\n\\nHow can I help you today?",
+        "deleteChat": "Delete Chat",
+        "deleteHeader": "Delete conversations",
+        "deleteConfirm": "Yes",
+        "deleteDismiss": "No",
+        "confirmDelete": "Are you sure you want to delete all past conversations?",
+        "previousChat": "Previous Chat",
+        "nextChat": "Next Chat",
+        "guestMessage": "Hi, I'm _Discovery_, the DevPortal chatbot!\\n\\nI can help you find information in the Portal documentation quickly and easily.\\n\\nTo access the service, please [log in]({host}/auth/login)",
+        "feedback": {
+            "contextRelevancy": "How relevant is the chatbot's response to your question?",
+            "responseRelevancy": "How faithful is the chatbot's response to the documentation?",
+            "comment": "What didn't satisfy you about the chatbot's response?*",
+            "inputPlaceholder": "Describe the problem encountered",
+            "mandatoryFields": "*Filling in this field is mandatory to send feedback",
+            "send": "Send",
+            "undo": "Cancel"
+        },
+        "errors": {
+            "title": "Error",
+            "serviceDown": "The chatbot is currently unavailable. Please try again later.",
+            "queryFailed": "The chatbot had problems formulating the response. Please try again."
+        },
+        "thereAreNoMessages": "There are no messages in this session"
     }
 }

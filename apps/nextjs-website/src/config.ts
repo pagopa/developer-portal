@@ -87,7 +87,8 @@ export const fetchWebinarsQuestionsIntervalMs = 1_000;
 export const maxPastWebinarsInHome = 3;
 
 export const defaultLanguage = { id: 'it', value: 'Italiano' };
-export const languages = [defaultLanguage];
+export const englishLanguage = { id: 'en', value: 'English' };
+export const languages = [defaultLanguage, englishLanguage];
 
 export const defaultLocale = 'it-IT';
 
