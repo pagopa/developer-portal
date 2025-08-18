@@ -128,7 +128,6 @@ variable "ecs_monitoring" {
     memory    = number
     image_uri = string
     port      = number
-    image_tag = string
   })
   description = "Langfuse configuration for the AI chatbot"
 }

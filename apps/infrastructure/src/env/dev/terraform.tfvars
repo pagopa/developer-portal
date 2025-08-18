@@ -39,7 +39,7 @@ ac_integration_is_enabled = true
 docs_redirect_is_enabled  = false
 
 chatbot_ecs_redis = {
-  image_tag = "887cf87cc744e4588ccade336d0dbb943e4e46330f738653ccb3a7a55df2f186"
+  image_tag = "sha256:887cf87cc744e4588ccade336d0dbb943e4e46330f738653ccb3a7a55df2f186"
 }
 
 chatbot_ecs_monitoring = {
