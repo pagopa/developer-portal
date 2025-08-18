@@ -63,9 +63,11 @@ def backfill_created_at_date() -> None:
 
 def get_final_response(response_str: str, references: List[str]) -> str:
 
-    if len(references) > 0:
+    unique_references = list(dict.fromkeys(references))
+
+    if len(unique_references) > 0:
         response_str += "\n\nRif:"
-        for ref in references:
+        for ref in unique_references:
             response_str += "\n" + ref
 
     return response_str
