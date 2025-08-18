@@ -184,10 +184,12 @@ resource "aws_cloudfront_distribution" "static_contents" {
     default_ttl = 86400
     max_ttl     = 31536000
 
+    /*
     function_association {
       event_type   = "viewer-request"
       function_arn = aws_cloudfront_function.website_viewer_request_handler.arn
     }
+    */
   }
 
   restrictions {
