@@ -65,7 +65,11 @@ def get_query_engine_tool(
 
     base_retriever = index.as_retriever(
         similarity_top_k=SETTINGS.similarity_topk,
-        embed_model=get_embed_model(task_type=SETTINGS.embed_task_qa),
+        embed_model=get_embed_model(
+            retries=SETTINGS.embed_retries_qa,
+            retry_min_seconds=SETTINGS.embed_retry_min_seconds_qa,
+            task_type=SETTINGS.embed_task_qa,
+        ),
     )
     retriever = AutoMergingRetriever(
         base_retriever, index.storage_context, verbose=verbose

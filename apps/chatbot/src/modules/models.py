@@ -3,8 +3,6 @@ from google.genai import types
 
 from llama_index.core.llms.llm import LLM
 from llama_index.core.base.embeddings.base import BaseEmbedding
-from llama_index.core.llms import MockLLM
-from llama_index.core import MockEmbedding
 
 from src.modules.logger import get_logger
 from src.modules.settings import SETTINGS
@@ -51,6 +49,8 @@ def get_llm(
         LOGGER.info(f"{model_id} LLM loaded successfully from Google!")
 
     elif provider == "mock":
+        from llama_index.core.llms import MockLLM
+
         llm = MockLLM(
             max_tokens=5,
         )
@@ -67,6 +67,8 @@ def get_embed_model(
     embed_batch_size: int | None = None,
     embed_dim: int | None = None,
     task_type: str | None = None,
+    retries: int = 3,
+    retry_min_seconds: float = 1,
 ) -> BaseEmbedding:
     """
     Returns an instance of the embedding model based on the provider specified in the environment variable.
@@ -95,6 +97,8 @@ def get_embed_model(
             model_name=model_id,
             api_key=SETTINGS.google_api_key,
             embed_batch_size=embed_batch_size,
+            retries=retries,
+            retry_min_seconds=retry_min_seconds,
             embedding_config=types.EmbedContentConfig(
                 output_dimensionality=embed_dim,
                 task_type=task_type,
@@ -103,6 +107,8 @@ def get_embed_model(
         LOGGER.info(f"{model_id} embedding model loaded successfully from Google!")
 
     elif provider == "mock":
+        from llama_index.core import MockEmbedding
+
         embed_model = MockEmbedding(embed_dim=5)
         LOGGER.info("Mock embedding model loaded successfully!")
 

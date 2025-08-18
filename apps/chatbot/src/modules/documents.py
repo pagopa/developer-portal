@@ -158,11 +158,17 @@ def read_file_from_s3(file_path: str) -> str:
         str: The content of the file as a string.
     """
 
-    response = AWS_S3_CLIENT.get_object(
-        Bucket=SETTINGS.bucket_static_content,
-        Key=file_path,
-    )
-    text = response["Body"].read().decode("utf-8")
+    try:
+        response = AWS_S3_CLIENT.get_object(
+            Bucket=SETTINGS.bucket_static_content,
+            Key=file_path,
+        )
+        text = response["Body"].read().decode("utf-8")
+
+    except Exception as e:
+        LOGGER.error(f"Error reading from S3 the file {file_path}: {e}")
+        text = ""
+
     return text
 
 
