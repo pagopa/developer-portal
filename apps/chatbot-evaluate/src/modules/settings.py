@@ -12,7 +12,7 @@ PROMPTS = yaml.safe_load(open(os.path.join(ROOT, "config", "prompts.yaml"), "r")
 
 
 class ChatbotSettings(BaseSettings):
-    """Settings for the chatbot application."""
+    """Settings for the chatbot evaluation."""
 
     # api keys
     aws_access_key_id: str = os.getenv("CHB_AWS_ACCESS_KEY_ID")
@@ -36,9 +36,7 @@ class ChatbotSettings(BaseSettings):
     # models settings
     embed_batch_size: int = int(os.getenv("CHB_EMBED_BATCH_SIZE", "100"))
     embed_dim: int = int(os.getenv("CHB_EMBEDDING_DIM", "768"))
-    embed_model_id: str = os.getenv(
-        "CHB_EMBED_MODEL_ID", "text-multilingual-embedding-002"
-    )
+    embed_model_id: str = os.getenv("CHB_EMBED_MODEL_ID", "gemini-embedding-001")
     embed_task_type: str = "SEMANTIC_SIMILARITY"
     max_tokens: int = os.getenv("CHB_MODEL_MAXTOKENS", "768")
     model_id: str = os.getenv("CHB_MODEL_ID", "gemini-2.5-flash")
