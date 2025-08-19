@@ -3,7 +3,7 @@ import { Button } from '@mui/material';
 import PageNotFound from '@/app/not-found';
 import { Auth } from 'aws-amplify';
 import { useSearchParams, useRouter } from 'next/navigation';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState, Suspense } from 'react';
 import Spinner from '@/components/atoms/Spinner/Spinner';
 import { useTranslations } from 'next-intl';
 import PageBackgroundWrapper from '@/components/atoms/PageBackgroundWrapper/PageBackgroundWrapper';
@@ -19,7 +19,7 @@ enum State {
   error = 'error',
 }
 
-const Confirmation = () => {
+const ConfirmationContent = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
   const username = searchParams.get('username');
@@ -97,6 +97,14 @@ const Confirmation = () => {
     default:
       return <Spinner />;
   }
+};
+
+const Confirmation = () => {
+  return (
+    <Suspense fallback={<Spinner />}>
+      <ConfirmationContent />
+    </Suspense>
+  );
 };
 
 export default Confirmation;
