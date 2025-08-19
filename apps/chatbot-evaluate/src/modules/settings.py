@@ -20,8 +20,8 @@ class ChatbotSettings(BaseSettings):
     aws_endpoint_url: str = os.getenv("CHB_AWS_SSM_ENDPOINT_URL")
     aws_secret_access_key: str = os.getenv("CHB_AWS_SECRET_ACCESS_KEY")
     google_api_key: str = get_ssm_parameter(
-        name=os.getenv("CHB_AWS_SSM_GOOGLE_API_KEY"),
-        default=os.getenv("CHB_AWS_GOOGLE_API_KEY"),
+        os.getenv("CHB_AWS_SSM_GOOGLE_API_KEY"),
+        os.getenv("CHB_AWS_GOOGLE_API_KEY"),
     )
     langfuse_host: str = os.getenv("CHB_LANGFUSE_HOST")
     langfuse_public_key: str = get_ssm_parameter(
@@ -41,7 +41,6 @@ class ChatbotSettings(BaseSettings):
     max_tokens: int = os.getenv("CHB_MODEL_MAXTOKENS", "768")
     model_id: str = os.getenv("CHB_MODEL_ID", "gemini-2.5-flash")
     provider: str = os.getenv("CHB_PROVIDER", "google")
-    reranker_id: str = os.getenv("CHB_RERANKER_ID", "semantic-ranker-512-003")
     temperature: float = float(os.getenv("CHB_MODEL_TEMPERATURE", "0.0"))
 
     # prompts
