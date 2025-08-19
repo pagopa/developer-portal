@@ -59,9 +59,9 @@ class ChatbotSettings(BaseSettings):
     embed_task_docs: str = "RETRIEVAL_DOCUMENT"
     embed_task_qa: str = "RETRIEVAL_QUERY"
     max_tokens: int = os.getenv("CHB_MODEL_MAXTOKENS", "768")
-    model_id: str = os.getenv("CHB_MODEL_ID", "gemini-2.5-flash")
+    model_id: str = os.getenv("CHB_MODEL_ID", "gemini-2.5-flash-lite")
     provider: str = os.getenv("CHB_PROVIDER", "google")
-    reranker_id: str = os.getenv("CHB_RERANKER_ID", "semantic-ranker-512-003")
+    reranker_id: str = os.getenv("CHB_RERANKER_ID", "semantic-ranker-default-004")
     similarity_topk: int = int(os.getenv("CHB_ENGINE_SIMILARITY_TOPK", "5"))
     temperature_agent: float = 0.7
     temperature_rag: float = float(os.getenv("CHB_MODEL_TEMPERATURE", "0.3"))

@@ -48,31 +48,29 @@ MODEL_ID = os.getenv("CHB_MODEL_ID")
 EMBED_MODEL_ID = os.getenv("CHB_EMBED_MODEL_ID")
 RERANKER_ID = os.getenv("CHB_RERANKER_ID")
 LLMS_COST = {
-    "mistral.mistral-large-2402-v1:0": {
-        "input_cost": 0.0052 * 1.0e-3,
-        "output_cost": 0.0156 * 1.0e-3,
-    },
-    "gemini-2.0-flash": {
-        "input_cost": 0.1 * 1.0e-6,
-        "output_cost": 0.4 * 1.0e-6,
+    "gemini-2.5-flash": {
+        "input_cost": 0.3 * 1.0e-6,
+        "output_cost": 2.5 * 1.0e-6,
     },
     "gemini-2.5-flash-lite": {
         "input_cost": 0.1 * 1.0e-6,
         "output_cost": 0.4 * 1.0e-6,
     },
-    "gemini-2.5-flash": {
+    "gemini-2.0-flash": {
         "input_cost": 0.1 * 1.0e-6,
         "output_cost": 0.4 * 1.0e-6,
     },
+    "gemini-2.0-flash-lite": {
+        "input_cost": 0.075 * 1.0e-6,
+        "output_cost": 0.3 * 1.0e-6,
+    },
 }
 EMBEDDERS_COST = {
-    "cohere.embed-multilingual-v3": 0.0001 * 1.0e-3,
-    "text-embedding-004": 0,
     "gemini-embedding-001": 0.15 * 1.0e-6,
-    "text-multilingual-embedding-002": 0.000025 * 1.0e-3,
 }
 RERANK_COST = {
-    "amazon.rerank-v1:0": 0.001,
+    "semantic-ranker-default-004": 0.001,
+    "semantic-ranker-fast-004": 0.001,
     "semantic-ranker-512-003": 0.001,
 }
 
