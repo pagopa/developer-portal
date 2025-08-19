@@ -3,7 +3,7 @@ import { Grid } from '@mui/material';
 import PasswordChangedCard from '@/components/organisms/Auth/PasswordChangedCard';
 import ChangePasswordForm from '@/components/organisms/Auth/ChangePasswordForm';
 import { ResetPasswordSteps } from '@/lib/types/resetPasswordSteps';
-import { useCallback, useState, useEffect } from 'react';
+import { useCallback, useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Auth } from 'aws-amplify';
 import PageNotFound from '@/app/not-found';
@@ -20,7 +20,7 @@ enum State {
   success = 'success',
 }
 
-const ChangePassword = () => {
+const ChangePasswordContent = () => {
   const confirmation = useTranslations('auth.confirmation');
 
   const searchParams = useSearchParams();
@@ -91,6 +91,14 @@ const ChangePassword = () => {
     default:
       return <Spinner />;
   }
+};
+
+const ChangePassword = () => {
+  return (
+    <Suspense fallback={<Spinner />}>
+      <ChangePasswordContent />
+    </Suspense>
+  );
 };
 
 export default ChangePassword;
