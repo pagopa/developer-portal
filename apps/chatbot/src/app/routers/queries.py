@@ -107,7 +107,8 @@ async def query_creation(
             "messages": messages,
         }
         sqs_response = sqs_queue_evaluate.send_message(
-            MessageBody=json.dumps(evaluation_data)
+            MessageBody=json.dumps(evaluation_data),
+            MessageGroupId=session["id"]  # Required for FIFO queues
         )
         LOGGER.info(f"sqs response: {sqs_response}")
 
