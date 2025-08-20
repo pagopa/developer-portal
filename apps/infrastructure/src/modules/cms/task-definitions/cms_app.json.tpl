@@ -13,9 +13,11 @@
 	"logConfiguration": {
         "logDriver": "awslogs",
         "options": {
-            "awslogs-group": "${log_group}",
-            "awslogs-region": "eu-south-1",
-            "awslogs-stream-prefix": "ecs"
+              "awslogs-group": "${log_group}",
+              "awslogs-region": "eu-south-1",
+              "awslogs-stream-prefix": "ecs",
+              "mode": "non-blocking",
+              "max-buffer-size": "1m"
             },
             "secretOptions": []
     },
