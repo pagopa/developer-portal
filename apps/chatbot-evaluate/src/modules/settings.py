@@ -47,7 +47,7 @@ class ChatbotSettings(BaseSettings):
     max_tokens: int = os.getenv("CHB_MODEL_MAXTOKENS", "768")
     model_id: str = os.getenv("CHB_MODEL_ID", "gemini-2.5-flash-lite")
     provider: str = os.getenv("CHB_PROVIDER", "google")
-    temperature: float = 0.0
+    temperature: float = float(os.getenv("CHB_MODEL_TEMPERATURE", "0.0"))
 
     # prompts
     condense_prompt_str: str = PROMPTS["condense_prompt_str"]
