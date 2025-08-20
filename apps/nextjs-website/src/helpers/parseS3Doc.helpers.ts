@@ -203,13 +203,14 @@ export const parseS3GuidePage = async (props: {
     // eslint-disable-next-line functional/no-expression-statements
     console.error('Missing version or guidePageMetadata for guidePath');
     // eslint-disable-next-line functional/no-expression-statements
+    console.log('parseS3GuidePage', guideProps, guidePath);
+
     console.log(
-      'parseS3GuidePage',
-      guideProps,
-      guidePath,
-      JSON.stringify(guidesMetadata, null, 2),
-      products
+      'guidePageMetadata.dirName !== version.dirName',
+      guidePageMetadata?.dirName !== version?.dirName
     );
+    console.log('guidePageMetadata?.dirName', guidePageMetadata?.dirName);
+    console.log('version?.dirName', version?.dirName);
 
     // eslint-disable-next-line functional/no-expression-statements
     console.log(
