@@ -57,7 +57,6 @@ const buildEnv = pipe(
   })
 );
 
-
 export const getHomepageProps = async () => {
   const strapiHomepage = await fetchHomepage(buildEnv);
   return makeHomepageProps(strapiHomepage);
