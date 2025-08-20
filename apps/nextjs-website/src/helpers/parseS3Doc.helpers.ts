@@ -204,6 +204,15 @@ export const parseS3GuidePage = async (props: {
     console.error('Missing version or guidePageMetadata for guidePath');
     // eslint-disable-next-line functional/no-expression-statements
     console.log(
+      'parseS3GuidePage',
+      guideProps,
+      guidePath,
+      JSON.stringify(guidesMetadata, null, 2),
+      products
+    );
+
+    // eslint-disable-next-line functional/no-expression-statements
+    console.log(
       'path',
       guidePath,
       'baseGuidePath',
