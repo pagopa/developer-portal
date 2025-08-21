@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useMemo, useState } from 'react';
+import { Suspense, useEffect, useMemo, useState } from 'react';
 import {
   Box,
   FormControl,
@@ -22,6 +22,7 @@ const NotSsrApiViewer = dynamic(
   () => import('@/components/atoms/ApiViewer/ApiViewer'),
   {
     loading: () => <Spinner />,
+    ssr: false,
   }
 );
 
@@ -128,11 +129,13 @@ const ApiRestSection = ({
           </StyledFormControl>
         </Stack>
       )}
-      <NotSsrApiViewer
-        product={product}
-        specURL={selectedApi.url}
-        hideTryIt={selectedApi.hideTryIt}
-      />
+      <Suspense fallback={<Spinner />}>
+        <NotSsrApiViewer
+          product={product}
+          specURL={selectedApi.url}
+          hideTryIt={selectedApi.hideTryIt}
+        />
+      </Suspense>
     </Box>
   );
 };
