@@ -2,7 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 import { Box, Stack, Typography } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Suspense } from 'react';
 import ChatbotHistoryLayout from '@/components/organisms/ChatbotHistoryLayout/ChatbotHistoryLayout';
 import {
   flushChatQueriesFromLocalStorage,
@@ -16,7 +16,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import ChatbotHistoryDetailLayout from '@/components/organisms/ChatbotHistoryDetailLayout/ChatbotHistoryDetailLayout';
 import { Query } from '@/lib/chatbot/queries';
 
-const ChatbotHistory = () => {
+const ChatbotHistoryContent = () => {
   const t = useTranslations();
   const { user, loading } = useUser();
   const {
@@ -129,6 +129,14 @@ const ChatbotHistory = () => {
         )}
       </Stack>
     </>
+  );
+};
+
+const ChatbotHistory = () => {
+  return (
+    <Suspense fallback={<Spinner />}>
+      <ChatbotHistoryContent />
+    </Suspense>
   );
 };
 

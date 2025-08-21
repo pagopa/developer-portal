@@ -1,11 +1,13 @@
 import datetime
 import nh3
+import json
 import os
 import uuid
 from botocore.exceptions import BotoCoreError, ClientError
 from boto3.dynamodb.conditions import Key
-from fastapi import APIRouter, BackgroundTasks, Header, HTTPException
-from typing import Annotated
+from fastapi import APIRouter, Header, HTTPException
+from typing import List, Annotated
+from src.app.sqs_init import sqs_queue_evaluate
 from src.app.models import Query, tables
 from src.modules.logger import get_logger
 from src.app.sessions import (
@@ -54,13 +56,10 @@ def backfill_created_at_date() -> None:
     while True:
         if last_evaluated_key:
             response = tables["queries"].scan(
-                ExclusiveStartKey=last_evaluated_key,
-                Limit=page_size
+                ExclusiveStartKey=last_evaluated_key, Limit=page_size
             )
         else:
-            response = tables["queries"].scan(
-                Limit=page_size
-            )
+            response = tables["queries"].scan(Limit=page_size)
         items.extend(response.get("Items", []))
         last_evaluated_key = response.get("LastEvaluatedKey")
 
@@ -80,20 +79,17 @@ def backfill_expires_at() -> None:
     """
     Backfill the `expiresAt` field for all existing items in the table with no value.
     """
-    
+
     items = []
     last_evaluated_key = None
     page_size = 200
     while True:
         if last_evaluated_key:
             response = tables["queries"].scan(
-                ExclusiveStartKey=last_evaluated_key,
-                Limit=page_size
+                ExclusiveStartKey=last_evaluated_key, Limit=page_size
             )
         else:
-            response = tables["queries"].scan(
-                Limit=page_size
-            )
+            response = tables["queries"].scan(Limit=page_size)
         items.extend(response.get("Items", []))
         last_evaluated_key = response.get("LastEvaluatedKey")
 
@@ -103,15 +99,11 @@ def backfill_expires_at() -> None:
     total = 0
     for item in items:
         if item["expiresAt"] is None:
-            created_at_datetime = datetime.datetime.fromisoformat(
-                item["createdAt"]
-            )
+            created_at_datetime = datetime.datetime.fromisoformat(item["createdAt"])
             days = int(os.getenv("EXPIRE_DAYS", 90))
             expires_at = int(
-                (
-                    created_at_datetime + datetime.timedelta(days=days)
-                ).timestamp()
-            )        
+                (created_at_datetime + datetime.timedelta(days=days)).timestamp()
+            )
             item["expiresAt"] = expires_at
             tables["queries"].put_item(Item=item)
             total += 1
@@ -120,17 +112,34 @@ def backfill_expires_at() -> None:
     print(f"Backfilled {total} items with `expiresAt`.")
 
 
-async def evaluate(evaluation_data: dict) -> dict:
-    if os.getenv("environment", "development") != "test":
-        evaluation_result = chatbot.evaluate(**evaluation_data)
-    else:
-        evaluation_result = {}
-    return evaluation_result
+def fix_unbalanced_code_blocks(text: str) -> str:
+    """
+    Ensures code blocks delimited by \n``` are balanced.
+    If unbalanced, removes the last dangling delimiter.
+    """
+    count = text.count("\n```")
+    if count % 2 == 1:  # unbalanced
+        last_index = text.rfind("\n```")
+        if last_index != -1:
+            text = text[:last_index] + text[last_index + 4 :]
+    return text
+
+
+def get_final_response(response_str: str, references: List[str]) -> str:
+
+    response_str = fix_unbalanced_code_blocks(response_str)
+    unique_references = list(dict.fromkeys(references))
+
+    if len(unique_references) > 0:
+        response_str += "\n\nRif:"
+        for ref in unique_references:
+            response_str += "\n" + ref
+
+    return response_str
 
 
 @router.post("/queries")
 async def query_creation(
-    background_tasks: BackgroundTasks,
     query: Query,
     authorization: Annotated[str | None, Header()] = None,
 ):
@@ -144,14 +153,17 @@ async def query_creation(
     user_id = hash_func(userId, salt)
     messages = [item.model_dump() for item in query.history] if query.history else None
 
-    answer_json = chatbot.chat_generate(
+    answer_json = await chatbot.chat_generate(
         query_str=query_str,
         trace_id=trace_id,
         session_id=session["id"],
         user_id=user_id,
         messages=messages,
     )
-    answer = chatbot.get_final_response(answer_json)
+    answer = get_final_response(
+        response_str=answer_json["response"],
+        references=answer_json["references"],
+    )
 
     if can_evaluate():
         evaluation_data = {
@@ -161,7 +173,10 @@ async def query_creation(
             "trace_id": trace_id,
             "messages": messages,
         }
-        background_tasks.add_task(evaluate, evaluation_data=evaluation_data)
+        sqs_response = sqs_queue_evaluate.send_message(
+            MessageBody=json.dumps(evaluation_data)
+        )
+        LOGGER.info(f"sqs response: {sqs_response}")
 
     if query.queriedAt is None:
         queriedAt = now.isoformat()
@@ -186,8 +201,11 @@ async def query_creation(
 
     bodyToSave = bodyToReturn.copy()
     bodyToSave["question"] = chatbot.mask_pii(query.question)
-    bodyToSave["answer"] = chatbot.mask_pii(answer)
-    bodyToSave["topics"] = answer_json.get("topics", [])
+    bodyToSave["answer"] = get_final_response(
+        response_str=chatbot.mask_pii(answer_json["response"]),
+        references=answer_json["references"],
+    )
+    bodyToSave["topics"] = answer_json.get("products", [])
     bodyToSave["expiresAt"] = expires_at
     try:
         tables["queries"].put_item(Item=bodyToSave)

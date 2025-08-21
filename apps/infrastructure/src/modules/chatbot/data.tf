@@ -12,21 +12,6 @@ data "aws_iam_policy_document" "lambda_s3_policy" {
     actions   = ["s3:*Object"]
     resources = ["${module.s3_bucket_llamaindex.s3_bucket_arn}/*", "${module.s3_bucket_kb.s3_bucket_arn}/*"]
   }
-
-  statement {
-    sid    = "BedrockPermissions"
-    effect = "Allow"
-    actions = [
-      "bedrock:ApplyGuardrail",
-      "bedrock:ListGuardrails",
-      "bedrock:GetGuardrail",
-      "bedrock:InvokeModel",
-      "bedrock:InvokeModelWithResponseStream",
-      "bedrock:ListFoundationModels",
-      "bedrock:Rerank"
-    ]
-    resources = ["*"]
-  }
 }
 
 data "aws_iam_policy_document" "lambda_dynamodb_policy" {
@@ -121,20 +106,6 @@ data "aws_iam_policy_document" "apigateway_cloudwatch" {
   }
 }
 
-data "aws_iam_policy_document" "bedrock_logging" {
-  count = var.environment == "dev" ? 1 : 0
-  statement {
-    effect = "Allow"
-    actions = [
-      "logs:CreateLogStream",
-      "logs:PutLogEvents"
-    ]
-    resources = [
-      "${module.bedrock_log_group[0].cloudwatch_log_group_arn}:log-stream:aws/bedrock/modelinvocations"
-    ]
-  }
-}
-
 data "aws_iam_policy_document" "deploy_github" {
   statement {
     effect  = "Allow"
@@ -181,7 +152,9 @@ resource "aws_iam_policy" "deploy_chatbot" {
           "ecr:InitiateLayerUpload",
           "ecr:BatchCheckLayerAvailability",
           "ecr:PutImage",
-          "ecr:BatchGetImage"
+          "ecr:BatchGetImage",
+          "ecr:GetRepositoryPolicy",
+          "ecr:SetRepositoryPolicy"
         ]
         Effect   = "Allow"
         Resource = "*"

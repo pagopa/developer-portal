@@ -1,5 +1,19 @@
 # infrastructure
 
+## 2.1.4
+
+### Patch Changes
+
+- a4a3541: Update references to old secret
+
+## 2.1.3
+
+### Patch Changes
+
+- 9098926: Added permissions on static contents and chatbot lambdas to reindexing iam role
+- 9b8abaa: Added ALLOW_CRAWLER env variable to opennext server lambda
+- 7baeb0c: Add role for chatbot reindexing action
+
 ## 2.1.2
 
 ### Patch Changes

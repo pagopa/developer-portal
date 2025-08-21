@@ -1,6 +1,6 @@
 {
   "name": "gitbook-docs",
-  "version": "0.5.1",
+  "version": "1.0.0",
   "private": true,
   "exports": {
     "./": "./dist/"
@@ -23,10 +23,13 @@
     "generate-guides-metadata": "ts-node src/scripts/generateGuidesMetadata.ts",
     "generate-solutions-metadata": "ts-node src/scripts/generateSolutionsMetadata.ts",
     "generate-release-notes-metadata": "ts-node src/scripts/generateReleaseNotesMetadata.ts",
-    "fetch-soap-api-from-strapi": "ts-node src/scripts/generateSoapApiRepositoriesList.ts"
+    "fetch-soap-api-from-strapi": "ts-node src/scripts/generateSoapApiRepositoriesList.ts",
+    "generate-url-parsing-metadata": "ts-node src/scripts/generateUrlParsingMetadata.ts",
+    "parse-docs": "ts-node src/scripts/parseDocUrlsAndIncludes.ts"
   },
   "dependencies": {
     "@markdoc/markdoc": "0.3.0",
+    "dotenv": "^17.2.1",
     "emojibase-data": "^15.3.2",
     "fp-ts": "^2.13.1",
     "htmlparser2": "^9.0.0",

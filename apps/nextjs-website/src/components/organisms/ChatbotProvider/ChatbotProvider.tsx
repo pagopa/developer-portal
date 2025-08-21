@@ -4,6 +4,7 @@ import { useUser } from '@/helpers/user.helper';
 import { FC, PropsWithChildren } from 'react';
 import ChatbotLayout from '@/components/organisms/ChatbotLayout/ChatbotLayout';
 import { useChatbot } from '@/helpers/chatbot.helper';
+import { isFeedbackFormEnabled } from '@/config';
 
 type ChatbotProviderProps = {
   isChatbotVisible: boolean;
@@ -36,8 +37,9 @@ const ChatbotProvider: FC<PropsWithChildren<ChatbotProviderProps>> = ({
           disabled={!user}
           mustFillFeedbackForm={
             user != null &&
-            (user.attributes.email.includes('pagopa') ||
-              user.attributes.email.includes('uqido'))
+            (user.attributes.email.endsWith('pagopa.it') ||
+              user.attributes.email.endsWith('uqido.com')) &&
+            isFeedbackFormEnabled
           }
         />
       )}

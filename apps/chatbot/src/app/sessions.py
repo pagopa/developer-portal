@@ -150,7 +150,7 @@ def add_langfuse_score_query(query_id: str, query_feedback: QueryFeedback):
         add_langfuse_score(
             trace_id=query_id,
             name="user-response-relevancy",
-            value=float(query_feedback.feedback.user_response_relevancy),
+            value=query_feedback.feedback.user_response_relevancy,
             data_type="NUMERIC",
         )
 
@@ -158,6 +158,6 @@ def add_langfuse_score_query(query_id: str, query_feedback: QueryFeedback):
         add_langfuse_score(
             trace_id=query_id,
             name="user-faithfullness",
-            value=float(query_feedback.feedback.user_faithfullness),
+            value=query_feedback.feedback.user_faithfullness,
             data_type="NUMERIC",
         )

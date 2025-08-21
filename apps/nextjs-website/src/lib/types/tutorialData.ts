@@ -12,4 +12,5 @@ export type Tutorial = {
   readonly publishedAt?: Date;
   readonly parts?: readonly Part[];
   readonly seo?: SEO;
+  readonly updatedAt?: string;
 } & Path;

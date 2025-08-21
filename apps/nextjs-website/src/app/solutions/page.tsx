@@ -4,7 +4,7 @@ import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataS
 import { getItemFromPaths } from '@/helpers/structuredData.helpers';
 import { Metadata } from 'next';
 import { makeMetadata } from '@/helpers/metadata.helpers';
-import { baseUrl, REVALIDATE_SHORT_INTERVAL } from '@/config';
+import { baseUrl } from '@/config';
 
 export async function generateMetadata(): Promise<Metadata> {
   return makeMetadata({
@@ -14,7 +14,8 @@ export async function generateMetadata(): Promise<Metadata> {
   });
 }
 
-export const revalidate = REVALIDATE_SHORT_INTERVAL;
+// Force dynamic rendering for the solutions page
+export const revalidate = false;
 
 const Page = async () => {
   const solutionsList = await getSolutionListPage();

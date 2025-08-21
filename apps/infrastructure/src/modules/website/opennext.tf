@@ -80,7 +80,7 @@ module "opennext" {
 
   server = {
     environment_variables = {
-      COOKIE_DOMAIN_SCRIPT                        = aws_ssm_parameter.cookie_domain_script.value # TODO: this should be removed since it's a duplicate of NEXT_PUBLIC_COOKIE_DOMAIN_SCRIPT
+      NEXT_PUBLIC_COOKIE_DOMAIN_SCRIPT            = aws_ssm_parameter.cookie_domain_script.value
       ENVIRONMENT                                 = var.environment
       FETCH_FROM_STRAPI                           = "true"
       NEXT_PUBLIC_CHATBOT_ACTIVE                  = var.create_chatbot ? "true" : "false"
@@ -108,6 +108,7 @@ module "opennext" {
       S3_SOLUTIONS_METADATA_JSON_PATH             = "solutions-metadata.json"
       STATIC_CONTENTS_URL                         = format("https://static-contents.%s", var.dns_domain_name)
       S3_SOAP_API_METADATA_JSON_PATH              = "soap-api/soap-api-metadata.json"
+      ALLOW_CRAWLER                               = var.environment == "prod" ? "true" : "false"
     }
   }
 

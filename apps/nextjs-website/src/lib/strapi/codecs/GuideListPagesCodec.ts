@@ -1,4 +1,5 @@
 import * as t from 'io-ts/lib';
+import * as tt from 'io-ts-types';
 import { BaseGuideCodec } from './GuidesCodec';
 import { BaseProductWithRelationsCodec } from './ProductCodec';
 import { PaginationCodec } from './PaginationCodec';
@@ -22,6 +23,7 @@ export const GuideListPageCodec = t.strict({
     guidesByCategory: t.array(GuideByCategoryCodec),
     bannerLinks: t.array(BannerLinkCodec),
     seo: t.union([NullToUndefinedCodec, SEOCodec]),
+    updatedAt: tt.DateFromISOString,
   }),
 });
 

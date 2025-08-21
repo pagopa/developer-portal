@@ -21,7 +21,7 @@ import redis.asyncio as aredis
 from redisvl.schema import IndexSchema
 
 from src.modules.logger import get_logger
-from src.modules.documents import get_api_docs, get_guide_docs
+from src.modules.documents import get_documents
 from src.modules.utils import get_ssm_parameter, put_ssm_parameter
 
 
@@ -81,23 +81,21 @@ DYNAMIC_HTMLS = [
 def build_index_redis(
     llm: BaseLLM,
     embed_model: BaseEmbedding,
-    documentation_dir: str,
     chunk_size: int,
     chunk_overlap: int,
 ) -> VectorStoreIndex:
     """
-    Builds a new vector index and stores it on Redis using the provided llm and embed_model.
+    Builds a new vector index and stores it in Redis.
     Args:
         llm (BaseLLM): The language model to use for the index.
         embed_model (BaseEmbedding): The embedding model to use for the index.
-        documentation_dir (str): Directory containing the documentation files.
         chunk_size (int): chunk size for the node parser.
         chunk_overlap (int): Overlap size for the node parser.
     Returns:
         VectorStoreIndex: The newly created vector store index.
     """
 
-    LOGGER.info("Storing vector index and hash table on Redis..")
+    LOGGER.info("Storing vector index in Redis..")
 
     Settings.llm = llm
     Settings.embed_model = embed_model
@@ -107,13 +105,7 @@ def build_index_redis(
         chunk_size=chunk_size, chunk_overlap=chunk_overlap
     )
 
-    api_docs = get_api_docs(WEBSITE_URL)
-    guide_docs, hash_table = get_guide_docs(WEBSITE_URL, documentation_dir)
-    documents = guide_docs + api_docs
-    for key, value in hash_table.items():
-        REDIS_KVSTORE.put(collection=f"hash_table_{NEW_INDEX_ID}", key=key, val=value)
-    LOGGER.info(f"hash_table_{NEW_INDEX_ID} is now on Redis.")
-
+    documents = get_documents()
     LOGGER.info(f"Creating index {NEW_INDEX_ID} ...")
     nodes = Settings.node_parser.get_nodes_from_documents(documents)
 
@@ -211,13 +203,13 @@ def load_index_redis(
 
 def delete_old_index():
     """
-    Deletes the old index and its hash table from Redis if the INDEX_ID is not 'default-index'.
+    Deletes the old index from Redis if the INDEX_ID is not 'default-index'.
     This function is called after creating a new index to ensure that only the latest index is retained.
     """
 
     if INDEX_ID != "default-index":
         for key in REDIS_CLIENT.scan_iter():
-            if f"{INDEX_ID}/vector" in str(key) or f"hash_table_{INDEX_ID}" == str(key):
+            if f"{INDEX_ID}/vector" in str(key):
                 REDIS_CLIENT.delete(key)
 
-        LOGGER.info(f"Deleted index with ID: {INDEX_ID} and its hash table from Redis.")
+        LOGGER.info(f"Deleted index with ID: {INDEX_ID} from Redis.")

@@ -31,6 +31,8 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
   const { user } = useUser();
   const [isSubscribed, setIsSubscribed] = useState(false);
   const { webinarState, setWebinar } = useWebinar();
+  const showHeaderImage =
+    webinarState === WebinarState.future && webinar.headerImage;
 
   useEffect(() => {
     webinar && setWebinar(webinar);
@@ -75,14 +77,26 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
         return null;
       }}
       webinarState={webinarState}
+      textColor={showHeaderImage ? 'white' : palette.text.primary}
     />
   );
 
   return (
     <>
-      <Box paddingTop={5} style={{ backgroundColor: palette.grey[50] }}>
+      <Box
+        paddingY={'20px'}
+        style={{
+          backgroundColor: palette.grey[50],
+          backgroundImage: showHeaderImage
+            ? `url(${webinar.headerImage?.url})`
+            : 'none',
+          backgroundRepeat: 'no-repeat',
+          backgroundSize: 'cover',
+        }}
+      >
         <EContainer>
           <ProductBreadcrumbs
+            textColor={showHeaderImage ? 'white' : palette.text.primary}
             breadcrumbs={[
               ...pageToBreadcrumbs('webinars', [
                 {
@@ -93,42 +107,31 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
             ]}
           />
         </EContainer>
+        <SummaryInformation
+          title={webinar.title}
+          description={webinar.description}
+          startDateTime={webinar.startDateTime}
+          endDateTime={webinar.endDateTime}
+          webinarState={webinarState}
+          textColor={showHeaderImage ? 'white' : palette.text.primary}
+        >
+          {subscribeToWebinarButton}
+          {isSubscribed && webinarState === WebinarState.comingSoon && (
+            <Typography
+              variant={'body2'}
+              sx={{
+                position: 'absolute',
+                bottom: '24px',
+                fontSize: '12px',
+                marginTop: 1,
+                color: showHeaderImage ? 'white' : palette.text.primary,
+              }}
+            >
+              {t('warnings.refresh')}
+            </Typography>
+          )}
+        </SummaryInformation>
       </Box>
-      <SummaryInformation
-        title={webinar.title}
-        description={webinar.description}
-        startDateTime={webinar.startDateTime}
-        endDateTime={webinar.endDateTime}
-        webinarState={webinarState}
-      >
-        {subscribeToWebinarButton}
-        {isSubscribed && webinarState === WebinarState.future && (
-          <Typography
-            variant={'body2'}
-            sx={{
-              position: 'absolute',
-              bottom: '24px',
-              fontSize: '12px',
-              marginTop: 1,
-            }}
-          >
-            {t('warnings.email')}
-          </Typography>
-        )}
-        {isSubscribed && webinarState === WebinarState.comingSoon && (
-          <Typography
-            variant={'body2'}
-            sx={{
-              position: 'absolute',
-              bottom: '24px',
-              fontSize: '12px',
-              marginTop: 1,
-            }}
-          >
-            {t('warnings.refresh')}
-          </Typography>
-        )}
-      </SummaryInformation>
       {user &&
         isSubscribed &&
         ![WebinarState.future, WebinarState.unknown].includes(webinarState) && (

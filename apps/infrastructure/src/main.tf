@@ -139,7 +139,7 @@ module "cms" {
   ac_integration_is_enabled = var.ac_integration_is_enabled
   ac_base_url_param         = var.ac_integration_is_enabled ? module.active_campaign[0].base_url_param : null
   ac_api_key_param          = var.ac_integration_is_enabled ? module.active_campaign[0].api_key_param : null
-
+  cms_app_image_tag         = var.cms_app_image_tag
   rds_scaling_configuration = var.rds_cms_scaling_configuration
 }
 
@@ -200,6 +200,7 @@ module "cicd" {
   opennext_cdn_distribution_id = module.website.opennext_cdn_distribution_id
 
   assets_opennext_bucket      = module.website.assets_opennext_bucket
+  website_standalone_bucket   = module.website.website_standalone_bucket
   lambda_code_opennext_bucket = module.website.lambda_code_opennext_bucket
   lambda_initializer_arn      = module.website.lambda_initializer.arn
 
