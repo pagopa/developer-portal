@@ -27,11 +27,6 @@ on:
         type: boolean
         required: true
         default: false
-      incremental_mode:
-        description: 'Run sync in incremental mode by checking only file size'
-        type: boolean
-        required: true
-        default: true
 
   # schedule:
   #   - cron: '0 23 * * *'  # Run daily at midnight UTC
