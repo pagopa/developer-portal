@@ -18,6 +18,7 @@ export type UrlParsingMetadata = {
 export function parseUrlsFromMarkdown(
   fileContent: string,
   guideMetadata: UrlParsingMetadata | undefined,
+  metadata: UrlParsingMetadata[] = [],
   filePath?: string
 ): string {
   // Regex to match markdown links: [link text](url)
@@ -27,7 +28,7 @@ export function parseUrlsFromMarkdown(
   // eslint-disable-next-line functional/no-let
   let updatedFileContent = fileContent;
   for (const match of matches) {
-    const replace = replaceUrl(guideMetadata, match[2]);
+    const replace = replaceUrl(guideMetadata, metadata, match[2]);
     updatedFileContent = updatedFileContent.replaceAll(
       '(' + match[2] || '',
       '(' + replace
@@ -47,6 +48,7 @@ export function parseUrlsFromMarkdown(
 // Handles various markdown file extensions and path formats to find the correct guide URL.
 export function replaceUrl(
   metadata: UrlParsingMetadata | undefined,
+  fullMedatada: UrlParsingMetadata[] = [],
   value: string
 ): string {
   if (!metadata) return value;
@@ -72,7 +74,10 @@ export function replaceUrl(
     guide.guidePath.includes(name)
   );
   if (guides.length <= 0) {
-    return value;
+    const externalGuide = fullMedatada.filter((g) => g.dirName.includes(name));
+    if (externalGuide.length > 0) {
+      guides.push(...externalGuide[0].guides);
+    } else return value;
   }
   const subParts = value.includes('#') ? value.split('#').at(-1) : '';
   const urlEnding = subParts && subParts.length > 0 ? '#' + subParts : '';
@@ -83,7 +88,7 @@ export function replaceUrl(
     const guide = guides.find((guide) =>
       guide.guidePath.includes([secondToLastPart, name].join('/'))
     );
-    return guide?.guideUrl + urlEnding || value;
+    return guide ? guide?.guideUrl + urlEnding : guides[0].guideUrl + urlEnding;
   }
 }
 

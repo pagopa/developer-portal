@@ -18,7 +18,7 @@ describe('makeGuideListPageProps', () => {
     expect(result).toEqual([]);
   });
 
-  it('should return an a array with a single element with the guides for the PagoPA product', () => {
+  it('should return an array with a single element with the guides for the PagoPA product', () => {
     const result = makeGuideListPagesProps(strapiGuideListPagesData);
     expect(result).toHaveLength(1);
     expect(result).toEqual(guideListPageProps);
