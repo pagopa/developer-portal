@@ -15,7 +15,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 // Force dynamic rendering for the solutions page
-export const revalidate = 0;
+export const revalidate = false;
 
 const Page = async () => {
   const solutionsList = await getSolutionListPage();

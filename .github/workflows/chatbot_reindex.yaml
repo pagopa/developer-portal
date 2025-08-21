@@ -14,10 +14,11 @@ on:
           - uat
           - prod
 
-  workflow_run:
-    workflows:
-      - Sync GitBook Docs
-    types: [completed]
+  #TODO enable when the env can be shared from the Sync GitBook Docs workflow
+  #workflow_run:
+  #  workflows:
+  #    - Sync GitBook Docs
+  #  types: [completed]
 
   # Allows external webhook trigger
   repository_dispatch:
@@ -32,7 +33,7 @@ permissions:
 jobs:
 
   cd_reindex:
-    name: Llama reindex (on ${{ matrix.environment }})
+    name: Llama reindex (cd_ reindex on ${{ matrix.environment }})
     # Trigger on a webhook (e.g. trigger reindex from CMS)
     if: github.event_name == 'repository_dispatch'
     runs-on: codebuild-${{ matrix.environment }}-github-runner-${{ github.run_id }}-${{ github.run_attempt }}
@@ -63,17 +64,17 @@ jobs:
           chatbot_lambda_name: ${{ vars.CHATBOT_LAMBDA_NAME }}
 
   cd_reindex_workflow_run:
-    name: Llama reindex (on ${{ matrix.environment }})
-    # Trigger on a webhook (e.g. trigger reindex from CMS)
+    name: Llama reindex (workflow_run on ${{ github.event.workflow_run.outputs.environment }})
+    # Trigger on workflow_run (e.g. after Sync GitBook Docs completes)
     if: github.event_name == 'workflow_run'
-    runs-on: codebuild-${{ github.event.workflow_run.jobs.build.outputs.environment }}-github-runner-${{ github.run_id }}-${{ github.run_attempt }}
+    runs-on: codebuild-${{ github.event.workflow_run.outputs.environment }}-github-runner-${{ github.run_id }}-${{ github.run_attempt }}
     strategy:
       fail-fast: false
 
-    environment: ${{ github.event.workflow_run.jobs.build.outputs.environment }}
+    environment: ${{ github.event.workflow_run.outputs.environment }}
 
     concurrency:
-      group: ${{ github.workflow }}-${{ github.event.workflow_run.jobs.build.outputs.environment }}
+      group: ${{ github.workflow }}-${{ github.event.workflow_run.outputs.environment }}
       cancel-in-progress: false
 
     steps:
