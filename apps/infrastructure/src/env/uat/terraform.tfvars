@@ -22,6 +22,8 @@ dns_domain_name = "uat.developer.pagopa.it"
 
 use_custom_certificate = true
 
+cms_app_image_tag = "5f6a93940d9de0aa2d354dbc12d3cedf15ed0d14"
+
 # CMS Strapi DNS
 dns_domain_name_cms = {
   "cms.uat.developer.pagopa.it" = {
