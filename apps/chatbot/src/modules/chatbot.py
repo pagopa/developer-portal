@@ -112,15 +112,16 @@ class Chatbot:
             product_list += getattr(raw_output, "products", [])
             references = getattr(raw_output, "references", [])
 
-            for ref in references:
-                references_list.append(
-                    f"[{ref.title}]({SETTINGS.website_url}{ref.filepath})"
-                )
+            references_list = [
+                f"[{ref.title}]({SETTINGS.website_url}{ref.filepath})"
+                for ref in references
+            ]
 
             nodes = getattr(raw_output, "source_nodes", [])
-            for node in nodes:
-                url = SETTINGS.website_url + node.metadata["filepath"]
-                retrieved_contexts.append(f"URL: {url}\n\n{node.text}")
+            retrieved_contexts = [
+                f"-------\nURL: {SETTINGS.website_url + node.metadata['filepath']}\n\n{node.text}\n\n"
+                for node in nodes
+            ]
 
         response_json = {
             "response": engine_response.response.content.strip(),
