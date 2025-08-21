@@ -61,8 +61,22 @@ def backfill_created_at_date() -> None:
     LOGGER.info(f"Backfilled {len(items)} items with `createdAtDate`.")
 
 
+def fix_unbalanced_code_blocks(text: str) -> str:
+    """
+    Ensures code blocks delimited by \n``` are balanced.
+    If unbalanced, removes the last dangling delimiter.
+    """
+    count = text.count("\n```")
+    if count % 2 == 1:  # unbalanced
+        last_index = text.rfind("\n```")
+        if last_index != -1:
+            text = text[:last_index] + text[last_index + 4 :]
+    return text
+
+
 def get_final_response(response_str: str, references: List[str]) -> str:
 
+    response_str = fix_unbalanced_code_blocks(response_str)
     unique_references = list(dict.fromkeys(references))
 
     if len(unique_references) > 0:
