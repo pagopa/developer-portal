@@ -63,6 +63,13 @@ jobs:
           ref: docs/from-gitbook
           path: devportal-docs
 
+      # Fix timestamps
+      - name: restore timestamps
+        if: inputs.incremental_mode == true && inputs.generate_metadata_only == false
+        uses: chetan/git-restore-mtime-action@v2
+        with:
+          working-directory: 'devportal-docs'
+
       - name: Setup Node.JS
         uses: ./.github/actions/setup-node
 
@@ -111,8 +118,7 @@ jobs:
         if: inputs.generate_metadata_only == false
         working-directory: ./devportal-docs
         run: |    
-          aws s3 sync docs s3://devportal-${{ env.ENV_SHORT }}-website-static-content/devportal-docs/docs --delete ${{ inputs.incremental_mode == true && ' --size-only' || '' }}
-      
+          aws s3 sync docs s3://devportal-${{ env.ENV_SHORT }}-website-static-content/devportal-docs/docs --delete --exact-timestamps
       
       - name: Generate guides metadata      
         if: inputs.metadata_type == 'guides' || inputs.metadata_type == 'all'
