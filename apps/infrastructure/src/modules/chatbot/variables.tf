@@ -157,14 +157,14 @@ variable "models" {
     provider   = optional(string, "google")
     generation = optional(string, "gemini-2.5-flash")
     embeddings = optional(string, "gemini-embedding-001")
-    reranker   = optional(string, "semantic-ranker-512-003")
+    reranker   = optional(string, "semantic-ranker-default-004")
   })
 
   default = {
     provider   = "google"
     generation = "gemini-2.5-flash"
     embeddings = "gemini-embedding-001"
-    reranker   = "semantic-ranker-512-003"
+    reranker   = "semantic-ranker-default-004"
   }
 
   description = "The models used by the AI chatbot"
