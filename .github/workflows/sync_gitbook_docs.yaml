@@ -65,7 +65,7 @@ jobs:
 
       # Fix timestamps
       - name: restore timestamps
-        if: inputs.incremental_mode == true && inputs.generate_metadata_only == false
+        if: inputs.generate_metadata_only == false
         uses: chetan/git-restore-mtime-action@v2
         with:
           working-directory: 'devportal-docs'
