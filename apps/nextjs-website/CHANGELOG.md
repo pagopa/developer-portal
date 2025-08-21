@@ -1,5 +1,11 @@
 # nextjs-website
 
+## 8.5.2
+
+### Patch Changes
+
+- 970a6db: Removed legacy cache that was causing errors on open next environment
+
 ## 8.5.1
 
 ### Patch Changes
