@@ -24,9 +24,9 @@ logging.getLogger("botocore").setLevel(logging.ERROR)
 LOGGER = get_logger(__name__)
 AWS_S3_CLIENT = boto3.client(
     "s3",
-    aws_access_key_id=SETTINGS.aws_access_key_id,
-    aws_secret_access_key=SETTINGS.aws_secret_access_key,
-    region_name=SETTINGS.aws_default_region,
+    aws_access_key_id=os.getenv("CHB_AWS_ACCESS_KEY_ID"),
+    aws_secret_access_key=os.getenv("CHB_AWS_SECRET_ACCESS_KEY"),
+    region_name=os.getenv("CHB_AWS_DEFAULT_REGION"),
 )
 
 
@@ -157,10 +157,6 @@ def read_file_from_s3(file_path: str) -> str:
     Returns:
         str: The content of the file as a string.
     """
-
-    LOGGER.info(f"AWS access key: {SETTINGS.aws_access_key_id}")
-    LOGGER.info(f"AWS secret key: {SETTINGS.aws_secret_access_key}")
-    LOGGER.info(f"AWS region: {SETTINGS.aws_default_region}")
 
     try:
         response = AWS_S3_CLIENT.get_object(
