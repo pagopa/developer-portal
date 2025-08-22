@@ -1,5 +1,15 @@
 # chatbot
 
+## 7.0.0
+
+### Major Changes
+
+- 8ea97a0: Change the evaluate sqs queue to ordered fifo.
+
+### Patch Changes
+
+- c8dd06f: Bug fix repetitive links and unwanted triple apix
+
 ## 6.1.0
 
 ### Minor Changes
