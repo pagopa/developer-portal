@@ -33,11 +33,13 @@ const makeStrapiSolutionsPopulate = () =>
     ...solutionsPopulate,
   });
 
-export const fetchSolutions = fetchFromStrapi(
-  'solutions',
-  makeStrapiSolutionsPopulate(),
-  SolutionsCodec
-);
+export const fetchSolutions = (locale?: string) =>
+  fetchFromStrapi(
+    'solutions',
+    makeStrapiSolutionsPopulate(),
+    SolutionsCodec,
+    locale
+  );
 
 const makeStrapiSolutionPopulate = (solutionSlug: string) =>
   qs.stringify({
@@ -47,9 +49,10 @@ const makeStrapiSolutionPopulate = (solutionSlug: string) =>
     },
   });
 
-export const fetchSolution = (solutionSlug: string) =>
+export const fetchSolution = (solutionSlug: string, locale?: string) =>
   fetchFromStrapi(
     'solutions',
     makeStrapiSolutionPopulate(solutionSlug),
-    SolutionsCodec
+    SolutionsCodec,
+    locale
   );

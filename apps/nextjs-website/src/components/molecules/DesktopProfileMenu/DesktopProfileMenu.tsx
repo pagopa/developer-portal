@@ -5,7 +5,6 @@ import Typography from '@mui/material/Typography';
 import { useTranslations } from 'next-intl';
 import { profileMenuItems } from '@/config';
 import Link from 'next/link';
-import { includes } from 'fp-ts/lib/string';
 
 type DesktopProfileMenuProps = {
   currentPathname: string;

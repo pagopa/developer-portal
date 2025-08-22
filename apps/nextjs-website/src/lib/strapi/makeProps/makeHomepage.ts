@@ -1,6 +1,6 @@
 import { StrapiHomepage } from '@/lib/strapi/codecs/HomepageCodec';
 import { makeWebinarFromStrapi } from './makeWebinars';
-import { HomepageProps } from '@/app/page';
+import { HomepageProps } from '@/app/[locale]/page';
 
 export const makeHomepageProps = (
   strapiHomepage: StrapiHomepage

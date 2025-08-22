@@ -23,8 +23,10 @@ const makeStrapiCaseHistoriesPopulate = () =>
     },
   });
 
-export const fetchCaseHistories = fetchFromStrapi(
-  'case-histories',
-  makeStrapiCaseHistoriesPopulate(),
-  CaseHistoriesCodec
-);
+export const fetchCaseHistories = (locale?: string) =>
+  fetchFromStrapi(
+    'case-histories',
+    makeStrapiCaseHistoriesPopulate(),
+    CaseHistoriesCodec,
+    locale
+  );

@@ -21,8 +21,10 @@ const makeStrapiTutorialListPagePopulate = () =>
     },
   });
 
-export const fetchTutorialListPages = fetchFromStrapi(
-  'tutorial-list-pages',
-  makeStrapiTutorialListPagePopulate(),
-  TutorialListPagesCodec
-);
+export const fetchTutorialListPages = (locale?: string) =>
+  fetchFromStrapi(
+    'tutorial-list-pages',
+    makeStrapiTutorialListPagePopulate(),
+    TutorialListPagesCodec,
+    locale
+  );

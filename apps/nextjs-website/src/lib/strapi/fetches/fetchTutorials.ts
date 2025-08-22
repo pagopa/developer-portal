@@ -25,8 +25,10 @@ const makeStrapiTutorialsPopulate = () =>
     },
   });
 
-export const fetchTutorials = fetchFromStrapi(
-  'tutorials',
-  makeStrapiTutorialsPopulate(),
-  TutorialsCodec
-);
+export const fetchTutorials = (locale?: string) =>
+  fetchFromStrapi(
+    'tutorials',
+    makeStrapiTutorialsPopulate(),
+    TutorialsCodec,
+    locale
+  );

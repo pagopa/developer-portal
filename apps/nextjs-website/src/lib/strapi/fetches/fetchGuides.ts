@@ -22,11 +22,8 @@ const makeStrapiGuidesPopulate = () =>
     ...guidesPopulate,
   });
 
-export const fetchGuides = fetchFromStrapi(
-  'guides',
-  makeStrapiGuidesPopulate(),
-  GuidesCodec
-);
+export const fetchGuides = (locale?: string) =>
+  fetchFromStrapi('guides', makeStrapiGuidesPopulate(), GuidesCodec, locale);
 
 const makeStrapiGuidePopulate = (guideSlug: string, productSlug: string) =>
   qs.stringify({
@@ -39,9 +36,14 @@ const makeStrapiGuidePopulate = (guideSlug: string, productSlug: string) =>
     },
   });
 
-export const fetchGuide = (guideSlug: string, productSlug: string) =>
+export const fetchGuide = (
+  guideSlug: string,
+  productSlug: string,
+  locale?: string
+) =>
   fetchFromStrapi(
     'guides',
     makeStrapiGuidePopulate(guideSlug, productSlug),
-    GuidesCodec
+    GuidesCodec,
+    locale
   );

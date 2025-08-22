@@ -36,8 +36,10 @@ export const webinarPopulate = {
 
 const makeStrapiWebinarsPopulate = () => qs.stringify(webinarPopulate);
 
-export const fetchWebinars = fetchFromStrapi(
-  'webinars',
-  makeStrapiWebinarsPopulate(),
-  WebinarsCodec
-);
+export const fetchWebinars = (locale?: string) =>
+  fetchFromStrapi(
+    'webinars',
+    makeStrapiWebinarsPopulate(),
+    WebinarsCodec,
+    locale
+  );

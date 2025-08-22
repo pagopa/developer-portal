@@ -1,12 +1,6 @@
 import { defaultLocale } from '@/config';
 import { Session } from '@/lib/chatbot/queries';
-import {
-  ListItem,
-  ListItemButton,
-  Stack,
-  Typography,
-  useTheme,
-} from '@mui/material';
+import { ListItem, ListItemButton, Typography, useTheme } from '@mui/material';
 import { useTranslations } from 'next-intl';
 
 type DateFormatOptions = {

@@ -21,8 +21,10 @@ const makeStrapiGuideListPopulate = () =>
     },
   });
 
-export const fetchGuideListPages = fetchFromStrapi(
-  'guide-list-pages',
-  makeStrapiGuideListPopulate(),
-  GuideListPagesCodec
-);
+export const fetchGuideListPages = (locale?: string) =>
+  fetchFromStrapi(
+    'guide-list-pages',
+    makeStrapiGuideListPopulate(),
+    GuideListPagesCodec,
+    locale
+  );

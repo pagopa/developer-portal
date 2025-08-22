@@ -44,8 +44,10 @@ const makeStrapiHomepagePopulate = () =>
     },
   });
 
-export const fetchHomepage = fetchFromStrapi(
-  'homepage',
-  makeStrapiHomepagePopulate(),
-  HomepageCodec
-);
+export const fetchHomepage = (locale?: string) =>
+  fetchFromStrapi(
+    'homepage',
+    makeStrapiHomepagePopulate(),
+    HomepageCodec,
+    locale
+  );

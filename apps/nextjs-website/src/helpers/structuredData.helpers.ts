@@ -1,5 +1,5 @@
-import { ApiDataPageProps } from '@/app/[productSlug]/api/[apiDataSlug]/page';
-import { QuickStartGuidePageProps } from '@/app/[productSlug]/quick-start/page';
+import { ApiDataPageProps } from '@/app/[locale]/[productSlug]/api/[apiDataSlug]/page';
+import { QuickStartGuidePageProps } from '@/app/[locale]/[productSlug]/quick-start/page';
 import { baseUrl, organizationInfo, websiteName } from '@/config';
 import { Media } from '@/lib/strapi/codecs/MediaCodec';
 import { Product } from '@/lib/types/product';
@@ -157,7 +157,7 @@ export function quickStartToStructuredDataHowTo(
   quickStart: QuickStartGuidePageProps
 ): WithContext<HowTo> {
   const steps: readonly HowToStep[] = quickStart.steps
-    ? quickStart.steps.map((step) => ({
+    ? quickStart.steps.map((step: any) => ({
         '@type': 'HowToStep',
         text: step.title,
       }))

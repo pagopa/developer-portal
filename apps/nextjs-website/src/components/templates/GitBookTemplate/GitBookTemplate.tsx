@@ -1,5 +1,5 @@
 'use client';
-import { ProductGuidePageProps } from '@/app/[productSlug]/guides/[...productGuidePage]/page';
+import { ProductGuidePageProps } from '@/app/[locale]/[productSlug]/guides/[...productGuidePage]/page';
 import GuideMenu from '@/components/atoms/GuideMenu/GuideMenu';
 import { GuideMenuItemsProps } from '@/components/atoms/GuideMenu/Menu';
 import ProductBreadcrumbs from '@/components/atoms/ProductBreadcrumbs/ProductBreadcrumbs';

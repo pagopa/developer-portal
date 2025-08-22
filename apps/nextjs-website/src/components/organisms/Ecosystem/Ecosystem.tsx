@@ -5,7 +5,7 @@ import TabComponent from '@/components/atoms/TabComponent/TabComponent';
 import CardsGrid from '@/components/molecules/CardsGrid/CardsGrid';
 import { ButtonNaked } from '@pagopa/mui-italia';
 import Link from 'next/link';
-import { HomepageProps } from '@/app/page';
+import { HomepageProps } from '@/app/[locale]/page';
 import SectionTitle from '@/components/molecules/SectionTitle/SectionTitle';
 
 const Ecosystem = ({

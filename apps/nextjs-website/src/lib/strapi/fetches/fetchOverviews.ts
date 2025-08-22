@@ -45,8 +45,10 @@ const makeStrapiOverviewsPopulate = () =>
     },
   });
 
-export const fetchOverviews = fetchFromStrapi(
-  'overviews',
-  makeStrapiOverviewsPopulate(),
-  OverviewsCodec
-);
+export const fetchOverviews = (locale?: string) =>
+  fetchFromStrapi(
+    'overviews',
+    makeStrapiOverviewsPopulate(),
+    OverviewsCodec,
+    locale
+  );
