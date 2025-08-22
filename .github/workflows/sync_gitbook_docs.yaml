@@ -33,8 +33,8 @@ on:
         required: true
         default: true
 
-  # schedule:
-  #   - cron: '0 23 * * *'  # Run daily at midnight UTC
+  schedule:
+    - cron: '0 23 * * *'  # Run daily at midnight UTC
 
 # Permissions needed for AWS OIDC authentication
 permissions:
@@ -44,6 +44,7 @@ permissions:
 jobs:
   sync_gitbook_docs:
     name: Sync gitbook Docs to S3 (manual on ${{ inputs.environment }})
+    if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     outputs:
       environment: ${{ inputs.environment }}
@@ -161,3 +162,116 @@ jobs:
       - name: Set environment output
         id: setenv
         run: echo "environment=${{ inputs.environment }}" >> $GITHUB_OUTPUT
+
+  scheduled_sync_gitbook_docs:
+    name: Sync gitbook Docs to S3 (scheduled on prod)
+    if: github.event_name == 'schedule'
+    runs-on: ubuntu-latest
+    outputs:
+      environment: ${{ inputs.environment }}
+    environment: ${{ inputs.environment }}
+    env:
+      ENV_SHORT: ${{ fromJSON('{"dev":"d","uat":"u","prod":"p"}')[inputs.environment] }}
+
+    steps:
+      - name: Checkout current repository
+        uses: actions/checkout@v4
+
+      - name: Checkout devportal-docs repo
+        uses: actions/checkout@v4
+        with:
+          repository: pagopa/devportal-docs
+          ref: docs/from-gitbook
+          path: devportal-docs
+
+      - name: Setup Node.JS
+        uses: ./.github/actions/setup-node
+
+      - name: Cache npm dependencies
+        id: cache-npm
+        uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-npm-
+
+      - name: Install dependencies
+        run: |
+          npm config set cache ~/.npm
+          npm ci
+
+      - name: Compile packages
+        run: npm run compile
+
+      - name: Generate UrlReplace metadata
+        env:
+          ENVIRONMENT: 'prod'
+          DOCUMENTATION_PATH: ${{ vars.DOCUMENTATION_PATH || '../../devportal-docs/docs' }}
+          URL_PARSING_METADATA_JSON_PATH: ${{ vars.URL_PARSING_METADATA_JSON_PATH || '../../url-parsing-metadata.json' }}
+          STRAPI_ENDPOINT: ${{ vars.STRAPI_ENDPOINT }}
+          STRAPI_API_TOKEN: ${{ secrets.STRAPI_API_TOKEN }}
+        run: npm run generate-url-parsing-metadata -w gitbook-docs
+
+      - name: Replace urls and include tags in docs
+        env:
+          ENVIRONMENT: 'prod'
+          DOCUMENTATION_PATH: ${{ vars.DOCUMENTATION_PATH || '../../devportal-docs/docs' }}
+          URL_PARSING_METADATA_JSON_PATH: ${{ vars.URL_PARSING_METADATA_JSON_PATH || '../../url-parsing-metadata.json' }}
+        run: npm run parse-docs -w gitbook-docs
+
+      - name: Configure AWS Credentials
+        uses: ./.github/actions/configure-aws-credentials
+        with:
+          aws_region: eu-south-1
+          role_to_assume: ${{ secrets.DEPLOY_IAM_ROLE }}
+
+      - name: Sync docs folder to S3
+        working-directory: ./devportal-docs
+        run: |
+          aws s3 sync docs s3://devportal-${{ env.ENV_SHORT }}-website-static-content/devportal-docs/docs --delete --size-only
+
+      - name: Generate guides metadata
+        env:
+          ENVIRONMENT: 'prod'
+          S3_BUCKET_NAME: devportal-${{ env.ENV_SHORT }}-website-static-content
+          S3_DOC_EXTRACTION_BUCKET_NAME: ${{ vars.S3_DOC_EXTRACTION_BUCKET_NAME }}
+          S3_PATH_TO_GITBOOK_DOCS: ${{ vars.S3_PATH_TO_GITBOOK_DOCS || 'devportal-docs/docs' }}
+          STRAPI_ENDPOINT: ${{ vars.STRAPI_ENDPOINT }}
+          STRAPI_API_TOKEN: ${{ secrets.STRAPI_API_TOKEN }}
+          FETCH_FROM_STRAPI: ${{ vars.FETCH_FROM_STRAPI || 'true' }}
+          NEXT_PUBLIC_COGNITO_REGION: ${{ vars.NEXT_PUBLIC_COGNITO_REGION || 'eu-south-1' }}
+        run: npm run generate-guides-metadata -w gitbook-docs
+
+      - name: Generate solutions metadata
+        env:
+          ENVIRONMENT: 'prod'
+          S3_BUCKET_NAME: devportal-${{ env.ENV_SHORT }}-website-static-content
+          S3_PATH_TO_GITBOOK_DOCS: ${{ vars.S3_PATH_TO_GITBOOK_DOCS || 'devportal-docs/docs' }}
+          STRAPI_ENDPOINT: ${{ vars.STRAPI_ENDPOINT }}
+          STRAPI_API_TOKEN: ${{ secrets.STRAPI_API_TOKEN }}
+          FETCH_FROM_STRAPI: ${{ vars.FETCH_FROM_STRAPI || 'true' }}
+          NEXT_PUBLIC_COGNITO_REGION: ${{ vars.NEXT_PUBLIC_COGNITO_REGION || 'eu-south-1' }}
+        run: npm run generate-solutions-metadata -w gitbook-docs
+
+      - name: Generate release notes metadata
+        env:
+          ENVIRONMENT: 'prod'
+          S3_BUCKET_NAME: devportal-${{ env.ENV_SHORT }}-website-static-content
+          S3_DOC_EXTRACTION_BUCKET_NAME: ${{ vars.S3_DOC_EXTRACTION_BUCKET_NAME }}
+          S3_PATH_TO_GITBOOK_DOCS: ${{ vars.S3_PATH_TO_GITBOOK_DOCS || 'devportal-docs/docs' }}
+          STRAPI_ENDPOINT: ${{ vars.STRAPI_ENDPOINT }}
+          STRAPI_API_TOKEN: ${{ secrets.STRAPI_API_TOKEN }}
+          FETCH_FROM_STRAPI: ${{ vars.FETCH_FROM_STRAPI || 'true' }}
+          NEXT_PUBLIC_COGNITO_REGION: ${{ vars.NEXT_PUBLIC_COGNITO_REGION || 'eu-south-1' }}
+        run: npm run generate-release-notes-metadata -w gitbook-docs
+
+      - name: Invalidate CloudFront asset bucket cache
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id ${{ vars.ASSET_BUCKET_CLOUDFRONT_DISTRIBUTION_ID }} \
+            --paths "/*"
+
+      - name: Set environment output
+        id: setenv
+        run: echo "environment=prod" >> $GITHUB_OUTPUT
