@@ -9,8 +9,10 @@ const makeStrapiWebinarCategoriesPopulate = () =>
     },
   });
 
-export const fetchWebinarCategories = fetchFromStrapi(
-  'webinar-categories',
-  makeStrapiWebinarCategoriesPopulate(),
-  WebinarCategoriesCodec
-);
+export const fetchWebinarCategories = (locale?: string) =>
+  fetchFromStrapi(
+    'webinar-categories',
+    makeStrapiWebinarCategoriesPopulate(),
+    WebinarCategoriesCodec,
+    locale
+  );

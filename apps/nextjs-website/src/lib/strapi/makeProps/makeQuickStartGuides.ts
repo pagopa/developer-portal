@@ -1,4 +1,4 @@
-import { QuickStartGuidePageProps } from '@/app/[productSlug]/quick-start/page';
+import { QuickStartGuidePageProps } from '@/app/[locale]/[productSlug]/quick-start/page';
 import { StrapiQuickStartGuides } from '../codecs/QuickStartGuidesCodec';
 import { Part } from '../../types/part';
 import { Step } from '../../types/step';

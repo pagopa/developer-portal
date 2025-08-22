@@ -34,8 +34,10 @@ const makeStrapiSolutionListPagePopulate = () =>
     },
   });
 
-export const fetchSolutionListPage = fetchFromStrapi(
-  'solution-list-page',
-  makeStrapiSolutionListPagePopulate(),
-  SolutionListPageCodec
-);
+export const fetchSolutionListPage = (locale?: string) =>
+  fetchFromStrapi(
+    'solution-list-page',
+    makeStrapiSolutionListPagePopulate(),
+    SolutionListPageCodec,
+    locale
+  );

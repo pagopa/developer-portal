@@ -1,7 +1,7 @@
 import { StrapiReleaseNotes } from '@/lib/strapi/codecs/ReleaseNotesCodec';
 import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
 import { makeBaseProductWithoutLogoProps } from './makeProducts';
-import { ReleaseNotePageProps } from '@/app/[productSlug]/[...releaseNoteSubPathSlugs]/page';
+import { ReleaseNotePageProps } from '@/app/[locale]/[productSlug]/[...releaseNoteSubPathSlugs]/page';
 
 export function makeReleaseNotesProps(
   strapiReleaseNotes: StrapiReleaseNotes

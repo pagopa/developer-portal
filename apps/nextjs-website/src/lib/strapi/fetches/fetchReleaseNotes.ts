@@ -22,11 +22,13 @@ const makeStrapiReleaseNotesPopulate = () =>
     ...releaseNotesPopulate,
   });
 
-export const fetchReleaseNotes = fetchFromStrapi(
-  'release-notes',
-  makeStrapiReleaseNotesPopulate(),
-  ReleaseNotesCodec
-);
+export const fetchReleaseNotes = (locale?: string) =>
+  fetchFromStrapi(
+    'release-notes',
+    makeStrapiReleaseNotesPopulate(),
+    ReleaseNotesCodec,
+    locale
+  );
 
 const makeStrapiReleaseNotePopulate = (productSlug: string) =>
   qs.stringify({
@@ -38,9 +40,10 @@ const makeStrapiReleaseNotePopulate = (productSlug: string) =>
     },
   });
 
-export const fetchReleaseNote = (productSlug: string) =>
+export const fetchReleaseNote = (productSlug: string, locale?: string) =>
   fetchFromStrapi(
     'release-notes',
     makeStrapiReleaseNotePopulate(productSlug),
-    ReleaseNotesCodec
+    ReleaseNotesCodec,
+    locale
   );

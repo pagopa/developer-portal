@@ -40,7 +40,8 @@ export const generateMetadata = async (
   parent: ResolvingMetadata
 ): Promise<Metadata> => {
   const resolvedParent = await parent;
-  const ApiDataProps = await getApiData(params.apiDataSlug);
+  const resolvedParams = await params;
+  const ApiDataProps = await getApiData(resolvedParams.apiDataSlug);
 
   if (ApiDataProps?.seo) {
     return makeMetadataFromStrapi(ApiDataProps.seo);
@@ -57,7 +58,8 @@ export const generateMetadata = async (
 };
 
 const ApiDataPage = async ({ params }: ApiDataParams) => {
-  const apiDataProps = await getApiData(params.apiDataSlug);
+  const resolvedParams = await params;
+  const apiDataProps = await getApiData(resolvedParams.apiDataSlug);
 
   const structuredData = generateStructuredDataScripts({
     breadcrumbsItems: [
@@ -75,7 +77,7 @@ const ApiDataPage = async ({ params }: ApiDataParams) => {
   });
 
   const path = apiDataProps.product?.slug
-    ? `/${apiDataProps.product.slug}/api/${params.apiDataSlug}`
+    ? `/${apiDataProps.product.slug}/api/${resolvedParams.apiDataSlug}`
     : '';
 
   if (apiDataProps && apiDataProps.product) {

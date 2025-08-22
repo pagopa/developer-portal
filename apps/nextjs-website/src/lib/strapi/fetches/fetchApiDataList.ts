@@ -27,8 +27,10 @@ const makeStrapiApiDataListPopulate = () =>
 
 // This endpoint does not respect the naming convention but we keep it
 // for backward compatibility with the already existing content in Strapi's production instance
-export const fetchApiDataList = fetchFromStrapi(
-  'apis-data',
-  makeStrapiApiDataListPopulate(),
-  ApiDataListCodec
-);
+export const fetchApiDataList = (locale?: string) =>
+  fetchFromStrapi(
+    'apis-data',
+    makeStrapiApiDataListPopulate(),
+    ApiDataListCodec,
+    locale
+  );

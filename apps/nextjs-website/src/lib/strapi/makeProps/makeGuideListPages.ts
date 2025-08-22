@@ -1,4 +1,4 @@
-import { GuideListPageProps } from '@/app/[productSlug]/guides/page';
+import { GuideListPageProps } from '@/app/[locale]/[productSlug]/guides/page';
 import { StrapiGuideListPages } from '../codecs/GuideListPagesCodec';
 import { GuidesSectionProps } from '@/components/molecules/GuidesSection/GuidesSection';
 import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';

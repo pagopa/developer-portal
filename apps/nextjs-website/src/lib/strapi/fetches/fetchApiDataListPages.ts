@@ -30,8 +30,10 @@ const makeStrapiApiDataListPagePopulate = () =>
     },
   });
 
-export const fetchApiDataListPages = fetchFromStrapi(
-  'api-data-list-pages',
-  makeStrapiApiDataListPagePopulate(),
-  ApiDataListPagesCodec
-);
+export const fetchApiDataListPages = (locale?: string) =>
+  fetchFromStrapi(
+    'api-data-list-pages',
+    makeStrapiApiDataListPagePopulate(),
+    ApiDataListPagesCodec,
+    locale
+  );

@@ -25,8 +25,10 @@ const makeStrapiProductsPopulate = () =>
     ...productRelationsPopulate,
   });
 
-export const fetchProducts = fetchFromStrapi(
-  'products',
-  makeStrapiProductsPopulate(),
-  ProductsCodec
-);
+export const fetchProducts = (locale?: string) =>
+  fetchFromStrapi(
+    'products',
+    makeStrapiProductsPopulate(),
+    ProductsCodec,
+    locale
+  );

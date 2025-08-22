@@ -22,8 +22,10 @@ const makeStrapiQuickStartGuidesPopulate = () =>
     },
   });
 
-export const fetchQuickStartGuides = fetchFromStrapi(
-  'quickstart-guides',
-  makeStrapiQuickStartGuidesPopulate(),
-  QuickStartGuidesCodec
-);
+export const fetchQuickStartGuides = (locale?: string) =>
+  fetchFromStrapi(
+    'quickstart-guides',
+    makeStrapiQuickStartGuidesPopulate(),
+    QuickStartGuidesCodec,
+    locale
+  );

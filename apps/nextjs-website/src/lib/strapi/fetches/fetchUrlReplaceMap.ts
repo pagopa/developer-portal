@@ -15,8 +15,10 @@ const makeStrapiUrlReplaceMapPopulate = () =>
     },
   });
 
-export const fetchUrlReplaceMap = fetchFromStrapi(
-  'url-replace-map',
-  makeStrapiUrlReplaceMapPopulate(),
-  UrlReplaceMapCodec
-);
+export const fetchUrlReplaceMap = (locale?: string) =>
+  fetchFromStrapi(
+    'url-replace-map',
+    makeStrapiUrlReplaceMapPopulate(),
+    UrlReplaceMapCodec,
+    locale
+  );

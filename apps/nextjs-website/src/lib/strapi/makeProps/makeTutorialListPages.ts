@@ -1,4 +1,4 @@
-import { TutorialsPageProps } from '@/app/[productSlug]/tutorials/page';
+import { TutorialsPageProps } from '@/app/[locale]/[productSlug]/tutorials/page';
 import { Tutorial } from '../../types/tutorialData';
 import { StrapiTutorialListPages } from '../codecs/TutorialListPagesCodec';
 import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';

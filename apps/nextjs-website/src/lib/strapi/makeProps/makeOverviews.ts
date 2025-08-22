@@ -1,5 +1,5 @@
 import { StrapiOverviews } from '@/lib/strapi/codecs/OverviewsCodec';
-import { OverviewPageProps } from '@/app/[productSlug]/overview/page';
+import { OverviewPageProps } from '@/app/[locale]/[productSlug]/overview/page';
 import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
 import { makeBaseProductWithoutLogoProps } from './makeProducts';
 

@@ -1,4 +1,4 @@
-import { ApiDataPageProps } from '@/app/[productSlug]/api/[apiDataSlug]/page';
+import { ApiDataPageProps } from '@/app/[locale]/[productSlug]/api/[apiDataSlug]/page';
 import { StrapiApiDataList } from '../codecs/ApiDataListCodec';
 import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
 import { makeBaseProductWithoutLogoProps } from './makeProducts';

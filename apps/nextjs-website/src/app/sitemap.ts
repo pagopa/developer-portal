@@ -16,17 +16,18 @@ import {
   getSolutionsMetadata,
   JsonMetadata,
 } from '@/helpers/s3Metadata.helpers';
+import { defaultLocale } from '@/i18n/config';
 
 // Force dynamic rendering for the sitemap
 export const revalidate = 0;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  // Get dynamic paths
-  const quickStartParams = await getQuickStartGuidesProps();
+  // Get dynamic paths using default locale
+  const quickStartParams = await getQuickStartGuidesProps(defaultLocale);
   const apiDataParams = await getApiDataParams();
-  const guideListPages = await getGuideListPagesProps();
-  const caseHistories = await getCaseHistoriesProps();
-  const productSlugs = (await getProductsProps()).map(
+  const guideListPages = await getGuideListPagesProps(defaultLocale);
+  const caseHistories = await getCaseHistoriesProps(defaultLocale);
+  const productSlugs = (await getProductsProps(defaultLocale)).map(
     (product) => product.slug
   );
 
@@ -112,7 +113,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.6,
   }));
 
-  const tutorials = await getTutorialsProps();
+  const tutorials = await getTutorialsProps(defaultLocale);
   const tutorialRoutes = tutorials.map((tutorial) => ({
     url: `${baseUrl}${tutorial.path}`,
     lastModified: new Date(tutorial.updatedAt || new Date().toISOString()),
@@ -120,7 +121,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.6,
   }));
 
-  const webinars = await getWebinarsProps();
+  const webinars = await getWebinarsProps(defaultLocale);
   const webinarRoutes = webinars.map((webinar) => ({
     url: `${baseUrl}/webinars/${webinar.slug}`,
     lastModified: new Date(webinar.updatedAt || new Date().toISOString()),
@@ -128,7 +129,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.6,
   }));
 
-  const solutions = await getSolutionsProps();
+  const solutions = await getSolutionsProps(defaultLocale);
   const solutionRoutes = solutions.map((solution) => ({
     url: `${baseUrl}/solutions/${solution.slug}`,
     lastModified: new Date(solution.updatedAt || new Date().toISOString()),
