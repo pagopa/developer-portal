@@ -17,8 +17,8 @@ def test_aws_credentials() -> None:
     identity = None
     try:
         session = boto3.Session(
-            aws_access_key_id=SETTINGS.aws_access_key_id,
-            aws_secret_access_key=SETTINGS.aws_secret_access_key,
+            aws_access_key_id=os.getenv("CHB_AWS_ACCESS_KEY_ID"),
+            aws_secret_access_key=os.getenv("CHB_AWS_SECRET_ACCESS_KEY"),
         )
         sts = session.client("sts")
         identity = sts.get_caller_identity()
