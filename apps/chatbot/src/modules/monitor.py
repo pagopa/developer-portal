@@ -82,7 +82,6 @@ def add_langfuse_score(
     trace_id: str,
     name: str,
     value: float,
-    score_id: str | None = None,
     comment: str | None = None,
     data_type: Literal["NUMERIC", "BOOLEAN"] | None = None,
 ) -> None:
@@ -93,8 +92,6 @@ def add_langfuse_score(
         trace_id (str): The ID of the trace to which the score will be added.
         name (str): The name of the score.
         value (float): The value of the score.
-        score_id (str, optional): The ID of the score. If None, a new score will be created.
-            Defaults to None.
         comment (str, optional): A comment for the score. Defaults to None.
         data_type (Literal["NUMERIC", "BOOLEAN"], optional): The type of the score.
             Defaults to None, which means the type will be inferred from the value.
@@ -110,24 +107,9 @@ def add_langfuse_score(
     else:
         value = float(value)
 
-    found_score = False
-    if score_id is None:
-        trace = get_trace(trace_id)
-        for score in trace.scores:
-            if score.name == name:
-                score_id = score.id
-                found_score = True
-                break
-
-        if not found_score:
-            score_id = str(uuid.uuid4())
-    else:
-        found_score = True
-
     try:
         LANGFUSE_CLIENT.score(
             trace_id=trace_id,
-            id=score_id,
             name=name,
             value=value,
             data_type=data_type,
@@ -135,10 +117,7 @@ def add_langfuse_score(
         )
         LANGFUSE_CLIENT.flush()
 
-        if found_score:
-            LOGGER.info(f"Updated {name} score with value {value} in trace {trace_id}.")
-        else:
-            LOGGER.info(f"Added {name} score with value {value} in trace {trace_id}.")
+        LOGGER.info(f"Added {name} score with value {value} in trace {trace_id}.")
     except Exception as e:
         LOGGER.error(
             f"Error adding {name} score with value {value} to trace {trace_id}: {e}."
