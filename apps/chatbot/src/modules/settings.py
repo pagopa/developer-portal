@@ -32,7 +32,7 @@ class ChatbotSettings(BaseSettings):
     aws_default_region: str = os.getenv(
         "AWS_REGION", os.getenv("CHB_AWS_DEFAULT_REGION")
     )
-    aws_endpoint_url: str = os.getenv("CHB_AWS_SSM_ENDPOINT_URL")
+    aws_endpoint_url: str | None = os.getenv("CHB_AWS_SSM_ENDPOINT_URL")
     aws_secret_access_key: str = os.getenv(
         "AWS_SECRET_ACCESS_KEY", os.getenv("CHB_AWS_SECRET_ACCESS_KEY")
     )
