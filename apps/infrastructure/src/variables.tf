@@ -134,6 +134,7 @@ variable "chatbot_ecs_redis" {
     memory    = optional(number, 4096)
     image_uri = optional(string, "redis/redis-stack-server@sha256:887cf87cc744e4588ccade336d0dbb943e4e46330f738653ccb3a7a55df2f186")
     port      = optional(number, 6379)
+    image_tag = optional(string, "latest")
   })
   description = "Redis configuration for the AI chatbot"
 
@@ -155,6 +156,7 @@ variable "chatbot_ecs_monitoring" {
     memory    = optional(number, 4096)
     image_uri = optional(string, "ghcr.io/langfuse/langfuse:sha-9375250")
     port      = optional(number, 3000)
+    image_tag = optional(string, "latest")
   })
   description = "Redis configuration for the AI chatbot"
 
