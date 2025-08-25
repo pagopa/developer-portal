@@ -3,6 +3,7 @@
 /* eslint-disable functional/no-let */
 /* eslint-disable functional/prefer-readonly-type */
 /* eslint-disable functional/no-expression-statements */
+/* eslint-disable functional/no-try-statements */
 import {
   S3Client,
   ListObjectsV2Command,
@@ -11,6 +12,7 @@ import {
 } from '@aws-sdk/client-s3';
 import { Readable } from 'stream';
 import { SitemapItem } from '../sitemapItem';
+import { UrlParsingItem } from '../scripts/generateUrlParsingMetadata';
 
 type S3Credentials = {
   readonly accessKeyId: string;
@@ -129,7 +131,7 @@ export async function downloadS3File(
 }
 
 export async function writeSitemapJson(
-  items: SitemapItem[],
+  items: SitemapItem[] | any, // TODO: remove when Strapi will manage Metadata
   jsonPath: string,
   bucketName: string,
   client: S3Client
@@ -145,4 +147,23 @@ export async function writeSitemapJson(
     })
   );
   console.log(`Uploaded sitemap JSON to S3: ${jsonPath}`);
+}
+
+export async function writeUrlParsingMetadataJson(
+  items: UrlParsingItem[],
+  jsonPath: string,
+  bucketName: string,
+  client: S3Client
+): Promise<void> {
+  const urlParsingMetadata = JSON.stringify(items, null, 2);
+  console.log(`Uploading UrlParsing metadata JSON to S3: ${jsonPath}`);
+
+  await client.send(
+    new PutObjectCommand({
+      Bucket: bucketName,
+      Key: jsonPath,
+      Body: urlParsingMetadata,
+    })
+  );
+  console.log(`Uploaded UrlParsing metadata JSON to S3: ${jsonPath}`);
 }

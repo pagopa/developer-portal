@@ -1,11 +1,23 @@
-## ECR Container Registry for Chatbot
-module "ecr" {
-  source = "git::https://github.com/terraform-aws-modules/terraform-aws-ecr.git?ref=9f4b587846551110b0db199ea5599f016570fefe" # v1.6.0
+locals {
+  ecr_repos = {
+    chatbot = {
+      repository_name = "chatbot"
+    }
+    evaluate = {
+      repository_name = "evaluate"
+    }
+  }
+}
 
-  repository_name                    = "chatbot"
-  repository_image_scan_on_push      = "true"
-  repository_image_tag_mutability    = "MUTABLE"
-  repository_lambda_read_access_arns = [aws_lambda_function.chatbot_lambda.arn]
+module "ecr" {
+  source   = "git::https://github.com/terraform-aws-modules/terraform-aws-ecr.git?ref=9f4b587846551110b0db199ea5599f016570fefe"
+  for_each = local.ecr_repos
+
+  repository_name                   = each.value.repository_name
+  repository_image_scan_on_push     = "true"
+  repository_image_tag_mutability   = "MUTABLE"
+  repository_read_write_access_arns = []
+  attach_repository_policy          = false
   repository_lifecycle_policy = jsonencode({
     rules = [
       {

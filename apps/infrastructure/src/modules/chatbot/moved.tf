@@ -67,7 +67,7 @@ moved {
 # IAM policy moved blocks
 moved {
   from = module.lambda_function.aws_iam_policy.additional_jsons[0]
-  to   = aws_iam_policy.lambda_s3_bedrock_policy
+  to   = aws_iam_policy.lambda_s3_chatbot_policy
 }
 
 moved {
@@ -93,7 +93,7 @@ moved {
 # IAM policy attachment moved blocks
 moved {
   from = module.lambda_function.aws_iam_role_policy_attachment.additional_jsons[0]
-  to   = aws_iam_role_policy_attachment.lambda_s3_bedrock_policy_attachment
+  to   = aws_iam_role_policy_attachment.lambda_s3_chatbot_policy_attachment
 }
 
 moved {

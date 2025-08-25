@@ -16,62 +16,16 @@ Before you start, make sure you have complete the following steps:
 npm i
 ```
 
-### Download the static documentation that come from GitBook. It may take a while.
-
-You have 2 ways of accomplish it, the first one consists in downloading the whole docs as zip, using 
-```bash
-npm run download-docs -w nextjs-website
-```
-
-Or you can initialize a git submodule on .tmp-docs directory:  
-```bash
-git submodule add --force https://github.com/pagopa/devportal-docs.git apps/nextjs-website/.tmp-docs
-``` 
-and then run the script to checkout docs to the right branch
-```bash
-npm run update-docs -w nextjs-website
-``` 
-
-#### Update documentation
-You can update the doc by downloading it again or, if you chose the submodule way, by running again the update command:
-```bash
-npm run update-docs -w nextjs-website
-```
-
 Finally:
 - in the `nextjs-website` app (`apps/nextjs-websites`), create a `.env.local` starting from `.env.default` and fill all the environment variables.
-- in the `strapi-cms` app (`apps/strapi-cms`), create a `.env` starting from `.env.default` and fill all the environment variables.
+- in the `strapi-cms` app of the dedicated repositories folders (`apps/strapi-cms`), create a `.env` starting from `.env.default` and fill all the environment variables.
 
 In order to get the Strapi API token needed in the .env.local:
 - for local developement, you can find the token at: [http://localhost:1337/admin/settings/api-tokens] (http://localhost:1337/admin/settings/api-tokens)
 - for the dev api token, ask one of the mantainer with admin access to [https://cms.dev.developer.pagopa.it] (https://cms.dev.developer.pagopa.it)
 
 ### Populate strapi cms
-
-In order to start with a populated strapi database, run the following command:
-``` bash
-npx strapi transfer --from https://cms.developer.pagopa.it/admin --from-token <strapi_token>
-```
-
-The strapi token can be recovered by a mantainer with admin access to the production cms
-
-Give that SQLite is used for local developement, this transfer will require the following lines to be added to `apps/strapi-cms/config/database.ts` inside the `sqlite` object:
-
-```
-      pool: {
-        min: 2,
-        max: 20,
-        acquireTimeoutMillis: 300000,
-        createTimeoutMillis: 300000,
-        destroyTimeoutMillis: 300000,
-        idleTimeoutMillis: 30000,
-        reapIntervalMillis:1000,
-        createRetryIntervalMillis: 2000
-      },
-      debug: false,
-```
-
-**Important**: remember to remove these lines after the transfer, before launching Strapi.
+See the repository https://github.com/pagopa/developer-portal-cms/
 
 ### Run the developer portal locally
 
@@ -84,45 +38,6 @@ npm run dev
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the website.
 
 Open [http://localhost:1337/admin/](http://localhost:1337/admin/) with your browser to see the CMS website.
-
-### Run Strapi CMS with Docker
-
-#### Run PostgreSQL
-``` bash
-docker run -it --rm --name postgres -e POSTGRES_PASSWORD=password -p 5432:5432 postgres:14
-```
-
-#### Create a network and connect the postgres container to it
-``` bash
-docker network create strapi-network  # Only needed if it doesn't exist
-docker network connect strapi-network postgres
-```
-
-#### Build Strapi container
-``` bash
-docker build -t strapi-cms apps/strapi-cms
-```
-
-#### Create a .env file for the Strapi container using the following values for the PostgreSQL connection
-``` bash
-...
-DATABASE_CLIENT=postgres
-DATABASE_HOST=postgres
-DATABASE_NAME=postgres
-DATABASE_PASSWORD=password
-DATABASE_PORT=5432
-DATABASE_SCHEMA=public
-DATABASE_SSL=false
-DATABASE_USERNAME=postgres
-...
-```
-
-#### Run Strapi container in the same network
-``` bash
-docker run --name strapi-cms --network strapi-network -p 1337:1337 --env-file apps/strapi-cms/.env-docker strapi-cms
-```
-
-Open [http://localhost:1337/admin/](http://localhost:1337/admin/) with your browser to see the CMS backoffice.
 
 ### Run test locally
 
@@ -205,15 +120,6 @@ and you will get a message like this:
 ╰────────────────────────────────────────────────────╯
 ```
 Open [http://localhost:6006](http://localhost:6006) with your browser to see the result.
-
-## Deploy in dev and production environments
-Currently, the deployment happens automatically in the `dev` environment when a push is made to the `main` branch of the repository, while it is done manually in the `production` environment.
-The CMS runs in an Amazon ECS container as defined in the `apps/strapi-cms/Dockerfile`.
-In the Docker container, the `package.json` and `package-lock.json` files located in the `apps/strapi-cms` folder are copied, npm packages are installed, and the `npm run start` command is executed to start the Strapi server.
-
-### Update the package-lock.json file whenever a dependency changes
-Whenever a `dependency` or `devDependency` is added in a PR to the CMS's `package.json`, it is necessary to update the `apps/strapi-cms/package-lock.json` file by running the command
-`npm run prune:strapi -w strapi-cms` from the root of the project.
 
 ## Changelog
 This project utilizes [changesets](https://github.com/changesets/changesets) to generate the changelog. Here's how you can use it:

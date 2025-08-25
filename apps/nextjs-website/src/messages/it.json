@@ -124,8 +124,12 @@
             "title": "Scrivi qui domande e commenti per la discussione finale (al massimo {maxLength} caratteri)",
             "question": "Domanda",
             "submit": "Invia",
-            "submitted": "Inviato",
-            "error": "Errore nell'invio, riprova più tardi."
+            "submitted": "Inviata",
+            "error": "Errore nell'invio, riprova più tardi.",
+            "reduce": "Riduci",
+            "expand": "Espandi",
+            "questionBox": "Question box",
+            "notLive": "Non appena sarà iniziato l’evento qui potrai scrivere le tue domande"
         },
         "warnings": {
             "email": "Il giorno prima dell'evento riceverai una email con i dettagli.",
@@ -314,7 +318,7 @@
                 "takePart": "Partecipa",
                 "view": "Visualizza"
             },
-            "subscribedLabel": "Iscrizione confermata",
+            "subscribedLabel": "Iscrizione effettuata",
             "unsubscribeLabel": "Annulla iscrizione"
         },
         "relatedLinks": "Link utili",

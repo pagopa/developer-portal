@@ -46,6 +46,7 @@ export function makeGuideListPagesProps(
               makeBannerLinkProps
             ),
       seo: attributes.seo,
+      updatedAt: new Date(attributes.updatedAt).toISOString(),
     };
   });
 }
