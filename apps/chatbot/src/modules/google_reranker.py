@@ -16,20 +16,11 @@ from llama_index.core.schema import MetadataMode, NodeWithScore, QueryBundle
 from google.oauth2 import service_account
 from google.cloud import discoveryengine_v1 as discoveryengine
 
-from src.modules.utils import get_ssm_parameter
+from src.modules.settings import SETTINGS
 
-
-GOOGLE_SERVICE_ACCOUNT = get_ssm_parameter(
-    name=os.getenv("CHB_AWS_SSM_GOOGLE_SERVICE_ACCOUNT")
-)
-if GOOGLE_SERVICE_ACCOUNT is None:
-    with open("./.google_service_account.json", "r") as file:
-        GOOGLE_JSON_ACCOUNT_INFO = json.load(file)
-else:
-    GOOGLE_JSON_ACCOUNT_INFO = json.loads(GOOGLE_SERVICE_ACCOUNT)
 
 GOOGLE_CREDENTIALS = service_account.Credentials.from_service_account_info(
-    GOOGLE_JSON_ACCOUNT_INFO
+    SETTINGS.google_service_account
 )
 
 
@@ -69,7 +60,7 @@ class GoogleRerank(BaseNodePostprocessor):
             )
 
         self._ranking_config = self._client.ranking_config_path(
-            project=GOOGLE_JSON_ACCOUNT_INFO["project_id"],
+            project=SETTINGS.google_service_account["project_id"],
             location="global",
             ranking_config=ranking_config,
         )

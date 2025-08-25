@@ -8,6 +8,8 @@ from src.app.models import AWS_DEFAULT_REGION
 
 LOGGER = get_logger(__name__)
 
+sqs_queue_evaluate = None
+
 try:
     sqs = boto3.resource(
         "sqs",

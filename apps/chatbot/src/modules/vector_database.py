@@ -22,28 +22,25 @@ from redisvl.schema import IndexSchema
 
 from src.modules.logger import get_logger
 from src.modules.documents import get_documents
-from src.modules.utils import get_ssm_parameter, put_ssm_parameter
+from src.modules.utils import put_ssm_parameter
+from src.modules.settings import SETTINGS
 
 
 LOGGER = get_logger(__name__)
 TODAY = datetime.now(pytz.timezone("Europe/Rome")).strftime("%Y-%m-%d--%H:%M:%S")
-INDEX_ID = get_ssm_parameter(
-    os.getenv("CHB_AWS_SSM_LLAMAINDEX_INDEX_ID"), "default-index"
+NEW_INDEX_ID = (
+    f"index--{TODAY}" if SETTINGS.index_id != "default-index" else "default-index"
 )
-NEW_INDEX_ID = f"index--{TODAY}" if INDEX_ID != "default-index" else "default-index"
-REDIS_URL = os.getenv("CHB_REDIS_URL")
-WEBSITE_URL = os.getenv("CHB_WEBSITE_URL")
-REDIS_CLIENT = Redis.from_url(REDIS_URL, socket_timeout=10)
-REDIS_ASYNC_CLIENT = aredis.Redis.from_pool(aredis.ConnectionPool.from_url(REDIS_URL))
-EMBED_MODEL_ID = os.getenv("CHB_EMBED_MODEL_ID")
-EMBEDDING_DIMS = {
-    "text-embedding-004": 768,
-    "cohere.embed-multilingual-v3": 1024,
-    "amazon.titan-embed-text-v2:0": 1024,
-}
+REDIS_CLIENT = Redis.from_url(SETTINGS.redis_url, socket_timeout=10)
+REDIS_ASYNC_CLIENT = aredis.Redis.from_pool(
+    aredis.ConnectionPool.from_url(SETTINGS.redis_url)
+)
 REDIS_SCHEMA = IndexSchema.from_dict(
     {
-        "index": {"name": f"{INDEX_ID}", "prefix": f"{INDEX_ID}/vector"},
+        "index": {
+            "name": f"{SETTINGS.index_id}",
+            "prefix": f"{SETTINGS.index_id}/vector",
+        },
         "fields": [
             {"name": "id", "type": "tag", "attrs": {"sortable": False}},
             {"name": "doc_id", "type": "tag", "attrs": {"sortable": False}},
@@ -52,7 +49,7 @@ REDIS_SCHEMA = IndexSchema.from_dict(
                 "name": "vector",
                 "type": "vector",
                 "attrs": {
-                    "dims": EMBEDDING_DIMS[EMBED_MODEL_ID],
+                    "dims": SETTINGS.embed_dim,
                     "algorithm": "flat",
                     "distance_metric": "cosine",
                 },
@@ -65,24 +62,11 @@ REDIS_KVSTORE = RedisKVStore(
 )
 REDIS_DOCSTORE = RedisDocumentStore(redis_kvstore=REDIS_KVSTORE)
 REDIS_INDEX_STORE = RedisIndexStore(redis_kvstore=REDIS_KVSTORE)
-DYNAMIC_HTMLS = [
-    "case-histories/tari-cagliari.html",
-    "firma-con-io/api/firma-con-io-main.html",
-    "index.html",
-    "privacy-policy.html",
-    "send/api/send-main.html",
-    "solutions/multe-per-violazioni-al-codice-della-strada.html",
-    "solutions/tassa-sui-rifiuti-tari.html",
-    "terms-of-service.html",
-    "webinars.html",
-]
 
 
 def build_index_redis(
     llm: BaseLLM,
     embed_model: BaseEmbedding,
-    chunk_size: int,
-    chunk_overlap: int,
 ) -> VectorStoreIndex:
     """
     Builds a new vector index and stores it in Redis.
@@ -99,10 +83,11 @@ def build_index_redis(
 
     Settings.llm = llm
     Settings.embed_model = embed_model
-    Settings.chunk_size = chunk_size
-    Settings.chunk_overlap = chunk_overlap
+    Settings.chunk_size = SETTINGS.chunk_size
+    Settings.chunk_overlap = SETTINGS.chunk_overlap
     Settings.node_parser = SentenceSplitter(
-        chunk_size=chunk_size, chunk_overlap=chunk_overlap
+        chunk_size=SETTINGS.chunk_size,
+        chunk_overlap=SETTINGS.chunk_overlap,
     )
 
     documents = get_documents()
@@ -126,7 +111,7 @@ def build_index_redis(
                         "name": "vector",
                         "type": "vector",
                         "attrs": {
-                            "dims": EMBEDDING_DIMS[embed_model.model_name],
+                            "dims": SETTINGS.embed_dim,
                             "algorithm": "flat",
                             "distance_metric": "cosine",
                         },
@@ -157,8 +142,6 @@ def build_index_redis(
 def load_index_redis(
     llm: BaseLLM,
     embed_model: BaseEmbedding,
-    chunk_size: int,
-    chunk_overlap: int,
 ) -> VectorStoreIndex:
     """
     Loads an existing vector index from Redis using the provided llm and embed_model.
@@ -171,14 +154,15 @@ def load_index_redis(
         VectorStoreIndex: The loaded vector store index.
     """
 
-    if INDEX_ID:
+    if SETTINGS.index_id:
 
         Settings.llm = llm
         Settings.embed_model = embed_model
-        Settings.chunk_size = chunk_size
-        Settings.chunk_overlap = chunk_overlap
+        Settings.chunk_size = SETTINGS.chunk_size
+        Settings.chunk_overlap = SETTINGS.chunk_overlap
         Settings.node_parser = SentenceSplitter(
-            chunk_size=chunk_size, chunk_overlap=chunk_overlap
+            chunk_size=SETTINGS.chunk_size,
+            chunk_overlap=SETTINGS.chunk_overlap,
         )
 
         redis_vector_store = RedisVectorStore(
@@ -193,7 +177,7 @@ def load_index_redis(
         )
 
         index = load_index_from_storage(
-            storage_context=storage_context, index_id=INDEX_ID
+            storage_context=storage_context, index_id=SETTINGS.index_id
         )
 
         return index
@@ -207,9 +191,9 @@ def delete_old_index():
     This function is called after creating a new index to ensure that only the latest index is retained.
     """
 
-    if INDEX_ID != "default-index":
+    if SETTINGS.index_id != "default-index":
         for key in REDIS_CLIENT.scan_iter():
-            if f"{INDEX_ID}/vector" in str(key):
+            if f"{SETTINGS.index_id}/vector" in str(key):
                 REDIS_CLIENT.delete(key)
 
-        LOGGER.info(f"Deleted index with ID: {INDEX_ID} from Redis.")
+        LOGGER.info(f"Deleted index with ID: {SETTINGS.index_id} from Redis.")
