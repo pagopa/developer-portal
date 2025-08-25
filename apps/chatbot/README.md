@@ -137,9 +137,3 @@ In the end, if you need to work with `jupyter-lab` and test yourself the chatbot
 ```
 ./docker/docker-compose-run-jupyter.sh
 ```
-
-## DynamoDB TTL
-Run this script in order to backfill the records with empty `expires_at` field:
-```
-poetry run python scripts/backfill-expires-at.py
-```

@@ -75,43 +75,6 @@ def backfill_created_at_date() -> None:
     LOGGER.info(f"Backfilled {len(items)} items with `createdAtDate`.")
 
 
-def backfill_expires_at() -> None:
-    """
-    Backfill the `expiresAt` field for all existing items in the table with no value.
-    """
-
-    items = []
-    last_evaluated_key = None
-    page_size = 200
-    while True:
-        if last_evaluated_key:
-            response = tables["queries"].scan(
-                ExclusiveStartKey=last_evaluated_key, Limit=page_size
-            )
-        else:
-            response = tables["queries"].scan(Limit=page_size)
-        items.extend(response.get("Items", []))
-        last_evaluated_key = response.get("LastEvaluatedKey")
-
-        if not last_evaluated_key:
-            break
-
-    total = 0
-    for item in items:
-        if item["expiresAt"] is None:
-            created_at_datetime = datetime.datetime.fromisoformat(item["createdAt"])
-            days = int(os.getenv("EXPIRE_DAYS", 90))
-            expires_at = int(
-                (created_at_datetime + datetime.timedelta(days=days)).timestamp()
-            )
-            item["expiresAt"] = expires_at
-            tables["queries"].put_item(Item=item)
-            total += 1
-
-    logger.info(f"Backfilled {total} items with `expiresAt`.")
-    print(f"Backfilled {total} items with `expiresAt`.")
-
-
 def fix_unbalanced_code_blocks(text: str) -> str:
     """
     Ensures code blocks delimited by \n``` are balanced.
@@ -175,7 +138,7 @@ async def query_creation(
         }
         sqs_response = sqs_queue_evaluate.send_message(
             MessageBody=json.dumps(evaluation_data),
-            MessageGroupId=trace_id # Required for FIFO queues
+            MessageGroupId=trace_id,  # Required for FIFO queues
         )
         LOGGER.info(f"sqs response: {sqs_response}")
 
