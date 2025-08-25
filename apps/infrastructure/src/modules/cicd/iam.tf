@@ -41,15 +41,7 @@ resource "aws_iam_policy" "deploy_website" {
         ]
         Resource = ["arn:aws:lambda:${var.aws_region}:${data.aws_caller_identity.current.account_id}:function:*chatbot*"]
       }
-      ], var.website_is_standalone ? [] : [{
-        Action = [
-          "cloudfront:CreateInvalidation"
-        ]
-        Effect = "Allow"
-        Resource = [
-          var.website_cdn.arn
-        ]
-    }])
+    ])
   })
 }
 

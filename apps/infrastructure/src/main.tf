@@ -196,7 +196,6 @@ module "cicd" {
   github_repository = var.github_repository
 
   website_bucket               = module.website.website_bucket
-  website_cdn                  = module.website.website_cdn
   opennext_cdn_distribution_id = module.website.opennext_cdn_distribution_id
 
   assets_opennext_bucket      = module.website.assets_opennext_bucket

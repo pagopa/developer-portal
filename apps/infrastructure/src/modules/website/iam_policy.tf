@@ -68,16 +68,7 @@ resource "aws_iam_policy" "deploy_website" {
           "arn:aws:lambda:${var.aws_region}:${data.aws_caller_identity.current.account_id}:function:ac-${var.environment}-*"
         ]
       }
-      ], (!var.website_is_standalone ? [{
-        Action = [
-          "cloudfront:CreateInvalidation"
-        ]
-        Effect = "Allow"
-        Resource = [
-          aws_cloudfront_distribution.website.arn,
-          aws_cloudfront_distribution.static_contents.arn,
-        ]
-    }] : []))
+    ])
   })
 }
 
