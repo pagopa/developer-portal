@@ -15,6 +15,15 @@ export type BaseProductWithBannerLinks = BaseProduct & {
   };
 };
 
+export type BaseProductWithoutBannerLinks = BaseProduct & {
+  readonly attributes: {
+    readonly description?: string;
+    readonly logo: {
+      readonly data?: Media;
+    };
+  };
+};
+
 type StrapiUrl = {
   readonly id: number;
   readonly name?: string;
