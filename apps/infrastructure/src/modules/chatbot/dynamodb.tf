@@ -8,6 +8,8 @@ module "dynamodb_chatbot_queries" {
   hash_key                       = "sessionId"
   range_key                      = "id"
   server_side_encryption_enabled = true
+  ttl_attribute_name             = "expiresAt"
+  ttl_enabled                    = true
 
   attributes = [
     {
@@ -57,6 +59,8 @@ module "dynamodb_chatbot_sessions" {
   hash_key                       = "userId"
   range_key                      = "id"
   server_side_encryption_enabled = true
+  ttl_attribute_name             = "expiresAt"
+  ttl_enabled                    = true
 
   attributes = [
     {
@@ -93,6 +97,8 @@ module "dynamodb_chatbot_salts" {
   name                           = "${local.prefix}-salts"
   hash_key                       = "sessionId"
   server_side_encryption_enabled = true
+  ttl_attribute_name             = "expiresAt"
+  ttl_enabled                    = true
 
   attributes = [
     {
