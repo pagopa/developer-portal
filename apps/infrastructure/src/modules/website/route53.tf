@@ -36,3 +36,16 @@ resource "aws_route53_record" "devportal_cognito_A" {
     zone_id = aws_cognito_user_pool_domain.devportal.cloudfront_distribution_zone_id
   }
 }
+
+# This Route53 record will point at our CloudFront distribution for static contents.
+resource "aws_route53_record" "static_contents" {
+  zone_id = var.hosted_zone_id
+  name    = local.dns_domain_name_static_contents
+  type    = "A"
+
+  alias {
+    name                   = aws_cloudfront_distribution.static_contents.domain_name
+    zone_id                = aws_cloudfront_distribution.static_contents.hosted_zone_id
+    evaluate_target_health = false
+  }
+}

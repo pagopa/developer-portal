@@ -1,11 +1,3 @@
-output "website_bucket" {
-  value = {
-    name = aws_s3_bucket.website.id
-    arn  = aws_s3_bucket.website.arn
-  }
-}
-
-
 output "cognito_user_pool" {
   value = {
     id        = aws_cognito_user_pool.devportal.id
