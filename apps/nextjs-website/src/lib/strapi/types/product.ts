@@ -1,5 +1,5 @@
 import { StrapiBannerLink } from '@/lib/strapi/types/bannerLink';
-import { Media } from '@/lib/strapi/types/media';
+import { StrapiMedia } from '@/lib/strapi/types/media';
 
 export type BaseProduct = {
   readonly attributes: {
@@ -19,7 +19,7 @@ export type BaseProductWithoutBannerLinks = BaseProduct & {
   readonly attributes: {
     readonly description?: string;
     readonly logo: {
-      readonly data?: Media;
+      readonly data?: StrapiMedia;
     };
   };
 };
@@ -92,7 +92,7 @@ export type StrapiProduct = {
       readonly bannerLinks?: readonly StrapiBannerLink[];
       readonly description?: string;
       readonly logo: {
-        readonly data?: Media;
+        readonly data?: StrapiMedia;
       };
     };
 };

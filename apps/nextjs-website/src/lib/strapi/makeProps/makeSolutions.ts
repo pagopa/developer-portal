@@ -1,12 +1,15 @@
-import { StrapiSolutions } from '../codecs/SolutionsCodec';
 import { SolutionTemplateProps } from '@/components/templates/SolutionTemplate/SolutionTemplate';
-import { deprecatedMakeWebinarFromStrapi } from './makeWebinars';
+
+import { StrapiSolutions } from '@/lib/strapi/types/solutions';
+import { makeWebinarFromStrapi } from '@/lib/strapi/makeProps/makeWebinars';
+import _ from 'lodash';
 
 export function makeSolutionsProps(
   strapiSolutions: StrapiSolutions
 ): ReadonlyArray<SolutionTemplateProps> {
   return strapiSolutions.data.map(({ attributes }) => ({
     ...attributes,
+    stats: [...attributes.stats],
     steps: attributes.steps.map((step) => ({
       ...step,
       products: step.products.data.map((product) => ({
@@ -15,11 +18,11 @@ export function makeSolutionsProps(
     })),
     products: attributes.products.data.map(({ attributes }) => ({
       ...attributes,
-      logo: attributes.logo.data.attributes,
+      logo: attributes.logo.data?.attributes,
     })),
     icon: attributes.icon.data.attributes,
-    webinars: attributes.webinars.data.map((webinar) =>
-      deprecatedMakeWebinarFromStrapi(webinar)
+    webinars: _.compact(
+      attributes.webinars.data.map((webinar) => makeWebinarFromStrapi(webinar))
     ),
     bannerLinks: attributes.bannerLinks.map((bannerLink) => ({
       ...bannerLink,
