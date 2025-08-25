@@ -14,7 +14,7 @@ resource "aws_iam_policy" "deploy_website" {
         ]
         Effect = "Allow"
         Resource = [
-          format("%s/*", var.website_bucket.arn)
+          format("%s/*", var.bucket_static_content_arn)
         ]
       },
       {
@@ -23,7 +23,7 @@ resource "aws_iam_policy" "deploy_website" {
         ]
         Effect = "Allow"
         Resource = [
-          var.website_bucket.arn
+          var.bucket_static_content_arn
         ]
       },
       {
@@ -155,7 +155,7 @@ resource "aws_iam_policy" "github_chatbot_reindex" {
         Effect = "Allow"
         Resource = [
           "${var.assets_opennext_bucket.arn}/*",
-          "${var.website_bucket.arn}/*",
+          "${var.bucket_static_content_arn}/*",
           "${var.website_standalone_bucket.arn}/*"
         ]
       },
@@ -166,7 +166,7 @@ resource "aws_iam_policy" "github_chatbot_reindex" {
         Effect = "Allow"
         Resource = [
           var.assets_opennext_bucket.arn,
-          var.website_bucket.arn,
+          var.bucket_static_content_arn,
           var.website_standalone_bucket.arn
         ]
       },

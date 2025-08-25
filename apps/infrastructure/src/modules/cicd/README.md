@@ -36,6 +36,7 @@
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_assets_opennext_bucket"></a> [assets\_opennext\_bucket](#input\_assets\_opennext\_bucket) | The S3 bucket used to store the assets | <pre>object({<br/>    name = string<br/>    arn  = string<br/>  })</pre> | n/a | yes |
+| <a name="input_bucket_static_content_arn"></a> [bucket\_static\_content\_arn](#input\_bucket\_static\_content\_arn) | The ARN of the S3 bucket used to store static content | `string` | n/a | yes |
 | <a name="input_environment"></a> [environment](#input\_environment) | Environment | `string` | n/a | yes |
 | <a name="input_environment_information"></a> [environment\_information](#input\_environment\_information) | n/a | <pre>object({<br/>    prefix          = string<br/>    env_short       = string<br/>    location        = string<br/>    domain          = optional(string)<br/>    app_name        = string<br/>    instance_number = string<br/>  })</pre> | n/a | yes |
 | <a name="input_github_repository"></a> [github\_repository](#input\_github\_repository) | The repository where the IaC workflows will run | `string` | n/a | yes |
@@ -44,7 +45,6 @@
 | <a name="input_opennext_cdn_distribution_id"></a> [opennext\_cdn\_distribution\_id](#input\_opennext\_cdn\_distribution\_id) | The ID of the CloudFront distribution used to serve the OpenNext website | `string` | n/a | yes |
 | <a name="input_security_groups"></a> [security\_groups](#input\_security\_groups) | The security groups used to deploy the resources | `map(string)` | n/a | yes |
 | <a name="input_vpc"></a> [vpc](#input\_vpc) | The VPC used to deploy the resources | <pre>object({<br/>    id                  = string<br/>    cidr_block          = string<br/>    public_subnets      = list(string)<br/>    database_subnets    = list(string)<br/>    private_subnets     = list(string)<br/>    elasticache_subnets = list(string)<br/>  })</pre> | n/a | yes |
-| <a name="input_website_bucket"></a> [website\_bucket](#input\_website\_bucket) | The S3 bucket used to store the website | <pre>object({<br/>    name = string<br/>    arn  = string<br/>  })</pre> | n/a | yes |
 | <a name="input_website_cdn"></a> [website\_cdn](#input\_website\_cdn) | The CloudFront distribution used to serve the website | <pre>object({<br/>    arn = string<br/>  })</pre> | n/a | yes |
 | <a name="input_website_standalone_bucket"></a> [website\_standalone\_bucket](#input\_website\_standalone\_bucket) | The S3 bucket used to store the website in standalone mode | <pre>object({<br/>    name = string<br/>    arn  = string<br/>  })</pre> | n/a | yes |
 | <a name="input_aws_region"></a> [aws\_region](#input\_aws\_region) | AWS region to create resources. Default Milan | `string` | `"eu-south-1"` | no |
