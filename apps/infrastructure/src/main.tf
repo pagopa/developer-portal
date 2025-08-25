@@ -163,16 +163,16 @@ module "chatbot" {
   environment        = var.environment
   tags               = var.tags
 
-  website_bucket_name     = module.website.website_bucket.name
-  dns_chatbot_hosted_zone = module.core.dns_chatbot_hosted_zone
-  cognito_user_pool       = module.website.cognito_user_pool
-  vpc                     = module.cms.vpc
-  security_groups         = module.cms.security_groups
-  dns_domain_name         = var.dns_domain_name
-  ecs_redis               = var.chatbot_ecs_redis
-  github_repository       = var.github_repository
-  ecs_monitoring          = var.chatbot_ecs_monitoring
-  models                  = var.chatbot_models
+  s3_bucket_name_static_content = module.website.website_standalone_bucket.name
+  dns_chatbot_hosted_zone       = module.core.dns_chatbot_hosted_zone
+  cognito_user_pool             = module.website.cognito_user_pool
+  vpc                           = module.cms.vpc
+  security_groups               = module.cms.security_groups
+  dns_domain_name               = var.dns_domain_name
+  ecs_redis                     = var.chatbot_ecs_redis
+  github_repository             = var.github_repository
+  ecs_monitoring                = var.chatbot_ecs_monitoring
+  models                        = var.chatbot_models
 }
 
 module "cicd" {
