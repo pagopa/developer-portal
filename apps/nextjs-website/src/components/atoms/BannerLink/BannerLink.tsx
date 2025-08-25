@@ -4,12 +4,12 @@ import Image from 'next/image';
 import IconWrapper from '../IconWrapper/IconWrapper';
 import { FC } from 'react';
 import { Variant } from '@mui/material/styles/createTypography';
-import { MediaAttributes } from '@/lib/strapi/types/media';
+import { Media } from '@/lib/strapi/types/media';
 
 export type BannerLinkProps = {
   content?: BlocksContent;
   contentJustification?: string;
-  icon: MediaAttributes;
+  icon: Media;
   theme: 'light' | 'dark';
   title?: string;
   variant?: Variant;

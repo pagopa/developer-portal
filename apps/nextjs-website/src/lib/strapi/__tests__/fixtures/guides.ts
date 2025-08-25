@@ -24,8 +24,8 @@ export const strapiGuideData = {
           data: {
             attributes: {
               name: 'pagoPA Guide Manual.png',
-              alternativeText: null,
-              caption: null,
+              alternativeText: undefined,
+              caption: undefined,
               width: 1156,
               height: 580,
               ext: '.png',
@@ -39,8 +39,8 @@ export const strapiGuideData = {
           data: {
             attributes: {
               name: 'saci.png',
-              alternativeText: null,
-              caption: null,
+              alternativeText: undefined,
+              caption: undefined,
               width: 1156,
               height: 580,
               ext: '.png',
@@ -97,7 +97,7 @@ export const strapiGuideData = {
           },
         ],
         bannerLinks: [],
-        seo: null,
+        seo: undefined,
         product: {
           data: {
             attributes: {

@@ -1,16 +1,16 @@
 import { BaseGuide } from '@/lib/strapi/types/guide';
 import { Link, RelatedLinks } from '@/lib/strapi/types/link';
-import { Media } from '@/lib/strapi/types/media';
+import { StrapiMedia } from '@/lib/strapi/types/media';
 import { Pagination } from '@/lib/strapi/types/pagination';
-import { StrapiSEO } from '@/lib/strapi/codecs/SeoCodec';
 import { StrapiProduct } from '@/lib/strapi/codecs/ProductCodec';
-import { StrapiBlocksContent } from '@/lib/strapi/codecs/BlocksContentCodec';
 import { StrapiBaseTutorial } from '@/lib/strapi/codecs/TutorialCodec';
 import { StrapiBannerLink } from '@/lib/strapi/types/bannerLink';
 import { StrapiNewsShowcase } from '@/lib/strapi/types/newsShowcase';
+import { BlocksContent } from '@strapi/blocks-react-renderer';
+import { StrapiSeo } from '@/lib/strapi/types/seo';
 
 export type StartInfo = {
-  readonly icon: { readonly data: Media };
+  readonly icon: { readonly data: StrapiMedia };
   readonly title: string;
   readonly description: string;
   readonly path: string;
@@ -18,14 +18,14 @@ export type StartInfo = {
 
 export type StartInfoSection = {
   readonly title: string;
-  readonly bottomLabel?: string | null;
-  readonly bottomLink?: Link | null;
+  readonly bottomLabel?: string;
+  readonly bottomLink?: Link;
   readonly items: readonly StartInfo[];
 };
 
 export type StrapiFeature = {
   readonly title: string;
-  readonly subtitle?: string | null;
+  readonly subtitle?: string;
   readonly items: ReadonlyArray<StrapiBannerLink>;
 };
 
@@ -37,11 +37,11 @@ export type TutorialSection = {
 
 export type CardProps = {
   readonly title: string;
-  readonly content: StrapiBlocksContent;
+  readonly content: BlocksContent;
   readonly linkText: string;
   readonly linkHref: string;
-  readonly image: { readonly data: Media };
-  readonly mobileImage: { readonly data: Media };
+  readonly image: { readonly data: StrapiMedia };
+  readonly mobileImage: { readonly data: StrapiMedia };
 };
 
 export type ServiceModel = {
@@ -53,8 +53,8 @@ export type ServiceModel = {
 export type PostIntegration = {
   readonly title: string;
   readonly description: string;
-  readonly link?: Link | null;
-  readonly guidesTitle?: string | null;
+  readonly link?: Link;
+  readonly guidesTitle?: string;
   readonly documents: readonly CardProps[];
   readonly guides: { readonly data: readonly BaseGuide[] };
   readonly serviceModels: readonly ServiceModel[];
@@ -68,16 +68,16 @@ export type Overview = {
     readonly updatedAt: string;
     readonly publishedAt: string;
     readonly subtitle: string;
-    readonly backgroundImage: { readonly data: Media };
-    readonly features?: StrapiFeature | null;
-    readonly startInfoSection?: StartInfoSection | null;
-    readonly tutorialSection?: TutorialSection | null;
-    readonly postIntegration?: PostIntegration | null;
-    readonly relatedLinks?: RelatedLinks | null;
+    readonly backgroundImage: { readonly data: StrapiMedia };
+    readonly features?: StrapiFeature;
+    readonly startInfoSection?: StartInfoSection;
+    readonly tutorialSection?: TutorialSection;
+    readonly postIntegration?: PostIntegration;
+    readonly relatedLinks?: RelatedLinks;
     readonly product: { readonly data: StrapiProduct };
     readonly bannerLinks: readonly StrapiBannerLink[];
-    readonly seo?: StrapiSEO | null;
-    readonly whatsNew?: StrapiNewsShowcase | null;
+    readonly seo?: StrapiSeo;
+    readonly whatsNew?: StrapiNewsShowcase;
   };
 };
 
