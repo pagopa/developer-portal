@@ -1,5 +1,5 @@
 terraform {
-  required_version = "1.5.7"
+  required_version = "~> 1.13.0"
 
   backend "s3" {}
 
@@ -195,8 +195,6 @@ module "cicd" {
   redis_port        = var.chatbot_ecs_redis.port
   github_repository = var.github_repository
 
-  website_bucket               = module.website.website_bucket
-  website_cdn                  = module.website.website_cdn
   opennext_cdn_distribution_id = module.website.opennext_cdn_distribution_id
 
   assets_opennext_bucket      = module.website.assets_opennext_bucket

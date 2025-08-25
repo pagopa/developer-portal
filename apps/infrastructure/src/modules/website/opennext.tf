@@ -136,7 +136,6 @@ resource "aws_iam_policy" "docs" {
         ]
         Effect = "Allow"
         Resource = [
-          "${aws_s3_bucket.website.arn}/*",
           "${aws_s3_bucket.website_standalone.arn}/*"
         ]
       },
@@ -146,7 +145,6 @@ resource "aws_iam_policy" "docs" {
         ]
         Effect = "Allow"
         Resource = [
-          aws_s3_bucket.website.arn,
           aws_s3_bucket.website_standalone.arn
         ]
       }

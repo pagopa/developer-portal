@@ -68,23 +68,6 @@ variable "redis_port" {
   default     = 6379
 }
 
-variable "website_bucket" {
-  type = object({
-    name = string
-    arn  = string
-  })
-
-  description = "The S3 bucket used to store the website"
-}
-
-variable "website_cdn" {
-  type = object({
-    arn = string
-  })
-
-  description = "The CloudFront distribution used to serve the website"
-}
-
 variable "opennext_cdn_distribution_id" {
   type        = string
   description = "The ID of the CloudFront distribution used to serve the OpenNext website"
