@@ -93,3 +93,5 @@ export const RootNodeCodec = t.union([
 ]);
 
 export const BlocksContentCodec: t.Type<BlocksContent> = t.array(RootNodeCodec);
+
+export type StrapiBlocksContent = t.TypeOf<typeof BlocksContentCodec>;
