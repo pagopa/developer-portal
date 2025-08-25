@@ -68,13 +68,9 @@ variable "redis_port" {
   default     = 6379
 }
 
-variable "website_bucket" {
-  type = object({
-    name = string
-    arn  = string
-  })
-
-  description = "The S3 bucket used to store the website"
+variable "bucket_static_content_arn" {
+  type        = string
+  description = "The ARN of the S3 bucket used to store static content"
 }
 
 variable "website_cdn" {
