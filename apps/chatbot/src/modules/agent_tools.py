@@ -7,14 +7,13 @@ from llama_index.core.bridge.pydantic import BaseModel, Field
 from llama_index.core.retrievers import AutoMergingRetriever
 from llama_index.core.query_engine import RetrieverQueryEngine
 from llama_index.core.tools import QueryEngineTool, FunctionTool
-from llama_index.core.objects import ObjectIndex
-from llama_index.core.agent.workflow import ReActAgent
+
+from src.modules.settings import SETTINGS
+from src.modules.documents import get_product_list
+from src.modules.models import get_llm, get_embed_model
 
 
-PROVIDER = os.getenv("CHB_PROVIDER", "google")
-RERANKER_ID = os.getenv("CHB_RERANKER_ID", "semantic-ranker-512-003")
-SIMILARITY_TOPK = int(os.getenv("CHB_ENGINE_SIMILARITY_TOPK", "5"))
-USE_ASYNC = os.getenv("CHB_ENGINE_USE_ASYNC", "True").lower() == "true"
+PRODUCTS = get_product_list()
 
 
 class Reference(BaseModel):
@@ -32,7 +31,7 @@ class RAGOutput(BaseModel):
         ...,
         description=(
             "A list of products. The list contains one or more of the PagoPA products: "
-            "'firma-con-io', 'app-io', 'piattaforma-pago-pa', 'send', and 'pdnd'"
+            f"{PRODUCTS}"
         ),
     )
     references: List[Reference] = Field(
@@ -41,17 +40,15 @@ class RAGOutput(BaseModel):
     )
 
 
-def get_engine(
+def get_query_engine_tool(
     index: VectorStoreIndex,
     llm: LLM,
-    identity_prompt: str | None = None,
     text_qa_template: PromptTemplate | None = None,
     refine_template: PromptTemplate | None = None,
-    react_system_str: str | None = None,
-    verbose: bool = True,
-) -> ReActAgent:
+    verbose: bool = False,
+) -> QueryEngineTool:
     """
-    Creates a CondensePlusContextChatEngine with an AutoMergingRetriever and a reranker.
+    Creates a QueryEngineTool with an AutoMergingRetriever and a reranker.
     Args:
         index (VectorStoreIndex): The vector store index to use for retrieval.
         llm (LLM): The language model to use for generating responses.
@@ -61,44 +58,46 @@ def get_engine(
         react_system_str (str | None): Optional system string for the ReAct agent.
         verbose (bool): Whether to enable verbose logging.
     Returns:
-        ReActAgent: An agent that uses RAG (Retrieval-Augmented Generation) to answer questions.
+        QueryEngineTool: A QA tool that uses RAG (Retrieval-Augmented Generation) to answer questions.
     Raises:
-        AssertionError: If the provider is not 'aws' or 'google'.
+        AssertionError: If the provider is not 'google' or 'mock'.
     """
 
-    base_retriever = index.as_retriever(similarity_top_k=SIMILARITY_TOPK)
+    base_retriever = index.as_retriever(
+        similarity_top_k=SETTINGS.similarity_topk,
+        embed_model=get_embed_model(
+            retries=SETTINGS.embed_retries_qa,
+            retry_min_seconds=SETTINGS.embed_retry_min_seconds_qa,
+            task_type=SETTINGS.embed_task_qa,
+        ),
+    )
     retriever = AutoMergingRetriever(
         base_retriever, index.storage_context, verbose=verbose
     )
 
-    if PROVIDER == "aws":
-        from llama_index.postprocessor.bedrock_rerank import AWSBedrockRerank
-
-        AWS_ACCESS_KEY_ID = os.getenv("CHB_AWS_ACCESS_KEY_ID")
-        AWS_SECRET_ACCESS_KEY = os.getenv("CHB_AWS_SECRET_ACCESS_KEY")
-        AWS_BEDROCK_RERANKER_REGION = os.getenv("CHB_AWS_BEDROCK_RERANKER_REGION")
-
-        reranker = AWSBedrockRerank(
-            top_n=SIMILARITY_TOPK,
-            rerank_model_name=RERANKER_ID,
-            aws_access_key_id=AWS_ACCESS_KEY_ID,
-            aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
-            region_name=AWS_BEDROCK_RERANKER_REGION,
-        )
-    elif PROVIDER == "google":
+    if SETTINGS.provider == "google":
         from src.modules.google_reranker import GoogleRerank
 
-        reranker = GoogleRerank(top_n=SIMILARITY_TOPK, rerank_model_name=RERANKER_ID)
+        reranker = GoogleRerank(
+            top_n=SETTINGS.similarity_topk,
+            rerank_model_name=SETTINGS.reranker_id,
+        )
+        node_postprocessors = [reranker]
+    elif SETTINGS.provider == "mock":
+        node_postprocessors = None
     else:
-        raise AssertionError(f"Provider must be 'aws' or 'google'. Given {PROVIDER}.")
+        raise AssertionError(
+            f"Provider must be 'google' or 'mock'. Given {SETTINGS.provider}."
+        )
 
     query_engine = RetrieverQueryEngine.from_args(
         retriever=retriever,
-        llm=llm.as_structured_llm(output_cls=RAGOutput),
+        llm=llm,
+        output_cls=RAGOutput,
         text_qa_template=text_qa_template,
         refine_template=refine_template,
-        node_postprocessors=[reranker],
-        use_async=USE_ASYNC,
+        node_postprocessors=node_postprocessors,
+        use_async=SETTINGS.use_async,
     )
 
     query_engine_tool = QueryEngineTool.from_defaults(
@@ -106,10 +105,15 @@ def get_engine(
         name="rag_tool",
         description=(
             "This tool is your primary resource for answering questions about PagoPA products and services. "
-            "Use it to find information on topics like 'app-io', 'piattaforma-pago-pa', 'send', 'pdnd', and 'firma-con-io'. "
+            f"Use it to find information on topics like: {PRODUCTS}. "
             "It can also answer general questions about the company and its offerings."
         ),
     )
+
+    return query_engine_tool
+
+
+def get_identity_tool(identity_prompt: str) -> FunctionTool:
 
     async def identity_fn() -> str:
         """Useful to reply questions about the agent identity."""
@@ -118,20 +122,10 @@ def get_engine(
     identity_tool = FunctionTool.from_defaults(
         fn=identity_fn,
         name="discovery_identity",
-        description="Responds to identity or personality questions like 'Who are you?', 'What is your name?', 'I am ..., and you?', or similar.",
-    )
-
-    agent = ReActAgent(
-        name="rag_agent",
         description=(
-            "A ReAct agent that uses RAG (Retrieval-Augmented Generation) to answer questions. "
-            "It retrieves relevant information from the index and generates a structured response."
+            "Responds to identity or personality questions like 'Who are you?', "
+            "'What is your name?', 'I am ..., and you?', or similar."
         ),
-        tools=[query_engine_tool, identity_tool],
-        llm=llm,
-        verbose=verbose,
     )
 
-    agent.formatter.system_header = react_system_str
-
-    return agent
+    return identity_tool

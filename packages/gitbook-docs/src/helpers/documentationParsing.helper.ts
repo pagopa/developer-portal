@@ -24,21 +24,24 @@ export function parseUrlsFromMarkdown(
   // Regex to match markdown links: [link text](url)
   // Captures: [1] = link text, [2] = URL
   const regex = /\[([^\]]+)]\(([^)]+)\)/g;
+  const tableRegex = /<a\s+(?:[^>]*?\s+)?href=(["'])(.*?)\1/g;
   const matches = [...fileContent.matchAll(regex)];
+  const tableMatches = [...fileContent.matchAll(tableRegex)];
+  const allMatches = matches.concat(tableMatches);
   // eslint-disable-next-line functional/no-let
   let updatedFileContent = fileContent;
-  for (const match of matches) {
+  for (const match of allMatches) {
     const replace = replaceUrl(guideMetadata, metadata, match[2]);
     updatedFileContent = updatedFileContent.replaceAll(
-      '(' + match[2] || '',
-      '(' + replace
+      '(' + (match[2] || '') + ')',
+      '(' + replace + ')'
     );
     updatedFileContent = updatedFileContent.replaceAll(
       '"' + match[2] || '',
       '"' + replace
     );
   }
-  if (matches.length > 0) {
+  if (allMatches.length > 0) {
     console.log('Replaced URLs in file: ', filePath || '');
   }
   return updatedFileContent;
@@ -74,7 +77,10 @@ export function replaceUrl(
     guide.guidePath.includes(name)
   );
   if (guides.length <= 0) {
-    const externalGuide = fullMedatada.filter((g) => g.dirName.includes(name));
+    const dirName = value.split('/s/').slice(1)[0]?.split('/')[0];
+    const externalGuide = fullMedatada.filter(
+      (g) => g.dirName.includes(name) || g.dirName === dirName
+    );
     if (externalGuide.length > 0) {
       guides.push(...externalGuide[0].guides);
     } else return value;

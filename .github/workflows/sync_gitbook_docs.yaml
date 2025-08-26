@@ -45,6 +45,8 @@ jobs:
   sync_gitbook_docs:
     name: Sync gitbook Docs to S3 (manual on ${{ inputs.environment }})
     runs-on: ubuntu-latest
+    outputs:
+      environment: ${{ inputs.environment }}
     environment: ${{ inputs.environment }}
     env:
       ENV_SHORT: ${{ fromJSON('{"dev":"d","uat":"u","prod":"p"}')[inputs.environment] }}
@@ -155,3 +157,7 @@ jobs:
           aws cloudfront create-invalidation \
             --distribution-id ${{ vars.ASSET_BUCKET_CLOUDFRONT_DISTRIBUTION_ID }} \
             --paths "/*"
+
+      - name: Set environment output
+        id: setenv
+        run: echo "environment=${{ inputs.environment }}" >> $GITHUB_OUTPUT
