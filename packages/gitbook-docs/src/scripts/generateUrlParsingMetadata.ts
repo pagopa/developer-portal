@@ -106,16 +106,16 @@ async function convertGuideToUrlParsingItems(
   ].flat();
 
   const items: UrlParsingItem[] = [];
-  for (const guideInfo of infoList) {
-    if (guideInfo.dirName) {
-      const guideDir = path.join(DOCUMENTATION_PATH, guideInfo.dirName);
+  for (const docInfo of infoList) {
+    if (docInfo.dirName) {
+      const guideDir = path.join(DOCUMENTATION_PATH, docInfo.dirName);
       if (!fs.existsSync(guideDir)) {
         console.warn(`Directory does not exist: ${guideDir}`);
         continue;
       }
       const guideFiles = await getMarkdownFilesRecursively(guideDir);
       const item = {
-        dirName: guideInfo.dirName,
+        dirName: docInfo.dirName,
         guides: [] as { guidePath: string; guideUrl: string }[],
       };
       for (const filePath of guideFiles) {
@@ -127,9 +127,9 @@ async function convertGuideToUrlParsingItems(
 
         const path = generateUrlPath(
           filePath,
-          guideInfo.guideSlug,
-          guideInfo.productSlug,
-          guideInfo.versionName
+          docInfo.guideSlug,
+          docInfo.productSlug,
+          docInfo.versionName
         );
         item.guides.push({
           guidePath: filePath || '',
@@ -143,38 +143,48 @@ async function convertGuideToUrlParsingItems(
 }
 
 async function main() {
+  console.log('Starting to process Markdown files...');
+  // eslint-disable-next-line functional/no-let
+  let strapiGuides;
   try {
-    console.log(__dirname);
-    console.log('Starting to process Markdown files...');
-
-    const strapiGuides = await fetchFromStrapi<StrapiGuide>(
+    const { data } = await fetchFromStrapi<StrapiGuide>(
       'api/guides?populate[0]=product&populate[1]=versions&pagination[pageSize]=1000&pagination[page]=1'
     );
-    console.log(`Fetched ${strapiGuides.data.length} guides from Strapi`);
-    // eslint-disable-next-line functional/no-let
-    let strapiSolutions;
-    try {
-      const { data } = await fetchFromStrapi<StrapiSolution>(
-        'api/solutions?pagination[pageSize]=1000&pagination[page]=1'
-      );
-      strapiSolutions = data;
-    } catch (error) {
-      console.error('Error fetching solutions from Strapi:', error);
-      process.exit(1);
-    }
-    // eslint-disable-next-line functional/no-let
-    let strapiReleaseNotes;
-    try {
-      const { data } = await fetchFromStrapi<StrapiReleaseNote>(
-        'api/release-notes?populate[0]=product&pagination[pageSize]=1000&pagination[page]=1'
-      );
-      strapiReleaseNotes = data;
-    } catch (error) {
-      console.error('Error fetching release notes from Strapi:', error);
-      process.exit(1);
-    }
+    strapiGuides = data;
+    console.log(`Fetched ${strapiGuides.length} guides from Strapi`);
+  } catch (error) {
+    console.error('Error fetching solutions from Strapi:', error);
+    process.exit(1);
+  }
+  // eslint-disable-next-line functional/no-let
+  let strapiSolutions;
+  try {
+    const { data } = await fetchFromStrapi<StrapiSolution>(
+      'api/solutions?pagination[pageSize]=1000&pagination[page]=1'
+    );
+    strapiSolutions = data;
+    console.log(`Fetched ${strapiSolutions.length} solutions from Strapi`);
+  } catch (error) {
+    console.error('Error fetching solutions from Strapi:', error);
+    process.exit(1);
+  }
+  // eslint-disable-next-line functional/no-let
+  let strapiReleaseNotes;
+  try {
+    const { data } = await fetchFromStrapi<StrapiReleaseNote>(
+      'api/release-notes?populate[0]=product&pagination[pageSize]=1000&pagination[page]=1'
+    );
+    strapiReleaseNotes = data;
+    console.log(
+      `Fetched ${strapiReleaseNotes.length} release notes from Strapi`
+    );
+  } catch (error) {
+    console.error('Error fetching release notes from Strapi:', error);
+    process.exit(1);
+  }
+  try {
     const urlParsingItems = await convertGuideToUrlParsingItems(
-      strapiGuides.data,
+      strapiGuides,
       strapiSolutions,
       strapiReleaseNotes
     );
