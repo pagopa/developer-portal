@@ -1,0 +1,289 @@
+from datetime import datetime
+from typing import List, Dict
+
+from llama_index.core import (
+    Settings,
+    Document,
+    VectorStoreIndex,
+    StorageContext,
+    load_index_from_storage,
+)
+from llama_index.core.node_parser import SentenceSplitter
+from llama_index.storage.docstore.redis import RedisDocumentStore
+from llama_index.storage.index_store.redis import RedisIndexStore
+from llama_index.storage.kvstore.redis import RedisKVStore
+from llama_index.vector_stores.redis import RedisVectorStore
+
+from redis import Redis
+import redis.asyncio as aredis
+from redisvl.schema import IndexSchema
+
+from src.modules.logger import get_logger
+from src.modules.documents import (
+    get_documents,
+    get_static_and_dynamic_lists,
+    get_api_docs,
+    get_static_docs,
+    get_dynamic_docs,
+)
+from src.modules.models import get_llm, get_embed_model
+from src.modules.settings import SETTINGS
+
+
+LOGGER = get_logger(__name__)
+REDIS_CLIENT = Redis.from_url(SETTINGS.redis_url, socket_timeout=10)
+REDIS_ASYNC_CLIENT = aredis.Redis.from_pool(
+    aredis.ConnectionPool.from_url(SETTINGS.redis_url)
+)
+REDIS_SCHEMA = IndexSchema.from_dict(
+    {
+        "index": {
+            "name": f"{SETTINGS.index_id}",
+            "prefix": f"{SETTINGS.index_id}/vector",
+        },
+        "fields": [
+            {"name": "id", "type": "tag", "attrs": {"sortable": False}},
+            {"name": "doc_id", "type": "tag", "attrs": {"sortable": False}},
+            {"name": "text", "type": "text", "attrs": {"weight": 1.0}},
+            {
+                "name": "vector",
+                "type": "vector",
+                "attrs": {
+                    "dims": SETTINGS.embed_dim,
+                    "algorithm": "flat",
+                    "distance_metric": "cosine",
+                },
+            },
+        ],
+    }
+)
+REDIS_KVSTORE = RedisKVStore(
+    redis_client=REDIS_CLIENT, async_redis_client=REDIS_ASYNC_CLIENT
+)
+REDIS_DOCSTORE = RedisDocumentStore(redis_kvstore=REDIS_KVSTORE)
+REDIS_INDEX_STORE = RedisIndexStore(redis_kvstore=REDIS_KVSTORE)
+Settings.llm = get_llm()
+Settings.embed_model = get_embed_model()
+Settings.chunk_size = SETTINGS.chunk_size
+Settings.chunk_overlap = SETTINGS.chunk_overlap
+Settings.node_parser = SentenceSplitter(
+    chunk_size=SETTINGS.chunk_size,
+    chunk_overlap=SETTINGS.chunk_overlap,
+)
+
+
+def build_index_redis() -> VectorStoreIndex:
+    """
+    Builds a new vector index and stores it in Redis.
+    Returns:
+        VectorStoreIndex: The newly created vector store index.
+    """
+
+    LOGGER.info("Storing vector index in Redis..")
+
+    documents = get_documents()
+    LOGGER.info(f"Creating index {Settings.index_id} ...")
+    nodes = Settings.node_parser.get_nodes_from_documents(documents)
+
+    redis_vector_store = RedisVectorStore(
+        redis_client=REDIS_CLIENT,
+        overwrite=True,
+        schema=REDIS_SCHEMA,
+    )
+
+    storage_context = StorageContext.from_defaults(
+        vector_store=redis_vector_store,
+        docstore=REDIS_DOCSTORE,
+        index_store=REDIS_INDEX_STORE,
+    )
+    storage_context.docstore.add_documents(nodes)
+
+    index = VectorStoreIndex(nodes, storage_context=storage_context)
+    index.set_index_id(Settings.index_id)
+    LOGGER.info("Created vector index successfully and stored on Redis.")
+
+    return index
+
+
+def load_index_redis() -> VectorStoreIndex:
+    """
+    Loads an existing vector index from Redis using the provided llm and embed_model.
+    Returns:
+        VectorStoreIndex: The loaded vector store index.
+    """
+
+    if SETTINGS.index_id:
+
+        redis_vector_store = RedisVectorStore(
+            redis_client=REDIS_CLIENT, overwrite=False, schema=REDIS_SCHEMA
+        )
+
+        LOGGER.info("Loading vector index from Redis...")
+        storage_context = StorageContext.from_defaults(
+            vector_store=redis_vector_store,
+            docstore=REDIS_DOCSTORE,
+            index_store=REDIS_INDEX_STORE,
+        )
+
+        index = load_index_from_storage(
+            storage_context=storage_context, index_id=SETTINGS.index_id
+        )
+
+        return index
+    else:
+        LOGGER.error("No index_id provided.")
+        return None
+
+
+class DiscoveryVectorIndex:
+    def __init__(self):
+        self.index_id = SETTINGS.index_id
+        self.index = self.get_index()
+        self.docstore = self.index.storage_context.docstore
+        self.static_list, self.dynamic_list = get_static_and_dynamic_lists()
+
+    def get_index(self) -> VectorStoreIndex:
+        """Retrieves the vector index from Redis. If not found, raises an error."""
+        index = load_index_redis()
+        if index is None:
+            LOGGER.warning(
+                f"Index {SETTINGS.index_id} not found in Redis. Creating a new one..."
+            )
+            raise ValueError("Index ID not found in Redis.")
+        return index
+
+    def create_index(self) -> VectorStoreIndex:
+        """Creates a new vector index and stores it in Redis."""
+        index = build_index_redis()
+        return index
+
+    def _update_docs(self, documents: List[Document] = []) -> None:
+        """
+        Adds and updates documents in the index and refreshes the reference documents.
+
+        Args:
+            documents (list[Document]): List of Document objects to add or update.
+        """
+
+        num_added_docs = 0
+        num_updated_docs = 0
+
+        for doc in documents:
+            nodes = Settings.node_parser.get_nodes_from_documents([doc])
+            existing_doc_hash = self.index._docstore.get_document_hash(doc.id_)
+            if existing_doc_hash is None:
+                num_added_docs += 1
+                with self.index._callback_manager.as_trace("insert"):
+                    self.index.insert_nodes(nodes)
+                    self.index._docstore.set_document_hash(doc.id_, doc.hash)
+
+            elif existing_doc_hash != doc.hash:
+                num_updated_docs += 1
+                with self.index._callback_manager.as_trace("update_ref_doc"):
+                    self.index.delete_ref_doc(doc.id_, delete_from_docstore=True)
+                    with self.index._callback_manager.as_trace("insert"):
+                        self.index.insert_nodes(nodes)
+                        self.index._docstore.set_document_hash(doc.id_, doc.hash)
+
+            self.index.storage_context.docstore.add_documents(nodes)
+
+        LOGGER.info(f"Added {num_added_docs} to vector index successfully.")
+        LOGGER.info(f"Updated {num_updated_docs} from vector index successfully.")
+
+    def _delete_docs(self, documents_id: List[str] = []) -> None:
+        """
+        Deletes documents from the index and from the document store.
+
+        Args:
+            documents (List[str]): List of Document IDs to delete.
+        """
+
+        for doc_id in documents_id:
+            self.index.delete_ref_doc(doc_id, delete_from_docstore=True)
+
+            ref_doc_info = self.index.storage_context.docstore.get_ref_doc_info(doc_id)
+            if ref_doc_info:
+                for node_id in ref_doc_info.node_ids:
+                    self.index.storage_context.docstore.delete_document(node_id)
+
+        LOGGER.info(f"Removed {len(documents_id)} from vector index successfully.")
+
+    def refresh_index_static_docs(
+        self,
+        static_docs_to_update: List[Dict[str, str]],
+        static_doc_ids_to_delete: List[str],
+    ) -> None:
+        """
+        Refreshes the vector index by updating and deleting documents as specified.
+
+        Args:
+            static_docs_to_update (list[dict]): List of dictionaries containing document metadata to update.
+            static_docs_ids_to_delete (list[str]): List of document IDs to delete from the index.
+        """
+
+        static_docs_to_update_filtered = []
+        for doc in static_docs_to_update:
+            if doc in self.static_list:
+                static_docs_to_update_filtered.append(doc)
+
+        docs_to_update = get_static_docs(static_docs_to_update_filtered)
+        self._update_docs(docs_to_update)
+        self._delete_docs(static_doc_ids_to_delete)
+
+    def refresh_index_dynamic_docs(self) -> None:
+
+        ref_doc_info = self.docstore.get_all_ref_doc_info()
+        ref_doc_ids = list(ref_doc_info.keys())
+        dynamic_doc_ids = [
+            item["url"].replace(SETTINGS.website_url, "") for item in self.dynamic_list
+        ]
+        static_doc_ids = [
+            item["url"].replace(SETTINGS.website_url, "") for item in self.static_list
+        ]
+        api_docs = get_api_docs()
+        api_docs_ids = [doc.id_ for doc in api_docs]
+        all_ref_docs_ids = api_docs_ids + static_doc_ids + dynamic_doc_ids
+
+        dynamic_docs_to_update = []
+        dynamic_doc_ids_to_remove = []
+
+        for item in self.dynamic_list:
+            doc_id = item["url"].replace(SETTINGS.website_url, "")
+            lastmod = item["lastmod"]
+
+            if doc_id in ref_doc_ids:
+                last_mod_ref_doc_info = ref_doc_info[doc_id].metadata["lastmod"]
+
+                dt1 = datetime.fromisoformat(
+                    last_mod_ref_doc_info.replace("Z", "+00:00")
+                )
+                dt2 = datetime.fromisoformat(lastmod.replace("Z", "+00:00"))
+                if dt2 > dt1:
+                    dynamic_docs_to_update.append(item)
+            else:
+                dynamic_docs_to_update.append(item)
+
+        for doc_id in ref_doc_ids:
+            if doc_id not in all_ref_docs_ids:
+                dynamic_doc_ids_to_remove.append(doc_id)
+
+        docs_to_update = get_dynamic_docs(docs_to_update)
+        self._update_docs(docs_to_update)
+        self._delete_docs(dynamic_doc_ids_to_remove)
+
+    def refresh_index(
+        self,
+        static_docs_to_update: List[Dict[str, str]],
+        static_docs_ids_to_delete: List[str],
+    ) -> None:
+        """
+        Refreshes the vector index by updating static and dynamic documents.
+
+        Args:
+            static_docs_to_update (list[dict]): List of dictionaries containing document metadata to update.
+            static_docs_ids_to_delete (list[str]): List of document IDs to delete from the index.
+        """
+
+        self.refresh_index_static_docs(static_docs_to_update, static_docs_ids_to_delete)
+        self.refresh_index_dynamic_docs()
+        LOGGER.info("Refreshed vector index successfully.")
