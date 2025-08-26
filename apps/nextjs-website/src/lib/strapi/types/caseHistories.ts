@@ -10,8 +10,8 @@ export type BaseCaseHistory = {
     readonly slug: string;
     readonly title: string;
     readonly description?: string;
-    readonly publishedAt: Date;
-    readonly updatedAt: Date;
+    readonly publishedAt: string;
+    readonly updatedAt: string;
     readonly image?: {
       readonly data?: StrapiMedia;
     };

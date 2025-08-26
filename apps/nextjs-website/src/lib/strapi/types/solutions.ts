@@ -66,8 +66,8 @@ export type Solution = {
     readonly description?: string;
     readonly dirName: string;
     readonly landingUseCaseFile: string;
-    readonly publishedAt: Date;
-    readonly updatedAt: Date;
+    readonly publishedAt: string;
+    readonly updatedAt: string;
     readonly introductionToSteps?: string;
     readonly steps: readonly Step[];
     readonly stats: readonly Stat[];

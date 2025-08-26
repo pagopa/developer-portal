@@ -185,7 +185,7 @@ export const webinarProps = {
   startDateTime: '2024-01-10T10:00:00.000Z',
   endDateTime: '2024-01-10T12:00:00.000Z',
   subscribeCtaLabel: 'Subscribe Now',
-  imagePath: 'https://example.com/image.jpg',
+  imagePath: 'https://example.com/example.jpg',
   seo: { metaTitle: 'SEO Webinar', metaDescription: 'SEO Description' },
   webinarCategory: {
     name: 'Category 1',
@@ -193,7 +193,7 @@ export const webinarProps = {
       data: {
         attributes: {
           ...mediaJpeg().attributes,
-          name: 'image.jpg',
+          name: 'example.jpg',
         },
       },
     },
