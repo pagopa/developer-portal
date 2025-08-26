@@ -19,6 +19,33 @@ export interface StrapiGuide {
   };
 }
 
+export interface StrapiReleaseNote {
+  readonly id: number;
+  readonly attributes: {
+    readonly slug: string;
+    readonly title: string;
+    readonly product?: {
+      readonly data?: {
+        readonly attributes?: {
+          readonly slug: string;
+        };
+      };
+    };
+    readonly dirName: string;
+    readonly landingFile: string;
+  };
+}
+
+export interface StrapiSolution {
+  readonly id: number;
+  readonly attributes: {
+    readonly slug: string;
+    readonly title: string;
+    readonly landingUseCaseFile: string;
+    readonly dirName: string;
+  };
+}
+
 export type GuideInfo = {
   readonly versionName: string;
   readonly isMainVersion: boolean;
