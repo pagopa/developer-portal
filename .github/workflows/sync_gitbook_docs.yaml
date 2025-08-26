@@ -168,10 +168,8 @@ jobs:
     if: github.event_name == 'schedule'
     runs-on: ubuntu-latest
     outputs:
-      environment: ${{ inputs.environment }}
-    environment: ${{ inputs.environment }}
-    env:
-      ENV_SHORT: ${{ fromJSON('{"dev":"d","uat":"u","prod":"p"}')[inputs.environment] }}
+      environment: 'prod'
+    environment: 'prod'
 
     steps:
       - name: Checkout current repository
@@ -229,12 +227,12 @@ jobs:
       - name: Sync docs folder to S3
         working-directory: ./devportal-docs
         run: |
-          aws s3 sync docs s3://devportal-${{ env.ENV_SHORT }}-website-static-content/devportal-docs/docs --delete --size-only
+          aws s3 sync docs s3://devportal-p-website-static-content/devportal-docs/docs --delete --size-only
 
       - name: Generate guides metadata
         env:
           ENVIRONMENT: 'prod'
-          S3_BUCKET_NAME: devportal-${{ env.ENV_SHORT }}-website-static-content
+          S3_BUCKET_NAME: devportal-p-website-static-content
           S3_DOC_EXTRACTION_BUCKET_NAME: ${{ vars.S3_DOC_EXTRACTION_BUCKET_NAME }}
           S3_PATH_TO_GITBOOK_DOCS: ${{ vars.S3_PATH_TO_GITBOOK_DOCS || 'devportal-docs/docs' }}
           STRAPI_ENDPOINT: ${{ vars.STRAPI_ENDPOINT }}
@@ -246,7 +244,7 @@ jobs:
       - name: Generate solutions metadata
         env:
           ENVIRONMENT: 'prod'
-          S3_BUCKET_NAME: devportal-${{ env.ENV_SHORT }}-website-static-content
+          S3_BUCKET_NAME: devportal-p-website-static-content
           S3_PATH_TO_GITBOOK_DOCS: ${{ vars.S3_PATH_TO_GITBOOK_DOCS || 'devportal-docs/docs' }}
           STRAPI_ENDPOINT: ${{ vars.STRAPI_ENDPOINT }}
           STRAPI_API_TOKEN: ${{ secrets.STRAPI_API_TOKEN }}
@@ -257,7 +255,7 @@ jobs:
       - name: Generate release notes metadata
         env:
           ENVIRONMENT: 'prod'
-          S3_BUCKET_NAME: devportal-${{ env.ENV_SHORT }}-website-static-content
+          S3_BUCKET_NAME: devportal-p-website-static-content
           S3_DOC_EXTRACTION_BUCKET_NAME: ${{ vars.S3_DOC_EXTRACTION_BUCKET_NAME }}
           S3_PATH_TO_GITBOOK_DOCS: ${{ vars.S3_PATH_TO_GITBOOK_DOCS || 'devportal-docs/docs' }}
           STRAPI_ENDPOINT: ${{ vars.STRAPI_ENDPOINT }}
