@@ -1,7 +1,7 @@
 import * as qs from 'qs';
 import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
 import { productRelationsPopulate } from './fetchProducts';
-import { StrapiGuidesPaginated } from '@/lib/strapi/types/guide';
+import { StrapiGuides } from '@/lib/strapi/types/guide';
 
 const guidesPopulate = {
   populate: {
@@ -22,7 +22,7 @@ const makeStrapiGuidesPopulate = () =>
     ...guidesPopulate,
   });
 
-export const fetchGuides = fetchFromStrapi<StrapiGuidesPaginated>(
+export const fetchGuides = fetchFromStrapi<StrapiGuides>(
   'guides',
   makeStrapiGuidesPopulate()
 );
@@ -39,7 +39,7 @@ const makeStrapiGuidePopulate = (guideSlug: string, productSlug: string) =>
   });
 
 export const fetchGuide = (guideSlug: string, productSlug: string) =>
-  fetchFromStrapi<StrapiGuidesPaginated>(
+  fetchFromStrapi<StrapiGuides>(
     'guides',
     makeStrapiGuidePopulate(guideSlug, productSlug)
   );

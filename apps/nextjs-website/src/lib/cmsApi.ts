@@ -26,8 +26,8 @@ import { makeGuideListPagesProps } from './strapi/makeProps/makeGuideListPages';
 import { makeGuidesProps } from './strapi/makeProps/makeGuides';
 import { fetchOverviews } from '@/lib/strapi/fetches/fetchOverviews';
 import { makeOverviewsProps } from '@/lib/strapi/makeProps/makeOverviews';
-import { fetchTutorialListPages } from './strapi/fetches/fetchTutorialListPages';
-import { makeTutorialListPagesProps } from './strapi/makeProps/makeTutorialListPages';
+import { fetchTutorialsListPages } from './strapi/fetches/fetchTutorialsListPages';
+import { makeTutorialsPageProps } from './strapi/makeProps/makeTutorialsPageProps';
 import { fetchUrlReplaceMap } from './strapi/fetches/fetchUrlReplaceMap';
 import { makeUrlReplaceMap } from './strapi/makeProps/makeUrlReplaceMap';
 import { withCache, getCacheKey } from './cache';
@@ -45,8 +45,8 @@ import {
   fetchResponseFromCDN,
   JsonMetadata,
 } from '@/helpers/s3Metadata.helpers';
-import { StrapiGuideListPaginated } from '@/lib/strapi/types/guideList';
-import { StrapiGuidesPaginated } from '@/lib/strapi/types/guide';
+import { StrapiGuideLists } from '@/lib/strapi/types/guideList';
+import { StrapiGuides } from '@/lib/strapi/types/guide';
 
 // a BuildEnv instance ready to be used
 const buildEnv = pipe(
@@ -120,8 +120,8 @@ export const getTutorialListPagesProps = async () => {
   return withCache(
     getCacheKey('getTutorialListPagesProps'),
     async () => {
-      const strapiTutorialListPages = await fetchTutorialListPages(buildEnv);
-      return makeTutorialListPagesProps(strapiTutorialListPages);
+      const strapiTutorialListPages = await fetchTutorialsListPages(buildEnv);
+      return makeTutorialsPageProps(strapiTutorialListPages);
     },
     CACHE_EXPIRY_IN_SECONDS
   );
@@ -139,17 +139,14 @@ export const getQuickStartGuidesProps = async () => {
 };
 
 export const getUrlReplaceMapProps = async () => {
-  const result = await withCache(
+  return withCache(
     getCacheKey('getUrlReplaceMapProps'),
     async () => {
       const strapiUrlReplaceMap = await fetchUrlReplaceMap(buildEnv);
-      const processed = makeUrlReplaceMap(strapiUrlReplaceMap);
-      return processed;
+      return makeUrlReplaceMap(strapiUrlReplaceMap);
     },
     CACHE_EXPIRY_IN_SECONDS
   );
-
-  return result;
 };
 
 export const getApiDataListPagesProps = async () => {
@@ -224,7 +221,7 @@ export const getGuideListPagesProps = async () => {
     async () => {
       const strapiGuideList = (await fetchResponseFromCDN(
         'synced-guide-list-pages-response.json'
-      )) as StrapiGuideListPaginated | undefined;
+      )) as StrapiGuideLists | undefined;
       return strapiGuideList ? makeGuideListPagesProps(strapiGuideList) : [];
     },
     CACHE_EXPIRY_IN_SECONDS
@@ -249,7 +246,7 @@ export const getGuidePageProps = async (
       // TODO: restore this when Strapi will manage guides metadata
       const strapiGuides = (await fetchResponseFromCDN(
         'synced-guides-response.json'
-      )) as StrapiGuidesPaginated | undefined;
+      )) as StrapiGuides | undefined;
       // eslint-disable-next-line functional/no-expression-statements
       const guides = strapiGuides ? makeGuidesProps(strapiGuides) : [];
       const guide = guides.filter(

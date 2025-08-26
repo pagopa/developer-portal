@@ -2,6 +2,7 @@ import { CaseHistoryPageTemplateProps } from '@/components/templates/CaseHistory
 import { StrapiCaseHistories } from '../codecs/CaseHistoriesCodec';
 import { Part } from '../../types/part';
 import { makePartProps } from '@/lib/strapi/makeProps/makePart';
+import { StrapiPart } from '@/lib/strapi/types/part';
 
 export function makeCaseHistoriesProps(
   strapiCaseHistories: StrapiCaseHistories
@@ -11,7 +12,7 @@ export function makeCaseHistoriesProps(
     updatedAt: attributes.updatedAt.toISOString(),
     parts: [
       ...(attributes.parts
-        .map((part) => makePartProps(part))
+        .map((part) => makePartProps(part as StrapiPart))
         .filter((part) => !!part) as ReadonlyArray<Part>),
     ],
     products: attributes.products.data.map(({ attributes }) => ({
