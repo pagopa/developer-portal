@@ -7,6 +7,27 @@ resource "aws_iam_policy" "deploy_website" {
     Statement = concat([
       {
         Action = [
+          "s3:PutObject",
+          "s3:GetObject",
+          "s3:PutObjectAcl",
+          "s3:DeleteObject"
+        ]
+        Effect = "Allow"
+        Resource = [
+          format("%s/*", var.bucket_static_content_arn)
+        ]
+      },
+      {
+        Action = [
+          "s3:ListBucket"
+        ]
+        Effect = "Allow"
+        Resource = [
+          var.bucket_static_content_arn
+        ]
+      },
+      {
+        Action = [
           "ssm:GetParameter",
           "ssm:PutParameter"
         ]
@@ -126,6 +147,7 @@ resource "aws_iam_policy" "github_chatbot_reindex" {
         Effect = "Allow"
         Resource = [
           "${var.assets_opennext_bucket.arn}/*",
+          "${var.bucket_static_content_arn}/*",
           "${var.website_standalone_bucket.arn}/*"
         ]
       },
@@ -136,6 +158,7 @@ resource "aws_iam_policy" "github_chatbot_reindex" {
         Effect = "Allow"
         Resource = [
           var.assets_opennext_bucket.arn,
+          var.bucket_static_content_arn,
           var.website_standalone_bucket.arn
         ]
       },

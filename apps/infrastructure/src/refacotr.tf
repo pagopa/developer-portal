@@ -90,6 +90,6 @@ moved {
 removed {
   from = module.website.aws_s3_bucket.website
   lifecycle {
-    destroy = true
+    destroy = false
   }
 }
