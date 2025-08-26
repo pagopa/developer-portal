@@ -235,6 +235,27 @@ class Chatbot:
 
         return data
 
+    async def chat_generate_with_final_response(
+        self,
+        query_str: str,
+        trace_id: str,
+        session_id: str | None = None,
+        user_id: str | None = None,
+        messages: Optional[List[Dict[str, str]]] | None = None,
+    ) -> dict:
+
+        generated = self.chat_generate(
+            query_str=query_str,
+            trace_id=trace_id,
+            session_id=session_id,
+            user_id=user_id,
+            messages=messages,
+        )
+
+        final_response = self.get_final_response(response_str=generated, references=[])
+
+        return final_response
+
     async def chat_generate(
         self,
         query_str: str,
@@ -273,3 +294,31 @@ class Chatbot:
         self.instrumentor.flush()
 
         return response_json
+
+    async def get_final_response(
+        self,
+        response_str: str,
+        references: List[str] | None = None,
+    ) -> str:
+
+        response_str = self.fix_unbalanced_code_blocks(response_str)
+        unique_references = list(dict.fromkeys(references))
+
+        if len(unique_references) > 0:
+            response_str += "\n\nRif:"
+            for ref in unique_references:
+                response_str += "\n" + ref
+
+        return response_str
+
+    async def fix_unbalanced_code_blocks(text: str) -> str:
+        """
+        Ensures code blocks delimited by \n``` are balanced.
+        If unbalanced, removes the last dangling delimiter.
+        """
+        count = text.count("\n```")
+        if count % 2 == 1:  # unbalanced
+            last_index = text.rfind("\n```")
+            if last_index != -1:
+                text = text[:last_index] + text[last_index + 4 :]
+        return text

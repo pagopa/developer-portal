@@ -31,6 +31,7 @@ COPY ./notebooks ./notebooks
 COPY ./.google_service_account.json .
 
 RUN poetry config virtualenvs.create false
+RUN poetry lock
 RUN poetry install
 
 RUN python ./scripts/nltk_download.py
