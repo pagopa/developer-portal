@@ -19,7 +19,7 @@ services:
         condition: service_started
       langfuse:
         condition: service_started
-      localstack :
+      localstack:
         condition: service_started
       evaluate:
         condition: service_started
