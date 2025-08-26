@@ -1,5 +1,5 @@
 import { SolutionListTemplateProps } from '@/components/templates/SolutionListTemplate/SolutionListTemplate';
-import { StrapiSolutionListPage } from '../codecs/SolutionListPageCodec';
+import { StrapiSolutionListPage } from '@/lib/strapi/types/solutionListPage';
 
 export function makeSolutionListPageProps(
   strapiSolutionsList: StrapiSolutionListPage
