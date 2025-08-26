@@ -119,6 +119,7 @@ async function main() {
     );
     console.log(`Fetched ${strapiGuides.data.length} guides from Strapi`);
 
+    console.log('Starting to convert Markdown files into URL parsing items...');
     const urlParsingItems = await convertGuideToUrlParsingItems(
       strapiGuides.data
     );
