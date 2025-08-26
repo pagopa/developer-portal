@@ -1,16 +1,10 @@
-import os
-import yaml
 import json
-from pathlib import Path
 
 from src.modules.judge import Judge
 from src.modules.logger import get_logger
 
 LOGGER = get_logger(__name__)
-CWF = Path(__file__)
-ROOT = CWF.parent.parent.absolute().__str__()
-PROMPTS = yaml.safe_load(open(os.path.join(ROOT, "config", "prompts.yaml"), "r"))
-JUDGE = Judge(prompts=PROMPTS)
+JUDGE = Judge()
 
 # SQS event example:
 """ {
