@@ -1,28 +1,106 @@
+import boto3
 import os
 import json
 import yaml
 from pathlib import Path
 from pydantic_settings import BaseSettings
 
-from src.modules.utils import get_ssm_parameter
+from src.modules.logger import get_logger
 
+LOGGER = get_logger(__name__)
 CWF = Path(__file__)
 ROOT = CWF.parent.parent.parent.absolute().__str__()
 PARAMS = yaml.safe_load(open(os.path.join(ROOT, "config", "params.yaml"), "r"))
 PROMPTS = yaml.safe_load(open(os.path.join(ROOT, "config", "prompts.yaml"), "r"))
 
-
-GOOGLE_SERVICE_ACCOUNT = get_ssm_parameter(
-    os.getenv("CHB_AWS_SSM_GOOGLE_SERVICE_ACCOUNT")
+AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID", os.getenv("CHB_AWS_ACCESS_KEY_ID"))
+AWS_DEFAULT_REGION = os.getenv("AWS_REGION", os.getenv("CHB_AWS_DEFAULT_REGION"))
+AWS_ENDPOINT_URL = os.getenv("CHB_AWS_SSM_ENDPOINT_URL")
+AWS_SECRET_ACCESS_KEY = os.getenv(
+    "AWS_SECRET_ACCESS_KEY", os.getenv("CHB_AWS_SECRET_ACCESS_KEY")
 )
-if GOOGLE_SERVICE_ACCOUNT is None:
-    with open(os.path.join(ROOT, ".google_service_account.json"), "r") as file:
-        GOOGLE_JSON_ACCOUNT_INFO = json.load(file)
-else:
-    GOOGLE_JSON_ACCOUNT_INFO = json.loads(GOOGLE_SERVICE_ACCOUNT)
+
+
+def get_ssm_parameter(name: str | None, default: str | None = None) -> str | None:
+    """
+    Retrieves a specific value from AWS Systems Manager's Parameter Store.
+
+    :param name: The name of the parameter to retrieve.
+    :param default: The default value to return if the parameter is not found.
+    :return: The value of the requested parameter.
+    """
+    SSM_CLIENT = boto3.client(
+        "ssm",
+        aws_access_key_id=AWS_ACCESS_KEY_ID,
+        aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
+        region_name=AWS_DEFAULT_REGION,
+        endpoint_url=AWS_ENDPOINT_URL,
+    )
+
+    if name is None:
+        name = "none-params-in-ssm"
+    try:
+        response = SSM_CLIENT.get_parameter(Name=name, WithDecryption=True)
+        value = response["Parameter"]["Value"]
+    except SSM_CLIENT.exceptions.ParameterNotFound:
+        return default
+
+    return value
 
 
 class ChatbotSettings(BaseSettings):
+    # AWS SSM based values
+    @property
+    def google_api_key(self) -> str:
+        return get_ssm_parameter(
+            name=os.getenv("CHB_AWS_SSM_GOOGLE_API_KEY"),
+            default=os.getenv("CHB_AWS_GOOGLE_API_KEY"),
+        )
+
+    @property
+    def google_service_account(self) -> dict:
+        return self.get_google_service_account()
+
+    @property
+    def strapi_api_key(self) -> str:
+        return get_ssm_parameter(
+            name=os.getenv("CHB_AWS_SSM_STRAPI_API_KEY"),
+            default=os.getenv("CHB_STRAPI_API_KEY", ""),
+        )
+
+    @property
+    def langfuse_public_key(self) -> str:
+        return get_ssm_parameter(
+            name=os.getenv("CHB_AWS_SSM_LANGFUSE_PUBLIC_KEY"),
+            default=os.getenv("LANGFUSE_INIT_PROJECT_PUBLIC_KEY"),
+        )
+
+    @property
+    def langfuse_secret_key(self) -> str:
+        return get_ssm_parameter(
+            name=os.getenv("CHB_AWS_SSM_LANGFUSE_SECRET_KEY"),
+            default=os.getenv("LANGFUSE_INIT_PROJECT_SECRET_KEY"),
+        )
+
+    @property
+    def index_id(self) -> str:
+        return get_ssm_parameter(
+            name=os.getenv("CHB_AWS_SSM_LLAMAINDEX_INDEX_ID"),
+            default="default-index",
+        )
+
+    def get_google_service_account(self):
+        GOOGLE_SERVICE_ACCOUNT = get_ssm_parameter(
+            os.getenv("CHB_AWS_SSM_GOOGLE_SERVICE_ACCOUNT")
+        )
+        if GOOGLE_SERVICE_ACCOUNT is None:
+            with open(os.path.join(ROOT, ".google_service_account.json"), "r") as file:
+                GOOGLE_JSON_ACCOUNT_INFO = json.load(file)
+        else:
+            GOOGLE_JSON_ACCOUNT_INFO = json.loads(GOOGLE_SERVICE_ACCOUNT)
+
+        return GOOGLE_JSON_ACCOUNT_INFO
+
     """Settings for the chatbot application."""
 
     # general
@@ -31,33 +109,10 @@ class ChatbotSettings(BaseSettings):
     log_level: str = os.getenv("LOG_LEVEL", "info")
 
     # api keys
-    aws_access_key_id: str = os.getenv(
-        "AWS_ACCESS_KEY_ID", os.getenv("CHB_AWS_ACCESS_KEY_ID")
-    )
-    aws_default_region: str = os.getenv(
-        "AWS_REGION", os.getenv("CHB_AWS_DEFAULT_REGION")
-    )
-    aws_endpoint_url: str | None = os.getenv("CHB_AWS_SSM_ENDPOINT_URL")
-    aws_secret_access_key: str = os.getenv(
-        "AWS_SECRET_ACCESS_KEY", os.getenv("CHB_AWS_SECRET_ACCESS_KEY")
-    )
-    google_api_key: str = get_ssm_parameter(
-        name=os.getenv("CHB_AWS_SSM_GOOGLE_API_KEY"),
-        default=os.getenv("CHB_AWS_GOOGLE_API_KEY"),
-    )
-    google_service_account: dict = GOOGLE_JSON_ACCOUNT_INFO
-    strapi_api_key: str = get_ssm_parameter(
-        os.getenv("CHB_AWS_SSM_STRAPI_API_KEY"), os.getenv("CHB_STRAPI_API_KEY", "")
-    )
-    langfuse_host: str = os.getenv("CHB_LANGFUSE_HOST")
-    langfuse_public_key: str = get_ssm_parameter(
-        os.getenv("CHB_AWS_SSM_LANGFUSE_PUBLIC_KEY"),
-        os.getenv("LANGFUSE_INIT_PROJECT_PUBLIC_KEY"),
-    )
-    langfuse_secret_key: str = get_ssm_parameter(
-        os.getenv("CHB_AWS_SSM_LANGFUSE_SECRET_KEY"),
-        os.getenv("LANGFUSE_INIT_PROJECT_SECRET_KEY"),
-    )
+    aws_access_key_id: str = AWS_ACCESS_KEY_ID
+    aws_default_region: str = AWS_DEFAULT_REGION
+    aws_endpoint_url: str | None = AWS_ENDPOINT_URL
+    aws_secret_access_key: str = AWS_SECRET_ACCESS_KEY
 
     # RAG settings
     embed_batch_size: int = int(os.getenv("CHB_EMBED_BATCH_SIZE", "100"))
@@ -81,9 +136,6 @@ class ChatbotSettings(BaseSettings):
     # vector index and docs params
     chunk_overlap: int = PARAMS["vector_index"]["chunk_overlap"]
     chunk_size: int = PARAMS["vector_index"]["chunk_size"]
-    index_id: str = get_ssm_parameter(
-        os.getenv("CHB_AWS_SSM_LLAMAINDEX_INDEX_ID"), "default-index"
-    )
     presidio_config: dict = PARAMS["config_presidio"]
     bucket_static_content: str = os.getenv(
         "CHB_AWS_S3_BUCKET_NAME_STATIC_CONTENT", "devportal-d-website-static-content"
@@ -99,6 +151,7 @@ class ChatbotSettings(BaseSettings):
     redis_url: str = os.getenv("CHB_REDIS_URL")
     website_url: str = os.getenv("CHB_WEBSITE_URL")
     dynamodb_url: str = os.getenv("AWS_ENDPOINT_URL_DYNAMODB")
+    langfuse_host: str = os.getenv("CHB_LANGFUSE_HOST")
 
     # controller logic
     max_daily_evaluations: int = int(os.getenv("CHB_MAX_DAILY_EVALUATIONS", "200"))

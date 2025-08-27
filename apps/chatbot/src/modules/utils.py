@@ -4,13 +4,16 @@ from src.modules.logger import get_logger
 from src.modules.settings import SETTINGS
 
 LOGGER = get_logger(__name__)
-SSM_CLIENT = boto3.client(
-    "ssm",
-    aws_access_key_id=SETTINGS.AWS_ACCESS_KEY_ID,
-    aws_secret_access_key=SETTINGS.AWS_SECRET_ACCESS_KEY,
-    region_name=SETTINGS.AWS_DEFAULT_REGION,
-    endpoint_url=SETTINGS.AWS_SSM_ENDPOINT_URL,
-)
+
+
+def get_ssm_client():
+    return boto3.client(
+        "ssm",
+        aws_access_key_id=SETTINGS.aws_access_key_id,
+        aws_secret_access_key=SETTINGS.aws_secret_access_key,
+        region_name=SETTINGS.aws_default_region,
+        endpoint_url=SETTINGS.aws_ssm_endpoint_url,
+    )
 
 
 def get_ssm_parameter(name: str | None, default: str | None = None) -> str | None:
@@ -21,6 +24,8 @@ def get_ssm_parameter(name: str | None, default: str | None = None) -> str | Non
     :param default: The default value to return if the parameter is not found.
     :return: The value of the requested parameter.
     """
+
+    SSM_CLIENT = get_ssm_client()
 
     if name is None:
         name = "none-params-in-ssm"
@@ -40,6 +45,8 @@ def put_ssm_parameter(name: str, value: str) -> None:
     :param name: The name of the parameter to put.
     :param value: The value to store in the parameter.
     """
+
+    SSM_CLIENT = get_ssm_client()
 
     LOGGER.debug(f"Putting parameter {name} to SSM")
     try:
