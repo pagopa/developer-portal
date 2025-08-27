@@ -83,7 +83,7 @@ Initialize dynamodb and redis (these are the first two steps of `./scripts/run.t
 
 ```
 ./scripts/dynamodb-init-test.sh
-poetry run python src/modules/create_vector_index.py --params config/params.yaml
+poetry run python src/modules/create_vector_index.py
 ```
 
 then launch a test, ex
