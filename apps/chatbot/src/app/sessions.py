@@ -1,7 +1,6 @@
 import datetime
 import hashlib
 import uuid
-import yaml
 
 from boto3.dynamodb.conditions import Key
 from botocore.exceptions import BotoCoreError, ClientError
@@ -12,10 +11,6 @@ from src.app.jwt_check import verify_jwt
 from src.modules.monitor import add_langfuse_score
 from src.modules.logger import get_logger
 from src.modules.settings import SETTINGS
-
-
-params = yaml.safe_load(open("config/params.yaml", "r"))
-prompts = yaml.safe_load(open("config/prompts.yaml", "r"))
 
 LOGGER = get_logger(__name__)
 

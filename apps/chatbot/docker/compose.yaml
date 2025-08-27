@@ -11,7 +11,6 @@ services:
     volumes:
       - ..:/app
       - ./files/.aws:/root/.aws
-      - ../../nextjs-website/out:/app/build-devp/out
     depends_on:
       redis:
         condition: service_started
@@ -32,7 +31,7 @@ services:
     build:
       context: ../../chatbot-evaluate
       dockerfile: ../chatbot-evaluate/docker/lambda.Dockerfile
-    env_file: ../.env.local
+    env_file: ../../chatbot-evaluate/.env.local
     environment:
       - PYTHONPATH=/var/task
     ports:
@@ -49,7 +48,7 @@ services:
     build:
       context: ../../chatbot-core
       dockerfile: ../chatbot-core/docker/lambda.Dockerfile
-    env_file: ../.env.local
+    env_file: ../../chatbot-core/.env.local
     environment:
       - PYTHONPATH=/var/task
     ports:
