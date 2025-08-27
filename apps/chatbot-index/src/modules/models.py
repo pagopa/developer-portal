@@ -1,4 +1,3 @@
-import os
 from google.genai import types
 
 from llama_index.core.llms.llm import LLM

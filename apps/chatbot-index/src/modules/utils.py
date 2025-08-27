@@ -3,6 +3,7 @@ import boto3
 
 from src.modules.logger import get_logger
 
+
 LOGGER = get_logger(__name__)
 SSM_CLIENT = boto3.client(
     "ssm",
