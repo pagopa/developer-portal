@@ -6,12 +6,10 @@ from pydantic_settings import BaseSettings
 
 from src.modules.utils import get_ssm_parameter
 
+
 CWF = Path(__file__)
 ROOT = CWF.parent.parent.parent.absolute().__str__()
 PARAMS = yaml.safe_load(open(os.path.join(ROOT, "config", "params.yaml"), "r"))
-PROMPTS = yaml.safe_load(open(os.path.join(ROOT, "config", "prompts.yaml"), "r"))
-
-
 GOOGLE_SERVICE_ACCOUNT = get_ssm_parameter(
     os.getenv("CHB_AWS_SSM_GOOGLE_SERVICE_ACCOUNT")
 )
@@ -59,7 +57,7 @@ class ChatbotSettings(BaseSettings):
     # vector index and docs params
     chunk_overlap: int = PARAMS["vector_index"]["chunk_overlap"]
     chunk_size: int = PARAMS["vector_index"]["chunk_size"]
-    index_id: str = "discovery-index"
+    index_id: str = PARAMS["vector_index"]["index_id"]
     bucket_static_content: str = os.getenv(
         "CHB_AWS_S3_BUCKET_NAME_STATIC_CONTENT", "devportal-d-website-static-content"
     )
