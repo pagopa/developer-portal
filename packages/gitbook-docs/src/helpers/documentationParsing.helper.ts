@@ -58,7 +58,6 @@ export function replaceUrl(
   // Clean up the URL by removing mentions, README.md, and .md extensions
   const splitValue = value
     .replace(' "mention"', '')
-    .replace('README.md', '')
     .replace('.md', '')
     .split('/')
     .filter((val) => {
