@@ -9,6 +9,47 @@ from src.modules.vector_index import DiscoveryVectorIndex
 LOGGER = get_logger(__name__)
 VECTOR_INDEX = DiscoveryVectorIndex()
 
+# S3 event example:
+""" {
+  "Records": [
+    {
+      "eventVersion": "2.0",
+      "eventSource": "aws:s3",
+      "awsRegion": "us-east-1",
+      "eventTime": "1970-01-01T00:00:00.000Z",
+      "eventName": "ObjectCreated:Put",
+      "userIdentity": {
+        "principalId": "EXAMPLE"
+      },
+      "requestParameters": {
+        "sourceIPAddress": "127.0.0.1"
+      },
+      "responseElements": {
+        "x-amz-request-id": "EXAMPLE123456789",
+        "x-amz-id-2": "EXAMPLE123/5678abcdefghijklambdaisawesome/mnopqrstuvwxyzABCDEFGH"
+      },
+      "s3": {
+        "s3SchemaVersion": "1.0",
+        "configurationId": "testConfigRule",
+        "bucket": {
+          "name": "example-bucket",
+          "ownerIdentity": {
+            "principalId": "EXAMPLE"
+          },
+          "arn": "arn:aws:s3:::example-bucket"
+        },
+        "object": {
+          "key": "test/key",
+          "size": 1024,
+          "eTag": "0123456789abcdef0123456789abcdef",
+          "sequencer": "0A1B2C3D4E5F678901"
+        }
+      }
+    }
+  ]
+}
+"""
+
 
 def read_payload(payload: dict) -> Tuple[List[Dict[str, str]], List[str]]:
 
@@ -24,7 +65,9 @@ def read_payload(payload: dict) -> Tuple[List[Dict[str, str]], List[str]]:
     static_docs_to_update = []
     static_docs_ids_to_delete = []
 
-    for record in payload["Records"]:
+    for record in payload.get("Records", []):
+        record = record.get("body", "{}")
+        record = json.loads(record)
         event_name = record.get("eventName", "")
         s3_info = record.get("s3", {})
         object_info = s3_info.get("object", {})
@@ -59,8 +102,11 @@ def lambda_handler(event, context):
     LOGGER.debug(f"event: {event}")
 
     results = []
-    for record in event.get("Records", []):
-        body = record.get("body", "{}")
-        body = json.loads(body)
+    static_docs_to_update, static_docs_ids_to_delete = read_payload(event)
+    if len(static_docs_to_update) > 0 or len(static_docs_ids_to_delete) > 0:
+        res = VECTOR_INDEX.refresh_index_static_docs(
+            static_docs_to_update=static_docs_to_update,
+            static_docs_ids_to_delete=static_docs_ids_to_delete,
+        )
 
     return {"statusCode": 200, "result": results, "event": event}
