@@ -1,5 +1,12 @@
 # gitbook-docs
 
+## 1.0.2
+
+### Patch Changes
+
+- d1f3b42: Update parsing to include release notes and solutions
+- c3014ee: Fix content ref parsing
+
 ## 1.0.1
 
 ### Patch Changes
