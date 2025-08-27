@@ -47,7 +47,6 @@
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "react-syntax-highlighter": "^15.5.0",
-    "redoc": "^2.5.0",
     "schema-dts": "^1.1.2",
     "sst": "3.14.25",
     "swagger-ui": "^5.9.1",
