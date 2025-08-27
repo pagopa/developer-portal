@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/nextjs';
 import CaseHistoryPageTemplate from '../../../nextjs-website/src/components/templates/CaseHistoryTemplate/CaseHistoryPageTemplate';
 import { mockImageBlock, mockTextBlock } from '../mock-content.helper';
 import quoteMockProps from '../atoms/Quote.stories';

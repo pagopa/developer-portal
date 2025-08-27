@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/nextjs';
 import ApiDataListTemplate from 'nextjs-website/src/components/templates/ApiDataListTemplate/ApiDataListTemplate';
 import { nextIntlContextDecorator } from '../next-intl-context.helper';
 import { mockText, mockTextBlock } from '../mock-content.helper';

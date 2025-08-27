@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/nextjs';
 import IconFireworks from '../../../nextjs-website/src/components/atoms/IconFireworks/IconFireworks';
 
 const meta: Meta<typeof IconFireworks> = {
