@@ -195,7 +195,6 @@ module "cicd" {
   redis_port        = var.chatbot_ecs_redis.port
   github_repository = var.github_repository
 
-  bucket_static_content_arn    = module.website.website_standalone_bucket.arn
   opennext_cdn_distribution_id = module.website.opennext_cdn_distribution_id
 
   assets_opennext_bucket      = module.website.assets_opennext_bucket

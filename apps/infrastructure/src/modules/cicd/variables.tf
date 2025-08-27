@@ -68,11 +68,6 @@ variable "redis_port" {
   default     = 6379
 }
 
-variable "bucket_static_content_arn" {
-  type        = string
-  description = "The ARN of the S3 bucket used to store static content"
-}
-
 variable "opennext_cdn_distribution_id" {
   type        = string
   description = "The ID of the CloudFront distribution used to serve the OpenNext website"
