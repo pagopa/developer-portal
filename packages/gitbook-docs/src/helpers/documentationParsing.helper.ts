@@ -9,9 +9,9 @@ export const DOCUMENTATION_PATH =
   process.env.DOCUMENTATION_PATH || '../../devportal-docs/docs';
 export type UrlParsingMetadata = {
   dirName: string;
-  guides: {
-    guidePath: string;
-    guideUrl: string;
+  docs: {
+    docPath: string;
+    docUrl: string;
   }[];
 };
 
@@ -72,32 +72,30 @@ export function replaceUrl(
     return value;
   }
   // Find guides that contain the extracted name in their path
-  const guides = metadata.guides.filter((guide) =>
-    guide.guidePath.includes(name)
-  );
-  if (guides.length <= 0) {
+  const docs = metadata.docs.filter((doc) => doc.docPath.includes(name));
+  if (docs.length <= 0) {
     const dirName = value.split('/s/').slice(1)[0]?.split('/')[0];
-    const externalGuide = fullMedatada.filter(
+    const externalDocs = fullMedatada.filter(
       (g) => g.dirName.includes(name) || g.dirName === dirName
     );
-    if (externalGuide.length > 0) {
-      guides.push(...externalGuide[0].guides);
+    if (externalDocs.length > 0) {
+      docs.push(...externalDocs[0].docs);
     } else return value;
   }
   const subParts = value.includes('#') ? value.split('#').at(-1) : '';
   const urlEnding = subParts && subParts.length > 0 ? '#' + subParts : '';
-  if (guides.length == 1) {
-    return guides[0].guideUrl + urlEnding || value;
+  if (docs.length == 1) {
+    return docs[0].docUrl + urlEnding || value;
   } else {
     // If multiple matches, try to find more specific match using parent directory
-    const guide = guides
-      .sort((guide1, guide2) => {
-        return guide1.guidePath.length - guide2.guidePath.length;
+    const doc = docs
+      .sort((doc1, doc2) => {
+        return doc1.docPath.length - doc2.docPath.length;
       })
       .find((guide) =>
-        guide.guidePath.includes([secondToLastPart, name].join('/'))
+        guide.docPath.includes([secondToLastPart, name].join('/'))
       );
-    return guide ? guide?.guideUrl + urlEnding : guides[0].guideUrl + urlEnding;
+    return doc ? doc?.docUrl + urlEnding : docs[0].docUrl + urlEnding;
   }
 }
 
