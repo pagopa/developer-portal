@@ -140,6 +140,7 @@ class DiscoveryVectorIndex:
         self.index_id = SETTINGS.index_id
         self.index = self.get_index()
         self.docstore = self.index.storage_context.docstore
+        self.api_docs = get_api_docs()
         self.static_list, self.dynamic_list = get_static_and_dynamic_lists()
 
     def get_index(self) -> VectorStoreIndex:
@@ -165,30 +166,33 @@ class DiscoveryVectorIndex:
             documents (list[Document]): List of Document objects to add or update.
         """
 
-        num_added_docs = 0
-        num_updated_docs = 0
+        with self.index._callback_manager.as_trace("refresh_ref_docs"):
+            refreshed_documents = [False] * len(documents)
 
-        for doc in documents:
-            nodes = Settings.node_parser.get_nodes_from_documents([doc])
-            existing_doc_hash = self.index._docstore.get_document_hash(doc.id_)
-            if existing_doc_hash is None:
-                num_added_docs += 1
-                with self.index._callback_manager.as_trace("insert"):
-                    self.index.insert_nodes(nodes)
-                    self.index._docstore.set_document_hash(doc.id_, doc.hash)
-
-            elif existing_doc_hash != doc.hash:
-                num_updated_docs += 1
-                with self.index._callback_manager.as_trace("update_ref_doc"):
-                    self.index.delete_ref_doc(doc.id_, delete_from_docstore=True)
+            for i, doc in enumerate(documents):
+                nodes = Settings.node_parser.get_nodes_from_documents([doc])
+                existing_doc_hash = self.index._docstore.get_document_hash(doc.id_)
+                if existing_doc_hash is None:
+                    refreshed_documents[i] = True
                     with self.index._callback_manager.as_trace("insert"):
                         self.index.insert_nodes(nodes)
                         self.index._docstore.set_document_hash(doc.id_, doc.hash)
 
-            self.index.storage_context.docstore.add_documents(nodes)
+                    self.index.storage_context.docstore.add_documents(nodes)
 
-        LOGGER.info(f"Added {num_added_docs} to vector index successfully.")
-        LOGGER.info(f"Updated {num_updated_docs} from vector index successfully.")
+                elif existing_doc_hash != doc.hash:
+                    refreshed_documents[i] = True
+                    with self.index._callback_manager.as_trace("update_ref_doc"):
+                        self.index.delete_ref_doc(doc.id_, delete_from_docstore=True)
+                        with self.index._callback_manager.as_trace("insert"):
+                            self.index.insert_nodes(nodes)
+                            self.index._docstore.set_document_hash(doc.id_, doc.hash)
+
+                    self.index.storage_context.docstore.add_documents(nodes)
+
+        LOGGER.info(
+            f"Updated {sum(refreshed_documents)} from vector index successfully."
+        )
 
     def _delete_docs(self, documents_id: List[str] = []) -> None:
         """
@@ -207,6 +211,23 @@ class DiscoveryVectorIndex:
                     self.index.storage_context.docstore.delete_document(node_id)
 
         LOGGER.info(f"Removed {len(documents_id)} from vector index successfully.")
+
+    def refresh_index_api_docs(self) -> None:
+        """
+        Refreshes the vector index by updating API documentation and removing obsolete documents.
+        """
+        api_doc_ids = [doc.id_ for doc in self.api_docs]
+        ref_doc_info = self.docstore.get_all_ref_doc_info()
+        ref_doc_ids = list(ref_doc_info.keys())
+
+        api_docs_to_remove = []
+
+        for doc_id in ref_doc_ids:
+            if doc_id not in api_doc_ids:
+                api_docs_to_remove.append(doc_id)
+
+        self._update_docs(self.api_docs)
+        self._delete_docs(api_docs_to_remove)
 
     def refresh_index_static_docs(
         self,
@@ -240,8 +261,7 @@ class DiscoveryVectorIndex:
         static_doc_ids = [
             item["url"].replace(SETTINGS.website_url, "") for item in self.static_list
         ]
-        api_docs = get_api_docs()
-        api_docs_ids = [doc.id_ for doc in api_docs]
+        api_docs_ids = [doc.id_ for doc in self.api_docs]
         all_ref_docs_ids = api_docs_ids + static_doc_ids + dynamic_doc_ids
 
         dynamic_docs_to_update = []
@@ -284,6 +304,7 @@ class DiscoveryVectorIndex:
             static_docs_ids_to_delete (list[str]): List of document IDs to delete from the index.
         """
 
+        self.refresh_index_api_docs()
         self.refresh_index_static_docs(static_docs_to_update, static_docs_ids_to_delete)
         self.refresh_index_dynamic_docs()
         LOGGER.info("Refreshed vector index successfully.")

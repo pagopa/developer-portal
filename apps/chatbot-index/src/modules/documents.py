@@ -111,13 +111,13 @@ def filter_urls(urls: List[str], website_url: str | None = None) -> List[str]:
     return filtered_urls
 
 
-def get_sitemap_urls(website_url: str | None = None) -> List[str]:
+def get_sitemap_urls(website_url: str | None = None) -> List[Dict[str, str]]:
     """
     Fetches URLs from a sitemap XML file.
     Args:
         sitemap_url (str): The URL of the sitemap XML file. If None, uses the default WEBSITE_URL.
     Returns:
-        List[str]: A list of URLs extracted from the sitemap.
+        List[Dict[str, str]]: A list of dictionaries containing URLs and their last modified dates.
     """
 
     if website_url is None:
@@ -263,7 +263,7 @@ def read_api_url(url: str) -> str:
         )
 
 
-def get_api_docs(website_url: str | None = None) -> list:
+def get_api_docs(website_url: str | None = None) -> List[Document]:
     """
     Creates API documentation in Markdown format from the provided API data.
 
