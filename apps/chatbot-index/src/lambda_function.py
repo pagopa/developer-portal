@@ -5,6 +5,7 @@ from src.modules.logger import get_logger
 from src.modules.documents import read_file_from_s3
 from src.modules.vector_index import DiscoveryVectorIndex
 
+
 LOGGER = get_logger(__name__)
 VECTOR_INDEX = DiscoveryVectorIndex()
 
