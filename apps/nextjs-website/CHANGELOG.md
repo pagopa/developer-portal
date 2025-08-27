@@ -1,5 +1,14 @@
 # nextjs-website
 
+## 8.5.3
+
+### Patch Changes
+
+- 58cee8b: Fix SyntaxHighlighter "split is not a function" error by improving data handling in code blocks
+- Updated dependencies [1b91366]
+- Updated dependencies [7e7d8ab]
+  - gitbook-docs@1.0.1
+
 ## 8.5.2
 
 ### Patch Changes
