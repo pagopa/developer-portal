@@ -12,7 +12,7 @@ def get_ssm_client():
         aws_access_key_id=SETTINGS.aws_access_key_id,
         aws_secret_access_key=SETTINGS.aws_secret_access_key,
         region_name=SETTINGS.aws_default_region,
-        endpoint_url=SETTINGS.aws_ssm_endpoint_url,
+        endpoint_url=SETTINGS.aws_endpoint_url,
     )
 
 

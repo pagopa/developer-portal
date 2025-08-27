@@ -1,4 +1,5 @@
 import copy
+import asyncio
 from typing import Union, Tuple, Optional, List, Any, Dict
 
 from langfuse import Langfuse
@@ -235,7 +236,7 @@ class Chatbot:
 
         return data
 
-    async def chat_generate_with_final_response(
+    def chat_generate_with_final_response(
         self,
         query_str: str,
         trace_id: str,
@@ -244,16 +245,22 @@ class Chatbot:
         messages: Optional[List[Dict[str, str]]] | None = None,
     ) -> dict:
 
-        generated = self.chat_generate(
-            query_str=query_str,
-            trace_id=trace_id,
-            session_id=session_id,
-            user_id=user_id,
-            messages=messages,
+        answer_json = asyncio.run(
+            self.chat_generate(
+                query_str=query_str,
+                trace_id=trace_id,
+                session_id=session_id,
+                user_id=user_id,
+                messages=messages,
+            )
         )
 
-        final_response = self.get_final_response(response_str=generated, references=[])
+        final_response = self.get_final_response(
+            response_str=answer_json["response"],
+            references=answer_json["references"],
+        )
 
+        LOGGER.debug(f"chat_generate_with_final_response returning: {final_response}")
         return final_response
 
     async def chat_generate(
@@ -272,8 +279,13 @@ class Chatbot:
             trace_id=trace_id, session_id=session_id, user_id=user_id
         ) as trace:
             try:
-                engine_response = await self.agent.run(query_str, chat_history)
+                LOGGER.debug(f"--->>> self.agent.run{query_str}...")
+                engine_response = self.agent.run(query_str, chat_history)
+                LOGGER.debug(
+                    f"--->>> self.agent.run done! engine_response: {engine_response}"
+                )
                 response_json = self._get_response_json(engine_response)
+                LOGGER.debug(f"--->>> response_json: {response_json}")
 
             except Exception as e:
                 response_json = {
@@ -293,9 +305,10 @@ class Chatbot:
             trace.score(name="user-feedback", value=0, data_type="NUMERIC")
         self.instrumentor.flush()
 
+        LOGGER.debug(f"chat_generate returning: {response_json}")
         return response_json
 
-    async def get_final_response(
+    def get_final_response(
         self,
         response_str: str,
         references: List[str] | None = None,
@@ -309,9 +322,10 @@ class Chatbot:
             for ref in unique_references:
                 response_str += "\n" + ref
 
+        LOGGER.debug(f"get_final_response returning: {response_str}")
         return response_str
 
-    async def fix_unbalanced_code_blocks(text: str) -> str:
+    def fix_unbalanced_code_blocks(self, text: str) -> str:
         """
         Ensures code blocks delimited by \n``` are balanced.
         If unbalanced, removes the last dangling delimiter.
@@ -321,4 +335,6 @@ class Chatbot:
             last_index = text.rfind("\n```")
             if last_index != -1:
                 text = text[:last_index] + text[last_index + 4 :]
+
+        LOGGER.debug(f"fix_unbalanced_code_blocks returning: {text}")
         return text

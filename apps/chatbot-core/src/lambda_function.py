@@ -7,14 +7,21 @@ chatbot = Chatbot()
 
 
 def lambda_handler(event, context):
-    LOGGER.debug(f"event: {event}")
+    LOGGER.debug(f"-------------->>>>>>>>> event: {event} <<<<<<<<<<<<<-------------")
 
     operation_name = event.get("operation")
+    # TODO: validate payload
     payload = event.get("payload")
 
     match operation_name:
         case "chat_generate":
-            # TODO: validate payload
+            # response_json = {
+            #     "response": "Scusa, non posso elaborare la tua richiesta.\n"
+            #     + "Prova a formulare una nuova domanda.",
+            #     "products": ["none"],
+            #     "references": [],
+            #     "contexts": [],
+            # }
             result = chatbot.chat_generate_with_final_response(
                 query_str=payload.get("query_str", ""),
                 trace_id=payload.get("trace_id", ""),
@@ -27,4 +34,5 @@ def lambda_handler(event, context):
         case _:
             return {"statusCode": 400, "error": "Invalid operation"}
 
+    result = True
     return {"statusCode": 200, "result": result, "event": event}
