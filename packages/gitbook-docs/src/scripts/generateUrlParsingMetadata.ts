@@ -4,16 +4,16 @@
 /* eslint-disable functional/immutable-data */
 /* eslint-disable functional/no-try-statements */
 import dotenv from 'dotenv';
-import { writeFile } from 'fs/promises';
+import { readdir, writeFile } from 'fs/promises';
 import * as fs from 'fs';
-import { readdir } from 'fs/promises';
 import path from 'path';
 import { fetchFromStrapi } from '../helpers/fetchFromStrapi';
 import {
+  MetadataInfo,
+  MetadataType,
   StrapiGuide,
-  GuideInfo,
-  StrapiSolution,
   StrapiReleaseNote,
+  StrapiSolution,
 } from '../helpers/guidesMetadataHelper';
 import { sitePathFromLocalPath } from '../helpers/sitePathFromLocalPath';
 import { DOCUMENTATION_PATH } from '../helpers/documentationParsing.helper';
@@ -34,14 +34,26 @@ export type UrlParsingItem = {
 
 export function generateUrlPath(
   filePath: string,
-  guideSlug: string,
-  productSlug: string,
-  versionName?: string
+  slug: string,
+  productSlug?: string,
+  versionName?: string,
+  metadataType: MetadataType = MetadataType.Guide
 ): string {
   const restOfPath = sitePathFromLocalPath(filePath, undefined);
-  return [`/${productSlug}`, 'guides', guideSlug, versionName, restOfPath]
-    .filter(Boolean)
-    .join('/');
+  switch (metadataType) {
+    case MetadataType.Guide:
+      return [`/${productSlug}`, 'guides', slug, versionName, restOfPath]
+        .filter(Boolean)
+        .join('/');
+    case MetadataType.Solution:
+      return ['/solutions', slug, 'details', restOfPath]
+        .filter(Boolean)
+        .join('/');
+    case MetadataType.ReleaseNote:
+      return [`/${productSlug}`, 'release-note', slug, restOfPath]
+        .filter(Boolean)
+        .join('/');
+  }
 }
 
 async function getMarkdownFilesRecursively(dir: string): Promise<string[]> {
@@ -67,36 +79,39 @@ async function convertGuideToUrlParsingItems(
   strapiSolutions: StrapiSolution[],
   strapiReleaseNotes: StrapiReleaseNote[]
 ): Promise<UrlParsingItem[]> {
-  const guideInfoList: GuideInfo[] = strapiGuides
+  const guideInfoList: MetadataInfo[] = strapiGuides
     .filter((guide) => !!guide.attributes.product?.data?.attributes?.slug)
     .flatMap((guide) =>
       guide.attributes.versions.map((version) => ({
         versionName: version.version,
         isMainVersion: version.main,
         dirName: version.dirName,
-        guideSlug: guide.attributes.slug,
+        slug: guide.attributes.slug,
         productSlug: `${guide.attributes.product?.data?.attributes?.slug}`,
+        metadataType: MetadataType.Guide,
       }))
     );
-  const solutionInfoList: GuideInfo[] = strapiSolutions
+  const solutionInfoList: MetadataInfo[] = strapiSolutions
     .filter((solution) => !!solution.attributes.dirName)
     .map((solution) => ({
       versionName: '',
       isMainVersion: true,
       dirName: solution.attributes.dirName,
-      guideSlug: solution.attributes.slug,
-      productSlug: 'solutions',
+      slug: solution.attributes.slug,
+      productSlug: '',
+      metadataType: MetadataType.Solution,
     }));
-  const releaseNoteInfoList: GuideInfo[] = strapiReleaseNotes
+  const releaseNoteInfoList: MetadataInfo[] = strapiReleaseNotes
     .filter((releaseNote) => !!releaseNote.attributes.dirName)
     .map((releaseNote) => ({
       versionName: '',
       isMainVersion: true,
       dirName: releaseNote.attributes.dirName,
-      guideSlug: releaseNote.attributes.slug,
+      slug: releaseNote.attributes.slug,
       productSlug:
         releaseNote.attributes.product?.data?.attributes?.slug ||
         'release-notes',
+      metadataType: MetadataType.ReleaseNote,
     }));
 
   const infoList = [
@@ -127,9 +142,10 @@ async function convertGuideToUrlParsingItems(
 
         const path = generateUrlPath(
           filePath,
-          docInfo.guideSlug,
+          docInfo.slug,
           docInfo.productSlug,
-          docInfo.versionName
+          docInfo.versionName,
+          docInfo.metadataType
         );
         item.guides.push({
           guidePath: filePath || '',
