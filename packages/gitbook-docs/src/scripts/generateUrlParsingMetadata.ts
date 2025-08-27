@@ -26,9 +26,9 @@ const URL_PARSING_METADATA_JSON_PATH =
 
 export type UrlParsingItem = {
   dirName: string;
-  guides: {
-    guidePath: string;
-    guideUrl: string;
+  docs: {
+    path: string;
+    url: string;
   }[];
 };
 
@@ -74,7 +74,7 @@ async function getMarkdownFilesRecursively(dir: string): Promise<string[]> {
 
   return files.flat();
 }
-async function convertGuideToUrlParsingItems(
+async function convertDocToUrlParsingItems(
   strapiGuides: StrapiGuide[],
   strapiSolutions: StrapiSolution[],
   strapiReleaseNotes: StrapiReleaseNote[]
@@ -123,33 +123,33 @@ async function convertGuideToUrlParsingItems(
   const items: UrlParsingItem[] = [];
   for (const docInfo of infoList) {
     if (docInfo.dirName) {
-      const guideDir = path.join(DOCUMENTATION_PATH, docInfo.dirName);
-      if (!fs.existsSync(guideDir)) {
-        console.warn(`Directory does not exist: ${guideDir}`);
+      const docDir = path.join(DOCUMENTATION_PATH, docInfo.dirName);
+      if (!fs.existsSync(docDir)) {
+        console.warn(`Directory does not exist: ${docDir}`);
         continue;
       }
-      const guideFiles = await getMarkdownFilesRecursively(guideDir);
-      const item = {
+      const docFiles = await getMarkdownFilesRecursively(docDir);
+      const item: UrlParsingItem = {
         dirName: docInfo.dirName,
-        guides: [] as { guidePath: string; guideUrl: string }[],
+        docs: [],
       };
-      for (const filePath of guideFiles) {
+      for (const filePath of docFiles) {
         const parts = filePath.split('/');
         if (parts.length <= 2) {
           continue;
         }
         if (!fs.existsSync(filePath)) continue;
 
-        const path = generateUrlPath(
+        const urlPath = generateUrlPath(
           filePath,
           docInfo.slug,
           docInfo.productSlug,
           docInfo.versionName,
           docInfo.metadataType
         );
-        item.guides.push({
-          guidePath: filePath || '',
-          guideUrl: path,
+        item.docs.push({
+          path: filePath || '',
+          url: urlPath,
         });
       }
       items.push(item);
@@ -199,13 +199,13 @@ async function main() {
     process.exit(1);
   }
   try {
-    const urlParsingItems = await convertGuideToUrlParsingItems(
+    const urlParsingItems = await convertDocToUrlParsingItems(
       strapiGuides,
       strapiSolutions,
       strapiReleaseNotes
     );
     console.log(
-      `Converted guides to ${urlParsingItems.length} url parsing items`
+      `Converted docs to ${urlParsingItems.length} url parsing items`
     );
     await writeFile(
       URL_PARSING_METADATA_JSON_PATH,

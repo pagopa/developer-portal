@@ -10,15 +10,15 @@ export const DOCUMENTATION_PATH =
 export type UrlParsingMetadata = {
   dirName: string;
   docs: {
-    docPath: string;
-    docUrl: string;
+    path: string;
+    url: string;
   }[];
 };
 
 export function parseUrlsFromMarkdown(
   fileContent: string,
-  guideMetadata: UrlParsingMetadata | undefined,
-  metadata: UrlParsingMetadata[] = [],
+  currentDocMetadata: UrlParsingMetadata | undefined,
+  allDocsMetadata: UrlParsingMetadata[] = [],
   filePath?: string
 ): string {
   // Regex to match markdown links: [link text](url)
@@ -31,7 +31,7 @@ export function parseUrlsFromMarkdown(
   // eslint-disable-next-line functional/no-let
   let updatedFileContent = fileContent;
   for (const match of allMatches) {
-    const replace = replaceUrl(guideMetadata, metadata, match[2]);
+    const replace = replaceUrl(currentDocMetadata, allDocsMetadata, match[2]);
     updatedFileContent = updatedFileContent.replaceAll(
       '(' + (match[2] || '') + ')',
       '(' + replace + ')'
@@ -50,11 +50,11 @@ export function parseUrlsFromMarkdown(
 // Transforms a relative URL into an absolute URL by matching it against guide metadata.
 // Handles various markdown file extensions and path formats to find the correct guide URL.
 export function replaceUrl(
-  metadata: UrlParsingMetadata | undefined,
-  fullMedatada: UrlParsingMetadata[] = [],
+  currentDocMetadata: UrlParsingMetadata | undefined,
+  allDocsMetadata: UrlParsingMetadata[] = [],
   value: string
 ): string {
-  if (!metadata) return value;
+  if (!currentDocMetadata) return value;
   // Clean up the URL by removing mentions, README.md, and .md extensions
   const splitValue = value
     .replace(' "mention"', '')
@@ -72,10 +72,10 @@ export function replaceUrl(
     return value;
   }
   // Find guides that contain the extracted name in their path
-  const docs = metadata.docs.filter((doc) => doc.docPath.includes(name));
+  const docs = currentDocMetadata.docs.filter((doc) => doc.path.includes(name));
   if (docs.length <= 0) {
     const dirName = value.split('/s/').slice(1)[0]?.split('/')[0];
-    const externalDocs = fullMedatada.filter(
+    const externalDocs = allDocsMetadata.filter(
       (g) => g.dirName.includes(name) || g.dirName === dirName
     );
     if (externalDocs.length > 0) {
@@ -85,17 +85,15 @@ export function replaceUrl(
   const subParts = value.includes('#') ? value.split('#').at(-1) : '';
   const urlEnding = subParts && subParts.length > 0 ? '#' + subParts : '';
   if (docs.length == 1) {
-    return docs[0].docUrl + urlEnding || value;
+    return docs[0].url + urlEnding || value;
   } else {
     // If multiple matches, try to find more specific match using parent directory
     const doc = docs
       .sort((doc1, doc2) => {
-        return doc1.docPath.length - doc2.docPath.length;
+        return doc1.path.length - doc2.path.length;
       })
-      .find((guide) =>
-        guide.docPath.includes([secondToLastPart, name].join('/'))
-      );
-    return doc ? doc?.docUrl + urlEnding : docs[0].docUrl + urlEnding;
+      .find((guide) => guide.path.includes([secondToLastPart, name].join('/')));
+    return doc ? doc?.url + urlEnding : docs[0].url + urlEnding;
   }
 }
 
