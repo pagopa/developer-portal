@@ -101,12 +101,11 @@ def read_payload(payload: dict) -> Tuple[List[Dict[str, str]], List[str]]:
 def lambda_handler(event, context):
     LOGGER.debug(f"event: {event}")
 
-    results = []
     static_docs_to_update, static_docs_ids_to_delete = read_payload(event)
     if len(static_docs_to_update) > 0 or len(static_docs_ids_to_delete) > 0:
-        res = VECTOR_INDEX.refresh_index_static_docs(
+        VECTOR_INDEX.refresh_index_static_docs(
             static_docs_to_update=static_docs_to_update,
             static_docs_ids_to_delete=static_docs_ids_to_delete,
         )
 
-    return {"statusCode": 200, "result": results, "event": event}
+    return {"statusCode": 200, "result": True, "event": event}
