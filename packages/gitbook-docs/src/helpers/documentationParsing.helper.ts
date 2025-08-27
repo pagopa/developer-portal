@@ -37,8 +37,8 @@ export function parseUrlsFromMarkdown(
       '(' + replace + ')'
     );
     updatedFileContent = updatedFileContent.replaceAll(
-      '"' + match[2] || '',
-      '"' + replace
+      '"' + (match[2] || '') + '"',
+      '"' + replace + '"'
     );
   }
   if (allMatches.length > 0) {
