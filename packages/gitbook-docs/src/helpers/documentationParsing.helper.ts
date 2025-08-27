@@ -90,9 +90,13 @@ export function replaceUrl(
     return guides[0].guideUrl + urlEnding || value;
   } else {
     // If multiple matches, try to find more specific match using parent directory
-    const guide = guides.find((guide) =>
-      guide.guidePath.includes([secondToLastPart, name].join('/'))
-    );
+    const guide = guides
+      .sort((guide1, guide2) => {
+        return guide1.guidePath.length - guide2.guidePath.length;
+      })
+      .find((guide) =>
+        guide.guidePath.includes([secondToLastPart, name].join('/'))
+      );
     return guide ? guide?.guideUrl + urlEnding : guides[0].guideUrl + urlEnding;
   }
 }
