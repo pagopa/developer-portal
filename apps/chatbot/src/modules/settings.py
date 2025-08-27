@@ -25,6 +25,11 @@ else:
 class ChatbotSettings(BaseSettings):
     """Settings for the chatbot application."""
 
+    # general
+    environment: str = os.getenv("environment", "dev")
+    cors_domains: str = os.getenv("CORS_DOMAINS", '["*"]')
+    log_level: str = os.getenv("LOG_LEVEL", "info")
+
     # api keys
     aws_access_key_id: str = os.getenv(
         "AWS_ACCESS_KEY_ID", os.getenv("CHB_AWS_ACCESS_KEY_ID")
@@ -93,6 +98,24 @@ class ChatbotSettings(BaseSettings):
     # urls
     redis_url: str = os.getenv("CHB_REDIS_URL")
     website_url: str = os.getenv("CHB_WEBSITE_URL")
+    dynamodb_url: str = os.getenv("AWS_ENDPOINT_URL_DYNAMODB")
+
+    # controller logic
+    max_daily_evaluations: int = int(os.getenv("CHB_MAX_DAILY_EVALUATIONS", "200"))
+    session_max_duration_days: float = float(
+        os.getenv("CHB_SESSION_MAX_DURATION_DAYS", "1")
+    )
+    table_prefix: str = os.getenv("CHB_QUERY_TABLE_PREFIX", "chatbot")
+    chatbot_generate_lambda_name: str = os.getenv(
+        "CHB_CHATBOT_GENERATE_LAMBDA_NAME", "local"
+    )
+    chatbot_mask_pii_lambda_name: str = os.getenv(
+        "CHB_CHATBOT_MASK_PII_LAMBDA_NAME", "local"
+    )
+    aws_sqs_queue_evaluate_name: str = os.getenv(
+        "CHB_AWS_SQS_QUEUE_EVALUATE_NAME", "chatbot-evaluate"
+    )
+    auth_cognito_userpool_id: str = os.getenv("AUTH_COGNITO_USERPOOL_ID")
 
 
 SETTINGS = ChatbotSettings()

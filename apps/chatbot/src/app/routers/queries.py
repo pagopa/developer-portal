@@ -1,7 +1,6 @@
 import datetime
 import nh3
 import json
-import os
 import uuid
 from botocore.exceptions import BotoCoreError, ClientError
 from boto3.dynamodb.conditions import Key
@@ -20,7 +19,7 @@ from src.app.sessions import (
     get_user_session,
 )
 from src.modules.logger import get_logger
-
+from src.modules.settings import SETTINGS
 
 LOGGER = get_logger(__name__)
 router = APIRouter()
@@ -134,8 +133,7 @@ def can_evaluate() -> bool:
     Decide whether to evaluate the query or not.
     This is based on the amount of daily query
     """
-    max_daily_evaluations = int(os.getenv("CHB_MAX_DAILY_EVALUATIONS", "200"))
-    return count_queries_created_today() < max_daily_evaluations
+    return count_queries_created_today() < SETTINGS.max_daily_evaluations
 
 
 def count_queries_created_today() -> int:

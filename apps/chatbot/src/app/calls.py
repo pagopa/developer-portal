@@ -1,12 +1,12 @@
 import boto3
-import os
 import requests
 
 from logging import getLogger
-from src.app.models import AWS_DEFAULT_REGION
+
+from src.modules.settings import SETTINGS
 
 logger = getLogger(__name__)
-lambda_client = boto3.client("lambda", region_name=AWS_DEFAULT_REGION)
+lambda_client = boto3.client("lambda", region_name=SETTINGS.aws_default_region)
 
 
 def chatbot_generate(payload: dict) -> dict:
@@ -14,7 +14,7 @@ def chatbot_generate(payload: dict) -> dict:
         "operation": "chat_generate",
         "payload": payload,
     }
-    if os.getenv("CHB_CHATBOT_GENERATE_LAMBDA_NAME") is None:
+    if SETTINGS.chatbot_generate_lambda_name == "local":
         response = requests.post(
             "http://core:8080/2015-03-31/functions/function/invocations",
             json=lambda_event,
@@ -24,7 +24,7 @@ def chatbot_generate(payload: dict) -> dict:
         response = response_json["result"]
     else:
         response = lambda_client.invoke(
-            FunctionName=os.getenv("CHB_CHATBOT_GENERATE_LAMBDA_NAME"),
+            FunctionName=SETTINGS.chatbot_generate_lambda_name,
             InvocationType="Event",
             Payload=bytes(str(lambda_event), encoding="utf-8"),
         )
@@ -39,7 +39,7 @@ def chatbot_mask_pii(string: str) -> str:
             "string": string,
         },
     }
-    if os.getenv("CHB_CHATBOT_MASK_PII_LAMBDA_NAME") is None:
+    if SETTINGS.chatbot_mask_pii_lambda_name == "local":
         response = requests.post(
             "http://core:8080/2015-03-31/functions/function/invocations",
             json=lambda_event,
@@ -49,33 +49,7 @@ def chatbot_mask_pii(string: str) -> str:
         response = response_json["result"]
     else:
         response = lambda_client.invoke(
-            FunctionName=os.getenv("CHB_CHATBOT_MASK_PII_LAMBDA_NAME"),
-            InvocationType="Event",
-            Payload=bytes(str(lambda_event), encoding="utf-8"),
-        )
-
-    return response
-
-
-def chatbot_evaluate(evaluation_data: dict) -> dict:
-    # TODO: not call lambda directly, use SQS instead.
-    if os.getenv("CHB_CHATBOT_EVALUATE_LAMBDA_NAME") is None:
-        lambda_event = {
-            "operation": "evaluate",
-            "payload": {
-                "evaluation_data": evaluation_data,
-            },
-        }
-        response = requests.post(
-            "http://core:8080/2015-03-31/functions/function/invocations",
-            json=lambda_event,
-        )
-        logger.info(f"[calls] lambda evaluate response={response}")
-        response_json = response.json()
-        response = response_json["result"]
-    else:
-        response = lambda_client.invoke(
-            FunctionName=os.getenv("CHB_CHATBOT_EVALUATE_LAMBDA_NAME"),
+            FunctionName=SETTINGS.chatbot_mask_pii_lambda_name,
             InvocationType="Event",
             Payload=bytes(str(lambda_event), encoding="utf-8"),
         )
