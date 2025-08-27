@@ -168,17 +168,17 @@ variable "chatbot_ecs_monitoring" {
 
 variable "chatbot_models" {
   type = object({
-    provider   = optional(string, "google")
-    generation = optional(string, "gemini-2.0-flash")
-    embeddings = optional(string, "text-embedding-004")
-    reranker   = optional(string, "semantic-ranker-512-003")
+    provider   = string
+    generation = string
+    embeddings = string
+    reranker   = string
   })
 
   default = {
     provider   = "google"
-    generation = "gemini-2.0-flash"
-    embeddings = "text-embedding-004"
-    reranker   = "semantic-ranker-512-003"
+    generation = "gemini-2.5-flash-lite"
+    embeddings = "gemini-embedding-001"
+    reranker   = "semantic-ranker-default-004"
   }
 
   description = "The models used by the AI chatbot"
