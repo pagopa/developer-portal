@@ -42,5 +42,3 @@ export const CaseHistoriesCodec = t.strict({
   data: t.array(CaseHistoryCodec),
   meta: PaginationCodec,
 });
-
-export type StrapiCaseHistories = t.TypeOf<typeof CaseHistoriesCodec>;
