@@ -1,5 +1,46 @@
 # nextjs-website
 
+## 8.5.3
+
+### Patch Changes
+
+- 58cee8b: Fix SyntaxHighlighter "split is not a function" error by improving data handling in code blocks
+- Updated dependencies [1b91366]
+- Updated dependencies [7e7d8ab]
+  - gitbook-docs@1.0.1
+
+## 8.5.2
+
+### Patch Changes
+
+- 970a6db: Removed legacy cache that was causing errors on open next environment
+
+## 8.5.1
+
+### Patch Changes
+
+- c2d3d47: Updated Next.js to version 14.2.30
+
+## 8.5.0
+
+### Minor Changes
+
+- d6f894f: Refactor Feedbackform and fix chat scrolling
+- 824b30a: Add limit to characters for user's name and family name. Adds nowrap to fields showing user name and family name
+
+### Patch Changes
+
+- b8a461a: Remove deprecated GitHub actions and workflows and remove unused scripts
+- 39151b5: Remove submodule: apps/nextjs-website/.tmp-docs
+- 54438da: Fix tooltip scroll bug
+- a4a3541: Update references to old secret
+- Updated dependencies [3d233b7]
+- Updated dependencies [6938692]
+- Updated dependencies [b8cc7a8]
+- Updated dependencies [6ecfd99]
+- Updated dependencies [719c746]
+  - gitbook-docs@1.0.0
+
 ## 8.4.0
 
 ### Minor Changes

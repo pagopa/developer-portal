@@ -1,5 +1,5 @@
 terraform {
-  required_version = "1.5.7"
+  required_version = "~> 1.13.0"
 
   backend "s3" {}
 
@@ -139,7 +139,7 @@ module "cms" {
   ac_integration_is_enabled = var.ac_integration_is_enabled
   ac_base_url_param         = var.ac_integration_is_enabled ? module.active_campaign[0].base_url_param : null
   ac_api_key_param          = var.ac_integration_is_enabled ? module.active_campaign[0].api_key_param : null
-
+  cms_app_image_tag         = var.cms_app_image_tag
   rds_scaling_configuration = var.rds_cms_scaling_configuration
 }
 
@@ -163,16 +163,16 @@ module "chatbot" {
   environment        = var.environment
   tags               = var.tags
 
-  website_bucket_name     = module.website.website_bucket.name
-  dns_chatbot_hosted_zone = module.core.dns_chatbot_hosted_zone
-  cognito_user_pool       = module.website.cognito_user_pool
-  vpc                     = module.cms.vpc
-  security_groups         = module.cms.security_groups
-  dns_domain_name         = var.dns_domain_name
-  ecs_redis               = var.chatbot_ecs_redis
-  github_repository       = var.github_repository
-  ecs_monitoring          = var.chatbot_ecs_monitoring
-  models                  = var.chatbot_models
+  s3_bucket_name_static_content = module.website.website_standalone_bucket.name
+  dns_chatbot_hosted_zone       = module.core.dns_chatbot_hosted_zone
+  cognito_user_pool             = module.website.cognito_user_pool
+  vpc                           = module.cms.vpc
+  security_groups               = module.cms.security_groups
+  dns_domain_name               = var.dns_domain_name
+  ecs_redis                     = var.chatbot_ecs_redis
+  github_repository             = var.github_repository
+  ecs_monitoring                = var.chatbot_ecs_monitoring
+  models                        = var.chatbot_models
 }
 
 module "cicd" {
@@ -195,8 +195,6 @@ module "cicd" {
   redis_port        = var.chatbot_ecs_redis.port
   github_repository = var.github_repository
 
-  website_bucket               = module.website.website_bucket
-  website_cdn                  = module.website.website_cdn
   opennext_cdn_distribution_id = module.website.opennext_cdn_distribution_id
 
   assets_opennext_bucket      = module.website.assets_opennext_bucket

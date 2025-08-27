@@ -18,26 +18,30 @@ export type UrlParsingMetadata = {
 export function parseUrlsFromMarkdown(
   fileContent: string,
   guideMetadata: UrlParsingMetadata | undefined,
+  metadata: UrlParsingMetadata[] = [],
   filePath?: string
 ): string {
   // Regex to match markdown links: [link text](url)
   // Captures: [1] = link text, [2] = URL
   const regex = /\[([^\]]+)]\(([^)]+)\)/g;
+  const tableRegex = /<a\s+(?:[^>]*?\s+)?href=(["'])(.*?)\1/g;
   const matches = [...fileContent.matchAll(regex)];
+  const tableMatches = [...fileContent.matchAll(tableRegex)];
+  const allMatches = matches.concat(tableMatches);
   // eslint-disable-next-line functional/no-let
   let updatedFileContent = fileContent;
-  for (const match of matches) {
-    const replace = replaceUrl(guideMetadata, match[2]);
+  for (const match of allMatches) {
+    const replace = replaceUrl(guideMetadata, metadata, match[2]);
     updatedFileContent = updatedFileContent.replaceAll(
-      '(' + match[2] || '',
-      '(' + replace
+      '(' + (match[2] || '') + ')',
+      '(' + replace + ')'
     );
     updatedFileContent = updatedFileContent.replaceAll(
       '"' + match[2] || '',
       '"' + replace
     );
   }
-  if (matches.length > 0) {
+  if (allMatches.length > 0) {
     console.log('Replaced URLs in file: ', filePath || '');
   }
   return updatedFileContent;
@@ -47,6 +51,7 @@ export function parseUrlsFromMarkdown(
 // Handles various markdown file extensions and path formats to find the correct guide URL.
 export function replaceUrl(
   metadata: UrlParsingMetadata | undefined,
+  fullMedatada: UrlParsingMetadata[] = [],
   value: string
 ): string {
   if (!metadata) return value;
@@ -72,7 +77,13 @@ export function replaceUrl(
     guide.guidePath.includes(name)
   );
   if (guides.length <= 0) {
-    return value;
+    const dirName = value.split('/s/').slice(1)[0]?.split('/')[0];
+    const externalGuide = fullMedatada.filter(
+      (g) => g.dirName.includes(name) || g.dirName === dirName
+    );
+    if (externalGuide.length > 0) {
+      guides.push(...externalGuide[0].guides);
+    } else return value;
   }
   const subParts = value.includes('#') ? value.split('#').at(-1) : '';
   const urlEnding = subParts && subParts.length > 0 ? '#' + subParts : '';
@@ -83,7 +94,7 @@ export function replaceUrl(
     const guide = guides.find((guide) =>
       guide.guidePath.includes([secondToLastPart, name].join('/'))
     );
-    return guide?.guideUrl + urlEnding || value;
+    return guide ? guide?.guideUrl + urlEnding : guides[0].guideUrl + urlEnding;
   }
 }
 

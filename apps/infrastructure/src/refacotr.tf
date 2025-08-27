@@ -76,3 +76,20 @@ moved {
   to   = module.chatbot[0].module.ecr["chatbot"]
   from = module.chatbot[0].module.ecr
 }
+
+moved {
+  from = module.chatbot[0].aws_iam_policy.lambda_s3_bedrock_policy
+  to   = module.chatbot[0].aws_iam_policy.lambda_s3_chatbot_policy
+}
+
+moved {
+  from = module.chatbot[0].aws_iam_role_policy_attachment.lambda_s3_bedrock_policy_attachment
+  to   = module.chatbot[0].aws_iam_role_policy_attachment.lambda_s3_chatbot_policy_attachment
+}
+
+removed {
+  from = module.website.aws_s3_bucket.website
+  lifecycle {
+    destroy = false
+  }
+}

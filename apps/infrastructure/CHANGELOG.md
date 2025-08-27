@@ -1,5 +1,17 @@
 # infrastructure
 
+## 3.0.0
+
+### Major Changes
+
+- 8ea97a0: Change the evaluate sqs queue to ordered fifo.
+
+## 2.1.4
+
+### Patch Changes
+
+- a4a3541: Update references to old secret
+
 ## 2.1.3
 
 ### Patch Changes
