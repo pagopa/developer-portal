@@ -1,11 +1,6 @@
 locals {
   lambda_env_variables = {
     AUTH_COGNITO_USERPOOL_ID           = var.cognito_user_pool.id
-    CHB_AWS_BEDROCK_EMBED_REGION       = "eu-central-1"
-    CHB_AWS_BEDROCK_LLM_REGION         = var.aws_chatbot_region
-    CHB_AWS_BEDROCK_RERANKER_REGION    = "eu-central-1"
-    CHB_AWS_GUARDRAIL_ID               = awscc_bedrock_guardrail.guardrail.guardrail_id
-    CHB_AWS_GUARDRAIL_VERSION          = awscc_bedrock_guardrail_version.guardrail.version
     CHB_AWS_S3_BUCKET                  = module.s3_bucket_llamaindex.s3_bucket_id
     CHB_AWS_SSM_GOOGLE_API_KEY         = module.google_api_key_ssm_parameter.ssm_parameter_name
     CHB_AWS_SSM_GOOGLE_SERVICE_ACCOUNT = module.google_service_account_ssm_parameter.ssm_parameter_name
@@ -27,20 +22,21 @@ locals {
     # Be extremely careful when changing the provider
     # both the generation and the embedding models would be changed
     # embeddings size change would break the application and requires reindexing
-    CHB_PROVIDER                    = var.models.provider
-    CHB_QUERY_TABLE_PREFIX          = local.prefix
-    CHB_REDIS_URL                   = "redis://${module.nlb.dns_name}:${var.ecs_redis.port}"
-    CHB_RERANKER_ID                 = var.models.reranker
-    CHB_USE_PRESIDIO                = "True"
-    CHB_WEBSITE_URL                 = "https://${var.dns_domain_name}"
-    CORS_DOMAINS                    = var.environment == "dev" ? jsonencode(["https://www.${var.dns_domain_name}", "https://${var.dns_domain_name}", "http://localhost:3000"]) : jsonencode(["https://www.${var.dns_domain_name}", "https://${var.dns_domain_name}"])
-    ENVIRONMENT                     = var.environment
-    LLAMA_INDEX_CACHE_DIR           = "/tmp"
-    LOG_LEVEL                       = "INFO"
-    NLTK_DATA                       = "_static/nltk_cache/"
-    TIKTOKEN_CACHE_DIR              = "/tmp/tiktoken"
-    CHB_AWS_SSM_STRAPI_API_KEY      = "/chatbot/chb_strapi_api_key"
-    CHB_AWS_SQS_QUEUE_EVALUATE_NAME = aws_sqs_queue.chatbot_evaluate_queue.name
+    CHB_PROVIDER                          = var.models.provider
+    CHB_QUERY_TABLE_PREFIX                = local.prefix
+    CHB_REDIS_URL                         = "redis://${module.nlb.dns_name}:${var.ecs_redis.port}"
+    CHB_RERANKER_ID                       = var.models.reranker
+    CHB_USE_PRESIDIO                      = "True"
+    CHB_WEBSITE_URL                       = "https://${var.dns_domain_name}"
+    CHB_AWS_S3_BUCKET_NAME_STATIC_CONTENT = var.s3_bucket_name_static_content
+    CORS_DOMAINS                          = var.environment == "dev" ? jsonencode(["https://www.${var.dns_domain_name}", "https://${var.dns_domain_name}", "http://localhost:3000"]) : jsonencode(["https://www.${var.dns_domain_name}", "https://${var.dns_domain_name}"])
+    ENVIRONMENT                           = var.environment
+    LLAMA_INDEX_CACHE_DIR                 = "/tmp"
+    LOG_LEVEL                             = "INFO"
+    NLTK_DATA                             = "_static/nltk_cache/"
+    TIKTOKEN_CACHE_DIR                    = "/tmp/tiktoken"
+    CHB_AWS_SSM_STRAPI_API_KEY            = "/chatbot/chb_strapi_api_key"
+    CHB_AWS_SQS_QUEUE_EVALUATE_NAME       = aws_sqs_queue.chatbot_evaluate_queue.name
   }
 }
 
@@ -251,8 +247,8 @@ resource "aws_iam_policy" "lambda_chatbot_ecr_access" {
 
 
 
-resource "aws_iam_policy" "lambda_s3_bedrock_policy" {
-  name = "chatbot-${var.environment}-api-lambda-s3-bedrock"
+resource "aws_iam_policy" "lambda_s3_chatbot_policy" {
+  name = "chatbot-${var.environment}-api-lambda-s3"
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -267,20 +263,6 @@ resource "aws_iam_policy" "lambda_s3_bedrock_policy" {
         Effect   = "Allow"
         Action   = "s3:*Object"
         Resource = ["${module.s3_bucket_llamaindex.s3_bucket_arn}/*", "${module.s3_bucket_kb.s3_bucket_arn}/*"]
-      },
-      {
-        Sid    = "BedrockPermissions"
-        Effect = "Allow"
-        Action = [
-          "bedrock:ApplyGuardrail",
-          "bedrock:ListGuardrails",
-          "bedrock:GetGuardrail",
-          "bedrock:InvokeModel",
-          "bedrock:InvokeModelWithResponseStream",
-          "bedrock:ListFoundationModels",
-          "bedrock:Rerank"
-        ]
-        Resource = "*"
       }
     ]
   })
@@ -358,9 +340,9 @@ resource "aws_iam_policy" "chatbot_monitor_queue" {
 }
 
 # IAM Role Policy Attachments
-resource "aws_iam_role_policy_attachment" "lambda_s3_bedrock_policy_attachment" {
+resource "aws_iam_role_policy_attachment" "lambda_s3_chatbot_policy_attachment" {
   role       = aws_iam_role.lambda_role.name
-  policy_arn = aws_iam_policy.lambda_s3_bedrock_policy.arn
+  policy_arn = aws_iam_policy.lambda_s3_chatbot_policy.arn
 }
 
 resource "aws_iam_role_policy_attachment" "lambda_dynamodb_policy_attachment" {

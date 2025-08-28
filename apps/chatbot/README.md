@@ -40,17 +40,20 @@ In this way, `PYTHONPATH` points to where the Python packages and modules are, n
 
 ## Knowledge index vector database
 
-To reach the remote redis instance, it is necessary to open a tunnel:
-
-    ./scripts/redis-tunnel.sh
-
-Verify that the HTML files that compose the Developer Portal documentation exist in a directory. Otherwise create the documentation. Once you have the documentation directory ready, put its path in `params` and, in the end, create the vector index doing:
+In order to create the vector index, do:
 
     python src/modules/create_vector_index.py --params config/params.yaml
 
-This script reads the documentation, split it into chucks with gerarchical organization, and stores it on Redis.
+This script:
 
-Check out the params in order to store your vector index accordingly.
+- gets the URLs that are present in the Developer Portal from the `sitemap.xml`,
+- reads the static documents (i.e. guides) from `.md` files stored in AWS S3,
+- reads the dynamic documents (i.e. webinars) opening a chrome browser,
+- splits the fetched documents into chucks,
+- creates the vector index,
+- stores the vector index in Redis.
+
+Check out the `params` in order to store your vector index accordingly.
 
 ## Test
 
@@ -60,33 +63,37 @@ In order to test the chatbot and its APIs, run:
 
     pytest
 
-For more details, read [TESTBOOK.md](https://github.com/pagopa/developer-portal/blob/main/apps/chatbot/TESTBOOK.md).
-
 ### API
 
 The working directory is `apps/chatbot`.
 
 In order to run all API test, just launch
+
 ```
 ./docker/docker-compose-run-tests.sh
 ```
 
 If you want to run only a subset of tests, enter into the container bash
+
 ```
 docker compose -f docker/compose.test.yaml -p chatbot-test run bash
 ```
 
-Initialize dynamodb and redis (these are the first two steps of `./scripts/run.test.sh`:
+Initialize dynamodb and redis (these are the first two steps of `./scripts/run.test.sh`):
+
 ```
 ./scripts/dynamodb-init-test.sh
-poetry run python src/modules/create_vector_index.py --params config/params.yaml
+poetry run python src/modules/create_vector_index.py
 ```
+
 then launch a test, ex
+
 ```
 poetry run pytest src/app/routers/test_sessions.py::test_query_feedback
 ```
 
 When you're done, shut down all the containers with
+
 ```
 ./docker/docker-compose-down-tests.sh
 ```

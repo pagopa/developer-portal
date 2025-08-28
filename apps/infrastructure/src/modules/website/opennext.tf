@@ -80,7 +80,7 @@ module "opennext" {
 
   server = {
     environment_variables = {
-      COOKIE_DOMAIN_SCRIPT                        = aws_ssm_parameter.cookie_domain_script.value # TODO: this should be removed since it's a duplicate of NEXT_PUBLIC_COOKIE_DOMAIN_SCRIPT
+      NEXT_PUBLIC_COOKIE_DOMAIN_SCRIPT            = aws_ssm_parameter.cookie_domain_script.value
       ENVIRONMENT                                 = var.environment
       FETCH_FROM_STRAPI                           = "true"
       NEXT_PUBLIC_CHATBOT_ACTIVE                  = var.create_chatbot ? "true" : "false"
@@ -136,7 +136,6 @@ resource "aws_iam_policy" "docs" {
         ]
         Effect = "Allow"
         Resource = [
-          "${aws_s3_bucket.website.arn}/*",
           "${aws_s3_bucket.website_standalone.arn}/*"
         ]
       },
@@ -146,7 +145,6 @@ resource "aws_iam_policy" "docs" {
         ]
         Effect = "Allow"
         Resource = [
-          aws_s3_bucket.website.arn,
           aws_s3_bucket.website_standalone.arn
         ]
       }
