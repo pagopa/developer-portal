@@ -403,7 +403,7 @@ apps/chatbot/*.ipynb
 apps/chatbot/results
 apps/chatbot/test.py
 !apps/chatbot/docker
-app/chabot/docker/volume
+apps/chatbot/docker/volume
 apps/chatbot/.env
 apps/chatbot/empty_htmls.json
 apps/chatbot/.google_service_account.json
