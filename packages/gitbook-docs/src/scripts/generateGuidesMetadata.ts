@@ -16,7 +16,7 @@ import {
   fetchFromStrapi,
   getResponseFromStrapi,
 } from '../helpers/fetchFromStrapi';
-import { StrapiGuide, GuideInfo } from '../helpers/guidesMetadataHelper';
+import { StrapiGuide, MetadataInfo } from '../helpers/guidesMetadataHelper';
 import { sitePathFromS3Path } from '../helpers/sitePathFromS3Path';
 
 // Load environment variables from .env file
@@ -50,14 +50,14 @@ function generateUrlPath(
 async function convertGuideToSitemapItems(
   strapiGuides: StrapiGuide[]
 ): Promise<SitemapItem[]> {
-  const guideInfoList: GuideInfo[] = strapiGuides
+  const guideInfoList: MetadataInfo[] = strapiGuides
     .filter((guide) => !!guide.attributes.product?.data?.attributes?.slug)
     .flatMap((guide) =>
       guide.attributes.versions.map((version) => ({
         versionName: version.version,
         isMainVersion: version.main,
         dirName: version.dirName,
-        guideSlug: guide.attributes.slug,
+        slug: guide.attributes.slug,
         productSlug: `${guide.attributes.product?.data?.attributes?.slug}`,
       }))
     );
@@ -92,7 +92,7 @@ async function convertGuideToSitemapItems(
       if (menuPath && content) {
         const path = generateUrlPath(
           filePath,
-          guideInfo.guideSlug,
+          guideInfo.slug,
           guideInfo.productSlug,
           guideInfo.versionName
         );
@@ -108,7 +108,7 @@ async function convertGuideToSitemapItems(
         if (guideInfo.isMainVersion) {
           const path = generateUrlPath(
             filePath,
-            guideInfo.guideSlug,
+            guideInfo.slug,
             guideInfo.productSlug
           );
           items.push({

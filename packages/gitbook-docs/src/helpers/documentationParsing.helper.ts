@@ -9,36 +9,39 @@ export const DOCUMENTATION_PATH =
   process.env.DOCUMENTATION_PATH || '../../devportal-docs/docs';
 export type UrlParsingMetadata = {
   dirName: string;
-  guides: {
-    guidePath: string;
-    guideUrl: string;
+  docs: {
+    path: string;
+    url: string;
   }[];
 };
 
 export function parseUrlsFromMarkdown(
   fileContent: string,
-  guideMetadata: UrlParsingMetadata | undefined,
-  metadata: UrlParsingMetadata[] = [],
+  currentDocMetadata: UrlParsingMetadata | undefined,
+  allDocsMetadata: UrlParsingMetadata[] = [],
   filePath?: string
 ): string {
   // Regex to match markdown links: [link text](url)
   // Captures: [1] = link text, [2] = URL
   const regex = /\[([^\]]+)]\(([^)]+)\)/g;
+  const tableRegex = /<a\s+(?:[^>]*?\s+)?href=(["'])(.*?)\1/g;
   const matches = [...fileContent.matchAll(regex)];
+  const tableMatches = [...fileContent.matchAll(tableRegex)];
+  const allMatches = matches.concat(tableMatches);
   // eslint-disable-next-line functional/no-let
   let updatedFileContent = fileContent;
-  for (const match of matches) {
-    const replace = replaceUrl(guideMetadata, metadata, match[2]);
+  for (const match of allMatches) {
+    const replace = replaceUrl(currentDocMetadata, allDocsMetadata, match[2]);
     updatedFileContent = updatedFileContent.replaceAll(
-      '(' + match[2] || '',
-      '(' + replace
+      '(' + (match[2] || '') + ')',
+      '(' + replace + ')'
     );
     updatedFileContent = updatedFileContent.replaceAll(
-      '"' + match[2] || '',
-      '"' + replace
+      '"' + (match[2] || '') + '"',
+      '"' + replace + '"'
     );
   }
-  if (matches.length > 0) {
+  if (allMatches.length > 0) {
     console.log('Replaced URLs in file: ', filePath || '');
   }
   return updatedFileContent;
@@ -47,15 +50,14 @@ export function parseUrlsFromMarkdown(
 // Transforms a relative URL into an absolute URL by matching it against guide metadata.
 // Handles various markdown file extensions and path formats to find the correct guide URL.
 export function replaceUrl(
-  metadata: UrlParsingMetadata | undefined,
-  fullMedatada: UrlParsingMetadata[] = [],
+  currentDocMetadata: UrlParsingMetadata | undefined,
+  allDocsMetadata: UrlParsingMetadata[] = [],
   value: string
 ): string {
-  if (!metadata) return value;
+  if (!currentDocMetadata) return value;
   // Clean up the URL by removing mentions, README.md, and .md extensions
   const splitValue = value
     .replace(' "mention"', '')
-    .replace('README.md', '')
     .replace('.md', '')
     .split('/')
     .filter((val) => {
@@ -70,25 +72,28 @@ export function replaceUrl(
     return value;
   }
   // Find guides that contain the extracted name in their path
-  const guides = metadata.guides.filter((guide) =>
-    guide.guidePath.includes(name)
-  );
-  if (guides.length <= 0) {
-    const externalGuide = fullMedatada.filter((g) => g.dirName.includes(name));
-    if (externalGuide.length > 0) {
-      guides.push(...externalGuide[0].guides);
+  const docs = currentDocMetadata.docs.filter((doc) => doc.path.includes(name));
+  if (docs.length <= 0) {
+    const dirName = value.split('/s/').slice(1)[0]?.split('/')[0];
+    const externalDocs = allDocsMetadata.filter(
+      (g) => g.dirName.includes(name) || g.dirName === dirName
+    );
+    if (externalDocs.length > 0) {
+      docs.push(...externalDocs[0].docs);
     } else return value;
   }
   const subParts = value.includes('#') ? value.split('#').at(-1) : '';
   const urlEnding = subParts && subParts.length > 0 ? '#' + subParts : '';
-  if (guides.length == 1) {
-    return guides[0].guideUrl + urlEnding || value;
+  if (docs.length == 1) {
+    return docs[0].url + urlEnding || value;
   } else {
     // If multiple matches, try to find more specific match using parent directory
-    const guide = guides.find((guide) =>
-      guide.guidePath.includes([secondToLastPart, name].join('/'))
-    );
-    return guide ? guide?.guideUrl + urlEnding : guides[0].guideUrl + urlEnding;
+    const doc = docs
+      .sort((doc1, doc2) => {
+        return doc1.path.length - doc2.path.length;
+      })
+      .find((guide) => guide.path.includes([secondToLastPart, name].join('/')));
+    return doc ? doc?.url + urlEnding : docs[0].url + urlEnding;
   }
 }
 
