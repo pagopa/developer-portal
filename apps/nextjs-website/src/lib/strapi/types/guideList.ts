@@ -1,8 +1,8 @@
 import { BaseGuide } from '@/lib/strapi/types/guide';
-import { StrapiBaseProductWithRelations } from '@/lib/strapi/codecs/ProductCodec';
 import { StrapiSeo } from '@/lib/strapi/types/seo';
 import { StrapiBannerLink } from '@/lib/strapi/types/bannerLink';
 import { Paginated } from '@/lib/strapi/types/paginated';
+import { StrapiBaseProductWithRelations } from '@/lib/strapi/types/product';
 
 export type GuideListPage = {
   readonly id: number;

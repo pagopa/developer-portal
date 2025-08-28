@@ -1,9 +1,10 @@
+import { Product } from '@/lib/types/product';
+import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
 import {
   StrapiBaseProductWithRelations,
+  StrapiProduct,
   StrapiProducts,
-} from '../codecs/ProductCodec';
-import { Product } from '../../types/product';
-import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
+} from '@/lib/strapi/types/product';
 
 export function makeProductsProps(
   strapiProducts: StrapiProducts
@@ -11,11 +12,11 @@ export function makeProductsProps(
   return strapiProducts.data.map(makeProductProps);
 }
 
-export function makeProductProps(product: StrapiProducts['data'][0]): Product {
+export function makeProductProps(product: StrapiProduct): Product {
   return {
     ...makeBaseProductWithoutLogoProps(product),
     description: product.attributes.description,
-    logo: product.attributes.logo?.data.attributes,
+    logo: product.attributes.logo?.data?.attributes,
   };
 }
 

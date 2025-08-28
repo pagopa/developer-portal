@@ -1,8 +1,8 @@
 import { BaseTutorial } from '@/lib/strapi/types/tutorial';
 import { StrapiBannerLink } from '@/lib/strapi/types/bannerLink';
-import { StrapiBaseProductWithRelations } from '@/lib/strapi/codecs/ProductCodec';
 import { StrapiSeo } from '@/lib/strapi/types/seo';
 import { Paginated } from '@/lib/strapi/types/paginated';
+import { StrapiBaseProductWithRelations } from '@/lib/strapi/types/product';
 
 export type TutorialsListPage = {
   readonly id: number;

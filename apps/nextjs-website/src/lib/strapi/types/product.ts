@@ -1,5 +1,11 @@
 import { StrapiBannerLink } from '@/lib/strapi/types/bannerLink';
 import { StrapiMedia } from '@/lib/strapi/types/media';
+import { StrapiComponent } from './strapiComponent';
+import { ApiDataListPageWithoutProduct } from './apiDataListPages';
+
+type Id = {
+  readonly id: number;
+};
 
 export type BaseProduct = {
   readonly attributes: {
@@ -24,67 +30,48 @@ export type BaseProductWithoutBannerLinks = BaseProduct & {
   };
 };
 
-type StrapiUrl = {
-  readonly id: number;
-  readonly name?: string;
-  readonly url: string;
-  readonly hideTryIt: boolean;
-};
-
-export type ApiDataListPage = {
-  readonly data?: {
-    readonly id: number;
-    readonly attributes: {
-      readonly apiData: {
-        readonly data: readonly [
-          {
-            readonly id: number;
-            readonly attributes: {
-              readonly apiRestDetail?: {
-                readonly slug: string;
-                readonly specUrl: StrapiUrl;
-              };
-              readonly apiSoapDetail?: {
-                readonly slug: string;
-                readonly repositoryUrl: string;
-                readonly dirName: string;
-              };
-            };
-          }
-        ];
-      };
-    };
-  };
-};
-
 export type ProductRelations = {
-  readonly overview: {
-    readonly data?: {
-      readonly id: number;
-    };
-  };
-  readonly quickstart_guide: {
-    readonly data?: {
-      readonly id: number;
-    };
-  };
-  readonly api_data_list_page: ApiDataListPage;
-  readonly tutorial_list_page?: {
-    readonly data?: {
-      readonly id: number;
-    };
-  };
-  readonly guide_list_page: {
-    readonly data?: {
-      readonly id: number;
-    };
-  };
-  readonly release_note: {
-    readonly data?: {
-      readonly id: number;
-    };
+  readonly overview: StrapiComponent<Id | undefined>;
+  readonly quickstart_guide: StrapiComponent<Id | undefined>;
+  readonly api_data_list_page: StrapiComponent<
+    ApiDataListPageWithoutProduct | undefined
+  >;
+  readonly tutorial_list_page: StrapiComponent<Id | undefined>;
+  readonly guide_list_page: StrapiComponent<Id | undefined>;
+  readonly release_note: StrapiComponent<Id | undefined>;
+};
+
+export type StrapiBaseProductWithRelations = BaseProduct & {
+  readonly attributes: ProductRelations & {
+    readonly bannerLinks?: readonly StrapiBannerLink[];
   };
 };
+
+// export type ApiDataListPage = {
+//   readonly data?: {
+//     readonly id: number;
+//     readonly attributes: {
+//       readonly apiData: {
+//         readonly data: readonly [
+//           {
+//             readonly id: number;
+//             readonly attributes: {
+//               readonly apiRestDetail?: {
+//                 readonly slug: string;
+//                 readonly specUrl: StrapiUrl;
+//               };
+//               readonly apiSoapDetail?: {
+//                 readonly slug: string;
+//                 readonly repositoryUrl: string;
+//                 readonly dirName: string;
+//               };
+//             };
+//           }
+//         ];
+//       };
+//     };
+//   };
+// };
 
 export type StrapiProduct = {
   readonly attributes: BaseProduct['attributes'] &
@@ -92,7 +79,9 @@ export type StrapiProduct = {
       readonly bannerLinks?: readonly StrapiBannerLink[];
       readonly description?: string;
       readonly logo: {
-        readonly data?: StrapiMedia;
+        readonly data: StrapiMedia;
       };
     };
 };
+
+export type StrapiProducts = StrapiComponent<readonly StrapiProduct[]>;

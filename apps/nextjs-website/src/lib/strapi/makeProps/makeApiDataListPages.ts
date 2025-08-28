@@ -1,7 +1,7 @@
 import { ApiDataListPageTemplateProps } from '@/components/templates/ApiDataListTemplate/ApiDataListTemplate';
-import { StrapiApiDataListPages } from '../codecs/ApiDataListPagesCodec';
 import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
-import { makeBaseProductWithoutLogoProps } from './makeProducts';
+import { makeBaseProductWithoutLogoProps } from '@/lib/strapi/makeProps/makeProducts';
+import { StrapiApiDataListPages } from '@/lib/strapi/types/apiDataListPages';
 
 export function makeApiDataListPagesProps(
   strapiApiDataListPages: StrapiApiDataListPages
@@ -44,7 +44,7 @@ export function makeApiDataListPagesProps(
         .filter((card) => card.title && !!card.tags),
       bannerLinks: attributes.bannerLinks.map(makeBannerLinkProps),
       seo: attributes.seo,
-      updatedAt: attributes.updatedAt.toISOString(),
+      updatedAt: attributes.updatedAt,
     };
   });
 }

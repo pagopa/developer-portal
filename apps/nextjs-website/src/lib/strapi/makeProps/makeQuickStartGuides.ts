@@ -1,18 +1,18 @@
 import { QuickStartGuidePageProps } from '@/app/[productSlug]/quick-start/page';
-import { StrapiQuickStartGuides } from '../codecs/QuickStartGuidesCodec';
 import { Part } from '../../types/part';
 import { Step } from '../../types/step';
 import { makePartProps } from '@/lib/strapi/makeProps/makePart';
 import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
 import { makeBaseProductWithoutLogoProps } from './makeProducts';
 import { StrapiPart } from '@/lib/strapi/types/part';
+import {
+  QuickStartGuideItem,
+  StrapiQuickStartGuides,
+} from '@/lib/strapi/types/quickStartGuides';
 
 export type QuickStartGuidesPageProps = readonly QuickStartGuidePageProps[];
 
-type QuickstartGuideItem =
-  StrapiQuickStartGuides['data'][0]['attributes']['quickstartGuideItems']['data'][0];
-
-function makeStepFromQuickstartGuideItems(item: QuickstartGuideItem): Step {
+function makeStepFromQuickstartGuideItems(item: QuickStartGuideItem): Step {
   return {
     anchor: item.attributes.anchor,
     title: item.attributes.title,
@@ -31,7 +31,7 @@ export function makeQuickStartGuidesProps(
         title: quickStart.attributes.title,
         description: quickStart.attributes.description,
       },
-      updatedAt: quickStart.attributes.updatedAt.toISOString(),
+      updatedAt: quickStart.attributes.updatedAt,
       defaultStepAnchor:
         quickStart.attributes.quickstartGuideItems.data[0].attributes.anchor,
       product: makeBaseProductWithoutLogoProps(

@@ -1,8 +1,8 @@
 import { ApiDataPageProps } from '@/app/[productSlug]/api/[apiDataSlug]/page';
-import { StrapiApiDataList } from '../codecs/ApiDataListCodec';
 import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
-import { makeBaseProductWithoutLogoProps } from './makeProducts';
+import { makeBaseProductWithoutLogoProps } from '@/lib/strapi/makeProps/makeProducts';
 import { makeApiSoapUrlList } from '@/lib/strapi/makeProps/makeApiSoapUrlList';
+import { StrapiApiDataList } from '@/lib/strapi/types/apiDataList';
 
 export async function makeApiDataListProps(
   strapiApiDataList: StrapiApiDataList
