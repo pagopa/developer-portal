@@ -44,8 +44,8 @@ import {
   fetchResponseFromCDN,
   JsonMetadata,
 } from '@/helpers/s3Metadata.helpers';
-import { StrapiGuideListPages } from './strapi/codecs/GuideListPagesCodec';
-import { StrapiGuides } from './strapi/codecs/GuidesCodec';
+import { StrapiGuideListPages } from '@/lib/strapi/types/guideList';
+import { StrapiGuides } from '@/lib/strapi/types/guide';
 
 // a BuildEnv instance ready to be used
 const buildEnv = pipe(

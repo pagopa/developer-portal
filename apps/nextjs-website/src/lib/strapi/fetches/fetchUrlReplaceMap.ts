@@ -1,4 +1,4 @@
-import { fetchFromStrapi } from '../fetchFromStrapi';
+import { deprecatedFetchFromStrapi } from '../fetchFromStrapi';
 import { UrlReplaceMapCodec } from '../codecs/UrlReplaceMapCodec';
 import qs from 'qs';
 
@@ -15,7 +15,7 @@ const makeStrapiUrlReplaceMapPopulate = () =>
     },
   });
 
-export const fetchUrlReplaceMap = fetchFromStrapi(
+export const fetchUrlReplaceMap = deprecatedFetchFromStrapi(
   'url-replace-map',
   makeStrapiUrlReplaceMapPopulate(),
   UrlReplaceMapCodec
