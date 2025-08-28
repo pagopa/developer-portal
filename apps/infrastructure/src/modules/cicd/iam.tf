@@ -101,6 +101,11 @@ resource "aws_iam_role_policy_attachment" "github_deploy_opennext" {
   policy_arn = aws_iam_policy.github_deploy_opennext.arn
 }
 
+resource "aws_iam_role_policy_attachment" "code_build_deploy_opennext" {
+  role       = module.codebuild.iam_role.name
+  policy_arn = aws_iam_policy.github_deploy_opennext.arn
+}
+
 resource "aws_iam_role" "github_chatbot_reindex" {
   name               = "${local.prefix}-chatbot-reindex"
   description        = "Role to reindex chatbot data."
