@@ -1,6 +1,6 @@
 import { StrapiSolutions } from '../codecs/SolutionsCodec';
 import { SolutionTemplateProps } from '@/components/templates/SolutionTemplate/SolutionTemplate';
-import { makeWebinarFromStrapi } from './makeWebinars';
+import { deprecatedMakeWebinarFromStrapi } from './makeWebinars';
 
 export function makeSolutionsProps(
   strapiSolutions: StrapiSolutions
@@ -19,7 +19,7 @@ export function makeSolutionsProps(
     })),
     icon: attributes.icon.data.attributes,
     webinars: attributes.webinars.data.map((webinar) =>
-      makeWebinarFromStrapi(webinar)
+      deprecatedMakeWebinarFromStrapi(webinar)
     ),
     bannerLinks: attributes.bannerLinks.map((bannerLink) => ({
       ...bannerLink,

@@ -1,15 +1,15 @@
-export type MediaAttributes = {
+export type Media = {
   readonly name: string;
-  readonly alternativeText?: string | null;
-  readonly caption?: string | null;
-  readonly width?: number | null;
-  readonly height?: number | null;
-  readonly size: number;
   readonly ext: string;
   readonly mime: string;
+  readonly size: number;
   readonly url: string;
+  readonly alternativeText?: string;
+  readonly caption?: string;
+  readonly height?: number;
+  readonly width?: number;
 };
 
-export type Media = {
-  readonly attributes: MediaAttributes;
+export type StrapiMedia = {
+  readonly attributes: Media;
 };
