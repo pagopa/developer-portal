@@ -1,5 +1,5 @@
 import * as qs from 'qs';
-import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
+import { deprecatedFetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
 import { productRelationsPopulate } from './fetchProducts';
 import { ReleaseNotesCodec } from '@/lib/strapi/codecs/ReleaseNotesCodec';
 
@@ -22,7 +22,7 @@ const makeStrapiReleaseNotesPopulate = () =>
     ...releaseNotesPopulate,
   });
 
-export const fetchReleaseNotes = fetchFromStrapi(
+export const fetchReleaseNotes = deprecatedFetchFromStrapi(
   'release-notes',
   makeStrapiReleaseNotesPopulate(),
   ReleaseNotesCodec
@@ -39,7 +39,7 @@ const makeStrapiReleaseNotePopulate = (productSlug: string) =>
   });
 
 export const fetchReleaseNote = (productSlug: string) =>
-  fetchFromStrapi(
+  deprecatedFetchFromStrapi(
     'release-notes',
     makeStrapiReleaseNotePopulate(productSlug),
     ReleaseNotesCodec
