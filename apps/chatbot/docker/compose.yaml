@@ -24,6 +24,8 @@ services:
         condition: service_started
       evaluate:
         condition: service_started
+      jupyter:
+        condition: service_started
     networks:
       - ntw
 
