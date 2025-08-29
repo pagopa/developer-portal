@@ -49,7 +49,8 @@ async def query_creation(
     }
 
     answer_json = chatbot_generate(lambda_payload)
-    answer = answer_json.get("final_response", "")
+    LOGGER.debug(f"-------------->>>> answer_json: {answer_json.keys()}")
+    answer = answer_json.get("response", "")
 
     if can_evaluate():
         evaluation_data = {
