@@ -14,11 +14,10 @@ on:
           - uat
           - prod
 
-  #TODO enable when the env can be shared from the Sync GitBook Docs workflow
-  #workflow_run:
-  #  workflows:
-  #    - Sync GitBook Docs
-  #  types: [completed]
+  workflow_run:
+    workflows:
+      - Sync GitBook Docs
+    types: [completed]
 
   # Allows external webhook trigger
   repository_dispatch:
