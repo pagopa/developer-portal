@@ -31,9 +31,9 @@ variable "aws_chatbot_region" {
   description = "AWS region to create AI chatbot's resources"
 }
 
-variable "website_bucket_name" {
+variable "s3_bucket_name_static_content" {
   type        = string
-  description = "The name of the website bucket"
+  description = "The name of the S3 bucket for static content"
 }
 
 variable "dns_chatbot_hosted_zone" {

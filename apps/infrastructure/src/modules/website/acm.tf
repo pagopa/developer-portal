@@ -36,17 +36,3 @@ resource "aws_acm_certificate" "static_contents" {
   # TLS certificate generated in us-east because it is related to the CDN which is a global resource
   provider = aws.us-east-1
 }
-
-
-resource "aws_acm_certificate" "static_website" {
-  domain_name               = local.domain_name_static_website
-  subject_alternative_names = [format("www.%s", local.domain_name_static_website), ]
-  validation_method         = "DNS"
-
-  lifecycle {
-    create_before_destroy = true
-  }
-
-  # TLS certificate generated in us-east because it is related to the CDN which is a global resource
-  provider = aws.us-east-1
-}
