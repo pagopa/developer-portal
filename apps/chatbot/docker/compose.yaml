@@ -24,8 +24,6 @@ services:
         condition: service_started
       evaluate:
         condition: service_started
-      jupyter:
-        condition: service_started
     networks:
       - ntw
 
@@ -55,6 +53,7 @@ services:
       - PYTHONPATH=/var/task
     ports:
       - "8082:8080"
+      - "8888:8888"
     volumes:
       - ../chatbot-core:/app
       - ~/.aws-lambda-rie/aws-lambda-rie:/usr/local/bin/aws-lambda-rie
@@ -124,7 +123,23 @@ services:
     networks:
       - ntw
 
-  jupyter:
+  # jupyter:
+  # build:
+  #   context: ..
+  #   dockerfile: docker/app.local.Dockerfile
+  # ports:
+  #   - 8888:8888
+  # env_file: ../.env.local
+  # depends_on:
+  #   redis:
+  #     condition: service_started
+  #   langfuse:
+  #     condition: service_started
+  # command: jupyter-lab --no-browser --allow-root --ip=0.0.0.0
+  # networks:
+  #   - ntw
+
+  jupyter-core:
     build:
       context: ../../chatbot-core
       dockerfile: ../chatbot-core/docker/lambda.Dockerfile
@@ -135,6 +150,8 @@ services:
       redis:
         condition: service_started
       langfuse:
+        condition: service_started
+      localstack:
         condition: service_started
     command: jupyter-lab --no-browser --allow-root --ip=0.0.0.0
     networks:

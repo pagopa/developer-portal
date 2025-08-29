@@ -1,5 +1,6 @@
+---
 vector_index:
-  index-id: discovery-index
+  path: index
   chunk_size: 1024
   chunk_overlap: 25
 
