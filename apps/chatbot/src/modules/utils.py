@@ -1,19 +1,9 @@
 import boto3
 
 from src.modules.logger import get_logger
-from src.modules.settings import SETTINGS
+from src.modules.settings import SSM_CLIENT
 
 LOGGER = get_logger(__name__)
-
-
-def get_ssm_client():
-    return boto3.client(
-        "ssm",
-        aws_access_key_id=SETTINGS.aws_access_key_id,
-        aws_secret_access_key=SETTINGS.aws_secret_access_key,
-        region_name=SETTINGS.aws_default_region,
-        endpoint_url=SETTINGS.aws_endpoint_url,
-    )
 
 
 def get_ssm_parameter(name: str | None, default: str | None = None) -> str | None:
@@ -25,15 +15,18 @@ def get_ssm_parameter(name: str | None, default: str | None = None) -> str | Non
     :return: The value of the requested parameter.
     """
 
-    SSM_CLIENT = get_ssm_client()
+    LOGGER.info(f"get_ssm_parameter {name}...")
 
     if name is None:
-        name = "none-params-in-ssm"
+        name = "/none/param"
     try:
         # Get the requested parameter
         response = SSM_CLIENT.get_parameter(Name=name, WithDecryption=True)
         value = response["Parameter"]["Value"]
     except SSM_CLIENT.exceptions.ParameterNotFound:
+        LOGGER.warning(
+            f"Parameter {name} not found in SSM, returning default: {default}"
+        )
         return default
 
     return value
@@ -45,8 +38,6 @@ def put_ssm_parameter(name: str, value: str) -> None:
     :param name: The name of the parameter to put.
     :param value: The value to store in the parameter.
     """
-
-    SSM_CLIENT = get_ssm_client()
 
     LOGGER.debug(f"Putting parameter {name} to SSM")
     try:

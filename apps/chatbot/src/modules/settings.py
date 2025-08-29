@@ -17,6 +17,13 @@ AWS_ENDPOINT_URL = os.getenv("AWS_ENDPOINT_URL")
 AWS_SECRET_ACCESS_KEY = os.getenv(
     "AWS_SECRET_ACCESS_KEY", os.getenv("CHB_AWS_SECRET_ACCESS_KEY")
 )
+SSM_CLIENT = boto3.client(
+    "ssm",
+    aws_access_key_id=AWS_ACCESS_KEY_ID,
+    aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
+    region_name=AWS_DEFAULT_REGION,
+    endpoint_url=AWS_ENDPOINT_URL,
+)
 
 
 def get_ssm_parameter(name: str | None, default: str | None = None) -> str | None:
@@ -27,13 +34,6 @@ def get_ssm_parameter(name: str | None, default: str | None = None) -> str | Non
     :param default: The default value to return if the parameter is not found.
     :return: The value of the requested parameter.
     """
-    SSM_CLIENT = boto3.client(
-        "ssm",
-        aws_access_key_id=AWS_ACCESS_KEY_ID,
-        aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
-        region_name=AWS_DEFAULT_REGION,
-        endpoint_url=AWS_ENDPOINT_URL,
-    )
 
     if name is None:
         name = "none-params-in-ssm"
