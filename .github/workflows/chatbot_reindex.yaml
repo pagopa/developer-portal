@@ -17,7 +17,7 @@ on:
   workflow_run:
     workflows:
       - Sync GitBook Docs
-    types: [completed]
+    types: [ completed ]
 
   # Allows external webhook trigger
   repository_dispatch:
@@ -38,7 +38,7 @@ jobs:
     runs-on: codebuild-${{ matrix.environment }}-github-runner-${{ github.run_id }}-${{ github.run_attempt }}
     strategy:
       matrix:
-        environment: ['dev', 'uat', 'prod']
+        environment: [ 'dev', 'uat', 'prod' ]
       fail-fast: false
 
     environment: ${{ matrix.environment }}
@@ -106,7 +106,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
-      
+
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502
         with:
