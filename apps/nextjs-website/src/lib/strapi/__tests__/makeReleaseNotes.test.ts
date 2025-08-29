@@ -14,11 +14,7 @@ import {
   releaseNotesWithCorruptedData,
   allInvalidReleaseNotes,
 } from '@/lib/strapi/__tests__/factories/releaseNotes';
-
-// Mock console.error to avoid noise in test output
-const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {
-  // Mock implementation - do nothing
-});
+import { consoleSpy } from '@/lib/strapi/__tests__/consoleMock';
 
 describe('makeReleaseNotesProps', () => {
   afterEach(() => {
