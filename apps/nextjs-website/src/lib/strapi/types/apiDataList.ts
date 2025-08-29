@@ -31,8 +31,6 @@ export type BaseApiData = {
   };
 };
 
-export type BaseApiDataDetails = {};
-
 export type ApiData = BaseApiData & {
   readonly attributes: BaseApiData['attributes'] & {
     readonly product: {
