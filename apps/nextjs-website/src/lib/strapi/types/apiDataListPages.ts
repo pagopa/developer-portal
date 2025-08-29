@@ -26,10 +26,12 @@ export type ApiDataListPageWithoutProduct = {
   readonly id: number;
   readonly attributes: {
     readonly apiData: StrapiComponent<
-      readonly Pick<
-        BaseApiData['attributes'],
-        'apiRestDetail' | 'apiSoapDetail'
-      >[]
+      readonly {
+        readonly attributes: Pick<
+          BaseApiData['attributes'],
+          'apiRestDetail' | 'apiSoapDetail'
+        >;
+      }[]
     >;
   };
 };

@@ -2,7 +2,6 @@ import { Product } from '@/lib/types/product';
 import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
 import {
   StrapiBaseProductWithRelations,
-  StrapiProduct,
   StrapiProducts,
 } from '@/lib/strapi/types/product';
 
@@ -12,11 +11,11 @@ export function makeProductsProps(
   return strapiProducts.data.map(makeProductProps);
 }
 
-export function makeProductProps(product: StrapiProduct): Product {
+export function makeProductProps(product: StrapiProducts['data'][0]): Product {
   return {
     ...makeBaseProductWithoutLogoProps(product),
     description: product.attributes.description,
-    logo: product.attributes.logo?.data?.attributes,
+    logo: product.attributes.logo?.data.attributes,
   };
 }
 
@@ -60,5 +59,5 @@ export function makeBaseProductWithoutLogoProps(
     hasQuickstartGuidePage: !!product.attributes.quickstart_guide.data,
     hasReleaseNotePage: !!product.attributes.release_note.data,
     bannerLinks: product.attributes.bannerLinks?.map(makeBannerLinkProps) || [],
-  } satisfies Product;
+  };
 }

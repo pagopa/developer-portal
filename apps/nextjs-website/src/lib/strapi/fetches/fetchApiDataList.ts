@@ -1,8 +1,7 @@
 import qs from 'qs';
 import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
-import { ApiDataListCodec } from '@/lib/strapi/codecs/ApiDataListCodec';
-import { productRelationsPopulate } from './fetchProducts';
-import { StrapiApiDataList } from '../types/apiDataList';
+import { productRelationsPopulate } from '@/lib/strapi/fetches/fetchProducts';
+import { StrapiApiDataList } from '@/lib/strapi/types/apiDataList';
 
 const makeStrapiApiDataListPopulate = () =>
   qs.stringify({
