@@ -7,6 +7,10 @@ from pydantic_settings import BaseSettings
 
 from src.modules.logger import get_logger
 
+from dotenv import load_dotenv
+
+load_dotenv(".env.local")
+
 LOGGER = get_logger(__name__)
 CWF = Path(__file__)
 ROOT = CWF.parent.parent.parent.absolute().__str__()
@@ -122,16 +126,6 @@ class ChatbotSettings(BaseSettings):
     qa_prompt_str: str = PROMPTS["qa_prompt_str"]
     react_system_str: str = PROMPTS["react_system_header_str"]
     refine_prompt_str: str = PROMPTS["refine_prompt_str"]
-
-    # models settings
-    embed_batch_size: int = int(os.getenv("CHB_EMBED_BATCH_SIZE", "100"))
-    embed_dim: int = int(os.getenv("CHB_EMBEDDING_DIM", "768"))
-    embed_model_id: str = os.getenv("CHB_EMBED_MODEL_ID", "gemini-embedding-001")
-    embed_task_type: str = "SEMANTIC_SIMILARITY"
-    max_tokens: int = os.getenv("CHB_MODEL_MAXTOKENS", "768")
-    model_id: str = os.getenv("CHB_MODEL_ID", "gemini-2.5-flash-lite")
-    provider: str = os.getenv("CHB_PROVIDER", "google")
-    temperature: float = float(os.getenv("CHB_MODEL_TEMPERATURE", "0.0"))
 
     # RAG settings
     embed_batch_size: int = int(os.getenv("CHB_EMBED_BATCH_SIZE", "100"))

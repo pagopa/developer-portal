@@ -1,8 +1,8 @@
 import copy
-import asyncio
 from typing import Union, Tuple, Optional, List, Any, Dict
 
 from langfuse import Langfuse
+from llama_index.core.async_utils import asyncio_run
 from llama_index.core import PromptTemplate
 from llama_index.core.llms import ChatMessage, MessageRole, TextBlock
 from llama_index.core.base.response.schema import (
@@ -65,11 +65,13 @@ class Chatbot:
             self.model,
             self.embed_model,
         )
+        LOGGER.debug("Initializing agent...")
         self.agent = get_agent(
             index=self.index,
             text_qa_template=self.qa_prompt_tmpl,
             refine_template=self.ref_prompt_tmpl,
         )
+        LOGGER.debug(f"Agent initialized successfully: {type(self.agent)}")
         self.instrumentor = LlamaIndexInstrumentor(
             public_key=SETTINGS.langfuse_public_key,
             secret_key=SETTINGS.langfuse_secret_key,
@@ -236,78 +238,6 @@ class Chatbot:
 
         return data
 
-    def chat_generate_with_final_response(
-        self,
-        query_str: str,
-        trace_id: str,
-        session_id: str | None = None,
-        user_id: str | None = None,
-        messages: Optional[List[Dict[str, str]]] | None = None,
-    ) -> dict:
-
-        answer_json = asyncio.run(
-            self.chat_generate(
-                query_str=query_str,
-                trace_id=trace_id,
-                session_id=session_id,
-                user_id=user_id,
-                messages=messages,
-            )
-        )
-
-        final_response = self.get_final_response(
-            response_str=answer_json["response"],
-            references=answer_json["references"],
-        )
-
-        LOGGER.debug(f"chat_generate_with_final_response returning: {final_response}")
-        return final_response
-
-    async def chat_generate(
-        self,
-        query_str: str,
-        trace_id: str,
-        session_id: str | None = None,
-        user_id: str | None = None,
-        messages: Optional[List[Dict[str, str]]] | None = None,
-    ) -> dict:
-
-        chat_history = self._messages_to_chathistory(messages)
-        LOGGER.info(f"Langfuse trace id: {trace_id}")
-
-        with self.instrumentor.observe(
-            trace_id=trace_id, session_id=session_id, user_id=user_id
-        ) as trace:
-            try:
-                LOGGER.debug(f"--->>> self.agent.run{query_str}...")
-                engine_response = self.agent.run(query_str, chat_history)
-                LOGGER.debug(
-                    f"--->>> self.agent.run done! engine_response: {engine_response}"
-                )
-                response_json = self._get_response_json(engine_response)
-                LOGGER.debug(f"--->>> response_json: {response_json}")
-
-            except Exception as e:
-                response_json = {
-                    "response": "Scusa, non posso elaborare la tua richiesta.\n"
-                    + "Prova a formulare una nuova domanda.",
-                    "products": ["none"],
-                    "references": [],
-                    "contexts": [],
-                }
-                LOGGER.error(f"Exception: {e}")
-
-            trace.update(
-                output=response_json["response"],
-                metadata={"contexts": response_json["contexts"]},
-                tags=response_json["products"],
-            )
-            trace.score(name="user-feedback", value=0, data_type="NUMERIC")
-        self.instrumentor.flush()
-
-        LOGGER.debug(f"chat_generate returning: {response_json}")
-        return response_json
-
     def get_final_response(
         self,
         response_str: str,
@@ -338,3 +268,92 @@ class Chatbot:
 
         LOGGER.debug(f"fix_unbalanced_code_blocks returning: {text}")
         return text
+
+    async def chat_generate(
+        self,
+        query_str: str,
+        trace_id: str,
+        session_id: str | None = None,
+        user_id: str | None = None,
+        messages: Optional[List[Dict[str, str]]] | None = None,
+    ) -> dict:
+        """
+        Generates a chat response using the agent with RAG.
+        Args:
+            query_str (str): The user's query.
+            trace_id (str): The Langfuse trace ID for logging.
+            session_id (str | None): Optional session ID for logging.
+            user_id (str | None): Optional user ID for logging.
+            messages (List[Dict[str, str]] | None): Optional chat history.
+        Returns:
+            dict: The response JSON containing the answer, products, references, and contexts.
+        """
+
+        chat_history = self._messages_to_chathistory(messages)
+        LOGGER.info(f"Langfuse trace id: {trace_id}")
+
+        with self.instrumentor.observe(
+            trace_id=trace_id, session_id=session_id, user_id=user_id
+        ) as trace:
+            try:
+                engine_response = await self.agent.run(query_str, chat_history)
+                response_json = self._get_response_json(engine_response)
+
+            except Exception as e:
+                response_json = {
+                    "response": "Scusa, non posso elaborare la tua richiesta.\n"
+                    + "Prova a formulare una nuova domanda.",
+                    "products": ["none"],
+                    "references": [],
+                    "contexts": [],
+                }
+                LOGGER.error(f"Exception: {e}")
+
+            trace.update(
+                output=response_json["response"],
+                metadata={"contexts": response_json["contexts"]},
+                tags=response_json["products"],
+            )
+            trace.score(name="user-feedback", value=0, data_type="NUMERIC")
+        self.instrumentor.flush()
+
+        LOGGER.debug(f"chat_generate returning: {response_json}")
+        return response_json
+
+    def chat_generate_with_final_response(
+        self,
+        query_str: str,
+        trace_id: str,
+        session_id: str | None = None,
+        user_id: str | None = None,
+        messages: Optional[List[Dict[str, str]]] | None = None,
+    ) -> dict:
+        """
+        Wrapper to call the async chat_generate and process the final response.
+        Args:
+            query_str (str): The user's query.
+            trace_id (str): The Langfuse trace ID for logging.
+            session_id (str | None): Optional session ID for logging.
+            user_id (str | None): Optional user ID for logging.
+            messages (List[Dict[str, str]] | None): Optional chat history.
+        Returns:
+            dict: The final response JSON with formatted answer and references.
+        """
+
+        response_json = asyncio_run(
+            self.chat_generate(
+                query_str=query_str,
+                trace_id=trace_id,
+                session_id=session_id,
+                user_id=user_id,
+                messages=messages,
+            )
+        )
+
+        final_response = self.get_final_response(
+            response_str=response_json["response"],
+            references=response_json["references"],
+        )
+        response_json["response"] = final_response
+
+        return response_json
