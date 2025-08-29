@@ -4,7 +4,7 @@ import {
   strapiEmptyGuideListPagesData,
   strapiGuideListPagesData,
 } from '@/lib/strapi/__tests__/fixtures/guideLists';
-import { StrapiGuideListPages } from '@/lib/strapi/types/guideList';
+import { StrapiGuideListPages } from '@/lib/strapi/types/guideListPage';
 import {
   guideListWithGuideWithUndefinedListItem,
   guideListWithGuideWithWrongDataType,
