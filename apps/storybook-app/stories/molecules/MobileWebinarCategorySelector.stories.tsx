@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/nextjs';
 import MobileWebinarCategorySelector from 'nextjs-website/src/components/molecules/MobileWebinarCategorySelector/MobileWebinarCategorySelector';
 import { nextIntlContextDecorator } from '../next-intl-context.helper';
 const meta: Meta<typeof MobileWebinarCategorySelector> = {

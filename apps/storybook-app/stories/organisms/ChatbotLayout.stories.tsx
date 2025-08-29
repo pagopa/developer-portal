@@ -1,4 +1,4 @@
-import { Decorator, Meta, StoryObj } from '@storybook/react';
+import { Decorator, Meta, StoryObj } from '@storybook/nextjs';
 import ChatbotLayout from 'nextjs-website/src/components/organisms/ChatbotLayout/ChatbotLayout';
 import React from 'react';
 import { mockText } from '../mock-content.helper';

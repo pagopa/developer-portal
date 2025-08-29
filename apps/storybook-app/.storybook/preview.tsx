@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { Decorator } from '@storybook/react';
+import { Decorator } from '@storybook/nextjs';
 import { storybookTheme } from './theme';
 import { ThemeProvider, Box } from '@mui/material';
 import { theme as muiItaliaTheme } from '@pagopa/mui-italia';

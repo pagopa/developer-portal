@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/nextjs';
 import TypographyPart from '../../../nextjs-website/src/components/atoms/TypographyPart/TypographyPart';
 
 const meta: Meta<typeof TypographyPart> = {

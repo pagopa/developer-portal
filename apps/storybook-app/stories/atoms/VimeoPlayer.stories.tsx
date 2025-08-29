@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/nextjs';
 import VimeoPlayer from '../../../nextjs-website/src/components/atoms/VimeoPlayer/VimeoPlayer';
 
 const meta: Meta<typeof VimeoPlayer> = {

@@ -122,7 +122,7 @@ export async function downloadS3File(
       chunks.push(Buffer.from(chunk));
     }
 
-    return Buffer.concat(chunks).toString('utf-8');
+    return Buffer.concat(chunks as Uint8Array[]).toString('utf-8');
   } catch (error) {
     console.error(`Error downloading file ${key}:`, error);
     // eslint-disable-next-line functional/no-throw-statements

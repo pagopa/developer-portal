@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/nextjs';
 import Newsroom, {
   INewsroomItem,
 } from '../../../nextjs-website/src/editorialComponents/Newsroom/Newsroom';

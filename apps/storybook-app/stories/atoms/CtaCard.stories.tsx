@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/nextjs';
 import React from 'react';
 import CtaCard from '../../../nextjs-website/src/components/atoms/CtaCard/CtaCard';
 import IconWrapper from '../../../nextjs-website/src/components/atoms/IconWrapper/IconWrapper';

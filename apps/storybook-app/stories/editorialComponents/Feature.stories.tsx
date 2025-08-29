@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/nextjs';
 import Feature from '../../../nextjs-website/src/editorialComponents/Feature/Feature';
 import { FeatureItem } from '../../../nextjs-website/src/editorialComponents/Feature/FeatureStackItem';
 

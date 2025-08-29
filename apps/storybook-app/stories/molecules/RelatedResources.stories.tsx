@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/nextjs';
 import RelatedResources from 'nextjs-website/src/components/molecules/RelatedResources/RelatedResources';
 import { nextIntlContextDecorator } from '../next-intl-context.helper';
 

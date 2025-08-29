@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/nextjs';
 import SolutionTemplate from '../../../nextjs-website/src/components/templates/SolutionTemplate/SolutionTemplate';
 import { nextIntlContextDecorator } from '../next-intl-context.helper';
 import { authProviderDecorator } from '../auth-provider.helper';

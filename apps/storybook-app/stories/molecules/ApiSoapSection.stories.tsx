@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/nextjs';
 import ApiSoapSection from 'nextjs-website/src/components/molecules/ApiSoapSection/ApiSoapSection';
 import { Product } from 'nextjs-website/src/lib/types/product';
 import { nextIntlContextDecorator } from '../next-intl-context.helper';

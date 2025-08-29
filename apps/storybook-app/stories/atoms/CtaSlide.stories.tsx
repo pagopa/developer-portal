@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/nextjs';
 import CtaSlide from '../../../nextjs-website/src/components/atoms/CtaSlide/CtaSlide';
 
 const meta: Meta<typeof CtaSlide> = {

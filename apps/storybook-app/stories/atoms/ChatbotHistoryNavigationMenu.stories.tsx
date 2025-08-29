@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/nextjs';
 import ChatbotHistoryNavigationMenu from '../../../nextjs-website/src/components/atoms/ChatbotHistoryNavigationMenu/ChatbotHistoryNavigationMenu';
 import { mockText } from '../mock-content.helper';
 import { nextIntlContextDecorator } from '../next-intl-context.helper';

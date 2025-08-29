@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/nextjs';
 import LinkButton from '../../../nextjs-website/src/components/atoms/LinkButton/LinkButton';
 
 const meta: Meta<typeof LinkButton> = {

@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/nextjs';
 import { UnorderedList } from 'nextjs-website/src/components/atoms/UnorderedList/UnorderedList';
 
 const meta: Meta<typeof UnorderedList> = {

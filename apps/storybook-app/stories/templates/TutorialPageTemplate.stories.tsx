@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/nextjs';
 import TutorialTemplate from 'nextjs-website/src/components/templates/TutorialTemplate/TutorialTemplate';
 import { mockImageBlock, mockTextBlock } from '../mock-content.helper';
 import { nextIntlContextDecorator } from '../next-intl-context.helper';

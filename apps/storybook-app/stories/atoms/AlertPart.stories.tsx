@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/nextjs';
 import AlertPart from '../../../nextjs-website/src/components/atoms/AlertPart/AlertPart';
 
 const meta: Meta<typeof AlertPart> = {

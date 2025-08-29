@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/nextjs';
 import ApiViewer from '../../../nextjs-website/src/components/atoms/ApiViewer/ApiViewer';
 
 const meta: Meta<typeof ApiViewer> = {

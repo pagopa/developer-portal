@@ -1,4 +1,4 @@
-import { Decorator, Meta, StoryObj } from '@storybook/react';
+import { Decorator, Meta, StoryObj } from '@storybook/nextjs';
 import { Box } from '@mui/material';
 import ChatbotHistoryLayout from 'nextjs-website/src/components/organisms/ChatbotHistoryLayout/ChatbotHistoryLayout';
 import { sessionsList } from '../fixtures/chatbotFixtures';

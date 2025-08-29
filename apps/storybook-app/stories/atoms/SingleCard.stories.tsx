@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/nextjs';
 import SingleCard from '../../../nextjs-website/src/components/atoms/SingleCard/SingleCard';
 
 const meta: Meta<typeof SingleCard> = {

@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/nextjs';
 import CopyToClipboard from '../../../nextjs-website/src/components/atoms/CopyToClipboard/CopyToClipboard';
 
 const meta: Meta<typeof CopyToClipboard> = {
