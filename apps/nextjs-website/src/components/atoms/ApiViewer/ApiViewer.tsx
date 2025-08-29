@@ -63,6 +63,7 @@ const ApiViewer: FC<ApiViewerProps> = ({ specURL, product }) => {
         allow-try='false'
         allow-server-selection='false'
         show-method-in-nav-bar='as-colored-block'
+        show-components='true'
       ></rapi-doc>
     </Box>
   );
