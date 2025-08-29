@@ -14,10 +14,10 @@ on:
           - uat
           - prod
 
-  workflow_run:
-    workflows:
-      - Sync GitBook Docs
-    types: [ completed ]
+  #workflow_run:
+  #  workflows:
+  #    - Sync GitBook Docs
+  #  types: [ completed ]
 
   # Allows external webhook trigger
   repository_dispatch:
@@ -65,7 +65,6 @@ jobs:
   cd_reindex_workflow_run:
     name: Llama reindex (workflow_run on ${{ matrix.environment }})
     # Trigger on workflow_run (e.g. after Sync GitBook Docs completes)
-    if: github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success'
     runs-on: codebuild-${{ matrix.environment }}-github-runner-${{ github.run_id }}-${{ github.run_attempt }}
     strategy:
       matrix:
