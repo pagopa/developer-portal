@@ -1,5 +1,11 @@
 # gitbook-docs
 
+## 1.0.3
+
+### Patch Changes
+
+- 7058218: Fix UrlParsingItem type
+
 ## 1.0.2
 
 ### Patch Changes

@@ -1,5 +1,13 @@
 # nextjs-website
 
+## 8.5.4
+
+### Patch Changes
+
+- a5594c3: Add new fetchFromStrapi and set the old one as deprecated. Remove the guides codec and add ts type instead
+- Updated dependencies [7058218]
+  - gitbook-docs@1.0.3
+
 ## 8.5.3
 
 ### Patch Changes
