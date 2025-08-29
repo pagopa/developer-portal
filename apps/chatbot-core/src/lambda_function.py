@@ -7,7 +7,6 @@ chatbot = Chatbot()
 
 
 def lambda_handler(event, context):
-    LOGGER.debug(f"-------------->>>>>>>>> event: {event} <<<<<<<<<<<<<-------------")
 
     operation_name = event.get("operation")
     # TODO: validate payload
@@ -34,5 +33,4 @@ def lambda_handler(event, context):
         case _:
             return {"statusCode": 400, "error": "Invalid operation"}
 
-    result = True
     return {"statusCode": 200, "result": result, "event": event}
