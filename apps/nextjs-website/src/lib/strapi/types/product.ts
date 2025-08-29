@@ -47,32 +47,6 @@ export type StrapiBaseProductWithRelations = BaseProduct & {
   };
 };
 
-// export type ApiDataListPage = {
-//   readonly data?: {
-//     readonly id: number;
-//     readonly attributes: {
-//       readonly apiData: {
-//         readonly data: readonly [
-//           {
-//             readonly id: number;
-//             readonly attributes: {
-//               readonly apiRestDetail?: {
-//                 readonly slug: string;
-//                 readonly specUrl: StrapiUrl;
-//               };
-//               readonly apiSoapDetail?: {
-//                 readonly slug: string;
-//                 readonly repositoryUrl: string;
-//                 readonly dirName: string;
-//               };
-//             };
-//           }
-//         ];
-//       };
-//     };
-//   };
-// };
-
 export type StrapiProduct = {
   readonly attributes: BaseProduct['attributes'] &
     ProductRelations & {

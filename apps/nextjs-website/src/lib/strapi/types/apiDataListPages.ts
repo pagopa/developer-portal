@@ -39,29 +39,3 @@ export type ApiDataListPageWithoutProduct = {
 export type StrapiApiDataListPages = StrapiComponent<
   readonly ApiDataListPage[]
 >;
-
-// ataListPage = {
-//   readonly data?: {
-//     readonly id: number;
-//     readonly attributes: {
-//       readonly apiData: {
-//         readonly data: readonly [
-//           {
-//             readonly id: number;
-//             readonly attributes: {
-//               readonly apiRestDetail?: {
-//                 readonly slug: string;
-//                 readonly specUrl: StrapiUrl;
-//               };
-//               readonly apiSoapDetail?: {
-//                 readonly slug: string;
-//                 readonly repositoryUrl: string;
-//                 readonly dirName: string;
-//               };
-//             };
-//           }
-//         ];
-//       };
-//     };
-//   };
-// };
