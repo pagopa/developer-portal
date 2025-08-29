@@ -40,7 +40,6 @@ export const strapiOverviews: StrapiOverviews = {
                     apiData: {
                       data: [
                         {
-                          id: 1,
                           attributes: {
                             apiRestDetail: {
                               slug: 'api-rest',
