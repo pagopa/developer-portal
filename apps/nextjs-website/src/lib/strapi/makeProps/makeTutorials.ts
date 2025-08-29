@@ -1,5 +1,5 @@
-import { Part } from '../../types/part';
-import { Tutorial } from '../../types/tutorialData';
+import { Part } from '@/lib/types/part';
+import { Tutorial } from '@/lib/types/tutorialData';
 import { makePartProps } from '@/lib/strapi/makeProps/makePart';
 import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
 import { RelatedLinksProps } from '@/components/atoms/RelatedLinks/RelatedLinks';

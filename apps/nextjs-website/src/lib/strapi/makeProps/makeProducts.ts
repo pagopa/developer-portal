@@ -47,7 +47,6 @@ export function makeBaseProductWithoutLogoProps(
     slug: product.attributes.slug,
     name: product.attributes.name,
     shortName: product.attributes.shortName,
-    description: undefined,
     hasApiDataListPage:
       product.attributes.api_data_list_page.data &&
       product.attributes.api_data_list_page.data.attributes.apiData.data
