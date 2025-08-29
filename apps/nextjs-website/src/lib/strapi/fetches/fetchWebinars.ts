@@ -1,5 +1,5 @@
 import * as qs from 'qs';
-import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
+import { deprecatedFetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
 import { WebinarsCodec } from '@/lib/strapi/codecs/WebinarsCodec';
 
 export const webinarPopulate = {
@@ -36,7 +36,7 @@ export const webinarPopulate = {
 
 const makeStrapiWebinarsPopulate = () => qs.stringify(webinarPopulate);
 
-export const fetchWebinars = fetchFromStrapi(
+export const fetchWebinars = deprecatedFetchFromStrapi(
   'webinars',
   makeStrapiWebinarsPopulate(),
   WebinarsCodec
