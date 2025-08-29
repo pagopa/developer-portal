@@ -7,9 +7,6 @@ from pydantic_settings import BaseSettings
 
 from src.modules.logger import get_logger
 
-from dotenv import load_dotenv
-
-load_dotenv(".env.local")
 
 LOGGER = get_logger(__name__)
 CWF = Path(__file__)
