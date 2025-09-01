@@ -10,5 +10,3 @@ export const BannerLinkCodec = t.strict({
   icon: t.strict({ data: MediaCodec }),
   theme: t.union([t.literal('light'), t.literal('dark')]),
 });
-
-export type StrapiBannerLink = t.TypeOf<typeof BannerLinkCodec>;
