@@ -6,13 +6,15 @@ import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
 import { makeBaseProductWithoutLogoProps } from '@/lib/strapi/makeProps/makeProducts';
 import { StrapiPart } from '@/lib/strapi/types/part';
 import {
-  QuickStartGuideItem,
+  StrapiQuickStartGuideItem,
   StrapiQuickStartGuides,
 } from '@/lib/strapi/types/quickStartGuides';
 
 export type QuickStartGuidesPageProps = readonly QuickStartGuidePageProps[];
 
-function makeStepFromQuickstartGuideItems(item: QuickStartGuideItem): Step {
+function makeStepFromQuickstartGuideItems(
+  item: StrapiQuickStartGuideItem
+): Step {
   return {
     anchor: item.attributes.anchor,
     title: item.attributes.title,

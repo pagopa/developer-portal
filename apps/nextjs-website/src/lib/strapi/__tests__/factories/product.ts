@@ -1,14 +1,14 @@
 import {
-  BaseProduct,
-  BaseProductWithBannerLinks,
-  BaseProductWithoutBannerLinks,
+  StrapiBaseProduct,
+  StrapiBaseProductWithBannerLinks,
+  StrapiBaseProductWithoutBannerLinks,
   StrapiBaseProductWithRelations,
   StrapiProduct,
 } from '@/lib/strapi/types/product';
 import { mediaJpeg } from '@/lib/strapi/__tests__/factories/media';
 import { generateBannerLinks } from '@/lib/strapi/__tests__/factories/bannerLink';
 
-export function baseProduct(): BaseProduct {
+export function baseProduct(): StrapiBaseProduct {
   return {
     attributes: {
       name: 'Test Product',
@@ -18,7 +18,7 @@ export function baseProduct(): BaseProduct {
   };
 }
 
-export function baseProductWithBannerLinks(): BaseProductWithBannerLinks {
+export function baseProductWithBannerLinks(): StrapiBaseProductWithBannerLinks {
   return {
     attributes: {
       ...baseProduct().attributes,
@@ -27,7 +27,7 @@ export function baseProductWithBannerLinks(): BaseProductWithBannerLinks {
   };
 }
 
-export function baseProductWithoutBannerLinks(): BaseProductWithoutBannerLinks {
+export function baseProductWithoutBannerLinks(): StrapiBaseProductWithoutBannerLinks {
   return {
     attributes: {
       ...baseProduct().attributes,
@@ -39,7 +39,7 @@ export function baseProductWithoutBannerLinks(): BaseProductWithoutBannerLinks {
   };
 }
 
-export function baseProductWithoutBannerLinksMinimal(): BaseProductWithoutBannerLinks {
+export function baseProductWithoutBannerLinksMinimal(): StrapiBaseProductWithoutBannerLinks {
   return {
     attributes: {
       ...baseProduct().attributes,

@@ -3,7 +3,7 @@ import { GuidesSectionProps } from '@/components/molecules/GuidesSection/GuidesS
 import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
 import { makeBaseProductWithoutLogoProps } from './makeProducts';
 import { GuideCardProps } from '@/components/molecules/GuideCard/GuideCard';
-import { BaseGuide } from '@/lib/strapi/types/guide';
+import { StrapiBaseGuide } from '@/lib/strapi/types/guide';
 import _ from 'lodash';
 import { StrapiGuideLists } from '@/lib/strapi/types/guideList';
 
@@ -41,7 +41,7 @@ export function makeGuideListPagesProps(
 }
 
 function makeGuideCardProps(
-  guide: BaseGuide,
+  guide: StrapiBaseGuide,
   productSlug: string
 ): GuideCardProps | null {
   if (!guide.attributes.slug) {
