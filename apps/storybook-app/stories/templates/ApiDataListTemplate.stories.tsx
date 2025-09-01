@@ -25,7 +25,6 @@ export const Showcase: StoryObj<typeof ApiDataListTemplate> = {
         icon: '/icons/code.svg',
         ctaLabel: 'Esplora le API',
         href: '#',
-        externalUrl: false,
         tags: [
           {
             label: 'REST',
@@ -38,7 +37,6 @@ export const Showcase: StoryObj<typeof ApiDataListTemplate> = {
         icon: '/icons/code.svg',
         ctaLabel: 'Esplora le API',
         href: '#',
-        externalUrl: true,
         tags: [
           {
             label: 'SOAP',
@@ -51,7 +49,6 @@ export const Showcase: StoryObj<typeof ApiDataListTemplate> = {
         icon: '/icons/code.svg',
         ctaLabel: 'Esplora le API',
         href: '#',
-        externalUrl: false,
         tags: [
           {
             label: 'REST',
@@ -64,7 +61,6 @@ export const Showcase: StoryObj<typeof ApiDataListTemplate> = {
         icon: '/icons/code.svg',
         ctaLabel: 'Esplora le API',
         href: '#',
-        externalUrl: false,
         tags: [
           {
             label: 'REST',

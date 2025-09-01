@@ -15,12 +15,7 @@ export const TabsComponent: StoryObj<typeof TabComponent> = {
     items: [
       {
         title: 'Title',
-        content: (
-          <IconWrapper
-            icon='https://cdn.dev.developer.pagopa.it/app_Io_d9bffd556b.svg'
-            useSrc={true}
-          />
-        ),
+        content: <IconWrapper icon='/icons/appIo.svg' useSrc={true} />,
       },
       {
         title: 'Title of the second page',

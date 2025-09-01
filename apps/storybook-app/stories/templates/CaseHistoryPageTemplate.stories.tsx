@@ -67,7 +67,7 @@ export const Showcase: StoryObj<typeof CaseHistoryPageTemplate> = {
         description: 'Il portale per gli sviluppatori di PagoPA',
         slug: 'pagopa',
         logo: {
-          url: 'https://cdn.dev.developer.pagopa.it/app_Io_d9bffd556b.svg',
+          url: '/icons/appIo.svg',
         },
       },
       {
@@ -75,7 +75,7 @@ export const Showcase: StoryObj<typeof CaseHistoryPageTemplate> = {
         description: 'Il portale per gli sviluppatori di PagoPA',
         slug: 'pagopa',
         logo: {
-          url: 'https://cdn.dev.developer.pagopa.it/app_Io_d9bffd556b.svg',
+          url: '/icons/appIo.svg',
         },
       },
       {
@@ -83,7 +83,7 @@ export const Showcase: StoryObj<typeof CaseHistoryPageTemplate> = {
         description: 'Il portale per gli sviluppatori di PagoPA',
         slug: 'pagopa',
         logo: {
-          url: 'https://cdn.dev.developer.pagopa.it/app_Io_d9bffd556b.svg',
+          url: '/icons/appIo.svg',
         },
       },
     ],

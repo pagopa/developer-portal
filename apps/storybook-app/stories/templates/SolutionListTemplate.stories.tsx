@@ -26,7 +26,7 @@ export const Showcase: StoryObj<typeof SolutionListTemplate> = {
           "La soluzione dedicata all’ottimizzazione dei processi legati all’intero ciclo di vita del servizio multe, dall'emissione del preavviso fino all'invio dell'eventuale contravvenzione.",
         slug: 'multe-per-violazioni-al-codice-della-strada',
         logo: {
-          url: 'https://cdn.developer.pagopa.it/app_Io_107fb95dac.svg',
+          url: '/icons/appIo.svg',
           name: 'logo-pagopa',
           width: 200,
           height: 200,
@@ -41,7 +41,7 @@ export const Showcase: StoryObj<typeof SolutionListTemplate> = {
           "La soluzione dedicata all’ottimizzazione dei processi legati all’intero ciclo di vita del servizio multe, dall'emissione del preavviso fino all'invio dell'eventuale contravvenzione.",
         slug: 'multe-per-violazioni-al-codice-della-strada',
         logo: {
-          url: 'https://cdn.developer.pagopa.it/app_Io_107fb95dac.svg',
+          url: '/icons/appIo.svg',
           name: 'logo-pagopa',
           width: 200,
           height: 200,
