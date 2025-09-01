@@ -2,4 +2,4 @@
 "chatbot-index": patch
 ---
 
-Add file to allow chatbot-index versioning
+Add package.json to the chatbot-index app to allow versioning
