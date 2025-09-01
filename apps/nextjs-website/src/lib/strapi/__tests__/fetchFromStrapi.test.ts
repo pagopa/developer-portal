@@ -1,5 +1,4 @@
-import * as t from 'io-ts';
-import { deprecatedFetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
+import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
 
 const makeTestEnv = () => {
   const fetchMock = jest.fn();
@@ -27,6 +26,22 @@ const strapiResponses = {
     },
     meta: {},
   },
+  '200WithNulls': {
+    data: {
+      id: 1,
+      attributes: {
+        createdAt: '2024-02-08T11:12:02.142Z',
+        updatedAt: null,
+        publishedAt: '2024-02-08T11:12:21.436Z',
+        nested: {
+          value: null,
+          other: 'test',
+        },
+        arrayWithNulls: [1, null, 'test', null],
+      },
+    },
+    meta: {},
+  },
   404: {
     data: null,
     error: {
@@ -47,17 +62,22 @@ const strapiResponses = {
   },
 };
 
-const codec = t.strict({
-  data: t.strict({
-    id: t.number,
-  }),
-});
-// This codec is used to test cases when the decode function fails
-const badCodec = t.strict({
-  data: t.strict({
-    id: t.string,
-  }),
-});
+type TestResponse = {
+  readonly data: {
+    readonly id: number;
+    readonly attributes: {
+      readonly createdAt: string;
+      readonly updatedAt?: string;
+      readonly publishedAt: string;
+      readonly nested?: {
+        readonly value?: string;
+        readonly other: string;
+      };
+      readonly arrayWithNulls?: readonly (number | string | undefined)[];
+    };
+  };
+  readonly meta: object;
+};
 
 describe('fetchFromStrapi', () => {
   it('should return strapi response given a 200 response', async () => {
@@ -67,10 +87,48 @@ describe('fetchFromStrapi', () => {
       statusText: 'OK',
       json: () => Promise.resolve(strapiResponses[200]),
     });
-    const actual = deprecatedFetchFromStrapi('aPath', 'aPopulate', codec)(env);
-    const expected = { data: { id: 1 } };
+    const actual = fetchFromStrapi<TestResponse>('aPath', 'aPopulate')(env);
+    const expected = {
+      data: {
+        id: 1,
+        attributes: {
+          createdAt: '2024-02-08T11:12:02.142Z',
+          updatedAt: '2024-02-08T11:12:21.438Z',
+          publishedAt: '2024-02-08T11:12:21.436Z',
+        },
+      },
+      meta: {},
+    };
     expect(await actual).toStrictEqual(expected);
   });
+
+  it('should convert nulls to undefined in the response', async () => {
+    const { env, fetchMock } = makeTestEnv();
+    fetchMock.mockResolvedValueOnce({
+      status: 200,
+      statusText: 'OK',
+      json: () => Promise.resolve(strapiResponses['200WithNulls']),
+    });
+    const actual = fetchFromStrapi<TestResponse>('aPath', 'aPopulate')(env);
+    const expected = {
+      data: {
+        id: 1,
+        attributes: {
+          createdAt: '2024-02-08T11:12:02.142Z',
+          updatedAt: undefined,
+          publishedAt: '2024-02-08T11:12:21.436Z',
+          nested: {
+            value: undefined,
+            other: 'test',
+          },
+          arrayWithNulls: [1, undefined, 'test', undefined],
+        },
+      },
+      meta: {},
+    };
+    expect(await actual).toStrictEqual(expected);
+  });
+
   it('should return error given a 401 response', async () => {
     const { env, fetchMock } = makeTestEnv();
     fetchMock.mockResolvedValueOnce({
@@ -78,10 +136,11 @@ describe('fetchFromStrapi', () => {
       statusText: 'Unauthorized',
       json: () => Promise.resolve(strapiResponses[401]),
     });
-    const actual = deprecatedFetchFromStrapi('aPath', 'aPopulate', codec)(env);
+    const actual = fetchFromStrapi<TestResponse>('aPath', 'aPopulate')(env);
     const expected = new Error('401 - Unauthorized');
     await expect(actual).rejects.toStrictEqual(expected);
   });
+
   it('should return error given a 404 response', async () => {
     const { env, fetchMock } = makeTestEnv();
     fetchMock.mockResolvedValueOnce({
@@ -89,32 +148,51 @@ describe('fetchFromStrapi', () => {
       statusText: 'Not Found',
       json: () => Promise.resolve(strapiResponses[404]),
     });
-    const actual = deprecatedFetchFromStrapi('aPath', 'aPopulate', codec)(env);
+    const actual = fetchFromStrapi<TestResponse>('aPath', 'aPopulate')(env);
     const expected = new Error('404 - Not Found');
     await expect(actual).rejects.toStrictEqual(expected);
   });
-  it('should return error given a reject', async () => {
+
+  it('should return error given a fetch rejection', async () => {
     const { env, fetchMock } = makeTestEnv();
-    fetchMock.mockRejectedValueOnce({});
-    const actual = deprecatedFetchFromStrapi('aPath', 'aPopulate', codec)(env);
-    const expected = new Error('[object Object]');
+    fetchMock.mockRejectedValueOnce(new Error('Network error'));
+    const actual = fetchFromStrapi<TestResponse>('aPath', 'aPopulate')(env);
+    const expected = new Error('Network error');
     await expect(actual).rejects.toStrictEqual(expected);
   });
-  it('should return error given a decode error', async () => {
+
+  it('should return error given a JSON parsing error', async () => {
+    const { env, fetchMock } = makeTestEnv();
+    fetchMock.mockResolvedValueOnce({
+      status: 200,
+      statusText: 'OK',
+      // eslint-disable-next-line functional/no-promise-reject
+      json: () => Promise.reject(new Error('Invalid JSON')),
+    });
+    const actual = fetchFromStrapi<TestResponse>('aPath', 'aPopulate')(env);
+    const expected = new Error('Invalid JSON');
+    await expect(actual).rejects.toStrictEqual(expected);
+  });
+
+  it('should call fetch with correct URL and headers', async () => {
     const { env, fetchMock } = makeTestEnv();
     fetchMock.mockResolvedValueOnce({
       status: 200,
       statusText: 'OK',
       json: () => Promise.resolve(strapiResponses[200]),
     });
-    const actual = deprecatedFetchFromStrapi(
-      'aPath',
-      'aPopulate',
-      badCodec
-    )(env);
-    const expected = new Error(
-      `Invalid value 1 supplied to '/data/id', expected type string`
+
+    await fetchFromStrapi<TestResponse>('test-path', 'populate=*')(env);
+
+    expect(fetchMock).toHaveBeenCalledWith(
+      'aStrapiEndpoint/api/test-path/?populate=*',
+      {
+        method: 'GET',
+        headers: {
+          Authorization: 'Bearer aStrapiApiToken',
+        },
+        cache: 'no-store',
+      }
     );
-    await expect(actual).rejects.toStrictEqual(expected);
   });
 });
