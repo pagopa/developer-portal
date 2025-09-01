@@ -2,21 +2,41 @@ import { Product } from '@/lib/types/product';
 import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
 import {
   StrapiBaseProductWithRelations,
+  StrapiProduct,
   StrapiProducts,
 } from '@/lib/strapi/types/product';
+import _ from 'lodash';
 
 export function makeProductsProps(
   strapiProducts: StrapiProducts
 ): ReadonlyArray<Product> {
-  return strapiProducts.data.map(makeProductProps);
+  return _.compact(strapiProducts.data.map(makeProductProps));
 }
 
-export function makeProductProps(product: StrapiProducts['data'][0]): Product {
-  return {
-    ...makeBaseProductWithoutLogoProps(product),
-    description: product.attributes.description,
-    logo: product.attributes.logo?.data.attributes,
-  };
+export function makeProductProps(product: StrapiProduct): Product | null {
+  if (!product.attributes.slug) {
+    // eslint-disable-next-line functional/no-expression-statements
+    console.error(
+      `Product with id ${product.attributes.name} is missing a slug`
+    );
+    return null;
+  }
+
+  // eslint-disable-next-line functional/no-try-statements
+  try {
+    return {
+      ...makeBaseProductWithoutLogoProps(product),
+      description: product.attributes.description,
+      logo: product.attributes.logo?.data.attributes,
+    };
+  } catch (error) {
+    // eslint-disable-next-line functional/no-expression-statements
+    console.error(
+      `Error while mapping product with id ${product.attributes.name}:`,
+      error
+    );
+    return null;
+  }
 }
 
 function getApiDataListPageUrl(

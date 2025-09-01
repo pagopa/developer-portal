@@ -47,15 +47,14 @@ export type StrapiBaseProductWithRelations = BaseProduct & {
   };
 };
 
-export type StrapiProduct = {
-  readonly attributes: BaseProduct['attributes'] &
-    ProductRelations & {
-      readonly bannerLinks?: readonly StrapiBannerLink[];
-      readonly description?: string;
-      readonly logo: {
-        readonly data: StrapiMedia;
-      };
+export type StrapiProduct = BaseProduct & {
+  readonly attributes: ProductRelations & {
+    readonly bannerLinks?: readonly StrapiBannerLink[];
+    readonly description?: string;
+    readonly logo: {
+      readonly data: StrapiMedia;
     };
+  };
 };
 
 export type StrapiProducts = StrapiComponent<readonly StrapiProduct[]>;
