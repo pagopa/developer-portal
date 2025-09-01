@@ -14,6 +14,7 @@ import {
 import { extractTitleFromMarkdown } from '../helpers/extractTitle.helper';
 import { fetchFromStrapi } from '../helpers/fetchFromStrapi';
 import { sitePathFromS3Path } from '../helpers/sitePathFromS3Path';
+import { StrapiSolution } from '../helpers/guidesMetadataHelper';
 
 // Load environment variables from .env file
 dotenv.config();
@@ -25,17 +26,6 @@ const S3_SOLUTIONS_METADATA_JSON_PATH =
   process.env.S3_SOLUTIONS_METADATA_JSON_PATH || 'solutions-metadata.json';
 
 const s3Client = makeS3Client();
-
-interface StrapiSolution {
-  id: number;
-  attributes: {
-    slug: string;
-    title: string;
-    landingUseCaseFile: string;
-    dirName: string;
-  };
-}
-
 function generateUrlPath(
   filePath: string,
   slug: string,
