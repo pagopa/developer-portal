@@ -2,4 +2,4 @@
 "chatbot-evaluate": patch
 ---
 
-Add versioning to chatbot-evaluate app
+Add package.json to the chatbot-evaluate app to allow versioning
