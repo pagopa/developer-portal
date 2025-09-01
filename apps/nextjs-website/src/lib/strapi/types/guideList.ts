@@ -1,10 +1,10 @@
-import { BaseGuide } from '@/lib/strapi/types/guide';
+import { StrapiBaseGuide } from '@/lib/strapi/types/guide';
 import { StrapiSeo } from '@/lib/strapi/types/seo';
 import { StrapiBannerLink } from '@/lib/strapi/types/bannerLink';
 import { Paginated } from '@/lib/strapi/types/paginated';
 import { StrapiBaseProductWithRelations } from '@/lib/strapi/types/product';
 
-export type GuideListPage = {
+export type StrapiGuideListPage = {
   readonly id: number;
   readonly attributes: {
     readonly title: string;
@@ -15,7 +15,7 @@ export type GuideListPage = {
     readonly guidesByCategory: ReadonlyArray<{
       readonly category: string;
       readonly guides: {
-        readonly data: ReadonlyArray<BaseGuide>;
+        readonly data: ReadonlyArray<StrapiBaseGuide>;
       };
     }>;
     readonly bannerLinks: ReadonlyArray<StrapiBannerLink>;
@@ -24,4 +24,4 @@ export type GuideListPage = {
   };
 };
 
-export type StrapiGuideLists = Paginated<GuideListPage>;
+export type StrapiGuideLists = Paginated<StrapiGuideListPage>;

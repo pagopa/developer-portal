@@ -1,6 +1,6 @@
 import { StrapiMedia } from '@/lib/strapi/types/media';
 
-export type SeoMediaSocial = Partial<{
+export type StrapiSeoMediaSocial = Partial<{
   readonly id: number;
   readonly socialNetwork: string;
   readonly title: string;
@@ -21,6 +21,6 @@ export type StrapiSeo = Partial<{
   readonly metaImage: {
     readonly data?: Partial<StrapiMedia>;
   };
-  readonly metaSocial: ReadonlyArray<SeoMediaSocial>;
+  readonly metaSocial: ReadonlyArray<StrapiSeoMediaSocial>;
   readonly structuredData: unknown;
 }>;

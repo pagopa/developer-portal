@@ -1,21 +1,34 @@
-import { BaseSolutionWithProducts } from '@/lib/strapi/types/solutions';
-import { CaseHistoriesComponent } from '@/lib/strapi/types/caseHistoriesComponent';
+import { StrapiBaseSolutionWithProducts } from '@/lib/strapi/types/solutions';
+import { StrapiCaseHistoriesComponent } from '@/lib/strapi/types/caseHistoriesComponent';
 import { StrapiSeo } from '@/lib/strapi/types/seo';
-import { Features } from '@/lib/strapi/types/features';
+import { StrapiFeatures } from '@/lib/strapi/types/features';
 
 export type SolutionListPage = {
   readonly data: {
     readonly attributes: {
       readonly title: string;
       readonly description: string;
-      readonly caseHistories?: CaseHistoriesComponent;
+      readonly caseHistories?: StrapiCaseHistoriesComponent;
       readonly solutions: {
-        readonly data: readonly BaseSolutionWithProducts[];
+        readonly data: readonly StrapiBaseSolutionWithProducts[];
       };
-      readonly features?: Features;
+      readonly features?: StrapiFeatures;
       readonly seo?: StrapiSeo;
     };
   };
 };
 
-export type StrapiSolutionListPage = SolutionListPage;
+export type StrapiSolutionListPage = {
+  readonly data: {
+    readonly attributes: {
+      readonly title: string;
+      readonly description: string;
+      readonly caseHistories?: StrapiCaseHistoriesComponent;
+      readonly solutions: {
+        readonly data: readonly StrapiBaseSolutionWithProducts[];
+      };
+      readonly features?: StrapiFeatures;
+      readonly seo?: StrapiSeo;
+    };
+  };
+};

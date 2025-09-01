@@ -11,7 +11,7 @@ type StrapiUrl = {
   readonly hideTryIt: boolean;
 };
 
-export type BaseApiData = {
+export type StrapiBaseApiData = {
   readonly id: number;
   readonly attributes: {
     readonly title: string;
@@ -31,8 +31,8 @@ export type BaseApiData = {
   };
 };
 
-export type ApiData = BaseApiData & {
-  readonly attributes: BaseApiData['attributes'] & {
+export type StrapiApiData = StrapiBaseApiData & {
+  readonly attributes: StrapiBaseApiData['attributes'] & {
     readonly product: {
       readonly data: StrapiBaseProductWithRelations;
     };
@@ -41,5 +41,7 @@ export type ApiData = BaseApiData & {
   };
 };
 
-export type StrapiBaseApiDataList = StrapiComponent<readonly BaseApiData[]>;
-export type StrapiApiDataList = StrapiComponent<readonly ApiData[]>;
+export type StrapiBaseApiDataList = StrapiComponent<
+  readonly StrapiBaseApiData[]
+>;
+export type StrapiApiDataList = StrapiComponent<readonly StrapiApiData[]>;

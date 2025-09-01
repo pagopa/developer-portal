@@ -4,13 +4,13 @@ import { StrapiBannerLink } from '@/lib/strapi/types/bannerLink';
 import { Paginated } from '@/lib/strapi/types/paginated';
 import { StrapiBaseProductWithRelations } from '@/lib/strapi/types/product';
 
-type GuideVersion = {
+type StrapiGuideVersion = {
   readonly main: boolean;
   readonly dirName: string;
   readonly version: string;
 };
 
-type BaseGuideAttributes = {
+type StrapiBaseGuideAttributes = {
   readonly title: string;
   readonly slug: string;
   readonly image: {
@@ -24,13 +24,13 @@ type BaseGuideAttributes = {
   }>;
 };
 
-export type BaseGuide = {
-  readonly attributes: BaseGuideAttributes;
+export type StrapiBaseGuide = {
+  readonly attributes: StrapiBaseGuideAttributes;
 };
 
-export type Guide = {
-  readonly attributes: BaseGuideAttributes & {
-    readonly versions: ReadonlyArray<GuideVersion>;
+export type StrapiGuide = {
+  readonly attributes: StrapiBaseGuideAttributes & {
+    readonly versions: ReadonlyArray<StrapiGuideVersion>;
     readonly product: {
       readonly data: StrapiBaseProductWithRelations;
     };
@@ -39,4 +39,4 @@ export type Guide = {
   };
 };
 
-export type StrapiGuides = Paginated<Guide>;
+export type StrapiGuides = Paginated<StrapiGuide>;

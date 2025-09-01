@@ -1,12 +1,12 @@
 import { StrapiMedia } from '@/lib/strapi/types/media';
-import { BaseProductWithBannerLinks } from '@/lib/strapi/types/product';
+import { StrapiBaseProductWithBannerLinks } from '@/lib/strapi/types/product';
 import { StrapiBannerLink } from '@/lib/strapi/types/bannerLink';
-import { RelatedLinks } from '@/lib/strapi/types/link';
+import { StrapiRelatedLinks } from '@/lib/strapi/types/link';
 import { StrapiSeo } from '@/lib/strapi/types/seo';
 import { Paginated } from '@/lib/strapi/types/paginated';
 import { StrapiPart } from '@/lib/strapi/types/part';
 
-export type BaseTutorial = {
+export type StrapiBaseTutorial = {
   readonly attributes: {
     readonly title: string;
     readonly slug: string;
@@ -15,21 +15,21 @@ export type BaseTutorial = {
       readonly data?: StrapiMedia;
     };
     readonly product: {
-      readonly data: BaseProductWithBannerLinks;
+      readonly data: StrapiBaseProductWithBannerLinks;
     };
   };
 };
 
-export type Tutorial = BaseTutorial & {
+export type StrapiTutorial = StrapiBaseTutorial & {
   readonly attributes: {
     readonly createdAt: string;
     readonly locale: string;
     readonly parts: readonly StrapiPart[];
     readonly updatedAt: string;
     readonly bannerLinks?: readonly StrapiBannerLink[];
-    readonly relatedLinks?: RelatedLinks;
+    readonly relatedLinks?: StrapiRelatedLinks;
     readonly seo?: StrapiSeo;
   };
 };
 
-export type StrapiTutorials = Paginated<Tutorial>;
+export type StrapiTutorials = Paginated<StrapiTutorial>;

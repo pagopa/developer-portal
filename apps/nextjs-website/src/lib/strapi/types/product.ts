@@ -1,13 +1,13 @@
 import { StrapiBannerLink } from '@/lib/strapi/types/bannerLink';
 import { StrapiMedia } from '@/lib/strapi/types/media';
 import { StrapiComponent } from './strapiComponent';
-import { ApiDataListPageWithoutProduct } from './apiDataListPages';
+import { StrapiApiDataListPageWithoutProduct } from './apiDataListPages';
 
-type Id = {
+type StrapiId = {
   readonly id: number;
 };
 
-export type BaseProduct = {
+export type StrapiBaseProduct = {
   readonly attributes: {
     readonly name: string;
     readonly shortName: string;
@@ -15,13 +15,13 @@ export type BaseProduct = {
   };
 };
 
-export type BaseProductWithBannerLinks = BaseProduct & {
+export type StrapiBaseProductWithBannerLinks = StrapiBaseProduct & {
   readonly attributes: {
     readonly bannerLinks?: readonly StrapiBannerLink[];
   };
 };
 
-export type BaseProductWithoutBannerLinks = BaseProduct & {
+export type StrapiBaseProductWithoutBannerLinks = StrapiBaseProduct & {
   readonly attributes: {
     readonly description?: string;
     readonly logo: {
@@ -30,25 +30,25 @@ export type BaseProductWithoutBannerLinks = BaseProduct & {
   };
 };
 
-export type ProductRelations = {
-  readonly overview: StrapiComponent<Id | undefined>;
-  readonly quickstart_guide: StrapiComponent<Id | undefined>;
+export type StrapiProductRelations = {
+  readonly overview: StrapiComponent<StrapiId | undefined>;
+  readonly quickstart_guide: StrapiComponent<StrapiId | undefined>;
   readonly api_data_list_page: StrapiComponent<
-    ApiDataListPageWithoutProduct | undefined
+    StrapiApiDataListPageWithoutProduct | undefined
   >;
-  readonly tutorial_list_page: StrapiComponent<Id | undefined>;
-  readonly guide_list_page: StrapiComponent<Id | undefined>;
-  readonly release_note: StrapiComponent<Id | undefined>;
+  readonly tutorial_list_page: StrapiComponent<StrapiId | undefined>;
+  readonly guide_list_page: StrapiComponent<StrapiId | undefined>;
+  readonly release_note: StrapiComponent<StrapiId | undefined>;
 };
 
-export type StrapiBaseProductWithRelations = BaseProduct & {
-  readonly attributes: ProductRelations & {
+export type StrapiBaseProductWithRelations = StrapiBaseProduct & {
+  readonly attributes: StrapiProductRelations & {
     readonly bannerLinks?: readonly StrapiBannerLink[];
   };
 };
 
-export type StrapiProduct = BaseProduct & {
-  readonly attributes: ProductRelations & {
+export type StrapiProduct = StrapiBaseProduct & {
+  readonly attributes: StrapiProductRelations & {
     readonly bannerLinks?: readonly StrapiBannerLink[];
     readonly description?: string;
     readonly logo: {

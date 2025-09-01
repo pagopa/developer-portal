@@ -5,7 +5,7 @@ import { StrapiSeo } from '@/lib/strapi/types/seo';
 import { Paginated } from '@/lib/strapi/types/paginated';
 import { StrapiPart } from '@/lib/strapi/types/part';
 
-export type QuickStartGuideItem = {
+export type StrapiQuickStartGuideItem = {
   readonly id: number;
   readonly attributes: {
     readonly title: string;
@@ -15,14 +15,14 @@ export type QuickStartGuideItem = {
   };
 };
 
-export type QuickStartGuide = {
+export type StrapiQuickStartGuide = {
   readonly id: number;
   readonly attributes: {
     readonly bannerLinks: readonly StrapiBannerLink[];
     readonly description: string;
     readonly product: StrapiComponent<StrapiBaseProductWithRelations>;
     readonly quickstartGuideItems: StrapiComponent<
-      readonly QuickStartGuideItem[]
+      readonly StrapiQuickStartGuideItem[]
     >;
     readonly seo?: StrapiSeo;
     readonly title: string;
@@ -30,4 +30,4 @@ export type QuickStartGuide = {
   };
 };
 
-export type StrapiQuickStartGuides = Paginated<QuickStartGuide>;
+export type StrapiQuickStartGuides = Paginated<StrapiQuickStartGuide>;

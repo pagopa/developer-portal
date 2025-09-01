@@ -1,11 +1,11 @@
 import { BlocksContent } from '@strapi/blocks-react-renderer';
 import { StrapiMedia } from '@/lib/strapi/types/media';
-import { RelatedLinks } from '@/lib/strapi/types/link';
+import { StrapiRelatedLinks } from '@/lib/strapi/types/link';
 import { StrapiSeo } from '@/lib/strapi/types/seo';
 import { StrapiWebinarCategory } from '@/lib/strapi/types/webinarCategory';
 import { Paginated } from '@/lib/strapi/types/paginated';
 
-type WebinarSpeaker = {
+type StrapiWebinarSpeaker = {
   readonly id: number;
   readonly attributes: {
     readonly name: string;
@@ -16,7 +16,7 @@ type WebinarSpeaker = {
   };
 };
 
-type Resource = {
+type StrapiResource = {
   readonly title: string;
   readonly linkText: string;
   readonly linkHref: string;
@@ -25,13 +25,13 @@ type Resource = {
   readonly image: { readonly data?: StrapiMedia };
 };
 
-type RelatedResources = {
+type StrapiRelatedResources = {
   readonly title: string;
-  readonly resources?: readonly Resource[];
+  readonly resources?: readonly StrapiResource[];
   readonly downloadableDocuments?: { readonly data: readonly StrapiMedia[] };
 };
 
-type QuestionAndAnswer = {
+type StrapiQuestionAndAnswer = {
   readonly question: string;
   readonly answer: BlocksContent;
 };
@@ -50,10 +50,12 @@ export type StrapiWebinar = {
     readonly startDatetime?: string;
     readonly endDatetime?: string;
     readonly subscribeParagraphLabel?: string;
-    readonly relatedLinks?: RelatedLinks;
-    readonly relatedResources?: RelatedResources;
-    readonly webinarSpeakers: { readonly data: readonly WebinarSpeaker[] };
-    readonly questionsAndAnswers?: readonly QuestionAndAnswer[];
+    readonly relatedLinks?: StrapiRelatedLinks;
+    readonly relatedResources?: StrapiRelatedResources;
+    readonly webinarSpeakers: {
+      readonly data: readonly StrapiWebinarSpeaker[];
+    };
+    readonly questionsAndAnswers?: readonly StrapiQuestionAndAnswer[];
     readonly seo?: StrapiSeo;
     readonly webinarCategory?: { readonly data?: StrapiWebinarCategory };
     readonly headerImage?: { readonly data?: StrapiMedia };

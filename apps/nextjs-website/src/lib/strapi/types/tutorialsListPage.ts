@@ -1,10 +1,10 @@
-import { BaseTutorial } from '@/lib/strapi/types/tutorial';
+import { StrapiBaseTutorial } from '@/lib/strapi/types/tutorial';
 import { StrapiBannerLink } from '@/lib/strapi/types/bannerLink';
 import { StrapiSeo } from '@/lib/strapi/types/seo';
 import { Paginated } from '@/lib/strapi/types/paginated';
 import { StrapiBaseProductWithRelations } from '@/lib/strapi/types/product';
 
-export type TutorialsListPage = {
+export type StrapiTutorialsListPage = {
   readonly id: number;
   readonly attributes: {
     readonly bannerLinks: readonly StrapiBannerLink[];
@@ -13,9 +13,9 @@ export type TutorialsListPage = {
       readonly data: StrapiBaseProductWithRelations;
     };
     readonly title: string;
-    readonly tutorials: { readonly data: readonly BaseTutorial[] };
+    readonly tutorials: { readonly data: readonly StrapiBaseTutorial[] };
     readonly seo?: StrapiSeo;
   };
 };
 
-export type StrapiTutorialListPages = Paginated<TutorialsListPage>;
+export type StrapiTutorialListPages = Paginated<StrapiTutorialsListPage>;

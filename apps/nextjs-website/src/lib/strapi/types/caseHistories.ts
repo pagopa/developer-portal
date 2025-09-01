@@ -1,10 +1,10 @@
 import { StrapiMedia } from '@/lib/strapi/types/media';
-import { BaseProductWithoutBannerLinks } from '@/lib/strapi/types/product';
+import { StrapiBaseProductWithoutBannerLinks } from '@/lib/strapi/types/product';
 import { StrapiSeo } from '@/lib/strapi/types/seo';
 import { Paginated } from '@/lib/strapi/types/paginated';
 import { StrapiPart } from '@/lib/strapi/types/part';
 
-export type BaseCaseHistory = {
+export type StrapiBaseCaseHistory = {
   readonly id: number;
   readonly attributes: {
     readonly slug: string;
@@ -18,14 +18,14 @@ export type BaseCaseHistory = {
   };
 };
 
-export type CaseHistory = BaseCaseHistory & {
-  readonly attributes: BaseCaseHistory['attributes'] & {
+export type StrapiCaseHistory = StrapiBaseCaseHistory & {
+  readonly attributes: StrapiBaseCaseHistory['attributes'] & {
     readonly products: {
-      readonly data: readonly BaseProductWithoutBannerLinks[];
+      readonly data: readonly StrapiBaseProductWithoutBannerLinks[];
     };
     readonly parts: readonly StrapiPart[];
     readonly seo?: StrapiSeo;
   };
 };
 
-export type StrapiCaseHistories = Paginated<CaseHistory>;
+export type StrapiCaseHistories = Paginated<StrapiCaseHistory>;
