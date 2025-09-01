@@ -1,4 +1,4 @@
-import { Media } from '@/lib/strapi/types/media';
+import { Media } from '@/lib/types/media';
 import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
 
 export type Product = {
@@ -8,10 +8,8 @@ export type Product = {
   readonly logo?: Media;
   readonly name: string;
   readonly bannerLinks: readonly BannerLinkProps[];
-
   readonly hasApiDataListPage?: boolean;
   readonly apiDataListPageUrl?: string;
-
   readonly hasTutorialListPage?: boolean;
   readonly hasGuideListPage?: boolean;
   readonly hasOverviewPage?: boolean;
