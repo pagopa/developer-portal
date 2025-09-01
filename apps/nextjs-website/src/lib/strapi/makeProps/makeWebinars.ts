@@ -1,6 +1,5 @@
 import { Webinar } from '../../types/webinar';
 import { StrapiWebinar, StrapiWebinars } from '@/lib/strapi/types/webinars';
-import * as webinarCodec from '@/lib/strapi/codecs/WebinarsCodec';
 import _ from 'lodash';
 
 export type WebinarsProps = readonly Webinar[];
@@ -74,7 +73,7 @@ export function makeWebinarsProps(
  * Use `makeWebinarFromStrapi` instead.
  */
 export const deprecatedMakeWebinarFromStrapi = (
-  strapiWebinar: webinarCodec.StrapiWebinars['data'][0]
+  strapiWebinar: StrapiWebinar
 ): Webinar => {
   return {
     ...strapiWebinar.attributes,
@@ -86,6 +85,7 @@ export const deprecatedMakeWebinarFromStrapi = (
           }))
         : undefined,
     questionsAndAnswers:
+      strapiWebinar.attributes.questionsAndAnswers?.length &&
       strapiWebinar.attributes.questionsAndAnswers.length > 0
         ? strapiWebinar.attributes.questionsAndAnswers
         : undefined,
@@ -99,8 +99,8 @@ export const deprecatedMakeWebinarFromStrapi = (
             image: resource.image.data?.attributes,
           })),
           downloadableDocuments: (
-            strapiWebinar.attributes.relatedResources.downloadableDocuments
-              .data || []
+            strapiWebinar.attributes.relatedResources?.downloadableDocuments
+              ?.data || []
           ).map(({ attributes }) => ({
             title: attributes.caption || attributes.name,
             downloadLink: attributes.url,
@@ -109,13 +109,13 @@ export const deprecatedMakeWebinarFromStrapi = (
           })),
         }
       : undefined,
-    startDateTime: strapiWebinar.attributes.startDatetime?.toISOString(),
-    endDateTime: strapiWebinar.attributes.endDatetime?.toISOString(),
+    startDateTime: strapiWebinar.attributes.startDatetime,
+    endDateTime: strapiWebinar.attributes.endDatetime,
     subscribeCtaLabel: strapiWebinar.attributes.subscribeParagraphLabel,
     imagePath: strapiWebinar.attributes.coverImage.data.attributes.url,
     seo: strapiWebinar.attributes.seo,
-    webinarCategory: strapiWebinar.attributes.webinarCategory.data?.attributes,
-    headerImage: strapiWebinar.attributes.headerImage.data?.attributes,
-    updatedAt: strapiWebinar.attributes.updatedAt.toISOString(),
+    webinarCategory: strapiWebinar.attributes.webinarCategory?.data?.attributes,
+    headerImage: strapiWebinar.attributes.headerImage?.data?.attributes,
+    updatedAt: strapiWebinar.attributes.updatedAt,
   };
 };
