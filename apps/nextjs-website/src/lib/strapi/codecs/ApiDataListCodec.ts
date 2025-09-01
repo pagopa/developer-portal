@@ -53,11 +53,3 @@ export const ApiDataCodec = t.strict({
 export const BaseApiDataListCodec = t.strict({
   data: t.array(BaseApiDataCodec),
 });
-
-export type StrapiBaseApiDataList = t.TypeOf<typeof BaseApiDataListCodec>;
-
-export const ApiDataListCodec = t.strict({
-  data: t.array(ApiDataCodec),
-});
-
-export type StrapiApiDataList = t.TypeOf<typeof ApiDataListCodec>;
