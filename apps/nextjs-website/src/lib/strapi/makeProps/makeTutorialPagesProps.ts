@@ -4,7 +4,7 @@ import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
 import { makeBaseProductWithoutLogoProps } from './makeProducts';
 import { StrapiTutorialListPages } from '@/lib/strapi/types/tutorialsListPage';
 
-export function makeTutorialsPageProps(
+export function makeTutorialListPagesProps(
   strapiTutorialList: StrapiTutorialListPages
 ): readonly TutorialsPageProps[] {
   return strapiTutorialList.data.map(({ attributes }) => {
