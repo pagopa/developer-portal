@@ -14,6 +14,12 @@ export function makeProductsProps(
 }
 
 export function makeProductProps(product: StrapiProduct): Product | null {
+  if (!product || !product.attributes) {
+    // eslint-disable-next-line functional/no-expression-statements
+    console.error('Invalid product data:', product);
+    return null;
+  }
+
   if (!product.attributes.slug) {
     // eslint-disable-next-line functional/no-expression-statements
     console.error(
@@ -67,10 +73,11 @@ export function makeBaseProductWithoutLogoProps(
     slug: product.attributes.slug,
     name: product.attributes.name,
     shortName: product.attributes.shortName,
-    hasApiDataListPage:
+    hasApiDataListPage: !!(
       product.attributes.api_data_list_page.data &&
       product.attributes.api_data_list_page.data.attributes.apiData.data
-        .length > 0,
+        .length > 0
+    ),
     apiDataListPageUrl: getApiDataListPageUrl(product),
     hasTutorialListPage: !!product.attributes.tutorial_list_page.data,
     hasGuideListPage: !!product.attributes.guide_list_page.data,
