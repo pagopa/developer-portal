@@ -1,5 +1,5 @@
 import EContainer from '@/editorialComponents/EContainer/EContainer';
-import { Media } from '@/lib/strapi/codecs/MediaCodec';
+import { Media } from '@/lib/strapi/types/media';
 import { FormatQuote } from '@mui/icons-material';
 import { Box, Stack, Typography, useTheme } from '@mui/material';
 import Image from 'next/image';
