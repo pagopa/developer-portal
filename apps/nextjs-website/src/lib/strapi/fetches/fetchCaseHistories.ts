@@ -1,6 +1,6 @@
 import * as qs from 'qs';
-import { CaseHistoriesCodec } from '@/lib/strapi/codecs/CaseHistoriesCodec';
-import { deprecatedFetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
+import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
+import { StrapiCaseHistories } from '../types/caseHistories';
 
 const makeStrapiCaseHistoriesPopulate = () =>
   qs.stringify({
@@ -23,8 +23,7 @@ const makeStrapiCaseHistoriesPopulate = () =>
     },
   });
 
-export const fetchCaseHistories = deprecatedFetchFromStrapi(
+export const fetchCaseHistories = fetchFromStrapi<StrapiCaseHistories>(
   'case-histories',
-  makeStrapiCaseHistoriesPopulate(),
-  CaseHistoriesCodec
+  makeStrapiCaseHistoriesPopulate()
 );
