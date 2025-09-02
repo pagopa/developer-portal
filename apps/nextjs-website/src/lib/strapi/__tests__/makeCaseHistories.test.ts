@@ -23,13 +23,14 @@ describe('makeCaseHistoriesProps', () => {
     const result = makeCaseHistoriesProps(
       _.cloneDeep(minimalDataCaseHistories())
     );
+    const firstElement = result[0];
     expect(result).toHaveLength(1);
-    expect(result[0].description).toBeUndefined();
-    expect(result[0].image).toBeUndefined();
-    expect(result[0].seo).toBeUndefined();
-    expect(result[0].parts).toEqual([]);
-    expect(result[0].products).toBeDefined();
-    expect(result[0].updatedAt).toBe('2023-01-02T00:00:00.000Z');
+    expect(firstElement.description).toBeUndefined();
+    expect(firstElement.image).toBeUndefined();
+    expect(firstElement.seo).toBeUndefined();
+    expect(firstElement.parts).toEqual([]);
+    expect(firstElement.products).toBeDefined();
+    expect(firstElement.updatedAt).toBe('2023-01-02T00:00:00.000Z');
   });
 
   it('should handle empty data array', () => {
@@ -50,8 +51,9 @@ describe('makeCaseHistoriesProps', () => {
 
   it('should handle case history with multiple products', () => {
     const result = makeCaseHistoriesProps(caseHistoriesWithMultipleProducts());
-    expect(result[0].products).toHaveLength(2);
-    expect(result[0].products[1]).toMatchObject({
+    const firstElement = result[0];
+    expect(firstElement.products).toHaveLength(2);
+    expect(firstElement.products[1]).toMatchObject({
       name: 'Second Product',
       slug: 'second-product',
       logo: mediaJpeg().attributes,
