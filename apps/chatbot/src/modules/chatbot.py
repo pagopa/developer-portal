@@ -1,10 +1,8 @@
-import os
 import copy
-from pathlib import Path
 from typing import Union, Tuple, Optional, List, Any, Dict
 
+from langfuse import Langfuse
 from llama_index.core import PromptTemplate
-from llama_index.core.async_utils import asyncio_run
 from llama_index.core.llms import ChatMessage, MessageRole, TextBlock
 from llama_index.core.base.response.schema import (
     Response,
@@ -26,24 +24,19 @@ from langfuse.llama_index import LlamaIndexInstrumentor
 
 from src.modules.logger import get_logger
 from src.modules.models import get_llm, get_embed_model
-from src.modules.monitor import add_langfuse_score
-from src.modules.evaluator import Evaluator
 from src.modules.vector_database import load_index_redis
-from src.modules.engine import get_engine
+from src.modules.agent import get_agent
 from src.modules.handlers import EventHandler
 from src.modules.presidio import PresidioPII
-from src.modules.monitor import (
-    LANGFUSE_PUBLIC_KEY,
-    LANGFUSE_SECRET_KEY,
-    LANGFUSE_HOST,
-    LANGFUSE_CLIENT,
-)
+from src.modules.settings import SETTINGS
 
 
 LOGGER = get_logger(__name__)
-CWF = Path(__file__)
-ROOT = CWF.parent.parent.parent.absolute().__str__()
-WEBSITE_URL = os.getenv("CHB_WEBSITE_URL")
+LANGFUSE_CLIENT = Langfuse(
+    public_key=SETTINGS.langfuse_public_key,
+    secret_key=SETTINGS.langfuse_secret_key,
+    host=SETTINGS.langfuse_host,
+)
 RESPONSE_TYPE = Union[
     Response,
     StreamingResponse,
@@ -62,35 +55,24 @@ RESPONSE_TYPE = Union[
 class Chatbot:
     def __init__(
         self,
-        params: dict | None = None,
-        prompts: dict | None = None,
     ):
-        self.params = params
-        self.prompts = prompts
-        self.pii = PresidioPII(config=params["config_presidio"])
-        self.judge = Evaluator()
+        self.pii = PresidioPII(config=SETTINGS.presidio_config)
         self.model = get_llm()
         self.embed_model = get_embed_model()
         self.qa_prompt_tmpl, self.ref_prompt_tmpl = self._get_prompt_templates()
         self.index = load_index_redis(
             self.model,
             self.embed_model,
-            chunk_size=params["vector_index"]["chunk_size"],
-            chunk_overlap=params["vector_index"]["chunk_overlap"],
         )
-        self.engine = get_engine(
-            self.index,
-            llm=self.model,
-            identity_prompt=self.prompts["identity_prompt_str"],
+        self.agent = get_agent(
+            index=self.index,
             text_qa_template=self.qa_prompt_tmpl,
             refine_template=self.ref_prompt_tmpl,
-            react_system_str=self.prompts["react_system_header_str"],
-            verbose=self.params["engine"]["verbose"],
         )
         self.instrumentor = LlamaIndexInstrumentor(
-            public_key=LANGFUSE_PUBLIC_KEY,
-            secret_key=LANGFUSE_SECRET_KEY,
-            host=LANGFUSE_HOST,
+            public_key=SETTINGS.langfuse_public_key,
+            secret_key=SETTINGS.langfuse_secret_key,
+            host=SETTINGS.langfuse_host,
             mask=self._mask_trace,
         )
         self.instrumentor._event_handler = EventHandler(langfuse_client=LANGFUSE_CLIENT)
@@ -100,7 +82,7 @@ class Chatbot:
     ) -> Tuple[PromptTemplate, PromptTemplate]:
 
         qa_prompt_tmpl = PromptTemplate(
-            self.prompts["qa_prompt_str"],
+            SETTINGS.qa_prompt_str,
             template_var_mappings={
                 "context_str": "context_str",
                 "query_str": "query_str",
@@ -108,7 +90,7 @@ class Chatbot:
         )
 
         ref_prompt_tmpl = PromptTemplate(
-            self.prompts["refine_prompt_str"],
+            SETTINGS.refine_prompt_str,
             prompt_type="refine",
             template_var_mappings={
                 "existing_answer": "existing_answer",
@@ -130,13 +112,16 @@ class Chatbot:
             product_list += getattr(raw_output, "products", [])
             references = getattr(raw_output, "references", [])
 
-            for ref in references:
-                references_list.append(f"[{ref.title}]({WEBSITE_URL}{ref.filepath})")
+            references_list = [
+                f"[{ref.title}]({SETTINGS.website_url}{ref.filepath})"
+                for ref in references
+            ]
 
             nodes = getattr(raw_output, "source_nodes", [])
-            for node in nodes:
-                url = WEBSITE_URL + node.metadata["filepath"]
-                retrieved_contexts.append(f"URL: {url}\n\n{node.text}")
+            retrieved_contexts = [
+                f"-------\nURL: {SETTINGS.website_url + node.metadata['filepath']}\n\n{node.text}\n\n"
+                for node in nodes
+            ]
 
         response_json = {
             "response": engine_response.response.content.strip(),
@@ -250,7 +235,7 @@ class Chatbot:
 
         return data
 
-    def chat_generate(
+    async def chat_generate(
         self,
         query_str: str,
         trace_id: str,
@@ -266,12 +251,13 @@ class Chatbot:
             trace_id=trace_id, session_id=session_id, user_id=user_id
         ) as trace:
             try:
-                engine_response = asyncio_run(self.engine.run(query_str, chat_history))
+                engine_response = await self.agent.run(query_str, chat_history)
                 response_json = self._get_response_json(engine_response)
 
             except Exception as e:
                 response_json = {
-                    "response": "Scusa, non posso elaborare la tua richiesta.\nProva a formulare una nuova domanda.",
+                    "response": "Scusa, non posso elaborare la tua richiesta.\n"
+                    + "Prova a formulare una nuova domanda.",
                     "products": ["none"],
                     "references": [],
                     "contexts": [],
@@ -287,46 +273,3 @@ class Chatbot:
         self.instrumentor.flush()
 
         return response_json
-
-    def get_final_response(self, response_json: dict) -> str:
-
-        final_response = response_json["response"]
-
-        if len(response_json["references"]) > 0:
-            final_response += "\n\nRif:"
-            for ref in response_json["references"]:
-                final_response += "\n" + ref
-
-        return final_response
-
-    def evaluate(
-        self,
-        query_str: str,
-        response_str: str,
-        retrieved_contexts: List[str],
-        trace_id: str,
-        messages: Optional[List[Dict[str, str]]] | None = None,
-    ) -> dict:
-
-        if messages is not None:
-            chat_history = self._messages_to_chathistory(messages)
-            condense_prompt = self.prompts["condense_prompt_evaluation_str"].format(
-                chat_history=chat_history, query_str=query_str
-            )
-            condense_query_response = asyncio_run(self.model.acomplete(condense_prompt))
-            query_str = condense_query_response.text.strip()
-
-        scores = self.judge.evaluate(
-            query_str=query_str,
-            response_str=response_str,
-            retrieved_contexts=retrieved_contexts,
-        )
-        for key, value in scores.items():
-            add_langfuse_score(
-                trace_id=trace_id,
-                name=key,
-                value=value,
-                data_type="NUMERIC",
-            )
-
-        return scores

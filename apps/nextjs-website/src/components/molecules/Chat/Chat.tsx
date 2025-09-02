@@ -88,19 +88,23 @@ const Chat = ({
         ])
       ),
     ],
-    [queries, t, user, isFeedbackFormVisible]
+    [queries, t, user]
   ) satisfies Message[];
 
   const scrollRef = useRef<HTMLDivElement>(null);
+  const [queriesCount, setQueriesCount] = useState(0);
 
   useEffect(() => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollIntoView({
-        behavior: instantScroll ? 'auto' : 'smooth',
-      });
+    if (messages.length !== queriesCount) {
+      setQueriesCount(messages.length);
+      if (scrollRef.current) {
+        scrollRef.current.scrollIntoView({
+          behavior: instantScroll ? 'auto' : 'smooth',
+        });
+      }
     }
     setInstantScroll(false);
-  }, [queries, instantScroll, setInstantScroll, isFeedbackFormVisible]);
+  }, [messages, instantScroll, setInstantScroll, isAwaitingResponse]);
 
   return (
     <>
@@ -127,92 +131,93 @@ const Chat = ({
           </Stack>
         </Box>
       )}
-      {isFeedbackFormVisible ? (
-        <ChatbotFeedbackForm
-          sessionId={sessionId}
-          id={id}
-          onClose={() => {
-            setIsFeedbackFormVisible(false);
-            return null;
-          }}
-          onSend={onSendFeedback}
-          setIsFormVisible={(isVisible) => {
-            setIsFeedbackFormVisible(isVisible);
-            return null;
-          }}
-        />
-      ) : (
+      {isFeedbackFormVisible && (
         <>
-          <Stack
-            direction={'column'}
-            sx={{
-              overflow: 'auto',
-              paddingRight: '0.5rem',
-              paddingX: { xs: 1, md: 4 },
-              backgroundColor: palette.background.paper,
-              height: '100%',
+          <ChatbotFeedbackForm
+            sessionId={sessionId}
+            id={id}
+            onClose={() => {
+              setIsFeedbackFormVisible(false);
+              return null;
             }}
-          >
-            {!messages.length && !areChatbotQueriesLoaded && <ChatSkeleton />}
-            {messages.map((message, index) => (
-              <Stack
-                key={index}
-                ref={index === messages.length - 1 ? scrollRef : null}
-                direction='row'
-                width='100%'
-                justifyContent={message.isQuestion ? 'flex-end' : 'flex-start'}
-                marginTop={index === 0 ? 2 : 0}
-                marginBottom={2}
-              >
-                <ChatMessage
-                  {...message}
-                  mustFillFeedbackForm={mustFillFeedbackForm}
-                  onToggleNegativeFeedback={(negativeFeedback) => {
-                    setSessionId(message.sessionId);
-                    setId(message.id);
-                    if (mustFillFeedbackForm && isFeedbackFormEnabled) {
-                      if (negativeFeedback) setIsFeedbackFormVisible(true);
-                    } else {
-                      onSendFeedback(
-                        negativeFeedback,
-                        message.sessionId,
-                        message.id,
-                        null,
-                        null,
-                        ''
-                      );
-                    }
-                    return null;
-                  }}
-                />
-              </Stack>
-            ))}
-            {isAwaitingResponse && <ChatbotWriting />}
-            {error && (
-              <Paper
-                elevation={4}
-                sx={{ marginBottom: '1rem', height: 'auto', marginTop: '1rem' }}
-              >
-                <AlertPart
-                  title={t('chatBot.errors.title')}
-                  text={t(`chatBot.errors.${error}`)}
-                  severity={'error'}
-                  alertStyle={{
-                    backgroundColor: palette.background.paper,
-                    marginBottom: 0,
-                  }}
-                />
-              </Paper>
-            )}
-          </Stack>
-          {!disabled && (
-            <ChatInputText
-              onSubmit={onSendQuery}
-              sendDisabled={isAwaitingResponse}
-            />
-          )}
+            onSend={onSendFeedback}
+            setIsFormVisible={(isVisible) => {
+              setIsFeedbackFormVisible(isVisible);
+              return null;
+            }}
+          />
         </>
       )}
+      <>
+        <Stack
+          direction={'column'}
+          sx={{
+            overflow: 'auto',
+            paddingRight: '0.5rem',
+            paddingX: { xs: 1, md: 4 },
+            backgroundColor: palette.background.paper,
+            height: isFeedbackFormVisible ? 0 : '100%',
+          }}
+        >
+          {!messages.length && !areChatbotQueriesLoaded && <ChatSkeleton />}
+          {messages.map((message, index) => (
+            <Stack
+              key={index}
+              ref={index === messages.length - 1 ? scrollRef : null}
+              direction='row'
+              width='100%'
+              justifyContent={message.isQuestion ? 'flex-end' : 'flex-start'}
+              marginTop={index === 0 ? 2 : 0}
+              marginBottom={2}
+            >
+              <ChatMessage
+                {...message}
+                mustFillFeedbackForm={mustFillFeedbackForm}
+                onToggleNegativeFeedback={(negativeFeedback) => {
+                  setSessionId(message.sessionId);
+                  setId(message.id);
+                  if (mustFillFeedbackForm) {
+                    if (negativeFeedback) setIsFeedbackFormVisible(true);
+                  } else {
+                    onSendFeedback(
+                      negativeFeedback,
+                      message.sessionId,
+                      message.id,
+                      null,
+                      null,
+                      ''
+                    );
+                  }
+                  return null;
+                }}
+              />
+            </Stack>
+          ))}
+          {isAwaitingResponse && <ChatbotWriting />}
+          {error && (
+            <Paper
+              elevation={4}
+              sx={{ marginBottom: '1rem', height: 'auto', marginTop: '1rem' }}
+            >
+              <AlertPart
+                title={t('chatBot.errors.title')}
+                text={t(`chatBot.errors.${error}`)}
+                severity={'error'}
+                alertStyle={{
+                  backgroundColor: palette.background.paper,
+                  marginBottom: 0,
+                }}
+              />
+            </Paper>
+          )}
+        </Stack>
+        {!disabled && !isFeedbackFormVisible && (
+          <ChatInputText
+            onSubmit={onSendQuery}
+            sendDisabled={isAwaitingResponse}
+          />
+        )}
+      </>
     </>
   );
 };

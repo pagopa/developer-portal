@@ -1,5 +1,41 @@
 # chatbot
 
+## 7.0.1
+
+### Patch Changes
+
+- 9b757ab: Remove AWS Bedrock support
+- 9b757ab: Code refactor with new gemini models
+- 9b757ab: Manage settings in a centralized way
+
+## 7.0.0
+
+### Major Changes
+
+- 8ea97a0: Change the evaluate sqs queue to ordered fifo.
+
+### Patch Changes
+
+- c8dd06f: Bug fix repetitive links and unwanted triple apix
+
+## 6.1.0
+
+### Minor Changes
+
+- 84272d6: Static documentation read from AWS S3, dynamic documentation from sitemap.xml
+
+### Patch Changes
+
+- 7b46882: Extract evaluate feature into a new lambda function
+
+## 6.0.1
+
+### Patch Changes
+
+- 77ebb18: Fix bug in get_final_response() function
+- a0a3fa7: Fix Bug key error in react system head str
+- eb1d228: Fix bug to make the chatbot to reply always in Italian
+
 ## 6.0.0
 
 ### Major Changes

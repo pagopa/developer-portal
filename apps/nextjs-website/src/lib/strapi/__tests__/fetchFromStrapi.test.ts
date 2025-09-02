@@ -79,6 +79,33 @@ type TestResponse = {
   readonly meta: object;
 };
 
+type StrapiSuccessResponse = {
+  readonly data: {
+    readonly id: number;
+    readonly attributes: {
+      readonly createdAt: string;
+      readonly updatedAt: string;
+      readonly publishedAt: string;
+    };
+  };
+  readonly meta: NonNullable<unknown>;
+};
+
+type StrapiErrorResponse = {
+  readonly data: null;
+  readonly error: {
+    readonly status: number;
+    readonly name: string;
+    readonly message: string;
+    readonly details: NonNullable<unknown>;
+  };
+};
+
+type CustomResponse = {
+  readonly someField: string;
+  readonly anotherField: number;
+};
+
 describe('fetchFromStrapi', () => {
   it('should return strapi response given a 200 response', async () => {
     const { env, fetchMock } = makeTestEnv();
@@ -194,5 +221,78 @@ describe('fetchFromStrapi', () => {
         cache: 'no-store',
       }
     );
+  });
+
+  describe('fetchFromStrapi function', () => {
+    it('should return strapi response given a 200 response', async () => {
+      const { env, fetchMock } = makeTestEnv();
+      fetchMock.mockResolvedValueOnce({
+        status: 200,
+        statusText: 'OK',
+        json: () => Promise.resolve(strapiResponses[200]),
+      });
+      const actual = fetchFromStrapi<StrapiSuccessResponse>(
+        'aPath',
+        'aPopulate'
+      )(env);
+      const expected = strapiResponses[200];
+      expect(await actual).toStrictEqual(expected);
+    });
+
+    it('should return error given a 401 response', async () => {
+      const { env, fetchMock } = makeTestEnv();
+      fetchMock.mockResolvedValueOnce({
+        status: 401,
+        statusText: 'Unauthorized',
+        json: () => Promise.resolve(strapiResponses[401]),
+      });
+      const actual = fetchFromStrapi<StrapiErrorResponse>(
+        'aPath',
+        'aPopulate'
+      )(env);
+      const expected = new Error('401 - Unauthorized');
+      await expect(actual).rejects.toStrictEqual(expected);
+    });
+
+    it('should return error given a 404 response', async () => {
+      const { env, fetchMock } = makeTestEnv();
+      fetchMock.mockResolvedValueOnce({
+        status: 404,
+        statusText: 'Not Found',
+        json: () => Promise.resolve(strapiResponses[404]),
+      });
+      const actual = fetchFromStrapi<StrapiErrorResponse>(
+        'aPath',
+        'aPopulate'
+      )(env);
+      const expected = new Error('404 - Not Found');
+      await expect(actual).rejects.toStrictEqual(expected);
+    });
+
+    it('should return error given a reject', async () => {
+      const { env, fetchMock } = makeTestEnv();
+      fetchMock.mockRejectedValueOnce({});
+      const actual = fetchFromStrapi<StrapiSuccessResponse>(
+        'aPath',
+        'aPopulate'
+      )(env);
+      const expected = new Error('[object Object]');
+      await expect(actual).rejects.toStrictEqual(expected);
+    });
+
+    it('should return a CustomResponse object with field undefined', async () => {
+      const { env, fetchMock } = makeTestEnv();
+      fetchMock.mockResolvedValueOnce({
+        status: 200,
+        statusText: 'OK',
+        json: () => Promise.resolve(strapiResponses[200]),
+      });
+      const actual = await fetchFromStrapi<CustomResponse>(
+        'aPath',
+        'aPopulate'
+      )(env);
+      expect(actual['someField']).toBeUndefined();
+      expect(actual['anotherField']).toBeUndefined();
+    });
   });
 });

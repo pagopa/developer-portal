@@ -1,7 +1,7 @@
 import * as qs from 'qs';
 import { webinarPopulate } from '@/lib/strapi/fetches/fetchWebinars';
 import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
-import { StrapiSolutions } from '../types/solutions';
+import { StrapiSolutions } from '@/lib/strapi/types/solutions';
 
 const solutionsPopulate = {
   populate: {

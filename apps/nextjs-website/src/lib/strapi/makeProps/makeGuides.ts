@@ -22,7 +22,7 @@ export function makeGuidesProps(
           : attributes.product.data.attributes.bannerLinks?.map(
               makeBannerLinkProps
             ) || [],
-      seo: attributes.seo,
+      seo: attributes.seo || undefined,
     };
   });
 }

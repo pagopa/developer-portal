@@ -1,10 +1,10 @@
-import { StrapiGuideLists } from '@/lib/strapi/types/guideList';
+import { StrapiGuideListPages } from '@/lib/strapi/types/guideListPage';
 import { GuideListPageProps } from '@/app/[productSlug]/guides/page';
 import { product } from '@/lib/strapi/__tests__/fixtures/product';
 
 const dateNow = new Date().toISOString();
 
-export const strapiEmptyGuideListPaginatedData = {
+export const strapiEmptyGuideListPagesData = {
   data: [],
   meta: {
     pagination: {
@@ -14,9 +14,9 @@ export const strapiEmptyGuideListPaginatedData = {
       total: 0,
     },
   },
-} satisfies StrapiGuideLists;
+} satisfies StrapiGuideListPages;
 
-export const strapiGuideListPaginatedData = {
+export const strapiGuideListPagesData = {
   data: [
     {
       id: 48,
@@ -415,7 +415,7 @@ export const strapiGuideListPaginatedData = {
       total: 1,
     },
   },
-} satisfies StrapiGuideLists;
+} satisfies StrapiGuideListPages;
 
 export const guideListPageProps = [
   {

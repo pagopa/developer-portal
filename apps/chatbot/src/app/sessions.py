@@ -8,7 +8,7 @@ from boto3.dynamodb.conditions import Key
 from botocore.exceptions import BotoCoreError, ClientError
 from fastapi import HTTPException
 
-from src.modules.chatbot import Chatbot
+from src.app.chatbot_init import chatbot
 from src.modules.monitor import add_langfuse_score
 from src.modules.logger import get_logger
 from src.app.models import QueryFeedback, tables
@@ -16,12 +16,11 @@ from src.app.jwt_check import verify_jwt
 
 params = yaml.safe_load(open("config/params.yaml", "r"))
 prompts = yaml.safe_load(open("config/prompts.yaml", "r"))
-chatbot = Chatbot(params, prompts)
 
 LOGGER = get_logger(__name__)
 
 
-def current_user_id(authorization: str) -> str:
+def current_user_id(authorization: str | None = None) -> str:
     if authorization is None:
         LOGGER.error("[current_user_id] Authorization header is missing, exit with 401")
         raise HTTPException(status_code=401, detail="Unauthorized")
@@ -124,9 +123,14 @@ def last_session_id(userId: str):
     return items[0].get("id", None) if items else None
 
 
-def get_user_session(userId: str, sessionId: str):
-    dbResponse = tables["sessions"].get_item(Key={"userId": userId, "id": sessionId})
-    item = dbResponse.get("Item")
+def get_user_session(userId: str, sessionId: str) -> dict | None:
+    dbResponse = tables["sessions"].get_item(
+        Key={
+          "userId": userId,
+          "id": sessionId
+        }
+    )
+    item = dbResponse.get('Item')
     return item if item else None
 
 
@@ -145,7 +149,7 @@ def add_langfuse_score_query(query_id: str, query_feedback: QueryFeedback):
         add_langfuse_score(
             trace_id=query_id,
             name="user-response-relevancy",
-            value=float(query_feedback.feedback.user_response_relevancy),
+            value=query_feedback.feedback.user_response_relevancy,
             data_type="NUMERIC",
         )
 
@@ -153,6 +157,6 @@ def add_langfuse_score_query(query_id: str, query_feedback: QueryFeedback):
         add_langfuse_score(
             trace_id=query_id,
             name="user-faithfullness",
-            value=float(query_feedback.feedback.user_faithfullness),
+            value=query_feedback.feedback.user_faithfullness,
             data_type="NUMERIC",
         )

@@ -1,4 +1,5 @@
-import os
+import uuid
+import numpy as np
 from datetime import datetime
 from typing import Sequence, Literal
 
@@ -7,23 +8,14 @@ from langfuse.api.resources.trace.types.traces import Traces
 from langfuse.model import TraceWithFullDetails
 
 from src.modules.logger import get_logger
-from src.modules.utils import get_ssm_parameter
+from src.modules.settings import SETTINGS
 
 
 LOGGER = get_logger(__name__)
-LANGFUSE_PUBLIC_KEY = get_ssm_parameter(
-    os.getenv("CHB_AWS_SSM_LANGFUSE_PUBLIC_KEY"),
-    os.getenv("LANGFUSE_INIT_PROJECT_PUBLIC_KEY"),
-)
-LANGFUSE_SECRET_KEY = get_ssm_parameter(
-    os.getenv("CHB_AWS_SSM_LANGFUSE_SECRET_KEY"),
-    os.getenv("LANGFUSE_INIT_PROJECT_SECRET_KEY"),
-)
-LANGFUSE_HOST = os.getenv("CHB_LANGFUSE_HOST")
 LANGFUSE_CLIENT = Langfuse(
-    public_key=LANGFUSE_PUBLIC_KEY,
-    secret_key=LANGFUSE_SECRET_KEY,
-    host=LANGFUSE_HOST,
+    public_key=SETTINGS.langfuse_public_key,
+    secret_key=SETTINGS.langfuse_secret_key,
+    host=SETTINGS.langfuse_host,
 )
 
 
@@ -37,7 +29,7 @@ def get_trace(trace_id: str, as_dict: bool = False) -> TraceWithFullDetails | di
         TraceWithFullDetails | dict: The trace object or its dictionary representation.
     """
 
-    LOGGER.warning(f"Getting trace {trace_id} from Langfuse")
+    LOGGER.info(f"Getting trace {trace_id} from Langfuse")
     try:
         trace = LANGFUSE_CLIENT.fetch_trace(trace_id)
         trace = trace.data
@@ -107,11 +99,27 @@ def add_langfuse_score(
         None
     """
 
-    LANGFUSE_CLIENT.score(
-        trace_id=trace_id,
-        name=name,
-        value=value,
-        data_type=data_type,
-        comment=comment,
-    )
-    LOGGER.info(f"Add score {name}: {value} in trace {trace_id}.")
+    if value is None or (isinstance(value, float) and np.isnan(value)):
+        LOGGER.warning(
+            f"Value for score {name} is None or NaN, setting to 0.0 for trace {trace_id}."
+        )
+        value = 0.0
+    else:
+        value = float(value)
+
+    try:
+        LANGFUSE_CLIENT.score(
+            trace_id=trace_id,
+            name=name,
+            value=value,
+            data_type=data_type,
+            comment=comment,
+        )
+        LANGFUSE_CLIENT.flush()
+
+        LOGGER.info(f"Added {name} score with value {value} in trace {trace_id}.")
+    except Exception as e:
+        LOGGER.error(
+            f"Error adding {name} score with value {value} to trace {trace_id}: {e}."
+        )
+        raise e

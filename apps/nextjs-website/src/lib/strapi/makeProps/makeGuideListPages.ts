@@ -5,10 +5,10 @@ import { makeBaseProductWithoutLogoProps } from './makeProducts';
 import { GuideCardProps } from '@/components/molecules/GuideCard/GuideCard';
 import { StrapiBaseGuide } from '@/lib/strapi/types/guide';
 import _ from 'lodash';
-import { StrapiGuideLists } from '@/lib/strapi/types/guideList';
+import { StrapiGuideListPages } from '@/lib/strapi/types/guideListPage';
 
 export function makeGuideListPagesProps(
-  strapiGuideListPages: StrapiGuideLists
+  strapiGuideListPages: StrapiGuideListPages
 ): readonly GuideListPageProps[] {
   return strapiGuideListPages.data.map(({ attributes }) => {
     const product = makeBaseProductWithoutLogoProps(attributes.product.data);

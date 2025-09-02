@@ -1,4 +1,4 @@
-export type StrapiPagination = {
+export type Pagination = {
   readonly page: number;
   readonly pageSize: number;
   readonly pageCount: number;

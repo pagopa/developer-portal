@@ -1,6 +1,6 @@
 import { SolutionTemplateProps } from '@/components/templates/SolutionTemplate/SolutionTemplate';
 import { StrapiSolutions } from '@/lib/strapi/types/solutions';
-import { makeWebinarFromStrapi } from '@/lib/strapi/makeProps/makeWebinars';
+import { makeWebinarProps } from '@/lib/strapi/makeProps/makeWebinars';
 import _ from 'lodash';
 
 export function makeSolutionsProps(
@@ -25,9 +25,7 @@ export function makeSolutionsProps(
           })),
           icon: attributes.icon.data.attributes,
           webinars: _.compact(
-            attributes.webinars.data.map((webinar) =>
-              makeWebinarFromStrapi(webinar)
-            )
+            attributes.webinars.data.map((webinar) => makeWebinarProps(webinar))
           ),
           bannerLinks: attributes.bannerLinks.map((bannerLink) => ({
             ...bannerLink,

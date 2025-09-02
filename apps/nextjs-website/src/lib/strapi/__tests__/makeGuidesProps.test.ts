@@ -11,7 +11,7 @@ describe('makeGuidesProps', () => {
     expect(result).toEqual([]);
   });
 
-  it('should return a single page with the provided guides', () => {
+  it('should return an array containing only one object of type GuideDefinition', () => {
     const result = makeGuidesProps(strapiGuideData);
     expect(result).toHaveLength(1);
     expect(result).toEqual(guideProps);

@@ -16,6 +16,7 @@ import {
   fetchFromStrapi,
   getResponseFromStrapi,
 } from '../helpers/fetchFromStrapi';
+import { StrapiGuide, MetadataInfo } from '../helpers/guidesMetadataHelper';
 import { sitePathFromS3Path } from '../helpers/sitePathFromS3Path';
 
 // Load environment variables from .env file
@@ -34,58 +35,29 @@ const SYNCED_GUIDE_LIST_PAGES_RESPONSE_JSON_PATH =
 
 const s3Client = makeS3Client();
 
-interface StrapiGuide {
-  id: number;
-  attributes: {
-    slug: string;
-    title: string;
-    product?: {
-      data?: {
-        attributes?: {
-          slug: string;
-        };
-      };
-    };
-    versions: {
-      id: number;
-      main: boolean;
-      version: string;
-      dirName: string;
-    }[];
-  };
-}
-
 function generateUrlPath(
   filePath: string,
   guideSlug: string,
   productSlug: string,
   versionName?: string
 ): string {
-  const restOfPath = sitePathFromS3Path(filePath);
+  const restOfPath = sitePathFromS3Path(filePath, undefined);
   return [`/${productSlug}`, 'guides', guideSlug, versionName, restOfPath]
     .filter(Boolean)
     .join('/');
 }
 
-type GuideInfo = {
-  versionName: string;
-  isMainVersion: boolean;
-  dirName: string;
-  guideSlug: string;
-  productSlug: string;
-};
-
 async function convertGuideToSitemapItems(
   strapiGuides: StrapiGuide[]
 ): Promise<SitemapItem[]> {
-  const guideInfoList: GuideInfo[] = strapiGuides
+  const guideInfoList: MetadataInfo[] = strapiGuides
     .filter((guide) => !!guide.attributes.product?.data?.attributes?.slug)
     .flatMap((guide) =>
       guide.attributes.versions.map((version) => ({
         versionName: version.version,
         isMainVersion: version.main,
         dirName: version.dirName,
-        guideSlug: guide.attributes.slug,
+        slug: guide.attributes.slug,
         productSlug: `${guide.attributes.product?.data?.attributes?.slug}`,
       }))
     );
@@ -120,7 +92,7 @@ async function convertGuideToSitemapItems(
       if (menuPath && content) {
         const path = generateUrlPath(
           filePath,
-          guideInfo.guideSlug,
+          guideInfo.slug,
           guideInfo.productSlug,
           guideInfo.versionName
         );
@@ -136,7 +108,7 @@ async function convertGuideToSitemapItems(
         if (guideInfo.isMainVersion) {
           const path = generateUrlPath(
             filePath,
-            guideInfo.guideSlug,
+            guideInfo.slug,
             guideInfo.productSlug
           );
           items.push({
