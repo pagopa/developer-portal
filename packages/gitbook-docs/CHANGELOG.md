@@ -1,5 +1,43 @@
 # gitbook-docs
 
+## 1.0.2
+
+### Patch Changes
+
+- d1f3b42: Update parsing to include release notes and solutions
+- c3014ee: Fix content ref parsing
+
+## 1.0.1
+
+### Patch Changes
+
+- 1b91366: Update parsing to include release notes and solutions
+- 7e7d8ab: Add href tag to parsing, fix wrong parsing if content ref is present, fix parsing for localhost urls
+
+## 1.0.0
+
+### Major Changes
+
+- 6ecfd99: Add script for documentation parsing and update href parsing
+
+### Minor Changes
+
+- 3d233b7: Refactor url parsing on front-end
+
+### Patch Changes
+
+- 6938692: Fix parsing error, Update tests
+- b8cc7a8: Fix url parsing to include path with #
+- 719c746: Fix parsing for link referencing other guides
+
+## 0.5.2
+
+### Patch Changes
+
+- 1ccab24: Add filters to filter out files from .gitbook/includes
+- 2fdcc36: Add check for .gitbook/include files and process exit with code 1 if an error is caught
+- 9656cda: Fix generate metadata scripts
+
 ## 0.5.1
 
 ### Patch Changes

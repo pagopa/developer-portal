@@ -27,6 +27,8 @@ const CodeBlockPart = ({
   maxWidth = 'auto',
   wrapLines = true,
 }: CodeBlockPartProps) => {
+  // Ensure code is always a string to prevent split errors
+  const safeCode = typeof code === 'string' ? code : String(code || '');
   const { spacing, palette } = useTheme();
   const t = useTranslations('shared');
   const isLightMode = mode === 'light';
@@ -66,7 +68,7 @@ const CodeBlockPart = ({
           width: isLightMode ? '' : '100%',
         }}
       >
-        {code}
+        {safeCode}
       </SyntaxHighlighter>
       {title && (
         <Typography
@@ -93,7 +95,7 @@ const CodeBlockPart = ({
       >
         <Box marginY={'4px'} marginRight={{ xs: '5px', md: '10px' }}>
           <CopyToClipboard
-            textToCopy={code}
+            textToCopy={safeCode}
             copiedTooltipLabel={t('copiedTooltip')}
             copyColor={copyColor}
           />
