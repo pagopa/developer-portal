@@ -20,7 +20,7 @@ prompts = yaml.safe_load(open("config/prompts.yaml", "r"))
 LOGGER = get_logger(__name__)
 
 
-def current_user_id(authorization: str) -> str:
+def current_user_id(authorization: str | None = None) -> str:
     if authorization is None:
         LOGGER.error("[current_user_id] Authorization header is missing, exit with 401")
         raise HTTPException(status_code=401, detail="Unauthorized")
@@ -123,9 +123,14 @@ def last_session_id(userId: str):
     return items[0].get("id", None) if items else None
 
 
-def get_user_session(userId: str, sessionId: str):
-    dbResponse = tables["sessions"].get_item(Key={"userId": userId, "id": sessionId})
-    item = dbResponse.get("Item")
+def get_user_session(userId: str, sessionId: str) -> dict | None:
+    dbResponse = tables["sessions"].get_item(
+        Key={
+          "userId": userId,
+          "id": sessionId
+        }
+    )
+    item = dbResponse.get('Item')
     return item if item else None
 
 
