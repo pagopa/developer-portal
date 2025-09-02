@@ -9,16 +9,17 @@ export function makeTutorialListPagesProps(
 ): readonly TutorialsPageProps[] {
   return strapiTutorialList.data.map(({ attributes }) => {
     const tutorials: readonly Tutorial[] = attributes.tutorials.data.map(
-      ({ attributes: tutorialAttributes }) => ({
-        name: tutorialAttributes.title,
-        path: `/${tutorialAttributes.product.data.attributes.slug}/tutorials/${tutorialAttributes.slug}`,
-        title: tutorialAttributes.title,
-        publishedAt: tutorialAttributes.publishedAt
-          ? new Date(tutorialAttributes.publishedAt)
-          : undefined,
-        showInOverview: false,
-        image: tutorialAttributes.image.data?.attributes,
-      })
+      ({ attributes: tutorialAttributes }) =>
+        ({
+          name: tutorialAttributes.title,
+          path: `/${tutorialAttributes.product.data.attributes.slug}/tutorials/${tutorialAttributes.slug}`,
+          title: tutorialAttributes.title,
+          publishedAt: tutorialAttributes.publishedAt
+            ? new Date(tutorialAttributes.publishedAt)
+            : undefined,
+          showInOverview: false,
+          image: tutorialAttributes.image.data?.attributes,
+        } satisfies Tutorial)
     );
 
     return {
