@@ -128,6 +128,12 @@ export const strapiHomepage: StrapiHomepage = {
                 ],
               },
               webinarSpeakers: { data: [] },
+              webinarCategory: {
+                data: undefined,
+              },
+              headerImage: {
+                data: undefined,
+              },
             },
           },
         ],
