@@ -97,7 +97,6 @@ export const makeHandler =
         }))
       );
 
-      // eslint-disable-next-line functional/no-expression-statements
       return await sendEmail();
     } else {
       return event;
