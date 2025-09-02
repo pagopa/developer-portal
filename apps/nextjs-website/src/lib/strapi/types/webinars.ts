@@ -55,8 +55,8 @@ export type StrapiWebinar = {
     readonly webinarSpeakers: { readonly data: readonly WebinarSpeaker[] };
     readonly questionsAndAnswers?: readonly QuestionAndAnswer[];
     readonly seo?: StrapiSeo;
-    readonly webinarCategory?: { readonly data?: StrapiWebinarCategory };
-    readonly headerImage?: { readonly data?: StrapiMedia };
+    readonly webinarCategory: { readonly data?: StrapiWebinarCategory };
+    readonly headerImage: { readonly data?: StrapiMedia };
     readonly updatedAt: string;
   };
 };

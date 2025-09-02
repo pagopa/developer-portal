@@ -3,7 +3,7 @@ import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
 import { productRelationsPopulate } from '@/lib/strapi/fetches/fetchProducts';
 import { StrapiTutorialListPages } from '@/lib/strapi/types/tutorialsListPage';
 
-const makeStrapiTutorialsListsPopulate = () =>
+const makeStrapiTutorialListPagePopulate = () =>
   qs.stringify({
     populate: {
       product: {
@@ -21,7 +21,7 @@ const makeStrapiTutorialsListsPopulate = () =>
     },
   });
 
-export const fetchTutorialsListPages = fetchFromStrapi<StrapiTutorialListPages>(
+export const fetchTutorialListPages = fetchFromStrapi<StrapiTutorialListPages>(
   'tutorial-list-pages',
-  makeStrapiTutorialsListsPopulate()
+  makeStrapiTutorialListPagePopulate()
 );
