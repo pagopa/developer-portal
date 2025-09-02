@@ -21,15 +21,16 @@ describe('makeSolutionsProps', () => {
   it('should handle minimal data with missing optional fields', () => {
     const result = makeSolutionsProps(_.cloneDeep(minimalDataSolutions()));
     expect(result).toHaveLength(1);
-    expect(result[0].description).toBeUndefined();
-    expect(result[0].introductionToSteps).toBeUndefined();
-    expect(result[0].steps).toEqual([]);
-    expect(result[0].stats).toEqual([]);
-    expect(result[0].statsSource).toBeUndefined();
-    expect(result[0].successStories).toBeUndefined();
-    expect(result[0].seo).toBeUndefined();
-    expect(result[0].bannerLinks).toBeDefined();
-    expect(result[0].webinars).toBeDefined();
+    const firstElement = result[0];
+    expect(firstElement.description).toBeUndefined();
+    expect(firstElement.introductionToSteps).toBeUndefined();
+    expect(firstElement.steps).toEqual([]);
+    expect(firstElement.stats).toEqual([]);
+    expect(firstElement.statsSource).toBeUndefined();
+    expect(firstElement.successStories).toBeUndefined();
+    expect(firstElement.seo).toBeUndefined();
+    expect(firstElement.bannerLinks).toBeDefined();
+    expect(firstElement.webinars).toBeDefined();
   });
 
   it('should handle empty data array', () => {
@@ -61,15 +62,16 @@ describe('makeSolutionsProps', () => {
   it('should handle minimal data with missing optional fields', () => {
     const result = makeSolutionsProps(_.cloneDeep(minimalDataSolutions()));
     expect(result).toHaveLength(1);
-    expect(result[0].description).toBeUndefined();
-    expect(result[0].introductionToSteps).toBeUndefined();
-    expect(result[0].steps).toEqual([]);
-    expect(result[0].stats).toEqual([]);
-    expect(result[0].statsSource).toBeUndefined();
-    expect(result[0].successStories).toBeUndefined();
-    expect(result[0].seo).toBeUndefined();
-    expect(result[0].bannerLinks).toBeDefined();
-    expect(result[0].webinars).toBeDefined();
+    const firstElement = result[0];
+    expect(firstElement.description).toBeUndefined();
+    expect(firstElement.introductionToSteps).toBeUndefined();
+    expect(firstElement.steps).toEqual([]);
+    expect(firstElement.stats).toEqual([]);
+    expect(firstElement.statsSource).toBeUndefined();
+    expect(firstElement.successStories).toBeUndefined();
+    expect(firstElement.seo).toBeUndefined();
+    expect(firstElement.bannerLinks).toBeDefined();
+    expect(firstElement.webinars).toBeDefined();
   });
 
   it('should handle empty data array', () => {
