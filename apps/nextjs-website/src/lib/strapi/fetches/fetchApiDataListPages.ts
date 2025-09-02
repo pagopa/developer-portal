@@ -1,5 +1,5 @@
 import * as qs from 'qs';
-import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
+import { deprecatedFetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
 import { ApiDataListPagesCodec } from '@/lib/strapi/codecs/ApiDataListPagesCodec';
 import { productRelationsPopulate } from './fetchProducts';
 
@@ -30,7 +30,7 @@ const makeStrapiApiDataListPagePopulate = () =>
     },
   });
 
-export const fetchApiDataListPages = fetchFromStrapi(
+export const fetchApiDataListPages = deprecatedFetchFromStrapi(
   'api-data-list-pages',
   makeStrapiApiDataListPagePopulate(),
   ApiDataListPagesCodec

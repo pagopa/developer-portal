@@ -4,16 +4,16 @@
 /* eslint-disable functional/immutable-data */
 /* eslint-disable functional/no-try-statements */
 import dotenv from 'dotenv';
-import { writeFile } from 'fs/promises';
+import { readdir, writeFile } from 'fs/promises';
 import * as fs from 'fs';
-import { readdir } from 'fs/promises';
 import path from 'path';
 import { fetchFromStrapi } from '../helpers/fetchFromStrapi';
 import {
+  MetadataInfo,
+  MetadataType,
   StrapiGuide,
-  GuideInfo,
-  StrapiSolution,
   StrapiReleaseNote,
+  StrapiSolution,
 } from '../helpers/guidesMetadataHelper';
 import { sitePathFromLocalPath } from '../helpers/sitePathFromLocalPath';
 import { DOCUMENTATION_PATH } from '../helpers/documentationParsing.helper';
@@ -26,22 +26,34 @@ const URL_PARSING_METADATA_JSON_PATH =
 
 export type UrlParsingItem = {
   dirName: string;
-  guides: {
-    guidePath: string;
-    guideUrl: string;
+  docs: {
+    path: string;
+    url: string;
   }[];
 };
 
 export function generateUrlPath(
   filePath: string,
-  guideSlug: string,
-  productSlug: string,
-  versionName?: string
+  slug: string,
+  productSlug?: string,
+  versionName?: string,
+  metadataType: MetadataType = MetadataType.Guide
 ): string {
   const restOfPath = sitePathFromLocalPath(filePath, undefined);
-  return [`/${productSlug}`, 'guides', guideSlug, versionName, restOfPath]
-    .filter(Boolean)
-    .join('/');
+  switch (metadataType) {
+    case MetadataType.Guide:
+      return [`/${productSlug}`, 'guides', slug, versionName, restOfPath]
+        .filter(Boolean)
+        .join('/');
+    case MetadataType.Solution:
+      return ['/solutions', slug, 'details', restOfPath]
+        .filter(Boolean)
+        .join('/');
+    case MetadataType.ReleaseNote:
+      return [`/${productSlug}`, 'release-note', slug, restOfPath]
+        .filter(Boolean)
+        .join('/');
+  }
 }
 
 async function getMarkdownFilesRecursively(dir: string): Promise<string[]> {
@@ -62,41 +74,44 @@ async function getMarkdownFilesRecursively(dir: string): Promise<string[]> {
 
   return files.flat();
 }
-async function convertGuideToUrlParsingItems(
+async function convertDocToUrlParsingItems(
   strapiGuides: StrapiGuide[],
   strapiSolutions: StrapiSolution[],
   strapiReleaseNotes: StrapiReleaseNote[]
 ): Promise<UrlParsingItem[]> {
-  const guideInfoList: GuideInfo[] = strapiGuides
+  const guideInfoList: MetadataInfo[] = strapiGuides
     .filter((guide) => !!guide.attributes.product?.data?.attributes?.slug)
     .flatMap((guide) =>
       guide.attributes.versions.map((version) => ({
         versionName: version.version,
         isMainVersion: version.main,
         dirName: version.dirName,
-        guideSlug: guide.attributes.slug,
+        slug: guide.attributes.slug,
         productSlug: `${guide.attributes.product?.data?.attributes?.slug}`,
+        metadataType: MetadataType.Guide,
       }))
     );
-  const solutionInfoList: GuideInfo[] = strapiSolutions
+  const solutionInfoList: MetadataInfo[] = strapiSolutions
     .filter((solution) => !!solution.attributes.dirName)
     .map((solution) => ({
       versionName: '',
       isMainVersion: true,
       dirName: solution.attributes.dirName,
-      guideSlug: solution.attributes.slug,
-      productSlug: 'solutions',
+      slug: solution.attributes.slug,
+      productSlug: '',
+      metadataType: MetadataType.Solution,
     }));
-  const releaseNoteInfoList: GuideInfo[] = strapiReleaseNotes
+  const releaseNoteInfoList: MetadataInfo[] = strapiReleaseNotes
     .filter((releaseNote) => !!releaseNote.attributes.dirName)
     .map((releaseNote) => ({
       versionName: '',
       isMainVersion: true,
       dirName: releaseNote.attributes.dirName,
-      guideSlug: releaseNote.attributes.slug,
+      slug: releaseNote.attributes.slug,
       productSlug:
         releaseNote.attributes.product?.data?.attributes?.slug ||
         'release-notes',
+      metadataType: MetadataType.ReleaseNote,
     }));
 
   const infoList = [
@@ -108,32 +123,33 @@ async function convertGuideToUrlParsingItems(
   const items: UrlParsingItem[] = [];
   for (const docInfo of infoList) {
     if (docInfo.dirName) {
-      const guideDir = path.join(DOCUMENTATION_PATH, docInfo.dirName);
-      if (!fs.existsSync(guideDir)) {
-        console.warn(`Directory does not exist: ${guideDir}`);
+      const docDir = path.join(DOCUMENTATION_PATH, docInfo.dirName);
+      if (!fs.existsSync(docDir)) {
+        console.warn(`Directory does not exist: ${docDir}`);
         continue;
       }
-      const guideFiles = await getMarkdownFilesRecursively(guideDir);
-      const item = {
+      const docFiles = await getMarkdownFilesRecursively(docDir);
+      const item: UrlParsingItem = {
         dirName: docInfo.dirName,
-        guides: [] as { guidePath: string; guideUrl: string }[],
+        docs: [],
       };
-      for (const filePath of guideFiles) {
+      for (const filePath of docFiles) {
         const parts = filePath.split('/');
         if (parts.length <= 2) {
           continue;
         }
         if (!fs.existsSync(filePath)) continue;
 
-        const path = generateUrlPath(
+        const urlPath = generateUrlPath(
           filePath,
-          docInfo.guideSlug,
+          docInfo.slug,
           docInfo.productSlug,
-          docInfo.versionName
+          docInfo.versionName,
+          docInfo.metadataType
         );
-        item.guides.push({
-          guidePath: filePath || '',
-          guideUrl: path,
+        item.docs.push({
+          path: filePath || '',
+          url: urlPath,
         });
       }
       items.push(item);
@@ -183,13 +199,13 @@ async function main() {
     process.exit(1);
   }
   try {
-    const urlParsingItems = await convertGuideToUrlParsingItems(
+    const urlParsingItems = await convertDocToUrlParsingItems(
       strapiGuides,
       strapiSolutions,
       strapiReleaseNotes
     );
     console.log(
-      `Converted guides to ${urlParsingItems.length} url parsing items`
+      `Converted docs to ${urlParsingItems.length} url parsing items`
     );
     await writeFile(
       URL_PARSING_METADATA_JSON_PATH,
