@@ -16,5 +16,3 @@ export const MediaAttributesCodec = t.strict({
 export const MediaCodec = t.strict({
   attributes: MediaAttributesCodec,
 });
-
-export type Media = t.TypeOf<typeof MediaAttributesCodec>;
