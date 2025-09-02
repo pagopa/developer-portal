@@ -54,11 +54,12 @@ describe('makeTutorialsProps', () => {
 
   it('should handle minimal data with missing optional fields', () => {
     const result = makeTutorialsProps(_.cloneDeep(minimalDataTutorials()));
+    const firstElement = result[0];
     expect(result).toHaveLength(1);
-    expect(result[0].relatedLinks).toBeUndefined();
-    expect(result[0].bannerLinks).toBeDefined();
-    expect(result[0].seo).toBeUndefined();
-    expect(result[0].parts).toEqual([]);
+    expect(firstElement.relatedLinks).toBeUndefined();
+    expect(firstElement.bannerLinks).toBeDefined();
+    expect(firstElement.seo).toBeUndefined();
+    expect(firstElement.parts).toEqual([]);
   });
 
   it('should handle empty data array', () => {
