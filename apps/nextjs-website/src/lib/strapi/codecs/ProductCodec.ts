@@ -124,7 +124,7 @@ export const ProductsCodec = t.strict({
 });
 
 export type StrapiBaseProduct = t.TypeOf<typeof BaseProductCodec>;
-export type BaseProductWithRelationsCodec = t.TypeOf<
+export type StrapiBaseProductWithRelations = t.TypeOf<
   typeof BaseProductWithRelationsCodec
 >;
 export type StrapiProduct = t.TypeOf<typeof ProductCodec>;
