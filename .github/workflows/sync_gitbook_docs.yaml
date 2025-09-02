@@ -12,6 +12,11 @@ on:
           - dev
           - uat
           - prod
+      call_reindex:
+        description: 'Trigger reindex workflow after docs sync'
+        type: boolean
+        required: true
+        default: false
       metadata_type:
         description: 'Type of metadata to generate'
         type: choice
@@ -158,15 +163,11 @@ jobs:
             --distribution-id ${{ vars.ASSET_BUCKET_CLOUDFRONT_DISTRIBUTION_ID }} \
             --paths "/*"
 
-      - name: Set environment output
-        id: setenv
-        run: echo "environment=${{ inputs.environment }}" >> $GITHUB_OUTPUT
-
       - name: Trigger reindex workflow
+        if: inputs.call_reindex
         run: |
           curl -X POST \
           -H "Authorization: token ${{ secrets.TAG_GITHUB_PAT }}" \
           -H "Accept: application/vnd.github+json" \
           https://api.github.com/repos/${{ github.repository }}/actions/workflows/141828151/dispatches \
           -d '{"ref":"main","inputs":{"environment":"${{ inputs.environment }}"}}'
-        # -d '{"event_type":"cd_reindex_workflow_run","client_payload":{"environment":"${{ inputs.environment }}"}}'
