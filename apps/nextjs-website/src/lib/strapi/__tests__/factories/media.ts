@@ -1,4 +1,4 @@
-import { Media, MediaAttributes } from '@/lib/strapi/types/media';
+import { StrapiMedia, Media } from '@/lib/strapi/types/media';
 
 const mediaAttributes = {
   name: 'example.png',
@@ -10,7 +10,7 @@ const mediaAttributes = {
   ext: '.png',
   mime: 'image/png',
   url: 'https://example.com/example.png',
-} satisfies MediaAttributes;
+} satisfies Media;
 
 export function mediaJpeg() {
   return {
@@ -21,5 +21,5 @@ export function mediaJpeg() {
       mime: 'image/jpeg',
       url: 'https://example.com/example.jpg',
     },
-  } satisfies Media;
+  } satisfies StrapiMedia;
 }

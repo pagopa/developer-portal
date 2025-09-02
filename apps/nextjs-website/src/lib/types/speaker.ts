@@ -1,5 +1,5 @@
 import { BlocksContent } from '@strapi/blocks-react-renderer';
-import { Media } from '@/lib/strapi/codecs/MediaCodec';
+import { Media } from '@/lib/strapi/types/media';
 
 export type Speaker = {
   readonly name: string;
