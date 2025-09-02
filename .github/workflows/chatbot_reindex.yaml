@@ -14,11 +14,6 @@ on:
           - uat
           - prod
 
-  #workflow_run:
-  #  workflows:
-  #    - Sync GitBook Docs
-  #  types: [ completed ]
-
   # Allows external webhook trigger
   repository_dispatch:
     types:
@@ -63,18 +58,18 @@ jobs:
           chatbot_lambda_name: ${{ vars.CHATBOT_LAMBDA_NAME }}
 
   cd_reindex_workflow_run:
-    name: Llama reindex (workflow_run on ${{ matrix.environment }})
+    name: Llama reindex (workflow_run on ${{ github.event.client_payload.environment }})
     # Trigger on workflow_run (e.g. after Sync GitBook Docs completes)
-    runs-on: codebuild-${{ matrix.environment }}-github-runner-${{ github.run_id }}-${{ github.run_attempt }}
+    runs-on: codebuild-${{  github.event.client_payload.environment  }}-github-runner-${{ github.run_id }}-${{ github.run_attempt }}
     strategy:
       matrix:
         environment: ['dev', 'uat', 'prod']
       fail-fast: false
 
-    environment: ${{ matrix.environment }}
+    environment: ${{ github.event.client_payload.environment }}
 
     concurrency:
-      group: ${{ github.workflow }}-${{ matrix.environment }}
+      group: ${{ github.workflow }}-${{ github.event.client_payload.environment }}
       cancel-in-progress: false
 
     steps:

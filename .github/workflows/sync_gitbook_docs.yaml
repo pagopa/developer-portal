@@ -165,7 +165,7 @@ jobs:
       - name: Trigger reindex workflow
         run: |
           curl -X POST \
-          -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+          -H "Authorization: token ${{ secrets.TAG_GITHUB_PAT }}" \
           -H "Accept: application/vnd.github+json" \
           https://api.github.com/repos/${{ github.repository }}/dispatches \
           -d '{"event_type":"cd_reindex_workflow_run","client_payload":{"environment":"${{ inputs.environment }}"}}'
