@@ -75,6 +75,12 @@ export const strapiSolutions: StrapiSolutions = {
                 webinarSpeakers: {
                   data: [],
                 },
+                webinarCategory: {
+                  data: undefined,
+                },
+                headerImage: {
+                  data: undefined,
+                },
               },
             },
           ],
@@ -126,7 +132,7 @@ export const strapiSolutions: StrapiSolutions = {
       total: 1,
     },
   },
-};
+} satisfies StrapiSolutions;
 
 export const expectedSolutionTemplateProps: SolutionTemplateProps = {
   slug: 'solution-title',

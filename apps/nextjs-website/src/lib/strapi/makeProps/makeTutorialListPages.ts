@@ -4,21 +4,22 @@ import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
 import { makeBaseProductWithoutLogoProps } from './makeProducts';
 import { StrapiTutorialListPages } from '@/lib/strapi/types/tutorialsListPage';
 
-export function makeTutorialsPageProps(
+export function makeTutorialListPagesProps(
   strapiTutorialList: StrapiTutorialListPages
 ): readonly TutorialsPageProps[] {
   return strapiTutorialList.data.map(({ attributes }) => {
     const tutorials: readonly Tutorial[] = attributes.tutorials.data.map(
-      ({ attributes: tutorialAttributes }) => ({
-        name: tutorialAttributes.title,
-        path: `/${tutorialAttributes.product.data.attributes.slug}/tutorials/${tutorialAttributes.slug}`,
-        title: tutorialAttributes.title,
-        publishedAt: tutorialAttributes.publishedAt
-          ? new Date(tutorialAttributes.publishedAt)
-          : undefined,
-        showInOverview: false,
-        image: tutorialAttributes.image.data?.attributes,
-      })
+      ({ attributes: tutorialAttributes }) =>
+        ({
+          name: tutorialAttributes.title,
+          path: `/${tutorialAttributes.product.data.attributes.slug}/tutorials/${tutorialAttributes.slug}`,
+          title: tutorialAttributes.title,
+          publishedAt: tutorialAttributes.publishedAt
+            ? new Date(tutorialAttributes.publishedAt)
+            : undefined,
+          showInOverview: false,
+          image: tutorialAttributes.image.data?.attributes,
+        } satisfies Tutorial)
     );
 
     return {
