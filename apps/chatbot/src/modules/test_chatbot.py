@@ -1,38 +1,25 @@
 import os
-import json
-import yaml
 import boto3
 import requests
-from pathlib import Path
 from llama_index.core.async_utils import asyncio_run
 
 from src.modules.logger import get_logger
-from src.modules.utils import (
-    get_ssm_parameter,
-    AWS_ACCESS_KEY_ID,
-    AWS_SECRET_ACCESS_KEY,
-)
-from src.modules.documents import WEBSITE_URL, STRAPI_API_KEY
-from src.modules.vector_database import REDIS_CLIENT, INDEX_ID
-from src.modules.models import get_llm, get_embed_model, PROVIDER
+from src.modules.settings import SETTINGS
+from src.modules.vector_database import REDIS_CLIENT
+from src.modules.models import get_llm, get_embed_model
 from src.modules.chatbot import Chatbot, LANGFUSE_CLIENT
 
 
 LOGGER = get_logger(__name__)
-CWF = Path(__file__)
-ROOT = CWF.parent.parent.parent.absolute().__str__()
-PARAMS = yaml.safe_load(open(os.path.join(ROOT, "config", "params.yaml"), "r"))
-PROMPTS = yaml.safe_load(open(os.path.join(ROOT, "config", "prompts.yaml"), "r"))
-CHATBOT = Chatbot(params=PARAMS, prompts=PROMPTS)
-WEBSITE_URL = os.getenv("CHB_WEBSITE_URL")
+CHATBOT = Chatbot()
 
 
 def test_aws_credentials() -> None:
     identity = None
     try:
         session = boto3.Session(
-            aws_access_key_id=AWS_ACCESS_KEY_ID,
-            aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
+            aws_access_key_id=os.getenv("CHB_AWS_ACCESS_KEY_ID"),
+            aws_secret_access_key=os.getenv("CHB_AWS_SECRET_ACCESS_KEY"),
         )
         sts = session.client("sts")
         identity = sts.get_caller_identity()
@@ -45,23 +32,12 @@ def test_aws_credentials() -> None:
 
 def test_ssm_params() -> None:
 
-    if PROVIDER == "google":
-        GOOGLE_API_KEY = get_ssm_parameter(
-            name=os.getenv("CHB_AWS_SSM_GOOGLE_API_KEY"),
-            default=os.getenv("CHB_AWS_GOOGLE_API_KEY"),
-        )
-        GOOGLE_SERVICE_ACCOUNT = get_ssm_parameter(
-            name=os.getenv("CHB_AWS_SSM_GOOGLE_SERVICE_ACCOUNT")
-        )
-        if GOOGLE_SERVICE_ACCOUNT is None:
-            with open("./.google_service_account.json", "r") as file:
-                GOOGLE_JSON_ACCOUNT_INFO = json.load(file)
-        else:
-            GOOGLE_JSON_ACCOUNT_INFO = json.loads(GOOGLE_SERVICE_ACCOUNT)
-        assert GOOGLE_API_KEY is not None and GOOGLE_JSON_ACCOUNT_INFO is not None
+    if SETTINGS.provider == "google":
+        assert SETTINGS.google_api_key is not None
+        assert SETTINGS.google_service_account is not None
 
-    assert INDEX_ID is not None
-    assert STRAPI_API_KEY is not None
+    assert SETTINGS.index_id is not None
+    assert SETTINGS.strapi_api_key is not None
 
 
 def test_connection_redis() -> None:
@@ -81,9 +57,9 @@ def test_connection_langfuse():
 
 def test_strapi_connection() -> None:
 
-    url = WEBSITE_URL.replace("https://", "https://cms.")
+    url = SETTINGS.website_url.replace("https://", "https://cms.")
     url += "/api/apis-data?populate[product]=*&populate[apiRestDetail][populate][specUrls]=*"
-    headers = {"Authorization": f"Bearer {STRAPI_API_KEY}"}
+    headers = {"Authorization": f"Bearer {SETTINGS.strapi_api_key}"}
 
     response = requests.get(url, headers=headers)
     LOGGER.info(f"Fetching API data from {url}")

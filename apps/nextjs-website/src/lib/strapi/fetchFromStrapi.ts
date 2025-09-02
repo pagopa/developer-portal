@@ -8,7 +8,10 @@ import { StrapiEnv } from '@/lib/strapi/StrapiEnv';
 import { makeError } from '../makeError';
 
 // Function to invoke in order to retrieve data from Strapi.
-export const fetchFromStrapi = <A, O, I>(
+/** @deprecated
+ * Use `fetchFromStrapi` instead, which does not require a codec.
+ */
+export const deprecatedFetchFromStrapi = <A, O, I>(
   path: string,
   populate: string,
   codec: t.Type<A, O, I>
@@ -58,3 +61,58 @@ export const fetchFromStrapi = <A, O, I>(
         )()
     )
   );
+
+export const fetchFromStrapi = <T>(path: string, populate: string) =>
+  pipe(
+    R.ask<StrapiEnv>(),
+    R.map(
+      ({
+        config: {
+          STRAPI_ENDPOINT: strapiEndpoint,
+          STRAPI_API_TOKEN: strapiApiToken,
+        },
+        fetchFun,
+      }) =>
+        pipe(
+          // handle any promise result
+          TE.tryCatch(
+            () =>
+              fetchFun(`${strapiEndpoint}/api/${path}/?${populate}`, {
+                method: 'GET',
+                headers: {
+                  Authorization: `Bearer ${strapiApiToken}`,
+                },
+                cache: 'no-store',
+              }),
+            E.toError
+          ),
+          TE.chain((response) => {
+            if (response.status === 200) {
+              return TE.tryCatch(() => response.json(), E.toError);
+            } else {
+              return TE.left(makeError(response));
+            }
+          }),
+          TE.map(nullsToUndefined),
+          TE.map((json) => json as T),
+          TE.fold(
+            // eslint-disable-next-line functional/no-promise-reject
+            (errors) => () => Promise.reject(errors),
+            (result) => () => Promise.resolve(result)
+          )
+        )()
+    )
+  );
+
+function nullsToUndefined(obj: any): any {
+  if (obj === null) return undefined;
+  if (Array.isArray(obj)) {
+    return obj.map(nullsToUndefined);
+  }
+  if (typeof obj === 'object' && obj !== undefined) {
+    return Object.entries(obj)
+      .map(([key, value]) => [key, nullsToUndefined(value)] as const)
+      .reduce((acc, [key, value]) => ({ ...acc, [key]: value }), {});
+  }
+  return obj;
+}

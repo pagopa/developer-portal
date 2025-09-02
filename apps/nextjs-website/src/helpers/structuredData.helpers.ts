@@ -1,7 +1,7 @@
 import { ApiDataPageProps } from '@/app/[productSlug]/api/[apiDataSlug]/page';
 import { QuickStartGuidePageProps } from '@/app/[productSlug]/quick-start/page';
 import { baseUrl, organizationInfo, websiteName } from '@/config';
-import { Media } from '@/lib/strapi/codecs/MediaCodec';
+import { Media } from '@/lib/strapi/types/media';
 import { Product } from '@/lib/types/product';
 import { SEO } from '@/lib/types/seo';
 import { Webinar } from '@/lib/types/webinar';

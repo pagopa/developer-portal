@@ -6,13 +6,13 @@ import {
 
 const UrlParsingMetadata = {
   dirName: 'test-hash',
-  guides: [
-    { guidePath: 'this-is-a-test', guideUrl: 'parsed-url' },
-    { guidePath: 'parent/parse-this', guideUrl: 'parsed-url' },
-    { guidePath: 'other-parent/parse-this', guideUrl: 'different-parsed-url' },
+  docs: [
+    { path: 'this-is-a-test', url: 'parsed-url' },
+    { path: 'parent/parse-this', url: 'parsed-url' },
+    { path: 'other-parent/parse-this', url: 'different-parsed-url' },
     {
-      guidePath: 'guide-with-hashtag/this-will-be-parsed',
-      guideUrl: 'parsed-url-with-hashtag',
+      path: 'guide-with-hashtag/this-will-be-parsed',
+      url: 'parsed-url-with-hashtag',
     },
   ],
 };
@@ -21,10 +21,10 @@ const GlobalMetadata = [
   UrlParsingMetadata,
   {
     dirName: 'second-test',
-    guides: [
+    docs: [
       {
-        guidePath: 'other-documentation',
-        guideUrl: 'other-documentation-parsed-url',
+        path: 'other-documentation',
+        url: 'other-documentation-parsed-url',
       },
     ],
   },

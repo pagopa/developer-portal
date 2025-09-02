@@ -25,6 +25,7 @@
 | [aws_iam_policy.github_deploy_opennext](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
 | [aws_iam_role.github_chatbot_reindex](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
 | [aws_iam_role.github_deploy_opennext](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
+| [aws_iam_role_policy_attachment.code_build_deploy_opennext](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_iam_role_policy_attachment.deploy_website](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_iam_role_policy_attachment.github_chatbot_reindex](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_iam_role_policy_attachment.github_deploy_opennext](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
@@ -44,8 +45,6 @@
 | <a name="input_opennext_cdn_distribution_id"></a> [opennext\_cdn\_distribution\_id](#input\_opennext\_cdn\_distribution\_id) | The ID of the CloudFront distribution used to serve the OpenNext website | `string` | n/a | yes |
 | <a name="input_security_groups"></a> [security\_groups](#input\_security\_groups) | The security groups used to deploy the resources | `map(string)` | n/a | yes |
 | <a name="input_vpc"></a> [vpc](#input\_vpc) | The VPC used to deploy the resources | <pre>object({<br/>    id                  = string<br/>    cidr_block          = string<br/>    public_subnets      = list(string)<br/>    database_subnets    = list(string)<br/>    private_subnets     = list(string)<br/>    elasticache_subnets = list(string)<br/>  })</pre> | n/a | yes |
-| <a name="input_website_bucket"></a> [website\_bucket](#input\_website\_bucket) | The S3 bucket used to store the website | <pre>object({<br/>    name = string<br/>    arn  = string<br/>  })</pre> | n/a | yes |
-| <a name="input_website_cdn"></a> [website\_cdn](#input\_website\_cdn) | The CloudFront distribution used to serve the website | <pre>object({<br/>    arn = string<br/>  })</pre> | n/a | yes |
 | <a name="input_website_standalone_bucket"></a> [website\_standalone\_bucket](#input\_website\_standalone\_bucket) | The S3 bucket used to store the website in standalone mode | <pre>object({<br/>    name = string<br/>    arn  = string<br/>  })</pre> | n/a | yes |
 | <a name="input_aws_region"></a> [aws\_region](#input\_aws\_region) | AWS region to create resources. Default Milan | `string` | `"eu-south-1"` | no |
 | <a name="input_build_timeout"></a> [build\_timeout](#input\_build\_timeout) | The timeout for the build process in minutes | `number` | `480` | no |

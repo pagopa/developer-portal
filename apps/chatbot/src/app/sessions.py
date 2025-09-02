@@ -8,7 +8,7 @@ from boto3.dynamodb.conditions import Key
 from botocore.exceptions import BotoCoreError, ClientError
 from fastapi import HTTPException
 
-from src.modules.chatbot import Chatbot
+from src.app.chatbot_init import chatbot
 from src.modules.monitor import add_langfuse_score
 from src.modules.logger import get_logger
 from src.app.models import QueryFeedback, tables
@@ -16,7 +16,6 @@ from src.app.jwt_check import verify_jwt
 
 params = yaml.safe_load(open("config/params.yaml", "r"))
 prompts = yaml.safe_load(open("config/prompts.yaml", "r"))
-chatbot = Chatbot(params, prompts)
 
 LOGGER = get_logger(__name__)
 
