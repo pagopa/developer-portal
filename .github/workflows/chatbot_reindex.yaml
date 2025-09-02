@@ -27,7 +27,7 @@ permissions:
 jobs:
 
   cd_reindex:
-    name: Llama reindex (cd_ reindex on ${{ matrix.environment }})
+    name: Llama reindex (cd_reindex on ${{ matrix.environment }})
     # Trigger on a webhook (e.g. trigger reindex from CMS)
     if: github.event_name == 'repository_dispatch'
     runs-on: codebuild-${{ matrix.environment }}-github-runner-${{ github.run_id }}-${{ github.run_attempt }}
@@ -40,36 +40,6 @@ jobs:
 
     concurrency:
       group: ${{ github.workflow }}-${{ matrix.environment }}
-      cancel-in-progress: false
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
-
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502
-        with:
-          role-to-assume: ${{ secrets.IAM_ROLE_CHATBOT_REINDEX }}
-          aws-region: eu-south-1
-
-      - name: Chatbot Vector Index
-        uses: ./.github/actions/chatbot
-        with:
-          chatbot_lambda_name: ${{ vars.CHATBOT_LAMBDA_NAME }}
-
-  cd_reindex_workflow_run:
-    name: Llama reindex (workflow_run on ${{ github.event.client_payload.environment }})
-    # Trigger on workflow_run (e.g. after Sync GitBook Docs completes)
-    runs-on: codebuild-${{  github.event.client_payload.environment  }}-github-runner-${{ github.run_id }}-${{ github.run_attempt }}
-    strategy:
-      matrix:
-        environment: ['dev', 'uat', 'prod']
-      fail-fast: false
-
-    environment: ${{ github.event.client_payload.environment }}
-
-    concurrency:
-      group: ${{ github.workflow }}-${{ github.event.client_payload.environment }}
       cancel-in-progress: false
 
     steps:
