@@ -417,7 +417,7 @@ export const strapiGuideListPagesData = {
   },
 } satisfies StrapiGuideListPages;
 
-export const guideListPageProps = [
+export const guideListPagesProps = [
   {
     path: '/pago-pa/guides',
     abstract: {

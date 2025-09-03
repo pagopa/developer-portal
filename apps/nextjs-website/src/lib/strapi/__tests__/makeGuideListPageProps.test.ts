@@ -1,16 +1,16 @@
 import { makeGuideListPagesProps } from '@/lib/strapi/makeProps/makeGuideListPages';
 import {
-  guideListPageProps,
+  guideListPagesProps,
   strapiEmptyGuideListPagesData,
   strapiGuideListPagesData,
-} from '@/lib/strapi/__tests__/fixtures/guideLists';
+} from '@/lib/strapi/__tests__/fixtures/guideListPages';
 import { StrapiGuideListPages } from '@/lib/strapi/types/guideListPage';
 import {
   guideListWithGuideWithUndefinedListItem,
   guideListWithGuideWithWrongDataType,
   guideListWithMissingImages,
   guideListWithMissingSlugs,
-} from '@/lib/strapi/__tests__/factories/guideLists';
+} from '@/lib/strapi/__tests__/factories/guideListPages';
 
 describe('makeGuideListPageProps', () => {
   it('should return an empty array when no guides are provided', () => {
@@ -21,7 +21,7 @@ describe('makeGuideListPageProps', () => {
   it('should return an array with a single element with the guides for the PagoPA product', () => {
     const result = makeGuideListPagesProps(strapiGuideListPagesData);
     expect(result).toHaveLength(1);
-    expect(result).toEqual(guideListPageProps);
+    expect(result).toEqual(guideListPagesProps);
   });
 
   it('should return a single element array of type GuideListPageProps with only one guide', () => {
@@ -30,8 +30,8 @@ describe('makeGuideListPageProps', () => {
     const result = makeGuideListPagesProps(guideListWithMissingSlugsData);
     expect(result).toHaveLength(1);
     expect(result[0]).toEqual({
-      ...guideListPageProps[0],
-      guidesSections: guideListPageProps[0].guidesSections.map((section) => ({
+      ...guideListPagesProps[0],
+      guidesSections: guideListPagesProps[0].guidesSections.map((section) => ({
         ...section,
         guides: [],
       })),
@@ -44,8 +44,8 @@ describe('makeGuideListPageProps', () => {
     const result = makeGuideListPagesProps(guideListWithMissingImagesData);
     expect(result).toHaveLength(1);
     expect(result[0]).toEqual({
-      ...guideListPageProps[0],
-      guidesSections: guideListPageProps[0].guidesSections.map((section) => ({
+      ...guideListPagesProps[0],
+      guidesSections: guideListPagesProps[0].guidesSections.map((section) => ({
         ...section,
         guides: section.guides.map((guide) => ({
           ...guide,
