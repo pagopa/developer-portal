@@ -1,4 +1,4 @@
-import { Media } from '@/lib/strapi/codecs/MediaCodec';
+import { Media } from '@/lib/strapi/types/media';
 import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
 
 export type Product = {

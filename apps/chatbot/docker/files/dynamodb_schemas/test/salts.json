@@ -10,6 +10,10 @@
     {
       "AttributeName": "sessionId",
       "AttributeType": "S"
+    },
+    {
+      "AttributeName": "expiresAt",
+      "AttributeType": "N"
     }
   ],
   "ProvisionedThroughput": {

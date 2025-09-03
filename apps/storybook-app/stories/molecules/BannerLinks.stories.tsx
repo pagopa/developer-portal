@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/nextjs';
 import { BannerLinks } from 'nextjs-website/src/components/molecules/BannerLinks/BannerLinks';
 import { bannerLinksFixture } from '../fixtures/bannerLinksFixtures';
 

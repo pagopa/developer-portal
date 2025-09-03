@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/nextjs';
 import React from 'react';
 import IconWrapper from '../../../nextjs-website/src/components/atoms/IconWrapper/IconWrapper';
 import TabComponent from '../../../nextjs-website/src/components/atoms/TabComponent/TabComponent';
@@ -15,12 +15,7 @@ export const TabsComponent: StoryObj<typeof TabComponent> = {
     items: [
       {
         title: 'Title',
-        content: (
-          <IconWrapper
-            icon='https://cdn.dev.developer.pagopa.it/app_Io_d9bffd556b.svg'
-            useSrc={true}
-          />
-        ),
+        content: <IconWrapper icon='/icons/appIo.svg' useSrc={true} />,
       },
       {
         title: 'Title of the second page',
