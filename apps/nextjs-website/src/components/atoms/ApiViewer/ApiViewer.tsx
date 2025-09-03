@@ -31,6 +31,7 @@ type ApiViewerProps = {
 
 const ApiViewer: FC<ApiViewerProps> = ({ specURL, product }) => {
   const { palette } = useTheme();
+
   // function that return current API component type
   return (
     <Box
@@ -52,9 +53,7 @@ const ApiViewer: FC<ApiViewerProps> = ({ specURL, product }) => {
         regular-font='Titillium Web'
         mono-font='Titillium Web'
         font-size='largest'
-        // allow-search='false'
-        // allow-advanced-search='false'
-        render-style='read'
+        render-style='focused'
         show-header='false'
         allow-authentication='false'
         primary-color={palette.primary.main}
