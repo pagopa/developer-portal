@@ -18,9 +18,7 @@ export async function makeApiDataList(
         .map(async ({ attributes }) => {
           // eslint-disable-next-line functional/no-try-statements
           try {
-            const product = makeBaseProductWithoutLogo(
-              attributes.product.data
-            );
+            const product = makeBaseProductWithoutLogo(attributes.product.data);
             return {
               ...attributes,
               product,
