@@ -1,5 +1,5 @@
 import React from 'react';
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/nextjs';
 import { NextIntlClientProvider } from 'next-intl';
 import InfoCardEditButton from '../../../nextjs-website/src/components/atoms/InfoCardEditButton/InfoCardEditButton';
 

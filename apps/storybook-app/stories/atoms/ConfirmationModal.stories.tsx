@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/nextjs';
 import ConfirmationModal from '../../../nextjs-website/src/components/atoms/ConfirmationModal/ConfirmationModal';
 
 const meta: Meta<typeof ConfirmationModal> = {
