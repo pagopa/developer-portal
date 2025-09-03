@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/nextjs';
 import RelatedResources from 'nextjs-website/src/components/molecules/RelatedResources/RelatedResources';
 import { nextIntlContextDecorator } from '../next-intl-context.helper';
 
@@ -18,12 +18,12 @@ export const Showcase: StoryObj<typeof RelatedResources> = {
           title: 'Multe per violazioni al Codice della Strada',
           listItems: ['Item1', 'Item2'],
         },
-        imagePath: 'https://via.placeholder.com/2000x1000',
+        imagePath: '/icons/placeholder2000x1000.png',
         link: {
           href: '#',
           label: 'Vai alla guida',
         },
-        mobileImagePath: 'https://via.placeholder.com/150',
+        mobileImagePath: '/icons/placeholder1000x1000.png',
         title: 'Guida pratica',
       },
     ],

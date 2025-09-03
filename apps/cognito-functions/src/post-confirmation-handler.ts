@@ -71,7 +71,6 @@ export const makeHandler =
         T.map(() => event)
       );
 
-      // eslint-disable-next-line functional/no-expression-statements
       return await sendEmail();
     }
     return event;
