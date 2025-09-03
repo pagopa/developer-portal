@@ -4,8 +4,9 @@ import { Typography, Grid, Stack, Box, useTheme } from '@mui/material';
 import Image from 'next/image';
 import { useMemo } from 'react';
 import EContainer from '../EContainer/EContainer';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 import { Variant } from '@mui/material/styles/createTypography';
+import { formatDate } from '@/lib/dateUtils';
 
 export interface INewsroomItem {
   comingSoonLabel?: string;
@@ -17,7 +18,6 @@ export interface INewsroomItem {
   title: string;
   date: {
     date?: Date;
-    locale?: string;
     options?: Intl.DateTimeFormatOptions;
   };
   href: {
@@ -38,6 +38,7 @@ const Item = (props: INewsroomItem) => {
   const { variant = 'h6' } = props;
   const theme = useTheme();
   const t = useTranslations();
+  const currentLocale = useLocale();
 
   const {
     comingSoonLabel,
@@ -45,7 +46,6 @@ const Item = (props: INewsroomItem) => {
     img,
     date: {
       date,
-      locale = 'it-IT',
       options = {
         day: '2-digit',
         month: 'long',
@@ -110,7 +110,7 @@ const Item = (props: INewsroomItem) => {
             fontWeight={400}
             mb={2}
           >
-            {new Intl.DateTimeFormat(locale, options).format(date)}
+            {formatDate(date, currentLocale, options)}
           </Typography>
         )}
         {label && (

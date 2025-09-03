@@ -92,6 +92,20 @@ export const languages = [defaultLanguage, englishLanguage];
 
 export const defaultLocale = 'it-IT';
 
+export const getDateOptions = (
+  locale?: string
+): Intl.DateTimeFormatOptions => ({
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+  timeZone: locale === 'en' ? 'UTC' : 'Europe/Rome',
+});
+
+export const getTimeOptions = (): Intl.DateTimeFormatOptions => ({
+  hour: '2-digit',
+  minute: '2-digit',
+});
+
 export const dateOptions: Intl.DateTimeFormatOptions = {
   year: 'numeric',
   month: 'long',

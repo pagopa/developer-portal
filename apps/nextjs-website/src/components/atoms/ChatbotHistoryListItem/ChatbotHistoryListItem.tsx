@@ -1,4 +1,3 @@
-import { defaultLocale } from '@/config';
 import { Session } from '@/lib/chatbot/queries';
 import {
   ListItem,
@@ -7,21 +6,8 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
-import { useTranslations } from 'next-intl';
-
-type DateFormatOptions = {
-  locale?: string;
-  options?: Intl.DateTimeFormatOptions;
-};
-
-const DEFAULT_DATE_FORMAT = {
-  locale: defaultLocale,
-  options: {
-    day: 'numeric',
-    month: 'numeric',
-    year: 'numeric',
-  },
-} satisfies DateFormatOptions;
+import { useTranslations, useLocale } from 'next-intl';
+import { formatDate } from '@/lib/dateUtils';
 
 type ChatbotHistoryListItemProps = {
   session: Session;
@@ -30,10 +16,12 @@ type ChatbotHistoryListItemProps = {
 const ChatbotHistoryListItem = ({ session }: ChatbotHistoryListItemProps) => {
   const { palette } = useTheme();
   const t = useTranslations();
-  const formattedDate = new Intl.DateTimeFormat(
-    DEFAULT_DATE_FORMAT.locale,
-    DEFAULT_DATE_FORMAT.options
-  ).format(new Date(session.createdAt));
+  const locale = useLocale();
+  const formattedDate = formatDate(new Date(session.createdAt), locale, {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+  });
 
   return (
     <ListItem sx={{ width: '100%', paddingX: 0 }}>
