@@ -74,13 +74,11 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 const NotSsrWebinarHeaderBanner = dynamic(
-  () => import('@/components/atoms/WebinarHeaderBanner/WebinarHeaderBanner'),
-  { ssr: false }
+  () => import('@/components/atoms/WebinarHeaderBanner/WebinarHeaderBanner')
 );
 
 const NotSsrWebinarsSection = dynamic(
-  () => import('@/components/organisms/WebinarsSection/WebinarsSection'),
-  { ssr: false }
+  () => import('@/components/organisms/WebinarsSection/WebinarsSection')
 );
 
 const Home = async () => {
