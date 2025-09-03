@@ -29,3 +29,5 @@ export const SEOCodec = t.partial({
   metaSocial: t.array(SEOMetaSocialCodec),
   structuredData: t.union([NullToUndefinedCodec, t.unknown]),
 });
+
+export type StrapiSEO = t.TypeOf<typeof SEOCodec>;

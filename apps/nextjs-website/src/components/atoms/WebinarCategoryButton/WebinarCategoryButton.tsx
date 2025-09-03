@@ -1,7 +1,7 @@
 import { Box, Button, useTheme } from '@mui/material';
 import IconWrapper from '@/components/atoms/IconWrapper/IconWrapper';
-import { Media } from '@/lib/strapi/codecs/MediaCodec';
 import React from 'react';
+import { Media } from '@/lib/strapi/types/media';
 
 type WebinarCategoryButtonProps = {
   // eslint-disable-next-line functional/no-return-void
