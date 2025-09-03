@@ -69,7 +69,7 @@ def find_or_create_session(userId: str, now: datetime.datetime):
             "title": now.strftime("%Y-%m-%d"),
             "userId": userId,
             "createdAt": now.isoformat(),
-            "expiresAt": expiresAt,
+            "expiresAt": expires_at,
         }
         try:
             create_session_record(body)
