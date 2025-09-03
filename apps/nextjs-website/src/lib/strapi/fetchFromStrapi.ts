@@ -93,6 +93,7 @@ export const fetchFromStrapi = <T>(path: string, populate: string) =>
               return TE.left(makeError(response));
             }
           }),
+          TE.map(nullsToUndefined),
           TE.map((json) => json as T),
           TE.fold(
             // eslint-disable-next-line functional/no-promise-reject
@@ -102,3 +103,16 @@ export const fetchFromStrapi = <T>(path: string, populate: string) =>
         )()
     )
   );
+
+function nullsToUndefined(obj: any): any {
+  if (obj === null) return undefined;
+  if (Array.isArray(obj)) {
+    return obj.map(nullsToUndefined);
+  }
+  if (typeof obj === 'object' && obj !== undefined) {
+    return Object.entries(obj)
+      .map(([key, value]) => [key, nullsToUndefined(value)] as const)
+      .reduce((acc, [key, value]) => ({ ...acc, [key]: value }), {});
+  }
+  return obj;
+}

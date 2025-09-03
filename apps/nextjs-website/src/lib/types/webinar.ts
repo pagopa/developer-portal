@@ -1,8 +1,8 @@
 import { Speaker } from '@/lib/types/speaker';
 import { BlocksContent } from '@strapi/blocks-react-renderer';
-import { Media } from '../strapi/codecs/MediaCodec';
 import { SEO } from './seo';
 import { WebinarCategory } from '@/lib/types/webinarCategory';
+import { Media } from '@/lib/strapi/types/media';
 
 export type QuestionsAndAnswer = {
   readonly question: string;

@@ -5,7 +5,7 @@ export const productsFixture = [
     description: 'Il portale per gli sviluppatori di PagoPA',
     slug: 'pagopa',
     logo: {
-      url: 'https://cdn.dev.developer.pagopa.it/app_Io_d9bffd556b.svg',
+      url: '/icons/appIo.svg',
     },
   },
   {
@@ -14,7 +14,7 @@ export const productsFixture = [
     description: 'Il portale per gli sviluppatori di App IO',
     slug: 'app-io',
     logo: {
-      url: 'https://cdn.dev.developer.pagopa.it/app_Io_d9bffd556b.svg',
+      url: '/icons/appIo.svg',
     },
   },
   {
@@ -23,7 +23,7 @@ export const productsFixture = [
     description: 'Il portale per gli sviluppatori di Send',
     slug: 'send',
     logo: {
-      url: 'https://cdn.dev.developer.pagopa.it/app_Io_d9bffd556b.svg',
+      url: '/icons/appIo.svg',
     },
   },
 ];
