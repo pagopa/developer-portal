@@ -44,7 +44,7 @@ const ApiViewer: FC<ApiViewerProps> = ({ specURL, product }) => {
     >
       <rapi-doc
         spec-url={specURL}
-        /*theme='light'
+        theme='light'
         nav-bg-color='#EBEEF5'
         bg-color={palette.background.paper}
         text-color={palette.text.primary}
@@ -52,18 +52,18 @@ const ApiViewer: FC<ApiViewerProps> = ({ specURL, product }) => {
         regular-font='Titillium Web'
         mono-font='Titillium Web'
         font-size='largest'
-        allow-search='false'
-        allow-advanced-search='false'
-        render-style='focused'
+        // allow-search='false'
+        // allow-advanced-search='false'
+        render-style='read'
         show-header='false'
         allow-authentication='false'
-        primary-color='#3b82f6'
+        primary-color={palette.primary.main}
         scroll-y-offset='0'
         auto-scroll='false'
         allow-try='false'
         allow-server-selection='false'
-        show-method-in-nav-bar='as-colored-block'
-        show-components='true'*/
+        show-method-in-nav-bar='as-plain-text'
+        show-components='true'
       ></rapi-doc>
     </Box>
   );
