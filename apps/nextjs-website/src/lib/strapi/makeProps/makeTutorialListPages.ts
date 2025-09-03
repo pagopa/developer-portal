@@ -1,11 +1,11 @@
 import { TutorialsPageProps } from '@/app/[productSlug]/tutorials/page';
 import { Tutorial } from '@/lib/types/tutorialData';
-import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
-import { makeBaseProductWithoutLogoProps } from './makeProducts';
+import { makeBannerLink } from '@/lib/strapi/makeProps/makeBannerLink';
+import { makeBaseProductWithoutLogo } from './makeProducts';
 import { StrapiTutorialListPages } from '@/lib/strapi/types/tutorialsListPage';
 import _ from 'lodash';
 
-export function makeTutorialListPagesProps(
+export function makeTutorialListPages(
   strapiTutorialList: StrapiTutorialListPages
 ): readonly TutorialsPageProps[] {
   return _.compact(
@@ -61,7 +61,7 @@ export function makeTutorialListPagesProps(
       return {
         name: attributes.title,
         path: `/${attributes.product.data.attributes.slug}/tutorials`,
-        product: makeBaseProductWithoutLogoProps(attributes.product.data),
+        product: makeBaseProductWithoutLogo(attributes.product.data),
         abstract: {
           title: attributes.title,
           description: attributes.description,
@@ -71,10 +71,10 @@ export function makeTutorialListPagesProps(
         bannerLinks:
           attributes.bannerLinks.length > 0
             ? attributes.bannerLinks.map((bannerLink) =>
-                makeBannerLinkProps(bannerLink)
+                makeBannerLink(bannerLink)
               )
             : attributes.product.data.attributes.bannerLinks?.map(
-                (bannerLink) => makeBannerLinkProps(bannerLink)
+                (bannerLink) => makeBannerLink(bannerLink)
               ),
       };
     })

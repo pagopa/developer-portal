@@ -1,9 +1,9 @@
 import { QuickStartGuidePageProps } from '@/app/[productSlug]/quick-start/page';
 import { Part } from '@/lib/types/part';
 import { Step } from '@/lib/types/step';
-import { makePartProps } from '@/lib/strapi/makeProps/makePart';
-import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
-import { makeBaseProductWithoutLogoProps } from '@/lib/strapi/makeProps/makeProducts';
+import { makePart } from '@/lib/strapi/makeProps/makePart';
+import { makeBannerLink } from '@/lib/strapi/makeProps/makeBannerLink';
+import { makeBaseProductWithoutLogo } from '@/lib/strapi/makeProps/makeProducts';
 import { StrapiPart } from '@/lib/strapi/types/part';
 import {
   StrapiQuickStartGuideItem,
@@ -19,12 +19,12 @@ function makeStepFromQuickstartGuideItems(
     anchor: item.attributes.anchor,
     title: item.attributes.title,
     parts: item.attributes.parts
-      .map((part) => makePartProps(part as StrapiPart))
+      .map((part) => makePart(part as StrapiPart))
       .filter((part) => !!part) as ReadonlyArray<Part>,
   };
 }
 
-export function makeQuickStartGuidesProps(
+export function makeQuickStartGuides(
   strapiQuickStarts: StrapiQuickStartGuides
 ): QuickStartGuidesPageProps {
   return strapiQuickStarts.data.map((quickStart) => {
@@ -36,18 +36,16 @@ export function makeQuickStartGuidesProps(
       updatedAt: quickStart.attributes.updatedAt,
       defaultStepAnchor:
         quickStart.attributes.quickstartGuideItems.data[0].attributes.anchor,
-      product: makeBaseProductWithoutLogoProps(
-        quickStart.attributes.product.data
-      ),
+      product: makeBaseProductWithoutLogo(quickStart.attributes.product.data),
       steps: quickStart.attributes.quickstartGuideItems.data.map((item) =>
         makeStepFromQuickstartGuideItems(item)
       ),
       path: `/${quickStart.attributes.product.data.attributes.slug}/quick-start`,
       bannerLinks:
         quickStart.attributes.bannerLinks.length > 0
-          ? quickStart.attributes.bannerLinks.map(makeBannerLinkProps)
+          ? quickStart.attributes.bannerLinks.map(makeBannerLink)
           : quickStart.attributes.product.data.attributes.bannerLinks?.map(
-              makeBannerLinkProps
+              makeBannerLink
             ),
       seo: quickStart.attributes.seo,
     };

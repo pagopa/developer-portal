@@ -1,10 +1,9 @@
 import { ApiDataListPageTemplateProps } from '@/components/templates/ApiDataListTemplate/ApiDataListTemplate';
-import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
-import { makeBaseProductWithoutLogoProps } from '@/lib/strapi/makeProps/makeProducts';
+import { makeBannerLink } from '@/lib/strapi/makeProps/makeBannerLink';
+import { makeBaseProductWithoutLogo } from '@/lib/strapi/makeProps/makeProducts';
 import { StrapiApiDataListPages } from '@/lib/strapi/types/apiDataListPages';
 import _ from 'lodash';
 import { StrapiBaseApiData } from '../types/apiDataList';
-import { cons } from 'fp-ts/lib/ReadonlyNonEmptyArray';
 
 function makeApiDataListPageCard(item: StrapiBaseApiData, slug: string) {
   if (
@@ -37,7 +36,7 @@ function makeApiDataListPageCard(item: StrapiBaseApiData, slug: string) {
   };
 }
 
-export function makeApiDataListPagesProps(
+export function makeApiDataListPages(
   strapiApiDataListPages: StrapiApiDataListPages
 ): ReadonlyArray<ApiDataListPageTemplateProps> {
   return _.compact(
@@ -59,7 +58,7 @@ export function makeApiDataListPagesProps(
             title: attributes.title,
             subtitle: attributes.description || '',
           },
-          product: makeBaseProductWithoutLogoProps(attributes.product.data),
+          product: makeBaseProductWithoutLogo(attributes.product.data),
           apiDetailSlugs: attributes.apiData.data
             .map(({ attributes }) =>
               attributes.apiRestDetail
@@ -72,7 +71,7 @@ export function makeApiDataListPagesProps(
               makeApiDataListPageCard(item, slug)
             )
           ),
-          bannerLinks: attributes.bannerLinks.map(makeBannerLinkProps),
+          bannerLinks: attributes.bannerLinks.map(makeBannerLink),
           seo: attributes.seo,
           updatedAt: attributes.updatedAt,
         };

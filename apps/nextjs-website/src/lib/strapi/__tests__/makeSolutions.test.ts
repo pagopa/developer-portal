@@ -1,4 +1,4 @@
-import { makeSolutionsProps } from '@/lib/strapi/makeProps/makeSolutions';
+import { makeSolutions } from '@/lib/strapi/makeProps/makeSolutions';
 import { StrapiSolutions } from '@/lib/strapi/types/solutions';
 import _ from 'lodash';
 import {
@@ -11,15 +11,15 @@ import {
   solutionsWithoutWebinars,
 } from '@/lib/strapi/__tests__/factories/solutions';
 
-describe('makeSolutionsProps', () => {
+describe('makeSolutions', () => {
   it('should transform strapi solutions to solution props', () => {
-    const result = makeSolutionsProps(_.cloneDeep(strapiSolutions));
+    const result = makeSolutions(_.cloneDeep(strapiSolutions));
     expect(result).toHaveLength(1);
     expect(result[0]).toMatchObject(expectedSolutionTemplateProps);
   });
 
   it('should handle minimal data with missing optional fields', () => {
-    const result = makeSolutionsProps(_.cloneDeep(minimalDataSolutions()));
+    const result = makeSolutions(_.cloneDeep(minimalDataSolutions()));
     expect(result).toHaveLength(1);
     const firstElement = result[0];
     expect(firstElement.description).toBeUndefined();
@@ -45,22 +45,22 @@ describe('makeSolutionsProps', () => {
         },
       },
     };
-    const result = makeSolutionsProps(emptyData);
+    const result = makeSolutions(emptyData);
     expect(result).toHaveLength(0);
   });
 
   it('should handle solutions without case histories', () => {
-    const result = makeSolutionsProps(solutionsWithoutCaseHistories());
+    const result = makeSolutions(solutionsWithoutCaseHistories());
     expect(result[0].successStories).toBeUndefined();
   });
 
   it('should handle solutions without webinars', () => {
-    const result = makeSolutionsProps(solutionsWithoutWebinars());
+    const result = makeSolutions(solutionsWithoutWebinars());
     expect(result[0].webinars).toEqual([]);
   });
 
   it('should handle minimal data with missing optional fields', () => {
-    const result = makeSolutionsProps(_.cloneDeep(minimalDataSolutions()));
+    const result = makeSolutions(_.cloneDeep(minimalDataSolutions()));
     expect(result).toHaveLength(1);
     const firstElement = result[0];
     expect(firstElement.description).toBeUndefined();
@@ -86,17 +86,17 @@ describe('makeSolutionsProps', () => {
         },
       },
     };
-    const result = makeSolutionsProps(emptyData);
+    const result = makeSolutions(emptyData);
     expect(result).toHaveLength(0);
   });
 
   it('should handle solutions without case histories', () => {
-    const result = makeSolutionsProps(solutionsWithoutCaseHistories());
+    const result = makeSolutions(solutionsWithoutCaseHistories());
     expect(result[0].successStories).toBeUndefined();
   });
 
   it('should handle solutions without webinars', () => {
-    const result = makeSolutionsProps(solutionsWithoutWebinars());
+    const result = makeSolutions(solutionsWithoutWebinars());
     expect(result[0].webinars).toEqual([]);
   });
 });

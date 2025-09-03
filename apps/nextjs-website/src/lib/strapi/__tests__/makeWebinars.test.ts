@@ -1,4 +1,4 @@
-import { makeWebinarsProps } from '@/lib/strapi/makeProps/makeWebinars';
+import { makeWebinars } from '@/lib/strapi/makeProps/makeWebinars';
 import { StrapiWebinars } from '@/lib/strapi/types/webinars';
 import _ from 'lodash';
 import {
@@ -8,7 +8,7 @@ import {
 } from './fixtures/webinars';
 import { consoleSpy } from '@/lib/strapi/__tests__/consoleMock';
 
-describe('makeWebinarsProps', () => {
+describe('makeWebinars', () => {
   afterEach(() => {
     consoleSpy.mockClear();
   });
@@ -18,15 +18,13 @@ describe('makeWebinarsProps', () => {
   });
 
   it('should transform strapi webinars to webinars props', () => {
-    const result = makeWebinarsProps(_.cloneDeep(strapiWebinars));
+    const result = makeWebinars(_.cloneDeep(strapiWebinars));
     expect(result).toHaveLength(1);
     expect(result[0]).toMatchObject(webinarProps);
   });
 
   it('should handle a payload with two object with the second one with missing data and successfully return webinar props with only one item', () => {
-    const result = makeWebinarsProps(
-      _.cloneDeep(strapiWebinarsWithMissingData)
-    );
+    const result = makeWebinars(_.cloneDeep(strapiWebinarsWithMissingData));
     expect(result).toHaveLength(1);
     expect(result[0]).toMatchObject(webinarProps);
   });
@@ -43,7 +41,7 @@ describe('makeWebinarsProps', () => {
         },
       },
     };
-    const result = makeWebinarsProps(emptyData);
+    const result = makeWebinars(emptyData);
     expect(result).toHaveLength(0);
   });
 
@@ -67,7 +65,7 @@ describe('makeWebinarsProps', () => {
       },
     };
 
-    const result = makeWebinarsProps(corruptedData);
+    const result = makeWebinars(corruptedData);
 
     expect(result).toHaveLength(0);
     expect(consoleSpy).toHaveBeenCalledWith(

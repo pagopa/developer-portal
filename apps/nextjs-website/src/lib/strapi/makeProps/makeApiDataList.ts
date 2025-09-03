@@ -1,11 +1,11 @@
 import { ApiDataPageProps } from '@/app/[productSlug]/api/[apiDataSlug]/page';
-import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
-import { makeBaseProductWithoutLogoProps } from '@/lib/strapi/makeProps/makeProducts';
+import { makeBannerLink } from '@/lib/strapi/makeProps/makeBannerLink';
+import { makeBaseProductWithoutLogo } from '@/lib/strapi/makeProps/makeProducts';
 import { makeApiSoapUrlList } from '@/lib/strapi/makeProps/makeApiSoapUrlList';
 import { StrapiApiDataList } from '@/lib/strapi/types/apiDataList';
 import _ from 'lodash';
 
-export async function makeApiDataListProps(
+export async function makeApiDataList(
   strapiApiDataList: StrapiApiDataList
 ): Promise<ReadonlyArray<ApiDataPageProps>> {
   const list = _.compact(
@@ -18,7 +18,7 @@ export async function makeApiDataListProps(
         .map(async ({ attributes }) => {
           // eslint-disable-next-line functional/no-try-statements
           try {
-            const product = makeBaseProductWithoutLogoProps(
+            const product = makeBaseProductWithoutLogo(
               attributes.product.data
             );
             return {
@@ -47,9 +47,9 @@ export async function makeApiDataListProps(
                 : [],
               bannerLinks:
                 attributes.bannerLinks.length > 0
-                  ? attributes.bannerLinks.map(makeBannerLinkProps)
+                  ? attributes.bannerLinks.map(makeBannerLink)
                   : attributes.product.data.attributes.bannerLinks?.map(
-                      makeBannerLinkProps
+                      makeBannerLink
                     ),
               seo: attributes.seo,
             } satisfies ApiDataPageProps;

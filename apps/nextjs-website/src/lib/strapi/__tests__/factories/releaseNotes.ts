@@ -125,7 +125,7 @@ export function releaseNotesWithCorruptedData() {
           product: {
             data: {
               ...strapiReleaseNote.attributes.product.data,
-              attributes: null as any, // This will cause an error in makeBaseProductWithoutLogoProps
+              attributes: null as any, // This will cause an error in makeBaseProductWithoutLogo
             },
           },
         },

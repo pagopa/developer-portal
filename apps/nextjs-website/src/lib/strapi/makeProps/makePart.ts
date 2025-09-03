@@ -3,7 +3,7 @@ import { parseCkEditorContent } from '@/helpers/parseCkEditorContent.helpers';
 import { StrapiPart } from '@/lib/strapi/types/part';
 import { ApiTesterPartProps } from '@/components/organisms/ApiTesterPart/ApiTesterPart';
 
-export function makePartProps(strapiPart: StrapiPart): Part | null {
+export function makePart(strapiPart: StrapiPart): Part | null {
   switch (strapiPart.__component) {
     case 'parts.alert':
       return {

@@ -1,15 +1,15 @@
 import { OverviewPageProps } from '@/app/[productSlug]/overview/page';
-import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
-import { makeBaseProductWithoutLogoProps } from './makeProducts';
+import { makeBannerLink } from '@/lib/strapi/makeProps/makeBannerLink';
+import { makeBaseProductWithoutLogo } from './makeProducts';
 import { StrapiOverviews } from '@/lib/strapi/types/overviews';
 
-export function makeOverviewsProps(
+export function makeOverviews(
   strapiOverviews: StrapiOverviews
 ): ReadonlyArray<OverviewPageProps> {
   return strapiOverviews.data.map(({ attributes }) => {
     return {
       path: `/${attributes.product.data?.attributes.slug}/overview`,
-      product: makeBaseProductWithoutLogoProps(attributes.product.data),
+      product: makeBaseProductWithoutLogo(attributes.product.data),
       hero: {
         backgroundImage: attributes.backgroundImage.data.attributes.url,
         altText:
@@ -156,9 +156,9 @@ export function makeOverviewsProps(
         undefined,
       bannerLinks:
         attributes.bannerLinks.length > 0
-          ? attributes.bannerLinks.map(makeBannerLinkProps)
+          ? attributes.bannerLinks.map(makeBannerLink)
           : attributes.product.data?.attributes.bannerLinks?.map(
-              makeBannerLinkProps
+              makeBannerLink
             ),
       seo: attributes.seo || undefined,
     } satisfies OverviewPageProps;

@@ -1,4 +1,4 @@
-import { makeOverviewsProps } from '@/lib/strapi/makeProps/makeOverviews';
+import { makeOverviews } from '@/lib/strapi/makeProps/makeOverviews';
 import { StrapiOverviews } from '@/lib/strapi/types/overviews';
 import {
   overviewPageProps,
@@ -7,16 +7,16 @@ import {
 import _ from 'lodash';
 import { minimalDataSingleOverview } from '@/lib/strapi/__tests__/factories/overviews';
 
-describe('makeOverviewsProps', () => {
+describe('makeOverviews', () => {
   it('should transform strapi overviews to overview page props', () => {
-    const result = makeOverviewsProps(_.cloneDeep(strapiOverviews));
+    const result = makeOverviews(_.cloneDeep(strapiOverviews));
 
     expect(result).toHaveLength(1);
     expect(result[0]).toEqual(overviewPageProps);
   });
 
   it('should handle minimal data with null optional fields', () => {
-    const result = makeOverviewsProps(_.cloneDeep(minimalDataSingleOverview()));
+    const result = makeOverviews(_.cloneDeep(minimalDataSingleOverview()));
 
     expect(result).toHaveLength(1);
     expect(result[0].feature).toBeUndefined();
@@ -41,7 +41,7 @@ describe('makeOverviewsProps', () => {
       },
     };
 
-    const result = makeOverviewsProps(emptyData);
+    const result = makeOverviews(emptyData);
 
     expect(result).toHaveLength(0);
   });

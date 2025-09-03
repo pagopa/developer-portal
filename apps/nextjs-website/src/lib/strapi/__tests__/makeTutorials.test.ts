@@ -1,12 +1,12 @@
-import { makeTutorialsProps } from '@/lib/strapi/makeProps/makeTutorials';
+import { makeTutorials } from '@/lib/strapi/makeProps/makeTutorials';
 import { StrapiTutorials } from '@/lib/strapi/types/tutorial';
 import _ from 'lodash';
 import { strapiTutorials } from '@/lib/strapi/__tests__/fixtures/tutorials';
 import { minimalDataTutorials } from '@/lib/strapi/__tests__/factories/tutorials';
 
-describe('makeTutorialsProps', () => {
+describe('makeTutorials', () => {
   it('should transform strapi tutorials to tutorials props', () => {
-    const result = makeTutorialsProps(_.cloneDeep(strapiTutorials));
+    const result = makeTutorials(_.cloneDeep(strapiTutorials));
     expect(result).toHaveLength(1);
     expect(result[0]).toMatchObject({
       image: {
@@ -53,7 +53,7 @@ describe('makeTutorialsProps', () => {
   });
 
   it('should handle minimal data with missing optional fields', () => {
-    const result = makeTutorialsProps(_.cloneDeep(minimalDataTutorials()));
+    const result = makeTutorials(_.cloneDeep(minimalDataTutorials()));
     const firstElement = result[0];
     expect(result).toHaveLength(1);
     expect(firstElement.relatedLinks).toBeUndefined();
@@ -74,7 +74,7 @@ describe('makeTutorialsProps', () => {
         },
       },
     };
-    const result = makeTutorialsProps(emptyData);
+    const result = makeTutorials(emptyData);
     expect(result).toHaveLength(0);
   });
 });

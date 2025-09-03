@@ -1,10 +1,10 @@
-import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
-import { makeBaseProductWithoutLogoProps } from '@/lib/strapi/makeProps/makeProducts';
+import { makeBannerLink } from '@/lib/strapi/makeProps/makeBannerLink';
+import { makeBaseProductWithoutLogo } from '@/lib/strapi/makeProps/makeProducts';
 import { ReleaseNotePageProps } from '@/app/[productSlug]/[...releaseNoteSubPathSlugs]/page';
 import { StrapiReleaseNotes } from '@/lib/strapi/types/releaseNotes';
 import _ from 'lodash';
 
-export function makeReleaseNotesProps(
+export function makeReleaseNotes(
   strapiReleaseNotes: StrapiReleaseNotes
 ): ReadonlyArray<ReleaseNotePageProps> {
   return _.compact(
@@ -22,14 +22,14 @@ export function makeReleaseNotesProps(
         return {
           bannerLinks:
             attributes.bannerLinks.length > 0
-              ? attributes.bannerLinks.map(makeBannerLinkProps)
+              ? attributes.bannerLinks.map(makeBannerLink)
               : attributes.product.data?.attributes.bannerLinks?.map(
-                  makeBannerLinkProps
+                  makeBannerLink
                 ),
           dirName: attributes.dirName,
           landingFile: attributes.landingFile,
           path: `/${attributes.product.data?.attributes.slug}/release-note`,
-          product: makeBaseProductWithoutLogoProps(attributes.product.data),
+          product: makeBaseProductWithoutLogo(attributes.product.data),
           seo: attributes.seo,
           title: attributes.title,
         };

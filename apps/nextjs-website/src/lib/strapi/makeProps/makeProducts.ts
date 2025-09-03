@@ -1,5 +1,5 @@
 import { Product } from '@/lib/types/product';
-import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
+import { makeBannerLink } from '@/lib/strapi/makeProps/makeBannerLink';
 import {
   StrapiBaseProductWithRelations,
   StrapiProduct,
@@ -7,13 +7,13 @@ import {
 } from '@/lib/strapi/types/product';
 import _ from 'lodash';
 
-export function makeProductsProps(
+export function makeProducts(
   strapiProducts: StrapiProducts
 ): ReadonlyArray<Product> {
-  return _.compact(strapiProducts.data.map(makeProductProps));
+  return _.compact(strapiProducts.data.map(makeProduct));
 }
 
-export function makeProductProps(product: StrapiProduct): Product | null {
+export function makeProduct(product: StrapiProduct): Product | null {
   if (!product || !product.attributes) {
     // eslint-disable-next-line functional/no-expression-statements
     console.error('Invalid product data:', product);
@@ -31,7 +31,7 @@ export function makeProductProps(product: StrapiProduct): Product | null {
   // eslint-disable-next-line functional/no-try-statements
   try {
     return {
-      ...makeBaseProductWithoutLogoProps(product),
+      ...makeBaseProductWithoutLogo(product),
       description: product.attributes.description,
       logo: product.attributes.logo?.data.attributes,
     };
@@ -66,7 +66,7 @@ function getApiDataListPageUrl(
   return `/${productSlug}/api`;
 }
 
-export function makeBaseProductWithoutLogoProps(
+export function makeBaseProductWithoutLogo(
   product: StrapiBaseProductWithRelations
 ): Product {
   return {
@@ -84,6 +84,6 @@ export function makeBaseProductWithoutLogoProps(
     hasOverviewPage: !!product.attributes.overview.data,
     hasQuickstartGuidePage: !!product.attributes.quickstart_guide.data,
     hasReleaseNotePage: !!product.attributes.release_note.data,
-    bannerLinks: product.attributes.bannerLinks?.map(makeBannerLinkProps) || [],
+    bannerLinks: product.attributes.bannerLinks?.map(makeBannerLink) || [],
   } satisfies Product;
 }

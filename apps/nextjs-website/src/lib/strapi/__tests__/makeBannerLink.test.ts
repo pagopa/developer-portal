@@ -1,4 +1,4 @@
-import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
+import { makeBannerLink } from '@/lib/strapi/makeProps/makeBannerLink';
 import {
   strapiBannerLink,
   expectedBannerLinkProps,
@@ -12,14 +12,14 @@ import {
 } from '@/lib/strapi/__tests__/factories/bannerLink';
 import _ from 'lodash';
 
-describe('makeBannerLinkProps', () => {
+describe('makeBannerLink', () => {
   it('should transform strapi banner link to banner link props', () => {
-    const result = makeBannerLinkProps(_.cloneDeep(strapiBannerLink));
+    const result = makeBannerLink(_.cloneDeep(strapiBannerLink));
     expect(result).toEqual(expectedBannerLinkProps);
   });
 
   it('should handle minimal data with undefined optional fields', () => {
-    const result = makeBannerLinkProps(minimalBannerLink());
+    const result = makeBannerLink(minimalBannerLink());
     expect(result).toEqual({
       title: '',
       content: undefined,
@@ -39,35 +39,35 @@ describe('makeBannerLinkProps', () => {
   });
 
   it('should correctly set dark theme', () => {
-    const result = makeBannerLinkProps(bannerLinkWithDarkTheme());
+    const result = makeBannerLink(bannerLinkWithDarkTheme());
     expect(result.theme).toBe('dark');
     expect(result.title).toBe('Dark Theme Banner');
   });
 
   it('should handle undefined content', () => {
-    const result = makeBannerLinkProps(bannerLinkWithUndefinedContent());
+    const result = makeBannerLink(bannerLinkWithUndefinedContent());
     expect(result.content).toBeUndefined();
     expect(result.title).toBe('Null Content Banner');
   });
 
   it('should handle empty title string', () => {
-    const result = makeBannerLinkProps(bannerLinkWithEmptyTitle());
+    const result = makeBannerLink(bannerLinkWithEmptyTitle());
     expect(result.title).toBe('');
   });
 
   it('should handle undefined title', () => {
-    const result = makeBannerLinkProps(bannerLinkWithUndefinedTitle());
+    const result = makeBannerLink(bannerLinkWithUndefinedTitle());
     expect(result.title).toBe('');
     expect(result.content).toBeUndefined();
   });
 
   it('should default to dark theme when theme is undefined', () => {
-    const result = makeBannerLinkProps(minimalBannerLink());
+    const result = makeBannerLink(minimalBannerLink());
     expect(result.theme).toBe('dark');
   });
 
   it('should correctly map icon attributes', () => {
-    const result = makeBannerLinkProps(strapiBannerLink);
+    const result = makeBannerLink(strapiBannerLink);
     expect(result.icon).toEqual({
       name: 'example.jpg',
       alternativeText: 'Example Image',
@@ -82,7 +82,7 @@ describe('makeBannerLinkProps', () => {
   });
 
   it('should handle light theme correctly', () => {
-    const result = makeBannerLinkProps(strapiBannerLink);
+    const result = makeBannerLink(strapiBannerLink);
     expect(result.theme).toBe('light');
   });
 
@@ -106,7 +106,7 @@ describe('makeBannerLinkProps', () => {
       },
     };
 
-    const result = makeBannerLinkProps(customBannerLink);
+    const result = makeBannerLink(customBannerLink);
     expect(result.icon).toEqual({
       name: 'custom-icon.png',
       alternativeText: 'Custom Icon',

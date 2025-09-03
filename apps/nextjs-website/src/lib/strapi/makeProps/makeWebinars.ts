@@ -4,9 +4,7 @@ import _ from 'lodash';
 
 export type WebinarsProps = readonly Webinar[];
 
-export const makeWebinarProps = (
-  strapiWebinar: StrapiWebinar
-): Webinar | null => {
+export const makeWebinar = (strapiWebinar: StrapiWebinar): Webinar | null => {
   // eslint-disable-next-line functional/no-try-statements
   try {
     return {
@@ -60,10 +58,8 @@ export const makeWebinarProps = (
   }
 };
 
-export function makeWebinarsProps(
-  strapiWebinars: StrapiWebinars
-): WebinarsProps {
+export function makeWebinars(strapiWebinars: StrapiWebinars): WebinarsProps {
   return _.compact([
-    ...strapiWebinars.data.map((webinar) => makeWebinarProps(webinar)),
+    ...strapiWebinars.data.map((webinar) => makeWebinar(webinar)),
   ]);
 }

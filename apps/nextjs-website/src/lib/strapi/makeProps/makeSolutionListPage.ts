@@ -1,7 +1,7 @@
 import { SolutionListTemplateProps } from '@/components/templates/SolutionListTemplate/SolutionListTemplate';
 import { StrapiSolutionListPage } from '@/lib/strapi/types/solutionListPage';
 
-export function makeSolutionListPageProps(
+export function makeSolutionListPage(
   strapiSolutionsList: StrapiSolutionListPage
 ): SolutionListTemplateProps {
   const {

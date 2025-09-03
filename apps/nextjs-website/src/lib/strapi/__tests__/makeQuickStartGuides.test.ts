@@ -1,13 +1,13 @@
-import { makeQuickStartGuidesProps } from '@/lib/strapi/makeProps/makeQuickStartGuides';
+import { makeQuickStartGuides } from '@/lib/strapi/makeProps/makeQuickStartGuides';
 import { strapiQuickStartGuides } from './fixtures/quickStartGuides';
 import {
   minimalQuickStartGuides,
   emptyQuickStartGuides,
 } from './factories/quickStartGuides';
 
-describe('makeQuickStartGuidesProps', () => {
+describe('makeQuickStartGuides', () => {
   it('should transform strapi quick start guides to page props', () => {
-    const result = makeQuickStartGuidesProps(strapiQuickStartGuides);
+    const result = makeQuickStartGuides(strapiQuickStartGuides);
     expect(result).toHaveLength(1);
     const firstElement = result[0];
     expect(firstElement.abstract?.title).toBe('Quick Start Guide Title');
@@ -23,7 +23,7 @@ describe('makeQuickStartGuidesProps', () => {
   });
 
   it('should handle minimal quick start guides', () => {
-    const result = makeQuickStartGuidesProps(minimalQuickStartGuides());
+    const result = makeQuickStartGuides(minimalQuickStartGuides());
     expect(result).toHaveLength(1);
     const firstElement = result[0];
     expect(firstElement.abstract?.title).toBe('Minimal Quick Start');
@@ -35,7 +35,7 @@ describe('makeQuickStartGuidesProps', () => {
   });
 
   it('should handle empty quick start guides', () => {
-    const result = makeQuickStartGuidesProps(emptyQuickStartGuides());
+    const result = makeQuickStartGuides(emptyQuickStartGuides());
     expect(result).toHaveLength(0);
   });
 });

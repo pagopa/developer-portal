@@ -2,35 +2,35 @@ import { pipe } from 'fp-ts/lib/function';
 import * as E from 'fp-ts/lib/Either';
 import { makeBuildConfig } from '@/BuildConfig';
 import { makeBuildEnv } from '@/BuildEnv';
-import { makeHomepageProps } from './strapi/makeProps/makeHomepage';
+import { makeHomepage } from './strapi/makeProps/makeHomepage';
 import { fetchHomepage } from '@/lib/strapi/fetches/fetchHomepage';
-import { makeWebinarsProps } from './strapi/makeProps/makeWebinars';
+import { makeWebinars } from './strapi/makeProps/makeWebinars';
 import { fetchWebinars } from './strapi/fetches/fetchWebinars';
 import { fetchTutorials } from './strapi/fetches/fetchTutorials';
-import { makeTutorialsProps } from './strapi/makeProps/makeTutorials';
+import { makeTutorials } from './strapi/makeProps/makeTutorials';
 import { fetchQuickStartGuides } from './strapi/fetches/fetchQuickStartGuides';
-import { makeQuickStartGuidesProps } from './strapi/makeProps/makeQuickStartGuides';
-import { makeCaseHistoriesProps } from './strapi/makeProps/makeCaseHistories';
+import { makeQuickStartGuides } from './strapi/makeProps/makeQuickStartGuides';
+import { makeCaseHistories } from './strapi/makeProps/makeCaseHistories';
 import { fetchCaseHistories } from './strapi/fetches/fetchCaseHistories';
 import { fetchSolution, fetchSolutions } from './strapi/fetches/fetchSolutions';
-import { makeSolutionsProps } from './strapi/makeProps/makeSolutions';
-import { makeSolutionListPageProps } from './strapi/makeProps/makeSolutionListPage';
+import { makeSolutions } from './strapi/makeProps/makeSolutions';
+import { makeSolutionListPage } from './strapi/makeProps/makeSolutionListPage';
 import { fetchSolutionListPage } from './strapi/fetches/fetchSolutionListPage';
 import { fetchApiDataListPages } from './strapi/fetches/fetchApiDataListPages';
-import { makeApiDataListPagesProps } from './strapi/makeProps/makeApiDataListPages';
-import { makeApiDataListProps } from './strapi/makeProps/makeApiDataList';
+import { makeApiDataListPages } from './strapi/makeProps/makeApiDataListPages';
+import { makeApiDataList } from './strapi/makeProps/makeApiDataList';
 import { fetchApiDataList } from './strapi/fetches/fetchApiDataList';
 import { fetchProducts } from '@/lib/strapi/fetches/fetchProducts';
-import { makeProductsProps } from './strapi/makeProps/makeProducts';
-import { makeGuideListPagesProps } from './strapi/makeProps/makeGuideListPages';
-import { makeGuidesProps } from './strapi/makeProps/makeGuides';
+import { makeProducts } from './strapi/makeProps/makeProducts';
+import { makeGuideListPages } from './strapi/makeProps/makeGuideListPages';
+import { makeGuides } from './strapi/makeProps/makeGuides';
 import { fetchOverviews } from '@/lib/strapi/fetches/fetchOverviews';
-import { makeOverviewsProps } from '@/lib/strapi/makeProps/makeOverviews';
+import { makeOverviews } from '@/lib/strapi/makeProps/makeOverviews';
 import { fetchTutorialListPages } from './strapi/fetches/fetchTutorialListPages';
-import { makeTutorialListPagesProps } from './strapi/makeProps/makeTutorialListPages';
+import { makeTutorialListPages } from './strapi/makeProps/makeTutorialListPages';
 import { fetchUrlReplaceMap } from './strapi/fetches/fetchUrlReplaceMap';
 import { makeUrlReplaceMap } from './strapi/makeProps/makeUrlReplaceMap';
-import { makeReleaseNotesProps } from '@/lib/strapi/makeProps/makeReleaseNotes';
+import { makeReleaseNotes } from '@/lib/strapi/makeProps/makeReleaseNotes';
 import { fetchReleaseNote } from '@/lib/strapi/fetches/fetchReleaseNotes';
 import {
   makeGuide as makeGuideS3,
@@ -39,7 +39,7 @@ import {
 } from '@/helpers/makeS3Docs.helpers';
 import { secrets } from '@/config';
 import { fetchWebinarCategories } from '@/lib/strapi/fetches/fetchWebinarCategories';
-import { makeWebinarCategoriesProps } from '@/lib/strapi/makeProps/makeWebinarCategories';
+import { makeWebinarCategories } from '@/lib/strapi/makeProps/makeWebinarCategories';
 import {
   fetchResponseFromCDN,
   JsonMetadata,
@@ -59,37 +59,37 @@ const buildEnv = pipe(
 
 export const getHomepageProps = async () => {
   const strapiHomepage = await fetchHomepage(buildEnv);
-  return makeHomepageProps(strapiHomepage);
+  return makeHomepage(strapiHomepage);
 };
 
 export const getWebinarsProps = async () => {
   const strapiWebinars = await fetchWebinars(buildEnv);
-  return makeWebinarsProps(strapiWebinars);
+  return makeWebinars(strapiWebinars);
 };
 
 export const getProductsProps = async () => {
   const strapiProducts = await fetchProducts(buildEnv);
-  return makeProductsProps(strapiProducts);
+  return makeProducts(strapiProducts);
 };
 
 export const getWebinarCategoriesProps = async () => {
   const strapiWebinarCategories = await fetchWebinarCategories(buildEnv);
-  return makeWebinarCategoriesProps(strapiWebinarCategories);
+  return makeWebinarCategories(strapiWebinarCategories);
 };
 
 export const getTutorialsProps = async () => {
   const strapiTutorials = await fetchTutorials(buildEnv);
-  return makeTutorialsProps(strapiTutorials);
+  return makeTutorials(strapiTutorials);
 };
 
 export const getTutorialListPagesProps = async () => {
   const strapiTutorialListPages = await fetchTutorialListPages(buildEnv);
-  return makeTutorialListPagesProps(strapiTutorialListPages);
+  return makeTutorialListPages(strapiTutorialListPages);
 };
 
 export const getQuickStartGuidesProps = async () => {
   const strapiQuickStartGuides = await fetchQuickStartGuides(buildEnv);
-  return makeQuickStartGuidesProps(strapiQuickStartGuides);
+  return makeQuickStartGuides(strapiQuickStartGuides);
 };
 
 export const getUrlReplaceMapProps = async () => {
@@ -100,39 +100,39 @@ export const getUrlReplaceMapProps = async () => {
 
 export const getApiDataListPagesProps = async () => {
   const strapiApiDataListPages = await fetchApiDataListPages(buildEnv);
-  return makeApiDataListPagesProps(strapiApiDataListPages);
+  return makeApiDataListPages(strapiApiDataListPages);
 };
 
 export const getApiDataProps = async () => {
   const strapiApiDataList = await fetchApiDataList(buildEnv);
-  return await makeApiDataListProps(strapiApiDataList);
+  return await makeApiDataList(strapiApiDataList);
 };
 
 export const getCaseHistoriesProps = async () => {
   const strapiCaseHistories = await fetchCaseHistories(buildEnv);
-  return makeCaseHistoriesProps(strapiCaseHistories);
+  return makeCaseHistories(strapiCaseHistories);
 };
 
 export const getSolutionsProps = async () => {
   const strapiSolutions = await fetchSolutions(buildEnv);
-  return makeSolutionsProps(strapiSolutions);
+  return makeSolutions(strapiSolutions);
 };
 
 export const getSolutionListPageProps = async () => {
   const strapiSolutionListPage = await fetchSolutionListPage(buildEnv);
-  return makeSolutionListPageProps(strapiSolutionListPage);
+  return makeSolutionListPage(strapiSolutionListPage);
 };
 
 export const getOverviewsProps = async () => {
   const strapiOverviews = await fetchOverviews(buildEnv);
-  return makeOverviewsProps(strapiOverviews);
+  return makeOverviews(strapiOverviews);
 };
 
 export const getGuideListPagesProps = async () => {
   const strapiGuideList = (await fetchResponseFromCDN(
     'synced-guide-list-pages-response.json'
   )) as StrapiGuideListPages | undefined;
-  return strapiGuideList ? makeGuideListPagesProps(strapiGuideList) : [];
+  return strapiGuideList ? makeGuideListPages(strapiGuideList) : [];
 };
 
 export const getGuideProps = async (
@@ -152,7 +152,7 @@ export const getGuidePageProps = async (
     'synced-guides-response.json'
   )) as StrapiGuides | undefined;
   // eslint-disable-next-line functional/no-expression-statements
-  const guides = strapiGuides ? makeGuidesProps(strapiGuides) : [];
+  const guides = strapiGuides ? makeGuides(strapiGuides) : [];
   const guide = guides.filter(
     (g) => g.guide.slug === guideSlug && g.product.slug === productSlug
   )[0];
@@ -174,7 +174,7 @@ export const getSolutionProps = async (
     // eslint-disable-next-line functional/no-throw-statements
     throw new Error('Failed to fetch data');
   }
-  const solution = makeSolutionsProps(strapiSolutions)[0];
+  const solution = makeSolutions(strapiSolutions)[0];
   return await makeSolutionS3(solution, jsonMetadata);
 };
 
@@ -187,6 +187,6 @@ export const getReleaseNoteProps = async (
     // eslint-disable-next-line functional/no-throw-statements
     throw new Error('Failed to fetch data');
   }
-  const releaseNote = makeReleaseNotesProps(strapiReleaseNotes)[0];
+  const releaseNote = makeReleaseNotes(strapiReleaseNotes)[0];
   return await makeReleaseNoteS3(releaseNote, jsonMetadata);
 };

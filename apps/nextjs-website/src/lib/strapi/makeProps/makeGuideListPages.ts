@@ -1,22 +1,22 @@
 import { GuideListPageProps } from '@/app/[productSlug]/guides/page';
 import { GuidesSectionProps } from '@/components/molecules/GuidesSection/GuidesSection';
-import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
-import { makeBaseProductWithoutLogoProps } from './makeProducts';
+import { makeBannerLink } from '@/lib/strapi/makeProps/makeBannerLink';
+import { makeBaseProductWithoutLogo } from './makeProducts';
 import { GuideCardProps } from '@/components/molecules/GuideCard/GuideCard';
 import { StrapiBaseGuide } from '@/lib/strapi/types/guide';
 import _ from 'lodash';
 import { StrapiGuideListPages } from '@/lib/strapi/types/guideListPage';
 
-export function makeGuideListPagesProps(
+export function makeGuideListPages(
   strapiGuideListPages: StrapiGuideListPages
 ): readonly GuideListPageProps[] {
   return strapiGuideListPages.data.map(({ attributes }) => {
-    const product = makeBaseProductWithoutLogoProps(attributes.product.data);
+    const product = makeBaseProductWithoutLogo(attributes.product.data);
     const guidesSections: readonly GuidesSectionProps[] = [
       ...attributes.guidesByCategory.map(({ category, guides }) => ({
         title: category,
         guides: _.compact(
-          guides.data.map((guide) => makeGuideCardProps(guide, product.slug))
+          guides.data.map((guide) => makeGuideCard(guide, product.slug))
         ),
       })),
     ];
@@ -30,17 +30,15 @@ export function makeGuideListPagesProps(
       guidesSections: [...guidesSections],
       bannerLinks:
         attributes.bannerLinks.length > 0
-          ? attributes.bannerLinks.map(makeBannerLinkProps)
-          : attributes.product.data.attributes.bannerLinks?.map(
-              makeBannerLinkProps
-            ),
+          ? attributes.bannerLinks.map(makeBannerLink)
+          : attributes.product.data.attributes.bannerLinks?.map(makeBannerLink),
       seo: attributes.seo,
       updatedAt: attributes.updatedAt,
     } satisfies GuideListPageProps;
   });
 }
 
-function makeGuideCardProps(
+function makeGuideCard(
   guide: StrapiBaseGuide,
   productSlug: string
 ): GuideCardProps | null {

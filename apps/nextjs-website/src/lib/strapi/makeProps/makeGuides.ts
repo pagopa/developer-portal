@@ -1,13 +1,13 @@
 import { GuideDefinition } from '@/helpers/makeDocs.helpers';
-import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
-import { makeBaseProductWithoutLogoProps } from './makeProducts';
+import { makeBannerLink } from '@/lib/strapi/makeProps/makeBannerLink';
+import { makeBaseProductWithoutLogo } from './makeProducts';
 import { StrapiGuides } from '@/lib/strapi/types/guide';
 
-export function makeGuidesProps(
+export function makeGuides(
   strapiGuides: StrapiGuides
 ): readonly GuideDefinition[] {
   return strapiGuides.data.map(({ attributes }) => {
-    const product = makeBaseProductWithoutLogoProps(attributes.product.data);
+    const product = makeBaseProductWithoutLogo(attributes.product.data);
 
     return {
       product,
@@ -18,9 +18,9 @@ export function makeGuidesProps(
       versions: attributes.versions,
       bannerLinks:
         attributes.bannerLinks.length > 0
-          ? attributes.bannerLinks.map(makeBannerLinkProps)
+          ? attributes.bannerLinks.map(makeBannerLink)
           : attributes.product.data.attributes.bannerLinks?.map(
-              makeBannerLinkProps
+              makeBannerLink
             ) || [],
       seo: attributes.seo || undefined,
     };

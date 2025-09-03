@@ -1,10 +1,10 @@
 import { CaseHistoryPageTemplateProps } from '@/components/templates/CaseHistoryTemplate/CaseHistoryPageTemplate';
 import { Part } from '../../types/part';
-import { makePartProps } from '@/lib/strapi/makeProps/makePart';
+import { makePart } from '@/lib/strapi/makeProps/makePart';
 import { StrapiPart } from '@/lib/strapi/types/part';
 import { StrapiCaseHistories } from '@/lib/strapi/types/caseHistories';
 
-export function makeCaseHistoriesProps(
+export function makeCaseHistories(
   strapiCaseHistories: StrapiCaseHistories
 ): ReadonlyArray<CaseHistoryPageTemplateProps> {
   return strapiCaseHistories.data.map(({ attributes }) => ({
@@ -12,7 +12,7 @@ export function makeCaseHistoriesProps(
     updatedAt: attributes.updatedAt,
     parts: [
       ...(attributes.parts
-        .map((part) => makePartProps(part as StrapiPart))
+        .map((part) => makePart(part as StrapiPart))
         .filter((part) => !!part) as ReadonlyArray<Part>),
     ],
     products: attributes.products.data.map(({ attributes }) => ({
