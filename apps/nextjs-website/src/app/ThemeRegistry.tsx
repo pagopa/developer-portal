@@ -20,7 +20,11 @@ export default function ThemeRegistry({
   children: ReactNode;
 }) {
   const [{ cache, flush }] = useState(() => {
-    const cache = createCache(options);
+    const cache = createCache({ 
+      ...options,
+      // Ensure consistent key generation
+      prepend: true,
+    });
     /* eslint-disable-next-line functional/immutable-data */
     cache.compat = true;
     const prevInsert = cache.insert;
