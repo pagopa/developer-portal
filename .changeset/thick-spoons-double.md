@@ -2,4 +2,4 @@
 "nextjs-website": minor
 ---
 
-Switch api viewer to rapi-doc
+Replace Stoplight Elements API viewer with RapiDoc
