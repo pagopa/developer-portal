@@ -16,21 +16,32 @@ export async function makeApiDataList(
             apiPage.attributes.apiRestDetail || apiPage.attributes.apiSoapDetail
         )
         .map(async ({ attributes }) => {
+          if (!attributes.apiRestDetail && !attributes.apiSoapDetail) {
+            // eslint-disable-next-line functional/no-expression-statements
+            console.error(
+              `Error processing API Data with title "${attributes.title}": Missing API details`
+            );
+            return null;
+          }
+          const apiDataSlug =
+            attributes.apiRestDetail?.slug ||
+            attributes.apiSoapDetail?.slug ||
+            '';
+          if (!apiDataSlug) {
+            // eslint-disable-next-line functional/no-expression-statements
+            console.error(
+              `Error processing API Data with title "${attributes.title}": Missing API slug`
+            );
+            return null;
+          }
           // eslint-disable-next-line functional/no-try-statements
           try {
             const product = makeBaseProductWithoutLogo(attributes.product.data);
             return {
               ...attributes,
               product,
-              apiType: attributes.apiRestDetail
-                ? 'rest'
-                : attributes.apiSoapDetail
-                ? 'soap'
-                : undefined,
-              apiDataSlug:
-                attributes.apiRestDetail?.slug ||
-                attributes.apiSoapDetail?.slug ||
-                '',
+              apiType: attributes.apiRestDetail ? 'rest' : 'soap',
+              apiDataSlug: apiDataSlug,
               restApiSpecUrls: attributes.apiRestDetail
                 ? [
                     ...attributes.apiRestDetail.specUrls.map((spec) => ({

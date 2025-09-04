@@ -16,6 +16,8 @@ import {
   soapApiDataOnly,
   restApiDataOnly,
   restApiDataWithMultipleSpecs,
+  apiDataWithInvalidRestApiDetails,
+  apiDataWithSoapApiDetailsWithoutSlug,
 } from '@/lib/strapi/__tests__/factories/apiDataList';
 
 // Mock the makeApiSoapUrlList function
@@ -62,6 +64,18 @@ describe('makeApiDataList', () => {
 
   it('should filter out api data without rest or soap details', async () => {
     const result = await makeApiDataList(apiDataWithoutApiDetails());
+    expect(result).toHaveLength(0);
+  });
+
+  it('should filter out api data with rest api details with invalid data', async () => {
+    const result = await makeApiDataList(apiDataWithInvalidRestApiDetails());
+    expect(result).toHaveLength(0);
+  });
+
+  it('should filter out api data with soap api details without slug', async () => {
+    const result = await makeApiDataList(
+      apiDataWithSoapApiDetailsWithoutSlug()
+    );
     expect(result).toHaveLength(0);
   });
 
