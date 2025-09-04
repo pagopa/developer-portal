@@ -20,9 +20,12 @@ type Params = {
 export async function generateMetadata({
   params,
 }: {
-  params: Params;
+  params: Promise<Params>;
 }): Promise<Metadata> {
-  const apiDataListPage = await getApiDataListPages(params?.productSlug);
+  const resolvedParams = await params;
+  const apiDataListPage = await getApiDataListPages(
+    resolvedParams?.productSlug
+  );
 
   if (apiDataListPage?.seo) {
     return makeMetadataFromStrapi(apiDataListPage.seo);
@@ -37,8 +40,11 @@ export async function generateMetadata({
   });
 }
 
-const ApiDataListPage = async ({ params }: { params: Params }) => {
-  const apiDataListPageProps = await getApiDataListPages(params.productSlug);
+const ApiDataListPage = async ({ params }: { params: Promise<Params> }) => {
+  const resolvedParams = await params;
+  const apiDataListPageProps = await getApiDataListPages(
+    resolvedParams.productSlug
+  );
 
   const structuredData = generateStructuredDataScripts({
     breadcrumbsItems: [

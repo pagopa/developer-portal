@@ -8,7 +8,10 @@ import {
   makeMetadata,
   makeMetadataFromStrapi,
 } from '@/helpers/metadata.helpers';
-import dynamic from 'next/dynamic';
+import {
+  NotSsrWebinarHeaderBanner,
+  NotSsrWebinarsSection,
+} from '@/components/ClientDynamicComponents';
 import { baseUrl } from '@/config';
 import { getHomepageProps } from '@/lib/cmsApi';
 
@@ -72,16 +75,6 @@ export async function generateMetadata(): Promise<Metadata> {
         locale: 'it_IT',
       });
 }
-
-const NotSsrWebinarHeaderBanner = dynamic(
-  () => import('@/components/atoms/WebinarHeaderBanner/WebinarHeaderBanner'),
-  { ssr: false }
-);
-
-const NotSsrWebinarsSection = dynamic(
-  () => import('@/components/organisms/WebinarsSection/WebinarsSection'),
-  { ssr: false }
-);
 
 const Home = async () => {
   const {

@@ -32,12 +32,13 @@ export type TutorialsPageProps = {
 } & ProductLayoutProps;
 
 export async function generateMetadata(
-  { params }: ProductParams,
+  { params }: { params: Promise<{ productSlug: string }> },
   parent: ResolvingMetadata
 ): Promise<Metadata> {
+  const resolvedParams = await params;
   const resolvedParent = await parent;
   const { product, abstract, path, seo } = await getTutorialListPageProps(
-    params.productSlug
+    resolvedParams.productSlug
   );
 
   if (seo) {
@@ -53,8 +54,13 @@ export async function generateMetadata(
   });
 }
 
-const TutorialsPage = async ({ params }: ProductParams) => {
-  const { productSlug } = params;
+const TutorialsPage = async ({
+  params,
+}: {
+  params: Promise<{ productSlug: string }>;
+}) => {
+  const resolvedParams = await params;
+  const { productSlug } = resolvedParams;
   const { abstract, bannerLinks, path, tutorials, seo, product } =
     await getTutorialListPageProps(productSlug);
 

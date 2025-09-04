@@ -6,8 +6,13 @@ type Params = {
   webinarSlug: string;
 };
 
-const WebinarQuestionsPage = async ({ params }: { params: Params }) => {
-  const webinar = await getWebinar(params?.webinarSlug);
+const WebinarQuestionsPage = async ({
+  params,
+}: {
+  params: Promise<Params>;
+}) => {
+  const resolvedParams = await params;
+  const webinar = await getWebinar(resolvedParams?.webinarSlug);
 
   return <WebinarQuestionsTemplate webinar={webinar} />;
 };
