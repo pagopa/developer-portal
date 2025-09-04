@@ -12,8 +12,17 @@ import {
   guideListWithMissingImages,
   guideListWithMissingSlugs,
 } from '@/lib/strapi/__tests__/factories/guideListPages';
+import { spyOnConsoleError } from '@/lib/strapi/__tests__/spyOnConsole';
 
 describe('makeGuideListPageProps', () => {
+  beforeEach(() => {
+    spyOnConsoleError.mockClear();
+  });
+
+  afterAll(() => {
+    spyOnConsoleError.mockRestore();
+  });
+
   it('should return an empty array when no guides are provided', () => {
     const result = makeGuideListPagesProps(strapiEmptyGuideListPagesData);
     expect(result).toEqual([]);
@@ -37,6 +46,10 @@ describe('makeGuideListPageProps', () => {
         guides: [],
       })),
     });
+    expect(spyOnConsoleError).toHaveBeenCalledWith(
+      'guide slug is missing:',
+      expect.any(Object)
+    );
   });
 
   it('should return a single element array of type GuideListPageProps with guides without images', () => {
@@ -64,6 +77,7 @@ describe('makeGuideListPageProps', () => {
     expect(result).toHaveLength(1);
     expect(result[0].guidesSections).toHaveLength(2);
     expect(result[0].guidesSections?.[0].guides).toHaveLength(1);
+    expect(spyOnConsoleError).toHaveBeenCalledWith(expect.any(Error));
   });
 
   it('should return a single element array with abstract title and description as numbers', () => {
@@ -82,5 +96,9 @@ describe('makeGuideListPageProps', () => {
       guideListPagesWithMissingProductSlug()
     );
     expect(result).toHaveLength(0);
+    expect(spyOnConsoleError).toHaveBeenCalledWith(
+      'product slug is missing:',
+      expect.any(Object)
+    );
   });
 });
