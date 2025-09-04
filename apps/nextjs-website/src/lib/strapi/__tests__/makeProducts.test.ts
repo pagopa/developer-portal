@@ -189,13 +189,13 @@ describe('makeBaseProductWithoutLogoProps', () => {
 
   it('should throw error for product without slug', () => {
     expect(() =>
-      makeBaseProductWithoutLogo(productWithoutSlug().data[0])
+      makeBaseProductWithoutLogoProps(productWithoutSlug().data[0])
     ).toThrow(Error('Product with id Product Without Slug is missing a slug'));
   });
 
   it('should throw error for product with empty slug', () => {
     expect(() =>
-      makeBaseProductWithoutLogo(productWithEmptySlug().data[0])
+      makeBaseProductWithoutLogoProps(productWithEmptySlug().data[0])
     ).toThrow(Error('Product with id Product Without Slug is missing a slug'));
   });
 });

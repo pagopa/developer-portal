@@ -70,12 +70,14 @@ describe('makeApiDataListProps', () => {
   });
 
   it('should filter out api data with rest api details with invalid data', async () => {
-    const result = await makeApiDataList(apiDataWithInvalidRestApiDetails());
+    const result = await makeApiDataListProps(
+      apiDataWithInvalidRestApiDetails()
+    );
     expect(result).toHaveLength(0);
   });
 
   it('should filter out api data with soap api details without slug', async () => {
-    const result = await makeApiDataList(
+    const result = await makeApiDataListProps(
       apiDataWithSoapApiDetailsWithoutSlug()
     );
     expect(result).toHaveLength(0);
