@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { makeGuideListPages } from '@/lib/strapi/makeProps/makeGuideListPages';
 import {
   guideListPagesProps,
@@ -6,6 +7,7 @@ import {
 } from '@/lib/strapi/__tests__/fixtures/guideListPages';
 import { StrapiGuideListPages } from '@/lib/strapi/types/guideListPage';
 import {
+  guideListPagesWithMissingProductSlug,
   guideListWithGuideWithUndefinedListItem,
   guideListWithGuideWithWrongDataType,
   guideListWithMissingImages,
@@ -74,5 +76,10 @@ describe('makeGuideListPage', () => {
       title: 12345,
       description: 67890,
     });
+  });
+
+  it('should return an empty array if all guide list pages have missing product slugs', () => {
+    const result = makeGuideListPages(guideListPagesWithMissingProductSlug());
+    expect(result).toHaveLength(0);
   });
 });

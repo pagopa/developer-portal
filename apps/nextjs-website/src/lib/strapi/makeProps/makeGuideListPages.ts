@@ -10,32 +10,41 @@ import { StrapiGuideListPages } from '@/lib/strapi/types/guideListPage';
 export function makeGuideListPages(
   strapiGuideListPages: StrapiGuideListPages
 ): readonly GuideListPageProps[] {
-  return strapiGuideListPages.data.map(({ attributes }) => {
-    const product = makeBaseProductWithoutLogo(attributes.product.data);
-    const guidesSections: readonly GuidesSectionProps[] = [
-      ...attributes.guidesByCategory.map(({ category, guides }) => ({
-        title: category,
-        guides: _.compact(
-          guides.data.map((guide) => makeGuideCard(guide, product.slug))
-        ),
-      })),
-    ];
-    return {
-      path: `/${attributes.product.data.attributes.slug}/guides`,
-      product,
-      abstract: {
-        title: attributes.title,
-        description: attributes.description,
-      },
-      guidesSections: [...guidesSections],
-      bannerLinks:
-        attributes.bannerLinks.length > 0
-          ? attributes.bannerLinks.map(makeBannerLink)
-          : attributes.product.data.attributes.bannerLinks?.map(makeBannerLink),
-      seo: attributes.seo,
-      updatedAt: attributes.updatedAt,
-    } satisfies GuideListPageProps;
-  });
+  return _.compact(
+    strapiGuideListPages.data.map(({ attributes }) => {
+      const productData = attributes.product.data;
+      if (!productData.attributes.slug) {
+        // eslint-disable-next-line functional/no-expression-statements
+        console.error('product slug is missing:', productData);
+        return null;
+      }
+
+      const product = makeBaseProductWithoutLogo(productData);
+      const guidesSections: readonly GuidesSectionProps[] = [
+        ...attributes.guidesByCategory.map(({ category, guides }) => ({
+          title: category,
+          guides: _.compact(
+            guides.data.map((guide) => makeGuideCard(guide, product.slug))
+          ),
+        })),
+      ];
+      return {
+        path: `/${productData.attributes.slug}/guides`,
+        product,
+        abstract: {
+          title: attributes.title,
+          description: attributes.description,
+        },
+        guidesSections: [...guidesSections],
+        bannerLinks:
+          attributes.bannerLinks.length > 0
+            ? attributes.bannerLinks.map(makeBannerLink)
+            : productData.attributes.bannerLinks?.map(makeBannerLink),
+        seo: attributes.seo,
+        updatedAt: attributes.updatedAt,
+      } satisfies GuideListPageProps;
+    })
+  );
 }
 
 function makeGuideCard(
