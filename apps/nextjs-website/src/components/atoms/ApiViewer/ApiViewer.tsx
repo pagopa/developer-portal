@@ -1,7 +1,6 @@
 'use client';
 import { FC } from 'react';
 import { Box, useTheme } from '@mui/material';
-import { Product } from '@/lib/types/product';
 import 'rapidoc';
 
 // Extend JSX to recognize the custom element <rapi-doc>
@@ -25,18 +24,17 @@ declare global {
 
 type ApiViewerProps = {
   specURL: string;
-  product: Product;
   hideTryIt?: boolean;
 };
 
-const ApiViewer: FC<ApiViewerProps> = ({ specURL, product }) => {
+const ApiViewer: FC<ApiViewerProps> = ({ specURL }) => {
   const { palette } = useTheme();
 
   // function that return current API component type
   return (
     <Box
       sx={{
-        mt: 2,
+        mt: 0,
         display: 'flex',
         height: '100%',
         width: '100%',
@@ -44,25 +42,26 @@ const ApiViewer: FC<ApiViewerProps> = ({ specURL, product }) => {
       }}
     >
       <rapi-doc
-        spec-url={specURL}
-        theme='light'
-        nav-bg-color='#EBEEF5'
-        bg-color={palette.background.paper}
-        text-color={palette.text.primary}
-        nav-text-color={palette.text.primary}
-        regular-font='Titillium Web'
-        mono-font='Titillium Web'
-        font-size='largest'
-        render-style='focused'
-        show-header='false'
+        allow-advanced-search='false'
         allow-authentication='false'
-        primary-color={palette.primary.main}
-        scroll-y-offset='0'
-        auto-scroll='false'
-        allow-try='false'
         allow-server-selection='false'
-        show-method-in-nav-bar='as-plain-text'
+        allow-try='false'
+        auto-scroll='false'
+        bg-color={palette.background.paper}
+        font-size='large'
+        mono-font='Titillium Web'
+        nav-bg-color={palette.grey[50]}
+        nav-text-color={palette.text.primary}
+        primary-color={palette.primary.main}
+        regular-font='Titillium Web'
+        render-style='focused'
+        scroll-y-offset='0'
         show-components='true'
+        show-header='false'
+        show-method-in-nav-bar='as-plain-text'
+        spec-url={specURL}
+        text-color={palette.text.primary}
+        theme='light'
       ></rapi-doc>
     </Box>
   );
