@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { StrapiQuickStartGuides } from '@/lib/strapi/types/quickStartGuides';
 import { minimalAlertPart } from './parts';
 import { strapiQuickStartGuides } from '../fixtures/quickStartGuides';
@@ -52,5 +53,32 @@ export function emptyQuickStartGuides(): StrapiQuickStartGuides {
         total: 0,
       },
     },
+  };
+}
+
+export function quickStartGuidesWithMissingProductSlug(): StrapiQuickStartGuides {
+  return {
+    ...strapiQuickStartGuides,
+    data: strapiQuickStartGuides.data.map((quickStart, index) => {
+      if (index === 0) {
+        return {
+          ...quickStart,
+          attributes: {
+            ...quickStart.attributes,
+            product: {
+              ...quickStart.attributes.product,
+              data: {
+                ...quickStart.attributes.product.data,
+                attributes: {
+                  ...quickStart.attributes.product.data.attributes,
+                  slug: undefined as any,
+                },
+              },
+            },
+          },
+        };
+      }
+      return quickStart;
+    }),
   };
 }

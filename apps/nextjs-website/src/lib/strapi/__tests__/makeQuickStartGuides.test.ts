@@ -3,9 +3,19 @@ import { strapiQuickStartGuides } from './fixtures/quickStartGuides';
 import {
   minimalQuickStartGuides,
   emptyQuickStartGuides,
+  quickStartGuidesWithMissingProductSlug,
 } from './factories/quickStartGuides';
+import { consoleSpy } from './consoleMock';
 
 describe('makeQuickStartGuidesProps', () => {
+  beforeEach(() => {
+    consoleSpy.mockClear();
+  });
+
+  afterAll(() => {
+    consoleSpy.mockRestore();
+  });
+
   it('should transform strapi quick start guides to page props', () => {
     const result = makeQuickStartGuidesProps(strapiQuickStartGuides);
     expect(result).toHaveLength(1);
@@ -37,5 +47,15 @@ describe('makeQuickStartGuidesProps', () => {
   it('should handle empty quick start guides', () => {
     const result = makeQuickStartGuidesProps(emptyQuickStartGuides());
     expect(result).toHaveLength(0);
+  });
+
+  it('should handle quick start guides with missing product slug', () => {
+    const result = makeQuickStartGuidesProps(
+      quickStartGuidesWithMissingProductSlug()
+    );
+    expect(result).toHaveLength(0);
+    expect(consoleSpy).toHaveBeenCalledWith(
+      'Error processing Quick Start Guide id 1: Missing product slug'
+    );
   });
 });
