@@ -4,7 +4,7 @@ import SolutionsShowcase from '@/components/organisms/SolutionsShowcase/Solution
 import Feature from '@/editorialComponents/Feature/Feature';
 import { FeatureItem } from '@/editorialComponents/Feature/FeatureStackItem';
 import Hero from '@/editorialComponents/Hero/Hero';
-import { Media } from '@/lib/strapi/codecs/MediaCodec';
+import { Media } from '@/lib/strapi/types/media';
 import { SEO } from '@/lib/types/seo';
 import { useTranslations } from 'next-intl';
 

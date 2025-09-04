@@ -84,10 +84,14 @@ async def query_creation(
         "badAnswer": False,
     }
 
+    days = int(os.getenv("EXPIRE_DAYS", 90))
+    expires_at = int((now + datetime.timedelta(days=days)).timestamp())
+
     bodyToSave = bodyToReturn.copy()
     bodyToSave["question"] = chatbot_mask_pii(query.question)
     bodyToSave["answer"] = chatbot_mask_pii(answer)
     bodyToSave["topics"] = answer_json.get("products", [])
+    bodyToSave["expiresAt"] = expires_at
     try:
         tables["queries"].put_item(Item=bodyToSave)
     except (BotoCoreError, ClientError) as e:
@@ -108,7 +112,7 @@ async def queries_fetching(
         sessionId = last_session_id(userId)
     else:
         session = get_user_session(userId, sessionId)
-        sessionId = session.get("id", None)
+        sessionId = session.get("id", None) if session else None
 
     if sessionId is None:
         result = []
