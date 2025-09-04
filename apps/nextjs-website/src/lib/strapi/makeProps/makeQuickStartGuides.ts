@@ -34,7 +34,7 @@ export function makeQuickStartGuidesProps(
     strapiQuickStarts.data.map((quickStart) => {
       if (!quickStart.attributes.product.data.attributes.slug) {
         console.error(
-          `Error processing Quick Start Guide id ${quickStart.id}: Missing product slug`
+          `Error processing Quick Start Guide id ${quickStart.id}: Missing product slug. Skipping...`
         );
         return null;
       }
