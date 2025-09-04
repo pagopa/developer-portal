@@ -19,7 +19,7 @@ export async function makeApiDataListProps(
           if (!attributes.apiRestDetail && !attributes.apiSoapDetail) {
             // eslint-disable-next-line functional/no-expression-statements
             console.error(
-              `Error processing API Data with title "${attributes.title}": Missing API details`
+              `Error processing API Data "${attributes.title}": Missing API details. Skipping...`
             );
             return null;
           }
@@ -30,7 +30,7 @@ export async function makeApiDataListProps(
           if (!apiDataSlug) {
             // eslint-disable-next-line functional/no-expression-statements
             console.error(
-              `Error processing API Data with title "${attributes.title}": Missing API slug`
+              `Error processing API Data with title "${attributes.title}": Missing API slug. Skipping...`
             );
             return null;
           }

@@ -12,15 +12,15 @@ import {
   overviewWithMissingTutorialProductSlug,
   overviewWithMissingTutorialSlug,
 } from '@/lib/strapi/__tests__/factories/overviews';
-import { consoleSpy } from './consoleMock';
+import { spyOnConsoleError } from './spyOnConsole';
 
 describe('makeOverviewsProps', () => {
   beforeEach(() => {
-    consoleSpy.mockClear();
+    spyOnConsoleError.mockClear();
   });
 
   afterAll(() => {
-    consoleSpy.mockRestore();
+    spyOnConsoleError.mockRestore();
   });
 
   it('should transform strapi overviews to overview page props', () => {
@@ -65,7 +65,7 @@ describe('makeOverviewsProps', () => {
   it('should log an error and skip overview with empty product slug', () => {
     const result = makeOverviewsProps(overviewWithEmptyProductSlug());
     expect(result).toHaveLength(0);
-    expect(consoleSpy).toHaveBeenCalledWith(
+    expect(spyOnConsoleError).toHaveBeenCalledWith(
       'Error processing Overview for product: "Piattaforma pagoPA": Missing product slug'
     );
   });
@@ -73,7 +73,7 @@ describe('makeOverviewsProps', () => {
   it('should log an error and skip overview with missing product slug', () => {
     const result = makeOverviewsProps(overviewWithEmptyProductSlug());
     expect(result).toHaveLength(0);
-    expect(consoleSpy).toHaveBeenCalledWith(
+    expect(spyOnConsoleError).toHaveBeenCalledWith(
       'Error processing Overview for product: "Piattaforma pagoPA": Missing product slug'
     );
   });
@@ -82,7 +82,7 @@ describe('makeOverviewsProps', () => {
     const result = makeOverviewsProps(overviewWithMissingTutorialProductSlug());
     expect(result).toHaveLength(1);
     expect(result[0].tutorials?.list).toHaveLength(0);
-    expect(consoleSpy).toHaveBeenCalledWith(
+    expect(spyOnConsoleError).toHaveBeenCalledWith(
       "tutorial's product slug is missing:",
       'Tutorial 1'
     );
@@ -92,7 +92,7 @@ describe('makeOverviewsProps', () => {
     const result = makeOverviewsProps(overviewWithMissingTutorialSlug());
     expect(result).toHaveLength(1);
     expect(result[0].tutorials?.list).toHaveLength(0);
-    expect(consoleSpy).toHaveBeenCalledWith(
+    expect(spyOnConsoleError).toHaveBeenCalledWith(
       'tutorial slug is missing:',
       'Tutorial 1'
     );

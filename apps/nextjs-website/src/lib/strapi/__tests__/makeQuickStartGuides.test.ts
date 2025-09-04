@@ -5,15 +5,15 @@ import {
   emptyQuickStartGuides,
   quickStartGuidesWithMissingProductSlug,
 } from './factories/quickStartGuides';
-import { consoleSpy } from './consoleMock';
+import { spyOnConsoleError } from './spyOnConsole';
 
 describe('makeQuickStartGuidesProps', () => {
   beforeEach(() => {
-    consoleSpy.mockClear();
+    spyOnConsoleError.mockClear();
   });
 
   afterAll(() => {
-    consoleSpy.mockRestore();
+    spyOnConsoleError.mockRestore();
   });
 
   it('should transform strapi quick start guides to page props', () => {
@@ -54,7 +54,7 @@ describe('makeQuickStartGuidesProps', () => {
       quickStartGuidesWithMissingProductSlug()
     );
     expect(result).toHaveLength(0);
-    expect(consoleSpy).toHaveBeenCalledWith(
+    expect(spyOnConsoleError).toHaveBeenCalledWith(
       'Error processing Quick Start Guide id 1: Missing product slug. Skipping...'
     );
   });

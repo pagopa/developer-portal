@@ -12,15 +12,15 @@ import {
   solutionListPageWithMissingSolutionSlug,
   solutionListPageWithMissingCaseHistorySlug,
 } from '@/lib/strapi/__tests__/factories/solutionListPage';
-import { consoleSpy } from '@/lib/strapi/__tests__/consoleMock';
+import { spyOnConsoleError } from '@/lib/strapi/__tests__/spyOnConsole';
 
 describe('makeSolutionListPageProps', () => {
   afterEach(() => {
-    consoleSpy.mockClear();
+    spyOnConsoleError.mockClear();
   });
 
   afterAll(() => {
-    consoleSpy.mockRestore();
+    spyOnConsoleError.mockRestore();
   });
 
   it('should transform strapi solution list page to solution list template props', () => {
@@ -90,7 +90,7 @@ describe('makeSolutionListPageProps', () => {
     );
     expect(result.solutions).toHaveLength(1);
     expect(result.solutions[0].name).toBe('Valid Solution');
-    expect(consoleSpy).toHaveBeenCalledWith(
+    expect(spyOnConsoleError).toHaveBeenCalledWith(
       'Error processing Solution "Solution Without Slug": Missing solution slug. Skipping...'
     );
   });
@@ -101,7 +101,7 @@ describe('makeSolutionListPageProps', () => {
     );
     expect(result.successStories?.stories).toHaveLength(1);
     expect(result.successStories?.stories[0].title).toBe('Valid Case History');
-    expect(consoleSpy).toHaveBeenCalledWith(
+    expect(spyOnConsoleError).toHaveBeenCalledWith(
       'Error processing Case History "Case History Without Slug": Missing case history slug. Skipping...'
     );
   });

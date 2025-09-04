@@ -20,11 +20,11 @@ import {
   productWithMissingAttributes,
   productWithEmptySlug,
 } from '@/lib/strapi/__tests__/factories/products';
-import { consoleSpy } from '@/lib/strapi/__tests__/consoleMock';
+import { spyOnConsoleError } from '@/lib/strapi/__tests__/spyOnConsole';
 
 describe('makeProductsProps', () => {
   afterEach(() => {
-    consoleSpy.mockClear();
+    spyOnConsoleError.mockClear();
   });
 
   it('should transform strapi products to product props', () => {
@@ -61,7 +61,7 @@ describe('makeProductsProps', () => {
     const result = makeProductsProps(productWithoutSlug());
 
     expect(result).toHaveLength(0);
-    expect(consoleSpy).toHaveBeenCalledWith(
+    expect(spyOnConsoleError).toHaveBeenCalledWith(
       'Product with id Product Without Slug is missing a slug'
     );
   });
@@ -82,7 +82,7 @@ describe('makeProductsProps', () => {
     const result = makeProductsProps(productWithCorruptedData());
 
     expect(result).toHaveLength(0);
-    expect(consoleSpy).toHaveBeenCalledWith(
+    expect(spyOnConsoleError).toHaveBeenCalledWith(
       'Error while mapping product with id Corrupted Product:',
       expect.any(Error)
     );
@@ -94,7 +94,7 @@ describe('makeProductsProps', () => {
     expect(result).toHaveLength(2);
     expect(result[0].name).toBe('Test Product');
     expect(result[1].name).toBe('Another Valid Product');
-    expect(consoleSpy).toHaveBeenCalledWith(
+    expect(spyOnConsoleError).toHaveBeenCalledWith(
       'Product with id Product Without Slug is missing a slug'
     );
   });
@@ -103,17 +103,17 @@ describe('makeProductsProps', () => {
     const result = makeProductsProps(allInvalidProducts());
 
     expect(result).toHaveLength(0);
-    expect(consoleSpy).toHaveBeenCalledTimes(2);
+    expect(spyOnConsoleError).toHaveBeenCalledTimes(2);
   });
 });
 
 describe('makeProductProps', () => {
   afterEach(() => {
-    consoleSpy.mockClear();
+    spyOnConsoleError.mockClear();
   });
 
   afterAll(() => {
-    consoleSpy.mockRestore();
+    spyOnConsoleError.mockRestore();
   });
 
   it('should transform single strapi product to product props', () => {
@@ -124,7 +124,7 @@ describe('makeProductProps', () => {
   it('should return null for product without slug', () => {
     const result = makeProductProps(productWithoutSlug().data[0]);
     expect(result).toBeNull();
-    expect(consoleSpy).toHaveBeenCalledWith(
+    expect(spyOnConsoleError).toHaveBeenCalledWith(
       'Product with id Product Without Slug is missing a slug'
     );
   });
@@ -132,13 +132,13 @@ describe('makeProductProps', () => {
   it('should return null and log error for corrupted product', () => {
     const result = makeProductProps(productWithCorruptedData().data[0]);
     expect(result).toBeNull();
-    expect(consoleSpy).toHaveBeenCalledTimes(1);
+    expect(spyOnConsoleError).toHaveBeenCalledTimes(1);
   });
 
   it('should return null and log error for product with missing attributes', () => {
     const result = makeProductProps(productWithMissingAttributes());
     expect(result).toBeNull();
-    expect(consoleSpy).toHaveBeenCalledWith(
+    expect(spyOnConsoleError).toHaveBeenCalledWith(
       'Invalid product data:',
       productWithMissingAttributes()
     );
