@@ -83,7 +83,7 @@ export function solutionListPageWithMissingSolutionSlug(): StrapiSolutionListPag
                   .attributes,
                 title: 'Valid Solution',
               },
-            }
+            },
           ],
         },
       },
