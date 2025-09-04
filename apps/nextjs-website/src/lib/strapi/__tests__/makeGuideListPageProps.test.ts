@@ -6,6 +6,7 @@ import {
 } from '@/lib/strapi/__tests__/fixtures/guideListPages';
 import { StrapiGuideListPages } from '@/lib/strapi/types/guideListPage';
 import {
+  guideListPagesWithMissingProductSlug,
   guideListWithGuideWithUndefinedListItem,
   guideListWithGuideWithWrongDataType,
   guideListWithMissingImages,
@@ -74,5 +75,12 @@ describe('makeGuideListPageProps', () => {
       title: 12345,
       description: 67890,
     });
+  });
+
+  it('should return an empty array if all guide list pages have missing product slugs', () => {
+    const result = makeGuideListPagesProps(
+      guideListPagesWithMissingProductSlug()
+    );
+    expect(result).toHaveLength(0);
   });
 });

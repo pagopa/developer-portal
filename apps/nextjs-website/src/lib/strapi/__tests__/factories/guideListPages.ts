@@ -1,4 +1,5 @@
 import { strapiGuideListPagesData } from '@/lib/strapi/__tests__/fixtures/guideListPages';
+import { StrapiGuideListPages } from '@/lib/strapi/types/guideListPage';
 
 export function guideListWithMissingSlugs() {
   const guidesList = strapiGuideListPagesData;
@@ -95,4 +96,26 @@ export function guideListWithGuideWithWrongDataType() {
       },
     })),
   };
+}
+
+export function guideListPagesWithMissingProductSlug() {
+  const guidesList = strapiGuideListPagesData;
+  return {
+    ...guidesList,
+    data: guidesList.data.map((guides) => ({
+      ...guides,
+      attributes: {
+        ...guides.attributes,
+        product: {
+          data: {
+            ...guides.attributes.product.data,
+            attributes: {
+              ...guides.attributes.product.data.attributes,
+              slug: undefined,
+            },
+          },
+        },
+      },
+    })),
+  } as unknown as StrapiGuideListPages;
 }
