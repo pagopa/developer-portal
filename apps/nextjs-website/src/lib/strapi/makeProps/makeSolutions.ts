@@ -1,3 +1,5 @@
+/* eslint-disable functional/no-expression-statements */
+/* eslint-disable functional/no-try-statements */
 import { SolutionTemplateProps } from '@/components/templates/SolutionTemplate/SolutionTemplate';
 import { StrapiSolutions } from '@/lib/strapi/types/solutions';
 import { makeWebinarProps } from '@/lib/strapi/makeProps/makeWebinars';
@@ -8,7 +10,13 @@ export function makeSolutionsProps(
 ): ReadonlyArray<SolutionTemplateProps> {
   return _.compact(
     strapiSolutions.data.map(({ attributes }) => {
-      // eslint-disable-next-line functional/no-try-statements
+      if (!attributes.slug) {
+        console.error(
+          `Error processing Solution "${attributes.title}": Missing solution slug. Skipping...`
+        );
+        return null;
+      }
+
       try {
         return {
           ...attributes,
@@ -37,19 +45,29 @@ export function makeSolutionsProps(
           successStories: attributes.caseHistories && {
             title: attributes.caseHistories.title,
             subtitle: attributes.caseHistories.description,
-            stories: attributes.caseHistories.case_histories.data.map(
-              (caseHistory) => ({
-                title: caseHistory.attributes.title,
-                path: `/case-histories/${caseHistory.attributes.slug}`,
-                image: caseHistory.attributes.image?.data?.attributes,
-              })
+            stories: _.compact(
+              attributes.caseHistories.case_histories.data.map(
+                (caseHistory) => {
+                  if (!caseHistory.attributes.slug) {
+                    console.error(
+                      `Error processing Case History "${caseHistory.attributes.title}": Missing case history slug. Skipping...`
+                    );
+                    return null;
+                  }
+
+                  return {
+                    title: caseHistory.attributes.title,
+                    path: `/case-histories/${caseHistory.attributes.slug}`,
+                    image: caseHistory.attributes.image?.data?.attributes,
+                  };
+                }
+              )
             ),
           },
           seo: attributes.seo,
           updatedAt: attributes.updatedAt,
         };
       } catch (error) {
-        // eslint-disable-next-line functional/no-expression-statements
         console.error(
           `Error while making solutions props for ${attributes.title}:`,
           error

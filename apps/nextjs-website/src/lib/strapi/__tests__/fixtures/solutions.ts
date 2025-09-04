@@ -5,7 +5,7 @@ import { SolutionTemplateProps } from '@/components/templates/SolutionTemplate/S
 
 const fixedDateIsoString = new Date('2024-01-01T00:00:00.000Z').toISOString();
 
-export const strapiSolutions: StrapiSolutions = {
+export const strapiSolutions = {
   data: [
     {
       id: 1,
