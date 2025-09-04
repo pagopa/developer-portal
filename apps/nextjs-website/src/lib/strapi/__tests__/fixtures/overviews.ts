@@ -6,7 +6,7 @@ import { OverviewPageProps } from '@/app/[productSlug]/overview/page';
 
 export const dateNow = new Date();
 
-export const strapiOverviews: StrapiOverviews = {
+export const strapiOverviews = {
   data: [
     {
       id: 1,
@@ -256,7 +256,7 @@ export const strapiOverviews: StrapiOverviews = {
       total: 1,
     },
   },
-};
+} satisfies StrapiOverviews;
 
 export const overviewPageProps: OverviewPageProps = {
   path: '/pago-pa/overview',
