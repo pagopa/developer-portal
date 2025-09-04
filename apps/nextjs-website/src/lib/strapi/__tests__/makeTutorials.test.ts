@@ -1,10 +1,23 @@
 import { makeTutorialsProps } from '@/lib/strapi/makeProps/makeTutorials';
 import { StrapiTutorials } from '@/lib/strapi/types/tutorial';
+import {
+  minimalDataTutorials,
+  tutorialsWithMissingTutorialSlug,
+  tutorialsWithMissingProductSlug,
+} from '@/lib/strapi/__tests__/factories/tutorials';
+import { consoleSpy } from '@/lib/strapi/__tests__/consoleMock';
 import _ from 'lodash';
-import { strapiTutorials } from '@/lib/strapi/__tests__/fixtures/tutorials';
-import { minimalDataTutorials } from '@/lib/strapi/__tests__/factories/tutorials';
+import { strapiTutorials } from './fixtures/tutorials';
 
 describe('makeTutorialsProps', () => {
+  afterEach(() => {
+    consoleSpy.mockClear();
+  });
+
+  afterAll(() => {
+    consoleSpy.mockRestore();
+  });
+
   it('should transform strapi tutorials to tutorials props', () => {
     const result = makeTutorialsProps(_.cloneDeep(strapiTutorials));
     expect(result).toHaveLength(1);
@@ -53,13 +66,16 @@ describe('makeTutorialsProps', () => {
   });
 
   it('should handle minimal data with missing optional fields', () => {
-    const result = makeTutorialsProps(_.cloneDeep(minimalDataTutorials()));
-    const firstElement = result[0];
+    const result = makeTutorialsProps(minimalDataTutorials());
     expect(result).toHaveLength(1);
-    expect(firstElement.relatedLinks).toBeUndefined();
-    expect(firstElement.bannerLinks).toBeDefined();
-    expect(firstElement.seo).toBeUndefined();
+    const firstElement = result[0];
+    expect(firstElement.title).toBe('Minimal Data Tutorial');
+    expect(firstElement.productSlug).toBe('pago-pa');
+    expect(firstElement.path).toBe('/pago-pa/tutorials/minimal-data-tutorial');
+    expect(firstElement.image).toBeUndefined();
     expect(firstElement.parts).toEqual([]);
+    expect(firstElement.relatedLinks).toBeUndefined();
+    expect(firstElement.seo).toBeUndefined();
   });
 
   it('should handle empty data array', () => {
@@ -76,5 +92,28 @@ describe('makeTutorialsProps', () => {
     };
     const result = makeTutorialsProps(emptyData);
     expect(result).toHaveLength(0);
+  });
+
+  it('should skip tutorials with missing tutorial slug and log error', () => {
+    const result = makeTutorialsProps(tutorialsWithMissingTutorialSlug());
+    expect(result).toHaveLength(1);
+    const firstElement = result[0];
+    expect(firstElement.title).toBe('Valid Tutorial');
+    expect(firstElement.path).toBe('/pago-pa/tutorials/valid-tutorial');
+    expect(consoleSpy).toHaveBeenCalledWith(
+      'Error processing Tutorial "Tutorial Without Slug": Missing tutorial slug. Skipping...'
+    );
+  });
+
+  it('should skip tutorials with missing product slug and log error', () => {
+    const result = makeTutorialsProps(tutorialsWithMissingProductSlug());
+    expect(result).toHaveLength(1);
+    const firstElement = result[0];
+    expect(firstElement.title).toBe('Valid Tutorial');
+    expect(firstElement.productSlug).toBe('valid-product');
+    expect(firstElement.path).toBe('/valid-product/tutorials/valid-tutorial');
+    expect(consoleSpy).toHaveBeenCalledWith(
+      'Error processing Tutorial "Tutorial Without Product Slug": Missing product slug. Skipping...'
+    );
   });
 });

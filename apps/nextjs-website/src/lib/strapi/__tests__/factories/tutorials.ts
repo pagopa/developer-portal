@@ -1,5 +1,68 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { strapiTutorials } from '@/lib/strapi/__tests__/fixtures/tutorials';
 import { StrapiTutorials } from '@/lib/strapi/types/tutorial';
+
+export function tutorialsWithMissingTutorialSlug(): StrapiTutorials {
+  return {
+    ...strapiTutorials,
+    data: [
+      {
+        attributes: {
+          ...strapiTutorials.data[0].attributes,
+          title: 'Tutorial Without Slug',
+          slug: undefined as any,
+        },
+      },
+      {
+        attributes: {
+          ...strapiTutorials.data[0].attributes,
+          title: 'Valid Tutorial',
+          slug: 'valid-tutorial',
+        },
+      },
+    ],
+  };
+}
+
+export function tutorialsWithMissingProductSlug(): StrapiTutorials {
+  return {
+    ...strapiTutorials,
+    data: [
+      {
+        attributes: {
+          ...strapiTutorials.data[0].attributes,
+          title: 'Tutorial Without Product Slug',
+          slug: 'tutorial-without-product-slug',
+          product: {
+            data: {
+              attributes: {
+                ...strapiTutorials.data[0].attributes.product.data.attributes,
+                name: 'Product Without Slug',
+                slug: undefined as any,
+              },
+            },
+          },
+        },
+      },
+      {
+        attributes: {
+          ...strapiTutorials.data[0].attributes,
+          title: 'Valid Tutorial',
+          slug: 'valid-tutorial',
+          product: {
+            data: {
+              attributes: {
+                ...strapiTutorials.data[0].attributes.product.data.attributes,
+                name: 'Valid Product',
+                slug: 'valid-product',
+              },
+            },
+          },
+        },
+      },
+    ],
+  };
+}
 
 export function minimalDataTutorials() {
   const strapiTutorial = strapiTutorials.data[0];
@@ -16,6 +79,7 @@ export function minimalDataTutorials() {
           parts: [],
           relatedLinks: undefined,
           seo: undefined,
+          image: { data: undefined },
         },
       },
     ],
