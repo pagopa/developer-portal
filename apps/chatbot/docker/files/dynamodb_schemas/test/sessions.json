@@ -22,6 +22,10 @@
     {
       "AttributeName": "createdAt",
       "AttributeType": "S"
+    },
+    {
+      "AttributeName": "expiresAt",
+      "AttributeType": "N"
     }
   ],
   "LocalSecondaryIndexes": [
@@ -40,7 +44,7 @@
       "Projection": {
         "ProjectionType": "ALL"
       }
-   }
+    }
   ],
   "ProvisionedThroughput": {
     "ReadCapacityUnits": 5,

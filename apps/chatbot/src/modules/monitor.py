@@ -99,7 +99,7 @@ def add_langfuse_score(
         None
     """
 
-    if value is None or np.isnan(value):
+    if value is None or (isinstance(value, float) and np.isnan(value)):
         LOGGER.warning(
             f"Value for score {name} is None or NaN, setting to 0.0 for trace {trace_id}."
         )
