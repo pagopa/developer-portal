@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { strapiProducts } from '@/lib/strapi/__tests__/fixtures/products';
 import { StrapiProducts } from '@/lib/strapi/types/product';
 
@@ -24,6 +25,23 @@ export function minimalProduct() {
           guide_list_page: { data: undefined },
           tutorial_list_page: { data: undefined },
           release_note: { data: undefined },
+        },
+      },
+    ],
+  } satisfies StrapiProducts;
+}
+
+export function productWithEmptySlug() {
+  const strapiProduct = strapiProducts.data[0];
+  return {
+    ...strapiProducts,
+    data: [
+      {
+        ...strapiProduct,
+        attributes: {
+          ...strapiProduct.attributes,
+          name: 'Product Without Slug',
+          slug: '',
         },
       },
     ],
@@ -162,6 +180,6 @@ export function allInvalidProducts() {
 export function productWithMissingAttributes() {
   return {
     id: 1,
-    attributes: null as any,
+    attributes: undefined as any,
   };
 }

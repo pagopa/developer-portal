@@ -18,6 +18,7 @@ import {
   mixedValidAndInvalidProducts,
   allInvalidProducts,
   productWithMissingAttributes,
+  productWithEmptySlug,
 } from '@/lib/strapi/__tests__/factories/products';
 import { consoleSpy } from '@/lib/strapi/__tests__/consoleMock';
 
@@ -184,5 +185,17 @@ describe('makeBaseProductWithoutLogo', () => {
     const result = makeBaseProductWithoutLogo(minimalProduct().data[0]);
     expect(result.hasApiDataListPage).toBe(false);
     expect(result.apiDataListPageUrl).toBeUndefined();
+  });
+
+  it('should throw error for product without slug', () => {
+    expect(() =>
+      makeBaseProductWithoutLogo(productWithoutSlug().data[0])
+    ).toThrow(Error('Product with id Product Without Slug is missing a slug'));
+  });
+
+  it('should throw error for product with empty slug', () => {
+    expect(() =>
+      makeBaseProductWithoutLogo(productWithEmptySlug().data[0])
+    ).toThrow(Error('Product with id Product Without Slug is missing a slug'));
   });
 });
