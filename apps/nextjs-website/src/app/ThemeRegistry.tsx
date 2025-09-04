@@ -20,7 +20,7 @@ export default function ThemeRegistry({
   children: ReactNode;
 }) {
   const [{ cache, flush }] = useState(() => {
-    const cache = createCache({ 
+    const cache = createCache({
       ...options,
       // Ensure consistent key generation
       prepend: true,
