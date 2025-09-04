@@ -1,3 +1,4 @@
+/* eslint-disable functional/no-throw-statements */
 import { Product } from '@/lib/types/product';
 import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
 import {
@@ -69,6 +70,12 @@ function getApiDataListPageUrl(
 export function makeBaseProductWithoutLogoProps(
   product: StrapiBaseProductWithRelations
 ): Product {
+  if (!product.attributes.slug) {
+    throw new Error(
+      `Product with id ${product.attributes.name} is missing a slug`
+    );
+  }
+
   return {
     slug: product.attributes.slug,
     name: product.attributes.name,
