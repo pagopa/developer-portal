@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { makeGuideListPagesProps } from '@/lib/strapi/makeProps/makeGuideListPages';
 import {
   guideListPagesProps,
