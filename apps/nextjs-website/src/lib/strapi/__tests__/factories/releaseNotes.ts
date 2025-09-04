@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { strapiReleaseNotes } from '@/lib/strapi/__tests__/fixtures/releaseNotes';
 import { StrapiReleaseNotes } from '@/lib/strapi/types/releaseNotes';
 
@@ -46,47 +47,6 @@ export function releaseNotesWithoutBannerLinks() {
   } satisfies StrapiReleaseNotes;
 }
 
-export function releaseNotesWithMissingProduct() {
-  const strapiReleaseNote = strapiReleaseNotes.data[0];
-  return {
-    ...strapiReleaseNotes,
-    data: [
-      {
-        ...strapiReleaseNote,
-        attributes: {
-          ...strapiReleaseNote.attributes,
-          title: 'Release Note Without Product',
-          product: {
-            data: undefined as any,
-          },
-        },
-      },
-    ],
-  } satisfies StrapiReleaseNotes;
-}
-
-export function mixedReleaseNotesWithAndWithoutProduct() {
-  const validReleaseNote = strapiReleaseNotes.data[0];
-  const invalidReleaseNote = releaseNotesWithMissingProduct().data[0];
-
-  return {
-    ...strapiReleaseNotes,
-    data: [
-      validReleaseNote,
-      invalidReleaseNote,
-      {
-        ...validReleaseNote,
-        id: 3,
-        attributes: {
-          ...validReleaseNote.attributes,
-          title: 'Another Valid Release Note',
-          dirName: 'another-valid-release-note',
-        },
-      },
-    ],
-  } satisfies StrapiReleaseNotes;
-}
-
 export function releaseNotesWithoutProductBannerLinks() {
   const strapiReleaseNote = strapiReleaseNotes.data[0];
   return {
@@ -112,7 +72,7 @@ export function releaseNotesWithoutProductBannerLinks() {
   } satisfies StrapiReleaseNotes;
 }
 
-export function releaseNotesWithCorruptedData() {
+export function releaseNotesWithMissingProductSlug() {
   const strapiReleaseNote = strapiReleaseNotes.data[0];
   return {
     ...strapiReleaseNotes,
@@ -121,25 +81,18 @@ export function releaseNotesWithCorruptedData() {
         ...strapiReleaseNote,
         attributes: {
           ...strapiReleaseNote.attributes,
-          title: 'Corrupted Release Note',
+          title: 'Release Note Without Product Slug',
           product: {
             data: {
               ...strapiReleaseNote.attributes.product.data,
-              attributes: null as any, // This will cause an error in makeBaseProductWithoutLogoProps
+              attributes: {
+                ...strapiReleaseNote.attributes.product.data.attributes,
+                slug: undefined as any,
+              },
             },
           },
         },
       },
     ],
-  };
-}
-
-export function allInvalidReleaseNotes() {
-  return {
-    ...strapiReleaseNotes,
-    data: [
-      releaseNotesWithMissingProduct().data[0],
-      releaseNotesWithCorruptedData().data[0],
-    ],
-  };
+  } satisfies StrapiReleaseNotes;
 }
