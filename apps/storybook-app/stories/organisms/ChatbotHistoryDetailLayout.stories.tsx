@@ -1,4 +1,4 @@
-import { Decorator, Meta, StoryObj } from '@storybook/react';
+import { Decorator, Meta, StoryObj } from '@storybook/nextjs';
 import ChatbotHistoryDetailLayout from 'nextjs-website/src/components/organisms/ChatbotHistoryDetailLayout/ChatbotHistoryDetailLayout';
 import { chatbotChatSession } from '../fixtures/chatbotFixtures';
 import React from 'react';

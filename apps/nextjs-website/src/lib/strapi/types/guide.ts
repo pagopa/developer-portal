@@ -10,26 +10,24 @@ type StrapiGuideVersion = {
   readonly version: string;
 };
 
-type StrapiBaseGuideAttributes = {
-  readonly title: string;
-  readonly slug: string;
-  readonly image: {
-    readonly data: StrapiMedia;
-  };
-  readonly mobileImage: {
-    readonly data: StrapiMedia;
-  };
-  readonly listItems: ReadonlyArray<{
-    readonly text: string;
-  }>;
-};
-
 export type StrapiBaseGuide = {
-  readonly attributes: StrapiBaseGuideAttributes;
+  readonly attributes: {
+    readonly title: string;
+    readonly slug: string;
+    readonly image: {
+      readonly data: StrapiMedia;
+    };
+    readonly mobileImage: {
+      readonly data: StrapiMedia;
+    };
+    readonly listItems: ReadonlyArray<{
+      readonly text: string;
+    }>;
+  };
 };
 
-export type StrapiGuide = {
-  readonly attributes: StrapiBaseGuideAttributes & {
+export type StrapiGuide = StrapiBaseGuide & {
+  readonly attributes: {
     readonly versions: ReadonlyArray<StrapiGuideVersion>;
     readonly product: {
       readonly data: StrapiBaseProductWithRelations;
