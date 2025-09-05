@@ -3,7 +3,7 @@ import _ from 'lodash';
 import { strapiTutorialListPages } from './fixtures/tutorialListPage';
 import {
   minimalTutorialListPages,
-  tutorialListPagesWithoutBannerLinks,
+  tutorialListPagesWithItemMissingBannerLinks,
   emptyTutorialListPages,
 } from './factories/tutorialListPage';
 
@@ -39,7 +39,7 @@ describe('makeTutorialListPagesProps', () => {
 
   it('should handle tutorial list pages without banner links', () => {
     const result = makeTutorialListPagesProps(
-      tutorialListPagesWithoutBannerLinks()
+      tutorialListPagesWithItemMissingBannerLinks()
     );
     expect(result).toHaveLength(1);
     expect(result[0].bannerLinks).toEqual([]);

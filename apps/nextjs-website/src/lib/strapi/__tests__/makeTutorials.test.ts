@@ -2,8 +2,8 @@ import { makeTutorialsProps } from '@/lib/strapi/makeProps/makeTutorials';
 import { StrapiTutorials } from '@/lib/strapi/types/tutorial';
 import {
   minimalDataTutorials,
-  tutorialListWithAnItemMissingSlug,
-  tutorialListWithAnItemMissingProductSlug,
+  tutorialsWithAnItemMissingSlug,
+  tutorialsWithAnItemMissingProductSlug,
 } from '@/lib/strapi/__tests__/factories/tutorials';
 import { consoleSpy } from '@/lib/strapi/__tests__/consoleMock';
 import _ from 'lodash';
@@ -95,7 +95,7 @@ describe('makeTutorialsProps', () => {
   });
 
   it('should skip tutorials with missing tutorial slug and log error', () => {
-    const result = makeTutorialsProps(tutorialListWithAnItemMissingSlug());
+    const result = makeTutorialsProps(tutorialsWithAnItemMissingSlug());
     expect(result).toHaveLength(1);
     const firstElement = result[0];
     expect(firstElement.title).toBe('Valid Tutorial');
@@ -106,9 +106,7 @@ describe('makeTutorialsProps', () => {
   });
 
   it('should skip tutorials with missing product slug and log error', () => {
-    const result = makeTutorialsProps(
-      tutorialListWithAnItemMissingProductSlug()
-    );
+    const result = makeTutorialsProps(tutorialsWithAnItemMissingProductSlug());
     expect(result).toHaveLength(1);
     const firstElement = result[0];
     expect(firstElement.title).toBe('Valid Tutorial');
