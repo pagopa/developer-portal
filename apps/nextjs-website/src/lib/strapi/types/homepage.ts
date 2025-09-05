@@ -37,7 +37,7 @@ type StrapiEcosystem = {
   readonly solutionsCta?: StrapiCallToAction;
 };
 
-export type Homepage = {
+export type StrapiHomepage = {
   readonly data: {
     readonly attributes: {
       readonly comingsoonDocumentation: StrapiRelatedLinks;
@@ -51,5 +51,3 @@ export type Homepage = {
     };
   };
 };
-
-export type StrapiHomepage = Homepage;

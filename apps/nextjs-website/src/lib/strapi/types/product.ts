@@ -3,7 +3,7 @@ import { StrapiMedia } from '@/lib/strapi/types/media';
 import { StrapiComponent } from './strapiComponent';
 import { StrapiApiDataListPageWithoutProduct } from './apiDataListPages';
 
-type StrapiId = {
+type Id = {
   readonly id: number;
 };
 
@@ -31,14 +31,14 @@ export type StrapiBaseProductWithoutBannerLinks = StrapiBaseProduct & {
 };
 
 export type StrapiProductRelations = {
-  readonly overview: StrapiComponent<StrapiId | undefined>;
-  readonly quickstart_guide: StrapiComponent<StrapiId | undefined>;
+  readonly overview: StrapiComponent<Id | undefined>;
+  readonly quickstart_guide: StrapiComponent<Id | undefined>;
   readonly api_data_list_page: StrapiComponent<
     StrapiApiDataListPageWithoutProduct | undefined
   >;
-  readonly tutorial_list_page: StrapiComponent<StrapiId | undefined>;
-  readonly guide_list_page: StrapiComponent<StrapiId | undefined>;
-  readonly release_note: StrapiComponent<StrapiId | undefined>;
+  readonly tutorial_list_page: StrapiComponent<Id | undefined>;
+  readonly guide_list_page: StrapiComponent<Id | undefined>;
+  readonly release_note: StrapiComponent<Id | undefined>;
 };
 
 export type StrapiBaseProductWithRelations = StrapiBaseProduct & {
