@@ -26,7 +26,7 @@ export function minimalDataSolutions() {
   } satisfies StrapiSolutions;
 }
 
-export function solutionsWithMissingData() {
+export function solutionsWithItemMissingData() {
   const strapiSolution = strapiSolutions.data[0];
   return {
     ...strapiSolutions,
@@ -44,8 +44,8 @@ export function solutionsWithMissingData() {
   };
 }
 
-export function solutionWithMissingMandatoryData() {
-  const strapiSolution = solutionsWithMissingData().data[0];
+export function solutionWithItemMissingMandatoryData() {
+  const strapiSolution = solutionsWithItemMissingData().data[0];
   return {
     ...strapiSolutions,
     data: [
@@ -60,7 +60,7 @@ export function solutionWithMissingMandatoryData() {
   };
 }
 
-export function solutionsWithoutCaseHistories() {
+export function solutionsWithItemWithoutCaseHistories() {
   const strapiSolution = strapiSolutions.data[0];
   return {
     ...strapiSolutions,
@@ -76,7 +76,7 @@ export function solutionsWithoutCaseHistories() {
   } satisfies StrapiSolutions;
 }
 
-export function solutionsWithoutWebinars() {
+export function solutionsWithItemWithoutWebinars() {
   const strapiSolution = strapiSolutions.data[0];
   return {
     ...strapiSolutions,
@@ -94,7 +94,7 @@ export function solutionsWithoutWebinars() {
   } satisfies StrapiSolutions;
 }
 
-export function solutionsWithMissingSolutionSlug() {
+export function solutionsWithItemMissingSolutionSlug() {
   const strapiSolution = strapiSolutions.data[0];
   return {
     ...strapiSolutions,
@@ -119,7 +119,7 @@ export function solutionsWithMissingSolutionSlug() {
   } satisfies StrapiSolutions;
 }
 
-export function solutionsWithMissingCaseHistorySlug() {
+export function solutionsWithItemMissingCaseHistorySlug() {
   const strapiSolution = strapiSolutions.data[0];
   return {
     ...strapiSolutions,
