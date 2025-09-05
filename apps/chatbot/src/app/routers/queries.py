@@ -5,7 +5,7 @@ import uuid
 from botocore.exceptions import BotoCoreError, ClientError
 from boto3.dynamodb.conditions import Key
 from fastapi import APIRouter, Header, HTTPException
-from typing import List, Annotated
+from typing import Annotated
 
 from src.app.sqs_init import sqs_queue_evaluate
 from src.app.models import Query, tables
@@ -84,8 +84,7 @@ async def query_creation(
         "badAnswer": False,
     }
 
-    days = int(os.getenv("EXPIRE_DAYS", 90))
-    expires_at = int((now + datetime.timedelta(days=days)).timestamp())
+    expires_at = int((now + datetime.timedelta(days=SETTINGS.expire_days)).timestamp())
 
     bodyToSave = bodyToReturn.copy()
     bodyToSave["question"] = chatbot_mask_pii(query.question)

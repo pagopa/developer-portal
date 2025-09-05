@@ -402,8 +402,8 @@ apps/chatbot/index
 apps/chatbot/*.ipynb
 apps/chatbot/results
 apps/chatbot/test.py
-app/chabot/docker/volume
-!apps/chatbot/docker/files
+apps/chatbot/docker/volume
+!apps/chatbot/docker/files/**
 apps/chatbot/.env*
 !apps/chatbot/.env.example
 apps/chatbot/empty_htmls.json

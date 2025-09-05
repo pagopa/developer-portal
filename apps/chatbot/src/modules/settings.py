@@ -1,7 +1,5 @@
 import boto3
 import os
-import json
-import yaml
 from pathlib import Path
 from pydantic_settings import BaseSettings
 
@@ -100,6 +98,9 @@ class ChatbotSettings(BaseSettings):
         "CHB_AWS_SQS_QUEUE_EVALUATE_NAME", "chatbot-evaluate"
     )
     auth_cognito_userpool_id: str = os.getenv("AUTH_COGNITO_USERPOOL_ID")
+
+    # database
+    expire_days: int = int(os.getenv("EXPIRE_DAYS", 90))
 
 
 SETTINGS = ChatbotSettings()

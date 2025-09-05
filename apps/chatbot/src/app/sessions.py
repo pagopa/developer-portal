@@ -55,9 +55,10 @@ def find_or_create_session(userId: str, now: datetime.datetime):
 
     items = dbResponse.get("Items", [])
     if len(items) == 0:
-        days = int(os.getenv("EXPIRE_DAYS", 90))
-        expires_at = int((now + datetime.timedelta(days=days)).timestamp())
-    
+        expires_at = int(
+            (now + datetime.timedelta(days=SETTINGS.expire_days)).timestamp()
+        )
+
         body = {
             "id": f"{uuid.uuid4()}",
             "title": now.strftime("%Y-%m-%d"),
@@ -126,13 +127,8 @@ def last_session_id(userId: str):
 
 
 def get_user_session(userId: str, sessionId: str) -> dict | None:
-    dbResponse = tables["sessions"].get_item(
-        Key={
-          "userId": userId,
-          "id": sessionId
-        }
-    )
-    item = dbResponse.get('Item')
+    dbResponse = tables["sessions"].get_item(Key={"userId": userId, "id": sessionId})
+    item = dbResponse.get("Item")
     return item if item else None
 
 
