@@ -1,7 +1,7 @@
 import { GuideDefinition } from '@/helpers/makeDocs.helpers';
-import { StrapiGuides } from '../codecs/GuidesCodec';
 import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
 import { makeBaseProductWithoutLogoProps } from './makeProducts';
+import { StrapiGuides } from '@/lib/strapi/types/guide';
 
 export function makeGuidesProps(
   strapiGuides: StrapiGuides
@@ -22,7 +22,7 @@ export function makeGuidesProps(
           : attributes.product.data.attributes.bannerLinks?.map(
               makeBannerLinkProps
             ) || [],
-      seo: attributes.seo,
+      seo: attributes.seo || undefined,
     };
   });
 }

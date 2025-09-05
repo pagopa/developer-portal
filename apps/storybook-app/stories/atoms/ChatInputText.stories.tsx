@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/nextjs';
 import ChatInputText from '../../../nextjs-website/src/components/atoms/ChatInputText/ChatInputText';
 import { nextIntlContextDecorator } from '../next-intl-context.helper';
 

@@ -43,4 +43,5 @@ export const TutorialsCodec = t.strict({
   meta: PaginationCodec,
 });
 
+export type StrapiBaseTutorial = t.TypeOf<typeof BaseTutorialCodec>;
 export type StrapiTutorials = t.TypeOf<typeof TutorialsCodec>;

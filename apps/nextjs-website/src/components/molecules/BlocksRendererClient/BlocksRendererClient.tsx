@@ -89,16 +89,36 @@ const BlocksRendererClient = ({
         list: ({ children }) => {
           return <ul style={listStyle}>{children}</ul>;
         },
-      }}
-      modifiers={{
         code: ({ children }) => {
+          // Extract code string safely from children
+          // eslint-disable-next-line functional/no-let
+          let codeString = '';
+
+          if (typeof children === 'string') {
+            codeString = children;
+          } else if (
+            children &&
+            typeof children === 'object' &&
+            'props' in children
+          ) {
+            const reactElement = children as ReactElement;
+            if (typeof reactElement.props?.children === 'string') {
+              codeString = reactElement.props.children;
+            } else if (Array.isArray(reactElement.props?.children)) {
+              // Handle array of children, join them as text
+              codeString = reactElement.props.children
+                .filter((child: any) => typeof child === 'string')
+                .join('');
+            }
+          }
+
           return (
-            <CodeBlockPart
-              code={(children as ReactElement).props.children}
-              showLineNumbers={false}
-            />
+            <CodeBlockPart code={codeString || ''} showLineNumbers={false} />
           );
         },
+      }}
+      modifiers={{
+        code: ({ children }) => <code>{children}</code>,
       }}
     />
   );

@@ -1,6 +1,6 @@
 import * as qs from 'qs';
 import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
-import { WebinarsCodec } from '@/lib/strapi/codecs/WebinarsCodec';
+import { StrapiWebinars } from '@/lib/strapi/types/webinars';
 
 export const webinarPopulate = {
   populate: {
@@ -36,8 +36,7 @@ export const webinarPopulate = {
 
 const makeStrapiWebinarsPopulate = () => qs.stringify(webinarPopulate);
 
-export const fetchWebinars = fetchFromStrapi(
+export const fetchWebinars = fetchFromStrapi<StrapiWebinars>(
   'webinars',
-  makeStrapiWebinarsPopulate(),
-  WebinarsCodec
+  makeStrapiWebinarsPopulate()
 );
