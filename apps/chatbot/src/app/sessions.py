@@ -61,11 +61,15 @@ def find_or_create_session(userId: str, now: datetime.datetime):
 
     items = dbResponse.get("Items", [])
     if len(items) == 0:
+        days = int(os.getenv("EXPIRE_DAYS", 90))
+        expires_at = int((now + datetime.timedelta(days=days)).timestamp())
+    
         body = {
             "id": f"{uuid.uuid4()}",
             "title": now.strftime("%Y-%m-%d"),
             "userId": userId,
             "createdAt": now.isoformat(),
+            "expiresAt": expires_at,
         }
         try:
             create_session_record(body)
@@ -83,7 +87,11 @@ def find_or_create_session(userId: str, now: datetime.datetime):
 
 def create_session_record(body: dict):
     saltValue = str(uuid.uuid4())
-    saltBody = {"sessionId": body["id"], "value": saltValue}
+    saltBody = {
+        "sessionId": body["id"],
+        "value": saltValue,
+        "expiresAt": body["expiresAt"],
+    }
     # TODO: transaction https://github.com/boto/boto3/pull/4010
     tables["sessions"].put_item(Item=body)
     tables["salts"].put_item(Item=saltBody)

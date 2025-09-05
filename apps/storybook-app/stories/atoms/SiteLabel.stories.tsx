@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/nextjs';
 import SiteLabel from '../../../nextjs-website/src/components/atoms/SiteLabel/SiteLabel';
 
 const meta: Meta<typeof SiteLabel> = {
