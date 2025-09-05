@@ -72,7 +72,7 @@ export function makeBaseProductWithoutLogoProps(
 ): Product {
   if (!product.attributes.slug) {
     throw new Error(
-      `Product with id ${product.attributes.name} is missing a slug`
+      `Product with id ${product.attributes.name} is missing the slug. Skipping...`
     );
   }
 
