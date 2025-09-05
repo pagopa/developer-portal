@@ -1,7 +1,7 @@
 import { strapiGuideListPagesData } from '@/lib/strapi/__tests__/fixtures/guideListPages';
 import { StrapiGuideListPages } from '@/lib/strapi/types/guideListPage';
 
-export function guideListWithMissingSlugs() {
+export function guideListPagesWithItemsMissingSlug() {
   const guidesList = strapiGuideListPagesData;
   return {
     ...guidesList,
@@ -27,7 +27,7 @@ export function guideListWithMissingSlugs() {
   };
 }
 
-export function guideListWithMissingImages() {
+export function guideListPagesWithItemsMissingImages() {
   const guidesList = strapiGuideListPagesData;
   return {
     ...guidesList,
@@ -54,7 +54,7 @@ export function guideListWithMissingImages() {
   };
 }
 
-export function guideListWithGuideWithUndefinedListItem() {
+export function guideListPagesWithItemsMissingListItem() {
   const guidesList = strapiGuideListPagesData;
   return {
     ...guidesList,
@@ -83,7 +83,7 @@ export function guideListWithGuideWithUndefinedListItem() {
   };
 }
 
-export function guideListWithGuideWithWrongDataType() {
+export function guideListPagesWithItemsWithWrongDataType() {
   const guidesList = strapiGuideListPagesData;
   return {
     ...guidesList,
@@ -98,7 +98,7 @@ export function guideListWithGuideWithWrongDataType() {
   };
 }
 
-export function guideListPagesWithMissingProductSlug() {
+export function guideListPagesWithItemMissingProductSlug() {
   const guidesList = strapiGuideListPagesData;
   return {
     ...guidesList,

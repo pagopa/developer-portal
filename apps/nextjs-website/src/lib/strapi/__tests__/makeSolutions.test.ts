@@ -7,10 +7,10 @@ import {
 } from '@/lib/strapi/__tests__/fixtures/solutions';
 import {
   minimalDataSolutions,
-  solutionsWithoutCaseHistories,
-  solutionsWithoutWebinars,
-  solutionsWithMissingSolutionSlug,
-  solutionsWithMissingCaseHistorySlug,
+  solutionsWithItemWithoutCaseHistories,
+  solutionsWithItemWithoutWebinars,
+  solutionsWithItemMissingSolutionSlug,
+  solutionsWithItemMissingCaseHistorySlug,
 } from '@/lib/strapi/__tests__/factories/solutions';
 import { spyOnConsoleError } from '@/lib/strapi/__tests__/spyOnConsole';
 
@@ -61,17 +61,17 @@ describe('makeSolutionsProps', () => {
   });
 
   it('should handle solutions without case histories', () => {
-    const result = makeSolutionsProps(solutionsWithoutCaseHistories());
+    const result = makeSolutionsProps(solutionsWithItemWithoutCaseHistories());
     expect(result[0].successStories).toBeUndefined();
   });
 
   it('should handle solutions without webinars', () => {
-    const result = makeSolutionsProps(solutionsWithoutWebinars());
+    const result = makeSolutionsProps(solutionsWithItemWithoutWebinars());
     expect(result[0].webinars).toEqual([]);
   });
 
   it('should skip solutions with missing slug and log error', () => {
-    const result = makeSolutionsProps(solutionsWithMissingSolutionSlug());
+    const result = makeSolutionsProps(solutionsWithItemMissingSolutionSlug());
     expect(result).toHaveLength(1);
     expect(result[0].title).toBe('Valid Solution');
     expect(result[0].solutionSlug).toBe('valid-solution');
@@ -81,7 +81,9 @@ describe('makeSolutionsProps', () => {
   });
 
   it('should skip case histories with missing slug and log error', () => {
-    const result = makeSolutionsProps(solutionsWithMissingCaseHistorySlug());
+    const result = makeSolutionsProps(
+      solutionsWithItemMissingCaseHistorySlug()
+    );
     expect(result).toHaveLength(1);
     expect(result[0].successStories?.stories).toHaveLength(1);
     expect(result[0].successStories?.stories[0].title).toBe(

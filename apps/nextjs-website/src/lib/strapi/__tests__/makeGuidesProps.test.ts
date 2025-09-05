@@ -5,8 +5,8 @@ import {
 } from '@/lib/strapi/__tests__/fixtures/guides';
 import { makeGuidesProps } from '@/lib/strapi/makeProps/makeGuides';
 import {
-  makeGuidesWithProductWithEmptySlug,
-  makeGuidesWithProductWithUndefinedSlug,
+  guideListWithItemsWithEmptyProductSlug,
+  guideListWithMissingProductSlug,
 } from '@/lib/strapi/__tests__/factories/guides';
 import { spyOnConsoleError } from '@/lib/strapi/__tests__/spyOnConsole';
 
@@ -31,7 +31,7 @@ describe('makeGuidesProps', () => {
   });
 
   it('should return an empty array when the product slug is an empty string', () => {
-    const result = makeGuidesProps(makeGuidesWithProductWithEmptySlug());
+    const result = makeGuidesProps(guideListWithItemsWithEmptyProductSlug());
     expect(result).toEqual([]);
     expect(spyOnConsoleError).toHaveBeenCalledWith(
       expect.stringContaining('product slug is missing'),
@@ -40,7 +40,7 @@ describe('makeGuidesProps', () => {
   });
 
   it('should return an empty array when the product slug is undefined', () => {
-    const result = makeGuidesProps(makeGuidesWithProductWithUndefinedSlug());
+    const result = makeGuidesProps(guideListWithMissingProductSlug());
     expect(result).toEqual([]);
     expect(spyOnConsoleError).toHaveBeenCalledWith(
       expect.stringContaining('product slug is missing'),

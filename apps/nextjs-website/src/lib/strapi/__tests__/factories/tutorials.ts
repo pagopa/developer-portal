@@ -2,7 +2,7 @@
 import { strapiTutorials } from '@/lib/strapi/__tests__/fixtures/tutorials';
 import { StrapiTutorials } from '@/lib/strapi/types/tutorial';
 
-export function tutorialsWithMissingTutorialSlug(): StrapiTutorials {
+export function tutorialsWithAnItemMissingSlug(): StrapiTutorials {
   return {
     ...strapiTutorials,
     data: [
@@ -24,7 +24,7 @@ export function tutorialsWithMissingTutorialSlug(): StrapiTutorials {
   };
 }
 
-export function tutorialsWithMissingProductSlug(): StrapiTutorials {
+export function tutorialsWithAnItemMissingProductSlug(): StrapiTutorials {
   return {
     ...strapiTutorials,
     data: [
@@ -86,7 +86,7 @@ export function minimalDataTutorials() {
   } satisfies StrapiTutorials;
 }
 
-export function tutorialsWithMissingData() {
+export function tutorialsWithItemMissingData() {
   const strapiTutorial = strapiTutorials.data[0];
   return {
     strapiTutorials,
@@ -104,8 +104,8 @@ export function tutorialsWithMissingData() {
   };
 }
 
-export function tutorialWithMissingMandatoryData() {
-  const strapiTutorial = tutorialsWithMissingData().data[0];
+export function tutorialsWithItemMissingMandatoryData() {
+  const strapiTutorial = tutorialsWithItemMissingData().data[0];
   return {
     ...strapiTutorials,
     data: [

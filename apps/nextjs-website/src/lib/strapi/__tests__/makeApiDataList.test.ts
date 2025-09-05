@@ -17,7 +17,7 @@ import {
   restApiDataOnly,
   restApiDataWithMultipleSpecs,
   apiDataWithInvalidRestApiDetails,
-  apiDataWithSoapApiDetailsWithoutSlug,
+  apiDatalistWithItemMissingSlug,
 } from '@/lib/strapi/__tests__/factories/apiDataList';
 import { spyOnConsoleError } from '@/lib/strapi/__tests__/spyOnConsole';
 
@@ -91,9 +91,7 @@ describe('makeApiDataListProps', () => {
   });
 
   it('should filter out api data with soap api details without slug', async () => {
-    const result = await makeApiDataListProps(
-      apiDataWithSoapApiDetailsWithoutSlug()
-    );
+    const result = await makeApiDataListProps(apiDatalistWithItemMissingSlug());
     expect(result).toHaveLength(0);
     expect(spyOnConsoleError).toHaveBeenCalledWith(
       expect.stringContaining('Missing API slug')
