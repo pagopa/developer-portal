@@ -2,7 +2,7 @@
 import { strapiTutorials } from '@/lib/strapi/__tests__/fixtures/tutorials';
 import { StrapiTutorials } from '@/lib/strapi/types/tutorial';
 
-export function tutorialsWithMissingTutorialSlug(): StrapiTutorials {
+export function tutorialListWithAnItemMissingSlug(): StrapiTutorials {
   return {
     ...strapiTutorials,
     data: [
@@ -24,7 +24,7 @@ export function tutorialsWithMissingTutorialSlug(): StrapiTutorials {
   };
 }
 
-export function tutorialsWithMissingProductSlug(): StrapiTutorials {
+export function tutorialListWithAnItemMissingProductSlug(): StrapiTutorials {
   return {
     ...strapiTutorials,
     data: [
