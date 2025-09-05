@@ -1,7 +1,6 @@
 import { Part } from '@/lib/types/part';
 import { parseCkEditorContent } from '@/helpers/parseCkEditorContent.helpers';
 import { StrapiPart } from '@/lib/strapi/types/part';
-import { ApiTesterPartProps } from '@/components/organisms/ApiTesterPart/ApiTesterPart';
 
 export function makePartProps(strapiPart: StrapiPart): Part | null {
   switch (strapiPart.__component) {
@@ -16,8 +15,7 @@ export function makePartProps(strapiPart: StrapiPart): Part | null {
         apiRequest: {
           ...strapiPart.requestCode,
           description: strapiPart.requestDescription,
-          attributes:
-            strapiPart.requestAttributes as ApiTesterPartProps['apiRequest']['attributes'],
+          attributes: [...strapiPart.requestAttributes],
         },
         apiResponse: {
           ...strapiPart.responseCode,
