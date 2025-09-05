@@ -3,21 +3,6 @@ import { StrapiCaseHistoriesComponent } from '@/lib/strapi/types/caseHistoriesCo
 import { StrapiSeo } from '@/lib/strapi/types/seo';
 import { StrapiFeatures } from '@/lib/strapi/types/features';
 
-export type SolutionListPage = {
-  readonly data: {
-    readonly attributes: {
-      readonly title: string;
-      readonly description: string;
-      readonly caseHistories?: StrapiCaseHistoriesComponent;
-      readonly solutions: {
-        readonly data: readonly StrapiBaseSolutionWithProducts[];
-      };
-      readonly features?: StrapiFeatures;
-      readonly seo?: StrapiSeo;
-    };
-  };
-};
-
 export type StrapiSolutionListPage = {
   readonly data: {
     readonly attributes: {
