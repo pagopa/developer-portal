@@ -1,5 +1,5 @@
 // Mock console.error to avoid noise in test output
-export const consoleSpy = jest
+export const spyOnConsoleError = jest
   .spyOn(console, 'error')
   .mockImplementation(() => {
     // Mock implementation - do nothing

@@ -1,3 +1,5 @@
+/* eslint-disable functional/no-expression-statements */
+/* eslint-disable functional/no-try-statements */
 import { Part } from '@/lib/types/part';
 import { Tutorial } from '@/lib/types/tutorialData';
 import { makePartProps } from '@/lib/strapi/makeProps/makePart';
@@ -18,7 +20,20 @@ export function makeTutorialsProps(
 ): readonly TutorialProps[] {
   return _.compact(
     strapiTutorials.data.map(({ attributes }) => {
-      // eslint-disable-next-line functional/no-try-statements
+      if (!attributes.slug) {
+        console.error(
+          `Error processing Tutorial "${attributes.title}": Missing tutorial slug. Skipping...`
+        );
+        return null;
+      }
+
+      if (!attributes.product.data.attributes.slug) {
+        console.error(
+          `Error processing Tutorial "${attributes.title}": Missing product slug. Skipping...`
+        );
+        return null;
+      }
+
       try {
         return {
           image: attributes.image.data
@@ -51,7 +66,6 @@ export function makeTutorialsProps(
           updatedAt: attributes.updatedAt,
         } satisfies TutorialProps;
       } catch (error) {
-        // eslint-disable-next-line functional/no-expression-statements
         console.error(
           `Error while making tutorial props for ${attributes.title}:`,
           error

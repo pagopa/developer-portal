@@ -16,7 +16,10 @@ import {
   soapApiDataOnly,
   restApiDataOnly,
   restApiDataWithMultipleSpecs,
+  apiDataWithInvalidRestApiDetails,
+  apiDatalistWithItemMissingSlug,
 } from '@/lib/strapi/__tests__/factories/apiDataList';
+import { spyOnConsoleError } from '@/lib/strapi/__tests__/spyOnConsole';
 
 // Mock the makeApiSoapUrlList function
 jest.mock('@/lib/strapi/makeProps/makeApiSoapUrlList', () => ({
@@ -28,6 +31,14 @@ jest.mock('@/lib/strapi/makeProps/makeApiSoapUrlList', () => ({
 }));
 
 describe('makeApiDataListProps', () => {
+  beforeEach(() => {
+    spyOnConsoleError.mockClear();
+  });
+
+  afterAll(() => {
+    spyOnConsoleError.mockRestore();
+  });
+
   it('should transform strapi api data list to api data page props', async () => {
     const result = await makeApiDataListProps(_.cloneDeep(strapiApiDataList));
     expect(result).toHaveLength(2);
@@ -69,6 +80,24 @@ describe('makeApiDataListProps', () => {
     expect(result).toHaveLength(0);
   });
 
+  it('should filter out api data with rest api details with invalid data', async () => {
+    const result = await makeApiDataListProps(
+      apiDataWithInvalidRestApiDetails()
+    );
+    expect(result).toHaveLength(0);
+    expect(spyOnConsoleError).toHaveBeenCalledWith(
+      expect.stringContaining('Missing API slug')
+    );
+  });
+
+  it('should filter out api data with soap api details without slug', async () => {
+    const result = await makeApiDataListProps(apiDatalistWithItemMissingSlug());
+    expect(result).toHaveLength(0);
+    expect(spyOnConsoleError).toHaveBeenCalledWith(
+      expect.stringContaining('Missing API slug')
+    );
+  });
+
   it('should handle mixed valid and invalid api data', async () => {
     const result = await makeApiDataListProps(mixedApiDataValidAndInvalid());
 
@@ -77,6 +106,7 @@ describe('makeApiDataListProps', () => {
     expect(result[0].title).toBe('SEND Main');
     expect(result[1].title).toBe('Documentazione SOAP');
     expect(result[2].title).toBe('Another Valid REST API');
+    expect(spyOnConsoleError).toHaveBeenCalledTimes(1);
   });
 
   it('should handle api data without banner links and without product banner links', async () => {
@@ -89,6 +119,7 @@ describe('makeApiDataListProps', () => {
   it('should return empty array when all api data are invalid', async () => {
     const result = await makeApiDataListProps(allInvalidApiData());
     expect(result).toHaveLength(0);
+    expect(spyOnConsoleError).toHaveBeenCalled();
   });
 
   it('should correctly identify REST API type', async () => {
@@ -102,17 +133,21 @@ describe('makeApiDataListProps', () => {
 
   it('should correctly identify SOAP API type', async () => {
     const result = await makeApiDataListProps(soapApiDataOnly());
-    expect(result[0].apiType).toBe('soap');
-    expect(result[0].restApiSpecUrls).toEqual([]);
-    expect(result[0].apiSoapUrlList).toHaveLength(1);
-    expect(result[0].apiSoapUrl).toBe('https://github.com/pagopa/pagopa-api/');
+    const firstElement = result[0];
+    expect(firstElement.apiType).toBe('soap');
+    expect(firstElement.restApiSpecUrls).toEqual([]);
+    expect(firstElement.apiSoapUrlList).toHaveLength(1);
+    expect(firstElement.apiSoapUrl).toBe(
+      'https://github.com/pagopa/pagopa-api/'
+    );
   });
 
   it('should prioritize api data banner links over product banner links', async () => {
     const result = await makeApiDataListProps(strapiApiDataList);
-    expect(result[0].bannerLinks).toHaveLength(2);
-    expect(result[0].bannerLinks?.[0].title).toBe('Banner Link 1');
-    expect(result[0].bannerLinks?.[1].title).toBe('Banner Link 2');
+    const firstElement = result[0];
+    expect(firstElement.bannerLinks).toHaveLength(2);
+    expect(firstElement.bannerLinks?.[0].title).toBe('Banner Link 1');
+    expect(firstElement.bannerLinks?.[1].title).toBe('Banner Link 2');
   });
 
   it('should handle api data with product that has undefined banner links', async () => {
@@ -145,5 +180,9 @@ describe('makeApiDataListProps', () => {
     const result = await makeApiDataListProps(apiDataWithMissingProduct());
     // Should filter out items with missing product since makeBaseProductWithoutLogoProps would fail
     expect(result).toHaveLength(0);
+    expect(spyOnConsoleError).toHaveBeenCalledWith(
+      expect.stringContaining('Error processing API Data'),
+      expect.any(Error)
+    );
   });
 });

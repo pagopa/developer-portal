@@ -14,8 +14,17 @@ import {
   emptyApiDataListPages,
   apiDataListPageWithBothRestAndSoap,
 } from '@/lib/strapi/__tests__/factories/apiDataListPages';
+import { spyOnConsoleError } from '@/lib/strapi/__tests__/spyOnConsole';
 
 describe('makeApiDataListPagesProps', () => {
+  beforeEach(() => {
+    spyOnConsoleError.mockClear();
+  });
+
+  afterAll(() => {
+    spyOnConsoleError.mockRestore();
+  });
+
   it('should transform strapi api data list pages to api data list page template props', () => {
     const result = makeApiDataListPagesProps(
       _.cloneDeep(strapiApiDataListPages)
@@ -79,6 +88,9 @@ describe('makeApiDataListPagesProps', () => {
     const firstElement = result[0];
     expect(firstElement.cards).toHaveLength(0);
     expect(firstElement.apiDetailSlugs).toHaveLength(0);
+    expect(spyOnConsoleError).toHaveBeenCalledWith(
+      expect.stringContaining('Missing title or API details')
+    );
   });
 
   it('should handle multiple pages', () => {
@@ -142,6 +154,9 @@ describe('makeApiDataListPagesProps', () => {
       apiDataListPageWithInvalidApiData()
     );
     expect(result[0].cards).toHaveLength(0);
+    expect(spyOnConsoleError).toHaveBeenCalledWith(
+      expect.stringContaining('Missing title or API details')
+    );
   });
 
   it('should handle API data with missing icon', () => {

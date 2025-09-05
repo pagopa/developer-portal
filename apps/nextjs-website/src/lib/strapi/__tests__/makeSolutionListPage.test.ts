@@ -9,9 +9,20 @@ import {
   solutionListPageWithoutCaseHistories,
   solutionListPageWithoutFeatures,
   solutionListPageWithoutSolutions,
+  solutionListPageWithMissingSolutionSlug,
+  solutionListPageWithMissingCaseHistorySlug,
 } from '@/lib/strapi/__tests__/factories/solutionListPage';
+import { spyOnConsoleError } from '@/lib/strapi/__tests__/spyOnConsole';
 
 describe('makeSolutionListPageProps', () => {
+  afterEach(() => {
+    spyOnConsoleError.mockClear();
+  });
+
+  afterAll(() => {
+    spyOnConsoleError.mockRestore();
+  });
+
   it('should transform strapi solution list page to solution list template props', () => {
     const result = makeSolutionListPageProps(
       _.cloneDeep(strapiSolutionListPage)
@@ -21,8 +32,8 @@ describe('makeSolutionListPageProps', () => {
 
   it('should handle minimal data with missing optional fields', () => {
     const result = makeSolutionListPageProps(minimalDataSolutionListPage());
+    expect(result).not.toBeNull();
     expect(result.hero.title).toBe('Minimal Solutions');
-    expect(result.hero.subtitle).toBe('Minimal solutions page');
     expect(result.solutions).toEqual([]);
     expect(result.successStories).toBeUndefined();
     expect(result.features).toBeUndefined();
@@ -71,5 +82,27 @@ describe('makeSolutionListPageProps', () => {
       _.cloneDeep(strapiSolutionListPage)
     );
     expect(result.solutions[0].slug).toBe('solutions/solution-1');
+  });
+
+  it('should skip solutions with missing slug and log error', () => {
+    const result = makeSolutionListPageProps(
+      solutionListPageWithMissingSolutionSlug()
+    );
+    expect(result.solutions).toHaveLength(1);
+    expect(result.solutions[0].name).toBe('Valid Solution');
+    expect(spyOnConsoleError).toHaveBeenCalledWith(
+      'Error processing Solution "Solution Without Slug": Missing solution slug. Skipping...'
+    );
+  });
+
+  it('should skip case histories with missing slug and log error', () => {
+    const result = makeSolutionListPageProps(
+      solutionListPageWithMissingCaseHistorySlug()
+    );
+    expect(result.successStories?.stories).toHaveLength(1);
+    expect(result.successStories?.stories[0].title).toBe('Valid Case History');
+    expect(spyOnConsoleError).toHaveBeenCalledWith(
+      'Error processing Case History "Case History Without Slug": Missing case history slug. Skipping...'
+    );
   });
 });

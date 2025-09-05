@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { strapiSolutions } from '@/lib/strapi/__tests__/fixtures/solutions';
 import { StrapiSolutions } from '@/lib/strapi/types/solutions';
 
@@ -25,7 +26,7 @@ export function minimalDataSolutions() {
   } satisfies StrapiSolutions;
 }
 
-export function solutionsWithMissingData() {
+export function solutionsWithItemMissingData() {
   const strapiSolution = strapiSolutions.data[0];
   return {
     ...strapiSolutions,
@@ -43,8 +44,8 @@ export function solutionsWithMissingData() {
   };
 }
 
-export function solutionWithMissingMandatoryData() {
-  const strapiSolution = solutionsWithMissingData().data[0];
+export function solutionWithItemMissingMandatoryData() {
+  const strapiSolution = solutionsWithItemMissingData().data[0];
   return {
     ...strapiSolutions,
     data: [
@@ -59,7 +60,7 @@ export function solutionWithMissingMandatoryData() {
   };
 }
 
-export function solutionsWithoutCaseHistories() {
+export function solutionsWithItemWithoutCaseHistories() {
   const strapiSolution = strapiSolutions.data[0];
   return {
     ...strapiSolutions,
@@ -75,7 +76,7 @@ export function solutionsWithoutCaseHistories() {
   } satisfies StrapiSolutions;
 }
 
-export function solutionsWithoutWebinars() {
+export function solutionsWithItemWithoutWebinars() {
   const strapiSolution = strapiSolutions.data[0];
   return {
     ...strapiSolutions,
@@ -86,6 +87,96 @@ export function solutionsWithoutWebinars() {
           ...strapiSolution.attributes,
           webinars: {
             data: [],
+          },
+        },
+      },
+    ],
+  } satisfies StrapiSolutions;
+}
+
+export function solutionsWithItemMissingSolutionSlug() {
+  const strapiSolution = strapiSolutions.data[0];
+  return {
+    ...strapiSolutions,
+    data: [
+      {
+        ...strapiSolution,
+        attributes: {
+          ...strapiSolution.attributes,
+          title: 'Solution Without Slug',
+          slug: undefined as any,
+        },
+      },
+      {
+        ...strapiSolution,
+        attributes: {
+          ...strapiSolution.attributes,
+          title: 'Valid Solution',
+          slug: 'valid-solution',
+        },
+      },
+    ],
+  } satisfies StrapiSolutions;
+}
+
+export function solutionsWithItemMissingCaseHistorySlug() {
+  const strapiSolution = strapiSolutions.data[0];
+  return {
+    ...strapiSolutions,
+    data: [
+      {
+        ...strapiSolution,
+        attributes: {
+          ...strapiSolution.attributes,
+          title: 'Solution with Case History Missing Slug',
+          slug: 'solution-with-case-history-missing-slug',
+          caseHistories: {
+            title: 'Success Stories',
+            description: 'Our success stories',
+            case_histories: {
+              data: [
+                {
+                  id: 1,
+                  attributes: {
+                    ...strapiSolution.attributes.caseHistories?.case_histories
+                      .data[0].attributes,
+                    title: 'Case History Without Slug',
+                    slug: undefined as any,
+                    image: {
+                      data: {
+                        attributes: {
+                          ...strapiSolution.attributes.caseHistories
+                            ?.case_histories.data[0].attributes.image.data
+                            .attributes,
+                          url: '/test-image.png',
+                          name: 'Test Image',
+                        },
+                      },
+                    },
+                  },
+                },
+                {
+                  id: 2,
+                  attributes: {
+                    ...strapiSolution.attributes.caseHistories?.case_histories
+                      .data[0].attributes,
+                    title: 'Valid Case History',
+                    slug: 'valid-case-history',
+                    image: {
+                      data: {
+                        attributes: {
+                          ...strapiSolution.attributes.caseHistories
+                            ?.case_histories.data[0].attributes.image.data
+                            .attributes,
+                          url: '/valid-image.png',
+                          name: 'Valid Image',
+                        },
+                      },
+                    },
+                  },
+                },
+              ],
+            },
           },
         },
       },

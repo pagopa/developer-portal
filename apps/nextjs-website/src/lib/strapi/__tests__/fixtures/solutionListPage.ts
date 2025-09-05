@@ -5,7 +5,7 @@ import { generateBannerLinks } from '@/lib/strapi/__tests__/factories/bannerLink
 
 const fixedDateIsoString = new Date('2025-01-01T00:00:00.000Z').toISOString();
 
-export const strapiSolutionListPage: StrapiSolutionListPage = {
+export const strapiSolutionListPage = {
   data: {
     attributes: {
       title: 'Solutions',
@@ -68,7 +68,7 @@ export const strapiSolutionListPage: StrapiSolutionListPage = {
       },
     },
   },
-};
+} satisfies StrapiSolutionListPage;
 
 export const expectedSolutionListTemplateProps: SolutionListTemplateProps = {
   hero: {

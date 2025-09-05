@@ -37,7 +37,7 @@ export function minimalTutorialListPages(): StrapiTutorialListPages {
   };
 }
 
-export function tutorialListPagesWithoutBannerLinks(): StrapiTutorialListPages {
+export function tutorialListPagesWithItemMissingBannerLinks(): StrapiTutorialListPages {
   return {
     data: [
       {

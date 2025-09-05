@@ -1,3 +1,5 @@
+/* eslint-disable functional/no-try-statements */
+/* eslint-disable functional/no-expression-statements */
 import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
 import { makeBaseProductWithoutLogoProps } from '@/lib/strapi/makeProps/makeProducts';
 import { ReleaseNotePageProps } from '@/app/[productSlug]/[...releaseNoteSubPathSlugs]/page';
@@ -9,15 +11,13 @@ export function makeReleaseNotesProps(
 ): ReadonlyArray<ReleaseNotePageProps> {
   return _.compact(
     strapiReleaseNotes.data.map(({ attributes }) => {
-      if (!attributes.product.data) {
-        // eslint-disable-next-line functional/no-expression-statements
+      if (!attributes.product.data.attributes.slug) {
         console.error(
-          `Release note "${attributes.title}" is missing the associated product. Skipping...`
+          `Error processing Release Note "${attributes.title}": Missing product slug. Skipping...`
         );
         return null;
       }
 
-      // eslint-disable-next-line functional/no-try-statements
       try {
         return {
           bannerLinks:
@@ -36,7 +36,7 @@ export function makeReleaseNotesProps(
       } catch (error) {
         // eslint-disable-next-line functional/no-expression-statements
         console.error(
-          `Error while making release note props for ${attributes.title}`,
+          `Error processing Release Note props for ${attributes.title}`,
           error
         );
         return null;

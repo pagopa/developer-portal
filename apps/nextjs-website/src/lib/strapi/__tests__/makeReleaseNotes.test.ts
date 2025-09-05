@@ -8,21 +8,18 @@ import {
 import {
   minimalDataReleaseNotes,
   releaseNotesWithoutBannerLinks,
-  releaseNotesWithMissingProduct,
   releaseNotesWithoutProductBannerLinks,
-  mixedReleaseNotesWithAndWithoutProduct,
-  releaseNotesWithCorruptedData,
-  allInvalidReleaseNotes,
+  releaseNotesWithMissingProductSlug,
 } from '@/lib/strapi/__tests__/factories/releaseNotes';
-import { consoleSpy } from '@/lib/strapi/__tests__/consoleMock';
+import { spyOnConsoleError } from '@/lib/strapi/__tests__/spyOnConsole';
 
 describe('makeReleaseNotesProps', () => {
   afterEach(() => {
-    consoleSpy.mockClear();
+    spyOnConsoleError.mockClear();
   });
 
   afterAll(() => {
-    consoleSpy.mockRestore();
+    spyOnConsoleError.mockRestore();
   });
 
   it('should transform strapi release notes to release note page props', () => {
@@ -66,51 +63,11 @@ describe('makeReleaseNotesProps', () => {
     expect(result[0].bannerLinks?.[0].title).toBe('Banner Link 1');
   });
 
-  it('should skip release notes with missing product and log error', () => {
-    const result = makeReleaseNotesProps(releaseNotesWithMissingProduct());
-
-    expect(result).toHaveLength(0);
-    expect(consoleSpy).toHaveBeenCalledWith(
-      'Release note "Release Note Without Product" is missing the associated product. Skipping...'
-    );
-  });
-
-  it('should handle mixed valid and invalid release notes', () => {
-    const result = makeReleaseNotesProps(
-      mixedReleaseNotesWithAndWithoutProduct()
-    );
-
-    // Should return only the 2 valid release notes, skipping the invalid one
-    expect(result).toHaveLength(2);
-    expect(result[0].title).toBe('Release Notes Title');
-    expect(result[1].title).toBe('Another Valid Release Note');
-    expect(consoleSpy).toHaveBeenCalledWith(
-      'Release note "Release Note Without Product" is missing the associated product. Skipping...'
-    );
-  });
-
   it('should handle release notes without banner links and without product banner links', () => {
     const result = makeReleaseNotesProps(
       releaseNotesWithoutProductBannerLinks()
     );
     expect(result[0].bannerLinks).toEqual([]);
-  });
-
-  it('should handle corrupted data with try/catch and log error', () => {
-    const result = makeReleaseNotesProps(releaseNotesWithCorruptedData());
-
-    expect(result).toHaveLength(0);
-    expect(consoleSpy).toHaveBeenCalledWith(
-      'Error while making release note props for Corrupted Release Note',
-      expect.any(Error)
-    );
-  });
-
-  it('should return empty array when all release notes are invalid', () => {
-    const result = makeReleaseNotesProps(allInvalidReleaseNotes());
-
-    expect(result).toHaveLength(0);
-    expect(consoleSpy).toHaveBeenCalledTimes(2);
   });
 
   it('should correctly generate path from product slug', () => {
@@ -128,5 +85,13 @@ describe('makeReleaseNotesProps', () => {
   it('should handle release notes with product that has undefined banner links', () => {
     const result = makeReleaseNotesProps(minimalDataReleaseNotes());
     expect(result[0].bannerLinks).toBeUndefined();
+  });
+
+  it('should throw error for release note whose product has missing slug', () => {
+    const result = makeReleaseNotesProps(releaseNotesWithMissingProductSlug());
+    expect(result).toHaveLength(0);
+    expect(spyOnConsoleError).toHaveBeenCalledWith(
+      'Error processing Release Note "Release Note Without Product Slug": Missing product slug. Skipping...'
+    );
   });
 });

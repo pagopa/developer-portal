@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { strapiApiDataList } from '@/lib/strapi/__tests__/fixtures/apiDataList';
 import { StrapiApiDataList } from '@/lib/strapi/types/apiDataList';
 
@@ -88,6 +89,49 @@ export function apiDataWithoutApiDetails() {
           title: 'API Data Without API Details',
           apiRestDetail: undefined,
           apiSoapDetail: undefined,
+        },
+      },
+    ],
+  } satisfies StrapiApiDataList;
+}
+
+export function apiDataWithInvalidRestApiDetails() {
+  const apiData = strapiApiDataList.data[0];
+  return {
+    ...strapiApiDataList,
+    data: [
+      {
+        ...apiData,
+        attributes: {
+          ...apiData.attributes,
+          title: 'API Data Without API Details',
+          apiRestDetail: {
+            slug: '',
+            specUrls: [],
+          },
+          apiSoapDetail: undefined,
+        },
+      },
+    ],
+  } satisfies StrapiApiDataList;
+}
+
+export function apiDatalistWithItemMissingSlug() {
+  const apiData = strapiApiDataList.data[0];
+  return {
+    ...strapiApiDataList,
+    data: [
+      {
+        ...apiData,
+        attributes: {
+          ...apiData.attributes,
+          title: 'API Data Without API Details',
+          apiRestDetail: undefined,
+          apiSoapDetail: {
+            slug: undefined as any,
+            repositoryUrl: 'https://example.com/soap.wsdl',
+            dirName: 'soap-dir',
+          },
         },
       },
     ],
