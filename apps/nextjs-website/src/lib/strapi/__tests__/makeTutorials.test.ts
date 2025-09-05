@@ -5,17 +5,17 @@ import {
   tutorialsWithAnItemMissingSlug,
   tutorialsWithAnItemMissingProductSlug,
 } from '@/lib/strapi/__tests__/factories/tutorials';
-import { consoleSpy } from '@/lib/strapi/__tests__/consoleMock';
+import { spyOnConsoleError } from '@/lib/strapi/__tests__/spyOnConsole';
 import _ from 'lodash';
 import { strapiTutorials } from './fixtures/tutorials';
 
 describe('makeTutorialsProps', () => {
   afterEach(() => {
-    consoleSpy.mockClear();
+    spyOnConsoleError.mockClear();
   });
 
   afterAll(() => {
-    consoleSpy.mockRestore();
+    spyOnConsoleError.mockRestore();
   });
 
   it('should transform strapi tutorials to tutorials props', () => {
@@ -100,7 +100,7 @@ describe('makeTutorialsProps', () => {
     const firstElement = result[0];
     expect(firstElement.title).toBe('Valid Tutorial');
     expect(firstElement.path).toBe('/pago-pa/tutorials/valid-tutorial');
-    expect(consoleSpy).toHaveBeenCalledWith(
+    expect(spyOnConsoleError).toHaveBeenCalledWith(
       'Error processing Tutorial "Tutorial Without Slug": Missing tutorial slug. Skipping...'
     );
   });
@@ -112,7 +112,7 @@ describe('makeTutorialsProps', () => {
     expect(firstElement.title).toBe('Valid Tutorial');
     expect(firstElement.productSlug).toBe('valid-product');
     expect(firstElement.path).toBe('/valid-product/tutorials/valid-tutorial');
-    expect(consoleSpy).toHaveBeenCalledWith(
+    expect(spyOnConsoleError).toHaveBeenCalledWith(
       'Error processing Tutorial "Tutorial Without Product Slug": Missing product slug. Skipping...'
     );
   });

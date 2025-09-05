@@ -11,15 +11,15 @@ import {
   releaseNotesWithoutProductBannerLinks,
   releaseNotesWithMissingProductSlug,
 } from '@/lib/strapi/__tests__/factories/releaseNotes';
-import { consoleSpy } from '@/lib/strapi/__tests__/consoleMock';
+import { spyOnConsoleError } from '@/lib/strapi/__tests__/spyOnConsole';
 
 describe('makeReleaseNotesProps', () => {
   afterEach(() => {
-    consoleSpy.mockClear();
+    spyOnConsoleError.mockClear();
   });
 
   afterAll(() => {
-    consoleSpy.mockRestore();
+    spyOnConsoleError.mockRestore();
   });
 
   it('should transform strapi release notes to release note page props', () => {
@@ -90,7 +90,7 @@ describe('makeReleaseNotesProps', () => {
   it('should throw error for release note whose product has missing slug', () => {
     const result = makeReleaseNotesProps(releaseNotesWithMissingProductSlug());
     expect(result).toHaveLength(0);
-    expect(consoleSpy).toHaveBeenCalledWith(
+    expect(spyOnConsoleError).toHaveBeenCalledWith(
       'Error processing Release Note "Release Note Without Product Slug": Missing product slug. Skipping...'
     );
   });

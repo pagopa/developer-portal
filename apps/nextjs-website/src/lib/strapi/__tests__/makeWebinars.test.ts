@@ -6,15 +6,15 @@ import {
   strapiWebinarsWithMissingData,
   webinarProps,
 } from './fixtures/webinars';
-import { consoleSpy } from '@/lib/strapi/__tests__/consoleMock';
+import { spyOnConsoleError } from '@/lib/strapi/__tests__/spyOnConsole';
 
 describe('makeWebinarsProps', () => {
   afterEach(() => {
-    consoleSpy.mockClear();
+    spyOnConsoleError.mockClear();
   });
 
   afterAll(() => {
-    consoleSpy.mockRestore();
+    spyOnConsoleError.mockRestore();
   });
 
   it('should transform strapi webinars to webinars props', () => {
@@ -70,7 +70,7 @@ describe('makeWebinarsProps', () => {
     const result = makeWebinarsProps(corruptedData);
 
     expect(result).toHaveLength(0);
-    expect(consoleSpy).toHaveBeenCalledWith(
+    expect(spyOnConsoleError).toHaveBeenCalledWith(
       'Error while making webinar from Strapi data:',
       expect.any(Error)
     );

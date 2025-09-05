@@ -4,7 +4,6 @@ import { makeBaseProductWithoutLogoProps } from '@/lib/strapi/makeProps/makeProd
 import { StrapiApiDataListPages } from '@/lib/strapi/types/apiDataListPages';
 import _ from 'lodash';
 import { StrapiBaseApiData } from '../types/apiDataList';
-import { cons } from 'fp-ts/lib/ReadonlyNonEmptyArray';
 
 function makeApiDataListPageCard(item: StrapiBaseApiData, slug: string) {
   if (
@@ -15,7 +14,7 @@ function makeApiDataListPageCard(item: StrapiBaseApiData, slug: string) {
   ) {
     // eslint-disable-next-line functional/no-expression-statements
     console.error(
-      `Error processing API Data with ID "${item.id}": Missing title or API details`
+      `Error processing API Data with ID "${item.id}": Missing title or API details. Skipping...`
     );
     return null;
   }
