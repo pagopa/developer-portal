@@ -116,7 +116,7 @@ export function apiDataWithInvalidRestApiDetails() {
   } satisfies StrapiApiDataList;
 }
 
-export function apiDataWithSoapApiDetailsWithoutSlug() {
+export function apiDatalistWithItemMissingSlug() {
   const apiData = strapiApiDataList.data[0];
   return {
     ...strapiApiDataList,
