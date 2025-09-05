@@ -23,7 +23,7 @@ export function minimalDataSingleOverview(): StrapiOverviews {
   };
 }
 
-export function overviewWithEmptyProductSlug() {
+export function overviewsWithItemWithEmptyProductSlug() {
   return {
     ...strapiOverviews,
     data: [
@@ -46,7 +46,7 @@ export function overviewWithEmptyProductSlug() {
   };
 }
 
-export function overviewWithMissingProductSlug() {
+export function overviewsWithItemMissingProductSlug() {
   return {
     ...strapiOverviews,
     data: [
@@ -69,7 +69,7 @@ export function overviewWithMissingProductSlug() {
   };
 }
 
-export function overviewWithMissingTutorialProductSlug() {
+export function overviewsWithItemMissingTutorialProductSlug() {
   return {
     ...strapiOverviews,
     data: [
@@ -110,7 +110,7 @@ export function overviewWithMissingTutorialProductSlug() {
   };
 }
 
-export function overviewWithMissingTutorialSlug() {
+export function overviewsWithItemMissingTutorialSlug() {
   return {
     ...strapiOverviews,
     data: [
@@ -140,7 +140,7 @@ export function overviewWithMissingTutorialSlug() {
   };
 }
 
-export function overviewWithEmptyGuideProductSlug() {
+export function overviewsWithItemWithEmptyGuideProductSlug() {
   return {
     ...strapiOverviews,
     data: [
@@ -159,6 +159,36 @@ export function overviewWithEmptyGuideProductSlug() {
                     ...strapiOverviews.data[0].attributes.postIntegration.guides
                       .data[0].attributes,
                     slug: '',
+                  },
+                },
+              ],
+            },
+          },
+        },
+      },
+    ],
+  };
+}
+
+export function overviewsWithItemMissingGuideProductSlug() {
+  return {
+    ...strapiOverviews,
+    data: [
+      {
+        ...strapiOverviews.data[0],
+        attributes: {
+          ...strapiOverviews.data[0].attributes,
+          postIntegration: {
+            ...strapiOverviews.data[0].attributes.postIntegration,
+            guides: {
+              data: [
+                {
+                  ...strapiOverviews.data[0].attributes.postIntegration.guides
+                    .data[0],
+                  attributes: {
+                    ...strapiOverviews.data[0].attributes.postIntegration.guides
+                      .data[0].attributes,
+                    slug: undefined as any,
                   },
                 },
               ],

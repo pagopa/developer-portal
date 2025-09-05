@@ -67,7 +67,8 @@ describe('makeGuideListPageProps', () => {
   });
 
   it('should return a single element array with abstract title and description as numbers', () => {
-    const guideListWithNumbers = guideListPagesWithItemsWithWrongDataType() as any;
+    const guideListWithNumbers =
+      guideListPagesWithItemsWithWrongDataType() as any;
 
     const result = makeGuideListPagesProps(guideListWithNumbers);
     expect(result).toHaveLength(1);
