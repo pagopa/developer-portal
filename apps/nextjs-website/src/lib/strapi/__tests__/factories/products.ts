@@ -31,7 +31,7 @@ export function minimalProduct() {
   } satisfies StrapiProducts;
 }
 
-export function productWithEmptySlug() {
+export function productsWithAnItemWithEmptySlug() {
   const strapiProduct = strapiProducts.data[0];
   return {
     ...strapiProducts,
@@ -48,24 +48,7 @@ export function productWithEmptySlug() {
   } satisfies StrapiProducts;
 }
 
-export function productWithMissingSlug() {
-  const strapiProduct = strapiProducts.data[0];
-  return {
-    ...strapiProducts,
-    data: [
-      {
-        ...strapiProduct,
-        attributes: {
-          ...strapiProduct.attributes,
-          name: 'Product Without Slug',
-          slug: undefined as any,
-        },
-      },
-    ],
-  } satisfies StrapiProducts;
-}
-
-export function productWithoutSlug() {
+export function productsWithAnItemMissingSlug() {
   const strapiProduct = strapiProducts.data[0];
   return {
     ...strapiProducts,
@@ -168,7 +151,7 @@ export function productWithCorruptedData() {
 
 export function mixedValidAndInvalidProducts() {
   const validProduct = strapiProducts.data[0];
-  const invalidProduct = productWithoutSlug().data[0];
+  const invalidProduct = productsWithAnItemMissingSlug().data[0];
 
   return {
     ...strapiProducts,
@@ -190,7 +173,10 @@ export function mixedValidAndInvalidProducts() {
 export function allInvalidProducts() {
   return {
     ...strapiProducts,
-    data: [productWithoutSlug().data[0], productWithCorruptedData().data[0]],
+    data: [
+      productsWithAnItemMissingSlug().data[0],
+      productWithCorruptedData().data[0],
+    ],
   };
 }
 

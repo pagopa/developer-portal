@@ -11,15 +11,14 @@ import {
 } from '@/lib/strapi/__tests__/fixtures/products';
 import {
   minimalProduct,
-  productWithoutSlug,
   productWithMultipleApiData,
   productWithEmptyApiData,
   productWithCorruptedData,
   mixedValidAndInvalidProducts,
   allInvalidProducts,
   productWithMissingAttributes,
-  productWithEmptySlug,
-  productWithMissingSlug,
+  productsWithAnItemWithEmptySlug,
+  productsWithAnItemMissingSlug,
 } from '@/lib/strapi/__tests__/factories/products';
 import { consoleSpy } from '@/lib/strapi/__tests__/consoleMock';
 
@@ -59,7 +58,7 @@ describe('makeProductsProps', () => {
   });
 
   it('should skip products without slug and log error', () => {
-    const result = makeProductsProps(productWithoutSlug());
+    const result = makeProductsProps(productsWithAnItemMissingSlug());
 
     expect(result).toHaveLength(0);
     expect(consoleSpy).toHaveBeenCalledWith(
@@ -123,7 +122,7 @@ describe('makeProductProps', () => {
   });
 
   it('should return null for product without slug', () => {
-    const result = makeProductProps(productWithoutSlug().data[0]);
+    const result = makeProductProps(productsWithAnItemMissingSlug().data[0]);
     expect(result).toBeNull();
     expect(consoleSpy).toHaveBeenCalledWith(
       'Product with id Product Without Slug is missing a slug'
@@ -190,19 +189,13 @@ describe('makeBaseProductWithoutLogoProps', () => {
 
   it('should throw error for product without slug', () => {
     expect(() =>
-      makeBaseProductWithoutLogoProps(productWithoutSlug().data[0])
+      makeBaseProductWithoutLogoProps(productsWithAnItemMissingSlug().data[0])
     ).toThrow(Error('Product with id Product Without Slug is missing a slug'));
   });
 
   it('should throw error for product with empty slug', () => {
     expect(() =>
-      makeBaseProductWithoutLogoProps(productWithEmptySlug().data[0])
-    ).toThrow(Error('Product with id Product Without Slug is missing a slug'));
-  });
-
-  it('should throw error for product with missing slug', () => {
-    expect(() =>
-      makeBaseProductWithoutLogoProps(productWithMissingSlug().data[0])
+      makeBaseProductWithoutLogoProps(productsWithAnItemWithEmptySlug().data[0])
     ).toThrow(Error('Product with id Product Without Slug is missing a slug'));
   });
 });
