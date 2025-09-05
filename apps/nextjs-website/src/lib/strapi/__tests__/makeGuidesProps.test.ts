@@ -5,8 +5,8 @@ import {
 } from '@/lib/strapi/__tests__/fixtures/guides';
 import { makeGuidesProps } from '@/lib/strapi/makeProps/makeGuides';
 import {
-  makeGuidesWithProductWithEmptySlug,
-  makeGuidesWithProductWithUndefinedSlug,
+  guideListWithItemsWithEmptyProductSlug,
+  guideListWithMissingProductSlug,
 } from '@/lib/strapi/__tests__/factories/guides';
 
 describe('makeGuidesProps', () => {
@@ -22,12 +22,12 @@ describe('makeGuidesProps', () => {
   });
 
   it('should return an empty array when the product slug is an empty string', () => {
-    const result = makeGuidesProps(makeGuidesWithProductWithEmptySlug());
+    const result = makeGuidesProps(guideListWithItemsWithEmptyProductSlug());
     expect(result).toEqual([]);
   });
 
   it('should return an empty array when the product slug is undefined', () => {
-    const result = makeGuidesProps(makeGuidesWithProductWithUndefinedSlug());
+    const result = makeGuidesProps(guideListWithMissingProductSlug());
     expect(result).toEqual([]);
   });
 });

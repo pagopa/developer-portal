@@ -2,7 +2,7 @@
 import { StrapiGuides } from '@/lib/strapi/types/guide';
 import { strapiGuideData } from '../fixtures/guides';
 
-export function makeGuidesWithProductWithEmptySlug() {
+export function guideListWithItemsWithEmptyProductSlug() {
   return {
     ...strapiGuideData,
     data: strapiGuideData.data.map((guide) => ({
@@ -24,7 +24,7 @@ export function makeGuidesWithProductWithEmptySlug() {
   } satisfies StrapiGuides;
 }
 
-export function makeGuidesWithProductWithUndefinedSlug() {
+export function guideListWithMissingProductSlug() {
   return {
     ...strapiGuideData,
     data: strapiGuideData.data.map((guide) => ({
