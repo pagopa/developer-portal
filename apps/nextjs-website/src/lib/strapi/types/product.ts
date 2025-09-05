@@ -1,7 +1,8 @@
 import { StrapiBannerLink } from '@/lib/strapi/types/bannerLink';
 import { StrapiMedia } from '@/lib/strapi/types/media';
-import { StrapiComponent } from './strapiComponent';
-import { StrapiApiDataListPageWithoutProduct } from './apiDataListPages';
+import { StrapiComponent } from '@/lib/strapi/types/strapiComponent';
+import { StrapiApiDataListPageWithoutProduct } from '@/lib/strapi/types/apiDataListPages';
+import { Paginated } from '@/lib/strapi/types/paginated';
 
 type Id = {
   readonly id: number;
@@ -57,4 +58,4 @@ export type StrapiProduct = StrapiBaseProduct & {
   };
 };
 
-export type StrapiProducts = StrapiComponent<readonly StrapiProduct[]>;
+export type StrapiProducts = Paginated<StrapiProduct>;

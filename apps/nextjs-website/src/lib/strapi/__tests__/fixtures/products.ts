@@ -42,6 +42,7 @@ export const strapiProducts: StrapiProducts = {
       },
     },
   ],
+  meta: { pagination: { page: 1, pageSize: 25, pageCount: 1, total: 1 } },
 };
 
 export const expectedProduct: Product = {

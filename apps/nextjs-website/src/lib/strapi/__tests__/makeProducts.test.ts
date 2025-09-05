@@ -52,6 +52,7 @@ describe('makeProductsProps', () => {
   it('should handle empty data array', () => {
     const emptyData: StrapiProducts = {
       data: [],
+      meta: { pagination: { page: 1, pageSize: 25, pageCount: 1, total: 0 } },
     };
     const result = makeProductsProps(emptyData);
     expect(result).toHaveLength(0);
