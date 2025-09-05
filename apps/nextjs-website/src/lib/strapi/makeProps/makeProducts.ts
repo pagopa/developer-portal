@@ -24,7 +24,7 @@ export function makeProductProps(product: StrapiProduct): Product | null {
   if (!product.attributes.slug) {
     // eslint-disable-next-line functional/no-expression-statements
     console.error(
-      `Product with id ${product.attributes.name} is missing a slug`
+      `Product with id ${product.attributes.name} is missing the slug. Skipping...`
     );
     return null;
   }

@@ -62,7 +62,7 @@ describe('makeProductsProps', () => {
 
     expect(result).toHaveLength(0);
     expect(spyOnConsoleError).toHaveBeenCalledWith(
-      'Product with id Product Without Slug is missing a slug'
+      'Product with id Product Without Slug is missing the slug. Skipping...'
     );
   });
 
@@ -95,7 +95,7 @@ describe('makeProductsProps', () => {
     expect(result[0].name).toBe('Test Product');
     expect(result[1].name).toBe('Another Valid Product');
     expect(spyOnConsoleError).toHaveBeenCalledWith(
-      'Product with id Product Without Slug is missing a slug'
+      'Product with id Product Without Slug is missing the slug. Skipping...'
     );
   });
 
@@ -125,7 +125,7 @@ describe('makeProductProps', () => {
     const result = makeProductProps(productsWithAnItemMissingSlug().data[0]);
     expect(result).toBeNull();
     expect(spyOnConsoleError).toHaveBeenCalledWith(
-      'Product with id Product Without Slug is missing a slug'
+      'Product with id Product Without Slug is missing the slug. Skipping...'
     );
   });
 
@@ -190,12 +190,20 @@ describe('makeBaseProductWithoutLogoProps', () => {
   it('should throw error for product without slug', () => {
     expect(() =>
       makeBaseProductWithoutLogoProps(productsWithAnItemMissingSlug().data[0])
-    ).toThrow(Error('Product with id Product Without Slug is missing a slug'));
+    ).toThrow(
+      Error(
+        'Product with id Product Without Slug is missing the slug. Skipping...'
+      )
+    );
   });
 
   it('should throw error for product with empty slug', () => {
     expect(() =>
       makeBaseProductWithoutLogoProps(productsWithAnItemWithEmptySlug().data[0])
-    ).toThrow(Error('Product with id Product Without Slug is missing a slug'));
+    ).toThrow(
+      Error(
+        'Product with id Product Without Slug is missing the slug. Skipping...'
+      )
+    );
   });
 });
