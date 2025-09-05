@@ -77,9 +77,7 @@ describe('makeApiDataListProps', () => {
   });
 
   it('should filter out api data with soap api details without slug', async () => {
-    const result = await makeApiDataListProps(
-      apiDatalistWithItemMissingSlug()
-    );
+    const result = await makeApiDataListProps(apiDatalistWithItemMissingSlug());
     expect(result).toHaveLength(0);
   });
 
