@@ -2,7 +2,7 @@ import { Speaker } from '@/lib/types/speaker';
 import { BlocksContent } from '@strapi/blocks-react-renderer';
 import { SEO } from './seo';
 import { WebinarCategory } from '@/lib/types/webinarCategory';
-import { Media } from '@/lib/strapi/types/media';
+import { Media } from '@/lib/types/media';
 
 export type QuestionsAndAnswer = {
   readonly question: string;
