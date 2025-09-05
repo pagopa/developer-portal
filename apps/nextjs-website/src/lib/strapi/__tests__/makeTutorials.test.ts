@@ -106,7 +106,9 @@ describe('makeTutorialsProps', () => {
   });
 
   it('should skip tutorials with missing product slug and log error', () => {
-    const result = makeTutorialsProps(tutorialListWithAnItemMissingProductSlug());
+    const result = makeTutorialsProps(
+      tutorialListWithAnItemMissingProductSlug()
+    );
     expect(result).toHaveLength(1);
     const firstElement = result[0];
     expect(firstElement.title).toBe('Valid Tutorial');
