@@ -48,6 +48,23 @@ export function productWithEmptySlug() {
   } satisfies StrapiProducts;
 }
 
+export function productWithMissingSlug() {
+  const strapiProduct = strapiProducts.data[0];
+  return {
+    ...strapiProducts,
+    data: [
+      {
+        ...strapiProduct,
+        attributes: {
+          ...strapiProduct.attributes,
+          name: 'Product Without Slug',
+          slug: undefined as any,
+        },
+      },
+    ],
+  } satisfies StrapiProducts;
+}
+
 export function productWithoutSlug() {
   const strapiProduct = strapiProducts.data[0];
   return {
