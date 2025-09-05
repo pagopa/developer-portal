@@ -36,11 +36,12 @@ export type ApiDataPageProps = {
 } & ProductLayoutProps;
 
 export const generateMetadata = async (
-  { params }: ApiDataParams,
+  { params }: { params: Promise<{ productSlug: string; apiDataSlug: string }> },
   parent: ResolvingMetadata
 ): Promise<Metadata> => {
+  const resolvedParams = await params;
   const resolvedParent = await parent;
-  const ApiDataProps = await getApiData(params.apiDataSlug);
+  const ApiDataProps = await getApiData(resolvedParams.apiDataSlug);
 
   if (ApiDataProps?.seo) {
     return makeMetadataFromStrapi(ApiDataProps.seo);
@@ -56,8 +57,13 @@ export const generateMetadata = async (
   });
 };
 
-const ApiDataPage = async ({ params }: ApiDataParams) => {
-  const apiDataProps = await getApiData(params.apiDataSlug);
+const ApiDataPage = async ({
+  params,
+}: {
+  params: Promise<{ productSlug: string; apiDataSlug: string }>;
+}) => {
+  const resolvedParams = await params;
+  const apiDataProps = await getApiData(resolvedParams.apiDataSlug);
 
   const structuredData = generateStructuredDataScripts({
     breadcrumbsItems: [
@@ -75,7 +81,7 @@ const ApiDataPage = async ({ params }: ApiDataParams) => {
   });
 
   const path = apiDataProps.product?.slug
-    ? `/${apiDataProps.product.slug}/api/${params.apiDataSlug}`
+    ? `/${apiDataProps.product.slug}/api/${resolvedParams.apiDataSlug}`
     : '';
 
   if (apiDataProps && apiDataProps.product) {

@@ -51,11 +51,12 @@ export type ProductGuidePageProps = {
 export async function generateMetadata({
   params,
 }: {
-  params: Params;
+  params: Promise<Params>;
 }): Promise<Metadata> {
+  const resolvedParams = await params;
   const props = await getGuidePage(
-    params?.productGuidePage ?? [''],
-    params?.productSlug
+    resolvedParams?.productGuidePage ?? [''],
+    resolvedParams?.productSlug
   );
 
   if (props?.seo) {
@@ -78,9 +79,13 @@ export async function generateMetadata({
   });
 }
 
-const Page = async ({ params }: { params: Params }) => {
+const Page = async ({ params }: { params: Promise<Params> }) => {
+  const resolvedParams = await params;
   const [guideProps, urlReplaceMap] = await Promise.all([
-    getGuidePage(params?.productGuidePage ?? [''], params?.productSlug),
+    getGuidePage(
+      resolvedParams?.productGuidePage ?? [''],
+      resolvedParams?.productSlug
+    ),
     getUrlReplaceMapProps(),
   ]);
 
@@ -120,7 +125,7 @@ const Page = async ({ params }: { params: Params }) => {
         name: seo?.metaTitle || page.title,
         item: breadcrumbItemByProduct(props.product, [
           'guides',
-          ...(params?.productGuidePage || []),
+          ...(resolvedParams?.productGuidePage || []),
         ]),
       },
     ],

@@ -24,7 +24,7 @@ import {
   makeMetadataFromStrapi,
 } from '@/helpers/metadata.helpers';
 import { BreadcrumbSegment } from '@/lib/types/path';
-import { baseUrl, REVALIDATE_LONG_INTERVAL } from '@/config';
+import { baseUrl } from '@/config';
 import PageNotFound from '@/app/not-found';
 import { getReleaseNotesMetadata } from '@/helpers/s3Metadata.helpers';
 
@@ -33,7 +33,7 @@ type ReleaseNotePageStaticParams = {
   releaseNoteSubPathSlugs: string[];
 };
 // TODO: remove when release notes metadata will be managed in strapi
-export const revalidate = REVALIDATE_LONG_INTERVAL;
+export const revalidate = 3600; // 1 hour
 
 const PRODUCT_SLUG_PATH_INDEX = 1;
 const RELEASE_NOTE_SUB_PATH_INDEX = 2;
@@ -55,17 +55,18 @@ export async function generateStaticParams(): Promise<
 export async function generateMetadata({
   params,
 }: {
-  params: ReleaseNotePageStaticParams;
+  params: Promise<ReleaseNotePageStaticParams>;
 }): Promise<Metadata> {
-  if (params.productSlug === 'unknown') {
+  const resolvedParams = await params;
+  if (resolvedParams.productSlug === 'unknown') {
     return makeMetadata({
       title: 'unknown',
       url: 'unknown',
     });
   }
   const props = await getReleaseNote(
-    params?.productSlug,
-    params?.releaseNoteSubPathSlugs
+    resolvedParams?.productSlug,
+    resolvedParams?.releaseNoteSubPathSlugs
   );
 
   if (props?.seo) {
@@ -91,14 +92,15 @@ export type ReleaseNotePageProps = {
 const ReleaseNotePage = async ({
   params,
 }: {
-  params: ReleaseNotePageStaticParams;
+  params: Promise<ReleaseNotePageStaticParams>;
 }) => {
-  if (params.productSlug === 'unknown') {
+  const resolvedParams = await params;
+  if (resolvedParams.productSlug === 'unknown') {
     return <PageNotFound />;
   }
   const releaseNoteProps = await getReleaseNote(
-    params.productSlug,
-    params.releaseNoteSubPathSlugs
+    resolvedParams.productSlug,
+    resolvedParams.releaseNoteSubPathSlugs
   );
 
   const urlReplaceMap = await getUrlReplaceMapProps();

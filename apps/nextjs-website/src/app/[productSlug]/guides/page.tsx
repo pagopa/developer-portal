@@ -34,12 +34,13 @@ export type GuideListPageProps = {
 } & ProductLayoutProps;
 
 export const generateMetadata = async (
-  { params }: ProductParams,
+  { params }: { params: Promise<{ productSlug: string }> },
   parent: ResolvingMetadata
 ): Promise<Metadata> => {
+  const resolvedParams = await params;
   const resolvedParent = await parent;
   const { path, abstract, seo, product } = await getGuideListPages(
-    params?.productSlug
+    resolvedParams?.productSlug
   );
 
   if (seo) {
@@ -54,9 +55,14 @@ export const generateMetadata = async (
   });
 };
 
-const GuideListPage = async ({ params }: ProductParams) => {
+const GuideListPage = async ({
+  params,
+}: {
+  params: Promise<{ productSlug: string }>;
+}) => {
+  const resolvedParams = await params;
   const { abstract, bannerLinks, guidesSections, path, product, seo } =
-    await getGuideListPages(params?.productSlug);
+    await getGuideListPages(resolvedParams?.productSlug);
 
   const structuredData = generateStructuredDataScripts({
     breadcrumbsItems: [

@@ -33,12 +33,13 @@ export type QuickStartGuidePageProps = {
 } & ProductLayoutProps;
 
 export async function generateMetadata(
-  { params }: ProductParams,
+  { params }: { params: Promise<{ productSlug: string }> },
   parent: ResolvingMetadata
 ): Promise<Metadata> {
+  const resolvedParams = await params;
   const resolvedParent = await parent;
   const { abstract, path, product, seo } = await getQuickStartGuide(
-    params?.productSlug
+    resolvedParams?.productSlug
   );
 
   if (seo) {
@@ -54,7 +55,12 @@ export async function generateMetadata(
   });
 }
 
-const QuickStartGuidesPage = async ({ params }: ProductParams) => {
+const QuickStartGuidesPage = async ({
+  params,
+}: {
+  params: Promise<{ productSlug: string }>;
+}) => {
+  const resolvedParams = await params;
   const {
     abstract,
     bannerLinks,
@@ -63,7 +69,7 @@ const QuickStartGuidesPage = async ({ params }: ProductParams) => {
     steps,
     seo,
     product,
-  } = await getQuickStartGuide(params?.productSlug);
+  } = await getQuickStartGuide(resolvedParams?.productSlug);
 
   const structuredData = generateStructuredDataScripts({
     breadcrumbsItems: [

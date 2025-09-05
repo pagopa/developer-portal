@@ -1,6 +1,5 @@
 import { getWebinar } from '@/lib/api';
-import dynamic from 'next/dynamic';
-import Spinner from '@/components/atoms/Spinner/Spinner';
+import { NotSsrWebinarDetailTemplate } from '@/components/ClientDynamicComponents';
 import {
   makeMetadata,
   makeMetadataFromStrapi,
@@ -17,9 +16,10 @@ type Params = {
 export async function generateMetadata({
   params,
 }: {
-  params: Params;
+  params: Promise<Params>;
 }): Promise<Metadata> {
-  const webinar = await getWebinar(params?.webinarSlug);
+  const resolvedParams = await params;
+  const webinar = await getWebinar(resolvedParams?.webinarSlug);
 
   if (webinar.seo) {
     return makeMetadataFromStrapi(webinar.seo);
@@ -33,19 +33,9 @@ export async function generateMetadata({
   });
 }
 
-const NotSsrWebinarDetailTemplate = dynamic(
-  () =>
-    import(
-      '@/components/templates/WebinarDetailTemplate/WebinarDetailTemplate'
-    ),
-  {
-    ssr: false,
-    loading: () => <Spinner />,
-  }
-);
-
-const Page = async ({ params }: { params: Params }) => {
-  const webinar = await getWebinar(params?.webinarSlug);
+const Page = async ({ params }: { params: Promise<Params> }) => {
+  const resolvedParams = await params;
+  const webinar = await getWebinar(resolvedParams?.webinarSlug);
 
   const structuredData = generateStructuredDataScripts({
     breadcrumbsItems: [
