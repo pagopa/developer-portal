@@ -1,4 +1,4 @@
-import { Decorator, Meta, StoryObj } from '@storybook/react';
+import { Decorator, Meta, StoryObj } from '@storybook/nextjs';
 import ChatHistoryMessage from 'nextjs-website/src/components/atoms/ChatHistoryMessage/ChatHistoryMessage';
 import React from 'react';
 import { nextIntlContextDecorator } from '../next-intl-context.helper';
