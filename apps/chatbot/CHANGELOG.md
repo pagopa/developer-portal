@@ -1,5 +1,13 @@
 # chatbot
 
+## 7.0.2
+
+### Patch Changes
+
+- 667674e: populate expiresAt field for sessions and salts tables
+- bd27ff2: fix feedback
+- dc43c81: add dynamodb TTL
+
 ## 7.0.1
 
 ### Patch Changes

@@ -1,5 +1,15 @@
 # cognito-functions
 
+## 1.0.0
+
+### Major Changes
+
+- a9113ff: Update lambda functions deprecated runtime
+
+### Patch Changes
+
+- a9113ff: Upgrade dependencies
+
 ## 0.1.2
 
 ### Patch Changes

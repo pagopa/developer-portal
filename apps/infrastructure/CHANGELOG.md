@@ -1,5 +1,15 @@
 # infrastructure
 
+## 3.1.0
+
+### Minor Changes
+
+- a9113ff: Update lambda functions deprecated runtime
+
+### Patch Changes
+
+- dc43c81: add dynamodb TTL
+
 ## 3.0.0
 
 ### Major Changes
