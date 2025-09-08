@@ -4,7 +4,7 @@ import Image from 'next/image';
 import IconWrapper from '../IconWrapper/IconWrapper';
 import { FC } from 'react';
 import { Variant } from '@mui/material/styles/createTypography';
-import { Media } from '@/lib/strapi/types/media';
+import { Media } from '@/lib/types/media';
 
 export type BannerLinkProps = {
   content?: BlocksContent;

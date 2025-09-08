@@ -1,18 +1,7 @@
 import { Webinar } from '@/lib/types/webinar';
-import { StrapiMedia } from '@/lib/strapi/types/media';
 import { StrapiWebinars } from '@/lib/strapi/types/webinars';
+import { mediaJpeg } from '@/lib/strapi/__tests__/factories/media';
 
-export const strapiMedia: StrapiMedia = {
-  attributes: {
-    url: 'https://example.com/image.jpg',
-    name: 'image.jpg',
-    ext: '.jpg',
-    mime: 'image/jpeg',
-    size: 123456,
-  },
-};
-
-// Fixtures for testing
 export const webinarSpeaker = {
   id: 1,
   attributes: {
@@ -23,7 +12,7 @@ export const webinarSpeaker = {
     avatar: {
       data: {
         attributes: {
-          ...strapiMedia.attributes,
+          ...mediaJpeg().attributes,
           name: 'avatar.jpg',
         },
       },
@@ -40,7 +29,7 @@ export const resource = {
   image: {
     data: {
       attributes: {
-        ...strapiMedia.attributes,
+        ...mediaJpeg().attributes,
         name: 'resource.jpg',
       },
     },
@@ -71,7 +60,7 @@ export const strapiWebinars: StrapiWebinars = {
         coverImage: {
           data: {
             attributes: {
-              ...strapiMedia.attributes,
+              ...mediaJpeg().attributes,
               name: 'cover.jpg',
             },
           },
@@ -103,12 +92,12 @@ export const strapiWebinars: StrapiWebinars = {
         webinarCategory: {
           data: {
             id: 1,
-            attributes: { name: 'Category 1', icon: { data: strapiMedia } },
+            attributes: { name: 'Category 1', icon: { data: mediaJpeg() } },
           },
         },
         headerImage: {
           data: {
-            attributes: { ...strapiMedia.attributes, name: 'header.jpg' },
+            attributes: { ...mediaJpeg().attributes, name: 'header.jpg' },
           },
         },
         updatedAt: '2024-01-02T00:00:00.000Z',
@@ -165,7 +154,7 @@ export const webinarProps = {
       name: 'Speaker Name',
       jobTitle: 'Speaker Job',
       avatar: {
-        ...strapiMedia.attributes,
+        ...mediaJpeg().attributes,
         name: 'avatar.jpg',
       },
     },
@@ -179,7 +168,7 @@ export const webinarProps = {
         linkHref: '/resource-link',
         subtitle: 'Resource Subtitle',
         image: {
-          ...strapiMedia.attributes,
+          ...mediaJpeg().attributes,
           name: 'resource.jpg',
         },
       },
@@ -196,21 +185,21 @@ export const webinarProps = {
   startDateTime: '2024-01-10T10:00:00.000Z',
   endDateTime: '2024-01-10T12:00:00.000Z',
   subscribeCtaLabel: 'Subscribe Now',
-  imagePath: 'https://example.com/image.jpg',
+  imagePath: 'https://example.com/example.jpg',
   seo: { metaTitle: 'SEO Webinar', metaDescription: 'SEO Description' },
   webinarCategory: {
     name: 'Category 1',
     icon: {
       data: {
         attributes: {
-          ...strapiMedia.attributes,
-          name: 'image.jpg',
+          ...mediaJpeg().attributes,
+          name: 'example.jpg',
         },
       },
     },
   },
   headerImage: {
-    ...strapiMedia.attributes,
+    ...mediaJpeg().attributes,
     name: 'header.jpg',
   },
   updatedAt: '2024-01-02T00:00:00.000Z',
