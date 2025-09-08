@@ -5,10 +5,10 @@ import { Box } from '@mui/material';
 import { Theme } from '@/editorialComponents/types/components';
 import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
 import BannerLinks from '@/components/molecules/BannerLinks/BannerLinks';
-import { StrapiBaseApiDataList } from '@/lib/strapi/codecs/ApiDataListCodec';
 import { useTranslations } from 'next-intl';
 import { SEO } from '@/lib/types/seo';
 import { Product } from '@/lib/types/product';
+import { StrapiBaseApiDataList } from '@/lib/strapi/types/apiDataList';
 
 export type ApiDataListPageTemplateProps = {
   readonly hero: {
