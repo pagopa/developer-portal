@@ -1,5 +1,5 @@
 'use client';
-import { Media } from '@/lib/strapi/types/media';
+import { Media } from '@/lib/types/media';
 import { Box, Stack, Typography, useTheme } from '@mui/material';
 import { ButtonNaked } from '@pagopa/mui-italia';
 import { BlocksContent } from '@strapi/blocks-react-renderer';

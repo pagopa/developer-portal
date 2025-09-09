@@ -1,6 +1,7 @@
-import { StrapiHomepage } from '@/lib/strapi/codecs/HomepageCodec';
-import { deprecatedMakeWebinarFromStrapi } from './makeWebinars';
+import { StrapiHomepage } from '@/lib/strapi/types/homepage';
+import { makeWebinarProps } from '@/lib/strapi/makeProps/makeWebinars';
 import { HomepageProps } from '@/app/page';
+import _ from 'lodash';
 
 export const makeHomepageProps = (
   strapiHomepage: StrapiHomepage
@@ -18,7 +19,7 @@ export const makeHomepageProps = (
         (item) => ({
           comingSoon: item.attributes.comingSoon,
           title: item.attributes.title,
-          publishedAt: item.attributes.publishedAt,
+          publishedAt: new Date(item.attributes.publishedAt),
           label: item.attributes.label,
           link: {
             text: item.attributes.link.text,
@@ -26,7 +27,8 @@ export const makeHomepageProps = (
             target: item.attributes.link.target,
           },
           image:
-            item.attributes.image.data && item.attributes.image.data.attributes,
+            item.attributes.image?.data &&
+            item.attributes.image.data.attributes,
         })
       ),
     },
@@ -40,7 +42,7 @@ export const makeHomepageProps = (
           title: product.attributes.name,
           text: product.attributes.description ?? '',
           href: `${product.attributes.slug}/overview`,
-          icon: product.attributes.logo.data.attributes.url,
+          icon: product.attributes.logo.data?.attributes.url || '',
           useSrc: true,
         })
       ),
@@ -62,9 +64,9 @@ export const makeHomepageProps = (
     },
   }),
   seo: strapiHomepage?.data?.attributes?.seo,
-  webinars: [
-    ...strapiHomepage.data.attributes.webinars.data.map((webinar) =>
-      deprecatedMakeWebinarFromStrapi(webinar)
-    ),
-  ],
+  webinars: _.compact(
+    strapiHomepage.data.attributes.webinars.data.map((webinar) =>
+      makeWebinarProps(webinar)
+    )
+  ),
 });
