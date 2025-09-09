@@ -216,77 +216,66 @@ export const strapiGuideData = {
                     apiData: {
                       data: [
                         {
-                          id: 156,
                           attributes: {
                             apiRestDetail: undefined,
                             apiSoapDetail: undefined,
                           },
                         },
                         {
-                          id: 158,
                           attributes: {
                             apiRestDetail: undefined,
                             apiSoapDetail: undefined,
                           },
                         },
                         {
-                          id: 157,
                           attributes: {
                             apiRestDetail: undefined,
                             apiSoapDetail: undefined,
                           },
                         },
                         {
-                          id: 159,
                           attributes: {
                             apiRestDetail: undefined,
                             apiSoapDetail: undefined,
                           },
                         },
                         {
-                          id: 160,
                           attributes: {
                             apiRestDetail: undefined,
                             apiSoapDetail: undefined,
                           },
                         },
                         {
-                          id: 170,
                           attributes: {
                             apiRestDetail: undefined,
                             apiSoapDetail: undefined,
                           },
                         },
                         {
-                          id: 167,
                           attributes: {
                             apiRestDetail: undefined,
                             apiSoapDetail: undefined,
                           },
                         },
                         {
-                          id: 168,
                           attributes: {
                             apiRestDetail: undefined,
                             apiSoapDetail: undefined,
                           },
                         },
                         {
-                          id: 164,
                           attributes: {
                             apiRestDetail: undefined,
                             apiSoapDetail: undefined,
                           },
                         },
                         {
-                          id: 161,
                           attributes: {
                             apiRestDetail: undefined,
                             apiSoapDetail: undefined,
                           },
                         },
                         {
-                          id: 162,
                           attributes: {
                             apiRestDetail: undefined,
                             apiSoapDetail: undefined,

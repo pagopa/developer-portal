@@ -1,4 +1,4 @@
-import { Media } from '@/lib/strapi/types/media';
+import { Media } from './media';
 
 export type WebinarCategory = {
   readonly name: string;
