@@ -104,7 +104,6 @@ module "website" {
   environment_information = {
     prefix          = "devportal"
     env_short       = local.env_short[var.environment]
-    location        = var.aws_region
     app_name        = "website"
     instance_number = "01"
     region          = var.aws_region
