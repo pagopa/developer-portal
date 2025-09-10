@@ -19,9 +19,9 @@ declare namespace AWSCloudFrontFunction {
 
   interface Request {
     uri: string;
-    headers: { [key: string]: any };
+    headers: { [key: string]: { value: string } };
     method: string;
-    querystring: { [key: string]: any };
-    cookies: { [key: string]: any };
+    querystring: { [key: string]: { value: string } };
+    cookies: { [key: string]: { value: string } };
   }
 }
