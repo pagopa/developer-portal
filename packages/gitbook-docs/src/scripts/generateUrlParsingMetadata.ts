@@ -4,8 +4,8 @@
 /* eslint-disable functional/immutable-data */
 /* eslint-disable functional/no-try-statements */
 import dotenv from 'dotenv';
+import { readdir, writeFile } from 'fs/promises';
 import * as fs from 'fs';
-const { readdir, writeFile } = fs.promises;
 import path from 'path';
 import { fetchFromStrapi } from '../helpers/fetchFromStrapi';
 import {
@@ -59,7 +59,7 @@ export function generateUrlPath(
 async function getMarkdownFilesRecursively(dir: string): Promise<string[]> {
   const entries = await readdir(dir, { withFileTypes: true });
   const files = await Promise.all(
-    entries.map(async (entry: import('fs').Dirent) => {
+    entries.map(async (entry) => {
       const fullPath = path.join(dir, entry.name);
       if (!fs.existsSync(fullPath)) return [];
       if (entry.isDirectory()) {

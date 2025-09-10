@@ -8,9 +8,9 @@ export async function fetchFromStrapi<T>(
 ): Promise<{ data: T[]; responseJson?: any }> {
   const output = await fetchFromStrapiResponse(url);
   console.log(
-    `Successfully fetched ${output.data?.length || 0} ${url} from Strapi`
+    `Successfully fetched ${(output as any).data?.length || 0} ${url} from Strapi`
   );
-  return { data: output.data || [], responseJson: output };
+  return { data: (output as any).data || [], responseJson: output };
 }
 
 // In case of an error, the error will be thrown

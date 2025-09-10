@@ -1,7 +1,6 @@
 /* eslint-disable functional/no-expression-statements */
 import { fetchFromStrapi } from '../helpers/fetchFromStrapi';
-import { promises as fs } from 'fs';
-const { writeFile, mkdir } = fs;
+import { writeFile, mkdir } from 'fs/promises';
 import { resolve } from 'path';
 
 interface StrapiSoapApiDetails {
