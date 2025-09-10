@@ -35,7 +35,6 @@ locals {
     LOG_LEVEL                             = "INFO"
     NLTK_DATA                             = "_static/nltk_cache/"
     TIKTOKEN_CACHE_DIR                    = "/tmp/tiktoken"
-    CHB_AWS_SSM_STRAPI_API_KEY            = "/chatbot/chb_strapi_api_key"
     CHB_AWS_SQS_QUEUE_EVALUATE_NAME       = aws_sqs_queue.chatbot_evaluate_queue.name
   }
 }
