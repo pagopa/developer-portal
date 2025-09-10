@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/nextjs';
 import { InfoCardItem } from 'nextjs-website/src/components/atoms/InfoCardItem/InfoCardItem';
 
 const meta: Meta<typeof InfoCardItem> = {

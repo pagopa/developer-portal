@@ -1,6 +1,6 @@
 import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
-import { ProductsCodec } from '@/lib/strapi/codecs/ProductCodec';
 import qs from 'qs';
+import { StrapiProducts } from '@/lib/strapi/types/product';
 
 // TODO: divide this populate in more specific ones for query optimization
 export const productRelationsPopulate = {
@@ -25,8 +25,7 @@ const makeStrapiProductsPopulate = () =>
     ...productRelationsPopulate,
   });
 
-export const fetchProducts = fetchFromStrapi(
+export const fetchProducts = fetchFromStrapi<StrapiProducts>(
   'products',
-  makeStrapiProductsPopulate(),
-  ProductsCodec
+  makeStrapiProductsPopulate()
 );

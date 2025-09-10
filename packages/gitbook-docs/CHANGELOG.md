@@ -1,5 +1,19 @@
 # gitbook-docs
 
+## 1.0.2
+
+### Patch Changes
+
+- d1f3b42: Update parsing to include release notes and solutions
+- c3014ee: Fix content ref parsing
+
+## 1.0.1
+
+### Patch Changes
+
+- 1b91366: Update parsing to include release notes and solutions
+- 7e7d8ab: Add href tag to parsing, fix wrong parsing if content ref is present, fix parsing for localhost urls
+
 ## 1.0.0
 
 ### Major Changes

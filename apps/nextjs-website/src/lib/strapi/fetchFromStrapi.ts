@@ -1,18 +1,11 @@
-import * as t from 'io-ts';
 import { pipe } from 'fp-ts/lib/function';
 import * as R from 'fp-ts/lib/Reader';
 import * as E from 'fp-ts/lib/Either';
 import * as TE from 'fp-ts/lib/TaskEither';
-import * as PR from './PathReporter';
 import { StrapiEnv } from '@/lib/strapi/StrapiEnv';
 import { makeError } from '../makeError';
 
-// Function to invoke in order to retrieve data from Strapi.
-export const fetchFromStrapi = <A, O, I>(
-  path: string,
-  populate: string,
-  codec: t.Type<A, O, I>
-) =>
+export const fetchFromStrapi = <T>(path: string, populate: string) =>
   pipe(
     R.ask<StrapiEnv>(),
     R.map(
@@ -43,13 +36,8 @@ export const fetchFromStrapi = <A, O, I>(
               return TE.left(makeError(response));
             }
           }),
-          TE.chainEitherK((json) =>
-            // decode the response with the given codec
-            pipe(
-              codec.decode(json),
-              E.mapLeft((errors) => new Error(PR.failure(errors).join('\n')))
-            )
-          ),
+          TE.map(nullsToUndefined),
+          TE.map((json) => json as T),
           TE.fold(
             // eslint-disable-next-line functional/no-promise-reject
             (errors) => () => Promise.reject(errors),
@@ -58,3 +46,16 @@ export const fetchFromStrapi = <A, O, I>(
         )()
     )
   );
+
+function nullsToUndefined(obj: any): any {
+  if (obj === null) return undefined;
+  if (Array.isArray(obj)) {
+    return obj.map(nullsToUndefined);
+  }
+  if (typeof obj === 'object' && obj !== undefined) {
+    return Object.entries(obj)
+      .map(([key, value]) => [key, nullsToUndefined(value)] as const)
+      .reduce((acc, [key, value]) => ({ ...acc, [key]: value }), {});
+  }
+  return obj;
+}
