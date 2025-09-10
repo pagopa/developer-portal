@@ -21,7 +21,7 @@ export async function getResponseFromStrapi(url: string) {
 }
 
 // In case of an error, the error will be thrown
-async function fetchFromStrapiResponse(url: string) {
+async function fetchFromStrapiResponse(url: string): Promise<unknown> {
   console.log('Fetching solutions from Strapi...');
   const strapiEndpoint = process.env.STRAPI_ENDPOINT;
   const strapiApiToken = process.env.STRAPI_API_TOKEN;

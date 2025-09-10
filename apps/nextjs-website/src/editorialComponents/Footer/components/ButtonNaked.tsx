@@ -10,7 +10,7 @@ export const ButtonNaked = <C extends React.ElementType>(
       weight?: 'default' | 'light';
     }
   >
-): React.ReactElement<any> => {
+): React.ReactElement => {
   const {
     children,
     buttonRef,
