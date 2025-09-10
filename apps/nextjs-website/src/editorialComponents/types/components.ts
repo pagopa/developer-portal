@@ -1,4 +1,4 @@
-import type { JSX } from "react";
+import type { JSX } from 'react';
 export type Theme = 'dark' | 'light';
 
 /** this Generic type is meant to be used

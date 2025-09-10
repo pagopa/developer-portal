@@ -5,7 +5,9 @@
     "sourceMap": false,
     "declaration": false,
     "rootDir": "src",
-    "outDir": "dist"
+    "outDir": "dist",
+    "types": ["node", "jest"],
+    "skipLibCheck": true
   },
   "include": ["src"]
 }

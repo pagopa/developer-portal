@@ -41,7 +41,7 @@ const ApiViewer: FC<ApiViewerProps> = ({ specURL }) => {
         overflow: 'hidden',
       }}
     >
-      {/* @ts-ignore */}
+      {/* @ts-expect-error - rapi-doc is a custom element without TypeScript definitions */}
       <rapi-doc
         allow-advanced-search='false'
         allow-authentication='false'
@@ -64,7 +64,7 @@ const ApiViewer: FC<ApiViewerProps> = ({ specURL }) => {
         text-color={palette.text.primary}
         theme='light'
       >
-      {/* @ts-ignore */}
+        {/* @ts-expect-error - rapi-doc is a custom element without TypeScript definitions */}
       </rapi-doc>
     </Box>
   );
