@@ -11,6 +11,8 @@ import {
   SvgColorLight,
 } from '../FundedByNextGenerationEU/partials';
 
+import type { JSX } from "react";
+
 const StyledSvg = styled('svg')({
   display: 'inline-block',
   userSelect: 'none',

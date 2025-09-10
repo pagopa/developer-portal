@@ -8,7 +8,7 @@ import {
   Link,
   type Theme,
 } from '@mui/material';
-import { useState } from 'react';
+import { useState, type JSX } from 'react';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { type Generic, type CommonProps } from '../../types/components';
 import { isJSX } from '../../utils';

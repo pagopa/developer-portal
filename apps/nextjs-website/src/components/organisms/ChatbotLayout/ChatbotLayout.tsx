@@ -45,7 +45,7 @@ const ChatbotLayout = ({
 }: ChatbotLayoutProps) => {
   const t = useTranslations();
   const { palette } = useTheme();
-  const ref = React.useRef<HTMLElement | undefined>();
+  const ref = React.useRef<HTMLElement | undefined>(undefined);
   const [anchorEl, setAnchorEl] = React.useState<HTMLElement | undefined>(
     undefined
   );

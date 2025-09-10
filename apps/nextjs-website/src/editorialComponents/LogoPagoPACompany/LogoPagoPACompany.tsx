@@ -3,6 +3,8 @@ import { styled } from '@mui/material';
 
 import { theme } from '@pagopa/mui-italia/dist/theme';
 
+import type { JSX } from "react";
+
 const StyledSvg = styled('svg')({
   display: 'inline-block',
   userSelect: 'none',

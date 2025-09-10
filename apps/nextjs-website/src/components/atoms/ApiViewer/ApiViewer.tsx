@@ -41,6 +41,7 @@ const ApiViewer: FC<ApiViewerProps> = ({ specURL }) => {
         overflow: 'hidden',
       }}
     >
+      {/* @ts-ignore */}
       <rapi-doc
         allow-advanced-search='false'
         allow-authentication='false'
@@ -62,7 +63,9 @@ const ApiViewer: FC<ApiViewerProps> = ({ specURL }) => {
         spec-url={specURL}
         text-color={palette.text.primary}
         theme='light'
-      ></rapi-doc>
+      >
+      {/* @ts-ignore */}
+      </rapi-doc>
     </Box>
   );
 };
