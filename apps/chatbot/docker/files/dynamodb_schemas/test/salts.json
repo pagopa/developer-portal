@@ -10,13 +10,12 @@
     {
       "AttributeName": "sessionId",
       "AttributeType": "S"
-    }"AttributeType": "N"
-  }
-],
-"ProvisionedThroughput": {
-  "ReadCapacityUnits": 5,
-  "WriteCapacityUnits": 5
-},
-"TableClass": "STANDARD",
-"DeletionProtectionEnabled": false
+    }
+  ],
+  "ProvisionedThroughput": {
+    "ReadCapacityUnits": 5,
+    "WriteCapacityUnits": 5
+  },
+  "TableClass": "STANDARD",
+  "DeletionProtectionEnabled": false
 }

@@ -9,14 +9,11 @@ from src.modules.settings import SETTINGS
 
 LOGGER = get_logger(__name__)
 
-AWS_DEFAULT_REGION = SETTINGS.aws_default_region
-AUTH_COGNITO_USERPOOL_ID = SETTINGS.auth_cognito_userpool_id
-
 
 def get_jwks():
     KEYS_URL = (
-        f"https://cognito-idp.{AWS_DEFAULT_REGION}.amazonaws.com/"
-        f"{AUTH_COGNITO_USERPOOL_ID}/"
+        f"{SETTINGS.auth_cognito_url}/"
+        f"{SETTINGS.auth_cognito_userpool_id}/"
         ".well-known/jwks.json"
     )
     response = requests.get(KEYS_URL)

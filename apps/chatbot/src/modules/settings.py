@@ -97,7 +97,8 @@ class ChatbotSettings(BaseSettings):
     aws_sqs_queue_evaluate_name: str = os.getenv(
         "CHB_AWS_SQS_QUEUE_EVALUATE_NAME", "chatbot-evaluate"
     )
-    auth_cognito_userpool_id: str = os.getenv("AUTH_COGNITO_USERPOOL_ID")
+    auth_cognito_userpool_id: str = os.getenv("AUTH_COGNITO_USERPOOL_ID", "")
+    auth_cognito_url: str = os.getenv("AUTH_COGNITO_URL", "")
 
     # database
     expire_days: int = int(os.getenv("EXPIRE_DAYS", 90))

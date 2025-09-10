@@ -9,16 +9,33 @@ services:
     volumes:
       - ..:/app
       - ./files/.aws:/root/.aws
-      - ./files/nextjs-website/out:/app/build-devp/out
     depends_on:
       dynamodb-test:
         condition: service_started
-      motoserver:
+      localstack-test:
         condition: service_started
       langfuse-test:
         condition: service_started
       redis-test:
         condition: service_started
+    networks:
+      - ntwtest
+
+  core-test:
+    build:
+      context: ../../chatbot-core
+      dockerfile: ../chatbot-core/docker/lambda.Dockerfile
+    env_file: ../.env.chatbot-core.test
+    environment:
+      - PYTHONPATH=/var/task
+    ports:
+      - "8082:8080"
+      - "8888:8888"
+    volumes:
+      - ../chatbot-core:/app
+      - ~/.aws-lambda-rie/aws-lambda-rie:/usr/local/bin/aws-lambda-rie
+    entrypoint: ["/usr/local/bin/aws-lambda-rie", "python3"]
+    command: ["-m", "awslambdaric", "src.lambda_function.lambda_handler"]
     networks:
       - ntwtest
 
@@ -59,10 +76,23 @@ services:
     networks:
       - ntwtest
 
-  motoserver:
-    image: motoserver/moto:5.1.0
+  localstack-test:
+    container_name: "${LOCALSTACK_DOCKER_NAME:-localstack-main}"
+    image: localstack/localstack:4.6.0
+    ports:
+      - "127.0.0.1:4566:4566" # LocalStack Gateway
+      - "127.0.0.1:4510-4559:4510-4559" # external services port range
+    environment:
+      # LocalStack configuration: https://docs.localstack.cloud/references/configuration/
+      - DEBUG=${DEBUG:-0}
+      - SERVICES=sqs,s3,ssm,cognito-idp
+    volumes:
+      - "${LOCALSTACK_VOLUME_DIR:-./volume}:/var/lib/localstack"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - ./files/localstack/init:/etc/localstack/init
     networks:
       - ntwtest
+
 
 networks:
   ntwtest:
