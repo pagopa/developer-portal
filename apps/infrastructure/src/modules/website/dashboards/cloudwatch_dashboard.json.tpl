@@ -92,7 +92,7 @@
             "height": 6,
             "properties": {
                 "metrics": [
-                    [ "AWS/CloudFront", "Requests", "Region", "Global", "DistributionId", "${static_contents_domain_name}", { "region": "us-east-1" } ]
+                    [ "AWS/CloudFront", "Requests", "Region", "Global", "DistributionId", "${static_contents_distribution_id}", { "region": "us-east-1" } ]
                 ],
                 "region": "${aws_region}",
                 "stacked": false,
@@ -111,7 +111,7 @@
             "properties": {
                 "metrics": [
                     [ { "expression": "ANOMALY_DETECTION_BAND(m1, 2)", "label": "Anomaly", "id": "e1" } ],
-                    [ "AWS/CloudFront", "4xxErrorRate", "Region", "Global", "DistributionId", "${static_contents_domain_name}", { "region": "us-east-1", "id": "m1" } ],
+                    [ "AWS/CloudFront", "4xxErrorRate", "Region", "Global", "DistributionId", "${static_contents_distribution_id}", { "region": "us-east-1", "id": "m1" } ],
                     [ ".", "5xxErrorRate", ".", ".", ".", ".", { "region": "us-east-1", "id": "m2" } ]
                 ],
                 "region": "${aws_region}",
@@ -131,7 +131,7 @@
             "height": 6,
             "properties": {
                 "metrics": [
-                    [ "AWS/CloudFront", "BytesUploaded", "Region", "Global", "DistributionId", "${static_contents_domain_name}", { "region": "us-east-1" } ],
+                    [ "AWS/CloudFront", "BytesUploaded", "Region", "Global", "DistributionId", "${static_contents_distribution_id}", { "region": "us-east-1" } ],
                     [ ".", "BytesDownloaded", ".", ".", ".", ".", { "region": "us-east-1" } ]
                 ],
                 "view": "timeSeries",
