@@ -25,6 +25,8 @@ dns_delegate_records = {
 
 use_custom_certificate = true
 
+cms_app_image_tag = "3898d70cf2edac6a07682cf9e26f5df560d90418"
+
 # CMS Strapi DNS
 dns_domain_name_cms = {
   "cms.developer.pagopa.it" = {
@@ -39,4 +41,15 @@ rds_cms_scaling_configuration = {
 
 create_chatbot            = true
 ac_integration_is_enabled = true
-docs_redirect_is_enabled  = true
+
+chatbot_models = {
+  provider   = "google"
+  generation = "gemini-2.0-flash"
+  embeddings = "text-embedding-004"
+  reranker   = "semantic-ranker-512-003"
+}
+
+
+
+
+docs_redirect_is_enabled = true

@@ -49,8 +49,22 @@ def backfill_created_at_date() -> None:
     """
     Backfill the `createdAtDate` field for all existing items in the table.
     """
-    response = tables["queries"].scan()
-    items = response.get("Items", [])
+
+    items = []
+    last_evaluated_key = None
+    page_size = 200
+    while True:
+        if last_evaluated_key:
+            response = tables["queries"].scan(
+                ExclusiveStartKey=last_evaluated_key, Limit=page_size
+            )
+        else:
+            response = tables["queries"].scan(Limit=page_size)
+        items.extend(response.get("Items", []))
+        last_evaluated_key = response.get("LastEvaluatedKey")
+
+        if not last_evaluated_key:
+            break
 
     for item in items:
         created_at_date = item["createdAt"][:10]
@@ -61,11 +75,27 @@ def backfill_created_at_date() -> None:
     LOGGER.info(f"Backfilled {len(items)} items with `createdAtDate`.")
 
 
+def fix_unbalanced_code_blocks(text: str) -> str:
+    """
+    Ensures code blocks delimited by \n``` are balanced.
+    If unbalanced, removes the last dangling delimiter.
+    """
+    count = text.count("\n```")
+    if count % 2 == 1:  # unbalanced
+        last_index = text.rfind("\n```")
+        if last_index != -1:
+            text = text[:last_index] + text[last_index + 4 :]
+    return text
+
+
 def get_final_response(response_str: str, references: List[str]) -> str:
 
-    if len(references) > 0:
+    response_str = fix_unbalanced_code_blocks(response_str)
+    unique_references = list(dict.fromkeys(references))
+
+    if len(unique_references) > 0:
         response_str += "\n\nRif:"
-        for ref in references:
+        for ref in unique_references:
             response_str += "\n" + ref
 
     return response_str
@@ -107,7 +137,8 @@ async def query_creation(
             "messages": messages,
         }
         sqs_response = sqs_queue_evaluate.send_message(
-            MessageBody=json.dumps(evaluation_data)
+            MessageBody=json.dumps(evaluation_data),
+            MessageGroupId=trace_id,  # Required for FIFO queues
         )
         LOGGER.info(f"sqs response: {sqs_response}")
 
@@ -129,6 +160,9 @@ async def query_creation(
         "badAnswer": False,
     }
 
+    days = int(os.getenv("EXPIRE_DAYS", 90))
+    expires_at = int((now + datetime.timedelta(days=days)).timestamp())
+
     bodyToSave = bodyToReturn.copy()
     bodyToSave["question"] = chatbot.mask_pii(query.question)
     bodyToSave["answer"] = get_final_response(
@@ -136,6 +170,7 @@ async def query_creation(
         references=answer_json["references"],
     )
     bodyToSave["topics"] = answer_json.get("products", [])
+    bodyToSave["expiresAt"] = expires_at
     try:
         tables["queries"].put_item(Item=bodyToSave)
     except (BotoCoreError, ClientError) as e:
@@ -156,7 +191,7 @@ async def queries_fetching(
         sessionId = last_session_id(userId)
     else:
         session = get_user_session(userId, sessionId)
-        sessionId = session.get("id", None)
+        sessionId = session.get("id", None) if session else None
 
     if sessionId is None:
         result = []

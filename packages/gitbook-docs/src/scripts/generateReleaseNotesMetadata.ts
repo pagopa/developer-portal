@@ -14,6 +14,7 @@ import {
 import { extractTitleFromMarkdown } from '../helpers/extractTitle.helper';
 import { fetchFromStrapi } from '../helpers/fetchFromStrapi';
 import { sitePathFromS3Path } from '../helpers/sitePathFromS3Path';
+import { StrapiReleaseNote } from '../helpers/guidesMetadataHelper';
 
 // Load environment variables from .env file
 dotenv.config();
@@ -26,23 +27,6 @@ const S3_RELEASE_NOTES_METADATA_JSON_PATH =
   'release-notes-metadata.json';
 
 const s3Client = makeS3Client();
-
-interface StrapiReleaseNote {
-  id: number;
-  attributes: {
-    slug: string;
-    title: string;
-    product?: {
-      data?: {
-        attributes?: {
-          slug: string;
-        };
-      };
-    };
-    dirName: string;
-    landingFile: string;
-  };
-}
 
 function generateUrlPath(
   filePath: string,

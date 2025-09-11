@@ -1,6 +1,6 @@
 import * as qs from 'qs';
 import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
-import { SolutionListPageCodec } from '@/lib/strapi/codecs/SolutionListPageCodec';
+import { StrapiSolutionListPage } from '../types/solutionListPage';
 
 const makeStrapiSolutionListPagePopulate = () =>
   qs.stringify({
@@ -34,8 +34,7 @@ const makeStrapiSolutionListPagePopulate = () =>
     },
   });
 
-export const fetchSolutionListPage = fetchFromStrapi(
+export const fetchSolutionListPage = fetchFromStrapi<StrapiSolutionListPage>(
   'solution-list-page',
-  makeStrapiSolutionListPagePopulate(),
-  SolutionListPageCodec
+  makeStrapiSolutionListPagePopulate()
 );
