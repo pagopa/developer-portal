@@ -6,16 +6,13 @@ import _ from 'lodash';
 import { StrapiBaseApiData } from '../types/apiDataList';
 
 function makeApiDataListPageCard(item: StrapiBaseApiData, slug: string) {
-  if (
-    !item.attributes.title ||
-    (!item.attributes.apiRestDetail && !item.attributes.apiSoapDetail) ||
-    (!item.attributes.apiRestDetail?.slug &&
-      !item.attributes.apiSoapDetail?.slug)
-  ) {
-    // eslint-disable-next-line functional/no-expression-statements
-    console.error(
-      `Error processing API Data with ID "${item.id}": Missing title or API details. Skipping...`
-    );
+  if (!item.attributes.apiRestDetail && !item.attributes.apiSoapDetail) {
+    console.error(`Error processing API Data "${item.attributes.title}": Missing API details. Skipping...`);
+    return null;
+  }
+
+  if (!item.attributes.apiRestDetail?.slug && !item.attributes.apiSoapDetail?.slug) {
+    console.error(`Error processing API Data "${item.attributes.title}": Missing API slug. Skipping...`);
     return null;
   }
 
