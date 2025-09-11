@@ -53,6 +53,16 @@ export function makePartProps(strapiPart: StrapiPart): Part | null {
         content: parsedContent,
         menuItems: [...menuItems],
       };
+    case 'parts.ck-editor-html':
+      // eslint-disable-next-line no-case-declarations
+      const imgParsedContent = strapiPart.content.replaceAll('\\  "', '"');
+      // eslint-disable-next-line no-case-declarations
+      const parsedHtmlContent = parseCkEditorContent(imgParsedContent);
+      return {
+        component: 'ckEditor',
+        content: parsedHtmlContent.parsedContent,
+        menuItems: [...parsedHtmlContent.menuItems],
+      };
     default:
       return null;
   }
