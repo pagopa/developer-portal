@@ -25,8 +25,12 @@ export const makeHandler =
         console.log(
           `User ${username} is confirmed and has requested to resend the email`
         );
-        // eslint-disable-next-line functional/no-throw-statements
-        throw new Error('Operation not permitted');
+
+        // eslint-disable-next-line functional/no-expression-statements
+        console.warn(
+          `User ${username} is confirmed and has requested to resend the email. Operation not permitted.`
+        );
+        return event;
       }
       const { codeParameter } = event.request;
       const href = `https://${env.domain}/auth/confirmation?username=${username}&code=${codeParameter}`;

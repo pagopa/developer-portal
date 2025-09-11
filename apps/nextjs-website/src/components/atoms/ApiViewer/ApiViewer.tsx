@@ -17,6 +17,28 @@ declare global {
         'render-style'?: string;
         'show-header'?: string;
         'primary-color'?: string;
+        'allow-advanced-search'?: string;
+        'allow-authentication'?: string;
+        'allow-server-selection'?: string;
+        'allow-try'?: string;
+        'bg-color'?: string;
+        'font-size'?: string;
+        'heading-text'?: string;
+        'info-description-headings-in-navbar'?: string;
+        layout?: string;
+        'nav-active-item-marker'?: string;
+        'nav-bg-color'?: string;
+        'nav-hover-bg-color'?: string;
+        'nav-hover-text-color'?: string;
+        'nav-item-spacing'?: string;
+        'nav-text-color'?: string;
+        'regular-font'?: string;
+        'schema-description-expanded'?: string;
+        'show-components'?: string;
+        'show-info'?: string;
+        'show-method-in-nav-bar'?: string;
+        'text-color'?: string;
+        'use-path-in-nav-bar'?: string;
       };
     }
   }
@@ -41,6 +63,7 @@ const ApiViewer: FC<ApiViewerProps> = ({ specURL }) => {
         overflow: 'hidden',
       }}
     >
+      {/* @ts-expect-error - rapi-doc is a custom element without TypeScript definitions */}
       <rapi-doc
         allow-advanced-search='false'
         allow-authentication='false'
@@ -62,7 +85,9 @@ const ApiViewer: FC<ApiViewerProps> = ({ specURL }) => {
         spec-url={specURL}
         text-color={palette.text.primary}
         theme='light'
-      ></rapi-doc>
+      >
+        {/* @ts-expect-error - rapi-doc is a custom element without TypeScript definitions */}
+      </rapi-doc>
     </Box>
   );
 };

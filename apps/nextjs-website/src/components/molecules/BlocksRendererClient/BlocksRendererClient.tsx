@@ -101,7 +101,7 @@ const BlocksRendererClient = ({
             typeof children === 'object' &&
             'props' in children
           ) {
-            const reactElement = children as ReactElement;
+            const reactElement = children as ReactElement<any>;
             if (typeof reactElement.props?.children === 'string') {
               codeString = reactElement.props.children;
             } else if (Array.isArray(reactElement.props?.children)) {

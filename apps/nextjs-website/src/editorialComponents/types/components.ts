@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 export type Theme = 'dark' | 'light';
 
 /** this Generic type is meant to be used
@@ -7,6 +8,5 @@ export type Theme = 'dark' | 'light';
 export type Generic = JSX.Element;
 
 export interface CommonProps {
-  // eslint-disable-next-line functional/prefer-readonly-type
-  theme: Theme;
+  readonly theme: Theme;
 }

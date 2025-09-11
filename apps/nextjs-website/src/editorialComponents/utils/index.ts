@@ -13,7 +13,7 @@ export const isJSX = <T>(arg: T | Generic): arg is Generic =>
  * and return a boolen with a true value when the ref pointing
  * to a tag element is visible
  */
-export function useIsVisible(ref: React.RefObject<Element>) {
+export function useIsVisible(ref: React.RefObject<Element | null>) {
   const [isIntersecting, setIntersecting] = React.useState(false);
 
   // eslint-disable-next-line functional/no-expression-statements

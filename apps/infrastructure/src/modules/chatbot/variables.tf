@@ -154,18 +154,11 @@ variable "waf_block_requests_to_queries_evaluation_window_sec" {
 
 variable "models" {
   type = object({
-    provider   = optional(string, "google")
-    generation = optional(string, "gemini-2.5-flash-lite")
-    embeddings = optional(string, "gemini-embedding-001")
-    reranker   = optional(string, "semantic-ranker-default-004")
+    provider   = string
+    generation = string
+    embeddings = string
+    reranker   = string
   })
-
-  default = {
-    provider   = "google"
-    generation = "gemini-2.5-flash-lite"
-    embeddings = "gemini-embedding-001"
-    reranker   = "semantic-ranker-default-004"
-  }
 
   description = "The models used by the AI chatbot"
 }
