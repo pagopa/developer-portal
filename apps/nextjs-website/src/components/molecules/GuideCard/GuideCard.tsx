@@ -24,14 +24,14 @@ type Description = {
 
 export type GuideCardProps = {
   description: Description;
-  imagePath: string;
+  imagePath?: string;
   layout?: 'left' | 'center' | 'right';
   link: {
     label: string;
     href: string;
     translate?: boolean;
   };
-  mobileImagePath: string;
+  mobileImagePath?: string;
   title: string;
 };
 

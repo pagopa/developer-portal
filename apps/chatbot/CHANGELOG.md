@@ -1,5 +1,13 @@
 # chatbot
 
+## 7.0.1
+
+### Patch Changes
+
+- 9b757ab: Remove AWS Bedrock support
+- 9b757ab: Code refactor with new gemini models
+- 9b757ab: Manage settings in a centralized way
+
 ## 7.0.0
 
 ### Major Changes

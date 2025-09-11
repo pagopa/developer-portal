@@ -1,7 +1,7 @@
 import * as qs from 'qs';
 import { webinarPopulate } from '@/lib/strapi/fetches/fetchWebinars';
 import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
-import { HomepageCodec } from '@/lib/strapi/codecs/HomepageCodec';
+import { StrapiHomepage } from '@/lib/strapi/types/homepage';
 
 const makeStrapiHomepagePopulate = () =>
   qs.stringify({
@@ -44,8 +44,7 @@ const makeStrapiHomepagePopulate = () =>
     },
   });
 
-export const fetchHomepage = fetchFromStrapi(
+export const fetchHomepage = fetchFromStrapi<StrapiHomepage>(
   'homepage',
-  makeStrapiHomepagePopulate(),
-  HomepageCodec
+  makeStrapiHomepagePopulate()
 );

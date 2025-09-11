@@ -1,7 +1,7 @@
 import * as qs from 'qs';
 import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
-import { productRelationsPopulate } from './fetchProducts';
-import { ReleaseNotesCodec } from '@/lib/strapi/codecs/ReleaseNotesCodec';
+import { productRelationsPopulate } from '@/lib/strapi/fetches/fetchProducts';
+import { StrapiReleaseNotes } from '@/lib/strapi/types/releaseNotes';
 
 const releaseNotesPopulate = {
   populate: {
@@ -22,10 +22,9 @@ const makeStrapiReleaseNotesPopulate = () =>
     ...releaseNotesPopulate,
   });
 
-export const fetchReleaseNotes = fetchFromStrapi(
+export const fetchReleaseNotes = fetchFromStrapi<StrapiReleaseNotes>(
   'release-notes',
-  makeStrapiReleaseNotesPopulate(),
-  ReleaseNotesCodec
+  makeStrapiReleaseNotesPopulate()
 );
 
 const makeStrapiReleaseNotePopulate = (productSlug: string) =>
@@ -39,8 +38,7 @@ const makeStrapiReleaseNotePopulate = (productSlug: string) =>
   });
 
 export const fetchReleaseNote = (productSlug: string) =>
-  fetchFromStrapi(
+  fetchFromStrapi<StrapiReleaseNotes>(
     'release-notes',
-    makeStrapiReleaseNotePopulate(productSlug),
-    ReleaseNotesCodec
+    makeStrapiReleaseNotePopulate(productSlug)
   );

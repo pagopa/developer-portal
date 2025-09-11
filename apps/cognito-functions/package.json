@@ -12,24 +12,26 @@
     "test": "npm run compile && jest -i"
   },
   "devDependencies": {
-    "@types/aws-lambda": "^8.10.126",
-    "@types/html-minifier": "^4.0.4",
+    "@eslint/eslintrc": "^3.3.1",
+    "@eslint/js": "^9.34.0",
+    "@types/aws-lambda": "^8.10.152",
+    "@types/html-minifier": "^4.0.5",
     "@types/mjml": "^4.7.4",
-    "esbuild": "^0.19.5",
-    "eslint": "^8.40.0",
+    "esbuild": "^0.25.9",
+    "eslint": "^9.34.0",
     "eslint-config-custom": "*",
-    "jest": "^29.7.0",
-    "jest-mock-extended": "^3.0.5",
-    "shx": "^0.3.4",
-    "ts-jest": "^29.1.1",
-    "ts-node": "^10.9.1",
-    "typescript": "^5.0.2"
+    "jest": "^30.1.2",
+    "jest-mock-extended": "^4.0.0",
+    "shx": "^0.4.0",
+    "ts-jest": "^29.4.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.1.6"
   },
   "dependencies": {
     "@aws-sdk/client-ses": "^3.441.0",
-    "fp-ts": "^2.16.1",
+    "fp-ts": "^2.16.11",
     "html-minifier": "^4.0.0",
-    "io-ts": "^2.2.20",
-    "mjml": "^4.14.1"
+    "io-ts": "^2.2.22",
+    "mjml": "^4.15.3"
   }
 }

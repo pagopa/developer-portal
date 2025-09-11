@@ -1,7 +1,7 @@
 import qs from 'qs';
 import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
-import { ApiDataListCodec } from '@/lib/strapi/codecs/ApiDataListCodec';
-import { productRelationsPopulate } from './fetchProducts';
+import { productRelationsPopulate } from '@/lib/strapi/fetches/fetchProducts';
+import { StrapiApiDataList } from '@/lib/strapi/types/apiDataList';
 
 const makeStrapiApiDataListPopulate = () =>
   qs.stringify({
@@ -27,8 +27,7 @@ const makeStrapiApiDataListPopulate = () =>
 
 // This endpoint does not respect the naming convention but we keep it
 // for backward compatibility with the already existing content in Strapi's production instance
-export const fetchApiDataList = fetchFromStrapi(
+export const fetchApiDataList = fetchFromStrapi<StrapiApiDataList>(
   'apis-data',
-  makeStrapiApiDataListPopulate(),
-  ApiDataListCodec
+  makeStrapiApiDataListPopulate()
 );

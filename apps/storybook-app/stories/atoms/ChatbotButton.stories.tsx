@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/nextjs';
 import ChatButton from '../../../nextjs-website/src/components/atoms/ChatButton/ChatButton';
 
 const meta: Meta<typeof ChatButton> = {

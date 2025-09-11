@@ -1,6 +1,6 @@
 import { Box, Button, useTheme } from '@mui/material';
 import IconWrapper from '@/components/atoms/IconWrapper/IconWrapper';
-import { Media } from '@/lib/strapi/codecs/MediaCodec';
+import { Media } from '@/lib/types/media';
 import React from 'react';
 
 type MobileWebinarCategoryButtonProps = {

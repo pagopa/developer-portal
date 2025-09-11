@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/nextjs';
 import CaseHistoryPageTemplate from '../../../nextjs-website/src/components/templates/CaseHistoryTemplate/CaseHistoryPageTemplate';
 import { mockImageBlock, mockTextBlock } from '../mock-content.helper';
 import quoteMockProps from '../atoms/Quote.stories';
@@ -67,7 +67,7 @@ export const Showcase: StoryObj<typeof CaseHistoryPageTemplate> = {
         description: 'Il portale per gli sviluppatori di PagoPA',
         slug: 'pagopa',
         logo: {
-          url: 'https://cdn.dev.developer.pagopa.it/app_Io_d9bffd556b.svg',
+          url: '/icons/appIo.svg',
         },
       },
       {
@@ -75,7 +75,7 @@ export const Showcase: StoryObj<typeof CaseHistoryPageTemplate> = {
         description: 'Il portale per gli sviluppatori di PagoPA',
         slug: 'pagopa',
         logo: {
-          url: 'https://cdn.dev.developer.pagopa.it/app_Io_d9bffd556b.svg',
+          url: '/icons/appIo.svg',
         },
       },
       {
@@ -83,7 +83,7 @@ export const Showcase: StoryObj<typeof CaseHistoryPageTemplate> = {
         description: 'Il portale per gli sviluppatori di PagoPA',
         slug: 'pagopa',
         logo: {
-          url: 'https://cdn.dev.developer.pagopa.it/app_Io_d9bffd556b.svg',
+          url: '/icons/appIo.svg',
         },
       },
     ],

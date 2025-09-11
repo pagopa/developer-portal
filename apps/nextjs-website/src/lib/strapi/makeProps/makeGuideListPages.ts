@@ -1,52 +1,90 @@
+/* eslint-disable functional/no-expression-statements */
+/* eslint-disable functional/no-try-statements */
 import { GuideListPageProps } from '@/app/[productSlug]/guides/page';
-import { StrapiGuideListPages } from '../codecs/GuideListPagesCodec';
 import { GuidesSectionProps } from '@/components/molecules/GuidesSection/GuidesSection';
 import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
 import { makeBaseProductWithoutLogoProps } from './makeProducts';
+import { GuideCardProps } from '@/components/molecules/GuideCard/GuideCard';
+import { StrapiBaseGuide } from '@/lib/strapi/types/guide';
+import _ from 'lodash';
+import { StrapiGuideListPages } from '@/lib/strapi/types/guideListPage';
 
 export function makeGuideListPagesProps(
   strapiGuideListPages: StrapiGuideListPages
 ): readonly GuideListPageProps[] {
-  return strapiGuideListPages.data.map(({ attributes }) => {
-    const product = makeBaseProductWithoutLogoProps(attributes.product.data);
+  return _.compact(
+    strapiGuideListPages.data.map(({ attributes }) => {
+      const productData = attributes.product.data;
+      if (!productData.attributes.slug) {
+        console.error('product slug is missing:', productData);
+        return null;
+      }
 
-    const guidesSections: readonly GuidesSectionProps[] = [
-      ...attributes.guidesByCategory.map(({ category, guides }) => ({
-        title: category,
-        guides: guides.data.map(({ attributes }) => ({
-          title: attributes.title,
-          description: {
-            title: 'guideListPage.cardSection.listItemsTitle', // this is translations path and it will be translated by the component
-            listItems: attributes.listItems.map(({ text }) => text),
-            translate: true,
-          },
-          imagePath: attributes.image.data.attributes.url,
-          mobileImagePath: attributes.mobileImage.data.attributes.url,
-          link: {
-            label: 'guideListPage.cardSection.linkLabel', // this is translations path and it will be translated by the component
-            href: `/${product.slug}/guides/${attributes.slug}`,
-            translate: true,
-          },
-        })),
-      })),
-    ];
-    return {
-      name: attributes.title,
-      path: `/${attributes.product.data.attributes.slug}/guides`,
-      product,
-      abstract: {
-        title: attributes.title,
-        description: attributes.description,
-      },
-      guidesSections: [...guidesSections],
-      bannerLinks:
-        attributes.bannerLinks.length > 0
-          ? attributes.bannerLinks.map(makeBannerLinkProps)
-          : attributes.product.data.attributes.bannerLinks?.map(
-              makeBannerLinkProps
+      try {
+        const product = makeBaseProductWithoutLogoProps(productData);
+        const guidesSections: readonly GuidesSectionProps[] = [
+          ...attributes.guidesByCategory.map(({ category, guides }) => ({
+            title: category,
+            guides: _.compact(
+              guides.data.map((guide) =>
+                makeGuideCardProps(guide, product.slug)
+              )
             ),
-      seo: attributes.seo,
-      updatedAt: new Date(attributes.updatedAt).toISOString(),
-    };
-  });
+          })),
+        ];
+        return {
+          path: `/${productData.attributes.slug}/guides`,
+          product,
+          abstract: {
+            title: attributes.title,
+            description: attributes.description,
+          },
+          guidesSections: [...guidesSections],
+          bannerLinks:
+            attributes.bannerLinks.length > 0
+              ? attributes.bannerLinks.map(makeBannerLinkProps)
+              : productData.attributes.bannerLinks?.map(makeBannerLinkProps),
+          seo: attributes.seo,
+          updatedAt: attributes.updatedAt,
+        } satisfies GuideListPageProps;
+      } catch (error) {
+        console.error(
+          `Error while processing Guide List Page for product with slug "${productData.attributes.slug}":`,
+          error
+        );
+        return null;
+      }
+    })
+  );
+}
+
+function makeGuideCardProps(
+  guide: StrapiBaseGuide,
+  productSlug: string
+): GuideCardProps | null {
+  if (!guide.attributes.slug) {
+    console.error('guide slug is missing:', guide);
+    return null;
+  }
+
+  try {
+    return {
+      title: guide.attributes.title,
+      description: {
+        title: 'guideListPage.cardSection.listItemsTitle',
+        listItems: guide.attributes.listItems.map(({ text }) => text),
+        translate: true,
+      },
+      imagePath: guide.attributes.image?.data?.attributes?.url,
+      mobileImagePath: guide.attributes.mobileImage?.data?.attributes?.url,
+      link: {
+        label: 'guideListPage.cardSection.linkLabel',
+        href: `/${productSlug}/guides/${guide.attributes.slug}`,
+        translate: true,
+      },
+    } satisfies GuideCardProps;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
 }
