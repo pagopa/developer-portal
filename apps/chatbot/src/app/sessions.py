@@ -1,21 +1,16 @@
 import datetime
 import hashlib
-import os
 import uuid
-import yaml
 
 from boto3.dynamodb.conditions import Key
 from botocore.exceptions import BotoCoreError, ClientError
 from fastapi import HTTPException
 
-from src.app.chatbot_init import chatbot
-from src.modules.monitor import add_langfuse_score
-from src.modules.logger import get_logger
 from src.app.models import QueryFeedback, tables
 from src.app.jwt_check import verify_jwt
-
-params = yaml.safe_load(open("config/params.yaml", "r"))
-prompts = yaml.safe_load(open("config/prompts.yaml", "r"))
+from src.modules.monitor import add_langfuse_score
+from src.modules.logger import get_logger
+from src.modules.settings import SETTINGS
 
 LOGGER = get_logger(__name__)
 
@@ -41,8 +36,7 @@ def find_or_create_session(userId: str, now: datetime.datetime):
     if userId is None:
         return None
 
-    SESSION_MAX_DURATION_DAYS = float(os.getenv("CHB_SESSION_MAX_DURATION_DAYS", "1"))
-    datetimeLimit = now - datetime.timedelta(SESSION_MAX_DURATION_DAYS - 1)
+    datetimeLimit = now - datetime.timedelta(SETTINGS.session_max_duration_days - 1)
     startOfDay = datetime.datetime.combine(datetimeLimit, datetime.time.min)
     # trovare una sessione con createdAt > datetimeLimit
     try:
@@ -61,9 +55,10 @@ def find_or_create_session(userId: str, now: datetime.datetime):
 
     items = dbResponse.get("Items", [])
     if len(items) == 0:
-        days = int(os.getenv("EXPIRE_DAYS", 90))
-        expires_at = int((now + datetime.timedelta(days=days)).timestamp())
-    
+        expires_at = int(
+            (now + datetime.timedelta(days=SETTINGS.expire_days)).timestamp()
+        )
+
         body = {
             "id": f"{uuid.uuid4()}",
             "title": now.strftime("%Y-%m-%d"),
@@ -132,13 +127,8 @@ def last_session_id(userId: str):
 
 
 def get_user_session(userId: str, sessionId: str) -> dict | None:
-    dbResponse = tables["sessions"].get_item(
-        Key={
-          "userId": userId,
-          "id": sessionId
-        }
-    )
-    item = dbResponse.get('Item')
+    dbResponse = tables["sessions"].get_item(Key={"userId": userId, "id": sessionId})
+    item = dbResponse.get("Item")
     return item if item else None
 
 
