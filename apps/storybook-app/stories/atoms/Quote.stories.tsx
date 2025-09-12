@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/nextjs';
 import Quote from '../../../nextjs-website/src/components/atoms/Quote/Quote';
 
 const meta: Meta<typeof Quote> = {

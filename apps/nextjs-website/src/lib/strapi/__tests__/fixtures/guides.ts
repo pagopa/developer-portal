@@ -24,8 +24,8 @@ export const strapiGuideData = {
           data: {
             attributes: {
               name: 'pagoPA Guide Manual.png',
-              alternativeText: null,
-              caption: null,
+              alternativeText: undefined,
+              caption: undefined,
               width: 1156,
               height: 580,
               ext: '.png',
@@ -39,8 +39,8 @@ export const strapiGuideData = {
           data: {
             attributes: {
               name: 'saci.png',
-              alternativeText: null,
-              caption: null,
+              alternativeText: undefined,
+              caption: undefined,
               width: 1156,
               height: 580,
               ext: '.png',
@@ -97,7 +97,7 @@ export const strapiGuideData = {
           },
         ],
         bannerLinks: [],
-        seo: null,
+        seo: undefined,
         product: {
           data: {
             attributes: {
@@ -216,77 +216,66 @@ export const strapiGuideData = {
                     apiData: {
                       data: [
                         {
-                          id: 156,
                           attributes: {
                             apiRestDetail: undefined,
                             apiSoapDetail: undefined,
                           },
                         },
                         {
-                          id: 158,
                           attributes: {
                             apiRestDetail: undefined,
                             apiSoapDetail: undefined,
                           },
                         },
                         {
-                          id: 157,
                           attributes: {
                             apiRestDetail: undefined,
                             apiSoapDetail: undefined,
                           },
                         },
                         {
-                          id: 159,
                           attributes: {
                             apiRestDetail: undefined,
                             apiSoapDetail: undefined,
                           },
                         },
                         {
-                          id: 160,
                           attributes: {
                             apiRestDetail: undefined,
                             apiSoapDetail: undefined,
                           },
                         },
                         {
-                          id: 170,
                           attributes: {
                             apiRestDetail: undefined,
                             apiSoapDetail: undefined,
                           },
                         },
                         {
-                          id: 167,
                           attributes: {
                             apiRestDetail: undefined,
                             apiSoapDetail: undefined,
                           },
                         },
                         {
-                          id: 168,
                           attributes: {
                             apiRestDetail: undefined,
                             apiSoapDetail: undefined,
                           },
                         },
                         {
-                          id: 164,
                           attributes: {
                             apiRestDetail: undefined,
                             apiSoapDetail: undefined,
                           },
                         },
                         {
-                          id: 161,
                           attributes: {
                             apiRestDetail: undefined,
                             apiSoapDetail: undefined,
                           },
                         },
                         {
-                          id: 162,
                           attributes: {
                             apiRestDetail: undefined,
                             apiSoapDetail: undefined,

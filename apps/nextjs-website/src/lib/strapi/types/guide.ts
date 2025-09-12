@@ -1,48 +1,40 @@
-import * as t from 'io-ts';
-import { StrapiBaseProductWithRelations } from '@/lib/strapi/codecs/ProductCodec';
-import { StrapiBannerLink } from '@/lib/strapi/codecs/BannerLinkCodec';
-import { SEOCodec } from '@/lib/strapi/codecs/SeoCodec';
-import { MediaAttributes } from '@/lib/strapi/types/media';
-import { Pagination } from '@/lib/strapi/types/pagination';
+import { StrapiMedia } from '@/lib/strapi/types/media';
+import { StrapiSeo } from '@/lib/strapi/types/seo';
+import { StrapiBannerLink } from '@/lib/strapi/types/bannerLink';
+import { Paginated } from '@/lib/strapi/types/paginated';
+import { StrapiBaseProductWithRelations } from '@/lib/strapi/types/product';
 
-type GuideVersion = {
+type StrapiGuideVersion = {
   readonly main: boolean;
   readonly dirName: string;
   readonly version: string;
 };
 
-type BaseGuideAttributes = {
-  readonly title: string;
-  readonly slug: string;
-  readonly image: {
-    readonly data: MediaAttributes;
+export type StrapiBaseGuide = {
+  readonly attributes: {
+    readonly title: string;
+    readonly slug: string;
+    readonly image: {
+      readonly data: StrapiMedia;
+    };
+    readonly mobileImage: {
+      readonly data: StrapiMedia;
+    };
+    readonly listItems: ReadonlyArray<{
+      readonly text: string;
+    }>;
   };
-  readonly mobileImage: {
-    readonly data: MediaAttributes;
-  };
-  readonly listItems: ReadonlyArray<{
-    readonly text: string;
-  }>;
 };
 
-export type BaseGuide = {
-  readonly attributes: BaseGuideAttributes;
-};
-
-export type Guide = {
-  readonly attributes: BaseGuideAttributes & {
-    readonly versions: ReadonlyArray<GuideVersion>;
+export type StrapiGuide = StrapiBaseGuide & {
+  readonly attributes: {
+    readonly versions: ReadonlyArray<StrapiGuideVersion>;
     readonly product: {
       readonly data: StrapiBaseProductWithRelations;
     };
     readonly bannerLinks: ReadonlyArray<StrapiBannerLink>;
-    readonly seo: t.TypeOf<typeof SEOCodec> | null;
+    readonly seo?: StrapiSeo;
   };
 };
 
-export type StrapiGuides = {
-  readonly data: ReadonlyArray<Guide>;
-  readonly meta: {
-    readonly pagination: Pagination;
-  };
-};
+export type StrapiGuides = Paginated<StrapiGuide>;

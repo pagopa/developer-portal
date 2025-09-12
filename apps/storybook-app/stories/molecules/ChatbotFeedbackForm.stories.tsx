@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/nextjs';
 import ChatbotFeedbackForm from 'nextjs-website/src/components/molecules/ChatbotFeedbackForm/ChatbotFeedbackForm';
 import { nextIntlContextDecorator } from '../next-intl-context.helper';
 
