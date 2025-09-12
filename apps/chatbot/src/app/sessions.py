@@ -8,7 +8,7 @@ from boto3.dynamodb.conditions import Key
 from botocore.exceptions import BotoCoreError, ClientError
 from fastapi import HTTPException
 
-from src.modules.chatbot import Chatbot
+from src.app.chatbot_init import chatbot
 from src.modules.monitor import add_langfuse_score
 from src.modules.logger import get_logger
 from src.app.models import QueryFeedback, tables
@@ -16,12 +16,11 @@ from src.app.jwt_check import verify_jwt
 
 params = yaml.safe_load(open("config/params.yaml", "r"))
 prompts = yaml.safe_load(open("config/prompts.yaml", "r"))
-chatbot = Chatbot(params, prompts)
 
 LOGGER = get_logger(__name__)
 
 
-def current_user_id(authorization: str) -> str:
+def current_user_id(authorization: str | None = None) -> str:
     if authorization is None:
         LOGGER.error("[current_user_id] Authorization header is missing, exit with 401")
         raise HTTPException(status_code=401, detail="Unauthorized")
@@ -62,11 +61,15 @@ def find_or_create_session(userId: str, now: datetime.datetime):
 
     items = dbResponse.get("Items", [])
     if len(items) == 0:
+        days = int(os.getenv("EXPIRE_DAYS", 90))
+        expires_at = int((now + datetime.timedelta(days=days)).timestamp())
+    
         body = {
             "id": f"{uuid.uuid4()}",
             "title": now.strftime("%Y-%m-%d"),
             "userId": userId,
             "createdAt": now.isoformat(),
+            "expiresAt": expires_at,
         }
         try:
             create_session_record(body)
@@ -84,7 +87,11 @@ def find_or_create_session(userId: str, now: datetime.datetime):
 
 def create_session_record(body: dict):
     saltValue = str(uuid.uuid4())
-    saltBody = {"sessionId": body["id"], "value": saltValue}
+    saltBody = {
+        "sessionId": body["id"],
+        "value": saltValue,
+        "expiresAt": body["expiresAt"],
+    }
     # TODO: transaction https://github.com/boto/boto3/pull/4010
     tables["sessions"].put_item(Item=body)
     tables["salts"].put_item(Item=saltBody)
@@ -124,9 +131,14 @@ def last_session_id(userId: str):
     return items[0].get("id", None) if items else None
 
 
-def get_user_session(userId: str, sessionId: str):
-    dbResponse = tables["sessions"].get_item(Key={"userId": userId, "id": sessionId})
-    item = dbResponse.get("Item")
+def get_user_session(userId: str, sessionId: str) -> dict | None:
+    dbResponse = tables["sessions"].get_item(
+        Key={
+          "userId": userId,
+          "id": sessionId
+        }
+    )
+    item = dbResponse.get('Item')
     return item if item else None
 
 

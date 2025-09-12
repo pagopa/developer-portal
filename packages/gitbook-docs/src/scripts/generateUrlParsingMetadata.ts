@@ -4,12 +4,17 @@
 /* eslint-disable functional/immutable-data */
 /* eslint-disable functional/no-try-statements */
 import dotenv from 'dotenv';
-import { writeFile } from 'fs/promises';
+import { readdir, writeFile } from 'fs/promises';
 import * as fs from 'fs';
-import { readdir } from 'fs/promises';
 import path from 'path';
 import { fetchFromStrapi } from '../helpers/fetchFromStrapi';
-import { StrapiGuide, GuideInfo } from '../helpers/guidesMetadataHelper';
+import {
+  MetadataInfo,
+  MetadataType,
+  StrapiGuide,
+  StrapiReleaseNote,
+  StrapiSolution,
+} from '../helpers/guidesMetadataHelper';
 import { sitePathFromLocalPath } from '../helpers/sitePathFromLocalPath';
 import { DOCUMENTATION_PATH } from '../helpers/documentationParsing.helper';
 // Load environment variables from .env file
@@ -21,22 +26,34 @@ const URL_PARSING_METADATA_JSON_PATH =
 
 export type UrlParsingItem = {
   dirName: string;
-  guides: {
-    guidePath: string;
-    guideUrl: string;
+  docs: {
+    path: string;
+    url: string;
   }[];
 };
 
 export function generateUrlPath(
   filePath: string,
-  guideSlug: string,
-  productSlug: string,
-  versionName?: string
+  slug: string,
+  productSlug?: string,
+  versionName?: string,
+  metadataType: MetadataType = MetadataType.Guide
 ): string {
   const restOfPath = sitePathFromLocalPath(filePath, undefined);
-  return [`/${productSlug}`, 'guides', guideSlug, versionName, restOfPath]
-    .filter(Boolean)
-    .join('/');
+  switch (metadataType) {
+    case MetadataType.Guide:
+      return [`/${productSlug}`, 'guides', slug, versionName, restOfPath]
+        .filter(Boolean)
+        .join('/');
+    case MetadataType.Solution:
+      return ['/solutions', slug, 'details', restOfPath]
+        .filter(Boolean)
+        .join('/');
+    case MetadataType.ReleaseNote:
+      return [`/${productSlug}`, 'release-note', slug, restOfPath]
+        .filter(Boolean)
+        .join('/');
+  }
 }
 
 async function getMarkdownFilesRecursively(dir: string): Promise<string[]> {
@@ -57,50 +74,82 @@ async function getMarkdownFilesRecursively(dir: string): Promise<string[]> {
 
   return files.flat();
 }
-async function convertGuideToUrlParsingItems(
-  strapiGuides: StrapiGuide[]
+async function convertDocToUrlParsingItems(
+  strapiGuides: StrapiGuide[],
+  strapiSolutions: StrapiSolution[],
+  strapiReleaseNotes: StrapiReleaseNote[]
 ): Promise<UrlParsingItem[]> {
-  const guideInfoList: GuideInfo[] = strapiGuides
+  const guideInfoList: MetadataInfo[] = strapiGuides
     .filter((guide) => !!guide.attributes.product?.data?.attributes?.slug)
     .flatMap((guide) =>
       guide.attributes.versions.map((version) => ({
         versionName: version.version,
         isMainVersion: version.main,
         dirName: version.dirName,
-        guideSlug: guide.attributes.slug,
+        slug: guide.attributes.slug,
         productSlug: `${guide.attributes.product?.data?.attributes?.slug}`,
+        metadataType: MetadataType.Guide,
       }))
     );
+  const solutionInfoList: MetadataInfo[] = strapiSolutions
+    .filter((solution) => !!solution.attributes.dirName)
+    .map((solution) => ({
+      versionName: '',
+      isMainVersion: true,
+      dirName: solution.attributes.dirName,
+      slug: solution.attributes.slug,
+      productSlug: '',
+      metadataType: MetadataType.Solution,
+    }));
+  const releaseNoteInfoList: MetadataInfo[] = strapiReleaseNotes
+    .filter((releaseNote) => !!releaseNote.attributes.dirName)
+    .map((releaseNote) => ({
+      versionName: '',
+      isMainVersion: true,
+      dirName: releaseNote.attributes.dirName,
+      slug: releaseNote.attributes.slug,
+      productSlug:
+        releaseNote.attributes.product?.data?.attributes?.slug ||
+        'release-notes',
+      metadataType: MetadataType.ReleaseNote,
+    }));
+
+  const infoList = [
+    guideInfoList,
+    solutionInfoList,
+    releaseNoteInfoList,
+  ].flat();
 
   const items: UrlParsingItem[] = [];
-  for (const guideInfo of guideInfoList) {
-    if (guideInfo.dirName) {
-      const guideDir = path.join(DOCUMENTATION_PATH, guideInfo.dirName);
-      if (!fs.existsSync(guideDir)) {
-        console.warn(`Directory does not exist: ${guideDir}`);
+  for (const docInfo of infoList) {
+    if (docInfo.dirName) {
+      const docDir = path.join(DOCUMENTATION_PATH, docInfo.dirName);
+      if (!fs.existsSync(docDir)) {
+        console.warn(`Directory does not exist: ${docDir}`);
         continue;
       }
-      const guideFiles = await getMarkdownFilesRecursively(guideDir);
-      const item = {
-        dirName: guideInfo.dirName,
-        guides: [] as { guidePath: string; guideUrl: string }[],
+      const docFiles = await getMarkdownFilesRecursively(docDir);
+      const item: UrlParsingItem = {
+        dirName: docInfo.dirName,
+        docs: [],
       };
-      for (const filePath of guideFiles) {
+      for (const filePath of docFiles) {
         const parts = filePath.split('/');
         if (parts.length <= 2) {
           continue;
         }
         if (!fs.existsSync(filePath)) continue;
 
-        const path = generateUrlPath(
+        const urlPath = generateUrlPath(
           filePath,
-          guideInfo.guideSlug,
-          guideInfo.productSlug,
-          guideInfo.versionName
+          docInfo.slug,
+          docInfo.productSlug,
+          docInfo.versionName,
+          docInfo.metadataType
         );
-        item.guides.push({
-          guidePath: filePath || '',
-          guideUrl: path,
+        item.docs.push({
+          path: filePath || '',
+          url: urlPath,
         });
       }
       items.push(item);
@@ -110,20 +159,53 @@ async function convertGuideToUrlParsingItems(
 }
 
 async function main() {
+  console.log('Starting to process Markdown files...');
+  // eslint-disable-next-line functional/no-let
+  let strapiGuides;
   try {
-    console.log(__dirname);
-    console.log('Starting to process Markdown files...');
-
-    const strapiGuides = await fetchFromStrapi<StrapiGuide>(
+    const { data } = await fetchFromStrapi<StrapiGuide>(
       'api/guides?populate[0]=product&populate[1]=versions&pagination[pageSize]=1000&pagination[page]=1'
     );
-    console.log(`Fetched ${strapiGuides.data.length} guides from Strapi`);
-
-    const urlParsingItems = await convertGuideToUrlParsingItems(
-      strapiGuides.data
+    strapiGuides = data;
+    console.log(`Fetched ${strapiGuides.length} guides from Strapi`);
+  } catch (error) {
+    console.error('Error fetching solutions from Strapi:', error);
+    process.exit(1);
+  }
+  // eslint-disable-next-line functional/no-let
+  let strapiSolutions;
+  try {
+    const { data } = await fetchFromStrapi<StrapiSolution>(
+      'api/solutions?pagination[pageSize]=1000&pagination[page]=1'
+    );
+    strapiSolutions = data;
+    console.log(`Fetched ${strapiSolutions.length} solutions from Strapi`);
+  } catch (error) {
+    console.error('Error fetching solutions from Strapi:', error);
+    process.exit(1);
+  }
+  // eslint-disable-next-line functional/no-let
+  let strapiReleaseNotes;
+  try {
+    const { data } = await fetchFromStrapi<StrapiReleaseNote>(
+      'api/release-notes?populate[0]=product&pagination[pageSize]=1000&pagination[page]=1'
+    );
+    strapiReleaseNotes = data;
+    console.log(
+      `Fetched ${strapiReleaseNotes.length} release notes from Strapi`
+    );
+  } catch (error) {
+    console.error('Error fetching release notes from Strapi:', error);
+    process.exit(1);
+  }
+  try {
+    const urlParsingItems = await convertDocToUrlParsingItems(
+      strapiGuides,
+      strapiSolutions,
+      strapiReleaseNotes
     );
     console.log(
-      `Converted guides to ${urlParsingItems.length} url parsing items`
+      `Converted docs to ${urlParsingItems.length} url parsing items`
     );
     await writeFile(
       URL_PARSING_METADATA_JSON_PATH,

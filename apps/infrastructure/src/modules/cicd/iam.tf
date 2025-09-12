@@ -7,27 +7,6 @@ resource "aws_iam_policy" "deploy_website" {
     Statement = concat([
       {
         Action = [
-          "s3:PutObject",
-          "s3:GetObject",
-          "s3:PutObjectAcl",
-          "s3:DeleteObject"
-        ]
-        Effect = "Allow"
-        Resource = [
-          format("%s/*", var.website_bucket.arn)
-        ]
-      },
-      {
-        Action = [
-          "s3:ListBucket"
-        ]
-        Effect = "Allow"
-        Resource = [
-          var.website_bucket.arn
-        ]
-      },
-      {
-        Action = [
           "ssm:GetParameter",
           "ssm:PutParameter"
         ]
@@ -41,15 +20,7 @@ resource "aws_iam_policy" "deploy_website" {
         ]
         Resource = ["arn:aws:lambda:${var.aws_region}:${data.aws_caller_identity.current.account_id}:function:*chatbot*"]
       }
-      ], var.website_is_standalone ? [] : [{
-        Action = [
-          "cloudfront:CreateInvalidation"
-        ]
-        Effect = "Allow"
-        Resource = [
-          var.website_cdn.arn
-        ]
-    }])
+    ])
   })
 }
 
@@ -130,6 +101,11 @@ resource "aws_iam_role_policy_attachment" "github_deploy_opennext" {
   policy_arn = aws_iam_policy.github_deploy_opennext.arn
 }
 
+resource "aws_iam_role_policy_attachment" "code_build_deploy_opennext" {
+  role       = module.codebuild.iam_role.name
+  policy_arn = aws_iam_policy.github_deploy_opennext.arn
+}
+
 resource "aws_iam_role" "github_chatbot_reindex" {
   name               = "${local.prefix}-chatbot-reindex"
   description        = "Role to reindex chatbot data."
@@ -155,7 +131,6 @@ resource "aws_iam_policy" "github_chatbot_reindex" {
         Effect = "Allow"
         Resource = [
           "${var.assets_opennext_bucket.arn}/*",
-          "${var.website_bucket.arn}/*",
           "${var.website_standalone_bucket.arn}/*"
         ]
       },
@@ -166,7 +141,6 @@ resource "aws_iam_policy" "github_chatbot_reindex" {
         Effect = "Allow"
         Resource = [
           var.assets_opennext_bucket.arn,
-          var.website_bucket.arn,
           var.website_standalone_bucket.arn
         ]
       },

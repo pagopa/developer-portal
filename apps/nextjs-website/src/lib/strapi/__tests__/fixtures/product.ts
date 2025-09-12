@@ -1,5 +1,6 @@
 import { mediaVectorJson } from './media';
 import { bannerLinksJson } from '@/lib/strapi/__tests__/fixtures/bannerLinksJson';
+import { Product } from '@/lib/types/product';
 
 export const baseProductJson = {
   data: {
@@ -40,3 +41,99 @@ export const productJson = {
 export const productsJson = {
   data: [productJson.data],
 };
+
+export const product = {
+  apiDataListPageUrl: '/pago-pa/api',
+  name: 'Piattaforma pagoPA',
+  slug: 'pago-pa',
+  shortName: 'pagoPA',
+  description: undefined,
+  hasApiDataListPage: true,
+  hasGuideListPage: true,
+  hasOverviewPage: true,
+  hasQuickstartGuidePage: true,
+  hasReleaseNotePage: false,
+  hasTutorialListPage: true,
+  bannerLinks: [
+    {
+      title: 'Serve aiuto?',
+      content: [
+        {
+          type: 'paragraph',
+          children: [
+            {
+              text: 'Apri un ticket utilizzando l’apposita funzione all’interno della tua ',
+              type: 'text',
+            },
+            {
+              url: 'https://selfcare.pagopa.it/auth/login?onSuccess=%2F',
+              type: 'link',
+              children: [
+                {
+                  text: 'Area Riservata',
+                  type: 'text',
+                },
+              ],
+            },
+            {
+              text: '',
+              type: 'text',
+            },
+          ],
+        },
+      ],
+      theme: 'dark',
+      icon: {
+        name: 'headset_78d50d9321_5bd20d1a6b.svg',
+        alternativeText: undefined,
+        caption: undefined,
+        width: 24,
+        height: 24,
+        ext: '.svg',
+        mime: 'image/svg+xml',
+        size: 0.31,
+        url: 'http://0.0.0.0:1337/uploads/headset_78d50d9321_5bd20d1a6b_6d5b8d3ee1.svg',
+      },
+    },
+    {
+      title: 'Dicci cosa ne pensi',
+      content: [
+        {
+          type: 'paragraph',
+          children: [
+            {
+              text: 'Per chiarimenti sulle specifiche d’implementazione, come SACI e SANP, puoi aprire una segnalazione su ',
+              type: 'text',
+            },
+            {
+              url: 'https://github.com/pagopa/pagopa-api/issues',
+              type: 'link',
+              children: [
+                {
+                  text: 'GitHub',
+                  type: 'text',
+                },
+              ],
+            },
+            {
+              text: '',
+              type: 'text',
+            },
+          ],
+        },
+      ],
+      theme: 'light',
+      icon: {
+        name: 'feedback_1504fc4fbf.svg',
+        alternativeText: undefined,
+        caption: undefined,
+        width: 24,
+        height: 24,
+        ext: '.svg',
+        mime: 'image/svg+xml',
+        size: 0.26,
+        url: 'http://0.0.0.0:1337/uploads/feedback_1504fc4fbf_042ed8f78b.svg',
+      },
+    },
+  ],
+} satisfies Product;

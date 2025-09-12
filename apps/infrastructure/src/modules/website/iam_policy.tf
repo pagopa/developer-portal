@@ -45,7 +45,6 @@ resource "aws_iam_policy" "deploy_website" {
         ]
         Effect = "Allow"
         Resource = [
-          format("%s/*", aws_s3_bucket.website.arn),
           format("%s/*", aws_s3_bucket.website_standalone.arn)
         ]
       },
@@ -55,7 +54,6 @@ resource "aws_iam_policy" "deploy_website" {
         ]
         Effect = "Allow"
         Resource = [
-          aws_s3_bucket.website.arn,
           aws_s3_bucket.website_standalone.arn
         ]
       },
@@ -67,38 +65,23 @@ resource "aws_iam_policy" "deploy_website" {
         Resource = [
           "arn:aws:lambda:${var.aws_region}:${data.aws_caller_identity.current.account_id}:function:ac-${var.environment}-*"
         ]
-      }
-      ], (!var.website_is_standalone ? [{
+      },
+      {
         Action = [
-          "cloudfront:CreateInvalidation"
+          "cloudfront:CreateInvalidation",
         ]
         Effect = "Allow"
         Resource = [
-          aws_cloudfront_distribution.website.arn,
           aws_cloudfront_distribution.static_contents.arn,
         ]
-    }] : []))
+      },
+    ])
   })
-}
-
-data "aws_iam_policy_document" "website_iam_policy" {
-  statement {
-    actions = ["s3:GetObject", "s3:ListBucket"]
-    resources = [
-      aws_s3_bucket.website.arn,
-      "${aws_s3_bucket.website.arn}/*"
-    ]
-
-    principals {
-      type        = "AWS"
-      identifiers = [aws_cloudfront_origin_access_identity.main.iam_arn]
-    }
-  }
 }
 
 data "aws_iam_policy_document" "website_standalone_iam_policy" {
   statement {
-    actions = ["s3:GetObject", "s3:ListBucket"]
+    actions = ["s3:GetObject"]
     resources = [
       aws_s3_bucket.website_standalone.arn,
       "${aws_s3_bucket.website_standalone.arn}/*"

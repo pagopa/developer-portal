@@ -1,4 +1,4 @@
-import { StrapiUrlReplaceMap } from '../codecs/UrlReplaceMapCodec';
+import { StrapiUrlReplaceMap } from '@/lib/strapi/types/urlReplaceMap';
 
 export type UrlReplaceMap = Record<string, string>;
 
