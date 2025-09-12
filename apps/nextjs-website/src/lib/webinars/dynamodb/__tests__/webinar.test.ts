@@ -1,5 +1,5 @@
-import { WebinarQuestionUpdate } from '../../webinarQuestions';
-import * as codec from '../codec';
+import { WebinarQuestionUpdate } from '@/lib/webinars/webinarQuestions';
+import { makeDynamodbUpdateFromWebinarQuestionUpdate } from '@/lib/webinars/dynamodb/webinar';
 
 const aWebinarQuestionId = {
   slug: 'aWebinarId',
@@ -21,7 +21,7 @@ describe('makeDynamodbUpdateFromWebinarQuestionUpdate', () => {
         },
       },
     };
-    const actual = codec.makeDynamodbUpdateFromWebinarQuestionUpdate(update);
+    const actual = makeDynamodbUpdateFromWebinarQuestionUpdate(update);
 
     expect(actual).toStrictEqual({
       Key: {
@@ -50,7 +50,7 @@ describe('makeDynamodbUpdateFromWebinarQuestionUpdate', () => {
         },
       },
     };
-    const actual = codec.makeDynamodbUpdateFromWebinarQuestionUpdate(update);
+    const actual = makeDynamodbUpdateFromWebinarQuestionUpdate(update);
 
     expect(actual).toStrictEqual({
       Key: {

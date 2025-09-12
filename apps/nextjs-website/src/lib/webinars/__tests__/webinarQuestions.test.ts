@@ -11,7 +11,7 @@ import {
   QueryCommand,
   UpdateItemCommand,
 } from '@aws-sdk/client-dynamodb';
-import { makeDynamodbItemFromWebinarQuestion } from '../dynamodb/codec';
+import { makeDynamodbItemFromWebinarQuestion } from '../dynamodb/webinar';
 
 const aWebinarQuestion = {
   id: {
