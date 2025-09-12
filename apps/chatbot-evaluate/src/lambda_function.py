@@ -2,6 +2,7 @@ import json
 
 from src.modules.judge import Judge
 from src.modules.logger import get_logger
+from src.modules.sqs_init import sqs_queue_evaluate
 
 LOGGER = get_logger(__name__)
 JUDGE = Judge()
@@ -68,5 +69,6 @@ def lambda_handler(event, context):
                 messages=body.get("messages", None),
             )
         )
+        sqs_queue_evaluate.delete_message(ReceiptHandle=record.get("receiptHandle", ""))
 
     return {"statusCode": 200, "result": results, "event": event}
