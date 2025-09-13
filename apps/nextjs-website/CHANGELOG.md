@@ -1,5 +1,19 @@
 # nextjs-website
 
+## 8.6.0
+
+### Minor Changes
+
+- 873af05: Add Webinars type and a new makeWebinarsProps using it and add tests for the new makeWebinars function
+
+### Patch Changes
+
+- a5594c3: Add new fetchFromStrapi and set the old one as deprecated. Remove the guides codec and add ts type instead
+- ca0f653: Remove overviews codec and add strapi overviews type
+- Updated dependencies [36db54a]
+- Updated dependencies [7058218]
+  - gitbook-docs@1.0.3
+
 ## 8.5.3
 
 ### Patch Changes

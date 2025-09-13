@@ -1,5 +1,12 @@
 # gitbook-docs
 
+## 1.0.3
+
+### Patch Changes
+
+- 36db54a: Update storybook version, fix issues with update
+- 7058218: Fix UrlParsingItem type
+
 ## 1.0.2
 
 ### Patch Changes

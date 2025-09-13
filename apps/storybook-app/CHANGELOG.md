@@ -1,5 +1,11 @@
 # storybook-app
 
+## 1.0.0
+
+### Major Changes
+
+- 36db54a: Update storybook version, fix issues with update
+
 ## 0.16.1
 
 ### Patch Changes
