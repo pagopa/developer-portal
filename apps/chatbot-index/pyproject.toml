@@ -1,0 +1,31 @@
+[tool.poetry]
+description = "Chatbot index creation and update"
+name = "chatbot"
+package-mode = false
+readme = "README.md"
+version = "0.1.0"
+
+[tool.poetry.dependencies]
+boto3 = "^1.40.18"
+html2text = "^2025.4.15"
+llama-index = "^0.13.3"
+llama-index-embeddings-google-genai = "^0.3.0"
+llama-index-llms-google-genai = "^0.3.0"
+llama-index-storage-docstore-redis = "^0.4.0"
+llama-index-storage-index-store-redis = "^0.5.0"
+llama-index-vector-stores-redis = "^0.6.0"
+pydantic-settings = "^2.10.1"
+python = ">=3.12,<3.14"
+pyyaml = "^6.0.2"
+selenium = "^4.35.0"
+
+[tool.poetry.group.test.dependencies]
+httpx = "^0.28.1"
+pytest = "^8.3.5"
+
+[tool.poetry.group.dev.dependencies]
+jupyter = "^1.1.1"
+
+[build-system]
+build-backend = "poetry.core.masonry.api"
+requires = ["poetry-core"]
