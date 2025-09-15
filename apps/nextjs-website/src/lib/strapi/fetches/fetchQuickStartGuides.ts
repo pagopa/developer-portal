@@ -1,7 +1,7 @@
 import * as qs from 'qs';
 import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
-import { QuickStartGuidesCodec } from '@/lib/strapi/codecs/QuickStartGuidesCodec';
-import { productRelationsPopulate } from './fetchProducts';
+import { productRelationsPopulate } from '@/lib/strapi/fetches/fetchProducts';
+import { StrapiQuickStartGuides } from '@/lib/strapi/types/quickStartGuides';
 
 const makeStrapiQuickStartGuidesPopulate = () =>
   qs.stringify({
@@ -22,8 +22,7 @@ const makeStrapiQuickStartGuidesPopulate = () =>
     },
   });
 
-export const fetchQuickStartGuides = fetchFromStrapi(
+export const fetchQuickStartGuides = fetchFromStrapi<StrapiQuickStartGuides>(
   'quickstart-guides',
-  makeStrapiQuickStartGuidesPopulate(),
-  QuickStartGuidesCodec
+  makeStrapiQuickStartGuidesPopulate()
 );

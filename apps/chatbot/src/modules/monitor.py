@@ -82,6 +82,7 @@ def add_langfuse_score(
     trace_id: str,
     name: str,
     value: float,
+    score_id: str | None = None,
     comment: str | None = None,
     data_type: Literal["NUMERIC", "BOOLEAN"] | None = None,
 ) -> None:
@@ -99,7 +100,7 @@ def add_langfuse_score(
         None
     """
 
-    if value is None or np.isnan(value):
+    if value is None or (isinstance(value, float) and np.isnan(value)):
         LOGGER.warning(
             f"Value for score {name} is None or NaN, setting to 0.0 for trace {trace_id}."
         )
@@ -107,9 +108,24 @@ def add_langfuse_score(
     else:
         value = float(value)
 
+    found_score = False
+    if score_id is None:
+        trace = get_trace(trace_id)
+        for score in trace.scores:
+            if score.name == name:
+                score_id = score.id
+                found_score = True
+                break
+
+        if not found_score:
+            score_id = str(uuid.uuid4())
+    else:
+        found_score = True
+
     try:
         LANGFUSE_CLIENT.score(
             trace_id=trace_id,
+            id=score_id,
             name=name,
             value=value,
             data_type=data_type,
@@ -117,7 +133,10 @@ def add_langfuse_score(
         )
         LANGFUSE_CLIENT.flush()
 
-        LOGGER.info(f"Added {name} score with value {value} in trace {trace_id}.")
+        if found_score:
+            LOGGER.info(f"Updated {name} score with value {value} in trace {trace_id}.")
+        else:
+            LOGGER.info(f"Added {name} score with value {value} in trace {trace_id}.")
     except Exception as e:
         LOGGER.error(
             f"Error adding {name} score with value {value} to trace {trace_id}: {e}."

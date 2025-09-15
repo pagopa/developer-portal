@@ -107,9 +107,12 @@ module "website" {
     location        = var.aws_region
     app_name        = "website"
     instance_number = "01"
+    region          = var.aws_region
   }
 
   next_cms_interlan_alb_dns_name = module.cms.internal_load_balancer.dns_name
+
+  next_public_feedback_form_enabled = true
 
   vpc = {
     id              = module.cms.vpc.id

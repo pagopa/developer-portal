@@ -1,5 +1,5 @@
-import { fetchFromStrapi } from '../fetchFromStrapi';
-import { UrlReplaceMapCodec } from '../codecs/UrlReplaceMapCodec';
+import { StrapiUrlReplaceMap } from '@/lib/strapi/types/urlReplaceMap';
+import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
 import qs from 'qs';
 
 const makeStrapiUrlReplaceMapPopulate = () =>
@@ -15,8 +15,7 @@ const makeStrapiUrlReplaceMapPopulate = () =>
     },
   });
 
-export const fetchUrlReplaceMap = fetchFromStrapi(
+export const fetchUrlReplaceMap = fetchFromStrapi<StrapiUrlReplaceMap>(
   'url-replace-map',
-  makeStrapiUrlReplaceMapPopulate(),
-  UrlReplaceMapCodec
+  makeStrapiUrlReplaceMapPopulate()
 );
