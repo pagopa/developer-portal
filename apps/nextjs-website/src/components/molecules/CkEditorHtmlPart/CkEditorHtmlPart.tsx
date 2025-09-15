@@ -4,22 +4,22 @@ import { Box, useTheme } from '@mui/material';
 import { SITE_HEADER_HEIGHT } from '@/components/molecules/SiteHeader/SiteHeader';
 import { PRODUCT_HEADER_HEIGHT } from '@/components/atoms/ProductHeader/ProductHeader';
 
-export type CkEditorMenuItem = {
+export type CkEditorHtmlMenuItem = {
   title: string;
   href: string;
   level: number;
 };
 
-export type CkEditorPartProps = {
+export type CkEditorHtmlPartProps = {
   content: string;
-  menuItems: CkEditorMenuItem[];
+  menuItems: CkEditorHtmlMenuItem[];
 };
 
-const CkEditorPart = ({ content }: CkEditorPartProps) => {
+const CkEditorHtmlPart = ({ content }: CkEditorHtmlPartProps) => {
   const { palette, typography } = useTheme();
   const scrollOffset = SITE_HEADER_HEIGHT + PRODUCT_HEADER_HEIGHT;
 
-  const ckEditorStyles = {
+  const ckEditorHtmlStyles = {
     '&': {
       fontSize: '1rem',
     },
@@ -135,9 +135,9 @@ const CkEditorPart = ({ content }: CkEditorPartProps) => {
   return (
     <Box
       dangerouslySetInnerHTML={{ __html: content }}
-      sx={ckEditorStyles}
+      sx={ckEditorHtmlStyles}
     ></Box>
   );
 };
 
-export default CkEditorPart;
+export default CkEditorHtmlPart;

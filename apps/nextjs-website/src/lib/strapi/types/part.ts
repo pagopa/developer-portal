@@ -22,11 +22,6 @@ type ApiTesterPart = {
   readonly __component: 'parts.api-tester';
 };
 
-type CkEditorPart = {
-  readonly content: string;
-  readonly __component: 'parts.ck-editor';
-};
-
 type CkEditorHtmlPart = {
   readonly content: string;
   readonly __component: 'parts.ck-editor-html';
@@ -60,7 +55,6 @@ type QuotePart = {
 export type StrapiPart =
   | AlertPart
   | ApiTesterPart
-  | CkEditorPart
   | CodeBlockPart
   | EmbedHtmlPart
   | HtmlPart

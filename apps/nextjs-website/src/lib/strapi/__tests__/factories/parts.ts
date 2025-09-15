@@ -53,9 +53,9 @@ export function minimalQuotePart(): StrapiPart {
   };
 }
 
-export function minimalCkEditorPart(): StrapiPart {
+export function minimalCkEditorHtmlPart(): StrapiPart {
   return {
-    __component: 'parts.ck-editor',
+    __component: 'parts.ck-editor-html',
     content: '',
   };
 }

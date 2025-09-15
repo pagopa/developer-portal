@@ -1,14 +1,14 @@
-import { CkEditorMenuItem } from '@/components/molecules/CkEditorPart/CkEditorPart';
+import { CkEditorHtmlMenuItem } from '@/components/molecules/CkEditorHtmlPart/CkEditorHtmlPart';
 import { JSDOM } from 'jsdom';
 import { generateIdFromString } from '@/helpers/anchor.helpers';
 import DOMPurify from 'isomorphic-dompurify';
 
-export function parseCkEditorContent(content: string): {
+export function parseCkEditorHtmlContent(content: string): {
   readonly parsedContent: string;
-  readonly menuItems: readonly CkEditorMenuItem[];
+  readonly menuItems: readonly CkEditorHtmlMenuItem[];
 } {
   // eslint-disable-next-line
-  const menuItems: CkEditorMenuItem[] = [];
+  const menuItems: CkEditorHtmlMenuItem[] = [];
   const dom = new JSDOM(content);
 
   // eslint-disable-next-line functional/no-expression-statements
