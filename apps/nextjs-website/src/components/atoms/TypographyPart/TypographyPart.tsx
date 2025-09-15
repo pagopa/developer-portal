@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 import { SxProps, Theme, Typography, useTheme } from '@mui/material';
-import { Variant } from '@mui/material/styles/createTypography';
+import type { TypographyVariant } from '@mui/material/styles';
 
 export type TypographyPartProps = {
   color?: string;
@@ -9,7 +9,7 @@ export type TypographyPartProps = {
   fontWeight?: string;
   sx?: SxProps<Theme>;
   style?: React.CSSProperties;
-  variant?: Variant | 'inherit';
+  variant?: TypographyVariant | 'inherit';
   text: string;
   asHtml?: boolean;
 };

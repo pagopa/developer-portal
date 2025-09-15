@@ -5,7 +5,7 @@ import { BlocksContent } from '@strapi/blocks-react-renderer';
 import BlocksRendererClient from '@/components/molecules/BlocksRendererClient/BlocksRendererClient';
 import Image from 'next/image';
 import { ReactNode } from 'react';
-import { Variant } from '@mui/material/styles/createTypography';
+import type { TypographyVariant } from '@mui/material/styles';
 
 export interface FeatureItem {
   iconName?: string;
@@ -23,7 +23,7 @@ interface FeatureStackItemProps {
   item: FeatureItem;
   theme: 'dark' | 'light';
   useDarkTheme?: boolean;
-  variant?: Variant;
+  variant?: TypographyVariant;
 }
 
 export const FeatureStackItem = ({

@@ -1,5 +1,5 @@
 import Box from '@mui/material/Box';
-import Container from '@mui/material/Container/Container';
+import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import { ImageProps } from 'gitbook-docs/markdoc/schema/image';
 

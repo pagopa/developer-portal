@@ -161,7 +161,7 @@ const SignUpForm = ({
     <Box component='section'>
       <Card variant='elevation' elevation={8}>
         <Grid container justifyContent='center'>
-          <Grid item xs={11}>
+          <Grid size={{ xs: 11 }}>
             <Typography variant='h4' pt={4} mb={4} textAlign='center'>
               {t('auth.signUp.createYourAccount')}
             </Typography>
@@ -170,7 +170,7 @@ const SignUpForm = ({
             </Typography>
             <Box component='form' display='flex' flexDirection='column' gap={2}>
               <Grid container spacing={2}>
-                <Grid item xs={6}>
+                <Grid size={{ xs: 6 }}>
                   <TextField
                     error={!!fieldErrors.name}
                     helperText={fieldErrors.name}
@@ -187,7 +187,7 @@ const SignUpForm = ({
                     onChange={handleInputChange}
                   />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid size={{ xs: 6 }}>
                   <TextField
                     error={!!fieldErrors.surname}
                     helperText={fieldErrors.surname}

@@ -35,7 +35,7 @@ const DownloadableDocuments = ({ documents }: DownloadableDocumentsProps) => {
           <Grid container spacing={3}>
             {documents.map(({ title, tags, downloadLink, size }, index) => {
               return (
-                <Grid key={index} item xs={12} md={3}>
+                <Grid key={index} size={{ xs: 12, md: 3 }}>
                   <CtaCard
                     title={title}
                     titleStyle={{

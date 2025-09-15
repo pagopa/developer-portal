@@ -158,10 +158,10 @@ const WebinarCard = ({
           <Box width={{ md: '45%' }}>
             <Typography
               my={2}
-              color={theme.palette.text.primary}
               fontSize={14}
               fontWeight={700}
               textTransform={'uppercase'}
+              sx={{ color: theme.palette.text.primary }}
             >
               {t('speakers')}
             </Typography>

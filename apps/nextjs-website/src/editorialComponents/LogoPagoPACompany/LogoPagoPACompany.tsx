@@ -32,7 +32,7 @@ export const LogoPagoPACompany = ({
   size = 120,
   color = 'default',
   variant = 'default',
-}: LogoPagoPACompanyProps): JSX.Element => (
+}: LogoPagoPACompanyProps): React.JSX.Element => (
   <StyledSvg
     viewBox='0 0 119 33'
     focusable='false'

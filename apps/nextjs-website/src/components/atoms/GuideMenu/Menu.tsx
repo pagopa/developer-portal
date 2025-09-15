@@ -3,7 +3,8 @@ import NextLink from 'next/link';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
-import { TreeItem, TreeView, treeItemClasses } from '@mui/lab';
+import { TreeItem, treeItemClasses } from '@mui/x-tree-view/TreeItem';
+import { SimpleTreeView } from '@mui/x-tree-view/SimpleTreeView';
 import { styled } from '@mui/material/styles';
 import { RenderingComponents, renderMenu } from 'gitbook-docs/renderMenu';
 import { parseMenu } from 'gitbook-docs/parseMenu';
@@ -61,14 +62,6 @@ const StyledTreeItem = styled(TreeItem)(({ theme }) => ({
   ['& a']: {
     paddingLeft: 'calc(1px * var(--x))',
   },
-  [`& .${treeItemClasses.group}`]: {
-    marginLeft: 0,
-    marginRight: 0,
-  },
-  [`& .${treeItemClasses.group} .${treeItemClasses.label}`]: {
-    paddingLeft: 0,
-    paddingRight: 0,
-  },
   [`& .${treeItemClasses.label}`]: {
     padding: 0,
     paddingLeft: 0,
@@ -110,10 +103,8 @@ const components: RenderingComponents<React.ReactNode> = {
     return (
       <StyledTreeItem
         key={href}
-        nodeId={href}
+        itemId={href}
         label={label}
-        disabled={false}
-        icon={href.startsWith('http') ? <OpenInNewIcon /> : undefined}
       >
         {children}
       </StyledTreeItem>
@@ -176,14 +167,16 @@ const GuideMenuItems = ({
       {versions && versionName && (
         <GuideVersionSelector versions={versions} versionName={versionName} />
       )}
-      <TreeView
-        defaultCollapseIcon={<ExpandLessIcon />}
-        defaultExpanded={expanded}
-        selected={currentPath}
-        defaultExpandIcon={<ExpandMoreIcon />}
+      <SimpleTreeView
+        defaultExpandedItems={expanded}
+        defaultSelectedItems={currentPath}
+        slots={{
+          collapseIcon: ExpandLessIcon,
+          expandIcon: ExpandMoreIcon
+        }}
       >
         {children}
-      </TreeView>
+      </SimpleTreeView>
     </>
   );
 };

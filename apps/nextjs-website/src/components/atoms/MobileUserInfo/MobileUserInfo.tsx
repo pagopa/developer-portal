@@ -76,7 +76,7 @@ const MobileUserInfo = ({ onClick }: MobileUserInfoProps) => {
       )}
       {user && (
         <MobileSiteHeaderStyledTreeItem
-          nodeId={'siteHeader.userInfo'}
+          itemId={'siteHeader.userInfo'}
           label={
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
               <PersonOutline

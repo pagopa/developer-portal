@@ -86,7 +86,7 @@ const ChangePasswordForm = ({
     >
       <Card variant='elevation' elevation={8}>
         <Grid container justifyContent='center'>
-          <Grid item xs={10}>
+          <Grid size={{ xs: 10 }}>
             <Stack pt={4} display='flex' alignItems='center'>
               <IllusDataSecurity />
             </Stack>

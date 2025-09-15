@@ -59,9 +59,10 @@ const CardsGrid = ({
               return (
                 <Grid
                   key={index}
-                  item
-                  xs={cardSize?.xs || 12}
-                  md={cardSize?.md || 6}
+                  size={{
+                    xs: (cardSize?.xs as any) || 12,
+                    md: (cardSize?.md as any) || 6
+                  }}
                 >
                   <CtaCard
                     comingSoon={comingSoon}

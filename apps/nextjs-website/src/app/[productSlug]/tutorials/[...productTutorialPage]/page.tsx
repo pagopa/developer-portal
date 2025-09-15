@@ -19,10 +19,11 @@ type Params = {
 export async function generateMetadata({
   params,
 }: {
-  params: Params;
+  params: Promise<Params>;
 }): Promise<Metadata | undefined> {
-  const productSlug = params?.productSlug;
-  const tutorialPath = params?.productTutorialPage?.join('/');
+  const resolvedParams = await params;
+  const productSlug = resolvedParams?.productSlug;
+  const tutorialPath = resolvedParams?.productTutorialPage?.join('/');
   const tutorialProps = await getTutorial(productSlug, [tutorialPath]);
   if (tutorialProps) {
     const { title, path, seo } = tutorialProps;
@@ -38,9 +39,10 @@ export async function generateMetadata({
   }
 }
 
-const Page = async ({ params }: { params: Params }) => {
-  const productSlug = params?.productSlug;
-  const tutorialPath = params?.productTutorialPage?.join('/');
+const Page = async ({ params }: { params: Promise<Params> }) => {
+  const resolvedParams = await params;
+  const productSlug = resolvedParams?.productSlug;
+  const tutorialPath = resolvedParams?.productTutorialPage?.join('/');
 
   const strapiTutorialProps = await getTutorial(productSlug, [tutorialPath]);
 
@@ -51,7 +53,7 @@ const Page = async ({ params }: { params: Params }) => {
         name: strapiTutorialProps.seo?.metaTitle || strapiTutorialProps.title,
         item: breadcrumbItemByProduct(strapiTutorialProps.product, [
           'guides',
-          ...(params?.productTutorialPage || []),
+          ...(resolvedParams?.productTutorialPage || []),
         ]),
       },
     ],

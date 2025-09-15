@@ -53,8 +53,7 @@ const SolutionPreviewCard = ({
           <Stack spacing={1}>
             <Typography
               variant='sidenav'
-              color={(theme) => theme.palette.action.active}
-              sx={{ fontWeight: 700 }}
+              sx={{ fontWeight: 700, color: (theme) => theme.palette.action.active }}
             >
               {header}
             </Typography>

@@ -55,17 +55,18 @@ export async function generateStaticParams(): Promise<
 export async function generateMetadata({
   params,
 }: {
-  params: ReleaseNotePageStaticParams;
+  params: Promise<ReleaseNotePageStaticParams>;
 }): Promise<Metadata> {
-  if (params.productSlug === 'unknown') {
+  const resolvedParams = await params;
+  if (resolvedParams.productSlug === 'unknown') {
     return makeMetadata({
       title: 'unknown',
       url: 'unknown',
     });
   }
   const props = await getReleaseNote(
-    params?.productSlug,
-    params?.releaseNoteSubPathSlugs
+    resolvedParams?.productSlug,
+    resolvedParams?.releaseNoteSubPathSlugs
   );
 
   if (props?.seo) {
@@ -91,14 +92,15 @@ export type ReleaseNotePageProps = {
 const ReleaseNotePage = async ({
   params,
 }: {
-  params: ReleaseNotePageStaticParams;
+  params: Promise<ReleaseNotePageStaticParams>;
 }) => {
-  if (params.productSlug === 'unknown') {
+  const resolvedParams = await params;
+  if (resolvedParams.productSlug === 'unknown') {
     return <PageNotFound />;
   }
   const releaseNoteProps = await getReleaseNote(
-    params.productSlug,
-    params.releaseNoteSubPathSlugs
+    resolvedParams.productSlug,
+    resolvedParams.releaseNoteSubPathSlugs
   );
 
   const urlReplaceMap = await getUrlReplaceMapProps();

@@ -187,12 +187,13 @@ export const WebinarQuestionsForm = ({
             <>
               <Typography
                 variant='body2'
-                sx={{ fontWeight: 600 }}
-                color={(theme) =>
-                  disabled
-                    ? theme.palette.text.disabled
-                    : theme.palette.text.primary
-                }
+                sx={{
+                  fontWeight: 600,
+                  color: (theme) =>
+                    disabled
+                      ? theme.palette.text.disabled
+                      : theme.palette.text.primary
+                }}
               >
                 {t('questionsForm.title', {
                   maxLength: `${MAX_QUESTION_LENGTH}`,
@@ -226,10 +227,9 @@ export const WebinarQuestionsForm = ({
                 helperText={
                   <Typography
                     component='span'
-                    color={(theme) => theme.palette.text.secondary}
                     fontSize={12}
                     fontWeight={600}
-                    sx={{ display: 'flex', justifyContent: 'end' }}
+                    sx={{ display: 'flex', justifyContent: 'end', color: (theme) => theme.palette.text.secondary }}
                   >
                     {question.length > 0 &&
                       `${question.length} / ${MAX_QUESTION_LENGTH}`}

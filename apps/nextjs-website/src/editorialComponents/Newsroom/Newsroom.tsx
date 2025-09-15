@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { useMemo } from 'react';
 import EContainer from '../EContainer/EContainer';
 import { useTranslations } from 'next-intl';
-import { Variant } from '@mui/material/styles/createTypography';
+import type { TypographyVariant } from '@mui/material/styles';
 
 export interface INewsroomItem {
   comingSoonLabel?: string;
@@ -26,7 +26,7 @@ export interface INewsroomItem {
     link: string;
     translate?: boolean;
   };
-  variant?: Variant;
+  variant?: TypographyVariant;
 }
 
 export interface INewsroom {
@@ -58,9 +58,7 @@ const Item = (props: INewsroomItem) => {
 
   return (
     <Grid
-      item
-      sm={12}
-      md={4}
+      size={{ sm: 12, md: 4 }}
       mb={8}
       minWidth={{ xs: '80vw', md: 'auto' }}
       sx={{ display: 'flex', flexDirection: 'column' }}

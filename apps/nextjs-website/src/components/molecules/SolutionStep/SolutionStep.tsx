@@ -23,8 +23,7 @@ const SolutionStep = ({
     <Stack sx={{ width: { md: width } }} gap={2} justifyContent='space-between'>
       <Stack gap={2}>
         <Typography
-          color={(theme) => theme.palette.action.active}
-          sx={{ fontWeight: 700 }}
+          sx={{ fontWeight: 700, color: (theme) => theme.palette.action.active }}
           variant='caption'
         >
           {title}
@@ -33,8 +32,7 @@ const SolutionStep = ({
       </Stack>
       <Stack gap={2}>
         <Typography
-          color={(theme) => theme.palette.action.active}
-          sx={{ textTransform: 'uppercase', fontWeight: 700 }}
+          sx={{ textTransform: 'uppercase', fontWeight: 700, color: (theme) => theme.palette.action.active }}
           variant='subtitle2'
         >
           {t('steps.platforms')}

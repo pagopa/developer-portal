@@ -56,10 +56,10 @@ const FutureWebinarsShowcase = ({
       <EContainer>
         <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
           <Box mb={webinars.length ? 6 : 0}>
-            <Typography variant='h4' mb={2} color={theme.palette.common.white}>
+            <Typography variant='h4' mb={2} sx={{ color: theme.palette.common.white }}>
               {t(`title.${title}`, { webinars: webinars.length })}
             </Typography>
-            <Typography variant='body2' color={theme.palette.common.white}>
+            <Typography variant='body2' sx={{ color: theme.palette.common.white }}>
               {t(description)}
             </Typography>
             {link && (
@@ -88,7 +88,7 @@ const FutureWebinarsShowcase = ({
               <Typography
                 variant='body1'
                 fontSize={18}
-                color={theme.palette.common.white}
+                sx={{ color: theme.palette.common.white }}
               >
                 {t('noWebinars')}
               </Typography>

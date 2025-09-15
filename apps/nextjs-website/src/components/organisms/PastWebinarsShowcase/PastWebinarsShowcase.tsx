@@ -32,12 +32,10 @@ const PastWebinarsShowcase = ({ webinars }: PastWebinarsProps) => {
           </Stack>
         </Box>
         <Box pb={4} width={'100%'}>
-          <Grid item md={12}>
-            <Grid container spacing={4}>
-              {webinars.map((webinar, i) => (
-                <WebinarListItem webinar={webinar} key={i} />
-              ))}
-            </Grid>
+          <Grid container spacing={4}>
+            {webinars.map((webinar, i) => (
+              <WebinarListItem webinar={webinar} key={i} />
+            ))}
           </Grid>
         </Box>
       </EContainer>

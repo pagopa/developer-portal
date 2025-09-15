@@ -82,7 +82,7 @@ export const MenuDropdown = (props: MenuDropdownProp) => {
   const Dropdown = ({
     children,
     ...stackProps
-  }: { children: JSX.Element[] } & StackProps) =>
+  }: { children: React.JSX.Element[] } & StackProps) =>
     md ? (
       <DialogBubble
         {...stackProps}

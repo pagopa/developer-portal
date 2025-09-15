@@ -72,7 +72,7 @@ const SignUpContent = () => {
           mx={isSmallScreen ? 3 : 20}
           my={isSmallScreen ? 3 : 15}
         >
-          <Grid item xs={isSmallScreen ? 1 : 5}>
+          <Grid size={{ xs: isSmallScreen ? 1 : 5 }}>
             <Typography variant='h6' mb={4} mt={isSmallScreen ? 10 : 0}>
               {signUp('whyCreateAccount')}
             </Typography>
@@ -89,7 +89,7 @@ const SignUpContent = () => {
               );
             })}
           </Grid>
-          <Grid item xs={isSmallScreen ? 1 : 5}>
+          <Grid size={{ xs: isSmallScreen ? 1 : 5 }}>
             {signUpStep === SignUpSteps.SIGN_UP && (
               <SignUpForm
                 userAlreadyExist={userAlreadyExist}

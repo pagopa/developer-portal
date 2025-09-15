@@ -18,7 +18,7 @@ const LinkCards = ({ cards }: LinkCardsProps) => {
       <Grid container spacing={4}>
         {cards.map(({ title, description, href, label }, index) => {
           return (
-            <Grid key={index} item xs={12} md={6} lg>
+            <Grid key={index} size={{ xs: 12, md: 6, lg: 'auto' }}>
               <LinkCard
                 minHeight={155}
                 title={title}

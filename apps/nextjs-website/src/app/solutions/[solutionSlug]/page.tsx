@@ -25,9 +25,10 @@ export async function generateStaticParams() {
 export async function generateMetadata({
   params,
 }: {
-  params: Params;
+  params: Promise<Params>;
 }): Promise<Metadata> {
-  const solution = await getSolution(params?.solutionSlug);
+  const resolvedParams = await params;
+  const solution = await getSolution(resolvedParams?.solutionSlug);
 
   if (solution.seo) {
     return makeMetadataFromStrapi(solution.seo);
@@ -40,8 +41,9 @@ export async function generateMetadata({
   });
 }
 
-const Page = async ({ params }: { params: Params }) => {
-  const solution = await getSolution(params?.solutionSlug);
+const Page = async ({ params }: { params: Promise<Params> }) => {
+  const resolvedParams = await params;
+  const solution = await getSolution(resolvedParams?.solutionSlug);
 
   const structuredData = generateStructuredDataScripts({
     breadcrumbsItems: [

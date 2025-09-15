@@ -95,7 +95,7 @@ const WebinarQuestionsTemplate = ({
               gap: 4,
             }}
           >
-            <Grid key={'notHighlightedQuestions'} item xs={12} md={6}>
+            <Grid key={'notHighlightedQuestions'} size={{ xs: 12, md: 6 }}>
               <WebinarQuestionsTable
                 updateLocalQuestions={updateLocalQuestionsByDate}
                 userName={userName}
@@ -103,7 +103,7 @@ const WebinarQuestionsTemplate = ({
                 title={t('title.questions')}
               />
             </Grid>
-            <Grid key={'highlightedQuestions'} item xs={12} md={6}>
+            <Grid key={'highlightedQuestions'} size={{ xs: 12, md: 6 }}>
               <WebinarQuestionsTable
                 updateLocalQuestions={updateLocalQuestionsByDate}
                 userName={userName}

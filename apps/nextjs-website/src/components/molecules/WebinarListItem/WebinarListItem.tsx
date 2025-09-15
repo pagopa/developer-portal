@@ -15,10 +15,7 @@ const WebinarListItem = ({ webinar }: WebinarListItemProps) => {
 
   return (
     <Grid
-      item
-      xs={12}
-      sm={6}
-      md={4}
+      size={{ xs: 12, sm: 6, md: 4 }}
       mb={6}
       minWidth={{ xs: '80vw', sm: 'auto' }}
       sx={{ display: 'flex', flexDirection: 'column' }}

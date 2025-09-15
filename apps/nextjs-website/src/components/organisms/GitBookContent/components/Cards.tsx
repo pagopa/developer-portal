@@ -32,7 +32,7 @@ export const Card = ({ children, coverSrc, href }: CardProps<ReactNode>) => {
     </>
   );
   return (
-    <Grid item xs={12} md={6}>
+    <Grid size={{ xs: 12, md: 6 }}>
       <MUICard variant='outlined' sx={{ height: '100%' }}>
         {href ? (
           <CardActionArea

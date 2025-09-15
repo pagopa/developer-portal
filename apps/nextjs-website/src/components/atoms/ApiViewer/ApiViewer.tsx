@@ -5,8 +5,7 @@ import 'rapidoc';
 
 // Extend JSX to recognize the custom element <rapi-doc>
 declare global {
-  // eslint-disable-next-line @typescript-eslint/no-namespace
-  namespace JSX {
+  namespace React.JSX {
     interface IntrinsicElements {
       'rapi-doc': React.DetailedHTMLProps<
         React.HTMLAttributes<HTMLElement>,
@@ -16,7 +15,25 @@ declare global {
         theme?: string;
         'render-style'?: string;
         'show-header'?: string;
+        'allow-advanced-search'?: string;
+        'allow-authentication'?: string;
+        'allow-server-selection'?: string;
+        'allow-try'?: string;
+        'auto-scroll'?: string;
+        'bg-color'?: string;
+        'nav-bg-color'?: string;
         'primary-color'?: string;
+        'regular-color'?: string;
+        'text-color'?: string;
+        'font-size'?: string;
+        'nav-text-color'?: string;
+        'show-info'?: string;
+        'show-components'?: string;
+        'layout'?: string;
+        'sort-tags'?: string;
+        'goto-path'?: string;
+        'fill-request-fields-with-example'?: string;
+        'persist-auth'?: string;
       };
     }
   }

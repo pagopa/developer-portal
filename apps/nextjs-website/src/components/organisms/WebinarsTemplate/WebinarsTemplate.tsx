@@ -177,7 +177,7 @@ const WebinarsTemplateContent = ({
               background={palette.background.paper}
               sx={{ paddingTop: 4, paddingBottom: 8 }}
             >
-              <Grid item md={12}>
+              <Grid size={{ md: 12 }}>
                 <Grid container spacing={4}>
                   {filteredWebinars.map((webinar, i) => (
                     <WebinarListItem webinar={webinar} key={i} />

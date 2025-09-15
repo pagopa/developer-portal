@@ -47,7 +47,7 @@ const ProductBreadcrumbs = ({
               key={index}
               fontSize={16}
               fontWeight={600}
-              color={textColor || theme.palette.text.primary}
+              sx={{ color: textColor || theme.palette.text.primary }}
             >
               {breadcrumb.translate ? t(breadcrumb.name) : breadcrumb.name}
             </Typography>
