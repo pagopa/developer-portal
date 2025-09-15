@@ -7,13 +7,7 @@ import {
   getChatbotQueries,
   deleteChatbotSession,
 } from '@/lib/chatbotApi';
-import {
-  ChatbotQueriesCodec,
-  PaginatedSessions,
-  Query,
-} from '@/lib/chatbot/queries';
-import { pipe } from 'fp-ts/lib/function';
-import * as E from 'fp-ts/lib/Either';
+import { PaginatedSessions, Query } from '@/lib/chatbot/queries';
 import { chatMaxHistoryMessages } from '@/config';
 
 const HISTORY_PAGE_SIZE = 10;
@@ -38,17 +32,8 @@ function getChatQueriesFromLocalStorage(): Query[] {
     flushChatQueriesFromLocalStorage();
     return [];
   }
-  const validation = ChatbotQueriesCodec.decode(JSON.parse(queriesStringify));
-  const queries = pipe(
-    validation,
-    E.fold(
-      () => () => [],
-      (result) => () => {
-        return result;
-      }
-    )
-  )();
-  return queries;
+
+  return JSON.parse(queriesStringify);
 }
 
 function setChatQueriesInLocalStorage(queries: Query[]) {
