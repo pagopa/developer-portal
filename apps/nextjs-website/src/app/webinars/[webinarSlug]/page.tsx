@@ -39,7 +39,6 @@ const NotSsrWebinarDetailTemplate = dynamic(
       '@/components/templates/WebinarDetailTemplate/WebinarDetailTemplate'
     ),
   {
-    ssr: false,
     loading: () => <Spinner />,
   }
 );

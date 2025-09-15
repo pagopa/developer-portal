@@ -24,7 +24,7 @@ import {
   makeMetadataFromStrapi,
 } from '@/helpers/metadata.helpers';
 import { BreadcrumbSegment } from '@/lib/types/path';
-import { baseUrl, REVALIDATE_LONG_INTERVAL } from '@/config';
+import { baseUrl } from '@/config';
 import PageNotFound from '@/app/not-found';
 import { getReleaseNotesMetadata } from '@/helpers/s3Metadata.helpers';
 
@@ -33,7 +33,7 @@ type ReleaseNotePageStaticParams = {
   releaseNoteSubPathSlugs: string[];
 };
 // TODO: remove when release notes metadata will be managed in strapi
-export const revalidate = REVALIDATE_LONG_INTERVAL;
+export const revalidate = 3600;
 
 const PRODUCT_SLUG_PATH_INDEX = 1;
 const RELEASE_NOTE_SUB_PATH_INDEX = 2;
