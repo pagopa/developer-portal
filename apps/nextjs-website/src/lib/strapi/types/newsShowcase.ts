@@ -1,11 +1,11 @@
-import { Link } from '@/lib/strapi/types/link';
+import { StrapiLink } from '@/lib/strapi/types/link';
 import { StrapiMedia } from '@/lib/strapi/types/media';
 
-type NewsItem = {
+type StrapiNewsItem = {
   readonly attributes: {
     readonly comingSoon: boolean;
     readonly title: string;
-    readonly link: Link;
+    readonly link: StrapiLink;
     readonly publishedAt: string;
     readonly image?: { readonly data: StrapiMedia };
     readonly label?: string;
@@ -15,8 +15,8 @@ type NewsItem = {
 export type StrapiNewsShowcase = {
   readonly title: string;
   readonly subTitle?: string;
-  readonly link?: Link;
+  readonly link?: StrapiLink;
   readonly items: {
-    readonly data: ReadonlyArray<NewsItem>;
+    readonly data: ReadonlyArray<StrapiNewsItem>;
   };
 };

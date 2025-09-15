@@ -1,7 +1,7 @@
 import * as qs from 'qs';
-import { deprecatedFetchFromStrapi } from '../fetchFromStrapi';
-import { TutorialsCodec } from '../codecs/TutorialCodec';
 import { productRelationsPopulate } from './fetchProducts';
+import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
+import { StrapiTutorials } from '@/lib/strapi/types/tutorial';
 
 const makeStrapiTutorialsPopulate = () =>
   qs.stringify({
@@ -25,8 +25,7 @@ const makeStrapiTutorialsPopulate = () =>
     },
   });
 
-export const fetchTutorials = deprecatedFetchFromStrapi(
+export const fetchTutorials = fetchFromStrapi<StrapiTutorials>(
   'tutorials',
-  makeStrapiTutorialsPopulate(),
-  TutorialsCodec
+  makeStrapiTutorialsPopulate()
 );
