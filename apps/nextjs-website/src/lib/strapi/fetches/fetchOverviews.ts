@@ -1,51 +1,51 @@
-import * as qs from 'qs';
-import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
-import { productRelationsPopulate } from './fetchProducts';
-import { StrapiOverviews } from '@/lib/strapi/types/overviews';
+import * as qs from "qs";
+import { fetchFromStrapi } from "@/lib/strapi/fetchFromStrapi";
+import { productRelationsPopulate } from "./fetchProducts";
+import { StrapiOverviews } from "@/lib/strapi/types/overviews";
 
 const makeStrapiOverviewsPopulate = () =>
   qs.stringify({
     populate: {
-      backgroundImage: '*',
+      backgroundImage: "*",
       product: {
         ...productRelationsPopulate,
       },
       relatedLinks: {
-        populate: ['links'],
+        populate: ["links"],
       },
       features: {
-        populate: ['items.icon'],
+        populate: ["items.icon"],
       },
       startInfoSection: {
-        populate: ['bottomLink', 'items.icon'],
+        populate: ["bottomLink", "items.icon"],
       },
       tutorialSection: {
-        populate: ['tutorials.image', 'tutorials.product'],
+        populate: ["tutorials.image", "tutorials.product"],
       },
       seo: {
-        populate: '*,metaImage,metaSocial.image',
+        populate: "*,metaImage,metaSocial.image",
       },
       postIntegration: {
         populate: [
-          'link',
-          'guides.image',
-          'guides.listItems',
-          'guides.mobileImage',
-          'documents.image',
-          'documents.mobileImage',
-          'serviceModels',
+          "link",
+          "guides.image",
+          "guides.listItems",
+          "guides.mobileImage",
+          "documents.image",
+          "documents.mobileImage",
+          "serviceModels",
         ],
       },
       bannerLinks: {
-        populate: ['icon'],
+        populate: ["icon"],
       },
       whatsNew: {
-        populate: ['link', 'items.image', 'items.link'],
+        populate: ["link", "items.image", "items.link"],
       },
     },
   });
 
 export const fetchOverviews = fetchFromStrapi<StrapiOverviews>(
-  'overviews',
-  makeStrapiOverviewsPopulate()
+  "overviews",
+  makeStrapiOverviewsPopulate(),
 );

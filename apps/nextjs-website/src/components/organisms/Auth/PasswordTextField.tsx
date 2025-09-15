@@ -6,21 +6,21 @@ import {
   InputProps,
   Stack,
   TextField,
-} from '@mui/material';
-import { Visibility, VisibilityOff } from '@mui/icons-material';
-import { MouseEvent, ReactNode, useMemo, useState } from 'react';
+} from "@mui/material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { MouseEvent, ReactNode, useMemo, useState } from "react";
 
 type PasswordTextFieldProps = {
   id: string;
   label: string;
   hasError?: boolean;
   helperText?: ReactNode;
-} & Pick<InputProps, 'onChange' | 'value'>;
+} & Pick<InputProps, "onChange" | "value">;
 
 export const PasswordTextField = ({
   id,
   hasError = false,
-  helperText = '',
+  helperText = "",
   label,
   value: password,
   onChange,
@@ -28,36 +28,36 @@ export const PasswordTextField = ({
   const [showPassword, setShowPassword] = useState(false);
   const endAdornment = useMemo(
     () => (
-      <InputAdornment position='end'>
+      <InputAdornment position="end">
         <IconButton
-          aria-label='toggle password visibility'
+          aria-label="toggle password visibility"
           onClick={() => setShowPassword((show) => !show)}
           onMouseDown={(event: MouseEvent<HTMLButtonElement>) => {
             event.preventDefault();
           }}
-          edge='end'
+          edge="end"
         >
           {showPassword ? <VisibilityOff /> : <Visibility />}
         </IconButton>
       </InputAdornment>
     ),
-    [showPassword]
+    [showPassword],
   );
 
-  const type = showPassword ? 'text' : 'password';
+  const type = showPassword ? "text" : "password";
 
   return (
     <Stack spacing={2}>
-      <FormControl variant='outlined' size='small'>
+      <FormControl variant="outlined" size="small">
         <TextField
           error={hasError}
           id={id}
-          inputProps={{ 'aria-label': id }}
+          inputProps={{ "aria-label": id }}
           InputProps={{ endAdornment }}
           label={label}
           name={id}
           required
-          size='small'
+          size="small"
           type={type}
           value={password}
           onChange={onChange}

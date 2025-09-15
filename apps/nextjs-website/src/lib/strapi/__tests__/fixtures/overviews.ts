@@ -1,8 +1,8 @@
-import { StrapiOverviews } from '@/lib/strapi/types/overviews';
-import { product } from '@/lib/strapi/__tests__/fixtures/product';
-import { mediaJpeg } from '@/lib/strapi/__tests__/factories/media';
-import { generateBannerLinks } from '@/lib/strapi/__tests__/factories/bannerLink';
-import { OverviewPageProps } from '@/app/[productSlug]/overview/page';
+import { StrapiOverviews } from "@/lib/strapi/types/overviews";
+import { product } from "@/lib/strapi/__tests__/fixtures/product";
+import { mediaJpeg } from "@/lib/strapi/__tests__/factories/media";
+import { generateBannerLinks } from "@/lib/strapi/__tests__/factories/bannerLink";
+import { OverviewPageProps } from "@/app/[productSlug]/overview/page";
 
 export const dateNow = new Date();
 
@@ -11,11 +11,11 @@ export const strapiOverviews = {
     {
       id: 1,
       attributes: {
-        title: 'Test Overview',
-        subtitle: 'Test Subtitle',
-        createdAt: '2023-01-01T00:00:00.000Z',
-        updatedAt: '2023-01-01T00:00:00.000Z',
-        publishedAt: '2023-01-01T00:00:00.000Z',
+        title: "Test Overview",
+        subtitle: "Test Subtitle",
+        createdAt: "2023-01-01T00:00:00.000Z",
+        updatedAt: "2023-01-01T00:00:00.000Z",
+        publishedAt: "2023-01-01T00:00:00.000Z",
         backgroundImage: {
           data: mediaJpeg(),
         },
@@ -43,12 +43,12 @@ export const strapiOverviews = {
                         {
                           attributes: {
                             apiRestDetail: {
-                              slug: 'api-rest',
+                              slug: "api-rest",
                               specUrls: [
                                 {
                                   id: 1,
-                                  name: 'OpenAPI Spec',
-                                  url: '/api-rest/openapi.json',
+                                  name: "OpenAPI Spec",
+                                  url: "/api-rest/openapi.json",
                                   hideTryIt: false,
                                 },
                               ],
@@ -83,32 +83,32 @@ export const strapiOverviews = {
           },
         },
         features: {
-          title: 'Features Title',
-          subtitle: 'Features Subtitle',
+          title: "Features Title",
+          subtitle: "Features Subtitle",
           items: [
             {
               id: 1,
-              title: 'Feature 1',
+              title: "Feature 1",
               content: undefined,
               icon: {
                 data: mediaJpeg(),
               },
-              theme: 'dark',
+              theme: "dark",
             },
           ],
         },
         startInfoSection: {
-          title: 'Start Info Title',
-          bottomLabel: 'Bottom Label',
+          title: "Start Info Title",
+          bottomLabel: "Bottom Label",
           bottomLink: {
-            text: 'Bottom Link',
-            href: '/bottom-link',
+            text: "Bottom Link",
+            href: "/bottom-link",
           },
           items: [
             {
-              title: 'Start Info Item',
-              description: 'Start info description',
-              path: '/start-path',
+              title: "Start Info Item",
+              description: "Start info description",
+              path: "/start-path",
               icon: {
                 data: mediaJpeg(),
               },
@@ -116,23 +116,23 @@ export const strapiOverviews = {
           ],
         },
         tutorialSection: {
-          title: 'Tutorials Title',
-          description: 'Tutorials Description',
+          title: "Tutorials Title",
+          description: "Tutorials Description",
           tutorials: {
             data: [
               {
                 attributes: {
-                  title: 'Tutorial 1',
-                  slug: 'tutorial-1',
+                  title: "Tutorial 1",
+                  slug: "tutorial-1",
                   image: {
                     data: mediaJpeg(),
                   },
                   product: {
                     data: {
                       attributes: {
-                        slug: 'test-product',
-                        name: 'Test Product',
-                        shortName: 'TestProd',
+                        slug: "test-product",
+                        name: "Test Product",
+                        shortName: "TestProd",
                       },
                     },
                   },
@@ -146,22 +146,22 @@ export const strapiOverviews = {
           title: "What's New Title",
           subTitle: "What's New Subtitle",
           link: {
-            text: 'View All',
-            href: '/whats-new',
-            target: '_self',
+            text: "View All",
+            href: "/whats-new",
+            target: "_self",
           },
           items: {
             data: [
               {
                 attributes: {
-                  title: 'News Item 1',
-                  label: 'New',
+                  title: "News Item 1",
+                  label: "New",
                   comingSoon: false,
                   publishedAt: dateNow.toISOString(),
                   link: {
-                    text: 'Read More',
-                    href: '/news/item-1',
-                    target: '_self',
+                    text: "Read More",
+                    href: "/news/item-1",
+                    target: "_self",
                   },
                   image: {
                     data: mediaJpeg(),
@@ -172,29 +172,29 @@ export const strapiOverviews = {
           },
         },
         postIntegration: {
-          title: 'Post Integration Title',
-          description: 'Post Integration Description',
-          guidesTitle: 'Guides Title',
+          title: "Post Integration Title",
+          description: "Post Integration Description",
+          guidesTitle: "Guides Title",
           link: {
-            text: 'Learn More',
-            href: '/post-integration',
+            text: "Learn More",
+            href: "/post-integration",
           },
           documents: [
             {
-              title: 'Document 1',
+              title: "Document 1",
               content: [
                 {
-                  type: 'paragraph',
+                  type: "paragraph",
                   children: [
                     {
-                      type: 'text',
-                      text: 'Document content',
+                      type: "text",
+                      text: "Document content",
                     },
                   ],
                 },
               ],
-              linkText: 'Download',
-              linkHref: '/documents/doc1.pdf',
+              linkText: "Download",
+              linkHref: "/documents/doc1.pdf",
               image: {
                 data: mediaJpeg(),
               },
@@ -207,11 +207,11 @@ export const strapiOverviews = {
             data: [
               {
                 attributes: {
-                  title: 'Guide 1',
-                  slug: 'guide-1',
+                  title: "Guide 1",
+                  slug: "guide-1",
                   listItems: [
-                    { text: 'Guide item 1' },
-                    { text: 'Guide item 2' },
+                    { text: "Guide item 1" },
+                    { text: "Guide item 2" },
                   ],
                   image: {
                     data: mediaJpeg(),
@@ -225,25 +225,25 @@ export const strapiOverviews = {
           },
           serviceModels: [
             {
-              title: 'Service Model 1',
-              description: 'Service model description',
-              href: '/service-models/model-1',
+              title: "Service Model 1",
+              description: "Service model description",
+              href: "/service-models/model-1",
             },
           ],
         },
         relatedLinks: {
-          title: 'Related Links',
+          title: "Related Links",
           links: [
             {
-              text: 'Related Link 1',
-              href: '/related-1',
+              text: "Related Link 1",
+              href: "/related-1",
             },
           ],
         },
         bannerLinks: generateBannerLinks(3),
         seo: {
-          metaTitle: 'SEO Title',
-          metaDescription: 'SEO Description',
+          metaTitle: "SEO Title",
+          metaDescription: "SEO Description",
         },
       },
     },
@@ -259,12 +259,12 @@ export const strapiOverviews = {
 } satisfies StrapiOverviews;
 
 export const overviewPageProps: OverviewPageProps = {
-  path: '/pago-pa/overview',
+  path: "/pago-pa/overview",
   product: {
-    apiDataListPageUrl: '/pago-pa/api/api-rest',
-    name: 'Piattaforma pagoPA',
-    slug: 'pago-pa',
-    shortName: 'pagoPA',
+    apiDataListPageUrl: "/pago-pa/api/api-rest",
+    name: "Piattaforma pagoPA",
+    slug: "pago-pa",
+    shortName: "pagoPA",
     hasApiDataListPage: true,
     hasGuideListPage: true,
     hasOverviewPage: true,
@@ -274,70 +274,70 @@ export const overviewPageProps: OverviewPageProps = {
     description: undefined,
     bannerLinks: [
       {
-        title: 'Banner Link 1',
+        title: "Banner Link 1",
         content: undefined,
         icon: {
-          alternativeText: 'Example Image',
+          alternativeText: "Example Image",
           caption: undefined,
-          ext: '.jpg',
+          ext: ".jpg",
           height: 600,
-          mime: 'image/jpeg',
-          name: 'example.jpg',
+          mime: "image/jpeg",
+          name: "example.jpg",
           size: 123456,
-          url: 'https://example.com/example.jpg',
+          url: "https://example.com/example.jpg",
           width: 800,
         },
-        theme: 'light',
+        theme: "light",
       },
     ],
   },
   hero: {
-    backgroundImage: 'https://example.com/example.jpg',
-    altText: 'Example Image',
-    title: 'Test Overview',
-    subtitle: 'Test Subtitle',
+    backgroundImage: "https://example.com/example.jpg",
+    altText: "Example Image",
+    title: "Test Overview",
+    subtitle: "Test Subtitle",
   },
   feature: {
-    title: 'Features Title',
-    subtitle: 'Features Subtitle',
+    title: "Features Title",
+    subtitle: "Features Subtitle",
     items: [
       {
-        iconUrl: 'https://example.com/example.jpg',
+        iconUrl: "https://example.com/example.jpg",
         content: undefined,
-        title: 'Feature 1',
+        title: "Feature 1",
       },
     ],
   },
   startInfo: {
-    title: 'Start Info Title',
+    title: "Start Info Title",
     cta: {
-      text: 'Bottom Label',
-      label: 'Bottom Link',
-      href: '/bottom-link',
+      text: "Bottom Label",
+      label: "Bottom Link",
+      href: "/bottom-link",
     },
     cards: [
       {
-        title: 'Start Info Item',
-        text: 'Start info description',
-        href: '/start-path',
+        title: "Start Info Item",
+        text: "Start info description",
+        href: "/start-path",
         useSrc: true,
-        iconName: 'https://example.com/example.jpg',
+        iconName: "https://example.com/example.jpg",
       },
     ],
   },
   tutorials: {
-    title: 'Tutorials Title',
-    subtitle: 'Tutorials Description',
+    title: "Tutorials Title",
+    subtitle: "Tutorials Description",
     list: [
       {
         showInOverview: true,
         image: {
-          url: 'https://example.com/example.jpg',
-          alternativeText: 'Example Image',
+          url: "https://example.com/example.jpg",
+          alternativeText: "Example Image",
         },
-        title: 'Tutorial 1',
-        name: 'shared.moreInfo',
-        path: '/test-product/tutorials/tutorial-1',
+        title: "Tutorial 1",
+        name: "shared.moreInfo",
+        path: "/test-product/tutorials/tutorial-1",
       },
     ],
   },
@@ -345,147 +345,147 @@ export const overviewPageProps: OverviewPageProps = {
     title: "What's New Title",
     subtitle: "What's New Subtitle",
     link: {
-      text: 'View All',
-      url: '/whats-new',
-      target: '_self',
+      text: "View All",
+      url: "/whats-new",
+      target: "_self",
     },
     items: [
       {
         comingSoon: false,
-        title: 'News Item 1',
+        title: "News Item 1",
         publishedAt: dateNow,
-        label: 'New',
+        label: "New",
         link: {
-          text: 'Read More',
-          url: '/news/item-1',
-          target: '_self',
+          text: "Read More",
+          url: "/news/item-1",
+          target: "_self",
         },
         image: {
-          alternativeText: 'Example Image',
-          url: 'https://example.com/example.jpg',
+          alternativeText: "Example Image",
+          url: "https://example.com/example.jpg",
         },
       },
     ],
   },
   postIntegration: {
-    title: 'Post Integration Title',
-    subtitle: 'Post Integration Description',
-    listTitle: 'Guides Title',
+    title: "Post Integration Title",
+    subtitle: "Post Integration Description",
+    listTitle: "Guides Title",
     cta: {
-      label: 'Learn More',
-      href: '/post-integration',
+      label: "Learn More",
+      href: "/post-integration",
     },
     guides: [
       {
-        title: 'Document 1',
+        title: "Document 1",
         description: {
           content: [
             {
               children: [
                 {
-                  text: 'Document content',
-                  type: 'text',
+                  text: "Document content",
+                  type: "text",
                 },
               ],
-              type: 'paragraph',
+              type: "paragraph",
             },
           ],
-          title: 'guideListPage.cardSection.listItemsTitle',
+          title: "guideListPage.cardSection.listItemsTitle",
           translate: false,
         },
-        imagePath: 'https://example.com/example.jpg',
-        mobileImagePath: 'https://example.com/example.jpg',
+        imagePath: "https://example.com/example.jpg",
+        mobileImagePath: "https://example.com/example.jpg",
         link: {
-          label: 'Download',
-          href: '/documents/doc1.pdf',
+          label: "Download",
+          href: "/documents/doc1.pdf",
           translate: false,
         },
       },
       {
-        title: 'Guide 1',
+        title: "Guide 1",
         description: {
-          listItems: ['Guide item 1', 'Guide item 2'],
-          title: 'guideListPage.cardSection.listItemsTitle',
+          listItems: ["Guide item 1", "Guide item 2"],
+          title: "guideListPage.cardSection.listItemsTitle",
           translate: false,
         },
-        imagePath: 'https://example.com/example.jpg',
-        mobileImagePath: 'https://example.com/example.jpg',
+        imagePath: "https://example.com/example.jpg",
+        mobileImagePath: "https://example.com/example.jpg",
         link: {
-          label: 'shared.goToGuide',
-          href: 'guides/guide-1',
+          label: "shared.goToGuide",
+          href: "guides/guide-1",
           translate: true,
         },
       },
     ],
     serviceModels: [
       {
-        title: 'Service Model 1',
-        description: 'Service model description',
-        href: '/service-models/model-1',
+        title: "Service Model 1",
+        description: "Service model description",
+        href: "/service-models/model-1",
       },
     ],
   },
   relatedLinks: {
-    title: 'Related Links',
+    title: "Related Links",
     links: [
       {
-        text: 'Related Link 1',
-        href: '/related-1',
+        text: "Related Link 1",
+        href: "/related-1",
       },
     ],
   },
   bannerLinks: [
     {
-      title: 'Banner Link 1',
+      title: "Banner Link 1",
       content: undefined,
       icon: {
-        alternativeText: 'Example Image',
+        alternativeText: "Example Image",
         caption: undefined,
-        ext: '.jpg',
+        ext: ".jpg",
         height: 600,
-        mime: 'image/jpeg',
-        name: 'example.jpg',
+        mime: "image/jpeg",
+        name: "example.jpg",
         size: 123456,
-        url: 'https://example.com/example.jpg',
+        url: "https://example.com/example.jpg",
         width: 800,
       },
-      theme: 'light',
+      theme: "light",
     },
     {
-      title: 'Banner Link 2',
+      title: "Banner Link 2",
       content: undefined,
       icon: {
-        alternativeText: 'Example Image',
+        alternativeText: "Example Image",
         caption: undefined,
-        ext: '.jpg',
+        ext: ".jpg",
         height: 600,
-        mime: 'image/jpeg',
-        name: 'example.jpg',
+        mime: "image/jpeg",
+        name: "example.jpg",
         size: 123456,
-        url: 'https://example.com/example.jpg',
+        url: "https://example.com/example.jpg",
         width: 800,
       },
-      theme: 'light',
+      theme: "light",
     },
     {
-      title: 'Banner Link 3',
+      title: "Banner Link 3",
       content: undefined,
       icon: {
-        alternativeText: 'Example Image',
+        alternativeText: "Example Image",
         caption: undefined,
-        ext: '.jpg',
+        ext: ".jpg",
         height: 600,
-        mime: 'image/jpeg',
-        name: 'example.jpg',
+        mime: "image/jpeg",
+        name: "example.jpg",
         size: 123456,
-        url: 'https://example.com/example.jpg',
+        url: "https://example.com/example.jpg",
         width: 800,
       },
-      theme: 'light',
+      theme: "light",
     },
   ],
   seo: {
-    metaTitle: 'SEO Title',
-    metaDescription: 'SEO Description',
+    metaTitle: "SEO Title",
+    metaDescription: "SEO Description",
   },
 };

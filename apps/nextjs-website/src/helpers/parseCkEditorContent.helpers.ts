@@ -1,11 +1,10 @@
-import { CkEditorMenuItem } from '@/components/molecules/CkEditorPart/CkEditorPart';
-import { generateIdFromString } from '@/helpers/anchor.helpers';
+import { CkEditorMenuItem } from "@/components/molecules/CkEditorPart/CkEditorPart";
+import { generateIdFromString } from "@/helpers/anchor.helpers";
 
 export function parseCkEditorContent(content: string): {
   readonly parsedContent: string;
   readonly menuItems: readonly CkEditorMenuItem[];
 } {
-  // eslint-disable-next-line
   const menuItems: CkEditorMenuItem[] = [];
 
   // Use regex-based approach for server-side compatibility
@@ -15,7 +14,7 @@ export function parseCkEditorContent(content: string): {
 
   while ((match = headingRegex.exec(content)) !== null) {
     const [fullMatch, tag, textContent] = match;
-    const level = parseInt(tag.replace('h', ''));
+    const level = parseInt(tag.replace("h", ""));
     const anchorId = generateIdFromString(`ckEditor-${textContent}`);
 
     // Create wrapped heading
@@ -28,7 +27,7 @@ export function parseCkEditorContent(content: string): {
     if (level >= 2 && level <= 4) {
       // eslint-disable-next-line functional/immutable-data,functional/no-expression-statements
       menuItems.push({
-        title: textContent.replace(/<[^>]*>/g, ''), // Strip HTML tags
+        title: textContent.replace(/<[^>]*>/g, ""), // Strip HTML tags
         href: `#${anchorId}`,
         level: level,
       });
@@ -39,9 +38,12 @@ export function parseCkEditorContent(content: string): {
   let serializedContent = processedContent;
 
   // Basic sanitization - remove script tags and dangerous attributes
-  serializedContent = serializedContent.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '');
-  serializedContent = serializedContent.replace(/on\w+="[^"]*"/gi, '');
-  serializedContent = serializedContent.replace(/javascript:/gi, '');
+  serializedContent = serializedContent.replace(
+    /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi,
+    "",
+  );
+  serializedContent = serializedContent.replace(/on\w+="[^"]*"/gi, "");
+  serializedContent = serializedContent.replace(/javascript:/gi, "");
 
   return { parsedContent: serializedContent, menuItems };
 }

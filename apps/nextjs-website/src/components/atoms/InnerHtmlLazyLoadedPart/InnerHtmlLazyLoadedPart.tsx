@@ -1,6 +1,6 @@
-'use client';
-import React, { useEffect, useState } from 'react';
-import { Box, useTheme } from '@mui/material';
+"use client";
+import React, { useEffect, useState } from "react";
+import { Box, useTheme } from "@mui/material";
 
 export type InnerHtmlLazyLoadedPartProps = { html: string };
 
@@ -15,9 +15,9 @@ const InnerHtmlLazyLoadedPart = ({ html }: InnerHtmlLazyLoadedPartProps) => {
         dangerouslySetInnerHTML={{ __html: html }}
         sx={{
           marginBottom: spacing(5),
-          fontFamily: 'Titillium Web',
+          fontFamily: "Titillium Web",
           fontWeight: 400,
-          fontSize: '18px',
+          fontSize: "18px",
           color: palette.text.primary,
         }}
       />

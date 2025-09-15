@@ -1,16 +1,16 @@
 import {
   makeMetadata,
   makeMetadataFromStrapi,
-} from '@/helpers/metadata.helpers';
-import { Metadata } from 'next';
-import { baseUrl } from '@/config';
-import { getCaseHistory } from '@/lib/api';
-import CaseHistoryPageTemplate from '@/components/templates/CaseHistoryTemplate/CaseHistoryPageTemplate';
-import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
+} from "@/helpers/metadata.helpers";
+import { Metadata } from "next";
+import { baseUrl } from "@/config";
+import { getCaseHistory } from "@/lib/api";
+import CaseHistoryPageTemplate from "@/components/templates/CaseHistoryTemplate/CaseHistoryPageTemplate";
+import { generateStructuredDataScripts } from "@/helpers/generateStructuredDataScripts.helpers";
 import {
   convertSeoToStructuredDataArticle,
   getItemFromPaths,
-} from '@/helpers/structuredData.helpers';
+} from "@/helpers/structuredData.helpers";
 
 type Params = {
   caseHistorySlug: string;
@@ -31,7 +31,7 @@ export async function generateMetadata({
   return makeMetadata({
     title: caseHistory.title,
     url: `${baseUrl}/case-histories/${caseHistory.slug}`,
-    locale: 'it_IT',
+    locale: "it_IT",
   });
 }
 
@@ -43,7 +43,7 @@ const Page = async ({ params }: { params: Promise<Params> }) => {
     breadcrumbsItems: [
       {
         name: caseHistory.seo?.metaTitle || caseHistory.title,
-        item: getItemFromPaths(['case-histories', caseHistory.slug]),
+        item: getItemFromPaths(["case-histories", caseHistory.slug]),
       },
     ],
     seo: caseHistory.seo,

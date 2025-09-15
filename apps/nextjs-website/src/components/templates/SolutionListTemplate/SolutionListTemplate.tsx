@@ -1,12 +1,12 @@
-'use client';
-import NewsShowcase from '@/components/organisms/NewsShowcase/NewsShowcase';
-import SolutionsShowcase from '@/components/organisms/SolutionsShowcase/SolutionsShowcase';
-import Feature from '@/editorialComponents/Feature/Feature';
-import { FeatureItem } from '@/editorialComponents/Feature/FeatureStackItem';
-import Hero from '@/editorialComponents/Hero/Hero';
-import { Media } from '@/lib/types/media';
-import { SEO } from '@/lib/types/seo';
-import { useTranslations } from 'next-intl';
+"use client";
+import NewsShowcase from "@/components/organisms/NewsShowcase/NewsShowcase";
+import SolutionsShowcase from "@/components/organisms/SolutionsShowcase/SolutionsShowcase";
+import Feature from "@/editorialComponents/Feature/Feature";
+import { FeatureItem } from "@/editorialComponents/Feature/FeatureStackItem";
+import Hero from "@/editorialComponents/Hero/Hero";
+import { Media } from "@/lib/types/media";
+import { SEO } from "@/lib/types/seo";
+import { useTranslations } from "next-intl";
 
 export type SolutionListTemplateProps = {
   hero: {
@@ -57,19 +57,19 @@ const SolutionListTemplate = ({
         background={hero.backgroundImage}
         title={hero.title}
         subtitle={hero.subtitle}
-        size='small'
-        smallHeight='fit-content'
+        size="small"
+        smallHeight="fit-content"
         useHoverlay={false}
         altText={hero.altText}
-        theme='light'
-        gridTextSx={{ marginTop: { xs: '62px', md: '77px' } }}
+        theme="light"
+        gridTextSx={{ marginTop: { xs: "62px", md: "77px" } }}
       />
       {solutions && solutions.length > 0 && (
         <SolutionsShowcase
           py={4}
           cards={solutions.map((solution) => ({
             title: solution.name,
-            text: solution.description || '',
+            text: solution.description || "",
             href: solution.slug,
             logoUrl: solution.logo.url,
             tags: solution.tags,
@@ -89,7 +89,7 @@ const SolutionListTemplate = ({
             ...story,
             link: {
               url: story.path,
-              text: t('shared.readStory'),
+              text: t("shared.readStory"),
             },
           }))}
         />

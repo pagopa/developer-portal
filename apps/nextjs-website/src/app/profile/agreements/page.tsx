@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { useTranslations } from 'next-intl';
+import { useTranslations } from "next-intl";
 import {
   Alert,
   Box,
@@ -10,12 +10,12 @@ import {
   Stack,
   Typography,
   useTheme,
-} from '@mui/material';
-import Link from 'next/link';
-import React, { ReactNode, useState } from 'react';
-import { ButtonNaked } from '@/editorialComponents/Footer/components/ButtonNaked';
-import { useUser } from '@/helpers/user.helper';
-import { snackbarAutoHideDurationMs } from '@/config';
+} from "@mui/material";
+import Link from "next/link";
+import React, { ReactNode, useState } from "react";
+import { ButtonNaked } from "@/editorialComponents/Footer/components/ButtonNaked";
+import { useUser } from "@/helpers/user.helper";
+import { snackbarAutoHideDurationMs } from "@/config";
 
 // TODO: Remove this code duplication and manage messages with a dedicated service
 interface Info {
@@ -32,7 +32,7 @@ const Agreements = () => {
   const [info, setInfo] = useState<Info | null>(null);
 
   const hasAcceptedMailingListSubscription =
-    user?.attributes['custom:mailinglist_accepted'] === 'true';
+    user?.attributes["custom:mailinglist_accepted"] === "true";
 
   const [isSubscriptionButtonDisabled, setIsSubscriptionButtonDisabled] =
     useState(false);
@@ -43,7 +43,7 @@ const Agreements = () => {
       setUserAttributes(
         {
           ...user.attributes,
-          'custom:mailinglist_accepted': 'true',
+          "custom:mailinglist_accepted": "true",
         },
         () => {
           setIsSubscriptionButtonDisabled(false);
@@ -51,12 +51,12 @@ const Agreements = () => {
         },
         () => {
           setInfo({
-            message: t('profile.agreements.newsletter.error.subscribe'),
+            message: t("profile.agreements.newsletter.error.subscribe"),
             isError: true,
           });
           setIsSubscriptionButtonDisabled(false);
           return null;
-        }
+        },
       );
     }
   };
@@ -66,7 +66,7 @@ const Agreements = () => {
       setUserAttributes(
         {
           ...user.attributes,
-          'custom:mailinglist_accepted': 'false',
+          "custom:mailinglist_accepted": "false",
         },
         () => {
           setIsSubscriptionButtonDisabled(false);
@@ -74,12 +74,12 @@ const Agreements = () => {
         },
         () => {
           setInfo({
-            message: t('profile.agreements.newsletter.error.unsubscribe'),
+            message: t("profile.agreements.newsletter.error.unsubscribe"),
             isError: true,
           });
           setIsSubscriptionButtonDisabled(false);
           return null;
-        }
+        },
       );
     }
   };
@@ -87,22 +87,22 @@ const Agreements = () => {
   const privacyStatementLink: ReactNode = (
     <LinkMui
       component={Link}
-      color='primary.main'
-      underline='none'
-      href={'/privacy-policy'}
+      color="primary.main"
+      underline="none"
+      href={"/privacy-policy"}
       aria-label={t(
-        'profile.agreements.privacy.statement.labelOfLinkToReplace'
+        "profile.agreements.privacy.statement.labelOfLinkToReplace",
       )}
-      title={t('profile.agreements.privacy.statement.labelOfLinkToReplace')}
+      title={t("profile.agreements.privacy.statement.labelOfLinkToReplace")}
     >
-      {t('profile.agreements.privacy.statement.labelOfLinkToReplace')}
+      {t("profile.agreements.privacy.statement.labelOfLinkToReplace")}
     </LinkMui>
   );
 
-  const privacyStatement = t('profile.agreements.privacy.statement.text')
-    .split('$')
+  const privacyStatement = t("profile.agreements.privacy.statement.text")
+    .split("$")
     .reduce((acc: ReactNode[], curr: ReactNode) => {
-      if (curr === 'labelOfLinkToReplace') {
+      if (curr === "labelOfLinkToReplace") {
         return [...acc, privacyStatementLink];
       }
       return [...acc, ` ${curr} `];
@@ -111,51 +111,51 @@ const Agreements = () => {
 
   return (
     <>
-      <title>{`${t('devPortal.title')} | ${t(
-        'profile.agreements.title'
+      <title>{`${t("devPortal.title")} | ${t(
+        "profile.agreements.title",
       )}`}</title>
       <Stack
         sx={{
-          padding: { xs: '40px 24px', md: '80px 40px' },
-          width: '100%',
-          maxWidth: '694px',
+          padding: { xs: "40px 24px", md: "80px 40px" },
+          width: "100%",
+          maxWidth: "694px",
         }}
       >
-        <Typography variant='h4' sx={{ marginBottom: '40px' }}>
-          {t('profile.agreements.title')}
+        <Typography variant="h4" sx={{ marginBottom: "40px" }}>
+          {t("profile.agreements.title")}
         </Typography>
         <Typography
-          variant='h6'
+          variant="h6"
           sx={{
-            marginBottom: '24px',
-            fontSize: '16px !important',
-            fontWeight: '600',
+            marginBottom: "24px",
+            fontSize: "16px !important",
+            fontWeight: "600",
           }}
         >
-          {t('profile.agreements.newsletter.title')}
+          {t("profile.agreements.newsletter.title")}
         </Typography>
         <Box
           sx={{
-            display: 'flex',
-            flexDirection: { xs: 'column', md: 'row' },
-            gap: { xs: '10px', md: '100px' },
+            display: "flex",
+            flexDirection: { xs: "column", md: "row" },
+            gap: { xs: "10px", md: "100px" },
           }}
         >
           <Typography
-            variant='body2'
+            variant="body2"
             sx={{
-              fontSize: '14px',
+              fontSize: "14px",
               color: palette.text.secondary,
             }}
           >
-            {t('profile.agreements.newsletter.description')}
+            {t("profile.agreements.newsletter.description")}
           </Typography>
           <Box
             sx={{
               margin: 0,
               padding: 0,
-              minWidth: '110px',
-              textAlign: 'right',
+              minWidth: "110px",
+              textAlign: "right",
             }}
           >
             {hasAcceptedMailingListSubscription ? (
@@ -163,50 +163,50 @@ const Agreements = () => {
                 disabled={loading || isSubscriptionButtonDisabled}
                 sx={{
                   color: palette.error.dark,
-                  whiteSpace: 'nowrap',
+                  whiteSpace: "nowrap",
                 }}
                 onClick={handleUnsubscribe}
               >
-                {t('profile.agreements.newsletter.unsubscribe')}
+                {t("profile.agreements.newsletter.unsubscribe")}
               </ButtonNaked>
             ) : (
               <ButtonNaked
                 disabled={loading || isSubscriptionButtonDisabled}
-                sx={{ whiteSpace: 'nowrap' }}
+                sx={{ whiteSpace: "nowrap" }}
                 onClick={handleSubscribe}
-                color='primary'
+                color="primary"
               >
-                {t('profile.agreements.newsletter.subscribe')}
+                {t("profile.agreements.newsletter.subscribe")}
               </ButtonNaked>
             )}
           </Box>
         </Box>
-        <Divider sx={{ marginY: '32px' }} />
+        <Divider sx={{ marginY: "32px" }} />
         <Typography
-          variant='h6'
+          variant="h6"
           sx={{
-            marginBottom: '24px',
-            fontSize: '16px !important',
-            fontWeight: '600',
+            marginBottom: "24px",
+            fontSize: "16px !important",
+            fontWeight: "600",
           }}
         >
-          {t('profile.agreements.privacy.title')}
+          {t("profile.agreements.privacy.title")}
         </Typography>
         <Typography
-          variant='body2'
+          variant="body2"
           sx={{
-            marginBottom: '24px',
-            fontSize: '14px',
+            marginBottom: "24px",
+            fontSize: "14px",
             color: palette.text.secondary,
           }}
         >
-          {t('profile.agreements.privacy.basicData')}
+          {t("profile.agreements.privacy.basicData")}
         </Typography>
         <Typography
-          variant='body2'
+          variant="body2"
           sx={{
-            marginBottom: '24px',
-            fontSize: '14px',
+            marginBottom: "24px",
+            fontSize: "14px",
             color: palette.text.secondary,
           }}
         >
@@ -218,7 +218,7 @@ const Agreements = () => {
         autoHideDuration={snackbarAutoHideDurationMs}
         onClose={() => setInfo(null)}
       >
-        <Alert severity={info?.isError ? 'error' : 'success'}>
+        <Alert severity={info?.isError ? "error" : "success"}>
           {info?.message}
         </Alert>
       </Snackbar>

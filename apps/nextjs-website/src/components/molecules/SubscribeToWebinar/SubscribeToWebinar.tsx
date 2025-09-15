@@ -1,13 +1,13 @@
-'use client';
-import React, { useCallback, useEffect, Suspense } from 'react';
-import { useState } from 'react';
-import SubscribeButton from '../../atoms/SubscribeButton/SubscribeButton';
-import { useTranslations } from 'next-intl';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { WebinarState } from '@/helpers/webinar.helpers';
-import { subscribeToWebinar, unsubscribeToWebinar } from '@/lib/webinarApi';
-import { useUser } from '@/helpers/user.helper';
-import Spinner from '../../atoms/Spinner/Spinner';
+"use client";
+import React, { useCallback, useEffect, Suspense } from "react";
+import { useState } from "react";
+import SubscribeButton from "../../atoms/SubscribeButton/SubscribeButton";
+import { useTranslations } from "next-intl";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { WebinarState } from "@/helpers/webinar.helpers";
+import { subscribeToWebinar, unsubscribeToWebinar } from "@/lib/webinarApi";
+import { useUser } from "@/helpers/user.helper";
+import Spinner from "../../atoms/Spinner/Spinner";
 
 export type SubscribeButtonProps = {
   webinarSlug?: string;
@@ -24,15 +24,15 @@ const SubscribeToWebinarContent = ({
   setIsSubscribed,
   handleErrorMessage,
   webinarState,
-  textColor = 'white',
+  textColor = "white",
 }: SubscribeButtonProps) => {
-  const t = useTranslations('webinar');
+  const t = useTranslations("webinar");
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const action = searchParams.get('action');
-  const isSubscribeAction = action === 'subscribe';
+  const action = searchParams.get("action");
+  const isSubscribeAction = action === "subscribe";
 
   const { user, webinarSubscriptions, reloadUser, aligned, isUserLoggedIn } =
     useUser();
@@ -41,14 +41,14 @@ const SubscribeToWebinarContent = ({
   useEffect(() => {
     if (username && webinarSlug) {
       setIsSubscribed(
-        webinarSubscriptions?.some((s) => s.webinarId === webinarSlug) ?? false
+        webinarSubscriptions?.some((s) => s.webinarId === webinarSlug) ?? false,
       );
     }
   }, [setIsSubscribed, username, webinarSubscriptions, webinarSlug]);
 
   const onSubscribe = useCallback(async () => {
     if (!webinarSlug || !username) {
-      handleErrorMessage && handleErrorMessage(t('genericSubscriptionError'));
+      handleErrorMessage && handleErrorMessage(t("genericSubscriptionError"));
       return null;
     }
 
@@ -57,7 +57,6 @@ const SubscribeToWebinarContent = ({
       .then(() => {
         reloadUser().then(() => setIsLoading(false));
         if (!pathname.includes(`/webinars/${webinarSlug}`)) {
-          // eslint-disable-next-line functional/immutable-data
           router.push(`/webinars/${webinarSlug}`);
         }
       })
@@ -83,7 +82,6 @@ const SubscribeToWebinarContent = ({
       ? `/webinars/${webinarSlug}?action=subscribe`
       : `${pathname}?action=subscribe`;
 
-    // eslint-disable-next-line functional/immutable-data
     router.push(`/auth/login?redirect=${btoa(finalPath)}`);
     return null;
   };
@@ -91,7 +89,7 @@ const SubscribeToWebinarContent = ({
   const onUnsubscribe = async () => {
     const userLoggedIn = await isUserLoggedIn(user);
     if (!userLoggedIn || !webinarSlug || !username) {
-      handleErrorMessage && handleErrorMessage(t('genericSubscriptionError'));
+      handleErrorMessage && handleErrorMessage(t("genericSubscriptionError"));
       return null;
     }
 
@@ -125,11 +123,11 @@ const SubscribeToWebinarContent = ({
   }, [onSubscribe, pathname, router, isSubscribeAction, username]);
 
   const subscribeLabelMap = {
-    [WebinarState.past]: 'view',
-    [WebinarState.comingSoon]: 'default',
-    [WebinarState.live]: 'takePart',
-    [WebinarState.future]: 'default',
-    [WebinarState.unknown]: 'default',
+    [WebinarState.past]: "view",
+    [WebinarState.comingSoon]: "default",
+    [WebinarState.live]: "takePart",
+    [WebinarState.future]: "default",
+    [WebinarState.unknown]: "default",
   };
 
   if (!webinarSlug) {

@@ -1,5 +1,5 @@
-'use client';
-import { useEffect, useMemo, useState } from 'react';
+"use client";
+import { useEffect, useMemo, useState } from "react";
 import {
   Box,
   FormControl,
@@ -11,23 +11,23 @@ import {
   Stack,
   styled,
   useTheme,
-} from '@mui/material';
-import { Product } from '@/lib/types/product';
-import { getStyles } from '@/components/molecules/ApiRestSection/ApiRestSection.styles';
-import dynamic from 'next/dynamic';
-import { useRouter, useSearchParams } from 'next/navigation';
-import Spinner from '@/components/atoms/Spinner/Spinner';
+} from "@mui/material";
+import { Product } from "@/lib/types/product";
+import { getStyles } from "@/components/molecules/ApiRestSection/ApiRestSection.styles";
+import dynamic from "next/dynamic";
+import { useRouter, useSearchParams } from "next/navigation";
+import Spinner from "@/components/atoms/Spinner/Spinner";
 
 /* TODO: Workaround due to error in SSR of elements package:
  * Error occurred prerendering page "/app-io/api". Read more: https://nextjs.org/docs/messages/prerender-error
  * Error: Cannot find module './impl/format'
  */
 const NotSsrApiViewer = dynamic(
-  () => import('@/components/atoms/ApiViewer/ApiViewer'),
+  () => import("@/components/atoms/ApiViewer/ApiViewer"),
   {
     ssr: false,
     loading: () => <Spinner />,
-  }
+  },
 );
 
 export type ApiRestPageProps = {
@@ -42,11 +42,11 @@ export type ApiRestPageProps = {
 };
 
 const StyledFormControl = styled(FormControl)(({ theme }) => ({
-  alignSelf: 'center',
+  alignSelf: "center",
   [`& .${formLabelClasses.root}`]: {
     color: `${theme.palette.common.white}`,
-    marginTop: '7px',
-    marginLeft: '8px',
+    marginTop: "7px",
+    marginLeft: "8px",
   },
   [`& .${formLabelClasses.root}.${formLabelClasses.focused}`]: {
     color: `${theme.palette.common.white}`,
@@ -68,7 +68,7 @@ const ApiRestSection = ({
 
   // if a spec query param is present, try to match it with the specURLs, if found, set it as selectedItemURL
   useEffect(() => {
-    const specName = searchParams.get('spec');
+    const specName = searchParams.get("spec");
     if (specName) {
       const decodedSpecName = decodeURIComponent(specName as string);
       const spec = specURLs.find((item) => item?.name === decodedSpecName);
@@ -86,14 +86,14 @@ const ApiRestSection = ({
     if (specURLsName && spec?.name) {
       // update the url with the spec query param
       router.replace(
-        `/${product.slug}/api/${apiSlug}?spec=${encodeURIComponent(spec.name)}`
+        `/${product.slug}/api/${apiSlug}?spec=${encodeURIComponent(spec.name)}`,
       );
     }
   };
 
   const selectedApi = useMemo(
     () => specURLs.find((item) => item?.url === selectedItemURL) || specURLs[0],
-    [selectedItemURL, specURLs]
+    [selectedItemURL, specURLs],
   );
   const borderColor = palette.divider;
   const styles = getStyles(palette);
@@ -102,26 +102,26 @@ const ApiRestSection = ({
     <Box
       sx={{
         borderTop: { md: `1px solid ${borderColor}` },
-        marginTop: { xs: '-42px', sm: '-22px', md: 0 },
+        marginTop: { xs: "-42px", sm: "-22px", md: 0 },
       }}
     >
       {specURLs.length > 1 && specURLsName && (
         <Stack
           sx={styles.selectContainer}
-          direction='row'
-          justifyContent='flex-end'
-          alignContent='center'
+          direction="row"
+          justifyContent="flex-end"
+          alignContent="center"
         >
-          <StyledFormControl size='medium'>
-            <InputLabel id='select-api-label'>{specURLsName}</InputLabel>
+          <StyledFormControl size="medium">
+            <InputLabel id="select-api-label">{specURLsName}</InputLabel>
             <Select
-              labelId='select-api-label'
+              labelId="select-api-label"
               value={selectedItemURL}
               onChange={handleChange}
-              size='small'
+              size="small"
               sx={styles.select}
-              id='select-api'
-              variant='outlined'
+              id="select-api"
+              variant="outlined"
               label={specURLsName}
             >
               {specURLs.map((item, index) => (

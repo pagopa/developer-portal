@@ -1,7 +1,7 @@
-'use client';
-import React from 'react';
-import { SxProps, Theme, Typography, useTheme } from '@mui/material';
-import type { TypographyVariant } from '@mui/material/styles';
+"use client";
+import React from "react";
+import { SxProps, Theme, Typography, useTheme } from "@mui/material";
+import type { TypographyVariant } from "@mui/material/styles";
 
 export type TypographyPartProps = {
   color?: string;
@@ -9,7 +9,7 @@ export type TypographyPartProps = {
   fontWeight?: string;
   sx?: SxProps<Theme>;
   style?: React.CSSProperties;
-  variant?: TypographyVariant | 'inherit';
+  variant?: TypographyVariant | "inherit";
   text: string;
   asHtml?: boolean;
 };
@@ -19,16 +19,16 @@ const TypographyPart = (props: TypographyPartProps) => {
 
   return (
     <Typography
-      component='div'
-      fontSize={props.fontSize || 'inherit'}
-      variant={props.variant || 'body1'}
-      fontWeight={props.fontWeight || 'inherit'}
-      color={props.color || 'inherit'}
+      component="div"
+      fontSize={props.fontSize || "inherit"}
+      variant={props.variant || "body1"}
+      fontWeight={props.fontWeight || "inherit"}
+      color={props.color || "inherit"}
       style={props.style}
       sx={{
-        wordBreak: 'break-word',
-        textAlign: 'justify',
-        textAlignLast: 'left',
+        wordBreak: "break-word",
+        textAlign: "justify",
+        textAlignLast: "left",
         marginBottom: spacing(5),
         ...props.sx,
       }}

@@ -1,21 +1,21 @@
-'use client';
+"use client";
 import {
   CardsProps,
   CardProps,
   CardItemProps,
-} from 'gitbook-docs/markdoc/schema/table';
-import MUICard from '@mui/material/Card';
-import CardMedia from '@mui/material/CardMedia';
-import CardContent from '@mui/material/CardContent';
-import { ReactNode } from 'react';
-import Typography from '@mui/material/Typography';
-import Grid from '@mui/material/Grid';
-import { useRouter } from 'next/navigation';
-import CardActionArea from '@mui/material/CardActionArea';
-import { useTheme } from '@mui/material';
+} from "gitbook-docs/markdoc/schema/table";
+import MUICard from "@mui/material/Card";
+import CardMedia from "@mui/material/CardMedia";
+import CardContent from "@mui/material/CardContent";
+import { ReactNode } from "react";
+import Typography from "@mui/material/Typography";
+import Grid from "@mui/material/Grid";
+import { useRouter } from "next/navigation";
+import CardActionArea from "@mui/material/CardActionArea";
+import { useTheme } from "@mui/material";
 
 export const CardItem = ({ children }: CardItemProps<ReactNode>) => (
-  <Typography component='div'>{children}</Typography>
+  <Typography component="div">{children}</Typography>
 );
 
 export const Card = ({ children, coverSrc, href }: CardProps<ReactNode>) => {
@@ -24,27 +24,26 @@ export const Card = ({ children, coverSrc, href }: CardProps<ReactNode>) => {
   const content = (
     <>
       {coverSrc && (
-        <CardMedia component='img' image={coverSrc} alt='Card Image' />
+        <CardMedia component="img" image={coverSrc} alt="Card Image" />
       )}
-      <CardContent component='div' sx={{ height: 'auto' }}>
+      <CardContent component="div" sx={{ height: "auto" }}>
         {children}
       </CardContent>
     </>
   );
   return (
     <Grid size={{ xs: 12, md: 6 }}>
-      <MUICard variant='outlined' sx={{ height: '100%' }}>
+      <MUICard variant="outlined" sx={{ height: "100%" }}>
         {href ? (
           <CardActionArea
             sx={{
-              height: '100%',
-              '.MuiCardActionArea-focusHighlight': {
+              height: "100%",
+              ".MuiCardActionArea-focusHighlight": {
                 backgroundColor: palette.background.paper,
                 opacity: 0,
               },
-              '.MuiCardContent-root': { height: 'inherit' },
+              ".MuiCardContent-root": { height: "inherit" },
             }}
-            // eslint-disable-next-line functional/immutable-data
             onClick={() => router.push(href)}
           >
             {content}
@@ -63,7 +62,7 @@ export const Cards = ({ children }: CardsProps<ReactNode>) => (
     spacing={2}
     columns={{ xs: 12, md: 12 }}
     marginBottom={2}
-    alignItems='stretch'
+    alignItems="stretch"
   >
     {children}
   </Grid>

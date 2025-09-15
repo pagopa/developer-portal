@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { StrapiQuickStartGuides } from '@/lib/strapi/types/quickStartGuides';
-import { minimalAlertPart } from './parts';
-import { strapiQuickStartGuides } from '../fixtures/quickStartGuides';
+import { StrapiQuickStartGuides } from "@/lib/strapi/types/quickStartGuides";
+import { minimalAlertPart } from "./parts";
+import { strapiQuickStartGuides } from "../fixtures/quickStartGuides";
 
 export function minimalQuickStartGuides(): StrapiQuickStartGuides {
   return {
@@ -9,9 +9,9 @@ export function minimalQuickStartGuides(): StrapiQuickStartGuides {
       {
         id: 1,
         attributes: {
-          title: 'Minimal Quick Start',
-          description: '',
-          updatedAt: '2024-01-01T00:00:00.000Z',
+          title: "Minimal Quick Start",
+          description: "",
+          updatedAt: "2024-01-01T00:00:00.000Z",
           product: strapiQuickStartGuides.data[0].attributes.product,
           bannerLinks: [],
           seo: undefined,
@@ -20,9 +20,9 @@ export function minimalQuickStartGuides(): StrapiQuickStartGuides {
               {
                 id: 1,
                 attributes: {
-                  title: 'Minimal Step',
-                  anchor: 'minimal-step',
-                  publishedAt: '2024-01-01T00:00:00.000Z',
+                  title: "Minimal Step",
+                  anchor: "minimal-step",
+                  publishedAt: "2024-01-01T00:00:00.000Z",
                   parts: [minimalAlertPart()],
                 },
               },

@@ -1,35 +1,35 @@
-import * as qs from 'qs';
-import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
-import { StrapiWebinars } from '@/lib/strapi/types/webinars';
+import * as qs from "qs";
+import { fetchFromStrapi } from "@/lib/strapi/fetchFromStrapi";
+import { StrapiWebinars } from "@/lib/strapi/types/webinars";
 
 export const webinarPopulate = {
   populate: {
     coverImage: {
-      populate: ['image'],
+      populate: ["image"],
     },
     webinarSpeakers: {
-      populate: ['avatar'],
+      populate: ["avatar"],
     },
     relatedLinks: {
-      populate: ['links'],
+      populate: ["links"],
     },
     relatedResources: {
       populate: {
         resources: {
-          populate: ['image'],
+          populate: ["image"],
         },
         downloadableDocuments: {
-          populate: '*',
+          populate: "*",
         },
       },
     },
     seo: {
-      populate: '*,metaImage,metaSocial.image',
+      populate: "*,metaImage,metaSocial.image",
     },
-    questionsAndAnswers: '*',
-    webinarCategory: { populate: ['icon'] },
+    questionsAndAnswers: "*",
+    webinarCategory: { populate: ["icon"] },
     headerImage: {
-      populate: ['image'],
+      populate: ["image"],
     },
   },
 };
@@ -37,6 +37,6 @@ export const webinarPopulate = {
 const makeStrapiWebinarsPopulate = () => qs.stringify(webinarPopulate);
 
 export const fetchWebinars = fetchFromStrapi<StrapiWebinars>(
-  'webinars',
-  makeStrapiWebinarsPopulate()
+  "webinars",
+  makeStrapiWebinarsPopulate(),
 );

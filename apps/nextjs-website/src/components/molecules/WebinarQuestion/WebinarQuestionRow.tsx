@@ -1,4 +1,4 @@
-import { WebinarQuestion } from '@/lib/webinars/webinarQuestions';
+import { WebinarQuestion } from "@/lib/webinars/webinarQuestions";
 import {
   Box,
   IconButton,
@@ -6,14 +6,14 @@ import {
   TableRow,
   Typography,
   useTheme,
-} from '@mui/material';
-import { CopyToClipboardButton } from '@pagopa/mui-italia';
-import DOMPurify from 'dompurify';
-import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-import Visibility from '@mui/icons-material/Visibility';
-import { useTranslations } from 'next-intl';
-import { defaultLocale, timeOptions } from '@/config';
-import { ThumbUpAlt, ThumbUpOffAlt } from '@mui/icons-material';
+} from "@mui/material";
+import { CopyToClipboardButton } from "@pagopa/mui-italia";
+import DOMPurify from "dompurify";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import Visibility from "@mui/icons-material/Visibility";
+import { useTranslations } from "next-intl";
+import { defaultLocale, timeOptions } from "@/config";
+import { ThumbUpAlt, ThumbUpOffAlt } from "@mui/icons-material";
 
 type WebinarQuestionRowProps = {
   question: WebinarQuestion;
@@ -29,7 +29,7 @@ export default function WebinarQuestionRow({
   onHighlight,
 }: WebinarQuestionRowProps) {
   const { palette } = useTheme();
-  const t = useTranslations('webinar.questionList');
+  const t = useTranslations("webinar.questionList");
 
   const { hiddenBy, highlightedBy } = question;
 
@@ -45,27 +45,27 @@ export default function WebinarQuestionRow({
       hover
       key={question.id.createdAt.toISOString()}
       sx={{
-        '&:last-child td, &:last-child th': { border: 0 },
-        '&.MuiTableRow-hover:hover': {
+        "&:last-child td, &:last-child th": { border: 0 },
+        "&.MuiTableRow-hover:hover": {
           backgroundColor:
             isHighlighted && !isHidden
               ? palette.primary.dark
               : palette.action.hover,
         },
-        '& > .MuiTableCell-root': {
-          padding: '32px 16px 24px 16px',
+        "& > .MuiTableCell-root": {
+          padding: "32px 16px 24px 16px",
         },
         backgroundColor:
-          isHighlighted && !isHidden ? palette.primary.light : '',
-        fontStyle: isHidden ? 'italic' : '',
-        position: 'relative',
+          isHighlighted && !isHidden ? palette.primary.light : "",
+        fontStyle: isHidden ? "italic" : "",
+        position: "relative",
       }}
     >
       <TableCell
-        width='100%'
+        width="100%"
         sx={{
           color: tcColor,
-          '& > .MuiTypography-root': {
+          "& > .MuiTypography-root": {
             color: tcColor,
           },
         }}
@@ -78,23 +78,23 @@ export default function WebinarQuestionRow({
               marginBottom: 2,
             }}
           >
-            {t('highlightedBy')}: {highlightedBy}
+            {t("highlightedBy")}: {highlightedBy}
           </Box>
         )}
-        <Typography fontStyle={'italic'} fontSize={14}>
+        <Typography fontStyle={"italic"} fontSize={14}>
           {!isHidden
             ? question.id.createdAt.toLocaleTimeString(
                 defaultLocale,
-                timeOptions
+                timeOptions,
               )
-            : ''}
+            : ""}
         </Typography>
         <Typography>
           {isHiddenByMe
-            ? `${t('hiddenByMe')}: (${question.question})`
+            ? `${t("hiddenByMe")}: (${question.question})`
             : question.question}
         </Typography>
-        <Box display={'flex'} justifyContent={'end'} mt={2}>
+        <Box display={"flex"} justifyContent={"end"} mt={2}>
           {!isHighlighted && (!isHidden || isHiddenByMe) && (
             <IconButton
               onClick={() => onHide(!isHidden)}

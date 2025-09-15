@@ -1,17 +1,17 @@
-import { Palette } from '@mui/material';
+import { Palette } from "@mui/material";
 
 export const getStyles = (palette: Palette) => {
   const white = palette.common.white;
   return {
     select: {
-      minWidth: { sx: 'auto', sm: '400px' },
+      minWidth: { sx: "auto", sm: "400px" },
       color: white,
       margin: 1,
-      '& .MuiOutlinedInput-notchedOutline': {
+      "& .MuiOutlinedInput-notchedOutline": {
         borderColor: `${white} !important`, // !important is needed due to MUI that overwrite style via javascript
       },
 
-      '& .MuiSelect-icon': {
+      "& .MuiSelect-icon": {
         color: white,
       },
     },
@@ -23,10 +23,10 @@ export const getStyles = (palette: Palette) => {
     soapContainer: {
       background: palette.primary.dark,
       color: white,
-      padding: '0 1rem',
+      padding: "0 1rem",
     },
     soapButton: {
-      cursor: 'pointer',
+      cursor: "pointer",
     },
   };
 };

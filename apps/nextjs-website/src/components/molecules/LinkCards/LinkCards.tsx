@@ -1,7 +1,7 @@
-'use client';
-import React from 'react';
-import { Box, Grid } from '@mui/material';
-import LinkCard from '@/components/molecules/LinkCard/LinkCard';
+"use client";
+import React from "react";
+import { Box, Grid } from "@mui/material";
+import LinkCard from "@/components/molecules/LinkCard/LinkCard";
 
 type LinkCardsProps = {
   cards: {
@@ -18,7 +18,7 @@ const LinkCards = ({ cards }: LinkCardsProps) => {
       <Grid container spacing={4}>
         {cards.map(({ title, description, href, label }, index) => {
           return (
-            <Grid key={index} size={{ xs: 12, md: 6, lg: 'auto' }}>
+            <Grid key={index} size={{ xs: 12, md: 6, lg: "auto" }}>
               <LinkCard
                 minHeight={155}
                 title={title}
@@ -27,7 +27,7 @@ const LinkCards = ({ cards }: LinkCardsProps) => {
                   href,
                   label,
                 }}
-                variant='h3'
+                variant="h3"
               />
             </Grid>
           );

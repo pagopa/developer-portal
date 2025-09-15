@@ -4,16 +4,16 @@ import {
   StrapiBaseProductWithoutBannerLinks,
   StrapiBaseProductWithRelations,
   StrapiProduct,
-} from '@/lib/strapi/types/product';
-import { mediaJpeg } from '@/lib/strapi/__tests__/factories/media';
-import { generateBannerLinks } from '@/lib/strapi/__tests__/factories/bannerLink';
+} from "@/lib/strapi/types/product";
+import { mediaJpeg } from "@/lib/strapi/__tests__/factories/media";
+import { generateBannerLinks } from "@/lib/strapi/__tests__/factories/bannerLink";
 
 export function baseProduct(): StrapiBaseProduct {
   return {
     attributes: {
-      name: 'Test Product',
-      shortName: 'TP',
-      slug: 'test-product',
+      name: "Test Product",
+      shortName: "TP",
+      slug: "test-product",
     },
   };
 }
@@ -31,7 +31,7 @@ export function baseProductWithoutBannerLinks(): StrapiBaseProductWithoutBannerL
   return {
     attributes: {
       ...baseProduct().attributes,
-      description: 'Test product description',
+      description: "Test product description",
       logo: {
         data: mediaJpeg(),
       },
@@ -86,7 +86,7 @@ export function strapiProduct(): StrapiProduct {
     attributes: {
       ...baseProduct().attributes,
       bannerLinks: generateBannerLinks(2),
-      description: 'Complete product description',
+      description: "Complete product description",
       logo: {
         data: mediaJpeg(),
       },
@@ -133,11 +133,11 @@ export function strapiProductWithoutLogo(): StrapiProduct {
 export function productWithAllRelations(): StrapiProduct {
   return {
     attributes: {
-      name: 'Full Feature Product',
-      shortName: 'FFP',
-      slug: 'full-feature-product',
+      name: "Full Feature Product",
+      shortName: "FFP",
+      slug: "full-feature-product",
       bannerLinks: generateBannerLinks(3),
-      description: 'A product with all available relations and features',
+      description: "A product with all available relations and features",
       logo: {
         data: mediaJpeg(),
       },
@@ -152,12 +152,12 @@ export function productWithAllRelations(): StrapiProduct {
                 {
                   attributes: {
                     apiRestDetail: {
-                      slug: 'test-api',
+                      slug: "test-api",
                       specUrls: [
                         {
                           id: 0,
-                          name: 'Spec URL',
-                          url: 'https://example.com/api/spec.yaml',
+                          name: "Spec URL",
+                          url: "https://example.com/api/spec.yaml",
                           hideTryIt: false,
                         },
                       ],
@@ -183,7 +183,7 @@ export function productWithMissingMandatoryFields(): Partial<StrapiProduct> {
       shortName: undefined as any,
       slug: undefined as any,
       bannerLinks: [],
-      description: 'Product with missing mandatory fields',
+      description: "Product with missing mandatory fields",
       logo: {
         data: mediaJpeg(),
       },

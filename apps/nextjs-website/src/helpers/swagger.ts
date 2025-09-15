@@ -1,4 +1,4 @@
-import SwaggerUI from 'swagger-ui';
+import SwaggerUI from "swagger-ui";
 
 //@ts-expect-error the types are not exported as expected, the following code
 //should type

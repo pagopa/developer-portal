@@ -1,20 +1,20 @@
 /* eslint-disable functional/no-try-statements */
 /* eslint-disable functional/no-expression-statements */
-import { OverviewPageProps } from '@/app/[productSlug]/overview/page';
-import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
-import { makeBaseProductWithoutLogoProps } from './makeProducts';
-import { StrapiOverviews } from '@/lib/strapi/types/overviews';
-import _ from 'lodash';
+import { OverviewPageProps } from "@/app/[productSlug]/overview/page";
+import { makeBannerLinkProps } from "@/lib/strapi/makeProps/makeBannerLink";
+import { makeBaseProductWithoutLogoProps } from "./makeProducts";
+import { StrapiOverviews } from "@/lib/strapi/types/overviews";
+import _ from "lodash";
 
 export function makeOverviewsProps(
-  strapiOverviews: StrapiOverviews
+  strapiOverviews: StrapiOverviews,
 ): ReadonlyArray<OverviewPageProps> {
   return _.compact(
     strapiOverviews.data.map(({ attributes }) => {
       const productData = attributes.product.data;
       if (!productData.attributes.slug) {
         console.error(
-          `Error processing Overview for product: "${productData.attributes.name}": Missing product slug`
+          `Error processing Overview for product: "${productData.attributes.name}": Missing product slug`,
         );
         return null;
       }
@@ -26,7 +26,7 @@ export function makeOverviewsProps(
           hero: {
             backgroundImage: attributes.backgroundImage.data.attributes.url,
             altText:
-              attributes.backgroundImage.data.attributes.alternativeText || '',
+              attributes.backgroundImage.data.attributes.alternativeText || "",
             title: attributes.title,
             subtitle: attributes.subtitle,
           },
@@ -37,13 +37,13 @@ export function makeOverviewsProps(
               attributes.features.items.map((item) => ({
                 iconUrl: item.icon.data?.attributes.url,
                 content: item.content,
-                title: item.title || '',
+                title: item.title || "",
               })) || [],
           },
           startInfo: attributes.startInfoSection && {
             title: attributes.startInfoSection.title,
             cta: attributes.startInfoSection.bottomLink && {
-              text: attributes.startInfoSection.bottomLabel || '',
+              text: attributes.startInfoSection.bottomLabel || "",
               label: attributes.startInfoSection.bottomLink.text,
               href: attributes.startInfoSection.bottomLink.href,
             },
@@ -64,8 +64,8 @@ export function makeOverviewsProps(
                 attributes.tutorialSection.tutorials.data.map((tutorial) => {
                   if (!tutorial.attributes.slug) {
                     console.error(
-                      'tutorial slug is missing:',
-                      tutorial.attributes.title
+                      "tutorial slug is missing:",
+                      tutorial.attributes.title,
                     );
                     return null;
                   }
@@ -73,7 +73,7 @@ export function makeOverviewsProps(
                   if (!tutorial.attributes.product.data.attributes.slug) {
                     console.error(
                       "tutorial's product slug is missing:",
-                      tutorial.attributes.title
+                      tutorial.attributes.title,
                     );
                     return null;
                   }
@@ -84,13 +84,13 @@ export function makeOverviewsProps(
                       url: tutorial.attributes.image.data.attributes.url,
                       alternativeText:
                         tutorial.attributes.image.data.attributes
-                          .alternativeText || '',
+                          .alternativeText || "",
                     },
                     title: tutorial.attributes.title,
-                    name: 'shared.moreInfo',
+                    name: "shared.moreInfo",
                     path: `/${tutorial.attributes.product.data.attributes.slug}/tutorials/${tutorial.attributes.slug}`,
                   };
-                })
+                }),
               ) || [],
           },
           whatsNew: attributes.whatsNew && {
@@ -116,7 +116,7 @@ export function makeOverviewsProps(
               image: item.attributes.image?.data && {
                 url: item.attributes.image.data.attributes.url,
                 alternativeText:
-                  item.attributes.image.data.attributes.alternativeText || '',
+                  item.attributes.image.data.attributes.alternativeText || "",
               },
             })),
           },
@@ -133,7 +133,7 @@ export function makeOverviewsProps(
                 title: document.title,
                 description: {
                   content: document.content,
-                  title: 'guideListPage.cardSection.listItemsTitle',
+                  title: "guideListPage.cardSection.listItemsTitle",
                   translate: false,
                 },
                 imagePath: document.image.data.attributes.url,
@@ -149,7 +149,7 @@ export function makeOverviewsProps(
                   if (!guide.attributes.slug) {
                     console.error(
                       "post-integration guide's product slug is missing:",
-                      guide.attributes
+                      guide.attributes,
                     );
                     return null;
                   }
@@ -158,21 +158,21 @@ export function makeOverviewsProps(
                     title: guide.attributes.title,
                     description: {
                       listItems: guide.attributes.listItems.map(
-                        (item) => item.text
+                        (item) => item.text,
                       ),
-                      title: 'guideListPage.cardSection.listItemsTitle',
+                      title: "guideListPage.cardSection.listItemsTitle",
                       translate: false,
                     },
                     imagePath: guide.attributes.image.data.attributes.url,
                     mobileImagePath:
                       guide.attributes.mobileImage.data.attributes.url,
                     link: {
-                      label: 'shared.goToGuide',
+                      label: "shared.goToGuide",
                       href: `guides/${guide.attributes.slug}`,
                       translate: true,
                     },
                   };
-                })
+                }),
               ),
             ],
             serviceModels: attributes.postIntegration.serviceModels,
@@ -188,17 +188,17 @@ export function makeOverviewsProps(
             attributes.bannerLinks.length > 0
               ? attributes.bannerLinks.map(makeBannerLinkProps)
               : attributes.product.data?.attributes.bannerLinks?.map(
-                  makeBannerLinkProps
+                  makeBannerLinkProps,
                 ),
           seo: attributes.seo,
         } satisfies OverviewPageProps;
       } catch (error) {
         console.error(
           `Error processing Overview for product: "${productData.attributes.name}":`,
-          error
+          error,
         );
         return null;
       }
-    })
+    }),
   );
 }

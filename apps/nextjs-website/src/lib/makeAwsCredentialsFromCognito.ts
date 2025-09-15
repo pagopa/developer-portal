@@ -1,11 +1,11 @@
-import { fromCognitoIdentityPool } from '@aws-sdk/credential-providers';
-import { Auth } from 'aws-amplify';
-import { BrowserConfig } from '@/BrowserConfig';
+import { fromCognitoIdentityPool } from "@aws-sdk/credential-providers";
+import { Auth } from "aws-amplify";
+import { BrowserConfig } from "@/BrowserConfig";
 
 // Create a aws credentials provider given a cognito user
 export const makeAwsCredentialsFromCognito = (
   config: BrowserConfig,
-  getCurrentSession: typeof Auth.currentSession
+  getCurrentSession: typeof Auth.currentSession,
 ) => {
   const providerName = `cognito-idp.${config.NEXT_PUBLIC_COGNITO_REGION}.amazonaws.com/${config.NEXT_PUBLIC_COGNITO_USER_POOL_ID}`;
   // create custom credentials provider

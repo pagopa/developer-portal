@@ -1,23 +1,23 @@
-'use client';
-import LoginForm from '@/components/organisms/Auth/LoginForm';
-import ConfirmLogIn from '@/components/organisms/Auth/ConfirmLogin';
-import { Grid } from '@mui/material';
-import { useCallback, useState, Suspense } from 'react';
-import { Auth } from 'aws-amplify';
-import { LoginSteps } from '@/lib/types/loginSteps';
-import { LoginFunction } from '@/lib/types/loginFunction';
-import ConfirmSignUp from '@/components/organisms/Auth/ConfirmSignUp';
-import { useRouter, useSearchParams } from 'next/navigation';
-import PageBackgroundWrapper from '@/components/atoms/PageBackgroundWrapper/PageBackgroundWrapper';
-import { SignInOpts } from '@aws-amplify/auth/lib/types';
-import AuthStatus from '@/components/organisms/Auth/AuthStatus';
-import Spinner from '@/components/atoms/Spinner/Spinner';
+"use client";
+import LoginForm from "@/components/organisms/Auth/LoginForm";
+import ConfirmLogIn from "@/components/organisms/Auth/ConfirmLogin";
+import { Grid } from "@mui/material";
+import { useCallback, useState, Suspense } from "react";
+import { Auth } from "aws-amplify";
+import { LoginSteps } from "@/lib/types/loginSteps";
+import { LoginFunction } from "@/lib/types/loginFunction";
+import ConfirmSignUp from "@/components/organisms/Auth/ConfirmSignUp";
+import { useRouter, useSearchParams } from "next/navigation";
+import PageBackgroundWrapper from "@/components/atoms/PageBackgroundWrapper/PageBackgroundWrapper";
+import { SignInOpts } from "@aws-amplify/auth/lib/types";
+import AuthStatus from "@/components/organisms/Auth/AuthStatus";
+import Spinner from "@/components/atoms/Spinner/Spinner";
 
 const LoginContent = () => {
   const router = useRouter();
   const [logInStep, setLogInStep] = useState(LoginSteps.LOG_IN);
   const [user, setUser] = useState(null);
-  const [loginData, setLoginData] = useState({ username: '', password: '' });
+  const [loginData, setLoginData] = useState({ username: "", password: "" });
   const [submitting, setSubmitting] = useState(false);
   const [noAccountError, setNoAccountError] = useState<boolean>(false);
 
@@ -29,7 +29,7 @@ const LoginContent = () => {
     const opts: SignInOpts = { username, password };
     const user = await Auth.signIn(opts)
       .catch((error) => {
-        if (error.code === 'UserNotConfirmedException') {
+        if (error.code === "UserNotConfirmedException") {
           setLogInStep(LoginSteps.CONFIRM_ACCOUNT);
         } else {
           setNoAccountError(true);
@@ -60,10 +60,10 @@ const LoginContent = () => {
     async (code: string) => {
       await Auth.sendCustomChallengeAnswer(user, code);
 
-      const redirect = searchParams.get('redirect');
-      router.replace(redirect ? atob(redirect) : '/');
+      const redirect = searchParams.get("redirect");
+      router.replace(redirect ? atob(redirect) : "/");
     },
-    [router, searchParams, user]
+    [router, searchParams, user],
   );
 
   const onBackStep = () => {
@@ -74,8 +74,8 @@ const LoginContent = () => {
     <PageBackgroundWrapper>
       <Grid
         container
-        justifyContent='center'
-        sx={{ mx: 'auto' }}
+        justifyContent="center"
+        sx={{ mx: "auto" }}
         my={6}
         spacing={6}
       >

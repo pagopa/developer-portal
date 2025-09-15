@@ -1,14 +1,14 @@
-'use client';
-import { Box, Stack, SxProps, Typography, useTheme } from '@mui/material';
-import EContainer from '@/editorialComponents/EContainer/EContainer';
-import { Generic } from '@/editorialComponents/types/components';
+"use client";
+import { Box, Stack, SxProps, Typography, useTheme } from "@mui/material";
+import EContainer from "@/editorialComponents/EContainer/EContainer";
+import { Generic } from "@/editorialComponents/types/components";
 
 export interface AbstractProps {
   overline?: string;
   title: string;
   description?: string | Generic;
   background?: string | Generic;
-  layout?: 'left' | 'center' | 'right';
+  layout?: "left" | "center" | "right";
   containerStyle?: SxProps;
   stackStyle?: SxProps;
 }
@@ -18,38 +18,38 @@ export const Abstract: React.FC<AbstractProps> = ({
   title,
   description,
   background,
-  layout = 'left',
+  layout = "left",
   containerStyle,
   stackStyle,
 }) => {
   const { palette } = useTheme();
   const theme = palette.mode;
-  const textColor = theme === 'dark' ? 'background.paper' : 'text.primary';
+  const textColor = theme === "dark" ? "background.paper" : "text.primary";
 
   const overlay =
-    theme === 'dark'
-      ? 'linear-gradient(76.77deg, rgba(0, 115, 230, 0.7) 40.28%, rgba(0, 115, 230, 0) 100%), '
-      : 'linear-gradient(0deg, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.8)), ';
+    theme === "dark"
+      ? "linear-gradient(76.77deg, rgba(0, 115, 230, 0.7) 40.28%, rgba(0, 115, 230, 0) 100%), "
+      : "linear-gradient(0deg, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.8)), ";
 
   const backgroundColor =
-    theme === 'dark' ? 'primary.dark' : 'background.paper';
-  const eyeletColor = theme === 'dark' ? 'background.paper' : 'text.secondary';
+    theme === "dark" ? "primary.dark" : "background.paper";
+  const eyeletColor = theme === "dark" ? "background.paper" : "text.secondary";
 
   const BackgroundImage = (
     <Box
       // https://www.w3.org/WAI/tutorials/images/decorative/#example-1-image-used-as-part-of-page-design
-      role='presentation'
+      role="presentation"
       sx={{
         px: { xs: 4 },
-        position: 'absolute',
+        position: "absolute",
         inset: 0,
         zIndex: -10,
-        height: '100%',
-        width: '100%',
-        objectFit: 'cover',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundImage: `${overlay}url(${background ?? ''})`,
+        height: "100%",
+        width: "100%",
+        objectFit: "cover",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundImage: `${overlay}url(${background ?? ""})`,
       }}
     />
   );
@@ -57,9 +57,9 @@ export const Abstract: React.FC<AbstractProps> = ({
   const { spacing } = useTheme();
 
   const flexLayoutMap = {
-    center: 'center',
-    right: 'flex-end',
-    left: 'flex-start',
+    center: "center",
+    right: "flex-end",
+    left: "flex-start",
   };
 
   return (
@@ -74,35 +74,35 @@ export const Abstract: React.FC<AbstractProps> = ({
             paddingX: 0,
           }
         }
-        width='100%'
-        justifyContent='center'
+        width="100%"
+        justifyContent="center"
         alignItems={flexLayoutMap[layout]}
       >
         <Box
-          display='flex'
-          flexDirection='column'
+          display="flex"
+          flexDirection="column"
           maxWidth={spacing(70)}
           textAlign={layout}
           color={textColor}
           gap={spacing(2)}
         >
           {overline && (
-            <Typography color={eyeletColor} variant={'overline'}>
+            <Typography color={eyeletColor} variant={"overline"}>
               {overline}
             </Typography>
           )}
           <Typography
             color={textColor}
-            variant='h1'
-            sx={{ fontSize: '2rem !important', lineHeight: '1.125 !important' }}
+            variant="h1"
+            sx={{ fontSize: "2rem !important", lineHeight: "1.125 !important" }}
           >
             {title}
           </Typography>
           {description && (
             <Typography
-              component={typeof description === 'string' ? 'p' : 'div'}
+              component={typeof description === "string" ? "p" : "div"}
               color={textColor}
-              variant='body1'
+              variant="body1"
             >
               {description}
             </Typography>

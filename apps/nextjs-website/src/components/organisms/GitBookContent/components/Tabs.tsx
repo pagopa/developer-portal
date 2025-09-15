@@ -1,9 +1,9 @@
-import MuiTabs from '@mui/material/Tabs';
-import MuiTab from '@mui/material/Tab';
-import { TabsProps } from 'gitbook-docs/markdoc/schema/tabs';
-import React, { ReactNode } from 'react';
-import { useTheme } from '@mui/material';
-import Tab from '@/components/organisms/GitBookContent/components/Tab';
+import MuiTabs from "@mui/material/Tabs";
+import MuiTab from "@mui/material/Tab";
+import { TabsProps } from "gitbook-docs/markdoc/schema/tabs";
+import React, { ReactNode } from "react";
+import { useTheme } from "@mui/material";
+import Tab from "@/components/organisms/GitBookContent/components/Tab";
 
 const Tabs = ({ titles, children }: TabsProps<ReactNode>) => {
   const { palette } = useTheme();
@@ -25,19 +25,19 @@ const Tabs = ({ titles, children }: TabsProps<ReactNode>) => {
           borderLeft: `1px solid ${palette.divider}`,
           borderRight: `1px solid ${palette.divider}`,
           borderBottom: 0,
-          borderTopLeftRadius: '4px',
-          borderTopRightRadius: '4px',
-          display: 'inline-block',
-          marginBottom: '-8px',
-          '& .MuiTabs-scroller': {
-            display: 'inline',
+          borderTopLeftRadius: "4px",
+          borderTopRightRadius: "4px",
+          display: "inline-block",
+          marginBottom: "-8px",
+          "& .MuiTabs-scroller": {
+            display: "inline",
           },
-          '& .MuiTabs-indicator': {
-            display: 'none',
+          "& .MuiTabs-indicator": {
+            display: "none",
           },
-          '& .MuiButtonBase-root': {
+          "& .MuiButtonBase-root": {
             borderRight: `1px solid ${palette.divider}`,
-            '&:last-child': {
+            "&:last-child": {
               borderRight: 0,
             },
           },
@@ -50,7 +50,7 @@ const Tabs = ({ titles, children }: TabsProps<ReactNode>) => {
             sx={{
               backgroundColor: palette.background.default,
               borderBottom: `1px solid ${palette.divider}`,
-              '&.Mui-selected': {
+              "&.Mui-selected": {
                 backgroundColor: palette.common.white,
                 borderBottom: 0,
                 color: palette.text.primary,

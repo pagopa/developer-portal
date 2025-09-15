@@ -1,32 +1,32 @@
 import ProductLayout, {
   ProductLayoutProps,
-} from '@/components/organisms/ProductLayout/ProductLayout';
-import { Product } from '@/lib/types/product';
-import { SEO } from '@/lib/types/seo';
-import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
+} from "@/components/organisms/ProductLayout/ProductLayout";
+import { Product } from "@/lib/types/product";
+import { SEO } from "@/lib/types/seo";
+import { generateStructuredDataScripts } from "@/helpers/generateStructuredDataScripts.helpers";
 import {
   convertSeoToStructuredDataArticle,
   productToBreadcrumb,
-} from '@/helpers/structuredData.helpers';
-import { getReleaseNote } from '@/lib/api';
-import { getUrlReplaceMapProps } from '@/lib/cmsApi';
+} from "@/helpers/structuredData.helpers";
+import { getReleaseNote } from "@/lib/api";
+import { getUrlReplaceMapProps } from "@/lib/cmsApi";
 import {
   BreadcrumbItem,
   gitBookPageToBreadcrumbs,
   productPageToBreadcrumbs,
-} from '@/helpers/breadcrumbs.helpers';
-import GitBookTemplate from '@/components/templates/GitBookTemplate/GitBookTemplate';
-import React from 'react';
-import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
-import { Metadata } from 'next';
+} from "@/helpers/breadcrumbs.helpers";
+import GitBookTemplate from "@/components/templates/GitBookTemplate/GitBookTemplate";
+import React from "react";
+import { BannerLinkProps } from "@/components/atoms/BannerLink/BannerLink";
+import { Metadata } from "next";
 import {
   makeMetadata,
   makeMetadataFromStrapi,
-} from '@/helpers/metadata.helpers';
-import { BreadcrumbSegment } from '@/lib/types/path';
-import { baseUrl } from '@/config';
-import PageNotFound from '@/app/not-found';
-import { getReleaseNotesMetadata } from '@/helpers/s3Metadata.helpers';
+} from "@/helpers/metadata.helpers";
+import { BreadcrumbSegment } from "@/lib/types/path";
+import { baseUrl } from "@/config";
+import PageNotFound from "@/app/not-found";
+import { getReleaseNotesMetadata } from "@/helpers/s3Metadata.helpers";
 
 type ReleaseNotePageStaticParams = {
   productSlug: string;
@@ -42,7 +42,7 @@ export async function generateStaticParams(): Promise<
 > {
   const releaseNotes = await getReleaseNotesMetadata();
   const releaseNoteParams = releaseNotes
-    .map(({ path }) => path.split('/'))
+    .map(({ path }) => path.split("/"))
     .filter((paths) => paths.length > RELEASE_NOTE_SUB_PATH_INDEX)
     .map((paths) => {
       return {
@@ -58,15 +58,15 @@ export async function generateMetadata({
   params: Promise<ReleaseNotePageStaticParams>;
 }): Promise<Metadata> {
   const resolvedParams = await params;
-  if (resolvedParams.productSlug === 'unknown') {
+  if (resolvedParams.productSlug === "unknown") {
     return makeMetadata({
-      title: 'unknown',
-      url: 'unknown',
+      title: "unknown",
+      url: "unknown",
     });
   }
   const props = await getReleaseNote(
     resolvedParams?.productSlug,
-    resolvedParams?.releaseNoteSubPathSlugs
+    resolvedParams?.releaseNoteSubPathSlugs,
   );
 
   if (props?.seo) {
@@ -95,12 +95,12 @@ const ReleaseNotePage = async ({
   params: Promise<ReleaseNotePageStaticParams>;
 }) => {
   const resolvedParams = await params;
-  if (resolvedParams.productSlug === 'unknown') {
+  if (resolvedParams.productSlug === "unknown") {
     return <PageNotFound />;
   }
   const releaseNoteProps = await getReleaseNote(
     resolvedParams.productSlug,
-    resolvedParams.releaseNoteSubPathSlugs
+    resolvedParams.releaseNoteSubPathSlugs,
   );
 
   const urlReplaceMap = await getUrlReplaceMapProps();
@@ -126,12 +126,12 @@ const ReleaseNotePage = async ({
 
   const breadcrumbs: readonly BreadcrumbSegment[] = gitBookPageToBreadcrumbs(
     bodyConfig.pagePath,
-    bodyConfig.gitBookPagesWithTitle
+    bodyConfig.gitBookPagesWithTitle,
   );
 
   const breadcrumbsItems: BreadcrumbItem[] = breadcrumbs.map((breadcrumb) => ({
     name: breadcrumb.name,
-    item: [baseUrl, breadcrumb.path].join(''),
+    item: [baseUrl, breadcrumb.path].join(""),
   }));
 
   const structuredData = generateStructuredDataScripts({

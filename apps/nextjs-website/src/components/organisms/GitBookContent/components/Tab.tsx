@@ -1,5 +1,5 @@
-import React, { ReactNode } from 'react';
-import { useTheme } from '@mui/material';
+import React, { ReactNode } from "react";
+import { useTheme } from "@mui/material";
 
 type TabProps = {
   children: ReactNode;

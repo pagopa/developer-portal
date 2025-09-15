@@ -1,22 +1,22 @@
-import ChatLink from '@/components/atoms/ChatLink/ChatLink';
-import Markdoc, { Config, ConfigType, Node } from '@markdoc/markdoc';
-import React, { ReactNode } from 'react';
+import ChatLink from "@/components/atoms/ChatLink/ChatLink";
+import Markdoc, { Config, ConfigType, Node } from "@markdoc/markdoc";
+import React, { ReactNode } from "react";
 
 const chatMarkdocConfig: ConfigType = {
   nodes: {
     link: {
-      render: 'Link',
+      render: "Link",
       attributes: {
         href: { type: String, required: true },
-        target: { type: String, default: '_blank' },
+        target: { type: String, default: "_blank" },
         title: { type: String },
       },
       transform(node: Node, config: Config) {
         const attributes = node.transformAttributes(config);
         return new Markdoc.Tag(
-          'Link',
+          "Link",
           attributes,
-          node.transformChildren(config)
+          node.transformChildren(config),
         );
       },
     },

@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { Webinar } from '@/lib/types/webinar';
+import { useEffect, useState } from "react";
+import { Webinar } from "@/lib/types/webinar";
 
 const COMING_SOON_START_TIME_DELTA_MS = 39 * 30 * 60 * 1000;
 const CHECK_WEBINAR_STATUS_INTERVAL_MS = 500;
@@ -15,7 +15,7 @@ export enum WebinarState {
 export const useWebinar = () => {
   const [webinar, setWebinar] = useState<Webinar | null>(null);
   const [webinarState, setWebinarState] = useState<WebinarState>(
-    WebinarState.unknown
+    WebinarState.unknown,
   );
 
   const startDateTimestamp =

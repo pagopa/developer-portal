@@ -1,12 +1,12 @@
-import { pipe } from 'fp-ts/lib/function';
-import { RemoteSessionsResponseCodec } from '@/lib/chatbot/queries';
-import { ChatbotEnv } from '@/lib/chatbot/chatbotEnv';
-import * as E from 'fp-ts/lib/Either';
-import * as PR from '@/lib/strapi/PathReporter';
-import * as R from 'fp-ts/lib/Reader';
-import * as TE from 'fp-ts/lib/TaskEither';
-import qs from 'qs';
-import { makeError } from '../makeError';
+import { pipe } from "fp-ts/lib/function";
+import { RemoteSessionsResponseCodec } from "@/lib/chatbot/queries";
+import { ChatbotEnv } from "@/lib/chatbot/chatbotEnv";
+import * as E from "fp-ts/lib/Either";
+import * as PR from "@/lib/strapi/PathReporter";
+import * as R from "fp-ts/lib/Reader";
+import * as TE from "fp-ts/lib/TaskEither";
+import qs from "qs";
+import { makeError } from "../makeError";
 
 export const getSessions = (page: number, pageSize: number) =>
   pipe(
@@ -23,13 +23,13 @@ export const getSessions = (page: number, pageSize: number) =>
                 pageSize: pageSize,
               })}`,
               {
-                method: 'GET',
+                method: "GET",
                 headers: {
-                  'Content-Type': 'application/json',
+                  "Content-Type": "application/json",
                   Authorization: `Bearer ${authToken}`,
                 },
-              }
-            )
+              },
+            ),
         ),
         TE.chain((response) => {
           if (response.status === 200) {
@@ -42,16 +42,16 @@ export const getSessions = (page: number, pageSize: number) =>
           // decode the response with the given codec
           pipe(
             RemoteSessionsResponseCodec.decode(json),
-            E.mapLeft((errors) => new Error(PR.failure(errors).join('\n')))
-          )
+            E.mapLeft((errors) => new Error(PR.failure(errors).join("\n"))),
+          ),
         ),
         TE.fold(
           // eslint-disable-next-line functional/no-promise-reject
           (errors) => () => Promise.reject(errors),
-          (result) => () => Promise.resolve(result)
-        )
-      )()
-    )
+          (result) => () => Promise.resolve(result),
+        ),
+      )(),
+    ),
   );
 
 export const deleteSession = (sessionId: string) =>
@@ -64,12 +64,12 @@ export const deleteSession = (sessionId: string) =>
         TE.chainTaskK(
           (authToken) => () =>
             fetch(`${chatbotHost}/sessions/${sessionId}`, {
-              method: 'DELETE',
+              method: "DELETE",
               headers: {
-                'Content-Type': 'application/json',
+                "Content-Type": "application/json",
                 Authorization: `Bearer ${authToken}`,
               },
-            })
+            }),
         ),
         TE.chain((response) => {
           if (response.status === 200) {
@@ -81,8 +81,8 @@ export const deleteSession = (sessionId: string) =>
         TE.fold(
           // eslint-disable-next-line functional/no-promise-reject
           (errors) => () => Promise.reject(errors),
-          (result) => () => Promise.resolve(result)
-        )
-      )()
-    )
+          (result) => () => Promise.resolve(result),
+        ),
+      )(),
+    ),
   );

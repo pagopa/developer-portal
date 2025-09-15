@@ -1,5 +1,5 @@
-import { NextIntlClientProvider } from 'next-intl';
-import { ComponentProps } from 'react';
+import { NextIntlClientProvider } from "next-intl";
+import { ComponentProps } from "react";
 
 type Props = ComponentProps<typeof NextIntlClientProvider>;
 

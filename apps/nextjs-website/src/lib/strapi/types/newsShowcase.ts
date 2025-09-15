@@ -1,5 +1,5 @@
-import { StrapiLink } from '@/lib/strapi/types/link';
-import { StrapiMedia } from '@/lib/strapi/types/media';
+import { StrapiLink } from "@/lib/strapi/types/link";
+import { StrapiMedia } from "@/lib/strapi/types/media";
 
 type StrapiNewsItem = {
   readonly attributes: {

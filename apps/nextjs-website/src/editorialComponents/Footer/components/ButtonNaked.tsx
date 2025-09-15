@@ -1,5 +1,5 @@
-import React from 'react';
-import { Button, type ButtonProps } from '@mui/material';
+import React from "react";
+import { Button, type ButtonProps } from "@mui/material";
 
 export const ButtonNaked = <C extends React.ElementType>(
   props: ButtonProps<
@@ -7,25 +7,25 @@ export const ButtonNaked = <C extends React.ElementType>(
     {
       component?: C;
       buttonRef?: React.Ref<HTMLButtonElement>;
-      weight?: 'default' | 'light';
+      weight?: "default" | "light";
     }
-  >
+  >,
 ): React.ReactElement => {
   const {
     children,
     buttonRef,
-    color = 'text',
-    weight = 'default',
+    color = "text",
+    weight = "default",
     ...rest
   } = props;
   return (
     <Button
       sx={{
-        fontWeight: weight === 'default' ? '600' : '400',
+        fontWeight: weight === "default" ? "600" : "400",
         letterSpacing: 0.3,
       }}
-      variant='naked'
-      size='small'
+      variant="naked"
+      size="small"
       color={color}
       disableRipple
       disableTouchRipple

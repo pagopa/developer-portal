@@ -1,11 +1,11 @@
-import { CodeBlockProps } from 'gitbook-docs/markdoc/schema/code';
-import { ReactNode } from 'react';
-import CodeBlockPart from '@/components/molecules/CodeBlockPart/CodeBlockPart';
-import dynamic from 'next/dynamic';
+import { CodeBlockProps } from "gitbook-docs/markdoc/schema/code";
+import { ReactNode } from "react";
+import CodeBlockPart from "@/components/molecules/CodeBlockPart/CodeBlockPart";
+import dynamic from "next/dynamic";
 
 const NoSSRMermaidDiagram = dynamic(
-  () => import('../../../atoms/MermaidDiagram/MermaidDiagram'),
-  { ssr: false }
+  () => import("../../../atoms/MermaidDiagram/MermaidDiagram"),
+  { ssr: false },
 );
 
 const CodeBlock = ({
@@ -13,11 +13,11 @@ const CodeBlock = ({
   lineNumbers,
   children,
 }: CodeBlockProps<ReactNode>) => {
-  if (language === 'mermaid' && typeof children === 'string') {
+  if (language === "mermaid" && typeof children === "string") {
     return <NoSSRMermaidDiagram chart={children} />;
   }
 
-  if (typeof children === 'string') {
+  if (typeof children === "string") {
     return (
       <CodeBlockPart
         code={children}

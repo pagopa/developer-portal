@@ -1,46 +1,46 @@
-import { getFutureWebinars, getPastWebinars } from '@/helpers/webinars.helpers';
-import { Webinar } from '@/lib/types/webinar';
-import { mediaRasterJson } from '@/lib/strapi/__tests__/fixtures/media';
+import { getFutureWebinars, getPastWebinars } from "@/helpers/webinars.helpers";
+import { Webinar } from "@/lib/types/webinar";
+import { mediaRasterJson } from "@/lib/strapi/__tests__/fixtures/media";
 
 const testWebinar: Webinar = {
-  title: 'Test Webinar',
-  updatedAt: '2024-03-14T08:30:00.000Z',
-  description: 'Questo è un webinar di test',
-  playerSrc: 'https://vimeo.com/event/4135276/embed',
+  title: "Test Webinar",
+  updatedAt: "2024-03-14T08:30:00.000Z",
+  description: "Questo è un webinar di test",
+  playerSrc: "https://vimeo.com/event/4135276/embed",
   bodyContent: [
     {
-      type: 'paragraph',
+      type: "paragraph",
       children: [
         {
-          type: 'text',
-          text: 'aText',
+          type: "text",
+          text: "aText",
         },
       ],
     },
     {
-      type: 'image',
+      type: "image",
       image: mediaRasterJson.data.attributes,
       children: [
         {
-          type: 'text',
-          text: '',
+          type: "text",
+          text: "",
         },
       ],
     },
   ],
-  slug: 'test-2024-03-14',
+  slug: "test-2024-03-14",
   isVisibleInList: false,
-  imagePath: '/images/webinar-cover-pago-pa-multe-14-marzo.jpg',
+  imagePath: "/images/webinar-cover-pago-pa-multe-14-marzo.jpg",
   speakers: [],
-  startDateTime: '2024-03-14T08:30:00.000Z',
-  endDateTime: '2024-03-14T09:30:00.000Z',
-  subscribeCtaLabel: '',
+  startDateTime: "2024-03-14T08:30:00.000Z",
+  endDateTime: "2024-03-14T09:30:00.000Z",
+  subscribeCtaLabel: "",
   relatedLinks: {
-    title: 'Link Utili',
+    title: "Link Utili",
     links: [
       {
         href: `#`,
-        text: 'Lorem ipsum dolor sit amet',
+        text: "Lorem ipsum dolor sit amet",
       },
     ],
   },
@@ -49,45 +49,45 @@ const testWebinar: Webinar = {
 const webinars: readonly Webinar[] = [
   {
     ...testWebinar,
-    startDateTime: '2022-01-01T08:30:00.000Z',
-    endDateTime: '2022-01-01T09:30:00.000Z',
+    startDateTime: "2022-01-01T08:30:00.000Z",
+    endDateTime: "2022-01-01T09:30:00.000Z",
   },
   {
     ...testWebinar,
-    startDateTime: '2024-03-04T08:30:00.000Z',
-    endDateTime: '2024-03-04T09:30:00.000Z',
+    startDateTime: "2024-03-04T08:30:00.000Z",
+    endDateTime: "2024-03-04T09:30:00.000Z",
   },
   {
     ...testWebinar,
-    startDateTime: '2099-01-01T08:30:00.000Z',
-    endDateTime: '2099-01-01T09:30:00.000Z',
+    startDateTime: "2099-01-01T08:30:00.000Z",
+    endDateTime: "2099-01-01T09:30:00.000Z",
   },
 ];
 
-describe('getFutureWebinars', () => {
-  it('should return only future webinars', () => {
+describe("getFutureWebinars", () => {
+  it("should return only future webinars", () => {
     expect(getFutureWebinars(webinars)).toStrictEqual([
       {
         ...testWebinar,
-        startDateTime: '2099-01-01T08:30:00.000Z',
-        endDateTime: '2099-01-01T09:30:00.000Z',
+        startDateTime: "2099-01-01T08:30:00.000Z",
+        endDateTime: "2099-01-01T09:30:00.000Z",
       },
     ]);
   });
 });
 
-describe('getPastWebinars', () => {
-  it('should return only past webinars', () => {
+describe("getPastWebinars", () => {
+  it("should return only past webinars", () => {
     expect(getPastWebinars(webinars)).toStrictEqual([
       {
         ...testWebinar,
-        startDateTime: '2024-03-04T08:30:00.000Z',
-        endDateTime: '2024-03-04T09:30:00.000Z',
+        startDateTime: "2024-03-04T08:30:00.000Z",
+        endDateTime: "2024-03-04T09:30:00.000Z",
       },
       {
         ...testWebinar,
-        startDateTime: '2022-01-01T08:30:00.000Z',
-        endDateTime: '2022-01-01T09:30:00.000Z',
+        startDateTime: "2022-01-01T08:30:00.000Z",
+        endDateTime: "2022-01-01T09:30:00.000Z",
       },
     ]);
   });

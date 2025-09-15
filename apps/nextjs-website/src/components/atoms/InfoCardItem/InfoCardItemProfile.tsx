@@ -1,5 +1,5 @@
-'use client';
-import RequiredTextField from '@/components/molecules/RequiredTextField/RequiredTextField';
+"use client";
+import RequiredTextField from "@/components/molecules/RequiredTextField/RequiredTextField";
 import {
   FormControl,
   InputLabel,
@@ -8,10 +8,10 @@ import {
   Stack,
   TextField,
   Typography,
-} from '@mui/material';
-import { ButtonNaked } from '@pagopa/mui-italia';
-import { useTranslations } from 'next-intl';
-import { ReactNode } from 'react';
+} from "@mui/material";
+import { ButtonNaked } from "@pagopa/mui-italia";
+import { useTranslations } from "next-intl";
+import { ReactNode } from "react";
 
 export type InfoCardItemProfileProps = {
   title: string;
@@ -20,8 +20,8 @@ export type InfoCardItemProfileProps = {
   editable: boolean;
   required: boolean;
 } & (
-  | { type: 'select'; values: { title: string; value: string }[] }
-  | { type: 'text' }
+  | { type: "select"; values: { title: string; value: string }[] }
+  | { type: "text" }
 );
 
 export type InfoCardItemEditingProfileProps = {
@@ -31,72 +31,72 @@ export type InfoCardItemEditingProfileProps = {
 };
 
 export const InfoCardItemProfile = (
-  infoCardItem: InfoCardItemProfileProps & InfoCardItemEditingProfileProps
+  infoCardItem: InfoCardItemProfileProps & InfoCardItemEditingProfileProps,
 ) => {
   const t = useTranslations();
 
   if (infoCardItem.editing) {
     return (
-      <Stack spacing={2} mb={2} sx={{ marginTop: '2rem' }}>
-        <FormControl variant='outlined'>
-          {infoCardItem.type === 'text' ? (
+      <Stack spacing={2} mb={2} sx={{ marginTop: "2rem" }}>
+        <FormControl variant="outlined">
+          {infoCardItem.type === "text" ? (
             infoCardItem.required ? (
               <RequiredTextField
                 inputProps={{ maxlength: 100 }}
                 label={infoCardItem.title}
-                value={infoCardItem.value ?? ''}
+                value={infoCardItem.value ?? ""}
                 onChange={({ target: { value } }) => {
                   infoCardItem.onValue && infoCardItem.onValue(value);
                 }}
-                helperText={t('shared.requiredFieldError')}
+                helperText={t("shared.requiredFieldError")}
               />
             ) : (
               <TextField
                 inputProps={{ maxlength: 100 }}
-                variant='outlined'
+                variant="outlined"
                 id={infoCardItem.title}
-                type={'text'}
+                type={"text"}
                 onChange={({ target: { value } }) => {
                   infoCardItem.onValue && infoCardItem.onValue(value);
                 }}
                 value={infoCardItem.value}
                 label={infoCardItem.title}
-                size='small'
+                size="small"
               />
             )
           ) : (
             <>
               <InputLabel
-                id={'company-field'}
+                id={"company-field"}
                 sx={{
-                  backgroundColor: 'white',
-                  top: '-8px',
-                  '&.Mui-focused': {
-                    paddingX: '8px',
-                    marginLeft: '-6px',
-                    top: '0',
+                  backgroundColor: "white",
+                  top: "-8px",
+                  "&.Mui-focused": {
+                    paddingX: "8px",
+                    marginLeft: "-6px",
+                    top: "0",
                   },
                 }}
               >
                 {infoCardItem.title}
-                {infoCardItem.required ? '*' : ''}
+                {infoCardItem.required ? "*" : ""}
               </InputLabel>
               <Select
-                labelId='company-field'
-                id='company-field-select'
+                labelId="company-field"
+                id="company-field-select"
                 value={
                   infoCardItem.values.find(
-                    ({ value }) => value === infoCardItem.value
-                  )?.value || ''
+                    ({ value }) => value === infoCardItem.value,
+                  )?.value || ""
                 }
                 onChange={({ target: { value } }) =>
                   infoCardItem.onValue &&
                   infoCardItem.onValue(
                     infoCardItem.values.find(({ value: v }) => v === value)
-                      ?.value || ''
+                      ?.value || "",
                   )
                 }
-                sx={{ padding: '8.5px 14px' }}
+                sx={{ padding: "8.5px 14px" }}
                 inputProps={{
                   sx: {
                     padding: 0,
@@ -119,39 +119,39 @@ export const InfoCardItemProfile = (
   return (
     <Stack
       my={{ xs: 1, md: 3 }}
-      flexDirection={{ xs: 'column', md: 'row' }}
-      alignItems={{ xs: 'flex-start', md: 'center' }}
+      flexDirection={{ xs: "column", md: "row" }}
+      alignItems={{ xs: "flex-start", md: "center" }}
       gap={2}
     >
       <Typography
-        variant='body2'
+        variant="body2"
         fontSize={16}
-        minWidth={{ xs: 'auto', md: '170px' }}
+        minWidth={{ xs: "auto", md: "170px" }}
       >
         {infoCardItem.title}
       </Typography>
-      {infoCardItem.value && infoCardItem.value != '' ? (
+      {infoCardItem.value && infoCardItem.value != "" ? (
         <Typography
           noWrap
-          maxWidth={'100%'}
-          minHeight={'24px'}
+          maxWidth={"100%"}
+          minHeight={"24px"}
           fontSize={16}
           flexGrow={1}
           fontWeight={700}
         >
-          {infoCardItem.type === 'select'
+          {infoCardItem.type === "select"
             ? infoCardItem.values.find(
-                ({ value }) => value === infoCardItem.value
+                ({ value }) => value === infoCardItem.value,
               )?.title
             : infoCardItem.value}
         </Typography>
       ) : (
         <ButtonNaked
           onClick={infoCardItem.onInsertPressed}
-          color='primary'
+          color="primary"
           sx={{ paddingLeft: 0, paddingRight: 0 }}
         >
-          {t('profile.insert')}
+          {t("profile.insert")}
         </ButtonNaked>
       )}
     </Stack>

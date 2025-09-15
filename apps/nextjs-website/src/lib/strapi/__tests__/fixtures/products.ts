@@ -1,16 +1,16 @@
-import { StrapiProducts } from '@/lib/strapi/types/product';
-import { Product } from '@/lib/types/product';
-import { generateBannerLinks } from '@/lib/strapi/__tests__/factories/bannerLink';
-import { mediaJpeg } from '@/lib/strapi/__tests__/factories/media';
+import { StrapiProducts } from "@/lib/strapi/types/product";
+import { Product } from "@/lib/types/product";
+import { generateBannerLinks } from "@/lib/strapi/__tests__/factories/bannerLink";
+import { mediaJpeg } from "@/lib/strapi/__tests__/factories/media";
 
 export const strapiProducts: StrapiProducts = {
   data: [
     {
       attributes: {
-        name: 'Test Product',
-        slug: 'test-product',
-        shortName: 'TP',
-        description: 'Test product description',
+        name: "Test Product",
+        slug: "test-product",
+        shortName: "TP",
+        description: "Test product description",
         logo: {
           data: mediaJpeg(),
         },
@@ -26,7 +26,7 @@ export const strapiProducts: StrapiProducts = {
                   {
                     attributes: {
                       apiRestDetail: {
-                        slug: 'api-detail',
+                        slug: "api-detail",
                         specUrls: [],
                       },
                     },
@@ -46,55 +46,55 @@ export const strapiProducts: StrapiProducts = {
 };
 
 export const expectedProduct: Product = {
-  name: 'Test Product',
-  slug: 'test-product',
-  shortName: 'TP',
-  description: 'Test product description',
+  name: "Test Product",
+  slug: "test-product",
+  shortName: "TP",
+  description: "Test product description",
   logo: {
-    url: 'https://example.com/example.jpg',
-    alternativeText: 'Example Image',
+    url: "https://example.com/example.jpg",
+    alternativeText: "Example Image",
     caption: undefined,
     height: 600,
-    name: 'example.jpg',
-    ext: '.jpg',
-    mime: 'image/jpeg',
+    name: "example.jpg",
+    ext: ".jpg",
+    mime: "image/jpeg",
     size: 123456,
     width: 800,
   },
   bannerLinks: [
     {
-      title: 'Banner Link 1',
+      title: "Banner Link 1",
       icon: {
-        url: 'https://example.com/example.jpg',
-        alternativeText: 'Example Image',
+        url: "https://example.com/example.jpg",
+        alternativeText: "Example Image",
         caption: undefined,
         height: 600,
-        name: 'example.jpg',
-        ext: '.jpg',
-        mime: 'image/jpeg',
+        name: "example.jpg",
+        ext: ".jpg",
+        mime: "image/jpeg",
         size: 123456,
         width: 800,
       },
-      theme: 'light',
+      theme: "light",
     },
     {
-      title: 'Banner Link 2',
+      title: "Banner Link 2",
       icon: {
-        url: 'https://example.com/example.jpg',
-        alternativeText: 'Example Image',
+        url: "https://example.com/example.jpg",
+        alternativeText: "Example Image",
         caption: undefined,
         height: 600,
-        name: 'example.jpg',
-        ext: '.jpg',
-        mime: 'image/jpeg',
+        name: "example.jpg",
+        ext: ".jpg",
+        mime: "image/jpeg",
         size: 123456,
         width: 800,
       },
-      theme: 'light',
+      theme: "light",
     },
   ],
   hasApiDataListPage: true,
-  apiDataListPageUrl: '/test-product/api/api-detail',
+  apiDataListPageUrl: "/test-product/api/api-detail",
   hasTutorialListPage: true,
   hasGuideListPage: true,
   hasOverviewPage: true,

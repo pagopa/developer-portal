@@ -1,6 +1,6 @@
-import { defaultOgTagImage, websiteName } from '@/config';
-import { SEO } from '@/lib/types/seo';
-import { Metadata, ResolvedMetadata } from 'next';
+import { defaultOgTagImage, websiteName } from "@/config";
+import { SEO } from "@/lib/types/seo";
+import { Metadata, ResolvedMetadata } from "next";
 
 type MakeMetadataParams = {
   readonly parent?: ResolvedMetadata;
@@ -28,14 +28,14 @@ export const makeMetadata: MakeMetadataFunction = ({
     metadataTitle,
     description,
     image,
-    locale
+    locale,
   );
   const twitter = getTwitterMetadata(metadataTitle, description, image);
 
   return {
     title: metadataTitle,
-    description: description || '',
-    url: url || '',
+    description: description || "",
+    url: url || "",
     openGraph,
     twitter,
   };
@@ -45,26 +45,26 @@ const getOpenGraphMetadata = (
   title: string,
   description?: string,
   image?: string,
-  locale = 'it_IT'
-): Metadata['openGraph'] => ({
+  locale = "it_IT",
+): Metadata["openGraph"] => ({
   title,
-  type: 'website',
+  type: "website",
   locale,
-  description: description || '',
+  description: description || "",
   images: image,
 });
 
 const getTwitterMetadata = (
   title: string,
   description?: string,
-  image?: string
-): Metadata['twitter'] => ({
+  image?: string,
+): Metadata["twitter"] => ({
   title,
-  description: description || '',
+  description: description || "",
   images: image,
-  card: 'summary',
-  site: '@pagopa',
-  creator: '@pagopa',
+  card: "summary",
+  site: "@pagopa",
+  creator: "@pagopa",
 });
 
 export const makeMetadataFromStrapi = (seo: SEO): Metadata => {
@@ -91,16 +91,16 @@ export const makeMetadataFromStrapi = (seo: SEO): Metadata => {
 };
 
 const enhanceOpenGraphMetadata = (
-  baseOG: Metadata['openGraph'] | undefined,
-  seo: SEO
-): Metadata['openGraph'] => {
+  baseOG: Metadata["openGraph"] | undefined,
+  seo: SEO,
+): Metadata["openGraph"] => {
   if (!baseOG) return baseOG;
 
   const enhancedOG = { ...baseOG };
 
   // eslint-disable-next-line functional/no-expression-statements
   seo.metaSocial?.forEach((social) => {
-    if (social.socialNetwork?.toLowerCase() === 'facebook') {
+    if (social.socialNetwork?.toLowerCase() === "facebook") {
       // eslint-disable-next-line functional/no-expression-statements, functional/immutable-data
       enhancedOG.title = social.title || enhancedOG.title;
       // eslint-disable-next-line functional/no-expression-statements, functional/immutable-data
@@ -112,16 +112,16 @@ const enhanceOpenGraphMetadata = (
 };
 
 const enhanceTwitterMetadata = (
-  baseTwitter: Metadata['twitter'] | undefined,
-  seo: SEO
-): Metadata['twitter'] => {
+  baseTwitter: Metadata["twitter"] | undefined,
+  seo: SEO,
+): Metadata["twitter"] => {
   if (!baseTwitter) return baseTwitter;
 
   const enhancedTwitter = { ...baseTwitter };
 
   // eslint-disable-next-line functional/no-expression-statements
   seo.metaSocial?.forEach((social) => {
-    if (social.socialNetwork?.toLowerCase() === 'twitter') {
+    if (social.socialNetwork?.toLowerCase() === "twitter") {
       // eslint-disable-next-line functional/no-expression-statements, functional/immutable-data
       enhancedTwitter.title = social.title || enhancedTwitter.title;
       // eslint-disable-next-line functional/no-expression-statements, functional/immutable-data

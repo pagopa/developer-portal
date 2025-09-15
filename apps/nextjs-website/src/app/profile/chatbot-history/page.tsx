@@ -1,20 +1,20 @@
-'use client';
+"use client";
 
-import { useTranslations } from 'next-intl';
-import { Box, Stack, Typography } from '@mui/material';
-import React, { useEffect, useState, Suspense } from 'react';
-import ChatbotHistoryLayout from '@/components/organisms/ChatbotHistoryLayout/ChatbotHistoryLayout';
+import { useTranslations } from "next-intl";
+import { Box, Stack, Typography } from "@mui/material";
+import React, { useEffect, useState, Suspense } from "react";
+import ChatbotHistoryLayout from "@/components/organisms/ChatbotHistoryLayout/ChatbotHistoryLayout";
 import {
   flushChatQueriesFromLocalStorage,
   useChatbot,
-} from '@/helpers/chatbot.helper';
-import { useUser } from '@/helpers/user.helper';
-import { isChatbotActive } from '@/config';
-import Spinner from '@/components/atoms/Spinner/Spinner';
-import { isEmpty } from 'fp-ts/lib/Array';
-import { useRouter, useSearchParams } from 'next/navigation';
-import ChatbotHistoryDetailLayout from '@/components/organisms/ChatbotHistoryDetailLayout/ChatbotHistoryDetailLayout';
-import { Query } from '@/lib/chatbot/queries';
+} from "@/helpers/chatbot.helper";
+import { useUser } from "@/helpers/user.helper";
+import { isChatbotActive } from "@/config";
+import Spinner from "@/components/atoms/Spinner/Spinner";
+import { isEmpty } from "fp-ts/lib/Array";
+import { useRouter, useSearchParams } from "next/navigation";
+import ChatbotHistoryDetailLayout from "@/components/organisms/ChatbotHistoryDetailLayout/ChatbotHistoryDetailLayout";
+import { Query } from "@/lib/chatbot/queries";
 
 const ChatbotHistoryContent = () => {
   const t = useTranslations();
@@ -29,7 +29,7 @@ const ChatbotHistoryContent = () => {
   const router = useRouter();
 
   const searchParams = useSearchParams();
-  const sessionId = searchParams.get('sessionId');
+  const sessionId = searchParams.get("sessionId");
 
   const { getSession, deleteChatbotSession } = useChatbot(true);
   const [session, setSession] = useState<Query[]>([]);
@@ -51,7 +51,7 @@ const ChatbotHistoryContent = () => {
   }, []); // Needs to run only once
 
   if (!isChatbotActive) {
-    router.replace('/not-found');
+    router.replace("/not-found");
     return null;
   }
 
@@ -62,14 +62,14 @@ const ChatbotHistoryContent = () => {
   if (sessionId) {
     return (
       <>
-        <title>{`${t('devPortal.title')} | ${t(
-          'profile.chatbot.title'
+        <title>{`${t("devPortal.title")} | ${t(
+          "profile.chatbot.title",
         )}`}</title>
         <Box
           sx={{
-            padding: { xs: '40px 24px', md: '80px 40px' },
-            width: '100%',
-            maxWidth: '694px',
+            padding: { xs: "40px 24px", md: "80px 40px" },
+            width: "100%",
+            maxWidth: "694px",
           }}
         >
           {!isSessionLoaded && <Spinner />}
@@ -79,7 +79,7 @@ const ChatbotHistoryContent = () => {
               userName={`${user.attributes.given_name} `}
               onDeleteChatSession={(
                 sessionId: string,
-                sessionDate: string | null
+                sessionDate: string | null,
               ) => {
                 deleteChatbotSession(sessionId).then(() => {
                   const date = sessionDate ? new Date(sessionDate) : null;
@@ -87,10 +87,10 @@ const ChatbotHistoryContent = () => {
                   if (date && date.getDate() === currentDate.getDate()) {
                     flushChatQueriesFromLocalStorage();
                   }
-                  if (typeof window !== 'undefined') {
+                  if (typeof window !== "undefined") {
                     // router.replace() or push() are not enough because they will not clean current state of components
                     // eslint-disable-next-line functional/immutable-data
-                    window.location.href = '/profile/chatbot-history';
+                    window.location.href = "/profile/chatbot-history";
                   }
                 });
                 return null;
@@ -104,22 +104,22 @@ const ChatbotHistoryContent = () => {
 
   return (
     <>
-      <title>{`${t('devPortal.title')} | ${t('profile.chatbot.title')}`}</title>
+      <title>{`${t("devPortal.title")} | ${t("profile.chatbot.title")}`}</title>
       <Stack
         sx={{
-          padding: { xs: '40px 24px', md: '80px 40px' },
-          width: '100%',
-          maxWidth: '694px',
+          padding: { xs: "40px 24px", md: "80px 40px" },
+          width: "100%",
+          maxWidth: "694px",
         }}
       >
-        <Typography variant='h4' sx={{ marginBottom: '40px' }}>
-          {t('profile.chatbot.title')}
+        <Typography variant="h4" sx={{ marginBottom: "40px" }}>
+          {t("profile.chatbot.title")}
         </Typography>
         {(loading || paginatedSessionsLoading) && <Spinner />}
         {!loading &&
           !paginatedSessionsLoading &&
           (!paginatedSessions || isEmpty(paginatedSessions.items)) && (
-            <Typography>{t('profile.chatbot.noSessions')}</Typography>
+            <Typography>{t("profile.chatbot.noSessions")}</Typography>
           )}
         {!loading && !paginatedSessionsLoading && paginatedSessions && (
           <ChatbotHistoryLayout

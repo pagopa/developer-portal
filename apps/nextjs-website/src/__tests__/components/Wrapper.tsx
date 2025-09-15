@@ -1,10 +1,10 @@
-import { NextIntlClientProvider } from 'next-intl';
-import { PropsWithChildren } from 'react';
+import { NextIntlClientProvider } from "next-intl";
+import { PropsWithChildren } from "react";
 
-import messages from '@/messages/it.json';
+import messages from "@/messages/it.json";
 
 const Wrapper = ({ children }: PropsWithChildren) => (
-  <NextIntlClientProvider locale={'it'} messages={messages}>
+  <NextIntlClientProvider locale={"it"} messages={messages}>
     {children}
   </NextIntlClientProvider>
 );

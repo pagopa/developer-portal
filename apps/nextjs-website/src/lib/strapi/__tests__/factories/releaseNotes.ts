@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { strapiReleaseNotes } from '@/lib/strapi/__tests__/fixtures/releaseNotes';
-import { StrapiReleaseNotes } from '@/lib/strapi/types/releaseNotes';
+import { strapiReleaseNotes } from "@/lib/strapi/__tests__/fixtures/releaseNotes";
+import { StrapiReleaseNotes } from "@/lib/strapi/types/releaseNotes";
 
 export function minimalDataReleaseNotes() {
   const strapiReleaseNote = strapiReleaseNotes.data[0];
@@ -11,9 +11,9 @@ export function minimalDataReleaseNotes() {
         ...strapiReleaseNote,
         attributes: {
           ...strapiReleaseNote.attributes,
-          title: 'Minimal Release Notes',
-          dirName: 'minimal-release-notes',
-          landingFile: 'minimal.md',
+          title: "Minimal Release Notes",
+          dirName: "minimal-release-notes",
+          landingFile: "minimal.md",
           bannerLinks: [],
           seo: undefined,
           product: {
@@ -81,7 +81,7 @@ export function releaseNotesWithMissingProductSlug() {
         ...strapiReleaseNote,
         attributes: {
           ...strapiReleaseNote.attributes,
-          title: 'Release Note Without Product Slug',
+          title: "Release Note Without Product Slug",
           product: {
             data: {
               ...strapiReleaseNote.attributes.product.data,

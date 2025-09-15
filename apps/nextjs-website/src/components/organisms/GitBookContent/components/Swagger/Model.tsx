@@ -1,4 +1,4 @@
-import { KeyboardArrowRight } from '@mui/icons-material';
+import { KeyboardArrowRight } from "@mui/icons-material";
 import {
   Box,
   Collapse,
@@ -6,10 +6,10 @@ import {
   ListItemButton,
   ListItemIcon,
   Typography,
-} from '@mui/material';
-import { OpenAPIV3 } from 'openapi-types';
-import { MouseEventHandler, PropsWithChildren, useState } from 'react';
-import { useModelProps } from './hooks/useModel';
+} from "@mui/material";
+import { OpenAPIV3 } from "openapi-types";
+import { MouseEventHandler, PropsWithChildren, useState } from "react";
+import { useModelProps } from "./hooks/useModel";
 
 type ModelEntryProps = {
   title?: string;
@@ -29,12 +29,12 @@ const ModelItem = ({
   schemaType,
   onClick,
 }: ModelItemProps) => {
-  const showIcon = typeof onClick === 'function';
+  const showIcon = typeof onClick === "function";
   return (
     <ListItemButton
       sx={{
-        display: 'block',
-        background: 'transparent!important',
+        display: "block",
+        background: "transparent!important",
         py: 1,
       }}
       disableGutters
@@ -42,21 +42,21 @@ const ModelItem = ({
     >
       <Box
         sx={{
-          display: 'inline-flex',
-          alignItems: 'center',
+          display: "inline-flex",
+          alignItems: "center",
           flexGrow: 1,
-          width: '100%',
+          width: "100%",
           gap: 2,
         }}
       >
         <ListItemIcon>
-          {showIcon && <KeyboardArrowRight sx={{ fontSize: '1.125rem' }} />}
+          {showIcon && <KeyboardArrowRight sx={{ fontSize: "1.125rem" }} />}
         </ListItemIcon>
         {title && (
-          <Typography sx={{ fontWeight: 'bold' }}>
+          <Typography sx={{ fontWeight: "bold" }}>
             {title}
             {required && (
-              <Typography component='span' color='red'>
+              <Typography component="span" color="red">
                 *
               </Typography>
             )}
@@ -88,9 +88,9 @@ const ModelListEntry = ({
         onClick={() => setOpen(!open)}
       />
       <Collapse
-        sx={{ borderLeft: 1, borderColor: 'divider', ml: 1, pl: 2 }}
+        sx={{ borderLeft: 1, borderColor: "divider", ml: 1, pl: 2 }}
         in={open}
-        timeout='auto'
+        timeout="auto"
         unmountOnExit
       >
         {children}
@@ -116,7 +116,7 @@ export const Model = (props: ModelProps) => {
     title,
   } = useModelProps(props);
 
-  if (schemaType === 'object') {
+  if (schemaType === "object") {
     return (
       <ModelListEntry title={title} required={required} schemaType={schemaType}>
         {Object.entries(properties).map(([key, property]) => (
@@ -129,7 +129,7 @@ export const Model = (props: ModelProps) => {
         ))}
       </ModelListEntry>
     );
-  } else if (schemaType === 'array') {
+  } else if (schemaType === "array") {
     return (
       <ModelListEntry title={title} required={required} schemaType={schemaType}>
         <Model model={items} requiredAttrs={requiredAttrs} />

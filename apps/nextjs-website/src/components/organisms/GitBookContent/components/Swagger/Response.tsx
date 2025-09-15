@@ -1,4 +1,4 @@
-import { Circle, KeyboardArrowRight } from '@mui/icons-material';
+import { Circle, KeyboardArrowRight } from "@mui/icons-material";
 import {
   Accordion,
   AccordionDetails,
@@ -6,32 +6,32 @@ import {
   AccordionSummary as MuiAccordionSummary,
   Typography,
   styled,
-} from '@mui/material';
-import { OpenAPIV3 } from 'openapi-types';
+} from "@mui/material";
+import { OpenAPIV3 } from "openapi-types";
 
-import { SchemaWithExample } from './SchemaWithExample';
-import { useState } from 'react';
+import { SchemaWithExample } from "./SchemaWithExample";
+import { useState } from "react";
 
 const AccordionSummary = styled(MuiAccordionSummary)(({ theme }) => ({
-  '& .MuiAccordionSummary-expandIconWrapper.Mui-expanded': {
+  "& .MuiAccordionSummary-expandIconWrapper.Mui-expanded": {
     color: theme.palette.primary.main,
-    transform: 'rotate(90deg)',
+    transform: "rotate(90deg)",
   },
-  '& .MuiAccordionSummary-content': {
-    alignItems: 'center',
+  "& .MuiAccordionSummary-content": {
+    alignItems: "center",
   },
 }));
 
 function getResponseCodeColor(code: string) {
   const codeNumber = Number(code);
   if (codeNumber >= 200 && codeNumber < 300) {
-    return 'success';
+    return "success";
   } else if (codeNumber >= 300 && codeNumber < 400) {
-    return 'primary';
+    return "primary";
   } else if (codeNumber >= 400 && codeNumber < 500) {
-    return 'warning';
+    return "warning";
   } else {
-    return 'error';
+    return "error";
   }
 }
 
@@ -41,11 +41,11 @@ type ResponseProps = OpenAPIV3.ResponseObject & {
 
 export const Response = ({ code, content, description }: ResponseProps) => {
   const [open, setOpen] = useState(false);
-  const response = content?.['application/json'];
+  const response = content?.["application/json"];
   const codeColor = getResponseCodeColor(code);
   const hasDetails = !!response;
   const expandIcon = hasDetails ? (
-    <KeyboardArrowRight sx={{ fontSize: '1.125rem' }} />
+    <KeyboardArrowRight sx={{ fontSize: "1.125rem" }} />
   ) : undefined;
 
   const handleToggle = () => {
@@ -55,11 +55,11 @@ export const Response = ({ code, content, description }: ResponseProps) => {
   return (
     <Accordion expanded={open} onChange={handleToggle}>
       <AccordionSummary expandIcon={expandIcon}>
-        <Box sx={{ display: 'flex', alignItems: 'center', width: 200 }}>
+        <Box sx={{ display: "flex", alignItems: "center", width: 200 }}>
           <Circle sx={{ fontSize: 14, mr: 2 }} color={codeColor} />
-          <Typography sx={{ mr: 2, fontWeight: 'bold' }}>{code}</Typography>
+          <Typography sx={{ mr: 2, fontWeight: "bold" }}>{code}</Typography>
         </Box>
-        <Typography variant='body2'>{description}</Typography>
+        <Typography variant="body2">{description}</Typography>
       </AccordionSummary>
       {hasDetails && (
         <AccordionDetails>

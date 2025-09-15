@@ -1,11 +1,11 @@
-'use client';
+"use client";
 import React, {
   ReactNode,
   useCallback,
   useContext,
   useEffect,
   useState,
-} from 'react';
+} from "react";
 
 type FragmentContextType = {
   fragment: string | null;
@@ -19,7 +19,7 @@ type FragmentProviderProps = {
 
 export function FragmentProvider({ children }: FragmentProviderProps) {
   const [fragment, setFragment] = useState<string | null>(() =>
-    typeof window !== 'undefined' ? window.location.hash : null
+    typeof window !== "undefined" ? window.location.hash : null,
   );
 
   const fragmentChangeHandler = useCallback(() => {
@@ -27,9 +27,9 @@ export function FragmentProvider({ children }: FragmentProviderProps) {
   }, []);
 
   useEffect(() => {
-    window.addEventListener('hashchange', fragmentChangeHandler);
+    window.addEventListener("hashchange", fragmentChangeHandler);
     return () => {
-      window.removeEventListener('hashchange', fragmentChangeHandler);
+      window.removeEventListener("hashchange", fragmentChangeHandler);
     };
   }, []);
 
@@ -49,7 +49,7 @@ export function useFragment() {
   if (!context)
     // eslint-disable-next-line functional/no-throw-statements
     throw new Error(
-      'FragmentContext not found, did you forget to wrap your app with FragmentProvider?'
+      "FragmentContext not found, did you forget to wrap your app with FragmentProvider?",
     );
 
   const { fragment } = context;

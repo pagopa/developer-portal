@@ -1,14 +1,14 @@
-'use client';
-import React, { useMemo } from 'react';
-import { Box, Typography, useTheme } from '@mui/material';
-import EContainer from '@/editorialComponents/EContainer/EContainer';
-import { useTranslations } from 'next-intl';
-import SectionTitle from '@/components/molecules/SectionTitle/SectionTitle';
+"use client";
+import React, { useMemo } from "react";
+import { Box, Typography, useTheme } from "@mui/material";
+import EContainer from "@/editorialComponents/EContainer/EContainer";
+import { useTranslations } from "next-intl";
+import SectionTitle from "@/components/molecules/SectionTitle/SectionTitle";
 import {
   GuideCard,
   GuideCardProps,
-} from '@/components/molecules/GuideCard/GuideCard';
-import LinkCards from '@/components/molecules/LinkCards/LinkCards';
+} from "@/components/molecules/GuideCard/GuideCard";
+import LinkCards from "@/components/molecules/LinkCards/LinkCards";
 
 type PostIntegrationProps = {
   title?: string;
@@ -24,7 +24,7 @@ type PostIntegrationProps = {
     href: string;
   }[];
   guides?: GuideCardProps[];
-  backgroundVariant?: 'white' | 'lightGrey';
+  backgroundVariant?: "white" | "lightGrey";
 };
 
 const PostIntegration = ({
@@ -34,7 +34,7 @@ const PostIntegration = ({
   listTitle,
   serviceModels,
   guides,
-  backgroundVariant = 'white',
+  backgroundVariant = "white",
 }: PostIntegrationProps) => {
   const theme = useTheme();
   const t = useTranslations();
@@ -50,7 +50,7 @@ const PostIntegration = ({
         paddingBottom: 8,
       },
     }),
-    [theme]
+    [theme],
   );
 
   return (
@@ -62,22 +62,22 @@ const PostIntegration = ({
     >
       <SectionTitle
         margin={0}
-        title={title || t('overview.postIntegration.title')}
+        title={title || t("overview.postIntegration.title")}
         subtitle={subtitle}
         link={cta ? { text: cta.label, url: cta.href } : undefined}
-        variant='h2'
+        variant="h2"
       />
       <EContainer>
         {listTitle && (
           <Typography
-            content='div'
+            content="div"
             mb={0}
             mt={6}
             color={theme.palette.grey[500]}
             fontSize={14}
             sx={{
               fontWeight: theme.typography.fontWeightBold,
-              textTransform: 'uppercase',
+              textTransform: "uppercase",
             }}
           >
             {listTitle}
@@ -89,14 +89,14 @@ const PostIntegration = ({
           <LinkCards
             cards={serviceModels.map((serviceModel) => ({
               ...serviceModel,
-              label: t('shared.goToModel'),
+              label: t("shared.goToModel"),
             }))}
           />
         </EContainer>
       )}
       {guides && guides.length > 0 && (
         <EContainer>
-          <Box sx={{ marginTop: 5, width: '100%' }}>
+          <Box sx={{ marginTop: 5, width: "100%" }}>
             {guides &&
               guides.map((props, index) => (
                 <GuideCard

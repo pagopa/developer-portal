@@ -1,5 +1,5 @@
-import { ChatbotConfig } from '@/lib/chatbot/chatbotConfig';
-import { Auth } from 'aws-amplify';
+import { ChatbotConfig } from "@/lib/chatbot/chatbotConfig";
+import { Auth } from "aws-amplify";
 
 // This type represents the environment of Chatbot.
 export type ChatbotEnv = {

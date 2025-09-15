@@ -1,9 +1,9 @@
-import { pipe } from 'fp-ts/lib/function';
-import * as R from 'fp-ts/lib/Reader';
-import * as E from 'fp-ts/lib/Either';
-import * as TE from 'fp-ts/lib/TaskEither';
-import { StrapiEnv } from '@/lib/strapi/StrapiEnv';
-import { makeError } from '../makeError';
+import { pipe } from "fp-ts/lib/function";
+import * as R from "fp-ts/lib/Reader";
+import * as E from "fp-ts/lib/Either";
+import * as TE from "fp-ts/lib/TaskEither";
+import { StrapiEnv } from "@/lib/strapi/StrapiEnv";
+import { makeError } from "../makeError";
 
 export const fetchFromStrapi = <T>(path: string, populate: string) =>
   pipe(
@@ -21,13 +21,13 @@ export const fetchFromStrapi = <T>(path: string, populate: string) =>
           TE.tryCatch(
             () =>
               fetchFun(`${strapiEndpoint}/api/${path}/?${populate}`, {
-                method: 'GET',
+                method: "GET",
                 headers: {
                   Authorization: `Bearer ${strapiApiToken}`,
                 },
-                cache: 'no-store',
+                cache: "no-store",
               }),
-            E.toError
+            E.toError,
           ),
           TE.chain((response) => {
             if (response.status === 200) {
@@ -41,10 +41,10 @@ export const fetchFromStrapi = <T>(path: string, populate: string) =>
           TE.fold(
             // eslint-disable-next-line functional/no-promise-reject
             (errors) => () => Promise.reject(errors),
-            (result) => () => Promise.resolve(result)
-          )
-        )()
-    )
+            (result) => () => Promise.resolve(result),
+          ),
+        )(),
+    ),
   );
 
 function nullsToUndefined(obj: any): any {
@@ -52,7 +52,7 @@ function nullsToUndefined(obj: any): any {
   if (Array.isArray(obj)) {
     return obj.map(nullsToUndefined);
   }
-  if (typeof obj === 'object' && obj !== undefined) {
+  if (typeof obj === "object" && obj !== undefined) {
     return Object.entries(obj)
       .map(([key, value]) => [key, nullsToUndefined(value)] as const)
       .reduce((acc, [key, value]) => ({ ...acc, [key]: value }), {});

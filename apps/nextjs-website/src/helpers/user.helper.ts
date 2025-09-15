@@ -1,11 +1,11 @@
 /* eslint-disable functional/no-expression-statements */
-import { DevPortalUser } from '@/lib/types/auth';
-import { getUserWebinarSubscriptions } from '@/lib/webinarApi';
-import { WebinarSubscription } from '@/lib/webinars/webinarSubscriptions';
-import { useAuthenticator } from '@aws-amplify/ui-react';
-import { Auth, Hub } from 'aws-amplify';
-import { redirect } from 'next/navigation';
-import { useCallback, useState, useEffect } from 'react';
+import { DevPortalUser } from "@/lib/types/auth";
+import { getUserWebinarSubscriptions } from "@/lib/webinarApi";
+import { WebinarSubscription } from "@/lib/webinars/webinarSubscriptions";
+import { useAuthenticator } from "@aws-amplify/ui-react";
+import { Auth, Hub } from "aws-amplify";
+import { redirect } from "next/navigation";
+import { useCallback, useState, useEffect } from "react";
 
 export const useUser = () => {
   const [isLoaded, setLoading] = useState<boolean>(true);
@@ -43,7 +43,7 @@ export const useUser = () => {
     }
 
     const subscriptions = await getUserWebinarSubscriptions(
-      user.username
+      user.username,
     ).catch(() => []);
 
     setLoading(false);
@@ -53,9 +53,9 @@ export const useUser = () => {
   }, []);
 
   const setUserAttributes = async (
-    attributes: DevPortalUser['attributes'],
+    attributes: DevPortalUser["attributes"],
     onSuccess?: () => null,
-    onFail?: () => null
+    onFail?: () => null,
   ) => {
     setAligned(false);
     return await Auth.updateUserAttributes(user, attributes)
@@ -84,18 +84,18 @@ export const useUser = () => {
   }, []);
 
   useEffect(() => {
-    const cancel = Hub.listen('auth', (event) => {
+    const cancel = Hub.listen("auth", (event) => {
       switch (event.payload.event) {
-        case 'signIn':
-        case 'autoSignIn': {
+        case "signIn":
+        case "autoSignIn": {
           const { data: user } = event.payload;
           setUser(user);
           break;
         }
-        case 'updateUserAttributes_failure':
+        case "updateUserAttributes_failure":
           signOutUser();
           break;
-        case 'signOut':
+        case "signOut":
           setUser(null);
           break;
       }
@@ -119,9 +119,9 @@ export const useUser = () => {
 export const useAuthenticatedUserRedirect = () => {
   const { authStatus } = useAuthenticator((context) => [context.authStatus]);
 
-  if (authStatus === 'authenticated') {
-    redirect('/');
+  if (authStatus === "authenticated") {
+    redirect("/");
   }
 
-  return authStatus !== 'unauthenticated';
+  return authStatus !== "unauthenticated";
 };

@@ -1,4 +1,4 @@
-import { getQueries, postQuery } from '@/lib/chatbot/chatbotQueries';
+import { getQueries, postQuery } from "@/lib/chatbot/chatbotQueries";
 
 const makeTestEnv = () => {
   const fetchMock = jest.fn();
@@ -6,9 +6,9 @@ const makeTestEnv = () => {
     fetchMock,
     env: {
       config: {
-        CHATBOT_HOST: 'chatbotHost',
+        CHATBOT_HOST: "chatbotHost",
       },
-      getAuthToken: async () => 'authToken',
+      getAuthToken: async () => "authToken",
       fetch: fetchMock,
     },
   };
@@ -16,32 +16,32 @@ const makeTestEnv = () => {
 
 const postQueryResponses = {
   200: {
-    id: 'queryId',
-    sessionId: 'sessionId',
-    queriedAt: '2024-02-08T11:12:02.142Z',
-    question: 'question',
-    answer: 'answer',
+    id: "queryId",
+    sessionId: "sessionId",
+    queriedAt: "2024-02-08T11:12:02.142Z",
+    question: "question",
+    answer: "answer",
     history: [
       {
-        id: '1',
-        question: 'question',
-        answer: 'answer',
+        id: "1",
+        question: "question",
+        answer: "answer",
       },
       {
-        id: '2',
-        question: 'question',
-        answer: 'answer',
+        id: "2",
+        question: "question",
+        answer: "answer",
       },
     ],
-    createdAt: '2024-02-08T11:12:02.438Z',
+    createdAt: "2024-02-08T11:12:02.438Z",
     badAnswer: false,
   },
   404: {
     data: null,
     error: {
       status: 404,
-      name: 'NotFoundError',
-      message: 'Not Found',
+      name: "NotFoundError",
+      message: "Not Found",
       details: {},
     },
   },
@@ -49,8 +49,8 @@ const postQueryResponses = {
     data: null,
     error: {
       status: 401,
-      name: 'UnauthorizedError',
-      message: 'Missing or invalid credentials',
+      name: "UnauthorizedError",
+      message: "Missing or invalid credentials",
       details: {},
     },
   },
@@ -59,12 +59,12 @@ const postQueryResponses = {
 const getQueriesResponses = {
   200: [
     {
-      id: 'queryId',
-      sessionId: 'sessionId',
-      queriedAt: '2024-02-08T11:12:02.142Z',
-      question: 'question',
-      answer: 'answer',
-      createdAt: '2024-02-08T11:12:02.438Z',
+      id: "queryId",
+      sessionId: "sessionId",
+      queriedAt: "2024-02-08T11:12:02.142Z",
+      question: "question",
+      answer: "answer",
+      createdAt: "2024-02-08T11:12:02.438Z",
       badAnswer: false,
     },
   ],
@@ -72,8 +72,8 @@ const getQueriesResponses = {
     data: null,
     error: {
       status: 404,
-      name: 'NotFoundError',
-      message: 'Not Found',
+      name: "NotFoundError",
+      message: "Not Found",
       details: {},
     },
   },
@@ -81,8 +81,8 @@ const getQueriesResponses = {
     data: null,
     error: {
       status: 401,
-      name: 'UnauthorizedError',
-      message: 'Missing or invalid credentials',
+      name: "UnauthorizedError",
+      message: "Missing or invalid credentials",
       details: {},
     },
   },
@@ -90,108 +90,108 @@ const getQueriesResponses = {
 
 const badResponse = {
   200: {
-    id: 'queryId',
+    id: "queryId",
     sessionId: 1234,
-    queriedAt: '2024-02-08T11:12:02.142Z',
-    question: 'question',
-    answer: 'answer',
-    createdAt: '2024-02-08T11:12:02.438Z',
+    queriedAt: "2024-02-08T11:12:02.142Z",
+    question: "question",
+    answer: "answer",
+    createdAt: "2024-02-08T11:12:02.438Z",
     badAnswer: false,
   },
 };
 
-describe('chatbotApi', () => {
-  it('chatbotApi::postQuery should return a query response given a 200 response', async () => {
+describe("chatbotApi", () => {
+  it("chatbotApi::postQuery should return a query response given a 200 response", async () => {
     const { env, fetchMock } = makeTestEnv();
     fetchMock.mockResolvedValueOnce({
       status: 200,
-      statusText: 'OK',
+      statusText: "OK",
       json: () => Promise.resolve(postQueryResponses[200]),
     });
     const actual = postQuery({
-      queriedAt: 'aQueriedAt',
-      question: 'aQuery',
+      queriedAt: "aQueriedAt",
+      question: "aQuery",
     })(env);
     const expected = {
-      id: 'queryId',
-      sessionId: 'sessionId',
-      queriedAt: '2024-02-08T11:12:02.142Z',
-      question: 'question',
-      answer: 'answer',
-      createdAt: '2024-02-08T11:12:02.438Z',
+      id: "queryId",
+      sessionId: "sessionId",
+      queriedAt: "2024-02-08T11:12:02.142Z",
+      question: "question",
+      answer: "answer",
+      createdAt: "2024-02-08T11:12:02.438Z",
       badAnswer: false,
     };
     expect(await actual).toStrictEqual(expected);
   });
-  it('chatbotApi::getQueries should return the queries of a session given a 200 response', async () => {
+  it("chatbotApi::getQueries should return the queries of a session given a 200 response", async () => {
     const { env, fetchMock } = makeTestEnv();
     fetchMock.mockResolvedValueOnce({
       status: 200,
-      statusText: 'Not Found',
+      statusText: "Not Found",
       json: () => Promise.resolve(getQueriesResponses[200]),
     });
-    const actual = getQueries('sessionId')(env);
+    const actual = getQueries("sessionId")(env);
     const expected = [
       {
-        id: 'queryId',
-        sessionId: 'sessionId',
-        queriedAt: '2024-02-08T11:12:02.142Z',
-        question: 'question',
-        answer: 'answer',
-        createdAt: '2024-02-08T11:12:02.438Z',
+        id: "queryId",
+        sessionId: "sessionId",
+        queriedAt: "2024-02-08T11:12:02.142Z",
+        question: "question",
+        answer: "answer",
+        createdAt: "2024-02-08T11:12:02.438Z",
         badAnswer: false,
       },
     ];
     expect(await actual).toStrictEqual(expected);
   });
-  it('chatbotApi::postQuery should return error given a 401 response', async () => {
+  it("chatbotApi::postQuery should return error given a 401 response", async () => {
     const { env, fetchMock } = makeTestEnv();
     fetchMock.mockResolvedValueOnce({
       status: 401,
-      statusText: 'Unauthorized',
+      statusText: "Unauthorized",
       json: () => Promise.resolve(postQueryResponses[401]),
     });
     const actual = postQuery({
-      queriedAt: 'aQueriedAt',
-      question: 'aQuery',
+      queriedAt: "aQueriedAt",
+      question: "aQuery",
     })(env);
-    const expected = new Error('401 - Unauthorized');
+    const expected = new Error("401 - Unauthorized");
     await expect(actual).rejects.toStrictEqual(expected);
   });
-  it('chatbotApi::getQueries should return error given a 404 response', async () => {
+  it("chatbotApi::getQueries should return error given a 404 response", async () => {
     const { env, fetchMock } = makeTestEnv();
     fetchMock.mockResolvedValueOnce({
       status: 404,
-      statusText: 'Not Found',
+      statusText: "Not Found",
       json: () => Promise.resolve(postQueryResponses[404]),
     });
-    const actual = getQueries('wrongSessionId')(env);
-    const expected = new Error('404 - Not Found');
+    const actual = getQueries("wrongSessionId")(env);
+    const expected = new Error("404 - Not Found");
     await expect(actual).rejects.toStrictEqual(expected);
   });
-  it('chatbotApi::postQuery should return error given a reject', async () => {
+  it("chatbotApi::postQuery should return error given a reject", async () => {
     const { env, fetchMock } = makeTestEnv();
     fetchMock.mockRejectedValueOnce({});
     const actual = postQuery({
-      queriedAt: 'aQueriedAt',
-      question: 'aQuery',
+      queriedAt: "aQueriedAt",
+      question: "aQuery",
     })(env);
     const expected = {};
     await expect(actual).rejects.toStrictEqual(expected);
   });
-  it('chatbotAp::postQuery should return error given a decode error', async () => {
+  it("chatbotAp::postQuery should return error given a decode error", async () => {
     const { env, fetchMock } = makeTestEnv();
     fetchMock.mockResolvedValueOnce({
       status: 200,
-      statusText: 'OK',
+      statusText: "OK",
       json: () => Promise.resolve(badResponse[200]),
     });
     const actual = postQuery({
-      queriedAt: 'aQueriedAt',
-      question: 'aQuery',
+      queriedAt: "aQueriedAt",
+      question: "aQuery",
     })(env);
     const expected = new Error(
-      `Invalid value 1234 supplied to '/sessionId', expected type string`
+      `Invalid value 1234 supplied to '/sessionId', expected type string`,
     );
     await expect(actual).rejects.toStrictEqual(expected);
   });

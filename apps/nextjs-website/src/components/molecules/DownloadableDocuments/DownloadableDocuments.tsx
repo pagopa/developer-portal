@@ -1,10 +1,10 @@
-'use client';
-import React from 'react';
-import { Box, Grid, Typography } from '@mui/material';
-import Download from '@mui/icons-material/Download';
-import CtaCard from '@/components/atoms/CtaCard/CtaCard';
-import { useTranslations } from 'next-intl';
-import { getHumanReadableFileSize } from '@/helpers/humanReadableFileSize.helper';
+"use client";
+import React from "react";
+import { Box, Grid, Typography } from "@mui/material";
+import Download from "@mui/icons-material/Download";
+import CtaCard from "@/components/atoms/CtaCard/CtaCard";
+import { useTranslations } from "next-intl";
+import { getHumanReadableFileSize } from "@/helpers/humanReadableFileSize.helper";
 
 export type DownloadableDocumentsProps = {
   documents: {
@@ -20,18 +20,18 @@ const DownloadableDocuments = ({ documents }: DownloadableDocumentsProps) => {
 
   return (
     documents.length > 0 && (
-      <Box width='100%'>
+      <Box width="100%">
         <Typography
-          color='text.secondary'
+          color="text.secondary"
           fontSize={14}
           fontWeight={700}
           mb={4}
-          textTransform='uppercase'
+          textTransform="uppercase"
         >
-          {t('shared.downloadableDocuments')}
+          {t("shared.downloadableDocuments")}
         </Typography>
 
-        <Box pb={4} width={'100%'}>
+        <Box pb={4} width={"100%"}>
           <Grid container spacing={3}>
             {documents.map(({ title, tags, downloadLink, size }, index) => {
               return (
@@ -39,28 +39,28 @@ const DownloadableDocuments = ({ documents }: DownloadableDocumentsProps) => {
                   <CtaCard
                     title={title}
                     titleStyle={{
-                      wordWrap: 'break-word',
-                      fontSize: '22px !important',
+                      wordWrap: "break-word",
+                      fontSize: "22px !important",
                       fontWeight: 700,
                     }}
                     cta={{
-                      variant: 'outlined',
+                      variant: "outlined",
                       label: (
                         <>
                           <Typography
-                            color='primary'
+                            color="primary"
                             fontWeight={700}
                             fontSize={16}
                           >
                             {size
                               ? `${t(
-                                  'shared.download'
+                                  "shared.download",
                                 )} - ${getHumanReadableFileSize(size)}`
-                              : t('shared.download')}{' '}
+                              : t("shared.download")}{" "}
                           </Typography>
                           <Download
-                            color='primary'
-                            sx={{ ml: 1, height: '18px', width: '18px' }}
+                            color="primary"
+                            sx={{ ml: 1, height: "18px", width: "18px" }}
                           />
                         </>
                       ),

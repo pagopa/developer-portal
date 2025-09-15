@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { Tutorial } from '@/lib/types/tutorialData';
-import { Path } from '@/lib/types/path';
-import NewsShowcase from '@/components/organisms/NewsShowcase/NewsShowcase';
-import { useTranslations } from 'next-intl';
+import React from "react";
+import { Tutorial } from "@/lib/types/tutorialData";
+import { Path } from "@/lib/types/path";
+import NewsShowcase from "@/components/organisms/NewsShowcase/NewsShowcase";
+import { useTranslations } from "next-intl";
 
 type TutorialsOverviewProps = {
   title?: string;
@@ -22,14 +22,14 @@ const TutorialsOverview = ({
   tutorialPath,
 }: TutorialsOverviewProps) => {
   const t = useTranslations();
-  const label = t('shared.readTutorial');
+  const label = t("shared.readTutorial");
   return (
     <NewsShowcase
       marginTop={8}
-      title={title || t('overview.tutorial.title')}
+      title={title || t("overview.tutorial.title")}
       subtitle={subtitle}
       link={{
-        text: ctaLabel || t('overview.tutorial.ctaLabel'),
+        text: ctaLabel || t("overview.tutorial.ctaLabel"),
         url: tutorialPath.path,
       }}
       items={tutorials.map((tutorial) => ({

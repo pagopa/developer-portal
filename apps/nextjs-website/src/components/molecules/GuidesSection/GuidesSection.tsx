@@ -1,11 +1,11 @@
-'use client';
-import { FC } from 'react';
+"use client";
+import { FC } from "react";
 import {
   GuideCard,
   GuideCardProps,
-} from '@/components/molecules/GuideCard/GuideCard';
-import { Typography, useTheme } from '@mui/material';
-import EContainer from '@/editorialComponents/EContainer/EContainer';
+} from "@/components/molecules/GuideCard/GuideCard";
+import { Typography, useTheme } from "@mui/material";
+import EContainer from "@/editorialComponents/EContainer/EContainer";
 
 export type GuidesSectionProps = {
   title: string;
@@ -21,14 +21,14 @@ export const GuidesSection: FC<GuidesSectionProps> = ({
   return (
     <EContainer background={palette.background.default} py={0}>
       <Typography
-        content='div'
+        content="div"
         mb={3}
         mt={6}
         color={palette.text.secondary}
         fontSize={14}
         sx={{
           fontWeight: typography.fontWeightBold,
-          textTransform: 'uppercase',
+          textTransform: "uppercase",
         }}
       >
         {title}

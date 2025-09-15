@@ -1,30 +1,30 @@
-'use client';
-import { Button } from '@mui/material';
-import PageNotFound from '@/app/not-found';
-import { Auth } from 'aws-amplify';
-import { useSearchParams, useRouter } from 'next/navigation';
-import { useCallback, useEffect, useState, Suspense } from 'react';
-import Spinner from '@/components/atoms/Spinner/Spinner';
-import { useTranslations } from 'next-intl';
-import PageBackgroundWrapper from '@/components/atoms/PageBackgroundWrapper/PageBackgroundWrapper';
-import SingleCard from '@/components/atoms/SingleCard/SingleCard';
-import { isProduction } from '@/config';
-import { IllusError } from '@pagopa/mui-italia';
-import AccountAlreadyConfirmed from '@/components/organisms/Auth/AccountAlreadyConfirmed';
+"use client";
+import { Button } from "@mui/material";
+import PageNotFound from "@/app/not-found";
+import { Auth } from "aws-amplify";
+import { useSearchParams, useRouter } from "next/navigation";
+import { useCallback, useEffect, useState, Suspense } from "react";
+import Spinner from "@/components/atoms/Spinner/Spinner";
+import { useTranslations } from "next-intl";
+import PageBackgroundWrapper from "@/components/atoms/PageBackgroundWrapper/PageBackgroundWrapper";
+import SingleCard from "@/components/atoms/SingleCard/SingleCard";
+import { isProduction } from "@/config";
+import { IllusError } from "@pagopa/mui-italia";
+import AccountAlreadyConfirmed from "@/components/organisms/Auth/AccountAlreadyConfirmed";
 
 enum State {
-  loading = 'loading',
-  resendCode = 'resendCode',
-  alreadyConfirmed = 'alreadyConfirmed',
-  error = 'error',
+  loading = "loading",
+  resendCode = "resendCode",
+  alreadyConfirmed = "alreadyConfirmed",
+  error = "error",
 }
 
 const ConfirmationContent = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const username = searchParams.get('username');
-  const code = searchParams.get('code');
-  const t = useTranslations('auth');
+  const username = searchParams.get("username");
+  const code = searchParams.get("code");
+  const t = useTranslations("auth");
 
   const [submitting, setSubmitting] = useState(false);
   const [state, setState] = useState<State>(State.loading);
@@ -33,18 +33,17 @@ const ConfirmationContent = () => {
     if (username && code) {
       Auth.confirmSignUp(username, code)
         .then(() => {
-          // eslint-disable-next-line functional/immutable-data
-          router.push('/auth/account-activated');
+          router.push("/auth/account-activated");
         })
         .catch((error) => {
           // TODO: remove console warn and handle errors: [CodeMismatchException, ExpiredCodeException, InternalErrorException, LimitExceededException]
           // see apps/nextjs-website/src/app/auth/email-confirmation/page.tsx
           !isProduction && console.warn(error);
           switch (error.code) {
-            case 'AliasExistsException':
+            case "AliasExistsException":
               setState(State.alreadyConfirmed);
               break;
-            case 'LimitExceededException':
+            case "LimitExceededException":
               setState(State.error);
               break;
             default:
@@ -81,14 +80,14 @@ const ConfirmationContent = () => {
         <PageBackgroundWrapper>
           <SingleCard
             icon={<IllusError />}
-            title={t('confirmation.title')}
+            title={t("confirmation.title")}
             cta={
               <Button
                 disabled={submitting}
-                variant='contained'
+                variant="contained"
                 onClick={onResendEmail}
               >
-                {t('confirmation.ctaLabel')}
+                {t("confirmation.ctaLabel")}
               </Button>
             }
           />

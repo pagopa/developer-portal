@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { StrapiOverviews } from '@/lib/strapi/types/overviews';
-import { strapiOverviews } from '@/lib/strapi/__tests__/fixtures/overviews';
+import { StrapiOverviews } from "@/lib/strapi/types/overviews";
+import { strapiOverviews } from "@/lib/strapi/__tests__/fixtures/overviews";
 
 export function minimalDataSingleOverview(): StrapiOverviews {
   return {
@@ -36,7 +36,7 @@ export function overviewsWithItemWithEmptyProductSlug() {
               ...strapiOverviews.data[0].attributes.product.data,
               attributes: {
                 ...strapiOverviews.data[0].attributes.product.data.attributes,
-                slug: '',
+                slug: "",
               },
             },
           },
@@ -158,7 +158,7 @@ export function overviewsWithItemWithEmptyGuideProductSlug() {
                   attributes: {
                     ...strapiOverviews.data[0].attributes.postIntegration.guides
                       .data[0].attributes,
-                    slug: '',
+                    slug: "",
                   },
                 },
               ],

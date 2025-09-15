@@ -1,29 +1,29 @@
-import * as qs from 'qs';
-import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
-import { StrapiCaseHistories } from '@/lib/strapi/types/caseHistories';
+import * as qs from "qs";
+import { fetchFromStrapi } from "@/lib/strapi/fetchFromStrapi";
+import { StrapiCaseHistories } from "@/lib/strapi/types/caseHistories";
 
 const makeStrapiCaseHistoriesPopulate = () =>
   qs.stringify({
     populate: {
-      image: 'image',
+      image: "image",
       parts: {
         populate: [
-          'responseCode',
-          'requestCode',
-          'requestAttributes',
-          'backgroundImage',
+          "responseCode",
+          "requestCode",
+          "requestAttributes",
+          "backgroundImage",
         ],
       },
       products: {
-        populate: ['logo'],
+        populate: ["logo"],
       },
       seo: {
-        populate: '*,metaImage,metaSocial.image',
+        populate: "*,metaImage,metaSocial.image",
       },
     },
   });
 
 export const fetchCaseHistories = fetchFromStrapi<StrapiCaseHistories>(
-  'case-histories',
-  makeStrapiCaseHistoriesPopulate()
+  "case-histories",
+  makeStrapiCaseHistoriesPopulate(),
 );

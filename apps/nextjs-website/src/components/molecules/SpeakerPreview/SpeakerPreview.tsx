@@ -1,15 +1,15 @@
-'use client';
-import { Speaker } from '@/lib/types/speaker';
-import { PersonOutline } from '@mui/icons-material';
-import { Box, Typography, useTheme } from '@mui/material';
-import Image from 'next/image';
-import React from 'react';
-import BlocksRendererClient from '../BlocksRendererClient/BlocksRendererClient';
-import { useMediaQuery } from '@mui/material';
+"use client";
+import { Speaker } from "@/lib/types/speaker";
+import { PersonOutline } from "@mui/icons-material";
+import { Box, Typography, useTheme } from "@mui/material";
+import Image from "next/image";
+import React from "react";
+import BlocksRendererClient from "../BlocksRendererClient/BlocksRendererClient";
+import { useMediaQuery } from "@mui/material";
 
 type SpeakerPreviewProps = {
   compactMode?: boolean;
-  flexDirection?: 'column' | 'row';
+  flexDirection?: "column" | "row";
   isSmallScreen?: boolean;
 } & Speaker;
 
@@ -28,29 +28,29 @@ const SpeakerAvatar = ({
       alt={avatar.alternativeText || name}
       width={0}
       height={0}
-      sizes='100vw'
+      sizes="100vw"
       style={{
-        borderRadius: '100%',
-        width: compactMode ? '4rem' : isSmallScreen ? '5rem' : '7.75rem',
-        height: compactMode ? '4rem' : isSmallScreen ? '5rem' : '7.75rem',
+        borderRadius: "100%",
+        width: compactMode ? "4rem" : isSmallScreen ? "5rem" : "7.75rem",
+        height: compactMode ? "4rem" : isSmallScreen ? "5rem" : "7.75rem",
       }}
     />
   ) : (
     <Box
       sx={{
-        display: 'flex',
+        display: "flex",
         flexShrink: 0,
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderStyle: 'solid',
-        borderWidth: '1px',
-        borderRadius: '100%',
+        alignItems: "center",
+        justifyContent: "center",
+        borderStyle: "solid",
+        borderWidth: "1px",
+        borderRadius: "100%",
         borderColor: palette.divider,
-        width: compactMode ? '4rem' : '9.063rem',
-        height: compactMode ? '4rem' : '9.063rem',
+        width: compactMode ? "4rem" : "9.063rem",
+        height: compactMode ? "4rem" : "9.063rem",
       }}
     >
-      <PersonOutline fontSize={compactMode ? 'medium' : 'large'} />
+      <PersonOutline fontSize={compactMode ? "medium" : "large"} />
     </Box>
   );
 };
@@ -68,19 +68,19 @@ const SpeakerInfo = ({
   return (
     <Box
       sx={{
-        maxWidth: '20.625rem',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        gap: '0.375rem',
+        maxWidth: "20.625rem",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        gap: "0.375rem",
       }}
     >
       {compactMode ? (
         <>
-          <Typography fontSize={'1.125rem'} fontWeight={600}>
+          <Typography fontSize={"1.125rem"} fontWeight={600}>
             {name}
           </Typography>
-          <Typography fontSize={'1.125rem'} fontWeight={400}>
+          <Typography fontSize={"1.125rem"} fontWeight={400}>
             {jobTitle}
           </Typography>
         </>
@@ -88,13 +88,13 @@ const SpeakerInfo = ({
         <>
           <Typography
             fontWeight={700}
-            fontSize={{ xs: '1.375rem', md: '1.5rem' }}
-            lineHeight={{ xs: '1.813rem', md: '2rem' }}
+            fontSize={{ xs: "1.375rem", md: "1.5rem" }}
+            lineHeight={{ xs: "1.813rem", md: "2rem" }}
           >
             {name}
           </Typography>
           <Typography
-            fontSize={{ xs: '1rem', md: '1.125rem' }}
+            fontSize={{ xs: "1rem", md: "1.125rem" }}
             fontWeight={400}
             color={palette.text.secondary}
           >
@@ -113,22 +113,22 @@ const SpeakerInfo = ({
 
 const SpeakerPreview = ({
   compactMode,
-  flexDirection = 'column',
+  flexDirection = "column",
   ...speaker
 }: SpeakerPreviewProps) => {
-  const isSmallScreen = useMediaQuery('(max-width: 900px)');
+  const isSmallScreen = useMediaQuery("(max-width: 900px)");
   return (
     <Box
       sx={{
         flex: 1,
-        display: 'flex',
-        flexDirection: { xs: 'row', md: flexDirection },
+        display: "flex",
+        flexDirection: { xs: "row", md: flexDirection },
         alignItems: {
-          xs: 'center',
-          md: compactMode ? 'center' : '  flex-start',
+          xs: "center",
+          md: compactMode ? "center" : "  flex-start",
         },
         gap: 3,
-        alignContent: 'center',
+        alignContent: "center",
       }}
     >
       <SpeakerAvatar

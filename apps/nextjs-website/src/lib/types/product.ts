@@ -1,5 +1,5 @@
-import { Media } from '@/lib/types/media';
-import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
+import { Media } from "@/lib/types/media";
+import { BannerLinkProps } from "@/components/atoms/BannerLink/BannerLink";
 
 export type Product = {
   readonly slug: string;

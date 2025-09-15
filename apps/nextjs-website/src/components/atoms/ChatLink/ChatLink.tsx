@@ -1,7 +1,7 @@
-'use client';
-import { ReactNode } from 'react';
-import { LinkProps } from 'gitbook-docs/markdoc/schema/link';
-import { Link, useTheme } from '@mui/material';
+"use client";
+import { ReactNode } from "react";
+import { LinkProps } from "gitbook-docs/markdoc/schema/link";
+import { Link, useTheme } from "@mui/material";
 
 const ChatLink = ({ title, href, children }: LinkProps<ReactNode>) => {
   const { palette } = useTheme();
@@ -10,8 +10,8 @@ const ChatLink = ({ title, href, children }: LinkProps<ReactNode>) => {
       href={href}
       title={title}
       color={palette.primary.main}
-      display={'block'}
-      fontWeight={'600'}
+      display={"block"}
+      fontWeight={"600"}
     >
       {children}
     </Link>

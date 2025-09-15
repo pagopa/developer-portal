@@ -1,31 +1,31 @@
-import * as qs from 'qs';
-import { productRelationsPopulate } from './fetchProducts';
-import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
-import { StrapiTutorials } from '@/lib/strapi/types/tutorial';
+import * as qs from "qs";
+import { productRelationsPopulate } from "./fetchProducts";
+import { fetchFromStrapi } from "@/lib/strapi/fetchFromStrapi";
+import { StrapiTutorials } from "@/lib/strapi/types/tutorial";
 
 const makeStrapiTutorialsPopulate = () =>
   qs.stringify({
     populate: {
       relatedLinks: {
-        populate: ['links'],
+        populate: ["links"],
       },
       image: {
-        populate: ['image'],
+        populate: ["image"],
       },
-      parts: '*',
+      parts: "*",
       product: {
         ...productRelationsPopulate,
       },
       bannerLinks: {
-        populate: ['icon'],
+        populate: ["icon"],
       },
       seo: {
-        populate: '*,metaImage,metaSocial.image',
+        populate: "*,metaImage,metaSocial.image",
       },
     },
   });
 
 export const fetchTutorials = fetchFromStrapi<StrapiTutorials>(
-  'tutorials',
-  makeStrapiTutorialsPopulate()
+  "tutorials",
+  makeStrapiTutorialsPopulate(),
 );

@@ -1,4 +1,4 @@
-import { Send } from '@mui/icons-material';
+import { Send } from "@mui/icons-material";
 import {
   Box,
   IconButton,
@@ -6,9 +6,9 @@ import {
   Theme,
   useMediaQuery,
   useTheme,
-} from '@mui/material';
-import { useTranslations } from 'next-intl';
-import { ChangeEvent, FormEvent, KeyboardEvent, useState } from 'react';
+} from "@mui/material";
+import { useTranslations } from "next-intl";
+import { ChangeEvent, FormEvent, KeyboardEvent, useState } from "react";
 
 const MESSAGE_MAX_CHARS = 800;
 
@@ -19,16 +19,16 @@ type ChatInputTextProps = {
 
 const ChatInputText = ({ onSubmit, sendDisabled }: ChatInputTextProps) => {
   const t = useTranslations();
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState("");
   const { palette } = useTheme();
   const disabledColor = palette.action.disabled;
-  const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('lg'));
+  const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up("lg"));
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setMessage(
       event.target.value
         .slice(0, MESSAGE_MAX_CHARS)
-        .replace(/(\r\n|\n|\r)/gm, '')
+        .replace(/(\r\n|\n|\r)/gm, ""),
     );
   };
 
@@ -39,11 +39,11 @@ const ChatInputText = ({ onSubmit, sendDisabled }: ChatInputTextProps) => {
 
   const submit = () => {
     onSubmit(message);
-    setMessage('');
+    setMessage("");
   };
 
   const onEnterKeyDownSubmitForm = (event: KeyboardEvent<HTMLFormElement>) => {
-    if (event.key === 'Enter' && message) {
+    if (event.key === "Enter" && message) {
       event.preventDefault();
       submit();
     }
@@ -51,17 +51,17 @@ const ChatInputText = ({ onSubmit, sendDisabled }: ChatInputTextProps) => {
 
   return (
     <Box
-      component='form'
+      component="form"
       onSubmit={handleSubmit}
       onKeyDown={onEnterKeyDownSubmitForm}
       sx={{
-        display: 'flex',
-        alignItems: 'end',
-        width: 'auto',
+        display: "flex",
+        alignItems: "end",
+        width: "auto",
         paddingLeft: 2,
         paddingRight: 1,
         paddingY: 2,
-        borderTop: '3px solid',
+        borderTop: "3px solid",
         borderTopColor: message.length ? palette.primary.main : disabledColor,
         backgroundColor: palette.background.paper,
       }}
@@ -70,7 +70,7 @@ const ChatInputText = ({ onSubmit, sendDisabled }: ChatInputTextProps) => {
         inputRef={(input) => input && input.focus()}
         fullWidth
         disabled={sendDisabled}
-        placeholder={t('chatBot.writeNewMessagePlaceholder')}
+        placeholder={t("chatBot.writeNewMessagePlaceholder")}
         value={message}
         onChange={handleChange}
         multiline
@@ -79,38 +79,38 @@ const ChatInputText = ({ onSubmit, sendDisabled }: ChatInputTextProps) => {
           <Box
             sx={{
               color: palette.action.disabled,
-              fontSize: '0.875rem',
-              marginLeft: '0.5rem',
+              fontSize: "0.875rem",
+              marginLeft: "0.5rem",
             }}
           >
             {`${message.length}/${MESSAGE_MAX_CHARS}`}
           </Box>
         }
         sx={{
-          alignItems: 'flex-end',
-          borderWidth: '2px',
+          alignItems: "flex-end",
+          borderWidth: "2px",
           paddingX: { xs: 1.5, md: 2 },
           paddingY: 1,
           borderRadius: 2,
-          borderStyle: 'solid',
+          borderStyle: "solid",
           borderColor: message.length ? palette.primary.main : disabledColor,
-          fontSize: '0.875rem',
+          fontSize: "0.875rem",
         }}
       />
       <IconButton
-        aria-label='send'
+        aria-label="send"
         onClick={submit}
         disabled={!message || sendDisabled}
         sx={{
           color: palette.primary.main,
-          cursor: 'pointer',
+          cursor: "pointer",
           marginLeft: 0.5,
         }}
       >
         <Send
           sx={{
-            height: '1.5rem',
-            width: '1.5rem',
+            height: "1.5rem",
+            width: "1.5rem",
           }}
         />
       </IconButton>

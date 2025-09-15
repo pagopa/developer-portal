@@ -1,10 +1,10 @@
 import ChatbotHistoryNavigationMenu, {
   SessionNavigationData,
-} from '@/components/atoms/ChatbotHistoryNavigationMenu/ChatbotHistoryNavigationMenu';
-import ChatbotHistoryMessages from '@/components/molecules/ChatbotHistoryMessages/ChatbotHistoryMessages';
-import { defaultLocale } from '@/config';
-import { Query } from '@/lib/chatbot/queries';
-import { Delete } from '@mui/icons-material';
+} from "@/components/atoms/ChatbotHistoryNavigationMenu/ChatbotHistoryNavigationMenu";
+import ChatbotHistoryMessages from "@/components/molecules/ChatbotHistoryMessages/ChatbotHistoryMessages";
+import { defaultLocale } from "@/config";
+import { Query } from "@/lib/chatbot/queries";
+import { Delete } from "@mui/icons-material";
 import {
   Box,
   Button,
@@ -15,10 +15,10 @@ import {
   DialogTitle,
   Stack,
   Typography,
-} from '@mui/material';
-import { isEmpty } from 'fp-ts/lib/Array';
-import { useTranslations } from 'next-intl';
-import React, { useState } from 'react';
+} from "@mui/material";
+import { isEmpty } from "fp-ts/lib/Array";
+import { useTranslations } from "next-intl";
+import React, { useState } from "react";
 
 type DateFormatOptions = {
   locale?: string;
@@ -28,9 +28,9 @@ type DateFormatOptions = {
 const DEFAULT_DATE_FORMAT = {
   locale: defaultLocale,
   options: {
-    day: '2-digit',
-    month: 'long',
-    year: 'numeric',
+    day: "2-digit",
+    month: "long",
+    year: "numeric",
   },
 } satisfies DateFormatOptions;
 
@@ -62,82 +62,82 @@ const ChatbotHistoryDetailLayout = ({
 
   if (isEmpty(queries)) {
     return (
-      <Typography variant='h4'>{t('chatBot.thereAreNoMessages')}</Typography>
+      <Typography variant="h4">{t("chatBot.thereAreNoMessages")}</Typography>
     );
   }
 
   const firstQuery = queries[0];
   const date = new Intl.DateTimeFormat(
     DEFAULT_DATE_FORMAT.locale,
-    DEFAULT_DATE_FORMAT.options
+    DEFAULT_DATE_FORMAT.options,
   ).format(new Date(firstQuery.queriedAt));
 
   return (
-    <Stack direction='column' spacing={2}>
+    <Stack direction="column" spacing={2}>
       <Dialog
         open={open}
         onClose={handleClose}
-        aria-labelledby='alert-dialog-title'
-        aria-describedby='alert-dialog-description'
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id='alert-dialog-title'>
-          {t('chatBot.deleteHeader')}
+        <DialogTitle id="alert-dialog-title">
+          {t("chatBot.deleteHeader")}
         </DialogTitle>
         <DialogContent>
-          <DialogContentText id='alert-dialog-description'>
-            {t('chatBot.confirmDelete')}
+          <DialogContentText id="alert-dialog-description">
+            {t("chatBot.confirmDelete")}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button variant='outlined' onClick={handleClose}>
-            {t('chatBot.deleteDismiss')}
+          <Button variant="outlined" onClick={handleClose}>
+            {t("chatBot.deleteDismiss")}
           </Button>
           <Button
-            variant='contained'
+            variant="contained"
             onClick={() =>
               onDeleteChatSession(firstQuery.sessionId, firstQuery.createdAt)
             }
             autoFocus
           >
-            {t('chatBot.deleteConfirm')}
+            {t("chatBot.deleteConfirm")}
           </Button>
         </DialogActions>
       </Dialog>
-      <Typography variant='h4'>{t('chatBot.sessionTitle') + date}</Typography>
-      <Stack direction='row' justifyContent='flex-end'>
+      <Typography variant="h4">{t("chatBot.sessionTitle") + date}</Typography>
+      <Stack direction="row" justifyContent="flex-end">
         <Button
-          variant='outlined'
+          variant="outlined"
           startIcon={<Delete />}
-          color='error'
-          sx={{ display: { xs: 'none', sm: 'flex' }, maxWidth: '162px' }}
+          color="error"
+          sx={{ display: { xs: "none", sm: "flex" }, maxWidth: "162px" }}
           onClick={handleClickOpen}
         >
-          {t('chatBot.deleteChat')}
+          {t("chatBot.deleteChat")}
         </Button>
       </Stack>
       <ChatbotHistoryMessages queries={queries} userName={userName} />
       <Box
         sx={{
-          display: { xs: 'flex', md: 'none' },
-          justifyContent: 'center',
-          paddingTop: '2rem',
-          width: '100%',
+          display: { xs: "flex", md: "none" },
+          justifyContent: "center",
+          paddingTop: "2rem",
+          width: "100%",
         }}
       >
         <Button
-          variant='outlined'
+          variant="outlined"
           startIcon={<Delete />}
-          color='error'
+          color="error"
           onClick={() =>
             onDeleteChatSession(firstQuery.sessionId, firstQuery.createdAt)
           }
         >
-          {t('chatBot.deleteChat')}
+          {t("chatBot.deleteChat")}
         </Button>
       </Box>
       <Box
-        paddingTop='3rem'
-        sx={{ display: { xs: 'none', md: 'block' }, width: '100%' }}
+        paddingTop="3rem"
+        sx={{ display: { xs: "none", md: "block" }, width: "100%" }}
       >
         <ChatbotHistoryNavigationMenu
           previousSession={previousSession}

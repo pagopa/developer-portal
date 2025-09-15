@@ -1,9 +1,9 @@
-import { makeApiDataListPagesProps } from '@/lib/strapi/makeProps/makeApiDataListPages';
-import _ from 'lodash';
+import { makeApiDataListPagesProps } from "@/lib/strapi/makeProps/makeApiDataListPages";
+import _ from "lodash";
 import {
   strapiApiDataListPages,
   expectedApiDataListPageProps,
-} from '@/lib/strapi/__tests__/fixtures/apiDataListPages';
+} from "@/lib/strapi/__tests__/fixtures/apiDataListPages";
 import {
   minimalApiDataListPages,
   apiDataListPageWithEmptyApiData,
@@ -13,10 +13,10 @@ import {
   multipleApiDataListPages,
   emptyApiDataListPages,
   apiDataListPageWithBothRestAndSoap,
-} from '@/lib/strapi/__tests__/factories/apiDataListPages';
-import { spyOnConsoleError } from '@/lib/strapi/__tests__/spyOnConsole';
+} from "@/lib/strapi/__tests__/factories/apiDataListPages";
+import { spyOnConsoleError } from "@/lib/strapi/__tests__/spyOnConsole";
 
-describe('makeApiDataListPagesProps', () => {
+describe("makeApiDataListPagesProps", () => {
   beforeEach(() => {
     spyOnConsoleError.mockClear();
   });
@@ -25,157 +25,157 @@ describe('makeApiDataListPagesProps', () => {
     spyOnConsoleError.mockRestore();
   });
 
-  it('should transform strapi api data list pages to api data list page template props', () => {
+  it("should transform strapi api data list pages to api data list page template props", () => {
     const result = makeApiDataListPagesProps(
-      _.cloneDeep(strapiApiDataListPages)
+      _.cloneDeep(strapiApiDataListPages),
     );
     expect(result).toHaveLength(1);
     expect(result[0]).toMatchObject(expectedApiDataListPageProps[0]);
   });
 
-  it('should handle minimal data with missing optional fields', () => {
+  it("should handle minimal data with missing optional fields", () => {
     const result = makeApiDataListPagesProps(
-      _.cloneDeep(minimalApiDataListPages())
+      _.cloneDeep(minimalApiDataListPages()),
     );
     expect(result).toHaveLength(1);
     const firstElement = result[0];
-    expect(firstElement.hero.title).toBe('Minimal API List Page');
-    expect(firstElement.hero.subtitle).toBe('');
+    expect(firstElement.hero.title).toBe("Minimal API List Page");
+    expect(firstElement.hero.subtitle).toBe("");
     expect(firstElement.seo).toBeUndefined();
     expect(firstElement.cards).toHaveLength(1);
-    expect(firstElement.cards[0].title).toBe('Minimal API');
-    expect(firstElement.cards[0].icon).toBe('');
+    expect(firstElement.cards[0].title).toBe("Minimal API");
+    expect(firstElement.cards[0].icon).toBe("");
     expect(firstElement.apiData).toBeDefined();
   });
 
-  it('should handle empty data array', () => {
+  it("should handle empty data array", () => {
     const result = makeApiDataListPagesProps(emptyApiDataListPages());
     expect(result).toHaveLength(0);
   });
 
-  it('should handle page with empty api data', () => {
+  it("should handle page with empty api data", () => {
     const result = makeApiDataListPagesProps(apiDataListPageWithEmptyApiData());
     expect(result).toHaveLength(1);
     expect(result[0].cards).toHaveLength(0);
     expect(result[0].apiDetailSlugs).toHaveLength(0);
   });
 
-  it('should handle mixed API types and filter invalid ones', () => {
+  it("should handle mixed API types and filter invalid ones", () => {
     const result = makeApiDataListPagesProps(
-      apiDataListPageWithMixedApiTypes()
+      apiDataListPageWithMixedApiTypes(),
     );
     expect(result).toHaveLength(1);
     const firstElement = result[0];
     expect(firstElement.cards).toHaveLength(2);
-    expect(firstElement.cards[0].tags?.[0].label).toBe('REST');
-    expect(firstElement.cards[1].tags?.[0].label).toBe('SOAP');
-    expect(firstElement.apiDetailSlugs).toEqual(['rest-api', 'soap-api']);
+    expect(firstElement.cards[0].tags?.[0].label).toBe("REST");
+    expect(firstElement.cards[1].tags?.[0].label).toBe("SOAP");
+    expect(firstElement.apiDetailSlugs).toEqual(["rest-api", "soap-api"]);
   });
 
-  it('should handle page without description', () => {
+  it("should handle page without description", () => {
     const result = makeApiDataListPagesProps(
-      apiDataListPageWithoutDescription()
+      apiDataListPageWithoutDescription(),
     );
     expect(result).toHaveLength(1);
-    expect(result[0].hero.subtitle).toBe('');
+    expect(result[0].hero.subtitle).toBe("");
   });
 
-  it('should filter out invalid API data', () => {
+  it("should filter out invalid API data", () => {
     const result = makeApiDataListPagesProps(
-      apiDataListPageWithInvalidApiData()
+      apiDataListPageWithInvalidApiData(),
     );
     expect(result).toHaveLength(1);
     const firstElement = result[0];
     expect(firstElement.cards).toHaveLength(0);
     expect(firstElement.apiDetailSlugs).toHaveLength(0);
     expect(spyOnConsoleError).toHaveBeenCalledWith(
-      expect.stringContaining('Missing title or API details')
+      expect.stringContaining("Missing title or API details"),
     );
   });
 
-  it('should handle multiple pages', () => {
+  it("should handle multiple pages", () => {
     const result = makeApiDataListPagesProps(multipleApiDataListPages());
     expect(result).toHaveLength(2);
-    expect(result[0].hero.title).toBe('SEND API Documentation');
-    expect(result[1].hero.title).toBe('Second API List Page');
+    expect(result[0].hero.title).toBe("SEND API Documentation");
+    expect(result[1].hero.title).toBe("Second API List Page");
   });
 
-  it('should correctly set hero properties', () => {
+  it("should correctly set hero properties", () => {
     const result = makeApiDataListPagesProps(strapiApiDataListPages);
     expect(result[0].hero).toEqual({
-      title: 'SEND API Documentation',
-      subtitle: 'Complete documentation for SEND APIs',
+      title: "SEND API Documentation",
+      subtitle: "Complete documentation for SEND APIs",
     });
   });
 
-  it('should correctly identify REST API type', () => {
+  it("should correctly identify REST API type", () => {
     const result = makeApiDataListPagesProps(strapiApiDataListPages);
     const restCard = result[0].cards.find(
-      (card) => card.tags?.[0].label === 'REST'
+      (card) => card.tags?.[0].label === "REST",
     );
     expect(restCard).toBeDefined();
-    expect(restCard?.title).toBe('SEND Main API');
-    expect(restCard?.href).toBe('/send/api/send-main');
+    expect(restCard?.title).toBe("SEND Main API");
+    expect(restCard?.href).toBe("/send/api/send-main");
   });
 
-  it('should correctly identify SOAP API type', () => {
+  it("should correctly identify SOAP API type", () => {
     const result = makeApiDataListPagesProps(strapiApiDataListPages);
     const soapCard = result[0].cards.find(
-      (card) => card.tags?.[0].label === 'SOAP'
+      (card) => card.tags?.[0].label === "SOAP",
     );
     expect(soapCard).toBeDefined();
-    expect(soapCard?.title).toBe('SEND SOAP API');
-    expect(soapCard?.href).toBe('/send/api/send-soap');
+    expect(soapCard?.title).toBe("SEND SOAP API");
+    expect(soapCard?.href).toBe("/send/api/send-soap");
   });
 
-  it('should correctly map banner links', () => {
+  it("should correctly map banner links", () => {
     const result = makeApiDataListPagesProps(strapiApiDataListPages);
     const firstElement = result[0];
     expect(firstElement.bannerLinks).toHaveLength(2);
-    expect(firstElement.bannerLinks[0]).toHaveProperty('title');
-    expect(firstElement.bannerLinks[0]).toHaveProperty('icon');
+    expect(firstElement.bannerLinks[0]).toHaveProperty("title");
+    expect(firstElement.bannerLinks[0]).toHaveProperty("icon");
   });
 
-  it('should correctly map SEO properties', () => {
+  it("should correctly map SEO properties", () => {
     const result = makeApiDataListPagesProps(strapiApiDataListPages);
     expect(result[0].seo).toEqual({
-      metaTitle: 'SEND API Documentation',
-      metaDescription: 'Complete documentation for SEND APIs',
+      metaTitle: "SEND API Documentation",
+      metaDescription: "Complete documentation for SEND APIs",
     });
   });
 
-  it('should correctly map updatedAt', () => {
+  it("should correctly map updatedAt", () => {
     const result = makeApiDataListPagesProps(strapiApiDataListPages);
-    expect(result[0].updatedAt).toBe('2024-01-02T00:00:00.000Z');
+    expect(result[0].updatedAt).toBe("2024-01-02T00:00:00.000Z");
   });
 
-  it('should filter cards without title or tags', () => {
+  it("should filter cards without title or tags", () => {
     const result = makeApiDataListPagesProps(
-      apiDataListPageWithInvalidApiData()
+      apiDataListPageWithInvalidApiData(),
     );
     expect(result[0].cards).toHaveLength(0);
     expect(spyOnConsoleError).toHaveBeenCalledWith(
-      expect.stringContaining('Missing title or API details')
+      expect.stringContaining("Missing title or API details"),
     );
   });
 
-  it('should handle API data with missing icon', () => {
+  it("should handle API data with missing icon", () => {
     const result = makeApiDataListPagesProps(minimalApiDataListPages());
-    expect(result[0].cards[0].icon).toBe('');
+    expect(result[0].cards[0].icon).toBe("");
   });
 
-  it('should correctly generate href for cards', () => {
+  it("should correctly generate href for cards", () => {
     const result = makeApiDataListPagesProps(strapiApiDataListPages);
     const firstElement = result[0];
     expect(firstElement.cards).toHaveLength(2);
-    expect(firstElement.cards[0].href).toBe('/send/api/send-main');
-    expect(firstElement.cards[1].href).toBe('/send/api/send-soap');
+    expect(firstElement.cards[0].href).toBe("/send/api/send-main");
+    expect(firstElement.cards[1].href).toBe("/send/api/send-soap");
   });
 
-  it('should prioritize REST slug over SOAP slug in apiDetailSlugs', () => {
+  it("should prioritize REST slug over SOAP slug in apiDetailSlugs", () => {
     const result = makeApiDataListPagesProps(
-      apiDataListPageWithBothRestAndSoap()
+      apiDataListPageWithBothRestAndSoap(),
     );
-    expect(result[0].apiDetailSlugs).toEqual(['rest-slug']);
+    expect(result[0].apiDetailSlugs).toEqual(["rest-slug"]);
   });
 });

@@ -1,15 +1,15 @@
-'use client';
-import React from 'react';
-import SectionTitle from '@/components/molecules/SectionTitle/SectionTitle';
-import { Box, Stack, Typography, useTheme } from '@mui/material';
-import LinkButton from '@/components/atoms/LinkButton/LinkButton';
-import CardsGrid from '@/components/molecules/CardsGrid/CardsGrid';
-import IconWrapper from '@/components/atoms/IconWrapper/IconWrapper';
-import { useTranslations } from 'next-intl';
+"use client";
+import React from "react";
+import SectionTitle from "@/components/molecules/SectionTitle/SectionTitle";
+import { Box, Stack, Typography, useTheme } from "@mui/material";
+import LinkButton from "@/components/atoms/LinkButton/LinkButton";
+import CardsGrid from "@/components/molecules/CardsGrid/CardsGrid";
+import IconWrapper from "@/components/atoms/IconWrapper/IconWrapper";
+import { useTranslations } from "next-intl";
 
 type StartInfoProps = {
   title?: string;
-  cardVariant?: 'text' | 'contained' | 'outlined';
+  cardVariant?: "text" | "contained" | "outlined";
   cards: {
     comingSoon?: boolean;
     title: string;
@@ -31,7 +31,7 @@ const StartInfo = ({
   title,
   cards,
   cta,
-  cardVariant = 'contained',
+  cardVariant = "contained",
 }: StartInfoProps) => {
   const { palette } = useTheme();
   const t = useTranslations();
@@ -41,8 +41,8 @@ const StartInfo = ({
       <Box pt={10} pb={6} sx={{ backgroundColor: palette.grey[50] }}>
         <Box mb={2}>
           <SectionTitle
-            title={title || t('overview.startInfo.title')}
-            variant='h2'
+            title={title || t("overview.startInfo.title")}
+            variant="h2"
           />
         </Box>
         <CardsGrid
@@ -61,8 +61,8 @@ const StartInfo = ({
             useSrc: card.useSrc,
           }))}
           containerSx={{
-            pt: '22px',
-            mt: '-22px',
+            pt: "22px",
+            mt: "-22px",
           }}
         />
       </Box>
@@ -70,20 +70,20 @@ const StartInfo = ({
         <Box py={2} sx={{ backgroundColor: palette.grey[50] }}>
           <Stack
             spacing={2}
-            direction={{ md: 'row', xs: 'column' }}
-            justifyContent='center'
-            alignItems='center'
+            direction={{ md: "row", xs: "column" }}
+            justifyContent="center"
+            alignItems="center"
             paddingY={0.5}
           >
             <Box pt={0.5}>
               <IconWrapper
                 color={palette.text.primary}
                 size={26}
-                icon={cta.iconName || 'MenuBook'}
+                icon={cta.iconName || "MenuBook"}
                 useSrc={false}
               />
             </Box>
-            <Typography variant='body1' mb={2}>
+            <Typography variant="body1" mb={2}>
               {cta.text}
             </Typography>
             <LinkButton href={cta.href} label={cta.label} />

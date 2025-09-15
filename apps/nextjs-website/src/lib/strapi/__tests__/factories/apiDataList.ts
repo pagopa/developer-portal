@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { strapiApiDataList } from '@/lib/strapi/__tests__/fixtures/apiDataList';
-import { StrapiApiDataList } from '@/lib/strapi/types/apiDataList';
+import { strapiApiDataList } from "@/lib/strapi/__tests__/fixtures/apiDataList";
+import { StrapiApiDataList } from "@/lib/strapi/types/apiDataList";
 
 export function minimalApiDataList() {
   const apiData = strapiApiDataList.data[0];
@@ -11,7 +11,7 @@ export function minimalApiDataList() {
         ...apiData,
         attributes: {
           ...apiData.attributes,
-          title: 'Minimal API Data',
+          title: "Minimal API Data",
           description: undefined,
           seo: undefined,
           bannerLinks: [],
@@ -25,11 +25,11 @@ export function minimalApiDataList() {
             },
           },
           apiRestDetail: {
-            slug: 'minimal-api',
+            slug: "minimal-api",
             specUrls: [
               {
                 id: 1,
-                url: 'https://example.com/api.yaml',
+                url: "https://example.com/api.yaml",
                 name: undefined,
                 hideTryIt: false,
               },
@@ -67,7 +67,7 @@ export function apiDataWithMissingProduct() {
         ...apiData,
         attributes: {
           ...apiData.attributes,
-          title: 'API Data Without Product',
+          title: "API Data Without Product",
           product: {
             data: undefined as any,
           },
@@ -86,7 +86,7 @@ export function apiDataWithoutApiDetails() {
         ...apiData,
         attributes: {
           ...apiData.attributes,
-          title: 'API Data Without API Details',
+          title: "API Data Without API Details",
           apiRestDetail: undefined,
           apiSoapDetail: undefined,
         },
@@ -104,9 +104,9 @@ export function apiDataWithInvalidRestApiDetails() {
         ...apiData,
         attributes: {
           ...apiData.attributes,
-          title: 'API Data Without API Details',
+          title: "API Data Without API Details",
           apiRestDetail: {
-            slug: '',
+            slug: "",
             specUrls: [],
           },
           apiSoapDetail: undefined,
@@ -125,12 +125,12 @@ export function apiDatalistWithItemMissingSlug() {
         ...apiData,
         attributes: {
           ...apiData.attributes,
-          title: 'API Data Without API Details',
+          title: "API Data Without API Details",
           apiRestDetail: undefined,
           apiSoapDetail: {
             slug: undefined as any,
-            repositoryUrl: 'https://example.com/soap.wsdl',
-            dirName: 'soap-dir',
+            repositoryUrl: "https://example.com/soap.wsdl",
+            dirName: "soap-dir",
           },
         },
       },
@@ -156,14 +156,14 @@ export function mixedApiDataValidAndInvalid() {
         id: 5,
         attributes: {
           ...validRestApi.attributes,
-          title: 'Another Valid REST API',
+          title: "Another Valid REST API",
           apiRestDetail: {
-            slug: 'another-valid-rest-api',
+            slug: "another-valid-rest-api",
             specUrls: [
               {
                 id: 5,
-                url: 'https://example.com/another-api.yaml',
-                name: 'Another API',
+                url: "https://example.com/another-api.yaml",
+                name: "Another API",
                 hideTryIt: false,
               },
             ],
@@ -208,7 +208,7 @@ export function apiDataWithCorruptedProduct() {
         ...apiData,
         attributes: {
           ...apiData.attributes,
-          title: 'API Data With Corrupted Product',
+          title: "API Data With Corrupted Product",
           product: {
             data: {
               ...apiData.attributes.product.data,
@@ -258,18 +258,18 @@ export function restApiDataWithMultipleSpecs() {
         attributes: {
           ...restApi.attributes,
           apiRestDetail: {
-            slug: 'multi-spec-api',
+            slug: "multi-spec-api",
             specUrls: [
               {
                 id: 1,
-                url: 'https://example.com/api1.yaml',
-                name: 'API 1',
+                url: "https://example.com/api1.yaml",
+                name: "API 1",
                 hideTryIt: false,
               },
               {
                 id: 2,
-                url: 'https://example.com/api2.yaml',
-                name: 'API 2',
+                url: "https://example.com/api2.yaml",
+                name: "API 2",
                 hideTryIt: true,
               },
             ],

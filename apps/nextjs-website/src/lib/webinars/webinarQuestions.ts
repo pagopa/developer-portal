@@ -1,22 +1,22 @@
-import { pipe } from 'fp-ts/lib/function';
-import * as RTE from 'fp-ts/lib/ReaderTaskEither';
-import * as RA from 'fp-ts/lib/ReadonlyArray';
-import * as TE from 'fp-ts/lib/TaskEither';
-import * as R from 'fp-ts/lib/Reader';
-import * as E from 'fp-ts/lib/Either';
+import { pipe } from "fp-ts/lib/function";
+import * as RTE from "fp-ts/lib/ReaderTaskEither";
+import * as RA from "fp-ts/lib/ReadonlyArray";
+import * as TE from "fp-ts/lib/TaskEither";
+import * as R from "fp-ts/lib/Reader";
+import * as E from "fp-ts/lib/Either";
 import {
   DynamoDBClient,
   PutItemCommand,
   QueryCommand,
   UpdateItemCommand,
-} from '@aws-sdk/client-dynamodb';
+} from "@aws-sdk/client-dynamodb";
 import {
   WebinarQuestionDynamodbCodec,
   makeDynamodbItemFromWebinarQuestion,
   makeWebinarQuestionFromDynamodbItem,
   makeWebinarQuestionListQueryCondition,
   makeDynamodbUpdateFromWebinarQuestionUpdate,
-} from './dynamodb/codec';
+} from "./dynamodb/codec";
 
 export type WebinarEnv = {
   readonly dynamoDBClient: DynamoDBClient;
@@ -24,8 +24,8 @@ export type WebinarEnv = {
 };
 
 export type InsertWebinarQuestion = {
-  readonly slug: WebinarQuestion['id']['slug'];
-  readonly question: WebinarQuestion['question'];
+  readonly slug: WebinarQuestion["id"]["slug"];
+  readonly question: WebinarQuestion["question"];
 };
 
 export type WebinarQuestion = {
@@ -40,15 +40,15 @@ export type WebinarQuestion = {
 
 export type UpdateExpression<T> =
   | {
-      readonly operation: 'update';
+      readonly operation: "update";
       readonly value: T;
     }
   | {
-      readonly operation: 'remove';
+      readonly operation: "remove";
     };
 
 export type WebinarQuestionUpdate = {
-  readonly id: WebinarQuestion['id'];
+  readonly id: WebinarQuestion["id"];
   readonly updates: {
     readonly hiddenBy?: UpdateExpression<string>;
     readonly highlightedBy?: UpdateExpression<string>;
@@ -58,12 +58,12 @@ export type WebinarQuestionUpdate = {
 export const insertWebinarQuestion = (question: InsertWebinarQuestion) =>
   pipe(
     // take dynamoDBClient and nowDate properties from WebinarEnv
-    R.ask<Pick<WebinarEnv, 'dynamoDBClient' | 'nowDate'>>(),
+    R.ask<Pick<WebinarEnv, "dynamoDBClient" | "nowDate">>(),
     R.map(({ dynamoDBClient, nowDate }) => {
       const createdAt = nowDate();
       // create put command
       const putCommand = new PutItemCommand({
-        TableName: 'WebinarQuestions',
+        TableName: "WebinarQuestions",
         Item: makeDynamodbItemFromWebinarQuestion({
           id: {
             slug: question.slug,
@@ -75,30 +75,30 @@ export const insertWebinarQuestion = (question: InsertWebinarQuestion) =>
       return TE.tryCatch(() => dynamoDBClient.send(putCommand), E.toError);
     }),
     // do not return (i.e., discard) the result if the operation succeded
-    RTE.map(() => void 0)
+    RTE.map(() => void 0),
   );
 
 export const updateWebinarQuestion = (update: WebinarQuestionUpdate) =>
   pipe(
     // take dynamoDBClient properties from WebinarEnv
-    R.ask<Pick<WebinarEnv, 'dynamoDBClient'>>(),
+    R.ask<Pick<WebinarEnv, "dynamoDBClient">>(),
     R.map(({ dynamoDBClient }) => {
       const updateCommand = new UpdateItemCommand({
-        TableName: 'WebinarQuestions',
+        TableName: "WebinarQuestions",
         ...makeDynamodbUpdateFromWebinarQuestionUpdate(update),
       });
       return TE.tryCatch(() => dynamoDBClient.send(updateCommand), E.toError);
     }),
     // do not return (i.e., discard) the result if the operation succeded
-    RTE.map(() => void 0)
+    RTE.map(() => void 0),
   );
 
 export const listWebinarQuestions = (webinarId: string) =>
   pipe(
-    R.ask<Pick<WebinarEnv, 'dynamoDBClient'>>(),
+    R.ask<Pick<WebinarEnv, "dynamoDBClient">>(),
     R.map(({ dynamoDBClient }) => {
       const queryCommand = new QueryCommand({
-        TableName: 'WebinarQuestions',
+        TableName: "WebinarQuestions",
         ...makeWebinarQuestionListQueryCondition(webinarId),
       });
       return TE.tryCatch(() => dynamoDBClient.send(queryCommand), E.toError);
@@ -112,7 +112,7 @@ export const listWebinarQuestions = (webinarId: string) =>
         // turn Array<Either<_, _>> to Either<_, Array<_>>
         RA.sequence(E.Applicative),
         // map errors to error and dynamodb item to WebinarQuestion
-        E.bimap(E.toError, RA.map(makeWebinarQuestionFromDynamodbItem))
-      )
-    )
+        E.bimap(E.toError, RA.map(makeWebinarQuestionFromDynamodbItem)),
+      ),
+    ),
   );

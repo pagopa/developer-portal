@@ -7,12 +7,12 @@ import {
   type LinkProps,
   Link,
   type Theme,
-} from '@mui/material';
-import { useState } from 'react';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import { type Generic, type CommonProps } from '../../types/components';
-import { isJSX } from '../../utils';
-import { DialogBubble } from '@/editorialComponents/DialogBubble/DialogBubble';
+} from "@mui/material";
+import { useState } from "react";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import { type Generic, type CommonProps } from "../../types/components";
+import { isJSX } from "../../utils";
+import { DialogBubble } from "@/editorialComponents/DialogBubble/DialogBubble";
 
 const TIMEOUT_LENGTH = 100;
 
@@ -23,7 +23,7 @@ interface DropdownLink extends LinkProps {
 type DropdownItem = Generic | DropdownLink;
 
 export interface MenuDropdownProp
-  extends Partial<Omit<LinkProps, 'children'>>,
+  extends Partial<Omit<LinkProps, "children">>,
     CommonProps {
   label: string;
   active?: boolean;
@@ -65,7 +65,7 @@ export const MenuDropdown = (props: MenuDropdownProp) => {
   // style
   const hasLinks = items?.length;
   const mui = useTheme();
-  const md = useMediaQuery(mui.breakpoints.up('md'));
+  const md = useMediaQuery(mui.breakpoints.up("md"));
   const styles = useStyles(props, mui);
 
   const dropdownVisible = menuHover || dropdownHover;
@@ -100,26 +100,26 @@ export const MenuDropdown = (props: MenuDropdownProp) => {
   return (
     <Stack sx={styles.menu} {...menuEventsHandlers}>
       <Link
-        sx={{ maxHeight: '27px', maxWidth: '130px', ...styles.item }}
+        sx={{ maxHeight: "27px", maxWidth: "130px", ...styles.item }}
         {...button}
       >
         <Typography
           noWrap
-          variant='sidenav'
-          color='inherit'
+          variant="sidenav"
+          color="inherit"
           sx={{
-            paddingTop: '2px',
-            textOverflow: 'ellipsis',
-            overflow: 'hidden',
-            display: 'inline-block',
+            paddingTop: "2px",
+            textOverflow: "ellipsis",
+            overflow: "hidden",
+            display: "inline-block",
           }}
         >
           {label}
         </Typography>
         {hasLinks && (
           <ArrowDropDownIcon
-            color='inherit'
-            fontSize='small'
+            color="inherit"
+            fontSize="small"
             sx={{
               ...(!md && dropdownVisible && styles.arrowAnimate),
             }}
@@ -133,15 +133,15 @@ export const MenuDropdown = (props: MenuDropdownProp) => {
               item
             ) : (
               <Link
-                variant='body1'
-                underline='none'
+                variant="body1"
+                underline="none"
                 key={item.key ?? index}
                 sx={styles.link}
                 {...item}
               >
                 {item.label}
               </Link>
-            )
+            ),
           )}
         </Dropdown>
       )}
@@ -151,7 +151,7 @@ export const MenuDropdown = (props: MenuDropdownProp) => {
 
 const useStyles = (props: MenuDropdownProp, mui: Theme) => {
   const textColor =
-    props.theme === 'dark'
+    props.theme === "dark"
       ? mui.palette.primary.contrastText
       : mui.palette.primary.main;
 
@@ -159,25 +159,25 @@ const useStyles = (props: MenuDropdownProp, mui: Theme) => {
     menu: {
       paddingY: { md: 2 },
       borderColor: textColor,
-      borderBottomStyle: 'solid',
+      borderBottomStyle: "solid",
       borderBottomWidth: { md: props.active ? 2 : 0, xs: 0 },
     },
     item: {
       cursor: {
-        md: props.items?.length ? 'default' : 'pointer',
-        xs: 'pointer',
+        md: props.items?.length ? "default" : "pointer",
+        xs: "pointer",
       },
-      flexDirection: 'row',
+      flexDirection: "row",
       color: textColor,
-      textDecoration: 'none',
+      textDecoration: "none",
     },
     link: {
       color: { xs: textColor, md: mui.palette.primary.contrastText },
       textIndent: { xs: mui.spacing(2), md: 0 },
     },
     arrowAnimate: {
-      transition: 'transform 0.2s',
-      transform: { xs: 'rotate(-180deg)', md: '' },
+      transition: "transform 0.2s",
+      transform: { xs: "rotate(-180deg)", md: "" },
     },
   };
 };

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { strapiSolutions } from '@/lib/strapi/__tests__/fixtures/solutions';
-import { StrapiSolutions } from '@/lib/strapi/types/solutions';
+import { strapiSolutions } from "@/lib/strapi/__tests__/fixtures/solutions";
+import { StrapiSolutions } from "@/lib/strapi/types/solutions";
 
 export function minimalDataSolutions() {
   const strapiSolution = strapiSolutions.data[0];
@@ -11,8 +11,8 @@ export function minimalDataSolutions() {
         ...strapiSolution,
         attributes: {
           ...strapiSolution.attributes,
-          title: 'Minimal Data Solution',
-          slug: 'minimal-data-solution',
+          title: "Minimal Data Solution",
+          slug: "minimal-data-solution",
           description: undefined,
           introductionToSteps: undefined,
           steps: [],
@@ -103,7 +103,7 @@ export function solutionsWithItemMissingSolutionSlug() {
         ...strapiSolution,
         attributes: {
           ...strapiSolution.attributes,
-          title: 'Solution Without Slug',
+          title: "Solution Without Slug",
           slug: undefined as any,
         },
       },
@@ -111,8 +111,8 @@ export function solutionsWithItemMissingSolutionSlug() {
         ...strapiSolution,
         attributes: {
           ...strapiSolution.attributes,
-          title: 'Valid Solution',
-          slug: 'valid-solution',
+          title: "Valid Solution",
+          slug: "valid-solution",
         },
       },
     ],
@@ -128,11 +128,11 @@ export function solutionsWithItemMissingCaseHistorySlug() {
         ...strapiSolution,
         attributes: {
           ...strapiSolution.attributes,
-          title: 'Solution with Case History Missing Slug',
-          slug: 'solution-with-case-history-missing-slug',
+          title: "Solution with Case History Missing Slug",
+          slug: "solution-with-case-history-missing-slug",
           caseHistories: {
-            title: 'Success Stories',
-            description: 'Our success stories',
+            title: "Success Stories",
+            description: "Our success stories",
             case_histories: {
               data: [
                 {
@@ -140,7 +140,7 @@ export function solutionsWithItemMissingCaseHistorySlug() {
                   attributes: {
                     ...strapiSolution.attributes.caseHistories?.case_histories
                       .data[0].attributes,
-                    title: 'Case History Without Slug',
+                    title: "Case History Without Slug",
                     slug: undefined as any,
                     image: {
                       data: {
@@ -148,8 +148,8 @@ export function solutionsWithItemMissingCaseHistorySlug() {
                           ...strapiSolution.attributes.caseHistories
                             ?.case_histories.data[0].attributes.image.data
                             .attributes,
-                          url: '/test-image.png',
-                          name: 'Test Image',
+                          url: "/test-image.png",
+                          name: "Test Image",
                         },
                       },
                     },
@@ -160,16 +160,16 @@ export function solutionsWithItemMissingCaseHistorySlug() {
                   attributes: {
                     ...strapiSolution.attributes.caseHistories?.case_histories
                       .data[0].attributes,
-                    title: 'Valid Case History',
-                    slug: 'valid-case-history',
+                    title: "Valid Case History",
+                    slug: "valid-case-history",
                     image: {
                       data: {
                         attributes: {
                           ...strapiSolution.attributes.caseHistories
                             ?.case_histories.data[0].attributes.image.data
                             .attributes,
-                          url: '/valid-image.png',
-                          name: 'Valid Image',
+                          url: "/valid-image.png",
+                          name: "Valid Image",
                         },
                       },
                     },

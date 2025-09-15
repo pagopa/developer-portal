@@ -1,10 +1,10 @@
-'use client';
-import React, { useCallback, useState } from 'react';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Autoplay, Navigation, Pagination } from 'swiper/modules';
-import NavigationArrow from '@/components/atoms/NavigationArrow/NavigationArrow';
-import CtaSlide, { CtaSlideProps } from '@/components/atoms/CtaSlide/CtaSlide';
-import { Swiper as SwiperCore } from 'swiper';
+"use client";
+import React, { useCallback, useState } from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay, Navigation, Pagination } from "swiper/modules";
+import NavigationArrow from "@/components/atoms/NavigationArrow/NavigationArrow";
+import CtaSlide, { CtaSlideProps } from "@/components/atoms/CtaSlide/CtaSlide";
+import { Swiper as SwiperCore } from "swiper";
 
 export type HeroSwiperProps = {
   cards: CtaSlideProps[];
@@ -44,10 +44,10 @@ const HeroSwiper = ({ cards }: HeroSwiperProps) => {
       {cards.length > 1 && (
         <>
           <div onClick={() => previousSlide()}>
-            <NavigationArrow direction={'left'} hidden={false} />
+            <NavigationArrow direction={"left"} hidden={false} />
           </div>
           <div onClick={() => nextSlide()}>
-            <NavigationArrow direction={'right'} hidden={false} />
+            <NavigationArrow direction={"right"} hidden={false} />
           </div>
         </>
       )}

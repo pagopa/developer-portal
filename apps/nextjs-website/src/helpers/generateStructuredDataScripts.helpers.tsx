@@ -1,4 +1,4 @@
-import { Thing } from 'schema-dts';
+import { Thing } from "schema-dts";
 import {
   homeBreadCrumb,
   makeBreadcrumbList,
@@ -6,8 +6,8 @@ import {
   organizationWithContext,
   StructuredDataBreadcrumbList,
   StructuredDataWebPage,
-} from './structuredData.helpers';
-import { SEO } from '@/lib/types/seo';
+} from "./structuredData.helpers";
+import { SEO } from "@/lib/types/seo";
 
 export function generateStructuredDataScripts(props: {
   breadcrumbsItems?: StructuredDataBreadcrumbList;
@@ -33,7 +33,7 @@ export function generateStructuredDataScripts(props: {
       {allThings.map((thing, index) => (
         <script
           key={index}
-          type='application/ld+json'
+          type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(thing) }}
         />
       ))}

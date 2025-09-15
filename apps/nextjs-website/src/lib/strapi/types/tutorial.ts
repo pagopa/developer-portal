@@ -1,10 +1,10 @@
-import { StrapiMedia } from '@/lib/strapi/types/media';
-import { StrapiBaseProductWithBannerLinks } from '@/lib/strapi/types/product';
-import { StrapiBannerLink } from '@/lib/strapi/types/bannerLink';
-import { StrapiRelatedLinks } from '@/lib/strapi/types/link';
-import { StrapiSeo } from '@/lib/strapi/types/seo';
-import { Paginated } from '@/lib/strapi/types/paginated';
-import { StrapiPart } from '@/lib/strapi/types/part';
+import { StrapiMedia } from "@/lib/strapi/types/media";
+import { StrapiBaseProductWithBannerLinks } from "@/lib/strapi/types/product";
+import { StrapiBannerLink } from "@/lib/strapi/types/bannerLink";
+import { StrapiRelatedLinks } from "@/lib/strapi/types/link";
+import { StrapiSeo } from "@/lib/strapi/types/seo";
+import { Paginated } from "@/lib/strapi/types/paginated";
+import { StrapiPart } from "@/lib/strapi/types/part";
 
 export type StrapiBaseTutorial = {
   readonly attributes: {

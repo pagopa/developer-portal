@@ -1,13 +1,13 @@
-import { defaultLocale } from '@/config';
-import { Session } from '@/lib/chatbot/queries';
+import { defaultLocale } from "@/config";
+import { Session } from "@/lib/chatbot/queries";
 import {
   ListItem,
   ListItemButton,
   Stack,
   Typography,
   useTheme,
-} from '@mui/material';
-import { useTranslations } from 'next-intl';
+} from "@mui/material";
+import { useTranslations } from "next-intl";
 
 type DateFormatOptions = {
   locale?: string;
@@ -17,9 +17,9 @@ type DateFormatOptions = {
 const DEFAULT_DATE_FORMAT = {
   locale: defaultLocale,
   options: {
-    day: 'numeric',
-    month: 'numeric',
-    year: 'numeric',
+    day: "numeric",
+    month: "numeric",
+    year: "numeric",
   },
 } satisfies DateFormatOptions;
 
@@ -32,34 +32,34 @@ const ChatbotHistoryListItem = ({ session }: ChatbotHistoryListItemProps) => {
   const t = useTranslations();
   const formattedDate = new Intl.DateTimeFormat(
     DEFAULT_DATE_FORMAT.locale,
-    DEFAULT_DATE_FORMAT.options
+    DEFAULT_DATE_FORMAT.options,
   ).format(new Date(session.createdAt));
 
   return (
-    <ListItem sx={{ width: '100%', paddingX: 0 }}>
+    <ListItem sx={{ width: "100%", paddingX: 0 }}>
       <ListItemButton
         sx={{
-          minHeight: '101px',
-          '&:hover': {
-            backgroundColor: '#E8EAEC',
+          minHeight: "101px",
+          "&:hover": {
+            backgroundColor: "#E8EAEC",
           },
-          display: 'block',
-          width: '100%',
-          alignContent: 'center',
-          backgroundColor: '#fafafa',
+          display: "block",
+          width: "100%",
+          alignContent: "center",
+          backgroundColor: "#fafafa",
         }}
         href={`/profile/chatbot-history?sessionId=${session.id}`}
       >
         <Typography
           color={palette.text.primary}
-          fontSize='1rem'
-          fontWeight='600'
+          fontSize="1rem"
+          fontWeight="600"
           noWrap
-          component='span'
-          display='block'
-          textOverflow='ellipsis'
+          component="span"
+          display="block"
+          textOverflow="ellipsis"
         >
-          {t('chatBot.sessionTitle') + formattedDate}
+          {t("chatBot.sessionTitle") + formattedDate}
         </Typography>
       </ListItemButton>
     </ListItem>

@@ -1,4 +1,4 @@
-import { makePartProps } from '@/lib/strapi/makeProps/makePart';
+import { makePartProps } from "@/lib/strapi/makeProps/makePart";
 import {
   alertPart,
   apiTesterPart,
@@ -7,7 +7,7 @@ import {
   embedHtmlPart,
   quotePart,
   ckEditorPart,
-} from '@/lib/strapi/__tests__/fixtures/parts';
+} from "@/lib/strapi/__tests__/fixtures/parts";
 import {
   minimalAlertPart,
   minimalApiTesterPart,
@@ -16,126 +16,126 @@ import {
   minimalEmbedHtmlPart,
   minimalQuotePart,
   minimalCkEditorPart,
-} from '@/lib/strapi/__tests__/factories/parts';
+} from "@/lib/strapi/__tests__/factories/parts";
 
-describe('makePartProps', () => {
-  it('should transform alert part', () => {
+describe("makePartProps", () => {
+  it("should transform alert part", () => {
     const result = makePartProps(alertPart);
     expect(result).toMatchObject({
-      component: 'alert',
-      text: 'Alert text',
-      title: 'Alert title',
-      severity: 'info',
+      component: "alert",
+      text: "Alert text",
+      title: "Alert title",
+      severity: "info",
     });
   });
 
-  it('should transform minimal alert part', () => {
+  it("should transform minimal alert part", () => {
     const result = makePartProps(minimalAlertPart());
     expect(result).toMatchObject({
-      component: 'alert',
-      severity: 'info',
+      component: "alert",
+      severity: "info",
     });
   });
 
-  it('should transform api-tester part', () => {
+  it("should transform api-tester part", () => {
     const result = makePartProps(apiTesterPart);
     expect(result).toMatchObject({
-      component: 'apiTester',
+      component: "apiTester",
       apiRequest: {
-        code: 'request code',
-        language: 'js',
+        code: "request code",
+        language: "js",
         showLineNumbers: true,
-        description: 'Request description',
-        attributes: [{ value: 'attr1', label: 'Attribute 1' }],
+        description: "Request description",
+        attributes: [{ value: "attr1", label: "Attribute 1" }],
       },
       apiResponse: {
-        code: 'response code',
-        language: 'js',
+        code: "response code",
+        language: "js",
         showLineNumbers: false,
-        description: 'Response description',
+        description: "Response description",
       },
     });
   });
 
-  it('should transform code-block part', () => {
+  it("should transform code-block part", () => {
     const result = makePartProps(codeBlockPart);
     expect(result).toMatchObject({
-      component: 'codeBlock',
+      component: "codeBlock",
       code: 'console.log("Hello")',
-      language: 'js',
+      language: "js",
       showLineNumbers: true,
     });
   });
 
-  it('should transform html part', () => {
+  it("should transform html part", () => {
     const result = makePartProps(htmlPart);
     expect(result).toMatchObject({
-      component: 'blockRenderer',
+      component: "blockRenderer",
       html: [
         {
-          type: 'paragraph',
-          children: [{ type: 'text', text: 'HTML content' }],
+          type: "paragraph",
+          children: [{ type: "text", text: "HTML content" }],
         },
       ],
     });
   });
 
-  it('should transform embed-html part', () => {
+  it("should transform embed-html part", () => {
     const result = makePartProps(embedHtmlPart);
     expect(result).toMatchObject({
-      component: 'innerHTMLLazyLoaded',
-      html: '<div>Embed HTML</div>',
+      component: "innerHTMLLazyLoaded",
+      html: "<div>Embed HTML</div>",
     });
   });
 
-  it('should transform quote part', () => {
+  it("should transform quote part", () => {
     const result = makePartProps(quotePart);
     expect(result).toMatchObject({
-      component: 'quote',
-      quote: 'Quote text',
+      component: "quote",
+      quote: "Quote text",
       backgroundImage: {
-        url: 'https://example.com/image.jpg',
-        alternativeText: 'Alt text',
+        url: "https://example.com/image.jpg",
+        alternativeText: "Alt text",
       },
     });
   });
 
-  it('should transform ck-editor part', () => {
+  it("should transform ck-editor part", () => {
     const result = makePartProps(ckEditorPart);
-    expect(result).toHaveProperty('component', 'ckEditor');
-    expect(result).toHaveProperty('content');
-    expect(result).toHaveProperty('menuItems');
+    expect(result).toHaveProperty("component", "ckEditor");
+    expect(result).toHaveProperty("content");
+    expect(result).toHaveProperty("menuItems");
   });
 
-  it('should return null for unknown part type', () => {
-    const result = makePartProps({ __component: 'parts.unknown' } as any);
+  it("should return null for unknown part type", () => {
+    const result = makePartProps({ __component: "parts.unknown" } as any);
     expect(result).toBeNull();
   });
 
-  it('should handle minimal parts', () => {
+  it("should handle minimal parts", () => {
     expect(makePartProps(minimalApiTesterPart())).toHaveProperty(
-      'component',
-      'apiTester'
+      "component",
+      "apiTester",
     );
     expect(makePartProps(minimalCodeBlockPart())).toHaveProperty(
-      'component',
-      'codeBlock'
+      "component",
+      "codeBlock",
     );
     expect(makePartProps(minimalHtmlPart())).toHaveProperty(
-      'component',
-      'blockRenderer'
+      "component",
+      "blockRenderer",
     );
     expect(makePartProps(minimalEmbedHtmlPart())).toHaveProperty(
-      'component',
-      'innerHTMLLazyLoaded'
+      "component",
+      "innerHTMLLazyLoaded",
     );
     expect(makePartProps(minimalQuotePart())).toHaveProperty(
-      'component',
-      'quote'
+      "component",
+      "quote",
     );
     expect(makePartProps(minimalCkEditorPart())).toHaveProperty(
-      'component',
-      'ckEditor'
+      "component",
+      "ckEditor",
     );
   });
 });

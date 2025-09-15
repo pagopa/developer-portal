@@ -1,7 +1,7 @@
-import { Stack, Typography } from '@mui/material';
-import { useTranslations } from 'next-intl';
-import { OpenAPIV2, OpenAPIV3, OpenAPIV3_1 } from 'openapi-types';
-import { Response } from './Response';
+import { Stack, Typography } from "@mui/material";
+import { useTranslations } from "next-intl";
+import { OpenAPIV2, OpenAPIV3, OpenAPIV3_1 } from "openapi-types";
+import { Response } from "./Response";
 
 type ResponsesProps = {
   responses:
@@ -11,15 +11,15 @@ type ResponsesProps = {
 };
 
 export const Responses = ({ responses }: ResponsesProps) => {
-  const t = useTranslations('swagger');
+  const t = useTranslations("swagger");
   const entries = Object.entries(responses);
   return (
     <Stack spacing={1}>
       <Typography
-        sx={{ fontWeight: 'bold', mt: '24px!important' }}
-        variant='body1'
+        sx={{ fontWeight: "bold", mt: "24px!important" }}
+        variant="body1"
       >
-        {t('responses.header')}
+        {t("responses.header")}
       </Typography>
       <div>
         {entries.map(([code, response], index) => (

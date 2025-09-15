@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { strapiTutorials } from '@/lib/strapi/__tests__/fixtures/tutorials';
-import { StrapiTutorials } from '@/lib/strapi/types/tutorial';
+import { strapiTutorials } from "@/lib/strapi/__tests__/fixtures/tutorials";
+import { StrapiTutorials } from "@/lib/strapi/types/tutorial";
 
 export function tutorialsWithAnItemMissingSlug(): StrapiTutorials {
   return {
@@ -9,15 +9,15 @@ export function tutorialsWithAnItemMissingSlug(): StrapiTutorials {
       {
         attributes: {
           ...strapiTutorials.data[0].attributes,
-          title: 'Tutorial Without Slug',
+          title: "Tutorial Without Slug",
           slug: undefined as any,
         },
       },
       {
         attributes: {
           ...strapiTutorials.data[0].attributes,
-          title: 'Valid Tutorial',
-          slug: 'valid-tutorial',
+          title: "Valid Tutorial",
+          slug: "valid-tutorial",
         },
       },
     ],
@@ -31,13 +31,13 @@ export function tutorialsWithAnItemMissingProductSlug(): StrapiTutorials {
       {
         attributes: {
           ...strapiTutorials.data[0].attributes,
-          title: 'Tutorial Without Product Slug',
-          slug: 'tutorial-without-product-slug',
+          title: "Tutorial Without Product Slug",
+          slug: "tutorial-without-product-slug",
           product: {
             data: {
               attributes: {
                 ...strapiTutorials.data[0].attributes.product.data.attributes,
-                name: 'Product Without Slug',
+                name: "Product Without Slug",
                 slug: undefined as any,
               },
             },
@@ -47,14 +47,14 @@ export function tutorialsWithAnItemMissingProductSlug(): StrapiTutorials {
       {
         attributes: {
           ...strapiTutorials.data[0].attributes,
-          title: 'Valid Tutorial',
-          slug: 'valid-tutorial',
+          title: "Valid Tutorial",
+          slug: "valid-tutorial",
           product: {
             data: {
               attributes: {
                 ...strapiTutorials.data[0].attributes.product.data.attributes,
-                name: 'Valid Product',
-                slug: 'valid-product',
+                name: "Valid Product",
+                slug: "valid-product",
               },
             },
           },
@@ -72,10 +72,10 @@ export function minimalDataTutorials() {
       {
         attributes: {
           ...strapiTutorial.attributes,
-          title: 'Minimal Data Tutorial',
-          slug: 'minimal-data-tutorial',
-          publishedAt: '2023-01-01T00:00:00Z',
-          locale: 'en-US',
+          title: "Minimal Data Tutorial",
+          slug: "minimal-data-tutorial",
+          publishedAt: "2023-01-01T00:00:00Z",
+          locale: "en-US",
           parts: [],
           relatedLinks: undefined,
           seo: undefined,

@@ -1,7 +1,7 @@
-import ChatHistoryMessage from '@/components/atoms/ChatHistoryMessage/ChatHistoryMessage';
-import { Query } from '@/lib/chatbot/queries';
-import { Stack } from '@mui/material';
-import { useTranslations } from 'next-intl';
+import ChatHistoryMessage from "@/components/atoms/ChatHistoryMessage/ChatHistoryMessage";
+import { Query } from "@/lib/chatbot/queries";
+import { Stack } from "@mui/material";
+import { useTranslations } from "next-intl";
 
 type ChatbotHistoryMessagesProps = {
   queries: Query[];
@@ -15,9 +15,9 @@ const ChatbotHistoryMessages = ({
   const t = useTranslations();
 
   return (
-    <Stack direction='column' width='100%' spacing={2}>
+    <Stack direction="column" width="100%" spacing={2}>
       {queries.map((query) => (
-        <Stack key={query.id} direction='column' width='100%' spacing={2}>
+        <Stack key={query.id} direction="column" width="100%" spacing={2}>
           <ChatHistoryMessage
             text={query.question}
             timestamp={query.queriedAt}
@@ -29,7 +29,7 @@ const ChatbotHistoryMessages = ({
               text={query.answer}
               timestamp={query.createdAt}
               isQuestion={false}
-              sender={t('chatBot.title')}
+              sender={t("chatBot.title")}
             />
           )}
         </Stack>

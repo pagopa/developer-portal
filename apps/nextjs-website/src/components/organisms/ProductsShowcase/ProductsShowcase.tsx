@@ -1,8 +1,8 @@
-'use client';
-import React from 'react';
-import SectionTitle from '@/components/molecules/SectionTitle/SectionTitle';
-import { Box, GridSize, useTheme } from '@mui/material';
-import CardsGrid from '@/components/molecules/CardsGrid/CardsGrid';
+"use client";
+import React from "react";
+import SectionTitle from "@/components/molecules/SectionTitle/SectionTitle";
+import { Box, GridSize, useTheme } from "@mui/material";
+import CardsGrid from "@/components/molecules/CardsGrid/CardsGrid";
 
 export type ProductsShowcaseProps = {
   title: string;
@@ -35,10 +35,10 @@ const ProductsShowcase = ({
         marginY: verticalPadding,
       }}
     >
-      <SectionTitle margin={'0 0 1.75rem 0'} title={title} />
+      <SectionTitle margin={"0 0 1.75rem 0"} title={title} />
       <CardsGrid
         cardSize={cardSize}
-        ctaButtonsVariant={'outlined'}
+        ctaButtonsVariant={"outlined"}
         cards={cards.map((card) => ({
           title: card.title,
           text: card.text,

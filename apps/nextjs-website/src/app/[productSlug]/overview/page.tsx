@@ -1,32 +1,32 @@
-import { getOverview } from '@/lib/api';
-import Hero from '@/editorialComponents/Hero/Hero';
-import { Metadata, ResolvingMetadata } from 'next';
+import { getOverview } from "@/lib/api";
+import Hero from "@/editorialComponents/Hero/Hero";
+import { Metadata, ResolvingMetadata } from "next";
 import ProductLayout, {
   ProductLayoutProps,
-} from '@/components/organisms/ProductLayout/ProductLayout';
-import { Product } from '@/lib/types/product';
-import { Tutorial } from '@/lib/types/tutorialData';
-import StartInfo from '@/components/organisms/StartInfo/StartInfo';
-import RelatedLinks from '@/components/atoms/RelatedLinks/RelatedLinks';
-import TutorialsOverview from '@/components/organisms/TutorialsOverview/TutorialsOverview';
-import Feature from '@/editorialComponents/Feature/Feature';
-import { FeatureItem } from '@/editorialComponents/Feature/FeatureStackItem';
-import { GuideCardProps } from '@/components/molecules/GuideCard/GuideCard';
-import PostIntegration from '@/components/organisms/PostIntegration/PostIntegration';
-import { ProductParams } from '@/lib/types/productParams';
+} from "@/components/organisms/ProductLayout/ProductLayout";
+import { Product } from "@/lib/types/product";
+import { Tutorial } from "@/lib/types/tutorialData";
+import StartInfo from "@/components/organisms/StartInfo/StartInfo";
+import RelatedLinks from "@/components/atoms/RelatedLinks/RelatedLinks";
+import TutorialsOverview from "@/components/organisms/TutorialsOverview/TutorialsOverview";
+import Feature from "@/editorialComponents/Feature/Feature";
+import { FeatureItem } from "@/editorialComponents/Feature/FeatureStackItem";
+import { GuideCardProps } from "@/components/molecules/GuideCard/GuideCard";
+import PostIntegration from "@/components/organisms/PostIntegration/PostIntegration";
+import { ProductParams } from "@/lib/types/productParams";
 import {
   makeMetadata,
   makeMetadataFromStrapi,
-} from '@/helpers/metadata.helpers';
-import { SEO } from '@/lib/types/seo';
-import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
+} from "@/helpers/metadata.helpers";
+import { SEO } from "@/lib/types/seo";
+import { generateStructuredDataScripts } from "@/helpers/generateStructuredDataScripts.helpers";
 import {
   convertSeoToStructuredDataArticle,
   productToBreadcrumb,
-} from '@/helpers/structuredData.helpers';
+} from "@/helpers/structuredData.helpers";
 import NewsShowcase, {
   NewsShowcaseProps,
-} from '@/components/organisms/NewsShowcase/NewsShowcase';
+} from "@/components/organisms/NewsShowcase/NewsShowcase";
 const MAX_NUM_TUTORIALS_IN_OVERVIEW = 3;
 
 export type OverviewPageProps = {
@@ -94,11 +94,13 @@ export type OverviewPageProps = {
 
 export async function generateMetadata(
   { params }: ProductParams,
-  parent: ResolvingMetadata
+  parent: ResolvingMetadata,
 ): Promise<Metadata> {
   const resolvedParams = await params;
   const resolvedParent = await parent;
-  const { product, path, seo, hero } = await getOverview(resolvedParams.productSlug);
+  const { product, path, seo, hero } = await getOverview(
+    resolvedParams.productSlug,
+  );
 
   if (seo) {
     return makeMetadataFromStrapi(seo);
@@ -106,7 +108,7 @@ export async function generateMetadata(
 
   return makeMetadata({
     parent: resolvedParent,
-    title: [hero?.title, product.name].filter(Boolean).join(' | '),
+    title: [hero?.title, product.name].filter(Boolean).join(" | "),
     description: product.description,
     url: path,
     image: product.logo?.url,
@@ -150,18 +152,18 @@ const OverviewPage = async ({ params }: ProductParams) => {
         background={hero.backgroundImage}
         title={hero.title}
         subtitle={hero.subtitle}
-        size='small'
+        size="small"
         useHoverlay={false}
         altText={hero.altText}
-        theme='light'
-        gridTextSx={{ marginTop: { xs: '62px', md: '77px' } }}
+        theme="light"
+        gridTextSx={{ marginTop: { xs: "62px", md: "77px" } }}
       />
       {feature && (
         <Feature
           items={feature.items}
           title={feature.title}
           subtitle={feature.subtitle}
-          variant='h2'
+          variant="h2"
         />
       )}
       {startInfo && (
@@ -177,7 +179,7 @@ const OverviewPage = async ({ params }: ProductParams) => {
           subtitle={tutorials.subtitle}
           tutorialPath={{
             path: `/${product.slug}/tutorials`,
-            name: 'tutorials',
+            name: "tutorials",
           }}
           tutorials={[...(tutorialsListToShow || [])]}
         />
@@ -189,7 +191,7 @@ const OverviewPage = async ({ params }: ProductParams) => {
           subtitle={whatsNew.subtitle}
           link={whatsNew.link}
           items={[...whatsNew.items]}
-          backgroundVariant='lightGrey'
+          backgroundVariant="lightGrey"
         />
       )}
       {product?.hasGuideListPage && postIntegration && (
@@ -207,14 +209,14 @@ const OverviewPage = async ({ params }: ProductParams) => {
             postIntegration.serviceModels && [...postIntegration.serviceModels]
           }
           guides={postIntegration.guides}
-          backgroundVariant={whatsNew ? 'white' : 'lightGrey'}
+          backgroundVariant={whatsNew ? "white" : "lightGrey"}
         />
       )}
       {relatedLinks && (
         <RelatedLinks
           title={relatedLinks.title}
           links={relatedLinks.links}
-          backgroundVariant={whatsNew ? 'lightGrey' : 'white'}
+          backgroundVariant={whatsNew ? "lightGrey" : "white"}
         />
       )}
     </ProductLayout>

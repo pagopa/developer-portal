@@ -1,7 +1,7 @@
-import * as t from 'io-ts';
-import * as E from 'fp-ts/lib/Either';
-import * as PR from 'io-ts/lib/PathReporter';
-import { pipe } from 'fp-ts/lib/function';
+import * as t from "io-ts";
+import * as E from "fp-ts/lib/Either";
+import * as PR from "io-ts/lib/PathReporter";
+import { pipe } from "fp-ts/lib/function";
 
 export const ChatbotConfigCodec = t.type({
   CHATBOT_HOST: t.string,
@@ -14,9 +14,9 @@ export const publicEnv = {
 };
 
 export const makeChatbotConfig = (
-  env: Record<string, undefined | string>
+  env: Record<string, undefined | string>,
 ): E.Either<string, ChatbotConfig> =>
   pipe(
     ChatbotConfigCodec.decode(env),
-    E.mapLeft((errors) => PR.failure(errors).join('\n'))
+    E.mapLeft((errors) => PR.failure(errors).join("\n")),
   );

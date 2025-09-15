@@ -1,13 +1,13 @@
-import { flow, pipe } from 'fp-ts/lib/function';
-import * as E from 'fp-ts/lib/Either';
-import * as RA from 'fp-ts/lib/ReadonlyArray';
-import { docsAssetsPath, docsPath } from '@/config';
-import { Product } from '@/lib/types/product';
-import { parseDoc } from 'gitbook-docs/parseDoc';
-import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
-import { SolutionTemplateProps } from '@/components/templates/SolutionTemplate/SolutionTemplate';
-import { SEO } from '@/lib/types/seo';
-import { ReleaseNotePageProps } from '@/app/[productSlug]/[...releaseNoteSubPathSlugs]/page';
+import { flow, pipe } from "fp-ts/lib/function";
+import * as E from "fp-ts/lib/Either";
+import * as RA from "fp-ts/lib/ReadonlyArray";
+import { docsAssetsPath, docsPath } from "@/config";
+import { Product } from "@/lib/types/product";
+import { parseDoc } from "gitbook-docs/parseDoc";
+import { BannerLinkProps } from "@/components/atoms/BannerLink/BannerLink";
+import { SolutionTemplateProps } from "@/components/templates/SolutionTemplate/SolutionTemplate";
+import { SEO } from "@/lib/types/seo";
+import { ReleaseNotePageProps } from "@/app/[productSlug]/[...releaseNoteSubPathSlugs]/page";
 
 export type TutorialsDefinition = {
   readonly product: Product;
@@ -42,7 +42,7 @@ const parseDocOrThrow = flow(
   E.fold((e) => {
     // eslint-disable-next-line functional/no-throw-statements
     throw e;
-  }, RA.flatten)
+  }, RA.flatten),
 );
 
 export const makeTutorials = ({
@@ -68,7 +68,7 @@ export const makeTutorials = ({
     ],
     parseDocOrThrow,
     // This is a workaround that removes the 'index' space from tutorial docs
-    RA.filter(({ page: { path } }) => path !== `/${product.slug}/tutorials`)
+    RA.filter(({ page: { path } }) => path !== `/${product.slug}/tutorials`),
   );
 };
 
@@ -114,7 +114,7 @@ export const makeGuide = ({
     }),
     RA.flatten,
     // parse docs files
-    parseDocOrThrow
+    parseDocOrThrow,
   );
 };
 
@@ -131,7 +131,7 @@ export const makeSolution = (solution: SolutionTemplateProps) => {
         },
       },
     ],
-    parseDocOrThrow
+    parseDocOrThrow,
   );
 };
 
@@ -148,6 +148,6 @@ export const makeReleaseNote = (releaseNote: ReleaseNotePageProps) => {
         },
       },
     ],
-    parseDocOrThrow
+    parseDocOrThrow,
   );
 };

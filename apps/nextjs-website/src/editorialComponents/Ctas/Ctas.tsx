@@ -1,7 +1,7 @@
-import Button, { type ButtonProps } from '@mui/material/Button';
-import Stack from '@mui/material/Stack';
-import { type Generic, type CommonProps } from '../types/components';
-import { isJSX } from '../utils';
+import Button, { type ButtonProps } from "@mui/material/Button";
+import Stack from "@mui/material/Stack";
+import { type Generic, type CommonProps } from "../types/components";
+import { isJSX } from "../utils";
 
 export interface CtaButtonProps extends Partial<ButtonProps> {
   text: string;
@@ -17,20 +17,20 @@ export interface CtaProps extends CommonProps {
 export const Ctas = ({ ctaButtons, theme, reverse }: CtaProps) => {
   const buttonsThemeDefault: ButtonProps[] = [
     {
-      color: theme === 'dark' ? 'negative' : 'primary',
-      variant: 'contained',
+      color: theme === "dark" ? "negative" : "primary",
+      variant: "contained",
     },
     {
-      color: theme === 'dark' ? 'negative' : 'primary',
-      variant: 'outlined',
+      color: theme === "dark" ? "negative" : "primary",
+      variant: "outlined",
     },
   ];
 
   return ctaButtons?.length ? (
     <Stack
-      display='flex'
-      direction={reverse ? 'row-reverse' : 'row'}
-      justifyContent='left'
+      display="flex"
+      direction={reverse ? "row-reverse" : "row"}
+      justifyContent="left"
       spacing={2}
     >
       {ctaButtons.map((button: CtaButton, i) => {
@@ -38,7 +38,7 @@ export const Ctas = ({ ctaButtons, theme, reverse }: CtaProps) => {
           button
         ) : (
           <Button
-            sx={{ width: { md: 'auto', xs: '100%' }, display: 'flex' }}
+            sx={{ width: { md: "auto", xs: "100%" }, display: "flex" }}
             key={`${button.text}-${i}`}
             {...buttonsThemeDefault[i]}
             {...button}

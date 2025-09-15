@@ -1,16 +1,16 @@
-import * as E from 'fp-ts/lib/Either';
-import { QueryInput } from '@/lib/chatbot/queries';
-import { pipe } from 'fp-ts/lib/function';
+import * as E from "fp-ts/lib/Either";
+import { QueryInput } from "@/lib/chatbot/queries";
+import { pipe } from "fp-ts/lib/function";
 import {
   getQueries,
   patchFeedback,
   postQuery,
-} from '@/lib/chatbot/chatbotQueries';
-import { makeChatbotEnv } from '@/lib/chatbot/chatbotEnv';
-import { makeChatbotConfig, publicEnv } from '@/lib/chatbot/chatbotConfig';
-import qs from 'qs';
-import { getHealthz } from './chatbot/chatbotHealthz';
-import { deleteSession, getSessions } from './chatbot/chatbotSessions';
+} from "@/lib/chatbot/chatbotQueries";
+import { makeChatbotEnv } from "@/lib/chatbot/chatbotEnv";
+import { makeChatbotConfig, publicEnv } from "@/lib/chatbot/chatbotConfig";
+import qs from "qs";
+import { getHealthz } from "./chatbot/chatbotHealthz";
+import { deleteSession, getSessions } from "./chatbot/chatbotSessions";
 
 const chatbotApiEnv = pipe(
   makeChatbotConfig(publicEnv),
@@ -18,15 +18,15 @@ const chatbotApiEnv = pipe(
   E.getOrElseW((errors) => {
     // eslint-disable-next-line functional/no-throw-statements
     throw errors;
-  })
+  }),
 );
 
 export const sendChatbotQuery = (query: QueryInput) =>
   postQuery(query)(chatbotApiEnv);
 
 export const getChatbotQueries = (sessionId?: string) =>
-  getQueries((sessionId && qs.stringify({ sessionId: sessionId })) || '')(
-    chatbotApiEnv
+  getQueries((sessionId && qs.stringify({ sessionId: sessionId })) || "")(
+    chatbotApiEnv,
   );
 
 export const getChatbotHealthz = () => getHealthz()(chatbotApiEnv);
@@ -37,7 +37,7 @@ export const sendChatbotFeedback = (
   queryId: string,
   user_response_relevancy: number | null,
   user_faithfullness: number | null,
-  user_comment: string
+  user_comment: string,
 ) =>
   patchFeedback(
     feedback,
@@ -45,7 +45,7 @@ export const sendChatbotFeedback = (
     queryId,
     user_response_relevancy,
     user_faithfullness,
-    user_comment
+    user_comment,
   )(chatbotApiEnv);
 
 export const getChatbotSessionsHistory = (page: number, pageSize: number) =>

@@ -1,5 +1,5 @@
-import { Link as MuiLink, useTheme } from '@mui/material';
-import Link from 'next/link';
+import { Link as MuiLink, useTheme } from "@mui/material";
+import Link from "next/link";
 
 type ChatbotHistoryNavigationLinkProps = {
   sessionId: string;
@@ -15,14 +15,14 @@ const ChatbotHistoryNavigationLink = ({
 
   return (
     <MuiLink
-      maxWidth='15rem'
-      textOverflow='ellipsis'
+      maxWidth="15rem"
+      textOverflow="ellipsis"
       color={textColor}
-      fontSize='1.125rem'
-      fontWeight='600'
+      fontSize="1.125rem"
+      fontWeight="600"
       fontFamily={typography.fontFamily}
       noWrap
-      sx={{ cursor: 'pointer', textDecoration: 'none' }}
+      sx={{ cursor: "pointer", textDecoration: "none" }}
       component={Link}
       href={`/profile/chatbot-history/${sessionId}`}
     >

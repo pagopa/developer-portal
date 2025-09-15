@@ -24,5 +24,5 @@ const nextConfig = {
   },
 };
 
-// eslint-disable-next-line
+ 
 module.exports = nextConfig;

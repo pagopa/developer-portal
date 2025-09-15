@@ -1,13 +1,13 @@
-'use client';
-import { Theme, Typography, useTheme } from '@mui/material';
-import { BlocksContent, BlocksRenderer } from '@strapi/blocks-react-renderer';
-import { SxProps } from '@mui/system';
-import { computeId } from '../PartRendererMenu/PartRendererMenu';
-import React from 'react';
+"use client";
+import { Theme, Typography, useTheme } from "@mui/material";
+import { BlocksContent, BlocksRenderer } from "@strapi/blocks-react-renderer";
+import { SxProps } from "@mui/system";
+import { computeId } from "../PartRendererMenu/PartRendererMenu";
+import React from "react";
 
 type BlocksRendererClientMenuProps = {
   content?: BlocksContent;
-  color?: 'contrastText' | 'main' | 'light' | 'dark';
+  color?: "contrastText" | "main" | "light" | "dark";
   paragraphSx?: SxProps<Theme>;
   listStyle?: React.CSSProperties;
   imageStyle?: React.CSSProperties;
@@ -31,12 +31,12 @@ const BlocksRendererClientMenu = ({
         paragraph: () => null,
         heading: ({ children }) => (
           <a
-            href={`#${computeId('blockRenderer', children)}`}
+            href={`#${computeId("blockRenderer", children)}`}
             style={{
-              textDecoration: 'none',
+              textDecoration: "none",
               margin: 0,
               padding: 0,
-              marginBottom: '16px',
+              marginBottom: "16px",
             }}
           >
             <Typography color={textColor}>{children}</Typography>

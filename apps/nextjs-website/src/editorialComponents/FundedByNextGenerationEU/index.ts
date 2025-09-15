@@ -1,1 +1,1 @@
-export * from './FundedByNextGenerationEU';
+export * from "./FundedByNextGenerationEU";

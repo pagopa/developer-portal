@@ -1,8 +1,8 @@
-'use client';
-import Check from '@mui/icons-material/Check';
-import ContentCopy from '@mui/icons-material/ContentCopy';
-import { IconButton, Tooltip } from '@mui/material';
-import React, { useState } from 'react';
+"use client";
+import Check from "@mui/icons-material/Check";
+import ContentCopy from "@mui/icons-material/ContentCopy";
+import { IconButton, Tooltip } from "@mui/material";
+import React, { useState } from "react";
 
 type CopyToClipboardProps = {
   readonly copiedTooltipLabel: string;
@@ -10,7 +10,7 @@ type CopyToClipboardProps = {
   readonly copyColor?: string;
   readonly tooltipDuration?: number;
   readonly iconSize?: string;
-  readonly tooltipPlacement?: 'top' | 'bottom' | 'left' | 'right';
+  readonly tooltipPlacement?: "top" | "bottom" | "left" | "right";
 };
 
 const CopyToClipboard = ({
@@ -18,8 +18,8 @@ const CopyToClipboard = ({
   textToCopy,
   copyColor,
   tooltipDuration = 2000,
-  iconSize = '24px',
-  tooltipPlacement = 'top',
+  iconSize = "24px",
+  tooltipPlacement = "top",
 }: CopyToClipboardProps) => {
   const [copied, setCopied] = useState(false);
 
@@ -38,20 +38,20 @@ const CopyToClipboard = ({
     <IconButton
       onClick={onCopyToClipboard}
       sx={{
-        cursor: 'pointer',
+        cursor: "pointer",
       }}
     >
       {copied ? (
         <Tooltip
           sx={{
-            display: 'block',
+            display: "block",
           }}
           open={true}
           placement={tooltipPlacement}
           title={copiedTooltipLabel}
           arrow
         >
-          <Check color='success' sx={size} />
+          <Check color="success" sx={size} />
         </Tooltip>
       ) : (
         <ContentCopy

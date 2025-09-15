@@ -1,5 +1,5 @@
-import { StrapiMedia } from '@/lib/strapi/types/media';
-import { Paginated } from '@/lib/strapi/types/paginated';
+import { StrapiMedia } from "@/lib/strapi/types/media";
+import { Paginated } from "@/lib/strapi/types/paginated";
 
 export type StrapiWebinarCategory = {
   readonly id: number;

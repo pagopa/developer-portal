@@ -1,18 +1,18 @@
-import * as qs from 'qs';
-import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
-import { productRelationsPopulate } from '@/lib/strapi/fetches/fetchProducts';
-import { StrapiReleaseNotes } from '@/lib/strapi/types/releaseNotes';
+import * as qs from "qs";
+import { fetchFromStrapi } from "@/lib/strapi/fetchFromStrapi";
+import { productRelationsPopulate } from "@/lib/strapi/fetches/fetchProducts";
+import { StrapiReleaseNotes } from "@/lib/strapi/types/releaseNotes";
 
 const releaseNotesPopulate = {
   populate: {
     bannerLinks: {
-      populate: ['icon'],
+      populate: ["icon"],
     },
     product: {
       ...productRelationsPopulate,
     },
     seo: {
-      populate: '*,metaImage,metaSocial.image',
+      populate: "*,metaImage,metaSocial.image",
     },
   },
 };
@@ -23,8 +23,8 @@ const makeStrapiReleaseNotesPopulate = () =>
   });
 
 export const fetchReleaseNotes = fetchFromStrapi<StrapiReleaseNotes>(
-  'release-notes',
-  makeStrapiReleaseNotesPopulate()
+  "release-notes",
+  makeStrapiReleaseNotesPopulate(),
 );
 
 const makeStrapiReleaseNotePopulate = (productSlug: string) =>
@@ -39,6 +39,6 @@ const makeStrapiReleaseNotePopulate = (productSlug: string) =>
 
 export const fetchReleaseNote = (productSlug: string) =>
   fetchFromStrapi<StrapiReleaseNotes>(
-    'release-notes',
-    makeStrapiReleaseNotePopulate(productSlug)
+    "release-notes",
+    makeStrapiReleaseNotePopulate(productSlug),
   );

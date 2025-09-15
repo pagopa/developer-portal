@@ -1,8 +1,8 @@
-import { WebinarEnv } from './lib/webinars/webinarQuestions';
-import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
-import { makeAwsCredentialsFromCognito } from './lib/makeAwsCredentialsFromCognito';
-import { Auth } from 'aws-amplify';
-import { BrowserConfig } from '@/BrowserConfig';
+import { WebinarEnv } from "./lib/webinars/webinarQuestions";
+import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
+import { makeAwsCredentialsFromCognito } from "./lib/makeAwsCredentialsFromCognito";
+import { Auth } from "aws-amplify";
+import { BrowserConfig } from "@/BrowserConfig";
 
 // This type represents the environment of the browser.
 // Contains all dependencies required to run the application on the browser.
@@ -20,7 +20,7 @@ export const makeBrowserEnv = (config: BrowserConfig): BrowserEnv => ({
       config,
       // passing Auth.currentSession raise an error because
       // Auth.currentSession is not able to retrieve all the information
-      () => Auth.currentSession()
+      () => Auth.currentSession(),
     ),
   }),
 });

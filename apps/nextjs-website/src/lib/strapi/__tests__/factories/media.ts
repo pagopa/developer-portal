@@ -1,17 +1,17 @@
-import { StrapiMedia } from '@/lib/strapi/types/media';
+import { StrapiMedia } from "@/lib/strapi/types/media";
 
 export function mediaJpeg() {
   return {
     attributes: {
-      alternativeText: 'Example Image',
+      alternativeText: "Example Image",
       caption: undefined,
       width: 800,
       height: 600,
       size: 123456,
-      name: 'example.jpg',
-      ext: '.jpg',
-      mime: 'image/jpeg',
-      url: 'https://example.com/example.jpg',
+      name: "example.jpg",
+      ext: ".jpg",
+      mime: "image/jpeg",
+      url: "https://example.com/example.jpg",
     },
   } satisfies StrapiMedia;
 }

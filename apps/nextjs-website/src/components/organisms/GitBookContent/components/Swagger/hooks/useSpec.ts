@@ -1,6 +1,6 @@
-import SwaggerParser from '@apidevtools/swagger-parser';
-import { OpenAPI } from 'openapi-types';
-import { useState, useEffect } from 'react';
+import SwaggerParser from "@apidevtools/swagger-parser";
+import { OpenAPI } from "openapi-types";
+import { useState, useEffect } from "react";
 
 export const useSpec = (src?: string) => {
   const [spec, setSpec] = useState<OpenAPI.Document>();

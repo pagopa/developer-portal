@@ -1,8 +1,8 @@
-'use client';
-import ArrowForward from '@mui/icons-material/ArrowForward';
-import { Link as LinkMui, Stack, Typography } from '@mui/material';
-import Link from 'next/link';
-import React from 'react';
+"use client";
+import ArrowForward from "@mui/icons-material/ArrowForward";
+import { Link as LinkMui, Stack, Typography } from "@mui/material";
+import Link from "next/link";
+import React from "react";
 
 type LinkButtonProps = {
   readonly color?: string;
@@ -15,8 +15,8 @@ type LinkButtonProps = {
 };
 
 const LinkButton = ({
-  color = 'inherit',
-  disabledColor = 'lightgray',
+  color = "inherit",
+  disabledColor = "lightgray",
   label,
   href,
   size = 14,
@@ -29,8 +29,8 @@ const LinkButton = ({
       fontWeight={700}
       color={disabled ? disabledColor : color}
       sx={{
-        '&::first-letter': {
-          textTransform: 'capitalize',
+        "&::first-letter": {
+          textTransform: "capitalize",
         },
       }}
     >
@@ -40,9 +40,9 @@ const LinkButton = ({
 
   return (
     <Stack
-      direction='row'
-      alignItems='center'
-      color='primary.main'
+      direction="row"
+      alignItems="center"
+      color="primary.main"
       width={width}
     >
       {disabled ? (
@@ -50,9 +50,9 @@ const LinkButton = ({
       ) : (
         <LinkMui
           component={Link}
-          color='primary.main'
-          underline='none'
-          href={href || '#'}
+          color="primary.main"
+          underline="none"
+          href={href || "#"}
           aria-label={label}
           title={label}
         >

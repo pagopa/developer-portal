@@ -1,7 +1,7 @@
-'use client';
-import { Typography } from '@mui/material';
-import { SwaggerDescriptionProps } from 'gitbook-docs/markdoc/schema/swagger';
-import { ReactNode } from 'react';
+"use client";
+import { Typography } from "@mui/material";
+import { SwaggerDescriptionProps } from "gitbook-docs/markdoc/schema/swagger";
+import { ReactNode } from "react";
 
 const SwaggerDescription = ({
   children,
@@ -11,10 +11,10 @@ const SwaggerDescription = ({
       sx={{
         fontWeight: 700,
         fontSize: 18,
-        marginTop: '16px',
-        marginBottom: '16px',
+        marginTop: "16px",
+        marginBottom: "16px",
       }}
-      component={'div'}
+      component={"div"}
     >
       {children}
     </Typography>

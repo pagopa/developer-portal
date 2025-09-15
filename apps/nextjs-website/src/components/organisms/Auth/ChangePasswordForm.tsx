@@ -1,5 +1,5 @@
-'use client';
-import { IllusDataSecurity } from '@pagopa/mui-italia';
+"use client";
+import { IllusDataSecurity } from "@pagopa/mui-italia";
 import {
   Box,
   Button,
@@ -10,15 +10,15 @@ import {
   Stack,
   Typography,
   useTheme,
-} from '@mui/material';
-import { ChangeEvent, useCallback, useState } from 'react';
-import { validatePassword } from '@/helpers/auth.helpers';
-import { useTranslations } from 'next-intl';
-import { PasswordTextField } from './PasswordTextField';
+} from "@mui/material";
+import { ChangeEvent, useCallback, useState } from "react";
+import { validatePassword } from "@/helpers/auth.helpers";
+import { useTranslations } from "next-intl";
+import { PasswordTextField } from "./PasswordTextField";
 
 interface ChangePasswordFormProps {
   submitting?: boolean;
-  // eslint-disable-next-line functional/no-return-void
+
   onSubmit: (password: string) => void;
 }
 
@@ -31,15 +31,15 @@ const ChangePasswordForm = ({
   submitting = false,
   onSubmit,
 }: ChangePasswordFormProps) => {
-  const login = useTranslations('auth.login');
-  const resetPassword = useTranslations('auth.resetPassword');
-  const signUp = useTranslations('auth.signUp');
-  const shared = useTranslations('shared');
+  const login = useTranslations("auth.login");
+  const resetPassword = useTranslations("auth.resetPassword");
+  const signUp = useTranslations("auth.signUp");
+  const shared = useTranslations("shared");
   const { palette } = useTheme();
 
   const [passwords, setPasswords] = useState({
-    password: '',
-    confirmPassword: '',
+    password: "",
+    confirmPassword: "",
   });
   const [fieldErrors, setFieldErrors] = useState<ChangePasswordFieldsError>({
     passwordError: false,
@@ -76,82 +76,82 @@ const ChangePasswordForm = ({
 
   return (
     <Box
-      component='section'
+      component="section"
       sx={{
-        width: '90vw',
-        '@media (min-width: 1200px)': {
-          width: '35vw',
+        width: "90vw",
+        "@media (min-width: 1200px)": {
+          width: "35vw",
         },
       }}
     >
-      <Card variant='elevation' elevation={8}>
-        <Grid container justifyContent='center'>
+      <Card variant="elevation" elevation={8}>
+        <Grid container justifyContent="center">
           <Grid size={{ xs: 10 }}>
-            <Stack pt={4} display='flex' alignItems='center'>
+            <Stack pt={4} display="flex" alignItems="center">
               <IllusDataSecurity />
             </Stack>
-            <Typography variant='h4' pt={8} mb={4} textAlign='center'>
-              {resetPassword('newPassword')}
+            <Typography variant="h4" pt={8} mb={4} textAlign="center">
+              {resetPassword("newPassword")}
             </Typography>
             <Stack spacing={2} mb={2}>
               <PasswordTextField
-                id='password'
+                id="password"
                 hasError={fieldErrors.passwordError}
                 helperText={
-                  fieldErrors.passwordError ? signUp('passwordPolicy') : ''
+                  fieldErrors.passwordError ? signUp("passwordPolicy") : ""
                 }
-                label={shared('password')}
+                label={shared("password")}
                 value={passwords.password}
                 onChange={handlePasswordChanged}
               />
               <PasswordTextField
-                id='confirmPassword'
+                id="confirmPassword"
                 hasError={fieldErrors.confirmPasswordError}
                 helperText={
                   fieldErrors.confirmPasswordError
-                    ? signUp('passwordMismatchError')
-                    : ''
+                    ? signUp("passwordMismatchError")
+                    : ""
                 }
-                label={shared('confirmPassword')}
+                label={shared("confirmPassword")}
                 value={passwords.confirmPassword}
                 onChange={handlePasswordChanged}
               />
             </Stack>
             <Stack
-              direction='row'
-              justifyContent='center'
+              direction="row"
+              justifyContent="center"
               spacing={4}
               pt={4}
               pb={2}
             >
               <Button
-                variant='contained'
+                variant="contained"
                 onClick={onChangePasswordClick}
                 disabled={submitting}
               >
-                {resetPassword('send')}
+                {resetPassword("send")}
               </Button>
             </Stack>
             <Divider />
             <Stack
               pt={4}
               pb={8}
-              display='flex'
-              alignItems='center'
-              justifyContent='center'
-              flexDirection='row'
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+              flexDirection="row"
             >
-              <Typography variant='caption-semibold' mr={1}>
-                {resetPassword('rememberPassword')}
+              <Typography variant="caption-semibold" mr={1}>
+                {resetPassword("rememberPassword")}
               </Typography>
               <Typography
                 component={Link}
                 fontSize={16}
-                href='/auth/login'
-                variant='caption-semibold'
+                href="/auth/login"
+                variant="caption-semibold"
                 color={palette.primary.main}
               >
-                {login('action')}
+                {login("action")}
               </Typography>
             </Stack>
           </Grid>

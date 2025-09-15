@@ -1,6 +1,6 @@
 /* eslint-disable functional/no-let */
 /* eslint-disable functional/no-expression-statements */
-import { staticContentsUrl } from '@/config';
+import { staticContentsUrl } from "@/config";
 
 export interface JsonMetadata {
   readonly path: string;
@@ -21,12 +21,12 @@ const delay = (ms: number): Promise<void> =>
   new Promise((resolve) => setTimeout(resolve, ms));
 
 // Retry configuration - configurable via environment variables
-const RETRY_ATTEMPTS = parseInt(process.env.CDN_RETRY_ATTEMPTS || '3', 10);
+const RETRY_ATTEMPTS = parseInt(process.env.CDN_RETRY_ATTEMPTS || "3", 10);
 const INITIAL_RETRY_DELAY_MS = parseInt(
-  process.env.CDN_RETRY_DELAY_MS || '1000',
-  10
+  process.env.CDN_RETRY_DELAY_MS || "1000",
+  10,
 );
-const TIMEOUT_LIMIT = parseInt(process.env.TIMEOUT_LIMIT || '30000');
+const TIMEOUT_LIMIT = parseInt(process.env.TIMEOUT_LIMIT || "30000");
 
 // Global promise cache to prevent concurrent requests to the same endpoint
 const requestCache = new Map<string, Promise<any>>();
@@ -34,12 +34,10 @@ const requestCache = new Map<string, Promise<any>>();
 async function withRetries<T>(
   operation: () => Promise<T>,
   operationName: string,
-  fallbackValue: T
+  fallbackValue: T,
 ): Promise<T> {
-  // eslint-disable-next-line functional/no-let
   let lastError: Error | null = null;
 
-  // eslint-disable-next-line functional/no-loop-statements
   for (let attempt = 1; attempt <= RETRY_ATTEMPTS; attempt++) {
     // eslint-disable-next-line functional/no-try-statements
     try {
@@ -47,41 +45,39 @@ async function withRetries<T>(
 
       // Log successful retry if this wasn't the first attempt
       if (attempt > 1) {
-        // eslint-disable-next-line no-console
         console.log(
-          `Successfully completed ${operationName} on attempt ${attempt}`
+          `Successfully completed ${operationName} on attempt ${attempt}`,
         );
       }
 
       return result;
     } catch (error) {
       lastError = error instanceof Error ? error : new Error(String(error));
-      // eslint-disable-next-line no-console
+
       console.error(
         `Error during ${operationName} (attempt ${attempt}/${RETRY_ATTEMPTS}):`,
-        error
+        error,
       );
 
       // If this isn't the last attempt, wait before retrying
       if (attempt < RETRY_ATTEMPTS) {
         const delayMs = INITIAL_RETRY_DELAY_MS * Math.pow(2, attempt - 1); // Exponential backoff
-        // eslint-disable-next-line no-console
+
         console.log(`Retrying in ${delayMs}ms...`);
         await delay(delayMs);
       }
     }
   }
 
-  // eslint-disable-next-line no-console
   console.error(
     `Failed to complete ${operationName} after ${RETRY_ATTEMPTS} attempts:`,
-    lastError
+    lastError,
   );
   return fallbackValue;
 }
 
 export async function downloadFileAsText(
-  path: string
+  path: string,
 ): Promise<string | undefined> {
   // Check if we already have a request in progress for this path
   const cacheKey = `downloadFileAsText:${path}`;
@@ -102,7 +98,7 @@ export async function downloadFileAsText(
       if (!response.ok) {
         // eslint-disable-next-line functional/no-throw-statements
         throw new Error(
-          `Failed to download file from ${url}: ${response.statusText}`
+          `Failed to download file from ${url}: ${response.statusText}`,
         );
       }
 
@@ -110,7 +106,7 @@ export async function downloadFileAsText(
       return await response.text();
     },
     `file download from ${path}`,
-    undefined
+    undefined,
   ).catch((error) => {
     // On failure, remove from cache to allow retries on subsequent calls
     requestCache.delete(cacheKey);
@@ -127,7 +123,7 @@ async function fetchFromCDN(path: string) {
   if (!staticContentsUrl) {
     // eslint-disable-next-line functional/no-throw-statements
     throw new Error(
-      'STATIC_CONTENTS_URL is not defined in the environment variables.'
+      "STATIC_CONTENTS_URL is not defined in the environment variables.",
     );
   }
 
@@ -139,7 +135,7 @@ async function fetchFromCDN(path: string) {
 
   if (!response || !response.ok) {
     // eslint-disable-next-line functional/no-throw-statements
-    throw new Error('Response is null');
+    throw new Error("Response is null");
   }
 
   const json = await response.json();
@@ -160,7 +156,7 @@ export async function fetchResponseFromCDN(path: string) {
       return await fetchFromCDN(path);
     },
     `response fetch from ${path}`,
-    undefined
+    undefined,
   ).catch((error) => {
     // On failure, remove from cache to allow retries on subsequent calls
     requestCache.delete(cacheKey);
@@ -174,7 +170,7 @@ export async function fetchResponseFromCDN(path: string) {
 }
 
 export async function fetchMetadataFromCDN<T>(
-  path: string
+  path: string,
 ): Promise<readonly T[] | null> {
   // Check if we already have a request in progress for this path
   const cacheKey = `fetchMetadataFromCDN:${path}`;
@@ -190,7 +186,7 @@ export async function fetchMetadataFromCDN<T>(
       return bodyContent as readonly T[];
     },
     `metadata fetch from ${path}`,
-    null
+    null,
   ).catch((error) => {
     // On failure, remove from cache to allow retries on subsequent calls
     requestCache.delete(cacheKey);
@@ -204,15 +200,15 @@ export async function fetchMetadataFromCDN<T>(
 }
 
 const S3_GUIDES_METADATA_JSON_PATH =
-  process.env.S3_GUIDES_METADATA_JSON_PATH || 'guides-metadata.json';
+  process.env.S3_GUIDES_METADATA_JSON_PATH || "guides-metadata.json";
 const S3_SOLUTIONS_METADATA_JSON_PATH =
-  process.env.S3_SOLUTIONS_METADATA_JSON_PATH || 'solutions-metadata.json';
+  process.env.S3_SOLUTIONS_METADATA_JSON_PATH || "solutions-metadata.json";
 const S3_RELEASE_NOTES_METADATA_JSON_PATH =
   process.env.S3_RELEASE_NOTES_METADATA_JSON_PATH ||
-  'release-notes-metadata.json';
+  "release-notes-metadata.json";
 const S3_SOAP_API_METADATA_JSON_PATH =
   process.env.S3_SOAP_API_METADATA_JSON_PATH ||
-  'soap-api/soap-api-metadata.json';
+  "soap-api/soap-api-metadata.json";
 
 let guidesMetadataCache: readonly JsonMetadata[] | null = null;
 let solutionsMetadataCache: readonly JsonMetadata[] | null = null;
@@ -220,13 +216,11 @@ let releaseNotesMetadataCache: readonly JsonMetadata[] | null = null;
 let soapApiMetadataCache: readonly SoapApiJsonMetadata[] | null = null;
 
 // Add timestamp-based cache invalidation
-// eslint-disable-next-line functional/no-let
+
 let guidesMetadataCacheTime = 0;
 
-// eslint-disable-next-line functional/no-let
 let solutionsMetadataCacheTime = 0;
 
-// eslint-disable-next-line functional/no-let
 let releaseNotesMetadataCacheTime = 0;
 
 const METADATA_CACHE_TTL = 5 * 60 * 1000; // 5 minutes
@@ -242,7 +236,7 @@ export const getGuidesMetadata = async () => {
   }
 
   guidesMetadataCache = await fetchMetadataFromCDN<JsonMetadata>(
-    S3_GUIDES_METADATA_JSON_PATH
+    S3_GUIDES_METADATA_JSON_PATH,
   );
   guidesMetadataCacheTime = now;
 
@@ -260,7 +254,7 @@ export const getSolutionsMetadata = async () => {
   }
 
   solutionsMetadataCache = await fetchMetadataFromCDN<JsonMetadata>(
-    S3_SOLUTIONS_METADATA_JSON_PATH
+    S3_SOLUTIONS_METADATA_JSON_PATH,
   );
   solutionsMetadataCacheTime = now;
 
@@ -278,7 +272,7 @@ export const getReleaseNotesMetadata = async () => {
   }
 
   releaseNotesMetadataCache = await fetchMetadataFromCDN<JsonMetadata>(
-    S3_RELEASE_NOTES_METADATA_JSON_PATH
+    S3_RELEASE_NOTES_METADATA_JSON_PATH,
   );
   releaseNotesMetadataCacheTime = now;
 
@@ -288,7 +282,7 @@ export const getReleaseNotesMetadata = async () => {
 export const getSoapApiMetadata = async () => {
   if (!soapApiMetadataCache) {
     soapApiMetadataCache = await fetchMetadataFromCDN<SoapApiJsonMetadata>(
-      S3_SOAP_API_METADATA_JSON_PATH
+      S3_SOAP_API_METADATA_JSON_PATH,
     );
   }
   return soapApiMetadataCache || [];

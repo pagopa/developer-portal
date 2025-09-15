@@ -1,40 +1,39 @@
-'use client';
-import PageNotFound from '@/app/not-found';
-import { Auth } from 'aws-amplify';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useState, Suspense } from 'react';
-import Spinner from '@/components/atoms/Spinner/Spinner';
-import ExpiredCode from '@/app/auth/expired-code/page';
+"use client";
+import PageNotFound from "@/app/not-found";
+import { Auth } from "aws-amplify";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState, Suspense } from "react";
+import Spinner from "@/components/atoms/Spinner/Spinner";
+import ExpiredCode from "@/app/auth/expired-code/page";
 
 enum State {
-  loading = 'loading',
-  expiredCode = 'expiredCode',
-  error = 'error',
+  loading = "loading",
+  expiredCode = "expiredCode",
+  error = "error",
 }
 
 const EmailConfirmationContent = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const code = searchParams.get('code');
+  const code = searchParams.get("code");
 
   const [state, setState] = useState<State>(State.loading);
 
   useEffect(() => {
     if (code) {
-      Auth.verifyCurrentUserAttributeSubmit('email', code)
+      Auth.verifyCurrentUserAttributeSubmit("email", code)
         .then(() => {
-          // eslint-disable-next-line functional/immutable-data
-          router.push('/auth/account-activated');
+          router.push("/auth/account-activated");
           Auth.signOut();
         })
         .catch((error) => {
           switch (error.code) {
-            case 'ExpiredCodeException':
+            case "ExpiredCodeException":
               setState(State.expiredCode);
               break;
-            case 'CodeMismatchException':
-            case 'InternalErrorException':
-            case 'LimitExceededException':
+            case "CodeMismatchException":
+            case "InternalErrorException":
+            case "LimitExceededException":
             default:
               setState(State.error);
               break;

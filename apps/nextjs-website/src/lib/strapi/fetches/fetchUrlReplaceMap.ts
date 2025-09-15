@@ -1,6 +1,6 @@
-import { StrapiUrlReplaceMap } from '@/lib/strapi/types/urlReplaceMap';
-import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
-import qs from 'qs';
+import { StrapiUrlReplaceMap } from "@/lib/strapi/types/urlReplaceMap";
+import { fetchFromStrapi } from "@/lib/strapi/fetchFromStrapi";
+import qs from "qs";
 
 const makeStrapiUrlReplaceMapPopulate = () =>
   qs.stringify({
@@ -8,7 +8,7 @@ const makeStrapiUrlReplaceMapPopulate = () =>
       urlToGuide: {
         populate: {
           guide: {
-            populate: ['product'],
+            populate: ["product"],
           },
         },
       },
@@ -16,6 +16,6 @@ const makeStrapiUrlReplaceMapPopulate = () =>
   });
 
 export const fetchUrlReplaceMap = fetchFromStrapi<StrapiUrlReplaceMap>(
-  'url-replace-map',
-  makeStrapiUrlReplaceMapPopulate()
+  "url-replace-map",
+  makeStrapiUrlReplaceMapPopulate(),
 );

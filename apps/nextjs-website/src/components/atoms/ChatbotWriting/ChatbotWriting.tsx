@@ -1,14 +1,14 @@
-import { Box, Stack, useTheme } from '@mui/material';
-import IconWrapper from '@/components/atoms/IconWrapper/IconWrapper';
-import styles from './ChatbotWriting.module.css';
+import { Box, Stack, useTheme } from "@mui/material";
+import IconWrapper from "@/components/atoms/IconWrapper/IconWrapper";
+import styles from "./ChatbotWriting.module.css";
 
 export const ChatbotWriting = () => {
   const { palette } = useTheme();
   return (
-    <Box borderRadius={{ xs: '0.75rem' }}>
-      <Stack direction={'row'} margin={{ xs: '1rem 1rem 0.5rem 1rem' }}>
+    <Box borderRadius={{ xs: "0.75rem" }}>
+      <Stack direction={"row"} margin={{ xs: "1rem 1rem 0.5rem 1rem" }}>
         <IconWrapper
-          icon={'/icons/chatbotChatAvatar.svg'}
+          icon={"/icons/chatbotChatAvatar.svg"}
           useSrc={true}
           color={palette.text.secondary}
           size={40}

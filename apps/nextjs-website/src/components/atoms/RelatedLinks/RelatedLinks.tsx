@@ -1,16 +1,16 @@
-'use client';
-import React from 'react';
-import Listing from '@/editorialComponents/Listing/Listing';
-import { useTranslations } from 'next-intl';
+"use client";
+import React from "react";
+import Listing from "@/editorialComponents/Listing/Listing";
+import { useTranslations } from "next-intl";
 
 export type RelatedLinksProps = {
   title?: string;
   links: {
     text: string;
     href: string;
-    target?: '_self' | '_blank' | '_parent' | '_top';
+    target?: "_self" | "_blank" | "_parent" | "_top";
   }[];
-  backgroundVariant?: 'white' | 'lightGrey';
+  backgroundVariant?: "white" | "lightGrey";
 };
 
 const RelatedLinks = ({
@@ -18,11 +18,11 @@ const RelatedLinks = ({
   links,
   backgroundVariant,
 }: RelatedLinksProps) => {
-  const t = useTranslations('shared');
+  const t = useTranslations("shared");
   return (
     <Listing
       items={links}
-      name={title ?? t('relatedLinks')}
+      name={title ?? t("relatedLinks")}
       backgroundVariant={backgroundVariant}
     />
   );

@@ -1,30 +1,30 @@
-import RecordVoiceOverIcon from '@mui/icons-material/RecordVoiceOver';
-import { Box, Typography, useTheme } from '@mui/material';
-import React from 'react';
-import { useTranslations } from 'next-intl';
+import RecordVoiceOverIcon from "@mui/icons-material/RecordVoiceOver";
+import { Box, Typography, useTheme } from "@mui/material";
+import React from "react";
+import { useTranslations } from "next-intl";
 
 const LiveWebinarChip = () => {
   const { palette } = useTheme();
-  const t = useTranslations('webinar');
+  const t = useTranslations("webinar");
 
   return (
     <Box
       sx={{
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
       }}
     >
       <RecordVoiceOverIcon
-        fontSize={'small'}
+        fontSize={"small"}
         sx={{ marginRight: 1, color: palette.text.primary }}
       />
       <Typography
-        variant='caption'
+        variant="caption"
         sx={{
-          textTransform: 'uppercase',
+          textTransform: "uppercase",
           fontWeight: 600,
-          fontSize: '14px',
+          fontSize: "14px",
           color: palette.common.white,
           backgroundColor: palette.text.primary,
           paddingX: 1,
@@ -32,7 +32,7 @@ const LiveWebinarChip = () => {
           borderRadius: 1,
         }}
       >
-        {t('liveWebinar')}
+        {t("liveWebinar")}
       </Typography>
     </Box>
   );

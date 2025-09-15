@@ -6,10 +6,10 @@ import {
   Palette,
   Typography,
   useTheme,
-} from '@mui/material';
-import { defaultLocale } from '@/config';
-import ChatbotHistoryListItem from '@/components/atoms/ChatbotHistoryListItem/ChatbotHistoryListItem';
-import { Session } from '@/lib/chatbot/queries';
+} from "@mui/material";
+import { defaultLocale } from "@/config";
+import ChatbotHistoryListItem from "@/components/atoms/ChatbotHistoryListItem/ChatbotHistoryListItem";
+import { Session } from "@/lib/chatbot/queries";
 
 type DateFormatOptions = {
   locale?: string;
@@ -19,34 +19,34 @@ type DateFormatOptions = {
 const DEFAULT_DATE_FORMAT = {
   locale: defaultLocale,
   options: {
-    month: 'long',
-    year: 'numeric',
+    month: "long",
+    year: "numeric",
   },
 } satisfies DateFormatOptions;
 
-type ChatbotHistoryList = {
+type ChatbotHistoryListProps = {
   sessionsList: Session[];
 };
 
-const ChatbotHistoryList = ({ sessionsList }: ChatbotHistoryList) => {
+const ChatbotHistoryList = ({ sessionsList }: ChatbotHistoryListProps) => {
   const { palette } = useTheme();
   const uniqueDates = Array.from(
     new Set(
       sessionsList.map((session) =>
         new Intl.DateTimeFormat(
           DEFAULT_DATE_FORMAT.locale,
-          DEFAULT_DATE_FORMAT.options
-        ).format(new Date(session.createdAt))
-      )
-    )
+          DEFAULT_DATE_FORMAT.options,
+        ).format(new Date(session.createdAt)),
+      ),
+    ),
   );
 
   return (
-    <List sx={{ width: '100%' }}>
+    <List sx={{ width: "100%" }}>
       {dateDividerSessionsItemsInterpolation(
         uniqueDates,
         sessionsList,
-        palette
+        palette,
       )}
     </List>
   );
@@ -57,15 +57,15 @@ export default ChatbotHistoryList;
 function dateDividerSessionsItemsInterpolation(
   dateDividers: string[],
   sessionsList: Session[],
-  palette: Palette
+  palette: Palette,
 ) {
   const items = dateDividers.map((date) => {
     const sessions = sessionsList.filter(
       (session: Session) =>
         new Intl.DateTimeFormat(
           DEFAULT_DATE_FORMAT.locale,
-          DEFAULT_DATE_FORMAT.options
-        ).format(new Date(session.createdAt)) === date
+          DEFAULT_DATE_FORMAT.options,
+        ).format(new Date(session.createdAt)) === date,
     );
     return sessions.map((session: Session) => session);
   });
@@ -76,22 +76,22 @@ function dateDividerSessionsItemsInterpolation(
         <Typography
           key={sameMonthItems[0].createdAt}
           color={palette.text.primary}
-          fontSize='1.5rem'
-          fontWeight='700'
-          sx={{ paddingY: '1rem' }}
+          fontSize="1.5rem"
+          fontWeight="700"
+          sx={{ paddingY: "1rem" }}
         >
           {capitalize(
             new Intl.DateTimeFormat(
               DEFAULT_DATE_FORMAT.locale,
-              DEFAULT_DATE_FORMAT.options
-            ).format(new Date(sameMonthItems[0].createdAt))
+              DEFAULT_DATE_FORMAT.options,
+            ).format(new Date(sameMonthItems[0].createdAt)),
           )}
         </Typography>
       </ListItem>
       {sameMonthItems.map((item, index) => [
         <ChatbotHistoryListItem key={item.id} session={item} />,
         <>
-          {sameMonthItems.length - 1 !== index && <Divider component='li' />}
+          {sameMonthItems.length - 1 !== index && <Divider component="li" />}
         </>,
       ])}
     </>

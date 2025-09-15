@@ -1,14 +1,14 @@
-import { getWebinar } from '@/lib/api';
-import dynamic from 'next/dynamic';
-import Spinner from '@/components/atoms/Spinner/Spinner';
+import { getWebinar } from "@/lib/api";
+import dynamic from "next/dynamic";
+import Spinner from "@/components/atoms/Spinner/Spinner";
 import {
   makeMetadata,
   makeMetadataFromStrapi,
-} from '@/helpers/metadata.helpers';
-import { Metadata } from 'next';
-import { baseUrl } from '@/config';
-import { getItemFromPaths } from '@/helpers/structuredData.helpers';
-import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
+} from "@/helpers/metadata.helpers";
+import { Metadata } from "next";
+import { baseUrl } from "@/config";
+import { getItemFromPaths } from "@/helpers/structuredData.helpers";
+import { generateStructuredDataScripts } from "@/helpers/generateStructuredDataScripts.helpers";
 
 type Params = {
   webinarSlug: string;
@@ -29,7 +29,7 @@ export async function generateMetadata({
   return makeMetadata({
     title: webinar.title,
     url: `${baseUrl}/webinars/${webinar.slug}`,
-    locale: 'it_IT',
+    locale: "it_IT",
     image: webinar.imagePath,
   });
 }
@@ -37,11 +37,11 @@ export async function generateMetadata({
 const NotSsrWebinarDetailTemplate = dynamic(
   () =>
     import(
-      '@/components/templates/WebinarDetailTemplate/WebinarDetailTemplate'
+      "@/components/templates/WebinarDetailTemplate/WebinarDetailTemplate"
     ),
   {
     loading: () => <Spinner />,
-  }
+  },
 );
 
 const Page = async ({ params }: { params: Promise<Params> }) => {
@@ -51,12 +51,12 @@ const Page = async ({ params }: { params: Promise<Params> }) => {
   const structuredData = generateStructuredDataScripts({
     breadcrumbsItems: [
       {
-        name: 'Webinars',
-        item: getItemFromPaths(['webinars']),
+        name: "Webinars",
+        item: getItemFromPaths(["webinars"]),
       },
       {
         name: webinar.seo?.metaTitle,
-        item: getItemFromPaths(['webinars', webinar.slug]),
+        item: getItemFromPaths(["webinars", webinar.slug]),
       },
     ],
     seo: webinar.seo,

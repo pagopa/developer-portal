@@ -1,14 +1,14 @@
-'use client';
+"use client";
 import {
   Box,
   Divider,
   Typography,
   Link as LinkMUI,
   useTheme,
-} from '@mui/material';
-import EContainer from '@/editorialComponents/EContainer/EContainer';
-import Link from 'next/link';
-import { useMemo } from 'react';
+} from "@mui/material";
+import EContainer from "@/editorialComponents/EContainer/EContainer";
+import Link from "next/link";
+import { useMemo } from "react";
 
 interface ListingItem {
   text: string;
@@ -16,7 +16,7 @@ interface ListingItem {
   htmlTitle?: string;
   linkColor?: string;
   isLast?: boolean;
-  target?: '_self' | '_blank' | '_parent' | '_top';
+  target?: "_self" | "_blank" | "_parent" | "_top";
 }
 
 export interface ListingsProps {
@@ -30,17 +30,17 @@ export interface ListingsProps {
   name?: string;
   linksColor?: string;
   items: ListingItem[];
-  backgroundVariant?: 'white' | 'lightGrey';
+  backgroundVariant?: "white" | "lightGrey";
 }
 
 const ListingItem = (props: ListingItem) => {
   const {
     text,
-    htmlTitle = '',
+    htmlTitle = "",
     href,
     isLast = false,
-    linkColor = 'InfoText',
-    target = '_self',
+    linkColor = "InfoText",
+    target = "_self",
   } = props;
   return (
     <Box mb={isLast ? 0 : 2}>
@@ -49,9 +49,9 @@ const ListingItem = (props: ListingItem) => {
           component={Link}
           href={href}
           target={target}
-          underline='none'
+          underline="none"
           mb={2}
-          variant='body2'
+          variant="body2"
           color={linkColor}
           fontWeight={600}
           title={htmlTitle}
@@ -59,11 +59,11 @@ const ListingItem = (props: ListingItem) => {
           {text}
         </LinkMUI>
       ) : (
-        <Typography fontWeight={600} mb={2} variant='body2' title={htmlTitle}>
+        <Typography fontWeight={600} mb={2} variant="body2" title={htmlTitle}>
           {text}
         </Typography>
       )}
-      <Divider sx={{ marginTop: '16px' }} />
+      <Divider sx={{ marginTop: "16px" }} />
     </Box>
   );
 };
@@ -71,10 +71,10 @@ const ListingItem = (props: ListingItem) => {
 const Listing = ({
   title,
   date,
-  name = '',
+  name = "",
   items,
   linksColor,
-  backgroundVariant = 'white',
+  backgroundVariant = "white",
 }: ListingsProps) => {
   const theme = useTheme();
 
@@ -83,40 +83,40 @@ const Listing = ({
       white: theme.palette.background.paper,
       lightGrey: theme.palette.grey[50],
     }),
-    [theme]
+    [theme],
   );
 
   return (
     <EContainer
       py={8}
       background={backgroundColor[backgroundVariant]}
-      direction='column'
+      direction="column"
     >
       {title && (
-        <Typography variant='h5' mb={2}>
+        <Typography variant="h5" mb={2}>
           {title}
         </Typography>
       )}
       {date && (
         <Typography
-          color='text.secondary'
+          color="text.secondary"
           fontSize={12}
           fontWeight={600}
           mb={5}
         >
           {`${date.preDate} ${new Intl.DateTimeFormat(
             date.locale,
-            date.options
+            date.options,
           ).format(date.date)}`}
         </Typography>
       )}
       {name && (
         <Typography
-          color='text.secondary'
+          color="text.secondary"
           fontSize={14}
           fontWeight={700}
           mb={4}
-          textTransform='uppercase'
+          textTransform="uppercase"
         >
           {name}
         </Typography>

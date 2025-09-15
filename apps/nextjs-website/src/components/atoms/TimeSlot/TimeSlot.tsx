@@ -1,4 +1,4 @@
-import { dateOptions, defaultLocale, timeOptions } from '@/config';
+import { dateOptions, defaultLocale, timeOptions } from "@/config";
 
 function isSameDay(start: Date, end: Date): boolean {
   return (
@@ -15,7 +15,7 @@ function isSameDay(start: Date, end: Date): boolean {
 function formattedDateTime(date: Date): string {
   return `${date.toLocaleDateString(
     defaultLocale,
-    dateOptions
+    dateOptions,
   )}, ${date.toLocaleTimeString(defaultLocale, timeOptions)}`;
 }
 
@@ -25,7 +25,7 @@ function formattedDateTime(date: Date): string {
  */
 function conditionallyFormattedEndDate(
   start?: Date,
-  end?: Date
+  end?: Date,
 ): string | undefined {
   if (!end) return;
 
@@ -49,7 +49,7 @@ const TimeSlot = ({ start, end }: TimeSlotProps) => {
     conditionallyFormattedEndDate(startDate, endDate),
   ]
     .filter(Boolean)
-    .join(' - ');
+    .join(" - ");
 };
 
 export default TimeSlot;

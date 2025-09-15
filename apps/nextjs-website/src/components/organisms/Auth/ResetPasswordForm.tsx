@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import {
   Typography,
   Stack,
@@ -10,11 +10,11 @@ import {
   Box,
   TextField,
   useTheme,
-} from '@mui/material';
-import { validateEmail } from '@/helpers/auth.helpers';
-import { IllusDataSecurity } from '@pagopa/mui-italia';
-import { Dispatch, SetStateAction, useCallback, useState } from 'react';
-import { useTranslations } from 'next-intl';
+} from "@mui/material";
+import { validateEmail } from "@/helpers/auth.helpers";
+import { IllusDataSecurity } from "@pagopa/mui-italia";
+import { Dispatch, SetStateAction, useCallback, useState } from "react";
+import { useTranslations } from "next-intl";
 
 interface ResetPasswordFormProps {
   email: string;
@@ -27,8 +27,8 @@ const ResetPasswordForm = ({
   setEmail,
   handleResetPassword,
 }: ResetPasswordFormProps) => {
-  const resetPassword = useTranslations('auth.resetPassword');
-  const shared = useTranslations('shared');
+  const resetPassword = useTranslations("auth.resetPassword");
+  const shared = useTranslations("shared");
   const [submitting, setSubmitting] = useState(false);
 
   const [emailError, setEmailError] = useState<string | null>(null);
@@ -37,7 +37,7 @@ const ResetPasswordForm = ({
     const emailError = validateEmail(email);
 
     if (emailError) {
-      setEmailError(resetPassword('emailFieldError'));
+      setEmailError(resetPassword("emailFieldError"));
     }
 
     return !emailError;
@@ -60,46 +60,46 @@ const ResetPasswordForm = ({
 
   return (
     <Box
-      component='section'
+      component="section"
       sx={{
-        width: '90vw',
-        '@media (min-width: 1200px)': {
-          width: '35vw',
+        width: "90vw",
+        "@media (min-width: 1200px)": {
+          width: "35vw",
         },
       }}
     >
-      <Card variant='elevation' elevation={8}>
-        <Grid container justifyContent='center'>
+      <Card variant="elevation" elevation={8}>
+        <Grid container justifyContent="center">
           <Grid size={{ xs: 10 }}>
-            <Stack pt={4} display='flex' alignItems='center'>
+            <Stack pt={4} display="flex" alignItems="center">
               <IllusDataSecurity />
             </Stack>
-            <Typography variant='h4' pt={5} mb={4} textAlign='center'>
-              {resetPassword('title')}
+            <Typography variant="h4" pt={5} mb={4} textAlign="center">
+              {resetPassword("title")}
             </Typography>
-            <Typography variant='body2' mb={4}>
-              {resetPassword('body')}
+            <Typography variant="body2" mb={4}>
+              {resetPassword("body")}
             </Typography>
             <TextField
-              label={shared('emailAddress')}
+              label={shared("emailAddress")}
               value={email}
               onChange={({ target: { value } }) => setEmail(value)}
               helperText={emailError}
               error={!!emailError}
-              size='small'
+              size="small"
               sx={{
                 backgroundColor: palette.background.paper,
-                width: '100%',
+                width: "100%",
               }}
             />
             <Stack spacing={4} pt={4} pb={2}>
-              <Stack direction='row' justifyContent='center'>
+              <Stack direction="row" justifyContent="center">
                 <Button
-                  variant='contained'
+                  variant="contained"
                   onClick={onResetPassword}
                   disabled={submitting}
                 >
-                  {resetPassword('send')}
+                  {resetPassword("send")}
                 </Button>
               </Stack>
             </Stack>
@@ -107,17 +107,17 @@ const ResetPasswordForm = ({
             <Stack
               pt={4}
               pb={8}
-              display='flex'
-              alignItems='center'
-              justifyContent='center'
-              flexDirection='row'
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+              flexDirection="row"
             >
               <Link
-                variant='body2'
-                href='/auth/login'
-                sx={{ fontWeight: 600, cursor: 'pointer' }}
+                variant="body2"
+                href="/auth/login"
+                sx={{ fontWeight: 600, cursor: "pointer" }}
               >
-                {resetPassword('goToLogin')}
+                {resetPassword("goToLogin")}
               </Link>
             </Stack>
           </Grid>

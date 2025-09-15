@@ -1,20 +1,20 @@
-import { StrapiQuickStartGuides } from '@/lib/strapi/types/quickStartGuides';
-import { alertPart, codeBlockPart } from './parts';
+import { StrapiQuickStartGuides } from "@/lib/strapi/types/quickStartGuides";
+import { alertPart, codeBlockPart } from "./parts";
 
 export const strapiQuickStartGuides: StrapiQuickStartGuides = {
   data: [
     {
       id: 1,
       attributes: {
-        title: 'Quick Start Guide Title',
-        description: 'Quick Start Guide Description',
-        updatedAt: '2024-01-01T00:00:00.000Z',
+        title: "Quick Start Guide Title",
+        description: "Quick Start Guide Description",
+        updatedAt: "2024-01-01T00:00:00.000Z",
         product: {
           data: {
             attributes: {
-              name: 'Product Name',
-              shortName: 'Product',
-              slug: 'product-slug',
+              name: "Product Name",
+              shortName: "Product",
+              slug: "product-slug",
               bannerLinks: [],
               overview: {
                 data: {
@@ -49,17 +49,17 @@ export const strapiQuickStartGuides: StrapiQuickStartGuides = {
         },
         bannerLinks: [],
         seo: {
-          metaTitle: 'Meta Title',
-          metaDescription: 'Meta Description',
+          metaTitle: "Meta Title",
+          metaDescription: "Meta Description",
         },
         quickstartGuideItems: {
           data: [
             {
               id: 1,
               attributes: {
-                title: 'Step 1',
-                anchor: 'step-1',
-                publishedAt: '2024-01-01T00:00:00.000Z',
+                title: "Step 1",
+                anchor: "step-1",
+                publishedAt: "2024-01-01T00:00:00.000Z",
                 parts: [alertPart, codeBlockPart],
               },
             },

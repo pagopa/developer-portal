@@ -1,9 +1,9 @@
-import { BlocksContent } from '@strapi/blocks-react-renderer';
-import { StrapiMedia } from '@/lib/strapi/types/media';
-import { StrapiRelatedLinks } from '@/lib/strapi/types/link';
-import { StrapiSeo } from '@/lib/strapi/types/seo';
-import { StrapiWebinarCategory } from '@/lib/strapi/types/webinarCategory';
-import { Paginated } from '@/lib/strapi/types/paginated';
+import { BlocksContent } from "@strapi/blocks-react-renderer";
+import { StrapiMedia } from "@/lib/strapi/types/media";
+import { StrapiRelatedLinks } from "@/lib/strapi/types/link";
+import { StrapiSeo } from "@/lib/strapi/types/seo";
+import { StrapiWebinarCategory } from "@/lib/strapi/types/webinarCategory";
+import { Paginated } from "@/lib/strapi/types/paginated";
 
 type StrapiWebinarSpeaker = {
   readonly id: number;

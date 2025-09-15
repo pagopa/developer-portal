@@ -1,22 +1,22 @@
 /* eslint-disable functional/no-expression-statements */
 /* eslint-disable functional/no-try-statements */
-import { GuideListPageProps } from '@/app/[productSlug]/guides/page';
-import { GuidesSectionProps } from '@/components/molecules/GuidesSection/GuidesSection';
-import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
-import { makeBaseProductWithoutLogoProps } from './makeProducts';
-import { GuideCardProps } from '@/components/molecules/GuideCard/GuideCard';
-import { StrapiBaseGuide } from '@/lib/strapi/types/guide';
-import _ from 'lodash';
-import { StrapiGuideListPages } from '@/lib/strapi/types/guideListPage';
+import { GuideListPageProps } from "@/app/[productSlug]/guides/page";
+import { GuidesSectionProps } from "@/components/molecules/GuidesSection/GuidesSection";
+import { makeBannerLinkProps } from "@/lib/strapi/makeProps/makeBannerLink";
+import { makeBaseProductWithoutLogoProps } from "./makeProducts";
+import { GuideCardProps } from "@/components/molecules/GuideCard/GuideCard";
+import { StrapiBaseGuide } from "@/lib/strapi/types/guide";
+import _ from "lodash";
+import { StrapiGuideListPages } from "@/lib/strapi/types/guideListPage";
 
 export function makeGuideListPagesProps(
-  strapiGuideListPages: StrapiGuideListPages
+  strapiGuideListPages: StrapiGuideListPages,
 ): readonly GuideListPageProps[] {
   return _.compact(
     strapiGuideListPages.data.map(({ attributes }) => {
       const productData = attributes.product.data;
       if (!productData.attributes.slug) {
-        console.error('product slug is missing:', productData);
+        console.error("product slug is missing:", productData);
         return null;
       }
 
@@ -27,8 +27,8 @@ export function makeGuideListPagesProps(
             title: category,
             guides: _.compact(
               guides.data.map((guide) =>
-                makeGuideCardProps(guide, product.slug)
-              )
+                makeGuideCardProps(guide, product.slug),
+              ),
             ),
           })),
         ];
@@ -50,20 +50,20 @@ export function makeGuideListPagesProps(
       } catch (error) {
         console.error(
           `Error while processing Guide List Page for product with slug "${productData.attributes.slug}":`,
-          error
+          error,
         );
         return null;
       }
-    })
+    }),
   );
 }
 
 function makeGuideCardProps(
   guide: StrapiBaseGuide,
-  productSlug: string
+  productSlug: string,
 ): GuideCardProps | null {
   if (!guide.attributes.slug) {
-    console.error('guide slug is missing:', guide);
+    console.error("guide slug is missing:", guide);
     return null;
   }
 
@@ -71,14 +71,14 @@ function makeGuideCardProps(
     return {
       title: guide.attributes.title,
       description: {
-        title: 'guideListPage.cardSection.listItemsTitle',
+        title: "guideListPage.cardSection.listItemsTitle",
         listItems: guide.attributes.listItems.map(({ text }) => text),
         translate: true,
       },
       imagePath: guide.attributes.image?.data?.attributes?.url,
       mobileImagePath: guide.attributes.mobileImage?.data?.attributes?.url,
       link: {
-        label: 'guideListPage.cardSection.linkLabel',
+        label: "guideListPage.cardSection.linkLabel",
         href: `/${productSlug}/guides/${guide.attributes.slug}`,
         translate: true,
       },

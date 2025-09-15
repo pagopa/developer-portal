@@ -1,9 +1,9 @@
-import { Stack, Typography, Box } from '@mui/material';
-import { Tag } from '@pagopa/mui-italia';
-import { BlocksContent } from '@strapi/blocks-react-renderer';
-import { useTranslations } from 'next-intl';
-import Link from 'next/link';
-import BlocksRendererClient from '../BlocksRendererClient/BlocksRendererClient';
+import { Stack, Typography, Box } from "@mui/material";
+import { Tag } from "@pagopa/mui-italia";
+import { BlocksContent } from "@strapi/blocks-react-renderer";
+import { useTranslations } from "next-intl";
+import Link from "next/link";
+import BlocksRendererClient from "../BlocksRendererClient/BlocksRendererClient";
 
 type SolutionStepProps = {
   title: string;
@@ -18,13 +18,16 @@ const SolutionStep = ({
   products,
   width,
 }: SolutionStepProps) => {
-  const t = useTranslations('solution');
+  const t = useTranslations("solution");
   return (
-    <Stack sx={{ width: { md: width } }} gap={2} justifyContent='space-between'>
+    <Stack sx={{ width: { md: width } }} gap={2} justifyContent="space-between">
       <Stack gap={2}>
         <Typography
-          sx={{ fontWeight: 700, color: (theme) => theme.palette.action.active }}
-          variant='caption'
+          sx={{
+            fontWeight: 700,
+            color: (theme) => theme.palette.action.active,
+          }}
+          variant="caption"
         >
           {title}
         </Typography>
@@ -32,15 +35,19 @@ const SolutionStep = ({
       </Stack>
       <Stack gap={2}>
         <Typography
-          sx={{ textTransform: 'uppercase', fontWeight: 700, color: (theme) => theme.palette.action.active }}
-          variant='subtitle2'
+          sx={{
+            textTransform: "uppercase",
+            fontWeight: 700,
+            color: (theme) => theme.palette.action.active,
+          }}
+          variant="subtitle2"
         >
-          {t('steps.platforms')}
+          {t("steps.platforms")}
         </Typography>
-        <Box display='flex' flexWrap={'wrap'} gap={1}>
+        <Box display="flex" flexWrap={"wrap"} gap={1}>
           {products.map((product, index) => (
             <Link key={index} href={product.href}>
-              <Tag value={product.label} color='primary' variant='light' />
+              <Tag value={product.label} color="primary" variant="light" />
             </Link>
           ))}
         </Box>

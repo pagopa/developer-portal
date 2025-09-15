@@ -1,9 +1,9 @@
-'use client';
-import React from 'react';
-import { Grid, Typography, useTheme } from '@mui/material';
-import { type FeatureItem, FeatureStackItem } from './FeatureStackItem';
-import EContainer from '@/editorialComponents/EContainer/EContainer';
-import type { TypographyVariant } from '@mui/material/styles';
+"use client";
+import React from "react";
+import { Grid, Typography, useTheme } from "@mui/material";
+import { type FeatureItem, FeatureStackItem } from "./FeatureStackItem";
+import EContainer from "@/editorialComponents/EContainer/EContainer";
+import type { TypographyVariant } from "@mui/material/styles";
 
 export interface FeatureProps {
   title: string;
@@ -21,14 +21,14 @@ const Feature = (props: FeatureProps) => {
     items,
     background,
     useDarkTheme = false,
-    variant = 'h4',
+    variant = "h4",
   } = props;
   const { palette } = useTheme();
   const theme = palette.mode;
-  const isDarkMode = useDarkTheme || theme !== 'light';
+  const isDarkMode = useDarkTheme || theme !== "light";
 
-  const themeStyle = isDarkMode ? 'background.paper' : 'text.primary';
-  const themeStyleBg = isDarkMode ? 'primary.dark' : 'background.paper';
+  const themeStyle = isDarkMode ? "background.paper" : "text.primary";
+  const themeStyleBg = isDarkMode ? "primary.dark" : "background.paper";
 
   return (
     <EContainer
@@ -39,32 +39,32 @@ const Feature = (props: FeatureProps) => {
         md: 8,
       }}
     >
-      <Grid textAlign={'center'} size={{ xs: 12 }}>
+      <Grid textAlign={"center"} size={{ xs: 12 }}>
         <Typography
           variant={variant}
           color={themeStyle}
-          textAlign='center'
+          textAlign="center"
           sx={{
-            fontSize: '2rem !important',
-            lineHeight: '1.125 !important',
+            fontSize: "2rem !important",
+            lineHeight: "1.125 !important",
           }}
         >
           {title}
         </Typography>
         {subtitle && (
           <Typography
-            px={{ xs: 2, md: '30%' }}
+            px={{ xs: 2, md: "30%" }}
             mt={2}
-            variant='body1'
+            variant="body1"
             color={themeStyle}
-            textAlign='center'
+            textAlign="center"
           >
             {subtitle}
           </Typography>
         )}
       </Grid>
       <Grid mt={8}>
-        <Grid container justifyContent='center'>
+        <Grid container justifyContent="center">
           {items.map((item, index) => (
             <Grid
               size={{ md: items.length < 4 ? 4 : 3 }}
@@ -75,7 +75,7 @@ const Feature = (props: FeatureProps) => {
                 theme={theme}
                 item={item}
                 useDarkTheme={useDarkTheme}
-                variant='h3'
+                variant="h3"
               />
             </Grid>
           ))}

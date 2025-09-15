@@ -1,5 +1,5 @@
-import React from 'react';
-import { type Generic } from '../types/components';
+import React from "react";
+import { type Generic } from "../types/components";
 
 /**
  * this function utility can be used to verify
@@ -34,4 +34,4 @@ export function useIsVisible(ref: React.RefObject<Element>) {
   return isIntersecting;
 }
 
-export const hrefNoOp = 'javascript:void(0)';
+export const hrefNoOp = "javascript:void(0)";

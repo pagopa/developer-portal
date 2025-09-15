@@ -1,13 +1,13 @@
-'use client';
-import React, { ReactNode, useMemo } from 'react';
-import Button from '@mui/material/Button';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import Link from 'next/link';
-import ArrowDropDown from '@mui/icons-material/ArrowDropDown';
-import ArrowDropUp from '@mui/icons-material/ArrowDropUp';
-import { ButtonNaked } from '@pagopa/mui-italia';
-import { PaperProps, PopoverOrigin, SxProps } from '@mui/material';
+"use client";
+import React, { ReactNode, useMemo } from "react";
+import Button from "@mui/material/Button";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import Link from "next/link";
+import ArrowDropDown from "@mui/icons-material/ArrowDropDown";
+import ArrowDropUp from "@mui/icons-material/ArrowDropUp";
+import { ButtonNaked } from "@pagopa/mui-italia";
+import { PaperProps, PopoverOrigin, SxProps } from "@mui/material";
 
 type DropdownProps = {
   label: string;
@@ -41,8 +41,8 @@ const Dropdown = ({
     <>
       <Button
         aria-controls={open ? `${label}-menu` : undefined}
-        aria-expanded={open ? 'true' : undefined}
-        variant='naked'
+        aria-expanded={open ? "true" : undefined}
+        variant="naked"
         disableElevation
         onClick={handleClick}
         endIcon={
@@ -58,18 +58,18 @@ const Dropdown = ({
         elevation={0}
         anchorOrigin={
           menuAnchorOrigin || {
-            vertical: 'bottom',
-            horizontal: 'right',
+            vertical: "bottom",
+            horizontal: "right",
           }
         }
         transformOrigin={
           menuTransformOrigin || {
-            vertical: 'top',
-            horizontal: 'center',
+            vertical: "top",
+            horizontal: "center",
           }
         }
         MenuListProps={{
-          'aria-labelledby': `${label}-button`,
+          "aria-labelledby": `${label}-button`,
         }}
         anchorEl={anchorEl}
         open={open}
@@ -80,10 +80,10 @@ const Dropdown = ({
           return (
             <MenuItem key={index} onClick={handleClose} disableRipple>
               <ButtonNaked
-                style={{ justifyContent: 'flex-start' }}
+                style={{ justifyContent: "flex-start" }}
                 fullWidth={true}
-                size='medium'
-                weight='light'
+                size="medium"
+                weight="light"
                 component={Link}
                 aria-label={item.label}
                 href={item.href}

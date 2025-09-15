@@ -1,15 +1,15 @@
-import { getTutorial } from '@/lib/api';
-import { Metadata } from 'next';
+import { getTutorial } from "@/lib/api";
+import { Metadata } from "next";
 import {
   makeMetadata,
   makeMetadataFromStrapi,
-} from '@/helpers/metadata.helpers';
-import TutorialTemplate from '@/components/templates/TutorialTemplate/TutorialTemplate';
-import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
+} from "@/helpers/metadata.helpers";
+import TutorialTemplate from "@/components/templates/TutorialTemplate/TutorialTemplate";
+import { generateStructuredDataScripts } from "@/helpers/generateStructuredDataScripts.helpers";
 import {
   breadcrumbItemByProduct,
   productToBreadcrumb,
-} from '@/helpers/structuredData.helpers';
+} from "@/helpers/structuredData.helpers";
 
 type Params = {
   productSlug: string;
@@ -23,7 +23,7 @@ export async function generateMetadata({
 }): Promise<Metadata | undefined> {
   const resolvedParams = await params;
   const productSlug = resolvedParams?.productSlug;
-  const tutorialPath = resolvedParams?.productTutorialPage?.join('/');
+  const tutorialPath = resolvedParams?.productTutorialPage?.join("/");
   const tutorialProps = await getTutorial(productSlug, [tutorialPath]);
   if (tutorialProps) {
     const { title, path, seo } = tutorialProps;
@@ -33,7 +33,7 @@ export async function generateMetadata({
     }
 
     return makeMetadata({
-      title: [title, tutorialProps.product?.name].filter(Boolean).join(' | '),
+      title: [title, tutorialProps.product?.name].filter(Boolean).join(" | "),
       url: path,
     });
   }
@@ -42,7 +42,7 @@ export async function generateMetadata({
 const Page = async ({ params }: { params: Promise<Params> }) => {
   const resolvedParams = await params;
   const productSlug = resolvedParams?.productSlug;
-  const tutorialPath = resolvedParams?.productTutorialPage?.join('/');
+  const tutorialPath = resolvedParams?.productTutorialPage?.join("/");
 
   const strapiTutorialProps = await getTutorial(productSlug, [tutorialPath]);
 
@@ -52,7 +52,7 @@ const Page = async ({ params }: { params: Promise<Params> }) => {
       {
         name: strapiTutorialProps.seo?.metaTitle || strapiTutorialProps.title,
         item: breadcrumbItemByProduct(strapiTutorialProps.product, [
-          'guides',
+          "guides",
           ...(resolvedParams?.productTutorialPage || []),
         ]),
       },

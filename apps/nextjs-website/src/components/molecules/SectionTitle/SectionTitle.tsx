@@ -1,9 +1,9 @@
-'use client';
-import LinkButton from '@/components/atoms/LinkButton/LinkButton';
-import EContainer from '@/editorialComponents/EContainer/EContainer';
-import { Stack, Typography } from '@mui/material';
-import type { TypographyVariant } from '@mui/material/styles';
-import React, { ReactNode } from 'react';
+"use client";
+import LinkButton from "@/components/atoms/LinkButton/LinkButton";
+import EContainer from "@/editorialComponents/EContainer/EContainer";
+import { Stack, Typography } from "@mui/material";
+import type { TypographyVariant } from "@mui/material/styles";
+import React, { ReactNode } from "react";
 
 type SectionTitleProps = {
   title: string;
@@ -11,7 +11,7 @@ type SectionTitleProps = {
   link?: {
     text: string;
     url: string;
-    target?: '_self' | '_blank' | '_parent' | '_top';
+    target?: "_self" | "_blank" | "_parent" | "_top";
   };
   children?: ReactNode | ReactNode[];
   margin?: number | string;
@@ -24,25 +24,25 @@ const SectionTitle = ({
   link,
   margin,
   children,
-  variant = 'h4',
+  variant = "h4",
 }: SectionTitleProps) => {
   return (
     <EContainer>
       <Stack
         m={margin}
         spacing={2}
-        direction='column'
-        justifyContent={{ sm: 'space-between', md: 'center' }}
-        alignItems='flex-start'
+        direction="column"
+        justifyContent={{ sm: "space-between", md: "center" }}
+        alignItems="flex-start"
       >
         {title && (
           <Typography
             variant={variant}
             sx={{
-              paddingBottom: '16px',
-              width: '100%',
-              fontSize: '2rem !important',
-              lineHeight: '1.125 !important',
+              paddingBottom: "16px",
+              width: "100%",
+              fontSize: "2rem !important",
+              lineHeight: "1.125 !important",
             }}
           >
             {title}
@@ -50,10 +50,10 @@ const SectionTitle = ({
         )}
         {subtitle && (
           <Typography
-            variant='body1'
+            variant="body1"
             style={{ marginTop: 0 }}
             marginBottom={2}
-            width={{ xs: '100%', md: '60%' }}
+            width={{ xs: "100%", md: "60%" }}
           >
             {subtitle}
           </Typography>

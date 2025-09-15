@@ -1,8 +1,8 @@
-import * as t from 'io-ts';
-import { pipe } from 'fp-ts/lib/function';
-import * as E from 'fp-ts/lib/Either';
-import * as PR from 'io-ts/lib/PathReporter';
-import { secrets } from './config';
+import * as t from "io-ts";
+import { pipe } from "fp-ts/lib/function";
+import * as E from "fp-ts/lib/Either";
+import * as PR from "io-ts/lib/PathReporter";
+import { secrets } from "./config";
 
 const BrowserConfigCodec = t.type({
   NEXT_PUBLIC_COGNITO_REGION: t.string,
@@ -28,9 +28,9 @@ export const publicEnv = {
 };
 
 export const makeBrowserConfig = (
-  env: Record<string, undefined | string>
+  env: Record<string, undefined | string>,
 ): E.Either<string, BrowserConfig> =>
   pipe(
     BrowserConfigCodec.decode(env),
-    E.mapLeft((errors) => PR.failure(errors).join('\n'))
+    E.mapLeft((errors) => PR.failure(errors).join("\n")),
   );

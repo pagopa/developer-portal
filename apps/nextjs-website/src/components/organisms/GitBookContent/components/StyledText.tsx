@@ -1,16 +1,16 @@
-import Typography from '@mui/material/Typography';
-import { StyledTextProps } from 'gitbook-docs/markdoc/schema/styledText';
-import { useTheme } from '@mui/material';
+import Typography from "@mui/material/Typography";
+import { StyledTextProps } from "gitbook-docs/markdoc/schema/styledText";
+import { useTheme } from "@mui/material";
 
 const StyledText = ({ style, children }: StyledTextProps) => {
   const { palette } = useTheme();
 
   switch (style) {
-    case 'code':
+    case "code":
       return (
         <Typography
-          variant='monospaced'
-          component='span'
+          variant="monospaced"
+          component="span"
           sx={{
             paddingY: 0.5,
             paddingX: 1,
@@ -20,31 +20,31 @@ const StyledText = ({ style, children }: StyledTextProps) => {
           {children}
         </Typography>
       );
-    case 'strong':
+    case "strong":
       return (
         <Typography
-          variant='body1'
-          fontWeight='bold'
-          component='span'
-          sx={{ fontSize: '18px' }}
+          variant="body1"
+          fontWeight="bold"
+          component="span"
+          sx={{ fontSize: "18px" }}
         >
           {children}
         </Typography>
       );
-    case 'italic':
+    case "italic":
       return (
         <Typography
-          variant='body1'
-          fontStyle='italic'
-          component='span'
-          sx={{ fontSize: '18px' }}
+          variant="body1"
+          fontStyle="italic"
+          component="span"
+          sx={{ fontSize: "18px" }}
         >
           {children}
         </Typography>
       );
     default:
       return (
-        <Typography variant='body1' component='span'>
+        <Typography variant="body1" component="span">
           {children}
         </Typography>
       );

@@ -1,5 +1,5 @@
-import { strapiGuideListPagesData } from '@/lib/strapi/__tests__/fixtures/guideListPages';
-import { StrapiGuideListPages } from '@/lib/strapi/types/guideListPage';
+import { strapiGuideListPagesData } from "@/lib/strapi/__tests__/fixtures/guideListPages";
+import { StrapiGuideListPages } from "@/lib/strapi/types/guideListPage";
 
 export function guideListPagesWithItemsMissingSlug() {
   const guidesList = strapiGuideListPagesData;
@@ -20,7 +20,7 @@ export function guideListPagesWithItemsMissingSlug() {
                 },
               })),
             },
-          })
+          }),
         ),
       },
     })),
@@ -47,7 +47,7 @@ export function guideListPagesWithItemsMissingImages() {
                 },
               })),
             },
-          })
+          }),
         ),
       },
     })),
@@ -76,7 +76,7 @@ export function guideListPagesWithItemsMissingListItem() {
                 ...guidePerCategory.guides.data.slice(1),
               ],
             },
-          })
+          }),
         ),
       },
     })),

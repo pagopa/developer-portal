@@ -1,25 +1,25 @@
-import { BreadcrumbSegment } from '@/lib/types/path';
-import { Product } from '@/lib/types/product';
+import { BreadcrumbSegment } from "@/lib/types/path";
+import { Product } from "@/lib/types/product";
 
 export type BreadcrumbItem = { readonly name?: string; readonly item?: string };
 
 export function productPageToBreadcrumbs(
   product: Product,
-  breadcrumbSegments?: readonly BreadcrumbSegment[]
+  breadcrumbSegments?: readonly BreadcrumbSegment[],
 ): readonly BreadcrumbSegment[] {
   return [
     {
-      name: 'breadcrumbs.home',
-      path: '/',
+      name: "breadcrumbs.home",
+      path: "/",
       translate: true,
     },
     {
       name: product.name,
       path: product.hasOverviewPage
         ? `${
-            product.slug.startsWith('/') ? product.slug : `/${product.slug}` // TODO: remove this control when validation will be added to Strapi
+            product.slug.startsWith("/") ? product.slug : `/${product.slug}` // TODO: remove this control when validation will be added to Strapi
           }/overview`
-        : '',
+        : "",
     },
     ...(breadcrumbSegments || []),
   ];
@@ -27,12 +27,12 @@ export function productPageToBreadcrumbs(
 
 export function pageToBreadcrumbs(
   pagePath: string,
-  paths?: readonly BreadcrumbSegment[]
+  paths?: readonly BreadcrumbSegment[],
 ): readonly BreadcrumbSegment[] {
   return [
     {
-      name: 'breadcrumbs.home',
-      path: '/',
+      name: "breadcrumbs.home",
+      path: "/",
       translate: true,
     },
     {
@@ -49,14 +49,14 @@ export function gitBookPageToBreadcrumbs(
   gitBookPagesWithTitle: readonly {
     readonly title: string;
     readonly path: string;
-  }[]
+  }[],
 ): readonly BreadcrumbSegment[] {
   // Generate a list of hierarchical breadcrumb paths from the page path
   // (e.g., '/send/release-note/2023/16-ottobre-2023' -> [ '/send/release-note/2023', '/send/release-note/2023/16-ottobre-2023'])
   const currentPageBreadcrumbPaths = pagePath
-    .split('/') // Split the path into parts based on '/'
+    .split("/") // Split the path into parts based on '/'
     .filter(Boolean) // Remove empty segments (e.g., leading or trailing slashes)
-    .map((_, index, arr) => '/' + arr.slice(0, index + 1).join('/')) // Reconstruct breadcrumb paths
+    .map((_, index, arr) => "/" + arr.slice(0, index + 1).join("/")) // Reconstruct breadcrumb paths
     .slice(2); // Ignore the first two levels
 
   // Match breadcrumb paths with available pages and sort them in hierarchical order

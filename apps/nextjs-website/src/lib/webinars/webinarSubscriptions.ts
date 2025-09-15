@@ -1,19 +1,19 @@
-import { pipe } from 'fp-ts/lib/function';
-import * as RTE from 'fp-ts/lib/ReaderTaskEither';
-import * as TE from 'fp-ts/lib/TaskEither';
-import * as R from 'fp-ts/lib/Reader';
-import * as RA from 'fp-ts/lib/ReadonlyArray';
-import * as E from 'fp-ts/lib/Either';
+import { pipe } from "fp-ts/lib/function";
+import * as RTE from "fp-ts/lib/ReaderTaskEither";
+import * as TE from "fp-ts/lib/TaskEither";
+import * as R from "fp-ts/lib/Reader";
+import * as RA from "fp-ts/lib/ReadonlyArray";
+import * as E from "fp-ts/lib/Either";
 import {
   DeleteItemCommand,
   DynamoDBClient,
   PutItemCommand,
   QueryCommand,
-} from '@aws-sdk/client-dynamodb';
+} from "@aws-sdk/client-dynamodb";
 import {
   WebinarSubscriptionDynamodbCodec,
   makeWebinarSubscriptionFromDynamodbItem,
-} from './dynamodb/codec';
+} from "./dynamodb/codec";
 
 export type WebinarEnv = {
   readonly dynamoDBClient: DynamoDBClient;
@@ -28,16 +28,16 @@ export type WebinarSubscription = {
 
 export const insertWebinarSubscription = (
   webinarId: string,
-  username: string
+  username: string,
 ) =>
   pipe(
     // take dynamoDBClient and nowDate properties from WebinarEnv
-    R.ask<Pick<WebinarEnv, 'dynamoDBClient' | 'nowDate'>>(),
+    R.ask<Pick<WebinarEnv, "dynamoDBClient" | "nowDate">>(),
     R.map(({ dynamoDBClient, nowDate }) => {
       const createdAt = nowDate();
       // create put command
       const putCommand = new PutItemCommand({
-        TableName: 'WebinarSubscriptions',
+        TableName: "WebinarSubscriptions",
         Item: {
           webinarId: { S: webinarId },
           username: { S: username },
@@ -47,18 +47,18 @@ export const insertWebinarSubscription = (
       return TE.tryCatch(() => dynamoDBClient.send(putCommand), E.toError);
     }),
     // do not return (i.e., discard) the result if the operation succeded
-    RTE.map(() => void 0)
+    RTE.map(() => void 0),
   );
 
 export const deleteWebinarSubscription = (
   webinarId: string,
-  username: string
+  username: string,
 ) =>
   pipe(
-    R.ask<Pick<WebinarEnv, 'dynamoDBClient'>>(),
+    R.ask<Pick<WebinarEnv, "dynamoDBClient">>(),
     R.map(({ dynamoDBClient }) => {
       const deleteCommand = new DeleteItemCommand({
-        TableName: 'WebinarSubscriptions',
+        TableName: "WebinarSubscriptions",
         Key: {
           webinarId: { S: webinarId },
           username: { S: username },
@@ -67,18 +67,18 @@ export const deleteWebinarSubscription = (
       return TE.tryCatch(() => dynamoDBClient.send(deleteCommand), E.toError);
     }),
     // do not return (i.e., discard) the result if the operation succeded
-    RTE.map(() => void 0)
+    RTE.map(() => void 0),
   );
 
 export const listUserWebinarSubscriptions = (username: string) =>
   pipe(
-    R.ask<Pick<WebinarEnv, 'dynamoDBClient'>>(),
+    R.ask<Pick<WebinarEnv, "dynamoDBClient">>(),
     R.map(({ dynamoDBClient }) => {
       const queryCommand = new QueryCommand({
-        TableName: 'WebinarSubscriptions',
-        KeyConditionExpression: 'username = :username',
+        TableName: "WebinarSubscriptions",
+        KeyConditionExpression: "username = :username",
         ExpressionAttributeValues: {
-          ':username': { S: username },
+          ":username": { S: username },
         },
       });
       return TE.tryCatch(() => dynamoDBClient.send(queryCommand), E.toError);
@@ -92,7 +92,7 @@ export const listUserWebinarSubscriptions = (username: string) =>
         // turn Array<Either<_, _>> to Either<_, Array<_>>
         RA.sequence(E.Applicative),
         // map errors to error and dynamodb item to WebinarSubscription
-        E.bimap(E.toError, RA.map(makeWebinarSubscriptionFromDynamodbItem))
-      )
-    )
+        E.bimap(E.toError, RA.map(makeWebinarSubscriptionFromDynamodbItem)),
+      ),
+    ),
   );

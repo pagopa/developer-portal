@@ -1,10 +1,10 @@
-import { StrapiHomepage } from '@/lib/strapi/types/homepage';
-import { makeWebinarProps } from '@/lib/strapi/makeProps/makeWebinars';
-import { HomepageProps } from '@/app/page';
-import _ from 'lodash';
+import { StrapiHomepage } from "@/lib/strapi/types/homepage";
+import { makeWebinarProps } from "@/lib/strapi/makeProps/makeWebinars";
+import { HomepageProps } from "@/app/page";
+import _ from "lodash";
 
 export const makeHomepageProps = (
-  strapiHomepage: StrapiHomepage
+  strapiHomepage: StrapiHomepage,
 ): HomepageProps => ({
   comingsoonDocumentation:
     strapiHomepage.data.attributes.comingsoonDocumentation,
@@ -29,33 +29,33 @@ export const makeHomepageProps = (
           image:
             item.attributes.image?.data &&
             item.attributes.image.data.attributes,
-        })
+        }),
       ),
     },
   }),
   ...(strapiHomepage.data.attributes.ecosystem && {
     ecosystem: {
-      title: strapiHomepage.data.attributes.ecosystem.title || '',
+      title: strapiHomepage.data.attributes.ecosystem.title || "",
       productsTabName: strapiHomepage.data.attributes.ecosystem.productsTabName,
       products: strapiHomepage.data.attributes.ecosystem.products.data.map(
         (product) => ({
           title: product.attributes.name,
-          text: product.attributes.description ?? '',
+          text: product.attributes.description ?? "",
           href: `${product.attributes.slug}/overview`,
-          icon: product.attributes.logo.data?.attributes.url || '',
+          icon: product.attributes.logo.data?.attributes.url || "",
           useSrc: true,
-        })
+        }),
       ),
       solutionsTabName:
         strapiHomepage.data.attributes.ecosystem.solutionsTabName,
       solutions: strapiHomepage.data.attributes.ecosystem.solutions.data.map(
         (solution) => ({
           title: solution.attributes.title,
-          text: solution.attributes.description ?? '',
+          text: solution.attributes.description ?? "",
           href: `/solutions/${solution.attributes.slug}`,
           icon: solution.attributes.icon.data.attributes.url,
           useSrc: true,
-        })
+        }),
       ),
       solutionsCta: strapiHomepage.data.attributes.ecosystem.solutionsCta && {
         variant: strapiHomepage.data.attributes.ecosystem.solutionsCta.variant,
@@ -66,7 +66,7 @@ export const makeHomepageProps = (
   seo: strapiHomepage?.data?.attributes?.seo,
   webinars: _.compact(
     strapiHomepage.data.attributes.webinars.data.map((webinar) =>
-      makeWebinarProps(webinar)
-    )
+      makeWebinarProps(webinar),
+    ),
   ),
 });

@@ -1,4 +1,4 @@
-import { StrapiComponent } from './strapiComponent';
+import { StrapiComponent } from "./strapiComponent";
 
 type Guide = {
   readonly attributes: {

@@ -1,5 +1,5 @@
-import { StrapiUrlReplaceMap } from '@/lib/strapi/types/urlReplaceMap';
-import { productJson } from './product';
+import { StrapiUrlReplaceMap } from "@/lib/strapi/types/urlReplaceMap";
+import { productJson } from "./product";
 
 export const strapiUrlReplaceMapFixture: StrapiUrlReplaceMap = {
   data: {
@@ -7,13 +7,13 @@ export const strapiUrlReplaceMapFixture: StrapiUrlReplaceMap = {
       urlToGuide: [
         {
           id: 1,
-          url: 'getting-started',
-          subPath: 'step-2',
+          url: "getting-started",
+          subPath: "step-2",
           guide: {
             data: {
               attributes: {
-                title: 'Getting started',
-                slug: 'getting-started',
+                title: "Getting started",
+                slug: "getting-started",
                 product: {
                   data: {
                     attributes: {
@@ -31,5 +31,5 @@ export const strapiUrlReplaceMapFixture: StrapiUrlReplaceMap = {
 };
 
 export const expectedUrlReplaceMapFixture = {
-  'getting-started': '/firma-con-io/guides/getting-started/step-2',
+  "getting-started": "/firma-con-io/guides/getting-started/step-2",
 };

@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { strapiSolutionListPage } from '@/lib/strapi/__tests__/fixtures/solutionListPage';
-import { StrapiSolutionListPage } from '@/lib/strapi/types/solutionListPage';
+import { strapiSolutionListPage } from "@/lib/strapi/__tests__/fixtures/solutionListPage";
+import { StrapiSolutionListPage } from "@/lib/strapi/types/solutionListPage";
 
 export function minimalDataSolutionListPage() {
   return {
     data: {
       attributes: {
-        title: 'Minimal Solutions',
-        description: 'Minimal solutions page',
+        title: "Minimal Solutions",
+        description: "Minimal solutions page",
         solutions: {
           data: [],
         },
@@ -74,14 +74,14 @@ export function solutionListPageWithMissingSolutionSlug(): StrapiSolutionListPag
                 ...strapiSolutionListPage.data.attributes.solutions.data[0]
                   .attributes,
                 slug: undefined as any,
-                title: 'Solution Without Slug',
+                title: "Solution Without Slug",
               },
             },
             {
               attributes: {
                 ...strapiSolutionListPage.data.attributes.solutions.data[0]
                   .attributes,
-                title: 'Valid Solution',
+                title: "Valid Solution",
               },
             },
           ],
@@ -108,7 +108,7 @@ export function solutionListPageWithMissingCaseHistorySlug(): StrapiSolutionList
                   ...strapiSolutionListPage.data.attributes.caseHistories
                     ?.case_histories.data[0].attributes,
                   slug: undefined as any,
-                  title: 'Case History Without Slug',
+                  title: "Case History Without Slug",
                 },
               },
               {
@@ -116,7 +116,7 @@ export function solutionListPageWithMissingCaseHistorySlug(): StrapiSolutionList
                 attributes: {
                   ...strapiSolutionListPage.data.attributes.caseHistories
                     ?.case_histories.data[0].attributes,
-                  title: 'Valid Case History',
+                  title: "Valid Case History",
                 },
               },
             ],

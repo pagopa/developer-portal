@@ -1,9 +1,9 @@
-'use client';
-import React, { useMemo } from 'react';
-import SectionTitle from '@/components/molecules/SectionTitle/SectionTitle';
-import { Box, useTheme } from '@mui/material';
-import Newsroom from '@/editorialComponents/Newsroom/Newsroom';
-import { useTranslations } from 'next-intl';
+"use client";
+import React, { useMemo } from "react";
+import SectionTitle from "@/components/molecules/SectionTitle/SectionTitle";
+import { Box, useTheme } from "@mui/material";
+import Newsroom from "@/editorialComponents/Newsroom/Newsroom";
+import { useTranslations } from "next-intl";
 
 type NewsShowcaseItemProps = {
   readonly comingSoon?: boolean;
@@ -13,7 +13,7 @@ type NewsShowcaseItemProps = {
   readonly link: {
     readonly text: string;
     readonly url: string;
-    readonly target?: '_self' | '_blank' | '_parent' | '_top';
+    readonly target?: "_self" | "_blank" | "_parent" | "_top";
   };
   readonly image?: {
     readonly url: string;
@@ -27,12 +27,12 @@ export type NewsShowcaseProps = {
   readonly link?: {
     readonly text: string;
     readonly url: string;
-    readonly target?: '_self' | '_blank' | '_parent' | '_top';
+    readonly target?: "_self" | "_blank" | "_parent" | "_top";
   };
   readonly marginTop?: number;
   readonly newsMarginTop?: number;
   readonly items: readonly NewsShowcaseItemProps[];
-  readonly backgroundVariant?: 'white' | 'lightGrey';
+  readonly backgroundVariant?: "white" | "lightGrey";
 };
 
 const NewsShowcase = ({
@@ -42,7 +42,7 @@ const NewsShowcase = ({
   marginTop,
   items,
   newsMarginTop = 2,
-  backgroundVariant = 'white',
+  backgroundVariant = "white",
 }: NewsShowcaseProps) => {
   const theme = useTheme();
   const t = useTranslations();
@@ -52,15 +52,15 @@ const NewsShowcase = ({
       white: theme.palette.background.paper,
       lightGrey: theme.palette.grey[50],
     }),
-    [theme]
+    [theme],
   );
 
   const sectionMargin = useMemo(
     () => ({
       white: 0,
-      lightGrey: '4rem 0 0',
+      lightGrey: "4rem 0 0",
     }),
-    []
+    [],
   );
 
   return (
@@ -75,13 +75,13 @@ const NewsShowcase = ({
         title={title}
         subtitle={subtitle}
         link={link}
-        variant='h2'
+        variant="h2"
       />
       <Box mt={newsMarginTop}>
         <Newsroom
           items={items.map((item) => ({
             comingSoonLabel: item.comingSoon
-              ? t('shared.comingSoon')
+              ? t("shared.comingSoon")
               : undefined,
             title: item.title,
             date: {
@@ -91,8 +91,8 @@ const NewsShowcase = ({
             href: { link: item.link.url, label: item.link.text },
             img: item.image
               ? {
-                  alt: (item.image && item.image.alternativeText) || '',
-                  src: (item.image && item.image.url) || '/images/news.png',
+                  alt: (item.image && item.image.alternativeText) || "",
+                  src: (item.image && item.image.url) || "/images/news.png",
                 }
               : undefined,
           }))}

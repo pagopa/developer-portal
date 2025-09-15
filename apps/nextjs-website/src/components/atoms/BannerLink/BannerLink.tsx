@@ -1,64 +1,64 @@
-import { Box, Stack, Typography, useTheme } from '@mui/material';
-import { BlocksContent, BlocksRenderer } from '@strapi/blocks-react-renderer';
-import Image from 'next/image';
-import IconWrapper from '../IconWrapper/IconWrapper';
-import { FC } from 'react';
-import type { TypographyVariant } from '@mui/material/styles';
-import { Media } from '@/lib/types/media';
+import { Box, Stack, Typography, useTheme } from "@mui/material";
+import { BlocksContent, BlocksRenderer } from "@strapi/blocks-react-renderer";
+import Image from "next/image";
+import IconWrapper from "../IconWrapper/IconWrapper";
+import { FC } from "react";
+import type { TypographyVariant } from "@mui/material/styles";
+import { Media } from "@/lib/types/media";
 
 export type BannerLinkProps = {
   content?: BlocksContent;
   contentJustification?: string;
   icon: Media;
-  theme: 'light' | 'dark';
+  theme: "light" | "dark";
   title?: string;
   variant?: TypographyVariant;
 };
 
 export const BannerLink: FC<BannerLinkProps> = ({
   content,
-  contentJustification = 'center',
+  contentJustification = "center",
   icon,
-  theme = 'light',
+  theme = "light",
   title,
-  variant = 'h6',
+  variant = "h6",
 }) => {
   const { palette } = useTheme();
 
   const backgroundColor =
-    theme === 'dark' ? palette.primary.dark : palette.primary.light;
+    theme === "dark" ? palette.primary.dark : palette.primary.light;
   const textColor = palette.primary.contrastText;
 
   return (
     <Box
-      component='section'
+      component="section"
       sx={{
         backgroundColor: backgroundColor,
-        direction: 'column',
-        display: 'flex',
-        justifyContent: { xs: 'center', md: contentJustification },
-        maxWidth: { xs: '100%', md: '100%' },
-        textAlign: 'center',
-        width: '100%',
+        direction: "column",
+        display: "flex",
+        justifyContent: { xs: "center", md: contentJustification },
+        maxWidth: { xs: "100%", md: "100%" },
+        textAlign: "center",
+        width: "100%",
       }}
     >
       <Box
         sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          maxWidth: '100%',
-          padding: { xs: '0px 32px', md: '0px 130px' },
-          textAlign: 'center',
+          display: "flex",
+          justifyContent: "center",
+          maxWidth: "100%",
+          padding: { xs: "0px 32px", md: "0px 130px" },
+          textAlign: "center",
         }}
       >
         <Stack
           sx={{
             maxWidth: 450,
-            padding: { xs: '40px 0px', md: '64px 0px' },
-            spacing: '8px',
+            padding: { xs: "40px 0px", md: "64px 0px" },
+            spacing: "8px",
           }}
         >
-          <div style={{ marginBottom: '26px' }}>
+          <div style={{ marginBottom: "26px" }}>
             <IconWrapper
               icon={icon.url}
               useSrc={true}
@@ -71,8 +71,8 @@ export const BannerLink: FC<BannerLinkProps> = ({
             <Typography
               variant={variant}
               sx={{
-                fontSize: '1.5rem !important',
-                lineHeight: '1.15 !important',
+                fontSize: "1.5rem !important",
+                lineHeight: "1.15 !important",
               }}
               color={textColor}
             >
@@ -88,18 +88,18 @@ export const BannerLink: FC<BannerLinkProps> = ({
                     src={image.url}
                     width={image.width}
                     height={image.height}
-                    alt={image.alternativeText || ''}
+                    alt={image.alternativeText || ""}
                   />
                 ),
                 paragraph: ({ children }) => (
-                  <Typography variant='body2' color={textColor}>
+                  <Typography variant="body2" color={textColor}>
                     {children}
                   </Typography>
                 ),
                 link: ({ children, url }) => (
                   <a
                     href={url}
-                    style={{ color: textColor, textDecorationLine: 'none' }}
+                    style={{ color: textColor, textDecorationLine: "none" }}
                   >
                     <b>{children}</b>
                   </a>
@@ -112,8 +112,8 @@ export const BannerLink: FC<BannerLinkProps> = ({
                 list: ({ children }) => (
                   <ul
                     style={{
-                      listStyleType: 'square',
-                      listStylePosition: 'inside',
+                      listStyleType: "square",
+                      listStylePosition: "inside",
                       color: textColor,
                       padding: 0,
                     }}

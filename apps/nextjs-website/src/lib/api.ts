@@ -1,6 +1,6 @@
-import { Product } from './types/product';
-import { Webinar } from '@/lib/types/webinar';
-import { GuidePage } from './types/guideData';
+import { Product } from "./types/product";
+import { Webinar } from "@/lib/types/webinar";
+import { GuidePage } from "./types/guideData";
 import {
   getApiDataListPagesProps,
   getApiDataProps,
@@ -18,18 +18,18 @@ import {
   getTutorialListPagesProps,
   getTutorialsProps,
   getWebinarsProps,
-} from './cmsApi';
-import { parseS3GuidePage } from '@/helpers/parseS3Doc.helpers';
+} from "./cmsApi";
+import { parseS3GuidePage } from "@/helpers/parseS3Doc.helpers";
 import {
   getGuidesMetadata,
   getReleaseNotesMetadata,
   getSolutionsMetadata,
-} from '@/helpers/s3Metadata.helpers';
+} from "@/helpers/s3Metadata.helpers";
 
 function manageUndefined<T>(props: undefined | null | T) {
   if (!props) {
     // eslint-disable-next-line functional/no-throw-statements
-    throw new Error('Failed to fetch data');
+    throw new Error("Failed to fetch data");
   }
   return props;
 }
@@ -43,9 +43,9 @@ const guidePageCache = new Map<string, any>();
 
 export async function getGuidePage(
   guidePaths: ReadonlyArray<string>,
-  productSlug: string
+  productSlug: string,
 ) {
-  const cacheKey = `${productSlug}-${guidePaths.join('/')}`;
+  const cacheKey = `${productSlug}-${guidePaths.join("/")}`;
 
   // Check cache first to avoid duplicate work
   if (guidePageCache.has(cacheKey)) {
@@ -56,16 +56,16 @@ export async function getGuidePage(
   // Fetch data in parallel instead of sequential
   const [products, guideProps, guidesMetadata] = await Promise.all([
     getProducts(),
-    getGuidePageProps(guidePaths.length > 0 ? guidePaths[0] : '', productSlug),
+    getGuidePageProps(guidePaths.length > 0 ? guidePaths[0] : "", productSlug),
     getGuidesMetadata(),
   ]);
 
   // Path construction
   const guidePath = [
     `/${guideProps.product.slug}`,
-    'guides',
+    "guides",
     ...guidePaths,
-  ].join('/');
+  ].join("/");
 
   const parsedGuidePage = manageUndefined(
     await parseS3GuidePage({
@@ -73,7 +73,7 @@ export async function getGuidePage(
       guidePath,
       guidesMetadata,
       products,
-    })
+    }),
   );
 
   // Cache the result to avoid duplicate work
@@ -86,14 +86,14 @@ export async function getGuidePage(
 export function getGitBookSubPaths(path: string) {
   // the filter is to remove the first 3 elements of the path which are
   // an empty string (the path begins with a / symbol), the product slug and 'guides' hard-coded string
-  return path.split('/').filter((p, index) => index > 2);
+  return path.split("/").filter((p, index) => index > 2);
 }
 
 export async function getGuideListPages(productSlug?: string) {
   const props = manageUndefined(
     (await getGuideListPagesProps()).find(
-      ({ product }) => product.slug === productSlug
-    )
+      ({ product }) => product.slug === productSlug,
+    ),
   );
   return manageUndefinedAndAddProducts(props);
 }
@@ -101,8 +101,8 @@ export async function getGuideListPages(productSlug?: string) {
 export async function getOverview(productSlug?: string) {
   return manageUndefined(
     (await getOverviewsProps()).find(
-      (overviewData) => overviewData.product.slug === productSlug
-    )
+      (overviewData) => overviewData.product.slug === productSlug,
+    ),
   );
 }
 
@@ -113,23 +113,23 @@ export async function getProducts(): Promise<readonly Product[]> {
 export async function getQuickStartGuide(productSlug?: string) {
   const props = manageUndefined(
     (await getQuickStartGuidesProps()).find(
-      ({ product }) => product.slug === productSlug
-    )
+      ({ product }) => product.slug === productSlug,
+    ),
   );
   return manageUndefinedAndAddProducts(props);
 }
 
 export async function getTutorial(
   productSlug: string,
-  productTutorialPage?: ReadonlyArray<string>
+  productTutorialPage?: ReadonlyArray<string>,
 ) {
-  const tutorialSubPath = productTutorialPage?.join('/');
+  const tutorialSubPath = productTutorialPage?.join("/");
   const tutorialPath = `/${productSlug}/tutorials/${tutorialSubPath}`;
 
   const product = await getProduct(productSlug);
 
   const props = manageUndefined(
-    (await getTutorialsProps()).find(({ path }) => path === tutorialPath)
+    (await getTutorialsProps()).find(({ path }) => path === tutorialPath),
   );
   return {
     ...props,
@@ -140,8 +140,8 @@ export async function getTutorial(
 export async function getTutorialPaths() {
   const tutorialsFromCMS = await getTutorialsProps();
   const tutorialPathsFromCMS = tutorialsFromCMS.map(({ path }) => ({
-    slug: path.split('/')[1],
-    tutorialPaths: [path.split('/').at(-1)],
+    slug: path.split("/")[1],
+    tutorialPaths: [path.split("/").at(-1)],
   }));
   return tutorialPathsFromCMS;
 }
@@ -157,13 +157,13 @@ export async function getTutorialListPageProps(productSlug?: string) {
 
 export async function getVisibleInListWebinars(): Promise<readonly Webinar[]> {
   return (await getWebinarsProps()).filter(
-    (webinar) => webinar.isVisibleInList
+    (webinar) => webinar.isVisibleInList,
   );
 }
 
 export async function getWebinar(webinarSlug?: string): Promise<Webinar> {
   const props = manageUndefined(
-    (await getWebinarsProps()).find(({ slug }) => slug === webinarSlug)
+    (await getWebinarsProps()).find(({ slug }) => slug === webinarSlug),
   );
   return props;
 }
@@ -171,8 +171,8 @@ export async function getWebinar(webinarSlug?: string): Promise<Webinar> {
 export async function getCaseHistory(caseHistorySlug?: string) {
   return manageUndefined(
     (await getCaseHistoriesProps()).find(
-      ({ slug }: { readonly slug: string }) => slug === caseHistorySlug
-    )
+      ({ slug }: { readonly slug: string }) => slug === caseHistorySlug,
+    ),
   );
 }
 
@@ -183,7 +183,7 @@ export async function getApiDataParams() {
         productSlug: apiDataListPageProps.product.slug,
         apiDataSlug,
         updatedAt: apiDataListPageProps.updatedAt,
-      }))
+      })),
   );
 
   return props || [];
@@ -191,14 +191,14 @@ export async function getApiDataParams() {
 
 export async function getApiDataListPages(productSlug: string) {
   const props = (await getApiDataListPagesProps()).find(
-    (apiDataListPageProps) => apiDataListPageProps.product.slug === productSlug
+    (apiDataListPageProps) => apiDataListPageProps.product.slug === productSlug,
   );
   return props;
 }
 
 export async function getProduct(productSlug: string) {
   const props = (await getProductsProps()).find(
-    (product) => product.slug === productSlug
+    (product) => product.slug === productSlug,
   );
   return props;
 }
@@ -206,25 +206,25 @@ export async function getProduct(productSlug: string) {
 export async function getApiData(apiDataSlug: string) {
   const props = manageUndefined(
     (await getApiDataProps()).find(
-      (apiData) => apiData.apiDataSlug === apiDataSlug
-    )
+      (apiData) => apiData.apiDataSlug === apiDataSlug,
+    ),
   );
   return props;
 }
 
 export async function getReleaseNote(
   productSlug: string,
-  releaseNoteSubPathSlugs?: readonly string[]
+  releaseNoteSubPathSlugs?: readonly string[],
 ) {
   const products = await getProducts();
   const releaseNotesPath = `/${productSlug}/${releaseNoteSubPathSlugs?.join(
-    '/'
+    "/",
   )}`;
   const releaseNotesMetadata = await getReleaseNotesMetadata();
 
   const releaseNoteProps = await getReleaseNoteProps(
     productSlug,
-    releaseNotesMetadata.find(({ path }) => path === releaseNotesPath)
+    releaseNotesMetadata.find(({ path }) => path === releaseNotesPath),
   );
 
   if (!releaseNoteProps) {
@@ -256,7 +256,7 @@ export async function getReleaseNote(
 
 export async function getSolution(solutionSlug?: string) {
   const props = manageUndefined(
-    (await getSolutionsProps()).find(({ slug }) => slug === solutionSlug)
+    (await getSolutionsProps()).find(({ slug }) => slug === solutionSlug),
   );
   return props;
 }
@@ -268,7 +268,7 @@ export async function getSolutionListPage() {
 
 export async function getSolutionDetail(
   solutionSlug: string,
-  solutionSubPathSlugs: readonly string[]
+  solutionSubPathSlugs: readonly string[],
 ) {
   const solutionsMetadata = await getSolutionsMetadata();
 
@@ -276,7 +276,7 @@ export async function getSolutionDetail(
     solutionSlug,
     solutionsMetadata.find(
       ({ path }) =>
-        path === `/solutions/${solutionSlug}/${solutionSubPathSlugs.join('/')}`
-    )
+        path === `/solutions/${solutionSlug}/${solutionSubPathSlugs.join("/")}`,
+    ),
   );
 }

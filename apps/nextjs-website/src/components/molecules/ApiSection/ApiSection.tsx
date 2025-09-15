@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import { ApiDataPageProps } from '@/app/[productSlug]/api/[apiDataSlug]/page';
-import ApiRestSection from '@/components/molecules/ApiRestSection/ApiRestSection';
-import ApiSoapSection from '@/components/molecules/ApiSoapSection/ApiSoapSection';
-import PageNotFound from '@/app/not-found';
-import React from 'react';
+import { ApiDataPageProps } from "@/app/[productSlug]/api/[apiDataSlug]/page";
+import ApiRestSection from "@/components/molecules/ApiRestSection/ApiRestSection";
+import ApiSoapSection from "@/components/molecules/ApiSoapSection/ApiSoapSection";
+import PageNotFound from "@/app/not-found";
+import React from "react";
 
 export type ApiPageProps = {
   readonly apiData: ApiDataPageProps;
@@ -15,17 +15,17 @@ const ApiSection = ({ apiData }: ApiPageProps) => {
   }
 
   switch (apiData.apiType) {
-    case 'soap':
+    case "soap":
       return (
         <ApiSoapSection
-          apiName={apiData.specUrlsName || ''}
+          apiName={apiData.specUrlsName || ""}
           apiRepositoryUrl={apiData.apiSoapUrl}
           apiSlug={apiData.apiDataSlug}
           apiUrls={apiData.apiSoapUrlList}
           product={apiData.product}
         />
       );
-    case 'rest':
+    case "rest":
       return (
         <ApiRestSection
           apiSlug={apiData.apiDataSlug}

@@ -1,6 +1,6 @@
-'use client';
-import React from 'react';
-import { useTheme } from '@mui/material';
+"use client";
+import React from "react";
+import { useTheme } from "@mui/material";
 
 const BodyWrapper = ({ children }: { children: React.ReactNode }) => {
   const { palette } = useTheme();

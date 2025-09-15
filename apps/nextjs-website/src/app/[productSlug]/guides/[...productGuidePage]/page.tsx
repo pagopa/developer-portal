@@ -1,27 +1,27 @@
 import ProductLayout, {
   ProductLayoutProps,
-} from '@/components/organisms/ProductLayout/ProductLayout';
-import { getGuidePage } from '@/lib/api';
-import { Product } from '@/lib/types/product';
-import React from 'react';
-import { ParseContentConfig } from 'gitbook-docs/parseContent';
-import { Metadata } from 'next';
+} from "@/components/organisms/ProductLayout/ProductLayout";
+import { getGuidePage } from "@/lib/api";
+import { Product } from "@/lib/types/product";
+import React from "react";
+import { ParseContentConfig } from "gitbook-docs/parseContent";
+import { Metadata } from "next";
 import {
   makeMetadata,
   makeMetadataFromStrapi,
-} from '@/helpers/metadata.helpers';
-import GitBookTemplate from '@/components/templates/GitBookTemplate/GitBookTemplate';
-import { productPageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
-import { getUrlReplaceMapProps } from '@/lib/cmsApi';
-import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
+} from "@/helpers/metadata.helpers";
+import GitBookTemplate from "@/components/templates/GitBookTemplate/GitBookTemplate";
+import { productPageToBreadcrumbs } from "@/helpers/breadcrumbs.helpers";
+import { getUrlReplaceMapProps } from "@/lib/cmsApi";
+import { generateStructuredDataScripts } from "@/helpers/generateStructuredDataScripts.helpers";
 import {
   breadcrumbItemByProduct,
   convertSeoToStructuredDataArticle,
   productToBreadcrumb,
-} from '@/helpers/structuredData.helpers';
-import PageNotFound from '@/app/not-found';
+} from "@/helpers/structuredData.helpers";
+import PageNotFound from "@/app/not-found";
 
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
 type Params = {
@@ -55,8 +55,8 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const resolvedParams = await params;
   const props = await getGuidePage(
-    resolvedParams?.productGuidePage ?? [''],
-    resolvedParams?.productSlug
+    resolvedParams?.productGuidePage ?? [""],
+    resolvedParams?.productSlug,
   );
 
   if (props?.seo) {
@@ -65,16 +65,16 @@ export async function generateMetadata({
 
   return makeMetadata({
     title: [
-      props ? props.page.title : '',
+      props ? props.page.title : "",
       props
         ? [props.guide.name, !props.version.main && props.version.name]
             .filter(Boolean)
-            .join(' ')
+            .join(" ")
         : [],
-      props ? props.product.name : '',
+      props ? props.product.name : "",
     ]
       .filter(Boolean)
-      .join(' | '),
+      .join(" | "),
     url: props?.page.path,
   });
 }
@@ -82,7 +82,10 @@ export async function generateMetadata({
 const Page = async ({ params }: { params: Promise<Params> }) => {
   const resolvedParams = await params;
   const [guideProps, urlReplaceMap] = await Promise.all([
-    getGuidePage(resolvedParams?.productGuidePage ?? [''], resolvedParams?.productSlug),
+    getGuidePage(
+      resolvedParams?.productGuidePage ?? [""],
+      resolvedParams?.productSlug,
+    ),
     getUrlReplaceMapProps(),
   ]);
 
@@ -121,7 +124,7 @@ const Page = async ({ params }: { params: Promise<Params> }) => {
       {
         name: seo?.metaTitle || page.title,
         item: breadcrumbItemByProduct(props.product, [
-          'guides',
+          "guides",
           ...(resolvedParams?.productGuidePage || []),
         ]),
       },
@@ -134,10 +137,10 @@ const Page = async ({ params }: { params: Promise<Params> }) => {
     ...productPageToBreadcrumbs(props.product, [
       {
         translate: true,
-        name: 'devPortal.productHeader.guides',
+        name: "devPortal.productHeader.guides",
         path: props.product.hasGuideListPage
           ? `/${props.product.slug}/guides`
-          : '/',
+          : "/",
       },
       {
         name: props.guide.name,

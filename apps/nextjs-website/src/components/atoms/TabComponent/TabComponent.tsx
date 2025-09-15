@@ -1,6 +1,6 @@
-'use client';
-import React, { FC, ReactNode } from 'react';
-import { Box, Tab, Tabs, SxProps } from '@mui/material';
+"use client";
+import React, { FC, ReactNode } from "react";
+import { Box, Tab, Tabs, SxProps } from "@mui/material";
 
 type TabPanelProps = {
   readonly children?: ReactNode;
@@ -19,7 +19,7 @@ const TabPanel: FC<TabPanelProps> = ({
 }) => {
   return (
     <div
-      role='tabpanel'
+      role="tabpanel"
       hidden={value !== index}
       id={`tabpanel-${index}`}
       aria-labelledby={`tab-${index}`}
@@ -37,7 +37,7 @@ export type TabItem = {
 export type TabsProps = {
   readonly items: ReadonlyArray<TabItem>;
   readonly centered?: boolean;
-  readonly variant?: 'standard' | 'scrollable' | 'fullWidth';
+  readonly variant?: "standard" | "scrollable" | "fullWidth";
   sx?: SxProps;
 };
 
@@ -53,11 +53,11 @@ export const TabComponent: FC<TabsProps> = ({
     <>
       <Box
         sx={{
-          display: 'flex',
-          justifyContent: 'space-around',
+          display: "flex",
+          justifyContent: "space-around",
           marginBottom: 6,
-          position: 'relative',
-          top: '2px',
+          position: "relative",
+          top: "2px",
         }}
       >
         <Tabs
@@ -68,10 +68,10 @@ export const TabComponent: FC<TabsProps> = ({
             setCurrentTab(newValue);
           }}
           sx={{
-            flexGrow: '1',
-            position: 'relative',
-            top: '2px',
-            maxWidth: '1200px',
+            flexGrow: "1",
+            position: "relative",
+            top: "2px",
+            maxWidth: "1200px",
           }}
         >
           {items.map((item, index) => (
@@ -79,9 +79,9 @@ export const TabComponent: FC<TabsProps> = ({
               key={index}
               label={item.title}
               sx={{
-                maxWidth: '600px',
+                maxWidth: "600px",
                 borderBottom: 2,
-                borderColor: 'divider',
+                borderColor: "divider",
               }}
             />
           ))}
