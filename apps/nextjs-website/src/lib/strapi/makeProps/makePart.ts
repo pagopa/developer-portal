@@ -43,16 +43,6 @@ export function makePartProps(strapiPart: StrapiPart): Part | null {
         quote: strapiPart.text,
         backgroundImage: strapiPart.backgroundImage.data?.attributes,
       };
-    case 'parts.ck-editor':
-      // eslint-disable-next-line no-case-declarations
-      const { parsedContent, menuItems } = parseCkEditorContent(
-        strapiPart.content
-      );
-      return {
-        component: 'ckEditor',
-        content: parsedContent,
-        menuItems: [...menuItems],
-      };
     case 'parts.ck-editor-html':
       // eslint-disable-next-line no-case-declarations
       // eslint-disable-next-line no-case-declarations
