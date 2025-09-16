@@ -1,5 +1,3 @@
-import * as t from 'io-ts/lib';
-
 export type Query = {
   readonly id: string;
   readonly sessionId: string;
