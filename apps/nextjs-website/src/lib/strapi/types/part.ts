@@ -60,9 +60,9 @@ type QuotePart = {
 export type StrapiPart =
   | AlertPart
   | ApiTesterPart
-  | CkEditorPart
   | CodeBlockPart
+  | CkEditorHtmlPart
+  | CkEditorPart
   | EmbedHtmlPart
   | HtmlPart
-  | QuotePart
-  | CkEditorHtmlPart;
+  | QuotePart;
