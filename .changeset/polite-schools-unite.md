@@ -2,4 +2,4 @@
 "nextjs-website": minor
 ---
 
-Add parsing for ckeditorhtml parts
+Add parsing for CkEditorHtml parts
