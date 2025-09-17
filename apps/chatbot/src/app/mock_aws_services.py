@@ -9,24 +9,7 @@ COGNITO_USERNAME = "test_user"
 COGNITO_PASSWORD = "TestPassword123!"
 
 
-def mock_client_cognito() -> boto3.client:
-    client = boto3.client("cognito-idp")
-    return client
-
-
-def mock_client_ssm() -> boto3.client:
-    client = boto3.client(
-        "ssm",
-        aws_access_key_id=AWS_ACCESS_KEY_ID,
-        aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
-        region_name=AWS_DEFAULT_REGION,
-        endpoint_url=AWS_ENDPOINT_URL,
-    )
-    return client
-
-
-client_cognito = mock_client_cognito()
-client_ssm = mock_client_ssm()
+client_cognito = boto3.client("cognito-idp")
 
 
 def mock_user_pool_id() -> str:
@@ -76,12 +59,3 @@ def mock_signup() -> dict:
     }
 
 
-def ssm_put_parameter(name: str, value: str) -> str:
-    client_ssm.put_parameter(
-        Name=name,
-        Value=value,
-        Type="String",
-        Overwrite=True,
-    )
-
-    return value

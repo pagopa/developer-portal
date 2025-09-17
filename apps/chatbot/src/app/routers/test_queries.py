@@ -1,6 +1,5 @@
 import os
 from fastapi.testclient import TestClient
-from moto import mock_aws
 from src.app.main import app
 from src.app.mock_aws_services import mock_signup
 
@@ -18,7 +17,6 @@ def post_queries(data: dict) -> dict:
     return response
 
 
-@mock_aws
 def test_post_queries() -> None:
     data = {
         "question": "come ti chiami?",
@@ -43,7 +41,6 @@ def test_get_queries_no_auth() -> None:
     )
     assert response.status_code == 401
 
-@mock_aws
 def test_get_queries() -> None:
     response = client.get(
         "/queries",
