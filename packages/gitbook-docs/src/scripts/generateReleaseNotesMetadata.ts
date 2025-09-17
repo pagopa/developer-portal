@@ -15,6 +15,7 @@ import { extractTitleFromMarkdown } from '../helpers/extractTitle.helper';
 import { fetchFromStrapi } from '../helpers/fetchFromStrapi';
 import { sitePathFromS3Path } from '../helpers/sitePathFromS3Path';
 import { StrapiReleaseNote } from '../helpers/guidesMetadataHelper';
+import { getSyncedReleaseNotesResponseJsonPath } from '../syncedResponses';
 
 // Load environment variables from .env file
 dotenv.config();
@@ -26,8 +27,7 @@ const S3_RELEASE_NOTES_METADATA_JSON_PATH =
   process.env.S3_RELEASE_NOTES_METADATA_JSON_PATH ||
   'release-notes-metadata.json';
 const SYNCED_RELEASE_NOTES_RESPONSE_JSON_PATH =
-  process.env.SYNCED_RELEASE_NOTES_RESPONSE_JSON_PATH ||
-  'synced-release-notes-response.json';
+  getSyncedReleaseNotesResponseJsonPath();
 
 const s3Client = makeS3Client();
 

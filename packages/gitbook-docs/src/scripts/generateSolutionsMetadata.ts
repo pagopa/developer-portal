@@ -18,6 +18,10 @@ import {
 } from '../helpers/fetchFromStrapi';
 import { sitePathFromS3Path } from '../helpers/sitePathFromS3Path';
 import { StrapiSolution } from '../helpers/guidesMetadataHelper';
+import {
+  getSyncedSolutionListPagesResponseJsonPath,
+  getSyncedSolutionsResponseJsonPath,
+} from '../syncedResponses';
 
 // Load environment variables from .env file
 dotenv.config();
@@ -28,11 +32,9 @@ const S3_PATH_TO_GITBOOK_DOCS =
 const S3_SOLUTIONS_METADATA_JSON_PATH =
   process.env.S3_SOLUTIONS_METADATA_JSON_PATH || 'solutions-metadata.json';
 const SYNCED_SOLUTIONS_RESPONSE_JSON_PATH =
-  process.env.SYNCED_SOLUTIONS_RESPONSE_JSON_PATH ||
-  'synced-solutions-response.json';
+  getSyncedSolutionsResponseJsonPath();
 const SYNCED_SOLUTION_LIST_PAGES_RESPONSE_JSON_PATH =
-  process.env.SYNCED_SOLUTION_LIST_PAGES_RESPONSE_JSON_PATH ||
-  'synced-solution-list-pages-response.json';
+  getSyncedSolutionListPagesResponseJsonPath();
 
 const s3Client = makeS3Client();
 function generateUrlPath(
