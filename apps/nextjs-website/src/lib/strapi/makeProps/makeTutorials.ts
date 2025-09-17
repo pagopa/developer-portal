@@ -20,10 +20,17 @@ export function makeTutorialsProps(
 ): readonly TutorialProps[] {
   return _.compact(
     strapiTutorials.data.map(({ attributes }) => {
-      if (!attributes.slug) {
-        console.error(
-          `Error processing Tutorial "${attributes.title}": Missing tutorial slug. Skipping...`
-        );
+      if (!attributes.slug || !attributes.title) {
+        // eslint-disable-next-line functional/no-let
+        let message: string;
+        if (!attributes.slug && !attributes.title) {
+          message = `Tutorial is missing both title and slug. Skipping...`;
+        } else if (!attributes.slug) {
+          message = `Tutorial with name "${attributes.title}" is missing the slug. Skipping...`;
+        } else {
+          message = `Tutorial with slug "${attributes.slug}" is missing the title. Skipping...`;
+        }
+        console.error(message);
         return null;
       }
 

@@ -11,13 +11,24 @@ export function makeGuidesProps(
 ): readonly GuideDefinition[] {
   return _.compact(
     strapiGuides.data.map(({ attributes }) => {
-      if (!attributes.slug) {
-        console.error('guide slug is missing:', attributes);
+      if (!attributes.slug || !attributes.title) {
+        // eslint-disable-next-line functional/no-let
+        let message: string;
+        if (!attributes.slug && !attributes.title) {
+          message = `Guide is missing both title and slug. Skipping...`;
+        } else if (!attributes.slug) {
+          message = `Guide with name "${attributes.title}" is missing the slug: Skipping...`;
+        } else {
+          message = `Guide with slug "${attributes.slug}" is missing the title: Skipping...`;
+        }
+        console.error(message);
         return null;
       }
 
       if (!attributes.product.data.attributes.slug) {
-        console.error('product slug is missing:', attributes.product.data);
+        console.error(
+          `Guide with name "${attributes.title}" is missing the product slug: Skipping...`
+        );
         return null;
       }
 
