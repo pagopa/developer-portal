@@ -70,7 +70,7 @@ class ChatbotSettings(BaseSettings):
     provider: str = os.getenv("CHB_PROVIDER", "google")
     reranker_id: str = os.getenv("CHB_RERANKER_ID", "semantic-ranker-default-004")
     similarity_topk: int = int(os.getenv("CHB_ENGINE_SIMILARITY_TOPK", "5"))
-    temperature_agent: float = 0.7
+    temperature_agent: float = 0.5
     temperature_rag: float = float(os.getenv("CHB_MODEL_TEMPERATURE", "0.3"))
     use_async: bool = os.getenv("CHB_ENGINE_USE_ASYNC", "True").lower() == "true"
 
