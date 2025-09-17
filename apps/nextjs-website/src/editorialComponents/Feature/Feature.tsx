@@ -3,7 +3,7 @@ import React from 'react';
 import { Grid, Typography, useTheme } from '@mui/material';
 import { type FeatureItem, FeatureStackItem } from './FeatureStackItem';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
-import { Variant } from '@mui/material/styles/createTypography';
+import type { TypographyVariant } from '@mui/material/styles';
 
 export interface FeatureProps {
   title: string;
@@ -11,7 +11,7 @@ export interface FeatureProps {
   items: FeatureItem[];
   background?: string;
   useDarkTheme?: boolean;
-  variant?: Variant;
+  variant?: TypographyVariant;
 }
 
 const Feature = (props: FeatureProps) => {
@@ -39,7 +39,7 @@ const Feature = (props: FeatureProps) => {
         md: 8,
       }}
     >
-      <Grid textAlign={'center'} item xs={12}>
+      <Grid textAlign={'center'} size={{ xs: 12 }}>
         <Typography
           variant={variant}
           color={themeStyle}
@@ -63,13 +63,12 @@ const Feature = (props: FeatureProps) => {
           </Typography>
         )}
       </Grid>
-      <Grid item mt={8}>
+      <Grid mt={8}>
         <Grid container justifyContent='center'>
           {items.map((item, index) => (
             <Grid
-              md={items.length < 4 ? 4 : 3}
+              size={{ md: items.length < 4 ? 4 : 3 }}
               px={{ xs: 4, md: items.length < 4 ? 7 : 2 }}
-              item
               key={index}
             >
               <FeatureStackItem

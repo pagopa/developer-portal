@@ -8,7 +8,7 @@ export type ProfileInfoCardProps = PropsWithChildren<{
   renderItem: (
     item: InfoCardItemProps,
     index: number,
-    items: InfoCardItemProps[]
+    items: InfoCardItemProps[],
   ) => React.ReactNode;
 }>;
 

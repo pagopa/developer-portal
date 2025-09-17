@@ -28,7 +28,7 @@ const ChatInputText = ({ onSubmit, sendDisabled }: ChatInputTextProps) => {
     setMessage(
       event.target.value
         .slice(0, MESSAGE_MAX_CHARS)
-        .replace(/(\r\n|\n|\r)/gm, '')
+        .replace(/(\r\n|\n|\r)/gm, ''),
     );
   };
 

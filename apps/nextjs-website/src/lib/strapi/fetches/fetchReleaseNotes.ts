@@ -24,7 +24,7 @@ const makeStrapiReleaseNotesPopulate = () =>
 
 export const fetchReleaseNotes = fetchFromStrapi<StrapiReleaseNotes>(
   'release-notes',
-  makeStrapiReleaseNotesPopulate()
+  makeStrapiReleaseNotesPopulate(),
 );
 
 const makeStrapiReleaseNotePopulate = (productSlug: string) =>
@@ -40,5 +40,5 @@ const makeStrapiReleaseNotePopulate = (productSlug: string) =>
 export const fetchReleaseNote = (productSlug: string) =>
   fetchFromStrapi<StrapiReleaseNotes>(
     'release-notes',
-    makeStrapiReleaseNotePopulate(productSlug)
+    makeStrapiReleaseNotePopulate(productSlug),
   );

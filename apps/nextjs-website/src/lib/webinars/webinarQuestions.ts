@@ -75,7 +75,7 @@ export const insertWebinarQuestion = (question: InsertWebinarQuestion) =>
       return TE.tryCatch(() => dynamoDBClient.send(putCommand), E.toError);
     }),
     // do not return (i.e., discard) the result if the operation succeded
-    RTE.map(() => void 0)
+    RTE.map(() => void 0),
   );
 
 export const updateWebinarQuestion = (update: WebinarQuestionUpdate) =>
@@ -90,7 +90,7 @@ export const updateWebinarQuestion = (update: WebinarQuestionUpdate) =>
       return TE.tryCatch(() => dynamoDBClient.send(updateCommand), E.toError);
     }),
     // do not return (i.e., discard) the result if the operation succeded
-    RTE.map(() => void 0)
+    RTE.map(() => void 0),
   );
 
 export const listWebinarQuestions = (webinarId: string) =>
@@ -112,7 +112,7 @@ export const listWebinarQuestions = (webinarId: string) =>
         // turn Array<Either<_, _>> to Either<_, Array<_>>
         RA.sequence(E.Applicative),
         // map errors to error and dynamodb item to WebinarQuestion
-        E.bimap(E.toError, RA.map(makeWebinarQuestionFromDynamodbItem))
-      )
-    )
+        E.bimap(E.toError, RA.map(makeWebinarQuestionFromDynamodbItem)),
+      ),
+    ),
   );

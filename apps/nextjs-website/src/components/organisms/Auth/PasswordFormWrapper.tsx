@@ -8,10 +8,10 @@ import React from 'react';
 type PasswordFormWrapperProps = {
   item: InfoCardItemProps;
   isEditing: boolean;
-  // eslint-disable-next-line functional/no-return-void
+
   onCancel: () => void;
   onSave: (oldPassword: string, newPassword: string) => Promise<void>;
-  // eslint-disable-next-line functional/no-return-void
+
   onEdit: () => void;
 };
 

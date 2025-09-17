@@ -69,7 +69,7 @@ const ChatbotHistoryDetailLayout = ({
   const firstQuery = queries[0];
   const date = new Intl.DateTimeFormat(
     DEFAULT_DATE_FORMAT.locale,
-    DEFAULT_DATE_FORMAT.options
+    DEFAULT_DATE_FORMAT.options,
   ).format(new Date(firstQuery.queriedAt));
 
   return (

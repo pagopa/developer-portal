@@ -27,7 +27,7 @@ export const postQuery = (input: QueryInput) =>
                 Authorization: `Bearer ${authToken}`,
               },
               body: JSON.stringify(input),
-            })
+            }),
         ),
         TE.chain((response) => {
           if (response.status === 200) {
@@ -40,16 +40,16 @@ export const postQuery = (input: QueryInput) =>
           // decode the response with the given codec
           pipe(
             QueryCodec.decode(json),
-            E.mapLeft((errors) => new Error(PR.failure(errors).join('\n')))
-          )
+            E.mapLeft((errors) => new Error(PR.failure(errors).join('\n'))),
+          ),
         ),
         TE.fold(
           // eslint-disable-next-line functional/no-promise-reject
           (errors) => () => Promise.reject(errors),
-          (result) => () => Promise.resolve(result)
-        )
-      )()
-    )
+          (result) => () => Promise.resolve(result),
+        ),
+      )(),
+    ),
   );
 
 export const getQueries = (query: string) =>
@@ -67,7 +67,7 @@ export const getQueries = (query: string) =>
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${authToken}`,
               },
-            })
+            }),
         ),
         TE.chain((response) => {
           if (response.status === 200) {
@@ -80,16 +80,16 @@ export const getQueries = (query: string) =>
           // decode the response with the given codec
           pipe(
             ChatbotQueriesCodec.decode(json),
-            E.mapLeft((errors) => new Error(PR.failure(errors).join('\n')))
-          )
+            E.mapLeft((errors) => new Error(PR.failure(errors).join('\n'))),
+          ),
         ),
         TE.fold(
           // eslint-disable-next-line functional/no-promise-reject
           (errors) => () => Promise.reject(errors),
-          (result) => () => Promise.resolve(result)
-        )
-      )()
-    )
+          (result) => () => Promise.resolve(result),
+        ),
+      )(),
+    ),
   );
 
 export const patchFeedback = (
@@ -98,7 +98,7 @@ export const patchFeedback = (
   queryId: string,
   user_response_relevancy: number | null,
   user_faithfullness: number | null,
-  user_comment: string
+  user_comment: string,
 ) =>
   pipe(
     R.ask<ChatbotEnv>(),
@@ -122,7 +122,7 @@ export const patchFeedback = (
                   user_comment: user_comment,
                 },
               }),
-            })
+            }),
         ),
         TE.chain((response) => {
           if (response.status === 200) {
@@ -135,14 +135,14 @@ export const patchFeedback = (
           // decode the response with the given codec
           pipe(
             QueryCodec.decode(json),
-            E.mapLeft((errors) => new Error(PR.failure(errors).join('\n')))
-          )
+            E.mapLeft((errors) => new Error(PR.failure(errors).join('\n'))),
+          ),
         ),
         TE.fold(
           // eslint-disable-next-line functional/no-promise-reject
           (errors) => () => Promise.reject(errors),
-          (result) => () => Promise.resolve(result)
-        )
-      )()
-    )
+          (result) => () => Promise.resolve(result),
+        ),
+      )(),
+    ),
   );

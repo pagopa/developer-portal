@@ -25,7 +25,7 @@ describe('makeWebinarsProps', () => {
 
   it('should handle a payload with two object with the second one with missing data and successfully return webinar props with only one item', () => {
     const result = makeWebinarsProps(
-      _.cloneDeep(strapiWebinarsWithMissingData)
+      _.cloneDeep(strapiWebinarsWithMissingData),
     );
     expect(result).toHaveLength(1);
     expect(result[0]).toMatchObject(webinarProps);
@@ -72,7 +72,7 @@ describe('makeWebinarsProps', () => {
     expect(result).toHaveLength(0);
     expect(spyOnConsoleError).toHaveBeenCalledWith(
       'Error while making webinar from Strapi data:',
-      expect.any(Error)
+      expect.any(Error),
     );
   });
 });

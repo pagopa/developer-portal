@@ -193,7 +193,7 @@ describe('fetchFromStrapi', () => {
     fetchMock.mockResolvedValueOnce({
       status: 200,
       statusText: 'OK',
-      // eslint-disable-next-line functional/no-promise-reject
+
       json: () => Promise.reject(new Error('Invalid JSON')),
     });
     const actual = fetchFromStrapi<TestResponse>('aPath', 'aPopulate')(env);
@@ -219,7 +219,7 @@ describe('fetchFromStrapi', () => {
           Authorization: 'Bearer aStrapiApiToken',
         },
         cache: 'no-store',
-      }
+      },
     );
   });
 
@@ -233,7 +233,7 @@ describe('fetchFromStrapi', () => {
       });
       const actual = fetchFromStrapi<StrapiSuccessResponse>(
         'aPath',
-        'aPopulate'
+        'aPopulate',
       )(env);
       const expected = strapiResponses[200];
       expect(await actual).toStrictEqual(expected);
@@ -248,7 +248,7 @@ describe('fetchFromStrapi', () => {
       });
       const actual = fetchFromStrapi<StrapiErrorResponse>(
         'aPath',
-        'aPopulate'
+        'aPopulate',
       )(env);
       const expected = new Error('401 - Unauthorized');
       await expect(actual).rejects.toStrictEqual(expected);
@@ -263,7 +263,7 @@ describe('fetchFromStrapi', () => {
       });
       const actual = fetchFromStrapi<StrapiErrorResponse>(
         'aPath',
-        'aPopulate'
+        'aPopulate',
       )(env);
       const expected = new Error('404 - Not Found');
       await expect(actual).rejects.toStrictEqual(expected);
@@ -274,7 +274,7 @@ describe('fetchFromStrapi', () => {
       fetchMock.mockRejectedValueOnce({});
       const actual = fetchFromStrapi<StrapiSuccessResponse>(
         'aPath',
-        'aPopulate'
+        'aPopulate',
       )(env);
       const expected = new Error('[object Object]');
       await expect(actual).rejects.toStrictEqual(expected);
@@ -289,7 +289,7 @@ describe('fetchFromStrapi', () => {
       });
       const actual = await fetchFromStrapi<CustomResponse>(
         'aPath',
-        'aPopulate'
+        'aPopulate',
       )(env);
       expect(actual['someField']).toBeUndefined();
       expect(actual['anotherField']).toBeUndefined();

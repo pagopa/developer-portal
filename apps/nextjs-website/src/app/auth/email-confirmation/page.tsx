@@ -23,7 +23,6 @@ const EmailConfirmationContent = () => {
     if (code) {
       Auth.verifyCurrentUserAttributeSubmit('email', code)
         .then(() => {
-          // eslint-disable-next-line functional/immutable-data
           router.push('/auth/account-activated');
           Auth.signOut();
         })

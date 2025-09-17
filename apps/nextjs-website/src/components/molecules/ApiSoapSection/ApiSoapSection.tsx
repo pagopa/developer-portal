@@ -63,7 +63,7 @@ const ApiSoapSection = ({
 
     if (spec?.name) {
       router.replace(
-        `/${product.slug}/api/${apiSlug}?spec=${encodeURIComponent(spec.name)}`
+        `/${product.slug}/api/${apiSlug}?spec=${encodeURIComponent(spec.name)}`,
       );
     }
 
@@ -74,7 +74,7 @@ const ApiSoapSection = ({
     () =>
       apiMenuItems.find((item) => item?.url === selectedItemUrl) ||
       apiMenuItems[0],
-    [selectedItemUrl, apiMenuItems]
+    [selectedItemUrl, apiMenuItems],
   );
   const borderColor = palette.divider;
 

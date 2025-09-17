@@ -99,7 +99,7 @@ const SummaryInformation: FC<SummaryInformationProps> = ({
                 >
                   {new Date(endDateTime).toLocaleDateString(
                     defaultLocale,
-                    dateOptions
+                    dateOptions,
                   )}
                 </Typography>
               </Box>

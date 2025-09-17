@@ -4,7 +4,7 @@ import Wrapper from './Wrapper';
 
 describe('EmailFormWrapper', () => {
   const mockOnCancel = jest.fn();
-  const mockOnSave = jest.fn((email: string) => Promise.resolve());
+  const mockOnSave = jest.fn(() => Promise.resolve());
   const mockOnEdit = jest.fn();
 
   const item = {
@@ -25,7 +25,7 @@ describe('EmailFormWrapper', () => {
           onSave={mockOnSave}
           onEdit={mockOnEdit}
         />
-      </Wrapper>
+      </Wrapper>,
     );
 
     expect(getByRole('textbox')).toBeTruthy();
@@ -41,7 +41,7 @@ describe('EmailFormWrapper', () => {
           onSave={mockOnSave}
           onEdit={mockOnEdit}
         />
-      </Wrapper>
+      </Wrapper>,
     );
 
     expect(getAllByText(item.value)).toBeTruthy();
@@ -57,7 +57,7 @@ describe('EmailFormWrapper', () => {
           onSave={mockOnSave}
           onEdit={mockOnEdit}
         />
-      </Wrapper>
+      </Wrapper>,
     );
 
     fireEvent.click(getByRole('button'));
@@ -74,7 +74,7 @@ describe('EmailFormWrapper', () => {
           onSave={mockOnSave}
           onEdit={mockOnEdit}
         />
-      </Wrapper>
+      </Wrapper>,
     );
 
     fireEvent.click(getAllByRole('button', { name: /annulla/i })[0]);
@@ -91,7 +91,7 @@ describe('EmailFormWrapper', () => {
           onSave={mockOnSave}
           onEdit={mockOnEdit}
         />
-      </Wrapper>
+      </Wrapper>,
     );
 
     fireEvent.change(getByRole('textbox'), {
@@ -112,7 +112,7 @@ describe('EmailFormWrapper', () => {
           onSave={mockOnSave}
           onEdit={mockOnEdit}
         />
-      </Wrapper>
+      </Wrapper>,
     );
 
     fireEvent.change(getByRole('textbox'), {

@@ -16,7 +16,7 @@ const GoToStep = ({ previousOrNext, title }: GoToStepProps) => {
 
   const arrowIcon = createElement(
     previousOrNext === 'next' ? ArrowForward : ArrowBack,
-    { sx: { color: palette.text.secondary, height: '24px', width: '24px' } }
+    { sx: { color: palette.text.secondary, height: '24px', width: '24px' } },
   );
   const t = useTranslations('quickStartGuide');
 

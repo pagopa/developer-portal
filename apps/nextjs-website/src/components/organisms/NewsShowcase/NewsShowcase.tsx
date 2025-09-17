@@ -52,7 +52,7 @@ const NewsShowcase = ({
       white: theme.palette.background.paper,
       lightGrey: theme.palette.grey[50],
     }),
-    [theme]
+    [theme],
   );
 
   const sectionMargin = useMemo(
@@ -60,7 +60,7 @@ const NewsShowcase = ({
       white: 0,
       lightGrey: '4rem 0 0',
     }),
-    []
+    [],
   );
 
   return (

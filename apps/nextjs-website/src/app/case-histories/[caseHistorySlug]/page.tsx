@@ -19,9 +19,10 @@ type Params = {
 export async function generateMetadata({
   params,
 }: {
-  params: Params;
+  params: Promise<Params>;
 }): Promise<Metadata> {
-  const caseHistory = await getCaseHistory(params?.caseHistorySlug);
+  const resolvedParams = await params;
+  const caseHistory = await getCaseHistory(resolvedParams?.caseHistorySlug);
 
   if (caseHistory?.seo) {
     return makeMetadataFromStrapi(caseHistory.seo);
@@ -34,8 +35,9 @@ export async function generateMetadata({
   });
 }
 
-const Page = async ({ params }: { params: Params }) => {
-  const caseHistory = await getCaseHistory(params?.caseHistorySlug);
+const Page = async ({ params }: { params: Promise<Params> }) => {
+  const resolvedParams = await params;
+  const caseHistory = await getCaseHistory(resolvedParams?.caseHistorySlug);
 
   const structuredData = generateStructuredDataScripts({
     breadcrumbsItems: [

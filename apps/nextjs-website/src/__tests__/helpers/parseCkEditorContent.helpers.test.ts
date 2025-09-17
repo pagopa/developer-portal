@@ -10,10 +10,10 @@ describe('parseCkEditorContent', () => {
     expect(result.parsedContent).toContain('titolo h1'); // Check if a h1 heading is present
     expect(result.parsedContent).toContain('Éxámplé String!@#!@#$%^&amp;*()_+'); // Check if a h2 heading is present
     expect(result.parsedContent).toContain(
-      `id="ckeditor-example-string!!$%^&amp;*()_"`
+      `id="ckeditor-example-string!!$%^&amp;*()_"`,
     ); // Check if IDs are added correctly around a h2 heading
     expect(result.parsedContent).toContain(
-      `<div id="ckeditor-example-string!!$%^&amp;*()_" class="menuAnchor"><h2>Éxámplé String!@#!@#$%^&amp;*()_+</h2></div>`
+      `<div id="ckeditor-example-string!!$%^&amp;*()_" class="menuAnchor"><h2>Éxámplé String!@#!@#$%^&amp;*()_+</h2></div>`,
     ); // Check if IDs are added correctly around a h2 heading
 
     // Test the menuItems array
@@ -39,7 +39,7 @@ describe('parseCkEditorContent', () => {
     const result = parseCkEditorContent(content);
 
     expect(result.parsedContent).toContain(
-      '<p>Some content without headings</p>'
+      '<p>Some content without headings</p>',
     );
     expect(result.menuItems).toEqual([]); // Expecting no menu items
   });

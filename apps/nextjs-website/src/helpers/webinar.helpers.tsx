@@ -15,7 +15,7 @@ export enum WebinarState {
 export const useWebinar = () => {
   const [webinar, setWebinar] = useState<Webinar | null>(null);
   const [webinarState, setWebinarState] = useState<WebinarState>(
-    WebinarState.unknown
+    WebinarState.unknown,
   );
 
   const startDateTimestamp =

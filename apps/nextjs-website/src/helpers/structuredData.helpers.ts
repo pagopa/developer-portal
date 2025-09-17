@@ -35,7 +35,7 @@ export function productToBreadcrumb(product?: Product) {
 
 export function breadcrumbItemByProduct(
   product?: Product,
-  paths?: readonly string[]
+  paths?: readonly string[],
 ) {
   return product?.slug && paths
     ? [baseUrl, product.slug, ...paths].join('/')
@@ -73,7 +73,7 @@ export type StructuredDataBreadcrumbList = readonly Pick<
 >[];
 
 export function makeBreadcrumbList(
-  items: StructuredDataBreadcrumbList
+  items: StructuredDataBreadcrumbList,
 ): WithContext<BreadcrumbList> {
   return {
     '@context': 'https://schema.org',
@@ -104,7 +104,7 @@ export type StructuredDataWebPage = Omit<WebPage, '@type'> & {
 };
 
 export function makeWebPage(
-  webPage: StructuredDataWebPage
+  webPage: StructuredDataWebPage,
 ): WithContext<WebPage> {
   return {
     '@context': 'https://schema.org',
@@ -122,7 +122,7 @@ export function makeFAQPage(
   faqs: ReadonlyArray<{
     readonly question: string;
     readonly answer: string;
-  }>
+  }>,
 ): WithContext<FAQPage> {
   return {
     '@context': 'https://schema.org',
@@ -154,7 +154,7 @@ export function makeHowTo(howTo: Omit<HowTo, '@type'>): WithContext<HowTo> {
 }
 
 export function quickStartToStructuredDataHowTo(
-  quickStart: QuickStartGuidePageProps
+  quickStart: QuickStartGuidePageProps,
 ): WithContext<HowTo> {
   const steps: readonly HowToStep[] = quickStart.steps
     ? quickStart.steps.map((step) => ({
@@ -188,7 +188,7 @@ export function makeEvent(event: Omit<Event, '@type'>): WithContext<Event> {
 }
 
 export function convertWebinarToStructuredDataEvent(
-  webinar: Webinar
+  webinar: Webinar,
 ): WithContext<Event> {
   return makeEvent({
     name: webinar.title,
@@ -213,7 +213,7 @@ export function convertWebinarToStructuredDataEvent(
 }
 
 export function makeSoftwareApplication(
-  softwareApplication: Omit<SoftwareApplication, '@type'>
+  softwareApplication: Omit<SoftwareApplication, '@type'>,
 ): WithContext<SoftwareApplication> {
   return {
     '@context': 'https://schema.org',
@@ -225,7 +225,7 @@ export function makeSoftwareApplication(
 }
 
 export function convertApiToStructuredDataSoftwareApplication(
-  api?: ApiDataPageProps
+  api?: ApiDataPageProps,
 ): WithContext<SoftwareApplication> | undefined {
   return (
     api &&
@@ -244,7 +244,7 @@ function makeArticle(article: Omit<Article, '@type'>): Article {
 }
 
 export function convertSeoToStructuredDataArticle(
-  seo?: SEO
+  seo?: SEO,
 ): WithContext<Article> | undefined {
   return (
     seo && {

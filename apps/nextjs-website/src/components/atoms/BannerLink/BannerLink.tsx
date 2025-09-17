@@ -3,7 +3,7 @@ import { BlocksContent, BlocksRenderer } from '@strapi/blocks-react-renderer';
 import Image from 'next/image';
 import IconWrapper from '../IconWrapper/IconWrapper';
 import { FC } from 'react';
-import { Variant } from '@mui/material/styles/createTypography';
+import type { TypographyVariant } from '@mui/material/styles';
 import { Media } from '@/lib/types/media';
 
 export type BannerLinkProps = {
@@ -12,7 +12,7 @@ export type BannerLinkProps = {
   icon: Media;
   theme: 'light' | 'dark';
   title?: string;
-  variant?: Variant;
+  variant?: TypographyVariant;
 };
 
 export const BannerLink: FC<BannerLinkProps> = ({

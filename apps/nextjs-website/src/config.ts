@@ -1,4 +1,3 @@
-/* eslint-disable functional/no-expression-statements */
 /**
 This file is going to be removed after few refactoring phases.
 The following environments are going to be moved in dedicated config files or environments.

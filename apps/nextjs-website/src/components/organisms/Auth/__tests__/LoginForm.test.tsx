@@ -11,7 +11,6 @@ const fieldsErrorsRegex = RegExp(labels.auth.login.noAccountError, 'i');
 const actionRegex = RegExp(labels.auth.login.action, 'i');
 
 describe('LoginForm', () => {
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
   const mockOnLogin = jest.fn(async () => {});
 
   beforeEach(() => {
@@ -22,7 +21,7 @@ describe('LoginForm', () => {
     render(
       <Wrapper>
         <LoginForm onLogin={mockOnLogin} />
-      </Wrapper>
+      </Wrapper>,
     );
   });
 
@@ -30,7 +29,7 @@ describe('LoginForm', () => {
     const { getByLabelText } = render(
       <Wrapper>
         <LoginForm onLogin={mockOnLogin} />
-      </Wrapper>
+      </Wrapper>,
     );
 
     const usernameInput = getByLabelText(/^email$/i) as HTMLInputElement;
@@ -47,7 +46,7 @@ describe('LoginForm', () => {
     const { getByLabelText, getByRole } = render(
       <Wrapper>
         <LoginForm onLogin={mockOnLogin} />
-      </Wrapper>
+      </Wrapper>,
     );
 
     const usernameInput = getByLabelText(/^email$/i) as HTMLInputElement;
@@ -75,7 +74,7 @@ describe('LoginForm', () => {
     } = render(
       <Wrapper>
         <LoginForm onLogin={mockOnLogin} />
-      </Wrapper>
+      </Wrapper>,
     );
 
     const usernameInput = getByLabelText(/^email$/i) as HTMLInputElement;
@@ -89,10 +88,10 @@ describe('LoginForm', () => {
     const errors = await findAllByText(errorsRegex);
 
     expect(usernameInput.attributes.getNamedItem('aria-invalid')?.value).toBe(
-      'true'
+      'true',
     );
     expect(passwordInput.attributes.getNamedItem('aria-invalid')?.value).toBe(
-      'true'
+      'true',
     );
     expect(errors).toHaveLength(2);
 
@@ -105,10 +104,10 @@ describe('LoginForm', () => {
     expect(emailError).toBeDefined();
     expect(passwordError).toBeDefined();
     expect(usernameInput.attributes.getNamedItem('aria-invalid')?.value).toBe(
-      'true'
+      'true',
     );
     expect(passwordInput.attributes.getNamedItem('aria-invalid')?.value).toBe(
-      'true'
+      'true',
     );
 
     fireEvent.change(usernameInput, { target: { value: 'test@example.com' } });
@@ -121,10 +120,10 @@ describe('LoginForm', () => {
     expect(emailError1).toBeNull();
     expect(errorsRegex1).toHaveLength(0);
     expect(usernameInput.attributes.getNamedItem('aria-invalid')?.value).toBe(
-      'false'
+      'false',
     );
     expect(passwordInput.attributes.getNamedItem('aria-invalid')?.value).toBe(
-      'false'
+      'false',
     );
   });
 
@@ -132,7 +131,7 @@ describe('LoginForm', () => {
     const { findAllByText } = render(
       <Wrapper>
         <LoginForm noAccount onLogin={mockOnLogin} />
-      </Wrapper>
+      </Wrapper>,
     );
 
     const errors = await findAllByText(fieldsErrorsRegex);

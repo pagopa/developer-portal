@@ -32,7 +32,7 @@ const WebinarPlayerSection = ({
   const isSmallScreen = useMediaQuery('(max-width: 1000px)');
   const isQuestionFormAvailable = useMemo(
     () => [WebinarState.live, WebinarState.comingSoon].includes(webinarState),
-    [webinarState]
+    [webinarState],
   );
   return (
     webinar.playerSrc && (

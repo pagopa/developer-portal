@@ -41,7 +41,7 @@ const SubscribeToWebinarContent = ({
   useEffect(() => {
     if (username && webinarSlug) {
       setIsSubscribed(
-        webinarSubscriptions?.some((s) => s.webinarId === webinarSlug) ?? false
+        webinarSubscriptions?.some((s) => s.webinarId === webinarSlug) ?? false,
       );
     }
   }, [setIsSubscribed, username, webinarSubscriptions, webinarSlug]);
@@ -57,7 +57,6 @@ const SubscribeToWebinarContent = ({
       .then(() => {
         reloadUser().then(() => setIsLoading(false));
         if (!pathname.includes(`/webinars/${webinarSlug}`)) {
-          // eslint-disable-next-line functional/immutable-data
           router.push(`/webinars/${webinarSlug}`);
         }
       })
@@ -83,7 +82,6 @@ const SubscribeToWebinarContent = ({
       ? `/webinars/${webinarSlug}?action=subscribe`
       : `${pathname}?action=subscribe`;
 
-    // eslint-disable-next-line functional/immutable-data
     router.push(`/auth/login?redirect=${btoa(finalPath)}`);
     return null;
   };

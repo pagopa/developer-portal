@@ -24,7 +24,7 @@ type ChatbotLayoutProps = {
     chatId: string,
     contextScore: number | null,
     responseScore: number | null,
-    comment: string
+    comment: string,
   ) => null;
   isAwaitingResponse: boolean;
   areChatbotQueriesLoaded: boolean;
@@ -45,9 +45,9 @@ const ChatbotLayout = ({
 }: ChatbotLayoutProps) => {
   const t = useTranslations();
   const { palette } = useTheme();
-  const ref = React.useRef<HTMLElement | undefined>();
+  const ref = React.useRef<HTMLElement | undefined>(undefined);
   const [anchorEl, setAnchorEl] = React.useState<HTMLElement | undefined>(
-    undefined
+    undefined,
   );
 
   const handleClick = () => {

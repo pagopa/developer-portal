@@ -42,7 +42,7 @@ type WebinarSubscriptionDynamoDB = t.TypeOf<
 >;
 
 export const makeWebinarQuestionListQueryCondition = (
-  webinarId: string
+  webinarId: string,
 ): Pick<
   QueryCommandInput,
   'KeyConditionExpression' | 'ExpressionAttributeValues'
@@ -52,7 +52,7 @@ export const makeWebinarQuestionListQueryCondition = (
 });
 
 export const makeWebinarQuestionFromDynamodbItem = (
-  input: WebinarQuestionDynamoDB
+  input: WebinarQuestionDynamoDB,
 ): WebinarQuestion => ({
   id: {
     slug: input.webinarId.S,
@@ -65,7 +65,7 @@ export const makeWebinarQuestionFromDynamodbItem = (
 });
 
 export const makeWebinarSubscriptionFromDynamodbItem = (
-  input: WebinarSubscriptionDynamoDB
+  input: WebinarSubscriptionDynamoDB,
 ): WebinarSubscription => ({
   webinarId: input.webinarId.S,
   username: input.username.S,
@@ -82,7 +82,7 @@ export const makeDynamodbItemFromWebinarQuestion = (input: WebinarQuestion) =>
   });
 
 export const makeDynamodbItemFromWebinarSubscription = (
-  input: WebinarSubscription
+  input: WebinarSubscription,
 ) =>
   WebinarSubscriptionDynamodbCodec.encode({
     webinarId: { S: input.webinarId },
@@ -97,7 +97,7 @@ type UpdateExpressionItem = {
 // Helper function to create UpdateExpression and ExpressionAttributeValues.
 // https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Expressions.UpdateExpressions.html
 const makeUpdateExpression = (
-  expressionList: ReadonlyArray<UpdateExpressionItem>
+  expressionList: ReadonlyArray<UpdateExpressionItem>,
 ): Pick<
   UpdateItemCommandInput,
   'UpdateExpression' | 'ExpressionAttributeValues'
@@ -138,7 +138,7 @@ const makeUpdateExpression = (
       // handle no operations
       else return acc;
     },
-    initialValue
+    initialValue,
   );
   return {
     UpdateExpression: `${set ?? ''} ${remove ?? ''}`,
@@ -147,7 +147,7 @@ const makeUpdateExpression = (
 };
 
 export const makeDynamodbUpdateFromWebinarQuestionUpdate = (
-  input: WebinarQuestionUpdate
+  input: WebinarQuestionUpdate,
 ): Omit<UpdateItemCommandInput, 'TableName'> => {
   const { UpdateExpression, ExpressionAttributeValues } = makeUpdateExpression([
     { fieldName: 'hiddenBy', expression: input.updates.hiddenBy },

@@ -48,7 +48,7 @@ describe('makeApiDataListProps', () => {
 
   it('should handle minimal data with missing optional fields', async () => {
     const result = await makeApiDataListProps(
-      _.cloneDeep(minimalApiDataList())
+      _.cloneDeep(minimalApiDataList()),
     );
     expect(result).toHaveLength(1);
     const firstElement = result[0];
@@ -82,11 +82,11 @@ describe('makeApiDataListProps', () => {
 
   it('should filter out api data with rest api details with invalid data', async () => {
     const result = await makeApiDataListProps(
-      apiDataWithInvalidRestApiDetails()
+      apiDataWithInvalidRestApiDetails(),
     );
     expect(result).toHaveLength(0);
     expect(spyOnConsoleError).toHaveBeenCalledWith(
-      expect.stringContaining('Missing API slug')
+      expect.stringContaining('Missing API slug'),
     );
   });
 
@@ -94,7 +94,7 @@ describe('makeApiDataListProps', () => {
     const result = await makeApiDataListProps(apiDatalistWithItemMissingSlug());
     expect(result).toHaveLength(0);
     expect(spyOnConsoleError).toHaveBeenCalledWith(
-      expect.stringContaining('Missing API slug')
+      expect.stringContaining('Missing API slug'),
     );
   });
 
@@ -111,7 +111,7 @@ describe('makeApiDataListProps', () => {
 
   it('should handle api data without banner links and without product banner links', async () => {
     const result = await makeApiDataListProps(
-      apiDataWithoutProductBannerLinks()
+      apiDataWithoutProductBannerLinks(),
     );
     expect(result[0].bannerLinks).toEqual([]);
   });
@@ -138,7 +138,7 @@ describe('makeApiDataListProps', () => {
     expect(firstElement.restApiSpecUrls).toEqual([]);
     expect(firstElement.apiSoapUrlList).toHaveLength(1);
     expect(firstElement.apiSoapUrl).toBe(
-      'https://github.com/pagopa/pagopa-api/'
+      'https://github.com/pagopa/pagopa-api/',
     );
   });
 
@@ -182,7 +182,7 @@ describe('makeApiDataListProps', () => {
     expect(result).toHaveLength(0);
     expect(spyOnConsoleError).toHaveBeenCalledWith(
       expect.stringContaining('Error processing API Data'),
-      expect.any(Error)
+      expect.any(Error),
     );
   });
 });

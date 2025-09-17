@@ -115,27 +115,27 @@ describe('makePartProps', () => {
   it('should handle minimal parts', () => {
     expect(makePartProps(minimalApiTesterPart())).toHaveProperty(
       'component',
-      'apiTester'
+      'apiTester',
     );
     expect(makePartProps(minimalCodeBlockPart())).toHaveProperty(
       'component',
-      'codeBlock'
+      'codeBlock',
     );
     expect(makePartProps(minimalHtmlPart())).toHaveProperty(
       'component',
-      'blockRenderer'
+      'blockRenderer',
     );
     expect(makePartProps(minimalEmbedHtmlPart())).toHaveProperty(
       'component',
-      'innerHTMLLazyLoaded'
+      'innerHTMLLazyLoaded',
     );
     expect(makePartProps(minimalQuotePart())).toHaveProperty(
       'component',
-      'quote'
+      'quote',
     );
     expect(makePartProps(minimalCkEditorPart())).toHaveProperty(
       'component',
-      'ckEditor'
+      'ckEditor',
     );
   });
 });

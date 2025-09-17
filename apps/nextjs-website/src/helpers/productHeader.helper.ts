@@ -5,7 +5,7 @@ import { Theme } from '@/editorialComponents/types/components';
 export function productToMenuItems(
   product: Product,
   path: string,
-  theme: Theme
+  theme: Theme,
 ): readonly MenuDropdownProp[] {
   return [
     // if there's overview data, add it to the menu

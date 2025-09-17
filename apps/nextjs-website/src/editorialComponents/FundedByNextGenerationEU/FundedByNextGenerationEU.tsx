@@ -53,7 +53,7 @@ export const FundedByNextGenerationEU = ({
   size = 200,
   color = 'dark',
   variant = 'outline',
-}: FundedByNextGenerationEUPropsProps): JSX.Element => (
+}: FundedByNextGenerationEUPropsProps): React.JSX.Element => (
   <StyledSvg
     viewBox='0 0 1174 270'
     focusable='false'

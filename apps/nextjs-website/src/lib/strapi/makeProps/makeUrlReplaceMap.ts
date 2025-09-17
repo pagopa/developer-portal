@@ -3,7 +3,7 @@ import { StrapiUrlReplaceMap } from '@/lib/strapi/types/urlReplaceMap';
 export type UrlReplaceMap = Record<string, string>;
 
 export function makeUrlReplaceMap(
-  strapiUrlReplacemap: StrapiUrlReplaceMap
+  strapiUrlReplacemap: StrapiUrlReplaceMap,
 ): UrlReplaceMap {
   return strapiUrlReplacemap.data.attributes.urlToGuide.reduce((map, obj) => {
     return {

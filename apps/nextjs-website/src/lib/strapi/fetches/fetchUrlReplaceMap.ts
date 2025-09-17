@@ -17,5 +17,5 @@ const makeStrapiUrlReplaceMapPopulate = () =>
 
 export const fetchUrlReplaceMap = fetchFromStrapi<StrapiUrlReplaceMap>(
   'url-replace-map',
-  makeStrapiUrlReplaceMapPopulate()
+  makeStrapiUrlReplaceMapPopulate(),
 );

@@ -25,7 +25,8 @@ export const makeHandler =
         console.log(
           `User ${username} is confirmed and has requested to resend the email`
         );
-        // eslint-disable-next-line functional/no-throw-statements
+
+        // eslint-disable-next-line functional/no-expression-statements
         console.warn(
           `User ${username} is confirmed and has requested to resend the email. Operation not permitted.`
         );

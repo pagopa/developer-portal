@@ -27,7 +27,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const guideListPages = await getGuideListPagesProps();
   const caseHistories = await getCaseHistoriesProps();
   const productSlugs = (await getProductsProps()).map(
-    (product) => product.slug
+    (product) => product.slug,
   );
 
   // Fetch metadata from S3
@@ -101,7 +101,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: new Date(updatedAt || new Date().toISOString()),
       changeFrequency: 'weekly' as const,
       priority: 0.6,
-    })
+    }),
   );
 
   // Guide list pages
@@ -180,11 +180,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     (releaseNote: JsonMetadata) => ({
       url: `${baseUrl}${releaseNote.path}`,
       lastModified: new Date(
-        releaseNote.lastModified || new Date().toISOString()
+        releaseNote.lastModified || new Date().toISOString(),
       ),
       changeFrequency: 'weekly' as const,
       priority: 0.6,
-    })
+    }),
   );
 
   return [

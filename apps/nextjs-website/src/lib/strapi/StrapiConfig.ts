@@ -5,4 +5,4 @@ export const StrapiConfig = t.type({
   STRAPI_API_TOKEN: t.string,
 });
 
-export type StrapiConfig = t.TypeOf<typeof StrapiConfig>;
+export type StrapiConfigType = t.TypeOf<typeof StrapiConfig>;

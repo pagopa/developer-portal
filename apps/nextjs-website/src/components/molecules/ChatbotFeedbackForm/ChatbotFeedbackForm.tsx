@@ -24,7 +24,7 @@ type ChatbotFeedbackProps = {
     chatId: string,
     contextScore: number | null,
     responseScore: number | null,
-    comment: string
+    comment: string,
   ) => null;
   setIsFormVisible: (boolean: boolean) => null;
 };
@@ -57,7 +57,7 @@ const ChatbotFeedbackForm = ({
     setUserComment(
       event.target.value
         .slice(0, MESSAGE_MAX_CHARS)
-        .replace(/(\r\n|\n|\r)/gm, '')
+        .replace(/(\r\n|\n|\r)/gm, ''),
     );
   };
 
@@ -203,7 +203,7 @@ const ChatbotFeedbackForm = ({
                 id,
                 userResponseRelevancy ? userResponseRelevancy / 5 : null,
                 userFaithfullness ? userFaithfullness / 5 : null,
-                userComment
+                userComment,
               );
             }}
           >

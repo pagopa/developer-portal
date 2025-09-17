@@ -11,7 +11,6 @@ import { MobileSiteHeaderStyledTreeItem } from '@/components/molecules/MobileSit
 import { flushChatQueriesFromLocalStorage } from '@/helpers/chatbot.helper';
 
 type MobileUserInfoProps = {
-  // eslint-disable-next-line functional/no-return-void
   onClick?: () => void;
 };
 
@@ -76,7 +75,7 @@ const MobileUserInfo = ({ onClick }: MobileUserInfoProps) => {
       )}
       {user && (
         <MobileSiteHeaderStyledTreeItem
-          nodeId={'siteHeader.userInfo'}
+          itemId={'siteHeader.userInfo'}
           label={
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
               <PersonOutline

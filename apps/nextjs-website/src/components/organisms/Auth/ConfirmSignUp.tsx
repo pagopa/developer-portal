@@ -14,7 +14,7 @@ import { useTranslations } from 'next-intl';
 
 interface ConfirmSignUpProps {
   email: string;
-  // eslint-disable-next-line functional/no-return-void
+
   onBack: () => void;
 }
 
@@ -26,7 +26,7 @@ const ConfirmSignUp = ({ email, onBack }: ConfirmSignUpProps) => {
     <Box component='section'>
       <Card variant='elevation' elevation={8}>
         <Grid container justifyContent='center'>
-          <Grid item xs={11}>
+          <Grid size={{ xs: 11 }}>
             <Stack pt={4} display='flex' alignItems='center'>
               <IconInbox />
             </Stack>

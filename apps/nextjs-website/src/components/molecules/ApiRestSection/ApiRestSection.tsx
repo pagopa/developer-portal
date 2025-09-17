@@ -27,7 +27,7 @@ const NotSsrApiViewer = dynamic(
   {
     ssr: false,
     loading: () => <Spinner />,
-  }
+  },
 );
 
 export type ApiRestPageProps = {
@@ -86,14 +86,14 @@ const ApiRestSection = ({
     if (specURLsName && spec?.name) {
       // update the url with the spec query param
       router.replace(
-        `/${product.slug}/api/${apiSlug}?spec=${encodeURIComponent(spec.name)}`
+        `/${product.slug}/api/${apiSlug}?spec=${encodeURIComponent(spec.name)}`,
       );
     }
   };
 
   const selectedApi = useMemo(
     () => specURLs.find((item) => item?.url === selectedItemURL) || specURLs[0],
-    [selectedItemURL, specURLs]
+    [selectedItemURL, specURLs],
   );
   const borderColor = palette.divider;
   const styles = getStyles(palette);
@@ -134,7 +134,6 @@ const ApiRestSection = ({
         </Stack>
       )}
       <NotSsrApiViewer
-        product={product}
         specURL={selectedApi.url}
         hideTryIt={selectedApi.hideTryIt}
       />

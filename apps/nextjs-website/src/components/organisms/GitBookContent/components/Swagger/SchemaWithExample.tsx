@@ -24,7 +24,7 @@ export const SchemaWithExample = ({
     schema ?? {},
     undefined,
     { includeReadOnly: true },
-    mediaTypeExample
+    mediaTypeExample,
   );
 
   // TODO: Add support for undefined schema but with example

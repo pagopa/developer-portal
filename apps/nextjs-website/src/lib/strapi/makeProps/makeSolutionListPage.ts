@@ -4,7 +4,7 @@ import { StrapiSolutionListPage } from '@/lib/strapi/types/solutionListPage';
 import _ from 'lodash';
 
 export function makeSolutionListPageProps(
-  strapiSolutionsList: StrapiSolutionListPage
+  strapiSolutionsList: StrapiSolutionListPage,
 ): SolutionListTemplateProps {
   const {
     data: { attributes },
@@ -19,7 +19,7 @@ export function makeSolutionListPageProps(
       attributes.solutions.data.map(({ attributes }) => {
         if (!attributes.slug) {
           console.error(
-            `Error processing Solution "${attributes.title}": Missing solution slug. Skipping...`
+            `Error processing Solution "${attributes.title}": Missing solution slug. Skipping...`,
           );
           return null;
         }
@@ -34,7 +34,7 @@ export function makeSolutionListPageProps(
             path: `/${products.attributes.slug}`,
           })),
         };
-      })
+      }),
     ),
     successStories: attributes.caseHistories && {
       title: attributes.caseHistories.title,
@@ -43,7 +43,7 @@ export function makeSolutionListPageProps(
         attributes.caseHistories.case_histories.data.map((caseHistory) => {
           if (!caseHistory.attributes.slug) {
             console.error(
-              `Error processing Case History "${caseHistory.attributes.title}": Missing case history slug. Skipping...`
+              `Error processing Case History "${caseHistory.attributes.title}": Missing case history slug. Skipping...`,
             );
             return null;
           }
@@ -53,7 +53,7 @@ export function makeSolutionListPageProps(
             path: `case-histories/${caseHistory.attributes.slug}`,
             image: caseHistory.attributes.image?.data?.attributes,
           };
-        })
+        }),
       ),
     },
     features: attributes.features && {

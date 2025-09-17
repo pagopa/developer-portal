@@ -24,21 +24,21 @@ const DEFAULT_DATE_FORMAT = {
   },
 } satisfies DateFormatOptions;
 
-type ChatbotHistoryList = {
+type ChatbotHistoryListProps = {
   sessionsList: Session[];
 };
 
-const ChatbotHistoryList = ({ sessionsList }: ChatbotHistoryList) => {
+const ChatbotHistoryList = ({ sessionsList }: ChatbotHistoryListProps) => {
   const { palette } = useTheme();
   const uniqueDates = Array.from(
     new Set(
       sessionsList.map((session) =>
         new Intl.DateTimeFormat(
           DEFAULT_DATE_FORMAT.locale,
-          DEFAULT_DATE_FORMAT.options
-        ).format(new Date(session.createdAt))
-      )
-    )
+          DEFAULT_DATE_FORMAT.options,
+        ).format(new Date(session.createdAt)),
+      ),
+    ),
   );
 
   return (
@@ -46,7 +46,7 @@ const ChatbotHistoryList = ({ sessionsList }: ChatbotHistoryList) => {
       {dateDividerSessionsItemsInterpolation(
         uniqueDates,
         sessionsList,
-        palette
+        palette,
       )}
     </List>
   );
@@ -57,15 +57,15 @@ export default ChatbotHistoryList;
 function dateDividerSessionsItemsInterpolation(
   dateDividers: string[],
   sessionsList: Session[],
-  palette: Palette
+  palette: Palette,
 ) {
   const items = dateDividers.map((date) => {
     const sessions = sessionsList.filter(
       (session: Session) =>
         new Intl.DateTimeFormat(
           DEFAULT_DATE_FORMAT.locale,
-          DEFAULT_DATE_FORMAT.options
-        ).format(new Date(session.createdAt)) === date
+          DEFAULT_DATE_FORMAT.options,
+        ).format(new Date(session.createdAt)) === date,
     );
     return sessions.map((session: Session) => session);
   });
@@ -83,8 +83,8 @@ function dateDividerSessionsItemsInterpolation(
           {capitalize(
             new Intl.DateTimeFormat(
               DEFAULT_DATE_FORMAT.locale,
-              DEFAULT_DATE_FORMAT.options
-            ).format(new Date(sameMonthItems[0].createdAt))
+              DEFAULT_DATE_FORMAT.options,
+            ).format(new Date(sameMonthItems[0].createdAt)),
           )}
         </Typography>
       </ListItem>

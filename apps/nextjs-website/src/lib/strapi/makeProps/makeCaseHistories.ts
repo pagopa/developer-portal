@@ -5,7 +5,7 @@ import { StrapiPart } from '@/lib/strapi/types/part';
 import { StrapiCaseHistories } from '@/lib/strapi/types/caseHistories';
 
 export function makeCaseHistoriesProps(
-  strapiCaseHistories: StrapiCaseHistories
+  strapiCaseHistories: StrapiCaseHistories,
 ): ReadonlyArray<CaseHistoryPageTemplateProps> {
   return strapiCaseHistories.data.map(({ attributes }) => ({
     ...attributes,

@@ -5,7 +5,7 @@ import dynamic from 'next/dynamic';
 
 const NoSSRMermaidDiagram = dynamic(
   () => import('../../../atoms/MermaidDiagram/MermaidDiagram'),
-  { ssr: false }
+  { ssr: false },
 );
 
 const CodeBlock = ({

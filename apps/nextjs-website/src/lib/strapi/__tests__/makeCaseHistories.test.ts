@@ -21,7 +21,7 @@ describe('makeCaseHistoriesProps', () => {
 
   it('should handle minimal data with missing optional fields', () => {
     const result = makeCaseHistoriesProps(
-      _.cloneDeep(minimalDataCaseHistories())
+      _.cloneDeep(minimalDataCaseHistories()),
     );
     const firstElement = result[0];
     expect(result).toHaveLength(1);

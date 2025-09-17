@@ -29,7 +29,7 @@ export const InfoCardProfile = ({
   }, [items]);
 
   const isButtonDisabled = dataSectionItems.some(
-    (item) => item.required && (!item.value || item.value.trim() === '')
+    (item) => item.required && (!item.value || item.value.trim() === ''),
   );
 
   const [editing, setEditing] = useState(false);

@@ -32,5 +32,5 @@ const makeStrapiApiDataListPagePopulate = () =>
 
 export const fetchApiDataListPages = fetchFromStrapi<StrapiApiDataListPages>(
   'api-data-list-pages',
-  makeStrapiApiDataListPagePopulate()
+  makeStrapiApiDataListPagePopulate(),
 );

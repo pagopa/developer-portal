@@ -3,9 +3,9 @@ import MenuIcon from '@mui/icons-material/Menu';
 
 interface HamburgerMenuProps {
   open: boolean;
-  // eslint-disable-next-line functional/no-return-void
+
   onOpen: () => void;
-  // eslint-disable-next-line functional/no-return-void
+
   onClose: () => void;
 }
 

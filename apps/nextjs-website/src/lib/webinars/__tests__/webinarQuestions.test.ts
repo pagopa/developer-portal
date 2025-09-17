@@ -37,7 +37,6 @@ const makeTestWebinarEnv = () => {
     if (cmd instanceof PutItemCommand) return {};
     else if (cmd instanceof UpdateItemCommand) return {};
     else if (cmd instanceof QueryCommand) return { Items: [aDynamoDBItem] };
-    // eslint-disable-next-line functional/no-throw-statements
     else throw new Error('Unsupported command');
   });
   nowDateMock.mockImplementation(() => nowDate);
@@ -64,7 +63,7 @@ describe('webinarQuestions', () => {
       const { env, dynamoDBClientMock, nowDateMock } = makeTestWebinarEnv();
 
       // override the mock to simulate a rejection
-      // eslint-disable-next-line functional/no-promise-reject
+
       dynamoDBClientMock.send.mockImplementation(() => Promise.reject(error));
 
       const actual = await insertWebinarQuestion(aInsertWebinarQuestion)(env)();
@@ -106,7 +105,7 @@ describe('webinarQuestions', () => {
       const { env, dynamoDBClientMock } = makeTestWebinarEnv();
       const { slug } = aWebinarQuestion.id;
       dynamoDBClientMock.send.mockImplementation(() =>
-        Promise.resolve({ Items: undefined })
+        Promise.resolve({ Items: undefined }),
       );
       const actual = await listWebinarQuestions(slug)(env)();
       const expected = E.right([]);

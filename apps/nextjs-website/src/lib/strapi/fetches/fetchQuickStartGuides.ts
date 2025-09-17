@@ -24,5 +24,5 @@ const makeStrapiQuickStartGuidesPopulate = () =>
 
 export const fetchQuickStartGuides = fetchFromStrapi<StrapiQuickStartGuides>(
   'quickstart-guides',
-  makeStrapiQuickStartGuidesPopulate()
+  makeStrapiQuickStartGuidesPopulate(),
 );

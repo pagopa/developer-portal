@@ -45,7 +45,7 @@ const RequiredTextField: FC<RequiredTextFieldProps> = ({
           const { valid, error } = validator(value);
           return valid ? acc : { valid, error };
         },
-        { valid: true, error: '' }
+        { valid: true, error: '' },
       );
       setIsValid(valid);
       setErrorText(error);

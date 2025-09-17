@@ -56,7 +56,7 @@ const Agreements = () => {
           });
           setIsSubscriptionButtonDisabled(false);
           return null;
-        }
+        },
       );
     }
   };
@@ -79,7 +79,7 @@ const Agreements = () => {
           });
           setIsSubscriptionButtonDisabled(false);
           return null;
-        }
+        },
       );
     }
   };
@@ -91,7 +91,7 @@ const Agreements = () => {
       underline='none'
       href={'/privacy-policy'}
       aria-label={t(
-        'profile.agreements.privacy.statement.labelOfLinkToReplace'
+        'profile.agreements.privacy.statement.labelOfLinkToReplace',
       )}
       title={t('profile.agreements.privacy.statement.labelOfLinkToReplace')}
     >
@@ -112,7 +112,7 @@ const Agreements = () => {
   return (
     <>
       <title>{`${t('devPortal.title')} | ${t(
-        'profile.agreements.title'
+        'profile.agreements.title',
       )}`}</title>
       <Stack
         sx={{

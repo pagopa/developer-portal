@@ -15,9 +15,9 @@ const BuildConfigCodec = t.intersection([
 export type BuildConfig = t.TypeOf<typeof BuildConfigCodec>;
 
 export const makeBuildConfig = (
-  env: Record<string, undefined | string>
+  env: Record<string, undefined | string>,
 ): E.Either<string, BuildConfig> =>
   pipe(
     BuildConfigCodec.decode(env),
-    E.mapLeft((errors) => PR.failure(errors).join('\n'))
+    E.mapLeft((errors) => PR.failure(errors).join('\n')),
   );

@@ -10,7 +10,7 @@ import _ from 'lodash';
 import { StrapiGuideListPages } from '@/lib/strapi/types/guideListPage';
 
 export function makeGuideListPagesProps(
-  strapiGuideListPages: StrapiGuideListPages
+  strapiGuideListPages: StrapiGuideListPages,
 ): readonly GuideListPageProps[] {
   return _.compact(
     strapiGuideListPages.data.map(({ attributes }) => {
@@ -27,8 +27,8 @@ export function makeGuideListPagesProps(
             title: category,
             guides: _.compact(
               guides.data.map((guide) =>
-                makeGuideCardProps(guide, product.slug)
-              )
+                makeGuideCardProps(guide, product.slug),
+              ),
             ),
           })),
         ];
@@ -50,17 +50,17 @@ export function makeGuideListPagesProps(
       } catch (error) {
         console.error(
           `Error while processing Guide List Page for product with slug "${productData.attributes.slug}":`,
-          error
+          error,
         );
         return null;
       }
-    })
+    }),
   );
 }
 
 function makeGuideCardProps(
   guide: StrapiBaseGuide,
-  productSlug: string
+  productSlug: string,
 ): GuideCardProps | null {
   if (!guide.attributes.slug) {
     console.error('guide slug is missing:', guide);

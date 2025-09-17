@@ -4,7 +4,6 @@ import { Media } from '@/lib/types/media';
 import React from 'react';
 
 type MobileWebinarCategoryButtonProps = {
-  // eslint-disable-next-line functional/no-return-void
   onClick: () => void;
   label: string;
   icon: Media;

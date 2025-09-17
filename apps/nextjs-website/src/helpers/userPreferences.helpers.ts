@@ -12,7 +12,7 @@ function isUserPreferences(obj: any): obj is UserPreferences {
 }
 
 export function userPreferencesFromAttributes(
-  attributes: DevPortalUser['attributes']
+  attributes: DevPortalUser['attributes'],
 ): UserPreferences {
   // eslint-disable-next-line functional/no-try-statements
   try {
@@ -35,12 +35,12 @@ export function userPreferencesFromAttributes(
 
 export function mergeUserPreferencesToAttributes(
   userPreferences: UserPreferences,
-  attributes: DevPortalUser['attributes']
+  attributes: DevPortalUser['attributes'],
 ): DevPortalUser['attributes'] | Error {
   const userPreferencesToString = JSON.stringify(userPreferences);
   if (userPreferencesToString.length > MAX_USER_PREFERENCES_LENGTH) {
     return new Error(
-      `User preferences length execed ${MAX_USER_PREFERENCES_LENGTH}`
+      `User preferences length execed ${MAX_USER_PREFERENCES_LENGTH}`,
     );
   }
   return {

@@ -76,24 +76,24 @@ describe('makeSolutionsProps', () => {
     expect(result[0].title).toBe('Valid Solution');
     expect(result[0].solutionSlug).toBe('valid-solution');
     expect(spyOnConsoleError).toHaveBeenCalledWith(
-      'Error processing Solution "Solution Without Slug": Missing solution slug. Skipping...'
+      'Error processing Solution "Solution Without Slug": Missing solution slug. Skipping...',
     );
   });
 
   it('should skip case histories with missing slug and log error', () => {
     const result = makeSolutionsProps(
-      solutionsWithItemMissingCaseHistorySlug()
+      solutionsWithItemMissingCaseHistorySlug(),
     );
     expect(result).toHaveLength(1);
     expect(result[0].successStories?.stories).toHaveLength(1);
     expect(result[0].successStories?.stories[0].title).toBe(
-      'Valid Case History'
+      'Valid Case History',
     );
     expect(result[0].successStories?.stories[0].path).toBe(
-      '/case-histories/valid-case-history'
+      '/case-histories/valid-case-history',
     );
     expect(spyOnConsoleError).toHaveBeenCalledWith(
-      'Error processing Case History "Case History Without Slug": Missing case history slug. Skipping...'
+      'Error processing Case History "Case History Without Slug": Missing case history slug. Skipping...',
     );
   });
 });

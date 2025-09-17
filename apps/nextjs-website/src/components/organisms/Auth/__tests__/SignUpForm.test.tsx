@@ -8,13 +8,13 @@ const actionRegex = RegExp(labels.auth.signUp.action, 'i');
 
 function getPasswordInputs(inputs: HTMLElement[]) {
   const filtered = inputs.filter(
-    (el) => el.getAttribute('type') === 'password'
+    (el) => el.getAttribute('type') === 'password',
   ) as HTMLInputElement[];
 
   expect(filtered).toHaveLength(2);
 
   const confirmPasswordInput = filtered.find(
-    (el) => el.name === 'confirmPassword'
+    (el) => el.name === 'confirmPassword',
   );
 
   const passwordInput = filtered.find((el) => el.name === 'password');
@@ -39,7 +39,7 @@ function getInputs() {
     name: /email/i,
   }) as HTMLInputElement;
   const passwordInputs = getPasswordInputs(
-    screen.getAllByLabelText(/password/i)
+    screen.getAllByLabelText(/password/i),
   );
   const submitButton = screen.getByRole('button', { name: actionRegex });
 
@@ -67,7 +67,7 @@ describe('SignUpForm', () => {
           onSignUp={mockOnSignUp}
           userAlreadyExist={mockUserAlreadyExist}
         />
-      </Wrapper>
+      </Wrapper>,
     );
   });
 
@@ -78,7 +78,7 @@ describe('SignUpForm', () => {
           onSignUp={mockOnSignUp}
           userAlreadyExist={mockUserAlreadyExist}
         />
-      </Wrapper>
+      </Wrapper>,
     );
 
     const {
@@ -109,7 +109,7 @@ describe('SignUpForm', () => {
     render(
       <Wrapper>
         <SignUpForm onSignUp={mockOnSignUp} userAlreadyExist />
-      </Wrapper>
+      </Wrapper>,
     );
 
     const { usernameInput, submitButton } = getInputs();
@@ -127,7 +127,7 @@ describe('SignUpForm', () => {
           onSignUp={mockOnSignUp}
           userAlreadyExist={mockUserAlreadyExist}
         />
-      </Wrapper>
+      </Wrapper>,
     );
 
     const {
@@ -179,7 +179,7 @@ describe('SignUpForm', () => {
           onSignUp={mockOnSignUp}
           userAlreadyExist={mockUserAlreadyExist}
         />
-      </Wrapper>
+      </Wrapper>,
     );
 
     const {

@@ -35,7 +35,7 @@ describe('makeGuidesProps', () => {
     expect(result).toEqual([]);
     expect(spyOnConsoleError).toHaveBeenCalledWith(
       expect.stringContaining('product slug is missing'),
-      expect.any(Object)
+      expect.any(Object),
     );
   });
 
@@ -44,7 +44,7 @@ describe('makeGuidesProps', () => {
     expect(result).toEqual([]);
     expect(spyOnConsoleError).toHaveBeenCalledWith(
       expect.stringContaining('product slug is missing'),
-      expect.any(Object)
+      expect.any(Object),
     );
   });
 });

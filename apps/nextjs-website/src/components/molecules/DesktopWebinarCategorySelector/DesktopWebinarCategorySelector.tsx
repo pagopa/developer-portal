@@ -4,7 +4,7 @@ import WebinarCategoryButton from '@/components/atoms/WebinarCategoryButton/Webi
 
 type DesktopWebinarCategorySelectorProps = {
   selectedWebinarCategory: number;
-  // eslint-disable-next-line functional/no-return-void
+
   setSelectedWebinarCategory: (selectedWebinarCategory: number) => void;
   webinarCategories: readonly WebinarCategory[];
 };

@@ -38,7 +38,7 @@ const ChatHistoryMessage = ({
     timestamp &&
     new Intl.DateTimeFormat(
       DEFAULT_DATE_FORMAT.locale,
-      DEFAULT_DATE_FORMAT.options
+      DEFAULT_DATE_FORMAT.options,
     ).format(new Date(timestamp));
 
   return (

@@ -35,7 +35,7 @@ const makeStrapiSolutionsPopulate = () =>
 
 export const fetchSolutions = fetchFromStrapi<StrapiSolutions>(
   'solutions',
-  makeStrapiSolutionsPopulate()
+  makeStrapiSolutionsPopulate(),
 );
 
 const makeStrapiSolutionPopulate = (solutionSlug: string) =>
@@ -49,5 +49,5 @@ const makeStrapiSolutionPopulate = (solutionSlug: string) =>
 export const fetchSolution = (solutionSlug: string) =>
   fetchFromStrapi<StrapiSolutions>(
     'solutions',
-    makeStrapiSolutionPopulate(solutionSlug)
+    makeStrapiSolutionPopulate(solutionSlug),
   );

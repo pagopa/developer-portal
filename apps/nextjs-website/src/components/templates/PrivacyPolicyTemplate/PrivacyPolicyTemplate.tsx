@@ -15,7 +15,6 @@ const PrivacyPolicyTemplate = () => {
         type='text/javascript'
         id='otprivacy-notice-script'
         onReady={() => {
-          // eslint-disable-next-line no-var
           var settings =
             'eyJjYWxsYmFja1VybCI6Imh0dHBzOi8vcHJpdmFjeXBvcnRhbC1kZS5vbmV0cnVzdC5jb20vcmVxdWVzdC92MS9wcml2YWN5Tm90aWNlcy9zdGF0cy92aWV3cyJ9';
           // To ensure external settings are loaded, use the Initialized promise:

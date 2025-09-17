@@ -63,14 +63,14 @@ const LoginForm = ({
 
   const handleClickShowPassword = useCallback(
     () => setShowPassword((show) => !show),
-    []
+    [],
   );
 
   const handleMouseDownPassword = useCallback(
     (event: MouseEvent<HTMLButtonElement>) => {
       event.preventDefault();
     },
-    []
+    [],
   );
 
   const handleChangeInput = useCallback(
@@ -84,7 +84,7 @@ const LoginForm = ({
 
       setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
     },
-    [fieldErrors]
+    [fieldErrors],
   );
 
   const validateForm = useCallback(() => {
@@ -133,7 +133,7 @@ const LoginForm = ({
     >
       <Card variant='elevation' elevation={8} sx={{ borderRadius: '16px' }}>
         <Grid container justifyContent='center'>
-          <Grid item xs={10}>
+          <Grid size={{ xs: 10 }}>
             <form>
               <Stack pt={4} display='flex' alignItems='center'>
                 <IllusLogin />

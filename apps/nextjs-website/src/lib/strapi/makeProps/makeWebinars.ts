@@ -5,7 +5,7 @@ import _ from 'lodash';
 export type WebinarsProps = readonly Webinar[];
 
 export const makeWebinarProps = (
-  strapiWebinar: StrapiWebinar
+  strapiWebinar: StrapiWebinar,
 ): Webinar | null => {
   // eslint-disable-next-line functional/no-try-statements
   try {
@@ -61,7 +61,7 @@ export const makeWebinarProps = (
 };
 
 export function makeWebinarsProps(
-  strapiWebinars: StrapiWebinars
+  strapiWebinars: StrapiWebinars,
 ): WebinarsProps {
   return _.compact([
     ...strapiWebinars.data.map((webinar) => makeWebinarProps(webinar)),

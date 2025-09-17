@@ -56,7 +56,7 @@ export const FooterColumn = ({
                   <IconWrapper icon={icon} {...rest} />
                 </LinkMui>
               </li>
-            )
+            ),
         )}
       </Stack>
     )}

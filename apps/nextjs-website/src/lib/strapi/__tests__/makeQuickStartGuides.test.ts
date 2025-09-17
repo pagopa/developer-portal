@@ -51,11 +51,11 @@ describe('makeQuickStartGuidesProps', () => {
 
   it('should handle quick start guides with missing product slug', () => {
     const result = makeQuickStartGuidesProps(
-      quickStartGuidesWithMissingProductSlug()
+      quickStartGuidesWithMissingProductSlug(),
     );
     expect(result).toHaveLength(0);
     expect(spyOnConsoleError).toHaveBeenCalledWith(
-      'Error processing Quick Start Guide id 1: Missing product slug. Skipping...'
+      'Error processing Quick Start Guide id 1: Missing product slug. Skipping...',
     );
   });
 });

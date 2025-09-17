@@ -7,7 +7,7 @@ import { ParameterRow } from './ParameterRow';
 
 const groupBy = (
   acc: Record<string, OpenAPIV3.ParameterObject[]>,
-  parameter: OpenAPIV3.ParameterObject
+  parameter: OpenAPIV3.ParameterObject,
 ): Record<string, OpenAPIV3.ParameterObject[]> => {
   const { in: group } = parameter;
   if (Reflect.has(acc, group)) {

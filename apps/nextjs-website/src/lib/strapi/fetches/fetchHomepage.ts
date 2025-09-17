@@ -46,5 +46,5 @@ const makeStrapiHomepagePopulate = () =>
 
 export const fetchHomepage = fetchFromStrapi<StrapiHomepage>(
   'homepage',
-  makeStrapiHomepagePopulate()
+  makeStrapiHomepagePopulate(),
 );

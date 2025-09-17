@@ -7,7 +7,6 @@ import { useTranslations } from 'next-intl';
 import { passwordMatcher } from '@/helpers/auth.helpers';
 
 type EditPasswordFormProps = {
-  // eslint-disable-next-line functional/no-return-void
   onCancel: () => void;
   onSave: (oldPassword: string, newPassword: string) => Promise<void>;
 };
@@ -62,7 +61,7 @@ export const EditPasswordForm = ({
           if (error.code === 'NotAuthorizedException') {
             setErrors({ currentPassword: t('changePassword.wrongPassword') });
           }
-        }
+        },
       );
     }
   };

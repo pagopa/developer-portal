@@ -25,14 +25,14 @@ const asFontSize = (level: number) =>
   level === 1
     ? '38px'
     : level === 2
-    ? '28px'
-    : level === 3
-    ? '18px'
-    : level === 4
-    ? '16px'
-    : level === 5
-    ? '14px'
-    : '12px';
+      ? '28px'
+      : level === 3
+        ? '18px'
+        : level === 4
+          ? '16px'
+          : level === 5
+            ? '14px'
+            : '12px';
 
 const asFontWeight = (level: number) => (level === 1 ? 700 : 600);
 

@@ -75,12 +75,10 @@ export async function generateMetadata(): Promise<Metadata> {
 
 const NotSsrWebinarHeaderBanner = dynamic(
   () => import('@/components/atoms/WebinarHeaderBanner/WebinarHeaderBanner'),
-  { ssr: false }
 );
 
 const NotSsrWebinarsSection = dynamic(
   () => import('@/components/organisms/WebinarsSection/WebinarsSection'),
-  { ssr: false }
 );
 
 const Home = async () => {

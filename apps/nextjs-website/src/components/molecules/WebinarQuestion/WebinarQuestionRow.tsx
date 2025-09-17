@@ -85,7 +85,7 @@ export default function WebinarQuestionRow({
           {!isHidden
             ? question.id.createdAt.toLocaleTimeString(
                 defaultLocale,
-                timeOptions
+                timeOptions,
               )
             : ''}
         </Typography>

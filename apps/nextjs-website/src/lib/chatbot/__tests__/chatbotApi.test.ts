@@ -191,7 +191,7 @@ describe('chatbotApi', () => {
       question: 'aQuery',
     })(env);
     const expected = new Error(
-      `Invalid value 1234 supplied to '/sessionId', expected type string`
+      `Invalid value 1234 supplied to '/sessionId', expected type string`,
     );
     await expect(actual).rejects.toStrictEqual(expected);
   });

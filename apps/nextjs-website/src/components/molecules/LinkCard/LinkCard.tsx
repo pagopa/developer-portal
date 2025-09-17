@@ -1,7 +1,7 @@
 'use client';
 import LinkButton from '@/components/atoms/LinkButton/LinkButton';
 import { Card, CardActions, CardContent, Typography } from '@mui/material';
-import { Variant } from '@mui/material/styles/createTypography';
+import type { TypographyVariant } from '@mui/material/styles';
 import React from 'react';
 
 export type LinkCardProps = {
@@ -12,7 +12,7 @@ export type LinkCardProps = {
     readonly label: string;
     readonly href: string;
   };
-  readonly variant?: Variant;
+  readonly variant?: TypographyVariant;
 };
 
 const LinkCard = ({

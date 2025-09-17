@@ -60,8 +60,8 @@ const WebinarsTemplateContent = ({
     0,
     Math.min(
       isNaN(parsedCategory) ? 0 : parsedCategory,
-      updatedCategories.length - 1
-    )
+      updatedCategories.length - 1,
+    ),
   );
   const [selectedCategory, setSelectedCategory] = useState(categoryValue);
 
@@ -71,11 +71,11 @@ const WebinarsTemplateContent = ({
       cat.webinarCategory?.name === updatedCategories[selectedCategory].name
     );
   });
-  // eslint-disable-next-line functional/no-return-void
+
   const setSelectedWebinarCategory = (newCategory: number): void => {
     if (newCategory === selectedCategory) return;
     addQueryParam('category', `${newCategory}`);
-    // eslint-disable-next-line functional/immutable-data
+
     //window.location.href = '#webinarsHeader';
     document
       .getElementById('webinarsHeader')
@@ -177,7 +177,7 @@ const WebinarsTemplateContent = ({
               background={palette.background.paper}
               sx={{ paddingTop: 4, paddingBottom: 8 }}
             >
-              <Grid item md={12}>
+              <Grid size={{ md: 12 }}>
                 <Grid container spacing={4}>
                   {filteredWebinars.map((webinar, i) => (
                     <WebinarListItem webinar={webinar} key={i} />

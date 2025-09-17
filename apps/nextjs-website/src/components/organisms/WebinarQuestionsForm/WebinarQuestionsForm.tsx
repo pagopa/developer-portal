@@ -24,14 +24,13 @@ const MAX_QUESTION_LENGTH = 240;
 
 type FormState = 'submitting' | 'submitted' | undefined;
 type WebinarQuestionsFormProps = {
-  // eslint-disable-next-line functional/no-return-void
   toggleFormVisibility: () => void;
   disabled?: boolean;
   webinarSlug: string;
   webinarState: WebinarState;
   isSmallScreen: boolean;
   question: string;
-  // eslint-disable-next-line functional/no-return-void
+
   setQuestion: (text: string) => void;
 };
 
@@ -94,7 +93,7 @@ export const WebinarQuestionsForm = ({
   ) : null;
   const isWebinarLive = useMemo(
     () => [WebinarState.live].includes(webinarState),
-    [webinarState]
+    [webinarState],
   );
   const btnLabel =
     formState === 'submitted'
@@ -187,12 +186,13 @@ export const WebinarQuestionsForm = ({
             <>
               <Typography
                 variant='body2'
-                sx={{ fontWeight: 600 }}
-                color={(theme) =>
-                  disabled
-                    ? theme.palette.text.disabled
-                    : theme.palette.text.primary
-                }
+                sx={{
+                  fontWeight: 600,
+                  color: (theme) =>
+                    disabled
+                      ? theme.palette.text.disabled
+                      : theme.palette.text.primary,
+                }}
               >
                 {t('questionsForm.title', {
                   maxLength: `${MAX_QUESTION_LENGTH}`,
@@ -226,10 +226,13 @@ export const WebinarQuestionsForm = ({
                 helperText={
                   <Typography
                     component='span'
-                    color={(theme) => theme.palette.text.secondary}
                     fontSize={12}
                     fontWeight={600}
-                    sx={{ display: 'flex', justifyContent: 'end' }}
+                    sx={{
+                      display: 'flex',
+                      justifyContent: 'end',
+                      color: (theme) => theme.palette.text.secondary,
+                    }}
                   >
                     {question.length > 0 &&
                       `${question.length} / ${MAX_QUESTION_LENGTH}`}

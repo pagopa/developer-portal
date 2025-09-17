@@ -33,7 +33,6 @@ const ConfirmationContent = () => {
     if (username && code) {
       Auth.confirmSignUp(username, code)
         .then(() => {
-          // eslint-disable-next-line functional/immutable-data
           router.push('/auth/account-activated');
         })
         .catch((error) => {

@@ -71,7 +71,7 @@ const PersonalData = () => {
 
   async function handleChangePassword(
     oldPassword: string,
-    newPassword: string
+    newPassword: string,
   ) {
     await Auth.changePassword(user, oldPassword, newPassword);
     setShowConfirmationModal('password');
@@ -100,7 +100,7 @@ const PersonalData = () => {
   const renderItem = (
     item: InfoCardItemProps,
     index: number,
-    items: InfoCardItemProps[]
+    items: InfoCardItemProps[],
   ) => {
     const isPasswordItem: boolean = item.name === 'password';
     const isEmailItem: boolean = item.name === 'email';
@@ -111,7 +111,7 @@ const PersonalData = () => {
     return (
       <>
         <title>{`${t('devPortal.title')} | ${t(
-          'profile.personalData.title'
+          'profile.personalData.title',
         )}`}</title>
         <Box key={index}>
           {isPasswordItem && (
@@ -204,7 +204,7 @@ const PersonalData = () => {
               () => {
                 setProfileDataSectionItems(oldItems);
                 return null;
-              }
+              },
             );
             return null;
           }}

@@ -10,7 +10,7 @@ import {
   SxProps,
   Typography,
 } from '@mui/material';
-import { Variant } from '@mui/material/styles/createTypography';
+import type { TypographyVariant } from '@mui/material/styles';
 import { Tag } from '@pagopa/mui-italia';
 import Link from 'next/link';
 import React, { ReactNode } from 'react';
@@ -30,7 +30,7 @@ export type CtaCardProps = {
   readonly icon?: ReactNode;
   readonly children?: ReactNode | ReactNode[];
   readonly tags?: { readonly label: string; readonly path?: string }[];
-  readonly variant?: Variant;
+  readonly variant?: TypographyVariant;
 };
 
 const StyledCardContent = styled(CardContent)(() => ({

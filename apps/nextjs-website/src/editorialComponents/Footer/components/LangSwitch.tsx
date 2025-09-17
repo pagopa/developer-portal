@@ -13,7 +13,7 @@ export interface Language {
 
 export interface LangSwitchProps {
   languages: Language[];
-  // eslint-disable-next-line functional/no-return-void
+
   onLanguageChanged: (lang: Language) => void;
   activeLanguage: Language;
 }

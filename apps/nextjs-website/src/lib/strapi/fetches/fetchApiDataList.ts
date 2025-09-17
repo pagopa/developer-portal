@@ -29,5 +29,5 @@ const makeStrapiApiDataListPopulate = () =>
 // for backward compatibility with the already existing content in Strapi's production instance
 export const fetchApiDataList = fetchFromStrapi<StrapiApiDataList>(
   'apis-data',
-  makeStrapiApiDataListPopulate()
+  makeStrapiApiDataListPopulate(),
 );

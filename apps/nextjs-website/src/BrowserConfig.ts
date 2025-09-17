@@ -28,9 +28,9 @@ export const publicEnv = {
 };
 
 export const makeBrowserConfig = (
-  env: Record<string, undefined | string>
+  env: Record<string, undefined | string>,
 ): E.Either<string, BrowserConfig> =>
   pipe(
     BrowserConfigCodec.decode(env),
-    E.mapLeft((errors) => PR.failure(errors).join('\n'))
+    E.mapLeft((errors) => PR.failure(errors).join('\n')),
   );

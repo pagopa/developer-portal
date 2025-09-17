@@ -23,5 +23,5 @@ const makeStrapiTutorialListPagePopulate = () =>
 
 export const fetchTutorialListPages = fetchFromStrapi<StrapiTutorialListPages>(
   'tutorial-list-pages',
-  makeStrapiTutorialListPagePopulate()
+  makeStrapiTutorialListPagePopulate(),
 );

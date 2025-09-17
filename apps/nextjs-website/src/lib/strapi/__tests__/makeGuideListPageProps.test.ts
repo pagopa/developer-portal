@@ -49,7 +49,7 @@ describe('makeGuideListPageProps', () => {
     });
     expect(spyOnConsoleError).toHaveBeenCalledWith(
       'guide slug is missing:',
-      expect.any(Object)
+      expect.any(Object),
     );
   });
 
@@ -95,12 +95,12 @@ describe('makeGuideListPageProps', () => {
 
   it('should return an empty array if all guide list pages have missing product slugs', () => {
     const result = makeGuideListPagesProps(
-      guideListPagesWithItemMissingProductSlug()
+      guideListPagesWithItemMissingProductSlug(),
     );
     expect(result).toHaveLength(0);
     expect(spyOnConsoleError).toHaveBeenCalledWith(
       'product slug is missing:',
-      expect.any(Object)
+      expect.any(Object),
     );
   });
 });

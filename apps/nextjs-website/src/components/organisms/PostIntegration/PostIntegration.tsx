@@ -50,7 +50,7 @@ const PostIntegration = ({
         paddingBottom: 8,
       },
     }),
-    [theme]
+    [theme],
   );
 
   return (

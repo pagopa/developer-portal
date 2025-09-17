@@ -24,7 +24,7 @@ const makeStrapiGuidesPopulate = () =>
 
 export const fetchGuides = fetchFromStrapi<StrapiGuides>(
   'guides',
-  makeStrapiGuidesPopulate()
+  makeStrapiGuidesPopulate(),
 );
 
 const makeStrapiGuidePopulate = (guideSlug: string, productSlug: string) =>
@@ -41,5 +41,5 @@ const makeStrapiGuidePopulate = (guideSlug: string, productSlug: string) =>
 export const fetchGuide = (guideSlug: string, productSlug: string) =>
   fetchFromStrapi<StrapiGuides>(
     'guides',
-    makeStrapiGuidePopulate(guideSlug, productSlug)
+    makeStrapiGuidePopulate(guideSlug, productSlug),
   );

@@ -38,5 +38,5 @@ const makeStrapiWebinarsPopulate = () => qs.stringify(webinarPopulate);
 
 export const fetchWebinars = fetchFromStrapi<StrapiWebinars>(
   'webinars',
-  makeStrapiWebinarsPopulate()
+  makeStrapiWebinarsPopulate(),
 );

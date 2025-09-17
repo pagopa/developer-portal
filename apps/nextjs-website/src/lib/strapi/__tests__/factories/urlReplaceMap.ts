@@ -4,7 +4,7 @@ import {
 } from '@/lib/strapi/types/urlReplaceMap';
 
 const makeUrlToGuideItem = (
-  overrides?: Partial<StrapiUrlToGuide>
+  overrides?: Partial<StrapiUrlToGuide>,
 ): StrapiUrlToGuide => ({
   id: 1,
   url: 'source-url',
@@ -28,7 +28,7 @@ const makeUrlToGuideItem = (
 });
 
 export const urlReplaceMapSingle = (
-  overrides?: Partial<StrapiUrlToGuide>
+  overrides?: Partial<StrapiUrlToGuide>,
 ): StrapiUrlReplaceMap => ({
   data: {
     attributes: {

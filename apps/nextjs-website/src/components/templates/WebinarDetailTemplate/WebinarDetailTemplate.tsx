@@ -45,12 +45,12 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
           <BlocksRendererClient content={webinar.bodyContent} />
         </EContainer>
       ) : null,
-    [webinar.bodyContent]
+    [webinar.bodyContent],
   );
 
   const speakerList = useMemo(
     () => webinar.speakers && <SpeakerList speakers={[...webinar.speakers]} />,
-    [webinar.speakers]
+    [webinar.speakers],
   );
 
   const relatedLinks = useMemo(
@@ -61,7 +61,7 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
           links={[...(webinar.relatedLinks?.links || [])]}
         />
       ),
-    [webinar.relatedLinks]
+    [webinar.relatedLinks],
   );
 
   const subscribeToWebinarButton = (

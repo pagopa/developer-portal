@@ -29,7 +29,7 @@ const WebinarHeaderBanner: FC<WebinarHeaderBannerProps> = ({ webinars }) => {
 
   const webinar = webinars.find(
     ({ endDateTime }: Webinar) =>
-      endDateTime && new Date(endDateTime).getTime() > new Date().getTime()
+      endDateTime && new Date(endDateTime).getTime() > new Date().getTime(),
   );
   const { slug, title: text, endDateTime } = webinar || {};
   const storedDateTime = slug && window?.localStorage.getItem(slug);

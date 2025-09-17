@@ -21,7 +21,7 @@ const NotSsrWebinarsTemplate = dynamic(
   () => import('@/components/organisms/WebinarsTemplate/WebinarsTemplate'),
   {
     loading: () => <Spinner />,
-  }
+  },
 );
 
 const Webinars = async () => {

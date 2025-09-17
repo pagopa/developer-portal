@@ -23,5 +23,5 @@ const makeStrapiGuideListPopulate = () =>
 
 export const fetchGuideListPages = fetchFromStrapi<StrapiGuideListPages>(
   'guide-list-pages',
-  makeStrapiGuideListPopulate()
+  makeStrapiGuideListPopulate(),
 );

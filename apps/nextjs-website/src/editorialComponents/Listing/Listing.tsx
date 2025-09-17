@@ -83,7 +83,7 @@ const Listing = ({
       white: theme.palette.background.paper,
       lightGrey: theme.palette.grey[50],
     }),
-    [theme]
+    [theme],
   );
 
   return (
@@ -106,7 +106,7 @@ const Listing = ({
         >
           {`${date.preDate} ${new Intl.DateTimeFormat(
             date.locale,
-            date.options
+            date.options,
           ).format(date.date)}`}
         </Typography>
       )}

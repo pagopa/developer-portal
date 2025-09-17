@@ -10,7 +10,7 @@ export type InfoCardItemProps = {
   title: string;
   value?: string;
   valueFallback?: ReactNode;
-  // eslint-disable-next-line functional/no-return-void
+
   onEdit?: () => void;
 };
 

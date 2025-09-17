@@ -12,7 +12,7 @@ const WebinarsSection = ({ webinars }: WebinarsSectionProps) => {
   const futureWebinars = getFutureWebinars(webinars);
   const pastWebinars = getPastWebinars(webinars).slice(
     0,
-    maxPastWebinarsInHome
+    maxPastWebinarsInHome,
   );
 
   return (

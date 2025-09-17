@@ -11,5 +11,5 @@ const makeStrapiWebinarCategoriesPopulate = () =>
 
 export const fetchWebinarCategories = fetchFromStrapi<StrapiWebinarCategories>(
   'webinar-categories',
-  makeStrapiWebinarCategoriesPopulate()
+  makeStrapiWebinarCategoriesPopulate(),
 );

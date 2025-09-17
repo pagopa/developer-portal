@@ -17,7 +17,7 @@ import { useTranslations } from 'next-intl';
 
 type MobileWebinarCategorySelectorProps = {
   selectedWebinarCategory: number;
-  // eslint-disable-next-line functional/no-return-void
+
   setSelectedWebinarCategory: (selectedWebinarCategory: number) => void;
   webinarCategories: readonly WebinarCategory[];
 };

@@ -7,7 +7,7 @@ import { StrapiGuides } from '@/lib/strapi/types/guide';
 import _ from 'lodash';
 
 export function makeGuidesProps(
-  strapiGuides: StrapiGuides
+  strapiGuides: StrapiGuides,
 ): readonly GuideDefinition[] {
   return _.compact(
     strapiGuides.data.map(({ attributes }) => {
@@ -23,7 +23,7 @@ export function makeGuidesProps(
 
       try {
         const product = makeBaseProductWithoutLogoProps(
-          attributes.product.data
+          attributes.product.data,
         );
         return {
           product,
@@ -36,7 +36,7 @@ export function makeGuidesProps(
             attributes.bannerLinks.length > 0
               ? attributes.bannerLinks.map(makeBannerLinkProps)
               : attributes.product.data.attributes.bannerLinks?.map(
-                  makeBannerLinkProps
+                  makeBannerLinkProps,
                 ) || [],
           seo: attributes.seo,
         };
@@ -44,10 +44,10 @@ export function makeGuidesProps(
         console.error(
           'error creating guide definition for:',
           attributes,
-          error
+          error,
         );
         return null;
       }
-    })
+    }),
   );
 }

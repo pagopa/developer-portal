@@ -28,8 +28,8 @@ export const getSessions = (page: number, pageSize: number) =>
                   'Content-Type': 'application/json',
                   Authorization: `Bearer ${authToken}`,
                 },
-              }
-            )
+              },
+            ),
         ),
         TE.chain((response) => {
           if (response.status === 200) {
@@ -42,16 +42,16 @@ export const getSessions = (page: number, pageSize: number) =>
           // decode the response with the given codec
           pipe(
             RemoteSessionsResponseCodec.decode(json),
-            E.mapLeft((errors) => new Error(PR.failure(errors).join('\n')))
-          )
+            E.mapLeft((errors) => new Error(PR.failure(errors).join('\n'))),
+          ),
         ),
         TE.fold(
           // eslint-disable-next-line functional/no-promise-reject
           (errors) => () => Promise.reject(errors),
-          (result) => () => Promise.resolve(result)
-        )
-      )()
-    )
+          (result) => () => Promise.resolve(result),
+        ),
+      )(),
+    ),
   );
 
 export const deleteSession = (sessionId: string) =>
@@ -69,7 +69,7 @@ export const deleteSession = (sessionId: string) =>
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${authToken}`,
               },
-            })
+            }),
         ),
         TE.chain((response) => {
           if (response.status === 200) {
@@ -81,8 +81,8 @@ export const deleteSession = (sessionId: string) =>
         TE.fold(
           // eslint-disable-next-line functional/no-promise-reject
           (errors) => () => Promise.reject(errors),
-          (result) => () => Promise.resolve(result)
-        )
-      )()
-    )
+          (result) => () => Promise.resolve(result),
+        ),
+      )(),
+    ),
   );

@@ -27,5 +27,5 @@ const makeStrapiProductsPopulate = () =>
 
 export const fetchProducts = fetchFromStrapi<StrapiProducts>(
   'products',
-  makeStrapiProductsPopulate()
+  makeStrapiProductsPopulate(),
 );

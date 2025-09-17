@@ -4,7 +4,6 @@ import React from 'react';
 import { Media } from '@/lib/types/media';
 
 type WebinarCategoryButtonProps = {
-  // eslint-disable-next-line functional/no-return-void
   onClick: () => void;
   isSelected: boolean;
   label: string;

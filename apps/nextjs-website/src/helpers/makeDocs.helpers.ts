@@ -42,7 +42,7 @@ const parseDocOrThrow = flow(
   E.fold((e) => {
     // eslint-disable-next-line functional/no-throw-statements
     throw e;
-  }, RA.flatten)
+  }, RA.flatten),
 );
 
 export const makeTutorials = ({
@@ -68,7 +68,7 @@ export const makeTutorials = ({
     ],
     parseDocOrThrow,
     // This is a workaround that removes the 'index' space from tutorial docs
-    RA.filter(({ page: { path } }) => path !== `/${product.slug}/tutorials`)
+    RA.filter(({ page: { path } }) => path !== `/${product.slug}/tutorials`),
   );
 };
 
@@ -114,7 +114,7 @@ export const makeGuide = ({
     }),
     RA.flatten,
     // parse docs files
-    parseDocOrThrow
+    parseDocOrThrow,
   );
 };
 
@@ -131,7 +131,7 @@ export const makeSolution = (solution: SolutionTemplateProps) => {
         },
       },
     ],
-    parseDocOrThrow
+    parseDocOrThrow,
   );
 };
 
@@ -148,6 +148,6 @@ export const makeReleaseNote = (releaseNote: ReleaseNotePageProps) => {
         },
       },
     ],
-    parseDocOrThrow
+    parseDocOrThrow,
   );
 };

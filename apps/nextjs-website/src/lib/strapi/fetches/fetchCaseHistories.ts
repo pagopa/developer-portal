@@ -25,5 +25,5 @@ const makeStrapiCaseHistoriesPopulate = () =>
 
 export const fetchCaseHistories = fetchFromStrapi<StrapiCaseHistories>(
   'case-histories',
-  makeStrapiCaseHistoriesPopulate()
+  makeStrapiCaseHistoriesPopulate(),
 );

@@ -4,7 +4,7 @@ import { HomepageProps } from '@/app/page';
 import _ from 'lodash';
 
 export const makeHomepageProps = (
-  strapiHomepage: StrapiHomepage
+  strapiHomepage: StrapiHomepage,
 ): HomepageProps => ({
   comingsoonDocumentation:
     strapiHomepage.data.attributes.comingsoonDocumentation,
@@ -29,7 +29,7 @@ export const makeHomepageProps = (
           image:
             item.attributes.image?.data &&
             item.attributes.image.data.attributes,
-        })
+        }),
       ),
     },
   }),
@@ -44,7 +44,7 @@ export const makeHomepageProps = (
           href: `${product.attributes.slug}/overview`,
           icon: product.attributes.logo.data?.attributes.url || '',
           useSrc: true,
-        })
+        }),
       ),
       solutionsTabName:
         strapiHomepage.data.attributes.ecosystem.solutionsTabName,
@@ -55,7 +55,7 @@ export const makeHomepageProps = (
           href: `/solutions/${solution.attributes.slug}`,
           icon: solution.attributes.icon.data.attributes.url,
           useSrc: true,
-        })
+        }),
       ),
       solutionsCta: strapiHomepage.data.attributes.ecosystem.solutionsCta && {
         variant: strapiHomepage.data.attributes.ecosystem.solutionsCta.variant,
@@ -66,7 +66,7 @@ export const makeHomepageProps = (
   seo: strapiHomepage?.data?.attributes?.seo,
   webinars: _.compact(
     strapiHomepage.data.attributes.webinars.data.map((webinar) =>
-      makeWebinarProps(webinar)
-    )
+      makeWebinarProps(webinar),
+    ),
   ),
 });

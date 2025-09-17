@@ -9,7 +9,6 @@ const invalidCodeRegex = new RegExp(labels.auth.confirmLogin.invalidCode, 'i');
 const emptyCodeRegex = new RegExp(labels.auth.confirmLogin.emptyCode, 'i');
 
 describe('ConfirmLogin', () => {
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
   const mockOnConfirmLogin = jest.fn(async () => {});
   const mockResendCode = jest.fn(async () => true);
 
@@ -25,7 +24,7 @@ describe('ConfirmLogin', () => {
           onConfirmLogin={mockOnConfirmLogin}
           resendCode={mockResendCode}
         />
-      </Wrapper>
+      </Wrapper>,
     );
   });
 
@@ -37,7 +36,7 @@ describe('ConfirmLogin', () => {
           onConfirmLogin={mockOnConfirmLogin}
           resendCode={mockResendCode}
         />
-      </Wrapper>
+      </Wrapper>,
     );
     const codeInput = screen.getByRole('textbox') as HTMLInputElement;
 
@@ -54,7 +53,7 @@ describe('ConfirmLogin', () => {
           onConfirmLogin={mockOnConfirmLogin}
           resendCode={mockResendCode}
         />
-      </Wrapper>
+      </Wrapper>,
     );
     const codeInput = screen.getByRole('textbox');
     const continueButton = screen.getByRole('button', { name: continueRegex });
@@ -77,7 +76,7 @@ describe('ConfirmLogin', () => {
           onConfirmLogin={mockOnConfirmLogin}
           resendCode={mockResendCode}
         />
-      </Wrapper>
+      </Wrapper>,
     );
     const codeInput = screen.getByRole('textbox');
     const continueButton = screen.getByRole('button', { name: continueRegex });
@@ -100,7 +99,7 @@ describe('ConfirmLogin', () => {
           onConfirmLogin={mockOnConfirmLogin}
           resendCode={mockResendCode}
         />
-      </Wrapper>
+      </Wrapper>,
     );
     const codeInput = screen.getByRole('textbox');
     const continueButton = screen.getByRole('button', { name: continueRegex });

@@ -14,9 +14,9 @@ export const publicEnv = {
 };
 
 export const makeChatbotConfig = (
-  env: Record<string, undefined | string>
+  env: Record<string, undefined | string>,
 ): E.Either<string, ChatbotConfig> =>
   pipe(
     ChatbotConfigCodec.decode(env),
-    E.mapLeft((errors) => PR.failure(errors).join('\n'))
+    E.mapLeft((errors) => PR.failure(errors).join('\n')),
   );

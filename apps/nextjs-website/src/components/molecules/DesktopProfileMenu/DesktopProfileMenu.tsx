@@ -83,7 +83,7 @@ const DesktopProfileMenu = ({
                 </Box>
               </MuiLink>
             );
-          }
+          },
         )}
       </Box>
     </Box>

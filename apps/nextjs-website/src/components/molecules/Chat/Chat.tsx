@@ -25,7 +25,7 @@ type ChatProps = {
     chatId: string,
     contextScore: number | null,
     responseScore: number | null,
-    comment: string
+    comment: string,
   ) => null;
   mustFillFeedbackForm: boolean;
   scrollToBottom: boolean;
@@ -59,7 +59,7 @@ const Chat = ({
         user
           ? t('chatBot.welcomeMessage')
           : t('chatBot.guestMessage', { host: baseUrl }),
-        mustFillFeedbackForm
+        mustFillFeedbackForm,
       ),
       ...compact(
         queries.flatMap((q) => [
@@ -85,10 +85,10 @@ const Chat = ({
                 mustFillFeedbackForm: mustFillFeedbackForm,
               }
             : null,
-        ])
+        ]),
       ),
     ],
-    [queries, t, user]
+    [queries, t, user],
   ) satisfies Message[];
 
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -185,7 +185,7 @@ const Chat = ({
                       message.id,
                       null,
                       null,
-                      ''
+                      '',
                     );
                   }
                   return null;

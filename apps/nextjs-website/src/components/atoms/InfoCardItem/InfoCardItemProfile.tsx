@@ -31,7 +31,7 @@ export type InfoCardItemEditingProfileProps = {
 };
 
 export const InfoCardItemProfile = (
-  infoCardItem: InfoCardItemProfileProps & InfoCardItemEditingProfileProps
+  infoCardItem: InfoCardItemProfileProps & InfoCardItemEditingProfileProps,
 ) => {
   const t = useTranslations();
 
@@ -86,14 +86,14 @@ export const InfoCardItemProfile = (
                 id='company-field-select'
                 value={
                   infoCardItem.values.find(
-                    ({ value }) => value === infoCardItem.value
+                    ({ value }) => value === infoCardItem.value,
                   )?.value || ''
                 }
                 onChange={({ target: { value } }) =>
                   infoCardItem.onValue &&
                   infoCardItem.onValue(
                     infoCardItem.values.find(({ value: v }) => v === value)
-                      ?.value || ''
+                      ?.value || '',
                   )
                 }
                 sx={{ padding: '8.5px 14px' }}
@@ -141,7 +141,7 @@ export const InfoCardItemProfile = (
         >
           {infoCardItem.type === 'select'
             ? infoCardItem.values.find(
-                ({ value }) => value === infoCardItem.value
+                ({ value }) => value === infoCardItem.value,
               )?.title
             : infoCardItem.value}
         </Typography>

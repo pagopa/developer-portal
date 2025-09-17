@@ -42,7 +42,7 @@ const ConfirmLogin = ({
       }
       setCode(e.target.value);
     },
-    [errors]
+    [errors],
   );
 
   const onConfirmLoginHandler = useCallback(() => {
@@ -61,8 +61,8 @@ const ConfirmLogin = ({
   const helperText = errors.codeError
     ? confirmLogin('invalidCode')
     : errors.emptyCode
-    ? confirmLogin('emptyCode')
-    : '';
+      ? confirmLogin('emptyCode')
+      : '';
 
   return (
     <Box
@@ -76,7 +76,7 @@ const ConfirmLogin = ({
     >
       <Card variant='elevation' elevation={8} sx={{ borderRadius: '16px' }}>
         <Grid container justifyContent='center'>
-          <Grid item xs={10}>
+          <Grid size={{ xs: 10 }}>
             <Stack pt={4} display='flex' alignItems='center'>
               <IllusEmailValidation />
             </Stack>

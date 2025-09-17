@@ -27,7 +27,7 @@ export const fetchFromStrapi = <T>(path: string, populate: string) =>
                 },
                 cache: 'no-store',
               }),
-            E.toError
+            E.toError,
           ),
           TE.chain((response) => {
             if (response.status === 200) {
@@ -41,10 +41,10 @@ export const fetchFromStrapi = <T>(path: string, populate: string) =>
           TE.fold(
             // eslint-disable-next-line functional/no-promise-reject
             (errors) => () => Promise.reject(errors),
-            (result) => () => Promise.resolve(result)
-          )
-        )()
-    )
+            (result) => () => Promise.resolve(result),
+          ),
+        )(),
+    ),
   );
 
 function nullsToUndefined(obj: any): any {

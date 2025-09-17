@@ -42,12 +42,10 @@ const ChatbotHistoryContent = () => {
         setIsSessionLoaded(true);
       });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sessionId]); // Needs to run only once
 
   useEffect(() => {
     getSessionsByPage(1);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // Needs to run only once
 
   if (!isChatbotActive) {
@@ -63,7 +61,7 @@ const ChatbotHistoryContent = () => {
     return (
       <>
         <title>{`${t('devPortal.title')} | ${t(
-          'profile.chatbot.title'
+          'profile.chatbot.title',
         )}`}</title>
         <Box
           sx={{
@@ -79,7 +77,7 @@ const ChatbotHistoryContent = () => {
               userName={`${user.attributes.given_name} `}
               onDeleteChatSession={(
                 sessionId: string,
-                sessionDate: string | null
+                sessionDate: string | null,
               ) => {
                 deleteChatbotSession(sessionId).then(() => {
                   const date = sessionDate ? new Date(sessionDate) : null;

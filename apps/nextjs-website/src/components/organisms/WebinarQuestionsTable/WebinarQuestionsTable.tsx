@@ -18,7 +18,7 @@ type WebinarQuestionsTableProps = {
   updateLocalQuestions: (
     createdAt: Date,
     highlight: boolean,
-    hidden: boolean
+    hidden: boolean,
   ) => null;
 };
 
@@ -46,7 +46,7 @@ const WebinarQuestionsTable = ({
                 updateLocalQuestions(
                   question.id.createdAt,
                   !!question.highlightedBy,
-                  hide
+                  hide,
                 );
                 await updateWebinarQuestion({
                   id: question.id,
@@ -61,7 +61,7 @@ const WebinarQuestionsTable = ({
                 updateLocalQuestions(
                   question.id.createdAt,
                   highlight,
-                  !!question.hiddenBy
+                  !!question.hiddenBy,
                 );
                 await updateWebinarQuestion({
                   id: question.id,

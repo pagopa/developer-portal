@@ -36,5 +36,5 @@ const makeStrapiSolutionListPagePopulate = () =>
 
 export const fetchSolutionListPage = fetchFromStrapi<StrapiSolutionListPage>(
   'solution-list-page',
-  makeStrapiSolutionListPagePopulate()
+  makeStrapiSolutionListPagePopulate(),
 );

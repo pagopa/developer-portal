@@ -5,7 +5,7 @@ export type BreadcrumbItem = { readonly name?: string; readonly item?: string };
 
 export function productPageToBreadcrumbs(
   product: Product,
-  breadcrumbSegments?: readonly BreadcrumbSegment[]
+  breadcrumbSegments?: readonly BreadcrumbSegment[],
 ): readonly BreadcrumbSegment[] {
   return [
     {
@@ -27,7 +27,7 @@ export function productPageToBreadcrumbs(
 
 export function pageToBreadcrumbs(
   pagePath: string,
-  paths?: readonly BreadcrumbSegment[]
+  paths?: readonly BreadcrumbSegment[],
 ): readonly BreadcrumbSegment[] {
   return [
     {
@@ -49,7 +49,7 @@ export function gitBookPageToBreadcrumbs(
   gitBookPagesWithTitle: readonly {
     readonly title: string;
     readonly path: string;
-  }[]
+  }[],
 ): readonly BreadcrumbSegment[] {
   // Generate a list of hierarchical breadcrumb paths from the page path
   // (e.g., '/send/release-note/2023/16-ottobre-2023' -> [ '/send/release-note/2023', '/send/release-note/2023/16-ottobre-2023'])

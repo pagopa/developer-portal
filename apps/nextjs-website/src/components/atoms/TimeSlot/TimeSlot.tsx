@@ -15,7 +15,7 @@ function isSameDay(start: Date, end: Date): boolean {
 function formattedDateTime(date: Date): string {
   return `${date.toLocaleDateString(
     defaultLocale,
-    dateOptions
+    dateOptions,
   )}, ${date.toLocaleTimeString(defaultLocale, timeOptions)}`;
 }
 
@@ -25,7 +25,7 @@ function formattedDateTime(date: Date): string {
  */
 function conditionallyFormattedEndDate(
   start?: Date,
-  end?: Date
+  end?: Date,
 ): string | undefined {
   if (!end) return;
 

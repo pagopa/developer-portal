@@ -25,7 +25,6 @@ const DeleteSection = ({ user }: DeleteSectionProps) => {
       setDeleting(true);
       await Auth.deleteUser()
         .then(() => {
-          // eslint-disable-next-line functional/immutable-data
           router.push('/');
           setDeleting(false);
         })

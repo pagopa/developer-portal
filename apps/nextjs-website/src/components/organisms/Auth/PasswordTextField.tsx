@@ -41,7 +41,7 @@ export const PasswordTextField = ({
         </IconButton>
       </InputAdornment>
     ),
-    [showPassword]
+    [showPassword],
   );
 
   const type = showPassword ? 'text' : 'password';

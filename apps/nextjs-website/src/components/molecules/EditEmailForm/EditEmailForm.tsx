@@ -10,7 +10,7 @@ import RequiredTextField, {
 
 type EditEmailFormProps = {
   onSave: (email: string) => Promise<void>;
-  // eslint-disable-next-line functional/no-return-void
+
   onCancel: () => void;
 };
 

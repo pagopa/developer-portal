@@ -9,7 +9,7 @@ import {
 import _ from 'lodash';
 
 export function makeProductsProps(
-  strapiProducts: StrapiProducts
+  strapiProducts: StrapiProducts,
 ): ReadonlyArray<Product> {
   return _.compact(strapiProducts.data.map(makeProductProps));
 }
@@ -24,7 +24,7 @@ export function makeProductProps(product: StrapiProduct): Product | null {
   if (!product.attributes.slug) {
     // eslint-disable-next-line functional/no-expression-statements
     console.error(
-      `Product with id ${product.attributes.name} is missing the slug. Skipping...`
+      `Product with id ${product.attributes.name} is missing the slug. Skipping...`,
     );
     return null;
   }
@@ -40,14 +40,14 @@ export function makeProductProps(product: StrapiProduct): Product | null {
     // eslint-disable-next-line functional/no-expression-statements
     console.error(
       `Error while mapping product with id ${product.attributes.name}:`,
-      error
+      error,
     );
     return null;
   }
 }
 
 function getApiDataListPageUrl(
-  product: StrapiBaseProductWithRelations
+  product: StrapiBaseProductWithRelations,
 ): string | undefined {
   const apiDataList = product.attributes.api_data_list_page.data;
   // if there is no api data, return undefined
@@ -68,11 +68,11 @@ function getApiDataListPageUrl(
 }
 
 export function makeBaseProductWithoutLogoProps(
-  product: StrapiBaseProductWithRelations
+  product: StrapiBaseProductWithRelations,
 ): Product {
   if (!product.attributes.slug) {
     throw new Error(
-      `Product with id ${product.attributes.name} is missing the slug. Skipping...`
+      `Product with id ${product.attributes.name} is missing the slug. Skipping...`,
     );
   }
 

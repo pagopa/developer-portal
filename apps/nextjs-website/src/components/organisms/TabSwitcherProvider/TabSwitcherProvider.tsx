@@ -27,7 +27,7 @@ function Tab({ id, children }: TabProps) {
   if (!context) {
     // eslint-disable-next-line functional/no-throw-statements
     throw new Error(
-      'TabSwitcherContext not found, did you forget to use TabSwitcherContextProvider?'
+      'TabSwitcherContext not found, did you forget to use TabSwitcherContextProvider?',
     );
   }
 
@@ -63,7 +63,7 @@ function TabPanel({ whenActive, children }: TabPanelProps) {
   if (!context) {
     // eslint-disable-next-line functional/no-throw-statements
     throw new Error(
-      'TabSwitcherContext not found, did you forget to use TabSwitcherContextProvider?'
+      'TabSwitcherContext not found, did you forget to use TabSwitcherContextProvider?',
     );
   }
   const { activeTabID } = context;

@@ -39,19 +39,19 @@ it('should extract UserPreference from user with incosistent state', () => {
     userPreferencesFromAttributes({
       ...attributesWithoutUserPreferences,
       'custom:user_preferences': 'dsdsdfds',
-    })
+    }),
   ).toEqual(expectedUserPreferences);
   expect(
     userPreferencesFromAttributes({
       ...attributesWithoutUserPreferences,
       'custom:user_preferences': undefined,
-    })
+    }),
   ).toEqual(expectedUserPreferences);
   expect(
     userPreferencesFromAttributes({
       ...attributesWithoutUserPreferences,
       'custom:user_preferences': (12345).toString(),
-    })
+    }),
   ).toEqual(expectedUserPreferences);
 });
 
@@ -63,7 +63,7 @@ it('should remove null value from UserPreference', () => {
     userPreferencesFromAttributes({
       ...attributesWithoutUserPreferences,
       'custom:user_preferences': `{"subscribedWebinarSlugs":[null]}`,
-    })
+    }),
   ).toEqual(expectedUserPreferences);
 });
 
@@ -76,6 +76,6 @@ it('should covert UserPreference to attributes', () => {
     'custom:user_preferences': JSON.stringify(userPreferences),
   };
   expect(mergeUserPreferencesToAttributes(userPreferences, attributes)).toEqual(
-    newAttributes
+    newAttributes,
   );
 });

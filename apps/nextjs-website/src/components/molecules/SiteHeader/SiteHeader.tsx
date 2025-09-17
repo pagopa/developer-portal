@@ -16,14 +16,14 @@ export type SiteHeaderProps = {
 
 const SiteHeader = (
   { products }: SiteHeaderProps,
-  ref: ForwardedRef<HTMLDivElement>
+  ref: ForwardedRef<HTMLDivElement>,
 ) => {
   const { palette } = useTheme();
   const t = useTranslations('devPortal');
 
   const productsWithOverview = useMemo(
     () => products.filter((product: Product) => product.hasOverviewPage),
-    [products]
+    [products],
   );
 
   return (

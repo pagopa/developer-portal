@@ -28,7 +28,7 @@ export type WebinarSubscription = {
 
 export const insertWebinarSubscription = (
   webinarId: string,
-  username: string
+  username: string,
 ) =>
   pipe(
     // take dynamoDBClient and nowDate properties from WebinarEnv
@@ -47,12 +47,12 @@ export const insertWebinarSubscription = (
       return TE.tryCatch(() => dynamoDBClient.send(putCommand), E.toError);
     }),
     // do not return (i.e., discard) the result if the operation succeded
-    RTE.map(() => void 0)
+    RTE.map(() => void 0),
   );
 
 export const deleteWebinarSubscription = (
   webinarId: string,
-  username: string
+  username: string,
 ) =>
   pipe(
     R.ask<Pick<WebinarEnv, 'dynamoDBClient'>>(),
@@ -67,7 +67,7 @@ export const deleteWebinarSubscription = (
       return TE.tryCatch(() => dynamoDBClient.send(deleteCommand), E.toError);
     }),
     // do not return (i.e., discard) the result if the operation succeded
-    RTE.map(() => void 0)
+    RTE.map(() => void 0),
   );
 
 export const listUserWebinarSubscriptions = (username: string) =>
@@ -92,7 +92,7 @@ export const listUserWebinarSubscriptions = (username: string) =>
         // turn Array<Either<_, _>> to Either<_, Array<_>>
         RA.sequence(E.Applicative),
         // map errors to error and dynamodb item to WebinarSubscription
-        E.bimap(E.toError, RA.map(makeWebinarSubscriptionFromDynamodbItem))
-      )
-    )
+        E.bimap(E.toError, RA.map(makeWebinarSubscriptionFromDynamodbItem)),
+      ),
+    ),
   );

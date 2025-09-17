@@ -30,7 +30,7 @@ describe('makeReleaseNotesProps', () => {
 
   it('should handle minimal data with missing optional fields', () => {
     const result = makeReleaseNotesProps(
-      _.cloneDeep(minimalDataReleaseNotes())
+      _.cloneDeep(minimalDataReleaseNotes()),
     );
     expect(result).toHaveLength(1);
     expect(result[0].title).toBe('Minimal Release Notes');
@@ -65,7 +65,7 @@ describe('makeReleaseNotesProps', () => {
 
   it('should handle release notes without banner links and without product banner links', () => {
     const result = makeReleaseNotesProps(
-      releaseNotesWithoutProductBannerLinks()
+      releaseNotesWithoutProductBannerLinks(),
     );
     expect(result[0].bannerLinks).toEqual([]);
   });
@@ -91,7 +91,7 @@ describe('makeReleaseNotesProps', () => {
     const result = makeReleaseNotesProps(releaseNotesWithMissingProductSlug());
     expect(result).toHaveLength(0);
     expect(spyOnConsoleError).toHaveBeenCalledWith(
-      'Error processing Release Note "Release Note Without Product Slug": Missing product slug. Skipping...'
+      'Error processing Release Note "Release Note Without Product Slug": Missing product slug. Skipping...',
     );
   });
 });

@@ -46,7 +46,7 @@ export function makePartProps(strapiPart: StrapiPart): Part | null {
     case 'parts.ck-editor':
       // eslint-disable-next-line no-case-declarations
       const { parsedContent, menuItems } = parseCkEditorContent(
-        strapiPart.content
+        strapiPart.content,
       );
       return {
         component: 'ckEditor',

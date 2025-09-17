@@ -20,7 +20,7 @@ export function guideListPagesWithItemsMissingSlug() {
                 },
               })),
             },
-          })
+          }),
         ),
       },
     })),
@@ -47,7 +47,7 @@ export function guideListPagesWithItemsMissingImages() {
                 },
               })),
             },
-          })
+          }),
         ),
       },
     })),
@@ -76,7 +76,7 @@ export function guideListPagesWithItemsMissingListItem() {
                 ...guidePerCategory.guides.data.slice(1),
               ],
             },
-          })
+          }),
         ),
       },
     })),

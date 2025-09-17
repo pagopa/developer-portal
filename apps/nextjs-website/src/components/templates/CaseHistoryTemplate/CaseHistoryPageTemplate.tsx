@@ -88,7 +88,7 @@ const CaseHistoryPageTemplate = ({
           <Box key={index}>
             <PartRenderer part={part} />
           </Box>
-        )
+        ),
       )}
       {cards.length > 0 && (
         <ProductsShowcase

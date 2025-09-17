@@ -51,7 +51,7 @@ const env = makeParseS3DocsEnv(bucketName, region, credentials);
 
 const parseDocOrThrow = async <T>(
   docs: readonly DocSource<T>[],
-  paths: readonly string[]
+  paths: readonly string[],
 ): Promise<readonly DocPage<T>[]> => {
   const parsedDocs = docs.map(async (doc) => {
     return await parseS3Doc(env, doc, paths);
@@ -86,7 +86,7 @@ export const makeTutorials = async (props: {
 
   const parsedDocs = await parseDocOrThrow(docs, props.tutorialPaths);
   return parsedDocs.filter(
-    ({ page: { path } }) => path !== `/${product.slug}/tutorials`
+    ({ page: { path } }) => path !== `/${product.slug}/tutorials`,
   );
 };
 
@@ -102,7 +102,7 @@ export const makeGuide = (props: {
   const docs = versions
     .filter(
       ({ version, main }) =>
-        guidePaths.some((path) => path === version) || main === true
+        guidePaths.some((path) => path === version) || main === true,
     )
     .flatMap(({ main = false, version, dirName }) => {
       const item = {
@@ -140,7 +140,7 @@ export const makeGuide = (props: {
 
 export const makeSolution = (
   solution: SolutionTemplateProps,
-  jsonMetadata?: JsonMetadata
+  jsonMetadata?: JsonMetadata,
 ) => {
   const doc = {
     ...solution,
@@ -157,7 +157,7 @@ export const makeSolution = (
 
 export const makeReleaseNote = (
   releaseNote: ReleaseNotePageProps,
-  jsonMetadata?: JsonMetadata
+  jsonMetadata?: JsonMetadata,
 ) => {
   const doc = {
     ...releaseNote,

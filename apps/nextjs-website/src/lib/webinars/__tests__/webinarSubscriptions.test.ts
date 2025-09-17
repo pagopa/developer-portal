@@ -37,7 +37,6 @@ const makeTestWebinarEnv = () => {
     if (cmd instanceof PutItemCommand) return {};
     else if (cmd instanceof DeleteItemCommand) return {};
     else if (cmd instanceof QueryCommand) return { Items: [aDynamoDBItem] };
-    // eslint-disable-next-line functional/no-throw-statements
     else throw new Error('Unsupported command');
   });
   nowDateMock.mockImplementation(() => nowDate);
@@ -54,7 +53,7 @@ describe('webinarSubscriptions', () => {
       const { env, dynamoDBClientMock } = makeTestWebinarEnv();
       const actual = await insertWebinarSubscription(
         aInsertWebinarSubscription.webinarId,
-        aInsertWebinarSubscription.username
+        aInsertWebinarSubscription.username,
       )(env)();
       const expected = E.right(undefined);
 
@@ -66,12 +65,12 @@ describe('webinarSubscriptions', () => {
       const { env, dynamoDBClientMock } = makeTestWebinarEnv();
 
       // override the mock to simulate a rejection
-      // eslint-disable-next-line functional/no-promise-reject
+
       dynamoDBClientMock.send.mockImplementation(() => Promise.reject(error));
 
       const actual = await insertWebinarSubscription(
         aInsertWebinarSubscription.webinarId,
-        aInsertWebinarSubscription.username
+        aInsertWebinarSubscription.username,
       )(env)();
       const expected = E.left(error);
 
@@ -85,7 +84,7 @@ describe('webinarSubscriptions', () => {
       const { env, dynamoDBClientMock } = makeTestWebinarEnv();
       const actual = await deleteWebinarSubscription(
         aInsertWebinarSubscription.webinarId,
-        aInsertWebinarSubscription.username
+        aInsertWebinarSubscription.username,
       )(env)();
       const expected = E.right(undefined);
 
@@ -98,12 +97,12 @@ describe('webinarSubscriptions', () => {
       const { env, dynamoDBClientMock } = makeTestWebinarEnv();
 
       // override the mock to simulate a rejection
-      // eslint-disable-next-line functional/no-promise-reject
+
       dynamoDBClientMock.send.mockImplementation(() => Promise.reject(error));
 
       const actual = await deleteWebinarSubscription(
         aInsertWebinarSubscription.webinarId,
-        aInsertWebinarSubscription.username
+        aInsertWebinarSubscription.username,
       )(env)();
       const expected = E.left(error);
 
@@ -116,7 +115,7 @@ describe('webinarSubscriptions', () => {
     it('should return a list of webinar subscriptions', async () => {
       const { env } = makeTestWebinarEnv();
       const actual = await listUserWebinarSubscriptions(
-        aWebinarSubscription.username
+        aWebinarSubscription.username,
       )(env)();
       const expected = E.right([aWebinarSubscription]);
 
@@ -126,10 +125,10 @@ describe('webinarSubscriptions', () => {
     it('should return an empty list if subscriptions are undefined', async () => {
       const { env, dynamoDBClientMock } = makeTestWebinarEnv();
       dynamoDBClientMock.send.mockImplementation(() =>
-        Promise.resolve({ Items: undefined })
+        Promise.resolve({ Items: undefined }),
       );
       const actual = await listUserWebinarSubscriptions(
-        aWebinarSubscription.username
+        aWebinarSubscription.username,
       )(env)();
       const expected = E.right([]);
 
@@ -141,11 +140,11 @@ describe('webinarSubscriptions', () => {
       const { env, dynamoDBClientMock } = makeTestWebinarEnv();
 
       // override the mock to simulate a rejection
-      // eslint-disable-next-line functional/no-promise-reject
+
       dynamoDBClientMock.send.mockImplementation(() => Promise.reject(error));
 
       const actual = await listUserWebinarSubscriptions(
-        aInsertWebinarSubscription.username
+        aInsertWebinarSubscription.username,
       )(env)();
       const expected = E.left(error);
 

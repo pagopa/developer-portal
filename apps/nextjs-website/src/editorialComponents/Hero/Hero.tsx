@@ -13,7 +13,7 @@ import { type CommonProps, type Generic } from '../types/components';
 import { isJSX } from '../utils';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
 import Image from 'next/image';
-import { Variant } from '@mui/material/styles/createTypography';
+import type { TypographyVariant } from '@mui/material/styles';
 
 export interface HeroProps extends CommonProps, HeroTextProps {
   image?: string | Generic;
@@ -34,7 +34,7 @@ interface HeroTextProps extends CommonProps {
   title: string;
   subtitle?: string | Generic;
   ctaButtons?: Array<CtaButton | Generic>;
-  titleVariant?: Variant;
+  titleVariant?: TypographyVariant;
 }
 
 const HeroTextContent = ({
@@ -134,8 +134,7 @@ const Hero = (props: HeroProps) => {
       direction={inverse ? 'row-reverse' : 'row'}
     >
       <Grid
-        item
-        lg={6}
+        size={{ lg: 6 }}
         sx={{
           minHeight: { lg: heroHeight },
           ...gridTextSx,
@@ -144,7 +143,7 @@ const Hero = (props: HeroProps) => {
         <HeroTextContent {...props} />
       </Grid>
       {image ? (
-        <Grid item lg={6} mb={{ xs: 4, lg: 0 }} component='figure'>
+        <Grid size={{ lg: 6 }} mb={{ xs: 4, lg: 0 }} component='figure'>
           {isJSX(image) ? (
             image
           ) : (

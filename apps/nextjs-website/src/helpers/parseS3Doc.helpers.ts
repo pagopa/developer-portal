@@ -39,7 +39,7 @@ const parseText = ({ type, attributes }: Node): string | null =>
 export const parseTitle = (markdown: string): string | null => {
   const nodes = Array.from(Markdoc.parse(markdown).walk());
   const headingNode = nodes.find(
-    ({ type, attributes }) => type === 'heading' && attributes.level === 1
+    ({ type, attributes }) => type === 'heading' && attributes.level === 1,
   );
 
   if (!headingNode) {
@@ -57,7 +57,7 @@ export type PageTitlePath = Pick<DocPage<unknown>['page'], 'title' | 'path'>;
 
 export type ParseDocS3Env = {
   readonly readFile: (key: string) => Promise<string>;
-  // eslint-disable-next-line functional/prefer-readonly-type
+
   readonly readDir: (prefix: string) => Promise<string[]>;
 };
 
@@ -68,7 +68,7 @@ export const makeParseS3DocsEnv = (
     readonly accessKeyId: string;
     readonly secretAccessKey: string;
     readonly sessionToken?: string;
-  }
+  },
 ): ParseDocS3Env => {
   const s3 =
     !!region && !!credentials
@@ -76,7 +76,6 @@ export const makeParseS3DocsEnv = (
       : new S3Client();
   return {
     readFile: async (key) => {
-      // eslint-disable-next-line functional/no-expression-statements
       const params = { Bucket: bucketName, Key: key };
       const data = await s3.send(new GetObjectCommand(params));
       const stream = data.Body as Readable;
@@ -87,7 +86,7 @@ export const makeParseS3DocsEnv = (
       const data = await s3.send(new ListObjectsV2Command(params));
       return (
         data.Contents?.filter(
-          (item) => item.Key && !item.Key.includes('.gitbook/assets/')
+          (item) => item.Key && !item.Key.includes('.gitbook/assets/'),
         ).map((item) => item.Key || '') || []
       );
     },
@@ -95,7 +94,6 @@ export const makeParseS3DocsEnv = (
 };
 
 const streamToString = (stream: Readable): Promise<string> => {
-  // eslint-disable-next-line functional/prefer-readonly-type
   const chunks: Uint8Array[] = [];
   return new Promise((resolve, reject) => {
     // eslint-disable-next-line functional/no-expression-statements, functional/immutable-data
@@ -110,7 +108,7 @@ const streamToString = (stream: Readable): Promise<string> => {
 const transformPath = (
   path: string,
   dirPath: string,
-  pathPrefix: string
+  pathPrefix: string,
 ): string => {
   const t = path
     .replace(dirPath, `${pathPrefix}`)
@@ -123,8 +121,7 @@ const transformPath = (
 export const parseS3Doc = async <T>(
   env: ParseDocS3Env,
   source: DocSource<T>,
-  paths: readonly string[]
-  // eslint-disable-next-line functional/prefer-readonly-type
+  paths: readonly string[],
 ): Promise<DocPage<T>[]> => {
   // eslint-disable-next-line functional/no-try-statements
   try {
@@ -141,7 +138,7 @@ export const parseS3Doc = async <T>(
     slugToPath = slugToPath !== dirPath ? slugToPath : `${dirPath}/README`;
     const filePath = files.find(
       (file) =>
-        file.endsWith('.md') && file.replace('.md', '').endsWith(slugToPath)
+        file.endsWith('.md') && file.replace('.md', '').endsWith(slugToPath),
     );
 
     if (!filePath) {
@@ -161,7 +158,7 @@ export const parseS3Doc = async <T>(
         path: transformPath(
           filePath,
           source.source.dirPath,
-          source.source.pathPrefix
+          source.source.pathPrefix,
         ),
         isIndex: path.parse(filePath).name === 'README',
         title,
@@ -188,7 +185,7 @@ export const parseS3GuidePage = async (props: {
 
   const baseGuidePath = `/${guideProps.product.slug}/guides/${guideProps.guide.slug}`;
   const guidePageMetadata = guidesMetadata.find(
-    (data) => data.path === guidePath
+    (data) => data.path === guidePath,
   );
   const versions = guideProps.versions;
   const version = guidePageMetadata?.version
@@ -213,7 +210,7 @@ export const parseS3GuidePage = async (props: {
       'or guidePageMetadata',
       guidePageMetadata,
       'guidesMetadataLength',
-      guidesMetadata.length
+      guidesMetadata.length,
     );
     return undefined;
   }
@@ -279,8 +276,7 @@ export const parseS3GuidePage = async (props: {
 
 export const parseDoc = async <T>(
   source: DocSource<T>,
-  jsonMetadata?: JsonMetadata
-  // eslint-disable-next-line functional/prefer-readonly-type
+  jsonMetadata?: JsonMetadata,
 ): Promise<DocPage<T> | undefined> => {
   if (!jsonMetadata) {
     return undefined;

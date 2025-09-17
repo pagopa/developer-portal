@@ -101,7 +101,7 @@ describe('makeTutorialsProps', () => {
     expect(firstElement.title).toBe('Valid Tutorial');
     expect(firstElement.path).toBe('/pago-pa/tutorials/valid-tutorial');
     expect(spyOnConsoleError).toHaveBeenCalledWith(
-      'Error processing Tutorial "Tutorial Without Slug": Missing tutorial slug. Skipping...'
+      'Error processing Tutorial "Tutorial Without Slug": Missing tutorial slug. Skipping...',
     );
   });
 
@@ -113,7 +113,7 @@ describe('makeTutorialsProps', () => {
     expect(firstElement.productSlug).toBe('valid-product');
     expect(firstElement.path).toBe('/valid-product/tutorials/valid-tutorial');
     expect(spyOnConsoleError).toHaveBeenCalledWith(
-      'Error processing Tutorial "Tutorial Without Product Slug": Missing product slug. Skipping...'
+      'Error processing Tutorial "Tutorial Without Product Slug": Missing product slug. Skipping...',
     );
   });
 });

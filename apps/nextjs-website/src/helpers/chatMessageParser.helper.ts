@@ -16,7 +16,7 @@ const chatMarkdocConfig: ConfigType = {
         return new Markdoc.Tag(
           'Link',
           attributes,
-          node.transformChildren(config)
+          node.transformChildren(config),
         );
       },
     },

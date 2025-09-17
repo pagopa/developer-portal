@@ -54,7 +54,7 @@ const ChatMessage = ({
     timestamp &&
     new Intl.DateTimeFormat(
       DEFAULT_DATE_FORMAT.locale,
-      DEFAULT_DATE_FORMAT.options
+      DEFAULT_DATE_FORMAT.options,
     ).format(new Date(timestamp));
 
   const iconSize = 40;

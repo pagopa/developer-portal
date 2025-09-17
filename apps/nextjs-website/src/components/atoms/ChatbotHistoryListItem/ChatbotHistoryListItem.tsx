@@ -32,7 +32,7 @@ const ChatbotHistoryListItem = ({ session }: ChatbotHistoryListItemProps) => {
   const t = useTranslations();
   const formattedDate = new Intl.DateTimeFormat(
     DEFAULT_DATE_FORMAT.locale,
-    DEFAULT_DATE_FORMAT.options
+    DEFAULT_DATE_FORMAT.options,
   ).format(new Date(session.createdAt));
 
   return (

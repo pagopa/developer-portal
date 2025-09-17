@@ -2,7 +2,7 @@
 import LinkButton from '@/components/atoms/LinkButton/LinkButton';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
 import { Stack, Typography } from '@mui/material';
-import { Variant } from '@mui/material/styles/createTypography';
+import type { TypographyVariant } from '@mui/material/styles';
 import React, { ReactNode } from 'react';
 
 type SectionTitleProps = {
@@ -15,7 +15,7 @@ type SectionTitleProps = {
   };
   children?: ReactNode | ReactNode[];
   margin?: number | string;
-  variant?: Variant;
+  variant?: TypographyVariant;
 };
 
 const SectionTitle = ({

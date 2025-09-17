@@ -47,5 +47,5 @@ const makeStrapiOverviewsPopulate = () =>
 
 export const fetchOverviews = fetchFromStrapi<StrapiOverviews>(
   'overviews',
-  makeStrapiOverviewsPopulate()
+  makeStrapiOverviewsPopulate(),
 );

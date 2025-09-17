@@ -4,7 +4,6 @@ import EditIcon from '@mui/icons-material/Edit';
 import { ButtonNaked } from '@pagopa/mui-italia';
 
 type InforCardEditButtonProps = {
-  // eslint-disable-next-line functional/no-return-void
   onClick?: () => void;
 };
 
