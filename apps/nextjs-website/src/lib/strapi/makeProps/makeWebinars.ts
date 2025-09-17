@@ -1,3 +1,4 @@
+/* eslint-disable functional/no-expression-statements */
 import { Webinar } from '../../types/webinar';
 import { StrapiWebinar, StrapiWebinars } from '@/lib/strapi/types/webinars';
 import _ from 'lodash';
@@ -7,6 +8,20 @@ export type WebinarsProps = readonly Webinar[];
 export const makeWebinarProps = (
   strapiWebinar: StrapiWebinar
 ): Webinar | null => {
+  if (!strapiWebinar.attributes.slug || !strapiWebinar.attributes.title) {
+    // eslint-disable-next-line functional/no-let
+    let message: string;
+    if (!strapiWebinar.attributes.title && !strapiWebinar.attributes.slug) {
+      message = `Webinar is missing both title and slug. Skipping...`;
+    } else if (!strapiWebinar.attributes.slug) {
+      message = `Webinar with title "${strapiWebinar.attributes.title}" is missing the webinar slug. Skipping...`;
+    } else {
+      message = `Webinar with slug "${strapiWebinar.attributes.slug}" is missing the title. Skipping...`;
+    }
+    console.error(message);
+    return null;
+  }
+
   // eslint-disable-next-line functional/no-try-statements
   try {
     return {

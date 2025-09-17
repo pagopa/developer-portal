@@ -1,3 +1,4 @@
+/* eslint-disable functional/no-expression-statements */
 /* eslint-disable functional/no-throw-statements */
 import { Product } from '@/lib/types/product';
 import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
@@ -16,16 +17,21 @@ export function makeProductsProps(
 
 export function makeProductProps(product: StrapiProduct): Product | null {
   if (!product || !product.attributes) {
-    // eslint-disable-next-line functional/no-expression-statements
     console.error('Invalid product data:', product);
     return null;
   }
 
-  if (!product.attributes.slug) {
-    // eslint-disable-next-line functional/no-expression-statements
-    console.error(
-      `Product with id ${product.attributes.name} is missing the slug. Skipping...`
-    );
+  if (!product.attributes.slug || !product.attributes.name) {
+    // eslint-disable-next-line functional/no-let
+    let message: string;
+    if (!product.attributes.name && !product.attributes.slug) {
+      message = `Product is missing both name and slug. Skipping...`;
+    } else if (!product.attributes.slug) {
+      message = `Product with name ${product.attributes.name} is missing the slug. Skipping...`;
+    } else {
+      message = `Product with slug ${product.attributes.slug} is missing the name. Skipping...`;
+    }
+    console.error(message);
     return null;
   }
 
@@ -37,7 +43,6 @@ export function makeProductProps(product: StrapiProduct): Product | null {
       logo: product.attributes.logo?.data.attributes,
     };
   } catch (error) {
-    // eslint-disable-next-line functional/no-expression-statements
     console.error(
       `Error while mapping product with id ${product.attributes.name}:`,
       error

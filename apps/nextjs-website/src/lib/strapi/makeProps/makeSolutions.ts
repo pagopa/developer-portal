@@ -10,10 +10,17 @@ export function makeSolutionsProps(
 ): ReadonlyArray<SolutionTemplateProps> {
   return _.compact(
     strapiSolutions.data.map(({ attributes }) => {
-      if (!attributes.slug) {
-        console.error(
-          `Error processing Solution "${attributes.title}": Missing solution slug. Skipping...`
-        );
+      if (!attributes.slug || !attributes.title) {
+        // eslint-disable-next-line functional/no-let
+        let message: string;
+        if (!attributes.slug && !attributes.title) {
+          message = `Solution is missing both title and slug. Skipping...`;
+        } else if (!attributes.slug) {
+          message = `Solution with title "${attributes.title}" is missing the solution slug. Skipping...`;
+        } else {
+          message = `Solution with slug "${attributes.slug}" is missing the title. Skipping...`;
+        }
+        console.error(message);
         return null;
       }
 
