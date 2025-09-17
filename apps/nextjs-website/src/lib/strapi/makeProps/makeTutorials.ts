@@ -63,6 +63,7 @@ export function makeTutorialsProps(
                   makeBannerLinkProps
                 ),
           seo: attributes.seo,
+          tags: attributes.tags.data?.map((tag) => tag.attributes) || [],
           updatedAt: attributes.updatedAt,
         } satisfies TutorialProps;
       } catch (error) {
