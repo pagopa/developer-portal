@@ -1,5 +1,5 @@
-import { CognitoUser } from "@aws-amplify/auth";
-import { WebinarSubscription } from "../webinars/webinarSubscriptions";
+import { CognitoUser } from '@aws-amplify/auth';
+import { WebinarSubscription } from '../webinars/webinarSubscriptions';
 
 export type DevPortalUser = CognitoUser & {
   readonly username: string;
@@ -9,11 +9,11 @@ export type DevPortalUser = CognitoUser & {
     readonly family_name: string;
     readonly given_name: string;
     readonly sub: string;
-    readonly "custom:company_type": string;
-    readonly "custom:job_role": string;
-    readonly "custom:mailinglist_accepted": "true" | "false";
-    readonly "custom:privacy_accepted": boolean;
-    readonly "custom:user_preferences"?: string;
+    readonly 'custom:company_type': string;
+    readonly 'custom:job_role': string;
+    readonly 'custom:mailinglist_accepted': 'true' | 'false';
+    readonly 'custom:privacy_accepted': boolean;
+    readonly 'custom:user_preferences'?: string;
   };
   readonly webinarSubscriptions?: readonly WebinarSubscription[];
 };

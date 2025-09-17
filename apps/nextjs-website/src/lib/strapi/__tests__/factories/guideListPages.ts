@@ -1,5 +1,5 @@
-import { strapiGuideListPagesData } from "@/lib/strapi/__tests__/fixtures/guideListPages";
-import { StrapiGuideListPages } from "@/lib/strapi/types/guideListPage";
+import { strapiGuideListPagesData } from '@/lib/strapi/__tests__/fixtures/guideListPages';
+import { StrapiGuideListPages } from '@/lib/strapi/types/guideListPage';
 
 export function guideListPagesWithItemsMissingSlug() {
   const guidesList = strapiGuideListPagesData;

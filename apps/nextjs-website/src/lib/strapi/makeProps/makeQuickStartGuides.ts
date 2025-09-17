@@ -1,17 +1,17 @@
 /* eslint-disable functional/no-try-statements */
 /* eslint-disable functional/no-expression-statements */
-import { QuickStartGuidePageProps } from "@/app/[productSlug]/quick-start/page";
-import { Part } from "@/lib/types/part";
-import { Step } from "@/lib/types/step";
-import { makePartProps } from "@/lib/strapi/makeProps/makePart";
-import { makeBannerLinkProps } from "@/lib/strapi/makeProps/makeBannerLink";
-import { makeBaseProductWithoutLogoProps } from "@/lib/strapi/makeProps/makeProducts";
-import { StrapiPart } from "@/lib/strapi/types/part";
+import { QuickStartGuidePageProps } from '@/app/[productSlug]/quick-start/page';
+import { Part } from '@/lib/types/part';
+import { Step } from '@/lib/types/step';
+import { makePartProps } from '@/lib/strapi/makeProps/makePart';
+import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
+import { makeBaseProductWithoutLogoProps } from '@/lib/strapi/makeProps/makeProducts';
+import { StrapiPart } from '@/lib/strapi/types/part';
 import {
   StrapiQuickStartGuideItem,
   StrapiQuickStartGuides,
-} from "@/lib/strapi/types/quickStartGuides";
-import _ from "lodash";
+} from '@/lib/strapi/types/quickStartGuides';
+import _ from 'lodash';
 
 export type QuickStartGuidesPageProps = readonly QuickStartGuidePageProps[];
 

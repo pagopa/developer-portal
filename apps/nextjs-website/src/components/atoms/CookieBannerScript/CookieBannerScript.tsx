@@ -1,6 +1,6 @@
-"use client";
-import { isProduction } from "@/config";
-import Script from "next/script";
+'use client';
+import { isProduction } from '@/config';
+import Script from 'next/script';
 type CookieBannerScriptProps = {
   cookieDomainScript?: string;
   cookieScript?: string;
@@ -15,14 +15,14 @@ const CookieBannerScript = ({
       <>
         <Script
           src={cookieScript}
-          type="text/javascript"
+          type='text/javascript'
           data-domain-script={cookieDomainScript}
-          strategy="afterInteractive"
+          strategy='afterInteractive'
         />
         <Script
-          id="optanonwrapper"
-          type="text/javascript"
-          strategy="afterInteractive"
+          id='optanonwrapper'
+          type='text/javascript'
+          strategy='afterInteractive'
           dangerouslySetInnerHTML={{
             __html: `function OptanonWrapper() {}`,
           }}

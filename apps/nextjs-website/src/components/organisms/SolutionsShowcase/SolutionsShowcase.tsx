@@ -1,7 +1,7 @@
-import React from "react";
-import SectionTitle from "@/components/molecules/SectionTitle/SectionTitle";
-import { Box } from "@mui/material";
-import CardsGrid from "@/components/molecules/CardsGrid/CardsGrid";
+import React from 'react';
+import SectionTitle from '@/components/molecules/SectionTitle/SectionTitle';
+import { Box } from '@mui/material';
+import CardsGrid from '@/components/molecules/CardsGrid/CardsGrid';
 
 type SolutionsShowcaseProps = {
   title?: string;
@@ -24,7 +24,7 @@ const SolutionsShowcase = ({
     <Box py={py}>
       {title && <SectionTitle title={title} />}
       <CardsGrid
-        ctaButtonsVariant={"contained"}
+        ctaButtonsVariant={'contained'}
         cards={cards.map((card) => ({
           title: card.title,
           text: card.text,
@@ -34,8 +34,8 @@ const SolutionsShowcase = ({
           useSrc: true,
         }))}
         containerSx={{
-          pt: "22px",
-          mt: "-22px",
+          pt: '22px',
+          mt: '-22px',
         }}
       />
     </Box>

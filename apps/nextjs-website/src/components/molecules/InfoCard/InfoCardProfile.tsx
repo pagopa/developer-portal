@@ -1,14 +1,14 @@
-"use client";
-import InfoCardEditButton from "@/components/atoms/InfoCardEditButton/InfoCardEditButton";
+'use client';
+import InfoCardEditButton from '@/components/atoms/InfoCardEditButton/InfoCardEditButton';
 import {
   InfoCardItemProfile,
   InfoCardItemProfileProps,
-} from "@/components/atoms/InfoCardItem/InfoCardItemProfile";
-import { isProduction } from "@/config";
-import { Box, Button, Card, Divider, Stack, Typography } from "@mui/material";
-import { ButtonNaked } from "@pagopa/mui-italia";
-import { useTranslations } from "next-intl";
-import { useEffect, useState } from "react";
+} from '@/components/atoms/InfoCardItem/InfoCardItemProfile';
+import { isProduction } from '@/config';
+import { Box, Button, Card, Divider, Stack, Typography } from '@mui/material';
+import { ButtonNaked } from '@pagopa/mui-italia';
+import { useTranslations } from 'next-intl';
+import { useEffect, useState } from 'react';
 
 export type InfoCardProfileProps = {
   cardTitle: string;
@@ -21,7 +21,7 @@ export const InfoCardProfile = ({
   items,
   onValue,
 }: InfoCardProfileProps) => {
-  const t = useTranslations("profile");
+  const t = useTranslations('profile');
 
   const [dataSectionItems, setDataSectionItems] = useState([...items]);
   useEffect(() => {
@@ -29,7 +29,7 @@ export const InfoCardProfile = ({
   }, [items]);
 
   const isButtonDisabled = dataSectionItems.some(
-    (item) => item.required && (!item.value || item.value.trim() === ""),
+    (item) => item.required && (!item.value || item.value.trim() === ''),
   );
 
   const [editing, setEditing] = useState(false);
@@ -42,9 +42,9 @@ export const InfoCardProfile = ({
       }}
     />
   ) : (
-    <Stack sx={{ display: "flex", flexDirection: "row" }}>
+    <Stack sx={{ display: 'flex', flexDirection: 'row' }}>
       <ButtonNaked
-        color="primary"
+        color='primary'
         fontWeight={600}
         fontSize={16}
         sx={{ paddingLeft: 0, paddingRight: 0 }}
@@ -53,41 +53,41 @@ export const InfoCardProfile = ({
           setDataSectionItems([...items]);
         }}
       >
-        {t("personalData.cancel")}
+        {t('personalData.cancel')}
       </ButtonNaked>
       <Button
         disabled={isButtonDisabled}
-        variant="contained"
-        sx={{ marginLeft: "1rem" }}
+        variant='contained'
+        sx={{ marginLeft: '1rem' }}
         onClick={() => {
           if (isButtonDisabled) return;
           setEditing(false);
           onValue && onValue(dataSectionItems);
         }}
       >
-        {t("personalData.save")}
+        {t('personalData.save')}
       </Button>
     </Stack>
   );
 
   const addValueComponent = !isProduction ? (
     <ButtonNaked
-      color="primary"
+      color='primary'
       fontWeight={600}
       fontSize={16}
       sx={{ paddingLeft: 0, paddingRight: 0 }}
     >
-      {t("personalData.addField")}
+      {t('personalData.addField')}
     </ButtonNaked>
   ) : null;
 
   return (
-    <Card raised sx={{ padding: 4, maxWidth: "700px" }}>
-      <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-        <Typography variant="h6" fontWeight={700} mt={1}>
+    <Card raised sx={{ padding: 4, maxWidth: '700px' }}>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+        <Typography variant='h6' fontWeight={700} mt={1}>
           {cardTitle}
         </Typography>
-        <Box display={{ xs: "none", md: "block" }}>{editButton}</Box>
+        <Box display={{ xs: 'none', md: 'block' }}>{editButton}</Box>
       </Box>
       {dataSectionItems.map((item, index) => (
         <Box key={index}>
@@ -113,7 +113,7 @@ export const InfoCardProfile = ({
           {index + 1 !== items.length && !editing && <Divider />}
         </Box>
       ))}
-      <Box display={{ xs: "block", md: "none" }}>{editButton}</Box>
+      <Box display={{ xs: 'block', md: 'none' }}>{editButton}</Box>
     </Card>
   );
 };

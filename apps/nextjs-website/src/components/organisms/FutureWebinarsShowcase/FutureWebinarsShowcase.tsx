@@ -1,49 +1,49 @@
-"use client";
-import { Webinar } from "@/lib/types/webinar";
-import { Alert, Box, Snackbar, Typography, useTheme } from "@mui/material";
-import React, { useState } from "react";
-import LinkButton from "@/components/atoms/LinkButton/LinkButton";
-import EContainer from "@/editorialComponents/EContainer/EContainer";
-import { snackbarAutoHideDurationMs } from "@/config";
-import WebinarCard from "@/components/molecules/WebinarCard/WebinarCard";
-import { useTranslations } from "next-intl";
+'use client';
+import { Webinar } from '@/lib/types/webinar';
+import { Alert, Box, Snackbar, Typography, useTheme } from '@mui/material';
+import React, { useState } from 'react';
+import LinkButton from '@/components/atoms/LinkButton/LinkButton';
+import EContainer from '@/editorialComponents/EContainer/EContainer';
+import { snackbarAutoHideDurationMs } from '@/config';
+import WebinarCard from '@/components/molecules/WebinarCard/WebinarCard';
+import { useTranslations } from 'next-intl';
 
 export type FutureWebinarsShowcaseProps = {
   link?: { href?: string; label: string };
   title?:
-    | "dontLoseNext"
-    | "dontLoseNextPlural"
-    | "next"
-    | "our"
-    | "participateTo"
-    | "dedicatedWebinar";
-  description?: "description" | "solutionDescription";
+    | 'dontLoseNext'
+    | 'dontLoseNextPlural'
+    | 'next'
+    | 'our'
+    | 'participateTo'
+    | 'dedicatedWebinar';
+  description?: 'description' | 'solutionDescription';
   webinars: Webinar[];
 };
 
 const FutureWebinarsShowcase = ({
   link,
-  title = "our",
-  description = "description",
+  title = 'our',
+  description = 'description',
   webinars,
 }: FutureWebinarsShowcaseProps) => {
   const theme = useTheme();
-  const t = useTranslations("webinar.webinarsSection");
+  const t = useTranslations('webinar.webinarsSection');
   const [error, setError] = useState<string | null>(null);
 
   return (
     <Box
       py={5}
       sx={{
-        backgroundImage: "url(/images/webinars.png)",
-        backgroundRepeat: "no-repeat",
-        backgroundSize: "cover",
-        backgroundPosition: "bottom left",
+        backgroundImage: 'url(/images/webinars.png)',
+        backgroundRepeat: 'no-repeat',
+        backgroundSize: 'cover',
+        backgroundPosition: 'bottom left',
         paddingY: 8,
-        position: "relative",
-        "&::before": {
+        position: 'relative',
+        '&::before': {
           content: '""',
-          position: "absolute",
+          position: 'absolute',
           top: 0,
           right: 0,
           bottom: 0,
@@ -54,17 +54,17 @@ const FutureWebinarsShowcase = ({
       }}
     >
       <EContainer>
-        <Box sx={{ display: "flex", flexDirection: "column", width: "100%" }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
           <Box mb={webinars.length ? 6 : 0}>
             <Typography
-              variant="h4"
+              variant='h4'
               mb={2}
               sx={{ color: theme.palette.common.white }}
             >
               {t(`title.${title}`, { webinars: webinars.length })}
             </Typography>
             <Typography
-              variant="body2"
+              variant='body2'
               sx={{ color: theme.palette.common.white }}
             >
               {t(description)}
@@ -78,7 +78,7 @@ const FutureWebinarsShowcase = ({
               />
             )}
           </Box>
-          <Box sx={{ display: "flex", flexDirection: "column", gap: "40px" }}>
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: '40px' }}>
             {webinars.length ? (
               webinars.map((webinar, index) => (
                 <WebinarCard
@@ -93,11 +93,11 @@ const FutureWebinarsShowcase = ({
               ))
             ) : (
               <Typography
-                variant="body1"
+                variant='body1'
                 fontSize={18}
                 sx={{ color: theme.palette.common.white }}
               >
-                {t("noWebinars")}
+                {t('noWebinars')}
               </Typography>
             )}
           </Box>
@@ -108,7 +108,7 @@ const FutureWebinarsShowcase = ({
         autoHideDuration={snackbarAutoHideDurationMs}
         onClose={() => setError(null)}
       >
-        <Alert severity={"error"}>{error}</Alert>
+        <Alert severity={'error'}>{error}</Alert>
       </Snackbar>
     </Box>
   );

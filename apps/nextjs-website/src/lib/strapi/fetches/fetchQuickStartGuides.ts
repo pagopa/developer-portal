@@ -1,28 +1,28 @@
-import * as qs from "qs";
-import { fetchFromStrapi } from "@/lib/strapi/fetchFromStrapi";
-import { productRelationsPopulate } from "@/lib/strapi/fetches/fetchProducts";
-import { StrapiQuickStartGuides } from "@/lib/strapi/types/quickStartGuides";
+import * as qs from 'qs';
+import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
+import { productRelationsPopulate } from '@/lib/strapi/fetches/fetchProducts';
+import { StrapiQuickStartGuides } from '@/lib/strapi/types/quickStartGuides';
 
 const makeStrapiQuickStartGuidesPopulate = () =>
   qs.stringify({
     populate: {
       quickstartGuideItems: {
         populate:
-          "parts.responseCode,parts.requestCode,parts.requestAttributes",
+          'parts.responseCode,parts.requestCode,parts.requestAttributes',
       },
       product: {
         ...productRelationsPopulate,
       },
       bannerLinks: {
-        populate: ["icon"],
+        populate: ['icon'],
       },
       seo: {
-        populate: "*,metaImage,metaSocial.image",
+        populate: '*,metaImage,metaSocial.image',
       },
     },
   });
 
 export const fetchQuickStartGuides = fetchFromStrapi<StrapiQuickStartGuides>(
-  "quickstart-guides",
+  'quickstart-guides',
   makeStrapiQuickStartGuidesPopulate(),
 );

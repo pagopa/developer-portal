@@ -1,16 +1,16 @@
-"use client";
+'use client';
 
-import { Grid } from "@mui/material";
-import { useCallback, useState } from "react";
-import { SendResetPasswordSteps } from "@/lib/types/sendResetPasswordSteps";
-import { Auth } from "aws-amplify";
-import { useRouter } from "next/navigation";
-import ResetPasswordForm from "@/components/organisms/Auth/ResetPasswordForm";
-import ResetPasswordSuccess from "@/components/organisms/Auth/ResetPasswordSuccess";
-import PageBackgroundWrapper from "@/components/atoms/PageBackgroundWrapper/PageBackgroundWrapper";
+import { Grid } from '@mui/material';
+import { useCallback, useState } from 'react';
+import { SendResetPasswordSteps } from '@/lib/types/sendResetPasswordSteps';
+import { Auth } from 'aws-amplify';
+import { useRouter } from 'next/navigation';
+import ResetPasswordForm from '@/components/organisms/Auth/ResetPasswordForm';
+import ResetPasswordSuccess from '@/components/organisms/Auth/ResetPasswordSuccess';
+import PageBackgroundWrapper from '@/components/atoms/PageBackgroundWrapper/PageBackgroundWrapper';
 
 const PasswordReset = () => {
-  const [email, setEmail] = useState<string>("");
+  const [email, setEmail] = useState<string>('');
   const [sendResetPasswordSteps, setSendResetPasswordSteps] = useState(
     SendResetPasswordSteps.SEND_EMAIL,
   );
@@ -36,8 +36,8 @@ const PasswordReset = () => {
     <PageBackgroundWrapper>
       <Grid
         container
-        justifyContent="center"
-        sx={{ mx: "auto" }}
+        justifyContent='center'
+        sx={{ mx: 'auto' }}
         my={6}
         spacing={6}
       >

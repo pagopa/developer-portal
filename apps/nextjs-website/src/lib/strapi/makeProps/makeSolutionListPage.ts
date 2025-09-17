@@ -1,7 +1,7 @@
 /* eslint-disable functional/no-expression-statements */
-import { SolutionListTemplateProps } from "@/components/templates/SolutionListTemplate/SolutionListTemplate";
-import { StrapiSolutionListPage } from "@/lib/strapi/types/solutionListPage";
-import _ from "lodash";
+import { SolutionListTemplateProps } from '@/components/templates/SolutionListTemplate/SolutionListTemplate';
+import { StrapiSolutionListPage } from '@/lib/strapi/types/solutionListPage';
+import _ from 'lodash';
 
 export function makeSolutionListPageProps(
   strapiSolutionsList: StrapiSolutionListPage,
@@ -59,7 +59,7 @@ export function makeSolutionListPageProps(
     features: attributes.features && {
       title: attributes.features.title,
       items: attributes.features.items.map((item) => ({
-        title: item.title ?? "",
+        title: item.title ?? '',
         content: item.content,
         iconUrl: item.icon.data.attributes.url,
       })),

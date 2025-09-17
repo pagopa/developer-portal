@@ -1,14 +1,14 @@
-import { Box, Container, Stack } from "@mui/material";
-import { FundedByNextGenerationEU } from "@/editorialComponents/FundedByNextGenerationEU";
-import { type Generic } from "../types/components";
-import { FooterColumn } from "./components/FooterColumn";
-import { LangSwitch, type LangSwitchProps } from "./components/LangSwitch";
-import { LegalInfo } from "./components/LegalInfo";
+import { Box, Container, Stack } from '@mui/material';
+import { FundedByNextGenerationEU } from '@/editorialComponents/FundedByNextGenerationEU';
+import { type Generic } from '../types/components';
+import { FooterColumn } from './components/FooterColumn';
+import { LangSwitch, type LangSwitchProps } from './components/LangSwitch';
+import { LegalInfo } from './components/LegalInfo';
 import type {
   CompanyLinkType,
   PreLoginFooterLinksType,
   FooterColumnIcon,
-} from "./types";
+} from './types';
 
 export interface FooterProps extends LangSwitchProps {
   companyLink: CompanyLinkType;
@@ -25,20 +25,20 @@ export const Footer = ({
   ...langProps
 }: FooterProps) => (
   <Box
-    borderColor="divider"
-    borderTop="1px"
-    component="footer"
+    borderColor='divider'
+    borderTop='1px'
+    component='footer'
     px={{ xs: 2, sm: 4, md: 20 }}
-    sx={{ backgroundColor: "background.paper" }}
+    sx={{ backgroundColor: 'background.paper' }}
   >
     <Container
       maxWidth={false}
       sx={{
         py: 8,
-        display: "flex",
-        alignItems: "stretch",
-        justifyContent: "space-between",
-        flexDirection: { xs: "column", sm: "row" },
+        display: 'flex',
+        alignItems: 'stretch',
+        justifyContent: 'space-between',
+        flexDirection: { xs: 'column', sm: 'row' },
         gap: 4,
       }}
     >
@@ -46,12 +46,12 @@ export const Footer = ({
       <FooterColumn data={services} />
       <FooterColumn data={resources} />
       <Box
-        display="flex"
-        flexDirection="column"
-        alignItems={{ sm: "flex-start", xs: "center" }}
-        justifyContent="space-between"
+        display='flex'
+        flexDirection='column'
+        alignItems={{ sm: 'flex-start', xs: 'center' }}
+        justifyContent='space-between'
       >
-        <Stack display="flex" alignItems={{ xs: "center", sm: "start" }}>
+        <Stack display='flex' alignItems={{ xs: 'center', sm: 'start' }}>
           <FooterColumn
             data={followUs}
             icons={followUs.socialLinks as FooterColumnIcon[]}

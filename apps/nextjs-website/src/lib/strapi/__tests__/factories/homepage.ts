@@ -1,17 +1,17 @@
-import { strapiHomepage } from "@/lib/strapi/__tests__/fixtures/homepage";
-import { StrapiHomepage } from "@/lib/strapi/types/homepage";
+import { strapiHomepage } from '@/lib/strapi/__tests__/fixtures/homepage';
+import { StrapiHomepage } from '@/lib/strapi/types/homepage';
 
 export function minimalDataHomepage() {
   return {
     data: {
       attributes: {
         comingsoonDocumentation: {
-          title: "Minimal Documentation",
+          title: 'Minimal Documentation',
           links: [],
         },
         heroSlider: [
           {
-            title: "Minimal Hero",
+            title: 'Minimal Hero',
             backgroundImage: { data: undefined },
           },
         ],

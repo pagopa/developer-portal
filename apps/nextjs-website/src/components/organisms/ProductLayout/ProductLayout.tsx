@@ -1,14 +1,14 @@
-"use client";
-import ProductHeader from "@/components/atoms/ProductHeader/ProductHeader";
-import { Product } from "@/lib/types/product";
-import React, { ReactNode, FC } from "react";
-import BannerLinks from "@/components/molecules/BannerLinks/BannerLinks";
-import ProductBreadcrumbs from "@/components/atoms/ProductBreadcrumbs/ProductBreadcrumbs";
-import { productPageToBreadcrumbs } from "@/helpers/breadcrumbs.helpers";
-import { BannerLinkProps } from "@/components/atoms/BannerLink/BannerLink";
-import { BreadcrumbSegment } from "@/lib/types/path";
-import EContainer from "@/editorialComponents/EContainer/EContainer";
-import ContentWrapper from "@/components/atoms/ContentWrapper/ContentWrapper";
+'use client';
+import ProductHeader from '@/components/atoms/ProductHeader/ProductHeader';
+import { Product } from '@/lib/types/product';
+import React, { ReactNode, FC } from 'react';
+import BannerLinks from '@/components/molecules/BannerLinks/BannerLinks';
+import ProductBreadcrumbs from '@/components/atoms/ProductBreadcrumbs/ProductBreadcrumbs';
+import { productPageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
+import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
+import { BreadcrumbSegment } from '@/lib/types/path';
+import EContainer from '@/editorialComponents/EContainer/EContainer';
+import ContentWrapper from '@/components/atoms/ContentWrapper/ContentWrapper';
 
 export type ProductLayoutProps = {
   readonly product?: Product;

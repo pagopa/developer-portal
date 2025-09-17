@@ -1,6 +1,6 @@
-import ChatbotHistoryList from "@/components/molecules/ChatbotHistoryList/ChatbotHistoryList";
-import { PaginatedSessions } from "@/lib/chatbot/queries";
-import { Box, Pagination, Stack } from "@mui/material";
+import ChatbotHistoryList from '@/components/molecules/ChatbotHistoryList/ChatbotHistoryList';
+import { PaginatedSessions } from '@/lib/chatbot/queries';
+import { Box, Pagination, Stack } from '@mui/material';
 
 type ChatbotHistoryLayoutProps = {
   paginatedSessions: PaginatedSessions;
@@ -12,9 +12,9 @@ const ChatbotHistoryLayout = ({
   getSessionsByPage,
 }: ChatbotHistoryLayoutProps) => {
   return (
-    <Stack direction="column">
+    <Stack direction='column'>
       <ChatbotHistoryList sessionsList={paginatedSessions.items} />
-      <Box display="flex" marginY="1rem" width="100%" justifyContent="center">
+      <Box display='flex' marginY='1rem' width='100%' justifyContent='center'>
         <Pagination
           count={paginatedSessions.pages}
           page={paginatedSessions.page}

@@ -1,16 +1,16 @@
-import React from "react";
-import { Metadata } from "next";
-import { makeMetadata } from "@/helpers/metadata.helpers";
-import { getSolutionDetail } from "@/lib/api";
-import GitBookTemplate from "@/components/templates/GitBookTemplate/GitBookTemplate";
-import { pageToBreadcrumbs } from "@/helpers/breadcrumbs.helpers";
-import { ParseContentConfig } from "gitbook-docs/parseContent";
-import { getUrlReplaceMapProps } from "@/lib/cmsApi";
-import { SolutionTemplateProps } from "@/components/templates/SolutionTemplate/SolutionTemplate";
-import { generateStructuredDataScripts } from "@/helpers/generateStructuredDataScripts.helpers";
-import { getItemFromPaths } from "@/helpers/structuredData.helpers";
-import PageNotFound from "@/app/not-found";
-import { getSolutionsMetadata } from "@/helpers/s3Metadata.helpers";
+import React from 'react';
+import { Metadata } from 'next';
+import { makeMetadata } from '@/helpers/metadata.helpers';
+import { getSolutionDetail } from '@/lib/api';
+import GitBookTemplate from '@/components/templates/GitBookTemplate/GitBookTemplate';
+import { pageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
+import { ParseContentConfig } from 'gitbook-docs/parseContent';
+import { getUrlReplaceMapProps } from '@/lib/cmsApi';
+import { SolutionTemplateProps } from '@/components/templates/SolutionTemplate/SolutionTemplate';
+import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
+import { getItemFromPaths } from '@/helpers/structuredData.helpers';
+import PageNotFound from '@/app/not-found';
+import { getSolutionsMetadata } from '@/helpers/s3Metadata.helpers';
 
 type SolutionDetailPageTemplateProps = {
   solution: SolutionTemplateProps;
@@ -34,7 +34,7 @@ const SOLUTION_SUB_PATH_INDEX = 3;
 export async function generateStaticParams(): Promise<Params[]> {
   const solutions = await getSolutionsMetadata();
   const solutionParams = solutions
-    .map(({ path }) => path.split("/"))
+    .map(({ path }) => path.split('/'))
     .filter((paths) => paths.length > SOLUTION_SUB_PATH_INDEX)
     .map((paths) => {
       return {
@@ -59,8 +59,10 @@ export async function generateMetadata({
   return makeMetadata({
     title: props?.title,
     url: props
-      ? `/solutions/${props?.slug}/${resolvedParams.solutionSubPathSlugs.join("/")}`
-      : "",
+      ? `/solutions/${props?.slug}/${resolvedParams.solutionSubPathSlugs.join(
+          '/',
+        )}`
+      : '',
   });
 }
 
@@ -96,19 +98,19 @@ const Page = async ({ params }: { params: Promise<Params> }) => {
   const structuredData = generateStructuredDataScripts({
     breadcrumbsItems: [
       {
-        name: "Solutions",
-        item: getItemFromPaths(["solutions"]),
+        name: 'Solutions',
+        item: getItemFromPaths(['solutions']),
       },
       {
         name: solution.seo?.metaTitle,
-        item: getItemFromPaths(["solutions", solution.slug]),
+        item: getItemFromPaths(['solutions', solution.slug]),
       },
       {
         name: page.title,
         item:
           resolvedParams?.solutionSubPathSlugs &&
           getItemFromPaths([
-            "solutions",
+            'solutions',
             solution.slug,
             ...resolvedParams.solutionSubPathSlugs,
           ]),
@@ -124,7 +126,7 @@ const Page = async ({ params }: { params: Promise<Params> }) => {
         hasHeader={false}
         menuName={props.solution.title}
         breadcrumbs={[
-          ...pageToBreadcrumbs("solutions", [
+          ...pageToBreadcrumbs('solutions', [
             {
               name: props.solution.title,
               path: `/solutions/${props.solution.slug}`,
@@ -133,7 +135,7 @@ const Page = async ({ params }: { params: Promise<Params> }) => {
               name: page.title,
               path: `/solutions/${
                 props.solution.slug
-              }/details/${resolvedParams.solutionSubPathSlugs.join("/")}`,
+              }/details/${resolvedParams.solutionSubPathSlugs.join('/')}`,
             },
           ]),
         ]}

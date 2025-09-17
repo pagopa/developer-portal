@@ -1,26 +1,26 @@
-import { Product } from "@/lib/types/product";
-import { getGuideListPages } from "@/lib/api";
+import { Product } from '@/lib/types/product';
+import { getGuideListPages } from '@/lib/api';
 import {
   GuidesSection,
   GuidesSectionProps,
-} from "@/components/molecules/GuidesSection/GuidesSection";
-import { Abstract } from "@/editorialComponents/Abstract/Abstract";
-import { Box } from "@mui/material";
+} from '@/components/molecules/GuidesSection/GuidesSection';
+import { Abstract } from '@/editorialComponents/Abstract/Abstract';
+import { Box } from '@mui/material';
 import ProductLayout, {
   ProductLayoutProps,
-} from "@/components/organisms/ProductLayout/ProductLayout";
-import { ProductParams } from "@/lib/types/productParams";
-import { Metadata, ResolvingMetadata } from "next";
+} from '@/components/organisms/ProductLayout/ProductLayout';
+import { ProductParams } from '@/lib/types/productParams';
+import { Metadata, ResolvingMetadata } from 'next';
 import {
   makeMetadata,
   makeMetadataFromStrapi,
-} from "@/helpers/metadata.helpers";
-import { SEO } from "@/lib/types/seo";
-import { generateStructuredDataScripts } from "@/helpers/generateStructuredDataScripts.helpers";
+} from '@/helpers/metadata.helpers';
+import { SEO } from '@/lib/types/seo';
+import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
 import {
   breadcrumbItemByProduct,
   productToBreadcrumb,
-} from "@/helpers/structuredData.helpers";
+} from '@/helpers/structuredData.helpers';
 
 export type GuideListPageProps = {
   readonly product: Product;
@@ -48,7 +48,7 @@ export const generateMetadata = async (
   }
 
   return makeMetadata({
-    title: [abstract?.title, product.name].filter(Boolean).join(" | "),
+    title: [abstract?.title, product.name].filter(Boolean).join(' | '),
     description: abstract?.description,
     url: path,
     parent: resolvedParent,
@@ -65,7 +65,7 @@ const GuideListPage = async ({ params }: ProductParams) => {
       productToBreadcrumb(product),
       {
         name: seo?.metaTitle || abstract?.title,
-        item: breadcrumbItemByProduct(product, ["guides"]),
+        item: breadcrumbItemByProduct(product, ['guides']),
       },
     ],
     seo: seo,
@@ -82,7 +82,7 @@ const GuideListPage = async ({ params }: ProductParams) => {
       {abstract && (
         <Abstract
           description={abstract?.description}
-          overline=""
+          overline=''
           title={abstract?.title}
         />
       )}

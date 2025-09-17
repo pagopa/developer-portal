@@ -6,10 +6,10 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-} from "@mui/material";
-import WebinarQuestionRow from "@/components/molecules/WebinarQuestion/WebinarQuestionRow";
-import { updateWebinarQuestion } from "@/lib/webinarApi";
-import { WebinarQuestion } from "@/lib/webinars/webinarQuestions";
+} from '@mui/material';
+import WebinarQuestionRow from '@/components/molecules/WebinarQuestion/WebinarQuestionRow';
+import { updateWebinarQuestion } from '@/lib/webinarApi';
+import { WebinarQuestion } from '@/lib/webinars/webinarQuestions';
 
 type WebinarQuestionsTableProps = {
   userName: string;
@@ -30,7 +30,7 @@ const WebinarQuestionsTable = ({
 }: WebinarQuestionsTableProps) => {
   return (
     <TableContainer component={Paper} sx={{ marginY: 2 }}>
-      <Table aria-label="simple table">
+      <Table aria-label='simple table'>
         <TableHead>
           <TableRow>
             <TableCell>{title}</TableCell>
@@ -52,8 +52,8 @@ const WebinarQuestionsTable = ({
                   id: question.id,
                   updates: {
                     hiddenBy: hide
-                      ? { operation: "update", value: userName }
-                      : { operation: "remove" },
+                      ? { operation: 'update', value: userName }
+                      : { operation: 'remove' },
                   },
                 });
               }}
@@ -67,8 +67,8 @@ const WebinarQuestionsTable = ({
                   id: question.id,
                   updates: {
                     highlightedBy: highlight
-                      ? { operation: "update", value: userName }
-                      : { operation: "remove" },
+                      ? { operation: 'update', value: userName }
+                      : { operation: 'remove' },
                   },
                 });
               }}

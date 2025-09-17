@@ -1,8 +1,8 @@
-import { StrapiMedia } from "@/lib/strapi/types/media";
-import { StrapiBaseProductWithRelations } from "@/lib/strapi/types/product";
-import { StrapiBannerLink } from "@/lib/strapi/types/bannerLink";
-import { StrapiSeo } from "@/lib/strapi/types/seo";
-import { StrapiComponent } from "./strapiComponent";
+import { StrapiMedia } from '@/lib/strapi/types/media';
+import { StrapiBaseProductWithRelations } from '@/lib/strapi/types/product';
+import { StrapiBannerLink } from '@/lib/strapi/types/bannerLink';
+import { StrapiSeo } from '@/lib/strapi/types/seo';
+import { StrapiComponent } from './strapiComponent';
 
 type StrapiUrl = {
   readonly id: number;
@@ -32,7 +32,7 @@ export type StrapiBaseApiData = {
 };
 
 export type StrapiApiData = StrapiBaseApiData & {
-  readonly attributes: StrapiBaseApiData["attributes"] & {
+  readonly attributes: StrapiBaseApiData['attributes'] & {
     readonly product: {
       readonly data: StrapiBaseProductWithRelations;
     };

@@ -6,10 +6,10 @@ import {
   Palette,
   Typography,
   useTheme,
-} from "@mui/material";
-import { defaultLocale } from "@/config";
-import ChatbotHistoryListItem from "@/components/atoms/ChatbotHistoryListItem/ChatbotHistoryListItem";
-import { Session } from "@/lib/chatbot/queries";
+} from '@mui/material';
+import { defaultLocale } from '@/config';
+import ChatbotHistoryListItem from '@/components/atoms/ChatbotHistoryListItem/ChatbotHistoryListItem';
+import { Session } from '@/lib/chatbot/queries';
 
 type DateFormatOptions = {
   locale?: string;
@@ -19,8 +19,8 @@ type DateFormatOptions = {
 const DEFAULT_DATE_FORMAT = {
   locale: defaultLocale,
   options: {
-    month: "long",
-    year: "numeric",
+    month: 'long',
+    year: 'numeric',
   },
 } satisfies DateFormatOptions;
 
@@ -42,7 +42,7 @@ const ChatbotHistoryList = ({ sessionsList }: ChatbotHistoryListProps) => {
   );
 
   return (
-    <List sx={{ width: "100%" }}>
+    <List sx={{ width: '100%' }}>
       {dateDividerSessionsItemsInterpolation(
         uniqueDates,
         sessionsList,
@@ -76,9 +76,9 @@ function dateDividerSessionsItemsInterpolation(
         <Typography
           key={sameMonthItems[0].createdAt}
           color={palette.text.primary}
-          fontSize="1.5rem"
-          fontWeight="700"
-          sx={{ paddingY: "1rem" }}
+          fontSize='1.5rem'
+          fontWeight='700'
+          sx={{ paddingY: '1rem' }}
         >
           {capitalize(
             new Intl.DateTimeFormat(
@@ -91,7 +91,7 @@ function dateDividerSessionsItemsInterpolation(
       {sameMonthItems.map((item, index) => [
         <ChatbotHistoryListItem key={item.id} session={item} />,
         <>
-          {sameMonthItems.length - 1 !== index && <Divider component="li" />}
+          {sameMonthItems.length - 1 !== index && <Divider component='li' />}
         </>,
       ])}
     </>

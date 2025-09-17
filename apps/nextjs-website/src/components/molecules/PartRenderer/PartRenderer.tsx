@@ -1,14 +1,14 @@
-"use client";
-import { Part } from "@/lib/types/part";
-import React, { ReactNode } from "react";
-import TypographyPart from "@/components/atoms/TypographyPart/TypographyPart";
-import InnerHtmlLazyLoadedPart from "@/components/atoms/InnerHtmlLazyLoadedPart/InnerHtmlLazyLoadedPart";
-import CodeBlockPart from "@/components/molecules/CodeBlockPart/CodeBlockPart";
-import AlertPart from "@/components/atoms/AlertPart/AlertPart";
-import ApiTesterPart from "@/components/organisms/ApiTesterPart/ApiTesterPart";
-import BlocksRendererPart from "@/components/organisms/BlocksRendererPart/BlocksRendererPart";
-import Quote from "@/components/atoms/Quote/Quote";
-import CkEditorPart from "../CkEditorPart/CkEditorPart";
+'use client';
+import { Part } from '@/lib/types/part';
+import React, { ReactNode } from 'react';
+import TypographyPart from '@/components/atoms/TypographyPart/TypographyPart';
+import InnerHtmlLazyLoadedPart from '@/components/atoms/InnerHtmlLazyLoadedPart/InnerHtmlLazyLoadedPart';
+import CodeBlockPart from '@/components/molecules/CodeBlockPart/CodeBlockPart';
+import AlertPart from '@/components/atoms/AlertPart/AlertPart';
+import ApiTesterPart from '@/components/organisms/ApiTesterPart/ApiTesterPart';
+import BlocksRendererPart from '@/components/organisms/BlocksRendererPart/BlocksRendererPart';
+import Quote from '@/components/atoms/Quote/Quote';
+import CkEditorPart from '../CkEditorPart/CkEditorPart';
 
 type PartRendererProps = {
   part: Part;
@@ -16,21 +16,21 @@ type PartRendererProps = {
 
 const PartRenderer = ({ part }: PartRendererProps): ReactNode | null => {
   switch (part.component) {
-    case "alert":
+    case 'alert':
       return <AlertPart {...part} />;
-    case "quote":
+    case 'quote':
       return <Quote {...part} />;
-    case "apiTester":
+    case 'apiTester':
       return <ApiTesterPart {...part} />;
-    case "blockRenderer":
+    case 'blockRenderer':
       return <BlocksRendererPart {...part} />;
-    case "codeBlock":
+    case 'codeBlock':
       return <CodeBlockPart {...part} />;
-    case "innerHTMLLazyLoaded":
+    case 'innerHTMLLazyLoaded':
       return <InnerHtmlLazyLoadedPart html={part.html} />;
-    case "typography":
+    case 'typography':
       return <TypographyPart {...part} />;
-    case "ckEditor":
+    case 'ckEditor':
       return <CkEditorPart {...part} />;
     default:
       return null;

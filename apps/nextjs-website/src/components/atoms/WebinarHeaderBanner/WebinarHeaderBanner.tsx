@@ -1,18 +1,18 @@
-"use client";
+'use client';
 import {
   Typography,
   Box,
   useTheme,
   IconButton,
   Link as MuiLink,
-} from "@mui/material";
-import { FC, useState } from "react";
-import VideoLibraryIcon from "@mui/icons-material/VideoLibrary";
-import CloseIcon from "@mui/icons-material/Close";
-import EastIcon from "@mui/icons-material/East";
-import Link from "next/link";
-import { Webinar } from "@/lib/types/webinar";
-import { useTranslations } from "next-intl";
+} from '@mui/material';
+import { FC, useState } from 'react';
+import VideoLibraryIcon from '@mui/icons-material/VideoLibrary';
+import CloseIcon from '@mui/icons-material/Close';
+import EastIcon from '@mui/icons-material/East';
+import Link from 'next/link';
+import { Webinar } from '@/lib/types/webinar';
+import { useTranslations } from 'next-intl';
 
 export type WebinarHeaderBannerProps = {
   webinars: Webinar[];
@@ -37,7 +37,7 @@ const WebinarHeaderBanner: FC<WebinarHeaderBannerProps> = ({ webinars }) => {
   const [visible, setVisible] = useState(shouldShow);
 
   const { palette } = useTheme();
-  const t = useTranslations("homepage");
+  const t = useTranslations('homepage');
 
   if (!webinar) return null;
   if (!endDateTime) return null;
@@ -46,41 +46,41 @@ const WebinarHeaderBanner: FC<WebinarHeaderBannerProps> = ({ webinars }) => {
   return (
     <Box
       sx={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        width: "100%",
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        width: '100%',
         background: palette.text.primary,
-        padding: { xs: "10px 1rem", lg: "10px 10rem" },
+        padding: { xs: '10px 1rem', lg: '10px 10rem' },
       }}
     >
-      <Box sx={{ display: "flex" }}>
+      <Box sx={{ display: 'flex' }}>
         <VideoLibraryIcon sx={{ color: palette.common.white }} />
         <Typography
           sx={{
             color: palette.common.white,
-            marginLeft: "10px",
-            WebkitLineClamp: "1",
-            display: "-webkit-box",
-            WebkitBoxOrient: "vertical",
-            overflow: "hidden",
+            marginLeft: '10px',
+            WebkitLineClamp: '1',
+            display: '-webkit-box',
+            WebkitBoxOrient: 'vertical',
+            overflow: 'hidden',
           }}
         >
           {text}
         </Typography>
         <MuiLink
-          underline={"none"}
+          underline={'none'}
           component={Link}
           sx={{
-            display: "flex",
+            display: 'flex',
             color: palette.common.white,
             fontWeight: 600,
             height: 28,
-            marginLeft: "16px",
+            marginLeft: '16px',
           }}
-          href={"/webinars/" + slug}
+          href={'/webinars/' + slug}
         >
-          {t("webinarBannerButtonContent")}
+          {t('webinarBannerButtonContent')}
           <EastIcon sx={{ height: 30, ml: 1 }} />
         </MuiLink>
       </Box>

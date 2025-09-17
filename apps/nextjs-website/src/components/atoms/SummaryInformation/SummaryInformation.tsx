@@ -1,12 +1,12 @@
-"use client";
-import React, { FC } from "react";
-import { Box, Stack, Typography, useMediaQuery, useTheme } from "@mui/material";
-import TimeSlot from "../TimeSlot/TimeSlot";
-import EContainer from "@/editorialComponents/EContainer/EContainer";
-import LiveWebinarChip from "@/components/atoms/LiveWebinarChip/LiveWebinarChip";
-import { WebinarState } from "@/helpers/webinar.helpers";
-import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
-import { dateOptions, defaultLocale } from "@/config";
+'use client';
+import React, { FC } from 'react';
+import { Box, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
+import TimeSlot from '../TimeSlot/TimeSlot';
+import EContainer from '@/editorialComponents/EContainer/EContainer';
+import LiveWebinarChip from '@/components/atoms/LiveWebinarChip/LiveWebinarChip';
+import { WebinarState } from '@/helpers/webinar.helpers';
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
+import { dateOptions, defaultLocale } from '@/config';
 
 export type SummaryInformationProps = {
   startDateTime?: string;
@@ -28,7 +28,7 @@ const SummaryInformation: FC<SummaryInformationProps> = ({
   textColor,
 }) => {
   const { palette } = useTheme();
-  const isSmallScreen = useMediaQuery("(max-width: 1000px)");
+  const isSmallScreen = useMediaQuery('(max-width: 1000px)');
   const showTimeSlot =
     startDateTime &&
     endDateTime &&
@@ -40,34 +40,34 @@ const SummaryInformation: FC<SummaryInformationProps> = ({
       <EContainer>
         <Stack
           sx={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "start",
-            alignContent: "flex-start",
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'start',
+            alignContent: 'flex-start',
             paddingTop: 10,
             paddingBottom: 10,
-            width: "100%",
+            width: '100%',
           }}
         >
           {webinarState === WebinarState.live && <LiveWebinarChip />}
           {showTimeSlot && (
             <Stack
-              direction={"row"}
-              sx={{ alignContent: "center", gap: "8px" }}
+              direction={'row'}
+              sx={{ alignContent: 'center', gap: '8px' }}
             >
               <CalendarTodayIcon
                 sx={{
                   color: textColor || palette.text.primary,
-                  width: "24px",
-                  height: "24px",
-                  alignSelf: isSmallScreen ? "start" : "center",
+                  width: '24px',
+                  height: '24px',
+                  alignSelf: isSmallScreen ? 'start' : 'center',
                 }}
               />
               <Typography
-                variant="caption"
+                variant='caption'
                 style={{
                   fontWeight: 700,
-                  fontSize: isSmallScreen ? "18px" : "24px",
+                  fontSize: isSmallScreen ? '18px' : '24px',
                   color: textColor || palette.grey[600],
                 }}
               >
@@ -77,23 +77,23 @@ const SummaryInformation: FC<SummaryInformationProps> = ({
           )}
           {showDateTag && (
             <Stack
-              direction={"row"}
-              sx={{ alignContent: "center", gap: "8px" }}
+              direction={'row'}
+              sx={{ alignContent: 'center', gap: '8px' }}
             >
               <Box
                 sx={{
-                  display: "flex",
-                  alignItems: "center",
+                  display: 'flex',
+                  alignItems: 'center',
                   backgroundColor: palette.grey[200],
                   padding: 0.5,
-                  borderRadius: "4px",
+                  borderRadius: '4px',
                 }}
               >
                 <Typography
-                  variant="caption"
+                  variant='caption'
                   style={{
                     fontWeight: 600,
-                    fontSize: "14px",
+                    fontSize: '14px',
                     color: textColor || palette.grey[600],
                   }}
                 >
@@ -108,8 +108,8 @@ const SummaryInformation: FC<SummaryInformationProps> = ({
           <Typography
             style={{
               fontWeight: 700,
-              fontStyle: "bold",
-              fontSize: isSmallScreen ? "32px" : "38px",
+              fontStyle: 'bold',
+              fontSize: isSmallScreen ? '32px' : '38px',
               marginTop: 16,
               marginBottom: 32,
               color: textColor || palette.text.primary,
@@ -119,8 +119,8 @@ const SummaryInformation: FC<SummaryInformationProps> = ({
           </Typography>
           <Typography
             sx={{
-              fontWeight: "400",
-              fontSize: "18px",
+              fontWeight: '400',
+              fontSize: '18px',
               color: textColor || palette.text.secondary,
             }}
           >

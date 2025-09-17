@@ -1,6 +1,6 @@
-"use client";
-import { Webinar } from "@/lib/types/webinar";
-import React, { useEffect, useMemo, useState } from "react";
+'use client';
+import { Webinar } from '@/lib/types/webinar';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
   Box,
   Button,
@@ -10,15 +10,15 @@ import {
   Typography,
   useMediaQuery,
   useTheme,
-} from "@mui/material";
-import LinkButton from "@/components/atoms/LinkButton/LinkButton";
-import SpeakerPreview from "@/components/molecules/SpeakerPreview/SpeakerPreview";
-import TimeSlot from "@/components/atoms/TimeSlot/TimeSlot";
-import SubscribeToWebinar from "../SubscribeToWebinar/SubscribeToWebinar";
-import { useTranslations } from "next-intl";
-import { useWebinar, WebinarState } from "@/helpers/webinar.helpers";
-import LiveWebinarChip from "@/components/atoms/LiveWebinarChip/LiveWebinarChip";
-import { useRouter } from "next/navigation";
+} from '@mui/material';
+import LinkButton from '@/components/atoms/LinkButton/LinkButton';
+import SpeakerPreview from '@/components/molecules/SpeakerPreview/SpeakerPreview';
+import TimeSlot from '@/components/atoms/TimeSlot/TimeSlot';
+import SubscribeToWebinar from '../SubscribeToWebinar/SubscribeToWebinar';
+import { useTranslations } from 'next-intl';
+import { useWebinar, WebinarState } from '@/helpers/webinar.helpers';
+import LiveWebinarChip from '@/components/atoms/LiveWebinarChip/LiveWebinarChip';
+import { useRouter } from 'next/navigation';
 
 type WebinarCardProps = {
   webinar: Webinar;
@@ -33,9 +33,9 @@ const WebinarCard = ({
 }: WebinarCardProps) => {
   const theme = useTheme();
   const router = useRouter();
-  const t = useTranslations("webinar");
+  const t = useTranslations('webinar');
   const [isSubscribed, setIsSubscribed] = useState(false);
-  const isSmallScreen = useMediaQuery("(max-width: 1000px)");
+  const isSmallScreen = useMediaQuery('(max-width: 1000px)');
   const { webinarState, setWebinar } = useWebinar();
 
   useEffect(() => {
@@ -51,7 +51,7 @@ const WebinarCard = ({
       <LinkButton
         disabled={false}
         href={`/webinars/${webinar.slug}`}
-        label={t(isSubscribed ? "goToWebinar" : "whyParticipate")}
+        label={t(isSubscribed ? 'goToWebinar' : 'whyParticipate')}
         color={theme.palette.primary.main}
       />
     );
@@ -60,23 +60,23 @@ const WebinarCard = ({
   return (
     <Card
       style={{
-        flexDirection: "column",
-        display: "flex",
-        justifyContent: "space-between",
-        height: "100%",
-        overflow: "visible",
-        position: "relative",
+        flexDirection: 'column',
+        display: 'flex',
+        justifyContent: 'space-between',
+        height: '100%',
+        overflow: 'visible',
+        position: 'relative',
       }}
     >
       <CardContent
         sx={{
-          display: "flex",
-          flexDirection: { xs: "column", md: "row" },
-          justifyContent: "left",
-          gap: "56px",
+          display: 'flex',
+          flexDirection: { xs: 'column', md: 'row' },
+          justifyContent: 'left',
+          gap: '56px',
         }}
       >
-        <Box width={{ md: "55%" }}>
+        <Box width={{ md: '55%' }}>
           {webinarState === WebinarState.live && <LiveWebinarChip />}
           {![
             WebinarState.unknown,
@@ -90,10 +90,10 @@ const WebinarCard = ({
               />
             </Typography>
           )}
-          <Typography variant="h6" mt={2} gutterBottom>
+          <Typography variant='h6' mt={2} gutterBottom>
             {webinar.title}
           </Typography>
-          <Typography variant="body2" mb={1}>
+          <Typography variant='body2' mb={1}>
             {webinar.description}
           </Typography>
           {linkButton}
@@ -101,15 +101,15 @@ const WebinarCard = ({
             {isSubscribed &&
             (webinarState === WebinarState.live ||
               webinarState === WebinarState.past) ? (
-              <Box mt={4} display={"flex"} flexDirection={"row"} gap={2}>
+              <Box mt={4} display={'flex'} flexDirection={'row'} gap={2}>
                 <Button
-                  variant={"contained"}
+                  variant={'contained'}
                   onClick={() => {
                     router.push(`/webinars/${webinar.slug}`);
                     return null;
                   }}
                 >
-                  {t("view")}
+                  {t('view')}
                 </Button>
               </Box>
             ) : (
@@ -128,43 +128,43 @@ const WebinarCard = ({
           </Box>
           {isSubscribed && webinarState === WebinarState.future && (
             <Typography
-              variant={"body2"}
+              variant={'body2'}
               sx={{
-                position: isSmallScreen ? "relative" : "absolute",
-                bottom: "24px",
-                fontSize: "12px",
+                position: isSmallScreen ? 'relative' : 'absolute',
+                bottom: '24px',
+                fontSize: '12px',
                 marginTop: 1,
               }}
             >
-              {t("warnings.email")}
+              {t('warnings.email')}
             </Typography>
           )}
           {isSubscribed && webinarState === WebinarState.comingSoon && (
             <Typography
-              variant={"body2"}
+              variant={'body2'}
               sx={{
-                position: isSmallScreen ? "relative" : "absolute",
-                bottom: "24px",
-                fontSize: "12px",
+                position: isSmallScreen ? 'relative' : 'absolute',
+                bottom: '24px',
+                fontSize: '12px',
                 marginTop: 1,
               }}
             >
-              {t("warnings.goTo")}
+              {t('warnings.goTo')}
             </Typography>
           )}
         </Box>
         {webinar.speakers && (
-          <Box width={{ md: "45%" }}>
+          <Box width={{ md: '45%' }}>
             <Typography
               my={2}
               fontSize={14}
               fontWeight={700}
-              textTransform={"uppercase"}
+              textTransform={'uppercase'}
               sx={{ color: theme.palette.text.primary }}
             >
-              {t("speakers")}
+              {t('speakers')}
             </Typography>
-            <Stack width="100%" direction="column" gap={2}>
+            <Stack width='100%' direction='column' gap={2}>
               {webinar.speakers.map((speaker, index) => (
                 <SpeakerPreview
                   key={index}
@@ -172,7 +172,7 @@ const WebinarCard = ({
                   description={speaker.description}
                   jobTitle={speaker.jobTitle}
                   avatar={speaker.avatar}
-                  flexDirection="row"
+                  flexDirection='row'
                   compactMode={true}
                 />
               ))}

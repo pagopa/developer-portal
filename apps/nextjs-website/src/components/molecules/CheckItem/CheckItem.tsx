@@ -1,7 +1,7 @@
-"use client";
-import { CheckCircle } from "@mui/icons-material";
-import { Box, Chip, Grid, Typography, useTheme } from "@mui/material";
-import { useTranslations } from "next-intl";
+'use client';
+import { CheckCircle } from '@mui/icons-material';
+import { Box, Chip, Grid, Typography, useTheme } from '@mui/material';
+import { useTranslations } from 'next-intl';
 
 interface CheckItemProps {
   title: string;
@@ -10,11 +10,11 @@ interface CheckItemProps {
 }
 
 const CheckItem = ({ title, description, isComingSoon }: CheckItemProps) => {
-  const shared = useTranslations("shared");
+  const shared = useTranslations('shared');
   const { palette } = useTheme();
 
   return (
-    <Grid container alignItems="flex-start" mb={4}>
+    <Grid container alignItems='flex-start' mb={4}>
       <Grid size={{ xs: 1 }} mr={3}>
         <CheckCircle sx={{ fontSize: 40, color: palette.info.extraLight }} />
       </Grid>
@@ -22,8 +22,8 @@ const CheckItem = ({ title, description, isComingSoon }: CheckItemProps) => {
         <Box>
           {isComingSoon && (
             <Chip
-              label={shared("comingSoon")}
-              size="small"
+              label={shared('comingSoon')}
+              size='small'
               sx={{
                 color: palette.text.secondary,
                 backgroundColor: palette.grey[200],
@@ -32,18 +32,18 @@ const CheckItem = ({ title, description, isComingSoon }: CheckItemProps) => {
           )}
         </Box>
         <Typography
-          variant="overline"
-          content="div"
+          variant='overline'
+          content='div'
           mb={2}
           color={palette.text.primary}
           fontSize={18}
           fontWeight={600}
-          letterSpacing={"normal"}
-          sx={{ textTransform: "none" }}
+          letterSpacing={'normal'}
+          sx={{ textTransform: 'none' }}
         >
           {title}
         </Typography>
-        <Typography content="div">{description}</Typography>
+        <Typography content='div'>{description}</Typography>
       </Grid>
     </Grid>
   );

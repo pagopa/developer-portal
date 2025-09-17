@@ -1,4 +1,4 @@
-import { dateOptions, defaultLocale, timeOptions } from "@/config";
+import { dateOptions, defaultLocale, timeOptions } from '@/config';
 
 function isSameDay(start: Date, end: Date): boolean {
   return (
@@ -49,7 +49,7 @@ const TimeSlot = ({ start, end }: TimeSlotProps) => {
     conditionallyFormattedEndDate(startDate, endDate),
   ]
     .filter(Boolean)
-    .join(" - ");
+    .join(' - ');
 };
 
 export default TimeSlot;

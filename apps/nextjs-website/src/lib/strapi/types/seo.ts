@@ -1,4 +1,4 @@
-import { StrapiMedia } from "@/lib/strapi/types/media";
+import { StrapiMedia } from '@/lib/strapi/types/media';
 
 type SeoMediaSocial = Partial<{
   readonly id: number;

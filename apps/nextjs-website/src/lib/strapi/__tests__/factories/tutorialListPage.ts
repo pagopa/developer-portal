@@ -1,5 +1,5 @@
-import { StrapiTutorialListPages } from "@/lib/strapi/types/tutorialsListPage";
-import { strapiTutorialListPages } from "../fixtures/tutorialListPage";
+import { StrapiTutorialListPages } from '@/lib/strapi/types/tutorialsListPage';
+import { strapiTutorialListPages } from '../fixtures/tutorialListPage';
 
 export function minimalTutorialListPages(): StrapiTutorialListPages {
   return {
@@ -7,8 +7,8 @@ export function minimalTutorialListPages(): StrapiTutorialListPages {
       {
         id: 1,
         attributes: {
-          title: "Minimal Tutorials",
-          description: "",
+          title: 'Minimal Tutorials',
+          description: '',
           bannerLinks: [],
           product: {
             data: {
@@ -43,8 +43,8 @@ export function tutorialListPagesWithItemMissingBannerLinks(): StrapiTutorialLis
       {
         id: 1,
         attributes: {
-          title: "No Banner Tutorials",
-          description: "No banner links",
+          title: 'No Banner Tutorials',
+          description: 'No banner links',
           bannerLinks: [],
           product: minimalTutorialListPages().data[0].attributes.product,
           tutorials: {

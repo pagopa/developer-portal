@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import { Amplify } from "aws-amplify";
+import { Amplify } from 'aws-amplify';
 
-import { amplifyConfig } from "@/config";
-import { Authenticator } from "@aws-amplify/ui-react";
-import { FC, PropsWithChildren } from "react";
+import { amplifyConfig } from '@/config';
+import { Authenticator } from '@aws-amplify/ui-react';
+import { FC, PropsWithChildren } from 'react';
 
 Amplify.configure(amplifyConfig);
 

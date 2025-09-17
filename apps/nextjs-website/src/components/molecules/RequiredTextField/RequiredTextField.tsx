@@ -1,7 +1,7 @@
-"use client";
-import { TextField, TextFieldProps } from "@mui/material";
-import { FC, useCallback, useEffect, useState } from "react";
-import { useTheme } from "@mui/material";
+'use client';
+import { TextField, TextFieldProps } from '@mui/material';
+import { FC, useCallback, useEffect, useState } from 'react';
+import { useTheme } from '@mui/material';
 
 export type ValidatorFunction = (value: string) => {
   valid: boolean;
@@ -19,7 +19,7 @@ const RequiredTextField: FC<RequiredTextFieldProps> = ({
   onChange,
   helperText,
   customValidators,
-  type = "text",
+  type = 'text',
   ...rest
 }) => {
   const [isDirty, setIsDirty] = useState(false);
@@ -45,7 +45,7 @@ const RequiredTextField: FC<RequiredTextFieldProps> = ({
           const { valid, error } = validator(value);
           return valid ? acc : { valid, error };
         },
-        { valid: true, error: "" },
+        { valid: true, error: '' },
       );
       setIsValid(valid);
       setErrorText(error);
@@ -55,8 +55,8 @@ const RequiredTextField: FC<RequiredTextFieldProps> = ({
   return (
     <TextField
       label={label}
-      variant="outlined"
-      size="small"
+      variant='outlined'
+      size='small'
       required
       type={type}
       value={value}
@@ -64,7 +64,7 @@ const RequiredTextField: FC<RequiredTextFieldProps> = ({
       onBlur={() => setIsDirty(true)}
       sx={{
         backgroundColor: palette.background.paper,
-        width: "100%",
+        width: '100%',
       }}
       error={isDirty && !isValid}
       helperText={isDirty && !isValid && errorText}

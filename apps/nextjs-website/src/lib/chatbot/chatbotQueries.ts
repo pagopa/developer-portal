@@ -1,15 +1,15 @@
-import { pipe } from "fp-ts/lib/function";
+import { pipe } from 'fp-ts/lib/function';
 import {
   ChatbotQueriesCodec,
   QueryCodec,
   QueryInput,
-} from "@/lib/chatbot/queries";
-import { ChatbotEnv } from "@/lib/chatbot/chatbotEnv";
-import * as E from "fp-ts/lib/Either";
-import * as PR from "@/lib/strapi/PathReporter";
-import * as R from "fp-ts/lib/Reader";
-import * as TE from "fp-ts/lib/TaskEither";
-import { makeError } from "../makeError";
+} from '@/lib/chatbot/queries';
+import { ChatbotEnv } from '@/lib/chatbot/chatbotEnv';
+import * as E from 'fp-ts/lib/Either';
+import * as PR from '@/lib/strapi/PathReporter';
+import * as R from 'fp-ts/lib/Reader';
+import * as TE from 'fp-ts/lib/TaskEither';
+import { makeError } from '../makeError';
 
 export const postQuery = (input: QueryInput) =>
   pipe(
@@ -21,9 +21,9 @@ export const postQuery = (input: QueryInput) =>
         TE.chainTaskK(
           (authToken) => () =>
             fetch(`${chatbotHost}/queries`, {
-              method: "POST",
+              method: 'POST',
               headers: {
-                "Content-Type": "application/json",
+                'Content-Type': 'application/json',
                 Authorization: `Bearer ${authToken}`,
               },
               body: JSON.stringify(input),
@@ -40,7 +40,7 @@ export const postQuery = (input: QueryInput) =>
           // decode the response with the given codec
           pipe(
             QueryCodec.decode(json),
-            E.mapLeft((errors) => new Error(PR.failure(errors).join("\n"))),
+            E.mapLeft((errors) => new Error(PR.failure(errors).join('\n'))),
           ),
         ),
         TE.fold(
@@ -62,9 +62,9 @@ export const getQueries = (query: string) =>
         TE.chainTaskK(
           (authToken) => () =>
             fetch(`${chatbotHost}/queries?${query}`, {
-              method: "GET",
+              method: 'GET',
               headers: {
-                "Content-Type": "application/json",
+                'Content-Type': 'application/json',
                 Authorization: `Bearer ${authToken}`,
               },
             }),
@@ -80,7 +80,7 @@ export const getQueries = (query: string) =>
           // decode the response with the given codec
           pipe(
             ChatbotQueriesCodec.decode(json),
-            E.mapLeft((errors) => new Error(PR.failure(errors).join("\n"))),
+            E.mapLeft((errors) => new Error(PR.failure(errors).join('\n'))),
           ),
         ),
         TE.fold(
@@ -109,9 +109,9 @@ export const patchFeedback = (
         TE.chainTaskK(
           (authToken) => () =>
             fetch(`${chatbotHost}/sessions/${sessionId}/queries/${queryId}`, {
-              method: "PATCH",
+              method: 'PATCH',
               headers: {
-                "Content-Type": "application/json",
+                'Content-Type': 'application/json',
                 Authorization: `Bearer ${authToken}`,
               },
               body: JSON.stringify({
@@ -135,7 +135,7 @@ export const patchFeedback = (
           // decode the response with the given codec
           pipe(
             QueryCodec.decode(json),
-            E.mapLeft((errors) => new Error(PR.failure(errors).join("\n"))),
+            E.mapLeft((errors) => new Error(PR.failure(errors).join('\n'))),
           ),
         ),
         TE.fold(

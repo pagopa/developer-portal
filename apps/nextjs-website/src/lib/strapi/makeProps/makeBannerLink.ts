@@ -1,5 +1,5 @@
-import { BannerLinkProps } from "@/components/atoms/BannerLink/BannerLink";
-import { StrapiBannerLink } from "../types/bannerLink";
+import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
+import { StrapiBannerLink } from '../types/bannerLink';
 
 export function makeBannerLinkProps(
   strapiBannerLink: StrapiBannerLink,
@@ -7,7 +7,7 @@ export function makeBannerLinkProps(
   return {
     content: strapiBannerLink.content || undefined,
     icon: strapiBannerLink.icon.data.attributes,
-    theme: strapiBannerLink.theme || "dark",
-    title: strapiBannerLink.title || "",
+    theme: strapiBannerLink.theme || 'dark',
+    title: strapiBannerLink.title || '',
   };
 }

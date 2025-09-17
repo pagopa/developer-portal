@@ -118,7 +118,13 @@ export default [
       'functional/no-try-statements': 'warn',
       'functional/no-throw-statements': 'warn',
       'functional/no-promise-reject': 'warn',
-      'prettier/prettier': 'warn',
+      'prettier/prettier': [
+        'warn',
+        {
+          singleQuote: true,
+          jsxSingleQuote: true,
+        },
+      ],
     },
   },
   // JavaScript files (no TypeScript parsing)
@@ -148,7 +154,13 @@ export default [
     },
     rules: {
       ...js.configs.recommended.rules,
-      'prettier/prettier': 'warn',
+      'prettier/prettier': [
+        'warn',
+        {
+          singleQuote: true,
+          jsxSingleQuote: true,
+        },
+      ],
       'no-unused-vars': 'warn',
     },
   },

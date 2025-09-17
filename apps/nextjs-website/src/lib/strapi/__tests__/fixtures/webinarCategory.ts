@@ -1,19 +1,19 @@
-import { StrapiWebinarCategories } from "@/lib/strapi/types/webinarCategory";
-import { mediaJpeg } from "../factories/media";
+import { StrapiWebinarCategories } from '@/lib/strapi/types/webinarCategory';
+import { mediaJpeg } from '../factories/media';
 
 export const strapiWebinarCategories: StrapiWebinarCategories = {
   data: [
     {
       id: 1,
       attributes: {
-        name: "Payments",
+        name: 'Payments',
         icon: { data: mediaJpeg() },
       },
     },
     {
       id: 2,
       attributes: {
-        name: "Onboarding",
+        name: 'Onboarding',
         icon: { data: mediaJpeg() },
       },
     },

@@ -1,6 +1,6 @@
-import { Path } from "@/lib/types/path";
-import { Part } from "./part";
-import { SEO } from "./seo";
+import { Path } from '@/lib/types/path';
+import { Part } from './part';
+import { SEO } from './seo';
 
 export type Tutorial = {
   readonly showInOverview?: boolean;

@@ -1,33 +1,33 @@
-"use client";
+'use client';
 import {
   SITE_HEADER_HEIGHT,
   SiteHeaderProps,
-} from "@/components/molecules/SiteHeader/SiteHeader";
-import Button from "@mui/material/Button";
-import React, { useEffect, useRef, useState } from "react";
-import { useTranslations } from "next-intl";
-import { Box, Divider, useTheme } from "@mui/material";
-import ArrowDropUp from "@mui/icons-material/ArrowDropUp";
-import ArrowDropDown from "@mui/icons-material/ArrowDropDown";
-import { TreeItem } from "@mui/x-tree-view/TreeItem";
-import { SimpleTreeView } from "@mui/x-tree-view/SimpleTreeView";
-import { treeItemClasses } from "@mui/x-tree-view/TreeItem";
-import { styled } from "@mui/material/styles";
-import Typography from "@mui/material/Typography";
-import NextLink from "next/link";
-import MobileUserInfo from "@/components/atoms/MobileUserInfo/MobileUserInfo";
+} from '@/components/molecules/SiteHeader/SiteHeader';
+import Button from '@mui/material/Button';
+import React, { useEffect, useRef, useState } from 'react';
+import { useTranslations } from 'next-intl';
+import { Box, Divider, useTheme } from '@mui/material';
+import ArrowDropUp from '@mui/icons-material/ArrowDropUp';
+import ArrowDropDown from '@mui/icons-material/ArrowDropDown';
+import { TreeItem } from '@mui/x-tree-view/TreeItem';
+import { SimpleTreeView } from '@mui/x-tree-view/SimpleTreeView';
+import { treeItemClasses } from '@mui/x-tree-view/TreeItem';
+import { styled } from '@mui/material/styles';
+import Typography from '@mui/material/Typography';
+import NextLink from 'next/link';
+import MobileUserInfo from '@/components/atoms/MobileUserInfo/MobileUserInfo';
 
 export const MobileSiteHeaderStyledTreeItem = styled(TreeItem)(({ theme }) => ({
   [`&`]: {
-    "--x": 16,
+    '--x': 16,
     marginBottom: 16,
   },
   [`& .${treeItemClasses.content}`]: {
     backgroundColor: `${theme.palette.common.white} !important`,
     color: theme.palette.primary.dark,
-    display: "flex",
-    flexDirection: "row-reverse",
-    justifyContent: "start",
+    display: 'flex',
+    flexDirection: 'row-reverse',
+    justifyContent: 'start',
     gap: 0,
     padding: 0,
     margin: 0,
@@ -51,15 +51,15 @@ export const MobileSiteHeaderStyledTreeItem = styled(TreeItem)(({ theme }) => ({
     paddingLeft: 0,
   },
   [`& .${treeItemClasses.iconContainer}:empty`]: {
-    display: "none",
+    display: 'none',
   },
   [`& .${treeItemClasses.content} > .${treeItemClasses.label}`]: {
     color: theme.palette.primary.dark,
     fontSize: 18,
     fontWeight: 600,
-    width: "fit-content",
-    lineHeight: "22px",
-    display: "flex",
+    width: 'fit-content',
+    lineHeight: '22px',
+    display: 'flex',
     marginTop: 0,
     marginLeft: 0,
     marginRight: 0,
@@ -74,13 +74,13 @@ export const MobileSiteHeaderStyledTreeItem = styled(TreeItem)(({ theme }) => ({
   },
   [`& ul`]: {
     paddingLeft: 0,
-    "--y": "calc(var(--x) + 0)",
+    '--y': 'calc(var(--x) + 0)',
   },
   [`& li`]: {
-    "--x": "calc(var(--y) + 24)",
+    '--x': 'calc(var(--y) + 24)',
   },
-  ["& a"]: {
-    paddingLeft: "calc(1px * var(--x))",
+  ['& a']: {
+    paddingLeft: 'calc(1px * var(--x))',
   },
   [`& .${treeItemClasses.label}`]: {
     padding: 0,
@@ -102,7 +102,7 @@ export const MobileSiteHeaderStyledTreeItem = styled(TreeItem)(({ theme }) => ({
 }));
 
 const MobileSiteHeader = ({ products }: SiteHeaderProps) => {
-  const t = useTranslations("devPortal");
+  const t = useTranslations('devPortal');
   const { palette } = useTheme();
 
   const [isOpen, setIsOpen] = useState(false);
@@ -119,10 +119,10 @@ const MobileSiteHeader = ({ products }: SiteHeaderProps) => {
         event.stopPropagation();
       }
     };
-    document.body.addEventListener("click", closeMenu);
+    document.body.addEventListener('click', closeMenu);
 
     return () => {
-      document.body.removeEventListener("click", closeMenu);
+      document.body.removeEventListener('click', closeMenu);
     };
   }, [isOpen]);
 
@@ -133,33 +133,33 @@ const MobileSiteHeader = ({ products }: SiteHeaderProps) => {
   return (
     <Box
       sx={{
-        alignItems: "center",
-        direction: "row",
-        display: { xs: "flex", sm: "none" },
+        alignItems: 'center',
+        direction: 'row',
+        display: { xs: 'flex', sm: 'none' },
         flexGrow: 1,
         paddingLeft: 2,
         gap: 4,
-        justifyContent: "end",
+        justifyContent: 'end',
       }}
     >
       <Button
-        variant="naked"
+        variant='naked'
         disableElevation
         onClick={handleClick}
         endIcon={isOpen ? <ArrowDropUp /> : <ArrowDropDown />}
       >
-        {t("siteHeader.label")}
+        {t('siteHeader.label')}
       </Button>
       <Box
         ref={menuRef}
         sx={{
-          display: isOpen ? "block" : "none",
-          backgroundColor: "white",
+          display: isOpen ? 'block' : 'none',
+          backgroundColor: 'white',
           top: SITE_HEADER_HEIGHT,
           left: 0,
-          padding: "16px 44px 8px 44px",
-          position: "fixed",
-          width: "100%",
+          padding: '16px 44px 8px 44px',
+          position: 'fixed',
+          width: '100%',
           zIndex: 200,
         }}
       >
@@ -171,22 +171,22 @@ const MobileSiteHeader = ({ products }: SiteHeaderProps) => {
           multiSelect
         >
           <MobileSiteHeaderStyledTreeItem
-            itemId={t("siteHeader.products")}
-            label={t("siteHeader.products")}
+            itemId={t('siteHeader.products')}
+            label={t('siteHeader.products')}
             disabled={false}
           >
             {products.map((product, index) => {
               return (
                 <Typography
                   key={index}
-                  variant="body1"
+                  variant='body1'
                   component={NextLink}
                   href={`/${product.slug}/overview`}
                   onClick={handleClick}
                   style={{
                     color: palette.primary.dark,
-                    display: "block",
-                    textDecoration: "none",
+                    display: 'block',
+                    textDecoration: 'none',
                   }}
                 >
                   {product.name}
@@ -196,42 +196,42 @@ const MobileSiteHeader = ({ products }: SiteHeaderProps) => {
           </MobileSiteHeaderStyledTreeItem>
 
           <MobileSiteHeaderStyledTreeItem
-            itemId={"siteHeader.solutions"}
+            itemId={'siteHeader.solutions'}
             label={
               <Typography
                 component={NextLink}
-                variant="body1"
-                href={"/solutions"}
+                variant='body1'
+                href={'/solutions'}
                 onClick={handleClick}
                 style={{
                   color: palette.primary.dark,
-                  display: "block",
-                  textDecoration: "none",
+                  display: 'block',
+                  textDecoration: 'none',
                   fontWeight: 600,
                   padding: 0,
                 }}
               >
-                {t("siteHeader.solutions")}
+                {t('siteHeader.solutions')}
               </Typography>
             }
           />
           <MobileSiteHeaderStyledTreeItem
-            itemId={"siteHeader.webinars"}
+            itemId={'siteHeader.webinars'}
             label={
               <Typography
                 component={NextLink}
-                variant="body1"
-                href={"/webinars"}
+                variant='body1'
+                href={'/webinars'}
                 onClick={handleClick}
                 style={{
                   color: palette.primary.dark,
-                  display: "block",
-                  textDecoration: "none",
+                  display: 'block',
+                  textDecoration: 'none',
                   fontWeight: 600,
                   padding: 0,
                 }}
               >
-                {t("siteHeader.webinars")}
+                {t('siteHeader.webinars')}
               </Typography>
             }
           />

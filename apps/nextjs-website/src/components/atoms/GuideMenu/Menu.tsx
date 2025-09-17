@@ -1,51 +1,51 @@
-import React, { useEffect, useMemo } from "react";
-import NextLink from "next/link";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import ExpandLessIcon from "@mui/icons-material/ExpandLess";
-import OpenInNewIcon from "@mui/icons-material/OpenInNew";
-import { TreeItem, treeItemClasses } from "@mui/x-tree-view/TreeItem";
-import { SimpleTreeView } from "@mui/x-tree-view/SimpleTreeView";
-import { styled } from "@mui/material/styles";
-import { RenderingComponents, renderMenu } from "gitbook-docs/renderMenu";
-import { parseMenu } from "gitbook-docs/parseMenu";
+import React, { useEffect, useMemo } from 'react';
+import NextLink from 'next/link';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
+import { TreeItem, treeItemClasses } from '@mui/x-tree-view/TreeItem';
+import { SimpleTreeView } from '@mui/x-tree-view/SimpleTreeView';
+import { styled } from '@mui/material/styles';
+import { RenderingComponents, renderMenu } from 'gitbook-docs/renderMenu';
+import { parseMenu } from 'gitbook-docs/parseMenu';
 
 import GuideVersionSelector, {
   type GuideVersionSelectorProps,
-} from "./GuideVersionSelector";
-import { Typography } from "@mui/material";
+} from './GuideVersionSelector';
+import { Typography } from '@mui/material';
 
 const StyledTreeItem = styled(TreeItem)(({ theme }) => ({
   [`&`]: {
-    "--x": 32,
+    '--x': 32,
   },
   [`& .${treeItemClasses.content}`]: {
-    boxSizing: "border-box",
-    flexDirection: "row-reverse",
-    width: "100%",
+    boxSizing: 'border-box',
+    flexDirection: 'row-reverse',
+    width: '100%',
     paddingTop: 0,
     paddingBottom: 0,
     paddingLeft: 0,
     paddingRight: 32,
-    alignItems: "space-between",
+    alignItems: 'space-between',
   },
   [`& .${treeItemClasses.content}:has(.${treeItemClasses.iconContainer}:empty)`]:
     {
       paddingRight: 0,
     },
   [`& .${treeItemClasses.iconContainer}`]: {
-    justifyContent: "flex-end",
+    justifyContent: 'flex-end',
     marginRight: 0,
     paddingRight: 0,
     paddingLeft: 0,
   },
   [`& .${treeItemClasses.iconContainer}:empty`]: {
-    display: "none",
+    display: 'none',
   },
   [`& .${treeItemClasses.content} > .${treeItemClasses.label}`]: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "stretch",
-    position: "relative",
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'stretch',
+    position: 'relative',
   },
   [`& .${treeItemClasses.content} > .${treeItemClasses.label} > a`]: {
     paddingTop: 10,
@@ -54,13 +54,13 @@ const StyledTreeItem = styled(TreeItem)(({ theme }) => ({
   },
   [`& ul`]: {
     paddingLeft: 0,
-    "--y": "calc(var(--x) + 0)",
+    '--y': 'calc(var(--x) + 0)',
   },
   [`& li`]: {
-    "--x": "calc(var(--y) + 24)",
+    '--x': 'calc(var(--y) + 24)',
   },
-  ["& a"]: {
-    paddingLeft: "calc(1px * var(--x))",
+  ['& a']: {
+    paddingLeft: 'calc(1px * var(--x))',
   },
   [`& .${treeItemClasses.label}`]: {
     padding: 0,
@@ -84,17 +84,17 @@ const components: RenderingComponents<React.ReactNode> = {
 
     useEffect(() => {
       if (ref.current && ref.current.href === window.location.href) {
-        ref.current.scrollIntoView({ behavior: "instant", block: "center" });
+        ref.current.scrollIntoView({ behavior: 'instant', block: 'center' });
       }
     }, []);
 
     const label = (
       <Typography
         ref={ref}
-        variant="sidenav"
+        variant='sidenav'
         component={NextLink}
         href={href}
-        style={{ textDecoration: "none" }}
+        style={{ textDecoration: 'none' }}
       >
         {title}
       </Typography>
@@ -108,16 +108,16 @@ const components: RenderingComponents<React.ReactNode> = {
   },
   Title: ({ children }) => (
     <Typography
-      color="text.secondary"
+      color='text.secondary'
       style={{
         paddingLeft: 32,
         paddingTop: 24,
         paddingBottom: 0,
-        textDecoration: "none",
+        textDecoration: 'none',
         fontSize: 14,
         fontWeight: 700,
       }}
-      textTransform="uppercase"
+      textTransform='uppercase'
     >
       {children}
     </Typography>
@@ -150,11 +150,11 @@ const GuideMenuItems = ({
   return (
     <>
       <Typography
-        variant="h6"
+        variant='h6'
         sx={{
-          verticalAlign: "middle",
-          padding: { xs: "16px 24px", lg: "16px 32px" },
-          fontSize: { xs: "20px", md: "24px" },
+          verticalAlign: 'middle',
+          padding: { xs: '16px 24px', lg: '16px 32px' },
+          fontSize: { xs: '20px', md: '24px' },
           fontWeight: { xs: 700, md: 600 },
         }}
       >

@@ -1,13 +1,13 @@
-import { StrapiBannerLink } from "@/lib/strapi/types/bannerLink";
-import { mediaJpeg } from "@/lib/strapi/__tests__/factories/media";
-import { strapiBannerLink } from "../fixtures/bannerLink";
+import { StrapiBannerLink } from '@/lib/strapi/types/bannerLink';
+import { mediaJpeg } from '@/lib/strapi/__tests__/factories/media';
+import { strapiBannerLink } from '../fixtures/bannerLink';
 
 const defaultBannerLink = {
   id: 1,
   content: undefined,
   icon: { data: mediaJpeg() },
-  theme: "light",
-  title: "Default Banner Link",
+  theme: 'light',
+  title: 'Default Banner Link',
 } satisfies StrapiBannerLink;
 
 export function bannerLink() {
@@ -31,15 +31,15 @@ export function minimalBannerLink(): StrapiBannerLink {
     icon: {
       data: {
         attributes: {
-          name: "minimal-icon.svg",
-          alternativeText: "Minimal Icon",
+          name: 'minimal-icon.svg',
+          alternativeText: 'Minimal Icon',
           caption: undefined,
           width: 24,
           height: 24,
-          ext: ".svg",
-          mime: "image/svg+xml",
+          ext: '.svg',
+          mime: 'image/svg+xml',
           size: 0.5,
-          url: "https://example.com/minimal-icon.svg",
+          url: 'https://example.com/minimal-icon.svg',
         },
       },
     },
@@ -49,15 +49,15 @@ export function minimalBannerLink(): StrapiBannerLink {
 export function bannerLinkWithDarkTheme(): StrapiBannerLink {
   return {
     ...strapiBannerLink,
-    title: "Dark Theme Banner",
-    theme: "dark",
+    title: 'Dark Theme Banner',
+    theme: 'dark',
   };
 }
 
 export function bannerLinkWithUndefinedContent(): StrapiBannerLink {
   return {
     ...strapiBannerLink,
-    title: "Null Content Banner",
+    title: 'Null Content Banner',
     content: undefined,
   };
 }
@@ -65,7 +65,7 @@ export function bannerLinkWithUndefinedContent(): StrapiBannerLink {
 export function bannerLinkWithEmptyTitle(): StrapiBannerLink {
   return {
     ...strapiBannerLink,
-    title: "",
+    title: '',
     content: undefined,
   };
 }

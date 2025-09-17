@@ -1,13 +1,13 @@
-import { StrapiBaseGuide } from "@/lib/strapi/types/guide";
-import { StrapiLink, StrapiRelatedLinks } from "@/lib/strapi/types/link";
-import { StrapiMedia } from "@/lib/strapi/types/media";
-import { StrapiBannerLink } from "@/lib/strapi/types/bannerLink";
-import { StrapiNewsShowcase } from "@/lib/strapi/types/newsShowcase";
-import { BlocksContent } from "@strapi/blocks-react-renderer";
-import { StrapiSeo } from "@/lib/strapi/types/seo";
-import { Paginated } from "@/lib/strapi/types/paginated";
-import { StrapiBaseTutorial } from "@/lib/strapi/types/tutorial";
-import { StrapiProduct } from "@/lib/strapi/types/product";
+import { StrapiBaseGuide } from '@/lib/strapi/types/guide';
+import { StrapiLink, StrapiRelatedLinks } from '@/lib/strapi/types/link';
+import { StrapiMedia } from '@/lib/strapi/types/media';
+import { StrapiBannerLink } from '@/lib/strapi/types/bannerLink';
+import { StrapiNewsShowcase } from '@/lib/strapi/types/newsShowcase';
+import { BlocksContent } from '@strapi/blocks-react-renderer';
+import { StrapiSeo } from '@/lib/strapi/types/seo';
+import { Paginated } from '@/lib/strapi/types/paginated';
+import { StrapiBaseTutorial } from '@/lib/strapi/types/tutorial';
+import { StrapiProduct } from '@/lib/strapi/types/product';
 
 export type StrapiStartInfo = {
   readonly icon: { readonly data: StrapiMedia };

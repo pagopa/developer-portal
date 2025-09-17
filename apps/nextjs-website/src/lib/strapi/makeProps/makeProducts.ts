@@ -1,12 +1,12 @@
 /* eslint-disable functional/no-throw-statements */
-import { Product } from "@/lib/types/product";
-import { makeBannerLinkProps } from "@/lib/strapi/makeProps/makeBannerLink";
+import { Product } from '@/lib/types/product';
+import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
 import {
   StrapiBaseProductWithRelations,
   StrapiProduct,
   StrapiProducts,
-} from "@/lib/strapi/types/product";
-import _ from "lodash";
+} from '@/lib/strapi/types/product';
+import _ from 'lodash';
 
 export function makeProductsProps(
   strapiProducts: StrapiProducts,
@@ -17,7 +17,7 @@ export function makeProductsProps(
 export function makeProductProps(product: StrapiProduct): Product | null {
   if (!product || !product.attributes) {
     // eslint-disable-next-line functional/no-expression-statements
-    console.error("Invalid product data:", product);
+    console.error('Invalid product data:', product);
     return null;
   }
 

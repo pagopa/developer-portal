@@ -1,4 +1,4 @@
-import { StrapiConfigType } from "@/lib/strapi/StrapiConfig";
+import { StrapiConfigType } from '@/lib/strapi/StrapiConfig';
 
 // This type represents the environment of Strapi.
 export type StrapiEnv = {

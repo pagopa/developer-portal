@@ -1,13 +1,13 @@
-import { Link as LinkMui, Stack, Typography } from "@mui/material";
-import { hrefNoOp } from "@/editorialComponents/utils";
+import { Link as LinkMui, Stack, Typography } from '@mui/material';
+import { hrefNoOp } from '@/editorialComponents/utils';
 import {
   FooterColumnIcon,
   type CompanyLinkType,
   type PreLoginFooterSingleSectionType,
-} from "../types";
-import { LogoPagoPACompany } from "@/editorialComponents/LogoPagoPACompany";
-import Link from "next/link";
-import IconWrapper from "@/components/atoms/IconWrapper/IconWrapper";
+} from '../types';
+import { LogoPagoPACompany } from '@/editorialComponents/LogoPagoPACompany';
+import Link from 'next/link';
+import IconWrapper from '@/components/atoms/IconWrapper/IconWrapper';
 
 export interface FooterColumnProps {
   data: PreLoginFooterSingleSectionType;
@@ -20,9 +20,9 @@ export const FooterColumn = ({
   companyLink,
   icons,
 }: FooterColumnProps) => (
-  <Stack spacing={2} display="flex" alignItems={{ xs: "center", sm: "start" }}>
+  <Stack spacing={2} display='flex' alignItems={{ xs: 'center', sm: 'start' }}>
     {data?.title && (
-      <Typography variant="overline" fontSize="body2.fontSize">
+      <Typography variant='overline' fontSize='body2.fontSize'>
         {data.title}
       </Typography>
     )}
@@ -30,10 +30,10 @@ export const FooterColumn = ({
     {companyLink && (
       <LinkMui
         component={Link}
-        role="link"
+        role='link'
         aria-label={companyLink.ariaLabel}
         href={companyLink.href ?? hrefNoOp}
-        sx={{ display: "inline-flex" }}
+        sx={{ display: 'inline-flex' }}
       >
         <LogoPagoPACompany />
       </LinkMui>
@@ -41,12 +41,12 @@ export const FooterColumn = ({
 
     {icons && (
       <Stack
-        aria-label="i nostri social"
+        aria-label='i nostri social'
         spacing={{ xs: 3, sm: 1.5, lg: 3 }}
-        direction="row"
-        component="ul"
-        alignItems={{ xs: "center", sm: "start" }}
-        sx={{ padding: 0, mt: 0.5, listStyle: "none" }}
+        direction='row'
+        component='ul'
+        alignItems={{ xs: 'center', sm: 'start' }}
+        sx={{ padding: 0, mt: 0.5, listStyle: 'none' }}
       >
         {icons?.map(
           ({ icon, href = hrefNoOp, ...rest }, i) =>
@@ -62,23 +62,23 @@ export const FooterColumn = ({
     )}
 
     <Stack
-      component="ul"
-      alignItems={{ xs: "center", sm: "start" }}
-      textAlign={{ xs: "center", sm: "left" }}
-      sx={{ padding: 0, listStyle: "none" }}
+      component='ul'
+      alignItems={{ xs: 'center', sm: 'start' }}
+      textAlign={{ xs: 'center', sm: 'left' }}
+      sx={{ padding: 0, listStyle: 'none' }}
     >
       {data?.links.map(({ href = hrefNoOp, label, ariaLabel, onClick }, i) => (
         <li key={i}>
           <LinkMui
             aria-label={ariaLabel}
-            fontSize="body2.fontSize"
-            component={"a"}
+            fontSize='body2.fontSize'
+            component={'a'}
             href={href}
             onClick={onClick}
-            underline="none"
-            color="text.primary"
-            sx={{ display: "inline-block", py: 0.5 }}
-            variant="subtitle2"
+            underline='none'
+            color='text.primary'
+            sx={{ display: 'inline-block', py: 0.5 }}
+            variant='subtitle2'
           >
             {label}
           </LinkMui>

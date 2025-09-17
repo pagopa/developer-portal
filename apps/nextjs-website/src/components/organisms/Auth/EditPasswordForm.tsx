@@ -1,10 +1,10 @@
-import { ButtonNaked } from "@pagopa/mui-italia";
-import { Stack, Typography } from "@mui/material";
-import { useState } from "react";
+import { ButtonNaked } from '@pagopa/mui-italia';
+import { Stack, Typography } from '@mui/material';
+import { useState } from 'react';
 
-import { PasswordTextField } from "./PasswordTextField";
-import { useTranslations } from "next-intl";
-import { passwordMatcher } from "@/helpers/auth.helpers";
+import { PasswordTextField } from './PasswordTextField';
+import { useTranslations } from 'next-intl';
+import { passwordMatcher } from '@/helpers/auth.helpers';
 
 type EditPasswordFormProps = {
   onCancel: () => void;
@@ -21,12 +21,12 @@ export const EditPasswordForm = ({
   onSave,
   onCancel,
 }: EditPasswordFormProps) => {
-  const t = useTranslations("profile");
+  const t = useTranslations('profile');
   const [errors, setErrors] = useState<Partial<Passwords>>({});
   const [passwords, setPasswords] = useState<Passwords>({
-    currentPassword: "",
-    newPassword: "",
-    passwordConfirm: "",
+    currentPassword: '',
+    newPassword: '',
+    passwordConfirm: '',
   });
 
   const validateForm = () => {
@@ -35,13 +35,13 @@ export const EditPasswordForm = ({
     let err = {};
 
     if (!currentPassword) {
-      err = { currentPassword: t("changePassword.requiredCurrentPassword") };
+      err = { currentPassword: t('changePassword.requiredCurrentPassword') };
     }
 
     if (!passwordMatcher.test(newPassword)) {
-      err = { ...err, newPassword: t("changePassword.passwordPolicy") };
+      err = { ...err, newPassword: t('changePassword.passwordPolicy') };
     } else if (newPassword !== passwordConfirm) {
-      err = { ...err, newPassword: t("changePassword.passwordsNotMatch") };
+      err = { ...err, newPassword: t('changePassword.passwordsNotMatch') };
     }
 
     setErrors(err);
@@ -58,8 +58,8 @@ export const EditPasswordForm = ({
     if (validateForm()) {
       onSave(passwords.currentPassword, passwords.newPassword).catch(
         (error) => {
-          if (error.code === "NotAuthorizedException") {
-            setErrors({ currentPassword: t("changePassword.wrongPassword") });
+          if (error.code === 'NotAuthorizedException') {
+            setErrors({ currentPassword: t('changePassword.wrongPassword') });
           }
         },
       );
@@ -69,14 +69,14 @@ export const EditPasswordForm = ({
   const actions = (
     <>
       <ButtonNaked
-        color="primary"
+        color='primary'
         sx={{ paddingLeft: 0, paddingRight: 0 }}
         onClick={onCancel}
       >
-        {t("changePassword.cancel")}
+        {t('changePassword.cancel')}
       </ButtonNaked>
-      <ButtonNaked variant="contained" color="primary" onClick={handleSave}>
-        {t("changePassword.save")}
+      <ButtonNaked variant='contained' color='primary' onClick={handleSave}>
+        {t('changePassword.save')}
       </ButtonNaked>
     </>
   );
@@ -84,46 +84,46 @@ export const EditPasswordForm = ({
   return (
     <Stack gap={3}>
       <Stack
-        alignItems={{ xs: "flex-start", md: "center" }}
-        flexDirection={{ xs: "column", md: "row" }}
+        alignItems={{ xs: 'flex-start', md: 'center' }}
+        flexDirection={{ xs: 'column', md: 'row' }}
         gap={2}
         mt={{ xs: 1, md: 3 }}
       >
         <Typography
-          variant="body2"
+          variant='body2'
           flexGrow={1}
           fontSize={16}
-          minWidth={{ xs: "auto", md: "170px" }}
+          minWidth={{ xs: 'auto', md: '170px' }}
         >
-          {t("changePassword.title")}
+          {t('changePassword.title')}
         </Typography>
-        <Stack flexDirection="row" gap={4} display={{ xs: "none", md: "flex" }}>
+        <Stack flexDirection='row' gap={4} display={{ xs: 'none', md: 'flex' }}>
           {actions}
         </Stack>
       </Stack>
       <PasswordTextField
-        id="currentPassword"
-        label={t("changePassword.currentPassword")}
-        hasError={Reflect.has(errors, "currentPassword")}
+        id='currentPassword'
+        label={t('changePassword.currentPassword')}
+        hasError={Reflect.has(errors, 'currentPassword')}
         helperText={errors.currentPassword}
         value={passwords.currentPassword}
         onChange={handlePasswordChange}
       />
       <PasswordTextField
-        id="newPassword"
-        label={t("changePassword.newPassword")}
+        id='newPassword'
+        label={t('changePassword.newPassword')}
         value={passwords.newPassword}
-        hasError={Reflect.has(errors, "newPassword")}
+        hasError={Reflect.has(errors, 'newPassword')}
         helperText={errors.newPassword}
         onChange={handlePasswordChange}
       />
       <PasswordTextField
-        id="passwordConfirm"
-        label={t("changePassword.confirmPassword")}
+        id='passwordConfirm'
+        label={t('changePassword.confirmPassword')}
         value={passwords.passwordConfirm}
         onChange={handlePasswordChange}
       />
-      <Stack flexDirection="row" gap={4} display={{ xs: "flex", md: "none" }}>
+      <Stack flexDirection='row' gap={4} display={{ xs: 'flex', md: 'none' }}>
         {actions}
       </Stack>
     </Stack>

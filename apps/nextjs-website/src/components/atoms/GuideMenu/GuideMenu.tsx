@@ -1,9 +1,9 @@
-"use client";
-import React, { Fragment, useCallback, useEffect, useState } from "react";
-import Typography from "@mui/material/Typography";
-import { usePathname } from "next/navigation";
-import ArrowDropDownOutlinedIcon from "@mui/icons-material/ArrowDropDownOutlined";
-import CloseIcon from "@mui/icons-material/Close";
+'use client';
+import React, { Fragment, useCallback, useEffect, useState } from 'react';
+import Typography from '@mui/material/Typography';
+import { usePathname } from 'next/navigation';
+import ArrowDropDownOutlinedIcon from '@mui/icons-material/ArrowDropDownOutlined';
+import CloseIcon from '@mui/icons-material/Close';
 import {
   Dialog,
   DialogContent,
@@ -13,11 +13,11 @@ import {
   Theme,
   useMediaQuery,
   useTheme,
-} from "@mui/material";
-import { SITE_HEADER_HEIGHT } from "@/components/molecules/SiteHeader/SiteHeader";
-import { useScrollUp } from "../ProductHeader/useScrollUp";
-import GuideMenuItems, { type GuideMenuItemsProps } from "./Menu";
-import { useTranslations } from "next-intl";
+} from '@mui/material';
+import { SITE_HEADER_HEIGHT } from '@/components/molecules/SiteHeader/SiteHeader';
+import { useScrollUp } from '../ProductHeader/useScrollUp';
+import GuideMenuItems, { type GuideMenuItemsProps } from './Menu';
+import { useTranslations } from 'next-intl';
 
 type GuideMenuProps = GuideMenuItemsProps & {
   distanceFromTop?: number;
@@ -28,12 +28,12 @@ const GuideMenu = (menuProps: GuideMenuProps) => {
   const [open, setOpen] = useState(false);
   const { palette } = useTheme();
   const t = useTranslations();
-  const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up("lg"));
+  const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('lg'));
   const scrollUp = useScrollUp();
   const currentPath = usePathname();
 
-  const segments = currentPath.split("/");
-  const expanded = segments.map((_, i) => segments.slice(0, i + 1).join("/"));
+  const segments = currentPath.split('/');
+  const expanded = segments.map((_, i) => segments.slice(0, i + 1).join('/'));
 
   const top = scrollUp ? SITE_HEADER_HEIGHT : 0;
 
@@ -71,47 +71,47 @@ const GuideMenu = (menuProps: GuideMenuProps) => {
         sx={{
           backgroundColor: palette.grey[50],
           flexShrink: 0,
-          position: "sticky",
+          position: 'sticky',
           top: topStyle,
           height: { lg: height },
-          overflowY: "auto",
-          transition: "all 0.5s linear",
-          scrollbarWidth: "thin",
-          width: { lg: "347px" },
+          overflowY: 'auto',
+          transition: 'all 0.5s linear',
+          scrollbarWidth: 'thin',
+          width: { lg: '347px' },
           zIndex: 51,
         }}
       >
         <Stack
           sx={{
-            padding: { lg: "80px 0" },
+            padding: { lg: '80px 0' },
             flexGrow: { lg: 0 },
             flexShrink: { lg: 0 },
           }}
         >
           <Stack
-            direction="row"
-            alignItems="center"
-            justifyContent="flex-start"
+            direction='row'
+            alignItems='center'
+            justifyContent='flex-start'
             onClick={isDesktop ? undefined : handleClick}
             sx={{
-              padding: "12px 24px",
-              cursor: "pointer",
-              display: { lg: "none" },
+              padding: '12px 24px',
+              cursor: 'pointer',
+              display: { lg: 'none' },
             }}
           >
             <Typography
-              variant="h6"
+              variant='h6'
               sx={{
-                fontSize: "16px!important",
-                verticalAlign: "middle",
+                fontSize: '16px!important',
+                verticalAlign: 'middle',
                 color: palette.primary.main,
               }}
             >
-              {t("productGuidePage.tableOfContents")}
+              {t('productGuidePage.tableOfContents')}
             </Typography>
             <IconButton
-              size="small"
-              sx={{ display: { lg: "none" }, color: palette.primary.main }}
+              size='small'
+              sx={{ display: { lg: 'none' }, color: palette.primary.main }}
             >
               <ArrowDropDownOutlinedIcon sx={{ width: 24, height: 24 }} />
             </IconButton>
@@ -123,27 +123,27 @@ const GuideMenu = (menuProps: GuideMenuProps) => {
         <Dialog open={open} onClose={handleClick} fullScreen>
           <DialogTitle
             component={Stack}
-            direction="row"
-            alignItems="center"
-            justifyContent="flex-start"
+            direction='row'
+            alignItems='center'
+            justifyContent='flex-start'
             sx={{
-              padding: "12px 24px",
+              padding: '12px 24px',
             }}
           >
             <Typography
-              variant="h6"
+              variant='h6'
               sx={{
                 flexGrow: 1,
                 flexShrink: 0,
-                fontSize: "16px!important",
-                verticalAlign: "middle",
+                fontSize: '16px!important',
+                verticalAlign: 'middle',
                 color: palette.primary.main,
               }}
             >
-              {t("productGuidePage.tableOfContents")}
+              {t('productGuidePage.tableOfContents')}
             </Typography>
             <IconButton
-              aria-label="close"
+              aria-label='close'
               onClick={handleClick}
               sx={{
                 color: palette.primary.main,

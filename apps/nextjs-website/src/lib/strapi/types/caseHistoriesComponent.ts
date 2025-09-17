@@ -1,4 +1,4 @@
-import { StrapiBaseCaseHistory } from "@/lib/strapi/types/caseHistories";
+import { StrapiBaseCaseHistory } from '@/lib/strapi/types/caseHistories';
 
 export type StrapiCaseHistoriesComponent = {
   readonly title: string;

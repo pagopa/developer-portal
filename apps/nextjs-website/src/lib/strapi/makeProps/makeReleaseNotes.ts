@@ -1,10 +1,10 @@
 /* eslint-disable functional/no-try-statements */
 /* eslint-disable functional/no-expression-statements */
-import { makeBannerLinkProps } from "@/lib/strapi/makeProps/makeBannerLink";
-import { makeBaseProductWithoutLogoProps } from "@/lib/strapi/makeProps/makeProducts";
-import { ReleaseNotePageProps } from "@/app/[productSlug]/[...releaseNoteSubPathSlugs]/page";
-import { StrapiReleaseNotes } from "@/lib/strapi/types/releaseNotes";
-import _ from "lodash";
+import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
+import { makeBaseProductWithoutLogoProps } from '@/lib/strapi/makeProps/makeProducts';
+import { ReleaseNotePageProps } from '@/app/[productSlug]/[...releaseNoteSubPathSlugs]/page';
+import { StrapiReleaseNotes } from '@/lib/strapi/types/releaseNotes';
+import _ from 'lodash';
 
 export function makeReleaseNotesProps(
   strapiReleaseNotes: StrapiReleaseNotes,

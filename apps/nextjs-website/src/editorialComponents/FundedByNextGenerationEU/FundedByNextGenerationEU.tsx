@@ -1,7 +1,7 @@
 // Components
-import { styled } from "@mui/material";
+import { styled } from '@mui/material';
 
-import { theme } from "@pagopa/mui-italia/dist/theme";
+import { theme } from '@pagopa/mui-italia/dist/theme';
 
 // Partials
 import {
@@ -9,15 +9,15 @@ import {
   SvgOutline,
   SvgColorDark,
   SvgColorLight,
-} from "../FundedByNextGenerationEU/partials";
+} from '../FundedByNextGenerationEU/partials';
 
-const StyledSvg = styled("svg")({
-  display: "inline-block",
-  userSelect: "none",
+const StyledSvg = styled('svg')({
+  display: 'inline-block',
+  userSelect: 'none',
 });
 
-export type NextGeneratioNEUVariants = "filled" | "outline" | "color";
-export type NextGenerationEUColors = "light" | "dark" | "pantone";
+export type NextGeneratioNEUVariants = 'filled' | 'outline' | 'color';
+export type NextGenerationEUColors = 'light' | 'dark' | 'pantone';
 
 export interface FundedByNextGenerationEUPropsProps {
   /** Provides a human-readable title for the element that contains it. */
@@ -51,14 +51,14 @@ const variantColorMap = {
 export const FundedByNextGenerationEU = ({
   title = "Finanziato dall'Unione Europea · NextGenerationEU",
   size = 200,
-  color = "dark",
-  variant = "outline",
+  color = 'dark',
+  variant = 'outline',
 }: FundedByNextGenerationEUPropsProps): React.JSX.Element => (
   <StyledSvg
-    viewBox="0 0 1174 270"
-    focusable="false"
-    role="img"
-    aria-labelledby="logo-next-genEU-titleID"
+    viewBox='0 0 1174 270'
+    focusable='false'
+    role='img'
+    aria-labelledby='logo-next-genEU-titleID'
     sx={{
       mt: { xs: 5 },
       width: size,
@@ -67,7 +67,7 @@ export const FundedByNextGenerationEU = ({
       fill: colorMap[color],
     }}
   >
-    {variant === "color" ? variantColorMap[color] : variantMap[variant]}
-    <title id="logo-next-genEU-titleID">{title}</title>
+    {variant === 'color' ? variantColorMap[color] : variantMap[variant]}
+    <title id='logo-next-genEU-titleID'>{title}</title>
   </StyledSvg>
 );

@@ -1,27 +1,27 @@
-import { StrapiApiDataListPages } from "@/lib/strapi/types/apiDataListPages";
-import { ApiDataListPageTemplateProps } from "@/components/templates/ApiDataListTemplate/ApiDataListTemplate";
-import { generateBannerLinks } from "@/lib/strapi/__tests__/factories/bannerLink";
-import { mediaJpeg } from "../factories/media";
+import { StrapiApiDataListPages } from '@/lib/strapi/types/apiDataListPages';
+import { ApiDataListPageTemplateProps } from '@/components/templates/ApiDataListTemplate/ApiDataListTemplate';
+import { generateBannerLinks } from '@/lib/strapi/__tests__/factories/bannerLink';
+import { mediaJpeg } from '../factories/media';
 
 export const strapiApiDataListPages = {
   data: [
     {
       id: 1,
       attributes: {
-        title: "SEND API Documentation",
-        description: "Complete documentation for SEND APIs",
+        title: 'SEND API Documentation',
+        description: 'Complete documentation for SEND APIs',
         seo: {
-          metaTitle: "SEND API Documentation",
-          metaDescription: "Complete documentation for SEND APIs",
+          metaTitle: 'SEND API Documentation',
+          metaDescription: 'Complete documentation for SEND APIs',
         },
         bannerLinks: generateBannerLinks(2),
-        updatedAt: "2024-01-02T00:00:00.000Z",
+        updatedAt: '2024-01-02T00:00:00.000Z',
         product: {
           data: {
             attributes: {
-              name: "SEND",
-              slug: "send",
-              shortName: "SEND",
+              name: 'SEND',
+              slug: 'send',
+              shortName: 'SEND',
               bannerLinks: generateBannerLinks(1),
               overview: { data: { id: 1 } },
               quickstart_guide: { data: { id: 1 } },
@@ -46,18 +46,18 @@ export const strapiApiDataListPages = {
             {
               id: 1,
               attributes: {
-                title: "SEND Main API",
-                description: "Main SEND API for delivery notifications",
+                title: 'SEND Main API',
+                description: 'Main SEND API for delivery notifications',
                 icon: {
                   data: mediaJpeg(),
                 },
                 apiRestDetail: {
-                  slug: "send-main",
+                  slug: 'send-main',
                   specUrls: [
                     {
                       id: 1,
-                      url: "https://example.com/api.yaml",
-                      name: "Main API",
+                      url: 'https://example.com/api.yaml',
+                      name: 'Main API',
                       hideTryIt: false,
                     },
                   ],
@@ -68,28 +68,28 @@ export const strapiApiDataListPages = {
             {
               id: 2,
               attributes: {
-                title: "SEND SOAP API",
-                description: "SOAP API for legacy integrations",
+                title: 'SEND SOAP API',
+                description: 'SOAP API for legacy integrations',
                 icon: {
                   data: {
                     attributes: {
-                      name: "soap-icon.svg",
-                      alternativeText: "SOAP Icon",
+                      name: 'soap-icon.svg',
+                      alternativeText: 'SOAP Icon',
                       caption: undefined,
                       width: 48,
                       height: 48,
-                      ext: ".svg",
-                      mime: "image/svg+xml",
+                      ext: '.svg',
+                      mime: 'image/svg+xml',
                       size: 0.5,
-                      url: "https://example.com/soap-icon.svg",
+                      url: 'https://example.com/soap-icon.svg',
                     },
                   },
                 },
                 apiRestDetail: undefined,
                 apiSoapDetail: {
-                  slug: "send-soap",
-                  repositoryUrl: "https://github.com/pagopa/send-soap",
-                  dirName: "send-soap",
+                  slug: 'send-soap',
+                  repositoryUrl: 'https://github.com/pagopa/send-soap',
+                  dirName: 'send-soap',
                 },
               },
             },
@@ -104,38 +104,38 @@ export const expectedApiDataListPageProps: ReadonlyArray<ApiDataListPageTemplate
   [
     {
       hero: {
-        title: "SEND API Documentation",
-        subtitle: "Complete documentation for SEND APIs",
+        title: 'SEND API Documentation',
+        subtitle: 'Complete documentation for SEND APIs',
       },
       product: {
-        name: "SEND",
-        slug: "send",
-        shortName: "SEND",
+        name: 'SEND',
+        slug: 'send',
+        shortName: 'SEND',
         bannerLinks: expect.any(Array),
       },
-      apiDetailSlugs: ["send-main", "send-soap"],
+      apiDetailSlugs: ['send-main', 'send-soap'],
       cards: [
         {
-          title: "SEND Main API",
-          text: "Main SEND API for delivery notifications",
-          icon: "https://example.com/example.jpg",
-          href: "/send/api/send-main",
-          tags: [{ label: "REST" }],
+          title: 'SEND Main API',
+          text: 'Main SEND API for delivery notifications',
+          icon: 'https://example.com/example.jpg',
+          href: '/send/api/send-main',
+          tags: [{ label: 'REST' }],
         },
         {
-          title: "SEND SOAP API",
-          text: "SOAP API for legacy integrations",
-          icon: "https://example.com/soap-icon.svg",
-          href: "/send/api/send-soap",
-          tags: [{ label: "SOAP" }],
+          title: 'SEND SOAP API',
+          text: 'SOAP API for legacy integrations',
+          icon: 'https://example.com/soap-icon.svg',
+          href: '/send/api/send-soap',
+          tags: [{ label: 'SOAP' }],
         },
       ],
       bannerLinks: expect.any(Array),
       seo: {
-        metaTitle: "SEND API Documentation",
-        metaDescription: "Complete documentation for SEND APIs",
+        metaTitle: 'SEND API Documentation',
+        metaDescription: 'Complete documentation for SEND APIs',
       },
-      updatedAt: "2024-01-02T00:00:00.000Z",
+      updatedAt: '2024-01-02T00:00:00.000Z',
       apiData: {
         data: expect.any(Array),
       },

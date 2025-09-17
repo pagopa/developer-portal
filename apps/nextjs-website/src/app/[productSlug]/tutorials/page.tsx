@@ -1,25 +1,25 @@
-import { Product } from "@/lib/types/product";
-import { Metadata, ResolvingMetadata } from "next";
-import { getTutorialListPageProps } from "@/lib/api";
-import { Abstract } from "@/editorialComponents/Abstract/Abstract";
-import { Box } from "@mui/material";
+import { Product } from '@/lib/types/product';
+import { Metadata, ResolvingMetadata } from 'next';
+import { getTutorialListPageProps } from '@/lib/api';
+import { Abstract } from '@/editorialComponents/Abstract/Abstract';
+import { Box } from '@mui/material';
 import ProductLayout, {
   ProductLayoutProps,
-} from "@/components/organisms/ProductLayout/ProductLayout";
-import { Tutorial } from "@/lib/types/tutorialData";
-import Newsroom from "@/editorialComponents/Newsroom/Newsroom";
-import React from "react";
-import { ProductParams } from "@/lib/types/productParams";
+} from '@/components/organisms/ProductLayout/ProductLayout';
+import { Tutorial } from '@/lib/types/tutorialData';
+import Newsroom from '@/editorialComponents/Newsroom/Newsroom';
+import React from 'react';
+import { ProductParams } from '@/lib/types/productParams';
 import {
   makeMetadata,
   makeMetadataFromStrapi,
-} from "@/helpers/metadata.helpers";
-import { SEO } from "@/lib/types/seo";
-import { generateStructuredDataScripts } from "@/helpers/generateStructuredDataScripts.helpers";
+} from '@/helpers/metadata.helpers';
+import { SEO } from '@/lib/types/seo';
+import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
 import {
   breadcrumbItemByProduct,
   productToBreadcrumb,
-} from "@/helpers/structuredData.helpers";
+} from '@/helpers/structuredData.helpers';
 
 export type TutorialsPageProps = {
   readonly product: Product;
@@ -47,7 +47,7 @@ export async function generateMetadata(
 
   return makeMetadata({
     parent: resolvedParent,
-    title: [abstract?.title, product.name].filter(Boolean).join(" | "),
+    title: [abstract?.title, product.name].filter(Boolean).join(' | '),
     description: abstract?.description,
     url: path,
     image: product.logo?.url,
@@ -65,7 +65,7 @@ const TutorialsPage = async ({ params }: ProductParams) => {
       productToBreadcrumb(product),
       {
         name: seo?.metaTitle || abstract?.title,
-        item: breadcrumbItemByProduct(product, ["tutorials"]),
+        item: breadcrumbItemByProduct(product, ['tutorials']),
       },
     ],
     seo: seo,
@@ -82,7 +82,7 @@ const TutorialsPage = async ({ params }: ProductParams) => {
       {abstract && (
         <Abstract
           description={abstract?.description}
-          overline=""
+          overline=''
           title={abstract?.title}
         />
       )}
@@ -95,13 +95,13 @@ const TutorialsPage = async ({ params }: ProductParams) => {
                 date: tutorial.publishedAt,
               },
               href: {
-                label: "shared.readTutorial",
+                label: 'shared.readTutorial',
                 link: tutorial.path,
                 translate: true,
               },
               img: {
-                alt: tutorial.image?.alternativeText || "",
-                src: tutorial.image?.url || "/images/news.png",
+                alt: tutorial.image?.alternativeText || '',
+                src: tutorial.image?.url || '/images/news.png',
               },
             }))}
           />

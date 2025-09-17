@@ -1,6 +1,6 @@
-import { Product } from "@/lib/types/product";
-import { MenuDropdownProp } from "@/editorialComponents/Header/components/MenuDropdown";
-import { Theme } from "@/editorialComponents/types/components";
+import { Product } from '@/lib/types/product';
+import { MenuDropdownProp } from '@/editorialComponents/Header/components/MenuDropdown';
+import { Theme } from '@/editorialComponents/types/components';
 
 export function productToMenuItems(
   product: Product,
@@ -11,7 +11,7 @@ export function productToMenuItems(
     // if there's overview data, add it to the menu
     product.hasOverviewPage
       ? {
-          label: "devPortal.productHeader.overview",
+          label: 'devPortal.productHeader.overview',
           href: `/${product.slug}/overview`,
           active: path.startsWith(`/${product.slug}/overview`),
           theme,
@@ -20,7 +20,7 @@ export function productToMenuItems(
     // if there's quiskstart guide data, add it to the menu
     product.hasQuickstartGuidePage
       ? {
-          label: "devPortal.productHeader.quickStartGuide",
+          label: 'devPortal.productHeader.quickStartGuide',
           href: `/${product.slug}/quick-start`,
           active: path.startsWith(`/${product.slug}/quick-start`),
           theme,
@@ -28,7 +28,7 @@ export function productToMenuItems(
       : null,
     product.hasApiDataListPage
       ? {
-          label: "devPortal.productHeader.api",
+          label: 'devPortal.productHeader.api',
           href: product.apiDataListPageUrl,
           active: path.startsWith(`/${product.slug}/api`),
           theme,
@@ -37,7 +37,7 @@ export function productToMenuItems(
     // if there's tutorials data, add it to the menu
     product.hasTutorialListPage
       ? {
-          label: "devPortal.productHeader.tutorials",
+          label: 'devPortal.productHeader.tutorials',
           href: `/${product.slug}/tutorials`,
           active: path.startsWith(`/${product.slug}/tutorials`),
           theme,
@@ -46,7 +46,7 @@ export function productToMenuItems(
     // if there's guides data, add it to the menu
     product.hasGuideListPage
       ? {
-          label: "devPortal.productHeader.guides",
+          label: 'devPortal.productHeader.guides',
           href: `/${product.slug}/guides`,
           active: path.startsWith(`/${product.slug}/guides`),
           theme,
@@ -55,7 +55,7 @@ export function productToMenuItems(
     // if there's release notes data, add it to the menu
     product.hasReleaseNotePage
       ? {
-          label: "devPortal.productHeader.releaseNote",
+          label: 'devPortal.productHeader.releaseNote',
           href: `/${product.slug}/release-note`,
           active: path.startsWith(`/${product.slug}/release-note`),
           theme,

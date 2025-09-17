@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { Box, Button, Modal, Stack, Typography, useTheme } from "@mui/material";
-import { FC } from "react";
+import { Box, Button, Modal, Stack, Typography, useTheme } from '@mui/material';
+import { FC } from 'react';
 
 type Cta = {
   onClick?: () => null;
@@ -32,10 +32,10 @@ const ConfirmationModal: FC<ConfirmationModalProps> = ({
     <Modal open={open} onClose={handleClose}>
       <Box
         sx={{
-          position: "absolute",
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
           maxWidth: 600,
           backgroundColor: palette.background.default,
           borderRadius: 1,
@@ -43,15 +43,15 @@ const ConfirmationModal: FC<ConfirmationModalProps> = ({
           p: 4,
         }}
       >
-        <Typography variant="h6" component="h2">
+        <Typography variant='h6' component='h2'>
           {title}
         </Typography>
         <Typography sx={{ mt: 2 }}>{text}</Typography>
-        <Stack pt={4} flexDirection={"row"} justifyContent={"end"} gap={2}>
+        <Stack pt={4} flexDirection={'row'} justifyContent={'end'} gap={2}>
           {cancelCta && (
             <Button
               disabled={!!cancelCta.disabled && cancelCta.disabled}
-              variant={"outlined"}
+              variant={'outlined'}
               onClick={cancelCta?.onClick}
             >
               {cancelCta.label}
@@ -60,7 +60,7 @@ const ConfirmationModal: FC<ConfirmationModalProps> = ({
           {confirmCta && (
             <Button
               disabled={!!confirmCta.disabled && confirmCta.disabled}
-              variant={"contained"}
+              variant={'contained'}
               onClick={confirmCta?.onClick}
             >
               {confirmCta.label}

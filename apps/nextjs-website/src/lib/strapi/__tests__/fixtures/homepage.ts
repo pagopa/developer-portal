@@ -1,39 +1,39 @@
-import { StrapiHomepage } from "@/lib/strapi/types/homepage";
-import { HomepageProps } from "@/app/page";
-import { mediaJpeg } from "@/lib/strapi/__tests__/factories/media";
-import { newsShowcase } from "@/lib/strapi/__tests__/fixtures/newsShowcase";
+import { StrapiHomepage } from '@/lib/strapi/types/homepage';
+import { HomepageProps } from '@/app/page';
+import { mediaJpeg } from '@/lib/strapi/__tests__/factories/media';
+import { newsShowcase } from '@/lib/strapi/__tests__/fixtures/newsShowcase';
 
-const fixedDateIsoString = new Date("2024-01-01T00:00:00.000Z").toISOString();
+const fixedDateIsoString = new Date('2024-01-01T00:00:00.000Z').toISOString();
 
 export const strapiHomepage: StrapiHomepage = {
   data: {
     attributes: {
       comingsoonDocumentation: {
-        title: "Coming Soon Documentation",
+        title: 'Coming Soon Documentation',
         links: [
           {
-            text: "Documentation Link",
-            href: "/docs",
+            text: 'Documentation Link',
+            href: '/docs',
           },
         ],
       },
       heroSlider: [
         {
-          title: "Hero Title",
+          title: 'Hero Title',
           subhead: [
             {
-              type: "paragraph",
-              children: [{ type: "text", text: "Hero subhead content" }],
+              type: 'paragraph',
+              children: [{ type: 'text', text: 'Hero subhead content' }],
             },
           ],
-          subheadColor: "main",
-          titleColor: "contrastText",
+          subheadColor: 'main',
+          titleColor: 'contrastText',
           callToAction: {
             link: {
-              text: "Get Started",
-              href: "/get-started",
+              text: 'Get Started',
+              href: '/get-started',
             },
-            variant: "contained",
+            variant: 'contained',
           },
           backgroundImage: {
             data: mediaJpeg(),
@@ -59,16 +59,16 @@ export const strapiHomepage: StrapiHomepage = {
         },
       },
       ecosystem: {
-        title: "Our Ecosystem",
-        productsTabName: "Products",
+        title: 'Our Ecosystem',
+        productsTabName: 'Products',
         products: {
           data: [
             {
               attributes: {
-                name: "Product 1",
-                shortName: "P1",
-                slug: "product-1",
-                description: "Product 1 description",
+                name: 'Product 1',
+                shortName: 'P1',
+                slug: 'product-1',
+                description: 'Product 1 description',
                 logo: { data: mediaJpeg() },
                 bannerLinks: [],
                 overview: { data: { id: 1 } },
@@ -81,28 +81,28 @@ export const strapiHomepage: StrapiHomepage = {
             },
           ],
         },
-        solutionsTabName: "Solutions",
+        solutionsTabName: 'Solutions',
         solutions: {
           data: [
             {
               attributes: {
-                slug: "solution-1",
+                slug: 'solution-1',
                 icon: { data: mediaJpeg() },
-                kickerTitle: "Solution Kicker",
-                title: "Solution 1",
-                description: "Solution 1 description",
-                dirName: "solution-1-dir",
-                landingUseCaseFile: "use-case.md",
+                kickerTitle: 'Solution Kicker',
+                title: 'Solution 1',
+                description: 'Solution 1 description',
+                dirName: 'solution-1-dir',
+                landingUseCaseFile: 'use-case.md',
               },
             },
           ],
         },
         solutionsCta: {
           link: {
-            text: "View All Solutions",
-            href: "/solutions",
+            text: 'View All Solutions',
+            href: '/solutions',
           },
-          variant: "outlined",
+          variant: 'outlined',
         },
       },
       webinars: {
@@ -110,20 +110,20 @@ export const strapiHomepage: StrapiHomepage = {
           {
             id: 1,
             attributes: {
-              title: "Webinar Title",
-              slug: "webinar-title",
-              description: "Webinar Description",
-              playerSrc: "https://example.com/player",
+              title: 'Webinar Title',
+              slug: 'webinar-title',
+              description: 'Webinar Description',
+              playerSrc: 'https://example.com/player',
               isVisibleInList: true,
               publishedAt: fixedDateIsoString,
               updatedAt: fixedDateIsoString,
               coverImage: { data: mediaJpeg() },
               relatedLinks: {
-                title: "Related Links",
+                title: 'Related Links',
                 links: [
                   {
-                    text: "Link 1",
-                    href: "/link-1",
+                    text: 'Link 1',
+                    href: '/link-1',
                   },
                 ],
               },
@@ -139,8 +139,8 @@ export const strapiHomepage: StrapiHomepage = {
         ],
       },
       seo: {
-        metaTitle: "Homepage SEO Title",
-        metaDescription: "Homepage SEO Description",
+        metaTitle: 'Homepage SEO Title',
+        metaDescription: 'Homepage SEO Description',
       },
     },
   },
@@ -148,38 +148,38 @@ export const strapiHomepage: StrapiHomepage = {
 
 export const expectedHomepageProps: HomepageProps = {
   comingsoonDocumentation: {
-    title: "Coming Soon Documentation",
+    title: 'Coming Soon Documentation',
     links: [
       {
-        text: "Documentation Link",
-        href: "/docs",
+        text: 'Documentation Link',
+        href: '/docs',
       },
     ],
   },
   hero: [
     {
-      title: "Hero Title",
+      title: 'Hero Title',
       subhead: [
         {
-          type: "paragraph",
-          children: [{ type: "text", text: "Hero subhead content" }],
+          type: 'paragraph',
+          children: [{ type: 'text', text: 'Hero subhead content' }],
         },
       ],
-      subheadColor: "main",
-      titleColor: "contrastText",
+      subheadColor: 'main',
+      titleColor: 'contrastText',
       callToAction: {
         link: {
-          text: "Get Started",
-          href: "/get-started",
+          text: 'Get Started',
+          href: '/get-started',
         },
-        variant: "contained",
+        variant: 'contained',
       },
       backgroundImage: {
-        url: "https://example.com/example.jpg",
-        alternativeText: "Example Image",
-        name: "example.jpg",
-        ext: ".jpg",
-        mime: "image/jpeg",
+        url: 'https://example.com/example.jpg',
+        alternativeText: 'Example Image',
+        name: 'example.jpg',
+        ext: '.jpg',
+        mime: 'image/jpeg',
         size: 123456,
       },
     },
@@ -191,103 +191,103 @@ export const expectedHomepageProps: HomepageProps = {
         title:
           "Usa il validatore di SEND per fare una verifica sull'integrazione",
         comingSoon: false,
-        publishedAt: new Date("2024-01-01T00:00:00.000Z"),
-        label: "Label",
+        publishedAt: new Date('2024-01-01T00:00:00.000Z'),
+        label: 'Label',
         link: {
-          text: "Vai al validatore",
-          url: "/send/guides/validatore",
-          target: "_self",
+          text: 'Vai al validatore',
+          url: '/send/guides/validatore',
+          target: '_self',
         },
         image: {
-          url: "https://example.com/example.jpg",
-          alternativeText: "Example Image",
+          url: 'https://example.com/example.jpg',
+          alternativeText: 'Example Image',
         },
       },
       {
         title:
           "Scopri la Quick Start di piattaforma pagoPA: l'integrazione in pochi semplici step",
         comingSoon: false,
-        publishedAt: new Date("2024-01-01T00:00:00.000Z"),
-        label: "Label",
+        publishedAt: new Date('2024-01-01T00:00:00.000Z'),
+        label: 'Label',
         link: {
-          text: "Vai alla guida",
-          url: "/pago-pa/quick-start",
-          target: "_self",
+          text: 'Vai alla guida',
+          url: '/pago-pa/quick-start',
+          target: '_self',
         },
         image: {
-          url: "https://example.com/example.jpg",
-          alternativeText: "Example Image",
+          url: 'https://example.com/example.jpg',
+          alternativeText: 'Example Image',
         },
       },
       {
-        title: "Scopri i nuovi tutorial di Firma con IO",
+        title: 'Scopri i nuovi tutorial di Firma con IO',
         comingSoon: false,
-        publishedAt: new Date("2024-01-01T00:00:00.000Z"),
-        label: "Label",
+        publishedAt: new Date('2024-01-01T00:00:00.000Z'),
+        label: 'Label',
         link: {
-          text: "Vai ai tutorial",
-          url: "/firma-con-io/tutorials",
-          target: "_self",
+          text: 'Vai ai tutorial',
+          url: '/firma-con-io/tutorials',
+          target: '_self',
         },
         image: {
-          url: "https://example.com/example.jpg",
-          alternativeText: "Example Image",
+          url: 'https://example.com/example.jpg',
+          alternativeText: 'Example Image',
         },
       },
     ],
   },
   ecosystem: {
-    title: "Our Ecosystem",
-    productsTabName: "Products",
+    title: 'Our Ecosystem',
+    productsTabName: 'Products',
     products: [
       {
-        title: "Product 1",
-        text: "Product 1 description",
-        href: "product-1/overview",
-        icon: "https://example.com/example.jpg",
+        title: 'Product 1',
+        text: 'Product 1 description',
+        href: 'product-1/overview',
+        icon: 'https://example.com/example.jpg',
         useSrc: true,
       },
     ],
-    solutionsTabName: "Solutions",
+    solutionsTabName: 'Solutions',
     solutions: [
       {
-        title: "Solution 1",
-        text: "Solution 1 description",
-        href: "/solutions/solution-1",
-        icon: "https://example.com/example.jpg",
+        title: 'Solution 1',
+        text: 'Solution 1 description',
+        href: '/solutions/solution-1',
+        icon: 'https://example.com/example.jpg',
         useSrc: true,
       },
     ],
     solutionsCta: {
-      variant: "outlined",
+      variant: 'outlined',
       link: {
-        text: "View All Solutions",
-        href: "/solutions",
+        text: 'View All Solutions',
+        href: '/solutions',
       },
     },
   },
   webinars: [
     {
-      title: "Webinar Title",
-      slug: "webinar-title",
-      description: "Webinar Description",
-      playerSrc: "https://example.com/player",
+      title: 'Webinar Title',
+      slug: 'webinar-title',
+      description: 'Webinar Description',
+      playerSrc: 'https://example.com/player',
       relatedLinks: {
-        title: "Related Links",
+        title: 'Related Links',
         links: [
           {
-            text: "Link 1",
-            href: "/link-1",
+            text: 'Link 1',
+            href: '/link-1',
           },
         ],
       },
       isVisibleInList: true,
-      imagePath: "https://example.com/example.jpg",
-      updatedAt: "2024-01-01T00:00:00.000Z",
+      imagePath: 'https://example.com/example.jpg',
+      updatedAt: '2024-01-01T00:00:00.000Z',
     },
   ],
   seo: {
-    metaTitle: "Homepage SEO Title",
-    metaDescription: "Homepage SEO Description",
+    metaTitle: 'Homepage SEO Title',
+    metaDescription: 'Homepage SEO Description',
   },
 };

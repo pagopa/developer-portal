@@ -4,20 +4,20 @@ import {
   staticContentsUrl,
   region,
   s3DocsPath,
-} from "@/config";
-import { Product } from "@/lib/types/product";
-import { BannerLinkProps } from "@/components/atoms/BannerLink/BannerLink";
-import { SEO } from "@/lib/types/seo";
+} from '@/config';
+import { Product } from '@/lib/types/product';
+import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
+import { SEO } from '@/lib/types/seo';
 import {
   DocPage,
   DocSource,
   makeParseS3DocsEnv,
   parseDoc,
   parseS3Doc,
-} from "./parseS3Doc.helpers";
-import { SolutionTemplateProps } from "@/components/templates/SolutionTemplate/SolutionTemplate";
-import { ReleaseNotePageProps } from "@/app/[productSlug]/[...releaseNoteSubPathSlugs]/page";
-import { JsonMetadata } from "./s3Metadata.helpers";
+} from './parseS3Doc.helpers';
+import { SolutionTemplateProps } from '@/components/templates/SolutionTemplate/SolutionTemplate';
+import { ReleaseNotePageProps } from '@/app/[productSlug]/[...releaseNoteSubPathSlugs]/page';
+import { JsonMetadata } from './s3Metadata.helpers';
 
 export type TutorialsDefinition = {
   readonly product: Product;

@@ -1,50 +1,50 @@
-import * as qs from "qs";
-import { webinarPopulate } from "@/lib/strapi/fetches/fetchWebinars";
-import { fetchFromStrapi } from "@/lib/strapi/fetchFromStrapi";
-import { StrapiHomepage } from "@/lib/strapi/types/homepage";
+import * as qs from 'qs';
+import { webinarPopulate } from '@/lib/strapi/fetches/fetchWebinars';
+import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
+import { StrapiHomepage } from '@/lib/strapi/types/homepage';
 
 const makeStrapiHomepagePopulate = () =>
   qs.stringify({
     populate: {
       comingsoonDocumentation: {
-        populate: ["links"],
+        populate: ['links'],
       },
       heroSlider: {
-        populate: ["backgroundImage", "callToAction.link"],
+        populate: ['backgroundImage', 'callToAction.link'],
       },
       newsShowcase: {
-        populate: ["link", "items.image", "items.link"],
+        populate: ['link', 'items.image', 'items.link'],
       },
       productsShowcase: {
-        populate: ["products.logo"],
+        populate: ['products.logo'],
       },
       webinars: webinarPopulate,
       ecosystem: {
         populate: [
-          "products.logo",
-          "products.bannerLinks.icon",
-          "products.overview",
-          "products.release_note",
-          "products.quickstart_guide",
-          "products.api_data_list_page",
-          "products.api_data_list_page.apiData.*",
-          "products.api_data_list_page.apiData.apiRestDetail.slug",
-          "products.api_data_list_page.apiData.apiRestDetail.specUrls",
-          "products.api_data_list_page.apiData.apiSoapDetail.*",
-          "products.guide_list_page",
-          "products.tutorial_list_page",
-          "solutions.icon",
-          "solutions.product.logo",
-          "solutionsCta.link",
+          'products.logo',
+          'products.bannerLinks.icon',
+          'products.overview',
+          'products.release_note',
+          'products.quickstart_guide',
+          'products.api_data_list_page',
+          'products.api_data_list_page.apiData.*',
+          'products.api_data_list_page.apiData.apiRestDetail.slug',
+          'products.api_data_list_page.apiData.apiRestDetail.specUrls',
+          'products.api_data_list_page.apiData.apiSoapDetail.*',
+          'products.guide_list_page',
+          'products.tutorial_list_page',
+          'solutions.icon',
+          'solutions.product.logo',
+          'solutionsCta.link',
         ],
       },
       seo: {
-        populate: "*,metaImage,metaSocial.image",
+        populate: '*,metaImage,metaSocial.image',
       },
     },
   });
 
 export const fetchHomepage = fetchFromStrapi<StrapiHomepage>(
-  "homepage",
+  'homepage',
   makeStrapiHomepagePopulate(),
 );

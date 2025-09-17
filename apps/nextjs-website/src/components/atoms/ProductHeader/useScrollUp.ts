@@ -1,5 +1,5 @@
 /* eslint-disable functional/no-expression-statements */
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect } from 'react';
 
 const SCROLL_UP_TRESHOLD = 50;
 
@@ -24,10 +24,10 @@ export const useScrollUp = () => {
       window.requestAnimationFrame(updateVisibility);
     };
 
-    window.addEventListener("scroll", onScroll);
+    window.addEventListener('scroll', onScroll);
 
     return () => {
-      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener('scroll', onScroll);
     };
   }, []);
 

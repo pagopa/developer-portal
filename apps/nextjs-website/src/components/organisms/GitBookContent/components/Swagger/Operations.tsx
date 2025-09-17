@@ -1,22 +1,22 @@
-import { useTranslations } from "next-intl";
-import { OpenAPIV3 } from "openapi-types";
+import { useTranslations } from 'next-intl';
+import { OpenAPIV3 } from 'openapi-types';
 
-import { Operation } from "./Operation";
-import { Card, Typography } from "@mui/material";
+import { Operation } from './Operation';
+import { Card, Typography } from '@mui/material';
 
 const methods = [
-  "get",
-  "post",
-  "put",
-  "delete",
-  "options",
-  "head",
-  "patch",
-  "trace",
+  'get',
+  'post',
+  'put',
+  'delete',
+  'options',
+  'head',
+  'patch',
+  'trace',
 ];
 
 const getOperations = (
-  pathItemObj: Omit<OpenAPIV3.PathItemObject, "parameters">,
+  pathItemObj: Omit<OpenAPIV3.PathItemObject, 'parameters'>,
 ) =>
   Object.keys(pathItemObj)
     .filter((key) => methods.includes(key))
@@ -32,18 +32,18 @@ type OperationsProps = {
 };
 
 export const Operations = ({ spec, validOperations }: OperationsProps) => {
-  const t = useTranslations("swagger");
+  const t = useTranslations('swagger');
 
   if (!spec.paths || !validOperations) {
-    const noOpHeader = t("emptyOperations.header");
-    const noOpMessage = t("emptyOperations.message");
+    const noOpHeader = t('emptyOperations.header');
+    const noOpMessage = t('emptyOperations.message');
     return (
-      <Card sx={{ borderRadius: 1, p: 2 }} variant="outlined">
-        <Typography sx={{ fontWeight: "bold" }} variant="body1">
+      <Card sx={{ borderRadius: 1, p: 2 }} variant='outlined'>
+        <Typography sx={{ fontWeight: 'bold' }} variant='body1'>
           {noOpHeader}
         </Typography>
         <Typography
-          variant="body2"
+          variant='body2'
           sx={{ color: (theme) => theme.palette.text.secondary }}
         >
           {noOpMessage}

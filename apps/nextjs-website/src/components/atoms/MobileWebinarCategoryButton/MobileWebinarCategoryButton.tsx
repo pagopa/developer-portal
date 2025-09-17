@@ -1,7 +1,7 @@
-import { Box, Button, useTheme } from "@mui/material";
-import IconWrapper from "@/components/atoms/IconWrapper/IconWrapper";
-import { Media } from "@/lib/types/media";
-import React from "react";
+import { Box, Button, useTheme } from '@mui/material';
+import IconWrapper from '@/components/atoms/IconWrapper/IconWrapper';
+import { Media } from '@/lib/types/media';
+import React from 'react';
 
 type MobileWebinarCategoryButtonProps = {
   onClick: () => void;
@@ -20,39 +20,39 @@ const MobileWebinarCategoryButton = ({
 }: MobileWebinarCategoryButtonProps) => {
   const { palette } = useTheme();
   const height = isHeader ? 32 : 64;
-  const paddingLeft = isHeader ? "16px" : "24px";
+  const paddingLeft = isHeader ? '16px' : '24px';
   return (
     <Box
-      width={"100%"}
+      width={'100%'}
       height={height}
-      alignItems={"center"}
-      display={"flex"}
-      justifyContent={"center"}
+      alignItems={'center'}
+      display={'flex'}
+      justifyContent={'center'}
       sx={{
-        borderRadius: "16px",
+        borderRadius: '16px',
       }}
     >
       <Button
         startIcon={<IconWrapper icon={icon.url} useSrc={true} size={32} />}
         disabled={isHeader}
         sx={{
-          justifyContent: "flex-start",
+          justifyContent: 'flex-start',
           paddingLeft: paddingLeft,
-          fontSize: "18px",
-          height: "100%",
-          width: "100%",
+          fontSize: '18px',
+          height: '100%',
+          width: '100%',
           fontWeight: 700,
-          borderBottomLeftRadius: isLast ? "16px" : 0,
-          borderBottomRightRadius: isLast ? "16px" : 0,
+          borderBottomLeftRadius: isLast ? '16px' : 0,
+          borderBottomRightRadius: isLast ? '16px' : 0,
           color: palette.text.primary,
           backgroundColor: palette.background.paper,
-          "&:hover": {
+          '&:hover': {
             backgroundColor: palette.grey[50],
           },
-          "&:disabled": {
+          '&:disabled': {
             fontWeight: 700,
             color: palette.text.primary,
-            borderRadius: "16px",
+            borderRadius: '16px',
             backgroundColor: palette.background.paper,
           },
         }}

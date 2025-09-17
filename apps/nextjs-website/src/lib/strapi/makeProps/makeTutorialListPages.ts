@@ -1,9 +1,9 @@
-import { TutorialsPageProps } from "@/app/[productSlug]/tutorials/page";
-import { Tutorial } from "@/lib/types/tutorialData";
-import { makeBannerLinkProps } from "@/lib/strapi/makeProps/makeBannerLink";
-import { makeBaseProductWithoutLogoProps } from "./makeProducts";
-import { StrapiTutorialListPages } from "@/lib/strapi/types/tutorialsListPage";
-import _ from "lodash";
+import { TutorialsPageProps } from '@/app/[productSlug]/tutorials/page';
+import { Tutorial } from '@/lib/types/tutorialData';
+import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
+import { makeBaseProductWithoutLogoProps } from './makeProducts';
+import { StrapiTutorialListPages } from '@/lib/strapi/types/tutorialsListPage';
+import _ from 'lodash';
 
 export function makeTutorialListPagesProps(
   strapiTutorialList: StrapiTutorialListPages,

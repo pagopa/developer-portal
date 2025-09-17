@@ -1,6 +1,6 @@
-"use client";
-import { Login, Logout, PersonOutline } from "@mui/icons-material";
-import ArrowDropDownOutlinedIcon from "@mui/icons-material/ArrowDropDownOutlined";
+'use client';
+import { Login, Logout, PersonOutline } from '@mui/icons-material';
+import ArrowDropDownOutlinedIcon from '@mui/icons-material/ArrowDropDownOutlined';
 import {
   Stack,
   Typography,
@@ -10,14 +10,14 @@ import {
   ListItemIcon,
   useTheme,
   Link as MuiLink,
-} from "@mui/material";
-import { Auth } from "aws-amplify";
-import React, { FC, useCallback, useState } from "react";
-import { useUser } from "@/helpers/user.helper";
-import Link from "next/link";
-import { useTranslations } from "next-intl";
-import { useRouter, usePathname } from "next/navigation";
-import { flushChatQueriesFromLocalStorage } from "@/helpers/chatbot.helper";
+} from '@mui/material';
+import { Auth } from 'aws-amplify';
+import React, { FC, useCallback, useState } from 'react';
+import { useUser } from '@/helpers/user.helper';
+import Link from 'next/link';
+import { useTranslations } from 'next-intl';
+import { useRouter, usePathname } from 'next/navigation';
+import { flushChatQueriesFromLocalStorage } from '@/helpers/chatbot.helper';
 
 const DesktopUserInfo: FC = () => {
   const t = useTranslations();
@@ -39,11 +39,11 @@ const DesktopUserInfo: FC = () => {
     });
 
     // Check if the user in an auth only page
-    if (["/auth", "/profile"].some((path) => pathname.match(path))) {
-      router.replace("/");
+    if (['/auth', '/profile'].some((path) => pathname.match(path))) {
+      router.replace('/');
     } else {
       // router.refresh(); is not enough beacuse it will not clean current state of components
-      typeof window !== "undefined" && window.location.reload();
+      typeof window !== 'undefined' && window.location.reload();
     }
 
     handleClose();
@@ -56,48 +56,48 @@ const DesktopUserInfo: FC = () => {
   return (
     <Stack
       flexGrow={1}
-      alignItems="center"
-      direction="row"
+      alignItems='center'
+      direction='row'
       gap={{ xs: 0, sm: 1 }}
-      justifyContent="flex-end"
+      justifyContent='flex-end'
     >
       {!user && !loading && (
         <MuiLink
           href={
-            pathname !== "/"
+            pathname !== '/'
               ? `/auth/login?redirect=${btoa(pathname)}`
-              : "/auth/login"
+              : '/auth/login'
           }
           component={Link}
           sx={{
-            display: "flex",
-            alignItems: "center",
-            textDecoration: "none",
+            display: 'flex',
+            alignItems: 'center',
+            textDecoration: 'none',
             color: palette.text.primary,
           }}
         >
           <Typography
-            variant="body1"
+            variant='body1'
             sx={{
-              fontSize: "14px",
+              fontSize: '14px',
               fontWeight: 600,
-              display: { xs: "none", sm: "flex" },
+              display: { xs: 'none', sm: 'flex' },
             }}
           >
-            {t("auth.login.action")}
+            {t('auth.login.action')}
           </Typography>
-          <Login sx={{ marginLeft: "2px", height: 20, width: 18 }} />
+          <Login sx={{ marginLeft: '2px', height: 20, width: 18 }} />
         </MuiLink>
       )}
       {user && (
         <>
           <Stack
-            direction="row"
-            alignItems="center"
-            justifyContent="flex-end"
+            direction='row'
+            alignItems='center'
+            justifyContent='flex-end'
             onClick={handleClick}
             gap={{ xs: 0, sm: 1 }}
-            sx={{ cursor: "pointer" }}
+            sx={{ cursor: 'pointer' }}
           >
             <PersonOutline
               sx={{
@@ -110,15 +110,15 @@ const DesktopUserInfo: FC = () => {
             <Typography
               noWrap
               sx={{
-                maxWidth: "300px",
+                maxWidth: '300px',
                 fontSize: 14,
                 fontWeight: 600,
-                display: "block",
+                display: 'block',
               }}
             >
               {user.attributes.given_name} {user.attributes.family_name}
             </Typography>
-            <IconButton size="small">
+            <IconButton size='small'>
               <ArrowDropDownOutlinedIcon
                 sx={{ width: 24, height: 24 }}
               ></ArrowDropDownOutlinedIcon>
@@ -126,44 +126,44 @@ const DesktopUserInfo: FC = () => {
           </Stack>
           <Menu
             anchorEl={menu}
-            id="account-menu"
+            id='account-menu'
             open={open}
             onClose={handleClose}
             onClick={handleClose}
             anchorOrigin={{
-              vertical: "bottom",
-              horizontal: "right",
+              vertical: 'bottom',
+              horizontal: 'right',
             }}
             transformOrigin={{
-              vertical: "top",
-              horizontal: "right",
+              vertical: 'top',
+              horizontal: 'right',
             }}
             sx={{
-              filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
+              filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
               mt: 1.5,
             }}
           >
             <MenuItem
               onClick={handleClose}
-              sx={{ flexDirection: "column", p: 0 }}
+              sx={{ flexDirection: 'column', p: 0 }}
             >
               <MuiLink
                 component={Link}
-                href="/profile/personal-data"
+                href='/profile/personal-data'
                 sx={{
-                  alignSelf: "stretch",
-                  textDecoration: "none",
+                  alignSelf: 'stretch',
+                  textDecoration: 'none',
                   color: palette.text.primary,
                   p: 2,
                 }}
               >
-                {t("shared.yourData")}
+                {t('shared.yourData')}
               </MuiLink>
             </MenuItem>
             <MenuItem onClick={signOut} sx={{ p: 2 }}>
-              {t("auth.logout")}
+              {t('auth.logout')}
               <ListItemIcon sx={{ ml: 1 }}>
-                <Logout fontSize="small" sx={{ color: palette.text.primary }} />
+                <Logout fontSize='small' sx={{ color: palette.text.primary }} />
               </ListItemIcon>
             </MenuItem>
           </Menu>

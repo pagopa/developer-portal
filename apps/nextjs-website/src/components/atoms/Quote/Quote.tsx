@@ -1,12 +1,12 @@
-import EContainer from "@/editorialComponents/EContainer/EContainer";
-import { Media } from "@/lib/types/media";
-import { FormatQuote } from "@mui/icons-material";
-import { Box, Stack, Typography, useTheme } from "@mui/material";
-import Image from "next/image";
+import EContainer from '@/editorialComponents/EContainer/EContainer';
+import { Media } from '@/lib/types/media';
+import { FormatQuote } from '@mui/icons-material';
+import { Box, Stack, Typography, useTheme } from '@mui/material';
+import Image from 'next/image';
 
 export type QuoteProps = {
   readonly quote: string;
-  readonly color?: "contrastText" | "main" | "light" | "dark";
+  readonly color?: 'contrastText' | 'main' | 'light' | 'dark';
   readonly backgroundImage?: Media;
 };
 
@@ -14,15 +14,15 @@ const Quote = ({
   quote,
   color,
   backgroundImage = {
-    name: "hero-swiper.png",
+    name: 'hero-swiper.png',
     caption: undefined,
     size: 10,
     alternativeText: undefined,
     width: 1920,
     height: 1080,
-    ext: ".png",
-    mime: "image/png",
-    url: "/images/hero-swiper.png",
+    ext: '.png',
+    mime: 'image/png',
+    url: '/images/hero-swiper.png',
   },
 }: QuoteProps) => {
   const { palette } = useTheme();
@@ -31,45 +31,45 @@ const Quote = ({
     : palette.primary.contrastText;
 
   return (
-    <Stack height={{ xs: 468, sm: 560 }} position={"relative"}>
+    <Stack height={{ xs: 468, sm: 560 }} position={'relative'}>
       <EContainer
         containerSx={{
-          margin: "auto 0",
+          margin: 'auto 0',
         }}
       >
         <Stack
-          direction={"column"}
-          justifyContent={"start"}
+          direction={'column'}
+          justifyContent={'start'}
           zIndex={10}
-          sx={{ width: "fit-content", maxWidth: { xs: "100%", lg: "40%" } }}
+          sx={{ width: 'fit-content', maxWidth: { xs: '100%', lg: '40%' } }}
         >
           <FormatQuote
-            fontSize="large"
+            fontSize='large'
             sx={{
               color: palette.grey[300],
-              rotate: "180deg",
-              position: "relative",
-              left: "4px",
-              bottom: "8px",
+              rotate: '180deg',
+              position: 'relative',
+              left: '4px',
+              bottom: '8px',
             }}
           />
-          <Typography color={textColor} variant="h6">
+          <Typography color={textColor} variant='h6'>
             {quote}
           </Typography>
           <FormatQuote
-            fontSize="large"
+            fontSize='large'
             sx={{
               color: palette.grey[300],
-              alignSelf: "flex-end",
-              position: "relative",
-              left: "24px",
+              alignSelf: 'flex-end',
+              position: 'relative',
+              left: '24px',
             }}
           />
         </Stack>
       </EContainer>
-      <Box zIndex={0} position={"absolute"} height={"100%"} width={"100%"}>
+      <Box zIndex={0} position={'absolute'} height={'100%'} width={'100%'}>
         <Image
-          style={{ objectFit: "cover" }}
+          style={{ objectFit: 'cover' }}
           src={backgroundImage.url}
           alt={quote}
           fill={true}

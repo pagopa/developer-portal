@@ -1,7 +1,7 @@
-import Dropdown from "@/components/atoms/Dropdown/Dropdown";
-import { ExpandLess, ExpandMore } from "@mui/icons-material";
-import { useTheme } from "@mui/material";
-import { useTranslations } from "next-intl";
+import Dropdown from '@/components/atoms/Dropdown/Dropdown';
+import { ExpandLess, ExpandMore } from '@mui/icons-material';
+import { useTheme } from '@mui/material';
+import { useTranslations } from 'next-intl';
 
 export type GuideVersionSelectorProps = {
   versionName: string;
@@ -17,7 +17,7 @@ const GuideVersionSelector = ({
 
   return (
     <Dropdown
-      label={`${t("shared.version")} ${versionName}`}
+      label={`${t('shared.version')} ${versionName}`}
       items={versions.map((version) => ({
         href: version.path,
         label: version.name,
@@ -25,21 +25,21 @@ const GuideVersionSelector = ({
       icons={{ opened: <ExpandLess />, closed: <ExpandMore /> }}
       buttonStyle={{
         color: palette.action.active,
-        display: "flex",
-        justifyContent: "space-between",
-        padding: "16px 32px",
+        display: 'flex',
+        justifyContent: 'space-between',
+        padding: '16px 32px',
       }}
       menuStyle={{
         style: {
-          width: "347px",
-          maxWidth: "347px",
+          width: '347px',
+          maxWidth: '347px',
           left: 0,
           right: 0,
         },
       }}
       menuAnchorOrigin={{
-        vertical: "bottom",
-        horizontal: "center",
+        vertical: 'bottom',
+        horizontal: 'center',
       }}
     />
   );

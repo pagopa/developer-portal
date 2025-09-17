@@ -1,7 +1,7 @@
-import { ArrowBack, ArrowForward } from "@mui/icons-material";
-import { Box, Stack, Typography, useTheme } from "@mui/material";
-import { useTranslations } from "next-intl";
-import ChatbotHistoryNavigationLink from "@/components/atoms/ChatbotHistoryNavigationLink/ChatbotHistoryNavigationLink";
+import { ArrowBack, ArrowForward } from '@mui/icons-material';
+import { Box, Stack, Typography, useTheme } from '@mui/material';
+import { useTranslations } from 'next-intl';
+import ChatbotHistoryNavigationLink from '@/components/atoms/ChatbotHistoryNavigationLink/ChatbotHistoryNavigationLink';
 
 export type SessionNavigationData = {
   sessionId: string;
@@ -22,13 +22,13 @@ const ChatbotHistoryNavigationMenu = ({
   const textColor = palette.text.secondary;
 
   return (
-    <Stack direction="row">
+    <Stack direction='row'>
       {previousSession && (
-        <Stack direction="column" spacing={1}>
-          <Typography component="h6" fontSize="0.875rem" color={textColor}>
-            {t("chatBot.previousChat")}
+        <Stack direction='column' spacing={1}>
+          <Typography component='h6' fontSize='0.875rem' color={textColor}>
+            {t('chatBot.previousChat')}
           </Typography>
-          <Stack direction="row" spacing={1}>
+          <Stack direction='row' spacing={1}>
             <ArrowBack sx={{ color: textColor }} />
             <ChatbotHistoryNavigationLink
               sessionId={previousSession.sessionId}
@@ -39,11 +39,11 @@ const ChatbotHistoryNavigationMenu = ({
       )}
       <Box flexGrow={1} />
       {nextSession && (
-        <Stack direction="column" spacing={1}>
-          <Typography component="h6" fontSize="0.875rem" color={textColor}>
-            {t("chatBot.nextChat")}
+        <Stack direction='column' spacing={1}>
+          <Typography component='h6' fontSize='0.875rem' color={textColor}>
+            {t('chatBot.nextChat')}
           </Typography>
-          <Stack direction="row" spacing={1}>
+          <Stack direction='row' spacing={1}>
             <ChatbotHistoryNavigationLink
               sessionId={nextSession.sessionId}
               sessionTitle={nextSession.sessionTitle}

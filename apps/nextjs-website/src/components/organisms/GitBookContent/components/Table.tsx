@@ -1,28 +1,28 @@
-import { styled, useTheme } from "@mui/material/styles";
-import MUITableContainer from "@mui/material/TableContainer";
-import MUITable from "@mui/material/Table";
-import MUITableHead from "@mui/material/TableHead";
-import MUITableBody from "@mui/material/TableBody";
-import MUITableRow from "@mui/material/TableRow";
-import MUITableCell, { TableCellProps } from "@mui/material/TableCell";
-import { Fragment, ReactNode } from "react";
-import { TableProps } from "gitbook-docs/markdoc/schema/table";
-import { Checkbox } from "@mui/material";
+import { styled, useTheme } from '@mui/material/styles';
+import MUITableContainer from '@mui/material/TableContainer';
+import MUITable from '@mui/material/Table';
+import MUITableHead from '@mui/material/TableHead';
+import MUITableBody from '@mui/material/TableBody';
+import MUITableRow from '@mui/material/TableRow';
+import MUITableCell, { TableCellProps } from '@mui/material/TableCell';
+import { Fragment, ReactNode } from 'react';
+import { TableProps } from 'gitbook-docs/markdoc/schema/table';
+import { Checkbox } from '@mui/material';
 
 export const Table = ({ children }: TableProps<ReactNode>) => (
   <MUITableContainer
-    component={"div"}
+    component={'div'}
     sx={{
       maxWidth: {
-        xs: "calc(100vw - 100px)",
-        lg: "calc(100vw - 700px)",
+        xs: 'calc(100vw - 100px)',
+        lg: 'calc(100vw - 700px)',
       },
     }}
   >
     <MUITable
       sx={{
-        borderCollapse: "collapse",
-        borderStyle: "hidden",
+        borderCollapse: 'collapse',
+        borderStyle: 'hidden',
       }}
     >
       {children}
@@ -36,8 +36,8 @@ export const TableHead = styled(MUITableHead)(({ theme }) => ({
 }));
 export const TableBody = styled(MUITableBody)(() => ({
   fontSize: 18,
-  "span.MuiTypography-body1": {
-    fontSize: "1rem !important",
+  'span.MuiTypography-body1': {
+    fontSize: '1rem !important',
   },
 }));
 export const TableR = MUITableRow;
@@ -46,27 +46,27 @@ export const TableH = styled(MUITableCell)(({ theme }) => ({
   border: `1px solid ${theme.palette.divider} !important`,
   fontSize: 18,
   fontWeight: 600,
-  padding: "0.5rem 1rem",
+  padding: '0.5rem 1rem',
 }));
 
 export const TableD = (props: TableCellProps) => {
   const theme = useTheme();
-  if (props.children === "true" || props.children === "false")
+  if (props.children === 'true' || props.children === 'false')
     return (
       <MUITableCell
         sx={{ border: `1px solid ${theme.palette.divider}` }}
         {...props}
       >
-        {props.children === "true" ? (
+        {props.children === 'true' ? (
           <Checkbox
             disabled
             checked
             style={{ color: theme.palette.primary.main }}
           />
-        ) : props.children === "false" ? (
+        ) : props.children === 'false' ? (
           <Checkbox disabled />
         ) : (
-          props.children || ""
+          props.children || ''
         )}
       </MUITableCell>
     );
@@ -75,7 +75,7 @@ export const TableD = (props: TableCellProps) => {
     <MUITableCell
       sx={{
         border: `1px solid ${theme.palette.divider}`,
-        padding: "0.5rem 1rem",
+        padding: '0.5rem 1rem',
       }}
       {...props}
     >

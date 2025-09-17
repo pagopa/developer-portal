@@ -1,9 +1,9 @@
 import {
   InfoCardItem,
   InfoCardItemProps,
-} from "@/components/atoms/InfoCardItem/InfoCardItem";
-import React from "react";
-import EditEmailForm from "@/components/molecules/EditEmailForm/EditEmailForm";
+} from '@/components/atoms/InfoCardItem/InfoCardItem';
+import React from 'react';
+import EditEmailForm from '@/components/molecules/EditEmailForm/EditEmailForm';
 
 type EmailFormWrapperProps = {
   item: InfoCardItemProps;

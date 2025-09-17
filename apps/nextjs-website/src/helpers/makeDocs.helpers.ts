@@ -1,13 +1,13 @@
-import { flow, pipe } from "fp-ts/lib/function";
-import * as E from "fp-ts/lib/Either";
-import * as RA from "fp-ts/lib/ReadonlyArray";
-import { docsAssetsPath, docsPath } from "@/config";
-import { Product } from "@/lib/types/product";
-import { parseDoc } from "gitbook-docs/parseDoc";
-import { BannerLinkProps } from "@/components/atoms/BannerLink/BannerLink";
-import { SolutionTemplateProps } from "@/components/templates/SolutionTemplate/SolutionTemplate";
-import { SEO } from "@/lib/types/seo";
-import { ReleaseNotePageProps } from "@/app/[productSlug]/[...releaseNoteSubPathSlugs]/page";
+import { flow, pipe } from 'fp-ts/lib/function';
+import * as E from 'fp-ts/lib/Either';
+import * as RA from 'fp-ts/lib/ReadonlyArray';
+import { docsAssetsPath, docsPath } from '@/config';
+import { Product } from '@/lib/types/product';
+import { parseDoc } from 'gitbook-docs/parseDoc';
+import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
+import { SolutionTemplateProps } from '@/components/templates/SolutionTemplate/SolutionTemplate';
+import { SEO } from '@/lib/types/seo';
+import { ReleaseNotePageProps } from '@/app/[productSlug]/[...releaseNoteSubPathSlugs]/page';
 
 export type TutorialsDefinition = {
   readonly product: Product;

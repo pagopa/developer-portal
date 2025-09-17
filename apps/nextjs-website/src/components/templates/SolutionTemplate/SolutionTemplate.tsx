@@ -1,23 +1,23 @@
-"use client";
-import React from "react";
-import { Product } from "@/lib/types/product";
-import { useTranslations } from "next-intl";
-import ProductsShowcase from "@/components/organisms/ProductsShowcase/ProductsShowcase";
-import ProductBreadcrumbs from "@/components/atoms/ProductBreadcrumbs/ProductBreadcrumbs";
-import { pageToBreadcrumbs } from "@/helpers/breadcrumbs.helpers";
-import { Box, useTheme } from "@mui/material";
-import { Webinar } from "@/lib/types/webinar";
-import { BannerLinkProps } from "@/components/atoms/BannerLink/BannerLink";
-import SolutionPreviewCard from "@/components/molecules/SolutionPreviewCard/SolutionsPreviewCard";
-import BannerLinks from "@/components/molecules/BannerLinks/BannerLinks";
-import FutureWebinarsShowcase from "@/components/organisms/FutureWebinarsShowcase/FutureWebinarsShowcase";
-import Stats from "@/components/atoms/Stats/Stats";
-import EContainer from "@/editorialComponents/EContainer/EContainer";
-import { BlocksContent } from "@strapi/blocks-react-renderer";
-import { Media } from "@/lib/types/media";
-import NewsShowcase from "@/components/organisms/NewsShowcase/NewsShowcase";
-import { SEO } from "@/lib/types/seo";
-import { isNonEmpty } from "fp-ts/lib/Array";
+'use client';
+import React from 'react';
+import { Product } from '@/lib/types/product';
+import { useTranslations } from 'next-intl';
+import ProductsShowcase from '@/components/organisms/ProductsShowcase/ProductsShowcase';
+import ProductBreadcrumbs from '@/components/atoms/ProductBreadcrumbs/ProductBreadcrumbs';
+import { pageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
+import { Box, useTheme } from '@mui/material';
+import { Webinar } from '@/lib/types/webinar';
+import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
+import SolutionPreviewCard from '@/components/molecules/SolutionPreviewCard/SolutionsPreviewCard';
+import BannerLinks from '@/components/molecules/BannerLinks/BannerLinks';
+import FutureWebinarsShowcase from '@/components/organisms/FutureWebinarsShowcase/FutureWebinarsShowcase';
+import Stats from '@/components/atoms/Stats/Stats';
+import EContainer from '@/editorialComponents/EContainer/EContainer';
+import { BlocksContent } from '@strapi/blocks-react-renderer';
+import { Media } from '@/lib/types/media';
+import NewsShowcase from '@/components/organisms/NewsShowcase/NewsShowcase';
+import { SEO } from '@/lib/types/seo';
+import { isNonEmpty } from 'fp-ts/lib/Array';
 
 export type SolutionTemplateProps = {
   slug: string;
@@ -29,7 +29,7 @@ export type SolutionTemplateProps = {
   steps: {
     title: string;
     content: BlocksContent;
-    products: Pick<Product, "shortName" | "slug">[];
+    products: Pick<Product, 'shortName' | 'slug'>[];
   }[];
   statsSource?: string;
   dirName: string;
@@ -38,7 +38,7 @@ export type SolutionTemplateProps = {
     title: string;
     description?: string;
   }[];
-  products: Pick<Product, "logo" | "slug" | "name" | "description">[];
+  products: Pick<Product, 'logo' | 'slug' | 'name' | 'description'>[];
   webinars: Webinar[];
   bannerLinks: BannerLinkProps[];
   successStories?: {
@@ -85,7 +85,7 @@ const SolutionTemplate = ({
         <Box sx={{ marginBottom: spacing(10) }}>
           <ProductBreadcrumbs
             breadcrumbs={[
-              ...pageToBreadcrumbs("solutions", [
+              ...pageToBreadcrumbs('solutions', [
                 {
                   name: title,
                   path: slug,
@@ -99,9 +99,9 @@ const SolutionTemplate = ({
         <SolutionPreviewCard
           header={kickerTitle}
           title={title}
-          description={introductionToSteps || description || ""}
+          description={introductionToSteps || description || ''}
           cta={{
-            label: t("solution.ctaDetailLabel"),
+            label: t('solution.ctaDetailLabel'),
             href: solutionDetailPath,
           }}
           steps={steps.map((step) => ({
@@ -135,7 +135,7 @@ const SolutionTemplate = ({
             ...story,
             link: {
               url: story.path,
-              text: t("shared.readStory"),
+              text: t('shared.readStory'),
             },
           }))}
         />
@@ -143,20 +143,20 @@ const SolutionTemplate = ({
       {isNonEmpty(webinars) && (
         <FutureWebinarsShowcase
           webinars={webinars}
-          title="dedicatedWebinar"
-          description="solutionDescription"
+          title='dedicatedWebinar'
+          description='solutionDescription'
         />
       )}
       {isNonEmpty(products) && (
         <ProductsShowcase
           cardSize={{ xs: 12, md: 4 }}
           backgroundColor={palette.background.paper}
-          title={t("caseHistory.productShowcaseLabel")}
+          title={t('caseHistory.productShowcaseLabel')}
           cards={products.map((product) => ({
             title: product.name,
-            text: product.description || "",
+            text: product.description || '',
             href: `/${product.slug}/overview`,
-            logoUrl: product.logo?.url || "",
+            logoUrl: product.logo?.url || '',
           }))}
         />
       )}

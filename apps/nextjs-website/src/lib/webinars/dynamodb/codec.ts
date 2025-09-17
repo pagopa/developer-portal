@@ -1,15 +1,15 @@
-import * as t from "io-ts";
-import * as tt from "io-ts-types";
+import * as t from 'io-ts';
+import * as tt from 'io-ts-types';
 import {
   UpdateExpression,
   WebinarQuestion,
   WebinarQuestionUpdate,
-} from "../webinarQuestions";
+} from '../webinarQuestions';
 import {
   QueryCommandInput,
   UpdateItemCommandInput,
-} from "@aws-sdk/client-dynamodb";
-import { WebinarSubscription } from "../webinarSubscriptions";
+} from '@aws-sdk/client-dynamodb';
+import { WebinarSubscription } from '../webinarSubscriptions';
 
 const DynamodbAttrS = t.strict({
   S: t.string,
@@ -45,10 +45,10 @@ export const makeWebinarQuestionListQueryCondition = (
   webinarId: string,
 ): Pick<
   QueryCommandInput,
-  "KeyConditionExpression" | "ExpressionAttributeValues"
+  'KeyConditionExpression' | 'ExpressionAttributeValues'
 > => ({
-  KeyConditionExpression: "webinarId = :webinarId",
-  ExpressionAttributeValues: { ":webinarId": { S: webinarId } },
+  KeyConditionExpression: 'webinarId = :webinarId',
+  ExpressionAttributeValues: { ':webinarId': { S: webinarId } },
 });
 
 export const makeWebinarQuestionFromDynamodbItem = (
@@ -100,7 +100,7 @@ const makeUpdateExpression = (
   expressionList: ReadonlyArray<UpdateExpressionItem>,
 ): Pick<
   UpdateItemCommandInput,
-  "UpdateExpression" | "ExpressionAttributeValues"
+  'UpdateExpression' | 'ExpressionAttributeValues'
 > => {
   // define the initialValue of the reduce function
   const initialValue: {
@@ -109,16 +109,16 @@ const makeUpdateExpression = (
     // the remove command; e.g.: remove fieldName0
     readonly remove?: string;
     // if expressionAttributeValues is empty the system raises a runtime error
-    readonly expressionAttributeValues?: UpdateItemCommandInput["ExpressionAttributeValues"];
+    readonly expressionAttributeValues?: UpdateItemCommandInput['ExpressionAttributeValues'];
   } = {};
   // reduce the list of expression to an object that contains set, remove and
   // ExpressionAttributeValues attribute
   const { set, remove, expressionAttributeValues } = expressionList.reduce(
     (acc, curr) => {
       // handle update operations
-      if (curr.expression?.operation === "update") {
+      if (curr.expression?.operation === 'update') {
         // if set is empty initialize the set command, otherwise append to the existing one
-        const prefix = acc.set ? `${acc.set},` : "set";
+        const prefix = acc.set ? `${acc.set},` : 'set';
         // the syntax is: set fieldName0 = :fieldName0, fieldNameN = :fieldNameN
         const set = `${prefix} ${curr.fieldName} = :${curr.fieldName}`;
         const expressionAttributeValues = {
@@ -128,9 +128,9 @@ const makeUpdateExpression = (
         return { ...acc, set, expressionAttributeValues };
       }
       // handle remove operations
-      else if (curr.expression?.operation === "remove") {
+      else if (curr.expression?.operation === 'remove') {
         // if remove is empty initialize the remove command, otherwise append to the existing one
-        const prefix = acc.remove ? `${acc.remove},` : "remove";
+        const prefix = acc.remove ? `${acc.remove},` : 'remove';
         // the syntax is: remove fieldName0, fieldNameN
         const remove = `${prefix} ${curr.fieldName}`;
         return { ...acc, remove };
@@ -141,17 +141,17 @@ const makeUpdateExpression = (
     initialValue,
   );
   return {
-    UpdateExpression: `${set ?? ""} ${remove ?? ""}`,
+    UpdateExpression: `${set ?? ''} ${remove ?? ''}`,
     ExpressionAttributeValues: expressionAttributeValues,
   };
 };
 
 export const makeDynamodbUpdateFromWebinarQuestionUpdate = (
   input: WebinarQuestionUpdate,
-): Omit<UpdateItemCommandInput, "TableName"> => {
+): Omit<UpdateItemCommandInput, 'TableName'> => {
   const { UpdateExpression, ExpressionAttributeValues } = makeUpdateExpression([
-    { fieldName: "hiddenBy", expression: input.updates.hiddenBy },
-    { fieldName: "highlightedBy", expression: input.updates.highlightedBy },
+    { fieldName: 'hiddenBy', expression: input.updates.hiddenBy },
+    { fieldName: 'highlightedBy', expression: input.updates.highlightedBy },
   ]);
   return {
     Key: {

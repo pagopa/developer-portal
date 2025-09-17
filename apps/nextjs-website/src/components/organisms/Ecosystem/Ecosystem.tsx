@@ -1,12 +1,12 @@
-"use client";
-import React from "react";
-import { Box, useTheme } from "@mui/material";
-import TabComponent from "@/components/atoms/TabComponent/TabComponent";
-import CardsGrid from "@/components/molecules/CardsGrid/CardsGrid";
-import { ButtonNaked } from "@pagopa/mui-italia";
-import Link from "next/link";
-import { HomepageProps } from "@/app/page";
-import SectionTitle from "@/components/molecules/SectionTitle/SectionTitle";
+'use client';
+import React from 'react';
+import { Box, useTheme } from '@mui/material';
+import TabComponent from '@/components/atoms/TabComponent/TabComponent';
+import CardsGrid from '@/components/molecules/CardsGrid/CardsGrid';
+import { ButtonNaked } from '@pagopa/mui-italia';
+import Link from 'next/link';
+import { HomepageProps } from '@/app/page';
+import SectionTitle from '@/components/molecules/SectionTitle/SectionTitle';
 
 const Ecosystem = ({
   title,
@@ -15,15 +15,15 @@ const Ecosystem = ({
   solutionsTabName,
   solutions,
   solutionsCta,
-}: Required<HomepageProps>["ecosystem"]) => {
+}: Required<HomepageProps>['ecosystem']) => {
   const theme = useTheme();
   return (
     <Box pt={10} pb={0} sx={{ backgroundColor: theme.palette.grey[50] }}>
-      {title && <SectionTitle margin={"0 0 1.75rem 0"} title={title} />}
+      {title && <SectionTitle margin={'0 0 1.75rem 0'} title={title} />}
       <Box
         sx={{
-          maxWidth: "1264px",
-          margin: "auto",
+          maxWidth: '1264px',
+          margin: 'auto',
           paddingX: 4,
         }}
       >
@@ -33,13 +33,13 @@ const Ecosystem = ({
               title: productsTabName,
               content: (
                 <CardsGrid
-                  ctaButtonsVariant={"contained"}
+                  ctaButtonsVariant={'contained'}
                   cards={products}
                   containerSx={{
-                    px: "22px",
-                    py: "22px",
-                    mt: "-22px",
-                    mx: "-22px",
+                    px: '22px',
+                    py: '22px',
+                    mt: '-22px',
+                    mx: '-22px',
                   }}
                 />
               ),
@@ -50,25 +50,25 @@ const Ecosystem = ({
                 <>
                   {solutions && (
                     <CardsGrid
-                      ctaButtonsVariant={"contained"}
+                      ctaButtonsVariant={'contained'}
                       cards={solutions}
                       containerSx={{
-                        px: "22px",
-                        py: "22px",
-                        mt: "-22px",
-                        mx: "-22px",
+                        px: '22px',
+                        py: '22px',
+                        mt: '-22px',
+                        mx: '-22px',
                       }}
                     />
                   )}
                   {solutionsCta && (
-                    <Box textAlign={"center"}>
+                    <Box textAlign={'center'}>
                       <ButtonNaked
                         component={Link}
                         href={solutionsCta.link.href}
-                        color={"primary"}
-                        variant={solutionsCta.variant || "contained"}
+                        color={'primary'}
+                        variant={solutionsCta.variant || 'contained'}
                         sx={{ mb: 3 }}
-                        target={solutionsCta.link.target ?? "_self"}
+                        target={solutionsCta.link.target ?? '_self'}
                       >
                         {solutionsCta.link.text}
                       </ButtonNaked>
@@ -78,7 +78,7 @@ const Ecosystem = ({
               ),
             },
           ]}
-          variant="fullWidth"
+          variant='fullWidth'
           centered
           sx={{ px: 0 }}
         />

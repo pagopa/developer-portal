@@ -1,9 +1,9 @@
-import { Stack, Typography } from "@mui/material";
-import { useTranslations } from "next-intl";
-import { OpenAPIV3 } from "openapi-types";
-import { useMemo } from "react";
+import { Stack, Typography } from '@mui/material';
+import { useTranslations } from 'next-intl';
+import { OpenAPIV3 } from 'openapi-types';
+import { useMemo } from 'react';
 
-import { ParameterRow } from "./ParameterRow";
+import { ParameterRow } from './ParameterRow';
 
 const groupBy = (
   acc: Record<string, OpenAPIV3.ParameterObject[]>,
@@ -23,7 +23,7 @@ type ParametersProps = {
 
 // Parameters are grouped into Path, Query, Header, Cookie and Body
 export const Parameters = ({ parameters = [] }: ParametersProps) => {
-  const t = useTranslations("swagger");
+  const t = useTranslations('swagger');
   const [hasParameters, groups] = useMemo(() => {
     if (parameters.length === 0) return [false, []];
 
@@ -39,13 +39,13 @@ export const Parameters = ({ parameters = [] }: ParametersProps) => {
   return (
     <Stack mt={3}>
       <Typography
-        sx={{ fontWeight: "bold", pb: "16px!important" }}
-        variant="body1"
+        sx={{ fontWeight: 'bold', pb: '16px!important' }}
+        variant='body1'
       >
-        {t("parameters.header")}
+        {t('parameters.header')}
       </Typography>
       {isEmpty && (
-        <Typography variant="body2">{t("parameters.empty")}</Typography>
+        <Typography variant='body2'>{t('parameters.empty')}</Typography>
       )}
       {hasParameters &&
         groups.map(([groupKey, parameters]) => (

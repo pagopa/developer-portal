@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import {
   Box,
   Button,
@@ -8,11 +8,11 @@ import {
   Divider,
   Stack,
   Typography,
-} from "@mui/material";
-import Link from "next/link";
-import React, { Fragment } from "react";
-import SolutionStep from "../SolutionStep/SolutionStep";
-import { BlocksContent } from "@strapi/blocks-react-renderer";
+} from '@mui/material';
+import Link from 'next/link';
+import React, { Fragment } from 'react';
+import SolutionStep from '../SolutionStep/SolutionStep';
+import { BlocksContent } from '@strapi/blocks-react-renderer';
 
 export type SolutionPreviewCard = {
   readonly header: string;
@@ -21,7 +21,7 @@ export type SolutionPreviewCard = {
   readonly cta?: {
     readonly label: string;
     readonly href?: string;
-    readonly variant?: "text" | "contained" | "outlined";
+    readonly variant?: 'text' | 'contained' | 'outlined';
   };
   readonly steps?: {
     title: string;
@@ -40,19 +40,19 @@ const SolutionPreviewCard = ({
   return (
     <Card
       sx={{
-        display: "flex",
-        flexDirection: "column",
-        width: "100%",
-        justifyContent: "space-between",
-        height: "100%",
-        boxShadow: "0px 8px 18px 7px rgba(0, 43, 85, 0.1)",
+        display: 'flex',
+        flexDirection: 'column',
+        width: '100%',
+        justifyContent: 'space-between',
+        height: '100%',
+        boxShadow: '0px 8px 18px 7px rgba(0, 43, 85, 0.1)',
       }}
     >
       <CardContent sx={{ padding: 5 }}>
-        <Stack spacing={2} maxWidth="680px">
+        <Stack spacing={2} maxWidth='680px'>
           <Stack spacing={1}>
             <Typography
-              variant="sidenav"
+              variant='sidenav'
               sx={{
                 fontWeight: 700,
                 color: (theme) => theme.palette.action.active,
@@ -60,24 +60,24 @@ const SolutionPreviewCard = ({
             >
               {header}
             </Typography>
-            <Typography variant="h4" sx={{ fontWeight: 700 }}>
+            <Typography variant='h4' sx={{ fontWeight: 700 }}>
               {title}
             </Typography>
           </Stack>
-          <Typography variant="body1">{description}</Typography>
+          <Typography variant='body1'>{description}</Typography>
         </Stack>
         <Box
           mt={5}
-          display="flex"
-          flexDirection={{ xs: "column", lg: "row" }}
+          display='flex'
+          flexDirection={{ xs: 'column', lg: 'row' }}
           gap={3}
-          width="100%"
+          width='100%'
         >
           {steps?.map((step, index) => (
             <Fragment key={index}>
               <SolutionStep {...step} width={`${100 / steps.length}%`} />
               {index !== steps.length - 1 && (
-                <Divider orientation="vertical" flexItem />
+                <Divider orientation='vertical' flexItem />
               )}
             </Fragment>
           ))}
@@ -87,9 +87,9 @@ const SolutionPreviewCard = ({
         {cta && (
           <Button
             href={cta.href}
-            variant={cta.variant || "contained"}
+            variant={cta.variant || 'contained'}
             LinkComponent={Link}
-            size="medium"
+            size='medium'
           >
             {cta.label}
           </Button>

@@ -1,18 +1,18 @@
-"use client";
-import React from "react";
-import { Product } from "@/lib/types/product";
-import { Part } from "@/lib/types/part";
-import PartRenderer from "@/components/molecules/PartRenderer/PartRenderer";
-import { useTranslations } from "next-intl";
+'use client';
+import React from 'react';
+import { Product } from '@/lib/types/product';
+import { Part } from '@/lib/types/part';
+import PartRenderer from '@/components/molecules/PartRenderer/PartRenderer';
+import { useTranslations } from 'next-intl';
 import ProductsShowcase, {
   ProductsShowcaseProps,
-} from "@/components/organisms/ProductsShowcase/ProductsShowcase";
-import ProductBreadcrumbs from "@/components/atoms/ProductBreadcrumbs/ProductBreadcrumbs";
-import { pageToBreadcrumbs } from "@/helpers/breadcrumbs.helpers";
-import { Box, Typography, useTheme } from "@mui/material";
-import EContainer from "@/editorialComponents/EContainer/EContainer";
-import { Media } from "@/lib/types/media";
-import { SEO } from "@/lib/types/seo";
+} from '@/components/organisms/ProductsShowcase/ProductsShowcase';
+import ProductBreadcrumbs from '@/components/atoms/ProductBreadcrumbs/ProductBreadcrumbs';
+import { pageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
+import { Box, Typography, useTheme } from '@mui/material';
+import EContainer from '@/editorialComponents/EContainer/EContainer';
+import { Media } from '@/lib/types/media';
+import { SEO } from '@/lib/types/seo';
 
 export type CaseHistoryPageTemplateProps = {
   slug: string;
@@ -20,7 +20,7 @@ export type CaseHistoryPageTemplateProps = {
   image?: Media;
   updatedAt: string;
   description?: string;
-  products: Pick<Product, "logo" | "slug" | "name" | "description">[];
+  products: Pick<Product, 'logo' | 'slug' | 'name' | 'description'>[];
   parts: Part[];
   seo?: SEO;
 };
@@ -47,15 +47,15 @@ const CaseHistoryPageTemplate = ({
         logoUrl: product.logo?.url,
       };
     })
-    .filter(Boolean) as ProductsShowcaseProps["cards"];
+    .filter(Boolean) as ProductsShowcaseProps['cards'];
 
   return (
     <>
-      <EContainer direction={"column"} sx={{ marginBottom: 12 }}>
+      <EContainer direction={'column'} sx={{ marginBottom: 12 }}>
         <Box sx={{ marginBottom: 10 }}>
           <ProductBreadcrumbs
             breadcrumbs={[
-              ...pageToBreadcrumbs("solutions", [
+              ...pageToBreadcrumbs('solutions', [
                 {
                   name: title,
                   path: slug,
@@ -65,14 +65,14 @@ const CaseHistoryPageTemplate = ({
           />
         </Box>
         <Box>
-          <Typography color={"text.primary"} variant="h4" marginBottom={2}>
+          <Typography color={'text.primary'} variant='h4' marginBottom={2}>
             {title}
           </Typography>
           {description && (
             <Typography
-              component={typeof description === "string" ? "p" : "div"}
-              color={"text.primary"}
-              variant="body1"
+              component={typeof description === 'string' ? 'p' : 'div'}
+              color={'text.primary'}
+              variant='body1'
             >
               {description}
             </Typography>
@@ -80,7 +80,7 @@ const CaseHistoryPageTemplate = ({
         </Box>
       </EContainer>
       {parts.map((part: Part, index: number) =>
-        part.component !== "quote" ? (
+        part.component !== 'quote' ? (
           <EContainer key={index}>
             <PartRenderer part={part} />
           </EContainer>
@@ -95,7 +95,7 @@ const CaseHistoryPageTemplate = ({
           verticalPadding={10}
           cardSize={{ xs: 12, md: 4 }}
           backgroundColor={palette.background.paper}
-          title={t("caseHistory.productShowcaseLabel")}
+          title={t('caseHistory.productShowcaseLabel')}
           cards={cards}
         />
       )}

@@ -1,9 +1,9 @@
-import { EditPasswordForm } from "@/components/organisms/Auth/EditPasswordForm";
+import { EditPasswordForm } from '@/components/organisms/Auth/EditPasswordForm';
 import {
   InfoCardItem,
   InfoCardItemProps,
-} from "@/components/atoms/InfoCardItem/InfoCardItem";
-import React from "react";
+} from '@/components/atoms/InfoCardItem/InfoCardItem';
+import React from 'react';
 
 type PasswordFormWrapperProps = {
   item: InfoCardItemProps;

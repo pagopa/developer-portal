@@ -1,7 +1,7 @@
-import { Check, ThumbDownAlt, ThumbDownAltOutlined } from "@mui/icons-material";
-import { IconButton, Tooltip } from "@mui/material";
-import { useTranslations } from "next-intl";
-import { useState } from "react";
+import { Check, ThumbDownAlt, ThumbDownAltOutlined } from '@mui/icons-material';
+import { IconButton, Tooltip } from '@mui/material';
+import { useTranslations } from 'next-intl';
+import { useState } from 'react';
 
 const TOOLTIP_DURATION = 2000;
 
@@ -30,11 +30,11 @@ const ChatbotFeedbackButton = ({
   return (
     <>
       <IconButton
-        color="primary"
+        color='primary'
         onClick={() => onToggle(!isNegativeFeedbackGiven)}
         disabled={feedbackGiven}
         sx={{
-          cursor: "pointer",
+          cursor: 'pointer',
         }}
       >
         {feedbackGiven ? (
@@ -42,21 +42,21 @@ const ChatbotFeedbackButton = ({
             PopperProps={{
               disablePortal: true,
               sx: {
-                display: "block",
-                whiteSpace: "nowrap",
+                display: 'block',
+                whiteSpace: 'nowrap',
               },
             }}
             open={true}
-            placement="bottom"
-            title={t("chatBot.feedbackGiven")}
+            placement='bottom'
+            title={t('chatBot.feedbackGiven')}
             arrow
           >
-            <Check color="success" fontSize="small" />
+            <Check color='success' fontSize='small' />
           </Tooltip>
         ) : isNegativeFeedbackGiven ? (
-          <ThumbDownAlt fontSize="small" />
+          <ThumbDownAlt fontSize='small' />
         ) : (
-          <ThumbDownAltOutlined fontSize="small" />
+          <ThumbDownAltOutlined fontSize='small' />
         )}
       </IconButton>
     </>

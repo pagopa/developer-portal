@@ -1,5 +1,5 @@
-import { getSoapApiMetadata } from "@/helpers/s3Metadata.helpers";
-import { staticContentsUrl } from "@/config";
+import { getSoapApiMetadata } from '@/helpers/s3Metadata.helpers';
+import { staticContentsUrl } from '@/config';
 
 export async function makeApiSoapUrlList(apiDirName: string) {
   const soapApiMetadata = await getSoapApiMetadata().then((metadata) =>

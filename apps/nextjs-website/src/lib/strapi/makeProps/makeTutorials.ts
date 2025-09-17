@@ -1,13 +1,13 @@
 /* eslint-disable functional/no-expression-statements */
 /* eslint-disable functional/no-try-statements */
-import { Part } from "@/lib/types/part";
-import { Tutorial } from "@/lib/types/tutorialData";
-import { makePartProps } from "@/lib/strapi/makeProps/makePart";
-import { BannerLinkProps } from "@/components/atoms/BannerLink/BannerLink";
-import { RelatedLinksProps } from "@/components/atoms/RelatedLinks/RelatedLinks";
-import { makeBannerLinkProps } from "@/lib/strapi/makeProps/makeBannerLink";
-import { StrapiTutorials } from "@/lib/strapi/types/tutorial";
-import _ from "lodash";
+import { Part } from '@/lib/types/part';
+import { Tutorial } from '@/lib/types/tutorialData';
+import { makePartProps } from '@/lib/strapi/makeProps/makePart';
+import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
+import { RelatedLinksProps } from '@/components/atoms/RelatedLinks/RelatedLinks';
+import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
+import { StrapiTutorials } from '@/lib/strapi/types/tutorial';
+import _ from 'lodash';
 
 export type TutorialProps = Tutorial & {
   readonly productSlug: string;
@@ -40,7 +40,7 @@ export function makeTutorialsProps(
             ? {
                 url: attributes.image.data.attributes.url,
                 alternativeText:
-                  attributes.image.data.attributes.alternativeText || "",
+                  attributes.image.data.attributes.alternativeText || '',
               }
             : undefined,
           title: attributes.title,

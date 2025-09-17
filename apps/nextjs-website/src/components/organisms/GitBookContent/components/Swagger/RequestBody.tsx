@@ -1,12 +1,12 @@
-import { Stack, Typography } from "@mui/material";
-import { useTranslations } from "next-intl";
-import { OpenAPIV3 } from "openapi-types";
+import { Stack, Typography } from '@mui/material';
+import { useTranslations } from 'next-intl';
+import { OpenAPIV3 } from 'openapi-types';
 
-import { SchemaWithExample } from "./SchemaWithExample";
+import { SchemaWithExample } from './SchemaWithExample';
 
 export const RequestBody = ({ content }: OpenAPIV3.RequestBodyObject) => {
-  const t = useTranslations("swagger");
-  const body = content?.["application/json"];
+  const t = useTranslations('swagger');
+  const body = content?.['application/json'];
   const hasDetails = !!body;
 
   if (!hasDetails) {
@@ -17,13 +17,13 @@ export const RequestBody = ({ content }: OpenAPIV3.RequestBodyObject) => {
     <Stack spacing={1} mt={3}>
       <Typography
         sx={{
-          fontWeight: "bold",
-          mt: "8px!important",
-          textTransform: "capitalize",
+          fontWeight: 'bold',
+          mt: '8px!important',
+          textTransform: 'capitalize',
         }}
-        variant="caption-semibold"
+        variant='caption-semibold'
       >
-        {t("requestBody.header")}
+        {t('requestBody.header')}
       </Typography>
       <div>
         <SchemaWithExample {...(body as OpenAPIV3.MediaTypeObject)} />

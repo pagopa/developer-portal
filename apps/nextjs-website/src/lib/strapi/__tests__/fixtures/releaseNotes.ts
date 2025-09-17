@@ -1,24 +1,24 @@
-import { StrapiReleaseNotes } from "@/lib/strapi/types/releaseNotes";
-import { ReleaseNotePageProps } from "@/app/[productSlug]/[...releaseNoteSubPathSlugs]/page";
-import { generateBannerLinks } from "@/lib/strapi/__tests__/factories/bannerLink";
+import { StrapiReleaseNotes } from '@/lib/strapi/types/releaseNotes';
+import { ReleaseNotePageProps } from '@/app/[productSlug]/[...releaseNoteSubPathSlugs]/page';
+import { generateBannerLinks } from '@/lib/strapi/__tests__/factories/bannerLink';
 
-const fixedDateIsoString = new Date("2024-01-01T00:00:00.000Z").toISOString();
+const fixedDateIsoString = new Date('2024-01-01T00:00:00.000Z').toISOString();
 
 export const strapiReleaseNotes: StrapiReleaseNotes = {
   data: [
     {
       id: 1,
       attributes: {
-        dirName: "release-notes-dir",
-        landingFile: "release-notes.md",
-        title: "Release Notes Title",
+        dirName: 'release-notes-dir',
+        landingFile: 'release-notes.md',
+        title: 'Release Notes Title',
         bannerLinks: generateBannerLinks(2),
         product: {
           data: {
             attributes: {
-              name: "Test Product",
-              slug: "test-product",
-              shortName: "TP",
+              name: 'Test Product',
+              slug: 'test-product',
+              shortName: 'TP',
               bannerLinks: generateBannerLinks(1),
               overview: { data: { id: 0 } },
               quickstart_guide: { data: { id: 0 } },
@@ -30,8 +30,8 @@ export const strapiReleaseNotes: StrapiReleaseNotes = {
           },
         },
         seo: {
-          metaTitle: "Release Notes SEO Title",
-          metaDescription: "Release Notes SEO Description",
+          metaTitle: 'Release Notes SEO Title',
+          metaDescription: 'Release Notes SEO Description',
         },
         publishedAt: fixedDateIsoString,
         updatedAt: fixedDateIsoString,
@@ -52,55 +52,55 @@ export const strapiReleaseNotes: StrapiReleaseNotes = {
 export const expectedReleaseNotePageProps: ReleaseNotePageProps = {
   bannerLinks: [
     {
-      title: "Banner Link 1",
+      title: 'Banner Link 1',
       icon: {
-        url: "https://example.com/example.jpg",
-        alternativeText: "Example Image",
-        name: "example.jpg",
-        ext: ".jpg",
-        mime: "image/jpeg",
+        url: 'https://example.com/example.jpg',
+        alternativeText: 'Example Image',
+        name: 'example.jpg',
+        ext: '.jpg',
+        mime: 'image/jpeg',
         size: 123456,
       },
-      theme: "light",
+      theme: 'light',
     },
     {
-      title: "Banner Link 2",
+      title: 'Banner Link 2',
       icon: {
-        url: "https://example.com/example.jpg",
-        alternativeText: "Example Image",
-        name: "example.jpg",
-        ext: ".jpg",
-        mime: "image/jpeg",
+        url: 'https://example.com/example.jpg',
+        alternativeText: 'Example Image',
+        name: 'example.jpg',
+        ext: '.jpg',
+        mime: 'image/jpeg',
         size: 123456,
       },
-      theme: "light",
+      theme: 'light',
     },
   ],
-  dirName: "release-notes-dir",
-  landingFile: "release-notes.md",
-  path: "/test-product/release-note",
+  dirName: 'release-notes-dir',
+  landingFile: 'release-notes.md',
+  path: '/test-product/release-note',
   product: {
-    name: "Test Product",
-    slug: "test-product",
-    shortName: "TP",
+    name: 'Test Product',
+    slug: 'test-product',
+    shortName: 'TP',
     bannerLinks: [
       {
-        title: "Banner Link 1",
+        title: 'Banner Link 1',
         icon: {
-          url: "https://example.com/example.jpg",
-          alternativeText: "Example Image",
-          name: "example.jpg",
-          ext: ".jpg",
-          mime: "image/jpeg",
+          url: 'https://example.com/example.jpg',
+          alternativeText: 'Example Image',
+          name: 'example.jpg',
+          ext: '.jpg',
+          mime: 'image/jpeg',
           size: 123456,
         },
-        theme: "light",
+        theme: 'light',
       },
     ],
   },
   seo: {
-    metaTitle: "Release Notes SEO Title",
-    metaDescription: "Release Notes SEO Description",
+    metaTitle: 'Release Notes SEO Title',
+    metaDescription: 'Release Notes SEO Description',
   },
-  title: "Release Notes Title",
+  title: 'Release Notes Title',
 };

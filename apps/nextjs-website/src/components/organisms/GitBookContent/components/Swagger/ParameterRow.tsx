@@ -1,7 +1,7 @@
-import { Stack, Typography } from "@mui/material";
-import { OpenAPIV3 } from "openapi-types";
+import { Stack, Typography } from '@mui/material';
+import { OpenAPIV3 } from 'openapi-types';
 
-import { Parameter } from "./Parameter";
+import { Parameter } from './Parameter';
 
 type ParameterRowProps = {
   title: string;
@@ -13,11 +13,11 @@ export const ParameterRow = ({ title, parameters }: ParameterRowProps) => {
     <Stack spacing={1}>
       <Typography
         sx={{
-          fontWeight: "bold",
-          mt: "8px!important",
-          textTransform: "capitalize",
+          fontWeight: 'bold',
+          mt: '8px!important',
+          textTransform: 'capitalize',
         }}
-        variant="caption-semibold"
+        variant='caption-semibold'
       >
         {title}
       </Typography>

@@ -1,7 +1,7 @@
-import { Stack, Typography, useTheme } from "@mui/material";
-import { defaultLocale } from "@/config";
-import IconWrapper from "@/components/atoms/IconWrapper/IconWrapper";
-import { parseChatMessage } from "@/helpers/chatMessageParser.helper";
+import { Stack, Typography, useTheme } from '@mui/material';
+import { defaultLocale } from '@/config';
+import IconWrapper from '@/components/atoms/IconWrapper/IconWrapper';
+import { parseChatMessage } from '@/helpers/chatMessageParser.helper';
 
 type DateFormatOptions = {
   locale?: string;
@@ -11,8 +11,8 @@ type DateFormatOptions = {
 const DEFAULT_DATE_FORMAT = {
   locale: defaultLocale,
   options: {
-    timeStyle: "short",
-    hourCycle: "h23",
+    timeStyle: 'short',
+    hourCycle: 'h23',
   },
 } satisfies DateFormatOptions;
 
@@ -42,38 +42,38 @@ const ChatHistoryMessage = ({
     ).format(new Date(timestamp));
 
   return (
-    <Stack direction="column" width="100%" spacing={1}>
+    <Stack direction='column' width='100%' spacing={1}>
       <Stack
-        direction={"row"}
-        margin={{ xs: "1rem 1rem 0.5rem 1rem" }}
-        alignItems="center"
+        direction={'row'}
+        margin={{ xs: '1rem 1rem 0.5rem 1rem' }}
+        alignItems='center'
         spacing={1}
       >
         {isQuestion ? (
           <IconWrapper
-            icon={"/icons/chatbotChatUserBorder.svg"}
+            icon={'/icons/chatbotChatUserBorder.svg'}
             useSrc={true}
             color={palette.text.secondary}
             size={iconSize}
-            sx={{ overflow: "visible" }}
+            sx={{ overflow: 'visible' }}
           />
         ) : (
           <IconWrapper
-            icon={"/icons/chatbotChatAvatar.svg"}
+            icon={'/icons/chatbotChatAvatar.svg'}
             useSrc={true}
             color={palette.text.secondary}
             size={iconSize}
-            sx={{ overflow: "visible" }}
+            sx={{ overflow: 'visible' }}
           />
         )}
         <Typography
           color={textColor}
-          component="span"
-          minWidth="12rem"
+          component='span'
+          minWidth='12rem'
           fontWeight={600}
           sx={{
-            fontSize: { xs: "1rem", xl: "1.125rem" },
-            overflowWrap: "break-word",
+            fontSize: { xs: '1rem', xl: '1.125rem' },
+            overflowWrap: 'break-word',
           }}
         >
           {sender}
@@ -81,9 +81,9 @@ const ChatHistoryMessage = ({
         {timeLabel && (
           <Typography
             color={textColor}
-            component={"span"}
+            component={'span'}
             marginLeft={1}
-            sx={{ fontSize: { xs: "0.75rem", xl: "0.875rem" } }}
+            sx={{ fontSize: { xs: '0.75rem', xl: '0.875rem' } }}
           >
             {timeLabel}
           </Typography>
@@ -91,13 +91,13 @@ const ChatHistoryMessage = ({
       </Stack>
       <Typography
         color={textColor}
-        component={"div"}
-        marginLeft={"1rem"}
+        component={'div'}
+        marginLeft={'1rem'}
         paragraph
-        width={"100%"}
+        width={'100%'}
         sx={{
-          fontSize: { xs: "0.875rem", xl: "1rem" },
-          overflowWrap: "break-word",
+          fontSize: { xs: '0.875rem', xl: '1rem' },
+          overflowWrap: 'break-word',
         }}
       >
         {parsedChatMessage}

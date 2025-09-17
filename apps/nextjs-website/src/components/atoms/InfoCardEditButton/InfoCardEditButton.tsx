@@ -1,23 +1,23 @@
-"use client";
-import { useTranslations } from "next-intl";
-import EditIcon from "@mui/icons-material/Edit";
-import { ButtonNaked } from "@pagopa/mui-italia";
+'use client';
+import { useTranslations } from 'next-intl';
+import EditIcon from '@mui/icons-material/Edit';
+import { ButtonNaked } from '@pagopa/mui-italia';
 
 type InforCardEditButtonProps = {
   onClick?: () => void;
 };
 
 const InfoCardEditButton = ({ onClick }: InforCardEditButtonProps) => {
-  const t = useTranslations("shared");
+  const t = useTranslations('shared');
 
   return (
     <ButtonNaked
       onClick={onClick}
-      color="primary"
+      color='primary'
       sx={{ paddingLeft: 0, paddingRight: 0 }}
       endIcon={<EditIcon sx={{ height: 30 }} />}
     >
-      {t("edit")}
+      {t('edit')}
     </ButtonNaked>
   );
 };

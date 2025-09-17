@@ -1,20 +1,20 @@
 import ChatMessage, {
   Message,
-} from "@/components/atoms/ChatMessage/ChatMessage";
-import { Box, Button, Paper, Stack, useTheme } from "@mui/material";
-import ChatInputText from "@/components/atoms/ChatInputText/ChatInputText";
-import React, { useEffect, useMemo, useRef, useState } from "react";
-import { History } from "@mui/icons-material";
-import { Query } from "@/lib/chatbot/queries";
-import { compact } from "lodash";
-import { useTranslations } from "next-intl";
-import { ChatbotWriting } from "@/components/atoms/ChatbotWriting/ChatbotWriting";
-import { ChatSkeleton } from "@/components/atoms/ChatSkeleton/ChatSkeleton";
-import { useUser } from "@/helpers/user.helper";
-import { baseUrl, isFeedbackFormEnabled } from "@/config";
-import AlertPart from "@/components/atoms/AlertPart/AlertPart";
-import { ChatbotErrorsType } from "@/helpers/chatbot.helper";
-import ChatbotFeedbackForm from "@/components/molecules/ChatbotFeedbackForm/ChatbotFeedbackForm";
+} from '@/components/atoms/ChatMessage/ChatMessage';
+import { Box, Button, Paper, Stack, useTheme } from '@mui/material';
+import ChatInputText from '@/components/atoms/ChatInputText/ChatInputText';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { History } from '@mui/icons-material';
+import { Query } from '@/lib/chatbot/queries';
+import { compact } from 'lodash';
+import { useTranslations } from 'next-intl';
+import { ChatbotWriting } from '@/components/atoms/ChatbotWriting/ChatbotWriting';
+import { ChatSkeleton } from '@/components/atoms/ChatSkeleton/ChatSkeleton';
+import { useUser } from '@/helpers/user.helper';
+import { baseUrl, isFeedbackFormEnabled } from '@/config';
+import AlertPart from '@/components/atoms/AlertPart/AlertPart';
+import { ChatbotErrorsType } from '@/helpers/chatbot.helper';
+import ChatbotFeedbackForm from '@/components/molecules/ChatbotFeedbackForm/ChatbotFeedbackForm';
 
 type ChatProps = {
   queries: Query[];
@@ -50,15 +50,15 @@ const Chat = ({
   const { palette } = useTheme();
   const [instantScroll, setInstantScroll] = useState(scrollToBottom);
   const { user } = useUser();
-  const [sessionId, setSessionId] = useState<string>("");
-  const [id, setId] = useState<string>("");
+  const [sessionId, setSessionId] = useState<string>('');
+  const [id, setId] = useState<string>('');
   const [isFeedbackFormVisible, setIsFeedbackFormVisible] = useState(false);
   const messages = useMemo(
     () => [
       firstMessage(
         user
-          ? t("chatBot.welcomeMessage")
-          : t("chatBot.guestMessage", { host: baseUrl }),
+          ? t('chatBot.welcomeMessage')
+          : t('chatBot.guestMessage', { host: baseUrl }),
         mustFillFeedbackForm,
       ),
       ...compact(
@@ -99,7 +99,7 @@ const Chat = ({
       setQueriesCount(messages.length);
       if (scrollRef.current) {
         scrollRef.current.scrollIntoView({
-          behavior: instantScroll ? "auto" : "smooth",
+          behavior: instantScroll ? 'auto' : 'smooth',
         });
       }
     }
@@ -112,20 +112,20 @@ const Chat = ({
         <Box
           sx={{
             backgroundColor: palette.background.paper,
-            borderBottom: "2px solid",
+            borderBottom: '2px solid',
             borderBottomColor: palette.action.disabled,
-            width: "auto",
+            width: 'auto',
           }}
         >
-          <Stack direction={"row"} paddingY={"0.25rem"}>
+          <Stack direction={'row'} paddingY={'0.25rem'}>
             <Button
-              href="/profile/chatbot-history"
-              size="small"
-              sx={{ margin: "0.4rem", paddingX: "0.4rem" }}
+              href='/profile/chatbot-history'
+              size='small'
+              sx={{ margin: '0.4rem', paddingX: '0.4rem' }}
             >
-              <History fontSize="small" />
-              <span style={{ fontSize: "1rem", marginLeft: "0.5rem" }}>
-                {t("chatBot.history")}
+              <History fontSize='small' />
+              <span style={{ fontSize: '1rem', marginLeft: '0.5rem' }}>
+                {t('chatBot.history')}
               </span>
             </Button>
           </Stack>
@@ -150,13 +150,13 @@ const Chat = ({
       )}
       <>
         <Stack
-          direction={"column"}
+          direction={'column'}
           sx={{
-            overflow: "auto",
-            paddingRight: "0.5rem",
+            overflow: 'auto',
+            paddingRight: '0.5rem',
             paddingX: { xs: 1, md: 4 },
             backgroundColor: palette.background.paper,
-            height: isFeedbackFormVisible ? 0 : "100%",
+            height: isFeedbackFormVisible ? 0 : '100%',
           }}
         >
           {!messages.length && !areChatbotQueriesLoaded && <ChatSkeleton />}
@@ -164,9 +164,9 @@ const Chat = ({
             <Stack
               key={index}
               ref={index === messages.length - 1 ? scrollRef : null}
-              direction="row"
-              width="100%"
-              justifyContent={message.isQuestion ? "flex-end" : "flex-start"}
+              direction='row'
+              width='100%'
+              justifyContent={message.isQuestion ? 'flex-end' : 'flex-start'}
               marginTop={index === 0 ? 2 : 0}
               marginBottom={2}
             >
@@ -185,7 +185,7 @@ const Chat = ({
                       message.id,
                       null,
                       null,
-                      "",
+                      '',
                     );
                   }
                   return null;
@@ -197,12 +197,12 @@ const Chat = ({
           {error && (
             <Paper
               elevation={4}
-              sx={{ marginBottom: "1rem", height: "auto", marginTop: "1rem" }}
+              sx={{ marginBottom: '1rem', height: 'auto', marginTop: '1rem' }}
             >
               <AlertPart
-                title={t("chatBot.errors.title")}
+                title={t('chatBot.errors.title')}
                 text={t(`chatBot.errors.${error}`)}
-                severity={"error"}
+                severity={'error'}
                 alertStyle={{
                   backgroundColor: palette.background.paper,
                   marginBottom: 0,
@@ -226,10 +226,10 @@ export default Chat;
 
 function firstMessage(text: string, mustFillFeedbackForm: boolean): Message {
   return {
-    id: "",
+    id: '',
     text: text,
     isQuestion: false,
-    sessionId: "",
+    sessionId: '',
     hasNegativeFeedback: false,
     mustFillFeedbackForm: mustFillFeedbackForm,
   };

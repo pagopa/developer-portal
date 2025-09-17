@@ -1,16 +1,16 @@
-import * as qs from "qs";
-import { fetchFromStrapi } from "@/lib/strapi/fetchFromStrapi";
-import { productRelationsPopulate } from "./fetchProducts";
-import { StrapiGuides } from "@/lib/strapi/types/guide";
+import * as qs from 'qs';
+import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
+import { productRelationsPopulate } from './fetchProducts';
+import { StrapiGuides } from '@/lib/strapi/types/guide';
 
 const guidesPopulate = {
   populate: {
-    image: { populate: "*" },
-    mobileImage: { populate: "*" },
-    listItems: { populate: "*" },
-    versions: { populate: "*" },
-    bannerLinks: { populate: ["icon"] },
-    seo: { populate: "metaSocial.image" },
+    image: { populate: '*' },
+    mobileImage: { populate: '*' },
+    listItems: { populate: '*' },
+    versions: { populate: '*' },
+    bannerLinks: { populate: ['icon'] },
+    seo: { populate: 'metaSocial.image' },
     product: {
       ...productRelationsPopulate,
     },
@@ -23,7 +23,7 @@ const makeStrapiGuidesPopulate = () =>
   });
 
 export const fetchGuides = fetchFromStrapi<StrapiGuides>(
-  "guides",
+  'guides',
   makeStrapiGuidesPopulate(),
 );
 
@@ -40,6 +40,6 @@ const makeStrapiGuidePopulate = (guideSlug: string, productSlug: string) =>
 
 export const fetchGuide = (guideSlug: string, productSlug: string) =>
   fetchFromStrapi<StrapiGuides>(
-    "guides",
+    'guides',
     makeStrapiGuidePopulate(guideSlug, productSlug),
   );

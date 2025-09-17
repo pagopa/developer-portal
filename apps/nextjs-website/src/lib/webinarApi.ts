@@ -1,23 +1,23 @@
 // This file contains application logic adapted to be easily integrated by pages
 // or components within the app and components folders, e.g.: provide a valid
 // application environment (AppEnv) and transform TaskEither to Promise
-import { pipe } from "fp-ts/function";
-import * as E from "fp-ts/Either";
-import * as TE from "fp-ts/TaskEither";
-import { makeBrowserEnv } from "@/BrowserEnv";
+import { pipe } from 'fp-ts/function';
+import * as E from 'fp-ts/Either';
+import * as TE from 'fp-ts/TaskEither';
+import { makeBrowserEnv } from '@/BrowserEnv';
 import {
   InsertWebinarQuestion,
   WebinarQuestionUpdate,
   insertWebinarQuestion,
   listWebinarQuestions,
   updateWebinarQuestion as _updateWebinarQuestion,
-} from "./webinars/webinarQuestions";
-import { makeBrowserConfig, publicEnv } from "@/BrowserConfig";
+} from './webinars/webinarQuestions';
+import { makeBrowserConfig, publicEnv } from '@/BrowserConfig';
 import {
   deleteWebinarSubscription,
   insertWebinarSubscription,
   listUserWebinarSubscriptions,
-} from "./webinars/webinarSubscriptions";
+} from './webinars/webinarSubscriptions';
 
 // a BrowserEnv instance ready to be used
 const browserEnv = pipe(

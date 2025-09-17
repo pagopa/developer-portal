@@ -1,8 +1,8 @@
-import { WebinarEnv } from "./lib/webinars/webinarQuestions";
-import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
-import { makeAwsCredentialsFromCognito } from "./lib/makeAwsCredentialsFromCognito";
-import { Auth } from "aws-amplify";
-import { BrowserConfig } from "@/BrowserConfig";
+import { WebinarEnv } from './lib/webinars/webinarQuestions';
+import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
+import { makeAwsCredentialsFromCognito } from './lib/makeAwsCredentialsFromCognito';
+import { Auth } from 'aws-amplify';
+import { BrowserConfig } from '@/BrowserConfig';
 
 // This type represents the environment of the browser.
 // Contains all dependencies required to run the application on the browser.

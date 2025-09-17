@@ -1,10 +1,10 @@
-"use client";
-import React from "react";
-import { Box, Grid, GridSize, SxProps, useTheme } from "@mui/material";
-import EContainer from "@/editorialComponents/EContainer/EContainer";
-import CtaCard from "@/components/atoms/CtaCard/CtaCard";
-import IconWrapper from "@/components/atoms/IconWrapper/IconWrapper";
-import { useTranslations } from "next-intl";
+'use client';
+import React from 'react';
+import { Box, Grid, GridSize, SxProps, useTheme } from '@mui/material';
+import EContainer from '@/editorialComponents/EContainer/EContainer';
+import CtaCard from '@/components/atoms/CtaCard/CtaCard';
+import IconWrapper from '@/components/atoms/IconWrapper/IconWrapper';
+import { useTranslations } from 'next-intl';
 
 export type CardsGridProps = {
   cardSize?: {
@@ -12,9 +12,9 @@ export type CardsGridProps = {
     md: boolean | GridSize;
   };
   containerSx?: SxProps;
-  ctaButtonsVariant?: "text" | "contained" | "outlined";
+  ctaButtonsVariant?: 'text' | 'contained' | 'outlined';
   cards: {
-    target?: "_blank" | "_self" | "_parent" | "_top";
+    target?: '_blank' | '_self' | '_parent' | '_top';
     comingSoon?: boolean;
     title: string;
     text: string;
@@ -34,11 +34,11 @@ const CardsGrid = ({
   ctaButtonsVariant,
 }: CardsGridProps) => {
   const { palette } = useTheme();
-  const t = useTranslations("shared");
+  const t = useTranslations('shared');
 
   return (
     <EContainer containerSx={containerSx}>
-      <Box pb={4} width={"100%"}>
+      <Box pb={4} width={'100%'}>
         <Grid container spacing={3}>
           {cards.map(
             (
@@ -69,10 +69,10 @@ const CardsGrid = ({
                     title={title}
                     text={text}
                     cta={{
-                      target: target || "_self",
+                      target: target || '_self',
                       label: ctaLabel
                         ? ctaLabel
-                        : t(comingSoon ? "comingSoon" : "moreInfo"),
+                        : t(comingSoon ? 'comingSoon' : 'moreInfo'),
                       href,
                       variant: ctaButtonsVariant,
                     }}

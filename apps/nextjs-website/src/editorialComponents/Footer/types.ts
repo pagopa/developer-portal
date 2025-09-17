@@ -1,7 +1,7 @@
-import * as t from "io-ts";
-import { IconWrapperProps } from "@/components/atoms/IconWrapper/IconWrapper";
+import * as t from 'io-ts';
+import { IconWrapperProps } from '@/components/atoms/IconWrapper/IconWrapper';
 
-export type LinkType = "internal" | "external";
+export type LinkType = 'internal' | 'external';
 export type FooterColumnIcon = IconWrapperProps & { readonly href: string };
 
 export interface FooterLinksType {
@@ -41,15 +41,15 @@ export interface CompanyLinkType {
 }
 
 export class EnumType<A> extends t.Type<A> {
-  public readonly _tag = "EnumType" as const;
+  public readonly _tag = 'EnumType' as const;
   public readonly enumObject!: object;
   public constructor(e: object, name?: string) {
     // eslint-disable-next-line functional/no-expression-statements
     super(
-      name ?? "enum",
+      name ?? 'enum',
       (u): u is A =>
         Object.values(this.enumObject).includes(u) &&
-        typeof (this.enumObject as never)[u as string] !== "number",
+        typeof (this.enumObject as never)[u as string] !== 'number',
 
       (u, c) => (this.is(u) ? t.success(u) : t.failure(u, c)),
       t.identity,

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { strapiProducts } from "@/lib/strapi/__tests__/fixtures/products";
-import { StrapiProducts } from "@/lib/strapi/types/product";
+import { strapiProducts } from '@/lib/strapi/__tests__/fixtures/products';
+import { StrapiProducts } from '@/lib/strapi/types/product';
 
 export function minimalProduct() {
   const strapiProduct = strapiProducts.data[0];
@@ -11,9 +11,9 @@ export function minimalProduct() {
         ...strapiProduct,
         attributes: {
           ...strapiProduct.attributes,
-          name: "Minimal Product",
-          slug: "minimal-product",
-          shortName: "MP",
+          name: 'Minimal Product',
+          slug: 'minimal-product',
+          shortName: 'MP',
           description: undefined,
           logo: {
             data: strapiProduct.attributes.logo.data,
@@ -40,8 +40,8 @@ export function productsWithAnItemWithEmptySlug() {
         ...strapiProduct,
         attributes: {
           ...strapiProduct.attributes,
-          name: "Product Without Slug",
-          slug: "",
+          name: 'Product Without Slug',
+          slug: '',
         },
       },
     ],
@@ -57,7 +57,7 @@ export function productsWithAnItemMissingSlug() {
         ...strapiProduct,
         attributes: {
           ...strapiProduct.attributes,
-          name: "Product Without Slug",
+          name: 'Product Without Slug',
           slug: undefined as any,
         },
       },
@@ -83,7 +83,7 @@ export function productWithMultipleApiData() {
                     {
                       attributes: {
                         apiRestDetail: {
-                          slug: "api-detail-1",
+                          slug: 'api-detail-1',
                           specUrls: [],
                         },
                       },
@@ -91,7 +91,7 @@ export function productWithMultipleApiData() {
                     {
                       attributes: {
                         apiRestDetail: {
-                          slug: "api-detail-2",
+                          slug: 'api-detail-2',
                           specUrls: [],
                         },
                       },
@@ -142,7 +142,7 @@ export function productWithCorruptedData() {
         attributes: {
           ...strapiProduct.attributes,
           api_data_list_page: undefined as any,
-          name: "Corrupted Product",
+          name: 'Corrupted Product',
         },
       },
     ],
@@ -162,8 +162,8 @@ export function mixedValidAndInvalidProducts() {
         ...validProduct,
         attributes: {
           ...validProduct.attributes,
-          name: "Another Valid Product",
-          slug: "another-valid-product",
+          name: 'Another Valid Product',
+          slug: 'another-valid-product',
         },
       },
     ],

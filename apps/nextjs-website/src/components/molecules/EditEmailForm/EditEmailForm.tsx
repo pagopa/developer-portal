@@ -1,12 +1,12 @@
-import { ButtonNaked } from "@pagopa/mui-italia";
-import { Stack, Typography } from "@mui/material";
-import { useCallback, useState } from "react";
+import { ButtonNaked } from '@pagopa/mui-italia';
+import { Stack, Typography } from '@mui/material';
+import { useCallback, useState } from 'react';
 
-import { useTranslations } from "next-intl";
-import { emailMatcher } from "@/helpers/auth.helpers";
+import { useTranslations } from 'next-intl';
+import { emailMatcher } from '@/helpers/auth.helpers';
 import RequiredTextField, {
   ValidatorFunction,
-} from "@/components/molecules/RequiredTextField/RequiredTextField";
+} from '@/components/molecules/RequiredTextField/RequiredTextField';
 
 type EditEmailFormProps = {
   onSave: (email: string) => Promise<void>;
@@ -19,17 +19,17 @@ type FormSchema = {
 };
 
 const EditEmailForm = ({ onSave, onCancel }: EditEmailFormProps) => {
-  const t = useTranslations("profile");
+  const t = useTranslations('profile');
 
   const [errors, setErrors] = useState<Partial<FormSchema>>({});
   const [formValue, setFormValue] = useState<FormSchema>({
-    email: "",
+    email: '',
   });
 
   const emailValidators: ValidatorFunction[] = [
     (value: string) => ({
       valid: emailMatcher.test(value),
-      error: t("changeEmail.wrongEmail"),
+      error: t('changeEmail.wrongEmail'),
     }),
   ];
 
@@ -39,7 +39,7 @@ const EditEmailForm = ({ onSave, onCancel }: EditEmailFormProps) => {
     let err = {};
 
     if (!emailMatcher.test(email)) {
-      err = { ...err, email: t("changeEmail.wrongEmail") };
+      err = { ...err, email: t('changeEmail.wrongEmail') };
     }
 
     setErrors(err);
@@ -58,8 +58,8 @@ const EditEmailForm = ({ onSave, onCancel }: EditEmailFormProps) => {
   const handleSave = () => {
     if (!validateForm()) return;
     onSave(formValue.email).catch((error) => {
-      if (error.code === "NotAuthorizedException") {
-        setErrors({ email: t("changeEmail.notAuthorizedException") });
+      if (error.code === 'NotAuthorizedException') {
+        setErrors({ email: t('changeEmail.notAuthorizedException') });
       } else {
         console.error(error);
       }
@@ -69,14 +69,14 @@ const EditEmailForm = ({ onSave, onCancel }: EditEmailFormProps) => {
   const actions = (
     <>
       <ButtonNaked
-        color="primary"
+        color='primary'
         sx={{ paddingLeft: 0, paddingRight: 0 }}
         onClick={onCancel}
       >
-        {t("changeEmail.cancel")}
+        {t('changeEmail.cancel')}
       </ButtonNaked>
-      <ButtonNaked variant="contained" color="primary" onClick={handleSave}>
-        {t("changeEmail.save")}
+      <ButtonNaked variant='contained' color='primary' onClick={handleSave}>
+        {t('changeEmail.save')}
       </ButtonNaked>
     </>
   );
@@ -84,35 +84,35 @@ const EditEmailForm = ({ onSave, onCancel }: EditEmailFormProps) => {
   return (
     <Stack gap={3}>
       <Stack
-        alignItems={{ xs: "flex-start", md: "center" }}
-        flexDirection={{ xs: "column", md: "row" }}
+        alignItems={{ xs: 'flex-start', md: 'center' }}
+        flexDirection={{ xs: 'column', md: 'row' }}
         gap={2}
         mt={{ xs: 1, md: 3 }}
       >
         <Typography
-          variant="body2"
+          variant='body2'
           flexGrow={1}
           fontSize={16}
-          minWidth={{ xs: "auto", md: "170px" }}
+          minWidth={{ xs: 'auto', md: '170px' }}
         >
-          {t("changeEmail.title")}
+          {t('changeEmail.title')}
         </Typography>
-        <Stack flexDirection="row" gap={4} display={{ xs: "none", md: "flex" }}>
+        <Stack flexDirection='row' gap={4} display={{ xs: 'none', md: 'flex' }}>
           {actions}
         </Stack>
       </Stack>
       <RequiredTextField
-        label={t("personalData.fields.email")}
+        label={t('personalData.fields.email')}
         value={formValue.email}
         onChange={handleEmailChange}
-        helperText={t("changeEmail.wrongEmail")}
+        helperText={t('changeEmail.wrongEmail')}
         customValidators={emailValidators}
         sx={{ marginBottom: { xs: 0, md: 3 } }}
       />
       <Stack
-        flexDirection="row"
+        flexDirection='row'
         gap={4}
-        display={{ xs: "flex", md: "none" }}
+        display={{ xs: 'flex', md: 'none' }}
         sx={{ marginBottom: { xs: 3, md: 0 } }}
       >
         {actions}

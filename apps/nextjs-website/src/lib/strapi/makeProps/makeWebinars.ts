@@ -1,6 +1,6 @@
-import { Webinar } from "../../types/webinar";
-import { StrapiWebinar, StrapiWebinars } from "@/lib/strapi/types/webinars";
-import _ from "lodash";
+import { Webinar } from '../../types/webinar';
+import { StrapiWebinar, StrapiWebinars } from '@/lib/strapi/types/webinars';
+import _ from 'lodash';
 
 export type WebinarsProps = readonly Webinar[];
 
@@ -39,7 +39,7 @@ export const makeWebinarProps = (
               title: attributes.caption || attributes.name,
               downloadLink: attributes.url,
               size: attributes.size,
-              extension: attributes.ext.replace(".", "").toUpperCase(),
+              extension: attributes.ext.replace('.', '').toUpperCase(),
             })),
           }
         : undefined,
@@ -55,7 +55,7 @@ export const makeWebinarProps = (
     } satisfies Webinar;
   } catch (error) {
     // eslint-disable-next-line functional/no-expression-statements
-    console.error("Error while making webinar from Strapi data:", error);
+    console.error('Error while making webinar from Strapi data:', error);
     return null;
   }
 };

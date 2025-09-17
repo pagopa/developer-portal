@@ -1,15 +1,15 @@
-"use client";
+'use client';
 import {
   Box,
   Breadcrumbs,
   Link as MuiLink,
   Typography,
   useTheme,
-} from "@mui/material";
-import Link from "next/link";
-import React from "react";
-import { useTranslations } from "next-intl";
-import { BreadcrumbSegment } from "@/lib/types/path";
+} from '@mui/material';
+import Link from 'next/link';
+import React from 'react';
+import { useTranslations } from 'next-intl';
+import { BreadcrumbSegment } from '@/lib/types/path';
 
 type ProductBreadcrumbsProps = {
   breadcrumbs: BreadcrumbSegment[];
@@ -24,18 +24,18 @@ const ProductBreadcrumbs = ({
   const t = useTranslations();
   return (
     <Box
-      component="div"
+      component='div'
       sx={{
-        display: { xs: "none", md: "block" },
-        paddingY: "24px",
+        display: { xs: 'none', md: 'block' },
+        paddingY: '24px',
         zIndex: 50,
-        position: "relative",
+        position: 'relative',
       }}
     >
       <Breadcrumbs
-        aria-label="breadcrumb"
+        aria-label='breadcrumb'
         sx={{
-          "& .MuiBreadcrumbs-separator": {
+          '& .MuiBreadcrumbs-separator': {
             fontSize: 16,
             color: textColor || theme.palette.text.primary,
           },
@@ -55,7 +55,7 @@ const ProductBreadcrumbs = ({
             <MuiLink
               key={index}
               component={Link}
-              underline="hover"
+              underline='hover'
               fontSize={16}
               color={
                 textColor ||

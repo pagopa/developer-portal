@@ -1,12 +1,12 @@
-"use client";
-import { productToMenuItems } from "@/helpers/productHeader.helper";
-import { Product } from "@/lib/types/product";
-import { Box, useTheme } from "@mui/material";
-import { Header } from "@/editorialComponents/Header";
-import React, { FC } from "react";
-import { useScrollUp } from "@/components/atoms/ProductHeader/useScrollUp";
-import { SITE_HEADER_HEIGHT } from "@/components/molecules/SiteHeader/SiteHeader";
-import { useTranslations } from "next-intl";
+'use client';
+import { productToMenuItems } from '@/helpers/productHeader.helper';
+import { Product } from '@/lib/types/product';
+import { Box, useTheme } from '@mui/material';
+import { Header } from '@/editorialComponents/Header';
+import React, { FC } from 'react';
+import { useScrollUp } from '@/components/atoms/ProductHeader/useScrollUp';
+import { SITE_HEADER_HEIGHT } from '@/components/molecules/SiteHeader/SiteHeader';
+import { useTranslations } from 'next-intl';
 
 type ProductHeaderProps = {
   product: Product;
@@ -28,11 +28,11 @@ const ProductHeader: FC<ProductHeaderProps> = ({ product, path }) => {
   return (
     <Box
       sx={{
-        position: "fixed",
+        position: 'fixed',
         top: scrollUp ? SITE_HEADER_HEIGHT : 0,
         zIndex: scrollUp ? 90 : 250,
-        transition: "top 0.5s linear",
-        width: "100vw",
+        transition: 'top 0.5s linear',
+        width: '100vw',
       }}
     >
       <Header

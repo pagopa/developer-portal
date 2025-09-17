@@ -1,8 +1,8 @@
-import { CaseHistoryPageTemplateProps } from "@/components/templates/CaseHistoryTemplate/CaseHistoryPageTemplate";
-import { Part } from "../../types/part";
-import { makePartProps } from "@/lib/strapi/makeProps/makePart";
-import { StrapiPart } from "@/lib/strapi/types/part";
-import { StrapiCaseHistories } from "@/lib/strapi/types/caseHistories";
+import { CaseHistoryPageTemplateProps } from '@/components/templates/CaseHistoryTemplate/CaseHistoryPageTemplate';
+import { Part } from '../../types/part';
+import { makePartProps } from '@/lib/strapi/makeProps/makePart';
+import { StrapiPart } from '@/lib/strapi/types/part';
+import { StrapiCaseHistories } from '@/lib/strapi/types/caseHistories';
 
 export function makeCaseHistoriesProps(
   strapiCaseHistories: StrapiCaseHistories,

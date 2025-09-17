@@ -1,11 +1,11 @@
-import { Box, Stack, Typography } from "@mui/material";
-import Subtitle from "@/editorialComponents/Feature/Subtitle";
-import IconWrapper from "@/components/atoms/IconWrapper/IconWrapper";
-import { BlocksContent } from "@strapi/blocks-react-renderer";
-import BlocksRendererClient from "@/components/molecules/BlocksRendererClient/BlocksRendererClient";
-import Image from "next/image";
-import { ReactNode } from "react";
-import type { TypographyVariant } from "@mui/material/styles";
+import { Box, Stack, Typography } from '@mui/material';
+import Subtitle from '@/editorialComponents/Feature/Subtitle';
+import IconWrapper from '@/components/atoms/IconWrapper/IconWrapper';
+import { BlocksContent } from '@strapi/blocks-react-renderer';
+import BlocksRendererClient from '@/components/molecules/BlocksRendererClient/BlocksRendererClient';
+import Image from 'next/image';
+import { ReactNode } from 'react';
+import type { TypographyVariant } from '@mui/material/styles';
 
 export interface FeatureItem {
   iconName?: string;
@@ -21,7 +21,7 @@ export interface FeatureItem {
 
 interface FeatureStackItemProps {
   item: FeatureItem;
-  theme: "dark" | "light";
+  theme: 'dark' | 'light';
   useDarkTheme?: boolean;
   variant?: TypographyVariant;
 }
@@ -30,11 +30,11 @@ export const FeatureStackItem = ({
   item,
   theme,
   useDarkTheme,
-  variant = "h6",
+  variant = 'h6',
 }: FeatureStackItemProps) => {
-  const isDarkMode = useDarkTheme || theme !== "light";
-  const textStyle = isDarkMode ? "background.paper" : "text.primary";
-  const imageStyle = isDarkMode ? "background.paper" : "primary.main";
+  const isDarkMode = useDarkTheme || theme !== 'light';
+  const textStyle = isDarkMode ? 'background.paper' : 'text.primary';
+  const imageStyle = isDarkMode ? 'background.paper' : 'primary.main';
 
   const renderSubtitleOrContent = (): ReactNode | null => {
     if (item.subtitle) {
@@ -46,7 +46,7 @@ export const FeatureStackItem = ({
           url={item.link.url}
         />
       ) : (
-        <Typography variant="body2" color="inherit">
+        <Typography variant='body2' color='inherit'>
           {item.subtitle}
         </Typography>
       );
@@ -66,22 +66,22 @@ export const FeatureStackItem = ({
 
   return (
     <Stack
-      component="article"
-      justifyContent="flex-start"
+      component='article'
+      justifyContent='flex-start'
       spacing={{ xs: 1, md: 3 }}
       sx={{
         flex: 1,
         flexGrow: 1,
-        overflow: "hidden",
+        overflow: 'hidden',
       }}
     >
       <Box
-        mx="auto"
-        alignSelf="center"
+        mx='auto'
+        alignSelf='center'
         sx={{
           svg: {
-            height: "64px",
-            width: "64px",
+            height: '64px',
+            width: '64px',
           },
         }}
         color={imageStyle}
@@ -98,13 +98,13 @@ export const FeatureStackItem = ({
           <Image src={item.iconUrl} alt={item.title} width={64} height={64} />
         )}
       </Box>
-      <Stack color={textStyle} spacing={1} textAlign="center">
+      <Stack color={textStyle} spacing={1} textAlign='center'>
         <Typography
-          color="inherit"
+          color='inherit'
           variant={variant}
           sx={{
-            fontSize: "1.5rem !important",
-            lineHeight: "1.15 !important",
+            fontSize: '1.5rem !important',
+            lineHeight: '1.15 !important',
           }}
         >
           {item.title}

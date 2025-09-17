@@ -1,29 +1,29 @@
-"use client";
-import { useEffect, useState } from "react";
+'use client';
+import { useEffect, useState } from 'react';
 import {
   sendChatbotQuery,
   sendChatbotFeedback,
   getChatbotSessionsHistory,
   getChatbotQueries,
   deleteChatbotSession,
-} from "@/lib/chatbotApi";
+} from '@/lib/chatbotApi';
 import {
   ChatbotQueriesCodec,
   PaginatedSessions,
   Query,
-} from "@/lib/chatbot/queries";
-import { pipe } from "fp-ts/lib/function";
-import * as E from "fp-ts/lib/Either";
-import { chatMaxHistoryMessages } from "@/config";
+} from '@/lib/chatbot/queries';
+import { pipe } from 'fp-ts/lib/function';
+import * as E from 'fp-ts/lib/Either';
+import { chatMaxHistoryMessages } from '@/config';
 
 const HISTORY_PAGE_SIZE = 10;
-const EXPIRE_CHAT_DATE_LOCAL_STORAGE_KEY = "expireChatDate";
-const CHAT_QUERIES_LOCAL_STORAGE_KEY = "chatQueries";
+const EXPIRE_CHAT_DATE_LOCAL_STORAGE_KEY = 'expireChatDate';
+const CHAT_QUERIES_LOCAL_STORAGE_KEY = 'chatQueries';
 
 export type ChatbotErrorsType =
-  | "serviceDown"
-  | "queryFailed"
-  | "feedbackFailed";
+  | 'serviceDown'
+  | 'queryFailed'
+  | 'feedbackFailed';
 
 function getExpireChatDateFromLocalStorage() {
   const queriesDate = localStorage.getItem(EXPIRE_CHAT_DATE_LOCAL_STORAGE_KEY);
@@ -115,8 +115,8 @@ export const useChatbot = (isUserAuthenticated: boolean) => {
     const queriedAt = new Date().toISOString();
     const previousQueries = chatQueries;
     const newQuery = {
-      id: "0",
-      sessionId: "0",
+      id: '0',
+      sessionId: '0',
       question: queryMessage,
       queriedAt: queriedAt,
       badAnswer: false,
@@ -152,7 +152,7 @@ export const useChatbot = (isUserAuthenticated: boolean) => {
       })
       .catch(() => {
         setIsAwaitingResponse(false);
-        setChatbotError("queryFailed");
+        setChatbotError('queryFailed');
       });
     return null;
   };

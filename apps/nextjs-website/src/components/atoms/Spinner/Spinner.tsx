@@ -1,4 +1,4 @@
-import { CircularProgress, Stack } from "@mui/material";
+import { CircularProgress, Stack } from '@mui/material';
 
 interface SpinnerProps {
   size?: string | number;
@@ -13,10 +13,10 @@ const Spinner = ({
 }: SpinnerProps) => {
   return (
     <Stack
-      justifyContent={"center"}
+      justifyContent={'center'}
       height={containerHeight}
       padding={containerPadding}
-      alignItems="center"
+      alignItems='center'
     >
       <CircularProgress size={size} />
     </Stack>

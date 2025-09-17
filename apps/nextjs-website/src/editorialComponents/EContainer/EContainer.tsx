@@ -1,20 +1,20 @@
-import Box, { type BoxProps } from "@mui/material/Box";
-import Grid, { type GridProps } from "@mui/material/Grid";
-import { Container } from "@mui/system";
-import { type Generic } from "../types/components";
-import { isJSX } from "../utils";
-import React from "react";
+import Box, { type BoxProps } from '@mui/material/Box';
+import Grid, { type GridProps } from '@mui/material/Grid';
+import { Container } from '@mui/system';
+import { type Generic } from '../types/components';
+import { isJSX } from '../utils';
+import React from 'react';
 
 interface Props {
-  alignItems?: GridProps["alignItems"];
+  alignItems?: GridProps['alignItems'];
   background?: string | Generic;
   children: React.ReactNode;
-  direction?: GridProps["direction"];
-  py?: BoxProps["py"];
-  px?: BoxProps["px"];
-  spacing?: GridProps["spacing"];
-  sx?: GridProps["sx"];
-  containerSx?: BoxProps["sx"];
+  direction?: GridProps['direction'];
+  py?: BoxProps['py'];
+  px?: BoxProps['px'];
+  spacing?: GridProps['spacing'];
+  sx?: GridProps['sx'];
+  containerSx?: BoxProps['sx'];
 }
 
 const EContainer = (props: Props) => {
@@ -22,7 +22,7 @@ const EContainer = (props: Props) => {
     alignItems,
     background,
     children,
-    direction = "row",
+    direction = 'row',
     py = {},
     px,
     spacing,
@@ -33,11 +33,11 @@ const EContainer = (props: Props) => {
 
   return (
     <Box
-      component="section"
+      component='section'
       sx={{
         px: { xs: 4 },
-        position: "relative",
-        overflow: "hidden",
+        position: 'relative',
+        overflow: 'hidden',
         ...containerSx,
       }}
       py={py}
@@ -45,7 +45,7 @@ const EContainer = (props: Props) => {
       bgcolor={!backgroundIsJSX ? background : undefined}
     >
       {backgroundIsJSX && background}
-      <Container maxWidth="lg" disableGutters>
+      <Container maxWidth='lg' disableGutters>
         <Grid
           container
           direction={direction}

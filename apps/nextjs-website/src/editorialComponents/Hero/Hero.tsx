@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import {
   Box,
   Button,
@@ -8,19 +8,19 @@ import {
   Grid,
   Theme,
   SxProps,
-} from "@mui/material";
-import { type CommonProps, type Generic } from "../types/components";
-import { isJSX } from "../utils";
-import EContainer from "@/editorialComponents/EContainer/EContainer";
-import Image from "next/image";
-import type { TypographyVariant } from "@mui/material/styles";
+} from '@mui/material';
+import { type CommonProps, type Generic } from '../types/components';
+import { isJSX } from '../utils';
+import EContainer from '@/editorialComponents/EContainer/EContainer';
+import Image from 'next/image';
+import type { TypographyVariant } from '@mui/material/styles';
 
 export interface HeroProps extends CommonProps, HeroTextProps {
   image?: string | Generic;
   altText?: string;
   inverse?: boolean;
   background?: string | Generic;
-  size?: "small" | "big";
+  size?: 'small' | 'big';
   useHoverlay?: boolean;
   smallHeight?: string;
   gridTextSx?: SxProps<Theme>;
@@ -42,15 +42,15 @@ const HeroTextContent = ({
   subtitle,
   ctaButtons,
   theme,
-  titleVariant = "h1",
+  titleVariant = 'h1',
 }: HeroTextProps) => {
-  const textColor = theme === "dark" ? "primary.contrastText" : "text.primary";
+  const textColor = theme === 'dark' ? 'primary.contrastText' : 'text.primary';
   return (
     <Stack
-      justifyContent={{ md: "center" }}
-      sx={{ minHeight: "inherit" }}
+      justifyContent={{ md: 'center' }}
+      sx={{ minHeight: 'inherit' }}
       mt={{ xs: 9, lg: 0 }}
-      component="section"
+      component='section'
     >
       <Box mb={{ xs: 6, md: 4 }}>
         <>
@@ -60,7 +60,7 @@ const HeroTextContent = ({
           {isJSX(subtitle) ? (
             subtitle
           ) : (
-            <Typography variant="body1" color={textColor}>
+            <Typography variant='body1' color={textColor}>
               {subtitle}
             </Typography>
           )}
@@ -68,7 +68,7 @@ const HeroTextContent = ({
       </Box>
       {ctaButtons?.length ? (
         <Stack
-          direction={{ xs: "column", md: "row" }}
+          direction={{ xs: 'column', md: 'row' }}
           spacing={2}
           mb={{ xs: 8, lg: 0 }}
         >
@@ -91,39 +91,39 @@ const Hero = (props: HeroProps) => {
     size,
     inverse = false,
     background,
-    theme = "dark",
+    theme = 'dark',
     useHoverlay = true,
     image,
-    altText = "",
-    smallHeight = "480px",
+    altText = '',
+    smallHeight = '480px',
     gridTextSx,
   } = props;
-  const heroHeight = size === "big" ? "720px" : smallHeight;
+  const heroHeight = size === 'big' ? '720px' : smallHeight;
 
   const overlay = useHoverlay
-    ? theme === "dark"
-      ? "linear-gradient(0deg, rgba(0, 98, 195, 0.65), rgba(0, 98, 195, 0.65)), "
-      : "linear-gradient(0deg, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.8)), "
-    : "";
-  const backgroundColor = theme === "dark" ? "primary.dark" : "primary.paper";
+    ? theme === 'dark'
+      ? 'linear-gradient(0deg, rgba(0, 98, 195, 0.65), rgba(0, 98, 195, 0.65)), '
+      : 'linear-gradient(0deg, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.8)), '
+    : '';
+  const backgroundColor = theme === 'dark' ? 'primary.dark' : 'primary.paper';
 
   const BackgroundImage = isJSX(background) ? (
     background
   ) : (
     <Box
       // https://www.w3.org/WAI/tutorials/images/decorative/#example-1-image-used-as-part-of-page-design
-      role="presentation"
+      role='presentation'
       sx={{
         px: { xs: 4 },
-        position: "absolute",
+        position: 'absolute',
         inset: 0,
         zIndex: -10,
-        height: "100%",
-        width: "100%",
-        objectFit: "cover",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundImage: `${overlay}url(${background ?? ""})`,
+        height: '100%',
+        width: '100%',
+        objectFit: 'cover',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundImage: `${overlay}url(${background ?? ''})`,
       }}
     />
   );
@@ -131,7 +131,7 @@ const Hero = (props: HeroProps) => {
   return (
     <EContainer
       background={!background ? backgroundColor : BackgroundImage}
-      direction={inverse ? "row-reverse" : "row"}
+      direction={inverse ? 'row-reverse' : 'row'}
     >
       <Grid
         size={{ lg: 6 }}
@@ -143,7 +143,7 @@ const Hero = (props: HeroProps) => {
         <HeroTextContent {...props} />
       </Grid>
       {image ? (
-        <Grid size={{ lg: 6 }} mb={{ xs: 4, lg: 0 }} component="figure">
+        <Grid size={{ lg: 6 }} mb={{ xs: 4, lg: 0 }} component='figure'>
           {isJSX(image) ? (
             image
           ) : (
@@ -151,12 +151,12 @@ const Hero = (props: HeroProps) => {
               alt={altText}
               src={image}
               style={{
-                objectFit: "contain",
-                objectPosition: "center",
-                width: "100%",
-                height: "100%",
+                objectFit: 'contain',
+                objectPosition: 'center',
+                width: '100%',
+                height: '100%',
                 maxHeight: heroHeight,
-                userSelect: "none",
+                userSelect: 'none',
               }}
             />
           )}

@@ -1,6 +1,6 @@
-import * as t from "io-ts/lib";
-import { pipe } from "fp-ts/lib/function";
-import * as E from "fp-ts/lib/Either";
+import * as t from 'io-ts/lib';
+import { pipe } from 'fp-ts/lib/function';
+import * as E from 'fp-ts/lib/Either';
 
 /**
  * This type is used to convert null to undefined when decoding.
@@ -13,7 +13,7 @@ import * as E from "fp-ts/lib/Either";
  */
 export const NullToUndefinedCodec = new t.Type<undefined, null, unknown>(
   // name: a unique name for this codec
-  "NullToUndefined",
+  'NullToUndefined',
   // is: a custom type guard
   t.undefined.is,
   // validate: succeeds if a value of type I can be decoded to a value of type A

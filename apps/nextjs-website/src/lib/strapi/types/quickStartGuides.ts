@@ -1,9 +1,9 @@
-import { StrapiComponent } from "@/lib/strapi/types/strapiComponent";
-import { StrapiBaseProductWithRelations } from "@/lib/strapi/types/product";
-import { StrapiBannerLink } from "@/lib/strapi/types/bannerLink";
-import { StrapiSeo } from "@/lib/strapi/types/seo";
-import { Paginated } from "@/lib/strapi/types/paginated";
-import { StrapiPart } from "@/lib/strapi/types/part";
+import { StrapiComponent } from '@/lib/strapi/types/strapiComponent';
+import { StrapiBaseProductWithRelations } from '@/lib/strapi/types/product';
+import { StrapiBannerLink } from '@/lib/strapi/types/bannerLink';
+import { StrapiSeo } from '@/lib/strapi/types/seo';
+import { Paginated } from '@/lib/strapi/types/paginated';
+import { StrapiPart } from '@/lib/strapi/types/part';
 
 export type StrapiQuickStartGuideItem = {
   readonly id: number;

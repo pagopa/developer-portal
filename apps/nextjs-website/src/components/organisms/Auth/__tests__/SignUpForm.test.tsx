@@ -1,23 +1,23 @@
-import { fireEvent, render, screen } from "@testing-library/react";
-import Wrapper from "@/__tests__/components/Wrapper";
-import SignUpForm from "../SignUpForm";
+import { fireEvent, render, screen } from '@testing-library/react';
+import Wrapper from '@/__tests__/components/Wrapper';
+import SignUpForm from '../SignUpForm';
 
-import labels from "@/messages/it.json";
+import labels from '@/messages/it.json';
 
-const actionRegex = RegExp(labels.auth.signUp.action, "i");
+const actionRegex = RegExp(labels.auth.signUp.action, 'i');
 
 function getPasswordInputs(inputs: HTMLElement[]) {
   const filtered = inputs.filter(
-    (el) => el.getAttribute("type") === "password",
+    (el) => el.getAttribute('type') === 'password',
   ) as HTMLInputElement[];
 
   expect(filtered).toHaveLength(2);
 
   const confirmPasswordInput = filtered.find(
-    (el) => el.name === "confirmPassword",
+    (el) => el.name === 'confirmPassword',
   );
 
-  const passwordInput = filtered.find((el) => el.name === "password");
+  const passwordInput = filtered.find((el) => el.name === 'password');
 
   expect(confirmPasswordInput).toBeDefined();
   expect(passwordInput).toBeDefined();
@@ -29,19 +29,19 @@ function getPasswordInputs(inputs: HTMLElement[]) {
 }
 
 function getInputs() {
-  const firstNameInput = screen.getByRole("textbox", {
+  const firstNameInput = screen.getByRole('textbox', {
     name: /firstname/i,
   }) as HTMLInputElement;
-  const lastNameInput = screen.getByRole("textbox", {
+  const lastNameInput = screen.getByRole('textbox', {
     name: /lastname/i,
   }) as HTMLInputElement;
-  const usernameInput = screen.getByRole("textbox", {
+  const usernameInput = screen.getByRole('textbox', {
     name: /email/i,
   }) as HTMLInputElement;
   const passwordInputs = getPasswordInputs(
     screen.getAllByLabelText(/password/i),
   );
-  const submitButton = screen.getByRole("button", { name: actionRegex });
+  const submitButton = screen.getByRole('button', { name: actionRegex });
 
   return {
     ...passwordInputs,
@@ -52,7 +52,7 @@ function getInputs() {
   };
 }
 
-describe("SignUpForm", () => {
+describe('SignUpForm', () => {
   const mockOnSignUp = jest.fn();
   const mockUserAlreadyExist = false;
 
@@ -60,7 +60,7 @@ describe("SignUpForm", () => {
     jest.clearAllMocks();
   });
 
-  it("should render without crashing", () => {
+  it('should render without crashing', () => {
     render(
       <Wrapper>
         <SignUpForm
@@ -71,7 +71,7 @@ describe("SignUpForm", () => {
     );
   });
 
-  it("should validate form fields and set errors", () => {
+  it('should validate form fields and set errors', () => {
     render(
       <Wrapper>
         <SignUpForm
@@ -90,11 +90,11 @@ describe("SignUpForm", () => {
       submitButton,
     } = getInputs();
 
-    fireEvent.change(firstNameInput, { target: { value: "" } });
-    fireEvent.change(lastNameInput, { target: { value: "" } });
-    fireEvent.change(usernameInput, { target: { value: "invalid email" } });
-    fireEvent.change(passwordInput, { target: { value: "short" } });
-    fireEvent.change(confirmPasswordInput, { target: { value: "mismatch" } });
+    fireEvent.change(firstNameInput, { target: { value: '' } });
+    fireEvent.change(lastNameInput, { target: { value: '' } });
+    fireEvent.change(usernameInput, { target: { value: 'invalid email' } });
+    fireEvent.change(passwordInput, { target: { value: 'short' } });
+    fireEvent.change(confirmPasswordInput, { target: { value: 'mismatch' } });
     fireEvent.click(submitButton);
 
     expect(firstNameInput).toBeInvalid();
@@ -105,7 +105,7 @@ describe("SignUpForm", () => {
     expect(mockOnSignUp).not.toHaveBeenCalled();
   });
 
-  it("should set user already exists error", () => {
+  it('should set user already exists error', () => {
     render(
       <Wrapper>
         <SignUpForm onSignUp={mockOnSignUp} userAlreadyExist />
@@ -120,7 +120,7 @@ describe("SignUpForm", () => {
     expect(mockOnSignUp).not.toHaveBeenCalled();
   });
 
-  it("should reset form fields errors", () => {
+  it('should reset form fields errors', () => {
     render(
       <Wrapper>
         <SignUpForm
@@ -139,11 +139,11 @@ describe("SignUpForm", () => {
       submitButton,
     } = getInputs();
 
-    fireEvent.change(firstNameInput, { target: { value: "" } });
-    fireEvent.change(lastNameInput, { target: { value: "" } });
-    fireEvent.change(usernameInput, { target: { value: "invalid email" } });
-    fireEvent.change(passwordInput, { target: { value: "short" } });
-    fireEvent.change(confirmPasswordInput, { target: { value: "mismatch" } });
+    fireEvent.change(firstNameInput, { target: { value: '' } });
+    fireEvent.change(lastNameInput, { target: { value: '' } });
+    fireEvent.change(usernameInput, { target: { value: 'invalid email' } });
+    fireEvent.change(passwordInput, { target: { value: 'short' } });
+    fireEvent.change(confirmPasswordInput, { target: { value: 'mismatch' } });
     fireEvent.click(submitButton);
 
     expect(firstNameInput).toBeInvalid();
@@ -153,14 +153,14 @@ describe("SignUpForm", () => {
     expect(confirmPasswordInput).toBeInvalid();
     expect(mockOnSignUp).not.toHaveBeenCalled();
 
-    fireEvent.change(firstNameInput, { target: { value: "John" } });
-    fireEvent.change(lastNameInput, { target: { value: "Doe" } });
+    fireEvent.change(firstNameInput, { target: { value: 'John' } });
+    fireEvent.change(lastNameInput, { target: { value: 'Doe' } });
     fireEvent.change(usernameInput, {
-      target: { value: "john.doe@example.com" },
+      target: { value: 'john.doe@example.com' },
     });
-    fireEvent.change(passwordInput, { target: { value: "StrongPassword23!" } });
+    fireEvent.change(passwordInput, { target: { value: 'StrongPassword23!' } });
     fireEvent.change(confirmPasswordInput, {
-      target: { value: "StrongPassword23!" },
+      target: { value: 'StrongPassword23!' },
     });
     fireEvent.click(submitButton);
 
@@ -172,7 +172,7 @@ describe("SignUpForm", () => {
     expect(mockOnSignUp).toHaveBeenCalled();
   });
 
-  it("should call onSignUp when form is valid", () => {
+  it('should call onSignUp when form is valid', () => {
     render(
       <Wrapper>
         <SignUpForm
@@ -191,14 +191,14 @@ describe("SignUpForm", () => {
       submitButton,
     } = getInputs();
 
-    fireEvent.change(firstNameInput, { target: { value: "John" } });
-    fireEvent.change(lastNameInput, { target: { value: "Doe" } });
+    fireEvent.change(firstNameInput, { target: { value: 'John' } });
+    fireEvent.change(lastNameInput, { target: { value: 'Doe' } });
     fireEvent.change(usernameInput, {
-      target: { value: "john.doe@example.com" },
+      target: { value: 'john.doe@example.com' },
     });
-    fireEvent.change(passwordInput, { target: { value: "StrongPassword23!" } });
+    fireEvent.change(passwordInput, { target: { value: 'StrongPassword23!' } });
     fireEvent.change(confirmPasswordInput, {
-      target: { value: "StrongPassword23!" },
+      target: { value: 'StrongPassword23!' },
     });
     fireEvent.click(submitButton);
 

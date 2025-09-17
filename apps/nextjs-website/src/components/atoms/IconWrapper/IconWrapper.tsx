@@ -1,8 +1,8 @@
-"use client";
-import React from "react";
-import { Icon, SxProps, Theme, Typography } from "@mui/material";
-import Image from "next/image";
-import { ICON_MAP } from "./IconMap";
+'use client';
+import React from 'react';
+import { Icon, SxProps, Theme, Typography } from '@mui/material';
+import Image from 'next/image';
+import { ICON_MAP } from './IconMap';
 
 export type IconWrapperProps = {
   id?: string;
@@ -19,7 +19,7 @@ const IconWrapper = ({
   id,
   icon,
   useSrc,
-  color = "text.primary",
+  color = 'text.primary',
   size = 35,
   sx,
 }: IconWrapperProps) => {
@@ -43,8 +43,8 @@ const IconWrapper = ({
     };
     const Icon = icon && ICON_MAP[icon as IconName];
     return Icon ? (
-      <Typography color={props?.color ?? "inherit"}>
-        <Icon {...props} color="inherit" sx={sx} />
+      <Typography color={props?.color ?? 'inherit'}>
+        <Icon {...props} color='inherit' sx={sx} />
       </Typography>
     ) : null;
   }

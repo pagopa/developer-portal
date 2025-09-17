@@ -1,11 +1,11 @@
-import { StrapiBaseProductWithRelations } from "@/lib/strapi/types/product";
-import { StrapiBannerLink } from "@/lib/strapi/types/bannerLink";
-import { StrapiSeo } from "@/lib/strapi/types/seo";
+import { StrapiBaseProductWithRelations } from '@/lib/strapi/types/product';
+import { StrapiBannerLink } from '@/lib/strapi/types/bannerLink';
+import { StrapiSeo } from '@/lib/strapi/types/seo';
 import {
   StrapiBaseApiData,
   StrapiBaseApiDataList,
-} from "@/lib/strapi/types/apiDataList";
-import { StrapiComponent } from "./strapiComponent";
+} from '@/lib/strapi/types/apiDataList';
+import { StrapiComponent } from './strapiComponent';
 
 export type StrapiApiDataListPage = {
   readonly id: number;
@@ -28,8 +28,8 @@ export type StrapiApiDataListPageWithoutProduct = {
     readonly apiData: StrapiComponent<
       readonly {
         readonly attributes: Pick<
-          StrapiBaseApiData["attributes"],
-          "apiRestDetail" | "apiSoapDetail"
+          StrapiBaseApiData['attributes'],
+          'apiRestDetail' | 'apiSoapDetail'
         >;
       }[]
     >;

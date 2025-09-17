@@ -5,8 +5,8 @@ import React, {
   ReactNode,
   SetStateAction,
   Dispatch,
-} from "react";
-import { Box, useTheme } from "@mui/material";
+} from 'react';
+import { Box, useTheme } from '@mui/material';
 
 type TabSwitcherContextType = {
   setActiveTabID: Dispatch<SetStateAction<string>>;
@@ -27,7 +27,7 @@ function Tab({ id, children }: TabProps) {
   if (!context) {
     // eslint-disable-next-line functional/no-throw-statements
     throw new Error(
-      "TabSwitcherContext not found, did you forget to use TabSwitcherContextProvider?",
+      'TabSwitcherContext not found, did you forget to use TabSwitcherContextProvider?',
     );
   }
 
@@ -40,12 +40,12 @@ function Tab({ id, children }: TabProps) {
     <Box
       onClick={() => setActiveTabID(id)}
       sx={{
-        backgroundColor: isActive ? palette.primaryAction.hover : "transparent",
-        borderRight: isActive ? `2px solid ${tabColor}` : "none",
-        "& > div > span": {
+        backgroundColor: isActive ? palette.primaryAction.hover : 'transparent',
+        borderRight: isActive ? `2px solid ${tabColor}` : 'none',
+        '& > div > span': {
           color: isActive ? tabColor : palette.text.primary,
         },
-        cursor: "pointer",
+        cursor: 'pointer',
       }}
     >
       {children}
@@ -63,7 +63,7 @@ function TabPanel({ whenActive, children }: TabPanelProps) {
   if (!context) {
     // eslint-disable-next-line functional/no-throw-statements
     throw new Error(
-      "TabSwitcherContext not found, did you forget to use TabSwitcherContextProvider?",
+      'TabSwitcherContext not found, did you forget to use TabSwitcherContextProvider?',
     );
   }
   const { activeTabID } = context;
@@ -80,7 +80,7 @@ function TabSwitcherProvider({
   children,
   defaultActiveTabID,
 }: TabSwitcherProps) {
-  const [activeTabID, setActiveTabID] = useState(defaultActiveTabID || "");
+  const [activeTabID, setActiveTabID] = useState(defaultActiveTabID || '');
   return (
     <TabSwitcherContext.Provider value={{ activeTabID, setActiveTabID }}>
       {children}

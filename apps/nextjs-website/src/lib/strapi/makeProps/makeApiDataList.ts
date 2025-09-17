@@ -1,9 +1,9 @@
-import { ApiDataPageProps } from "@/app/[productSlug]/api/[apiDataSlug]/page";
-import { makeBannerLinkProps } from "@/lib/strapi/makeProps/makeBannerLink";
-import { makeBaseProductWithoutLogoProps } from "@/lib/strapi/makeProps/makeProducts";
-import { makeApiSoapUrlList } from "@/lib/strapi/makeProps/makeApiSoapUrlList";
-import { StrapiApiDataList } from "@/lib/strapi/types/apiDataList";
-import _ from "lodash";
+import { ApiDataPageProps } from '@/app/[productSlug]/api/[apiDataSlug]/page';
+import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
+import { makeBaseProductWithoutLogoProps } from '@/lib/strapi/makeProps/makeProducts';
+import { makeApiSoapUrlList } from '@/lib/strapi/makeProps/makeApiSoapUrlList';
+import { StrapiApiDataList } from '@/lib/strapi/types/apiDataList';
+import _ from 'lodash';
 
 export async function makeApiDataListProps(
   strapiApiDataList: StrapiApiDataList,
@@ -27,7 +27,7 @@ export async function makeApiDataListProps(
           const apiDataSlug =
             attributes.apiRestDetail?.slug ||
             attributes.apiSoapDetail?.slug ||
-            "";
+            '';
           if (!apiDataSlug) {
             // eslint-disable-next-line functional/no-expression-statements
             console.error(
@@ -43,7 +43,7 @@ export async function makeApiDataListProps(
             return {
               ...attributes,
               product,
-              apiType: attributes.apiRestDetail ? "rest" : "soap",
+              apiType: attributes.apiRestDetail ? 'rest' : 'soap',
               apiDataSlug: apiDataSlug,
               restApiSpecUrls: attributes.apiRestDetail
                 ? [

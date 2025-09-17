@@ -1,10 +1,10 @@
-import { OpenAPIV3 } from "openapi-types";
-import { useTranslations } from "next-intl";
+import { OpenAPIV3 } from 'openapi-types';
+import { useTranslations } from 'next-intl';
 
-import { system } from "@/helpers/swagger";
-import CodeBlock from "../CodeBlock";
-import Tabs from "../Tabs";
-import { Model } from "./Model";
+import { system } from '@/helpers/swagger';
+import CodeBlock from '../CodeBlock';
+import Tabs from '../Tabs';
+import { Model } from './Model';
 
 type SchemaWithExampleProps = OpenAPIV3.MediaTypeObject;
 
@@ -13,9 +13,9 @@ export const SchemaWithExample = ({
   example,
   examples,
 }: SchemaWithExampleProps) => {
-  const t = useTranslations("swagger");
-  const exampleLabel = t("example");
-  const schemaLabel = t("schema");
+  const t = useTranslations('swagger');
+  const exampleLabel = t('example');
+  const schemaLabel = t('schema');
   const titles = schema ? [exampleLabel, schemaLabel] : [exampleLabel];
   const mediaTypeExample =
     (examples?.response as OpenAPIV3.ExampleObject)?.value || example?.value;
@@ -32,7 +32,7 @@ export const SchemaWithExample = ({
   // The old code supported this, generating a schema from the example.
   return (
     <Tabs titles={titles}>
-      <CodeBlock language="json">{exampleAsJson}</CodeBlock>
+      <CodeBlock language='json'>{exampleAsJson}</CodeBlock>
       {schema && <Model model={schema as OpenAPIV3.SchemaObject} />}
     </Tabs>
   );

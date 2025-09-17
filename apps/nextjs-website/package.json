@@ -6,7 +6,7 @@
     "build": "next build --debug",
     "compile": "tsc --noEmit",
     "dev": "next dev --turbopack",
-    "lint": "eslint . --max-warnings 1000 || true",
+    "lint": "eslint . ",
     "start": "next start",
     "test": "jest -i"
   },

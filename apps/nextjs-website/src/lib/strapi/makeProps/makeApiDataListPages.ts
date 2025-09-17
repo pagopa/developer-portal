@@ -1,9 +1,9 @@
-import { ApiDataListPageTemplateProps } from "@/components/templates/ApiDataListTemplate/ApiDataListTemplate";
-import { makeBannerLinkProps } from "@/lib/strapi/makeProps/makeBannerLink";
-import { makeBaseProductWithoutLogoProps } from "@/lib/strapi/makeProps/makeProducts";
-import { StrapiApiDataListPages } from "@/lib/strapi/types/apiDataListPages";
-import _ from "lodash";
-import { StrapiBaseApiData } from "../types/apiDataList";
+import { ApiDataListPageTemplateProps } from '@/components/templates/ApiDataListTemplate/ApiDataListTemplate';
+import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
+import { makeBaseProductWithoutLogoProps } from '@/lib/strapi/makeProps/makeProducts';
+import { StrapiApiDataListPages } from '@/lib/strapi/types/apiDataListPages';
+import _ from 'lodash';
+import { StrapiBaseApiData } from '../types/apiDataList';
 
 function makeApiDataListPageCard(item: StrapiBaseApiData, slug: string) {
   if (
@@ -22,12 +22,12 @@ function makeApiDataListPageCard(item: StrapiBaseApiData, slug: string) {
   return {
     tags: [
       {
-        label: item.attributes.apiSoapDetail ? "SOAP" : "REST",
+        label: item.attributes.apiSoapDetail ? 'SOAP' : 'REST',
       },
     ].filter((tag) => !!tag.label),
     title: item?.attributes?.title,
-    text: item?.attributes?.description || "",
-    icon: item?.attributes?.icon?.data?.attributes.url || "",
+    text: item?.attributes?.description || '',
+    icon: item?.attributes?.icon?.data?.attributes.url || '',
     href: `/${slug}/api/${
       item.attributes.apiRestDetail
         ? item.attributes.apiRestDetail?.slug
@@ -56,7 +56,7 @@ export function makeApiDataListPagesProps(
           ...attributes,
           hero: {
             title: attributes.title,
-            subtitle: attributes.description || "",
+            subtitle: attributes.description || '',
           },
           product: makeBaseProductWithoutLogoProps(attributes.product.data),
           apiDetailSlugs: attributes.apiData.data

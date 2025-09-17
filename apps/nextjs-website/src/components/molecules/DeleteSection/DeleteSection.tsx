@@ -1,11 +1,11 @@
-import ConfirmationModal from "@/components/atoms/ConfirmationModal/ConfirmationModal";
-import { DevPortalUser } from "@/lib/types/auth";
-import { Box, Typography, useTheme } from "@mui/material";
-import { ButtonNaked } from "@pagopa/mui-italia";
-import { useTranslations } from "next-intl";
-import { useRouter } from "next/navigation";
-import { useCallback, useState } from "react";
-import { Auth } from "aws-amplify";
+import ConfirmationModal from '@/components/atoms/ConfirmationModal/ConfirmationModal';
+import { DevPortalUser } from '@/lib/types/auth';
+import { Box, Typography, useTheme } from '@mui/material';
+import { ButtonNaked } from '@pagopa/mui-italia';
+import { useTranslations } from 'next-intl';
+import { useRouter } from 'next/navigation';
+import { useCallback, useState } from 'react';
+import { Auth } from 'aws-amplify';
 
 type DeleteSectionProps = {
   user: DevPortalUser | null;
@@ -13,8 +13,8 @@ type DeleteSectionProps = {
 
 const DeleteSection = ({ user }: DeleteSectionProps) => {
   const router = useRouter();
-  const t = useTranslations("profile");
-  const sharedTranslate = useTranslations("shared");
+  const t = useTranslations('profile');
+  const sharedTranslate = useTranslations('shared');
   const { palette } = useTheme();
 
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
@@ -25,7 +25,7 @@ const DeleteSection = ({ user }: DeleteSectionProps) => {
       setDeleting(true);
       await Auth.deleteUser()
         .then(() => {
-          router.push("/");
+          router.push('/');
           setDeleting(false);
         })
         .catch(() => {
@@ -36,46 +36,46 @@ const DeleteSection = ({ user }: DeleteSectionProps) => {
   }, [user, router]);
 
   return (
-    <Box display={"flex"} flexDirection={"column"} maxWidth={"700px"}>
+    <Box display={'flex'} flexDirection={'column'} maxWidth={'700px'}>
       <Typography
-        variant="h6"
+        variant='h6'
         sx={{
-          marginBottom: "24px",
-          fontSize: "16px !important",
-          fontWeight: "600",
+          marginBottom: '24px',
+          fontSize: '16px !important',
+          fontWeight: '600',
         }}
       >
-        {t("personalData.deleteAccountSection")}
+        {t('personalData.deleteAccountSection')}
       </Typography>
       <Box
         sx={{
-          display: "flex",
-          flexDirection: { xs: "column", md: "row" },
-          gap: { xs: "10px", md: "100px" },
+          display: 'flex',
+          flexDirection: { xs: 'column', md: 'row' },
+          gap: { xs: '10px', md: '100px' },
         }}
       >
         <Typography
-          variant="body2"
+          variant='body2'
           sx={{
-            fontSize: "14px",
+            fontSize: '14px',
             color: palette.text.secondary,
           }}
         >
-          {t("personalData.deleteAccount.sectionLabel")}
+          {t('personalData.deleteAccount.sectionLabel')}
         </Typography>
         <Box sx={{ margin: 0, padding: 0 }}>
           <ButtonNaked
-            component={"button"}
+            component={'button'}
             onClick={() => setOpenDeleteModal(true)}
-            color="error"
-            sx={{ whiteSpace: "nowrap", color: palette.error.dark }}
+            color='error'
+            sx={{ whiteSpace: 'nowrap', color: palette.error.dark }}
           >
-            {t("personalData.deleteAccount.buttonLabel")}
+            {t('personalData.deleteAccount.buttonLabel')}
           </ButtonNaked>
         </Box>
         <ConfirmationModal
-          title={t("personalData.deleteAccount.modalTitle")}
-          text={t("personalData.deleteAccount.modalText")}
+          title={t('personalData.deleteAccount.modalTitle')}
+          text={t('personalData.deleteAccount.modalText')}
           open={openDeleteModal}
           cancelCta={{
             onClick: () => {
@@ -83,7 +83,7 @@ const DeleteSection = ({ user }: DeleteSectionProps) => {
               return null;
             },
             disabled: deleting,
-            label: sharedTranslate("cancel"),
+            label: sharedTranslate('cancel'),
           }}
           confirmCta={{
             onClick: () => {
@@ -91,7 +91,7 @@ const DeleteSection = ({ user }: DeleteSectionProps) => {
               return null;
             },
             disabled: deleting,
-            label: t("personalData.deleteAccount.buttonLabel"),
+            label: t('personalData.deleteAccount.buttonLabel'),
           }}
           setOpen={(value: boolean) => {
             setOpenDeleteModal(value);

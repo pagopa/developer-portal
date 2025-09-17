@@ -1,9 +1,9 @@
 /* eslint-disable functional/no-expression-statements */
 /* eslint-disable functional/no-try-statements */
-import { SolutionTemplateProps } from "@/components/templates/SolutionTemplate/SolutionTemplate";
-import { StrapiSolutions } from "@/lib/strapi/types/solutions";
-import { makeWebinarProps } from "@/lib/strapi/makeProps/makeWebinars";
-import _ from "lodash";
+import { SolutionTemplateProps } from '@/components/templates/SolutionTemplate/SolutionTemplate';
+import { StrapiSolutions } from '@/lib/strapi/types/solutions';
+import { makeWebinarProps } from '@/lib/strapi/makeProps/makeWebinars';
+import _ from 'lodash';
 
 export function makeSolutionsProps(
   strapiSolutions: StrapiSolutions,
@@ -39,7 +39,7 @@ export function makeSolutionsProps(
           ),
           bannerLinks: attributes.bannerLinks.map((bannerLink) => ({
             ...bannerLink,
-            title: bannerLink.title || "",
+            title: bannerLink.title || '',
             icon: bannerLink.icon?.data?.attributes,
           })),
           solutionSlug: attributes.slug,

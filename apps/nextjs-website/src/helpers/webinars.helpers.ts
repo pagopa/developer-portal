@@ -1,4 +1,4 @@
-import { Webinar } from "@/lib/types/webinar";
+import { Webinar } from '@/lib/types/webinar';
 
 export const getFutureWebinars = (
   webinars: readonly Webinar[],

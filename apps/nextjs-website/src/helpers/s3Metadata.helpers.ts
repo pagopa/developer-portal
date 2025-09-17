@@ -1,6 +1,6 @@
 /* eslint-disable functional/no-let */
 /* eslint-disable functional/no-expression-statements */
-import { staticContentsUrl } from "@/config";
+import { staticContentsUrl } from '@/config';
 
 export interface JsonMetadata {
   readonly path: string;
@@ -21,12 +21,12 @@ const delay = (ms: number): Promise<void> =>
   new Promise((resolve) => setTimeout(resolve, ms));
 
 // Retry configuration - configurable via environment variables
-const RETRY_ATTEMPTS = parseInt(process.env.CDN_RETRY_ATTEMPTS || "3", 10);
+const RETRY_ATTEMPTS = parseInt(process.env.CDN_RETRY_ATTEMPTS || '3', 10);
 const INITIAL_RETRY_DELAY_MS = parseInt(
-  process.env.CDN_RETRY_DELAY_MS || "1000",
+  process.env.CDN_RETRY_DELAY_MS || '1000',
   10,
 );
-const TIMEOUT_LIMIT = parseInt(process.env.TIMEOUT_LIMIT || "30000");
+const TIMEOUT_LIMIT = parseInt(process.env.TIMEOUT_LIMIT || '30000');
 
 // Global promise cache to prevent concurrent requests to the same endpoint
 const requestCache = new Map<string, Promise<any>>();
@@ -123,7 +123,7 @@ async function fetchFromCDN(path: string) {
   if (!staticContentsUrl) {
     // eslint-disable-next-line functional/no-throw-statements
     throw new Error(
-      "STATIC_CONTENTS_URL is not defined in the environment variables.",
+      'STATIC_CONTENTS_URL is not defined in the environment variables.',
     );
   }
 
@@ -135,7 +135,7 @@ async function fetchFromCDN(path: string) {
 
   if (!response || !response.ok) {
     // eslint-disable-next-line functional/no-throw-statements
-    throw new Error("Response is null");
+    throw new Error('Response is null');
   }
 
   const json = await response.json();
@@ -200,15 +200,15 @@ export async function fetchMetadataFromCDN<T>(
 }
 
 const S3_GUIDES_METADATA_JSON_PATH =
-  process.env.S3_GUIDES_METADATA_JSON_PATH || "guides-metadata.json";
+  process.env.S3_GUIDES_METADATA_JSON_PATH || 'guides-metadata.json';
 const S3_SOLUTIONS_METADATA_JSON_PATH =
-  process.env.S3_SOLUTIONS_METADATA_JSON_PATH || "solutions-metadata.json";
+  process.env.S3_SOLUTIONS_METADATA_JSON_PATH || 'solutions-metadata.json';
 const S3_RELEASE_NOTES_METADATA_JSON_PATH =
   process.env.S3_RELEASE_NOTES_METADATA_JSON_PATH ||
-  "release-notes-metadata.json";
+  'release-notes-metadata.json';
 const S3_SOAP_API_METADATA_JSON_PATH =
   process.env.S3_SOAP_API_METADATA_JSON_PATH ||
-  "soap-api/soap-api-metadata.json";
+  'soap-api/soap-api-metadata.json';
 
 let guidesMetadataCache: readonly JsonMetadata[] | null = null;
 let solutionsMetadataCache: readonly JsonMetadata[] | null = null;

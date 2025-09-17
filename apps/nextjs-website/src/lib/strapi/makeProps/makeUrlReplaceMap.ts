@@ -1,4 +1,4 @@
-import { StrapiUrlReplaceMap } from "@/lib/strapi/types/urlReplaceMap";
+import { StrapiUrlReplaceMap } from '@/lib/strapi/types/urlReplaceMap';
 
 export type UrlReplaceMap = Record<string, string>;
 
@@ -11,7 +11,7 @@ export function makeUrlReplaceMap(
       [obj.url]: `/${
         obj.guide.data?.attributes.product.data.attributes.slug
       }/guides/${obj.guide.data?.attributes.slug}${
-        obj.subPath ? `/${obj.subPath}` : ""
+        obj.subPath ? `/${obj.subPath}` : ''
       }`,
     };
   }, {} as UrlReplaceMap);

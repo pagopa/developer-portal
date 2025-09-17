@@ -1,13 +1,13 @@
-import Box from "@mui/material/Box";
-import Stack from "@mui/material/Stack";
-import { useTheme, type SxProps } from "@mui/material/styles";
-import { useEffect, useState } from "react";
-import { type CommonProps } from "../types/components";
-import { Ctas, type CtaProps } from "../Ctas/Ctas";
-import { HamburgerMenu } from "./components/HamburgerMenu";
-import { type NavigationProps, Navigation } from "./components/Navigation";
-import { type TitleProps, Content } from "./components/Title";
-import { Divider } from "@mui/material";
+import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
+import { useTheme, type SxProps } from '@mui/material/styles';
+import { useEffect, useState } from 'react';
+import { type CommonProps } from '../types/components';
+import { Ctas, type CtaProps } from '../Ctas/Ctas';
+import { HamburgerMenu } from './components/HamburgerMenu';
+import { type NavigationProps, Navigation } from './components/Navigation';
+import { type TitleProps, Content } from './components/Title';
+import { Divider } from '@mui/material';
 
 interface BottomHeaderProps extends CtaProps, NavigationProps, TitleProps {}
 
@@ -30,16 +30,16 @@ export const Header = (props: HeaderProps) => {
   };
 
   useEffect(() => {
-    window.addEventListener("resize", onResize);
+    window.addEventListener('resize', onResize);
 
     return () => {
-      window.removeEventListener("resize", onResize);
+      window.removeEventListener('resize', onResize);
     };
   }, []);
 
   const { palette } = useTheme();
   const backgroundColor =
-    theme === "dark" ? palette.primary.dark : palette.background.paper;
+    theme === 'dark' ? palette.primary.dark : palette.background.paper;
 
   const HeaderCtas = () => <Ctas {...{ theme, ctaButtons }} />;
 
@@ -47,11 +47,11 @@ export const Header = (props: HeaderProps) => {
     <>
       <Box
         bgcolor={backgroundColor}
-        component="header"
-        role="banner"
+        component='header'
+        role='banner'
         sx={{
-          borderBottomRightRadius: "8px",
-          borderBottomLeftRadius: "8px",
+          borderBottomRightRadius: '8px',
+          borderBottomLeftRadius: '8px',
           paddingX: {
             xs: 3,
             sm: 3,
@@ -59,19 +59,19 @@ export const Header = (props: HeaderProps) => {
         }}
       >
         <Stack
-          direction={{ md: "row" }}
+          direction={{ md: 'row' }}
           paddingY={{ xs: 2, sm: 3, md: 1 }}
           gap={4}
         >
           <Stack sx={styles.headerInfo}>
             <Content {...{ product, avatar, beta, theme }} />
             <Stack
-              sx={{ display: { md: "none" } }}
-              direction="row"
-              alignItems="center"
+              sx={{ display: { md: 'none' } }}
+              direction='row'
+              alignItems='center'
               gap={4}
             >
-              <Box sx={{ display: { xs: "none", sm: "block", md: "none" } }}>
+              <Box sx={{ display: { xs: 'none', sm: 'block', md: 'none' } }}>
                 <HeaderCtas />
               </Box>
               <HamburgerMenu
@@ -84,14 +84,14 @@ export const Header = (props: HeaderProps) => {
 
           <Stack
             sx={{
-              display: { xs: headerOpen ? "flex" : "none", md: "flex" },
+              display: { xs: headerOpen ? 'flex' : 'none', md: 'flex' },
               ...styles.headerMenu,
             }}
           >
             <Navigation {...{ menu, theme }} />
             <Box
               sx={{
-                display: { sm: "none", md: "block" },
+                display: { sm: 'none', md: 'block' },
               }}
             >
               <HeaderCtas />
@@ -106,16 +106,16 @@ export const Header = (props: HeaderProps) => {
 
 const styles: Record<string, SxProps> = {
   headerMenu: {
-    justifyContent: "space-between",
-    width: "100%",
-    flexDirection: { xs: "column", md: "row" },
-    alignItems: { md: "center", xs: "flex-start" },
+    justifyContent: 'space-between',
+    width: '100%',
+    flexDirection: { xs: 'column', md: 'row' },
+    alignItems: { md: 'center', xs: 'flex-start' },
     gap: { xs: 2 },
     px: 3,
   },
   headerInfo: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
 };

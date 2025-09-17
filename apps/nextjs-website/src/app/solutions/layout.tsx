@@ -1,4 +1,4 @@
-import ContentWrapper from "@/components/atoms/ContentWrapper/ContentWrapper";
+import ContentWrapper from '@/components/atoms/ContentWrapper/ContentWrapper';
 
 export default function SolutionsLayout({
   children,

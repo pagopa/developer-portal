@@ -1,12 +1,12 @@
-"use client";
-import React, { ReactNode } from "react";
-import { parseInPageMenu } from "gitbook-docs/parseInPageMenu";
+'use client';
+import React, { ReactNode } from 'react';
+import { parseInPageMenu } from 'gitbook-docs/parseInPageMenu';
 import {
   RenderingComponents,
   renderInPageMenu,
-} from "gitbook-docs/renderInPageMenu";
-import Heading from "@/components/organisms/GuideInPageMenu/components/Heading";
-import { Typography, useTheme } from "@mui/material";
+} from 'gitbook-docs/renderInPageMenu';
+import Heading from '@/components/organisms/GuideInPageMenu/components/Heading';
+import { Typography, useTheme } from '@mui/material';
 
 type GuideInPageMenuProps = {
   assetsPrefix: string;
@@ -35,8 +35,8 @@ const GuideInPageMenu = ({
           color={palette.text.secondary}
           fontSize={14}
           fontWeight={700}
-          textTransform={"uppercase"}
-          marginBottom={"18px"}
+          textTransform={'uppercase'}
+          marginBottom={'18px'}
         >
           {title}
         </Typography>

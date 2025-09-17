@@ -1,6 +1,6 @@
-import { Abstract } from "@/editorialComponents/Abstract/Abstract";
-import { useTranslations } from "next-intl";
-import React from "react";
+import { Abstract } from '@/editorialComponents/Abstract/Abstract';
+import { useTranslations } from 'next-intl';
+import React from 'react';
 
 type ErrorPageProps = {
   overline: string;
@@ -16,7 +16,7 @@ const ErrorPage: React.FC<ErrorPageProps> = ({
   const t = useTranslations();
   return (
     <Abstract
-      layout="center"
+      layout='center'
       overline={t(overline)}
       title={t(title)}
       description={t(description)}

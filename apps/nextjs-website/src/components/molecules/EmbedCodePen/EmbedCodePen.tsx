@@ -1,5 +1,5 @@
-import React from "react";
-import EmbedCaption from "@/components/atoms/EmbedCaption/EmbedCaption";
+import React from 'react';
+import EmbedCaption from '@/components/atoms/EmbedCaption/EmbedCaption';
 
 export type EmbedCodePenProps = {
   url: string;
@@ -7,16 +7,16 @@ export type EmbedCodePenProps = {
 };
 
 const EmbedCodePen = ({ url, children }: EmbedCodePenProps) => {
-  const codePenUrl = url.replace("/pen/", "/embed/");
+  const codePenUrl = url.replace('/pen/', '/embed/');
 
   return (
     <>
       <iframe
-        height="500"
-        style={{ width: "100%" }}
-        title="CodePen Embed"
+        height='500'
+        style={{ width: '100%' }}
+        title='CodePen Embed'
         src={codePenUrl}
-        loading="lazy"
+        loading='lazy'
         allowFullScreen={true}
       ></iframe>
       <EmbedCaption>{children}</EmbedCaption>

@@ -1,14 +1,14 @@
-import { makeWebinarsProps } from "@/lib/strapi/makeProps/makeWebinars";
-import { StrapiWebinars } from "@/lib/strapi/types/webinars";
-import _ from "lodash";
+import { makeWebinarsProps } from '@/lib/strapi/makeProps/makeWebinars';
+import { StrapiWebinars } from '@/lib/strapi/types/webinars';
+import _ from 'lodash';
 import {
   strapiWebinars,
   strapiWebinarsWithMissingData,
   webinarProps,
-} from "./fixtures/webinars";
-import { spyOnConsoleError } from "@/lib/strapi/__tests__/spyOnConsole";
+} from './fixtures/webinars';
+import { spyOnConsoleError } from '@/lib/strapi/__tests__/spyOnConsole';
 
-describe("makeWebinarsProps", () => {
+describe('makeWebinarsProps', () => {
   afterEach(() => {
     spyOnConsoleError.mockClear();
   });
@@ -17,13 +17,13 @@ describe("makeWebinarsProps", () => {
     spyOnConsoleError.mockRestore();
   });
 
-  it("should transform strapi webinars to webinars props", () => {
+  it('should transform strapi webinars to webinars props', () => {
     const result = makeWebinarsProps(_.cloneDeep(strapiWebinars));
     expect(result).toHaveLength(1);
     expect(result[0]).toMatchObject(webinarProps);
   });
 
-  it("should handle a payload with two object with the second one with missing data and successfully return webinar props with only one item", () => {
+  it('should handle a payload with two object with the second one with missing data and successfully return webinar props with only one item', () => {
     const result = makeWebinarsProps(
       _.cloneDeep(strapiWebinarsWithMissingData),
     );
@@ -31,7 +31,7 @@ describe("makeWebinarsProps", () => {
     expect(result[0]).toMatchObject(webinarProps);
   });
 
-  it("should handle empty data array", () => {
+  it('should handle empty data array', () => {
     const emptyData: StrapiWebinars = {
       data: [],
       meta: {
@@ -47,7 +47,7 @@ describe("makeWebinarsProps", () => {
     expect(result).toHaveLength(0);
   });
 
-  it("should handle corrupted data with try/catch and log error", () => {
+  it('should handle corrupted data with try/catch and log error', () => {
     const corruptedData: StrapiWebinars = {
       data: [
         {
@@ -71,7 +71,7 @@ describe("makeWebinarsProps", () => {
 
     expect(result).toHaveLength(0);
     expect(spyOnConsoleError).toHaveBeenCalledWith(
-      "Error while making webinar from Strapi data:",
+      'Error while making webinar from Strapi data:',
       expect.any(Error),
     );
   });
