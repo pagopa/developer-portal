@@ -25,6 +25,9 @@ const S3_PATH_TO_GITBOOK_DOCS =
 const S3_RELEASE_NOTES_METADATA_JSON_PATH =
   process.env.S3_RELEASE_NOTES_METADATA_JSON_PATH ||
   'release-notes-metadata.json';
+const SYNCED_RELEASE_NOTES_RESPONSE_JSON_PATH =
+  process.env.SYNCED_RELEASE_NOTES_RESPONSE_JSON_PATH ||
+  'synced-release-notes-response.json';
 
 const s3Client = makeS3Client();
 
@@ -98,11 +101,14 @@ async function main() {
 
   // eslint-disable-next-line functional/no-let
   let strapiReleaseNotes;
+  // eslint-disable-next-line functional/no-let
+  let responseJson;
   try {
-    const { data } = await fetchFromStrapi<StrapiReleaseNote>(
+    const result = await fetchFromStrapi<StrapiReleaseNote>(
       'api/release-notes?populate[0]=product&pagination[pageSize]=1000&pagination[page]=1'
     );
-    strapiReleaseNotes = data;
+    strapiReleaseNotes = result.data;
+    responseJson = result;
   } catch (error) {
     console.error('Error fetching release notes from Strapi:', error);
     process.exit(1);
@@ -120,6 +126,14 @@ async function main() {
   await writeSitemapJson(
     sitemapItems,
     S3_RELEASE_NOTES_METADATA_JSON_PATH,
+    `${S3_BUCKET_NAME}`,
+    s3Client
+  );
+
+  // TODO: remove when Strapi will manage Metadata
+  await writeSitemapJson(
+    responseJson,
+    SYNCED_RELEASE_NOTES_RESPONSE_JSON_PATH,
     `${S3_BUCKET_NAME}`,
     s3Client
   );
