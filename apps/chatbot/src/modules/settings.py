@@ -26,16 +26,6 @@ class ChatbotSettings(BaseSettings):
     """Settings for the chatbot application."""
 
     # api keys
-    aws_access_key_id: str = os.getenv(
-        "AWS_ACCESS_KEY_ID", os.getenv("CHB_AWS_ACCESS_KEY_ID")
-    )
-    aws_default_region: str = os.getenv(
-        "AWS_REGION", os.getenv("CHB_AWS_DEFAULT_REGION")
-    )
-    aws_endpoint_url: str | None = os.getenv("CHB_AWS_SSM_ENDPOINT_URL")
-    aws_secret_access_key: str = os.getenv(
-        "AWS_SECRET_ACCESS_KEY", os.getenv("CHB_AWS_SECRET_ACCESS_KEY")
-    )
     google_api_key: str = get_ssm_parameter(
         name=os.getenv("CHB_AWS_SSM_GOOGLE_API_KEY"),
         default=os.getenv("CHB_AWS_GOOGLE_API_KEY"),

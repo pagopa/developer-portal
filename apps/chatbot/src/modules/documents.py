@@ -22,12 +22,7 @@ from src.modules.settings import SETTINGS
 
 logging.getLogger("botocore").setLevel(logging.ERROR)
 LOGGER = get_logger(__name__)
-AWS_S3_CLIENT = boto3.client(
-    "s3",
-    aws_access_key_id=os.getenv("CHB_AWS_ACCESS_KEY_ID"),
-    aws_secret_access_key=os.getenv("CHB_AWS_SECRET_ACCESS_KEY"),
-    region_name=os.getenv("CHB_AWS_DEFAULT_REGION"),
-)
+AWS_S3_CLIENT = boto3.client("s3")
 
 
 def remove_figure_blocks(md_text):

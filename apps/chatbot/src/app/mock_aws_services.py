@@ -8,20 +8,9 @@ logger = getLogger(__name__)
 COGNITO_USERNAME = "test_user"
 COGNITO_PASSWORD = "TestPassword123!"
 
-AWS_ACCESS_KEY_ID = os.getenv("CHB_AWS_ACCESS_KEY_ID")
-AWS_SECRET_ACCESS_KEY = os.getenv("CHB_AWS_SECRET_ACCESS_KEY")
-AWS_DEFAULT_REGION = os.getenv("CHB_AWS_DEFAULT_REGION")
-AWS_ENDPOINT_URL = os.getenv("CHB_AWS_SSM_ENDPOINT_URL", None)
-
 
 def mock_client_cognito() -> boto3.client:
-    client = boto3.client(
-        "cognito-idp",
-        aws_access_key_id=AWS_ACCESS_KEY_ID,
-        aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
-        region_name=AWS_DEFAULT_REGION,
-        endpoint_url=AWS_ENDPOINT_URL,
-    )
+    client = boto3.client("cognito-idp")
     return client
 
 

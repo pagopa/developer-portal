@@ -4,13 +4,7 @@ import boto3
 from src.modules.logger import get_logger
 
 LOGGER = get_logger(__name__)
-SSM_CLIENT = boto3.client(
-    "ssm",
-    aws_access_key_id=os.getenv("CHB_AWS_ACCESS_KEY_ID"),
-    aws_secret_access_key=os.getenv("CHB_AWS_SECRET_ACCESS_KEY"),
-    region_name=os.getenv("CHB_AWS_DEFAULT_REGION"),
-    endpoint_url=os.getenv("CHB_AWS_SSM_ENDPOINT_URL", None),
-)
+SSM_CLIENT = boto3.client("ssm")
 
 
 def get_ssm_parameter(name: str | None, default: str | None = None) -> str | None:
