@@ -8,7 +8,7 @@ type ChatbotHistoryNavigationLinkProps = {
 
 const ChatbotHistoryNavigationLink = ({
   sessionId,
-  sessionTitle
+  sessionTitle,
 }: ChatbotHistoryNavigationLinkProps) => {
   const { palette, typography } = useTheme();
   const textColor = palette.text.secondary;

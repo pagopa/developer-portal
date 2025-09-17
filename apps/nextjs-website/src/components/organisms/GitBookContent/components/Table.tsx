@@ -15,14 +15,14 @@ export const Table = ({ children }: TableProps<ReactNode>) => (
     sx={{
       maxWidth: {
         xs: 'calc(100vw - 100px)',
-        lg: 'calc(100vw - 700px)'
-      }
+        lg: 'calc(100vw - 700px)',
+      },
     }}
   >
     <MUITable
       sx={{
         borderCollapse: 'collapse',
-        borderStyle: 'hidden'
+        borderStyle: 'hidden',
       }}
     >
       {children}
@@ -32,13 +32,13 @@ export const Table = ({ children }: TableProps<ReactNode>) => (
 
 export const TableHead = styled(MUITableHead)(({ theme }) => ({
   backgroundColor: theme.palette.background.default,
-  borderBottom: `2px solid ${theme.palette.divider}`
+  borderBottom: `2px solid ${theme.palette.divider}`,
 }));
 export const TableBody = styled(MUITableBody)(() => ({
   fontSize: 18,
   'span.MuiTypography-body1': {
-    fontSize: '1rem !important'
-  }
+    fontSize: '1rem !important',
+  },
 }));
 export const TableR = MUITableRow;
 
@@ -46,7 +46,7 @@ export const TableH = styled(MUITableCell)(({ theme }) => ({
   border: `1px solid ${theme.palette.divider} !important`,
   fontSize: 18,
   fontWeight: 600,
-  padding: '0.5rem 1rem'
+  padding: '0.5rem 1rem',
 }));
 
 export const TableD = (props: TableCellProps) => {
@@ -75,7 +75,7 @@ export const TableD = (props: TableCellProps) => {
     <MUITableCell
       sx={{
         border: `1px solid ${theme.palette.divider}`,
-        padding: '0.5rem 1rem'
+        padding: '0.5rem 1rem',
       }}
       {...props}
     >

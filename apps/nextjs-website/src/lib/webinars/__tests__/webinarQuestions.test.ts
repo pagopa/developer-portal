@@ -4,28 +4,28 @@ import {
   WebinarEnv,
   insertWebinarQuestion,
   listWebinarQuestions,
-  updateWebinarQuestion
+  updateWebinarQuestion,
 } from '../webinarQuestions';
 import {
   PutItemCommand,
   QueryCommand,
-  UpdateItemCommand
+  UpdateItemCommand,
 } from '@aws-sdk/client-dynamodb';
 import { makeDynamodbItemFromWebinarQuestion } from '../dynamodb/codec';
 
 const aWebinarQuestion = {
   id: {
     slug: 'aWebinarId',
-    createdAt: new Date(0)
+    createdAt: new Date(0),
   },
-  question: 'aQuestion'
+  question: 'aQuestion',
 };
 const aInsertWebinarQuestion = {
   slug: aWebinarQuestion.id.slug,
-  question: aWebinarQuestion.question
+  question: aWebinarQuestion.question,
 };
 const aDynamoDBItem = makeDynamodbItemFromWebinarQuestion({
-  ...aWebinarQuestion
+  ...aWebinarQuestion,
 });
 
 const makeTestWebinarEnv = () => {
@@ -42,7 +42,7 @@ const makeTestWebinarEnv = () => {
   nowDateMock.mockImplementation(() => nowDate);
   const env = {
     dynamoDBClient: dynamoDBClientMock,
-    nowDate: nowDateMock
+    nowDate: nowDateMock,
   };
   return { env, dynamoDBClientMock, nowDateMock, nowDate };
 };
@@ -81,8 +81,8 @@ describe('webinarQuestions', () => {
       const actual = await updateWebinarQuestion({
         id: aWebinarQuestion.id,
         updates: {
-          highlightedBy: { operation: 'remove' }
-        }
+          highlightedBy: { operation: 'remove' },
+        },
       })(env)();
       const expected = E.right(undefined);
 
@@ -105,7 +105,7 @@ describe('webinarQuestions', () => {
       const { env, dynamoDBClientMock } = makeTestWebinarEnv();
       const { slug } = aWebinarQuestion.id;
       dynamoDBClientMock.send.mockImplementation(() =>
-        Promise.resolve({ Items: undefined })
+        Promise.resolve({ Items: undefined }),
       );
       const actual = await listWebinarQuestions(slug)(env)();
       const expected = E.right([]);

@@ -1,7 +1,7 @@
 import { Product } from '@/lib/types/product';
 import { Abstract } from '@/editorialComponents/Abstract/Abstract';
 import ProductLayout, {
-  ProductLayoutProps
+  ProductLayoutProps,
 } from '@/components/organisms/ProductLayout/ProductLayout';
 import { getQuickStartGuide } from '@/lib/api';
 import React from 'react';
@@ -11,13 +11,13 @@ import { ProductParams } from '@/lib/types/productParams';
 import { Metadata, ResolvingMetadata } from 'next';
 import {
   makeMetadata,
-  makeMetadataFromStrapi
+  makeMetadataFromStrapi,
 } from '@/helpers/metadata.helpers';
 import { SEO } from '@/lib/types/seo';
 import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
 import {
   breadcrumbItemByProduct,
-  productToBreadcrumb
+  productToBreadcrumb,
 } from '@/helpers/structuredData.helpers';
 
 export type QuickStartGuidePageProps = {
@@ -34,12 +34,12 @@ export type QuickStartGuidePageProps = {
 
 export async function generateMetadata(
   { params }: ProductParams,
-  parent: ResolvingMetadata
+  parent: ResolvingMetadata,
 ): Promise<Metadata> {
   const resolvedParams = await params;
   const resolvedParent = await parent;
   const { abstract, path, product, seo } = await getQuickStartGuide(
-    resolvedParams?.productSlug
+    resolvedParams?.productSlug,
   );
 
   if (seo) {
@@ -51,7 +51,7 @@ export async function generateMetadata(
     title: [abstract?.title, product.name].filter(Boolean).join(' | '),
     description: abstract?.description,
     url: path,
-    image: product.logo?.url
+    image: product.logo?.url,
   });
 }
 
@@ -64,7 +64,7 @@ const QuickStartGuidesPage = async ({ params }: ProductParams) => {
     path,
     steps,
     seo,
-    product
+    product,
   } = await getQuickStartGuide(resolvedParams?.productSlug);
 
   const structuredData = generateStructuredDataScripts({
@@ -72,10 +72,10 @@ const QuickStartGuidesPage = async ({ params }: ProductParams) => {
       productToBreadcrumb(product),
       {
         name: seo?.metaTitle || abstract?.title,
-        item: breadcrumbItemByProduct(product, ['quick-start'])
-      }
+        item: breadcrumbItemByProduct(product, ['quick-start']),
+      },
     ],
-    seo: seo
+    seo: seo,
   });
 
   return (

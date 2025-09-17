@@ -3,37 +3,37 @@ import * as tt from 'io-ts-types';
 import {
   UpdateExpression,
   WebinarQuestion,
-  WebinarQuestionUpdate
+  WebinarQuestionUpdate,
 } from '../webinarQuestions';
 import {
   QueryCommandInput,
-  UpdateItemCommandInput
+  UpdateItemCommandInput,
 } from '@aws-sdk/client-dynamodb';
 import { WebinarSubscription } from '../webinarSubscriptions';
 
 const DynamodbAttrS = t.strict({
-  S: t.string
+  S: t.string,
 });
 const DynamodbAttrISODate = t.strict({
-  S: tt.DateFromISOString
+  S: tt.DateFromISOString,
 });
 
 export const WebinarQuestionDynamodbCodec = t.intersection([
   t.strict({
     webinarId: DynamodbAttrS,
     createdAt: DynamodbAttrISODate,
-    question: DynamodbAttrS
+    question: DynamodbAttrS,
   }),
   t.partial({
     hiddenBy: DynamodbAttrS,
-    highlightedBy: DynamodbAttrS
-  })
+    highlightedBy: DynamodbAttrS,
+  }),
 ]);
 
 export const WebinarSubscriptionDynamodbCodec = t.strict({
   webinarId: DynamodbAttrS,
   username: DynamodbAttrS,
-  createdAt: DynamodbAttrISODate
+  createdAt: DynamodbAttrISODate,
 });
 
 type WebinarQuestionDynamoDB = t.TypeOf<typeof WebinarQuestionDynamodbCodec>;
@@ -42,34 +42,34 @@ type WebinarSubscriptionDynamoDB = t.TypeOf<
 >;
 
 export const makeWebinarQuestionListQueryCondition = (
-  webinarId: string
+  webinarId: string,
 ): Pick<
   QueryCommandInput,
   'KeyConditionExpression' | 'ExpressionAttributeValues'
 > => ({
   KeyConditionExpression: 'webinarId = :webinarId',
-  ExpressionAttributeValues: { ':webinarId': { S: webinarId } }
+  ExpressionAttributeValues: { ':webinarId': { S: webinarId } },
 });
 
 export const makeWebinarQuestionFromDynamodbItem = (
-  input: WebinarQuestionDynamoDB
+  input: WebinarQuestionDynamoDB,
 ): WebinarQuestion => ({
   id: {
     slug: input.webinarId.S,
-    createdAt: input.createdAt.S
+    createdAt: input.createdAt.S,
   },
   question: input.question.S,
   // use the short-circuit evaluation to omit the attribute if it is undefined
   ...(input.hiddenBy && { hiddenBy: input.hiddenBy.S }),
-  ...(input.highlightedBy && { highlightedBy: input.highlightedBy.S })
+  ...(input.highlightedBy && { highlightedBy: input.highlightedBy.S }),
 });
 
 export const makeWebinarSubscriptionFromDynamodbItem = (
-  input: WebinarSubscriptionDynamoDB
+  input: WebinarSubscriptionDynamoDB,
 ): WebinarSubscription => ({
   webinarId: input.webinarId.S,
   username: input.username.S,
-  createdAt: new Date(input.createdAt.S)
+  createdAt: new Date(input.createdAt.S),
 });
 
 export const makeDynamodbItemFromWebinarQuestion = (input: WebinarQuestion) =>
@@ -78,16 +78,16 @@ export const makeDynamodbItemFromWebinarQuestion = (input: WebinarQuestion) =>
     createdAt: { S: input.id.createdAt },
     question: { S: input.question },
     ...(input.hiddenBy && { hiddenBy: { S: input.hiddenBy } }),
-    ...(input.highlightedBy && { highlightedBy: { S: input.highlightedBy } })
+    ...(input.highlightedBy && { highlightedBy: { S: input.highlightedBy } }),
   });
 
 export const makeDynamodbItemFromWebinarSubscription = (
-  input: WebinarSubscription
+  input: WebinarSubscription,
 ) =>
   WebinarSubscriptionDynamodbCodec.encode({
     webinarId: { S: input.webinarId },
     username: { S: input.username },
-    createdAt: { S: input.createdAt }
+    createdAt: { S: input.createdAt },
   });
 
 type UpdateExpressionItem = {
@@ -97,7 +97,7 @@ type UpdateExpressionItem = {
 // Helper function to create UpdateExpression and ExpressionAttributeValues.
 // https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Expressions.UpdateExpressions.html
 const makeUpdateExpression = (
-  expressionList: ReadonlyArray<UpdateExpressionItem>
+  expressionList: ReadonlyArray<UpdateExpressionItem>,
 ): Pick<
   UpdateItemCommandInput,
   'UpdateExpression' | 'ExpressionAttributeValues'
@@ -123,7 +123,7 @@ const makeUpdateExpression = (
         const set = `${prefix} ${curr.fieldName} = :${curr.fieldName}`;
         const expressionAttributeValues = {
           ...acc.expressionAttributeValues,
-          [`:${curr.fieldName}`]: { S: curr.expression?.value }
+          [`:${curr.fieldName}`]: { S: curr.expression?.value },
         };
         return { ...acc, set, expressionAttributeValues };
       }
@@ -138,27 +138,27 @@ const makeUpdateExpression = (
       // handle no operations
       else return acc;
     },
-    initialValue
+    initialValue,
   );
   return {
     UpdateExpression: `${set ?? ''} ${remove ?? ''}`,
-    ExpressionAttributeValues: expressionAttributeValues
+    ExpressionAttributeValues: expressionAttributeValues,
   };
 };
 
 export const makeDynamodbUpdateFromWebinarQuestionUpdate = (
-  input: WebinarQuestionUpdate
+  input: WebinarQuestionUpdate,
 ): Omit<UpdateItemCommandInput, 'TableName'> => {
   const { UpdateExpression, ExpressionAttributeValues } = makeUpdateExpression([
     { fieldName: 'hiddenBy', expression: input.updates.hiddenBy },
-    { fieldName: 'highlightedBy', expression: input.updates.highlightedBy }
+    { fieldName: 'highlightedBy', expression: input.updates.highlightedBy },
   ]);
   return {
     Key: {
       webinarId: { S: input.id.slug },
-      createdAt: { S: input.id.createdAt.toISOString() }
+      createdAt: { S: input.id.createdAt.toISOString() },
     },
     UpdateExpression,
-    ExpressionAttributeValues
+    ExpressionAttributeValues,
   };
 };

@@ -6,16 +6,16 @@ export default function robots(): MetadataRoute.Robots {
     return {
       rules: {
         userAgent: '*',
-        allow: '/'
+        allow: '/',
       },
-      sitemap: `${baseUrl}/sitemap.xml`
+      sitemap: `${baseUrl}/sitemap.xml`,
     };
   } else {
     return {
       rules: {
         userAgent: '*',
-        disallow: '/'
-      }
+        disallow: '/',
+      },
     };
   }
 }

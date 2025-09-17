@@ -9,7 +9,7 @@ import ExpiredCode from '@/app/auth/expired-code/page';
 enum State {
   loading = 'loading',
   expiredCode = 'expiredCode',
-  error = 'error'
+  error = 'error',
 }
 
 const EmailConfirmationContent = () => {

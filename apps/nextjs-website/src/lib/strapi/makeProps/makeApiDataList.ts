@@ -6,20 +6,21 @@ import { StrapiApiDataList } from '@/lib/strapi/types/apiDataList';
 import _ from 'lodash';
 
 export async function makeApiDataListProps(
-  strapiApiDataList: StrapiApiDataList
+  strapiApiDataList: StrapiApiDataList,
 ): Promise<ReadonlyArray<ApiDataPageProps>> {
   const list = _.compact(
     await Promise.all(
       strapiApiDataList.data
         .filter(
           (apiPage) =>
-            apiPage.attributes.apiRestDetail || apiPage.attributes.apiSoapDetail
+            apiPage.attributes.apiRestDetail ||
+            apiPage.attributes.apiSoapDetail,
         )
         .map(async ({ attributes }) => {
           if (!attributes.apiRestDetail && !attributes.apiSoapDetail) {
             // eslint-disable-next-line functional/no-expression-statements
             console.error(
-              `Error processing API Data "${attributes.title}": Missing API details. Skipping...`
+              `Error processing API Data "${attributes.title}": Missing API details. Skipping...`,
             );
             return null;
           }
@@ -30,14 +31,14 @@ export async function makeApiDataListProps(
           if (!apiDataSlug) {
             // eslint-disable-next-line functional/no-expression-statements
             console.error(
-              `Error processing API Data with title "${attributes.title}": Missing API slug. Skipping...`
+              `Error processing API Data with title "${attributes.title}": Missing API slug. Skipping...`,
             );
             return null;
           }
           // eslint-disable-next-line functional/no-try-statements
           try {
             const product = makeBaseProductWithoutLogoProps(
-              attributes.product.data
+              attributes.product.data,
             );
             return {
               ...attributes,
@@ -47,8 +48,8 @@ export async function makeApiDataListProps(
               restApiSpecUrls: attributes.apiRestDetail
                 ? [
                     ...attributes.apiRestDetail.specUrls.map((spec) => ({
-                      ...spec
-                    }))
+                      ...spec,
+                    })),
                   ]
                 : [],
               apiSoapUrl: attributes.apiSoapDetail?.repositoryUrl,
@@ -60,20 +61,20 @@ export async function makeApiDataListProps(
                 attributes.bannerLinks.length > 0
                   ? attributes.bannerLinks.map(makeBannerLinkProps)
                   : attributes.product.data.attributes.bannerLinks?.map(
-                      makeBannerLinkProps
+                      makeBannerLinkProps,
                     ),
-              seo: attributes.seo
+              seo: attributes.seo,
             } satisfies ApiDataPageProps;
           } catch (error) {
             // eslint-disable-next-line functional/no-expression-statements
             console.error(
               `Error processing API Data with title "${attributes.title}":`,
-              error
+              error,
             );
             return null;
           }
-        })
-    )
+        }),
+    ),
   );
   return Promise.all(list);
 }

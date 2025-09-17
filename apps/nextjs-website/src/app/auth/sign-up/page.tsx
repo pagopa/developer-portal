@@ -25,7 +25,7 @@ const SignUpContent = () => {
   const [submitting, setSubmitting] = useState(false);
   const [userAlreadyExist, setUserAlreadyExist] = useState(false);
   const [signUpStep, setSignUpStep] = useState(
-    params.get('step') || SignUpSteps.SIGN_UP
+    params.get('step') || SignUpSteps.SIGN_UP,
   );
 
   const onBackStep = () => {
@@ -60,7 +60,7 @@ const SignUpContent = () => {
           backgroundImage: 'url(/images/hero.jpg)',
           backgroundRepeat: 'no-repeat',
           backgroundSize: 'cover',
-          backgroundPosition: 'bottom right'
+          backgroundPosition: 'bottom right',
         }}
       >
         <Grid

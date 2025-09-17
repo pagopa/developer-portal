@@ -21,11 +21,11 @@ const CkEditorPart = ({ content }: CkEditorPartProps) => {
 
   const ckEditorStyles = {
     '&': {
-      fontSize: '1rem'
+      fontSize: '1rem',
     },
     '& .menuAnchor': {
       marginTop: `-${scrollOffset}px`,
-      paddingTop: `${scrollOffset}px`
+      paddingTop: `${scrollOffset}px`,
     },
     '& h1': { ...typography.h3 },
     '& h2': { ...typography.h4 },
@@ -36,11 +36,11 @@ const CkEditorPart = ({ content }: CkEditorPartProps) => {
     '& a': {
       color: palette.primary.main,
       textDecoration: 'underline',
-      fontWeight: typography.fontWeightRegular
+      fontWeight: typography.fontWeightRegular,
     },
     '& p': {
       fontSize: '1rem',
-      margin: '0px 0px 16px'
+      margin: '0px 0px 16px',
     },
     '& pre': {
       background: '#F2F2F2',
@@ -54,7 +54,7 @@ const CkEditorPart = ({ content }: CkEditorPartProps) => {
       whiteSpace: 'pre',
       wordBreak: 'normal',
       wordSpacing: 'normal',
-      wordWrap: 'normal'
+      wordWrap: 'normal',
     },
     '& code': {
       background: '#F2F2F2',
@@ -67,47 +67,47 @@ const CkEditorPart = ({ content }: CkEditorPartProps) => {
       position: 'relative',
       tabSize: '4',
       wordBreak: 'break-all',
-      whiteSpace: 'pre-wrap'
+      whiteSpace: 'pre-wrap',
     },
     '& figure.image': {
-      margin: '0 1.5rem 1.5rem 1.5rem'
+      margin: '0 1.5rem 1.5rem 1.5rem',
     },
     '& img': {
       display: 'block',
       margin: '0 auto',
       maxWidth: '100%',
-      height: 'auto'
+      height: 'auto',
     },
     '& figure.table': {
       margin: 0,
-      width: '100%'
+      width: '100%',
     },
     '& table': {
       borderCollapse: 'collapse',
       borderStyle: 'hidden',
       textAlign: 'left',
       width: '100%',
-      wordBreak: 'break-word'
+      wordBreak: 'break-word',
     },
     '& table > thead': {
       backgroundColor: palette.background.default,
-      borderBottom: `2px solid ${palette.divider}`
+      borderBottom: `2px solid ${palette.divider}`,
     },
     '& table > tbody': {
       fontSize: '1rem',
       '& span.MuiTypography-body1': {
-        fontSize: '1rem !important'
-      }
+        fontSize: '1rem !important',
+      },
     },
     '& th': {
       border: `1px solid ${palette.divider} !important`,
       fontSize: '1rem',
       fontWeight: 600,
-      padding: '0.5rem 1rem'
+      padding: '0.5rem 1rem',
     },
     '& td': {
       border: `1px solid ${palette.divider}`,
-      padding: '0.5rem 1rem'
+      padding: '0.5rem 1rem',
     },
     '& blockquote': {
       paddingY: 0,
@@ -116,20 +116,20 @@ const CkEditorPart = ({ content }: CkEditorPartProps) => {
       borderLeftWidth: 4,
       borderLeftStyle: 'solid',
       borderLeftColor: palette.divider,
-      '& > p': { margin: 0 }
+      '& > p': { margin: 0 },
     },
     '& ol li, & ul li': {
-      margin: '0px 0px 8px'
+      margin: '0px 0px 8px',
     },
     '& ol li li': {
-      'list-style-type': 'lower-alpha'
+      'list-style-type': 'lower-alpha',
     },
     '& ul li li': {
-      'list-style-type': 'circle'
+      'list-style-type': 'circle',
     },
     '& ol li li li, & ul li li li': {
-      'list-style-type': 'square'
-    }
+      'list-style-type': 'square',
+    },
   };
 
   return (

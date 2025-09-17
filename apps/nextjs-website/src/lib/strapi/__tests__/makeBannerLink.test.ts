@@ -1,14 +1,14 @@
 import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
 import {
   strapiBannerLink,
-  expectedBannerLinkProps
+  expectedBannerLinkProps,
 } from '@/lib/strapi/__tests__/fixtures/bannerLink';
 import {
   minimalBannerLink,
   bannerLinkWithDarkTheme,
   bannerLinkWithUndefinedContent,
   bannerLinkWithEmptyTitle,
-  bannerLinkWithUndefinedTitle
+  bannerLinkWithUndefinedTitle,
 } from '@/lib/strapi/__tests__/factories/bannerLink';
 import _ from 'lodash';
 
@@ -33,8 +33,8 @@ describe('makeBannerLinkProps', () => {
         ext: '.svg',
         mime: 'image/svg+xml',
         size: 0.5,
-        url: 'https://example.com/minimal-icon.svg'
-      }
+        url: 'https://example.com/minimal-icon.svg',
+      },
     });
   });
 
@@ -77,7 +77,7 @@ describe('makeBannerLinkProps', () => {
       ext: '.jpg',
       mime: 'image/jpeg',
       size: 123456,
-      url: 'https://example.com/example.jpg'
+      url: 'https://example.com/example.jpg',
     });
   });
 
@@ -100,10 +100,10 @@ describe('makeBannerLinkProps', () => {
             ext: '.png',
             mime: 'image/png',
             size: 64,
-            url: 'https://example.com/custom-icon.png'
-          }
-        }
-      }
+            url: 'https://example.com/custom-icon.png',
+          },
+        },
+      },
     };
 
     const result = makeBannerLinkProps(customBannerLink);
@@ -116,7 +116,7 @@ describe('makeBannerLinkProps', () => {
       ext: '.png',
       mime: 'image/png',
       size: 64,
-      url: 'https://example.com/custom-icon.png'
+      url: 'https://example.com/custom-icon.png',
     });
   });
 });

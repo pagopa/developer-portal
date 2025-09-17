@@ -18,10 +18,10 @@ export function minimalDataCaseHistories() {
           updatedAt: '2023-01-02T00:00:00.000Z',
           image: undefined,
           parts: [],
-          seo: undefined
-        }
-      }
-    ]
+          seo: undefined,
+        },
+      },
+    ],
   } satisfies StrapiCaseHistories;
 }
 
@@ -37,10 +37,10 @@ export function caseHistoriesWithMissingData() {
           title: undefined,
           slug: undefined,
           publishedAt: undefined,
-          updatedAt: undefined
-        }
-      }
-    ]
+          updatedAt: undefined,
+        },
+      },
+    ],
   };
 }
 
@@ -53,10 +53,10 @@ export function caseHistoryWithMissingMandatoryData() {
         ...strapiCaseHistory,
         attributes: {
           ...strapiCaseHistory.attributes,
-          products: { data: [] }
-        }
-      }
-    ]
+          products: { data: [] },
+        },
+      },
+    ],
   };
 }
 
@@ -68,9 +68,9 @@ export function caseHistoriesWithMultipleProducts() {
       shortName: 'SecondProd',
       slug: 'second-product',
       logo: {
-        data: mediaJpeg()
-      }
-    }
+        data: mediaJpeg(),
+      },
+    },
   };
 
   return {
@@ -81,11 +81,14 @@ export function caseHistoriesWithMultipleProducts() {
         attributes: {
           ...strapiCaseHistory.attributes,
           products: {
-            data: [...strapiCaseHistory.attributes.products.data, secondProduct]
-          }
-        }
-      }
-    ]
+            data: [
+              ...strapiCaseHistory.attributes.products.data,
+              secondProduct,
+            ],
+          },
+        },
+      },
+    ],
   } satisfies StrapiCaseHistories;
 }
 
@@ -98,9 +101,9 @@ export function caseHistoriesWithoutImage() {
         ...strapiCaseHistory,
         attributes: {
           ...strapiCaseHistory.attributes,
-          image: undefined
-        }
-      }
-    ]
+          image: undefined,
+        },
+      },
+    ],
   } satisfies StrapiCaseHistories;
 }

@@ -27,7 +27,7 @@ const EContainer = (props: Props) => {
     px,
     spacing,
     sx,
-    containerSx
+    containerSx,
   } = props;
   const backgroundIsJSX = isJSX(background);
 
@@ -38,7 +38,7 @@ const EContainer = (props: Props) => {
         px: { xs: 4 },
         position: 'relative',
         overflow: 'hidden',
-        ...containerSx
+        ...containerSx,
       }}
       py={py}
       px={px}

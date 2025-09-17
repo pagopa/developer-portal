@@ -39,30 +39,30 @@ export async function generateStaticParams(): Promise<Params[]> {
     .map((paths) => {
       return {
         solutionSlug: paths[SOLUTION_SLUG_PATH_INDEX],
-        solutionSubPathSlugs: paths.slice(SOLUTION_SUB_PATH_INDEX)
+        solutionSubPathSlugs: paths.slice(SOLUTION_SUB_PATH_INDEX),
       };
     });
   return solutionParams;
 }
 
 export async function generateMetadata({
-  params
+  params,
 }: {
   params: Promise<Params>;
 }): Promise<Metadata> {
   const resolvedParams = await params;
   const props = await getSolutionDetail(
     resolvedParams?.solutionSlug,
-    resolvedParams?.solutionSubPathSlugs
+    resolvedParams?.solutionSubPathSlugs,
   );
 
   return makeMetadata({
     title: props?.title,
     url: props
       ? `/solutions/${props?.slug}/${resolvedParams.solutionSubPathSlugs.join(
-          '/'
+          '/',
         )}`
-      : ''
+      : '',
   });
 }
 
@@ -70,7 +70,7 @@ const Page = async ({ params }: { params: Promise<Params> }) => {
   const resolvedParams = await params;
   const solutionProps = await getSolutionDetail(
     resolvedParams?.solutionSlug,
-    resolvedParams?.solutionSubPathSlugs
+    resolvedParams?.solutionSubPathSlugs,
   );
 
   if (!solutionProps) {
@@ -91,19 +91,19 @@ const Page = async ({ params }: { params: Promise<Params> }) => {
       assetsPrefix: source.assetsPrefix,
       urlReplaces: urlReplaceMap,
       gitBookPagesWithTitle: [],
-      spaceToPrefix: []
-    }
+      spaceToPrefix: [],
+    },
   };
 
   const structuredData = generateStructuredDataScripts({
     breadcrumbsItems: [
       {
         name: 'Solutions',
-        item: getItemFromPaths(['solutions'])
+        item: getItemFromPaths(['solutions']),
       },
       {
         name: solution.seo?.metaTitle,
-        item: getItemFromPaths(['solutions', solution.slug])
+        item: getItemFromPaths(['solutions', solution.slug]),
       },
       {
         name: page.title,
@@ -112,11 +112,11 @@ const Page = async ({ params }: { params: Promise<Params> }) => {
           getItemFromPaths([
             'solutions',
             solution.slug,
-            ...resolvedParams.solutionSubPathSlugs
-          ])
-      }
+            ...resolvedParams.solutionSubPathSlugs,
+          ]),
+      },
     ],
-    seo: solution.seo
+    seo: solution.seo,
   });
 
   return (
@@ -129,15 +129,15 @@ const Page = async ({ params }: { params: Promise<Params> }) => {
           ...pageToBreadcrumbs('solutions', [
             {
               name: props.solution.title,
-              path: `/solutions/${props.solution.slug}`
+              path: `/solutions/${props.solution.slug}`,
             },
             {
               name: page.title,
               path: `/solutions/${
                 props.solution.slug
-              }/details/${resolvedParams.solutionSubPathSlugs.join('/')}`
-            }
-          ])
+              }/details/${resolvedParams.solutionSubPathSlugs.join('/')}`,
+            },
+          ]),
         ]}
         menuDistanceFromTop={0}
         contentMarginTop={0}

@@ -12,7 +12,7 @@ export const strapiProducts: StrapiProducts = {
         shortName: 'TP',
         description: 'Test product description',
         logo: {
-          data: mediaJpeg()
+          data: mediaJpeg(),
         },
         bannerLinks: generateBannerLinks(2),
         overview: { data: { id: 1 } },
@@ -27,22 +27,22 @@ export const strapiProducts: StrapiProducts = {
                     attributes: {
                       apiRestDetail: {
                         slug: 'api-detail',
-                        specUrls: []
-                      }
-                    }
-                  }
-                ]
-              }
-            }
-          }
+                        specUrls: [],
+                      },
+                    },
+                  },
+                ],
+              },
+            },
+          },
         },
         guide_list_page: { data: { id: 1 } },
         tutorial_list_page: { data: { id: 1 } },
-        release_note: { data: { id: 1 } }
-      }
-    }
+        release_note: { data: { id: 1 } },
+      },
+    },
   ],
-  meta: { pagination: { page: 1, pageSize: 25, pageCount: 1, total: 1 } }
+  meta: { pagination: { page: 1, pageSize: 25, pageCount: 1, total: 1 } },
 };
 
 export const expectedProduct: Product = {
@@ -59,7 +59,7 @@ export const expectedProduct: Product = {
     ext: '.jpg',
     mime: 'image/jpeg',
     size: 123456,
-    width: 800
+    width: 800,
   },
   bannerLinks: [
     {
@@ -73,9 +73,9 @@ export const expectedProduct: Product = {
         ext: '.jpg',
         mime: 'image/jpeg',
         size: 123456,
-        width: 800
+        width: 800,
       },
-      theme: 'light'
+      theme: 'light',
     },
     {
       title: 'Banner Link 2',
@@ -88,10 +88,10 @@ export const expectedProduct: Product = {
         ext: '.jpg',
         mime: 'image/jpeg',
         size: 123456,
-        width: 800
+        width: 800,
       },
-      theme: 'light'
-    }
+      theme: 'light',
+    },
   ],
   hasApiDataListPage: true,
   apiDataListPageUrl: '/test-product/api/api-detail',
@@ -99,5 +99,5 @@ export const expectedProduct: Product = {
   hasGuideListPage: true,
   hasOverviewPage: true,
   hasQuickstartGuidePage: true,
-  hasReleaseNotePage: true
+  hasReleaseNotePage: true,
 };

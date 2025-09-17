@@ -2,7 +2,7 @@ import { getOverview } from '@/lib/api';
 import Hero from '@/editorialComponents/Hero/Hero';
 import { Metadata, ResolvingMetadata } from 'next';
 import ProductLayout, {
-  ProductLayoutProps
+  ProductLayoutProps,
 } from '@/components/organisms/ProductLayout/ProductLayout';
 import { Product } from '@/lib/types/product';
 import { Tutorial } from '@/lib/types/tutorialData';
@@ -16,16 +16,16 @@ import PostIntegration from '@/components/organisms/PostIntegration/PostIntegrat
 import { ProductParams } from '@/lib/types/productParams';
 import {
   makeMetadata,
-  makeMetadataFromStrapi
+  makeMetadataFromStrapi,
 } from '@/helpers/metadata.helpers';
 import { SEO } from '@/lib/types/seo';
 import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
 import {
   convertSeoToStructuredDataArticle,
-  productToBreadcrumb
+  productToBreadcrumb,
 } from '@/helpers/structuredData.helpers';
 import NewsShowcase, {
-  NewsShowcaseProps
+  NewsShowcaseProps,
 } from '@/components/organisms/NewsShowcase/NewsShowcase';
 const MAX_NUM_TUTORIALS_IN_OVERVIEW = 3;
 
@@ -94,12 +94,12 @@ export type OverviewPageProps = {
 
 export async function generateMetadata(
   { params }: ProductParams,
-  parent: ResolvingMetadata
+  parent: ResolvingMetadata,
 ): Promise<Metadata> {
   const resolvedParams = await params;
   const resolvedParent = await parent;
   const { product, path, seo, hero } = await getOverview(
-    resolvedParams.productSlug
+    resolvedParams.productSlug,
   );
 
   if (seo) {
@@ -111,7 +111,7 @@ export async function generateMetadata(
     title: [hero?.title, product.name].filter(Boolean).join(' | '),
     description: product.description,
     url: path,
-    image: product.logo?.url
+    image: product.logo?.url,
   });
 }
 
@@ -128,7 +128,7 @@ const OverviewPage = async ({ params }: ProductParams) => {
     relatedLinks,
     bannerLinks,
     seo,
-    product
+    product,
   } = await getOverview(resolvedParams.productSlug);
 
   const tutorialsListToShow = tutorials?.list
@@ -138,7 +138,7 @@ const OverviewPage = async ({ params }: ProductParams) => {
   const structuredData = generateStructuredDataScripts({
     breadcrumbsItems: [productToBreadcrumb(product)],
     seo: seo,
-    things: [convertSeoToStructuredDataArticle(seo)]
+    things: [convertSeoToStructuredDataArticle(seo)],
   });
 
   return (
@@ -179,7 +179,7 @@ const OverviewPage = async ({ params }: ProductParams) => {
           subtitle={tutorials.subtitle}
           tutorialPath={{
             path: `/${product.slug}/tutorials`,
-            name: 'tutorials'
+            name: 'tutorials',
           }}
           tutorials={[...(tutorialsListToShow || [])]}
         />
@@ -201,7 +201,7 @@ const OverviewPage = async ({ params }: ProductParams) => {
           cta={
             postIntegration.cta && {
               label: postIntegration.cta.label,
-              href: postIntegration.cta.href
+              href: postIntegration.cta.href,
             }
           }
           listTitle={postIntegration.listTitle}

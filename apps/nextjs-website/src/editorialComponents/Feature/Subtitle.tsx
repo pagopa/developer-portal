@@ -31,7 +31,7 @@ const Subtitle = ({ subtitle, textLink, url, isDarkMode }: SubtitleProps) => {
             href={url}
             underline='none'
             sx={{
-              fontWeight: 'bold'
+              fontWeight: 'bold',
             }}
           >
             {textLink}

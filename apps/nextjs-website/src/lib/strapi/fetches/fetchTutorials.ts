@@ -7,25 +7,25 @@ const makeStrapiTutorialsPopulate = () =>
   qs.stringify({
     populate: {
       relatedLinks: {
-        populate: ['links']
+        populate: ['links'],
       },
       image: {
-        populate: ['image']
+        populate: ['image'],
       },
       parts: '*',
       product: {
-        ...productRelationsPopulate
+        ...productRelationsPopulate,
       },
       bannerLinks: {
-        populate: ['icon']
+        populate: ['icon'],
       },
       seo: {
-        populate: '*,metaImage,metaSocial.image'
-      }
-    }
+        populate: '*,metaImage,metaSocial.image',
+      },
+    },
   });
 
 export const fetchTutorials = fetchFromStrapi<StrapiTutorials>(
   'tutorials',
-  makeStrapiTutorialsPopulate()
+  makeStrapiTutorialsPopulate(),
 );

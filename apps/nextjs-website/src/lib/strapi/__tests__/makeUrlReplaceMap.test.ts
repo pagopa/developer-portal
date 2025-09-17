@@ -1,11 +1,11 @@
 import { makeUrlReplaceMap } from '../makeProps/makeUrlReplaceMap';
 import {
   strapiUrlReplaceMapFixture,
-  expectedUrlReplaceMapFixture
+  expectedUrlReplaceMapFixture,
 } from './fixtures/urlReplaceMap';
 import {
   urlReplaceMapSingle,
-  urlReplaceMapMultiple
+  urlReplaceMapMultiple,
 } from './factories/urlReplaceMap';
 
 describe('makeUrlReplaceMap', () => {
@@ -19,7 +19,7 @@ describe('makeUrlReplaceMap', () => {
     const urlReplaceMap = makeUrlReplaceMap(data);
 
     expect(urlReplaceMap).toEqual({
-      'source-url': '/product-slug/guides/guide-slug'
+      'source-url': '/product-slug/guides/guide-slug',
     });
   });
 
@@ -29,7 +29,7 @@ describe('makeUrlReplaceMap', () => {
 
     expect(urlReplaceMap).toEqual({
       a: '/product-slug/guides/guide-slug',
-      b: '/p-2/guides/s-2/x'
+      b: '/p-2/guides/s-2/x',
     });
   });
 });

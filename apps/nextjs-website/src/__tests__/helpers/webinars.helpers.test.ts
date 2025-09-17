@@ -13,9 +13,9 @@ const testWebinar: Webinar = {
       children: [
         {
           type: 'text',
-          text: 'aText'
-        }
-      ]
+          text: 'aText',
+        },
+      ],
     },
     {
       type: 'image',
@@ -23,10 +23,10 @@ const testWebinar: Webinar = {
       children: [
         {
           type: 'text',
-          text: ''
-        }
-      ]
-    }
+          text: '',
+        },
+      ],
+    },
   ],
   slug: 'test-2024-03-14',
   isVisibleInList: false,
@@ -40,28 +40,28 @@ const testWebinar: Webinar = {
     links: [
       {
         href: `#`,
-        text: 'Lorem ipsum dolor sit amet'
-      }
-    ]
-  }
+        text: 'Lorem ipsum dolor sit amet',
+      },
+    ],
+  },
 };
 
 const webinars: readonly Webinar[] = [
   {
     ...testWebinar,
     startDateTime: '2022-01-01T08:30:00.000Z',
-    endDateTime: '2022-01-01T09:30:00.000Z'
+    endDateTime: '2022-01-01T09:30:00.000Z',
   },
   {
     ...testWebinar,
     startDateTime: '2024-03-04T08:30:00.000Z',
-    endDateTime: '2024-03-04T09:30:00.000Z'
+    endDateTime: '2024-03-04T09:30:00.000Z',
   },
   {
     ...testWebinar,
     startDateTime: '2099-01-01T08:30:00.000Z',
-    endDateTime: '2099-01-01T09:30:00.000Z'
-  }
+    endDateTime: '2099-01-01T09:30:00.000Z',
+  },
 ];
 
 describe('getFutureWebinars', () => {
@@ -70,8 +70,8 @@ describe('getFutureWebinars', () => {
       {
         ...testWebinar,
         startDateTime: '2099-01-01T08:30:00.000Z',
-        endDateTime: '2099-01-01T09:30:00.000Z'
-      }
+        endDateTime: '2099-01-01T09:30:00.000Z',
+      },
     ]);
   });
 });
@@ -82,13 +82,13 @@ describe('getPastWebinars', () => {
       {
         ...testWebinar,
         startDateTime: '2024-03-04T08:30:00.000Z',
-        endDateTime: '2024-03-04T09:30:00.000Z'
+        endDateTime: '2024-03-04T09:30:00.000Z',
       },
       {
         ...testWebinar,
         startDateTime: '2022-01-01T08:30:00.000Z',
-        endDateTime: '2022-01-01T09:30:00.000Z'
-      }
+        endDateTime: '2022-01-01T09:30:00.000Z',
+      },
     ]);
   });
 });

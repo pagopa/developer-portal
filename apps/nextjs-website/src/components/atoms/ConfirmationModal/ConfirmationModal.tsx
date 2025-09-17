@@ -23,7 +23,7 @@ const ConfirmationModal: FC<ConfirmationModalProps> = ({
   cancelCta,
   confirmCta,
   open,
-  setOpen
+  setOpen,
 }) => {
   const { palette } = useTheme();
   const handleClose = () => setOpen(false);
@@ -40,7 +40,7 @@ const ConfirmationModal: FC<ConfirmationModalProps> = ({
           backgroundColor: palette.background.default,
           borderRadius: 1,
           boxShadow: 24,
-          p: 4
+          p: 4,
         }}
       >
         <Typography variant='h6' component='h2'>

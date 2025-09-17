@@ -30,17 +30,17 @@ const Tabs = ({ titles, children }: TabsProps<ReactNode>) => {
           display: 'inline-block',
           marginBottom: '-8px',
           '& .MuiTabs-scroller': {
-            display: 'inline'
+            display: 'inline',
           },
           '& .MuiTabs-indicator': {
-            display: 'none'
+            display: 'none',
           },
           '& .MuiButtonBase-root': {
             borderRight: `1px solid ${palette.divider}`,
             '&:last-child': {
-              borderRight: 0
-            }
-          }
+              borderRight: 0,
+            },
+          },
         }}
       >
         {titles.map((title, index) => (
@@ -53,8 +53,8 @@ const Tabs = ({ titles, children }: TabsProps<ReactNode>) => {
               '&.Mui-selected': {
                 backgroundColor: palette.common.white,
                 borderBottom: 0,
-                color: palette.text.primary
-              }
+                color: palette.text.primary,
+              },
             }}
           />
         ))}

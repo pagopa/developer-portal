@@ -6,7 +6,7 @@ import {
   Grid,
   Stack,
   TextField,
-  Typography
+  Typography,
 } from '@mui/material';
 import { IllusEmailValidation } from '@pagopa/mui-italia';
 import { ChangeEvent, useCallback, useState } from 'react';
@@ -23,7 +23,7 @@ interface confirmLoginProps {
 const ConfirmLogin = ({
   email,
   onConfirmLogin,
-  resendCode
+  resendCode,
 }: confirmLoginProps) => {
   const confirmLogin = useTranslations('auth.confirmLogin');
 
@@ -31,7 +31,7 @@ const ConfirmLogin = ({
   const [code, setCode] = useState<string>('');
   const [errors, setErrors] = useState<Record<string, boolean>>({
     codeError: false,
-    emptyCode: false
+    emptyCode: false,
   });
   const [submitting, setSubmitting] = useState(false);
 
@@ -42,7 +42,7 @@ const ConfirmLogin = ({
       }
       setCode(e.target.value);
     },
-    [errors]
+    [errors],
   );
 
   const onConfirmLoginHandler = useCallback(() => {
@@ -70,8 +70,8 @@ const ConfirmLogin = ({
       sx={{
         width: '90vw',
         '@media (min-width: 1200px)': {
-          width: '35vw'
-        }
+          width: '35vw',
+        },
       }}
     >
       <Card variant='elevation' elevation={8} sx={{ borderRadius: '16px' }}>
@@ -105,7 +105,7 @@ const ConfirmLogin = ({
                 helperText={helperText}
                 size='small'
                 sx={{
-                  backgroundColor: palette.background.paper
+                  backgroundColor: palette.background.paper,
                 }}
                 variant='outlined'
                 onChange={handleCodeChanged}

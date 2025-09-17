@@ -23,7 +23,7 @@ const PersonalData = () => {
 
   const companyRolesValues = companyRoles.map((role) => ({
     title: t('auth.signUp.companyRoles.' + role),
-    value: role
+    value: role,
   }));
 
   const [profileDataSectionItems, setProfileDataSectionItems] = useState<
@@ -37,21 +37,21 @@ const PersonalData = () => {
         value: user?.attributes.given_name,
         editable: true,
         type: 'text',
-        required: true
+        required: true,
       },
       {
         title: t('profile.personalData.fields.surname'),
         value: user?.attributes.family_name,
         editable: true,
         type: 'text',
-        required: true
+        required: true,
       },
       {
         title: t('profile.personalData.fields.role'),
         value: user?.attributes['custom:job_role'],
         editable: true,
         type: 'text',
-        required: false
+        required: false,
       },
       {
         title: t('profile.personalData.fields.sector'),
@@ -59,8 +59,8 @@ const PersonalData = () => {
         editable: true,
         type: 'select',
         values: companyRolesValues,
-        required: false
-      }
+        required: false,
+      },
     ]);
   }, [user?.attributes]);
 
@@ -71,7 +71,7 @@ const PersonalData = () => {
 
   async function handleChangePassword(
     oldPassword: string,
-    newPassword: string
+    newPassword: string,
   ) {
     await Auth.changePassword(user, oldPassword, newPassword);
     setShowConfirmationModal('password');
@@ -87,20 +87,20 @@ const PersonalData = () => {
       name: 'email',
       title: t('profile.personalData.fields.email'),
       value: user?.attributes.email,
-      editable: true
+      editable: true,
     },
     {
       name: 'password',
       title: t('profile.personalData.fields.password'),
       value: '••••••••••••',
-      editable: true
-    }
+      editable: true,
+    },
   ];
 
   const renderItem = (
     item: InfoCardItemProps,
     index: number,
-    items: InfoCardItemProps[]
+    items: InfoCardItemProps[],
   ) => {
     const isPasswordItem: boolean = item.name === 'password';
     const isEmailItem: boolean = item.name === 'email';
@@ -111,7 +111,7 @@ const PersonalData = () => {
     return (
       <>
         <title>{`${t('devPortal.title')} | ${t(
-          'profile.personalData.title'
+          'profile.personalData.title',
         )}`}</title>
         <Box key={index}>
           {isPasswordItem && (
@@ -153,7 +153,7 @@ const PersonalData = () => {
                 router.replace('/auth/login');
               });
               return null;
-            }
+            },
           }}
         />
       )}
@@ -169,7 +169,7 @@ const PersonalData = () => {
               setEditItem(null);
               setShowConfirmationModal(null);
               return null;
-            }
+            },
           }}
         />
       )}
@@ -194,8 +194,8 @@ const PersonalData = () => {
                   family_name: items[1].value || user.attributes.family_name,
                   'custom:job_role': items[2].value || '',
                   'custom:company_type':
-                    items[3].value || user.attributes['custom:company_type']
-                }
+                    items[3].value || user.attributes['custom:company_type'],
+                },
               },
               () => {
                 setProfileDataSectionItems(items);
@@ -204,7 +204,7 @@ const PersonalData = () => {
               () => {
                 setProfileDataSectionItems(oldItems);
                 return null;
-              }
+              },
             );
             return null;
           }}

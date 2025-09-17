@@ -21,7 +21,7 @@ const Feature = (props: FeatureProps) => {
     items,
     background,
     useDarkTheme = false,
-    variant = 'h4'
+    variant = 'h4',
   } = props;
   const { palette } = useTheme();
   const theme = palette.mode;
@@ -36,7 +36,7 @@ const Feature = (props: FeatureProps) => {
       py={{
         xs: 4,
         sm: 4,
-        md: 8
+        md: 8,
       }}
     >
       <Grid textAlign={'center'} size={{ xs: 12 }}>
@@ -46,7 +46,7 @@ const Feature = (props: FeatureProps) => {
           textAlign='center'
           sx={{
             fontSize: '2rem !important',
-            lineHeight: '1.125 !important'
+            lineHeight: '1.125 !important',
           }}
         >
           {title}

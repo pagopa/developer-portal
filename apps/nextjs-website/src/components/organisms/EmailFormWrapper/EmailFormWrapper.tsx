@@ -1,6 +1,6 @@
 import {
   InfoCardItem,
-  InfoCardItemProps
+  InfoCardItemProps,
 } from '@/components/atoms/InfoCardItem/InfoCardItem';
 import React from 'react';
 import EditEmailForm from '@/components/molecules/EditEmailForm/EditEmailForm';
@@ -20,7 +20,7 @@ const EmailFormWrapper: React.FC<EmailFormWrapperProps> = ({
   isEditing,
   onCancel,
   onSave,
-  onEdit
+  onEdit,
 }) => {
   return isEditing ? (
     <EditEmailForm onCancel={onCancel} onSave={onSave} />

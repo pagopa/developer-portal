@@ -6,7 +6,7 @@ import { useTranslations } from 'next-intl';
 import SectionTitle from '@/components/molecules/SectionTitle/SectionTitle';
 import {
   GuideCard,
-  GuideCardProps
+  GuideCardProps,
 } from '@/components/molecules/GuideCard/GuideCard';
 import LinkCards from '@/components/molecules/LinkCards/LinkCards';
 
@@ -34,7 +34,7 @@ const PostIntegration = ({
   listTitle,
   serviceModels,
   guides,
-  backgroundVariant = 'white'
+  backgroundVariant = 'white',
 }: PostIntegrationProps) => {
   const theme = useTheme();
   const t = useTranslations();
@@ -43,21 +43,21 @@ const PostIntegration = ({
     () => ({
       white: {
         backgroundColor: theme.palette.background.paper,
-        paddingBottom: 0
+        paddingBottom: 0,
       },
       lightGrey: {
         backgroundColor: theme.palette.grey[50],
-        paddingBottom: 8
-      }
+        paddingBottom: 8,
+      },
     }),
-    [theme]
+    [theme],
   );
 
   return (
     <Box
       sx={{
         paddingTop: 8,
-        ...backgroundStyles[backgroundVariant]
+        ...backgroundStyles[backgroundVariant],
       }}
     >
       <SectionTitle
@@ -77,7 +77,7 @@ const PostIntegration = ({
             fontSize={14}
             sx={{
               fontWeight: theme.typography.fontWeightBold,
-              textTransform: 'uppercase'
+              textTransform: 'uppercase',
             }}
           >
             {listTitle}
@@ -89,7 +89,7 @@ const PostIntegration = ({
           <LinkCards
             cards={serviceModels.map((serviceModel) => ({
               ...serviceModel,
-              label: t('shared.goToModel')
+              label: t('shared.goToModel'),
             }))}
           />
         </EContainer>
@@ -107,13 +107,13 @@ const PostIntegration = ({
                       ? t(props.description.title)
                       : props.description.title,
                     content: props.description.content,
-                    listItems: props.description.listItems
+                    listItems: props.description.listItems,
                   }}
                   link={{
                     label: props.link.translate
                       ? t(props.link.label)
                       : props.link.label,
-                    href: props.link.href
+                    href: props.link.href,
                   }}
                 />
               ))}

@@ -25,7 +25,7 @@ const LinkCards = ({ cards }: LinkCardsProps) => {
                 description={description}
                 link={{
                   href,
-                  label
+                  label,
                 }}
                 variant='h3'
               />

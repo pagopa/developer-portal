@@ -7,14 +7,14 @@ import { StrapiOverviews } from '@/lib/strapi/types/overviews';
 import _ from 'lodash';
 
 export function makeOverviewsProps(
-  strapiOverviews: StrapiOverviews
+  strapiOverviews: StrapiOverviews,
 ): ReadonlyArray<OverviewPageProps> {
   return _.compact(
     strapiOverviews.data.map(({ attributes }) => {
       const productData = attributes.product.data;
       if (!productData.attributes.slug) {
         console.error(
-          `Error processing Overview for product: "${productData.attributes.name}": Missing product slug`
+          `Error processing Overview for product: "${productData.attributes.name}": Missing product slug`,
         );
         return null;
       }
@@ -28,7 +28,7 @@ export function makeOverviewsProps(
             altText:
               attributes.backgroundImage.data.attributes.alternativeText || '',
             title: attributes.title,
-            subtitle: attributes.subtitle
+            subtitle: attributes.subtitle,
           },
           feature: attributes.features && {
             title: attributes.features.title,
@@ -37,15 +37,15 @@ export function makeOverviewsProps(
               attributes.features.items.map((item) => ({
                 iconUrl: item.icon.data?.attributes.url,
                 content: item.content,
-                title: item.title || ''
-              })) || []
+                title: item.title || '',
+              })) || [],
           },
           startInfo: attributes.startInfoSection && {
             title: attributes.startInfoSection.title,
             cta: attributes.startInfoSection.bottomLink && {
               text: attributes.startInfoSection.bottomLabel || '',
               label: attributes.startInfoSection.bottomLink.text,
-              href: attributes.startInfoSection.bottomLink.href
+              href: attributes.startInfoSection.bottomLink.href,
             },
             cards:
               attributes.startInfoSection.items.map((item) => ({
@@ -53,8 +53,8 @@ export function makeOverviewsProps(
                 text: item.description,
                 href: item.path,
                 useSrc: true,
-                iconName: item.icon.data.attributes.url
-              })) || []
+                iconName: item.icon.data.attributes.url,
+              })) || [],
           },
           tutorials: attributes.tutorialSection && {
             title: attributes.tutorialSection.title,
@@ -65,7 +65,7 @@ export function makeOverviewsProps(
                   if (!tutorial.attributes.slug) {
                     console.error(
                       'tutorial slug is missing:',
-                      tutorial.attributes.title
+                      tutorial.attributes.title,
                     );
                     return null;
                   }
@@ -73,7 +73,7 @@ export function makeOverviewsProps(
                   if (!tutorial.attributes.product.data.attributes.slug) {
                     console.error(
                       "tutorial's product slug is missing:",
-                      tutorial.attributes.title
+                      tutorial.attributes.title,
                     );
                     return null;
                   }
@@ -84,14 +84,14 @@ export function makeOverviewsProps(
                       url: tutorial.attributes.image.data.attributes.url,
                       alternativeText:
                         tutorial.attributes.image.data.attributes
-                          .alternativeText || ''
+                          .alternativeText || '',
                     },
                     title: tutorial.attributes.title,
                     name: 'shared.moreInfo',
-                    path: `/${tutorial.attributes.product.data.attributes.slug}/tutorials/${tutorial.attributes.slug}`
+                    path: `/${tutorial.attributes.product.data.attributes.slug}/tutorials/${tutorial.attributes.slug}`,
                   };
-                })
-              ) || []
+                }),
+              ) || [],
           },
           whatsNew: attributes.whatsNew && {
             title: attributes.whatsNew.title,
@@ -100,8 +100,8 @@ export function makeOverviewsProps(
               link: {
                 text: attributes.whatsNew.link.text,
                 url: attributes.whatsNew.link.href,
-                target: attributes.whatsNew.link.target
-              }
+                target: attributes.whatsNew.link.target,
+              },
             }),
             items: attributes.whatsNew.items.data.map((item) => ({
               comingSoon: item.attributes.comingSoon,
@@ -111,14 +111,14 @@ export function makeOverviewsProps(
               link: {
                 text: item.attributes.link.text,
                 url: item.attributes.link.href,
-                target: item.attributes.link.target
+                target: item.attributes.link.target,
               },
               image: item.attributes.image?.data && {
                 url: item.attributes.image.data.attributes.url,
                 alternativeText:
-                  item.attributes.image.data.attributes.alternativeText || ''
-              }
-            }))
+                  item.attributes.image.data.attributes.alternativeText || '',
+              },
+            })),
           },
           postIntegration: attributes.postIntegration && {
             title: attributes.postIntegration.title,
@@ -126,7 +126,7 @@ export function makeOverviewsProps(
             listTitle: attributes.postIntegration.guidesTitle,
             cta: attributes.postIntegration.link && {
               label: attributes.postIntegration.link.text,
-              href: attributes.postIntegration.link.href
+              href: attributes.postIntegration.link.href,
             },
             guides: [
               ...attributes.postIntegration.documents.map((document) => ({
@@ -134,22 +134,22 @@ export function makeOverviewsProps(
                 description: {
                   content: document.content,
                   title: 'guideListPage.cardSection.listItemsTitle',
-                  translate: false
+                  translate: false,
                 },
                 imagePath: document.image.data.attributes.url,
                 mobileImagePath: document.mobileImage.data.attributes.url,
                 link: {
                   label: document.linkText,
                   href: document.linkHref,
-                  translate: false
-                }
+                  translate: false,
+                },
               })),
               ..._.compact(
                 attributes.postIntegration.guides.data.map((guide) => {
                   if (!guide.attributes.slug) {
                     console.error(
                       "post-integration guide's product slug is missing:",
-                      guide.attributes
+                      guide.attributes,
                     );
                     return null;
                   }
@@ -158,10 +158,10 @@ export function makeOverviewsProps(
                     title: guide.attributes.title,
                     description: {
                       listItems: guide.attributes.listItems.map(
-                        (item) => item.text
+                        (item) => item.text,
                       ),
                       title: 'guideListPage.cardSection.listItemsTitle',
-                      translate: false
+                      translate: false,
                     },
                     imagePath: guide.attributes.image.data.attributes.url,
                     mobileImagePath:
@@ -169,36 +169,36 @@ export function makeOverviewsProps(
                     link: {
                       label: 'shared.goToGuide',
                       href: `guides/${guide.attributes.slug}`,
-                      translate: true
-                    }
+                      translate: true,
+                    },
                   };
-                })
-              )
+                }),
+              ),
             ],
-            serviceModels: attributes.postIntegration.serviceModels
+            serviceModels: attributes.postIntegration.serviceModels,
           },
           relatedLinks: attributes.relatedLinks && {
             title: attributes.relatedLinks.title,
             links: attributes.relatedLinks.links.map((link) => ({
               text: link.text,
-              href: link.href
-            }))
+              href: link.href,
+            })),
           },
           bannerLinks:
             attributes.bannerLinks.length > 0
               ? attributes.bannerLinks.map(makeBannerLinkProps)
               : attributes.product.data?.attributes.bannerLinks?.map(
-                  makeBannerLinkProps
+                  makeBannerLinkProps,
                 ),
-          seo: attributes.seo
+          seo: attributes.seo,
         } satisfies OverviewPageProps;
       } catch (error) {
         console.error(
           `Error processing Overview for product: "${productData.attributes.name}":`,
-          error
+          error,
         );
         return null;
       }
-    })
+    }),
   );
 }

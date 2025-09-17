@@ -13,15 +13,15 @@ export async function generateMetadata(): Promise<Metadata> {
     title: 'PagoPA DevPortal - Webinars',
     description: 'I nostri webinar',
     url: `${baseUrl}/webinars`,
-    locale: 'it_IT'
+    locale: 'it_IT',
   });
 }
 
 const NotSsrWebinarsTemplate = dynamic(
   () => import('@/components/organisms/WebinarsTemplate/WebinarsTemplate'),
   {
-    loading: () => <Spinner />
-  }
+    loading: () => <Spinner />,
+  },
 );
 
 const Webinars = async () => {

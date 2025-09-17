@@ -20,7 +20,7 @@ import {
   SoftwareApplication,
   WebPage,
   WebSite,
-  WithContext
+  WithContext,
 } from 'schema-dts';
 
 export const homeBreadCrumb = { name: websiteName, item: baseUrl };
@@ -29,13 +29,13 @@ export function productToBreadcrumb(product?: Product) {
   const item = breadcrumbItemByProduct(product, ['overview']);
   return {
     name: product?.name,
-    item
+    item,
   };
 }
 
 export function breadcrumbItemByProduct(
   product?: Product,
-  paths?: readonly string[]
+  paths?: readonly string[],
 ) {
   return product?.slug && paths
     ? [baseUrl, product.slug, ...paths].join('/')
@@ -48,23 +48,23 @@ export function getItemFromPaths(paths?: readonly string[]) {
 
 export const organization: Organization = {
   '@type': 'Organization',
-  ...organizationInfo
+  ...organizationInfo,
 };
 
 export const organizationWithContext: WithContext<Organization> = {
   '@context': 'https://schema.org',
-  ...organization
+  ...organization,
 };
 
 export const website: WebSite = {
   '@type': 'WebSite',
   name: `${websiteName} ${organizationInfo.name}`,
-  url: baseUrl
+  url: baseUrl,
 };
 
 export const websiteWithContext: WithContext<WebSite> = {
   '@context': 'https://schema.org',
-  ...website
+  ...website,
 };
 
 export type StructuredDataBreadcrumbList = readonly Pick<
@@ -73,7 +73,7 @@ export type StructuredDataBreadcrumbList = readonly Pick<
 >[];
 
 export function makeBreadcrumbList(
-  items: StructuredDataBreadcrumbList
+  items: StructuredDataBreadcrumbList,
 ): WithContext<BreadcrumbList> {
   return {
     '@context': 'https://schema.org',
@@ -81,8 +81,8 @@ export function makeBreadcrumbList(
     itemListElement: items.map((item, index) => ({
       '@type': 'ListItem',
       position: index + 1,
-      ...item
-    }))
+      ...item,
+    })),
   };
 }
 
@@ -95,7 +95,7 @@ function mediaToImageObject(media: StructuredDataMedia): ImageObject {
     '@type': 'ImageObject',
     url: media.url,
     width: `${media.width}`,
-    height: `${media.height}`
+    height: `${media.height}`,
   };
 }
 
@@ -104,7 +104,7 @@ export type StructuredDataWebPage = Omit<WebPage, '@type'> & {
 };
 
 export function makeWebPage(
-  webPage: StructuredDataWebPage
+  webPage: StructuredDataWebPage,
 ): WithContext<WebPage> {
   return {
     '@context': 'https://schema.org',
@@ -114,7 +114,7 @@ export function makeWebPage(
     author: webPage.author || organization,
     image:
       webPage.image ||
-      (webPage.media ? mediaToImageObject(webPage.media) : undefined)
+      (webPage.media ? mediaToImageObject(webPage.media) : undefined),
   };
 }
 
@@ -122,7 +122,7 @@ export function makeFAQPage(
   faqs: ReadonlyArray<{
     readonly question: string;
     readonly answer: string;
-  }>
+  }>,
 ): WithContext<FAQPage> {
   return {
     '@context': 'https://schema.org',
@@ -132,16 +132,16 @@ export function makeFAQPage(
       name: question,
       acceptedAnswer: {
         '@type': 'Answer',
-        text: answer
-      }
-    }))
+        text: answer,
+      },
+    })),
   };
 }
 
 const defaultMonetaryAmount: MonetaryAmount = {
   '@type': 'MonetaryAmount',
   currency: 'EUR',
-  value: '0'
+  value: '0',
 };
 
 export function makeHowTo(howTo: Omit<HowTo, '@type'>): WithContext<HowTo> {
@@ -149,17 +149,17 @@ export function makeHowTo(howTo: Omit<HowTo, '@type'>): WithContext<HowTo> {
     '@context': 'https://schema.org',
     '@type': 'HowTo',
     ...howTo,
-    estimatedCost: defaultMonetaryAmount
+    estimatedCost: defaultMonetaryAmount,
   };
 }
 
 export function quickStartToStructuredDataHowTo(
-  quickStart: QuickStartGuidePageProps
+  quickStart: QuickStartGuidePageProps,
 ): WithContext<HowTo> {
   const steps: readonly HowToStep[] = quickStart.steps
     ? quickStart.steps.map((step) => ({
         '@type': 'HowToStep',
-        text: step.title
+        text: step.title,
       }))
     : [];
   return makeHowTo({
@@ -168,14 +168,14 @@ export function quickStartToStructuredDataHowTo(
     image:
       quickStart.seo?.metaImage?.data?.attributes &&
       mediaToImageObject(quickStart.seo.metaImage.data.attributes),
-    step: steps
+    step: steps,
   });
 }
 
 const defaultOffers: Offer = {
   '@type': 'Offer',
   price: '0',
-  availability: 'https://schema.org/InStock'
+  availability: 'https://schema.org/InStock',
 };
 
 export function makeEvent(event: Omit<Event, '@type'>): WithContext<Event> {
@@ -183,12 +183,12 @@ export function makeEvent(event: Omit<Event, '@type'>): WithContext<Event> {
     '@context': 'https://schema.org',
     '@type': 'Event',
     ...event,
-    offers: event.offers || defaultOffers
+    offers: event.offers || defaultOffers,
   };
 }
 
 export function convertWebinarToStructuredDataEvent(
-  webinar: Webinar
+  webinar: Webinar,
 ): WithContext<Event> {
   return makeEvent({
     name: webinar.title,
@@ -201,37 +201,37 @@ export function convertWebinarToStructuredDataEvent(
     organizer: organization,
     location: {
       '@type': 'VirtualLocation',
-      url: `${baseUrl}/webinars/${webinar.slug}`
+      url: `${baseUrl}/webinars/${webinar.slug}`,
     },
     performers: webinar.speakers?.map((speaker) => ({
       '@type': 'Person',
       name: speaker.name,
       jobTitle: speaker.jobTitle,
-      image: speaker.avatar ? mediaToImageObject(speaker.avatar) : undefined
-    }))
+      image: speaker.avatar ? mediaToImageObject(speaker.avatar) : undefined,
+    })),
   });
 }
 
 export function makeSoftwareApplication(
-  softwareApplication: Omit<SoftwareApplication, '@type'>
+  softwareApplication: Omit<SoftwareApplication, '@type'>,
 ): WithContext<SoftwareApplication> {
   return {
     '@context': 'https://schema.org',
     '@type': 'SoftwareApplication',
     ...softwareApplication,
     applicationCategory: 'Business',
-    offers: defaultOffers
+    offers: defaultOffers,
   };
 }
 
 export function convertApiToStructuredDataSoftwareApplication(
-  api?: ApiDataPageProps
+  api?: ApiDataPageProps,
 ): WithContext<SoftwareApplication> | undefined {
   return (
     api &&
     makeSoftwareApplication({
       name: api.specUrlsName,
-      url: `${baseUrl}/${api.product?.slug}/api/${api.apiDataSlug}`
+      url: `${baseUrl}/${api.product?.slug}/api/${api.apiDataSlug}`,
     })
   );
 }
@@ -239,12 +239,12 @@ export function convertApiToStructuredDataSoftwareApplication(
 function makeArticle(article: Omit<Article, '@type'>): Article {
   return {
     '@type': 'Article',
-    ...article
+    ...article,
   };
 }
 
 export function convertSeoToStructuredDataArticle(
-  seo?: SEO
+  seo?: SEO,
 ): WithContext<Article> | undefined {
   return (
     seo && {
@@ -257,8 +257,8 @@ export function convertSeoToStructuredDataArticle(
         about: seo?.keywords,
         image:
           seo?.metaImage?.data?.attributes &&
-          mediaToImageObject(seo.metaImage.data.attributes)
-      })
+          mediaToImageObject(seo.metaImage.data.attributes),
+      }),
     }
   );
 }

@@ -6,7 +6,7 @@ import {
   useMediaQuery,
   type LinkProps,
   Link,
-  type Theme
+  type Theme,
 } from '@mui/material';
 import { useState } from 'react';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
@@ -73,10 +73,10 @@ export const MenuDropdown = (props: MenuDropdownProp) => {
   const menuEventsHandlers = md
     ? {
         onMouseEnter: hoverOnMenu,
-        onMouseLeave: leavesMenu
+        onMouseLeave: leavesMenu,
       }
     : {
-        onClick: toggleMenu
+        onClick: toggleMenu,
       };
 
   const Dropdown = ({
@@ -111,7 +111,7 @@ export const MenuDropdown = (props: MenuDropdownProp) => {
             paddingTop: '2px',
             textOverflow: 'ellipsis',
             overflow: 'hidden',
-            display: 'inline-block'
+            display: 'inline-block',
           }}
         >
           {label}
@@ -121,7 +121,7 @@ export const MenuDropdown = (props: MenuDropdownProp) => {
             color='inherit'
             fontSize='small'
             sx={{
-              ...(!md && dropdownVisible && styles.arrowAnimate)
+              ...(!md && dropdownVisible && styles.arrowAnimate),
             }}
           />
         )}
@@ -141,7 +141,7 @@ export const MenuDropdown = (props: MenuDropdownProp) => {
               >
                 {item.label}
               </Link>
-            )
+            ),
           )}
         </Dropdown>
       )}
@@ -160,24 +160,24 @@ const useStyles = (props: MenuDropdownProp, mui: Theme) => {
       paddingY: { md: 2 },
       borderColor: textColor,
       borderBottomStyle: 'solid',
-      borderBottomWidth: { md: props.active ? 2 : 0, xs: 0 }
+      borderBottomWidth: { md: props.active ? 2 : 0, xs: 0 },
     },
     item: {
       cursor: {
         md: props.items?.length ? 'default' : 'pointer',
-        xs: 'pointer'
+        xs: 'pointer',
       },
       flexDirection: 'row',
       color: textColor,
-      textDecoration: 'none'
+      textDecoration: 'none',
     },
     link: {
       color: { xs: textColor, md: mui.palette.primary.contrastText },
-      textIndent: { xs: mui.spacing(2), md: 0 }
+      textIndent: { xs: mui.spacing(2), md: 0 },
     },
     arrowAnimate: {
       transition: 'transform 0.2s',
-      transform: { xs: 'rotate(-180deg)', md: '' }
-    }
+      transform: { xs: 'rotate(-180deg)', md: '' },
+    },
   };
 };

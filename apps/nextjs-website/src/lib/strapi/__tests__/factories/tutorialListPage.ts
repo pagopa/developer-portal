@@ -15,25 +15,25 @@ export function minimalTutorialListPages(): StrapiTutorialListPages {
               attributes: {
                 ...strapiTutorialListPages.data[0].attributes.product.data
                   .attributes,
-                bannerLinks: []
-              }
-            }
+                bannerLinks: [],
+              },
+            },
           },
           tutorials: {
-            data: []
+            data: [],
           },
-          seo: undefined
-        }
-      }
+          seo: undefined,
+        },
+      },
     ],
     meta: {
       pagination: {
         page: 1,
         pageSize: 25,
         pageCount: 1,
-        total: 1
-      }
-    }
+        total: 1,
+      },
+    },
   };
 }
 
@@ -48,20 +48,20 @@ export function tutorialListPagesWithItemMissingBannerLinks(): StrapiTutorialLis
           bannerLinks: [],
           product: minimalTutorialListPages().data[0].attributes.product,
           tutorials: {
-            data: []
+            data: [],
           },
-          seo: undefined
-        }
-      }
+          seo: undefined,
+        },
+      },
     ],
     meta: {
       pagination: {
         page: 1,
         pageSize: 25,
         pageCount: 1,
-        total: 1
-      }
-    }
+        total: 1,
+      },
+    },
   };
 }
 
@@ -73,8 +73,8 @@ export function emptyTutorialListPages(): StrapiTutorialListPages {
         page: 1,
         pageSize: 25,
         pageCount: 0,
-        total: 0
-      }
-    }
+        total: 0,
+      },
+    },
   };
 }

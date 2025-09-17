@@ -11,7 +11,7 @@ type ModelObjectProps = {
 export const useModelProps = ({
   model = {},
   label = '',
-  requiredAttrs = []
+  requiredAttrs = [],
 }: ModelObjectProps) => {
   const title = model?.title || label;
   const attrs = (model?.required ?? []) as ReadonlyArray<string>;
@@ -29,6 +29,6 @@ export const useModelProps = ({
     description,
     items,
     properties,
-    requiredAttrs: attrs
+    requiredAttrs: attrs,
   };
 };

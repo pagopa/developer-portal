@@ -9,20 +9,20 @@ const firstItem = {
       children: [
         {
           text: 'Apri un ticket utilizzando l’apposita funzione all’interno della tua ',
-          type: 'text'
+          type: 'text',
         },
         {
           url: 'https://selfcare.pagopa.it/auth/login?onSuccess=%2F',
           type: 'link',
-          children: [{ bold: true, text: 'Area Riservata', type: 'text' }]
+          children: [{ bold: true, text: 'Area Riservata', type: 'text' }],
         },
-        { text: '', type: 'text' }
-      ]
-    }
+        { text: '', type: 'text' },
+      ],
+    },
   ],
   theme: 'dark',
   subtitle: null,
-  icon: mediaVectorJson
+  icon: mediaVectorJson,
 };
 
 const secondItem = {
@@ -34,20 +34,20 @@ const secondItem = {
       children: [
         {
           text: 'Per chiarimenti sulle specifiche d’implementazione, come SACI e SANP, puoi aprire una segnalazione su ',
-          type: 'text'
+          type: 'text',
         },
         {
           url: 'https://github.com/pagopa/pagopa-api/issues',
           type: 'link',
-          children: [{ text: 'GitHub', type: 'text' }]
+          children: [{ text: 'GitHub', type: 'text' }],
         },
-        { text: '', type: 'text' }
-      ]
-    }
+        { text: '', type: 'text' },
+      ],
+    },
   ],
   theme: 'light',
   subtitle: null,
-  icon: mediaVectorJson
+  icon: mediaVectorJson,
 };
 
 export const bannerLinksJson = [firstItem, secondItem];

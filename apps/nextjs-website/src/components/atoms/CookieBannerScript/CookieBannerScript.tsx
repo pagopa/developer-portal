@@ -8,7 +8,7 @@ type CookieBannerScriptProps = {
 
 const CookieBannerScript = ({
   cookieDomainScript,
-  cookieScript
+  cookieScript,
 }: CookieBannerScriptProps) => {
   return (
     isProduction && (
@@ -24,7 +24,7 @@ const CookieBannerScript = ({
           type='text/javascript'
           strategy='afterInteractive'
           dangerouslySetInnerHTML={{
-            __html: `function OptanonWrapper() {}`
+            __html: `function OptanonWrapper() {}`,
           }}
         />
       </>

@@ -1,12 +1,12 @@
 import {
   guideProps,
   strapiEmptyGuideData,
-  strapiGuideData
+  strapiGuideData,
 } from '@/lib/strapi/__tests__/fixtures/guides';
 import { makeGuidesProps } from '@/lib/strapi/makeProps/makeGuides';
 import {
   guideListWithItemsWithEmptyProductSlug,
-  guideListWithMissingProductSlug
+  guideListWithMissingProductSlug,
 } from '@/lib/strapi/__tests__/factories/guides';
 import { spyOnConsoleError } from '@/lib/strapi/__tests__/spyOnConsole';
 
@@ -35,7 +35,7 @@ describe('makeGuidesProps', () => {
     expect(result).toEqual([]);
     expect(spyOnConsoleError).toHaveBeenCalledWith(
       expect.stringContaining('product slug is missing'),
-      expect.any(Object)
+      expect.any(Object),
     );
   });
 
@@ -44,7 +44,7 @@ describe('makeGuidesProps', () => {
     expect(result).toEqual([]);
     expect(spyOnConsoleError).toHaveBeenCalledWith(
       expect.stringContaining('product slug is missing'),
-      expect.any(Object)
+      expect.any(Object),
     );
   });
 });

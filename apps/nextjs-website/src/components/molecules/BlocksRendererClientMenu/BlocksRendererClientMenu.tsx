@@ -15,7 +15,7 @@ type BlocksRendererClientMenuProps = {
 
 const BlocksRendererClientMenu = ({
   content,
-  color
+  color,
 }: BlocksRendererClientMenuProps) => {
   const { palette } = useTheme();
 
@@ -36,13 +36,13 @@ const BlocksRendererClientMenu = ({
               textDecoration: 'none',
               margin: 0,
               padding: 0,
-              marginBottom: '16px'
+              marginBottom: '16px',
             }}
           >
             <Typography color={textColor}>{children}</Typography>
           </a>
         ),
-        list: () => null
+        list: () => null,
       }}
     />
   );

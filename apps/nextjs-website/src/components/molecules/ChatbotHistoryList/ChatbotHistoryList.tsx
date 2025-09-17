@@ -5,7 +5,7 @@ import {
   ListItem,
   Palette,
   Typography,
-  useTheme
+  useTheme,
 } from '@mui/material';
 import { defaultLocale } from '@/config';
 import ChatbotHistoryListItem from '@/components/atoms/ChatbotHistoryListItem/ChatbotHistoryListItem';
@@ -20,8 +20,8 @@ const DEFAULT_DATE_FORMAT = {
   locale: defaultLocale,
   options: {
     month: 'long',
-    year: 'numeric'
-  }
+    year: 'numeric',
+  },
 } satisfies DateFormatOptions;
 
 type ChatbotHistoryListProps = {
@@ -35,10 +35,10 @@ const ChatbotHistoryList = ({ sessionsList }: ChatbotHistoryListProps) => {
       sessionsList.map((session) =>
         new Intl.DateTimeFormat(
           DEFAULT_DATE_FORMAT.locale,
-          DEFAULT_DATE_FORMAT.options
-        ).format(new Date(session.createdAt))
-      )
-    )
+          DEFAULT_DATE_FORMAT.options,
+        ).format(new Date(session.createdAt)),
+      ),
+    ),
   );
 
   return (
@@ -46,7 +46,7 @@ const ChatbotHistoryList = ({ sessionsList }: ChatbotHistoryListProps) => {
       {dateDividerSessionsItemsInterpolation(
         uniqueDates,
         sessionsList,
-        palette
+        palette,
       )}
     </List>
   );
@@ -57,15 +57,15 @@ export default ChatbotHistoryList;
 function dateDividerSessionsItemsInterpolation(
   dateDividers: string[],
   sessionsList: Session[],
-  palette: Palette
+  palette: Palette,
 ) {
   const items = dateDividers.map((date) => {
     const sessions = sessionsList.filter(
       (session: Session) =>
         new Intl.DateTimeFormat(
           DEFAULT_DATE_FORMAT.locale,
-          DEFAULT_DATE_FORMAT.options
-        ).format(new Date(session.createdAt)) === date
+          DEFAULT_DATE_FORMAT.options,
+        ).format(new Date(session.createdAt)) === date,
     );
     return sessions.map((session: Session) => session);
   });
@@ -83,14 +83,16 @@ function dateDividerSessionsItemsInterpolation(
           {capitalize(
             new Intl.DateTimeFormat(
               DEFAULT_DATE_FORMAT.locale,
-              DEFAULT_DATE_FORMAT.options
-            ).format(new Date(sameMonthItems[0].createdAt))
+              DEFAULT_DATE_FORMAT.options,
+            ).format(new Date(sameMonthItems[0].createdAt)),
           )}
         </Typography>
       </ListItem>
       {sameMonthItems.map((item, index) => [
         <ChatbotHistoryListItem key={item.id} session={item} />,
-        <>{sameMonthItems.length - 1 !== index && <Divider component='li' />}</>
+        <>
+          {sameMonthItems.length - 1 !== index && <Divider component='li' />}
+        </>,
       ])}
     </>
   ));

@@ -9,7 +9,7 @@ import {
   Grid,
   Box,
   TextField,
-  useTheme
+  useTheme,
 } from '@mui/material';
 import { validateEmail } from '@/helpers/auth.helpers';
 import { IllusDataSecurity } from '@pagopa/mui-italia';
@@ -25,7 +25,7 @@ interface ResetPasswordFormProps {
 const ResetPasswordForm = ({
   email,
   setEmail,
-  handleResetPassword
+  handleResetPassword,
 }: ResetPasswordFormProps) => {
   const resetPassword = useTranslations('auth.resetPassword');
   const shared = useTranslations('shared');
@@ -64,8 +64,8 @@ const ResetPasswordForm = ({
       sx={{
         width: '90vw',
         '@media (min-width: 1200px)': {
-          width: '35vw'
-        }
+          width: '35vw',
+        },
       }}
     >
       <Card variant='elevation' elevation={8}>
@@ -89,7 +89,7 @@ const ResetPasswordForm = ({
               size='small'
               sx={{
                 backgroundColor: palette.background.paper,
-                width: '100%'
+                width: '100%',
               }}
             />
             <Stack spacing={4} pt={4} pb={2}>

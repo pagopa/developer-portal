@@ -2,7 +2,7 @@
 import { FC } from 'react';
 import {
   GuideCard,
-  GuideCardProps
+  GuideCardProps,
 } from '@/components/molecules/GuideCard/GuideCard';
 import { Typography, useTheme } from '@mui/material';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
@@ -14,7 +14,7 @@ export type GuidesSectionProps = {
 
 export const GuidesSection: FC<GuidesSectionProps> = ({
   title,
-  guides
+  guides,
 }: GuidesSectionProps) => {
   const { typography, palette } = useTheme();
 
@@ -28,7 +28,7 @@ export const GuidesSection: FC<GuidesSectionProps> = ({
         fontSize={14}
         sx={{
           fontWeight: typography.fontWeightBold,
-          textTransform: 'uppercase'
+          textTransform: 'uppercase',
         }}
       >
         {title}

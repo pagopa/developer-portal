@@ -11,7 +11,7 @@ export function mediaJpeg() {
       name: 'example.jpg',
       ext: '.jpg',
       mime: 'image/jpeg',
-      url: 'https://example.com/example.jpg'
-    }
+      url: 'https://example.com/example.jpg',
+    },
   } satisfies StrapiMedia;
 }

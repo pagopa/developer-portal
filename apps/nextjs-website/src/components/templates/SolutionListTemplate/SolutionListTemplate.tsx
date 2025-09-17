@@ -47,7 +47,7 @@ const SolutionListTemplate = ({
   hero,
   solutions,
   features,
-  successStories
+  successStories,
 }: SolutionListTemplateProps) => {
   const t = useTranslations();
 
@@ -72,7 +72,7 @@ const SolutionListTemplate = ({
             text: solution.description || '',
             href: solution.slug,
             logoUrl: solution.logo.url,
-            tags: solution.tags
+            tags: solution.tags,
           }))}
         />
       )}
@@ -89,8 +89,8 @@ const SolutionListTemplate = ({
             ...story,
             link: {
               url: story.path,
-              text: t('shared.readStory')
-            }
+              text: t('shared.readStory'),
+            },
           }))}
         />
       )}

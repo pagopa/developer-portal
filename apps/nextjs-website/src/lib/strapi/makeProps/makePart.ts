@@ -7,7 +7,7 @@ export function makePartProps(strapiPart: StrapiPart): Part | null {
     case 'parts.alert':
       return {
         component: 'alert',
-        ...strapiPart
+        ...strapiPart,
       };
     case 'parts.api-tester':
       return {
@@ -15,43 +15,43 @@ export function makePartProps(strapiPart: StrapiPart): Part | null {
         apiRequest: {
           ...strapiPart.requestCode,
           description: strapiPart.requestDescription,
-          attributes: [...strapiPart.requestAttributes]
+          attributes: [...strapiPart.requestAttributes],
         },
         apiResponse: {
           ...strapiPart.responseCode,
-          description: strapiPart.responseDescription
-        }
+          description: strapiPart.responseDescription,
+        },
       };
     case 'parts.code-block':
       return {
         component: 'codeBlock',
-        ...strapiPart
+        ...strapiPart,
       };
     case 'parts.html':
       return {
         component: 'blockRenderer',
-        ...strapiPart
+        ...strapiPart,
       };
     case 'parts.embed-html':
       return {
         component: 'innerHTMLLazyLoaded',
-        ...strapiPart
+        ...strapiPart,
       };
     case 'parts.quote':
       return {
         component: 'quote',
         quote: strapiPart.text,
-        backgroundImage: strapiPart.backgroundImage.data?.attributes
+        backgroundImage: strapiPart.backgroundImage.data?.attributes,
       };
     case 'parts.ck-editor':
       // eslint-disable-next-line no-case-declarations
       const { parsedContent, menuItems } = parseCkEditorContent(
-        strapiPart.content
+        strapiPart.content,
       );
       return {
         component: 'ckEditor',
         content: parsedContent,
-        menuItems: [...menuItems]
+        menuItems: [...menuItems],
       };
     default:
       return null;

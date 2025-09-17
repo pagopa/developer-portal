@@ -12,7 +12,7 @@ import {
   Stack,
   Theme,
   useMediaQuery,
-  useTheme
+  useTheme,
 } from '@mui/material';
 import { SITE_HEADER_HEIGHT } from '@/components/molecules/SiteHeader/SiteHeader';
 import { useScrollUp } from '../ProductHeader/useScrollUp';
@@ -44,7 +44,7 @@ const GuideMenu = (menuProps: GuideMenuProps) => {
     : {
         xs: top,
         sm: top,
-        md: top
+        md: top,
       };
 
   const handleClick = useCallback(() => {
@@ -78,14 +78,14 @@ const GuideMenu = (menuProps: GuideMenuProps) => {
           transition: 'all 0.5s linear',
           scrollbarWidth: 'thin',
           width: { lg: '347px' },
-          zIndex: 51
+          zIndex: 51,
         }}
       >
         <Stack
           sx={{
             padding: { lg: '80px 0' },
             flexGrow: { lg: 0 },
-            flexShrink: { lg: 0 }
+            flexShrink: { lg: 0 },
           }}
         >
           <Stack
@@ -96,7 +96,7 @@ const GuideMenu = (menuProps: GuideMenuProps) => {
             sx={{
               padding: '12px 24px',
               cursor: 'pointer',
-              display: { lg: 'none' }
+              display: { lg: 'none' },
             }}
           >
             <Typography
@@ -104,7 +104,7 @@ const GuideMenu = (menuProps: GuideMenuProps) => {
               sx={{
                 fontSize: '16px!important',
                 verticalAlign: 'middle',
-                color: palette.primary.main
+                color: palette.primary.main,
               }}
             >
               {t('productGuidePage.tableOfContents')}
@@ -127,7 +127,7 @@ const GuideMenu = (menuProps: GuideMenuProps) => {
             alignItems='center'
             justifyContent='flex-start'
             sx={{
-              padding: '12px 24px'
+              padding: '12px 24px',
             }}
           >
             <Typography
@@ -137,7 +137,7 @@ const GuideMenu = (menuProps: GuideMenuProps) => {
                 flexShrink: 0,
                 fontSize: '16px!important',
                 verticalAlign: 'middle',
-                color: palette.primary.main
+                color: palette.primary.main,
               }}
             >
               {t('productGuidePage.tableOfContents')}
@@ -146,7 +146,7 @@ const GuideMenu = (menuProps: GuideMenuProps) => {
               aria-label='close'
               onClick={handleClick}
               sx={{
-                color: palette.primary.main
+                color: palette.primary.main,
               }}
             >
               <CloseIcon />

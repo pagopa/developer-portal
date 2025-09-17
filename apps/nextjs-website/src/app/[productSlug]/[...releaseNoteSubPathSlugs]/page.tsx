@@ -1,19 +1,19 @@
 import ProductLayout, {
-  ProductLayoutProps
+  ProductLayoutProps,
 } from '@/components/organisms/ProductLayout/ProductLayout';
 import { Product } from '@/lib/types/product';
 import { SEO } from '@/lib/types/seo';
 import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
 import {
   convertSeoToStructuredDataArticle,
-  productToBreadcrumb
+  productToBreadcrumb,
 } from '@/helpers/structuredData.helpers';
 import { getReleaseNote } from '@/lib/api';
 import { getUrlReplaceMapProps } from '@/lib/cmsApi';
 import {
   BreadcrumbItem,
   gitBookPageToBreadcrumbs,
-  productPageToBreadcrumbs
+  productPageToBreadcrumbs,
 } from '@/helpers/breadcrumbs.helpers';
 import GitBookTemplate from '@/components/templates/GitBookTemplate/GitBookTemplate';
 import React from 'react';
@@ -21,7 +21,7 @@ import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
 import { Metadata } from 'next';
 import {
   makeMetadata,
-  makeMetadataFromStrapi
+  makeMetadataFromStrapi,
 } from '@/helpers/metadata.helpers';
 import { BreadcrumbSegment } from '@/lib/types/path';
 import { baseUrl } from '@/config';
@@ -47,13 +47,13 @@ export async function generateStaticParams(): Promise<
     .map((paths) => {
       return {
         productSlug: paths[PRODUCT_SLUG_PATH_INDEX],
-        releaseNoteSubPathSlugs: paths.slice(RELEASE_NOTE_SUB_PATH_INDEX)
+        releaseNoteSubPathSlugs: paths.slice(RELEASE_NOTE_SUB_PATH_INDEX),
       };
     });
   return releaseNoteParams;
 }
 export async function generateMetadata({
-  params
+  params,
 }: {
   params: Promise<ReleaseNotePageStaticParams>;
 }): Promise<Metadata> {
@@ -61,12 +61,12 @@ export async function generateMetadata({
   if (resolvedParams.productSlug === 'unknown') {
     return makeMetadata({
       title: 'unknown',
-      url: 'unknown'
+      url: 'unknown',
     });
   }
   const props = await getReleaseNote(
     resolvedParams?.productSlug,
-    resolvedParams?.releaseNoteSubPathSlugs
+    resolvedParams?.releaseNoteSubPathSlugs,
   );
 
   if (props?.seo) {
@@ -75,7 +75,7 @@ export async function generateMetadata({
 
   return makeMetadata({
     title: props?.page.title,
-    url: props?.page.path
+    url: props?.page.path,
   });
 }
 
@@ -90,7 +90,7 @@ export type ReleaseNotePageProps = {
 } & ProductLayoutProps;
 
 const ReleaseNotePage = async ({
-  params
+  params,
 }: {
   params: Promise<ReleaseNotePageStaticParams>;
 }) => {
@@ -100,7 +100,7 @@ const ReleaseNotePage = async ({
   }
   const releaseNoteProps = await getReleaseNote(
     resolvedParams.productSlug,
-    resolvedParams.releaseNoteSubPathSlugs
+    resolvedParams.releaseNoteSubPathSlugs,
   );
 
   const urlReplaceMap = await getUrlReplaceMapProps();
@@ -120,18 +120,18 @@ const ReleaseNotePage = async ({
       isPageIndex: page.isIndex,
       pagePath: page.path,
       assetsPrefix: source.assetsPrefix,
-      urlReplaces: urlReplaceMap
-    }
+      urlReplaces: urlReplaceMap,
+    },
   };
 
   const breadcrumbs: readonly BreadcrumbSegment[] = gitBookPageToBreadcrumbs(
     bodyConfig.pagePath,
-    bodyConfig.gitBookPagesWithTitle
+    bodyConfig.gitBookPagesWithTitle,
   );
 
   const breadcrumbsItems: BreadcrumbItem[] = breadcrumbs.map((breadcrumb) => ({
     name: breadcrumb.name,
-    item: [baseUrl, breadcrumb.path].join('')
+    item: [baseUrl, breadcrumb.path].join(''),
   }));
 
   const structuredData = generateStructuredDataScripts({
@@ -139,12 +139,12 @@ const ReleaseNotePage = async ({
       productToBreadcrumb(product),
       {
         name: title,
-        item: `${baseUrl}/${product.slug}/release-note`
+        item: `${baseUrl}/${product.slug}/release-note`,
       },
-      ...breadcrumbsItems
+      ...breadcrumbsItems,
     ],
     seo: seo,
-    things: [convertSeoToStructuredDataArticle(seo)]
+    things: [convertSeoToStructuredDataArticle(seo)],
   });
 
   return (
@@ -160,10 +160,10 @@ const ReleaseNotePage = async ({
           ...productPageToBreadcrumbs(product, [
             {
               name: title,
-              path: `/${product.slug}/release-note`
+              path: `/${product.slug}/release-note`,
             },
-            ...breadcrumbs
-          ])
+            ...breadcrumbs,
+          ]),
         ]}
         hasInPageMenu={false}
         {...props}

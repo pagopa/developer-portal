@@ -3,7 +3,7 @@ import * as codec from '../codec';
 
 const aWebinarQuestionId = {
   slug: 'aWebinarId',
-  createdAt: new Date()
+  createdAt: new Date(),
 };
 
 describe('makeDynamodbUpdateFromWebinarQuestionUpdate', () => {
@@ -13,27 +13,27 @@ describe('makeDynamodbUpdateFromWebinarQuestionUpdate', () => {
       updates: {
         hiddenBy: {
           operation: 'update',
-          value: 'aNewHiddenValue'
+          value: 'aNewHiddenValue',
         },
         highlightedBy: {
           operation: 'update',
-          value: 'aNewHighlightedBy'
-        }
-      }
+          value: 'aNewHighlightedBy',
+        },
+      },
     };
     const actual = codec.makeDynamodbUpdateFromWebinarQuestionUpdate(update);
 
     expect(actual).toStrictEqual({
       Key: {
         webinarId: { S: update.id.slug },
-        createdAt: { S: update.id.createdAt.toISOString() }
+        createdAt: { S: update.id.createdAt.toISOString() },
       },
       UpdateExpression:
         'set hiddenBy = :hiddenBy, highlightedBy = :highlightedBy ',
       ExpressionAttributeValues: {
         ':hiddenBy': { S: 'aNewHiddenValue' },
-        ':highlightedBy': { S: 'aNewHighlightedBy' }
-      }
+        ':highlightedBy': { S: 'aNewHighlightedBy' },
+      },
     });
   });
 
@@ -43,24 +43,24 @@ describe('makeDynamodbUpdateFromWebinarQuestionUpdate', () => {
       updates: {
         hiddenBy: {
           operation: 'update',
-          value: 'aNewHiddenValue'
+          value: 'aNewHiddenValue',
         },
         highlightedBy: {
-          operation: 'remove'
-        }
-      }
+          operation: 'remove',
+        },
+      },
     };
     const actual = codec.makeDynamodbUpdateFromWebinarQuestionUpdate(update);
 
     expect(actual).toStrictEqual({
       Key: {
         webinarId: { S: update.id.slug },
-        createdAt: { S: update.id.createdAt.toISOString() }
+        createdAt: { S: update.id.createdAt.toISOString() },
       },
       UpdateExpression: 'set hiddenBy = :hiddenBy remove highlightedBy',
       ExpressionAttributeValues: {
-        ':hiddenBy': { S: 'aNewHiddenValue' }
-      }
+        ':hiddenBy': { S: 'aNewHiddenValue' },
+      },
     });
   });
 });

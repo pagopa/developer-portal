@@ -7,7 +7,7 @@ type Params = {
 };
 
 const WebinarQuestionsPage = async ({
-  params
+  params,
 }: {
   params: Promise<Params>;
 }) => {

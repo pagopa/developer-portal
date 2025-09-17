@@ -18,39 +18,39 @@ export const strapiQuickStartGuides: StrapiQuickStartGuides = {
               bannerLinks: [],
               overview: {
                 data: {
-                  id: 1
-                }
+                  id: 1,
+                },
               },
               quickstart_guide: {
                 data: {
-                  id: 1
-                }
+                  id: 1,
+                },
               },
               api_data_list_page: {
-                data: undefined
+                data: undefined,
               },
               tutorial_list_page: {
                 data: {
-                  id: 1
-                }
+                  id: 1,
+                },
               },
               guide_list_page: {
                 data: {
-                  id: 1
-                }
+                  id: 1,
+                },
               },
               release_note: {
                 data: {
-                  id: 1
-                }
-              }
-            }
-          }
+                  id: 1,
+                },
+              },
+            },
+          },
         },
         bannerLinks: [],
         seo: {
           metaTitle: 'Meta Title',
-          metaDescription: 'Meta Description'
+          metaDescription: 'Meta Description',
         },
         quickstartGuideItems: {
           data: [
@@ -60,20 +60,20 @@ export const strapiQuickStartGuides: StrapiQuickStartGuides = {
                 title: 'Step 1',
                 anchor: 'step-1',
                 publishedAt: '2024-01-01T00:00:00.000Z',
-                parts: [alertPart, codeBlockPart]
-              }
-            }
-          ]
-        }
-      }
-    }
+                parts: [alertPart, codeBlockPart],
+              },
+            },
+          ],
+        },
+      },
+    },
   ],
   meta: {
     pagination: {
       page: 1,
       pageSize: 25,
       pageCount: 1,
-      total: 1
-    }
-  }
+      total: 1,
+    },
+  },
 };

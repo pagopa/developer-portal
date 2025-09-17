@@ -21,7 +21,7 @@ export interface LangSwitchProps {
 export function LangSwitch({
   languages,
   onLanguageChanged,
-  activeLanguage
+  activeLanguage,
 }: LangSwitchProps) {
   const t = useTranslations('footer');
   const [menuOpen, setMenuOpen] = useState(false);
@@ -38,7 +38,7 @@ export function LangSwitch({
         sx={{
           color: 'text.primary',
           height: 'auto',
-          display: 'flex'
+          display: 'flex',
         }}
         aria-label='lingua'
         aria-haspopup='true'

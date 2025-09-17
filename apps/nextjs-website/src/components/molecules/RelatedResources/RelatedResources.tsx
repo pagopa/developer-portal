@@ -3,7 +3,7 @@ import { Box, Typography } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import { GuideCard, GuideCardProps } from '../GuideCard/GuideCard';
 import DownloadableDocuments, {
-  DownloadableDocumentsProps
+  DownloadableDocumentsProps,
 } from '@/components/molecules/DownloadableDocuments/DownloadableDocuments';
 
 interface RelatedResourcesProps {
@@ -15,7 +15,7 @@ interface RelatedResourcesProps {
 const RelatedResources = ({
   title,
   resources,
-  downloadableDocuments
+  downloadableDocuments,
 }: RelatedResourcesProps) => {
   const t = useTranslations();
 

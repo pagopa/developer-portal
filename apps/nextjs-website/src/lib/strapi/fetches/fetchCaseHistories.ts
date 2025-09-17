@@ -11,19 +11,19 @@ const makeStrapiCaseHistoriesPopulate = () =>
           'responseCode',
           'requestCode',
           'requestAttributes',
-          'backgroundImage'
-        ]
+          'backgroundImage',
+        ],
       },
       products: {
-        populate: ['logo']
+        populate: ['logo'],
       },
       seo: {
-        populate: '*,metaImage,metaSocial.image'
-      }
-    }
+        populate: '*,metaImage,metaSocial.image',
+      },
+    },
   });
 
 export const fetchCaseHistories = fetchFromStrapi<StrapiCaseHistories>(
   'case-histories',
-  makeStrapiCaseHistoriesPopulate()
+  makeStrapiCaseHistoriesPopulate(),
 );

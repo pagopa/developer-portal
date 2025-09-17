@@ -8,12 +8,12 @@ import {
   SvgFilled,
   SvgOutline,
   SvgColorDark,
-  SvgColorLight
+  SvgColorLight,
 } from '../FundedByNextGenerationEU/partials';
 
 const StyledSvg = styled('svg')({
   display: 'inline-block',
-  userSelect: 'none'
+  userSelect: 'none',
 });
 
 export type NextGeneratioNEUVariants = 'filled' | 'outline' | 'color';
@@ -34,25 +34,25 @@ export interface FundedByNextGenerationEUPropsProps {
 const colorMap = {
   dark: theme.palette.text.primary,
   light: theme.palette.common.white,
-  pantone: theme.palette.europeanUnion.main
+  pantone: theme.palette.europeanUnion.main,
 };
 
 const variantMap = {
   outline: <SvgOutline />,
-  filled: <SvgFilled />
+  filled: <SvgFilled />,
 };
 
 const variantColorMap = {
   dark: <SvgColorDark />,
   light: <SvgColorLight />,
-  pantone: <SvgColorDark />
+  pantone: <SvgColorDark />,
 };
 
 export const FundedByNextGenerationEU = ({
   title = "Finanziato dall'Unione Europea · NextGenerationEU",
   size = 200,
   color = 'dark',
-  variant = 'outline'
+  variant = 'outline',
 }: FundedByNextGenerationEUPropsProps): React.JSX.Element => (
   <StyledSvg
     viewBox='0 0 1174 270'
@@ -64,7 +64,7 @@ export const FundedByNextGenerationEU = ({
       width: size,
       /* If the color variant is set,
       the following property is ignored */
-      fill: colorMap[color]
+      fill: colorMap[color],
     }}
   >
     {variant === 'color' ? variantColorMap[color] : variantMap[variant]}

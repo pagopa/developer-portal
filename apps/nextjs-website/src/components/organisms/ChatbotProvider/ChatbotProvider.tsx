@@ -12,7 +12,7 @@ type ChatbotProviderProps = {
 
 const ChatbotProvider: FC<PropsWithChildren<ChatbotProviderProps>> = ({
   children,
-  isChatbotVisible
+  isChatbotVisible,
 }) => {
   const { user } = useUser();
   const {
@@ -21,7 +21,7 @@ const ChatbotProvider: FC<PropsWithChildren<ChatbotProviderProps>> = ({
     sendFeedback,
     isAwaitingResponse,
     areChatbotQueriesLoaded,
-    chatbotError
+    chatbotError,
   } = useChatbot(!!user);
 
   return (

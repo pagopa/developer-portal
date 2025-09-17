@@ -5,7 +5,7 @@ import {
   List,
   ListItemButton,
   ListItemIcon,
-  Typography
+  Typography,
 } from '@mui/material';
 import { OpenAPIV3 } from 'openapi-types';
 import { MouseEventHandler, PropsWithChildren, useState } from 'react';
@@ -27,7 +27,7 @@ const ModelItem = ({
   title,
   required,
   schemaType,
-  onClick
+  onClick,
 }: ModelItemProps) => {
   const showIcon = typeof onClick === 'function';
   return (
@@ -35,7 +35,7 @@ const ModelItem = ({
       sx={{
         display: 'block',
         background: 'transparent!important',
-        py: 1
+        py: 1,
       }}
       disableGutters
       onClick={onClick}
@@ -46,7 +46,7 @@ const ModelItem = ({
           alignItems: 'center',
           flexGrow: 1,
           width: '100%',
-          gap: 2
+          gap: 2,
         }}
       >
         <ListItemIcon>
@@ -75,7 +75,7 @@ const ModelListEntry = ({
   title,
   required,
   schemaType,
-  children
+  children,
 }: PropsWithChildren<ModelEntryProps>) => {
   const [open, setOpen] = useState(false);
 
@@ -113,7 +113,7 @@ export const Model = (props: ModelProps) => {
     required,
     requiredAttrs,
     schemaType,
-    title
+    title,
   } = useModelProps(props);
 
   if (schemaType === 'object') {

@@ -21,13 +21,13 @@ export function minimalDataReleaseNotes() {
               ...strapiReleaseNote.attributes.product.data,
               attributes: {
                 ...strapiReleaseNote.attributes.product.data.attributes,
-                bannerLinks: undefined
-              }
-            }
-          }
-        }
-      }
-    ]
+                bannerLinks: undefined,
+              },
+            },
+          },
+        },
+      },
+    ],
   } satisfies StrapiReleaseNotes;
 }
 
@@ -40,10 +40,10 @@ export function releaseNotesWithoutBannerLinks() {
         ...strapiReleaseNote,
         attributes: {
           ...strapiReleaseNote.attributes,
-          bannerLinks: []
-        }
-      }
-    ]
+          bannerLinks: [],
+        },
+      },
+    ],
   } satisfies StrapiReleaseNotes;
 }
 
@@ -62,13 +62,13 @@ export function releaseNotesWithoutProductBannerLinks() {
               ...strapiReleaseNote.attributes.product.data,
               attributes: {
                 ...strapiReleaseNote.attributes.product.data.attributes,
-                bannerLinks: []
-              }
-            }
-          }
-        }
-      }
-    ]
+                bannerLinks: [],
+              },
+            },
+          },
+        },
+      },
+    ],
   } satisfies StrapiReleaseNotes;
 }
 
@@ -87,12 +87,12 @@ export function releaseNotesWithMissingProductSlug() {
               ...strapiReleaseNote.attributes.product.data,
               attributes: {
                 ...strapiReleaseNote.attributes.product.data.attributes,
-                slug: undefined as any
-              }
-            }
-          }
-        }
-      }
-    ]
+                slug: undefined as any,
+              },
+            },
+          },
+        },
+      },
+    ],
   } satisfies StrapiReleaseNotes;
 }

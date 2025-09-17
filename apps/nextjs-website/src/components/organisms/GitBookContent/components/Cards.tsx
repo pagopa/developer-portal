@@ -2,7 +2,7 @@
 import {
   CardsProps,
   CardProps,
-  CardItemProps
+  CardItemProps,
 } from 'gitbook-docs/markdoc/schema/table';
 import MUICard from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
@@ -40,9 +40,9 @@ export const Card = ({ children, coverSrc, href }: CardProps<ReactNode>) => {
               height: '100%',
               '.MuiCardActionArea-focusHighlight': {
                 backgroundColor: palette.background.paper,
-                opacity: 0
+                opacity: 0,
               },
-              '.MuiCardContent-root': { height: 'inherit' }
+              '.MuiCardContent-root': { height: 'inherit' },
             }}
             onClick={() => router.push(href)}
           >

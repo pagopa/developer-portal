@@ -35,14 +35,14 @@ import { fetchReleaseNote } from '@/lib/strapi/fetches/fetchReleaseNotes';
 import {
   makeGuide as makeGuideS3,
   makeSolution as makeSolutionS3,
-  makeReleaseNote as makeReleaseNoteS3
+  makeReleaseNote as makeReleaseNoteS3,
 } from '@/helpers/makeS3Docs.helpers';
 import { secrets } from '@/config';
 import { fetchWebinarCategories } from '@/lib/strapi/fetches/fetchWebinarCategories';
 import { makeWebinarCategoriesProps } from '@/lib/strapi/makeProps/makeWebinarCategories';
 import {
   fetchResponseFromCDN,
-  JsonMetadata
+  JsonMetadata,
 } from '@/helpers/s3Metadata.helpers';
 import { StrapiGuideListPages } from '@/lib/strapi/types/guideListPage';
 import { StrapiGuides } from '@/lib/strapi/types/guide';
@@ -54,7 +54,7 @@ const buildEnv = pipe(
   E.getOrElseW((errors) => {
     // eslint-disable-next-line functional/no-throw-statements
     throw errors;
-  })
+  }),
 );
 
 export const getHomepageProps = async () => {
@@ -130,14 +130,14 @@ export const getOverviewsProps = async () => {
 
 export const getGuideListPagesProps = async () => {
   const strapiGuideList = (await fetchResponseFromCDN(
-    'synced-guide-list-pages-response.json'
+    'synced-guide-list-pages-response.json',
   )) as StrapiGuideListPages | undefined;
   return strapiGuideList ? makeGuideListPagesProps(strapiGuideList) : [];
 };
 
 export const getGuideProps = async (
   guidePaths: ReadonlyArray<string>,
-  productSlug: string
+  productSlug: string,
 ) => {
   const guide = await getGuidePageProps(guidePaths[0], productSlug);
   return await makeGuideS3({ guideDefinition: guide, guidePaths });
@@ -145,16 +145,16 @@ export const getGuideProps = async (
 
 export const getGuidePageProps = async (
   guideSlug: string,
-  productSlug: string
+  productSlug: string,
 ) => {
   // TODO: restore this when Strapi will manage guides metadata
   const strapiGuides = (await fetchResponseFromCDN(
-    'synced-guides-response.json'
+    'synced-guides-response.json',
   )) as StrapiGuides | undefined;
 
   const guides = strapiGuides ? makeGuidesProps(strapiGuides) : [];
   const guide = guides.filter(
-    (g) => g.guide.slug === guideSlug && g.product.slug === productSlug
+    (g) => g.guide.slug === guideSlug && g.product.slug === productSlug,
   )[0];
 
   if (!guide) {
@@ -167,7 +167,7 @@ export const getGuidePageProps = async (
 
 export const getSolutionProps = async (
   solutionsSlug: string,
-  jsonMetadata?: JsonMetadata
+  jsonMetadata?: JsonMetadata,
 ) => {
   const strapiSolutions = await fetchSolution(solutionsSlug)(buildEnv);
   if (!strapiSolutions || strapiSolutions.data.length < 1) {
@@ -180,7 +180,7 @@ export const getSolutionProps = async (
 
 export const getReleaseNoteProps = async (
   productSlug: string,
-  jsonMetadata?: JsonMetadata
+  jsonMetadata?: JsonMetadata,
 ) => {
   const strapiReleaseNotes = await fetchReleaseNote(productSlug)(buildEnv);
   if (!strapiReleaseNotes || strapiReleaseNotes.data.length < 1) {

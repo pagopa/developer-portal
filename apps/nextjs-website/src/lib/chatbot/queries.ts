@@ -8,7 +8,7 @@ export const QueryCodec = t.strict({
   queriedAt: t.string,
   badAnswer: t.union([t.boolean, t.undefined]),
   answer: t.string,
-  createdAt: t.string
+  createdAt: t.string,
 });
 
 const ChatbotHistoryCodec = t.array(QueryCodec);
@@ -16,8 +16,8 @@ const ChatbotHistoryCodec = t.array(QueryCodec);
 export const QueryWithHistoryCodec = t.intersection([
   QueryCodec,
   t.strict({
-    history: t.union([NullToUndefinedCodec, ChatbotHistoryCodec])
-  })
+    history: t.union([NullToUndefinedCodec, ChatbotHistoryCodec]),
+  }),
 ]);
 
 export type RemoteQuery = t.TypeOf<typeof QueryCodec>;
@@ -50,7 +50,7 @@ export type QueryInput = Pick<
 export const SessionCodec = t.strict({
   id: t.string,
   title: t.string,
-  createdAt: t.string
+  createdAt: t.string,
 });
 
 export type Session = t.TypeOf<typeof SessionCodec>;
@@ -60,7 +60,7 @@ export const RemoteSessionsResponseCodec = t.strict({
   total: t.number,
   page: t.number,
   size: t.number,
-  pages: t.number
+  pages: t.number,
 });
 
 export type PaginatedSessions = t.TypeOf<typeof RemoteSessionsResponseCodec>;

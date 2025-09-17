@@ -17,14 +17,14 @@ const DesktopSiteHeader = ({ products }: SiteHeaderProps) => {
         display: { xs: 'none', sm: 'flex' },
         flexGrow: 1,
         gap: 4,
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
       }}
     >
       <Dropdown
         label={t('siteHeader.products')}
         items={products.map((product) => ({
           href: `/${product.slug}/overview`,
-          label: product.name
+          label: product.name,
         }))}
       />
       <LinkMui

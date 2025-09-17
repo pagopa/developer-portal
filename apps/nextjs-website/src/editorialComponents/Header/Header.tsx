@@ -54,8 +54,8 @@ export const Header = (props: HeaderProps) => {
           borderBottomLeftRadius: '8px',
           paddingX: {
             xs: 3,
-            sm: 3
-          }
+            sm: 3,
+          },
         }}
       >
         <Stack
@@ -85,13 +85,13 @@ export const Header = (props: HeaderProps) => {
           <Stack
             sx={{
               display: { xs: headerOpen ? 'flex' : 'none', md: 'flex' },
-              ...styles.headerMenu
+              ...styles.headerMenu,
             }}
           >
             <Navigation {...{ menu, theme }} />
             <Box
               sx={{
-                display: { sm: 'none', md: 'block' }
+                display: { sm: 'none', md: 'block' },
               }}
             >
               <HeaderCtas />
@@ -111,11 +111,11 @@ const styles: Record<string, SxProps> = {
     flexDirection: { xs: 'column', md: 'row' },
     alignItems: { md: 'center', xs: 'flex-start' },
     gap: { xs: 2 },
-    px: 3
+    px: 3,
   },
   headerInfo: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center'
-  }
+    alignItems: 'center',
+  },
 };

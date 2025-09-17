@@ -16,7 +16,7 @@ const GoToStep = ({ previousOrNext, title }: GoToStepProps) => {
 
   const arrowIcon = createElement(
     previousOrNext === 'next' ? ArrowForward : ArrowBack,
-    { sx: { color: palette.text.secondary, height: '24px', width: '24px' } }
+    { sx: { color: palette.text.secondary, height: '24px', width: '24px' } },
   );
   const t = useTranslations('quickStartGuide');
 
@@ -26,7 +26,7 @@ const GoToStep = ({ previousOrNext, title }: GoToStepProps) => {
         display: 'flex',
         flexDirection: 'column',
         paddingLeft: previousOrNext === 'next' ? 1 : 0,
-        paddingRight: previousOrNext === 'next' ? 0 : 1
+        paddingRight: previousOrNext === 'next' ? 0 : 1,
       }}
     >
       <Typography
@@ -43,7 +43,7 @@ const GoToStep = ({ previousOrNext, title }: GoToStepProps) => {
           alignItems: 'center',
           display: 'flex',
           flexDirection: previousOrNext === 'next' ? 'row' : 'row-reverse',
-          gap: '15px'
+          gap: '15px',
         }}
       >
         <Typography

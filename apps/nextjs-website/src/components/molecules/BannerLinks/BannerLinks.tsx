@@ -3,7 +3,7 @@ import React, { FC } from 'react';
 import { Stack } from '@mui/material';
 import {
   BannerLink,
-  BannerLinkProps
+  BannerLinkProps,
 } from '@/components/atoms/BannerLink/BannerLink';
 
 type BannerLinksProps = {
@@ -21,7 +21,7 @@ export const BannerLinks: FC<BannerLinksProps> = ({ bannerLinks }) => (
       flexDirection: { xs: 'column', md: 'row' },
       alignItems: 'stretch',
       justifyContent: 'space-between',
-      width: '100%'
+      width: '100%',
     }}
   >
     {bannerLinks?.map((bannerLink, index) => (

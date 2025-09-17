@@ -16,10 +16,10 @@ export const newsShowcase = {
           link: {
             text: 'Vai al validatore',
             href: '/send/guides/validatore',
-            target: '_self'
+            target: '_self',
           },
-          image: { data: mediaJpeg() }
-        }
+          image: { data: mediaJpeg() },
+        },
       },
       {
         attributes: {
@@ -31,10 +31,10 @@ export const newsShowcase = {
           link: {
             text: 'Vai alla guida',
             href: '/pago-pa/quick-start',
-            target: '_self'
+            target: '_self',
           },
-          image: { data: mediaJpeg() }
-        }
+          image: { data: mediaJpeg() },
+        },
       },
       {
         attributes: {
@@ -45,16 +45,16 @@ export const newsShowcase = {
           link: {
             text: 'Vai ai tutorial',
             href: '/firma-con-io/tutorials',
-            target: '_self'
+            target: '_self',
           },
-          image: { data: mediaJpeg() }
-        }
-      }
-    ]
+          image: { data: mediaJpeg() },
+        },
+      },
+    ],
   },
   link: {
     text: 'Vai alle release note',
     href: '/send/release-note',
-    target: '_self'
-  }
+    target: '_self',
+  },
 } satisfies StrapiNewsShowcase;

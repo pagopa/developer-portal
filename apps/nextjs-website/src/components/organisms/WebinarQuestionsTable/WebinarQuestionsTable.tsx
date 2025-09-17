@@ -5,7 +5,7 @@ import {
   TableCell,
   TableContainer,
   TableHead,
-  TableRow
+  TableRow,
 } from '@mui/material';
 import WebinarQuestionRow from '@/components/molecules/WebinarQuestion/WebinarQuestionRow';
 import { updateWebinarQuestion } from '@/lib/webinarApi';
@@ -18,7 +18,7 @@ type WebinarQuestionsTableProps = {
   updateLocalQuestions: (
     createdAt: Date,
     highlight: boolean,
-    hidden: boolean
+    hidden: boolean,
   ) => null;
 };
 
@@ -26,7 +26,7 @@ const WebinarQuestionsTable = ({
   userName,
   questions,
   title,
-  updateLocalQuestions
+  updateLocalQuestions,
 }: WebinarQuestionsTableProps) => {
   return (
     <TableContainer component={Paper} sx={{ marginY: 2 }}>
@@ -46,30 +46,30 @@ const WebinarQuestionsTable = ({
                 updateLocalQuestions(
                   question.id.createdAt,
                   !!question.highlightedBy,
-                  hide
+                  hide,
                 );
                 await updateWebinarQuestion({
                   id: question.id,
                   updates: {
                     hiddenBy: hide
                       ? { operation: 'update', value: userName }
-                      : { operation: 'remove' }
-                  }
+                      : { operation: 'remove' },
+                  },
                 });
               }}
               onHighlight={async (highlight) => {
                 updateLocalQuestions(
                   question.id.createdAt,
                   highlight,
-                  !!question.hiddenBy
+                  !!question.hiddenBy,
                 );
                 await updateWebinarQuestion({
                   id: question.id,
                   updates: {
                     highlightedBy: highlight
                       ? { operation: 'update', value: userName }
-                      : { operation: 'remove' }
-                  }
+                      : { operation: 'remove' },
+                  },
                 });
               }}
             />

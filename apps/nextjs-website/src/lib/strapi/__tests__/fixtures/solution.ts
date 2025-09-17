@@ -21,10 +21,10 @@ export const baseSolutionJson = {
     statsSource: null,
     bannerLinks: [],
     products: {
-      data: []
+      data: [],
     },
     webinars: {
-      data: []
+      data: [],
     },
     caseHistories: {
       id: 12,
@@ -44,15 +44,15 @@ export const baseSolutionJson = {
               publishedAt: '2024-06-12T13:24:27.231Z',
               locale: 'it',
               image: {
-                data: null
+                data: null,
               },
               parts: [],
-              products: productsJson
-            }
-          }
-        ]
-      }
+              products: productsJson,
+            },
+          },
+        ],
+      },
     },
-    seo: null
-  }
+    seo: null,
+  },
 };

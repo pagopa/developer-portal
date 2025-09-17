@@ -1,7 +1,7 @@
 import { EditPasswordForm } from '@/components/organisms/Auth/EditPasswordForm';
 import {
   InfoCardItem,
-  InfoCardItemProps
+  InfoCardItemProps,
 } from '@/components/atoms/InfoCardItem/InfoCardItem';
 import React from 'react';
 
@@ -20,7 +20,7 @@ const PasswordFormWrapper: React.FC<PasswordFormWrapperProps> = ({
   isEditing,
   onCancel,
   onSave,
-  onEdit
+  onEdit,
 }) => {
   return isEditing ? (
     <EditPasswordForm onCancel={onCancel} onSave={onSave} />

@@ -4,7 +4,7 @@ import React, {
   useCallback,
   useContext,
   useEffect,
-  useState
+  useState,
 } from 'react';
 
 type FragmentContextType = {
@@ -19,7 +19,7 @@ type FragmentProviderProps = {
 
 export function FragmentProvider({ children }: FragmentProviderProps) {
   const [fragment, setFragment] = useState<string | null>(() =>
-    typeof window !== 'undefined' ? window.location.hash : null
+    typeof window !== 'undefined' ? window.location.hash : null,
   );
 
   const fragmentChangeHandler = useCallback(() => {
@@ -36,7 +36,7 @@ export function FragmentProvider({ children }: FragmentProviderProps) {
   return (
     <FragmentContext.Provider
       value={{
-        fragment
+        fragment,
       }}
     >
       {children}
@@ -49,12 +49,12 @@ export function useFragment() {
   if (!context)
     // eslint-disable-next-line functional/no-throw-statements
     throw new Error(
-      'FragmentContext not found, did you forget to wrap your app with FragmentProvider?'
+      'FragmentContext not found, did you forget to wrap your app with FragmentProvider?',
     );
 
   const { fragment } = context;
 
   return {
-    fragment
+    fragment,
   } as const;
 }

@@ -55,7 +55,7 @@ const ApiViewer: FC<ApiViewerProps> = ({ specURL }) => {
         display: 'flex',
         height: '100%',
         width: '100%',
-        overflow: 'hidden'
+        overflow: 'hidden',
       }}
     >
       <rapi-doc

@@ -14,8 +14,8 @@ const TabPanel: FC<TabPanelProps> = ({
   value,
   index,
   sx = {
-    px: 3
-  }
+    px: 3,
+  },
 }) => {
   return (
     <div
@@ -45,7 +45,7 @@ export const TabComponent: FC<TabsProps> = ({
   items,
   variant,
   centered = false,
-  sx
+  sx,
 }: TabsProps) => {
   const [currentTab, setCurrentTab] = React.useState(0);
 
@@ -57,7 +57,7 @@ export const TabComponent: FC<TabsProps> = ({
           justifyContent: 'space-around',
           marginBottom: 6,
           position: 'relative',
-          top: '2px'
+          top: '2px',
         }}
       >
         <Tabs
@@ -71,7 +71,7 @@ export const TabComponent: FC<TabsProps> = ({
             flexGrow: '1',
             position: 'relative',
             top: '2px',
-            maxWidth: '1200px'
+            maxWidth: '1200px',
           }}
         >
           {items.map((item, index) => (
@@ -81,7 +81,7 @@ export const TabComponent: FC<TabsProps> = ({
               sx={{
                 maxWidth: '600px',
                 borderBottom: 2,
-                borderColor: 'divider'
+                borderColor: 'divider',
               }}
             />
           ))}

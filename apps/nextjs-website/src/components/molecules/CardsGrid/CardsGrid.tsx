@@ -31,7 +31,7 @@ const CardsGrid = ({
   cards,
   cardSize,
   containerSx,
-  ctaButtonsVariant
+  ctaButtonsVariant,
 }: CardsGridProps) => {
   const { palette } = useTheme();
   const t = useTranslations('shared');
@@ -52,16 +52,16 @@ const CardsGrid = ({
                 iconColor,
                 tags,
                 ctaLabel,
-                useSrc
+                useSrc,
               },
-              index
+              index,
             ) => {
               return (
                 <Grid
                   key={index}
                   size={{
                     xs: (cardSize?.xs as any) || 12,
-                    md: (cardSize?.md as any) || 6
+                    md: (cardSize?.md as any) || 6,
                   }}
                 >
                   <CtaCard
@@ -74,7 +74,7 @@ const CardsGrid = ({
                         ? ctaLabel
                         : t(comingSoon ? 'comingSoon' : 'moreInfo'),
                       href,
-                      variant: ctaButtonsVariant
+                      variant: ctaButtonsVariant,
                     }}
                     icon={
                       <IconWrapper
@@ -87,7 +87,7 @@ const CardsGrid = ({
                   />
                 </Grid>
               );
-            }
+            },
           )}
         </Grid>
       </Box>

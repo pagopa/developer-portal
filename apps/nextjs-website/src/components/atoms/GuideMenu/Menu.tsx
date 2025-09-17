@@ -10,13 +10,13 @@ import { RenderingComponents, renderMenu } from 'gitbook-docs/renderMenu';
 import { parseMenu } from 'gitbook-docs/parseMenu';
 
 import GuideVersionSelector, {
-  type GuideVersionSelectorProps
+  type GuideVersionSelectorProps,
 } from './GuideVersionSelector';
 import { Typography } from '@mui/material';
 
 const StyledTreeItem = styled(TreeItem)(({ theme }) => ({
   [`&`]: {
-    '--x': 32
+    '--x': 32,
   },
   [`& .${treeItemClasses.content}`]: {
     boxSizing: 'border-box',
@@ -26,56 +26,56 @@ const StyledTreeItem = styled(TreeItem)(({ theme }) => ({
     paddingBottom: 0,
     paddingLeft: 0,
     paddingRight: 32,
-    alignItems: 'space-between'
+    alignItems: 'space-between',
   },
   [`& .${treeItemClasses.content}:has(.${treeItemClasses.iconContainer}:empty)`]:
     {
-      paddingRight: 0
+      paddingRight: 0,
     },
   [`& .${treeItemClasses.iconContainer}`]: {
     justifyContent: 'flex-end',
     marginRight: 0,
     paddingRight: 0,
-    paddingLeft: 0
+    paddingLeft: 0,
   },
   [`& .${treeItemClasses.iconContainer}:empty`]: {
-    display: 'none'
+    display: 'none',
   },
   [`& .${treeItemClasses.content} > .${treeItemClasses.label}`]: {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'stretch',
-    position: 'relative'
+    position: 'relative',
   },
   [`& .${treeItemClasses.content} > .${treeItemClasses.label} > a`]: {
     paddingTop: 10,
     paddingBottom: 10,
-    paddingRight: 32
+    paddingRight: 32,
   },
   [`& ul`]: {
     paddingLeft: 0,
-    '--y': 'calc(var(--x) + 0)'
+    '--y': 'calc(var(--x) + 0)',
   },
   [`& li`]: {
-    '--x': 'calc(var(--y) + 24)'
+    '--x': 'calc(var(--y) + 24)',
   },
   ['& a']: {
-    paddingLeft: 'calc(1px * var(--x))'
+    paddingLeft: 'calc(1px * var(--x))',
   },
   [`& .${treeItemClasses.label}`]: {
     padding: 0,
-    paddingLeft: 0
+    paddingLeft: 0,
   },
   [`& .${treeItemClasses.root}`]: {
     margin: 0,
-    paddingLeft: 0
+    paddingLeft: 0,
   },
   [`& .${treeItemClasses.selected}`]: {
-    borderRight: `2px solid ${theme.palette.primary.dark}`
+    borderRight: `2px solid ${theme.palette.primary.dark}`,
   },
   [`& .${treeItemClasses.selected} > .${treeItemClasses.label} > *`]: {
-    color: theme.palette.primary.dark
-  }
+    color: theme.palette.primary.dark,
+  },
 }));
 
 const components: RenderingComponents<React.ReactNode> = {
@@ -115,13 +115,13 @@ const components: RenderingComponents<React.ReactNode> = {
         paddingBottom: 0,
         textDecoration: 'none',
         fontSize: 14,
-        fontWeight: 700
+        fontWeight: 700,
       }}
       textTransform='uppercase'
     >
       {children}
     </Typography>
-  )
+  ),
 };
 
 export type GuideMenuItemsProps = Partial<GuideVersionSelectorProps> & {
@@ -141,7 +141,7 @@ const GuideMenuItems = ({
   linkPrefix,
   menu,
   versionName,
-  versions
+  versions,
 }: GuideMenuItemsProps) => {
   const children = useMemo(() => {
     const parsed = parseMenu(menu, { assetsPrefix, linkPrefix });
@@ -155,7 +155,7 @@ const GuideMenuItems = ({
           verticalAlign: 'middle',
           padding: { xs: '16px 24px', lg: '16px 32px' },
           fontSize: { xs: '20px', md: '24px' },
-          fontWeight: { xs: 700, md: 600 }
+          fontWeight: { xs: 700, md: 600 },
         }}
       >
         {name}
@@ -168,7 +168,7 @@ const GuideMenuItems = ({
         defaultSelectedItems={currentPath}
         slots={{
           collapseIcon: ExpandLessIcon,
-          expandIcon: ExpandMoreIcon
+          expandIcon: ExpandMoreIcon,
         }}
       >
         {children}

@@ -14,7 +14,7 @@ const StyledText = ({ style, children }: StyledTextProps) => {
           sx={{
             paddingY: 0.5,
             paddingX: 1,
-            backgroundColor: palette.background.default
+            backgroundColor: palette.background.default,
           }}
         >
           {children}

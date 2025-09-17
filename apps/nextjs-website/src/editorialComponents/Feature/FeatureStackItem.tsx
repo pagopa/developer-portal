@@ -30,7 +30,7 @@ export const FeatureStackItem = ({
   item,
   theme,
   useDarkTheme,
-  variant = 'h6'
+  variant = 'h6',
 }: FeatureStackItemProps) => {
   const isDarkMode = useDarkTheme || theme !== 'light';
   const textStyle = isDarkMode ? 'background.paper' : 'text.primary';
@@ -72,7 +72,7 @@ export const FeatureStackItem = ({
       sx={{
         flex: 1,
         flexGrow: 1,
-        overflow: 'hidden'
+        overflow: 'hidden',
       }}
     >
       <Box
@@ -81,8 +81,8 @@ export const FeatureStackItem = ({
         sx={{
           svg: {
             height: '64px',
-            width: '64px'
-          }
+            width: '64px',
+          },
         }}
         color={imageStyle}
       >
@@ -104,7 +104,7 @@ export const FeatureStackItem = ({
           variant={variant}
           sx={{
             fontSize: '1.5rem !important',
-            lineHeight: '1.15 !important'
+            lineHeight: '1.15 !important',
           }}
         >
           {item.title}

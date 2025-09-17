@@ -19,7 +19,7 @@ type WebinarQuestionsTemplateProps = {
 };
 
 const WebinarQuestionsTemplate = ({
-  webinar
+  webinar,
 }: WebinarQuestionsTemplateProps) => {
   const { user, loading } = useUser();
   const { webinarState, setWebinar } = useWebinar();
@@ -27,7 +27,7 @@ const WebinarQuestionsTemplate = ({
   const [questions, setQuestions] = useState<readonly WebinarQuestion[]>([]);
 
   const { data, error } = useSWR(webinar.slug, getWebinarQuestionList, {
-    refreshInterval: fetchWebinarsQuestionsIntervalMs
+    refreshInterval: fetchWebinarsQuestionsIntervalMs,
   });
 
   useEffect(() => {
@@ -47,17 +47,17 @@ const WebinarQuestionsTemplate = ({
       .filter(({ hiddenBy }) => !hiddenBy || userName === hiddenBy);
 
     const highlightedQuestions = sortedVisibleQuestions.filter(
-      (question) => !!question.highlightedBy
+      (question) => !!question.highlightedBy,
     );
 
     const notHighlightedQuestions = sortedVisibleQuestions.filter(
-      (question) => !question.highlightedBy
+      (question) => !question.highlightedBy,
     );
 
     const updateLocalQuestionsByDate = (
       createdAt: Date,
       updateHighlight: boolean,
-      updateHide: boolean
+      updateHide: boolean,
     ) => {
       setQuestions((oldQuestions) =>
         oldQuestions.map((oldQuestion) => {
@@ -67,10 +67,10 @@ const WebinarQuestionsTemplate = ({
             ? {
                 ...oldQuestion,
                 hiddenBy: updateHide ? userName : undefined,
-                highlightedBy: updateHighlight ? userName : undefined
+                highlightedBy: updateHighlight ? userName : undefined,
               }
             : oldQuestion;
-        })
+        }),
       );
 
       return null;
@@ -92,7 +92,7 @@ const WebinarQuestionsTemplate = ({
               display: 'flex',
               flexDirection: { xs: 'column-reverse', md: 'row' },
               alignContent: 'space-between',
-              gap: 4
+              gap: 4,
             }}
           >
             <Grid key={'notHighlightedQuestions'} size={{ xs: 12, md: 6 }}>

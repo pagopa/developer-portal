@@ -41,7 +41,7 @@ const DownloadableDocuments = ({ documents }: DownloadableDocumentsProps) => {
                     titleStyle={{
                       wordWrap: 'break-word',
                       fontSize: '22px !important',
-                      fontWeight: 700
+                      fontWeight: 700,
                     }}
                     cta={{
                       variant: 'outlined',
@@ -54,7 +54,7 @@ const DownloadableDocuments = ({ documents }: DownloadableDocumentsProps) => {
                           >
                             {size
                               ? `${t(
-                                  'shared.download'
+                                  'shared.download',
                                 )} - ${getHumanReadableFileSize(size)}`
                               : t('shared.download')}{' '}
                           </Typography>
@@ -64,7 +64,7 @@ const DownloadableDocuments = ({ documents }: DownloadableDocumentsProps) => {
                           />
                         </>
                       ),
-                      href: downloadLink
+                      href: downloadLink,
                     }}
                     tags={tags}
                   />

@@ -7,7 +7,7 @@ import {
   Typography,
   Grid,
   Theme,
-  SxProps
+  SxProps,
 } from '@mui/material';
 import { type CommonProps, type Generic } from '../types/components';
 import { isJSX } from '../utils';
@@ -42,7 +42,7 @@ const HeroTextContent = ({
   subtitle,
   ctaButtons,
   theme,
-  titleVariant = 'h1'
+  titleVariant = 'h1',
 }: HeroTextProps) => {
   const textColor = theme === 'dark' ? 'primary.contrastText' : 'text.primary';
   return (
@@ -96,7 +96,7 @@ const Hero = (props: HeroProps) => {
     image,
     altText = '',
     smallHeight = '480px',
-    gridTextSx
+    gridTextSx,
   } = props;
   const heroHeight = size === 'big' ? '720px' : smallHeight;
 
@@ -123,7 +123,7 @@ const Hero = (props: HeroProps) => {
         objectFit: 'cover',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
-        backgroundImage: `${overlay}url(${background ?? ''})`
+        backgroundImage: `${overlay}url(${background ?? ''})`,
       }}
     />
   );
@@ -137,7 +137,7 @@ const Hero = (props: HeroProps) => {
         size={{ lg: 6 }}
         sx={{
           minHeight: { lg: heroHeight },
-          ...gridTextSx
+          ...gridTextSx,
         }}
       >
         <HeroTextContent {...props} />
@@ -156,7 +156,7 @@ const Hero = (props: HeroProps) => {
                 width: '100%',
                 height: '100%',
                 maxHeight: heroHeight,
-                userSelect: 'none'
+                userSelect: 'none',
               }}
             />
           )}

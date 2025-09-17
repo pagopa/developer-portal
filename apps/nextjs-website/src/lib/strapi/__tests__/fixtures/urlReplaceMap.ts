@@ -17,19 +17,19 @@ export const strapiUrlReplaceMapFixture: StrapiUrlReplaceMap = {
                 product: {
                   data: {
                     attributes: {
-                      slug: productJson.data.attributes.slug
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      ]
-    }
-  }
+                      slug: productJson.data.attributes.slug,
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      ],
+    },
+  },
 };
 
 export const expectedUrlReplaceMapFixture = {
-  'getting-started': '/firma-con-io/guides/getting-started/step-2'
+  'getting-started': '/firma-con-io/guides/getting-started/step-2',
 };

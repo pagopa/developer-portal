@@ -10,7 +10,7 @@ type ChatbotHistoryMessagesProps = {
 
 const ChatbotHistoryMessages = ({
   queries,
-  userName
+  userName,
 }: ChatbotHistoryMessagesProps) => {
   const t = useTranslations();
 

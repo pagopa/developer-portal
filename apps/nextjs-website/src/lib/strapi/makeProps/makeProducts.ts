@@ -4,12 +4,12 @@ import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
 import {
   StrapiBaseProductWithRelations,
   StrapiProduct,
-  StrapiProducts
+  StrapiProducts,
 } from '@/lib/strapi/types/product';
 import _ from 'lodash';
 
 export function makeProductsProps(
-  strapiProducts: StrapiProducts
+  strapiProducts: StrapiProducts,
 ): ReadonlyArray<Product> {
   return _.compact(strapiProducts.data.map(makeProductProps));
 }
@@ -24,7 +24,7 @@ export function makeProductProps(product: StrapiProduct): Product | null {
   if (!product.attributes.slug) {
     // eslint-disable-next-line functional/no-expression-statements
     console.error(
-      `Product with id ${product.attributes.name} is missing the slug. Skipping...`
+      `Product with id ${product.attributes.name} is missing the slug. Skipping...`,
     );
     return null;
   }
@@ -34,20 +34,20 @@ export function makeProductProps(product: StrapiProduct): Product | null {
     return {
       ...makeBaseProductWithoutLogoProps(product),
       description: product.attributes.description,
-      logo: product.attributes.logo?.data.attributes
+      logo: product.attributes.logo?.data.attributes,
     };
   } catch (error) {
     // eslint-disable-next-line functional/no-expression-statements
     console.error(
       `Error while mapping product with id ${product.attributes.name}:`,
-      error
+      error,
     );
     return null;
   }
 }
 
 function getApiDataListPageUrl(
-  product: StrapiBaseProductWithRelations
+  product: StrapiBaseProductWithRelations,
 ): string | undefined {
   const apiDataList = product.attributes.api_data_list_page.data;
   // if there is no api data, return undefined
@@ -68,11 +68,11 @@ function getApiDataListPageUrl(
 }
 
 export function makeBaseProductWithoutLogoProps(
-  product: StrapiBaseProductWithRelations
+  product: StrapiBaseProductWithRelations,
 ): Product {
   if (!product.attributes.slug) {
     throw new Error(
-      `Product with id ${product.attributes.name} is missing the slug. Skipping...`
+      `Product with id ${product.attributes.name} is missing the slug. Skipping...`,
     );
   }
 
@@ -91,6 +91,6 @@ export function makeBaseProductWithoutLogoProps(
     hasOverviewPage: !!product.attributes.overview.data,
     hasQuickstartGuidePage: !!product.attributes.quickstart_guide.data,
     hasReleaseNotePage: !!product.attributes.release_note.data,
-    bannerLinks: product.attributes.bannerLinks?.map(makeBannerLinkProps) || []
+    bannerLinks: product.attributes.bannerLinks?.map(makeBannerLinkProps) || [],
   } satisfies Product;
 }

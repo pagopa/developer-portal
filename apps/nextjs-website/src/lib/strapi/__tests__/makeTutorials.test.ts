@@ -3,7 +3,7 @@ import { StrapiTutorials } from '@/lib/strapi/types/tutorial';
 import {
   minimalDataTutorials,
   tutorialsWithAnItemMissingSlug,
-  tutorialsWithAnItemMissingProductSlug
+  tutorialsWithAnItemMissingProductSlug,
 } from '@/lib/strapi/__tests__/factories/tutorials';
 import { spyOnConsoleError } from '@/lib/strapi/__tests__/spyOnConsole';
 import _ from 'lodash';
@@ -24,7 +24,7 @@ describe('makeTutorialsProps', () => {
     expect(result[0]).toMatchObject({
       image: {
         url: 'https://example.com/example.jpg',
-        alternativeText: 'Example Image'
+        alternativeText: 'Example Image',
       },
       title: 'Tutorial Title',
       name: 'Tutorial Title',
@@ -35,33 +35,33 @@ describe('makeTutorialsProps', () => {
           code: 'console.log("Hello World");',
           language: 'javascript',
           showLineNumbers: true,
-          __component: 'parts.code-block'
-        }
+          __component: 'parts.code-block',
+        },
       ],
       relatedLinks: {
         title: 'Related Links',
         links: [
           {
             text: 'Link 1',
-            href: '/link-1'
-          }
-        ]
+            href: '/link-1',
+          },
+        ],
       },
       bannerLinks: [
         {
           title: 'Banner Link 1',
           icon: {
             alternativeText: 'Example Image',
-            url: 'https://example.com/example.jpg'
+            url: 'https://example.com/example.jpg',
           },
-          theme: 'light'
-        }
+          theme: 'light',
+        },
       ],
       seo: {
         metaTitle: 'SEO Title',
-        metaDescription: 'SEO Description'
+        metaDescription: 'SEO Description',
       },
-      updatedAt: '2024-01-02T00:00:00.000Z'
+      updatedAt: '2024-01-02T00:00:00.000Z',
     });
   });
 
@@ -86,9 +86,9 @@ describe('makeTutorialsProps', () => {
           page: 1,
           pageSize: 25,
           pageCount: 0,
-          total: 0
-        }
-      }
+          total: 0,
+        },
+      },
     };
     const result = makeTutorialsProps(emptyData);
     expect(result).toHaveLength(0);
@@ -101,7 +101,7 @@ describe('makeTutorialsProps', () => {
     expect(firstElement.title).toBe('Valid Tutorial');
     expect(firstElement.path).toBe('/pago-pa/tutorials/valid-tutorial');
     expect(spyOnConsoleError).toHaveBeenCalledWith(
-      'Error processing Tutorial "Tutorial Without Slug": Missing tutorial slug. Skipping...'
+      'Error processing Tutorial "Tutorial Without Slug": Missing tutorial slug. Skipping...',
     );
   });
 
@@ -113,7 +113,7 @@ describe('makeTutorialsProps', () => {
     expect(firstElement.productSlug).toBe('valid-product');
     expect(firstElement.path).toBe('/valid-product/tutorials/valid-tutorial');
     expect(spyOnConsoleError).toHaveBeenCalledWith(
-      'Error processing Tutorial "Tutorial Without Product Slug": Missing product slug. Skipping...'
+      'Error processing Tutorial "Tutorial Without Product Slug": Missing product slug. Skipping...',
     );
   });
 });

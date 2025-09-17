@@ -18,9 +18,9 @@ export const getHealthz = () =>
               method: 'GET',
               headers: {
                 'Content-Type': 'application/json',
-                Authorization: `Bearer ${authToken}`
-              }
-            })
+                Authorization: `Bearer ${authToken}`,
+              },
+            }),
         ),
         TE.chain((response) => {
           if (response.status === 200) {
@@ -28,7 +28,7 @@ export const getHealthz = () =>
           } else {
             return TE.left(makeError(response));
           }
-        })
-      )()
-    )
+        }),
+      )(),
+    ),
   );

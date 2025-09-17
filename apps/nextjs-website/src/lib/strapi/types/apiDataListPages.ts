@@ -3,7 +3,7 @@ import { StrapiBannerLink } from '@/lib/strapi/types/bannerLink';
 import { StrapiSeo } from '@/lib/strapi/types/seo';
 import {
   StrapiBaseApiData,
-  StrapiBaseApiDataList
+  StrapiBaseApiDataList,
 } from '@/lib/strapi/types/apiDataList';
 import { StrapiComponent } from './strapiComponent';
 

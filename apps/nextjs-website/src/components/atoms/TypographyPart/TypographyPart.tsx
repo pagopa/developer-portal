@@ -30,7 +30,7 @@ const TypographyPart = (props: TypographyPartProps) => {
         textAlign: 'justify',
         textAlignLast: 'left',
         marginBottom: spacing(5),
-        ...props.sx
+        ...props.sx,
       }}
     >
       {props.asHtml === true ? (

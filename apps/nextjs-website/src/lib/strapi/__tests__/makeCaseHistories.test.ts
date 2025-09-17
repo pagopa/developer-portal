@@ -3,12 +3,12 @@ import { StrapiCaseHistories } from '@/lib/strapi/types/caseHistories';
 import _ from 'lodash';
 import {
   caseHistoriesPageTemplateProps,
-  strapiCaseHistories
+  strapiCaseHistories,
 } from '@/lib/strapi/__tests__/fixtures/caseHistories';
 import {
   minimalDataCaseHistories,
   caseHistoriesWithMultipleProducts,
-  caseHistoriesWithoutImage
+  caseHistoriesWithoutImage,
 } from '@/lib/strapi/__tests__/factories/caseHistories';
 import { mediaJpeg } from './factories/media';
 
@@ -21,7 +21,7 @@ describe('makeCaseHistoriesProps', () => {
 
   it('should handle minimal data with missing optional fields', () => {
     const result = makeCaseHistoriesProps(
-      _.cloneDeep(minimalDataCaseHistories())
+      _.cloneDeep(minimalDataCaseHistories()),
     );
     const firstElement = result[0];
     expect(result).toHaveLength(1);
@@ -41,9 +41,9 @@ describe('makeCaseHistoriesProps', () => {
           page: 1,
           pageSize: 25,
           pageCount: 0,
-          total: 0
-        }
-      }
+          total: 0,
+        },
+      },
     };
     const result = makeCaseHistoriesProps(emptyData);
     expect(result).toHaveLength(0);
@@ -56,7 +56,7 @@ describe('makeCaseHistoriesProps', () => {
     expect(firstElement.products[1]).toMatchObject({
       name: 'Second Product',
       slug: 'second-product',
-      logo: mediaJpeg().attributes
+      logo: mediaJpeg().attributes,
     });
   });
 

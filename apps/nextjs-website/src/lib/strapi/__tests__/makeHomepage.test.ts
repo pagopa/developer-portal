@@ -2,14 +2,14 @@ import { makeHomepageProps } from '@/lib/strapi/makeProps/makeHomepage';
 import _ from 'lodash';
 import {
   strapiHomepage,
-  expectedHomepageProps
+  expectedHomepageProps,
 } from '@/lib/strapi/__tests__/fixtures/homepage';
 import {
   minimalDataHomepage,
   homepageWithoutNewsShowcase,
   homepageWithoutEcosystem,
   homepageWithoutWebinars,
-  homepageWithoutSeo
+  homepageWithoutSeo,
 } from '@/lib/strapi/__tests__/factories/homepage';
 
 describe('makeHomepageProps', () => {
@@ -70,7 +70,7 @@ describe('makeHomepageProps', () => {
       name: 'example.jpg',
       ext: '.jpg',
       mime: 'image/jpeg',
-      size: 123456
+      size: 123456,
     });
   });
 
@@ -82,8 +82,8 @@ describe('makeHomepageProps', () => {
         text: 'Product 1 description',
         href: 'product-1/overview',
         icon: 'https://example.com/example.jpg',
-        useSrc: true
-      }
+        useSrc: true,
+      },
     ]);
     expect(result.ecosystem?.solutions).toEqual([
       {
@@ -91,8 +91,8 @@ describe('makeHomepageProps', () => {
         text: 'Solution 1 description',
         href: '/solutions/solution-1',
         icon: 'https://example.com/example.jpg',
-        useSrc: true
-      }
+        useSrc: true,
+      },
     ]);
   });
 
@@ -107,8 +107,8 @@ describe('makeHomepageProps', () => {
       link: {
         text: 'Vai al validatore',
         url: '/send/guides/validatore',
-        target: '_self'
-      }
+        target: '_self',
+      },
     });
   });
 });

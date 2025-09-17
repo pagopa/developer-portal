@@ -5,7 +5,7 @@ import {
   Stack,
   TextField,
   Typography,
-  useTheme
+  useTheme,
 } from '@mui/material';
 import React, { ChangeEvent, useState } from 'react';
 import { useTranslations } from 'next-intl';
@@ -24,7 +24,7 @@ type ChatbotFeedbackProps = {
     chatId: string,
     contextScore: number | null,
     responseScore: number | null,
-    comment: string
+    comment: string,
   ) => null;
   setIsFormVisible: (boolean: boolean) => null;
 };
@@ -34,7 +34,7 @@ const ChatbotFeedbackForm = ({
   id,
   onClose,
   onSend,
-  setIsFormVisible
+  setIsFormVisible,
 }: ChatbotFeedbackProps) => {
   const t = useTranslations();
   const { palette } = useTheme();
@@ -43,21 +43,21 @@ const ChatbotFeedbackForm = ({
   const [userComment, setUserComment] = useState('');
   const StyledRating = styled(Rating)({
     '& .MuiRating-iconFilled': {
-      color: palette.primary.main
+      color: palette.primary.main,
     },
     '& .MuiRating-iconHover': {
-      color: palette.primary.main
+      color: palette.primary.main,
     },
     '& .MuiRating-iconEmpty': {
-      color: palette.grey[500]
-    }
+      color: palette.grey[500],
+    },
   });
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setUserComment(
       event.target.value
         .slice(0, MESSAGE_MAX_CHARS)
-        .replace(/(\r\n|\n|\r)/gm, '')
+        .replace(/(\r\n|\n|\r)/gm, ''),
     );
   };
 
@@ -70,7 +70,7 @@ const ChatbotFeedbackForm = ({
           paddingRight: '0.5rem',
           paddingX: { xs: 1, md: 4 },
           backgroundColor: palette.background.paper,
-          height: '100%'
+          height: '100%',
         }}
       >
         <Typography
@@ -85,7 +85,7 @@ const ChatbotFeedbackForm = ({
           sx={{
             display: 'flex',
             justifyContent: 'center',
-            alignItems: 'center'
+            alignItems: 'center',
           }}
         >
           <StyledRating
@@ -111,7 +111,7 @@ const ChatbotFeedbackForm = ({
           sx={{
             display: 'flex',
             justifyContent: 'center',
-            alignItems: 'center'
+            alignItems: 'center',
           }}
         >
           <StyledRating
@@ -142,8 +142,8 @@ const ChatbotFeedbackForm = ({
               fontSize: '14px',
               fontWeight: 400,
               lineHeight: '21px',
-              letterSpacing: '0px'
-            }
+              letterSpacing: '0px',
+            },
           }}
           onChange={handleChange}
           multiline
@@ -155,14 +155,14 @@ const ChatbotFeedbackForm = ({
               fontSize: '14px',
               fontWeight: 400,
               lineHeight: '21px',
-              letterSpacing: '0px'
+              letterSpacing: '0px',
             },
             '& .MuiFormLabel-root': {
               fontSize: '14px',
               fontWeight: 600,
               color: '#A2ADB8',
-              paddingLeft: '4px'
-            }
+              paddingLeft: '4px',
+            },
           }}
         />
         <Typography
@@ -173,7 +173,7 @@ const ChatbotFeedbackForm = ({
             lineHeight: '16px',
             letterSpacing: '0px',
             verticalAlign: 'middle',
-            color: palette.text.secondary
+            color: palette.text.secondary,
           }}
         >
           {t('chatBot.feedback.mandatoryFields')}
@@ -186,7 +186,7 @@ const ChatbotFeedbackForm = ({
             paddingBottom: '20px',
             display: 'flex',
             justifyContent: 'end',
-            alignContent: 'flex-end'
+            alignContent: 'flex-end',
           }}
         >
           <Button variant={'text'} onClick={onClose}>
@@ -203,7 +203,7 @@ const ChatbotFeedbackForm = ({
                 id,
                 userResponseRelevancy ? userResponseRelevancy / 5 : null,
                 userFaithfullness ? userFaithfullness / 5 : null,
-                userComment
+                userComment,
               );
             }}
           >

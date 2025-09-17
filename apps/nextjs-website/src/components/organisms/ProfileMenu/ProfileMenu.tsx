@@ -15,7 +15,7 @@ const ProfileMenu = ({ children }: { children: ReactNode }) => {
   const userFullName =
     (user &&
       [user.attributes['given_name'], user.attributes['family_name']].join(
-        ' '
+        ' ',
       )) ||
     '';
 

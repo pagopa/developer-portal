@@ -15,12 +15,12 @@ export function guideListWithItemsWithEmptyProductSlug() {
             ...guide.attributes.product.data,
             attributes: {
               ...guide.attributes.product.data.attributes,
-              slug: ''
-            }
-          }
-        }
-      }
-    }))
+              slug: '',
+            },
+          },
+        },
+      },
+    })),
   } satisfies StrapiGuides;
 }
 
@@ -37,11 +37,11 @@ export function guideListWithMissingProductSlug() {
             ...guide.attributes.product.data,
             attributes: {
               ...guide.attributes.product.data.attributes,
-              slug: undefined as any
-            }
-          }
-        }
-      }
-    }))
+              slug: undefined as any,
+            },
+          },
+        },
+      },
+    })),
   } satisfies StrapiGuides;
 }

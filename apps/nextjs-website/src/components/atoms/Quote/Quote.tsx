@@ -22,8 +22,8 @@ const Quote = ({
     height: 1080,
     ext: '.png',
     mime: 'image/png',
-    url: '/images/hero-swiper.png'
-  }
+    url: '/images/hero-swiper.png',
+  },
 }: QuoteProps) => {
   const { palette } = useTheme();
   const textColor = color
@@ -34,7 +34,7 @@ const Quote = ({
     <Stack height={{ xs: 468, sm: 560 }} position={'relative'}>
       <EContainer
         containerSx={{
-          margin: 'auto 0'
+          margin: 'auto 0',
         }}
       >
         <Stack
@@ -50,7 +50,7 @@ const Quote = ({
               rotate: '180deg',
               position: 'relative',
               left: '4px',
-              bottom: '8px'
+              bottom: '8px',
             }}
           />
           <Typography color={textColor} variant='h6'>
@@ -62,7 +62,7 @@ const Quote = ({
               color: palette.grey[300],
               alignSelf: 'flex-end',
               position: 'relative',
-              left: '24px'
+              left: '24px',
             }}
           />
         </Stack>

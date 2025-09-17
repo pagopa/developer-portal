@@ -19,22 +19,22 @@ const makeStrapiSolutionListPagePopulate = () =>
           'webinars.coverImage',
           'caseHistories',
           'caseHistories.case_histories',
-          'caseHistories.case_histories.image'
-        ]
+          'caseHistories.case_histories.image',
+        ],
       },
       caseHistories: {
-        populate: ['case_histories', 'case_histories.image']
+        populate: ['case_histories', 'case_histories.image'],
       },
       features: {
-        populate: ['items.icon']
+        populate: ['items.icon'],
       },
       seo: {
-        populate: '*,metaImage,metaSocial.image'
-      }
-    }
+        populate: '*,metaImage,metaSocial.image',
+      },
+    },
   });
 
 export const fetchSolutionListPage = fetchFromStrapi<StrapiSolutionListPage>(
   'solution-list-page',
-  makeStrapiSolutionListPagePopulate()
+  makeStrapiSolutionListPagePopulate(),
 );

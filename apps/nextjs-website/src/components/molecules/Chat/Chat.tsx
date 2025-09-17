@@ -1,5 +1,5 @@
 import ChatMessage, {
-  Message
+  Message,
 } from '@/components/atoms/ChatMessage/ChatMessage';
 import { Box, Button, Paper, Stack, useTheme } from '@mui/material';
 import ChatInputText from '@/components/atoms/ChatInputText/ChatInputText';
@@ -25,7 +25,7 @@ type ChatProps = {
     chatId: string,
     contextScore: number | null,
     responseScore: number | null,
-    comment: string
+    comment: string,
   ) => null;
   mustFillFeedbackForm: boolean;
   scrollToBottom: boolean;
@@ -44,7 +44,7 @@ const Chat = ({
   isAwaitingResponse,
   areChatbotQueriesLoaded,
   error,
-  disabled
+  disabled,
 }: ChatProps) => {
   const t = useTranslations();
   const { palette } = useTheme();
@@ -59,7 +59,7 @@ const Chat = ({
         user
           ? t('chatBot.welcomeMessage')
           : t('chatBot.guestMessage', { host: baseUrl }),
-        mustFillFeedbackForm
+        mustFillFeedbackForm,
       ),
       ...compact(
         queries.flatMap((q) => [
@@ -71,7 +71,7 @@ const Chat = ({
                 sessionId: q.sessionId,
                 timestamp: q.queriedAt,
                 hasNegativeFeedback: false,
-                mustFillFeedbackForm: mustFillFeedbackForm
+                mustFillFeedbackForm: mustFillFeedbackForm,
               }
             : null,
           q.answer && q.createdAt
@@ -82,13 +82,13 @@ const Chat = ({
                 sessionId: q.sessionId,
                 timestamp: q.createdAt,
                 hasNegativeFeedback: q.badAnswer || false,
-                mustFillFeedbackForm: mustFillFeedbackForm
+                mustFillFeedbackForm: mustFillFeedbackForm,
               }
-            : null
-        ])
-      )
+            : null,
+        ]),
+      ),
     ],
-    [queries, t, user]
+    [queries, t, user],
   ) satisfies Message[];
 
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -99,7 +99,7 @@ const Chat = ({
       setQueriesCount(messages.length);
       if (scrollRef.current) {
         scrollRef.current.scrollIntoView({
-          behavior: instantScroll ? 'auto' : 'smooth'
+          behavior: instantScroll ? 'auto' : 'smooth',
         });
       }
     }
@@ -114,7 +114,7 @@ const Chat = ({
             backgroundColor: palette.background.paper,
             borderBottom: '2px solid',
             borderBottomColor: palette.action.disabled,
-            width: 'auto'
+            width: 'auto',
           }}
         >
           <Stack direction={'row'} paddingY={'0.25rem'}>
@@ -156,7 +156,7 @@ const Chat = ({
             paddingRight: '0.5rem',
             paddingX: { xs: 1, md: 4 },
             backgroundColor: palette.background.paper,
-            height: isFeedbackFormVisible ? 0 : '100%'
+            height: isFeedbackFormVisible ? 0 : '100%',
           }}
         >
           {!messages.length && !areChatbotQueriesLoaded && <ChatSkeleton />}
@@ -185,7 +185,7 @@ const Chat = ({
                       message.id,
                       null,
                       null,
-                      ''
+                      '',
                     );
                   }
                   return null;
@@ -205,7 +205,7 @@ const Chat = ({
                 severity={'error'}
                 alertStyle={{
                   backgroundColor: palette.background.paper,
-                  marginBottom: 0
+                  marginBottom: 0,
                 }}
               />
             </Paper>
@@ -231,6 +231,6 @@ function firstMessage(text: string, mustFillFeedbackForm: boolean): Message {
     isQuestion: false,
     sessionId: '',
     hasNegativeFeedback: false,
-    mustFillFeedbackForm: mustFillFeedbackForm
+    mustFillFeedbackForm: mustFillFeedbackForm,
   };
 }

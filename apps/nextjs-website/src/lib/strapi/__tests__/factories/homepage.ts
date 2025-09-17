@@ -7,20 +7,20 @@ export function minimalDataHomepage() {
       attributes: {
         comingsoonDocumentation: {
           title: 'Minimal Documentation',
-          links: []
+          links: [],
         },
         heroSlider: [
           {
             title: 'Minimal Hero',
-            backgroundImage: { data: undefined }
-          }
+            backgroundImage: { data: undefined },
+          },
         ],
         newsShowcase: undefined,
         ecosystem: undefined,
         webinars: { data: [] },
-        seo: undefined
-      }
-    }
+        seo: undefined,
+      },
+    },
   } satisfies StrapiHomepage;
 }
 
@@ -31,9 +31,9 @@ export function homepageWithoutNewsShowcase() {
       ...strapiHomepage.data,
       attributes: {
         ...strapiHomepage.data.attributes,
-        newsShowcase: undefined
-      }
-    }
+        newsShowcase: undefined,
+      },
+    },
   } satisfies StrapiHomepage;
 }
 
@@ -44,9 +44,9 @@ export function homepageWithoutEcosystem() {
       ...strapiHomepage.data,
       attributes: {
         ...strapiHomepage.data.attributes,
-        ecosystem: undefined
-      }
-    }
+        ecosystem: undefined,
+      },
+    },
   } satisfies StrapiHomepage;
 }
 
@@ -58,10 +58,10 @@ export function homepageWithoutWebinars() {
       attributes: {
         ...strapiHomepage.data.attributes,
         webinars: {
-          data: []
-        }
-      }
-    }
+          data: [],
+        },
+      },
+    },
   } satisfies StrapiHomepage;
 }
 
@@ -72,8 +72,8 @@ export function homepageWithoutSeo() {
       ...strapiHomepage.data,
       attributes: {
         ...strapiHomepage.data.attributes,
-        seo: undefined
-      }
-    }
+        seo: undefined,
+      },
+    },
   } satisfies StrapiHomepage;
 }

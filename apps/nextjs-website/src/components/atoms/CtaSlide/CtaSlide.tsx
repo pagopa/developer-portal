@@ -38,8 +38,8 @@ const CtaSlide = ({
     height: 1080,
     ext: '.png',
     mime: 'image/png',
-    url: '/images/hero-swiper.png'
-  }
+    url: '/images/hero-swiper.png',
+  },
 }: CtaSlideProps) => {
   const { palette } = useTheme();
   const textColor = color
@@ -63,7 +63,7 @@ const CtaSlide = ({
         <Typography
           fontSize={{
             xs: 'clamp(36px, 8vw, 48px)',
-            md: 'clamp(48px, 10vw, 58px)'
+            md: 'clamp(48px, 10vw, 58px)',
           }}
           variant={'h1'}
           color={textColor}

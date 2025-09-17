@@ -16,7 +16,7 @@ const SolutionStep = ({
   title,
   content,
   products,
-  width
+  width,
 }: SolutionStepProps) => {
   const t = useTranslations('solution');
   return (
@@ -25,7 +25,7 @@ const SolutionStep = ({
         <Typography
           sx={{
             fontWeight: 700,
-            color: (theme) => theme.palette.action.active
+            color: (theme) => theme.palette.action.active,
           }}
           variant='caption'
         >
@@ -38,7 +38,7 @@ const SolutionStep = ({
           sx={{
             textTransform: 'uppercase',
             fontWeight: 700,
-            color: (theme) => theme.palette.action.active
+            color: (theme) => theme.palette.action.active,
           }}
           variant='subtitle2'
         >

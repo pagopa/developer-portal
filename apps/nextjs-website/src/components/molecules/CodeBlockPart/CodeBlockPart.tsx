@@ -25,7 +25,7 @@ const CodeBlockPart = ({
   showLineNumbers = true,
   title,
   maxWidth = 'auto',
-  wrapLines = true
+  wrapLines = true,
 }: CodeBlockPartProps) => {
   // Ensure code is always a string to prevent split errors
   const safeCode = typeof code === 'string' ? code : String(code || '');
@@ -48,7 +48,7 @@ const CodeBlockPart = ({
         borderRadius: '0.375rem',
         display: isLightMode ? 'block' : 'flex',
         marginBottom: isLightMode ? spacing(5) : 0,
-        position: 'relative'
+        position: 'relative',
       }}
       maxWidth={{ xs: '100%', md: maxWidth }}
       flexGrow={1}
@@ -59,13 +59,13 @@ const CodeBlockPart = ({
         lineNumberStyle={{ fontWeight: 700 }}
         showLineNumbers={showLineNumbers}
         lineProps={{
-          style: { wordBreak: 'break-all', whiteSpace: 'pre-wrap' }
+          style: { wordBreak: 'break-all', whiteSpace: 'pre-wrap' },
         }}
         wrapLines={wrapLines}
         style={isLightMode ? lightCustomStyle : darkCustomStyle}
         customStyle={{
           padding: title ? '5em 1em 1.25em 1em' : '1.25em 3em 1.25em 1em',
-          width: isLightMode ? '' : '100%'
+          width: isLightMode ? '' : '100%',
         }}
       >
         {safeCode}
@@ -78,7 +78,7 @@ const CodeBlockPart = ({
             fontWeight: 700,
             position: 'absolute',
             left: '24px',
-            top: '24px'
+            top: '24px',
           }}
         >
           {title}
@@ -90,7 +90,7 @@ const CodeBlockPart = ({
           padding: 0,
           position: 'absolute',
           right: 0,
-          top: '14px'
+          top: '14px',
         }}
       >
         <Box marginY={'4px'} marginRight={{ xs: '5px', md: '10px' }}>

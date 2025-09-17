@@ -42,7 +42,7 @@ const DeleteSection = ({ user }: DeleteSectionProps) => {
         sx={{
           marginBottom: '24px',
           fontSize: '16px !important',
-          fontWeight: '600'
+          fontWeight: '600',
         }}
       >
         {t('personalData.deleteAccountSection')}
@@ -51,14 +51,14 @@ const DeleteSection = ({ user }: DeleteSectionProps) => {
         sx={{
           display: 'flex',
           flexDirection: { xs: 'column', md: 'row' },
-          gap: { xs: '10px', md: '100px' }
+          gap: { xs: '10px', md: '100px' },
         }}
       >
         <Typography
           variant='body2'
           sx={{
             fontSize: '14px',
-            color: palette.text.secondary
+            color: palette.text.secondary,
           }}
         >
           {t('personalData.deleteAccount.sectionLabel')}
@@ -83,7 +83,7 @@ const DeleteSection = ({ user }: DeleteSectionProps) => {
               return null;
             },
             disabled: deleting,
-            label: sharedTranslate('cancel')
+            label: sharedTranslate('cancel'),
           }}
           confirmCta={{
             onClick: () => {
@@ -91,7 +91,7 @@ const DeleteSection = ({ user }: DeleteSectionProps) => {
               return null;
             },
             disabled: deleting,
-            label: t('personalData.deleteAccount.buttonLabel')
+            label: t('personalData.deleteAccount.buttonLabel'),
           }}
           setOpen={(value: boolean) => {
             setOpenDeleteModal(value);

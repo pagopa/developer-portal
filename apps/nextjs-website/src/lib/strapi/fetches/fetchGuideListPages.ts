@@ -7,21 +7,21 @@ const makeStrapiGuideListPopulate = () =>
   qs.stringify({
     populate: {
       product: {
-        ...productRelationsPopulate
+        ...productRelationsPopulate,
       },
       guidesByCategory: {
-        populate: ['guides.mobileImage', 'guides.image', 'guides.listItems']
+        populate: ['guides.mobileImage', 'guides.image', 'guides.listItems'],
       },
       bannerLinks: {
-        populate: ['icon']
+        populate: ['icon'],
       },
       seo: {
-        populate: '*,metaImage,metaSocial.image'
-      }
-    }
+        populate: '*,metaImage,metaSocial.image',
+      },
+    },
   });
 
 export const fetchGuideListPages = fetchFromStrapi<StrapiGuideListPages>(
   'guide-list-pages',
-  makeStrapiGuideListPopulate()
+  makeStrapiGuideListPopulate(),
 );

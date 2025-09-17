@@ -9,18 +9,18 @@ const chatMarkdocConfig: ConfigType = {
       attributes: {
         href: { type: String, required: true },
         target: { type: String, default: '_blank' },
-        title: { type: String }
+        title: { type: String },
       },
       transform(node: Node, config: Config) {
         const attributes = node.transformAttributes(config);
         return new Markdoc.Tag(
           'Link',
           attributes,
-          node.transformChildren(config)
+          node.transformChildren(config),
         );
-      }
-    }
-  }
+      },
+    },
+  },
 };
 
 export function parseChatMessage(markdown: string): ReactNode {
@@ -28,7 +28,7 @@ export function parseChatMessage(markdown: string): ReactNode {
   const content = Markdoc.transform(ast, chatMarkdocConfig);
   return Markdoc.renderers.react(content, React, {
     components: {
-      Link: ChatLink
-    }
+      Link: ChatLink,
+    },
   });
 }

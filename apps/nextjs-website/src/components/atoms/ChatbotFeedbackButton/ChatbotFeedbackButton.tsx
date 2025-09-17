@@ -14,7 +14,7 @@ type ChatbotFeedbackButtonProps = {
 const ChatbotFeedbackButton = ({
   mustFillFeedbackForm,
   isNegativeFeedbackGiven,
-  onToggleNegativeFeedback
+  onToggleNegativeFeedback,
 }: ChatbotFeedbackButtonProps) => {
   const t = useTranslations();
   const [feedbackGiven, setFeedbackGiven] = useState(false);
@@ -34,7 +34,7 @@ const ChatbotFeedbackButton = ({
         onClick={() => onToggle(!isNegativeFeedbackGiven)}
         disabled={feedbackGiven}
         sx={{
-          cursor: 'pointer'
+          cursor: 'pointer',
         }}
       >
         {feedbackGiven ? (
@@ -43,8 +43,8 @@ const ChatbotFeedbackButton = ({
               disablePortal: true,
               sx: {
                 display: 'block',
-                whiteSpace: 'nowrap'
-              }
+                whiteSpace: 'nowrap',
+              },
             }}
             open={true}
             placement='bottom'

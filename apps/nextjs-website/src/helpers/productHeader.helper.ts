@@ -5,7 +5,7 @@ import { Theme } from '@/editorialComponents/types/components';
 export function productToMenuItems(
   product: Product,
   path: string,
-  theme: Theme
+  theme: Theme,
 ): readonly MenuDropdownProp[] {
   return [
     // if there's overview data, add it to the menu
@@ -14,7 +14,7 @@ export function productToMenuItems(
           label: 'devPortal.productHeader.overview',
           href: `/${product.slug}/overview`,
           active: path.startsWith(`/${product.slug}/overview`),
-          theme
+          theme,
         }
       : null,
     // if there's quiskstart guide data, add it to the menu
@@ -23,7 +23,7 @@ export function productToMenuItems(
           label: 'devPortal.productHeader.quickStartGuide',
           href: `/${product.slug}/quick-start`,
           active: path.startsWith(`/${product.slug}/quick-start`),
-          theme
+          theme,
         }
       : null,
     product.hasApiDataListPage
@@ -31,7 +31,7 @@ export function productToMenuItems(
           label: 'devPortal.productHeader.api',
           href: product.apiDataListPageUrl,
           active: path.startsWith(`/${product.slug}/api`),
-          theme
+          theme,
         }
       : null,
     // if there's tutorials data, add it to the menu
@@ -40,7 +40,7 @@ export function productToMenuItems(
           label: 'devPortal.productHeader.tutorials',
           href: `/${product.slug}/tutorials`,
           active: path.startsWith(`/${product.slug}/tutorials`),
-          theme
+          theme,
         }
       : null,
     // if there's guides data, add it to the menu
@@ -49,7 +49,7 @@ export function productToMenuItems(
           label: 'devPortal.productHeader.guides',
           href: `/${product.slug}/guides`,
           active: path.startsWith(`/${product.slug}/guides`),
-          theme
+          theme,
         }
       : null,
     // if there's release notes data, add it to the menu
@@ -58,8 +58,8 @@ export function productToMenuItems(
           label: 'devPortal.productHeader.releaseNote',
           href: `/${product.slug}/release-note`,
           active: path.startsWith(`/${product.slug}/release-note`),
-          theme
+          theme,
         }
-      : null
+      : null,
   ].filter((item) => item !== null) as readonly MenuDropdownProp[];
 }

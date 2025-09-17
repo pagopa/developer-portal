@@ -1,7 +1,7 @@
 `use client`;
 import Accordion from '@mui/material/Accordion';
 import MuiAccordionSummary, {
-  AccordionSummaryProps
+  AccordionSummaryProps,
 } from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
@@ -24,8 +24,8 @@ const AccordionSummary = styled((props: AccordionSummaryProps) => (
 ))(() => ({
   flexDirection: 'row-reverse',
   '& .MuiAccordionSummary-expandIconWrapper.Mui-expanded': {
-    transform: 'rotate(90deg)'
-  }
+    transform: 'rotate(90deg)',
+  },
 }));
 
 const Swagger = ({
@@ -33,7 +33,7 @@ const Swagger = ({
   summary,
   children,
   src,
-  path
+  path,
 }: SwaggerProps<ReactNode>) => {
   const { spec } = useSpec(src);
   const t = useTranslations('swagger');
@@ -53,7 +53,7 @@ const Swagger = ({
       sx={{
         border: `1px solid ${theme.palette.grey[300]}`,
         borderRadius: '4px',
-        marginBottom: '16px'
+        marginBottom: '16px',
       }}
     >
       <AccordionSummary aria-controls='panel2-content' id='panel2-header'>
@@ -62,7 +62,7 @@ const Swagger = ({
             padding: '8px 12px',
             display: 'flex',
             flexDirection: 'column',
-            alignItems: 'flex-start'
+            alignItems: 'flex-start',
           }}
         >
           <Typography
@@ -74,7 +74,7 @@ const Swagger = ({
               fontSize: 14,
               fontWeight: 700,
               marginBottom: '16px',
-              textTransform: 'uppercase'
+              textTransform: 'uppercase',
             }}
           >
             {method}

@@ -11,15 +11,15 @@ export const strapiBannerLink: StrapiBannerLink = {
       children: [
         {
           type: 'text',
-          text: 'Access the developer documentation'
-        }
-      ]
-    }
+          text: 'Access the developer documentation',
+        },
+      ],
+    },
   ],
   theme: 'light',
   icon: {
-    data: mediaJpeg()
-  }
+    data: mediaJpeg(),
+  },
 };
 
 export const expectedBannerLinkProps: BannerLinkProps = {
@@ -30,10 +30,10 @@ export const expectedBannerLinkProps: BannerLinkProps = {
       children: [
         {
           type: 'text',
-          text: 'Access the developer documentation'
-        }
-      ]
-    }
+          text: 'Access the developer documentation',
+        },
+      ],
+    },
   ],
   theme: 'light',
   icon: {
@@ -45,6 +45,6 @@ export const expectedBannerLinkProps: BannerLinkProps = {
     ext: '.jpg',
     mime: 'image/jpeg',
     size: 123456,
-    url: 'https://example.com/example.jpg'
-  }
+    url: 'https://example.com/example.jpg',
+  },
 };

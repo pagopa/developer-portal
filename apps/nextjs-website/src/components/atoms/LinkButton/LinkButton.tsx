@@ -21,7 +21,7 @@ const LinkButton = ({
   href,
   size = 14,
   width,
-  disabled = false
+  disabled = false,
 }: LinkButtonProps) => {
   const labelComponent = (
     <Typography
@@ -30,8 +30,8 @@ const LinkButton = ({
       color={disabled ? disabledColor : color}
       sx={{
         '&::first-letter': {
-          textTransform: 'capitalize'
-        }
+          textTransform: 'capitalize',
+        },
       }}
     >
       {label}
@@ -64,7 +64,7 @@ const LinkButton = ({
           color: disabled ? disabledColor : color,
           marginLeft: 0.5,
           height: 24,
-          width: 24
+          width: 24,
         }}
       />
     </Stack>

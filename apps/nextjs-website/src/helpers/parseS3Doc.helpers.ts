@@ -1,7 +1,7 @@
 import {
   S3Client,
   GetObjectCommand,
-  ListObjectsV2Command
+  ListObjectsV2Command,
 } from '@aws-sdk/client-s3';
 import * as path from 'path';
 import { Readable } from 'stream';
@@ -39,7 +39,7 @@ const parseText = ({ type, attributes }: Node): string | null =>
 export const parseTitle = (markdown: string): string | null => {
   const nodes = Array.from(Markdoc.parse(markdown).walk());
   const headingNode = nodes.find(
-    ({ type, attributes }) => type === 'heading' && attributes.level === 1
+    ({ type, attributes }) => type === 'heading' && attributes.level === 1,
   );
 
   if (!headingNode) {
@@ -68,7 +68,7 @@ export const makeParseS3DocsEnv = (
     readonly accessKeyId: string;
     readonly secretAccessKey: string;
     readonly sessionToken?: string;
-  }
+  },
 ): ParseDocS3Env => {
   const s3 =
     !!region && !!credentials
@@ -86,10 +86,10 @@ export const makeParseS3DocsEnv = (
       const data = await s3.send(new ListObjectsV2Command(params));
       return (
         data.Contents?.filter(
-          (item) => item.Key && !item.Key.includes('.gitbook/assets/')
+          (item) => item.Key && !item.Key.includes('.gitbook/assets/'),
         ).map((item) => item.Key || '') || []
       );
-    }
+    },
   };
 };
 
@@ -108,7 +108,7 @@ const streamToString = (stream: Readable): Promise<string> => {
 const transformPath = (
   path: string,
   dirPath: string,
-  pathPrefix: string
+  pathPrefix: string,
 ): string => {
   const t = path
     .replace(dirPath, `${pathPrefix}`)
@@ -121,7 +121,7 @@ const transformPath = (
 export const parseS3Doc = async <T>(
   env: ParseDocS3Env,
   source: DocSource<T>,
-  paths: readonly string[]
+  paths: readonly string[],
 ): Promise<DocPage<T>[]> => {
   // eslint-disable-next-line functional/no-try-statements
   try {
@@ -132,13 +132,13 @@ export const parseS3Doc = async <T>(
     // eslint-disable-next-line functional/no-let
     let slugToPath = [
       dirPath,
-      ...paths.filter((path) => path !== source.source.version).slice(1)
+      ...paths.filter((path) => path !== source.source.version).slice(1),
     ].join('/');
     // eslint-disable-next-line functional/no-expression-statements
     slugToPath = slugToPath !== dirPath ? slugToPath : `${dirPath}/README`;
     const filePath = files.find(
       (file) =>
-        file.endsWith('.md') && file.replace('.md', '').endsWith(slugToPath)
+        file.endsWith('.md') && file.replace('.md', '').endsWith(slugToPath),
     );
 
     if (!filePath) {
@@ -158,13 +158,13 @@ export const parseS3Doc = async <T>(
         path: transformPath(
           filePath,
           source.source.dirPath,
-          source.source.pathPrefix
+          source.source.pathPrefix,
         ),
         isIndex: path.parse(filePath).name === 'README',
         title,
         menu,
-        body
-      }
+        body,
+      },
     };
     return [docPage];
   } catch (error) {
@@ -185,7 +185,7 @@ export const parseS3GuidePage = async (props: {
 
   const baseGuidePath = `/${guideProps.product.slug}/guides/${guideProps.guide.slug}`;
   const guidePageMetadata = guidesMetadata.find(
-    (data) => data.path === guidePath
+    (data) => data.path === guidePath,
   );
   const versions = guideProps.versions;
   const version = guidePageMetadata?.version
@@ -210,7 +210,7 @@ export const parseS3GuidePage = async (props: {
       'or guidePageMetadata',
       guidePageMetadata,
       'guidesMetadataLength',
-      guidesMetadata.length
+      guidesMetadata.length,
     );
     return undefined;
   }
@@ -223,30 +223,32 @@ export const parseS3GuidePage = async (props: {
     version,
     assetsPrefix: `${staticContentsUrl}/${s3DocsPath}/${guidePageMetadata.dirName}`,
     dirPath: `${s3DocsPath}/${guidePageMetadata.dirName}`,
-    spaceId: guidePageMetadata.dirName
+    spaceId: guidePageMetadata.dirName,
   };
 
   // Download menu and body files in parallel
   const [menu, body] = await Promise.all([
     guidePageMetadata && downloadFileAsText(guidePageMetadata.menuS3Path),
-    downloadFileAsText(guidePageMetadata.contentS3Path)
+    downloadFileAsText(guidePageMetadata.contentS3Path),
   ]);
 
   const result = {
     ...guideProps,
     guide: {
       name: guideProps.guide.name,
-      path: guidePath
+      path: guidePath,
     },
     version: {
       main: version.main || false,
       name: version.version,
-      path: version.main ? baseGuidePath : `${baseGuidePath}/${version.version}`
+      path: version.main
+        ? baseGuidePath
+        : `${baseGuidePath}/${version.version}`,
     },
     versions: versions.map(({ main = false, version }) => ({
       main,
       name: version,
-      path: `${baseGuidePath}/${version}`
+      path: `${baseGuidePath}/${version}`,
     })),
     source,
     page: {
@@ -254,7 +256,7 @@ export const parseS3GuidePage = async (props: {
       isIndex,
       title: guidePageMetadata.title || '',
       menu: menu || '',
-      body: body || ''
+      body: body || '',
     },
     products: products,
     bodyConfig: {
@@ -264,9 +266,9 @@ export const parseS3GuidePage = async (props: {
       gitBookPagesWithTitle: guidesMetadata,
       spaceToPrefix: guidesMetadata.map((metadata) => ({
         spaceId: metadata.dirName,
-        pathPrefix: metadata.path.split('/').slice(0, 4).join('/')
-      }))
-    }
+        pathPrefix: metadata.path.split('/').slice(0, 4).join('/'),
+      })),
+    },
   };
 
   return result;
@@ -274,7 +276,7 @@ export const parseS3GuidePage = async (props: {
 
 export const parseDoc = async <T>(
   source: DocSource<T>,
-  jsonMetadata?: JsonMetadata
+  jsonMetadata?: JsonMetadata,
 ): Promise<DocPage<T> | undefined> => {
   if (!jsonMetadata) {
     return undefined;
@@ -300,8 +302,8 @@ export const parseDoc = async <T>(
         isIndex: path.parse(filePath).name === 'README',
         title,
         menu,
-        body
-      }
+        body,
+      },
     };
     return docPage;
   } catch (error) {

@@ -3,7 +3,7 @@ import { makeGuideListPagesProps } from '@/lib/strapi/makeProps/makeGuideListPag
 import {
   guideListPagesProps,
   strapiEmptyGuideListPagesData,
-  strapiGuideListPagesData
+  strapiGuideListPagesData,
 } from '@/lib/strapi/__tests__/fixtures/guideListPages';
 import { StrapiGuideListPages } from '@/lib/strapi/types/guideListPage';
 import {
@@ -11,7 +11,7 @@ import {
   guideListPagesWithItemsMissingListItem,
   guideListPagesWithItemsWithWrongDataType,
   guideListPagesWithItemsMissingImages,
-  guideListPagesWithItemsMissingSlug
+  guideListPagesWithItemsMissingSlug,
 } from '@/lib/strapi/__tests__/factories/guideListPages';
 import { spyOnConsoleError } from '@/lib/strapi/__tests__/spyOnConsole';
 
@@ -44,12 +44,12 @@ describe('makeGuideListPageProps', () => {
       ...guideListPagesProps[0],
       guidesSections: guideListPagesProps[0].guidesSections.map((section) => ({
         ...section,
-        guides: []
-      }))
+        guides: [],
+      })),
     });
     expect(spyOnConsoleError).toHaveBeenCalledWith(
       'guide slug is missing:',
-      expect.any(Object)
+      expect.any(Object),
     );
   });
 
@@ -65,9 +65,9 @@ describe('makeGuideListPageProps', () => {
         guides: section.guides.map((guide) => ({
           ...guide,
           imagePath: undefined,
-          mobileImagePath: undefined
-        }))
-      }))
+          mobileImagePath: undefined,
+        })),
+      })),
     });
   });
 
@@ -89,18 +89,18 @@ describe('makeGuideListPageProps', () => {
     expect(result).toHaveLength(1);
     expect(result[0].abstract).toEqual({
       title: 12345,
-      description: 67890
+      description: 67890,
     });
   });
 
   it('should return an empty array if all guide list pages have missing product slugs', () => {
     const result = makeGuideListPagesProps(
-      guideListPagesWithItemMissingProductSlug()
+      guideListPagesWithItemMissingProductSlug(),
     );
     expect(result).toHaveLength(0);
     expect(spyOnConsoleError).toHaveBeenCalledWith(
       'product slug is missing:',
-      expect.any(Object)
+      expect.any(Object),
     );
   });
 });

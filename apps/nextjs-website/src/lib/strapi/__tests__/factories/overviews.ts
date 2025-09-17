@@ -16,10 +16,10 @@ export function minimalDataSingleOverview(): StrapiOverviews {
           whatsNew: undefined,
           postIntegration: undefined,
           relatedLinks: undefined,
-          seo: undefined
-        }
-      }
-    ]
+          seo: undefined,
+        },
+      },
+    ],
   };
 }
 
@@ -36,13 +36,13 @@ export function overviewsWithItemWithEmptyProductSlug() {
               ...strapiOverviews.data[0].attributes.product.data,
               attributes: {
                 ...strapiOverviews.data[0].attributes.product.data.attributes,
-                slug: ''
-              }
-            }
-          }
-        }
-      }
-    ]
+                slug: '',
+              },
+            },
+          },
+        },
+      },
+    ],
   };
 }
 
@@ -59,13 +59,13 @@ export function overviewsWithItemMissingProductSlug() {
               ...strapiOverviews.data[0].attributes.product.data,
               attributes: {
                 ...strapiOverviews.data[0].attributes.product.data.attributes,
-                slug: undefined as any
-              }
-            }
-          }
-        }
-      }
-    ]
+                slug: undefined as any,
+              },
+            },
+          },
+        },
+      },
+    ],
   };
 }
 
@@ -95,18 +95,18 @@ export function overviewsWithItemMissingTutorialProductSlug() {
                           ...strapiOverviews.data[0].attributes.tutorialSection
                             .tutorials.data[0].attributes.product.data
                             .attributes,
-                          slug: undefined as any
-                        }
-                      }
-                    }
-                  }
-                }
-              ]
-            }
-          }
-        }
-      }
-    ]
+                          slug: undefined as any,
+                        },
+                      },
+                    },
+                  },
+                },
+              ],
+            },
+          },
+        },
+      },
+    ],
   };
 }
 
@@ -128,15 +128,15 @@ export function overviewsWithItemMissingTutorialSlug() {
                   attributes: {
                     ...strapiOverviews.data[0].attributes.tutorialSection
                       .tutorials.data[0].attributes,
-                    slug: undefined as any
-                  }
-                }
-              ]
-            }
-          }
-        }
-      }
-    ]
+                    slug: undefined as any,
+                  },
+                },
+              ],
+            },
+          },
+        },
+      },
+    ],
   };
 }
 
@@ -158,15 +158,15 @@ export function overviewsWithItemWithEmptyGuideProductSlug() {
                   attributes: {
                     ...strapiOverviews.data[0].attributes.postIntegration.guides
                       .data[0].attributes,
-                    slug: ''
-                  }
-                }
-              ]
-            }
-          }
-        }
-      }
-    ]
+                    slug: '',
+                  },
+                },
+              ],
+            },
+          },
+        },
+      },
+    ],
   };
 }
 
@@ -188,14 +188,14 @@ export function overviewsWithItemMissingGuideProductSlug() {
                   attributes: {
                     ...strapiOverviews.data[0].attributes.postIntegration.guides
                       .data[0].attributes,
-                    slug: undefined as any
-                  }
-                }
-              ]
-            }
-          }
-        }
-      }
-    ]
+                    slug: undefined as any,
+                  },
+                },
+              ],
+            },
+          },
+        },
+      },
+    ],
   };
 }

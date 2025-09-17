@@ -19,7 +19,7 @@ export const InfoCardItem = ({
   title,
   value,
   valueFallback,
-  onEdit
+  onEdit,
 }: InfoCardItemProps) => {
   const handleClick = useCallback(() => {
     if (onEdit) {

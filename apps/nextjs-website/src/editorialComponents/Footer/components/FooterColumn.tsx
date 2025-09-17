@@ -3,7 +3,7 @@ import { hrefNoOp } from '@/editorialComponents/utils';
 import {
   FooterColumnIcon,
   type CompanyLinkType,
-  type PreLoginFooterSingleSectionType
+  type PreLoginFooterSingleSectionType,
 } from '../types';
 import { LogoPagoPACompany } from '@/editorialComponents/LogoPagoPACompany';
 import Link from 'next/link';
@@ -18,7 +18,7 @@ export interface FooterColumnProps {
 export const FooterColumn = ({
   data,
   companyLink,
-  icons
+  icons,
 }: FooterColumnProps) => (
   <Stack spacing={2} display='flex' alignItems={{ xs: 'center', sm: 'start' }}>
     {data?.title && (
@@ -56,7 +56,7 @@ export const FooterColumn = ({
                   <IconWrapper icon={icon} {...rest} />
                 </LinkMui>
               </li>
-            )
+            ),
         )}
       </Stack>
     )}

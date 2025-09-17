@@ -9,7 +9,7 @@ import {
   Stack,
   Typography,
   useMediaQuery,
-  useTheme
+  useTheme,
 } from '@mui/material';
 import LinkButton from '@/components/atoms/LinkButton/LinkButton';
 import SpeakerPreview from '@/components/molecules/SpeakerPreview/SpeakerPreview';
@@ -29,7 +29,7 @@ type WebinarCardProps = {
 const WebinarCard = ({
   webinar,
   handleErrorMessage,
-  textColor
+  textColor,
 }: WebinarCardProps) => {
   const theme = useTheme();
   const router = useRouter();
@@ -65,7 +65,7 @@ const WebinarCard = ({
         justifyContent: 'space-between',
         height: '100%',
         overflow: 'visible',
-        position: 'relative'
+        position: 'relative',
       }}
     >
       <CardContent
@@ -73,7 +73,7 @@ const WebinarCard = ({
           display: 'flex',
           flexDirection: { xs: 'column', md: 'row' },
           justifyContent: 'left',
-          gap: '56px'
+          gap: '56px',
         }}
       >
         <Box width={{ md: '55%' }}>
@@ -81,7 +81,7 @@ const WebinarCard = ({
           {![
             WebinarState.unknown,
             WebinarState.live,
-            WebinarState.past
+            WebinarState.past,
           ].includes(webinarState) && (
             <Typography fontSize={18} fontWeight={600}>
               <TimeSlot
@@ -133,7 +133,7 @@ const WebinarCard = ({
                 position: isSmallScreen ? 'relative' : 'absolute',
                 bottom: '24px',
                 fontSize: '12px',
-                marginTop: 1
+                marginTop: 1,
               }}
             >
               {t('warnings.email')}
@@ -146,7 +146,7 @@ const WebinarCard = ({
                 position: isSmallScreen ? 'relative' : 'absolute',
                 bottom: '24px',
                 fontSize: '12px',
-                marginTop: 1
+                marginTop: 1,
               }}
             >
               {t('warnings.goTo')}

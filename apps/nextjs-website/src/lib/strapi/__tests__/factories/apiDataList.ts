@@ -20,9 +20,9 @@ export function minimalApiDataList() {
               ...apiData.attributes.product.data,
               attributes: {
                 ...apiData.attributes.product.data.attributes,
-                bannerLinks: undefined
-              }
-            }
+                bannerLinks: undefined,
+              },
+            },
           },
           apiRestDetail: {
             slug: 'minimal-api',
@@ -31,14 +31,14 @@ export function minimalApiDataList() {
                 id: 1,
                 url: 'https://example.com/api.yaml',
                 name: undefined,
-                hideTryIt: false
-              }
-            ]
+                hideTryIt: false,
+              },
+            ],
           },
-          apiSoapDetail: undefined
-        }
-      }
-    ]
+          apiSoapDetail: undefined,
+        },
+      },
+    ],
   } satisfies StrapiApiDataList;
 }
 
@@ -51,10 +51,10 @@ export function apiDataWithoutBannerLinks() {
         ...apiData,
         attributes: {
           ...apiData.attributes,
-          bannerLinks: []
-        }
-      }
-    ]
+          bannerLinks: [],
+        },
+      },
+    ],
   } satisfies StrapiApiDataList;
 }
 
@@ -69,11 +69,11 @@ export function apiDataWithMissingProduct() {
           ...apiData.attributes,
           title: 'API Data Without Product',
           product: {
-            data: undefined as any
-          }
-        }
-      }
-    ]
+            data: undefined as any,
+          },
+        },
+      },
+    ],
   } satisfies StrapiApiDataList;
 }
 
@@ -88,10 +88,10 @@ export function apiDataWithoutApiDetails() {
           ...apiData.attributes,
           title: 'API Data Without API Details',
           apiRestDetail: undefined,
-          apiSoapDetail: undefined
-        }
-      }
-    ]
+          apiSoapDetail: undefined,
+        },
+      },
+    ],
   } satisfies StrapiApiDataList;
 }
 
@@ -107,12 +107,12 @@ export function apiDataWithInvalidRestApiDetails() {
           title: 'API Data Without API Details',
           apiRestDetail: {
             slug: '',
-            specUrls: []
+            specUrls: [],
           },
-          apiSoapDetail: undefined
-        }
-      }
-    ]
+          apiSoapDetail: undefined,
+        },
+      },
+    ],
   } satisfies StrapiApiDataList;
 }
 
@@ -130,11 +130,11 @@ export function apiDatalistWithItemMissingSlug() {
           apiSoapDetail: {
             slug: undefined as any,
             repositoryUrl: 'https://example.com/soap.wsdl',
-            dirName: 'soap-dir'
-          }
-        }
-      }
-    ]
+            dirName: 'soap-dir',
+          },
+        },
+      },
+    ],
   } satisfies StrapiApiDataList;
 }
 
@@ -164,13 +164,13 @@ export function mixedApiDataValidAndInvalid() {
                 id: 5,
                 url: 'https://example.com/another-api.yaml',
                 name: 'Another API',
-                hideTryIt: false
-              }
-            ]
-          }
-        }
-      }
-    ]
+                hideTryIt: false,
+              },
+            ],
+          },
+        },
+      },
+    ],
   } satisfies StrapiApiDataList;
 }
 
@@ -189,13 +189,13 @@ export function apiDataWithoutProductBannerLinks() {
               ...apiData.attributes.product.data,
               attributes: {
                 ...apiData.attributes.product.data.attributes,
-                bannerLinks: []
-              }
-            }
-          }
-        }
-      }
-    ]
+                bannerLinks: [],
+              },
+            },
+          },
+        },
+      },
+    ],
   } satisfies StrapiApiDataList;
 }
 
@@ -212,12 +212,12 @@ export function apiDataWithCorruptedProduct() {
           product: {
             data: {
               ...apiData.attributes.product.data,
-              attributes: undefined as any
-            }
-          }
-        }
-      }
-    ]
+              attributes: undefined as any,
+            },
+          },
+        },
+      },
+    ],
   };
 }
 
@@ -227,8 +227,8 @@ export function allInvalidApiData() {
     data: [
       apiDataWithoutApiDetails().data[0],
       apiDataWithMissingProduct().data[0],
-      apiDataWithCorruptedProduct().data[0]
-    ]
+      apiDataWithCorruptedProduct().data[0],
+    ],
   };
 }
 
@@ -236,7 +236,7 @@ export function soapApiDataOnly() {
   const soapApi = strapiApiDataList.data[1];
   return {
     ...strapiApiDataList,
-    data: [soapApi]
+    data: [soapApi],
   } satisfies StrapiApiDataList;
 }
 
@@ -244,7 +244,7 @@ export function restApiDataOnly() {
   const restApi = strapiApiDataList.data[0];
   return {
     ...strapiApiDataList,
-    data: [restApi]
+    data: [restApi],
   } satisfies StrapiApiDataList;
 }
 
@@ -264,18 +264,18 @@ export function restApiDataWithMultipleSpecs() {
                 id: 1,
                 url: 'https://example.com/api1.yaml',
                 name: 'API 1',
-                hideTryIt: false
+                hideTryIt: false,
               },
               {
                 id: 2,
                 url: 'https://example.com/api2.yaml',
                 name: 'API 2',
-                hideTryIt: true
-              }
-            ]
-          }
-        }
-      }
-    ]
+                hideTryIt: true,
+              },
+            ],
+          },
+        },
+      },
+    ],
   } satisfies StrapiApiDataList;
 }

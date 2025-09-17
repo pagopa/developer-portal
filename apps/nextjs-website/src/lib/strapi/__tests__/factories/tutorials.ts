@@ -10,17 +10,17 @@ export function tutorialsWithAnItemMissingSlug(): StrapiTutorials {
         attributes: {
           ...strapiTutorials.data[0].attributes,
           title: 'Tutorial Without Slug',
-          slug: undefined as any
-        }
+          slug: undefined as any,
+        },
       },
       {
         attributes: {
           ...strapiTutorials.data[0].attributes,
           title: 'Valid Tutorial',
-          slug: 'valid-tutorial'
-        }
-      }
-    ]
+          slug: 'valid-tutorial',
+        },
+      },
+    ],
   };
 }
 
@@ -38,11 +38,11 @@ export function tutorialsWithAnItemMissingProductSlug(): StrapiTutorials {
               attributes: {
                 ...strapiTutorials.data[0].attributes.product.data.attributes,
                 name: 'Product Without Slug',
-                slug: undefined as any
-              }
-            }
-          }
-        }
+                slug: undefined as any,
+              },
+            },
+          },
+        },
       },
       {
         attributes: {
@@ -54,13 +54,13 @@ export function tutorialsWithAnItemMissingProductSlug(): StrapiTutorials {
               attributes: {
                 ...strapiTutorials.data[0].attributes.product.data.attributes,
                 name: 'Valid Product',
-                slug: 'valid-product'
-              }
-            }
-          }
-        }
-      }
-    ]
+                slug: 'valid-product',
+              },
+            },
+          },
+        },
+      },
+    ],
   };
 }
 
@@ -79,10 +79,10 @@ export function minimalDataTutorials() {
           parts: [],
           relatedLinks: undefined,
           seo: undefined,
-          image: { data: undefined }
-        }
-      }
-    ]
+          image: { data: undefined },
+        },
+      },
+    ],
   } satisfies StrapiTutorials;
 }
 
@@ -97,10 +97,10 @@ export function tutorialsWithItemMissingData() {
           title: undefined,
           slug: undefined,
           publishedAt: undefined,
-          locale: undefined
-        }
-      }
-    ]
+          locale: undefined,
+        },
+      },
+    ],
   };
 }
 
@@ -113,9 +113,9 @@ export function tutorialsWithItemMissingMandatoryData() {
         ...strapiTutorial,
         attributes: {
           ...strapiTutorial.attributes,
-          product: { data: undefined }
-        }
-      }
-    ]
+          product: { data: undefined },
+        },
+      },
+    ],
   };
 }

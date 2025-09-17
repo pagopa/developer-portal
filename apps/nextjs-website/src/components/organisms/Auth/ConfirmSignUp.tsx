@@ -7,7 +7,7 @@ import {
   Grid,
   Divider,
   Card,
-  Link
+  Link,
 } from '@mui/material';
 import ResendEmail from '@/components/molecules/ResendEmail/ResendEmail';
 import { useTranslations } from 'next-intl';

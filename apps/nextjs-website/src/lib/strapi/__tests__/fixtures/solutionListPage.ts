@@ -29,14 +29,14 @@ export const strapiSolutionListPage = {
                       shortName: 'P1',
                       slug: 'product-1',
                       description: 'Product 1 description',
-                      logo: { data: mediaJpeg() }
-                    }
-                  }
-                ]
-              }
-            }
-          }
-        ]
+                      logo: { data: mediaJpeg() },
+                    },
+                  },
+                ],
+              },
+            },
+          },
+        ],
       },
       caseHistories: {
         title: 'Success Stories',
@@ -51,29 +51,29 @@ export const strapiSolutionListPage = {
                 description: 'Case history description',
                 publishedAt: fixedDateIsoString,
                 updatedAt: fixedDateIsoString,
-                image: { data: mediaJpeg() }
-              }
-            }
-          ]
-        }
+                image: { data: mediaJpeg() },
+              },
+            },
+          ],
+        },
       },
       features: {
         title: 'Features',
         subtitle: 'Our key features',
-        items: generateBannerLinks(2)
+        items: generateBannerLinks(2),
       },
       seo: {
         metaTitle: 'Solutions SEO Title',
-        metaDescription: 'Solutions SEO Description'
-      }
-    }
-  }
+        metaDescription: 'Solutions SEO Description',
+      },
+    },
+  },
 } satisfies StrapiSolutionListPage;
 
 export const expectedSolutionListTemplateProps: SolutionListTemplateProps = {
   hero: {
     title: 'Solutions',
-    subtitle: 'Explore our solutions'
+    subtitle: 'Explore our solutions',
   },
   solutions: [
     {
@@ -85,16 +85,16 @@ export const expectedSolutionListTemplateProps: SolutionListTemplateProps = {
         name: 'example.jpg',
         ext: '.jpg',
         mime: 'image/jpeg',
-        size: 123456
+        size: 123456,
       },
       slug: 'solutions/solution-1',
       tags: [
         {
           label: 'P1',
-          path: '/product-1'
-        }
-      ]
-    }
+          path: '/product-1',
+        },
+      ],
+    },
   ],
   successStories: {
     title: 'Success Stories',
@@ -105,10 +105,10 @@ export const expectedSolutionListTemplateProps: SolutionListTemplateProps = {
         path: 'case-histories/case-history-1',
         image: {
           url: 'https://example.com/example.jpg',
-          alternativeText: 'Example Image'
-        }
-      }
-    ]
+          alternativeText: 'Example Image',
+        },
+      },
+    ],
   },
   features: {
     title: 'Features',
@@ -116,17 +116,17 @@ export const expectedSolutionListTemplateProps: SolutionListTemplateProps = {
       {
         title: 'Banner Link 1',
         content: undefined,
-        iconUrl: 'https://example.com/example.jpg'
+        iconUrl: 'https://example.com/example.jpg',
       },
       {
         title: 'Banner Link 2',
         content: undefined,
-        iconUrl: 'https://example.com/example.jpg'
-      }
-    ]
+        iconUrl: 'https://example.com/example.jpg',
+      },
+    ],
   },
   seo: {
     metaTitle: 'Solutions SEO Title',
-    metaDescription: 'Solutions SEO Description'
-  }
+    metaDescription: 'Solutions SEO Description',
+  },
 };

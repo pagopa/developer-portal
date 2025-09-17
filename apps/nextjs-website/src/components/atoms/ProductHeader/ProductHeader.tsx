@@ -23,7 +23,7 @@ const ProductHeader: FC<ProductHeaderProps> = ({ product, path }) => {
 
   const menu = productToMenuItems(product, path, themeVariant).map((item) => ({
     ...item,
-    label: t(item.label)
+    label: t(item.label),
   }));
   return (
     <Box
@@ -32,14 +32,14 @@ const ProductHeader: FC<ProductHeaderProps> = ({ product, path }) => {
         top: scrollUp ? SITE_HEADER_HEIGHT : 0,
         zIndex: scrollUp ? 90 : 250,
         transition: 'top 0.5s linear',
-        width: '100vw'
+        width: '100vw',
       }}
     >
       <Header
         menu={menu}
         product={{
           href: `/${product.slug}/overview`,
-          name: product.name
+          name: product.name,
         }}
         theme={themeVariant}
       />

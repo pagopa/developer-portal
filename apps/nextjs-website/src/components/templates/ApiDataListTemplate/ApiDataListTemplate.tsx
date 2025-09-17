@@ -37,7 +37,7 @@ const ApiDataListTemplate = ({
   hero,
   cards,
   bannerLinks,
-  theme = 'light'
+  theme = 'light',
 }: ApiDataListPageTemplateProps) => {
   const t = useTranslations('');
 
@@ -50,7 +50,7 @@ const ApiDataListTemplate = ({
         smallHeight={hero.height || '272px'}
         titleVariant='h4'
         gridTextSx={{
-          justifyContent: 'center'
+          justifyContent: 'center',
         }}
       />
       <Box paddingBottom={6}>
@@ -59,12 +59,12 @@ const ApiDataListTemplate = ({
           cards={cards.map((card) => ({
             ...card,
             useSrc: true,
-            ctaLabel: t('apiDataListPage.explore')
+            ctaLabel: t('apiDataListPage.explore'),
           }))}
           cardSize={{ xs: 12, md: 4 }}
           containerSx={{
             pt: '22px',
-            mt: '-22px'
+            mt: '-22px',
           }}
         />
       </Box>

@@ -16,14 +16,14 @@ export function guideListPagesWithItemsMissingSlug() {
               data: guidePerCategory.guides.data.map((guide) => ({
                 attributes: {
                   ...guide.attributes,
-                  slug: undefined
-                }
-              }))
-            }
-          })
-        )
-      }
-    }))
+                  slug: undefined,
+                },
+              })),
+            },
+          }),
+        ),
+      },
+    })),
   };
 }
 
@@ -43,14 +43,14 @@ export function guideListPagesWithItemsMissingImages() {
                 attributes: {
                   ...guide.attributes,
                   image: undefined,
-                  mobileImage: undefined
-                }
-              }))
-            }
-          })
-        )
-      }
-    }))
+                  mobileImage: undefined,
+                },
+              })),
+            },
+          }),
+        ),
+      },
+    })),
   };
 }
 
@@ -70,16 +70,16 @@ export function guideListPagesWithItemsMissingListItem() {
                 {
                   attributes: {
                     ...guidePerCategory.guides.data[0].attributes,
-                    listItems: undefined
-                  }
+                    listItems: undefined,
+                  },
                 },
-                ...guidePerCategory.guides.data.slice(1)
-              ]
-            }
-          })
-        )
-      }
-    }))
+                ...guidePerCategory.guides.data.slice(1),
+              ],
+            },
+          }),
+        ),
+      },
+    })),
   };
 }
 
@@ -92,9 +92,9 @@ export function guideListPagesWithItemsWithWrongDataType() {
       attributes: {
         ...guides.attributes,
         title: 12345, // Wrong data type: it should be a string
-        description: 67890 // Wrong data type: it should be a string
-      }
-    }))
+        description: 67890, // Wrong data type: it should be a string
+      },
+    })),
   };
 }
 
@@ -111,11 +111,11 @@ export function guideListPagesWithItemMissingProductSlug() {
             ...guides.attributes.product.data,
             attributes: {
               ...guides.attributes.product.data.attributes,
-              slug: undefined
-            }
-          }
-        }
-      }
-    }))
+              slug: undefined,
+            },
+          },
+        },
+      },
+    })),
   } as unknown as StrapiGuideListPages;
 }

@@ -45,7 +45,7 @@ const RequiredTextField: FC<RequiredTextFieldProps> = ({
           const { valid, error } = validator(value);
           return valid ? acc : { valid, error };
         },
-        { valid: true, error: '' }
+        { valid: true, error: '' },
       );
       setIsValid(valid);
       setErrorText(error);
@@ -64,7 +64,7 @@ const RequiredTextField: FC<RequiredTextFieldProps> = ({
       onBlur={() => setIsDirty(true)}
       sx={{
         backgroundColor: palette.background.paper,
-        width: '100%'
+        width: '100%',
       }}
       error={isDirty && !isValid}
       helperText={isDirty && !isValid && errorText}

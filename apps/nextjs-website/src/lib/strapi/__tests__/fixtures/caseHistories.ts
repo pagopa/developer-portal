@@ -20,35 +20,35 @@ export const strapiCaseHistories: StrapiCaseHistories = {
               attributes: {
                 ...product,
                 logo: {
-                  data: mediaJpeg()
-                }
-              }
-            }
-          ]
+                  data: mediaJpeg(),
+                },
+              },
+            },
+          ],
         },
         parts: [
           {
             __component: 'parts.code-block',
             code: 'console.log("Hello World");',
             language: 'javascript',
-            showLineNumbers: true
-          }
+            showLineNumbers: true,
+          },
         ],
         seo: {
           metaTitle: 'SEO Title',
-          metaDescription: 'SEO Description'
-        }
-      }
-    }
+          metaDescription: 'SEO Description',
+        },
+      },
+    },
   ],
   meta: {
     pagination: {
       page: 1,
       pageSize: 25,
       pageCount: 1,
-      total: 1
-    }
-  }
+      total: 1,
+    },
+  },
 };
 
 export const caseHistoriesPageTemplateProps: CaseHistoryPageTemplateProps = {
@@ -61,19 +61,19 @@ export const caseHistoriesPageTemplateProps: CaseHistoryPageTemplateProps = {
     {
       name: product.name,
       slug: product.slug,
-      logo: mediaJpeg().attributes
-    }
+      logo: mediaJpeg().attributes,
+    },
   ],
   parts: [
     {
       component: 'codeBlock' as const,
       code: 'console.log("Hello World");',
       language: 'javascript',
-      showLineNumbers: true
-    }
+      showLineNumbers: true,
+    },
   ],
   seo: {
     metaTitle: 'SEO Title',
-    metaDescription: 'SEO Description'
-  }
+    metaDescription: 'SEO Description',
+  },
 };

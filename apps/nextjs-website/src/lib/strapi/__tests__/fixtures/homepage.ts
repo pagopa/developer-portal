@@ -13,9 +13,9 @@ export const strapiHomepage: StrapiHomepage = {
         links: [
           {
             text: 'Documentation Link',
-            href: '/docs'
-          }
-        ]
+            href: '/docs',
+          },
+        ],
       },
       heroSlider: [
         {
@@ -23,22 +23,22 @@ export const strapiHomepage: StrapiHomepage = {
           subhead: [
             {
               type: 'paragraph',
-              children: [{ type: 'text', text: 'Hero subhead content' }]
-            }
+              children: [{ type: 'text', text: 'Hero subhead content' }],
+            },
           ],
           subheadColor: 'main',
           titleColor: 'contrastText',
           callToAction: {
             link: {
               text: 'Get Started',
-              href: '/get-started'
+              href: '/get-started',
             },
-            variant: 'contained'
+            variant: 'contained',
           },
           backgroundImage: {
-            data: mediaJpeg()
-          }
-        }
+            data: mediaJpeg(),
+          },
+        },
       ],
       newsShowcase: {
         ...newsShowcase,
@@ -51,12 +51,12 @@ export const strapiHomepage: StrapiHomepage = {
               link: item.attributes.link
                 ? {
                     ...item.attributes.link,
-                    target: item.attributes.link.target || undefined
+                    target: item.attributes.link.target || undefined,
                   }
-                : item.attributes.link
-            }
-          }))
-        }
+                : item.attributes.link,
+            },
+          })),
+        },
       },
       ecosystem: {
         title: 'Our Ecosystem',
@@ -76,10 +76,10 @@ export const strapiHomepage: StrapiHomepage = {
                 api_data_list_page: { data: undefined },
                 tutorial_list_page: { data: { id: 1 } },
                 guide_list_page: { data: { id: 1 } },
-                release_note: { data: { id: 1 } }
-              }
-            }
-          ]
+                release_note: { data: { id: 1 } },
+              },
+            },
+          ],
         },
         solutionsTabName: 'Solutions',
         solutions: {
@@ -92,18 +92,18 @@ export const strapiHomepage: StrapiHomepage = {
                 title: 'Solution 1',
                 description: 'Solution 1 description',
                 dirName: 'solution-1-dir',
-                landingUseCaseFile: 'use-case.md'
-              }
-            }
-          ]
+                landingUseCaseFile: 'use-case.md',
+              },
+            },
+          ],
         },
         solutionsCta: {
           link: {
             text: 'View All Solutions',
-            href: '/solutions'
+            href: '/solutions',
           },
-          variant: 'outlined'
-        }
+          variant: 'outlined',
+        },
       },
       webinars: {
         data: [
@@ -123,27 +123,27 @@ export const strapiHomepage: StrapiHomepage = {
                 links: [
                   {
                     text: 'Link 1',
-                    href: '/link-1'
-                  }
-                ]
+                    href: '/link-1',
+                  },
+                ],
               },
               webinarSpeakers: { data: [] },
               webinarCategory: {
-                data: undefined
+                data: undefined,
               },
               headerImage: {
-                data: undefined
-              }
-            }
-          }
-        ]
+                data: undefined,
+              },
+            },
+          },
+        ],
       },
       seo: {
         metaTitle: 'Homepage SEO Title',
-        metaDescription: 'Homepage SEO Description'
-      }
-    }
-  }
+        metaDescription: 'Homepage SEO Description',
+      },
+    },
+  },
 };
 
 export const expectedHomepageProps: HomepageProps = {
@@ -152,9 +152,9 @@ export const expectedHomepageProps: HomepageProps = {
     links: [
       {
         text: 'Documentation Link',
-        href: '/docs'
-      }
-    ]
+        href: '/docs',
+      },
+    ],
   },
   hero: [
     {
@@ -162,17 +162,17 @@ export const expectedHomepageProps: HomepageProps = {
       subhead: [
         {
           type: 'paragraph',
-          children: [{ type: 'text', text: 'Hero subhead content' }]
-        }
+          children: [{ type: 'text', text: 'Hero subhead content' }],
+        },
       ],
       subheadColor: 'main',
       titleColor: 'contrastText',
       callToAction: {
         link: {
           text: 'Get Started',
-          href: '/get-started'
+          href: '/get-started',
         },
-        variant: 'contained'
+        variant: 'contained',
       },
       backgroundImage: {
         url: 'https://example.com/example.jpg',
@@ -180,9 +180,9 @@ export const expectedHomepageProps: HomepageProps = {
         name: 'example.jpg',
         ext: '.jpg',
         mime: 'image/jpeg',
-        size: 123456
-      }
-    }
+        size: 123456,
+      },
+    },
   ],
   newsShowcase: {
     title: "Cosa c'è di nuovo",
@@ -196,12 +196,12 @@ export const expectedHomepageProps: HomepageProps = {
         link: {
           text: 'Vai al validatore',
           url: '/send/guides/validatore',
-          target: '_self'
+          target: '_self',
         },
         image: {
           url: 'https://example.com/example.jpg',
-          alternativeText: 'Example Image'
-        }
+          alternativeText: 'Example Image',
+        },
       },
       {
         title:
@@ -212,12 +212,12 @@ export const expectedHomepageProps: HomepageProps = {
         link: {
           text: 'Vai alla guida',
           url: '/pago-pa/quick-start',
-          target: '_self'
+          target: '_self',
         },
         image: {
           url: 'https://example.com/example.jpg',
-          alternativeText: 'Example Image'
-        }
+          alternativeText: 'Example Image',
+        },
       },
       {
         title: 'Scopri i nuovi tutorial di Firma con IO',
@@ -227,14 +227,14 @@ export const expectedHomepageProps: HomepageProps = {
         link: {
           text: 'Vai ai tutorial',
           url: '/firma-con-io/tutorials',
-          target: '_self'
+          target: '_self',
         },
         image: {
           url: 'https://example.com/example.jpg',
-          alternativeText: 'Example Image'
-        }
-      }
-    ]
+          alternativeText: 'Example Image',
+        },
+      },
+    ],
   },
   ecosystem: {
     title: 'Our Ecosystem',
@@ -245,8 +245,8 @@ export const expectedHomepageProps: HomepageProps = {
         text: 'Product 1 description',
         href: 'product-1/overview',
         icon: 'https://example.com/example.jpg',
-        useSrc: true
-      }
+        useSrc: true,
+      },
     ],
     solutionsTabName: 'Solutions',
     solutions: [
@@ -255,16 +255,16 @@ export const expectedHomepageProps: HomepageProps = {
         text: 'Solution 1 description',
         href: '/solutions/solution-1',
         icon: 'https://example.com/example.jpg',
-        useSrc: true
-      }
+        useSrc: true,
+      },
     ],
     solutionsCta: {
       variant: 'outlined',
       link: {
         text: 'View All Solutions',
-        href: '/solutions'
-      }
-    }
+        href: '/solutions',
+      },
+    },
   },
   webinars: [
     {
@@ -277,17 +277,17 @@ export const expectedHomepageProps: HomepageProps = {
         links: [
           {
             text: 'Link 1',
-            href: '/link-1'
-          }
-        ]
+            href: '/link-1',
+          },
+        ],
       },
       isVisibleInList: true,
       imagePath: 'https://example.com/example.jpg',
-      updatedAt: '2024-01-01T00:00:00.000Z'
-    }
+      updatedAt: '2024-01-01T00:00:00.000Z',
+    },
   ],
   seo: {
     metaTitle: 'Homepage SEO Title',
-    metaDescription: 'Homepage SEO Description'
-  }
+    metaDescription: 'Homepage SEO Description',
+  },
 };

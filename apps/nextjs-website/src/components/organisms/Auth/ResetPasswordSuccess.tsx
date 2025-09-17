@@ -5,7 +5,7 @@ import {
   Grid,
   Link,
   Stack,
-  Typography
+  Typography,
 } from '@mui/material';
 import { IllusEmailValidation } from '@pagopa/mui-italia';
 import { useTranslations } from 'next-intl';
@@ -19,7 +19,7 @@ interface ResetPasswordSuccessProps {
 const ResetPasswordSuccess = ({
   email,
   onBack,
-  resendEmail
+  resendEmail,
 }: ResetPasswordSuccessProps) => {
   const resetPassword = useTranslations('auth.resetPassword');
   const shared = useTranslations('shared');
@@ -30,8 +30,8 @@ const ResetPasswordSuccess = ({
       sx={{
         width: '90vw',
         '@media (min-width: 1200px)': {
-          width: '35vw'
-        }
+          width: '35vw',
+        },
       }}
     >
       <Card variant='elevation' elevation={8}>

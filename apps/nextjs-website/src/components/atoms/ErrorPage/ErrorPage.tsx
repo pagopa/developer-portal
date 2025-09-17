@@ -11,7 +11,7 @@ type ErrorPageProps = {
 const ErrorPage: React.FC<ErrorPageProps> = ({
   overline,
   title,
-  description
+  description,
 }) => {
   const t = useTranslations();
   return (

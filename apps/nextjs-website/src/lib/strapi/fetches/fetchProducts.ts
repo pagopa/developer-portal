@@ -16,16 +16,16 @@ export const productRelationsPopulate = {
     'api_data_list_page.apiData.apiRestDetail.specUrls',
     'api_data_list_page.apiData.apiSoapDetail.*',
     'guide_list_page',
-    'tutorial_list_page'
-  ]
+    'tutorial_list_page',
+  ],
 };
 
 const makeStrapiProductsPopulate = () =>
   qs.stringify({
-    ...productRelationsPopulate
+    ...productRelationsPopulate,
   });
 
 export const fetchProducts = fetchFromStrapi<StrapiProducts>(
   'products',
-  makeStrapiProductsPopulate()
+  makeStrapiProductsPopulate(),
 );

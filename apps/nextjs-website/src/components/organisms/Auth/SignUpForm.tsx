@@ -2,7 +2,7 @@
 import {
   validateEmail,
   validateField,
-  validatePassword
+  validatePassword,
 } from '@/helpers/auth.helpers';
 import { SignUpUserData } from '@/lib/types/sign-up';
 import {
@@ -18,7 +18,7 @@ import {
   Stack,
   TextField,
   Typography,
-  useTheme
+  useTheme,
 } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
@@ -35,7 +35,7 @@ const defaults = {
   mailinglistAccepted: false,
   role: '',
   company: '',
-  confirmPassword: ''
+  confirmPassword: '',
 };
 
 interface SignUpFormProps {
@@ -55,13 +55,13 @@ interface SignUpFieldsError {
 const SignUpForm = ({
   onSignUp,
   userAlreadyExist,
-  submitting = false
+  submitting = false,
 }: SignUpFormProps) => {
   const t = useTranslations();
   const { palette } = useTheme();
   const [userData, setUserData] = useState<SignUpUserData>(defaults);
   const [fieldErrors, setFieldErrors] = useState<Partial<SignUpFieldsError>>(
-    {}
+    {},
   );
 
   const validateForm = useCallback(() => {
@@ -99,7 +99,7 @@ const SignUpForm = ({
     if (confirmPasswordError) {
       errors = {
         ...errors,
-        confirmPassword: t('auth.signUp.passwordMismatchError')
+        confirmPassword: t('auth.signUp.passwordMismatchError'),
       };
     }
 
@@ -118,7 +118,7 @@ const SignUpForm = ({
     if (userAlreadyExist) {
       setFieldErrors((prevFieldErrors) => ({
         ...prevFieldErrors,
-        email: t('shared.emailAlreadyTaken')
+        email: t('shared.emailAlreadyTaken'),
       }));
     }
   }, [userAlreadyExist, t]);
@@ -136,7 +136,7 @@ const SignUpForm = ({
 
     setUserData((prevData) => ({
       ...prevData,
-      [name]: type === 'checkbox' ? checked : value
+      [name]: type === 'checkbox' ? checked : value,
     }));
   };
 
@@ -153,7 +153,7 @@ const SignUpForm = ({
     password,
     role,
     username,
-    mailinglistAccepted
+    mailinglistAccepted,
   } = userData;
 
   return (
@@ -179,7 +179,7 @@ const SignUpForm = ({
                     required
                     sx={{
                       backgroundColor: 'white',
-                      width: '100%'
+                      width: '100%',
                     }}
                     size='small'
                     value={firstName}
@@ -196,7 +196,7 @@ const SignUpForm = ({
                     required
                     sx={{
                       backgroundColor: 'white',
-                      width: '100%'
+                      width: '100%',
                     }}
                     size='small'
                     value={lastName}
@@ -215,7 +215,7 @@ const SignUpForm = ({
                   required
                   sx={{
                     backgroundColor: 'white',
-                    width: '100%'
+                    width: '100%',
                   }}
                   size='small'
                   value={username}
@@ -256,7 +256,7 @@ const SignUpForm = ({
                   <TextField
                     id='company-field-select'
                     inputProps={{
-                      sx: { padding: '8.5px 14px' }
+                      sx: { padding: '8.5px 14px' },
                     }}
                     label={t('shared.company')}
                     name='company'
@@ -278,7 +278,7 @@ const SignUpForm = ({
                   label={t('shared.role')}
                   name='role'
                   sx={{
-                    backgroundColor: palette.background.paper
+                    backgroundColor: palette.background.paper,
                   }}
                   size='small'
                   value={role}

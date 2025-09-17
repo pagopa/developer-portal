@@ -16,20 +16,20 @@ export type TutorialProps = Tutorial & {
 };
 
 export function makeTutorialsProps(
-  strapiTutorials: StrapiTutorials
+  strapiTutorials: StrapiTutorials,
 ): readonly TutorialProps[] {
   return _.compact(
     strapiTutorials.data.map(({ attributes }) => {
       if (!attributes.slug) {
         console.error(
-          `Error processing Tutorial "${attributes.title}": Missing tutorial slug. Skipping...`
+          `Error processing Tutorial "${attributes.title}": Missing tutorial slug. Skipping...`,
         );
         return null;
       }
 
       if (!attributes.product.data.attributes.slug) {
         console.error(
-          `Error processing Tutorial "${attributes.title}": Missing product slug. Skipping...`
+          `Error processing Tutorial "${attributes.title}": Missing product slug. Skipping...`,
         );
         return null;
       }
@@ -40,7 +40,7 @@ export function makeTutorialsProps(
             ? {
                 url: attributes.image.data.attributes.url,
                 alternativeText:
-                  attributes.image.data.attributes.alternativeText || ''
+                  attributes.image.data.attributes.alternativeText || '',
               }
             : undefined,
           title: attributes.title,
@@ -52,7 +52,7 @@ export function makeTutorialsProps(
           parts: [
             ...(attributes.parts
               .map((part) => makePartProps(part))
-              .filter((part) => !!part) as ReadonlyArray<Part>)
+              .filter((part) => !!part) as ReadonlyArray<Part>),
           ],
           productSlug: attributes.product.data.attributes.slug,
           relatedLinks: attributes.relatedLinks as RelatedLinksProps,
@@ -60,18 +60,18 @@ export function makeTutorialsProps(
             attributes.bannerLinks && attributes.bannerLinks.length > 0
               ? attributes.bannerLinks?.map(makeBannerLinkProps)
               : attributes.product.data?.attributes.bannerLinks?.map(
-                  makeBannerLinkProps
+                  makeBannerLinkProps,
                 ),
           seo: attributes.seo,
-          updatedAt: attributes.updatedAt
+          updatedAt: attributes.updatedAt,
         } satisfies TutorialProps;
       } catch (error) {
         console.error(
           `Error while making tutorial props for ${attributes.title}:`,
-          error
+          error,
         );
         return null;
       }
-    })
+    }),
   );
 }

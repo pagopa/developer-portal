@@ -21,7 +21,7 @@ const IconWrapper = ({
   useSrc,
   color = 'text.primary',
   size = 35,
-  sx
+  sx,
 }: IconWrapperProps) => {
   if (useSrc) {
     return (
@@ -39,7 +39,7 @@ const IconWrapper = ({
   } else {
     const props = {
       color,
-      sx: { width: size, height: size }
+      sx: { width: size, height: size },
     };
     const Icon = icon && ICON_MAP[icon as IconName];
     return Icon ? (

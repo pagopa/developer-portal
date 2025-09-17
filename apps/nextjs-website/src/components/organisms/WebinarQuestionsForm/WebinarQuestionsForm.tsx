@@ -10,7 +10,7 @@ import {
   Stack,
   TextField,
   Typography,
-  useTheme
+  useTheme,
 } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import { useCallback, useMemo, useState } from 'react';
@@ -41,7 +41,7 @@ export const WebinarQuestionsForm = ({
   toggleFormVisibility,
   isSmallScreen,
   question,
-  setQuestion
+  setQuestion,
 }: WebinarQuestionsFormProps) => {
   const t = useTranslations('webinar');
   const [error, setError] = useState<string | null>(null);
@@ -53,7 +53,7 @@ export const WebinarQuestionsForm = ({
     setFormState('submitting');
     return await sendWebinarQuestion({
       slug: webinarSlug,
-      question: question
+      question: question,
     });
   }, [webinarSlug, question]);
 
@@ -93,7 +93,7 @@ export const WebinarQuestionsForm = ({
   ) : null;
   const isWebinarLive = useMemo(
     () => [WebinarState.live].includes(webinarState),
-    [webinarState]
+    [webinarState],
   );
   const btnLabel =
     formState === 'submitted'
@@ -113,7 +113,7 @@ export const WebinarQuestionsForm = ({
           borderBottomRightRadius: '16px',
           borderTopLeftRadius: 0,
           borderBottomLeftRadius: isSmallScreen ? '16px' : 0,
-          boxShadow: '0px 4px 9px 4px rgba(0, 43, 85, 0.1)'
+          boxShadow: '0px 4px 9px 4px rgba(0, 43, 85, 0.1)',
         }}
       >
         <Button
@@ -123,7 +123,7 @@ export const WebinarQuestionsForm = ({
               sx={{
                 gap: '8px',
                 height: '32px',
-                alignItems: 'center'
+                alignItems: 'center',
               }}
             >
               <ForumIcon
@@ -141,7 +141,7 @@ export const WebinarQuestionsForm = ({
               direction='row'
               sx={{
                 alignItems: 'center',
-                margin: 0
+                margin: 0,
               }}
             >
               {isSmallScreen ? (
@@ -154,7 +154,7 @@ export const WebinarQuestionsForm = ({
                 sx={{
                   color: 'white',
                   fontWeight: 400,
-                  fontSize: 12
+                  fontSize: 12,
                 }}
               >
                 {t('questionsForm.reduce')}
@@ -172,14 +172,14 @@ export const WebinarQuestionsForm = ({
             borderTopRightRadius: isSmallScreen ? '0' : '16px',
             borderTopLeftRadius: 0,
             borderBottomLeftRadius: 0,
-            borderBottomRightRadius: 0
+            borderBottomRightRadius: 0,
           }}
         />
         <Stack
           direction={'column'}
           sx={{
             padding: '16px',
-            gap: '24px'
+            gap: '24px',
           }}
         >
           {isWebinarLive ? (
@@ -191,11 +191,11 @@ export const WebinarQuestionsForm = ({
                   color: (theme) =>
                     disabled
                       ? theme.palette.text.disabled
-                      : theme.palette.text.primary
+                      : theme.palette.text.primary,
                 }}
               >
                 {t('questionsForm.title', {
-                  maxLength: `${MAX_QUESTION_LENGTH}`
+                  maxLength: `${MAX_QUESTION_LENGTH}`,
                 })}
               </Typography>
               <TextField
@@ -205,7 +205,7 @@ export const WebinarQuestionsForm = ({
                     sx={{
                       fontSize: 16,
                       fontWeight: 400,
-                      color: palette.text.secondary
+                      color: palette.text.secondary,
                     }}
                   >
                     {t('questionsForm.question')}
@@ -221,7 +221,7 @@ export const WebinarQuestionsForm = ({
                 onKeyDown={handleKeyDown}
                 inputProps={{
                   maxLength: MAX_QUESTION_LENGTH,
-                  sx: { fontSize: 16, fontWeight: 400 }
+                  sx: { fontSize: 16, fontWeight: 400 },
                 }}
                 helperText={
                   <Typography
@@ -231,7 +231,7 @@ export const WebinarQuestionsForm = ({
                     sx={{
                       display: 'flex',
                       justifyContent: 'end',
-                      color: (theme) => theme.palette.text.secondary
+                      color: (theme) => theme.palette.text.secondary,
                     }}
                   >
                     {question.length > 0 &&
@@ -253,8 +253,8 @@ export const WebinarQuestionsForm = ({
                       color:
                         formState === 'submitted'
                           ? palette.text.secondary
-                          : 'white'
-                    }
+                          : 'white',
+                    },
                   }}
                   loadingPosition={hasFormState ? 'start' : undefined}
                   loading={formState === 'submitting'}
@@ -273,7 +273,7 @@ export const WebinarQuestionsForm = ({
                 color: palette.text.disabled,
                 fontWeight: 600,
                 fontSize: 16,
-                letterSpacing: '0.15px'
+                letterSpacing: '0.15px',
               }}
             >
               {t('questionsForm.notLive')}

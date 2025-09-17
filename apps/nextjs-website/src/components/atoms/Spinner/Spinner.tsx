@@ -9,7 +9,7 @@ interface SpinnerProps {
 const Spinner = ({
   size = 40,
   containerHeight = 500,
-  containerPadding = 2
+  containerPadding = 2,
 }: SpinnerProps) => {
   return (
     <Stack

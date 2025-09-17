@@ -5,13 +5,13 @@ export type BreadcrumbItem = { readonly name?: string; readonly item?: string };
 
 export function productPageToBreadcrumbs(
   product: Product,
-  breadcrumbSegments?: readonly BreadcrumbSegment[]
+  breadcrumbSegments?: readonly BreadcrumbSegment[],
 ): readonly BreadcrumbSegment[] {
   return [
     {
       name: 'breadcrumbs.home',
       path: '/',
-      translate: true
+      translate: true,
     },
     {
       name: product.name,
@@ -19,28 +19,28 @@ export function productPageToBreadcrumbs(
         ? `${
             product.slug.startsWith('/') ? product.slug : `/${product.slug}` // TODO: remove this control when validation will be added to Strapi
           }/overview`
-        : ''
+        : '',
     },
-    ...(breadcrumbSegments || [])
+    ...(breadcrumbSegments || []),
   ];
 }
 
 export function pageToBreadcrumbs(
   pagePath: string,
-  paths?: readonly BreadcrumbSegment[]
+  paths?: readonly BreadcrumbSegment[],
 ): readonly BreadcrumbSegment[] {
   return [
     {
       name: 'breadcrumbs.home',
       path: '/',
-      translate: true
+      translate: true,
     },
     {
       name: `breadcrumbs.${pagePath}`,
       path: `/${pagePath}`,
-      translate: true
+      translate: true,
     },
-    ...(paths || [])
+    ...(paths || []),
   ];
 }
 
@@ -49,7 +49,7 @@ export function gitBookPageToBreadcrumbs(
   gitBookPagesWithTitle: readonly {
     readonly title: string;
     readonly path: string;
-  }[]
+  }[],
 ): readonly BreadcrumbSegment[] {
   // Generate a list of hierarchical breadcrumb paths from the page path
   // (e.g., '/send/release-note/2023/16-ottobre-2023' -> [ '/send/release-note/2023', '/send/release-note/2023/16-ottobre-2023'])
@@ -64,7 +64,7 @@ export function gitBookPageToBreadcrumbs(
     .filter(({ path }) => currentPageBreadcrumbPaths.includes(path)) // Keep only the paths present in breadcrumbs
     .map(({ title, path }) => ({
       name: title,
-      path
+      path,
     }))
     .sort((a, b) => a.path.length - b.path.length); // Sort breadcrumbs by path length (ensuring hierarchy)
 }

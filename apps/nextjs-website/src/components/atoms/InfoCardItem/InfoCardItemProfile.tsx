@@ -7,7 +7,7 @@ import {
   Select,
   Stack,
   TextField,
-  Typography
+  Typography,
 } from '@mui/material';
 import { ButtonNaked } from '@pagopa/mui-italia';
 import { useTranslations } from 'next-intl';
@@ -31,7 +31,7 @@ export type InfoCardItemEditingProfileProps = {
 };
 
 export const InfoCardItemProfile = (
-  infoCardItem: InfoCardItemProfileProps & InfoCardItemEditingProfileProps
+  infoCardItem: InfoCardItemProfileProps & InfoCardItemEditingProfileProps,
 ) => {
   const t = useTranslations();
 
@@ -74,8 +74,8 @@ export const InfoCardItemProfile = (
                   '&.Mui-focused': {
                     paddingX: '8px',
                     marginLeft: '-6px',
-                    top: '0'
-                  }
+                    top: '0',
+                  },
                 }}
               >
                 {infoCardItem.title}
@@ -86,21 +86,21 @@ export const InfoCardItemProfile = (
                 id='company-field-select'
                 value={
                   infoCardItem.values.find(
-                    ({ value }) => value === infoCardItem.value
+                    ({ value }) => value === infoCardItem.value,
                   )?.value || ''
                 }
                 onChange={({ target: { value } }) =>
                   infoCardItem.onValue &&
                   infoCardItem.onValue(
                     infoCardItem.values.find(({ value: v }) => v === value)
-                      ?.value || ''
+                      ?.value || '',
                   )
                 }
                 sx={{ padding: '8.5px 14px' }}
                 inputProps={{
                   sx: {
-                    padding: 0
-                  }
+                    padding: 0,
+                  },
                 }}
               >
                 {infoCardItem.values.map(({ title, value }) => (
@@ -141,7 +141,7 @@ export const InfoCardItemProfile = (
         >
           {infoCardItem.type === 'select'
             ? infoCardItem.values.find(
-                ({ value }) => value === infoCardItem.value
+                ({ value }) => value === infoCardItem.value,
               )?.title
             : infoCardItem.value}
         </Typography>

@@ -12,7 +12,7 @@ const LiveWebinarChip = () => {
       sx={{
         display: 'flex',
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'center',
       }}
     >
       <RecordVoiceOverIcon
@@ -29,7 +29,7 @@ const LiveWebinarChip = () => {
           backgroundColor: palette.text.primary,
           paddingX: 1,
           paddingY: 0.5,
-          borderRadius: 1
+          borderRadius: 1,
         }}
       >
         {t('liveWebinar')}

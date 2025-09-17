@@ -6,7 +6,7 @@ import {
   Box,
   Stack,
   Typography,
-  useTheme
+  useTheme,
 } from '@mui/material';
 
 import React, { useState } from 'react';
@@ -25,7 +25,7 @@ type MobileWebinarCategorySelectorProps = {
 const MobileWebinarCategorySelector = ({
   selectedWebinarCategory,
   setSelectedWebinarCategory,
-  webinarCategories
+  webinarCategories,
 }: MobileWebinarCategorySelectorProps) => {
   const t = useTranslations();
   const { palette } = useTheme();
@@ -41,7 +41,7 @@ const MobileWebinarCategorySelector = ({
         alignItems: 'center',
         maxWidth: '100%',
         textAlign: 'center',
-        width: '100%'
+        width: '100%',
       }}
     >
       <Accordion
@@ -57,14 +57,14 @@ const MobileWebinarCategorySelector = ({
           paddingY: isExpanded ? 0 : '16px',
           fontWeight: 700,
           color: palette.text.primary,
-          backgroundColor: palette.background.paper
+          backgroundColor: palette.background.paper,
         }}
       >
         <AccordionSummary
           expandIcon={icon}
           sx={{
             height: isExpanded ? '64px' : '32px',
-            minHeight: isExpanded ? '64px' : '32px'
+            minHeight: isExpanded ? '64px' : '32px',
           }}
           aria-controls='panel1-content'
           id='panel1-header'

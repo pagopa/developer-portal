@@ -12,19 +12,19 @@ const guidesPopulate = {
     bannerLinks: { populate: ['icon'] },
     seo: { populate: 'metaSocial.image' },
     product: {
-      ...productRelationsPopulate
-    }
-  }
+      ...productRelationsPopulate,
+    },
+  },
 };
 
 const makeStrapiGuidesPopulate = () =>
   qs.stringify({
-    ...guidesPopulate
+    ...guidesPopulate,
   });
 
 export const fetchGuides = fetchFromStrapi<StrapiGuides>(
   'guides',
-  makeStrapiGuidesPopulate()
+  makeStrapiGuidesPopulate(),
 );
 
 const makeStrapiGuidePopulate = (guideSlug: string, productSlug: string) =>
@@ -33,13 +33,13 @@ const makeStrapiGuidePopulate = (guideSlug: string, productSlug: string) =>
     filters: {
       slug: guideSlug,
       product: {
-        slug: productSlug
-      }
-    }
+        slug: productSlug,
+      },
+    },
   });
 
 export const fetchGuide = (guideSlug: string, productSlug: string) =>
   fetchFromStrapi<StrapiGuides>(
     'guides',
-    makeStrapiGuidePopulate(guideSlug, productSlug)
+    makeStrapiGuidePopulate(guideSlug, productSlug),
   );

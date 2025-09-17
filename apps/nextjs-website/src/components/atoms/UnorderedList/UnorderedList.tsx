@@ -7,7 +7,7 @@ export type UnorderedListProps = {
 };
 
 export const UnorderedList: FC<UnorderedListProps> = ({
-  listItems
+  listItems,
 }: UnorderedListProps) => {
   return (
     listItems?.length && (
@@ -16,7 +16,7 @@ export const UnorderedList: FC<UnorderedListProps> = ({
           listStyleType: 'square',
           lineHeight: '28px',
           margin: '8px 0 0 0',
-          paddingLeft: '26px'
+          paddingLeft: '26px',
         }}
       >
         {listItems.map((item, index) => (

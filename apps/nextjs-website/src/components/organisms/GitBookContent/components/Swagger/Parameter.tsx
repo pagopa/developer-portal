@@ -5,7 +5,7 @@ export const Parameter = ({
   name,
   description,
   schema,
-  required
+  required,
 }: OpenAPIV3.ParameterObject) => {
   const type = schema ? (schema as OpenAPIV3.SchemaObject)?.type : '';
   return (
@@ -15,14 +15,14 @@ export const Parameter = ({
         alignItems: 'baseline',
         justifyContent: 'space-between',
         flexGrow: 1,
-        fontSize: (theme) => theme.typography.caption.fontSize
+        fontSize: (theme) => theme.typography.caption.fontSize,
       }}
     >
       <Box
         sx={{
           display: 'flex',
           alignItems: 'center',
-          width: 200
+          width: 200,
         }}
       >
         {name}

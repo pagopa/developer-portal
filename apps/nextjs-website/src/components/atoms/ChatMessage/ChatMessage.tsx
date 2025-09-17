@@ -15,8 +15,8 @@ const DEFAULT_DATE_FORMAT = {
   locale: defaultLocale,
   options: {
     timeStyle: 'short',
-    hourCycle: 'h23'
-  }
+    hourCycle: 'h23',
+  },
 } satisfies DateFormatOptions;
 
 export type Message = {
@@ -41,7 +41,7 @@ const ChatMessage = ({
   dateHeader,
   hasNegativeFeedback,
   onToggleNegativeFeedback,
-  mustFillFeedbackForm
+  mustFillFeedbackForm,
 }: ChatMessageProps) => {
   const t = useTranslations();
   const { palette } = useTheme();
@@ -54,7 +54,7 @@ const ChatMessage = ({
     timestamp &&
     new Intl.DateTimeFormat(
       DEFAULT_DATE_FORMAT.locale,
-      DEFAULT_DATE_FORMAT.options
+      DEFAULT_DATE_FORMAT.options,
     ).format(new Date(timestamp));
 
   const iconSize = 40;
@@ -74,7 +74,7 @@ const ChatMessage = ({
               borderRadius: 1,
               boxShadow:
                 '0px 1px 3px 0px rgba(0, 43, 85, 0.1), 0px 1px 1px 0px rgba(0, 43, 85, 0.05), 0px 2px 1px -1px rgba(0, 43, 85, 0.1)',
-              padding: '4px 8px 4px 8px'
+              padding: '4px 8px 4px 8px',
             }}
           >
             <Typography fontSize={'0.625rem'}>{dateHeader}</Typography>

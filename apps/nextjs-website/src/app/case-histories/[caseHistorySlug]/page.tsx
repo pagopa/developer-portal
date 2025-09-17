@@ -1,6 +1,6 @@
 import {
   makeMetadata,
-  makeMetadataFromStrapi
+  makeMetadataFromStrapi,
 } from '@/helpers/metadata.helpers';
 import { Metadata } from 'next';
 import { baseUrl } from '@/config';
@@ -9,7 +9,7 @@ import CaseHistoryPageTemplate from '@/components/templates/CaseHistoryTemplate/
 import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
 import {
   convertSeoToStructuredDataArticle,
-  getItemFromPaths
+  getItemFromPaths,
 } from '@/helpers/structuredData.helpers';
 
 type Params = {
@@ -17,7 +17,7 @@ type Params = {
 };
 
 export async function generateMetadata({
-  params
+  params,
 }: {
   params: Promise<Params>;
 }): Promise<Metadata> {
@@ -31,7 +31,7 @@ export async function generateMetadata({
   return makeMetadata({
     title: caseHistory.title,
     url: `${baseUrl}/case-histories/${caseHistory.slug}`,
-    locale: 'it_IT'
+    locale: 'it_IT',
   });
 }
 
@@ -43,11 +43,11 @@ const Page = async ({ params }: { params: Promise<Params> }) => {
     breadcrumbsItems: [
       {
         name: caseHistory.seo?.metaTitle || caseHistory.title,
-        item: getItemFromPaths(['case-histories', caseHistory.slug])
-      }
+        item: getItemFromPaths(['case-histories', caseHistory.slug]),
+      },
     ],
     seo: caseHistory.seo,
-    things: [convertSeoToStructuredDataArticle(caseHistory.seo)]
+    things: [convertSeoToStructuredDataArticle(caseHistory.seo)],
   });
 
   return (

@@ -14,7 +14,7 @@ const Ecosystem = ({
   productsTabName,
   solutionsTabName,
   solutions,
-  solutionsCta
+  solutionsCta,
 }: Required<HomepageProps>['ecosystem']) => {
   const theme = useTheme();
   return (
@@ -24,7 +24,7 @@ const Ecosystem = ({
         sx={{
           maxWidth: '1264px',
           margin: 'auto',
-          paddingX: 4
+          paddingX: 4,
         }}
       >
         <TabComponent
@@ -39,10 +39,10 @@ const Ecosystem = ({
                     px: '22px',
                     py: '22px',
                     mt: '-22px',
-                    mx: '-22px'
+                    mx: '-22px',
                   }}
                 />
-              )
+              ),
             },
             {
               title: solutionsTabName,
@@ -56,7 +56,7 @@ const Ecosystem = ({
                         px: '22px',
                         py: '22px',
                         mt: '-22px',
-                        mx: '-22px'
+                        mx: '-22px',
                       }}
                     />
                   )}
@@ -75,8 +75,8 @@ const Ecosystem = ({
                     </Box>
                   )}
                 </>
-              )
-            }
+              ),
+            },
           ]}
           variant='fullWidth'
           centered

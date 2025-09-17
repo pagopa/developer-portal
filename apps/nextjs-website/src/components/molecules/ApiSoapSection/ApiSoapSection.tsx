@@ -7,7 +7,7 @@ import {
   MenuList,
   Stack,
   Typography,
-  useTheme
+  useTheme,
 } from '@mui/material';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Product } from '@/lib/types/product';
@@ -29,7 +29,7 @@ const ApiSoapSection = ({
   apiName,
   apiSlug,
   apiRepositoryUrl,
-  apiUrls
+  apiUrls,
 }: ApiSoapSectionProps) => {
   const t = useTranslations();
   const { palette } = useTheme();
@@ -41,7 +41,7 @@ const ApiSoapSection = ({
     .map((url) => ({
       url: url,
       // eslint-disable-next-line functional/immutable-data
-      name: _.split(_.split(url, '/').pop(), '.')[0] || ''
+      name: _.split(_.split(url, '/').pop(), '.')[0] || '',
     }))
     .filter((item) => !!item.name);
 
@@ -63,7 +63,7 @@ const ApiSoapSection = ({
 
     if (spec?.name) {
       router.replace(
-        `/${product.slug}/api/${apiSlug}?spec=${encodeURIComponent(spec.name)}`
+        `/${product.slug}/api/${apiSlug}?spec=${encodeURIComponent(spec.name)}`,
       );
     }
 
@@ -74,7 +74,7 @@ const ApiSoapSection = ({
     () =>
       apiMenuItems.find((item) => item?.url === selectedItemUrl) ||
       apiMenuItems[0],
-    [selectedItemUrl, apiMenuItems]
+    [selectedItemUrl, apiMenuItems],
   );
   const borderColor = palette.divider;
 
@@ -83,7 +83,7 @@ const ApiSoapSection = ({
       sx={{
         borderTop: { md: `1px solid ${borderColor}` },
         marginTop: { xs: '-42px', sm: '-22px', md: 0 },
-        height: '100vh'
+        height: '100vh',
       }}
     >
       {apiMenuItems.length > 1 && apiName && (
@@ -94,7 +94,7 @@ const ApiSoapSection = ({
           alignContent='center'
           sx={{
             height: '100%',
-            overflowY: 'auto'
+            overflowY: 'auto',
           }}
         >
           <Box
@@ -104,7 +104,7 @@ const ApiSoapSection = ({
               paddingTop: '2rem',
               position: 'sticky',
               top: 0,
-              height: 'calc(100% - 1px)'
+              height: 'calc(100% - 1px)',
             }}
           >
             <Typography
@@ -114,7 +114,7 @@ const ApiSoapSection = ({
                 paddingY: '1rem',
                 color: palette.text.primary,
                 fontWeight: 600,
-                fontSize: '1rem'
+                fontSize: '1rem',
               }}
             >
               {apiName}
@@ -135,8 +135,8 @@ const ApiSoapSection = ({
                       background:
                         selectedItemUrl === item.url
                           ? 'rgba(0, 115, 230, 0.08)'
-                          : 'rgba(0, 115, 230, 0.04)'
-                    }
+                          : 'rgba(0, 115, 230, 0.04)',
+                    },
                   }}
                 >
                   <Stack
@@ -150,7 +150,7 @@ const ApiSoapSection = ({
                       noWrap={true}
                       sx={{
                         fontWeight: 400,
-                        fontSize: '0.875rem'
+                        fontSize: '0.875rem',
                       }}
                     >
                       {item.name || item.url}
@@ -165,7 +165,7 @@ const ApiSoapSection = ({
             direction='column'
             sx={{
               width: '100%',
-              height: '100%'
+              height: '100%',
             }}
           >
             <Box
@@ -174,7 +174,7 @@ const ApiSoapSection = ({
                 paddingBlock: 4,
                 paddingTop: 7,
                 width: '90%',
-                minWidth: 800
+                minWidth: 800,
               }}
             >
               <iframe
@@ -183,7 +183,7 @@ const ApiSoapSection = ({
                 style={{
                   border: 'none',
                   width: '100%',
-                  height: '80vh'
+                  height: '80vh',
                 }}
                 title={t('apiDataPage.soap.iframeTitle')}
               />
@@ -193,7 +193,7 @@ const ApiSoapSection = ({
                 sx={{
                   paddingLeft: 20,
                   paddingBottom: 8,
-                  paddingTop: 2
+                  paddingTop: 2,
                 }}
               >
                 <LinkMui
@@ -206,7 +206,7 @@ const ApiSoapSection = ({
                     sx={{
                       fontWeight: 600,
                       fontSize: '1rem',
-                      textDecoration: 'underline'
+                      textDecoration: 'underline',
                     }}
                   >
                     {t('apiDataPage.soap.repoLink')}

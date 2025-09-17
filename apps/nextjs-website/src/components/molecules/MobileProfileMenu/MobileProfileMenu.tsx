@@ -19,7 +19,7 @@ import {
   useTheme,
   Stack,
   useMediaQuery,
-  Theme
+  Theme,
 } from '@mui/material';
 
 type MobileProfileMenuProps = {
@@ -58,7 +58,7 @@ const MobileProfileMenu = ({ userFullName }: MobileProfileMenuProps) => {
               textDecoration: 'none',
               color: palette.text.primary,
               py: 1,
-              pl: 6
+              pl: 6,
             }}
           >
             {t(label)}
@@ -77,7 +77,7 @@ const MobileProfileMenu = ({ userFullName }: MobileProfileMenuProps) => {
         display: { md: 'none' },
         backgroundColor: palette.grey[50],
         borderBottom: `1px solid ${palette.divider}`,
-        width: 1
+        width: 1,
       }}
     >
       <EContainer>
@@ -111,7 +111,7 @@ const MobileProfileMenu = ({ userFullName }: MobileProfileMenuProps) => {
             alignItems='center'
             justifyContent='flex-start'
             sx={{
-              padding: '12px 24px'
+              padding: '12px 24px',
             }}
           >
             <Typography
@@ -121,7 +121,7 @@ const MobileProfileMenu = ({ userFullName }: MobileProfileMenuProps) => {
                 flexShrink: 0,
                 fontSize: '16px!important',
                 verticalAlign: 'middle',
-                color: palette.primary.main
+                color: palette.primary.main,
               }}
             >
               {t('title')}
@@ -130,7 +130,7 @@ const MobileProfileMenu = ({ userFullName }: MobileProfileMenuProps) => {
               aria-label='close'
               onClick={handleClick}
               sx={{
-                color: palette.primary.main
+                color: palette.primary.main,
               }}
             >
               <CloseIcon />

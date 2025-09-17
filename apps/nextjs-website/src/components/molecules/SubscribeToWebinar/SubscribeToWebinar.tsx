@@ -24,7 +24,7 @@ const SubscribeToWebinarContent = ({
   setIsSubscribed,
   handleErrorMessage,
   webinarState,
-  textColor = 'white'
+  textColor = 'white',
 }: SubscribeButtonProps) => {
   const t = useTranslations('webinar');
   const [isLoading, setIsLoading] = useState(false);
@@ -41,7 +41,7 @@ const SubscribeToWebinarContent = ({
   useEffect(() => {
     if (username && webinarSlug) {
       setIsSubscribed(
-        webinarSubscriptions?.some((s) => s.webinarId === webinarSlug) ?? false
+        webinarSubscriptions?.some((s) => s.webinarId === webinarSlug) ?? false,
       );
     }
   }, [setIsSubscribed, username, webinarSubscriptions, webinarSlug]);
@@ -73,7 +73,7 @@ const SubscribeToWebinarContent = ({
     pathname,
     reloadUser,
     router,
-    isUserLoggedIn
+    isUserLoggedIn,
   ]);
 
   const onSubscribeWithoutUser = () => {
@@ -127,7 +127,7 @@ const SubscribeToWebinarContent = ({
     [WebinarState.comingSoon]: 'default',
     [WebinarState.live]: 'takePart',
     [WebinarState.future]: 'default',
-    [WebinarState.unknown]: 'default'
+    [WebinarState.unknown]: 'default',
   };
 
   if (!webinarSlug) {

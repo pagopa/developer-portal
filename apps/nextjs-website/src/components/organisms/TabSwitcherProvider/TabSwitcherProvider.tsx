@@ -4,7 +4,7 @@ import React, {
   useContext,
   ReactNode,
   SetStateAction,
-  Dispatch
+  Dispatch,
 } from 'react';
 import { Box, useTheme } from '@mui/material';
 
@@ -27,7 +27,7 @@ function Tab({ id, children }: TabProps) {
   if (!context) {
     // eslint-disable-next-line functional/no-throw-statements
     throw new Error(
-      'TabSwitcherContext not found, did you forget to use TabSwitcherContextProvider?'
+      'TabSwitcherContext not found, did you forget to use TabSwitcherContextProvider?',
     );
   }
 
@@ -43,9 +43,9 @@ function Tab({ id, children }: TabProps) {
         backgroundColor: isActive ? palette.primaryAction.hover : 'transparent',
         borderRight: isActive ? `2px solid ${tabColor}` : 'none',
         '& > div > span': {
-          color: isActive ? tabColor : palette.text.primary
+          color: isActive ? tabColor : palette.text.primary,
         },
-        cursor: 'pointer'
+        cursor: 'pointer',
       }}
     >
       {children}
@@ -63,7 +63,7 @@ function TabPanel({ whenActive, children }: TabPanelProps) {
   if (!context) {
     // eslint-disable-next-line functional/no-throw-statements
     throw new Error(
-      'TabSwitcherContext not found, did you forget to use TabSwitcherContextProvider?'
+      'TabSwitcherContext not found, did you forget to use TabSwitcherContextProvider?',
     );
   }
   const { activeTabID } = context;
@@ -78,7 +78,7 @@ type TabSwitcherProps = {
 
 function TabSwitcherProvider({
   children,
-  defaultActiveTabID
+  defaultActiveTabID,
 }: TabSwitcherProps) {
   const [activeTabID, setActiveTabID] = useState(defaultActiveTabID || '');
   return (

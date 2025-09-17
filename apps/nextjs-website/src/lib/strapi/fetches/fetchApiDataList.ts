@@ -7,27 +7,27 @@ const makeStrapiApiDataListPopulate = () =>
   qs.stringify({
     populate: {
       apiRestDetail: {
-        populate: ['slug', 'specUrls']
+        populate: ['slug', 'specUrls'],
       },
       apiSoapDetail: {
-        populate: ['slug', 'repositoryUrl', 'dirName']
+        populate: ['slug', 'repositoryUrl', 'dirName'],
       },
       icon: { populate: '*' },
       product: {
-        ...productRelationsPopulate
+        ...productRelationsPopulate,
       },
       bannerLinks: {
-        populate: ['icon']
+        populate: ['icon'],
       },
       seo: {
-        populate: '*,metaImage,metaSocial.image'
-      }
-    }
+        populate: '*,metaImage,metaSocial.image',
+      },
+    },
   });
 
 // This endpoint does not respect the naming convention but we keep it
 // for backward compatibility with the already existing content in Strapi's production instance
 export const fetchApiDataList = fetchFromStrapi<StrapiApiDataList>(
   'apis-data',
-  makeStrapiApiDataListPopulate()
+  makeStrapiApiDataListPopulate(),
 );

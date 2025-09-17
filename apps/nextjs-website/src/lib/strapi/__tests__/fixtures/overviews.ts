@@ -17,7 +17,7 @@ export const strapiOverviews = {
         updatedAt: '2023-01-01T00:00:00.000Z',
         publishedAt: '2023-01-01T00:00:00.000Z',
         backgroundImage: {
-          data: mediaJpeg()
+          data: mediaJpeg(),
         },
         product: {
           data: {
@@ -26,13 +26,13 @@ export const strapiOverviews = {
               bannerLinks: generateBannerLinks(1),
               overview: {
                 data: {
-                  id: 1
-                }
+                  id: 1,
+                },
               },
               quickstart_guide: {
                 data: {
-                  id: 2
-                }
+                  id: 2,
+                },
               },
               api_data_list_page: {
                 data: {
@@ -49,38 +49,38 @@ export const strapiOverviews = {
                                   id: 1,
                                   name: 'OpenAPI Spec',
                                   url: '/api-rest/openapi.json',
-                                  hideTryIt: false
-                                }
-                              ]
+                                  hideTryIt: false,
+                                },
+                              ],
                             },
-                            apiSoapDetail: undefined
-                          }
-                        }
-                      ]
-                    }
-                  }
-                }
+                            apiSoapDetail: undefined,
+                          },
+                        },
+                      ],
+                    },
+                  },
+                },
               },
               tutorial_list_page: {
                 data: {
-                  id: 4
-                }
+                  id: 4,
+                },
               },
               release_note: {
                 data: {
-                  id: 5
-                }
+                  id: 5,
+                },
               },
               guide_list_page: {
                 data: {
-                  id: 6
-                }
+                  id: 6,
+                },
               },
               logo: {
-                data: mediaJpeg()
-              }
-            }
-          }
+                data: mediaJpeg(),
+              },
+            },
+          },
         },
         features: {
           title: 'Features Title',
@@ -91,18 +91,18 @@ export const strapiOverviews = {
               title: 'Feature 1',
               content: undefined,
               icon: {
-                data: mediaJpeg()
+                data: mediaJpeg(),
               },
-              theme: 'dark'
-            }
-          ]
+              theme: 'dark',
+            },
+          ],
         },
         startInfoSection: {
           title: 'Start Info Title',
           bottomLabel: 'Bottom Label',
           bottomLink: {
             text: 'Bottom Link',
-            href: '/bottom-link'
+            href: '/bottom-link',
           },
           items: [
             {
@@ -110,10 +110,10 @@ export const strapiOverviews = {
               description: 'Start info description',
               path: '/start-path',
               icon: {
-                data: mediaJpeg()
-              }
-            }
-          ]
+                data: mediaJpeg(),
+              },
+            },
+          ],
         },
         tutorialSection: {
           title: 'Tutorials Title',
@@ -125,22 +125,22 @@ export const strapiOverviews = {
                   title: 'Tutorial 1',
                   slug: 'tutorial-1',
                   image: {
-                    data: mediaJpeg()
+                    data: mediaJpeg(),
                   },
                   product: {
                     data: {
                       attributes: {
                         slug: 'test-product',
                         name: 'Test Product',
-                        shortName: 'TestProd'
-                      }
-                    }
+                        shortName: 'TestProd',
+                      },
+                    },
                   },
-                  publishedAt: dateNow.toISOString()
-                }
-              }
-            ]
-          }
+                  publishedAt: dateNow.toISOString(),
+                },
+              },
+            ],
+          },
         },
         whatsNew: {
           title: "What's New Title",
@@ -148,7 +148,7 @@ export const strapiOverviews = {
           link: {
             text: 'View All',
             href: '/whats-new',
-            target: '_self'
+            target: '_self',
           },
           items: {
             data: [
@@ -161,15 +161,15 @@ export const strapiOverviews = {
                   link: {
                     text: 'Read More',
                     href: '/news/item-1',
-                    target: '_self'
+                    target: '_self',
                   },
                   image: {
-                    data: mediaJpeg()
-                  }
-                }
-              }
-            ]
-          }
+                    data: mediaJpeg(),
+                  },
+                },
+              },
+            ],
+          },
         },
         postIntegration: {
           title: 'Post Integration Title',
@@ -177,7 +177,7 @@ export const strapiOverviews = {
           guidesTitle: 'Guides Title',
           link: {
             text: 'Learn More',
-            href: '/post-integration'
+            href: '/post-integration',
           },
           documents: [
             {
@@ -188,20 +188,20 @@ export const strapiOverviews = {
                   children: [
                     {
                       type: 'text',
-                      text: 'Document content'
-                    }
-                  ]
-                }
+                      text: 'Document content',
+                    },
+                  ],
+                },
               ],
               linkText: 'Download',
               linkHref: '/documents/doc1.pdf',
               image: {
-                data: mediaJpeg()
+                data: mediaJpeg(),
               },
               mobileImage: {
-                data: mediaJpeg()
-              }
-            }
+                data: mediaJpeg(),
+              },
+            },
           ],
           guides: {
             data: [
@@ -211,51 +211,51 @@ export const strapiOverviews = {
                   slug: 'guide-1',
                   listItems: [
                     { text: 'Guide item 1' },
-                    { text: 'Guide item 2' }
+                    { text: 'Guide item 2' },
                   ],
                   image: {
-                    data: mediaJpeg()
+                    data: mediaJpeg(),
                   },
                   mobileImage: {
-                    data: mediaJpeg()
-                  }
-                }
-              }
-            ]
+                    data: mediaJpeg(),
+                  },
+                },
+              },
+            ],
           },
           serviceModels: [
             {
               title: 'Service Model 1',
               description: 'Service model description',
-              href: '/service-models/model-1'
-            }
-          ]
+              href: '/service-models/model-1',
+            },
+          ],
         },
         relatedLinks: {
           title: 'Related Links',
           links: [
             {
               text: 'Related Link 1',
-              href: '/related-1'
-            }
-          ]
+              href: '/related-1',
+            },
+          ],
         },
         bannerLinks: generateBannerLinks(3),
         seo: {
           metaTitle: 'SEO Title',
-          metaDescription: 'SEO Description'
-        }
-      }
-    }
+          metaDescription: 'SEO Description',
+        },
+      },
+    },
   ],
   meta: {
     pagination: {
       page: 1,
       pageSize: 25,
       pageCount: 1,
-      total: 1
-    }
-  }
+      total: 1,
+    },
+  },
 } satisfies StrapiOverviews;
 
 export const overviewPageProps: OverviewPageProps = {
@@ -285,17 +285,17 @@ export const overviewPageProps: OverviewPageProps = {
           name: 'example.jpg',
           size: 123456,
           url: 'https://example.com/example.jpg',
-          width: 800
+          width: 800,
         },
-        theme: 'light'
-      }
-    ]
+        theme: 'light',
+      },
+    ],
   },
   hero: {
     backgroundImage: 'https://example.com/example.jpg',
     altText: 'Example Image',
     title: 'Test Overview',
-    subtitle: 'Test Subtitle'
+    subtitle: 'Test Subtitle',
   },
   feature: {
     title: 'Features Title',
@@ -304,16 +304,16 @@ export const overviewPageProps: OverviewPageProps = {
       {
         iconUrl: 'https://example.com/example.jpg',
         content: undefined,
-        title: 'Feature 1'
-      }
-    ]
+        title: 'Feature 1',
+      },
+    ],
   },
   startInfo: {
     title: 'Start Info Title',
     cta: {
       text: 'Bottom Label',
       label: 'Bottom Link',
-      href: '/bottom-link'
+      href: '/bottom-link',
     },
     cards: [
       {
@@ -321,9 +321,9 @@ export const overviewPageProps: OverviewPageProps = {
         text: 'Start info description',
         href: '/start-path',
         useSrc: true,
-        iconName: 'https://example.com/example.jpg'
-      }
-    ]
+        iconName: 'https://example.com/example.jpg',
+      },
+    ],
   },
   tutorials: {
     title: 'Tutorials Title',
@@ -333,13 +333,13 @@ export const overviewPageProps: OverviewPageProps = {
         showInOverview: true,
         image: {
           url: 'https://example.com/example.jpg',
-          alternativeText: 'Example Image'
+          alternativeText: 'Example Image',
         },
         title: 'Tutorial 1',
         name: 'shared.moreInfo',
-        path: '/test-product/tutorials/tutorial-1'
-      }
-    ]
+        path: '/test-product/tutorials/tutorial-1',
+      },
+    ],
   },
   whatsNew: {
     title: "What's New Title",
@@ -347,7 +347,7 @@ export const overviewPageProps: OverviewPageProps = {
     link: {
       text: 'View All',
       url: '/whats-new',
-      target: '_self'
+      target: '_self',
     },
     items: [
       {
@@ -358,14 +358,14 @@ export const overviewPageProps: OverviewPageProps = {
         link: {
           text: 'Read More',
           url: '/news/item-1',
-          target: '_self'
+          target: '_self',
         },
         image: {
           alternativeText: 'Example Image',
-          url: 'https://example.com/example.jpg'
-        }
-      }
-    ]
+          url: 'https://example.com/example.jpg',
+        },
+      },
+    ],
   },
   postIntegration: {
     title: 'Post Integration Title',
@@ -373,7 +373,7 @@ export const overviewPageProps: OverviewPageProps = {
     listTitle: 'Guides Title',
     cta: {
       label: 'Learn More',
-      href: '/post-integration'
+      href: '/post-integration',
     },
     guides: [
       {
@@ -384,55 +384,55 @@ export const overviewPageProps: OverviewPageProps = {
               children: [
                 {
                   text: 'Document content',
-                  type: 'text'
-                }
+                  type: 'text',
+                },
               ],
-              type: 'paragraph'
-            }
+              type: 'paragraph',
+            },
           ],
           title: 'guideListPage.cardSection.listItemsTitle',
-          translate: false
+          translate: false,
         },
         imagePath: 'https://example.com/example.jpg',
         mobileImagePath: 'https://example.com/example.jpg',
         link: {
           label: 'Download',
           href: '/documents/doc1.pdf',
-          translate: false
-        }
+          translate: false,
+        },
       },
       {
         title: 'Guide 1',
         description: {
           listItems: ['Guide item 1', 'Guide item 2'],
           title: 'guideListPage.cardSection.listItemsTitle',
-          translate: false
+          translate: false,
         },
         imagePath: 'https://example.com/example.jpg',
         mobileImagePath: 'https://example.com/example.jpg',
         link: {
           label: 'shared.goToGuide',
           href: 'guides/guide-1',
-          translate: true
-        }
-      }
+          translate: true,
+        },
+      },
     ],
     serviceModels: [
       {
         title: 'Service Model 1',
         description: 'Service model description',
-        href: '/service-models/model-1'
-      }
-    ]
+        href: '/service-models/model-1',
+      },
+    ],
   },
   relatedLinks: {
     title: 'Related Links',
     links: [
       {
         text: 'Related Link 1',
-        href: '/related-1'
-      }
-    ]
+        href: '/related-1',
+      },
+    ],
   },
   bannerLinks: [
     {
@@ -447,9 +447,9 @@ export const overviewPageProps: OverviewPageProps = {
         name: 'example.jpg',
         size: 123456,
         url: 'https://example.com/example.jpg',
-        width: 800
+        width: 800,
       },
-      theme: 'light'
+      theme: 'light',
     },
     {
       title: 'Banner Link 2',
@@ -463,9 +463,9 @@ export const overviewPageProps: OverviewPageProps = {
         name: 'example.jpg',
         size: 123456,
         url: 'https://example.com/example.jpg',
-        width: 800
+        width: 800,
       },
-      theme: 'light'
+      theme: 'light',
     },
     {
       title: 'Banner Link 3',
@@ -479,13 +479,13 @@ export const overviewPageProps: OverviewPageProps = {
         name: 'example.jpg',
         size: 123456,
         url: 'https://example.com/example.jpg',
-        width: 800
+        width: 800,
       },
-      theme: 'light'
-    }
+      theme: 'light',
+    },
   ],
   seo: {
     metaTitle: 'SEO Title',
-    metaDescription: 'SEO Description'
-  }
+    metaDescription: 'SEO Description',
+  },
 };

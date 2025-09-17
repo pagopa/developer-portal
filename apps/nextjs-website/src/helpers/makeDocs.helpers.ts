@@ -42,13 +42,13 @@ const parseDocOrThrow = flow(
   E.fold((e) => {
     // eslint-disable-next-line functional/no-throw-statements
     throw e;
-  }, RA.flatten)
+  }, RA.flatten),
 );
 
 export const makeTutorials = ({
   product,
   dirName,
-  bannerLinks
+  bannerLinks,
 }: TutorialsDefinition) => {
   return pipe(
     [
@@ -58,17 +58,17 @@ export const makeTutorials = ({
           pathPrefix: `/${product.slug}/tutorials`,
           assetsPrefix: `${docsAssetsPath}/${dirName}`,
           dirPath: `${docsPath}/${dirName}`,
-          spaceId: dirName
+          spaceId: dirName,
         },
         bannerLinks: bannerLinks,
         relatedLinks: {
-          links: []
-        }
-      }
+          links: [],
+        },
+      },
     ],
     parseDocOrThrow,
     // This is a workaround that removes the 'index' space from tutorial docs
-    RA.filter(({ page: { path } }) => path !== `/${product.slug}/tutorials`)
+    RA.filter(({ page: { path } }) => path !== `/${product.slug}/tutorials`),
   );
 };
 
@@ -76,7 +76,7 @@ export const makeGuide = ({
   product,
   guide,
   versions,
-  bannerLinks
+  bannerLinks,
 }: GuideDefinition) => {
   const guidePath = `/${product.slug}/guides/${guide.slug}`;
   return pipe(
@@ -86,25 +86,25 @@ export const makeGuide = ({
         product: product,
         guide: {
           name: guide.name,
-          path: guidePath
+          path: guidePath,
         },
         version: {
           main,
           name: version,
-          path: `${guidePath}/${version}`
+          path: `${guidePath}/${version}`,
         },
         versions: versions.map(({ main = false, version }) => ({
           main,
           name: version,
-          path: `${guidePath}/${version}`
+          path: `${guidePath}/${version}`,
         })),
         source: {
           pathPrefix: `${guidePath}/${version}`,
           assetsPrefix: `${docsAssetsPath}/${dirName}`,
           dirPath: `${docsPath}/${dirName}`,
-          spaceId: dirName
+          spaceId: dirName,
         },
-        bannerLinks: bannerLinks
+        bannerLinks: bannerLinks,
       };
       // We need to generate two items for the main version of the guide
       // One with the name version and one without version in the path
@@ -114,7 +114,7 @@ export const makeGuide = ({
     }),
     RA.flatten,
     // parse docs files
-    parseDocOrThrow
+    parseDocOrThrow,
   );
 };
 
@@ -127,11 +127,11 @@ export const makeSolution = (solution: SolutionTemplateProps) => {
           pathPrefix: `/solutions/${solution.slug}/details`,
           assetsPrefix: `${docsAssetsPath}/${solution.dirName}`,
           dirPath: `${docsPath}/${solution.dirName}`,
-          spaceId: solution.dirName
-        }
-      }
+          spaceId: solution.dirName,
+        },
+      },
     ],
-    parseDocOrThrow
+    parseDocOrThrow,
   );
 };
 
@@ -144,10 +144,10 @@ export const makeReleaseNote = (releaseNote: ReleaseNotePageProps) => {
           pathPrefix: `/${releaseNote.product.slug}/release-note`,
           assetsPrefix: `${docsAssetsPath}/${releaseNote.dirName}`,
           dirPath: `${docsPath}/${releaseNote.dirName}`,
-          spaceId: releaseNote.dirName
-        }
-      }
+          spaceId: releaseNote.dirName,
+        },
+      },
     ],
-    parseDocOrThrow
+    parseDocOrThrow,
   );
 };

@@ -29,7 +29,7 @@ export function parseCkEditorContent(content: string): {
       menuItems.push({
         title: textContent.replace(/<[^>]*>/g, ''), // Strip HTML tags
         href: `#${anchorId}`,
-        level: level
+        level: level,
       });
     }
   }
@@ -40,7 +40,7 @@ export function parseCkEditorContent(content: string): {
   // Basic sanitization - remove script tags and dangerous attributes
   serializedContent = serializedContent.replace(
     /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi,
-    ''
+    '',
   );
   serializedContent = serializedContent.replace(/on\w+="[^"]*"/gi, '');
   serializedContent = serializedContent.replace(/javascript:/gi, '');

@@ -19,7 +19,7 @@ const SpeakerAvatar = ({
   avatar,
   name,
   compactMode = true,
-  isSmallScreen = false
+  isSmallScreen = false,
 }: SpeakerAvatarProps) => {
   const { palette } = useTheme();
   return avatar ? (
@@ -32,7 +32,7 @@ const SpeakerAvatar = ({
       style={{
         borderRadius: '100%',
         width: compactMode ? '4rem' : isSmallScreen ? '5rem' : '7.75rem',
-        height: compactMode ? '4rem' : isSmallScreen ? '5rem' : '7.75rem'
+        height: compactMode ? '4rem' : isSmallScreen ? '5rem' : '7.75rem',
       }}
     />
   ) : (
@@ -47,7 +47,7 @@ const SpeakerAvatar = ({
         borderRadius: '100%',
         borderColor: palette.divider,
         width: compactMode ? '4rem' : '9.063rem',
-        height: compactMode ? '4rem' : '9.063rem'
+        height: compactMode ? '4rem' : '9.063rem',
       }}
     >
       <PersonOutline fontSize={compactMode ? 'medium' : 'large'} />
@@ -62,7 +62,7 @@ const SpeakerInfo = ({
   name,
   jobTitle,
   description,
-  isSmallScreen = false
+  isSmallScreen = false,
 }: SpeakerInfoProps) => {
   const { palette } = useTheme();
   return (
@@ -72,7 +72,7 @@ const SpeakerInfo = ({
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
-        gap: '0.375rem'
+        gap: '0.375rem',
       }}
     >
       {compactMode ? (
@@ -125,10 +125,10 @@ const SpeakerPreview = ({
         flexDirection: { xs: 'row', md: flexDirection },
         alignItems: {
           xs: 'center',
-          md: compactMode ? 'center' : '  flex-start'
+          md: compactMode ? 'center' : '  flex-start',
         },
         gap: 3,
-        alignContent: 'center'
+        alignContent: 'center',
       }}
     >
       <SpeakerAvatar

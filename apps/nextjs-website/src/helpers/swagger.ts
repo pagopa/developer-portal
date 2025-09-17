@@ -8,5 +8,5 @@ export const system = new SwaggerUI.System({
   //following code should type
   //https://github.com/swagger-api/swagger-ui/wiki/JSON-Schema-samples-API
   plugins: [SwaggerUI.plugins.JSONSchema5Samples],
-  presets: []
+  presets: [],
 }).getSystem();

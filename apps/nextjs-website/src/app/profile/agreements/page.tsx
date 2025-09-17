@@ -9,7 +9,7 @@ import {
   Snackbar,
   Stack,
   Typography,
-  useTheme
+  useTheme,
 } from '@mui/material';
 import Link from 'next/link';
 import React, { ReactNode, useState } from 'react';
@@ -43,7 +43,7 @@ const Agreements = () => {
       setUserAttributes(
         {
           ...user.attributes,
-          'custom:mailinglist_accepted': 'true'
+          'custom:mailinglist_accepted': 'true',
         },
         () => {
           setIsSubscriptionButtonDisabled(false);
@@ -52,11 +52,11 @@ const Agreements = () => {
         () => {
           setInfo({
             message: t('profile.agreements.newsletter.error.subscribe'),
-            isError: true
+            isError: true,
           });
           setIsSubscriptionButtonDisabled(false);
           return null;
-        }
+        },
       );
     }
   };
@@ -66,7 +66,7 @@ const Agreements = () => {
       setUserAttributes(
         {
           ...user.attributes,
-          'custom:mailinglist_accepted': 'false'
+          'custom:mailinglist_accepted': 'false',
         },
         () => {
           setIsSubscriptionButtonDisabled(false);
@@ -75,11 +75,11 @@ const Agreements = () => {
         () => {
           setInfo({
             message: t('profile.agreements.newsletter.error.unsubscribe'),
-            isError: true
+            isError: true,
           });
           setIsSubscriptionButtonDisabled(false);
           return null;
-        }
+        },
       );
     }
   };
@@ -91,7 +91,7 @@ const Agreements = () => {
       underline='none'
       href={'/privacy-policy'}
       aria-label={t(
-        'profile.agreements.privacy.statement.labelOfLinkToReplace'
+        'profile.agreements.privacy.statement.labelOfLinkToReplace',
       )}
       title={t('profile.agreements.privacy.statement.labelOfLinkToReplace')}
     >
@@ -112,13 +112,13 @@ const Agreements = () => {
   return (
     <>
       <title>{`${t('devPortal.title')} | ${t(
-        'profile.agreements.title'
+        'profile.agreements.title',
       )}`}</title>
       <Stack
         sx={{
           padding: { xs: '40px 24px', md: '80px 40px' },
           width: '100%',
-          maxWidth: '694px'
+          maxWidth: '694px',
         }}
       >
         <Typography variant='h4' sx={{ marginBottom: '40px' }}>
@@ -129,7 +129,7 @@ const Agreements = () => {
           sx={{
             marginBottom: '24px',
             fontSize: '16px !important',
-            fontWeight: '600'
+            fontWeight: '600',
           }}
         >
           {t('profile.agreements.newsletter.title')}
@@ -138,14 +138,14 @@ const Agreements = () => {
           sx={{
             display: 'flex',
             flexDirection: { xs: 'column', md: 'row' },
-            gap: { xs: '10px', md: '100px' }
+            gap: { xs: '10px', md: '100px' },
           }}
         >
           <Typography
             variant='body2'
             sx={{
               fontSize: '14px',
-              color: palette.text.secondary
+              color: palette.text.secondary,
             }}
           >
             {t('profile.agreements.newsletter.description')}
@@ -155,7 +155,7 @@ const Agreements = () => {
               margin: 0,
               padding: 0,
               minWidth: '110px',
-              textAlign: 'right'
+              textAlign: 'right',
             }}
           >
             {hasAcceptedMailingListSubscription ? (
@@ -163,7 +163,7 @@ const Agreements = () => {
                 disabled={loading || isSubscriptionButtonDisabled}
                 sx={{
                   color: palette.error.dark,
-                  whiteSpace: 'nowrap'
+                  whiteSpace: 'nowrap',
                 }}
                 onClick={handleUnsubscribe}
               >
@@ -187,7 +187,7 @@ const Agreements = () => {
           sx={{
             marginBottom: '24px',
             fontSize: '16px !important',
-            fontWeight: '600'
+            fontWeight: '600',
           }}
         >
           {t('profile.agreements.privacy.title')}
@@ -197,7 +197,7 @@ const Agreements = () => {
           sx={{
             marginBottom: '24px',
             fontSize: '14px',
-            color: palette.text.secondary
+            color: palette.text.secondary,
           }}
         >
           {t('profile.agreements.privacy.basicData')}
@@ -207,7 +207,7 @@ const Agreements = () => {
           sx={{
             marginBottom: '24px',
             fontSize: '14px',
-            color: palette.text.secondary
+            color: palette.text.secondary,
           }}
         >
           {privacyStatement}

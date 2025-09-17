@@ -7,7 +7,7 @@ const SwaggerParameter = ({
   in: inProp,
   name,
   required,
-  children
+  children,
 }: SwaggerParameterProps<ReactNode>) => {
   return (
     <>

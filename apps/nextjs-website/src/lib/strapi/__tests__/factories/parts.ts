@@ -3,7 +3,7 @@ import { StrapiPart } from '@/lib/strapi/types/part';
 export function minimalAlertPart(): StrapiPart {
   return {
     __component: 'parts.alert',
-    severity: 'info'
+    severity: 'info',
   };
 }
 
@@ -14,34 +14,34 @@ export function minimalApiTesterPart(): StrapiPart {
     requestAttributes: [],
     requestCode: {
       code: '',
-      __component: 'parts.code-block'
+      __component: 'parts.code-block',
     },
     responseDescription: '',
     responseCode: {
       code: '',
-      __component: 'parts.code-block'
-    }
+      __component: 'parts.code-block',
+    },
   };
 }
 
 export function minimalCodeBlockPart(): StrapiPart {
   return {
     __component: 'parts.code-block',
-    code: ''
+    code: '',
   };
 }
 
 export function minimalHtmlPart(): StrapiPart {
   return {
     __component: 'parts.html',
-    html: []
+    html: [],
   };
 }
 
 export function minimalEmbedHtmlPart(): StrapiPart {
   return {
     __component: 'parts.embed-html',
-    html: ''
+    html: '',
   };
 }
 
@@ -49,13 +49,13 @@ export function minimalQuotePart(): StrapiPart {
   return {
     __component: 'parts.quote',
     text: '',
-    backgroundImage: {}
+    backgroundImage: {},
   };
 }
 
 export function minimalCkEditorPart(): StrapiPart {
   return {
     __component: 'parts.ck-editor',
-    content: ''
+    content: '',
   };
 }

@@ -43,7 +43,7 @@ export const useUser = () => {
     }
 
     const subscriptions = await getUserWebinarSubscriptions(
-      user.username
+      user.username,
     ).catch(() => []);
 
     setLoading(false);
@@ -55,7 +55,7 @@ export const useUser = () => {
   const setUserAttributes = async (
     attributes: DevPortalUser['attributes'],
     onSuccess?: () => null,
-    onFail?: () => null
+    onFail?: () => null,
   ) => {
     setAligned(false);
     return await Auth.updateUserAttributes(user, attributes)
@@ -111,7 +111,7 @@ export const useUser = () => {
     setUserAttributes,
     aligned,
     reloadUser,
-    isUserLoggedIn
+    isUserLoggedIn,
   };
 };
 

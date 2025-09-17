@@ -24,7 +24,7 @@ describe('ConfirmLogin', () => {
           onConfirmLogin={mockOnConfirmLogin}
           resendCode={mockResendCode}
         />
-      </Wrapper>
+      </Wrapper>,
     );
   });
 
@@ -36,7 +36,7 @@ describe('ConfirmLogin', () => {
           onConfirmLogin={mockOnConfirmLogin}
           resendCode={mockResendCode}
         />
-      </Wrapper>
+      </Wrapper>,
     );
     const codeInput = screen.getByRole('textbox') as HTMLInputElement;
 
@@ -53,7 +53,7 @@ describe('ConfirmLogin', () => {
           onConfirmLogin={mockOnConfirmLogin}
           resendCode={mockResendCode}
         />
-      </Wrapper>
+      </Wrapper>,
     );
     const codeInput = screen.getByRole('textbox');
     const continueButton = screen.getByRole('button', { name: continueRegex });
@@ -66,7 +66,7 @@ describe('ConfirmLogin', () => {
 
   it('should display error message when code is invalid', async () => {
     mockOnConfirmLogin.mockRejectedValueOnce({
-      name: 'NotAuthorizedException'
+      name: 'NotAuthorizedException',
     });
 
     render(
@@ -76,7 +76,7 @@ describe('ConfirmLogin', () => {
           onConfirmLogin={mockOnConfirmLogin}
           resendCode={mockResendCode}
         />
-      </Wrapper>
+      </Wrapper>,
     );
     const codeInput = screen.getByRole('textbox');
     const continueButton = screen.getByRole('button', { name: continueRegex });
@@ -99,7 +99,7 @@ describe('ConfirmLogin', () => {
           onConfirmLogin={mockOnConfirmLogin}
           resendCode={mockResendCode}
         />
-      </Wrapper>
+      </Wrapper>,
     );
     const codeInput = screen.getByRole('textbox');
     const continueButton = screen.getByRole('button', { name: continueRegex });

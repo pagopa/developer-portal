@@ -11,7 +11,7 @@ type SchemaWithExampleProps = OpenAPIV3.MediaTypeObject;
 export const SchemaWithExample = ({
   schema,
   example,
-  examples
+  examples,
 }: SchemaWithExampleProps) => {
   const t = useTranslations('swagger');
   const exampleLabel = t('example');
@@ -24,7 +24,7 @@ export const SchemaWithExample = ({
     schema ?? {},
     undefined,
     { includeReadOnly: true },
-    mediaTypeExample
+    mediaTypeExample,
   );
 
   // TODO: Add support for undefined schema but with example

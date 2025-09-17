@@ -21,7 +21,7 @@ export const credentials =
         accessKeyId: secrets.S3_ACCESS_KEY_ID || process.env.S3_ACCESS_KEY_ID,
         secretAccessKey:
           secrets.S3_SECRET_ACCESS_KEY || process.env.S3_SECRET_ACCESS_KEY,
-        sessionToken: secrets.S3_SESSION_TOKEN || process.env.S3_SESSION_TOKEN
+        sessionToken: secrets.S3_SESSION_TOKEN || process.env.S3_SESSION_TOKEN,
       }
     : undefined;
 export const bucketName = process.env.S3_BUCKET_NAME || secrets.S3_BUCKET_NAME;
@@ -54,14 +54,14 @@ export const amplifyConfig = {
       process.env.NEXT_PUBLIC_COGNITO_USER_POOL_ID,
     userPoolWebClientId:
       secrets.NEXT_PUBLIC_COGNITO_USER_POOL_WEB_CLIENT_ID ||
-      process.env.NEXT_PUBLIC_COGNITO_USER_POOL_WEB_CLIENT_ID
+      process.env.NEXT_PUBLIC_COGNITO_USER_POOL_WEB_CLIENT_ID,
   },
-  authenticationFlowType: 'CUSTOM_AUTH'
+  authenticationFlowType: 'CUSTOM_AUTH',
 };
 
 const defaultItems = [
   { label: 'personalData.title', href: '/profile/personal-data' },
-  { label: 'agreements.title', href: '/profile/agreements' }
+  { label: 'agreements.title', href: '/profile/agreements' },
 ];
 
 export const profileMenuItems: readonly {
@@ -70,7 +70,7 @@ export const profileMenuItems: readonly {
 }[] = isChatbotActive
   ? [
       ...defaultItems,
-      { label: 'chatbot.title', href: '/profile/chatbot-history' }
+      { label: 'chatbot.title', href: '/profile/chatbot-history' },
     ]
   : defaultItems;
 
@@ -94,12 +94,12 @@ export const dateOptions: Intl.DateTimeFormatOptions = {
   year: 'numeric',
   month: 'long',
   day: 'numeric',
-  timeZone: 'Europe/Rome'
+  timeZone: 'Europe/Rome',
 };
 
 export const timeOptions: Intl.DateTimeFormatOptions = {
   hour: '2-digit',
-  minute: '2-digit'
+  minute: '2-digit',
 };
 
 export const websiteName = process.env.NEXT_PUBLIC_WEBSITE_NAME || 'DevPortal';
@@ -113,7 +113,7 @@ export const organizationInfo = {
   sameAs: (
     process.env.NEXT_PUBLIC_ORGANIZATION_SOCIAL_LINKS ||
     'https://x.com/PagoPA,https://www.instagram.com/pagopaspa/,https://www.linkedin.com/company/pagopa/,https://medium.com/pagopa-spa'
-  ).split(',')
+  ).split(','),
 };
 
 export const REVALIDATE_LONG_INTERVAL = 3600; // 1 hour
@@ -125,12 +125,12 @@ export const companyRoles = [
   'psp',
   'gestore-di-pubblico-servizio',
   'azienda-privata',
-  'altro'
+  'altro',
 ];
 
 export const signUpAdvantages = [
   'exclusive_contents',
   'product_updates',
   'api_keys',
-  'support'
+  'support',
 ];
