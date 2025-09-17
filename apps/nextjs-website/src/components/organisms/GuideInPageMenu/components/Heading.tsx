@@ -23,7 +23,7 @@ const Heading = ({ level, id, children }: HeadingProps<ReactNode>) => {
         display: 'block',
         fontFamily: 'Titillium Web',
         marginBottom: '12px',
-        textDecoration: 'none',
+        textDecoration: 'none'
       }}
     >
       <Typography
@@ -32,7 +32,7 @@ const Heading = ({ level, id, children }: HeadingProps<ReactNode>) => {
             ? palette.primary.main
             : palette.text.secondary,
           fontSize: level === 2 ? 16 : 14,
-          fontWeight: isCurrentFragment ? 700 : 400,
+          fontWeight: isCurrentFragment ? 700 : 400
         }}
       >
         {children}

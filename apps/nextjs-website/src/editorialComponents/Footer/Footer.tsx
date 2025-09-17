@@ -7,7 +7,7 @@ import { LegalInfo } from './components/LegalInfo';
 import type {
   CompanyLinkType,
   PreLoginFooterLinksType,
-  FooterColumnIcon,
+  FooterColumnIcon
 } from './types';
 
 export interface FooterProps extends LangSwitchProps {
@@ -39,7 +39,7 @@ export const Footer = ({
         alignItems: 'stretch',
         justifyContent: 'space-between',
         flexDirection: { xs: 'column', sm: 'row' },
-        gap: 4,
+        gap: 4
       }}
     >
       <FooterColumn data={aboutUs} companyLink={companyLink} />

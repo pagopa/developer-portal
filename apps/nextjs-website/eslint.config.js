@@ -123,6 +123,7 @@ export default [
         {
           singleQuote: true,
           jsxSingleQuote: true,
+          trailingComma: 'none',
         },
       ],
     },
@@ -159,6 +160,7 @@ export default [
         {
           singleQuote: true,
           jsxSingleQuote: true,
+          trailingComma: 'none',
         },
       ],
       'no-unused-vars': 'warn',

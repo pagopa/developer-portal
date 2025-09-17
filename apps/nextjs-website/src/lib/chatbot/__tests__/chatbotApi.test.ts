@@ -6,11 +6,11 @@ const makeTestEnv = () => {
     fetchMock,
     env: {
       config: {
-        CHATBOT_HOST: 'chatbotHost',
+        CHATBOT_HOST: 'chatbotHost'
       },
       getAuthToken: async () => 'authToken',
-      fetch: fetchMock,
-    },
+      fetch: fetchMock
+    }
   };
 };
 
@@ -25,16 +25,16 @@ const postQueryResponses = {
       {
         id: '1',
         question: 'question',
-        answer: 'answer',
+        answer: 'answer'
       },
       {
         id: '2',
         question: 'question',
-        answer: 'answer',
-      },
+        answer: 'answer'
+      }
     ],
     createdAt: '2024-02-08T11:12:02.438Z',
-    badAnswer: false,
+    badAnswer: false
   },
   404: {
     data: null,
@@ -42,8 +42,8 @@ const postQueryResponses = {
       status: 404,
       name: 'NotFoundError',
       message: 'Not Found',
-      details: {},
-    },
+      details: {}
+    }
   },
   401: {
     data: null,
@@ -51,9 +51,9 @@ const postQueryResponses = {
       status: 401,
       name: 'UnauthorizedError',
       message: 'Missing or invalid credentials',
-      details: {},
-    },
-  },
+      details: {}
+    }
+  }
 };
 
 const getQueriesResponses = {
@@ -65,8 +65,8 @@ const getQueriesResponses = {
       question: 'question',
       answer: 'answer',
       createdAt: '2024-02-08T11:12:02.438Z',
-      badAnswer: false,
-    },
+      badAnswer: false
+    }
   ],
   404: {
     data: null,
@@ -74,8 +74,8 @@ const getQueriesResponses = {
       status: 404,
       name: 'NotFoundError',
       message: 'Not Found',
-      details: {},
-    },
+      details: {}
+    }
   },
   401: {
     data: null,
@@ -83,9 +83,9 @@ const getQueriesResponses = {
       status: 401,
       name: 'UnauthorizedError',
       message: 'Missing or invalid credentials',
-      details: {},
-    },
-  },
+      details: {}
+    }
+  }
 };
 
 const badResponse = {
@@ -96,8 +96,8 @@ const badResponse = {
     question: 'question',
     answer: 'answer',
     createdAt: '2024-02-08T11:12:02.438Z',
-    badAnswer: false,
-  },
+    badAnswer: false
+  }
 };
 
 describe('chatbotApi', () => {
@@ -106,11 +106,11 @@ describe('chatbotApi', () => {
     fetchMock.mockResolvedValueOnce({
       status: 200,
       statusText: 'OK',
-      json: () => Promise.resolve(postQueryResponses[200]),
+      json: () => Promise.resolve(postQueryResponses[200])
     });
     const actual = postQuery({
       queriedAt: 'aQueriedAt',
-      question: 'aQuery',
+      question: 'aQuery'
     })(env);
     const expected = {
       id: 'queryId',
@@ -119,7 +119,7 @@ describe('chatbotApi', () => {
       question: 'question',
       answer: 'answer',
       createdAt: '2024-02-08T11:12:02.438Z',
-      badAnswer: false,
+      badAnswer: false
     };
     expect(await actual).toStrictEqual(expected);
   });
@@ -128,7 +128,7 @@ describe('chatbotApi', () => {
     fetchMock.mockResolvedValueOnce({
       status: 200,
       statusText: 'Not Found',
-      json: () => Promise.resolve(getQueriesResponses[200]),
+      json: () => Promise.resolve(getQueriesResponses[200])
     });
     const actual = getQueries('sessionId')(env);
     const expected = [
@@ -139,8 +139,8 @@ describe('chatbotApi', () => {
         question: 'question',
         answer: 'answer',
         createdAt: '2024-02-08T11:12:02.438Z',
-        badAnswer: false,
-      },
+        badAnswer: false
+      }
     ];
     expect(await actual).toStrictEqual(expected);
   });
@@ -149,11 +149,11 @@ describe('chatbotApi', () => {
     fetchMock.mockResolvedValueOnce({
       status: 401,
       statusText: 'Unauthorized',
-      json: () => Promise.resolve(postQueryResponses[401]),
+      json: () => Promise.resolve(postQueryResponses[401])
     });
     const actual = postQuery({
       queriedAt: 'aQueriedAt',
-      question: 'aQuery',
+      question: 'aQuery'
     })(env);
     const expected = new Error('401 - Unauthorized');
     await expect(actual).rejects.toStrictEqual(expected);
@@ -163,7 +163,7 @@ describe('chatbotApi', () => {
     fetchMock.mockResolvedValueOnce({
       status: 404,
       statusText: 'Not Found',
-      json: () => Promise.resolve(postQueryResponses[404]),
+      json: () => Promise.resolve(postQueryResponses[404])
     });
     const actual = getQueries('wrongSessionId')(env);
     const expected = new Error('404 - Not Found');
@@ -174,7 +174,7 @@ describe('chatbotApi', () => {
     fetchMock.mockRejectedValueOnce({});
     const actual = postQuery({
       queriedAt: 'aQueriedAt',
-      question: 'aQuery',
+      question: 'aQuery'
     })(env);
     const expected = {};
     await expect(actual).rejects.toStrictEqual(expected);
@@ -184,14 +184,14 @@ describe('chatbotApi', () => {
     fetchMock.mockResolvedValueOnce({
       status: 200,
       statusText: 'OK',
-      json: () => Promise.resolve(badResponse[200]),
+      json: () => Promise.resolve(badResponse[200])
     });
     const actual = postQuery({
       queriedAt: 'aQueriedAt',
-      question: 'aQuery',
+      question: 'aQuery'
     })(env);
     const expected = new Error(
-      `Invalid value 1234 supplied to '/sessionId', expected type string`,
+      `Invalid value 1234 supplied to '/sessionId', expected type string`
     );
     await expect(actual).rejects.toStrictEqual(expected);
   });

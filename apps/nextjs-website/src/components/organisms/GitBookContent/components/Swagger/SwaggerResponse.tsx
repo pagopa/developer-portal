@@ -11,14 +11,14 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 const SwaggerResponse = ({
   status,
   description,
-  children,
+  children
 }: SwaggerResponseProps<ReactNode>) => {
   return (
     <Accordion
       sx={{
         border: '1px solid #ddd',
         borderRadius: '4px',
-        marginBottom: '16px',
+        marginBottom: '16px'
       }}
     >
       <AccordionSummary
@@ -30,7 +30,7 @@ const SwaggerResponse = ({
           style={{
             display: 'flex',
             flexDirection: 'column',
-            alignItems: 'flex-start',
+            alignItems: 'flex-start'
           }}
         >
           <div style={{ display: 'flex' }}>
@@ -42,7 +42,7 @@ const SwaggerResponse = ({
                 backgroundColor: '#008847',
                 marginTop: '7px',
                 marginLeft: '10px',
-                marginRight: '8px',
+                marginRight: '8px'
               }}
             ></div>
             <Typography sx={{ marginBottom: '16px' }}>{status}</Typography>

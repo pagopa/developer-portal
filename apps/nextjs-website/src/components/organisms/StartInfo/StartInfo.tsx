@@ -31,7 +31,7 @@ const StartInfo = ({
   title,
   cards,
   cta,
-  cardVariant = 'contained',
+  cardVariant = 'contained'
 }: StartInfoProps) => {
   const { palette } = useTheme();
   const t = useTranslations();
@@ -49,7 +49,7 @@ const StartInfo = ({
           ctaButtonsVariant={cardVariant}
           cardSize={{
             xs: 12,
-            md: 12 / cards.length,
+            md: 12 / cards.length
           }}
           cards={cards.map((card) => ({
             comingSoon: card.comingSoon,
@@ -58,11 +58,11 @@ const StartInfo = ({
             href: card.href,
             icon: card.iconName,
             iconColor: card.iconColor,
-            useSrc: card.useSrc,
+            useSrc: card.useSrc
           }))}
           containerSx={{
             pt: '22px',
-            mt: '-22px',
+            mt: '-22px'
           }}
         />
       </Box>

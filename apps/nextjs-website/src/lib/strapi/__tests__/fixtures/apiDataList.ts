@@ -10,7 +10,7 @@ export const strapiApiDataList: StrapiApiDataList = {
       attributes: {
         seo: {
           metaTitle: 'SEND Main API',
-          metaDescription: 'SEND Main API Documentation',
+          metaDescription: 'SEND Main API Documentation'
         },
         title: 'SEND Main',
         description: 'Main SEND API for delivery notifications',
@@ -22,12 +22,12 @@ export const strapiApiDataList: StrapiApiDataList = {
               id: 3,
               url: 'https://raw.githubusercontent.com/pagopa/pn-delivery/pn-openapi-devportal/docs/openapi/api-external-b2b-pa-bundle.yaml',
               name: 'Main API',
-              hideTryIt: true,
-            },
-          ],
+              hideTryIt: true
+            }
+          ]
         },
         icon: {
-          data: mediaJpeg(),
+          data: mediaJpeg()
         },
         product: {
           data: {
@@ -41,12 +41,12 @@ export const strapiApiDataList: StrapiApiDataList = {
               api_data_list_page: { data: undefined },
               guide_list_page: { data: { id: 0 } },
               tutorial_list_page: { data: { id: 0 } },
-              release_note: { data: { id: 0 } },
-            },
-          },
+              release_note: { data: { id: 0 } }
+            }
+          }
         },
-        bannerLinks: generateBannerLinks(2),
-      },
+        bannerLinks: generateBannerLinks(2)
+      }
     },
     {
       id: 7,
@@ -59,7 +59,7 @@ export const strapiApiDataList: StrapiApiDataList = {
         apiSoapDetail: {
           repositoryUrl: 'https://github.com/pagopa/pagopa-api/',
           dirName: 'pagopa-api',
-          slug: 'pagopa-soap-api',
+          slug: 'pagopa-soap-api'
         },
         icon: {
           data: {
@@ -72,9 +72,9 @@ export const strapiApiDataList: StrapiApiDataList = {
               ext: '.svg',
               mime: 'image/svg+xml',
               size: 0.24,
-              url: 'https://cdn.dev.developer.pagopa.it/Code_7ebfbd1657.svg',
-            },
-          },
+              url: 'https://cdn.dev.developer.pagopa.it/Code_7ebfbd1657.svg'
+            }
+          }
         },
         product: {
           data: {
@@ -88,21 +88,21 @@ export const strapiApiDataList: StrapiApiDataList = {
               api_data_list_page: { data: undefined },
               guide_list_page: { data: { id: 0 } },
               tutorial_list_page: { data: { id: 0 } },
-              release_note: { data: { id: 0 } },
-            },
-          },
+              release_note: { data: { id: 0 } }
+            }
+          }
         },
-        bannerLinks: [],
-      },
-    },
-  ],
+        bannerLinks: []
+      }
+    }
+  ]
 };
 
 export const expectedApiDataPageProps: ReadonlyArray<ApiDataPageProps> = [
   {
     seo: {
       metaTitle: 'SEND Main API',
-      metaDescription: 'SEND Main API Documentation',
+      metaDescription: 'SEND Main API Documentation'
     },
     title: 'SEND Main',
     apiSoapUrl: undefined,
@@ -112,8 +112,8 @@ export const expectedApiDataPageProps: ReadonlyArray<ApiDataPageProps> = [
       {
         url: 'https://raw.githubusercontent.com/pagopa/pn-delivery/pn-openapi-devportal/docs/openapi/api-external-b2b-pa-bundle.yaml',
         name: 'Main API',
-        hideTryIt: true,
-      },
+        hideTryIt: true
+      }
     ],
     specUrlsName: 'SEND Main',
     apiSoapUrlList: [],
@@ -121,9 +121,9 @@ export const expectedApiDataPageProps: ReadonlyArray<ApiDataPageProps> = [
       name: 'Test Product',
       slug: 'test-product',
       shortName: 'TP',
-      bannerLinks: expect.any(Array),
+      bannerLinks: expect.any(Array)
     },
-    bannerLinks: expect.any(Array),
+    bannerLinks: expect.any(Array)
   },
   {
     seo: undefined,
@@ -138,8 +138,8 @@ export const expectedApiDataPageProps: ReadonlyArray<ApiDataPageProps> = [
       name: 'SOAP Product',
       slug: 'soap-product',
       shortName: 'SP',
-      bannerLinks: expect.any(Array),
+      bannerLinks: expect.any(Array)
     },
-    bannerLinks: expect.any(Array),
-  },
+    bannerLinks: expect.any(Array)
+  }
 ];

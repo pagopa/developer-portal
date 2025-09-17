@@ -45,12 +45,12 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
           <BlocksRendererClient content={webinar.bodyContent} />
         </EContainer>
       ) : null,
-    [webinar.bodyContent],
+    [webinar.bodyContent]
   );
 
   const speakerList = useMemo(
     () => webinar.speakers && <SpeakerList speakers={[...webinar.speakers]} />,
-    [webinar.speakers],
+    [webinar.speakers]
   );
 
   const relatedLinks = useMemo(
@@ -61,7 +61,7 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
           links={[...(webinar.relatedLinks?.links || [])]}
         />
       ),
-    [webinar.relatedLinks],
+    [webinar.relatedLinks]
   );
 
   const subscribeToWebinarButton = (
@@ -91,7 +91,7 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
             ? `url(${webinar.headerImage?.url})`
             : 'none',
           backgroundRepeat: 'no-repeat',
-          backgroundSize: 'cover',
+          backgroundSize: 'cover'
         }}
       >
         <EContainer>
@@ -101,9 +101,9 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
               ...pageToBreadcrumbs('webinars', [
                 {
                   name: webinar.title,
-                  path: webinar.slug,
-                },
-              ]),
+                  path: webinar.slug
+                }
+              ])
             ]}
           />
         </EContainer>
@@ -124,7 +124,7 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
                 bottom: '24px',
                 fontSize: '12px',
                 marginTop: 1,
-                color: showHeaderImage ? 'white' : palette.text.primary,
+                color: showHeaderImage ? 'white' : palette.text.primary
               }}
             >
               {t('warnings.refresh')}
@@ -157,14 +157,14 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
             title: resource.title,
             description: {
               title: resource.subtitle || '',
-              content: resource.description,
+              content: resource.description
             },
             imagePath: resource.image?.url || '/images/hero.jpg',
             link: {
               label: resource.linkText,
-              href: resource.linkHref,
+              href: resource.linkHref
             },
-            mobileImagePath: resource.image?.url || '/images/hero.jpg',
+            mobileImagePath: resource.image?.url || '/images/hero.jpg'
           }))}
           downloadableDocuments={(
             webinar.relatedResources.downloadableDocuments || []
@@ -172,7 +172,7 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
             title: doc.title,
             size: doc.size,
             downloadLink: doc.downloadLink,
-            tags: [{ label: doc.extension }],
+            tags: [{ label: doc.extension }]
           }))}
         />
       )}

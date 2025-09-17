@@ -36,7 +36,7 @@ const HeroSwiper = ({ cards }: HeroSwiperProps) => {
       pagination={{ clickable: true }}
       autoplay={{
         delay: SWIPER_AUTOPLAY_DELAY_IN_MS,
-        disableOnInteraction: false,
+        disableOnInteraction: false
       }}
       loop={true}
       modules={[Autoplay, Navigation, Pagination]}

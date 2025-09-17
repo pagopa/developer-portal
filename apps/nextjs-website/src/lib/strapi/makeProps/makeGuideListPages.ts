@@ -10,7 +10,7 @@ import _ from 'lodash';
 import { StrapiGuideListPages } from '@/lib/strapi/types/guideListPage';
 
 export function makeGuideListPagesProps(
-  strapiGuideListPages: StrapiGuideListPages,
+  strapiGuideListPages: StrapiGuideListPages
 ): readonly GuideListPageProps[] {
   return _.compact(
     strapiGuideListPages.data.map(({ attributes }) => {
@@ -27,17 +27,17 @@ export function makeGuideListPagesProps(
             title: category,
             guides: _.compact(
               guides.data.map((guide) =>
-                makeGuideCardProps(guide, product.slug),
-              ),
-            ),
-          })),
+                makeGuideCardProps(guide, product.slug)
+              )
+            )
+          }))
         ];
         return {
           path: `/${productData.attributes.slug}/guides`,
           product,
           abstract: {
             title: attributes.title,
-            description: attributes.description,
+            description: attributes.description
           },
           guidesSections: [...guidesSections],
           bannerLinks:
@@ -45,22 +45,22 @@ export function makeGuideListPagesProps(
               ? attributes.bannerLinks.map(makeBannerLinkProps)
               : productData.attributes.bannerLinks?.map(makeBannerLinkProps),
           seo: attributes.seo,
-          updatedAt: attributes.updatedAt,
+          updatedAt: attributes.updatedAt
         } satisfies GuideListPageProps;
       } catch (error) {
         console.error(
           `Error while processing Guide List Page for product with slug "${productData.attributes.slug}":`,
-          error,
+          error
         );
         return null;
       }
-    }),
+    })
   );
 }
 
 function makeGuideCardProps(
   guide: StrapiBaseGuide,
-  productSlug: string,
+  productSlug: string
 ): GuideCardProps | null {
   if (!guide.attributes.slug) {
     console.error('guide slug is missing:', guide);
@@ -73,15 +73,15 @@ function makeGuideCardProps(
       description: {
         title: 'guideListPage.cardSection.listItemsTitle',
         listItems: guide.attributes.listItems.map(({ text }) => text),
-        translate: true,
+        translate: true
       },
       imagePath: guide.attributes.image?.data?.attributes?.url,
       mobileImagePath: guide.attributes.mobileImage?.data?.attributes?.url,
       link: {
         label: 'guideListPage.cardSection.linkLabel',
         href: `/${productSlug}/guides/${guide.attributes.slug}`,
-        translate: true,
-      },
+        translate: true
+      }
     } satisfies GuideCardProps;
   } catch (error) {
     console.error(error);

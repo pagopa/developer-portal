@@ -3,13 +3,13 @@ import { StrapiReleaseNotes } from '@/lib/strapi/types/releaseNotes';
 import _ from 'lodash';
 import {
   strapiReleaseNotes,
-  expectedReleaseNotePageProps,
+  expectedReleaseNotePageProps
 } from '@/lib/strapi/__tests__/fixtures/releaseNotes';
 import {
   minimalDataReleaseNotes,
   releaseNotesWithoutBannerLinks,
   releaseNotesWithoutProductBannerLinks,
-  releaseNotesWithMissingProductSlug,
+  releaseNotesWithMissingProductSlug
 } from '@/lib/strapi/__tests__/factories/releaseNotes';
 import { spyOnConsoleError } from '@/lib/strapi/__tests__/spyOnConsole';
 
@@ -30,7 +30,7 @@ describe('makeReleaseNotesProps', () => {
 
   it('should handle minimal data with missing optional fields', () => {
     const result = makeReleaseNotesProps(
-      _.cloneDeep(minimalDataReleaseNotes()),
+      _.cloneDeep(minimalDataReleaseNotes())
     );
     expect(result).toHaveLength(1);
     expect(result[0].title).toBe('Minimal Release Notes');
@@ -48,9 +48,9 @@ describe('makeReleaseNotesProps', () => {
           page: 1,
           pageSize: 25,
           pageCount: 0,
-          total: 0,
-        },
-      },
+          total: 0
+        }
+      }
     };
     const result = makeReleaseNotesProps(emptyData);
     expect(result).toHaveLength(0);
@@ -65,7 +65,7 @@ describe('makeReleaseNotesProps', () => {
 
   it('should handle release notes without banner links and without product banner links', () => {
     const result = makeReleaseNotesProps(
-      releaseNotesWithoutProductBannerLinks(),
+      releaseNotesWithoutProductBannerLinks()
     );
     expect(result[0].bannerLinks).toEqual([]);
   });
@@ -91,7 +91,7 @@ describe('makeReleaseNotesProps', () => {
     const result = makeReleaseNotesProps(releaseNotesWithMissingProductSlug());
     expect(result).toHaveLength(0);
     expect(spyOnConsoleError).toHaveBeenCalledWith(
-      'Error processing Release Note "Release Note Without Product Slug": Missing product slug. Skipping...',
+      'Error processing Release Note "Release Note Without Product Slug": Missing product slug. Skipping...'
     );
   });
 });

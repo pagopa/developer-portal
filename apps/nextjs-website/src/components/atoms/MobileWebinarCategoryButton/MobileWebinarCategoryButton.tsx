@@ -16,7 +16,7 @@ const MobileWebinarCategoryButton = ({
   icon,
   label,
   isHeader = false,
-  isLast = false,
+  isLast = false
 }: MobileWebinarCategoryButtonProps) => {
   const { palette } = useTheme();
   const height = isHeader ? 32 : 64;
@@ -29,7 +29,7 @@ const MobileWebinarCategoryButton = ({
       display={'flex'}
       justifyContent={'center'}
       sx={{
-        borderRadius: '16px',
+        borderRadius: '16px'
       }}
     >
       <Button
@@ -47,14 +47,14 @@ const MobileWebinarCategoryButton = ({
           color: palette.text.primary,
           backgroundColor: palette.background.paper,
           '&:hover': {
-            backgroundColor: palette.grey[50],
+            backgroundColor: palette.grey[50]
           },
           '&:disabled': {
             fontWeight: 700,
             color: palette.text.primary,
             borderRadius: '16px',
-            backgroundColor: palette.background.paper,
-          },
+            backgroundColor: palette.background.paper
+          }
         }}
         onClick={onClick}
       >

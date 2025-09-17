@@ -31,7 +31,7 @@ const PoliciesParagraph = () => {
           >
             {chunks}
           </Typography>
-        ),
+        )
       })}
     </Typography>
   );

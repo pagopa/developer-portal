@@ -6,7 +6,7 @@ import { StrapiTutorialListPages } from '@/lib/strapi/types/tutorialsListPage';
 import _ from 'lodash';
 
 export function makeTutorialListPagesProps(
-  strapiTutorialList: StrapiTutorialListPages,
+  strapiTutorialList: StrapiTutorialListPages
 ): readonly TutorialsPageProps[] {
   return _.compact(
     strapiTutorialList.data.map(({ attributes }) => {
@@ -14,7 +14,7 @@ export function makeTutorialListPagesProps(
       if (!slug) {
         // eslint-disable-next-line functional/no-expression-statements
         console.error(
-          `Tutorial List Page ${attributes.title} is missing product slug. Skipping...`,
+          `Tutorial List Page ${attributes.title} is missing product slug. Skipping...`
         );
         return null;
       }
@@ -24,14 +24,14 @@ export function makeTutorialListPagesProps(
           if (!slug) {
             // eslint-disable-next-line functional/no-expression-statements
             console.error(
-              `Tutorial ${tutorialAttributes.title} is missing product slug. Skipping...`,
+              `Tutorial ${tutorialAttributes.title} is missing product slug. Skipping...`
             );
             return null;
           }
           if (!tutorialAttributes.slug) {
             // eslint-disable-next-line functional/no-expression-statements
             console.error(
-              `Tutorial ${tutorialAttributes.title} is missing slug. Skipping...`,
+              `Tutorial ${tutorialAttributes.title} is missing slug. Skipping...`
             );
             return null;
           }
@@ -46,16 +46,16 @@ export function makeTutorialListPagesProps(
                 ? new Date(tutorialAttributes.publishedAt)
                 : undefined,
               showInOverview: false,
-              image: tutorialAttributes.image.data?.attributes,
+              image: tutorialAttributes.image.data?.attributes
             } satisfies Tutorial;
           } catch (error) {
             // eslint-disable-next-line functional/no-expression-statements
             console.error(
-              `Error processing tutorial ${tutorialAttributes.title}: ${error}`,
+              `Error processing tutorial ${tutorialAttributes.title}: ${error}`
             );
             return null;
           }
-        }),
+        })
       );
 
       return {
@@ -64,19 +64,19 @@ export function makeTutorialListPagesProps(
         product: makeBaseProductWithoutLogoProps(attributes.product.data),
         abstract: {
           title: attributes.title,
-          description: attributes.description,
+          description: attributes.description
         },
         seo: attributes.seo,
         tutorials: tutorials,
         bannerLinks:
           attributes.bannerLinks.length > 0
             ? attributes.bannerLinks.map((bannerLink) =>
-                makeBannerLinkProps(bannerLink),
+                makeBannerLinkProps(bannerLink)
               )
             : attributes.product.data.attributes.bannerLinks?.map(
-                (bannerLink) => makeBannerLinkProps(bannerLink),
-              ),
+                (bannerLink) => makeBannerLinkProps(bannerLink)
+              )
       };
-    }),
+    })
   );
 }

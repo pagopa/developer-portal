@@ -27,7 +27,7 @@ type WebinarsTemplateProps = {
 
 const WebinarsTemplateContent = ({
   webinars,
-  categories,
+  categories
 }: WebinarsTemplateProps) => {
   const t = useTranslations();
   const updatedCategories = [
@@ -44,12 +44,12 @@ const WebinarsTemplateContent = ({
             size: 32,
             ext: '.svg',
             mime: 'image/svg',
-            url: ' icons/all.svg',
-          },
-        },
-      },
+            url: ' icons/all.svg'
+          }
+        }
+      }
     },
-    ...categories,
+    ...categories
   ];
   const { palette } = useTheme();
   const [futureWebinars, setFutureWebinars] = useState<readonly Webinar[]>([]);
@@ -60,8 +60,8 @@ const WebinarsTemplateContent = ({
     0,
     Math.min(
       isNaN(parsedCategory) ? 0 : parsedCategory,
-      updatedCategories.length - 1,
-    ),
+      updatedCategories.length - 1
+    )
   );
   const [selectedCategory, setSelectedCategory] = useState(categoryValue);
 
@@ -92,17 +92,17 @@ const WebinarsTemplateContent = ({
   const webinarsListPageSEO = {
     metaTitle: t('webinars.title'),
     metaDescription: t('webinars.subtitle'),
-    canonicalURL: `${baseUrl}/webinars`,
+    canonicalURL: `${baseUrl}/webinars`
   };
 
   const structuredData = generateStructuredDataScripts({
     breadcrumbsItems: [
       {
         name: webinarsListPageSEO.metaTitle,
-        item: getItemFromPaths(['webinars']),
-      },
+        item: getItemFromPaths(['webinars'])
+      }
     ],
-    seo: webinarsListPageSEO,
+    seo: webinarsListPageSEO
   });
   useEffect(() => {
     setFutureWebinars(getFutureWebinars(webinars));
@@ -142,7 +142,7 @@ const WebinarsTemplateContent = ({
             sx={{
               display: 'flex',
               justifyContent: 'center',
-              alignItems: 'center',
+              alignItems: 'center'
             }}
           >
             <SectionTitle title={t('webinars.pastWebinars')} />
@@ -167,7 +167,7 @@ const WebinarsTemplateContent = ({
               sx={{
                 display: 'flex',
                 justifyContent: 'center',
-                alignItems: 'center',
+                alignItems: 'center'
               }}
             >
               <SectionTitle title={t('webinars.noWebinars')} />

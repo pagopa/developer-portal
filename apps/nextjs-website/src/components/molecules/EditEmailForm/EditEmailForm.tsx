@@ -5,7 +5,7 @@ import { useCallback, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { emailMatcher } from '@/helpers/auth.helpers';
 import RequiredTextField, {
-  ValidatorFunction,
+  ValidatorFunction
 } from '@/components/molecules/RequiredTextField/RequiredTextField';
 
 type EditEmailFormProps = {
@@ -23,14 +23,14 @@ const EditEmailForm = ({ onSave, onCancel }: EditEmailFormProps) => {
 
   const [errors, setErrors] = useState<Partial<FormSchema>>({});
   const [formValue, setFormValue] = useState<FormSchema>({
-    email: '',
+    email: ''
   });
 
   const emailValidators: ValidatorFunction[] = [
     (value: string) => ({
       valid: emailMatcher.test(value),
-      error: t('changeEmail.wrongEmail'),
-    }),
+      error: t('changeEmail.wrongEmail')
+    })
   ];
 
   const validateForm = useCallback(() => {
@@ -49,7 +49,7 @@ const EditEmailForm = ({ onSave, onCancel }: EditEmailFormProps) => {
 
   const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const {
-      target: { value },
+      target: { value }
     } = event;
 
     setFormValue(() => ({ email: value }));

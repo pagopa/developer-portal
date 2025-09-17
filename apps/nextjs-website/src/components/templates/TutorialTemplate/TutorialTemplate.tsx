@@ -3,7 +3,7 @@ import { productPageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
 import { FragmentProvider } from '@/components/organisms/FragmentProvider/FragmentProvider';
 import { Box, Typography } from '@mui/material';
 import RelatedLinks, {
-  RelatedLinksProps,
+  RelatedLinksProps
 } from '@/components/atoms/RelatedLinks/RelatedLinks';
 import ProductLayout from '@/components/organisms/ProductLayout/ProductLayout';
 import { Product } from '@/lib/types/product';
@@ -31,7 +31,7 @@ const TutorialTemplate = ({
   relatedLinks,
   bannerLinks,
   title,
-  structuredData,
+  structuredData
 }: TutorialPageTemplateProps) => {
   return (
     <ProductLayout
@@ -48,7 +48,7 @@ const TutorialTemplate = ({
             marginTop: '80px',
             marginX: 'auto',
             paddingTop: 3,
-            px: { xs: 4, lg: 0 },
+            px: { xs: 4, lg: 0 }
           }}
         >
           <ProductBreadcrumbs
@@ -59,13 +59,13 @@ const TutorialTemplate = ({
                   name: 'devPortal.productHeader.tutorials',
                   path: product.hasTutorialListPage
                     ? `/${product.slug}/tutorials`
-                    : '',
+                    : ''
                 },
                 {
                   name: title,
-                  path: path,
-                },
-              ]),
+                  path: path
+                }
+              ])
             ]}
           />
         </Box>
@@ -81,7 +81,7 @@ const TutorialTemplate = ({
               ? '56px'
               : 0,
             paddingTop: '56px',
-            px: { xs: 4, lg: 0 },
+            px: { xs: 4, lg: 0 }
           }}
         >
           <Box
@@ -89,9 +89,9 @@ const TutorialTemplate = ({
               flexGrow: { lg: 1 },
               maxWidth: {
                 xs: '100%',
-                lg: '822px',
+                lg: '822px'
               },
-              overflowWrap: 'break-word',
+              overflowWrap: 'break-word'
             }}
           >
             <Typography
@@ -100,7 +100,7 @@ const TutorialTemplate = ({
                 fontSize: '38px',
                 fontWeight: 700,
                 lineHeight: '42px',
-                paddingY: 2,
+                paddingY: 2
               }}
             >
               {title}
@@ -120,14 +120,14 @@ const TutorialTemplate = ({
               // 78px is the height of the header, 80px is the height of the product header
               paddingTop: '30px',
               paddingLeft: '60px',
-              width: { lg: '378px' },
+              width: { lg: '378px' }
             }}
           >
             <Box
               sx={{
                 position: 'sticky',
                 maxWidth: '378px',
-                top: 140,
+                top: 140
               }}
             >
               <PartRendererMenu parts={parts ?? []} />

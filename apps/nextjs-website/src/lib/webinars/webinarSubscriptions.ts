@@ -8,11 +8,11 @@ import {
   DeleteItemCommand,
   DynamoDBClient,
   PutItemCommand,
-  QueryCommand,
+  QueryCommand
 } from '@aws-sdk/client-dynamodb';
 import {
   WebinarSubscriptionDynamodbCodec,
-  makeWebinarSubscriptionFromDynamodbItem,
+  makeWebinarSubscriptionFromDynamodbItem
 } from './dynamodb/codec';
 
 export type WebinarEnv = {
@@ -28,7 +28,7 @@ export type WebinarSubscription = {
 
 export const insertWebinarSubscription = (
   webinarId: string,
-  username: string,
+  username: string
 ) =>
   pipe(
     // take dynamoDBClient and nowDate properties from WebinarEnv
@@ -41,18 +41,18 @@ export const insertWebinarSubscription = (
         Item: {
           webinarId: { S: webinarId },
           username: { S: username },
-          createdAt: { S: createdAt.toISOString() },
-        },
+          createdAt: { S: createdAt.toISOString() }
+        }
       });
       return TE.tryCatch(() => dynamoDBClient.send(putCommand), E.toError);
     }),
     // do not return (i.e., discard) the result if the operation succeded
-    RTE.map(() => void 0),
+    RTE.map(() => void 0)
   );
 
 export const deleteWebinarSubscription = (
   webinarId: string,
-  username: string,
+  username: string
 ) =>
   pipe(
     R.ask<Pick<WebinarEnv, 'dynamoDBClient'>>(),
@@ -61,13 +61,13 @@ export const deleteWebinarSubscription = (
         TableName: 'WebinarSubscriptions',
         Key: {
           webinarId: { S: webinarId },
-          username: { S: username },
-        },
+          username: { S: username }
+        }
       });
       return TE.tryCatch(() => dynamoDBClient.send(deleteCommand), E.toError);
     }),
     // do not return (i.e., discard) the result if the operation succeded
-    RTE.map(() => void 0),
+    RTE.map(() => void 0)
   );
 
 export const listUserWebinarSubscriptions = (username: string) =>
@@ -78,8 +78,8 @@ export const listUserWebinarSubscriptions = (username: string) =>
         TableName: 'WebinarSubscriptions',
         KeyConditionExpression: 'username = :username',
         ExpressionAttributeValues: {
-          ':username': { S: username },
-        },
+          ':username': { S: username }
+        }
       });
       return TE.tryCatch(() => dynamoDBClient.send(queryCommand), E.toError);
     }),
@@ -92,7 +92,7 @@ export const listUserWebinarSubscriptions = (username: string) =>
         // turn Array<Either<_, _>> to Either<_, Array<_>>
         RA.sequence(E.Applicative),
         // map errors to error and dynamodb item to WebinarSubscription
-        E.bimap(E.toError, RA.map(makeWebinarSubscriptionFromDynamodbItem)),
-      ),
-    ),
+        E.bimap(E.toError, RA.map(makeWebinarSubscriptionFromDynamodbItem))
+      )
+    )
   );

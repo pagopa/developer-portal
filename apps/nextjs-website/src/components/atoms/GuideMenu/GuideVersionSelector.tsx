@@ -10,7 +10,7 @@ export type GuideVersionSelectorProps = {
 
 const GuideVersionSelector = ({
   versionName,
-  versions,
+  versions
 }: GuideVersionSelectorProps) => {
   const { palette } = useTheme();
   const t = useTranslations();
@@ -20,26 +20,26 @@ const GuideVersionSelector = ({
       label={`${t('shared.version')} ${versionName}`}
       items={versions.map((version) => ({
         href: version.path,
-        label: version.name,
+        label: version.name
       }))}
       icons={{ opened: <ExpandLess />, closed: <ExpandMore /> }}
       buttonStyle={{
         color: palette.action.active,
         display: 'flex',
         justifyContent: 'space-between',
-        padding: '16px 32px',
+        padding: '16px 32px'
       }}
       menuStyle={{
         style: {
           width: '347px',
           maxWidth: '347px',
           left: 0,
-          right: 0,
-        },
+          right: 0
+        }
       }}
       menuAnchorOrigin={{
         vertical: 'bottom',
-        horizontal: 'center',
+        horizontal: 'center'
       }}
     />
   );

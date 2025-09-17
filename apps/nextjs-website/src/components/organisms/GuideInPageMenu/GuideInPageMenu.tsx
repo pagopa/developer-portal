@@ -3,7 +3,7 @@ import React, { ReactNode } from 'react';
 import { parseInPageMenu } from 'gitbook-docs/parseInPageMenu';
 import {
   RenderingComponents,
-  renderInPageMenu,
+  renderInPageMenu
 } from 'gitbook-docs/renderInPageMenu';
 import Heading from '@/components/organisms/GuideInPageMenu/components/Heading';
 import { Typography, useTheme } from '@mui/material';
@@ -16,14 +16,14 @@ type GuideInPageMenuProps = {
 };
 
 const components: RenderingComponents<ReactNode> = {
-  Heading: Heading,
+  Heading: Heading
 };
 
 const GuideInPageMenu = ({
   inPageMenu,
   assetsPrefix,
   pagePath,
-  title,
+  title
 }: GuideInPageMenuProps) => {
   const { palette } = useTheme();
   const nodes = parseInPageMenu(inPageMenu, { assetsPrefix, pagePath });

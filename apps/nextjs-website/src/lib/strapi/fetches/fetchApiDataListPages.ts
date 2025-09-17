@@ -9,28 +9,28 @@ const makeStrapiApiDataListPagePopulate = () =>
       apiData: {
         populate: {
           apiRestDetail: {
-            populate: ['slug', 'specUrls'],
+            populate: ['slug', 'specUrls']
           },
           apiSoapDetail: {
-            populate: ['slug', 'repositoryUrl', 'dirName'],
+            populate: ['slug', 'repositoryUrl', 'dirName']
           },
           icon: { populate: '*' },
-          product: { populate: 'logo' },
-        },
+          product: { populate: 'logo' }
+        }
       },
       product: {
-        ...productRelationsPopulate,
+        ...productRelationsPopulate
       },
       bannerLinks: {
-        populate: ['icon'],
+        populate: ['icon']
       },
       seo: {
-        populate: '*,metaImage,metaSocial.image',
-      },
-    },
+        populate: '*,metaImage,metaSocial.image'
+      }
+    }
   });
 
 export const fetchApiDataListPages = fetchFromStrapi<StrapiApiDataListPages>(
   'api-data-list-pages',
-  makeStrapiApiDataListPagePopulate(),
+  makeStrapiApiDataListPagePopulate()
 );

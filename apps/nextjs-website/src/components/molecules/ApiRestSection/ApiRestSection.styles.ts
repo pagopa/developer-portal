@@ -8,25 +8,25 @@ export const getStyles = (palette: Palette) => {
       color: white,
       margin: 1,
       '& .MuiOutlinedInput-notchedOutline': {
-        borderColor: `${white} !important`, // !important is needed due to MUI that overwrite style via javascript
+        borderColor: `${white} !important` // !important is needed due to MUI that overwrite style via javascript
       },
 
       '& .MuiSelect-icon': {
-        color: white,
-      },
+        color: white
+      }
     },
     selectContainer: {
       background: palette.primary.dark,
       height: 72,
-      paddingRight: 2,
+      paddingRight: 2
     },
     soapContainer: {
       background: palette.primary.dark,
       color: white,
-      padding: '0 1rem',
+      padding: '0 1rem'
     },
     soapButton: {
-      cursor: 'pointer',
-    },
+      cursor: 'pointer'
+    }
   };
 };

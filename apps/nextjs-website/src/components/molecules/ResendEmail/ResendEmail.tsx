@@ -20,7 +20,7 @@ const ResendEmail = ({
   email,
   setSubmitting,
   isLoginCTA = false,
-  resendCode,
+  resendCode
 }: ResendEmailProps) => {
   const t = useTranslations('auth.resendEmail');
   const { palette } = useTheme();

@@ -12,5 +12,5 @@ export const makeChatbotEnv = (config: ChatbotConfig): ChatbotEnv => ({
   config: config,
   getAuthToken: async () =>
     Auth.currentSession().then((session) => session.getIdToken().getJwtToken()),
-  fetch: fetch,
+  fetch: fetch
 });

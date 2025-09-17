@@ -25,28 +25,28 @@ export const strapiReleaseNotes: StrapiReleaseNotes = {
               api_data_list_page: { data: undefined },
               guide_list_page: { data: { id: 0 } },
               tutorial_list_page: { data: { id: 0 } },
-              release_note: { data: { id: 0 } },
-            },
-          },
+              release_note: { data: { id: 0 } }
+            }
+          }
         },
         seo: {
           metaTitle: 'Release Notes SEO Title',
-          metaDescription: 'Release Notes SEO Description',
+          metaDescription: 'Release Notes SEO Description'
         },
         publishedAt: fixedDateIsoString,
         updatedAt: fixedDateIsoString,
-        createdAt: fixedDateIsoString,
-      },
-    },
+        createdAt: fixedDateIsoString
+      }
+    }
   ],
   meta: {
     pagination: {
       page: 1,
       pageSize: 25,
       pageCount: 1,
-      total: 1,
-    },
-  },
+      total: 1
+    }
+  }
 };
 
 export const expectedReleaseNotePageProps: ReleaseNotePageProps = {
@@ -59,9 +59,9 @@ export const expectedReleaseNotePageProps: ReleaseNotePageProps = {
         name: 'example.jpg',
         ext: '.jpg',
         mime: 'image/jpeg',
-        size: 123456,
+        size: 123456
       },
-      theme: 'light',
+      theme: 'light'
     },
     {
       title: 'Banner Link 2',
@@ -71,10 +71,10 @@ export const expectedReleaseNotePageProps: ReleaseNotePageProps = {
         name: 'example.jpg',
         ext: '.jpg',
         mime: 'image/jpeg',
-        size: 123456,
+        size: 123456
       },
-      theme: 'light',
-    },
+      theme: 'light'
+    }
   ],
   dirName: 'release-notes-dir',
   landingFile: 'release-notes.md',
@@ -92,15 +92,15 @@ export const expectedReleaseNotePageProps: ReleaseNotePageProps = {
           name: 'example.jpg',
           ext: '.jpg',
           mime: 'image/jpeg',
-          size: 123456,
+          size: 123456
         },
-        theme: 'light',
-      },
-    ],
+        theme: 'light'
+      }
+    ]
   },
   seo: {
     metaTitle: 'Release Notes SEO Title',
-    metaDescription: 'Release Notes SEO Description',
+    metaDescription: 'Release Notes SEO Description'
   },
-  title: 'Release Notes Title',
+  title: 'Release Notes Title'
 };

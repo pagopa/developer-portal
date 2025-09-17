@@ -12,7 +12,7 @@ type DesktopWebinarCategorySelectorProps = {
 const DesktopWebinarCategorySelector = ({
   selectedWebinarCategory,
   setSelectedWebinarCategory,
-  webinarCategories,
+  webinarCategories
 }: DesktopWebinarCategorySelectorProps) => {
   return (
     <Stack
@@ -27,7 +27,7 @@ const DesktopWebinarCategorySelector = ({
         alignItems: 'center',
         maxWidth: { xs: '100%', md: '100%' },
         textAlign: 'center',
-        width: '100%',
+        width: '100%'
       }}
     >
       {webinarCategories.map((category, index) => (

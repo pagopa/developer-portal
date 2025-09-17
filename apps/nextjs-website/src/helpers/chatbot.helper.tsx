@@ -5,12 +5,12 @@ import {
   sendChatbotFeedback,
   getChatbotSessionsHistory,
   getChatbotQueries,
-  deleteChatbotSession,
+  deleteChatbotSession
 } from '@/lib/chatbotApi';
 import {
   ChatbotQueriesCodec,
   PaginatedSessions,
-  Query,
+  Query
 } from '@/lib/chatbot/queries';
 import { pipe } from 'fp-ts/lib/function';
 import * as E from 'fp-ts/lib/Either';
@@ -45,8 +45,8 @@ function getChatQueriesFromLocalStorage(): Query[] {
       () => () => [],
       (result) => () => {
         return result;
-      },
-    ),
+      }
+    )
   )();
   return queries;
 }
@@ -58,7 +58,7 @@ function setChatQueriesInLocalStorage(queries: Query[]) {
     expireDate.setDate(new Date().getDate() + 1);
     localStorage.setItem(
       EXPIRE_CHAT_DATE_LOCAL_STORAGE_KEY,
-      expireDate.toISOString(),
+      expireDate.toISOString()
     );
   }
   const queriesStringify = JSON.stringify(queries);
@@ -73,7 +73,7 @@ export function flushChatQueriesFromLocalStorage() {
 function setFeedbackByQueryId(
   queries: Query[],
   queryId: string,
-  hasNegativeFeedback: boolean,
+  hasNegativeFeedback: boolean
 ) {
   return queries.map((query) => {
     if (query.id === queryId) {
@@ -94,7 +94,7 @@ export const useChatbot = (isUserAuthenticated: boolean) => {
   const [paginatedSessions, setPaginatedSessions] =
     useState<PaginatedSessions | null>(null);
   const [chatbotError, setChatbotError] = useState<ChatbotErrorsType | null>(
-    null,
+    null
   );
 
   useEffect(() => {
@@ -121,13 +121,13 @@ export const useChatbot = (isUserAuthenticated: boolean) => {
       queriedAt: queriedAt,
       badAnswer: false,
       answer: null,
-      createdAt: null,
+      createdAt: null
     };
     setHistoryQueries([...historyQueries, newQuery]);
 
     const newChatQueries = [
       ...previousQueries,
-      { ...newQuery, question: queryMessage },
+      { ...newQuery, question: queryMessage }
     ];
     setChatQueries(newChatQueries);
     setChatQueriesInLocalStorage(newChatQueries);
@@ -135,14 +135,14 @@ export const useChatbot = (isUserAuthenticated: boolean) => {
     sendChatbotQuery({
       question: queryMessage,
       queriedAt: queriedAt,
-      history: previousQueries.slice(-chatMaxHistoryMessages),
+      history: previousQueries.slice(-chatMaxHistoryMessages)
     })
       .then((response) => {
         setIsAwaitingResponse(false);
 
         const newChatQueries = [
           ...chatQueries,
-          { ...response, question: queryMessage },
+          { ...response, question: queryMessage }
         ];
         setChatQueries(newChatQueries);
         setChatQueriesInLocalStorage(newChatQueries);
@@ -163,7 +163,7 @@ export const useChatbot = (isUserAuthenticated: boolean) => {
     queryId: string,
     user_response_relevancy: number | null,
     user_faithfullness: number | null,
-    user_comment: string,
+    user_comment: string
   ) => {
     sendChatbotFeedback(
       hasNegativeFeedback,
@@ -171,12 +171,12 @@ export const useChatbot = (isUserAuthenticated: boolean) => {
       queryId,
       user_response_relevancy,
       user_faithfullness,
-      user_comment,
+      user_comment
     );
     const updatedChatQueries = setFeedbackByQueryId(
       chatQueries,
       queryId,
-      hasNegativeFeedback,
+      hasNegativeFeedback
     );
     setChatQueries(updatedChatQueries);
     setChatQueriesInLocalStorage(updatedChatQueries);
@@ -184,7 +184,7 @@ export const useChatbot = (isUserAuthenticated: boolean) => {
     const updatedHistoryQueries = setFeedbackByQueryId(
       historyQueries,
       queryId,
-      hasNegativeFeedback,
+      hasNegativeFeedback
     );
     setHistoryQueries(updatedHistoryQueries);
     return null;
@@ -214,6 +214,6 @@ export const useChatbot = (isUserAuthenticated: boolean) => {
     getSession,
     paginatedSessionsLoading,
     deleteChatbotSession,
-    chatbotError,
+    chatbotError
   };
 };

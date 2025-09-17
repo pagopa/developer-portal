@@ -7,23 +7,23 @@ export const strapiWebinarCategories: StrapiWebinarCategories = {
       id: 1,
       attributes: {
         name: 'Payments',
-        icon: { data: mediaJpeg() },
-      },
+        icon: { data: mediaJpeg() }
+      }
     },
     {
       id: 2,
       attributes: {
         name: 'Onboarding',
-        icon: { data: mediaJpeg() },
-      },
-    },
+        icon: { data: mediaJpeg() }
+      }
+    }
   ],
   meta: {
     pagination: {
       page: 1,
       pageSize: 25,
       pageCount: 1,
-      total: 2,
-    },
-  },
+      total: 2
+    }
+  }
 };

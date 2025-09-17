@@ -2,7 +2,7 @@ import { pipe } from 'fp-ts/lib/function';
 import {
   ChatbotQueriesCodec,
   QueryCodec,
-  QueryInput,
+  QueryInput
 } from '@/lib/chatbot/queries';
 import { ChatbotEnv } from '@/lib/chatbot/chatbotEnv';
 import * as E from 'fp-ts/lib/Either';
@@ -24,10 +24,10 @@ export const postQuery = (input: QueryInput) =>
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
-                Authorization: `Bearer ${authToken}`,
+                Authorization: `Bearer ${authToken}`
               },
-              body: JSON.stringify(input),
-            }),
+              body: JSON.stringify(input)
+            })
         ),
         TE.chain((response) => {
           if (response.status === 200) {
@@ -40,16 +40,16 @@ export const postQuery = (input: QueryInput) =>
           // decode the response with the given codec
           pipe(
             QueryCodec.decode(json),
-            E.mapLeft((errors) => new Error(PR.failure(errors).join('\n'))),
-          ),
+            E.mapLeft((errors) => new Error(PR.failure(errors).join('\n')))
+          )
         ),
         TE.fold(
           // eslint-disable-next-line functional/no-promise-reject
           (errors) => () => Promise.reject(errors),
-          (result) => () => Promise.resolve(result),
-        ),
-      )(),
-    ),
+          (result) => () => Promise.resolve(result)
+        )
+      )()
+    )
   );
 
 export const getQueries = (query: string) =>
@@ -65,9 +65,9 @@ export const getQueries = (query: string) =>
               method: 'GET',
               headers: {
                 'Content-Type': 'application/json',
-                Authorization: `Bearer ${authToken}`,
-              },
-            }),
+                Authorization: `Bearer ${authToken}`
+              }
+            })
         ),
         TE.chain((response) => {
           if (response.status === 200) {
@@ -80,16 +80,16 @@ export const getQueries = (query: string) =>
           // decode the response with the given codec
           pipe(
             ChatbotQueriesCodec.decode(json),
-            E.mapLeft((errors) => new Error(PR.failure(errors).join('\n'))),
-          ),
+            E.mapLeft((errors) => new Error(PR.failure(errors).join('\n')))
+          )
         ),
         TE.fold(
           // eslint-disable-next-line functional/no-promise-reject
           (errors) => () => Promise.reject(errors),
-          (result) => () => Promise.resolve(result),
-        ),
-      )(),
-    ),
+          (result) => () => Promise.resolve(result)
+        )
+      )()
+    )
   );
 
 export const patchFeedback = (
@@ -98,7 +98,7 @@ export const patchFeedback = (
   queryId: string,
   user_response_relevancy: number | null,
   user_faithfullness: number | null,
-  user_comment: string,
+  user_comment: string
 ) =>
   pipe(
     R.ask<ChatbotEnv>(),
@@ -112,17 +112,17 @@ export const patchFeedback = (
               method: 'PATCH',
               headers: {
                 'Content-Type': 'application/json',
-                Authorization: `Bearer ${authToken}`,
+                Authorization: `Bearer ${authToken}`
               },
               body: JSON.stringify({
                 badAnswer: badAnswer,
                 feedback: {
                   user_response_relevancy: user_response_relevancy,
                   user_faithfullness: user_faithfullness,
-                  user_comment: user_comment,
-                },
-              }),
-            }),
+                  user_comment: user_comment
+                }
+              })
+            })
         ),
         TE.chain((response) => {
           if (response.status === 200) {
@@ -135,14 +135,14 @@ export const patchFeedback = (
           // decode the response with the given codec
           pipe(
             QueryCodec.decode(json),
-            E.mapLeft((errors) => new Error(PR.failure(errors).join('\n'))),
-          ),
+            E.mapLeft((errors) => new Error(PR.failure(errors).join('\n')))
+          )
         ),
         TE.fold(
           // eslint-disable-next-line functional/no-promise-reject
           (errors) => () => Promise.reject(errors),
-          (result) => () => Promise.resolve(result),
-        ),
-      )(),
-    ),
+          (result) => () => Promise.resolve(result)
+        )
+      )()
+    )
   );

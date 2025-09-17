@@ -25,8 +25,8 @@ const BlocksRendererClient = ({
   imageStyle = {
     height: 'auto',
     width: '100%',
-    maxWidth: '820px',
-  },
+    maxWidth: '820px'
+  }
 }: BlocksRendererClientProps) => {
   const { palette } = useTheme();
 
@@ -45,7 +45,7 @@ const BlocksRendererClient = ({
             sx={{
               color: palette.primary.main,
               textDecoration: 'none',
-              fontWeight: 600,
+              fontWeight: 600
             }}
           >
             {children}
@@ -55,7 +55,7 @@ const BlocksRendererClient = ({
           <Image
             style={{
               marginBottom: 40,
-              ...imageStyle,
+              ...imageStyle
             }}
             src={image.url}
             width={image.width}
@@ -78,7 +78,7 @@ const BlocksRendererClient = ({
             id={computeId('blockRenderer', children)}
             style={{
               marginTop: `-${scrollOffset}px`,
-              paddingTop: `${scrollOffset}px`,
+              paddingTop: `${scrollOffset}px`
             }}
           >
             <Typography marginY={4} variant={`h${level}`} color={textColor}>
@@ -115,10 +115,10 @@ const BlocksRendererClient = ({
           return (
             <CodeBlockPart code={codeString || ''} showLineNumbers={false} />
           );
-        },
+        }
       }}
       modifiers={{
-        code: ({ children }) => <code>{children}</code>,
+        code: ({ children }) => <code>{children}</code>
       }}
     />
   );

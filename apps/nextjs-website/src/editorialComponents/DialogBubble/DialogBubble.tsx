@@ -3,7 +3,7 @@ import {
   Stack,
   type StackProps,
   useTheme,
-  type Theme,
+  type Theme
 } from '@mui/material';
 import { type ReactNode } from 'react';
 
@@ -35,7 +35,7 @@ const useStyles = (mui: Theme) => ({
     marginTop: '30px',
     padding: mui.spacing(2),
     direction: 'rtl',
-    textAlign: 'left',
+    textAlign: 'left'
   },
   bubblePointer: {
     display: 'block',
@@ -46,7 +46,7 @@ const useStyles = (mui: Theme) => ({
     border: '0.9em solid transparent',
     borderTopColor: mui.palette.primary.main,
     bottom: 0,
-    transform: 'translateY(1.2em)',
+    transform: 'translateY(1.2em)'
   },
-  bubble: { transform: 'rotate(180deg)' },
+  bubble: { transform: 'rotate(180deg)' }
 });

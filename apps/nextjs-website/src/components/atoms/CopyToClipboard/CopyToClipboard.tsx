@@ -19,7 +19,7 @@ const CopyToClipboard = ({
   copyColor,
   tooltipDuration = 2000,
   iconSize = '24px',
-  tooltipPlacement = 'top',
+  tooltipPlacement = 'top'
 }: CopyToClipboardProps) => {
   const [copied, setCopied] = useState(false);
 
@@ -31,20 +31,20 @@ const CopyToClipboard = ({
 
   const size = {
     height: iconSize,
-    width: iconSize,
+    width: iconSize
   };
 
   return (
     <IconButton
       onClick={onCopyToClipboard}
       sx={{
-        cursor: 'pointer',
+        cursor: 'pointer'
       }}
     >
       {copied ? (
         <Tooltip
           sx={{
-            display: 'block',
+            display: 'block'
           }}
           open={true}
           placement={tooltipPlacement}
@@ -57,7 +57,7 @@ const CopyToClipboard = ({
         <ContentCopy
           sx={{
             color: copyColor,
-            ...size,
+            ...size
           }}
         />
       )}

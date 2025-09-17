@@ -1,6 +1,6 @@
 import {
   makeWebinarCategoriesProps,
-  makeWebinarCategoryProps,
+  makeWebinarCategoryProps
 } from '@/lib/strapi/makeProps/makeWebinarCategories';
 import { strapiWebinarCategories } from './fixtures/webinarCategory';
 import { StrapiWebinarCategory } from '../types/webinarCategory';
@@ -12,11 +12,11 @@ describe('makeWebinarCategoriesProps', () => {
     expect(result).toHaveLength(2);
     expect(result[0]).toEqual({
       name: 'Payments',
-      icon: { data: mediaJpeg() },
+      icon: { data: mediaJpeg() }
     });
     expect(result[1]).toEqual({
       name: 'Onboarding',
-      icon: { data: mediaJpeg() },
+      icon: { data: mediaJpeg() }
     });
   });
 
@@ -33,7 +33,7 @@ describe('makeWebinarCategoryProps', () => {
     const result = makeWebinarCategoryProps(category);
     expect(result).toEqual({
       name: 'Payments',
-      icon: { data: mediaJpeg() },
+      icon: { data: mediaJpeg() }
     });
   });
 
@@ -42,14 +42,14 @@ describe('makeWebinarCategoryProps', () => {
       ...strapiWebinarCategories.data[0],
       attributes: {
         ...strapiWebinarCategories.data[0].attributes,
-        icon: undefined as any,
-      },
+        icon: undefined as any
+      }
     } satisfies StrapiWebinarCategory;
 
     const result = makeWebinarCategoryProps(category);
     expect(result).toEqual({
       name: 'Payments',
-      icon: undefined,
+      icon: undefined
     });
   });
 });

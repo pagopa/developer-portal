@@ -5,7 +5,7 @@ import { Part } from '@/lib/types/part';
 import PartRenderer from '@/components/molecules/PartRenderer/PartRenderer';
 import { useTranslations } from 'next-intl';
 import ProductsShowcase, {
-  ProductsShowcaseProps,
+  ProductsShowcaseProps
 } from '@/components/organisms/ProductsShowcase/ProductsShowcase';
 import ProductBreadcrumbs from '@/components/atoms/ProductBreadcrumbs/ProductBreadcrumbs';
 import { pageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
@@ -30,7 +30,7 @@ const CaseHistoryPageTemplate = ({
   title,
   description,
   products,
-  parts,
+  parts
 }: CaseHistoryPageTemplateProps) => {
   const { palette } = useTheme();
   const t = useTranslations();
@@ -44,7 +44,7 @@ const CaseHistoryPageTemplate = ({
         title: product.name,
         text: product.description,
         href: `/${product.slug}/overview`,
-        logoUrl: product.logo?.url,
+        logoUrl: product.logo?.url
       };
     })
     .filter(Boolean) as ProductsShowcaseProps['cards'];
@@ -58,9 +58,9 @@ const CaseHistoryPageTemplate = ({
               ...pageToBreadcrumbs('solutions', [
                 {
                   name: title,
-                  path: slug,
-                },
-              ]),
+                  path: slug
+                }
+              ])
             ]}
           />
         </Box>
@@ -88,7 +88,7 @@ const CaseHistoryPageTemplate = ({
           <Box key={index}>
             <PartRenderer part={part} />
           </Box>
-        ),
+        )
       )}
       {cards.length > 0 && (
         <ProductsShowcase

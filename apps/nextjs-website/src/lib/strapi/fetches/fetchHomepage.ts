@@ -7,16 +7,16 @@ const makeStrapiHomepagePopulate = () =>
   qs.stringify({
     populate: {
       comingsoonDocumentation: {
-        populate: ['links'],
+        populate: ['links']
       },
       heroSlider: {
-        populate: ['backgroundImage', 'callToAction.link'],
+        populate: ['backgroundImage', 'callToAction.link']
       },
       newsShowcase: {
-        populate: ['link', 'items.image', 'items.link'],
+        populate: ['link', 'items.image', 'items.link']
       },
       productsShowcase: {
-        populate: ['products.logo'],
+        populate: ['products.logo']
       },
       webinars: webinarPopulate,
       ecosystem: {
@@ -35,16 +35,16 @@ const makeStrapiHomepagePopulate = () =>
           'products.tutorial_list_page',
           'solutions.icon',
           'solutions.product.logo',
-          'solutionsCta.link',
-        ],
+          'solutionsCta.link'
+        ]
       },
       seo: {
-        populate: '*,metaImage,metaSocial.image',
-      },
-    },
+        populate: '*,metaImage,metaSocial.image'
+      }
+    }
   });
 
 export const fetchHomepage = fetchFromStrapi<StrapiHomepage>(
   'homepage',
-  makeStrapiHomepagePopulate(),
+  makeStrapiHomepagePopulate()
 );

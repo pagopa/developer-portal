@@ -19,7 +19,7 @@ const Stats = ({
   items,
   statsSource,
   maxWidth = 150,
-  useDarkTheme = false,
+  useDarkTheme = false
 }: StatsProps) => {
   const { palette } = useTheme();
 
@@ -36,8 +36,8 @@ const Stats = ({
           paddingTop: { xs: '2.2rem', sm: '4.688rem' },
           paddingBottom: {
             xs: statsSource ? '2.2rem' : '2.6rem',
-            sm: statsSource ? '2.5rem' : '6.5rem',
-          },
+            sm: statsSource ? '2.5rem' : '6.5rem'
+          }
         }}
       >
         <Stack

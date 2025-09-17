@@ -7,7 +7,7 @@ import {
   CardMedia,
   Stack,
   Typography,
-  useTheme,
+  useTheme
 } from '@mui/material';
 import { UnorderedList } from '@/components/atoms/UnorderedList/UnorderedList';
 import LinkButton from '@/components/atoms/LinkButton/LinkButton';
@@ -41,7 +41,7 @@ export const GuideCard: FC<GuideCardProps> = ({
   layout = 'center',
   link,
   mobileImagePath,
-  title,
+  title
 }: GuideCardProps) => {
   const { spacing } = useTheme();
   const t = useTranslations();
@@ -49,7 +49,7 @@ export const GuideCard: FC<GuideCardProps> = ({
   const flexLayoutMap = {
     center: 'center',
     right: 'flex-end',
-    left: 'flex-start',
+    left: 'flex-start'
   };
 
   return (
@@ -66,14 +66,14 @@ export const GuideCard: FC<GuideCardProps> = ({
           display: 'flex',
           flexDirection: { xs: 'column-reverse', lg: 'row' },
           marginBottom: 10,
-          width: '100%',
+          width: '100%'
         }}
       >
         <Box
           sx={{
             display: 'flex',
             flexDirection: 'column',
-            width: { xs: '100%', lg: '50%' },
+            width: { xs: '100%', lg: '50%' }
           }}
         >
           <CardContent
@@ -84,8 +84,8 @@ export const GuideCard: FC<GuideCardProps> = ({
               justifyContent: 'space-between',
               padding: '40px',
               '&:last-child': {
-                paddingBottom: '40px',
-              },
+                paddingBottom: '40px'
+              }
             }}
           >
             <Box>
@@ -111,7 +111,7 @@ export const GuideCard: FC<GuideCardProps> = ({
         <CardMedia
           sx={{
             display: { xs: 'block', lg: 'none' },
-            width: { xs: '100%', lg: '50%' },
+            width: { xs: '100%', lg: '50%' }
           }}
           component='img'
           image={mobileImagePath}
@@ -120,7 +120,7 @@ export const GuideCard: FC<GuideCardProps> = ({
         <CardMedia
           sx={{
             display: { xs: 'none', lg: 'block' },
-            width: { xs: '100%', lg: '50%' },
+            width: { xs: '100%', lg: '50%' }
           }}
           component='img'
           image={imagePath}

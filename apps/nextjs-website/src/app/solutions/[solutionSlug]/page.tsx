@@ -1,6 +1,6 @@
 import {
   makeMetadata,
-  makeMetadataFromStrapi,
+  makeMetadataFromStrapi
 } from '@/helpers/metadata.helpers';
 import { Metadata } from 'next';
 import { baseUrl } from '@/config';
@@ -18,12 +18,12 @@ export const revalidate = 300;
 export async function generateStaticParams() {
   const solutions = await getSolutionsProps();
   return [...solutions].map(({ slug }) => ({
-    solutionSlug: slug,
+    solutionSlug: slug
   }));
 }
 
 export async function generateMetadata({
-  params,
+  params
 }: {
   params: Promise<Params>;
 }): Promise<Metadata> {
@@ -37,7 +37,7 @@ export async function generateMetadata({
   return makeMetadata({
     title: solution.title,
     url: `${baseUrl}/solutions/${solution.slug}`,
-    locale: 'it_IT',
+    locale: 'it_IT'
   });
 }
 
@@ -49,14 +49,14 @@ const Page = async ({ params }: { params: Promise<Params> }) => {
     breadcrumbsItems: [
       {
         name: 'Solutions',
-        item: getItemFromPaths(['solutions']),
+        item: getItemFromPaths(['solutions'])
       },
       {
         name: solution.seo?.metaTitle,
-        item: getItemFromPaths(['solutions', solution.slug]),
-      },
+        item: getItemFromPaths(['solutions', solution.slug])
+      }
     ],
-    seo: solution.seo,
+    seo: solution.seo
   });
 
   return (

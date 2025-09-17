@@ -21,7 +21,7 @@ const TermsOfServiceTemplate = () => {
             // To ensure external settings are loaded, use the Initialized promise:
             (window as any).OneTrust.NoticeApi.Initialized.then(() => {
               (window as any).OneTrust.NoticeApi.LoadNotices([
-                'https://privacyportalde-cdn.onetrust.com/77f17844-04c3-4969-a11d-462ee77acbe1/privacy-notices/30a52037-d537-4347-9dfc-cfc0cc7d5d13.json',
+                'https://privacyportalde-cdn.onetrust.com/77f17844-04c3-4969-a11d-462ee77acbe1/privacy-notices/30a52037-d537-4347-9dfc-cfc0cc7d5d13.json'
               ]);
             });
           }

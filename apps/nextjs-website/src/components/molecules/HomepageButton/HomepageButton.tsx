@@ -13,7 +13,7 @@ type HomepageButtonProps = {
 const HomepageButton = ({
   title,
   boldTitle,
-  href = '/',
+  href = '/'
 }: HomepageButtonProps) => {
   const completeTitle = [title, boldTitle].join(' ');
   return (

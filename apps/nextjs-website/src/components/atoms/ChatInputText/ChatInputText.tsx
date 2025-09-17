@@ -5,7 +5,7 @@ import {
   InputBase,
   Theme,
   useMediaQuery,
-  useTheme,
+  useTheme
 } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import { ChangeEvent, FormEvent, KeyboardEvent, useState } from 'react';
@@ -28,7 +28,7 @@ const ChatInputText = ({ onSubmit, sendDisabled }: ChatInputTextProps) => {
     setMessage(
       event.target.value
         .slice(0, MESSAGE_MAX_CHARS)
-        .replace(/(\r\n|\n|\r)/gm, ''),
+        .replace(/(\r\n|\n|\r)/gm, '')
     );
   };
 
@@ -63,7 +63,7 @@ const ChatInputText = ({ onSubmit, sendDisabled }: ChatInputTextProps) => {
         paddingY: 2,
         borderTop: '3px solid',
         borderTopColor: message.length ? palette.primary.main : disabledColor,
-        backgroundColor: palette.background.paper,
+        backgroundColor: palette.background.paper
       }}
     >
       <InputBase
@@ -80,7 +80,7 @@ const ChatInputText = ({ onSubmit, sendDisabled }: ChatInputTextProps) => {
             sx={{
               color: palette.action.disabled,
               fontSize: '0.875rem',
-              marginLeft: '0.5rem',
+              marginLeft: '0.5rem'
             }}
           >
             {`${message.length}/${MESSAGE_MAX_CHARS}`}
@@ -94,7 +94,7 @@ const ChatInputText = ({ onSubmit, sendDisabled }: ChatInputTextProps) => {
           borderRadius: 2,
           borderStyle: 'solid',
           borderColor: message.length ? palette.primary.main : disabledColor,
-          fontSize: '0.875rem',
+          fontSize: '0.875rem'
         }}
       />
       <IconButton
@@ -104,13 +104,13 @@ const ChatInputText = ({ onSubmit, sendDisabled }: ChatInputTextProps) => {
         sx={{
           color: palette.primary.main,
           cursor: 'pointer',
-          marginLeft: 0.5,
+          marginLeft: 0.5
         }}
       >
         <Send
           sx={{
             height: '1.5rem',
-            width: '1.5rem',
+            width: '1.5rem'
           }}
         />
       </IconButton>

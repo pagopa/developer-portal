@@ -7,7 +7,7 @@ import Table, {
   TableD,
   TableH,
   TableHead,
-  TableR,
+  TableR
 } from './components/Table';
 import Heading from './components/Heading';
 import Paragraph from './components/Paragraph';
@@ -20,7 +20,7 @@ import File from './components/File';
 import Image from './components/Image';
 import Expandable, {
   ExpandableDetails,
-  ExpandableSummary,
+  ExpandableSummary
 } from './components/Expandable';
 import Tabs from './components/Tabs';
 import Quote from './components/Quote';
@@ -70,7 +70,7 @@ const components: RenderingComponents<ReactNode> = {
   Card: Card,
   CardItem: CardItem,
   PageLink: PageLink,
-  Br: () => <br />,
+  Br: () => <br />
 };
 
 const GitBookContent = ({ content, config }: GitBookContentProps) =>

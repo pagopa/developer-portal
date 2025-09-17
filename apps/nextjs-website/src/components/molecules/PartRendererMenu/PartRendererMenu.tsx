@@ -64,14 +64,14 @@ const PartRendererMenu = (props: PartRendererMenuProps): ReactNode | null => {
                 display: 'block',
                 fontFamily: 'Titillium Web',
                 marginBottom: '12px',
-                textDecoration: 'none',
+                textDecoration: 'none'
               }}
             >
               <Typography
                 sx={{
                   color: palette.text.secondary,
                   fontSize: getFontSizeByLevel(menuItem.level),
-                  fontWeight: 400,
+                  fontWeight: 400
                 }}
               >
                 {menuItem.title}
@@ -105,8 +105,8 @@ const PartRendererMenu = (props: PartRendererMenuProps): ReactNode | null => {
     <Box
       sx={{
         '& > br': {
-          display: 'none',
-        },
+          display: 'none'
+        }
       }}
     >
       <Typography

@@ -5,7 +5,7 @@ import {
   CircularProgress,
   Typography,
   useMediaQuery,
-  useTheme,
+  useTheme
 } from '@mui/material';
 import CheckIcon from '@mui/icons-material/Check';
 import { useTranslations } from 'next-intl';
@@ -28,7 +28,7 @@ const SubscribeButton = ({
   onSubscribe,
   onCancelSubscription,
   subscribeLabel = 'default',
-  textColor = 'white',
+  textColor = 'white'
 }: SubscribeButtonProps) => {
   const t = useTranslations('shared');
   const { palette } = useTheme();
@@ -51,8 +51,8 @@ const SubscribeButton = ({
             }
             sx={{
               '&:disabled': {
-                backgroundColor: palette.success.dark,
-              },
+                backgroundColor: palette.success.dark
+              }
             }}
           >
             <Typography
@@ -60,7 +60,7 @@ const SubscribeButton = ({
               fontWeight={'700'}
               fontSize={'16px'}
               sx={{
-                color: 'white',
+                color: 'white'
               }}
             >
               {t('subscribeButton.subscribedLabel')}
@@ -74,7 +74,7 @@ const SubscribeButton = ({
                 <CircularProgress
                   size={24}
                   sx={{
-                    color: 'white',
+                    color: 'white'
                   }}
                 />
               )
@@ -93,7 +93,7 @@ const SubscribeButton = ({
               <CircularProgress
                 size={24}
                 sx={{
-                  color: palette.text.disabled,
+                  color: palette.text.disabled
                 }}
               />
             )

@@ -17,7 +17,7 @@ enum State {
   loading = 'loading',
   error = 'error',
   errorLink = 'errorLink',
-  success = 'success',
+  success = 'success'
 }
 
 const ChangePasswordContent = () => {
@@ -30,7 +30,7 @@ const ChangePasswordContent = () => {
   const [state, setState] = useState<State>(State.loading);
   const [submitting, setSubmitting] = useState(false);
   const [resetPasswordSteps, setResetPasswordSteps] = useState(
-    ResetPasswordSteps.CHANGE_PASSWORD,
+    ResetPasswordSteps.CHANGE_PASSWORD
   );
 
   const onPasswordChanged = useCallback(
@@ -47,7 +47,7 @@ const ChangePasswordContent = () => {
           setSubmitting(false);
         });
     },
-    [code, username],
+    [code, username]
   );
 
   useEffect(() => {

@@ -25,14 +25,14 @@ const ProductsShowcase = ({
   verticalPadding = 5,
   backgroundColor,
   cards,
-  cardSize,
+  cardSize
 }: ProductsShowcaseProps) => {
   const theme = useTheme();
   return (
     <Box
       sx={{
         backgroundColor: backgroundColor || theme.palette.grey[50],
-        marginY: verticalPadding,
+        marginY: verticalPadding
       }}
     >
       <SectionTitle margin={'0 0 1.75rem 0'} title={title} />
@@ -44,7 +44,7 @@ const ProductsShowcase = ({
           text: card.text,
           href: card.href,
           icon: card.logoUrl,
-          useSrc: true,
+          useSrc: true
         }))}
       />
     </Box>

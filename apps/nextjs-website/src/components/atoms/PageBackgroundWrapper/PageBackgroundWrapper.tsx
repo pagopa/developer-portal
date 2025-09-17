@@ -18,7 +18,7 @@ const PageBackgroundWrapper = ({ children }: PageBackgroundWrapperProps) => {
         backgroundImage: 'url(/images/hero.jpg)',
         backgroundRepeat: 'no-repeat',
         backgroundSize: 'cover',
-        backgroundPosition: 'bottom right',
+        backgroundPosition: 'bottom right'
       }}
     >
       {children}

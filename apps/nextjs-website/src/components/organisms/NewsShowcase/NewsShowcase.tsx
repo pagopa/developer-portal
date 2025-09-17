@@ -42,7 +42,7 @@ const NewsShowcase = ({
   marginTop,
   items,
   newsMarginTop = 2,
-  backgroundVariant = 'white',
+  backgroundVariant = 'white'
 }: NewsShowcaseProps) => {
   const theme = useTheme();
   const t = useTranslations();
@@ -50,24 +50,24 @@ const NewsShowcase = ({
   const backgroundColor = useMemo(
     () => ({
       white: theme.palette.background.paper,
-      lightGrey: theme.palette.grey[50],
+      lightGrey: theme.palette.grey[50]
     }),
-    [theme],
+    [theme]
   );
 
   const sectionMargin = useMemo(
     () => ({
       white: 0,
-      lightGrey: '4rem 0 0',
+      lightGrey: '4rem 0 0'
     }),
-    [],
+    []
   );
 
   return (
     <Box
       sx={{
         marginTop: marginTop,
-        backgroundColor: backgroundColor[backgroundVariant],
+        backgroundColor: backgroundColor[backgroundVariant]
       }}
     >
       <SectionTitle
@@ -85,16 +85,16 @@ const NewsShowcase = ({
               : undefined,
             title: item.title,
             date: {
-              date: item.publishedAt,
+              date: item.publishedAt
             },
             label: item.label,
             href: { link: item.link.url, label: item.link.text },
             img: item.image
               ? {
                   alt: (item.image && item.image.alternativeText) || '',
-                  src: (item.image && item.image.url) || '/images/news.png',
+                  src: (item.image && item.image.url) || '/images/news.png'
                 }
-              : undefined,
+              : undefined
           }))}
         />
       </Box>

@@ -5,7 +5,7 @@ import _ from 'lodash';
 export type WebinarsProps = readonly Webinar[];
 
 export const makeWebinarProps = (
-  strapiWebinar: StrapiWebinar,
+  strapiWebinar: StrapiWebinar
 ): Webinar | null => {
   // eslint-disable-next-line functional/no-try-statements
   try {
@@ -15,7 +15,7 @@ export const makeWebinarProps = (
         strapiWebinar.attributes.webinarSpeakers.data.length > 0
           ? strapiWebinar.attributes.webinarSpeakers.data.map((speaker) => ({
               ...speaker.attributes,
-              avatar: speaker.attributes.avatar?.data?.attributes,
+              avatar: speaker.attributes.avatar?.data?.attributes
             }))
           : undefined,
       questionsAndAnswers: strapiWebinar.attributes.questionsAndAnswers?.length
@@ -30,7 +30,7 @@ export const makeWebinarProps = (
               ...resource,
               subtitle: resource.subtitle,
               description: resource.description,
-              image: resource.image?.data?.attributes,
+              image: resource.image?.data?.attributes
             })),
             downloadableDocuments: (
               strapiWebinar.attributes.relatedResources.downloadableDocuments
@@ -39,8 +39,8 @@ export const makeWebinarProps = (
               title: attributes.caption || attributes.name,
               downloadLink: attributes.url,
               size: attributes.size,
-              extension: attributes.ext.replace('.', '').toUpperCase(),
-            })),
+              extension: attributes.ext.replace('.', '').toUpperCase()
+            }))
           }
         : undefined,
       startDateTime: strapiWebinar.attributes.startDatetime,
@@ -51,7 +51,7 @@ export const makeWebinarProps = (
       webinarCategory:
         strapiWebinar.attributes.webinarCategory?.data?.attributes,
       headerImage: strapiWebinar.attributes.headerImage?.data?.attributes,
-      updatedAt: strapiWebinar.attributes.updatedAt,
+      updatedAt: strapiWebinar.attributes.updatedAt
     } satisfies Webinar;
   } catch (error) {
     // eslint-disable-next-line functional/no-expression-statements
@@ -61,9 +61,9 @@ export const makeWebinarProps = (
 };
 
 export function makeWebinarsProps(
-  strapiWebinars: StrapiWebinars,
+  strapiWebinars: StrapiWebinars
 ): WebinarsProps {
   return _.compact([
-    ...strapiWebinars.data.map((webinar) => makeWebinarProps(webinar)),
+    ...strapiWebinars.data.map((webinar) => makeWebinarProps(webinar))
   ]);
 }

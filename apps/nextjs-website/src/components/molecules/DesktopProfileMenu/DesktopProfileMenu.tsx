@@ -14,7 +14,7 @@ type DesktopProfileMenuProps = {
 
 const DesktopProfileMenu = ({
   currentPathname,
-  userFullName,
+  userFullName
 }: DesktopProfileMenuProps) => {
   const { palette } = useTheme();
   const t = useTranslations('profile');
@@ -25,7 +25,7 @@ const DesktopProfileMenu = ({
         backgroundColor: palette.grey[50],
         display: { xs: 'none', md: 'flex' },
         position: 'relative',
-        minHeight: '60vh',
+        minHeight: '60vh'
       }}
     >
       <Box
@@ -38,7 +38,7 @@ const DesktopProfileMenu = ({
           position: 'sticky',
           overflowY: 'auto',
           top: 50,
-          scrollbarWidth: 'thin',
+          scrollbarWidth: 'thin'
         }}
       >
         <Box sx={{ marginBottom: 8 }}>
@@ -47,7 +47,7 @@ const DesktopProfileMenu = ({
             noWrap
             sx={{
               padding: '0px 32px',
-              verticalAlign: 'middle',
+              verticalAlign: 'middle'
             }}
           >
             {userFullName}
@@ -76,14 +76,14 @@ const DesktopProfileMenu = ({
                     padding: '10px 32px',
                     cursor: 'pointer',
                     fontWeight: 600,
-                    color: isCurrent ? palette.primary.dark : 'inherit',
+                    color: isCurrent ? palette.primary.dark : 'inherit'
                   }}
                 >
                   {t(label)}
                 </Box>
               </MuiLink>
             );
-          },
+          }
         )}
       </Box>
     </Box>

@@ -12,8 +12,8 @@ const DEFAULT_DATE_FORMAT = {
   locale: defaultLocale,
   options: {
     timeStyle: 'short',
-    hourCycle: 'h23',
-  },
+    hourCycle: 'h23'
+  }
 } satisfies DateFormatOptions;
 
 type ChatMessageProps = {
@@ -27,7 +27,7 @@ const ChatHistoryMessage = ({
   text,
   timestamp,
   isQuestion,
-  sender,
+  sender
 }: ChatMessageProps) => {
   const { palette } = useTheme();
   const textColor = palette.text.primary;
@@ -38,7 +38,7 @@ const ChatHistoryMessage = ({
     timestamp &&
     new Intl.DateTimeFormat(
       DEFAULT_DATE_FORMAT.locale,
-      DEFAULT_DATE_FORMAT.options,
+      DEFAULT_DATE_FORMAT.options
     ).format(new Date(timestamp));
 
   return (
@@ -73,7 +73,7 @@ const ChatHistoryMessage = ({
           fontWeight={600}
           sx={{
             fontSize: { xs: '1rem', xl: '1.125rem' },
-            overflowWrap: 'break-word',
+            overflowWrap: 'break-word'
           }}
         >
           {sender}
@@ -97,7 +97,7 @@ const ChatHistoryMessage = ({
         width={'100%'}
         sx={{
           fontSize: { xs: '0.875rem', xl: '1rem' },
-          overflowWrap: 'break-word',
+          overflowWrap: 'break-word'
         }}
       >
         {parsedChatMessage}

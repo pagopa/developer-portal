@@ -14,7 +14,7 @@ export const theme = createTheme(muiItaliaTheme);
 // https://github.com/emotion-js/emotion/issues/2928#issuecomment-1319747902
 export default function ThemeRegistry({
   options,
-  children,
+  children
 }: {
   options: Options;
   children: ReactNode;
@@ -58,7 +58,7 @@ export default function ThemeRegistry({
         key={cache.key}
         data-emotion={`${cache.key} ${names.join(' ')}`}
         dangerouslySetInnerHTML={{
-          __html: styles,
+          __html: styles
         }}
       />
     );

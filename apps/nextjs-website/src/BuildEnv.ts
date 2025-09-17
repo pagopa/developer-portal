@@ -9,5 +9,5 @@ export type BuildEnv = {
 // given environment variables produce an BuildEnv
 export const makeBuildEnv = (config: BuildConfig): BuildEnv => ({
   config,
-  fetchFun: fetch,
+  fetchFun: fetch
 });

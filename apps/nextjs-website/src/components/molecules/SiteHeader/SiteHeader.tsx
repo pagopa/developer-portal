@@ -16,14 +16,14 @@ export type SiteHeaderProps = {
 
 const SiteHeader = (
   { products }: SiteHeaderProps,
-  ref: ForwardedRef<HTMLDivElement>,
+  ref: ForwardedRef<HTMLDivElement>
 ) => {
   const { palette } = useTheme();
   const t = useTranslations('devPortal');
 
   const productsWithOverview = useMemo(
     () => products.filter((product: Product) => product.hasOverviewPage),
-    [products],
+    [products]
   );
 
   return (
@@ -32,7 +32,7 @@ const SiteHeader = (
         position: 'sticky',
         top: 0,
         height: SITE_HEADER_HEIGHT,
-        zIndex: 100,
+        zIndex: 100
       }}
     >
       <Stack
@@ -45,7 +45,7 @@ const SiteHeader = (
           minHeight: SITE_HEADER_HEIGHT,
           borderBottomWidth: 1,
           borderBottomStyle: 'solid',
-          borderBottomColor: palette.divider,
+          borderBottomColor: palette.divider
         }}
         spacing={{ xs: 0, sm: 2 }}
         direction='row'

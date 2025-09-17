@@ -11,7 +11,7 @@ export const LegalInfo = ({ data }: LegalInfoProps) => (
     sx={{
       borderTop: 1,
       borderColor: 'divider',
-      backgroundColor: 'background.paper',
+      backgroundColor: 'background.paper'
     }}
   >
     <Container sx={{ px: 2, py: 2 }}>

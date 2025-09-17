@@ -4,13 +4,13 @@ import {
   ChipProps,
   Typography,
   chipClasses,
-  styled,
+  styled
 } from '@mui/material';
 import { OpenAPIV3 } from 'openapi-types';
 
 import Expandable, {
   ExpandableDetails,
-  ExpandableSummary,
+  ExpandableSummary
 } from '../Expandable';
 import { Parameters } from './Parameters';
 import { RequestBody } from './RequestBody';
@@ -20,8 +20,8 @@ const StyledChip = styled(Chip)(() => ({
   [`& .${chipClasses.label}`]: {
     textTransform: 'uppercase',
     fontWeight: 'bold',
-    color: 'white!important',
-  },
+    color: 'white!important'
+  }
 }));
 
 export const API_METHODS_COLORS: Record<
@@ -35,7 +35,7 @@ export const API_METHODS_COLORS: Record<
   options: 'default',
   head: 'default',
   patch: 'default',
-  trace: 'default',
+  trace: 'default'
 };
 
 type OperationProps = OpenAPIV3.OperationObject<{
@@ -51,7 +51,7 @@ export const Operation = ({
   parameters,
   responses,
   requestBody,
-  servers = [],
+  servers = []
 }: OperationProps) => {
   const chipColor = API_METHODS_COLORS[method] || 'default';
   const baseUrl = servers[0]?.url || '';

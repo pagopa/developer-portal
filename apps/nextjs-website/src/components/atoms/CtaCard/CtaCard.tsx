@@ -8,7 +8,7 @@ import {
   CardMedia,
   styled,
   SxProps,
-  Typography,
+  Typography
 } from '@mui/material';
 import type { TypographyVariant } from '@mui/material/styles';
 import { Tag } from '@pagopa/mui-italia';
@@ -35,7 +35,7 @@ export type CtaCardProps = {
 
 const StyledCardContent = styled(CardContent)(() => ({
   display: 'flex',
-  flexDirection: 'column',
+  flexDirection: 'column'
 }));
 
 const CtaCard = ({
@@ -48,7 +48,7 @@ const CtaCard = ({
   icon,
   children,
   tags,
-  variant = 'h3',
+  variant = 'h3'
 }: CtaCardProps) => {
   return (
     <Card
@@ -57,7 +57,7 @@ const CtaCard = ({
         display: 'flex',
         justifyContent: 'space-between',
         height: '100%',
-        boxShadow: '0px 8px 18px 7px rgba(0, 43, 85, 0.1)',
+        boxShadow: '0px 8px 18px 7px rgba(0, 43, 85, 0.1)'
       }}
     >
       <div style={{ opacity: comingSoon ? 0.5 : 1, flexGrow: 1 }}>
@@ -71,7 +71,7 @@ const CtaCard = ({
               ...titleStyle,
               fontSize: '1.5rem !important',
               lineHeight: '1.15 !important',
-              marginTop: 2,
+              marginTop: 2
             }}
             variant={variant}
             gutterBottom
@@ -88,7 +88,7 @@ const CtaCard = ({
                   sx={{
                     display: 'inline',
                     marginRight: 1,
-                    '& > span': { marginBottom: 1 },
+                    '& > span': { marginBottom: 1 }
                   }}
                 >
                   <Tag value={tag.label} color='primary' variant='light' />

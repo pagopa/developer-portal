@@ -19,7 +19,7 @@ export const makeMetadata: MakeMetadataFunction = ({
   description,
   url,
   image: imageParam,
-  locale,
+  locale
 }) => {
   const previousTitle = parent?.title?.absolute || websiteName;
   const metadataTitle = title ? `${title} | ${previousTitle}` : previousTitle;
@@ -28,7 +28,7 @@ export const makeMetadata: MakeMetadataFunction = ({
     metadataTitle,
     description,
     image,
-    locale,
+    locale
   );
   const twitter = getTwitterMetadata(metadataTitle, description, image);
 
@@ -37,7 +37,7 @@ export const makeMetadata: MakeMetadataFunction = ({
     description: description || '',
     url: url || '',
     openGraph,
-    twitter,
+    twitter
   };
 };
 
@@ -45,26 +45,26 @@ const getOpenGraphMetadata = (
   title: string,
   description?: string,
   image?: string,
-  locale = 'it_IT',
+  locale = 'it_IT'
 ): Metadata['openGraph'] => ({
   title,
   type: 'website',
   locale,
   description: description || '',
-  images: image,
+  images: image
 });
 
 const getTwitterMetadata = (
   title: string,
   description?: string,
-  image?: string,
+  image?: string
 ): Metadata['twitter'] => ({
   title,
   description: description || '',
   images: image,
   card: 'summary',
   site: '@pagopa',
-  creator: '@pagopa',
+  creator: '@pagopa'
 });
 
 export const makeMetadataFromStrapi = (seo: SEO): Metadata => {
@@ -72,7 +72,7 @@ export const makeMetadataFromStrapi = (seo: SEO): Metadata => {
     title: seo.metaTitle,
     description: seo.metaDescription,
     url: seo.canonicalURL,
-    image: seo.metaImage?.data?.attributes?.url,
+    image: seo.metaImage?.data?.attributes?.url
   });
 
   const metadata: Metadata = {
@@ -81,10 +81,10 @@ export const makeMetadataFromStrapi = (seo: SEO): Metadata => {
     robots: seo.metaRobots,
     viewport: seo.metaViewport,
     alternates: {
-      canonical: seo.canonicalURL,
+      canonical: seo.canonicalURL
     },
     openGraph: enhanceOpenGraphMetadata(baseMetadata.openGraph, seo),
-    twitter: enhanceTwitterMetadata(baseMetadata.twitter, seo),
+    twitter: enhanceTwitterMetadata(baseMetadata.twitter, seo)
   };
 
   return metadata;
@@ -92,7 +92,7 @@ export const makeMetadataFromStrapi = (seo: SEO): Metadata => {
 
 const enhanceOpenGraphMetadata = (
   baseOG: Metadata['openGraph'] | undefined,
-  seo: SEO,
+  seo: SEO
 ): Metadata['openGraph'] => {
   if (!baseOG) return baseOG;
 
@@ -113,7 +113,7 @@ const enhanceOpenGraphMetadata = (
 
 const enhanceTwitterMetadata = (
   baseTwitter: Metadata['twitter'] | undefined,
-  seo: SEO,
+  seo: SEO
 ): Metadata['twitter'] => {
   if (!baseTwitter) return baseTwitter;
 

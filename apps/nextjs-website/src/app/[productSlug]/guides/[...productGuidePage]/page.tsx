@@ -1,5 +1,5 @@
 import ProductLayout, {
-  ProductLayoutProps,
+  ProductLayoutProps
 } from '@/components/organisms/ProductLayout/ProductLayout';
 import { getGuidePage } from '@/lib/api';
 import { Product } from '@/lib/types/product';
@@ -8,7 +8,7 @@ import { ParseContentConfig } from 'gitbook-docs/parseContent';
 import { Metadata } from 'next';
 import {
   makeMetadata,
-  makeMetadataFromStrapi,
+  makeMetadataFromStrapi
 } from '@/helpers/metadata.helpers';
 import GitBookTemplate from '@/components/templates/GitBookTemplate/GitBookTemplate';
 import { productPageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
@@ -17,7 +17,7 @@ import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataS
 import {
   breadcrumbItemByProduct,
   convertSeoToStructuredDataArticle,
-  productToBreadcrumb,
+  productToBreadcrumb
 } from '@/helpers/structuredData.helpers';
 import PageNotFound from '@/app/not-found';
 
@@ -49,14 +49,14 @@ export type ProductGuidePageProps = {
 } & ProductLayoutProps;
 
 export async function generateMetadata({
-  params,
+  params
 }: {
   params: Promise<Params>;
 }): Promise<Metadata> {
   const resolvedParams = await params;
   const props = await getGuidePage(
     resolvedParams?.productGuidePage ?? [''],
-    resolvedParams?.productSlug,
+    resolvedParams?.productSlug
   );
 
   if (props?.seo) {
@@ -71,11 +71,11 @@ export async function generateMetadata({
             .filter(Boolean)
             .join(' ')
         : [],
-      props ? props.product.name : '',
+      props ? props.product.name : ''
     ]
       .filter(Boolean)
       .join(' | '),
-    url: props?.page.path,
+    url: props?.page.path
   });
 }
 
@@ -84,9 +84,9 @@ const Page = async ({ params }: { params: Promise<Params> }) => {
   const [guideProps, urlReplaceMap] = await Promise.all([
     getGuidePage(
       resolvedParams?.productGuidePage ?? [''],
-      resolvedParams?.productSlug,
+      resolvedParams?.productSlug
     ),
-    getUrlReplaceMapProps(),
+    getUrlReplaceMapProps()
   ]);
 
   if (!guideProps) {
@@ -101,7 +101,7 @@ const Page = async ({ params }: { params: Promise<Params> }) => {
     source,
     bannerLinks,
     seo,
-    bodyConfig,
+    bodyConfig
   } = guideProps;
 
   const props: ProductGuidePageProps = {
@@ -114,8 +114,8 @@ const Page = async ({ params }: { params: Promise<Params> }) => {
     pathPrefix: source.pathPrefix,
     bodyConfig: {
       ...bodyConfig,
-      urlReplaces: urlReplaceMap,
-    },
+      urlReplaces: urlReplaceMap
+    }
   };
 
   const structuredData = generateStructuredDataScripts({
@@ -125,12 +125,12 @@ const Page = async ({ params }: { params: Promise<Params> }) => {
         name: seo?.metaTitle || page.title,
         item: breadcrumbItemByProduct(props.product, [
           'guides',
-          ...(resolvedParams?.productGuidePage || []),
-        ]),
-      },
+          ...(resolvedParams?.productGuidePage || [])
+        ])
+      }
     ],
     seo: seo,
-    things: [convertSeoToStructuredDataArticle(seo)],
+    things: [convertSeoToStructuredDataArticle(seo)]
   });
 
   const breadcrumbs = [
@@ -140,13 +140,13 @@ const Page = async ({ params }: { params: Promise<Params> }) => {
         name: 'devPortal.productHeader.guides',
         path: props.product.hasGuideListPage
           ? `/${props.product.slug}/guides`
-          : '/',
+          : '/'
       },
       {
         name: props.guide.name,
-        path: props.guide.path,
-      },
-    ]),
+        path: props.guide.path
+      }
+    ])
   ];
 
   return (

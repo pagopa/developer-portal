@@ -23,16 +23,16 @@ export function minimalApiDataListPages(): StrapiApiDataListPages {
                   icon: { data: undefined },
                   apiRestDetail: {
                     slug: 'minimal-api',
-                    specUrls: [],
+                    specUrls: []
                   },
-                  apiSoapDetail: undefined,
-                },
-              },
-            ],
-          },
-        },
-      },
-    ],
+                  apiSoapDetail: undefined
+                }
+              }
+            ]
+          }
+        }
+      }
+    ]
   };
 }
 
@@ -46,11 +46,11 @@ export function apiDataListPageWithEmptyApiData(): StrapiApiDataListPages {
           ...page.attributes,
           title: 'Empty API List Page',
           apiData: {
-            data: [],
-          },
-        },
-      },
-    ],
+            data: []
+          }
+        }
+      }
+    ]
   };
 }
 
@@ -74,10 +74,10 @@ export function apiDataListPageWithMixedApiTypes(): StrapiApiDataListPages {
                   icon: { data: undefined },
                   apiRestDetail: {
                     slug: 'rest-api',
-                    specUrls: [],
+                    specUrls: []
                   },
-                  apiSoapDetail: undefined,
-                },
+                  apiSoapDetail: undefined
+                }
               },
               // Valid SOAP API
               {
@@ -90,9 +90,9 @@ export function apiDataListPageWithMixedApiTypes(): StrapiApiDataListPages {
                   apiSoapDetail: {
                     slug: 'soap-api',
                     repositoryUrl: 'https://example.com/soap',
-                    dirName: 'soap',
-                  },
-                },
+                    dirName: 'soap'
+                  }
+                }
               },
               // Invalid API (no details)
               {
@@ -102,14 +102,14 @@ export function apiDataListPageWithMixedApiTypes(): StrapiApiDataListPages {
                   description: 'An invalid API',
                   icon: { data: undefined },
                   apiRestDetail: undefined,
-                  apiSoapDetail: undefined,
-                },
-              },
-            ],
-          },
-        },
-      },
-    ],
+                  apiSoapDetail: undefined
+                }
+              }
+            ]
+          }
+        }
+      }
+    ]
   };
 }
 
@@ -121,10 +121,10 @@ export function apiDataListPageWithoutDescription(): StrapiApiDataListPages {
         ...page,
         attributes: {
           ...page.attributes,
-          description: undefined,
-        },
-      },
-    ],
+          description: undefined
+        }
+      }
+    ]
   };
 }
 
@@ -147,10 +147,10 @@ export function apiDataListPageWithInvalidApiData(): StrapiApiDataListPages {
                   icon: { data: undefined },
                   apiRestDetail: {
                     slug: undefined as any,
-                    specUrls: [],
+                    specUrls: []
                   },
-                  apiSoapDetail: undefined,
-                },
+                  apiSoapDetail: undefined
+                }
               },
               // API without any details
               {
@@ -160,14 +160,14 @@ export function apiDataListPageWithInvalidApiData(): StrapiApiDataListPages {
                   description: 'This API has no REST or SOAP details',
                   icon: { data: undefined },
                   apiRestDetail: undefined,
-                  apiSoapDetail: undefined,
-                },
-              },
-            ],
-          },
-        },
-      },
-    ],
+                  apiSoapDetail: undefined
+                }
+              }
+            ]
+          }
+        }
+      }
+    ]
   };
 }
 
@@ -193,22 +193,22 @@ export function multipleApiDataListPages(): StrapiApiDataListPages {
                   icon: { data: undefined },
                   apiRestDetail: {
                     slug: 'another-rest-api',
-                    specUrls: [],
+                    specUrls: []
                   },
-                  apiSoapDetail: undefined,
-                },
-              },
-            ],
-          },
-        },
-      },
-    ],
+                  apiSoapDetail: undefined
+                }
+              }
+            ]
+          }
+        }
+      }
+    ]
   };
 }
 
 export function emptyApiDataListPages(): StrapiApiDataListPages {
   return {
-    data: [],
+    data: []
   };
 }
 
@@ -230,19 +230,19 @@ export function apiDataListPageWithBothRestAndSoap(): StrapiApiDataListPages {
                   icon: { data: undefined },
                   apiRestDetail: {
                     slug: 'rest-slug',
-                    specUrls: [],
+                    specUrls: []
                   },
                   apiSoapDetail: {
                     slug: 'soap-slug',
                     repositoryUrl: 'https://example.com',
-                    dirName: 'soap',
-                  },
-                },
-              },
-            ],
-          },
-        },
-      },
-    ],
+                    dirName: 'soap'
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    ]
   };
 }

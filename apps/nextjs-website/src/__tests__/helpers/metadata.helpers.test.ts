@@ -4,8 +4,8 @@ import { baseUrl, websiteName } from '@/config';
 
 const parent = {
   title: {
-    absolute: 'Parent title',
-  },
+    absolute: 'Parent title'
+  }
 } as ResolvedMetadata;
 
 it('should return the correct metadata when all fields are present', () => {
@@ -14,7 +14,7 @@ it('should return the correct metadata when all fields are present', () => {
     title: 'Title',
     description: 'Description',
     url: 'Url',
-    image: 'Image',
+    image: 'Image'
   });
 
   expect(metadata).toEqual({
@@ -26,7 +26,7 @@ it('should return the correct metadata when all fields are present', () => {
       type: 'website',
       locale: 'it_IT',
       description: 'Description',
-      images: 'Image',
+      images: 'Image'
     },
     twitter: {
       title: 'Title | Parent title',
@@ -34,8 +34,8 @@ it('should return the correct metadata when all fields are present', () => {
       images: 'Image',
       card: 'summary',
       site: '@pagopa',
-      creator: '@pagopa',
-    },
+      creator: '@pagopa'
+    }
   });
 });
 
@@ -44,7 +44,7 @@ it('should return the correct metadata when title is missing', () => {
     parent,
     description: 'Description',
     url: 'Url',
-    image: 'Image',
+    image: 'Image'
   });
 
   expect(metadataWithoutTitle).toEqual({
@@ -56,7 +56,7 @@ it('should return the correct metadata when title is missing', () => {
       type: 'website',
       locale: 'it_IT',
       description: 'Description',
-      images: 'Image',
+      images: 'Image'
     },
     twitter: {
       title: 'Parent title',
@@ -64,8 +64,8 @@ it('should return the correct metadata when title is missing', () => {
       images: 'Image',
       card: 'summary',
       site: '@pagopa',
-      creator: '@pagopa',
-    },
+      creator: '@pagopa'
+    }
   });
 });
 
@@ -74,7 +74,7 @@ it('should return the correct metadata when description is missing', () => {
     parent,
     title: 'Title',
     url: 'Url',
-    image: 'Image',
+    image: 'Image'
   });
 
   expect(metadataWithoutDescription).toEqual({
@@ -86,7 +86,7 @@ it('should return the correct metadata when description is missing', () => {
       type: 'website',
       locale: 'it_IT',
       description: '',
-      images: 'Image',
+      images: 'Image'
     },
     twitter: {
       title: 'Title | Parent title',
@@ -94,8 +94,8 @@ it('should return the correct metadata when description is missing', () => {
       images: 'Image',
       card: 'summary',
       site: '@pagopa',
-      creator: '@pagopa',
-    },
+      creator: '@pagopa'
+    }
   });
 });
 
@@ -104,7 +104,7 @@ it('should return the correct metadata when url is missing', () => {
     parent,
     title: 'Title',
     description: 'Description',
-    image: 'Image',
+    image: 'Image'
   });
 
   expect(metadataWithoutUrl).toEqual({
@@ -116,7 +116,7 @@ it('should return the correct metadata when url is missing', () => {
       type: 'website',
       locale: 'it_IT',
       description: 'Description',
-      images: 'Image',
+      images: 'Image'
     },
     twitter: {
       title: 'Title | Parent title',
@@ -124,8 +124,8 @@ it('should return the correct metadata when url is missing', () => {
       images: 'Image',
       card: 'summary',
       site: '@pagopa',
-      creator: '@pagopa',
-    },
+      creator: '@pagopa'
+    }
   });
 });
 
@@ -134,7 +134,7 @@ it('should return the correct metadata when image is missing', () => {
     parent,
     title: 'Title',
     description: 'Description',
-    url: 'Url',
+    url: 'Url'
   });
 
   expect(metadataWithoutImage).toEqual({
@@ -146,7 +146,7 @@ it('should return the correct metadata when image is missing', () => {
       type: 'website',
       locale: 'it_IT',
       description: 'Description',
-      images: `${baseUrl}/images/dev-portal-home.jpg`,
+      images: `${baseUrl}/images/dev-portal-home.jpg`
     },
     twitter: {
       title: 'Title | Parent title',
@@ -154,8 +154,8 @@ it('should return the correct metadata when image is missing', () => {
       images: `${baseUrl}/images/dev-portal-home.jpg`,
       card: 'summary',
       site: '@pagopa',
-      creator: '@pagopa',
-    },
+      creator: '@pagopa'
+    }
   });
 });
 
@@ -164,7 +164,7 @@ it('should return the correct metadata when parent is missing', () => {
     title: 'Title',
     description: 'Description',
     url: 'Url',
-    image: 'Image',
+    image: 'Image'
   });
 
   expect(metadataWithoutParent).toEqual({
@@ -176,7 +176,7 @@ it('should return the correct metadata when parent is missing', () => {
       type: 'website',
       locale: 'it_IT',
       description: 'Description',
-      images: 'Image',
+      images: 'Image'
     },
     twitter: {
       title: `Title | ${websiteName}`,
@@ -184,7 +184,7 @@ it('should return the correct metadata when parent is missing', () => {
       images: 'Image',
       card: 'summary',
       site: '@pagopa',
-      creator: '@pagopa',
-    },
+      creator: '@pagopa'
+    }
   });
 });

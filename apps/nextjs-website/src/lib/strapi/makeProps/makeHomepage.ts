@@ -4,13 +4,13 @@ import { HomepageProps } from '@/app/page';
 import _ from 'lodash';
 
 export const makeHomepageProps = (
-  strapiHomepage: StrapiHomepage,
+  strapiHomepage: StrapiHomepage
 ): HomepageProps => ({
   comingsoonDocumentation:
     strapiHomepage.data.attributes.comingsoonDocumentation,
   hero: strapiHomepage.data.attributes.heroSlider.map((slide) => ({
     ...slide,
-    backgroundImage: slide.backgroundImage?.data?.attributes,
+    backgroundImage: slide.backgroundImage?.data?.attributes
   })),
   ...(strapiHomepage.data.attributes.newsShowcase && {
     newsShowcase: {
@@ -24,14 +24,13 @@ export const makeHomepageProps = (
           link: {
             text: item.attributes.link.text,
             url: item.attributes.link.href,
-            target: item.attributes.link.target,
+            target: item.attributes.link.target
           },
           image:
-            item.attributes.image?.data &&
-            item.attributes.image.data.attributes,
-        }),
-      ),
-    },
+            item.attributes.image?.data && item.attributes.image.data.attributes
+        })
+      )
+    }
   }),
   ...(strapiHomepage.data.attributes.ecosystem && {
     ecosystem: {
@@ -43,8 +42,8 @@ export const makeHomepageProps = (
           text: product.attributes.description ?? '',
           href: `${product.attributes.slug}/overview`,
           icon: product.attributes.logo.data?.attributes.url || '',
-          useSrc: true,
-        }),
+          useSrc: true
+        })
       ),
       solutionsTabName:
         strapiHomepage.data.attributes.ecosystem.solutionsTabName,
@@ -54,19 +53,19 @@ export const makeHomepageProps = (
           text: solution.attributes.description ?? '',
           href: `/solutions/${solution.attributes.slug}`,
           icon: solution.attributes.icon.data.attributes.url,
-          useSrc: true,
-        }),
+          useSrc: true
+        })
       ),
       solutionsCta: strapiHomepage.data.attributes.ecosystem.solutionsCta && {
         variant: strapiHomepage.data.attributes.ecosystem.solutionsCta.variant,
-        link: strapiHomepage.data.attributes.ecosystem.solutionsCta.link,
-      },
-    },
+        link: strapiHomepage.data.attributes.ecosystem.solutionsCta.link
+      }
+    }
   }),
   seo: strapiHomepage?.data?.attributes?.seo,
   webinars: _.compact(
     strapiHomepage.data.attributes.webinars.data.map((webinar) =>
-      makeWebinarProps(webinar),
-    ),
-  ),
+      makeWebinarProps(webinar)
+    )
+  )
 });

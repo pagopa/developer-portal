@@ -21,7 +21,7 @@ export const BannerLink: FC<BannerLinkProps> = ({
   icon,
   theme = 'light',
   title,
-  variant = 'h6',
+  variant = 'h6'
 }) => {
   const { palette } = useTheme();
 
@@ -39,7 +39,7 @@ export const BannerLink: FC<BannerLinkProps> = ({
         justifyContent: { xs: 'center', md: contentJustification },
         maxWidth: { xs: '100%', md: '100%' },
         textAlign: 'center',
-        width: '100%',
+        width: '100%'
       }}
     >
       <Box
@@ -48,14 +48,14 @@ export const BannerLink: FC<BannerLinkProps> = ({
           justifyContent: 'center',
           maxWidth: '100%',
           padding: { xs: '0px 32px', md: '0px 130px' },
-          textAlign: 'center',
+          textAlign: 'center'
         }}
       >
         <Stack
           sx={{
             maxWidth: 450,
             padding: { xs: '40px 0px', md: '64px 0px' },
-            spacing: '8px',
+            spacing: '8px'
           }}
         >
           <div style={{ marginBottom: '26px' }}>
@@ -72,7 +72,7 @@ export const BannerLink: FC<BannerLinkProps> = ({
               variant={variant}
               sx={{
                 fontSize: '1.5rem !important',
-                lineHeight: '1.15 !important',
+                lineHeight: '1.15 !important'
               }}
               color={textColor}
             >
@@ -115,12 +115,12 @@ export const BannerLink: FC<BannerLinkProps> = ({
                       listStyleType: 'square',
                       listStylePosition: 'inside',
                       color: textColor,
-                      padding: 0,
+                      padding: 0
                     }}
                   >
                     {children}
                   </ul>
-                ),
+                )
               }}
             />
           )}

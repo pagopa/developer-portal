@@ -11,9 +11,9 @@ export const strapiEmptyGuideListPagesData = {
       page: 1,
       pageSize: 0,
       pageCount: 1,
-      total: 0,
-    },
-  },
+      total: 0
+    }
+  }
 } satisfies StrapiGuideListPages;
 
 export const strapiGuideListPagesData = {
@@ -40,7 +40,7 @@ export const strapiGuideListPagesData = {
                       children: [
                         {
                           text: 'Apri un ticket utilizzando l’apposita funzione all’interno della tua ',
-                          type: 'text',
+                          type: 'text'
                         },
                         {
                           url: 'https://selfcare.pagopa.it/auth/login?onSuccess=%2F',
@@ -48,16 +48,16 @@ export const strapiGuideListPagesData = {
                           children: [
                             {
                               text: 'Area Riservata',
-                              type: 'text',
-                            },
-                          ],
+                              type: 'text'
+                            }
+                          ]
                         },
                         {
                           text: '',
-                          type: 'text',
-                        },
-                      ],
-                    },
+                          type: 'text'
+                        }
+                      ]
+                    }
                   ],
                   theme: 'dark',
                   icon: {
@@ -71,10 +71,10 @@ export const strapiGuideListPagesData = {
                         ext: '.svg',
                         mime: 'image/svg+xml',
                         size: 0.31,
-                        url: 'http://0.0.0.0:1337/uploads/headset_78d50d9321_5bd20d1a6b_6d5b8d3ee1.svg',
-                      },
-                    },
-                  },
+                        url: 'http://0.0.0.0:1337/uploads/headset_78d50d9321_5bd20d1a6b_6d5b8d3ee1.svg'
+                      }
+                    }
+                  }
                 },
                 {
                   id: 385,
@@ -85,7 +85,7 @@ export const strapiGuideListPagesData = {
                       children: [
                         {
                           text: 'Per chiarimenti sulle specifiche d’implementazione, come SACI e SANP, puoi aprire una segnalazione su ',
-                          type: 'text',
+                          type: 'text'
                         },
                         {
                           url: 'https://github.com/pagopa/pagopa-api/issues',
@@ -93,16 +93,16 @@ export const strapiGuideListPagesData = {
                           children: [
                             {
                               text: 'GitHub',
-                              type: 'text',
-                            },
-                          ],
+                              type: 'text'
+                            }
+                          ]
                         },
                         {
                           text: '',
-                          type: 'text',
-                        },
-                      ],
-                    },
+                          type: 'text'
+                        }
+                      ]
+                    }
                   ],
                   theme: 'light',
                   icon: {
@@ -116,24 +116,24 @@ export const strapiGuideListPagesData = {
                         ext: '.svg',
                         mime: 'image/svg+xml',
                         size: 0.26,
-                        url: 'http://0.0.0.0:1337/uploads/feedback_1504fc4fbf_042ed8f78b.svg',
-                      },
-                    },
-                  },
-                },
+                        url: 'http://0.0.0.0:1337/uploads/feedback_1504fc4fbf_042ed8f78b.svg'
+                      }
+                    }
+                  }
+                }
               ],
               overview: {
                 data: {
-                  id: 48,
-                },
+                  id: 48
+                }
               },
               quickstart_guide: {
                 data: {
-                  id: 48,
-                },
+                  id: 48
+                }
               },
               release_note: {
-                data: undefined,
+                data: undefined
               },
               api_data_list_page: {
                 data: {
@@ -144,8 +144,8 @@ export const strapiGuideListPagesData = {
                         {
                           attributes: {
                             apiRestDetail: undefined,
-                            apiSoapDetail: undefined,
-                          },
+                            apiSoapDetail: undefined
+                          }
                         },
                         {
                           attributes: {
@@ -156,84 +156,84 @@ export const strapiGuideListPagesData = {
                                   id: 1,
                                   name: 'Specifica API REST',
                                   url: 'https://raw.githubusercontent.com/pagopa/pagopa-api/master/specs/gestione-posizioni-debitorie.yaml',
-                                  hideTryIt: false,
-                                },
-                              ],
+                                  hideTryIt: false
+                                }
+                              ]
                             },
-                            apiSoapDetail: undefined,
-                          },
+                            apiSoapDetail: undefined
+                          }
                         },
                         {
                           attributes: {
                             apiRestDetail: undefined,
-                            apiSoapDetail: undefined,
-                          },
+                            apiSoapDetail: undefined
+                          }
                         },
                         {
                           attributes: {
                             apiRestDetail: undefined,
-                            apiSoapDetail: undefined,
-                          },
+                            apiSoapDetail: undefined
+                          }
                         },
                         {
                           attributes: {
                             apiSoapDetail: undefined,
-                            apiRestDetail: undefined,
-                          },
+                            apiRestDetail: undefined
+                          }
                         },
                         {
                           attributes: {
                             apiRestDetail: undefined,
-                            apiSoapDetail: undefined,
-                          },
+                            apiSoapDetail: undefined
+                          }
                         },
                         {
                           attributes: {
                             apiRestDetail: undefined,
-                            apiSoapDetail: undefined,
-                          },
+                            apiSoapDetail: undefined
+                          }
                         },
                         {
                           attributes: {
                             apiRestDetail: undefined,
-                            apiSoapDetail: undefined,
-                          },
+                            apiSoapDetail: undefined
+                          }
                         },
                         {
                           attributes: {
                             apiRestDetail: undefined,
-                            apiSoapDetail: undefined,
-                          },
+                            apiSoapDetail: undefined
+                          }
                         },
                         {
                           attributes: {
                             apiRestDetail: undefined,
-                            apiSoapDetail: undefined,
-                          },
+                            apiSoapDetail: undefined
+                          }
                         },
                         {
                           attributes: {
                             apiRestDetail: undefined,
-                            apiSoapDetail: undefined,
-                          },
-                        },
-                      ],
-                    },
-                  },
-                },
+                            apiSoapDetail: undefined
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
               },
               guide_list_page: {
                 data: {
-                  id: 48,
-                },
+                  id: 48
+                }
               },
               tutorial_list_page: {
                 data: {
-                  id: 48,
-                },
-              },
-            },
-          },
+                  id: 48
+                }
+              }
+            }
+          }
         },
         guidesByCategory: [
           {
@@ -246,17 +246,17 @@ export const strapiGuideListPagesData = {
                     slug: 'saci',
                     listItems: [
                       {
-                        text: 'Genera un codice IUV',
+                        text: 'Genera un codice IUV'
                       },
                       {
-                        text: 'Comprendi la gestione delle operazioni di trasferimento fondi',
+                        text: 'Comprendi la gestione delle operazioni di trasferimento fondi'
                       },
                       {
-                        text: 'Crea il flusso di rendicontazione',
+                        text: 'Crea il flusso di rendicontazione'
                       },
                       {
-                        text: 'Riconcilia il flusso dei pagamenti',
-                      },
+                        text: 'Riconcilia il flusso dei pagamenti'
+                      }
                     ],
                     image: {
                       data: {
@@ -269,9 +269,9 @@ export const strapiGuideListPagesData = {
                           ext: '.png',
                           mime: 'image/png',
                           size: 236.84,
-                          url: 'http://0.0.0.0:1337/uploads/pago_PA_Guide_Manual_4246ba7771.png',
-                        },
-                      },
+                          url: 'http://0.0.0.0:1337/uploads/pago_PA_Guide_Manual_4246ba7771.png'
+                        }
+                      }
                     },
                     mobileImage: {
                       data: {
@@ -284,11 +284,11 @@ export const strapiGuideListPagesData = {
                           ext: '.png',
                           mime: 'image/png',
                           size: 236.84,
-                          url: 'http://0.0.0.0:1337/uploads/saci_9d9358115d.png',
-                        },
-                      },
-                    },
-                  },
+                          url: 'http://0.0.0.0:1337/uploads/saci_9d9358115d.png'
+                        }
+                      }
+                    }
+                  }
                 },
                 {
                   attributes: {
@@ -296,17 +296,17 @@ export const strapiGuideListPagesData = {
                     slug: 'sanp',
                     listItems: [
                       {
-                        text: 'Conosci, usa e gestisci il prodotto pagoPA',
+                        text: 'Conosci, usa e gestisci il prodotto pagoPA'
                       },
                       {
-                        text: 'Esplora i principali casi d’uso per PSP ed Enti Creditori',
+                        text: 'Esplora i principali casi d’uso per PSP ed Enti Creditori'
                       },
                       {
-                        text: 'Scopri come un Ente Creditore può aderire e integrarsi in pagoPA',
+                        text: 'Scopri come un Ente Creditore può aderire e integrarsi in pagoPA'
                       },
                       {
-                        text: 'Scopri come un PSP può aderire e integrarsi in pagoPA',
-                      },
+                        text: 'Scopri come un PSP può aderire e integrarsi in pagoPA'
+                      }
                     ],
                     image: {
                       data: {
@@ -319,9 +319,9 @@ export const strapiGuideListPagesData = {
                           ext: '.png',
                           mime: 'image/png',
                           size: 237.14,
-                          url: 'http://0.0.0.0:1337/uploads/sanp_b68c5c1525.png',
-                        },
-                      },
+                          url: 'http://0.0.0.0:1337/uploads/sanp_b68c5c1525.png'
+                        }
+                      }
                     },
                     mobileImage: {
                       data: {
@@ -334,14 +334,14 @@ export const strapiGuideListPagesData = {
                           ext: '.png',
                           mime: 'image/png',
                           size: 237.14,
-                          url: 'http://0.0.0.0:1337/uploads/sanp_b68c5c1525.png',
-                        },
-                      },
-                    },
-                  },
-                },
-              ],
-            },
+                          url: 'http://0.0.0.0:1337/uploads/sanp_b68c5c1525.png'
+                        }
+                      }
+                    }
+                  }
+                }
+              ]
+            }
           },
           {
             category: "Per l'utilizzo",
@@ -353,17 +353,17 @@ export const strapiGuideListPagesData = {
                     slug: 'avviso-pagamento',
                     listItems: [
                       {
-                        text: 'Scopri come si crea un avviso di pagamento',
+                        text: 'Scopri come si crea un avviso di pagamento'
                       },
                       {
-                        text: 'Usa i modelli grafici per la creazione di un avviso',
+                        text: 'Usa i modelli grafici per la creazione di un avviso'
                       },
                       {
-                        text: 'Visualizza alcuni esempi',
+                        text: 'Visualizza alcuni esempi'
                       },
                       {
-                        text: 'Consulta le indicazioni per la produzione di un avviso di pagamento',
-                      },
+                        text: 'Consulta le indicazioni per la produzione di un avviso di pagamento'
+                      }
                     ],
                     image: {
                       data: {
@@ -376,9 +376,9 @@ export const strapiGuideListPagesData = {
                           ext: '.png',
                           mime: 'image/png',
                           size: 68.58,
-                          url: 'http://0.0.0.0:1337/uploads/guida_tecnica_sugli_avvisi_di_pagamento_df77a98f5f.png',
-                        },
-                      },
+                          url: 'http://0.0.0.0:1337/uploads/guida_tecnica_sugli_avvisi_di_pagamento_df77a98f5f.png'
+                        }
+                      }
                     },
                     mobileImage: {
                       data: {
@@ -391,30 +391,30 @@ export const strapiGuideListPagesData = {
                           ext: '.png',
                           mime: 'image/png',
                           size: 68.58,
-                          url: 'http://0.0.0.0:1337/uploads/guida_tecnica_sugli_avvisi_di_pagamento_df77a98f5f.png',
-                        },
-                      },
-                    },
-                  },
-                },
-              ],
-            },
-          },
+                          url: 'http://0.0.0.0:1337/uploads/guida_tecnica_sugli_avvisi_di_pagamento_df77a98f5f.png'
+                        }
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
         ],
         bannerLinks: [],
         seo: undefined,
-        updatedAt: dateNow,
-      },
-    },
+        updatedAt: dateNow
+      }
+    }
   ],
   meta: {
     pagination: {
       page: 1,
       pageSize: 100,
       pageCount: 1,
-      total: 1,
-    },
-  },
+      total: 1
+    }
+  }
 } satisfies StrapiGuideListPages;
 
 export const guideListPagesProps = [
@@ -423,7 +423,7 @@ export const guideListPagesProps = [
     abstract: {
       title: 'Guide e manuali',
       description:
-        'Per una conoscenza approfondita o dubbi puntuali, consulta i manuali e le guide disponibili per la piattaforma pagoPA.\n\n',
+        'Per una conoscenza approfondita o dubbi puntuali, consulta i manuali e le guide disponibili per la piattaforma pagoPA.\n\n'
     },
     guidesSections: [
       {
@@ -437,9 +437,9 @@ export const guideListPagesProps = [
                 'Genera un codice IUV',
                 'Comprendi la gestione delle operazioni di trasferimento fondi',
                 'Crea il flusso di rendicontazione',
-                'Riconcilia il flusso dei pagamenti',
+                'Riconcilia il flusso dei pagamenti'
               ],
-              translate: true,
+              translate: true
             },
             imagePath:
               'http://0.0.0.0:1337/uploads/pago_PA_Guide_Manual_4246ba7771.png',
@@ -447,8 +447,8 @@ export const guideListPagesProps = [
             link: {
               label: 'guideListPage.cardSection.linkLabel',
               href: '/pago-pa/guides/saci',
-              translate: true,
-            },
+              translate: true
+            }
           },
           {
             title: 'SANP',
@@ -458,19 +458,19 @@ export const guideListPagesProps = [
                 'Conosci, usa e gestisci il prodotto pagoPA',
                 'Esplora i principali casi d’uso per PSP ed Enti Creditori',
                 'Scopri come un Ente Creditore può aderire e integrarsi in pagoPA',
-                'Scopri come un PSP può aderire e integrarsi in pagoPA',
+                'Scopri come un PSP può aderire e integrarsi in pagoPA'
               ],
-              translate: true,
+              translate: true
             },
             imagePath: 'http://0.0.0.0:1337/uploads/sanp_b68c5c1525.png',
             mobileImagePath: 'http://0.0.0.0:1337/uploads/sanp_b68c5c1525.png',
             link: {
               label: 'guideListPage.cardSection.linkLabel',
               href: '/pago-pa/guides/sanp',
-              translate: true,
-            },
-          },
-        ],
+              translate: true
+            }
+          }
+        ]
       },
       {
         title: "Per l'utilizzo",
@@ -483,9 +483,9 @@ export const guideListPagesProps = [
                 'Scopri come si crea un avviso di pagamento',
                 'Usa i modelli grafici per la creazione di un avviso',
                 'Visualizza alcuni esempi',
-                'Consulta le indicazioni per la produzione di un avviso di pagamento',
+                'Consulta le indicazioni per la produzione di un avviso di pagamento'
               ],
-              translate: true,
+              translate: true
             },
             imagePath:
               'http://0.0.0.0:1337/uploads/guida_tecnica_sugli_avvisi_di_pagamento_df77a98f5f.png',
@@ -494,15 +494,15 @@ export const guideListPagesProps = [
             link: {
               label: 'guideListPage.cardSection.linkLabel',
               href: '/pago-pa/guides/avviso-pagamento',
-              translate: true,
-            },
-          },
-        ],
-      },
+              translate: true
+            }
+          }
+        ]
+      }
     ],
     product: product,
     bannerLinks: product.bannerLinks,
     seo: undefined,
-    updatedAt: dateNow,
-  },
+    updatedAt: dateNow
+  }
 ] satisfies readonly GuideListPageProps[];

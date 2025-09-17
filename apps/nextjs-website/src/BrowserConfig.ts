@@ -7,7 +7,7 @@ import { secrets } from './config';
 const BrowserConfigCodec = t.type({
   NEXT_PUBLIC_COGNITO_REGION: t.string,
   NEXT_PUBLIC_COGNITO_USER_POOL_ID: t.string,
-  NEXT_PUBLIC_COGNITO_IDENTITY_POOL_ID: t.string,
+  NEXT_PUBLIC_COGNITO_IDENTITY_POOL_ID: t.string
 });
 
 export type BrowserConfig = t.TypeOf<typeof BrowserConfigCodec>;
@@ -24,13 +24,13 @@ export const publicEnv = {
     process.env.NEXT_PUBLIC_COGNITO_USER_POOL_ID,
   NEXT_PUBLIC_COGNITO_IDENTITY_POOL_ID:
     secrets.NEXT_PUBLIC_COGNITO_IDENTITY_POOL_ID ||
-    process.env.NEXT_PUBLIC_COGNITO_IDENTITY_POOL_ID,
+    process.env.NEXT_PUBLIC_COGNITO_IDENTITY_POOL_ID
 };
 
 export const makeBrowserConfig = (
-  env: Record<string, undefined | string>,
+  env: Record<string, undefined | string>
 ): E.Either<string, BrowserConfig> =>
   pipe(
     BrowserConfigCodec.decode(env),
-    E.mapLeft((errors) => PR.failure(errors).join('\n')),
+    E.mapLeft((errors) => PR.failure(errors).join('\n'))
   );

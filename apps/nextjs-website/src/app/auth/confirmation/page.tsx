@@ -16,7 +16,7 @@ enum State {
   loading = 'loading',
   resendCode = 'resendCode',
   alreadyConfirmed = 'alreadyConfirmed',
-  error = 'error',
+  error = 'error'
 }
 
 const ConfirmationContent = () => {

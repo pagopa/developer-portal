@@ -49,11 +49,11 @@ const Item = (props: INewsroomItem) => {
       options = {
         day: '2-digit',
         month: 'long',
-        year: 'numeric',
-      },
+        year: 'numeric'
+      }
     },
     title,
-    href,
+    href
   } = props;
 
   return (
@@ -76,7 +76,7 @@ const Item = (props: INewsroomItem) => {
             position={'absolute'}
             sx={{
               borderRadius: 1,
-              backgroundColor: theme.palette.info.main,
+              backgroundColor: theme.palette.info.main
             }}
           >
             <Typography fontSize={14} fontWeight={600}>
@@ -95,7 +95,7 @@ const Item = (props: INewsroomItem) => {
               borderRadius: 16,
               width: '100%',
               height: 'auto',
-              marginBottom: '16px',
+              marginBottom: '16px'
             }}
           />
         )}
@@ -122,7 +122,7 @@ const Item = (props: INewsroomItem) => {
               textAlign: 'center',
               textOverflow: 'ellipsis',
               overflow: 'hidden',
-              display: 'inline-block',
+              display: 'inline-block'
             }}
           >
             <Typography fontSize={14} fontWeight={600} sx={{ marginX: '8px' }}>
@@ -136,14 +136,14 @@ const Item = (props: INewsroomItem) => {
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-between',
-          flexGrow: '0',
+          flexGrow: '0'
         }}
       >
         <Typography
           variant={variant}
           sx={{
             fontSize: '1.5rem !important',
-            lineHeight: '1.15 !important',
+            lineHeight: '1.15 !important'
           }}
         >
           {title}
@@ -165,7 +165,7 @@ const Newsroom = (props: INewsroom) => {
 
   const news = useMemo(
     () => items.map((item, i) => <Item key={i} {...item} />),
-    [items],
+    [items]
   );
 
   return (
@@ -179,13 +179,13 @@ const Newsroom = (props: INewsroom) => {
           maxWidth: { md: '1280px', lg: '1310px' },
           '&.MuiGrid-container': {
             padding: { xs: '0 32px', lg: 0 },
-            marginLeft: { md: '-24px' },
+            marginLeft: { md: '-24px' }
           },
           overflowX: 'scroll',
           width: {
             xs: 'auto',
-            md: '100%',
-          },
+            md: '100%'
+          }
         }}
       >
         {news}

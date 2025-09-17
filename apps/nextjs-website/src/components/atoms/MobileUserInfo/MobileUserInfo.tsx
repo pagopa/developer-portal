@@ -49,7 +49,7 @@ const MobileUserInfo = ({ onClick }: MobileUserInfoProps) => {
             alignItems: 'center',
             textDecoration: 'none',
             color: palette.text.primary,
-            marginBottom: 2,
+            marginBottom: 2
           }}
         >
           <Typography
@@ -59,7 +59,7 @@ const MobileUserInfo = ({ onClick }: MobileUserInfoProps) => {
               fontSize: 18,
               fontWeight: 600,
               display: 'flex',
-              marginRight: 1,
+              marginRight: 1
             }}
           >
             {t('auth.login.action')}
@@ -68,7 +68,7 @@ const MobileUserInfo = ({ onClick }: MobileUserInfoProps) => {
             sx={{
               color: palette.primary.dark,
               height: 20,
-              width: 18,
+              width: 18
             }}
           />
         </MuiLink>
@@ -83,7 +83,7 @@ const MobileUserInfo = ({ onClick }: MobileUserInfoProps) => {
                   width: 20,
                   height: 20,
                   color: palette.primary.dark,
-                  marginRight: 1,
+                  marginRight: 1
                 }}
               ></PersonOutline>
               <Typography
@@ -94,7 +94,7 @@ const MobileUserInfo = ({ onClick }: MobileUserInfoProps) => {
                   color: palette.primary.dark,
                   fontSize: 18,
                   fontWeight: 600,
-                  display: 'block',
+                  display: 'block'
                 }}
               >
                 {user.attributes.given_name} {user.attributes.family_name}
@@ -110,7 +110,7 @@ const MobileUserInfo = ({ onClick }: MobileUserInfoProps) => {
             style={{
               color: palette.primary.dark,
               display: 'block',
-              textDecoration: 'none',
+              textDecoration: 'none'
             }}
           >
             {t('shared.yourData')}
@@ -124,7 +124,7 @@ const MobileUserInfo = ({ onClick }: MobileUserInfoProps) => {
               alignItems: 'center',
               textDecoration: 'none',
               color: palette.text.primary,
-              justifyContent: 'start',
+              justifyContent: 'start'
             }}
           >
             <Typography
@@ -134,7 +134,7 @@ const MobileUserInfo = ({ onClick }: MobileUserInfoProps) => {
                 fontSize: '18px',
                 fontWeight: 400,
                 display: 'flex',
-                marginRight: 1,
+                marginRight: 1
               }}
             >
               {t('auth.logout')}

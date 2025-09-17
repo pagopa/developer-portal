@@ -19,7 +19,7 @@ const TutorialsOverview = ({
   subtitle,
   ctaLabel,
   tutorials,
-  tutorialPath,
+  tutorialPath
 }: TutorialsOverviewProps) => {
   const t = useTranslations();
   const label = t('shared.readTutorial');
@@ -30,15 +30,15 @@ const TutorialsOverview = ({
       subtitle={subtitle}
       link={{
         text: ctaLabel || t('overview.tutorial.ctaLabel'),
-        url: tutorialPath.path,
+        url: tutorialPath.path
       }}
       items={tutorials.map((tutorial) => ({
         ...tutorial,
         image: tutorial.image,
         link: {
           url: tutorial.path,
-          text: label,
-        },
+          text: label
+        }
       }))}
     />
   );

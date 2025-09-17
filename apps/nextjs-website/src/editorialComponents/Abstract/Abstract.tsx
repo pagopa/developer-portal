@@ -20,7 +20,7 @@ export const Abstract: React.FC<AbstractProps> = ({
   background,
   layout = 'left',
   containerStyle,
-  stackStyle,
+  stackStyle
 }) => {
   const { palette } = useTheme();
   const theme = palette.mode;
@@ -49,7 +49,7 @@ export const Abstract: React.FC<AbstractProps> = ({
         objectFit: 'cover',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
-        backgroundImage: `${overlay}url(${background ?? ''})`,
+        backgroundImage: `${overlay}url(${background ?? ''})`
       }}
     />
   );
@@ -59,7 +59,7 @@ export const Abstract: React.FC<AbstractProps> = ({
   const flexLayoutMap = {
     center: 'center',
     right: 'flex-end',
-    left: 'flex-start',
+    left: 'flex-start'
   };
 
   return (
@@ -71,7 +71,7 @@ export const Abstract: React.FC<AbstractProps> = ({
         sx={
           stackStyle || {
             paddingY: { xs: spacing(5), md: spacing(10) },
-            paddingX: 0,
+            paddingX: 0
           }
         }
         width='100%'

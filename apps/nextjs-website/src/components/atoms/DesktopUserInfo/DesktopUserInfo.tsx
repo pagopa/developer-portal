@@ -9,7 +9,7 @@ import {
   MenuItem,
   ListItemIcon,
   useTheme,
-  Link as MuiLink,
+  Link as MuiLink
 } from '@mui/material';
 import { Auth } from 'aws-amplify';
 import React, { FC, useCallback, useState } from 'react';
@@ -73,7 +73,7 @@ const DesktopUserInfo: FC = () => {
             display: 'flex',
             alignItems: 'center',
             textDecoration: 'none',
-            color: palette.text.primary,
+            color: palette.text.primary
           }}
         >
           <Typography
@@ -81,7 +81,7 @@ const DesktopUserInfo: FC = () => {
             sx={{
               fontSize: '14px',
               fontWeight: 600,
-              display: { xs: 'none', sm: 'flex' },
+              display: { xs: 'none', sm: 'flex' }
             }}
           >
             {t('auth.login.action')}
@@ -104,7 +104,7 @@ const DesktopUserInfo: FC = () => {
                 width: 20,
                 height: 20,
                 color: palette.text.primary,
-                marginRight: 1,
+                marginRight: 1
               }}
             ></PersonOutline>
             <Typography
@@ -113,7 +113,7 @@ const DesktopUserInfo: FC = () => {
                 maxWidth: '300px',
                 fontSize: 14,
                 fontWeight: 600,
-                display: 'block',
+                display: 'block'
               }}
             >
               {user.attributes.given_name} {user.attributes.family_name}
@@ -132,15 +132,15 @@ const DesktopUserInfo: FC = () => {
             onClick={handleClose}
             anchorOrigin={{
               vertical: 'bottom',
-              horizontal: 'right',
+              horizontal: 'right'
             }}
             transformOrigin={{
               vertical: 'top',
-              horizontal: 'right',
+              horizontal: 'right'
             }}
             sx={{
               filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
-              mt: 1.5,
+              mt: 1.5
             }}
           >
             <MenuItem
@@ -154,7 +154,7 @@ const DesktopUserInfo: FC = () => {
                   alignSelf: 'stretch',
                   textDecoration: 'none',
                   color: palette.text.primary,
-                  p: 2,
+                  p: 2
                 }}
               >
                 {t('shared.yourData')}

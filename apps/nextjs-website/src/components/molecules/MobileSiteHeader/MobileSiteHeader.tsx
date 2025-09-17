@@ -1,7 +1,7 @@
 'use client';
 import {
   SITE_HEADER_HEIGHT,
-  SiteHeaderProps,
+  SiteHeaderProps
 } from '@/components/molecules/SiteHeader/SiteHeader';
 import Button from '@mui/material/Button';
 import React, { useEffect, useRef, useState } from 'react';
@@ -20,7 +20,7 @@ import MobileUserInfo from '@/components/atoms/MobileUserInfo/MobileUserInfo';
 export const MobileSiteHeaderStyledTreeItem = styled(TreeItem)(({ theme }) => ({
   [`&`]: {
     '--x': 16,
-    marginBottom: 16,
+    marginBottom: 16
   },
   [`& .${treeItemClasses.content}`]: {
     backgroundColor: `${theme.palette.common.white} !important`,
@@ -30,17 +30,17 @@ export const MobileSiteHeaderStyledTreeItem = styled(TreeItem)(({ theme }) => ({
     justifyContent: 'start',
     gap: 0,
     padding: 0,
-    margin: 0,
+    margin: 0
   },
   [`& .${treeItemClasses.content} .${treeItemClasses.focused}`]: {
-    backgroundColor: `${theme.palette.common.white} !important`,
+    backgroundColor: `${theme.palette.common.white} !important`
   },
   [`& .${treeItemClasses.content}:hover`]: {
-    backgroundColor: `${theme.palette.common.white} !important`,
+    backgroundColor: `${theme.palette.common.white} !important`
   },
   [`& .${treeItemClasses.content}:has(.${treeItemClasses.iconContainer}:empty)`]:
     {
-      paddingRight: 0,
+      paddingRight: 0
     },
   [`& .${treeItemClasses.iconContainer}`]: {
     marginTop: 0,
@@ -48,10 +48,10 @@ export const MobileSiteHeaderStyledTreeItem = styled(TreeItem)(({ theme }) => ({
     marginRight: 0,
     marginBottom: 16,
     paddingRight: 0,
-    paddingLeft: 0,
+    paddingLeft: 0
   },
   [`& .${treeItemClasses.iconContainer}:empty`]: {
-    display: 'none',
+    display: 'none'
   },
   [`& .${treeItemClasses.content} > .${treeItemClasses.label}`]: {
     color: theme.palette.primary.dark,
@@ -64,41 +64,41 @@ export const MobileSiteHeaderStyledTreeItem = styled(TreeItem)(({ theme }) => ({
     marginLeft: 0,
     marginRight: 0,
     marginBottom: 16,
-    padding: 0,
+    padding: 0
   },
   [`& .${treeItemClasses.content} > .${treeItemClasses.label} > a`]: {
     color: theme.palette.primary.dark,
     paddingTop: 16,
     paddingBottom: 16,
-    paddingRight: 32,
+    paddingRight: 32
   },
   [`& ul`]: {
     paddingLeft: 0,
-    '--y': 'calc(var(--x) + 0)',
+    '--y': 'calc(var(--x) + 0)'
   },
   [`& li`]: {
-    '--x': 'calc(var(--y) + 24)',
+    '--x': 'calc(var(--y) + 24)'
   },
   ['& a']: {
-    paddingLeft: 'calc(1px * var(--x))',
+    paddingLeft: 'calc(1px * var(--x))'
   },
   [`& .${treeItemClasses.label}`]: {
     padding: 0,
-    paddingLeft: 0,
+    paddingLeft: 0
   },
   [`& .${treeItemClasses.root}`]: {
     margin: 0,
-    paddingLeft: 0,
+    paddingLeft: 0
   },
   [`& .${treeItemClasses.selected}`]: {
-    backgroundColor: `${theme.palette.common.white} !important`,
+    backgroundColor: `${theme.palette.common.white} !important`
   },
   [`& .${treeItemClasses.content} .${treeItemClasses.selected}`]: {
-    backgroundColor: `${theme.palette.common.white} !important`,
+    backgroundColor: `${theme.palette.common.white} !important`
   },
   [`& .${treeItemClasses.selected} > .${treeItemClasses.label} > *`]: {
-    color: theme.palette.primary.dark,
-  },
+    color: theme.palette.primary.dark
+  }
 }));
 
 const MobileSiteHeader = ({ products }: SiteHeaderProps) => {
@@ -139,7 +139,7 @@ const MobileSiteHeader = ({ products }: SiteHeaderProps) => {
         flexGrow: 1,
         paddingLeft: 2,
         gap: 4,
-        justifyContent: 'end',
+        justifyContent: 'end'
       }}
     >
       <Button
@@ -160,13 +160,13 @@ const MobileSiteHeader = ({ products }: SiteHeaderProps) => {
           padding: '16px 44px 8px 44px',
           position: 'fixed',
           width: '100%',
-          zIndex: 200,
+          zIndex: 200
         }}
       >
         <SimpleTreeView
           slots={{
             collapseIcon: ArrowDropUp,
-            expandIcon: ArrowDropDown,
+            expandIcon: ArrowDropDown
           }}
           multiSelect
         >
@@ -186,7 +186,7 @@ const MobileSiteHeader = ({ products }: SiteHeaderProps) => {
                   style={{
                     color: palette.primary.dark,
                     display: 'block',
-                    textDecoration: 'none',
+                    textDecoration: 'none'
                   }}
                 >
                   {product.name}
@@ -208,7 +208,7 @@ const MobileSiteHeader = ({ products }: SiteHeaderProps) => {
                   display: 'block',
                   textDecoration: 'none',
                   fontWeight: 600,
-                  padding: 0,
+                  padding: 0
                 }}
               >
                 {t('siteHeader.solutions')}
@@ -228,7 +228,7 @@ const MobileSiteHeader = ({ products }: SiteHeaderProps) => {
                   display: 'block',
                   textDecoration: 'none',
                   fontWeight: 600,
-                  padding: 0,
+                  padding: 0
                 }}
               >
                 {t('siteHeader.webinars')}

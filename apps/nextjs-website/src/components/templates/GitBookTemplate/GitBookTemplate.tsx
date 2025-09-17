@@ -37,7 +37,7 @@ const GitBookTemplate = ({
   menuDistanceFromTop,
   contentMarginTop = 75,
   hasHeader = true,
-  hasInPageMenu = true,
+  hasInPageMenu = true
 }: GitBookTemplateProps) => {
   const t = useTranslations();
   const paddingTop = hasHeader ? '60px' : '-80px';
@@ -49,7 +49,7 @@ const GitBookTemplate = ({
           display: 'flex',
           flexDirection: { xs: 'column', lg: 'row' },
           margin: '0 auto',
-          maxWidth: '1900px',
+          maxWidth: '1900px'
         }}
       >
         {menu && (
@@ -71,8 +71,8 @@ const GitBookTemplate = ({
             flexGrow: { lg: 1 },
             maxWidth: {
               xs: '100%',
-              lg: '1008px',
-            },
+              lg: '1008px'
+            }
           }}
         >
           <Box sx={{ paddingTop: paddingTop, paddingX: '40px' }}>
@@ -88,14 +88,14 @@ const GitBookTemplate = ({
               display: { xs: 'none', lg: 'initial' },
               position: 'relative',
               padding: { lg: hasHeader ? '80px 64px' : '48px 64px' },
-              width: { lg: '378px' },
+              width: { lg: '378px' }
             }}
           >
             <Box
               sx={{
                 position: 'sticky',
                 maxWidth: '378px',
-                top: hasHeader ? 144 : 64,
+                top: hasHeader ? 144 : 64
               }}
             >
               <GuideInPageMenu

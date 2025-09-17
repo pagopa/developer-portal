@@ -3,12 +3,12 @@ import { createEnumType } from '../types';
 
 enum LinkType {
   internal = 'internal',
-  external = 'external',
+  external = 'external'
 }
 
 export const ProductType = t.interface({
   label: t.string,
   href: t.string,
   ariaLabel: t.string,
-  linkType: createEnumType<LinkType>(LinkType, 'LinkTypeIoTs'),
+  linkType: createEnumType<LinkType>(LinkType, 'LinkTypeIoTs')
 });

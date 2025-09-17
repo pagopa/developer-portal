@@ -6,7 +6,7 @@ import React, { useEffect, useState, Suspense } from 'react';
 import ChatbotHistoryLayout from '@/components/organisms/ChatbotHistoryLayout/ChatbotHistoryLayout';
 import {
   flushChatQueriesFromLocalStorage,
-  useChatbot,
+  useChatbot
 } from '@/helpers/chatbot.helper';
 import { useUser } from '@/helpers/user.helper';
 import { isChatbotActive } from '@/config';
@@ -24,7 +24,7 @@ const ChatbotHistoryContent = () => {
     paginatedSessionsLoading,
     setIsSessionLoaded,
     isSessionLoaded,
-    getSessionsByPage,
+    getSessionsByPage
   } = useChatbot(true);
   const router = useRouter();
 
@@ -61,13 +61,13 @@ const ChatbotHistoryContent = () => {
     return (
       <>
         <title>{`${t('devPortal.title')} | ${t(
-          'profile.chatbot.title',
+          'profile.chatbot.title'
         )}`}</title>
         <Box
           sx={{
             padding: { xs: '40px 24px', md: '80px 40px' },
             width: '100%',
-            maxWidth: '694px',
+            maxWidth: '694px'
           }}
         >
           {!isSessionLoaded && <Spinner />}
@@ -77,7 +77,7 @@ const ChatbotHistoryContent = () => {
               userName={`${user.attributes.given_name} `}
               onDeleteChatSession={(
                 sessionId: string,
-                sessionDate: string | null,
+                sessionDate: string | null
               ) => {
                 deleteChatbotSession(sessionId).then(() => {
                   const date = sessionDate ? new Date(sessionDate) : null;
@@ -107,7 +107,7 @@ const ChatbotHistoryContent = () => {
         sx={{
           padding: { xs: '40px 24px', md: '80px 40px' },
           width: '100%',
-          maxWidth: '694px',
+          maxWidth: '694px'
         }}
       >
         <Typography variant='h4' sx={{ marginBottom: '40px' }}>

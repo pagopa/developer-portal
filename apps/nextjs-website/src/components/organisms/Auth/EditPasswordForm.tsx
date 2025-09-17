@@ -19,14 +19,14 @@ type Passwords = {
 
 export const EditPasswordForm = ({
   onSave,
-  onCancel,
+  onCancel
 }: EditPasswordFormProps) => {
   const t = useTranslations('profile');
   const [errors, setErrors] = useState<Partial<Passwords>>({});
   const [passwords, setPasswords] = useState<Passwords>({
     currentPassword: '',
     newPassword: '',
-    passwordConfirm: '',
+    passwordConfirm: ''
   });
 
   const validateForm = () => {
@@ -61,7 +61,7 @@ export const EditPasswordForm = ({
           if (error.code === 'NotAuthorizedException') {
             setErrors({ currentPassword: t('changePassword.wrongPassword') });
           }
-        },
+        }
       );
     }
   };

@@ -4,7 +4,7 @@ import {
   Box,
   useTheme,
   IconButton,
-  Link as MuiLink,
+  Link as MuiLink
 } from '@mui/material';
 import { FC, useState } from 'react';
 import VideoLibraryIcon from '@mui/icons-material/VideoLibrary';
@@ -29,7 +29,7 @@ const WebinarHeaderBanner: FC<WebinarHeaderBannerProps> = ({ webinars }) => {
 
   const webinar = webinars.find(
     ({ endDateTime }: Webinar) =>
-      endDateTime && new Date(endDateTime).getTime() > new Date().getTime(),
+      endDateTime && new Date(endDateTime).getTime() > new Date().getTime()
   );
   const { slug, title: text, endDateTime } = webinar || {};
   const storedDateTime = slug && window?.localStorage.getItem(slug);
@@ -51,7 +51,7 @@ const WebinarHeaderBanner: FC<WebinarHeaderBannerProps> = ({ webinars }) => {
         justifyContent: 'space-between',
         width: '100%',
         background: palette.text.primary,
-        padding: { xs: '10px 1rem', lg: '10px 10rem' },
+        padding: { xs: '10px 1rem', lg: '10px 10rem' }
       }}
     >
       <Box sx={{ display: 'flex' }}>
@@ -63,7 +63,7 @@ const WebinarHeaderBanner: FC<WebinarHeaderBannerProps> = ({ webinars }) => {
             WebkitLineClamp: '1',
             display: '-webkit-box',
             WebkitBoxOrient: 'vertical',
-            overflow: 'hidden',
+            overflow: 'hidden'
           }}
         >
           {text}
@@ -76,7 +76,7 @@ const WebinarHeaderBanner: FC<WebinarHeaderBannerProps> = ({ webinars }) => {
             color: palette.common.white,
             fontWeight: 600,
             height: 28,
-            marginLeft: '16px',
+            marginLeft: '16px'
           }}
           href={'/webinars/' + slug}
         >

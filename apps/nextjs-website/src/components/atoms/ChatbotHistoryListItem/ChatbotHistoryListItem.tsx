@@ -5,7 +5,7 @@ import {
   ListItemButton,
   Stack,
   Typography,
-  useTheme,
+  useTheme
 } from '@mui/material';
 import { useTranslations } from 'next-intl';
 
@@ -19,8 +19,8 @@ const DEFAULT_DATE_FORMAT = {
   options: {
     day: 'numeric',
     month: 'numeric',
-    year: 'numeric',
-  },
+    year: 'numeric'
+  }
 } satisfies DateFormatOptions;
 
 type ChatbotHistoryListItemProps = {
@@ -32,7 +32,7 @@ const ChatbotHistoryListItem = ({ session }: ChatbotHistoryListItemProps) => {
   const t = useTranslations();
   const formattedDate = new Intl.DateTimeFormat(
     DEFAULT_DATE_FORMAT.locale,
-    DEFAULT_DATE_FORMAT.options,
+    DEFAULT_DATE_FORMAT.options
   ).format(new Date(session.createdAt));
 
   return (
@@ -41,12 +41,12 @@ const ChatbotHistoryListItem = ({ session }: ChatbotHistoryListItemProps) => {
         sx={{
           minHeight: '101px',
           '&:hover': {
-            backgroundColor: '#E8EAEC',
+            backgroundColor: '#E8EAEC'
           },
           display: 'block',
           width: '100%',
           alignContent: 'center',
-          backgroundColor: '#fafafa',
+          backgroundColor: '#fafafa'
         }}
         href={`/profile/chatbot-history?sessionId=${session.id}`}
       >

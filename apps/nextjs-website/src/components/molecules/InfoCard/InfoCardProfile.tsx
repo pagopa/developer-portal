@@ -2,7 +2,7 @@
 import InfoCardEditButton from '@/components/atoms/InfoCardEditButton/InfoCardEditButton';
 import {
   InfoCardItemProfile,
-  InfoCardItemProfileProps,
+  InfoCardItemProfileProps
 } from '@/components/atoms/InfoCardItem/InfoCardItemProfile';
 import { isProduction } from '@/config';
 import { Box, Button, Card, Divider, Stack, Typography } from '@mui/material';
@@ -19,7 +19,7 @@ export type InfoCardProfileProps = {
 export const InfoCardProfile = ({
   cardTitle,
   items,
-  onValue,
+  onValue
 }: InfoCardProfileProps) => {
   const t = useTranslations('profile');
 
@@ -29,7 +29,7 @@ export const InfoCardProfile = ({
   }, [items]);
 
   const isButtonDisabled = dataSectionItems.some(
-    (item) => item.required && (!item.value || item.value.trim() === ''),
+    (item) => item.required && (!item.value || item.value.trim() === '')
   );
 
   const [editing, setEditing] = useState(false);
@@ -100,7 +100,7 @@ export const InfoCardProfile = ({
               // eslint-disable-next-line functional/immutable-data
               newItems[index] = {
                 ...newItems[index],
-                value,
+                value
               };
               setDataSectionItems(newItems);
               return null;

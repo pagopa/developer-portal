@@ -18,7 +18,7 @@ type SolutionsShowcaseProps = {
 const SolutionsShowcase = ({
   title,
   cards,
-  py = 5,
+  py = 5
 }: SolutionsShowcaseProps) => {
   return (
     <Box py={py}>
@@ -31,11 +31,11 @@ const SolutionsShowcase = ({
           href: card.href,
           icon: card.logoUrl,
           tags: card.tags,
-          useSrc: true,
+          useSrc: true
         }))}
         containerSx={{
           pt: '22px',
-          mt: '-22px',
+          mt: '-22px'
         }}
       />
     </Box>

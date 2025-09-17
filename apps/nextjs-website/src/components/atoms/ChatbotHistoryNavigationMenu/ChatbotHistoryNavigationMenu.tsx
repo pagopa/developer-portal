@@ -15,7 +15,7 @@ type ChatbotHistoryNavigationMenuProps = {
 
 const ChatbotHistoryNavigationMenu = ({
   previousSession,
-  nextSession,
+  nextSession
 }: ChatbotHistoryNavigationMenuProps) => {
   const t = useTranslations();
   const { palette } = useTheme();

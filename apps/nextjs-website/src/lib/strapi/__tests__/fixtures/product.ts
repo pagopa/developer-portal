@@ -8,9 +8,9 @@ export const baseProductJson = {
     attributes: {
       name: 'Firma con IO',
       slug: 'firma-con-io',
-      shortName: 'Firma con IO',
-    },
-  },
+      shortName: 'Firma con IO'
+    }
+  }
 };
 
 export const productJson = {
@@ -33,13 +33,13 @@ export const productJson = {
       api_data_list_page: { data: null },
       tutorial_list_page: { data: null },
       guide_list_page: { data: null },
-      release_note: { data: null },
-    },
-  },
+      release_note: { data: null }
+    }
+  }
 };
 
 export const productsJson = {
-  data: [productJson.data],
+  data: [productJson.data]
 };
 
 export const product = {
@@ -63,7 +63,7 @@ export const product = {
           children: [
             {
               text: 'Apri un ticket utilizzando l’apposita funzione all’interno della tua ',
-              type: 'text',
+              type: 'text'
             },
             {
               url: 'https://selfcare.pagopa.it/auth/login?onSuccess=%2F',
@@ -71,16 +71,16 @@ export const product = {
               children: [
                 {
                   text: 'Area Riservata',
-                  type: 'text',
-                },
-              ],
+                  type: 'text'
+                }
+              ]
             },
             {
               text: '',
-              type: 'text',
-            },
-          ],
-        },
+              type: 'text'
+            }
+          ]
+        }
       ],
       theme: 'dark',
       icon: {
@@ -92,8 +92,8 @@ export const product = {
         ext: '.svg',
         mime: 'image/svg+xml',
         size: 0.31,
-        url: 'http://0.0.0.0:1337/uploads/headset_78d50d9321_5bd20d1a6b_6d5b8d3ee1.svg',
-      },
+        url: 'http://0.0.0.0:1337/uploads/headset_78d50d9321_5bd20d1a6b_6d5b8d3ee1.svg'
+      }
     },
     {
       title: 'Dicci cosa ne pensi',
@@ -103,7 +103,7 @@ export const product = {
           children: [
             {
               text: 'Per chiarimenti sulle specifiche d’implementazione, come SACI e SANP, puoi aprire una segnalazione su ',
-              type: 'text',
+              type: 'text'
             },
             {
               url: 'https://github.com/pagopa/pagopa-api/issues',
@@ -111,16 +111,16 @@ export const product = {
               children: [
                 {
                   text: 'GitHub',
-                  type: 'text',
-                },
-              ],
+                  type: 'text'
+                }
+              ]
             },
             {
               text: '',
-              type: 'text',
-            },
-          ],
-        },
+              type: 'text'
+            }
+          ]
+        }
       ],
       theme: 'light',
       icon: {
@@ -132,8 +132,8 @@ export const product = {
         ext: '.svg',
         mime: 'image/svg+xml',
         size: 0.26,
-        url: 'http://0.0.0.0:1337/uploads/feedback_1504fc4fbf_042ed8f78b.svg',
-      },
-    },
-  ],
+        url: 'http://0.0.0.0:1337/uploads/feedback_1504fc4fbf_042ed8f78b.svg'
+      }
+    }
+  ]
 } satisfies Product;

@@ -9,7 +9,7 @@ type ChatbotHistoryLayoutProps = {
 
 const ChatbotHistoryLayout = ({
   paginatedSessions,
-  getSessionsByPage,
+  getSessionsByPage
 }: ChatbotHistoryLayoutProps) => {
   return (
     <Stack direction='column'>

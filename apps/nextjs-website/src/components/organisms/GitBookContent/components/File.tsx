@@ -14,7 +14,7 @@ const File = ({ src, filename }: FileProps) => (
       overflow: 'hidden',
       whiteSpace: 'pre-wrap',
       wordWrap: 'break-word',
-      wordBreak: 'break-all',
+      wordBreak: 'break-all'
     }}
     component={ButtonNaked}
     color='text'

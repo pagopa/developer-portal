@@ -12,9 +12,9 @@ export const fetchFromStrapi = <T>(path: string, populate: string) =>
       ({
         config: {
           STRAPI_ENDPOINT: strapiEndpoint,
-          STRAPI_API_TOKEN: strapiApiToken,
+          STRAPI_API_TOKEN: strapiApiToken
         },
-        fetchFun,
+        fetchFun
       }) =>
         pipe(
           // handle any promise result
@@ -23,11 +23,11 @@ export const fetchFromStrapi = <T>(path: string, populate: string) =>
               fetchFun(`${strapiEndpoint}/api/${path}/?${populate}`, {
                 method: 'GET',
                 headers: {
-                  Authorization: `Bearer ${strapiApiToken}`,
+                  Authorization: `Bearer ${strapiApiToken}`
                 },
-                cache: 'no-store',
+                cache: 'no-store'
               }),
-            E.toError,
+            E.toError
           ),
           TE.chain((response) => {
             if (response.status === 200) {
@@ -41,10 +41,10 @@ export const fetchFromStrapi = <T>(path: string, populate: string) =>
           TE.fold(
             // eslint-disable-next-line functional/no-promise-reject
             (errors) => () => Promise.reject(errors),
-            (result) => () => Promise.resolve(result),
-          ),
-        )(),
-    ),
+            (result) => () => Promise.resolve(result)
+          )
+        )()
+    )
   );
 
 function nullsToUndefined(obj: any): any {

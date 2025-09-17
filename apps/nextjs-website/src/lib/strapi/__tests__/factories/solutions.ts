@@ -19,10 +19,10 @@ export function minimalDataSolutions() {
           stats: [],
           statsSource: undefined,
           caseHistories: undefined,
-          seo: undefined,
-        },
-      },
-    ],
+          seo: undefined
+        }
+      }
+    ]
   } satisfies StrapiSolutions;
 }
 
@@ -37,10 +37,10 @@ export function solutionsWithItemMissingData() {
           ...strapiSolution.attributes,
           title: undefined,
           slug: undefined,
-          description: undefined,
-        },
-      },
-    ],
+          description: undefined
+        }
+      }
+    ]
   };
 }
 
@@ -53,10 +53,10 @@ export function solutionWithItemMissingMandatoryData() {
         ...strapiSolution,
         attributes: {
           ...strapiSolution.attributes,
-          icon: { data: undefined },
-        },
-      },
-    ],
+          icon: { data: undefined }
+        }
+      }
+    ]
   };
 }
 
@@ -69,10 +69,10 @@ export function solutionsWithItemWithoutCaseHistories() {
         ...strapiSolution,
         attributes: {
           ...strapiSolution.attributes,
-          caseHistories: undefined,
-        },
-      },
-    ],
+          caseHistories: undefined
+        }
+      }
+    ]
   } satisfies StrapiSolutions;
 }
 
@@ -86,11 +86,11 @@ export function solutionsWithItemWithoutWebinars() {
         attributes: {
           ...strapiSolution.attributes,
           webinars: {
-            data: [],
-          },
-        },
-      },
-    ],
+            data: []
+          }
+        }
+      }
+    ]
   } satisfies StrapiSolutions;
 }
 
@@ -104,18 +104,18 @@ export function solutionsWithItemMissingSolutionSlug() {
         attributes: {
           ...strapiSolution.attributes,
           title: 'Solution Without Slug',
-          slug: undefined as any,
-        },
+          slug: undefined as any
+        }
       },
       {
         ...strapiSolution,
         attributes: {
           ...strapiSolution.attributes,
           title: 'Valid Solution',
-          slug: 'valid-solution',
-        },
-      },
-    ],
+          slug: 'valid-solution'
+        }
+      }
+    ]
   } satisfies StrapiSolutions;
 }
 
@@ -149,11 +149,11 @@ export function solutionsWithItemMissingCaseHistorySlug() {
                             ?.case_histories.data[0].attributes.image.data
                             .attributes,
                           url: '/test-image.png',
-                          name: 'Test Image',
-                        },
-                      },
-                    },
-                  },
+                          name: 'Test Image'
+                        }
+                      }
+                    }
+                  }
                 },
                 {
                   id: 2,
@@ -169,17 +169,17 @@ export function solutionsWithItemMissingCaseHistorySlug() {
                             ?.case_histories.data[0].attributes.image.data
                             .attributes,
                           url: '/valid-image.png',
-                          name: 'Valid Image',
-                        },
-                      },
-                    },
-                  },
-                },
-              ],
-            },
-          },
-        },
-      },
-    ],
+                          name: 'Valid Image'
+                        }
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }
+    ]
   } satisfies StrapiSolutions;
 }

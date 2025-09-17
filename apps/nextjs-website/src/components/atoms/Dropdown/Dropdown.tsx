@@ -26,7 +26,7 @@ const Dropdown = ({
   buttonStyle,
   menuStyle,
   menuAnchorOrigin,
-  menuTransformOrigin,
+  menuTransformOrigin
 }: DropdownProps) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = useMemo(() => Boolean(anchorEl), [anchorEl]);
@@ -59,17 +59,17 @@ const Dropdown = ({
         anchorOrigin={
           menuAnchorOrigin || {
             vertical: 'bottom',
-            horizontal: 'right',
+            horizontal: 'right'
           }
         }
         transformOrigin={
           menuTransformOrigin || {
             vertical: 'top',
-            horizontal: 'center',
+            horizontal: 'center'
           }
         }
         MenuListProps={{
-          'aria-labelledby': `${label}-button`,
+          'aria-labelledby': `${label}-button`
         }}
         anchorEl={anchorEl}
         open={open}

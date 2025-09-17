@@ -5,11 +5,11 @@ import { StrapiWebinarCategories } from '@/lib/strapi/types/webinarCategory';
 const makeStrapiWebinarCategoriesPopulate = () =>
   qs.stringify({
     populate: {
-      icon: { populate: '*' },
-    },
+      icon: { populate: '*' }
+    }
   });
 
 export const fetchWebinarCategories = fetchFromStrapi<StrapiWebinarCategories>(
   'webinar-categories',
-  makeStrapiWebinarCategoriesPopulate(),
+  makeStrapiWebinarCategoriesPopulate()
 );

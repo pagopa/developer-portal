@@ -4,7 +4,7 @@ export const alertPart: StrapiPart = {
   __component: 'parts.alert',
   text: 'Alert text',
   title: 'Alert title',
-  severity: 'info',
+  severity: 'info'
 };
 
 export const apiTesterPart: StrapiPart = {
@@ -15,22 +15,22 @@ export const apiTesterPart: StrapiPart = {
     code: 'request code',
     language: 'js',
     showLineNumbers: true,
-    __component: 'parts.code-block',
+    __component: 'parts.code-block'
   },
   responseDescription: 'Response description',
   responseCode: {
     code: 'response code',
     language: 'js',
     showLineNumbers: false,
-    __component: 'parts.code-block',
-  },
+    __component: 'parts.code-block'
+  }
 };
 
 export const codeBlockPart: StrapiPart = {
   __component: 'parts.code-block',
   code: 'console.log("Hello")',
   language: 'js',
-  showLineNumbers: true,
+  showLineNumbers: true
 };
 
 export const htmlPart: StrapiPart = {
@@ -38,14 +38,14 @@ export const htmlPart: StrapiPart = {
   html: [
     {
       type: 'paragraph',
-      children: [{ type: 'text', text: 'HTML content' }],
-    },
-  ],
+      children: [{ type: 'text', text: 'HTML content' }]
+    }
+  ]
 };
 
 export const embedHtmlPart: StrapiPart = {
   __component: 'parts.embed-html',
-  html: '<div>Embed HTML</div>',
+  html: '<div>Embed HTML</div>'
 };
 
 export const quotePart: StrapiPart = {
@@ -59,13 +59,13 @@ export const quotePart: StrapiPart = {
         name: '',
         ext: '',
         mime: '',
-        size: 0,
-      },
-    },
-  },
+        size: 0
+      }
+    }
+  }
 };
 
 export const ckEditorPart: StrapiPart = {
   __component: 'parts.ck-editor',
-  content: '<p>CKEditor content</p>',
+  content: '<p>CKEditor content</p>'
 };

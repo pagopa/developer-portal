@@ -1,7 +1,7 @@
 import ContentWrapper from '@/components/atoms/ContentWrapper/ContentWrapper';
 
 export default function CaseHistoriesLayout({
-  children,
+  children
 }: {
   children: React.ReactNode | React.ReactNode[];
 }) {

@@ -24,7 +24,7 @@ const SectionTitle = ({
   link,
   margin,
   children,
-  variant = 'h4',
+  variant = 'h4'
 }: SectionTitleProps) => {
   return (
     <EContainer>
@@ -42,7 +42,7 @@ const SectionTitle = ({
               paddingBottom: '16px',
               width: '100%',
               fontSize: '2rem !important',
-              lineHeight: '1.125 !important',
+              lineHeight: '1.125 !important'
             }}
           >
             {title}

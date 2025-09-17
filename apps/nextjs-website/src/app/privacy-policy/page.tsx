@@ -8,7 +8,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return makeMetadata({
     title: 'Privacy Policy',
     url: `${baseUrl}/privacy-policy`,
-    locale: 'it_IT',
+    locale: 'it_IT'
   });
 }
 

@@ -1,7 +1,7 @@
 import { StrapiMedia } from '@/lib/strapi/types/media';
 import {
   StrapiBaseProduct,
-  StrapiBaseProductWithoutBannerLinks,
+  StrapiBaseProductWithoutBannerLinks
 } from '@/lib/strapi/types/product';
 import { StrapiBannerLink } from '@/lib/strapi/types/bannerLink';
 import { StrapiSeo } from '@/lib/strapi/types/seo';

@@ -9,7 +9,7 @@ export const ButtonNaked = <C extends React.ElementType>(
       buttonRef?: React.Ref<HTMLButtonElement>;
       weight?: 'default' | 'light';
     }
-  >,
+  >
 ): React.ReactElement => {
   const {
     children,
@@ -22,7 +22,7 @@ export const ButtonNaked = <C extends React.ElementType>(
     <Button
       sx={{
         fontWeight: weight === 'default' ? '600' : '400',
-        letterSpacing: 0.3,
+        letterSpacing: 0.3
       }}
       variant='naked'
       size='small'

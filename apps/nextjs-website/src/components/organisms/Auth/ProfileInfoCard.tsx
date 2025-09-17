@@ -8,14 +8,14 @@ export type ProfileInfoCardProps = PropsWithChildren<{
   renderItem: (
     item: InfoCardItemProps,
     index: number,
-    items: InfoCardItemProps[],
+    items: InfoCardItemProps[]
   ) => React.ReactNode;
 }>;
 
 export const ProfileInfoCard = ({
   cardTitle,
   items,
-  renderItem,
+  renderItem
 }: ProfileInfoCardProps) => {
   return (
     <Card raised sx={{ padding: 4, maxWidth: '700px' }}>

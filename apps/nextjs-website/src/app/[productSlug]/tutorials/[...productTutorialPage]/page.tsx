@@ -2,13 +2,13 @@ import { getTutorial } from '@/lib/api';
 import { Metadata } from 'next';
 import {
   makeMetadata,
-  makeMetadataFromStrapi,
+  makeMetadataFromStrapi
 } from '@/helpers/metadata.helpers';
 import TutorialTemplate from '@/components/templates/TutorialTemplate/TutorialTemplate';
 import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
 import {
   breadcrumbItemByProduct,
-  productToBreadcrumb,
+  productToBreadcrumb
 } from '@/helpers/structuredData.helpers';
 
 type Params = {
@@ -17,7 +17,7 @@ type Params = {
 };
 
 export async function generateMetadata({
-  params,
+  params
 }: {
   params: Promise<Params>;
 }): Promise<Metadata | undefined> {
@@ -34,7 +34,7 @@ export async function generateMetadata({
 
     return makeMetadata({
       title: [title, tutorialProps.product?.name].filter(Boolean).join(' | '),
-      url: path,
+      url: path
     });
   }
 }
@@ -53,11 +53,11 @@ const Page = async ({ params }: { params: Promise<Params> }) => {
         name: strapiTutorialProps.seo?.metaTitle || strapiTutorialProps.title,
         item: breadcrumbItemByProduct(strapiTutorialProps.product, [
           'guides',
-          ...(resolvedParams?.productTutorialPage || []),
-        ]),
-      },
+          ...(resolvedParams?.productTutorialPage || [])
+        ])
+      }
     ],
-    seo: strapiTutorialProps.seo,
+    seo: strapiTutorialProps.seo
   });
   return (
     <TutorialTemplate

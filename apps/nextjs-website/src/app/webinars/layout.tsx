@@ -1,7 +1,7 @@
 import ContentWrapper from '@/components/atoms/ContentWrapper/ContentWrapper';
 
 export default function WebinarsLayout({
-  children,
+  children
 }: {
   children: React.ReactNode | React.ReactNode[];
 }) {

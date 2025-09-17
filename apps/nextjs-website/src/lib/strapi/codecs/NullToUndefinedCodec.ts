@@ -20,8 +20,8 @@ export const NullToUndefinedCodec = new t.Type<undefined, null, unknown>(
   (u, c) =>
     pipe(
       t.null.validate(u, c),
-      E.map(() => undefined),
+      E.map(() => undefined)
     ),
   // encode: converts a value of type A to a value of type O
-  () => null,
+  () => null
 );

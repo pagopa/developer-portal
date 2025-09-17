@@ -23,22 +23,22 @@ export function minimalQuickStartGuides(): StrapiQuickStartGuides {
                   title: 'Minimal Step',
                   anchor: 'minimal-step',
                   publishedAt: '2024-01-01T00:00:00.000Z',
-                  parts: [minimalAlertPart()],
-                },
-              },
-            ],
-          },
-        },
-      },
+                  parts: [minimalAlertPart()]
+                }
+              }
+            ]
+          }
+        }
+      }
     ],
     meta: {
       pagination: {
         page: 1,
         pageSize: 25,
         pageCount: 1,
-        total: 1,
-      },
-    },
+        total: 1
+      }
+    }
   };
 }
 
@@ -50,9 +50,9 @@ export function emptyQuickStartGuides(): StrapiQuickStartGuides {
         page: 1,
         pageSize: 25,
         pageCount: 0,
-        total: 0,
-      },
-    },
+        total: 0
+      }
+    }
   };
 }
 
@@ -71,14 +71,14 @@ export function quickStartGuidesWithMissingProductSlug(): StrapiQuickStartGuides
                 ...quickStart.attributes.product.data,
                 attributes: {
                   ...quickStart.attributes.product.data.attributes,
-                  slug: undefined as any,
-                },
-              },
-            },
-          },
+                  slug: undefined as any
+                }
+              }
+            }
+          }
         };
       }
       return quickStart;
-    }),
+    })
   };
 }

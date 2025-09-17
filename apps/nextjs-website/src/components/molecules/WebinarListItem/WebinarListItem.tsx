@@ -30,7 +30,7 @@ const WebinarListItem = ({ webinar }: WebinarListItemProps) => {
           style={{
             borderRadius: 16,
             width: '100%',
-            height: 'auto',
+            height: 'auto'
           }}
         />
       </Box>
@@ -43,7 +43,7 @@ const WebinarListItem = ({ webinar }: WebinarListItemProps) => {
         >
           {new Date(webinar.startDateTime).toLocaleDateString(
             defaultLocale,
-            dateOptions,
+            dateOptions
           )}
         </Typography>
       )}

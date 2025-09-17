@@ -25,7 +25,7 @@ const FutureWebinarsShowcase = ({
   link,
   title = 'our',
   description = 'description',
-  webinars,
+  webinars
 }: FutureWebinarsShowcaseProps) => {
   const theme = useTheme();
   const t = useTranslations('webinar.webinarsSection');
@@ -49,8 +49,8 @@ const FutureWebinarsShowcase = ({
           bottom: 0,
           left: 0,
           backgroundColor: theme.palette.primary.main,
-          opacity: 0.7,
-        },
+          opacity: 0.7
+        }
       }}
     >
       <EContainer>

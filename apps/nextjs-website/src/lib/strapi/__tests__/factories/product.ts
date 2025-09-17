@@ -3,7 +3,7 @@ import {
   StrapiBaseProductWithBannerLinks,
   StrapiBaseProductWithoutBannerLinks,
   StrapiBaseProductWithRelations,
-  StrapiProduct,
+  StrapiProduct
 } from '@/lib/strapi/types/product';
 import { mediaJpeg } from '@/lib/strapi/__tests__/factories/media';
 import { generateBannerLinks } from '@/lib/strapi/__tests__/factories/bannerLink';
@@ -13,8 +13,8 @@ export function baseProduct(): StrapiBaseProduct {
     attributes: {
       name: 'Test Product',
       shortName: 'TP',
-      slug: 'test-product',
-    },
+      slug: 'test-product'
+    }
   };
 }
 
@@ -22,8 +22,8 @@ export function baseProductWithBannerLinks(): StrapiBaseProductWithBannerLinks {
   return {
     attributes: {
       ...baseProduct().attributes,
-      bannerLinks: generateBannerLinks(2),
-    },
+      bannerLinks: generateBannerLinks(2)
+    }
   };
 }
 
@@ -33,9 +33,9 @@ export function baseProductWithoutBannerLinks(): StrapiBaseProductWithoutBannerL
       ...baseProduct().attributes,
       description: 'Test product description',
       logo: {
-        data: mediaJpeg(),
-      },
-    },
+        data: mediaJpeg()
+      }
+    }
   };
 }
 
@@ -45,9 +45,9 @@ export function baseProductWithoutBannerLinksMinimal(): StrapiBaseProductWithout
       ...baseProduct().attributes,
       description: undefined,
       logo: {
-        data: undefined,
-      },
-    },
+        data: undefined
+      }
+    }
   };
 }
 
@@ -61,8 +61,8 @@ export function strapiBaseProductWithRelations(): StrapiBaseProductWithRelations
       api_data_list_page: { data: undefined },
       tutorial_list_page: { data: { id: 3 } },
       guide_list_page: { data: { id: 4 } },
-      release_note: { data: undefined },
-    },
+      release_note: { data: undefined }
+    }
   };
 }
 
@@ -76,8 +76,8 @@ export function strapiBaseProductWithoutRelations(): StrapiBaseProductWithRelati
       api_data_list_page: { data: undefined },
       tutorial_list_page: { data: undefined },
       guide_list_page: { data: undefined },
-      release_note: { data: undefined },
-    },
+      release_note: { data: undefined }
+    }
   };
 }
 
@@ -88,15 +88,15 @@ export function strapiProduct(): StrapiProduct {
       bannerLinks: generateBannerLinks(2),
       description: 'Complete product description',
       logo: {
-        data: mediaJpeg(),
+        data: mediaJpeg()
       },
       overview: { data: { id: 1 } },
       quickstart_guide: { data: { id: 2 } },
       api_data_list_page: { data: undefined },
       tutorial_list_page: { data: { id: 3 } },
       guide_list_page: { data: { id: 4 } },
-      release_note: { data: { id: 5 } },
-    },
+      release_note: { data: { id: 5 } }
+    }
   };
 }
 
@@ -107,15 +107,15 @@ export function strapiProductMinimal(): StrapiProduct {
       bannerLinks: undefined,
       description: undefined,
       logo: {
-        data: mediaJpeg(),
+        data: mediaJpeg()
       },
       overview: { data: undefined },
       quickstart_guide: { data: undefined },
       api_data_list_page: { data: undefined },
       tutorial_list_page: { data: undefined },
       guide_list_page: { data: undefined },
-      release_note: { data: undefined },
-    },
+      release_note: { data: undefined }
+    }
   };
 }
 
@@ -124,9 +124,9 @@ export function strapiProductWithoutLogo(): StrapiProduct {
     attributes: {
       ...strapiProduct().attributes,
       logo: {
-        data: null as any, // Simulating missing logo data
-      },
-    },
+        data: null as any // Simulating missing logo data
+      }
+    }
   };
 }
 
@@ -139,7 +139,7 @@ export function productWithAllRelations(): StrapiProduct {
       bannerLinks: generateBannerLinks(3),
       description: 'A product with all available relations and features',
       logo: {
-        data: mediaJpeg(),
+        data: mediaJpeg()
       },
       overview: { data: { id: 1 } },
       quickstart_guide: { data: { id: 2 } },
@@ -158,21 +158,21 @@ export function productWithAllRelations(): StrapiProduct {
                           id: 0,
                           name: 'Spec URL',
                           url: 'https://example.com/api/spec.yaml',
-                          hideTryIt: false,
-                        },
-                      ],
-                    },
-                  },
-                },
-              ],
-            },
-          },
-        },
+                          hideTryIt: false
+                        }
+                      ]
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
       },
       tutorial_list_page: { data: { id: 3 } },
       guide_list_page: { data: { id: 4 } },
-      release_note: { data: { id: 5 } },
-    },
+      release_note: { data: { id: 5 } }
+    }
   };
 }
 
@@ -185,14 +185,14 @@ export function productWithMissingMandatoryFields(): Partial<StrapiProduct> {
       bannerLinks: [],
       description: 'Product with missing mandatory fields',
       logo: {
-        data: mediaJpeg(),
+        data: mediaJpeg()
       },
       overview: { data: undefined },
       quickstart_guide: { data: undefined },
       api_data_list_page: { data: undefined },
       tutorial_list_page: { data: undefined },
       guide_list_page: { data: undefined },
-      release_note: { data: undefined },
-    },
+      release_note: { data: undefined }
+    }
   };
 }

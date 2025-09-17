@@ -12,11 +12,11 @@ const methods = [
   'options',
   'head',
   'patch',
-  'trace',
+  'trace'
 ];
 
 const getOperations = (
-  pathItemObj: Omit<OpenAPIV3.PathItemObject, 'parameters'>,
+  pathItemObj: Omit<OpenAPIV3.PathItemObject, 'parameters'>
 ) =>
   Object.keys(pathItemObj)
     .filter((key) => methods.includes(key))
@@ -57,7 +57,7 @@ export const Operations = ({ spec, validOperations }: OperationsProps) => {
 
   const renderOperationTag = ([path, pathItemObj = {}]: [
     string,
-    OpenAPIV3.PathItemObject | undefined,
+    OpenAPIV3.PathItemObject | undefined
   ]) => {
     const operations = getOperations(pathItemObj);
     const headerParameters = pathItemObj?.parameters || [];

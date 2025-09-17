@@ -7,7 +7,7 @@ import {
   Popover,
   Stack,
   Typography,
-  useTheme,
+  useTheme
 } from '@mui/material';
 import React from 'react';
 import { Query } from '@/lib/chatbot/queries';
@@ -24,7 +24,7 @@ type ChatbotLayoutProps = {
     chatId: string,
     contextScore: number | null,
     responseScore: number | null,
-    comment: string,
+    comment: string
   ) => null;
   isAwaitingResponse: boolean;
   areChatbotQueriesLoaded: boolean;
@@ -41,13 +41,13 @@ const ChatbotLayout = ({
   areChatbotQueriesLoaded,
   error,
   disabled,
-  mustFillFeedbackForm = false,
+  mustFillFeedbackForm = false
 }: ChatbotLayoutProps) => {
   const t = useTranslations();
   const { palette } = useTheme();
   const ref = React.useRef<HTMLElement | undefined>(undefined);
   const [anchorEl, setAnchorEl] = React.useState<HTMLElement | undefined>(
-    undefined,
+    undefined
   );
 
   const handleClick = () => {
@@ -70,7 +70,7 @@ const ChatbotLayout = ({
         position: 'fixed',
         bottom: { xs: '1rem', md: '2rem' },
         right: { xs: '1rem', md: '2rem' },
-        zIndex: 1000,
+        zIndex: 1000
       }}
     >
       <Box sx={{ display: { lg: 'none' } }}>
@@ -96,11 +96,11 @@ const ChatbotLayout = ({
         onClose={handleClose}
         anchorOrigin={{
           vertical: 'bottom',
-          horizontal: 'right',
+          horizontal: 'right'
         }}
         transformOrigin={{
           vertical: 'bottom',
-          horizontal: 'right',
+          horizontal: 'right'
         }}
         marginThreshold={0}
         disableScrollLock
@@ -114,9 +114,9 @@ const ChatbotLayout = ({
               maxHeight: { xs: '100%', md: '40rem' },
               margin: 0,
               maxWidth: { xs: '100%' },
-              minWidth: { xs: 'auto', md: '48rem' },
-            },
-          },
+              minWidth: { xs: 'auto', md: '48rem' }
+            }
+          }
         }}
       >
         <Stack

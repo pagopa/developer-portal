@@ -38,7 +38,7 @@ const ApiTesterPart = ({ apiRequest, apiResponse }: ApiTesterPartProps) => {
         display: 'flex',
         flexDirection: { xs: 'column', md: 'row' },
         marginBottom: spacing(5),
-        position: 'relative',
+        position: 'relative'
       }}
     >
       <Box
@@ -48,7 +48,7 @@ const ApiTesterPart = ({ apiRequest, apiResponse }: ApiTesterPartProps) => {
           borderTop: boxBorder,
           borderBottom: { xs: 'none', md: boxBorder },
           borderRadius: { xs: '6px 6px 0 0', md: '6px 0 0 6px' },
-          padding: spacing(3),
+          padding: spacing(3)
         }}
       >
         <Stack width={{ xs: 'auto', md: '200px' }}>
@@ -86,7 +86,7 @@ const ApiTesterPart = ({ apiRequest, apiResponse }: ApiTesterPartProps) => {
               onClick={() => setIsLifeCycleCallPhase(!isLifeCycleCallPhase)}
               style={{
                 paddingLeft: 0,
-                paddingRight: 0,
+                paddingRight: 0
               }}
             >
               <Stack

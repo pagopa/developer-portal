@@ -24,7 +24,7 @@ const delay = (ms: number): Promise<void> =>
 const RETRY_ATTEMPTS = parseInt(process.env.CDN_RETRY_ATTEMPTS || '3', 10);
 const INITIAL_RETRY_DELAY_MS = parseInt(
   process.env.CDN_RETRY_DELAY_MS || '1000',
-  10,
+  10
 );
 const TIMEOUT_LIMIT = parseInt(process.env.TIMEOUT_LIMIT || '30000');
 
@@ -34,7 +34,7 @@ const requestCache = new Map<string, Promise<any>>();
 async function withRetries<T>(
   operation: () => Promise<T>,
   operationName: string,
-  fallbackValue: T,
+  fallbackValue: T
 ): Promise<T> {
   let lastError: Error | null = null;
 
@@ -46,7 +46,7 @@ async function withRetries<T>(
       // Log successful retry if this wasn't the first attempt
       if (attempt > 1) {
         console.log(
-          `Successfully completed ${operationName} on attempt ${attempt}`,
+          `Successfully completed ${operationName} on attempt ${attempt}`
         );
       }
 
@@ -56,7 +56,7 @@ async function withRetries<T>(
 
       console.error(
         `Error during ${operationName} (attempt ${attempt}/${RETRY_ATTEMPTS}):`,
-        error,
+        error
       );
 
       // If this isn't the last attempt, wait before retrying
@@ -71,13 +71,13 @@ async function withRetries<T>(
 
   console.error(
     `Failed to complete ${operationName} after ${RETRY_ATTEMPTS} attempts:`,
-    lastError,
+    lastError
   );
   return fallbackValue;
 }
 
 export async function downloadFileAsText(
-  path: string,
+  path: string
 ): Promise<string | undefined> {
   // Check if we already have a request in progress for this path
   const cacheKey = `downloadFileAsText:${path}`;
@@ -92,13 +92,13 @@ export async function downloadFileAsText(
       const url = `${staticContentsUrl}/${path}`;
       const response = await fetch(url, {
         // Add timeout and other fetch options to prevent hanging
-        signal: AbortSignal.timeout(TIMEOUT_LIMIT), // 30 second timeout
+        signal: AbortSignal.timeout(TIMEOUT_LIMIT) // 30 second timeout
       });
 
       if (!response.ok) {
         // eslint-disable-next-line functional/no-throw-statements
         throw new Error(
-          `Failed to download file from ${url}: ${response.statusText}`,
+          `Failed to download file from ${url}: ${response.statusText}`
         );
       }
 
@@ -106,7 +106,7 @@ export async function downloadFileAsText(
       return await response.text();
     },
     `file download from ${path}`,
-    undefined,
+    undefined
   ).catch((error) => {
     // On failure, remove from cache to allow retries on subsequent calls
     requestCache.delete(cacheKey);
@@ -123,14 +123,14 @@ async function fetchFromCDN(path: string) {
   if (!staticContentsUrl) {
     // eslint-disable-next-line functional/no-throw-statements
     throw new Error(
-      'STATIC_CONTENTS_URL is not defined in the environment variables.',
+      'STATIC_CONTENTS_URL is not defined in the environment variables.'
     );
   }
 
   const url = `${staticContentsUrl}/${path}`;
   const response = await fetch(url, {
     // Add timeout and other fetch options to prevent hanging
-    signal: AbortSignal.timeout(TIMEOUT_LIMIT), // 30 second timeout
+    signal: AbortSignal.timeout(TIMEOUT_LIMIT) // 30 second timeout
   });
 
   if (!response || !response.ok) {
@@ -156,7 +156,7 @@ export async function fetchResponseFromCDN(path: string) {
       return await fetchFromCDN(path);
     },
     `response fetch from ${path}`,
-    undefined,
+    undefined
   ).catch((error) => {
     // On failure, remove from cache to allow retries on subsequent calls
     requestCache.delete(cacheKey);
@@ -170,7 +170,7 @@ export async function fetchResponseFromCDN(path: string) {
 }
 
 export async function fetchMetadataFromCDN<T>(
-  path: string,
+  path: string
 ): Promise<readonly T[] | null> {
   // Check if we already have a request in progress for this path
   const cacheKey = `fetchMetadataFromCDN:${path}`;
@@ -186,7 +186,7 @@ export async function fetchMetadataFromCDN<T>(
       return bodyContent as readonly T[];
     },
     `metadata fetch from ${path}`,
-    null,
+    null
   ).catch((error) => {
     // On failure, remove from cache to allow retries on subsequent calls
     requestCache.delete(cacheKey);
@@ -236,7 +236,7 @@ export const getGuidesMetadata = async () => {
   }
 
   guidesMetadataCache = await fetchMetadataFromCDN<JsonMetadata>(
-    S3_GUIDES_METADATA_JSON_PATH,
+    S3_GUIDES_METADATA_JSON_PATH
   );
   guidesMetadataCacheTime = now;
 
@@ -254,7 +254,7 @@ export const getSolutionsMetadata = async () => {
   }
 
   solutionsMetadataCache = await fetchMetadataFromCDN<JsonMetadata>(
-    S3_SOLUTIONS_METADATA_JSON_PATH,
+    S3_SOLUTIONS_METADATA_JSON_PATH
   );
   solutionsMetadataCacheTime = now;
 
@@ -272,7 +272,7 @@ export const getReleaseNotesMetadata = async () => {
   }
 
   releaseNotesMetadataCache = await fetchMetadataFromCDN<JsonMetadata>(
-    S3_RELEASE_NOTES_METADATA_JSON_PATH,
+    S3_RELEASE_NOTES_METADATA_JSON_PATH
   );
   releaseNotesMetadataCacheTime = now;
 
@@ -282,7 +282,7 @@ export const getReleaseNotesMetadata = async () => {
 export const getSoapApiMetadata = async () => {
   if (!soapApiMetadataCache) {
     soapApiMetadataCache = await fetchMetadataFromCDN<SoapApiJsonMetadata>(
-      S3_SOAP_API_METADATA_JSON_PATH,
+      S3_SOAP_API_METADATA_JSON_PATH
     );
   }
   return soapApiMetadataCache || [];

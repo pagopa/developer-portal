@@ -7,7 +7,7 @@ const defaultBannerLink = {
   content: undefined,
   icon: { data: mediaJpeg() },
   theme: 'light',
-  title: 'Default Banner Link',
+  title: 'Default Banner Link'
 } satisfies StrapiBannerLink;
 
 export function bannerLink() {
@@ -18,7 +18,7 @@ export function generateBannerLinks(count: number) {
   return Array.from({ length: count }, (_, index) => ({
     ...defaultBannerLink,
     id: index + 1,
-    title: `Banner Link ${index + 1}`,
+    title: `Banner Link ${index + 1}`
   }));
 }
 
@@ -39,10 +39,10 @@ export function minimalBannerLink(): StrapiBannerLink {
           ext: '.svg',
           mime: 'image/svg+xml',
           size: 0.5,
-          url: 'https://example.com/minimal-icon.svg',
-        },
-      },
-    },
+          url: 'https://example.com/minimal-icon.svg'
+        }
+      }
+    }
   };
 }
 
@@ -50,7 +50,7 @@ export function bannerLinkWithDarkTheme(): StrapiBannerLink {
   return {
     ...strapiBannerLink,
     title: 'Dark Theme Banner',
-    theme: 'dark',
+    theme: 'dark'
   };
 }
 
@@ -58,7 +58,7 @@ export function bannerLinkWithUndefinedContent(): StrapiBannerLink {
   return {
     ...strapiBannerLink,
     title: 'Null Content Banner',
-    content: undefined,
+    content: undefined
   };
 }
 
@@ -66,7 +66,7 @@ export function bannerLinkWithEmptyTitle(): StrapiBannerLink {
   return {
     ...strapiBannerLink,
     title: '',
-    content: undefined,
+    content: undefined
   };
 }
 
@@ -74,6 +74,6 @@ export function bannerLinkWithUndefinedTitle(): StrapiBannerLink {
   return {
     ...strapiBannerLink,
     title: undefined,
-    content: undefined,
+    content: undefined
   };
 }

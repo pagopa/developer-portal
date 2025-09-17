@@ -7,22 +7,21 @@ const makeStrapiQuickStartGuidesPopulate = () =>
   qs.stringify({
     populate: {
       quickstartGuideItems: {
-        populate:
-          'parts.responseCode,parts.requestCode,parts.requestAttributes',
+        populate: 'parts.responseCode,parts.requestCode,parts.requestAttributes'
       },
       product: {
-        ...productRelationsPopulate,
+        ...productRelationsPopulate
       },
       bannerLinks: {
-        populate: ['icon'],
+        populate: ['icon']
       },
       seo: {
-        populate: '*,metaImage,metaSocial.image',
-      },
-    },
+        populate: '*,metaImage,metaSocial.image'
+      }
+    }
   });
 
 export const fetchQuickStartGuides = fetchFromStrapi<StrapiQuickStartGuides>(
   'quickstart-guides',
-  makeStrapiQuickStartGuidesPopulate(),
+  makeStrapiQuickStartGuidesPopulate()
 );

@@ -4,11 +4,11 @@ import { baseUrl } from '@/config';
 import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
 import {
   breadcrumbItemByProduct,
-  productToBreadcrumb,
+  productToBreadcrumb
 } from '@/helpers/structuredData.helpers';
 import {
   makeMetadata,
-  makeMetadataFromStrapi,
+  makeMetadataFromStrapi
 } from '@/helpers/metadata.helpers';
 import { getApiDataListPages } from '@/lib/api';
 import { Metadata } from 'next';
@@ -18,13 +18,13 @@ type Params = {
 };
 
 export async function generateMetadata({
-  params,
+  params
 }: {
   params: Promise<Params>;
 }): Promise<Metadata> {
   const resolvedParams = await params;
   const apiDataListPage = await getApiDataListPages(
-    resolvedParams?.productSlug,
+    resolvedParams?.productSlug
   );
 
   if (apiDataListPage?.seo) {
@@ -36,14 +36,14 @@ export async function generateMetadata({
       .filter(Boolean)
       .join(' | '),
     url: `${baseUrl}/${apiDataListPage?.product.slug}/api`,
-    locale: 'it_IT',
+    locale: 'it_IT'
   });
 }
 
 const ApiDataListPage = async ({ params }: { params: Promise<Params> }) => {
   const resolvedParams = await params;
   const apiDataListPageProps = await getApiDataListPages(
-    resolvedParams.productSlug,
+    resolvedParams.productSlug
   );
 
   const structuredData = generateStructuredDataScripts({
@@ -53,10 +53,10 @@ const ApiDataListPage = async ({ params }: { params: Promise<Params> }) => {
         name:
           apiDataListPageProps?.seo?.metaTitle ||
           apiDataListPageProps?.hero.title,
-        item: breadcrumbItemByProduct(apiDataListPageProps?.product, ['api']),
-      },
+        item: breadcrumbItemByProduct(apiDataListPageProps?.product, ['api'])
+      }
     ],
-    seo: apiDataListPageProps?.seo,
+    seo: apiDataListPageProps?.seo
   });
 
   if (apiDataListPageProps) {

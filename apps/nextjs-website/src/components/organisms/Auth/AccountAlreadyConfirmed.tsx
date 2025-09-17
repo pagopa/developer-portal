@@ -7,7 +7,7 @@ import Link from 'next/link';
 
 const AccountAlreadyConfirmed = () => {
   const accountAlreadyConfirmed = useTranslations(
-    'auth.login.accountAlreadyConfirmed',
+    'auth.login.accountAlreadyConfirmed'
   );
   return (
     <PageBackgroundWrapper>

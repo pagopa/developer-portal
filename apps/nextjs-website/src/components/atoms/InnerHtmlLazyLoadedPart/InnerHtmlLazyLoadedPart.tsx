@@ -18,7 +18,7 @@ const InnerHtmlLazyLoadedPart = ({ html }: InnerHtmlLazyLoadedPartProps) => {
           fontFamily: 'Titillium Web',
           fontWeight: 400,
           fontSize: '18px',
-          color: palette.text.primary,
+          color: palette.text.primary
         }}
       />
     )

@@ -10,13 +10,13 @@ import {
   WebinarQuestionUpdate,
   insertWebinarQuestion,
   listWebinarQuestions,
-  updateWebinarQuestion as _updateWebinarQuestion,
+  updateWebinarQuestion as _updateWebinarQuestion
 } from './webinars/webinarQuestions';
 import { makeBrowserConfig, publicEnv } from '@/BrowserConfig';
 import {
   deleteWebinarSubscription,
   insertWebinarSubscription,
-  listUserWebinarSubscriptions,
+  listUserWebinarSubscriptions
 } from './webinars/webinarSubscriptions';
 
 // a BrowserEnv instance ready to be used
@@ -26,7 +26,7 @@ const browserEnv = pipe(
   E.getOrElseW((errors) => {
     // eslint-disable-next-line functional/no-throw-statements
     throw errors;
-  }),
+  })
 );
 
 const makePromiseFromTE = <E, A>(input: TE.TaskEither<E, A>) =>
@@ -35,8 +35,8 @@ const makePromiseFromTE = <E, A>(input: TE.TaskEither<E, A>) =>
     TE.fold(
       // eslint-disable-next-line functional/no-promise-reject
       (error) => () => Promise.reject(error),
-      (result) => () => Promise.resolve(result),
-    ),
+      (result) => () => Promise.resolve(result)
+    )
   );
 
 export const sendWebinarQuestion = (question: InsertWebinarQuestion) =>
@@ -51,13 +51,13 @@ export const updateWebinarQuestion = (update: WebinarQuestionUpdate) =>
 export const subscribeToWebinar = (webinarId: string, username: string) =>
   pipe(
     insertWebinarSubscription(webinarId, username)(browserEnv),
-    makePromiseFromTE,
+    makePromiseFromTE
   )();
 
 export const unsubscribeToWebinar = (webinarId: string, username: string) =>
   pipe(
     deleteWebinarSubscription(webinarId, username)(browserEnv),
-    makePromiseFromTE,
+    makePromiseFromTE
   )();
 
 export const getUserWebinarSubscriptions = (username: string) =>

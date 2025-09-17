@@ -3,7 +3,7 @@ import {
   credentials,
   staticContentsUrl,
   region,
-  s3DocsPath,
+  s3DocsPath
 } from '@/config';
 import { Product } from '@/lib/types/product';
 import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
@@ -13,7 +13,7 @@ import {
   DocSource,
   makeParseS3DocsEnv,
   parseDoc,
-  parseS3Doc,
+  parseS3Doc
 } from './parseS3Doc.helpers';
 import { SolutionTemplateProps } from '@/components/templates/SolutionTemplate/SolutionTemplate';
 import { ReleaseNotePageProps } from '@/app/[productSlug]/[...releaseNoteSubPathSlugs]/page';
@@ -51,7 +51,7 @@ const env = makeParseS3DocsEnv(bucketName, region, credentials);
 
 const parseDocOrThrow = async <T>(
   docs: readonly DocSource<T>[],
-  paths: readonly string[],
+  paths: readonly string[]
 ): Promise<readonly DocPage<T>[]> => {
   const parsedDocs = docs.map(async (doc) => {
     return await parseS3Doc(env, doc, paths);
@@ -75,18 +75,18 @@ export const makeTutorials = async (props: {
         pathPrefix: `/${product.slug}/tutorials`,
         assetsPrefix: `${staticContentsUrl}/${s3DocsPath}/${dirName}`,
         dirPath: `${s3DocsPath}/${dirName}`,
-        spaceId: dirName,
+        spaceId: dirName
       },
       bannerLinks: bannerLinks,
       relatedLinks: {
-        links: [],
-      },
-    },
+        links: []
+      }
+    }
   ];
 
   const parsedDocs = await parseDocOrThrow(docs, props.tutorialPaths);
   return parsedDocs.filter(
-    ({ page: { path } }) => path !== `/${product.slug}/tutorials`,
+    ({ page: { path } }) => path !== `/${product.slug}/tutorials`
   );
 };
 
@@ -96,39 +96,39 @@ export const makeGuide = (props: {
 }) => {
   const {
     guidePaths,
-    guideDefinition: { product, guide, versions, bannerLinks },
+    guideDefinition: { product, guide, versions, bannerLinks }
   } = props;
   const guidePath = `/${product.slug}/guides/${guide.slug}`;
   const docs = versions
     .filter(
       ({ version, main }) =>
-        guidePaths.some((path) => path === version) || main === true,
+        guidePaths.some((path) => path === version) || main === true
     )
     .flatMap(({ main = false, version, dirName }) => {
       const item = {
         product: product,
         guide: {
           name: guide.name,
-          path: guidePath,
+          path: guidePath
         },
         version: {
           main,
           name: version,
-          path: `${guidePath}/${version}`,
+          path: `${guidePath}/${version}`
         },
         versions: versions.map(({ main = false, version }) => ({
           main,
           name: version,
-          path: `${guidePath}/${version}`,
+          path: `${guidePath}/${version}`
         })),
         source: {
           pathPrefix: `${guidePath}/${version}`,
           version,
           assetsPrefix: `${staticContentsUrl}/${s3DocsPath}/${dirName}`,
           dirPath: `${s3DocsPath}/${dirName}`,
-          spaceId: dirName,
+          spaceId: dirName
         },
-        bannerLinks: bannerLinks,
+        bannerLinks: bannerLinks
       };
       return main
         ? [item, { ...item, source: { ...item.source, pathPrefix: guidePath } }]
@@ -140,7 +140,7 @@ export const makeGuide = (props: {
 
 export const makeSolution = (
   solution: SolutionTemplateProps,
-  jsonMetadata?: JsonMetadata,
+  jsonMetadata?: JsonMetadata
 ) => {
   const doc = {
     ...solution,
@@ -148,8 +148,8 @@ export const makeSolution = (
       pathPrefix: `/solutions/${solution.slug}/details`,
       assetsPrefix: `${staticContentsUrl}/${s3DocsPath}/${solution.dirName}`,
       dirPath: `${s3DocsPath}/${solution.dirName}`,
-      spaceId: solution.dirName,
-    },
+      spaceId: solution.dirName
+    }
   };
 
   return parseDoc(doc, jsonMetadata);
@@ -157,7 +157,7 @@ export const makeSolution = (
 
 export const makeReleaseNote = (
   releaseNote: ReleaseNotePageProps,
-  jsonMetadata?: JsonMetadata,
+  jsonMetadata?: JsonMetadata
 ) => {
   const doc = {
     ...releaseNote,
@@ -165,8 +165,8 @@ export const makeReleaseNote = (
       pathPrefix: `/${releaseNote.product.slug}/release-note`,
       assetsPrefix: `${staticContentsUrl}/${s3DocsPath}/${releaseNote.dirName}`,
       dirPath: `${s3DocsPath}/${releaseNote.dirName}`,
-      spaceId: releaseNote.dirName,
-    },
+      spaceId: releaseNote.dirName
+    }
   };
 
   return parseDoc(doc, jsonMetadata);

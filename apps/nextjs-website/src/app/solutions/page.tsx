@@ -10,7 +10,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return makeMetadata({
     title: 'Soluzioni',
     url: `${baseUrl}/solutions`,
-    locale: 'it_IT',
+    locale: 'it_IT'
   });
 }
 
@@ -24,10 +24,10 @@ const Page = async () => {
     breadcrumbsItems: [
       {
         name: solutionsList.seo?.metaTitle,
-        item: getItemFromPaths(['solutions']),
-      },
+        item: getItemFromPaths(['solutions'])
+      }
     ],
-    seo: solutionsList.seo,
+    seo: solutionsList.seo
   });
 
   return (

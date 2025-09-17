@@ -15,7 +15,7 @@ import {
   Stack,
   TextField,
   Typography,
-  useTheme,
+  useTheme
 } from '@mui/material';
 import { IllusLogin } from '@pagopa/mui-italia';
 import { useTranslations } from 'next-intl';
@@ -25,7 +25,7 @@ import {
   MouseEvent,
   useCallback,
   useEffect,
-  useState,
+  useState
 } from 'react';
 import { validateEmail, validateField } from '@/helpers/auth.helpers';
 
@@ -43,7 +43,7 @@ interface LoginFieldsError {
 const LoginForm = ({
   onLogin,
   noAccount = false,
-  submitting = false,
+  submitting = false
 }: LoginFormProps) => {
   const signUp = useTranslations('auth.signUp');
   const login = useTranslations('auth.login');
@@ -52,25 +52,25 @@ const LoginForm = ({
   const { palette } = useTheme();
   const [formData, setFormData] = useState({
     username: '',
-    password: '',
+    password: ''
   });
 
   const [showPassword, setShowPassword] = useState(false);
   const [fieldErrors, setFieldErrors] = useState<LoginFieldsError>({
     email: null,
-    password: null,
+    password: null
   });
 
   const handleClickShowPassword = useCallback(
     () => setShowPassword((show) => !show),
-    [],
+    []
   );
 
   const handleMouseDownPassword = useCallback(
     (event: MouseEvent<HTMLButtonElement>) => {
       event.preventDefault();
     },
-    [],
+    []
   );
 
   const handleChangeInput = useCallback(
@@ -78,13 +78,13 @@ const LoginForm = ({
       if (fieldErrors.email || fieldErrors.password) {
         setFieldErrors({
           email: null,
-          password: null,
+          password: null
         });
       }
 
       setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
     },
-    [fieldErrors],
+    [fieldErrors]
   );
 
   const validateForm = useCallback(() => {
@@ -93,7 +93,7 @@ const LoginForm = ({
 
     setFieldErrors({
       email: emailError ? shared(emailError) : null,
-      password: passwordError ? shared(passwordError) : null,
+      password: passwordError ? shared(passwordError) : null
     });
 
     return !emailError && !passwordError;
@@ -104,7 +104,7 @@ const LoginForm = ({
       setFieldErrors((prevFieldErrors) => ({
         ...prevFieldErrors,
         email: login('noAccountError'),
-        password: login('noAccountError'),
+        password: login('noAccountError')
       }));
     }
   }, [noAccount, login]);
@@ -127,8 +127,8 @@ const LoginForm = ({
       sx={{
         width: '90vw',
         '@media (min-width: 1200px)': {
-          width: '35vw',
-        },
+          width: '35vw'
+        }
       }}
     >
       <Card variant='elevation' elevation={8} sx={{ borderRadius: '16px' }}>
@@ -148,14 +148,14 @@ const LoginForm = ({
                   helperText={fieldErrors.email}
                   inputProps={{
                     'aria-label': 'email',
-                    name: 'username',
+                    name: 'username'
                   }}
                   label={shared('emailAddress')}
                   required
                   size='small'
                   sx={{
                     width: '100%',
-                    backgroundColor: palette.background.paper,
+                    backgroundColor: palette.background.paper
                   }}
                   value={formData.username}
                   variant='outlined'
@@ -170,7 +170,7 @@ const LoginForm = ({
                     id='password-input'
                     inputProps={{
                       'aria-label': 'password',
-                      name: 'password',
+                      name: 'password'
                     }}
                     InputProps={{
                       endAdornment: (
@@ -184,7 +184,7 @@ const LoginForm = ({
                             {showPassword ? <VisibilityOff /> : <Visibility />}
                           </IconButton>
                         </InputAdornment>
-                      ),
+                      )
                     }}
                     label={`${shared('password')}`}
                     required

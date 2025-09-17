@@ -1,5 +1,5 @@
 import ChatbotHistoryNavigationMenu, {
-  SessionNavigationData,
+  SessionNavigationData
 } from '@/components/atoms/ChatbotHistoryNavigationMenu/ChatbotHistoryNavigationMenu';
 import ChatbotHistoryMessages from '@/components/molecules/ChatbotHistoryMessages/ChatbotHistoryMessages';
 import { defaultLocale } from '@/config';
@@ -14,7 +14,7 @@ import {
   DialogContentText,
   DialogTitle,
   Stack,
-  Typography,
+  Typography
 } from '@mui/material';
 import { isEmpty } from 'fp-ts/lib/Array';
 import { useTranslations } from 'next-intl';
@@ -30,8 +30,8 @@ const DEFAULT_DATE_FORMAT = {
   options: {
     day: '2-digit',
     month: 'long',
-    year: 'numeric',
-  },
+    year: 'numeric'
+  }
 } satisfies DateFormatOptions;
 
 type ChatbotHistoryDetailLayoutProps = {
@@ -47,7 +47,7 @@ const ChatbotHistoryDetailLayout = ({
   userName,
   previousSession,
   nextSession,
-  onDeleteChatSession,
+  onDeleteChatSession
 }: ChatbotHistoryDetailLayoutProps) => {
   const [open, setOpen] = useState(false);
   const t = useTranslations();
@@ -69,7 +69,7 @@ const ChatbotHistoryDetailLayout = ({
   const firstQuery = queries[0];
   const date = new Intl.DateTimeFormat(
     DEFAULT_DATE_FORMAT.locale,
-    DEFAULT_DATE_FORMAT.options,
+    DEFAULT_DATE_FORMAT.options
   ).format(new Date(firstQuery.queriedAt));
 
   return (
@@ -121,7 +121,7 @@ const ChatbotHistoryDetailLayout = ({
           display: { xs: 'flex', md: 'none' },
           justifyContent: 'center',
           paddingTop: '2rem',
-          width: '100%',
+          width: '100%'
         }}
       >
         <Button

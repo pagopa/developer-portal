@@ -12,7 +12,7 @@ describe('EmailFormWrapper', () => {
     name: 'email',
     title: 'Email',
     value: 'mockEmail@mock.it',
-    onEdit: mockOnEdit,
+    onEdit: mockOnEdit
   };
 
   it('should render EditEmailForm when isEditing is true', () => {
@@ -25,7 +25,7 @@ describe('EmailFormWrapper', () => {
           onSave={mockOnSave}
           onEdit={mockOnEdit}
         />
-      </Wrapper>,
+      </Wrapper>
     );
 
     expect(getByRole('textbox')).toBeTruthy();
@@ -41,7 +41,7 @@ describe('EmailFormWrapper', () => {
           onSave={mockOnSave}
           onEdit={mockOnEdit}
         />
-      </Wrapper>,
+      </Wrapper>
     );
 
     expect(getAllByText(item.value)).toBeTruthy();
@@ -57,7 +57,7 @@ describe('EmailFormWrapper', () => {
           onSave={mockOnSave}
           onEdit={mockOnEdit}
         />
-      </Wrapper>,
+      </Wrapper>
     );
 
     fireEvent.click(getByRole('button'));
@@ -74,7 +74,7 @@ describe('EmailFormWrapper', () => {
           onSave={mockOnSave}
           onEdit={mockOnEdit}
         />
-      </Wrapper>,
+      </Wrapper>
     );
 
     fireEvent.click(getAllByRole('button', { name: /annulla/i })[0]);
@@ -91,11 +91,11 @@ describe('EmailFormWrapper', () => {
           onSave={mockOnSave}
           onEdit={mockOnEdit}
         />
-      </Wrapper>,
+      </Wrapper>
     );
 
     fireEvent.change(getByRole('textbox'), {
-      target: { value: 'updated' },
+      target: { value: 'updated' }
     });
 
     fireEvent.click(getAllByRole('button', { name: /conferma/i })[0]);
@@ -112,11 +112,11 @@ describe('EmailFormWrapper', () => {
           onSave={mockOnSave}
           onEdit={mockOnEdit}
         />
-      </Wrapper>,
+      </Wrapper>
     );
 
     fireEvent.change(getByRole('textbox'), {
-      target: { value: 'updated@mockmail.com' },
+      target: { value: 'updated@mockmail.com' }
     });
 
     fireEvent.click(getAllByRole('button', { name: /conferma/i })[0]);

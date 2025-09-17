@@ -5,27 +5,27 @@ import {
   WebinarSubscription,
   deleteWebinarSubscription,
   insertWebinarSubscription,
-  listUserWebinarSubscriptions,
+  listUserWebinarSubscriptions
 } from '../webinarSubscriptions';
 import {
   DeleteItemCommand,
   PutItemCommand,
-  QueryCommand,
+  QueryCommand
 } from '@aws-sdk/client-dynamodb';
 import { makeDynamodbItemFromWebinarSubscription } from '../dynamodb/codec';
 
 const aWebinarSubscription: WebinarSubscription = {
   username: 'aUsername@mail.com',
   webinarId: 'a-webinar-id',
-  createdAt: new Date(0),
+  createdAt: new Date(0)
 };
 const aInsertWebinarSubscription: WebinarSubscription = {
   username: aWebinarSubscription.username,
   webinarId: aWebinarSubscription.webinarId,
-  createdAt: aWebinarSubscription.createdAt,
+  createdAt: aWebinarSubscription.createdAt
 };
 const aDynamoDBItem = makeDynamodbItemFromWebinarSubscription({
-  ...aWebinarSubscription,
+  ...aWebinarSubscription
 });
 
 const makeTestWebinarEnv = () => {
@@ -42,7 +42,7 @@ const makeTestWebinarEnv = () => {
   nowDateMock.mockImplementation(() => nowDate);
   const env = {
     dynamoDBClient: dynamoDBClientMock,
-    nowDate: nowDateMock,
+    nowDate: nowDateMock
   };
   return { env, dynamoDBClientMock };
 };
@@ -53,7 +53,7 @@ describe('webinarSubscriptions', () => {
       const { env, dynamoDBClientMock } = makeTestWebinarEnv();
       const actual = await insertWebinarSubscription(
         aInsertWebinarSubscription.webinarId,
-        aInsertWebinarSubscription.username,
+        aInsertWebinarSubscription.username
       )(env)();
       const expected = E.right(undefined);
 
@@ -70,7 +70,7 @@ describe('webinarSubscriptions', () => {
 
       const actual = await insertWebinarSubscription(
         aInsertWebinarSubscription.webinarId,
-        aInsertWebinarSubscription.username,
+        aInsertWebinarSubscription.username
       )(env)();
       const expected = E.left(error);
 
@@ -84,7 +84,7 @@ describe('webinarSubscriptions', () => {
       const { env, dynamoDBClientMock } = makeTestWebinarEnv();
       const actual = await deleteWebinarSubscription(
         aInsertWebinarSubscription.webinarId,
-        aInsertWebinarSubscription.username,
+        aInsertWebinarSubscription.username
       )(env)();
       const expected = E.right(undefined);
 
@@ -102,7 +102,7 @@ describe('webinarSubscriptions', () => {
 
       const actual = await deleteWebinarSubscription(
         aInsertWebinarSubscription.webinarId,
-        aInsertWebinarSubscription.username,
+        aInsertWebinarSubscription.username
       )(env)();
       const expected = E.left(error);
 
@@ -115,7 +115,7 @@ describe('webinarSubscriptions', () => {
     it('should return a list of webinar subscriptions', async () => {
       const { env } = makeTestWebinarEnv();
       const actual = await listUserWebinarSubscriptions(
-        aWebinarSubscription.username,
+        aWebinarSubscription.username
       )(env)();
       const expected = E.right([aWebinarSubscription]);
 
@@ -125,10 +125,10 @@ describe('webinarSubscriptions', () => {
     it('should return an empty list if subscriptions are undefined', async () => {
       const { env, dynamoDBClientMock } = makeTestWebinarEnv();
       dynamoDBClientMock.send.mockImplementation(() =>
-        Promise.resolve({ Items: undefined }),
+        Promise.resolve({ Items: undefined })
       );
       const actual = await listUserWebinarSubscriptions(
-        aWebinarSubscription.username,
+        aWebinarSubscription.username
       )(env)();
       const expected = E.right([]);
 
@@ -144,7 +144,7 @@ describe('webinarSubscriptions', () => {
       dynamoDBClientMock.send.mockImplementation(() => Promise.reject(error));
 
       const actual = await listUserWebinarSubscriptions(
-        aInsertWebinarSubscription.username,
+        aInsertWebinarSubscription.username
       )(env)();
       const expected = E.left(error);
 

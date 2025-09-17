@@ -2,7 +2,7 @@
 import InfoCardEditButton from '@/components/atoms/InfoCardEditButton/InfoCardEditButton';
 import {
   InfoCardItem,
-  InfoCardItemProps,
+  InfoCardItemProps
 } from '@/components/atoms/InfoCardItem/InfoCardItem';
 import { isProduction } from '@/config';
 import { Box, Card, Divider, Typography } from '@mui/material';

@@ -63,7 +63,7 @@ const LoginContent = () => {
       const redirect = searchParams.get('redirect');
       router.replace(redirect ? atob(redirect) : '/');
     },
-    [router, searchParams, user],
+    [router, searchParams, user]
   );
 
   const onBackStep = () => {

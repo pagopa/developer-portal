@@ -16,7 +16,7 @@ export type RelatedLinksProps = {
 const RelatedLinks = ({
   title,
   links,
-  backgroundVariant,
+  backgroundVariant
 }: RelatedLinksProps) => {
   const t = useTranslations('shared');
   return (

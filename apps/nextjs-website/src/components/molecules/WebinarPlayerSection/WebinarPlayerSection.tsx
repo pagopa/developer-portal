@@ -5,7 +5,7 @@ import {
   Button,
   Typography,
   useMediaQuery,
-  useTheme,
+  useTheme
 } from '@mui/material';
 import VimeoPlayer from '@/components/atoms/VimeoPlayer/VimeoPlayer';
 import { WebinarQuestionsForm } from '@/components/organisms/WebinarQuestionsForm/WebinarQuestionsForm';
@@ -23,7 +23,7 @@ type WebinarPlayerSectionProps = {
 };
 const WebinarPlayerSection = ({
   webinar,
-  webinarState,
+  webinarState
 }: WebinarPlayerSectionProps) => {
   const t = useTranslations('webinar');
   const { palette } = useTheme();
@@ -32,7 +32,7 @@ const WebinarPlayerSection = ({
   const isSmallScreen = useMediaQuery('(max-width: 1000px)');
   const isQuestionFormAvailable = useMemo(
     () => [WebinarState.live, WebinarState.comingSoon].includes(webinarState),
-    [webinarState],
+    [webinarState]
   );
   return (
     webinar.playerSrc && (
@@ -46,14 +46,14 @@ const WebinarPlayerSection = ({
               alignContent: 'stretch',
               flexGrow: 1,
               gap: 0,
-              marginBottom: 10,
+              marginBottom: 10
             }}
           >
             <Box
               sx={{
                 width: {
-                  md: isQuestionFormExpanded ? '80%' : '100%',
-                },
+                  md: isQuestionFormExpanded ? '80%' : '100%'
+                }
               }}
             >
               <VimeoPlayer playerSrc={webinar.playerSrc} />
@@ -80,13 +80,13 @@ const WebinarPlayerSection = ({
                       direction='row'
                       sx={{
                         alignItems: 'center',
-                        gap: isSmallScreen ? '8px' : '0',
+                        gap: isSmallScreen ? '8px' : '0'
                       }}
                     >
                       <ForumIcon
                         style={{
                           width: '32px',
-                          height: '32px',
+                          height: '32px'
                         }}
                       />
                       {isSmallScreen ? (
@@ -105,7 +105,7 @@ const WebinarPlayerSection = ({
                       direction='row'
                       sx={{
                         alignItems: 'center',
-                        margin: 0,
+                        margin: 0
                       }}
                     >
                       {isSmallScreen ? (
@@ -122,7 +122,7 @@ const WebinarPlayerSection = ({
                           sx={{
                             color: 'white',
                             fontWeight: 400,
-                            fontSize: 12,
+                            fontSize: 12
                           }}
                         >
                           {t('questionsForm.expand')}
@@ -142,7 +142,7 @@ const WebinarPlayerSection = ({
                     borderBottomLeftRadius: isSmallScreen ? '16px' : 0,
                     borderTopLeftRadius: 0,
                     backgroundColor: palette.primary.main,
-                    boxShadow: '6px 4px 9px 4px rgba(0, 43, 85, 0.1)',
+                    boxShadow: '6px 4px 9px 4px rgba(0, 43, 85, 0.1)'
                   }}
                 />
               )

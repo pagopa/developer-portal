@@ -18,12 +18,12 @@ export const Ctas = ({ ctaButtons, theme, reverse }: CtaProps) => {
   const buttonsThemeDefault: ButtonProps[] = [
     {
       color: theme === 'dark' ? 'negative' : 'primary',
-      variant: 'contained',
+      variant: 'contained'
     },
     {
       color: theme === 'dark' ? 'negative' : 'primary',
-      variant: 'outlined',
-    },
+      variant: 'outlined'
+    }
   ];
 
   return ctaButtons?.length ? (

@@ -52,7 +52,7 @@ const Heading = ({ level, id, children }: HeadingProps<ReactNode>) => (
         py: 3,
         fontSize: { xs: asFontSize(level) },
         fontWeight: { xs: asFontWeight(level) },
-        lineHeight: { xs: asLineHeight(level) },
+        lineHeight: { xs: asLineHeight(level) }
       }}
     >
       {children}

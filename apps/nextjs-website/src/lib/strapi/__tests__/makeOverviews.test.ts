@@ -2,7 +2,7 @@ import { makeOverviewsProps } from '@/lib/strapi/makeProps/makeOverviews';
 import { StrapiOverviews } from '@/lib/strapi/types/overviews';
 import {
   overviewPageProps,
-  strapiOverviews,
+  strapiOverviews
 } from '@/lib/strapi/__tests__/fixtures/overviews';
 import _ from 'lodash';
 import {
@@ -11,7 +11,7 @@ import {
   overviewsWithItemWithEmptyProductSlug,
   overviewsWithItemMissingTutorialProductSlug,
   overviewsWithItemMissingTutorialSlug,
-  overviewsWithItemMissingGuideProductSlug,
+  overviewsWithItemMissingGuideProductSlug
 } from '@/lib/strapi/__tests__/factories/overviews';
 import { spyOnConsoleError } from './spyOnConsole';
 
@@ -53,9 +53,9 @@ describe('makeOverviewsProps', () => {
           page: 1,
           pageSize: 25,
           pageCount: 0,
-          total: 0,
-        },
-      },
+          total: 0
+        }
+      }
     };
 
     const result = makeOverviewsProps(emptyData);
@@ -67,7 +67,7 @@ describe('makeOverviewsProps', () => {
     const result = makeOverviewsProps(overviewsWithItemWithEmptyProductSlug());
     expect(result).toHaveLength(0);
     expect(spyOnConsoleError).toHaveBeenCalledWith(
-      'Error processing Overview for product: "Piattaforma pagoPA": Missing product slug',
+      'Error processing Overview for product: "Piattaforma pagoPA": Missing product slug'
     );
   });
 
@@ -75,19 +75,19 @@ describe('makeOverviewsProps', () => {
     const result = makeOverviewsProps(overviewsWithItemWithEmptyProductSlug());
     expect(result).toHaveLength(0);
     expect(spyOnConsoleError).toHaveBeenCalledWith(
-      'Error processing Overview for product: "Piattaforma pagoPA": Missing product slug',
+      'Error processing Overview for product: "Piattaforma pagoPA": Missing product slug'
     );
   });
 
   it('should log an error and skip tutorials with missing product slug', () => {
     const result = makeOverviewsProps(
-      overviewsWithItemMissingTutorialProductSlug(),
+      overviewsWithItemMissingTutorialProductSlug()
     );
     expect(result).toHaveLength(1);
     expect(result[0].tutorials?.list).toHaveLength(0);
     expect(spyOnConsoleError).toHaveBeenCalledWith(
       "tutorial's product slug is missing:",
-      'Tutorial 1',
+      'Tutorial 1'
     );
   });
 
@@ -97,13 +97,13 @@ describe('makeOverviewsProps', () => {
     expect(result[0].tutorials?.list).toHaveLength(0);
     expect(spyOnConsoleError).toHaveBeenCalledWith(
       'tutorial slug is missing:',
-      'Tutorial 1',
+      'Tutorial 1'
     );
   });
 
   it('should log an error and skip guides with empty product slug', () => {
     const result = makeOverviewsProps(
-      overviewsWithItemWithEmptyGuideProductSlug(),
+      overviewsWithItemWithEmptyGuideProductSlug()
     );
     expect(result).toHaveLength(1);
     expect(result[0].postIntegration?.guides).toHaveLength(1);
@@ -112,7 +112,7 @@ describe('makeOverviewsProps', () => {
 
   it('should log an error and skip guides with missing product slug', () => {
     const result = makeOverviewsProps(
-      overviewsWithItemMissingGuideProductSlug(),
+      overviewsWithItemMissingGuideProductSlug()
     );
     expect(result).toHaveLength(1);
     expect(result[0].postIntegration?.guides).toHaveLength(1);

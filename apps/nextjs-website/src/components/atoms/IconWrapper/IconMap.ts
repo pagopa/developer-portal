@@ -54,5 +54,5 @@ export const ICON_MAP = {
   TimerSharp: TimerSharp,
   TrendingUp: TrendingUp,
   Twitter: Twitter,
-  VpnKey: VpnKey,
+  VpnKey: VpnKey
 };

@@ -12,7 +12,7 @@ import PageBackgroundWrapper from '@/components/atoms/PageBackgroundWrapper/Page
 const PasswordReset = () => {
   const [email, setEmail] = useState<string>('');
   const [sendResetPasswordSteps, setSendResetPasswordSteps] = useState(
-    SendResetPasswordSteps.SEND_EMAIL,
+    SendResetPasswordSteps.SEND_EMAIL
   );
 
   const router = useRouter();

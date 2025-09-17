@@ -10,7 +10,7 @@ import {
   SelectChangeEvent,
   Stack,
   styled,
-  useTheme,
+  useTheme
 } from '@mui/material';
 import { Product } from '@/lib/types/product';
 import { getStyles } from '@/components/molecules/ApiRestSection/ApiRestSection.styles';
@@ -26,8 +26,8 @@ const NotSsrApiViewer = dynamic(
   () => import('@/components/atoms/ApiViewer/ApiViewer'),
   {
     ssr: false,
-    loading: () => <Spinner />,
-  },
+    loading: () => <Spinner />
+  }
 );
 
 export type ApiRestPageProps = {
@@ -46,18 +46,18 @@ const StyledFormControl = styled(FormControl)(({ theme }) => ({
   [`& .${formLabelClasses.root}`]: {
     color: `${theme.palette.common.white}`,
     marginTop: '7px',
-    marginLeft: '8px',
+    marginLeft: '8px'
   },
   [`& .${formLabelClasses.root}.${formLabelClasses.focused}`]: {
-    color: `${theme.palette.common.white}`,
-  },
+    color: `${theme.palette.common.white}`
+  }
 }));
 
 const ApiRestSection = ({
   apiSlug,
   product,
   specURLs,
-  specURLsName,
+  specURLsName
 }: ApiRestPageProps) => {
   const { palette } = useTheme();
 
@@ -86,14 +86,14 @@ const ApiRestSection = ({
     if (specURLsName && spec?.name) {
       // update the url with the spec query param
       router.replace(
-        `/${product.slug}/api/${apiSlug}?spec=${encodeURIComponent(spec.name)}`,
+        `/${product.slug}/api/${apiSlug}?spec=${encodeURIComponent(spec.name)}`
       );
     }
   };
 
   const selectedApi = useMemo(
     () => specURLs.find((item) => item?.url === selectedItemURL) || specURLs[0],
-    [selectedItemURL, specURLs],
+    [selectedItemURL, specURLs]
   );
   const borderColor = palette.divider;
   const styles = getStyles(palette);
@@ -102,7 +102,7 @@ const ApiRestSection = ({
     <Box
       sx={{
         borderTop: { md: `1px solid ${borderColor}` },
-        marginTop: { xs: '-42px', sm: '-22px', md: 0 },
+        marginTop: { xs: '-42px', sm: '-22px', md: 0 }
       }}
     >
       {specURLs.length > 1 && specURLsName && (

@@ -5,13 +5,13 @@ import dynamic from 'next/dynamic';
 
 const NoSSRMermaidDiagram = dynamic(
   () => import('../../../atoms/MermaidDiagram/MermaidDiagram'),
-  { ssr: false },
+  { ssr: false }
 );
 
 const CodeBlock = ({
   language,
   lineNumbers,
-  children,
+  children
 }: CodeBlockProps<ReactNode>) => {
   if (language === 'mermaid' && typeof children === 'string') {
     return <NoSSRMermaidDiagram chart={children} />;

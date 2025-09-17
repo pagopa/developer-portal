@@ -5,7 +5,7 @@ import {
   Box,
   AccordionSummary as MuiAccordionSummary,
   Typography,
-  styled,
+  styled
 } from '@mui/material';
 import { OpenAPIV3 } from 'openapi-types';
 
@@ -15,11 +15,11 @@ import { useState } from 'react';
 const AccordionSummary = styled(MuiAccordionSummary)(({ theme }) => ({
   '& .MuiAccordionSummary-expandIconWrapper.Mui-expanded': {
     color: theme.palette.primary.main,
-    transform: 'rotate(90deg)',
+    transform: 'rotate(90deg)'
   },
   '& .MuiAccordionSummary-content': {
-    alignItems: 'center',
-  },
+    alignItems: 'center'
+  }
 }));
 
 function getResponseCodeColor(code: string) {

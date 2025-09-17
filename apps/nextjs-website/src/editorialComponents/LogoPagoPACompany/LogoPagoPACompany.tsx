@@ -5,7 +5,7 @@ import { theme } from '@pagopa/mui-italia/dist/theme';
 
 const StyledSvg = styled('svg')({
   display: 'inline-block',
-  userSelect: 'none',
+  userSelect: 'none'
 });
 
 export type LogoPACompanyColors = 'default' | 'light' | 'dark';
@@ -24,14 +24,14 @@ export interface LogoPagoPACompanyProps {
 const colorMap = {
   default: theme.palette.secondary.main,
   dark: theme.palette.common.black,
-  light: theme.palette.common.white,
+  light: theme.palette.common.white
 };
 
 export const LogoPagoPACompany = ({
   title = 'PagoPA',
   size = 120,
   color = 'default',
-  variant = 'default',
+  variant = 'default'
 }: LogoPagoPACompanyProps): React.JSX.Element => (
   <StyledSvg
     viewBox='0 0 119 33'
@@ -40,7 +40,7 @@ export const LogoPagoPACompany = ({
     role='img'
     sx={{
       width: size,
-      fill: colorMap[color],
+      fill: colorMap[color]
     }}
   >
     {variant === 'default' ? <DefaultVariant /> : <FlatVariant />}

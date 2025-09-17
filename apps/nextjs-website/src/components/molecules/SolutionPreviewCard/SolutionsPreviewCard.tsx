@@ -7,7 +7,7 @@ import {
   CardContent,
   Divider,
   Stack,
-  Typography,
+  Typography
 } from '@mui/material';
 import Link from 'next/link';
 import React, { Fragment } from 'react';
@@ -35,7 +35,7 @@ const SolutionPreviewCard = ({
   title,
   description,
   cta,
-  steps,
+  steps
 }: SolutionPreviewCard) => {
   return (
     <Card
@@ -45,7 +45,7 @@ const SolutionPreviewCard = ({
         width: '100%',
         justifyContent: 'space-between',
         height: '100%',
-        boxShadow: '0px 8px 18px 7px rgba(0, 43, 85, 0.1)',
+        boxShadow: '0px 8px 18px 7px rgba(0, 43, 85, 0.1)'
       }}
     >
       <CardContent sx={{ padding: 5 }}>
@@ -55,7 +55,7 @@ const SolutionPreviewCard = ({
               variant='sidenav'
               sx={{
                 fontWeight: 700,
-                color: (theme) => theme.palette.action.active,
+                color: (theme) => theme.palette.action.active
               }}
             >
               {header}

@@ -20,7 +20,7 @@ const LinkCard = ({
   description,
   minHeight,
   link,
-  variant = 'h6',
+  variant = 'h6'
 }: LinkCardProps) => {
   return (
     <Card
@@ -29,7 +29,7 @@ const LinkCard = ({
         height: '100%',
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'space-between',
+        justifyContent: 'space-between'
       }}
     >
       <CardContent sx={{ minHeight: minHeight || 'auto', pb: 0 }}>
@@ -37,7 +37,7 @@ const LinkCard = ({
           variant={variant}
           sx={{
             fontSize: '1.5rem !important',
-            lineHeight: '1.15 !important',
+            lineHeight: '1.15 !important'
           }}
           gutterBottom
         >

@@ -5,7 +5,7 @@ import {
   makeWebPage,
   organizationWithContext,
   StructuredDataBreadcrumbList,
-  StructuredDataWebPage,
+  StructuredDataWebPage
 } from './structuredData.helpers';
 import { SEO } from '@/lib/types/seo';
 
@@ -20,13 +20,13 @@ export function generateStructuredDataScripts(props: {
     name: seo?.metaTitle,
     description: seo?.metaDescription,
     url: seo?.canonicalURL,
-    media: seo?.metaImage?.data?.attributes,
+    media: seo?.metaImage?.data?.attributes
   };
   const allThings: Thing[] = [
     makeBreadcrumbList(allBreadcrumbsItems) as Thing,
     makeWebPage(webPage) as Thing,
     organizationWithContext as Thing,
-    ...(things ? (things.filter(Boolean) as Thing[]) : []),
+    ...(things ? (things.filter(Boolean) as Thing[]) : [])
   ];
   return (
     <>

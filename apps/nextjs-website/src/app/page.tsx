@@ -1,12 +1,12 @@
 import HeroSwiper from '@/components/molecules/HeroSwiper/HeroSwiper';
 import RelatedLinks from '@/components/atoms/RelatedLinks/RelatedLinks';
 import NewsShowcase, {
-  NewsShowcaseProps,
+  NewsShowcaseProps
 } from '@/components/organisms/NewsShowcase/NewsShowcase';
 import { Metadata } from 'next';
 import {
   makeMetadata,
-  makeMetadataFromStrapi,
+  makeMetadataFromStrapi
 } from '@/helpers/metadata.helpers';
 import dynamic from 'next/dynamic';
 import { baseUrl } from '@/config';
@@ -69,16 +69,16 @@ export async function generateMetadata(): Promise<Metadata> {
         title: 'PagoPA DevPortal',
         description: 'Il portale per gli sviluppatori di PagoPA',
         url: baseUrl,
-        locale: 'it_IT',
+        locale: 'it_IT'
       });
 }
 
 const NotSsrWebinarHeaderBanner = dynamic(
-  () => import('@/components/atoms/WebinarHeaderBanner/WebinarHeaderBanner'),
+  () => import('@/components/atoms/WebinarHeaderBanner/WebinarHeaderBanner')
 );
 
 const NotSsrWebinarsSection = dynamic(
-  () => import('@/components/organisms/WebinarsSection/WebinarsSection'),
+  () => import('@/components/organisms/WebinarsSection/WebinarsSection')
 );
 
 const Home = async () => {
@@ -88,12 +88,12 @@ const Home = async () => {
     newsShowcase,
     ecosystem,
     comingsoonDocumentation,
-    seo,
+    seo
   }: HomepageProps = await getHomepageProps();
 
   const structuredData = generateStructuredDataScripts({
     seo: seo,
-    things: [websiteWithContext],
+    things: [websiteWithContext]
   });
 
   return (
@@ -111,7 +111,7 @@ const Home = async () => {
                 content={itemProp.subhead}
                 color={itemProp.subheadColor}
               />
-            ),
+            )
           }))}
         />
         {newsShowcase && (

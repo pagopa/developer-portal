@@ -17,7 +17,7 @@ const Tab = ({ children, hidden }: TabProps) => {
         borderTopRightRadius: 4,
         borderBottomRightRadius: 4,
         borderBottomLeftRadius: 4,
-        padding: 16,
+        padding: 16
       }}
     >
       {children}

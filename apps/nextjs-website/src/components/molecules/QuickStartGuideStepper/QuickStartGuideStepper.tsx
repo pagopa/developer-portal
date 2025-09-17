@@ -8,7 +8,7 @@ import PartRenderer from '@/components/molecules/PartRenderer/PartRenderer';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
 import TabSwitcherProvider, {
   Tab,
-  TabPanel,
+  TabPanel
 } from '@/components/organisms/TabSwitcherProvider/TabSwitcherProvider';
 import GoToStep from '@/components/atoms/GoToStep/GoToStep';
 
@@ -19,7 +19,7 @@ type QuickStartGuideStepperProps = {
 
 const QuickStartGuideStepper = ({
   defaultStepAnchor,
-  steps,
+  steps
 }: QuickStartGuideStepperProps): ReactNode | null => {
   const { spacing, palette } = useTheme();
 
@@ -31,13 +31,13 @@ const QuickStartGuideStepper = ({
             display: 'flex',
             gap: '40px',
             verticalAlign: 'start',
-            width: '100%',
+            width: '100%'
           }}
         >
           <Box
             sx={{
               display: { xs: 'none', md: 'flex' },
-              flexDirection: 'column',
+              flexDirection: 'column'
             }}
           >
             {steps?.map((step, index) => (
@@ -47,7 +47,7 @@ const QuickStartGuideStepper = ({
                     textDecoration: 'none',
                     padding: '16px 32px',
                     width: '354px',
-                    verticalAlign: 'middle',
+                    verticalAlign: 'middle'
                   }}
                 >
                   <Typography
@@ -55,7 +55,7 @@ const QuickStartGuideStepper = ({
                     sx={{
                       fontSize: '18px',
                       fontWeight: 600,
-                      textDecoration: 'none',
+                      textDecoration: 'none'
                     }}
                   >
                     {step.anchor} - {step.title}
@@ -71,7 +71,7 @@ const QuickStartGuideStepper = ({
                 sx={{
                   display: 'flex',
                   flexDirection: 'column',
-                  width: '100%',
+                  width: '100%'
                 }}
               >
                 <>
@@ -80,7 +80,7 @@ const QuickStartGuideStepper = ({
                       color: palette.primary.dark,
                       fontSize: '18px',
                       fontWeight: 600,
-                      marginBottom: '24px',
+                      marginBottom: '24px'
                     }}
                   >
                     {step.anchor}
@@ -93,7 +93,7 @@ const QuickStartGuideStepper = ({
                       display: 'flex',
                       flexDirection: 'row',
                       justifyContent: index ? 'space-between' : 'flex-end',
-                      marginTop: '40px',
+                      marginTop: '40px'
                     }}
                   >
                     {index - 1 >= 0 && (

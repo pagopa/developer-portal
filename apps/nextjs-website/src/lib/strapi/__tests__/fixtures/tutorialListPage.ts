@@ -24,9 +24,9 @@ export const strapiTutorialListPages: StrapiTutorialListPages = {
               api_data_list_page: { data: undefined },
               tutorial_list_page: { data: undefined },
               guide_list_page: { data: undefined },
-              release_note: { data: undefined },
-            },
-          },
+              release_note: { data: undefined }
+            }
+          }
         },
         tutorials: {
           data: [
@@ -40,30 +40,30 @@ export const strapiTutorialListPages: StrapiTutorialListPages = {
                     attributes: {
                       name: 'Product 1',
                       shortName: 'P1',
-                      slug: 'product-1',
-                    },
-                  },
+                      slug: 'product-1'
+                    }
+                  }
                 },
                 image: {
-                  data: mediaJpeg(),
-                },
-              },
-            },
-          ],
+                  data: mediaJpeg()
+                }
+              }
+            }
+          ]
         },
         seo: {
           metaTitle: 'Tutorials SEO Title',
-          metaDescription: 'Tutorials SEO Description',
-        },
-      },
-    },
+          metaDescription: 'Tutorials SEO Description'
+        }
+      }
+    }
   ],
   meta: {
     pagination: {
       page: 1,
       pageSize: 25,
       pageCount: 1,
-      total: 1,
-    },
-  },
+      total: 1
+    }
+  }
 };

@@ -30,7 +30,7 @@ const ProductLayout: FC<LayoutPropsWithChildren> = ({
   bannerLinks,
   children,
   showBreadcrumbs = false,
-  structuredData,
+  structuredData
 }) => {
   return (
     <>

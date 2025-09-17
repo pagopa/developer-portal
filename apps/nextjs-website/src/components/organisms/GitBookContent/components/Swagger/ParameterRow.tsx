@@ -15,7 +15,7 @@ export const ParameterRow = ({ title, parameters }: ParameterRowProps) => {
         sx={{
           fontWeight: 'bold',
           mt: '8px!important',
-          textTransform: 'capitalize',
+          textTransform: 'capitalize'
         }}
         variant='caption-semibold'
       >

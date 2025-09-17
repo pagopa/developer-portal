@@ -12,7 +12,7 @@ const Quote = ({ children }: QuoteProps<ReactNode>) => (
       borderLeftWidth: 4,
       borderLeftStyle: 'solid',
       borderLeftColor: ({ palette }) => palette.divider,
-      '& > div.MuiTypography-body1': { margin: 0 },
+      '& > div.MuiTypography-body1': { margin: 0 }
     }}
   >
     {children}

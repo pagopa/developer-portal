@@ -5,7 +5,7 @@ import {
   Chip,
   type AvatarProps,
   useTheme,
-  Link,
+  Link
 } from '@mui/material';
 import { type CommonProps } from '../../types/components';
 
@@ -22,7 +22,7 @@ export const Content = ({
   avatar,
   beta,
   product: { name: productName, href: productHref },
-  theme,
+  theme
 }: TitleProps) => {
   const { palette, spacing } = useTheme();
   const textColor =

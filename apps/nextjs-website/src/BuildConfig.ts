@@ -7,17 +7,17 @@ import { StrapiConfig } from '@/lib/strapi/StrapiConfig';
 
 const BuildConfigCodec = t.intersection([
   t.type({
-    FETCH_FROM_STRAPI: t.string.pipe(tt.BooleanFromString),
+    FETCH_FROM_STRAPI: t.string.pipe(tt.BooleanFromString)
   }),
-  StrapiConfig,
+  StrapiConfig
 ]);
 
 export type BuildConfig = t.TypeOf<typeof BuildConfigCodec>;
 
 export const makeBuildConfig = (
-  env: Record<string, undefined | string>,
+  env: Record<string, undefined | string>
 ): E.Either<string, BuildConfig> =>
   pipe(
     BuildConfigCodec.decode(env),
-    E.mapLeft((errors) => PR.failure(errors).join('\n')),
+    E.mapLeft((errors) => PR.failure(errors).join('\n'))
   );

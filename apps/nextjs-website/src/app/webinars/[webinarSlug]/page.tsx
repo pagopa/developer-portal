@@ -3,7 +3,7 @@ import dynamic from 'next/dynamic';
 import Spinner from '@/components/atoms/Spinner/Spinner';
 import {
   makeMetadata,
-  makeMetadataFromStrapi,
+  makeMetadataFromStrapi
 } from '@/helpers/metadata.helpers';
 import { Metadata } from 'next';
 import { baseUrl } from '@/config';
@@ -15,7 +15,7 @@ type Params = {
 };
 
 export async function generateMetadata({
-  params,
+  params
 }: {
   params: Promise<Params>;
 }): Promise<Metadata> {
@@ -30,7 +30,7 @@ export async function generateMetadata({
     title: webinar.title,
     url: `${baseUrl}/webinars/${webinar.slug}`,
     locale: 'it_IT',
-    image: webinar.imagePath,
+    image: webinar.imagePath
   });
 }
 
@@ -40,8 +40,8 @@ const NotSsrWebinarDetailTemplate = dynamic(
       '@/components/templates/WebinarDetailTemplate/WebinarDetailTemplate'
     ),
   {
-    loading: () => <Spinner />,
-  },
+    loading: () => <Spinner />
+  }
 );
 
 const Page = async ({ params }: { params: Promise<Params> }) => {
@@ -52,14 +52,14 @@ const Page = async ({ params }: { params: Promise<Params> }) => {
     breadcrumbsItems: [
       {
         name: 'Webinars',
-        item: getItemFromPaths(['webinars']),
+        item: getItemFromPaths(['webinars'])
       },
       {
         name: webinar.seo?.metaTitle,
-        item: getItemFromPaths(['webinars', webinar.slug]),
-      },
+        item: getItemFromPaths(['webinars', webinar.slug])
+      }
     ],
-    seo: webinar.seo,
+    seo: webinar.seo
   });
 
   return (

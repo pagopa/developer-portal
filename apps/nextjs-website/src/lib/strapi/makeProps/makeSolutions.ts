@@ -6,13 +6,13 @@ import { makeWebinarProps } from '@/lib/strapi/makeProps/makeWebinars';
 import _ from 'lodash';
 
 export function makeSolutionsProps(
-  strapiSolutions: StrapiSolutions,
+  strapiSolutions: StrapiSolutions
 ): ReadonlyArray<SolutionTemplateProps> {
   return _.compact(
     strapiSolutions.data.map(({ attributes }) => {
       if (!attributes.slug) {
         console.error(
-          `Error processing Solution "${attributes.title}": Missing solution slug. Skipping...`,
+          `Error processing Solution "${attributes.title}": Missing solution slug. Skipping...`
         );
         return null;
       }
@@ -24,23 +24,21 @@ export function makeSolutionsProps(
           steps: attributes.steps.map((step) => ({
             ...step,
             products: step.products.data.map((product) => ({
-              ...product.attributes,
-            })),
+              ...product.attributes
+            }))
           })),
           products: attributes.products.data.map(({ attributes }) => ({
             ...attributes,
-            logo: attributes.logo.data?.attributes,
+            logo: attributes.logo.data?.attributes
           })),
           icon: attributes.icon.data.attributes,
           webinars: _.compact(
-            attributes.webinars.data.map((webinar) =>
-              makeWebinarProps(webinar),
-            ),
+            attributes.webinars.data.map((webinar) => makeWebinarProps(webinar))
           ),
           bannerLinks: attributes.bannerLinks.map((bannerLink) => ({
             ...bannerLink,
             title: bannerLink.title || '',
-            icon: bannerLink.icon?.data?.attributes,
+            icon: bannerLink.icon?.data?.attributes
           })),
           solutionSlug: attributes.slug,
           path: `/solutions/${attributes.slug}/details`,
@@ -52,7 +50,7 @@ export function makeSolutionsProps(
                 (caseHistory) => {
                   if (!caseHistory.attributes.slug) {
                     console.error(
-                      `Error processing Case History "${caseHistory.attributes.title}": Missing case history slug. Skipping...`,
+                      `Error processing Case History "${caseHistory.attributes.title}": Missing case history slug. Skipping...`
                     );
                     return null;
                   }
@@ -60,22 +58,22 @@ export function makeSolutionsProps(
                   return {
                     title: caseHistory.attributes.title,
                     path: `/case-histories/${caseHistory.attributes.slug}`,
-                    image: caseHistory.attributes.image?.data?.attributes,
+                    image: caseHistory.attributes.image?.data?.attributes
                   };
-                },
-              ),
-            ),
+                }
+              )
+            )
           },
           seo: attributes.seo,
-          updatedAt: attributes.updatedAt,
+          updatedAt: attributes.updatedAt
         };
       } catch (error) {
         console.error(
           `Error while making solutions props for ${attributes.title}:`,
-          error,
+          error
         );
         return null;
       }
-    }),
+    })
   );
 }

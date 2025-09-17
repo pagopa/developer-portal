@@ -5,7 +5,7 @@ import {
   InputAdornment,
   InputProps,
   Stack,
-  TextField,
+  TextField
 } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { MouseEvent, ReactNode, useMemo, useState } from 'react';
@@ -23,7 +23,7 @@ export const PasswordTextField = ({
   helperText = '',
   label,
   value: password,
-  onChange,
+  onChange
 }: PasswordTextFieldProps) => {
   const [showPassword, setShowPassword] = useState(false);
   const endAdornment = useMemo(
@@ -41,7 +41,7 @@ export const PasswordTextField = ({
         </IconButton>
       </InputAdornment>
     ),
-    [showPassword],
+    [showPassword]
   );
 
   const type = showPassword ? 'text' : 'password';

@@ -7,7 +7,7 @@ import {
   Box,
   Button,
   Typography,
-  useTheme,
+  useTheme
 } from '@mui/material';
 import { Compress, Expand, ExpandMore } from '@mui/icons-material';
 import { useTranslations } from 'next-intl';
@@ -24,7 +24,7 @@ export type QuestionsAndAnswersProps = {
 const QuestionsAndAnswers = ({
   items,
   minQuestionsToShow = 5,
-  maxQuestionsToShow,
+  maxQuestionsToShow
 }: QuestionsAndAnswersProps) => {
   const theme = useTheme();
   const t = useTranslations();
@@ -74,7 +74,7 @@ const QuestionsAndAnswers = ({
               borderTop: 'none',
               borderRadius: '4px',
               '::before': { display: 'none' },
-              width: '100%',
+              width: '100%'
             }}
             disableGutters
             expanded={expanded === index}
@@ -90,7 +90,7 @@ const QuestionsAndAnswers = ({
                   fontWeight: 600,
                   fontSize: '16px',
                   lineHeight: '21px',
-                  my: 2,
+                  my: 2
                 }}
               >
                 {item.question}
@@ -111,7 +111,7 @@ const QuestionsAndAnswers = ({
                 mx: 'auto',
                 fontWeight: 700,
                 fontSize: '16px',
-                lineHeight: '21px',
+                lineHeight: '21px'
               }}
               onClick={() => toggleShowMore((prev) => !prev)}
             >

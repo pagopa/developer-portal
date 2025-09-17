@@ -17,17 +17,17 @@ export const strapiTutorials: StrapiTutorials = {
           data: {
             attributes: {
               ...product,
-              bannerLinks: generateBannerLinks(1),
-            },
-          },
+              bannerLinks: generateBannerLinks(1)
+            }
+          }
         },
         parts: [
           {
             __component: 'parts.code-block',
             code: 'console.log("Hello World");',
             language: 'javascript',
-            showLineNumbers: true,
-          },
+            showLineNumbers: true
+          }
         ],
         bannerLinks: generateBannerLinks(1),
         relatedLinks: {
@@ -35,24 +35,24 @@ export const strapiTutorials: StrapiTutorials = {
           links: [
             {
               text: 'Link 1',
-              href: '/link-1',
-            },
-          ],
+              href: '/link-1'
+            }
+          ]
         },
         seo: {
           metaTitle: 'SEO Title',
-          metaDescription: 'SEO Description',
+          metaDescription: 'SEO Description'
         },
-        updatedAt: '2024-01-02T00:00:00.000Z',
-      },
-    },
+        updatedAt: '2024-01-02T00:00:00.000Z'
+      }
+    }
   ],
   meta: {
     pagination: {
       page: 1,
       pageSize: 25,
       pageCount: 1,
-      total: 1,
-    },
-  },
+      total: 1
+    }
+  }
 };

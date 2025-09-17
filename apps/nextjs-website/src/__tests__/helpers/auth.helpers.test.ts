@@ -1,7 +1,7 @@
 import {
   validateEmail,
   validateField,
-  validatePassword,
+  validatePassword
 } from '../../helpers/auth.helpers';
 
 describe('validateField', () => {

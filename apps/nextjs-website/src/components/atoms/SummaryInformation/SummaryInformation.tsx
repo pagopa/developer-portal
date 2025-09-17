@@ -25,7 +25,7 @@ const SummaryInformation: FC<SummaryInformationProps> = ({
   description,
   webinarState,
   children,
-  textColor,
+  textColor
 }) => {
   const { palette } = useTheme();
   const isSmallScreen = useMediaQuery('(max-width: 1000px)');
@@ -46,7 +46,7 @@ const SummaryInformation: FC<SummaryInformationProps> = ({
             alignContent: 'flex-start',
             paddingTop: 10,
             paddingBottom: 10,
-            width: '100%',
+            width: '100%'
           }}
         >
           {webinarState === WebinarState.live && <LiveWebinarChip />}
@@ -60,7 +60,7 @@ const SummaryInformation: FC<SummaryInformationProps> = ({
                   color: textColor || palette.text.primary,
                   width: '24px',
                   height: '24px',
-                  alignSelf: isSmallScreen ? 'start' : 'center',
+                  alignSelf: isSmallScreen ? 'start' : 'center'
                 }}
               />
               <Typography
@@ -68,7 +68,7 @@ const SummaryInformation: FC<SummaryInformationProps> = ({
                 style={{
                   fontWeight: 700,
                   fontSize: isSmallScreen ? '18px' : '24px',
-                  color: textColor || palette.grey[600],
+                  color: textColor || palette.grey[600]
                 }}
               >
                 <TimeSlot start={startDateTime} end={endDateTime} />
@@ -86,7 +86,7 @@ const SummaryInformation: FC<SummaryInformationProps> = ({
                   alignItems: 'center',
                   backgroundColor: palette.grey[200],
                   padding: 0.5,
-                  borderRadius: '4px',
+                  borderRadius: '4px'
                 }}
               >
                 <Typography
@@ -94,12 +94,12 @@ const SummaryInformation: FC<SummaryInformationProps> = ({
                   style={{
                     fontWeight: 600,
                     fontSize: '14px',
-                    color: textColor || palette.grey[600],
+                    color: textColor || palette.grey[600]
                   }}
                 >
                   {new Date(endDateTime).toLocaleDateString(
                     defaultLocale,
-                    dateOptions,
+                    dateOptions
                   )}
                 </Typography>
               </Box>
@@ -112,7 +112,7 @@ const SummaryInformation: FC<SummaryInformationProps> = ({
               fontSize: isSmallScreen ? '32px' : '38px',
               marginTop: 16,
               marginBottom: 32,
-              color: textColor || palette.text.primary,
+              color: textColor || palette.text.primary
             }}
           >
             {title}
@@ -121,7 +121,7 @@ const SummaryInformation: FC<SummaryInformationProps> = ({
             sx={{
               fontWeight: '400',
               fontSize: '18px',
-              color: textColor || palette.text.secondary,
+              color: textColor || palette.text.secondary
             }}
           >
             {description}

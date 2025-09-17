@@ -20,7 +20,7 @@ export const makeBrowserEnv = (config: BrowserConfig): BrowserEnv => ({
       config,
       // passing Auth.currentSession raise an error because
       // Auth.currentSession is not able to retrieve all the information
-      () => Auth.currentSession(),
-    ),
-  }),
+      () => Auth.currentSession()
+    )
+  })
 });

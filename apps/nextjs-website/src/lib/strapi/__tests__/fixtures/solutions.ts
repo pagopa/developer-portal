@@ -26,8 +26,8 @@ export const strapiSolutions = {
             content: [
               {
                 type: 'paragraph',
-                children: [{ type: 'text', text: 'Step content' }],
-              },
+                children: [{ type: 'text', text: 'Step content' }]
+              }
             ],
             products: {
               data: [
@@ -35,18 +35,18 @@ export const strapiSolutions = {
                   attributes: {
                     name: 'Product 1',
                     shortName: 'P1',
-                    slug: 'product-1',
-                  },
-                },
-              ],
-            },
-          },
+                    slug: 'product-1'
+                  }
+                }
+              ]
+            }
+          }
         ],
         stats: [
           {
             title: 'Stat 1',
-            description: 'Stat description',
-          },
+            description: 'Stat description'
+          }
         ],
         statsSource: 'Stats source',
         bannerLinks: generateBannerLinks(1),
@@ -68,22 +68,22 @@ export const strapiSolutions = {
                   links: [
                     {
                       text: 'Link 1',
-                      href: '/link-1',
-                    },
-                  ],
+                      href: '/link-1'
+                    }
+                  ]
                 },
                 webinarSpeakers: {
-                  data: [],
+                  data: []
                 },
                 webinarCategory: {
-                  data: undefined,
+                  data: undefined
                 },
                 headerImage: {
-                  data: undefined,
-                },
-              },
-            },
-          ],
+                  data: undefined
+                }
+              }
+            }
+          ]
         },
         products: {
           data: [
@@ -93,10 +93,10 @@ export const strapiSolutions = {
                 shortName: 'P1',
                 slug: 'product-1',
                 description: 'Product description',
-                logo: { data: mediaJpeg() },
-              },
-            },
-          ],
+                logo: { data: mediaJpeg() }
+              }
+            }
+          ]
         },
         caseHistories: {
           title: 'Case Studies',
@@ -111,27 +111,27 @@ export const strapiSolutions = {
                   description: 'Case history description',
                   publishedAt: fixedDateIsoString,
                   updatedAt: fixedDateIsoString,
-                  image: { data: mediaJpeg() },
-                },
-              },
-            ],
-          },
+                  image: { data: mediaJpeg() }
+                }
+              }
+            ]
+          }
         },
         seo: {
           metaTitle: 'SEO Title',
-          metaDescription: 'SEO Description',
-        },
-      },
-    },
+          metaDescription: 'SEO Description'
+        }
+      }
+    }
   ],
   meta: {
     pagination: {
       page: 1,
       pageSize: 25,
       pageCount: 1,
-      total: 1,
-    },
-  },
+      total: 1
+    }
+  }
 } satisfies StrapiSolutions;
 
 export const expectedSolutionTemplateProps: SolutionTemplateProps = {
@@ -142,7 +142,7 @@ export const expectedSolutionTemplateProps: SolutionTemplateProps = {
     name: 'example.jpg',
     ext: '.jpg',
     mime: 'image/jpeg',
-    size: 123456,
+    size: 123456
   },
   kickerTitle: 'Solution Kicker',
   title: 'Solution Title',
@@ -156,22 +156,22 @@ export const expectedSolutionTemplateProps: SolutionTemplateProps = {
       content: [
         {
           type: 'paragraph',
-          children: [{ type: 'text', text: 'Step content' }],
-        },
+          children: [{ type: 'text', text: 'Step content' }]
+        }
       ],
       products: [
         {
           shortName: 'P1',
-          slug: 'product-1',
-        },
-      ],
-    },
+          slug: 'product-1'
+        }
+      ]
+    }
   ],
   stats: [
     {
       title: 'Stat 1',
-      description: 'Stat description',
-    },
+      description: 'Stat description'
+    }
   ],
   statsSource: 'Stats source',
   products: [
@@ -185,9 +185,9 @@ export const expectedSolutionTemplateProps: SolutionTemplateProps = {
         name: 'example.jpg',
         ext: '.jpg',
         mime: 'image/jpeg',
-        size: 123456,
-      },
-    },
+        size: 123456
+      }
+    }
   ],
   webinars: [
     {
@@ -200,14 +200,14 @@ export const expectedSolutionTemplateProps: SolutionTemplateProps = {
         links: [
           {
             text: 'Link 1',
-            href: '/link-1',
-          },
-        ],
+            href: '/link-1'
+          }
+        ]
       },
       isVisibleInList: true,
       imagePath: 'https://example.com/example.jpg',
-      updatedAt: '2024-01-01T00:00:00.000Z',
-    },
+      updatedAt: '2024-01-01T00:00:00.000Z'
+    }
   ],
   bannerLinks: [
     {
@@ -218,10 +218,10 @@ export const expectedSolutionTemplateProps: SolutionTemplateProps = {
         name: 'example.jpg',
         ext: '.jpg',
         mime: 'image/jpeg',
-        size: 123456,
+        size: 123456
       },
-      theme: 'light',
-    },
+      theme: 'light'
+    }
   ],
   successStories: {
     title: 'Case Studies',
@@ -232,16 +232,16 @@ export const expectedSolutionTemplateProps: SolutionTemplateProps = {
         path: '/case-histories/case-history-1',
         image: {
           url: 'https://example.com/example.jpg',
-          alternativeText: 'Example Image',
-        },
-      },
-    ],
+          alternativeText: 'Example Image'
+        }
+      }
+    ]
   },
   seo: {
     metaTitle: 'SEO Title',
-    metaDescription: 'SEO Description',
+    metaDescription: 'SEO Description'
   },
   solutionSlug: 'solution-title',
   path: '/solutions/solution-title/details',
-  updatedAt: '2024-01-01T00:00:00.000Z',
+  updatedAt: '2024-01-01T00:00:00.000Z'
 };

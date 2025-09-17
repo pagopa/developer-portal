@@ -5,7 +5,7 @@ import { StrapiPart } from '@/lib/strapi/types/part';
 import { StrapiCaseHistories } from '@/lib/strapi/types/caseHistories';
 
 export function makeCaseHistoriesProps(
-  strapiCaseHistories: StrapiCaseHistories,
+  strapiCaseHistories: StrapiCaseHistories
 ): ReadonlyArray<CaseHistoryPageTemplateProps> {
   return strapiCaseHistories.data.map(({ attributes }) => ({
     ...attributes,
@@ -13,13 +13,13 @@ export function makeCaseHistoriesProps(
     parts: [
       ...(attributes.parts
         .map((part) => makePartProps(part as StrapiPart))
-        .filter((part) => !!part) as ReadonlyArray<Part>),
+        .filter((part) => !!part) as ReadonlyArray<Part>)
     ],
     products: attributes.products.data.map(({ attributes }) => ({
       ...attributes,
-      logo: attributes.logo.data?.attributes,
+      logo: attributes.logo.data?.attributes
     })),
     image: attributes.image?.data?.attributes,
-    seo: attributes.seo,
+    seo: attributes.seo
   }));
 }

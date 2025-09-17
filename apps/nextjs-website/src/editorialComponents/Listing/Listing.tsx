@@ -4,7 +4,7 @@ import {
   Divider,
   Typography,
   Link as LinkMUI,
-  useTheme,
+  useTheme
 } from '@mui/material';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
 import Link from 'next/link';
@@ -40,7 +40,7 @@ const ListingItem = (props: ListingItem) => {
     href,
     isLast = false,
     linkColor = 'InfoText',
-    target = '_self',
+    target = '_self'
   } = props;
   return (
     <Box mb={isLast ? 0 : 2}>
@@ -74,16 +74,16 @@ const Listing = ({
   name = '',
   items,
   linksColor,
-  backgroundVariant = 'white',
+  backgroundVariant = 'white'
 }: ListingsProps) => {
   const theme = useTheme();
 
   const backgroundColor = useMemo(
     () => ({
       white: theme.palette.background.paper,
-      lightGrey: theme.palette.grey[50],
+      lightGrey: theme.palette.grey[50]
     }),
-    [theme],
+    [theme]
   );
 
   return (
@@ -106,7 +106,7 @@ const Listing = ({
         >
           {`${date.preDate} ${new Intl.DateTimeFormat(
             date.locale,
-            date.options,
+            date.options
           ).format(date.date)}`}
         </Typography>
       )}

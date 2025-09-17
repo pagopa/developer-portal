@@ -5,7 +5,7 @@ import {
   TableCell,
   TableRow,
   Typography,
-  useTheme,
+  useTheme
 } from '@mui/material';
 import { CopyToClipboardButton } from '@pagopa/mui-italia';
 import DOMPurify from 'dompurify';
@@ -26,7 +26,7 @@ export default function WebinarQuestionRow({
   question,
   userName,
   onHide,
-  onHighlight,
+  onHighlight
 }: WebinarQuestionRowProps) {
   const { palette } = useTheme();
   const t = useTranslations('webinar.questionList');
@@ -50,15 +50,15 @@ export default function WebinarQuestionRow({
           backgroundColor:
             isHighlighted && !isHidden
               ? palette.primary.dark
-              : palette.action.hover,
+              : palette.action.hover
         },
         '& > .MuiTableCell-root': {
-          padding: '32px 16px 24px 16px',
+          padding: '32px 16px 24px 16px'
         },
         backgroundColor:
           isHighlighted && !isHidden ? palette.primary.light : '',
         fontStyle: isHidden ? 'italic' : '',
-        position: 'relative',
+        position: 'relative'
       }}
     >
       <TableCell
@@ -66,8 +66,8 @@ export default function WebinarQuestionRow({
         sx={{
           color: tcColor,
           '& > .MuiTypography-root': {
-            color: tcColor,
-          },
+            color: tcColor
+          }
         }}
       >
         {isHighlighted && !isHidden && (
@@ -75,7 +75,7 @@ export default function WebinarQuestionRow({
             sx={{
               fontSize: 14,
               color: palette.common.white,
-              marginBottom: 2,
+              marginBottom: 2
             }}
           >
             {t('highlightedBy')}: {highlightedBy}
@@ -85,7 +85,7 @@ export default function WebinarQuestionRow({
           {!isHidden
             ? question.id.createdAt.toLocaleTimeString(
                 defaultLocale,
-                timeOptions,
+                timeOptions
               )
             : ''}
         </Typography>

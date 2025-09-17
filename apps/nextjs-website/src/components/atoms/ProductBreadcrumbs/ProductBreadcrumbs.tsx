@@ -4,7 +4,7 @@ import {
   Breadcrumbs,
   Link as MuiLink,
   Typography,
-  useTheme,
+  useTheme
 } from '@mui/material';
 import Link from 'next/link';
 import React from 'react';
@@ -18,7 +18,7 @@ type ProductBreadcrumbsProps = {
 
 const ProductBreadcrumbs = ({
   breadcrumbs,
-  textColor,
+  textColor
 }: ProductBreadcrumbsProps) => {
   const theme = useTheme();
   const t = useTranslations();
@@ -29,7 +29,7 @@ const ProductBreadcrumbs = ({
         display: { xs: 'none', md: 'block' },
         paddingY: '24px',
         zIndex: 50,
-        position: 'relative',
+        position: 'relative'
       }}
     >
       <Breadcrumbs
@@ -37,8 +37,8 @@ const ProductBreadcrumbs = ({
         sx={{
           '& .MuiBreadcrumbs-separator': {
             fontSize: 16,
-            color: textColor || theme.palette.text.primary,
-          },
+            color: textColor || theme.palette.text.primary
+          }
         }}
       >
         {breadcrumbs.map((breadcrumb, index) => {

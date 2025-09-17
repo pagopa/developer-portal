@@ -8,22 +8,22 @@ const makeStrapiOverviewsPopulate = () =>
     populate: {
       backgroundImage: '*',
       product: {
-        ...productRelationsPopulate,
+        ...productRelationsPopulate
       },
       relatedLinks: {
-        populate: ['links'],
+        populate: ['links']
       },
       features: {
-        populate: ['items.icon'],
+        populate: ['items.icon']
       },
       startInfoSection: {
-        populate: ['bottomLink', 'items.icon'],
+        populate: ['bottomLink', 'items.icon']
       },
       tutorialSection: {
-        populate: ['tutorials.image', 'tutorials.product'],
+        populate: ['tutorials.image', 'tutorials.product']
       },
       seo: {
-        populate: '*,metaImage,metaSocial.image',
+        populate: '*,metaImage,metaSocial.image'
       },
       postIntegration: {
         populate: [
@@ -33,19 +33,19 @@ const makeStrapiOverviewsPopulate = () =>
           'guides.mobileImage',
           'documents.image',
           'documents.mobileImage',
-          'serviceModels',
-        ],
+          'serviceModels'
+        ]
       },
       bannerLinks: {
-        populate: ['icon'],
+        populate: ['icon']
       },
       whatsNew: {
-        populate: ['link', 'items.image', 'items.link'],
-      },
-    },
+        populate: ['link', 'items.image', 'items.link']
+      }
+    }
   });
 
 export const fetchOverviews = fetchFromStrapi<StrapiOverviews>(
   'overviews',
-  makeStrapiOverviewsPopulate(),
+  makeStrapiOverviewsPopulate()
 );

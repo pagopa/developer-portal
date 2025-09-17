@@ -9,7 +9,7 @@ import {
   Link,
   Stack,
   Typography,
-  useTheme,
+  useTheme
 } from '@mui/material';
 import { ChangeEvent, useCallback, useState } from 'react';
 import { validatePassword } from '@/helpers/auth.helpers';
@@ -29,7 +29,7 @@ interface ChangePasswordFieldsError {
 
 const ChangePasswordForm = ({
   submitting = false,
-  onSubmit,
+  onSubmit
 }: ChangePasswordFormProps) => {
   const login = useTranslations('auth.login');
   const resetPassword = useTranslations('auth.resetPassword');
@@ -39,17 +39,17 @@ const ChangePasswordForm = ({
 
   const [passwords, setPasswords] = useState({
     password: '',
-    confirmPassword: '',
+    confirmPassword: ''
   });
   const [fieldErrors, setFieldErrors] = useState<ChangePasswordFieldsError>({
     passwordError: false,
-    confirmPasswordError: false,
+    confirmPasswordError: false
   });
 
   const handlePasswordChanged = (ev: ChangeEvent<HTMLInputElement>) => {
     setFieldErrors({
       passwordError: false,
-      confirmPasswordError: false,
+      confirmPasswordError: false
     });
     const { value, name } = ev.target;
     setPasswords((prev) => ({ ...prev, [name]: value }));
@@ -62,7 +62,7 @@ const ChangePasswordForm = ({
 
     setFieldErrors({
       passwordError: passwordError !== null,
-      confirmPasswordError: confirmPasswordHasErrors,
+      confirmPasswordError: confirmPasswordHasErrors
     });
 
     return !passwordError && !confirmPasswordHasErrors;
@@ -80,8 +80,8 @@ const ChangePasswordForm = ({
       sx={{
         width: '90vw',
         '@media (min-width: 1200px)': {
-          width: '35vw',
-        },
+          width: '35vw'
+        }
       }}
     >
       <Card variant='elevation' elevation={8}>

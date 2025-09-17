@@ -9,45 +9,45 @@ const solutionsPopulate = {
     stats: '*',
     steps: {
       populate: {
-        products: '*',
-      },
+        products: '*'
+      }
     },
     seo: {
-      populate: '*,metaImage,metaSocial.image',
+      populate: '*,metaImage,metaSocial.image'
     },
     products: {
-      populate: ['logo'],
+      populate: ['logo']
     },
     bannerLinks: {
-      populate: ['icon'],
+      populate: ['icon']
     },
     webinars: webinarPopulate,
     caseHistories: {
-      populate: ['case_histories', 'case_histories.image'],
-    },
-  },
+      populate: ['case_histories', 'case_histories.image']
+    }
+  }
 };
 
 const makeStrapiSolutionsPopulate = () =>
   qs.stringify({
-    ...solutionsPopulate,
+    ...solutionsPopulate
   });
 
 export const fetchSolutions = fetchFromStrapi<StrapiSolutions>(
   'solutions',
-  makeStrapiSolutionsPopulate(),
+  makeStrapiSolutionsPopulate()
 );
 
 const makeStrapiSolutionPopulate = (solutionSlug: string) =>
   qs.stringify({
     ...solutionsPopulate,
     filters: {
-      slug: solutionSlug,
-    },
+      slug: solutionSlug
+    }
   });
 
 export const fetchSolution = (solutionSlug: string) =>
   fetchFromStrapi<StrapiSolutions>(
     'solutions',
-    makeStrapiSolutionPopulate(solutionSlug),
+    makeStrapiSolutionPopulate(solutionSlug)
   );

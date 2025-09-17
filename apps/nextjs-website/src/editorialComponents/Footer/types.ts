@@ -52,7 +52,7 @@ export class EnumType<A> extends t.Type<A> {
         typeof (this.enumObject as never)[u as string] !== 'number',
 
       (u, c) => (this.is(u) ? t.success(u) : t.failure(u, c)),
-      t.identity,
+      t.identity
     );
     // eslint-disable-next-line functional/no-expression-statements
     this.enumObject = e;

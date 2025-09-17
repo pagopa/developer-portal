@@ -4,7 +4,7 @@ import { ReactNode } from 'react';
 const CHATBOT_CONTENT_ID = 'chatbot-page-content';
 
 const ContentWrapper = ({
-  children,
+  children
 }: {
   children: ReactNode | ReactNode[];
 }) => <div id={CHATBOT_CONTENT_ID}>{children}</div>;

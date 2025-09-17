@@ -6,25 +6,25 @@ import { StrapiReleaseNotes } from '@/lib/strapi/types/releaseNotes';
 const releaseNotesPopulate = {
   populate: {
     bannerLinks: {
-      populate: ['icon'],
+      populate: ['icon']
     },
     product: {
-      ...productRelationsPopulate,
+      ...productRelationsPopulate
     },
     seo: {
-      populate: '*,metaImage,metaSocial.image',
-    },
-  },
+      populate: '*,metaImage,metaSocial.image'
+    }
+  }
 };
 
 const makeStrapiReleaseNotesPopulate = () =>
   qs.stringify({
-    ...releaseNotesPopulate,
+    ...releaseNotesPopulate
   });
 
 export const fetchReleaseNotes = fetchFromStrapi<StrapiReleaseNotes>(
   'release-notes',
-  makeStrapiReleaseNotesPopulate(),
+  makeStrapiReleaseNotesPopulate()
 );
 
 const makeStrapiReleaseNotePopulate = (productSlug: string) =>
@@ -32,13 +32,13 @@ const makeStrapiReleaseNotePopulate = (productSlug: string) =>
     ...releaseNotesPopulate,
     filters: {
       product: {
-        slug: productSlug,
-      },
-    },
+        slug: productSlug
+      }
+    }
   });
 
 export const fetchReleaseNote = (productSlug: string) =>
   fetchFromStrapi<StrapiReleaseNotes>(
     'release-notes',
-    makeStrapiReleaseNotePopulate(productSlug),
+    makeStrapiReleaseNotePopulate(productSlug)
   );

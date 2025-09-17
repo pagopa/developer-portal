@@ -72,7 +72,7 @@ const SolutionTemplate = ({
   products,
   webinars,
   bannerLinks,
-  successStories,
+  successStories
 }: SolutionTemplateProps) => {
   const { palette, spacing } = useTheme();
   const t = useTranslations();
@@ -88,9 +88,9 @@ const SolutionTemplate = ({
               ...pageToBreadcrumbs('solutions', [
                 {
                   name: title,
-                  path: slug,
-                },
-              ]),
+                  path: slug
+                }
+              ])
             ]}
           />
         </Box>
@@ -102,15 +102,15 @@ const SolutionTemplate = ({
           description={introductionToSteps || description || ''}
           cta={{
             label: t('solution.ctaDetailLabel'),
-            href: solutionDetailPath,
+            href: solutionDetailPath
           }}
           steps={steps.map((step) => ({
             title: step.title,
             content: step.content,
             products: step.products.map((product) => ({
               label: product.shortName,
-              href: `/${product.slug}/overview`,
-            })),
+              href: `/${product.slug}/overview`
+            }))
           }))}
         />
       </EContainer>
@@ -120,7 +120,7 @@ const SolutionTemplate = ({
           maxWidth={265}
           items={stats.map((stat) => ({
             title: stat.title,
-            description: stat.description,
+            description: stat.description
           }))}
           statsSource={statsSource}
         />
@@ -135,8 +135,8 @@ const SolutionTemplate = ({
             ...story,
             link: {
               url: story.path,
-              text: t('shared.readStory'),
-            },
+              text: t('shared.readStory')
+            }
           }))}
         />
       )}
@@ -156,7 +156,7 @@ const SolutionTemplate = ({
             title: product.name,
             text: product.description || '',
             href: `/${product.slug}/overview`,
-            logoUrl: product.logo?.url || '',
+            logoUrl: product.logo?.url || ''
           }))}
         />
       )}

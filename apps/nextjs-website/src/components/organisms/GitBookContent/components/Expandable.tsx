@@ -3,11 +3,11 @@ import Paragraph from './Paragraph';
 import MuiAccordion, { AccordionProps } from '@mui/material/Accordion';
 import MuiAccordionDetails from '@mui/material/AccordionDetails';
 import MuiAccordionSummary, {
-  AccordionSummaryProps,
+  AccordionSummaryProps
 } from '@mui/material/AccordionSummary';
 import {
   ExpandableProps,
-  ExpandableSummaryProps,
+  ExpandableSummaryProps
 } from 'gitbook-docs/markdoc/schema/details';
 import { styled } from '@mui/material';
 import { KeyboardArrowRight } from '@mui/icons-material';
@@ -21,11 +21,11 @@ const Accordion = styled((props: AccordionProps) => (
   border: `1px solid ${theme.palette.divider}`,
   borderRadius: 4,
   '&.MuiAccordion-root::before': {
-    display: 'none',
+    display: 'none'
   },
   '&.Mui-expanded': {
-    border: `1px solid ${theme.palette.primary.main}`,
-  },
+    border: `1px solid ${theme.palette.primary.main}`
+  }
 }));
 
 const AccordionSummary = styled((props: AccordionSummaryProps) => (
@@ -39,21 +39,21 @@ const AccordionSummary = styled((props: AccordionSummaryProps) => (
   flexDirection: 'row-reverse',
   '& .MuiAccordionSummary-expandIconWrapper.Mui-expanded': {
     color: theme.palette.primary.main,
-    transform: 'rotate(90deg)',
+    transform: 'rotate(90deg)'
   },
   '& .MuiAccordionSummary-content': {
     marginTop: 0,
     marginLeft: theme.spacing(1),
     marginBottom: 0,
-    marginRight: theme.spacing(1),
-  },
+    marginRight: theme.spacing(1)
+  }
 }));
 
 const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
   paddingTop: 0,
   paddingLeft: '42px',
   paddingBottom: theme.spacing(2),
-  paddingRight: theme.spacing(2),
+  paddingRight: theme.spacing(2)
 }));
 
 const Expandable = ({ children }: ExpandableProps<ReactNode>) => {
@@ -72,7 +72,7 @@ const Expandable = ({ children }: ExpandableProps<ReactNode>) => {
 };
 
 export const ExpandableSummary = ({
-  children,
+  children
 }: ExpandableSummaryProps<ReactNode>) => (
   <AccordionSummary>
     <Paragraph>{children}</Paragraph>
