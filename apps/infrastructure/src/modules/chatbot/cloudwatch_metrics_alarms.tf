@@ -307,3 +307,21 @@ resource "aws_sns_topic_policy" "alerts" {
     ]
   })
 }
+
+# lambda evaluate allarm
+resource "aws_cloudwatch_metric_alarm" "lambda_evaluate_errors" {
+  alarm_name          = "${local.prefix}-evaluate-lambda-errors"
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  evaluation_periods  = 1
+  metric_name         = "Errors"
+  namespace           = "AWS/Lambda"
+  period              = 300
+  statistic           = "Sum"
+  threshold           = 3
+  alarm_description   = "This metric monitors errors in the evaluate lambda"
+  dimensions = {
+    FunctionName = aws_lambda_function.chatbot_evaluate_lambda.function_name
+  }
+  alarm_actions = [aws_sns_topic.alerts.arn]
+
+}
