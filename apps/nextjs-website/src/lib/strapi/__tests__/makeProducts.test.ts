@@ -63,7 +63,7 @@ describe('makeProductsProps', () => {
 
     expect(result).toHaveLength(0);
     expect(spyOnConsoleError).toHaveBeenCalledWith(
-      'Product with id Product Without Slug is missing the slug. Skipping...'
+      'Product with name Product Without Slug is missing the slug. Skipping...'
     );
   });
 
@@ -96,7 +96,7 @@ describe('makeProductsProps', () => {
     expect(result[0].name).toBe('Test Product');
     expect(result[1].name).toBe('Another Valid Product');
     expect(spyOnConsoleError).toHaveBeenCalledWith(
-      'Product with id Product Without Slug is missing the slug. Skipping...'
+      'Product with name Product Without Slug is missing the slug. Skipping...'
     );
   });
 
@@ -126,7 +126,7 @@ describe('makeProductProps', () => {
     const result = makeProductProps(productsWithAnItemMissingSlug().data[0]);
     expect(result).toBeNull();
     expect(spyOnConsoleError).toHaveBeenCalledWith(
-      'Product with id Product Without Slug is missing the slug. Skipping...'
+      'Product with name Product Without Slug is missing the slug. Skipping...'
     );
   });
 

@@ -101,7 +101,7 @@ describe('makeTutorialsProps', () => {
     expect(firstElement.title).toBe('Valid Tutorial');
     expect(firstElement.path).toBe('/pago-pa/tutorials/valid-tutorial');
     expect(spyOnConsoleError).toHaveBeenCalledWith(
-      'Error processing Tutorial "Tutorial Without Slug": Missing tutorial slug. Skipping...'
+      'Tutorial with name "Tutorial Without Slug" is missing the slug. Skipping...'
     );
   });
 
