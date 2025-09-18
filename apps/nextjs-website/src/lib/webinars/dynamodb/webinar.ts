@@ -23,16 +23,28 @@ export const makeWebinarQuestionListQueryCondition = (
 
 export const makeWebinarQuestionFromDynamodbItem = (
   input: WebinarQuestionDynamoDb
-): WebinarQuestion => ({
-  id: {
-    slug: input.webinarId.S,
-    createdAt: new Date(input.createdAt.S),
-  },
-  question: input.question.S,
-  // use the short-circuit evaluation to omit the attribute if it is undefined
-  ...(input.hiddenBy && { hiddenBy: input.hiddenBy.S }),
-  ...(input.highlightedBy && { highlightedBy: input.highlightedBy.S }),
-});
+): WebinarQuestion | null => {
+  if (!input.createdAt?.S) {
+    // eslint-disable-next-line functional/no-expression-statements
+    console.error(
+      'Error processing WebinarQuestionDynamoDb of webinarId: ',
+      input.webinarId?.S,
+      '. Missing createdAt attribute. Skipping...'
+    );
+    return null;
+  }
+
+  return {
+    id: {
+      slug: input.webinarId.S,
+      createdAt: new Date(input.createdAt.S),
+    },
+    question: input.question.S,
+    // use the short-circuit evaluation to omit the attribute if it is undefined
+    ...(input.hiddenBy && { hiddenBy: input.hiddenBy.S }),
+    ...(input.highlightedBy && { highlightedBy: input.highlightedBy.S }),
+  };
+};
 
 export const makeWebinarSubscriptionFromDynamodbItem = (
   input: WebinarSubscriptionDynamoDb

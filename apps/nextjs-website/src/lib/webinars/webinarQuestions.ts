@@ -17,6 +17,8 @@ import {
   makeDynamodbUpdateFromWebinarQuestionUpdate,
 } from './dynamodb/webinar';
 import { WebinarQuestionDynamoDb } from './dynamodb/types/webinarQuestion';
+import { compact } from 'lodash';
+import { item } from 'gitbook-docs/markdoc/schema/item';
 
 export type WebinarEnv = {
   readonly dynamoDBClient: DynamoDBClient;
@@ -112,7 +114,8 @@ export const listWebinarQuestions = (webinarId: string) =>
         // turn Array<Either<_, _>> to Either<_, Array<_>>
         RA.sequence(E.Applicative),
         // map errors to error and dynamodb item to WebinarQuestion
-        E.bimap(E.toError, RA.map(makeWebinarQuestionFromDynamodbItem))
+        E.bimap(E.toError, RA.map(makeWebinarQuestionFromDynamodbItem)),
+        E.map((items) => compact(items))
       )
     )
   );
