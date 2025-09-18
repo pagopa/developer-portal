@@ -118,7 +118,7 @@ const ChatbotHistoryContent = () => {
         {(loading || paginatedSessionsLoading) && <Spinner />}
         {!loading &&
           !paginatedSessionsLoading &&
-          (!paginatedSessions || _.isEmpty(paginatedSessions.items)) && (
+          (!paginatedSessions || isEmpty(paginatedSessions.items)) && (
             <Typography>{t('profile.chatbot.noSessions')}</Typography>
           )}
         {!loading && !paginatedSessionsLoading && paginatedSessions && (
