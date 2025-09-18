@@ -88,7 +88,7 @@ describe('Handler', () => {
     expect(response.emailMessage).toStrictEqual(expected);
   });
 
-  it('should throw an error on user confirmed', async () => {
+  it('should log a warning and return the event on user confirmed', async () => {
     const event = makeEvent();
     const userVerifiedEvent = {
       ...event,
@@ -102,13 +102,22 @@ describe('Handler', () => {
       },
     };
 
-    // eslint-disable-next-line functional/no-try-statements
-    try {
-      await makeHandler(env)(userVerifiedEvent);
-      fail('Should not reach this point');
-    } catch (error) {
-      expect(error).toStrictEqual(new Error('Operation not permitted'));
-    }
+    // Spy on console.warn
+    const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
+
+    const result = await makeHandler(env)(userVerifiedEvent);
+
+    const username = event.request.userAttributes['sub'];
+    // Verify that the warning was logged
+    expect(consoleWarnSpy).toHaveBeenCalledWith(
+      `User ${username} is confirmed and has requested to resend the email. Operation not permitted.`
+    );
+
+    // Verify that the event is returned unmodified
+    expect(result).toStrictEqual(userVerifiedEvent);
+
+    // Restore the original console.warn
+    consoleWarnSpy.mockRestore();
   });
 
   it('should reply with verification link on UpdateUserAttribute event', async () => {
