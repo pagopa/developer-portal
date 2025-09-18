@@ -73,6 +73,7 @@ resource "aws_iam_policy" "deploy_website" {
         Effect = "Allow"
         Resource = [
           aws_cloudfront_distribution.static_contents.arn,
+          module.opennext.cloudfront.distribution_arn
         ]
       },
     ])

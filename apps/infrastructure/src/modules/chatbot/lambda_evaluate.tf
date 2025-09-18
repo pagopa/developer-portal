@@ -135,3 +135,5 @@ resource "aws_lambda_event_source_mapping" "evaluate_lambda_sqs" {
   batch_size       = 10
   #maximum_batching_window_in_seconds = 60
 }
+
+

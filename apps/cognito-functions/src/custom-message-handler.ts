@@ -22,10 +22,6 @@ export const makeHandler =
     ) {
       if (cognitoUserStatus === 'CONFIRMED') {
         // eslint-disable-next-line functional/no-expression-statements
-        console.log(
-          `User ${username} is confirmed and has requested to resend the email`
-        );
-        // eslint-disable-next-line functional/no-throw-statements
         console.warn(
           `User ${username} is confirmed and has requested to resend the email. Operation not permitted.`
         );
