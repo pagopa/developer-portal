@@ -89,7 +89,7 @@ describe('makeApiDataListPagesProps', () => {
     expect(firstElement.cards).toHaveLength(0);
     expect(firstElement.apiDetailSlugs).toHaveLength(0);
     expect(spyOnConsoleError).toHaveBeenCalledWith(
-      expect.stringContaining('Missing title or API details')
+      expect.stringContaining('Error processing API Data')
     );
   });
 
@@ -155,7 +155,7 @@ describe('makeApiDataListPagesProps', () => {
     );
     expect(result[0].cards).toHaveLength(0);
     expect(spyOnConsoleError).toHaveBeenCalledWith(
-      expect.stringContaining('Missing title or API details')
+      expect.stringContaining('Error processing API Data')
     );
   });
 

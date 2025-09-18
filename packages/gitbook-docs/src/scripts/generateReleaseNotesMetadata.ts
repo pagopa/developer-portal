@@ -15,6 +15,7 @@ import { extractTitleFromMarkdown } from '../helpers/extractTitle.helper';
 import { fetchFromStrapi } from '../helpers/fetchFromStrapi';
 import { sitePathFromS3Path } from '../helpers/sitePathFromS3Path';
 import { StrapiReleaseNote } from '../helpers/guidesMetadataHelper';
+import { getSyncedReleaseNotesResponseJsonPath } from '../syncedResponses';
 
 // Load environment variables from .env file
 dotenv.config();
@@ -25,6 +26,8 @@ const S3_PATH_TO_GITBOOK_DOCS =
 const S3_RELEASE_NOTES_METADATA_JSON_PATH =
   process.env.S3_RELEASE_NOTES_METADATA_JSON_PATH ||
   'release-notes-metadata.json';
+const SYNCED_RELEASE_NOTES_RESPONSE_JSON_PATH =
+  getSyncedReleaseNotesResponseJsonPath();
 
 const s3Client = makeS3Client();
 
@@ -98,11 +101,14 @@ async function main() {
 
   // eslint-disable-next-line functional/no-let
   let strapiReleaseNotes;
+  // eslint-disable-next-line functional/no-let
+  let responseJson;
   try {
-    const { data } = await fetchFromStrapi<StrapiReleaseNote>(
-      'api/release-notes?populate[0]=product&pagination[pageSize]=1000&pagination[page]=1'
+    const result = await fetchFromStrapi<StrapiReleaseNote>(
+      'api/release-notes/?populate[bannerLinks][populate][0]=icon&populate[product][populate][0]=logo&populate[product][populate][1]=bannerLinks.icon&populate[product][populate][2]=overview&populate[product][populate][3]=quickstart_guide&populate[product][populate][4]=release_note&populate[product][populate][5]=api_data_list_page&populate[product][populate][6]=api_data_list_page.apiData.*&populate[product][populate][7]=api_data_list_page.apiData.apiRestDetail.slug&populate[product][populate][8]=api_data_list_page.apiData.apiRestDetail.specUrls&populate[product][populate][9]=api_data_list_page.apiData.apiSoapDetail.*&populate[product][populate][10]=guide_list_page&populate[product][populate][11]=tutorial_list_page&populate[seo][populate]=*,metaImage,metaSocial.image&pagination[pageSize]=1000&pagination[page]=1'
     );
-    strapiReleaseNotes = data;
+    strapiReleaseNotes = result.data;
+    responseJson = result.responseJson;
   } catch (error) {
     console.error('Error fetching release notes from Strapi:', error);
     process.exit(1);
@@ -120,6 +126,14 @@ async function main() {
   await writeSitemapJson(
     sitemapItems,
     S3_RELEASE_NOTES_METADATA_JSON_PATH,
+    `${S3_BUCKET_NAME}`,
+    s3Client
+  );
+
+  // TODO: remove when Strapi will manage Metadata
+  await writeSitemapJson(
+    responseJson,
+    SYNCED_RELEASE_NOTES_RESPONSE_JSON_PATH,
     `${S3_BUCKET_NAME}`,
     s3Client
   );
