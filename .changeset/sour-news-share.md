@@ -2,4 +2,4 @@
 "nextjs-website": patch
 ---
 
-Remove webinar dynamoDB codecs and add new TS types instead
+Remove webinar DynamoDB codecs and add new TS types instead
