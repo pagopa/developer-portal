@@ -1,3 +1,4 @@
+/* eslint-disable functional/no-expression-statements */
 import { ApiDataListPageTemplateProps } from '@/components/templates/ApiDataListTemplate/ApiDataListTemplate';
 import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
 import { makeBaseProductWithoutLogoProps } from '@/lib/strapi/makeProps/makeProducts';
@@ -7,12 +8,18 @@ import { StrapiBaseApiData } from '../types/apiDataList';
 
 function makeApiDataListPageCard(item: StrapiBaseApiData, slug: string) {
   if (!item.attributes.apiRestDetail && !item.attributes.apiSoapDetail) {
-    console.error(`Error processing API Data "${item.attributes.title}": Missing API details. Skipping...`);
+    console.error(
+      `Error processing API Data "${item.attributes.title}": Missing API details. Skipping...`
+    );
     return null;
   }
 
-  if (!item.attributes.apiRestDetail?.slug && !item.attributes.apiSoapDetail?.slug) {
-    console.error(`Error processing API Data "${item.attributes.title}": Missing API slug. Skipping...`);
+  if (
+    !item.attributes.apiRestDetail?.slug &&
+    !item.attributes.apiSoapDetail?.slug
+  ) {
+    console.error(`
+      Error processing API Data "${item.attributes.title}": Missing API slug. Skipping...`);
     return null;
   }
 
@@ -40,7 +47,6 @@ export function makeApiDataListPagesProps(
     strapiApiDataListPages.data.map(({ attributes }) => {
       const slug = attributes.product.data.attributes.slug;
       if (!slug) {
-        // eslint-disable-next-line functional/no-expression-statements
         console.error(
           `Error processing API Data List Page with title "${attributes.title}": Missing product slug`
         );
