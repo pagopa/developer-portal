@@ -37,6 +37,11 @@ on:
         type: boolean
         required: true
         default: true
+      inivalidate_opennext_cache:
+        description: 'Invalidate opennext cloufront cache'
+        type: boolean
+        required: true
+        default: false
 
   schedule:
     - cron: '0 23 * * *'  # Run daily at midnight UTC
@@ -162,6 +167,13 @@ jobs:
         run: |
           aws cloudfront create-invalidation \
             --distribution-id ${{ vars.ASSET_BUCKET_CLOUDFRONT_DISTRIBUTION_ID }} \
+            --paths "/*"
+        
+      - name: Invalidate CloudFront opennext cache
+        if: inputs.inivalidate_opennext_cache == true
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id ${{ vars.OPENNEXT_CLOUDFRONT_DISTRIBUTION_ID }} \
             --paths "/*"
 
       - name: Trigger reindex workflow

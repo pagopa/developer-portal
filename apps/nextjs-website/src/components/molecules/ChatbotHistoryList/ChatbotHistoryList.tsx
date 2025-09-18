@@ -25,7 +25,7 @@ const DEFAULT_DATE_FORMAT = {
 } satisfies DateFormatOptions;
 
 type ChatbotHistoryList = {
-  sessionsList: Session[];
+  sessionsList: readonly Session[];
 };
 
 const ChatbotHistoryList = ({ sessionsList }: ChatbotHistoryList) => {
@@ -56,7 +56,7 @@ export default ChatbotHistoryList;
 
 function dateDividerSessionsItemsInterpolation(
   dateDividers: string[],
-  sessionsList: Session[],
+  sessionsList: readonly Session[],
   palette: Palette
 ) {
   const items = dateDividers.map((date) => {

@@ -4,8 +4,8 @@ In this repository you can find anything you need to work on the developer porta
 
 ## Requirements
 
-- [Node.js](https://nodejs.org/docs/latest-v18.x/api/index.html)
-- [npm CLI](https://docs.npmjs.com/cli/v9)
+- [Node.js](https://nodejs.org/docs/latest-v22.x/api/index.html)
+- [npm CLI](https://docs.npmjs.com/cli/v10)
 
 ## Local development
 
@@ -17,22 +17,39 @@ npm i
 ```
 
 Finally:
+
 - in the `nextjs-website` app (`apps/nextjs-websites`), create a `.env.local` starting from `.env.default` and fill all the environment variables.
 - in the `strapi-cms` app of the dedicated repositories folders (`apps/strapi-cms`), create a `.env` starting from `.env.default` and fill all the environment variables.
 
 In order to get the Strapi API token needed in the .env.local:
+
 - for local developement, you can find the token at: [http://localhost:1337/admin/settings/api-tokens] (http://localhost:1337/admin/settings/api-tokens)
 - for the dev api token, ask one of the mantainer with admin access to [https://cms.dev.developer.pagopa.it] (https://cms.dev.developer.pagopa.it)
 
 ### Populate strapi cms
-See the repository https://github.com/pagopa/developer-portal-cms/
 
-### Run the developer portal locally
+See the repository <https://github.com/pagopa/developer-portal-cms/>
+
+### Copile the applications and the packages in the monorepo
 
 Run the following command from the root folder.
 
 ``` bash
+npm run compile
+```
+
+### Run the developer portal locally
+
+Run the following commands from the root folder.
+
+``` bash
 npm run dev
+```
+
+You can run a single workspace by running:
+
+``` bash
+npm run dev -w <workspace>
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the website.
@@ -91,6 +108,7 @@ npm -w <workspace> run <command>
 ```
 
 #### Manage dependencies
+
 Add to the root the dependency `<dependency>`.
 
 ``` bash
@@ -104,11 +122,15 @@ npm -w <package> install <dependency> -D
 ```
 
 ## Storybook
+
 To access the [Storybook](https://storybook.js.org/) and view the available React components, follow these instructions:
+
 ```bash
 npm run storybook
 ```
+
 and you will get a message like this:
+
 ```bash
 ╭────────────────────────────────────────────────────╮
 │                                                    │
@@ -119,9 +141,11 @@ and you will get a message like this:
 │                                                    │
 ╰────────────────────────────────────────────────────╯
 ```
+
 Open [http://localhost:6006](http://localhost:6006) with your browser to see the result.
 
 ## Changelog
+
 This project utilizes [changesets](https://github.com/changesets/changesets) to generate the changelog. Here's how you can use it:
 
 1. **Adding Changelog Information**: to add entries to the changelog, execute `npx changeset` or `npm run changeset`.  
