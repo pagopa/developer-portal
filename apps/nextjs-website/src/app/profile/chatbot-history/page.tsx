@@ -14,7 +14,7 @@ import Spinner from '@/components/atoms/Spinner/Spinner';
 import { useRouter, useSearchParams } from 'next/navigation';
 import ChatbotHistoryDetailLayout from '@/components/organisms/ChatbotHistoryDetailLayout/ChatbotHistoryDetailLayout';
 import { Query } from '@/lib/chatbot/queries';
-import _ from 'lodash';
+import { isEmpty } from 'lodash';
 
 const ChatbotHistoryContent = () => {
   const t = useTranslations();
