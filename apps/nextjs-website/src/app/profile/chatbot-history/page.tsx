@@ -11,10 +11,10 @@ import {
 import { useUser } from '@/helpers/user.helper';
 import { isChatbotActive } from '@/config';
 import Spinner from '@/components/atoms/Spinner/Spinner';
-import { isEmpty } from 'fp-ts/lib/Array';
 import { useRouter, useSearchParams } from 'next/navigation';
 import ChatbotHistoryDetailLayout from '@/components/organisms/ChatbotHistoryDetailLayout/ChatbotHistoryDetailLayout';
 import { Query } from '@/lib/chatbot/queries';
+import { isEmpty } from 'lodash';
 
 const ChatbotHistoryContent = () => {
   const t = useTranslations();
