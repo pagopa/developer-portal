@@ -16,6 +16,7 @@ export type StrapiBaseTutorial = {
     readonly image: {
       readonly data?: StrapiMedia;
     };
+    readonly tags: StrapiComponent<readonly StrapiTag[] | undefined>;
     readonly product: {
       readonly data: StrapiBaseProductWithBannerLinks;
     };
@@ -31,7 +32,6 @@ export type StrapiTutorial = StrapiBaseTutorial & {
     readonly bannerLinks?: readonly StrapiBannerLink[];
     readonly relatedLinks?: StrapiRelatedLinks;
     readonly seo?: StrapiSeo;
-    readonly tags: StrapiComponent<readonly StrapiTag[] | undefined>;
   };
 };
 
