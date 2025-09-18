@@ -1,17 +1,17 @@
 import { Meta, StoryObj } from '@storybook/nextjs';
-import MobileWebinarCategorySelector from 'nextjs-website/src/components/molecules/MobileWebinarCategorySelector/MobileWebinarCategorySelector';
+import MobileFilterSelector from 'nextjs-website/src/components/molecules/MobileFilterSelector/MobileFilterSelector';
 import { nextIntlContextDecorator } from '../next-intl-context.helper';
-const meta: Meta<typeof MobileWebinarCategorySelector> = {
-  title: 'Molecules/MobileWebinarCategorySelector',
-  component: MobileWebinarCategorySelector,
+const meta: Meta<typeof MobileFilterSelector> = {
+  title: 'Molecules/MobileFilterSelector',
+  component: MobileFilterSelector,
 };
 
 export default meta;
 
-export const Showcase: StoryObj<typeof MobileWebinarCategorySelector> = {
+export const Showcase: StoryObj<typeof MobileFilterSelector> = {
   args: {
-    selectedWebinarCategory: 0,
-    webinarCategories: [
+    selectedFilter: 0,
+    selectorFilters: [
       {
         name: 'Tutti',
         icon: {

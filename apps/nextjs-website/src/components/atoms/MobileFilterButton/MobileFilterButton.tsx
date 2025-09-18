@@ -3,7 +3,7 @@ import IconWrapper from '@/components/atoms/IconWrapper/IconWrapper';
 import { Media } from '@/lib/types/media';
 import React from 'react';
 
-type MobileWebinarCategoryButtonProps = {
+type MobileFilterButtonProps = {
   // eslint-disable-next-line functional/no-return-void
   onClick: () => void;
   label: string;
@@ -12,13 +12,13 @@ type MobileWebinarCategoryButtonProps = {
   isLast?: boolean;
 };
 
-const MobileWebinarCategoryButton = ({
+const MobileFilterButton = ({
   onClick,
   icon,
   label,
   isHeader = false,
   isLast = false,
-}: MobileWebinarCategoryButtonProps) => {
+}: MobileFilterButtonProps) => {
   const { palette } = useTheme();
   const height = isHeader ? 32 : 64;
   const paddingLeft = isHeader ? '16px' : '24px';
@@ -65,4 +65,4 @@ const MobileWebinarCategoryButton = ({
   );
 };
 
-export default MobileWebinarCategoryButton;
+export default MobileFilterButton;
