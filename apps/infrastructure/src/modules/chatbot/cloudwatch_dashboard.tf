@@ -21,9 +21,10 @@ resource "aws_cloudwatch_dashboard" "chatbot_dashboard" {
           alarms = [
             aws_cloudwatch_metric_alarm.api_gateway_5xx_errors.arn,
             aws_cloudwatch_metric_alarm.lambda_errors.arn,
+            aws_cloudwatch_metric_alarm.lambda_evaluate_errors.arn,
             aws_cloudwatch_metric_alarm.lambda_duration.arn,
             aws_cloudwatch_metric_alarm.dynamodb_read_throttle_queries.arn,
-            aws_cloudwatch_metric_alarm.dynamodb_write_throttle_queries.arn
+            aws_cloudwatch_metric_alarm.dynamodb_write_throttle_queries.arn,
           ]
         }
       },
