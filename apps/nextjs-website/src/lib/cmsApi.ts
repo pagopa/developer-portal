@@ -12,10 +12,8 @@ import { fetchQuickStartGuides } from './strapi/fetches/fetchQuickStartGuides';
 import { makeQuickStartGuidesProps } from './strapi/makeProps/makeQuickStartGuides';
 import { makeCaseHistoriesProps } from './strapi/makeProps/makeCaseHistories';
 import { fetchCaseHistories } from './strapi/fetches/fetchCaseHistories';
-import { fetchSolution, fetchSolutions } from './strapi/fetches/fetchSolutions';
 import { makeSolutionsProps } from './strapi/makeProps/makeSolutions';
 import { makeSolutionListPageProps } from './strapi/makeProps/makeSolutionListPage';
-import { fetchSolutionListPage } from './strapi/fetches/fetchSolutionListPage';
 import { fetchApiDataListPages } from './strapi/fetches/fetchApiDataListPages';
 import { makeApiDataListPagesProps } from './strapi/makeProps/makeApiDataListPages';
 import { makeApiDataListProps } from './strapi/makeProps/makeApiDataList';
@@ -31,7 +29,6 @@ import { makeTutorialListPagesProps } from './strapi/makeProps/makeTutorialListP
 import { fetchUrlReplaceMap } from './strapi/fetches/fetchUrlReplaceMap';
 import { makeUrlReplaceMap } from './strapi/makeProps/makeUrlReplaceMap';
 import { makeReleaseNotesProps } from '@/lib/strapi/makeProps/makeReleaseNotes';
-import { fetchReleaseNote } from '@/lib/strapi/fetches/fetchReleaseNotes';
 import {
   makeGuide as makeGuideS3,
   makeSolution as makeSolutionS3,
@@ -46,6 +43,16 @@ import {
 } from '@/helpers/s3Metadata.helpers';
 import { StrapiGuideListPages } from '@/lib/strapi/types/guideListPage';
 import { StrapiGuides } from '@/lib/strapi/types/guide';
+import {
+  getSyncedGuidesResponseJsonPath,
+  getSyncedGuideListPagesResponseJsonPath,
+  getSyncedSolutionsResponseJsonPath,
+  getSyncedSolutionListPagesResponseJsonPath,
+  getSyncedReleaseNotesResponseJsonPath,
+} from 'gitbook-docs/syncedResponses';
+import { StrapiSolutionListPage } from './strapi/types/solutionListPage';
+import { StrapiSolutions } from './strapi/types/solutions';
+import { StrapiReleaseNotes } from './strapi/types/releaseNotes';
 
 // a BuildEnv instance ready to be used
 const buildEnv = pipe(
@@ -114,12 +121,28 @@ export const getCaseHistoriesProps = async () => {
 };
 
 export const getSolutionsProps = async () => {
-  const strapiSolutions = await fetchSolutions(buildEnv);
-  return makeSolutionsProps(strapiSolutions);
+  // TODO: restore this when Strapi will manage guides metadata
+  const strapiSolutions = (await fetchResponseFromCDN(
+    getSyncedSolutionsResponseJsonPath()
+  )) as StrapiSolutions | undefined;
+  return makeSolutionsProps(
+    strapiSolutions || {
+      data: [],
+      meta: { pagination: { page: 1, pageSize: 0, pageCount: 0, total: 0 } },
+    }
+  );
 };
 
 export const getSolutionListPageProps = async () => {
-  const strapiSolutionListPage = await fetchSolutionListPage(buildEnv);
+  const strapiSolutionListPage = (await fetchResponseFromCDN(
+    getSyncedSolutionListPagesResponseJsonPath()
+  )) as StrapiSolutionListPage | undefined;
+
+  if (!strapiSolutionListPage) {
+    // eslint-disable-next-line functional/no-throw-statements
+    throw new Error('Failed to fetch solution list page data');
+  }
+
   return makeSolutionListPageProps(strapiSolutionListPage);
 };
 
@@ -130,7 +153,7 @@ export const getOverviewsProps = async () => {
 
 export const getGuideListPagesProps = async () => {
   const strapiGuideList = (await fetchResponseFromCDN(
-    'synced-guide-list-pages-response.json'
+    getSyncedGuideListPagesResponseJsonPath()
   )) as StrapiGuideListPages | undefined;
   return strapiGuideList ? makeGuideListPagesProps(strapiGuideList) : [];
 };
@@ -149,7 +172,7 @@ export const getGuidePageProps = async (
 ) => {
   // TODO: restore this when Strapi will manage guides metadata
   const strapiGuides = (await fetchResponseFromCDN(
-    'synced-guides-response.json'
+    getSyncedGuidesResponseJsonPath()
   )) as StrapiGuides | undefined;
   // eslint-disable-next-line functional/no-expression-statements
   const guides = strapiGuides ? makeGuidesProps(strapiGuides) : [];
@@ -169,12 +192,20 @@ export const getSolutionProps = async (
   solutionsSlug: string,
   jsonMetadata?: JsonMetadata
 ) => {
-  const strapiSolutions = await fetchSolution(solutionsSlug)(buildEnv);
+  // TODO: restore this when Strapi will manage guides metadata
+  const strapiSolutions = (await fetchResponseFromCDN(
+    getSyncedSolutionsResponseJsonPath()
+  )) as StrapiSolutions | undefined;
   if (!strapiSolutions || strapiSolutions.data.length < 1) {
     // eslint-disable-next-line functional/no-throw-statements
-    throw new Error('Failed to fetch data');
+    throw new Error('Failed to fetch solution data');
   }
-  const solution = makeSolutionsProps(strapiSolutions)[0];
+  const solutions = makeSolutionsProps(strapiSolutions);
+  const solution = solutions.find((s) => s.slug === solutionsSlug);
+  if (!solution) {
+    // eslint-disable-next-line functional/no-throw-statements
+    throw new Error('Failed to fetch solution data');
+  }
   return await makeSolutionS3(solution, jsonMetadata);
 };
 
@@ -182,11 +213,21 @@ export const getReleaseNoteProps = async (
   productSlug: string,
   jsonMetadata?: JsonMetadata
 ) => {
-  const strapiReleaseNotes = await fetchReleaseNote(productSlug)(buildEnv);
+  // TODO: restore this when Strapi will manage guides metadata
+  const strapiReleaseNotes = (await fetchResponseFromCDN(
+    getSyncedSolutionsResponseJsonPath()
+  )) as StrapiReleaseNotes | undefined;
   if (!strapiReleaseNotes || strapiReleaseNotes.data.length < 1) {
     // eslint-disable-next-line functional/no-throw-statements
-    throw new Error('Failed to fetch data');
+    throw new Error('Failed to fetch release data');
   }
-  const releaseNote = makeReleaseNotesProps(strapiReleaseNotes)[0];
+  const releaseNotes = makeReleaseNotesProps(strapiReleaseNotes);
+  const releaseNote = releaseNotes.find(
+    (rn) => rn.product.slug === productSlug
+  );
+  if (!releaseNote) {
+    // eslint-disable-next-line functional/no-throw-statements
+    throw new Error('Failed to fetch release data');
+  }
   return await makeReleaseNoteS3(releaseNote, jsonMetadata);
 };

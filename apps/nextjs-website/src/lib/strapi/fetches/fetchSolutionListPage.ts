@@ -1,3 +1,7 @@
+/**
+ * @deprecated This file is deprecated and currently is not used. This is file is left because it could be resored once DEV-2500 RFC will be defined
+ */
+
 import * as qs from 'qs';
 import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
 import { StrapiSolutionListPage } from '../types/solutionListPage';
