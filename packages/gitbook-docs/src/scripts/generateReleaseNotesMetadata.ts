@@ -108,7 +108,7 @@ async function main() {
       'api/release-notes?populate[0]=product&pagination[pageSize]=1000&pagination[page]=1'
     );
     strapiReleaseNotes = result.data;
-    responseJson = result;
+    responseJson = result.responseJson;
   } catch (error) {
     console.error('Error fetching release notes from Strapi:', error);
     process.exit(1);
