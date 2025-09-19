@@ -36,8 +36,6 @@ export function makeTutorialListPagesProps(
             return null;
           }
 
-          // eslint-disable-next-line functional/no-expression-statements
-          console.log('tutorialAttributes', tutorialAttributes);
           // eslint-disable-next-line functional/no-try-statements
           try {
             return {
