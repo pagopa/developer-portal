@@ -7,6 +7,7 @@ export const strapiTutorials: StrapiTutorials = {
   data: [
     {
       attributes: {
+        tags: { data: [] },
         title: 'Tutorial Title',
         slug: 'tutorial-title',
         publishedAt: '2024-01-01T00:00:00.000Z',

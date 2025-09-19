@@ -54,6 +54,7 @@ export function baseProductWithoutBannerLinksMinimal(): StrapiBaseProductWithout
 export function strapiBaseProductWithRelations(): StrapiBaseProductWithRelations {
   return {
     attributes: {
+      tags: { data: [] },
       ...baseProduct().attributes,
       bannerLinks: generateBannerLinks(1),
       overview: { data: { id: 1 } },
@@ -71,6 +72,7 @@ export function strapiBaseProductWithoutRelations(): StrapiBaseProductWithRelati
     attributes: {
       ...baseProduct().attributes,
       bannerLinks: undefined,
+      tags: { data: [] },
       overview: { data: undefined },
       quickstart_guide: { data: undefined },
       api_data_list_page: { data: undefined },
@@ -85,6 +87,7 @@ export function strapiProduct(): StrapiProduct {
   return {
     attributes: {
       ...baseProduct().attributes,
+      tags: { data: [] },
       bannerLinks: generateBannerLinks(2),
       description: 'Complete product description',
       logo: {
@@ -109,6 +112,7 @@ export function strapiProductMinimal(): StrapiProduct {
       logo: {
         data: mediaJpeg(),
       },
+      tags: { data: [] },
       overview: { data: undefined },
       quickstart_guide: { data: undefined },
       api_data_list_page: { data: undefined },
@@ -135,6 +139,7 @@ export function productWithAllRelations(): StrapiProduct {
     attributes: {
       name: 'Full Feature Product',
       shortName: 'FFP',
+      tags: { data: [] },
       slug: 'full-feature-product',
       bannerLinks: generateBannerLinks(3),
       description: 'A product with all available relations and features',
@@ -180,6 +185,7 @@ export function productWithMissingMandatoryFields(): Partial<StrapiProduct> {
   return {
     attributes: {
       name: undefined as any,
+      tags: { data: [] },
       shortName: undefined as any,
       slug: undefined as any,
       bannerLinks: [],

@@ -22,6 +22,9 @@ const makeStrapiTutorialsPopulate = () =>
       seo: {
         populate: '*,metaImage,metaSocial.image',
       },
+      tags: {
+        populate: '*',
+      },
     },
   });
 

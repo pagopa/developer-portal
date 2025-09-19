@@ -1,6 +1,7 @@
 import { Path } from '@/lib/types/path';
 import { Part } from './part';
 import { SEO } from './seo';
+import { Tag } from '@/lib/types/tag';
 
 export type Tutorial = {
   readonly showInOverview?: boolean;
@@ -12,5 +13,6 @@ export type Tutorial = {
   readonly publishedAt?: Date;
   readonly parts?: readonly Part[];
   readonly seo?: SEO;
+  readonly tags?: readonly Tag[];
   readonly updatedAt?: string;
 } & Path;

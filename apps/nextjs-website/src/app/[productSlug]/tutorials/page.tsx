@@ -20,6 +20,7 @@ import {
   breadcrumbItemByProduct,
   productToBreadcrumb,
 } from '@/helpers/structuredData.helpers';
+import { TutorialsList } from '@/components/organisms/TutorialsList/TutorialsList';
 
 export type TutorialsPageProps = {
   readonly product: Product;
@@ -85,25 +86,7 @@ const TutorialsPage = async ({ params }: ProductParams) => {
         />
       )}
       {tutorials && (
-        <Box>
-          <Newsroom
-            items={tutorials.map((tutorial) => ({
-              title: tutorial.title,
-              date: {
-                date: tutorial.publishedAt,
-              },
-              href: {
-                label: 'shared.readTutorial',
-                link: tutorial.path,
-                translate: true,
-              },
-              img: {
-                alt: tutorial.image?.alternativeText || '',
-                src: tutorial.image?.url || '/images/news.png',
-              },
-            }))}
-          />
-        </Box>
+        <TutorialsList tags={product.tags || []} tutorials={tutorials} />
       )}
     </ProductLayout>
   );

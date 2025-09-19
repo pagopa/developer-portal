@@ -296,6 +296,9 @@ export const strapiGuideData = {
                   id: 48,
                 },
               },
+              tags: {
+                data: [],
+              },
             },
           },
         },
