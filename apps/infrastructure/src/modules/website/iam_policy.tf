@@ -73,6 +73,7 @@ resource "aws_iam_policy" "deploy_website" {
         Effect = "Allow"
         Resource = [
           aws_cloudfront_distribution.static_contents.arn,
+          module.opennext.cloudfront.distribution_arn
         ]
       },
     ])
@@ -81,7 +82,7 @@ resource "aws_iam_policy" "deploy_website" {
 
 data "aws_iam_policy_document" "website_standalone_iam_policy" {
   statement {
-    actions = ["s3:GetObject", "s3:ListBucket"]
+    actions = ["s3:GetObject"]
     resources = [
       aws_s3_bucket.website_standalone.arn,
       "${aws_s3_bucket.website_standalone.arn}/*"

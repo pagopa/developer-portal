@@ -12,9 +12,16 @@ import {
   writeSitemapJson,
 } from '../helpers/s3Bucket.helper';
 import { extractTitleFromMarkdown } from '../helpers/extractTitle.helper';
-import { fetchFromStrapi } from '../helpers/fetchFromStrapi';
+import {
+  fetchFromStrapi,
+  getResponseFromStrapi,
+} from '../helpers/fetchFromStrapi';
 import { sitePathFromS3Path } from '../helpers/sitePathFromS3Path';
 import { StrapiSolution } from '../helpers/guidesMetadataHelper';
+import {
+  getSyncedSolutionListPagesResponseJsonPath,
+  getSyncedSolutionsResponseJsonPath,
+} from '../syncedResponses';
 
 // Load environment variables from .env file
 dotenv.config();
@@ -24,6 +31,10 @@ const S3_PATH_TO_GITBOOK_DOCS =
   process.env.S3_PATH_TO_GITBOOK_DOCS || 'devportal-docs/docs';
 const S3_SOLUTIONS_METADATA_JSON_PATH =
   process.env.S3_SOLUTIONS_METADATA_JSON_PATH || 'solutions-metadata.json';
+const SYNCED_SOLUTIONS_RESPONSE_JSON_PATH =
+  getSyncedSolutionsResponseJsonPath();
+const SYNCED_SOLUTION_LIST_PAGES_RESPONSE_JSON_PATH =
+  getSyncedSolutionListPagesResponseJsonPath();
 
 const s3Client = makeS3Client();
 function generateUrlPath(
@@ -92,13 +103,28 @@ async function convertSolutionToSitemapItems(
 async function main() {
   console.log('Starting to process Markdown files...');
 
+  // TODO: remove when Strapi will manage Metadata
+  // eslint-disable-next-line functional/no-let
+  let solutionListPagesResponse;
+  try {
+    solutionListPagesResponse = await getResponseFromStrapi(
+      'api/solution-list-page/?populate%5Bsolutions%5D%5Bpopulate%5D%5B0%5D=bannerLinks&populate%5Bsolutions%5D%5Bpopulate%5D%5B1%5D=bannerLinks.icon&populate%5Bsolutions%5D%5Bpopulate%5D%5B2%5D=products.logo&populate%5Bsolutions%5D%5Bpopulate%5D%5B3%5D=icon&populate%5Bsolutions%5D%5Bpopulate%5D%5B4%5D=icon.name&populate%5Bsolutions%5D%5Bpopulate%5D%5B5%5D=stats&populate%5Bsolutions%5D%5Bpopulate%5D%5B6%5D=steps&populate%5Bsolutions%5D%5Bpopulate%5D%5B7%5D=steps.products&populate%5Bsolutions%5D%5Bpopulate%5D%5B8%5D=webinars&populate%5Bsolutions%5D%5Bpopulate%5D%5B9%5D=webinars.coverImage&populate%5Bsolutions%5D%5Bpopulate%5D%5B10%5D=caseHistories&populate%5Bsolutions%5D%5Bpopulate%5D%5B11%5D=caseHistories.case_histories&populate%5Bsolutions%5D%5Bpopulate%5D%5B12%5D=caseHistories.case_histories.image&populate%5BcaseHistories%5D%5Bpopulate%5D%5B0%5D=case_histories&populate%5BcaseHistories%5D%5Bpopulate%5D%5B1%5D=case_histories.image&populate%5Bfeatures%5D%5Bpopulate%5D%5B0%5D=items.icon&populate%5Bseo%5D%5Bpopulate%5D=%2A%2CmetaImage%2CmetaSocial.image'
+    );
+  } catch (error) {
+    console.error('Error fetching solution list pages from Strapi:', error);
+    process.exit(1);
+  }
+
   // eslint-disable-next-line functional/no-let
   let strapiSolutions;
+  // eslint-disable-next-line functional/no-let
+  let responseJson;
   try {
-    const { data } = await fetchFromStrapi<StrapiSolution>(
-      'api/solutions?pagination[pageSize]=1000&pagination[page]=1'
+    const result = await fetchFromStrapi<StrapiSolution>(
+      'api/solutions/?populate[icon]=icon&populate[stats]=*&populate[steps][populate][products]=*&populate[seo][populate]=*,metaImage,metaSocial.image&populate[products][populate][0]=logo&populate[bannerLinks][populate][0]=icon&populate[webinars][populate][coverImage][populate][0]=image&populate[webinars][populate][webinarSpeakers][populate][0]=avatar&populate[webinars][populate][relatedLinks][populate][0]=links&populate[webinars][populate][relatedResources][populate][resources][populate][0]=image&populate[webinars][populate][relatedResources][populate][downloadableDocuments][populate]=*&populate[webinars][populate][seo][populate]=*,metaImage,metaSocial.image&populate[webinars][populate][questionsAndAnswers]=*&populate[webinars][populate][webinarCategory][populate][0]=icon&populate[webinars][populate][headerImage][populate][0]=image&populate[caseHistories][populate][0]=case_histories&populate[caseHistories][populate][1]=case_histories.image&pagination[pageSize]=1000&pagination[page]=1'
     );
-    strapiSolutions = data;
+    strapiSolutions = result.data;
+    responseJson = result.responseJson;
   } catch (error) {
     console.error('Error fetching solutions from Strapi:', error);
     process.exit(1);
@@ -112,6 +138,22 @@ async function main() {
   await writeSitemapJson(
     sitemapItems,
     S3_SOLUTIONS_METADATA_JSON_PATH,
+    `${S3_BUCKET_NAME}`,
+    s3Client
+  );
+
+  // TODO: remove when Strapi will manage Metadata
+  await writeSitemapJson(
+    responseJson,
+    SYNCED_SOLUTIONS_RESPONSE_JSON_PATH,
+    `${S3_BUCKET_NAME}`,
+    s3Client
+  );
+
+  // TODO: remove when Strapi will manage Metadata
+  await writeSitemapJson(
+    solutionListPagesResponse,
+    SYNCED_SOLUTION_LIST_PAGES_RESPONSE_JSON_PATH,
     `${S3_BUCKET_NAME}`,
     s3Client
   );

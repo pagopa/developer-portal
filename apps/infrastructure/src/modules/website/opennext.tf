@@ -39,6 +39,7 @@ module "opennext" {
 
   are_previews_enabled = true
   environment          = var.environment_information
+  node_major_version   = 22
 
   server = {
     environment_variables = {
