@@ -134,7 +134,6 @@ const ApiRestSection = ({
         </Stack>
       )}
       <NotSsrApiViewer
-        product={product}
         specURL={selectedApi.url}
         hideTryIt={selectedApi.hideTryIt}
       />
