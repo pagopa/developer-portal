@@ -7,12 +7,12 @@ import {
   StrapiProduct,
   StrapiProducts,
 } from '@/lib/strapi/types/product';
-import _ from 'lodash';
+import { compact } from 'lodash';
 
 export function makeProductsProps(
   strapiProducts: StrapiProducts
 ): ReadonlyArray<Product> {
-  return _.compact(strapiProducts.data.map(makeProductProps));
+  return compact(strapiProducts.data.map(makeProductProps));
 }
 
 export function makeProductProps(product: StrapiProduct): Product | null {
@@ -22,16 +22,9 @@ export function makeProductProps(product: StrapiProduct): Product | null {
   }
 
   if (!product.attributes.slug || !product.attributes.name) {
-    // eslint-disable-next-line functional/no-let
-    let message: string;
-    if (!product.attributes.name && !product.attributes.slug) {
-      message = `Product is missing both name and slug. Skipping...`;
-    } else if (!product.attributes.slug) {
-      message = `Product with name ${product.attributes.name} is missing the slug. Skipping...`;
-    } else {
-      message = `Product with slug ${product.attributes.slug} is missing the name. Skipping...`;
-    }
-    console.error(message);
+    console.error(
+      `Error processing Product with name "${product.attributes.name}" is missing the slug. Skipping...`
+    );
     return null;
   }
 

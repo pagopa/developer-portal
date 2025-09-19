@@ -4,12 +4,12 @@ import { Tutorial } from '@/lib/types/tutorialData';
 import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
 import { makeBaseProductWithoutLogoProps } from './makeProducts';
 import { StrapiTutorialListPages } from '@/lib/strapi/types/tutorialsListPage';
-import _ from 'lodash';
+import { compact } from 'lodash';
 
 export function makeTutorialListPagesProps(
   strapiTutorialList: StrapiTutorialListPages
 ): readonly TutorialsPageProps[] {
-  return _.compact(
+  return compact(
     strapiTutorialList.data.map(({ attributes }) => {
       const slug = attributes.product.data?.attributes.slug;
       if (!slug) {
@@ -19,27 +19,21 @@ export function makeTutorialListPagesProps(
         );
         return null;
       }
-      const tutorials: readonly Tutorial[] = _.compact(
+
+      const tutorials: readonly Tutorial[] = compact(
         attributes.tutorials.data.map(({ attributes: tutorialAttributes }) => {
           const slug = tutorialAttributes.product?.data?.attributes?.slug;
           if (!slug) {
             console.error(
-              `Tutorial ${tutorialAttributes.title} is missing product slug. Skipping...`
+              `Error processing Tutorial with title "${tutorialAttributes.title}" is missing product slug. Skipping...`
             );
             return null;
           }
 
           if (!tutorialAttributes.slug || !tutorialAttributes.title) {
-            // eslint-disable-next-line functional/no-let
-            let message: string;
-            if (!tutorialAttributes.slug && !tutorialAttributes.title) {
-              message = `Tutorial is missing both title and slug. Skipping...`;
-            } else if (!tutorialAttributes.slug) {
-              message = `Tutorial with name "${tutorialAttributes.title}" is missing the slug. Skipping...`;
-            } else {
-              message = `Tutorial with slug "${tutorialAttributes.slug}" is missing the title. Skipping...`;
-            }
-            console.error(message);
+            console.error(
+              `Error processing Tutorial with title "${tutorialAttributes.title}" is missing the slug. Skipping...`
+            );
             return null;
           }
 

@@ -4,12 +4,12 @@ import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
 import { makeBaseProductWithoutLogoProps } from '@/lib/strapi/makeProps/makeProducts';
 import { ReleaseNotePageProps } from '@/app/[productSlug]/[...releaseNoteSubPathSlugs]/page';
 import { StrapiReleaseNotes } from '@/lib/strapi/types/releaseNotes';
-import _ from 'lodash';
+import { compact } from 'lodash';
 
 export function makeReleaseNotesProps(
   strapiReleaseNotes: StrapiReleaseNotes
 ): ReadonlyArray<ReleaseNotePageProps> {
-  return _.compact(
+  return compact(
     strapiReleaseNotes.data.map(({ attributes }) => {
       if (!attributes.product.data?.attributes.slug) {
         console.error(

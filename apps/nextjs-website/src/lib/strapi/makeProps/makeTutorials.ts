@@ -7,7 +7,7 @@ import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
 import { RelatedLinksProps } from '@/components/atoms/RelatedLinks/RelatedLinks';
 import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
 import { StrapiTutorials } from '@/lib/strapi/types/tutorial';
-import _ from 'lodash';
+import { compact } from 'lodash';
 
 export type TutorialProps = Tutorial & {
   readonly productSlug: string;
@@ -18,19 +18,12 @@ export type TutorialProps = Tutorial & {
 export function makeTutorialsProps(
   strapiTutorials: StrapiTutorials
 ): readonly TutorialProps[] {
-  return _.compact(
+  return compact(
     strapiTutorials.data.map(({ attributes }) => {
       if (!attributes.slug || !attributes.title) {
-        // eslint-disable-next-line functional/no-let
-        let message: string;
-        if (!attributes.slug && !attributes.title) {
-          message = `Tutorial is missing both title and slug. Skipping...`;
-        } else if (!attributes.slug) {
-          message = `Tutorial with name "${attributes.title}" is missing the slug. Skipping...`;
-        } else {
-          message = `Tutorial with slug "${attributes.slug}" is missing the title. Skipping...`;
-        }
-        console.error(message);
+        console.error(
+          `Error processing Tutorial with title "${attributes.title}" is missing the slug. Skipping...`
+        );
         return null;
       }
 

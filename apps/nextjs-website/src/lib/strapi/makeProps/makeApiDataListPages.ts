@@ -3,7 +3,7 @@ import { ApiDataListPageTemplateProps } from '@/components/templates/ApiDataList
 import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
 import { makeBaseProductWithoutLogoProps } from '@/lib/strapi/makeProps/makeProducts';
 import { StrapiApiDataListPages } from '@/lib/strapi/types/apiDataListPages';
-import _ from 'lodash';
+import { compact } from 'lodash';
 import { StrapiBaseApiData } from '../types/apiDataList';
 
 function makeApiDataListPageCard(item: StrapiBaseApiData, slug: string) {
@@ -43,7 +43,7 @@ function makeApiDataListPageCard(item: StrapiBaseApiData, slug: string) {
 export function makeApiDataListPagesProps(
   strapiApiDataListPages: StrapiApiDataListPages
 ): ReadonlyArray<ApiDataListPageTemplateProps> {
-  return _.compact(
+  return compact(
     strapiApiDataListPages.data.map(({ attributes }) => {
       const slug = attributes.product.data?.attributes.slug;
       if (!slug) {
@@ -69,7 +69,7 @@ export function makeApiDataListPagesProps(
                 : attributes.apiSoapDetail?.slug
             )
             .filter(Boolean) as readonly string[],
-          cards: _.compact(
+          cards: compact(
             attributes.apiData.data.map((item) =>
               makeApiDataListPageCard(item, slug)
             )

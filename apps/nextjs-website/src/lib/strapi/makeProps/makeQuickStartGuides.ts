@@ -11,7 +11,7 @@ import {
   StrapiQuickStartGuideItem,
   StrapiQuickStartGuides,
 } from '@/lib/strapi/types/quickStartGuides';
-import _ from 'lodash';
+import { compact } from 'lodash';
 
 export type QuickStartGuidesPageProps = readonly QuickStartGuidePageProps[];
 
@@ -30,7 +30,7 @@ function makeStepFromQuickstartGuideItems(
 export function makeQuickStartGuidesProps(
   strapiQuickStarts: StrapiQuickStartGuides
 ): QuickStartGuidesPageProps {
-  return _.compact(
+  return compact(
     strapiQuickStarts.data.map((quickStart) => {
       if (!quickStart.attributes.product.data?.attributes.slug) {
         console.error(

@@ -4,12 +4,12 @@ import { OverviewPageProps } from '@/app/[productSlug]/overview/page';
 import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
 import { makeBaseProductWithoutLogoProps } from './makeProducts';
 import { StrapiOverviews } from '@/lib/strapi/types/overviews';
-import _ from 'lodash';
+import { compact } from 'lodash';
 
 export function makeOverviewsProps(
   strapiOverviews: StrapiOverviews
 ): ReadonlyArray<OverviewPageProps> {
-  return _.compact(
+  return compact(
     strapiOverviews.data.map(({ attributes }) => {
       const productData = attributes.product.data;
       if (!productData.attributes.slug) {
@@ -60,7 +60,7 @@ export function makeOverviewsProps(
             title: attributes.tutorialSection.title,
             subtitle: attributes.tutorialSection.description,
             list:
-              _.compact(
+              compact(
                 attributes.tutorialSection.tutorials.data.map((tutorial) => {
                   if (!tutorial.attributes.slug) {
                     console.error(
@@ -144,7 +144,7 @@ export function makeOverviewsProps(
                   translate: false,
                 },
               })),
-              ..._.compact(
+              ...compact(
                 attributes.postIntegration.guides.data.map((guide) => {
                   if (!guide.attributes.slug) {
                     console.error(

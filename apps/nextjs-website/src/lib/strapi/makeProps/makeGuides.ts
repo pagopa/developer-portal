@@ -4,12 +4,12 @@ import { GuideDefinition } from '@/helpers/makeDocs.helpers';
 import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
 import { makeBaseProductWithoutLogoProps } from './makeProducts';
 import { StrapiGuides } from '@/lib/strapi/types/guide';
-import _ from 'lodash';
+import { compact } from 'lodash';
 
 export function makeGuidesProps(
   strapiGuides: StrapiGuides
 ): readonly GuideDefinition[] {
-  return _.compact(
+  return compact(
     strapiGuides.data.map(({ attributes }) => {
       if (!attributes.slug || !attributes.title) {
         console.error(

@@ -3,24 +3,17 @@
 import { SolutionTemplateProps } from '@/components/templates/SolutionTemplate/SolutionTemplate';
 import { StrapiSolutions } from '@/lib/strapi/types/solutions';
 import { makeWebinarProps } from '@/lib/strapi/makeProps/makeWebinars';
-import _ from 'lodash';
+import { compact } from 'lodash';
 
 export function makeSolutionsProps(
   strapiSolutions: StrapiSolutions
 ): ReadonlyArray<SolutionTemplateProps> {
-  return _.compact(
+  return compact(
     strapiSolutions.data.map(({ attributes }) => {
       if (!attributes.slug || !attributes.title) {
-        // eslint-disable-next-line functional/no-let
-        let message: string;
-        if (!attributes.slug && !attributes.title) {
-          message = `Solution is missing both title and slug. Skipping...`;
-        } else if (!attributes.slug) {
-          message = `Solution with title "${attributes.title}" is missing the solution slug. Skipping...`;
-        } else {
-          message = `Solution with slug "${attributes.slug}" is missing the title. Skipping...`;
-        }
-        console.error(message);
+        console.error(
+          `Error processing Solution with title "${attributes.title}" is missing the slug. Skipping...`
+        );
         return null;
       }
 
@@ -39,7 +32,7 @@ export function makeSolutionsProps(
             logo: attributes.logo.data?.attributes,
           })),
           icon: attributes.icon.data.attributes,
-          webinars: _.compact(
+          webinars: compact(
             attributes.webinars.data.map((webinar) => makeWebinarProps(webinar))
           ),
           bannerLinks: attributes.bannerLinks.map((bannerLink) => ({
@@ -52,7 +45,7 @@ export function makeSolutionsProps(
           successStories: attributes.caseHistories && {
             title: attributes.caseHistories.title,
             subtitle: attributes.caseHistories.description,
-            stories: _.compact(
+            stories: compact(
               attributes.caseHistories.case_histories.data.map(
                 (caseHistory) => {
                   if (!caseHistory.attributes.slug) {

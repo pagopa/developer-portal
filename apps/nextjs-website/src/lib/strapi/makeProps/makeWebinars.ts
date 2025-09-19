@@ -1,7 +1,7 @@
 /* eslint-disable functional/no-expression-statements */
 import { Webinar } from '../../types/webinar';
 import { StrapiWebinar, StrapiWebinars } from '@/lib/strapi/types/webinars';
-import _ from 'lodash';
+import { compact } from 'lodash';
 
 export type WebinarsProps = readonly Webinar[];
 
@@ -9,16 +9,9 @@ export const makeWebinarProps = (
   strapiWebinar: StrapiWebinar
 ): Webinar | null => {
   if (!strapiWebinar.attributes.slug || !strapiWebinar.attributes.title) {
-    // eslint-disable-next-line functional/no-let
-    let message: string;
-    if (!strapiWebinar.attributes.title && !strapiWebinar.attributes.slug) {
-      message = `Webinar is missing both title and slug. Skipping...`;
-    } else if (!strapiWebinar.attributes.slug) {
-      message = `Webinar with title "${strapiWebinar.attributes.title}" is missing the webinar slug. Skipping...`;
-    } else {
-      message = `Webinar with slug "${strapiWebinar.attributes.slug}" is missing the title. Skipping...`;
-    }
-    console.error(message);
+    console.error(
+      `Error processing Webinar with title "${strapiWebinar.attributes.title}" is missing the slug. Skipping...`
+    );
     return null;
   }
 
@@ -78,7 +71,7 @@ export const makeWebinarProps = (
 export function makeWebinarsProps(
   strapiWebinars: StrapiWebinars
 ): WebinarsProps {
-  return _.compact([
+  return compact([
     ...strapiWebinars.data.map((webinar) => makeWebinarProps(webinar)),
   ]);
 }
