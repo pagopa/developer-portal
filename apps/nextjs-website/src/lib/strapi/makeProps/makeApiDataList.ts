@@ -1,3 +1,4 @@
+/* eslint-disable functional/no-expression-statements */
 import { ApiDataPageProps } from '@/app/[productSlug]/api/[apiDataSlug]/page';
 import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
 import { makeBaseProductWithoutLogoProps } from '@/lib/strapi/makeProps/makeProducts';
@@ -17,7 +18,6 @@ export async function makeApiDataListProps(
         )
         .map(async ({ attributes }) => {
           if (!attributes.apiRestDetail && !attributes.apiSoapDetail) {
-            // eslint-disable-next-line functional/no-expression-statements
             console.error(
               `Error processing API Data "${attributes.title}": Missing API details. Skipping...`
             );
@@ -28,12 +28,19 @@ export async function makeApiDataListProps(
             attributes.apiSoapDetail?.slug ||
             '';
           if (!apiDataSlug) {
-            // eslint-disable-next-line functional/no-expression-statements
             console.error(
               `Error processing API Data with title "${attributes.title}": Missing API slug. Skipping...`
             );
             return null;
           }
+
+          if (!attributes.product.data) {
+            console.error(
+              `Error processing API Data with title "${attributes.title}": Missing product data. Skipping...`
+            );
+            return null;
+          }
+
           // eslint-disable-next-line functional/no-try-statements
           try {
             const product = makeBaseProductWithoutLogoProps(
@@ -65,7 +72,6 @@ export async function makeApiDataListProps(
               seo: attributes.seo,
             } satisfies ApiDataPageProps;
           } catch (error) {
-            // eslint-disable-next-line functional/no-expression-statements
             console.error(
               `Error processing API Data with title "${attributes.title}":`,
               error

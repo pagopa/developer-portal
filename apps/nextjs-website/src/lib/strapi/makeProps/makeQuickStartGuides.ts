@@ -32,7 +32,7 @@ export function makeQuickStartGuidesProps(
 ): QuickStartGuidesPageProps {
   return _.compact(
     strapiQuickStarts.data.map((quickStart) => {
-      if (!quickStart.attributes.product.data.attributes.slug) {
+      if (!quickStart.attributes.product.data?.attributes.slug) {
         console.error(
           `Error processing Quick Start Guide id ${quickStart.id}: Missing product slug. Skipping...`
         );

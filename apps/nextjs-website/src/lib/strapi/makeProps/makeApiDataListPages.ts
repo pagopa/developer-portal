@@ -45,7 +45,7 @@ export function makeApiDataListPagesProps(
 ): ReadonlyArray<ApiDataListPageTemplateProps> {
   return _.compact(
     strapiApiDataListPages.data.map(({ attributes }) => {
-      const slug = attributes.product.data.attributes.slug;
+      const slug = attributes.product.data?.attributes.slug;
       if (!slug) {
         console.error(
           `Error processing API Data List Page with title "${attributes.title}": Missing product slug`

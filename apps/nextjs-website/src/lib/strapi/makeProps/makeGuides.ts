@@ -12,20 +12,13 @@ export function makeGuidesProps(
   return _.compact(
     strapiGuides.data.map(({ attributes }) => {
       if (!attributes.slug || !attributes.title) {
-        // eslint-disable-next-line functional/no-let
-        let message: string;
-        if (!attributes.slug && !attributes.title) {
-          message = `Guide is missing both title and slug. Skipping...`;
-        } else if (!attributes.slug) {
-          message = `Guide with name "${attributes.title}" is missing the slug: Skipping...`;
-        } else {
-          message = `Guide with slug "${attributes.slug}" is missing the title: Skipping...`;
-        }
-        console.error(message);
+        console.error(
+          `Guide with name "${attributes.title}" is missing the slug: Skipping...`
+        );
         return null;
       }
 
-      if (!attributes.product.data.attributes.slug) {
+      if (!attributes.product.data?.attributes.slug) {
         console.error(
           `Guide with name "${attributes.title}" is missing the product slug: Skipping...`
         );

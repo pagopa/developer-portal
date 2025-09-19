@@ -11,7 +11,7 @@ export function makeTutorialListPagesProps(
 ): readonly TutorialsPageProps[] {
   return _.compact(
     strapiTutorialList.data.map(({ attributes }) => {
-      const slug = attributes.product.data.attributes.slug;
+      const slug = attributes.product.data?.attributes.slug;
       if (!slug) {
         // eslint-disable-next-line functional/no-expression-statements
         console.error(

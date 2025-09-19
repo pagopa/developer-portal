@@ -11,7 +11,7 @@ export function makeReleaseNotesProps(
 ): ReadonlyArray<ReleaseNotePageProps> {
   return _.compact(
     strapiReleaseNotes.data.map(({ attributes }) => {
-      if (!attributes.product.data.attributes.slug) {
+      if (!attributes.product.data?.attributes.slug) {
         console.error(
           `Error processing Release Note "${attributes.title}": Missing product slug. Skipping...`
         );

@@ -15,7 +15,7 @@ export function makeGuideListPagesProps(
   return _.compact(
     strapiGuideListPages.data.map(({ attributes }) => {
       const productData = attributes.product.data;
-      if (!productData.attributes.slug) {
+      if (!productData?.attributes.slug) {
         console.error('product slug is missing:', productData);
         return null;
       }

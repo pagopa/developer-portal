@@ -20,7 +20,9 @@ export type StrapiQuickStartGuide = {
   readonly attributes: {
     readonly bannerLinks: readonly StrapiBannerLink[];
     readonly description: string;
-    readonly product: StrapiComponent<StrapiBaseProductWithRelations>;
+    readonly product: {
+      readonly data?: StrapiBaseProductWithRelations;
+    };
     readonly quickstartGuideItems: StrapiComponent<
       readonly StrapiQuickStartGuideItem[]
     >;
