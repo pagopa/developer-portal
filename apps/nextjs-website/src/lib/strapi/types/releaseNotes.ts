@@ -11,7 +11,7 @@ export type StrapiReleaseNote = {
     readonly dirName: string;
     readonly landingFile: string;
     readonly product: {
-      readonly data: StrapiBaseProductWithRelations;
+      readonly data?: StrapiBaseProductWithRelations;
     };
     readonly publishedAt: string;
     readonly seo?: StrapiSeo;

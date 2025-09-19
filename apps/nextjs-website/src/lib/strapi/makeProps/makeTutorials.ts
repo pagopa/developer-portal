@@ -7,7 +7,7 @@ import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
 import { RelatedLinksProps } from '@/components/atoms/RelatedLinks/RelatedLinks';
 import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
 import { StrapiTutorials } from '@/lib/strapi/types/tutorial';
-import _ from 'lodash';
+import { compact } from 'lodash';
 
 export type TutorialProps = Tutorial & {
   readonly productSlug: string;
@@ -18,11 +18,11 @@ export type TutorialProps = Tutorial & {
 export function makeTutorialsProps(
   strapiTutorials: StrapiTutorials
 ): readonly TutorialProps[] {
-  return _.compact(
+  return compact(
     strapiTutorials.data.map(({ attributes }) => {
-      if (!attributes.slug) {
+      if (!attributes.slug || !attributes.title) {
         console.error(
-          `Error processing Tutorial "${attributes.title}": Missing tutorial slug. Skipping...`
+          `Error processing Tutorial with title "${attributes.title}" is missing the slug. Skipping...`
         );
         return null;
       }

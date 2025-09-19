@@ -30,7 +30,7 @@ export type StrapiGuide = StrapiBaseGuide & {
   readonly attributes: {
     readonly versions: ReadonlyArray<StrapiGuideVersion>;
     readonly product: {
-      readonly data: StrapiBaseProductWithRelations;
+      readonly data?: StrapiBaseProductWithRelations;
     };
     readonly bannerLinks: ReadonlyArray<StrapiBannerLink>;
     readonly seo?: StrapiSeo;

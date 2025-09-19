@@ -1,16 +1,17 @@
+/* eslint-disable functional/no-expression-statements */
 import { TutorialsPageProps } from '@/app/[productSlug]/tutorials/page';
 import { Tutorial } from '@/lib/types/tutorialData';
 import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
 import { makeBaseProductWithoutLogoProps } from './makeProducts';
 import { StrapiTutorialListPages } from '@/lib/strapi/types/tutorialsListPage';
-import _ from 'lodash';
+import { compact } from 'lodash';
 
 export function makeTutorialListPagesProps(
   strapiTutorialList: StrapiTutorialListPages
 ): readonly TutorialsPageProps[] {
-  return _.compact(
+  return compact(
     strapiTutorialList.data.map(({ attributes }) => {
-      const slug = attributes.product.data.attributes.slug;
+      const slug = attributes.product.data?.attributes.slug;
       if (!slug) {
         // eslint-disable-next-line functional/no-expression-statements
         console.error(
@@ -18,20 +19,20 @@ export function makeTutorialListPagesProps(
         );
         return null;
       }
-      const tutorials: readonly Tutorial[] = _.compact(
+
+      const tutorials: readonly Tutorial[] = compact(
         attributes.tutorials.data.map(({ attributes: tutorialAttributes }) => {
           const slug = tutorialAttributes.product?.data?.attributes?.slug;
           if (!slug) {
-            // eslint-disable-next-line functional/no-expression-statements
             console.error(
-              `Tutorial ${tutorialAttributes.title} is missing product slug. Skipping...`
+              `Error processing Tutorial with title "${tutorialAttributes.title}" is missing product slug. Skipping...`
             );
             return null;
           }
-          if (!tutorialAttributes.slug) {
-            // eslint-disable-next-line functional/no-expression-statements
+
+          if (!tutorialAttributes.slug || !tutorialAttributes.title) {
             console.error(
-              `Tutorial ${tutorialAttributes.title} is missing slug. Skipping...`
+              `Error processing Tutorial with title "${tutorialAttributes.title}" is missing the slug. Skipping...`
             );
             return null;
           }

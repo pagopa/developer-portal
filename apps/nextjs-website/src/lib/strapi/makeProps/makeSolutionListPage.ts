@@ -1,7 +1,7 @@
 /* eslint-disable functional/no-expression-statements */
 import { SolutionListTemplateProps } from '@/components/templates/SolutionListTemplate/SolutionListTemplate';
 import { StrapiSolutionListPage } from '@/lib/strapi/types/solutionListPage';
-import _ from 'lodash';
+import { compact } from 'lodash';
 
 export function makeSolutionListPageProps(
   strapiSolutionsList: StrapiSolutionListPage
@@ -15,7 +15,7 @@ export function makeSolutionListPageProps(
       title: attributes.title,
       subtitle: attributes.description,
     },
-    solutions: _.compact(
+    solutions: compact(
       attributes.solutions.data.map(({ attributes }) => {
         if (!attributes.slug) {
           console.error(
@@ -39,7 +39,7 @@ export function makeSolutionListPageProps(
     successStories: attributes.caseHistories && {
       title: attributes.caseHistories.title,
       subtitle: attributes.caseHistories.description,
-      stories: _.compact(
+      stories: compact(
         attributes.caseHistories.case_histories.data.map((caseHistory) => {
           if (!caseHistory.attributes.slug) {
             console.error(

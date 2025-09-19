@@ -13,7 +13,7 @@ export type StrapiApiDataListPage = {
     readonly title: string;
     readonly description?: string;
     readonly product: {
-      readonly data: StrapiBaseProductWithRelations;
+      readonly data?: StrapiBaseProductWithRelations;
     };
     readonly updatedAt: string;
     readonly apiData: StrapiBaseApiDataList;

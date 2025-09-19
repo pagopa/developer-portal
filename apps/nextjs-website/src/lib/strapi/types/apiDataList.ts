@@ -34,7 +34,7 @@ export type StrapiBaseApiData = {
 export type StrapiApiData = StrapiBaseApiData & {
   readonly attributes: StrapiBaseApiData['attributes'] & {
     readonly product: {
-      readonly data: StrapiBaseProductWithRelations;
+      readonly data?: StrapiBaseProductWithRelations;
     };
     readonly bannerLinks: readonly StrapiBannerLink[];
     readonly seo?: StrapiSeo;

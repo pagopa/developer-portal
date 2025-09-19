@@ -76,7 +76,7 @@ describe('makeSolutionsProps', () => {
     expect(result[0].title).toBe('Valid Solution');
     expect(result[0].solutionSlug).toBe('valid-solution');
     expect(spyOnConsoleError).toHaveBeenCalledWith(
-      'Error processing Solution "Solution Without Slug": Missing solution slug. Skipping...'
+      'Error processing Solution with title "Solution Without Slug" is missing the slug. Skipping...'
     );
   });
 

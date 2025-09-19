@@ -181,8 +181,7 @@ describe('makeApiDataListProps', () => {
     // Should filter out items with missing product since makeBaseProductWithoutLogoProps would fail
     expect(result).toHaveLength(0);
     expect(spyOnConsoleError).toHaveBeenCalledWith(
-      expect.stringContaining('Error processing API Data'),
-      expect.any(Error)
+      'Error processing API Data with title "API Data Without Product": Missing product data. Skipping...'
     );
   });
 });

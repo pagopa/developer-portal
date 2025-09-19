@@ -3,16 +3,16 @@
 import { SolutionTemplateProps } from '@/components/templates/SolutionTemplate/SolutionTemplate';
 import { StrapiSolutions } from '@/lib/strapi/types/solutions';
 import { makeWebinarProps } from '@/lib/strapi/makeProps/makeWebinars';
-import _ from 'lodash';
+import { compact } from 'lodash';
 
 export function makeSolutionsProps(
   strapiSolutions: StrapiSolutions
 ): ReadonlyArray<SolutionTemplateProps> {
-  return _.compact(
+  return compact(
     strapiSolutions.data.map(({ attributes }) => {
-      if (!attributes.slug) {
+      if (!attributes.slug || !attributes.title) {
         console.error(
-          `Error processing Solution "${attributes.title}": Missing solution slug. Skipping...`
+          `Error processing Solution with title "${attributes.title}" is missing the slug. Skipping...`
         );
         return null;
       }
@@ -32,7 +32,7 @@ export function makeSolutionsProps(
             logo: attributes.logo.data?.attributes,
           })),
           icon: attributes.icon.data.attributes,
-          webinars: _.compact(
+          webinars: compact(
             attributes.webinars.data.map((webinar) => makeWebinarProps(webinar))
           ),
           bannerLinks: attributes.bannerLinks.map((bannerLink) => ({
@@ -45,7 +45,7 @@ export function makeSolutionsProps(
           successStories: attributes.caseHistories && {
             title: attributes.caseHistories.title,
             subtitle: attributes.caseHistories.description,
-            stories: _.compact(
+            stories: compact(
               attributes.caseHistories.case_histories.data.map(
                 (caseHistory) => {
                   if (!caseHistory.attributes.slug) {

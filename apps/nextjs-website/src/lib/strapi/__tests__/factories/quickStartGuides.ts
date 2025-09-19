@@ -70,7 +70,7 @@ export function quickStartGuidesWithMissingProductSlug(): StrapiQuickStartGuides
               data: {
                 ...quickStart.attributes.product.data,
                 attributes: {
-                  ...quickStart.attributes.product.data.attributes,
+                  ...(quickStart.attributes.product.data?.attributes as any),
                   slug: undefined as any,
                 },
               },
