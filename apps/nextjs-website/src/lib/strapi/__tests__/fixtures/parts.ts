@@ -69,3 +69,8 @@ export const ckEditorPart: StrapiPart = {
   __component: 'parts.ck-editor',
   content: '<p>CKEditor content</p>',
 };
+
+export const ckEditorHtmlPart: StrapiPart = {
+  __component: 'parts.ck-editor-html',
+  content: '<p>CKEditor HTML content</p>',
+};
