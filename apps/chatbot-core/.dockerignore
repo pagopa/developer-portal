@@ -1,0 +1,5 @@
+.env*
+build-devp
+.pytest_cache
+load-test
+*.ipynb
