@@ -1,5 +1,5 @@
 import { StrapiHomepage } from '@/lib/strapi/types/homepage';
-import { makeWebinar } from '@/lib/strapi/makeProps/makeWebinars';
+import { makeWebinar } from '@/lib/strapi/makeData/makeWebinars';
 import { HomepageData } from '@/app/page';
 import { compact } from 'lodash';
 

@@ -2,7 +2,7 @@
 /* eslint-disable functional/no-try-statements */
 import { GuideListPageData } from '@/app/[productSlug]/guides/page';
 import { GuidesSectionProps } from '@/components/molecules/GuidesSection/GuidesSection';
-import { makeBannerLink } from '@/lib/strapi/makeProps/makeBannerLink';
+import { makeBannerLink } from '@/lib/strapi/makeData/makeBannerLink';
 import { makeBaseProductWithoutLogo } from './makeProducts';
 import { GuideCardProps } from '@/components/molecules/GuideCard/GuideCard';
 import { StrapiBaseGuide } from '@/lib/strapi/types/guide';

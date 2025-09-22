@@ -1,4 +1,4 @@
-import { makeOverviews } from '@/lib/strapi/makeProps/makeOverviews';
+import { makeOverviews } from '@/lib/strapi/makeData/makeOverviews';
 import { StrapiOverviews } from '@/lib/strapi/types/overviews';
 import {
   overviewPageProps,

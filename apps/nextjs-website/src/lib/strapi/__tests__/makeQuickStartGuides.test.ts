@@ -1,4 +1,4 @@
-import { makeQuickStartGuides } from '@/lib/strapi/makeProps/makeQuickStartGuides';
+import { makeQuickStartGuides } from '@/lib/strapi/makeData/makeQuickStartGuides';
 import { strapiQuickStartGuides } from './fixtures/quickStartGuides';
 import {
   minimalQuickStartGuides,

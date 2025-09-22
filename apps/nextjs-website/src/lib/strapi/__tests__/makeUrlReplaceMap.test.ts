@@ -1,4 +1,4 @@
-import { makeUrlReplaceMap } from '../makeProps/makeUrlReplaceMap';
+import { makeUrlReplaceMap } from '../makeData/makeUrlReplaceMap';
 import {
   strapiUrlReplaceMapFixture,
   expectedUrlReplaceMapFixture,

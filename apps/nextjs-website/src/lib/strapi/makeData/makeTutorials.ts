@@ -2,10 +2,10 @@
 /* eslint-disable functional/no-try-statements */
 import { PartData } from '@/lib/types/part';
 import { Tutorial } from '@/lib/types/tutorialData';
-import { makePart } from '@/lib/strapi/makeProps/makePart';
+import { makePart } from '@/lib/strapi/makeData/makePart';
 import { BannerLinkData } from '@/components/atoms/BannerLink/BannerLink';
 import { RelatedLinksProps } from '@/components/atoms/RelatedLinks/RelatedLinks';
-import { makeBannerLink } from '@/lib/strapi/makeProps/makeBannerLink';
+import { makeBannerLink } from '@/lib/strapi/makeData/makeBannerLink';
 import { StrapiTutorials } from '@/lib/strapi/types/tutorial';
 import { compact } from 'lodash';
 

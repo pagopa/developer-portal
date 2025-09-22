@@ -1,8 +1,8 @@
 /* eslint-disable functional/no-expression-statements */
 import { ApiDataPageData as ApiDataPageData } from '@/app/[productSlug]/api/[apiDataSlug]/page';
-import { makeBannerLink } from '@/lib/strapi/makeProps/makeBannerLink';
-import { makeBaseProductWithoutLogo } from '@/lib/strapi/makeProps/makeProducts';
-import { makeApiSoapUrlList } from '@/lib/strapi/makeProps/makeApiSoapUrlList';
+import { makeBannerLink } from '@/lib/strapi/makeData/makeBannerLink';
+import { makeBaseProductWithoutLogo } from '@/lib/strapi/makeData/makeProducts';
+import { makeApiSoapUrlList } from '@/lib/strapi/makeData/makeApiSoapUrlList';
 import { StrapiApiDataList } from '@/lib/strapi/types/apiDataList';
 import { compact } from 'lodash';
 

@@ -2,7 +2,7 @@ import {
   makeProductsProps,
   makeProduct,
   makeBaseProductWithoutLogo,
-} from '@/lib/strapi/makeProps/makeProducts';
+} from '@/lib/strapi/makeData/makeProducts';
 import { StrapiProducts } from '@/lib/strapi/types/product';
 import _ from 'lodash';
 import {

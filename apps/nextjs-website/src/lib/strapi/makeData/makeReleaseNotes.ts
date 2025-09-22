@@ -1,7 +1,7 @@
 /* eslint-disable functional/no-try-statements */
 /* eslint-disable functional/no-expression-statements */
-import { makeBannerLink } from '@/lib/strapi/makeProps/makeBannerLink';
-import { makeBaseProductWithoutLogo } from '@/lib/strapi/makeProps/makeProducts';
+import { makeBannerLink } from '@/lib/strapi/makeData/makeBannerLink';
+import { makeBaseProductWithoutLogo } from '@/lib/strapi/makeData/makeProducts';
 import { ReleaseNotePagePropsData } from '@/app/[productSlug]/[...releaseNoteSubPathSlugs]/page';
 import { StrapiReleaseNotes } from '@/lib/strapi/types/releaseNotes';
 import { compact } from 'lodash';

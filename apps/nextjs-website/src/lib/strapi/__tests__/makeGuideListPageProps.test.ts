@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { makeGuideListPages } from '@/lib/strapi/makeProps/makeGuideListPages';
+import { makeGuideListPages } from '@/lib/strapi/makeData/makeGuideListPages';
 import {
   guideListPagesProps,
   strapiEmptyGuideListPagesData,

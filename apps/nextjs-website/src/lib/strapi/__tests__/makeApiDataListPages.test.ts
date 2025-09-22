@@ -1,4 +1,4 @@
-import { makeApiDataListPages } from '@/lib/strapi/makeProps/makeApiDataListPages';
+import { makeApiDataListPages } from '@/lib/strapi/makeData/makeApiDataListPages';
 import _ from 'lodash';
 import {
   strapiApiDataListPages,

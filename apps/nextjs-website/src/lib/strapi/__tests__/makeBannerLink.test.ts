@@ -1,4 +1,4 @@
-import { makeBannerLink } from '@/lib/strapi/makeProps/makeBannerLink';
+import { makeBannerLink } from '@/lib/strapi/makeData/makeBannerLink';
 import {
   strapiBannerLink,
   expectedBannerLinkProps,

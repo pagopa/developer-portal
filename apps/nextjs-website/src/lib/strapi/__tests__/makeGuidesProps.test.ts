@@ -3,7 +3,7 @@ import {
   strapiEmptyGuideData,
   strapiGuideData,
 } from '@/lib/strapi/__tests__/fixtures/guides';
-import { makeGuides } from '@/lib/strapi/makeProps/makeGuides';
+import { makeGuides } from '@/lib/strapi/makeData/makeGuides';
 import {
   guideListWithItemsWithEmptyProductSlug,
   guideListWithMissingProductSlug,

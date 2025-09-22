@@ -2,35 +2,35 @@ import { pipe } from 'fp-ts/lib/function';
 import * as E from 'fp-ts/lib/Either';
 import { makeBuildConfig } from '@/BuildConfig';
 import { makeBuildEnv } from '@/BuildEnv';
-import { makeHomepageProps } from './strapi/makeProps/makeHomepage';
+import { makeHomepageProps } from './strapi/makeData/makeHomepage';
 import { fetchHomepage } from '@/lib/strapi/fetches/fetchHomepage';
-import { makeWebinarsProps } from './strapi/makeProps/makeWebinars';
+import { makeWebinarsProps } from './strapi/makeData/makeWebinars';
 import { fetchWebinars } from './strapi/fetches/fetchWebinars';
 import { fetchTutorials } from './strapi/fetches/fetchTutorials';
-import { makeTutorials } from './strapi/makeProps/makeTutorials';
+import { makeTutorials } from './strapi/makeData/makeTutorials';
 import { fetchQuickStartGuides } from './strapi/fetches/fetchQuickStartGuides';
-import { makeQuickStartGuides } from './strapi/makeProps/makeQuickStartGuides';
-import { makeCaseHistories } from './strapi/makeProps/makeCaseHistories';
+import { makeQuickStartGuides } from './strapi/makeData/makeQuickStartGuides';
+import { makeCaseHistories } from './strapi/makeData/makeCaseHistories';
 import { fetchCaseHistories } from './strapi/fetches/fetchCaseHistories';
 import { fetchSolution, fetchSolutions } from './strapi/fetches/fetchSolutions';
-import { makeSolutions } from './strapi/makeProps/makeSolutions';
-import { makeSolutionListPageProps } from './strapi/makeProps/makeSolutionListPage';
+import { makeSolutions } from './strapi/makeData/makeSolutions';
+import { makeSolutionListPageProps } from './strapi/makeData/makeSolutionListPage';
 import { fetchSolutionListPage } from './strapi/fetches/fetchSolutionListPage';
 import { fetchApiDataListPages } from './strapi/fetches/fetchApiDataListPages';
-import { makeApiDataListPages } from './strapi/makeProps/makeApiDataListPages';
-import { makeApiDataList } from './strapi/makeProps/makeApiDataList';
+import { makeApiDataListPages } from './strapi/makeData/makeApiDataListPages';
+import { makeApiDataList } from './strapi/makeData/makeApiDataList';
 import { fetchApiDataList } from './strapi/fetches/fetchApiDataList';
 import { fetchProducts } from '@/lib/strapi/fetches/fetchProducts';
-import { makeProductsProps } from './strapi/makeProps/makeProducts';
-import { makeGuideListPages } from './strapi/makeProps/makeGuideListPages';
-import { makeGuides } from './strapi/makeProps/makeGuides';
+import { makeProductsProps } from './strapi/makeData/makeProducts';
+import { makeGuideListPages } from './strapi/makeData/makeGuideListPages';
+import { makeGuides } from './strapi/makeData/makeGuides';
 import { fetchOverviews } from '@/lib/strapi/fetches/fetchOverviews';
-import { makeOverviews } from '@/lib/strapi/makeProps/makeOverviews';
+import { makeOverviews } from '@/lib/strapi/makeData/makeOverviews';
 import { fetchTutorialListPages } from './strapi/fetches/fetchTutorialListPages';
-import { makeTutorialListPagesProps } from './strapi/makeProps/makeTutorialListPages';
+import { makeTutorialListPagesProps } from './strapi/makeData/makeTutorialListPages';
 import { fetchUrlReplaceMap } from './strapi/fetches/fetchUrlReplaceMap';
-import { makeUrlReplaceMap } from './strapi/makeProps/makeUrlReplaceMap';
-import { makeReleaseNotes } from '@/lib/strapi/makeProps/makeReleaseNotes';
+import { makeUrlReplaceMap } from './strapi/makeData/makeUrlReplaceMap';
+import { makeReleaseNotes } from '@/lib/strapi/makeData/makeReleaseNotes';
 import { fetchReleaseNote } from '@/lib/strapi/fetches/fetchReleaseNotes';
 import {
   makeGuide as makeGuideS3,
@@ -39,7 +39,7 @@ import {
 } from '@/helpers/makeS3Docs.helpers';
 import { secrets } from '@/config';
 import { fetchWebinarCategories } from '@/lib/strapi/fetches/fetchWebinarCategories';
-import { makeWebinarCategories } from '@/lib/strapi/makeProps/makeWebinarCategories';
+import { makeWebinarCategories } from '@/lib/strapi/makeData/makeWebinarCategories';
 import {
   fetchResponseFromCDN,
   JsonMetadata,

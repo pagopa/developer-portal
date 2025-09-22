@@ -1,4 +1,4 @@
-import { makeHomepageProps } from '@/lib/strapi/makeProps/makeHomepage';
+import { makeHomepageProps } from '@/lib/strapi/makeData/makeHomepage';
 import _ from 'lodash';
 import {
   strapiHomepage,

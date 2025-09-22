@@ -1,4 +1,4 @@
-import { makeSolutions } from '@/lib/strapi/makeProps/makeSolutions';
+import { makeSolutions } from '@/lib/strapi/makeData/makeSolutions';
 import { StrapiSolutions } from '@/lib/strapi/types/solutions';
 import _ from 'lodash';
 import {

@@ -3,9 +3,9 @@
 import { QuickStartGuidePageData } from '@/app/[productSlug]/quick-start/page';
 import { PartData } from '@/lib/types/part';
 import { Step } from '@/lib/types/step';
-import { makePart } from '@/lib/strapi/makeProps/makePart';
-import { makeBannerLink } from '@/lib/strapi/makeProps/makeBannerLink';
-import { makeBaseProductWithoutLogo } from '@/lib/strapi/makeProps/makeProducts';
+import { makePart } from '@/lib/strapi/makeData/makePart';
+import { makeBannerLink } from '@/lib/strapi/makeData/makeBannerLink';
+import { makeBaseProductWithoutLogo } from '@/lib/strapi/makeData/makeProducts';
 import { StrapiPart } from '@/lib/strapi/types/part';
 import {
   StrapiQuickStartGuideItem,

@@ -1,4 +1,4 @@
-import { makeWebinarsProps } from '@/lib/strapi/makeProps/makeWebinars';
+import { makeWebinarsProps } from '@/lib/strapi/makeData/makeWebinars';
 import { StrapiWebinars } from '@/lib/strapi/types/webinars';
 import _ from 'lodash';
 import {

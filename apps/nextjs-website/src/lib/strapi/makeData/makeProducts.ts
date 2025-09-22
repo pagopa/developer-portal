@@ -1,7 +1,7 @@
 /* eslint-disable functional/no-expression-statements */
 /* eslint-disable functional/no-throw-statements */
 import { Product } from '@/lib/types/product';
-import { makeBannerLink } from '@/lib/strapi/makeProps/makeBannerLink';
+import { makeBannerLink } from '@/lib/strapi/makeData/makeBannerLink';
 import {
   StrapiBaseProductWithRelations,
   StrapiProduct,

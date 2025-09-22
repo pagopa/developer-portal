@@ -1,4 +1,4 @@
-import { makeSolutionListPageProps } from '@/lib/strapi/makeProps/makeSolutionListPage';
+import { makeSolutionListPageProps } from '@/lib/strapi/makeData/makeSolutionListPage';
 import _ from 'lodash';
 import {
   strapiSolutionListPage,

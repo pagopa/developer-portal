@@ -2,7 +2,7 @@
 /* eslint-disable functional/no-try-statements */
 import { SolutionTemplateData } from '@/components/templates/SolutionTemplate/SolutionTemplate';
 import { StrapiSolutions } from '@/lib/strapi/types/solutions';
-import { makeWebinar } from '@/lib/strapi/makeProps/makeWebinars';
+import { makeWebinar } from '@/lib/strapi/makeData/makeWebinars';
 import { compact } from 'lodash';
 
 export function makeSolutions(

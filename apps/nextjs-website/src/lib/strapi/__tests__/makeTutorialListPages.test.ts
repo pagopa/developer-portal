@@ -1,4 +1,4 @@
-import { makeTutorialListPagesProps } from '@/lib/strapi/makeProps/makeTutorialListPages';
+import { makeTutorialListPagesProps } from '@/lib/strapi/makeData/makeTutorialListPages';
 import _ from 'lodash';
 import { strapiTutorialListPages } from './fixtures/tutorialListPage';
 import {

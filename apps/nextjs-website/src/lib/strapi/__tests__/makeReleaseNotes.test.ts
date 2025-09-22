@@ -1,4 +1,4 @@
-import { makeReleaseNotes } from '@/lib/strapi/makeProps/makeReleaseNotes';
+import { makeReleaseNotes } from '@/lib/strapi/makeData/makeReleaseNotes';
 import { StrapiReleaseNotes } from '@/lib/strapi/types/releaseNotes';
 import _ from 'lodash';
 import {

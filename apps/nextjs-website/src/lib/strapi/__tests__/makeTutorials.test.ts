@@ -1,4 +1,4 @@
-import { makeTutorials } from '@/lib/strapi/makeProps/makeTutorials';
+import { makeTutorials } from '@/lib/strapi/makeData/makeTutorials';
 import { StrapiTutorials } from '@/lib/strapi/types/tutorial';
 import {
   minimalDataTutorials,

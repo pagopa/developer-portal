@@ -1,4 +1,4 @@
-import { makeApiDataList } from '@/lib/strapi/makeProps/makeApiDataList';
+import { makeApiDataList } from '@/lib/strapi/makeData/makeApiDataList';
 import { StrapiApiDataList } from '@/lib/strapi/types/apiDataList';
 import _ from 'lodash';
 import {
@@ -22,7 +22,7 @@ import {
 import { spyOnConsoleError } from '@/lib/strapi/__tests__/spyOnConsole';
 
 // Mock the makeApiSoapUrlList function
-jest.mock('@/lib/strapi/makeProps/makeApiSoapUrlList', () => ({
+jest.mock('@/lib/strapi/makeData/makeApiSoapUrlList', () => ({
   makeApiSoapUrlList: jest
     .fn()
     .mockResolvedValue([

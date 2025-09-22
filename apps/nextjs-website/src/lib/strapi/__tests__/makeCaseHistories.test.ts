@@ -1,4 +1,4 @@
-import { makeCaseHistories } from '@/lib/strapi/makeProps/makeCaseHistories';
+import { makeCaseHistories } from '@/lib/strapi/makeData/makeCaseHistories';
 import { StrapiCaseHistories } from '@/lib/strapi/types/caseHistories';
 import _ from 'lodash';
 import {

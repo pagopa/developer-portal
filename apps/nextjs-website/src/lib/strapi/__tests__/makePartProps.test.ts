@@ -1,4 +1,4 @@
-import { makePart } from '@/lib/strapi/makeProps/makePart';
+import { makePart } from '@/lib/strapi/makeData/makePart';
 import {
   alertPart,
   apiTesterPart,

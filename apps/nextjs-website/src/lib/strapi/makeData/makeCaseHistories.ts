@@ -1,6 +1,6 @@
 import { CaseHistoryPageTemplateData } from '@/components/templates/CaseHistoryTemplate/CaseHistoryPageTemplate';
 import { PartData } from '../../types/part';
-import { makePart } from '@/lib/strapi/makeProps/makePart';
+import { makePart } from '@/lib/strapi/makeData/makePart';
 import { StrapiPart } from '@/lib/strapi/types/part';
 import { StrapiCaseHistories } from '@/lib/strapi/types/caseHistories';
 

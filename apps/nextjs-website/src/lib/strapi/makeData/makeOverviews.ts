@@ -1,7 +1,7 @@
 /* eslint-disable functional/no-try-statements */
 /* eslint-disable functional/no-expression-statements */
 import { OverviewPageData } from '@/app/[productSlug]/overview/page';
-import { makeBannerLink } from '@/lib/strapi/makeProps/makeBannerLink';
+import { makeBannerLink } from '@/lib/strapi/makeData/makeBannerLink';
 import { makeBaseProductWithoutLogo } from './makeProducts';
 import { StrapiOverviews } from '@/lib/strapi/types/overviews';
 import { compact } from 'lodash';

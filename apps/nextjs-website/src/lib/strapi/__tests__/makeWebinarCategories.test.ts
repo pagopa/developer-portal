@@ -1,7 +1,7 @@
 import {
   makeWebinarCategories,
   makeWebinarCategory,
-} from '@/lib/strapi/makeProps/makeWebinarCategories';
+} from '@/lib/strapi/makeData/makeWebinarCategories';
 import { strapiWebinarCategories } from './fixtures/webinarCategory';
 import { StrapiWebinarCategory } from '../types/webinarCategory';
 import { mediaJpeg } from './factories/media';
