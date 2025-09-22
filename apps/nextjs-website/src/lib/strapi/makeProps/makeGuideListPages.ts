@@ -1,17 +1,17 @@
 /* eslint-disable functional/no-expression-statements */
 /* eslint-disable functional/no-try-statements */
-import { GuideListPageProps } from '@/app/[productSlug]/guides/page';
+import { GuideListPageData } from '@/app/[productSlug]/guides/page';
 import { GuidesSectionProps } from '@/components/molecules/GuidesSection/GuidesSection';
-import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
-import { makeBaseProductWithoutLogoProps } from './makeProducts';
+import { makeBannerLink } from '@/lib/strapi/makeProps/makeBannerLink';
+import { makeBaseProductWithoutLogo } from './makeProducts';
 import { GuideCardProps } from '@/components/molecules/GuideCard/GuideCard';
 import { StrapiBaseGuide } from '@/lib/strapi/types/guide';
 import { compact } from 'lodash';
 import { StrapiGuideListPages } from '@/lib/strapi/types/guideListPage';
 
-export function makeGuideListPagesProps(
+export function makeGuideListPages(
   strapiGuideListPages: StrapiGuideListPages
-): readonly GuideListPageProps[] {
+): readonly GuideListPageData[] {
   return compact(
     strapiGuideListPages.data.map(({ attributes }) => {
       const productData = attributes.product.data;
@@ -23,7 +23,7 @@ export function makeGuideListPagesProps(
       }
 
       try {
-        const product = makeBaseProductWithoutLogoProps(productData);
+        const product = makeBaseProductWithoutLogo(productData);
         const guidesSections: readonly GuidesSectionProps[] = [
           ...attributes.guidesByCategory.map(({ category, guides }) => ({
             title: category,
@@ -44,11 +44,11 @@ export function makeGuideListPagesProps(
           guidesSections: [...guidesSections],
           bannerLinks:
             attributes.bannerLinks.length > 0
-              ? attributes.bannerLinks.map(makeBannerLinkProps)
-              : productData.attributes.bannerLinks?.map(makeBannerLinkProps),
+              ? attributes.bannerLinks.map(makeBannerLink)
+              : productData.attributes.bannerLinks?.map(makeBannerLink),
           seo: attributes.seo,
           updatedAt: attributes.updatedAt,
-        } satisfies GuideListPageProps;
+        } satisfies GuideListPageData;
       } catch (error) {
         console.error(
           `Error while processing Guide List Page for product with slug "${productData.attributes.slug}":`,

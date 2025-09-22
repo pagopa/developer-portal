@@ -1,4 +1,4 @@
-import { makeApiDataListPagesProps } from '@/lib/strapi/makeProps/makeApiDataListPages';
+import { makeApiDataListPages } from '@/lib/strapi/makeProps/makeApiDataListPages';
 import _ from 'lodash';
 import {
   strapiApiDataListPages,
@@ -26,7 +26,7 @@ describe('makeApiDataListPagesProps', () => {
   });
 
   it('should transform strapi api data list pages to api data list page template props', () => {
-    const result = makeApiDataListPagesProps(
+    const result = makeApiDataListPages(
       _.cloneDeep(strapiApiDataListPages)
     );
     expect(result).toHaveLength(1);
@@ -34,7 +34,7 @@ describe('makeApiDataListPagesProps', () => {
   });
 
   it('should handle minimal data with missing optional fields', () => {
-    const result = makeApiDataListPagesProps(
+    const result = makeApiDataListPages(
       _.cloneDeep(minimalApiDataListPages())
     );
     expect(result).toHaveLength(1);
@@ -49,19 +49,19 @@ describe('makeApiDataListPagesProps', () => {
   });
 
   it('should handle empty data array', () => {
-    const result = makeApiDataListPagesProps(emptyApiDataListPages());
+    const result = makeApiDataListPages(emptyApiDataListPages());
     expect(result).toHaveLength(0);
   });
 
   it('should handle page with empty api data', () => {
-    const result = makeApiDataListPagesProps(apiDataListPageWithEmptyApiData());
+    const result = makeApiDataListPages(apiDataListPageWithEmptyApiData());
     expect(result).toHaveLength(1);
     expect(result[0].cards).toHaveLength(0);
     expect(result[0].apiDetailSlugs).toHaveLength(0);
   });
 
   it('should handle mixed API types and filter invalid ones', () => {
-    const result = makeApiDataListPagesProps(
+    const result = makeApiDataListPages(
       apiDataListPageWithMixedApiTypes()
     );
     expect(result).toHaveLength(1);
@@ -73,7 +73,7 @@ describe('makeApiDataListPagesProps', () => {
   });
 
   it('should handle page without description', () => {
-    const result = makeApiDataListPagesProps(
+    const result = makeApiDataListPages(
       apiDataListPageWithoutDescription()
     );
     expect(result).toHaveLength(1);
@@ -81,7 +81,7 @@ describe('makeApiDataListPagesProps', () => {
   });
 
   it('should filter out invalid API data', () => {
-    const result = makeApiDataListPagesProps(
+    const result = makeApiDataListPages(
       apiDataListPageWithInvalidApiData()
     );
     expect(result).toHaveLength(1);
@@ -96,14 +96,14 @@ describe('makeApiDataListPagesProps', () => {
   });
 
   it('should handle multiple pages', () => {
-    const result = makeApiDataListPagesProps(multipleApiDataListPages());
+    const result = makeApiDataListPages(multipleApiDataListPages());
     expect(result).toHaveLength(2);
     expect(result[0].hero.title).toBe('SEND API Documentation');
     expect(result[1].hero.title).toBe('Second API List Page');
   });
 
   it('should correctly set hero properties', () => {
-    const result = makeApiDataListPagesProps(strapiApiDataListPages);
+    const result = makeApiDataListPages(strapiApiDataListPages);
     expect(result[0].hero).toEqual({
       title: 'SEND API Documentation',
       subtitle: 'Complete documentation for SEND APIs',
@@ -111,7 +111,7 @@ describe('makeApiDataListPagesProps', () => {
   });
 
   it('should correctly identify REST API type', () => {
-    const result = makeApiDataListPagesProps(strapiApiDataListPages);
+    const result = makeApiDataListPages(strapiApiDataListPages);
     const restCard = result[0].cards.find(
       (card) => card.tags?.[0].label === 'REST'
     );
@@ -121,7 +121,7 @@ describe('makeApiDataListPagesProps', () => {
   });
 
   it('should correctly identify SOAP API type', () => {
-    const result = makeApiDataListPagesProps(strapiApiDataListPages);
+    const result = makeApiDataListPages(strapiApiDataListPages);
     const soapCard = result[0].cards.find(
       (card) => card.tags?.[0].label === 'SOAP'
     );
@@ -131,7 +131,7 @@ describe('makeApiDataListPagesProps', () => {
   });
 
   it('should correctly map banner links', () => {
-    const result = makeApiDataListPagesProps(strapiApiDataListPages);
+    const result = makeApiDataListPages(strapiApiDataListPages);
     const firstElement = result[0];
     expect(firstElement.bannerLinks).toHaveLength(2);
     expect(firstElement.bannerLinks[0]).toHaveProperty('title');
@@ -139,7 +139,7 @@ describe('makeApiDataListPagesProps', () => {
   });
 
   it('should correctly map SEO properties', () => {
-    const result = makeApiDataListPagesProps(strapiApiDataListPages);
+    const result = makeApiDataListPages(strapiApiDataListPages);
     expect(result[0].seo).toEqual({
       metaTitle: 'SEND API Documentation',
       metaDescription: 'Complete documentation for SEND APIs',
@@ -147,12 +147,12 @@ describe('makeApiDataListPagesProps', () => {
   });
 
   it('should correctly map updatedAt', () => {
-    const result = makeApiDataListPagesProps(strapiApiDataListPages);
+    const result = makeApiDataListPages(strapiApiDataListPages);
     expect(result[0].updatedAt).toBe('2024-01-02T00:00:00.000Z');
   });
 
   it('should filter cards without title or tags', () => {
-    const result = makeApiDataListPagesProps(
+    const result = makeApiDataListPages(
       apiDataListPageWithInvalidApiData()
     );
     expect(result[0].cards).toHaveLength(0);
@@ -164,12 +164,12 @@ describe('makeApiDataListPagesProps', () => {
   });
 
   it('should handle API data with missing icon', () => {
-    const result = makeApiDataListPagesProps(minimalApiDataListPages());
+    const result = makeApiDataListPages(minimalApiDataListPages());
     expect(result[0].cards[0].icon).toBe('');
   });
 
   it('should correctly generate href for cards', () => {
-    const result = makeApiDataListPagesProps(strapiApiDataListPages);
+    const result = makeApiDataListPages(strapiApiDataListPages);
     const firstElement = result[0];
     expect(firstElement.cards).toHaveLength(2);
     expect(firstElement.cards[0].href).toBe('/send/api/send-main');
@@ -177,7 +177,7 @@ describe('makeApiDataListPagesProps', () => {
   });
 
   it('should prioritize REST slug over SOAP slug in apiDetailSlugs', () => {
-    const result = makeApiDataListPagesProps(
+    const result = makeApiDataListPages(
       apiDataListPageWithBothRestAndSoap()
     );
     expect(result[0].apiDetailSlugs).toEqual(['rest-slug']);

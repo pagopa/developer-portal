@@ -1,5 +1,5 @@
 import ProductLayout, {
-  ProductLayoutProps,
+  ProductLayoutData,
 } from '@/components/organisms/ProductLayout/ProductLayout';
 import { getGuidePage } from '@/lib/api';
 import { Product } from '@/lib/types/product';
@@ -46,7 +46,7 @@ export type ProductGuidePageProps = {
   menu: string;
   body: string;
   bodyConfig: ParseContentConfig;
-} & ProductLayoutProps;
+} & ProductLayoutData;
 
 export async function generateMetadata({
   params,

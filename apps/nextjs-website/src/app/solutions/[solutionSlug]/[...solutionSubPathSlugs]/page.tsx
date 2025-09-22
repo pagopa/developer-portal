@@ -6,7 +6,7 @@ import GitBookTemplate from '@/components/templates/GitBookTemplate/GitBookTempl
 import { pageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
 import { ParseContentConfig } from 'gitbook-docs/parseContent';
 import { getUrlReplaceMapProps } from '@/lib/cmsApi';
-import { SolutionTemplateProps } from '@/components/templates/SolutionTemplate/SolutionTemplate';
+import { SolutionTemplateData } from '@/components/templates/SolutionTemplate/SolutionTemplate';
 import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
 import { getItemFromPaths } from '@/helpers/structuredData.helpers';
 import PageNotFound from '@/app/not-found';
@@ -14,7 +14,7 @@ import { REVALIDATE_LONG_INTERVAL } from '@/config';
 import { getSolutionsMetadata } from '@/helpers/s3Metadata.helpers';
 
 type SolutionDetailPageTemplateProps = {
-  solution: SolutionTemplateProps;
+  solution: SolutionTemplateData;
   path: string;
   pathPrefix: string;
   isIndex: boolean;

@@ -1,4 +1,4 @@
-import { makePartProps } from '@/lib/strapi/makeProps/makePart';
+import { makePart } from '@/lib/strapi/makeProps/makePart';
 import {
   alertPart,
   apiTesterPart,
@@ -20,7 +20,7 @@ import {
 
 describe('makePartProps', () => {
   it('should transform alert part', () => {
-    const result = makePartProps(alertPart);
+    const result = makePart(alertPart);
     expect(result).toMatchObject({
       component: 'alert',
       text: 'Alert text',
@@ -30,7 +30,7 @@ describe('makePartProps', () => {
   });
 
   it('should transform minimal alert part', () => {
-    const result = makePartProps(minimalAlertPart());
+    const result = makePart(minimalAlertPart());
     expect(result).toMatchObject({
       component: 'alert',
       severity: 'info',
@@ -38,7 +38,7 @@ describe('makePartProps', () => {
   });
 
   it('should transform api-tester part', () => {
-    const result = makePartProps(apiTesterPart);
+    const result = makePart(apiTesterPart);
     expect(result).toMatchObject({
       component: 'apiTester',
       apiRequest: {
@@ -58,7 +58,7 @@ describe('makePartProps', () => {
   });
 
   it('should transform code-block part', () => {
-    const result = makePartProps(codeBlockPart);
+    const result = makePart(codeBlockPart);
     expect(result).toMatchObject({
       component: 'codeBlock',
       code: 'console.log("Hello")',
@@ -68,7 +68,7 @@ describe('makePartProps', () => {
   });
 
   it('should transform html part', () => {
-    const result = makePartProps(htmlPart);
+    const result = makePart(htmlPart);
     expect(result).toMatchObject({
       component: 'blockRenderer',
       html: [
@@ -81,7 +81,7 @@ describe('makePartProps', () => {
   });
 
   it('should transform embed-html part', () => {
-    const result = makePartProps(embedHtmlPart);
+    const result = makePart(embedHtmlPart);
     expect(result).toMatchObject({
       component: 'innerHTMLLazyLoaded',
       html: '<div>Embed HTML</div>',
@@ -89,7 +89,7 @@ describe('makePartProps', () => {
   });
 
   it('should transform quote part', () => {
-    const result = makePartProps(quotePart);
+    const result = makePart(quotePart);
     expect(result).toMatchObject({
       component: 'quote',
       quote: 'Quote text',
@@ -101,39 +101,39 @@ describe('makePartProps', () => {
   });
 
   it('should transform ck-editor part', () => {
-    const result = makePartProps(ckEditorPart);
+    const result = makePart(ckEditorPart);
     expect(result).toHaveProperty('component', 'ckEditor');
     expect(result).toHaveProperty('content');
     expect(result).toHaveProperty('menuItems');
   });
 
   it('should return null for unknown part type', () => {
-    const result = makePartProps({ __component: 'parts.unknown' } as any);
+    const result = makePart({ __component: 'parts.unknown' } as any);
     expect(result).toBeNull();
   });
 
   it('should handle minimal parts', () => {
-    expect(makePartProps(minimalApiTesterPart())).toHaveProperty(
+    expect(makePart(minimalApiTesterPart())).toHaveProperty(
       'component',
       'apiTester'
     );
-    expect(makePartProps(minimalCodeBlockPart())).toHaveProperty(
+    expect(makePart(minimalCodeBlockPart())).toHaveProperty(
       'component',
       'codeBlock'
     );
-    expect(makePartProps(minimalHtmlPart())).toHaveProperty(
+    expect(makePart(minimalHtmlPart())).toHaveProperty(
       'component',
       'blockRenderer'
     );
-    expect(makePartProps(minimalEmbedHtmlPart())).toHaveProperty(
+    expect(makePart(minimalEmbedHtmlPart())).toHaveProperty(
       'component',
       'innerHTMLLazyLoaded'
     );
-    expect(makePartProps(minimalQuotePart())).toHaveProperty(
+    expect(makePart(minimalQuotePart())).toHaveProperty(
       'component',
       'quote'
     );
-    expect(makePartProps(minimalCkEditorPart())).toHaveProperty(
+    expect(makePart(minimalCkEditorPart())).toHaveProperty(
       'component',
       'ckEditor'
     );

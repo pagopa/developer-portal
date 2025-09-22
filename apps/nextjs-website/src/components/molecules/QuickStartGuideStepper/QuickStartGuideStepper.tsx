@@ -3,7 +3,7 @@ import React, { ReactNode } from 'react';
 import { Step } from '@/lib/types/step';
 import { Box, useTheme } from '@mui/material';
 import Typography from '@mui/material/Typography';
-import { Part } from '@/lib/types/part';
+import { PartData } from '@/lib/types/part';
 import PartRenderer from '@/components/molecules/PartRenderer/PartRenderer';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
 import TabSwitcherProvider, {
@@ -85,7 +85,7 @@ const QuickStartGuideStepper = ({
                   >
                     {step.anchor}
                   </Typography>
-                  {step.parts.map((part: Part, index: number) => (
+                  {step.parts.map((part: PartData, index: number) => (
                     <PartRenderer key={index} part={part} />
                   ))}
                   <Box

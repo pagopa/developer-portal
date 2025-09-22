@@ -1,7 +1,7 @@
 import { Product } from '@/lib/types/product';
 import { Abstract } from '@/editorialComponents/Abstract/Abstract';
 import ProductLayout, {
-  ProductLayoutProps,
+  ProductLayoutData,
 } from '@/components/organisms/ProductLayout/ProductLayout';
 import { getQuickStartGuide } from '@/lib/api';
 import React from 'react';
@@ -20,7 +20,7 @@ import {
   productToBreadcrumb,
 } from '@/helpers/structuredData.helpers';
 
-export type QuickStartGuidePageProps = {
+export type QuickStartGuidePageData = {
   readonly product: Product;
   readonly abstract?: {
     readonly title: string;
@@ -30,7 +30,7 @@ export type QuickStartGuidePageProps = {
   readonly defaultStepAnchor?: string;
   readonly steps?: ReadonlyArray<Step>;
   readonly seo?: SEO;
-} & ProductLayoutProps;
+} & ProductLayoutData;
 
 export async function generateMetadata(
   { params }: ProductParams,

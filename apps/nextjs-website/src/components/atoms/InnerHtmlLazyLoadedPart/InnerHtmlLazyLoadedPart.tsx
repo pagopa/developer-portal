@@ -2,9 +2,9 @@
 import React, { useEffect, useState } from 'react';
 import { Box, useTheme } from '@mui/material';
 
-export type InnerHtmlLazyLoadedPartProps = { html: string };
+export type InnerHtmlLazyLoadedPartData = { readonly html: string };
 
-const InnerHtmlLazyLoadedPart = ({ html }: InnerHtmlLazyLoadedPartProps) => {
+const InnerHtmlLazyLoadedPart = ({ html }: InnerHtmlLazyLoadedPartData) => {
   const { spacing, palette } = useTheme();
   const [loaded, setLoaded] = useState(false);
   useEffect(() => setLoaded(true), []);

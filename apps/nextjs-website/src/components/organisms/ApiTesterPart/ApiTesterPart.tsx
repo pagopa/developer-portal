@@ -17,12 +17,12 @@ type ApiPhaseDescription = {
   }[];
 };
 
-export type ApiTesterPartProps = {
-  apiRequest: ApiPhaseDescription;
-  apiResponse: ApiPhaseDescription;
+export type ApiTesterPartData = {
+  readonly apiRequest: ApiPhaseDescription;
+  readonly apiResponse: ApiPhaseDescription;
 };
 
-const ApiTesterPart = ({ apiRequest, apiResponse }: ApiTesterPartProps) => {
+const ApiTesterPart = ({ apiRequest, apiResponse }: ApiTesterPartData) => {
   const { spacing, palette } = useTheme();
   const [isLifeCycleCallPhase, setIsLifeCycleCallPhase] = useState(true);
   const t = useTranslations('quickStartGuide.content.apiPhases');

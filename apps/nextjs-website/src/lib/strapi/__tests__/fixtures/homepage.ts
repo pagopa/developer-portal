@@ -1,5 +1,5 @@
 import { StrapiHomepage } from '@/lib/strapi/types/homepage';
-import { HomepageProps } from '@/app/page';
+import { HomepageData } from '@/app/page';
 import { mediaJpeg } from '@/lib/strapi/__tests__/factories/media';
 import { newsShowcase } from '@/lib/strapi/__tests__/fixtures/newsShowcase';
 
@@ -146,7 +146,7 @@ export const strapiHomepage: StrapiHomepage = {
   },
 };
 
-export const expectedHomepageProps: HomepageProps = {
+export const expectedHomepageProps: HomepageData = {
   comingsoonDocumentation: {
     title: 'Coming Soon Documentation',
     links: [

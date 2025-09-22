@@ -1,5 +1,5 @@
 import { Path } from '@/lib/types/path';
-import { Part } from './part';
+import { PartData } from './part';
 import { SEO } from './seo';
 
 export type Tutorial = {
@@ -10,7 +10,7 @@ export type Tutorial = {
   };
   readonly title: string;
   readonly publishedAt?: Date;
-  readonly parts?: readonly Part[];
+  readonly parts?: readonly PartData[];
   readonly seo?: SEO;
   readonly updatedAt?: string;
 } & Path;

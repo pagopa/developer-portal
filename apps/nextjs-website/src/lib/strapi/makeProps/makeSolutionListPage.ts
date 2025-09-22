@@ -1,11 +1,11 @@
 /* eslint-disable functional/no-expression-statements */
-import { SolutionListTemplateProps } from '@/components/templates/SolutionListTemplate/SolutionListTemplate';
+import { SolutionListTemplateData } from '@/components/templates/SolutionListTemplate/SolutionListTemplate';
 import { StrapiSolutionListPage } from '@/lib/strapi/types/solutionListPage';
 import { compact } from 'lodash';
 
 export function makeSolutionListPageProps(
   strapiSolutionsList: StrapiSolutionListPage
-): SolutionListTemplateProps {
+): SolutionListTemplateData {
   const {
     data: { attributes },
   } = strapiSolutionsList;

@@ -1,13 +1,10 @@
 'use client';
 import React, { FC } from 'react';
 import { Stack } from '@mui/material';
-import {
-  BannerLink,
-  BannerLinkProps,
-} from '@/components/atoms/BannerLink/BannerLink';
+import { BannerLinkData } from '@/components/atoms/BannerLink/BannerLink';
 
 type BannerLinksProps = {
-  bannerLinks?: readonly BannerLinkProps[];
+  bannerLinks?: readonly BannerLinkData[];
 };
 
 function CalculateJustify(index: number, length: number) {
@@ -25,7 +22,7 @@ export const BannerLinks: FC<BannerLinksProps> = ({ bannerLinks }) => (
     }}
   >
     {bannerLinks?.map((bannerLink, index) => (
-      <BannerLink
+      <BannerLinkData
         variant='h3'
         contentJustification={CalculateJustify(index, bannerLinks.length)}
         key={index}

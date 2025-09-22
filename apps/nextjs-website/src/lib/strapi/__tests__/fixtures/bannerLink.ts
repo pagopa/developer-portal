@@ -1,5 +1,5 @@
 import { StrapiBannerLink } from '@/lib/strapi/types/bannerLink';
-import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
+import { BannerLinkData } from '@/components/atoms/BannerLink/BannerLink';
 import { mediaJpeg } from '../factories/media';
 
 export const strapiBannerLink: StrapiBannerLink = {
@@ -22,7 +22,7 @@ export const strapiBannerLink: StrapiBannerLink = {
   },
 };
 
-export const expectedBannerLinkProps: BannerLinkProps = {
+export const expectedBannerLinkProps: BannerLinkData = {
   title: 'Developer Portal',
   content: [
     {

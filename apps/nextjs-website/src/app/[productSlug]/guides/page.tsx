@@ -7,7 +7,7 @@ import {
 import { Abstract } from '@/editorialComponents/Abstract/Abstract';
 import { Box } from '@mui/material';
 import ProductLayout, {
-  ProductLayoutProps,
+  ProductLayoutData,
 } from '@/components/organisms/ProductLayout/ProductLayout';
 import { ProductParams } from '@/lib/types/productParams';
 import { Metadata, ResolvingMetadata } from 'next';
@@ -22,7 +22,7 @@ import {
   productToBreadcrumb,
 } from '@/helpers/structuredData.helpers';
 
-export type GuideListPageProps = {
+export type GuideListPageData = {
   readonly product: Product;
   readonly abstract?: {
     readonly title: string;
@@ -31,7 +31,7 @@ export type GuideListPageProps = {
   readonly guidesSections?: GuidesSectionProps[];
   readonly seo?: SEO;
   readonly updatedAt?: string;
-} & ProductLayoutProps;
+} & ProductLayoutData;
 
 export const generateMetadata = async (
   { params }: ProductParams,

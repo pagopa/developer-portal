@@ -4,15 +4,15 @@ import * as RA from 'fp-ts/lib/ReadonlyArray';
 import { docsAssetsPath, docsPath } from '@/config';
 import { Product } from '@/lib/types/product';
 import { parseDoc } from 'gitbook-docs/parseDoc';
-import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
-import { SolutionTemplateProps } from '@/components/templates/SolutionTemplate/SolutionTemplate';
+import { BannerLinkData } from '@/components/atoms/BannerLink/BannerLink';
+import { SolutionTemplateData } from '@/components/templates/SolutionTemplate/SolutionTemplate';
 import { SEO } from '@/lib/types/seo';
-import { ReleaseNotePageProps } from '@/app/[productSlug]/[...releaseNoteSubPathSlugs]/page';
+import { ReleaseNotePagePropsData } from '@/app/[productSlug]/[...releaseNoteSubPathSlugs]/page';
 
 export type TutorialsDefinition = {
   readonly product: Product;
   readonly dirName: string;
-  readonly bannerLinks: readonly BannerLinkProps[];
+  readonly bannerLinks: readonly BannerLinkData[];
 };
 
 export type GuideDefinition = {
@@ -27,7 +27,7 @@ export type GuideDefinition = {
     readonly version: string;
     readonly dirName: string;
   }>;
-  readonly bannerLinks: readonly BannerLinkProps[];
+  readonly bannerLinks: readonly BannerLinkData[];
   readonly seo?: SEO;
   readonly source?: {
     readonly pathPrefix: string;
@@ -118,7 +118,7 @@ export const makeGuide = ({
   );
 };
 
-export const makeSolution = (solution: SolutionTemplateProps) => {
+export const makeSolution = (solution: SolutionTemplateData) => {
   return pipe(
     [
       {
@@ -135,7 +135,7 @@ export const makeSolution = (solution: SolutionTemplateProps) => {
   );
 };
 
-export const makeReleaseNote = (releaseNote: ReleaseNotePageProps) => {
+export const makeReleaseNote = (releaseNote: ReleaseNotePagePropsData) => {
   return pipe(
     [
       {

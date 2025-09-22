@@ -1,14 +1,14 @@
 /* eslint-disable functional/no-expression-statements */
-import { ApiDataPageProps } from '@/app/[productSlug]/api/[apiDataSlug]/page';
-import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
-import { makeBaseProductWithoutLogoProps } from '@/lib/strapi/makeProps/makeProducts';
+import { ApiDataPageData as ApiDataPageData } from '@/app/[productSlug]/api/[apiDataSlug]/page';
+import { makeBannerLink } from '@/lib/strapi/makeProps/makeBannerLink';
+import { makeBaseProductWithoutLogo } from '@/lib/strapi/makeProps/makeProducts';
 import { makeApiSoapUrlList } from '@/lib/strapi/makeProps/makeApiSoapUrlList';
 import { StrapiApiDataList } from '@/lib/strapi/types/apiDataList';
 import { compact } from 'lodash';
 
-export async function makeApiDataListProps(
+export async function makeApiDataList(
   strapiApiDataList: StrapiApiDataList
-): Promise<ReadonlyArray<ApiDataPageProps>> {
+): Promise<ReadonlyArray<ApiDataPageData>> {
   const list = compact(
     await Promise.all(
       strapiApiDataList.data
@@ -43,9 +43,7 @@ export async function makeApiDataListProps(
 
           // eslint-disable-next-line functional/no-try-statements
           try {
-            const product = makeBaseProductWithoutLogoProps(
-              attributes.product.data
-            );
+            const product = makeBaseProductWithoutLogo(attributes.product.data);
             return {
               ...attributes,
               product,
@@ -65,12 +63,12 @@ export async function makeApiDataListProps(
                 : [],
               bannerLinks:
                 attributes.bannerLinks.length > 0
-                  ? attributes.bannerLinks.map(makeBannerLinkProps)
+                  ? attributes.bannerLinks.map(makeBannerLink)
                   : attributes.product.data.attributes.bannerLinks?.map(
-                      makeBannerLinkProps
+                      makeBannerLink
                     ),
               seo: attributes.seo,
-            } satisfies ApiDataPageProps;
+            } satisfies ApiDataPageData;
           } catch (error) {
             console.error(
               `Error while processing API Data with title "${attributes.title}":`,

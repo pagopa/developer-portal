@@ -2,7 +2,7 @@ import { getOverview } from '@/lib/api';
 import Hero from '@/editorialComponents/Hero/Hero';
 import { Metadata, ResolvingMetadata } from 'next';
 import ProductLayout, {
-  ProductLayoutProps,
+  ProductLayoutData,
 } from '@/components/organisms/ProductLayout/ProductLayout';
 import { Product } from '@/lib/types/product';
 import { Tutorial } from '@/lib/types/tutorialData';
@@ -29,7 +29,7 @@ import NewsShowcase, {
 } from '@/components/organisms/NewsShowcase/NewsShowcase';
 const MAX_NUM_TUTORIALS_IN_OVERVIEW = 3;
 
-export type OverviewPageProps = {
+export type OverviewPageData = {
   readonly path: string;
   readonly product: Product;
   readonly hero: {
@@ -90,7 +90,7 @@ export type OverviewPageProps = {
     }[];
   };
   readonly seo?: SEO;
-} & ProductLayoutProps;
+} & ProductLayoutData;
 
 export async function generateMetadata(
   { params }: ProductParams,

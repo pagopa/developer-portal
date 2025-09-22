@@ -1,7 +1,7 @@
 import {
   makeProductsProps,
-  makeProductProps,
-  makeBaseProductWithoutLogoProps,
+  makeProduct,
+  makeBaseProductWithoutLogo,
 } from '@/lib/strapi/makeProps/makeProducts';
 import { StrapiProducts } from '@/lib/strapi/types/product';
 import _ from 'lodash';
@@ -119,12 +119,12 @@ describe('makeProductProps', () => {
   });
 
   it('should transform single strapi product to product props', () => {
-    const result = makeProductProps(strapiProducts.data[0]);
+    const result = makeProduct(strapiProducts.data[0]);
     expect(result).toMatchObject(expectedProduct);
   });
 
   it('should return null for product without slug', () => {
-    const result = makeProductProps(productsWithAnItemMissingSlug().data[0]);
+    const result = makeProduct(productsWithAnItemMissingSlug().data[0]);
     expect(result).toBeNull();
     expect(spyOnConsoleError).toHaveBeenCalledWith(
       'Error while processing Product: missing title or slug. Title: Product Without Slug | Slug: undefined. Skipping...'
@@ -132,13 +132,13 @@ describe('makeProductProps', () => {
   });
 
   it('should return null and log error for corrupted product', () => {
-    const result = makeProductProps(productWithCorruptedData().data[0]);
+    const result = makeProduct(productWithCorruptedData().data[0]);
     expect(result).toBeNull();
     expect(spyOnConsoleError).toHaveBeenCalledTimes(1);
   });
 
   it('should return null and log error for product with missing attributes', () => {
-    const result = makeProductProps(productWithMissingAttributes());
+    const result = makeProduct(productWithMissingAttributes());
     expect(result).toBeNull();
     expect(spyOnConsoleError).toHaveBeenCalledWith(
       'Invalid product data:',
@@ -149,7 +149,7 @@ describe('makeProductProps', () => {
 
 describe('makeBaseProductWithoutLogoProps', () => {
   it('should create base product props without logo', () => {
-    const result = makeBaseProductWithoutLogoProps(strapiProducts.data[0]);
+    const result = makeBaseProductWithoutLogo(strapiProducts.data[0]);
 
     expect(result).toEqual({
       slug: 'test-product',
@@ -167,31 +167,31 @@ describe('makeBaseProductWithoutLogoProps', () => {
   });
 
   it('should handle product with no banner links', () => {
-    const result = makeBaseProductWithoutLogoProps(minimalProduct().data[0]);
+    const result = makeBaseProductWithoutLogo(minimalProduct().data[0]);
     expect(result.bannerLinks).toEqual([]);
   });
 
   it('should correctly determine API data list page URL for single API', () => {
-    const result = makeBaseProductWithoutLogoProps(strapiProducts.data[0]);
+    const result = makeBaseProductWithoutLogo(strapiProducts.data[0]);
     expect(result.apiDataListPageUrl).toBe('/test-product/api/api-detail');
   });
 
   it('should correctly determine API data list page URL for multiple APIs', () => {
-    const result = makeBaseProductWithoutLogoProps(
+    const result = makeBaseProductWithoutLogo(
       productWithMultipleApiData().data[0]
     );
     expect(result.apiDataListPageUrl).toBe('/test-product/api');
   });
 
   it('should handle undefined API data list page', () => {
-    const result = makeBaseProductWithoutLogoProps(minimalProduct().data[0]);
+    const result = makeBaseProductWithoutLogo(minimalProduct().data[0]);
     expect(result.hasApiDataListPage).toBe(false);
     expect(result.apiDataListPageUrl).toBeUndefined();
   });
 
   it('should throw error for product without slug', () => {
     expect(() =>
-      makeBaseProductWithoutLogoProps(productsWithAnItemMissingSlug().data[0])
+      makeBaseProductWithoutLogo(productsWithAnItemMissingSlug().data[0])
     ).toThrow(
       Error(
         'Error while processing Product with name "Product Without Slug": missing slug. Skipping...'
@@ -201,7 +201,7 @@ describe('makeBaseProductWithoutLogoProps', () => {
 
   it('should throw error for product with empty slug', () => {
     expect(() =>
-      makeBaseProductWithoutLogoProps(productsWithAnItemWithEmptySlug().data[0])
+      makeBaseProductWithoutLogo(productsWithAnItemWithEmptySlug().data[0])
     ).toThrow(
       Error(
         'Error while processing Product with name "Product Without Slug": missing slug. Skipping...'

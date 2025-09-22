@@ -1,4 +1,4 @@
-import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
+import { BannerLinkData } from '@/components/atoms/BannerLink/BannerLink';
 import { Path } from '@/lib/types/path';
 import { DocPage } from 'gitbook-docs/parseDoc';
 import { Product } from './product';
@@ -33,7 +33,7 @@ export type GuidePage = NonNullable<
     readonly version: GuideVersion;
     readonly versions: readonly GuideVersion[];
     readonly source: GuideSource;
-    readonly bannerLinks: readonly BannerLinkProps[];
+    readonly bannerLinks: readonly BannerLinkData[];
     readonly products: readonly Product[];
     readonly pathPrefix: string;
     readonly assetsPrefix: string;

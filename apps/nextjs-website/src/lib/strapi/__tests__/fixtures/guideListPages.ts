@@ -1,5 +1,5 @@
 import { StrapiGuideListPages } from '@/lib/strapi/types/guideListPage';
-import { GuideListPageProps } from '@/app/[productSlug]/guides/page';
+import { GuideListPageData } from '@/app/[productSlug]/guides/page';
 import { product } from '@/lib/strapi/__tests__/fixtures/product';
 
 const dateNow = new Date().toISOString();
@@ -505,4 +505,4 @@ export const guideListPagesProps = [
     seo: undefined,
     updatedAt: dateNow,
   },
-] satisfies readonly GuideListPageProps[];
+] satisfies readonly GuideListPageData[];

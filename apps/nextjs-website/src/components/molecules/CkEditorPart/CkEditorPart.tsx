@@ -10,12 +10,12 @@ export type CkEditorMenuItem = {
   level: number;
 };
 
-export type CkEditorPartProps = {
-  content: string;
-  menuItems: CkEditorMenuItem[];
+export type CkEditorPartData = {
+  readonly content: string;
+  readonly menuItems: CkEditorMenuItem[];
 };
 
-const CkEditorPart = ({ content }: CkEditorPartProps) => {
+const CkEditorPart = ({ content }: CkEditorPartData) => {
   const { palette, typography } = useTheme();
   const scrollOffset = SITE_HEADER_HEIGHT + PRODUCT_HEADER_HEIGHT;
 

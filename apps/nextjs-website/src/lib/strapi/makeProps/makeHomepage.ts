@@ -1,11 +1,11 @@
 import { StrapiHomepage } from '@/lib/strapi/types/homepage';
-import { makeWebinarProps } from '@/lib/strapi/makeProps/makeWebinars';
-import { HomepageProps } from '@/app/page';
+import { makeWebinar } from '@/lib/strapi/makeProps/makeWebinars';
+import { HomepageData } from '@/app/page';
 import { compact } from 'lodash';
 
 export const makeHomepageProps = (
   strapiHomepage: StrapiHomepage
-): HomepageProps => ({
+): HomepageData => ({
   comingsoonDocumentation:
     strapiHomepage.data.attributes.comingsoonDocumentation,
   hero: strapiHomepage.data.attributes.heroSlider.map((slide) => ({
@@ -66,7 +66,7 @@ export const makeHomepageProps = (
   seo: strapiHomepage?.data?.attributes?.seo,
   webinars: compact(
     strapiHomepage.data.attributes.webinars.data.map((webinar) =>
-      makeWebinarProps(webinar)
+      makeWebinar(webinar)
     )
   ),
 });

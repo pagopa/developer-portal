@@ -5,9 +5,7 @@ import { compact } from 'lodash';
 
 export type WebinarsProps = readonly Webinar[];
 
-export const makeWebinarProps = (
-  strapiWebinar: StrapiWebinar
-): Webinar | null => {
+export const makeWebinar = (strapiWebinar: StrapiWebinar): Webinar | null => {
   if (!strapiWebinar.attributes.slug || !strapiWebinar.attributes.title) {
     console.error(
       `Error while processing Webinar: missing title or slug. Title: ${strapiWebinar.attributes.title} | Slug: ${strapiWebinar.attributes.slug}. Skipping...`
@@ -76,6 +74,6 @@ export function makeWebinarsProps(
   strapiWebinars: StrapiWebinars
 ): WebinarsProps {
   return compact([
-    ...strapiWebinars.data.map((webinar) => makeWebinarProps(webinar)),
+    ...strapiWebinars.data.map((webinar) => makeWebinar(webinar)),
   ]);
 }

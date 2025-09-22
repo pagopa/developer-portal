@@ -4,7 +4,7 @@ import { FormatQuote } from '@mui/icons-material';
 import { Box, Stack, Typography, useTheme } from '@mui/material';
 import Image from 'next/image';
 
-export type QuoteProps = {
+export type QuoteData = {
   readonly quote: string;
   readonly color?: 'contrastText' | 'main' | 'light' | 'dark';
   readonly backgroundImage?: Media;
@@ -24,7 +24,7 @@ const Quote = ({
     mime: 'image/png',
     url: '/images/hero-swiper.png',
   },
-}: QuoteProps) => {
+}: QuoteData) => {
   const { palette } = useTheme();
   const textColor = color
     ? palette.primary[color]

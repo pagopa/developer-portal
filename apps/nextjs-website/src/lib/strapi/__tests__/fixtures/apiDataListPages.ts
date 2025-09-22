@@ -1,5 +1,5 @@
 import { StrapiApiDataListPages } from '@/lib/strapi/types/apiDataListPages';
-import { ApiDataListPageTemplateProps } from '@/components/templates/ApiDataListTemplate/ApiDataListTemplate';
+import { ApiDataListPageTemplateData } from '@/components/templates/ApiDataListTemplate/ApiDataListTemplate';
 import { generateBannerLinks } from '@/lib/strapi/__tests__/factories/bannerLink';
 import { mediaJpeg } from '../factories/media';
 
@@ -100,7 +100,7 @@ export const strapiApiDataListPages = {
   ],
 } satisfies StrapiApiDataListPages;
 
-export const expectedApiDataListPageProps: ReadonlyArray<ApiDataListPageTemplateProps> =
+export const expectedApiDataListPageProps: ReadonlyArray<ApiDataListPageTemplateData> =
   [
     {
       hero: {

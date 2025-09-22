@@ -8,39 +8,39 @@ import { Media } from '@/lib/types/media';
 import { SEO } from '@/lib/types/seo';
 import { useTranslations } from 'next-intl';
 
-export type SolutionListTemplateProps = {
-  hero: {
-    backgroundImage?: string;
-    altText?: string;
-    title: string;
-    subtitle: string;
+export type SolutionListTemplateData = {
+  readonly hero: {
+    readonly backgroundImage?: string;
+    readonly altText?: string;
+    readonly title: string;
+    readonly subtitle: string;
   };
-  solutions: {
-    name: string;
-    description?: string;
-    slug: string;
-    tags?: { label: string; path?: string }[];
-    logo: Media;
+  readonly solutions: {
+    readonly name: string;
+    readonly description?: string;
+    readonly slug: string;
+    readonly tags?: { label: string; path?: string }[];
+    readonly logo: Media;
   }[];
-  features?: {
-    title: string;
-    subtitle?: string;
-    items: FeatureItem[];
+  readonly features?: {
+    readonly title: string;
+    readonly subtitle?: string;
+    readonly items: FeatureItem[];
   };
-  successStories?: {
-    title: string;
-    subtitle?: string;
-    stories: {
-      title: string;
-      publishedAt?: Date;
-      path: string;
-      image?: {
-        url: string;
-        alternativeText?: string;
+  readonly successStories?: {
+    readonly title: string;
+    readonly subtitle?: string;
+    readonly stories: {
+      readonly title: string;
+      readonly publishedAt?: Date;
+      readonly path: string;
+      readonly image?: {
+        readonly url: string;
+        readonly alternativeText?: string;
       };
     }[];
   };
-  seo?: SEO;
+  readonly seo?: SEO;
 };
 
 const SolutionListTemplate = ({
@@ -48,7 +48,7 @@ const SolutionListTemplate = ({
   solutions,
   features,
   successStories,
-}: SolutionListTemplateProps) => {
+}: SolutionListTemplateData) => {
   const t = useTranslations();
 
   return (

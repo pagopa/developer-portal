@@ -4,9 +4,9 @@ import { Box } from '@mui/material';
 import BlocksRendererClient from '@/components/molecules/BlocksRendererClient/BlocksRendererClient';
 import { BlocksContent } from '@strapi/blocks-react-renderer';
 
-export type BlocksRendererPartProps = { html: BlocksContent };
+export type BlocksRendererPartData = { readonly html: BlocksContent };
 
-const BlocksRendererPart = ({ html }: BlocksRendererPartProps) => {
+const BlocksRendererPart = ({ html }: BlocksRendererPartData) => {
   return (
     <Box component='div' mt={2}>
       <BlocksRendererClient content={html} />

@@ -1,5 +1,5 @@
 import ProductLayout, {
-  ProductLayoutProps,
+  ProductLayoutData,
 } from '@/components/organisms/ProductLayout/ProductLayout';
 import { Product } from '@/lib/types/product';
 import { SEO } from '@/lib/types/seo';
@@ -17,7 +17,7 @@ import {
 } from '@/helpers/breadcrumbs.helpers';
 import GitBookTemplate from '@/components/templates/GitBookTemplate/GitBookTemplate';
 import React from 'react';
-import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
+import { BannerLinkData } from '@/components/atoms/BannerLink/BannerLink';
 import { Metadata } from 'next';
 import {
   makeMetadata,
@@ -78,15 +78,15 @@ export async function generateMetadata({
   });
 }
 
-export type ReleaseNotePageProps = {
-  readonly bannerLinks?: BannerLinkProps[];
+export type ReleaseNotePagePropsData = {
+  readonly bannerLinks?: BannerLinkData[];
   readonly dirName: string;
   readonly landingFile: string;
   readonly path: string;
   readonly product: Product;
   readonly seo?: SEO;
   readonly title: string;
-} & ProductLayoutProps;
+} & ProductLayoutData;
 
 const ReleaseNotePage = async ({
   params,

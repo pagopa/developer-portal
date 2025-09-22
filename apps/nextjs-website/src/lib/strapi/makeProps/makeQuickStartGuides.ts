@@ -1,11 +1,11 @@
 /* eslint-disable functional/no-try-statements */
 /* eslint-disable functional/no-expression-statements */
-import { QuickStartGuidePageProps } from '@/app/[productSlug]/quick-start/page';
-import { Part } from '@/lib/types/part';
+import { QuickStartGuidePageData } from '@/app/[productSlug]/quick-start/page';
+import { PartData } from '@/lib/types/part';
 import { Step } from '@/lib/types/step';
-import { makePartProps } from '@/lib/strapi/makeProps/makePart';
-import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
-import { makeBaseProductWithoutLogoProps } from '@/lib/strapi/makeProps/makeProducts';
+import { makePart } from '@/lib/strapi/makeProps/makePart';
+import { makeBannerLink } from '@/lib/strapi/makeProps/makeBannerLink';
+import { makeBaseProductWithoutLogo } from '@/lib/strapi/makeProps/makeProducts';
 import { StrapiPart } from '@/lib/strapi/types/part';
 import {
   StrapiQuickStartGuideItem,
@@ -13,7 +13,7 @@ import {
 } from '@/lib/strapi/types/quickStartGuides';
 import { compact } from 'lodash';
 
-export type QuickStartGuidesPageProps = readonly QuickStartGuidePageProps[];
+export type QuickStartGuidesPage = readonly QuickStartGuidePageData[];
 
 function makeStepFromQuickstartGuideItems(
   item: StrapiQuickStartGuideItem
@@ -22,14 +22,14 @@ function makeStepFromQuickstartGuideItems(
     anchor: item.attributes.anchor,
     title: item.attributes.title,
     parts: item.attributes.parts
-      .map((part) => makePartProps(part as StrapiPart))
-      .filter((part) => !!part) as ReadonlyArray<Part>,
+      .map((part) => makePart(part as StrapiPart))
+      .filter((part) => !!part) as ReadonlyArray<PartData>,
   };
 }
 
-export function makeQuickStartGuidesProps(
+export function makeQuickStartGuides(
   strapiQuickStarts: StrapiQuickStartGuides
-): QuickStartGuidesPageProps {
+): QuickStartGuidesPage {
   return compact(
     strapiQuickStarts.data.map((quickStart) => {
       if (!quickStart.attributes.product.data?.attributes.slug) {
@@ -49,7 +49,7 @@ export function makeQuickStartGuidesProps(
           defaultStepAnchor:
             quickStart.attributes.quickstartGuideItems.data[0].attributes
               .anchor,
-          product: makeBaseProductWithoutLogoProps(
+          product: makeBaseProductWithoutLogo(
             quickStart.attributes.product.data
           ),
           steps: quickStart.attributes.quickstartGuideItems.data.map((item) =>
@@ -58,12 +58,12 @@ export function makeQuickStartGuidesProps(
           path: `/${quickStart.attributes.product.data.attributes.slug}/quick-start`,
           bannerLinks:
             quickStart.attributes.bannerLinks.length > 0
-              ? quickStart.attributes.bannerLinks.map(makeBannerLinkProps)
+              ? quickStart.attributes.bannerLinks.map(makeBannerLink)
               : quickStart.attributes.product.data.attributes.bannerLinks?.map(
-                  makeBannerLinkProps
+                  makeBannerLink
                 ),
           seo: quickStart.attributes.seo,
-        } satisfies QuickStartGuidePageProps;
+        } satisfies QuickStartGuidePageData;
       } catch (error) {
         console.error(
           `Error while processing QuickStartGuide with id ${quickStart.id}:`,

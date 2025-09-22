@@ -1,5 +1,5 @@
 import { Media } from '@/lib/types/media';
-import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
+import { BannerLinkData } from '@/components/atoms/BannerLink/BannerLink';
 
 export type Product = {
   readonly slug: string;
@@ -7,7 +7,7 @@ export type Product = {
   readonly description?: string;
   readonly logo?: Media;
   readonly name: string;
-  readonly bannerLinks: readonly BannerLinkProps[];
+  readonly bannerLinks: readonly BannerLinkData[];
   readonly hasApiDataListPage?: boolean;
   readonly apiDataListPageUrl?: string;
   readonly hasTutorialListPage?: boolean;

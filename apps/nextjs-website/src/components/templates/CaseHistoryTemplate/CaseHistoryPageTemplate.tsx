@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 import { Product } from '@/lib/types/product';
-import { Part } from '@/lib/types/part';
+import { PartData } from '@/lib/types/part';
 import PartRenderer from '@/components/molecules/PartRenderer/PartRenderer';
 import { useTranslations } from 'next-intl';
 import ProductsShowcase, {
@@ -14,15 +14,15 @@ import EContainer from '@/editorialComponents/EContainer/EContainer';
 import { Media } from '@/lib/types/media';
 import { SEO } from '@/lib/types/seo';
 
-export type CaseHistoryPageTemplateProps = {
-  slug: string;
-  title: string;
-  image?: Media;
-  updatedAt: string;
-  description?: string;
-  products: Pick<Product, 'logo' | 'slug' | 'name' | 'description'>[];
-  parts: Part[];
-  seo?: SEO;
+export type CaseHistoryPageTemplateData = {
+  readonly slug: string;
+  readonly title: string;
+  readonly image?: Media;
+  readonly updatedAt: string;
+  readonly description?: string;
+  readonly products: Pick<Product, 'logo' | 'slug' | 'name' | 'description'>[];
+  readonly parts: PartData[];
+  readonly seo?: SEO;
 };
 
 const CaseHistoryPageTemplate = ({
@@ -31,7 +31,7 @@ const CaseHistoryPageTemplate = ({
   description,
   products,
   parts,
-}: CaseHistoryPageTemplateProps) => {
+}: CaseHistoryPageTemplateData) => {
   const { palette } = useTheme();
   const t = useTranslations();
 
@@ -79,7 +79,7 @@ const CaseHistoryPageTemplate = ({
           )}
         </Box>
       </EContainer>
-      {parts.map((part: Part, index: number) =>
+      {parts.map((part: PartData, index: number) =>
         part.component !== 'quote' ? (
           <EContainer key={index}>
             <PartRenderer part={part} />

@@ -6,16 +6,16 @@ import { FC } from 'react';
 import { Variant } from '@mui/material/styles/createTypography';
 import { Media } from '@/lib/types/media';
 
-export type BannerLinkProps = {
-  content?: BlocksContent;
-  contentJustification?: string;
-  icon: Media;
-  theme: 'light' | 'dark';
-  title?: string;
-  variant?: Variant;
+export type BannerLinkData = {
+  readonly content?: BlocksContent;
+  readonly contentJustification?: string;
+  readonly icon: Media;
+  readonly theme: 'light' | 'dark';
+  readonly title?: string;
+  readonly variant?: Variant;
 };
 
-export const BannerLink: FC<BannerLinkProps> = ({
+export const BannerLinkData: FC<BannerLinkData> = ({
   content,
   contentJustification = 'center',
   icon,

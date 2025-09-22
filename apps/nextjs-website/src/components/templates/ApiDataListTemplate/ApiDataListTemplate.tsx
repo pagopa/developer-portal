@@ -3,14 +3,14 @@ import Hero from '@/editorialComponents/Hero/Hero';
 import CardsGrid from '@/components/molecules/CardsGrid/CardsGrid';
 import { Box } from '@mui/material';
 import { Theme } from '@/editorialComponents/types/components';
-import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
+import { BannerLinkData } from '@/components/atoms/BannerLink/BannerLink';
 import BannerLinks from '@/components/molecules/BannerLinks/BannerLinks';
 import { useTranslations } from 'next-intl';
 import { SEO } from '@/lib/types/seo';
 import { Product } from '@/lib/types/product';
 import { StrapiBaseApiDataList } from '@/lib/strapi/types/apiDataList';
 
-export type ApiDataListPageTemplateProps = {
+export type ApiDataListPageTemplateData = {
   readonly hero: {
     readonly title: string;
     readonly subtitle: string;
@@ -27,7 +27,7 @@ export type ApiDataListPageTemplateProps = {
     readonly tags?: { label: string }[];
   }[];
   readonly updatedAt: string;
-  readonly bannerLinks: BannerLinkProps[];
+  readonly bannerLinks: BannerLinkData[];
   readonly theme?: Theme;
   readonly apiData: StrapiBaseApiDataList;
   readonly seo?: SEO;
@@ -38,7 +38,7 @@ const ApiDataListTemplate = ({
   cards,
   bannerLinks,
   theme = 'light',
-}: ApiDataListPageTemplateProps) => {
+}: ApiDataListPageTemplateData) => {
   const t = useTranslations('');
 
   return (

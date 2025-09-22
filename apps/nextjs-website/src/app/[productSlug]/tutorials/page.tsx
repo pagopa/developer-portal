@@ -4,7 +4,7 @@ import { getTutorialListPageProps } from '@/lib/api';
 import { Abstract } from '@/editorialComponents/Abstract/Abstract';
 import { Box } from '@mui/material';
 import ProductLayout, {
-  ProductLayoutProps,
+  ProductLayoutData,
 } from '@/components/organisms/ProductLayout/ProductLayout';
 import { Tutorial } from '@/lib/types/tutorialData';
 import Newsroom from '@/editorialComponents/Newsroom/Newsroom';
@@ -29,7 +29,7 @@ export type TutorialsPageProps = {
   };
   readonly tutorials: readonly Tutorial[];
   readonly seo?: SEO;
-} & ProductLayoutProps;
+} & ProductLayoutData;
 
 export async function generateMetadata(
   { params }: ProductParams,

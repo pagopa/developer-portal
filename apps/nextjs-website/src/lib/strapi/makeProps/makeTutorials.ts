@@ -1,23 +1,23 @@
 /* eslint-disable functional/no-expression-statements */
 /* eslint-disable functional/no-try-statements */
-import { Part } from '@/lib/types/part';
+import { PartData } from '@/lib/types/part';
 import { Tutorial } from '@/lib/types/tutorialData';
-import { makePartProps } from '@/lib/strapi/makeProps/makePart';
-import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
+import { makePart } from '@/lib/strapi/makeProps/makePart';
+import { BannerLinkData } from '@/components/atoms/BannerLink/BannerLink';
 import { RelatedLinksProps } from '@/components/atoms/RelatedLinks/RelatedLinks';
-import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
+import { makeBannerLink } from '@/lib/strapi/makeProps/makeBannerLink';
 import { StrapiTutorials } from '@/lib/strapi/types/tutorial';
 import { compact } from 'lodash';
 
-export type TutorialProps = Tutorial & {
+export type TutorialData = Tutorial & {
   readonly productSlug: string;
   readonly relatedLinks?: RelatedLinksProps;
-  readonly bannerLinks?: readonly BannerLinkProps[];
+  readonly bannerLinks?: readonly BannerLinkData[];
 };
 
-export function makeTutorialsProps(
+export function makeTutorials(
   strapiTutorials: StrapiTutorials
-): readonly TutorialProps[] {
+): readonly TutorialData[] {
   return compact(
     strapiTutorials.data.map(({ attributes }) => {
       if (!attributes.slug || !attributes.title) {
@@ -51,20 +51,20 @@ export function makeTutorialsProps(
           path: `/${attributes.product.data.attributes.slug}/tutorials/${attributes.slug}`,
           parts: [
             ...(attributes.parts
-              .map((part) => makePartProps(part))
-              .filter((part) => !!part) as ReadonlyArray<Part>),
+              .map((part) => makePart(part))
+              .filter((part) => !!part) as ReadonlyArray<PartData>),
           ],
           productSlug: attributes.product.data.attributes.slug,
           relatedLinks: attributes.relatedLinks as RelatedLinksProps,
           bannerLinks:
             attributes.bannerLinks && attributes.bannerLinks.length > 0
-              ? attributes.bannerLinks?.map(makeBannerLinkProps)
+              ? attributes.bannerLinks?.map(makeBannerLink)
               : attributes.product.data?.attributes.bannerLinks?.map(
-                  makeBannerLinkProps
+                  makeBannerLink
                 ),
           seo: attributes.seo,
           updatedAt: attributes.updatedAt,
-        } satisfies TutorialProps;
+        } satisfies TutorialData;
       } catch (error) {
         console.error(
           `Error while processing Tutorial with title ${attributes.title}:`,

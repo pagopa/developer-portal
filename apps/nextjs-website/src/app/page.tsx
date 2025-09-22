@@ -25,7 +25,7 @@ import { CtaSlideProps } from '@/components/atoms/CtaSlide/CtaSlide';
 import { Webinar } from '@/lib/types/webinar';
 import { SEO } from '@/lib/types/seo';
 
-type EcosystemSolutionsCtaProps = {
+type EcosystemSolutionsCta = {
   readonly variant?: 'text' | 'contained' | 'outlined';
   readonly link: {
     readonly href: string;
@@ -34,16 +34,16 @@ type EcosystemSolutionsCtaProps = {
   };
 };
 
-type EcosystemProps = {
+type Ecosystem = {
   readonly title: string;
   readonly productsTabName: string;
   readonly products: CardsGridProps['cards'];
   readonly solutionsTabName: string;
   readonly solutions?: CardsGridProps['cards'];
-  readonly solutionsCta?: EcosystemSolutionsCtaProps;
+  readonly solutionsCta?: EcosystemSolutionsCta;
 };
 
-type ComingSoonDocumentationProps = {
+type ComingSoonDocumentation = {
   readonly title?: string;
   readonly links: readonly {
     readonly text: string;
@@ -51,12 +51,12 @@ type ComingSoonDocumentationProps = {
   }[];
 };
 
-export type HomepageProps = {
+export type HomepageData = {
   readonly hero: readonly CtaSlideProps[];
   readonly newsShowcase?: NewsShowcaseProps;
-  readonly ecosystem?: EcosystemProps;
+  readonly ecosystem?: Ecosystem;
   readonly webinars: readonly Webinar[];
-  readonly comingsoonDocumentation: ComingSoonDocumentationProps;
+  readonly comingsoonDocumentation: ComingSoonDocumentation;
   readonly seo?: SEO;
 };
 
@@ -91,7 +91,7 @@ const Home = async () => {
     ecosystem,
     comingsoonDocumentation,
     seo,
-  }: HomepageProps = await getHomepageProps();
+  }: HomepageData = await getHomepageProps();
 
   const structuredData = generateStructuredDataScripts({
     seo: seo,

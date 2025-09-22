@@ -1,4 +1,4 @@
-import { makeCaseHistoriesProps } from '@/lib/strapi/makeProps/makeCaseHistories';
+import { makeCaseHistories } from '@/lib/strapi/makeProps/makeCaseHistories';
 import { StrapiCaseHistories } from '@/lib/strapi/types/caseHistories';
 import _ from 'lodash';
 import {
@@ -14,13 +14,13 @@ import { mediaJpeg } from './factories/media';
 
 describe('makeCaseHistoriesProps', () => {
   it('should transform strapi case histories to case history props', () => {
-    const result = makeCaseHistoriesProps(_.cloneDeep(strapiCaseHistories));
+    const result = makeCaseHistories(_.cloneDeep(strapiCaseHistories));
     expect(result).toHaveLength(1);
     expect(result[0]).toMatchObject(caseHistoriesPageTemplateProps);
   });
 
   it('should handle minimal data with missing optional fields', () => {
-    const result = makeCaseHistoriesProps(
+    const result = makeCaseHistories(
       _.cloneDeep(minimalDataCaseHistories())
     );
     const firstElement = result[0];
@@ -45,12 +45,12 @@ describe('makeCaseHistoriesProps', () => {
         },
       },
     };
-    const result = makeCaseHistoriesProps(emptyData);
+    const result = makeCaseHistories(emptyData);
     expect(result).toHaveLength(0);
   });
 
   it('should handle case history with multiple products', () => {
-    const result = makeCaseHistoriesProps(caseHistoriesWithMultipleProducts());
+    const result = makeCaseHistories(caseHistoriesWithMultipleProducts());
     const firstElement = result[0];
     expect(firstElement.products).toHaveLength(2);
     expect(firstElement.products[1]).toMatchObject({
@@ -61,7 +61,7 @@ describe('makeCaseHistoriesProps', () => {
   });
 
   it('should handle case history without image', () => {
-    const result = makeCaseHistoriesProps(caseHistoriesWithoutImage());
+    const result = makeCaseHistories(caseHistoriesWithoutImage());
     expect(result[0].image).toBeUndefined();
   });
 });

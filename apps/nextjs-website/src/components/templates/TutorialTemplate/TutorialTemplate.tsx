@@ -8,15 +8,15 @@ import RelatedLinks, {
 import ProductLayout from '@/components/organisms/ProductLayout/ProductLayout';
 import { Product } from '@/lib/types/product';
 import PartRenderer from '@/components/molecules/PartRenderer/PartRenderer';
-import { Part } from '@/lib/types/part';
+import { PartData } from '@/lib/types/part';
 import PartRendererMenu from '@/components/molecules/PartRendererMenu/PartRendererMenu';
 import { ReactNode } from 'react';
-import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
+import { BannerLinkData } from '@/components/atoms/BannerLink/BannerLink';
 
 // TODO: Remove once the migration to CMS contents will be completed
 type TutorialPageTemplateProps = {
-  readonly bannerLinks?: ReadonlyArray<BannerLinkProps>;
-  readonly parts?: ReadonlyArray<Part>;
+  readonly bannerLinks?: ReadonlyArray<BannerLinkData>;
+  readonly parts?: ReadonlyArray<PartData>;
   readonly path: string;
   readonly product?: Product;
   readonly relatedLinks?: RelatedLinksProps;

@@ -1,9 +1,9 @@
-import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
+import { BannerLinkData } from '@/components/atoms/BannerLink/BannerLink';
 import { StrapiBannerLink } from '../types/bannerLink';
 
-export function makeBannerLinkProps(
+export function makeBannerLink(
   strapiBannerLink: StrapiBannerLink
-): BannerLinkProps {
+): BannerLinkData {
   return {
     content: strapiBannerLink.content || undefined,
     icon: strapiBannerLink.icon.data.attributes,

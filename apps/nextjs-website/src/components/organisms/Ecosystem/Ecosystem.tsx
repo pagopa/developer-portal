@@ -5,7 +5,7 @@ import TabComponent from '@/components/atoms/TabComponent/TabComponent';
 import CardsGrid from '@/components/molecules/CardsGrid/CardsGrid';
 import { ButtonNaked } from '@pagopa/mui-italia';
 import Link from 'next/link';
-import { HomepageProps } from '@/app/page';
+import { HomepageData } from '@/app/page';
 import SectionTitle from '@/components/molecules/SectionTitle/SectionTitle';
 
 const Ecosystem = ({
@@ -15,7 +15,7 @@ const Ecosystem = ({
   solutionsTabName,
   solutions,
   solutionsCta,
-}: Required<HomepageProps>['ecosystem']) => {
+}: Required<HomepageData>['ecosystem']) => {
   const theme = useTheme();
   return (
     <Box pt={10} pb={0} sx={{ backgroundColor: theme.palette.grey[50] }}>

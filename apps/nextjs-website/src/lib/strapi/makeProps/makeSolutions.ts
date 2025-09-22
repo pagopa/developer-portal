@@ -1,13 +1,13 @@
 /* eslint-disable functional/no-expression-statements */
 /* eslint-disable functional/no-try-statements */
-import { SolutionTemplateProps } from '@/components/templates/SolutionTemplate/SolutionTemplate';
+import { SolutionTemplateData } from '@/components/templates/SolutionTemplate/SolutionTemplate';
 import { StrapiSolutions } from '@/lib/strapi/types/solutions';
-import { makeWebinarProps } from '@/lib/strapi/makeProps/makeWebinars';
+import { makeWebinar } from '@/lib/strapi/makeProps/makeWebinars';
 import { compact } from 'lodash';
 
-export function makeSolutionsProps(
+export function makeSolutions(
   strapiSolutions: StrapiSolutions
-): ReadonlyArray<SolutionTemplateProps> {
+): readonly SolutionTemplateData[] {
   return compact(
     strapiSolutions.data.map(({ attributes }) => {
       if (!attributes.slug || !attributes.title) {
@@ -33,7 +33,7 @@ export function makeSolutionsProps(
           })),
           icon: attributes.icon.data.attributes,
           webinars: compact(
-            attributes.webinars.data.map((webinar) => makeWebinarProps(webinar))
+            attributes.webinars.data.map((webinar) => makeWebinar(webinar))
           ),
           bannerLinks: attributes.bannerLinks.map((bannerLink) => ({
             ...bannerLink,

@@ -1,7 +1,7 @@
 /* eslint-disable functional/no-expression-statements */
-import { ApiDataListPageTemplateProps } from '@/components/templates/ApiDataListTemplate/ApiDataListTemplate';
-import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
-import { makeBaseProductWithoutLogoProps } from '@/lib/strapi/makeProps/makeProducts';
+import { ApiDataListPageTemplateData } from '@/components/templates/ApiDataListTemplate/ApiDataListTemplate';
+import { makeBannerLink } from '@/lib/strapi/makeProps/makeBannerLink';
+import { makeBaseProductWithoutLogo } from '@/lib/strapi/makeProps/makeProducts';
 import { StrapiApiDataListPages } from '@/lib/strapi/types/apiDataListPages';
 import { compact } from 'lodash';
 import { StrapiBaseApiData } from '../types/apiDataList';
@@ -40,9 +40,9 @@ function makeApiDataListPageCard(item: StrapiBaseApiData, slug: string) {
   };
 }
 
-export function makeApiDataListPagesProps(
+export function makeApiDataListPages(
   strapiApiDataListPages: StrapiApiDataListPages
-): ReadonlyArray<ApiDataListPageTemplateProps> {
+): ReadonlyArray<ApiDataListPageTemplateData> {
   return compact(
     strapiApiDataListPages.data.map(({ attributes }) => {
       const slug = attributes.product.data?.attributes.slug;
@@ -61,7 +61,7 @@ export function makeApiDataListPagesProps(
             title: attributes.title,
             subtitle: attributes.description || '',
           },
-          product: makeBaseProductWithoutLogoProps(attributes.product.data),
+          product: makeBaseProductWithoutLogo(attributes.product.data),
           apiDetailSlugs: attributes.apiData.data
             .map(({ attributes }) =>
               attributes.apiRestDetail
@@ -74,7 +74,7 @@ export function makeApiDataListPagesProps(
               makeApiDataListPageCard(item, slug)
             )
           ),
-          bannerLinks: attributes.bannerLinks.map(makeBannerLinkProps),
+          bannerLinks: attributes.bannerLinks.map(makeBannerLink),
           seo: attributes.seo,
           updatedAt: attributes.updatedAt,
         };

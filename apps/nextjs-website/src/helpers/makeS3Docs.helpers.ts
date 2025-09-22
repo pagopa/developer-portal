@@ -6,7 +6,7 @@ import {
   s3DocsPath,
 } from '@/config';
 import { Product } from '@/lib/types/product';
-import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
+import { BannerLinkData } from '@/components/atoms/BannerLink/BannerLink';
 import { SEO } from '@/lib/types/seo';
 import {
   DocPage,
@@ -15,14 +15,14 @@ import {
   parseDoc,
   parseS3Doc,
 } from './parseS3Doc.helpers';
-import { SolutionTemplateProps } from '@/components/templates/SolutionTemplate/SolutionTemplate';
-import { ReleaseNotePageProps } from '@/app/[productSlug]/[...releaseNoteSubPathSlugs]/page';
+import { SolutionTemplateData } from '@/components/templates/SolutionTemplate/SolutionTemplate';
+import { ReleaseNotePagePropsData } from '@/app/[productSlug]/[...releaseNoteSubPathSlugs]/page';
 import { JsonMetadata } from './s3Metadata.helpers';
 
 export type TutorialsDefinition = {
   readonly product: Product;
   readonly dirName: string;
-  readonly bannerLinks: readonly BannerLinkProps[];
+  readonly bannerLinks: readonly BannerLinkData[];
 };
 
 export type GuideDefinition = {
@@ -37,7 +37,7 @@ export type GuideDefinition = {
     readonly version: string;
     readonly dirName: string;
   }>;
-  readonly bannerLinks: readonly BannerLinkProps[];
+  readonly bannerLinks: readonly BannerLinkData[];
   readonly seo?: SEO;
   readonly source?: {
     readonly pathPrefix: string;
@@ -63,7 +63,7 @@ export const makeTutorials = async (props: {
   readonly tutorial: {
     readonly product: Product;
     readonly dirName: string;
-    readonly bannerLinks: readonly BannerLinkProps[];
+    readonly bannerLinks: readonly BannerLinkData[];
   };
   readonly tutorialPaths: readonly string[];
 }) => {
@@ -139,7 +139,7 @@ export const makeGuide = (props: {
 };
 
 export const makeSolution = (
-  solution: SolutionTemplateProps,
+  solution: SolutionTemplateData,
   jsonMetadata?: JsonMetadata
 ) => {
   const doc = {
@@ -156,7 +156,7 @@ export const makeSolution = (
 };
 
 export const makeReleaseNote = (
-  releaseNote: ReleaseNotePageProps,
+  releaseNote: ReleaseNotePagePropsData,
   jsonMetadata?: JsonMetadata
 ) => {
   const doc = {

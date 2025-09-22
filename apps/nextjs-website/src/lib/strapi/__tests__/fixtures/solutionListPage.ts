@@ -1,5 +1,5 @@
 import { StrapiSolutionListPage } from '@/lib/strapi/types/solutionListPage';
-import { SolutionListTemplateProps } from '@/components/templates/SolutionListTemplate/SolutionListTemplate';
+import { SolutionListTemplateData } from '@/components/templates/SolutionListTemplate/SolutionListTemplate';
 import { mediaJpeg } from '@/lib/strapi/__tests__/factories/media';
 import { generateBannerLinks } from '@/lib/strapi/__tests__/factories/bannerLink';
 
@@ -70,7 +70,7 @@ export const strapiSolutionListPage = {
   },
 } satisfies StrapiSolutionListPage;
 
-export const expectedSolutionListTemplateProps: SolutionListTemplateProps = {
+export const expectedSolutionListTemplateProps: SolutionListTemplateData = {
   hero: {
     title: 'Solutions',
     subtitle: 'Explore our solutions',

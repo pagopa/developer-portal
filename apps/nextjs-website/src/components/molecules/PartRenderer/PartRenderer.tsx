@@ -1,5 +1,5 @@
 'use client';
-import { Part } from '@/lib/types/part';
+import { PartData } from '@/lib/types/part';
 import React, { ReactNode } from 'react';
 import TypographyPart from '@/components/atoms/TypographyPart/TypographyPart';
 import InnerHtmlLazyLoadedPart from '@/components/atoms/InnerHtmlLazyLoadedPart/InnerHtmlLazyLoadedPart';
@@ -11,7 +11,7 @@ import Quote from '@/components/atoms/Quote/Quote';
 import CkEditorPart from '../CkEditorPart/CkEditorPart';
 
 type PartRendererProps = {
-  part: Part;
+  part: PartData;
 };
 
 const PartRenderer = ({ part }: PartRendererProps): ReactNode | null => {

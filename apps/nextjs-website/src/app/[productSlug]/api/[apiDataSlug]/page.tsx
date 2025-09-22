@@ -1,6 +1,6 @@
 import { getApiData } from '@/lib/api';
 import ProductLayout, {
-  ProductLayoutProps,
+  ProductLayoutData,
 } from '@/components/organisms/ProductLayout/ProductLayout';
 import { Product } from '@/lib/types/product';
 import { Metadata, ResolvingMetadata } from 'next';
@@ -19,21 +19,21 @@ import {
 } from '@/helpers/structuredData.helpers';
 import ApiSection from '@/components/molecules/ApiSection/ApiSection';
 
-export type ApiDataPageProps = {
+export type ApiDataPageData = {
   readonly title?: string;
   readonly product?: Product;
   readonly apiType?: 'rest' | 'soap';
   readonly apiDataSlug: string;
   readonly specUrlsName?: string;
   readonly restApiSpecUrls: {
-    name?: string;
-    url: string;
-    hideTryIt?: boolean;
+    readonly name?: string;
+    readonly url: string;
+    readonly hideTryIt?: boolean;
   }[];
   readonly apiSoapUrl?: string;
   readonly apiSoapUrlList: readonly string[];
   readonly seo?: SEO;
-} & ProductLayoutProps;
+} & ProductLayoutData;
 
 export const generateMetadata = async (
   { params }: ApiDataParams,

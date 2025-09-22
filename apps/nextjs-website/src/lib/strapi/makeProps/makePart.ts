@@ -1,8 +1,8 @@
-import { Part } from '@/lib/types/part';
+import { PartData } from '@/lib/types/part';
 import { parseCkEditorContent } from '@/helpers/parseCkEditorContent.helpers';
 import { StrapiPart } from '@/lib/strapi/types/part';
 
-export function makePartProps(strapiPart: StrapiPart): Part | null {
+export function makePart(strapiPart: StrapiPart): PartData | null {
   switch (strapiPart.__component) {
     case 'parts.alert':
       return {

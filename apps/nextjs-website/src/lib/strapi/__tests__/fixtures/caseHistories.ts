@@ -1,7 +1,7 @@
 import { StrapiCaseHistories } from '@/lib/strapi/types/caseHistories';
 import { mediaJpeg } from '@/lib/strapi/__tests__/factories/media';
 import { product } from '@/lib/strapi/__tests__/fixtures/product';
-import { CaseHistoryPageTemplateProps } from '@/components/templates/CaseHistoryTemplate/CaseHistoryPageTemplate';
+import { CaseHistoryPageTemplateData } from '@/components/templates/CaseHistoryTemplate/CaseHistoryPageTemplate';
 
 export const strapiCaseHistories: StrapiCaseHistories = {
   data: [
@@ -51,7 +51,7 @@ export const strapiCaseHistories: StrapiCaseHistories = {
   },
 };
 
-export const caseHistoriesPageTemplateProps: CaseHistoryPageTemplateProps = {
+export const caseHistoriesPageTemplateProps: CaseHistoryPageTemplateData = {
   slug: 'case-history-title',
   title: 'Case History Title',
   description: 'Case history description',

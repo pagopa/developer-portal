@@ -1,5 +1,5 @@
 'use client';
-import { Part } from '@/lib/types/part';
+import { PartData } from '@/lib/types/part';
 import React, { ReactNode } from 'react';
 
 import { Box, Typography, useTheme } from '@mui/material';
@@ -10,7 +10,7 @@ import MUILink from '@mui/material/Link';
 import { useTranslations } from 'next-intl';
 
 type PartRendererMenuProps = {
-  readonly parts: readonly Part[];
+  readonly parts: readonly PartData[];
 };
 
 const getFontSizeByLevel = (level: number): number => {

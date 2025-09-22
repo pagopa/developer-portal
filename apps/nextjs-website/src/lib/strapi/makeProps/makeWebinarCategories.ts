@@ -4,13 +4,13 @@ import {
 } from '@/lib/strapi/types/webinarCategory';
 import { WebinarCategory } from '@/lib/types/webinarCategory';
 
-export function makeWebinarCategoriesProps(
+export function makeWebinarCategories(
   strapiWebinarCategories: StrapiWebinarCategories
-): ReadonlyArray<WebinarCategory> {
-  return strapiWebinarCategories.data.map(makeWebinarCategoryProps);
+): readonly WebinarCategory[] {
+  return strapiWebinarCategories.data.map(makeWebinarCategory);
 }
 
-export function makeWebinarCategoryProps(
+export function makeWebinarCategory(
   webinarCategory: StrapiWebinarCategory
 ): WebinarCategory {
   return {

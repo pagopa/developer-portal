@@ -1,14 +1,14 @@
 /* eslint-disable functional/no-try-statements */
 /* eslint-disable functional/no-expression-statements */
-import { OverviewPageProps } from '@/app/[productSlug]/overview/page';
-import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
-import { makeBaseProductWithoutLogoProps } from './makeProducts';
+import { OverviewPageData } from '@/app/[productSlug]/overview/page';
+import { makeBannerLink } from '@/lib/strapi/makeProps/makeBannerLink';
+import { makeBaseProductWithoutLogo } from './makeProducts';
 import { StrapiOverviews } from '@/lib/strapi/types/overviews';
 import { compact } from 'lodash';
 
-export function makeOverviewsProps(
+export function makeOverviews(
   strapiOverviews: StrapiOverviews
-): ReadonlyArray<OverviewPageProps> {
+): ReadonlyArray<OverviewPageData> {
   return compact(
     strapiOverviews.data.map(({ attributes }) => {
       const productData = attributes.product.data;
@@ -22,7 +22,7 @@ export function makeOverviewsProps(
       try {
         return {
           path: `/${attributes.product.data?.attributes.slug}/overview`,
-          product: makeBaseProductWithoutLogoProps(attributes.product.data),
+          product: makeBaseProductWithoutLogo(attributes.product.data),
           hero: {
             backgroundImage: attributes.backgroundImage.data.attributes.url,
             altText:
@@ -186,12 +186,12 @@ export function makeOverviewsProps(
           },
           bannerLinks:
             attributes.bannerLinks.length > 0
-              ? attributes.bannerLinks.map(makeBannerLinkProps)
+              ? attributes.bannerLinks.map(makeBannerLink)
               : attributes.product.data?.attributes.bannerLinks?.map(
-                  makeBannerLinkProps
+                  makeBannerLink
                 ),
           seo: attributes.seo,
-        } satisfies OverviewPageProps;
+        } satisfies OverviewPageData;
       } catch (error) {
         console.error(
           `Error processing Overview for product: "${productData.attributes.name}":`,

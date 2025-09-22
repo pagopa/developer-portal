@@ -1,5 +1,5 @@
-import { ApiDataPageProps } from '@/app/[productSlug]/api/[apiDataSlug]/page';
-import { QuickStartGuidePageProps } from '@/app/[productSlug]/quick-start/page';
+import { ApiDataPageData } from '@/app/[productSlug]/api/[apiDataSlug]/page';
+import { QuickStartGuidePageData } from '@/app/[productSlug]/quick-start/page';
 import { baseUrl, organizationInfo, websiteName } from '@/config';
 import { Media } from '@/lib/types/media';
 import { Product } from '@/lib/types/product';
@@ -154,7 +154,7 @@ export function makeHowTo(howTo: Omit<HowTo, '@type'>): WithContext<HowTo> {
 }
 
 export function quickStartToStructuredDataHowTo(
-  quickStart: QuickStartGuidePageProps
+  quickStart: QuickStartGuidePageData
 ): WithContext<HowTo> {
   const steps: readonly HowToStep[] = quickStart.steps
     ? quickStart.steps.map((step) => ({
@@ -225,7 +225,7 @@ export function makeSoftwareApplication(
 }
 
 export function convertApiToStructuredDataSoftwareApplication(
-  api?: ApiDataPageProps
+  api?: ApiDataPageData
 ): WithContext<SoftwareApplication> | undefined {
   return (
     api &&

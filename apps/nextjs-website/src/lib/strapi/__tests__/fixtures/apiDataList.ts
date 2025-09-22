@@ -1,5 +1,5 @@
 import { StrapiApiDataList } from '@/lib/strapi/types/apiDataList';
-import { ApiDataPageProps } from '@/app/[productSlug]/api/[apiDataSlug]/page';
+import { ApiDataPageData } from '@/app/[productSlug]/api/[apiDataSlug]/page';
 import { generateBannerLinks } from '@/lib/strapi/__tests__/factories/bannerLink';
 import { mediaJpeg } from '../factories/media';
 
@@ -98,7 +98,7 @@ export const strapiApiDataList: StrapiApiDataList = {
   ],
 };
 
-export const expectedApiDataPageProps: ReadonlyArray<ApiDataPageProps> = [
+export const expectedApiDataPageProps: ReadonlyArray<ApiDataPageData> = [
   {
     seo: {
       metaTitle: 'SEND Main API',

@@ -7,7 +7,7 @@ import ProductBreadcrumbs from '@/components/atoms/ProductBreadcrumbs/ProductBre
 import { pageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
 import { Box, useTheme } from '@mui/material';
 import { Webinar } from '@/lib/types/webinar';
-import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
+import { BannerLinkData } from '@/components/atoms/BannerLink/BannerLink';
 import SolutionPreviewCard from '@/components/molecules/SolutionPreviewCard/SolutionsPreviewCard';
 import BannerLinks from '@/components/molecules/BannerLinks/BannerLinks';
 import FutureWebinarsShowcase from '@/components/organisms/FutureWebinarsShowcase/FutureWebinarsShowcase';
@@ -19,45 +19,45 @@ import NewsShowcase from '@/components/organisms/NewsShowcase/NewsShowcase';
 import { SEO } from '@/lib/types/seo';
 import { isNonEmpty } from 'fp-ts/lib/Array';
 
-export type SolutionTemplateProps = {
-  slug: string;
-  kickerTitle: string;
-  title: string;
-  description?: string;
-  icon: Media;
-  introductionToSteps?: string;
-  steps: {
-    title: string;
-    content: BlocksContent;
-    products: Pick<Product, 'shortName' | 'slug'>[];
+export type SolutionTemplateData = {
+  readonly slug: string;
+  readonly kickerTitle: string;
+  readonly title: string;
+  readonly description?: string;
+  readonly icon: Media;
+  readonly introductionToSteps?: string;
+  readonly steps: {
+    readonly title: string;
+    readonly content: BlocksContent;
+    readonly products: Pick<Product, 'shortName' | 'slug'>[];
   }[];
-  statsSource?: string;
-  dirName: string;
-  landingUseCaseFile: string;
-  stats: {
-    title: string;
-    description?: string;
+  readonly statsSource?: string;
+  readonly dirName: string;
+  readonly landingUseCaseFile: string;
+  readonly stats: {
+    readonly title: string;
+    readonly description?: string;
   }[];
-  products: Pick<Product, 'logo' | 'slug' | 'name' | 'description'>[];
-  webinars: Webinar[];
-  bannerLinks: BannerLinkProps[];
-  successStories?: {
-    title: string;
-    subtitle?: string;
-    stories: {
-      title: string;
-      publishedAt?: Date;
-      path: string;
-      image?: {
-        url: string;
-        alternativeText?: string;
+  readonly products: Pick<Product, 'logo' | 'slug' | 'name' | 'description'>[];
+  readonly webinars: Webinar[];
+  readonly bannerLinks: BannerLinkData[];
+  readonly successStories?: {
+    readonly title: string;
+    readonly subtitle?: string;
+    readonly stories: {
+      readonly title: string;
+      readonly publishedAt?: Date;
+      readonly path: string;
+      readonly image?: {
+        readonly url: string;
+        readonly alternativeText?: string;
       };
     }[];
   };
-  solutionSlug: string;
-  path?: string;
-  seo?: SEO;
-  updatedAt?: string;
+  readonly solutionSlug: string;
+  readonly path?: string;
+  readonly seo?: SEO;
+  readonly updatedAt?: string;
 };
 
 const SolutionTemplate = ({
@@ -73,7 +73,7 @@ const SolutionTemplate = ({
   webinars,
   bannerLinks,
   successStories,
-}: SolutionTemplateProps) => {
+}: SolutionTemplateData) => {
   const { palette, spacing } = useTheme();
   const t = useTranslations();
 

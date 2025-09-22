@@ -5,23 +5,23 @@ import React, { ReactNode, FC } from 'react';
 import BannerLinks from '@/components/molecules/BannerLinks/BannerLinks';
 import ProductBreadcrumbs from '@/components/atoms/ProductBreadcrumbs/ProductBreadcrumbs';
 import { productPageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
-import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
+import { BannerLinkData } from '@/components/atoms/BannerLink/BannerLink';
 import { BreadcrumbSegment } from '@/lib/types/path';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
 import ContentWrapper from '@/components/atoms/ContentWrapper/ContentWrapper';
 
-export type ProductLayoutProps = {
+export type ProductLayoutData = {
   readonly product?: Product;
   readonly path?: string;
   readonly breadcrumbSegments?: BreadcrumbSegment[];
-  readonly bannerLinks?: readonly BannerLinkProps[];
+  readonly bannerLinks?: readonly BannerLinkData[];
   readonly showBreadcrumbs?: boolean;
   readonly structuredData?: ReactNode;
 };
 
 type LayoutPropsWithChildren = {
   children: ReactNode | ReactNode[];
-} & ProductLayoutProps;
+} & ProductLayoutData;
 
 const ProductLayout: FC<LayoutPropsWithChildren> = ({
   path,
