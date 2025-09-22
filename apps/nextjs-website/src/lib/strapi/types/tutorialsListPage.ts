@@ -15,6 +15,7 @@ export type StrapiTutorialsListPage = {
     readonly title: string;
     readonly tutorials: { readonly data: readonly StrapiBaseTutorial[] };
     readonly seo?: StrapiSeo;
+    readonly enableFilters?: boolean;
   };
 };
 

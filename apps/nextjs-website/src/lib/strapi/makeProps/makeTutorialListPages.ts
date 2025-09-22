@@ -71,6 +71,7 @@ export function makeTutorialListPagesProps(
         },
         seo: attributes.seo,
         tutorials: tutorials,
+        enableFilters: attributes.enableFilters,
         bannerLinks:
           attributes.bannerLinks.length > 0
             ? attributes.bannerLinks.map((bannerLink) =>

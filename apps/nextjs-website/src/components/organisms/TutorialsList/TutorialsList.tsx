@@ -14,9 +14,14 @@ import SectionTitle from '@/components/molecules/SectionTitle/SectionTitle';
 type TutorialsListProps = {
   readonly tutorials: readonly Tutorial[];
   readonly tags: readonly Tag[];
+  readonly enableFilters?: boolean;
 };
 
-export const TutorialsList = ({ tags, tutorials }: TutorialsListProps) => {
+export const TutorialsList = ({
+  tags,
+  tutorials,
+  enableFilters,
+}: TutorialsListProps) => {
   const t = useTranslations();
   const updatedTags = [
     {
@@ -74,7 +79,7 @@ export const TutorialsList = ({ tags, tutorials }: TutorialsListProps) => {
   return (
     <Box>
       <Box sx={{ paddingBottom: filteredTutorials.length > 0 ? '24px' : 0 }}>
-        {tags.length <= 0 ? null : isSmallScreen ? (
+        {tags.length <= 0 || !enableFilters ? null : isSmallScreen ? (
           <MobileFilterSelector
             selectedFilter={selectedTag}
             setSelectedFilter={setSelectedTagFilter}
