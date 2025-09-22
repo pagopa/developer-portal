@@ -19,7 +19,7 @@ export function makeSolutionListPageProps(
       attributes.solutions.data.map(({ attributes }) => {
         if (!attributes.slug) {
           console.error(
-            `Error processing Solution "${attributes.title}": Missing solution slug. Skipping...`
+            `Error while processing Solution with title "${attributes.title}": missing slug. Skipping...`
           );
           return null;
         }
@@ -43,7 +43,7 @@ export function makeSolutionListPageProps(
         attributes.caseHistories.case_histories.data.map((caseHistory) => {
           if (!caseHistory.attributes.slug) {
             console.error(
-              `Error processing Case History "${caseHistory.attributes.title}": Missing case history slug. Skipping...`
+              `Error while processing CaseHistory with title "${caseHistory.attributes.title}": missing slug. Skipping...`
             );
             return null;
           }

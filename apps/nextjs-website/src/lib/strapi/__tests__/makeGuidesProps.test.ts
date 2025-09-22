@@ -34,7 +34,7 @@ describe('makeGuidesProps', () => {
     const result = makeGuidesProps(guideListWithItemsWithEmptyProductSlug());
     expect(result).toEqual([]);
     expect(spyOnConsoleError).toHaveBeenCalledWith(
-      'Guide with name "SACI" is missing the product slug: Skipping...'
+      'Error while processing Guide with name "SACI": missing the product slug. Skipping...'
     );
   });
 
@@ -42,7 +42,7 @@ describe('makeGuidesProps', () => {
     const result = makeGuidesProps(guideListWithMissingProductSlug());
     expect(result).toEqual([]);
     expect(spyOnConsoleError).toHaveBeenCalledWith(
-      'Guide with name "SACI" is missing the product slug: Skipping...'
+      'Error while processing Guide with name "SACI": missing the product slug. Skipping...'
     );
   });
 });

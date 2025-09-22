@@ -19,7 +19,7 @@ export async function makeApiDataListProps(
         .map(async ({ attributes }) => {
           if (!attributes.apiRestDetail && !attributes.apiSoapDetail) {
             console.error(
-              `Error processing API Data "${attributes.title}": Missing API details. Skipping...`
+              `Error while processing API Data with title "${attributes.title}": missing API details. Skipping...`
             );
             return null;
           }
@@ -29,14 +29,14 @@ export async function makeApiDataListProps(
             '';
           if (!apiDataSlug) {
             console.error(
-              `Error processing API Data with title "${attributes.title}": Missing API slug. Skipping...`
+              `Error while processing API Data with title "${attributes.title}": missing API slug. Skipping...`
             );
             return null;
           }
 
           if (!attributes.product.data) {
             console.error(
-              `Error processing API Data with title "${attributes.title}": Missing product data. Skipping...`
+              `Error while processing API Data with title "${attributes.title}": missing product data. Skipping...`
             );
             return null;
           }
@@ -73,8 +73,9 @@ export async function makeApiDataListProps(
             } satisfies ApiDataPageProps;
           } catch (error) {
             console.error(
-              `Error processing API Data with title "${attributes.title}":`,
-              error
+              `Error while processing API Data with title "${attributes.title}":`,
+              error,
+              'Skipping...'
             );
             return null;
           }

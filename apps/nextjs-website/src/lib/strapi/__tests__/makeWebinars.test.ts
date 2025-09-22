@@ -71,7 +71,7 @@ describe('makeWebinarsProps', () => {
 
     expect(result).toHaveLength(0);
     expect(spyOnConsoleError).toHaveBeenCalledWith(
-      'Error processing Webinar with title "undefined" is missing the slug. Skipping...'
+      'Error while processing Webinar: missing title or slug. Title: undefined | Slug: undefined. Skipping...'
     );
   });
 });

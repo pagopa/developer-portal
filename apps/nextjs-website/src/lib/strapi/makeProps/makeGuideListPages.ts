@@ -16,7 +16,9 @@ export function makeGuideListPagesProps(
     strapiGuideListPages.data.map(({ attributes }) => {
       const productData = attributes.product.data;
       if (!productData?.attributes.slug) {
-        console.error('product slug is missing:', productData);
+        console.error(
+          `Error while processing GuideListPage with title "${attributes.title}": missing product slug. Skipping...`
+        );
         return null;
       }
 
@@ -50,7 +52,8 @@ export function makeGuideListPagesProps(
       } catch (error) {
         console.error(
           `Error while processing Guide List Page for product with slug "${productData.attributes.slug}":`,
-          error
+          error,
+          'Skipping...'
         );
         return null;
       }

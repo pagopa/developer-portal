@@ -14,7 +14,7 @@ export function makeOverviewsProps(
       const productData = attributes.product.data;
       if (!productData.attributes.slug) {
         console.error(
-          `Overview for product with name "${productData.attributes.name}" is missing the product slug. Skipping...`
+          `Error while processing Overview with title "${attributes.title}": missing product slug. Skipping...`
         );
         return null;
       }

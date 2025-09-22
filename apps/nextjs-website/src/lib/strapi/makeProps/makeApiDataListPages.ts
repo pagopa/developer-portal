@@ -9,7 +9,7 @@ import { StrapiBaseApiData } from '../types/apiDataList';
 function makeApiDataListPageCard(item: StrapiBaseApiData, slug: string) {
   if (!item.attributes.apiRestDetail && !item.attributes.apiSoapDetail) {
     console.error(
-      `Error processing API Data "${item.attributes.title}": Missing API details. Skipping...`
+      `Error while processing API Data with title "${item.attributes.title}": missing API details. Skipping...`
     );
     return null;
   }
@@ -19,7 +19,7 @@ function makeApiDataListPageCard(item: StrapiBaseApiData, slug: string) {
     !item.attributes.apiSoapDetail?.slug
   ) {
     console.error(`
-      Error processing API Data "${item.attributes.title}": Missing API slug. Skipping...`);
+      Error while processing API Data with title "${item.attributes.title}": missing API slug. Skipping...`);
     return null;
   }
 
@@ -48,7 +48,7 @@ export function makeApiDataListPagesProps(
       const slug = attributes.product.data?.attributes.slug;
       if (!slug) {
         console.error(
-          `Error processing API Data List Page with title "${attributes.title}": Missing product slug`
+          `Error while processing API Data List Page with title "${attributes.title}": missing product slug. Skipping...`
         );
         return null;
       }
@@ -81,8 +81,9 @@ export function makeApiDataListPagesProps(
       } catch (error) {
         // eslint-disable-next-line functional/no-expression-statements
         console.error(
-          `Error processing API Data List Page with title "${attributes.title}":`,
-          error
+          `Error while processing API Data List Page with title "${attributes.title}":`,
+          error,
+          'Skipping...'
         );
         return null;
       }

@@ -23,7 +23,7 @@ export function makeProductProps(product: StrapiProduct): Product | null {
 
   if (!product.attributes.slug || !product.attributes.name) {
     console.error(
-      `Error processing Product with name "${product.attributes.name}" is missing the slug. Skipping...`
+      `Error while processing Product: missing title or slug. Title: ${product.attributes.name} | Slug: ${product.attributes.slug}. Skipping...`
     );
     return null;
   }
@@ -37,8 +37,9 @@ export function makeProductProps(product: StrapiProduct): Product | null {
     };
   } catch (error) {
     console.error(
-      `Error while mapping product with id ${product.attributes.name}:`,
-      error
+      `Error while processing Product with name "${product.attributes.name}":`,
+      error,
+      'Skipping...'
     );
     return null;
   }
@@ -70,7 +71,7 @@ export function makeBaseProductWithoutLogoProps(
 ): Product {
   if (!product.attributes.slug) {
     throw new Error(
-      `Product with id ${product.attributes.name} is missing the slug. Skipping...`
+      `Error while processing Product with name "${product.attributes.name}": missing slug. Skipping...`
     );
   }
 

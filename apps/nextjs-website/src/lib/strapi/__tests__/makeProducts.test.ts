@@ -63,7 +63,7 @@ describe('makeProductsProps', () => {
 
     expect(result).toHaveLength(0);
     expect(spyOnConsoleError).toHaveBeenCalledWith(
-      'Error processing Product with name "Product Without Slug" is missing the slug. Skipping...'
+      'Error while processing Product: missing title or slug. Title: Product Without Slug | Slug: undefined. Skipping...'
     );
   });
 
@@ -84,8 +84,9 @@ describe('makeProductsProps', () => {
 
     expect(result).toHaveLength(0);
     expect(spyOnConsoleError).toHaveBeenCalledWith(
-      'Error while mapping product with id Corrupted Product:',
-      expect.any(Error)
+      'Error while processing Product with name "Corrupted Product":',
+      expect.any(Error),
+      'Skipping...'
     );
   });
 
@@ -96,7 +97,7 @@ describe('makeProductsProps', () => {
     expect(result[0].name).toBe('Test Product');
     expect(result[1].name).toBe('Another Valid Product');
     expect(spyOnConsoleError).toHaveBeenCalledWith(
-      'Error processing Product with name "Product Without Slug" is missing the slug. Skipping...'
+      'Error while processing Product: missing title or slug. Title: Product Without Slug | Slug: undefined. Skipping...'
     );
   });
 
@@ -126,7 +127,7 @@ describe('makeProductProps', () => {
     const result = makeProductProps(productsWithAnItemMissingSlug().data[0]);
     expect(result).toBeNull();
     expect(spyOnConsoleError).toHaveBeenCalledWith(
-      'Error processing Product with name "Product Without Slug" is missing the slug. Skipping...'
+      'Error while processing Product: missing title or slug. Title: Product Without Slug | Slug: undefined. Skipping...'
     );
   });
 
@@ -193,7 +194,7 @@ describe('makeBaseProductWithoutLogoProps', () => {
       makeBaseProductWithoutLogoProps(productsWithAnItemMissingSlug().data[0])
     ).toThrow(
       Error(
-        'Product with id Product Without Slug is missing the slug. Skipping...'
+        'Error while processing Product with name "Product Without Slug": missing slug. Skipping...'
       )
     );
   });
@@ -203,7 +204,7 @@ describe('makeBaseProductWithoutLogoProps', () => {
       makeBaseProductWithoutLogoProps(productsWithAnItemWithEmptySlug().data[0])
     ).toThrow(
       Error(
-        'Product with id Product Without Slug is missing the slug. Skipping...'
+        'Error while processing Product with name "Product Without Slug": missing slug. Skipping...'
       )
     );
   });

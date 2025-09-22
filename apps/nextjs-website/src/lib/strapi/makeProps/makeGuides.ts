@@ -13,14 +13,14 @@ export function makeGuidesProps(
     strapiGuides.data.map(({ attributes }) => {
       if (!attributes.slug || !attributes.title) {
         console.error(
-          `Guide with name "${attributes.title}" is missing the slug: Skipping...`
+          `Error while processing Guide: missing title or slug. Title: ${attributes.title} | Slug: ${attributes.slug}. Skipping...`
         );
         return null;
       }
 
       if (!attributes.product.data?.attributes.slug) {
         console.error(
-          `Guide with name "${attributes.title}" is missing the product slug: Skipping...`
+          `Error while processing Guide with name "${attributes.title}": missing the product slug. Skipping...`
         );
         return null;
       }
@@ -46,9 +46,9 @@ export function makeGuidesProps(
         };
       } catch (error) {
         console.error(
-          'error creating guide definition for:',
-          attributes,
-          error
+          `Error while processing guide with slug "${attributes.slug}":`,
+          error,
+          'Skipping...'
         );
         return null;
       }

@@ -22,14 +22,14 @@ export function makeTutorialsProps(
     strapiTutorials.data.map(({ attributes }) => {
       if (!attributes.slug || !attributes.title) {
         console.error(
-          `Error processing Tutorial with title "${attributes.title}" is missing the slug. Skipping...`
+          `Error while processing Tutorial: missing title or slug. Title: ${attributes.title} | Slug: ${attributes.slug}. Skipping...`
         );
         return null;
       }
 
       if (!attributes.product.data.attributes.slug) {
         console.error(
-          `Error processing Tutorial "${attributes.title}": Missing product slug. Skipping...`
+          `Error while processing Tutorial with title "${attributes.title}": missing product slug. Skipping...`
         );
         return null;
       }
@@ -67,8 +67,9 @@ export function makeTutorialsProps(
         } satisfies TutorialProps;
       } catch (error) {
         console.error(
-          `Error while making tutorial props for ${attributes.title}:`,
-          error
+          `Error while processing Tutorial with title ${attributes.title}:`,
+          error,
+          'Skipping...'
         );
         return null;
       }

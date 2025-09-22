@@ -34,7 +34,7 @@ export function makeQuickStartGuidesProps(
     strapiQuickStarts.data.map((quickStart) => {
       if (!quickStart.attributes.product.data?.attributes.slug) {
         console.error(
-          `Error processing Quick Start Guide id ${quickStart.id}: Missing product slug. Skipping...`
+          `Error while processing QuickStartGuide with id ${quickStart.id}: missing product slug. Skipping...`
         );
         return null;
       }
@@ -66,7 +66,9 @@ export function makeQuickStartGuidesProps(
         } satisfies QuickStartGuidePageProps;
       } catch (error) {
         console.error(
-          `Error processing Quick Start Guide for product: "${quickStart.attributes.product.data?.attributes.name}": ${error}`
+          `Error while processing QuickStartGuide with id ${quickStart.id}:`,
+          error,
+          'Skipping...'
         );
         return null;
       }

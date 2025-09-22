@@ -12,7 +12,7 @@ export function makeSolutionsProps(
     strapiSolutions.data.map(({ attributes }) => {
       if (!attributes.slug || !attributes.title) {
         console.error(
-          `Error processing Solution with title "${attributes.title}" is missing the slug. Skipping...`
+          `Error while processing Solution: missing title or slug. Title: ${attributes.title} | Slug: ${attributes.slug}. Skipping...`
         );
         return null;
       }
@@ -50,7 +50,7 @@ export function makeSolutionsProps(
                 (caseHistory) => {
                   if (!caseHistory.attributes.slug) {
                     console.error(
-                      `Error processing Case History "${caseHistory.attributes.title}": Missing case history slug. Skipping...`
+                      `Error while processing CaseHistory with title "${caseHistory.attributes.title}": missing slug. Skipping...`
                     );
                     return null;
                   }
@@ -69,8 +69,9 @@ export function makeSolutionsProps(
         };
       } catch (error) {
         console.error(
-          `Error while making solutions props for ${attributes.title}:`,
-          error
+          `Error while processing Solution with title ${attributes.title}:`,
+          error,
+          'Skipping...'
         );
         return null;
       }

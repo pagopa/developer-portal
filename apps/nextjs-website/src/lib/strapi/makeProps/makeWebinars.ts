@@ -10,7 +10,7 @@ export const makeWebinarProps = (
 ): Webinar | null => {
   if (!strapiWebinar.attributes.slug || !strapiWebinar.attributes.title) {
     console.error(
-      `Error processing Webinar with title "${strapiWebinar.attributes.title}" is missing the slug. Skipping...`
+      `Error while processing Webinar: missing title or slug. Title: ${strapiWebinar.attributes.title} | Slug: ${strapiWebinar.attributes.slug}. Skipping...`
     );
     return null;
   }
@@ -63,7 +63,11 @@ export const makeWebinarProps = (
     } satisfies Webinar;
   } catch (error) {
     // eslint-disable-next-line functional/no-expression-statements
-    console.error('Error while making webinar from Strapi data:', error);
+    console.error(
+      `Error while processing Webinar with title ${strapiWebinar.attributes.title}:`,
+      error,
+      'Skipping...'
+    );
     return null;
   }
 };

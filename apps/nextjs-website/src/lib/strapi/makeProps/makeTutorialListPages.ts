@@ -15,7 +15,7 @@ export function makeTutorialListPagesProps(
       if (!slug) {
         // eslint-disable-next-line functional/no-expression-statements
         console.error(
-          `Tutorial List Page ${attributes.title} is missing product slug. Skipping...`
+          `Error while processing TutorialListPage ${attributes.title}: missing product slug. Skipping...`
         );
         return null;
       }
@@ -25,14 +25,14 @@ export function makeTutorialListPagesProps(
           const slug = tutorialAttributes.product?.data?.attributes?.slug;
           if (!slug) {
             console.error(
-              `Error processing Tutorial with title "${tutorialAttributes.title}" is missing product slug. Skipping...`
+              `Error while processing Tutorial with title "${tutorialAttributes.title}": missing product slug. Skipping...`
             );
             return null;
           }
 
           if (!tutorialAttributes.slug || !tutorialAttributes.title) {
             console.error(
-              `Error processing Tutorial with title "${tutorialAttributes.title}" is missing the slug. Skipping...`
+              `Error while processing Tutorial: missing title or slug. Title: ${tutorialAttributes.title} | Slug: ${tutorialAttributes.slug}. Skipping...`
             );
             return null;
           }
@@ -52,7 +52,9 @@ export function makeTutorialListPagesProps(
           } catch (error) {
             // eslint-disable-next-line functional/no-expression-statements
             console.error(
-              `Error processing tutorial ${tutorialAttributes.title}: ${error}`
+              `Error while processing Tutorial with title ${tutorialAttributes.title}:`,
+              error,
+              'Skipping...'
             );
             return null;
           }
