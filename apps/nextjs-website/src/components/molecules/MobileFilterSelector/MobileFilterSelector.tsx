@@ -18,7 +18,7 @@ import { Media } from '@/lib/types/media';
 type MobileFilterSelectorProps = {
   selectedFilter: number;
   // eslint-disable-next-line functional/no-return-void
-  setSelectedFilter: (selectedWebinarCategory: number) => void;
+  setSelectedFilter: (selectedFilter: number) => void;
   selectorFilters: readonly {
     name: string;
     icon: {
