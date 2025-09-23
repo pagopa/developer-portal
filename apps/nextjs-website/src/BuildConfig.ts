@@ -15,5 +15,5 @@ export const makeBuildConfig = (
       FETCH_FROM_STRAPI: env.FETCH_FROM_STRAPI === 'true',
       STRAPI_ENDPOINT: env.STRAPI_ENDPOINT,
       STRAPI_API_TOKEN: env.STRAPI_API_TOKEN,
-    } as BuildConfig)) ||
+    })) ||
   E.left('Missing environment variables');
