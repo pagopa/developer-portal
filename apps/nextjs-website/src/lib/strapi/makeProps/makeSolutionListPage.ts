@@ -1,7 +1,7 @@
 /* eslint-disable functional/no-expression-statements */
 import { SolutionListTemplateProps } from '@/components/templates/SolutionListTemplate/SolutionListTemplate';
 import { StrapiSolutionListPage } from '@/lib/strapi/types/solutionListPage';
-import _ from 'lodash';
+import { compact } from 'lodash';
 
 export function makeSolutionListPageProps(
   strapiSolutionsList: StrapiSolutionListPage
@@ -15,11 +15,11 @@ export function makeSolutionListPageProps(
       title: attributes.title,
       subtitle: attributes.description,
     },
-    solutions: _.compact(
+    solutions: compact(
       attributes.solutions.data.map(({ attributes }) => {
         if (!attributes.slug) {
           console.error(
-            `Error processing Solution "${attributes.title}": Missing solution slug. Skipping...`
+            `Error while processing Solution with title "${attributes.title}": missing slug. Skipping...`
           );
           return null;
         }
@@ -39,11 +39,11 @@ export function makeSolutionListPageProps(
     successStories: attributes.caseHistories && {
       title: attributes.caseHistories.title,
       subtitle: attributes.caseHistories.description,
-      stories: _.compact(
+      stories: compact(
         attributes.caseHistories.case_histories.data.map((caseHistory) => {
           if (!caseHistory.attributes.slug) {
             console.error(
-              `Error processing Case History "${caseHistory.attributes.title}": Missing case history slug. Skipping...`
+              `Error while processing CaseHistory with title "${caseHistory.attributes.title}": missing slug. Skipping...`
             );
             return null;
           }

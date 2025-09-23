@@ -4,14 +4,14 @@ import { SxProps, Theme, Typography, useTheme } from '@mui/material';
 import { Variant } from '@mui/material/styles/createTypography';
 
 export type TypographyPartProps = {
-  color?: string;
-  fontSize?: string;
-  fontWeight?: string;
-  sx?: SxProps<Theme>;
-  style?: React.CSSProperties;
-  variant?: Variant | 'inherit';
-  text: string;
-  asHtml?: boolean;
+  readonly color?: string;
+  readonly fontSize?: string;
+  readonly fontWeight?: string;
+  readonly sx?: SxProps<Theme>;
+  readonly style?: React.CSSProperties;
+  readonly variant?: Variant | 'inherit';
+  readonly text: string;
+  readonly asHtml?: boolean;
 };
 
 const TypographyPart = (props: TypographyPartProps) => {

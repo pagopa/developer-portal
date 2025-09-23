@@ -1,37 +1,38 @@
+/* eslint-disable functional/no-expression-statements */
 import { TutorialsPageProps } from '@/app/[productSlug]/tutorials/page';
 import { Tutorial } from '@/lib/types/tutorialData';
 import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
 import { makeBaseProductWithoutLogoProps } from './makeProducts';
 import { StrapiTutorialListPages } from '@/lib/strapi/types/tutorialsListPage';
-import _ from 'lodash';
+import { compact } from 'lodash';
 
 export function makeTutorialListPagesProps(
   strapiTutorialList: StrapiTutorialListPages
 ): readonly TutorialsPageProps[] {
-  return _.compact(
+  return compact(
     strapiTutorialList.data.map(({ attributes }) => {
-      const slug = attributes.product.data.attributes.slug;
+      const slug = attributes.product.data?.attributes.slug;
       if (!slug) {
         // eslint-disable-next-line functional/no-expression-statements
         console.error(
-          `Tutorial List Page ${attributes.title} is missing product slug. Skipping...`
+          `Error while processing TutorialListPage ${attributes.title}: missing product slug. Skipping...`
         );
         return null;
       }
-      const tutorials: readonly Tutorial[] = _.compact(
+
+      const tutorials: readonly Tutorial[] = compact(
         attributes.tutorials.data.map(({ attributes: tutorialAttributes }) => {
           const slug = tutorialAttributes.product?.data?.attributes?.slug;
           if (!slug) {
-            // eslint-disable-next-line functional/no-expression-statements
             console.error(
-              `Tutorial ${tutorialAttributes.title} is missing product slug. Skipping...`
+              `Error while processing Tutorial with title "${tutorialAttributes.title}": missing product slug. Skipping...`
             );
             return null;
           }
-          if (!tutorialAttributes.slug) {
-            // eslint-disable-next-line functional/no-expression-statements
+
+          if (!tutorialAttributes.slug || !tutorialAttributes.title) {
             console.error(
-              `Tutorial ${tutorialAttributes.title} is missing slug. Skipping...`
+              `Error while processing Tutorial: missing title or slug. Title: ${tutorialAttributes.title} | Slug: ${tutorialAttributes.slug}. Skipping...`
             );
             return null;
           }
@@ -51,7 +52,9 @@ export function makeTutorialListPagesProps(
           } catch (error) {
             // eslint-disable-next-line functional/no-expression-statements
             console.error(
-              `Error processing tutorial ${tutorialAttributes.title}: ${error}`
+              `Error while processing Tutorial with title ${tutorialAttributes.title}:`,
+              error,
+              'Skipping...'
             );
             return null;
           }

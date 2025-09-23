@@ -29,7 +29,7 @@ export interface ListingsProps {
   };
   name?: string;
   linksColor?: string;
-  items: ListingItem[];
+  items: readonly ListingItem[];
   backgroundVariant?: 'white' | 'lightGrey';
 }
 

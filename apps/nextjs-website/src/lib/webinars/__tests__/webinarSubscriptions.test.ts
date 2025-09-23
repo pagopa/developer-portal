@@ -12,7 +12,7 @@ import {
   PutItemCommand,
   QueryCommand,
 } from '@aws-sdk/client-dynamodb';
-import { makeDynamodbItemFromWebinarSubscription } from '../dynamodb/codec';
+import { makeDynamodbItemFromWebinarSubscription } from '../dynamodb/webinar';
 
 const aWebinarSubscription: WebinarSubscription = {
   username: 'aUsername@mail.com',

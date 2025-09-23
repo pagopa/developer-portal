@@ -1,7 +1,6 @@
 /* eslint-disable functional/no-try-statements */
 /* eslint-disable functional/no-expression-statements */
 import { QuickStartGuidePageProps } from '@/app/[productSlug]/quick-start/page';
-import { Part } from '@/lib/types/part';
 import { Step } from '@/lib/types/step';
 import { makePartProps } from '@/lib/strapi/makeProps/makePart';
 import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
@@ -11,7 +10,7 @@ import {
   StrapiQuickStartGuideItem,
   StrapiQuickStartGuides,
 } from '@/lib/strapi/types/quickStartGuides';
-import _ from 'lodash';
+import { compact } from 'lodash';
 
 export type QuickStartGuidesPageProps = readonly QuickStartGuidePageProps[];
 
@@ -21,20 +20,18 @@ function makeStepFromQuickstartGuideItems(
   return {
     anchor: item.attributes.anchor,
     title: item.attributes.title,
-    parts: item.attributes.parts
-      .map((part) => makePartProps(part as StrapiPart))
-      .filter((part) => !!part) as ReadonlyArray<Part>,
+    parts: compact(item.attributes.parts.map((part) => makePartProps(part))),
   };
 }
 
 export function makeQuickStartGuidesProps(
   strapiQuickStarts: StrapiQuickStartGuides
 ): QuickStartGuidesPageProps {
-  return _.compact(
+  return compact(
     strapiQuickStarts.data.map((quickStart) => {
-      if (!quickStart.attributes.product.data.attributes.slug) {
+      if (!quickStart.attributes.product.data?.attributes.slug) {
         console.error(
-          `Error processing Quick Start Guide id ${quickStart.id}: Missing product slug. Skipping...`
+          `Error while processing QuickStartGuide with id ${quickStart.id}: missing product slug. Skipping...`
         );
         return null;
       }
@@ -66,7 +63,9 @@ export function makeQuickStartGuidesProps(
         } satisfies QuickStartGuidePageProps;
       } catch (error) {
         console.error(
-          `Error processing Quick Start Guide for product: "${quickStart.attributes.product.data?.attributes.name}": ${error}`
+          `Error while processing QuickStartGuide with id ${quickStart.id}:`,
+          error,
+          'Skipping...'
         );
         return null;
       }
