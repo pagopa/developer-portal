@@ -1,0 +1,174 @@
+Subject: [PATCH] Remove casting in make functions
+---
+Index: apps/nextjs-website/src/lib/strapi/makeProps/makeApiSoapUrlList.ts
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/apps/nextjs-website/src/lib/strapi/makeProps/makeApiSoapUrlList.ts b/apps/nextjs-website/src/lib/strapi/makeProps/makeApiSoapUrlList.ts
+--- a/apps/nextjs-website/src/lib/strapi/makeProps/makeApiSoapUrlList.ts	(revision a2af2f3f23ab5971e0c12c4b3d8ee30475a99ebd)
++++ b/apps/nextjs-website/src/lib/strapi/makeProps/makeApiSoapUrlList.ts	(date 1758616041603)
+@@ -12,5 +12,5 @@
+ 
+   return soapApiMetadata.contentS3Paths.map(
+     (url) => `${staticContentsUrl}/soap-api/${url}`
+-  ) as readonly string[];
++  );
+ }
+Index: apps/nextjs-website/src/editorialComponents/Listing/Listing.tsx
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/apps/nextjs-website/src/editorialComponents/Listing/Listing.tsx b/apps/nextjs-website/src/editorialComponents/Listing/Listing.tsx
+--- a/apps/nextjs-website/src/editorialComponents/Listing/Listing.tsx	(revision a2af2f3f23ab5971e0c12c4b3d8ee30475a99ebd)
++++ b/apps/nextjs-website/src/editorialComponents/Listing/Listing.tsx	(date 1758615929187)
+@@ -29,7 +29,7 @@
+   };
+   name?: string;
+   linksColor?: string;
+-  items: ListingItem[];
++  items: readonly ListingItem[];
+   backgroundVariant?: 'white' | 'lightGrey';
+ }
+ 
+Index: apps/nextjs-website/src/lib/strapi/makeProps/makeTutorials.ts
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/apps/nextjs-website/src/lib/strapi/makeProps/makeTutorials.ts b/apps/nextjs-website/src/lib/strapi/makeProps/makeTutorials.ts
+--- a/apps/nextjs-website/src/lib/strapi/makeProps/makeTutorials.ts	(revision a2af2f3f23ab5971e0c12c4b3d8ee30475a99ebd)
++++ b/apps/nextjs-website/src/lib/strapi/makeProps/makeTutorials.ts	(date 1758615638294)
+@@ -1,6 +1,5 @@
+ /* eslint-disable functional/no-expression-statements */
+ /* eslint-disable functional/no-try-statements */
+-import { Part } from '@/lib/types/part';
+ import { Tutorial } from '@/lib/types/tutorialData';
+ import { makePartProps } from '@/lib/strapi/makeProps/makePart';
+ import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
+@@ -49,11 +48,9 @@
+             : undefined,
+           name: attributes.title,
+           path: `/${attributes.product.data.attributes.slug}/tutorials/${attributes.slug}`,
+-          parts: attributes.parts
+-            .map((part) => makePartProps(part))
+-            .filter((part) => !!part) as ReadonlyArray<Part>,
++          parts: compact(attributes.parts.map((part) => makePartProps(part))),
+           productSlug: attributes.product.data.attributes.slug,
+-          relatedLinks: attributes.relatedLinks as RelatedLinksProps,
++          relatedLinks: attributes.relatedLinks,
+           bannerLinks:
+             attributes.bannerLinks && attributes.bannerLinks.length > 0
+               ? attributes.bannerLinks?.map(makeBannerLinkProps)
+Index: apps/nextjs-website/src/lib/strapi/makeProps/makeCaseHistories.ts
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/apps/nextjs-website/src/lib/strapi/makeProps/makeCaseHistories.ts b/apps/nextjs-website/src/lib/strapi/makeProps/makeCaseHistories.ts
+--- a/apps/nextjs-website/src/lib/strapi/makeProps/makeCaseHistories.ts	(revision a2af2f3f23ab5971e0c12c4b3d8ee30475a99ebd)
++++ b/apps/nextjs-website/src/lib/strapi/makeProps/makeCaseHistories.ts	(date 1758616183403)
+@@ -1,8 +1,7 @@
+ import { CaseHistoryPageTemplateProps } from '@/components/templates/CaseHistoryTemplate/CaseHistoryPageTemplate';
+-import { Part } from '../../types/part';
+ import { makePartProps } from '@/lib/strapi/makeProps/makePart';
+-import { StrapiPart } from '@/lib/strapi/types/part';
+ import { StrapiCaseHistories } from '@/lib/strapi/types/caseHistories';
++import { compact } from 'lodash';
+ 
+ export function makeCaseHistoriesProps(
+   strapiCaseHistories: StrapiCaseHistories
+@@ -10,11 +9,7 @@
+   return strapiCaseHistories.data.map(({ attributes }) => ({
+     ...attributes,
+     updatedAt: attributes.updatedAt,
+-    parts: [
+-      ...(attributes.parts
+-        .map((part) => makePartProps(part as StrapiPart))
+-        .filter((part) => !!part) as ReadonlyArray<Part>),
+-    ],
++    parts: compact(attributes.parts.map((part) => makePartProps(part))),
+     products: attributes.products.data.map(({ attributes }) => ({
+       ...attributes,
+       logo: attributes.logo.data?.attributes,
+Index: apps/nextjs-website/src/lib/strapi/makeProps/makeQuickStartGuides.ts
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/apps/nextjs-website/src/lib/strapi/makeProps/makeQuickStartGuides.ts b/apps/nextjs-website/src/lib/strapi/makeProps/makeQuickStartGuides.ts
+--- a/apps/nextjs-website/src/lib/strapi/makeProps/makeQuickStartGuides.ts	(revision a2af2f3f23ab5971e0c12c4b3d8ee30475a99ebd)
++++ b/apps/nextjs-website/src/lib/strapi/makeProps/makeQuickStartGuides.ts	(date 1758616261349)
+@@ -1,7 +1,6 @@
+ /* eslint-disable functional/no-try-statements */
+ /* eslint-disable functional/no-expression-statements */
+ import { QuickStartGuidePageProps } from '@/app/[productSlug]/quick-start/page';
+-import { Part } from '@/lib/types/part';
+ import { Step } from '@/lib/types/step';
+ import { makePartProps } from '@/lib/strapi/makeProps/makePart';
+ import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
+@@ -21,9 +20,7 @@
+   return {
+     anchor: item.attributes.anchor,
+     title: item.attributes.title,
+-    parts: item.attributes.parts
+-      .map((part) => makePartProps(part as StrapiPart))
+-      .filter((part) => !!part) as ReadonlyArray<Part>,
++    parts: compact(item.attributes.parts.map((part) => makePartProps(part))),
+   };
+ }
+ 
+Index: apps/nextjs-website/src/lib/strapi/makeProps/makeApiDataListPages.ts
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/apps/nextjs-website/src/lib/strapi/makeProps/makeApiDataListPages.ts b/apps/nextjs-website/src/lib/strapi/makeProps/makeApiDataListPages.ts
+--- a/apps/nextjs-website/src/lib/strapi/makeProps/makeApiDataListPages.ts	(revision a2af2f3f23ab5971e0c12c4b3d8ee30475a99ebd)
++++ b/apps/nextjs-website/src/lib/strapi/makeProps/makeApiDataListPages.ts	(date 1758616238062)
+@@ -62,13 +62,13 @@
+             subtitle: attributes.description || '',
+           },
+           product: makeBaseProductWithoutLogoProps(attributes.product.data),
+-          apiDetailSlugs: attributes.apiData.data
+-            .map(({ attributes }) =>
++          apiDetailSlugs: compact(
++            attributes.apiData.data.map(({ attributes }) =>
+               attributes.apiRestDetail
+                 ? attributes.apiRestDetail.slug
+                 : attributes.apiSoapDetail?.slug
+             )
+-            .filter(Boolean) as readonly string[],
++          ),
+           cards: compact(
+             attributes.apiData.data.map((item) =>
+               makeApiDataListPageCard(item, slug)
+Index: apps/nextjs-website/src/components/atoms/RelatedLinks/RelatedLinks.tsx
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/apps/nextjs-website/src/components/atoms/RelatedLinks/RelatedLinks.tsx b/apps/nextjs-website/src/components/atoms/RelatedLinks/RelatedLinks.tsx
+--- a/apps/nextjs-website/src/components/atoms/RelatedLinks/RelatedLinks.tsx	(revision a2af2f3f23ab5971e0c12c4b3d8ee30475a99ebd)
++++ b/apps/nextjs-website/src/components/atoms/RelatedLinks/RelatedLinks.tsx	(date 1758615797718)
+@@ -4,13 +4,13 @@
+ import { useTranslations } from 'next-intl';
+ 
+ export type RelatedLinksProps = {
+-  title?: string;
+-  links: {
+-    text: string;
+-    href: string;
+-    target?: '_self' | '_blank' | '_parent' | '_top';
++  readonly title?: string;
++  readonly links: readonly {
++    readonly text: string;
++    readonly href: string;
++    readonly target?: '_self' | '_blank' | '_parent' | '_top';
+   }[];
+-  backgroundVariant?: 'white' | 'lightGrey';
++  readonly backgroundVariant?: 'white' | 'lightGrey';
+ };
+ 
+ const RelatedLinks = ({
