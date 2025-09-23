@@ -85,7 +85,7 @@ const MobileFilterSelector = ({
               lineHeight={'22px'}
               color={'#636B82'}
             >
-              {t('webinar.selectWebinarCategory')}
+              {t('webinar.selectFilter')}
             </Typography>
           ) : (
             <MobileFilterButton
