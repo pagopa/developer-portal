@@ -79,19 +79,21 @@ export const TutorialsList = ({
   return (
     <Box>
       <Box sx={{ paddingBottom: filteredTutorials.length > 0 ? '24px' : 0 }}>
-        {tags.length <= 0 || !enableFilters ? null : isSmallScreen ? (
-          <MobileFilterSelector
-            selectedFilter={selectedTag}
-            setSelectedFilter={setSelectedTagFilter}
-            selectorFilters={updatedTags}
-          />
-        ) : (
-          <DesktopFilterSelector
-            selectedFilter={selectedTag}
-            setSelectedFilter={setSelectedTagFilter}
-            selectorFilters={updatedTags}
-          />
-        )}
+        {enableFilters &&
+          tags.length > 0 &&
+          (isSmallScreen ? (
+            <MobileFilterSelector
+              selectedFilter={selectedTag}
+              setSelectedFilter={setSelectedTagFilter}
+              selectorFilters={updatedTags}
+            />
+          ) : (
+            <DesktopFilterSelector
+              selectedFilter={selectedTag}
+              setSelectedFilter={setSelectedTagFilter}
+              selectorFilters={updatedTags}
+            />
+          ))}
       </Box>
       {filteredTutorials.length <= 0 ? (
         <Box
