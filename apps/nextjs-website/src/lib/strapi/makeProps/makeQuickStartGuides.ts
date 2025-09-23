@@ -1,7 +1,6 @@
 /* eslint-disable functional/no-try-statements */
 /* eslint-disable functional/no-expression-statements */
 import { QuickStartGuidePageProps } from '@/app/[productSlug]/quick-start/page';
-import { Part } from '@/lib/types/part';
 import { Step } from '@/lib/types/step';
 import { makePartProps } from '@/lib/strapi/makeProps/makePart';
 import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
@@ -21,9 +20,7 @@ function makeStepFromQuickstartGuideItems(
   return {
     anchor: item.attributes.anchor,
     title: item.attributes.title,
-    parts: item.attributes.parts
-      .map((part) => makePartProps(part as StrapiPart))
-      .filter((part) => !!part) as ReadonlyArray<Part>,
+    parts: compact(item.attributes.parts.map((part) => makePartProps(part))),
   };
 }
 

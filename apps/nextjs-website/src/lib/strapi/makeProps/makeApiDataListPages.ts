@@ -62,13 +62,13 @@ export function makeApiDataListPagesProps(
             subtitle: attributes.description || '',
           },
           product: makeBaseProductWithoutLogoProps(attributes.product.data),
-          apiDetailSlugs: attributes.apiData.data
-            .map(({ attributes }) =>
+          apiDetailSlugs: compact(
+            attributes.apiData.data.map(({ attributes }) =>
               attributes.apiRestDetail
                 ? attributes.apiRestDetail.slug
                 : attributes.apiSoapDetail?.slug
             )
-            .filter(Boolean) as readonly string[],
+          ),
           cards: compact(
             attributes.apiData.data.map((item) =>
               makeApiDataListPageCard(item, slug)

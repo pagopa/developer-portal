@@ -1,6 +1,5 @@
 /* eslint-disable functional/no-expression-statements */
 /* eslint-disable functional/no-try-statements */
-import { Part } from '@/lib/types/part';
 import { Tutorial } from '@/lib/types/tutorialData';
 import { makePartProps } from '@/lib/strapi/makeProps/makePart';
 import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
@@ -49,13 +48,9 @@ export function makeTutorialsProps(
             : undefined,
           name: attributes.title,
           path: `/${attributes.product.data.attributes.slug}/tutorials/${attributes.slug}`,
-          parts: [
-            ...(attributes.parts
-              .map((part) => makePartProps(part))
-              .filter((part) => !!part) as ReadonlyArray<Part>),
-          ],
+          parts: compact(attributes.parts.map((part) => makePartProps(part))),
           productSlug: attributes.product.data.attributes.slug,
-          relatedLinks: attributes.relatedLinks as RelatedLinksProps,
+          relatedLinks: attributes.relatedLinks,
           bannerLinks:
             attributes.bannerLinks && attributes.bannerLinks.length > 0
               ? attributes.bannerLinks?.map(makeBannerLinkProps)

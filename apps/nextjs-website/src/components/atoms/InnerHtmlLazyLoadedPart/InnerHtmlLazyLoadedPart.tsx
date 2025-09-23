@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { Box, useTheme } from '@mui/material';
 
-export type InnerHtmlLazyLoadedPartProps = { html: string };
+export type InnerHtmlLazyLoadedPartProps = { readonly html: string };
 
 const InnerHtmlLazyLoadedPart = ({ html }: InnerHtmlLazyLoadedPartProps) => {
   const { spacing, palette } = useTheme();
