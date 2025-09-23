@@ -32,7 +32,7 @@ export const TutorialsList = ({ tags, tutorials }: TutorialsListProps) => {
             size: 32,
             ext: '.svg',
             mime: 'image/svg',
-            url: ' ../icons/all.svg',
+            url: '/icons/all.svg',
           },
         },
       },
