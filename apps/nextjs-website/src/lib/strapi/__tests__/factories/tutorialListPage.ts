@@ -13,7 +13,7 @@ export function minimalTutorialListPages(): StrapiTutorialListPages {
           product: {
             data: {
               attributes: {
-                ...strapiTutorialListPages.data[0].attributes.product.data
+                ...strapiTutorialListPages.data[0].attributes.product.data!
                   .attributes,
                 bannerLinks: [],
               },

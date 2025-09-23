@@ -11,12 +11,14 @@ import {
   UpdateItemCommand,
 } from '@aws-sdk/client-dynamodb';
 import {
-  WebinarQuestionDynamodbCodec,
   makeDynamodbItemFromWebinarQuestion,
   makeWebinarQuestionFromDynamodbItem,
   makeWebinarQuestionListQueryCondition,
   makeDynamodbUpdateFromWebinarQuestionUpdate,
-} from './dynamodb/codec';
+} from './dynamodb/webinar';
+import { WebinarQuestionDynamoDb } from './dynamodb/types/webinarQuestion';
+import { compact } from 'lodash';
+import { item } from 'gitbook-docs/markdoc/schema/item';
 
 export type WebinarEnv = {
   readonly dynamoDBClient: DynamoDBClient;
@@ -108,11 +110,12 @@ export const listWebinarQuestions = (webinarId: string) =>
         // turn undefined to empty array
         Items || [],
         // decode the response
-        RA.map(WebinarQuestionDynamodbCodec.decode),
+        RA.map((item) => E.right(item as WebinarQuestionDynamoDb)),
         // turn Array<Either<_, _>> to Either<_, Array<_>>
         RA.sequence(E.Applicative),
         // map errors to error and dynamodb item to WebinarQuestion
-        E.bimap(E.toError, RA.map(makeWebinarQuestionFromDynamodbItem))
+        E.bimap(E.toError, RA.map(makeWebinarQuestionFromDynamodbItem)),
+        E.map((items) => compact(items))
       )
     )
   );

@@ -91,7 +91,7 @@ describe('makeReleaseNotesProps', () => {
     const result = makeReleaseNotesProps(releaseNotesWithMissingProductSlug());
     expect(result).toHaveLength(0);
     expect(spyOnConsoleError).toHaveBeenCalledWith(
-      'Error processing Release Note "Release Note Without Product Slug": Missing product slug. Skipping...'
+      'Error while processing ReleaseNote with title "Release Note Without Product Slug": missing product slug. Skipping...'
     );
   });
 });

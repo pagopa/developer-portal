@@ -4,16 +4,16 @@ import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
 import { makeBaseProductWithoutLogoProps } from '@/lib/strapi/makeProps/makeProducts';
 import { ReleaseNotePageProps } from '@/app/[productSlug]/[...releaseNoteSubPathSlugs]/page';
 import { StrapiReleaseNotes } from '@/lib/strapi/types/releaseNotes';
-import _ from 'lodash';
+import { compact } from 'lodash';
 
 export function makeReleaseNotesProps(
   strapiReleaseNotes: StrapiReleaseNotes
 ): ReadonlyArray<ReleaseNotePageProps> {
-  return _.compact(
+  return compact(
     strapiReleaseNotes.data.map(({ attributes }) => {
-      if (!attributes.product.data.attributes.slug) {
+      if (!attributes.product.data?.attributes.slug) {
         console.error(
-          `Error processing Release Note "${attributes.title}": Missing product slug. Skipping...`
+          `Error while processing ReleaseNote with title "${attributes.title}": missing product slug. Skipping...`
         );
         return null;
       }
@@ -36,8 +36,9 @@ export function makeReleaseNotesProps(
       } catch (error) {
         // eslint-disable-next-line functional/no-expression-statements
         console.error(
-          `Error processing Release Note props for ${attributes.title}`,
-          error
+          `Error while processing ReleaseNote with title ${attributes.title}`,
+          error,
+          'Skipping...'
         );
         return null;
       }
