@@ -9,7 +9,7 @@ export const makeBuildConfig = (
   env: Record<string, undefined | string>
 ): E.Either<string, BuildConfig> =>
   (env.FETCH_FROM_STRAPI &&
-    env.STRAPI_API_URL &&
+    env.STRAPI_ENDPOINT &&
     env.STRAPI_API_TOKEN &&
     E.right({
       FETCH_FROM_STRAPI: env.FETCH_FROM_STRAPI === 'true',

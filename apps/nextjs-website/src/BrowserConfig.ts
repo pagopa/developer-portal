@@ -28,5 +28,10 @@ export const makeBrowserConfig = (
   (env.NEXT_PUBLIC_COGNITO_REGION &&
     env.NEXT_PUBLIC_COGNITO_USER_POOL_ID &&
     env.NEXT_PUBLIC_COGNITO_IDENTITY_POOL_ID &&
-    E.right(env as BrowserConfig)) ||
+    E.right({
+      NEXT_PUBLIC_COGNITO_REGION: env.NEXT_PUBLIC_COGNITO_REGION,
+      NEXT_PUBLIC_COGNITO_USER_POOL_ID: env.NEXT_PUBLIC_COGNITO_USER_POOL_ID,
+      NEXT_PUBLIC_COGNITO_IDENTITY_POOL_ID:
+        env.NEXT_PUBLIC_COGNITO_IDENTITY_POOL_ID,
+    })) ||
   E.left('Missing environment variables');
