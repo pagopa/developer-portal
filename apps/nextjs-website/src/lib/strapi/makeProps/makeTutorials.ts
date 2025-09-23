@@ -7,7 +7,7 @@ import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
 import { RelatedLinksProps } from '@/components/atoms/RelatedLinks/RelatedLinks';
 import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
 import { StrapiTutorials } from '@/lib/strapi/types/tutorial';
-import _ from 'lodash';
+import { compact } from 'lodash';
 
 export type TutorialProps = Tutorial & {
   readonly productSlug: string;
@@ -18,18 +18,18 @@ export type TutorialProps = Tutorial & {
 export function makeTutorialsProps(
   strapiTutorials: StrapiTutorials
 ): readonly TutorialProps[] {
-  return _.compact(
+  return compact(
     strapiTutorials.data.map(({ attributes }) => {
-      if (!attributes.slug) {
+      if (!attributes.slug || !attributes.title) {
         console.error(
-          `Error processing Tutorial "${attributes.title}": Missing tutorial slug. Skipping...`
+          `Error while processing Tutorial: missing title or slug. Title: ${attributes.title} | Slug: ${attributes.slug}. Skipping...`
         );
         return null;
       }
 
       if (!attributes.product.data.attributes.slug) {
         console.error(
-          `Error processing Tutorial "${attributes.title}": Missing product slug. Skipping...`
+          `Error while processing Tutorial with title "${attributes.title}": missing product slug. Skipping...`
         );
         return null;
       }
@@ -67,8 +67,9 @@ export function makeTutorialsProps(
         } satisfies TutorialProps;
       } catch (error) {
         console.error(
-          `Error while making tutorial props for ${attributes.title}:`,
-          error
+          `Error while processing Tutorial with title ${attributes.title}:`,
+          error,
+          'Skipping...'
         );
         return null;
       }

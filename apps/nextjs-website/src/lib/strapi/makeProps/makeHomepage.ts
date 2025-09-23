@@ -1,7 +1,7 @@
 import { StrapiHomepage } from '@/lib/strapi/types/homepage';
 import { makeWebinarProps } from '@/lib/strapi/makeProps/makeWebinars';
 import { HomepageProps } from '@/app/page';
-import _ from 'lodash';
+import { compact } from 'lodash';
 
 export const makeHomepageProps = (
   strapiHomepage: StrapiHomepage
@@ -64,7 +64,7 @@ export const makeHomepageProps = (
     },
   }),
   seo: strapiHomepage?.data?.attributes?.seo,
-  webinars: _.compact(
+  webinars: compact(
     strapiHomepage.data.attributes.webinars.data.map((webinar) =>
       makeWebinarProps(webinar)
     )

@@ -20,7 +20,8 @@ export function minimalDataReleaseNotes() {
             data: {
               ...strapiReleaseNote.attributes.product.data,
               attributes: {
-                ...strapiReleaseNote.attributes.product.data.attributes,
+                ...(strapiReleaseNote.attributes.product.data
+                  ?.attributes as any),
                 bannerLinks: undefined,
               },
             },
@@ -61,7 +62,8 @@ export function releaseNotesWithoutProductBannerLinks() {
             data: {
               ...strapiReleaseNote.attributes.product.data,
               attributes: {
-                ...strapiReleaseNote.attributes.product.data.attributes,
+                ...(strapiReleaseNote.attributes.product.data
+                  ?.attributes as any),
                 bannerLinks: [],
               },
             },
@@ -86,7 +88,8 @@ export function releaseNotesWithMissingProductSlug() {
             data: {
               ...strapiReleaseNote.attributes.product.data,
               attributes: {
-                ...strapiReleaseNote.attributes.product.data.attributes,
+                ...(strapiReleaseNote.attributes.product.data
+                  ?.attributes as any),
                 slug: undefined as any,
               },
             },

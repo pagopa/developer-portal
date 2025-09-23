@@ -19,7 +19,7 @@ export function minimalApiDataList() {
             data: {
               ...apiData.attributes.product.data,
               attributes: {
-                ...apiData.attributes.product.data.attributes,
+                ...(apiData.attributes.product.data?.attributes as any),
                 bannerLinks: undefined,
               },
             },
@@ -188,7 +188,7 @@ export function apiDataWithoutProductBannerLinks() {
             data: {
               ...apiData.attributes.product.data,
               attributes: {
-                ...apiData.attributes.product.data.attributes,
+                ...(apiData.attributes.product.data?.attributes as any),
                 bannerLinks: [],
               },
             },
