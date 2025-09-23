@@ -86,7 +86,9 @@ describe('makeApiDataListProps', () => {
     );
     expect(result).toHaveLength(0);
     expect(spyOnConsoleError).toHaveBeenCalledWith(
-      expect.stringContaining('Missing API slug')
+      expect.stringContaining(
+        'Error while processing API Data with title "API Data Without API Details": missing API slug. Skipping...'
+      )
     );
   });
 
@@ -94,7 +96,9 @@ describe('makeApiDataListProps', () => {
     const result = await makeApiDataListProps(apiDatalistWithItemMissingSlug());
     expect(result).toHaveLength(0);
     expect(spyOnConsoleError).toHaveBeenCalledWith(
-      expect.stringContaining('Missing API slug')
+      expect.stringContaining(
+        'Error while processing API Data with title "API Data Without API Details": missing API slug. Skipping...'
+      )
     );
   });
 
@@ -181,8 +185,7 @@ describe('makeApiDataListProps', () => {
     // Should filter out items with missing product since makeBaseProductWithoutLogoProps would fail
     expect(result).toHaveLength(0);
     expect(spyOnConsoleError).toHaveBeenCalledWith(
-      expect.stringContaining('Error processing API Data'),
-      expect.any(Error)
+      'Error while processing API Data with title "API Data Without Product": missing product data. Skipping...'
     );
   });
 });
