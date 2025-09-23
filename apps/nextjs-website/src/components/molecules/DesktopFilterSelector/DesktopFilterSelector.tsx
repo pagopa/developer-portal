@@ -5,7 +5,7 @@ import { Media } from '@/lib/types/media';
 type DesktopFilterSelectorProps = {
   selectedFilter: number;
   // eslint-disable-next-line functional/no-return-void
-  setSelectedFilter: (selectedWebinarCategory: number) => void;
+  setSelectedFilter: (selectedFilter: number) => void;
   selectorFilters: readonly {
     name: string;
     icon: {

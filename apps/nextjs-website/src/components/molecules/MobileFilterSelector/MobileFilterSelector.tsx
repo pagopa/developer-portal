@@ -18,7 +18,7 @@ import { Media } from '@/lib/types/media';
 type MobileFilterSelectorProps = {
   selectedFilter: number;
   // eslint-disable-next-line functional/no-return-void
-  setSelectedFilter: (selectedWebinarCategory: number) => void;
+  setSelectedFilter: (selectedFilter: number) => void;
   selectorFilters: readonly {
     name: string;
     icon: {
@@ -85,7 +85,7 @@ const MobileFilterSelector = ({
               lineHeight={'22px'}
               color={'#636B82'}
             >
-              {t('webinar.selectWebinarCategory')}
+              {t('webinar.selectFilter')}
             </Typography>
           ) : (
             <MobileFilterButton
