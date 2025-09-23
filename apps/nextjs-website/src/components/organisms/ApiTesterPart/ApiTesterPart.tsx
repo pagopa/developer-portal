@@ -8,12 +8,12 @@ import { useTranslations } from 'next-intl';
 import TypographyPart from '@/components/atoms/TypographyPart/TypographyPart';
 
 type ApiPhaseDescription = {
-  code: string;
-  language?: string;
-  description: string;
-  attributes?: {
-    label?: string;
-    value: string;
+  readonly code: string;
+  readonly language?: string;
+  readonly description: string;
+  readonly attributes?: {
+    readonly label?: string;
+    readonly value: string;
   }[];
 };
 

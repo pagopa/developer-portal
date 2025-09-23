@@ -274,6 +274,7 @@ export const overviewPageProps: OverviewPageProps = {
     hasReleaseNotePage: true,
     hasTutorialListPage: true,
     description: undefined,
+    tags: [],
     bannerLinks: [
       {
         title: 'Banner Link 1',

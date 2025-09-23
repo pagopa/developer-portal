@@ -5,10 +5,10 @@ import Alert, { AlertColor } from '@mui/material/Alert';
 import { computeId } from '@/components/molecules/PartRendererMenu/PartRendererMenu';
 
 export type AlertPartProps = {
-  alertStyle?: SxProps;
-  severity: AlertColor;
-  text?: string;
-  title?: string;
+  readonly alertStyle?: SxProps;
+  readonly severity: AlertColor;
+  readonly text?: string;
+  readonly title?: string;
 };
 
 const AlertPart = ({ alertStyle, severity, text, title }: AlertPartProps) => {

@@ -1,16 +1,11 @@
-import * as t from 'io-ts';
-import { pipe } from 'fp-ts/lib/function';
 import * as E from 'fp-ts/lib/Either';
-import * as PR from 'io-ts/lib/PathReporter';
 import { secrets } from './config';
 
-const BrowserConfigCodec = t.type({
-  NEXT_PUBLIC_COGNITO_REGION: t.string,
-  NEXT_PUBLIC_COGNITO_USER_POOL_ID: t.string,
-  NEXT_PUBLIC_COGNITO_IDENTITY_POOL_ID: t.string,
-});
-
-export type BrowserConfig = t.TypeOf<typeof BrowserConfigCodec>;
+export type BrowserConfig = {
+  readonly NEXT_PUBLIC_COGNITO_REGION: string;
+  readonly NEXT_PUBLIC_COGNITO_USER_POOL_ID: string;
+  readonly NEXT_PUBLIC_COGNITO_IDENTITY_POOL_ID: string;
+};
 
 // TODO: Migrate all the above environment
 // publicEnv exists to allow nextjs to correctly replace environments at build
@@ -30,7 +25,13 @@ export const publicEnv = {
 export const makeBrowserConfig = (
   env: Record<string, undefined | string>
 ): E.Either<string, BrowserConfig> =>
-  pipe(
-    BrowserConfigCodec.decode(env),
-    E.mapLeft((errors) => PR.failure(errors).join('\n'))
-  );
+  (env.NEXT_PUBLIC_COGNITO_REGION &&
+    env.NEXT_PUBLIC_COGNITO_USER_POOL_ID &&
+    env.NEXT_PUBLIC_COGNITO_IDENTITY_POOL_ID &&
+    E.right({
+      NEXT_PUBLIC_COGNITO_REGION: env.NEXT_PUBLIC_COGNITO_REGION,
+      NEXT_PUBLIC_COGNITO_USER_POOL_ID: env.NEXT_PUBLIC_COGNITO_USER_POOL_ID,
+      NEXT_PUBLIC_COGNITO_IDENTITY_POOL_ID:
+        env.NEXT_PUBLIC_COGNITO_IDENTITY_POOL_ID,
+    })) ||
+  E.left('Missing environment variables');

@@ -37,7 +37,7 @@ export const TutorialsList = ({
             size: 32,
             ext: '.svg',
             mime: 'image/svg',
-            url: ' ../icons/all.svg',
+            url: '/icons/all.svg',
           },
         },
       },
