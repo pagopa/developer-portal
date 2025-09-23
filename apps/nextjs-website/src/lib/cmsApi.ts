@@ -215,7 +215,7 @@ export const getReleaseNoteProps = async (
 ) => {
   // TODO: restore this when Strapi will manage guides metadata
   const strapiReleaseNotes = (await fetchResponseFromCDN(
-    getSyncedSolutionsResponseJsonPath()
+    getSyncedReleaseNotesResponseJsonPath()
   )) as StrapiReleaseNotes | undefined;
   if (!strapiReleaseNotes || strapiReleaseNotes.data.length < 1) {
     // eslint-disable-next-line functional/no-throw-statements
