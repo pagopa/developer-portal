@@ -49,11 +49,9 @@ export function makeTutorialsProps(
             : undefined,
           name: attributes.title,
           path: `/${attributes.product.data.attributes.slug}/tutorials/${attributes.slug}`,
-          parts: [
-            ...(attributes.parts
-              .map((part) => makePartProps(part))
-              .filter((part) => !!part) as ReadonlyArray<Part>),
-          ],
+          parts: attributes.parts
+            .map((part) => makePartProps(part))
+            .filter((part) => !!part) as ReadonlyArray<Part>,
           productSlug: attributes.product.data.attributes.slug,
           relatedLinks: attributes.relatedLinks as RelatedLinksProps,
           bannerLinks:

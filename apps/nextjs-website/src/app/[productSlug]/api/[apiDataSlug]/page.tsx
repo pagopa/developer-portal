@@ -26,9 +26,9 @@ export type ApiDataPageProps = {
   readonly apiDataSlug: string;
   readonly specUrlsName?: string;
   readonly restApiSpecUrls: {
-    name?: string;
-    url: string;
-    hideTryIt?: boolean;
+    readonly name?: string;
+    readonly url: string;
+    readonly hideTryIt?: boolean;
   }[];
   readonly apiSoapUrl?: string;
   readonly apiSoapUrlList: readonly string[];

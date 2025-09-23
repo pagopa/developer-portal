@@ -15,14 +15,17 @@ import { Media } from '@/lib/types/media';
 import { SEO } from '@/lib/types/seo';
 
 export type CaseHistoryPageTemplateProps = {
-  slug: string;
-  title: string;
-  image?: Media;
-  updatedAt: string;
-  description?: string;
-  products: Pick<Product, 'logo' | 'slug' | 'name' | 'description'>[];
-  parts: Part[];
-  seo?: SEO;
+  readonly slug: string;
+  readonly title: string;
+  readonly image?: Media;
+  readonly updatedAt: string;
+  readonly description?: string;
+  readonly products: readonly Pick<
+    Product,
+    'logo' | 'slug' | 'name' | 'description'
+  >[];
+  readonly parts: Part[];
+  readonly seo?: SEO;
 };
 
 const CaseHistoryPageTemplate = ({
