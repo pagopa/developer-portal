@@ -120,6 +120,18 @@ describe('chatbotApi', () => {
       answer: 'answer',
       createdAt: '2024-02-08T11:12:02.438Z',
       badAnswer: false,
+      history: [
+        {
+          id: '1',
+          question: 'question',
+          answer: 'answer',
+        },
+        {
+          id: '2',
+          question: 'question',
+          answer: 'answer',
+        },
+      ],
     };
     expect(await actual).toStrictEqual(expected);
   });
@@ -177,22 +189,6 @@ describe('chatbotApi', () => {
       question: 'aQuery',
     })(env);
     const expected = {};
-    await expect(actual).rejects.toStrictEqual(expected);
-  });
-  it('chatbotAp::postQuery should return error given a decode error', async () => {
-    const { env, fetchMock } = makeTestEnv();
-    fetchMock.mockResolvedValueOnce({
-      status: 200,
-      statusText: 'OK',
-      json: () => Promise.resolve(badResponse[200]),
-    });
-    const actual = postQuery({
-      queriedAt: 'aQueriedAt',
-      question: 'aQuery',
-    })(env);
-    const expected = new Error(
-      `Invalid value 1234 supplied to '/sessionId', expected type string`
-    );
     await expect(actual).rejects.toStrictEqual(expected);
   });
 });

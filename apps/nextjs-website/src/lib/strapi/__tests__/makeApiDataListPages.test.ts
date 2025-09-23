@@ -89,7 +89,9 @@ describe('makeApiDataListPagesProps', () => {
     expect(firstElement.cards).toHaveLength(0);
     expect(firstElement.apiDetailSlugs).toHaveLength(0);
     expect(spyOnConsoleError).toHaveBeenCalledWith(
-      expect.stringContaining('Error processing API Data')
+      expect.stringContaining(
+        'Error while processing API Data with title "undefined": missing API slug. Skipping...'
+      )
     );
   });
 
@@ -155,7 +157,9 @@ describe('makeApiDataListPagesProps', () => {
     );
     expect(result[0].cards).toHaveLength(0);
     expect(spyOnConsoleError).toHaveBeenCalledWith(
-      expect.stringContaining('Error processing API Data')
+      expect.stringContaining(
+        'Error while processing API Data with title "undefined": missing API slug. Skipping...'
+      )
     );
   });
 

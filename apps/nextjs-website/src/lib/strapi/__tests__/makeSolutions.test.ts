@@ -76,7 +76,7 @@ describe('makeSolutionsProps', () => {
     expect(result[0].title).toBe('Valid Solution');
     expect(result[0].solutionSlug).toBe('valid-solution');
     expect(spyOnConsoleError).toHaveBeenCalledWith(
-      'Error processing Solution "Solution Without Slug": Missing solution slug. Skipping...'
+      'Error while processing Solution: missing title or slug. Title: Solution Without Slug | Slug: undefined. Skipping...'
     );
   });
 
@@ -93,7 +93,7 @@ describe('makeSolutionsProps', () => {
       '/case-histories/valid-case-history'
     );
     expect(spyOnConsoleError).toHaveBeenCalledWith(
-      'Error processing Case History "Case History Without Slug": Missing case history slug. Skipping...'
+      'Error while processing CaseHistory with title "Case History Without Slug": missing slug. Skipping...'
     );
   });
 });

@@ -1,5 +1,3 @@
-import * as t from 'io-ts';
-import * as tt from 'io-ts-types';
 import {
   UpdateExpression,
   WebinarQuestion,
@@ -10,36 +8,8 @@ import {
   UpdateItemCommandInput,
 } from '@aws-sdk/client-dynamodb';
 import { WebinarSubscription } from '../webinarSubscriptions';
-
-const DynamodbAttrS = t.strict({
-  S: t.string,
-});
-const DynamodbAttrISODate = t.strict({
-  S: tt.DateFromISOString,
-});
-
-export const WebinarQuestionDynamodbCodec = t.intersection([
-  t.strict({
-    webinarId: DynamodbAttrS,
-    createdAt: DynamodbAttrISODate,
-    question: DynamodbAttrS,
-  }),
-  t.partial({
-    hiddenBy: DynamodbAttrS,
-    highlightedBy: DynamodbAttrS,
-  }),
-]);
-
-export const WebinarSubscriptionDynamodbCodec = t.strict({
-  webinarId: DynamodbAttrS,
-  username: DynamodbAttrS,
-  createdAt: DynamodbAttrISODate,
-});
-
-type WebinarQuestionDynamoDB = t.TypeOf<typeof WebinarQuestionDynamodbCodec>;
-type WebinarSubscriptionDynamoDB = t.TypeOf<
-  typeof WebinarSubscriptionDynamodbCodec
->;
+import { WebinarQuestionDynamoDb } from '@/lib/webinars/dynamodb/types/webinarQuestion';
+import { WebinarSubscriptionDynamoDb } from '@/lib/webinars/dynamodb/types/webinarSubscription';
 
 export const makeWebinarQuestionListQueryCondition = (
   webinarId: string
@@ -52,43 +22,55 @@ export const makeWebinarQuestionListQueryCondition = (
 });
 
 export const makeWebinarQuestionFromDynamodbItem = (
-  input: WebinarQuestionDynamoDB
-): WebinarQuestion => ({
-  id: {
-    slug: input.webinarId.S,
-    createdAt: input.createdAt.S,
-  },
-  question: input.question.S,
-  // use the short-circuit evaluation to omit the attribute if it is undefined
-  ...(input.hiddenBy && { hiddenBy: input.hiddenBy.S }),
-  ...(input.highlightedBy && { highlightedBy: input.highlightedBy.S }),
-});
+  input: WebinarQuestionDynamoDb
+): WebinarQuestion | null => {
+  if (!input.createdAt?.S) {
+    // eslint-disable-next-line functional/no-expression-statements
+    console.error(
+      'Error processing WebinarQuestionDynamoDb of webinarId: ',
+      input.webinarId?.S,
+      '. Missing createdAt attribute. Skipping...'
+    );
+    return null;
+  }
+
+  return {
+    id: {
+      slug: input.webinarId.S,
+      createdAt: new Date(input.createdAt.S),
+    },
+    question: input.question.S,
+    // use the short-circuit evaluation to omit the attribute if it is undefined
+    ...(input.hiddenBy && { hiddenBy: input.hiddenBy.S }),
+    ...(input.highlightedBy && { highlightedBy: input.highlightedBy.S }),
+  };
+};
 
 export const makeWebinarSubscriptionFromDynamodbItem = (
-  input: WebinarSubscriptionDynamoDB
+  input: WebinarSubscriptionDynamoDb
 ): WebinarSubscription => ({
   webinarId: input.webinarId.S,
   username: input.username.S,
   createdAt: new Date(input.createdAt.S),
 });
 
-export const makeDynamodbItemFromWebinarQuestion = (input: WebinarQuestion) =>
-  WebinarQuestionDynamodbCodec.encode({
-    webinarId: { S: input.id.slug },
-    createdAt: { S: input.id.createdAt },
-    question: { S: input.question },
-    ...(input.hiddenBy && { hiddenBy: { S: input.hiddenBy } }),
-    ...(input.highlightedBy && { highlightedBy: { S: input.highlightedBy } }),
-  });
+export const makeDynamodbItemFromWebinarQuestion = (
+  input: WebinarQuestion
+): WebinarQuestionDynamoDb => ({
+  webinarId: { S: input.id.slug },
+  createdAt: { S: input.id.createdAt.toISOString() },
+  question: { S: input.question },
+  ...(input.hiddenBy && { hiddenBy: { S: input.hiddenBy } }),
+  ...(input.highlightedBy && { highlightedBy: { S: input.highlightedBy } }),
+});
 
 export const makeDynamodbItemFromWebinarSubscription = (
   input: WebinarSubscription
-) =>
-  WebinarSubscriptionDynamodbCodec.encode({
-    webinarId: { S: input.webinarId },
-    username: { S: input.username },
-    createdAt: { S: input.createdAt },
-  });
+): WebinarSubscriptionDynamoDb => ({
+  webinarId: { S: input.webinarId },
+  username: { S: input.username },
+  createdAt: { S: input.createdAt.toISOString() },
+});
 
 type UpdateExpressionItem = {
   readonly fieldName: string;
