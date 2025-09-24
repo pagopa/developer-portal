@@ -55,6 +55,11 @@ services:
     volumes:
       - ../chatbot-index:/app
       - ~/.aws-lambda-rie/aws-lambda-rie:/usr/local/bin/aws-lambda-rie
+    depends_on:
+      localstack:
+        condition: service_started
+      redis:
+        condition: service_started
     entrypoint: ["/usr/local/bin/aws-lambda-rie", "python3"]
     command: ["-m", "awslambdaric", "src.lambda_function.lambda_handler"]
     networks:
