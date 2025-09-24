@@ -97,7 +97,7 @@ resource "aws_lambda_function" "chatbot_evaluate_lambda" {
   image_uri    = "${module.ecr["evaluate"].repository_url}:latest"
   package_type = "Image"
 
-  timeout       = 30
+  timeout       = 120 # 2 minutes
   memory_size   = 1024
   architectures = ["x86_64"]
   role          = aws_iam_role.lambda_evaluate_role.arn
@@ -135,3 +135,5 @@ resource "aws_lambda_event_source_mapping" "evaluate_lambda_sqs" {
   batch_size       = 10
   #maximum_batching_window_in_seconds = 60
 }
+
+

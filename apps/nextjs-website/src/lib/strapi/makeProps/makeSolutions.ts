@@ -3,16 +3,16 @@
 import { SolutionTemplateProps } from '@/components/templates/SolutionTemplate/SolutionTemplate';
 import { StrapiSolutions } from '@/lib/strapi/types/solutions';
 import { makeWebinarProps } from '@/lib/strapi/makeProps/makeWebinars';
-import _ from 'lodash';
+import { compact } from 'lodash';
 
 export function makeSolutionsProps(
   strapiSolutions: StrapiSolutions
 ): ReadonlyArray<SolutionTemplateProps> {
-  return _.compact(
+  return compact(
     strapiSolutions.data.map(({ attributes }) => {
-      if (!attributes.slug) {
+      if (!attributes.slug || !attributes.title) {
         console.error(
-          `Error processing Solution "${attributes.title}": Missing solution slug. Skipping...`
+          `Error while processing Solution: missing title or slug. Title: ${attributes.title} | Slug: ${attributes.slug}. Skipping...`
         );
         return null;
       }
@@ -32,7 +32,7 @@ export function makeSolutionsProps(
             logo: attributes.logo.data?.attributes,
           })),
           icon: attributes.icon.data.attributes,
-          webinars: _.compact(
+          webinars: compact(
             attributes.webinars.data.map((webinar) => makeWebinarProps(webinar))
           ),
           bannerLinks: attributes.bannerLinks.map((bannerLink) => ({
@@ -45,12 +45,12 @@ export function makeSolutionsProps(
           successStories: attributes.caseHistories && {
             title: attributes.caseHistories.title,
             subtitle: attributes.caseHistories.description,
-            stories: _.compact(
+            stories: compact(
               attributes.caseHistories.case_histories.data.map(
                 (caseHistory) => {
                   if (!caseHistory.attributes.slug) {
                     console.error(
-                      `Error processing Case History "${caseHistory.attributes.title}": Missing case history slug. Skipping...`
+                      `Error while processing CaseHistory with title "${caseHistory.attributes.title}": missing slug. Skipping...`
                     );
                     return null;
                   }
@@ -69,8 +69,9 @@ export function makeSolutionsProps(
         };
       } catch (error) {
         console.error(
-          `Error while making solutions props for ${attributes.title}:`,
-          error
+          `Error while processing Solution with title ${attributes.title}:`,
+          error,
+          'Skipping...'
         );
         return null;
       }

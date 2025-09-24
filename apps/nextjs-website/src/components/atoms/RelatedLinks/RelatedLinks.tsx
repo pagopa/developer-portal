@@ -4,13 +4,13 @@ import Listing from '@/editorialComponents/Listing/Listing';
 import { useTranslations } from 'next-intl';
 
 export type RelatedLinksProps = {
-  title?: string;
-  links: {
-    text: string;
-    href: string;
-    target?: '_self' | '_blank' | '_parent' | '_top';
+  readonly title?: string;
+  readonly links: readonly {
+    readonly text: string;
+    readonly href: string;
+    readonly target?: '_self' | '_blank' | '_parent' | '_top';
   }[];
-  backgroundVariant?: 'white' | 'lightGrey';
+  readonly backgroundVariant?: 'white' | 'lightGrey';
 };
 
 const RelatedLinks = ({
