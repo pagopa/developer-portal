@@ -85,7 +85,7 @@ resource "aws_lambda_function" "chatbot_index_lambda" {
   environment {
     variables = {
       CHB_AWS_SSM_GOOGLE_API_KEY         = module.google_api_key_ssm_parameter.ssm_parameter_name
-      CHB_AWS_SSM_GOOGLE_SERVICE_ACCOUNT = module.google_service_account.ssm_parameter_name
+      CHB_AWS_SSM_GOOGLE_SERVICE_ACCOUNT = module.google_service_account_ssm_parameter.ssm_parameter_name
       #CHB_AWS_SSM_STRAPI_API_KEY      = module.strapi_api_key.ssm_parameter_name
       #CHB_STRAPI_API_KEY              = module.strapi_api_key.ssm_parameter_name
       CHB_EMBED_BATCH_SIZE                  = 100
