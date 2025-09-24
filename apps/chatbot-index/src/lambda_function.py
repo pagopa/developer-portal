@@ -103,7 +103,7 @@ def lambda_handler(event, context):
 
     static_docs_to_update, static_docs_ids_to_delete = read_payload(event)
     if len(static_docs_to_update) > 0 or len(static_docs_ids_to_delete) > 0:
-        VECTOR_INDEX.refresh_index_static_docs(
+        VECTOR_INDEX.refresh_index(
             static_docs_to_update=static_docs_to_update,
             static_docs_ids_to_delete=static_docs_ids_to_delete,
         )
