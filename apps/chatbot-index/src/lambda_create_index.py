@@ -1,8 +1,4 @@
-import json
-from typing import Tuple, List, Dict
-
 from src.modules.logger import get_logger
-from src.modules.documents import read_file_from_s3
 from src.modules.vector_index import DiscoveryVectorIndex
 
 
