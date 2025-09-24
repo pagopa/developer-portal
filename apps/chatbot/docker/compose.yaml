@@ -73,7 +73,7 @@ services:
     environment:
       - PYTHONPATH=/var/task
     ports:
-      - "8082:8080"
+      - "8083:8080"
     volumes:
       - ../chatbot-index:/app
       - ~/.aws-lambda-rie/aws-lambda-rie:/usr/local/bin/aws-lambda-rie
