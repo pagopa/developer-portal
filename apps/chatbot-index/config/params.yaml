@@ -1,4 +1,4 @@
 vector_index:
-  index_id: discovery_index
+  index_id: default-index
   chunk_size: 1024
   chunk_overlap: 200
