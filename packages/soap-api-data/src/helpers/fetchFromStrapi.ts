@@ -31,7 +31,6 @@ async function fetchFromStrapiResponse(url: string) {
     throw new Error('Missing Strapi configuration in environment variables');
   }
 
-  // Using pagination with a large page size to fetch all solutions in one request
   const response = await fetch(`${strapiEndpoint}/${url}`, {
     headers: {
       Authorization: `Bearer ${strapiApiToken}`,
