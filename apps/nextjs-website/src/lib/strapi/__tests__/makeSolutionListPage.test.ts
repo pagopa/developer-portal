@@ -91,7 +91,7 @@ describe('makeSolutionListPageProps', () => {
     expect(result.solutions).toHaveLength(1);
     expect(result.solutions[0].name).toBe('Valid Solution');
     expect(spyOnConsoleError).toHaveBeenCalledWith(
-      'Error processing Solution "Solution Without Slug": Missing solution slug. Skipping...'
+      'Error while processing Solution with title "Solution Without Slug": missing slug. Skipping...'
     );
   });
 
@@ -102,7 +102,7 @@ describe('makeSolutionListPageProps', () => {
     expect(result.successStories?.stories).toHaveLength(1);
     expect(result.successStories?.stories[0].title).toBe('Valid Case History');
     expect(spyOnConsoleError).toHaveBeenCalledWith(
-      'Error processing Case History "Case History Without Slug": Missing case history slug. Skipping...'
+      'Error while processing CaseHistory with title "Case History Without Slug": missing slug. Skipping...'
     );
   });
 });

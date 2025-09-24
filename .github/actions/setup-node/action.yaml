@@ -11,7 +11,7 @@ runs:
   using: "composite"
   steps:
     - name: Setup node
-      uses: actions/setup-node@e33196f7422957bea03ed53f6fbb155025ffc7b8 # v3.7.0
+      uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5.0.0
       with:
         node-version-file: '.node-version'        
           

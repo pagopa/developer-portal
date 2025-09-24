@@ -2,4 +2,4 @@
 "chatbot": patch
 ---
 
-Fix repetitive score bug in the Langfuse GUI
+Fix repetitive score bug in the Langfuse GUI.
