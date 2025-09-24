@@ -3,9 +3,19 @@
 echo "-=-=-=-= AWS_ENDPOINT_URL: $AWS_ENDPOINT_URL -=-=-=-=-=-=-"
 echo "-=-=-=-= CHB_AWS_SQS_QUEUE_EVALUATE_NAME: $CHB_AWS_SQS_QUEUE_EVALUATE_NAME -=-=-=-=-=-=-"
 echo "-=-=-=-= AWS_DEFAULT_REGION: $AWS_DEFAULT_REGION -=-=-=-=-=-=-"
+echo "-=-=-=-= CHB_AWS_S3_BUCKET_NAME_STATIC_CONTENT: $CHB_AWS_S3_BUCKET_NAME_STATIC_CONTENT -=-=-=-=-=-=-"
 
 # echo '-=-=-=-=-=-=-=-=-= init Cognito -==-=-=-=-=-=-=-=-'
 # ./scripts/cognito-init-test.sh
+
+echo '-=-=-=-=-=-=-=-=-= init S3 -==-=-=-=-=-=-=-=-'
+aws s3api create-bucket --bucket $CHB_AWS_S3_BUCKET_NAME_STATIC_CONTENT \
+  --endpoint-url=$AWS_ENDPOINT_URL \
+  --region $AWS_DEFAULT_REGION
+
+aws s3api list-buckets \
+  --endpoint-url=$AWS_ENDPOINT_URL \
+  --region $AWS_DEFAULT_REGION
 
 echo '-=-=-=-=-=-=-=-=-= init DynamoDB -==-=-=-=-=-=-=-=-'
 ./scripts/dynamodb-init-test.sh
