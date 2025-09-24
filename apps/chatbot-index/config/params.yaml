@@ -1,4 +1,4 @@
 vector_index:
   index_id: discovery_index
   chunk_size: 1024
-  chunk_overlap: 25
+  chunk_overlap: 200
