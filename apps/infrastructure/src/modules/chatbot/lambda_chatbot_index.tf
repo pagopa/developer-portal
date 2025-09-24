@@ -28,6 +28,24 @@ resource "aws_iam_role_policy" "lambda_index_policy" {
     Statement = [
       {
         Action = [
+          "ecr:GetAuthorizationToken",
+          "ecr:BatchCheckLayerAvailability",
+          "ecr:GetDownloadUrlForLayer",
+          "ecr:BatchGetImage",
+          "ecr:ListTagsForResource",
+          "ecr:ListImages",
+          "ecr:GetRepositoryPolicy",
+          "ecr:GetLifecyclePolicyPreview",
+          "ecr:GetLifecyclePolicy",
+          "ecr:DescribeRepositories",
+          "ecr:DescribeImages",
+          "ecr:DescribeImageScanFindings",
+        ]
+        Effect   = "Allow"
+        Resource = "*"
+      },
+      {
+        Action = [
           "logs:CreateLogGroup",
           "logs:CreateLogStream",
           "logs:PutLogEvents"
@@ -43,7 +61,7 @@ resource "aws_iam_role_policy" "lambda_index_policy" {
         Effect = "Allow"
         Resource = [
           module.google_api_key_ssm_parameter.ssm_parameter_arn,
-          module.strapi_api_key_ssm_parameter.ssm_parameter_name
+          module.strapi_api_key_ssm_parameter.ssm_parameter_arn,
         ]
       },
       {
@@ -73,9 +91,8 @@ resource "aws_iam_role_policy" "lambda_index_policy" {
 resource "aws_lambda_function" "chatbot_index_lambda" {
   function_name = "${local.prefix}-index-lambda"
   description   = "Lambda function for indexing chatbot data."
-  runtime       = "python3.9"
-  filename      = "./lambda-hello-python/lambda.zip" # <-- Add or update this line
-  handler       = "index.lambda_handler"
+  image_uri     = "${module.ecr["index"].repository_url}:latest"
+  package_type  = "Image"
 
   timeout       = 120 # 2 minutes
   memory_size   = 1024
@@ -107,7 +124,7 @@ resource "aws_lambda_function" "chatbot_index_lambda" {
 
   lifecycle {
     ignore_changes = [
-      "filename",
+      "image_uri",
     ]
   }
 }
