@@ -47,7 +47,7 @@ services:
     build:
       context: ../../chatbot-index
       dockerfile: ../chatbot-index/docker/lambda.Dockerfile
-    env_file: ../.env.local
+    env_file: ../../chatbot-index/.env.local
     environment:
       - PYTHONPATH=/var/task
     ports:
