@@ -60,7 +60,7 @@ resource "aws_iam_role_policy" "lambda_evaluate_policy" {
           "s3:GetObject",
           "s3:ListBucket"
         ]
-        Effect   = "Allow"
+        Effect = "Allow"
         Resource = [
           "arn:aws:s3:::${var.s3_bucket_name_static_content}/*",
           "arn:aws:s3:::${var.s3_bucket_name_static_content}"
@@ -72,9 +72,10 @@ resource "aws_iam_role_policy" "lambda_evaluate_policy" {
 
 resource "aws_lambda_function" "chatbot_index_lambda" {
   function_name = "${local.prefix}-index-lambda"
-  description   = "Lambda responsible injecting messages into langfuse"
-
-  package_type = "zip"
+  description   = "Lambda function for indexing chatbot data."
+  runtime       = "python3.9"
+  filename      = "./lambda-hello-python/lambda.zip" # <-- Add or update this line
+  handler       = "index.lambda_handler"
 
   timeout       = 120 # 2 minutes
   memory_size   = 1024
@@ -83,19 +84,19 @@ resource "aws_lambda_function" "chatbot_index_lambda" {
 
   environment {
     variables = {
-      CHB_AWS_SSM_GOOGLE_API_KEY      = module.google_api_key_ssm_parameter.ssm_parameter_name
+      CHB_AWS_SSM_GOOGLE_API_KEY         = module.google_api_key_ssm_parameter.ssm_parameter_name
       CHB_AWS_SSM_GOOGLE_SERVICE_ACCOUNT = module.google_service_account.ssm_parameter_name
-      CHB_AWS_SSM_STRAPI_API_KEY      = module.strapi_api_key.ssm_parameter_name
-      CHB_STRAPI_API_KEY              = module.strapi_api_key.ssm_parameter_name
-      CHB_EMBED_BATCH_SIZE            = 100
-      CHB_EMBEDDING_DIM               = 768
-      CHB_EMBED_MODEL_ID              = var.models.embeddings
-      CHB_MODEL_MAXTOKENS             = 768
-      CHB_MODEL_ID                    = var.models.generation
-      CHB_PROVIDER                    = var.models.provider
+      #CHB_AWS_SSM_STRAPI_API_KEY      = module.strapi_api_key.ssm_parameter_name
+      #CHB_STRAPI_API_KEY              = module.strapi_api_key.ssm_parameter_name
+      CHB_EMBED_BATCH_SIZE                  = 100
+      CHB_EMBEDDING_DIM                     = 768
+      CHB_EMBED_MODEL_ID                    = var.models.embeddings
+      CHB_MODEL_MAXTOKENS                   = 768
+      CHB_MODEL_ID                          = var.models.generation
+      CHB_PROVIDER                          = var.models.provider
       CHB_AWS_S3_BUCKET_NAME_STATIC_CONTENT = var.s3_bucket_name_static_content
-      CHB_REDIS_URL                   = "redis://${module.nlb.dns_name}:${var.ecs_redis.port}"
-      CHB_WEBSITE_URL                 = "https://${var.dns_domain_name}"
+      CHB_REDIS_URL                         = "redis://${module.nlb.dns_name}:${var.ecs_redis.port}"
+      CHB_WEBSITE_URL                       = "https://${var.dns_domain_name}"
     }
   }
 
@@ -106,7 +107,7 @@ resource "aws_lambda_function" "chatbot_index_lambda" {
 
   lifecycle {
     ignore_changes = [
-      "TODO"
+      "filename",
     ]
   }
 }
