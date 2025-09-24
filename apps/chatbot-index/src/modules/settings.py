@@ -44,6 +44,7 @@ class ChatbotSettings(BaseSettings):
     max_tokens: int = os.getenv("CHB_MODEL_MAXTOKENS", "2048")
     model_id: str = os.getenv("CHB_MODEL_ID", "gemini-2.5-flash-lite")
     provider: str = os.getenv("CHB_PROVIDER", "google")
+    temperature_rag: float = float(os.getenv("CHB_MODEL_TEMPERATURE", "0.3"))
 
     # vector index and docs params
     chunk_overlap: int = PARAMS["vector_index"]["chunk_overlap"]
