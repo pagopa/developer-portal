@@ -82,7 +82,7 @@ def build_index_redis() -> VectorStoreIndex:
     LOGGER.info("Storing vector index in Redis..")
 
     documents = get_documents()
-    LOGGER.info(f"Creating index {Settings.index_id} ...")
+    LOGGER.info(f"Creating index {SETTINGS.index_id} ...")
     nodes = Settings.node_parser.get_nodes_from_documents(documents)
 
     redis_vector_store = RedisVectorStore(
@@ -99,7 +99,7 @@ def build_index_redis() -> VectorStoreIndex:
     storage_context.docstore.add_documents(nodes)
 
     index = VectorStoreIndex(nodes, storage_context=storage_context)
-    index.set_index_id(Settings.index_id)
+    index.set_index_id(SETTINGS.index_id)
     LOGGER.info("Created vector index successfully and stored on Redis.")
 
     return index
@@ -148,9 +148,8 @@ class DiscoveryVectorIndex:
         index = load_index_redis()
         if index is None:
             LOGGER.warning(
-                f"Index {SETTINGS.index_id} not found in Redis. Creating a new one..."
+                f"Index {SETTINGS.index_id} not found in Redis. You should create one."
             )
-            raise ValueError("Index ID not found in Redis.")
         return index
 
     def create_index(self) -> VectorStoreIndex:

@@ -1,5 +1,5 @@
 import os
-import json
+import boto3
 import yaml
 from pathlib import Path
 from pydantic_settings import BaseSettings
@@ -10,22 +10,18 @@ from src.modules.utils import get_ssm_parameter
 CWF = Path(__file__)
 ROOT = CWF.parent.parent.parent.absolute().__str__()
 PARAMS = yaml.safe_load(open(os.path.join(ROOT, "config", "params.yaml"), "r"))
+AWS_SESSION = boto3.Session(
+    aws_access_key_id=os.getenv("AWS_ACCESS_KEY_ID"),
+    aws_secret_access_key=os.getenv("AWS_SECRET_ACCESS_KEY"),
+    region_name=os.getenv("AWS_DEFAULT_REGION", "eu-south-1"),
+)
 
 
 class ChatbotSettings(BaseSettings):
     """Settings for the chatbot application."""
 
     # api keys
-    aws_access_key_id: str = os.getenv(
-        "AWS_ACCESS_KEY_ID", os.getenv("CHB_AWS_ACCESS_KEY_ID")
-    )
-    aws_default_region: str = os.getenv(
-        "AWS_REGION", os.getenv("CHB_AWS_DEFAULT_REGION")
-    )
-    aws_endpoint_url: str | None = os.getenv("CHB_AWS_SSM_ENDPOINT_URL")
-    aws_secret_access_key: str = os.getenv(
-        "AWS_SECRET_ACCESS_KEY", os.getenv("CHB_AWS_SECRET_ACCESS_KEY")
-    )
+    # aws_endpoint_url: str | None = os.getenv("CHB_AWS_SSM_ENDPOINT_URL")
     google_api_key: str = get_ssm_parameter(
         name=os.getenv("CHB_AWS_SSM_GOOGLE_API_KEY"),
         default=os.getenv("CHB_AWS_GOOGLE_API_KEY"),
