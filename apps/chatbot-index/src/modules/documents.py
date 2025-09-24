@@ -421,6 +421,7 @@ def get_dynamic_docs(dynamic_urls: List[dict]) -> List[Document]:
     ):
         url = item["url"]
         lastmod = item["lastmod"]
+        driver = None
         try:
             driver = webdriver.Chrome(options=driver_options, service=driver_service)
             driver.get(url)
