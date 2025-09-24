@@ -20,9 +20,9 @@ resource "aws_iam_role" "lambda_index_role" {
   })
 }
 
-resource "aws_iam_role_policy" "lambda_evaluate_policy" {
-  name = "${local.prefix}-evaluate-lambda"
-  role = aws_iam_role.lambda_evaluate_role.id
+resource "aws_iam_role_policy" "lambda_index_policy" {
+  name = "${local.prefix}-index-lambda"
+  role = aws_iam_role.lambda_index_role.id
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
