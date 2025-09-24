@@ -10,14 +10,6 @@ from src.modules.utils import get_ssm_parameter
 CWF = Path(__file__)
 ROOT = CWF.parent.parent.parent.absolute().__str__()
 PARAMS = yaml.safe_load(open(os.path.join(ROOT, "config", "params.yaml"), "r"))
-GOOGLE_SERVICE_ACCOUNT = get_ssm_parameter(
-    os.getenv("CHB_AWS_SSM_GOOGLE_SERVICE_ACCOUNT")
-)
-if GOOGLE_SERVICE_ACCOUNT is None:
-    with open(os.path.join(ROOT, ".google_service_account.json"), "r") as file:
-        GOOGLE_JSON_ACCOUNT_INFO = json.load(file)
-else:
-    GOOGLE_JSON_ACCOUNT_INFO = json.loads(GOOGLE_SERVICE_ACCOUNT)
 
 
 class ChatbotSettings(BaseSettings):
@@ -38,7 +30,6 @@ class ChatbotSettings(BaseSettings):
         name=os.getenv("CHB_AWS_SSM_GOOGLE_API_KEY"),
         default=os.getenv("CHB_AWS_GOOGLE_API_KEY"),
     )
-    google_service_account: dict = GOOGLE_JSON_ACCOUNT_INFO
     strapi_api_key: str = get_ssm_parameter(
         os.getenv("CHB_AWS_SSM_STRAPI_API_KEY"), os.getenv("CHB_STRAPI_API_KEY", "")
     )
@@ -50,7 +41,7 @@ class ChatbotSettings(BaseSettings):
     embed_retry_min_seconds_docs: float = 1.5
     embed_retries_docs: int = 30
     embed_task_docs: str = "RETRIEVAL_DOCUMENT"
-    max_tokens: int = os.getenv("CHB_MODEL_MAXTOKENS", "768")
+    max_tokens: int = os.getenv("CHB_MODEL_MAXTOKENS", "2048")
     model_id: str = os.getenv("CHB_MODEL_ID", "gemini-2.5-flash-lite")
     provider: str = os.getenv("CHB_PROVIDER", "google")
 
