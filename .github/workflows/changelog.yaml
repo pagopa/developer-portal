@@ -47,4 +47,4 @@ jobs:
           createGithubReleases: false
           setupGitUser: false
         env:
-          GITHUB_TOKEN: ${{ secrets.TAG_GITHUB_PAT }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
