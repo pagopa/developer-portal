@@ -1,12 +1,12 @@
-name: Deploy Lambda evaluate
+name: Deploy Lambda Chatbot index
 
 on:
   push:
     branches:
       - "main"
     paths:
-      - 'apps/chatbot-evaluate/**'
-      - '.github/workflows/deploy_lambda_evaluate.yaml'
+      - 'apps/chatbot-index/**'
+      - '.github/workflows/deploy_lambda_chatbot_index.yaml'
   workflow_dispatch:
     inputs:
       environment:
@@ -44,7 +44,7 @@ jobs:
           echo "matrix=$matrixStringifiedObject" >> $GITHUB_OUTPUT
     
   deploy:
-    name: Deploy lambda monitor ${{ matrix.environment }}
+    name: Deploy lambda chatbot index ${{ matrix.environment }}
     if: ${{ needs.setup.outputs.matrix != '' }}
     runs-on: ubuntu-24.04
     needs: [ setup ]
@@ -86,19 +86,19 @@ jobs:
         uses: docker/build-push-action@4a13e500e55cf31b7a5d59a38ab2040ab0f42f56 # v5.1.0
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: evaluate
+          ECR_REPOSITORY: chatbot-index
           IMAGE_TAG: ${{ github.sha }}
         with:
-            context: apps/chatbot-evaluate
-            file: apps/chatbot-evaluate/docker/lambda.Dockerfile
+            context: apps/chatbot-index
+            file: apps/chatbot-index/docker/lambda.Dockerfile
             push: true
-            tags: ${{ env.ECR_REGISTRY }}/evaluate:${{ env.IMAGE_TAG }}
+            tags: ${{ env.ECR_REGISTRY }}/chatbot-index:${{ env.IMAGE_TAG }}
             provenance: false
 
       - name: AWS set lambda function image
         env:
-            LAMBDA_NAME: chatbot-${{ matrix.environment }}-evaluate-lambda
+            LAMBDA_NAME: chatbot-${{ matrix.environment }}-index-lambda
         run: |
             aws lambda update-function-code \
             --function-name ${{ env.LAMBDA_NAME }} \
-            --image-uri ${{ steps.login-ecr.outputs.registry }}/evaluate:${{ github.sha }}
+            --image-uri ${{ steps.login-ecr.outputs.registry }}/chatbot-index:${{ github.sha }}
