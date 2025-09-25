@@ -46,7 +46,7 @@ services:
   refresh-index:
     build:
       context: ../../chatbot-index
-      dockerfile: ../chatbot-index/docker/lambda.Dockerfile
+      dockerfile: ../chatbot-index/docker/lambda_refresh_index.Dockerfile
     env_file: ../../chatbot-index/.env.local
     environment:
       - PYTHONPATH=/var/task
@@ -68,7 +68,7 @@ services:
   create-index:
     build:
       context: ../../chatbot-index
-      dockerfile: ../chatbot-index/docker/lambda.Dockerfile
+      dockerfile: ../chatbot-index/docker/lambda_create_index.Dockerfile
     env_file: ../../chatbot-index/.env.local
     environment:
       - PYTHONPATH=/var/task
