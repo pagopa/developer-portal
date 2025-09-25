@@ -1,16 +1,69 @@
 import os
+import boto3
 import json
 import yaml
 from pathlib import Path
 from pydantic_settings import BaseSettings
 
-from src.modules.utils import get_ssm_parameter
+from src.modules.logger import get_logger
 
 
+LOGGER = get_logger(__name__)
 CWF = Path(__file__)
 ROOT = CWF.parent.parent.parent.absolute().__str__()
 PARAMS = yaml.safe_load(open(os.path.join(ROOT, "config", "params.yaml"), "r"))
 PROMPTS = yaml.safe_load(open(os.path.join(ROOT, "config", "prompts.yaml"), "r"))
+AWS_SESSION = boto3.Session(
+    aws_access_key_id=os.getenv("AWS_ACCESS_KEY_ID"),
+    aws_secret_access_key=os.getenv("AWS_SECRET_ACCESS_KEY"),
+    region_name=os.getenv("AWS_DEFAULT_REGION", "eu-south-1"),
+)
+SSM_CLIENT = boto3.client("ssm")
+
+
+def get_ssm_parameter(name: str | None, default: str | None = None) -> str | None:
+    """
+    Retrieves a specific value from AWS Systems Manager's Parameter Store.
+
+    :param name: The name of the parameter to retrieve.
+    :param default: The default value to return if the parameter is not found.
+    :return: The value of the requested parameter.
+    """
+
+    LOGGER.info(f"get_ssm_parameter {name}...")
+
+    if name is None:
+        name = "/none/param"
+    try:
+        # Get the requested parameter
+        response = SSM_CLIENT.get_parameter(Name=name, WithDecryption=True)
+        value = response["Parameter"]["Value"]
+    except SSM_CLIENT.exceptions.ParameterNotFound:
+        LOGGER.warning(
+            f"Parameter {name} not found in SSM, returning default: {default}"
+        )
+        return default
+
+    return value
+
+
+def put_ssm_parameter(name: str, value: str) -> None:
+    """
+    Puts a specific value into AWS Systems Manager's Parameter Store.
+    :param name: The name of the parameter to put.
+    :param value: The value to store in the parameter.
+    """
+
+    LOGGER.debug(f"Putting parameter {name} to SSM")
+    try:
+        SSM_CLIENT.put_parameter(
+            Name=name,
+            Value=value,
+            Type="String",
+            Overwrite=True,
+        )
+    except Exception as e:
+        LOGGER.error(e)
 
 
 GOOGLE_SERVICE_ACCOUNT = get_ssm_parameter(
@@ -59,12 +112,11 @@ class ChatbotSettings(BaseSettings):
     embed_batch_size: int = int(os.getenv("CHB_EMBED_BATCH_SIZE", "100"))
     embed_dim: int = int(os.getenv("CHB_EMBEDDING_DIM", "768"))
     embed_model_id: str = os.getenv("CHB_EMBED_MODEL_ID", "gemini-embedding-001")
-    embed_retry_min_seconds_docs: float = 1.5
-    embed_retry_min_seconds_qa: float = 1
-    embed_retries_docs: int = 30
-    embed_retries_qa: int = 3
-    embed_task_docs: str = "RETRIEVAL_DOCUMENT"
-    embed_task_qa: str = "RETRIEVAL_QUERY"
+    embed_retries: int = int(os.getenv("CHB_EMBED_RETRIES", "3"))
+    embed_retry_min_seconds: float = float(
+        os.getenv("CHB_EMBED_RETRY_MIN_SECONDS", "1")
+    )
+    embed_task: str = "RETRIEVAL_QUERY"
     max_tokens: int = os.getenv("CHB_MODEL_MAXTOKENS", "2048")
     model_id: str = os.getenv("CHB_MODEL_ID", "gemini-2.5-flash-lite")
     provider: str = os.getenv("CHB_PROVIDER", "google")
