@@ -16,7 +16,7 @@ AWS_SESSION = boto3.Session(
     aws_secret_access_key=os.getenv("AWS_SECRET_ACCESS_KEY"),
     region_name=os.getenv("AWS_REGION", "eu-south-1"),
 )
-SSM_CLIENT = boto3.client("ssm")
+SSM_CLIENT = AWS_SESSION.client("ssm")
 
 
 def get_ssm_parameter(name: str | None, default: str | None = None) -> str | None:
