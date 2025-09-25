@@ -34,6 +34,10 @@ class ChatbotSettings(BaseSettings):
     embed_batch_size: int = int(os.getenv("CHB_EMBED_BATCH_SIZE", "100"))
     embed_dim: int = int(os.getenv("CHB_EMBEDDING_DIM", "768"))
     embed_model_id: str = os.getenv("CHB_EMBED_MODEL_ID", "gemini-embedding-001")
+    embed_retries: int = int(os.getenv("CHB_EMBED_RETRIES", "30"))
+    embed_retry_min_seconds: float = float(
+        os.getenv("CHB_EMBED_RETRY_MIN_SECONDS", "1.5")
+    )
     embed_task_docs: str = "RETRIEVAL_DOCUMENT"
     max_tokens: int = os.getenv("CHB_MODEL_MAXTOKENS", "2048")
     model_id: str = os.getenv("CHB_MODEL_ID", "gemini-2.5-flash-lite")

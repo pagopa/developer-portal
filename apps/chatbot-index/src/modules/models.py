@@ -66,8 +66,8 @@ def get_embed_model(
     embed_batch_size: int | None = None,
     embed_dim: int | None = None,
     task_type: str | None = None,
-    retries: int = 30,
-    retry_min_seconds: float = 1.5,
+    retries: int | None = None,
+    retry_min_seconds: float | None = None,
 ) -> BaseEmbedding:
     """
     Returns an instance of the embedding model based on the provider specified in the environment variable.
@@ -88,6 +88,8 @@ def get_embed_model(
     embed_batch_size = embed_batch_size or SETTINGS.embed_batch_size
     embed_dim = embed_dim or SETTINGS.embed_dim
     task_type = task_type or SETTINGS.embed_task_docs
+    retries = retries or SETTINGS.embed_retries
+    retry_min_seconds = retry_min_seconds or SETTINGS.embed_retry_min_seconds
 
     if provider == "google":
         from llama_index.embeddings.google_genai import GoogleGenAIEmbedding
