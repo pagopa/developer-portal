@@ -34,4 +34,4 @@ RUN poetry install
 
 COPY ./ ${LAMBDA_TASK_ROOT}/
 
-CMD ["src.lambda_function.lambda_handler"]
+CMD ["src.lambda_refresh_index.lambda_handler"]
