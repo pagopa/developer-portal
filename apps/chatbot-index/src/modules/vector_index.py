@@ -17,6 +17,7 @@ from llama_index.vector_stores.redis import RedisVectorStore
 from redis import Redis
 import redis.asyncio as aredis
 from redisvl.schema import IndexSchema
+from tqdm import tqdm
 
 from src.modules.logger import get_logger
 from src.modules.documents import (
@@ -72,17 +73,21 @@ Settings.node_parser = SentenceSplitter(
 )
 
 
-def build_index_redis() -> VectorStoreIndex:
+def build_index_redis(clean_redis: bool = True) -> VectorStoreIndex:
     """
     Builds a new vector index and stores it in Redis.
     Returns:
         VectorStoreIndex: The newly created vector store index.
     """
 
-    LOGGER.info("Storing vector index in Redis..")
+    if clean_redis:
+        file_keys = REDIS_CLIENT.keys("*")
+        for key in tqdm(REDIS_CLIENT.scan_iter(), total=len(file_keys)):
+            REDIS_CLIENT.delete(key)
+        LOGGER.info("Redis is now empty.")
 
     documents = get_documents()
-    LOGGER.info(f"Creating index {SETTINGS.index_id} ...")
+
     nodes = Settings.node_parser.get_nodes_from_documents(documents)
 
     redis_vector_store = RedisVectorStore(
@@ -98,9 +103,12 @@ def build_index_redis() -> VectorStoreIndex:
     )
     storage_context.docstore.add_documents(nodes)
 
+    LOGGER.info(f"Creating vector index: {SETTINGS.index_id} ...")
     index = VectorStoreIndex(nodes, storage_context=storage_context)
     index.set_index_id(SETTINGS.index_id)
-    LOGGER.info("Created vector index successfully and stored on Redis.")
+    LOGGER.info(
+        f"{SETTINGS.index_id} has been created successfully and stored in Redis."
+    )
 
     return index
 
@@ -112,8 +120,7 @@ def load_index_redis() -> VectorStoreIndex:
         VectorStoreIndex: The loaded vector store index.
     """
 
-    if SETTINGS.index_id:
-
+    try:
         redis_vector_store = RedisVectorStore(
             redis_client=REDIS_CLIENT, overwrite=False, schema=REDIS_SCHEMA
         )
@@ -128,20 +135,16 @@ def load_index_redis() -> VectorStoreIndex:
         index = load_index_from_storage(
             storage_context=storage_context, index_id=SETTINGS.index_id
         )
-
+        LOGGER.info(f"Loaded index {SETTINGS.index_id} from Redis successfully.")
         return index
-    else:
-        LOGGER.error("No index_id provided.")
-        return None
+
+    except Exception as e:
+        raise ValueError(f"Error loading index from Redis: {e}")
 
 
 class DiscoveryVectorIndex:
     def __init__(self):
         self.index_id = SETTINGS.index_id
-        self.index = self.get_index()
-        self.docstore = self.index.storage_context.docstore
-        self.api_docs = get_api_docs()
-        self.static_list, self.dynamic_list = get_static_and_dynamic_lists()
 
     def get_index(self) -> VectorStoreIndex:
         """Retrieves the vector index from Redis. If not found, raises an error."""
@@ -302,6 +305,11 @@ class DiscoveryVectorIndex:
             static_docs_to_update (list[dict]): List of dictionaries containing document metadata to update.
             static_docs_ids_to_delete (list[str]): List of document IDs to delete from the index.
         """
+
+        self.index = self.get_index()
+        self.docstore = self.index.storage_context.docstore
+        self.api_docs = get_api_docs()
+        self.static_list, self.dynamic_list = get_static_and_dynamic_lists()
 
         self.refresh_index_api_docs()
         self.refresh_index_static_docs(static_docs_to_update, static_docs_ids_to_delete)
