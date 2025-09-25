@@ -6,7 +6,7 @@ on:
       - "main"
     paths:
       - 'apps/chatbot-evaluate/**'
-      - '.github/workflows/deploy_lambda_monitor.yaml'
+      - '.github/workflows/deploy_lambda_evaluate.yaml'
   workflow_dispatch:
     inputs:
       environment:
