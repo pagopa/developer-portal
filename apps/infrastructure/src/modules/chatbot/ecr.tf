@@ -7,7 +7,7 @@ locals {
       repository_name = "evaluate"
     }
     chatbotindex = {
-      repository_name = "chatbotindex"
+      repository_name = "chatbot-index"
     }
   }
 }

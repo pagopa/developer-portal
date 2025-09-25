@@ -91,10 +91,10 @@ resource "aws_iam_role_policy" "lambda_index_policy" {
 resource "aws_lambda_function" "chatbot_index_lambda" {
   function_name = "${local.prefix}-index-lambda"
   description   = "Lambda function for indexing chatbot data."
-  image_uri     = "${module.ecr["index"].repository_url}:latest"
+  image_uri     = format("%s:latest", module.ecr["chatbotindex"].repository_url)
   package_type  = "Image"
 
-  timeout       = 120 # 2 minutes
+  timeout       = 60 # 1 minute
   memory_size   = 1024
   architectures = ["x86_64"]
   role          = aws_iam_role.lambda_index_role.arn
@@ -124,7 +124,7 @@ resource "aws_lambda_function" "chatbot_index_lambda" {
 
   lifecycle {
     ignore_changes = [
-      "image_uri",
+      image_uri,
     ]
   }
 }
