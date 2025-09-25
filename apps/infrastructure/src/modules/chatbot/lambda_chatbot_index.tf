@@ -108,12 +108,15 @@ resource "aws_lambda_function" "chatbot_index_lambda" {
       CHB_EMBED_BATCH_SIZE                  = 100
       CHB_EMBEDDING_DIM                     = 768
       CHB_EMBED_MODEL_ID                    = var.models.embeddings
+      CHB_EMBED_RETRIES                     = 30
+      CHB_EMBED_RETRY_MIN_SECONDS           = 1.5
       CHB_MODEL_MAXTOKENS                   = 768
       CHB_MODEL_ID                          = var.models.generation
       CHB_PROVIDER                          = var.models.provider
       CHB_AWS_S3_BUCKET_NAME_STATIC_CONTENT = var.s3_bucket_name_static_content
       CHB_REDIS_URL                         = "redis://${module.nlb.dns_name}:${var.ecs_redis.port}"
       CHB_WEBSITE_URL                       = "https://${var.dns_domain_name}"
+
     }
   }
 
