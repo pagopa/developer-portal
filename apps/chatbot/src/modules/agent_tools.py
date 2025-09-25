@@ -3,6 +3,7 @@ import requests
 from typing import List
 
 from llama_index.core.llms.llm import LLM
+from llama_index.core.base.embeddings.base import BaseEmbedding
 from llama_index.core import VectorStoreIndex, PromptTemplate
 from llama_index.core.bridge.pydantic import BaseModel, Field
 from llama_index.core.retrievers import AutoMergingRetriever
@@ -80,6 +81,7 @@ class RAGOutput(BaseModel):
 def get_query_engine_tool(
     index: VectorStoreIndex,
     llm: LLM,
+    embed_model: BaseEmbedding,
     text_qa_template: PromptTemplate | None = None,
     refine_template: PromptTemplate | None = None,
     verbose: bool = False,
@@ -102,7 +104,7 @@ def get_query_engine_tool(
 
     base_retriever = index.as_retriever(
         similarity_top_k=SETTINGS.similarity_topk,
-        embed_model=get_embed_model(),
+        embed_model=embed_model,
     )
     retriever = AutoMergingRetriever(
         base_retriever, index.storage_context, verbose=verbose
