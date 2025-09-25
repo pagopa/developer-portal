@@ -66,8 +66,8 @@ def get_embed_model(
     embed_batch_size: int | None = None,
     embed_dim: int | None = None,
     task_type: str | None = None,
-    retries: int = 3,
-    retry_min_seconds: float = 1,
+    retries: int = 30,
+    retry_min_seconds: float = 1.5,
 ) -> BaseEmbedding:
     """
     Returns an instance of the embedding model based on the provider specified in the environment variable.
