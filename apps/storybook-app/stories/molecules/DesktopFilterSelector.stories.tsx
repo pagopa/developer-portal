@@ -1,17 +1,17 @@
 import { Meta, StoryObj } from '@storybook/nextjs';
 import { nextIntlContextDecorator } from '../next-intl-context.helper';
-import DesktopWebinarCategorySelector from 'nextjs-website/src/components/molecules/DesktopWebinarCategorySelector/DesktopWebinarCategorySelector';
-const meta: Meta<typeof DesktopWebinarCategorySelector> = {
-  title: 'Molecules/DesktopWebinarCategorySelector',
-  component: DesktopWebinarCategorySelector,
+import DesktopFilterSelector from 'nextjs-website/src/components/molecules/DesktopFilterSelector/DesktopFilterSelector';
+const meta: Meta<typeof DesktopFilterSelector> = {
+  title: 'Molecules/DesktopFilterSelector',
+  component: DesktopFilterSelector,
 };
 
 export default meta;
 
-export const Showcase: StoryObj<typeof DesktopWebinarCategorySelector> = {
+export const Showcase: StoryObj<typeof DesktopFilterSelector> = {
   args: {
-    selectedWebinarCategory: 0,
-    webinarCategories: [
+    selectedFilter: 0,
+    selectorFilters: [
       {
         name: 'Tutti',
         icon: {
