@@ -1,5 +1,17 @@
 # gitbook-docs
 
+## 1.1.0
+
+### Minor Changes
+
+- 8e23e7f: Update generate metadata script to add synced response in S3 for solutions and release note
+
+### Patch Changes
+
+- 36db54a: Update storybook version, fix issues with update
+- 808b26b: Fix synced response urls with correct populate
+- 7058218: Fix UrlParsingItem type
+
 ## 1.0.2
 
 ### Patch Changes
