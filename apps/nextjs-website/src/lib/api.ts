@@ -1,13 +1,11 @@
 import { Product } from './types/product';
 import { Webinar } from '@/lib/types/webinar';
-import { GuidePage } from './types/guideData';
 import {
   getApiDataListPagesProps,
   getApiDataProps,
   getCaseHistoriesProps,
   getGuideListPagesProps,
   getGuidePageProps,
-  getGuideProps,
   getOverviewsProps,
   getProductsProps,
   getQuickStartGuidesProps,
@@ -17,6 +15,7 @@ import {
   getSolutionsProps,
   getTutorialListPagesProps,
   getTutorialsProps,
+  getUseCasesProps,
   getWebinarsProps,
 } from './cmsApi';
 import { parseS3GuidePage } from '@/helpers/parseS3Doc.helpers';
@@ -137,6 +136,7 @@ export async function getTutorial(
   };
 }
 
+// TODO: remove? No longer used.
 export async function getTutorialPaths() {
   const tutorialsFromCMS = await getTutorialsProps();
   const tutorialPathsFromCMS = tutorialsFromCMS.map(({ path }) => ({
@@ -279,4 +279,22 @@ export async function getSolutionDetail(
         path === `/solutions/${solutionSlug}/${solutionSubPathSlugs.join('/')}`
     )
   );
+}
+
+export async function getUseCase(
+  productSlug: string,
+  productUseCasePage?: ReadonlyArray<string>
+) {
+  const useCaseSubPath = productUseCasePage?.join('/');
+  const useCasePath = `/${productSlug}/use-cases/${useCaseSubPath}`;
+
+  const product = await getProduct(productSlug);
+
+  const props = manageUndefined(
+    (await getUseCasesProps()).find(({ path }) => path === useCasePath)
+  );
+  return {
+    ...props,
+    product,
+  };
 }

@@ -40,6 +40,7 @@ export type StrapiProductRelations = {
   readonly tutorial_list_page: StrapiComponent<Id | undefined>;
   readonly guide_list_page: StrapiComponent<Id | undefined>;
   readonly release_note: StrapiComponent<Id | undefined>;
+  readonly use_case_list_page: StrapiComponent<Id | undefined>;
 };
 
 export type StrapiBaseProductWithRelations = StrapiBaseProduct & {
