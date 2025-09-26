@@ -1,13 +1,17 @@
+from llama_index.core.llms.llm import LLM
+from llama_index.core.base.embeddings.base import BaseEmbedding
 from llama_index.core import VectorStoreIndex, PromptTemplate
 from llama_index.core.agent.workflow import ReActAgent
 
 from src.modules.settings import SETTINGS
-from src.modules.models import get_llm
+from src.modules.models import get_llm, get_embed_model
 from src.modules.agent_tools import get_query_engine_tool, get_identity_tool
 
 
 def get_agent(
     index: VectorStoreIndex,
+    llm: LLM | None = None,
+    embed_model: BaseEmbedding | None = None,
     text_qa_template: PromptTemplate | None = None,
     refine_template: PromptTemplate | None = None,
 ) -> ReActAgent:
@@ -20,7 +24,8 @@ def get_agent(
 
     query_engine_tool = get_query_engine_tool(
         index=index,
-        llm=get_llm(),
+        llm=llm if llm else get_llm(),
+        embed_model=embed_model if embed_model else get_embed_model(),
         text_qa_template=text_qa_template,
         refine_template=refine_template,
     )

@@ -11,23 +11,18 @@ import html2text
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from urllib.parse import quote
-from typing import List, Tuple
+from typing import Tuple, List, Dict
 import xml.etree.ElementTree as ET
 
 from llama_index.core import Document
 
 from src.modules.logger import get_logger
-from src.modules.settings import SETTINGS
+from src.modules.settings import SETTINGS, AWS_SESSION
 
 
 logging.getLogger("botocore").setLevel(logging.ERROR)
 LOGGER = get_logger(__name__)
-AWS_S3_CLIENT = boto3.client(
-    "s3",
-    aws_access_key_id=os.getenv("CHB_AWS_ACCESS_KEY_ID"),
-    aws_secret_access_key=os.getenv("CHB_AWS_SECRET_ACCESS_KEY"),
-    region_name=os.getenv("CHB_AWS_DEFAULT_REGION"),
-)
+AWS_S3_CLIENT = AWS_SESSION.client("s3")
 
 
 def remove_figure_blocks(md_text):
@@ -111,13 +106,13 @@ def filter_urls(urls: List[str], website_url: str | None = None) -> List[str]:
     return filtered_urls
 
 
-def get_sitemap_urls(website_url: str | None = None) -> List[str]:
+def get_sitemap_urls(website_url: str | None = None) -> List[Dict[str, str]]:
     """
     Fetches URLs from a sitemap XML file.
     Args:
         sitemap_url (str): The URL of the sitemap XML file. If None, uses the default WEBSITE_URL.
     Returns:
-        List[str]: A list of URLs extracted from the sitemap.
+        List[Dict[str, str]]: A list of dictionaries containing URLs and their last modified dates.
     """
 
     if website_url is None:
@@ -263,7 +258,7 @@ def read_api_url(url: str) -> str:
         )
 
 
-def get_api_docs(website_url: str | None = None) -> list:
+def get_api_docs(website_url: str | None = None) -> List[Document]:
     """
     Creates API documentation in Markdown format from the provided API data.
 
@@ -308,15 +303,15 @@ def get_api_docs(website_url: str | None = None) -> list:
 
 def get_static_and_dynamic_lists(
     website_url: str | None = None,
-) -> Tuple[List[dict], List[str]]:
+) -> Tuple[List[dict], List[dict]]:
     """
     Fetches static and dynamic URLs from the sitemap and metadata files.
     Args:
         website_url (str | None): The base URL of the website. If None, uses the default WEBSITE_URL.
     Returns:
-        Tuple[List[dict], List[str]]: A tuple containing two lists:
+        Tuple[List[dict], List[dict]]: A tuple containing two lists:
             - A list of dictionaries with static URLs and their S3 file paths.
-            - A list of dynamic URLs.
+            - A list of dictionaries with dynamic URLs and their last modified dates.
     """
 
     sitemap = get_sitemap_urls(website_url)
@@ -348,9 +343,16 @@ def get_static_and_dynamic_lists(
                 )
 
         static_urls_list = [url["url"] for url in static_urls]
-        for url in filtered_urls:
-            if url not in static_urls_list:
-                dynamic_urls.append(url)
+        for item in sitemap:
+            url = item["url"]
+            lastmod = item["lastmod"]
+            if url in filtered_urls and url not in static_urls_list:
+                dynamic_urls.append(
+                    {
+                        "url": url,
+                        "lastmod": lastmod,
+                    }
+                )
 
     LOGGER.info(
         f"Found {len(static_urls)} static URLs and {len(dynamic_urls)} dynamic URLs."
@@ -379,7 +381,7 @@ def get_static_docs(static_urls: List[dict]) -> List[Document]:
 
         static_docs.append(
             Document(
-                id_=url.replace(SETTINGS.website_url, ""),
+                id_=item["s3_file_path"],
                 text=text,
                 metadata={
                     "filepath": url.replace(SETTINGS.website_url, ""),
@@ -392,7 +394,7 @@ def get_static_docs(static_urls: List[dict]) -> List[Document]:
     return static_docs
 
 
-def get_dynamic_docs(dynamic_urls: List[str]) -> List[Document]:
+def get_dynamic_docs(dynamic_urls: List[dict]) -> List[Document]:
     """
     Fetches dynamic documents from the provided URLs using Selenium.
     Args:
@@ -414,9 +416,12 @@ def get_dynamic_docs(dynamic_urls: List[str]) -> List[Document]:
     dynamic_docs = []
     discarded_docs = 0
 
-    for url in tqdm.tqdm(
+    for item in tqdm.tqdm(
         dynamic_urls, total=len(dynamic_urls), desc="Getting dynamic documents"
     ):
+        url = item["url"]
+        lastmod = item["lastmod"]
+        driver = None
         try:
             driver = webdriver.Chrome(options=driver_options, service=driver_service)
             driver.get(url)
@@ -435,8 +440,9 @@ def get_dynamic_docs(dynamic_urls: List[str]) -> List[Document]:
                         text=text,
                         metadata={
                             "filepath": url.replace(SETTINGS.website_url, ""),
-                            "title": title,
                             "language": "it",
+                            "lastmod": lastmod,
+                            "title": title,
                         },
                     )
                 )

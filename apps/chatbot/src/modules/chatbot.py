@@ -66,6 +66,8 @@ class Chatbot:
         )
         self.agent = get_agent(
             index=self.index,
+            llm=self.model,
+            embed_model=self.embed_model,
             text_qa_template=self.qa_prompt_tmpl,
             refine_template=self.ref_prompt_tmpl,
         )
