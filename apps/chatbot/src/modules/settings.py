@@ -1,3 +1,4 @@
+import boto3
 import os
 import json
 import yaml
@@ -10,6 +11,11 @@ CWF = Path(__file__)
 ROOT = CWF.parent.parent.parent.absolute().__str__()
 PARAMS = yaml.safe_load(open(os.path.join(ROOT, "config", "params.yaml"), "r"))
 PROMPTS = yaml.safe_load(open(os.path.join(ROOT, "config", "prompts.yaml"), "r"))
+AWS_SESSION = boto3.Session(
+    aws_access_key_id=os.getenv("AWS_ACCESS_KEY_ID"),
+    aws_secret_access_key=os.getenv("AWS_SECRET_ACCESS_KEY"),
+    region_name=os.getenv("AWS_REGION"),
+)
 
 
 GOOGLE_SERVICE_ACCOUNT = get_ssm_parameter(
@@ -26,6 +32,8 @@ class ChatbotSettings(BaseSettings):
     """Settings for the chatbot application."""
 
     # api keys
+    aws_region: str = os.getenv("AWS_REGION", "us-east-1")
+    auth_cognito_userpool_id: str = os.getenv("AUTH_COGNITO_USERPOOL_ID", "")
     google_api_key: str = get_ssm_parameter(
         name=os.getenv("CHB_AWS_SSM_GOOGLE_API_KEY"),
         default=os.getenv("CHB_AWS_GOOGLE_API_KEY"),

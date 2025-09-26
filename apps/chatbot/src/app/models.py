@@ -1,9 +1,9 @@
-import boto3
 import os
 
 from decimal import Decimal
 from pydantic import BaseModel, Field
 from typing import List
+from src.modules.settings import SETTINGS
 
 
 class QueryFromThePast(BaseModel):
@@ -29,21 +29,7 @@ class QueryFeedback(BaseModel):
     feedback: Feedback | None = None
 
 
-AWS_DEFAULT_REGION = os.getenv(
-    'CHB_AWS_DEFAULT_REGION',
-    os.getenv('AWS_DEFAULT_REGION', None)
-)
-
-
-boto3_session = boto3.session.Session(
-  region_name=AWS_DEFAULT_REGION
-)
-
-# endpoint_url is set by AWS_ENDPOINT_URL_DYNAMODB
-dynamodb = boto3_session.resource(
-    'dynamodb',
-    region_name=AWS_DEFAULT_REGION
-)
+dynamodb = SETTINGS.AWS_SESSION.resource("dynamodb")
 
 
 tables = {
@@ -53,7 +39,5 @@ tables = {
     "sessions": dynamodb.Table(
         f"{os.getenv('CHB_QUERY_TABLE_PREFIX', 'chatbot')}-sessions"
     ),
-    "salts": dynamodb.Table(
-        f"{os.getenv('CHB_QUERY_TABLE_PREFIX', 'chatbot')}-salts"
-    )
+    "salts": dynamodb.Table(f"{os.getenv('CHB_QUERY_TABLE_PREFIX', 'chatbot')}-salts"),
 }
