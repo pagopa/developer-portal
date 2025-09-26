@@ -26,6 +26,7 @@ export const strapiReleaseNotes: StrapiReleaseNotes = {
               guide_list_page: { data: { id: 0 } },
               tutorial_list_page: { data: { id: 0 } },
               release_note: { data: { id: 0 } },
+              use_case_list_page: { data: { id: 0 } },
             },
           },
         },
