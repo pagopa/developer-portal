@@ -1,5 +1,22 @@
 # infrastructure
 
+## 3.1.0
+
+### Minor Changes
+
+- c9dfb90: Fix lost configuration with gemini models 2.5
+- 3010e2b: Update github action Sync gitdocs to allow to invalidate opennext cloudfront cache invalidation
+- f0eafcf: Lambda evaluate errors alarm
+- c2ff087: Increased the lambda evaluate timeout from 30 sec to 120 sec
+- 9aa6e49: Update lambda runtime from 20 to 22 lambda(s) opennext
+- a9113ff: Update lambda functions deprecated runtime
+- c896c5f: Refactort and renamed website cloudwatch dashboard.
+- ad03523: Fix permissions in static content s3 bucket that allows to list content through cloudfront.
+
+### Patch Changes
+
+- dc43c81: add dynamodb TTL
+
 ## 3.0.0
 
 ### Major Changes
