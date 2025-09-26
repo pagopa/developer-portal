@@ -8,8 +8,6 @@ services:
     env_file: ../.env.test
     volumes:
       - ..:/app
-      # - ./files/.aws:/root/.aws
-      - ./files/nextjs-website/out:/app/build-devp/out
     depends_on:
       motoserver:
         condition: service_started
@@ -34,6 +32,8 @@ services:
 
   redis-test:
     image: redis/redis-stack:7.2.0-v13
+    volumes:
+      - ./files/redis-dump.rdb:/data/dump.rdb
     networks:
       - ntwtest
 
