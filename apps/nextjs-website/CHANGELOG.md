@@ -1,5 +1,16 @@
 # nextjs-website
 
+## 9.0.0
+
+### Major Changes
+
+- ebe435f: Add filters to tutorial list page
+
+### Minor Changes
+
+- 7d819f7: Rename and generalize Filter Selectors
+- bacb9be: Add flag to toggle filters in tutorials list page
+
 ## 8.6.0
 
 ### Minor Changes
