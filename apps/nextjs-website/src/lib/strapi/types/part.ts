@@ -27,6 +27,11 @@ type CkEditorPart = {
   readonly __component: 'parts.ck-editor';
 };
 
+type CkEditorHtmlPart = {
+  readonly content: string;
+  readonly __component: 'parts.ck-editor-html';
+};
+
 type CodeBlockPart = {
   readonly code: string;
   readonly language?: string;
@@ -55,8 +60,9 @@ type QuotePart = {
 export type StrapiPart =
   | AlertPart
   | ApiTesterPart
-  | CkEditorPart
   | CodeBlockPart
+  | CkEditorHtmlPart
+  | CkEditorPart
   | EmbedHtmlPart
   | HtmlPart
   | QuotePart;

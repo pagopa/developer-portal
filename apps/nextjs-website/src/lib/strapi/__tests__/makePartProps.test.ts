@@ -7,6 +7,7 @@ import {
   embedHtmlPart,
   quotePart,
   ckEditorPart,
+  ckEditorHtmlPart,
 } from '@/lib/strapi/__tests__/fixtures/parts';
 import {
   minimalAlertPart,
@@ -102,6 +103,13 @@ describe('makePartProps', () => {
 
   it('should transform ck-editor part', () => {
     const result = makePartProps(ckEditorPart);
+    expect(result).toHaveProperty('component', 'ckEditor');
+    expect(result).toHaveProperty('content');
+    expect(result).toHaveProperty('menuItems');
+  });
+
+  it('should transform ck-editor-html part', () => {
+    const result = makePartProps(ckEditorHtmlPart);
     expect(result).toHaveProperty('component', 'ckEditor');
     expect(result).toHaveProperty('content');
     expect(result).toHaveProperty('menuItems');
