@@ -80,16 +80,14 @@ class ChatbotSettings(BaseSettings):
     """Settings for the chatbot application."""
 
     # api keys
-    aws_access_key_id: str = os.getenv(
-        "AWS_ACCESS_KEY_ID", os.getenv("CHB_AWS_ACCESS_KEY_ID")
+    # aws_endpoint_url: str | None = os.getenv("CHB_AWS_SSM_ENDPOINT_URL")
+
+    # useful when I want to use local AWS emulator but cognito in real AWS world
+    aws_region_cognito: str = os.getenv(
+        "CHB_AWS_REGION_COGNITO", os.getenv("AWS_REGION")
     )
-    aws_default_region: str = os.getenv(
-        "AWS_REGION", os.getenv("CHB_AWS_DEFAULT_REGION")
-    )
-    aws_endpoint_url: str | None = os.getenv("CHB_AWS_SSM_ENDPOINT_URL")
-    aws_secret_access_key: str = os.getenv(
-        "AWS_SECRET_ACCESS_KEY", os.getenv("CHB_AWS_SECRET_ACCESS_KEY")
-    )
+    auth_cognito_userpool_id: str = os.getenv("AUTH_COGNITO_USERPOOL_ID", "")
+
     google_api_key: str = get_ssm_parameter(
         name=os.getenv("CHB_AWS_SSM_GOOGLE_API_KEY"),
         default=os.getenv("CHB_AWS_GOOGLE_API_KEY"),
