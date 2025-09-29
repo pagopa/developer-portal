@@ -52,6 +52,12 @@ type QuotePart = {
   readonly __component: 'parts.quote';
 };
 
+type MarkDownPart = {
+  readonly dirName: string;
+  readonly pathToFile: string;
+  readonly __component: 'parts.markdown';
+};
+
 export type StrapiPart =
   | AlertPart
   | ApiTesterPart
@@ -59,4 +65,5 @@ export type StrapiPart =
   | CodeBlockPart
   | EmbedHtmlPart
   | HtmlPart
-  | QuotePart;
+  | QuotePart
+  | MarkDownPart;

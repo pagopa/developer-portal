@@ -43,6 +43,12 @@ export function makePartProps(strapiPart: StrapiPart): Part | null {
         quote: strapiPart.text,
         backgroundImage: strapiPart.backgroundImage.data?.attributes,
       };
+    case 'parts.markdown':
+      return {
+        component: 'markdown',
+        dirName: strapiPart.dirName,
+        pathToFile: strapiPart.pathToFile,
+      };
     case 'parts.ck-editor':
       // eslint-disable-next-line no-case-declarations
       const { parsedContent, menuItems } = parseCkEditorContent(
