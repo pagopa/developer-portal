@@ -2,4 +2,4 @@
 "chatbot": patch
 ---
 
-Removed chatbot/docker/volume from git
+Update docker in .gitingore file
