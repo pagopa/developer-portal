@@ -48,6 +48,9 @@ export function makeTutorialListPagesProps(
                 : undefined,
               showInOverview: false,
               image: tutorialAttributes.image.data?.attributes,
+              tags:
+                tutorialAttributes.tags?.data?.map((tag) => tag.attributes) ||
+                [],
             } satisfies Tutorial;
           } catch (error) {
             // eslint-disable-next-line functional/no-expression-statements
