@@ -6,6 +6,7 @@ readme = "README.md"
 version = "0.1.0"
 
 [tool.poetry.dependencies]
+boto3 = "^1.40.40"
 langfuse = "^3.5.2"
 llama-index = "^0.14.3"
 pydantic-settings = "^2.11.0"
