@@ -99,8 +99,7 @@ describe('makeGuideListPageProps', () => {
     );
     expect(result).toHaveLength(0);
     expect(spyOnConsoleError).toHaveBeenCalledWith(
-      'product slug is missing:',
-      expect.any(Object)
+      'Error while processing GuideListPage with title "Guide e manuali": missing product slug. Skipping...'
     );
   });
 });

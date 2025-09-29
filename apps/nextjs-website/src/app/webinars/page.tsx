@@ -6,7 +6,7 @@ import dynamic from 'next/dynamic';
 import Spinner from '@/components/atoms/Spinner/Spinner';
 import { getWebinarCategoriesProps } from '@/lib/cmsApi';
 
-export const revalidate = false;
+export const revalidate = 0;
 
 export async function generateMetadata(): Promise<Metadata> {
   return makeMetadata({

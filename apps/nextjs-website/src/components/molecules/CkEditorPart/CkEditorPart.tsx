@@ -11,8 +11,8 @@ export type CkEditorMenuItem = {
 };
 
 export type CkEditorPartProps = {
-  content: string;
-  menuItems: CkEditorMenuItem[];
+  readonly content: string;
+  readonly menuItems: CkEditorMenuItem[];
 };
 
 const CkEditorPart = ({ content }: CkEditorPartProps) => {

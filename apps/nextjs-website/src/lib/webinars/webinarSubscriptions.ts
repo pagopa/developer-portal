@@ -10,10 +10,8 @@ import {
   PutItemCommand,
   QueryCommand,
 } from '@aws-sdk/client-dynamodb';
-import {
-  WebinarSubscriptionDynamodbCodec,
-  makeWebinarSubscriptionFromDynamodbItem,
-} from './dynamodb/codec';
+import { makeWebinarSubscriptionFromDynamodbItem } from './dynamodb/webinar';
+import { WebinarSubscriptionDynamoDb } from './dynamodb/types/webinarSubscription';
 
 export type WebinarEnv = {
   readonly dynamoDBClient: DynamoDBClient;
@@ -88,7 +86,7 @@ export const listUserWebinarSubscriptions = (username: string) =>
         // turn undefined to empty array
         Items || [],
         // decode the response
-        RA.map(WebinarSubscriptionDynamodbCodec.decode),
+        RA.map((item) => E.right(item as WebinarSubscriptionDynamoDb)),
         // turn Array<Either<_, _>> to Either<_, Array<_>>
         RA.sequence(E.Applicative),
         // map errors to error and dynamodb item to WebinarSubscription
