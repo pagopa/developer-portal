@@ -48,6 +48,8 @@ import { StrapiGuideListPages } from '@/lib/strapi/types/guideListPage';
 import { StrapiGuides } from '@/lib/strapi/types/guide';
 import { fetchTags } from '@/lib/strapi/fetches/fetchTags';
 import { makeTagsProps } from '@/lib/strapi/makeProps/makeTags';
+import { MarkDownPart } from '@/lib/strapi/types/part';
+import { getMarkdownContent } from '@/lib/api';
 
 // a BuildEnv instance ready to be used
 const buildEnv = pipe(
@@ -86,7 +88,31 @@ export const getTagsProps = async () => {
 
 export const getTutorialsProps = async () => {
   const strapiTutorials = await fetchTutorials(buildEnv);
-  return makeTutorialsProps(strapiTutorials);
+  const tutorialsWithMarkdown = strapiTutorials.data.filter((tutorial) => {
+    const parts = tutorial?.attributes?.parts ?? [];
+    return parts.some((part) => part?.__component === 'parts.markdown');
+  });
+  const allMarkdownParts = tutorialsWithMarkdown.flatMap((tutorial) =>
+    (tutorial?.attributes?.parts ?? []).filter(
+      (part) => part?.__component === 'parts.markdown'
+    )
+  );
+  const contentPromises = allMarkdownParts.map(async (part) => {
+    // Estraiamo dirName e pathToFile dalla parte
+    const { dirName, pathToFile } = part as MarkDownPart;
+
+    // Creiamo la chiave univoca per il nostro dizionario
+    const key = `${dirName}/${pathToFile}`; // Usare un separatore è una buona pratica
+
+    // Chiamiamo la funzione asincrona e attendiamo il contenuto
+    const content = await getMarkdownContent(dirName, pathToFile);
+
+    // Restituiamo una coppia [chiave, valore]
+    return [key, content];
+  });
+  const resolvedContentPairs = await Promise.all(contentPromises);
+  const markdownContentDict = Object.fromEntries(resolvedContentPairs);
+  return makeTutorialsProps(strapiTutorials, markdownContentDict);
 };
 
 export const getTutorialListPagesProps = async () => {

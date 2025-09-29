@@ -52,7 +52,7 @@ type QuotePart = {
   readonly __component: 'parts.quote';
 };
 
-type MarkDownPart = {
+export type MarkDownPart = {
   readonly dirName: string;
   readonly pathToFile: string;
   readonly __component: 'parts.markdown';
