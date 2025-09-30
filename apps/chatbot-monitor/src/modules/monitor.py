@@ -21,9 +21,11 @@ from langfuse._client.span import (
 
 from src.modules.logger import get_logger
 from src.modules.settings import SETTINGS
+from src.modules.presidio import PresidioPII
 
 
 LOGGER = get_logger(__name__)
+PRESIDIO = PresidioPII(config=SETTINGS.presidio_config)
 LANGFUSE_CLIENT = Langfuse(
     public_key=SETTINGS.langfuse_public_key,
     secret_key=SETTINGS.langfuse_secret_key,
@@ -91,16 +93,16 @@ def create_langfuse_child(
         obs = span.start_observation(
             name=child["name"],
             as_type="span",
-            input=attributes.get("input.value"),
-            output=attributes.get("output.value"),
+            input=PRESIDIO.mask_pii(attributes.get("input.value")),
+            output=PRESIDIO.mask_pii(attributes.get("output.value")),
         )
 
     elif span_kind == "CHAIN":
         obs = span.start_observation(
             name=child["name"],
             as_type="chain",
-            input=attributes.get("input.value"),
-            output=attributes.get("output.value"),
+            input=PRESIDIO.mask_pii(attributes.get("input.value")),
+            output=PRESIDIO.mask_pii(attributes.get("output.value")),
             usage_details=usage_details,
         )
 
@@ -108,8 +110,8 @@ def create_langfuse_child(
         obs = span.start_observation(
             name=child["name"],
             as_type="generation",
-            input=attributes.get("input.value"),
-            output=attributes.get("output.value"),
+            input=PRESIDIO.mask_pii(attributes.get("input.value")),
+            output=PRESIDIO.mask_pii(attributes.get("output.value")),
             model=attributes.get("llm.model_name"),
             model_parameters=safe_json_load(
                 child["attributes"].get("llm.invocation_parameters")
@@ -120,7 +122,7 @@ def create_langfuse_child(
         obs = span.start_observation(
             name=child["name"],
             as_type="embedding",
-            input=attributes.get("input.value"),
+            input=PRESIDIO.mask_pii(attributes.get("input.value")),
             output=attributes.get("embedding.embeddings.0.embedding.vector"),
             model=attributes.get("embedding.model_name"),
         )
@@ -129,24 +131,24 @@ def create_langfuse_child(
         obs = span.start_observation(
             name=child["name"],
             as_type="tool",
-            input=attributes.get("input.value"),
-            output=attributes.get("output.value"),
+            input=PRESIDIO.mask_pii(attributes.get("input.value")),
+            output=PRESIDIO.mask_pii(attributes.get("output.value")),
         )
 
     elif span_kind == "RETRIEVER":
         obs = span.start_observation(
             name=child["name"],
             as_type="retriever",
-            input=attributes.get("input.value"),
-            output=attributes.get("output.value"),
+            input=PRESIDIO.mask_pii(attributes.get("input.value")),
+            output=PRESIDIO.mask_pii(attributes.get("output.value")),
         )
     else:
         LOGGER.warning(f"UNKNOWN SPAN KIND: {span_kind}. Set it as span type")
         obs = span.start_observation(
             name=child["name"],
             as_type="span",
-            input=attributes.get("input.value"),
-            output=attributes.get("output.value"),
+            input=PRESIDIO.mask_pii(attributes.get("input.value")),
+            output=PRESIDIO.mask_pii(attributes.get("output.value")),
         )
 
     children = get_children(all_spans, span_id)
@@ -196,8 +198,11 @@ def create_langfuse_trace(
         [create_langfuse_child(root, child, spans) for child in root_children]
 
     root.update_trace(
-        input={"query": query, "chat_history": chat_history},
-        output=response,
+        input={
+            "query": PRESIDIO.mask_pii(query),
+            "chat_history": chat_history,
+        },
+        output=PRESIDIO.mask_pii(response),
         metadata={"contexts": contexts},
         user_id=user_id,
         session_id=session_id,

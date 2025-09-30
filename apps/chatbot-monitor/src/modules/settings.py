@@ -58,6 +58,7 @@ class ChatbotSettings(BaseSettings):
         os.getenv("CHB_AWS_SSM_LANGFUSE_SECRET_KEY"),
         os.getenv("LANGFUSE_INIT_PROJECT_SECRET_KEY"),
     )
+    presidio_config: dict = PARAMS["config_presidio"]
 
 
 SETTINGS = ChatbotSettings()
