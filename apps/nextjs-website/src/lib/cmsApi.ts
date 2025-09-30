@@ -53,6 +53,8 @@ import {
 import { StrapiSolutionListPage } from './strapi/types/solutionListPage';
 import { StrapiSolutions } from './strapi/types/solutions';
 import { StrapiReleaseNotes } from './strapi/types/releaseNotes';
+import { fetchTags } from '@/lib/strapi/fetches/fetchTags';
+import { makeTagsProps } from '@/lib/strapi/makeProps/makeTags';
 
 // a BuildEnv instance ready to be used
 const buildEnv = pipe(
@@ -82,6 +84,11 @@ export const getProductsProps = async () => {
 export const getWebinarCategoriesProps = async () => {
   const strapiWebinarCategories = await fetchWebinarCategories(buildEnv);
   return makeWebinarCategoriesProps(strapiWebinarCategories);
+};
+
+export const getTagsProps = async () => {
+  const strapiTags = await fetchTags(buildEnv);
+  return makeTagsProps(strapiTags);
 };
 
 export const getTutorialsProps = async () => {
