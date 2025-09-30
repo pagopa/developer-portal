@@ -99,7 +99,9 @@ def read_payload(payload: dict) -> Tuple[List[Dict[str, str]], List[str]]:
 
 
 def lambda_handler(event, context):
-    LOGGER.debug(f"event: {event}")
+    LOGGER.debug(f"[DEBUG] event: {event}")
+    LOGGER.info(f"[INFO] event: {event}")
+    print(f"[print] event: {event}")
 
     static_docs_to_update, static_docs_ids_to_delete = read_payload(event)
     if len(static_docs_to_update) > 0 or len(static_docs_ids_to_delete) > 0:
