@@ -41,6 +41,43 @@ const asLineHeight = (level: number) =>
 
 const scrollOffset = SITE_HEADER_HEIGHT + PRODUCT_HEADER_HEIGHT;
 
+export const HeadingIgnoreH1 = ({
+  level,
+  id,
+  children,
+}: HeadingProps<ReactNode>) => {
+  const createSlug = (text: string) =>
+    text
+      .toLowerCase()
+      .replace(/[^a-z0-9\s-]/g, '')
+      .replace(/\s+/g, '-');
+  if (level === 1) {
+    return null;
+  }
+
+  return (
+    <div
+      id={createSlug(children ? children.toString() : id)}
+      style={{
+        marginTop: `-${scrollOffset}px`,
+        paddingTop: `${scrollOffset}px`,
+      }}
+    >
+      <Typography
+        variant={asVariant(level)}
+        sx={{
+          py: 3,
+          fontSize: { xs: asFontSize(level) },
+          fontWeight: { xs: asFontWeight(level) },
+          lineHeight: { xs: asLineHeight(level) },
+        }}
+      >
+        {children}
+      </Typography>
+    </div>
+  );
+};
+
 const Heading = ({ level, id, children }: HeadingProps<ReactNode>) => (
   <div
     id={id}

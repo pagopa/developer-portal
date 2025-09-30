@@ -20,6 +20,7 @@ const MarkdownPart = ({ content }: MarkdownPartProps) => {
         gitBookPagesWithTitle: [],
         spaceToPrefix: [],
       }}
+      hideH1={true}
     />
   );
 };

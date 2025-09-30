@@ -9,7 +9,7 @@ import Table, {
   TableHead,
   TableR,
 } from './components/Table';
-import Heading from './components/Heading';
+import Heading, { HeadingIgnoreH1 } from './components/Heading';
 import Paragraph from './components/Paragraph';
 import Hint from './components/Hint';
 import List from './components/List';
@@ -37,6 +37,41 @@ import SwaggerDescription from './components/Swagger/SwaggerDescription';
 type GitBookContentProps = {
   content: string;
   config: ParseContentConfig;
+  hideH1?: boolean;
+};
+
+const hideH1Components: RenderingComponents<ReactNode> = {
+  StyledText: StyledText,
+  Swagger: Swagger,
+  SwaggerParameter: SwaggerParameter,
+  SwaggerResponse: SwaggerResponse,
+  SwaggerDescription: SwaggerDescription,
+  Link: Link,
+  Hint: Hint,
+  Quote: Quote,
+  CodeBlock: CodeBlock,
+  Image: Image,
+  Embed: Embed,
+  File: File,
+  Paragraph: Paragraph,
+  Heading: HeadingIgnoreH1,
+  List: List,
+  Item: Item,
+  Tabs: Tabs,
+  Expandable: Expandable,
+  ExpandableSummary: ExpandableSummary,
+  ExpandableDetails: ExpandableDetails,
+  Table: Table,
+  TableHead: TableHead,
+  TableBody: TableBody,
+  TableH: TableH,
+  TableR: TableR,
+  TableD: TableD,
+  Cards: Cards,
+  Card: Card,
+  CardItem: CardItem,
+  PageLink: PageLink,
+  Br: () => <br />,
 };
 
 const components: RenderingComponents<ReactNode> = {
@@ -73,7 +108,15 @@ const components: RenderingComponents<ReactNode> = {
   Br: () => <br />,
 };
 
-const GitBookContent = ({ content, config }: GitBookContentProps) =>
-  renderContent(parseContent(content, config), React, components);
+const GitBookContent = ({
+  content,
+  config,
+  hideH1 = false,
+}: GitBookContentProps) =>
+  renderContent(
+    parseContent(content, config),
+    React,
+    hideH1 ? hideH1Components : components
+  );
 
 export default GitBookContent;
