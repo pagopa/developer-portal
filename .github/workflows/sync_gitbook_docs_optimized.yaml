@@ -1,9 +1,6 @@
 name: Sync GitBook Docs (Optimized)
 
 on:
-  push:
-    branches:
-      - optimize-gitbook-sync
   workflow_dispatch:
     inputs:
       environment:
