@@ -14,7 +14,7 @@ PARAMS = yaml.safe_load(open(os.path.join(ROOT, "config", "params.yaml"), "r"))
 AWS_SESSION = boto3.Session(
     aws_access_key_id=os.getenv("AWS_ACCESS_KEY_ID", None),
     aws_secret_access_key=os.getenv("AWS_SECRET_ACCESS_KEY", None),
-    region_name=os.getenv("AWS_REGION", "eu-south-1", None),
+    region_name=os.getenv("AWS_REGION", None),
 )
 SSM_CLIENT = AWS_SESSION.client("ssm")
 
