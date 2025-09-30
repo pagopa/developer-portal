@@ -1,6 +1,7 @@
 import json
 from typing import Tuple, List, Dict
 
+from src.modules.settings import SETTINGS
 from src.modules.logger import get_logger
 from src.modules.documents import read_file_from_s3
 from src.modules.vector_index import DiscoveryVectorIndex
@@ -84,7 +85,7 @@ def read_payload(payload: dict) -> Tuple[List[Dict[str, str]], List[str]]:
 
                 static_docs_to_update.append(
                     {
-                        "url": doc_info.get("url"),
+                        "url": SETTINGS.website_url + doc_info.get("path"),
                         "s3_file_path": doc_info.get("contentS3Path"),
                         "title": doc_info.get("title"),
                     }
