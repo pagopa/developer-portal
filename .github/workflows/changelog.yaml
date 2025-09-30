@@ -14,6 +14,9 @@ jobs:
   changelog:
     name: Update CHANGELOG
     runs-on: ubuntu-latest
+    permissions:
+      contents: write # Needed to push changes and create a release
+      pull-requests: write # Optional: if you need to read PR information
     steps:
       - name: Checkout code
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
@@ -44,4 +47,4 @@ jobs:
           createGithubReleases: false
           setupGitUser: false
         env:
-          GITHUB_TOKEN: ${{ secrets.TAG_GITHUB_PAT }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
