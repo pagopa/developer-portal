@@ -12,9 +12,9 @@ CWF = Path(__file__)
 ROOT = CWF.parent.parent.parent.absolute().__str__()
 PARAMS = yaml.safe_load(open(os.path.join(ROOT, "config", "params.yaml"), "r"))
 AWS_SESSION = boto3.Session(
-    aws_access_key_id=os.getenv("AWS_ACCESS_KEY_ID"),
-    aws_secret_access_key=os.getenv("AWS_SECRET_ACCESS_KEY"),
-    region_name=os.getenv("AWS_REGION", "eu-south-1"),
+    #    aws_access_key_id=os.getenv("AWS_ACCESS_KEY_ID"),
+    #    aws_secret_access_key=os.getenv("AWS_SECRET_ACCESS_KEY"),
+    #    region_name=os.getenv("AWS_REGION", "eu-south-1"),
 )
 SSM_CLIENT = AWS_SESSION.client("ssm")
 
