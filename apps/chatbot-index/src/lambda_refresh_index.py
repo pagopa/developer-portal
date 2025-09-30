@@ -84,9 +84,9 @@ def read_payload(payload: dict) -> Tuple[List[Dict[str, str]], List[str]]:
 
                 static_docs_to_update.append(
                     {
-                        "url": doc_info["url"],
-                        "s3_file_path": doc_info["contentS3Path"],
-                        "title": doc_info["title"],
+                        "url": doc_info.get("url"),
+                        "s3_file_path": doc_info.get("contentS3Path"),
+                        "title": doc_info.get("title"),
                     }
                 )
             except Exception as e:
