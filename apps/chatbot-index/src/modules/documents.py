@@ -408,20 +408,21 @@ def get_dynamic_docs(dynamic_urls: List[dict]) -> List[Document]:
         driver_service = webdriver.ChromeService(executable_path=driver_exe_path)
     else:
         driver_service = None
-        chrome_options = webdriver.ChromeOptions()
-        chrome_options.add_argument("--headless=new")
-        chrome_options.add_argument("--no-sandbox")
-        chrome_options.add_argument("--disable-dev-shm-usage")
-        chrome_options.add_argument("--disable-gpu")
-        chrome_options.add_argument("--disable-dev-tools")
-        chrome_options.add_argument("--no-zygote")
-        chrome_options.add_argument("--single-process")
-        chrome_options.add_argument(f"--user-data-dir={mkdtemp()}")
-        chrome_options.add_argument(f"--data-path={mkdtemp()}")
-        chrome_options.add_argument(f"--disk-cache-dir={mkdtemp()}")
-        chrome_options.add_argument("--remote-debugging-pipe")
-        chrome_options.add_argument("--verbose")
-        chrome_options.add_argument("--log-path=/tmp")
+
+    chrome_options = webdriver.ChromeOptions()
+    chrome_options.add_argument("--headless=new")
+    chrome_options.add_argument("--no-sandbox")
+    chrome_options.add_argument("--disable-dev-shm-usage")
+    chrome_options.add_argument("--disable-gpu")
+    chrome_options.add_argument("--disable-dev-tools")
+    chrome_options.add_argument("--no-zygote")
+    chrome_options.add_argument("--single-process")
+    chrome_options.add_argument(f"--user-data-dir={mkdtemp()}")
+    chrome_options.add_argument(f"--data-path={mkdtemp()}")
+    chrome_options.add_argument(f"--disk-cache-dir={mkdtemp()}")
+    chrome_options.add_argument("--remote-debugging-pipe")
+    chrome_options.add_argument("--verbose")
+    chrome_options.add_argument("--log-path=/tmp")
 
     dynamic_docs = []
     discarded_docs = 0
