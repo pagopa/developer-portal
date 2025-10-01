@@ -1,4 +1,3 @@
-import { WebinarCategory } from '@/lib/types/webinarCategory';
 import {
   Accordion,
   AccordionDetails,
@@ -12,21 +11,29 @@ import {
 import React, { useState } from 'react';
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import MobileWebinarCategoryButton from '@/components/atoms/MobileWebinarCategoryButton/MobileWebinarCategoryButton';
+import MobileFilterButton from '@/components/atoms/MobileFilterButton/MobileFilterButton';
 import { useTranslations } from 'next-intl';
+import { Media } from '@/lib/types/media';
 
-type MobileWebinarCategorySelectorProps = {
-  selectedWebinarCategory: number;
+type MobileFilterSelectorProps = {
+  selectedFilter: number;
   // eslint-disable-next-line functional/no-return-void
-  setSelectedWebinarCategory: (selectedWebinarCategory: number) => void;
-  webinarCategories: readonly WebinarCategory[];
+  setSelectedFilter: (selectedFilter: number) => void;
+  selectorFilters: readonly {
+    name: string;
+    icon: {
+      data: {
+        attributes: Media;
+      };
+    };
+  }[];
 };
 
-const MobileWebinarCategorySelector = ({
-  selectedWebinarCategory,
-  setSelectedWebinarCategory,
-  webinarCategories,
-}: MobileWebinarCategorySelectorProps) => {
+const MobileFilterSelector = ({
+  selectedFilter,
+  setSelectedFilter,
+  selectorFilters,
+}: MobileFilterSelectorProps) => {
   const t = useTranslations();
   const { palette } = useTheme();
   const [isExpanded, setIsExpanded] = useState(false);
@@ -78,19 +85,17 @@ const MobileWebinarCategorySelector = ({
               lineHeight={'22px'}
               color={'#636B82'}
             >
-              {t('webinar.selectWebinarCategory')}
+              {t('webinar.selectFilter')}
             </Typography>
           ) : (
-            <MobileWebinarCategoryButton
+            <MobileFilterButton
               key={-1}
               onClick={() => {
                 return;
               }}
               isHeader={true}
-              label={webinarCategories[selectedWebinarCategory].name}
-              icon={
-                webinarCategories[selectedWebinarCategory].icon.data.attributes
-              }
+              label={selectorFilters[selectedFilter].name}
+              icon={selectorFilters[selectedFilter].icon.data.attributes}
             />
           )}
         </AccordionSummary>
@@ -100,17 +105,17 @@ const MobileWebinarCategorySelector = ({
             direction={'column'}
             alignItems={'flex-start'}
           >
-            {webinarCategories.map((category, index) => (
-              <MobileWebinarCategoryButton
+            {selectorFilters.map((category, index) => (
+              <MobileFilterButton
                 key={index}
                 onClick={() => {
                   setIsExpanded(false);
-                  setSelectedWebinarCategory(index);
+                  setSelectedFilter(index);
                   return;
                 }}
                 label={category.name}
                 icon={category.icon.data.attributes}
-                isLast={index == webinarCategories.length - 1}
+                isLast={index == selectorFilters.length - 1}
               />
             ))}
           </Stack>
@@ -120,4 +125,4 @@ const MobileWebinarCategorySelector = ({
   );
 };
 
-export default MobileWebinarCategorySelector;
+export default MobileFilterSelector;

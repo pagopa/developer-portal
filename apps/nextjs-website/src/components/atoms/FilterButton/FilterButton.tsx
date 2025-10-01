@@ -3,7 +3,7 @@ import IconWrapper from '@/components/atoms/IconWrapper/IconWrapper';
 import React from 'react';
 import { Media } from '@/lib/types/media';
 
-type WebinarCategoryButtonProps = {
+type FilterButtonProps = {
   // eslint-disable-next-line functional/no-return-void
   onClick: () => void;
   isSelected: boolean;
@@ -11,12 +11,12 @@ type WebinarCategoryButtonProps = {
   icon: Media;
 };
 
-const WebinarCategoryButton = ({
+const FilterButton = ({
   onClick,
   icon,
   isSelected,
   label,
-}: WebinarCategoryButtonProps) => {
+}: FilterButtonProps) => {
   const { palette } = useTheme();
   return (
     <Box
@@ -50,4 +50,4 @@ const WebinarCategoryButton = ({
   );
 };
 
-export default WebinarCategoryButton;
+export default FilterButton;
