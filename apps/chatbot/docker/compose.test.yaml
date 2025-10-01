@@ -8,6 +8,7 @@ services:
     env_file: ../.env.test
     volumes:
       - ..:/app
+      - ./files/.aws:/root/.aws
     depends_on:
       motoserver:
         condition: service_started

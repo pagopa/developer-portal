@@ -3,7 +3,7 @@ import os
 from decimal import Decimal
 from pydantic import BaseModel, Field
 from typing import List
-from src.modules.settings import SETTINGS
+from src.modules.settings import AWS_SESSION, SETTINGS
 
 
 class QueryFromThePast(BaseModel):
@@ -29,15 +29,10 @@ class QueryFeedback(BaseModel):
     feedback: Feedback | None = None
 
 
-dynamodb = SETTINGS.AWS_SESSION.resource("dynamodb")
-
+dynamodb = AWS_SESSION.resource("dynamodb")
 
 tables = {
-    "queries": dynamodb.Table(
-        f"{os.getenv('CHB_QUERY_TABLE_PREFIX', 'chatbot')}-queries"
-    ),
-    "sessions": dynamodb.Table(
-        f"{os.getenv('CHB_QUERY_TABLE_PREFIX', 'chatbot')}-sessions"
-    ),
-    "salts": dynamodb.Table(f"{os.getenv('CHB_QUERY_TABLE_PREFIX', 'chatbot')}-salts"),
+    "queries": dynamodb.Table(f"{SETTINGS.query_table_prefix}-queries"),
+    "sessions": dynamodb.Table(f"{SETTINGS.query_table_prefix}-sessions"),
+    "salts": dynamodb.Table(f"{SETTINGS.query_table_prefix}-salts"),
 }

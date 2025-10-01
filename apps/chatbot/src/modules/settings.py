@@ -11,13 +11,7 @@ CWF = Path(__file__)
 ROOT = CWF.parent.parent.parent.absolute().__str__()
 PARAMS = yaml.safe_load(open(os.path.join(ROOT, "config", "params.yaml"), "r"))
 PROMPTS = yaml.safe_load(open(os.path.join(ROOT, "config", "prompts.yaml"), "r"))
-AWS_SESSION = boto3.Session(
-    aws_access_key_id=os.getenv("AWS_ACCESS_KEY_ID"),
-    aws_secret_access_key=os.getenv("AWS_SECRET_ACCESS_KEY"),
-    region_name=os.getenv("AWS_REGION"),
-)
-
-
+AWS_SESSION = boto3.Session()
 GOOGLE_SERVICE_ACCOUNT = get_ssm_parameter(
     os.getenv("CHB_AWS_SSM_GOOGLE_SERVICE_ACCOUNT")
 )
@@ -91,6 +85,12 @@ class ChatbotSettings(BaseSettings):
     # urls
     redis_url: str = os.getenv("CHB_REDIS_URL")
     website_url: str = os.getenv("CHB_WEBSITE_URL")
+
+    # API
+    query_table_prefix: str = os.getenv("CHB_QUERY_TABLE_PREFIX", "chatbot")
+    aws_sqs_queue_evaluate_name: str = os.getenv(
+        "CHB_AWS_SQS_QUEUE_EVALUATE_NAME", "chatbot-evaluate"
+    )
 
 
 SETTINGS = ChatbotSettings()
