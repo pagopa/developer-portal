@@ -9,6 +9,9 @@ locals {
     chatbotindex = {
       repository_name = "chatbot-index"
     }
+    chatbotindex = {
+      repository_name = "chatbot-reindex"
+    }
   }
 }
 
