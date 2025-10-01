@@ -163,6 +163,7 @@ describe('makeBaseProductWithoutLogoProps', () => {
       hasQuickstartGuidePage: true,
       hasReleaseNotePage: true,
       bannerLinks: expectedProduct.bannerLinks,
+      tags: [],
     });
   });
 

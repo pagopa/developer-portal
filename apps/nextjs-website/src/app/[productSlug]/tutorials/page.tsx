@@ -2,12 +2,10 @@ import { Product } from '@/lib/types/product';
 import { Metadata, ResolvingMetadata } from 'next';
 import { getTutorialListPageProps } from '@/lib/api';
 import { Abstract } from '@/editorialComponents/Abstract/Abstract';
-import { Box } from '@mui/material';
 import ProductLayout, {
   ProductLayoutProps,
 } from '@/components/organisms/ProductLayout/ProductLayout';
 import { Tutorial } from '@/lib/types/tutorialData';
-import Newsroom from '@/editorialComponents/Newsroom/Newsroom';
 import React from 'react';
 import { ProductParams } from '@/lib/types/productParams';
 import {
@@ -20,6 +18,7 @@ import {
   breadcrumbItemByProduct,
   productToBreadcrumb,
 } from '@/helpers/structuredData.helpers';
+import { TutorialsList } from '@/components/organisms/TutorialsList/TutorialsList';
 
 export type TutorialsPageProps = {
   readonly product: Product;
@@ -29,6 +28,7 @@ export type TutorialsPageProps = {
   };
   readonly tutorials: readonly Tutorial[];
   readonly seo?: SEO;
+  readonly enableFilters?: boolean;
 } & ProductLayoutProps;
 
 export async function generateMetadata(
@@ -55,8 +55,15 @@ export async function generateMetadata(
 
 const TutorialsPage = async ({ params }: ProductParams) => {
   const { productSlug } = params;
-  const { abstract, bannerLinks, path, tutorials, seo, product } =
-    await getTutorialListPageProps(productSlug);
+  const {
+    abstract,
+    bannerLinks,
+    path,
+    tutorials,
+    seo,
+    product,
+    enableFilters,
+  } = await getTutorialListPageProps(productSlug);
 
   const structuredData = generateStructuredDataScripts({
     breadcrumbsItems: [
@@ -85,25 +92,11 @@ const TutorialsPage = async ({ params }: ProductParams) => {
         />
       )}
       {tutorials && (
-        <Box>
-          <Newsroom
-            items={tutorials.map((tutorial) => ({
-              title: tutorial.title,
-              date: {
-                date: tutorial.publishedAt,
-              },
-              href: {
-                label: 'shared.readTutorial',
-                link: tutorial.path,
-                translate: true,
-              },
-              img: {
-                alt: tutorial.image?.alternativeText || '',
-                src: tutorial.image?.url || '/images/news.png',
-              },
-            }))}
-          />
-        </Box>
+        <TutorialsList
+          tags={product.tags || []}
+          tutorials={tutorials}
+          enableFilters={enableFilters}
+        />
       )}
     </ProductLayout>
   );

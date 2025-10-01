@@ -12,8 +12,8 @@ import FutureWebinarsShowcase from '../FutureWebinarsShowcase/FutureWebinarsShow
 import { baseUrl } from '@/config';
 import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
 import { getItemFromPaths } from '@/helpers/structuredData.helpers';
-import MobileWebinarCategorySelector from '@/components/molecules/MobileWebinarCategorySelector/MobileWebinarCategorySelector';
-import DesktopWebinarCategorySelector from '@/components/molecules/DesktopWebinarCategorySelector/DesktopWebinarCategorySelector';
+import MobileFilterSelector from '@/components/molecules/MobileFilterSelector/MobileFilterSelector';
+import DesktopFilterSelector from '@/components/molecules/DesktopFilterSelector/DesktopFilterSelector';
 import { WebinarCategory } from '@/lib/types/webinarCategory';
 import { useSearchParams } from 'next/navigation';
 import Spinner from '@/components/atoms/Spinner/Spinner';
@@ -148,16 +148,16 @@ const WebinarsTemplateContent = ({
             <SectionTitle title={t('webinars.pastWebinars')} />
           </Box>
           {categories.length <= 0 ? null : isSmallScreen ? (
-            <MobileWebinarCategorySelector
-              selectedWebinarCategory={selectedCategory}
-              setSelectedWebinarCategory={setSelectedWebinarCategory}
-              webinarCategories={updatedCategories}
+            <MobileFilterSelector
+              selectedFilter={selectedCategory}
+              setSelectedFilter={setSelectedWebinarCategory}
+              selectorFilters={updatedCategories}
             />
           ) : (
-            <DesktopWebinarCategorySelector
-              selectedWebinarCategory={selectedCategory}
-              setSelectedWebinarCategory={setSelectedWebinarCategory}
-              webinarCategories={updatedCategories}
+            <DesktopFilterSelector
+              selectedFilter={selectedCategory}
+              setSelectedFilter={setSelectedWebinarCategory}
+              selectorFilters={updatedCategories}
             />
           )}
           {filteredWebinars.length <= 0 ? (
