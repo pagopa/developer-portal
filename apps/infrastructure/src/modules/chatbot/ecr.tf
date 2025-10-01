@@ -9,7 +9,7 @@ locals {
     chatbotindex = {
       repository_name = "chatbot-index"
     }
-    chatbotindex = {
+    chatbotreindex = {
       repository_name = "chatbot-reindex"
     }
   }
