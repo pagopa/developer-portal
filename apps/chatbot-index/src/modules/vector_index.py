@@ -181,6 +181,7 @@ class DiscoveryVectorIndex:
                         self.index._docstore.set_document_hash(doc.id_, doc.hash)
 
                     self.index.storage_context.docstore.add_documents(nodes)
+                    LOGGER.info(f"Added document {doc.id_} to the index.")
 
                 elif existing_doc_hash != doc.hash:
                     refreshed_documents[i] = True
@@ -191,9 +192,10 @@ class DiscoveryVectorIndex:
                             self.index._docstore.set_document_hash(doc.id_, doc.hash)
 
                     self.index.storage_context.docstore.add_documents(nodes)
+                    LOGGER.info(f"Updated document {doc.id_} in the index.")
 
         LOGGER.info(
-            f"Updated {sum(refreshed_documents)} from vector index successfully."
+            f"Updated vector index successfully with {sum(refreshed_documents)} documents."
         )
 
     def _delete_docs(self, documents_id: List[str] = []) -> None:
@@ -211,6 +213,8 @@ class DiscoveryVectorIndex:
             if ref_doc_info:
                 for node_id in ref_doc_info.node_ids:
                     self.index.storage_context.docstore.delete_document(node_id)
+
+            LOGGER.info(f"Deleted document {doc_id} from the index.")
 
         LOGGER.info(f"Removed {len(documents_id)} from vector index successfully.")
 
