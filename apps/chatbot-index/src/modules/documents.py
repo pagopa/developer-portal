@@ -1,6 +1,5 @@
 import os
 import re
-import boto3
 import logging
 import time
 import json
@@ -8,6 +7,7 @@ import yaml
 import tqdm
 import requests
 import html2text
+from tempfile import mkdtemp
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from urllib.parse import quote
@@ -408,11 +408,21 @@ def get_dynamic_docs(dynamic_urls: List[dict]) -> List[Document]:
         driver_service = webdriver.ChromeService(executable_path=driver_exe_path)
     else:
         driver_service = None
-    driver_options = webdriver.ChromeOptions()
-    driver_options.add_argument("--headless")
-    driver_options.add_argument("--disable-gpu")
-    driver_options.add_argument("--no-sandbox")
-    driver_options.add_argument("--disable-dev-shm-usage")
+        chrome_options = webdriver.ChromeOptions()
+        chrome_options.add_argument("--headless=new")
+        chrome_options.add_argument("--no-sandbox")
+        chrome_options.add_argument("--disable-dev-shm-usage")
+        chrome_options.add_argument("--disable-gpu")
+        chrome_options.add_argument("--disable-dev-tools")
+        chrome_options.add_argument("--no-zygote")
+        chrome_options.add_argument("--single-process")
+        chrome_options.add_argument(f"--user-data-dir={mkdtemp()}")
+        chrome_options.add_argument(f"--data-path={mkdtemp()}")
+        chrome_options.add_argument(f"--disk-cache-dir={mkdtemp()}")
+        chrome_options.add_argument("--remote-debugging-pipe")
+        chrome_options.add_argument("--verbose")
+        chrome_options.add_argument("--log-path=/tmp")
+
     dynamic_docs = []
     discarded_docs = 0
 
@@ -423,7 +433,7 @@ def get_dynamic_docs(dynamic_urls: List[dict]) -> List[Document]:
         lastmod = item["lastmod"]
         driver = None
         try:
-            driver = webdriver.Chrome(options=driver_options, service=driver_service)
+            driver = webdriver.Chrome(options=chrome_options, service=driver_service)
             driver.get(url)
             time.sleep(5)
             title, text = html2markdown(driver.page_source)
