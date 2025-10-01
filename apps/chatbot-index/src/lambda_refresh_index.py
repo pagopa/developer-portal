@@ -3,7 +3,7 @@ from typing import Tuple, List, Dict
 
 from src.modules.settings import SETTINGS
 from src.modules.logger import get_logger
-from src.modules.documents import read_file_from_s3
+from src.modules.documents import read_file_from_s3, get_sitemap_urls, filter_urls
 from src.modules.vector_index import DiscoveryVectorIndex
 
 
@@ -56,6 +56,11 @@ VECTOR_INDEX = DiscoveryVectorIndex()
 
 def read_payload(payload: dict) -> Tuple[List[Dict[str, str]], List[str]]:
 
+    sitemap = get_sitemap_urls(SETTINGS.website_url)
+    urls_list = [item["url"] for item in sitemap]
+    filtered_urls = filter_urls(urls_list, SETTINGS.website_url)
+    filtered_paths = [url.replace(SETTINGS.website_url, "") for url in filtered_urls]
+
     guides_metadata = json.loads(read_file_from_s3("guides-metadata.json"))
     release_notes_metadata = json.loads(
         read_file_from_s3("release-notes-metadata.json")
@@ -63,7 +68,12 @@ def read_payload(payload: dict) -> Tuple[List[Dict[str, str]], List[str]]:
     solutions_metadata = json.loads(read_file_from_s3("solutions-metadata.json"))
 
     all_metadata = guides_metadata + release_notes_metadata + solutions_metadata
-    s3_paths = [item["contentS3Path"] for item in all_metadata]
+    filtered_metadata = []
+    s3_paths = []
+    for metadata in all_metadata:
+        if metadata.get("path") in filtered_paths:
+            filtered_metadata.append(metadata)
+            s3_paths.append(metadata.get("contentS3Path"))
 
     static_docs_to_update = []
     static_docs_ids_to_delete = []
@@ -80,7 +90,7 @@ def read_payload(payload: dict) -> Tuple[List[Dict[str, str]], List[str]]:
                 LOGGER.info(f"object_key: {object_key}")
                 idx = s3_paths.index(object_key)
                 LOGGER.info(f"idx: {idx}")
-                doc_info = all_metadata[idx]
+                doc_info = filtered_metadata[idx]
                 LOGGER.info(f"doc_info: {doc_info}")
 
                 static_docs_to_update.append(
