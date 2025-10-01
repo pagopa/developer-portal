@@ -409,17 +409,17 @@ def get_dynamic_docs(dynamic_urls: List[dict]) -> List[Document]:
     """
 
     driver_exe_path = "/usr/bin/chromedriver"
-    if os.path.exists(driver_exe_path):
-        driver_service = Service(executable_path=driver_exe_path)
-    else:
-        driver_service = None
+    # if os.path.exists(driver_exe_path):
+    driver_service = Service(executable_path=driver_exe_path)
+    # else:
+    #     driver_service = None
 
     chrome_options = Options()
-    chrome_options.add_argument("--headless=new")
+    chrome_options.add_argument("--headless")
+    chrome_options.add_argument("--disable-gpu")
     chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument("--disable-dev-shm-usage")
-    chrome_options.add_argument("--disable-gpu")
-    chrome_options.add_argument("--disable-dev-tools")
+    # chrome_options.add_argument("--disable-dev-tools")
     # chrome_options.add_argument("--no-zygote")
     # chrome_options.add_argument("--single-process")
     # chrome_options.add_argument(f"--user-data-dir={mkdtemp()}")
