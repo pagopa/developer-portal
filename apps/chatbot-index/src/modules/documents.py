@@ -253,8 +253,8 @@ def read_api_url(url: str) -> str:
                 txt += "\n"
         return txt
     else:
-        raise ValueError(
-            f"Failed to fetch OpenAPI spec from {url}. Status code: {response.status_code}"
+        LOGGER.warning(
+            f"Failed to fetch OpenAPI spec from {url}. Status code: {response.status_code}. Skipped."
         )
 
 
