@@ -55,7 +55,7 @@ describe('makeQuickStartGuidesProps', () => {
     );
     expect(result).toHaveLength(0);
     expect(spyOnConsoleError).toHaveBeenCalledWith(
-      'Error processing Quick Start Guide id 1: Missing product slug. Skipping...'
+      'Error while processing QuickStartGuide with id 1: missing product slug. Skipping...'
     );
   });
 });

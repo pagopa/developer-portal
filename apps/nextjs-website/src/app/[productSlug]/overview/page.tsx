@@ -85,8 +85,8 @@ export type OverviewPageProps = {
   readonly relatedLinks?: {
     readonly title?: string;
     readonly links: {
-      text: string;
-      href: string;
+      readonly text: string;
+      readonly href: string;
     }[];
   };
   readonly seo?: SEO;

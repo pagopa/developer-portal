@@ -10,7 +10,7 @@ export type StrapiGuideListPage = {
     readonly title: string;
     readonly description: string;
     readonly product: {
-      readonly data: StrapiBaseProductWithRelations;
+      readonly data?: StrapiBaseProductWithRelations;
     };
     readonly guidesByCategory: ReadonlyArray<{
       readonly category: string;

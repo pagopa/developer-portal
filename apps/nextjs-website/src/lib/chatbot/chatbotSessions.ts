@@ -1,8 +1,7 @@
 import { pipe } from 'fp-ts/lib/function';
-import { RemoteSessionsResponseCodec } from '@/lib/chatbot/queries';
+import { PaginatedSessions } from '@/lib/chatbot/queries';
 import { ChatbotEnv } from '@/lib/chatbot/chatbotEnv';
 import * as E from 'fp-ts/lib/Either';
-import * as PR from '@/lib/strapi/PathReporter';
 import * as R from 'fp-ts/lib/Reader';
 import * as TE from 'fp-ts/lib/TaskEither';
 import qs from 'qs';
@@ -38,13 +37,7 @@ export const getSessions = (page: number, pageSize: number) =>
             return TE.left(makeError(response));
           }
         }),
-        TE.chainEitherK((json) =>
-          // decode the response with the given codec
-          pipe(
-            RemoteSessionsResponseCodec.decode(json),
-            E.mapLeft((errors) => new Error(PR.failure(errors).join('\n')))
-          )
-        ),
+        TE.map((json) => json as PaginatedSessions),
         TE.fold(
           // eslint-disable-next-line functional/no-promise-reject
           (errors) => () => Promise.reject(errors),

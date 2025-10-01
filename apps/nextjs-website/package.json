@@ -1,6 +1,6 @@
 {
   "name": "nextjs-website",
-  "version": "8.5.3",
+  "version": "8.6.0",
   "private": true,
   "scripts": {
     "build": "next build --debug",
@@ -31,8 +31,6 @@
     "dompurify": "^3.2.5",
     "fp-ts": "^2.13.1",
     "gitbook-docs": "*",
-    "io-ts": "^2.2.20",
-    "io-ts-types": "^0.5.19",
     "isomorphic-dompurify": "^2.24.0",
     "jsdom": "^25.0.0",
     "mermaid": "^10.9.0",
