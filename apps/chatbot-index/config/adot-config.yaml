@@ -9,6 +9,7 @@ exporters:
   logging:
     loglevel: debug
   awsxray:
+    region: eu-south-1
 
 service:
   pipelines:
