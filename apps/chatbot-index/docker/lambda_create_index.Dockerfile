@@ -29,7 +29,7 @@ RUN pip install --upgrade pip \
 WORKDIR $LAMBDA_TASK_ROOT
 COPY pyproject.toml $LAMBDA_TASK_ROOT
 COPY poetry.lock $LAMBDA_TASK_ROOT
-COPY --from=public.ecr.aws/aws-observability/adot-autoinstrumentation-python:v0.12.1 /src/collector /opt/extensions/collector
+COPY --from=public.ecr.aws/aws-observability/aws-otel-collector:latest /src/collector /opt/extensions/collector
 COPY config/adot-config.yaml /opt/collector-config/config.yaml
 RUN poetry config virtualenvs.create false
 RUN poetry install
