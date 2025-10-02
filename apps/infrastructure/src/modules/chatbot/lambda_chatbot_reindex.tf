@@ -94,7 +94,7 @@ resource "aws_lambda_function" "chatbot_reindex_lambda" {
   image_uri     = format("%s:latest", module.ecr["chatbotreindex"].repository_url)
   package_type  = "Image"
 
-  timeout       = 60 # 1 minute
+  timeout       = 600 # 10 minutes
   memory_size   = 1024
   architectures = ["x86_64"]
   role          = aws_iam_role.lambda_reindex_role.arn
