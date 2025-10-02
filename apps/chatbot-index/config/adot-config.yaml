@@ -14,5 +14,5 @@ exporters:
 service:
   pipelines:
     traces:
-      receivers: [otlp]
+      receivers: [otlp, telemetryapi]
       exporters: [logging, awsxray]

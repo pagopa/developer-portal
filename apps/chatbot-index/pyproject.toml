@@ -18,6 +18,9 @@ pydantic-settings = "^2.10.1"
 python = ">=3.12,<3.14"
 pyyaml = "^6.0.2"
 selenium = "^4.35.0"
+opentelemetry-sdk = "^1.37.0"
+opentelemetry-instrumentation = "^0.58b0"
+opentelemetry-exporter-otlp = "^1.37.0"
 
 [tool.poetry.group.test.dependencies]
 httpx = "^0.28.1"
