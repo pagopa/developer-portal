@@ -55,7 +55,6 @@ export const product = {
   hasQuickstartGuidePage: true,
   hasReleaseNotePage: false,
   hasTutorialListPage: true,
-  hasUseCaseListPage: true,
   bannerLinks: [
     {
       title: 'Serve aiuto?',

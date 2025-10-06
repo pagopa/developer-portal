@@ -38,7 +38,6 @@ export const strapiApiDataListPages = {
               guide_list_page: { data: { id: 1 } },
               tutorial_list_page: { data: { id: 1 } },
               release_note: { data: { id: 1 } },
-              use_case_list_page: { data: { id: 1 } },
             },
           },
         },

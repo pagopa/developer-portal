@@ -90,7 +90,6 @@ export function makeBaseProductWithoutLogoProps(
     hasOverviewPage: !!product.attributes.overview.data,
     hasQuickstartGuidePage: !!product.attributes.quickstart_guide.data,
     hasReleaseNotePage: !!product.attributes.release_note.data,
-    hasUseCaseListPage: !!product.attributes.use_case_list_page.data,
     bannerLinks: product.attributes.bannerLinks?.map(makeBannerLinkProps) || [],
   } satisfies Product;
 }
