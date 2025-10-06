@@ -440,6 +440,9 @@
         "startInfo": {
             "title": "Si comincia da qui"
         },
+        "tutorialsList": {
+          "ctaLabel": "Scopri la documentazione"
+        },
         "tutorial": {
             "title": "Esplora i tutorial",
             "ctaLabel": "Vedi tutti i tutorial",

@@ -93,6 +93,40 @@ export function makeOverviewsProps(
                 })
               ) || [],
           },
+          tutorialsList: attributes.tutorialsList && {
+            title: attributes.tutorialsList.title,
+            tutorialCard:
+              compact(
+                attributes.tutorialsList.tutorialCard
+                  .filter(
+                    (tutorialCard) =>
+                      tutorialCard.tutorial?.data.attributes.product.data
+                        .attributes.slug ===
+                      attributes.product.data.attributes.slug
+                  )
+                  .map((tutorialCard) => {
+                    return {
+                      title: tutorialCard.title || '',
+                      description: tutorialCard.description || '',
+                      icon: tutorialCard.icon.data.attributes,
+                      tutorial: {
+                        showInOverview: true,
+                        image: tutorialCard.tutorial.data.attributes.image
+                          .data && {
+                          url: tutorialCard.tutorial.data.attributes.image.data
+                            .attributes.url,
+                          alternativeText:
+                            tutorialCard.tutorial.data.attributes.image.data
+                              .attributes.alternativeText || '',
+                        },
+                        title: tutorialCard.tutorial.data.attributes.title,
+                        name: 'shared.moreInfo',
+                        path: `/${tutorialCard.tutorial.data.attributes.product.data.attributes.slug}/tutorials/${tutorialCard.tutorial.data.attributes.slug}`,
+                      },
+                    };
+                  })
+              ) || [],
+          },
           whatsNew: attributes.whatsNew && {
             title: attributes.whatsNew.title,
             subtitle: attributes.whatsNew.subTitle,

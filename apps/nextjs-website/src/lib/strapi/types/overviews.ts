@@ -35,6 +35,18 @@ export type StrapiTutorialSection = {
   readonly tutorials: { readonly data: readonly StrapiBaseTutorial[] };
 };
 
+export type StrapiTutorialCard = {
+  readonly title?: string;
+  readonly icon: { readonly data: StrapiMedia };
+  readonly description?: string;
+  readonly tutorial: { readonly data: StrapiBaseTutorial };
+};
+
+export type StrapiTutorialsList = {
+  readonly title: string;
+  readonly tutorialCard: readonly StrapiTutorialCard[];
+};
+
 export type StrapiCardProps = {
   readonly title: string;
   readonly content: BlocksContent;
@@ -72,6 +84,7 @@ export type StrapiOverview = {
     readonly features?: StrapiFeature;
     readonly startInfoSection?: StrapiStartInfoSection;
     readonly tutorialSection?: StrapiTutorialSection;
+    readonly tutorialsList?: StrapiTutorialsList;
     readonly postIntegration?: StrapiPostIntegration;
     readonly relatedLinks?: StrapiRelatedLinks;
     readonly product: { readonly data: StrapiProduct };
