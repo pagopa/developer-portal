@@ -68,22 +68,15 @@ services:
   create-index:
     build:
       context: ../../chatbot-index
-      dockerfile: ../chatbot-index/docker/lambda_create_index.Dockerfile
+      dockerfile: docker/app.local.Dockerfile
+    command: poetry run python ../../chatbot-index/src/modules/create_vector_index.py
     env_file: ../../chatbot-index/.env.local
-    environment:
-      - PYTHONPATH=/var/task
-    ports:
-      - "8083:8080"
     volumes:
-      - ../chatbot-index:/app
-      - ~/.aws-lambda-rie/aws-lambda-rie:/usr/local/bin/aws-lambda-rie
+      - ./files/.aws:/root/.aws
+      - ../../nextjs-website/out:/app/build-devp/out
     depends_on:
-      localstack:
-        condition: service_started
       redis:
         condition: service_started
-    entrypoint: ["/usr/local/bin/aws-lambda-rie", "python3"]
-    command: ["-m", "awslambdaric", "src.lambda_create_index.lambda_handler"]
     networks:
       - ntw
 
@@ -153,8 +146,8 @@ services:
     container_name: "${LOCALSTACK_DOCKER_NAME:-localstack-main}"
     image: localstack/localstack:4.6.0
     ports:
-      - "127.0.0.1:4566:4566"            # LocalStack Gateway
-      - "127.0.0.1:4510-4559:4510-4559"  # external services port range
+      - "127.0.0.1:4566:4566" # LocalStack Gateway
+      - "127.0.0.1:4510-4559:4510-4559" # external services port range
     environment:
       # LocalStack configuration: https://docs.localstack.cloud/references/configuration/
       - DEBUG=${DEBUG:-0}
