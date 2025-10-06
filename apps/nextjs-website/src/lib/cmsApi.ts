@@ -48,6 +48,8 @@ import { StrapiGuideListPages } from '@/lib/strapi/types/guideListPage';
 import { StrapiGuides } from '@/lib/strapi/types/guide';
 import { fetchUseCases } from '@/lib/strapi/fetches/fetchUseCases';
 import { makeUseCasesProps } from '@/lib/strapi/makeProps/makeUseCases';
+import { fetchUseCaseListPages } from '@/lib/strapi/fetches/fetchUseCaseListPages';
+import { makeUseCaseListPagesProps } from '@/lib/strapi/makeProps/makeUseCaseListPages';
 
 // a BuildEnv instance ready to be used
 const buildEnv = pipe(
@@ -196,4 +198,9 @@ export const getReleaseNoteProps = async (
 export const getUseCasesProps = async () => {
   const strapiUseCases = await fetchUseCases(buildEnv);
   return makeUseCasesProps(strapiUseCases);
+};
+
+export const getUseCaseListPagesProps = async () => {
+  const strapiUseCasesListPages = await fetchUseCaseListPages(buildEnv);
+  return makeUseCaseListPagesProps(strapiUseCasesListPages);
 };
