@@ -1,5 +1,11 @@
 # infrastructure
 
+## 4.0.0
+
+### Major Changes
+
+- d4bc174: New lambda function chatbot reindex
+
 ## 3.1.0
 
 ### Minor Changes
