@@ -8,12 +8,11 @@ import {
   makeMetadata,
   makeMetadataFromStrapi,
 } from '@/helpers/metadata.helpers';
-import dynamic from 'next/dynamic';
+import nextDynamic from 'next/dynamic';
 import { baseUrl } from '@/config';
 import { getHomepageProps } from '@/lib/cmsApi';
 
-// Force dynamic rendering for the homepage
-export const revalidate = 0;
+export const dynamic = 'force-dynamic';
 
 import BlocksRendererClient from '@/components/molecules/BlocksRendererClient/BlocksRendererClient';
 import Ecosystem from '@/components/organisms/Ecosystem/Ecosystem';
@@ -73,12 +72,12 @@ export async function generateMetadata(): Promise<Metadata> {
       });
 }
 
-const NotSsrWebinarHeaderBanner = dynamic(
+const NotSsrWebinarHeaderBanner = nextDynamic(
   () => import('@/components/atoms/WebinarHeaderBanner/WebinarHeaderBanner'),
   { ssr: false }
 );
 
-const NotSsrWebinarsSection = dynamic(
+const NotSsrWebinarsSection = nextDynamic(
   () => import('@/components/organisms/WebinarsSection/WebinarsSection'),
   { ssr: false }
 );

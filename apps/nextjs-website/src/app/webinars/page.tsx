@@ -2,11 +2,11 @@ import { getVisibleInListWebinars } from '@/lib/api';
 import { makeMetadata } from '@/helpers/metadata.helpers';
 import { Metadata } from 'next';
 import { baseUrl } from '@/config';
-import dynamic from 'next/dynamic';
+import nextDynamic from 'next/dynamic';
 import Spinner from '@/components/atoms/Spinner/Spinner';
 import { getWebinarCategoriesProps } from '@/lib/cmsApi';
 
-export const revalidate = 0;
+export const dynamic = 'force-dynamic';
 
 export async function generateMetadata(): Promise<Metadata> {
   return makeMetadata({
@@ -17,7 +17,7 @@ export async function generateMetadata(): Promise<Metadata> {
   });
 }
 
-const NotSsrWebinarsTemplate = dynamic(
+const NotSsrWebinarsTemplate = nextDynamic(
   () => import('@/components/organisms/WebinarsTemplate/WebinarsTemplate'),
   {
     loading: () => <Spinner />,
