@@ -32,8 +32,10 @@ def mock_user_pool_id() -> str:
 class ChatbotSettings(BaseSettings):
     """Settings for the chatbot application."""
 
-    # api keys
+    # api
+    environment: str = os.getenv("environment", "local")
     aws_region: str = os.getenv("AWS_REGION", "us-east-1")
+    aws_endpoint_url: str = os.getenv("AWS_ENDPOINT_URL")
     auth_cognito_userpool_id: str = os.getenv(
         "AUTH_COGNITO_USERPOOL_ID", mock_user_pool_id()
     )
@@ -54,6 +56,8 @@ class ChatbotSettings(BaseSettings):
         os.getenv("CHB_AWS_SSM_LANGFUSE_SECRET_KEY"),
         os.getenv("LANGFUSE_INIT_PROJECT_SECRET_KEY"),
     )
+    cors_domains: str = os.getenv("CORS_DOMAINS", '["*"]')
+    log_level: str = os.getenv("LOG_LEVEL", "info")
 
     # RAG settings
     embed_batch_size: int = int(os.getenv("CHB_EMBED_BATCH_SIZE", "100"))
