@@ -22,12 +22,21 @@ else:
     GOOGLE_JSON_ACCOUNT_INFO = json.loads(GOOGLE_SERVICE_ACCOUNT)
 
 
+def mock_user_pool_id() -> str:
+    client_cognito = boto3.client("cognito-idp")
+    user_pool_response = client_cognito.create_user_pool(PoolName="test_pool")
+    user_pool_id = user_pool_response["UserPool"]["Id"]
+    return user_pool_id
+
+
 class ChatbotSettings(BaseSettings):
     """Settings for the chatbot application."""
 
     # api keys
     aws_region: str = os.getenv("AWS_REGION", "us-east-1")
-    auth_cognito_userpool_id: str = os.getenv("AUTH_COGNITO_USERPOOL_ID", "")
+    auth_cognito_userpool_id: str = os.getenv(
+        "AUTH_COGNITO_USERPOOL_ID", mock_user_pool_id()
+    )
     google_api_key: str = get_ssm_parameter(
         name=os.getenv("CHB_AWS_SSM_GOOGLE_API_KEY"),
         default=os.getenv("CHB_AWS_GOOGLE_API_KEY"),
@@ -69,7 +78,7 @@ class ChatbotSettings(BaseSettings):
     chunk_overlap: int = PARAMS["vector_index"]["chunk_overlap"]
     chunk_size: int = PARAMS["vector_index"]["chunk_size"]
     index_id: str = get_ssm_parameter(
-        os.getenv("CHB_AWS_SSM_LLAMAINDEX_INDEX_ID"), "default-index"
+        os.getenv("CHB_AWS_SSM_LLAMAINDEX_INDEX_ID"), "discovery-index"
     )
     presidio_config: dict = PARAMS["config_presidio"]
     bucket_static_content: str = os.getenv(

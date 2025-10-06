@@ -7,7 +7,8 @@ RUN apt-get update && \
   curl \
   wget \
   jq \
-  zip
+  zip \
+  less
 
 RUN wget https://github.com/rphrp1985/selenium_support/raw/main/chrome_114_amd64.deb && \
   apt-get install -y ./chrome_114_amd64.deb && \
@@ -15,11 +16,15 @@ RUN wget https://github.com/rphrp1985/selenium_support/raw/main/chrome_114_amd64
   unzip chromedriver_linux64.zip && \
   mv chromedriver /usr/bin/chromedriver
 
+RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && \
+  unzip awscliv2.zip && \
+  ./aws/install
+
 ENV PYTHONPATH=/app
 ENV PIP_ROOT_USER_ACTION=ignore
 
 RUN pip install --upgrade pip \
-  && pip install poetry awscli
+  && pip install poetry
 
 WORKDIR /app
 COPY ./pyproject.toml .

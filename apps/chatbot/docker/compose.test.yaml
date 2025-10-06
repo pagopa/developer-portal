@@ -35,8 +35,13 @@ services:
     image: redis/redis-stack:7.2.0-v13
     volumes:
       - ./files/redis-dump.rdb:/data/dump.rdb
+    ports:
+      - "6379:6379"
+      - "8001:8001"
     networks:
       - ntwtest
+    environment:
+      REDIS_ARGS: "--save '' --appendonly no --stop-writes-on-bgsave-error no"
 
   langfuse-test:
     image: langfuse/langfuse:2
@@ -58,5 +63,16 @@ services:
     networks:
       - ntwtest
 
+  # awscli:
+  #   image: amazon/aws-cli:2.15.1
+  #   depends_on:
+  #     - motoserver
+  #   networks:
+  #     - ntwtest
+  #   entrypoint: /bin/sh
+  #   tty: true
+  #   stdin_open: true
+
 networks:
   ntwtest:
+    driver: bridge
