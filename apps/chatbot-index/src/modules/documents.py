@@ -408,30 +408,54 @@ def get_dynamic_docs(dynamic_urls: List[dict]) -> List[Document]:
         List[Document]: A list of Document objects containing the content and metadata.
     """
 
-    driver_exe_path = "/usr/bin/chromedriver"
-    # if os.path.exists(driver_exe_path):
-    driver_service = Service(executable_path=driver_exe_path)
-    # else:
-    #     driver_service = None
+    # driver_exe_path = "/usr/bin/chromedriver"
+    # # if os.path.exists(driver_exe_path):
+    # driver_service = Service(executable_path=driver_exe_path)
+    # # else:
+    # #     driver_service = None
+
+    # chrome_options = Options()
+    # chrome_options.add_argument("--headless")
+    # chrome_options.add_argument("--disable-gpu")
+    # chrome_options.add_argument("--no-sandbox")
+    # chrome_options.add_argument("--disable-dev-shm-usage")
+    # # chrome_options.add_argument("--disable-dev-tools")
+    # # chrome_options.add_argument("--no-zygote")
+    # # chrome_options.add_argument("--single-process")
+    # # chrome_options.add_argument(f"--user-data-dir={mkdtemp()}")
+    # # chrome_options.add_argument(f"--data-path={mkdtemp()}")
+    # # chrome_options.add_argument(f"--disk-cache-dir={mkdtemp()}")
+    # # chrome_options.add_argument("--remote-debugging-pipe")
+    # # chrome_options.add_argument("--verbose")
+    # # chrome_options.add_argument("--log-path=/tmp")
 
     chrome_options = Options()
-    chrome_options.add_argument("--headless")
-    chrome_options.add_argument("--disable-gpu")
+    chrome_options.add_argument("--headless=new")
     chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument("--disable-dev-shm-usage")
-    # chrome_options.add_argument("--disable-dev-tools")
-    # chrome_options.add_argument("--no-zygote")
-    # chrome_options.add_argument("--single-process")
-    # chrome_options.add_argument(f"--user-data-dir={mkdtemp()}")
-    # chrome_options.add_argument(f"--data-path={mkdtemp()}")
-    # chrome_options.add_argument(f"--disk-cache-dir={mkdtemp()}")
-    # chrome_options.add_argument("--remote-debugging-pipe")
-    # chrome_options.add_argument("--verbose")
-    # chrome_options.add_argument("--log-path=/tmp")
+    chrome_options.add_argument("--disable-gpu")
+    chrome_options.add_argument("--disable-dev-tools")
+    chrome_options.add_argument("--no-zygote")
+    chrome_options.add_argument("--single-process")
+    chrome_options.add_argument(f"--user-data-dir={mkdtemp()}")
+    chrome_options.add_argument(f"--data-path={mkdtemp()}")
+    chrome_options.add_argument(f"--disk-cache-dir={mkdtemp()}")
+    chrome_options.add_argument("--remote-debugging-pipe")
+    chrome_options.add_argument("--verbose")
+    chrome_options.add_argument("--log-path=/tmp")
+    chrome_options.binary_location = "/opt/chrome/chrome-linux64/chrome"
+
+    service = Service(
+        executable_path="/opt/chrome-driver/chromedriver-linux64/chromedriver",
+        service_log_path="/tmp/chromedriver.log",
+    )
 
     dynamic_docs = []
     discarded_docs = 0
-    driver = webdriver.Chrome(options=chrome_options, service=driver_service)
+    driver = webdriver.Chrome(
+        options=chrome_options,
+        service=service,
+    )
 
     for item in tqdm.tqdm(
         dynamic_urls, total=len(dynamic_urls), desc="Getting dynamic documents"
