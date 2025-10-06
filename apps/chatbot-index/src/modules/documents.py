@@ -422,17 +422,12 @@ def get_dynamic_docs(dynamic_urls: List[dict]) -> List[Document]:
     chrome_options.add_argument("--remote-debugging-pipe")
     chrome_options.add_argument("--verbose")
     chrome_options.add_argument("--log-path=/tmp")
+    chrome_options.binary_location = "/opt/chrome/chrome-linux64/chrome"
 
-    driver_exe_path = "/opt/chrome-driver/chromedriver-linux64/chromedriver"
-    if os.path.exists(driver_exe_path):
-        chrome_options.binary_location = "/opt/chrome/chrome-linux64/chrome"
-        service = Service(
-            executable_path=driver_exe_path,
-            service_log_path="/tmp/chromedriver.log",
-        )
-    else:
-        service = Service()
-        LOGGER.warning(f"Chrome driver not found at {driver_exe_path}. Using default.")
+    service = Service(
+        executable_path="/opt/chrome-driver/chromedriver-linux64/chromedriver",
+        service_log_path="/tmp/chromedriver.log",
+    )
 
     dynamic_docs = []
     discarded_docs = 0
