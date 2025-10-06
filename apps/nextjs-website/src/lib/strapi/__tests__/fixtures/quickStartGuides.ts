@@ -44,6 +44,11 @@ export const strapiQuickStartGuides: StrapiQuickStartGuides = {
                   id: 1,
                 },
               },
+              use_case_list_page: {
+                data: {
+                  id: 1,
+                },
+              },
             },
           },
         },
