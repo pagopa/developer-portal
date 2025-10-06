@@ -47,7 +47,7 @@ export function makeUseCasesProps(
             ? new Date(attributes.publishedAt)
             : undefined,
           name: attributes.title,
-          path: `/${attributes.product.data.attributes.slug}/tutorials/${attributes.slug}`,
+          path: `/${attributes.product.data.attributes.slug}/use-cases/${attributes.slug}`,
           parts: compact(attributes.parts.map((part) => makePartProps(part))),
           productSlug: attributes.product.data.attributes.slug,
           relatedLinks: attributes.relatedLinks,
