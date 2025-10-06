@@ -62,6 +62,7 @@ export function strapiBaseProductWithRelations(): StrapiBaseProductWithRelations
       tutorial_list_page: { data: { id: 3 } },
       guide_list_page: { data: { id: 4 } },
       release_note: { data: undefined },
+      use_case_list_page: { data: { id: 1 } },
     },
   };
 }
@@ -77,6 +78,7 @@ export function strapiBaseProductWithoutRelations(): StrapiBaseProductWithRelati
       tutorial_list_page: { data: undefined },
       guide_list_page: { data: undefined },
       release_note: { data: undefined },
+      use_case_list_page: { data: undefined },
     },
   };
 }
@@ -96,6 +98,7 @@ export function strapiProduct(): StrapiProduct {
       tutorial_list_page: { data: { id: 3 } },
       guide_list_page: { data: { id: 4 } },
       release_note: { data: { id: 5 } },
+      use_case_list_page: { data: { id: 1 } },
     },
   };
 }
@@ -115,6 +118,7 @@ export function strapiProductMinimal(): StrapiProduct {
       tutorial_list_page: { data: undefined },
       guide_list_page: { data: undefined },
       release_note: { data: undefined },
+      use_case_list_page: { data: undefined },
     },
   };
 }
@@ -172,6 +176,7 @@ export function productWithAllRelations(): StrapiProduct {
       tutorial_list_page: { data: { id: 3 } },
       guide_list_page: { data: { id: 4 } },
       release_note: { data: { id: 5 } },
+      use_case_list_page: { data: { id: 1 } },
     },
   };
 }
@@ -193,6 +198,7 @@ export function productWithMissingMandatoryFields(): Partial<StrapiProduct> {
       tutorial_list_page: { data: undefined },
       guide_list_page: { data: undefined },
       release_note: { data: undefined },
+      use_case_list_page: { data: undefined },
     },
   };
 }
