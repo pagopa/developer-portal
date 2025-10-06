@@ -1,5 +1,5 @@
 ---
-name: Chatbot Create Index
+name: Chatbot Reindex
 
 on:
   workflow_dispatch:
