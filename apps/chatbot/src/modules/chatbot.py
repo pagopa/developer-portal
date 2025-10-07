@@ -79,6 +79,8 @@ class Chatbot:
         )
         self.instrumentor._event_handler = EventHandler(langfuse_client=LANGFUSE_CLIENT)
 
+        LOGGER.info(">>>>>>> Chatbot initialized <<<<<<<")
+
     def _get_prompt_templates(
         self,
     ) -> Tuple[PromptTemplate, PromptTemplate]:
