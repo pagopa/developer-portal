@@ -1,5 +1,6 @@
 import { Media } from '@/lib/types/media';
 import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
+import { Tag } from '@/lib/types/tag';
 
 export type Product = {
   readonly slug: string;
@@ -16,4 +17,5 @@ export type Product = {
   readonly hasQuickstartGuidePage?: boolean;
   readonly hasReleaseNotePage?: boolean;
   readonly hasUseCaseListPage?: boolean;
+  readonly tags?: readonly Tag[];
 };
