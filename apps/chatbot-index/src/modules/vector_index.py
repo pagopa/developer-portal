@@ -178,7 +178,6 @@ class DiscoveryVectorIndex:
         with self.index._callback_manager.as_trace("refresh_ref_docs"):
             refreshed_documents = [False] * len(documents)
 
-            self.index.refresh_ref_docs()
             for i, doc in enumerate(documents):
 
                 LOGGER.info(
@@ -334,10 +333,10 @@ class DiscoveryVectorIndex:
 
         self.index = self.get_index()
         self.docstore = self.index.storage_context.docstore
-        self.api_docs = get_api_docs()
+        # self.api_docs = get_api_docs()
         self.static_list, self.dynamic_list = get_static_and_dynamic_lists()
 
-        self.refresh_index_api_docs()
+        # self.refresh_index_api_docs()
         self.refresh_index_static_docs(static_docs_to_update, static_docs_ids_to_delete)
-        self.refresh_index_dynamic_docs()
+        # self.refresh_index_dynamic_docs()
         LOGGER.info("Refreshed vector index successfully.")
