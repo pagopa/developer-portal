@@ -169,7 +169,7 @@ class DiscoveryVectorIndex:
         """
 
         LOGGER.info(
-            f">>>>>>>>>>> Input argument type: {isinstance(doc, List)} <<<<<<<<<<<<"
+            f">>>>>>>>>>> Input argument type: {isinstance(documents, List)} <<<<<<<<<<<<"
         )
         LOGGER.info(f">>>>>>>>>>> Updating {len(documents)} documents... <<<<<<<<<<<<")
 
