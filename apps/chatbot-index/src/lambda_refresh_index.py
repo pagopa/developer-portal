@@ -89,9 +89,7 @@ def read_payload(payload: dict) -> Tuple[List[Dict[str, str]], List[str]]:
             try:
                 LOGGER.info(f"object_key: {object_key}")
                 idx = s3_paths.index(object_key)
-                LOGGER.info(f"idx: {idx}")
                 doc_info = filtered_metadata[idx]
-                LOGGER.info(f"doc_info: {doc_info}")
 
                 static_docs_to_update.append(
                     {
