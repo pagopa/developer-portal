@@ -83,8 +83,9 @@ def read_payload(payload: dict) -> Tuple[List[Dict[str, str]], List[str]]:
         s3_info = record.get("s3", {})
         object_info = s3_info.get("object", {})
         object_key = object_info.get("key", "")
+        event_action = event_name.split(":")[0]
 
-        if event_name == "ObjectCreated:Put":
+        if event_action == "ObjectCreated":
 
             try:
                 LOGGER.info(f"object_key: {object_key}")
@@ -102,7 +103,7 @@ def read_payload(payload: dict) -> Tuple[List[Dict[str, str]], List[str]]:
                 LOGGER.info(f"File {object_key} not in metadata files. Skipping...")
                 continue
 
-        elif event_name == "ObjectRemoved:Delete":
+        elif event_action == "ObjectRemoved":
             static_docs_ids_to_delete.append(object_key)
         else:
             LOGGER.info(f"Unhandled event type: {event_name}")
