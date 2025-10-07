@@ -68,8 +68,8 @@ services:
   create-index:
     build:
       context: ../../chatbot-index
-      dockerfile: docker/app.local.Dockerfile
-    command: poetry run python ../../chatbot-index/src/modules/create_vector_index.py
+      dockerfile: ../chatbot-index/docker/create_index.Dockerfile
+    command: poetry run python ../chatbot-index/src/modules/create_vector_index.py
     env_file: ../../chatbot-index/.env.local
     volumes:
       - ./files/.aws:/root/.aws
