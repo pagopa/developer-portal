@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useMemo, useState } from 'react';
+import { Suspense, useEffect, useMemo, useState } from 'react';
 import {
   Box,
   FormControl,
@@ -14,21 +14,9 @@ import {
 } from '@mui/material';
 import { Product } from '@/lib/types/product';
 import { getStyles } from '@/components/molecules/ApiRestSection/ApiRestSection.styles';
-import dynamic from 'next/dynamic';
 import { useRouter, useSearchParams } from 'next/navigation';
+import ApiViewer from '@/components/atoms/ApiViewer/ApiViewer';
 import Spinner from '@/components/atoms/Spinner/Spinner';
-
-/* TODO: Workaround due to error in SSR of elements package:
- * Error occurred prerendering page "/app-io/api". Read more: https://nextjs.org/docs/messages/prerender-error
- * Error: Cannot find module './impl/format'
- */
-const NotSsrApiViewer = dynamic(
-  () => import('@/components/atoms/ApiViewer/ApiViewer'),
-  {
-    ssr: false,
-    loading: () => <Spinner />,
-  }
-);
 
 export type ApiRestPageProps = {
   readonly product: Product;
@@ -133,11 +121,13 @@ const ApiRestSection = ({
           </StyledFormControl>
         </Stack>
       )}
-      <NotSsrApiViewer
-        product={product}
-        specURL={selectedApi.url}
-        hideTryIt={selectedApi.hideTryIt}
-      />
+      <Suspense fallback={<Spinner />}>
+        <ApiViewer
+          product={product}
+          specURL={selectedApi.url}
+          hideTryIt={selectedApi.hideTryIt}
+        />
+      </Suspense>
     </Box>
   );
 };

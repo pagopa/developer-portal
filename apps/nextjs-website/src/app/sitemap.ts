@@ -17,8 +17,7 @@ import {
   JsonMetadata,
 } from '@/helpers/s3Metadata.helpers';
 
-// Force dynamic rendering for the sitemap
-export const revalidate = 0;
+export const dynamic = 'force-dynamic';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Get dynamic paths
