@@ -122,7 +122,9 @@ def load_index_redis() -> VectorStoreIndex:
 
     try:
         redis_vector_store = RedisVectorStore(
-            redis_client=REDIS_CLIENT, overwrite=False, schema=REDIS_SCHEMA
+            redis_client=REDIS_CLIENT,
+            overwrite=True,
+            schema=REDIS_SCHEMA,
         )
 
         LOGGER.info("Loading vector index from Redis...")
