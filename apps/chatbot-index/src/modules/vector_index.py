@@ -1,8 +1,8 @@
 from datetime import datetime
 from typing import List, Dict
 
+from llama_index.core import Settings as LlamaIndexSettings
 from llama_index.core import (
-    Settings,
     Document,
     VectorStoreIndex,
     StorageContext,
@@ -63,11 +63,11 @@ REDIS_KVSTORE = RedisKVStore(
 )
 REDIS_DOCSTORE = RedisDocumentStore(redis_kvstore=REDIS_KVSTORE)
 REDIS_INDEX_STORE = RedisIndexStore(redis_kvstore=REDIS_KVSTORE)
-Settings.llm = get_llm()
-Settings.embed_model = get_embed_model()
-Settings.chunk_size = SETTINGS.chunk_size
-Settings.chunk_overlap = SETTINGS.chunk_overlap
-Settings.node_parser = SentenceSplitter(
+LlamaIndexSettings.llm = get_llm()
+LlamaIndexSettings.embed_model = get_embed_model()
+LlamaIndexSettings.chunk_size = SETTINGS.chunk_size
+LlamaIndexSettings.chunk_overlap = SETTINGS.chunk_overlap
+LlamaIndexSettings.node_parser = SentenceSplitter(
     chunk_size=SETTINGS.chunk_size,
     chunk_overlap=SETTINGS.chunk_overlap,
 )
@@ -88,7 +88,7 @@ def build_index_redis(clean_redis: bool = True) -> VectorStoreIndex:
 
     documents = get_documents()
 
-    nodes = Settings.node_parser.get_nodes_from_documents(documents)
+    nodes = LlamaIndexSettings.node_parser.get_nodes_from_documents(documents)
 
     redis_vector_store = RedisVectorStore(
         redis_client=REDIS_CLIENT,
@@ -168,31 +168,46 @@ class DiscoveryVectorIndex:
             documents (list[Document]): List of Document objects to add or update.
         """
 
+        LOGGER.info(
+            f">>>>>>>>>>> Input argument type: {isinstance(doc, List)} <<<<<<<<<<<<"
+        )
+        LOGGER.info(f">>>>>>>>>>> Updating {len(documents)} documents... <<<<<<<<<<<<")
+
         with self.index._callback_manager.as_trace("refresh_ref_docs"):
             refreshed_documents = [False] * len(documents)
 
             for i, doc in enumerate(documents):
-                nodes = Settings.node_parser.get_nodes_from_documents([doc])
-                existing_doc_hash = self.index._docstore.get_document_hash(doc.id_)
+
+                LOGGER.info(
+                    f">>>>>>>>>>> Document type: {isinstance(doc, Document)} <<<<<<<<<<<<"
+                )
+
+                nodes = LlamaIndexSettings.node_parser.get_nodes_from_documents([doc])
+
+                LOGGER.info(f">>>>>>>>>>> Extracted {len(nodes)} nodes <<<<<<<<<<<<")
+
+                existing_doc_hash = self.index.docstore.get_document_hash(doc.id_)
                 if existing_doc_hash is None:
                     refreshed_documents[i] = True
-                    with self.index._callback_manager.as_trace("insert"):
-                        self.index.insert_nodes(nodes)
-                        self.index._docstore.set_document_hash(doc.id_, doc.hash)
-
-                    self.index.storage_context.docstore.add_documents(nodes)
+                    self.index.insert_nodes(nodes)
+                    self.index._docstore.set_document_hash(doc.id_, doc.hash)
+                    self.index.storage_context.docstore.add_documents(
+                        nodes,
+                        allow_update=True,
+                    )
                     LOGGER.info(f"Added document {doc.id_} to the index.")
 
                 elif existing_doc_hash != doc.hash:
                     refreshed_documents[i] = True
                     with self.index._callback_manager.as_trace("update_ref_doc"):
                         self.index.delete_ref_doc(doc.id_, delete_from_docstore=True)
-                        with self.index._callback_manager.as_trace("insert"):
-                            self.index.insert_nodes(nodes)
-                            self.index._docstore.set_document_hash(doc.id_, doc.hash)
-
-                    self.index.storage_context.docstore.add_documents(nodes)
-                    LOGGER.info(f"Updated document {doc.id_} in the index.")
+                        self.index.insert_nodes(nodes)
+                        self.index.docstore.set_document_hash(doc.id_, doc.hash)
+                        self.index.storage_context.docstore.add_documents(
+                            nodes,
+                            allow_update=True,
+                        )
+                        LOGGER.info(f"Updated document {doc.id_} in the index.")
 
         LOGGER.info(
             f"Updated vector index successfully with {sum(refreshed_documents)} documents."
