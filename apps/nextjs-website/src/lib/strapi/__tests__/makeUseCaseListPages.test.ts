@@ -14,16 +14,16 @@ describe('makeUseCaseListPagesProps', () => {
     );
     expect(result).toHaveLength(1);
     const page = result[0];
-    expect(page.abstract?.title).toBe('Tutorials');
-    expect(page.abstract?.description).toBe('Explore our tutorials');
+    expect(page.abstract?.title).toBe('Use Cases');
+    expect(page.abstract?.description).toBe('Explore our use cases');
     expect(page.seo).toMatchObject({
-      metaTitle: 'Tutorials SEO Title',
-      metaDescription: 'Tutorials SEO Description',
+      metaTitle: 'Use Cases SEO Title',
+      metaDescription: 'Use Cases SEO Description',
     });
     expect(page.useCases).toHaveLength(1);
     const firstElement = page.useCases[0];
-    expect(firstElement.title).toBe('Tutorial 1');
-    expect(firstElement.path).toBe('/product-1/tutorials/tutorial-1');
+    expect(firstElement.title).toBe('Use Case 1');
+    expect(firstElement.path).toBe('/product-1/use-cases/use-case-1');
     expect(firstElement.image?.url).toBe('https://example.com/example.jpg');
   });
 
@@ -31,7 +31,7 @@ describe('makeUseCaseListPagesProps', () => {
     const result = makeUseCaseListPagesProps(minimalUseCaseListPages());
     expect(result).toHaveLength(1);
     const page = result[0];
-    expect(page.abstract?.title).toBe('Minimal Tutorials');
+    expect(page.abstract?.title).toBe('Minimal Use Cases');
     expect(page.useCases).toEqual([]);
     expect(page.seo).toBeUndefined();
     expect(page.bannerLinks).toEqual([]);
