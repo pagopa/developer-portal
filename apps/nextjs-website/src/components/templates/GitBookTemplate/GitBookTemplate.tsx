@@ -4,11 +4,11 @@ import GuideMenu from '@/components/atoms/GuideMenu/GuideMenu';
 import { GuideMenuItemsProps } from '@/components/atoms/GuideMenu/Menu';
 import ProductBreadcrumbs from '@/components/atoms/ProductBreadcrumbs/ProductBreadcrumbs';
 import { FragmentProvider } from '@/components/organisms/FragmentProvider/FragmentProvider';
-import GitBookContent from '@/components/organisms/GitBookContent/GitBookContent';
 import GuideInPageMenu from '@/components/organisms/GuideInPageMenu/GuideInPageMenu';
 import { BreadcrumbSegment } from '@/lib/types/path';
 import { Box, Stack } from '@mui/material';
 import { useTranslations } from 'next-intl';
+import GitBookContent from '@/components/organisms/GitBookContent/components/GitBookContent';
 
 export type GitBookTemplateProps = {
   menuName: string;

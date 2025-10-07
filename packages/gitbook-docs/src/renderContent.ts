@@ -37,6 +37,7 @@ import {
   TableRProps,
 } from './markdoc/schema/table';
 import { PageLinkProps } from './markdoc/schema/pageLink';
+import { StepperProps, SteppersProps } from './markdoc/schema/steppers';
 
 export type RenderingComponents<A> = {
   readonly Link: (props: LinkProps<A>) => A;
@@ -69,6 +70,8 @@ export type RenderingComponents<A> = {
   readonly SwaggerResponse: (props: SwaggerResponseProps<A>) => A;
   readonly SwaggerDescription: (props: SwaggerDescriptionProps<A>) => A;
   readonly PageLink: (props: PageLinkProps<A>) => A;
+  readonly Stepper: (props: StepperProps<A>) => A;
+  readonly Steppers: (props: SteppersProps<A>) => A;
   readonly Br: () => A;
 };
 
