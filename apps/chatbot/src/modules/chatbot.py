@@ -1,4 +1,5 @@
 import copy
+import time
 from typing import Union, Tuple, Optional, List, Any, Dict
 
 from langfuse import Langfuse
@@ -56,7 +57,12 @@ class Chatbot:
     def __init__(
         self,
     ):
+        start_time = time.time()
         self.pii = PresidioPII(config=SETTINGS.presidio_config)
+        end_time_presidio = time.time() - start_time
+        LOGGER.info(
+            f">>>>>>>>>>> Presidio initialized in {end_time_presidio:.3f} secs. <<<<<<<<<<"
+        )
         self.model = get_llm()
         self.embed_model = get_embed_model()
         self.qa_prompt_tmpl, self.ref_prompt_tmpl = self._get_prompt_templates()
@@ -78,8 +84,8 @@ class Chatbot:
             mask=self._mask_trace,
         )
         self.instrumentor._event_handler = EventHandler(langfuse_client=LANGFUSE_CLIENT)
-
-        LOGGER.info(">>>>>>> Chatbot initialized <<<<<<<")
+        end_time = time.time() - start_time
+        LOGGER.info(f">>>>>>> Chatbot initialized in {end_time:.3f} secs. <<<<<<<")
 
     def _get_prompt_templates(
         self,
