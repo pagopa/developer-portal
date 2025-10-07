@@ -176,6 +176,7 @@ class DiscoveryVectorIndex:
         with self.index._callback_manager.as_trace("refresh_ref_docs"):
             refreshed_documents = [False] * len(documents)
 
+            self.index.refresh_ref_docs()
             for i, doc in enumerate(documents):
 
                 LOGGER.info(
@@ -187,10 +188,14 @@ class DiscoveryVectorIndex:
                 LOGGER.info(f">>>>>>>>>>> Extracted {len(nodes)} nodes <<<<<<<<<<<<")
 
                 existing_doc_hash = self.index.docstore.get_document_hash(doc.id_)
+                LOGGER.info(
+                    f">>>>>>>>>>> Existing document hash: {existing_doc_hash} <<<<<<<<<<<<"
+                )
+
                 if existing_doc_hash is None:
                     refreshed_documents[i] = True
                     self.index.insert_nodes(nodes)
-                    self.index._docstore.set_document_hash(doc.id_, doc.hash)
+                    self.index.docstore.set_document_hash(doc.id_, doc.hash)
                     self.index.storage_context.docstore.add_documents(
                         nodes,
                         allow_update=True,
