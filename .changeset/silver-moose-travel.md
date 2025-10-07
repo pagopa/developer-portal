@@ -1,5 +1,5 @@
 ---
-"nextjs-website": minor
+"nextjs-website": major
 ---
 
-Add UseCase detail page, makeUseCasesProps and add UseCases fetch
+Implement UseCase detail page, define UseCases props, and add UseCases data fetching.

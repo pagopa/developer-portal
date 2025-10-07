@@ -301,6 +301,9 @@ export const strapiGuideData = {
                   id: 42,
                 },
               },
+              tags: {
+                data: [],
+              },
             },
           },
         },

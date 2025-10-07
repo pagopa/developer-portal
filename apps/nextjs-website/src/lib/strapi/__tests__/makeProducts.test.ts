@@ -164,6 +164,7 @@ describe('makeBaseProductWithoutLogoProps', () => {
       hasReleaseNotePage: true,
       hasUseCaseListPage: true,
       bannerLinks: expectedProduct.bannerLinks,
+      tags: [],
     });
   });
 

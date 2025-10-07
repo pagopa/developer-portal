@@ -444,7 +444,9 @@
         },
         "tutorial": {
             "title": "Esplora i tutorial",
-            "ctaLabel": "Vedi tutti i tutorial"
+            "ctaLabel": "Vedi tutti i tutorial",
+            "all": "Tutti",
+            "noTutorialMessage": "Non sono presenti tutorial della categoria selezionata"
         },
         "postIntegration": {
             "title": "Dopo l'integrazione"

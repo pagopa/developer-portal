@@ -15,6 +15,7 @@ export const strapiTutorialListPages: StrapiTutorialListPages = {
         product: {
           data: {
             attributes: {
+              tags: { data: [] },
               name: 'Product 1',
               shortName: 'P1',
               slug: 'product-1',
@@ -33,6 +34,7 @@ export const strapiTutorialListPages: StrapiTutorialListPages = {
           data: [
             {
               attributes: {
+                tags: { data: [] },
                 title: 'Tutorial 1',
                 slug: 'tutorial-1',
                 publishedAt: fixedDateIsoString,

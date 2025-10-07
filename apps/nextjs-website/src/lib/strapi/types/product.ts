@@ -3,6 +3,7 @@ import { StrapiMedia } from '@/lib/strapi/types/media';
 import { StrapiComponent } from '@/lib/strapi/types/strapiComponent';
 import { StrapiApiDataListPageWithoutProduct } from '@/lib/strapi/types/apiDataListPages';
 import { Paginated } from '@/lib/strapi/types/paginated';
+import { StrapiTag } from '@/lib/strapi/types/tag';
 
 type Id = {
   readonly id: number;
@@ -41,6 +42,7 @@ export type StrapiProductRelations = {
   readonly guide_list_page: StrapiComponent<Id | undefined>;
   readonly release_note: StrapiComponent<Id | undefined>;
   readonly use_case_list_page: StrapiComponent<Id | undefined>;
+  readonly tags: StrapiComponent<readonly StrapiTag[] | undefined>;
 };
 
 export type StrapiBaseProductWithRelations = StrapiBaseProduct & {

@@ -92,5 +92,6 @@ export function makeBaseProductWithoutLogoProps(
     hasReleaseNotePage: !!product.attributes.release_note.data,
     hasUseCaseListPage: !!product.attributes.use_case_list_page.data,
     bannerLinks: product.attributes.bannerLinks?.map(makeBannerLinkProps) || [],
+    tags: product.attributes.tags?.data?.map((tag) => tag.attributes) || [],
   } satisfies Product;
 }

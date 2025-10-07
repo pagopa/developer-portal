@@ -12,6 +12,7 @@ export const strapiQuickStartGuides: StrapiQuickStartGuides = {
         product: {
           data: {
             attributes: {
+              tags: { data: [] },
               name: 'Product Name',
               shortName: 'Product',
               slug: 'product-slug',

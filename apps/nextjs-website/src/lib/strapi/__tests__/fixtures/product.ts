@@ -56,6 +56,7 @@ export const product = {
   hasReleaseNotePage: false,
   hasTutorialListPage: true,
   hasUseCaseListPage: true,
+  tags: [],
   bannerLinks: [
     {
       title: 'Serve aiuto?',

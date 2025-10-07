@@ -23,6 +23,7 @@ export const strapiOverviews = {
           data: {
             attributes: {
               ...product,
+              tags: { data: [] },
               bannerLinks: generateBannerLinks(1),
               overview: {
                 data: {
@@ -128,6 +129,7 @@ export const strapiOverviews = {
               {
                 attributes: {
                   title: 'Tutorial 1',
+                  tags: { data: [] },
                   slug: 'tutorial-1',
                   image: {
                     data: mediaJpeg(),
@@ -278,6 +280,7 @@ export const overviewPageProps: OverviewPageProps = {
     hasTutorialListPage: true,
     hasUseCaseListPage: true,
     description: undefined,
+    tags: [],
     bannerLinks: [
       {
         title: 'Banner Link 1',

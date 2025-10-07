@@ -7,6 +7,7 @@ export const strapiProducts: StrapiProducts = {
   data: [
     {
       attributes: {
+        tags: { data: [] },
         name: 'Test Product',
         slug: 'test-product',
         shortName: 'TP',
