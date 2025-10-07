@@ -123,7 +123,7 @@ def load_index_redis() -> VectorStoreIndex:
     try:
         redis_vector_store = RedisVectorStore(
             redis_client=REDIS_CLIENT,
-            overwrite=True,
+            overwrite=False,
             schema=REDIS_SCHEMA,
         )
 
