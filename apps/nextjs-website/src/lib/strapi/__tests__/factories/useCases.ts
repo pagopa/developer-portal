@@ -2,7 +2,6 @@
 import { strapiUseCases } from '@/lib/strapi/__tests__/fixtures/useCases';
 import { StrapiUseCases } from '@/lib/strapi/types/useCase';
 
-// Clone of tutorials factories adapted for UseCases
 export function useCasesWithAnItemMissingSlug(): StrapiUseCases {
   return {
     ...strapiUseCases,
