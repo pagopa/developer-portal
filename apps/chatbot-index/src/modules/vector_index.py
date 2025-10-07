@@ -170,11 +170,6 @@ class DiscoveryVectorIndex:
             documents (list[Document]): List of Document objects to add or update.
         """
 
-        LOGGER.info(
-            f">>>>>>>>>>> Input argument type: {isinstance(documents, List)} <<<<<<<<<<<<"
-        )
-        LOGGER.info(f">>>>>>>>>>> Updating {len(documents)} documents... <<<<<<<<<<<<")
-
         with self.index._callback_manager.as_trace("refresh_ref_docs"):
             refreshed_documents = [False] * len(documents)
 
@@ -247,9 +242,15 @@ class DiscoveryVectorIndex:
         """
         Refreshes the vector index by updating API documentation and removing obsolete documents.
         """
+
+        LOGGER.info(f"first API Doc: {self.api_docs[0]}")
+
         api_doc_ids = [doc.id_ for doc in self.api_docs]
         ref_doc_info = self.index.storage_context.docstore.get_all_ref_doc_info()
         ref_doc_ids = list(ref_doc_info.keys())
+
+        LOGGER.info(f"Num API Doc: {len(api_doc_ids)}")
+        LOGGER.info(f"Num Ref Doc: {len(ref_doc_ids)}")
 
         api_docs_to_remove = []
 
@@ -339,7 +340,10 @@ class DiscoveryVectorIndex:
         self.api_docs = get_api_docs()
         self.static_list, self.dynamic_list = get_static_and_dynamic_lists()
 
+        LOGGER.info(">>>>>>> Refreshing vector index with API docs...")
         self.refresh_index_api_docs()
+        LOGGER.info(">>>>>>> Refreshing vector index with static docs...")
         self.refresh_index_static_docs(static_docs_to_update, static_docs_ids_to_delete)
+        LOGGER.info(">>>>>>> Refreshing vector index with dynamic docs...")
         self.refresh_index_dynamic_docs()
         LOGGER.info("Refreshed vector index successfully.")
