@@ -175,45 +175,62 @@ class DiscoveryVectorIndex:
         )
         LOGGER.info(f">>>>>>>>>>> Updating {len(documents)} documents... <<<<<<<<<<<<")
 
-        with self.index._callback_manager.as_trace("refresh_ref_docs"):
-            refreshed_documents = [False] * len(documents)
+        # with self.index._callback_manager.as_trace("refresh_ref_docs"):
+        #     refreshed_documents = [False] * len(documents)
 
-            for i, doc in enumerate(documents):
+        #     for i, doc in enumerate(documents):
 
-                LOGGER.info(
-                    f">>>>>>>>>>> Document type: {isinstance(doc, Document)} <<<<<<<<<<<<"
-                )
+        #         LOGGER.info(
+        #             f">>>>>>>>>>> Document type: {isinstance(doc, Document)} <<<<<<<<<<<<"
+        #         )
 
-                nodes = LlamaIndexSettings.node_parser.get_nodes_from_documents([doc])
+        #         nodes = LlamaIndexSettings.node_parser.get_nodes_from_documents([doc])
 
-                LOGGER.info(f">>>>>>>>>>> Extracted {len(nodes)} nodes <<<<<<<<<<<<")
+        #         LOGGER.info(f">>>>>>>>>>> Extracted {len(nodes)} nodes <<<<<<<<<<<<")
 
-                existing_doc_hash = self.index.docstore.get_document_hash(doc.id_)
-                LOGGER.info(
-                    f">>>>>>>>>>> Existing document hash: {existing_doc_hash} <<<<<<<<<<<<"
-                )
+        #         existing_doc_hash = self.index.docstore.get_document_hash(doc.id_)
+        #         LOGGER.info(
+        #             f">>>>>>>>>>> Existing document hash: {existing_doc_hash} <<<<<<<<<<<<"
+        #         )
 
-                if existing_doc_hash is None:
-                    refreshed_documents[i] = True
-                    self.index.insert_nodes(nodes)
-                    self.index.docstore.set_document_hash(doc.id_, doc.hash)
-                    self.index.storage_context.docstore.add_documents(
-                        nodes,
-                        allow_update=True,
-                    )
-                    LOGGER.info(f"Added document {doc.id_} to the index.")
+        #         if existing_doc_hash is None:
+        #             refreshed_documents[i] = True
+        #             with self.index._callback_manager.as_trace("insert_nodes"):
+        #                 self.index._insert(nodes)
+        #                 self.index.storage_context.index_store.add_index_struct(
+        #                     self.index._index_struct
+        #                 )
+        #                 self.index.storage_context.docstore.set_document_hash(
+        #                     doc.id_, doc.hash
+        #                 )
+        #                 self.index.storage_context.docstore.add_documents(
+        #                     nodes,
+        #                     allow_update=True,
+        #                 )
+        #             LOGGER.info(f"Added document {doc.id_} to the index.")
 
-                elif existing_doc_hash != doc.hash:
-                    refreshed_documents[i] = True
-                    with self.index._callback_manager.as_trace("update_ref_doc"):
-                        self.index.delete_ref_doc(doc.id_, delete_from_docstore=True)
-                        self.index.insert_nodes(nodes)
-                        self.index.docstore.set_document_hash(doc.id_, doc.hash)
-                        self.index.storage_context.docstore.add_documents(
-                            nodes,
-                            allow_update=True,
-                        )
-                        LOGGER.info(f"Updated document {doc.id_} in the index.")
+        #         elif existing_doc_hash != doc.hash:
+        #             refreshed_documents[i] = True
+        #             with self.index._callback_manager.as_trace("update_ref_doc"):
+        #                 self.index.delete_ref_doc(doc.id_, delete_from_docstore=True)
+        #                 with self.index._callback_manager.as_trace("insert_nodes"):
+        #                     self.index._insert(nodes)
+        #                     self.index.storage_context.index_store.add_index_struct(
+        #                         self.index._index_struct
+        #                     )
+        #                     self.index.storage_context.docstore.set_document_hash(
+        #                         doc.id_, doc.hash
+        #                     )
+        #                     self.index.storage_context.docstore.add_documents(
+        #                         nodes,
+        #                         allow_update=True,
+        #                     )
+        #                 LOGGER.info(f"Updated document {doc.id_} in the index.")
+
+        refreshed_documents = self.index.refresh_ref_docs(documents)
+        for flag, doc in zip(refreshed_documents, documents):
+            if flag:
+                LOGGER.info(f"Added/Updated document {doc.id_} in the index.")
 
         LOGGER.info(
             f"Updated vector index successfully with {sum(refreshed_documents)} documents."
@@ -230,10 +247,10 @@ class DiscoveryVectorIndex:
         for doc_id in documents_id:
             self.index.delete_ref_doc(doc_id, delete_from_docstore=True)
 
-            ref_doc_info = self.index.storage_context.docstore.get_ref_doc_info(doc_id)
-            if ref_doc_info:
-                for node_id in ref_doc_info.node_ids:
-                    self.index.storage_context.docstore.delete_document(node_id)
+            # ref_doc_info = self.index.storage_context.docstore.get_ref_doc_info(doc_id)
+            # if ref_doc_info:
+            #     for node_id in ref_doc_info.node_ids:
+            #         self.index.storage_context.docstore.delete_document(node_id)
 
             LOGGER.info(f"Deleted document {doc_id} from the index.")
 
@@ -333,7 +350,11 @@ class DiscoveryVectorIndex:
 
         self.index = self.get_index()
         self.docstore = self.index.storage_context.docstore
-        # self.api_docs = get_api_docs()
+        self.api_docs = get_api_docs()
+        LOGGER.info(
+            f">>>>>>>>>>> API doc type: {isinstance(self.api_docs[0], Document)} <<<<<<<<<<<<"
+        )
+
         self.static_list, self.dynamic_list = get_static_and_dynamic_lists()
 
         # self.refresh_index_api_docs()
