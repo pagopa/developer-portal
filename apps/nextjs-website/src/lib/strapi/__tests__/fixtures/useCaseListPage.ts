@@ -26,6 +26,7 @@ export const strapiUseCaseListPages: StrapiUseCaseListPages = {
               guide_list_page: { data: undefined },
               release_note: { data: undefined },
               use_case_list_page: { data: undefined },
+              tags: { data: [] },
             },
           },
         },
