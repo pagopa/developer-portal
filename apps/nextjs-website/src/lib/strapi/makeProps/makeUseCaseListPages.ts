@@ -3,8 +3,8 @@ import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
 import { makeBaseProductWithoutLogoProps } from './makeProducts';
 import { compact } from 'lodash';
 import { StrapiUseCaseListPages } from '@/lib/strapi/types/useCaseListPage';
-import { UseCase } from '../../types/useCaseData';
-import { UseCasesPageProps } from '../../../app/[productSlug]/use-cases/page';
+import { UseCase } from '@/lib/types/useCaseData';
+import { UseCasesPageProps } from '@/app/[productSlug]/use-cases/page';
 
 export function makeUseCaseListPagesProps(
   strapiUseCaseList: StrapiUseCaseListPages

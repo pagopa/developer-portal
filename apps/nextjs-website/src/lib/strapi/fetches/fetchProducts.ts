@@ -17,6 +17,7 @@ export const productRelationsPopulate = {
     'api_data_list_page.apiData.apiSoapDetail.*',
     'guide_list_page',
     'tutorial_list_page',
+    'use_case_list_page',
   ],
 };
 
