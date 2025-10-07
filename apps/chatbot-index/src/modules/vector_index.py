@@ -180,17 +180,9 @@ class DiscoveryVectorIndex:
 
             for i, doc in enumerate(documents):
 
-                LOGGER.info(
-                    f">>>>>>>>>>> Document type: {isinstance(doc, Document)} <<<<<<<<<<<<"
-                )
-
                 nodes = LlamaIndexSettings.node_parser.get_nodes_from_documents([doc])
-
-                LOGGER.info(f">>>>>>>>>>> Extracted {len(nodes)} nodes <<<<<<<<<<<<")
-
-                existing_doc_hash = self.index.docstore.get_document_hash(doc.id_)
-                LOGGER.info(
-                    f">>>>>>>>>>> Existing document hash: {existing_doc_hash} <<<<<<<<<<<<"
+                existing_doc_hash = (
+                    self.index.storage_context.docstore.get_document_hash(doc.id_)
                 )
 
                 if existing_doc_hash is None:
@@ -256,7 +248,7 @@ class DiscoveryVectorIndex:
         Refreshes the vector index by updating API documentation and removing obsolete documents.
         """
         api_doc_ids = [doc.id_ for doc in self.api_docs]
-        ref_doc_info = self.docstore.get_all_ref_doc_info()
+        ref_doc_info = self.index.storage_context.docstore.get_all_ref_doc_info()
         ref_doc_ids = list(ref_doc_info.keys())
 
         api_docs_to_remove = []
@@ -292,7 +284,7 @@ class DiscoveryVectorIndex:
 
     def refresh_index_dynamic_docs(self) -> None:
 
-        ref_doc_info = self.docstore.get_all_ref_doc_info()
+        ref_doc_info = self.index.storage_context.docstore.get_all_ref_doc_info()
         ref_doc_ids = list(ref_doc_info.keys())
         dynamic_doc_ids = [
             item["url"].replace(SETTINGS.website_url, "") for item in self.dynamic_list
@@ -344,15 +336,10 @@ class DiscoveryVectorIndex:
         """
 
         self.index = self.get_index()
-        self.docstore = self.index.storage_context.docstore
         self.api_docs = get_api_docs()
-        LOGGER.info(
-            f">>>>>>>>>>> API doc type: {isinstance(self.api_docs[0], Document)} <<<<<<<<<<<<"
-        )
-
         self.static_list, self.dynamic_list = get_static_and_dynamic_lists()
 
-        # self.refresh_index_api_docs()
+        self.refresh_index_api_docs()
         self.refresh_index_static_docs(static_docs_to_update, static_docs_ids_to_delete)
-        # self.refresh_index_dynamic_docs()
+        self.refresh_index_dynamic_docs()
         LOGGER.info("Refreshed vector index successfully.")
