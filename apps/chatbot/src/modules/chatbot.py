@@ -107,9 +107,12 @@ class Chatbot:
 
         for tool_call in tool_calls:
 
-            LOGGER.info(
-                f">>>>>>>> SOURCE NODES: {tool_call.tool_output.raw_output.source_nodes} <<<<<<<<<"
-            )
+            LOGGER.info(f">>>>>>>> SOURCE NODES <<<<<<<<<")
+            for node in tool_call.tool_output.raw_output.source_nodes:
+                LOGGER.info(f"   Node ID: {node.node_id}")
+                LOGGER.info(f"   Node Text: {node.text}")
+                LOGGER.info(f"   Node Metadata: {node.metadata}")
+            LOGGER.info(f">>>>>>>> SOURCE NODES END <<<<<<<<<")
 
             raw_output = tool_call.tool_output.raw_output
             product_list += getattr(raw_output, "products", [])
