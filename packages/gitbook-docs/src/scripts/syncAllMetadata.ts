@@ -10,12 +10,7 @@ import { writeFile } from 'fs/promises';
 import * as fs from 'fs';
 import path from 'path';
 import { SitemapItem } from '../sitemapItem';
-import {
-  downloadS3File,
-  listS3Files,
-  makeS3Client,
-  writeSitemapJson,
-} from '../helpers/s3Bucket.helper';
+import { makeS3Client, writeSitemapJson } from '../helpers/s3Bucket.helper';
 import { S3Client } from '@aws-sdk/client-s3';
 import { extractTitleFromMarkdown } from '../helpers/extractTitle.helper';
 import { fetchFromStrapi } from '../helpers/fetchFromStrapi';
@@ -67,9 +62,7 @@ const S3_RELEASE_NOTES_METADATA_JSON_PATH =
   process.env.S3_RELEASE_NOTES_METADATA_JSON_PATH ||
   'release-notes-metadata.json';
 
-// Cache for S3 operations
-const s3FileCache = new Map<string, string>();
-const s3ListCache = new Map<string, string[]>();
+const DOCUMENTATION_ABSOLUTE_PATH = path.resolve(DOCUMENTATION_PATH);
 
 interface StrapiData {
   guides: StrapiGuide[];
@@ -92,34 +85,30 @@ interface UrlParsingItem {
 
 let s3Client: S3Client | undefined;
 
+function localPathToS3Path(localPath: string): string {
+  const relativePath = path
+    .relative(DOCUMENTATION_ABSOLUTE_PATH, path.resolve(localPath))
+    .split(path.sep)
+    .join('/');
+  const basePath = S3_PATH_TO_GITBOOK_DOCS.replace(/\\/g, '/').replace(
+    /\/$/,
+    ''
+  );
+  if (relativePath.startsWith('..')) {
+    console.warn(
+      `Cannot derive S3 path for ${localPath}; falling back to base directory ${basePath}`
+    );
+    const sanitizedPath = relativePath.replace(/^(\.\.\/?)+/, '');
+    return sanitizedPath ? `${basePath}/${sanitizedPath}` : basePath;
+  }
+  return `${basePath}/${relativePath}`;
+}
+
 function getS3Client(): S3Client {
   if (!s3Client) {
     s3Client = makeS3Client();
   }
   return s3Client;
-}
-
-// Cached S3 operations
-async function cachedListS3Files(prefix: string): Promise<string[]> {
-  if (s3ListCache.has(prefix)) {
-    return s3ListCache.get(prefix)!;
-  }
-  const files = await listS3Files(prefix, S3_BUCKET_NAME!, getS3Client());
-  s3ListCache.set(prefix, files);
-  return files;
-}
-
-async function cachedDownloadS3File(filePath: string): Promise<string> {
-  if (s3FileCache.has(filePath)) {
-    return s3FileCache.get(filePath)!;
-  }
-  const content = await downloadS3File(
-    filePath,
-    S3_BUCKET_NAME!,
-    getS3Client()
-  );
-  s3FileCache.set(filePath, content);
-  return content;
 }
 
 // Fetch all data from Strapi in one go
@@ -203,6 +192,10 @@ function generateUrlPath(
 
 // Get markdown files recursively (for URL parsing metadata)
 async function getMarkdownFilesRecursively(dir: string): Promise<string[]> {
+  if (!fs.existsSync(dir)) {
+    console.warn(`Skipping missing documentation directory ${dir}`);
+    return [];
+  }
   const entries = await fs.promises.readdir(dir, { withFileTypes: true });
   const files = await Promise.all(
     entries.map(async (entry) => {
@@ -240,28 +233,35 @@ async function processGuidesMetadata(
   const items: SitemapItem[] = [];
 
   for (const guideInfo of guideInfoList) {
-    const guideFiles = (
-      await cachedListS3Files(`${S3_PATH_TO_GITBOOK_DOCS}/${guideInfo.dirName}`)
-    ).filter((file) => file.endsWith('.md'));
+    const guideDir = path.join(DOCUMENTATION_PATH, guideInfo.dirName);
+    if (!fs.existsSync(guideDir)) {
+      console.warn(`Guide directory not found for ${guideInfo.dirName}`);
+      continue;
+    }
 
-    const menuPath = guideFiles.find((file) =>
-      file.includes(guideInfo.dirName + '/SUMMARY.md')
+    const guideFiles = await getMarkdownFilesRecursively(guideDir);
+    const menuLocalPath = guideFiles.find((file) =>
+      file.replace(/\\/g, '/').endsWith(`${guideInfo.dirName}/SUMMARY.md`)
     );
+    const menuS3Path = menuLocalPath
+      ? localPathToS3Path(menuLocalPath)
+      : undefined;
 
     for (const filePath of guideFiles) {
-      const parts = filePath.split('/');
+      const normalizedFilePath = filePath.replace(/\\/g, '/');
+      const parts = normalizedFilePath.split('/');
       if (
         parts.length <= 2 ||
-        filePath.endsWith('/SUMMARY.md') ||
-        filePath.includes('.gitbook/includes')
+        normalizedFilePath.endsWith('/SUMMARY.md') ||
+        normalizedFilePath.includes('.gitbook/includes')
       ) {
         continue;
       }
 
-      const content = await cachedDownloadS3File(filePath);
+      const content = await fs.promises.readFile(filePath, 'utf8');
       const title = extractTitleFromMarkdown(content);
 
-      if (menuPath && content) {
+      if (menuS3Path && content) {
         const path = generateUrlPath(
           filePath,
           guideInfo.slug,
@@ -273,8 +273,8 @@ async function processGuidesMetadata(
         const baseItem: SitemapItem = {
           path,
           dirName: guideInfo.dirName,
-          contentS3Path: filePath,
-          menuS3Path: menuPath,
+          contentS3Path: localPathToS3Path(filePath),
+          menuS3Path,
           title: title || path.split('/').pop() || 'Untitled',
           version: guideInfo.versionName,
         };
@@ -312,28 +312,35 @@ async function processSolutionsMetadata(
     const dirName = solution.attributes.dirName;
     if (!dirName) continue;
 
-    const solutionFiles = (
-      await cachedListS3Files(`${S3_PATH_TO_GITBOOK_DOCS}/${dirName}`)
-    ).filter((file) => file.endsWith('.md'));
+    const solutionDir = path.join(DOCUMENTATION_PATH, dirName);
+    if (!fs.existsSync(solutionDir)) {
+      console.warn(`Solution directory not found for ${dirName}`);
+      continue;
+    }
 
-    const menuPath = solutionFiles.find((file) =>
-      file.includes(dirName + '/SUMMARY.md')
+    const solutionFiles = await getMarkdownFilesRecursively(solutionDir);
+    const menuLocalPath = solutionFiles.find((file) =>
+      file.replace(/\\/g, '/').endsWith(`${dirName}/SUMMARY.md`)
     );
+    const menuS3Path = menuLocalPath
+      ? localPathToS3Path(menuLocalPath)
+      : undefined;
 
     for (const filePath of solutionFiles) {
-      const parts = filePath.split('/');
+      const normalizedFilePath = filePath.replace(/\\/g, '/');
+      const parts = normalizedFilePath.split('/');
       if (
         parts.length <= 2 ||
-        filePath.endsWith('/SUMMARY.md') ||
-        filePath.includes('.gitbook/includes')
+        normalizedFilePath.endsWith('/SUMMARY.md') ||
+        normalizedFilePath.includes('.gitbook/includes')
       ) {
         continue;
       }
 
-      const content = await cachedDownloadS3File(filePath);
+      const content = await fs.promises.readFile(filePath, 'utf8');
       const title = extractTitleFromMarkdown(content);
 
-      if (menuPath && content) {
+      if (menuS3Path && content) {
         const path = generateUrlPath(
           filePath,
           solution.attributes.slug,
@@ -346,8 +353,8 @@ async function processSolutionsMetadata(
         items.push({
           path,
           dirName,
-          contentS3Path: filePath,
-          menuS3Path: menuPath,
+          contentS3Path: localPathToS3Path(filePath),
+          menuS3Path,
           title: title || path.split('/').pop() || 'Untitled',
         });
       }
@@ -367,30 +374,37 @@ async function processReleaseNotesMetadata(
     const dirName = releaseNote.attributes.dirName;
     if (!dirName) continue;
 
-    const releaseNoteFiles = (
-      await cachedListS3Files(`${S3_PATH_TO_GITBOOK_DOCS}/${dirName}`)
-    ).filter((file) => file.endsWith('.md'));
+    const releaseNoteDir = path.join(DOCUMENTATION_PATH, dirName);
+    if (!fs.existsSync(releaseNoteDir)) {
+      console.warn(`Release note directory not found for ${dirName}`);
+      continue;
+    }
 
-    const menuPath = releaseNoteFiles.find((file) =>
-      file.includes(dirName + '/SUMMARY.md')
+    const releaseNoteFiles = await getMarkdownFilesRecursively(releaseNoteDir);
+    const menuLocalPath = releaseNoteFiles.find((file) =>
+      file.replace(/\\/g, '/').endsWith(`${dirName}/SUMMARY.md`)
     );
+    const menuS3Path = menuLocalPath
+      ? localPathToS3Path(menuLocalPath)
+      : undefined;
 
     for (const filePath of releaseNoteFiles) {
-      const parts = filePath.split('/');
+      const normalizedFilePath = filePath.replace(/\\/g, '/');
+      const parts = normalizedFilePath.split('/');
       if (
         parts.length <= 2 ||
-        filePath.endsWith('/SUMMARY.md') ||
-        filePath.includes('.gitbook/includes')
+        normalizedFilePath.endsWith('/SUMMARY.md') ||
+        normalizedFilePath.includes('.gitbook/includes')
       ) {
         continue;
       }
 
-      const content = await cachedDownloadS3File(filePath);
+      const content = await fs.promises.readFile(filePath, 'utf8');
       const title = extractTitleFromMarkdown(content);
       const productSlug =
         releaseNote.attributes.product?.data?.attributes?.slug;
 
-      if (dirName && menuPath && content && productSlug) {
+      if (dirName && menuS3Path && content && productSlug) {
         const path = generateUrlPath(
           filePath,
           releaseNote.attributes.slug,
@@ -403,8 +417,8 @@ async function processReleaseNotesMetadata(
         items.push({
           path,
           dirName,
-          contentS3Path: filePath,
-          menuS3Path: menuPath,
+          contentS3Path: localPathToS3Path(filePath),
+          menuS3Path,
           title: title || path.split('/').pop() || 'Untitled',
         });
       }
@@ -607,9 +621,6 @@ async function main() {
     }
 
     console.log('Metadata sync completed successfully!');
-    console.log(
-      `Cache stats: ${s3FileCache.size} files cached, ${s3ListCache.size} directories cached`
-    );
   } catch (error) {
     console.error('Error during metadata sync:', error);
     process.exit(1);
