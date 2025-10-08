@@ -1,3 +1,4 @@
+'use client';
 import { Webinar } from '@/lib/types/webinar';
 import FutureWebinarsShowcase from '../FutureWebinarsShowcase/FutureWebinarsShowcase';
 import PastWebinarsShowcase from '../PastWebinarsShowcase/PastWebinarsShowcase';
