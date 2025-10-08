@@ -1,5 +1,64 @@
 # nextjs-website
 
+## 9.0.1
+
+### Patch Changes
+
+- 1563c31: Remove error log in build and NoSSR wrapper
+
+## 9.0.0
+
+### Major Changes
+
+- ebe435f: Add filters to tutorial list page
+
+### Minor Changes
+
+- 7d819f7: Rename and generalize Filter Selectors
+- bacb9be: Add flag to toggle filters in tutorials list page
+
+### Patch Changes
+
+- 645a425: Fix dynamic rendering for webinars, solutions and homepage
+
+## 8.6.0
+
+### Minor Changes
+
+- e7eacbc: Add Tutorial type, a new makeTutorialsProps using it and add tests for the new makeTutorials function
+- 873af05: Add Webinars type and a new makeWebinarsProps using it and add tests for the new makeWebinars function
+- e7eacbc: Add Solutions types, a new makeSolutionsProps using it and add tests for the new makeSolutions function
+
+### Patch Changes
+
+- e7eacbc: Add fetchFromStrapi test and remove deprecatedFetchFromStrapi and its test
+- e7eacbc: Rename all types in the strapi dir by adding the prefix 'Strapi'
+- e7eacbc: Remove all unused codecs
+- 0c105d4: Remove io-ts and io-ts-types from dependencies in nextjs-website/package.json
+- e7eacbc: Add QuickStartGuides TS types, add makeQuickStartGuides tests.
+- e7eacbc: Rename fixtures and factories files from guideLists to guideListPages
+- e7eacbc: Add makeProducts tests and remove unused Product codecs
+- e7eacbc: Add guard for missing slugs in all makeProps function where appropriate.
+- e7eacbc: Remove StrapiBaseGuidesAttributes
+- f3929bd: Make all models used as props immutable
+- e7eacbc: Add Homepage types and update makeHomepageProps and add tests for the makeHomepageProps function
+- e7eacbc: Add ReleaseNotes TS types, add makeReleaseNotes test, remove ReleaseNotesCodec
+- e7eacbc: Expand use of spyOnConsoleError to all tests where a call to console error is expected.
+- e7eacbc: Add UrlReplaceMap types, add makeUrlReplaceMap tests and remove UrlReplaceMap codecs.
+- a5594c3: Add new fetchFromStrapi and set the old one as deprecated. Remove the guides codec and add ts type instead
+- ca0f653: Remove overviews codec and add strapi overviews type
+- c49f7f6: Add and improve guards for name, slug and title in makeProps
+- f4f6892: Add detailed error logs and guards in makeApiDataListCard
+- e7eacbc: Add tests for makeApiDataList, makeApiDataListPages, makeBannerLink, makePart, makeQuickStartGuides, makeTutorialListPages, makeWebinarCategories
+- 52a8d7c: Remove webinar DynamoDB codecs and add new TS types instead
+- 0f7ca34: Remove Chatbot codecs and use TS types instead
+- e7eacbc: Add ApiDataList and ApiDataListPages TS types, add makeApiDataList and makeApiDataListPages tests
+- Updated dependencies [36db54a]
+- Updated dependencies [8e23e7f]
+- Updated dependencies [808b26b]
+- Updated dependencies [7058218]
+  - gitbook-docs@1.1.0
+
 ## 8.5.3
 
 ### Patch Changes

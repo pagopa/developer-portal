@@ -10,7 +10,7 @@ const makeStrapiTutorialListPagePopulate = () =>
         ...productRelationsPopulate,
       },
       tutorials: {
-        populate: ['image', 'product'],
+        populate: ['image', 'product', 'tags'],
       },
       bannerLinks: {
         populate: ['icon'],
@@ -18,6 +18,7 @@ const makeStrapiTutorialListPagePopulate = () =>
       seo: {
         populate: '*,metaImage,metaSocial.image',
       },
+      enableFilters: true,
     },
   });
 

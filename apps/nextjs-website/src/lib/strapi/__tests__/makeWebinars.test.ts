@@ -71,8 +71,7 @@ describe('makeWebinarsProps', () => {
 
     expect(result).toHaveLength(0);
     expect(spyOnConsoleError).toHaveBeenCalledWith(
-      'Error while making webinar from Strapi data:',
-      expect.any(Error)
+      'Error while processing Webinar: missing title or slug. Title: undefined | Slug: undefined. Skipping...'
     );
   });
 });

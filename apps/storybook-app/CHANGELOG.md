@@ -1,5 +1,17 @@
 # storybook-app
 
+## 1.0.1
+
+### Patch Changes
+
+- 7d819f7: Rename and generalize Filter Selectors
+
+## 1.0.0
+
+### Major Changes
+
+- 36db54a: Update storybook version, fix issues with update
+
 ## 0.16.1
 
 ### Patch Changes

@@ -34,6 +34,7 @@ export const strapiApiDataList: StrapiApiDataList = {
             attributes: {
               name: 'Test Product',
               slug: 'test-product',
+              tags: { data: [] },
               shortName: 'TP',
               bannerLinks: generateBannerLinks(1),
               overview: { data: { id: 0 } },
@@ -82,6 +83,7 @@ export const strapiApiDataList: StrapiApiDataList = {
               name: 'SOAP Product',
               slug: 'soap-product',
               shortName: 'SP',
+              tags: { data: [] },
               bannerLinks: generateBannerLinks(1),
               overview: { data: { id: 0 } },
               quickstart_guide: { data: { id: 0 } },

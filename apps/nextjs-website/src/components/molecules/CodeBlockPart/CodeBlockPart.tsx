@@ -9,13 +9,13 @@ import { useTranslations } from 'next-intl';
 import { computeId } from '../PartRendererMenu/PartRendererMenu';
 
 export type CodeBlockPartProps = {
-  code: string;
-  language?: string;
-  mode?: 'light' | 'dark';
-  showLineNumbers?: boolean;
-  title?: string;
-  maxWidth?: number | 'auto';
-  wrapLines?: boolean;
+  readonly code: string;
+  readonly language?: string;
+  readonly mode?: 'light' | 'dark';
+  readonly showLineNumbers?: boolean;
+  readonly title?: string;
+  readonly maxWidth?: number | 'auto';
+  readonly wrapLines?: boolean;
 };
 
 const CodeBlockPart = ({

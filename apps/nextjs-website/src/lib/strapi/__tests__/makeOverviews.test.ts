@@ -67,7 +67,7 @@ describe('makeOverviewsProps', () => {
     const result = makeOverviewsProps(overviewsWithItemWithEmptyProductSlug());
     expect(result).toHaveLength(0);
     expect(spyOnConsoleError).toHaveBeenCalledWith(
-      'Error processing Overview for product: "Piattaforma pagoPA": Missing product slug'
+      'Error while processing Overview with title "Test Overview": missing product slug. Skipping...'
     );
   });
 
@@ -75,7 +75,7 @@ describe('makeOverviewsProps', () => {
     const result = makeOverviewsProps(overviewsWithItemWithEmptyProductSlug());
     expect(result).toHaveLength(0);
     expect(spyOnConsoleError).toHaveBeenCalledWith(
-      'Error processing Overview for product: "Piattaforma pagoPA": Missing product slug'
+      'Error while processing Overview with title "Test Overview": missing product slug. Skipping...'
     );
   });
 
