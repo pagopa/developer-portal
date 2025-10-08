@@ -98,16 +98,9 @@ export const getTutorialsProps = async () => {
     )
   );
   const contentPromises = allMarkdownParts.map(async (part) => {
-    // Estraiamo dirName e pathToFile dalla parte
     const { dirName, pathToFile } = part as MarkDownPart;
-
-    // Creiamo la chiave univoca per il nostro dizionario
-    const key = `${dirName}/${pathToFile}`; // Usare un separatore è una buona pratica
-
-    // Chiamiamo la funzione asincrona e attendiamo il contenuto
+    const key = `${dirName}/${pathToFile}`;
     const content = await getMarkdownContent(dirName, pathToFile);
-
-    // Restituiamo una coppia [chiave, valore]
     return [key, content];
   });
   const resolvedContentPairs = await Promise.all(contentPromises);

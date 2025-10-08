@@ -65,5 +65,5 @@ export type StrapiPart =
   | CodeBlockPart
   | EmbedHtmlPart
   | HtmlPart
-  | QuotePart
-  | MarkDownPart;
+  | MarkDownPart
+  | QuotePart;

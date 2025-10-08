@@ -5,7 +5,7 @@ export type MarkdownPartProps = {
   readonly content: string;
 };
 const MarkdownPart = ({ content }: MarkdownPartProps) => {
-  if (content == null) {
+  if (content === null) {
     return <Typography />; // empty placeholder while loading
   }
 
@@ -20,7 +20,7 @@ const MarkdownPart = ({ content }: MarkdownPartProps) => {
         gitBookPagesWithTitle: [],
         spaceToPrefix: [],
       }}
-      hideH1={true}
+      hideLevel1Headings={true}
     />
   );
 };
