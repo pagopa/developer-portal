@@ -1,18 +1,18 @@
 'use client';
-import ProductBreadcrumbs from "@/components/atoms/ProductBreadcrumbs/ProductBreadcrumbs";
-import { productPageToBreadcrumbs } from "@/helpers/breadcrumbs.helpers";
-import { FragmentProvider } from "@/components/organisms/FragmentProvider/FragmentProvider";
-import { Box, Stack, Typography, useMediaQuery, useTheme } from "@mui/material";
+import ProductBreadcrumbs from '@/components/atoms/ProductBreadcrumbs/ProductBreadcrumbs';
+import { productPageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
+import { FragmentProvider } from '@/components/organisms/FragmentProvider/FragmentProvider';
+import { Box, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
 import RelatedLinks, {
   RelatedLinksProps,
-} from "@/components/atoms/RelatedLinks/RelatedLinks";
-import ProductLayout from "@/components/organisms/ProductLayout/ProductLayout";
-import { Product } from "@/lib/types/product";
-import PartRenderer from "@/components/molecules/PartRenderer/PartRenderer";
-import { Part } from "@/lib/types/part";
-import PartRendererMenu from "@/components/molecules/PartRendererMenu/PartRendererMenu";
-import { ReactNode } from "react";
-import { BannerLinkProps } from "@/components/atoms/BannerLink/BannerLink";
+} from '@/components/atoms/RelatedLinks/RelatedLinks';
+import ProductLayout from '@/components/organisms/ProductLayout/ProductLayout';
+import { Product } from '@/lib/types/product';
+import PartRenderer from '@/components/molecules/PartRenderer/PartRenderer';
+import { Part } from '@/lib/types/part';
+import PartRendererMenu from '@/components/molecules/PartRendererMenu/PartRendererMenu';
+import { ReactNode } from 'react';
+import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
 import EContainer from '../../../editorialComponents/EContainer/EContainer';
 
 // TODO: Remove once the migration to CMS contents will be completed
@@ -52,14 +52,14 @@ const UseCaseTemplate = ({
     >
       {product && (
         <Box
-          paddingY={"20px"}
-          marginTop={"76px"}
+          paddingY={'20px'}
+          marginTop={'76px'}
           style={{
             backgroundColor: palette.grey[50],
             backgroundImage:
-              (headerImage && `url(${headerImage?.url})`) || "none",
-            backgroundRepeat: "no-repeat",
-            backgroundSize: "cover",
+              (headerImage && `url(${headerImage?.url})`) || 'none',
+            backgroundRepeat: 'no-repeat',
+            backgroundSize: 'cover',
           }}
         >
           <EContainer>
@@ -68,10 +68,10 @@ const UseCaseTemplate = ({
                 ...productPageToBreadcrumbs(product, [
                   {
                     translate: true,
-                    name: "devPortal.productHeader.useCases",
+                    name: 'devPortal.productHeader.useCases',
                     path: product.hasUseCaseListPage
                       ? `/${product.slug}/use-cases`
-                      : "",
+                      : '',
                   },
                   {
                     name: title,
@@ -79,29 +79,29 @@ const UseCaseTemplate = ({
                   },
                 ]),
               ]}
-              textColor={headerImage ? "white" : palette.text.primary}
+              textColor={headerImage ? 'white' : palette.text.primary}
             />
           </EContainer>
           <EContainer>
             <Stack
               sx={{
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "start",
-                alignContent: "flex-start",
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'start',
+                alignContent: 'flex-start',
                 paddingTop: 10,
                 paddingBottom: 10,
-                width: "100%",
+                width: '100%',
               }}
             >
               <Typography
                 style={{
                   fontWeight: 700,
-                  fontStyle: "bold",
-                  fontSize: isSmallScreen ? "32px" : "38px",
+                  fontStyle: 'bold',
+                  fontSize: isSmallScreen ? '32px' : '38px',
                   marginTop: 16,
                   marginBottom: 32,
-                  color: headerImage ? "white" : palette.text.primary,
+                  color: headerImage ? 'white' : palette.text.primary,
                 }}
               >
                 {title}
@@ -113,14 +113,14 @@ const UseCaseTemplate = ({
       <FragmentProvider>
         <Box
           sx={{
-            display: "flex",
-            flexDirection: { xs: "column", lg: "row" },
-            maxWidth: "1200px",
-            margin: "0 auto",
+            display: 'flex',
+            flexDirection: { xs: 'column', lg: 'row' },
+            maxWidth: '1200px',
+            margin: '0 auto',
             paddingBottom: !((relatedLinks?.links?.length ?? 0) > 0)
-              ? "56px"
+              ? '56px'
               : 0,
-            paddingTop: "56px",
+            paddingTop: '56px',
             px: { xs: 4, lg: 0 },
           }}
         >
@@ -128,18 +128,18 @@ const UseCaseTemplate = ({
             sx={{
               flexGrow: { lg: 1 },
               maxWidth: {
-                xs: "100%",
-                lg: "822px",
+                xs: '100%',
+                lg: '822px',
               },
-              overflowWrap: "break-word",
+              overflowWrap: 'break-word',
             }}
           >
             <Typography
-              component="h1"
+              component='h1'
               sx={{
-                fontSize: "38px",
+                fontSize: '38px',
                 fontWeight: 700,
-                lineHeight: "42px",
+                lineHeight: '42px',
                 paddingY: 2,
               }}
             >
@@ -155,18 +155,18 @@ const UseCaseTemplate = ({
           </Box>
           <Box
             sx={{
-              display: { xs: "none", lg: "initial" },
-              position: "relative",
+              display: { xs: 'none', lg: 'initial' },
+              position: 'relative',
               // 78px is the height of the header, 80px is the height of the product header
-              paddingTop: "30px",
-              paddingLeft: "60px",
-              width: { lg: "378px" },
+              paddingTop: '30px',
+              paddingLeft: '60px',
+              width: { lg: '378px' },
             }}
           >
             <Box
               sx={{
-                position: "sticky",
-                maxWidth: "378px",
+                position: 'sticky',
+                maxWidth: '378px',
                 top: 140,
               }}
             >
