@@ -4,12 +4,12 @@ from llama_index.core import VectorStoreIndex, PromptTemplate
 from llama_index.core.agent.workflow import ReActAgent
 
 from src.modules.settings import SETTINGS
+from src.modules.vector_database import load_index_redis
 from src.modules.models import get_llm, get_embed_model
 from src.modules.agent_tools import get_query_engine_tool, get_identity_tool
 
 
 def get_agent(
-    index: VectorStoreIndex,
     llm: LLM | None = None,
     embed_model: BaseEmbedding | None = None,
     text_qa_template: PromptTemplate | None = None,
@@ -22,10 +22,15 @@ def get_agent(
         ReActAgent: The configured ReActAgent instance.
     """
 
+    llm_rag = llm if llm else get_llm()
+    llm_agent = get_llm(temperature=SETTINGS.temperature_agent)
+    embed_model = embed_model if embed_model else get_embed_model()
+
+    index = load_index_redis(llm=llm_rag, embed_model=embed_model)
     query_engine_tool = get_query_engine_tool(
         index=index,
-        llm=llm if llm else get_llm(),
-        embed_model=embed_model if embed_model else get_embed_model(),
+        llm=llm_rag,
+        embed_model=embed_model,
         text_qa_template=text_qa_template,
         refine_template=refine_template,
     )
@@ -41,7 +46,7 @@ def get_agent(
             "It retrieves relevant information from the index and generates a structured response."
         ),
         tools=[query_engine_tool, identity_tool],
-        llm=get_llm(temperature=SETTINGS.temperature_agent),
+        llm=llm_agent,
     )
 
     agent.formatter.system_header = SETTINGS.react_system_str
