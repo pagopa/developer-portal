@@ -345,11 +345,3 @@ class DiscoveryVectorIndex:
         # LOGGER.info(">>>>>>> Refreshing vector index with dynamic docs...")
         # self.refresh_index_dynamic_docs()
         LOGGER.info("Refreshed vector index successfully.")
-
-        query_engine = self.index.as_query_engine()
-        query_str = "parlami del caso GreenPass sul perche' usare il toolkit di comunicazione dell'appio?"
-        LOGGER.info(f"Query: {query_str}")
-        response = query_engine.query(query_str)
-        LOGGER.info(f"Response: {response}")
-        LOGGER.info(f"Response source nodes: {response.source_nodes}")
-        LOGGER.info(f"Response metadata: {response.metadata}")
