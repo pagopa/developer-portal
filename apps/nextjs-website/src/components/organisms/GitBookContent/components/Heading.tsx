@@ -51,6 +51,7 @@ export const SubHeading = ({
       .toLowerCase()
       .replace(/[^a-z0-9\s-]/g, '')
       .replace(/\s+/g, '-');
+      .replace(/\s+/g, '-');
 
   if (level === 1) {
     return null;
