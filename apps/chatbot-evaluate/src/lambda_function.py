@@ -1,24 +1,10 @@
 import json
-from opentelemetry import trace
-from opentelemetry.instrumentation.aws_lambda import AwsLambdaInstrumentor
 
-from src.otel_config import configure_tracer
 from src.modules.judge import Judge
 from src.modules.logger import get_logger
 
-# Configure OpenTelemetry before anything else
-configure_tracer()
-
 LOGGER = get_logger(__name__)
-
-# Instrument AWS Lambda
-AwsLambdaInstrumentor().instrument()
-
-tracer = trace.get_tracer(__name__)
-
-# Trace Judge initialization
-with tracer.start_as_current_span("judge_initialization"):
-    JUDGE = Judge()
+JUDGE = Judge()
 
 # SQS event example:
 """ {
@@ -67,28 +53,20 @@ with tracer.start_as_current_span("judge_initialization"):
 
 
 def lambda_handler(event, context):
-    with tracer.start_as_current_span("lambda_handler") as span:
-        LOGGER.debug(f"event: {event}")
-        span.set_attribute("event.records_count", len(event.get("Records", [])))
+    LOGGER.debug(f"event: {event}")
 
-        results = []
-        for idx, record in enumerate(event.get("Records", [])):
-            with tracer.start_as_current_span(f"process_record_{idx}") as record_span:
-                body = record.get("body", "{}")
-                body = json.loads(body)
-                
-                record_span.set_attribute("trace_id", body.get("trace_id", ""))
-                record_span.set_attribute("has_messages", messages := body.get("messages") is not None)
-                record_span.set_attribute("contexts_count", len(body.get("retrieved_contexts", [])))
-                
-                with tracer.start_as_current_span("judge_evaluate"):
-                    result = JUDGE.evaluate(
-                        trace_id=body.get("trace_id", ""),
-                        query_str=body.get("query_str", ""),
-                        response_str=body.get("response_str", ""),
-                        retrieved_contexts=body.get("retrieved_contexts", []),
-                        messages=messages,
-                    )
-                results.append(result)
+    results = []
+    for record in event.get("Records", []):
+        body = record.get("body", "{}")
+        body = json.loads(body)
+        results.append(
+            JUDGE.evaluate(
+                trace_id=body.get("trace_id", ""),
+                query_str=body.get("query_str", ""),
+                response_str=body.get("response_str", ""),
+                retrieved_contexts=body.get("retrieved_contexts", []),
+                messages=body.get("messages", None),
+            )
+        )
 
-        return {"statusCode": 200, "result": results, "event": event}
+    return {"statusCode": 200, "result": results, "event": event}

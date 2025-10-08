@@ -1,5 +1,4 @@
 import os
-from opentelemetry import trace
 from google.genai import types
 
 from llama_index.core.llms.llm import LLM
@@ -12,7 +11,6 @@ from src.modules.settings import SETTINGS
 
 
 LOGGER = get_logger(__name__)
-tracer = trace.get_tracer(__name__)
 
 
 def get_llm(
@@ -35,37 +33,32 @@ def get_llm(
     Raises:
         AssertionError: If the provider is not 'google' or 'mock'.
     """
-    with tracer.start_as_current_span("get_llm") as span:
-        provider = provider or SETTINGS.provider
-        model_id = model_id or SETTINGS.model_id
-        temperature = temperature or SETTINGS.temperature
-        max_tokens = max_tokens or SETTINGS.max_tokens
-        
-        span.set_attribute("provider", provider)
-        span.set_attribute("model_id", model_id)
 
-        if provider == "google":
-            with tracer.start_as_current_span("import_google_genai"):
-                from llama_index.llms.google_genai import GoogleGenAI
+    provider = provider or SETTINGS.provider
+    model_id = model_id or SETTINGS.model_id
+    temperature = temperature or SETTINGS.temperature
+    max_tokens = max_tokens or SETTINGS.max_tokens
 
-            with tracer.start_as_current_span("instantiate_google_llm"):
-                llm = GoogleGenAI(
-                    model=model_id,
-                    temperature=temperature,
-                    max_tokens=max_tokens,
-                    api_key=SETTINGS.google_api_key,
-                )
-            LOGGER.info(f"{model_id} LLM loaded successfully from Google!")
+    if provider == "google":
+        from llama_index.llms.google_genai import GoogleGenAI
 
-        elif provider == "mock":
-            llm = MockLLM(
-                max_tokens=5,
-            )
-            LOGGER.info("Mock LLM loaded successfully!")
-        else:
-            raise AssertionError(f"Provider must be 'google' or 'mock'. Given {provider}.")
+        llm = GoogleGenAI(
+            model=model_id,
+            temperature=temperature,
+            max_tokens=max_tokens,
+            api_key=SETTINGS.google_api_key,
+        )
+        LOGGER.info(f"{model_id} LLM loaded successfully from Google!")
 
-        return llm
+    elif provider == "mock":
+        llm = MockLLM(
+            max_tokens=5,
+        )
+        LOGGER.info("Mock LLM loaded successfully!")
+    else:
+        raise AssertionError(f"Provider must be 'google' or 'mock'. Given {provider}.")
+
+    return llm
 
 
 def get_embed_model(
@@ -88,37 +81,32 @@ def get_embed_model(
     Raises:
         AssertionError: If the provider is not 'google' or 'mock'.
     """
-    with tracer.start_as_current_span("get_embed_model") as span:
-        provider = provider or SETTINGS.provider
-        model_id = model_id or SETTINGS.embed_model_id
-        embed_batch_size = embed_batch_size or SETTINGS.embed_batch_size
-        embed_dim = embed_dim or SETTINGS.embed_dim
-        task_type = task_type or SETTINGS.embed_task_type
-        
-        span.set_attribute("provider", provider)
-        span.set_attribute("model_id", model_id)
 
-        if provider == "google":
-            with tracer.start_as_current_span("import_google_genai_embedding"):
-                from llama_index.embeddings.google_genai import GoogleGenAIEmbedding
+    provider = provider or SETTINGS.provider
+    model_id = model_id or SETTINGS.embed_model_id
+    embed_batch_size = embed_batch_size or SETTINGS.embed_batch_size
+    embed_dim = embed_dim or SETTINGS.embed_dim
+    task_type = task_type or SETTINGS.embed_task_type
 
-            with tracer.start_as_current_span("instantiate_google_embedding"):
-                embed_model = GoogleGenAIEmbedding(
-                    model_name=model_id,
-                    api_key=SETTINGS.google_api_key,
-                    embed_batch_size=embed_batch_size,
-                    embedding_config=types.EmbedContentConfig(
-                        output_dimensionality=embed_dim,
-                        task_type=task_type,
-                    ),
-                )
-            LOGGER.info(f"{model_id} embedding model loaded successfully from Google!")
+    if provider == "google":
+        from llama_index.embeddings.google_genai import GoogleGenAIEmbedding
 
-        elif provider == "mock":
-            embed_model = MockEmbedding(embed_dim=5)
-            LOGGER.info("Mock embedding model loaded successfully!")
+        embed_model = GoogleGenAIEmbedding(
+            model_name=model_id,
+            api_key=SETTINGS.google_api_key,
+            embed_batch_size=embed_batch_size,
+            embedding_config=types.EmbedContentConfig(
+                output_dimensionality=embed_dim,
+                task_type=task_type,
+            ),
+        )
+        LOGGER.info(f"{model_id} embedding model loaded successfully from Google!")
 
-        else:
-            raise AssertionError(f"Provider must be 'google' or 'mock'. Given {provider}.")
+    elif provider == "mock":
+        embed_model = MockEmbedding(embed_dim=5)
+        LOGGER.info("Mock embedding model loaded successfully!")
 
-        return embed_model
+    else:
+        raise AssertionError(f"Provider must be 'google' or 'mock'. Given {provider}.")
+
+    return embed_model
