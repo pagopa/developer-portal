@@ -33,6 +33,8 @@ export const strapiTutorialListPages: StrapiTutorialListPages = {
           data: [
             {
               attributes: {
+                description: '',
+                icon: { data: mediaJpeg() },
                 tags: { data: [] },
                 title: 'Tutorial 1',
                 slug: 'tutorial-1',
