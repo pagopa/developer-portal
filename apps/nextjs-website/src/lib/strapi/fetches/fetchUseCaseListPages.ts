@@ -10,7 +10,7 @@ const makeStrapiUseCaseListPagePopulate = () =>
         ...productRelationsPopulate,
       },
       useCases: {
-        populate: ['image', 'product'],
+        populate: ['coverImage', 'product'],
       },
       bannerLinks: {
         populate: ['icon'],
