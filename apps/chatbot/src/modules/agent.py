@@ -4,7 +4,7 @@ from llama_index.core import VectorStoreIndex, PromptTemplate
 from llama_index.core.agent.workflow import ReActAgent
 
 from src.modules.settings import SETTINGS
-from src.modules.vector_database import load_index_redis
+from src.modules.vector_index import load_index_redis
 from src.modules.models import get_llm, get_embed_model
 from src.modules.agent_tools import get_query_engine_tool, get_identity_tool
 
