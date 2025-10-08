@@ -30,7 +30,7 @@ class RagasWrapper(LlamaIndexLLMWrapper):
         llm: BaseLLM,
         run_config: Optional[RunConfig] = None,
     ):
-        with tracer.start_as_current_span("LlamaIndexLLMWrapper __init__") as span:
+        with tracer.start_as_current_span("RagasWrapper __init__") as span:
             span.set_attribute("llm", type(llm).__name__)
             LOGGER.info(f"Using LLM: {type(llm).__name__}")
             self.llm = llm
@@ -74,7 +74,7 @@ class Evaluator:
         embedder: BaseEmbedding,
     ):
 
-        with tracer.start_as_current_span("LlamaIndexLLMWrapper __init__") as span:
+        with tracer.start_as_current_span("Evaluator __init__") as span:
             span.set_attribute("llm", type(llm).__name__)
             span.set_attribute("embedder", type(embedder).__name__)
             
@@ -91,7 +91,7 @@ class Evaluator:
         self, query_str: str, response_str: str, retrieved_contexts: List[str]
     ) -> dict:
         
-        with tracer.start_as_current_span("LlamaIndexLLMWrapper __init__") as span:
+        with tracer.start_as_current_span("Evaluator evaluate") as span:
 
             sample = SingleTurnSample(
                 user_input=query_str,
