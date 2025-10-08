@@ -118,11 +118,14 @@ export const strapiOverviews = {
         },
         tutorialSection: {
           title: 'Tutorials Title',
+          showNewLayout: false,
           description: 'Tutorials Description',
           tutorials: {
             data: [
               {
                 attributes: {
+                  description: 'test description',
+                  icon: { data: mediaJpeg() },
                   title: 'Tutorial 1',
                   tags: { data: [] },
                   slug: 'tutorial-1',
@@ -330,6 +333,7 @@ export const overviewPageProps: OverviewPageProps = {
   },
   tutorials: {
     title: 'Tutorials Title',
+    showNewLayout: false,
     subtitle: 'Tutorials Description',
     list: [
       {
@@ -338,6 +342,8 @@ export const overviewPageProps: OverviewPageProps = {
           url: 'https://example.com/example.jpg',
           alternativeText: 'Example Image',
         },
+        icon: { name: '', ext: '', mime: '', size: 32, url: '' },
+        description: 'test description',
         title: 'Tutorial 1',
         name: 'shared.moreInfo',
         path: '/test-product/tutorials/tutorial-1',
