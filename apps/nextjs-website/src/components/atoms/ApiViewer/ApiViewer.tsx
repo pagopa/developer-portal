@@ -3,25 +3,6 @@ import { FC } from 'react';
 import { Box, useTheme } from '@mui/material';
 import 'rapidoc';
 
-// Extend JSX to recognize the custom element <rapi-doc>
-declare global {
-  // eslint-disable-next-line @typescript-eslint/no-namespace
-  namespace JSX {
-    interface IntrinsicElements {
-      'rapi-doc': React.DetailedHTMLProps<
-        React.HTMLAttributes<HTMLElement>,
-        HTMLElement
-      > & {
-        'spec-url'?: string;
-        theme?: string;
-        'render-style'?: string;
-        'show-header'?: string;
-        'primary-color'?: string;
-      };
-    }
-  }
-}
-
 type ApiViewerProps = {
   specURL: string;
   hideTryIt?: boolean;
