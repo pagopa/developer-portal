@@ -98,8 +98,8 @@ const UseCasesPage = async ({ params }: ProductParams) => {
                 translate: true,
               },
               img: {
-                alt: useCase.image?.alternativeText || '',
-                src: useCase.image?.url || '/images/news.png',
+                alt: useCase.coverImage?.alternativeText || '',
+                src: useCase.coverImage?.url || '/images/news.png',
               },
             }))}
           />

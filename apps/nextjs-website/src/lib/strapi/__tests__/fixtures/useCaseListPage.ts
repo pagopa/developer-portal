@@ -46,7 +46,7 @@ export const strapiUseCaseListPages: StrapiUseCaseListPages = {
                     },
                   },
                 },
-                image: {
+                coverImage: {
                   data: mediaJpeg(),
                 },
               },

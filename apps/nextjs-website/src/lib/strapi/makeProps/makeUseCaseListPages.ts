@@ -47,7 +47,7 @@ export function makeUseCaseListPagesProps(
                 ? new Date(useCaseAttributes.publishedAt)
                 : undefined,
               showInOverview: false,
-              image: useCaseAttributes.image.data?.attributes,
+              coverImage: useCaseAttributes.coverImage.data?.attributes,
             } satisfies UseCase;
           } catch (error) {
             // eslint-disable-next-line functional/no-expression-statements
