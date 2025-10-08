@@ -5,7 +5,6 @@
 /* eslint-disable functional/no-try-statements */
 /* eslint-disable functional/no-let */
 
-
 import dotenv from 'dotenv';
 import { writeFile } from 'fs/promises';
 import * as fs from 'fs';
@@ -17,17 +16,20 @@ import {
   makeS3Client,
   writeSitemapJson,
 } from '../helpers/s3Bucket.helper';
+import { S3Client } from '@aws-sdk/client-s3';
 import { extractTitleFromMarkdown } from '../helpers/extractTitle.helper';
-import {
-  fetchFromStrapi,
-  getResponseFromStrapi,
-} from '../helpers/fetchFromStrapi';
+import { fetchFromStrapi } from '../helpers/fetchFromStrapi';
 import {
   MetadataInfo,
   MetadataType,
   StrapiGuide,
   StrapiReleaseNote,
   StrapiSolution,
+  StrapiGuideListPageResponse,
+  StrapiSolutionListPageResponse,
+  StrapiGuidesResponse,
+  StrapiSolutionsResponse,
+  StrapiReleaseNotesResponse,
 } from '../helpers/guidesMetadataHelper';
 import { sitePathFromS3Path } from '../helpers/sitePathFromS3Path';
 import { sitePathFromLocalPath } from '../helpers/sitePathFromLocalPath';
@@ -73,11 +75,11 @@ interface StrapiData {
   guides: StrapiGuide[];
   solutions: StrapiSolution[];
   releaseNotes: StrapiReleaseNote[];
-  guidesResponse?: any;
-  solutionsResponse?: any;
-  releaseNotesResponse?: any;
-  guideListPagesResponse?: any;
-  solutionListPageResponse?: any;
+  guidesRawResponse?: StrapiGuidesResponse;
+  solutionsRawResponse?: StrapiSolutionsResponse;
+  releaseNotesRawResponse?: StrapiReleaseNotesResponse;
+  guideListPagesResponse?: StrapiGuideListPageResponse[];
+  solutionListPageResponse?: StrapiSolutionListPageResponse[];
 }
 
 interface UrlParsingItem {
@@ -88,9 +90,9 @@ interface UrlParsingItem {
   }[];
 }
 
-let s3Client: ReturnType<typeof makeS3Client> | undefined;
+let s3Client: S3Client | undefined;
 
-function getS3Client(): ReturnType<typeof makeS3Client> {
+function getS3Client(): S3Client {
   if (!s3Client) {
     s3Client = makeS3Client();
   }
@@ -144,11 +146,11 @@ async function fetchAllStrapiData(): Promise<StrapiData> {
       'api/release-notes/?populate[bannerLinks][populate][0]=icon&populate[product][populate][0]=logo&populate[product][populate][1]=bannerLinks.icon&populate[product][populate][2]=overview&populate[product][populate][3]=quickstart_guide&populate[product][populate][4]=release_note&populate[product][populate][5]=api_data_list_page&populate[product][populate][6]=api_data_list_page.apiData.*&populate[product][populate][7]=api_data_list_page.apiData.apiRestDetail.slug&populate[product][populate][8]=api_data_list_page.apiData.apiRestDetail.specUrls&populate[product][populate][9]=api_data_list_page.apiData.apiSoapDetail.*&populate[product][populate][10]=guide_list_page&populate[product][populate][11]=tutorial_list_page&populate[seo][populate]=*,metaImage,metaSocial.image&pagination[pageSize]=1000&pagination[page]=1'
     ),
     // Guide list pages
-    getResponseFromStrapi(
+    fetchFromStrapi<StrapiGuideListPageResponse>(
       'api/guide-list-pages/?populate%5Bproduct%5D%5Bpopulate%5D%5B0%5D=logo&populate%5Bproduct%5D%5Bpopulate%5D%5B1%5D=bannerLinks.icon&populate%5Bproduct%5D%5Bpopulate%5D%5B2%5D=overview&populate%5Bproduct%5D%5Bpopulate%5D%5B3%5D=quickstart_guide&populate%5Bproduct%5D%5Bpopulate%5D%5B4%5D=release_note&populate%5Bproduct%5D%5Bpopulate%5D%5B5%5D=api_data_list_page&populate%5Bproduct%5D%5Bpopulate%5D%5B6%5D=api_data_list_page.apiData.%2A&populate%5Bproduct%5D%5Bpopulate%5D%5B7%5D=api_data_list_page.apiData.apiRestDetail.%2A&populate%5Bproduct%5D%5Bpopulate%5D%5B8%5D=guide_list_page&populate%5Bproduct%5D%5Bpopulate%5D%5B9%5D=tutorial_list_page&populate%5BguidesByCategory%5D%5Bpopulate%5D%5B0%5D=guides.mobileImage&populate%5BguidesByCategory%5D%5Bpopulate%5D%5B1%5D=guides.image&populate%5BguidesByCategory%5D%5Bpopulate%5D%5B2%5D=guides.listItems&populate%5BbannerLinks%5D%5Bpopulate%5D%5B0%5D=icon&populate%5Bseo%5D%5Bpopulate%5D=%2A%2CmetaImage%2CmetaSocial.image'
     ),
     // Solution list page
-    getResponseFromStrapi(
+    fetchFromStrapi<StrapiSolutionListPageResponse>(
       'api/solution-list-page/?populate%5Bsolutions%5D%5Bpopulate%5D%5B0%5D=bannerLinks&populate%5Bsolutions%5D%5Bpopulate%5D%5B1%5D=bannerLinks.icon&populate%5Bsolutions%5D%5Bpopulate%5D%5B2%5D=products.logo&populate%5Bsolutions%5D%5Bpopulate%5D%5B3%5D=icon&populate%5Bsolutions%5D%5Bpopulate%5D%5B4%5D=icon.name&populate%5Bsolutions%5D%5Bpopulate%5D%5B5%5D=stats&populate%5Bsolutions%5D%5Bpopulate%5D%5B6%5D=steps&populate%5Bsolutions%5D%5Bpopulate%5D%5B7%5D=steps.products&populate%5Bsolutions%5D%5Bpopulate%5D%5B8%5D=webinars&populate%5Bsolutions%5D%5Bpopulate%5D%5B9%5D=webinars.coverImage&populate%5Bsolutions%5D%5Bpopulate%5D%5B10%5D=caseHistories&populate%5Bsolutions%5D%5Bpopulate%5D%5B11%5D=caseHistories.case_histories&populate%5Bsolutions%5D%5Bpopulate%5D%5B12%5D=caseHistories.case_histories.image&populate%5BcaseHistories%5D%5Bpopulate%5D%5B0%5D=case_histories&populate%5BcaseHistories%5D%5Bpopulate%5D%5B1%5D=case_histories.image&populate%5Bfeatures%5D%5Bpopulate%5D%5B0%5D=items.icon&populate%5Bseo%5D%5Bpopulate%5D=%2A%2CmetaImage%2CmetaSocial.image'
     ),
   ]);
@@ -161,11 +163,11 @@ async function fetchAllStrapiData(): Promise<StrapiData> {
     guides: guidesResult.data,
     solutions: solutionsResult.data,
     releaseNotes: releaseNotesResult.data,
-    guidesResponse: guidesResult.responseJson,
-    solutionsResponse: solutionsResult.responseJson,
-    releaseNotesResponse: releaseNotesResult.responseJson,
-    guideListPagesResponse,
-    solutionListPageResponse,
+    guidesRawResponse: guidesResult.responseJson,
+    solutionsRawResponse: solutionsResult.responseJson,
+    releaseNotesRawResponse: releaseNotesResult.responseJson,
+    guideListPagesResponse: guideListPagesResponse.data,
+    solutionListPageResponse: solutionListPageResponse.data,
   };
 }
 
@@ -509,7 +511,7 @@ async function main() {
     // Save synced responses
     if (SAVE_STRAPI_RESPONSES && metadataFilter.guides) {
       await writeSitemapJson(
-        strapiData.guidesResponse,
+        strapiData.guidesRawResponse,
         getSyncedGuidesResponseJsonPath(),
         S3_BUCKET_NAME!,
         getS3Client()
@@ -524,7 +526,7 @@ async function main() {
 
     if (SAVE_STRAPI_RESPONSES && metadataFilter.solutions) {
       await writeSitemapJson(
-        strapiData.solutionsResponse,
+        strapiData.solutionsRawResponse,
         getSyncedSolutionsResponseJsonPath(),
         S3_BUCKET_NAME!,
         getS3Client()
@@ -539,7 +541,7 @@ async function main() {
 
     if (SAVE_STRAPI_RESPONSES && metadataFilter.releaseNotes) {
       await writeSitemapJson(
-        strapiData.releaseNotesResponse,
+        strapiData.releaseNotesRawResponse,
         getSyncedReleaseNotesResponseJsonPath(),
         S3_BUCKET_NAME!,
         getS3Client()
