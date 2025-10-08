@@ -34,7 +34,14 @@ export function productToMenuItems(
           theme,
         }
       : null,
-    // if there's tutorials data, add it to the menu
+    product.hasUseCaseListPage
+      ? {
+          label: 'devPortal.productHeader.useCases',
+          href: `/${product.slug}/use-cases`,
+          active: path.startsWith(`/${product.slug}/use-cases`),
+          theme,
+        }
+      : null,
     product.hasTutorialListPage
       ? {
           label: 'devPortal.productHeader.tutorials',
