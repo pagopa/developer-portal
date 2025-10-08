@@ -2,6 +2,7 @@
 import { FC } from 'react';
 import { Box, useTheme } from '@mui/material';
 import 'rapidoc';
+import { Product } from 'schema-dts';
 
 type ApiViewerProps = {
   specURL: string;
