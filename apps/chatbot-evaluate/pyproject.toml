@@ -23,6 +23,12 @@ pyyaml = "^6.0.2"
 ragas = "^0.2.14"
 # requests-auth-aws-sigv4 = "^0.7"
 toml = "^0.10.2"
+opentelemetry-api = "^1.37.0"
+opentelemetry-sdk = "^1.37.0"
+opentelemetry-exporter-otlp = "^1.37.0"
+opentelemetry-distro = "^0.58b0"
+opentelemetry-instrumentation-aws-lambda = "^0.58b0"
+opentelemetry-instrumentation-botocore = "^0.58b0"
 
 [tool.poetry.group.test.dependencies]
 httpx = "^0.28.1"
