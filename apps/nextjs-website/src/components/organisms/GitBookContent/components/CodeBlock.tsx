@@ -1,12 +1,7 @@
 import { CodeBlockProps } from 'gitbook-docs/markdoc/schema/code';
 import { ReactNode } from 'react';
 import CodeBlockPart from '@/components/molecules/CodeBlockPart/CodeBlockPart';
-import dynamic from 'next/dynamic';
-
-const NoSSRMermaidDiagram = dynamic(
-  () => import('../../../atoms/MermaidDiagram/MermaidDiagram'),
-  { ssr: false }
-);
+import MermaidDiagram from '../../../atoms/MermaidDiagram/MermaidDiagram';
 
 const CodeBlock = ({
   language,
@@ -14,7 +9,7 @@ const CodeBlock = ({
   children,
 }: CodeBlockProps<ReactNode>) => {
   if (language === 'mermaid' && typeof children === 'string') {
-    return <NoSSRMermaidDiagram chart={children} />;
+    return <MermaidDiagram chart={children} />;
   }
 
   if (typeof children === 'string') {
