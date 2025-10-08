@@ -100,14 +100,15 @@ class Chatbot:
 
     def _get_response_json(self, engine_response: RESPONSE_TYPE) -> dict:
 
-        LOGGER.info(f">>>>>>>> ENGINE RESPONSE: {engine_response} <<<<<<<<<")
-
         tool_calls = engine_response.tool_calls
         product_list = []
         references_list = []
         retrieved_contexts = []
 
         for tool_call in tool_calls:
+
+            LOGGER.info(f">>>>>>>> TOOL OUTPUT: {tool_call.tool_output} <<<<<<<<<")
+
             raw_output = tool_call.tool_output.raw_output
             product_list += getattr(raw_output, "products", [])
             references = getattr(raw_output, "references", [])
