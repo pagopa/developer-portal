@@ -347,7 +347,7 @@ class DiscoveryVectorIndex:
         LOGGER.info("Refreshed vector index successfully.")
 
         query_engine = self.index.as_query_engine()
-        query_str = "Dimmi che cosa disse Dedalo a Icaro prima della loro fuga?"
+        query_str = "parlami del caso GreenPass sul perche' usare il toolkit di comunicazione dell'appio?"
         LOGGER.info(f"Query: {query_str}")
         response = query_engine.query(query_str)
         LOGGER.info(f"Response: {response}")
