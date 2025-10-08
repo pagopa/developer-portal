@@ -134,17 +134,6 @@ const UseCaseTemplate = ({
               overflowWrap: 'break-word',
             }}
           >
-            <Typography
-              component='h1'
-              sx={{
-                fontSize: '38px',
-                fontWeight: 700,
-                lineHeight: '42px',
-                paddingY: 2,
-              }}
-            >
-              {title}
-            </Typography>
             {parts && (
               <Box mt={1}>
                 {parts.map((part, index) => (
@@ -152,26 +141,6 @@ const UseCaseTemplate = ({
                 ))}
               </Box>
             )}
-          </Box>
-          <Box
-            sx={{
-              display: { xs: 'none', lg: 'initial' },
-              position: 'relative',
-              // 78px is the height of the header, 80px is the height of the product header
-              paddingTop: '30px',
-              paddingLeft: '60px',
-              width: { lg: '378px' },
-            }}
-          >
-            <Box
-              sx={{
-                position: 'sticky',
-                maxWidth: '378px',
-                top: 140,
-              }}
-            >
-              <PartRendererMenu parts={parts ?? []} />
-            </Box>
           </Box>
         </Box>
       </FragmentProvider>
