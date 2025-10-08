@@ -13,7 +13,7 @@ RUN poetry config virtualenvs.create false
 RUN poetry install
 
 # Download the OpenTelemetry Layer with Application Signals Support 
-RUN dnf install unzip wet -y
+RUN dnf install unzip wget -y
 RUN wget https://github.com/aws-observability/aws-otel-python-instrumentation/releases/latest/download/layer.zip -O /tmp/layer.zip 
 
 # Extract and include Lambda layer contents 
