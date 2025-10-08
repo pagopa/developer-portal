@@ -14,10 +14,14 @@ from ragas.metrics import (
 )
 from langchain_core.callbacks import Callbacks
 
+from opentelemetry import trace
+
 from src.modules.logger import get_logger
 
 
 LOGGER = get_logger(__name__)
+# Get the current tracer
+tracer = trace.get_tracer(__name__)
 
 
 class RagasWrapper(LlamaIndexLLMWrapper):
@@ -26,11 +30,14 @@ class RagasWrapper(LlamaIndexLLMWrapper):
         llm: BaseLLM,
         run_config: Optional[RunConfig] = None,
     ):
-        self.llm = llm
-        self._signature = type(self.llm).__name__.lower()
-        if run_config is None:
-            run_config = RunConfig()
-        self.set_run_config(run_config)
+        with tracer.start_as_current_span("LlamaIndexLLMWrapper __init__") as span:
+            span.set_attribute("llm", type(llm).__name__)
+            LOGGER.info(f"Using LLM: {type(llm).__name__}")
+            self.llm = llm
+            self._signature = type(self.llm).__name__.lower()
+            if run_config is None:
+                run_config = RunConfig()
+            self.set_run_config(run_config)
 
     def check_args(
         self,
@@ -67,40 +74,46 @@ class Evaluator:
         embedder: BaseEmbedding,
     ):
 
-        self.llm = RagasWrapper(llm=llm)
-        self.embedder = LlamaIndexEmbeddingsWrapper(embeddings=embedder)
+        with tracer.start_as_current_span("LlamaIndexLLMWrapper __init__") as span:
+            span.set_attribute("llm", type(llm).__name__)
+            span.set_attribute("embedder", type(embedder).__name__)
+            
+            self.llm = RagasWrapper(llm=llm)
+            self.embedder = LlamaIndexEmbeddingsWrapper(embeddings=embedder)
 
-        self.response_relevancy = ResponseRelevancy(
-            llm=self.llm, embeddings=self.embedder
-        )
-        self.context_precision = LLMContextPrecisionWithoutReference(llm=self.llm)
-        self.faithfulness = Faithfulness(llm=self.llm)
+            self.response_relevancy = ResponseRelevancy(
+                llm=self.llm, embeddings=self.embedder
+            )
+            self.context_precision = LLMContextPrecisionWithoutReference(llm=self.llm)
+            self.faithfulness = Faithfulness(llm=self.llm)
 
     def evaluate(
         self, query_str: str, response_str: str, retrieved_contexts: List[str]
     ) -> dict:
+        
+        with tracer.start_as_current_span("LlamaIndexLLMWrapper __init__") as span:
 
-        sample = SingleTurnSample(
-            user_input=query_str,
-            response=response_str,
-            retrieved_contexts=retrieved_contexts,
-        )
-        dataset = EvaluationDataset([sample])
+            sample = SingleTurnSample(
+                user_input=query_str,
+                response=response_str,
+                retrieved_contexts=retrieved_contexts,
+            )
+            dataset = EvaluationDataset([sample])
 
-        result = evaluate(
-            dataset=dataset,
-            metrics=[
-                self.response_relevancy,
-                self.context_precision,
-                self.faithfulness,
-            ],
-            llm=self.llm,
-            embeddings=self.embedder,
-            show_progress=False,
-        )
-        scores = result.scores[0]
-        scores["context_precision"] = scores.pop(
-            "llm_context_precision_without_reference"
-        )
+            result = evaluate(
+                dataset=dataset,
+                metrics=[
+                    self.response_relevancy,
+                    self.context_precision,
+                    self.faithfulness,
+                ],
+                llm=self.llm,
+                embeddings=self.embedder,
+                show_progress=False,
+            )
+            scores = result.scores[0]
+            scores["context_precision"] = scores.pop(
+                "llm_context_precision_without_reference"
+            )
 
-        return scores
+            return scores
