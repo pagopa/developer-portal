@@ -27,7 +27,6 @@ import {
 import NewsShowcase, {
   NewsShowcaseProps,
 } from '@/components/organisms/NewsShowcase/NewsShowcase';
-import { Media } from '@/lib/types/media';
 import TutorialsListOverview from '@/components/organisms/TutorialsListOverview/TutorialsListOverview';
 const MAX_NUM_TUTORIALS_IN_OVERVIEW = 3;
 
@@ -67,15 +66,7 @@ export type OverviewPageProps = {
     readonly title?: string;
     readonly subtitle: string;
     readonly list: readonly Tutorial[];
-  };
-  readonly tutorialsList?: {
-    readonly title: string;
-    readonly tutorialCard: {
-      readonly title?: string;
-      readonly description?: string;
-      readonly icon: Media;
-      readonly tutorial: Tutorial;
-    }[];
+    readonly showNewLayout: boolean;
   };
   readonly whatsNew?: NewsShowcaseProps;
   readonly postIntegration?: {
@@ -130,7 +121,6 @@ const OverviewPage = async ({ params }: ProductParams) => {
     feature,
     path,
     tutorials,
-    tutorialsList,
     whatsNew,
     postIntegration,
     relatedLinks,
@@ -181,7 +171,7 @@ const OverviewPage = async ({ params }: ProductParams) => {
           cards={startInfo.cards}
         />
       )}
-      {product?.hasTutorialListPage && tutorials && (
+      {product?.hasTutorialListPage && tutorials && !tutorials.showNewLayout ? (
         <TutorialsOverview
           title={tutorials.title}
           subtitle={tutorials.subtitle}
@@ -191,13 +181,13 @@ const OverviewPage = async ({ params }: ProductParams) => {
           }}
           tutorials={[...(tutorialsListToShow || [])]}
         />
-      )}
-      {tutorialsList && tutorialsList.tutorialCard.length > 0 && (
+      ) : (
         <TutorialsListOverview
-          title={tutorialsList.title}
-          tutorialCard={tutorialsList.tutorialCard}
+          title={tutorials?.title || ''}
+          tutorials={tutorials?.list || []}
         />
       )}
+
       {whatsNew && (
         <NewsShowcase
           marginTop={15}

@@ -50,6 +50,8 @@ export function makeTutorialsProps(
           path: `/${attributes.product.data.attributes.slug}/tutorials/${attributes.slug}`,
           parts: compact(attributes.parts.map((part) => makePartProps(part))),
           productSlug: attributes.product.data.attributes.slug,
+          description: attributes.description || '',
+          icon: attributes.icon.data?.attributes || undefined,
           relatedLinks: attributes.relatedLinks,
           bannerLinks:
             attributes.bannerLinks && attributes.bannerLinks.length > 0

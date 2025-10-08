@@ -59,6 +59,7 @@ export function makeOverviewsProps(
           tutorials: attributes.tutorialSection && {
             title: attributes.tutorialSection.title,
             subtitle: attributes.tutorialSection.description,
+            showNewLayout: attributes.tutorialSection.showNewLayout,
             list:
               compact(
                 attributes.tutorialSection.tutorials.data.map((tutorial) => {
@@ -77,8 +78,9 @@ export function makeOverviewsProps(
                     );
                     return null;
                   }
-
                   return {
+                    icon: tutorial.attributes.icon.data?.attributes,
+                    description: tutorial.attributes.description,
                     showInOverview: true,
                     image: tutorial.attributes.image.data && {
                       url: tutorial.attributes.image.data.attributes.url,
@@ -91,40 +93,6 @@ export function makeOverviewsProps(
                     path: `/${tutorial.attributes.product.data.attributes.slug}/tutorials/${tutorial.attributes.slug}`,
                   };
                 })
-              ) || [],
-          },
-          tutorialsList: attributes.tutorialsList && {
-            title: attributes.tutorialsList.title,
-            tutorialCard:
-              compact(
-                attributes.tutorialsList.tutorialCard
-                  .filter(
-                    (tutorialCard) =>
-                      tutorialCard.tutorial?.data.attributes.product.data
-                        .attributes.slug ===
-                      attributes.product.data.attributes.slug
-                  )
-                  .map((tutorialCard) => {
-                    return {
-                      title: tutorialCard.title || '',
-                      description: tutorialCard.description || '',
-                      icon: tutorialCard.icon.data.attributes,
-                      tutorial: {
-                        showInOverview: true,
-                        image: tutorialCard.tutorial.data.attributes.image
-                          .data && {
-                          url: tutorialCard.tutorial.data.attributes.image.data
-                            .attributes.url,
-                          alternativeText:
-                            tutorialCard.tutorial.data.attributes.image.data
-                              .attributes.alternativeText || '',
-                        },
-                        title: tutorialCard.tutorial.data.attributes.title,
-                        name: 'shared.moreInfo',
-                        path: `/${tutorialCard.tutorial.data.attributes.product.data.attributes.slug}/tutorials/${tutorialCard.tutorial.data.attributes.slug}`,
-                      },
-                    };
-                  })
               ) || [],
           },
           whatsNew: attributes.whatsNew && {

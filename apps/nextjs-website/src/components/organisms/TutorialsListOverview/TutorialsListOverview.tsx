@@ -1,5 +1,4 @@
 'use client';
-import { Media } from '@/lib/types/media';
 import { Tutorial } from '@/lib/types/tutorialData';
 import { Box, useTheme } from '@mui/material';
 import React from 'react';
@@ -9,17 +8,12 @@ import { useTranslations } from 'next-intl';
 
 type TutorialsOverviewProps = {
   title: string;
-  tutorialCard: {
-    title?: string;
-    description?: string;
-    icon: Media;
-    tutorial: Tutorial;
-  }[];
+  tutorials: readonly Tutorial[];
 };
 
 const TutorialsListOverview = ({
   title,
-  tutorialCard,
+  tutorials,
 }: TutorialsOverviewProps) => {
   const t = useTranslations();
   const theme = useTheme();
@@ -36,19 +30,19 @@ const TutorialsListOverview = ({
         ctaButtonsVariant={'contained'}
         cardSize={{
           xs: 12,
-          md: 12 / tutorialCard.length,
+          md: 12 / tutorials.length,
         }}
         containerSx={{
           pt: '22px',
           mt: '-22px',
         }}
-        cards={tutorialCard.map((card) => ({
-          title: card.tutorial.title || card.title || '',
+        cards={tutorials.map((tutorial) => ({
+          title: tutorial.title || '',
           ctaLabel: t('overview.tutorialsList.ctaLabel'),
-          text: card.description || '',
-          icon: card.icon.url,
-          useSrc: true,
-          href: card.tutorial.path,
+          text: tutorial.description || '',
+          icon: tutorial.icon?.url || '',
+          useSrc: tutorial.icon !== undefined,
+          href: tutorial.path,
         }))}
       />
     </Box>
