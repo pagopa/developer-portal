@@ -22,7 +22,11 @@ describe('makeUseCasesProps', () => {
     const result = makeUseCasesProps(_.cloneDeep(strapiUseCases));
     expect(result).toHaveLength(1);
     expect(result[0]).toMatchObject({
-      image: {
+      coverImage: {
+        url: 'https://example.com/example.jpg',
+        alternativeText: 'Example Image',
+      },
+      headerImage: {
         url: 'https://example.com/example.jpg',
         alternativeText: 'Example Image',
       },
@@ -72,7 +76,8 @@ describe('makeUseCasesProps', () => {
     expect(firstElement.title).toBe('Minimal Data UseCase');
     expect(firstElement.productSlug).toBe('pago-pa');
     expect(firstElement.path).toBe('/pago-pa/use-cases/minimal-data-use-case');
-    expect(firstElement.image).toBeUndefined();
+    expect(firstElement.coverImage).toBeUndefined();
+    expect(firstElement.headerImage).toBeUndefined();
     expect(firstElement.parts).toEqual([]);
     expect(firstElement.relatedLinks).toBeUndefined();
     expect(firstElement.seo).toBeUndefined();

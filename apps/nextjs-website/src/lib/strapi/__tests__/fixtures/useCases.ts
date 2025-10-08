@@ -11,7 +11,8 @@ export const strapiUseCases: StrapiUseCases = {
         slug: 'use-case-title',
         publishedAt: '2024-01-01T00:00:00.000Z',
         createdAt: '2024-01-01T00:00:00.000Z',
-        image: { data: mediaJpeg() },
+        coverImage: { data: mediaJpeg() },
+        headerImage: { data: mediaJpeg() },
         locale: 'en-US',
         product: {
           data: {

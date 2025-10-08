@@ -35,11 +35,18 @@ export function makeUseCasesProps(
 
       try {
         return {
-          image: attributes.image.data
+          coverImage: attributes.coverImage.data
             ? {
-                url: attributes.image.data.attributes.url,
+                url: attributes.coverImage.data.attributes.url,
                 alternativeText:
-                  attributes.image.data.attributes.alternativeText || '',
+                  attributes.coverImage.data.attributes.alternativeText || '',
+              }
+            : undefined,
+          headerImage: attributes.headerImage?.data
+            ? {
+                url: attributes.headerImage.data.attributes.url,
+                alternativeText:
+                  attributes.headerImage.data.attributes.alternativeText || '',
               }
             : undefined,
           title: attributes.title,

@@ -8,15 +8,18 @@ import { StrapiPart } from '@/lib/strapi/types/part';
 
 export type StrapiBaseUseCase = {
   readonly attributes: {
-    readonly title: string;
-    readonly slug: string;
-    readonly publishedAt?: string;
-    readonly image: {
+    readonly coverImage: {
+      readonly data?: StrapiMedia;
+    };
+    readonly headerImage?: {
       readonly data?: StrapiMedia;
     };
     readonly product: {
       readonly data: StrapiBaseProductWithBannerLinks;
     };
+    readonly publishedAt?: string;
+    readonly slug: string;
+    readonly title: string;
   };
 };
 

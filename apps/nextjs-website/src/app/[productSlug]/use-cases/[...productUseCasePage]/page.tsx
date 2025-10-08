@@ -60,12 +60,13 @@ const Page = async ({ params }: { params: Params }) => {
   return (
     <UseCaseTemplate
       bannerLinks={strapiUseCaseProps.bannerLinks}
+      headerImage={strapiUseCaseProps.headerImage}
       parts={strapiUseCaseProps.parts}
       path={strapiUseCaseProps.path}
       product={strapiUseCaseProps.product}
       relatedLinks={strapiUseCaseProps.relatedLinks}
-      title={strapiUseCaseProps.title}
       structuredData={structuredData}
+      title={strapiUseCaseProps.title}
     />
   );
 };
