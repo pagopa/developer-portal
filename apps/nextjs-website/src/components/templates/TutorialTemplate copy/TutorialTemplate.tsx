@@ -1,8 +1,7 @@
-'use client';
 import ProductBreadcrumbs from '@/components/atoms/ProductBreadcrumbs/ProductBreadcrumbs';
 import { productPageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
 import { FragmentProvider } from '@/components/organisms/FragmentProvider/FragmentProvider';
-import { Box, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import RelatedLinks, {
   RelatedLinksProps,
 } from '@/components/atoms/RelatedLinks/RelatedLinks';
@@ -13,36 +12,27 @@ import { Part } from '@/lib/types/part';
 import PartRendererMenu from '@/components/molecules/PartRendererMenu/PartRendererMenu';
 import { ReactNode } from 'react';
 import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
-import EContainer from '../../../editorialComponents/EContainer/EContainer';
 
 // TODO: Remove once the migration to CMS contents will be completed
-type UseCasePageTemplateProps = {
+type TutorialPageTemplateProps = {
   readonly bannerLinks?: ReadonlyArray<BannerLinkProps>;
-  readonly headerImage?: {
-    readonly url: string;
-    readonly alternativeText?: string;
-  };
   readonly parts?: ReadonlyArray<Part>;
   readonly path: string;
   readonly product?: Product;
   readonly relatedLinks?: RelatedLinksProps;
-  readonly structuredData?: ReactNode;
   readonly title: string;
+  readonly structuredData?: ReactNode;
 };
 
-const UseCaseTemplate = ({
-  bannerLinks,
-  headerImage,
+const TutorialTemplate = ({
   parts,
   path,
   product,
   relatedLinks,
-  structuredData,
+  bannerLinks,
   title,
-}: UseCasePageTemplateProps) => {
-  const { palette } = useTheme();
-  const isSmallScreen = useMediaQuery('(max-width: 1000px)');
-
+  structuredData,
+}: TutorialPageTemplateProps) => {
   return (
     <ProductLayout
       product={product}
@@ -52,62 +42,32 @@ const UseCaseTemplate = ({
     >
       {product && (
         <Box
-          paddingY={'20px'}
-          marginTop={'76px'}
-          style={{
-            backgroundColor: palette.grey[50],
-            backgroundImage:
-              (headerImage && `url(${headerImage?.url})`) || 'none',
-            backgroundRepeat: 'no-repeat',
-            backgroundSize: 'cover',
+          sx={{
+            maxWidth: '1200px',
+            // 80px is the height of the product header
+            marginTop: '80px',
+            marginX: 'auto',
+            paddingTop: 3,
+            px: { xs: 4, lg: 0 },
           }}
         >
-          <EContainer>
-            <ProductBreadcrumbs
-              breadcrumbs={[
-                ...productPageToBreadcrumbs(product, [
-                  {
-                    translate: true,
-                    name: 'devPortal.productHeader.useCases',
-                    path: product.hasUseCaseListPage
-                      ? `/${product.slug}/use-cases`
-                      : '',
-                  },
-                  {
-                    name: title,
-                    path: path,
-                  },
-                ]),
-              ]}
-              textColor={headerImage ? 'white' : palette.text.primary}
-            />
-          </EContainer>
-          <EContainer>
-            <Stack
-              sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'start',
-                alignContent: 'flex-start',
-                paddingTop: 10,
-                paddingBottom: 10,
-                width: '100%',
-              }}
-            >
-              <Typography
-                style={{
-                  fontWeight: 700,
-                  fontStyle: 'bold',
-                  fontSize: isSmallScreen ? '32px' : '38px',
-                  marginTop: 16,
-                  marginBottom: 32,
-                  color: headerImage ? 'white' : palette.text.primary,
-                }}
-              >
-                {title}
-              </Typography>
-            </Stack>
-          </EContainer>
+          <ProductBreadcrumbs
+            breadcrumbs={[
+              ...productPageToBreadcrumbs(product, [
+                {
+                  translate: true,
+                  name: 'devPortal.productHeader.tutorials',
+                  path: product.hasTutorialListPage
+                    ? `/${product.slug}/tutorials`
+                    : '',
+                },
+                {
+                  name: title,
+                  path: path,
+                },
+              ]),
+            ]}
+          />
         </Box>
       )}
       <FragmentProvider>
@@ -185,4 +145,4 @@ const UseCaseTemplate = ({
   );
 };
 
-export default UseCaseTemplate;
+export default TutorialTemplate;

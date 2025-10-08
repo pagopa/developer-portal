@@ -9,7 +9,10 @@ const makeStrapiUseCasesPopulate = () =>
       relatedLinks: {
         populate: ['links'],
       },
-      image: {
+      coverImage: {
+        populate: ['image'],
+      },
+      headerImage: {
         populate: ['image'],
       },
       parts: '*',
