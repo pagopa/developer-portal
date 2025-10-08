@@ -199,7 +199,7 @@ class DiscoveryVectorIndex:
                 elif existing_doc_hash != doc.hash:
                     refreshed_documents[i] = True
                     with self.index._callback_manager.as_trace("update_ref_doc"):
-                        self.index.delete_ref_doc(doc.id_, delete_from_docstore=True)
+                        self._delete_docs([doc.id_])
                         with self.index._callback_manager.as_trace("insert_nodes"):
                             self.index._insert(nodes)
                             self.index.storage_context.index_store.add_index_struct(
