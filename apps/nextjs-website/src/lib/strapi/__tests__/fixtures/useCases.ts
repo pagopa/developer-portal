@@ -8,6 +8,7 @@ export const strapiUseCases: StrapiUseCases = {
     {
       attributes: {
         title: 'UseCase Title',
+        subtitle: 'UseCase Subtitle',
         slug: 'use-case-title',
         publishedAt: '2024-01-01T00:00:00.000Z',
         createdAt: '2024-01-01T00:00:00.000Z',

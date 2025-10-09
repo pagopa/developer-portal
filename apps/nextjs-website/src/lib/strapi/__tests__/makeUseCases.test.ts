@@ -31,6 +31,7 @@ describe('makeUseCasesProps', () => {
         alternativeText: 'Example Image',
       },
       title: 'UseCase Title',
+      subtitle: 'UseCase Subtitle',
       name: 'UseCase Title',
       path: '/pago-pa/use-cases/use-case-title',
       productSlug: 'pago-pa',
@@ -74,6 +75,7 @@ describe('makeUseCasesProps', () => {
     expect(result).toHaveLength(1);
     const firstElement = result[0];
     expect(firstElement.title).toBe('Minimal Data UseCase');
+    expect(firstElement.subtitle).toBe('Minimal Data UseCase Subtitle');
     expect(firstElement.productSlug).toBe('pago-pa');
     expect(firstElement.path).toBe('/pago-pa/use-cases/minimal-data-use-case');
     expect(firstElement.coverImage).toBeUndefined();
