@@ -50,7 +50,7 @@ const Page = async ({ params }: { params: Params }) => {
       {
         name: strapiUseCaseProps.seo?.metaTitle || strapiUseCaseProps.title,
         item: breadcrumbItemByProduct(strapiUseCaseProps.product, [
-          'guides',
+          'use-cases',
           ...(params?.productUseCasePage || []),
         ]),
       },
