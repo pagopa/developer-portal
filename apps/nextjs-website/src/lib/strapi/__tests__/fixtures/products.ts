@@ -100,4 +100,5 @@ export const expectedProduct: Product = {
   hasGuideListPage: true,
   hasOverviewPage: true,
   hasQuickstartGuidePage: true,
+  hasReleaseNotePage: true,
 };
