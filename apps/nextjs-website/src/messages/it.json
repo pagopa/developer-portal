@@ -14,7 +14,8 @@
             "api": "API",
             "tutorials": "Tutorial",
             "guides": "Guide e manuali",
-            "releaseNote": "Release note"
+            "releaseNote": "Release note",
+            "useCases": "Casi d'uso"
         },
         "title": "DevPortal"
     },

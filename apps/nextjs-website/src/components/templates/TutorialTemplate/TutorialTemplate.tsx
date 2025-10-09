@@ -13,7 +13,6 @@ import PartRendererMenu from '@/components/molecules/PartRendererMenu/PartRender
 import { ReactNode } from 'react';
 import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
 
-// TODO: Remove once the migration to CMS contents will be completed
 type TutorialPageTemplateProps = {
   readonly bannerLinks?: ReadonlyArray<BannerLinkProps>;
   readonly parts?: ReadonlyArray<Part>;

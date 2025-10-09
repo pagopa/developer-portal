@@ -46,6 +46,8 @@ import {
 } from '@/helpers/s3Metadata.helpers';
 import { StrapiGuideListPages } from '@/lib/strapi/types/guideListPage';
 import { StrapiGuides } from '@/lib/strapi/types/guide';
+import { fetchUseCases } from '@/lib/strapi/fetches/fetchUseCases';
+import { makeUseCasesProps } from '@/lib/strapi/makeProps/makeUseCases';
 import { fetchTags } from '@/lib/strapi/fetches/fetchTags';
 import { makeTagsProps } from '@/lib/strapi/makeProps/makeTags';
 import { MarkDownPart } from '@/lib/strapi/types/part';
@@ -215,4 +217,9 @@ export const getReleaseNoteProps = async (
   }
   const releaseNote = makeReleaseNotesProps(strapiReleaseNotes)[0];
   return await makeReleaseNoteS3(releaseNote, jsonMetadata);
+};
+
+export const getUseCasesProps = async () => {
+  const strapiUseCases = await fetchUseCases(buildEnv);
+  return makeUseCasesProps(strapiUseCases);
 };
