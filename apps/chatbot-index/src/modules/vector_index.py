@@ -170,7 +170,6 @@ class DiscoveryVectorIndex:
             documents (list[Document]): List of Document objects to add or update.
         """
 
-        LOGGER.info(f"Updating {len(documents)} documents in vector index...")
         LOGGER.info(f"Document 0 ID: {documents[0].id_ if documents else 'N/A'}")
         LOGGER.info(
             f"Document 0 Title: {documents[0].metadata['title'] if documents else 'N/A'}"
@@ -268,10 +267,18 @@ class DiscoveryVectorIndex:
             if doc_id not in api_doc_ids:
                 api_docs_to_remove.append(doc_id)
 
-        self._update_docs(self.api_docs)
+        if self.api_docs:
+            try:
+                LOGGER.info(f"Num API Documents to update: {len(self.api_docs)}")
+                self._update_docs(self.api_docs)
+            except Exception as e:
+                LOGGER.error(f"Error updating API Documents: {e}")
         if api_docs_to_remove:
-            LOGGER.info(f"Num API Doc to remove: {len(api_docs_to_remove)}")
-            self._delete_docs(api_docs_to_remove)
+            try:
+                LOGGER.info(f"Num API Documents to remove: {len(api_docs_to_remove)}")
+                self._delete_docs(api_docs_to_remove)
+            except Exception as e:
+                LOGGER.error(f"Error deleting API Documents: {e}")
 
     def refresh_index_static_docs(
         self,
@@ -294,11 +301,19 @@ class DiscoveryVectorIndex:
         docs_to_update = get_static_docs(static_docs_to_update_filtered)
 
         if docs_to_update:
-            LOGGER.info(f"Num Static Doc to update: {len(docs_to_update)}")
-            self._update_docs(docs_to_update)
+            try:
+                LOGGER.info(f"Num Static Documents to update: {len(docs_to_update)}")
+                self._update_docs(docs_to_update)
+            except Exception as e:
+                LOGGER.error(f"Error updating Static Documents: {e}")
         if static_doc_ids_to_delete:
-            LOGGER.info(f"Num Static Doc to delete: {len(static_doc_ids_to_delete)}")
-            self._delete_docs(static_doc_ids_to_delete)
+            try:
+                LOGGER.info(
+                    f"Num Static Documents to delete: {len(static_doc_ids_to_delete)}"
+                )
+                self._delete_docs(static_doc_ids_to_delete)
+            except Exception as e:
+                LOGGER.error(f"Error deleting Static Documents: {e}")
 
     def refresh_index_dynamic_docs(self) -> None:
 
@@ -336,13 +351,23 @@ class DiscoveryVectorIndex:
             if doc_id not in all_ref_docs_ids:
                 dynamic_doc_ids_to_remove.append(doc_id)
 
-        docs_to_update = get_dynamic_docs(docs_to_update)
-        if docs_to_update:
-            LOGGER.info(f"Num Dynamic Doc to update: {len(docs_to_update)}")
-            self._update_docs(docs_to_update)
+        if dynamic_docs_to_update:
+            try:
+                dynamic_docs_to_update = get_dynamic_docs(dynamic_docs_to_update)
+                LOGGER.info(
+                    f"Num Dynamic Documents to update: {len(dynamic_docs_to_update)}"
+                )
+                self._update_docs(dynamic_docs_to_update)
+            except Exception as e:
+                LOGGER.error(f"Error updating Dynamic Documents: {e}")
         if dynamic_doc_ids_to_remove:
-            LOGGER.info(f"Num Dynamic Doc to delete: {len(dynamic_doc_ids_to_remove)}")
-            self._delete_docs(dynamic_doc_ids_to_remove)
+            try:
+                LOGGER.info(
+                    f"Num Dynamic Documents to delete: {len(dynamic_doc_ids_to_remove)}"
+                )
+                self._delete_docs(dynamic_doc_ids_to_remove)
+            except Exception as e:
+                LOGGER.error(f"Error deleting Dynamic Documents: {e}")
 
     def refresh_index(
         self,
