@@ -350,6 +350,22 @@ export const overviewPageProps: OverviewPageProps = {
       },
     ],
   },
+  useCases: {
+    title: 'Use Cases Title',
+    description: 'Use Cases Description',
+    list: [
+      {
+        showInOverview: true,
+        coverImage: {
+          url: 'https://example.com/example.jpg',
+          alternativeText: 'Example Image',
+        },
+        title: 'Use Case 1',
+        name: 'shared.moreInfo',
+        path: '/test-product/use-cases/use-case-1',
+      },
+    ],
+  },
   whatsNew: {
     title: "What's New Title",
     subtitle: "What's New Subtitle",

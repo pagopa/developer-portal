@@ -117,6 +117,10 @@ export function makeOverviewsProps(
                   }
 
                   return {
+                    publishedAt:
+                      (useCase.attributes.publishedAt &&
+                        new Date(useCase.attributes.publishedAt)) ||
+                      undefined,
                     showInOverview: true,
                     coverImage: useCase.attributes.coverImage.data && {
                       url: useCase.attributes.coverImage.data.attributes.url,
