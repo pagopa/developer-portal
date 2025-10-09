@@ -8,7 +8,6 @@ export function productToMenuItems(
   theme: Theme
 ): readonly MenuDropdownProp[] {
   return [
-    // if there's overview data, add it to the menu
     product.hasOverviewPage
       ? {
           label: 'devPortal.productHeader.overview',
@@ -17,7 +16,6 @@ export function productToMenuItems(
           theme,
         }
       : null,
-    // if there's quiskstart guide data, add it to the menu
     product.hasQuickstartGuidePage
       ? {
           label: 'devPortal.productHeader.quickStartGuide',
@@ -50,7 +48,6 @@ export function productToMenuItems(
           theme,
         }
       : null,
-    // if there's guides data, add it to the menu
     product.hasGuideListPage
       ? {
           label: 'devPortal.productHeader.guides',
@@ -59,7 +56,6 @@ export function productToMenuItems(
           theme,
         }
       : null,
-    // if there's release notes data, add it to the menu
     product.hasReleaseNotePage
       ? {
           label: 'devPortal.productHeader.releaseNote',
