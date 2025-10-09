@@ -93,24 +93,28 @@ class Evaluator:
         
         with tracer.start_as_current_span("Evaluator evaluate") as span:
 
-            sample = SingleTurnSample(
-                user_input=query_str,
-                response=response_str,
-                retrieved_contexts=retrieved_contexts,
-            )
-            dataset = EvaluationDataset([sample])
+            with tracer.start_as_current_span("Evaluator sample"):
 
-            result = evaluate(
-                dataset=dataset,
-                metrics=[
-                    self.response_relevancy,
-                    self.context_precision,
-                    self.faithfulness,
-                ],
-                llm=self.llm,
-                embeddings=self.embedder,
-                show_progress=False,
-            )
+                sample = SingleTurnSample(
+                    user_input=query_str,
+                    response=response_str,
+                    retrieved_contexts=retrieved_contexts,
+                )
+                
+                dataset = EvaluationDataset([sample])
+
+            with tracer.start_as_current_span("Evaluator rags.evaluate"):
+                result = evaluate(
+                    dataset=dataset,
+                    metrics=[
+                        self.response_relevancy,
+                        self.context_precision,
+                        self.faithfulness,
+                    ],
+                    llm=self.llm,
+                    embeddings=self.embedder,
+                    show_progress=False,
+                )
             scores = result.scores[0]
             scores["context_precision"] = scores.pop(
                 "llm_context_precision_without_reference"
