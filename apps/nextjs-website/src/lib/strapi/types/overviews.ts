@@ -33,7 +33,7 @@ export type StrapiTutorialSection = {
   readonly title: string;
   readonly description: string;
   readonly tutorials: { readonly data: readonly StrapiBaseTutorial[] };
-  readonly showNewLayout: boolean;
+  readonly showCardsLayout: boolean;
 };
 
 export type StrapiCardProps = {

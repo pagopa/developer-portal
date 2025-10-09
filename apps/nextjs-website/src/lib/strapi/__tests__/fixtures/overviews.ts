@@ -118,7 +118,7 @@ export const strapiOverviews = {
         },
         tutorialSection: {
           title: 'Tutorials Title',
-          showNewLayout: false,
+          showCardsLayout: false,
           description: 'Tutorials Description',
           tutorials: {
             data: [
@@ -333,7 +333,7 @@ export const overviewPageProps: OverviewPageProps = {
   },
   tutorials: {
     title: 'Tutorials Title',
-    showNewLayout: false,
+    showCardsLayout: false,
     subtitle: 'Tutorials Description',
     list: [
       {

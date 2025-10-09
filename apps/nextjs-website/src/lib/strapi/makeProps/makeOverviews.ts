@@ -59,7 +59,7 @@ export function makeOverviewsProps(
           tutorials: attributes.tutorialSection && {
             title: attributes.tutorialSection.title,
             subtitle: attributes.tutorialSection.description,
-            showNewLayout: attributes.tutorialSection.showNewLayout,
+            showCardsLayout: attributes.tutorialSection.showCardsLayout,
             list:
               compact(
                 attributes.tutorialSection.tutorials.data.map((tutorial) => {

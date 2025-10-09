@@ -66,7 +66,7 @@ export type OverviewPageProps = {
     readonly title?: string;
     readonly subtitle: string;
     readonly list: readonly Tutorial[];
-    readonly showNewLayout: boolean;
+    readonly showCardsLayout: boolean;
   };
   readonly whatsNew?: NewsShowcaseProps;
   readonly postIntegration?: {
@@ -171,7 +171,9 @@ const OverviewPage = async ({ params }: ProductParams) => {
           cards={startInfo.cards}
         />
       )}
-      {product?.hasTutorialListPage && tutorials && !tutorials.showNewLayout ? (
+      {product?.hasTutorialListPage &&
+      tutorials &&
+      !tutorials.showCardsLayout ? (
         <TutorialsOverview
           title={tutorials.title}
           subtitle={tutorials.subtitle}
