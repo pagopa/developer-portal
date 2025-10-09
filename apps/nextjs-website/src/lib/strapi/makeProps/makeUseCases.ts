@@ -65,6 +65,7 @@ export function makeUseCasesProps(
                   makeBannerLinkProps
                 ),
           seo: attributes.seo,
+          subtitle: attributes.subtitle,
           updatedAt: attributes.updatedAt,
         } satisfies UseCaseProps;
       } catch (error) {

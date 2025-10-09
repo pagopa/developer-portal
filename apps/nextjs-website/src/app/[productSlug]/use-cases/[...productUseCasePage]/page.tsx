@@ -66,6 +66,7 @@ const Page = async ({ params }: { params: Params }) => {
       product={strapiUseCaseProps.product}
       relatedLinks={strapiUseCaseProps.relatedLinks}
       structuredData={structuredData}
+      subtitle={strapiUseCaseProps.subtitle}
       title={strapiUseCaseProps.title}
     />
   );

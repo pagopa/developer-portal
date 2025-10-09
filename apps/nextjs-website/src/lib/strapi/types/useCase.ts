@@ -19,6 +19,7 @@ export type StrapiBaseUseCase = {
     };
     readonly publishedAt?: string;
     readonly slug: string;
+    readonly subtitle?: string;
     readonly title: string;
   };
 };
