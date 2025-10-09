@@ -15,6 +15,7 @@ export type UseCase = {
   readonly publishedAt?: Date;
   readonly seo?: SEO;
   readonly showInOverview?: boolean;
+  readonly subtitle?: string;
   readonly title: string;
   readonly updatedAt?: string;
 } & Path;

@@ -25,6 +25,7 @@ type UseCasePageTemplateProps = {
   readonly product?: Product;
   readonly relatedLinks?: RelatedLinksProps;
   readonly structuredData?: ReactNode;
+  readonly subtitle?: string;
   readonly title: string;
 };
 
@@ -36,6 +37,7 @@ const UseCaseTemplate = ({
   product,
   relatedLinks,
   structuredData,
+  subtitle,
   title,
 }: UseCasePageTemplateProps) => {
   const { palette } = useTheme();
@@ -88,7 +90,7 @@ const UseCaseTemplate = ({
                 justifyContent: 'start',
                 alignContent: 'flex-start',
                 paddingTop: 10,
-                paddingBottom: 10,
+                paddingBottom: 20,
                 width: '100%',
               }}
             >
@@ -97,12 +99,24 @@ const UseCaseTemplate = ({
                   fontWeight: 700,
                   fontStyle: 'bold',
                   fontSize: isSmallScreen ? '32px' : '38px',
+                  marginBottom: 16,
                   marginTop: 16,
-                  marginBottom: 32,
                   color: headerImage ? 'white' : palette.text.primary,
                 }}
               >
                 {title}
+              </Typography>
+              <Typography
+                style={{
+                  fontWeight: 400,
+                  fontStyle: 'regular',
+                  fontSize: '1rem',
+                  marginBottom: 16,
+                  marginTop: 16,
+                  color: headerImage ? 'white' : palette.text.primary,
+                }}
+              >
+                {subtitle}
               </Typography>
             </Stack>
           </EContainer>

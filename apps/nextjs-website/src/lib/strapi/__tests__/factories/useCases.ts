@@ -73,6 +73,7 @@ export function minimalDataUseCases() {
         attributes: {
           ...strapiUseCase.attributes,
           title: 'Minimal Data UseCase',
+          subtitle: 'Minimal Data UseCase Subtitle',
           slug: 'minimal-data-use-case',
           publishedAt: '2023-01-01T00:00:00Z',
           locale: 'en-US',
