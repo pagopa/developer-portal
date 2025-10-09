@@ -268,10 +268,10 @@ class DiscoveryVectorIndex:
             if doc_id not in api_doc_ids:
                 api_docs_to_remove.append(doc_id)
 
-        LOGGER.info(f"Num API Doc to remove: {len(api_docs_to_remove)}")
-
         self._update_docs(self.api_docs)
-        self._delete_docs(api_docs_to_remove)
+        if api_docs_to_remove:
+            LOGGER.info(f"Num API Doc to remove: {len(api_docs_to_remove)}")
+            self._delete_docs(api_docs_to_remove)
 
     def refresh_index_static_docs(
         self,
@@ -292,8 +292,13 @@ class DiscoveryVectorIndex:
                 static_docs_to_update_filtered.append(doc)
 
         docs_to_update = get_static_docs(static_docs_to_update_filtered)
-        self._update_docs(docs_to_update)
-        self._delete_docs(static_doc_ids_to_delete)
+
+        if docs_to_update:
+            LOGGER.info(f"Num Static Doc to update: {len(docs_to_update)}")
+            self._update_docs(docs_to_update)
+        if static_doc_ids_to_delete:
+            LOGGER.info(f"Num Static Doc to delete: {len(static_doc_ids_to_delete)}")
+            self._delete_docs(static_doc_ids_to_delete)
 
     def refresh_index_dynamic_docs(self) -> None:
 
@@ -332,8 +337,12 @@ class DiscoveryVectorIndex:
                 dynamic_doc_ids_to_remove.append(doc_id)
 
         docs_to_update = get_dynamic_docs(docs_to_update)
-        self._update_docs(docs_to_update)
-        self._delete_docs(dynamic_doc_ids_to_remove)
+        if docs_to_update:
+            LOGGER.info(f"Num Dynamic Doc to update: {len(docs_to_update)}")
+            self._update_docs(docs_to_update)
+        if dynamic_doc_ids_to_remove:
+            LOGGER.info(f"Num Dynamic Doc to delete: {len(dynamic_doc_ids_to_remove)}")
+            self._delete_docs(dynamic_doc_ids_to_remove)
 
     def refresh_index(
         self,
@@ -356,6 +365,6 @@ class DiscoveryVectorIndex:
         self.refresh_index_api_docs()
         LOGGER.info(">>>>>>> Refreshing vector index with static docs...")
         self.refresh_index_static_docs(static_docs_to_update, static_docs_ids_to_delete)
-        # LOGGER.info(">>>>>>> Refreshing vector index with dynamic docs...")
-        # self.refresh_index_dynamic_docs()
+        LOGGER.info(">>>>>>> Refreshing vector index with dynamic docs...")
+        self.refresh_index_dynamic_docs()
         LOGGER.info("Refreshed vector index successfully.")
