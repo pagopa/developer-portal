@@ -233,6 +233,11 @@ export const strapiGuideListPagesData = {
                   id: 48,
                 },
               },
+              use_case_list_page: {
+                data: {
+                  id: 42,
+                },
+              },
             },
           },
         },

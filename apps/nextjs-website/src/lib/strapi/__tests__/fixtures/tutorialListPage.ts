@@ -26,6 +26,7 @@ export const strapiTutorialListPages: StrapiTutorialListPages = {
               tutorial_list_page: { data: undefined },
               guide_list_page: { data: undefined },
               release_note: { data: undefined },
+              use_case_list_page: { data: undefined },
             },
           },
         },

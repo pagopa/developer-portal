@@ -77,6 +77,11 @@ export const strapiOverviews = {
                   id: 6,
                 },
               },
+              use_case_list_page: {
+                data: {
+                  id: 7,
+                },
+              },
               logo: {
                 data: mediaJpeg(),
               },
@@ -276,6 +281,7 @@ export const overviewPageProps: OverviewPageProps = {
     hasQuickstartGuidePage: true,
     hasReleaseNotePage: true,
     hasTutorialListPage: true,
+    hasUseCaseListPage: true,
     description: undefined,
     tags: [],
     bannerLinks: [

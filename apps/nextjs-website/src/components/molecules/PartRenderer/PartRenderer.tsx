@@ -9,6 +9,7 @@ import ApiTesterPart from '@/components/organisms/ApiTesterPart/ApiTesterPart';
 import BlocksRendererPart from '@/components/organisms/BlocksRendererPart/BlocksRendererPart';
 import Quote from '@/components/atoms/Quote/Quote';
 import CkEditorPart from '../CkEditorPart/CkEditorPart';
+import MarkdownPart from '@/components/molecules/MarkdownPart/MarkdownPart';
 
 type PartRendererProps = {
   part: Part;
@@ -30,6 +31,8 @@ const PartRenderer = ({ part }: PartRendererProps): ReactNode | null => {
       return <InnerHtmlLazyLoadedPart html={part.html} />;
     case 'typography':
       return <TypographyPart {...part} />;
+    case 'markdown':
+      return <MarkdownPart {...part} />;
     case 'ckEditor':
       return <CkEditorPart {...part} />;
     default:
