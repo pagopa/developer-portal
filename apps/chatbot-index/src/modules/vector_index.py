@@ -170,6 +170,12 @@ class DiscoveryVectorIndex:
             documents (list[Document]): List of Document objects to add or update.
         """
 
+        LOGGER.info(f"Updating {len(documents)} documents in vector index...")
+        LOGGER.info(f"Document 0 ID: {documents[0].id_ if documents else 'N/A'}")
+        LOGGER.info(
+            f"Document 0 Hash: {documents[0].metadata['title'] if documents else 'N/A'}"
+        )
+
         with self.index._callback_manager.as_trace("refresh_ref_docs"):
             refreshed_documents = [False] * len(documents)
 
@@ -199,7 +205,7 @@ class DiscoveryVectorIndex:
                 elif existing_doc_hash != doc.hash:
                     refreshed_documents[i] = True
                     with self.index._callback_manager.as_trace("update_ref_doc"):
-                        self._delete_docs([doc.id_])
+                        self._delete_docs([doc.id_], update=True)
                         with self.index._callback_manager.as_trace("insert_nodes"):
                             self.index._insert(nodes)
                             self.index.storage_context.index_store.add_index_struct(
@@ -218,12 +224,13 @@ class DiscoveryVectorIndex:
             f"Updated vector index successfully with {sum(refreshed_documents)} documents."
         )
 
-    def _delete_docs(self, documents_id: List[str] = []) -> None:
+    def _delete_docs(self, documents_id: List[str] = [], update: bool = False) -> None:
         """
         Deletes documents from the index and from the document store.
 
         Args:
             documents (List[str]): List of Document IDs to delete.
+            update (bool): Flag indicating if this deletion is part of an update operation.
         """
 
         for doc_id in documents_id:
@@ -234,9 +241,11 @@ class DiscoveryVectorIndex:
                 for node_id in ref_doc_info.node_ids:
                     self.index.storage_context.docstore.delete_document(node_id)
 
-            LOGGER.info(f"Deleted from vector index document ID: {doc_id}")
+            if not update:
+                LOGGER.info(f"Deleted from vector index document ID: {doc_id}")
 
-        LOGGER.info(f"Removed {len(documents_id)} from vector index successfully.")
+        if not update:
+            LOGGER.info(f"Removed {len(documents_id)} from vector index successfully.")
 
     def refresh_index_api_docs(self) -> None:
         """
@@ -255,6 +264,8 @@ class DiscoveryVectorIndex:
         for doc_id in ref_doc_ids:
             if doc_id not in api_doc_ids:
                 api_docs_to_remove.append(doc_id)
+
+        LOGGER.info(f"Num API Doc to remove: {len(api_docs_to_remove)}")
 
         self._update_docs(self.api_docs)
         self._delete_docs(api_docs_to_remove)
@@ -335,11 +346,11 @@ class DiscoveryVectorIndex:
         """
 
         self.index = self.get_index()
-        # self.api_docs = get_api_docs()
+        self.api_docs = get_api_docs()
         self.static_list, self.dynamic_list = get_static_and_dynamic_lists()
 
-        # LOGGER.info(">>>>>>> Refreshing vector index with API docs...")
-        # self.refresh_index_api_docs()
+        LOGGER.info(">>>>>>> Refreshing vector index with API docs...")
+        self.refresh_index_api_docs()
         LOGGER.info(">>>>>>> Refreshing vector index with static docs...")
         self.refresh_index_static_docs(static_docs_to_update, static_docs_ids_to_delete)
         # LOGGER.info(">>>>>>> Refreshing vector index with dynamic docs...")
