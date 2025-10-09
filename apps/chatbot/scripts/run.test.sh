@@ -5,6 +5,9 @@ echo "-=-=-=-= CHB_AWS_SQS_QUEUE_EVALUATE_NAME: $CHB_AWS_SQS_QUEUE_EVALUATE_NAME
 echo "-=-=-=-= AWS_REGION: $AWS_REGION -=-=-=-=-=-=-"
 echo "-=-=-=-= CHB_AWS_S3_BUCKET_NAME_STATIC_CONTENT: $CHB_AWS_S3_BUCKET_NAME_STATIC_CONTENT -=-=-=-=-=-=-"
 
+AWS_REGION=${AWS_REGION:-"us-east-1"}
+AWS_ENDPOINT_URL=${AWS_ENDPOINT_URL:-"http://motoserver:3000"}
+
 # echo '-=-=-=-=-=-=-=-=-= init Cognito -==-=-=-=-=-=-=-=-'
 # ./scripts/cognito-init-test.sh
 
