@@ -1,6 +1,7 @@
 import { Path } from '@/lib/types/path';
-import { Part } from './part';
-import { SEO } from './seo';
+import { Part } from '@/lib/types/part';
+import { SEO } from '@/lib/types/seo';
+import { Tag } from '@/lib/types/tag';
 
 export type UseCase = {
   readonly coverImage?: {
@@ -16,6 +17,7 @@ export type UseCase = {
   readonly seo?: SEO;
   readonly showInOverview?: boolean;
   readonly subtitle?: string;
+  readonly tags?: readonly Tag[];
   readonly title: string;
   readonly updatedAt?: string;
 } & Path;

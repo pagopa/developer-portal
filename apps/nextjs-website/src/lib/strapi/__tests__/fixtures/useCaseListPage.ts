@@ -49,6 +49,16 @@ export const strapiUseCaseListPages: StrapiUseCaseListPages = {
                 coverImage: {
                   data: mediaJpeg(),
                 },
+                tags: {
+                  data: [
+                    {
+                      attributes: {
+                        name: 'Tag1',
+                        icon: { data: mediaJpeg() },
+                      },
+                    },
+                  ],
+                },
               },
             },
           ],
@@ -57,6 +67,7 @@ export const strapiUseCaseListPages: StrapiUseCaseListPages = {
           metaTitle: 'Use Cases SEO Title',
           metaDescription: 'Use Cases SEO Description',
         },
+        enableFilters: true,
       },
     },
   ],

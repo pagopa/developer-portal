@@ -52,6 +52,7 @@ import { fetchUseCaseListPages } from '@/lib/strapi/fetches/fetchUseCaseListPage
 import { makeUseCaseListPagesProps } from '@/lib/strapi/makeProps/makeUseCaseListPages';
 import { fetchTags } from '@/lib/strapi/fetches/fetchTags';
 import { makeTagsProps } from '@/lib/strapi/makeProps/makeTags';
+import { cons } from 'fp-ts/lib/ReadonlyNonEmptyArray';
 
 // a BuildEnv instance ready to be used
 const buildEnv = pipe(

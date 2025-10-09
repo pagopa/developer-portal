@@ -1,11 +1,9 @@
 import { Product } from '@/lib/types/product';
 import { Metadata, ResolvingMetadata } from 'next';
 import { Abstract } from '@/editorialComponents/Abstract/Abstract';
-import { Box } from '@mui/material';
 import ProductLayout, {
   ProductLayoutProps,
 } from '@/components/organisms/ProductLayout/ProductLayout';
-import Newsroom from '@/editorialComponents/Newsroom/Newsroom';
 import React from 'react';
 import { ProductParams } from '@/lib/types/productParams';
 import {
@@ -20,6 +18,7 @@ import {
 } from '@/helpers/structuredData.helpers';
 import { UseCase } from '@/lib/types/useCaseData';
 import { getUseCaseListPageProps } from '@/lib/api';
+import { UseCaseList } from '../../../components/organisms/UseCaseList/UseCaseList';
 
 export type UseCasesPageProps = {
   readonly product: Product;
@@ -29,6 +28,7 @@ export type UseCasesPageProps = {
   };
   readonly useCases: readonly UseCase[];
   readonly seo?: SEO;
+  readonly enableFilters: boolean | undefined;
 } & ProductLayoutProps;
 
 export async function generateMetadata(
@@ -55,7 +55,7 @@ export async function generateMetadata(
 
 const UseCasesPage = async ({ params }: ProductParams) => {
   const { productSlug } = params;
-  const { abstract, bannerLinks, path, useCases, seo, product } =
+  const { abstract, bannerLinks, path, useCases, seo, product, enableFilters } =
     await getUseCaseListPageProps(productSlug);
 
   const structuredData = generateStructuredDataScripts({
@@ -85,25 +85,11 @@ const UseCasesPage = async ({ params }: ProductParams) => {
         />
       )}
       {useCases && (
-        <Box>
-          <Newsroom
-            items={useCases.map((useCase) => ({
-              title: useCase.title,
-              date: {
-                date: useCase.publishedAt,
-              },
-              href: {
-                label: 'shared.readUseCase',
-                link: useCase.path,
-                translate: true,
-              },
-              img: {
-                alt: useCase.coverImage?.alternativeText || '',
-                src: useCase.coverImage?.url || '/images/news.png',
-              },
-            }))}
-          />
-        </Box>
+        <UseCaseList
+          tags={product.tags || []}
+          useCases={useCases}
+          enableFilters={enableFilters}
+        />
       )}
     </ProductLayout>
   );

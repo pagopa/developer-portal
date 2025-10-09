@@ -6,8 +6,8 @@ import { StrapiUseCases } from '../types/useCase';
 const makeStrapiUseCasesPopulate = () =>
   qs.stringify({
     populate: {
-      relatedLinks: {
-        populate: ['links'],
+      bannerLinks: {
+        populate: ['icon'],
       },
       coverImage: {
         populate: ['image'],
@@ -19,11 +19,14 @@ const makeStrapiUseCasesPopulate = () =>
       product: {
         ...productRelationsPopulate,
       },
-      bannerLinks: {
-        populate: ['icon'],
+      relatedLinks: {
+        populate: ['links'],
       },
       seo: {
         populate: '*,metaImage,metaSocial.image',
+      },
+      tags: {
+        populate: '*',
       },
     },
   });

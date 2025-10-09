@@ -45,6 +45,16 @@ export const strapiUseCases: StrapiUseCases = {
           metaTitle: 'SEO Title',
           metaDescription: 'SEO Description',
         },
+        tags: {
+          data: [
+            {
+              attributes: {
+                name: 'Tag1',
+                icon: { data: mediaJpeg() },
+              },
+            },
+          ],
+        },
         updatedAt: '2024-01-02T00:00:00.000Z',
       },
     },

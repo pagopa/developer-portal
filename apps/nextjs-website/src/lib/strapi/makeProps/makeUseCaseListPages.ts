@@ -48,6 +48,8 @@ export function makeUseCaseListPagesProps(
                 : undefined,
               showInOverview: false,
               coverImage: useCaseAttributes.coverImage.data?.attributes,
+              tags:
+                useCaseAttributes.tags.data?.map((tag) => tag.attributes) || [],
             } satisfies UseCase;
           } catch (error) {
             // eslint-disable-next-line functional/no-expression-statements
@@ -79,6 +81,7 @@ export function makeUseCaseListPagesProps(
             : attributes.product.data.attributes.bannerLinks?.map(
                 (bannerLink) => makeBannerLinkProps(bannerLink)
               ),
+        enableFilters: attributes.enableFilters,
       };
     })
   );

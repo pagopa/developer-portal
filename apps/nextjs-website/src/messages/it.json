@@ -453,6 +453,10 @@
         },
         "relatedLinks": {
             "title": "LINK UTILI"
+        },
+        "useCases": {
+            "all": "Tutti",
+            "noUseCaseMessage": "Non sono presenti casi d'uso della categoria selezionata"
         }
     },
     "footer": {
