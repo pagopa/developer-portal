@@ -136,16 +136,6 @@ export async function getTutorial(
   };
 }
 
-// TODO: remove? No longer used.
-export async function getTutorialPaths() {
-  const tutorialsFromCMS = await getTutorialsProps();
-  const tutorialPathsFromCMS = tutorialsFromCMS.map(({ path }) => ({
-    slug: path.split('/')[1],
-    tutorialPaths: [path.split('/').at(-1)],
-  }));
-  return tutorialPathsFromCMS;
-}
-
 export async function getTutorialListPageProps(productSlug?: string) {
   const tutorialListPages = await getTutorialListPagesProps();
   const props =
