@@ -50,6 +50,8 @@ import { fetchUseCases } from '@/lib/strapi/fetches/fetchUseCases';
 import { makeUseCasesProps } from '@/lib/strapi/makeProps/makeUseCases';
 import { fetchTags } from '@/lib/strapi/fetches/fetchTags';
 import { makeTagsProps } from '@/lib/strapi/makeProps/makeTags';
+import { MarkDownPart } from '@/lib/strapi/types/part';
+import { getMarkdownContent } from '@/lib/api';
 
 // a BuildEnv instance ready to be used
 const buildEnv = pipe(
@@ -88,7 +90,24 @@ export const getTagsProps = async () => {
 
 export const getTutorialsProps = async () => {
   const strapiTutorials = await fetchTutorials(buildEnv);
-  return makeTutorialsProps(strapiTutorials);
+  const tutorialsWithMarkdown = strapiTutorials.data.filter((tutorial) => {
+    const parts = tutorial?.attributes?.parts ?? [];
+    return parts.some((part) => part?.__component === 'parts.markdown');
+  });
+  const allMarkdownParts = tutorialsWithMarkdown.flatMap((tutorial) =>
+    (tutorial?.attributes?.parts ?? []).filter(
+      (part) => part?.__component === 'parts.markdown'
+    )
+  );
+  const contentPromises = allMarkdownParts.map(async (part) => {
+    const { dirName, pathToFile } = part as MarkDownPart;
+    const key = `${dirName}/${pathToFile}`;
+    const content = await getMarkdownContent(dirName, pathToFile);
+    return [key, content];
+  });
+  const resolvedContentPairs = await Promise.all(contentPromises);
+  const markdownContentDict = Object.fromEntries(resolvedContentPairs);
+  return makeTutorialsProps(strapiTutorials, markdownContentDict);
 };
 
 export const getTutorialListPagesProps = async () => {
