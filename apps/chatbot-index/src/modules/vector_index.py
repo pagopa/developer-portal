@@ -255,6 +255,11 @@ class DiscoveryVectorIndex:
         api_doc_ids = [doc.id_ for doc in self.api_docs]
         ref_doc_info = self.index.storage_context.docstore.get_all_ref_doc_info()
         ref_doc_ids = list(ref_doc_info.keys())
+
+        LOGGER.info(f"Num API Doc in index: {len(api_doc_ids)}")
+        LOGGER.info(f">>>>>>>>>>> type: {isinstance(ref_doc_ids, list)}")
+        LOGGER.info(f">>>>>>>>>>> content: {ref_doc_ids[:5]}")
+
         ref_api_doc_ids = [
             doc_id for doc_id in ref_doc_ids if doc_id.split("/")[2] == "api"
         ]
