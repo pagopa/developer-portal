@@ -173,7 +173,7 @@ class DiscoveryVectorIndex:
         LOGGER.info(f"Updating {len(documents)} documents in vector index...")
         LOGGER.info(f"Document 0 ID: {documents[0].id_ if documents else 'N/A'}")
         LOGGER.info(
-            f"Document 0 Hash: {documents[0].metadata['title'] if documents else 'N/A'}"
+            f"Document 0 Title: {documents[0].metadata['title'] if documents else 'N/A'}"
         )
 
         with self.index._callback_manager.as_trace("refresh_ref_docs"):
@@ -256,16 +256,11 @@ class DiscoveryVectorIndex:
         ref_doc_info = self.index.storage_context.docstore.get_all_ref_doc_info()
         ref_doc_ids = list(ref_doc_info.keys())
 
-        LOGGER.info(f"Num API Doc in index: {len(api_doc_ids)}")
-        # LOGGER.info(f">>>>>>>>>>> type: {isinstance(ref_doc_ids, list)}")
-        # LOGGER.info(f">>>>>>>>>>> content: {ref_doc_ids[:5]}")
-
-        ref_api_doc_ids = [doc_id for doc_id in ref_doc_ids if "/api/" in doc_id]
-
-        LOGGER.info(f"API Doc IDs: {ref_api_doc_ids}")
-
-        LOGGER.info(f"Num API Doc: {len(api_doc_ids)}")
-        LOGGER.info(f"Num Ref Doc: {len(ref_api_doc_ids)}")
+        ref_api_doc_ids = [
+            doc_id
+            for doc_id in ref_doc_ids
+            if "/api/" in doc_id and ".md" not in doc_id
+        ]
 
         api_docs_to_remove = []
 
