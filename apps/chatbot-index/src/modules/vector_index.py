@@ -319,14 +319,14 @@ class DiscoveryVectorIndex:
 
         ref_doc_info = self.index.storage_context.docstore.get_all_ref_doc_info()
         ref_doc_ids = list(ref_doc_info.keys())
+        dynamic_ref_doc_ids = [
+            doc_id
+            for doc_id in ref_doc_ids
+            if "/api/" not in doc_id and ".md" not in doc_id
+        ]
         dynamic_doc_ids = [
             item["url"].replace(SETTINGS.website_url, "") for item in self.dynamic_list
         ]
-        static_doc_ids = [
-            item["url"].replace(SETTINGS.website_url, "") for item in self.static_list
-        ]
-        api_docs_ids = [doc.id_ for doc in self.api_docs]
-        all_ref_docs_ids = api_docs_ids + static_doc_ids + dynamic_doc_ids
 
         dynamic_docs_to_update = []
         dynamic_doc_ids_to_remove = []
@@ -347,8 +347,8 @@ class DiscoveryVectorIndex:
             else:
                 dynamic_docs_to_update.append(item)
 
-        for doc_id in ref_doc_ids:
-            if doc_id not in all_ref_docs_ids:
+        for doc_id in dynamic_ref_doc_ids:
+            if doc_id not in dynamic_doc_ids:
                 dynamic_doc_ids_to_remove.append(doc_id)
 
         if dynamic_docs_to_update:
