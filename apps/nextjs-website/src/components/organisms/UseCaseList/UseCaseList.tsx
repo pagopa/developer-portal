@@ -51,8 +51,6 @@ export const UseCaseList = ({
     Math.min(isNaN(parsedTag) ? 0 : parsedTag, updatedTags.length - 1)
   );
   const [selectedTag, setSelectedTag] = useState(tagValue);
-  console.log('Selected Tag:', selectedTag)
-  useCases.forEach((uc) => console.log('UseCase Tags:', uc.tags?.map(tag => tag.name)));
 
   const filteredUseCases = useCases.filter((useCase) => {
     return (
