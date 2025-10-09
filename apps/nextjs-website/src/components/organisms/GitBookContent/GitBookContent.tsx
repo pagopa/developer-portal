@@ -9,7 +9,7 @@ import Table, {
   TableHead,
   TableR,
 } from './components/Table';
-import Heading from './components/Heading';
+import Heading, { SubHeading } from './components/Heading';
 import Paragraph from './components/Paragraph';
 import Hint from './components/Hint';
 import List from './components/List';
@@ -37,6 +37,7 @@ import SwaggerDescription from './components/Swagger/SwaggerDescription';
 type GitBookContentProps = {
   content: string;
   config: ParseContentConfig;
+  hideLevel1Headings?: boolean;
 };
 
 const components: RenderingComponents<ReactNode> = {
@@ -73,7 +74,20 @@ const components: RenderingComponents<ReactNode> = {
   Br: () => <br />,
 };
 
-const GitBookContent = ({ content, config }: GitBookContentProps) =>
-  renderContent(parseContent(content, config), React, components);
+const hideH1Components: RenderingComponents<ReactNode> = {
+  ...components,
+  Heading: SubHeading,
+};
+
+const GitBookContent = ({
+  content,
+  config,
+  hideLevel1Headings = false,
+}: GitBookContentProps) =>
+  renderContent(
+    parseContent(content, config),
+    React,
+    hideLevel1Headings ? hideH1Components : components
+  );
 
 export default GitBookContent;

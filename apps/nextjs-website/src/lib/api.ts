@@ -21,6 +21,7 @@ import {
 } from './cmsApi';
 import { parseS3GuidePage } from '@/helpers/parseS3Doc.helpers';
 import {
+  downloadFileAsText,
   getGuidesMetadata,
   getReleaseNotesMetadata,
   getSolutionsMetadata,
@@ -40,6 +41,15 @@ async function manageUndefinedAndAddProducts<T>(props: undefined | null | T) {
 
 // Cache to avoid duplicate calls between metadata generation and page rendering
 const guidePageCache = new Map<string, any>();
+
+export async function getMarkdownContent(
+  dirName: string,
+  pathToFile: string
+): Promise<string> {
+  const pathToMarkdownFile = `devportal-docs/docs/${dirName}/${pathToFile}`;
+  const output = await downloadFileAsText(pathToMarkdownFile);
+  return output || '';
+}
 
 export async function getGuidePage(
   guidePaths: ReadonlyArray<string>,
