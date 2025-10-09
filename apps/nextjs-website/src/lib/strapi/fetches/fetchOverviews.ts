@@ -22,6 +22,9 @@ const makeStrapiOverviewsPopulate = () =>
       tutorialSection: {
         populate: ['tutorials.image', 'tutorials.product'],
       },
+      useCaseSection: {
+        populate: ['useCases.coverImage', 'useCases.product'],
+      },
       seo: {
         populate: '*,metaImage,metaSocial.image',
       },
