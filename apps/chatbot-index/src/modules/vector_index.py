@@ -255,13 +255,16 @@ class DiscoveryVectorIndex:
         api_doc_ids = [doc.id_ for doc in self.api_docs]
         ref_doc_info = self.index.storage_context.docstore.get_all_ref_doc_info()
         ref_doc_ids = list(ref_doc_info.keys())
+        ref_api_doc_ids = [
+            doc_id for doc_id in ref_doc_ids if doc_id.split("/")[2] == "api"
+        ]
 
         LOGGER.info(f"Num API Doc: {len(api_doc_ids)}")
-        LOGGER.info(f"Num Ref Doc: {len(ref_doc_ids)}")
+        LOGGER.info(f"Num Ref Doc: {len(ref_api_doc_ids)}")
 
         api_docs_to_remove = []
 
-        for doc_id in ref_doc_ids:
+        for doc_id in ref_api_doc_ids:
             if doc_id not in api_doc_ids:
                 api_docs_to_remove.append(doc_id)
 
