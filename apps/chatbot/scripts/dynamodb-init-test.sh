@@ -1,6 +1,7 @@
 #!/bin/bash
 
-AWS_REGION=us-east-1
+AWS_REGION=${AWS_REGION:-"us-east-1"}
+AWS_ENDPOINT_URL=${AWS_ENDPOINT_URL:-"http://motoserver:3000"}
 
 aws dynamodb create-table \
 --endpoint-url $AWS_ENDPOINT_URL \
@@ -35,6 +36,6 @@ aws dynamodb update-time-to-live \
   --time-to-live-specification "Enabled=true,AttributeName=expiresAt" \
   --region $AWS_REGION
 
-aws dynamodb list-tables \
-  --endpoint-url $AWS_ENDPOINT_URL \
-  --region $AWS_REGION
+# aws dynamodb list-tables \
+#   --endpoint-url $AWS_ENDPOINT_URL \
+#   --region $AWS_REGION
