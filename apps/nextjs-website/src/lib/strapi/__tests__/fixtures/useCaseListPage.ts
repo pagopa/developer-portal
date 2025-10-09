@@ -1,21 +1,20 @@
-import { StrapiTutorialListPages } from '@/lib/strapi/types/tutorialsListPage';
 import { generateBannerLinks } from '@/lib/strapi/__tests__/factories/bannerLink';
-import { mediaJpeg } from '../factories/media';
+import { mediaJpeg } from '@/lib/strapi/__tests__/factories/media';
+import { StrapiUseCaseListPages } from '@/lib/strapi/types/useCaseListPage';
 
 const fixedDateIsoString = new Date('2025-01-01T00:00:00.000Z').toISOString();
 
-export const strapiTutorialListPages: StrapiTutorialListPages = {
+export const strapiUseCaseListPages: StrapiUseCaseListPages = {
   data: [
     {
       id: 1,
       attributes: {
-        title: 'Tutorials',
-        description: 'Explore our tutorials',
+        title: 'Use Cases',
+        description: 'Explore our use cases',
         bannerLinks: generateBannerLinks(1),
         product: {
           data: {
             attributes: {
-              tags: { data: [] },
               name: 'Product 1',
               shortName: 'P1',
               slug: 'product-1',
@@ -27,16 +26,16 @@ export const strapiTutorialListPages: StrapiTutorialListPages = {
               guide_list_page: { data: undefined },
               release_note: { data: undefined },
               use_case_list_page: { data: undefined },
+              tags: { data: [] },
             },
           },
         },
-        tutorials: {
+        useCases: {
           data: [
             {
               attributes: {
-                tags: { data: [] },
-                title: 'Tutorial 1',
-                slug: 'tutorial-1',
+                title: 'Use Case 1',
+                slug: 'use-case-1',
                 publishedAt: fixedDateIsoString,
                 product: {
                   data: {
@@ -47,7 +46,7 @@ export const strapiTutorialListPages: StrapiTutorialListPages = {
                     },
                   },
                 },
-                image: {
+                coverImage: {
                   data: mediaJpeg(),
                 },
               },
@@ -55,8 +54,8 @@ export const strapiTutorialListPages: StrapiTutorialListPages = {
           ],
         },
         seo: {
-          metaTitle: 'Tutorials SEO Title',
-          metaDescription: 'Tutorials SEO Description',
+          metaTitle: 'Use Cases SEO Title',
+          metaDescription: 'Use Cases SEO Description',
         },
       },
     },

@@ -15,6 +15,7 @@ import {
   getSolutionsProps,
   getTutorialListPagesProps,
   getTutorialsProps,
+  getUseCaseListPagesProps,
   getUseCasesProps,
   getWebinarsProps,
 } from './cmsApi';
@@ -297,4 +298,13 @@ export async function getUseCase(
     ...props,
     product,
   };
+}
+
+export async function getUseCaseListPageProps(productSlug?: string) {
+  const useCaseListPages = await getUseCaseListPagesProps();
+  const props =
+    useCaseListPages.find(({ product }) => product.slug === productSlug) ||
+    null;
+
+  return manageUndefinedAndAddProducts(props);
 }
