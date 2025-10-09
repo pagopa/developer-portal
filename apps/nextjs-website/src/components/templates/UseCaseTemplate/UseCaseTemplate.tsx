@@ -14,7 +14,6 @@ import { ReactNode } from 'react';
 import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
 import EContainer from '../../../editorialComponents/EContainer/EContainer';
 
-// TODO: Remove once the migration to CMS contents will be completed
 type UseCasePageTemplateProps = {
   readonly bannerLinks?: ReadonlyArray<BannerLinkProps>;
   readonly headerImage?: {
