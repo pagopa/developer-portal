@@ -4,4 +4,4 @@
 ---
 
 Remove generateSoapApiRepositoriesList from package
-Create package and script generateSoapApiRepositoryList
+Create package and script generateSoapApiRepositoriesList
