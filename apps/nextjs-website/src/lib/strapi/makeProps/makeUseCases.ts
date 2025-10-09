@@ -66,6 +66,7 @@ export function makeUseCasesProps(
                 ),
           seo: attributes.seo,
           subtitle: attributes.subtitle,
+          tags: attributes.tags.data?.map((tag) => tag.attributes) || [],
           updatedAt: attributes.updatedAt,
         } satisfies UseCaseProps;
       } catch (error) {

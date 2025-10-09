@@ -6,17 +6,18 @@ import { StrapiUseCaseListPages } from '../types/useCaseListPage';
 const makeStrapiUseCaseListPagePopulate = () =>
   qs.stringify({
     populate: {
-      product: {
-        ...productRelationsPopulate,
-      },
-      useCases: {
-        populate: ['coverImage', 'product'],
-      },
       bannerLinks: {
         populate: ['icon'],
       },
+      enableFilters: true,
+      product: {
+        ...productRelationsPopulate,
+      },
       seo: {
         populate: '*,metaImage,metaSocial.image',
+      },
+      useCases: {
+        populate: ['coverImage', 'product', 'tags'],
       },
     },
   });
