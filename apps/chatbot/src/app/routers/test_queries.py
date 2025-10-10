@@ -3,7 +3,7 @@ from fastapi.testclient import TestClient
 from src.app.main import app
 from src.app.mock_aws_services import mock_signup
 
-cognito_mock = mock_signup(custom_username="test_user_queries")
+cognito_mock = mock_signup()
 os.environ["AUTH_COGNITO_USERPOOL_ID"] = cognito_mock["user_pool_id"]
 
 client = TestClient(app)

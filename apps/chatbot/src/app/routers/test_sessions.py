@@ -4,7 +4,7 @@ from src.app.main import app
 from src.app.mock_aws_services import mock_signup
 from src.app.routers.test_queries import post_queries
 
-cognito_mock = mock_signup(custom_username="test_user_sessions")
+cognito_mock = mock_signup()
 os.environ["AUTH_COGNITO_USERPOOL_ID"] = cognito_mock["user_pool_id"]
 
 client = TestClient(app)

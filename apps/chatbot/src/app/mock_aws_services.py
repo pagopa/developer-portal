@@ -12,9 +12,7 @@ COGNITO_PASSWORD = "TestPassword123!"
 client_cognito = boto3.client("cognito-idp")
 
 
-def mock_signup(custom_username: str = None) -> dict:
-
-    username = custom_username or COGNITO_USERNAME
+def mock_signup() -> dict:
     user_pool_id = SETTINGS.auth_cognito_userpool_id
 
     client_response = client_cognito.create_user_pool_client(
@@ -22,26 +20,24 @@ def mock_signup(custom_username: str = None) -> dict:
     )
     client_id = client_response["UserPoolClient"]["ClientId"]
 
-    LOGGER.info(f"mock_signup(custom_username={username})")
-
     users = client_cognito.list_users(
-        UserPoolId=user_pool_id, Filter=f'username="{username}"'
+        UserPoolId=user_pool_id, Filter=f'username="{COGNITO_USERNAME}"'
     )
     if users["Users"] == []:
         client_cognito.sign_up(
-            ClientId=client_id, Username=username, Password=COGNITO_PASSWORD
+            ClientId=client_id, Username=COGNITO_USERNAME, Password=COGNITO_PASSWORD
         )
 
         client_cognito.admin_confirm_sign_up(
             UserPoolId=user_pool_id,
-            Username=username,
+            Username=COGNITO_USERNAME,
         )
 
     response = client_cognito.initiate_auth(
         ClientId=client_id,
         AuthFlow="USER_PASSWORD_AUTH",
         AuthParameters={
-            "USERNAME": username,
+            "USERNAME": COGNITO_USERNAME,
             "PASSWORD": COGNITO_PASSWORD,
         },
     )
