@@ -22,7 +22,7 @@ from tqdm import tqdm
 from src.modules.logger import get_logger
 from src.modules.documents import (
     get_documents,
-    get_static_and_dynamic_lists,
+    get_static_and_dynamic_metadata,
     get_api_docs,
     get_static_docs,
     get_dynamic_docs,
@@ -295,7 +295,7 @@ class DiscoveryVectorIndex:
 
         static_docs_to_update_filtered = []
         for doc in static_docs_to_update:
-            if doc in self.static_list:
+            if doc in self.static_metadata:
                 static_docs_to_update_filtered.append(doc)
 
         docs_to_update = get_static_docs(static_docs_to_update_filtered)
@@ -325,13 +325,14 @@ class DiscoveryVectorIndex:
             if "/api/" not in doc_id and ".md" not in doc_id
         ]
         dynamic_doc_ids = [
-            item["url"].replace(SETTINGS.website_url, "") for item in self.dynamic_list
+            item["url"].replace(SETTINGS.website_url, "")
+            for item in self.dynamic_metadata
         ]
 
         dynamic_docs_to_update = []
         dynamic_doc_ids_to_remove = []
 
-        for item in self.dynamic_list:
+        for item in self.dynamic_metadata:
             doc_id = item["url"].replace(SETTINGS.website_url, "")
             lastmod = item["lastmod"]
 
@@ -384,7 +385,7 @@ class DiscoveryVectorIndex:
 
         self.index = self.get_index()
         self.api_docs = get_api_docs()
-        self.static_list, self.dynamic_list = get_static_and_dynamic_lists()
+        self.static_metadata, self.dynamic_metadata = get_static_and_dynamic_metadata()
 
         LOGGER.info(">>>>>>> Refreshing vector index with API docs...")
         self.refresh_index_api_docs()
