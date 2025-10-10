@@ -7,7 +7,10 @@ COGNITO_USERNAME = "test_user"
 COGNITO_PASSWORD = "TestPassword123!"
 
 
-client_cognito = AWS_SESSION.client("cognito-idp")
+client_cognito = AWS_SESSION.client(
+    "cognito-idp",
+    region_name=SETTINGS.aws_cognito_region
+)
 
 
 def mock_signup() -> dict:
