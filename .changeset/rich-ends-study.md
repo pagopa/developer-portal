@@ -2,4 +2,4 @@
 "nextjs-website": minor
 ---
 
-Add new tutorials list to overview
+Refactor tutorial section in product overview page
