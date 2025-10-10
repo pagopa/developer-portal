@@ -20,7 +20,7 @@ const makeStrapiOverviewsPopulate = () =>
         populate: ['bottomLink', 'items.icon'],
       },
       tutorialSection: {
-        populate: ['tutorials.image', 'tutorials.product'],
+        populate: ['tutorials.image', 'tutorials.product', 'tutorials.icon'],
       },
       useCaseSection: {
         populate: ['useCases.coverImage', 'useCases.product'],

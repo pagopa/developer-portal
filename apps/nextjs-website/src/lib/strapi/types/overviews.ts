@@ -34,6 +34,7 @@ export type StrapiTutorialSection = {
   readonly title: string;
   readonly description: string;
   readonly tutorials: { readonly data: readonly StrapiBaseTutorial[] };
+  readonly showCardsLayout: boolean;
 };
 
 export type StrapiUseCaseSection = {

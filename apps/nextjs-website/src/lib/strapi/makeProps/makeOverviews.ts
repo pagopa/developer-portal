@@ -60,6 +60,7 @@ export function makeOverviewsProps(
           tutorials: attributes.tutorialSection && {
             title: attributes.tutorialSection.title,
             subtitle: attributes.tutorialSection.description,
+            showCardsLayout: attributes.tutorialSection.showCardsLayout,
             list:
               compact(
                 attributes.tutorialSection.tutorials.data.map((tutorial) => {
@@ -78,8 +79,9 @@ export function makeOverviewsProps(
                     );
                     return null;
                   }
-
                   return {
+                    icon: tutorial.attributes.icon.data?.attributes,
+                    description: tutorial.attributes.description,
                     showInOverview: true,
                     image: tutorial.attributes.image.data && {
                       url: tutorial.attributes.image.data.attributes.url,
