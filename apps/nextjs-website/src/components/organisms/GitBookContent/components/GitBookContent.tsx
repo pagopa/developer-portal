@@ -22,8 +22,8 @@ import Cards, { Card, CardItem } from './Cards';
 import SwaggerParameter from './Swagger/SwaggerParameter';
 import SwaggerResponse from './Swagger/SwaggerResponse';
 import SwaggerDescription from './Swagger/SwaggerDescription';
-import Steppers from './Steppers';
 import Stepper from './Stepper';
+import Step from './Step';
 import PageLink from '@/components/organisms/GitBookContent/components/PageLink';
 
 type GitBookContentProps = {
@@ -63,8 +63,8 @@ const hideH1Components: RenderingComponents<ReactNode> = {
   Card: Card,
   CardItem: CardItem,
   PageLink: PageLink,
-  Stepper: Stepper,
-  Steppers: Steppers,
+  Stepper: Step,
+  Steppers: Stepper,
   Br: () => <br />,
 };
 
@@ -99,8 +99,8 @@ const components: RenderingComponents<ReactNode> = {
   Card: Card,
   CardItem: CardItem,
   PageLink: PageLink,
-  Stepper: Stepper,
-  Steppers: Steppers,
+  Stepper: Step,
+  Steppers: Stepper,
   Br: () => <br />,
 };
 
@@ -110,7 +110,20 @@ const GitBookContent = ({
   hideH1 = false,
 }: GitBookContentProps) =>
   renderContent(
-    parseContent(content, config),
+    parseContent(
+      '{% stepper %}\n' +
+        '{% step %}\n' +
+        '### Step 1 title\n' +
+        '#### Step 1 subtitle\n' +
+        'Step 1 text\n' +
+        '{% endstep %}\n' +
+        '{% step %}\n' +
+        '### Step 2 title\n' +
+        'Step 2 text\n' +
+        '{% endstep %}\n' +
+        '{% endstepper %}',
+      config
+    ),
     React,
     hideH1 ? hideH1Components : components
   );

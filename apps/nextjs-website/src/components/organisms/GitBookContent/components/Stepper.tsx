@@ -1,40 +1,20 @@
-// components/Stepper.tsx
-import { Box, Typography } from '@mui/material';
-import { ReactNode } from 'react';
-
+// components/Steppers.tsx
+import { ReactNode, Children, cloneElement, isValidElement } from 'react';
+import { Box } from '@mui/material';
 export type StepperProps<A> = {
-  readonly title: string;
   readonly children: A;
-  // This prop is injected by the parent Steppers component, not from Markdoc
-  readonly stepNumber?: number;
 };
 
-const Stepper = ({ title, children, stepNumber }: StepperProps<ReactNode>) => (
-  <Box sx={{ display: 'flex', gap: 2, marginBottom: 3 }}>
-    {/* The numbered circle */}
-    <Box
-      sx={{
-        width: 32,
-        height: 32,
-        borderRadius: '50%',
-        backgroundColor: 'primary.main',
-        color: 'primary.contrastText',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        flexShrink: 0,
-        fontWeight: 'bold',
-      }}
-    >
-      {stepNumber}
-    </Box>
-    {/* The content of the step */}
-    <Box>
-      <Typography variant='h6' component='h3' sx={{ fontWeight: 'bold' }}>
-        {title}
-      </Typography>
-      {children}
-    </Box>
+const Stepper = ({ children }: StepperProps<ReactNode>) => (
+  <Box sx={{ marginY: 4 }}>
+    {/* Map over children to inject the stepNumber prop */}
+    {Children.map(children, (child, index) => {
+      if (isValidElement(child)) {
+        // Clone the element to add the stepNumber prop
+        return cloneElement(child, { stepNumber: index + 1 } as any);
+      }
+      return child;
+    })}
   </Box>
 );
 

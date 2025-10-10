@@ -37,7 +37,7 @@ import {
   TableRProps,
 } from './markdoc/schema/table';
 import { PageLinkProps } from './markdoc/schema/pageLink';
-import { StepperProps, SteppersProps } from './markdoc/schema/steppers';
+import { StepperProps, SteppersProps } from './markdoc/schema/stepper';
 
 export type RenderingComponents<A> = {
   readonly Link: (props: LinkProps<A>) => A;
