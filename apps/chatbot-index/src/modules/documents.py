@@ -329,9 +329,11 @@ def get_static_and_dynamic_metadata(
         static_metadata = []
         dynamic_metadata = []
 
-        guides_metadata = json.load(open("guides-metadata.json", "r"))
-        release_notes_metadata = json.load(open("release-notes-metadata.json", "r"))
-        solutions_metadata = json.load(open("solutions-metadata.json", "r"))
+        guides_metadata = json.loads(read_file_from_s3("guides-metadata.json"))
+        release_notes_metadata = json.loads(
+            read_file_from_s3("release-notes-metadata.json")
+        )
+        solutions_metadata = json.loads(read_file_from_s3("solutions-metadata.json"))
         all_metadata = guides_metadata + release_notes_metadata + solutions_metadata
         all_url_metadata = [
             SETTINGS.website_url + item["path"] for item in all_metadata
