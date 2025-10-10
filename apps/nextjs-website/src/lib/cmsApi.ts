@@ -223,7 +223,24 @@ export const getReleaseNoteProps = async (
 
 export const getUseCasesProps = async () => {
   const strapiUseCases = await fetchUseCases(buildEnv);
-  return makeUseCasesProps(strapiUseCases);
+  const useCasesWithMarkdown = strapiUseCases.data.filter((useCase) => {
+    const parts = useCase?.attributes?.parts ?? [];
+    return parts.some((part) => part?.__component === 'parts.markdown');
+  });
+  const allMarkdownParts = useCasesWithMarkdown.flatMap((useCase) =>
+    (useCase?.attributes?.parts ?? []).filter(
+      (part) => part?.__component === 'parts.markdown'
+    )
+  );
+  const contentPromises = allMarkdownParts.map(async (part) => {
+    const { dirName, pathToFile } = part as MarkDownPart;
+    const key = `${dirName}/${pathToFile}`;
+    const content = await getMarkdownContent(dirName, pathToFile);
+    return [key, content];
+  });
+  const resolvedContentPairs = await Promise.all(contentPromises);
+  const markdownContentDict = Object.fromEntries(resolvedContentPairs);
+  return makeUseCasesProps(strapiUseCases, markdownContentDict);
 };
 
 export const getUseCaseListPagesProps = async () => {
