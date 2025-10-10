@@ -1,16 +1,13 @@
 // markdoc/schema/stepper.ts
-import Markdoc, { Schema, Tag } from '@markdoc/markdoc';
-import { ReactNode } from 'react';
+import Markdoc, { Schema } from '@markdoc/markdoc';
 
-// Prop types for your React components
-export type SteppersProps<A> = {
+export type StepperProps<A> = {
   readonly children: A;
 };
 
-export type StepperProps<A> = {
-  readonly title: string;
+export type StepProps<A> = {
   readonly children: A;
-  // This prop is injected by the parent Steppers component, not from Markdoc
+  readonly title?: string;
   readonly stepNumber?: number;
 };
 
@@ -39,7 +36,7 @@ export const stepper: Schema = {
     }
 
     const children = node.transformChildren(config);
-    return new Markdoc.Tag('Stepper', {}, children); // This was 'Steppers' in your example, adjust if needed.
+    return new Markdoc.Tag('Stepper', {}, children);
   },
 };
 

@@ -63,8 +63,8 @@ const hideH1Components: RenderingComponents<ReactNode> = {
   Card: Card,
   CardItem: CardItem,
   PageLink: PageLink,
-  Stepper: Step,
-  Steppers: Stepper,
+  Stepper: Stepper,
+  Step: Step,
   Br: () => <br />,
 };
 
@@ -99,8 +99,8 @@ const components: RenderingComponents<ReactNode> = {
   Card: Card,
   CardItem: CardItem,
   PageLink: PageLink,
-  Stepper: Step,
-  Steppers: Stepper,
+  Stepper: Stepper,
+  Step: Step,
   Br: () => <br />,
 };
 

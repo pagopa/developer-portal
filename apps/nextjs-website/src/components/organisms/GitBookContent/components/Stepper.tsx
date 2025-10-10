@@ -1,9 +1,6 @@
-// components/Steppers.tsx
-import { ReactNode, Children, cloneElement, isValidElement } from 'react';
+import { Children, ReactNode, cloneElement, isValidElement } from 'react';
 import { Box } from '@mui/material';
-export type StepperProps<A> = {
-  readonly children: A;
-};
+import { StepperProps } from 'gitbook-docs/markdoc/schema/stepper';
 
 const Stepper = ({ children }: StepperProps<ReactNode>) => (
   <Box sx={{ marginY: 4 }}>
