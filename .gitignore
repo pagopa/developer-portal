@@ -402,9 +402,9 @@ apps/chatbot/index
 apps/chatbot/*.ipynb
 apps/chatbot/results
 apps/chatbot/test.py
-!app/chatbot/docker
-!app/chatbot/docker/files
-app/chabot/docker/volume
+!apps/chatbot/docker
+!apps/chatbot/docker/files
+apps/chabot/docker/volume
 apps/chatbot/.env
 apps/chatbot/empty_htmls.json
 apps/chatbot/.google_service_account.json
