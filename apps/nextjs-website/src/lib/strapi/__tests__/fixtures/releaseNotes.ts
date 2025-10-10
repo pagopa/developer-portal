@@ -16,6 +16,7 @@ export const strapiReleaseNotes: StrapiReleaseNotes = {
         product: {
           data: {
             attributes: {
+              tags: { data: [] },
               name: 'Test Product',
               slug: 'test-product',
               shortName: 'TP',
@@ -26,6 +27,7 @@ export const strapiReleaseNotes: StrapiReleaseNotes = {
               guide_list_page: { data: { id: 0 } },
               tutorial_list_page: { data: { id: 0 } },
               release_note: { data: { id: 0 } },
+              use_case_list_page: { data: { id: 0 } },
             },
           },
         },

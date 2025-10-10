@@ -65,6 +65,7 @@ export const strapiHomepage: StrapiHomepage = {
           data: [
             {
               attributes: {
+                tags: { data: [] },
                 name: 'Product 1',
                 shortName: 'P1',
                 slug: 'product-1',
@@ -77,6 +78,7 @@ export const strapiHomepage: StrapiHomepage = {
                 tutorial_list_page: { data: { id: 1 } },
                 guide_list_page: { data: { id: 1 } },
                 release_note: { data: { id: 1 } },
+                use_case_list_page: { data: { id: 1 } },
               },
             },
           ],

@@ -34,6 +34,7 @@ export const productJson = {
       tutorial_list_page: { data: null },
       guide_list_page: { data: null },
       release_note: { data: null },
+      use_case_list_page: { data: null },
     },
   },
 };
@@ -54,6 +55,8 @@ export const product = {
   hasQuickstartGuidePage: true,
   hasReleaseNotePage: false,
   hasTutorialListPage: true,
+  hasUseCaseListPage: true,
+  tags: [],
   bannerLinks: [
     {
       title: 'Serve aiuto?',

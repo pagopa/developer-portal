@@ -23,6 +23,7 @@ export const strapiOverviews = {
           data: {
             attributes: {
               ...product,
+              tags: { data: [] },
               bannerLinks: generateBannerLinks(1),
               overview: {
                 data: {
@@ -76,6 +77,11 @@ export const strapiOverviews = {
                   id: 6,
                 },
               },
+              use_case_list_page: {
+                data: {
+                  id: 7,
+                },
+              },
               logo: {
                 data: mediaJpeg(),
               },
@@ -123,6 +129,7 @@ export const strapiOverviews = {
               {
                 attributes: {
                   title: 'Tutorial 1',
+                  tags: { data: [] },
                   slug: 'tutorial-1',
                   image: {
                     data: mediaJpeg(),
@@ -271,7 +278,9 @@ export const overviewPageProps: OverviewPageProps = {
     hasQuickstartGuidePage: true,
     hasReleaseNotePage: true,
     hasTutorialListPage: true,
+    hasUseCaseListPage: true,
     description: undefined,
+    tags: [],
     bannerLinks: [
       {
         title: 'Banner Link 1',

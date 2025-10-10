@@ -15,7 +15,8 @@ export type TutorialProps = Tutorial & {
 };
 
 export function makeTutorialsProps(
-  strapiTutorials: StrapiTutorials
+  strapiTutorials: StrapiTutorials,
+  markdownContentDict: Record<string, string>
 ): readonly TutorialProps[] {
   return compact(
     strapiTutorials.data.map(({ attributes }) => {
@@ -48,7 +49,11 @@ export function makeTutorialsProps(
             : undefined,
           name: attributes.title,
           path: `/${attributes.product.data.attributes.slug}/tutorials/${attributes.slug}`,
-          parts: compact(attributes.parts.map((part) => makePartProps(part))),
+          parts: compact(
+            attributes.parts.map((part) =>
+              makePartProps(part, markdownContentDict)
+            )
+          ),
           productSlug: attributes.product.data.attributes.slug,
           relatedLinks: attributes.relatedLinks,
           bannerLinks:
@@ -58,6 +63,7 @@ export function makeTutorialsProps(
                   makeBannerLinkProps
                 ),
           seo: attributes.seo,
+          tags: attributes.tags.data?.map((tag) => tag.attributes) || [],
           updatedAt: attributes.updatedAt,
         } satisfies TutorialProps;
       } catch (error) {

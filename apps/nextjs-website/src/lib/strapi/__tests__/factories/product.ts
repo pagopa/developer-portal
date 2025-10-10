@@ -54,6 +54,7 @@ export function baseProductWithoutBannerLinksMinimal(): StrapiBaseProductWithout
 export function strapiBaseProductWithRelations(): StrapiBaseProductWithRelations {
   return {
     attributes: {
+      tags: { data: [] },
       ...baseProduct().attributes,
       bannerLinks: generateBannerLinks(1),
       overview: { data: { id: 1 } },
@@ -62,6 +63,7 @@ export function strapiBaseProductWithRelations(): StrapiBaseProductWithRelations
       tutorial_list_page: { data: { id: 3 } },
       guide_list_page: { data: { id: 4 } },
       release_note: { data: undefined },
+      use_case_list_page: { data: { id: 1 } },
     },
   };
 }
@@ -71,12 +73,14 @@ export function strapiBaseProductWithoutRelations(): StrapiBaseProductWithRelati
     attributes: {
       ...baseProduct().attributes,
       bannerLinks: undefined,
+      tags: { data: [] },
       overview: { data: undefined },
       quickstart_guide: { data: undefined },
       api_data_list_page: { data: undefined },
       tutorial_list_page: { data: undefined },
       guide_list_page: { data: undefined },
       release_note: { data: undefined },
+      use_case_list_page: { data: undefined },
     },
   };
 }
@@ -85,6 +89,7 @@ export function strapiProduct(): StrapiProduct {
   return {
     attributes: {
       ...baseProduct().attributes,
+      tags: { data: [] },
       bannerLinks: generateBannerLinks(2),
       description: 'Complete product description',
       logo: {
@@ -96,6 +101,7 @@ export function strapiProduct(): StrapiProduct {
       tutorial_list_page: { data: { id: 3 } },
       guide_list_page: { data: { id: 4 } },
       release_note: { data: { id: 5 } },
+      use_case_list_page: { data: { id: 1 } },
     },
   };
 }
@@ -109,12 +115,14 @@ export function strapiProductMinimal(): StrapiProduct {
       logo: {
         data: mediaJpeg(),
       },
+      tags: { data: [] },
       overview: { data: undefined },
       quickstart_guide: { data: undefined },
       api_data_list_page: { data: undefined },
       tutorial_list_page: { data: undefined },
       guide_list_page: { data: undefined },
       release_note: { data: undefined },
+      use_case_list_page: { data: undefined },
     },
   };
 }
@@ -135,6 +143,7 @@ export function productWithAllRelations(): StrapiProduct {
     attributes: {
       name: 'Full Feature Product',
       shortName: 'FFP',
+      tags: { data: [] },
       slug: 'full-feature-product',
       bannerLinks: generateBannerLinks(3),
       description: 'A product with all available relations and features',
@@ -172,6 +181,7 @@ export function productWithAllRelations(): StrapiProduct {
       tutorial_list_page: { data: { id: 3 } },
       guide_list_page: { data: { id: 4 } },
       release_note: { data: { id: 5 } },
+      use_case_list_page: { data: { id: 1 } },
     },
   };
 }
@@ -180,6 +190,7 @@ export function productWithMissingMandatoryFields(): Partial<StrapiProduct> {
   return {
     attributes: {
       name: undefined as any,
+      tags: { data: [] },
       shortName: undefined as any,
       slug: undefined as any,
       bannerLinks: [],
@@ -193,6 +204,7 @@ export function productWithMissingMandatoryFields(): Partial<StrapiProduct> {
       tutorial_list_page: { data: undefined },
       guide_list_page: { data: undefined },
       release_note: { data: undefined },
+      use_case_list_page: { data: undefined },
     },
   };
 }

@@ -6,7 +6,7 @@ on:
       - "main"
     paths:
       - 'apps/chatbot-evaluate/**'
-      - '.github/workflows/deploy_lambda_monitor.yaml'
+      - '.github/workflows/deploy_lambda_evaluate.yaml'
   workflow_dispatch:
     inputs:
       environment:
@@ -38,7 +38,7 @@ jobs:
           if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
             matrixStringifiedObject="{\"include\":[{\"environment\":\"${{ github.event.inputs.environment }}\"}]}"
           else
-            matrixStringifiedObject="{\"include\":[{\"environment\":\"dev\"}, {\"environment\":\"uat\"}]}"
+            matrixStringifiedObject="{\"include\":[{\"environment\":\"dev\"}]}"
           fi
 
           echo "matrix=$matrixStringifiedObject" >> $GITHUB_OUTPUT
