@@ -1,7 +1,5 @@
-import boto3
-
 from src.modules.logger import get_logger
-from src.modules.settings import SETTINGS
+from src.modules.settings import SETTINGS, AWS_SESSION
 
 LOGGER = get_logger(__name__)
 
@@ -9,7 +7,7 @@ COGNITO_USERNAME = "test_user"
 COGNITO_PASSWORD = "TestPassword123!"
 
 
-client_cognito = boto3.client("cognito-idp")
+client_cognito = AWS_SESSION.client("cognito-idp")
 
 
 def mock_signup() -> dict:

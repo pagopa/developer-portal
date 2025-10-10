@@ -23,7 +23,7 @@ else:
 
 
 def mock_user_pool_id() -> str:
-    client_cognito = boto3.client("cognito-idp")
+    client_cognito = AWS_SESSION.client("cognito-idp")
     user_pool_response = client_cognito.create_user_pool(PoolName="test_pool")
     user_pool_id = user_pool_response["UserPool"]["Id"]
     return user_pool_id

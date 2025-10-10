@@ -1,6 +1,5 @@
 import os
 import re
-import boto3
 import logging
 import time
 import json
@@ -17,12 +16,12 @@ import xml.etree.ElementTree as ET
 from llama_index.core import Document
 
 from src.modules.logger import get_logger
-from src.modules.settings import SETTINGS
+from src.modules.settings import SETTINGS, AWS_SESSION
 
 
 logging.getLogger("botocore").setLevel(logging.ERROR)
 LOGGER = get_logger(__name__)
-AWS_S3_CLIENT = boto3.client("s3")
+AWS_S3_CLIENT = AWS_SESSION.client("s3")
 
 
 def remove_figure_blocks(md_text):

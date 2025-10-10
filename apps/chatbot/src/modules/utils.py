@@ -1,10 +1,10 @@
 import os
-import boto3
 
 from src.modules.logger import get_logger
+from src.modules.settings import AWS_SESSION
 
 LOGGER = get_logger(__name__)
-SSM_CLIENT = boto3.client("ssm")
+SSM_CLIENT = AWS_SESSION.client("ssm")
 
 
 def get_ssm_parameter(name: str | None, default: str | None = None) -> str | None:
@@ -19,7 +19,7 @@ def get_ssm_parameter(name: str | None, default: str | None = None) -> str | Non
     LOGGER.info(f"get_ssm_parameter {name}...")
 
     if name is None:
-        name = "/none/param"
+        name = "none-params-in-ssm"
     try:
         # Get the requested parameter
         response = SSM_CLIENT.get_parameter(Name=name, WithDecryption=True)
