@@ -4,35 +4,35 @@ AWS_REGION=${AWS_REGION:-"us-east-1"}
 AWS_ENDPOINT_URL=${AWS_ENDPOINT_URL:-"http://motoserver:3000"}
 
 aws dynamodb create-table \
---endpoint-url $AWS_ENDPOINT_URL \
---cli-input-json file://./docker/files/dynamodb_schemas/test/sessions.json \
---region $AWS_REGION
+  --endpoint-url $AWS_ENDPOINT_URL \
+  --cli-input-json file://./docker/files/dynamodb_schemas/$environment/sessions.json \
+  --region $AWS_REGION
 
 aws dynamodb update-time-to-live \
   --endpoint-url $AWS_ENDPOINT_URL \
-  --table-name chatbot-test-sessions \
+  --table-name $CHB_QUERY_TABLE_PREFIX-sessions \
   --time-to-live-specification "Enabled=true,AttributeName=expiresAt" \
   --region $AWS_REGION
 
 aws dynamodb create-table \
   --endpoint-url $AWS_ENDPOINT_URL \
-  --cli-input-json file://./docker/files/dynamodb_schemas/test/queries.json \
+  --cli-input-json file://./docker/files/dynamodb_schemas/$environment/queries.json \
   --region $AWS_REGION
 
 aws dynamodb update-time-to-live \
   --endpoint-url $AWS_ENDPOINT_URL \
-  --table-name chatbot-test-queries \
+  --table-name $CHB_QUERY_TABLE_PREFIX-queries \
   --time-to-live-specification "Enabled=true,AttributeName=expiresAt" \
   --region $AWS_REGION
 
 aws dynamodb create-table \
 --endpoint-url $AWS_ENDPOINT_URL \
---cli-input-json file://./docker/files/dynamodb_schemas/test/salts.json \
+--cli-input-json file://./docker/files/dynamodb_schemas/$environment/salts.json \
 --region $AWS_REGION
 
 aws dynamodb update-time-to-live \
   --endpoint-url $AWS_ENDPOINT_URL \
-  --table-name chatbot-test-salts \
+  --table-name $CHB_QUERY_TABLE_PREFIX-salts \
   --time-to-live-specification "Enabled=true,AttributeName=expiresAt" \
   --region $AWS_REGION
 
