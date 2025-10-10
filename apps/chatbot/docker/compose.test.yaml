@@ -55,11 +55,11 @@ services:
       - ntwtest
 
   motoserver:
-    image: motoserver/moto:5.1.12
+    image: motoserver/moto:5.1.14
     ports:
-      - "3000:3000"
+      - "3002:3000"
     environment:
-      - MOTO_PORT=3000
+      - MOTO_PORT=3002
     networks:
       - ntwtest
 
