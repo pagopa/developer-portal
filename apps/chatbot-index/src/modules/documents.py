@@ -306,7 +306,7 @@ def get_api_docs(website_url: str | None = None) -> List[Document]:
     return docs
 
 
-def get_static_and_dynamic_lists(
+def get_static_and_dynamic_metadata(
     website_url: str | None = None,
 ) -> Tuple[List[dict], List[dict]]:
     """
@@ -323,46 +323,38 @@ def get_static_and_dynamic_lists(
     if not sitemap:
         return [], []
     else:
-        urls_list = [item["url"] for item in sitemap]
-        filtered_urls = filter_urls(urls_list, website_url)
+        sitemap_urls = [item["url"] for item in sitemap]
+        sitemap_filtered_urls = filter_urls(sitemap_urls)
 
-        static_urls = []
-        dynamic_urls = []
+        static_metadata = []
+        dynamic_metadata = []
 
-        guides_metadata = json.loads(read_file_from_s3("guides-metadata.json"))
-        release_notes_metadata = json.loads(
-            read_file_from_s3("release-notes-metadata.json")
-        )
-        solutions_metadata = json.loads(read_file_from_s3("solutions-metadata.json"))
+        guides_metadata = json.load(open("guides-metadata.json", "r"))
+        release_notes_metadata = json.load(open("release-notes-metadata.json", "r"))
+        solutions_metadata = json.load(open("solutions-metadata.json", "r"))
+        all_metadata = guides_metadata + release_notes_metadata + solutions_metadata
+        all_url_metadata = [
+            SETTINGS.website_url + item["path"] for item in all_metadata
+        ]
 
-        for item in guides_metadata + release_notes_metadata + solutions_metadata:
-
-            url = SETTINGS.website_url + item["path"]
-            if url in filtered_urls:
-                static_urls.append(
+        for url in sitemap_filtered_urls:
+            if url in all_url_metadata:
+                idx = all_url_metadata.index(url)
+                static_metadata.append(
                     {
                         "url": url,
-                        "s3_file_path": item["contentS3Path"],
-                        "title": item["title"],
+                        "s3_file_path": all_metadata[idx]["contentS3Path"],
+                        "title": all_metadata[idx]["title"],
                     }
                 )
-
-        static_urls_list = [url["url"] for url in static_urls]
-        for item in sitemap:
-            url = item["url"]
-            lastmod = item["lastmod"]
-            if url in filtered_urls and url not in static_urls_list:
-                dynamic_urls.append(
-                    {
-                        "url": url,
-                        "lastmod": lastmod,
-                    }
-                )
+            else:
+                idx = sitemap_urls.index(url)
+                dynamic_metadata.append(sitemap[idx])
 
     LOGGER.info(
-        f"Found {len(static_urls)} static URLs and {len(dynamic_urls)} dynamic URLs."
+        f"Found {len(static_metadata)} static URLs and {len(dynamic_metadata)} dynamic URLs."
     )
-    return static_urls, dynamic_urls
+    return static_metadata, dynamic_metadata
 
 
 def get_static_docs(static_urls: List[dict]) -> List[Document]:
@@ -496,11 +488,11 @@ def get_documents(website_url: str | None = None) -> List[Document]:
         List[Document]: A list of Document objects containing the content and metadata.
     """
 
-    static_urls, dynamic_urls = get_static_and_dynamic_lists(website_url)
+    static_metadata, dynamic_metadata = get_static_and_dynamic_metadata(website_url)
 
     api_docs = get_api_docs(website_url)
-    static_docs = get_static_docs(static_urls)
-    dynamic_docs = get_dynamic_docs(dynamic_urls)
+    static_docs = get_static_docs(static_metadata)
+    dynamic_docs = get_dynamic_docs(dynamic_metadata)
     docs = api_docs + static_docs + dynamic_docs
 
     LOGGER.info(f"Total number of fetched documents: {len(docs)}")
