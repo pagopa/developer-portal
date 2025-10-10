@@ -4,7 +4,7 @@ from src.modules.logger import get_logger
 from src.modules.models import get_llm, get_embed_model
 from src.modules.judge import Judge
 from src.modules.monitor import LANGFUSE_CLIENT
-from src.modules.settings import SETTINGS
+from src.modules.settings import AWS_SESSION, SETTINGS
 
 LOGGER = get_logger(__name__)
 JUDGE = Judge()
@@ -14,7 +14,7 @@ WEBSITE_URL = os.getenv("CHB_WEBSITE_URL")
 def test_aws_credentials() -> None:
     identity = None
     try:
-        sts = SETTINGS.boto3_session.client("sts")
+        sts = SETTINGS.AWS_SESSION.client("sts")
         identity = sts.get_caller_identity()
 
     except Exception as e:
