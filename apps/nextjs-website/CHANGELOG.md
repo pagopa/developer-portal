@@ -1,5 +1,25 @@
 # nextjs-website
 
+## 10.0.0
+
+### Major Changes
+
+- e103dbf: Add filters to use case list page
+- a4545d2: Implement UseCase detail page, define UseCases props, and add UseCases data fetching.
+- a10836f: Add use case list page, define StrapiUseCaseListPage type, UseCaseListPage props and add UseCaseListPage data fetcing
+
+### Minor Changes
+
+- f1895e6: Add rendering for new markdown part
+- f95be9b: Add Use Cases section preview in overviews
+- 25a39f7: Refactor tutorial section in product overview page
+
+### Patch Changes
+
+- Updated dependencies [f1895e6]
+- Updated dependencies [ff133a4]
+  - gitbook-docs@1.2.0
+
 ## 9.0.1
 
 ### Patch Changes
