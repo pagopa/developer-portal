@@ -1,6 +1,4 @@
 import os
-import boto3
-import json
 
 from src.modules.logger import get_logger
 from src.modules.models import get_llm, get_embed_model
@@ -16,11 +14,7 @@ WEBSITE_URL = os.getenv("CHB_WEBSITE_URL")
 def test_aws_credentials() -> None:
     identity = None
     try:
-        session = boto3.Session(
-            aws_access_key_id=os.getenv("CHB_AWS_ACCESS_KEY_ID"),
-            aws_secret_access_key=os.getenv("CHB_AWS_SECRET_ACCESS_KEY"),
-        )
-        sts = session.client("sts")
+        sts = SETTINGS.boto3_session.client("sts")
         identity = sts.get_caller_identity()
 
     except Exception as e:

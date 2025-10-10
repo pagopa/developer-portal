@@ -19,7 +19,7 @@ def get_ssm_parameter(name: str | None, default: str | None = None) -> str | Non
     LOGGER.info(f"get_ssm_parameter {name}...")
 
     if name is None:
-        name = "/none/param"
+        name = "none-params-in-ssm"
     try:
         # Get the requested parameter
         response = SSM_CLIENT.get_parameter(Name=name, WithDecryption=True)
