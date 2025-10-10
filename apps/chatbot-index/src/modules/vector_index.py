@@ -170,10 +170,10 @@ class DiscoveryVectorIndex:
             documents (list[Document]): List of Document objects to add or update.
         """
 
-        LOGGER.info(f"Document 0 ID: {documents[0].id_ if documents else 'N/A'}")
-        LOGGER.info(
-            f"Document 0 Title: {documents[0].metadata['title'] if documents else 'N/A'}"
-        )
+        for doc in documents[:5]:
+            LOGGER.info(
+                f"Document ID: {doc.id_ if doc else 'N/A'} - title: {doc.metadata.get('title', 'N/A') if doc and doc.metadata else 'N/A'}"
+            )
 
         with self.index._callback_manager.as_trace("refresh_ref_docs"):
             refreshed_documents = [False] * len(documents)
@@ -392,4 +392,4 @@ class DiscoveryVectorIndex:
         self.refresh_index_static_docs(static_docs_to_update, static_docs_ids_to_delete)
         LOGGER.info(">>>>>>> Refreshing vector index with dynamic docs...")
         self.refresh_index_dynamic_docs()
-        LOGGER.info("Refreshed vector index successfully.")
+        LOGGER.info(">>>>>>> Refreshed vector index successfully. <<<<<<<")
