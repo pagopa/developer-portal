@@ -8,6 +8,7 @@ import { StrapiSeo } from '@/lib/strapi/types/seo';
 import { Paginated } from '@/lib/strapi/types/paginated';
 import { StrapiBaseTutorial } from '@/lib/strapi/types/tutorial';
 import { StrapiProduct } from '@/lib/strapi/types/product';
+import { StrapiBaseUseCase } from './useCase';
 
 export type StrapiStartInfo = {
   readonly icon: { readonly data: StrapiMedia };
@@ -34,6 +35,12 @@ export type StrapiTutorialSection = {
   readonly description: string;
   readonly tutorials: { readonly data: readonly StrapiBaseTutorial[] };
   readonly showCardsLayout: boolean;
+};
+
+export type StrapiUseCaseSection = {
+  readonly title: string;
+  readonly description: string;
+  readonly useCases: { readonly data: readonly StrapiBaseUseCase[] };
 };
 
 export type StrapiCardProps = {
@@ -73,6 +80,7 @@ export type StrapiOverview = {
     readonly features?: StrapiFeature;
     readonly startInfoSection?: StrapiStartInfoSection;
     readonly tutorialSection?: StrapiTutorialSection;
+    readonly useCaseSection?: StrapiUseCaseSection;
     readonly postIntegration?: StrapiPostIntegration;
     readonly relatedLinks?: StrapiRelatedLinks;
     readonly product: { readonly data: StrapiProduct };

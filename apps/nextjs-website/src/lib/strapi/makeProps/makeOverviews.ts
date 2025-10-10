@@ -5,6 +5,7 @@ import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
 import { makeBaseProductWithoutLogoProps } from './makeProducts';
 import { StrapiOverviews } from '@/lib/strapi/types/overviews';
 import { compact } from 'lodash';
+import { UseCase } from '../../types/useCaseData';
 
 export function makeOverviewsProps(
   strapiOverviews: StrapiOverviews
@@ -92,6 +93,47 @@ export function makeOverviewsProps(
                     name: 'shared.moreInfo',
                     path: `/${tutorial.attributes.product.data.attributes.slug}/tutorials/${tutorial.attributes.slug}`,
                   };
+                })
+              ) || [],
+          },
+          useCases: attributes.useCaseSection && {
+            title: attributes.useCaseSection.title,
+            description: attributes.useCaseSection.description,
+            list:
+              compact(
+                attributes.useCaseSection.useCases.data.map((useCase) => {
+                  if (!useCase.attributes.slug) {
+                    console.error(
+                      'use case slug is missing:',
+                      useCase.attributes.title
+                    );
+                    return null;
+                  }
+
+                  if (!useCase.attributes.product.data.attributes.slug) {
+                    console.error(
+                      "use case's product slug is missing:",
+                      useCase.attributes.title
+                    );
+                    return null;
+                  }
+
+                  return {
+                    publishedAt:
+                      (useCase.attributes.publishedAt &&
+                        new Date(useCase.attributes.publishedAt)) ||
+                      undefined,
+                    showInOverview: true,
+                    coverImage: useCase.attributes.coverImage.data && {
+                      url: useCase.attributes.coverImage.data.attributes.url,
+                      alternativeText:
+                        useCase.attributes.coverImage.data.attributes
+                          .alternativeText || '',
+                    },
+                    title: useCase.attributes.title,
+                    name: 'shared.moreInfo',
+                    path: `/${useCase.attributes.product.data.attributes.slug}/use-cases/${useCase.attributes.slug}`,
+                  } satisfies UseCase;
                 })
               ) || [],
           },

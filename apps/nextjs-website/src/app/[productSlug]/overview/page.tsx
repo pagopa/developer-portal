@@ -27,6 +27,8 @@ import {
 import NewsShowcase, {
   NewsShowcaseProps,
 } from '@/components/organisms/NewsShowcase/NewsShowcase';
+import UseCasesOverview from '@/components/organisms/UseCasesOverview/UseCasesOverview';
+import { UseCase } from '@/lib/types/useCaseData';
 import TutorialsSectionPreviewCardsLayout from '@/components/organisms/TutorialsSectionPreviewCardsLayout/TutorialsSectionPreviewCardsLayout';
 const MAX_NUM_TUTORIALS_IN_OVERVIEW = 3;
 
@@ -67,6 +69,11 @@ export type OverviewPageProps = {
     readonly subtitle: string;
     readonly list: readonly Tutorial[];
     readonly showCardsLayout: boolean;
+  };
+  readonly useCases?: {
+    readonly title?: string;
+    readonly description: string;
+    readonly list: readonly UseCase[];
   };
   readonly whatsNew?: NewsShowcaseProps;
   readonly postIntegration?: {
@@ -121,6 +128,7 @@ const OverviewPage = async ({ params }: ProductParams) => {
     feature,
     path,
     tutorials,
+    useCases,
     whatsNew,
     postIntegration,
     relatedLinks,
@@ -189,7 +197,17 @@ const OverviewPage = async ({ params }: ProductParams) => {
           tutorials={tutorials?.list || []}
         />
       )}
-
+      {product?.hasUseCaseListPage && useCases && (
+        <UseCasesOverview
+          title={useCases.title}
+          description={useCases.description}
+          useCasePath={{
+            path: `/${product.slug}/use-cases`,
+            name: 'useCases',
+          }}
+          useCases={[...(useCases.list || [])]}
+        />
+      )}
       {whatsNew && (
         <NewsShowcase
           marginTop={15}

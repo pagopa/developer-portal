@@ -152,6 +152,33 @@ export const strapiOverviews = {
             ],
           },
         },
+        useCaseSection: {
+          title: 'Use Cases Title',
+          description: 'Use Cases Description',
+          useCases: {
+            data: [
+              {
+                attributes: {
+                  title: 'Use Case 1',
+                  tags: { data: [] },
+                  slug: 'use-case-1',
+                  coverImage: {
+                    data: mediaJpeg(),
+                  },
+                  product: {
+                    data: {
+                      attributes: {
+                        slug: 'test-product',
+                        name: 'Test Product',
+                        shortName: 'TestProd',
+                      },
+                    },
+                  },
+                },
+              },
+            ],
+          },
+        },
         whatsNew: {
           title: "What's New Title",
           subTitle: "What's New Subtitle",
@@ -363,6 +390,22 @@ export const overviewPageProps: OverviewPageProps = {
         title: 'Tutorial 1',
         name: 'shared.moreInfo',
         path: '/test-product/tutorials/tutorial-1',
+      },
+    ],
+  },
+  useCases: {
+    title: 'Use Cases Title',
+    description: 'Use Cases Description',
+    list: [
+      {
+        showInOverview: true,
+        coverImage: {
+          url: 'https://example.com/example.jpg',
+          alternativeText: 'Example Image',
+        },
+        title: 'Use Case 1',
+        name: 'shared.moreInfo',
+        path: '/test-product/use-cases/use-case-1',
       },
     ],
   },
