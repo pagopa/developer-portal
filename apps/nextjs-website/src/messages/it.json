@@ -14,7 +14,8 @@
             "api": "API",
             "tutorials": "Tutorial",
             "guides": "Guide e manuali",
-            "releaseNote": "Release note"
+            "releaseNote": "Release note",
+            "useCases": "Casi d'uso"
         },
         "title": "DevPortal"
     },
@@ -291,6 +292,7 @@
         "comingSoon": "In Arrivo",
         "readTutorial": "Leggi il tutorial",
         "readStory": "Leggi la storia",
+        "readUseCase": "Leggi il caso d'uso",
         "moreInfo": "Scopri di più",
         "version": "Versione",
         "copiedTooltip": "Copiato",
@@ -451,6 +453,10 @@
         },
         "relatedLinks": {
             "title": "LINK UTILI"
+        },
+        "useCases": {
+            "all": "Tutti",
+            "noUseCaseMessage": "Non sono presenti casi d'uso della categoria selezionata"
         }
     },
     "footer": {
