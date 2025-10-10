@@ -6,15 +6,15 @@ import SectionTitle from '@/components/molecules/SectionTitle/SectionTitle';
 import CardsGrid from '@/components/molecules/CardsGrid/CardsGrid';
 import { useTranslations } from 'next-intl';
 
-type TutorialsOverviewProps = {
+type TutorialsSectionPreviewCardsLayoutProps = {
   title: string;
   tutorials: readonly Tutorial[];
 };
 
-const TutorialsListOverview = ({
+const TutorialsSectionPreviewCardsLayout = ({
   title,
   tutorials,
-}: TutorialsOverviewProps) => {
+}: TutorialsSectionPreviewCardsLayoutProps) => {
   const t = useTranslations();
   const theme = useTheme();
   return (
@@ -49,4 +49,4 @@ const TutorialsListOverview = ({
   );
 };
 
-export default TutorialsListOverview;
+export default TutorialsSectionPreviewCardsLayout;

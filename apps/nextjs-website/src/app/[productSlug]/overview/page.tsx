@@ -27,7 +27,7 @@ import {
 import NewsShowcase, {
   NewsShowcaseProps,
 } from '@/components/organisms/NewsShowcase/NewsShowcase';
-import TutorialsListOverview from '@/components/organisms/TutorialsListOverview/TutorialsListOverview';
+import TutorialsSectionPreviewCardsLayout from '@/components/organisms/TutorialsSectionPreviewCardsLayout/TutorialsSectionPreviewCardsLayout';
 const MAX_NUM_TUTORIALS_IN_OVERVIEW = 3;
 
 export type OverviewPageProps = {
@@ -184,7 +184,7 @@ const OverviewPage = async ({ params }: ProductParams) => {
           tutorials={[...(tutorialsListToShow || [])]}
         />
       ) : (
-        <TutorialsListOverview
+        <TutorialsSectionPreviewCardsLayout
           title={tutorials?.title || ''}
           tutorials={tutorials?.list || []}
         />
