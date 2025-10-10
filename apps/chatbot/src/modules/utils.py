@@ -1,10 +1,10 @@
 import os
+import boto3
 
 from src.modules.logger import get_logger
-from src.modules.settings import AWS_SESSION
 
 LOGGER = get_logger(__name__)
-SSM_CLIENT = AWS_SESSION.client("ssm")
+SSM_CLIENT = boto3.client("ssm")
 
 
 def get_ssm_parameter(name: str | None, default: str | None = None) -> str | None:
