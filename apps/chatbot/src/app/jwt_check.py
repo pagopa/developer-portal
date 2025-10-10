@@ -10,6 +10,8 @@ LOGGER = get_logger(__name__)
 
 
 def get_jwks():
+    REGION = SETTINGS.aws_cognito_region or SETTINGS.aws_region
+
     # https://docs.getmoto.org/en/latest/docs/services/cognito-idp.html#cognito-idp
     if SETTINGS.environment == "test":
         KEYS_URL = (
@@ -20,13 +22,13 @@ def get_jwks():
         headers = {
             "Authorization": (
                 "AWS4-HMAC-SHA256 Credential=mock_access_key/20220524/"
-                f"{SETTINGS.aws_region}/cognito-idp/aws4_request, "
+                f"{REGION}/cognito-idp/aws4_request, "
                 "SignedHeaders=content-length;content-type;host;x-amz-date, Signature=asdf"
             )
         }
     else:
         KEYS_URL = (
-            f"https://cognito-idp.{SETTINGS.aws_region}.amazonaws.com/"
+            f"https://cognito-idp.{REGION}.amazonaws.com/"
             f"{SETTINGS.auth_cognito_userpool_id}/"
             ".well-known/jwks.json"
         )
