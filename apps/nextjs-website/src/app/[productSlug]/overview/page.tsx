@@ -27,6 +27,7 @@ import {
 import NewsShowcase, {
   NewsShowcaseProps,
 } from '@/components/organisms/NewsShowcase/NewsShowcase';
+import TutorialsSectionPreviewCardsLayout from '@/components/organisms/TutorialsSectionPreviewCardsLayout/TutorialsSectionPreviewCardsLayout';
 const MAX_NUM_TUTORIALS_IN_OVERVIEW = 3;
 
 export type OverviewPageProps = {
@@ -65,6 +66,7 @@ export type OverviewPageProps = {
     readonly title?: string;
     readonly subtitle: string;
     readonly list: readonly Tutorial[];
+    readonly showCardsLayout: boolean;
   };
   readonly whatsNew?: NewsShowcaseProps;
   readonly postIntegration?: {
@@ -169,7 +171,9 @@ const OverviewPage = async ({ params }: ProductParams) => {
           cards={startInfo.cards}
         />
       )}
-      {product?.hasTutorialListPage && tutorials && (
+      {product?.hasTutorialListPage &&
+      tutorials &&
+      !tutorials.showCardsLayout ? (
         <TutorialsOverview
           title={tutorials.title}
           subtitle={tutorials.subtitle}
@@ -179,7 +183,13 @@ const OverviewPage = async ({ params }: ProductParams) => {
           }}
           tutorials={[...(tutorialsListToShow || [])]}
         />
+      ) : (
+        <TutorialsSectionPreviewCardsLayout
+          title={tutorials?.title || ''}
+          tutorials={tutorials?.list || []}
+        />
       )}
+
       {whatsNew && (
         <NewsShowcase
           marginTop={15}
