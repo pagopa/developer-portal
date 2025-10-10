@@ -1,5 +1,12 @@
 # gitbook-docs
 
+## 1.2.0
+
+### Minor Changes
+
+- f1895e6: Add rendering for new markdown part
+- ff133a4: Add populate product use_case_list_page to query for guides and e release notes
+
 ## 1.1.0
 
 ### Minor Changes
