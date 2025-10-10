@@ -170,11 +170,6 @@ class DiscoveryVectorIndex:
             documents (list[Document]): List of Document objects to add or update.
         """
 
-        for doc in documents[:5]:
-            LOGGER.info(
-                f"Document ID: {doc.id_ if doc else 'N/A'} - title: {doc.metadata.get('title', 'N/A') if doc and doc.metadata else 'N/A'}"
-            )
-
         with self.index._callback_manager.as_trace("refresh_ref_docs"):
             refreshed_documents = [False] * len(documents)
 
