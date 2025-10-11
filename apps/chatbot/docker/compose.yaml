@@ -11,7 +11,6 @@ services:
     volumes:
       - ..:/app
       - ./files/.aws:/root/.aws
-      - ../../nextjs-website/out:/app/build-devp/out
     depends_on:
       redis:
         condition: service_started
@@ -20,6 +19,8 @@ services:
       langfuse:
         condition: service_started
       localstack:
+        condition: service_started
+      core:
         condition: service_started
       evaluate:
         condition: service_started
@@ -30,13 +31,31 @@ services:
     build:
       context: ../../chatbot-evaluate
       dockerfile: ../chatbot-evaluate/docker/lambda.Dockerfile
-    env_file: ../.env.local
+    env_file: ../../chatbot-evaluate/.env.local
     environment:
       - PYTHONPATH=/var/task
     ports:
       - "8081:8080"
     volumes:
       - ../chatbot-evaluate:/app
+      - ~/.aws-lambda-rie/aws-lambda-rie:/usr/local/bin/aws-lambda-rie
+    entrypoint: ["/usr/local/bin/aws-lambda-rie", "python3"]
+    command: ["-m", "awslambdaric", "src.lambda_function.lambda_handler"]
+    networks:
+      - ntw
+
+  core:
+    build:
+      context: ../../chatbot-core
+      dockerfile: ../chatbot-core/docker/lambda.Dockerfile
+    env_file: ../../chatbot-core/.env.local
+    environment:
+      - PYTHONPATH=/var/task
+    ports:
+      - "8082:8080"
+      - "8888:8888"
+    volumes:
+      - ../chatbot-core:/app
       - ~/.aws-lambda-rie/aws-lambda-rie:/usr/local/bin/aws-lambda-rie
     entrypoint: ["/usr/local/bin/aws-lambda-rie", "python3"]
     command: ["-m", "awslambdaric", "src.lambda_function.lambda_handler"]
@@ -104,17 +123,35 @@ services:
     networks:
       - ntw
 
-  jupyter:
+  # jupyter:
+  # build:
+  #   context: ..
+  #   dockerfile: docker/app.local.Dockerfile
+  # ports:
+  #   - 8888:8888
+  # env_file: ../.env.local
+  # depends_on:
+  #   redis:
+  #     condition: service_started
+  #   langfuse:
+  #     condition: service_started
+  # command: jupyter-lab --no-browser --allow-root --ip=0.0.0.0
+  # networks:
+  #   - ntw
+
+  jupyter-core:
     build:
-      context: ..
-      dockerfile: docker/app.local.Dockerfile
+      context: ../../chatbot-core
+      dockerfile: ../chatbot-core/docker/lambda.Dockerfile
+    env_file: ../../chatbot-core/.env.local
     ports:
       - 8888:8888
-    env_file: ../.env.local
     depends_on:
       redis:
         condition: service_started
       langfuse:
+        condition: service_started
+      localstack:
         condition: service_started
     command: jupyter-lab --no-browser --allow-root --ip=0.0.0.0
     networks:
@@ -124,8 +161,8 @@ services:
     container_name: "${LOCALSTACK_DOCKER_NAME:-localstack-main}"
     image: localstack/localstack:4.6.0
     ports:
-      - "127.0.0.1:4566:4566"            # LocalStack Gateway
-      - "127.0.0.1:4510-4559:4510-4559"  # external services port range
+      - "127.0.0.1:4566:4566" # LocalStack Gateway
+      - "127.0.0.1:4510-4559:4510-4559" # external services port range
     environment:
       # LocalStack configuration: https://docs.localstack.cloud/references/configuration/
       - DEBUG=${DEBUG:-0}
