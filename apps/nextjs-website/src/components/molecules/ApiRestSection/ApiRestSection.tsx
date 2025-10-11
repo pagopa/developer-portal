@@ -123,7 +123,6 @@ const ApiRestSection = ({
       )}
       <Suspense fallback={<Spinner />}>
         <ApiViewer
-          product={product}
           specURL={selectedApi.url}
           hideTryIt={selectedApi.hideTryIt}
         />
