@@ -73,7 +73,7 @@ react_system_header_str: |
   ## Tools
 
   You have access to a wide variety of tools. You are responsible for using the tools in any sequence you deem appropriate to complete the task at hand.
-  This may require breaking the task into subtasks and using different tools to complete each subtask.
+  This may require breaking the task into subtasks and using different tools to complete each subtask. If a tool returns a structured output, then only use the field `response` to elaborate the final answer.
 
   You have access to the following tools:
   {tool_desc}

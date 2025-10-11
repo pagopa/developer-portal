@@ -1,6 +1,5 @@
 import os
 import re
-import boto3
 import logging
 import time
 import json
@@ -8,26 +7,27 @@ import yaml
 import tqdm
 import requests
 import html2text
+from tempfile import mkdtemp
 from bs4 import BeautifulSoup
 from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 from urllib.parse import quote
-from typing import List, Tuple
+from typing import Tuple, List, Dict
 import xml.etree.ElementTree as ET
 
 from llama_index.core import Document
 
 from src.modules.logger import get_logger
-from src.modules.settings import SETTINGS
+from src.modules.settings import SETTINGS, AWS_SESSION
 
 
 logging.getLogger("botocore").setLevel(logging.ERROR)
 LOGGER = get_logger(__name__)
-AWS_S3_CLIENT = boto3.client(
-    "s3",
-    aws_access_key_id=os.getenv("CHB_AWS_ACCESS_KEY_ID"),
-    aws_secret_access_key=os.getenv("CHB_AWS_SECRET_ACCESS_KEY"),
-    region_name=os.getenv("CHB_AWS_DEFAULT_REGION"),
-)
+AWS_S3_CLIENT = AWS_SESSION.client("s3")
 
 
 def remove_figure_blocks(md_text):
@@ -111,13 +111,13 @@ def filter_urls(urls: List[str], website_url: str | None = None) -> List[str]:
     return filtered_urls
 
 
-def get_sitemap_urls(website_url: str | None = None) -> List[str]:
+def get_sitemap_urls(website_url: str | None = None) -> List[Dict[str, str]]:
     """
     Fetches URLs from a sitemap XML file.
     Args:
         sitemap_url (str): The URL of the sitemap XML file. If None, uses the default WEBSITE_URL.
     Returns:
-        List[str]: A list of URLs extracted from the sitemap.
+        List[Dict[str, str]]: A list of dictionaries containing URLs and their last modified dates.
     """
 
     if website_url is None:
@@ -258,12 +258,12 @@ def read_api_url(url: str) -> str:
                 txt += "\n"
         return txt
     else:
-        raise ValueError(
-            f"Failed to fetch OpenAPI spec from {url}. Status code: {response.status_code}"
+        LOGGER.warning(
+            f"Failed to fetch OpenAPI spec from {url}. Status code: {response.status_code}. Skipped."
         )
 
 
-def get_api_docs(website_url: str | None = None) -> list:
+def get_api_docs(website_url: str | None = None) -> List[Document]:
     """
     Creates API documentation in Markdown format from the provided API data.
 
@@ -306,56 +306,57 @@ def get_api_docs(website_url: str | None = None) -> list:
     return docs
 
 
-def get_static_and_dynamic_lists(
+def get_static_and_dynamic_metadata(
     website_url: str | None = None,
-) -> Tuple[List[dict], List[str]]:
+) -> Tuple[List[dict], List[dict]]:
     """
     Fetches static and dynamic URLs from the sitemap and metadata files.
     Args:
         website_url (str | None): The base URL of the website. If None, uses the default WEBSITE_URL.
     Returns:
-        Tuple[List[dict], List[str]]: A tuple containing two lists:
+        Tuple[List[dict], List[dict]]: A tuple containing two lists:
             - A list of dictionaries with static URLs and their S3 file paths.
-            - A list of dynamic URLs.
+            - A list of dictionaries with dynamic URLs and their last modified dates.
     """
 
     sitemap = get_sitemap_urls(website_url)
     if not sitemap:
         return [], []
     else:
-        urls_list = [item["url"] for item in sitemap]
-        filtered_urls = filter_urls(urls_list, website_url)
+        sitemap_urls = [item["url"] for item in sitemap]
+        sitemap_filtered_urls = filter_urls(sitemap_urls)
 
-        static_urls = []
-        dynamic_urls = []
+        static_metadata = []
+        dynamic_metadata = []
 
         guides_metadata = json.loads(read_file_from_s3("guides-metadata.json"))
         release_notes_metadata = json.loads(
             read_file_from_s3("release-notes-metadata.json")
         )
         solutions_metadata = json.loads(read_file_from_s3("solutions-metadata.json"))
+        all_metadata = guides_metadata + release_notes_metadata + solutions_metadata
+        all_url_metadata = [
+            SETTINGS.website_url + item["path"] for item in all_metadata
+        ]
 
-        for item in guides_metadata + release_notes_metadata + solutions_metadata:
-
-            url = SETTINGS.website_url + item["path"]
-            if url in filtered_urls:
-                static_urls.append(
+        for url in sitemap_filtered_urls:
+            if url in all_url_metadata:
+                idx = all_url_metadata.index(url)
+                static_metadata.append(
                     {
                         "url": url,
-                        "s3_file_path": item["contentS3Path"],
-                        "title": item["title"],
+                        "s3_file_path": all_metadata[idx]["contentS3Path"],
+                        "title": all_metadata[idx]["title"],
                     }
                 )
-
-        static_urls_list = [url["url"] for url in static_urls]
-        for url in filtered_urls:
-            if url not in static_urls_list:
-                dynamic_urls.append(url)
+            else:
+                idx = sitemap_urls.index(url)
+                dynamic_metadata.append(sitemap[idx])
 
     LOGGER.info(
-        f"Found {len(static_urls)} static URLs and {len(dynamic_urls)} dynamic URLs."
+        f"Found {len(static_metadata)} static URLs and {len(dynamic_metadata)} dynamic URLs."
     )
-    return static_urls, dynamic_urls
+    return static_metadata, dynamic_metadata
 
 
 def get_static_docs(static_urls: List[dict]) -> List[Document]:
@@ -379,7 +380,7 @@ def get_static_docs(static_urls: List[dict]) -> List[Document]:
 
         static_docs.append(
             Document(
-                id_=url.replace(SETTINGS.website_url, ""),
+                id_=item["s3_file_path"],
                 text=text,
                 metadata={
                     "filepath": url.replace(SETTINGS.website_url, ""),
@@ -392,7 +393,7 @@ def get_static_docs(static_urls: List[dict]) -> List[Document]:
     return static_docs
 
 
-def get_dynamic_docs(dynamic_urls: List[str]) -> List[Document]:
+def get_dynamic_docs(dynamic_urls: List[dict]) -> List[Document]:
     """
     Fetches dynamic documents from the provided URLs using Selenium.
     Args:
@@ -401,28 +402,48 @@ def get_dynamic_docs(dynamic_urls: List[str]) -> List[Document]:
         List[Document]: A list of Document objects containing the content and metadata.
     """
 
-    driver_exe_path = "/usr/bin/chromedriver"
-    if os.path.exists(driver_exe_path):
-        driver_service = webdriver.ChromeService(executable_path=driver_exe_path)
-    else:
-        driver_service = None
-    driver_options = webdriver.ChromeOptions()
-    driver_options.add_argument("--headless")
-    driver_options.add_argument("--disable-gpu")
-    driver_options.add_argument("--no-sandbox")
-    driver_options.add_argument("--disable-dev-shm-usage")
+    chrome_options = Options()
+    chrome_options.add_argument("--headless=new")
+    chrome_options.add_argument("--no-sandbox")
+    chrome_options.add_argument("--disable-dev-shm-usage")
+    chrome_options.add_argument("--disable-gpu")
+    chrome_options.add_argument("--disable-dev-tools")
+    chrome_options.add_argument("--no-zygote")
+    chrome_options.add_argument("--single-process")
+    chrome_options.add_argument(f"--user-data-dir={mkdtemp()}")
+    chrome_options.add_argument(f"--data-path={mkdtemp()}")
+    chrome_options.add_argument(f"--disk-cache-dir={mkdtemp()}")
+    chrome_options.add_argument("--remote-debugging-pipe")
+    chrome_options.add_argument("--verbose")
+    chrome_options.add_argument("--log-path=/tmp")
+    chrome_options.binary_location = "/opt/chrome/chrome-linux64/chrome"
+
+    service = Service(
+        executable_path="/opt/chrome-driver/chromedriver-linux64/chromedriver",
+        service_log_path="/tmp/chromedriver.log",
+    )
+
     dynamic_docs = []
     discarded_docs = 0
+    driver = webdriver.Chrome(
+        options=chrome_options,
+        service=service,
+    )
 
-    for url in tqdm.tqdm(
+    for item in tqdm.tqdm(
         dynamic_urls, total=len(dynamic_urls), desc="Getting dynamic documents"
     ):
+        url = item["url"]
+        lastmod = item["lastmod"]
+
         try:
-            driver = webdriver.Chrome(options=driver_options, service=driver_service)
             driver.get(url)
             time.sleep(5)
+            # WebDriverWait(driver, 10).until(
+            #     EC.visibility_of_element_located((By.ID, "chatbot-page-content"))
+            # )
             title, text = html2markdown(driver.page_source)
-            driver.quit()
+
             if text is not None and text != "" and text != "None":
 
                 text = re.sub(r"(?<=[\wÀ-ÿ])\n(?=[\wÀ-ÿ])", " ", text)
@@ -435,8 +456,9 @@ def get_dynamic_docs(dynamic_urls: List[str]) -> List[Document]:
                         text=text,
                         metadata={
                             "filepath": url.replace(SETTINGS.website_url, ""),
-                            "title": title,
                             "language": "it",
+                            "lastmod": lastmod,
+                            "title": title,
                         },
                     )
                 )
@@ -451,6 +473,7 @@ def get_dynamic_docs(dynamic_urls: List[str]) -> List[Document]:
                 driver.quit()
             continue
 
+    driver.quit()
     LOGGER.warning(
         f"Discarded {discarded_docs} dynamic documents due to empty content."
     )
@@ -467,11 +490,11 @@ def get_documents(website_url: str | None = None) -> List[Document]:
         List[Document]: A list of Document objects containing the content and metadata.
     """
 
-    static_urls, dynamic_urls = get_static_and_dynamic_lists(website_url)
+    static_metadata, dynamic_metadata = get_static_and_dynamic_metadata(website_url)
 
     api_docs = get_api_docs(website_url)
-    static_docs = get_static_docs(static_urls)
-    dynamic_docs = get_dynamic_docs(dynamic_urls)
+    static_docs = get_static_docs(static_metadata)
+    dynamic_docs = get_dynamic_docs(dynamic_metadata)
     docs = api_docs + static_docs + dynamic_docs
 
     LOGGER.info(f"Total number of fetched documents: {len(docs)}")
