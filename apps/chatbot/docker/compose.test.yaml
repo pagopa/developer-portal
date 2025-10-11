@@ -9,10 +9,7 @@ services:
     volumes:
       - ..:/app
       - ./files/.aws:/root/.aws
-      - ./files/nextjs-website/out:/app/build-devp/out
     depends_on:
-      dynamodb-test:
-        condition: service_started
       motoserver:
         condition: service_started
       langfuse-test:
@@ -34,19 +31,17 @@ services:
     networks:
       - ntwtest
 
-  dynamodb-test:
-    image: amazon/dynamodb-local:2.5.2
-    environment:
-      - AWS_ACCESS_KEY_ID=dummy
-      - AWS_SECRET_ACCESS_KEY=dummy
-      - AWS_DEFAULT_REGION=local
-    networks:
-      - ntwtest
-
   redis-test:
     image: redis/redis-stack:7.2.0-v13
+    volumes:
+      - ./files/redis-dump.rdb:/data/dump.rdb
+    ports:
+      - "6379:6379"
+      - "8001:8001"
     networks:
       - ntwtest
+    environment:
+      REDIS_ARGS: "--save '' --appendonly no --stop-writes-on-bgsave-error no"
 
   langfuse-test:
     image: langfuse/langfuse:2
@@ -60,9 +55,24 @@ services:
       - ntwtest
 
   motoserver:
-    image: motoserver/moto:5.1.0
+    image: motoserver/moto:5.1.14
+    ports:
+      - "3002:3000"
+    environment:
+      - MOTO_PORT=3002
     networks:
       - ntwtest
 
+  # awscli:
+  #   image: amazon/aws-cli:2.15.1
+  #   depends_on:
+  #     - motoserver
+  #   networks:
+  #     - ntwtest
+  #   entrypoint: /bin/sh
+  #   tty: true
+  #   stdin_open: true
+
 networks:
   ntwtest:
+    driver: bridge

@@ -29,6 +29,7 @@ def get_trace(trace_id: str, as_dict: bool = False) -> TraceWithFullDetails | di
         TraceWithFullDetails | dict: The trace object or its dictionary representation.
     """
 
+    trace = None
     LOGGER.info(f"Getting trace {trace_id} from Langfuse")
     try:
         trace = LANGFUSE_CLIENT.fetch_trace(trace_id)
@@ -111,11 +112,12 @@ def add_langfuse_score(
     found_score = False
     if score_id is None:
         trace = get_trace(trace_id)
-        for score in trace.scores:
-            if score.name == name:
-                score_id = score.id
-                found_score = True
-                break
+        if trace is not None:
+            for score in trace.scores:
+                if score.name == name:
+                    score_id = score.id
+                    found_score = True
+                    break
 
         if not found_score:
             score_id = str(uuid.uuid4())
