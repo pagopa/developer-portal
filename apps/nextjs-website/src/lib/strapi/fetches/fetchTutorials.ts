@@ -9,6 +9,8 @@ const makeStrapiTutorialsPopulate = () =>
       relatedLinks: {
         populate: ['links'],
       },
+      description: '*',
+      icon: { populate: ['icon'] },
       image: {
         populate: ['image'],
       },

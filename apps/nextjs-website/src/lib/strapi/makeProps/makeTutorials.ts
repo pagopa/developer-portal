@@ -55,6 +55,8 @@ export function makeTutorialsProps(
             )
           ),
           productSlug: attributes.product.data.attributes.slug,
+          description: attributes.description || '',
+          icon: attributes.icon.data?.attributes || undefined,
           relatedLinks: attributes.relatedLinks,
           bannerLinks:
             attributes.bannerLinks && attributes.bannerLinks.length > 0
