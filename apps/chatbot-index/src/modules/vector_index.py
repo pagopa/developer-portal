@@ -217,9 +217,12 @@ class DiscoveryVectorIndex:
                             )
                         LOGGER.info(f"Updated vector index with document ID: {doc.id_}")
 
-        LOGGER.info(
-            f"Updated vector index successfully with {sum(refreshed_documents)} documents."
-        )
+            LOGGER.info(
+                f">>>>>>>>>>>>>> Refreshed documents flags: {refreshed_documents}"
+            )
+            LOGGER.info(
+                f"Updated vector index successfully with {sum(refreshed_documents)} documents."
+            )
 
     def _delete_docs(self, documents_id: List[str] = [], update: bool = False) -> None:
         """
