@@ -179,9 +179,6 @@ class DiscoveryVectorIndex:
                 existing_doc_hash = (
                     self.index.storage_context.docstore.get_document_hash(doc.id_)
                 )
-                LOGGER.info(
-                    f"Document Hash: {existing_doc_hash if existing_doc_hash else 'N/A'}"
-                )
 
                 if existing_doc_hash is None:
                     refreshed_documents[i] = True
@@ -217,9 +214,6 @@ class DiscoveryVectorIndex:
                             )
                         LOGGER.info(f"Updated vector index with document ID: {doc.id_}")
 
-            LOGGER.info(
-                f">>>>>>>>>>>>>> Refreshed documents flags: {refreshed_documents}"
-            )
             LOGGER.info(
                 f"Updated vector index successfully with {sum(refreshed_documents)} documents."
             )
