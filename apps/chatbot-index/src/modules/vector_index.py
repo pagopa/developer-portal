@@ -264,13 +264,11 @@ class DiscoveryVectorIndex:
 
         if self.api_docs:
             try:
-                LOGGER.info(f"Num API Documents to update: {len(self.api_docs)}")
                 self._update_docs(self.api_docs)
             except Exception as e:
                 LOGGER.error(f"Error updating API Documents: {e}")
         if api_docs_to_remove:
             try:
-                LOGGER.info(f"Num API Documents to remove: {len(api_docs_to_remove)}")
                 self._delete_docs(api_docs_to_remove)
             except Exception as e:
                 LOGGER.error(f"Error deleting API Documents: {e}")
@@ -297,15 +295,11 @@ class DiscoveryVectorIndex:
 
         if docs_to_update:
             try:
-                LOGGER.info(f"Num Static Documents to update: {len(docs_to_update)}")
                 self._update_docs(docs_to_update)
             except Exception as e:
                 LOGGER.error(f"Error updating Static Documents: {e}")
         if static_doc_ids_to_delete:
             try:
-                LOGGER.info(
-                    f"Num Static Documents to delete: {len(static_doc_ids_to_delete)}"
-                )
                 self._delete_docs(static_doc_ids_to_delete)
             except Exception as e:
                 LOGGER.error(f"Error deleting Static Documents: {e}")
@@ -350,17 +344,11 @@ class DiscoveryVectorIndex:
         if dynamic_docs_to_update:
             try:
                 dynamic_docs_to_update = get_dynamic_docs(dynamic_docs_to_update)
-                LOGGER.info(
-                    f"Num Dynamic Documents to update: {len(dynamic_docs_to_update)}"
-                )
                 self._update_docs(dynamic_docs_to_update)
             except Exception as e:
                 LOGGER.error(f"Error updating Dynamic Documents: {e}")
         if dynamic_doc_ids_to_remove:
             try:
-                LOGGER.info(
-                    f"Num Dynamic Documents to delete: {len(dynamic_doc_ids_to_remove)}"
-                )
                 self._delete_docs(dynamic_doc_ids_to_remove)
             except Exception as e:
                 LOGGER.error(f"Error deleting Dynamic Documents: {e}")
