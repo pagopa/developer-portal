@@ -54,6 +54,48 @@ const PartRendererMenu = (props: PartRendererMenuProps): ReactNode | null => {
               <Typography>{part.title}</Typography>
             </a>
           );
+        case 'markdown': {
+          const headingRegex = /^(#{2,})\s+(.+)/gm;
+          const matches = [...part.content.matchAll(headingRegex)];
+          const createSlug = (text: string) =>
+            text
+              .toLowerCase()
+              .replace(/[^a-z0-9\s-]/g, '')
+              .replace(/\s+/g, '-');
+
+          return matches.map((match) => {
+            const level = match[1].length;
+            const title = match[2]
+              .trim()
+              .replace(/&[a-zA-Z0-9#]+;/g, ' ')
+              .replace(/\s+/g, ' ');
+            const href = `#${createSlug(title)}`;
+
+            return (
+              <MUILink
+                key={title}
+                href={href}
+                title={title}
+                sx={{
+                  display: 'block',
+                  fontFamily: 'Titillium Web',
+                  marginBottom: '12px',
+                  textDecoration: 'none',
+                }}
+              >
+                <Typography
+                  sx={{
+                    color: palette.text.secondary,
+                    fontSize: getFontSizeByLevel(level),
+                    fontWeight: 400,
+                  }}
+                >
+                  {title}
+                </Typography>
+              </MUILink>
+            );
+          });
+        }
         case 'ckEditor':
           return part.menuItems.map((menuItem) => (
             <MUILink

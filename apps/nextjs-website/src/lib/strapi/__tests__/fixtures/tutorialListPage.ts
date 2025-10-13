@@ -26,6 +26,7 @@ export const strapiTutorialListPages: StrapiTutorialListPages = {
               tutorial_list_page: { data: undefined },
               guide_list_page: { data: undefined },
               release_note: { data: undefined },
+              use_case_list_page: { data: undefined },
             },
           },
         },
@@ -33,6 +34,8 @@ export const strapiTutorialListPages: StrapiTutorialListPages = {
           data: [
             {
               attributes: {
+                description: '',
+                icon: { data: mediaJpeg() },
                 tags: { data: [] },
                 title: 'Tutorial 1',
                 slug: 'tutorial-1',

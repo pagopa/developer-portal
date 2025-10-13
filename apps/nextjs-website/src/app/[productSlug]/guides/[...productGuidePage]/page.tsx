@@ -22,7 +22,6 @@ import {
 import PageNotFound from '@/app/not-found';
 
 export const dynamic = 'force-dynamic';
-export const revalidate = 0;
 
 type Params = {
   productSlug: string;

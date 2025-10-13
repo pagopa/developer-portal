@@ -1,6 +1,4 @@
 import { getWebinar } from '@/lib/api';
-import dynamic from 'next/dynamic';
-import Spinner from '@/components/atoms/Spinner/Spinner';
 import {
   makeMetadata,
   makeMetadataFromStrapi,
@@ -9,6 +7,9 @@ import { Metadata } from 'next';
 import { baseUrl } from '@/config';
 import { getItemFromPaths } from '@/helpers/structuredData.helpers';
 import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
+import WebinarDetailTemplate from '@/components/templates/WebinarDetailTemplate/WebinarDetailTemplate';
+import { Suspense } from 'react';
+import Spinner from '@/components/atoms/Spinner/Spinner';
 
 type Params = {
   webinarSlug: string;
@@ -33,17 +34,6 @@ export async function generateMetadata({
   });
 }
 
-const NotSsrWebinarDetailTemplate = dynamic(
-  () =>
-    import(
-      '@/components/templates/WebinarDetailTemplate/WebinarDetailTemplate'
-    ),
-  {
-    ssr: false,
-    loading: () => <Spinner />,
-  }
-);
-
 const Page = async ({ params }: { params: Params }) => {
   const webinar = await getWebinar(params?.webinarSlug);
 
@@ -64,7 +54,9 @@ const Page = async ({ params }: { params: Params }) => {
   return (
     <>
       {structuredData}
-      <NotSsrWebinarDetailTemplate webinar={webinar} />
+      <Suspense fallback={<Spinner />}>
+        <WebinarDetailTemplate webinar={webinar} />
+      </Suspense>
     </>
   );
 };
