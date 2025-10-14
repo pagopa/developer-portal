@@ -223,11 +223,7 @@ export const getReleaseNoteProps = async (
 
 export const getUseCasesProps = async () => {
   const strapiUseCases = await fetchUseCases(buildEnv);
-  const useCasesWithMarkdown = strapiUseCases.data.filter((useCase) => {
-    const parts = useCase?.attributes?.parts ?? [];
-    return parts.some((part) => part?.__component === 'parts.markdown');
-  });
-  const allMarkdownParts = useCasesWithMarkdown.flatMap((useCase) =>
+  const allMarkdownParts = strapiUseCases.data.flatMap((useCase) =>
     (useCase?.attributes?.parts ?? []).filter(
       (part) => part?.__component === 'parts.markdown'
     )
