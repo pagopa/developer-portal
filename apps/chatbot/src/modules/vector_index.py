@@ -96,4 +96,6 @@ def load_index_redis(
 
         return index
     else:
-        raise ValueError("No index_id provided.")
+        raise ValueError(
+            "No index_id provided or the index_id provided is wrong. Please check out SETTINGS.index_id in your configuration."
+        )

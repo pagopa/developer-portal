@@ -256,11 +256,13 @@ def read_api_url(url: str) -> str:
                     for key, value in details.items():
                         txt += f"   - {key}: {value}\n"
                 txt += "\n"
-        return txt
     else:
+        txt = ""
         LOGGER.warning(
             f"Failed to fetch OpenAPI spec from {url}. Status code: {response.status_code}. Skipped."
         )
+
+    return txt
 
 
 def get_api_docs(website_url: str | None = None) -> List[Document]:

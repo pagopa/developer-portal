@@ -100,7 +100,9 @@ def read_payload(payload: dict) -> Tuple[List[Dict[str, str]], List[str]]:
                     }
                 )
             except Exception as e:
-                LOGGER.info(f"File {object_key} not in metadata files. Skipping...")
+                LOGGER.warning(
+                    f"File {object_key} not in metadata files. Skipping because {e}"
+                )
                 continue
 
         elif event_action == "ObjectRemoved":

@@ -81,8 +81,7 @@ def build_index_redis(clean_redis: bool = True) -> VectorStoreIndex:
     """
 
     if clean_redis:
-        file_keys = REDIS_CLIENT.keys("*")
-        for key in tqdm(REDIS_CLIENT.scan_iter(), total=len(file_keys)):
+        for key in tqdm(REDIS_CLIENT.scan_iter(), total=REDIS_CLIENT.dbsize()):
             REDIS_CLIENT.delete(key)
         LOGGER.info("Redis is now empty.")
 
