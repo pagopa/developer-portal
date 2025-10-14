@@ -10,6 +10,7 @@ import { useSearchParams } from 'next/navigation';
 import MobileFilterSelector from '@/components/molecules/MobileFilterSelector/MobileFilterSelector';
 import DesktopFilterSelector from '@/components/molecules/DesktopFilterSelector/DesktopFilterSelector';
 import SectionTitle from '@/components/molecules/SectionTitle/SectionTitle';
+import { PRODUCT_HEADER_HEIGHT } from '@/components/atoms/ProductHeader/ProductHeader';
 
 type TutorialsListProps = {
   readonly tutorials: readonly Tutorial[];
@@ -62,11 +63,14 @@ export const TutorialsList = ({
   const setSelectedTagFilter = (newTag: number): void => {
     if (newTag === selectedTag) return;
     addQueryParam('tag', `${newTag}`);
-    // eslint-disable-next-line functional/immutable-data
-    //window.location.href = '#webinarsHeader';
-    document
-      .getElementById('chatbot-page-content')
-      ?.scrollIntoView({ behavior: 'smooth' });
+    const element = document.getElementById('tutorials-list');
+    if (element) {
+      const y =
+        element.getBoundingClientRect().top +
+        window.pageYOffset -
+        PRODUCT_HEADER_HEIGHT;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    }
     setSelectedTag(newTag);
   };
 
@@ -77,7 +81,7 @@ export const TutorialsList = ({
   };
   const isSmallScreen = useMediaQuery('(max-width: 1000px)');
   return (
-    <Box>
+    <Box id='tutorials-list'>
       <Box sx={{ paddingBottom: filteredTutorials.length > 0 ? '24px' : 0 }}>
         {enableFilters &&
           tags.length > 0 &&
