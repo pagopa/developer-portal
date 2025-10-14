@@ -1,5 +1,5 @@
-import GitBookContent from '@/components/organisms/GitBookContent/GitBookContent';
 import { Typography } from '@mui/material';
+import GitBookContent from '@/components/organisms/GitBookContent/GitBookContent';
 
 export type MarkdownPartProps = {
   readonly content: string;

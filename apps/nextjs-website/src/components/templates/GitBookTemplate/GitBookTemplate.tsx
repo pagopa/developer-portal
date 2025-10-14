@@ -8,7 +8,7 @@ import GuideInPageMenu from '@/components/organisms/GuideInPageMenu/GuideInPageM
 import { BreadcrumbSegment } from '@/lib/types/path';
 import { Box, Stack } from '@mui/material';
 import { useTranslations } from 'next-intl';
-import GitBookContent from '@/components/organisms/GitBookContent/components/GitBookContent';
+import GitBookContent from '@/components/organisms/GitBookContent/GitBookContent';
 
 export type GitBookTemplateProps = {
   menuName: string;
