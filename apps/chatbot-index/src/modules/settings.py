@@ -11,11 +11,7 @@ LOGGER = get_logger(__name__)
 CWF = Path(__file__)
 ROOT = CWF.parent.parent.parent.absolute().__str__()
 PARAMS = yaml.safe_load(open(os.path.join(ROOT, "config", "params.yaml"), "r"))
-AWS_SESSION = boto3.Session(
-    # aws_access_key_id=os.getenv("AWS_ACCESS_KEY_ID", None),
-    # aws_secret_access_key=os.getenv("AWS_SECRET_ACCESS_KEY", None),
-    # region_name=os.getenv("AWS_REGION", None),
-)
+AWS_SESSION = boto3.Session()
 SSM_CLIENT = AWS_SESSION.client("ssm")
 
 
@@ -68,7 +64,6 @@ class ChatbotSettings(BaseSettings):
     """Settings for the chatbot application."""
 
     # api keys
-    # aws_endpoint_url: str | None = os.getenv("CHB_AWS_SSM_ENDPOINT_URL")
     google_api_key: str = get_ssm_parameter(
         name=os.getenv("CHB_AWS_SSM_GOOGLE_API_KEY"),
         default=os.getenv("CHB_AWS_GOOGLE_API_KEY"),
