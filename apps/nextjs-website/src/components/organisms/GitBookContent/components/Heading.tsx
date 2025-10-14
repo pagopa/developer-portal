@@ -41,7 +41,7 @@ const asLineHeight = (level: number) =>
 
 const scrollOffset = SITE_HEADER_HEIGHT + PRODUCT_HEADER_HEIGHT;
 
-export const HeadingIgnoreH1 = ({
+export const SubHeading = ({
   level,
   id,
   children,
@@ -51,6 +51,7 @@ export const HeadingIgnoreH1 = ({
       .toLowerCase()
       .replace(/[^a-z0-9\s-]/g, '')
       .replace(/\s+/g, '-');
+
   if (level === 1) {
     return null;
   }

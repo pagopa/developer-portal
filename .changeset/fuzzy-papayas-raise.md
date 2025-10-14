@@ -1,5 +1,5 @@
 ---
-"nextjs-website": major
+"nextjs-website": minor
 "gitbook-docs": minor
 ---
 

@@ -1,13 +1,11 @@
 import { Product } from './types/product';
 import { Webinar } from '@/lib/types/webinar';
-import { GuidePage } from './types/guideData';
 import {
   getApiDataListPagesProps,
   getApiDataProps,
   getCaseHistoriesProps,
   getGuideListPagesProps,
   getGuidePageProps,
-  getGuideProps,
   getOverviewsProps,
   getProductsProps,
   getQuickStartGuidesProps,
@@ -17,6 +15,8 @@ import {
   getSolutionsProps,
   getTutorialListPagesProps,
   getTutorialsProps,
+  getUseCaseListPagesProps,
+  getUseCasesProps,
   getWebinarsProps,
 } from './cmsApi';
 import { parseS3GuidePage } from '@/helpers/parseS3Doc.helpers';
@@ -145,15 +145,6 @@ export async function getTutorial(
     ...props,
     product,
   };
-}
-
-export async function getTutorialPaths() {
-  const tutorialsFromCMS = await getTutorialsProps();
-  const tutorialPathsFromCMS = tutorialsFromCMS.map(({ path }) => ({
-    slug: path.split('/')[1],
-    tutorialPaths: [path.split('/').at(-1)],
-  }));
-  return tutorialPathsFromCMS;
 }
 
 export async function getTutorialListPageProps(productSlug?: string) {
@@ -289,4 +280,31 @@ export async function getSolutionDetail(
         path === `/solutions/${solutionSlug}/${solutionSubPathSlugs.join('/')}`
     )
   );
+}
+
+export async function getUseCase(
+  productSlug: string,
+  productUseCasePage?: ReadonlyArray<string>
+) {
+  const useCaseSubPath = productUseCasePage?.join('/');
+  const useCasePath = `/${productSlug}/use-cases/${useCaseSubPath}`;
+
+  const product = await getProduct(productSlug);
+
+  const props = manageUndefined(
+    (await getUseCasesProps()).find(({ path }) => path === useCasePath)
+  );
+  return {
+    ...props,
+    product,
+  };
+}
+
+export async function getUseCaseListPageProps(productSlug?: string) {
+  const useCaseListPages = await getUseCaseListPagesProps();
+  const props =
+    useCaseListPages.find(({ product }) => product.slug === productSlug) ||
+    null;
+
+  return manageUndefinedAndAddProducts(props);
 }

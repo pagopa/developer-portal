@@ -1,5 +1,11 @@
 # nextjs-website
 
+## 9.0.1
+
+### Patch Changes
+
+- 1563c31: Remove error log in build and NoSSR wrapper
+
 ## 9.0.0
 
 ### Major Changes

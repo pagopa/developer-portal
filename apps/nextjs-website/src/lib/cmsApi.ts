@@ -46,6 +46,10 @@ import {
 } from '@/helpers/s3Metadata.helpers';
 import { StrapiGuideListPages } from '@/lib/strapi/types/guideListPage';
 import { StrapiGuides } from '@/lib/strapi/types/guide';
+import { fetchUseCases } from '@/lib/strapi/fetches/fetchUseCases';
+import { makeUseCasesProps } from '@/lib/strapi/makeProps/makeUseCases';
+import { fetchUseCaseListPages } from '@/lib/strapi/fetches/fetchUseCaseListPages';
+import { makeUseCaseListPagesProps } from '@/lib/strapi/makeProps/makeUseCaseListPages';
 import { fetchTags } from '@/lib/strapi/fetches/fetchTags';
 import { makeTagsProps } from '@/lib/strapi/makeProps/makeTags';
 import { MarkDownPart } from '@/lib/strapi/types/part';
@@ -98,16 +102,9 @@ export const getTutorialsProps = async () => {
     )
   );
   const contentPromises = allMarkdownParts.map(async (part) => {
-    // Estraiamo dirName e pathToFile dalla parte
     const { dirName, pathToFile } = part as MarkDownPart;
-
-    // Creiamo la chiave univoca per il nostro dizionario
-    const key = `${dirName}/${pathToFile}`; // Usare un separatore è una buona pratica
-
-    // Chiamiamo la funzione asincrona e attendiamo il contenuto
+    const key = `${dirName}/${pathToFile}`;
     const content = await getMarkdownContent(dirName, pathToFile);
-
-    // Restituiamo una coppia [chiave, valore]
     return [key, content];
   });
   const resolvedContentPairs = await Promise.all(contentPromises);
@@ -222,4 +219,31 @@ export const getReleaseNoteProps = async (
   }
   const releaseNote = makeReleaseNotesProps(strapiReleaseNotes)[0];
   return await makeReleaseNoteS3(releaseNote, jsonMetadata);
+};
+
+export const getUseCasesProps = async () => {
+  const strapiUseCases = await fetchUseCases(buildEnv);
+  const useCasesWithMarkdown = strapiUseCases.data.filter((useCase) => {
+    const parts = useCase?.attributes?.parts ?? [];
+    return parts.some((part) => part?.__component === 'parts.markdown');
+  });
+  const allMarkdownParts = useCasesWithMarkdown.flatMap((useCase) =>
+    (useCase?.attributes?.parts ?? []).filter(
+      (part) => part?.__component === 'parts.markdown'
+    )
+  );
+  const contentPromises = allMarkdownParts.map(async (part) => {
+    const { dirName, pathToFile } = part as MarkDownPart;
+    const key = `${dirName}/${pathToFile}`;
+    const content = await getMarkdownContent(dirName, pathToFile);
+    return [key, content];
+  });
+  const resolvedContentPairs = await Promise.all(contentPromises);
+  const markdownContentDict = Object.fromEntries(resolvedContentPairs);
+  return makeUseCasesProps(strapiUseCases, markdownContentDict);
+};
+
+export const getUseCaseListPagesProps = async () => {
+  const strapiUseCasesListPages = await fetchUseCaseListPages(buildEnv);
+  return makeUseCaseListPagesProps(strapiUseCasesListPages);
 };
