@@ -45,5 +45,8 @@ class ChatbotSettings(BaseSettings):
     # prompts
     condense_prompt_str: str = PROMPTS["condense_prompt_str"]
 
+    # urls
+    website_url: str = os.getenv("CHB_WEBSITE_URL")
+
 
 SETTINGS = ChatbotSettings()
