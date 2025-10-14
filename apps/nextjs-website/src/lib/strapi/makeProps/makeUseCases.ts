@@ -15,7 +15,8 @@ export type UseCaseProps = UseCase & {
 };
 
 export function makeUseCasesProps(
-  strapiUseCases: StrapiUseCases
+  strapiUseCases: StrapiUseCases,
+  markdownContentDict: Record<string, string>
 ): readonly UseCaseProps[] {
   return compact(
     strapiUseCases.data.map(({ attributes }) => {
@@ -55,7 +56,11 @@ export function makeUseCasesProps(
             : undefined,
           name: attributes.title,
           path: `/${attributes.product.data.attributes.slug}/use-cases/${attributes.slug}`,
-          parts: compact(attributes.parts.map((part) => makePartProps(part))),
+          parts: compact(
+            attributes.parts.map((part) =>
+              makePartProps(part, markdownContentDict)
+            )
+          ),
           productSlug: attributes.product.data.attributes.slug,
           relatedLinks: attributes.relatedLinks,
           bannerLinks:

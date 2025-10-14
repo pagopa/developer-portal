@@ -116,6 +116,7 @@ resource "aws_lambda_function" "chatbot_index_lambda" {
       CHB_AWS_S3_BUCKET_NAME_STATIC_CONTENT = var.s3_bucket_name_static_content
       CHB_REDIS_URL                         = "redis://${module.nlb.dns_name}:${var.ecs_redis.port}"
       CHB_WEBSITE_URL                       = "https://${var.dns_domain_name}"
+      NLTK_DATA                             = "/tmp"
 
     }
   }

@@ -442,6 +442,9 @@
         "startInfo": {
             "title": "Si comincia da qui"
         },
+        "tutorialsList": {
+          "ctaLabel": "Vai al tutorial"
+        },
         "tutorial": {
             "title": "Esplora i tutorial",
             "ctaLabel": "Vedi tutti i tutorial",
@@ -455,8 +458,10 @@
             "title": "LINK UTILI"
         },
         "useCases": {
-            "all": "Tutti",
-            "noUseCaseMessage": "Non sono presenti casi d'uso della categoria selezionata"
+          "title": "Casi d'uso",
+          "ctaLabel": "Vedi tutti i casi d'uso",
+          "all": "Tutti",
+          "noUseCaseMessage": "Non sono presenti casi d'uso della categoria selezionata"
         }
     },
     "footer": {
