@@ -110,20 +110,7 @@ const GitBookContent = ({
   hideH1 = false,
 }: GitBookContentProps) =>
   renderContent(
-    parseContent(
-      '{% stepper %}\n' +
-        '{% step %}\n' +
-        '### Step 1 title\n' +
-        '#### Step 1 subtitle\n' +
-        'Step 1 text\n' +
-        '{% endstep %}\n' +
-        '{% step %}\n' +
-        '### Step 2 title\n' +
-        'Step 2 text\n' +
-        '{% endstep %}\n' +
-        '{% endstepper %}',
-      config
-    ),
+    parseContent(content, config),
     React,
     hideH1 ? hideH1Components : components
   );

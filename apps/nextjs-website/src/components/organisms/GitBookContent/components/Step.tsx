@@ -1,6 +1,5 @@
 import {
   Children,
-  Fragment,
   ReactElement,
   ReactNode,
   cloneElement,
@@ -38,7 +37,8 @@ const Step = ({ stepNumber, children }: StepProps<ReactNode>) => {
       <Box
         sx={{
           display: 'flex',
-          alignItems: 'flex-start',
+          alignItems: 'center',
+          justifyContent: 'center',
           gap: 2,
         }}
       >
@@ -54,7 +54,6 @@ const Step = ({ stepNumber, children }: StepProps<ReactNode>) => {
               alignItems: 'center',
               justifyContent: 'center',
               fontWeight: 600,
-              mt: 1,
             }}
           >
             {stepNumber}
@@ -67,12 +66,15 @@ const Step = ({ stepNumber, children }: StepProps<ReactNode>) => {
     ) : null;
 
   return (
-    <Box
-      sx={{ display: 'flex', flexDirection: 'column', gap: 2, marginBottom: 3 }}
-    >
+    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
       {headingWithNumber}
       {content.map((child, index) => (
-        <Fragment key={getChildKey(child, index)}>{child}</Fragment>
+        <Box
+          sx={{ marginLeft: { sm: 0, md: 6 } }}
+          key={getChildKey(child, index)}
+        >
+          {child}
+        </Box>
       ))}
     </Box>
   );
