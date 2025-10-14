@@ -387,9 +387,6 @@ terraform.rc
 .idea/
 .vscode/
 
-# Docker config files
-docker/
-
 # Ignore files managed by gitbook fetch step
 apps/nextjs-website/.tmp/
 apps/nextjs-website/.tmp-docs/
@@ -404,14 +401,13 @@ apps/chatbot/results
 apps/chatbot/test.py
 !apps/chatbot/docker
 !apps/chatbot/docker/files
-apps/chabot/docker/volume
+apps/chatbot/docker/volume
 apps/chatbot/.env
 apps/chatbot/empty_htmls.json
 apps/chatbot/.google_service_account.json
 
 # chatbot-evaluate
 apps/chatbot-evaluate/*.ipynb
-!apps/chatbot-evaluate/docker
 apps/chatbot-evaluate/.env
 apps/chatbot-evaluate/.google_service_account.json
 
