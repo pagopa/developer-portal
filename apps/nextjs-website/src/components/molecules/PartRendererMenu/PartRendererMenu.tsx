@@ -56,6 +56,12 @@ const PartRendererMenu = (props: PartRendererMenuProps): ReactNode | null => {
           );
         case 'markdown': {
           const headingRegex = /^(#{2,})\s+(.+)/gm;
+          const stepTag = /\{% step %}/g;
+          const stepIndices = Array.from(
+            part.content.matchAll(stepTag),
+            (match) => match.index || 0
+          );
+
           const matches = [...part.content.matchAll(headingRegex)];
           const createSlug = (text: string) =>
             text
@@ -70,12 +76,20 @@ const PartRendererMenu = (props: PartRendererMenuProps): ReactNode | null => {
               .replace(/&[a-zA-Z0-9#]+;/g, ' ')
               .replace(/\s+/g, ' ');
             const href = `#${createSlug(title)}`;
+            const lastStepIndex =
+              level === 3 && stepIndices.length > 0
+                ? stepIndices.findLast((index) => index < (match?.index || 0))
+                : undefined;
+            const stepNumber = lastStepIndex
+              ? stepIndices.indexOf(lastStepIndex) + 1
+              : undefined;
 
+            const finalTitle = stepNumber ? stepNumber + ' - ' + title : title;
             return (
               <MUILink
                 key={title}
                 href={href}
-                title={title}
+                title={finalTitle}
                 sx={{
                   display: 'block',
                   fontFamily: 'Titillium Web',
@@ -90,7 +104,21 @@ const PartRendererMenu = (props: PartRendererMenuProps): ReactNode | null => {
                     fontWeight: 400,
                   }}
                 >
-                  {title}
+                  {stepNumber ? (
+                    <>
+                      <span
+                        style={{
+                          color: palette.primary.main,
+                          fontWeight: '700',
+                        }}
+                      >
+                        {stepNumber}
+                      </span>
+                      {' - ' + title}
+                    </>
+                  ) : (
+                    title
+                  )}
                 </Typography>
               </MUILink>
             );
