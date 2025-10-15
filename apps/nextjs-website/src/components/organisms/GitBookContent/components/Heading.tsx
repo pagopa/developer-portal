@@ -67,7 +67,8 @@ export const SubHeading = ({
       <Typography
         variant={asVariant(level)}
         sx={{
-          py: 3,
+          paddingTop: 3,
+          paddingBottom: 1,
           fontSize: { xs: asFontSize(level) },
           fontWeight: { xs: asFontWeight(level) },
           lineHeight: { xs: asLineHeight(level) },
