@@ -1,3 +1,4 @@
+import boto3
 import os
 import yaml
 from pathlib import Path
@@ -5,26 +6,18 @@ from pydantic_settings import BaseSettings
 
 from src.modules.utils import get_ssm_parameter
 
-
 CWF = Path(__file__)
 ROOT = CWF.parent.parent.parent.absolute().__str__()
 PROMPTS = yaml.safe_load(open(os.path.join(ROOT, "config", "prompts.yaml"), "r"))
+AWS_SESSION = boto3.Session()
 
 
 class ChatbotSettings(BaseSettings):
     """Settings for the chatbot evaluation."""
 
-    # api keys
-    aws_access_key_id: str = os.getenv(
-        "AWS_ACCESS_KEY_ID", os.getenv("CHB_AWS_ACCESS_KEY_ID")
-    )
-    aws_default_region: str = os.getenv(
-        "AWS_REGION", os.getenv("CHB_AWS_DEFAULT_REGION")
-    )
-    aws_endpoint_url: str | None = os.getenv("CHB_AWS_SSM_ENDPOINT_URL")
-    aws_secret_access_key: str = os.getenv(
-        "AWS_SECRET_ACCESS_KEY", os.getenv("CHB_AWS_SECRET_ACCESS_KEY")
-    )
+    # api
+    aws_region: str = os.getenv("AWS_REGION", "us-east-1")
+    aws_endpoint_url: str = os.getenv("AWS_ENDPOINT_URL")
     google_api_key: str = get_ssm_parameter(
         os.getenv("CHB_AWS_SSM_GOOGLE_API_KEY"),
         os.getenv("CHB_AWS_GOOGLE_API_KEY"),
@@ -51,6 +44,9 @@ class ChatbotSettings(BaseSettings):
 
     # prompts
     condense_prompt_str: str = PROMPTS["condense_prompt_str"]
+
+    # urls
+    website_url: str = os.getenv("CHB_WEBSITE_URL")
 
 
 SETTINGS = ChatbotSettings()
