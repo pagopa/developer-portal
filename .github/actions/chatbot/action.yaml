@@ -38,12 +38,6 @@ runs:
         cd apps/chatbot-index
         bash ./docker/chrome-installer.sh
 
-    # - name: Run tests
-    #   shell: bash
-    #   run: |
-    #     cd apps/chatbot-index
-    #     PYTHONPATH=. poetry run ./src/modules/pytest
-
     - name: Create Vector Index
       shell: bash
       run: |
