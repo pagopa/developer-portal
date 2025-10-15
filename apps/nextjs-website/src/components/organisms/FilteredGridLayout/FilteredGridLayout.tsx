@@ -1,7 +1,9 @@
 'use client';
 
 import { Tag } from '@/lib/types/tag';
-import Newsroom from '@/editorialComponents/Newsroom/Newsroom';
+import Newsroom, {
+  INewsroomItem,
+} from '@/editorialComponents/Newsroom/Newsroom';
 import { Box, useMediaQuery } from '@mui/material';
 import React, { useState } from 'react';
 import { useTranslations } from 'next-intl';
@@ -9,23 +11,24 @@ import { useSearchParams } from 'next/navigation';
 import MobileFilterSelector from '@/components/molecules/MobileFilterSelector/MobileFilterSelector';
 import DesktopFilterSelector from '@/components/molecules/DesktopFilterSelector/DesktopFilterSelector';
 import SectionTitle from '@/components/molecules/SectionTitle/SectionTitle';
-import { UseCase } from '../../../lib/types/useCaseData';
 
-type UseCaseListProps = {
-  readonly useCases: readonly UseCase[];
+type FilteredGridLayoutProps = {
+  readonly items: readonly (INewsroomItem & { tags: readonly Tag[] })[];
   readonly tags: readonly Tag[];
   readonly enableFilters?: boolean;
+  readonly noItemsMessageKey?: string;
 };
 
-export const UseCaseList = ({
+export const FilteredGridLayout = ({
   tags,
-  useCases,
+  items,
   enableFilters,
-}: UseCaseListProps) => {
+  noItemsMessageKey = '',
+}: FilteredGridLayoutProps) => {
   const t = useTranslations();
   const updatedTags = [
     {
-      name: t('overview.useCases.all'),
+      name: t('overview.all'),
       icon: {
         data: {
           attributes: {
@@ -52,10 +55,10 @@ export const UseCaseList = ({
   );
   const [selectedTag, setSelectedTag] = useState(tagValue);
 
-  const filteredUseCases = useCases.filter((useCase) => {
+  const filteredItems = items.filter((item) => {
     return (
       selectedTag === 0 ||
-      useCase.tags?.some((tag) => tag.name === updatedTags[selectedTag].name)
+      item.tags?.some((tag) => tag.name === updatedTags[selectedTag].name)
     );
   });
   // eslint-disable-next-line functional/no-return-void
@@ -76,7 +79,7 @@ export const UseCaseList = ({
   const isSmallScreen = useMediaQuery('(max-width: 1000px)');
   return (
     <Box>
-      <Box sx={{ paddingBottom: filteredUseCases.length > 0 ? '24px' : 0 }}>
+      <Box sx={{ paddingBottom: filteredItems.length > 0 ? '24px' : 0 }}>
         {enableFilters &&
           tags.length > 0 &&
           (isSmallScreen ? (
@@ -93,7 +96,7 @@ export const UseCaseList = ({
             />
           ))}
       </Box>
-      {filteredUseCases.length <= 0 ? (
+      {filteredItems.length <= 0 ? (
         <Box
           pt={8}
           pb={2}
@@ -103,24 +106,12 @@ export const UseCaseList = ({
             alignItems: 'center',
           }}
         >
-          <SectionTitle title={t('overview.useCases.noUseCaseMessage')} />
+          <SectionTitle title={t(noItemsMessageKey)} />
         </Box>
       ) : (
         <Newsroom
-          items={useCases.map((useCase) => ({
-            title: useCase.title,
-            date: {
-              date: useCase.publishedAt,
-            },
-            href: {
-              label: 'shared.readUseCase',
-              link: useCase.path,
-              translate: true,
-            },
-            img: {
-              alt: useCase.coverImage?.alternativeText || '',
-              src: useCase.coverImage?.url || '/images/news.png',
-            },
+          items={filteredItems.map((item) => ({
+            ...item,
           }))}
         />
       )}
