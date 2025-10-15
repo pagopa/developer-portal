@@ -30,6 +30,8 @@ import NewsShowcase, {
 import UseCasesOverview from '@/components/organisms/UseCasesOverview/UseCasesOverview';
 import { UseCase } from '@/lib/types/useCaseData';
 import TutorialsSectionPreviewCardsLayout from '@/components/organisms/TutorialsSectionPreviewCardsLayout/TutorialsSectionPreviewCardsLayout';
+import OverviewItemList from '@/components/organisms/OverviewItemList/OverviewItemList';
+import { useTranslations } from 'next-intl';
 const MAX_NUM_TUTORIALS_IN_OVERVIEW = 3;
 
 export type OverviewPageProps = {
@@ -141,6 +143,15 @@ const OverviewPage = async ({ params }: ProductParams) => {
     ?.filter((tutorial) => tutorial.showInOverview)
     .slice(0, MAX_NUM_TUTORIALS_IN_OVERVIEW);
 
+  const mappedTutorials = tutorialsListToShow?.map((tutorial) => ({
+    ...tutorial,
+    image: tutorial.image,
+    link: {
+      url: tutorial.path,
+      text: 'shared.readTutorial',
+    },
+  }));
+
   const structuredData = generateStructuredDataScripts({
     breadcrumbsItems: [productToBreadcrumb(product)],
     seo: seo,
@@ -182,14 +193,15 @@ const OverviewPage = async ({ params }: ProductParams) => {
       {product?.hasTutorialListPage &&
       tutorials &&
       !tutorials.showCardsLayout ? (
-        <TutorialsOverview
+        <OverviewItemList
           title={tutorials.title}
+          ctaLabelKey={'overview.tutorial.ctaLabel'}
           subtitle={tutorials.subtitle}
-          tutorialPath={{
+          itemPath={{
             path: `/${product.slug}/tutorials`,
             name: 'tutorials',
           }}
-          tutorials={[...(tutorialsListToShow || [])]}
+          items={[...(mappedTutorials || [])]}
         />
       ) : (
         <TutorialsSectionPreviewCardsLayout
