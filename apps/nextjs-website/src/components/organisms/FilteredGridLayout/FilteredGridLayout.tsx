@@ -65,9 +65,7 @@ export const FilteredGridLayout = ({
   const setSelectedTagFilter = (newTag: number): void => {
     if (newTag === selectedTag) return;
     addQueryParam('tag', `${newTag}`);
-    document
-      .getElementById('chatbot-page-content')
-      ?.scrollIntoView({ behavior: 'smooth' });
+    document.getElementById('filters')?.scrollIntoView({ behavior: 'smooth' });
     setSelectedTag(newTag);
   };
 
