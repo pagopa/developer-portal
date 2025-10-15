@@ -2,4 +2,4 @@
 "chatbot": patch
 ---
 
-Code refactor with new gemini models
+Code refactor new chatbot-index lambda
