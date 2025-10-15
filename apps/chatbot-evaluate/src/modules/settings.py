@@ -16,8 +16,6 @@ class ChatbotSettings(BaseSettings):
     """Settings for the chatbot evaluation."""
 
     # api
-    aws_region: str = os.getenv("AWS_REGION", "us-east-1")
-    aws_endpoint_url: str = os.getenv("AWS_ENDPOINT_URL")
     google_api_key: str = get_ssm_parameter(
         os.getenv("CHB_AWS_SSM_GOOGLE_API_KEY"),
         os.getenv("CHB_AWS_GOOGLE_API_KEY"),
