@@ -1,0 +1,83 @@
+/* eslint-disable functional/prefer-readonly-type */
+/* eslint-disable functional/no-loop-statements */
+/* eslint-disable functional/no-expression-statements */
+/* eslint-disable functional/immutable-data */
+/* eslint-disable functional/no-try-statements */
+import dotenv from 'dotenv';
+import { fetchFromStrapi } from '../helpers/fetchFromStrapi';
+import { StrapiBaseProduct } from 'nextjs-website/src/lib/strapi/types/product';
+import { StrapiApiData } from 'nextjs-website/src/lib/strapi/types/apiDataList';
+import { makeS3Client, writeSitemapJson } from '../helpers/s3Bucket.helper';
+
+dotenv.config();
+
+const SITEMAP_URL =
+  process.env.SITEMAP_URL || 'https://developer.pagopa.it/sitemap.xml';
+const S3_SITEMAP_PATH = process.env.S3_SITEMAP_PATH || 'sitemap.xml';
+const S3_PRODUCTS_METADATA_JSON_PATH =
+  process.env.S3_PRODUCTS_METADATA_JSON_PATH || 'synced-products-response.json';
+const S3_APIS_DATA_METADATA_JSON_PATH =
+  process.env.S3_APIS_DATA_METADATA_JSON_PATH ||
+  'synced-apis-data-response.json';
+const S3_BUCKET_NAME = process.env.S3_BUCKET_NAME;
+
+const s3Client = makeS3Client();
+async function main() {
+  console.log('Recovering products and apis-data from Strapi CMS...');
+  // eslint-disable-next-line functional/no-let
+  let strapiProducts;
+  try {
+    const { data } = await fetchFromStrapi<StrapiBaseProduct>('api/products');
+    strapiProducts = data;
+  } catch (error) {
+    console.error('Error fetching Products from Strapi:', error);
+    process.exit(1);
+  }
+  console.log(`Fetched ${strapiProducts.length} products from Strapi`);
+
+  // eslint-disable-next-line functional/no-let
+  let strapiApisData;
+  try {
+    const { data } = await fetchFromStrapi<StrapiApiData>(
+      'api/apis-data?populate[product]=*&populate[apiRestDetail][populate][specUrls]=*'
+    );
+    strapiApisData = data;
+  } catch (error) {
+    console.error('Error fetching Products from Strapi:', error);
+    process.exit(1);
+  }
+  console.log(`Fetched ${strapiApisData.length} apis-data from Strapi`);
+
+  // eslint-disable-next-line functional/no-let
+  let siteMap;
+  try {
+    const response = await fetch(SITEMAP_URL);
+    siteMap = await response.text();
+  } catch (error) {
+    console.error('Error fetching sitemap.xml:', error);
+    process.exit(1);
+  }
+
+  await writeSitemapJson(
+    siteMap,
+    S3_SITEMAP_PATH,
+    `${S3_BUCKET_NAME}`,
+    s3Client
+  );
+
+  await writeSitemapJson(
+    strapiProducts,
+    S3_PRODUCTS_METADATA_JSON_PATH,
+    `${S3_BUCKET_NAME}`,
+    s3Client
+  );
+
+  await writeSitemapJson(
+    strapiApisData,
+    S3_APIS_DATA_METADATA_JSON_PATH,
+    `${S3_BUCKET_NAME}`,
+    s3Client
+  );
+}
+
+main();
