@@ -30,7 +30,7 @@ const ProductHeader: FC<ProductHeaderProps> = ({ product, path }) => {
       sx={{
         position: 'fixed',
         top: { xs: scrollUp ? SITE_HEADER_HEIGHT : 0, md: SITE_HEADER_HEIGHT },
-        zIndex: 250,
+        zIndex: scrollUp ? 90 : 250,
         transition: 'top 0.5s linear',
         width: '100vw',
       }}
