@@ -253,7 +253,7 @@ module "video_streaming" {
 
   # Pass variables to the module
 
-  project_name = "decportal-${local.env_short[var.environment]}"
+  project_name = "devportal-${local.env_short[var.environment]}"
   ivs_channels = {
     "channell-01" = {
       name = "channel-01"
