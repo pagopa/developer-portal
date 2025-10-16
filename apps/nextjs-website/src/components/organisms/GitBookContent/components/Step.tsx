@@ -9,7 +9,7 @@ import { Box } from '@mui/material';
 import { StepProps } from 'gitbook-docs/markdoc/schema/stepper';
 
 const getChildKey = (child: ReactNode, index: number) =>
-  isValidElement(child) && child.key != null ? child.key : index;
+  isValidElement(child) && child.key !== null ? child.key : index;
 
 const Step = ({ stepNumber, children }: StepProps<ReactNode>) => {
   const childArray = Children.toArray(children);
