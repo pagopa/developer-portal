@@ -213,6 +213,11 @@ class DiscoveryVectorIndex:
                             )
                         LOGGER.info(f"Updated vector index with document ID: {doc.id_}")
 
+                elif existing_doc_hash == doc.hash:
+                    LOGGER.info(
+                        f"Document ID: {doc.id_} with hash {doc.hash} already exists in vector index. Skipping."
+                    )
+
             LOGGER.info(
                 f"Updated vector index successfully with {sum(refreshed_documents)} documents."
             )
