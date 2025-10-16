@@ -162,25 +162,16 @@ def filter_urls(urls: List[str]) -> List[str]:
     return filtered_urls
 
 
-def get_sitemap_urls(website_url: str | None = None) -> List[Dict[str, str]]:
+def get_sitemap_urls() -> List[Dict[str, str]]:
     """
     Fetches URLs from a sitemap XML file.
-    Args:
-        sitemap_url (str): The URL of the sitemap XML file. If None, uses the default WEBSITE_URL.
     Returns:
         List[Dict[str, str]]: A list of dictionaries containing URLs and their last modified dates.
     """
 
-    if website_url is None:
-        sitemap_url = f"{SETTINGS.website_url}/sitemap.xml"
-    else:
-        sitemap_url = f"{website_url}/sitemap.xml"
-
-    LOGGER.info(f"Fetching sitemap from {sitemap_url}")
-    response = requests.get(sitemap_url)
-    if response.status_code == 200:
-        LOGGER.info("Sitemap fetched successfully.")
-        root = ET.fromstring(response.content)
+    sitemap_content = read_file_from_s3("sitemap.xml")
+    if sitemap_content:
+        root = ET.fromstring(sitemap_content)
         ns = {"ns": "http://www.sitemaps.org/schemas/sitemap/0.9"}
 
         sitemap = []
@@ -194,11 +185,12 @@ def get_sitemap_urls(website_url: str | None = None) -> List[Dict[str, str]]:
                 }
             )
         LOGGER.info(f"Found {len(sitemap)} URLs in the sitemap.")
-
-        return sitemap
     else:
-        LOGGER.error(f"Error fetching data: {response.status_code}")
-        return []
+        raise ValueError(
+            f"Not found {SETTINGS.bucket_static_content}/sitemap.xml file in S3."
+        )
+
+    return sitemap
 
 
 def html2markdown(html: str) -> Tuple[str, str]:
@@ -352,20 +344,16 @@ def get_api_docs() -> List[Document]:
     return docs
 
 
-def get_static_and_dynamic_metadata(
-    website_url: str | None = None,
-) -> Tuple[List[dict], List[dict]]:
+def get_static_and_dynamic_metadata() -> Tuple[List[dict], List[dict]]:
     """
     Fetches static and dynamic URLs from the sitemap and metadata files.
-    Args:
-        website_url (str | None): The base URL of the website. If None, uses the default WEBSITE_URL.
     Returns:
         Tuple[List[dict], List[dict]]: A tuple containing two lists:
             - A list of dictionaries with static URLs and their S3 file paths.
             - A list of dictionaries with dynamic URLs and their last modified dates.
     """
 
-    sitemap = get_sitemap_urls(website_url)
+    sitemap = get_sitemap_urls()
     if not sitemap:
         return [], []
     else:
@@ -405,18 +393,18 @@ def get_static_and_dynamic_metadata(
     return static_metadata, dynamic_metadata
 
 
-def get_static_docs(static_urls: List[dict]) -> List[Document]:
+def get_static_docs(static_metadata: List[dict]) -> List[Document]:
     """
-    Fetches static documents from the provided URLs.
+    Fetches static documents from the provided metadata.
     Args:
-        static_urls (List[dict]): A list of dictionaries containing URLs and S3 file paths.
+        static_metadata (List[dict]): A list of dictionaries containing metadata for static documents.
     Returns:
         List[Document]: A list of Document objects containing the content and metadata.
     """
 
     static_docs = []
     for item in tqdm.tqdm(
-        static_urls, total=len(static_urls), desc="Getting static documents"
+        static_metadata, total=len(static_metadata), desc="Getting static documents"
     ):
 
         url = item["url"]
@@ -439,11 +427,11 @@ def get_static_docs(static_urls: List[dict]) -> List[Document]:
     return static_docs
 
 
-def get_dynamic_docs(dynamic_urls: List[dict]) -> List[Document]:
+def get_dynamic_docs(dynamic_metadata: List[dict]) -> List[Document]:
     """
-    Fetches dynamic documents from the provided URLs using Selenium.
+    Fetches dynamic documents from the provided metadata using Selenium.
     Args:
-        dynamic_urls (List[str]): A list of URLs to fetch dynamic documents from.
+        dynamic_metadata (List[dict]): A list of dictionaries containing metadata for dynamic documents.
     Returns:
         List[Document]: A list of Document objects containing the content and metadata.
     """
@@ -477,7 +465,7 @@ def get_dynamic_docs(dynamic_urls: List[dict]) -> List[Document]:
     )
 
     for item in tqdm.tqdm(
-        dynamic_urls, total=len(dynamic_urls), desc="Getting dynamic documents"
+        dynamic_metadata, total=len(dynamic_metadata), desc="Getting dynamic documents"
     ):
         url = item["url"]
         lastmod = item["lastmod"]
@@ -527,16 +515,14 @@ def get_dynamic_docs(dynamic_urls: List[dict]) -> List[Document]:
     return dynamic_docs
 
 
-def get_documents(website_url: str | None = None) -> List[Document]:
+def get_documents() -> List[Document]:
     """
     Fetches documents from static and dynamic sources.
-    Args:
-        website_url (str | None): The base URL of the website. If None, uses the default WEBSITE_URL.
     Returns:
         List[Document]: A list of Document objects containing the content and metadata.
     """
 
-    static_metadata, dynamic_metadata = get_static_and_dynamic_metadata(website_url)
+    static_metadata, dynamic_metadata = get_static_and_dynamic_metadata()
 
     api_docs = get_api_docs()
     static_docs = get_static_docs(static_metadata)
