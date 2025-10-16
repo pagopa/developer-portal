@@ -17,3 +17,18 @@ output "iam_role_deploy_standalone_website_arn" {
 output "standalone_server" {
   value = module.website.standalone_server
 }
+
+
+## video streaming outputs ##
+
+output "video_streaming" {
+  value = {
+    s3_recording_bucket_name = module.video_streaming.s3_recording_bucket_name
+    ivs_channel_details      = module.video_streaming.ivs_channel_details
+  }
+
+  description = "Outputs from the video streaming module."
+  sensitive   = true
+}
+
+# -----------------
