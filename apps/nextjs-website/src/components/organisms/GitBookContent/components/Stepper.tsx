@@ -3,7 +3,7 @@ import { Box } from '@mui/material';
 import { StepperProps } from 'gitbook-docs/markdoc/schema/stepper';
 
 const Stepper = ({ children }: StepperProps<ReactNode>) => (
-  <Box sx={{ gap: 0 }}>
+  <Box sx={{ marginLeft: { sm: 0, lg: '-46px' } }}>
     {/* Map over children to inject the stepNumber prop */}
     {Children.map(children, (child, index) => {
       if (isValidElement(child)) {

@@ -19,22 +19,6 @@ export const stepper: Schema = {
   // This should be 'step', listing the allowed child tags.
   children: ['step'],
   transform(node, config) {
-    // Find all direct children that are 'step' tags and add an index.
-    // eslint-disable-next-line functional/no-let
-    let stepIndex = 0;
-    // eslint-disable-next-line functional/no-loop-statements
-    for (const child of node.children) {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      if (child.type === 'Step') {
-        // Mutate the child node to add the index to its attributes.
-        // eslint-disable-next-line functional/immutable-data,functional/no-expression-statements
-        child.attributes.index = stepIndex;
-        // eslint-disable-next-line functional/no-expression-statements
-        stepIndex++;
-      }
-    }
-
     const children = node.transformChildren(config);
     return new Markdoc.Tag('Stepper', {}, children);
   },
