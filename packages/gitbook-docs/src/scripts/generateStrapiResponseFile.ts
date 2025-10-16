@@ -5,9 +5,8 @@
 /* eslint-disable functional/no-try-statements */
 import dotenv from 'dotenv';
 import { fetchFromStrapi } from '../helpers/fetchFromStrapi';
-import { StrapiBaseProduct } from 'nextjs-website/src/lib/strapi/types/product';
-import { StrapiApiData } from 'nextjs-website/src/lib/strapi/types/apiDataList';
 import { makeS3Client, writeSitemapJson } from '../helpers/s3Bucket.helper';
+import { StrapiApiData, StrapiProduct } from '../helpers/guidesMetadataHelper';
 
 dotenv.config();
 
@@ -27,7 +26,7 @@ async function main() {
   // eslint-disable-next-line functional/no-let
   let strapiProducts;
   try {
-    const { data } = await fetchFromStrapi<StrapiBaseProduct>('api/products');
+    const { data } = await fetchFromStrapi<StrapiProduct>('api/products');
     strapiProducts = data;
   } catch (error) {
     console.error('Error fetching Products from Strapi:', error);
