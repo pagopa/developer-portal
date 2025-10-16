@@ -28,26 +28,12 @@ runs:
     - name: Install python libraries
       shell: bash
       run: |
-        cd apps/chatbot
+        cd apps/chatbot-index
         poetry config virtualenvs.create false
         poetry install --only main --no-interaction
-
-#    - name: Run tests
-#      run: |
-#        cd apps/chatbot
-#        poetry run pytest
-#        coverage report
-#
 
     - name: Create Vector Index
       shell: bash
       run: |
-        cd apps/chatbot
-        PYTHONPATH=. poetry run python src/modules/create_vector_index.py --params config/params.yaml
-
-    - name: Restart backend lambda function
-      env:
-        CHATBOT_LAMBDA_NAME: ${{ inputs.chatbot_lambda_name }}
-      shell: bash
-      run: |
-        aws lambda update-function-code --function-name "${{ env.CHATBOT_LAMBDA_NAME }}" --image-uri $(aws lambda get-function --function-name "${{ env.CHATBOT_LAMBDA_NAME }}" --query 'Code.ImageUri' --output text)
+        cd apps/chatbot-index
+        PYTHONPATH=. poetry run python src/modules/create_vector_index.py
