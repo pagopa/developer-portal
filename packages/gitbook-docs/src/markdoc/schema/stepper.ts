@@ -17,9 +17,9 @@ export type StepProps<A> = {
 export const stepper: Schema = {
   render: 'Stepper',
   // This should be 'step', listing the allowed child tags.
-  children: ['Step'],
+  children: ['step'],
   transform(node, config) {
-    // We find all direct children that are 'step' tags and add an index.
+    // Find all direct children that are 'step' tags and add an index.
     // eslint-disable-next-line functional/no-let
     let stepIndex = 0;
     // eslint-disable-next-line functional/no-loop-statements
