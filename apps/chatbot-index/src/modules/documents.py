@@ -30,6 +30,32 @@ LOGGER = get_logger(__name__)
 AWS_S3_CLIENT = AWS_SESSION.client("s3")
 
 
+def read_file_from_s3(
+    file_path: str,
+    bucket_name: str | None = None,
+) -> str:
+    """Reads a file from an S3 bucket.
+    Args:
+        file_path (str): The path to the file in the S3 bucket.
+    Returns:
+        str: The content of the file as a string.
+    """
+
+    bucket_name = bucket_name if bucket_name else SETTINGS.bucket_static_content
+    try:
+        response = AWS_S3_CLIENT.get_object(
+            Bucket=bucket_name,
+            Key=file_path,
+        )
+        text = response["Body"].read().decode("utf-8")
+
+    except Exception as e:
+        LOGGER.error(f"Error reading from S3 the file {bucket_name}/{file_path}: {e}")
+        text = ""
+
+    return text
+
+
 def remove_figure_blocks(md_text):
     """Removes <figure> blocks from Markdown text.
     Args:
@@ -40,51 +66,76 @@ def remove_figure_blocks(md_text):
     return re.sub(r"<figure[\s\S]*?</figure>", "", md_text, flags=re.IGNORECASE)
 
 
-def get_product_list(website_url: str | None = None) -> List[str]:
+# def get_product_list(website_url: str | None = None) -> List[str]:
+#     """
+#     Fetches a list of products from the website.
+#     Args:
+#         website_url (str | None): The base URL of the website. If None, uses the default WEBSITE_URL.
+#     Returns:
+#         List[str]: A list of product slugs. If the request fails, an empty list is returned.
+#     """
+#     if website_url is None:
+#         website_url = SETTINGS.website_url
+
+#     url = website_url.replace("https://", "https://cms.")
+#     url += "/api/products"
+#     headers = {"Authorization": f"Bearer {SETTINGS.strapi_api_key}"}
+#     response = requests.get(url, headers=headers)
+#     product_list = []
+#     if response.status_code == 200:
+#         products = json.loads(response.text)
+
+#         for product in products["data"]:
+#             try:
+#                 product_slug = product["attributes"]["slug"]
+#                 product_list.append(product_slug)
+#             except KeyError as e:
+#                 LOGGER.error(f"Error extracting product slug: {e}")
+
+#     else:
+#         LOGGER.error(f"Failed to fetch product list: {response.status_code}")
+
+#     LOGGER.info(f"Found {len(product_list)} products: {product_list}.")
+#     return product_list
+
+
+def get_product_list() -> List[str]:
     """
-    Fetches a list of products from the website.
-    Args:
-        website_url (str | None): The base URL of the website. If None, uses the default WEBSITE_URL.
+    Fetches a list of products from AWS S3.
     Returns:
         List[str]: A list of product slugs. If the request fails, an empty list is returned.
     """
-    if website_url is None:
-        website_url = SETTINGS.website_url
-
-    url = website_url.replace("https://", "https://cms.")
-    url += "/api/products"
-    headers = {"Authorization": f"Bearer {SETTINGS.strapi_api_key}"}
-    response = requests.get(url, headers=headers)
-    product_list = []
-    if response.status_code == 200:
-        products = json.loads(response.text)
-
-        for product in products["data"]:
-            try:
-                product_slug = product["attributes"]["slug"]
-                product_list.append(product_slug)
-            except KeyError as e:
-                LOGGER.error(f"Error extracting product slug: {e}")
-
+    s3_data = read_file_from_s3("synced-products-data-response.json")
+    if s3_data:
+        products = json.loads(s3_data)
+        product_list = []
+        if s3_data:
+            products = json.loads(s3_data)
+            for product in products["data"]:
+                try:
+                    product_slug = product["attributes"]["slug"]
+                    product_list.append(product_slug)
+                except KeyError as e:
+                    LOGGER.error(f"Error extracting product slug: {e}")
+        LOGGER.info(f"Found {len(product_list)} products: {product_list}.")
+        return product_list
     else:
-        LOGGER.error(f"Failed to fetch product list: {response.status_code}")
+        raise ValueError(
+            f"Not found {SETTINGS.bucket_static_content}/synced-products-data-response.json file in S3."
+        )
 
-    LOGGER.info(f"Found {len(product_list)} products: {product_list}.")
-    return product_list
 
-
-def filter_urls(urls: List[str], website_url: str | None = None) -> List[str]:
+def filter_urls(urls: List[str]) -> List[str]:
     """
     Filters out HTML files that match specific patterns.
     Args:
         urls (List[str]): A list of HTML file paths to filter.
-        website_url (str | None): The base URL of the website. If None, uses the default WEBSITE_URL.
     Returns:
-        List[str]: A list of HTML file paths that do not match the specified patterns.
+        List[str]: A list of filtered HTML file paths.
     """
 
     # Get the dynamic product list
-    product_list = get_product_list(website_url)
+    product_list = get_product_list()
 
     pattern = re.compile(r"/v\d{1,2}.")
     pattern2 = re.compile(r"/\d{1,2}.")
@@ -150,28 +201,6 @@ def get_sitemap_urls(website_url: str | None = None) -> List[Dict[str, str]]:
         return []
 
 
-def read_file_from_s3(file_path: str) -> str:
-    """Reads a file from an S3 bucket.
-    Args:
-        file_path (str): The path to the file in the S3 bucket.
-    Returns:
-        str: The content of the file as a string.
-    """
-
-    try:
-        response = AWS_S3_CLIENT.get_object(
-            Bucket=SETTINGS.bucket_static_content,
-            Key=file_path,
-        )
-        text = response["Body"].read().decode("utf-8")
-
-    except Exception as e:
-        LOGGER.error(f"Error reading from S3 the file {file_path}: {e}")
-        text = ""
-
-    return text
-
-
 def html2markdown(html: str) -> Tuple[str, str]:
     """
     Converts HTML content to Markdown format.
@@ -198,30 +227,45 @@ def html2markdown(html: str) -> Tuple[str, str]:
     return title, content.strip()
 
 
-def get_apidata(website_url: str | None = None) -> dict:
+# def get_apidata(website_url: str | None = None) -> dict:
+#     """
+#     Fetches API data from a remote source.
+#     Args:
+#         website_url (str): The base URL of the website. If None, uses the default WEBSITE_URL.
+#     Returns:
+#         dict: Parsed JSON data from the API response.
+#     """
+#     if website_url is None:
+#         url = SETTINGS.website_url.replace("https://", "https://cms.")
+#     else:
+#         url = website_url.replace("https://", "https://cms.")
+#     url += "/api/apis-data?populate[product]=*&populate[apiRestDetail][populate][specUrls]=*"
+#     headers = {"Authorization": f"Bearer {SETTINGS.strapi_api_key}"}
+
+#     response = requests.get(url, headers=headers)
+#     LOGGER.info(f"Fetching API data from {url}")
+#     if response.status_code == 200:
+#         return json.loads(response.text)
+#     else:
+#         LOGGER.error(
+#             f"Failed to fetch data from API. Status code: {response.status_code}"
+#         )
+#         return response.text
+
+
+def get_apidata() -> dict:
     """
-    Fetches API data from a remote source.
-    Args:
-        website_url (str): The base URL of the website. If None, uses the default WEBSITE_URL.
+    Fetches API data from AWS S3.
     Returns:
         dict: Parsed JSON data from the API response.
     """
-    if website_url is None:
-        url = SETTINGS.website_url.replace("https://", "https://cms.")
+    s3_data = read_file_from_s3("synced-apis-data-response.json")
+    if s3_data:
+        return json.loads(s3_data)
     else:
-        url = website_url.replace("https://", "https://cms.")
-    url += "/api/apis-data?populate[product]=*&populate[apiRestDetail][populate][specUrls]=*"
-    headers = {"Authorization": f"Bearer {SETTINGS.strapi_api_key}"}
-
-    response = requests.get(url, headers=headers)
-    LOGGER.info(f"Fetching API data from {url}")
-    if response.status_code == 200:
-        return json.loads(response.text)
-    else:
-        LOGGER.error(
-            f"Failed to fetch data from API. Status code: {response.status_code}"
+        raise ValueError(
+            f"Not found {SETTINGS.bucket_static_content}/synced-apis-data-response.json file in S3."
         )
-        return response.text
 
 
 def read_api_url(url: str) -> str:
@@ -265,7 +309,7 @@ def read_api_url(url: str) -> str:
     return txt
 
 
-def get_api_docs(website_url: str | None = None) -> List[Document]:
+def get_api_docs() -> List[Document]:
     """
     Creates API documentation in Markdown format from the provided API data.
 
@@ -276,7 +320,7 @@ def get_api_docs(website_url: str | None = None) -> List[Document]:
         list: The llama-index Documents list.
     """
 
-    api_data = get_apidata(website_url)
+    api_data = get_apidata()
 
     num_apis = len(api_data["data"])
     LOGGER.info(f"{num_apis} API documents to read.")
@@ -494,7 +538,7 @@ def get_documents(website_url: str | None = None) -> List[Document]:
 
     static_metadata, dynamic_metadata = get_static_and_dynamic_metadata(website_url)
 
-    api_docs = get_api_docs(website_url)
+    api_docs = get_api_docs()
     static_docs = get_static_docs(static_metadata)
     dynamic_docs = get_dynamic_docs(dynamic_metadata)
     docs = api_docs + static_docs + dynamic_docs
