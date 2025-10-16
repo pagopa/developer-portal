@@ -473,9 +473,6 @@ def get_dynamic_docs(dynamic_metadata: List[dict]) -> List[Document]:
         try:
             driver.get(url)
             time.sleep(5)
-            # WebDriverWait(driver, 10).until(
-            #     EC.visibility_of_element_located((By.ID, "chatbot-page-content"))
-            # )
             title, text = html2markdown(driver.page_source)
 
             if text is not None and text != "" and text != "None":
