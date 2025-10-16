@@ -56,7 +56,7 @@ VECTOR_INDEX = DiscoveryVectorIndex()
 
 def read_payload(payload: dict) -> Tuple[List[Dict[str, str]], List[str]]:
 
-    sitemap = get_sitemap_urls(SETTINGS.website_url)
+    sitemap = get_sitemap_urls()
     urls_list = [item["url"] for item in sitemap]
     filtered_urls = filter_urls(urls_list)
     filtered_paths = [url.replace(SETTINGS.website_url, "") for url in filtered_urls]
