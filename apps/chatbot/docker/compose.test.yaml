@@ -3,7 +3,7 @@ services:
   api-test:
     build:
       context: ..
-      dockerfile: docker/app.local.Dockerfile
+      dockerfile: docker/app.test.Dockerfile
     command: "./scripts/run.test.sh"
     env_file: ../.env.test
     volumes:

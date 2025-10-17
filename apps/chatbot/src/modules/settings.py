@@ -5,13 +5,48 @@ import yaml
 from pathlib import Path
 from pydantic_settings import BaseSettings
 
-from src.modules.utils import get_ssm_parameter
+from src.modules.logger import get_logger
 
+LOGGER = get_logger(__name__)
 CWF = Path(__file__)
 ROOT = CWF.parent.parent.parent.absolute().__str__()
 PARAMS = yaml.safe_load(open(os.path.join(ROOT, "config", "params.yaml"), "r"))
 PROMPTS = yaml.safe_load(open(os.path.join(ROOT, "config", "prompts.yaml"), "r"))
 AWS_SESSION = boto3.Session()
+
+def get_ssm_parameter(name: str | None, default: str | None = None) -> str | None:
+    """
+    Retrieves a specific value from AWS Systems Manager's Parameter Store.
+
+    :param name: The name of the parameter to retrieve.
+    :param default: The default value to return if the parameter is not found.
+    :return: The value of the requested parameter.
+    """
+
+    SSM_CLIENT = AWS_SESSION.client("ssm")
+    LOGGER.info(f"get_ssm_parameter {name}...")
+
+    if name is None:
+        name = "none-params-in-ssm"
+    try:
+        # Get the requested parameter
+        response = SSM_CLIENT.get_parameter(Name=name, WithDecryption=True)
+        value = response["Parameter"]["Value"]
+    except SSM_CLIENT.exceptions.ParameterNotFound:
+        LOGGER.warning(
+            f"Parameter {name} not found in SSM, returning default: {default}"
+        )
+        return default
+
+    return value
+
+def mock_user_pool_id() -> str:
+    client_cognito = AWS_SESSION.client("cognito-idp")
+    user_pool_response = client_cognito.create_user_pool(PoolName="test_pool")
+    user_pool_id = user_pool_response["UserPool"]["Id"]
+    return user_pool_id
+
+
 GOOGLE_SERVICE_ACCOUNT = get_ssm_parameter(
     os.getenv("CHB_AWS_SSM_GOOGLE_SERVICE_ACCOUNT")
 )
@@ -20,13 +55,6 @@ if GOOGLE_SERVICE_ACCOUNT is None:
         GOOGLE_JSON_ACCOUNT_INFO = json.load(file)
 else:
     GOOGLE_JSON_ACCOUNT_INFO = json.loads(GOOGLE_SERVICE_ACCOUNT)
-
-
-def mock_user_pool_id() -> str:
-    client_cognito = AWS_SESSION.client("cognito-idp")
-    user_pool_response = client_cognito.create_user_pool(PoolName="test_pool")
-    user_pool_id = user_pool_response["UserPool"]["Id"]
-    return user_pool_id
 
 
 class ChatbotSettings(BaseSettings):
@@ -65,27 +93,24 @@ class ChatbotSettings(BaseSettings):
     embed_batch_size: int = int(os.getenv("CHB_EMBED_BATCH_SIZE", "100"))
     embed_dim: int = int(os.getenv("CHB_EMBEDDING_DIM", "768"))
     embed_model_id: str = os.getenv("CHB_EMBED_MODEL_ID", "gemini-embedding-001")
-    embed_retry_min_seconds_docs: float = 1.5
-    embed_retry_min_seconds_qa: float = 1
-    embed_retries_docs: int = 30
-    embed_retries_qa: int = 3
-    embed_task_docs: str = "RETRIEVAL_DOCUMENT"
-    embed_task_qa: str = "RETRIEVAL_QUERY"
-    max_tokens: int = os.getenv("CHB_MODEL_MAXTOKENS", "768")
+    embed_retries: int = int(os.getenv("CHB_EMBED_RETRIES", "3"))
+    embed_retry_min_seconds: float = float(
+        os.getenv("CHB_EMBED_RETRY_MIN_SECONDS", "1")
+    )
+    embed_task: str = "RETRIEVAL_QUERY"
+    max_tokens: int = int(os.getenv("CHB_MODEL_MAXTOKENS", "2048"))
     model_id: str = os.getenv("CHB_MODEL_ID", "gemini-2.5-flash-lite")
     provider: str = os.getenv("CHB_PROVIDER", "google")
     reranker_id: str = os.getenv("CHB_RERANKER_ID", "semantic-ranker-default-004")
     similarity_topk: int = int(os.getenv("CHB_ENGINE_SIMILARITY_TOPK", "5"))
-    temperature_agent: float = 0.7
+    temperature_agent: float = 0.5
     temperature_rag: float = float(os.getenv("CHB_MODEL_TEMPERATURE", "0.3"))
     use_async: bool = os.getenv("CHB_ENGINE_USE_ASYNC", "True").lower() == "true"
 
     # vector index and docs params
     chunk_overlap: int = PARAMS["vector_index"]["chunk_overlap"]
     chunk_size: int = PARAMS["vector_index"]["chunk_size"]
-    index_id: str = get_ssm_parameter(
-        os.getenv("CHB_AWS_SSM_LLAMAINDEX_INDEX_ID"), "discovery-index"
-    )
+    index_id: str = PARAMS["vector_index"]["index_id"]
     presidio_config: dict = PARAMS["config_presidio"]
     bucket_static_content: str = os.getenv(
         "CHB_AWS_S3_BUCKET_NAME_STATIC_CONTENT", "devportal-d-website-static-content"
