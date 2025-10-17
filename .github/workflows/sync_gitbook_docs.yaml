@@ -233,16 +233,6 @@ jobs:
       - name: Compile packages
         run: npm run compile
 
-      - name: Generate Strapi Response Files
-        env:
-          ENVIRONMENT: ${{ github.event_name == 'workflow_dispatch' && inputs.environment || 'dev' }}
-          S3_BUCKET_NAME: devportal-${{ env.ENV_SHORT }}-website-static-content
-          STRAPI_ENDPOINT: ${{ vars.STRAPI_ENDPOINT }}
-          STRAPI_API_TOKEN: ${{ secrets.STRAPI_API_TOKEN }}
-          FETCH_FROM_STRAPI: ${{ vars.FETCH_FROM_STRAPI || 'true' }}
-          NEXT_PUBLIC_COGNITO_REGION: ${{ vars.NEXT_PUBLIC_COGNITO_REGION || 'eu-south-1' }}
-        run: npm run generate-strapi-response-files -w gitbook-docs
-
       - name: Generate UrlReplace metadata
         env:
           ENVIRONMENT: 'prod'
@@ -265,10 +255,15 @@ jobs:
           aws_region: eu-south-1
           role_to_assume: ${{ secrets.DEPLOY_IAM_ROLE }}
 
-      - name: Sync docs folder to S3
-        working-directory: ./devportal-docs
-        run: |
-          aws s3 sync docs s3://devportal-p-website-static-content/devportal-docs/docs --delete --size-only
+      - name: Generate Strapi Response Files
+        env:
+          ENVIRONMENT: ${{ github.event_name == 'workflow_dispatch' && inputs.environment || 'dev' }}
+          S3_BUCKET_NAME: devportal-${{ env.ENV_SHORT }}-website-static-content
+          STRAPI_ENDPOINT: ${{ vars.STRAPI_ENDPOINT }}
+          STRAPI_API_TOKEN: ${{ secrets.STRAPI_API_TOKEN }}
+          FETCH_FROM_STRAPI: ${{ vars.FETCH_FROM_STRAPI || 'true' }}
+          NEXT_PUBLIC_COGNITO_REGION: ${{ vars.NEXT_PUBLIC_COGNITO_REGION || 'eu-south-1' }}
+        run: npm run generate-strapi-response-files -w gitbook-docs
 
       - name: Generate guides metadata
         env:
@@ -304,6 +299,11 @@ jobs:
           FETCH_FROM_STRAPI: ${{ vars.FETCH_FROM_STRAPI || 'true' }}
           NEXT_PUBLIC_COGNITO_REGION: ${{ vars.NEXT_PUBLIC_COGNITO_REGION || 'eu-south-1' }}
         run: npm run generate-release-notes-metadata -w gitbook-docs
+
+      - name: Sync docs folder to S3
+        working-directory: ./devportal-docs
+        run: |
+          aws s3 sync docs s3://devportal-p-website-static-content/devportal-docs/docs --delete --size-only
 
       - name: Invalidate CloudFront asset bucket cache
         run: |
