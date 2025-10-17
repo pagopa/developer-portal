@@ -47,7 +47,7 @@ const chatMarkdocConfig: ConfigType = {
       transform(node: Node, config: Config) {
         const attrs = node.transformAttributes(config);
         const gitBookPagesWithTitle: ReadonlyArray<PageTitlePath> =
-          config.variables ? [...config.variables.gitBookPagesWithTitle] : [];
+          config.variables?.gitBookPagesWithTitle || [];
         const page = gitBookPagesWithTitle.find(
           ({ path }) => path === attrs.href
         );
