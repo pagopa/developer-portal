@@ -94,16 +94,6 @@ jobs:
       - name: Compile packages
         run: npm run compile
 
-      - name: Generate Strapi Response Files
-        env:
-          ENVIRONMENT: ${{ github.event_name == 'workflow_dispatch' && inputs.environment || 'dev' }}
-          S3_BUCKET_NAME: devportal-${{ env.ENV_SHORT }}-website-static-content
-          STRAPI_ENDPOINT: ${{ vars.STRAPI_ENDPOINT }}
-          STRAPI_API_TOKEN: ${{ secrets.STRAPI_API_TOKEN }}
-          FETCH_FROM_STRAPI: ${{ vars.FETCH_FROM_STRAPI || 'true' }}
-          NEXT_PUBLIC_COGNITO_REGION: ${{ vars.NEXT_PUBLIC_COGNITO_REGION || 'eu-south-1' }}
-        run: npm run generate-strapi-response-files -w gitbook-docs
-
       - name: Generate UrlReplace metadata
         if: inputs.generate_metadata_only == false
         env:
@@ -128,13 +118,16 @@ jobs:
           aws_region: eu-south-1
           role_to_assume: ${{ secrets.DEPLOY_IAM_ROLE }}
 
-      - name: Sync docs folder to S3
-        if: inputs.generate_metadata_only == false
-        working-directory: ./devportal-docs
-        run: |    
-          aws s3 sync docs s3://devportal-${{ env.ENV_SHORT }}-website-static-content/devportal-docs/docs --delete ${{ inputs.incremental_mode == true && ' --size-only' || '' }}
-      
-      
+      - name: Generate Strapi Response Files
+        env:
+          ENVIRONMENT: ${{ github.event_name == 'workflow_dispatch' && inputs.environment || 'dev' }}
+          S3_BUCKET_NAME: devportal-${{ env.ENV_SHORT }}-website-static-content
+          STRAPI_ENDPOINT: ${{ vars.STRAPI_ENDPOINT }}
+          STRAPI_API_TOKEN: ${{ secrets.STRAPI_API_TOKEN }}
+          FETCH_FROM_STRAPI: ${{ vars.FETCH_FROM_STRAPI || 'true' }}
+          NEXT_PUBLIC_COGNITO_REGION: ${{ vars.NEXT_PUBLIC_COGNITO_REGION || 'eu-south-1' }}
+        run: npm run generate-strapi-response-files -w gitbook-docs
+
       - name: Generate guides metadata      
         if: inputs.metadata_type == 'guides' || inputs.metadata_type == 'all'
         env:
@@ -171,7 +164,13 @@ jobs:
           STRAPI_API_TOKEN: ${{ secrets.STRAPI_API_TOKEN }}
           FETCH_FROM_STRAPI: ${{ vars.FETCH_FROM_STRAPI || 'true' }}
           NEXT_PUBLIC_COGNITO_REGION: ${{ vars.NEXT_PUBLIC_COGNITO_REGION || 'eu-south-1' }}
-        run: npm run generate-release-notes-metadata -w gitbook-docs 
+        run: npm run generate-release-notes-metadata -w gitbook-docs
+
+      - name: Sync docs folder to S3
+        if: inputs.generate_metadata_only == false
+        working-directory: ./devportal-docs
+        run: |
+          aws s3 sync docs s3://devportal-${{ env.ENV_SHORT }}-website-static-content/devportal-docs/docs --delete ${{ inputs.incremental_mode == true && ' --size-only' || '' }}
 
       - name: Invalidate CloudFront asset bucket cache
         run: |
