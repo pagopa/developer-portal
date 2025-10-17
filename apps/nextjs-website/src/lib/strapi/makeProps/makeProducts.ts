@@ -82,7 +82,7 @@ export function makeBaseProductWithoutLogoProps(
     hasApiDataListPage: !!(
       product.attributes.api_data_list_page.data &&
       product.attributes.api_data_list_page.data.attributes.apiData.data
-      .length > 0
+        .length > 0
     ),
     hasGuideListPage: !!product.attributes.guide_list_page.data,
     hasOverviewPage: !!product.attributes.overview.data,
