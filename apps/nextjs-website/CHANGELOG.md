@@ -1,5 +1,33 @@
 # nextjs-website
 
+## 10.0.0
+
+### Major Changes
+
+- e103dbf: Add filters to use case list page
+- a4545d2: Implement UseCase detail page, define UseCases props, and add UseCases data fetching.
+- a10836f: Add use case list page, define StrapiUseCaseListPage type, UseCaseListPage props and add UseCaseListPage data fetcing
+
+### Minor Changes
+
+- bd07eff: Add steps to PartRendererMenu
+- f1895e6: Add rendering for new markdown part
+- 42deada: Improve scroll behaviour to be able to scroll to the top of the filters in UseCaseList and TutorialsList components
+- f95be9b: Add Use Cases section preview in overviews
+- 9184d73: Add rendering for GitBook Stepper and Step
+- 25a39f7: Refactor tutorial section in product overview page
+- 1d1e4f0: Add rendering of Markdown parts to UseCases
+
+### Patch Changes
+
+- fa69b3b: Add assets prefix to tutorials markdown part
+- 79ece2d: Remove redundant type assertion and remove duplicate collection filter
+- Updated dependencies [6d0f79a]
+- Updated dependencies [f1895e6]
+- Updated dependencies [ff133a4]
+- Updated dependencies [9184d73]
+  - gitbook-docs@1.2.0
+
 ## 9.0.1
 
 ### Patch Changes

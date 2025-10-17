@@ -1,5 +1,16 @@
 # infrastructure
 
+## 5.0.0
+
+### Major Changes
+
+- 070e4a1: Cloudfront distribution for video streaming
+- 3cacbdb: New module that creates aws ivs channels
+
+### Patch Changes
+
+- 492fa6c: Use the registry release of the opennext terraform module
+
 ## 4.0.0
 
 ### Major Changes
