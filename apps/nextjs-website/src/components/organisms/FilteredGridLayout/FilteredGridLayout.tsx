@@ -11,6 +11,8 @@ import { useSearchParams } from 'next/navigation';
 import MobileFilterSelector from '@/components/molecules/MobileFilterSelector/MobileFilterSelector';
 import DesktopFilterSelector from '@/components/molecules/DesktopFilterSelector/DesktopFilterSelector';
 import SectionTitle from '@/components/molecules/SectionTitle/SectionTitle';
+import { UseCase } from '@/lib/types/useCaseData';
+import { PRODUCT_HEADER_HEIGHT } from '@/components/atoms/ProductHeader/ProductHeader';
 
 type FilteredGridLayoutProps = {
   readonly items: readonly (INewsroomItem & { tags: readonly Tag[] })[];
@@ -65,7 +67,14 @@ export const FilteredGridLayout = ({
   const setSelectedTagFilter = (newTag: number): void => {
     if (newTag === selectedTag) return;
     addQueryParam('tag', `${newTag}`);
-    document.getElementById('filters')?.scrollIntoView({ behavior: 'smooth' });
+    const element = document.getElementById('filtered-grid');
+    if (element) {
+      const y =
+        element.getBoundingClientRect().top +
+        window.pageYOffset -
+        PRODUCT_HEADER_HEIGHT;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    }
     setSelectedTag(newTag);
   };
 
@@ -76,7 +85,7 @@ export const FilteredGridLayout = ({
   };
   const isSmallScreen = useMediaQuery('(max-width: 1000px)');
   return (
-    <Box>
+    <Box id='filtered-grid'>
       <Box sx={{ paddingBottom: filteredItems.length > 0 ? '24px' : 0 }}>
         {enableFilters &&
           tags.length > 0 &&
