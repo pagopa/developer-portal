@@ -35,12 +35,17 @@ const GitBookTemplate = ({
   versions,
   breadcrumbs,
   menuDistanceFromTop,
-  contentMarginTop = 75,
+  contentMarginTop,
   hasHeader = true,
   hasInPageMenu = true,
 }: GitBookTemplateProps) => {
   const t = useTranslations();
   const paddingTop = hasHeader ? '60px' : '-80px';
+  const responsiveContentMarginTop = (contentMarginTop &&
+    `${contentMarginTop}px`) || {
+    xs: '30px',
+    md: '110px',
+  };
 
   return (
     <FragmentProvider>
@@ -66,7 +71,7 @@ const GitBookTemplate = ({
         )}
         <Stack
           sx={{
-            margin: `${contentMarginTop} auto`,
+            marginTop: responsiveContentMarginTop,
             paddingTop: 3,
             flexGrow: { lg: 1 },
             maxWidth: {
