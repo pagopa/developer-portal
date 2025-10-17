@@ -2,6 +2,7 @@ import ChatLink from '@/components/atoms/ChatLink/ChatLink';
 import Markdoc, { Config, ConfigType, Node, Tag } from '@markdoc/markdoc';
 import React, { ReactNode } from 'react';
 import { PageTitlePath } from '@/helpers/parseS3Doc.helpers';
+
 const capitalizeFirstLetter = (text: string): string =>
   text.charAt(0).toUpperCase() + text.slice(1);
 const chatMarkdocConfig: ConfigType = {
