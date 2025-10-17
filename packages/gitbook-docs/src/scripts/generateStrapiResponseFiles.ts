@@ -57,26 +57,19 @@ async function main() {
     process.exit(1);
   }
 
-  await writeSitemapJson(
-    siteMap,
-    S3_SITEMAP_PATH,
-    `${S3_BUCKET_NAME}`,
-    s3Client
-  );
-
-  await writeSitemapJson(
-    strapiProducts,
-    S3_PRODUCTS_METADATA_JSON_PATH,
-    `${S3_BUCKET_NAME}`,
-    s3Client
-  );
-
-  await writeSitemapJson(
-    strapiApisData,
-    S3_APIS_DATA_METADATA_JSON_PATH,
-    `${S3_BUCKET_NAME}`,
-    s3Client
-  );
+  const sitemapJsons = [
+    { data: siteMap, path: S3_SITEMAP_PATH },
+    { data: strapiProducts, path: S3_PRODUCTS_METADATA_JSON_PATH },
+    { data: strapiApisData, path: S3_APIS_DATA_METADATA_JSON_PATH }
+  ];
+  for (const { data, path } of sitemapJsons) {
+    await writeSitemapJson(
+      data,
+      path,
+      `${S3_BUCKET_NAME}`,
+      s3Client
+    );
+  }
 }
 
 main();
