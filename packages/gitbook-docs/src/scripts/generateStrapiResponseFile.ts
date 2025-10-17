@@ -7,11 +7,11 @@ import dotenv from 'dotenv';
 import { fetchFromStrapi } from '../helpers/fetchFromStrapi';
 import { makeS3Client, writeSitemapJson } from '../helpers/s3Bucket.helper';
 import { StrapiApiData, StrapiProduct } from '../helpers/strapiTypes';
+import { baseUrl } from 'nextjs-website/src/config';
 
 dotenv.config();
 
-const SITEMAP_URL =
-  process.env.SITEMAP_URL || 'https://developer.pagopa.it/sitemap.xml';
+const SITEMAP_URL = process.env.SITEMAP_URL || `${baseUrl}/sitemap.xml`;
 const S3_SITEMAP_PATH = process.env.S3_SITEMAP_PATH || 'sitemap.xml';
 const S3_PRODUCTS_METADATA_JSON_PATH =
   process.env.S3_PRODUCTS_METADATA_JSON_PATH || 'synced-products-response.json';
