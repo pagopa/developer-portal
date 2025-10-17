@@ -3,4 +3,4 @@
 "nextjs-website": minor
 ---
 
-Add rendering for gitbook Stepper and Step
+Add rendering for GitBook Stepper and Step
