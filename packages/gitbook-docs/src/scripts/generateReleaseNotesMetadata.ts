@@ -14,7 +14,7 @@ import {
 import { extractTitleFromMarkdown } from '../helpers/extractTitle.helper';
 import { fetchFromStrapi } from '../helpers/fetchFromStrapi';
 import { sitePathFromS3Path } from '../helpers/sitePathFromS3Path';
-import { StrapiReleaseNote } from '../helpers/guidesMetadataHelper';
+import { StrapiReleaseNote } from '../helpers/strapiTypes';
 import { getSyncedReleaseNotesResponseJsonPath } from '../syncedResponses';
 
 // Load environment variables from .env file

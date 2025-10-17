@@ -51,6 +51,7 @@ export function makePartProps(
         return {
           component: 'markdown',
           content: '',
+          dirName: '',
         };
       // eslint-disable-next-line no-case-declarations
       const content =
@@ -58,6 +59,7 @@ export function makePartProps(
       return {
         component: 'markdown',
         content: content ? content : '',
+        dirName: strapiPart.dirName,
       };
     case 'parts.ck-editor':
       // eslint-disable-next-line no-case-declarations
