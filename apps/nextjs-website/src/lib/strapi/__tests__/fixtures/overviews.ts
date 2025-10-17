@@ -299,6 +299,7 @@ export const overviewPageProps: OverviewPageProps = {
   path: '/pago-pa/overview',
   product: {
     apiDataListPageUrl: '/pago-pa/api/api-rest',
+    isVisible: true,
     name: 'Piattaforma pagoPA',
     slug: 'pago-pa',
     shortName: 'pagoPA',
