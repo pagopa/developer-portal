@@ -58,9 +58,6 @@ export const generateMetadata = async (
 
 const ApiDataPage = async ({ params }: ApiDataParams) => {
   const apiDataProps = await getApiData(params.apiDataSlug);
-  if (!apiDataProps.product?.isVisible) {
-    return <PageNotFound />;
-  }
 
   const structuredData = generateStructuredDataScripts({
     breadcrumbsItems: [

@@ -10,7 +10,6 @@ import {
   breadcrumbItemByProduct,
   productToBreadcrumb,
 } from '@/helpers/structuredData.helpers';
-import PageNotFound from '../../../not-found';
 
 type Params = {
   productSlug: string;
@@ -44,9 +43,6 @@ const Page = async ({ params }: { params: Params }) => {
   const tutorialPath = params?.productTutorialPage?.join('/');
 
   const strapiTutorialProps = await getTutorial(productSlug, [tutorialPath]);
-  if (!strapiTutorialProps.product?.isVisible) {
-    return <PageNotFound />;
-  }
 
   const structuredData = generateStructuredDataScripts({
     breadcrumbsItems: [

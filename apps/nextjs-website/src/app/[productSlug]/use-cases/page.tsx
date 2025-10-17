@@ -19,7 +19,6 @@ import {
 import { UseCase } from '@/lib/types/useCaseData';
 import { getUseCaseListPageProps } from '@/lib/api';
 import { UseCaseList } from '../../../components/organisms/UseCaseList/UseCaseList';
-import PageNotFound from '../../not-found';
 
 export type UseCasesPageProps = {
   readonly product: Product;
@@ -58,10 +57,6 @@ const UseCasesPage = async ({ params }: ProductParams) => {
   const { productSlug } = params;
   const { abstract, bannerLinks, path, useCases, seo, product, enableFilters } =
     await getUseCaseListPageProps(productSlug);
-
-  if (!product.isVisible) {
-    return <PageNotFound />;
-  }
 
   const structuredData = generateStructuredDataScripts({
     breadcrumbsItems: [

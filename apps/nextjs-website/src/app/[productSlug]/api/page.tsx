@@ -12,7 +12,6 @@ import {
 } from '@/helpers/metadata.helpers';
 import { getApiDataListPages } from '@/lib/api';
 import { Metadata } from 'next';
-import PageNotFound from '../../not-found';
 
 type Params = {
   productSlug: string;
@@ -40,9 +39,6 @@ export async function generateMetadata({
 
 const ApiDataListPage = async ({ params }: { params: Params }) => {
   const apiDataListPageProps = await getApiDataListPages(params.productSlug);
-  if (!apiDataListPageProps?.product.isVisible) {
-    return <PageNotFound />;
-  }
 
   const structuredData = generateStructuredDataScripts({
     breadcrumbsItems: [
