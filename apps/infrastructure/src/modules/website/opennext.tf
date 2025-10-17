@@ -38,8 +38,8 @@ module "opennext" {
     hosted_zone_id      = var.hosted_zone_id
   }
 
-  environment          = var.environment_information
-  node_major_version   = 22
+  environment        = var.environment_information
+  node_major_version = 22
 
   server = {
     environment_variables = {
