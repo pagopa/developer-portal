@@ -35,6 +35,14 @@ provider "aws" {
     tags = var.tags
   }
 }
+provider "aws" {
+  alias  = "eu-central-1"
+  region = "eu-central-1"
+
+  default_tags {
+    tags = var.tags
+  }
+}
 
 provider "aws" {
   alias  = "eu-west-3"
@@ -233,4 +241,22 @@ module "docs_redirect" {
 
   environment = var.environment
   tags        = var.tags
+}
+
+
+module "video_streaming" {
+  source = "./modules/video_streaming"
+
+  providers = {
+    aws = aws.eu-central-1
+  }
+
+  # Pass variables to the module
+
+  project_name = "devportal-${local.env_short[var.environment]}"
+  ivs_channels = {
+    "channell-01" = {
+      name = "channel-01"
+    }
+  }
 }
