@@ -6,7 +6,7 @@
 import dotenv from 'dotenv';
 import { fetchFromStrapi } from '../helpers/fetchFromStrapi';
 import { makeS3Client, writeSitemapJson } from '../helpers/s3Bucket.helper';
-import { StrapiApiData, StrapiProduct } from '../helpers/guidesMetadataHelper';
+import { StrapiApiData, StrapiProduct } from '../helpers/strapiTypes';
 
 dotenv.config();
 
