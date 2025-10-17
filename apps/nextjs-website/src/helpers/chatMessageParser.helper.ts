@@ -1,7 +1,37 @@
 import ChatLink from '@/components/atoms/ChatLink/ChatLink';
-import Markdoc, { Config, ConfigType, Node, Tag } from '@markdoc/markdoc';
+import Markdoc, {
+  Config,
+  ConfigType,
+  Node,
+  RenderableTreeNode,
+  Tag,
+} from '@markdoc/markdoc';
 import React, { ReactNode } from 'react';
 import { PageTitlePath } from '@/helpers/parseS3Doc.helpers';
+
+function getTitleFromPage(
+  childrenTreeNode: readonly RenderableTreeNode[],
+  page?: PageTitlePath
+): string | undefined {
+  return childrenTreeNode &&
+    typeof childrenTreeNode[0] === 'string' &&
+    childrenTreeNode[0].endsWith('.md') &&
+    page
+    ? page.title
+    : undefined;
+}
+
+function getTitleFromAnchor(
+  childrenTreeNode: readonly RenderableTreeNode[]
+): string | undefined {
+  return childrenTreeNode &&
+    typeof childrenTreeNode[0] === 'string' &&
+    childrenTreeNode[0].startsWith('#')
+    ? capitalizeFirstLetter(
+        childrenTreeNode[0].replace('#', '').replaceAll('-', ' ')
+      )
+    : undefined;
+}
 
 const capitalizeFirstLetter = (text: string): string =>
   text.charAt(0).toUpperCase() + text.slice(1);
@@ -24,22 +54,9 @@ const chatMarkdocConfig: ConfigType = {
 
         const childrenTreeNode = node.transformChildren(config);
 
-        const titleFromPage =
-          childrenTreeNode &&
-          typeof childrenTreeNode[0] === 'string' &&
-          childrenTreeNode[0].endsWith('.md') &&
-          page
-            ? page.title
-            : undefined;
+        const titleFromPage = getTitleFromPage(childrenTreeNode, page);
 
-        const titleFromAnchor =
-          childrenTreeNode &&
-          typeof childrenTreeNode[0] === 'string' &&
-          childrenTreeNode[0].startsWith('#')
-            ? capitalizeFirstLetter(
-                childrenTreeNode[0].replace('#', '').replaceAll('-', ' ')
-              )
-            : undefined;
+        const titleFromAnchor = getTitleFromAnchor(childrenTreeNode);
 
         const children = titleFromPage
           ? [titleFromPage]
