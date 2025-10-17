@@ -112,6 +112,10 @@ const Page = async ({ params }: { params: Params }) => {
     },
   };
 
+  if (!product.isVisible) {
+    return <PageNotFound />;
+  }
+
   const structuredData = generateStructuredDataScripts({
     breadcrumbsItems: [
       productToBreadcrumb(props.product),

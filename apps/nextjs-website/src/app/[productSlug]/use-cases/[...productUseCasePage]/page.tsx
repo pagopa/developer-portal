@@ -10,6 +10,7 @@ import {
   productToBreadcrumb,
 } from '@/helpers/structuredData.helpers';
 import UseCaseTemplate from '@/components/templates/UseCaseTemplate/UseCaseTemplate';
+import PageNotFound from '../../../not-found';
 
 type Params = {
   productSlug: string;
@@ -43,6 +44,9 @@ const Page = async ({ params }: { params: Params }) => {
   const useCasePath = params?.productUseCasePage?.join('/');
 
   const strapiUseCaseProps = await getUseCase(productSlug, [useCasePath]);
+  if (!strapiUseCaseProps.product?.isVisible) {
+    return <PageNotFound />;
+  }
 
   const structuredData = generateStructuredDataScripts({
     breadcrumbsItems: [

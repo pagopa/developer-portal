@@ -198,9 +198,9 @@ export async function getApiDataListPages(productSlug: string) {
 }
 
 export async function getProduct(productSlug: string) {
-  const props = (await getProductsProps()).find(
-    (product) => product.slug === productSlug
-  );
+  const props = (await getProductsProps())
+    .filter((product) => product.isVisible)
+    .find((product) => product.slug === productSlug);
   return props;
 }
 

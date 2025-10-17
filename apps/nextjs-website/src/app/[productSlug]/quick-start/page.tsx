@@ -19,6 +19,7 @@ import {
   breadcrumbItemByProduct,
   productToBreadcrumb,
 } from '@/helpers/structuredData.helpers';
+import PageNotFound from '../../not-found';
 
 export type QuickStartGuidePageProps = {
   readonly product: Product;
@@ -64,6 +65,10 @@ const QuickStartGuidesPage = async ({ params }: ProductParams) => {
     seo,
     product,
   } = await getQuickStartGuide(params?.productSlug);
+
+  if (!product.isVisible) {
+    return <PageNotFound />;
+  }
 
   const structuredData = generateStructuredDataScripts({
     breadcrumbsItems: [

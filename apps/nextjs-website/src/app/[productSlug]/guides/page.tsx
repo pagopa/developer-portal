@@ -21,6 +21,7 @@ import {
   breadcrumbItemByProduct,
   productToBreadcrumb,
 } from '@/helpers/structuredData.helpers';
+import PageNotFound from '../../not-found';
 
 export type GuideListPageProps = {
   readonly product: Product;
@@ -57,6 +58,10 @@ export const generateMetadata = async (
 const GuideListPage = async ({ params }: ProductParams) => {
   const { abstract, bannerLinks, guidesSections, path, product, seo } =
     await getGuideListPages(params?.productSlug);
+
+  if (!product.isVisible) {
+    return <PageNotFound />;
+  }
 
   const structuredData = generateStructuredDataScripts({
     breadcrumbsItems: [

@@ -19,6 +19,7 @@ import {
   productToBreadcrumb,
 } from '@/helpers/structuredData.helpers';
 import { TutorialsList } from '@/components/organisms/TutorialsList/TutorialsList';
+import PageNotFound from '../../not-found';
 
 export type TutorialsPageProps = {
   readonly product: Product;
@@ -64,6 +65,10 @@ const TutorialsPage = async ({ params }: ProductParams) => {
     product,
     enableFilters,
   } = await getTutorialListPageProps(productSlug);
+
+  if (!product.isVisible) {
+    return <PageNotFound />;
+  }
 
   const structuredData = generateStructuredDataScripts({
     breadcrumbsItems: [

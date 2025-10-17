@@ -30,6 +30,7 @@ import NewsShowcase, {
 import UseCasesOverview from '@/components/organisms/UseCasesOverview/UseCasesOverview';
 import { UseCase } from '@/lib/types/useCaseData';
 import TutorialsSectionPreviewCardsLayout from '@/components/organisms/TutorialsSectionPreviewCardsLayout/TutorialsSectionPreviewCardsLayout';
+import PageNotFound from '../../not-found';
 const MAX_NUM_TUTORIALS_IN_OVERVIEW = 3;
 
 export type OverviewPageProps = {
@@ -146,6 +147,10 @@ const OverviewPage = async ({ params }: ProductParams) => {
     seo: seo,
     things: [convertSeoToStructuredDataArticle(seo)],
   });
+
+  if (!product.isVisible) {
+    return <PageNotFound />;
+  }
 
   return (
     <ProductLayout
