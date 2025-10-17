@@ -1,5 +1,26 @@
 # nextjs-website
 
+## 9.0.1
+
+### Patch Changes
+
+- 1563c31: Remove error log in build and NoSSR wrapper
+
+## 9.0.0
+
+### Major Changes
+
+- ebe435f: Add filters to tutorial list page
+
+### Minor Changes
+
+- 7d819f7: Rename and generalize Filter Selectors
+- bacb9be: Add flag to toggle filters in tutorials list page
+
+### Patch Changes
+
+- 645a425: Fix dynamic rendering for webinars, solutions and homepage
+
 ## 8.6.0
 
 ### Minor Changes

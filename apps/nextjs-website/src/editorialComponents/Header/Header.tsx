@@ -50,8 +50,6 @@ export const Header = (props: HeaderProps) => {
         component='header'
         role='banner'
         sx={{
-          borderBottomRightRadius: '8px',
-          borderBottomLeftRadius: '8px',
           paddingX: {
             xs: 3,
             sm: 3,

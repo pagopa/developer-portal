@@ -77,6 +77,11 @@ export const strapiOverviews = {
                   id: 6,
                 },
               },
+              use_case_list_page: {
+                data: {
+                  id: 7,
+                },
+              },
               logo: {
                 data: mediaJpeg(),
               },
@@ -118,11 +123,14 @@ export const strapiOverviews = {
         },
         tutorialSection: {
           title: 'Tutorials Title',
+          showCardsLayout: false,
           description: 'Tutorials Description',
           tutorials: {
             data: [
               {
                 attributes: {
+                  description: 'test description',
+                  icon: { data: mediaJpeg() },
                   title: 'Tutorial 1',
                   tags: { data: [] },
                   slug: 'tutorial-1',
@@ -139,6 +147,33 @@ export const strapiOverviews = {
                     },
                   },
                   publishedAt: dateNow.toISOString(),
+                },
+              },
+            ],
+          },
+        },
+        useCaseSection: {
+          title: 'Use Cases Title',
+          description: 'Use Cases Description',
+          useCases: {
+            data: [
+              {
+                attributes: {
+                  title: 'Use Case 1',
+                  tags: { data: [] },
+                  slug: 'use-case-1',
+                  coverImage: {
+                    data: mediaJpeg(),
+                  },
+                  product: {
+                    data: {
+                      attributes: {
+                        slug: 'test-product',
+                        name: 'Test Product',
+                        shortName: 'TestProd',
+                      },
+                    },
+                  },
                 },
               },
             ],
@@ -273,6 +308,7 @@ export const overviewPageProps: OverviewPageProps = {
     hasQuickstartGuidePage: true,
     hasReleaseNotePage: true,
     hasTutorialListPage: true,
+    hasUseCaseListPage: true,
     description: undefined,
     tags: [],
     bannerLinks: [
@@ -330,6 +366,7 @@ export const overviewPageProps: OverviewPageProps = {
   },
   tutorials: {
     title: 'Tutorials Title',
+    showCardsLayout: false,
     subtitle: 'Tutorials Description',
     list: [
       {
@@ -338,9 +375,37 @@ export const overviewPageProps: OverviewPageProps = {
           url: 'https://example.com/example.jpg',
           alternativeText: 'Example Image',
         },
+        icon: {
+          alternativeText: 'Example Image',
+          caption: undefined,
+          ext: '.jpg',
+          height: 600,
+          mime: 'image/jpeg',
+          name: 'example.jpg',
+          size: 123456,
+          url: 'https://example.com/example.jpg',
+          width: 800,
+        },
+        description: 'test description',
         title: 'Tutorial 1',
         name: 'shared.moreInfo',
         path: '/test-product/tutorials/tutorial-1',
+      },
+    ],
+  },
+  useCases: {
+    title: 'Use Cases Title',
+    description: 'Use Cases Description',
+    list: [
+      {
+        showInOverview: true,
+        coverImage: {
+          url: 'https://example.com/example.jpg',
+          alternativeText: 'Example Image',
+        },
+        title: 'Use Case 1',
+        name: 'shared.moreInfo',
+        path: '/test-product/use-cases/use-case-1',
       },
     ],
   },
