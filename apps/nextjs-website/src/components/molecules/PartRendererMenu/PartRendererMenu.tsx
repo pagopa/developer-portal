@@ -76,17 +76,13 @@ const PartRendererMenu = (props: PartRendererMenuProps): ReactNode | null => {
               .replace(/&[a-zA-Z0-9#]+;/g, ' ')
               .replace(/\s+/g, ' ');
             const href = `#${createSlug(title)}`;
-            // eslint-disable-next-line functional/no-let
-            let stepNumber = undefined;
-            if (level === 3 && stepIndices.length > 0) {
-              // eslint-disable-next-line functional/no-loop-statements,functional/no-let
-              for (let i = stepIndices.length - 1; i >= 0; i--) {
-                if (stepIndices[i] < (match?.index || 0)) {
-                  stepNumber = i + 1;
-                }
-              }
-            }
-
+            const lastStepIndex =
+              level === 3 && stepIndices.length > 0
+                ? stepIndices.findLast((index) => index < (match?.index || 0))
+                : undefined;
+            const stepNumber = lastStepIndex
+              ? stepIndices.indexOf(lastStepIndex) + 1
+              : undefined;
             const finalTitle = stepNumber ? stepNumber + ' - ' + title : title;
             return (
               <MUILink
