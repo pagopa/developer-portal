@@ -8,7 +8,6 @@ export type Product = {
   readonly description?: string;
   readonly isVisible: boolean;
   readonly logo?: Media;
-  readonly name: string;
   readonly hasApiDataListPage?: boolean;
   readonly hasGuideListPage?: boolean;
   readonly hasOverviewPage?: boolean;
@@ -16,6 +15,7 @@ export type Product = {
   readonly hasReleaseNotePage?: boolean;
   readonly hasTutorialListPage?: boolean;
   readonly hasUseCaseListPage?: boolean;
+  readonly name: string;
   readonly shortName: string;
   readonly slug: string;
   readonly tags?: readonly Tag[];

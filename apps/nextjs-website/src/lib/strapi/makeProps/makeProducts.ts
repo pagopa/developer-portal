@@ -79,11 +79,10 @@ export function makeBaseProductWithoutLogoProps(
     apiDataListPageUrl: getApiDataListPageUrl(product),
     bannerLinks: product.attributes.bannerLinks?.map(makeBannerLinkProps) || [],
     isVisible: product.attributes.isVisible,
-    name: product.attributes.name,
     hasApiDataListPage: !!(
       product.attributes.api_data_list_page.data &&
       product.attributes.api_data_list_page.data.attributes.apiData.data
-        .length > 0
+      .length > 0
     ),
     hasGuideListPage: !!product.attributes.guide_list_page.data,
     hasOverviewPage: !!product.attributes.overview.data,
@@ -91,6 +90,7 @@ export function makeBaseProductWithoutLogoProps(
     hasReleaseNotePage: !!product.attributes.release_note.data,
     hasTutorialListPage: !!product.attributes.tutorial_list_page.data,
     hasUseCaseListPage: !!product.attributes.use_case_list_page.data,
+    name: product.attributes.name,
     shortName: product.attributes.shortName,
     slug: product.attributes.slug,
     tags: product.attributes.tags?.data?.map((tag) => tag.attributes) || [],
