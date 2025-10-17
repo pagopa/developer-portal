@@ -15,6 +15,7 @@ export const strapiUseCaseListPages: StrapiUseCaseListPages = {
         product: {
           data: {
             attributes: {
+              isVisible: true,
               name: 'Product 1',
               shortName: 'P1',
               slug: 'product-1',
@@ -40,6 +41,7 @@ export const strapiUseCaseListPages: StrapiUseCaseListPages = {
                 product: {
                   data: {
                     attributes: {
+                      isVisible: true,
                       name: 'Product 1',
                       shortName: 'P1',
                       slug: 'product-1',

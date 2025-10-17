@@ -16,6 +16,7 @@ export const strapiReleaseNotes: StrapiReleaseNotes = {
         product: {
           data: {
             attributes: {
+              isVisible: true,
               tags: { data: [] },
               name: 'Test Product',
               slug: 'test-product',
@@ -82,6 +83,7 @@ export const expectedReleaseNotePageProps: ReleaseNotePageProps = {
   landingFile: 'release-notes.md',
   path: '/test-product/release-note',
   product: {
+    isVisible: true,
     name: 'Test Product',
     slug: 'test-product',
     shortName: 'TP',

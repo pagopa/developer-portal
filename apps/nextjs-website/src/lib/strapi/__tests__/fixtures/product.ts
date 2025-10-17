@@ -6,6 +6,7 @@ export const baseProductJson = {
   data: {
     id: 8,
     attributes: {
+      isVisible: true,
       name: 'Firma con IO',
       slug: 'firma-con-io',
       shortName: 'Firma con IO',
@@ -45,6 +46,7 @@ export const productsJson = {
 
 export const product = {
   apiDataListPageUrl: '/pago-pa/api',
+  isVisible: true,
   name: 'Piattaforma pagoPA',
   slug: 'pago-pa',
   shortName: 'pagoPA',

@@ -27,6 +27,7 @@ export const strapiGuideListPagesData = {
         product: {
           data: {
             attributes: {
+              isVisible: true,
               tags: { data: [] },
               name: 'Piattaforma pagoPA',
               slug: 'pago-pa',

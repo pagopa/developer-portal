@@ -25,9 +25,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const apiDataParams = await getApiDataParams();
   const guideListPages = await getGuideListPagesProps();
   const caseHistories = await getCaseHistoriesProps();
-  const productSlugs = (await getProductsProps()).map(
-    (product) => product.slug
-  );
+  const productSlugs = (await getProductsProps())
+    .filter((product) => product.isVisible)
+    .map((product) => product.slug);
 
   // Fetch metadata from S3
   const guidesMetadata = await getGuidesMetadata();

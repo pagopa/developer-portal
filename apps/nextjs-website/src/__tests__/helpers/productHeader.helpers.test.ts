@@ -2,6 +2,7 @@ import { productToMenuItems } from '@/helpers/productHeader.helper';
 import { Product } from '@/lib/types/product';
 
 const product: Product = {
+  isVisible: true,
   name: 'test',
   shortName: 'test',
   description: 'test',

@@ -19,6 +19,7 @@ export const strapiApiDataListPages = {
         product: {
           data: {
             attributes: {
+              isVisible: true,
               name: 'SEND',
               slug: 'send',
               shortName: 'SEND',
@@ -110,6 +111,7 @@ export const expectedApiDataListPageProps: ReadonlyArray<ApiDataListPageTemplate
         subtitle: 'Complete documentation for SEND APIs',
       },
       product: {
+        isVisible: true,
         name: 'SEND',
         slug: 'send',
         shortName: 'SEND',
