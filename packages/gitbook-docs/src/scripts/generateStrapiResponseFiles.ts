@@ -42,7 +42,7 @@ async function main() {
     );
     strapiApisData = data;
   } catch (error) {
-    console.error('Error fetching Products from Strapi:', error);
+    console.error('Error fetching APIs data from Strapi:', error);
     process.exit(1);
   }
   console.log(`Fetched ${strapiApisData.length} apis-data from Strapi`);
