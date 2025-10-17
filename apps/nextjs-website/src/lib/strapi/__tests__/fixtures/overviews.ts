@@ -140,6 +140,7 @@ export const strapiOverviews = {
                   product: {
                     data: {
                       attributes: {
+                        isVisible: true,
                         slug: 'test-product',
                         name: 'Test Product',
                         shortName: 'TestProd',
@@ -168,6 +169,7 @@ export const strapiOverviews = {
                   product: {
                     data: {
                       attributes: {
+                        isVisible: true,
                         slug: 'test-product',
                         name: 'Test Product',
                         shortName: 'TestProd',
