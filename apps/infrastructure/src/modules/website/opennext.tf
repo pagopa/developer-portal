@@ -32,6 +32,7 @@ module "opennext" {
   source  = "pagopa-dx/aws-open-next/aws"
   version = "~> 0.0"
 
+
   custom_domain = {
     domain_name         = var.dns_domain_name
     acm_certificate_arn = aws_acm_certificate.website.arn
