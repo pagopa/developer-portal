@@ -2,4 +2,4 @@
 "nextjs-website": patch
 ---
 
-Manage product visibility using the new attribute isVisible flag of StrapiProduct
+Manage product visibility using the new boolean attribute isVisible of StrapiProduct
