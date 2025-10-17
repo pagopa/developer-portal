@@ -12,11 +12,6 @@ on:
           - dev
           - uat
           - prod
-      call_reindex:
-        description: 'Trigger reindex workflow after docs sync'
-        type: boolean
-        required: true
-        default: false
       metadata_type:
         description: 'Type of metadata to generate'
         type: choice
@@ -184,15 +179,6 @@ jobs:
           aws cloudfront create-invalidation \
             --distribution-id ${{ vars.OPENNEXT_CLOUDFRONT_DISTRIBUTION_ID }} \
             --paths "/*"
-
-      - name: Trigger reindex workflow
-        if: inputs.call_reindex
-        run: |
-          curl -X POST \
-          -H "Authorization: token ${{ secrets.TAG_GITHUB_PAT }}" \
-          -H "Accept: application/vnd.github+json" \
-          https://api.github.com/repos/${{ github.repository }}/actions/workflows/141828151/dispatches \
-          -d '{"ref":"main","inputs":{"environment":"${{ inputs.environment }}"}}'
 
   scheduled_sync_gitbook_docs:
     name: Sync gitbook Docs to S3 (scheduled on prod)
