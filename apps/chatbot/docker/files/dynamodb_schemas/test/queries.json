@@ -26,10 +26,6 @@
     {
       "AttributeName": "createdAtDate",
       "AttributeType": "S"
-    },
-    {
-      "AttributeName": "expiresAt",
-      "AttributeType": "N"
     }
   ],
   "LocalSecondaryIndexes": [
@@ -48,7 +44,7 @@
       "Projection": {
         "ProjectionType": "ALL"
       }
-   }
+    }
   ],
   "GlobalSecondaryIndexes": [
     {
