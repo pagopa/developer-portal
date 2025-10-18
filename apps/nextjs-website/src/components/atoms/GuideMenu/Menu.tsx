@@ -101,7 +101,12 @@ const components: RenderingComponents<React.ReactNode> = {
         variant='sidenav'
         component={NextLink}
         href={href}
-        style={{ textDecoration: 'none' }}
+        color='text.secondary'
+        style={{
+          textDecoration: 'none',
+          fontSize: '.938rem',
+          fontWeight: 400,
+        }}
       >
         {title}
       </Typography>
@@ -121,14 +126,14 @@ const components: RenderingComponents<React.ReactNode> = {
   },
   Title: ({ children }) => (
     <Typography
-      color='text.secondary'
+      color='text.primary'
       style={{
         paddingLeft: 32,
-        paddingTop: 24,
-        paddingBottom: 0,
+        paddingTop: 16,
+        paddingBottom: 4,
         textDecoration: 'none',
-        fontSize: 14,
-        fontWeight: 700,
+        fontSize: '.875rem',
+        fontWeight: 600,
       }}
       textTransform='uppercase'
     >

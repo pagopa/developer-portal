@@ -71,7 +71,7 @@ const Swagger = ({
               color: 'white',
               padding: '2px 8px',
               borderRadius: '40px',
-              fontSize: 14,
+              fontSize: '0.875rem',
               fontWeight: 700,
               marginBottom: '16px',
               textTransform: 'uppercase',
@@ -79,7 +79,10 @@ const Swagger = ({
           >
             {method}
           </Typography>
-          <Typography component={'div'} sx={{ fontWeight: 700, fontSize: 18 }}>
+          <Typography
+            component={'div'}
+            sx={{ fontWeight: 700, fontSize: '1.125rem' }}
+          >
             {summary}
           </Typography>
         </div>
@@ -88,7 +91,11 @@ const Swagger = ({
         {children ? (
           <>
             <Typography
-              sx={{ fontWeight: 700, fontSize: 18, marginBottom: '16px' }}
+              sx={{
+                fontWeight: 700,
+                fontSize: '1.125rem',
+                marginBottom: '16px',
+              }}
             >
               {t('parameters.header')}
             </Typography>
@@ -96,7 +103,7 @@ const Swagger = ({
           </>
         ) : (
           <Typography
-            sx={{ fontWeight: 700, fontSize: 18, marginBottom: '16px' }}
+            sx={{ fontWeight: 700, fontSize: '1.125rem', marginBottom: '16px' }}
           >
             {t('parameters.empty')}
           </Typography>
