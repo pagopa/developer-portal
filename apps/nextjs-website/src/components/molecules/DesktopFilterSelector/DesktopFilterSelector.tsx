@@ -23,6 +23,7 @@ const DesktopFilterSelector = ({
 }: DesktopFilterSelectorProps) => {
   return (
     <Stack
+      id={'filters'}
       component='section'
       spacing={{ md: '32px', sm: '16px' }}
       direction={'row'}

@@ -40,6 +40,7 @@ const MobileFilterSelector = ({
   const icon = isExpanded ? null : <ExpandMoreIcon />;
   return (
     <Box
+      id={'filters'}
       sx={{
         backgroundColor: '#EBF4FD',
         paddingY: '24px',
