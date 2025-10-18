@@ -5,7 +5,7 @@ import { Box, useTheme } from '@mui/material';
 import Newsroom from '@/editorialComponents/Newsroom/Newsroom';
 import { useTranslations } from 'next-intl';
 
-type NewsShowcaseItemProps = {
+export type NewsShowcaseItemProps = {
   readonly comingSoon?: boolean;
   readonly title: string;
   readonly publishedAt?: Date;
