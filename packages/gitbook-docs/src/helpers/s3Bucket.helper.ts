@@ -134,7 +134,8 @@ export async function writeSitemapJson(
   items: SitemapItem[] | any, // TODO: remove when Strapi will manage Metadata
   jsonPath: string,
   bucketName: string,
-  client: S3Client
+  client: S3Client,
+  isJson = true
 ): Promise<void> {
   const sitemapJson = JSON.stringify(items, null, 2);
   console.log(`Uploading sitemap JSON to S3: ${jsonPath}`);
@@ -143,7 +144,7 @@ export async function writeSitemapJson(
     new PutObjectCommand({
       Bucket: bucketName,
       Key: jsonPath,
-      Body: sitemapJson,
+      Body: isJson ? sitemapJson : items,
     })
   );
   console.log(`Uploaded sitemap JSON to S3: ${jsonPath}`);
