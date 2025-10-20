@@ -248,10 +248,9 @@ module "video_streaming" {
   source = "./modules/video_streaming"
 
   providers = {
-    aws = aws.eu-central-1
+    aws           = aws.eu-central-1
+    aws.us-east-1 = aws.us-east-1 #
   }
-
-  # Pass variables to the module
 
   project_name = "devportal-${local.env_short[var.environment]}"
   ivs_channels = {
@@ -259,4 +258,7 @@ module "video_streaming" {
       name = "channel-01"
     }
   }
+
+  custom_domain_name = "video.${var.dns_domain_name}"
+  route53_zone_id    = module.core.hosted_zone_id
 }

@@ -26,6 +26,7 @@ import {
   getReleaseNotesMetadata,
   getSolutionsMetadata,
 } from '@/helpers/s3Metadata.helpers';
+import { s3DocsPath } from '@/config';
 
 function manageUndefined<T>(props: undefined | null | T) {
   if (!props) {
@@ -46,7 +47,7 @@ export async function getMarkdownContent(
   dirName: string,
   pathToFile: string
 ): Promise<string> {
-  const pathToMarkdownFile = `devportal-docs/docs/${dirName}/${pathToFile}`;
+  const pathToMarkdownFile = `${s3DocsPath}/${dirName}/${pathToFile}`;
   const output = await downloadFileAsText(pathToMarkdownFile);
   return output || '';
 }

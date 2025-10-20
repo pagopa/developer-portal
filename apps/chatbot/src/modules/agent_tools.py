@@ -1,19 +1,32 @@
-import os
+import json
+import requests
 from typing import List
 
 from llama_index.core.llms.llm import LLM
+from llama_index.core.base.embeddings.base import BaseEmbedding
 from llama_index.core import VectorStoreIndex, PromptTemplate
 from llama_index.core.bridge.pydantic import BaseModel, Field
 from llama_index.core.retrievers import AutoMergingRetriever
 from llama_index.core.query_engine import RetrieverQueryEngine
 from llama_index.core.tools import QueryEngineTool, FunctionTool
 
+from src.modules.logger import get_logger
 from src.modules.settings import SETTINGS
-from src.modules.documents import get_product_list
-from src.modules.models import get_llm, get_embed_model
+
+# from src.modules.documents import get_product_list
 
 
-PRODUCTS = get_product_list()
+LOGGER = get_logger(__name__)
+# PRODUCTS = get_product_list() + ["api", "webinars"]
+PRODUCTS = [
+    "pago-pa",
+    "firma-con-io",
+    "app-io",
+    "send",
+    "pdnd-interoperabilita",
+    "api",
+    "webinars",
+]
 
 
 class Reference(BaseModel):
@@ -43,6 +56,7 @@ class RAGOutput(BaseModel):
 def get_query_engine_tool(
     index: VectorStoreIndex,
     llm: LLM,
+    embed_model: BaseEmbedding,
     text_qa_template: PromptTemplate | None = None,
     refine_template: PromptTemplate | None = None,
     verbose: bool = False,
@@ -65,11 +79,7 @@ def get_query_engine_tool(
 
     base_retriever = index.as_retriever(
         similarity_top_k=SETTINGS.similarity_topk,
-        embed_model=get_embed_model(
-            retries=SETTINGS.embed_retries_qa,
-            retry_min_seconds=SETTINGS.embed_retry_min_seconds_qa,
-            task_type=SETTINGS.embed_task_qa,
-        ),
+        embed_model=embed_model,
     )
     retriever = AutoMergingRetriever(
         base_retriever, index.storage_context, verbose=verbose
@@ -104,9 +114,7 @@ def get_query_engine_tool(
         query_engine=query_engine,
         name="rag_tool",
         description=(
-            "This tool is your primary resource for answering questions about PagoPA products and services. "
-            f"Use it to find information on topics like: {PRODUCTS}. "
-            "It can also answer general questions about the company and its offerings."
+            "This tool is your primary resource for answering questions about PagoPA Developer Portal products and services."
         ),
     )
 
