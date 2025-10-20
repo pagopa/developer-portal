@@ -1,8 +1,8 @@
 ---
 vector_index:
-  path: index
+  index_id: discovery-index
   chunk_size: 1024
-  chunk_overlap: 25
+  chunk_overlap: 20
 
 config_presidio:
   nlp_engine_name: spacy
