@@ -26,6 +26,8 @@ import {
   StrapiGuidesResponse,
   StrapiSolutionsResponse,
   StrapiReleaseNotesResponse,
+  StrapiProduct,
+  StrapiApiData,
 } from '../helpers/guidesMetadataHelper';
 import { sitePathFromS3Path } from '../helpers/sitePathFromS3Path';
 import { sitePathFromLocalPath } from '../helpers/sitePathFromLocalPath';
@@ -37,6 +39,7 @@ import {
   getSyncedReleaseNotesResponseJsonPath,
 } from '../syncedResponses';
 import { DOCUMENTATION_PATH } from '../helpers/documentationParsing.helper';
+import { baseUrl } from 'nextjs-website/src/config';
 
 // Load environment variables
 dotenv.config();
@@ -62,6 +65,15 @@ const S3_SOLUTIONS_METADATA_JSON_PATH =
 const S3_RELEASE_NOTES_METADATA_JSON_PATH =
   process.env.S3_RELEASE_NOTES_METADATA_JSON_PATH ||
   'release-notes-metadata.json';
+
+const SITEMAP_URL = process.env.SITEMAP_URL || `${baseUrl}/sitemap.xml`;
+const S3_SITEMAP_PATH = process.env.S3_SITEMAP_PATH || 'sitemap.xml';
+const S3_PRODUCTS_METADATA_JSON_PATH =
+  process.env.S3_PRODUCTS_METADATA_JSON_PATH ||
+  'synced-products-response.json';
+const S3_APIS_DATA_METADATA_JSON_PATH =
+  process.env.S3_APIS_DATA_METADATA_JSON_PATH ||
+  'synced-apis-data-response.json';
 
 const DOCUMENTATION_ABSOLUTE_PATH = path.resolve(DOCUMENTATION_PATH);
 
@@ -204,6 +216,33 @@ const solutionsQueryParams = {
   ...STRAPI_DEFAULT_PAGINATION,
 };
 
+const productsQueryParams = {
+  ...STRAPI_DEFAULT_PAGINATION,
+};
+
+const apisDataPopulate = {
+  populate: {
+    product: {
+      populate: '*',
+    },
+    apiRestDetail: {
+      populate: {
+        specUrls: {
+          populate: '*',
+        },
+      },
+    },
+    apiSoapDetail: {
+      populate: '*',
+    },
+  },
+};
+
+const apisDataQueryParams = {
+  ...apisDataPopulate,
+  ...STRAPI_DEFAULT_PAGINATION,
+};
+
 const guideListPagesQueryParams = {
   populate: {
     product: {
@@ -258,6 +297,8 @@ const solutionListPageQueryParams = {
 
 const guidesQueryString = qs.stringify(guidesQueryParams);
 const solutionsQueryString = qs.stringify(solutionsQueryParams);
+const productsQueryString = qs.stringify(productsQueryParams);
+const apisDataQueryString = qs.stringify(apisDataQueryParams);
 const releaseNotesQueryString = qs.stringify(releaseNotesQueryParams);
 const guideListPagesQueryString = qs.stringify(guideListPagesQueryParams);
 const solutionListPageQueryString = qs.stringify(solutionListPageQueryParams);
@@ -266,6 +307,8 @@ interface StrapiData {
   guides: StrapiGuide[];
   solutions: StrapiSolution[];
   releaseNotes: StrapiReleaseNote[];
+  products: StrapiProduct[];
+  apisData: StrapiApiData[];
   guidesRawResponse?: StrapiGuidesResponse;
   solutionsRawResponse?: StrapiSolutionsResponse;
   releaseNotesRawResponse?: StrapiReleaseNotesResponse;
@@ -319,6 +362,8 @@ async function fetchAllStrapiData(): Promise<StrapiData> {
     releaseNotesResult,
     guideListPagesResponse,
     solutionListPageResponse,
+    productsResult,
+    apisDataResult,
   ] = await Promise.all([
     // Guides with full populate
     fetchFromStrapi<StrapiGuide>(`api/guides?${guidesQueryString}`),
@@ -336,22 +381,41 @@ async function fetchAllStrapiData(): Promise<StrapiData> {
     fetchFromStrapi<StrapiSolutionListPageResponse>(
       `api/solution-list-page/?${solutionListPageQueryString}`
     ),
+    // Products
+    fetchFromStrapi<StrapiProduct>(`api/products?${productsQueryString}`),
+    // APIs data
+    fetchFromStrapi<StrapiApiData>(`api/apis-data?${apisDataQueryString}`),
   ]);
 
   console.log(
-    `Fetched ${guidesResult.data.length} guides, ${solutionsResult.data.length} solutions, ${releaseNotesResult.data.length} release notes`
+    `Fetched ${guidesResult.data.length} guides, ${solutionsResult.data.length} solutions, ${releaseNotesResult.data.length} release notes, ${productsResult.data.length} products, ${apisDataResult.data.length} apis data entries`
   );
 
   return {
     guides: guidesResult.data,
     solutions: solutionsResult.data,
     releaseNotes: releaseNotesResult.data,
+    products: productsResult.data,
+    apisData: apisDataResult.data,
     guidesRawResponse: guidesResult.responseJson,
     solutionsRawResponse: solutionsResult.responseJson,
     releaseNotesRawResponse: releaseNotesResult.responseJson,
     guideListPagesResponse: guideListPagesResponse.data,
     solutionListPageResponse: solutionListPageResponse.data,
   };
+}
+
+async function fetchSitemapXml(): Promise<string> {
+  console.log(`Fetching sitemap from ${SITEMAP_URL}...`);
+  const response = await fetch(SITEMAP_URL);
+  if (!response.ok) {
+    // eslint
+    // eslint-disable-next-line functional/no-throw-statements
+    throw new Error(
+      `Failed to fetch sitemap: ${response.status} ${response.statusText}`
+    );
+  }
+  return await response.text();
 }
 
 // Generate URL path helper functions
@@ -715,6 +779,29 @@ async function main() {
       releaseNotes:
         METADATA_TYPE === 'all' || METADATA_TYPE === 'release_notes',
     };
+
+    if (SAVE_STRAPI_RESPONSES) {
+      console.log('Saving Strapi products, APIs data, and sitemap...');
+      await writeSitemapJson(
+        strapiData.products,
+        S3_PRODUCTS_METADATA_JSON_PATH,
+        S3_BUCKET_NAME!,
+        getS3Client()
+      );
+      await writeSitemapJson(
+        strapiData.apisData,
+        S3_APIS_DATA_METADATA_JSON_PATH,
+        S3_BUCKET_NAME!,
+        getS3Client()
+      );
+      const sitemapXml = await fetchSitemapXml();
+      await writeSitemapJson(
+        sitemapXml,
+        S3_SITEMAP_PATH,
+        S3_BUCKET_NAME!,
+        getS3Client()
+      );
+    }
 
     // Save synced responses
     if (SAVE_STRAPI_RESPONSES && metadataFilter.guides) {
