@@ -9,6 +9,7 @@ import dotenv from 'dotenv';
 import { writeFile } from 'fs/promises';
 import * as fs from 'fs';
 import path from 'path';
+import qs from 'qs';
 import { SitemapItem } from '../sitemapItem';
 import { makeS3Client, writeSitemapJson } from '../helpers/s3Bucket.helper';
 import { S3Client } from '@aws-sdk/client-s3';
@@ -63,6 +64,203 @@ const S3_RELEASE_NOTES_METADATA_JSON_PATH =
   'release-notes-metadata.json';
 
 const DOCUMENTATION_ABSOLUTE_PATH = path.resolve(DOCUMENTATION_PATH);
+
+const STRAPI_PAGE_SIZE = 1000;
+
+const STRAPI_DEFAULT_PAGINATION = {
+  pagination: {
+    pageSize: STRAPI_PAGE_SIZE,
+    page: 1,
+  },
+};
+
+const productRelationsPopulate = {
+  populate: [
+    'logo',
+    'bannerLinks.icon',
+    'overview',
+    'quickstart_guide',
+    'release_note',
+    'api_data_list_page',
+    'api_data_list_page.apiData.*',
+    'api_data_list_page.apiData.apiRestDetail.*',
+    'guide_list_page',
+    'tutorial_list_page',
+    'use_case_list_page',
+  ],
+};
+
+const webinarPopulate = {
+  populate: {
+    coverImage: {
+      populate: ['image'],
+    },
+    webinarSpeakers: {
+      populate: ['avatar'],
+    },
+    relatedLinks: {
+      populate: ['links'],
+    },
+    relatedResources: {
+      populate: {
+        resources: {
+          populate: ['image'],
+        },
+        downloadableDocuments: {
+          populate: '*',
+        },
+      },
+    },
+    seo: {
+      populate: '*,metaImage,metaSocial.image',
+    },
+    questionsAndAnswers: '*',
+    webinarCategory: {
+      populate: ['icon'],
+    },
+    headerImage: {
+      populate: ['image'],
+    },
+  },
+};
+
+const guidesPopulate = {
+  populate: {
+    image: { populate: '*' },
+    mobileImage: { populate: '*' },
+    listItems: { populate: '*' },
+    versions: { populate: '*' },
+    bannerLinks: { populate: ['icon'] },
+    seo: { populate: '*,metaImage,metaSocial.image' },
+    product: {
+      ...productRelationsPopulate,
+    },
+  },
+};
+
+const guidesQueryParams = {
+  ...guidesPopulate,
+  ...STRAPI_DEFAULT_PAGINATION,
+};
+
+const releaseNotesQueryParams = {
+  populate: {
+    bannerLinks: {
+      populate: ['icon'],
+    },
+    product: {
+      populate: [
+        'logo',
+        'bannerLinks.icon',
+        'overview',
+        'quickstart_guide',
+        'release_note',
+        'api_data_list_page',
+        'api_data_list_page.apiData.*',
+        'api_data_list_page.apiData.apiRestDetail.slug',
+        'api_data_list_page.apiData.apiRestDetail.specUrls',
+        'api_data_list_page.apiData.apiSoapDetail.*',
+        'guide_list_page',
+        'tutorial_list_page',
+        'use_case_list_page',
+      ],
+    },
+    seo: {
+      populate: '*,metaImage,metaSocial.image',
+    },
+  },
+  ...STRAPI_DEFAULT_PAGINATION,
+};
+
+const solutionsPopulate = {
+  populate: {
+    icon: 'icon',
+    stats: '*',
+    steps: {
+      populate: {
+        products: '*',
+      },
+    },
+    seo: {
+      populate: '*,metaImage,metaSocial.image',
+    },
+    products: {
+      populate: ['logo'],
+    },
+    bannerLinks: {
+      populate: ['icon'],
+    },
+    webinars: {
+      ...webinarPopulate,
+    },
+    caseHistories: {
+      populate: ['case_histories', 'case_histories.image'],
+    },
+  },
+};
+
+const solutionsQueryParams = {
+  ...solutionsPopulate,
+  ...STRAPI_DEFAULT_PAGINATION,
+};
+
+const guideListPagesQueryParams = {
+  populate: {
+    product: {
+      ...productRelationsPopulate,
+    },
+    guidesByCategory: {
+      populate: {
+        guides: {
+          populate: ['mobileImage', 'image', 'listItems'],
+        },
+      },
+    },
+    bannerLinks: {
+      populate: ['icon'],
+    },
+    seo: {
+      populate: '*,metaImage,metaSocial.image',
+    },
+  },
+};
+
+const solutionListPageQueryParams = {
+  populate: {
+    solutions: {
+      populate: [
+        'bannerLinks',
+        'bannerLinks.icon',
+        'products.logo',
+        'icon',
+        'icon.name',
+        'stats',
+        'steps',
+        'steps.products',
+        'webinars',
+        'webinars.coverImage',
+        'caseHistories',
+        'caseHistories.case_histories',
+        'caseHistories.case_histories.image',
+      ],
+    },
+    caseHistories: {
+      populate: ['case_histories', 'case_histories.image'],
+    },
+    features: {
+      populate: ['items.icon'],
+    },
+    seo: {
+      populate: '*,metaImage,metaSocial.image',
+    },
+  },
+};
+
+const guidesQueryString = qs.stringify(guidesQueryParams);
+const solutionsQueryString = qs.stringify(solutionsQueryParams);
+const releaseNotesQueryString = qs.stringify(releaseNotesQueryParams);
+const guideListPagesQueryString = qs.stringify(guideListPagesQueryParams);
+const solutionListPageQueryString = qs.stringify(solutionListPageQueryParams);
 
 interface StrapiData {
   guides: StrapiGuide[];
@@ -123,24 +321,20 @@ async function fetchAllStrapiData(): Promise<StrapiData> {
     solutionListPageResponse,
   ] = await Promise.all([
     // Guides with full populate
-    fetchFromStrapi<StrapiGuide>(
-      'api/guides?populate[0]=product&populate[1]=versions&populate[2]=image&populate[3]=mobileImage&populate[4]=bannerLinks&populate[5]=bannerLinks.icon&populate[6]=listItems&populate[7]=seo&populate[8]=seo.metaImage&populate[9]=seo.metaSocial.image&pagination[pageSize]=1000&pagination[page]=1'
-    ),
+    fetchFromStrapi<StrapiGuide>(`api/guides?${guidesQueryString}`),
     // Solutions with full populate
-    fetchFromStrapi<StrapiSolution>(
-      'api/solutions/?populate[icon]=icon&populate[stats]=*&populate[steps][populate][products]=*&populate[seo][populate]=*,metaImage,metaSocial.image&populate[products][populate][0]=logo&populate[bannerLinks][populate][0]=icon&populate[webinars][populate][coverImage][populate][0]=image&populate[webinars][populate][webinarSpeakers][populate][0]=avatar&populate[webinars][populate][relatedLinks][populate][0]=links&populate[webinars][populate][relatedResources][populate][resources][populate][0]=image&populate[webinars][populate][relatedResources][populate][downloadableDocuments][populate]=*&populate[webinars][populate][seo][populate]=*,metaImage,metaSocial.image&populate[webinars][populate][questionsAndAnswers]=*&populate[webinars][populate][webinarCategory][populate][0]=icon&populate[webinars][populate][headerImage][populate][0]=image&populate[caseHistories][populate][0]=case_histories&populate[caseHistories][populate][1]=case_histories.image&pagination[pageSize]=1000&pagination[page]=1'
-    ),
+    fetchFromStrapi<StrapiSolution>(`api/solutions/?${solutionsQueryString}`),
     // Release notes with full populate
     fetchFromStrapi<StrapiReleaseNote>(
-      'api/release-notes/?populate[bannerLinks][populate][0]=icon&populate[product][populate][0]=logo&populate[product][populate][1]=bannerLinks.icon&populate[product][populate][2]=overview&populate[product][populate][3]=quickstart_guide&populate[product][populate][4]=release_note&populate[product][populate][5]=api_data_list_page&populate[product][populate][6]=api_data_list_page.apiData.*&populate[product][populate][7]=api_data_list_page.apiData.apiRestDetail.slug&populate[product][populate][8]=api_data_list_page.apiData.apiRestDetail.specUrls&populate[product][populate][9]=api_data_list_page.apiData.apiSoapDetail.*&populate[product][populate][10]=guide_list_page&populate[product][populate][11]=tutorial_list_page&populate[seo][populate]=*,metaImage,metaSocial.image&pagination[pageSize]=1000&pagination[page]=1'
+      `api/release-notes/?${releaseNotesQueryString}`
     ),
     // Guide list pages
     fetchFromStrapi<StrapiGuideListPageResponse>(
-      'api/guide-list-pages/?populate%5Bproduct%5D%5Bpopulate%5D%5B0%5D=logo&populate%5Bproduct%5D%5Bpopulate%5D%5B1%5D=bannerLinks.icon&populate%5Bproduct%5D%5Bpopulate%5D%5B2%5D=overview&populate%5Bproduct%5D%5Bpopulate%5D%5B3%5D=quickstart_guide&populate%5Bproduct%5D%5Bpopulate%5D%5B4%5D=release_note&populate%5Bproduct%5D%5Bpopulate%5D%5B5%5D=api_data_list_page&populate%5Bproduct%5D%5Bpopulate%5D%5B6%5D=api_data_list_page.apiData.%2A&populate%5Bproduct%5D%5Bpopulate%5D%5B7%5D=api_data_list_page.apiData.apiRestDetail.%2A&populate%5Bproduct%5D%5Bpopulate%5D%5B8%5D=guide_list_page&populate%5Bproduct%5D%5Bpopulate%5D%5B9%5D=tutorial_list_page&populate%5BguidesByCategory%5D%5Bpopulate%5D%5B0%5D=guides.mobileImage&populate%5BguidesByCategory%5D%5Bpopulate%5D%5B1%5D=guides.image&populate%5BguidesByCategory%5D%5Bpopulate%5D%5B2%5D=guides.listItems&populate%5BbannerLinks%5D%5Bpopulate%5D%5B0%5D=icon&populate%5Bseo%5D%5Bpopulate%5D=%2A%2CmetaImage%2CmetaSocial.image'
+      `api/guide-list-pages/?${guideListPagesQueryString}`
     ),
     // Solution list page
     fetchFromStrapi<StrapiSolutionListPageResponse>(
-      'api/solution-list-page/?populate%5Bsolutions%5D%5Bpopulate%5D%5B0%5D=bannerLinks&populate%5Bsolutions%5D%5Bpopulate%5D%5B1%5D=bannerLinks.icon&populate%5Bsolutions%5D%5Bpopulate%5D%5B2%5D=products.logo&populate%5Bsolutions%5D%5Bpopulate%5D%5B3%5D=icon&populate%5Bsolutions%5D%5Bpopulate%5D%5B4%5D=icon.name&populate%5Bsolutions%5D%5Bpopulate%5D%5B5%5D=stats&populate%5Bsolutions%5D%5Bpopulate%5D%5B6%5D=steps&populate%5Bsolutions%5D%5Bpopulate%5D%5B7%5D=steps.products&populate%5Bsolutions%5D%5Bpopulate%5D%5B8%5D=webinars&populate%5Bsolutions%5D%5Bpopulate%5D%5B9%5D=webinars.coverImage&populate%5Bsolutions%5D%5Bpopulate%5D%5B10%5D=caseHistories&populate%5Bsolutions%5D%5Bpopulate%5D%5B11%5D=caseHistories.case_histories&populate%5Bsolutions%5D%5Bpopulate%5D%5B12%5D=caseHistories.case_histories.image&populate%5BcaseHistories%5D%5Bpopulate%5D%5B0%5D=case_histories&populate%5BcaseHistories%5D%5Bpopulate%5D%5B1%5D=case_histories.image&populate%5Bfeatures%5D%5Bpopulate%5D%5B0%5D=items.icon&populate%5Bseo%5D%5Bpopulate%5D=%2A%2CmetaImage%2CmetaSocial.image'
+      `api/solution-list-page/?${solutionListPageQueryString}`
     ),
   ]);
 
