@@ -141,9 +141,15 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
     }
   }
 
+  # custom domain configuration
+  aliases = var.custom_domain_name != null ? [var.custom_domain_name] : []
+
   # Use the default CloudFront SSL/TLS certificate
   viewer_certificate {
-    cloudfront_default_certificate = true
+    acm_certificate_arn            = var.custom_domain_name != null ? aws_acm_certificate_validation.cdn_cert_validation[0].certificate_arn : null
+    ssl_support_method             = var.custom_domain_name != null ? "sni-only" : null
+    cloudfront_default_certificate = var.custom_domain_name == null ? true : false
+    minimum_protocol_version       = "TLSv1.2_2021"
   }
 
   tags = {
@@ -174,4 +180,63 @@ resource "aws_s3_bucket_policy" "allow_cloudfront_oac" {
 
   # Depends on the public access block to ensure it is evaluated correctly
   depends_on = [aws_s3_bucket_public_access_block.ivs_recordings_pac]
+}
+
+
+# CloudFront Custom Domain and Route 53 Record (if provided) #
+
+resource "aws_acm_certificate" "cdn_cert" {
+
+  count = var.custom_domain_name != null ? 1 : 0
+
+
+  provider          = aws.us-east-1
+  domain_name       = var.custom_domain_name
+  validation_method = "DNS"
+
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+
+resource "aws_route53_record" "cert_validation" {
+  for_each = {
+    for dvo in toset(aws_acm_certificate.cdn_cert[0].domain_validation_options) : dvo.domain_name => {
+      name   = dvo.resource_record_name
+      record = dvo.resource_record_value
+      type   = dvo.resource_record_type
+    } if var.custom_domain_name != null
+  }
+
+  allow_overwrite = true
+  name            = each.value.name
+  records         = [each.value.record]
+  ttl             = 60
+  type            = each.value.type
+  zone_id         = var.route53_zone_id
+}
+
+resource "aws_acm_certificate_validation" "cdn_cert_validation" {
+
+  count = var.custom_domain_name != null ? 1 : 0
+
+  provider                = aws.us-east-1
+  certificate_arn         = aws_acm_certificate.cdn_cert[0].arn
+  validation_record_fqdns = [for record in aws_route53_record.cert_validation : record.fqdn]
+}
+
+
+# Create a DNS record for the custom domain
+resource "aws_route53_record" "cdn_alias_record" {
+  count = var.custom_domain_name != null && var.route53_zone_id != null ? 1 : 0
+
+  zone_id = var.route53_zone_id
+  name    = var.custom_domain_name
+  type    = "A"
+
+  alias {
+    name                   = aws_cloudfront_distribution.s3_distribution.domain_name
+    zone_id                = aws_cloudfront_distribution.s3_distribution.hosted_zone_id
+    evaluate_target_health = false
+  }
 }
