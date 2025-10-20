@@ -28,6 +28,12 @@ from src.modules.settings import SETTINGS, AWS_SESSION
 logging.getLogger("botocore").setLevel(logging.ERROR)
 LOGGER = get_logger(__name__)
 AWS_S3_CLIENT = AWS_SESSION.client("s3")
+SITEMAP_S3_FILEPATH = "sitemap.xml"
+GUIDES_METADATA_S3_FILEPATH = "guides-metadata.json"
+RELEASE_NOTES_METADATA_S3_FILEPATH = "release-notes-metadata.json"
+SOLUTIONS_METADATA_S3_FILEPATH = "solutions-metadata.json"
+PRODUCTS_S3_FILEPATH = "synced-products-response.json"
+APIS_DATA_S3_FILEPATH = "synced-apis-data-response.json"
 
 
 def read_file_from_s3(
@@ -49,11 +55,9 @@ def read_file_from_s3(
         )
         text = response["Body"].read().decode("utf-8")
 
+        return text
     except Exception as e:
-        LOGGER.error(f"Error reading from S3 the file {bucket_name}/{file_path}: {e}")
-        text = ""
-
-    return text
+        raise KeyError(f"Error reading {bucket_name}/{file_path} from S3: {e}")
 
 
 def remove_figure_blocks(md_text):
@@ -66,63 +70,29 @@ def remove_figure_blocks(md_text):
     return re.sub(r"<figure[\s\S]*?</figure>", "", md_text, flags=re.IGNORECASE)
 
 
-# def get_product_list(website_url: str | None = None) -> List[str]:
-#     """
-#     Fetches a list of products from the website.
-#     Args:
-#         website_url (str | None): The base URL of the website. If None, uses the default WEBSITE_URL.
-#     Returns:
-#         List[str]: A list of product slugs. If the request fails, an empty list is returned.
-#     """
-#     if website_url is None:
-#         website_url = SETTINGS.website_url
-
-#     url = website_url.replace("https://", "https://cms.")
-#     url += "/api/products"
-#     headers = {"Authorization": f"Bearer {SETTINGS.strapi_api_key}"}
-#     response = requests.get(url, headers=headers)
-#     product_list = []
-#     if response.status_code == 200:
-#         products = json.loads(response.text)
-
-#         for product in products["data"]:
-#             try:
-#                 product_slug = product["attributes"]["slug"]
-#                 product_list.append(product_slug)
-#             except KeyError as e:
-#                 LOGGER.error(f"Error extracting product slug: {e}")
-
-#     else:
-#         LOGGER.error(f"Failed to fetch product list: {response.status_code}")
-
-#     LOGGER.info(f"Found {len(product_list)} products: {product_list}.")
-#     return product_list
-
-
-def get_product_list() -> List[str]:
+def get_product_list(file_path: str | None = None) -> List[str]:
     """
     Fetches a list of products from AWS S3.
+    Args:
+        file_path (str): The S3 file path to fetch the product data from.
     Returns:
         List[str]: A list of product slugs. If the request fails, an empty list is returned.
     """
-    s3_data = read_file_from_s3("synced-products-data-response.json")
+    file_path = file_path if file_path else PRODUCTS_S3_FILEPATH
+
+    s3_data = read_file_from_s3(file_path)
+    products = json.loads(s3_data)
+    product_list = []
     if s3_data:
         products = json.loads(s3_data)
-        product_list = []
-        if s3_data:
-            products = json.loads(s3_data)
-            for product in products["data"]:
-                try:
-                    product_slug = product["attributes"]["slug"]
-                    product_list.append(product_slug)
-                except KeyError as e:
-                    LOGGER.error(f"Error extracting product slug: {e}")
-        LOGGER.info(f"Found {len(product_list)} products: {product_list}.")
-        return product_list
-    else:
-        raise ValueError(
-            f"Not found {SETTINGS.bucket_static_content}/synced-products-data-response.json file in S3."
-        )
+        for product in products["data"]:
+            try:
+                product_slug = product["attributes"]["slug"]
+                product_list.append(product_slug)
+            except KeyError as e:
+                LOGGER.error(f"Error extracting product slug: {e}")
+    LOGGER.info(f"Found {len(product_list)} products: {product_list}.")
+    return product_list
 
 
 def filter_urls(urls: List[str]) -> List[str]:
@@ -162,33 +132,32 @@ def filter_urls(urls: List[str]) -> List[str]:
     return filtered_urls
 
 
-def get_sitemap_urls() -> List[Dict[str, str]]:
+def get_sitemap_urls(file_path: str | None = None) -> List[Dict[str, str]]:
     """
     Fetches URLs from a sitemap XML file.
+    Args:
+        file_path (str): The S3 file path to fetch the sitemap from.
     Returns:
         List[Dict[str, str]]: A list of dictionaries containing URLs and their last modified dates.
     """
 
-    sitemap_content = read_file_from_s3("sitemap.xml")
-    if sitemap_content:
-        root = ET.fromstring(sitemap_content)
-        ns = {"ns": "http://www.sitemaps.org/schemas/sitemap/0.9"}
+    sitemap_path = file_path if file_path else SITEMAP_S3_FILEPATH
 
-        sitemap = []
-        for entry in root.findall("ns:url", ns) + root.findall("ns:sitemap", ns):
-            loc = entry.find("ns:loc", ns)
-            lastmod = entry.find("ns:lastmod", ns)
-            sitemap.append(
-                {
-                    "url": loc.text if loc is not None else "N/A",
-                    "lastmod": lastmod.text if lastmod is not None else "N/A",
-                }
-            )
-        LOGGER.info(f"Found {len(sitemap)} URLs in the sitemap.")
-    else:
-        raise ValueError(
-            f"Not found {SETTINGS.bucket_static_content}/sitemap.xml file in S3."
+    sitemap_content = read_file_from_s3(sitemap_path)
+    root = ET.fromstring(sitemap_content)
+    ns = {"ns": "http://www.sitemaps.org/schemas/sitemap/0.9"}
+
+    sitemap = []
+    for entry in root.findall("ns:url", ns) + root.findall("ns:sitemap", ns):
+        loc = entry.find("ns:loc", ns)
+        lastmod = entry.find("ns:lastmod", ns)
+        sitemap.append(
+            {
+                "url": loc.text if loc is not None else "N/A",
+                "lastmod": lastmod.text if lastmod is not None else "N/A",
+            }
         )
+    LOGGER.info(f"Found {len(sitemap)} URLs in the sitemap.")
 
     return sitemap
 
@@ -219,45 +188,18 @@ def html2markdown(html: str) -> Tuple[str, str]:
     return title, content.strip()
 
 
-# def get_apidata(website_url: str | None = None) -> dict:
-#     """
-#     Fetches API data from a remote source.
-#     Args:
-#         website_url (str): The base URL of the website. If None, uses the default WEBSITE_URL.
-#     Returns:
-#         dict: Parsed JSON data from the API response.
-#     """
-#     if website_url is None:
-#         url = SETTINGS.website_url.replace("https://", "https://cms.")
-#     else:
-#         url = website_url.replace("https://", "https://cms.")
-#     url += "/api/apis-data?populate[product]=*&populate[apiRestDetail][populate][specUrls]=*"
-#     headers = {"Authorization": f"Bearer {SETTINGS.strapi_api_key}"}
-
-#     response = requests.get(url, headers=headers)
-#     LOGGER.info(f"Fetching API data from {url}")
-#     if response.status_code == 200:
-#         return json.loads(response.text)
-#     else:
-#         LOGGER.error(
-#             f"Failed to fetch data from API. Status code: {response.status_code}"
-#         )
-#         return response.text
-
-
-def get_apidata() -> dict:
+def get_apidata(file_path: str | None = None) -> dict:
     """
     Fetches API data from AWS S3.
+    Args:
+        file_path (str): The S3 file path to fetch the API data from.
     Returns:
         dict: Parsed JSON data from the API response.
     """
-    s3_data = read_file_from_s3("synced-apis-data-response.json")
-    if s3_data:
-        return json.loads(s3_data)
-    else:
-        raise ValueError(
-            f"Not found {SETTINGS.bucket_static_content}/synced-apis-data-response.json file in S3."
-        )
+    file_path = file_path if file_path else APIS_DATA_S3_FILEPATH
+
+    s3_data = read_file_from_s3(file_path)
+    return json.loads(s3_data)
 
 
 def read_api_url(url: str) -> str:
@@ -344,16 +286,34 @@ def get_api_docs() -> List[Document]:
     return docs
 
 
-def get_static_and_dynamic_metadata() -> Tuple[List[dict], List[dict]]:
+def get_static_and_dynamic_metadata(
+    sitemap_path: str | None = None,
+    guides_path: str | None = None,
+    solutions_path: str | None = None,
+    release_notes_path: str | None = None,
+) -> Tuple[List[dict], List[dict]]:
     """
     Fetches static and dynamic URLs from the sitemap and metadata files.
+    Args:
+        sitemap_path (str): The S3 file path to fetch the sitemap from.
+        guides_path (str): The S3 file path to fetch the guides metadata from.
+        solutions_path (str): The S3 file path to fetch the solutions metadata from.
+        release_notes_path (str): The S3 file path to fetch the release notes metadata from
     Returns:
         Tuple[List[dict], List[dict]]: A tuple containing two lists:
             - A list of dictionaries with static URLs and their S3 file paths.
             - A list of dictionaries with dynamic URLs and their last modified dates.
     """
 
-    sitemap = get_sitemap_urls()
+    guides_path = guides_path if guides_path else GUIDES_METADATA_S3_FILEPATH
+    solutions_path = (
+        solutions_path if solutions_path else SOLUTIONS_METADATA_S3_FILEPATH
+    )
+    release_notes_path = (
+        release_notes_path if release_notes_path else RELEASE_NOTES_METADATA_S3_FILEPATH
+    )
+
+    sitemap = get_sitemap_urls(sitemap_path)
     if not sitemap:
         return [], []
     else:
@@ -363,11 +323,9 @@ def get_static_and_dynamic_metadata() -> Tuple[List[dict], List[dict]]:
         static_metadata = []
         dynamic_metadata = []
 
-        guides_metadata = json.loads(read_file_from_s3("guides-metadata.json"))
-        release_notes_metadata = json.loads(
-            read_file_from_s3("release-notes-metadata.json")
-        )
-        solutions_metadata = json.loads(read_file_from_s3("solutions-metadata.json"))
+        guides_metadata = json.loads(read_file_from_s3(guides_path))
+        release_notes_metadata = json.loads(read_file_from_s3(release_notes_path))
+        solutions_metadata = json.loads(read_file_from_s3(solutions_path))
         all_metadata = guides_metadata + release_notes_metadata + solutions_metadata
         all_url_metadata = [
             SETTINGS.website_url + item["path"] for item in all_metadata
