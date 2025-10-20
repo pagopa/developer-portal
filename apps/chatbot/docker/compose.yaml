@@ -42,12 +42,34 @@ services:
     networks:
       - ntw
 
-  create-redis-index:
+  refresh-index:
     build:
-      context: ..
-      dockerfile: docker/app.local.Dockerfile
-    command: "poetry run python src/modules/create_vector_index.py --params config/params.yaml"
-    env_file: "../.env.local"
+      context: ../../chatbot-index
+      dockerfile: ../chatbot-index/docker/lambda_refresh_index.Dockerfile
+    env_file: ../../chatbot-index/.env.local
+    environment:
+      - PYTHONPATH=/var/task
+    ports:
+      - "8082:8080"
+    volumes:
+      - ../chatbot-index:/app
+      - ~/.aws-lambda-rie/aws-lambda-rie:/usr/local/bin/aws-lambda-rie
+    depends_on:
+      localstack:
+        condition: service_started
+      redis:
+        condition: service_started
+    entrypoint: ["/usr/local/bin/aws-lambda-rie", "python3"]
+    command: ["-m", "awslambdaric", "src.lambda_refresh_index.lambda_handler"]
+    networks:
+      - ntw
+
+  create-index:
+    build:
+      context: ../../chatbot-index
+      dockerfile: ../chatbot-index/docker/create_index.Dockerfile
+    command: poetry run python ../chatbot-index/src/modules/create_vector_index.py
+    env_file: ../../chatbot-index/.env.local
     volumes:
       - ./files/.aws:/root/.aws
       - ../../nextjs-website/out:/app/build-devp/out

@@ -16,7 +16,8 @@ import {
   fetchFromStrapi,
   getResponseFromStrapi,
 } from '../helpers/fetchFromStrapi';
-import { StrapiGuide, MetadataInfo } from '../helpers/guidesMetadataHelper';
+import { StrapiGuide } from '../helpers/strapiTypes';
+import { MetadataInfo } from '../helpers/guidesMetadataHelper';
 import { sitePathFromS3Path } from '../helpers/sitePathFromS3Path';
 import {
   getSyncedGuideListPagesResponseJsonPath,

@@ -7,11 +7,11 @@ output "ivs_channel_details" {
   description = "A map containing the details for each created IVS channel."
   value = {
     for key, channel in aws_ivs_channel.channels : key => {
-      arn             = channel.arn
-      ingest_endpoint = "rtmps://${channel.ingest_endpoint}:443/app/"
-      playback_url    = channel.playback_url
-      stream_key      = data.aws_ivs_stream_key.channels[key].value
+      arn                      = channel.arn
+      ingest_endpoint          = "rtmps://${channel.ingest_endpoint}:443/app/"
+      playback_url             = channel.playback_url
+      distribution_domain_name = aws_cloudfront_distribution.s3_distribution.domain_name
     }
   }
-  sensitive = true
+
 }

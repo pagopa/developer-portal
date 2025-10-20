@@ -411,6 +411,13 @@ apps/chatbot-evaluate/*.ipynb
 apps/chatbot-evaluate/.env
 apps/chatbot-evaluate/.google_service_account.json
 
+# chatbot-index
+apps/chatbot-index/*.ipynb
+!apps/chatbot-index/docker
+apps/chatbot-index/.env
+!apps/chatbot-index/.env.example
+apps/chatbot-index/.google_service_account.json
+
 /results
 
 # terraform
