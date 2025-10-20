@@ -1,4 +1,3 @@
-import os
 from google.genai import types
 
 from llama_index.core.llms.llm import LLM
@@ -88,7 +87,7 @@ def get_embed_model(
     model_id = model_id or SETTINGS.embed_model_id
     embed_batch_size = embed_batch_size or SETTINGS.embed_batch_size
     embed_dim = embed_dim or SETTINGS.embed_dim
-    task_type = task_type or SETTINGS.embed_task
+    task_type = task_type or SETTINGS.embed_task_docs
     retries = retries or SETTINGS.embed_retries
     retry_min_seconds = retry_min_seconds or SETTINGS.embed_retry_min_seconds
 
