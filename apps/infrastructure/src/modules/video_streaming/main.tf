@@ -225,3 +225,18 @@ resource "aws_acm_certificate_validation" "cdn_cert_validation" {
   validation_record_fqdns = [for record in aws_route53_record.cert_validation : record.fqdn]
 }
 
+
+# Create a DNS record for the custom domain
+resource "aws_route53_record" "cdn_alias_record" {
+  count = var.custom_domain_name != null && var.route53_zone_id != null ? 1 : 0
+
+  zone_id = var.route53_zone_id
+  name    = var.custom_domain_name
+  type    = "A"
+
+  alias {
+    name                   = aws_cloudfront_distribution.s3_distribution.domain_name
+    zone_id                = aws_cloudfront_distribution.s3_distribution.hosted_zone_id
+    evaluate_target_health = false
+  }
+}
