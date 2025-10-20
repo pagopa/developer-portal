@@ -28,7 +28,6 @@ output "video_streaming" {
   }
 
   description = "Outputs from the video streaming module."
-  sensitive   = true
 }
 
 # -----------------

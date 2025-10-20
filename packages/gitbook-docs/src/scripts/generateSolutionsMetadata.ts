@@ -17,7 +17,7 @@ import {
   getResponseFromStrapi,
 } from '../helpers/fetchFromStrapi';
 import { sitePathFromS3Path } from '../helpers/sitePathFromS3Path';
-import { StrapiSolution } from '../helpers/guidesMetadataHelper';
+import { StrapiSolution } from '../helpers/strapiTypes';
 import {
   getSyncedSolutionListPagesResponseJsonPath,
   getSyncedSolutionsResponseJsonPath,
