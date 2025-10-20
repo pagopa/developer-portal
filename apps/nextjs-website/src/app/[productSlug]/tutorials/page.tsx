@@ -112,7 +112,7 @@ const TutorialsPage = async ({ params }: ProductParams) => {
       {tutorials && (
         <FilteredGridLayout
           items={mappedTutorials}
-          tags={product.tags || []}
+          tags={product.tags}
           enableFilters={enableFilters}
           noItemsMessageKey={'overview.tutorial.noTutorialMessage'}
         />

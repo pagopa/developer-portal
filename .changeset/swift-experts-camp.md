@@ -1,5 +1,5 @@
 ---
-"nextjs-website": minor
+"nextjs-website": patch
 ---
 
 Generalise filtered grid component

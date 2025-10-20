@@ -11,18 +11,17 @@ import { useSearchParams } from 'next/navigation';
 import MobileFilterSelector from '@/components/molecules/MobileFilterSelector/MobileFilterSelector';
 import DesktopFilterSelector from '@/components/molecules/DesktopFilterSelector/DesktopFilterSelector';
 import SectionTitle from '@/components/molecules/SectionTitle/SectionTitle';
-import { UseCase } from '@/lib/types/useCaseData';
 import { PRODUCT_HEADER_HEIGHT } from '@/components/atoms/ProductHeader/ProductHeader';
 
 type FilteredGridLayoutProps = {
   readonly items: readonly (INewsroomItem & { tags: readonly Tag[] })[];
-  readonly tags: readonly Tag[];
+  readonly tags: readonly Tag[] | undefined;
   readonly enableFilters?: boolean;
   readonly noItemsMessageKey?: string;
 };
 
 export const FilteredGridLayout = ({
-  tags,
+  tags = [],
   items,
   enableFilters,
   noItemsMessageKey = '',

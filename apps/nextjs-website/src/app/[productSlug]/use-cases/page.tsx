@@ -106,7 +106,7 @@ const UseCasesPage = async ({ params }: ProductParams) => {
       {useCases && (
         <FilteredGridLayout
           items={mappedUseCases}
-          tags={product.tags || []}
+          tags={product.tags}
           enableFilters={enableFilters}
           noItemsMessageKey={'overview.useCases.noUseCaseMessage'}
         />
