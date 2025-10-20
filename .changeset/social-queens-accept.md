@@ -1,5 +1,5 @@
 ---
-"nextjs-website": minor
+"nextjs-website": patch
 ---
 
 Generalise item list component in overview
