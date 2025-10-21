@@ -1,5 +1,21 @@
 # infrastructure
 
+## 5.0.0
+
+### Major Changes
+
+- 070e4a1: Cloudfront distribution for video streaming
+- 3cacbdb: New module that creates aws ivs channels
+
+### Minor Changes
+
+- fea763f: Optional custom domain for cloudfront video streaming distribution
+
+### Patch Changes
+
+- 492fa6c: Use the registry release of the opennext terraform module
+- 0d6bb25: Changed CHB_MAX_TOKENS env var to 2048
+
 ## 4.0.0
 
 ### Major Changes

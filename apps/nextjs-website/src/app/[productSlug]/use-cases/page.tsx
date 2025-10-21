@@ -18,7 +18,7 @@ import {
 } from '@/helpers/structuredData.helpers';
 import { UseCase } from '@/lib/types/useCaseData';
 import { getUseCaseListPageProps } from '@/lib/api';
-import { UseCaseList } from '../../../components/organisms/UseCaseList/UseCaseList';
+import { FilteredGridLayout } from '@/components/organisms/FilteredGridLayout/FilteredGridLayout';
 
 export type UseCasesPageProps = {
   readonly product: Product;
@@ -69,6 +69,25 @@ const UseCasesPage = async ({ params }: ProductParams) => {
     seo: seo,
   });
 
+  const mappedUseCases = useCases.map((useCase) => {
+    return {
+      tags: useCase.tags || [],
+      title: useCase.title,
+      date: {
+        date: useCase.publishedAt,
+      },
+      href: {
+        label: 'shared.readUseCase',
+        link: useCase.path,
+        translate: true,
+      },
+      img: {
+        alt: useCase.coverImage?.alternativeText || '',
+        src: useCase.coverImage?.url || '/images/news.png',
+      },
+    };
+  });
+
   return (
     <ProductLayout
       product={product}
@@ -85,10 +104,11 @@ const UseCasesPage = async ({ params }: ProductParams) => {
         />
       )}
       {useCases && (
-        <UseCaseList
-          tags={product.tags || []}
-          useCases={useCases}
+        <FilteredGridLayout
+          items={mappedUseCases}
+          tags={product.tags}
           enableFilters={enableFilters}
+          noItemsMessageKey={'overview.useCases.noUseCaseMessage'}
         />
       )}
     </ProductLayout>
