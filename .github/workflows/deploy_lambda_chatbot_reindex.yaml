@@ -90,7 +90,7 @@ jobs:
           IMAGE_TAG: ${{ github.sha }}
         with:
             context: apps/chatbot-index
-            file: apps/chatbot-index/docker/lambda_refresh_index.Dockerfile
+            file: apps/chatbot-index/docker/lambda_create_index.Dockerfile
             push: true
             tags: ${{ env.ECR_REGISTRY }}/chatbot-reindex:${{ env.IMAGE_TAG }}
             provenance: false

@@ -5,20 +5,15 @@ from jose import exceptions as jwt_exceptions
 from jose.utils import base64url_decode
 from fastapi import HTTPException
 from src.modules.logger import get_logger
+from src.modules.settings import SETTINGS
 
 LOGGER = get_logger(__name__)
-
-AWS_DEFAULT_REGION = os.getenv(
-    'CHB_AWS_DEFAULT_REGION',
-    os.getenv('AWS_DEFAULT_REGION', None)
-)
-AUTH_COGNITO_USERPOOL_ID = os.getenv('AUTH_COGNITO_USERPOOL_ID')
 
 
 def get_jwks():
     KEYS_URL = (
-        f"https://cognito-idp.{AWS_DEFAULT_REGION}.amazonaws.com/"
-        f"{AUTH_COGNITO_USERPOOL_ID}/"
+        f"https://cognito-idp.{SETTINGS.aws_region_cognito}.amazonaws.com/"
+        f"{SETTINGS.auth_cognito_userpool_id}/"
         ".well-known/jwks.json"
     )
     response = requests.get(KEYS_URL)
@@ -26,7 +21,9 @@ def get_jwks():
     if response.status_code == 200:
         return response.json()
     else:
-        LOGGER.error(f"[get_jwks] KEYS_URL={KEYS_URL}, Response status code: {response.status_code}")
+        LOGGER.error(
+            f"[get_jwks] KEYS_URL={KEYS_URL}, Response status code: {response.status_code}"
+        )
         raise HTTPException(status_code=401, detail="Auth error")
 
 
@@ -42,13 +39,10 @@ def verify_jwt(token: str):
 
         public_key = jwk.construct(public_keys[kid])
 
-        message, encoded_signature = str(token).rsplit('.', 1)
-        decoded_signature = base64url_decode(encoded_signature.encode('utf-8'))
+        message, encoded_signature = str(token).rsplit(".", 1)
+        decoded_signature = base64url_decode(encoded_signature.encode("utf-8"))
         if not public_key.verify(message.encode("utf8"), decoded_signature):
-            raise HTTPException(
-                status_code=401,
-                detail="error in public_key.verify"
-            )
+            raise HTTPException(status_code=401, detail="error in public_key.verify")
 
         # since we passed the verification,
         # we can now safely use the unverified claims

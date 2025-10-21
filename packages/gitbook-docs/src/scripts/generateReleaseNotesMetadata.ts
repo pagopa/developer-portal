@@ -4,12 +4,12 @@
 /* eslint-disable functional/immutable-data */
 /* eslint-disable functional/no-try-statements */
 import dotenv from 'dotenv';
-import { SitemapItem } from '../sitemapItem';
+import { MetadataItem } from '../metadataItem';
 import {
   downloadS3File,
   listS3Files,
   makeS3Client,
-  writeSitemapJson,
+  writeMetadataJson,
 } from '../helpers/s3Bucket.helper';
 import { extractTitleFromMarkdown } from '../helpers/extractTitle.helper';
 import { fetchFromStrapi } from '../helpers/fetchFromStrapi';
@@ -44,10 +44,10 @@ function generateUrlPath(
   }
 }
 
-async function convertReleaseNoteToSitemapItems(
+async function convertReleaseNoteToMetadataItems(
   strapiReleaseNotes: StrapiReleaseNote[]
-): Promise<SitemapItem[]> {
-  const items: SitemapItem[] = [];
+): Promise<MetadataItem[]> {
+  const items: MetadataItem[] = [];
   for (const releaseNote of strapiReleaseNotes) {
     const dirName = releaseNote.attributes.dirName;
     const releaseNoteFiles = (
@@ -116,22 +116,22 @@ async function main() {
 
   console.log(`Fetched ${strapiReleaseNotes.length} release notes from Strapi`);
 
-  const sitemapItems = await convertReleaseNoteToSitemapItems(
+  const metadataItems = await convertReleaseNoteToMetadataItems(
     strapiReleaseNotes
   );
   console.log(
-    `Converted release notes to ${sitemapItems.length} sitemap items`
+    `Converted release notes to ${metadataItems.length} metadata items`
   );
 
-  await writeSitemapJson(
-    sitemapItems,
+  await writeMetadataJson(
+    metadataItems,
     S3_RELEASE_NOTES_METADATA_JSON_PATH,
     `${S3_BUCKET_NAME}`,
     s3Client
   );
 
   // TODO: remove when Strapi will manage Metadata
-  await writeSitemapJson(
+  await writeMetadataJson(
     responseJson,
     SYNCED_RELEASE_NOTES_RESPONSE_JSON_PATH,
     `${S3_BUCKET_NAME}`,
