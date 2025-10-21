@@ -243,8 +243,8 @@ jobs:
 
       - name: Generate Strapi Response Files
         env:
-          ENVIRONMENT: ${{ github.event_name == 'workflow_dispatch' && inputs.environment || 'dev' }}
-          S3_BUCKET_NAME: devportal-${{ env.ENV_SHORT }}-website-static-content
+          ENVIRONMENT: 'prod'
+          S3_BUCKET_NAME: devportal-p-website-static-content
           STRAPI_ENDPOINT: ${{ vars.STRAPI_ENDPOINT }}
           STRAPI_API_TOKEN: ${{ secrets.STRAPI_API_TOKEN }}
           FETCH_FROM_STRAPI: ${{ vars.FETCH_FROM_STRAPI || 'true' }}
