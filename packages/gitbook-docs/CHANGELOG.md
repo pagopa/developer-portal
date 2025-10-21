@@ -1,5 +1,19 @@
 # gitbook-docs
 
+## 1.2.0
+
+### Minor Changes
+
+- 6d0f79a: Add script for strapi response files generation
+- f1895e6: Add rendering for new markdown part
+- ff133a4: Add populate product use_case_list_page to query for guides and e release notes
+- c8c68af: Fix chat message parsing and update markdown parsing
+- 9184d73: Add rendering for GitBook Stepper and Step
+
+### Patch Changes
+
+- 9bcaab6: Hotfix for sitemap.xml generation
+
 ## 1.1.0
 
 ### Minor Changes

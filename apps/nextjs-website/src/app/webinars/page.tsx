@@ -2,11 +2,12 @@ import { getVisibleInListWebinars } from '@/lib/api';
 import { makeMetadata } from '@/helpers/metadata.helpers';
 import { Metadata } from 'next';
 import { baseUrl } from '@/config';
-import dynamic from 'next/dynamic';
-import Spinner from '@/components/atoms/Spinner/Spinner';
 import { getWebinarCategoriesProps } from '@/lib/cmsApi';
+import WebinarsTemplate from '@/components/organisms/WebinarsTemplate/WebinarsTemplate';
+import { Suspense } from 'react';
+import Spinner from '@/components/atoms/Spinner/Spinner';
 
-export const revalidate = 0;
+export const dynamic = 'force-dynamic';
 
 export async function generateMetadata(): Promise<Metadata> {
   return makeMetadata({
@@ -17,18 +18,15 @@ export async function generateMetadata(): Promise<Metadata> {
   });
 }
 
-const NotSsrWebinarsTemplate = dynamic(
-  () => import('@/components/organisms/WebinarsTemplate/WebinarsTemplate'),
-  {
-    loading: () => <Spinner />,
-  }
-);
-
 const Webinars = async () => {
   const webinars = await getVisibleInListWebinars();
   const categories = await getWebinarCategoriesProps();
 
-  return <NotSsrWebinarsTemplate webinars={webinars} categories={categories} />;
+  return (
+    <Suspense fallback={<Spinner />}>
+      <WebinarsTemplate webinars={webinars} categories={categories} />
+    </Suspense>
+  );
 };
 
 export default Webinars;

@@ -1,31 +1,35 @@
 'use client';
 
 import { Tag } from '@/lib/types/tag';
-import Newsroom from '@/editorialComponents/Newsroom/Newsroom';
+import Newsroom, {
+  INewsroomItem,
+} from '@/editorialComponents/Newsroom/Newsroom';
 import { Box, useMediaQuery } from '@mui/material';
 import React, { useState } from 'react';
-import { Tutorial } from '@/lib/types/tutorialData';
 import { useTranslations } from 'next-intl';
 import { useSearchParams } from 'next/navigation';
 import MobileFilterSelector from '@/components/molecules/MobileFilterSelector/MobileFilterSelector';
 import DesktopFilterSelector from '@/components/molecules/DesktopFilterSelector/DesktopFilterSelector';
 import SectionTitle from '@/components/molecules/SectionTitle/SectionTitle';
+import { PRODUCT_HEADER_HEIGHT } from '@/components/atoms/ProductHeader/ProductHeader';
 
-type TutorialsListProps = {
-  readonly tutorials: readonly Tutorial[];
-  readonly tags: readonly Tag[];
+type FilteredGridLayoutProps = {
+  readonly items: readonly (INewsroomItem & { tags: readonly Tag[] })[];
+  readonly tags: readonly Tag[] | undefined;
   readonly enableFilters?: boolean;
+  readonly noItemsMessageKey?: string;
 };
 
-export const TutorialsList = ({
-  tags,
-  tutorials,
+export const FilteredGridLayout = ({
+  tags = [],
+  items,
   enableFilters,
-}: TutorialsListProps) => {
+  noItemsMessageKey = '',
+}: FilteredGridLayoutProps) => {
   const t = useTranslations();
   const updatedTags = [
     {
-      name: t('overview.tutorial.all'),
+      name: t('overview.all'),
       icon: {
         data: {
           attributes: {
@@ -52,21 +56,24 @@ export const TutorialsList = ({
   );
   const [selectedTag, setSelectedTag] = useState(tagValue);
 
-  const filteredTutorials = tutorials.filter((tutorial) => {
+  const filteredItems = items.filter((item) => {
     return (
       selectedTag === 0 ||
-      tutorial.tags?.some((tag) => tag.name === updatedTags[selectedTag].name)
+      item.tags?.some((tag) => tag.name === updatedTags[selectedTag].name)
     );
   });
   // eslint-disable-next-line functional/no-return-void
   const setSelectedTagFilter = (newTag: number): void => {
     if (newTag === selectedTag) return;
     addQueryParam('tag', `${newTag}`);
-    // eslint-disable-next-line functional/immutable-data
-    //window.location.href = '#webinarsHeader';
-    document
-      .getElementById('chatbot-page-content')
-      ?.scrollIntoView({ behavior: 'smooth' });
+    const element = document.getElementById('filtered-grid');
+    if (element) {
+      const y =
+        element.getBoundingClientRect().top +
+        window.pageYOffset -
+        PRODUCT_HEADER_HEIGHT;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    }
     setSelectedTag(newTag);
   };
 
@@ -77,8 +84,8 @@ export const TutorialsList = ({
   };
   const isSmallScreen = useMediaQuery('(max-width: 1000px)');
   return (
-    <Box>
-      <Box sx={{ paddingBottom: filteredTutorials.length > 0 ? '24px' : 0 }}>
+    <Box id='filtered-grid'>
+      <Box sx={{ paddingBottom: filteredItems.length > 0 ? '24px' : 0 }}>
         {enableFilters &&
           tags.length > 0 &&
           (isSmallScreen ? (
@@ -95,7 +102,7 @@ export const TutorialsList = ({
             />
           ))}
       </Box>
-      {filteredTutorials.length <= 0 ? (
+      {filteredItems.length <= 0 ? (
         <Box
           pt={8}
           pb={2}
@@ -105,24 +112,12 @@ export const TutorialsList = ({
             alignItems: 'center',
           }}
         >
-          <SectionTitle title={t('overview.tutorial.noTutorialMessage')} />
+          <SectionTitle title={t(noItemsMessageKey)} />
         </Box>
       ) : (
         <Newsroom
-          items={filteredTutorials.map((tutorial) => ({
-            title: tutorial.title,
-            date: {
-              date: tutorial.publishedAt,
-            },
-            href: {
-              label: 'shared.readTutorial',
-              link: tutorial.path,
-              translate: true,
-            },
-            img: {
-              alt: tutorial.image?.alternativeText || '',
-              src: tutorial.image?.url || '/images/news.png',
-            },
+          items={filteredItems.map((item) => ({
+            ...item,
           }))}
         />
       )}

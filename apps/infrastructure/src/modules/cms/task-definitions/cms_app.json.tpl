@@ -43,6 +43,10 @@
         "value": "${google_oauth_redirect_uri}"
       },
       {
+        "name": "GITHUB_WORKFLOW_ENV",
+        "value": "${github_workflow_env}"
+      },
+      {
         "name": "AWS_BUCKET_NAME",
         "value": "${bucket_name}"
       },

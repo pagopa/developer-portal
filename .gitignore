@@ -414,6 +414,12 @@ apps/chatbot-monitor/*.ipynb
 apps/chatbot-monitor/.env
 !apps/chatbot-monitor/.env.example
 
+# chatbot-index
+apps/chatbot-index/*.ipynb
+apps/chatbot-index/.env
+!apps/chatbot-index/.env.example
+
+/results
 
 # terraform
 apps/infrastructure/src/builds
