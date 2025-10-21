@@ -85,7 +85,7 @@ def get_product_list(file_path: str | None = None) -> List[str]:
     product_list = []
     if s3_data:
         products = json.loads(s3_data)
-        for product in products["data"]:
+        for product in products:
             try:
                 product_slug = product["attributes"]["slug"]
                 product_list.append(product_slug)
@@ -255,12 +255,8 @@ def get_api_docs() -> List[Document]:
     """
 
     api_data = get_apidata()
-
-    num_apis = len(api_data["data"])
-    LOGGER.info(f"{num_apis} API documents to read.")
-
     docs = []
-    for data in tqdm.tqdm(api_data["data"], total=num_apis, desc="Getting API docs"):
+    for data in tqdm.tqdm(api_data, total=len(api_data), desc="Getting API docs"):
         title = data["attributes"]["title"]
         product_slug = data["attributes"]["product"]["data"]["attributes"]["slug"]
         if data["attributes"]["apiRestDetail"] is not None:
