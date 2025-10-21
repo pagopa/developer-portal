@@ -15,6 +15,7 @@ export const strapiTutorialListPages: StrapiTutorialListPages = {
         product: {
           data: {
             attributes: {
+              isVisible: true,
               tags: { data: [] },
               name: 'Product 1',
               shortName: 'P1',
@@ -43,6 +44,7 @@ export const strapiTutorialListPages: StrapiTutorialListPages = {
                 product: {
                   data: {
                     attributes: {
+                      isVisible: true,
                       name: 'Product 1',
                       shortName: 'P1',
                       slug: 'product-1',
