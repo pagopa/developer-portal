@@ -5,9 +5,10 @@
 /* eslint-disable functional/no-try-statements */
 import dotenv from 'dotenv';
 import { fetchFromStrapi } from '../helpers/fetchFromStrapi';
-import { makeS3Client, writeSitemapJson } from '../helpers/s3Bucket.helper';
+import { makeS3Client, writeMetadataJson } from '../helpers/s3Bucket.helper';
 import { StrapiApiData, StrapiProduct } from '../helpers/strapiTypes';
 import { baseUrl } from 'nextjs-website/src/config';
+import { PutObjectCommand } from '@aws-sdk/client-s3';
 
 dotenv.config();
 
@@ -57,14 +58,20 @@ async function main() {
     process.exit(1);
   }
 
-  const sitemapJsons = [
-    { data: siteMap, path: S3_SITEMAP_PATH },
+  const metadataJsons = [
     { data: strapiProducts, path: S3_PRODUCTS_METADATA_JSON_PATH },
     { data: strapiApisData, path: S3_APIS_DATA_METADATA_JSON_PATH },
   ];
-  for (const { data, path } of sitemapJsons) {
-    await writeSitemapJson(data, path, `${S3_BUCKET_NAME}`, s3Client);
+  for (const { data, path } of metadataJsons) {
+    await writeMetadataJson(data, path, `${S3_BUCKET_NAME}`, s3Client);
   }
+  await s3Client.send(
+    new PutObjectCommand({
+      Bucket: `${S3_BUCKET_NAME}`,
+      Key: S3_SITEMAP_PATH,
+      Body: siteMap,
+    })
+  );
 }
 
 main();
