@@ -1,5 +1,11 @@
 # nextjs-website
 
+## 10.0.1
+
+### Patch Changes
+
+- efb12a5: Manage product visibility using the new boolean attribute isVisible of StrapiProduct
+
 ## 10.0.0
 
 ### Major Changes
