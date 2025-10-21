@@ -18,7 +18,7 @@ import {
   breadcrumbItemByProduct,
   productToBreadcrumb,
 } from '@/helpers/structuredData.helpers';
-import { TutorialsList } from '@/components/organisms/TutorialsList/TutorialsList';
+import { FilteredGridLayout } from '@/components/organisms/FilteredGridLayout/FilteredGridLayout';
 
 export type TutorialsPageProps = {
   readonly product: Product;
@@ -75,6 +75,24 @@ const TutorialsPage = async ({ params }: ProductParams) => {
     ],
     seo: seo,
   });
+  const mappedTutorials = tutorials.map((tutorial) => {
+    return {
+      tags: tutorial.tags || [],
+      title: tutorial.title,
+      date: {
+        date: tutorial.publishedAt,
+      },
+      href: {
+        label: 'shared.readTutorial',
+        link: tutorial.path,
+        translate: true,
+      },
+      img: {
+        alt: tutorial.image?.alternativeText || '',
+        src: tutorial.image?.url || '/images/news.png',
+      },
+    };
+  });
 
   return (
     <ProductLayout
@@ -92,10 +110,11 @@ const TutorialsPage = async ({ params }: ProductParams) => {
         />
       )}
       {tutorials && (
-        <TutorialsList
-          tags={product.tags || []}
-          tutorials={tutorials}
+        <FilteredGridLayout
+          items={mappedTutorials}
+          tags={product.tags}
           enableFilters={enableFilters}
+          noItemsMessageKey={'overview.tutorial.noTutorialMessage'}
         />
       )}
     </ProductLayout>

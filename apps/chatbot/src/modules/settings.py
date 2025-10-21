@@ -1,6 +1,5 @@
 import boto3
 import os
-import boto3
 import json
 import yaml
 from pathlib import Path
