@@ -1,5 +1,11 @@
 # nextjs-website
 
+## 10.0.2
+
+### Patch Changes
+
+- c4b443a: Remove cache from guide pages
+
 ## 10.0.1
 
 ### Patch Changes
