@@ -18,3 +18,15 @@ variable "ivs_channels" {
   }))
   default = {}
 }
+
+variable "custom_domain_name" {
+  description = "The custom domain name (e.g., video.example.com) to assign to the CloudFront distribution."
+  type        = string
+  default     = null
+}
+
+variable "route53_zone_id" {
+  description = "The ID of the existing Route 53 hosted zone for the custom domain."
+  type        = string
+  default     = null
+}

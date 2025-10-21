@@ -44,7 +44,7 @@ class ChatbotSettings(BaseSettings):
     embed_dim: int = int(os.getenv("CHB_EMBEDDING_DIM", "768"))
     embed_model_id: str = os.getenv("CHB_EMBED_MODEL_ID", "gemini-embedding-001")
     embed_task_type: str = "SEMANTIC_SIMILARITY"
-    max_tokens: int = os.getenv("CHB_MODEL_MAXTOKENS", "768")
+    max_tokens: int = int(os.getenv("CHB_MODEL_MAXTOKENS", "2048"))
     model_id: str = os.getenv("CHB_MODEL_ID", "gemini-2.5-flash-lite")
     provider: str = os.getenv("CHB_PROVIDER", "google")
     temperature: float = float(os.getenv("CHB_MODEL_TEMPERATURE", "0.0"))

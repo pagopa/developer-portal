@@ -187,7 +187,7 @@ export const webinarProps = {
   subscribeCtaLabel: 'Subscribe Now',
   imagePath: 'https://example.com/example.jpg',
   seo: { metaTitle: 'SEO Webinar', metaDescription: 'SEO Description' },
-  webinarCategory: {
+  tag: {
     name: 'Category 1',
     icon: {
       data: {
