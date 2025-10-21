@@ -89,12 +89,6 @@ const components: RenderingComponents<React.ReactNode> = {
   Item: ({ href, title, children }) => {
     const ref = React.useRef<HTMLAnchorElement>(null);
 
-    useEffect(() => {
-      if (ref.current && ref.current.href === window.location.href) {
-        ref.current.scrollIntoView({ behavior: 'instant', block: 'center' });
-      }
-    }, []);
-
     const label = (
       <Typography
         ref={ref}
