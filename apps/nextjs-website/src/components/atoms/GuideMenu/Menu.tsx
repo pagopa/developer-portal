@@ -87,11 +87,8 @@ const StyledTreeItem = styled(TreeItem)(({ theme }) => ({
 
 const components: RenderingComponents<React.ReactNode> = {
   Item: ({ href, title, children }) => {
-    const ref = React.useRef<HTMLAnchorElement>(null);
-
     const label = (
       <Typography
-        ref={ref}
         variant='sidenav'
         component={NextLink}
         href={href}

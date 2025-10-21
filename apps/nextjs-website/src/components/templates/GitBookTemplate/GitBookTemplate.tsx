@@ -78,6 +78,7 @@ const GitBookTemplate = ({
               xs: '100%',
               lg: '1008px',
             },
+            minHeight: '100vh',
           }}
         >
           <Box sx={{ paddingTop: paddingTop, paddingX: '40px' }}>
