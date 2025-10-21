@@ -82,7 +82,7 @@ async function withRetries<T>(
 
 export async function downloadFileAsText(
   path: string,
-  config?: any
+  config?: RequestInit
 ): Promise<string | undefined> {
   // Create the request promise
   const requestPromise = withRetries(
