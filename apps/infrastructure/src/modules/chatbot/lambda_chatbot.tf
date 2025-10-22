@@ -262,6 +262,18 @@ resource "aws_iam_policy" "lambda_s3_chatbot_policy" {
         Effect   = "Allow"
         Action   = "s3:*Object"
         Resource = ["${module.s3_bucket_llamaindex.s3_bucket_arn}/*", "${module.s3_bucket_kb.s3_bucket_arn}/*"]
+      },
+      {
+        Sid = "ReadStaticContent"
+        Action = [
+          "s3:GetObject",
+          "s3:ListBucket"
+        ]
+        Effect = "Allow"
+        Resource = [
+          "arn:aws:s3:::${var.s3_bucket_name_static_content}/*",
+          "arn:aws:s3:::${var.s3_bucket_name_static_content}"
+        ]
       }
     ]
   })
