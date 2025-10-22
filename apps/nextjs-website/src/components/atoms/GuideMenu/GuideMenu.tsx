@@ -43,7 +43,7 @@ const GuideMenu = (menuProps: GuideMenuProps) => {
     ? {
         xs: topOffsetXs + 62,
         sm: topOffsetXs + 90,
-        md: SITE_HEADER_HEIGHT + 77,
+        md: SITE_HEADER_HEIGHT + 22,
       }
     : {
         xs: topOffsetXs,

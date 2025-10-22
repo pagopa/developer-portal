@@ -44,7 +44,7 @@ const GitBookTemplate = ({
   const responsiveContentMarginTop = (contentMarginTop &&
     `${contentMarginTop}px`) || {
     xs: '30px',
-    md: '110px',
+    md: '60px',
   };
 
   return (
