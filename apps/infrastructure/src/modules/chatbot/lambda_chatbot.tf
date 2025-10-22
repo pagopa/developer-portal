@@ -16,7 +16,7 @@ locals {
     CHB_GOOGLE_API_KEY                 = "/chatbot/google_api_key"
     CHB_LANGFUSE_HOST                  = "https://${local.priv_monitoring_host}"
     CHB_MODEL_ID                       = var.models.generation
-    CHB_MODEL_MAXTOKENS                = "2048"
+    CHB_MODEL_MAXTOKENS                = "768"
     CHB_MODEL_TEMPERATURE              = "0.3"
     CHB_AWS_SSM_STRAPI_API_KEY         = module.strapi_api_key_ssm_parameter.ssm_parameter_name
     # Be extremely careful when changing the provider
