@@ -4,12 +4,12 @@
 /* eslint-disable functional/immutable-data */
 /* eslint-disable functional/no-try-statements */
 import dotenv from 'dotenv';
-import { SitemapItem } from '../sitemapItem';
+import { MetadataItem } from '../metadataItem';
 import {
   downloadS3File,
   listS3Files,
   makeS3Client,
-  writeSitemapJson,
+  writeMetadataJson,
 } from '../helpers/s3Bucket.helper';
 import { extractTitleFromMarkdown } from '../helpers/extractTitle.helper';
 import {
@@ -50,9 +50,9 @@ function generateUrlPath(
     .join('/');
 }
 
-async function convertGuideToSitemapItems(
+async function convertGuideToMetadataItems(
   strapiGuides: StrapiGuide[]
-): Promise<SitemapItem[]> {
+): Promise<MetadataItem[]> {
   const guideInfoList: MetadataInfo[] = strapiGuides
     .filter((guide) => !!guide.attributes.product?.data?.attributes?.slug)
     .flatMap((guide) =>
@@ -65,7 +65,7 @@ async function convertGuideToSitemapItems(
       }))
     );
 
-  const items: SitemapItem[] = [];
+  const items: MetadataItem[] = [];
   for (const guideInfo of guideInfoList) {
     const guideFiles = (
       await listS3Files(
@@ -161,26 +161,24 @@ async function main() {
 
   console.log(`Fetched ${strapiGuides.length} guides from Strapi`);
 
-  const sitemapItems = await convertGuideToSitemapItems(strapiGuides);
-  console.log(`Converted guides to ${sitemapItems.length} sitemap items`);
+  const metadataItems = await convertGuideToMetadataItems(strapiGuides);
+  console.log(`Converted guides to ${metadataItems.length} metadata items`);
 
-  await writeSitemapJson(
-    sitemapItems,
+  await writeMetadataJson(
+    metadataItems,
     S3_GUIDE_METADATA_JSON_PATH,
     `${S3_BUCKET_NAME}`,
     s3Client
   );
 
-  // TODO: remove when Strapi will manage Metadata
-  await writeSitemapJson(
+  await writeMetadataJson(
     responseJson,
     SYNCED_GUIDES_RESPONSE_JSON_PATH,
     `${S3_BUCKET_NAME}`,
     s3Client
   );
 
-  // TODO: remove when Strapi will manage Metadata
-  await writeSitemapJson(
+  await writeMetadataJson(
     guideListPagesResponse,
     SYNCED_GUIDE_LIST_PAGES_RESPONSE_JSON_PATH,
     `${S3_BUCKET_NAME}`,
