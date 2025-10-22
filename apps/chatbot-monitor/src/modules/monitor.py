@@ -45,6 +45,22 @@ SPAN_TYPES = Union[
 ]
 
 
+def link_spans_groups(spans: List[dict], root_span_id: str) -> List[dict]:
+    """Links spans to their parent spans based on the parent_id field.
+    Args:
+        spans (List[dict]): The list of spans to link.
+        root_span_id (str): The ID of the root span.
+    Returns:
+        List[dict]: The list of spans with their children linked.
+    """
+
+    for span in spans[1:]:
+        parent_id = span.get("parent_id")
+        if parent_id is None:
+            span["parent_id"] = root_span_id
+    return spans
+
+
 def safe_json_load(value):
     """Tries to load a string as JSON, returns the original string on failure."""
     if not isinstance(value, str):
@@ -183,11 +199,23 @@ def create_langfuse_trace(
     contexts: List[str],
     tags: List[str],
     spans: List[dict],
-):
-    """Creates a Langfuse trace from a list of span dictionaries."""
+) -> None:
+    """Creates a Langfuse trace from a list of span dictionaries.
+    Args:
+        trace_id (str): The ID of the trace.
+        user_id (str): The ID of the user.
+        session_id (str): The ID of the session.
+        query (str): The user query.
+        chat_history (List[Dict[str, str]]): The chat history.
+        response (str): The chat response.
+        contexts (List[str]): The retrieved contexts.
+        tags (List[str]): The tags for the trace.
+        spans (List[dict]): The list of span dictionaries.
+    """
 
     span_root = spans[0]
     root_span_id = span_root["context"]["span_id"]
+    spans = link_spans_groups(spans, root_span_id)
     root = LANGFUSE_CLIENT.start_span(
         name=trace_id, trace_context=TraceContext(trace_id=trace_id)
     )
@@ -219,8 +247,16 @@ def add_langfuse_score(
     score: float,
     comment: str | None = None,
     data_type: Optional[Literal["NUMERIC", "BOOLEAN"]] = None,
-):
-    """Adds a score to an existing Langfuse trace."""
+) -> None:
+    """Adds a score to an existing Langfuse trace.
+    Args:
+        trace_id (str): The ID of the trace.
+        name (str): The name of the score.
+        score (float): The score value.
+        comment (str | None, optional): An optional comment for the score. Defaults to None.
+        data_type (Optional[Literal["NUMERIC", "BOOLEAN"]], optional): The data type of the score.
+            Defaults to None.
+    """
 
     LANGFUSE_CLIENT.create_score(
         trace_id=trace_id,
