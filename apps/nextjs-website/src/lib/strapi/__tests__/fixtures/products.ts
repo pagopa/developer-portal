@@ -7,6 +7,7 @@ export const strapiProducts: StrapiProducts = {
   data: [
     {
       attributes: {
+        isVisible: true,
         tags: { data: [] },
         name: 'Test Product',
         slug: 'test-product',
@@ -48,6 +49,7 @@ export const strapiProducts: StrapiProducts = {
 };
 
 export const expectedProduct: Product = {
+  isVisible: true,
   name: 'Test Product',
   slug: 'test-product',
   shortName: 'TP',

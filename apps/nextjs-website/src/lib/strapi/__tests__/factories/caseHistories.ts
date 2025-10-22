@@ -64,6 +64,7 @@ export function caseHistoriesWithMultipleProducts() {
   const strapiCaseHistory = strapiCaseHistories.data[0];
   const secondProduct = {
     attributes: {
+      isVisible: true,
       name: 'Second Product',
       shortName: 'SecondProd',
       slug: 'second-product',
