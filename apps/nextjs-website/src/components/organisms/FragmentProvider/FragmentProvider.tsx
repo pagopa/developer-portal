@@ -1,3 +1,4 @@
+/* eslint-disable functional/no-let */
 /* eslint-disable functional/immutable-data */
 /* eslint-disable functional/no-return-void */
 'use client';
@@ -16,8 +17,7 @@ type FragmentContextType = {
     fragment: string | null,
     options?: { source?: 'manual'; suppressAutoForMs?: number }
   ) => void;
-  // eslint-disable-next-line functional/no-return-void
-  setFragmentFromScroll: (fragment: string | null) => void;
+  setFragmentFromScroll: (fragment: string | null) => boolean;
 };
 
 const FragmentContext = React.createContext<FragmentContextType | null>(null);
@@ -48,11 +48,21 @@ export function FragmentProvider({ children }: FragmentProviderProps) {
   );
 
   const setFragmentFromScroll = useCallback((nextFragment: string | null) => {
-    if (Date.now() < autoUpdateBlockedUntilRef.current) return;
+    if (Date.now() < autoUpdateBlockedUntilRef.current) return false;
 
-    setFragmentState((current) =>
-      current === nextFragment ? current : nextFragment
-    );
+    let didUpdate = false;
+    setFragmentState((current) => {
+      if (current === nextFragment) return current;
+      didUpdate = true;
+      return nextFragment;
+    });
+
+    if (didUpdate) {
+      // eslint-disable-next-line functional/immutable-data
+      autoUpdateBlockedUntilRef.current = 0;
+    }
+
+    return didUpdate;
   }, []);
 
   const fragmentChangeHandler = useCallback(() => {

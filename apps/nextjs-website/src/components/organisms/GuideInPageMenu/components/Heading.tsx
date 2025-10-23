@@ -12,7 +12,7 @@ const Heading = ({ level, id, children }: HeadingProps<ReactNode>) => {
   const isCurrentFragment = fragment === `#${id}`;
 
   const handleClick = useCallback(() => {
-    setFragment(`#${id}`, { source: 'manual', suppressAutoForMs: 1000 });
+    setFragment(`#${id}`, { source: 'manual', suppressAutoForMs: 500 });
   }, [id, setFragment]);
 
   return (

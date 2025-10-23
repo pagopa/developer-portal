@@ -89,9 +89,11 @@ const GuideInPageMenu = ({
 
       if (fragmentRef.current === nextFragment) return;
 
-      // eslint-disable-next-line functional/immutable-data
-      fragmentRef.current = nextFragment;
-      setFragmentFromScroll(nextFragment);
+      const updated = setFragmentFromScroll(nextFragment);
+      if (updated) {
+        // eslint-disable-next-line functional/immutable-data
+        fragmentRef.current = nextFragment;
+      }
     };
 
     const handleScroll = () => {
