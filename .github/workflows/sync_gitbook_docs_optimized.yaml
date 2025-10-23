@@ -124,12 +124,6 @@ jobs:
           aws_region: eu-south-1
           role_to_assume: ${{ secrets.DEPLOY_IAM_ROLE }}
 
-      - name: Sync docs folder to S3
-        if: inputs.generate_metadata_only == false
-        working-directory: ./devportal-docs
-        run: |
-          aws s3 sync docs s3://devportal-${{ env.ENV_SHORT }}-website-static-content/devportal-docs/docs --delete ${{ inputs.incremental_mode == true && ' --size-only' || '' }}
-
       - name: Generate metadata
         env:
           ENVIRONMENT: ${{ inputs.environment }}
@@ -145,6 +139,12 @@ jobs:
           GENERATE_SITEMAP_METADATA: 'true'
           SAVE_STRAPI_RESPONSES: 'true'
         run: npm run sync-all-metadata -w gitbook-docs
+
+      - name: Sync docs folder to S3
+        if: inputs.generate_metadata_only == false
+        working-directory: ./devportal-docs
+        run: |
+          aws s3 sync docs s3://devportal-${{ env.ENV_SHORT }}-website-static-content/devportal-docs/docs --delete ${{ inputs.incremental_mode == true && ' --size-only' || '' }}
 
       - name: Invalidate CloudFront asset bucket cache
         run: |
@@ -247,11 +247,6 @@ jobs:
           aws_region: eu-south-1
           role_to_assume: ${{ secrets.DEPLOY_IAM_ROLE }}
 
-      - name: Sync docs folder to S3
-        working-directory: ./devportal-docs
-        run: |
-          aws s3 sync docs s3://devportal-p-website-static-content/devportal-docs/docs --delete --size-only
-
       - name: Generate metadata
         env:
           ENVIRONMENT: 'prod'
@@ -268,9 +263,13 @@ jobs:
           SAVE_STRAPI_RESPONSES: 'true'
         run: npm run sync-all-metadata -w gitbook-docs
 
+      - name: Sync docs folder to S3
+        working-directory: ./devportal-docs
+        run: |
+          aws s3 sync docs s3://devportal-p-website-static-content/devportal-docs/docs --delete --size-only
+
       - name: Invalidate CloudFront asset bucket cache
         run: |
           aws cloudfront create-invalidation \
             --distribution-id ${{ vars.ASSET_BUCKET_CLOUDFRONT_DISTRIBUTION_ID }} \
             --paths "/*"
-
