@@ -27,8 +27,9 @@ import { Titillium_Web } from 'next/font/google';
 import NextIntlContext from '@/components/atoms/NextIntlContext/NextIntlContext';
 import ChatbotProvider from '@/components/organisms/ChatbotProvider/ChatbotProvider';
 import { ErrorBoundary } from 'next/dist/client/components/error-boundary';
-import 'video.js/dist/video-js.css';
 import Error from './error';
+import 'video.js/dist/video-js.css';
+import 'src/styles/customVideoJsFont.css';
 
 // TODO: remove PREVIOUS_MATOMO_TAG_MANAGER_SCRIPT script, usePreviousScript when the migration to the new tag manager is completed
 const PREVIOUS_MATOMO_TAG_MANAGER_SCRIPT =
@@ -42,7 +43,6 @@ const PREVIOUS_MATOMO_TAG_MANAGER_SCRIPT =
   `'; s.parentNode.insertBefore(g,s);
   })();
 `;
-
 const MATOMO_TAG_MANAGER_SCRIPT =
   `
   var _mtm = window._mtm = window._mtm || [];
