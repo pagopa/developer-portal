@@ -1,5 +1,12 @@
 # nextjs-website
 
+## 10.0.3
+
+### Patch Changes
+
+- c28f1c9: Refactor CDN fetch functions to remove request caching and add configurable fetch options
+- a0e8842: Fix past webinars order in webinars section
+
 ## 10.0.2
 
 ### Patch Changes
