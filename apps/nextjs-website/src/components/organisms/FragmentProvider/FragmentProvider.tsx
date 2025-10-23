@@ -1,16 +1,23 @@
+/* eslint-disable functional/immutable-data */
+/* eslint-disable functional/no-return-void */
 'use client';
 import React, {
   ReactNode,
   useCallback,
   useContext,
   useEffect,
+  useRef,
   useState,
 } from 'react';
 
 type FragmentContextType = {
   fragment: string | null;
+  setFragment: (
+    fragment: string | null,
+    options?: { source?: 'manual'; suppressAutoForMs?: number }
+  ) => void;
   // eslint-disable-next-line functional/no-return-void
-  setFragment: (fragment: string | null) => void;
+  setFragmentFromScroll: (fragment: string | null) => void;
 };
 
 const FragmentContext = React.createContext<FragmentContextType | null>(null);
@@ -21,8 +28,28 @@ type FragmentProviderProps = {
 
 export function FragmentProvider({ children }: FragmentProviderProps) {
   const [fragment, setFragmentState] = useState<string | null>(null);
+  const autoUpdateBlockedUntilRef = useRef(0);
 
-  const setFragment = useCallback((nextFragment: string | null) => {
+  const setFragment = useCallback(
+    (
+      nextFragment: string | null,
+      options?: { source?: 'manual'; suppressAutoForMs?: number }
+    ) => {
+      setFragmentState((current) =>
+        current === nextFragment ? current : nextFragment
+      );
+
+      if (options?.source === 'manual') {
+        const suppressMs = options.suppressAutoForMs ?? 0;
+        autoUpdateBlockedUntilRef.current = Date.now() + suppressMs;
+      }
+    },
+    []
+  );
+
+  const setFragmentFromScroll = useCallback((nextFragment: string | null) => {
+    if (Date.now() < autoUpdateBlockedUntilRef.current) return;
+
     setFragmentState((current) =>
       current === nextFragment ? current : nextFragment
     );
@@ -47,6 +74,7 @@ export function FragmentProvider({ children }: FragmentProviderProps) {
       value={{
         fragment,
         setFragment,
+        setFragmentFromScroll,
       }}
     >
       {children}
@@ -62,10 +90,11 @@ export function useFragment() {
       'FragmentContext not found, did you forget to wrap your app with FragmentProvider?'
     );
 
-  const { fragment, setFragment } = context;
+  const { fragment, setFragment, setFragmentFromScroll } = context;
 
   return {
     fragment,
     setFragment,
+    setFragmentFromScroll,
   } as const;
 }
