@@ -14,6 +14,7 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import '@/styles/globals.css';
+import 'video.js/dist/video-js.css';
 import ThemeRegistry from './ThemeRegistry';
 import { getProducts } from '@/lib/api';
 import SiteFooter from '@/components/atoms/SiteFooter/SiteFooter';
@@ -28,8 +29,6 @@ import NextIntlContext from '@/components/atoms/NextIntlContext/NextIntlContext'
 import ChatbotProvider from '@/components/organisms/ChatbotProvider/ChatbotProvider';
 import { ErrorBoundary } from 'next/dist/client/components/error-boundary';
 import Error from './error';
-import 'video.js/dist/video-js.css';
-import 'src/styles/customVideoJsFont.css';
 
 // TODO: remove PREVIOUS_MATOMO_TAG_MANAGER_SCRIPT script, usePreviousScript when the migration to the new tag manager is completed
 const PREVIOUS_MATOMO_TAG_MANAGER_SCRIPT =
