@@ -35,16 +35,20 @@ const GuideMenu = (menuProps: GuideMenuProps) => {
   const segments = currentPath.split('/');
   const expanded = segments.map((_, i) => segments.slice(0, i + 1).join('/'));
 
-  const top = scrollUp ? SITE_HEADER_HEIGHT : 0;
+  const topOffsetXs = scrollUp ? SITE_HEADER_HEIGHT : 0;
 
-  const height = `calc(100vh - ${top}px)`;
+  const height = `calc(100vh - ${topOffsetXs}px)`;
 
   const topStyle = menuProps.hasHeader
-    ? { xs: top + 62, sm: top + 90, md: top + 77 }
+    ? {
+        xs: topOffsetXs + 62,
+        sm: topOffsetXs + 90,
+        md: SITE_HEADER_HEIGHT + 77,
+      }
     : {
-        xs: top,
-        sm: top,
-        md: top,
+        xs: topOffsetXs,
+        sm: topOffsetXs,
+        md: topOffsetXs,
       };
 
   const handleClick = useCallback(() => {

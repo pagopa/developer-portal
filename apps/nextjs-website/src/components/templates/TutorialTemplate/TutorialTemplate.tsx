@@ -46,7 +46,7 @@ const TutorialTemplate = ({
             // 80px is the height of the product header
             marginTop: '80px',
             marginX: 'auto',
-            paddingTop: 3,
+            paddingTop: 8,
             px: { xs: 4, lg: 0 },
           }}
         >
