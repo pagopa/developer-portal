@@ -97,8 +97,8 @@ resource "aws_lambda_function" "chatbot_evaluate_lambda" {
   image_uri    = "${module.ecr["evaluate"].repository_url}:latest"
   package_type = "Image"
 
-  timeout       = 120 # 2 minutes
-  memory_size   = 1024
+  timeout       = 600 # 10 minutes
+  memory_size   = 848
   architectures = ["x86_64"]
   role          = aws_iam_role.lambda_evaluate_role.arn
 
@@ -111,6 +111,7 @@ resource "aws_lambda_function" "chatbot_evaluate_lambda" {
       CHB_AWS_SSM_GOOGLE_API_KEY      = module.google_api_key_ssm_parameter.ssm_parameter_name
       CHB_AWS_SSM_LANGFUSE_PUBLIC_KEY = module.langfuse_public_key.ssm_parameter_name
       CHB_AWS_SSM_LANGFUSE_SECRET_KEY = module.langfuse_secret_key.ssm_parameter_name
+      RAGAS_DO_NOT_TRACK              = "True"
     }
   }
 

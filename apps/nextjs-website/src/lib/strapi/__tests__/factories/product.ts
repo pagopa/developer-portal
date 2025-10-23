@@ -11,6 +11,7 @@ import { generateBannerLinks } from '@/lib/strapi/__tests__/factories/bannerLink
 export function baseProduct(): StrapiBaseProduct {
   return {
     attributes: {
+      isVisible: true,
       name: 'Test Product',
       shortName: 'TP',
       slug: 'test-product',
@@ -141,6 +142,7 @@ export function strapiProductWithoutLogo(): StrapiProduct {
 export function productWithAllRelations(): StrapiProduct {
   return {
     attributes: {
+      isVisible: true,
       name: 'Full Feature Product',
       shortName: 'FFP',
       tags: { data: [] },
@@ -189,6 +191,7 @@ export function productWithAllRelations(): StrapiProduct {
 export function productWithMissingMandatoryFields(): Partial<StrapiProduct> {
   return {
     attributes: {
+      isVisible: true,
       name: undefined as any,
       tags: { data: [] },
       shortName: undefined as any,

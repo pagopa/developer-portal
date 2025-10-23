@@ -81,22 +81,17 @@ async function withRetries<T>(
 }
 
 export async function downloadFileAsText(
-  path: string
+  path: string,
+  config?: RequestInit
 ): Promise<string | undefined> {
-  // Check if we already have a request in progress for this path
-  const cacheKey = `downloadFileAsText:${path}`;
-  if (requestCache.has(cacheKey)) {
-    const result = await requestCache.get(cacheKey);
-    return result;
-  }
-
-  // Create the request promise and cache it
+  // Create the request promise
   const requestPromise = withRetries(
     async () => {
       const url = `${staticContentsUrl}/${path}`;
       const response = await fetch(url, {
         // Add timeout and other fetch options to prevent hanging
         signal: AbortSignal.timeout(TIMEOUT_LIMIT), // 30 second timeout
+        ...config,
       });
 
       if (!response.ok) {
@@ -112,13 +107,10 @@ export async function downloadFileAsText(
     `file download from ${path}`,
     undefined
   ).catch((error) => {
-    // On failure, remove from cache to allow retries on subsequent calls
-    requestCache.delete(cacheKey);
     // eslint-disable-next-line functional/no-throw-statements
     throw error;
   });
 
-  requestCache.set(cacheKey, requestPromise);
   const result = await requestPromise;
   return result;
 }

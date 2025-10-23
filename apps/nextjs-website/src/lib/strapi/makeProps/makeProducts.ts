@@ -76,22 +76,23 @@ export function makeBaseProductWithoutLogoProps(
   }
 
   return {
-    slug: product.attributes.slug,
-    name: product.attributes.name,
-    shortName: product.attributes.shortName,
+    apiDataListPageUrl: getApiDataListPageUrl(product),
+    bannerLinks: product.attributes.bannerLinks?.map(makeBannerLinkProps) || [],
+    isVisible: product.attributes.isVisible,
     hasApiDataListPage: !!(
       product.attributes.api_data_list_page.data &&
       product.attributes.api_data_list_page.data.attributes.apiData.data
         .length > 0
     ),
-    apiDataListPageUrl: getApiDataListPageUrl(product),
-    hasTutorialListPage: !!product.attributes.tutorial_list_page.data,
     hasGuideListPage: !!product.attributes.guide_list_page.data,
     hasOverviewPage: !!product.attributes.overview.data,
     hasQuickstartGuidePage: !!product.attributes.quickstart_guide.data,
     hasReleaseNotePage: !!product.attributes.release_note.data,
+    hasTutorialListPage: !!product.attributes.tutorial_list_page.data,
     hasUseCaseListPage: !!product.attributes.use_case_list_page.data,
-    bannerLinks: product.attributes.bannerLinks?.map(makeBannerLinkProps) || [],
+    name: product.attributes.name,
+    shortName: product.attributes.shortName,
+    slug: product.attributes.slug,
     tags: product.attributes.tags?.data?.map((tag) => tag.attributes) || [],
   } satisfies Product;
 }

@@ -65,6 +65,7 @@ export const strapiHomepage: StrapiHomepage = {
           data: [
             {
               attributes: {
+                isVisible: true,
                 tags: { data: [] },
                 name: 'Product 1',
                 shortName: 'P1',
