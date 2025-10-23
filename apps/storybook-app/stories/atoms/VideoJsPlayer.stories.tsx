@@ -14,6 +14,6 @@ export const Showcase: StoryObj<typeof VideoJsPlayer> = {
     autoplay: true,
     controls: true,
     playsInline: true,
-    src: 'https://video.dev.developer.pagopa.it/ivs/v1/039804388894/aTDsKTAzIgD0/2025/9/23/8/37/9d44hRI1jhzc/media/hls/master.m3u8',
+    src: 'https://video.dev.developer.pagopa.it/ivs/v1/039804388894/5CsyUCnE771r/2025/10/22/9/30/devTalks-pagoPA-fdr/master.m3u8',
   },
 };
