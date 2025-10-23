@@ -4,7 +4,6 @@ import { useEffect, useRef } from 'react';
 import {
   registerIVSQualityPlugin,
   registerIVSTech,
-  VideoJSEvents,
   VideoJSIVSTech,
   VideoJSQualityPlugin,
 } from 'amazon-ivs-player';
@@ -35,45 +34,34 @@ const VideoJsPlayer = (props: PlayerProps) => {
       {
         techOrder: props.techOrder,
         autoplay: props.autoplay,
-      },
-      function () {
-        console.warn('Player is ready to use');
       }
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
     ) as videojs.Player & VideoJSIVSTech & VideoJSQualityPlugin;
 
     player.enableIVSQualityPlugin();
-
-    const events: VideoJSEvents = player.getIVSEvents();
-    const ivsPlayer = player.getIVSPlayer();
-    ivsPlayer.addEventListener(events.PlayerState.PLAYING, () => {
-      console.log('IVS Player is playing');
-    });
     player.src(props.src);
   }, [props.autoplay, props.src, props.techOrder]);
 
   return (
-    <>
-      <Box sx={{ position: 'relative', paddingBottom: '56.25%' }}>
-        <video
-          className={'video-js'}
-          id='videojs-player'
-          ref={videoEl}
-          playsInline={props.playsInline}
-          autoPlay={props.autoplay}
-          controls={props.controls}
-          style={{
-            border: 'none',
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100%',
-          }}
-        />
-      </Box>
-    </>
+    <Box sx={{ position: 'relative', paddingBottom: '56.25%' }}>
+      <video
+        className={'video-js'}
+        id='videojs-player'
+        ref={videoEl}
+        playsInline={props.playsInline}
+        autoPlay={props.autoplay}
+        controls={props.controls}
+        style={{
+          border: 'none',
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+        }}
+      />
+    </Box>
   );
 };
 
