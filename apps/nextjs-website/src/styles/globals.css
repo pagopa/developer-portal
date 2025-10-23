@@ -4,6 +4,10 @@
   font-family: var(--font-titillium-web)!important;
 }
 
+.video-js * {
+  font-family: 'VideoJS'!important;
+}
+
 body {
   background-color: white;
   margin: 0;
@@ -78,7 +82,7 @@ body {
 }
 
 .ot-sdk-container {
-  font-family: "Titillium Web", sans-serif !important;
+  font-family: "Titillium Web", sans-serif;
 }
 
 @media only screen and (min-width: 1024px) {

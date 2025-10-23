@@ -9,7 +9,6 @@ import {
 } from 'amazon-ivs-player';
 import videojs from 'video.js';
 import { Box } from '@mui/material';
-import 'video.js/dist/video-js.css';
 import { amazonIvsVersion } from '@/config';
 
 interface PlayerProps {
