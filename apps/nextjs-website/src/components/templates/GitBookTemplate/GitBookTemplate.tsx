@@ -9,6 +9,8 @@ import GuideInPageMenu from '@/components/organisms/GuideInPageMenu/GuideInPageM
 import { BreadcrumbSegment } from '@/lib/types/path';
 import { Box, Stack } from '@mui/material';
 import { useTranslations } from 'next-intl';
+import { SITE_HEADER_HEIGHT } from '../../molecules/SiteHeader/SiteHeader';
+import { PRODUCT_HEADER_HEIGHT } from '../../atoms/ProductHeader/ProductHeader';
 
 export type GitBookTemplateProps = {
   menuName: string;
@@ -46,6 +48,9 @@ const GitBookTemplate = ({
     xs: '30px',
     md: '60px',
   };
+  const headersOffset = hasHeader
+    ? `${SITE_HEADER_HEIGHT + PRODUCT_HEADER_HEIGHT}px`
+    : '0px';
 
   return (
     <FragmentProvider>
@@ -93,7 +98,8 @@ const GitBookTemplate = ({
             sx={{
               display: { xs: 'none', lg: 'initial' },
               position: 'relative',
-              padding: { lg: hasHeader ? '80px 64px' : '48px 64px' },
+              marginTop: { lg: headersOffset },
+              padding: { lg: '43px 64px' },
               width: { lg: '378px' },
             }}
           >
