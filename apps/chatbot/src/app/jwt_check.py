@@ -1,4 +1,3 @@
-import os
 import requests
 from jose import jwk, jwt
 from jose import exceptions as jwt_exceptions
@@ -11,12 +10,31 @@ LOGGER = get_logger(__name__)
 
 
 def get_jwks():
-    KEYS_URL = (
-        f"https://cognito-idp.{SETTINGS.aws_region_cognito}.amazonaws.com/"
-        f"{SETTINGS.auth_cognito_userpool_id}/"
-        ".well-known/jwks.json"
-    )
-    response = requests.get(KEYS_URL)
+    REGION = SETTINGS.aws_cognito_region or SETTINGS.aws_region
+
+    # https://docs.getmoto.org/en/latest/docs/services/cognito-idp.html#cognito-idp
+    if SETTINGS.environment == "test":
+        KEYS_URL = (
+            f"{SETTINGS.aws_endpoint_url}/"
+            f"{SETTINGS.auth_cognito_userpool_id}/"
+            ".well-known/jwks.json"
+        )
+        headers = {
+            "Authorization": (
+                "AWS4-HMAC-SHA256 Credential=mock_access_key/20220524/"
+                f"{REGION}/cognito-idp/aws4_request, "
+                "SignedHeaders=content-length;content-type;host;x-amz-date, Signature=asdf"
+            )
+        }
+    else:
+        KEYS_URL = (
+            f"https://cognito-idp.{REGION}.amazonaws.com/"
+            f"{SETTINGS.auth_cognito_userpool_id}/"
+            ".well-known/jwks.json"
+        )
+        headers = None
+
+    response = requests.get(KEYS_URL, headers=headers)
 
     if response.status_code == 200:
         return response.json()
