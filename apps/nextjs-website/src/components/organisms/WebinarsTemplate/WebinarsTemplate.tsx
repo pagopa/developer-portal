@@ -4,7 +4,10 @@ import Hero from '@/editorialComponents/Hero/Hero';
 import { useTranslations } from 'next-intl';
 import { useTheme } from '@mui/material';
 import { Webinar } from '@/lib/types/webinar';
-import { getFutureWebinars, getPastWebinars } from '@/helpers/webinars.helpers';
+import {
+  getFutureWebinarsFrom,
+  getPastWebinarsFrom,
+} from '@/helpers/webinars.helpers';
 import FutureWebinarsShowcase from '../FutureWebinarsShowcase/FutureWebinarsShowcase';
 import { baseUrl } from '@/config';
 import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
@@ -45,18 +48,18 @@ const WebinarsTemplateContent = ({
     seo: webinarsListPageSEO,
   });
   useEffect(() => {
-    setFutureWebinars(getFutureWebinars(webinars));
-    setPastWebinars(getPastWebinars(webinars));
+    setFutureWebinars(getFutureWebinarsFrom(webinars));
+    setPastWebinars(getPastWebinarsFrom(webinars));
 
     const intervalId = setInterval(() => {
-      setFutureWebinars(getFutureWebinars(webinars));
-      setPastWebinars(getPastWebinars(webinars));
+      setFutureWebinars(getFutureWebinarsFrom(webinars));
+      setPastWebinars(getPastWebinarsFrom(webinars));
     }, CHECK_WEBINARS_INTERVAL_MS);
 
     // Cleanup the interval when the component is unmounted
     return () => clearInterval(intervalId);
   }, [webinars]);
-  const mappedWebinars = webinars.map((webinar) => ({
+  const mappedWebinars = pastWebinars.map((webinar) => ({
     tags: webinar.tag ? [webinar.tag] : [],
     title: webinar.title,
     date: {

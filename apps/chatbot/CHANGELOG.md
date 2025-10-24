@@ -1,5 +1,12 @@
 # chatbot
 
+## 7.0.3
+
+### Patch Changes
+
+- 0d6bb25: Code refactor new chatbot-index lambda
+- 60f3fe7: Update docker in .gitingore file
+
 ## 7.0.2
 
 ### Patch Changes

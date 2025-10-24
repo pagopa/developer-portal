@@ -1,5 +1,11 @@
 # storybook-app
 
+## 1.1.0
+
+### Minor Changes
+
+- ef04d04: Add gitbook content story
+
 ## 1.0.1
 
 ### Patch Changes
