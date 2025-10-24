@@ -1,5 +1,11 @@
 'use client';
-import React, { Fragment, useCallback, useEffect, useState } from 'react';
+import React, {
+  Fragment,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import Typography from '@mui/material/Typography';
 import { usePathname } from 'next/navigation';
 import ArrowDropDownOutlinedIcon from '@mui/icons-material/ArrowDropDownOutlined';
@@ -26,6 +32,7 @@ type GuideMenuProps = GuideMenuItemsProps & {
 
 const GuideMenu = (menuProps: GuideMenuProps) => {
   const [open, setOpen] = useState(false);
+  const menuContainerRef = useRef<HTMLDivElement>(null);
   const { palette } = useTheme();
   const t = useTranslations();
   const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('lg'));
@@ -37,13 +44,13 @@ const GuideMenu = (menuProps: GuideMenuProps) => {
 
   const topOffsetXs = scrollUp ? SITE_HEADER_HEIGHT : 0;
 
-  const height = `calc(100vh - ${topOffsetXs}px)`;
+  const height = `calc(100vh - ${SITE_HEADER_HEIGHT}px)`;
 
   const topStyle = menuProps.hasHeader
     ? {
         xs: topOffsetXs + 62,
         sm: topOffsetXs + 90,
-        md: SITE_HEADER_HEIGHT + 77,
+        md: SITE_HEADER_HEIGHT + 25,
       }
     : {
         xs: topOffsetXs,
@@ -55,23 +62,64 @@ const GuideMenu = (menuProps: GuideMenuProps) => {
     setOpen((prev) => !prev);
   }, []);
 
+  const scrollToActiveItem = useCallback(() => {
+    if (!menuContainerRef.current) return;
+
+    const activeItem = menuContainerRef.current.querySelector(
+      '[data-active="true"]'
+    );
+    if (activeItem) {
+      const container = menuContainerRef.current;
+      const containerRect = container.getBoundingClientRect();
+      const itemRect = activeItem.getBoundingClientRect();
+
+      // Calculate the position of the item relative to the container
+      const itemTop = itemRect.top - containerRect.top + container.scrollTop;
+      const itemBottom = itemTop + itemRect.height;
+
+      // Calculate the visible area of the container
+      const containerHeight = container.clientHeight;
+      const scrollTop = container.scrollTop;
+      const scrollBottom = scrollTop + containerHeight;
+
+      // Check if item is outside the visible area
+      if (itemTop < scrollTop || itemBottom > scrollBottom) {
+        // Center the item in the container
+        const targetScrollTop =
+          itemTop - containerHeight / 2 + itemRect.height / 2;
+
+        container.scrollTo({
+          top: Math.max(0, targetScrollTop),
+          behavior: 'smooth',
+        });
+      }
+    }
+  }, []);
+
   useEffect(() => {
     if (isDesktop) {
       setOpen(false);
     }
   }, [isDesktop]);
 
+  useEffect(() => {
+    const timer = setTimeout(scrollToActiveItem, 100);
+    return () => clearTimeout(timer);
+  }, [currentPath, scrollToActiveItem]);
+
   const items = (
     <GuideMenuItems
       {...menuProps}
       currentPath={currentPath}
       expanded={expanded}
+      containerRef={menuContainerRef}
     />
   );
 
   return (
     <Fragment>
       <Stack
+        ref={menuContainerRef}
         sx={{
           backgroundColor: palette.grey[50],
           flexShrink: 0,
