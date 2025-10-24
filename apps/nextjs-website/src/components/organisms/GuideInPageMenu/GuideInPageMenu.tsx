@@ -57,7 +57,7 @@ const GuideInPageMenu = ({
 
     if (headingElements.length === 0) return;
 
-    const TOP_OFFSET = 180;
+    const TOP_OFFSET = 130;
     // eslint-disable-next-line functional/no-let
     let ticking = false;
 
