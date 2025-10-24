@@ -101,6 +101,7 @@ export const strapiGuideData = {
         product: {
           data: {
             attributes: {
+              isVisible: true,
               name: 'Piattaforma pagoPA',
               slug: 'pago-pa',
               shortName: 'pagoPA',
