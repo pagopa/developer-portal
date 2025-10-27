@@ -2,7 +2,6 @@ import datetime
 import hashlib
 import os
 import uuid
-import yaml
 
 from boto3.dynamodb.conditions import Key
 from botocore.exceptions import BotoCoreError, ClientError
@@ -14,8 +13,6 @@ from src.modules.logger import get_logger
 from src.app.models import QueryFeedback, tables
 from src.app.jwt_check import verify_jwt
 
-params = yaml.safe_load(open("config/params.yaml", "r"))
-prompts = yaml.safe_load(open("config/prompts.yaml", "r"))
 
 LOGGER = get_logger(__name__)
 

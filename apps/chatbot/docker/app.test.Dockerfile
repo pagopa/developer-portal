@@ -29,11 +29,10 @@ COPY ./poetry.lock .
 COPY ./src ./src
 COPY ./config ./config
 COPY ./scripts ./scripts
-COPY ./notebooks ./notebooks
 COPY ./.google_service_account.json .
 
 RUN poetry config virtualenvs.create false
-RUN poetry install
+RUN poetry install --with test
 
 RUN python ./scripts/nltk_download.py
 RUN python ./scripts/spacy_download.py
