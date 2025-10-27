@@ -107,7 +107,7 @@ const GitBookTemplate = ({
               sx={{
                 position: 'sticky',
                 maxWidth: '378px',
-                top: hasHeader ? 121 : 64,
+                top: 121,
               }}
             >
               <GuideInPageMenu
