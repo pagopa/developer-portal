@@ -82,7 +82,7 @@ body {
 }
 
 .ot-sdk-container {
-  font-family: "Titillium Web", sans-serif;
+  font-family: "Titillium Web", sans-serif !important;
 }
 
 @media only screen and (min-width: 1024px) {
