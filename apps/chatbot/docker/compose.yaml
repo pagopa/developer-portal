@@ -108,6 +108,7 @@ services:
       - "6379:6379"
       - "8001:8001"
     volumes:
+      - ./files/redis-dump.rdb:/data/dump.rdb
       - redis_data:/data
     networks:
       - ntw
