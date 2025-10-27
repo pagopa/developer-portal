@@ -40,13 +40,6 @@ def get_ssm_parameter(name: str | None, default: str | None = None) -> str | Non
 
     return value
 
-def mock_user_pool_id() -> str:
-    client_cognito = AWS_SESSION.client("cognito-idp")
-    user_pool_response = client_cognito.create_user_pool(PoolName="test_pool")
-    user_pool_id = user_pool_response["UserPool"]["Id"]
-    return user_pool_id
-
-
 GOOGLE_SERVICE_ACCOUNT = get_ssm_parameter(
     os.getenv("CHB_AWS_SSM_GOOGLE_SERVICE_ACCOUNT")
 )
@@ -55,6 +48,13 @@ if GOOGLE_SERVICE_ACCOUNT is None:
         GOOGLE_JSON_ACCOUNT_INFO = json.load(file)
 else:
     GOOGLE_JSON_ACCOUNT_INFO = json.loads(GOOGLE_SERVICE_ACCOUNT)
+
+
+def mock_user_pool_id() -> str:
+    client_cognito = AWS_SESSION.client("cognito-idp")
+    user_pool_response = client_cognito.create_user_pool(PoolName="test_pool")
+    user_pool_id = user_pool_response["UserPool"]["Id"]
+    return user_pool_id
 
 
 class ChatbotSettings(BaseSettings):

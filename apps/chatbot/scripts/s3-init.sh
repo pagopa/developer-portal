@@ -7,6 +7,3 @@ aws s3api create-bucket --bucket $CHB_AWS_S3_BUCKET_NAME_STATIC_CONTENT \
   --endpoint-url=$AWS_ENDPOINT_URL \
   --region $AWS_REGION
 
-# aws s3api list-buckets \
-#   --endpoint-url=$AWS_ENDPOINT_URL \
-#   --region $AWS_REGION
