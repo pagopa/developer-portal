@@ -99,7 +99,7 @@ const GitBookTemplate = ({
               display: { xs: 'none', lg: 'initial' },
               position: 'relative',
               marginTop: { lg: headersOffset },
-              padding: { lg: '43px 64px' },
+              padding: { lg: '0px 64px' },
               width: { lg: '378px' },
             }}
           >
