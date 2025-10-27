@@ -1,3 +1,4 @@
+import boto3
 import os
 import boto3
 import json
@@ -42,26 +43,6 @@ def get_ssm_parameter(name: str | None, default: str | None = None) -> str | Non
 
     return value
 
-
-def put_ssm_parameter(name: str, value: str) -> None:
-    """
-    Puts a specific value into AWS Systems Manager's Parameter Store.
-    :param name: The name of the parameter to put.
-    :param value: The value to store in the parameter.
-    """
-
-    LOGGER.debug(f"Putting parameter {name} to SSM")
-    try:
-        SSM_CLIENT.put_parameter(
-            Name=name,
-            Value=value,
-            Type="String",
-            Overwrite=True,
-        )
-    except Exception as e:
-        LOGGER.error(e)
-
-
 GOOGLE_SERVICE_ACCOUNT = get_ssm_parameter(
     os.getenv("CHB_AWS_SSM_GOOGLE_SERVICE_ACCOUNT")
 )
@@ -72,15 +53,25 @@ else:
     GOOGLE_JSON_ACCOUNT_INFO = json.loads(GOOGLE_SERVICE_ACCOUNT)
 
 
+def mock_user_pool_id() -> str:
+    client_cognito = AWS_SESSION.client("cognito-idp")
+    user_pool_response = client_cognito.create_user_pool(PoolName="test_pool")
+    user_pool_id = user_pool_response["UserPool"]["Id"]
+    return user_pool_id
+
+
 class ChatbotSettings(BaseSettings):
     """Settings for the chatbot application."""
 
-    aws_region_cognito: str = os.getenv(
-        "CHB_AWS_REGION_COGNITO", os.getenv("AWS_REGION")
+    # api
+    environment: str = os.getenv("environment", "local")
+    aws_endpoint_url: str = os.getenv("AWS_ENDPOINT_URL")
+    aws_cognito_region: str = os.getenv("CHB_AWS_COGNITO_REGION") or os.getenv(
+        "AWS_REGION"
     )
-    auth_cognito_userpool_id: str = os.getenv("AUTH_COGNITO_USERPOOL_ID", "")
-
-    # api keys
+    auth_cognito_userpool_id: str = os.getenv(
+        "AUTH_COGNITO_USERPOOL_ID", mock_user_pool_id()
+    )
     google_api_key: str = get_ssm_parameter(
         name=os.getenv("CHB_AWS_SSM_GOOGLE_API_KEY"),
         default=os.getenv("CHB_AWS_GOOGLE_API_KEY"),
@@ -98,6 +89,8 @@ class ChatbotSettings(BaseSettings):
         os.getenv("CHB_AWS_SSM_LANGFUSE_SECRET_KEY"),
         os.getenv("LANGFUSE_INIT_PROJECT_SECRET_KEY"),
     )
+    cors_domains: str = os.getenv("CORS_DOMAINS", '["*"]')
+    log_level: str = os.getenv("LOG_LEVEL", "info")
 
     # RAG settings
     embed_batch_size: int = int(os.getenv("CHB_EMBED_BATCH_SIZE", "100"))
@@ -135,6 +128,12 @@ class ChatbotSettings(BaseSettings):
     # urls
     redis_url: str = os.getenv("CHB_REDIS_URL")
     website_url: str = os.getenv("CHB_WEBSITE_URL")
+
+    # API
+    query_table_prefix: str = os.getenv("CHB_QUERY_TABLE_PREFIX", "chatbot")
+    aws_sqs_queue_evaluate_name: str = os.getenv(
+        "CHB_AWS_SQS_QUEUE_EVALUATE_NAME", "chatbot-evaluate"
+    )
 
 
 SETTINGS = ChatbotSettings()
