@@ -80,6 +80,13 @@ resource "aws_iam_role_policy" "lambda_evaluate_policy" {
       {
         Effect = "Allow"
         Action = [
+          "sqs:SendMessage",
+        ]
+        Resource = aws_sqs_queue.chatbot_evaluate_queue_dlq.arn
+      },
+      {
+        Effect = "Allow"
+        Action = [
           "ec2:CreateNetworkInterface",
           "ec2:DescribeNetworkInterfaces",
           "ec2:DeleteNetworkInterface"
