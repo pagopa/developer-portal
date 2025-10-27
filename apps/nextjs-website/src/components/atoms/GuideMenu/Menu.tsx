@@ -113,7 +113,7 @@ const GuideMenuItems = ({
             variant='sidenav'
             component={NextLink}
             href={href}
-            style={{ 
+            style={{
               textDecoration: 'none',
               fontSize: '.938rem',
               fontWeight: 400,
