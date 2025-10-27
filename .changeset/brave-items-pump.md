@@ -2,4 +2,4 @@
 "chatbot-index": patch
 ---
 
-fix chrome install
+Fix chrome install
