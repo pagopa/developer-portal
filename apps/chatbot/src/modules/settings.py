@@ -61,13 +61,15 @@ class ChatbotSettings(BaseSettings):
     """Settings for the chatbot application."""
 
     # api
-    environment: str = os.getenv("environment", "local")
+    environment: str = os.getenv("ENVIRONMENT", os.getenv("environment", "local"))
     aws_endpoint_url: str = os.getenv("AWS_ENDPOINT_URL")
     aws_cognito_region: str = os.getenv("CHB_AWS_COGNITO_REGION") or os.getenv(
         "AWS_REGION"
     )
-    auth_cognito_userpool_id: str = os.getenv(
-        "AUTH_COGNITO_USERPOOL_ID", mock_user_pool_id()
+    auth_cognito_userpool_id: str = (
+        mock_user_pool_id() 
+        if os.getenv("ENVIRONMENT", "local") in ["test", "local"] 
+        else os.getenv("AUTH_COGNITO_USERPOOL_ID")
     )
     google_api_key: str = get_ssm_parameter(
         name=os.getenv("CHB_AWS_SSM_GOOGLE_API_KEY"),
