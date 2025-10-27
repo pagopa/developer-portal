@@ -9,6 +9,8 @@ import { BreadcrumbSegment } from '@/lib/types/path';
 import { Box, Stack } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import GitBookContent from '@/components/organisms/GitBookContent/GitBookContent';
+import { SITE_HEADER_HEIGHT } from '../../molecules/SiteHeader/SiteHeader';
+import { PRODUCT_HEADER_HEIGHT } from '../../atoms/ProductHeader/ProductHeader';
 
 export type GitBookTemplateProps = {
   menuName: string;
@@ -44,8 +46,11 @@ const GitBookTemplate = ({
   const responsiveContentMarginTop = (contentMarginTop &&
     `${contentMarginTop}px`) || {
     xs: '30px',
-    md: '110px',
+    md: '60px',
   };
+  const headersOffset = hasHeader
+    ? `${SITE_HEADER_HEIGHT + PRODUCT_HEADER_HEIGHT}px`
+    : '0px';
 
   return (
     <FragmentProvider>
@@ -78,6 +83,7 @@ const GitBookTemplate = ({
               xs: '100%',
               lg: '1008px',
             },
+            minHeight: '100vh',
           }}
         >
           <Box sx={{ paddingTop: paddingTop, paddingX: '40px' }}>
@@ -92,7 +98,8 @@ const GitBookTemplate = ({
             sx={{
               display: { xs: 'none', lg: 'initial' },
               position: 'relative',
-              padding: { lg: hasHeader ? '80px 64px' : '48px 64px' },
+              marginTop: { lg: headersOffset },
+              padding: { lg: '43px 64px' },
               width: { lg: '378px' },
             }}
           >
@@ -100,7 +107,7 @@ const GitBookTemplate = ({
               sx={{
                 position: 'sticky',
                 maxWidth: '378px',
-                top: hasHeader ? 144 : 64,
+                top: hasHeader ? 168 : 64,
               }}
             >
               <GuideInPageMenu
