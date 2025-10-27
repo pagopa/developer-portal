@@ -1,10 +1,10 @@
-resource "aws_cloudwatch_log_group" "lambda_reindex_logs" {
-  name              = "/aws/lambda/${aws_lambda_function.chatbot_reindex_lambda.function_name}"
+resource "aws_cloudwatch_log_group" "lambda_index_logs" {
+  name              = "/aws/lambda/${aws_lambda_function.chatbot_index_lambda.function_name}"
   retention_in_days = 14
 }
 
-resource "aws_iam_role" "lambda_reindex_role" {
-  name                  = "${local.prefix}-reindex-lambda"
+resource "aws_iam_role" "lambda_index_role" {
+  name                  = "${local.prefix}-index-lambda"
   force_detach_policies = true
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -20,9 +20,9 @@ resource "aws_iam_role" "lambda_reindex_role" {
   })
 }
 
-resource "aws_iam_role_policy" "lambda_reindex_policy" {
-  name = "${local.prefix}-reindex-lambda"
-  role = aws_iam_role.lambda_reindex_role.id
+resource "aws_iam_role_policy" "lambda_index_policy" {
+  name = "${local.prefix}-index-lambda"
+  role = aws_iam_role.lambda_index_role.id
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -88,16 +88,20 @@ resource "aws_iam_role_policy" "lambda_reindex_policy" {
   })
 }
 
-resource "aws_lambda_function" "chatbot_reindex_lambda" {
-  function_name = "${local.prefix}-reindex-lambda"
-  description   = "Lambda function for reindexing chatbot data."
-  image_uri     = format("%s:latest", module.ecr["chatbotreindex"].repository_url)
+locals {
+  chatbot_index_lambda_name = "${local.prefix}-index-lambda"
+}
+
+resource "aws_lambda_function" "chatbot_index_lambda" {
+  function_name = local.chatbot_index_lambda_name
+  description   = "Lambda function for indexing chatbot data."
+  image_uri     = format("%s:latest", module.ecr["chatbotindex"].repository_url)
   package_type  = "Image"
 
-  timeout       = 600 # 10 minutes
+  timeout       = 900 # 15 minutes
   memory_size   = 1024
   architectures = ["x86_64"]
-  role          = aws_iam_role.lambda_reindex_role.arn
+  role          = aws_iam_role.lambda_index_role.arn
 
   environment {
     variables = {
@@ -116,6 +120,7 @@ resource "aws_lambda_function" "chatbot_reindex_lambda" {
       CHB_AWS_S3_BUCKET_NAME_STATIC_CONTENT = var.s3_bucket_name_static_content
       CHB_REDIS_URL                         = "redis://${module.nlb.dns_name}:${var.ecs_redis.port}"
       CHB_WEBSITE_URL                       = "https://${var.dns_domain_name}"
+      NLTK_DATA                             = "/tmp"
 
     }
   }
@@ -130,4 +135,29 @@ resource "aws_lambda_function" "chatbot_reindex_lambda" {
       image_uri,
     ]
   }
+
+  tags = {
+    Name = local.chatbot_index_lambda_name
+  }
+}
+
+resource "aws_lambda_permission" "allow_s3_invoke_index" {
+  statement_id  = "AllowExecutionFromS3Bucket"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.chatbot_index_lambda.arn
+  principal     = "s3.amazonaws.com"
+  source_arn    = "arn:aws:s3:::${var.s3_bucket_name_static_content}"
+}
+
+resource "aws_s3_bucket_notification" "index_lambda_trigger" {
+  bucket = var.s3_bucket_name_static_content
+
+  lambda_function {
+    lambda_function_arn = aws_lambda_function.chatbot_index_lambda.arn
+    events              = ["s3:ObjectCreated:*", "s3:ObjectRemoved:*"]
+    filter_prefix       = ""
+    filter_suffix       = ".md"
+  }
+
+  depends_on = [aws_lambda_permission.allow_s3_invoke_index]
 }

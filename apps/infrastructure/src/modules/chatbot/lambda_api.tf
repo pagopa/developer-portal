@@ -16,7 +16,7 @@ locals {
     CHB_GOOGLE_API_KEY                 = "/chatbot/google_api_key"
     CHB_LANGFUSE_HOST                  = "https://${local.priv_monitoring_host}"
     CHB_MODEL_ID                       = var.models.generation
-    CHB_MODEL_MAXTOKENS                = "768"
+    CHB_MODEL_MAXTOKENS                = 768
     CHB_MODEL_TEMPERATURE              = "0.3"
     CHB_AWS_SSM_STRAPI_API_KEY         = module.strapi_api_key_ssm_parameter.ssm_parameter_name
     # Be extremely careful when changing the provider
@@ -39,9 +39,13 @@ locals {
   }
 }
 
+locals {
+  chatbot_lambda_name = "${local.prefix}-api-lambda"
+}
+
 
 resource "aws_lambda_function" "chatbot_lambda" {
-  function_name = "${local.prefix}-api-lambda"
+  function_name = local.chatbot_lambda_name
   description   = "Lambda function running APIs of the Developer Portal Chatbot"
 
   image_uri    = "${module.ecr["chatbot"].repository_url}:latest"
@@ -65,6 +69,10 @@ resource "aws_lambda_function" "chatbot_lambda" {
     ignore_changes = [
       image_uri
     ]
+  }
+
+  tags = {
+    Name = local.chatbot_lambda_name
   }
 }
 
@@ -262,6 +270,18 @@ resource "aws_iam_policy" "lambda_s3_chatbot_policy" {
         Effect   = "Allow"
         Action   = "s3:*Object"
         Resource = ["${module.s3_bucket_llamaindex.s3_bucket_arn}/*", "${module.s3_bucket_kb.s3_bucket_arn}/*"]
+      },
+      {
+        Sid = "ReadStaticContent"
+        Action = [
+          "s3:GetObject",
+          "s3:ListBucket"
+        ]
+        Effect = "Allow"
+        Resource = [
+          "arn:aws:s3:::${var.s3_bucket_name_static_content}/*",
+          "arn:aws:s3:::${var.s3_bucket_name_static_content}"
+        ]
       }
     ]
   })

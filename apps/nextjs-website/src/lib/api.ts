@@ -1,13 +1,11 @@
 import { Product } from './types/product';
 import { Webinar } from '@/lib/types/webinar';
-import { GuidePage } from './types/guideData';
 import {
   getApiDataListPagesProps,
   getApiDataProps,
   getCaseHistoriesProps,
   getGuideListPagesProps,
   getGuidePageProps,
-  getGuideProps,
   getOverviewsProps,
   getProductsProps,
   getQuickStartGuidesProps,
@@ -17,14 +15,18 @@ import {
   getSolutionsProps,
   getTutorialListPagesProps,
   getTutorialsProps,
+  getUseCaseListPagesProps,
+  getUseCasesProps,
   getWebinarsProps,
 } from './cmsApi';
 import { parseS3GuidePage } from '@/helpers/parseS3Doc.helpers';
 import {
+  downloadFileAsText,
   getGuidesMetadata,
   getReleaseNotesMetadata,
   getSolutionsMetadata,
 } from '@/helpers/s3Metadata.helpers';
+import { s3DocsPath } from '@/config';
 
 function manageUndefined<T>(props: undefined | null | T) {
   if (!props) {
@@ -38,21 +40,19 @@ async function manageUndefinedAndAddProducts<T>(props: undefined | null | T) {
   return { ...manageUndefined(props), products: await getProducts() };
 }
 
-// Cache to avoid duplicate calls between metadata generation and page rendering
-const guidePageCache = new Map<string, any>();
+export async function getMarkdownContent(
+  dirName: string,
+  pathToFile: string
+): Promise<string> {
+  const pathToMarkdownFile = `${s3DocsPath}/${dirName}/${pathToFile}`;
+  const output = await downloadFileAsText(pathToMarkdownFile);
+  return output || '';
+}
 
 export async function getGuidePage(
   guidePaths: ReadonlyArray<string>,
   productSlug: string
 ) {
-  const cacheKey = `${productSlug}-${guidePaths.join('/')}`;
-
-  // Check cache first to avoid duplicate work
-  if (guidePageCache.has(cacheKey)) {
-    const cached = guidePageCache.get(cacheKey);
-    return cached;
-  }
-
   // Fetch data in parallel instead of sequential
   const [products, guideProps, guidesMetadata] = await Promise.all([
     getProducts(),
@@ -67,7 +67,7 @@ export async function getGuidePage(
     ...guidePaths,
   ].join('/');
 
-  const parsedGuidePage = manageUndefined(
+  return manageUndefined(
     await parseS3GuidePage({
       guideProps,
       guidePath,
@@ -75,18 +75,6 @@ export async function getGuidePage(
       products,
     })
   );
-
-  // Cache the result to avoid duplicate work
-  // eslint-disable-next-line functional/no-expression-statements
-  guidePageCache.set(cacheKey, parsedGuidePage);
-
-  return parsedGuidePage;
-}
-
-export function getGitBookSubPaths(path: string) {
-  // the filter is to remove the first 3 elements of the path which are
-  // an empty string (the path begins with a / symbol), the product slug and 'guides' hard-coded string
-  return path.split('/').filter((p, index) => index > 2);
 }
 
 export async function getGuideListPages(productSlug?: string) {
@@ -135,15 +123,6 @@ export async function getTutorial(
     ...props,
     product,
   };
-}
-
-export async function getTutorialPaths() {
-  const tutorialsFromCMS = await getTutorialsProps();
-  const tutorialPathsFromCMS = tutorialsFromCMS.map(({ path }) => ({
-    slug: path.split('/')[1],
-    tutorialPaths: [path.split('/').at(-1)],
-  }));
-  return tutorialPathsFromCMS;
 }
 
 export async function getTutorialListPageProps(productSlug?: string) {
@@ -279,4 +258,31 @@ export async function getSolutionDetail(
         path === `/solutions/${solutionSlug}/${solutionSubPathSlugs.join('/')}`
     )
   );
+}
+
+export async function getUseCase(
+  productSlug: string,
+  productUseCasePage?: ReadonlyArray<string>
+) {
+  const useCaseSubPath = productUseCasePage?.join('/');
+  const useCasePath = `/${productSlug}/use-cases/${useCaseSubPath}`;
+
+  const product = await getProduct(productSlug);
+
+  const props = manageUndefined(
+    (await getUseCasesProps()).find(({ path }) => path === useCasePath)
+  );
+  return {
+    ...props,
+    product,
+  };
+}
+
+export async function getUseCaseListPageProps(productSlug?: string) {
+  const useCaseListPages = await getUseCaseListPagesProps();
+  const props =
+    useCaseListPages.find(({ product }) => product.slug === productSlug) ||
+    null;
+
+  return manageUndefinedAndAddProducts(props);
 }

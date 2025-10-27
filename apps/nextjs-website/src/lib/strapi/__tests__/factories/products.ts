@@ -25,6 +25,7 @@ export function minimalProduct() {
           guide_list_page: { data: undefined },
           tutorial_list_page: { data: undefined },
           release_note: { data: undefined },
+          use_case_list_page: { data: undefined },
         },
       },
     ],

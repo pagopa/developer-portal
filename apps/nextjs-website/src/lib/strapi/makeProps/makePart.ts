@@ -2,7 +2,10 @@ import { Part } from '@/lib/types/part';
 import { parseCkEditorContent } from '@/helpers/parseCkEditorContent.helpers';
 import { StrapiPart } from '@/lib/strapi/types/part';
 
-export function makePartProps(strapiPart: StrapiPart): Part | null {
+export function makePartProps(
+  strapiPart: StrapiPart,
+  markdownContentDict?: Record<string, string>
+): Part | null {
   switch (strapiPart.__component) {
     case 'parts.alert':
       return {
@@ -42,6 +45,21 @@ export function makePartProps(strapiPart: StrapiPart): Part | null {
         component: 'quote',
         quote: strapiPart.text,
         backgroundImage: strapiPart.backgroundImage.data?.attributes,
+      };
+    case 'parts.markdown':
+      if (!markdownContentDict)
+        return {
+          component: 'markdown',
+          content: '',
+          dirName: '',
+        };
+      // eslint-disable-next-line no-case-declarations
+      const content =
+        markdownContentDict[`${strapiPart.dirName}/${strapiPart.pathToFile}`];
+      return {
+        component: 'markdown',
+        content: content ? content : '',
+        dirName: strapiPart.dirName,
       };
     case 'parts.ck-editor':
       // eslint-disable-next-line no-case-declarations

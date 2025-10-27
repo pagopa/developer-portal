@@ -1,6 +1,6 @@
 import { Webinar } from '@/lib/types/webinar';
 
-export const getFutureWebinars = (
+export const getFutureWebinarsFrom = (
   webinars: readonly Webinar[]
 ): readonly Webinar[] =>
   webinars.filter(
@@ -9,7 +9,7 @@ export const getFutureWebinars = (
       (endDateTime && new Date(endDateTime).getTime() > new Date().getTime())
   );
 
-export const getPastWebinars = (
+export const getPastWebinarsFrom = (
   webinars: readonly Webinar[]
 ): readonly Webinar[] =>
   webinars

@@ -12,6 +12,7 @@ export const strapiQuickStartGuides: StrapiQuickStartGuides = {
         product: {
           data: {
             attributes: {
+              isVisible: true,
               tags: { data: [] },
               name: 'Product Name',
               shortName: 'Product',
@@ -41,6 +42,11 @@ export const strapiQuickStartGuides: StrapiQuickStartGuides = {
                 },
               },
               release_note: {
+                data: {
+                  id: 1,
+                },
+              },
+              use_case_list_page: {
                 data: {
                   id: 1,
                 },

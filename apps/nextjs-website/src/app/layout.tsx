@@ -95,7 +95,7 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const products = [...(await getProducts())];
+  const products = [...(await getProducts()).filter((product) => product.isVisible)];
 
   // Disabled eslint rules to to follow https://next-intl-docs.vercel.app/docs/getting-started/app-router-client-components guide
   // eslint-disable-next-line functional/no-let

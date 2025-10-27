@@ -6,6 +6,7 @@ import { TypographyPartProps } from '@/components/atoms/TypographyPart/Typograph
 import { BlocksRendererPartProps } from '@/components/organisms/BlocksRendererPart/BlocksRendererPart';
 import { QuoteProps } from '@/components/atoms/Quote/Quote';
 import { CkEditorPartProps } from '@/components/molecules/CkEditorPart/CkEditorPart';
+import { MarkdownPartProps } from '@/components/molecules/MarkdownPart/MarkdownPart';
 
 export type Part =
   | (AlertPartProps & { readonly component: 'alert' })
@@ -15,6 +16,7 @@ export type Part =
   | (CodeBlockPartProps & { readonly component: 'codeBlock' })
   | (TypographyPartProps & { readonly component: 'typography' })
   | (CkEditorPartProps & { readonly component: 'ckEditor' })
+  | (MarkdownPartProps & { readonly component: 'markdown' })
   | (InnerHtmlLazyLoadedPartProps & {
       readonly component: 'innerHTMLLazyLoaded';
     });

@@ -1,6 +1,6 @@
 {
   "name": "gitbook-docs",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "private": true,
   "exports": {
     "./": "./dist/"
@@ -25,6 +25,7 @@
     "generate-release-notes-metadata": "ts-node src/scripts/generateReleaseNotesMetadata.ts",
     "fetch-soap-api-from-strapi": "ts-node src/scripts/generateSoapApiRepositoriesList.ts",
     "generate-url-parsing-metadata": "ts-node src/scripts/generateUrlParsingMetadata.ts",
+    "generate-strapi-response-files": "ts-node src/scripts/generateStrapiResponseFiles.ts",
     "parse-docs": "ts-node src/scripts/parseDocUrlsAndIncludes.ts"
   },
   "dependencies": {
