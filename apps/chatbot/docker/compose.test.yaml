@@ -60,16 +60,6 @@ services:
     networks:
       - ntwtest
 
-  # awscli:
-  #   image: amazon/aws-cli:2.15.1
-  #   depends_on:
-  #     - motoserver
-  #   networks:
-  #     - ntwtest
-  #   entrypoint: /bin/sh
-  #   tty: true
-  #   stdin_open: true
-
 networks:
   ntwtest:
     driver: bridge
