@@ -14,7 +14,6 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import '@/styles/globals.css';
-import 'video.js/dist/video-js.css';
 import ThemeRegistry from './ThemeRegistry';
 import { getProducts } from '@/lib/api';
 import SiteFooter from '@/components/atoms/SiteFooter/SiteFooter';

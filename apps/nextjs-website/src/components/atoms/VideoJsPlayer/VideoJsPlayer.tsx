@@ -7,6 +7,7 @@ import {
   VideoJSIVSTech,
   VideoJSQualityPlugin,
 } from 'amazon-ivs-player';
+import 'video.js/dist/video-js.css';
 import videojs from 'video.js';
 import { Box } from '@mui/material';
 import { amazonIvsVersion } from '@/config';
