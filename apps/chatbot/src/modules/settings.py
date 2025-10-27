@@ -62,7 +62,7 @@ class ChatbotSettings(BaseSettings):
 
     # api
     environment: str = os.getenv("ENVIRONMENT", os.getenv("environment", "local"))
-    aws_endpoint_url: str = os.getenv("AWS_ENDPOINT_URL")
+    aws_endpoint_url: str | None = os.getenv("AWS_ENDPOINT_URL")
     aws_cognito_region: str = os.getenv("CHB_AWS_COGNITO_REGION") or os.getenv(
         "AWS_REGION"
     )
