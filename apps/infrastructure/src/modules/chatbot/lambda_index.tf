@@ -88,8 +88,12 @@ resource "aws_iam_role_policy" "lambda_index_policy" {
   })
 }
 
+locals {
+  chatbot_index_lambda_name = "${local.prefix}-index-lambda"
+}
+
 resource "aws_lambda_function" "chatbot_index_lambda" {
-  function_name = "${local.prefix}-index-lambda"
+  function_name = local.chatbot_index_lambda_name
   description   = "Lambda function for indexing chatbot data."
   image_uri     = format("%s:latest", module.ecr["chatbotindex"].repository_url)
   package_type  = "Image"
@@ -130,6 +134,10 @@ resource "aws_lambda_function" "chatbot_index_lambda" {
     ignore_changes = [
       image_uri,
     ]
+  }
+
+  tags = {
+    Name = local.chatbot_index_lambda_name
   }
 }
 
