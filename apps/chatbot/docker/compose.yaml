@@ -43,13 +43,35 @@ services:
     entrypoint: ["/usr/local/bin/aws-lambda-rie", "python3"]
     command: ["-m", "awslambdaric", "src.lambda_function.lambda_handler"]
 
-  create-redis-index:
+  refresh-index:
     platform: linux/amd64
     build:
-      context: ..
-      dockerfile: docker/app.local.Dockerfile
-    command: "poetry run python src/modules/create_vector_index.py --params config/params.yaml"
-    env_file: "../.env.local"
+      context: ../../chatbot-index
+      dockerfile: ../chatbot-index/docker/lambda_refresh_index.Dockerfile
+    env_file: ../../chatbot-index/.env.local
+    environment:
+      - PYTHONPATH=/var/task
+    ports:
+      - "8082:8080"
+    volumes:
+      - ../chatbot-index:/app
+      - ~/.aws-lambda-rie/aws-lambda-rie:/usr/local/bin/aws-lambda-rie
+    depends_on:
+      localstack:
+        condition: service_started
+      redis:
+        condition: service_started
+    entrypoint: ["/usr/local/bin/aws-lambda-rie", "python3"]
+    command: ["-m", "awslambdaric", "src.lambda_refresh_index.lambda_handler"]
+    networks:
+      - ntw
+
+  create-index:
+    build:
+      context: ../../chatbot-index
+      dockerfile: ../chatbot-index/docker/create_index.Dockerfile
+    command: poetry run python ../chatbot-index/src/modules/create_vector_index.py
+    env_file: ../../chatbot-index/.env.local
     volumes:
       - ./files/.aws:/root/.aws
       - ../../nextjs-website/out:/app/build-devp/out
@@ -109,8 +131,8 @@ services:
     container_name: "${LOCALSTACK_DOCKER_NAME:-localstack-main}"
     image: localstack/localstack:4.6.0
     ports:
-      - "127.0.0.1:4566:4566"            # LocalStack Gateway
-      - "127.0.0.1:4510-4559:4510-4559"  # external services port range
+      - "127.0.0.1:4566:4566" # LocalStack Gateway
+      - "127.0.0.1:4510-4559:4510-4559" # external services port range
     environment:
       # LocalStack configuration: https://docs.localstack.cloud/references/configuration/
       - DEBUG=${DEBUG:-0}
@@ -135,12 +157,13 @@ services:
       - 127.0.0.1:3030:3030
     env_file: ../.env.local
     environment: &langfuse-worker-env
-      NEXTAUTH_URL: http://localhost:4001
-      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/postgres
-      SALT: "mysalt"
-      ENCRYPTION_KEY: "43a3c2fe6d150cdd793b7192b3054573b922395adc9bf38a8f6345f1972d0a93" # generate via `openssl rand -hex 32`
-      TELEMETRY_ENABLED: ${TELEMETRY_ENABLED:-true}
-      LANGFUSE_ENABLE_EXPERIMENTAL_FEATURES: ${LANGFUSE_ENABLE_EXPERIMENTAL_FEATURES:-false}
+      # TO IMPROVE: move all env vars to .env.langfuse file
+#      NEXTAUTH_URL: http://localhost:4001
+#      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/postgres
+#      SALT: "mysalt"
+#      ENCRYPTION_KEY: "43a3c2fe6d150cdd793b7192b3054573b922395adc9bf38a8f6345f1972d0a93" # generate via `openssl rand -hex 32`
+#      TELEMETRY_ENABLED: ${TELEMETRY_ENABLED:-true}
+#      LANGFUSE_ENABLE_EXPERIMENTAL_FEATURES: ${LANGFUSE_ENABLE_EXPERIMENTAL_FEATURES:-false}
       CLICKHOUSE_MIGRATION_URL: ${CLICKHOUSE_MIGRATION_URL:-clickhouse://clickhouse:9000}
       CLICKHOUSE_URL: ${CLICKHOUSE_URL:-http://clickhouse:8123}
       CLICKHOUSE_USER: ${CLICKHOUSE_USER:-clickhouse}
@@ -174,7 +197,7 @@ services:
       LANGFUSE_INGESTION_CLICKHOUSE_WRITE_INTERVAL_MS: ${LANGFUSE_INGESTION_CLICKHOUSE_WRITE_INTERVAL_MS:-}
       REDIS_HOST: ${REDIS_HOST:-redis}
       REDIS_PORT: ${REDIS_PORT:-6379}
-      REDIS_AUTH: ${REDIS_AUTH:-myredissecret} # CHANGEME
+      REDIS_AUTH: ${REDIS_AUTH:-myredissecret}
       REDIS_TLS_ENABLED: ${REDIS_TLS_ENABLED:-false}
       REDIS_TLS_CA: ${REDIS_TLS_CA:-/certs/ca.crt}
       REDIS_TLS_CERT: ${REDIS_TLS_CERT:-/certs/redis.crt}
@@ -190,16 +213,17 @@ services:
     env_file: ../.env.local
     environment:
       <<: *langfuse-worker-env
-      NEXTAUTH_SECRET: mysecret
-      LANGFUSE_INIT_ORG_ID: ${LANGFUSE_INIT_ORG_ID:-pagopa-123}
-      LANGFUSE_INIT_ORG_NAME: ${LANGFUSE_INIT_ORG_NAME:-PagoPA}
-      LANGFUSE_INIT_PROJECT_ID: ${LANGFUSE_INIT_PROJECT_ID:-monitor-123}
-      LANGFUSE_INIT_PROJECT_NAME: ${LANGFUSE_INIT_PROJECT_NAME:-Monitor}
-      LANGFUSE_INIT_PROJECT_PUBLIC_KEY: ${LANGFUSE_INIT_PROJECT_PUBLIC_KEY:-pk-lf-1a5df1e2-770f-4391-9a7a-4aa5f6b4a72b}
-      LANGFUSE_INIT_PROJECT_SECRET_KEY: ${LANGFUSE_INIT_PROJECT_SECRET_KEY:-sk-lf-f144905b-b3d9-4a67-bd6d-a638cddd5774}
-      LANGFUSE_INIT_USER_EMAIL: ${LANGFUSE_INIT_USER_EMAIL:-user@example.com}
-      LANGFUSE_INIT_USER_NAME: ${LANGFUSE_INIT_USER_NAME:-user}
-      LANGFUSE_INIT_USER_PASSWORD: ${LANGFUSE_INIT_USER_PASSWORD:-abcd1234}
+      # TO IMPROVE: move all env vars to .env.langfuse file
+#      NEXTAUTH_SECRET: mysecret
+#      LANGFUSE_INIT_ORG_ID: ${LANGFUSE_INIT_ORG_ID:-pagopa-123}
+#      LANGFUSE_INIT_ORG_NAME: ${LANGFUSE_INIT_ORG_NAME:-PagoPA}
+#      LANGFUSE_INIT_PROJECT_ID: ${LANGFUSE_INIT_PROJECT_ID:-monitor-123}
+#      LANGFUSE_INIT_PROJECT_NAME: ${LANGFUSE_INIT_PROJECT_NAME:-Monitor}
+#      LANGFUSE_INIT_PROJECT_PUBLIC_KEY: ${LANGFUSE_INIT_PROJECT_PUBLIC_KEY:-pk-lf-1a5df1e2-770f-4391-9a7a-4aa5f6b4a72b}
+#      LANGFUSE_INIT_PROJECT_SECRET_KEY: ${LANGFUSE_INIT_PROJECT_SECRET_KEY:-sk-lf-f144905b-b3d9-4a67-bd6d-a638cddd5774}
+#      LANGFUSE_INIT_USER_EMAIL: ${LANGFUSE_INIT_USER_EMAIL:-user@example.com}
+#      LANGFUSE_INIT_USER_NAME: ${LANGFUSE_INIT_USER_NAME:-user}
+#      LANGFUSE_INIT_USER_PASSWORD: ${LANGFUSE_INIT_USER_PASSWORD:-abcd1234}
 
   clickhouse:
     image: docker.io/clickhouse/clickhouse-server:25.8.8.26-alpine

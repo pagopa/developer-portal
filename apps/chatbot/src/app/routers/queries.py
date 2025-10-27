@@ -136,11 +136,16 @@ async def query_creation(
             "trace_id": trace_id,
             "messages": messages,
         }
-        sqs_response = sqs_queue_evaluate.send_message(
-            MessageBody=json.dumps(evaluation_data),
-            MessageGroupId=trace_id,  # Required for FIFO queues
-        )
-        LOGGER.info(f"sqs response: {sqs_response}")
+        if sqs_queue_evaluate is None:
+            LOGGER.warning(
+                f"sqs_queue_evaluate is None, cannot send message {evaluation_data}"
+            )
+        else:
+            sqs_response = sqs_queue_evaluate.send_message(
+                MessageBody=json.dumps(evaluation_data),
+                MessageGroupId=trace_id,  # Required for FIFO queues
+            )
+            LOGGER.info(f"sqs response: {sqs_response}")
 
     if query.queriedAt is None:
         queriedAt = now.isoformat()

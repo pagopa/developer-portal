@@ -6,6 +6,7 @@ export const baseProductJson = {
   data: {
     id: 8,
     attributes: {
+      isVisible: true,
       name: 'Firma con IO',
       slug: 'firma-con-io',
       shortName: 'Firma con IO',
@@ -34,6 +35,7 @@ export const productJson = {
       tutorial_list_page: { data: null },
       guide_list_page: { data: null },
       release_note: { data: null },
+      use_case_list_page: { data: null },
     },
   },
 };
@@ -44,6 +46,7 @@ export const productsJson = {
 
 export const product = {
   apiDataListPageUrl: '/pago-pa/api',
+  isVisible: true,
   name: 'Piattaforma pagoPA',
   slug: 'pago-pa',
   shortName: 'pagoPA',
@@ -54,6 +57,7 @@ export const product = {
   hasQuickstartGuidePage: true,
   hasReleaseNotePage: false,
   hasTutorialListPage: true,
+  hasUseCaseListPage: true,
   tags: [],
   bannerLinks: [
     {

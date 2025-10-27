@@ -4,12 +4,12 @@
 /* eslint-disable functional/immutable-data */
 /* eslint-disable functional/no-try-statements */
 import dotenv from 'dotenv';
-import { SitemapItem } from '../sitemapItem';
+import { MetadataItem } from '../metadataItem';
 import {
   downloadS3File,
   listS3Files,
   makeS3Client,
-  writeSitemapJson,
+  writeMetadataJson,
 } from '../helpers/s3Bucket.helper';
 import { extractTitleFromMarkdown } from '../helpers/extractTitle.helper';
 import {
@@ -17,7 +17,7 @@ import {
   getResponseFromStrapi,
 } from '../helpers/fetchFromStrapi';
 import { sitePathFromS3Path } from '../helpers/sitePathFromS3Path';
-import { StrapiSolution } from '../helpers/guidesMetadataHelper';
+import { StrapiSolution } from '../helpers/strapiTypes';
 import {
   getSyncedSolutionListPagesResponseJsonPath,
   getSyncedSolutionsResponseJsonPath,
@@ -50,10 +50,10 @@ function generateUrlPath(
   }
 }
 
-async function convertSolutionToSitemapItems(
+async function convertSolutionToMetadataItems(
   strapiSolutions: StrapiSolution[]
-): Promise<SitemapItem[]> {
-  const items: SitemapItem[] = [];
+): Promise<MetadataItem[]> {
+  const items: MetadataItem[] = [];
   for (const solution of strapiSolutions) {
     const dirName = solution.attributes.dirName;
     const solutionFiles = (
@@ -132,26 +132,24 @@ async function main() {
 
   console.log(`Fetched ${strapiSolutions.length} solutions from Strapi`);
 
-  const sitemapItems = await convertSolutionToSitemapItems(strapiSolutions);
-  console.log(`Converted solutions to ${sitemapItems.length} sitemap items`);
+  const metadataItems = await convertSolutionToMetadataItems(strapiSolutions);
+  console.log(`Converted solutions to ${metadataItems.length} metadata items`);
 
-  await writeSitemapJson(
-    sitemapItems,
+  await writeMetadataJson(
+    metadataItems,
     S3_SOLUTIONS_METADATA_JSON_PATH,
     `${S3_BUCKET_NAME}`,
     s3Client
   );
 
-  // TODO: remove when Strapi will manage Metadata
-  await writeSitemapJson(
+  await writeMetadataJson(
     responseJson,
     SYNCED_SOLUTIONS_RESPONSE_JSON_PATH,
     `${S3_BUCKET_NAME}`,
     s3Client
   );
 
-  // TODO: remove when Strapi will manage Metadata
-  await writeSitemapJson(
+  await writeMetadataJson(
     solutionListPagesResponse,
     SYNCED_SOLUTION_LIST_PAGES_RESPONSE_JSON_PATH,
     `${S3_BUCKET_NAME}`,
