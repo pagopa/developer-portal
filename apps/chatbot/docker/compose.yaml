@@ -52,7 +52,6 @@ services:
       - "8082:8080"
     volumes:
       - ../chatbot-index:/app
-      - ~/.aws-lambda-rie/aws-lambda-rie:/usr/local/bin/aws-lambda-rie
     depends_on:
       motoserver:
         condition: service_started
@@ -109,6 +108,7 @@ services:
       - "6379:6379"
       - "8001:8001"
     volumes:
+      - ./files/redis-dump.rdb:/data/dump.rdb
       - redis_data:/data
     networks:
       - ntw

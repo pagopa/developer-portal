@@ -1,6 +1,5 @@
 import boto3
 import os
-import boto3
 import json
 import yaml
 from pathlib import Path
@@ -8,15 +7,12 @@ from pydantic_settings import BaseSettings
 
 from src.modules.logger import get_logger
 
-
 LOGGER = get_logger(__name__)
 CWF = Path(__file__)
 ROOT = CWF.parent.parent.parent.absolute().__str__()
 PARAMS = yaml.safe_load(open(os.path.join(ROOT, "config", "params.yaml"), "r"))
 PROMPTS = yaml.safe_load(open(os.path.join(ROOT, "config", "prompts.yaml"), "r"))
 AWS_SESSION = boto3.Session()
-SSM_CLIENT = AWS_SESSION.client("ssm")
-
 
 def get_ssm_parameter(name: str | None, default: str | None = None) -> str | None:
     """
@@ -27,10 +23,11 @@ def get_ssm_parameter(name: str | None, default: str | None = None) -> str | Non
     :return: The value of the requested parameter.
     """
 
+    SSM_CLIENT = AWS_SESSION.client("ssm")
     LOGGER.info(f"get_ssm_parameter {name}...")
 
     if name is None:
-        name = "/none/param"
+        name = "none-params-in-ssm"
     try:
         # Get the requested parameter
         response = SSM_CLIENT.get_parameter(Name=name, WithDecryption=True)

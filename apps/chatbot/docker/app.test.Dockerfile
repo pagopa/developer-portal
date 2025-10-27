@@ -23,21 +23,16 @@ ENV PIP_ROOT_USER_ACTION=ignore
 RUN pip install --upgrade pip \
   && pip install poetry
 
-RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && \
-  unzip awscliv2.zip && \
-  ./aws/install
-
 WORKDIR /app
 COPY ./pyproject.toml .
 COPY ./poetry.lock .
 COPY ./src ./src
 COPY ./config ./config
 COPY ./scripts ./scripts
-COPY ./notebooks ./notebooks
 COPY ./.google_service_account.json .
 
 RUN poetry config virtualenvs.create false
-RUN poetry install --with dev
+RUN poetry install --with test
 
 RUN python ./scripts/nltk_download.py
 RUN python ./scripts/spacy_download.py
