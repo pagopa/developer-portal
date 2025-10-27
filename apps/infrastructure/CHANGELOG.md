@@ -1,5 +1,14 @@
 # infrastructure
 
+## 5.1.0
+
+### Minor Changes
+
+- 03f36f7: Lambda evaluate update memori size and env variables.
+- 76096c3: ECR chatbot repository tags immutable
+- cdda8f5: Change IAM policy to allow lambda api to read static contents from S3
+- ffd44ff: Lambda chatbot index update timeout
+
 ## 5.0.0
 
 ### Major Changes
