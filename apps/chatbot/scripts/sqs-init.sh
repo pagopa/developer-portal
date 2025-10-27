@@ -8,7 +8,3 @@ aws sqs create-queue \
   --endpoint-url=$AWS_ENDPOINT_URL \
   --region $AWS_REGION
 
-#  aws sqs list-queues \
-#   --queue-name $CHB_AWS_SQS_QUEUE_EVALUATE_NAME \
-#   --endpoint-url=$AWS_ENDPOINT_URL \
-#   --region $AWS_REGION
