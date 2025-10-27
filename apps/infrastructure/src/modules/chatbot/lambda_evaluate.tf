@@ -90,8 +90,12 @@ resource "aws_iam_role_policy" "lambda_evaluate_policy" {
   })
 }
 
+locals {
+  chatbot_evaluate_lambda_name = "${local.prefix}-evaluate-lambda"
+}
+
 resource "aws_lambda_function" "chatbot_evaluate_lambda" {
-  function_name = "${local.prefix}-evaluate-lambda"
+  function_name = local.chatbot_evaluate_lambda_name
   description   = "Lambda responsible injecting messages into langfuse"
 
   image_uri    = "${module.ecr["evaluate"].repository_url}:latest"
@@ -108,6 +112,7 @@ resource "aws_lambda_function" "chatbot_evaluate_lambda" {
       CHB_AWS_SSM_LANGFUSE_SECRET_KEY = module.langfuse_secret_key.ssm_parameter_name
       CHB_LANGFUSE_HOST               = "https://${local.priv_monitoring_host}"
       CHB_MODEL_TEMPERATURE           = 0
+      CHB_MODEL_MAXTOKENS             = 2048
       CHB_AWS_SSM_GOOGLE_API_KEY      = module.google_api_key_ssm_parameter.ssm_parameter_name
       CHB_AWS_SSM_LANGFUSE_PUBLIC_KEY = module.langfuse_public_key.ssm_parameter_name
       CHB_AWS_SSM_LANGFUSE_SECRET_KEY = module.langfuse_secret_key.ssm_parameter_name
@@ -127,6 +132,10 @@ resource "aws_lambda_function" "chatbot_evaluate_lambda" {
   }
 
   depends_on = [module.ecr]
+
+  tags = {
+    Name = local.chatbot_evaluate_lambda_name
+  }
 }
 
 resource "aws_lambda_event_source_mapping" "evaluate_lambda_sqs" {
