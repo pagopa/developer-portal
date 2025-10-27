@@ -4,7 +4,7 @@ import {
   SiteHeaderProps,
 } from '@/components/molecules/SiteHeader/SiteHeader';
 import Button from '@mui/material/Button';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { Box, Divider, useTheme } from '@mui/material';
 import ArrowDropUp from '@mui/icons-material/ArrowDropUp';
@@ -117,6 +117,13 @@ const MobileSiteHeader = ({ products }: SiteHeaderProps) => {
 
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+  const sortedProducts = useMemo(
+    () =>
+      [...products].sort((productA, productB) =>
+        productA.name.localeCompare(productB.name)
+      ),
+    [products]
+  );
 
   useEffect(() => {
     const closeMenu = (event: MouseEvent) => {
@@ -184,7 +191,7 @@ const MobileSiteHeader = ({ products }: SiteHeaderProps) => {
             label={t('siteHeader.products')}
             disabled={false}
           >
-            {products.map((product, index) => {
+            {sortedProducts.map((product, index) => {
               return (
                 <Typography
                   key={index}
