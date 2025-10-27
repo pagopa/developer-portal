@@ -97,8 +97,12 @@ resource "aws_iam_role_policy" "lambda_evaluate_policy" {
   })
 }
 
+locals {
+  chatbot_evaluate_lambda_name = "${local.prefix}-evaluate-lambda"
+}
+
 resource "aws_lambda_function" "chatbot_evaluate_lambda" {
-  function_name = "${local.prefix}-evaluate-lambda"
+  function_name = local.chatbot_evaluate_lambda_name
   description   = "Lambda responsible injecting messages into langfuse"
 
   image_uri    = "${module.ecr["evaluate"].repository_url}:latest"
@@ -135,6 +139,10 @@ resource "aws_lambda_function" "chatbot_evaluate_lambda" {
   }
 
   depends_on = [module.ecr]
+
+  tags = {
+    Name = local.chatbot_evaluate_lambda_name
+  }
 }
 
 resource "aws_lambda_event_source_mapping" "evaluate_lambda_sqs" {
