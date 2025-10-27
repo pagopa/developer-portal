@@ -39,9 +39,13 @@ locals {
   }
 }
 
+locals {
+  chatbot_lambda_name = "${local.prefix}-api-lambda"
+}
+
 
 resource "aws_lambda_function" "chatbot_lambda" {
-  function_name = "${local.prefix}-api-lambda"
+  function_name = local.chatbot_lambda_name
   description   = "Lambda function running APIs of the Developer Portal Chatbot"
 
   image_uri    = "${module.ecr["chatbot"].repository_url}:latest"
@@ -65,6 +69,10 @@ resource "aws_lambda_function" "chatbot_lambda" {
     ignore_changes = [
       image_uri
     ]
+  }
+
+  tags = {
+    Name = local.chatbot_lambda_name
   }
 }
 
