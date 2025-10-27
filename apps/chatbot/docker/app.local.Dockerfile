@@ -26,7 +26,7 @@ RUN mkdir -p ~/.aws-lambda-rie && \
 
 WORKDIR /app
 COPY ./pyproject.toml .
-#COPY ./poetry.lock .
+COPY ./poetry.lock .
 COPY ./src ./src
 COPY ./config ./config
 COPY ./scripts ./scripts
