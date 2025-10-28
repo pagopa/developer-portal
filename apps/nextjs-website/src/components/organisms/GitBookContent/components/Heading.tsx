@@ -23,21 +23,21 @@ const asVariant = (level: number) => {
 
 const asFontSize = (level: number) =>
   level === 1
-    ? '38px'
+    ? '2.375rem'
     : level === 2
-    ? '28px'
+    ? '1.875rem'
     : level === 3
-    ? '18px'
+    ? '1.5rem'
     : level === 4
-    ? '16px'
+    ? '1.25rem'
     : level === 5
-    ? '14px'
-    : '12px';
+    ? '1rem'
+    : '0.75rem';
 
 const asFontWeight = (level: number) => (level === 1 ? 700 : 600);
 
 const asLineHeight = (level: number) =>
-  level === 1 || level === 2 ? '42px' : '24px';
+  level === 1 || level === 2 ? '2.625rem' : '1.5rem';
 
 const scrollOffset = SITE_HEADER_HEIGHT + PRODUCT_HEADER_HEIGHT;
 
@@ -67,7 +67,8 @@ export const SubHeading = ({
       <Typography
         variant={asVariant(level)}
         sx={{
-          py: 3,
+          paddingTop: 3,
+          paddingBottom: 1,
           fontSize: { xs: asFontSize(level) },
           fontWeight: { xs: asFontWeight(level) },
           lineHeight: { xs: asLineHeight(level) },
@@ -87,7 +88,8 @@ const Heading = ({ level, id, children }: HeadingProps<ReactNode>) => (
     <Typography
       variant={asVariant(level)}
       sx={{
-        py: 3,
+        paddingTop: 3,
+        paddingBottom: 1,
         fontSize: { xs: asFontSize(level) },
         fontWeight: { xs: asFontWeight(level) },
         lineHeight: { xs: asLineHeight(level) },
