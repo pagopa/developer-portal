@@ -14,7 +14,6 @@ services:
     volumes:
       - ..:/app
       - ./files/.aws:/root/.aws
-      - ../../nextjs-website/out:/app/build-devp/out
     depends_on:
       redis:
         condition: service_started
@@ -24,7 +23,7 @@ services:
         condition: service_started
       langfuse-worker:
         condition: service_started
-      localstack:
+      motoserver:
         condition: service_started
       evaluate:
         condition: service_started
@@ -55,9 +54,8 @@ services:
       - "8082:8080"
     volumes:
       - ../chatbot-index:/app
-      - ~/.aws-lambda-rie/aws-lambda-rie:/usr/local/bin/aws-lambda-rie
     depends_on:
-      localstack:
+      motoserver:
         condition: service_started
       redis:
         condition: service_started
@@ -110,6 +108,7 @@ services:
       timeout: 10s
       retries: 10
     volumes:
+      - ./files/redis-dump.rdb:/data/dump.rdb
       - redis_data:/data
 
   jupyter:
@@ -127,20 +126,10 @@ services:
         condition: service_started
     command: jupyter-lab --no-browser --allow-root --ip=0.0.0.0
 
-  localstack:
-    container_name: "${LOCALSTACK_DOCKER_NAME:-localstack-main}"
-    image: localstack/localstack:4.6.0
-    ports:
-      - "127.0.0.1:4566:4566" # LocalStack Gateway
-      - "127.0.0.1:4510-4559:4510-4559" # external services port range
+  motoserver:
+    image: motoserver/moto:5.1.14
     environment:
-      # LocalStack configuration: https://docs.localstack.cloud/references/configuration/
-      - DEBUG=${DEBUG:-0}
-      - SERVICES=sqs,s3,ssm
-    volumes:
-      - "${LOCALSTACK_VOLUME_DIR:-./volume}:/var/lib/localstack"
-      - "/var/run/docker.sock:/var/run/docker.sock"
-      - ./files/localstack/init:/etc/localstack/init
+      - MOTO_PORT=3002
 
   langfuse-worker:
     image: docker.io/langfuse/langfuse-worker:3.115

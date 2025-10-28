@@ -2,7 +2,6 @@ import datetime
 import hashlib
 import os
 import uuid
-import yaml
 
 from boto3.dynamodb.conditions import Key
 from botocore.exceptions import BotoCoreError, ClientError
@@ -14,8 +13,6 @@ from src.modules.logger import get_logger
 from src.app.models import QueryFeedback, tables
 from src.app.jwt_check import verify_jwt
 
-params = yaml.safe_load(open("config/params.yaml", "r"))
-prompts = yaml.safe_load(open("config/prompts.yaml", "r"))
 
 LOGGER = get_logger(__name__)
 
@@ -63,7 +60,7 @@ def find_or_create_session(userId: str, now: datetime.datetime):
     if len(items) == 0:
         days = int(os.getenv("EXPIRE_DAYS", 90))
         expires_at = int((now + datetime.timedelta(days=days)).timestamp())
-    
+
         body = {
             "id": f"{uuid.uuid4()}",
             "title": now.strftime("%Y-%m-%d"),
@@ -132,13 +129,8 @@ def last_session_id(userId: str):
 
 
 def get_user_session(userId: str, sessionId: str) -> dict | None:
-    dbResponse = tables["sessions"].get_item(
-        Key={
-          "userId": userId,
-          "id": sessionId
-        }
-    )
-    item = dbResponse.get('Item')
+    dbResponse = tables["sessions"].get_item(Key={"userId": userId, "id": sessionId})
+    item = dbResponse.get("Item")
     return item if item else None
 
 
