@@ -58,7 +58,6 @@ export function FragmentProvider({ children }: FragmentProviderProps) {
     });
 
     if (didUpdate) {
-      // eslint-disable-next-line functional/immutable-data
       autoUpdateBlockedUntilRef.current = 0;
     }
 
