@@ -231,8 +231,9 @@ export const parseS3GuidePage = async (props: {
 
   // Download menu and body files in parallel
   const [menu, body] = await Promise.all([
-    guidePageMetadata && downloadFileAsText(guidePageMetadata.menuS3Path),
-    downloadFileAsText(guidePageMetadata.contentS3Path),
+    guidePageMetadata &&
+      downloadFileAsText(guidePageMetadata.menuS3Path, { cache: 'no-store' }),
+    downloadFileAsText(guidePageMetadata.contentS3Path, { cache: 'no-store' }),
   ]);
 
   const result = {

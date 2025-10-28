@@ -14,6 +14,7 @@ export type StrapiBaseProduct = {
     readonly name: string;
     readonly shortName: string;
     readonly slug: string;
+    readonly isVisible: boolean;
   };
 };
 

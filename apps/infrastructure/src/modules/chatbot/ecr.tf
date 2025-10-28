@@ -18,7 +18,7 @@ module "ecr" {
 
   repository_name                   = each.value.repository_name
   repository_image_scan_on_push     = "true"
-  repository_image_tag_mutability   = "MUTABLE"
+  repository_image_tag_mutability   = "IMMUTABLE"
   repository_read_write_access_arns = []
   attach_repository_policy          = false
   repository_lifecycle_policy = jsonencode({

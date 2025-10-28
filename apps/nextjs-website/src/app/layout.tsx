@@ -41,7 +41,6 @@ const PREVIOUS_MATOMO_TAG_MANAGER_SCRIPT =
   `'; s.parentNode.insertBefore(g,s);
   })();
 `;
-
 const MATOMO_TAG_MANAGER_SCRIPT =
   `
   var _mtm = window._mtm = window._mtm || [];
@@ -95,7 +94,7 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const products = [...(await getProducts())];
+  const products = [...(await getProducts()).filter((product) => product.isVisible)];
 
   // Disabled eslint rules to to follow https://next-intl-docs.vercel.app/docs/getting-started/app-router-client-components guide
   // eslint-disable-next-line functional/no-let
