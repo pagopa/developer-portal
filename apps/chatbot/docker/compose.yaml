@@ -110,7 +110,7 @@ services:
     depends_on:
       redis-fix-perms:
         condition: service_completed_successfully
-    
+
   redis-seed:
     image: alpine:3.18
     user: root
@@ -131,7 +131,6 @@ services:
         condition: service_completed_successfully
     command: ["sh", "-c", "chown -R redis:redis /data 2>/dev/null || chown -R 1000:1000 /data || true"]
     restart: "no"
-
 
   jupyter:
     platform: linux/amd64
@@ -160,7 +159,7 @@ services:
         condition: service_healthy
       minio:
         condition: service_healthy
-      redis:
+      valkey:
         condition: service_healthy
       clickhouse:
         condition: service_healthy
@@ -206,13 +205,8 @@ services:
       LANGFUSE_S3_BATCH_EXPORT_FORCE_PATH_STYLE: ${LANGFUSE_S3_BATCH_EXPORT_FORCE_PATH_STYLE:-true}
       LANGFUSE_INGESTION_QUEUE_DELAY_MS: ${LANGFUSE_INGESTION_QUEUE_DELAY_MS:-}
       LANGFUSE_INGESTION_CLICKHOUSE_WRITE_INTERVAL_MS: ${LANGFUSE_INGESTION_CLICKHOUSE_WRITE_INTERVAL_MS:-}
-      REDIS_HOST: ${REDIS_HOST:-redis}
+      REDIS_HOST: ${REDIS_HOST:-valkey}
       REDIS_PORT: ${REDIS_PORT:-6379}
-      REDIS_AUTH: ${REDIS_AUTH:-myredissecret}
-      REDIS_TLS_ENABLED: ${REDIS_TLS_ENABLED:-false}
-      REDIS_TLS_CA: ${REDIS_TLS_CA:-/certs/ca.crt}
-      REDIS_TLS_CERT: ${REDIS_TLS_CERT:-/certs/redis.crt}
-      REDIS_TLS_KEY: ${REDIS_TLS_KEY:-/certs/redis.key}
       EMAIL_FROM_ADDRESS: ${EMAIL_FROM_ADDRESS:-}
       SMTP_CONNECTION_URL: ${SMTP_CONNECTION_URL:-}
 
@@ -275,6 +269,15 @@ services:
       timeout: 5s
       retries: 5
       start_period: 1s
+
+  valkey:
+    image: valkey/valkey:8.1.4-alpine3.22
+    healthcheck:
+      test: [ "CMD", "valkey-cli", "ping" ]
+      interval: 3s
+      timeout: 10s
+      retries: 10
+      start_period: 5s
 
 volumes:
   postgres_data:
