@@ -13,8 +13,9 @@ RUN apt-get update && \
   jq
 
 COPY ./docker/chrome-installer.sh ./chrome-installer.sh
-RUN ./chrome-installer.sh
-RUN rm ./chrome-installer.sh
+RUN chmod +x ./chrome-installer.sh && \
+  ./chrome-installer.sh && \
+  rm ./chrome-installer.sh
 
 RUN pip install --upgrade pip \
   && pip install poetry
