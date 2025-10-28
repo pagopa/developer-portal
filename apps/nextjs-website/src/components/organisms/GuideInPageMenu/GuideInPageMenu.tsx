@@ -125,7 +125,7 @@ const GuideInPageMenu = ({
         sx={{
           maxHeight: `calc(100vh - ${headerOffset}px)`,
           overflowY: 'auto',
-          paddingTop: '23px',
+          paddingTop: '50px',
         }}
       >
         <Typography

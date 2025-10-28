@@ -142,8 +142,8 @@ const GuideMenuItems = ({
           color='text.primary'
           style={{
             paddingLeft: 32,
-            paddingTop: 24,
-            paddingBottom: 0,
+            paddingTop: 26,
+            paddingBottom: 6,
             textDecoration: 'none',
             fontSize: '.875rem',
             fontWeight: 600,
