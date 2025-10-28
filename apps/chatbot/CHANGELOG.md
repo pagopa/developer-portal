@@ -1,5 +1,12 @@
 # chatbot
 
+## 7.0.4
+
+### Patch Changes
+
+- bc6b23c: Remove unused libraries, organize pyproject dependencies in groups
+- 612d7d7: test and settings refactor
+
 ## 7.0.3
 
 ### Patch Changes
