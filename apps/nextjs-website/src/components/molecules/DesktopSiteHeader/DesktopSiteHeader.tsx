@@ -8,13 +8,6 @@ import { useTranslations } from 'next-intl';
 
 const DesktopSiteHeader = ({ products }: SiteHeaderProps) => {
   const t = useTranslations('devPortal');
-  const sortedProducts = React.useMemo(
-    () =>
-      [...products].sort((productA, productB) =>
-        productA.name.localeCompare(productB.name)
-      ),
-    [products]
-  );
 
   return (
     <Box
@@ -29,7 +22,7 @@ const DesktopSiteHeader = ({ products }: SiteHeaderProps) => {
     >
       <Dropdown
         label={t('siteHeader.products')}
-        items={sortedProducts.map((product) => ({
+        items={products.map((product) => ({
           href: `/${product.slug}/overview`,
           label: product.name,
         }))}
