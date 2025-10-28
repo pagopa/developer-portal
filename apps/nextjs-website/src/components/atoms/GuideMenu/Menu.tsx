@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import NextLink from 'next/link';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
@@ -85,63 +85,6 @@ const StyledTreeItem = styled(TreeItem)(({ theme }) => ({
   },
 }));
 
-const components: RenderingComponents<React.ReactNode> = {
-  Item: ({ href, title, children }) => {
-    const ref = React.useRef<HTMLAnchorElement>(null);
-
-    useEffect(() => {
-      if (ref.current && ref.current.href === window.location.href) {
-        ref.current.scrollIntoView({ behavior: 'instant', block: 'center' });
-      }
-    }, []);
-
-    const label = (
-      <Typography
-        ref={ref}
-        variant='sidenav'
-        component={NextLink}
-        href={href}
-        color='text.secondary'
-        style={{
-          textDecoration: 'none',
-          fontSize: '.938rem',
-          fontWeight: 400,
-        }}
-      >
-        {title}
-      </Typography>
-    );
-
-    return (
-      <StyledTreeItem
-        key={href}
-        nodeId={href}
-        label={label}
-        disabled={false}
-        icon={href.startsWith('http') ? <OpenInNewIcon /> : undefined}
-      >
-        {children}
-      </StyledTreeItem>
-    );
-  },
-  Title: ({ children }) => (
-    <Typography
-      color='text.primary'
-      style={{
-        paddingLeft: 32,
-        paddingTop: 16,
-        paddingBottom: 4,
-        textDecoration: 'none',
-        fontSize: '.875rem',
-        fontWeight: 600,
-      }}
-      textTransform='uppercase'
-    >
-      {children}
-    </Typography>
-  ),
-};
-
 export type GuideMenuItemsProps = Partial<GuideVersionSelectorProps> & {
   name: string;
   assetsPrefix: string;
@@ -149,6 +92,7 @@ export type GuideMenuItemsProps = Partial<GuideVersionSelectorProps> & {
   expanded?: string[];
   menu: string;
   linkPrefix: string;
+  containerRef?: React.RefObject<HTMLDivElement>;
 };
 
 const GuideMenuItems = ({
@@ -161,10 +105,63 @@ const GuideMenuItems = ({
   versionName,
   versions,
 }: GuideMenuItemsProps) => {
+  const components: RenderingComponents<React.ReactNode> = useMemo(
+    () => ({
+      Item: ({ href, title, children }) => {
+        const label = (
+          <Typography
+            variant='sidenav'
+            component={NextLink}
+            href={href}
+            color='text.secondary'
+            style={{
+              textDecoration: 'none',
+              fontSize: '.938rem',
+              fontWeight: 400,
+            }}
+          >
+            {title}
+          </Typography>
+        );
+
+        return (
+          <StyledTreeItem
+            key={href}
+            nodeId={href}
+            label={label}
+            disabled={false}
+            icon={href.startsWith('http') ? <OpenInNewIcon /> : undefined}
+            data-active={href === currentPath ? 'true' : 'false'}
+          >
+            {children}
+          </StyledTreeItem>
+        );
+      },
+      Title: ({ children }) => (
+        <Typography
+          color='text.primary'
+          style={{
+            paddingLeft: 32,
+            paddingTop: 24,
+            paddingBottom: 0,
+            textDecoration: 'none',
+            fontSize: '.875rem',
+            fontWeight: 600,
+          }}
+          textTransform='uppercase'
+        >
+          {children}
+        </Typography>
+      ),
+    }),
+    [currentPath]
+  );
+
   const children = useMemo(() => {
     const parsed = parseMenu(menu, { assetsPrefix, linkPrefix });
     return renderMenu(parsed, React, components);
-  }, [menu, assetsPrefix, linkPrefix]);
+  }, [menu, assetsPrefix, linkPrefix, components]);
+
   return (
     <>
       <Typography
