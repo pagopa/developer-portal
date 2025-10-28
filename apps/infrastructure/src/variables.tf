@@ -156,7 +156,7 @@ variable "chatbot_ecs_monitoring" {
     image_uri = optional(string, "ghcr.io/langfuse/langfuse:sha-9375250")
     port      = optional(number, 3000)
   })
-  description = "Redis configuration for the AI chatbot"
+  description = "Langfuse configuration for the AI chatbot"
 
   default = {
     cpu       = 2048
