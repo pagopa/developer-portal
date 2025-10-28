@@ -1,4 +1,7 @@
-import { getFutureWebinars, getPastWebinars } from '@/helpers/webinars.helpers';
+import {
+  getFutureWebinarsFrom,
+  getPastWebinarsFrom,
+} from '@/helpers/webinars.helpers';
 import { Webinar } from '@/lib/types/webinar';
 import { mediaRasterJson } from '@/lib/strapi/__tests__/fixtures/media';
 
@@ -66,7 +69,7 @@ const webinars: readonly Webinar[] = [
 
 describe('getFutureWebinars', () => {
   it('should return only future webinars', () => {
-    expect(getFutureWebinars(webinars)).toStrictEqual([
+    expect(getFutureWebinarsFrom(webinars)).toStrictEqual([
       {
         ...testWebinar,
         startDateTime: '2099-01-01T08:30:00.000Z',
@@ -78,7 +81,7 @@ describe('getFutureWebinars', () => {
 
 describe('getPastWebinars', () => {
   it('should return only past webinars', () => {
-    expect(getPastWebinars(webinars)).toStrictEqual([
+    expect(getPastWebinarsFrom(webinars)).toStrictEqual([
       {
         ...testWebinar,
         startDateTime: '2024-03-04T08:30:00.000Z',

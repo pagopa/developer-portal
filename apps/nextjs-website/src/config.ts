@@ -35,6 +35,8 @@ export const cookieCategory = process.env.NEXT_PUBLIC_COOKIE_CATEGORY;
 export const matomoScriptSrc =
   process.env.NEXT_PUBLIC_MATOMO_SCRIPT_SRC ||
   'https://cdn.matomo.cloud/pagopa.matomo.cloud/container_cT0RWuHZ.js';
+export const amazonIvsVersion =
+  process.env.NEXT_PUBLIC_AMAZON_IVS_VERSION || '1.45.0';
 export const environment = process.env.ENVIRONMENT;
 export const docsAssetsPath = '/gitbook/docs';
 export const staticContentsUrl = process.env.STATIC_CONTENTS_URL;

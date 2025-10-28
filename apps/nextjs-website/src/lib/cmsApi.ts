@@ -52,7 +52,7 @@ import { fetchUseCaseListPages } from '@/lib/strapi/fetches/fetchUseCaseListPage
 import { makeUseCaseListPagesProps } from '@/lib/strapi/makeProps/makeUseCaseListPages';
 import { fetchTags } from '@/lib/strapi/fetches/fetchTags';
 import { makeTagsProps } from '@/lib/strapi/makeProps/makeTags';
-import { MarkDownPart } from '@/lib/strapi/types/part';
+import { isMarkDownPart, MarkDownPart } from '@/lib/strapi/types/part';
 import { getMarkdownContent } from '@/lib/api';
 
 // a BuildEnv instance ready to be used
@@ -223,17 +223,11 @@ export const getReleaseNoteProps = async (
 
 export const getUseCasesProps = async () => {
   const strapiUseCases = await fetchUseCases(buildEnv);
-  const useCasesWithMarkdown = strapiUseCases.data.filter((useCase) => {
-    const parts = useCase?.attributes?.parts ?? [];
-    return parts.some((part) => part?.__component === 'parts.markdown');
-  });
-  const allMarkdownParts = useCasesWithMarkdown.flatMap((useCase) =>
-    (useCase?.attributes?.parts ?? []).filter(
-      (part) => part?.__component === 'parts.markdown'
-    )
+  const allMarkdownParts = strapiUseCases.data.flatMap((useCase) =>
+    (useCase?.attributes?.parts ?? []).filter(isMarkDownPart)
   );
   const contentPromises = allMarkdownParts.map(async (part) => {
-    const { dirName, pathToFile } = part as MarkDownPart;
+    const { dirName, pathToFile } = part;
     const key = `${dirName}/${pathToFile}`;
     const content = await getMarkdownContent(dirName, pathToFile);
     return [key, content];

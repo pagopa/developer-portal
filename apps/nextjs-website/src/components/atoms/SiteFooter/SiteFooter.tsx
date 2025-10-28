@@ -49,7 +49,7 @@ const SiteFooter = ({
       links: [
         {
           ariaLabel: t('followUs.links.accessibility.ariaLabel'),
-          href: 'https://form.agid.gov.it/view/eca3487c-f3cb-40be-a590-212eafc70058/',
+          href: 'https://form.agid.gov.it/view/5de36b80-97b7-11f0-b1d3-cb68959f3505',
           label: t('followUs.links.accessibility.label'),
           linkType: 'external',
         },
