@@ -263,8 +263,8 @@ module "video_streaming" {
   route53_zone_id    = module.core.hosted_zone_id
 }
 
-module "monitoring" {
-  source = "./modules/monitoring"
+module "langfuse" {
+  source = "./modules/langfuse"
 
   environment        = var.environment
   tags               = var.tags

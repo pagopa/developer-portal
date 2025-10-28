@@ -1,6 +1,6 @@
 locals {
-  clickhouse_db = "default"
-  clickhouse_user = "clickhouse"
+  clickhouse_db       = "default"
+  clickhouse_user     = "clickhouse"
   clickhouse_password = random_password.clickhouse_password.result
 }
 
@@ -59,7 +59,7 @@ resource "aws_ecs_task_definition" "clickhouse" {
 
   runtime_platform {
     operating_system_family = "LINUX"
-    cpu_architecture = "ARM64"
+    cpu_architecture        = "ARM64"
   }
 
   container_definitions = jsonencode([
@@ -107,7 +107,7 @@ resource "aws_ecs_task_definition" "clickhouse" {
           value = local.clickhouse_password
         },
         {
-          name = "AWS_REGION"
+          name  = "AWS_REGION"
           value = var.region
         },
         # {
@@ -130,6 +130,7 @@ resource "aws_ecs_task_definition" "clickhouse" {
           awslogs-stream-prefix = "clickhouse"
           awslogs-region        = var.region
           awslogs-group         = aws_cloudwatch_log_group.clickhouse.name
+          mode                  = "non-blocking",
         }
       }
 
