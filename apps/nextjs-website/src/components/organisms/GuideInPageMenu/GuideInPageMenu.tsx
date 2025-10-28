@@ -8,6 +8,8 @@ import {
 import Heading from '@/components/organisms/GuideInPageMenu/components/Heading';
 import { Box, Typography, useTheme } from '@mui/material';
 import { useFragment } from '@/components/organisms/FragmentProvider/FragmentProvider';
+import { SITE_HEADER_HEIGHT } from '../../molecules/SiteHeader/SiteHeader';
+import { PRODUCT_HEADER_HEIGHT } from '../../atoms/ProductHeader/ProductHeader';
 
 type GuideInPageMenuProps = {
   assetsPrefix: string;
@@ -31,6 +33,7 @@ const GuideInPageMenu = ({
   const fragmentRef = useRef(fragment);
   const menuContainerRef = useRef<HTMLDivElement | null>(null);
   const nodes = parseInPageMenu(inPageMenu, { assetsPrefix, pagePath });
+  const headerOffset = PRODUCT_HEADER_HEIGHT + SITE_HEADER_HEIGHT;
 
   useEffect(() => {
     // eslint-disable-next-line functional/immutable-data
@@ -117,7 +120,14 @@ const GuideInPageMenu = ({
 
   return (
     nodes.length > 0 && (
-      <Box ref={menuContainerRef}>
+      <Box
+        ref={menuContainerRef}
+        sx={{
+          maxHeight: `calc(100vh - ${headerOffset}px)`,
+          overflowY: 'auto',
+          paddingTop: '23px',
+        }}
+      >
         <Typography
           color={palette.text.secondary}
           fontSize={14}
