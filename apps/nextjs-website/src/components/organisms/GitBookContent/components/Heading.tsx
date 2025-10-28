@@ -34,7 +34,7 @@ const asFontSize = (level: number) =>
     ? '1rem'
     : '0.75rem';
 
-const asPaddingBottom = (level: number) => (level === 1 ? 2 : 1);
+const asPaddingBottom = (level: number) => (level === 1 ? 3 : 1);
 
 const asFontWeight = (level: number) => (level === 1 ? 700 : 600);
 
