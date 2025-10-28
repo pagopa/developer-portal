@@ -24,25 +24,25 @@
 #   }
 # }
 
-resource "aws_security_group" "apprunner_vpc_connector" {
-  name = "apprunner-vpc-connector-sg"
-  tags_all = {
-    Name = "apprunner_vpc_connector_sg"
-  }
-  vpc_id = var.vpc_id
-
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = -1
-    cidr_blocks = ["0.0.0.0/0"]
-    description = "Allow all traffic out to the internet"
-  }
-
-  tags = {
-    Name = "apprunner_vpc_connector_sg"
-  }
-}
+# resource "aws_security_group" "apprunner_vpc_connector" {
+#   name = "apprunner-vpc-connector-sg"
+#   tags_all = {
+#     Name = "apprunner_vpc_connector_sg"
+#   }
+#   vpc_id = var.vpc_id
+#
+#   egress {
+#     from_port   = 0
+#     to_port     = 0
+#     protocol    = -1
+#     cidr_blocks = ["0.0.0.0/0"]
+#     description = "Allow all traffic out to the internet"
+#   }
+#
+#   tags = {
+#     Name = "apprunner_vpc_connector_sg"
+#   }
+# }
 
 # resource "aws_security_group" "langfuse_cache" {
 #   vpc_id      = var.vpc_id
@@ -102,8 +102,8 @@ resource "aws_security_group" "clickhouse" {
     from_port       = 0
     to_port         = 0
     protocol        = "-1"
-    security_groups = [aws_security_group.apprunner_vpc_connector.id]
-    # REPLACE WHEN READY: security_groups = [aws_security_group.apprunner_vpc_connector.id, aws_security_group.langfuse_worker.id]
+    security_groups = []
+    # ADD WHEN READY: security_groups = [aws_security_group.apprunner_vpc_connector.id, aws_security_group.apprunner_vpc_connector.id, aws_security_group.langfuse_worker.id]
   }
 
   egress {

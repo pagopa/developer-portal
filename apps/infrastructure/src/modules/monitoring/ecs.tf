@@ -1,5 +1,7 @@
 locals {
+  clickhouse_db = "default"
   clickhouse_user = "clickhouse"
+  clickhouse_password = random_password.clickhouse_password.result
 }
 
 resource "aws_ecs_cluster" "langfuse" {
@@ -9,6 +11,7 @@ resource "aws_ecs_cluster" "langfuse" {
     name  = "containerInsights"
     value = "enabled"
   }
+
   configuration {
     execute_command_configuration {
       logging = "OVERRIDE"
@@ -93,7 +96,7 @@ resource "aws_ecs_task_definition" "clickhouse" {
       environment = [
         {
           name  = "CLICKHOUSE_DB"
-          value = "default"
+          value = local.clickhouse_db
         },
         {
           name  = "CLICKHOUSE_USER"
@@ -101,7 +104,7 @@ resource "aws_ecs_task_definition" "clickhouse" {
         },
         {
           name  = "CLICKHOUSE_PASSWORD"
-          value = random_password.clickhouse_password.result
+          value = local.clickhouse_password
         },
         {
           name = "AWS_REGION"
