@@ -15,6 +15,7 @@ export const strapiTutorialListPages: StrapiTutorialListPages = {
         product: {
           data: {
             attributes: {
+              isVisible: true,
               tags: { data: [] },
               name: 'Product 1',
               shortName: 'P1',
@@ -26,6 +27,7 @@ export const strapiTutorialListPages: StrapiTutorialListPages = {
               tutorial_list_page: { data: undefined },
               guide_list_page: { data: undefined },
               release_note: { data: undefined },
+              use_case_list_page: { data: undefined },
             },
           },
         },
@@ -33,6 +35,8 @@ export const strapiTutorialListPages: StrapiTutorialListPages = {
           data: [
             {
               attributes: {
+                description: '',
+                icon: { data: mediaJpeg() },
                 tags: { data: [] },
                 title: 'Tutorial 1',
                 slug: 'tutorial-1',
@@ -40,6 +44,7 @@ export const strapiTutorialListPages: StrapiTutorialListPages = {
                 product: {
                   data: {
                     attributes: {
+                      isVisible: true,
                       name: 'Product 1',
                       shortName: 'P1',
                       slug: 'product-1',

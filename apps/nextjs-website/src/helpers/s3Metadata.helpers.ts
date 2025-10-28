@@ -28,9 +28,6 @@ const INITIAL_RETRY_DELAY_MS = parseInt(
 );
 const TIMEOUT_LIMIT = parseInt(process.env.TIMEOUT_LIMIT || '30000');
 
-// Global promise cache to prevent concurrent requests to the same endpoint
-const requestCache = new Map<string, Promise<any>>();
-
 async function withRetries<T>(
   operation: () => Promise<T>,
   operationName: string,
@@ -81,22 +78,17 @@ async function withRetries<T>(
 }
 
 export async function downloadFileAsText(
-  path: string
+  path: string,
+  config?: RequestInit
 ): Promise<string | undefined> {
-  // Check if we already have a request in progress for this path
-  const cacheKey = `downloadFileAsText:${path}`;
-  if (requestCache.has(cacheKey)) {
-    const result = await requestCache.get(cacheKey);
-    return result;
-  }
-
-  // Create the request promise and cache it
+  // Create the request promise
   const requestPromise = withRetries(
     async () => {
       const url = `${staticContentsUrl}/${path}`;
       const response = await fetch(url, {
         // Add timeout and other fetch options to prevent hanging
         signal: AbortSignal.timeout(TIMEOUT_LIMIT), // 30 second timeout
+        ...config,
       });
 
       if (!response.ok) {
@@ -112,18 +104,14 @@ export async function downloadFileAsText(
     `file download from ${path}`,
     undefined
   ).catch((error) => {
-    // On failure, remove from cache to allow retries on subsequent calls
-    requestCache.delete(cacheKey);
     // eslint-disable-next-line functional/no-throw-statements
     throw error;
   });
 
-  requestCache.set(cacheKey, requestPromise);
-  const result = await requestPromise;
-  return result;
+  return await requestPromise;
 }
 
-async function fetchFromCDN(path: string) {
+async function fetchFromCDN(path: string, config?: RequestInit) {
   if (!staticContentsUrl) {
     // eslint-disable-next-line functional/no-throw-statements
     throw new Error(
@@ -135,6 +123,7 @@ async function fetchFromCDN(path: string) {
   const response = await fetch(url, {
     // Add timeout and other fetch options to prevent hanging
     signal: AbortSignal.timeout(TIMEOUT_LIMIT), // 30 second timeout
+    ...config,
   });
 
   if (!response || !response.ok) {
@@ -142,65 +131,42 @@ async function fetchFromCDN(path: string) {
     throw new Error('Response is null');
   }
 
-  const json = await response.json();
-  return json;
+  return response.json();
 }
 
 export async function fetchResponseFromCDN(path: string) {
-  // Check if we already have a request in progress for this path
-  const cacheKey = `fetchResponseFromCDN:${path}`;
-  if (requestCache.has(cacheKey)) {
-    const result = await requestCache.get(cacheKey);
-    return result;
-  }
-
   // Create the request promise and cache it
   const requestPromise = withRetries(
     async () => {
-      return await fetchFromCDN(path);
+      return await fetchFromCDN(path, { cache: 'no-store' });
     },
     `response fetch from ${path}`,
     undefined
   ).catch((error) => {
-    // On failure, remove from cache to allow retries on subsequent calls
-    requestCache.delete(cacheKey);
     // eslint-disable-next-line functional/no-throw-statements
     throw error;
   });
 
-  requestCache.set(cacheKey, requestPromise);
-  const result = await requestPromise;
-  return result;
+  return await requestPromise;
 }
 
 export async function fetchMetadataFromCDN<T>(
   path: string
 ): Promise<readonly T[] | null> {
-  // Check if we already have a request in progress for this path
-  const cacheKey = `fetchMetadataFromCDN:${path}`;
-  if (requestCache.has(cacheKey)) {
-    const result = await requestCache.get(cacheKey);
-    return result;
-  }
-
   // Create the request promise and cache it
   const requestPromise = withRetries(
     async () => {
-      const bodyContent = await fetchFromCDN(path);
+      const bodyContent = await fetchFromCDN(path, { cache: 'no-store' });
       return bodyContent as readonly T[];
     },
     `metadata fetch from ${path}`,
     null
   ).catch((error) => {
-    // On failure, remove from cache to allow retries on subsequent calls
-    requestCache.delete(cacheKey);
     // eslint-disable-next-line functional/no-throw-statements
     throw error;
   });
 
-  requestCache.set(cacheKey, requestPromise);
-  const result = await requestPromise;
-  return result;
+  return await requestPromise;
 }
 
 const S3_GUIDES_METADATA_JSON_PATH =

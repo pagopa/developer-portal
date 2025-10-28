@@ -32,6 +32,7 @@ export const strapiApiDataList: StrapiApiDataList = {
         product: {
           data: {
             attributes: {
+              isVisible: true,
               name: 'Test Product',
               slug: 'test-product',
               tags: { data: [] },
@@ -43,6 +44,7 @@ export const strapiApiDataList: StrapiApiDataList = {
               guide_list_page: { data: { id: 0 } },
               tutorial_list_page: { data: { id: 0 } },
               release_note: { data: { id: 0 } },
+              use_case_list_page: { data: { id: 0 } },
             },
           },
         },
@@ -80,6 +82,7 @@ export const strapiApiDataList: StrapiApiDataList = {
         product: {
           data: {
             attributes: {
+              isVisible: true,
               name: 'SOAP Product',
               slug: 'soap-product',
               shortName: 'SP',
@@ -91,6 +94,7 @@ export const strapiApiDataList: StrapiApiDataList = {
               guide_list_page: { data: { id: 0 } },
               tutorial_list_page: { data: { id: 0 } },
               release_note: { data: { id: 0 } },
+              use_case_list_page: { data: { id: 0 } },
             },
           },
         },
@@ -120,6 +124,7 @@ export const expectedApiDataPageProps: ReadonlyArray<ApiDataPageProps> = [
     specUrlsName: 'SEND Main',
     apiSoapUrlList: [],
     product: {
+      isVisible: true,
       name: 'Test Product',
       slug: 'test-product',
       shortName: 'TP',
@@ -137,6 +142,7 @@ export const expectedApiDataPageProps: ReadonlyArray<ApiDataPageProps> = [
     specUrlsName: 'Documentazione SOAP',
     apiSoapUrlList: expect.any(Array),
     product: {
+      isVisible: true,
       name: 'SOAP Product',
       slug: 'soap-product',
       shortName: 'SP',

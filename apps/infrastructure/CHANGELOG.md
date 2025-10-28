@@ -1,5 +1,36 @@
 # infrastructure
 
+## 5.1.0
+
+### Minor Changes
+
+- 03f36f7: Lambda evaluate update memori size and env variables.
+- 76096c3: ECR chatbot repository tags immutable
+- cdda8f5: Change IAM policy to allow lambda api to read static contents from S3
+- ffd44ff: Lambda chatbot index update timeout
+
+## 5.0.0
+
+### Major Changes
+
+- 070e4a1: Cloudfront distribution for video streaming
+- 3cacbdb: New module that creates aws ivs channels
+
+### Minor Changes
+
+- fea763f: Optional custom domain for cloudfront video streaming distribution
+
+### Patch Changes
+
+- 492fa6c: Use the registry release of the opennext terraform module
+- 0d6bb25: Changed CHB_MAX_TOKENS env var to 2048
+
+## 4.0.0
+
+### Major Changes
+
+- d4bc174: New lambda function chatbot reindex
+
 ## 3.1.0
 
 ### Minor Changes

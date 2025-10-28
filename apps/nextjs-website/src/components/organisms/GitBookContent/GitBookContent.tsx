@@ -9,7 +9,7 @@ import Table, {
   TableHead,
   TableR,
 } from './components/Table';
-import Heading from './components/Heading';
+import Heading, { SubHeading } from './components/Heading';
 import Paragraph from './components/Paragraph';
 import Hint from './components/Hint';
 import List from './components/List';
@@ -33,10 +33,13 @@ import { ParseContentConfig } from 'gitbook-docs/parseContent';
 import SwaggerParameter from './components/Swagger/SwaggerParameter';
 import SwaggerResponse from './components/Swagger/SwaggerResponse';
 import SwaggerDescription from './components/Swagger/SwaggerDescription';
+import Stepper from '@/components/organisms/GitBookContent/components/Stepper';
+import Step from '@/components/organisms/GitBookContent/components/Step';
 
 type GitBookContentProps = {
   content: string;
   config: ParseContentConfig;
+  hideLevel1Headings?: boolean;
 };
 
 const components: RenderingComponents<ReactNode> = {
@@ -70,10 +73,25 @@ const components: RenderingComponents<ReactNode> = {
   Card: Card,
   CardItem: CardItem,
   PageLink: PageLink,
+  Stepper: Stepper,
+  Step: Step,
   Br: () => <br />,
 };
 
-const GitBookContent = ({ content, config }: GitBookContentProps) =>
-  renderContent(parseContent(content, config), React, components);
+const hideH1Components: RenderingComponents<ReactNode> = {
+  ...components,
+  Heading: SubHeading,
+};
+
+const GitBookContent = ({
+  content,
+  config,
+  hideLevel1Headings = false,
+}: GitBookContentProps) =>
+  renderContent(
+    parseContent(content, config),
+    React,
+    hideLevel1Headings ? hideH1Components : components
+  );
 
 export default GitBookContent;

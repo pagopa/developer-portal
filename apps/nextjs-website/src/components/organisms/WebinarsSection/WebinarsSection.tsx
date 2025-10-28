@@ -1,7 +1,11 @@
+'use client';
 import { Webinar } from '@/lib/types/webinar';
 import FutureWebinarsShowcase from '../FutureWebinarsShowcase/FutureWebinarsShowcase';
 import PastWebinarsShowcase from '../PastWebinarsShowcase/PastWebinarsShowcase';
-import { getFutureWebinars, getPastWebinars } from '@/helpers/webinars.helpers';
+import {
+  getFutureWebinarsFrom,
+  getPastWebinarsFrom,
+} from '@/helpers/webinars.helpers';
 import { maxPastWebinarsInHome } from '@/config';
 
 type WebinarsSectionProps = {
@@ -9,8 +13,8 @@ type WebinarsSectionProps = {
 };
 
 const WebinarsSection = ({ webinars }: WebinarsSectionProps) => {
-  const futureWebinars = getFutureWebinars(webinars);
-  const pastWebinars = getPastWebinars(webinars).slice(
+  const futureWebinars = getFutureWebinarsFrom(webinars);
+  const pastWebinars = getPastWebinarsFrom(webinars).slice(
     0,
     maxPastWebinarsInHome
   );

@@ -29,7 +29,9 @@ resource "aws_ssm_parameter" "strapi_api_token" {
 
 
 module "opennext" {
-  source = "github.com/pagopa/dx//infra/modules/aws_open_next?ref=opennext-module"
+  source  = "pagopa-dx/aws-open-next/aws"
+  version = "~> 0.0"
+
 
   custom_domain = {
     domain_name         = var.dns_domain_name
@@ -37,9 +39,8 @@ module "opennext" {
     hosted_zone_id      = var.hosted_zone_id
   }
 
-  are_previews_enabled = true
-  environment          = var.environment_information
-  node_major_version   = 22
+  environment        = var.environment_information
+  node_major_version = 22
 
   server = {
     environment_variables = {
@@ -75,11 +76,9 @@ module "opennext" {
     }
   }
 
-  enable_alarms  = true
   alarms_actions = [aws_sns_topic.metric_alarm.arn]
 
   vpc = var.vpc
-
 
   tags = var.tags
 
