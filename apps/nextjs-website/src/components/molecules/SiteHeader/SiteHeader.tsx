@@ -29,10 +29,11 @@ const SiteHeader = (
   return (
     <Box
       sx={{
-        position: 'sticky',
+        position: 'fixed',
         top: 0,
         height: SITE_HEADER_HEIGHT,
         zIndex: 100,
+        width: '100vw',
       }}
     >
       <Stack

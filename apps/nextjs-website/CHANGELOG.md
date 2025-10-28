@@ -1,5 +1,12 @@
 # nextjs-website
 
+## 10.1.0
+
+### Minor Changes
+
+- 5a484e8: Add VideoJsPlayer and its storybook
+- 1f7a515: Add VideoJsPlayer to webinar page
+
 ## 10.0.3
 
 ### Patch Changes

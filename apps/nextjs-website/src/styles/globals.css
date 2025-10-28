@@ -4,6 +4,10 @@
   font-family: var(--font-titillium-web)!important;
 }
 
+.video-js * {
+  font-family: 'VideoJS'!important;
+}
+
 body {
   background-color: white;
   margin: 0;
