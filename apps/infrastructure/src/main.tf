@@ -266,6 +266,9 @@ module "video_streaming" {
 module "monitoring" {
   source = "./modules/monitoring"
 
-  environment = var.environment
-  tags        = var.tags
+  environment        = var.environment
+  tags               = var.tags
+  region             = var.aws_region
+  vpc_id             = module.cms.vpc.id
+  private_subnet_ids = module.cms.vpc.private_subnets
 }

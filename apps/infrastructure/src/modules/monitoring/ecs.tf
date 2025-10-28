@@ -2,31 +2,31 @@ locals {
   clickhouse_user = "clickhouse"
 }
 
-# resource "aws_ecs_cluster" "langfuse" {
-#   name = "langfuse"
-#
-#   setting {
-#     name  = "containerInsights"
-#     value = "enabled"
-#   }
-#   configuration {
-#     execute_command_configuration {
-#       logging = "OVERRIDE"
-#
-#       log_configuration {
-#         cloud_watch_log_group_name = aws_cloudwatch_log_group.langfuse_worker.name
-#         s3_key_prefix              = "/aws/ecs/langfuse/logs"
-#       }
-#     }
-#   }
-#
-#   service_connect_defaults {
-#     namespace = aws_service_discovery_private_dns_namespace.langfuse.arn
-#   }
-#   tags = {
-#     Name = "langfuse"
-#   }
-# }
+resource "aws_ecs_cluster" "langfuse" {
+  name = "langfuse"
+
+  setting {
+    name  = "containerInsights"
+    value = "enabled"
+  }
+  configuration {
+    execute_command_configuration {
+      logging = "OVERRIDE"
+
+      log_configuration {
+        cloud_watch_log_group_name = aws_cloudwatch_log_group.langfuse_worker.name
+        s3_key_prefix              = "/aws/ecs/langfuse/logs"
+      }
+    }
+  }
+
+  service_connect_defaults {
+    namespace = aws_service_discovery_private_dns_namespace.langfuse.arn
+  }
+  tags = {
+    Name = "langfuse"
+  }
+}
 
 # resource "aws_ecs_cluster_capacity_providers" "langfuse" {
 #   cluster_name       = aws_ecs_cluster.langfuse.name
@@ -62,7 +62,7 @@ resource "aws_ecs_task_definition" "clickhouse" {
   container_definitions = jsonencode([
     {
       name      = "clickhouse"
-      image     = "${aws_ecr_repository.clickhouse.repository_url}:latest"
+      image     = "docker.io/clickhouse/clickhouse-server:25.8.8.26-alpine"
       cpu       = 1024
       memory    = 8192
       essential = true
@@ -107,10 +107,10 @@ resource "aws_ecs_task_definition" "clickhouse" {
           name = "AWS_REGION"
           value = var.region
         },
-        {
-          name = "S3_BUCKET"
-          value = aws_s3_bucket.langfuse_clickhouse.id
-        }
+        # {
+        #   name = "S3_BUCKET"
+        #   value = aws_s3_bucket.langfuse_clickhouse.id
+        # }
       ]
 
       healthCheck = {

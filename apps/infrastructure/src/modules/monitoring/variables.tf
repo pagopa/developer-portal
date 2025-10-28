@@ -16,6 +16,11 @@ variable "tags" {
   }
 }
 
+variable "region" {
+  description = "AWS region on which to deploy"
+  type        = string
+}
+
 variable "vpc_id" {
   description = "VPC ID for Your Langfuse Environment"
   type        = string

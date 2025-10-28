@@ -114,15 +114,15 @@ resource "aws_security_group" "clickhouse" {
   }
 }
 
-# resource "aws_security_group" "efs" {
-#   name        = "efs-clickhouse"
-#   description = "Allow EFS access from ECS tasks"
-#   vpc_id      = var.vpc_id
-#
-#   ingress {
-#     from_port       = 2049
-#     to_port         = 2049
-#     protocol        = "tcp"
-#     security_groups = [aws_security_group.clickhouse.id]
-#   }
-# }
+resource "aws_security_group" "efs" {
+  name        = "efs-clickhouse"
+  description = "Allow EFS access from ECS tasks"
+  vpc_id      = var.vpc_id
+
+  ingress {
+    from_port       = 2049
+    to_port         = 2049
+    protocol        = "tcp"
+    security_groups = [aws_security_group.clickhouse.id]
+  }
+}
