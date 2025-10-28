@@ -61,8 +61,6 @@ services:
         condition: service_started
     entrypoint: ["/usr/local/bin/aws-lambda-rie", "python3"]
     command: ["-m", "awslambdaric", "src.lambda_refresh_index.lambda_handler"]
-    networks:
-      - ntw
 
   create-index:
     build:
@@ -108,8 +106,8 @@ services:
       timeout: 10s
       retries: 10
     volumes:
-      - ./files/redis-dump.rdb:/data/dump.rdb
       - redis_data:/data
+      - ./files/redis-data/redis-dump.rdb:/data/dump.rdb
 
   jupyter:
     platform: linux/amd64

@@ -280,6 +280,8 @@ class Chatbot:
                 tags=response_json["products"],
             )
             trace.score(name="user-feedback", value=0, data_type="NUMERIC")
+        LOGGER.info('instrumentor flushing...')
         self.instrumentor.flush()
+        LOGGER.info('instrumentor flushed.')
 
         return response_json
