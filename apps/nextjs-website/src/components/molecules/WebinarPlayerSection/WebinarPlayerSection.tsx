@@ -16,6 +16,7 @@ import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { Stack } from '@mui/system';
 import { useTranslations } from 'next-intl';
+import VideoJsPlayer from '@/components/atoms/VideoJsPlayer/VideoJsPlayer';
 
 type WebinarPlayerSectionProps = {
   webinar: Webinar;
@@ -56,7 +57,17 @@ const WebinarPlayerSection = ({
                 },
               }}
             >
-              <VimeoPlayer playerSrc={webinar.playerSrc} />
+              {webinar.playerSrc.includes('vimeo') ? (
+                <VimeoPlayer playerSrc={webinar.playerSrc} />
+              ) : (
+                <VideoJsPlayer
+                  techOrder={['AmazonIVS']}
+                  autoplay={true}
+                  controls={true}
+                  playsInline={true}
+                  src={webinar.playerSrc}
+                />
+              )}
             </Box>
             {isQuestionFormAvailable ? (
               isQuestionFormExpanded ? (

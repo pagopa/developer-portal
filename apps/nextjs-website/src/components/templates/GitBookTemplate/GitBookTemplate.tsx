@@ -8,6 +8,8 @@ import GuideInPageMenu from '@/components/organisms/GuideInPageMenu/GuideInPageM
 import { BreadcrumbSegment } from '@/lib/types/path';
 import { Box, Stack } from '@mui/material';
 import { useTranslations } from 'next-intl';
+import { SITE_HEADER_HEIGHT } from '../../molecules/SiteHeader/SiteHeader';
+import { PRODUCT_HEADER_HEIGHT } from '../../atoms/ProductHeader/ProductHeader';
 import GitBookContent from '@/components/organisms/GitBookContent/GitBookContent';
 
 export type GitBookTemplateProps = {
@@ -35,12 +37,20 @@ const GitBookTemplate = ({
   versions,
   breadcrumbs,
   menuDistanceFromTop,
-  contentMarginTop = 75,
+  contentMarginTop,
   hasHeader = true,
   hasInPageMenu = true,
 }: GitBookTemplateProps) => {
   const t = useTranslations();
   const paddingTop = hasHeader ? '60px' : '-80px';
+  const responsiveContentMarginTop = (contentMarginTop &&
+    `${contentMarginTop}px`) || {
+    xs: '30px',
+    md: '60px',
+  };
+  const headersOffset = hasHeader
+    ? `${SITE_HEADER_HEIGHT + PRODUCT_HEADER_HEIGHT}px`
+    : '0px';
 
   return (
     <FragmentProvider>
@@ -66,13 +76,14 @@ const GitBookTemplate = ({
         )}
         <Stack
           sx={{
-            margin: `${contentMarginTop} auto`,
+            marginTop: responsiveContentMarginTop,
             paddingTop: 3,
             flexGrow: { lg: 1 },
             maxWidth: {
               xs: '100%',
               lg: '1008px',
             },
+            minHeight: '100vh',
           }}
         >
           <Box sx={{ paddingTop: paddingTop, paddingX: '40px' }}>
@@ -87,7 +98,8 @@ const GitBookTemplate = ({
             sx={{
               display: { xs: 'none', lg: 'initial' },
               position: 'relative',
-              padding: { lg: hasHeader ? '80px 64px' : '48px 64px' },
+              marginTop: { lg: headersOffset },
+              padding: { lg: '43px 64px' },
               width: { lg: '378px' },
             }}
           >

@@ -1,5 +1,21 @@
 # infrastructure
 
+## 5.2.0
+
+### Minor Changes
+
+- 055fea6: Update env variable CHB_MODEL_MAXTOKENS
+- a2828db: Dead letter queue for the lambda chabot evaluate.
+
+## 5.1.0
+
+### Minor Changes
+
+- 03f36f7: Lambda evaluate update memori size and env variables.
+- 76096c3: ECR chatbot repository tags immutable
+- cdda8f5: Change IAM policy to allow lambda api to read static contents from S3
+- ffd44ff: Lambda chatbot index update timeout
+
 ## 5.0.0
 
 ### Major Changes
