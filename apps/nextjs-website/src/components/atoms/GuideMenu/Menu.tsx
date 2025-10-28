@@ -47,8 +47,8 @@ const StyledTreeItem = styled(TreeItem)(({ theme }) => ({
     position: 'relative',
   },
   [`& .${treeItemClasses.content} > .${treeItemClasses.label} > a`]: {
-    paddingTop: 10,
-    paddingBottom: 10,
+    paddingTop: 6,
+    paddingBottom: 6,
     paddingRight: 32,
   },
   [`& ul`]: {
