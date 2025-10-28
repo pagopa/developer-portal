@@ -30,6 +30,7 @@ pyyaml = "^6.0.2"
 toml = "^0.10.2"
 spacy = "^3.8.7"
 nltk = "^3.9.2"
+hypercorn = "^0.17.3"
 
 [tool.poetry.group.test.dependencies]
 httpx = "^0.28.1"
