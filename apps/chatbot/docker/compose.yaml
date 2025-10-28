@@ -148,6 +148,11 @@ services:
         condition: service_started
     command: jupyter-lab --no-browser --allow-root --ip=0.0.0.0
 
+  motoserver:
+    image: motoserver/moto:5.1.14
+    environment:
+      - MOTO_PORT=3002
+
   langfuse-worker:
     image: docker.io/langfuse/langfuse-worker:3.115
     depends_on: &langfuse-depends-on
@@ -270,11 +275,6 @@ services:
       timeout: 5s
       retries: 5
       start_period: 1s
-  
-  motoserver:
-    image: motoserver/moto:5.1.14
-    environment:
-      - MOTO_PORT=3002
 
 volumes:
   postgres_data:
