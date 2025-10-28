@@ -56,7 +56,7 @@ const StyledTreeItem = styled(TreeItem)(({ theme }) => ({
     '--y': 'calc(var(--x) + 0)',
   },
   [`& li`]: {
-    '--x': 'calc(var(--y) + 24)',
+    '--x': 'calc(var(--y) + 12)',
   },
   ['& a']: {
     paddingLeft: 'calc(1px * var(--x))',
