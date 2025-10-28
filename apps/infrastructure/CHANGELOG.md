@@ -1,5 +1,12 @@
 # infrastructure
 
+## 5.2.0
+
+### Minor Changes
+
+- 055fea6: Update env variable CHB_MODEL_MAXTOKENS
+- a2828db: Dead letter queue for the lambda chabot evaluate.
+
 ## 5.1.0
 
 ### Minor Changes

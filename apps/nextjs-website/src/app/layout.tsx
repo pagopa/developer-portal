@@ -41,7 +41,6 @@ const PREVIOUS_MATOMO_TAG_MANAGER_SCRIPT =
   `'; s.parentNode.insertBefore(g,s);
   })();
 `;
-
 const MATOMO_TAG_MANAGER_SCRIPT =
   `
   var _mtm = window._mtm = window._mtm || [];

@@ -14,7 +14,6 @@ services:
     volumes:
       - ..:/app
       - ./files/.aws:/root/.aws
-      - ../../nextjs-website/out:/app/build-devp/out
     depends_on:
       redis:
         condition: service_started
@@ -24,7 +23,7 @@ services:
         condition: service_started
       langfuse-worker:
         condition: service_started
-      localstack:
+      motoserver:
         condition: service_started
       evaluate:
         condition: service_started
@@ -55,16 +54,13 @@ services:
       - "8082:8080"
     volumes:
       - ../chatbot-index:/app
-      - ~/.aws-lambda-rie/aws-lambda-rie:/usr/local/bin/aws-lambda-rie
     depends_on:
-      localstack:
+      motoserver:
         condition: service_started
       redis:
         condition: service_started
     entrypoint: ["/usr/local/bin/aws-lambda-rie", "python3"]
     command: ["-m", "awslambdaric", "src.lambda_refresh_index.lambda_handler"]
-    networks:
-      - ntw
 
   create-index:
     build:
@@ -111,6 +107,30 @@ services:
       retries: 10
     volumes:
       - redis_data:/data
+    depends_on:
+      redis-fix-perms:
+        condition: service_completed_successfully
+
+  redis-seed:
+    image: alpine:3.18
+    user: root
+    volumes:
+      - redis_data:/data
+      - ./files/redis-data/redis-dump.rdb:/seed/dump.rdb:ro
+    command: ["sh", "-c", "if [ -f /seed/dump.rdb ]; then cp -a /seed/dump.rdb /data/dump.rdb && chown redis:redis /data/dump.rdb 2>/dev/null || chown 1000:1000 /data/dump.rdb || true; fi"]
+    restart: "no"
+
+  redis-fix-perms:
+    # one-shot: ensure /data owned by redis user before redis starts
+    image: redis/redis-stack:7.2.0-v13
+    user: root
+    volumes:
+      - redis_data:/data
+    depends_on:
+      redis-seed:
+        condition: service_completed_successfully
+    command: ["sh", "-c", "chown -R redis:redis /data 2>/dev/null || chown -R 1000:1000 /data || true"]
+    restart: "no"
 
   jupyter:
     platform: linux/amd64
@@ -127,20 +147,10 @@ services:
         condition: service_started
     command: jupyter-lab --no-browser --allow-root --ip=0.0.0.0
 
-  localstack:
-    container_name: "${LOCALSTACK_DOCKER_NAME:-localstack-main}"
-    image: localstack/localstack:4.6.0
-    ports:
-      - "127.0.0.1:4566:4566" # LocalStack Gateway
-      - "127.0.0.1:4510-4559:4510-4559" # external services port range
+  motoserver:
+    image: motoserver/moto:5.1.14
     environment:
-      # LocalStack configuration: https://docs.localstack.cloud/references/configuration/
-      - DEBUG=${DEBUG:-0}
-      - SERVICES=sqs,s3,ssm
-    volumes:
-      - "${LOCALSTACK_VOLUME_DIR:-./volume}:/var/lib/localstack"
-      - "/var/run/docker.sock:/var/run/docker.sock"
-      - ./files/localstack/init:/etc/localstack/init
+      - MOTO_PORT=3002
 
   langfuse-worker:
     image: docker.io/langfuse/langfuse-worker:3.115
@@ -149,7 +159,7 @@ services:
         condition: service_healthy
       minio:
         condition: service_healthy
-      redis:
+      valkey:
         condition: service_healthy
       clickhouse:
         condition: service_healthy
@@ -195,13 +205,8 @@ services:
       LANGFUSE_S3_BATCH_EXPORT_FORCE_PATH_STYLE: ${LANGFUSE_S3_BATCH_EXPORT_FORCE_PATH_STYLE:-true}
       LANGFUSE_INGESTION_QUEUE_DELAY_MS: ${LANGFUSE_INGESTION_QUEUE_DELAY_MS:-}
       LANGFUSE_INGESTION_CLICKHOUSE_WRITE_INTERVAL_MS: ${LANGFUSE_INGESTION_CLICKHOUSE_WRITE_INTERVAL_MS:-}
-      REDIS_HOST: ${REDIS_HOST:-redis}
+      REDIS_HOST: ${REDIS_HOST:-valkey}
       REDIS_PORT: ${REDIS_PORT:-6379}
-      REDIS_AUTH: ${REDIS_AUTH:-myredissecret}
-      REDIS_TLS_ENABLED: ${REDIS_TLS_ENABLED:-false}
-      REDIS_TLS_CA: ${REDIS_TLS_CA:-/certs/ca.crt}
-      REDIS_TLS_CERT: ${REDIS_TLS_CERT:-/certs/redis.crt}
-      REDIS_TLS_KEY: ${REDIS_TLS_KEY:-/certs/redis.key}
       EMAIL_FROM_ADDRESS: ${EMAIL_FROM_ADDRESS:-}
       SMTP_CONNECTION_URL: ${SMTP_CONNECTION_URL:-}
 
@@ -264,6 +269,15 @@ services:
       timeout: 5s
       retries: 5
       start_period: 1s
+
+  valkey:
+    image: valkey/valkey:8.1.4-alpine3.22
+    healthcheck:
+      test: [ "CMD", "valkey-cli", "ping" ]
+      interval: 3s
+      timeout: 10s
+      retries: 10
+      start_period: 5s
 
 volumes:
   postgres_data:

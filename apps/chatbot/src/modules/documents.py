@@ -7,8 +7,6 @@ from src.modules.settings import SETTINGS, AWS_SESSION
 
 
 LOGGER = get_logger(__name__)
-
-
 AWS_S3_CLIENT = AWS_SESSION.client("s3")
 
 

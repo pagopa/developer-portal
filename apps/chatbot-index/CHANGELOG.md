@@ -1,5 +1,11 @@
 # chatbot-index
 
+## 2.0.1
+
+### Patch Changes
+
+- 612d7d7: Fix chrome install
+
 ## 2.0.0
 
 ### Major Changes
