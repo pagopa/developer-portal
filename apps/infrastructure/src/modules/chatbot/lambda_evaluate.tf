@@ -80,6 +80,14 @@ resource "aws_iam_role_policy" "lambda_evaluate_policy" {
       {
         Effect = "Allow"
         Action = [
+          "sqs:SendMessage",
+
+        ]
+        Resource = aws_sqs_queue.chatbot_evaluate_queue_dlq.arn
+      },
+      {
+        Effect = "Allow"
+        Action = [
           "ec2:CreateNetworkInterface",
           "ec2:DescribeNetworkInterfaces",
           "ec2:DeleteNetworkInterface"
@@ -142,8 +150,28 @@ resource "aws_lambda_event_source_mapping" "evaluate_lambda_sqs" {
   event_source_arn = aws_sqs_queue.chatbot_evaluate_queue.arn
   function_name    = aws_lambda_function.chatbot_evaluate_lambda.arn
   enabled          = true
-  batch_size       = 10
+  batch_size       = 5
   #maximum_batching_window_in_seconds = 60
 }
 
+
+# Event invoke configuration for retries
+resource "aws_lambda_function_event_invoke_config" "lambda_evaluate" {
+  function_name = aws_lambda_function.chatbot_evaluate_lambda.function_name
+
+  maximum_event_age_in_seconds = 60
+  maximum_retry_attempts       = 1
+
+  /*
+  destination_config {
+    on_failure {
+      destination = aws_sqs_queue.chatbot_evaluate_queue_dlq.arn
+    }
+
+    on_success {
+      destination = aws_sqs_queue.chatbot_evaluate_queue_dlq.arn
+    }
+  }
+  */
+}
 
