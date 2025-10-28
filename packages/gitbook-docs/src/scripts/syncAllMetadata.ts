@@ -10,8 +10,8 @@ import { writeFile } from 'fs/promises';
 import * as fs from 'fs';
 import path from 'path';
 import qs from 'qs';
-import { SitemapItem } from '../sitemapItem';
-import { makeS3Client, writeSitemapJson } from '../helpers/s3Bucket.helper';
+import { MetadataItem } from '../metadataItem';
+import { makeS3Client, writeMetadataJson } from '../helpers/s3Bucket.helper';
 import { S3Client } from '@aws-sdk/client-s3';
 import { extractTitleFromMarkdown } from '../helpers/extractTitle.helper';
 import { fetchFromStrapi } from '../helpers/fetchFromStrapi';
@@ -473,7 +473,7 @@ async function getMarkdownFilesRecursively(dir: string): Promise<string[]> {
 // Process guide metadata
 async function processGuidesMetadata(
   guides: StrapiGuide[]
-): Promise<SitemapItem[]> {
+): Promise<MetadataItem[]> {
   const guideInfoList: MetadataInfo[] = guides
     .filter((guide) => !!guide.attributes.product?.data?.attributes?.slug)
     .flatMap((guide) =>
@@ -487,7 +487,7 @@ async function processGuidesMetadata(
       }))
     );
 
-  const items: SitemapItem[] = [];
+  const items: MetadataItem[] = [];
 
   for (const guideInfo of guideInfoList) {
     const guideDir = path.join(DOCUMENTATION_PATH, guideInfo.dirName);
@@ -527,7 +527,7 @@ async function processGuidesMetadata(
           MetadataType.Guide
         );
 
-        const baseItem: SitemapItem = {
+        const baseItem: MetadataItem = {
           path,
           dirName: guideInfo.dirName,
           contentS3Path: localPathToS3Path(filePath),
@@ -562,8 +562,8 @@ async function processGuidesMetadata(
 // Process solutions metadata
 async function processSolutionsMetadata(
   solutions: StrapiSolution[]
-): Promise<SitemapItem[]> {
-  const items: SitemapItem[] = [];
+): Promise<MetadataItem[]> {
+  const items: MetadataItem[] = [];
 
   for (const solution of solutions) {
     const dirName = solution.attributes.dirName;
@@ -624,8 +624,8 @@ async function processSolutionsMetadata(
 // Process release notes metadata
 async function processReleaseNotesMetadata(
   releaseNotes: StrapiReleaseNote[]
-): Promise<SitemapItem[]> {
-  const items: SitemapItem[] = [];
+): Promise<MetadataItem[]> {
+  const items: MetadataItem[] = [];
 
   for (const releaseNote of releaseNotes) {
     const dirName = releaseNote.attributes.dirName;
@@ -781,20 +781,20 @@ async function main() {
 
     if (SAVE_STRAPI_RESPONSES) {
       console.log('Saving Strapi products, APIs data, and sitemap...');
-      await writeSitemapJson(
+      await writeMetadataJson(
         strapiData.products,
         S3_PRODUCTS_METADATA_JSON_PATH,
         S3_BUCKET_NAME!,
         getS3Client()
       );
-      await writeSitemapJson(
+      await writeMetadataJson(
         strapiData.apisData,
         S3_APIS_DATA_METADATA_JSON_PATH,
         S3_BUCKET_NAME!,
         getS3Client()
       );
       const sitemapXml = await fetchSitemapXml();
-      await writeSitemapJson(
+      await writeMetadataJson(
         sitemapXml,
         S3_SITEMAP_PATH,
         S3_BUCKET_NAME!,
@@ -804,13 +804,13 @@ async function main() {
 
     // Save synced responses
     if (SAVE_STRAPI_RESPONSES && metadataFilter.guides) {
-      await writeSitemapJson(
+      await writeMetadataJson(
         strapiData.guidesRawResponse,
         getSyncedGuidesResponseJsonPath(),
         S3_BUCKET_NAME!,
         getS3Client()
       );
-      await writeSitemapJson(
+      await writeMetadataJson(
         strapiData.guideListPagesResponse,
         getSyncedGuideListPagesResponseJsonPath(),
         S3_BUCKET_NAME!,
@@ -819,13 +819,13 @@ async function main() {
     }
 
     if (SAVE_STRAPI_RESPONSES && metadataFilter.solutions) {
-      await writeSitemapJson(
+      await writeMetadataJson(
         strapiData.solutionsRawResponse,
         getSyncedSolutionsResponseJsonPath(),
         S3_BUCKET_NAME!,
         getS3Client()
       );
-      await writeSitemapJson(
+      await writeMetadataJson(
         strapiData.solutionListPageResponse,
         getSyncedSolutionListPagesResponseJsonPath(),
         S3_BUCKET_NAME!,
@@ -834,7 +834,7 @@ async function main() {
     }
 
     if (SAVE_STRAPI_RESPONSES && metadataFilter.releaseNotes) {
-      await writeSitemapJson(
+      await writeMetadataJson(
         strapiData.releaseNotesRawResponse,
         getSyncedReleaseNotesResponseJsonPath(),
         S3_BUCKET_NAME!,
@@ -859,7 +859,7 @@ async function main() {
     if (GENERATE_SITEMAP_METADATA && metadataFilter.guides) {
       console.log('Processing guides metadata...');
       const guidesSitemap = await processGuidesMetadata(strapiData.guides);
-      await writeSitemapJson(
+      await writeMetadataJson(
         guidesSitemap,
         S3_GUIDE_METADATA_JSON_PATH,
         S3_BUCKET_NAME!,
@@ -874,7 +874,7 @@ async function main() {
       const solutionsSitemap = await processSolutionsMetadata(
         strapiData.solutions
       );
-      await writeSitemapJson(
+      await writeMetadataJson(
         solutionsSitemap,
         S3_SOLUTIONS_METADATA_JSON_PATH,
         S3_BUCKET_NAME!,
@@ -889,7 +889,7 @@ async function main() {
       const releaseNotesSitemap = await processReleaseNotesMetadata(
         strapiData.releaseNotes
       );
-      await writeSitemapJson(
+      await writeMetadataJson(
         releaseNotesSitemap,
         S3_RELEASE_NOTES_METADATA_JSON_PATH,
         S3_BUCKET_NAME!,
