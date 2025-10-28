@@ -60,7 +60,6 @@ const GuideInPageMenu = ({
 
     if (headingElements.length === 0) return;
 
-    const TOP_OFFSET = SITE_HEADER_HEIGHT + PRODUCT_HEADER_HEIGHT;
     // eslint-disable-next-line functional/no-let
     let ticking = false;
 
@@ -72,7 +71,7 @@ const GuideInPageMenu = ({
       for (const headingElement of headingElements) {
         const { top } = headingElement.getBoundingClientRect();
 
-        if (top <= TOP_OFFSET) {
+        if (top <= SITE_HEADER_HEIGHT + PRODUCT_HEADER_HEIGHT) {
           activeId = headingElement.id;
           continue;
         }
