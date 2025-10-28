@@ -93,8 +93,13 @@ jobs:
       - name: Compile packages
         run: npm run compile
 
-      - name: Generate URL metadata
-        if: inputs.generate_metadata_only == false
+      - name: Configure AWS Credentials
+        uses: ./.github/actions/configure-aws-credentials
+        with:
+          aws_region: eu-south-1
+          role_to_assume: ${{ secrets.DEPLOY_IAM_ROLE }}
+
+      - name: Generate all metadata
         env:
           ENVIRONMENT: ${{ inputs.environment }}
           DOCUMENTATION_PATH: ${{ vars.DOCUMENTATION_PATH || '../../devportal-docs/docs' }}
@@ -102,12 +107,14 @@ jobs:
           STRAPI_ENDPOINT: ${{ vars.STRAPI_ENDPOINT }}
           STRAPI_API_TOKEN: ${{ secrets.STRAPI_API_TOKEN }}
           S3_BUCKET_NAME: devportal-${{ env.ENV_SHORT }}-website-static-content
+          S3_DOC_EXTRACTION_BUCKET_NAME: ${{ vars.S3_DOC_EXTRACTION_BUCKET_NAME }}
           S3_PATH_TO_GITBOOK_DOCS: ${{ vars.S3_PATH_TO_GITBOOK_DOCS || 'devportal-docs/docs' }}
           NEXT_PUBLIC_COGNITO_REGION: ${{ vars.NEXT_PUBLIC_COGNITO_REGION || 'eu-south-1' }}
+          FETCH_FROM_STRAPI: ${{ vars.FETCH_FROM_STRAPI || 'true' }}
           GENERATE_URL_METADATA: 'true'
-          GENERATE_SITEMAP_METADATA: 'false'
-          SAVE_STRAPI_RESPONSES: 'false'
-          METADATA_TYPE: 'all'
+          GENERATE_SITEMAP_METADATA: 'true'
+          SAVE_STRAPI_RESPONSES: 'true'
+          METADATA_TYPE: ${{ inputs.metadata_type }}
         run: npm run sync-all-metadata -w gitbook-docs
 
       - name: Replace urls and include tags in docs
@@ -117,28 +124,6 @@ jobs:
           DOCUMENTATION_PATH: ${{ vars.DOCUMENTATION_PATH || '../../devportal-docs/docs' }}
           URL_PARSING_METADATA_JSON_PATH: ${{ vars.URL_PARSING_METADATA_JSON_PATH || '../../url-parsing-metadata.json' }}
         run: npm run parse-docs -w gitbook-docs
-
-      - name: Configure AWS Credentials
-        uses: ./.github/actions/configure-aws-credentials
-        with:
-          aws_region: eu-south-1
-          role_to_assume: ${{ secrets.DEPLOY_IAM_ROLE }}
-
-      - name: Generate metadata
-        env:
-          ENVIRONMENT: ${{ inputs.environment }}
-          S3_BUCKET_NAME: devportal-${{ env.ENV_SHORT }}-website-static-content
-          S3_DOC_EXTRACTION_BUCKET_NAME: ${{ vars.S3_DOC_EXTRACTION_BUCKET_NAME }}
-          S3_PATH_TO_GITBOOK_DOCS: ${{ vars.S3_PATH_TO_GITBOOK_DOCS || 'devportal-docs/docs' }}
-          STRAPI_ENDPOINT: ${{ vars.STRAPI_ENDPOINT }}
-          STRAPI_API_TOKEN: ${{ secrets.STRAPI_API_TOKEN }}
-          FETCH_FROM_STRAPI: ${{ vars.FETCH_FROM_STRAPI || 'true' }}
-          NEXT_PUBLIC_COGNITO_REGION: ${{ vars.NEXT_PUBLIC_COGNITO_REGION || 'eu-south-1' }}
-          METADATA_TYPE: ${{ inputs.metadata_type }}
-          GENERATE_URL_METADATA: 'false'
-          GENERATE_SITEMAP_METADATA: 'true'
-          SAVE_STRAPI_RESPONSES: 'true'
-        run: npm run sync-all-metadata -w gitbook-docs
 
       - name: Sync docs folder to S3
         if: inputs.generate_metadata_only == false
@@ -218,7 +203,13 @@ jobs:
       - name: Compile packages
         run: npm run compile
 
-      - name: Generate URL metadata
+      - name: Configure AWS Credentials
+        uses: ./.github/actions/configure-aws-credentials
+        with:
+          aws_region: eu-south-1
+          role_to_assume: ${{ secrets.DEPLOY_IAM_ROLE }}
+
+      - name: Generate all metadata
         env:
           ENVIRONMENT: 'prod'
           DOCUMENTATION_PATH: ${{ vars.DOCUMENTATION_PATH || '../../devportal-docs/docs' }}
@@ -226,11 +217,13 @@ jobs:
           STRAPI_ENDPOINT: ${{ vars.STRAPI_ENDPOINT }}
           STRAPI_API_TOKEN: ${{ secrets.STRAPI_API_TOKEN }}
           S3_BUCKET_NAME: devportal-p-website-static-content
+          S3_DOC_EXTRACTION_BUCKET_NAME: ${{ vars.S3_DOC_EXTRACTION_BUCKET_NAME }}
           S3_PATH_TO_GITBOOK_DOCS: ${{ vars.S3_PATH_TO_GITBOOK_DOCS || 'devportal-docs/docs' }}
           NEXT_PUBLIC_COGNITO_REGION: ${{ vars.NEXT_PUBLIC_COGNITO_REGION || 'eu-south-1' }}
+          FETCH_FROM_STRAPI: ${{ vars.FETCH_FROM_STRAPI || 'true' }}
           GENERATE_URL_METADATA: 'true'
-          GENERATE_SITEMAP_METADATA: 'false'
-          SAVE_STRAPI_RESPONSES: 'false'
+          GENERATE_SITEMAP_METADATA: 'true'
+          SAVE_STRAPI_RESPONSES: 'true'
           METADATA_TYPE: 'all'
         run: npm run sync-all-metadata -w gitbook-docs
 
@@ -240,28 +233,6 @@ jobs:
           DOCUMENTATION_PATH: ${{ vars.DOCUMENTATION_PATH || '../../devportal-docs/docs' }}
           URL_PARSING_METADATA_JSON_PATH: ${{ vars.URL_PARSING_METADATA_JSON_PATH || '../../url-parsing-metadata.json' }}
         run: npm run parse-docs -w gitbook-docs
-
-      - name: Configure AWS Credentials
-        uses: ./.github/actions/configure-aws-credentials
-        with:
-          aws_region: eu-south-1
-          role_to_assume: ${{ secrets.DEPLOY_IAM_ROLE }}
-
-      - name: Generate metadata
-        env:
-          ENVIRONMENT: 'prod'
-          S3_BUCKET_NAME: devportal-p-website-static-content
-          S3_DOC_EXTRACTION_BUCKET_NAME: ${{ vars.S3_DOC_EXTRACTION_BUCKET_NAME }}
-          S3_PATH_TO_GITBOOK_DOCS: ${{ vars.S3_PATH_TO_GITBOOK_DOCS || 'devportal-docs/docs' }}
-          STRAPI_ENDPOINT: ${{ vars.STRAPI_ENDPOINT }}
-          STRAPI_API_TOKEN: ${{ secrets.STRAPI_API_TOKEN }}
-          FETCH_FROM_STRAPI: ${{ vars.FETCH_FROM_STRAPI || 'true' }}
-          NEXT_PUBLIC_COGNITO_REGION: ${{ vars.NEXT_PUBLIC_COGNITO_REGION || 'eu-south-1' }}
-          METADATA_TYPE: 'all'
-          GENERATE_URL_METADATA: 'false'
-          GENERATE_SITEMAP_METADATA: 'true'
-          SAVE_STRAPI_RESPONSES: 'true'
-        run: npm run sync-all-metadata -w gitbook-docs
 
       - name: Sync docs folder to S3
         working-directory: ./devportal-docs
