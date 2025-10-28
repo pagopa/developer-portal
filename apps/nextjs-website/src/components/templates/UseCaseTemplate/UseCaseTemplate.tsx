@@ -52,7 +52,7 @@ const UseCaseTemplate = ({
     >
       {product && (
         <Box
-          paddingY={'20px'}
+          paddingY={'74px'}
           marginTop={{ sm: '64px', md: '76px' }}
           style={{
             backgroundColor: palette.grey[50],
