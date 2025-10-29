@@ -2,17 +2,14 @@
 import { FC } from 'react';
 import { Box, useTheme } from '@mui/material';
 import 'rapidoc';
-import { Product } from 'schema-dts';
 
 type ApiViewerProps = {
   specURL: string;
-  hideTryIt?: boolean;
 };
 
 const ApiViewer: FC<ApiViewerProps> = ({ specURL }) => {
   const { palette } = useTheme();
 
-  // function that return current API component type
   return (
     <Box
       sx={{
@@ -43,7 +40,7 @@ const ApiViewer: FC<ApiViewerProps> = ({ specURL }) => {
         show-method-in-nav-bar='as-plain-text'
         spec-url={specURL}
         text-color={palette.text.primary}
-        theme='light'
+        theme={palette.mode}
       ></rapi-doc>
     </Box>
   );
