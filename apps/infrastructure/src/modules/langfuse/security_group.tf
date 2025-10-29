@@ -98,13 +98,14 @@ resource "aws_security_group" "clickhouse" {
     Name = "langfuse_clickhouse_sg"
   }
 
-  ingress {
-    from_port       = 0
-    to_port         = 0
-    protocol        = "-1"
-    security_groups = []
-    # ADD WHEN READY: security_groups = [aws_security_group.apprunner_vpc_connector.id, aws_security_group.apprunner_vpc_connector.id, aws_security_group.langfuse_worker.id]
-  }
+  # ADD WHEN READY
+  # ingress {
+  #   from_port       = 0
+  #   to_port         = 0
+  #   protocol        = "-1"
+  #   security_groups = []
+  #   # ADD WHEN READY: security_groups = [aws_security_group.apprunner_vpc_connector.id, aws_security_group.apprunner_vpc_connector.id, aws_security_group.langfuse_worker.id]
+  # }
 
   egress {
     from_port   = 0
