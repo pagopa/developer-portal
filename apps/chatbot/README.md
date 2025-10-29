@@ -103,11 +103,14 @@ When you're done, shut down all the containers with
 In order to run the chatbot locally for the first time, you need to:
 
 - install [Docker Compose](https://docs.docker.com/compose/install/),
-- create `.env.local` file running:
+- create local files running:
 
-        cp .env.example .env.local
+```
+cp .env.example .env.local
+cp .google_service_account.json.example .google_service_account.json
+```
 
-  and fill it in,
+  and fill it in with your environment variables
 
 - run the following bash scripts:
 
