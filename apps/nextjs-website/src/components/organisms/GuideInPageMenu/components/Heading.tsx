@@ -19,6 +19,9 @@ const Heading = ({ level, id, children }: HeadingProps<ReactNode>) => {
     <Box
       sx={{
         borderLeft: level === 2 ? 'none' : `.5px solid ${palette.grey[300]}`,
+        marginLeft: level === 2 ? '0px' : '9px',
+        marginTop: level === 2 ? '8px' : '0',
+        paddingLeft: '8px',
         paddingY: '6px',
         ':hover': { backgroundColor: palette.action.hover },
       }}
@@ -40,7 +43,7 @@ const Heading = ({ level, id, children }: HeadingProps<ReactNode>) => {
               : palette.text.secondary,
             fontSize: level === 2 ? 15 : 13,
             fontWeight: 400,
-            paddingLeft: level === 2 ? '0px' : '18px',
+            marginLeft: level === 2 ? '0px' : '8px',
           }}
         >
           {children}
