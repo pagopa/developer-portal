@@ -63,6 +63,9 @@ const GENERATE_SINGLE_METADATA_FILE =
 // S3 paths for metadata files
 const S3_GUIDE_METADATA_JSON_PATH =
   process.env.S3_GUIDE_METADATA_JSON_PATH || 'guides-metadata.json';
+const S3_MAIN_VERSION_GUIDE_METADATA_JSON_PATH =
+  process.env.S3_MAIN_VERSION_GUIDE_METADATA_JSON_PATH ||
+  'main-version-guides-metadata.json';
 const S3_SOLUTIONS_METADATA_JSON_PATH =
   process.env.S3_SOLUTIONS_METADATA_JSON_PATH || 'solutions-metadata.json';
 const S3_RELEASE_NOTES_METADATA_JSON_PATH =
@@ -473,7 +476,30 @@ async function getMarkdownFilesRecursively(dir: string): Promise<string[]> {
   return files.flat();
 }
 
-//TODO UPDATE THIS FUNCTION TO PROCESS DATA FOR ONLY THE REQUIRED DIRECTORY
+async function processMainVersionMetadata(
+  guides: StrapiGuide[]
+): Promise<string[]> {
+  const guideInfoList: MetadataInfo[] = guides
+    .filter((guide) => !!guide.attributes.product?.data?.attributes?.slug)
+    .flatMap((guide) =>
+      guide.attributes.versions.map((version) => ({
+        versionName: version.version,
+        isMainVersion: version.main,
+        dirName: version.dirName,
+        slug: guide.attributes.slug,
+        productSlug: `${guide.attributes.product?.data?.attributes?.slug}`,
+        metadataType: MetadataType.Guide,
+      }))
+    )
+    .filter((guide) => guide.isMainVersion);
+  const items: string[] = [];
+  guideInfoList.map((guideInfo) => {
+    console.log('Processing main version for guide:', guideInfo.dirName);
+    items.push(guideInfo.dirName);
+  });
+  return items;
+}
+
 // Process guide metadata
 async function processGuidesMetadata(
   guides: StrapiGuide[]
@@ -865,6 +891,19 @@ async function main() {
         `URL parsing metadata saved to ${URL_PARSING_METADATA_JSON_PATH}`
       );
     }
+
+    const mainVersionItems = await processMainVersionMetadata(
+      strapiData.guides
+    );
+    console.log(
+      `Processed ${mainVersionItems.length} main version guide items.`
+    );
+    await writeMetadataJson(
+      mainVersionItems,
+      S3_MAIN_VERSION_GUIDE_METADATA_JSON_PATH,
+      S3_BUCKET_NAME!,
+      getS3Client()
+    );
 
     //TODO UPDATE THIS PART TO PROCESS DATA FOR ONLY THE REQUIRED DIRECTORY
     // Process and save guides metadata
