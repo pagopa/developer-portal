@@ -26,8 +26,8 @@ export const useWebinar = () => {
       setWebinarVideoVisible(false);
       return;
     }
-    const vimeoPattern = /vimeo\.com\/(\d+)/;
-    if (vimeoPattern.test(url)) {
+    const liveUrlPattern = /playback\.live-video.*\.m3u8$/;
+    if (!liveUrlPattern.test(url)) {
       setWebinarVideoVisible(true);
       return;
     }
