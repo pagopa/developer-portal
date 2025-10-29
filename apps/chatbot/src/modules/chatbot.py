@@ -282,5 +282,4 @@ class Chatbot:
             trace.score(name="user-feedback", value=0, data_type="NUMERIC")
         
         self.instrumentor.flush()
-        
         return response_json
