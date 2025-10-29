@@ -20,6 +20,7 @@ const Heading = ({ level, id, children }: HeadingProps<ReactNode>) => {
       sx={{
         borderLeft: level === 2 ? 'none' : `.5px solid ${palette.grey[300]}`,
         paddingY: '6px',
+        ':hover': { backgroundColor: palette.action.hover },
       }}
     >
       <MUILink
