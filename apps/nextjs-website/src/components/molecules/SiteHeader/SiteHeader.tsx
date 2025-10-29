@@ -44,9 +44,6 @@ const SiteHeader = (
           px: 3,
           backgroundColor: palette.common.white,
           minHeight: SITE_HEADER_HEIGHT,
-          borderBottomWidth: 1,
-          borderBottomStyle: 'solid',
-          borderBottomColor: palette.divider,
         }}
         spacing={{ xs: 0, sm: 2 }}
         direction='row'
