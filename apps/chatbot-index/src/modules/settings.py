@@ -1,19 +1,16 @@
-import os
 import boto3
+import os
 import yaml
 from pathlib import Path
 from pydantic_settings import BaseSettings
 
 from src.modules.logger import get_logger
 
-
 LOGGER = get_logger(__name__)
 CWF = Path(__file__)
 ROOT = CWF.parent.parent.parent.absolute().__str__()
 PARAMS = yaml.safe_load(open(os.path.join(ROOT, "config", "params.yaml"), "r"))
 AWS_SESSION = boto3.Session()
-SSM_CLIENT = AWS_SESSION.client("ssm")
-
 
 def get_ssm_parameter(name: str | None, default: str | None = None) -> str | None:
     """
@@ -24,10 +21,11 @@ def get_ssm_parameter(name: str | None, default: str | None = None) -> str | Non
     :return: The value of the requested parameter.
     """
 
+    SSM_CLIENT = AWS_SESSION.client("ssm")
     LOGGER.info(f"get_ssm_parameter {name}...")
 
     if name is None:
-        name = "/none/param"
+        name = "none-params-in-ssm"
     try:
         # Get the requested parameter
         response = SSM_CLIENT.get_parameter(Name=name, WithDecryption=True)
@@ -39,25 +37,6 @@ def get_ssm_parameter(name: str | None, default: str | None = None) -> str | Non
         return default
 
     return value
-
-
-def put_ssm_parameter(name: str, value: str) -> None:
-    """
-    Puts a specific value into AWS Systems Manager's Parameter Store.
-    :param name: The name of the parameter to put.
-    :param value: The value to store in the parameter.
-    """
-
-    LOGGER.debug(f"Putting parameter {name} to SSM")
-    try:
-        SSM_CLIENT.put_parameter(
-            Name=name,
-            Value=value,
-            Type="String",
-            Overwrite=True,
-        )
-    except Exception as e:
-        LOGGER.error(e)
 
 
 class ChatbotSettings(BaseSettings):

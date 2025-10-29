@@ -1,23 +1,16 @@
-import os
 import boto3
+import os
 import yaml
 from pathlib import Path
 from pydantic_settings import BaseSettings
 
 from src.modules.logger import get_logger
 
-
 LOGGER = get_logger(__name__)
 CWF = Path(__file__)
 ROOT = CWF.parent.parent.parent.absolute().__str__()
 PARAMS = yaml.safe_load(open(os.path.join(ROOT, "config", "params.yaml"), "r"))
-AWS_SESSION = boto3.Session(
-    aws_access_key_id=os.getenv("AWS_ACCESS_KEY_ID"),
-    aws_secret_access_key=os.getenv("AWS_SECRET_ACCESS_KEY"),
-    region_name=os.getenv("AWS_REGION", "eu-south-1"),
-)
-SSM_CLIENT = AWS_SESSION.client("ssm")
-
+AWS_SESSION = boto3.Session()
 
 def get_ssm_parameter(name: str | None, default: str | None = None) -> str | None:
     """
@@ -28,10 +21,11 @@ def get_ssm_parameter(name: str | None, default: str | None = None) -> str | Non
     :return: The value of the requested parameter.
     """
 
+    SSM_CLIENT = AWS_SESSION.client("ssm")
     LOGGER.info(f"get_ssm_parameter {name}...")
 
     if name is None:
-        name = "/none/param"
+        name = "none-params-in-ssm"
     try:
         # Get the requested parameter
         response = SSM_CLIENT.get_parameter(Name=name, WithDecryption=True)
