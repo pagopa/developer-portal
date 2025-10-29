@@ -133,6 +133,7 @@ const GuideInPageMenu = ({
           fontWeight={700}
           textTransform={'uppercase'}
           marginBottom={'18px'}
+          marginLeft='8px'
         >
           {title}
         </Typography>
