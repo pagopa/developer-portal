@@ -2,7 +2,7 @@
 import { HeadingProps } from 'gitbook-docs/markdoc/schema/heading';
 import React, { ReactNode, useCallback } from 'react';
 import MUILink from '@mui/material/Link';
-import { Typography, useTheme } from '@mui/material';
+import { Box, Typography, useTheme } from '@mui/material';
 import { useFragment } from '@/components/organisms/FragmentProvider/FragmentProvider';
 
 const Heading = ({ level, id, children }: HeadingProps<ReactNode>) => {
@@ -16,29 +16,36 @@ const Heading = ({ level, id, children }: HeadingProps<ReactNode>) => {
   }, [id, setFragment]);
 
   return (
-    <MUILink
-      href={`#${id}`}
-      title={isString ? children : ''}
-      onClick={handleClick}
+    <Box
       sx={{
-        display: 'block',
-        fontFamily: 'Titillium Web',
-        marginBottom: '12px',
-        textDecoration: 'none',
+        borderLeft: level === 2 ? 'none' : `.5px solid ${palette.grey[300]}`,
+        paddingY: '6px',
       }}
     >
-      <Typography
+      <MUILink
+        href={`#${id}`}
+        title={isString ? children : ''}
+        onClick={handleClick}
         sx={{
-          color: isCurrentFragment
-            ? palette.primary.main
-            : palette.text.secondary,
-          fontSize: level === 2 ? 15 : 13,
-          fontWeight: 400,
+          display: 'block',
+          fontFamily: 'Titillium Web',
+          textDecoration: 'none',
         }}
       >
-        {children}
-      </Typography>
-    </MUILink>
+        <Typography
+          sx={{
+            color: isCurrentFragment
+              ? palette.primary.main
+              : palette.text.secondary,
+            fontSize: level === 2 ? 15 : 13,
+            fontWeight: 400,
+            paddingLeft: level === 2 ? '0px' : '18px',
+          }}
+        >
+          {children}
+        </Typography>
+      </MUILink>
+    </Box>
   );
 };
 
