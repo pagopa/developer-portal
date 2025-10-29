@@ -88,35 +88,35 @@ data "aws_iam_policy_document" "ecs_task_execute_assume_policy" {
   }
 }
 
-# resource "aws_iam_policy" "langfuse_ecs_task_execute_role_policy" {
-#   name        = "langfuseEcsTaskExecuteRolePolicy"
-#   description = "ECS Task Execution Policy for Langfuse"
-#   policy      = data.aws_iam_policy_document.ecs_task_execute_role_policy.json
-#   tags = {
-#     Name = "ecs_task_execute_role_policy"
-#   }
-# }
-#
-# data "aws_iam_policy_document" "ecs_task_execute_role_policy" {
-#   statement {
-#     actions = [
-#       "secretsmanager:*",
-#       "logs:CreateLogStream",
-#       "logs:PutLogEvents",
-#       "ecr:GetAuthorizationToken",
-#       "ecr:BatchCheckLayerAvailability",
-#       "ecr:GetDownloadUrlForLayer",
-#       "ecr:BatchGetImage",
-#     ]
-#     effect    = "Allow"
-#     resources = ["*"]
-#   }
-# }
-#
-# resource "aws_iam_role_policy_attachment" "ecs_task_execute_role_attachment" {
-#   role       = aws_iam_role.langfuse_ecs_task_execute_role.name
-#   policy_arn = aws_iam_policy.langfuse_ecs_task_execute_role_policy.arn
-# }
+resource "aws_iam_policy" "langfuse_ecs_task_execute_role_policy" {
+  name        = "langfuseEcsTaskExecuteRolePolicy"
+  description = "ECS Task Execution Policy for Langfuse"
+  policy      = data.aws_iam_policy_document.ecs_task_execute_role_policy.json
+  tags = {
+    Name = "ecs_task_execute_role_policy"
+  }
+}
+
+data "aws_iam_policy_document" "ecs_task_execute_role_policy" {
+  statement {
+    actions = [
+      "secretsmanager:*",
+      "logs:CreateLogStream",
+      "logs:PutLogEvents",
+      "ecr:GetAuthorizationToken",
+      "ecr:BatchCheckLayerAvailability",
+      "ecr:GetDownloadUrlForLayer",
+      "ecr:BatchGetImage",
+    ]
+    effect    = "Allow"
+    resources = ["*"]
+  }
+}
+
+resource "aws_iam_role_policy_attachment" "ecs_task_execute_role_attachment" {
+  role       = aws_iam_role.langfuse_ecs_task_execute_role.name
+  policy_arn = aws_iam_policy.langfuse_ecs_task_execute_role_policy.arn
+}
 
 resource "aws_iam_role" "langfuse_task_role" {
   name               = "LangfuseTaskRole"
@@ -128,19 +128,19 @@ resource "aws_iam_role" "langfuse_task_role" {
   }
 }
 
-# resource "aws_iam_policy" "langfuse_task_role_policy" {
-#   name        = "langfuseTaskRolePolicy"
-#   description = "Task Role Policy for Langfuse"
-#   policy      = data.aws_iam_policy_document.langfuse_instance_role_policy.json
-#   tags = {
-#     Name = "task_role_policy"
-#   }
-# }
-#
-# resource "aws_iam_role_policy_attachment" "task_role_policy_attachment" {
-#   role       = aws_iam_role.langfuse_task_role.name
-#   policy_arn = aws_iam_policy.langfuse_task_role_policy.arn
-# }
+resource "aws_iam_policy" "langfuse_task_role_policy" {
+  name        = "langfuseTaskRolePolicy"
+  description = "Task Role Policy for Langfuse"
+  policy      = data.aws_iam_policy_document.langfuse_instance_role_policy.json
+  tags = {
+    Name = "task_role_policy"
+  }
+}
+
+resource "aws_iam_role_policy_attachment" "task_role_policy_attachment" {
+  role       = aws_iam_role.langfuse_task_role.name
+  policy_arn = aws_iam_policy.langfuse_task_role_policy.arn
+}
 
 data "aws_iam_policy_document" "langfuse_task_role_assume_policy" {
   statement {
@@ -153,15 +153,15 @@ data "aws_iam_policy_document" "langfuse_task_role_assume_policy" {
   }
 }
 
-# data "aws_iam_policy_document" "langfuse_instance_role_policy" {
-#   statement {
-#     actions = [
-#       "secretsmanager:*",
-#       "s3:*",
-#       "elasticfilesystem:ClientMount",
-#       "elasticfilesystem:ClientWrite",
-#     ]
-#     effect    = "Allow"
-#     resources = ["*"]
-#   }
-# }
+data "aws_iam_policy_document" "langfuse_instance_role_policy" {
+  statement {
+    actions = [
+      "secretsmanager:*",
+      "s3:*",
+      "elasticfilesystem:ClientMount",
+      "elasticfilesystem:ClientWrite",
+    ]
+    effect    = "Allow"
+    resources = ["*"]
+  }
+}
