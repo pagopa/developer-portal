@@ -10,6 +10,7 @@ const Heading = ({ level, id, children }: HeadingProps<ReactNode>) => {
   const { palette } = useTheme();
   const { fragment, setFragment } = useFragment();
   const isCurrentFragment = fragment === `#${id}`;
+  const isLevel2 = level === 2;
 
   const handleClick = useCallback(() => {
     setFragment(`#${id}`, { source: 'manual', suppressAutoForMs: 1500 });
@@ -18,9 +19,9 @@ const Heading = ({ level, id, children }: HeadingProps<ReactNode>) => {
   return (
     <Box
       sx={{
-        borderLeft: level === 2 ? 'none' : `.5px solid ${palette.grey[300]}`,
-        marginLeft: level === 2 ? '0px' : '9px',
-        marginTop: level === 2 ? '8px' : '0',
+        borderLeft: isLevel2 ? 'none' : `.5px solid ${palette.grey[300]}`,
+        marginLeft: isLevel2 ? '0px' : '9px',
+        marginTop: isLevel2 ? '8px' : '0',
         paddingLeft: '8px',
         paddingY: '6px',
         ':hover': { backgroundColor: palette.action.hover },
@@ -41,9 +42,9 @@ const Heading = ({ level, id, children }: HeadingProps<ReactNode>) => {
             color: isCurrentFragment
               ? palette.primary.main
               : palette.text.secondary,
-            fontSize: level === 2 ? 15 : 13,
+            fontSize: isLevel2 ? 15 : 13,
             fontWeight: 400,
-            marginLeft: level === 2 ? '0px' : '8px',
+            marginLeft: isLevel2 ? '0px' : '8px',
           }}
         >
           {children}
