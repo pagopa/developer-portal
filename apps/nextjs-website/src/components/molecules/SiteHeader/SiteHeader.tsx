@@ -29,10 +29,11 @@ const SiteHeader = (
   return (
     <Box
       sx={{
-        position: 'sticky',
+        position: 'fixed',
         top: 0,
         height: SITE_HEADER_HEIGHT,
         zIndex: 100,
+        width: '100vw',
       }}
     >
       <Stack
@@ -43,9 +44,6 @@ const SiteHeader = (
           px: 3,
           backgroundColor: palette.common.white,
           minHeight: SITE_HEADER_HEIGHT,
-          borderBottomWidth: 1,
-          borderBottomStyle: 'solid',
-          borderBottomColor: palette.divider,
         }}
         spacing={{ xs: 0, sm: 2 }}
         direction='row'

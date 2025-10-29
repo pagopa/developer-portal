@@ -13,7 +13,6 @@ import PartRendererMenu from '@/components/molecules/PartRendererMenu/PartRender
 import { ReactNode } from 'react';
 import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
 
-// TODO: Remove once the migration to CMS contents will be completed
 type TutorialPageTemplateProps = {
   readonly bannerLinks?: ReadonlyArray<BannerLinkProps>;
   readonly parts?: ReadonlyArray<Part>;
@@ -47,7 +46,7 @@ const TutorialTemplate = ({
             // 80px is the height of the product header
             marginTop: '80px',
             marginX: 'auto',
-            paddingTop: 3,
+            paddingTop: 8,
             px: { xs: 4, lg: 0 },
           }}
         >

@@ -1,6 +1,6 @@
 'use client';
 import { HeadingProps } from 'gitbook-docs/markdoc/schema/heading';
-import React, { ReactNode, useEffect, useState } from 'react';
+import React, { ReactNode, useCallback } from 'react';
 import MUILink from '@mui/material/Link';
 import { Typography, useTheme } from '@mui/material';
 import { useFragment } from '@/components/organisms/FragmentProvider/FragmentProvider';
@@ -8,17 +8,18 @@ import { useFragment } from '@/components/organisms/FragmentProvider/FragmentPro
 const Heading = ({ level, id, children }: HeadingProps<ReactNode>) => {
   const isString = typeof children === 'string';
   const { palette } = useTheme();
-  const { fragment } = useFragment();
-  const [isCurrentFragment, setIsCurrentFragment] = useState(false);
+  const { fragment, setFragment } = useFragment();
+  const isCurrentFragment = fragment === `#${id}`;
 
-  useEffect(() => {
-    setIsCurrentFragment(fragment === `#${id}`);
-  }, [fragment, id]);
+  const handleClick = useCallback(() => {
+    setFragment(`#${id}`, { source: 'manual', suppressAutoForMs: 1500 });
+  }, [id, setFragment]);
 
   return (
     <MUILink
       href={`#${id}`}
       title={isString ? children : ''}
+      onClick={handleClick}
       sx={{
         display: 'block',
         fontFamily: 'Titillium Web',
@@ -31,8 +32,8 @@ const Heading = ({ level, id, children }: HeadingProps<ReactNode>) => {
           color: isCurrentFragment
             ? palette.primary.main
             : palette.text.secondary,
-          fontSize: level === 2 ? 16 : 14,
-          fontWeight: isCurrentFragment ? 700 : 400,
+          fontSize: level === 2 ? 15 : 13,
+          fontWeight: 400,
         }}
       >
         {children}

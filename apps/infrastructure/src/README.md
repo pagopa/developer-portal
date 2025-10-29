@@ -23,6 +23,7 @@
 | <a name="module_core"></a> [core](#module\_core) | ./modules/core | n/a |
 | <a name="module_docs_redirect"></a> [docs\_redirect](#module\_docs\_redirect) | ./modules/docs_redirect | n/a |
 | <a name="module_identity"></a> [identity](#module\_identity) | ./identity | n/a |
+| <a name="module_video_streaming"></a> [video\_streaming](#module\_video\_streaming) | ./modules/video_streaming | n/a |
 | <a name="module_website"></a> [website](#module\_website) | ./modules/website | n/a |
 
 ## Resources
@@ -70,3 +71,4 @@
 | <a name="output_standalone_server"></a> [standalone\_server](#output\_standalone\_server) | n/a |
 | <a name="output_terraform_backend_bucket_name"></a> [terraform\_backend\_bucket\_name](#output\_terraform\_backend\_bucket\_name) | n/a |
 | <a name="output_terraform_lock_dynamodb_table"></a> [terraform\_lock\_dynamodb\_table](#output\_terraform\_lock\_dynamodb\_table) | n/a |
+| <a name="output_video_streaming"></a> [video\_streaming](#output\_video\_streaming) | Outputs from the video streaming module. |

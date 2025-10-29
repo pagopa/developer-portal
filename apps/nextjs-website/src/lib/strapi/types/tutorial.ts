@@ -20,6 +20,10 @@ export type StrapiBaseTutorial = {
     readonly product: {
       readonly data: StrapiBaseProductWithBannerLinks;
     };
+    readonly icon: {
+      readonly data?: StrapiMedia;
+    };
+    readonly description?: string;
   };
 };
 

@@ -23,23 +23,64 @@ const asVariant = (level: number) => {
 
 const asFontSize = (level: number) =>
   level === 1
-    ? '38px'
+    ? '2.375rem'
     : level === 2
-    ? '28px'
+    ? '1.875rem'
     : level === 3
-    ? '18px'
+    ? '1.5rem'
     : level === 4
-    ? '16px'
+    ? '1.25rem'
     : level === 5
-    ? '14px'
-    : '12px';
+    ? '1rem'
+    : '0.75rem';
+
+const asPaddingBottom = (level: number) => (level === 1 ? 3 : 1);
 
 const asFontWeight = (level: number) => (level === 1 ? 700 : 600);
 
 const asLineHeight = (level: number) =>
-  level === 1 || level === 2 ? '42px' : '24px';
+  level === 1 || level === 2 ? '2.625rem' : '1.5rem';
 
 const scrollOffset = SITE_HEADER_HEIGHT + PRODUCT_HEADER_HEIGHT;
+
+export const SubHeading = ({
+  level,
+  id,
+  children,
+}: HeadingProps<ReactNode>) => {
+  const createSlug = (text: string) =>
+    text
+      .toLowerCase()
+      .replace(/[^a-z0-9\s-]/g, '')
+      .replace(/\s+/g, '-');
+
+  if (level === 1) {
+    return null;
+  }
+
+  return (
+    <div
+      id={createSlug(children ? children.toString() : id)}
+      style={{
+        marginTop: `-${scrollOffset}px`,
+        paddingTop: `${scrollOffset}px`,
+      }}
+    >
+      <Typography
+        variant={asVariant(level)}
+        sx={{
+          paddingTop: 3,
+          paddingBottom: 1,
+          fontSize: { xs: asFontSize(level) },
+          fontWeight: { xs: asFontWeight(level) },
+          lineHeight: { xs: asLineHeight(level) },
+        }}
+      >
+        {children}
+      </Typography>
+    </div>
+  );
+};
 
 const Heading = ({ level, id, children }: HeadingProps<ReactNode>) => (
   <div
@@ -49,7 +90,8 @@ const Heading = ({ level, id, children }: HeadingProps<ReactNode>) => (
     <Typography
       variant={asVariant(level)}
       sx={{
-        py: 3,
+        paddingTop: 3,
+        paddingBottom: { xs: asPaddingBottom(level) },
         fontSize: { xs: asFontSize(level) },
         fontWeight: { xs: asFontWeight(level) },
         lineHeight: { xs: asLineHeight(level) },

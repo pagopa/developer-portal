@@ -54,6 +54,75 @@ const PartRendererMenu = (props: PartRendererMenuProps): ReactNode | null => {
               <Typography>{part.title}</Typography>
             </a>
           );
+        case 'markdown': {
+          const headingRegex = /^(#{2,})\s+(.+)/gm;
+          const stepTag = /\{% step %}/g;
+          const stepIndices = Array.from(
+            part.content.matchAll(stepTag),
+            (match) => match.index || 0
+          );
+
+          const matches = [...part.content.matchAll(headingRegex)];
+          const createSlug = (text: string) =>
+            text
+              .toLowerCase()
+              .replace(/[^a-z0-9\s-]/g, '')
+              .replace(/\s+/g, '-');
+
+          return matches.map((match) => {
+            const level = match[1].length;
+            const title = match[2]
+              .trim()
+              .replace(/&[a-zA-Z0-9#]+;/g, ' ')
+              .replace(/\s+/g, ' ');
+            const href = `#${createSlug(title)}`;
+            const lastStepIndex =
+              level === 3 && stepIndices.length > 0
+                ? stepIndices.findLast((index) => index < (match?.index || 0))
+                : undefined;
+            const stepNumber = lastStepIndex
+              ? stepIndices.indexOf(lastStepIndex) + 1
+              : undefined;
+            const finalTitle = stepNumber ? stepNumber + ' - ' + title : title;
+            return (
+              <MUILink
+                key={title}
+                href={href}
+                title={finalTitle}
+                sx={{
+                  display: 'block',
+                  fontFamily: 'Titillium Web',
+                  marginBottom: '12px',
+                  textDecoration: 'none',
+                }}
+              >
+                <Typography
+                  sx={{
+                    color: palette.text.secondary,
+                    fontSize: getFontSizeByLevel(level),
+                    fontWeight: 400,
+                  }}
+                >
+                  {stepNumber ? (
+                    <>
+                      <span
+                        style={{
+                          color: palette.primary.main,
+                          fontWeight: '700',
+                        }}
+                      >
+                        {stepNumber}
+                      </span>
+                      {' - ' + title}
+                    </>
+                  ) : (
+                    title
+                  )}
+                </Typography>
+              </MUILink>
+            );
+          });
+        }
         case 'ckEditor':
           return part.menuItems.map((menuItem) => (
             <MUILink

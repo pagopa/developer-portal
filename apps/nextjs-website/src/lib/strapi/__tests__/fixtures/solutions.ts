@@ -33,6 +33,7 @@ export const strapiSolutions = {
               data: [
                 {
                   attributes: {
+                    isVisible: true,
                     name: 'Product 1',
                     shortName: 'P1',
                     slug: 'product-1',
@@ -89,6 +90,7 @@ export const strapiSolutions = {
           data: [
             {
               attributes: {
+                isVisible: true,
                 name: 'Product 1',
                 shortName: 'P1',
                 slug: 'product-1',
