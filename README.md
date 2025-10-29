@@ -30,7 +30,7 @@ In order to get the Strapi API token needed in the .env.local:
 
 See the repository <https://github.com/pagopa/developer-portal-cms/>
 
-### Copile the applications and the packages in the monorepo
+### Compile the applications and the packages in the monorepo
 
 Run the following command from the root folder.
 

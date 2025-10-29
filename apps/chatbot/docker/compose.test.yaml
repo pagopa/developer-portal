@@ -1,4 +1,6 @@
 ---
+name: chatbot-test
+
 services:
   api-test:
     build:
