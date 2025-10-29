@@ -48,9 +48,6 @@ const GitBookTemplate = ({
     xs: '30px',
     md: '65px',
   };
-  const headersOffset = hasHeader
-    ? `${SITE_HEADER_HEIGHT + PRODUCT_HEADER_HEIGHT}px`
-    : '0px';
 
   return (
     <FragmentProvider>
