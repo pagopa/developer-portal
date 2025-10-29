@@ -9,7 +9,7 @@ export type ParseInPageMenuConfig = {
 };
 
 // Array that defines the header level for which to show component in the in-page menu
-const HEADING_LEVELS_TO_SHOW = [2];
+const HEADING_LEVELS_TO_SHOW = [2, 3];
 
 const schema: ConfigType = {
   nodes: {
