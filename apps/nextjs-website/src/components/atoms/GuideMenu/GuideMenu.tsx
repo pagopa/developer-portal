@@ -24,6 +24,7 @@ import { SITE_HEADER_HEIGHT } from '@/components/molecules/SiteHeader/SiteHeader
 import { useScrollUp } from '../ProductHeader/useScrollUp';
 import GuideMenuItems, { type GuideMenuItemsProps } from './Menu';
 import { useTranslations } from 'next-intl';
+import { PRODUCT_HEADER_HEIGHT } from '../ProductHeader/ProductHeader';
 
 type GuideMenuProps = GuideMenuItemsProps & {
   distanceFromTop?: number;
@@ -50,7 +51,7 @@ const GuideMenu = (menuProps: GuideMenuProps) => {
     ? {
         xs: topOffsetXs + 62,
         sm: topOffsetXs + 90,
-        md: SITE_HEADER_HEIGHT + 25,
+        md: SITE_HEADER_HEIGHT + PRODUCT_HEADER_HEIGHT,
       }
     : {
         xs: topOffsetXs,
@@ -135,7 +136,7 @@ const GuideMenu = (menuProps: GuideMenuProps) => {
       >
         <Stack
           sx={{
-            padding: { lg: '80px 0' },
+            padding: { lg: '28px 0' },
             flexGrow: { lg: 0 },
             flexShrink: { lg: 0 },
           }}
