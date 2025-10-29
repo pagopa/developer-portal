@@ -46,6 +46,7 @@ const AccordionSummary = styled((props: AccordionSummaryProps) => (
     marginLeft: theme.spacing(1),
     marginBottom: 0,
     marginRight: theme.spacing(1),
+    paddingTop: '15px',
   },
 }));
 

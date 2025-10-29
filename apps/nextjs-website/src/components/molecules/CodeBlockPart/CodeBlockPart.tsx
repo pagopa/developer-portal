@@ -64,6 +64,7 @@ const CodeBlockPart = ({
         wrapLines={wrapLines}
         style={isLightMode ? lightCustomStyle : darkCustomStyle}
         customStyle={{
+          fontSize: '1rem',
           padding: title ? '5em 1em 1.25em 1em' : '1.25em 3em 1.25em 1em',
           width: isLightMode ? '' : '100%',
         }}

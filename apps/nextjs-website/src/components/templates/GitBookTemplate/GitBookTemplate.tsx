@@ -46,7 +46,7 @@ const GitBookTemplate = ({
   const responsiveContentMarginTop = (contentMarginTop &&
     `${contentMarginTop}px`) || {
     xs: '30px',
-    md: '60px',
+    md: '65px',
   };
   const headersOffset = hasHeader
     ? `${SITE_HEADER_HEIGHT + PRODUCT_HEADER_HEIGHT}px`
@@ -98,8 +98,7 @@ const GitBookTemplate = ({
             sx={{
               display: { xs: 'none', lg: 'initial' },
               position: 'relative',
-              marginTop: { lg: headersOffset },
-              padding: { lg: '43px 64px' },
+              padding: { lg: '0 64px 0 32px' },
               width: { lg: '378px' },
             }}
           >
@@ -107,7 +106,7 @@ const GitBookTemplate = ({
               sx={{
                 position: 'sticky',
                 maxWidth: '378px',
-                top: hasHeader ? 121 : 64,
+                top: SITE_HEADER_HEIGHT + PRODUCT_HEADER_HEIGHT,
               }}
             >
               <GuideInPageMenu
