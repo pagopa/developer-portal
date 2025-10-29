@@ -93,9 +93,9 @@ const GitBookTemplate = ({
         {hasInPageMenu && (
           <Box
             sx={{
-              display: { xs: 'none', lg: 'initial' },
+              display: { lg: 'none', xl: 'initial' },
               position: 'relative',
-              padding: { lg: '0 64px 0 32px' },
+              padding: { lg: '0 32px', xl: '0 64px 0 32px' },
               width: { lg: '378px' },
             }}
           >
