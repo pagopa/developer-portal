@@ -1,2 +1,2 @@
 #!/bin/bash
-docker compose -f docker/compose.yaml -p chatbot up jupyter
+docker compose -f docker/compose.yaml up jupyter

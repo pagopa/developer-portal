@@ -403,6 +403,7 @@ apps/chatbot/test.py
 !apps/chatbot/docker/files
 apps/chatbot/docker/volume
 apps/chatbot/.env
+!apps/chatbot/.env.langfuse
 apps/chatbot/empty_htmls.json
 apps/chatbot/.google_service_account.json
 
