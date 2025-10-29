@@ -49,6 +49,10 @@ const StyledTreeItem = styled(TreeItem)(({ theme }) => ({
   [`& .${treeItemClasses.content} > .${treeItemClasses.label} > a`]: {
     paddingTop: 6,
     paddingBottom: 6,
+    [theme.breakpoints.down('sm')]: {
+      paddingTop: 10,
+      paddingBottom: 10,
+    },
     paddingRight: 32,
   },
   [`& ul`]: {
@@ -114,9 +118,9 @@ const GuideMenuItems = ({
             component={NextLink}
             href={href}
             color='text.secondary'
-            style={{
+            sx={{
               textDecoration: 'none',
-              fontSize: '.938rem',
+              fontSize: { xs: '1rem', md: '.938rem' },
               fontWeight: 400,
             }}
           >
