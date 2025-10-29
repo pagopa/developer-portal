@@ -34,6 +34,8 @@ const asFontSize = (level: number) =>
     ? '1rem'
     : '0.75rem';
 
+const asPaddingBottom = (level: number) => (level === 1 ? 3 : 1);
+
 const asFontWeight = (level: number) => (level === 1 ? 700 : 600);
 
 const asLineHeight = (level: number) =>
@@ -89,7 +91,7 @@ const Heading = ({ level, id, children }: HeadingProps<ReactNode>) => (
       variant={asVariant(level)}
       sx={{
         paddingTop: 3,
-        paddingBottom: 1,
+        paddingBottom: { xs: asPaddingBottom(level) },
         fontSize: { xs: asFontSize(level) },
         fontWeight: { xs: asFontWeight(level) },
         lineHeight: { xs: asLineHeight(level) },
