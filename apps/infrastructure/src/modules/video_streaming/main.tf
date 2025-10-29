@@ -132,6 +132,8 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
     min_ttl                = 0
     default_ttl            = 3600  # Cache objects for 1 hour by default
     max_ttl                = 86400 # Cache objects for up to 24 hours
+
+    response_headers_policy_id = aws_cloudfront_response_headers_policy.cors_policy.id
   }
 
   # Standard restrictions
@@ -154,6 +156,36 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
 
   tags = {
     Name = "${var.project_name} video streaming distribution"
+  }
+}
+
+data "aws_route53_zone" "selected" {
+  zone_id = var.route53_zone_id
+}
+
+
+resource "aws_cloudfront_response_headers_policy" "cors_policy" {
+  name    = "cors-policy-video-streaming"
+  comment = "Cors policy for video streaming."
+
+  cors_config {
+    access_control_allow_credentials = false
+
+    access_control_allow_headers {
+      items = ["*"]
+    }
+
+
+    access_control_allow_methods {
+      items = ["GET", "HEAD"]
+    }
+
+
+    access_control_allow_origins {
+      items = ["https://${data.aws_route53_zone.selected.name}"]
+    }
+
+    origin_override = true
   }
 }
 
