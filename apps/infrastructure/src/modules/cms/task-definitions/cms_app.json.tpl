@@ -105,6 +105,10 @@
       {
         "name": "SENDER_URL",
         "value": "${ac_sender_url}"
+      },
+      {
+        "DISABLE_CUSTOM_VALIDATORS",
+        "value": "${disable_custom_validator}"
       }
     ],
     "secrets" : [
