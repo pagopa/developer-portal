@@ -30,20 +30,47 @@ services:
       interval: 3s
       timeout: 3s
       retries: 10
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
     env_file: ../.env.test
 
   redis:
     image: redis/redis-stack:7.2.0-v13
+    ports:
+      - "6379:6379"
+      - "8001:8001"
     healthcheck:
       test: [ "CMD", "redis-cli", "ping" ]
       interval: 3s
       timeout: 10s
       retries: 10
     volumes:
-      - ./files/redis-data/redis-dump.rdb:/data/dump.rdb
-    environment:
-      REDIS_ARGS: "--save '' --appendonly no --stop-writes-on-bgsave-error no"
+      - redis_data:/data
+    depends_on:
+      redis-fix-perms:
+        condition: service_completed_successfully
 
+  redis-seed:
+    image: alpine:3.18
+    user: root
+    volumes:
+      - redis_data:/data
+      - ./files/redis-data/redis-dump.rdb:/seed/dump.rdb:ro
+    command: ["sh", "-c", "if [ -f /seed/dump.rdb ]; then cp -a /seed/dump.rdb /data/dump.rdb && chown redis:redis /data/dump.rdb 2>/dev/null || chown 1000:1000 /data/dump.rdb || true; fi"]
+    restart: "no"
+
+  redis-fix-perms:
+    # one-shot: ensure /data owned by redis user before redis starts
+    image: redis/redis-stack:7.2.0-v13
+    user: root
+    volumes:
+      - redis_data:/data
+    depends_on:
+      redis-seed:
+        condition: service_completed_successfully
+    command: ["sh", "-c", "chown -R redis:redis /data 2>/dev/null || chown -R 1000:1000 /data || true"]
+    restart: "no"
+    
   motoserver:
     image: motoserver/moto:5.1.14
     environment:
@@ -65,6 +92,8 @@ services:
   langfuse-web:
     image: docker.io/langfuse/langfuse:3.115
     depends_on: *langfuse-depends-on
+    ports:
+      - 4001:3000
     env_file: ../.env.langfuse
 
   clickhouse:
@@ -74,6 +103,9 @@ services:
       CLICKHOUSE_DB: default
       CLICKHOUSE_USER: clickhouse
       CLICKHOUSE_PASSWORD: clickhouse
+    volumes:
+      - langfuse_clickhouse_data:/var/lib/clickhouse
+      - langfuse_clickhouse_logs:/var/log/clickhouse-server
     healthcheck:
       test: wget --no-verbose --tries=1 --spider http://0.0.0.0:8123/ping || exit 1
       interval: 5s
@@ -104,3 +136,15 @@ services:
       timeout: 10s
       retries: 10
       start_period: 5s
+
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+  langfuse_clickhouse_data:
+    driver: local
+  langfuse_clickhouse_logs:
+    driver: local
+  langfuse_minio_data:
+    driver: local

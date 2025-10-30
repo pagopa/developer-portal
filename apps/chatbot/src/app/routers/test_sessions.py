@@ -1,4 +1,5 @@
 import os
+import time
 from fastapi.testclient import TestClient
 from src.app.main import app
 from src.app.mock_aws_services import mock_signup
@@ -45,6 +46,8 @@ def test_query_feedback() -> None:
 def test_query_feedback_with_null_values() -> None:
     query_data = {"question": "come ti chiami?", "queriedAt": "2024-11-11"}
     response_queries = post_queries(query_data)
+    # wait for langfuse...
+    time.sleep(4.5)
     json_queries = response_queries.json()
     sessionId = json_queries["sessionId"]
     id = json_queries["id"]
