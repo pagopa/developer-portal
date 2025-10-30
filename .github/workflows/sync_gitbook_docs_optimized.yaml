@@ -27,11 +27,6 @@ on:
           - guides
           - solutions
           - release_notes
-      generate_metadata_only:
-        description: 'Generate metadata only without syncing docs'
-        type: boolean
-        required: true
-        default: false
       incremental_mode:
         description: 'Run sync in incremental mode by checking only file size'
         type: boolean
