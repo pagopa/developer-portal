@@ -144,17 +144,6 @@ jobs:
             --distribution-id ${{ vars.OPENNEXT_CLOUDFRONT_DISTRIBUTION_ID }} \
             --paths "/*"
 
-      - name: Summary
-        if: always()
-        run: |
-          echo "## Sync Summary" >> $GITHUB_STEP_SUMMARY
-          echo "- Environment: ${{ inputs.environment }}" >> $GITHUB_STEP_SUMMARY
-          echo "- Metadata Type: ${{ inputs.metadata_type }}" >> $GITHUB_STEP_SUMMARY
-          echo "- Generate Metadata Only: ${{ inputs.generate_metadata_only }}" >> $GITHUB_STEP_SUMMARY
-          echo "- Incremental Mode: ${{ inputs.incremental_mode }}" >> $GITHUB_STEP_SUMMARY
-          echo "- Cache Invalidation: Asset bucket (always), OpenNext (${{ inputs.inivalidate_opennext_cache }})" >> $GITHUB_STEP_SUMMARY
-          echo "- Reindex Triggered: ${{ inputs.call_reindex }}" >> $GITHUB_STEP_SUMMARY
-
   scheduled_sync_gitbook_docs:
     name: Sync gitbook Docs to S3 (scheduled on prod)
     if: github.event_name == 'schedule'
