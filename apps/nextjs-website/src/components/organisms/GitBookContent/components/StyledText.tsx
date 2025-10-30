@@ -12,6 +12,7 @@ const StyledText = ({ style, children }: StyledTextProps) => {
           variant='monospaced'
           component='span'
           sx={{
+            color: palette.grey[800],
             paddingY: 0,
             paddingX: '4px',
             backgroundColor: palette.background.default,
