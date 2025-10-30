@@ -1,2 +1,2 @@
 #!/bin/bash
-docker compose -f docker/compose.yaml -p chatbot down
+docker compose -f docker/compose.yaml down
