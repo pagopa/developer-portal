@@ -22,6 +22,7 @@ export function makeOverviewsProps(
 
       try {
         return {
+          updatedAt: attributes.updatedAt,
           path: `/${attributes.product.data?.attributes.slug}/overview`,
           product: makeBaseProductWithoutLogoProps(attributes.product.data),
           hero: {

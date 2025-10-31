@@ -40,6 +40,7 @@ export function makeTutorialListPagesProps(
           // eslint-disable-next-line functional/no-try-statements
           try {
             return {
+              updatedAt: tutorialAttributes.updatedAt,
               name: tutorialAttributes.title,
               path: `/${slug}/tutorials/${tutorialAttributes.slug}`,
               title: tutorialAttributes.title,
@@ -63,8 +64,14 @@ export function makeTutorialListPagesProps(
           }
         })
       );
+      const updatedAt = attributes.tutorials.data.reduce((latest, current) => {
+        const latestDate = new Date(latest.attributes.updatedAt);
+        const currentDate = new Date(current.attributes.updatedAt);
+        return currentDate > latestDate ? current : latest;
+      }).attributes.updatedAt;
 
       return {
+        updatedAt: updatedAt,
         name: attributes.title,
         path: `/${attributes.product.data.attributes.slug}/tutorials`,
         product: makeBaseProductWithoutLogoProps(attributes.product.data),

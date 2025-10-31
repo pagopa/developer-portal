@@ -21,6 +21,7 @@ import {
 import { FilteredGridLayout } from '@/components/organisms/FilteredGridLayout/FilteredGridLayout';
 
 export type TutorialsPageProps = {
+  readonly updatedAt: string;
   readonly product: Product;
   readonly abstract?: {
     readonly title: string;
@@ -36,46 +37,39 @@ export async function generateMetadata(
   parent: ResolvingMetadata
 ): Promise<Metadata> {
   const resolvedParent = await parent;
-  const { product, abstract, path, seo } = await getTutorialListPageProps(
-    params.productSlug
-  );
+  const tutorialListPage = await getTutorialListPageProps(params.productSlug);
 
-  if (seo) {
-    return makeMetadataFromStrapi(seo);
+  if (tutorialListPage?.seo) {
+    return makeMetadataFromStrapi(tutorialListPage.seo);
   }
 
   return makeMetadata({
     parent: resolvedParent,
-    title: [abstract?.title, product.name].filter(Boolean).join(' | '),
-    description: abstract?.description,
-    url: path,
-    image: product.logo?.url,
+    title: [tutorialListPage?.abstract?.title, tutorialListPage?.product.name]
+      .filter(Boolean)
+      .join(' | '),
+    description: tutorialListPage?.abstract?.description,
+    url: tutorialListPage?.path,
+    image: tutorialListPage?.product.logo?.url,
   });
 }
 
 const TutorialsPage = async ({ params }: ProductParams) => {
   const { productSlug } = params;
-  const {
-    abstract,
-    bannerLinks,
-    path,
-    tutorials,
-    seo,
-    product,
-    enableFilters,
-  } = await getTutorialListPageProps(productSlug);
+  const tutorialListPage = await getTutorialListPageProps(productSlug);
 
   const structuredData = generateStructuredDataScripts({
     breadcrumbsItems: [
-      productToBreadcrumb(product),
+      productToBreadcrumb(tutorialListPage?.product),
       {
-        name: seo?.metaTitle || abstract?.title,
-        item: breadcrumbItemByProduct(product, ['tutorials']),
+        name:
+          tutorialListPage?.seo?.metaTitle || tutorialListPage?.abstract?.title,
+        item: breadcrumbItemByProduct(tutorialListPage?.product, ['tutorials']),
       },
     ],
-    seo: seo,
+    seo: tutorialListPage?.seo,
   });
-  const mappedTutorials = tutorials.map((tutorial) => {
+  const mappedTutorials = tutorialListPage?.tutorials.map((tutorial) => {
     return {
       tags: tutorial.tags || [],
       title: tutorial.title,
@@ -96,24 +90,24 @@ const TutorialsPage = async ({ params }: ProductParams) => {
 
   return (
     <ProductLayout
-      product={product}
-      path={path}
-      bannerLinks={bannerLinks}
+      product={tutorialListPage?.product}
+      path={tutorialListPage?.path}
+      bannerLinks={tutorialListPage?.bannerLinks}
       showBreadcrumbs
       structuredData={structuredData}
     >
-      {abstract && (
+      {tutorialListPage?.abstract && (
         <Abstract
-          description={abstract?.description}
+          description={tutorialListPage?.abstract?.description}
           overline=''
-          title={abstract?.title}
+          title={tutorialListPage?.abstract?.title}
         />
       )}
-      {tutorials && (
+      {tutorialListPage?.tutorials && (
         <FilteredGridLayout
-          items={mappedTutorials}
-          tags={product.tags}
-          enableFilters={enableFilters}
+          items={mappedTutorials || []}
+          tags={tutorialListPage?.product.tags}
+          enableFilters={tutorialListPage?.enableFilters}
           noItemsMessageKey={'overview.tutorial.noTutorialMessage'}
         />
       )}
