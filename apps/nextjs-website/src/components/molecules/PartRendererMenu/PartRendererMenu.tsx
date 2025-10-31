@@ -15,7 +15,6 @@ type PartRendererMenuProps = {
 };
 
 const PartRendererMenu = (props: PartRendererMenuProps): ReactNode | null => {
-  console.log('Rendering PartRendererMenu with parts:', props.parts);
   const { palette } = useTheme();
   const t = useTranslations();
   const menuItems = props.parts
