@@ -276,7 +276,7 @@ resource "aws_route53_record" "cdn_alias_record" {
 ## Lambda function that notifiy when a recording is available ##
 
 resource "aws_cloudwatch_log_group" "lambda_index_logs" {
-  name              = "/aws/lambda/${aws_lambda_function.todo.function_name}"
+  name              = "/aws/lambda/${aws_lambda_function.ivs_video_processing_function.function_name}"
   retention_in_days = 14
 }
 
@@ -341,7 +341,7 @@ resource "aws_iam_role_policy" "ivs_video_processing_policy" {
 data "archive_file" "lambda_zip" {
   type        = "zip"
   source_file = "${path.module}/index.js"
-  output_path = "${path.module}/ivs-vide-processing.zip"
+  output_path = "${path.module}/../../builds/ivs-video-processing.zip"
 }
 
 locals {
@@ -373,16 +373,10 @@ resource "aws_lambda_function" "ivs_video_processing_function" {
     }
   }
 
-  vpc_config {
-    subnet_ids         = var.vpc.private_subnets
-    security_group_ids = [aws_security_group.lambda.id]
-  }
-
   lifecycle {
     ignore_changes = [
       filename,
       source_code_hash,
-      last_modified, # Also good to ignore this auto-updated attribute
     ]
   }
 
@@ -396,7 +390,7 @@ resource "aws_lambda_permission" "allow_s3_invoke_ivs_video_processing_function"
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.ivs_video_processing_function.arn
   principal     = "s3.amazonaws.com"
-  source_arn    = aws_s3_bucket.ivs_recordings.id
+  source_arn    = aws_s3_bucket.ivs_recordings.arn
 }
 
 
@@ -407,7 +401,7 @@ resource "aws_s3_bucket_notification" "index_lambda_trigger" {
     lambda_function_arn = aws_lambda_function.ivs_video_processing_function.arn
     events              = ["s3:ObjectCreated:*"]
     filter_prefix       = ""
-    filter_suffix       = ".md"
+    filter_suffix       = "recording-ended.json"
   }
 
   depends_on = [aws_lambda_permission.allow_s3_invoke_ivs_video_processing_function]
