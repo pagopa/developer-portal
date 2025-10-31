@@ -21,8 +21,9 @@ const Heading = ({ level, id, children }: HeadingProps<ReactNode>) => {
       sx={{
         borderLeft: isLevel2 ? 'none' : `.5px solid ${palette.grey[300]}`,
         marginLeft: isLevel2 ? '0px' : '9px',
+        marginTop: isLevel2 ? '8px' : '0',
         paddingLeft: '8px',
-        paddingY: '5px',
+        paddingY: '6px',
         ':hover': { backgroundColor: palette.action.hover },
       }}
     >
