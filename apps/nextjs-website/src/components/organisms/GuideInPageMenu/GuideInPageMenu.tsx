@@ -8,8 +8,8 @@ import {
 import Heading from '@/components/organisms/GuideInPageMenu/components/Heading';
 import { Box, Typography, useTheme } from '@mui/material';
 import { useFragment } from '@/components/organisms/FragmentProvider/FragmentProvider';
-import { SITE_HEADER_HEIGHT } from '../../molecules/SiteHeader/SiteHeader';
-import { PRODUCT_HEADER_HEIGHT } from '../../atoms/ProductHeader/ProductHeader';
+import { SITE_HEADER_HEIGHT } from '@/config';
+import { PRODUCT_HEADER_HEIGHT } from '@/config';
 
 type GuideInPageMenuProps = {
   assetsPrefix: string;
