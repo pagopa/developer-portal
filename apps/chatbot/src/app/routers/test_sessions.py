@@ -46,7 +46,10 @@ def test_query_feedback() -> None:
 def test_query_feedback_with_null_values() -> None:
     query_data = {"question": "come ti chiami?", "queriedAt": "2024-11-11"}
     response_queries = post_queries(query_data)
-    # wait for langfuse...
+    # wait for langfuse trace creation.
+    # this sleep will disappear with the use of chatbot-monitor lambda,
+    # because the trace creation and the trace update will be queued in the same
+    # SQS FIFO queue
     time.sleep(4.5)
     json_queries = response_queries.json()
     sessionId = json_queries["sessionId"]
