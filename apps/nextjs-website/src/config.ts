@@ -137,3 +137,6 @@ export const signUpAdvantages = [
   'api_keys',
   'support',
 ];
+
+export const SITE_HEADER_HEIGHT = 48;
+export const PRODUCT_HEADER_HEIGHT = 77;
