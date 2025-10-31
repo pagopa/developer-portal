@@ -218,3 +218,4 @@ async def queries_fetching(
         result = dbResponse.get("Items", [])
 
     return result
+
