@@ -43,8 +43,6 @@ const TutorialTemplate = ({
         <Box
           sx={{
             maxWidth: '1200px',
-            // 80px is the height of the product header
-            marginTop: '80px',
             marginX: 'auto',
             paddingTop: 8,
             px: { xs: 4, lg: 0 },

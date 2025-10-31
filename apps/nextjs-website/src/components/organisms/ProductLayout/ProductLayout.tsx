@@ -48,7 +48,7 @@ const ProductLayout: FC<LayoutPropsWithChildren> = ({
       {structuredData}
       {product && path && <ProductHeader product={product} path={path} />}
       {product && showBreadcrumbs && (
-        <EContainer sx={{ marginTop: 15, paddingTop: 3 }}>
+        <EContainer sx={{ paddingTop: 3 }}>
           <ProductBreadcrumbs
             breadcrumbs={[...productPageToBreadcrumbs(product, paths)]}
           />
