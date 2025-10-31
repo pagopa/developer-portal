@@ -11,7 +11,11 @@ import * as fs from 'fs';
 import path from 'path';
 import qs from 'qs';
 import { MetadataItem } from '../metadataItem';
-import { makeS3Client, writeMetadataJson } from '../helpers/s3Bucket.helper';
+import {
+  downloadS3File,
+  makeS3Client,
+  writeMetadataJson,
+} from '../helpers/s3Bucket.helper';
 import { S3Client } from '@aws-sdk/client-s3';
 import { extractTitleFromMarkdown } from '../helpers/extractTitle.helper';
 import { fetchFromStrapi } from '../helpers/fetchFromStrapi';
@@ -66,6 +70,9 @@ const S3_GUIDE_METADATA_JSON_PATH =
 const S3_MAIN_VERSION_GUIDE_METADATA_JSON_PATH =
   process.env.S3_MAIN_VERSION_GUIDE_METADATA_JSON_PATH ||
   'main-version-guides-metadata.json';
+const S3_OLD_GUIDE_VERSION_TO_REMOVE_JSON_PATH =
+  process.env.S3_OLD_GUIDE_VERSION_TO_REMOVE_JSON_PATH ||
+  'old-versions-to-remove.json';
 const S3_SOLUTIONS_METADATA_JSON_PATH =
   process.env.S3_SOLUTIONS_METADATA_JSON_PATH || 'solutions-metadata.json';
 const S3_RELEASE_NOTES_METADATA_JSON_PATH =
@@ -898,6 +905,28 @@ async function main() {
     console.log(
       `Processed ${mainVersionItems.length} main version guide items.`
     );
+
+    const s3MainVersionItems = await downloadS3File(
+      S3_MAIN_VERSION_GUIDE_METADATA_JSON_PATH,
+      S3_BUCKET_NAME!,
+      getS3Client()
+    );
+    const s3DirNames: string[] = JSON.parse(s3MainVersionItems);
+
+    const setMainNames = new Set(mainVersionItems);
+
+    const directoriesToRemove: string[] = s3DirNames.filter(
+      (dirName) => !setMainNames.has(dirName)
+    );
+
+    if (directoriesToRemove.length > 0) {
+      await writeMetadataJson(
+        directoriesToRemove,
+        S3_OLD_GUIDE_VERSION_TO_REMOVE_JSON_PATH,
+        S3_BUCKET_NAME!,
+        getS3Client()
+      );
+    }
     await writeMetadataJson(
       mainVersionItems,
       S3_MAIN_VERSION_GUIDE_METADATA_JSON_PATH,
