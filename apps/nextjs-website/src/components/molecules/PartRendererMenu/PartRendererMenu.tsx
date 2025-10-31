@@ -15,19 +15,17 @@ type PartRendererMenuProps = {
 
 const getFontSizeByLevel = (level: number): number => {
   switch (level) {
-    case 1:
-      return 24;
     case 2:
-      return 18;
+      return 15;
     case 3:
-      return 16;
-    case 4:
+      return 13;
     default:
-      return 14;
+      return 15;
   }
 };
 
 const PartRendererMenu = (props: PartRendererMenuProps): ReactNode | null => {
+  console.log('Rendering PartRendererMenu with parts:', props.parts);
   const { palette } = useTheme();
   const t = useTranslations();
   const menuItems = props.parts
@@ -108,7 +106,6 @@ const PartRendererMenu = (props: PartRendererMenuProps): ReactNode | null => {
                       <span
                         style={{
                           color: palette.primary.main,
-                          fontWeight: '700',
                         }}
                       >
                         {stepNumber}

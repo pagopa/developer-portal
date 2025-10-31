@@ -39,34 +39,6 @@ const TutorialTemplate = ({
       structuredData={structuredData}
       bannerLinks={bannerLinks}
     >
-      {product && (
-        <Box
-          sx={{
-            maxWidth: '1200px',
-            marginX: 'auto',
-            paddingTop: 4,
-            px: { xs: 4, lg: 0 },
-          }}
-        >
-          <ProductBreadcrumbs
-            breadcrumbs={[
-              ...productPageToBreadcrumbs(product, [
-                {
-                  translate: true,
-                  name: 'devPortal.productHeader.tutorials',
-                  path: product.hasTutorialListPage
-                    ? `/${product.slug}/tutorials`
-                    : '',
-                },
-                {
-                  name: title,
-                  path: path,
-                },
-              ]),
-            ]}
-          />
-        </Box>
-      )}
       <FragmentProvider>
         <Box
           sx={{
@@ -77,7 +49,7 @@ const TutorialTemplate = ({
             paddingBottom: !((relatedLinks?.links?.length ?? 0) > 0)
               ? '56px'
               : 0,
-            paddingTop: '56px',
+            paddingTop: '24px',
             px: { xs: 4, lg: 0 },
           }}
         >
@@ -91,13 +63,41 @@ const TutorialTemplate = ({
               overflowWrap: 'break-word',
             }}
           >
+            {product && (
+              <Box
+                sx={{
+                  maxWidth: '1200px',
+                  marginX: 'auto',
+                  px: { xs: 4, lg: 0 },
+                  marginBottom: 2,
+                }}
+              >
+                <ProductBreadcrumbs
+                  breadcrumbs={[
+                    ...productPageToBreadcrumbs(product, [
+                      {
+                        translate: true,
+                        name: 'devPortal.productHeader.tutorials',
+                        path: product.hasTutorialListPage
+                          ? `/${product.slug}/tutorials`
+                          : '',
+                      },
+                      {
+                        name: title,
+                        path: path,
+                      },
+                    ]),
+                  ]}
+                />
+              </Box>
+            )}
             <Typography
               component='h1'
               sx={{
                 fontSize: '38px',
                 fontWeight: 700,
                 lineHeight: '42px',
-                paddingY: 2,
+                paddingY: 4,
               }}
             >
               {title}
@@ -115,7 +115,7 @@ const TutorialTemplate = ({
               display: { xs: 'none', lg: 'initial' },
               position: 'relative',
               // 78px is the height of the header, 80px is the height of the product header
-              paddingTop: '30px',
+              paddingTop: '26px',
               paddingLeft: '60px',
               width: { lg: '378px' },
             }}

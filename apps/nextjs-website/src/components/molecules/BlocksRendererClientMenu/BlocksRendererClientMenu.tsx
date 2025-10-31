@@ -33,10 +33,11 @@ const BlocksRendererClientMenu = ({
           <a
             href={`#${computeId('blockRenderer', children)}`}
             style={{
-              textDecoration: 'none',
+              fontSize: 15,
               margin: 0,
+              marginBottom: '5px',
               padding: 0,
-              marginBottom: '16px',
+              textDecoration: 'none',
             }}
           >
             <Typography color={textColor}>{children}</Typography>
