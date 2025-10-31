@@ -44,7 +44,7 @@ const TutorialTemplate = ({
           sx={{
             maxWidth: '1200px',
             marginX: 'auto',
-            paddingTop: 8,
+            paddingTop: 4,
             px: { xs: 4, lg: 0 },
           }}
         >
