@@ -59,7 +59,15 @@ const Step = ({ stepNumber, children }: StepProps<ReactNode>) => {
             {stepNumber}
           </Box>
         ) : null}
-        <Box sx={{ flex: 1, minWidth: 0 }}>
+        <Box
+          sx={{
+            height: '72px',
+            flex: 1,
+            minWidth: 0,
+            display: 'flex',
+            alignItems: 'flex-start',
+          }}
+        >
           {cloneElement(headingElement as ReactElement)}
         </Box>
       </Box>
@@ -69,10 +77,7 @@ const Step = ({ stepNumber, children }: StepProps<ReactNode>) => {
     <Box sx={{ display: 'flex', flexDirection: 'column' }}>
       {headingWithNumber}
       {content.map((child, index) => (
-        <Box
-          sx={{ marginLeft: { sm: 0, md: 6 } }}
-          key={getChildKey(child, index)}
-        >
+        <Box sx={{ marginTop: '-8px' }} key={getChildKey(child, index)}>
           {child}
         </Box>
       ))}
