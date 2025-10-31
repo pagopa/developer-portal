@@ -131,13 +131,6 @@ jobs:
             --distribution-id ${{ vars.ASSET_BUCKET_CLOUDFRONT_DISTRIBUTION_ID }} \
             --paths "/*"
 
-      - name: Invalidate CloudFront opennext cache
-        if: inputs.inivalidate_opennext_cache == true
-        run: |
-          aws cloudfront create-invalidation \
-            --distribution-id ${{ vars.OPENNEXT_CLOUDFRONT_DISTRIBUTION_ID }} \
-            --paths "/*"
-
   scheduled_sync_gitbook_docs:
     name: Sync gitbook Docs to S3 (scheduled on prod)
     if: github.event_name == 'schedule'
