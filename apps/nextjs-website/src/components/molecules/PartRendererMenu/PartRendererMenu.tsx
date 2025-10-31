@@ -6,22 +6,12 @@ import { Box, Typography, useTheme } from '@mui/material';
 
 import BlocksRendererClientMenu from '../BlocksRendererClientMenu/BlocksRendererClientMenu';
 import { generateIdFromString } from '@/helpers/anchor.helpers';
-import MUILink from '@mui/material/Link';
 import { useTranslations } from 'next-intl';
+import Heading from '@/components/organisms/GuideInPageMenu/components/Heading';
+import { includes, some } from 'lodash';
 
 type PartRendererMenuProps = {
   readonly parts: readonly Part[];
-};
-
-const getFontSizeByLevel = (level: number): number => {
-  switch (level) {
-    case 2:
-      return 15;
-    case 3:
-      return 13;
-    default:
-      return 15;
-  }
 };
 
 const PartRendererMenu = (props: PartRendererMenuProps): ReactNode | null => {
@@ -33,25 +23,14 @@ const PartRendererMenu = (props: PartRendererMenuProps): ReactNode | null => {
       switch (part.component) {
         case 'blockRenderer':
           // eslint-disable-next-line no-case-declarations
-          const hasHeading = part.html.reduce((acc, block) => {
-            if (block.type === 'heading') {
-              return true;
-            }
-            return acc;
-          }, false);
+          const hasHeading = some(
+            part.html,
+            (block) => block.type === 'heading'
+          );
+
           return hasHeading ? (
             <BlocksRendererClientMenu content={part.html} />
           ) : null;
-        case 'codeBlock':
-          return (
-            <a
-              key={part.title}
-              href={`#${computeId('codeBlock', part.title)}`}
-              style={{ textDecoration: 'none' }}
-            >
-              <Typography>{part.title}</Typography>
-            </a>
-          );
         case 'markdown': {
           const headingRegex = /^(#{2,})\s+(.+)/gm;
           const stepTag = /\{% step %}/g;
@@ -69,11 +48,13 @@ const PartRendererMenu = (props: PartRendererMenuProps): ReactNode | null => {
 
           return matches.map((match) => {
             const level = match[1].length;
+            if (!includes([2, 3], level)) return null;
+
             const title = match[2]
               .trim()
               .replace(/&[a-zA-Z0-9#]+;/g, ' ')
               .replace(/\s+/g, ' ');
-            const href = `#${createSlug(title)}`;
+            const href = `${createSlug(title)}`;
             const lastStepIndex =
               level === 3 && stepIndices.length > 0
                 ? stepIndices.findLast((index) => index < (match?.index || 0))
@@ -83,79 +64,47 @@ const PartRendererMenu = (props: PartRendererMenuProps): ReactNode | null => {
               : undefined;
             const finalTitle = stepNumber ? stepNumber + ' - ' + title : title;
             return (
-              <MUILink
-                key={title}
-                href={href}
-                title={finalTitle}
-                sx={{
-                  display: 'block',
-                  fontFamily: 'Titillium Web',
-                  marginBottom: '12px',
-                  textDecoration: 'none',
-                }}
-              >
-                <Typography
-                  sx={{
-                    color: palette.text.secondary,
-                    fontSize: getFontSizeByLevel(level),
-                    fontWeight: 400,
-                  }}
-                >
-                  {stepNumber ? (
-                    <>
-                      <span
-                        style={{
-                          color: palette.primary.main,
-                        }}
-                      >
-                        {stepNumber}
-                      </span>
-                      {' - ' + title}
-                    </>
-                  ) : (
-                    title
-                  )}
-                </Typography>
-              </MUILink>
+              <Heading key={finalTitle} level={level} id={href}>
+                {stepNumber ? (
+                  <>
+                    <span
+                      style={{
+                        color: palette.primary.main,
+                      }}
+                    >
+                      {stepNumber}
+                    </span>
+                    {' - ' + title}
+                  </>
+                ) : (
+                  title
+                )}
+              </Heading>
             );
           });
         }
         case 'ckEditor':
-          return part.menuItems.map((menuItem) => (
-            <MUILink
-              key={menuItem.title}
-              href={menuItem.href}
-              title={menuItem.title}
-              sx={{
-                display: 'block',
-                fontFamily: 'Titillium Web',
-                marginBottom: '12px',
-                textDecoration: 'none',
-              }}
-            >
-              <Typography
-                sx={{
-                  color: palette.text.secondary,
-                  fontSize: getFontSizeByLevel(menuItem.level),
-                  fontWeight: 400,
-                }}
+          return part.menuItems
+            .filter((menuItem) => includes([2, 3], menuItem.level))
+            .map((menuItem) => (
+              <Heading
+                key={menuItem.title}
+                level={menuItem.level}
+                id={menuItem.href}
               >
                 {menuItem.title}
-              </Typography>
-            </MUILink>
-          ));
+              </Heading>
+            ));
         case 'typography':
-          if (!['h1', 'h2', 'h3', 'h4'].includes(part?.variant ?? ''))
-            return null;
+          if (!['h2', 'h3'].includes(part?.variant ?? '')) return null;
 
           return (
-            <a
-              key={part.text}
-              href={`#${computeId('typography', part.text)}`}
-              style={{ textDecoration: 'none' }}
+            <Heading
+              level={part.variant === 'h2' ? 2 : 3}
+              id={computeId('typography', part.text)}
             >
-              <Typography>{part.text}</Typography>
-            </a>
+              {part.text}
+            </Heading>
           );
         default:
           return null;
@@ -181,6 +130,7 @@ const PartRendererMenu = (props: PartRendererMenuProps): ReactNode | null => {
         fontWeight={700}
         textTransform={'uppercase'}
         marginBottom={'18px'}
+        marginLeft='8px'
       >
         {t('productGuidePage.onThisPage')}
       </Typography>

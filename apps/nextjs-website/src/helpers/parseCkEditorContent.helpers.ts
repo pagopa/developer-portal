@@ -27,7 +27,7 @@ export function parseCkEditorContent(content: string): {
       // eslint-disable-next-line functional/immutable-data,functional/no-expression-statements
       menuItems.push({
         title: cloned.textContent ?? '',
-        href: `#${wrapper.id}`,
+        href: `${wrapper.id}`,
         level: parseInt(element.tagName.toLowerCase().replace('h', '')),
       });
     }
