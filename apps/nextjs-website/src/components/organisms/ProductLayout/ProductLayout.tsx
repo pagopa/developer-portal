@@ -39,7 +39,7 @@ const ProductLayout: FC<LayoutPropsWithChildren> = ({
       sx={{
         marginTop: product
           ? {
-              xs: `${SITE_HEADER_HEIGHT}px`,
+              xs: `${SITE_HEADER_HEIGHT + 40}px`,
               md: `${SITE_HEADER_HEIGHT + PRODUCT_HEADER_HEIGHT}px`,
             }
           : 0,
