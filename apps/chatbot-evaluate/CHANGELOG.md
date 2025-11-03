@@ -1,5 +1,11 @@
 # chatbot-evaluate
 
+## 1.0.4
+
+### Patch Changes
+
+- 07d1049: Align settings.py file to chatbot module
+
 ## 1.0.3
 
 ### Patch Changes

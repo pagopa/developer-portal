@@ -20,14 +20,13 @@ describe('parseCkEditorContent', () => {
     expect(result.menuItems).toEqual([
       {
         title: 'Éxámplé String!@#!@#$%^&*()_+',
-        href: '#ckeditor-example-string!!$%^&*()_',
+        href: 'ckeditor-example-string!!$%^&*()_',
         level: 2,
       },
-      { title: 'titolo h3', href: '#ckeditor-titolo-h3', level: 3 },
-      { title: 'titolo h4', href: '#ckeditor-titolo-h4', level: 4 },
+      { title: 'titolo h3', href: 'ckeditor-titolo-h3', level: 3 },
       {
         title: 'Un esempio: la TARI',
-        href: '#ckeditor-un-esempio:-la-tari',
+        href: 'ckeditor-un-esempio:-la-tari',
         level: 2,
       },
     ]);

@@ -1,9 +1,12 @@
 'use client';
-import { Theme, Typography, useTheme } from '@mui/material';
+import { Theme } from '@mui/material';
 import { BlocksContent, BlocksRenderer } from '@strapi/blocks-react-renderer';
 import { SxProps } from '@mui/system';
 import { computeId } from '../PartRendererMenu/PartRendererMenu';
 import React from 'react';
+import Heading from '@/components/organisms/GuideInPageMenu/components/Heading';
+import { headingLevelsToShowInMenu } from '@/config';
+import { includes } from 'lodash';
 
 type BlocksRendererClientMenuProps = {
   content?: BlocksContent;
@@ -15,13 +18,8 @@ type BlocksRendererClientMenuProps = {
 
 const BlocksRendererClientMenu = ({
   content,
-  color,
 }: BlocksRendererClientMenuProps) => {
-  const { palette } = useTheme();
-
   if (!content) return null;
-
-  const textColor = color ? palette.primary[color] : palette.text.primary;
 
   return (
     <BlocksRenderer
@@ -29,19 +27,14 @@ const BlocksRendererClientMenu = ({
       blocks={{
         image: () => null,
         paragraph: () => null,
-        heading: ({ children }) => (
-          <a
-            href={`#${computeId('blockRenderer', children)}`}
-            style={{
-              textDecoration: 'none',
-              margin: 0,
-              padding: 0,
-              marginBottom: '16px',
-            }}
-          >
-            <Typography color={textColor}>{children}</Typography>
-          </a>
-        ),
+        heading: ({ children, level }) => {
+          if (!includes(headingLevelsToShowInMenu, level)) return null;
+          return (
+            <Heading level={level} id={computeId('blockRenderer', children)}>
+              {children}
+            </Heading>
+          );
+        },
         list: () => null,
       }}
     />
