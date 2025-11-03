@@ -1,5 +1,16 @@
 # infrastructure
 
+## 5.3.0
+
+### Minor Changes
+
+- 1447dad: Strapi env variable disable_custom_validator = var.environment == "dev" ? "True" : "Fasle"
+- 2bd346d: Rightsize cpu and memory langfuse ecs task
+
+### Patch Changes
+
+- 2536043: Assignt cors policy to the cloudfront distribution for video streaming
+
 ## 5.2.0
 
 ### Minor Changes

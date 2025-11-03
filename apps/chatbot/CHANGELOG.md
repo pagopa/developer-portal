@@ -1,5 +1,15 @@
 # chatbot
 
+## 7.1.0
+
+### Minor Changes
+
+- 736a638: Replace Langfuse v2 with Langufuse v3.112.0 in the local environment
+
+### Patch Changes
+
+- 8681c49: fix settings
+
 ## 7.0.4
 
 ### Patch Changes
