@@ -200,7 +200,7 @@ let releaseNotesMetadataCacheTime = 0;
 
 const METADATA_CACHE_TTL = 5 * 60 * 1000; // 5 minutes
 
-export const getGuidesMetadata = async (dirName: string) => {
+export const getGuidesMetadata = async (dirName?: string) => {
   const now = Date.now();
 
   if (
@@ -211,7 +211,13 @@ export const getGuidesMetadata = async (dirName: string) => {
   }
 
   guidesMetadataCache = await fetchMetadataFromCDN<JsonMetadata>(
-    path.join(S3_PATH_TO_GITBOOK_DOCS, dirName, S3_GUIDES_METADATA_JSON_PATH)
+    dirName
+      ? path.join(
+          S3_PATH_TO_GITBOOK_DOCS,
+          dirName,
+          S3_GUIDES_METADATA_JSON_PATH
+        )
+      : S3_GUIDES_METADATA_JSON_PATH
   );
   guidesMetadataCacheTime = now;
 
