@@ -54,10 +54,9 @@ export async function getGuidePage(
   productSlug: string
 ) {
   // Fetch data in parallel instead of sequential
-  const [products, guideProps, guidesMetadata] = await Promise.all([
+  const [products, guideProps] = await Promise.all([
     getProducts(),
     getGuidePageProps(guidePaths.length > 0 ? guidePaths[0] : '', productSlug),
-    getGuidesMetadata(),
   ]);
 
   // Path construction
@@ -66,7 +65,14 @@ export async function getGuidePage(
     'guides',
     ...guidePaths,
   ].join('/');
+  const versionCheck = guidePaths.length > 1 ? guidePaths[1] : null;
+  const guideToFind = guideProps.versions.find((v) => {
+    return versionCheck ? v.version === versionCheck : v.main;
+  });
 
+  const guidesMetadata = await getGuidesMetadata(
+    guideToFind ? guideToFind.dirName : ''
+  );
   return manageUndefined(
     await parseS3GuidePage({
       guideProps,
