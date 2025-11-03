@@ -6,20 +6,20 @@ services:
   refresh-index:
     platform: linux/amd64
     build:
-      context: ../../chatbot-index
-      dockerfile: ../chatbot-index/docker/app.test.Dockerfile
-    env_file: ../../chatbot-index/.env.test
-    environment:
-      - LAMBDA_TASK_ROOT=/var/task
-    # volumes:
-    #   - ../chatbot-index:/app
+      context: ..
+      dockerfile: docker/lambda_refresh_index.test.Dockerfile
+    env_file: ../.env.test
+    # environment:
+    #   - LAMBDA_TASK_ROOT=/var/task
+    volumes:
+      - ./files/.aws:/root/.aws
     depends_on:
       motoserver:
         condition: service_started
       redis:
         condition: service_started
-    entrypoint: ["/usr/local/bin/aws-lambda-rie", "python3"]
-    command: ["-m", "awslambdaric", "src.lambda_refresh_index.lambda_handler"]
+    # entrypoint: ["/usr/local/bin/aws-lambda-rie", "python3"]
+    command: ["src.lambda_refresh_index.lambda_handler"]
 
   redis:
     image: redis/redis-stack:7.2.0-v13
