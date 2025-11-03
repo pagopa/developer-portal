@@ -211,7 +211,7 @@ export const getSolutionProps = async (
   const solution = solutions.find((s) => s.slug === solutionsSlug);
   if (!solution) {
     // eslint-disable-next-line functional/no-throw-statements
-    throw new Error('Failed to fetch solution data');
+    throw new Error(`No solution found matching slug "${solutionsSlug}"`);
   }
   return await makeSolutionS3(solution, jsonMetadata);
 };
@@ -234,7 +234,9 @@ export const getReleaseNoteProps = async (
   );
   if (!releaseNote) {
     // eslint-disable-next-line functional/no-throw-statements
-    throw new Error('Failed to fetch release data');
+    throw new Error(
+      `No release data found matching product slug "${productSlug}"`
+    );
   }
   return await makeReleaseNoteS3(releaseNote, jsonMetadata);
 };
