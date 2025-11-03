@@ -48,6 +48,8 @@ export const isFeedbackFormEnabled =
   process.env.NEXT_PUBLIC_FEEDBACK_FORM_ENABLED === 'true';
 export const chatMaxHistoryMessages =
   parseInt(`${process.env.NEXT_PUBLIC_CHAT_MAX_HISTORY_MESSAGES}`) || 10;
+// Array that defines the header level for which to show component in the in-page menu
+export const headingLevelsToShowInMenu = [2, 3];
 
 export const amplifyConfig = {
   Auth: {

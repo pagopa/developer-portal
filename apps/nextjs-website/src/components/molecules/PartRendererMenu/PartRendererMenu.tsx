@@ -9,6 +9,7 @@ import { generateIdFromString } from '@/helpers/anchor.helpers';
 import { useTranslations } from 'next-intl';
 import Heading from '@/components/organisms/GuideInPageMenu/components/Heading';
 import { includes, some } from 'lodash';
+import { headingLevelsToShowInMenu } from '@/config';
 
 type PartRendererMenuProps = {
   readonly parts: readonly Part[];
@@ -47,7 +48,7 @@ const PartRendererMenu = (props: PartRendererMenuProps): ReactNode | null => {
 
           return matches.map((match) => {
             const level = match[1].length;
-            if (!includes([2, 3], level)) return null;
+            if (!includes(headingLevelsToShowInMenu, level)) return null;
 
             const title = match[2]
               .trim()
@@ -84,7 +85,9 @@ const PartRendererMenu = (props: PartRendererMenuProps): ReactNode | null => {
         }
         case 'ckEditor':
           return part.menuItems
-            .filter((menuItem) => includes([2, 3], menuItem.level))
+            .filter((menuItem) =>
+              includes(headingLevelsToShowInMenu, menuItem.level)
+            )
             .map((menuItem) => (
               <Heading
                 key={menuItem.title}

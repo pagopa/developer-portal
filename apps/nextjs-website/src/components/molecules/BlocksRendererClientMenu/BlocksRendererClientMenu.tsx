@@ -5,6 +5,8 @@ import { SxProps } from '@mui/system';
 import { computeId } from '../PartRendererMenu/PartRendererMenu';
 import React from 'react';
 import Heading from '@/components/organisms/GuideInPageMenu/components/Heading';
+import { headingLevelsToShowInMenu } from '@/config';
+import { includes } from 'lodash';
 
 type BlocksRendererClientMenuProps = {
   content?: BlocksContent;
@@ -26,7 +28,7 @@ const BlocksRendererClientMenu = ({
         image: () => null,
         paragraph: () => null,
         heading: ({ children, level }) => {
-          if (![2, 3].includes(level)) return null;
+          if (!includes(headingLevelsToShowInMenu, level)) return null;
           return (
             <Heading level={level} id={computeId('blockRenderer', children)}>
               {children}
