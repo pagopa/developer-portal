@@ -1,8 +1,5 @@
 'use client';
-import {
-  SITE_HEADER_HEIGHT,
-  SiteHeaderProps,
-} from '@/components/molecules/SiteHeader/SiteHeader';
+import { SiteHeaderProps } from '@/components/molecules/SiteHeader/SiteHeader';
 import Button from '@mui/material/Button';
 import React, { useEffect, useRef, useState } from 'react';
 import { useTranslations } from 'next-intl';
@@ -14,6 +11,7 @@ import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import NextLink from 'next/link';
 import MobileUserInfo from '@/components/atoms/MobileUserInfo/MobileUserInfo';
+import { SITE_HEADER_HEIGHT } from '@/config';
 
 export const MobileSiteHeaderStyledTreeItem = styled(TreeItem)(({ theme }) => ({
   [`&`]: {
