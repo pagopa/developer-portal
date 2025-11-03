@@ -12,6 +12,7 @@ import { Part } from '@/lib/types/part';
 import PartRendererMenu from '@/components/molecules/PartRendererMenu/PartRendererMenu';
 import { ReactNode } from 'react';
 import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
+import { PRODUCT_HEADER_HEIGHT, SITE_HEADER_HEIGHT } from '@/config';
 
 type TutorialPageTemplateProps = {
   readonly bannerLinks?: ReadonlyArray<BannerLinkProps>;
@@ -39,34 +40,6 @@ const TutorialTemplate = ({
       structuredData={structuredData}
       bannerLinks={bannerLinks}
     >
-      {product && (
-        <Box
-          sx={{
-            maxWidth: '1200px',
-            marginX: 'auto',
-            paddingTop: 4,
-            px: { xs: 4, lg: 0 },
-          }}
-        >
-          <ProductBreadcrumbs
-            breadcrumbs={[
-              ...productPageToBreadcrumbs(product, [
-                {
-                  translate: true,
-                  name: 'devPortal.productHeader.tutorials',
-                  path: product.hasTutorialListPage
-                    ? `/${product.slug}/tutorials`
-                    : '',
-                },
-                {
-                  name: title,
-                  path: path,
-                },
-              ]),
-            ]}
-          />
-        </Box>
-      )}
       <FragmentProvider>
         <Box
           sx={{
@@ -77,7 +50,6 @@ const TutorialTemplate = ({
             paddingBottom: !((relatedLinks?.links?.length ?? 0) > 0)
               ? '56px'
               : 0,
-            paddingTop: '56px',
             px: { xs: 4, lg: 0 },
           }}
         >
@@ -91,13 +63,41 @@ const TutorialTemplate = ({
               overflowWrap: 'break-word',
             }}
           >
+            {product && (
+              <Box
+                sx={{
+                  maxWidth: '1200px',
+                  marginX: 'auto',
+                  px: { xs: 4, lg: 0 },
+                  marginY: 2,
+                }}
+              >
+                <ProductBreadcrumbs
+                  breadcrumbs={[
+                    ...productPageToBreadcrumbs(product, [
+                      {
+                        translate: true,
+                        name: 'devPortal.productHeader.tutorials',
+                        path: product.hasTutorialListPage
+                          ? `/${product.slug}/tutorials`
+                          : '',
+                      },
+                      {
+                        name: title,
+                        path: path,
+                      },
+                    ]),
+                  ]}
+                />
+              </Box>
+            )}
             <Typography
               component='h1'
               sx={{
                 fontSize: '38px',
                 fontWeight: 700,
                 lineHeight: '42px',
-                paddingY: 2,
+                paddingY: 4,
               }}
             >
               {title}
@@ -115,16 +115,20 @@ const TutorialTemplate = ({
               display: { xs: 'none', lg: 'initial' },
               position: 'relative',
               // 78px is the height of the header, 80px is the height of the product header
-              paddingTop: '30px',
-              paddingLeft: '60px',
+              marginLeft: '60px',
               width: { lg: '378px' },
             }}
           >
             <Box
               sx={{
-                position: 'sticky',
+                maxHeight: `calc(100vh - ${
+                  SITE_HEADER_HEIGHT + PRODUCT_HEADER_HEIGHT
+                }px)`,
                 maxWidth: '378px',
-                top: 140,
+                overflowY: 'auto',
+                paddingY: '42px',
+                position: 'sticky',
+                top: SITE_HEADER_HEIGHT + PRODUCT_HEADER_HEIGHT,
               }}
             >
               <PartRendererMenu parts={parts ?? []} />

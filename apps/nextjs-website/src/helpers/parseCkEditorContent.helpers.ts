@@ -2,6 +2,8 @@ import { CkEditorMenuItem } from '@/components/molecules/CkEditorPart/CkEditorPa
 import { JSDOM } from 'jsdom';
 import { generateIdFromString } from '@/helpers/anchor.helpers';
 import DOMPurify from 'isomorphic-dompurify';
+import { headingLevelsToShowInMenu } from '@/config';
+import { includes } from 'lodash';
 
 export function parseCkEditorContent(content: string): {
   readonly parsedContent: string;
@@ -23,11 +25,16 @@ export function parseCkEditorContent(content: string): {
     wrapper.appendChild(cloned);
     // eslint-disable-next-line functional/no-expression-statements
     element.parentNode?.replaceChild(wrapper, element);
-    if (['h2', 'h3', 'h4'].includes(element.tagName.toLowerCase())) {
+    if (
+      includes(
+        headingLevelsToShowInMenu.map((level) => `h${level}`),
+        element.tagName.toLowerCase()
+      )
+    ) {
       // eslint-disable-next-line functional/immutable-data,functional/no-expression-statements
       menuItems.push({
         title: cloned.textContent ?? '',
-        href: `#${wrapper.id}`,
+        href: `${wrapper.id}`,
         level: parseInt(element.tagName.toLowerCase().replace('h', '')),
       });
     }
