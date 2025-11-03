@@ -4,16 +4,14 @@ import { Product } from '@/lib/types/product';
 import { Box, useTheme } from '@mui/material';
 import { Header } from '@/editorialComponents/Header';
 import React, { FC } from 'react';
-import { SITE_HEADER_HEIGHT } from '@/components/molecules/SiteHeader/SiteHeader';
 import { useTranslations } from 'next-intl';
 import { useScrollUp } from './useScrollUp';
+import { SITE_HEADER_HEIGHT } from '@/config';
 
 type ProductHeaderProps = {
   product: Product;
   path: string;
 };
-
-export const PRODUCT_HEADER_HEIGHT = 77;
 
 const ProductHeader: FC<ProductHeaderProps> = ({ product, path }) => {
   const { palette } = useTheme();

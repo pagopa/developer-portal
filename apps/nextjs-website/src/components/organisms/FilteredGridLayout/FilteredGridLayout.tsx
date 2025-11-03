@@ -11,7 +11,7 @@ import { useSearchParams } from 'next/navigation';
 import MobileFilterSelector from '@/components/molecules/MobileFilterSelector/MobileFilterSelector';
 import DesktopFilterSelector from '@/components/molecules/DesktopFilterSelector/DesktopFilterSelector';
 import SectionTitle from '@/components/molecules/SectionTitle/SectionTitle';
-import { PRODUCT_HEADER_HEIGHT } from '@/components/atoms/ProductHeader/ProductHeader';
+import { PRODUCT_HEADER_HEIGHT } from '@/config';
 
 type FilteredGridLayoutProps = {
   readonly items: readonly (INewsroomItem & { tags: readonly Tag[] })[];
