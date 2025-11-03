@@ -30,5 +30,7 @@ COPY ./pyproject.toml ${LAMBDA_TASK_ROOT}/
 COPY ./poetry.lock ${LAMBDA_TASK_ROOT}/
 COPY ./src ${LAMBDA_TASK_ROOT}/src
 COPY ./scripts ${LAMBDA_TASK_ROOT}/scripts
+COPY ./config ${LAMBDA_TASK_ROOT}/config
+COPY ./docker/files ${LAMBDA_TASK_ROOT}/files
 
 CMD ["src.lambda_refresh_index.lambda_handler"]

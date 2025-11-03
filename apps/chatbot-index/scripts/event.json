@@ -1,0 +1,38 @@
+{
+  "Records": [
+    {
+      "eventVersion": "2.1", 
+      "eventSource": "aws:s3", 
+      "awsRegion": "eu-south-1", 
+      "eventTime": "2025-09-30T13:41:26.899Z", 
+      "eventName": "ObjectCreated:Put", 
+      "userIdentity": {
+        "principalId": "AWS:xxx"
+      }, 
+      "requestParameters": {
+        "sourceIPAddress": "x.x.x.x"
+      }, 
+      "responseElements": {
+        "x-amz-request-id": "xxx", 
+        "x-amz-id-2": "xxx"
+      }, 
+      "s3": {
+        "s3SchemaVersion": "1.0", 
+        "configurationId": "xxx", 
+        "bucket": {
+          "name": "xxx", 
+          "ownerIdentity": {
+            "principalId": "xxx"
+          }, 
+          "arn": "arn:aws:s3:::xxx"
+        }, 
+        "object": {
+          "key": "devportal-docs/new-file-for-lambda-index-test.md", 
+          "size": 2, 
+          "eTag": "xxx", 
+          "sequencer": "xxx"
+        }
+      }
+    }
+  ]
+}
