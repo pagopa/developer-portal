@@ -98,7 +98,13 @@ const PartRendererMenu = (props: PartRendererMenuProps): ReactNode | null => {
               </Heading>
             ));
         case 'typography':
-          if (!['h2', 'h3'].includes(part?.variant ?? '')) return null;
+          if (
+            !includes(
+              headingLevelsToShowInMenu.map((level) => `h${level}`),
+              part?.variant
+            )
+          )
+            return null;
 
           return (
             <Heading
