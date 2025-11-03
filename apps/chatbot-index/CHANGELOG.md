@@ -1,5 +1,11 @@
 # chatbot-index
 
+## 2.0.2
+
+### Patch Changes
+
+- 07d1049: Align settings.py file to chatbot module
+
 ## 2.0.1
 
 ### Patch Changes
