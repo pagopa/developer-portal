@@ -139,6 +139,8 @@ services:
       dockerfile: docker/app.local.Dockerfile
     ports:
       - 8888:8888
+    volumes:
+      - ./files/.aws:/root/.aws
     env_file: ../.env.local
     depends_on:
       langfuse-worker:
