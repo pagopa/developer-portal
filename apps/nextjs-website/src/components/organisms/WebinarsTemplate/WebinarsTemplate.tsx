@@ -2,7 +2,7 @@
 import React, { useEffect, useState, Suspense } from 'react';
 import Hero from '@/editorialComponents/Hero/Hero';
 import { useTranslations } from 'next-intl';
-import { useTheme } from '@mui/material';
+import { Box, useTheme } from '@mui/material';
 import { Webinar } from '@/lib/types/webinar';
 import {
   getFutureWebinarsFrom,
@@ -15,6 +15,7 @@ import { getItemFromPaths } from '@/helpers/structuredData.helpers';
 import Spinner from '@/components/atoms/Spinner/Spinner';
 import { FilteredGridLayout } from '@/components/organisms/FilteredGridLayout/FilteredGridLayout';
 import { Tag } from '@/lib/types/tag';
+import { SITE_HEADER_HEIGHT } from '@/config';
 
 const CHECK_WEBINARS_INTERVAL_MS = 60 * 1000;
 
@@ -104,9 +105,15 @@ const WebinarsTemplateContent = ({
 
 const WebinarsTemplate = (props: WebinarsTemplateProps) => {
   return (
-    <Suspense fallback={<Spinner />}>
-      <WebinarsTemplateContent {...props} />
-    </Suspense>
+    <Box
+      sx={{
+        marginTop: `${SITE_HEADER_HEIGHT}px`,
+      }}
+    >
+      <Suspense fallback={<Spinner />}>
+        <WebinarsTemplateContent {...props} />
+      </Suspense>
+    </Box>
   );
 };
 
