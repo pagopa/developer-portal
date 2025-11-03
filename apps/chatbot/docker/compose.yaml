@@ -153,6 +153,8 @@ services:
       - ./files/.aws:/root/.aws
     env_file: ../.env.local
     depends_on:
+      motoserver:
+        condition: service_started
       redis:
         condition: service_started
       langfuse-worker:
