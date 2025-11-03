@@ -1,5 +1,27 @@
 # nextjs-website
 
+## 10.2.0
+
+### Minor Changes
+
+- 5e89e42: Adjust padding for heading in Guide contend and for section and items in the left menu, adjust font-size and weight for right in guide menu
+- 1cae187: Change ProductHeader behaviour to be fixed on desktop and maintain the old behaviour on mobile
+- 5c1bf8b: Change guides' fontSize, fontWeight and paddings to improve readability
+- 9160917: Aling layout and typography of tutorial in page menu to the guide in page menu
+- dc9eae7: Add scroll behaviour to GuideInPageMenu
+
+### Patch Changes
+
+- 5e51549: Adjust layout styles in Step and Stepper components for improved alignment
+- c8dae53: Update code inline styling
+- dc9eae7: Fix gitbook template lateral menu to have the higlighted element reflecting the currently displayed section
+- a236eb9: Fix: Adjust page layout top margin to prevent content from being hidden behind the site and product headers.
+- 6efe983: Sort products in Desktop and Mobile site headers
+- 0b9a01d: Add indentation for h3 level guide in page menu items and a left continous border, add hover effect with changing background color for all items in guide in page menu
+- 1cae187: Remove auto scrolling behaviour from Guide content, set minimum height for GitBookTemplate content and align GitBook's menus and content
+- Updated dependencies [5e89e42]
+  - gitbook-docs@1.3.0
+
 ## 10.1.0
 
 ### Minor Changes
