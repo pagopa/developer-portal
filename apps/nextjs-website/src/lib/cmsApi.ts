@@ -128,7 +128,7 @@ export const getCaseHistoriesProps = async () => {
 };
 
 export const getSolutionsProps = async () => {
-  // TODO: restore this when Strapi will manage guides metadata
+  // TODO: restore this when Strapi will manage solutions metadata
   const strapiSolutions = (await fetchResponseFromCDN(
     getSyncedSolutionsResponseJsonPath()
   )) as StrapiSolutions | undefined;
@@ -199,7 +199,7 @@ export const getSolutionProps = async (
   solutionsSlug: string,
   jsonMetadata?: JsonMetadata
 ) => {
-  // TODO: restore this when Strapi will manage guides metadata
+  // TODO: restore this when Strapi will manage solutions metadata
   const strapiSolutions = (await fetchResponseFromCDN(
     getSyncedSolutionsResponseJsonPath()
   )) as StrapiSolutions | undefined;
@@ -220,7 +220,7 @@ export const getReleaseNoteProps = async (
   productSlug: string,
   jsonMetadata?: JsonMetadata
 ) => {
-  // TODO: restore this when Strapi will manage guides metadata
+  // TODO: restore this when Strapi will manage release notes metadata
   const strapiReleaseNotes = (await fetchResponseFromCDN(
     getSyncedReleaseNotesResponseJsonPath()
   )) as StrapiReleaseNotes | undefined;
