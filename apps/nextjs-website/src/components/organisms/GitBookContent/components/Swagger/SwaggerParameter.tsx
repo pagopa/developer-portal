@@ -13,11 +13,11 @@ const SwaggerParameter = ({
     <>
       <Typography
         component={'div'}
-        sx={{ fontWeight: 700, fontSize: '14px', marginBottom: '8px' }}
+        sx={{ fontWeight: 700, fontSize: '0.875rem', marginBottom: '8px' }}
       >
         {inProp}
       </Typography>
-      <Box display={'flex'} fontSize={14}>
+      <Box display='flex' fontSize='0.875rem'>
         <Box flex={1}>
           {name}
           <span style={{ color: 'red' }}>{required && ' *'}</span>

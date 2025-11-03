@@ -50,19 +50,13 @@ export const Header = (props: HeaderProps) => {
         component='header'
         role='banner'
         sx={{
-          borderBottomRightRadius: '8px',
-          borderBottomLeftRadius: '8px',
           paddingX: {
             xs: 3,
             sm: 3,
           },
         }}
       >
-        <Stack
-          direction={{ md: 'row' }}
-          paddingY={{ xs: 2, sm: 3, md: 1 }}
-          gap={4}
-        >
+        <Stack direction={{ md: 'row' }} paddingY={{ xs: 2, md: 1 }} gap={4}>
           <Stack sx={styles.headerInfo}>
             <Content {...{ product, avatar, beta, theme }} />
             <Stack

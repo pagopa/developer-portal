@@ -7,19 +7,24 @@ RUN apt-get update && \
   curl \
   wget \
   jq \
-  zip
-
-RUN wget https://github.com/rphrp1985/selenium_support/raw/main/chrome_114_amd64.deb && \
-  apt-get install -y ./chrome_114_amd64.deb && \
-  wget https://chromedriver.storage.googleapis.com/114.0.5735.90/chromedriver_linux64.zip && \
-  unzip chromedriver_linux64.zip && \
-  mv chromedriver /usr/bin/chromedriver
+  zip \
+  less
 
 ENV PYTHONPATH=/app
 ENV PIP_ROOT_USER_ACTION=ignore
 
 RUN pip install --upgrade pip \
-  && pip install poetry awscli
+  && pip install poetry
+
+RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && \
+  unzip awscliv2.zip && \
+  ./aws/install
+
+RUN mkdir -p /tmp/.aws-lambda-rie \
+    && curl -Lo /tmp/.aws-lambda-rie/aws-lambda-rie https://github.com/aws/aws-lambda-runtime-interface-emulator/releases/latest/download/aws-lambda-rie \
+    && chmod +x /tmp/.aws-lambda-rie/aws-lambda-rie \
+    && cp /tmp/.aws-lambda-rie/aws-lambda-rie /usr/local/bin/aws-lambda-rie \
+    && rm -rf /tmp/.aws-lambda-rie
 
 WORKDIR /app
 COPY ./pyproject.toml .
@@ -31,7 +36,7 @@ COPY ./notebooks ./notebooks
 COPY ./.google_service_account.json .
 
 RUN poetry config virtualenvs.create false
-RUN poetry install
+RUN poetry install --with dev
 
 RUN python ./scripts/nltk_download.py
 RUN python ./scripts/spacy_download.py

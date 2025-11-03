@@ -1,5 +1,109 @@
 # nextjs-website
 
+## 10.2.0
+
+### Minor Changes
+
+- 5e89e42: Adjust padding for heading in Guide contend and for section and items in the left menu, adjust font-size and weight for right in guide menu
+- 1cae187: Change ProductHeader behaviour to be fixed on desktop and maintain the old behaviour on mobile
+- 5c1bf8b: Change guides' fontSize, fontWeight and paddings to improve readability
+- 9160917: Aling layout and typography of tutorial in page menu to the guide in page menu
+- dc9eae7: Add scroll behaviour to GuideInPageMenu
+
+### Patch Changes
+
+- 5e51549: Adjust layout styles in Step and Stepper components for improved alignment
+- c8dae53: Update code inline styling
+- dc9eae7: Fix gitbook template lateral menu to have the higlighted element reflecting the currently displayed section
+- a236eb9: Fix: Adjust page layout top margin to prevent content from being hidden behind the site and product headers.
+- 6efe983: Sort products in Desktop and Mobile site headers
+- 0b9a01d: Add indentation for h3 level guide in page menu items and a left continous border, add hover effect with changing background color for all items in guide in page menu
+- 1cae187: Remove auto scrolling behaviour from Guide content, set minimum height for GitBookTemplate content and align GitBook's menus and content
+- Updated dependencies [5e89e42]
+  - gitbook-docs@1.3.0
+
+## 10.1.0
+
+### Minor Changes
+
+- 5a484e8: Add VideoJsPlayer and its storybook
+- 1f7a515: Add VideoJsPlayer to webinar page
+
+## 10.0.3
+
+### Patch Changes
+
+- c28f1c9: Refactor CDN fetch functions to remove request caching and add configurable fetch options
+- a0e8842: Fix past webinars order in webinars section
+
+## 10.0.2
+
+### Patch Changes
+
+- c4b443a: Remove cache from guide pages
+
+## 10.0.1
+
+### Patch Changes
+
+- efb12a5: Manage product visibility using the new boolean attribute isVisible of StrapiProduct
+
+## 10.0.0
+
+### Major Changes
+
+- e103dbf: Add filters to use case list page
+- a4545d2: Implement UseCase detail page, define UseCases props, and add UseCases data fetching.
+- a10836f: Add use case list page, define StrapiUseCaseListPage type, UseCaseListPage props and add UseCaseListPage data fetcing
+
+### Minor Changes
+
+- bd07eff: Add steps to PartRendererMenu
+- f1895e6: Add rendering for new markdown part
+- 42deada: Improve scroll behaviour to be able to scroll to the top of the filters in UseCaseList and TutorialsList components
+- f95be9b: Add Use Cases section preview in overviews
+- c8c68af: Fix chat message parsing and update markdown parsing
+- 9184d73: Add rendering for GitBook Stepper and Step
+- 25a39f7: Refactor tutorial section in product overview page
+- 1d1e4f0: Add rendering of Markdown parts to UseCases
+
+### Patch Changes
+
+- d6d44d7: Fix accessibility link in footer
+- fa69b3b: Add assets prefix to tutorials markdown part
+- 79ece2d: Remove redundant type assertion and remove duplicate collection filter
+- ac75bc9: Generalise item list component in overview
+- 5635af9: Generalise filtered grid component
+- c8a2e3c: Use environment variable instead of hardcoded string
+- Updated dependencies [9bcaab6]
+- Updated dependencies [6d0f79a]
+- Updated dependencies [f1895e6]
+- Updated dependencies [ff133a4]
+- Updated dependencies [c8c68af]
+- Updated dependencies [9184d73]
+  - gitbook-docs@1.2.0
+
+## 9.0.1
+
+### Patch Changes
+
+- 1563c31: Remove error log in build and NoSSR wrapper
+
+## 9.0.0
+
+### Major Changes
+
+- ebe435f: Add filters to tutorial list page
+
+### Minor Changes
+
+- 7d819f7: Rename and generalize Filter Selectors
+- bacb9be: Add flag to toggle filters in tutorials list page
+
+### Patch Changes
+
+- 645a425: Fix dynamic rendering for webinars, solutions and homepage
+
 ## 8.6.0
 
 ### Minor Changes

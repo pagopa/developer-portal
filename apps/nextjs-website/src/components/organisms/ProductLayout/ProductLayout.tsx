@@ -9,6 +9,8 @@ import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
 import { BreadcrumbSegment } from '@/lib/types/path';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
 import ContentWrapper from '@/components/atoms/ContentWrapper/ContentWrapper';
+import { Box } from '@mui/material';
+import { PRODUCT_HEADER_HEIGHT, SITE_HEADER_HEIGHT } from '@/config';
 
 export type ProductLayoutProps = {
   readonly product?: Product;
@@ -33,11 +35,20 @@ const ProductLayout: FC<LayoutPropsWithChildren> = ({
   structuredData,
 }) => {
   return (
-    <>
+    <Box
+      sx={{
+        marginTop: product
+          ? {
+              xs: `${SITE_HEADER_HEIGHT + 40}px`,
+              md: `${SITE_HEADER_HEIGHT + PRODUCT_HEADER_HEIGHT}px`,
+            }
+          : 0,
+      }}
+    >
       {structuredData}
       {product && path && <ProductHeader product={product} path={path} />}
       {product && showBreadcrumbs && (
-        <EContainer sx={{ marginTop: 10, paddingTop: 3 }}>
+        <EContainer sx={{ paddingTop: 3 }}>
           <ProductBreadcrumbs
             breadcrumbs={[...productPageToBreadcrumbs(product, paths)]}
           />
@@ -45,7 +56,7 @@ const ProductLayout: FC<LayoutPropsWithChildren> = ({
       )}
       <ContentWrapper>{children}</ContentWrapper>
       {bannerLinks && <BannerLinks bannerLinks={bannerLinks} />}
-    </>
+    </Box>
   );
 };
 

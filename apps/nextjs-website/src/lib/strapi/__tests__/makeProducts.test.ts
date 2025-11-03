@@ -155,6 +155,7 @@ describe('makeBaseProductWithoutLogoProps', () => {
       slug: 'test-product',
       name: 'Test Product',
       shortName: 'TP',
+      isVisible: true,
       hasApiDataListPage: true,
       apiDataListPageUrl: '/test-product/api/api-detail',
       hasTutorialListPage: true,
@@ -162,6 +163,7 @@ describe('makeBaseProductWithoutLogoProps', () => {
       hasOverviewPage: true,
       hasQuickstartGuidePage: true,
       hasReleaseNotePage: true,
+      hasUseCaseListPage: true,
       bannerLinks: expectedProduct.bannerLinks,
       tags: [],
     });

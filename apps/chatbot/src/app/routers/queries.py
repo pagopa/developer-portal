@@ -30,7 +30,10 @@ def can_evaluate() -> bool:
     This is based on the amount of daily query
     """
     max_daily_evaluations = int(os.getenv("CHB_MAX_DAILY_EVALUATIONS", "200"))
-    return count_queries_created_today() < max_daily_evaluations
+
+    result = count_queries_created_today() < max_daily_evaluations
+    LOGGER.debug(f"[can_evaluate] result: {result}")
+    return result
 
 
 def count_queries_created_today() -> int:
@@ -136,11 +139,16 @@ async def query_creation(
             "trace_id": trace_id,
             "messages": messages,
         }
-        sqs_response = sqs_queue_evaluate.send_message(
-            MessageBody=json.dumps(evaluation_data),
-            MessageGroupId=trace_id,  # Required for FIFO queues
-        )
-        LOGGER.info(f"sqs response: {sqs_response}")
+        if sqs_queue_evaluate is None:
+            LOGGER.warning(
+                f"sqs_queue_evaluate is None, cannot send message {evaluation_data}"
+            )
+        else:
+            sqs_response = sqs_queue_evaluate.send_message(
+                MessageBody=json.dumps(evaluation_data),
+                MessageGroupId=trace_id,  # Required for FIFO queues
+            )
+            LOGGER.info(f"sqs response: {sqs_response}")
 
     if query.queriedAt is None:
         queriedAt = now.isoformat()

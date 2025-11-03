@@ -51,6 +51,8 @@ resource "aws_ecs_task_definition" "cms_task_def" {
       ac_base_url                = var.ac_integration_is_enabled ? var.ac_base_url_param : module.secret_cms_transfer_token_salt.ssm_parameter_arn
       ac_api_key                 = var.ac_integration_is_enabled ? var.ac_api_key_param : module.secret_cms_transfer_token_salt.ssm_parameter_arn
       ac_sender_url              = "https://${var.dns_domain_name}"
+      github_workflow_env        = var.environment
+      disable_custom_validator   = var.environment == "dev" ? "True" : "Fasle"
   })
 }
 

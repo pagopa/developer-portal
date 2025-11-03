@@ -19,6 +19,7 @@ export const strapiApiDataListPages = {
         product: {
           data: {
             attributes: {
+              isVisible: true,
               name: 'SEND',
               slug: 'send',
               shortName: 'SEND',
@@ -38,6 +39,7 @@ export const strapiApiDataListPages = {
               guide_list_page: { data: { id: 1 } },
               tutorial_list_page: { data: { id: 1 } },
               release_note: { data: { id: 1 } },
+              use_case_list_page: { data: { id: 1 } },
               tags: { data: [] },
             },
           },
@@ -109,6 +111,7 @@ export const expectedApiDataListPageProps: ReadonlyArray<ApiDataListPageTemplate
         subtitle: 'Complete documentation for SEND APIs',
       },
       product: {
+        isVisible: true,
         name: 'SEND',
         slug: 'send',
         shortName: 'SEND',

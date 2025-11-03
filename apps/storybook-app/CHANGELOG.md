@@ -1,5 +1,23 @@
 # storybook-app
 
+## 1.1.1
+
+### Patch Changes
+
+- 5a484e8: Add VideoJsPlayer and its storybook
+
+## 1.1.0
+
+### Minor Changes
+
+- ef04d04: Add gitbook content story
+
+## 1.0.1
+
+### Patch Changes
+
+- 7d819f7: Rename and generalize Filter Selectors
+
 ## 1.0.0
 
 ### Major Changes

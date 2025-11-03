@@ -1,5 +1,11 @@
 'use client';
-import React, { Fragment, useCallback, useEffect, useState } from 'react';
+import React, {
+  Fragment,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import Typography from '@mui/material/Typography';
 import { usePathname } from 'next/navigation';
 import ArrowDropDownOutlinedIcon from '@mui/icons-material/ArrowDropDownOutlined';
@@ -14,10 +20,10 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import { SITE_HEADER_HEIGHT } from '@/components/molecules/SiteHeader/SiteHeader';
 import { useScrollUp } from '../ProductHeader/useScrollUp';
 import GuideMenuItems, { type GuideMenuItemsProps } from './Menu';
 import { useTranslations } from 'next-intl';
+import { PRODUCT_HEADER_HEIGHT, SITE_HEADER_HEIGHT } from '@/config';
 
 type GuideMenuProps = GuideMenuItemsProps & {
   distanceFromTop?: number;
@@ -26,6 +32,7 @@ type GuideMenuProps = GuideMenuItemsProps & {
 
 const GuideMenu = (menuProps: GuideMenuProps) => {
   const [open, setOpen] = useState(false);
+  const menuContainerRef = useRef<HTMLDivElement>(null);
   const { palette } = useTheme();
   const t = useTranslations();
   const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('lg'));
@@ -35,20 +42,58 @@ const GuideMenu = (menuProps: GuideMenuProps) => {
   const segments = currentPath.split('/');
   const expanded = segments.map((_, i) => segments.slice(0, i + 1).join('/'));
 
-  const top = scrollUp ? SITE_HEADER_HEIGHT : 0;
+  const topOffsetXs = scrollUp ? SITE_HEADER_HEIGHT : 0;
 
-  const height = `calc(100vh - ${top}px)`;
+  const height = `calc(100vh - ${SITE_HEADER_HEIGHT}px)`;
 
   const topStyle = menuProps.hasHeader
-    ? { xs: top + 62, sm: top + 90, md: top + 77 }
+    ? {
+        xs: topOffsetXs + 62,
+        sm: topOffsetXs + 75,
+        md: SITE_HEADER_HEIGHT + PRODUCT_HEADER_HEIGHT,
+      }
     : {
-        xs: top,
-        sm: top,
-        md: top,
+        xs: topOffsetXs,
+        sm: topOffsetXs,
+        md: topOffsetXs,
       };
 
   const handleClick = useCallback(() => {
     setOpen((prev) => !prev);
+  }, []);
+
+  const scrollToActiveItem = useCallback(() => {
+    if (!menuContainerRef.current) return;
+
+    const activeItem = menuContainerRef.current.querySelector(
+      '[data-active="true"]'
+    );
+    if (activeItem) {
+      const container = menuContainerRef.current;
+      const containerRect = container.getBoundingClientRect();
+      const itemRect = activeItem.getBoundingClientRect();
+
+      // Calculate the position of the item relative to the container
+      const itemTop = itemRect.top - containerRect.top + container.scrollTop;
+      const itemBottom = itemTop + itemRect.height;
+
+      // Calculate the visible area of the container
+      const containerHeight = container.clientHeight;
+      const scrollTop = container.scrollTop;
+      const scrollBottom = scrollTop + containerHeight;
+
+      // Check if item is outside the visible area
+      if (itemTop < scrollTop || itemBottom > scrollBottom) {
+        // Center the item in the container
+        const targetScrollTop =
+          itemTop - containerHeight / 2 + itemRect.height / 2;
+
+        container.scrollTo({
+          top: Math.max(0, targetScrollTop),
+          behavior: 'smooth',
+        });
+      }
+    }
   }, []);
 
   useEffect(() => {
@@ -57,17 +102,24 @@ const GuideMenu = (menuProps: GuideMenuProps) => {
     }
   }, [isDesktop]);
 
+  useEffect(() => {
+    const timer = setTimeout(scrollToActiveItem, 100);
+    return () => clearTimeout(timer);
+  }, [currentPath, scrollToActiveItem]);
+
   const items = (
     <GuideMenuItems
       {...menuProps}
       currentPath={currentPath}
       expanded={expanded}
+      containerRef={menuContainerRef}
     />
   );
 
   return (
     <Fragment>
       <Stack
+        ref={menuContainerRef}
         sx={{
           backgroundColor: palette.grey[50],
           flexShrink: 0,
@@ -83,7 +135,7 @@ const GuideMenu = (menuProps: GuideMenuProps) => {
       >
         <Stack
           sx={{
-            padding: { lg: '80px 0' },
+            padding: { lg: '28px 0' },
             flexGrow: { lg: 0 },
             flexShrink: { lg: 0 },
           }}

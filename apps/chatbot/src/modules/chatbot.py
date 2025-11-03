@@ -1,4 +1,5 @@
 import copy
+import time
 from typing import Union, Tuple, Optional, List, Any, Dict
 
 from langfuse import Langfuse
@@ -24,7 +25,6 @@ from langfuse.llama_index import LlamaIndexInstrumentor
 
 from src.modules.logger import get_logger
 from src.modules.models import get_llm, get_embed_model
-from src.modules.vector_database import load_index_redis
 from src.modules.agent import get_agent
 from src.modules.handlers import EventHandler
 from src.modules.presidio import PresidioPII
@@ -56,19 +56,15 @@ class Chatbot:
     def __init__(
         self,
     ):
+        start_time = time.time()
         self.pii = PresidioPII(config=SETTINGS.presidio_config)
+        end_time_presidio = time.time() - start_time
+        LOGGER.info(
+            f">>>>>>>>>>> Presidio initialized in {end_time_presidio:.3f} secs. <<<<<<<<<<"
+        )
         self.model = get_llm()
         self.embed_model = get_embed_model()
         self.qa_prompt_tmpl, self.ref_prompt_tmpl = self._get_prompt_templates()
-        self.index = load_index_redis(
-            self.model,
-            self.embed_model,
-        )
-        self.agent = get_agent(
-            index=self.index,
-            text_qa_template=self.qa_prompt_tmpl,
-            refine_template=self.ref_prompt_tmpl,
-        )
         self.instrumentor = LlamaIndexInstrumentor(
             public_key=SETTINGS.langfuse_public_key,
             secret_key=SETTINGS.langfuse_secret_key,
@@ -76,6 +72,8 @@ class Chatbot:
             mask=self._mask_trace,
         )
         self.instrumentor._event_handler = EventHandler(langfuse_client=LANGFUSE_CLIENT)
+        end_time = time.time() - start_time
+        LOGGER.info(f">>>>>>> Chatbot initialized in {end_time:.3f} secs. <<<<<<<")
 
     def _get_prompt_templates(
         self,
@@ -108,6 +106,7 @@ class Chatbot:
         retrieved_contexts = []
 
         for tool_call in tool_calls:
+
             raw_output = tool_call.tool_output.raw_output
             product_list += getattr(raw_output, "products", [])
             references = getattr(raw_output, "references", [])
@@ -244,6 +243,17 @@ class Chatbot:
         messages: Optional[List[Dict[str, str]]] | None = None,
     ) -> dict:
 
+        start_time = time.time()
+        agent = get_agent(
+            llm=self.model,
+            embed_model=self.embed_model,
+            text_qa_template=self.qa_prompt_tmpl,
+            refine_template=self.ref_prompt_tmpl,
+        )
+        LOGGER.info(
+            f">>>>>>> Agent initialized in {time.time() - start_time:.3f} secs. <<<<<<<<"
+        )
+
         chat_history = self._messages_to_chathistory(messages)
         LOGGER.info(f"Langfuse trace id: {trace_id}")
 
@@ -251,7 +261,7 @@ class Chatbot:
             trace_id=trace_id, session_id=session_id, user_id=user_id
         ) as trace:
             try:
-                engine_response = await self.agent.run(query_str, chat_history)
+                engine_response = await agent.run(query_str, chat_history)
                 response_json = self._get_response_json(engine_response)
 
             except Exception as e:
@@ -270,6 +280,6 @@ class Chatbot:
                 tags=response_json["products"],
             )
             trace.score(name="user-feedback", value=0, data_type="NUMERIC")
+        
         self.instrumentor.flush()
-
         return response_json

@@ -30,7 +30,7 @@ In order to get the Strapi API token needed in the .env.local:
 
 See the repository <https://github.com/pagopa/developer-portal-cms/>
 
-### Copile the applications and the packages in the monorepo
+### Compile the applications and the packages in the monorepo
 
 Run the following command from the root folder.
 
@@ -159,3 +159,15 @@ The summary you provide here will be added to the `CHANGELOG.md` file. Follow th
 4. **Creating a Pull Request**: after generating the changelog, the workflow will create a PR with the proposed changes, which include version bumping and updating the `CHANGELOG.md` file.
 
 5. **Updating the PR**: if additional changes are made while the PR is open, the changeset's bot will automatically update the PR based on the changes in the `.changeset` folder.
+
+## SOAP API Sync
+
+Launch the SOAP API sync manually from GitHub Actions.
+
+Steps:
+
+1. Open the repository’s Actions tab.
+2. Select the workflow named Sync SOAP API Repo.
+3. Click Run workflow and confirm.
+
+No automatic schedule or trigger is configured due to the low frequency of SOAP API repository updates. Run it only when the upstream SOAP API repo has changed.

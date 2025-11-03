@@ -53,8 +53,14 @@ import {
 import { StrapiSolutionListPage } from './strapi/types/solutionListPage';
 import { StrapiSolutions } from './strapi/types/solutions';
 import { StrapiReleaseNotes } from './strapi/types/releaseNotes';
+import { fetchUseCases } from '@/lib/strapi/fetches/fetchUseCases';
+import { makeUseCasesProps } from '@/lib/strapi/makeProps/makeUseCases';
+import { fetchUseCaseListPages } from '@/lib/strapi/fetches/fetchUseCaseListPages';
+import { makeUseCaseListPagesProps } from '@/lib/strapi/makeProps/makeUseCaseListPages';
 import { fetchTags } from '@/lib/strapi/fetches/fetchTags';
 import { makeTagsProps } from '@/lib/strapi/makeProps/makeTags';
+import { isMarkDownPart, MarkDownPart } from '@/lib/strapi/types/part';
+import { getMarkdownContent } from '@/lib/api';
 
 // a BuildEnv instance ready to be used
 const buildEnv = pipe(
@@ -78,7 +84,10 @@ export const getWebinarsProps = async () => {
 
 export const getProductsProps = async () => {
   const strapiProducts = await fetchProducts(buildEnv);
-  return makeProductsProps(strapiProducts);
+  const products = makeProductsProps(strapiProducts);
+  return [...products].sort((productA, productB) =>
+    productA.name.localeCompare(productB.name)
+  );
 };
 
 export const getWebinarCategoriesProps = async () => {
@@ -93,7 +102,24 @@ export const getTagsProps = async () => {
 
 export const getTutorialsProps = async () => {
   const strapiTutorials = await fetchTutorials(buildEnv);
-  return makeTutorialsProps(strapiTutorials);
+  const tutorialsWithMarkdown = strapiTutorials.data.filter((tutorial) => {
+    const parts = tutorial?.attributes?.parts ?? [];
+    return parts.some((part) => part?.__component === 'parts.markdown');
+  });
+  const allMarkdownParts = tutorialsWithMarkdown.flatMap((tutorial) =>
+    (tutorial?.attributes?.parts ?? []).filter(
+      (part) => part?.__component === 'parts.markdown'
+    )
+  );
+  const contentPromises = allMarkdownParts.map(async (part) => {
+    const { dirName, pathToFile } = part as MarkDownPart;
+    const key = `${dirName}/${pathToFile}`;
+    const content = await getMarkdownContent(dirName, pathToFile);
+    return [key, content];
+  });
+  const resolvedContentPairs = await Promise.all(contentPromises);
+  const markdownContentDict = Object.fromEntries(resolvedContentPairs);
+  return makeTutorialsProps(strapiTutorials, markdownContentDict);
 };
 
 export const getTutorialListPagesProps = async () => {
@@ -239,4 +265,25 @@ export const getReleaseNoteProps = async (
     );
   }
   return await makeReleaseNoteS3(releaseNote, jsonMetadata);
+};
+
+export const getUseCasesProps = async () => {
+  const strapiUseCases = await fetchUseCases(buildEnv);
+  const allMarkdownParts = strapiUseCases.data.flatMap((useCase) =>
+    (useCase?.attributes?.parts ?? []).filter(isMarkDownPart)
+  );
+  const contentPromises = allMarkdownParts.map(async (part) => {
+    const { dirName, pathToFile } = part;
+    const key = `${dirName}/${pathToFile}`;
+    const content = await getMarkdownContent(dirName, pathToFile);
+    return [key, content];
+  });
+  const resolvedContentPairs = await Promise.all(contentPromises);
+  const markdownContentDict = Object.fromEntries(resolvedContentPairs);
+  return makeUseCasesProps(strapiUseCases, markdownContentDict);
+};
+
+export const getUseCaseListPagesProps = async () => {
+  const strapiUseCasesListPages = await fetchUseCaseListPages(buildEnv);
+  return makeUseCaseListPagesProps(strapiUseCasesListPages);
 };
