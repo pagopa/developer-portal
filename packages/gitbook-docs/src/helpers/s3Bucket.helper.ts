@@ -185,7 +185,7 @@ export async function deleteS3Directory(
       );
       const output = await client.send(deleteCommand);
 
-      // Logga eventuali errori specifici per oggetto
+      // Logs specific object errors
       if (output.Errors && output.Errors.length > 0) {
         console.error(
           `There was a problem deleting batch: ${i / batchSize + 1}:`
