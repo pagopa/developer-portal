@@ -1,5 +1,0 @@
----
-"chatbot": patch
----
-
-fix settings

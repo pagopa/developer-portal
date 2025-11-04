@@ -30,3 +30,8 @@ variable "route53_zone_id" {
   type        = string
   default     = null
 }
+
+variable "environment" {
+  type        = string
+  description = "Environment"
+}

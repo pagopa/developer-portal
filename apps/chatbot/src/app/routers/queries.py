@@ -30,7 +30,10 @@ def can_evaluate() -> bool:
     This is based on the amount of daily query
     """
     max_daily_evaluations = int(os.getenv("CHB_MAX_DAILY_EVALUATIONS", "200"))
-    return count_queries_created_today() < max_daily_evaluations
+
+    result = count_queries_created_today() < max_daily_evaluations
+    LOGGER.debug(f"[can_evaluate] result: {result}")
+    return result
 
 
 def count_queries_created_today() -> int:
