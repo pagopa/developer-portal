@@ -1,5 +1,11 @@
 # infrastructure
 
+## 6.0.0
+
+### Major Changes
+
+- 4138d59: New lambda function to notify IVS end of streaming.
+
 ## 5.3.0
 
 ### Minor Changes
