@@ -42,6 +42,11 @@ on:
         type: boolean
         required: true
         default: false
+      generate_single_metadata_file:
+        description: 'Generate a single metadata file instead of multiple ones'
+        type: boolean
+        required: true
+        default: true
 
   schedule:
     - cron: '0 23 * * *'  # Run daily at midnight UTC
@@ -111,6 +116,7 @@ jobs:
           S3_PATH_TO_GITBOOK_DOCS: ${{ vars.S3_PATH_TO_GITBOOK_DOCS || 'devportal-docs/docs' }}
           NEXT_PUBLIC_COGNITO_REGION: ${{ vars.NEXT_PUBLIC_COGNITO_REGION || 'eu-south-1' }}
           FETCH_FROM_STRAPI: ${{ vars.FETCH_FROM_STRAPI || 'true' }}
+          GENERATE_SINGLE_METADATA_FILE: ${{ inputs.generate_single_metadata_file == true && 'true' || 'false' }}
           GENERATE_URL_METADATA: 'true'
           GENERATE_SITEMAP_METADATA: 'true'
           SAVE_STRAPI_RESPONSES: 'true'
@@ -221,6 +227,7 @@ jobs:
           S3_PATH_TO_GITBOOK_DOCS: ${{ vars.S3_PATH_TO_GITBOOK_DOCS || 'devportal-docs/docs' }}
           NEXT_PUBLIC_COGNITO_REGION: ${{ vars.NEXT_PUBLIC_COGNITO_REGION || 'eu-south-1' }}
           FETCH_FROM_STRAPI: ${{ vars.FETCH_FROM_STRAPI || 'true' }}
+          GENERATE_SINGLE_METADATA_FILE: ${{ inputs.generate_single_metadata_file == true && 'true' || 'false' }}
           GENERATE_URL_METADATA: 'true'
           GENERATE_SITEMAP_METADATA: 'true'
           SAVE_STRAPI_RESPONSES: 'true'
