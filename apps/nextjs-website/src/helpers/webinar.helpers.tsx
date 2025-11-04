@@ -18,25 +18,24 @@ export const useWebinar = () => {
   const [webinarState, setWebinarState] = useState<WebinarState>(
     WebinarState.unknown
   );
-  const [webinarVideoVisible, setWebinarVideoVisible] =
-    useState<boolean>(false);
+  const [isPlayerVisible, setIsPlayerVisible] = useState<boolean>(false);
 
-  const updateWebinarVideoVisible = async (url?: string): Promise<void> => {
+  const updateIsPlayerVisible = async (url?: string): Promise<void> => {
     if (!url) {
-      setWebinarVideoVisible(false);
+      setIsPlayerVisible(false);
       return;
     }
     const liveUrlPattern = /playback\.live-video.*\.m3u8$/;
     if (!liveUrlPattern.test(url)) {
-      setWebinarVideoVisible(true);
+      setIsPlayerVisible(true);
       return;
     }
     // eslint-disable-next-line functional/no-try-statements
     try {
       const response = await fetch(url, { method: 'GET' });
-      setWebinarVideoVisible(response.ok);
+      setIsPlayerVisible(response.ok);
     } catch {
-      setWebinarVideoVisible(false);
+      setIsPlayerVisible(false);
     }
   };
 
@@ -78,18 +77,18 @@ export const useWebinar = () => {
   }, [webinar]);
 
   useEffect(() => {
-    updateWebinarVideoVisible(webinar?.playerSrc);
+    updateIsPlayerVisible(webinar?.playerSrc);
     const pollingIntervalId = setInterval(() => {
       if (
         webinar &&
         [WebinarState.live, WebinarState.comingSoon].includes(webinarState)
       ) {
-        updateWebinarVideoVisible(webinar.playerSrc);
+        updateIsPlayerVisible(webinar.playerSrc);
       }
     }, POLLING_WEBINAR_VIDEO_INTERVAL_MS);
 
     return () => clearInterval(pollingIntervalId);
   }, [webinarState]);
 
-  return { webinarState, setWebinar, webinarVideoVisible };
+  return { webinarState, setWebinar, isPlayerVisible };
 };
