@@ -92,7 +92,6 @@ const GuideMenu = (menuProps: GuideMenuProps) => {
 
         container.scrollTo({
           top: Math.max(0, targetScrollTop),
-          behavior: 'smooth',
         });
       }
     }
