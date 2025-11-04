@@ -44,7 +44,9 @@ const GuideMenu = (menuProps: GuideMenuProps) => {
 
   const topOffsetXs = scrollUp ? SITE_HEADER_HEIGHT : 0;
 
-  const height = `calc(100vh - ${SITE_HEADER_HEIGHT}px)`;
+  const height = `calc(100vh - ${
+    SITE_HEADER_HEIGHT + PRODUCT_HEADER_HEIGHT
+  }px)`;
 
   const topStyle = menuProps.hasHeader
     ? {

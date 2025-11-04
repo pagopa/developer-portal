@@ -1,5 +1,11 @@
 # chatbot
 
+## 7.1.1
+
+### Patch Changes
+
+- 39ab9cf: Let local tests work with Langfuse V3
+
 ## 7.1.0
 
 ### Minor Changes
