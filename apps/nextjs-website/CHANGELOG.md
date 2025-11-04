@@ -1,5 +1,11 @@
 # nextjs-website
 
+## 10.3.0
+
+### Minor Changes
+
+- b37ac58: Remove animation from auto scroll in GuideMenu
+
 ## 10.2.1
 
 ### Patch Changes
