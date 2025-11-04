@@ -241,7 +241,7 @@ async function main() {
     const directoriesToRemove: string[] = s3DirNames.filter(
       (dirName) => !setDirNames.has(dirName)
     );
-    directoriesToRemove.map((dirName) => {
+    directoriesToRemove.forEach((dirName) => {
       deleteS3Directory(
         path.join(S3_PATH_TO_GITBOOK_DOCS, dirName),
         S3_BUCKET_NAME!,
