@@ -32,7 +32,7 @@ export const useWebinar = () => {
     }
     // eslint-disable-next-line functional/no-try-statements
     try {
-      const response = await fetch(url, { method: 'GET' });
+      const response = await fetch(url, { method: 'GET', cache: 'no-store' });
       setIsPlayerVisible(response.ok);
     } catch {
       setIsPlayerVisible(false);
