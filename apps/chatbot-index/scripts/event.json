@@ -3,7 +3,7 @@
     {
       "eventVersion": "2.1", 
       "eventSource": "aws:s3", 
-      "awsRegion": "eu-south-1", 
+      "awsRegion": "us-east-1", 
       "eventTime": "2025-09-30T13:41:26.899Z", 
       "eventName": "ObjectCreated:Put", 
       "userIdentity": {
