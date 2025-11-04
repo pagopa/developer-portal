@@ -6,7 +6,7 @@ export async function fetchFromStrapiResponse<T = unknown>(
   }
 ): Promise<T> {
   const strapiEndpoint = process.env.STRAPI_API_URL;
-  const strapiApiToken = process.env.STRAPI_IVS_API_TOKEN; // TODO: check if is better to have more generic token (write or write and read)
+  const strapiApiToken = process.env.STRAPI_IVS_API_TOKEN;
 
   if (!strapiEndpoint || !strapiApiToken) {
     // eslint-disable-next-line functional/no-throw-statements
@@ -33,6 +33,7 @@ export async function fetchFromStrapiResponse<T = unknown>(
     method,
     headers: baseHeaders,
     body,
+    cache: 'no-store',
   });
 
   if (!response.ok) {
