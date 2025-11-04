@@ -1,5 +1,11 @@
 # nextjs-website
 
+## 10.2.1
+
+### Patch Changes
+
+- 92d3566: Fix height of GuideMenu component
+
 ## 10.2.0
 
 ### Minor Changes
