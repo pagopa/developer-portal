@@ -1,5 +1,4 @@
 import React, { useMemo } from 'react';
-import NextLink from 'next/link';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
@@ -97,6 +96,9 @@ export type GuideMenuItemsProps = Partial<GuideVersionSelectorProps> & {
   menu: string;
   linkPrefix: string;
   containerRef?: React.RefObject<HTMLDivElement>;
+  // Callback invoked after successful guide fetch
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  onGuideNavigate?: (data: any) => boolean;
 };
 
 const GuideMenuItems = ({
@@ -108,15 +110,33 @@ const GuideMenuItems = ({
   menu,
   versionName,
   versions,
+  onGuideNavigate,
 }: GuideMenuItemsProps) => {
   const components: RenderingComponents<React.ReactNode> = useMemo(
     () => ({
       Item: ({ href, title, children }) => {
+        const handleNavigate = (e: React.MouseEvent<HTMLAnchorElement>) => {
+          if (href.startsWith('http')) return; // external
+          e.preventDefault();
+          const cleanHref = href.split('#')[0];
+          const parts = cleanHref.split('/').filter(Boolean);
+          if (parts.length < 2 || parts[1] !== 'guides') return; // not a guide
+          const apiPath = `/api/${parts[0]}/guides/${parts.slice(2).join('/')}`;
+          fetch(apiPath, { headers: { Accept: 'application/json' } })
+            .then((res) => (res.ok ? res.json() : undefined))
+            .then((data) => {
+              if (data && onGuideNavigate) {
+                onGuideNavigate(data);
+              }
+            })
+            .catch(() => undefined);
+        };
         const label = (
           <Typography
             variant='sidenav'
-            component={NextLink}
+            component='a'
             href={href}
+            onClick={handleNavigate}
             color='text.secondary'
             sx={{
               textDecoration: 'none',
@@ -158,7 +178,7 @@ const GuideMenuItems = ({
         </Typography>
       ),
     }),
-    [currentPath]
+    [currentPath, onGuideNavigate]
   );
 
   const children = useMemo(() => {

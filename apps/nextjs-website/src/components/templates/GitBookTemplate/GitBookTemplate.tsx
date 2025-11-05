@@ -10,6 +10,7 @@ import { Box, Stack } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import { PRODUCT_HEADER_HEIGHT, SITE_HEADER_HEIGHT } from '@/config';
 import GitBookContent from '@/components/organisms/GitBookContent/GitBookContent';
+import { useState } from 'react';
 
 export type GitBookTemplateProps = {
   menuName: string;
@@ -44,6 +45,33 @@ const GitBookTemplate = ({
   const responsiveContentMarginTop =
     (contentMarginTop && `${contentMarginTop}px`) || 0;
 
+  // Local dynamic state (initialised from server props)
+  const [dynamicContent, setDynamicContent] = useState({
+    body,
+    bodyConfig,
+    path,
+  });
+
+  // Expose global updater (simple approach without new context plumbing)
+  const updateGuideContent = (data: unknown): boolean => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const payload = data as any;
+    if (!payload?.page?.body) return false;
+    setDynamicContent((prev) => {
+      const mergedBodyConfig = {
+        ...prev.bodyConfig,
+        ...payload.bodyConfig,
+        urlReplaces: prev.bodyConfig.urlReplaces,
+      };
+      return {
+        body: payload.page.body,
+        bodyConfig: mergedBodyConfig,
+        path: payload.page.path ?? prev.path,
+      };
+    });
+    return true;
+  };
+
   return (
     <FragmentProvider>
       <Box
@@ -64,6 +92,7 @@ const GitBookTemplate = ({
             versionName={versionName}
             versions={versions}
             distanceFromTop={menuDistanceFromTop}
+            onGuideNavigate={updateGuideContent}
           />
         )}
         <Stack
@@ -82,7 +111,10 @@ const GitBookTemplate = ({
             <ProductBreadcrumbs breadcrumbs={breadcrumbs} />
           </Box>
           <Box sx={{ padding: '0 40px 32px 40px' }}>
-            <GitBookContent content={body} config={bodyConfig} />
+            <GitBookContent
+              content={dynamicContent.body}
+              config={dynamicContent.bodyConfig}
+            />
           </Box>
         </Stack>
         {hasInPageMenu && (
@@ -102,9 +134,9 @@ const GitBookTemplate = ({
               }}
             >
               <GuideInPageMenu
-                assetsPrefix={bodyConfig.assetsPrefix}
-                pagePath={path}
-                inPageMenu={body}
+                assetsPrefix={dynamicContent.bodyConfig.assetsPrefix}
+                pagePath={dynamicContent.path}
+                inPageMenu={dynamicContent.body}
                 title={t('productGuidePage.onThisPage')}
               />
             </Box>
