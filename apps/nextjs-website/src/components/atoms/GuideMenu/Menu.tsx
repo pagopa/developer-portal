@@ -96,7 +96,6 @@ export type GuideMenuItemsProps = Partial<GuideVersionSelectorProps> & {
   menu: string;
   linkPrefix: string;
   containerRef?: React.RefObject<HTMLDivElement>;
-  // Callback invoked after successful guide fetch
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onGuideNavigate?: (data: any) => boolean;
 };
@@ -120,8 +119,7 @@ const GuideMenuItems = ({
           e.preventDefault();
           const cleanHref = href.split('#')[0];
           const parts = cleanHref.split('/').filter(Boolean);
-          if (parts.length < 2 || parts[1] !== 'guides') return; // not a guide
-          const apiPath = `/api/${parts[0]}/guides/${parts.slice(2).join('/')}`;
+          const apiPath = `/api/${parts.join('/')}`;
           fetch(apiPath, { headers: { Accept: 'application/json' } })
             .then((res) => (res.ok ? res.json() : undefined))
             .then((data) => {

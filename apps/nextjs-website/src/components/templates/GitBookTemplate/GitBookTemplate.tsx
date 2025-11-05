@@ -10,7 +10,11 @@ import { Box, Stack } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import { PRODUCT_HEADER_HEIGHT, SITE_HEADER_HEIGHT } from '@/config';
 import GitBookContent from '@/components/organisms/GitBookContent/GitBookContent';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import {
+  productPageToBreadcrumbs,
+  pageToBreadcrumbs,
+} from '@/helpers/breadcrumbs.helpers';
 
 export type GitBookTemplateProps = {
   menuName: string;
@@ -44,16 +48,23 @@ const GitBookTemplate = ({
   const t = useTranslations();
   const responsiveContentMarginTop =
     (contentMarginTop && `${contentMarginTop}px`) || 0;
-
-  // Local dynamic state (initialised from server props)
   const [dynamicContent, setDynamicContent] = useState({
     body,
     bodyConfig,
     path,
+    menu,
   });
+  const initialBreadcrumbs = breadcrumbs;
+  const [dynamicBreadcrumbs, setDynamicBreadcrumbs] =
+    useState<BreadcrumbSegment[]>(initialBreadcrumbs);
+  const [dynamicSeo, setDynamicSeo] = useState<{
+    metaTitle?: string;
+    metaDescription?: string;
+    canonical?: string;
+  } | null>(null);
 
   // Expose global updater (simple approach without new context plumbing)
-  const updateGuideContent = (data: unknown): boolean => {
+  const updateDynamicContent = (data: unknown): boolean => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const payload = data as any;
     if (!payload?.page?.body) return false;
@@ -67,10 +78,102 @@ const GitBookTemplate = ({
         body: payload.page.body,
         bodyConfig: mergedBodyConfig,
         path: payload.page.path ?? prev.path,
+        menu: payload.page.menu ?? prev.menu,
       };
     });
+    // Breadcrumbs: Guide
+    if (payload?.product && payload?.guide) {
+      const guideCrumbsBase: BreadcrumbSegment[] = [
+        {
+          translate: true,
+          name: 'devPortal.productHeader.guides',
+          path: payload.product.hasGuideListPage
+            ? `/${payload.product.slug}/guides`
+            : '/',
+        },
+        {
+          name: payload.guide.name,
+          path: payload.guide.path,
+        },
+      ];
+      const newCrumbs = productPageToBreadcrumbs(
+        payload.product,
+        guideCrumbsBase
+      );
+      setDynamicBreadcrumbs(newCrumbs as BreadcrumbSegment[]);
+    }
+    // Breadcrumbs: Solution
+    if (payload?.solution) {
+      const solutionBase: BreadcrumbSegment[] = [
+        {
+          name: payload.solution.title,
+          path: `/solutions/${payload.solution.slug}`,
+        },
+        {
+          name: payload.page.title,
+          path: payload.page.path,
+        },
+      ];
+      const solutionCrumbs = pageToBreadcrumbs('solutions', solutionBase);
+      setDynamicBreadcrumbs(solutionCrumbs as BreadcrumbSegment[]);
+    }
+    // SEO
+    const seo = payload?.seo;
+    if (seo) {
+      setDynamicSeo({
+        metaTitle:
+          seo.metaTitle || seo.seoTitle || seo.title || seo.metaTitleFallback,
+        metaDescription: seo.metaDescription || seo.seoDescription || '',
+        canonical: payload?.page?.path || undefined,
+      });
+    } else {
+      const guideTitleBits = [
+        payload?.guide?.name,
+        payload?.version && !payload?.version?.main && payload?.version?.name,
+        payload?.product?.name,
+      ].filter(Boolean);
+      const solutionTitleBits = [payload?.solution?.title].filter(Boolean);
+      const entityTitle =
+        guideTitleBits.length > 0
+          ? guideTitleBits.join(' ')
+          : solutionTitleBits.join(' ');
+      const fallbackTitleParts = [
+        payload?.page?.title || '',
+        entityTitle,
+      ].filter(Boolean);
+      setDynamicSeo({
+        metaTitle: fallbackTitleParts.join(' | '),
+        metaDescription: '',
+        canonical: payload?.page?.path || undefined,
+      });
+    }
+    if (typeof window !== 'undefined' && payload?.page?.path) {
+      if (window.location.pathname !== payload.page.path) {
+        window.history.pushState({}, '', payload.page.path);
+      }
+    }
     return true;
   };
+
+  // Apply document title & meta updates
+  useEffect(() => {
+    if (!dynamicSeo?.metaTitle) return;
+    if (typeof document !== 'undefined') {
+      const metaDesc = dynamicSeo.metaDescription;
+      const titleElement = document.querySelector('title');
+      if (titleElement && dynamicSeo.metaTitle) {
+        const docFrag = document.createElement('title');
+        docFrag.appendChild(document.createTextNode(dynamicSeo.metaTitle));
+        titleElement.parentNode?.replaceChild(docFrag, titleElement);
+      }
+      if (metaDesc) {
+        const metaTag = document.querySelector('meta[name="description"]');
+        if (metaTag) {
+          metaTag.setAttribute('content', metaDesc);
+        }
+      }
+    }
+  }, [dynamicSeo]);
 
   return (
     <FragmentProvider>
@@ -92,7 +195,7 @@ const GitBookTemplate = ({
             versionName={versionName}
             versions={versions}
             distanceFromTop={menuDistanceFromTop}
-            onGuideNavigate={updateGuideContent}
+            onGuideNavigate={updateDynamicContent}
           />
         )}
         <Stack
@@ -108,7 +211,7 @@ const GitBookTemplate = ({
           }}
         >
           <Box sx={{ paddingX: '40px' }}>
-            <ProductBreadcrumbs breadcrumbs={breadcrumbs} />
+            <ProductBreadcrumbs breadcrumbs={dynamicBreadcrumbs} />
           </Box>
           <Box sx={{ padding: '0 40px 32px 40px' }}>
             <GitBookContent

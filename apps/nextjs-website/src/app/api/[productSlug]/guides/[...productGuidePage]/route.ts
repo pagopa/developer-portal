@@ -1,3 +1,5 @@
+import { getGuidePage } from '@/lib/api';
+
 export async function GET(
   request: Request,
   {
@@ -12,7 +14,6 @@ export async function GET(
   const { productSlug, productGuidePage } = params;
   const guideSegments = Array.isArray(productGuidePage) ? productGuidePage : [];
 
-  const { getGuidePage } = await import('@/lib/api');
   return getGuidePage(guideSegments, productSlug)
     .then((data) => {
       if (!data) {
@@ -24,7 +25,12 @@ export async function GET(
       const payload = {
         page: data.page,
         guide: data.guide,
-        product: { slug: data.product.slug, name: data.product.name },
+        product: {
+          slug: data.product.slug,
+          name: data.product.name,
+          hasGuideListPage: data.product.hasGuideListPage ?? false,
+          hasOverviewPage: data.product.hasOverviewPage ?? false,
+        },
         version: data.version,
         versions: data.versions,
         bodyConfig: data.bodyConfig,
@@ -36,7 +42,6 @@ export async function GET(
         status: 200,
         headers: {
           'Content-Type': 'application/json',
-          'Cache-Control': 'no-store',
         },
       });
     })
