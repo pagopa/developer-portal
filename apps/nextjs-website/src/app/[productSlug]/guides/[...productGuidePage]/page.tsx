@@ -60,9 +60,8 @@ export async function generateMetadata({
   if (props?.seo) {
     return makeMetadataFromStrapi(props?.seo);
   }
-  const robots = props.version.main ? '' : 'noindex, follow';
   return {
-    robots: robots,
+    ...(props.version.main ? {} : { robots: 'noindex, follow' }),
     ...makeMetadata({
       title: [
         props ? props.page.title : '',
