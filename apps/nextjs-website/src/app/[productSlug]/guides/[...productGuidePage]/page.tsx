@@ -60,21 +60,24 @@ export async function generateMetadata({
   if (props?.seo) {
     return makeMetadataFromStrapi(props?.seo);
   }
-
-  return makeMetadata({
-    title: [
-      props ? props.page.title : '',
-      props
-        ? [props.guide.name, !props.version.main && props.version.name]
-            .filter(Boolean)
-            .join(' ')
-        : [],
-      props ? props.product.name : '',
-    ]
-      .filter(Boolean)
-      .join(' | '),
-    url: props?.page.path,
-  });
+  const robots = props.version.main ? '' : 'noindex, follow';
+  return {
+    robots: robots,
+    ...makeMetadata({
+      title: [
+        props ? props.page.title : '',
+        props
+          ? [props.guide.name, !props.version.main && props.version.name]
+              .filter(Boolean)
+              .join(' ')
+          : [],
+        props ? props.product.name : '',
+      ]
+        .filter(Boolean)
+        .join(' | '),
+      url: props?.page.path,
+    }),
+  };
 }
 
 const Page = async ({ params }: { params: Params }) => {
