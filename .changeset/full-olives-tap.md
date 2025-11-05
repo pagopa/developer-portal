@@ -2,4 +2,4 @@
 "nextjs-website": patch
 ---
 
-Add noindex,follo to non-main guide pages
+Add 'noindex, follow' to non-main guide pages
