@@ -9,26 +9,12 @@ import dotenv from 'dotenv';
 import { writeFile } from 'fs/promises';
 import * as fs from 'fs';
 import path from 'path';
-import qs from 'qs';
 import { MetadataItem } from '../metadataItem';
 import { makeS3Client, writeMetadataJson } from '../helpers/s3Bucket.helper';
 import { S3Client } from '@aws-sdk/client-s3';
 import { extractTitleFromMarkdown } from '../helpers/extractTitle.helper';
 import { fetchFromStrapi } from '../helpers/fetchFromStrapi';
-import {
-  MetadataInfo,
-  MetadataType,
-  StrapiGuide,
-  StrapiReleaseNote,
-  StrapiSolution,
-  StrapiGuideListPageResponse,
-  StrapiSolutionListPageResponse,
-  StrapiGuidesResponse,
-  StrapiSolutionsResponse,
-  StrapiReleaseNotesResponse,
-  StrapiProduct,
-  StrapiApiData,
-} from '../helpers/guidesMetadataHelper';
+import { MetadataInfo, MetadataType } from '../helpers/guidesMetadataHelper';
 import { sitePathFromS3Path } from '../helpers/sitePathFromS3Path';
 import { sitePathFromLocalPath } from '../helpers/sitePathFromLocalPath';
 import {
@@ -40,6 +26,27 @@ import {
 } from '../syncedResponses';
 import { DOCUMENTATION_PATH } from '../helpers/documentationParsing.helper';
 import { baseUrl } from 'nextjs-website/src/config';
+import {
+  StrapiGuide,
+  StrapiReleaseNote,
+  StrapiSolution,
+  StrapiGuideListPageResponse,
+  StrapiSolutionListPageResponse,
+  StrapiGuidesResponse,
+  StrapiSolutionsResponse,
+  StrapiReleaseNotesResponse,
+  StrapiProduct,
+  StrapiApiData,
+} from '../helpers/strapiTypes';
+import {
+  apisDataQueryString,
+  guideListPagesQueryString,
+  guidesQueryString,
+  productsQueryString,
+  releaseNotesQueryString,
+  solutionListPageQueryString,
+  solutionsQueryString,
+} from '../helpers/strapiQuery';
 
 // Load environment variables
 dotenv.config();
@@ -75,232 +82,6 @@ const S3_APIS_DATA_METADATA_JSON_PATH =
   'synced-apis-data-response.json';
 
 const DOCUMENTATION_ABSOLUTE_PATH = path.resolve(DOCUMENTATION_PATH);
-
-const STRAPI_PAGE_SIZE = 1000;
-
-const STRAPI_DEFAULT_PAGINATION = {
-  pagination: {
-    pageSize: STRAPI_PAGE_SIZE,
-    page: 1,
-  },
-};
-
-const productRelationsPopulate = {
-  populate: [
-    'logo',
-    'bannerLinks.icon',
-    'overview',
-    'quickstart_guide',
-    'release_note',
-    'api_data_list_page',
-    'api_data_list_page.apiData.*',
-    'api_data_list_page.apiData.apiRestDetail.*',
-    'guide_list_page',
-    'tutorial_list_page',
-    'use_case_list_page',
-  ],
-};
-
-const webinarPopulate = {
-  populate: {
-    coverImage: {
-      populate: ['image'],
-    },
-    webinarSpeakers: {
-      populate: ['avatar'],
-    },
-    relatedLinks: {
-      populate: ['links'],
-    },
-    relatedResources: {
-      populate: {
-        resources: {
-          populate: ['image'],
-        },
-        downloadableDocuments: {
-          populate: '*',
-        },
-      },
-    },
-    seo: {
-      populate: '*,metaImage,metaSocial.image',
-    },
-    questionsAndAnswers: '*',
-    webinarCategory: {
-      populate: ['icon'],
-    },
-    headerImage: {
-      populate: ['image'],
-    },
-  },
-};
-
-const guidesPopulate = {
-  populate: {
-    image: { populate: '*' },
-    mobileImage: { populate: '*' },
-    listItems: { populate: '*' },
-    versions: { populate: '*' },
-    bannerLinks: { populate: ['icon'] },
-    seo: { populate: '*,metaImage,metaSocial.image' },
-    product: {
-      ...productRelationsPopulate,
-    },
-  },
-};
-
-const guidesQueryParams = {
-  ...guidesPopulate,
-  ...STRAPI_DEFAULT_PAGINATION,
-};
-
-const releaseNotesQueryParams = {
-  populate: {
-    bannerLinks: {
-      populate: ['icon'],
-    },
-    product: {
-      populate: [
-        'logo',
-        'bannerLinks.icon',
-        'overview',
-        'quickstart_guide',
-        'release_note',
-        'api_data_list_page',
-        'api_data_list_page.apiData.*',
-        'api_data_list_page.apiData.apiRestDetail.slug',
-        'api_data_list_page.apiData.apiRestDetail.specUrls',
-        'api_data_list_page.apiData.apiSoapDetail.*',
-        'guide_list_page',
-        'tutorial_list_page',
-        'use_case_list_page',
-      ],
-    },
-    seo: {
-      populate: '*,metaImage,metaSocial.image',
-    },
-  },
-  ...STRAPI_DEFAULT_PAGINATION,
-};
-
-const solutionsPopulate = {
-  populate: {
-    icon: 'icon',
-    stats: '*',
-    steps: {
-      populate: {
-        products: '*',
-      },
-    },
-    seo: {
-      populate: '*,metaImage,metaSocial.image',
-    },
-    products: {
-      populate: ['logo'],
-    },
-    bannerLinks: {
-      populate: ['icon'],
-    },
-    webinars: {
-      ...webinarPopulate,
-    },
-    caseHistories: {
-      populate: ['case_histories', 'case_histories.image'],
-    },
-  },
-};
-
-const solutionsQueryParams = {
-  ...solutionsPopulate,
-  ...STRAPI_DEFAULT_PAGINATION,
-};
-
-const productsQueryParams = {
-  ...STRAPI_DEFAULT_PAGINATION,
-};
-
-const apisDataPopulate = {
-  populate: {
-    product: {
-      populate: '*',
-    },
-    apiRestDetail: {
-      populate: {
-        specUrls: {
-          populate: '*',
-        },
-      },
-    },
-    apiSoapDetail: {
-      populate: '*',
-    },
-  },
-};
-
-const apisDataQueryParams = {
-  ...apisDataPopulate,
-  ...STRAPI_DEFAULT_PAGINATION,
-};
-
-const guideListPagesQueryParams = {
-  populate: {
-    product: {
-      ...productRelationsPopulate,
-    },
-    guidesByCategory: {
-      populate: {
-        guides: {
-          populate: ['mobileImage', 'image', 'listItems'],
-        },
-      },
-    },
-    bannerLinks: {
-      populate: ['icon'],
-    },
-    seo: {
-      populate: '*,metaImage,metaSocial.image',
-    },
-  },
-};
-
-const solutionListPageQueryParams = {
-  populate: {
-    solutions: {
-      populate: [
-        'bannerLinks',
-        'bannerLinks.icon',
-        'products.logo',
-        'icon',
-        'icon.name',
-        'stats',
-        'steps',
-        'steps.products',
-        'webinars',
-        'webinars.coverImage',
-        'caseHistories',
-        'caseHistories.case_histories',
-        'caseHistories.case_histories.image',
-      ],
-    },
-    caseHistories: {
-      populate: ['case_histories', 'case_histories.image'],
-    },
-    features: {
-      populate: ['items.icon'],
-    },
-    seo: {
-      populate: '*,metaImage,metaSocial.image',
-    },
-  },
-};
-
-const guidesQueryString = qs.stringify(guidesQueryParams);
-const solutionsQueryString = qs.stringify(solutionsQueryParams);
-const productsQueryString = qs.stringify(productsQueryParams);
-const apisDataQueryString = qs.stringify(apisDataQueryParams);
-const releaseNotesQueryString = qs.stringify(releaseNotesQueryParams);
-const guideListPagesQueryString = qs.stringify(guideListPagesQueryParams);
-const solutionListPageQueryString = qs.stringify(solutionListPageQueryParams);
 
 interface StrapiData {
   guides: StrapiGuide[];
