@@ -74,7 +74,7 @@ export const FilteredGridLayout = ({
     return card.tags?.some((cardTag) => cardTag.name === selectedTagName);
   });
 
-  const hasCards = cards && cards.length > 0;
+  const hasCards = cards.length > 0;
   const filteredCount = hasCards ? filteredCards.length : filteredItems.length;
   // eslint-disable-next-line functional/no-return-void
   const setSelectedTagFilter = (newTag: number): void => {
