@@ -174,12 +174,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const latestDate = new Date(latest.updatedAt || '');
     const currentDate = new Date(current.updatedAt || '');
     return currentDate > latestDate ? current : latest;
-  }).updatedAt;
+  }, { updatedAt: '' }).updatedAt;
   const lastWebinarUpdatedAt = webinars.reduce((latest, current) => {
     const latestDate = new Date(latest.updatedAt || '');
     const currentDate = new Date(current.updatedAt || '');
     return currentDate > latestDate ? current : latest;
-  }).updatedAt;
+  }, { updatedAt: '' }).updatedAt;
 
   // Add main section routes
   const sectionRoutes = [
