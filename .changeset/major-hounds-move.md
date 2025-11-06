@@ -2,4 +2,6 @@
 "nextjs-website": major
 ---
 
-Add dynamic content update to GitBookTemplate component when a GuideMenu item is selected
+Add route handlers for guides, release notes and solutions
+Add fetch using route handlers
+Add dynamic content update in GitBookTemplate
