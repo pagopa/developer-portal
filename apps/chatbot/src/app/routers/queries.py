@@ -2,7 +2,7 @@ import datetime
 import nh3
 import json
 import os
-import uuid
+import secrets
 from botocore.exceptions import BotoCoreError, ClientError
 from boto3.dynamodb.conditions import Key
 from fastapi import APIRouter, Header, HTTPException
@@ -110,7 +110,7 @@ async def query_creation(
 ):
 
     now = datetime.datetime.now(datetime.UTC)
-    trace_id = str(uuid.uuid4())
+    trace_id = secrets.token_hex(16)
     userId = current_user_id(authorization)
     session = find_or_create_session(userId, now=now)
     salt = session_salt(session["id"])
@@ -120,20 +120,17 @@ async def query_creation(
 
     answer_json = await chatbot.chat_generate(
         query_str=query_str,
-        trace_id=trace_id,
-        session_id=session["id"],
-        user_id=user_id,
         messages=messages,
     )
     answer = get_final_response(
         response_str=answer_json["response"],
         references=answer_json["references"],
     )
-    
+
     if can_evaluate():
         evaluation_data = {
             "query_str": query_str,
-            "response_str": answer,
+            "response_str": answer_json["response"],
             "retrieved_contexts": answer_json["contexts"],
             "trace_id": trace_id,
             "messages": messages,
@@ -165,6 +162,18 @@ async def query_creation(
         "createdAtDate": createdAtDate,
         "queriedAt": queriedAt,
         "badAnswer": False,
+    }
+
+    bodyToMonitor = {
+        "traceId": trace_id,
+        "userId": user_id,
+        "sessionId": session["id"],
+        "question": query.question,
+        "answer": answer,
+        "retrieved_contexts": answer_json["contexts"],
+        "products": answer_json.get("products", []),
+        "references": answer_json.get("references", []),
+        "spans": answer_json.get("spans", []),
     }
 
     days = int(os.getenv("EXPIRE_DAYS", 90))
@@ -217,4 +226,3 @@ async def queries_fetching(
         result = dbResponse.get("Items", [])
 
     return result
-
