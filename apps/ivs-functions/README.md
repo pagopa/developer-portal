@@ -16,5 +16,3 @@ TypeScript AWS Lambda functions (Turbo repo package) that react to IVS / S3 fina
 ## Features
 - Time‑window (±15 min) matching logic (`START_STREAMING_TRASHOLD_MS`).
 - Defensive checks (missing env vars, unexpected webinar cardinality).
-- Pure TypeScript typed models (`RecordingEndedFile`, `StrapiWebinars`).
-- Functional style (with selective ESLint rule relaxations).
