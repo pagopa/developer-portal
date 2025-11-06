@@ -10,7 +10,11 @@ import { writeFile } from 'fs/promises';
 import * as fs from 'fs';
 import path from 'path';
 import { MetadataItem } from '../metadataItem';
-import { makeS3Client, writeMetadataJson } from '../helpers/s3Bucket.helper';
+import {
+  downloadS3File,
+  makeS3Client,
+  writeMetadataJson,
+} from '../helpers/s3Bucket.helper';
 import { S3Client } from '@aws-sdk/client-s3';
 import { extractTitleFromMarkdown } from '../helpers/extractTitle.helper';
 import { fetchFromStrapi } from '../helpers/fetchFromStrapi';
@@ -65,6 +69,12 @@ const GENERATE_SITEMAP_METADATA =
 const SAVE_STRAPI_RESPONSES = process.env.SAVE_STRAPI_RESPONSES !== 'false';
 const GENERATE_SINGLE_METADATA_FILE =
   process.env.GENERATE_SINGLE_METADATA_FILE !== 'false';
+const S3_MAIN_VERSION_GUIDE_METADATA_JSON_PATH =
+  process.env.S3_MAIN_VERSION_GUIDE_METADATA_JSON_PATH ||
+  'main-version-guides-metadata.json';
+const S3_OLD_GUIDE_VERSION_TO_REMOVE_JSON_PATH =
+  process.env.S3_OLD_GUIDE_VERSION_TO_REMOVE_JSON_PATH ||
+  'old-versions-to-remove.json';
 
 // S3 paths for metadata files
 const S3_GUIDE_METADATA_JSON_PATH =
@@ -341,6 +351,30 @@ async function processGuidesMetadata(
     items.push(guideItems);
   }
 
+  return items;
+}
+
+async function processMainVersionMetadata(
+  guides: StrapiGuide[]
+): Promise<string[]> {
+  const guideInfoList: MetadataInfo[] = guides
+    .filter((guide) => !!guide.attributes.product?.data?.attributes?.slug)
+    .flatMap((guide) =>
+      guide.attributes.versions.map((version) => ({
+        versionName: version.version,
+        isMainVersion: version.main,
+        dirName: version.dirName,
+        slug: guide.attributes.slug,
+        productSlug: `${guide.attributes.product?.data?.attributes?.slug}`,
+        metadataType: MetadataType.Guide,
+      }))
+    )
+    .filter((guide) => guide.isMainVersion);
+  const items: string[] = [];
+  guideInfoList.map((guideInfo) => {
+    console.log('Processing main version for guide:', guideInfo.dirName);
+    items.push(guideInfo.dirName);
+  });
   return items;
 }
 
@@ -644,6 +678,41 @@ async function main() {
         `URL parsing metadata saved to ${URL_PARSING_METADATA_JSON_PATH}`
       );
     }
+
+    const mainVersionItems = await processMainVersionMetadata(
+      strapiData.guides
+    );
+    console.log(
+      `Processed ${mainVersionItems.length} main version guide items.`
+    );
+
+    const s3MainVersionItems = await downloadS3File(
+      S3_MAIN_VERSION_GUIDE_METADATA_JSON_PATH,
+      S3_BUCKET_NAME!,
+      getS3Client()
+    );
+    const s3DirNames: string[] = JSON.parse(s3MainVersionItems);
+
+    const setMainNames = new Set(mainVersionItems);
+
+    const directoriesToRemove: string[] = s3DirNames.filter(
+      (dirName) => !setMainNames.has(dirName)
+    );
+
+    if (directoriesToRemove.length > 0) {
+      await writeMetadataJson(
+        directoriesToRemove,
+        S3_OLD_GUIDE_VERSION_TO_REMOVE_JSON_PATH,
+        S3_BUCKET_NAME!,
+        getS3Client()
+      );
+    }
+    await writeMetadataJson(
+      mainVersionItems,
+      S3_MAIN_VERSION_GUIDE_METADATA_JSON_PATH,
+      S3_BUCKET_NAME!,
+      getS3Client()
+    );
 
     // Process and save guides metadata
     if (GENERATE_SITEMAP_METADATA && metadataFilter.guides) {
