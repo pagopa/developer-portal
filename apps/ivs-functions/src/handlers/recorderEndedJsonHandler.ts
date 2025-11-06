@@ -3,7 +3,7 @@ import { RecordingEndedFile } from '../types/recordingEndedFile';
 import { StrapiWebinars } from '../types/strapiWebinars';
 import { fetchFromStrapiResponse } from '../helpers/fetchFromStrapiResponse';
 
-const START_STREAMING_TRASHOLD_MS = 15 * 60 * 1000; // 15 minutes
+const START_STREAMING_THRESHOLD_MS = 15 * 60 * 1000; // 15 minutes
 const FILE_SUFFIX = 'recording-ended.json';
 
 export const mangeS3Event = async (event: S3Event) => {
@@ -60,9 +60,9 @@ export const mangeS3Event = async (event: S3Event) => {
     ].join('/');
 
     const strapiWebinarsUrl = `api/webinars?filters[startDatetime][$gte]=${new Date(
-      startStreamingTime - START_STREAMING_TRASHOLD_MS
+      startStreamingTime - START_STREAMING_THRESHOLD_MS
     ).toISOString()}&filters[startDatetime][$lte]=${new Date(
-      startStreamingTime + START_STREAMING_TRASHOLD_MS
+      startStreamingTime + START_STREAMING_THRESHOLD_MS
     ).toISOString()}`;
 
     const strapiWebinarsResponse: StrapiWebinars =

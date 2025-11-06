@@ -14,5 +14,5 @@ TypeScript AWS Lambda functions (Turbo repo package) that react to IVS / S3 fina
 6. `PUT /api/webinars/:id` updating `playerSrc` (and any extra metadata as needed).
 
 ## Features
-- Time‑window (±15 min) matching logic (`START_STREAMING_TRASHOLD_MS`).
+- Time‑window (±15 min) matching logic (`START_STREAMING_THRESHOLD_MS`).
 - Defensive checks (missing env vars, unexpected webinar cardinality).
