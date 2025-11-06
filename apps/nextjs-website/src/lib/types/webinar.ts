@@ -1,7 +1,6 @@
 import { Speaker } from '@/lib/types/speaker';
 import { BlocksContent } from '@strapi/blocks-react-renderer';
 import { SEO } from './seo';
-import { WebinarCategory } from '@/lib/types/webinarCategory';
 import { Media } from '@/lib/types/media';
 import { Tag } from '@/lib/types/tag';
 
@@ -14,6 +13,7 @@ export type Webinar = {
   readonly description: string;
   readonly bodyContent?: BlocksContent;
   readonly playerSrc?: string;
+  readonly playerCoverImagePath?: string;
   readonly speakers?: readonly Speaker[];
   readonly startDateTime?: string;
   readonly endDateTime?: string;
