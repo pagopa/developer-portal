@@ -127,21 +127,23 @@ const Page = async ({ params }: { params: Params }) => {
     things: [convertSeoToStructuredDataArticle(seo)],
   });
 
-  const breadcrumbs = [
-    ...productPageToBreadcrumbs(props.product, [
-      {
-        translate: true,
-        name: 'devPortal.productHeader.guides',
-        path: props.product.hasGuideListPage
-          ? `/${props.product.slug}/guides`
-          : '/',
-      },
-      {
-        name: props.guide.name,
-        path: props.guide.path,
-      },
-    ]),
-  ];
+  const generateBreadcrumbs = (
+    segments: readonly { name: string; path: string }[]
+  ) => {
+    'use server';
+    return [
+      ...productPageToBreadcrumbs(props.product, [
+        {
+          translate: true,
+          name: 'devPortal.productHeader.guides',
+          path: props.product.hasGuideListPage
+            ? `/${props.product.slug}/guides`
+            : '/',
+        },
+        ...segments,
+      ]),
+    ];
+  };
 
   return (
     <ProductLayout
@@ -152,7 +154,10 @@ const Page = async ({ params }: { params: Params }) => {
     >
       <GitBookTemplate
         menuName={props.guide.name}
-        breadcrumbs={breadcrumbs}
+        initialBreadcrumbs={generateBreadcrumbs([
+          { name: props.guide.name, path: props.guide.path },
+        ])}
+        generateBreadcrumbs={generateBreadcrumbs}
         versionName={props.version.name}
         {...props}
       />

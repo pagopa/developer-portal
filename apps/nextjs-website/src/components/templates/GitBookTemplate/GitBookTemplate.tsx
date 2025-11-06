@@ -11,14 +11,13 @@ import { useTranslations } from 'next-intl';
 import { PRODUCT_HEADER_HEIGHT, SITE_HEADER_HEIGHT } from '@/config';
 import GitBookContent from '@/components/organisms/GitBookContent/GitBookContent';
 import { useState, useEffect } from 'react';
-import {
-  productPageToBreadcrumbs,
-  pageToBreadcrumbs,
-} from '@/helpers/breadcrumbs.helpers';
 
 export type GitBookTemplateProps = {
   menuName: string;
-  breadcrumbs: BreadcrumbSegment[];
+  initialBreadcrumbs: BreadcrumbSegment[];
+  generateBreadcrumbs: (
+    segments: readonly { name: string; path: string }[]
+  ) => Promise<BreadcrumbSegment[]>;
   menuDistanceFromTop?: number;
   contentMarginTop?: number;
   versions?: GuideMenuItemsProps['versions'];
@@ -39,7 +38,8 @@ const GitBookTemplate = ({
   pathPrefix,
   versionName,
   versions,
-  breadcrumbs,
+  initialBreadcrumbs,
+  generateBreadcrumbs,
   menuDistanceFromTop,
   contentMarginTop,
   hasHeader = true,
@@ -54,7 +54,6 @@ const GitBookTemplate = ({
     path,
     menu,
   });
-  const initialBreadcrumbs = breadcrumbs;
   const [dynamicBreadcrumbs, setDynamicBreadcrumbs] =
     useState<BreadcrumbSegment[]>(initialBreadcrumbs);
   const [dynamicSeo, setDynamicSeo] = useState<{
@@ -81,41 +80,18 @@ const GitBookTemplate = ({
         menu: payload.page.menu ?? prev.menu,
       };
     });
-    // Breadcrumbs: Guide
     if (payload?.product && payload?.guide) {
-      const guideCrumbsBase: BreadcrumbSegment[] = [
-        {
-          translate: true,
-          name: 'devPortal.productHeader.guides',
-          path: payload.product.hasGuideListPage
-            ? `/${payload.product.slug}/guides`
-            : '/',
-        },
-        {
-          name: payload.guide.name,
-          path: payload.guide.path,
-        },
-      ];
-      const newCrumbs = productPageToBreadcrumbs(
-        payload.product,
-        guideCrumbsBase
-      );
-      setDynamicBreadcrumbs(newCrumbs as BreadcrumbSegment[]);
+      generateBreadcrumbs([
+        { name: payload.guide.name, path: payload.guide.path },
+      ]).then((guideCrumbs) => setDynamicBreadcrumbs(guideCrumbs));
     }
-    // Breadcrumbs: Solution
     if (payload?.solution) {
-      const solutionBase: BreadcrumbSegment[] = [
-        {
-          name: payload.solution.title,
-          path: `/solutions/${payload.solution.slug}`,
-        },
+      generateBreadcrumbs([
         {
           name: payload.page.title,
           path: payload.page.path,
         },
-      ];
-      const solutionCrumbs = pageToBreadcrumbs('solutions', solutionBase);
-      setDynamicBreadcrumbs(solutionCrumbs as BreadcrumbSegment[]);
+      ]).then((solutionCrumbs) => setDynamicBreadcrumbs(solutionCrumbs));
     }
     // SEO
     const seo = payload?.seo;

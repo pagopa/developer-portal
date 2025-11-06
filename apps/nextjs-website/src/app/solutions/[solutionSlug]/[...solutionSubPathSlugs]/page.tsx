@@ -116,26 +116,38 @@ const Page = async ({ params }: { params: Params }) => {
     seo: solution.seo,
   });
 
+  const generateBreadcrumbs = async (
+    segments: readonly { name: string; path: string }[]
+  ) => {
+    'use server';
+    return [
+      ...pageToBreadcrumbs('solutions', [
+        {
+          name: props.solution.title,
+          path: `/solutions/${props.solution.slug}`,
+        },
+        ...segments,
+      ]),
+    ];
+  };
+
+  const initialBreadcrumbs = await generateBreadcrumbs([
+    {
+      name: page.title,
+      path: `/solutions/${
+        props.solution.slug
+      }/details/${params.solutionSubPathSlugs.join('/')}`,
+    },
+  ]);
+
   return (
     <>
       {structuredData}
       <GitBookTemplate
         hasHeader={false}
         menuName={props.solution.title}
-        breadcrumbs={[
-          ...pageToBreadcrumbs('solutions', [
-            {
-              name: props.solution.title,
-              path: `/solutions/${props.solution.slug}`,
-            },
-            {
-              name: page.title,
-              path: `/solutions/${
-                props.solution.slug
-              }/details/${params.solutionSubPathSlugs.join('/')}`,
-            },
-          ]),
-        ]}
+        generateBreadcrumbs={generateBreadcrumbs}
+        initialBreadcrumbs={initialBreadcrumbs}
         menuDistanceFromTop={0}
         contentMarginTop={0}
         {...props}
