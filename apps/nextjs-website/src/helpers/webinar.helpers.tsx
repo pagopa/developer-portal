@@ -3,6 +3,7 @@ import { Webinar } from '@/lib/types/webinar';
 
 const COMING_SOON_START_TIME_DELTA_MS = 39 * 30 * 60 * 1000;
 const CHECK_WEBINAR_STATUS_INTERVAL_MS = 500;
+const POLLING_WEBINAR_VIDEO_INTERVAL_MS = 60 * 1000; // every 60 seconds
 
 export enum WebinarState {
   future,
@@ -17,6 +18,26 @@ export const useWebinar = () => {
   const [webinarState, setWebinarState] = useState<WebinarState>(
     WebinarState.unknown
   );
+  const [isPlayerVisible, setIsPlayerVisible] = useState<boolean>(false);
+
+  const updateIsPlayerVisible = async (url?: string): Promise<void> => {
+    if (!url) {
+      setIsPlayerVisible(false);
+      return;
+    }
+    const liveUrlPattern = /playback\.live-video.*\.m3u8$/;
+    if (!liveUrlPattern.test(url)) {
+      setIsPlayerVisible(true);
+      return;
+    }
+    // eslint-disable-next-line functional/no-try-statements
+    try {
+      const response = await fetch(url, { method: 'GET', cache: 'no-store' });
+      setIsPlayerVisible(response.ok);
+    } catch {
+      setIsPlayerVisible(false);
+    }
+  };
 
   const startDateTimestamp =
     webinar?.startDateTime && new Date(webinar.startDateTime).getTime();
@@ -51,9 +72,23 @@ export const useWebinar = () => {
       setWebinarState(handleWebinarState());
     }, CHECK_WEBINAR_STATUS_INTERVAL_MS);
 
-    // Cleanup the interval when the component is unmounted
+    // Cleanup the intervals when the component is unmounted
     return () => clearInterval(intervalId);
   }, [webinar]);
 
-  return { webinarState, setWebinar };
+  useEffect(() => {
+    updateIsPlayerVisible(webinar?.playerSrc);
+    const pollingIntervalId = setInterval(() => {
+      if (
+        webinar &&
+        [WebinarState.live, WebinarState.comingSoon].includes(webinarState)
+      ) {
+        updateIsPlayerVisible(webinar.playerSrc);
+      }
+    }, POLLING_WEBINAR_VIDEO_INTERVAL_MS);
+
+    return () => clearInterval(pollingIntervalId);
+  }, [webinarState]);
+
+  return { webinarState, setWebinar, isPlayerVisible };
 };
