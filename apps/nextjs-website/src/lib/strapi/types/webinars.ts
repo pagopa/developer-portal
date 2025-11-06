@@ -47,7 +47,7 @@ export type StrapiWebinar = {
     readonly coverImage: { readonly data: StrapiMedia };
     readonly bodyContent?: BlocksContent;
     readonly playerSrc?: string;
-    readonly playerCoverImage: { readonly data?: StrapiMedia };
+    readonly playerCoverImage?: { readonly data?: StrapiMedia };
     readonly startDatetime?: string;
     readonly endDatetime?: string;
     readonly subscribeParagraphLabel?: string;
