@@ -1,5 +1,20 @@
 # nextjs-website
 
+## 11.0.0
+
+### Major Changes
+
+- 164c286: Add support for filters using tags in ApiDataListPages, refactor FilteredGridLayout to support cards
+
+### Minor Changes
+
+- 3788385: Fix issue with side menus in solutions
+
+### Patch Changes
+
+- Updated dependencies [af1d820]
+  - gitbook-docs@1.3.1
+
 ## 10.4.0
 
 ### Minor Changes
