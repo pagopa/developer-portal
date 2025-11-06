@@ -66,7 +66,7 @@ const WebinarPlayerSection = ({
                   controls={true}
                   playsInline={true}
                   src={webinar.playerSrc}
-                  posterUrl={webinar.playerCoverImageUrl}
+                  poster={webinar.playerCoverImageUrl}
                 />
               )}
             </Box>
