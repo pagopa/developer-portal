@@ -145,19 +145,15 @@ const ReleaseNotePage = async ({
     things: [convertSeoToStructuredDataArticle(seo)],
   });
 
-  const generateBreadcrumbs = async (
-    segments: readonly { name: string; path: string }[]
-  ) => [
+  const initialBreadcrumbs = [
     ...productPageToBreadcrumbs(product, [
       {
         name: title,
         path: `/${product.slug}/release-note`,
       },
-      ...segments,
+      ...breadcrumbs,
     ]),
   ];
-
-  const initialBreadcrumbs = await generateBreadcrumbs(breadcrumbs);
 
   return (
     <ProductLayout
@@ -168,7 +164,6 @@ const ReleaseNotePage = async ({
     >
       <GitBookTemplate
         menuName={title}
-        generateBreadcrumbs={generateBreadcrumbs}
         initialBreadcrumbs={initialBreadcrumbs}
         hasInPageMenu={false}
         {...props}
