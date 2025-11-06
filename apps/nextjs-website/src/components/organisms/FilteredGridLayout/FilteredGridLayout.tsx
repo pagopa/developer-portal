@@ -116,7 +116,7 @@ export const FilteredGridLayout = ({
             />
           ))}
       </Box>
-      {filteredCount <= 0 ? (
+      {filteredCount === 0 ? (
         <Box
           sx={{
             display: 'flex',
