@@ -20,6 +20,7 @@ import {
   productToBreadcrumb,
 } from '@/helpers/structuredData.helpers';
 import PageNotFound from '@/app/not-found';
+import { init } from 'next/dist/compiled/webpack/webpack';
 
 export const dynamic = 'force-dynamic';
 
@@ -127,7 +128,7 @@ const Page = async ({ params }: { params: Params }) => {
     things: [convertSeoToStructuredDataArticle(seo)],
   });
 
-  const generateBreadcrumbs = (
+  const generateBreadcrumbs = async (
     segments: readonly { name: string; path: string }[]
   ) => {
     'use server';
@@ -145,6 +146,10 @@ const Page = async ({ params }: { params: Params }) => {
     ];
   };
 
+  const initialBreadcrumbs = await generateBreadcrumbs([
+    { name: props.guide.name, path: props.guide.path },
+  ]);
+
   return (
     <ProductLayout
       product={props.product}
@@ -154,9 +159,7 @@ const Page = async ({ params }: { params: Params }) => {
     >
       <GitBookTemplate
         menuName={props.guide.name}
-        initialBreadcrumbs={generateBreadcrumbs([
-          { name: props.guide.name, path: props.guide.path },
-        ])}
+        initialBreadcrumbs={initialBreadcrumbs}
         generateBreadcrumbs={generateBreadcrumbs}
         versionName={props.version.name}
         {...props}
