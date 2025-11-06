@@ -20,7 +20,6 @@ import {
   productToBreadcrumb,
 } from '@/helpers/structuredData.helpers';
 import PageNotFound from '@/app/not-found';
-import { init } from 'next/dist/compiled/webpack/webpack';
 
 export const dynamic = 'force-dynamic';
 
