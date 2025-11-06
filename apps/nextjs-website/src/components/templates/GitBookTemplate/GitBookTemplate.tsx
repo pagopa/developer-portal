@@ -10,7 +10,7 @@ import { Box, Stack } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import { PRODUCT_HEADER_HEIGHT, SITE_HEADER_HEIGHT } from '@/config';
 import GitBookContent from '@/components/organisms/GitBookContent/GitBookContent';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useDynamicSeo } from '@/hooks/useDynamicSeo';
 import { gitBookPageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
 
@@ -71,99 +71,102 @@ const GitBookTemplate = ({
     }
   }, [dynamicContent.path]);
 
-  const updateDynamicContent = (data: unknown): boolean => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const payload = data as any;
-    if (!payload?.page?.body) {
-      return false;
-    }
-
-    setDynamicContent((prev) => {
-      const mergedBodyConfig = {
-        ...prev.bodyConfig,
-        ...payload.bodyConfig,
-        urlReplaces: prev.bodyConfig.urlReplaces,
-      };
-      return {
-        body: payload.page.body,
-        bodyConfig: mergedBodyConfig,
-        path: payload.page.path ?? prev.path,
-        menu: payload.page.menu ?? prev.menu,
-      };
-    });
-
-    // Dynamic breadcrumbs
-    if (payload?.product && payload?.guide) {
-      generateBreadcrumbs([
-        { name: payload.guide.name, path: payload.guide.path },
-      ]).then((guideCrumbs) => setDynamicBreadcrumbs(guideCrumbs));
-    }
-    if (payload?.solution) {
-      generateBreadcrumbs([
-        {
-          name: payload.page.title,
-          path: payload.page.path,
-        },
-      ]).then((solutionCrumbs) => setDynamicBreadcrumbs(solutionCrumbs));
-    }
-    if (!payload?.guide && !payload?.solution && payload?.title) {
-      const isReleaseNote = (payload.page?.path || '').includes(
-        '/release-note'
-      );
-      if (isReleaseNote) {
-        const gbPageSegments = gitBookPageToBreadcrumbs(
-          payload.bodyConfig.pagePath,
-          payload.bodyConfig.gitBookPagesWithTitle
-        );
-        generateBreadcrumbs(gbPageSegments).then((rnCrumbs) =>
-          setDynamicBreadcrumbs(rnCrumbs)
-        );
+  const updateDynamicContent = useCallback(
+    (data: unknown): boolean => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const payload = data as any;
+      if (!payload?.page?.body) {
+        return false;
       }
-    }
 
-    // SEO
-    const seo = payload?.seo;
-    if (seo) {
-      setDynamicSeo({
-        metaTitle:
-          seo.metaTitle || seo.seoTitle || seo.title || seo.metaTitleFallback,
-        metaDescription: seo.metaDescription || seo.seoDescription || '',
-        canonical: payload?.page?.path || undefined,
+      setDynamicContent((prev) => {
+        const mergedBodyConfig = {
+          ...prev.bodyConfig,
+          ...payload.bodyConfig,
+          urlReplaces: prev.bodyConfig.urlReplaces,
+        };
+        return {
+          body: payload.page.body,
+          bodyConfig: mergedBodyConfig,
+          path: payload.page.path ?? prev.path,
+          menu: payload.page.menu ?? prev.menu,
+        };
       });
-    } else {
-      const guideTitleBits = [
-        payload?.guide?.name,
-        payload?.version && !payload?.version?.main && payload?.version?.name,
-        payload?.product?.name,
-      ].filter(Boolean);
-      const solutionTitleBits = [payload?.solution?.title].filter(Boolean);
-      const releaseNoteTitleBits =
-        !payload?.guide && !payload?.solution && payload?.title
-          ? [payload.title]
-          : [];
-      const entityTitle =
-        guideTitleBits.length > 0
-          ? guideTitleBits.join(' ')
-          : solutionTitleBits.length > 0
-          ? solutionTitleBits.join(' ')
-          : releaseNoteTitleBits.join(' ');
-      const fallbackTitleParts = [
-        payload?.page?.title || '',
-        entityTitle,
-      ].filter(Boolean);
-      setDynamicSeo({
-        metaTitle: fallbackTitleParts.join(' | '),
-        metaDescription: '',
-        canonical: payload?.page?.path || undefined,
-      });
-    }
-    if (typeof window !== 'undefined' && payload?.page?.path) {
-      if (window.location.pathname !== payload.page.path) {
-        window.history.pushState({}, '', payload.page.path);
+
+      // Dynamic breadcrumbs
+      if (payload?.product && payload?.guide) {
+        generateBreadcrumbs([
+          { name: payload.guide.name, path: payload.guide.path },
+        ]).then((guideCrumbs) => setDynamicBreadcrumbs(guideCrumbs));
       }
-    }
-    return true;
-  };
+      if (payload?.solution) {
+        generateBreadcrumbs([
+          {
+            name: payload.page.title,
+            path: payload.page.path,
+          },
+        ]).then((solutionCrumbs) => setDynamicBreadcrumbs(solutionCrumbs));
+      }
+      if (!payload?.guide && !payload?.solution && payload?.title) {
+        const isReleaseNote = (payload.page?.path || '').includes(
+          '/release-note'
+        );
+        if (isReleaseNote) {
+          const gbPageSegments = gitBookPageToBreadcrumbs(
+            payload.bodyConfig.pagePath,
+            payload.bodyConfig.gitBookPagesWithTitle
+          );
+          generateBreadcrumbs(gbPageSegments).then((rnCrumbs) =>
+            setDynamicBreadcrumbs(rnCrumbs)
+          );
+        }
+      }
+
+      // SEO
+      const seo = payload?.seo;
+      if (seo) {
+        setDynamicSeo({
+          metaTitle:
+            seo.metaTitle || seo.seoTitle || seo.title || seo.metaTitleFallback,
+          metaDescription: seo.metaDescription || seo.seoDescription || '',
+          canonical: payload?.page?.path || undefined,
+        });
+      } else {
+        const guideTitleBits = [
+          payload?.guide?.name,
+          payload?.version && !payload?.version?.main && payload?.version?.name,
+          payload?.product?.name,
+        ].filter(Boolean);
+        const solutionTitleBits = [payload?.solution?.title].filter(Boolean);
+        const releaseNoteTitleBits =
+          !payload?.guide && !payload?.solution && payload?.title
+            ? [payload.title]
+            : [];
+        const entityTitle =
+          guideTitleBits.length > 0
+            ? guideTitleBits.join(' ')
+            : solutionTitleBits.length > 0
+            ? solutionTitleBits.join(' ')
+            : releaseNoteTitleBits.join(' ');
+        const fallbackTitleParts = [
+          payload?.page?.title || '',
+          entityTitle,
+        ].filter(Boolean);
+        setDynamicSeo({
+          metaTitle: fallbackTitleParts.join(' | '),
+          metaDescription: '',
+          canonical: payload?.page?.path || undefined,
+        });
+      }
+      if (typeof window !== 'undefined' && payload?.page?.path) {
+        if (window.location.pathname !== payload.page.path) {
+          window.history.pushState({}, '', payload.page.path);
+        }
+      }
+      return true;
+    },
+    [generateBreadcrumbs]
+  );
 
   useDynamicSeo(dynamicSeo);
 

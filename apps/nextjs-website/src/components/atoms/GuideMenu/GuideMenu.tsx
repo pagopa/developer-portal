@@ -1,6 +1,7 @@
 'use client';
 import React, {
   Fragment,
+  memo,
   useCallback,
   useEffect,
   useRef,
@@ -212,4 +213,4 @@ const GuideMenu = (menuProps: GuideMenuProps) => {
   );
 };
 
-export default GuideMenu;
+export default memo(GuideMenu);
