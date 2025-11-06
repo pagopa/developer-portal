@@ -16,7 +16,6 @@ import {
   gitBookPageToBreadcrumbs,
   productPageToBreadcrumbs,
 } from '@/helpers/breadcrumbs.helpers';
-// Removed server action prop; breadcrumbs now generated client-side without server calls
 
 export type GitBookTemplateProps = {
   menuName: string;
@@ -27,6 +26,7 @@ export type GitBookTemplateProps = {
   versionName?: GuideMenuItemsProps['versionName'];
   hasHeader?: boolean;
   hasInPageMenu?: boolean;
+  hasProductHeader?: boolean;
 } & Pick<
   ProductGuidePageProps,
   'menu' | 'body' | 'bodyConfig' | 'path' | 'pathPrefix'
@@ -46,6 +46,7 @@ const GitBookTemplate = ({
   contentMarginTop,
   hasHeader = true,
   hasInPageMenu = true,
+  hasProductHeader = true,
 }: GitBookTemplateProps) => {
   const t = useTranslations();
   const responsiveContentMarginTop =
@@ -203,6 +204,7 @@ const GitBookTemplate = ({
             versions={versions}
             distanceFromTop={menuDistanceFromTop}
             onGuideNavigate={updateDynamicContent}
+            hasProductHeader={hasProductHeader}
           />
         )}
         <Stack
@@ -240,7 +242,9 @@ const GitBookTemplate = ({
               sx={{
                 position: 'sticky',
                 maxWidth: '378px',
-                top: SITE_HEADER_HEIGHT + PRODUCT_HEADER_HEIGHT,
+                top:
+                  SITE_HEADER_HEIGHT +
+                  (hasProductHeader ? PRODUCT_HEADER_HEIGHT : 0),
               }}
             >
               <GuideInPageMenu
@@ -248,6 +252,7 @@ const GitBookTemplate = ({
                 pagePath={dynamicContent.path}
                 inPageMenu={dynamicContent.body}
                 title={t('productGuidePage.onThisPage')}
+                hasProductHeader={hasProductHeader}
               />
             </Box>
           </Box>

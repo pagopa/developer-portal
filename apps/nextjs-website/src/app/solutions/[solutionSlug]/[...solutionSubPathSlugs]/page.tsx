@@ -140,6 +140,7 @@ const Page = async ({ params }: { params: Params }) => {
         initialBreadcrumbs={initialBreadcrumbs}
         menuDistanceFromTop={0}
         contentMarginTop={0}
+        hasProductHeader={false}
         {...props}
       />
     </>

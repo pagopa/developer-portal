@@ -7,6 +7,9 @@ export const webinarPopulate = {
     coverImage: {
       populate: ['image'],
     },
+    playerCoverImage: {
+      populate: ['image'],
+    },
     webinarSpeakers: {
       populate: ['avatar'],
     },

@@ -89,7 +89,7 @@ export const expectedSolutionListTemplateProps: SolutionListTemplateProps = {
         size: 123456,
       },
       slug: 'solutions/solution-1',
-      tags: [
+      labels: [
         {
           label: 'P1',
           path: '/product-1',
