@@ -64,11 +64,14 @@ export function makeTutorialListPagesProps(
           }
         })
       );
-      const updatedAt = attributes.tutorials.data.reduce((latest, current) => {
-        const latestDate = new Date(latest.attributes.updatedAt);
-        const currentDate = new Date(current.attributes.updatedAt);
-        return currentDate > latestDate ? current : latest;
-      }).attributes.updatedAt;
+      const updatedAt =
+        attributes.tutorials.data.length > 0
+          ? attributes.tutorials.data.reduce((latest, current) => {
+              const latestDate = new Date(latest.attributes.updatedAt);
+              const currentDate = new Date(current.attributes.updatedAt);
+              return currentDate > latestDate ? current : latest;
+            }).attributes.updatedAt
+          : undefined;
 
       return {
         updatedAt: updatedAt,
