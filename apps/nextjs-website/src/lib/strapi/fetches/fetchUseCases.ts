@@ -12,9 +12,6 @@ const makeStrapiUseCasesPopulate = () =>
       coverImage: {
         populate: ['image'],
       },
-      playerCoverImage: {
-        populate: ['image'],
-      },
       headerImage: {
         populate: ['image'],
       },
