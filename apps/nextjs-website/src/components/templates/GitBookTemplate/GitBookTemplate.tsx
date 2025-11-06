@@ -12,6 +12,7 @@ import { PRODUCT_HEADER_HEIGHT, SITE_HEADER_HEIGHT } from '@/config';
 import GitBookContent from '@/components/organisms/GitBookContent/GitBookContent';
 import { useState } from 'react';
 import { useDynamicSeo } from '@/hooks/useDynamicSeo';
+import { gitBookPageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
 
 export type GitBookTemplateProps = {
   menuName: string;
@@ -66,7 +67,10 @@ const GitBookTemplate = ({
   const updateDynamicContent = (data: unknown): boolean => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const payload = data as any;
-    if (!payload?.page?.body) return false;
+    if (!payload?.page?.body) {
+      return false;
+    }
+
     setDynamicContent((prev) => {
       const mergedBodyConfig = {
         ...prev.bodyConfig,
@@ -80,6 +84,8 @@ const GitBookTemplate = ({
         menu: payload.page.menu ?? prev.menu,
       };
     });
+
+    // Dynamic breadcrumbs
     if (payload?.product && payload?.guide) {
       generateBreadcrumbs([
         { name: payload.guide.name, path: payload.guide.path },
@@ -93,6 +99,21 @@ const GitBookTemplate = ({
         },
       ]).then((solutionCrumbs) => setDynamicBreadcrumbs(solutionCrumbs));
     }
+    if (!payload?.guide && !payload?.solution && payload?.title) {
+      const isReleaseNote = (payload.page?.path || '').includes(
+        '/release-note'
+      );
+      if (isReleaseNote) {
+        const gbPageSegments = gitBookPageToBreadcrumbs(
+          payload.bodyConfig.pagePath,
+          payload.bodyConfig.gitBookPagesWithTitle
+        );
+        generateBreadcrumbs(gbPageSegments).then((rnCrumbs) =>
+          setDynamicBreadcrumbs(rnCrumbs)
+        );
+      }
+    }
+
     // SEO
     const seo = payload?.seo;
     if (seo) {
@@ -109,10 +130,16 @@ const GitBookTemplate = ({
         payload?.product?.name,
       ].filter(Boolean);
       const solutionTitleBits = [payload?.solution?.title].filter(Boolean);
+      const releaseNoteTitleBits =
+        !payload?.guide && !payload?.solution && payload?.title
+          ? [payload.title]
+          : [];
       const entityTitle =
         guideTitleBits.length > 0
           ? guideTitleBits.join(' ')
-          : solutionTitleBits.join(' ');
+          : solutionTitleBits.length > 0
+          ? solutionTitleBits.join(' ')
+          : releaseNoteTitleBits.join(' ');
       const fallbackTitleParts = [
         payload?.page?.title || '',
         entityTitle,
