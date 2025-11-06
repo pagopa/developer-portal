@@ -29,6 +29,7 @@ logging.getLogger("botocore").setLevel(logging.ERROR)
 LOGGER = get_logger(__name__)
 AWS_S3_CLIENT = AWS_SESSION.client("s3")
 SITEMAP_S3_FILEPATH = "sitemap.xml"
+DOCS_PARENT_FOLDER = "devportal-docs/docs/"
 GUIDES_METADATA_S3_FILEPATH = "guides-metadata.json"
 RELEASE_NOTES_METADATA_S3_FILEPATH = "release-notes-metadata.json"
 SOLUTIONS_METADATA_S3_FILEPATH = "solutions-metadata.json"
@@ -58,6 +59,56 @@ def read_file_from_s3(
         return text
     except Exception as e:
         raise KeyError(f"Error reading {bucket_name}/{file_path} from S3: {e}")
+
+
+def read_metadata_from_s3(
+    docs_parent_folder: str | None = None,
+    bucket_name: str | None = None,
+) -> Tuple[List[dict], List[dict], List[dict]]:
+    """Reads metadata files from an S3 bucket.
+    Args:
+        docs_parent_folder (str): The parent folder in the S3 bucket where the metadata files
+            are located.
+        bucket_name (str): The name of the S3 bucket.
+    Returns:
+        Tuple[List[dict], List[dict], List[dict]]: A tuple containing three lists of dictionaries:
+            - guides metadata
+            - solutions metadata
+            - release notes metadata
+    """
+
+    bucket_name = bucket_name if bucket_name else SETTINGS.bucket_static_content
+    paginator = AWS_S3_CLIENT.get_paginator("list_objects")
+    docs_parent_folder = (
+        docs_parent_folder if docs_parent_folder else DOCS_PARENT_FOLDER
+    )
+    pages = paginator.paginate(Bucket=bucket_name, Prefix=docs_parent_folder)
+    guides, solutions, release_notes = [], [], []
+
+    for page in pages:
+        if "Contents" in page:
+            for obj in page["Contents"]:
+                key = obj["Key"]
+                if key.endswith(GUIDES_METADATA_S3_FILEPATH):
+                    guides_metadata_content = read_file_from_s3(
+                        key,
+                        bucket_name,
+                    )
+                    guides += json.loads(guides_metadata_content)
+                if key.endswith(SOLUTIONS_METADATA_S3_FILEPATH):
+                    solutions_metadata_content = read_file_from_s3(
+                        key,
+                        bucket_name,
+                    )
+                    solutions += json.loads(solutions_metadata_content)
+                if key.endswith(RELEASE_NOTES_METADATA_S3_FILEPATH):
+                    release_notes_metadata_content = read_file_from_s3(
+                        key,
+                        bucket_name,
+                    )
+                    release_notes += json.loads(release_notes_metadata_content)
+
+    return guides + solutions + release_notes
 
 
 def remove_figure_blocks(md_text):
@@ -284,30 +335,16 @@ def get_api_docs() -> List[Document]:
 
 def get_static_and_dynamic_metadata(
     sitemap_path: str | None = None,
-    guides_path: str | None = None,
-    solutions_path: str | None = None,
-    release_notes_path: str | None = None,
 ) -> Tuple[List[dict], List[dict]]:
     """
     Fetches static and dynamic URLs from the sitemap and metadata files.
     Args:
         sitemap_path (str): The S3 file path to fetch the sitemap from.
-        guides_path (str): The S3 file path to fetch the guides metadata from.
-        solutions_path (str): The S3 file path to fetch the solutions metadata from.
-        release_notes_path (str): The S3 file path to fetch the release notes metadata from
     Returns:
         Tuple[List[dict], List[dict]]: A tuple containing two lists:
             - A list of dictionaries with static URLs and their S3 file paths.
             - A list of dictionaries with dynamic URLs and their last modified dates.
     """
-
-    guides_path = guides_path if guides_path else GUIDES_METADATA_S3_FILEPATH
-    solutions_path = (
-        solutions_path if solutions_path else SOLUTIONS_METADATA_S3_FILEPATH
-    )
-    release_notes_path = (
-        release_notes_path if release_notes_path else RELEASE_NOTES_METADATA_S3_FILEPATH
-    )
 
     sitemap = get_sitemap_urls(sitemap_path)
     if not sitemap:
@@ -319,10 +356,7 @@ def get_static_and_dynamic_metadata(
         static_metadata = []
         dynamic_metadata = []
 
-        guides_metadata = json.loads(read_file_from_s3(guides_path))
-        release_notes_metadata = json.loads(read_file_from_s3(release_notes_path))
-        solutions_metadata = json.loads(read_file_from_s3(solutions_path))
-        all_metadata = guides_metadata + release_notes_metadata + solutions_metadata
+        all_metadata = read_metadata_from_s3()
         all_url_metadata = [
             SETTINGS.website_url + item["path"] for item in all_metadata
         ]
