@@ -24,4 +24,4 @@ WORKDIR $LAMBDA_TASK_ROOT
 COPY pyproject.toml $LAMBDA_TASK_ROOT
 COPY poetry.lock $LAMBDA_TASK_ROOT
 RUN poetry config virtualenvs.create false
-RUN poetry install
+RUN poetry install --only main
