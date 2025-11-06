@@ -18,7 +18,7 @@ interface PlayerProps {
   controls: boolean;
   playsInline: boolean;
   src: string;
-  thumbnailUrl?: string;
+  posterUrl?: string;
 }
 
 const VideoJsPlayer = (props: PlayerProps) => {
@@ -53,7 +53,7 @@ const VideoJsPlayer = (props: PlayerProps) => {
         playsInline={props.playsInline}
         autoPlay={props.autoplay}
         controls={props.controls}
-        poster={props.thumbnailUrl}
+        poster={props.posterUrl}
         style={{
           border: 'none',
           position: 'absolute',

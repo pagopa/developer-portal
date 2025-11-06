@@ -13,7 +13,7 @@ export type Webinar = {
   readonly description: string;
   readonly bodyContent?: BlocksContent;
   readonly playerSrc?: string;
-  readonly playerCoverImagePath?: string;
+  readonly playerCoverImageUrl?: string;
   readonly speakers?: readonly Speaker[];
   readonly startDateTime?: string;
   readonly endDateTime?: string;
