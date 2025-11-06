@@ -6,7 +6,7 @@ import { fetchFromStrapiResponse } from '../helpers/fetchFromStrapiResponse';
 const START_STREAMING_THRESHOLD_MS = 15 * 60 * 1000; // 15 minutes
 const FILE_SUFFIX = 'recording-ended.json';
 
-export const mangeS3Event = async (event: S3Event) => {
+export const recordingEndedS3EventHandler = async (event: S3Event) => {
   console.log('event', JSON.stringify(event, null, 2));
   const targetRecord: S3EventRecord | undefined = event.Records.find((record) =>
     decodeURIComponent(record.s3.object.key.replace(/\+/g, ' ')).endsWith(
