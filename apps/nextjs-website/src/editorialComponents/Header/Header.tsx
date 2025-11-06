@@ -56,11 +56,7 @@ export const Header = (props: HeaderProps) => {
           },
         }}
       >
-        <Stack
-          direction={{ md: 'row' }}
-          paddingY={{ xs: 2, sm: 3, md: 1 }}
-          gap={4}
-        >
+        <Stack direction={{ md: 'row' }} paddingY={{ xs: 2, md: 1 }} gap={4}>
           <Stack sx={styles.headerInfo}>
             <Content {...{ product, avatar, beta, theme }} />
             <Stack

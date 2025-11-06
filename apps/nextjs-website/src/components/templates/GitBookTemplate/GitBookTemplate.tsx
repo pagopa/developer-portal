@@ -8,8 +8,7 @@ import GuideInPageMenu from '@/components/organisms/GuideInPageMenu/GuideInPageM
 import { BreadcrumbSegment } from '@/lib/types/path';
 import { Box, Stack } from '@mui/material';
 import { useTranslations } from 'next-intl';
-import { SITE_HEADER_HEIGHT } from '../../molecules/SiteHeader/SiteHeader';
-import { PRODUCT_HEADER_HEIGHT } from '../../atoms/ProductHeader/ProductHeader';
+import { PRODUCT_HEADER_HEIGHT, SITE_HEADER_HEIGHT } from '@/config';
 import GitBookContent from '@/components/organisms/GitBookContent/GitBookContent';
 
 export type GitBookTemplateProps = {
@@ -21,6 +20,7 @@ export type GitBookTemplateProps = {
   versionName?: GuideMenuItemsProps['versionName'];
   hasHeader?: boolean;
   hasInPageMenu?: boolean;
+  hasProductHeader?: boolean;
 } & Pick<
   ProductGuidePageProps,
   'menu' | 'body' | 'bodyConfig' | 'path' | 'pathPrefix'
@@ -40,14 +40,11 @@ const GitBookTemplate = ({
   contentMarginTop,
   hasHeader = true,
   hasInPageMenu = true,
+  hasProductHeader = true,
 }: GitBookTemplateProps) => {
   const t = useTranslations();
-  const paddingTop = hasHeader ? '60px' : '-80px';
-  const responsiveContentMarginTop = (contentMarginTop &&
-    `${contentMarginTop}px`) || {
-    xs: '30px',
-    md: '65px',
-  };
+  const responsiveContentMarginTop =
+    (contentMarginTop && `${contentMarginTop}px`) || 0;
 
   return (
     <FragmentProvider>
@@ -69,12 +66,13 @@ const GitBookTemplate = ({
             versionName={versionName}
             versions={versions}
             distanceFromTop={menuDistanceFromTop}
+            hasProductHeader={hasProductHeader}
           />
         )}
         <Stack
           sx={{
             marginTop: responsiveContentMarginTop,
-            paddingTop: 3,
+            paddingTop: { xs: '68px', sm: '78px', md: '24px' },
             flexGrow: { lg: 1 },
             maxWidth: {
               xs: '100%',
@@ -83,10 +81,10 @@ const GitBookTemplate = ({
             minHeight: '100vh',
           }}
         >
-          <Box sx={{ paddingTop: paddingTop, paddingX: '40px' }}>
+          <Box sx={{ paddingX: '40px' }}>
             <ProductBreadcrumbs breadcrumbs={breadcrumbs} />
           </Box>
-          <Box sx={{ padding: '32px 40px' }}>
+          <Box sx={{ padding: '0 40px 32px 40px' }}>
             <GitBookContent content={body} config={bodyConfig} />
           </Box>
         </Stack>
@@ -103,7 +101,9 @@ const GitBookTemplate = ({
               sx={{
                 position: 'sticky',
                 maxWidth: '378px',
-                top: SITE_HEADER_HEIGHT + PRODUCT_HEADER_HEIGHT,
+                top:
+                  SITE_HEADER_HEIGHT +
+                  (hasProductHeader ? PRODUCT_HEADER_HEIGHT : 0),
               }}
             >
               <GuideInPageMenu
@@ -111,6 +111,7 @@ const GitBookTemplate = ({
                 pagePath={path}
                 inPageMenu={body}
                 title={t('productGuidePage.onThisPage')}
+                hasProductHeader={hasProductHeader}
               />
             </Box>
           </Box>

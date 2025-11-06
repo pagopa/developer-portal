@@ -8,14 +8,14 @@ import {
 import Heading from '@/components/organisms/GuideInPageMenu/components/Heading';
 import { Box, Typography, useTheme } from '@mui/material';
 import { useFragment } from '@/components/organisms/FragmentProvider/FragmentProvider';
-import { SITE_HEADER_HEIGHT } from '../../molecules/SiteHeader/SiteHeader';
-import { PRODUCT_HEADER_HEIGHT } from '../../atoms/ProductHeader/ProductHeader';
+import { PRODUCT_HEADER_HEIGHT, SITE_HEADER_HEIGHT } from '@/config';
 
 type GuideInPageMenuProps = {
   assetsPrefix: string;
   pagePath: string;
   inPageMenu: string;
   title: string;
+  hasProductHeader?: boolean;
 };
 
 const components: RenderingComponents<ReactNode> = {
@@ -27,13 +27,15 @@ const GuideInPageMenu = ({
   assetsPrefix,
   pagePath,
   title,
+  hasProductHeader = true,
 }: GuideInPageMenuProps) => {
   const { palette } = useTheme();
   const { fragment, setFragmentFromScroll } = useFragment();
   const fragmentRef = useRef(fragment);
   const menuContainerRef = useRef<HTMLDivElement | null>(null);
   const nodes = parseInPageMenu(inPageMenu, { assetsPrefix, pagePath });
-  const headerOffset = PRODUCT_HEADER_HEIGHT + SITE_HEADER_HEIGHT;
+  const productHeaderHeight = hasProductHeader ? PRODUCT_HEADER_HEIGHT : 0;
+  const headerOffset = productHeaderHeight + SITE_HEADER_HEIGHT;
 
   useEffect(() => {
     // eslint-disable-next-line functional/immutable-data
@@ -71,7 +73,7 @@ const GuideInPageMenu = ({
       for (const headingElement of headingElements) {
         const { top } = headingElement.getBoundingClientRect();
 
-        if (top <= SITE_HEADER_HEIGHT + PRODUCT_HEADER_HEIGHT) {
+        if (top <= SITE_HEADER_HEIGHT + productHeaderHeight) {
           activeId = headingElement.id;
           continue;
         }
