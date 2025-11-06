@@ -16,7 +16,7 @@ export async function fetchFromStrapiResponse<T = unknown>(
   }
 
   const method = opts?.method || 'GET';
-  const baseHeaders: Record<string, string> = {
+  const headers: Record<string, string> = {
     Authorization: `Bearer ${strapiApiToken}`,
   };
 
@@ -24,14 +24,12 @@ export async function fetchFromStrapiResponse<T = unknown>(
   let body: string | undefined;
   if (method === 'PUT') {
     body = opts?.body !== undefined ? JSON.stringify(opts.body) : '{}';
-    if (!baseHeaders['Content-Type']) {
-      baseHeaders['Content-Type'] = 'application/json';
-    }
+    headers['Content-Type'] = 'application/json';
   }
 
   const response = await fetch(`${strapiEndpoint}/${path}`, {
     method,
-    headers: baseHeaders,
+    headers: headers,
     body,
     cache: 'no-store',
   });
