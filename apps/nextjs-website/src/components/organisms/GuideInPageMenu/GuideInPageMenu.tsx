@@ -15,7 +15,7 @@ type GuideInPageMenuProps = {
   pagePath: string;
   inPageMenu: string;
   title: string;
-  isGuide?: boolean;
+  hasProductHeader?: boolean;
 };
 
 const components: RenderingComponents<ReactNode> = {
@@ -27,14 +27,14 @@ const GuideInPageMenu = ({
   assetsPrefix,
   pagePath,
   title,
-  isGuide = true,
+  hasProductHeader = true,
 }: GuideInPageMenuProps) => {
   const { palette } = useTheme();
   const { fragment, setFragmentFromScroll } = useFragment();
   const fragmentRef = useRef(fragment);
   const menuContainerRef = useRef<HTMLDivElement | null>(null);
   const nodes = parseInPageMenu(inPageMenu, { assetsPrefix, pagePath });
-  const productHeaderHeight = isGuide ? PRODUCT_HEADER_HEIGHT : 0;
+  const productHeaderHeight = hasProductHeader ? PRODUCT_HEADER_HEIGHT : 0;
   const headerOffset = productHeaderHeight + SITE_HEADER_HEIGHT;
 
   useEffect(() => {
