@@ -29,7 +29,7 @@ export function makeSolutionListPageProps(
           description: attributes.description,
           logo: attributes.icon.data.attributes,
           slug: `solutions/${attributes.slug}`,
-          tags: attributes.products.data.map((products) => ({
+          labels: attributes.products.data.map((products) => ({
             label: products.attributes.shortName,
             path: `/${products.attributes.slug}`,
           })),

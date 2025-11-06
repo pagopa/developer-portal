@@ -8,11 +8,8 @@ const Item = ({ children }: ItemProps<ReactNode>) => {
     <Typography
       component='li'
       variant='body1'
-      style={{
-        wordBreak: 'break-word',
-        margin: '0px 0px 8px',
-      }}
       sx={{
+        fontSize: '0.937rem',
         '& div.MuiContainer-root:has(img)': {
           width: 'initial',
           marginLeft: '1rem',
@@ -25,6 +22,8 @@ const Item = ({ children }: ItemProps<ReactNode>) => {
         '.list-item-container, div.list-item-container > *': {
           fontSize: '1rem',
         },
+        margin: '0px 0px 8px',
+        wordBreak: 'break-word',
       }}
     >
       <div className='list-item-container'>{children}</div>

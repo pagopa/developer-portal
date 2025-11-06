@@ -8,8 +8,7 @@ import {
 import Heading from '@/components/organisms/GuideInPageMenu/components/Heading';
 import { Box, Typography, useTheme } from '@mui/material';
 import { useFragment } from '@/components/organisms/FragmentProvider/FragmentProvider';
-import { SITE_HEADER_HEIGHT } from '../../molecules/SiteHeader/SiteHeader';
-import { PRODUCT_HEADER_HEIGHT } from '../../atoms/ProductHeader/ProductHeader';
+import { PRODUCT_HEADER_HEIGHT, SITE_HEADER_HEIGHT } from '@/config';
 
 type GuideInPageMenuProps = {
   assetsPrefix: string;
@@ -124,7 +123,7 @@ const GuideInPageMenu = ({
         sx={{
           maxHeight: `calc(100vh - ${headerOffset}px)`,
           overflowY: 'auto',
-          paddingTop: '50px',
+          paddingY: '50px',
         }}
       >
         <Typography
@@ -133,6 +132,7 @@ const GuideInPageMenu = ({
           fontWeight={700}
           textTransform={'uppercase'}
           marginBottom={'18px'}
+          marginLeft='8px'
         >
           {title}
         </Typography>

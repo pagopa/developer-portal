@@ -65,10 +65,11 @@ const WebinarPlayerSection = ({
               ) : (
                 <VideoJsPlayer
                   techOrder={['AmazonIVS']}
-                  autoplay={true}
+                  autoplay={webinarState === WebinarState.live}
                   controls={true}
                   playsInline={true}
                   src={webinar.playerSrc}
+                  poster={webinar.playerCoverImageUrl}
                 />
               )}
             </Box>
