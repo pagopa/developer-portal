@@ -1,5 +1,11 @@
 # chatbot-index
 
+## 2.1.0
+
+### Minor Changes
+
+- b6291ed: Add Docker compose for test
+
 ## 2.0.2
 
 ### Patch Changes
