@@ -7,7 +7,6 @@ from src.modules.documents import (
     read_file_from_s3,
     get_sitemap_urls,
     filter_urls,
-    get_id_to_delete_from_mainfile,
 )
 from src.modules.vector_index import DiscoveryVectorIndex
 
@@ -15,6 +14,7 @@ from src.modules.vector_index import DiscoveryVectorIndex
 LOGGER = get_logger(__name__)
 VECTOR_INDEX = DiscoveryVectorIndex()
 MAIN_FILE_PATH = "pippobaudo.json"
+ROOT_FOLDERS_IN_BUCKET = "devportal-docs/docs/"
 
 # S3 event example:
 
@@ -96,9 +96,7 @@ def read_payload(payload: dict) -> Tuple[List[Dict[str, str]], List[str]]:
             if object_key == MAIN_FILE_PATH:
                 list_of_folders = json.loads(read_file_from_s3(object_key))
                 for folder in list_of_folders:
-                    static_docs_ids_to_delete += get_id_to_delete_from_mainfile(
-                        docs_parent_folder=folder
-                    )
+                    VECTOR_INDEX.remove_docs_in_folder(folder_path=folder)
 
             try:
                 idx = s3_paths.index(object_key)
