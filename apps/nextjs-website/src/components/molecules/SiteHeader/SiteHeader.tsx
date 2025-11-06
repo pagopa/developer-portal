@@ -6,9 +6,7 @@ import { useTranslations } from 'next-intl';
 import React, { ForwardedRef, forwardRef, useMemo } from 'react';
 import MobileSiteHeader from '../MobileSiteHeader/MobileSiteHeader';
 import DesktopSiteHeader from '@/components/molecules/DesktopSiteHeader/DesktopSiteHeader';
-
-// Used in ProductHeader.tsx to manage scroll-up animation
-export const SITE_HEADER_HEIGHT = 48;
+import { SITE_HEADER_HEIGHT } from '@/config';
 
 export type SiteHeaderProps = {
   products: Product[];
@@ -44,9 +42,6 @@ const SiteHeader = (
           px: 3,
           backgroundColor: palette.common.white,
           minHeight: SITE_HEADER_HEIGHT,
-          borderBottomWidth: 1,
-          borderBottomStyle: 'solid',
-          borderBottomColor: palette.divider,
         }}
         spacing={{ xs: 0, sm: 2 }}
         direction='row'

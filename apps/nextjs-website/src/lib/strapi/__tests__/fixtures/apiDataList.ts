@@ -26,6 +26,7 @@ export const strapiApiDataList: StrapiApiDataList = {
             },
           ],
         },
+        tags: { data: undefined },
         icon: {
           data: mediaJpeg(),
         },
@@ -79,6 +80,7 @@ export const strapiApiDataList: StrapiApiDataList = {
             },
           },
         },
+        tags: { data: undefined },
         product: {
           data: {
             attributes: {

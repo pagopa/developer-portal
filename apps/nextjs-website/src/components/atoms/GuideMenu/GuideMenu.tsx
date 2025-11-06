@@ -20,10 +20,10 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import { SITE_HEADER_HEIGHT } from '@/components/molecules/SiteHeader/SiteHeader';
 import { useScrollUp } from '../ProductHeader/useScrollUp';
 import GuideMenuItems, { type GuideMenuItemsProps } from './Menu';
 import { useTranslations } from 'next-intl';
+import { PRODUCT_HEADER_HEIGHT, SITE_HEADER_HEIGHT } from '@/config';
 
 type GuideMenuProps = GuideMenuItemsProps & {
   distanceFromTop?: number;
@@ -44,13 +44,15 @@ const GuideMenu = (menuProps: GuideMenuProps) => {
 
   const topOffsetXs = scrollUp ? SITE_HEADER_HEIGHT : 0;
 
-  const height = `calc(100vh - ${SITE_HEADER_HEIGHT}px)`;
+  const height = `calc(100vh - ${
+    SITE_HEADER_HEIGHT + PRODUCT_HEADER_HEIGHT
+  }px)`;
 
   const topStyle = menuProps.hasHeader
     ? {
         xs: topOffsetXs + 62,
-        sm: topOffsetXs + 90,
-        md: SITE_HEADER_HEIGHT + 25,
+        sm: topOffsetXs + 75,
+        md: SITE_HEADER_HEIGHT + PRODUCT_HEADER_HEIGHT,
       }
     : {
         xs: topOffsetXs,
@@ -90,7 +92,6 @@ const GuideMenu = (menuProps: GuideMenuProps) => {
 
         container.scrollTo({
           top: Math.max(0, targetScrollTop),
-          behavior: 'smooth',
         });
       }
     }
@@ -135,7 +136,7 @@ const GuideMenu = (menuProps: GuideMenuProps) => {
       >
         <Stack
           sx={{
-            padding: { lg: '80px 0' },
+            padding: { lg: '28px 0' },
             flexGrow: { lg: 0 },
             flexShrink: { lg: 0 },
           }}

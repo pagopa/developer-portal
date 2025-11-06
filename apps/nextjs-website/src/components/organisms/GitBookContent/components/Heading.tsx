@@ -1,8 +1,7 @@
 import Typography from '@mui/material/Typography';
 import { HeadingProps } from 'gitbook-docs/markdoc/schema/heading';
 import { ReactNode } from 'react';
-import { SITE_HEADER_HEIGHT } from '@/components/molecules/SiteHeader/SiteHeader';
-import { PRODUCT_HEADER_HEIGHT } from '@/components/atoms/ProductHeader/ProductHeader';
+import { PRODUCT_HEADER_HEIGHT, SITE_HEADER_HEIGHT } from '@/config';
 
 const asVariant = (level: number) => {
   switch (level) {
@@ -33,6 +32,8 @@ const asFontSize = (level: number) =>
     : level === 5
     ? '1rem'
     : '0.75rem';
+
+const asPaddingBottom = (level: number) => (level === 1 ? 3 : 1);
 
 const asFontWeight = (level: number) => (level === 1 ? 700 : 600);
 
@@ -89,7 +90,7 @@ const Heading = ({ level, id, children }: HeadingProps<ReactNode>) => (
       variant={asVariant(level)}
       sx={{
         paddingTop: 3,
-        paddingBottom: 1,
+        paddingBottom: { xs: asPaddingBottom(level) },
         fontSize: { xs: asFontSize(level) },
         fontWeight: { xs: asFontWeight(level) },
         lineHeight: { xs: asLineHeight(level) },
