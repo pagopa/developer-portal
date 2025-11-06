@@ -10,7 +10,7 @@ import { Box, Stack } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import { PRODUCT_HEADER_HEIGHT, SITE_HEADER_HEIGHT } from '@/config';
 import GitBookContent from '@/components/organisms/GitBookContent/GitBookContent';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useDynamicSeo } from '@/hooks/useDynamicSeo';
 import { gitBookPageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
 
@@ -63,6 +63,13 @@ const GitBookTemplate = ({
     metaDescription?: string;
     canonical?: string;
   } | null>(null);
+
+  // Scroll to top when path changes (content navigation)
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      window.scrollTo({ top: 0 });
+    }
+  }, [dynamicContent.path]);
 
   const updateDynamicContent = (data: unknown): boolean => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -172,6 +179,7 @@ const GitBookTemplate = ({
       >
         {menu && (
           <GuideMenu
+            key='menu'
             hasHeader={hasHeader}
             menu={menu}
             assetsPrefix={bodyConfig.assetsPrefix}
