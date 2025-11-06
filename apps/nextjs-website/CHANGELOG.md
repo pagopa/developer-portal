@@ -1,5 +1,15 @@
 # nextjs-website
 
+## 10.4.0
+
+### Minor Changes
+
+- acb3aff: Add thumbnail to video.js webinar player and activate autoplay only if webinar is live
+
+### Patch Changes
+
+- 74e119a: Add 'noindex, follow' to non-main guide pages
+
 ## 10.3.0
 
 ### Minor Changes

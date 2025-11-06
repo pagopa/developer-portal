@@ -19,7 +19,7 @@ export type SolutionListTemplateProps = {
     readonly name: string;
     readonly description?: string;
     readonly slug: string;
-    readonly tags?: { label: string; path?: string }[];
+    readonly labels?: { label: string; path?: string }[];
     readonly logo: Media;
   }[];
   readonly features?: {
@@ -71,8 +71,8 @@ const SolutionListTemplate = ({
             title: solution.name,
             text: solution.description || '',
             href: solution.slug,
-            logoUrl: solution.logo.url,
-            tags: solution.tags,
+            icon: solution.logo.url,
+            labels: solution.labels,
           }))}
         />
       )}
