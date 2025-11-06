@@ -12,18 +12,23 @@ import MobileFilterSelector from '@/components/molecules/MobileFilterSelector/Mo
 import DesktopFilterSelector from '@/components/molecules/DesktopFilterSelector/DesktopFilterSelector';
 import SectionTitle from '@/components/molecules/SectionTitle/SectionTitle';
 import { PRODUCT_HEADER_HEIGHT } from '@/config';
+import CardsGrid, {
+  CardProps,
+} from '@/components/molecules/CardsGrid/CardsGrid';
 
 type FilteredGridLayoutProps = {
-  readonly items: readonly (INewsroomItem & { tags: readonly Tag[] })[];
-  readonly tags: readonly Tag[] | undefined;
+  readonly items?: readonly (INewsroomItem & { tags: readonly Tag[] })[];
+  readonly cards?: readonly CardProps[];
+  readonly tags?: readonly Tag[];
   readonly enableFilters?: boolean;
   readonly noItemsMessageKey?: string;
 };
 
 export const FilteredGridLayout = ({
   tags = [],
-  items,
-  enableFilters,
+  items = [],
+  cards = [],
+  enableFilters = false,
   noItemsMessageKey = '',
 }: FilteredGridLayoutProps) => {
   const t = useTranslations();
@@ -62,6 +67,15 @@ export const FilteredGridLayout = ({
       item.tags?.some((tag) => tag.name === updatedTags[selectedTag].name)
     );
   });
+
+  const filteredCards = cards.filter((card) => {
+    if (selectedTag === 0) return true;
+    const selectedTagName = updatedTags[selectedTag].name;
+    return card.tags?.some((cardTag) => cardTag.name === selectedTagName);
+  });
+
+  const hasCards = cards.length > 0;
+  const filteredCount = hasCards ? filteredCards.length : filteredItems.length;
   // eslint-disable-next-line functional/no-return-void
   const setSelectedTagFilter = (newTag: number): void => {
     if (newTag === selectedTag) return;
@@ -85,7 +99,7 @@ export const FilteredGridLayout = ({
   const isSmallScreen = useMediaQuery('(max-width: 1000px)');
   return (
     <Box id='filtered-grid'>
-      <Box sx={{ paddingBottom: filteredItems.length > 0 ? '24px' : 0 }}>
+      <Box sx={{ paddingBottom: filteredCount > 0 ? '24px' : 0 }}>
         {enableFilters &&
           tags.length > 0 &&
           (isSmallScreen ? (
@@ -102,18 +116,29 @@ export const FilteredGridLayout = ({
             />
           ))}
       </Box>
-      {filteredItems.length <= 0 ? (
+      {filteredCount === 0 ? (
         <Box
-          pt={8}
-          pb={2}
           sx={{
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
+            paddingBottom: '16px',
+            paddingTop: '64px',
+            width: '100%',
           }}
         >
           <SectionTitle title={t(noItemsMessageKey)} />
         </Box>
+      ) : hasCards ? (
+        <CardsGrid
+          cards={filteredCards}
+          cardSize={{ xs: 12, md: 4 }}
+          containerSx={{
+            pt: '22px',
+            mt: '-22px',
+          }}
+          ctaButtonsVariant='outlined'
+        />
       ) : (
         <Newsroom
           items={filteredItems.map((item) => ({

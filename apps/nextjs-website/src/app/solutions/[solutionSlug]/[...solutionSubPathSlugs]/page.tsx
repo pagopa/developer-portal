@@ -138,6 +138,7 @@ const Page = async ({ params }: { params: Params }) => {
         ]}
         menuDistanceFromTop={0}
         contentMarginTop={0}
+        hasProductHeader={false}
         {...props}
       />
     </>
