@@ -2,4 +2,4 @@
 "nextjs-website": minor
 ---
 
-Manage thumbnail for webinar and autoplay only if webinar is live
+Add thumbnail to video.js webinar player and activate autoplay only if webinar is live
