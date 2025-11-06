@@ -15,6 +15,7 @@ type GuideInPageMenuProps = {
   pagePath: string;
   inPageMenu: string;
   title: string;
+  isGuide?: boolean;
 };
 
 const components: RenderingComponents<ReactNode> = {
@@ -26,13 +27,15 @@ const GuideInPageMenu = ({
   assetsPrefix,
   pagePath,
   title,
+  isGuide = true,
 }: GuideInPageMenuProps) => {
   const { palette } = useTheme();
   const { fragment, setFragmentFromScroll } = useFragment();
   const fragmentRef = useRef(fragment);
   const menuContainerRef = useRef<HTMLDivElement | null>(null);
   const nodes = parseInPageMenu(inPageMenu, { assetsPrefix, pagePath });
-  const headerOffset = PRODUCT_HEADER_HEIGHT + SITE_HEADER_HEIGHT;
+  const productHeaderHeight = isGuide ? PRODUCT_HEADER_HEIGHT : 0;
+  const headerOffset = productHeaderHeight + SITE_HEADER_HEIGHT;
 
   useEffect(() => {
     // eslint-disable-next-line functional/immutable-data
@@ -70,7 +73,7 @@ const GuideInPageMenu = ({
       for (const headingElement of headingElements) {
         const { top } = headingElement.getBoundingClientRect();
 
-        if (top <= SITE_HEADER_HEIGHT + PRODUCT_HEADER_HEIGHT) {
+        if (top <= SITE_HEADER_HEIGHT + productHeaderHeight) {
           activeId = headingElement.id;
           continue;
         }
