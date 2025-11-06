@@ -21,10 +21,12 @@ import VideoJsPlayer from '@/components/atoms/VideoJsPlayer/VideoJsPlayer';
 type WebinarPlayerSectionProps = {
   webinar: Webinar;
   webinarState: WebinarState;
+  isPlayerVisible?: boolean;
 };
 const WebinarPlayerSection = ({
   webinar,
   webinarState,
+  isPlayerVisible = false,
 }: WebinarPlayerSectionProps) => {
   const t = useTranslations('webinar');
   const { palette } = useTheme();
@@ -36,7 +38,8 @@ const WebinarPlayerSection = ({
     [webinarState]
   );
   return (
-    webinar.playerSrc && (
+    webinar.playerSrc &&
+    isPlayerVisible && (
       <div style={{ backgroundColor: palette.grey[50] }}>
         <EContainer>
           <Box
