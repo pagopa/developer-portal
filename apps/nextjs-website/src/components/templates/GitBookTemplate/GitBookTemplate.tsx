@@ -10,7 +10,8 @@ import { Box, Stack } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import { PRODUCT_HEADER_HEIGHT, SITE_HEADER_HEIGHT } from '@/config';
 import GitBookContent from '@/components/organisms/GitBookContent/GitBookContent';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import { useDynamicSeo } from '@/hooks/useDynamicSeo';
 
 export type GitBookTemplateProps = {
   menuName: string;
@@ -62,7 +63,6 @@ const GitBookTemplate = ({
     canonical?: string;
   } | null>(null);
 
-  // Expose global updater (simple approach without new context plumbing)
   const updateDynamicContent = (data: unknown): boolean => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const payload = data as any;
@@ -131,25 +131,7 @@ const GitBookTemplate = ({
     return true;
   };
 
-  // Apply document title & meta updates
-  useEffect(() => {
-    if (!dynamicSeo?.metaTitle) return;
-    if (typeof document !== 'undefined') {
-      const metaDesc = dynamicSeo.metaDescription;
-      const titleElement = document.querySelector('title');
-      if (titleElement && dynamicSeo.metaTitle) {
-        const docFrag = document.createElement('title');
-        docFrag.appendChild(document.createTextNode(dynamicSeo.metaTitle));
-        titleElement.parentNode?.replaceChild(docFrag, titleElement);
-      }
-      if (metaDesc) {
-        const metaTag = document.querySelector('meta[name="description"]');
-        if (metaTag) {
-          metaTag.setAttribute('content', metaDesc);
-        }
-      }
-    }
-  }, [dynamicSeo]);
+  useDynamicSeo(dynamicSeo);
 
   return (
     <FragmentProvider>
