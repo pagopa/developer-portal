@@ -60,6 +60,30 @@ def read_file_from_s3(
         raise KeyError(f"Error reading {bucket_name}/{file_path} from S3: {e}")
 
 
+def get_id_to_delete_from_mainfile(
+    docs_parent_folder: str | None = None,
+    bucket_name: str | None = None,
+) -> Tuple[List[dict], List[dict], List[dict]]:
+
+    bucket_name = bucket_name if bucket_name else SETTINGS.bucket_static_content
+    paginator = AWS_S3_CLIENT.get_paginator("list_objects")
+    docs_parent_folder = (
+        docs_parent_folder if docs_parent_folder else DOCS_PARENT_FOLDER
+    )
+    pages = paginator.paginate(Bucket=bucket_name, Prefix=docs_parent_folder)
+
+    list_of_files = []
+
+    for page in pages:
+        if "Contents" in page:
+            for obj in page["Contents"]:
+                key = obj["Key"]
+                if key.endswith(".md"):
+                    list_of_files.append(key)
+
+    return list_of_files
+
+
 def remove_figure_blocks(md_text):
     """Removes <figure> blocks from Markdown text.
     Args:
