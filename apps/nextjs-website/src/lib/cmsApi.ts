@@ -77,7 +77,10 @@ export const getWebinarsProps = async () => {
 
 export const getProductsProps = async () => {
   const strapiProducts = await fetchProducts(buildEnv);
-  return makeProductsProps(strapiProducts);
+  const products = makeProductsProps(strapiProducts);
+  return [...products].sort((productA, productB) =>
+    productA.name.localeCompare(productB.name)
+  );
 };
 
 export const getWebinarCategoriesProps = async () => {

@@ -35,7 +35,7 @@ def get_trace(trace_id: str, as_dict: bool = False) -> TraceWithFullDetails | di
         trace = LANGFUSE_CLIENT.fetch_trace(trace_id)
         trace = trace.data
     except Exception as e:
-        LOGGER.error(e)
+        LOGGER.error(f"LANGFUSE_CLIENT.fetch_trace: {e}")
 
     if as_dict:
         return trace.dict()
@@ -102,7 +102,7 @@ def add_langfuse_score(
     """
 
     if value is None or (isinstance(value, float) and np.isnan(value)):
-        LOGGER.warning(
+        LOGGER.info(
             f"Value for score {name} is None or NaN, setting to 0.0 for trace {trace_id}."
         )
         value = 0.0
@@ -112,6 +112,7 @@ def add_langfuse_score(
     found_score = False
     if score_id is None:
         trace = get_trace(trace_id)
+        
         if trace is not None:
             for score in trace.scores:
                 if score.name == name:
@@ -136,7 +137,7 @@ def add_langfuse_score(
         LANGFUSE_CLIENT.flush()
 
         if found_score:
-            LOGGER.info(f"Updated {name} score with value {value} in trace {trace_id}.")
+            LOGGER.warning(f"Updated {name} score with value {value} in trace {trace_id}.")
         else:
             LOGGER.info(f"Added {name} score with value {value} in trace {trace_id}.")
     except Exception as e:

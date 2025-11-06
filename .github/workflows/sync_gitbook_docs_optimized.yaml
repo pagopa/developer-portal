@@ -27,11 +27,6 @@ on:
           - guides
           - solutions
           - release_notes
-      generate_metadata_only:
-        description: 'Generate metadata only without syncing docs'
-        type: boolean
-        required: true
-        default: false
       incremental_mode:
         description: 'Run sync in incremental mode by checking only file size'
         type: boolean
@@ -42,6 +37,11 @@ on:
         type: boolean
         required: true
         default: false
+      generate_single_metadata_file:
+        description: 'Generate a single metadata file instead of multiple ones'
+        type: boolean
+        required: true
+        default: true
 
   schedule:
     - cron: '0 23 * * *'  # Run daily at midnight UTC
@@ -66,7 +66,6 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Checkout devportal-docs repo
-        if: inputs.generate_metadata_only == false
         uses: actions/checkout@v4
         with:
           repository: pagopa/devportal-docs
@@ -111,6 +110,7 @@ jobs:
           S3_PATH_TO_GITBOOK_DOCS: ${{ vars.S3_PATH_TO_GITBOOK_DOCS || 'devportal-docs/docs' }}
           NEXT_PUBLIC_COGNITO_REGION: ${{ vars.NEXT_PUBLIC_COGNITO_REGION || 'eu-south-1' }}
           FETCH_FROM_STRAPI: ${{ vars.FETCH_FROM_STRAPI || 'true' }}
+          GENERATE_SINGLE_METADATA_FILE: ${{ inputs.generate_single_metadata_file == true && 'true' || 'false' }}
           GENERATE_URL_METADATA: 'true'
           GENERATE_SITEMAP_METADATA: 'true'
           SAVE_STRAPI_RESPONSES: 'true'
@@ -136,33 +136,6 @@ jobs:
           aws cloudfront create-invalidation \
             --distribution-id ${{ vars.ASSET_BUCKET_CLOUDFRONT_DISTRIBUTION_ID }} \
             --paths "/*"
-
-      - name: Invalidate CloudFront opennext cache
-        if: inputs.inivalidate_opennext_cache == true
-        run: |
-          aws cloudfront create-invalidation \
-            --distribution-id ${{ vars.OPENNEXT_CLOUDFRONT_DISTRIBUTION_ID }} \
-            --paths "/*"
-
-      - name: Trigger reindex workflow
-        if: inputs.call_reindex
-        run: |
-          curl -X POST \
-          -H "Authorization: token ${{ secrets.TAG_GITHUB_PAT }}" \
-          -H "Accept: application/vnd.github+json" \
-          https://api.github.com/repos/${{ github.repository }}/actions/workflows/141828151/dispatches \
-          -d '{"ref":"main","inputs":{"environment":"${{ inputs.environment }}"}}'
-
-      - name: Summary
-        if: always()
-        run: |
-          echo "## Sync Summary" >> $GITHUB_STEP_SUMMARY
-          echo "- Environment: ${{ inputs.environment }}" >> $GITHUB_STEP_SUMMARY
-          echo "- Metadata Type: ${{ inputs.metadata_type }}" >> $GITHUB_STEP_SUMMARY
-          echo "- Generate Metadata Only: ${{ inputs.generate_metadata_only }}" >> $GITHUB_STEP_SUMMARY
-          echo "- Incremental Mode: ${{ inputs.incremental_mode }}" >> $GITHUB_STEP_SUMMARY
-          echo "- Cache Invalidation: Asset bucket (always), OpenNext (${{ inputs.inivalidate_opennext_cache }})" >> $GITHUB_STEP_SUMMARY
-          echo "- Reindex Triggered: ${{ inputs.call_reindex }}" >> $GITHUB_STEP_SUMMARY
 
   scheduled_sync_gitbook_docs:
     name: Sync gitbook Docs to S3 (scheduled on prod)
@@ -221,6 +194,7 @@ jobs:
           S3_PATH_TO_GITBOOK_DOCS: ${{ vars.S3_PATH_TO_GITBOOK_DOCS || 'devportal-docs/docs' }}
           NEXT_PUBLIC_COGNITO_REGION: ${{ vars.NEXT_PUBLIC_COGNITO_REGION || 'eu-south-1' }}
           FETCH_FROM_STRAPI: ${{ vars.FETCH_FROM_STRAPI || 'true' }}
+          GENERATE_SINGLE_METADATA_FILE: ${{ inputs.generate_single_metadata_file == true && 'true' || 'false' }}
           GENERATE_URL_METADATA: 'true'
           GENERATE_SITEMAP_METADATA: 'true'
           SAVE_STRAPI_RESPONSES: 'true'

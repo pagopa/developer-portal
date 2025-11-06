@@ -8,14 +8,14 @@ import {
 import Heading from '@/components/organisms/GuideInPageMenu/components/Heading';
 import { Box, Typography, useTheme } from '@mui/material';
 import { useFragment } from '@/components/organisms/FragmentProvider/FragmentProvider';
-import { SITE_HEADER_HEIGHT } from '../../molecules/SiteHeader/SiteHeader';
-import { PRODUCT_HEADER_HEIGHT } from '../../atoms/ProductHeader/ProductHeader';
+import { PRODUCT_HEADER_HEIGHT, SITE_HEADER_HEIGHT } from '@/config';
 
 type GuideInPageMenuProps = {
   assetsPrefix: string;
   pagePath: string;
   inPageMenu: string;
   title: string;
+  hasProductHeader?: boolean;
 };
 
 const components: RenderingComponents<ReactNode> = {
@@ -27,13 +27,15 @@ const GuideInPageMenu = ({
   assetsPrefix,
   pagePath,
   title,
+  hasProductHeader = true,
 }: GuideInPageMenuProps) => {
   const { palette } = useTheme();
   const { fragment, setFragmentFromScroll } = useFragment();
   const fragmentRef = useRef(fragment);
   const menuContainerRef = useRef<HTMLDivElement | null>(null);
   const nodes = parseInPageMenu(inPageMenu, { assetsPrefix, pagePath });
-  const headerOffset = PRODUCT_HEADER_HEIGHT + SITE_HEADER_HEIGHT;
+  const productHeaderHeight = hasProductHeader ? PRODUCT_HEADER_HEIGHT : 0;
+  const headerOffset = productHeaderHeight + SITE_HEADER_HEIGHT;
 
   useEffect(() => {
     // eslint-disable-next-line functional/immutable-data
@@ -60,7 +62,6 @@ const GuideInPageMenu = ({
 
     if (headingElements.length === 0) return;
 
-    const TOP_OFFSET = 130;
     // eslint-disable-next-line functional/no-let
     let ticking = false;
 
@@ -72,7 +73,7 @@ const GuideInPageMenu = ({
       for (const headingElement of headingElements) {
         const { top } = headingElement.getBoundingClientRect();
 
-        if (top <= TOP_OFFSET) {
+        if (top <= SITE_HEADER_HEIGHT + productHeaderHeight) {
           activeId = headingElement.id;
           continue;
         }
@@ -125,7 +126,7 @@ const GuideInPageMenu = ({
         sx={{
           maxHeight: `calc(100vh - ${headerOffset}px)`,
           overflowY: 'auto',
-          paddingTop: '23px',
+          paddingY: '50px',
         }}
       >
         <Typography
@@ -134,6 +135,7 @@ const GuideInPageMenu = ({
           fontWeight={700}
           textTransform={'uppercase'}
           marginBottom={'18px'}
+          marginLeft='8px'
         >
           {title}
         </Typography>

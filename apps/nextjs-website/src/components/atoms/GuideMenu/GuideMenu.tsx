@@ -20,14 +20,15 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import { SITE_HEADER_HEIGHT } from '@/components/molecules/SiteHeader/SiteHeader';
 import { useScrollUp } from '../ProductHeader/useScrollUp';
 import GuideMenuItems, { type GuideMenuItemsProps } from './Menu';
 import { useTranslations } from 'next-intl';
+import { PRODUCT_HEADER_HEIGHT, SITE_HEADER_HEIGHT } from '@/config';
 
 type GuideMenuProps = GuideMenuItemsProps & {
   distanceFromTop?: number;
   hasHeader: boolean;
+  hasProductHeader?: boolean;
 };
 
 const GuideMenu = (menuProps: GuideMenuProps) => {
@@ -42,15 +43,20 @@ const GuideMenu = (menuProps: GuideMenuProps) => {
   const segments = currentPath.split('/');
   const expanded = segments.map((_, i) => segments.slice(0, i + 1).join('/'));
 
-  const topOffsetXs = scrollUp ? SITE_HEADER_HEIGHT : 0;
+  const topOffsetXs =
+    scrollUp || !menuProps.hasProductHeader ? SITE_HEADER_HEIGHT : 0;
 
-  const height = `calc(100vh - ${SITE_HEADER_HEIGHT}px)`;
+  const productHeaderHeight = menuProps.hasProductHeader
+    ? PRODUCT_HEADER_HEIGHT
+    : 0;
+
+  const height = `calc(100vh - ${SITE_HEADER_HEIGHT + productHeaderHeight}px)`;
 
   const topStyle = menuProps.hasHeader
     ? {
         xs: topOffsetXs + 62,
-        sm: topOffsetXs + 90,
-        md: SITE_HEADER_HEIGHT + 25,
+        sm: topOffsetXs + 75,
+        md: SITE_HEADER_HEIGHT + productHeaderHeight,
       }
     : {
         xs: topOffsetXs,
@@ -90,7 +96,6 @@ const GuideMenu = (menuProps: GuideMenuProps) => {
 
         container.scrollTo({
           top: Math.max(0, targetScrollTop),
-          behavior: 'smooth',
         });
       }
     }
@@ -135,7 +140,7 @@ const GuideMenu = (menuProps: GuideMenuProps) => {
       >
         <Stack
           sx={{
-            padding: { lg: '80px 0' },
+            padding: { lg: '28px 0' },
             flexGrow: { lg: 0 },
             flexShrink: { lg: 0 },
           }}
