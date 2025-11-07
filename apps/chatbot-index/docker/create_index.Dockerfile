@@ -13,8 +13,9 @@ RUN apt-get update && \
   jq
 
 COPY ./docker/chrome-installer.sh ./chrome-installer.sh
-RUN ./chrome-installer.sh
-RUN rm ./chrome-installer.sh
+RUN chmod +x ./chrome-installer.sh && \
+  ./chrome-installer.sh && \
+  rm ./chrome-installer.sh
 
 RUN pip install --upgrade pip \
   && pip install poetry
@@ -23,4 +24,4 @@ WORKDIR $LAMBDA_TASK_ROOT
 COPY pyproject.toml $LAMBDA_TASK_ROOT
 COPY poetry.lock $LAMBDA_TASK_ROOT
 RUN poetry config virtualenvs.create false
-RUN poetry install
+RUN poetry install --only main

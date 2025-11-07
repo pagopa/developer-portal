@@ -16,14 +16,17 @@ import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { Stack } from '@mui/system';
 import { useTranslations } from 'next-intl';
+import VideoJsPlayer from '@/components/atoms/VideoJsPlayer/VideoJsPlayer';
 
 type WebinarPlayerSectionProps = {
   webinar: Webinar;
   webinarState: WebinarState;
+  isPlayerVisible?: boolean;
 };
 const WebinarPlayerSection = ({
   webinar,
   webinarState,
+  isPlayerVisible = false,
 }: WebinarPlayerSectionProps) => {
   const t = useTranslations('webinar');
   const { palette } = useTheme();
@@ -35,7 +38,8 @@ const WebinarPlayerSection = ({
     [webinarState]
   );
   return (
-    webinar.playerSrc && (
+    webinar.playerSrc &&
+    isPlayerVisible && (
       <div style={{ backgroundColor: palette.grey[50] }}>
         <EContainer>
           <Box
@@ -56,7 +60,18 @@ const WebinarPlayerSection = ({
                 },
               }}
             >
-              <VimeoPlayer playerSrc={webinar.playerSrc} />
+              {webinar.playerSrc.includes('vimeo') ? (
+                <VimeoPlayer playerSrc={webinar.playerSrc} />
+              ) : (
+                <VideoJsPlayer
+                  techOrder={['AmazonIVS']}
+                  autoplay={webinarState === WebinarState.live}
+                  controls={true}
+                  playsInline={true}
+                  src={webinar.playerSrc}
+                  poster={webinar.playerCoverImageUrl}
+                />
+              )}
             </Box>
             {isQuestionFormAvailable ? (
               isQuestionFormExpanded ? (

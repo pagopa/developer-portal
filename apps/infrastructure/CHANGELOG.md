@@ -1,5 +1,38 @@
 # infrastructure
 
+## 6.0.0
+
+### Major Changes
+
+- 4138d59: New lambda function to notify IVS end of streaming.
+
+## 5.3.0
+
+### Minor Changes
+
+- 1447dad: Strapi env variable disable_custom_validator = var.environment == "dev" ? "True" : "Fasle"
+- 2bd346d: Rightsize cpu and memory langfuse ecs task
+
+### Patch Changes
+
+- 2536043: Assignt cors policy to the cloudfront distribution for video streaming
+
+## 5.2.0
+
+### Minor Changes
+
+- 055fea6: Update env variable CHB_MODEL_MAXTOKENS
+- a2828db: Dead letter queue for the lambda chabot evaluate.
+
+## 5.1.0
+
+### Minor Changes
+
+- 03f36f7: Lambda evaluate update memori size and env variables.
+- 76096c3: ECR chatbot repository tags immutable
+- cdda8f5: Change IAM policy to allow lambda api to read static contents from S3
+- ffd44ff: Lambda chatbot index update timeout
+
 ## 5.0.0
 
 ### Major Changes

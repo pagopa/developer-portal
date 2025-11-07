@@ -132,6 +132,8 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
     min_ttl                = 0
     default_ttl            = 3600  # Cache objects for 1 hour by default
     max_ttl                = 86400 # Cache objects for up to 24 hours
+
+    response_headers_policy_id = aws_cloudfront_response_headers_policy.cors_policy.id
   }
 
   # Standard restrictions
@@ -154,6 +156,36 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
 
   tags = {
     Name = "${var.project_name} video streaming distribution"
+  }
+}
+
+data "aws_route53_zone" "selected" {
+  zone_id = var.route53_zone_id
+}
+
+
+resource "aws_cloudfront_response_headers_policy" "cors_policy" {
+  name    = "cors-policy-video-streaming"
+  comment = "Cors policy for video streaming."
+
+  cors_config {
+    access_control_allow_credentials = false
+
+    access_control_allow_headers {
+      items = ["*"]
+    }
+
+
+    access_control_allow_methods {
+      items = ["GET", "HEAD"]
+    }
+
+
+    access_control_allow_origins {
+      items = ["https://${data.aws_route53_zone.selected.name}"]
+    }
+
+    origin_override = true
   }
 }
 
@@ -239,4 +271,138 @@ resource "aws_route53_record" "cdn_alias_record" {
     zone_id                = aws_cloudfront_distribution.s3_distribution.hosted_zone_id
     evaluate_target_health = false
   }
+}
+
+## Lambda function that notifiy when a recording is available ##
+
+resource "aws_cloudwatch_log_group" "lambda_index_logs" {
+  name              = "/aws/lambda/${aws_lambda_function.ivs_video_processing_function.function_name}"
+  retention_in_days = 14
+}
+
+resource "aws_iam_role" "ivs_video_processing_function" {
+  name                  = "ivs-video-processing-lambda-role"
+  force_detach_policies = true
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Principal = {
+          Service = "lambda.amazonaws.com"
+        }
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy" "ivs_video_processing_policy" {
+  name = "ivs-video-processing-lambda-policy"
+  role = aws_iam_role.ivs_video_processing_function.id
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "logs:CreateLogGroup",
+          "logs:CreateLogStream",
+          "logs:PutLogEvents"
+        ]
+        Effect   = "Allow"
+        Resource = "*"
+      },
+      {
+        Action = [
+          "ssm:GetParameter",
+          "ssm:GetParameters"
+        ]
+        Effect = "Allow"
+        #TODDO: Restrict Resource
+        Resource = ["*"]
+      },
+      {
+        Action = [
+          "s3:GetObject",
+          "s3:ListBucket"
+        ]
+        Effect = "Allow"
+        Resource = [
+          "${aws_s3_bucket.ivs_recordings.arn}/*",
+          aws_s3_bucket.ivs_recordings.arn
+        ]
+      }
+    ]
+  })
+}
+
+
+# 1. Archive the Lambda source code into a ZIP file.
+data "archive_file" "lambda_zip" {
+  type        = "zip"
+  source_file = "${path.module}/index.js"
+  output_path = "${path.module}/../../builds/ivs-video-processing.zip"
+}
+
+locals {
+  ivs_video_processing_lambda_name = "${var.project_name}-ivs-video-processing"
+}
+
+
+resource "aws_lambda_function" "ivs_video_processing_function" {
+  function_name = local.ivs_video_processing_lambda_name
+  description   = "Lambda function that processes IVS video recordings when they become available."
+
+  handler = "index.handler" # filename.exported_function_name
+  runtime = "nodejs22.x"
+
+  # Point to the placeholder code package
+  filename         = data.archive_file.lambda_zip.output_path
+  source_code_hash = data.archive_file.lambda_zip.output_base64sha256
+
+
+  timeout       = 30
+  memory_size   = 512
+  architectures = ["x86_64"]
+  role          = aws_iam_role.ivs_video_processing_function.arn
+
+  environment {
+    variables = {
+      STRAPI_API_URL = "TODO"
+      STRAPI_API_KEY = "TODO"
+    }
+  }
+
+  lifecycle {
+    ignore_changes = [
+      filename,
+      source_code_hash,
+    ]
+  }
+
+  tags = {
+    Name = local.ivs_video_processing_lambda_name
+  }
+}
+
+resource "aws_lambda_permission" "allow_s3_invoke_ivs_video_processing_function" {
+  statement_id  = "AllowExecutionFromS3Bucket"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.ivs_video_processing_function.arn
+  principal     = "s3.amazonaws.com"
+  source_arn    = aws_s3_bucket.ivs_recordings.arn
+}
+
+
+resource "aws_s3_bucket_notification" "index_lambda_trigger" {
+  bucket = aws_s3_bucket.ivs_recordings.id
+
+  lambda_function {
+    lambda_function_arn = aws_lambda_function.ivs_video_processing_function.arn
+    events              = ["s3:ObjectCreated:*"]
+    filter_prefix       = ""
+    filter_suffix       = "recording-ended.json"
+  }
+
+  depends_on = [aws_lambda_permission.allow_s3_invoke_ivs_video_processing_function]
 }

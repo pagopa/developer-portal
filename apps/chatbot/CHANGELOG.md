@@ -1,5 +1,28 @@
 # chatbot
 
+## 7.1.1
+
+### Patch Changes
+
+- 39ab9cf: Let local tests work with Langfuse V3
+
+## 7.1.0
+
+### Minor Changes
+
+- 736a638: Replace Langfuse v2 with Langufuse v3.112.0 in the local environment
+
+### Patch Changes
+
+- 8681c49: fix settings
+
+## 7.0.4
+
+### Patch Changes
+
+- bc6b23c: Remove unused libraries, organize pyproject dependencies in groups
+- 612d7d7: test and settings refactor
+
 ## 7.0.3
 
 ### Patch Changes

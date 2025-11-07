@@ -3,12 +3,15 @@ from boto3.dynamodb.conditions import Key
 from decimal import Decimal
 from fastapi import APIRouter, Header, HTTPException
 from typing import Annotated
+
 from src.app.models import QueryFeedback, tables
+from src.modules.logger import get_logger
 from src.app.chatbot_init import chatbot
 from src.app.sessions import current_user_id, add_langfuse_score_query
 
 router = APIRouter()
 
+LOGGER = get_logger(__name__)
 
 # retrieve sessions of current user
 @router.get("/sessions")

@@ -29,7 +29,7 @@ export type CtaCardProps = {
   readonly comingSoon?: boolean;
   readonly icon?: ReactNode;
   readonly children?: ReactNode | ReactNode[];
-  readonly tags?: { readonly label: string; readonly path?: string }[];
+  readonly labels?: { readonly label: string; readonly path?: string }[];
   readonly variant?: Variant;
 };
 
@@ -47,15 +47,16 @@ const CtaCard = ({
   comingSoon = false,
   icon,
   children,
-  tags,
+  labels,
   variant = 'h3',
 }: CtaCardProps) => {
   return (
     <Card
-      style={{
+      sx={{
         flexDirection: 'column',
         display: 'flex',
         justifyContent: 'space-between',
+        minHeight: { xs: 'auto', lg: '330px' },
         height: '100%',
         boxShadow: '0px 8px 18px 7px rgba(0, 43, 85, 0.1)',
       }}
@@ -80,18 +81,18 @@ const CtaCard = ({
           </Typography>
           {text && <Typography variant='body2'>{text}</Typography>}
           <Box flexGrow={1} />
-          {tags && tags.length > 0 && (
+          {labels && labels.length > 0 && (
             <Box mt={1} mr={1} mb={-1}>
-              {tags.map((tag) => (
+              {labels.map((label) => (
                 <Box
-                  key={tag.label}
+                  key={label.label}
                   sx={{
                     display: 'inline',
                     marginRight: 1,
                     '& > span': { marginBottom: 1 },
                   }}
                 >
-                  <Tag value={tag.label} color='primary' variant='light' />
+                  <Tag value={label.label} color='primary' variant='light' />
                 </Box>
               ))}
             </Box>

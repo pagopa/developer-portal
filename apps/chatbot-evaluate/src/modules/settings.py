@@ -1,33 +1,48 @@
+import boto3
 import os
 import yaml
 from pathlib import Path
 from pydantic_settings import BaseSettings
 
-from src.modules.utils import get_ssm_parameter
-
-
 CWF = Path(__file__)
 ROOT = CWF.parent.parent.parent.absolute().__str__()
 PROMPTS = yaml.safe_load(open(os.path.join(ROOT, "config", "prompts.yaml"), "r"))
+AWS_SESSION = boto3.Session()
 
+def get_ssm_parameter(name: str | None, default: str | None = None) -> str | None:
+    """
+    Retrieves a specific value from AWS Systems Manager's Parameter Store.
+
+    :param name: The name of the parameter to retrieve.
+    :param default: The default value to return if the parameter is not found.
+    :return: The value of the requested parameter.
+    """
+
+    ssm_client = AWS_SESSION.client("ssm")
+    LOGGER.info(f"get_ssm_parameter {name}...")
+
+    if name is None:
+        name = "none-params-in-ssm"
+    try:
+        response = ssm_client.get_parameter(Name=name, WithDecryption=True)
+        value = response["Parameter"]["Value"]
+    except ssm_client.exceptions.ParameterNotFound:
+        LOGGER.warning(
+            f"Parameter {name} not found in SSM, returning default: {default}"
+        )
+        return default
+
+    return value
 
 class ChatbotSettings(BaseSettings):
     """Settings for the chatbot evaluation."""
 
-    # api keys
-    aws_access_key_id: str = os.getenv(
-        "AWS_ACCESS_KEY_ID", os.getenv("CHB_AWS_ACCESS_KEY_ID")
-    )
-    aws_default_region: str = os.getenv(
-        "AWS_REGION", os.getenv("CHB_AWS_DEFAULT_REGION")
-    )
-    aws_endpoint_url: str | None = os.getenv("CHB_AWS_SSM_ENDPOINT_URL")
-    aws_secret_access_key: str = os.getenv(
-        "AWS_SECRET_ACCESS_KEY", os.getenv("CHB_AWS_SECRET_ACCESS_KEY")
-    )
+    # api
+    environment: str = os.getenv("ENVIRONMENT", os.getenv("environment", "local"))
+    aws_endpoint_url: str | None = os.getenv("AWS_ENDPOINT_URL")    
     google_api_key: str = get_ssm_parameter(
-        os.getenv("CHB_AWS_SSM_GOOGLE_API_KEY"),
-        os.getenv("CHB_AWS_GOOGLE_API_KEY"),
+        name=os.getenv("CHB_AWS_SSM_GOOGLE_API_KEY"),
+        default=os.getenv("CHB_AWS_GOOGLE_API_KEY"),
     )
     langfuse_host: str = os.getenv("CHB_LANGFUSE_HOST")
     langfuse_public_key: str = get_ssm_parameter(
@@ -38,6 +53,7 @@ class ChatbotSettings(BaseSettings):
         os.getenv("CHB_AWS_SSM_LANGFUSE_SECRET_KEY"),
         os.getenv("LANGFUSE_INIT_PROJECT_SECRET_KEY"),
     )
+    log_level: str = os.getenv("LOG_LEVEL", "info")
 
     # models settings
     embed_batch_size: int = int(os.getenv("CHB_EMBED_BATCH_SIZE", "100"))
