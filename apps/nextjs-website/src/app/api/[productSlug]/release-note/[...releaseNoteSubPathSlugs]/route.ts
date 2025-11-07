@@ -42,7 +42,7 @@ export async function GET(
         } = releaseNoteProps;
 
         const payload = {
-          page: page, // includes body, menu, path, title, isIndex, gitBookPagesWithTitle
+          page: page,
           product: {
             slug: product.slug,
             name: product.name,
