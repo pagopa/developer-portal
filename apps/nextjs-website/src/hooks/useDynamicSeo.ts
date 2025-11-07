@@ -54,5 +54,5 @@ export function useDynamicSeo(seo: DynamicSeo | null) {
     }
 
     prevRef.current = seo;
-  }, [seo?.metaTitle, seo?.metaDescription, seo?.canonical, seo]);
+  }, [seo]);
 }
