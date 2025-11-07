@@ -55,10 +55,16 @@ export async function GET(
       });
     })
     .catch(
-      () =>
-        new Response(JSON.stringify({ error: 'Internal server error' }), {
-          status: 500,
-          headers: { 'Content-Type': 'application/json' },
-        })
+      (e: Error) =>
+        new Response(
+          JSON.stringify({
+            error: 'Internal server error:',
+            details: JSON.stringify(e),
+          }),
+          {
+            status: 500,
+            headers: { 'Content-Type': 'application/json' },
+          }
+        )
     );
 }
