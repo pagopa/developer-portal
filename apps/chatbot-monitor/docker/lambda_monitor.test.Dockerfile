@@ -12,7 +12,7 @@ COPY ./pyproject.toml ${LAMBDA_TASK_ROOT}/
 COPY ./poetry.lock ${LAMBDA_TASK_ROOT}/
 
 RUN poetry config virtualenvs.create false
-RUN poetry install
+RUN poetry install --with test
 
 COPY ./src ${LAMBDA_TASK_ROOT}/src
 COPY ./scripts ${LAMBDA_TASK_ROOT}/scripts
