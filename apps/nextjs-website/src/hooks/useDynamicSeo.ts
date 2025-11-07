@@ -9,12 +9,6 @@ export type DynamicSeo = {
   readonly canonical?: string;
 };
 
-/**
- * useDynamicSeo
- * Applies dynamic SEO updates (title, meta description, canonical) after render.
- * Designed for client transitions where Next.js metadata API was originally server-only.
- * Avoids mutating existing DOM nodes directly; instead replaces <title> element and sets attributes.
- */
 export function useDynamicSeo(seo: DynamicSeo | null) {
   const prevRef = useRef<DynamicSeo | null>(null);
   useEffect(() => {
