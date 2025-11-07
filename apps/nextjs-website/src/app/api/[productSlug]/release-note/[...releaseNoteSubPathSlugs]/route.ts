@@ -70,8 +70,8 @@ export async function GET(
       });
     })
     .catch(
-      () =>
-        new Response(JSON.stringify({ error: 'Internal server error' }), {
+      (e) =>
+        new Response(JSON.stringify({ error: 'Internal server error' , error: e}), {
           status: 500,
           headers: { 'Content-Type': 'application/json' },
         })
