@@ -20,6 +20,7 @@ export type GitBookTemplateProps = {
   versionName?: GuideMenuItemsProps['versionName'];
   hasHeader?: boolean;
   hasInPageMenu?: boolean;
+  hasProductHeader?: boolean;
 } & Pick<
   ProductGuidePageProps,
   'menu' | 'body' | 'bodyConfig' | 'path' | 'pathPrefix'
@@ -39,6 +40,7 @@ const GitBookTemplate = ({
   contentMarginTop,
   hasHeader = true,
   hasInPageMenu = true,
+  hasProductHeader = true,
 }: GitBookTemplateProps) => {
   const t = useTranslations();
   const responsiveContentMarginTop =
@@ -64,6 +66,7 @@ const GitBookTemplate = ({
             versionName={versionName}
             versions={versions}
             distanceFromTop={menuDistanceFromTop}
+            hasProductHeader={hasProductHeader}
           />
         )}
         <Stack
@@ -98,7 +101,9 @@ const GitBookTemplate = ({
               sx={{
                 position: 'sticky',
                 maxWidth: '378px',
-                top: SITE_HEADER_HEIGHT + PRODUCT_HEADER_HEIGHT,
+                top:
+                  SITE_HEADER_HEIGHT +
+                  (hasProductHeader ? PRODUCT_HEADER_HEIGHT : 0),
               }}
             >
               <GuideInPageMenu
@@ -106,6 +111,7 @@ const GitBookTemplate = ({
                 pagePath={path}
                 inPageMenu={body}
                 title={t('productGuidePage.onThisPage')}
+                hasProductHeader={hasProductHeader}
               />
             </Box>
           </Box>
