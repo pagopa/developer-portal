@@ -51,15 +51,15 @@ const GitBookTemplate = ({
   const t = useTranslations();
   const responsiveContentMarginTop =
     (contentMarginTop && `${contentMarginTop}px`) || 0;
-  const [dynamicContent, setDynamicContent] = useState({
+  const [content, setContent] = useState({
     body,
     bodyConfig,
     path,
     menu,
   });
-  const [dynamicBreadcrumbs, setDynamicBreadcrumbs] =
+  const [breadcrumbs, setBreadcrumbs] =
     useState<BreadcrumbSegment[]>(initialBreadcrumbs);
-  const [dynamicSeo, setDynamicSeo] = useState<{
+  const [seo, setSeo] = useState<{
     metaTitle?: string;
     metaDescription?: string;
     canonical?: string;
@@ -69,16 +69,16 @@ const GitBookTemplate = ({
     if (typeof window !== 'undefined') {
       window.scrollTo({ top: 0 });
     }
-  }, [dynamicContent.path]);
+  }, [content.path]);
 
-  const updateDynamicContent = useCallback((data: unknown): boolean => {
+  const updateContent = useCallback((data: unknown): boolean => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const payload = data as any;
     if (!payload?.page?.body) {
       return false;
     }
 
-    setDynamicContent((prev) => {
+    setContent((prev) => {
       const mergedBodyConfig = {
         ...prev.bodyConfig,
         ...payload.bodyConfig,
@@ -113,7 +113,7 @@ const GitBookTemplate = ({
       const guideCrumbs = buildBreadcrumbs([
         { name: payload.guide.name, path: payload.guide.path },
       ]);
-      setDynamicBreadcrumbs([...guideCrumbs]);
+      setBreadcrumbs([...guideCrumbs]);
     } else if (payload?.solution) {
       const solutionCrumbs = buildBreadcrumbs([
         {
@@ -121,7 +121,7 @@ const GitBookTemplate = ({
           path: payload.page.path,
         },
       ]);
-      setDynamicBreadcrumbs([...solutionCrumbs]);
+      setBreadcrumbs([...solutionCrumbs]);
     } else if (!payload?.guide && !payload?.solution && payload?.title) {
       const isReleaseNote = (payload.page?.path || '').includes(
         '/release-note'
@@ -132,14 +132,14 @@ const GitBookTemplate = ({
           payload.bodyConfig.gitBookPagesWithTitle
         );
         const rnCrumbs = buildBreadcrumbs(gbPageSegments);
-        setDynamicBreadcrumbs([...rnCrumbs]);
+        setBreadcrumbs([...rnCrumbs]);
       }
     }
 
     // SEO
     const seo = payload?.seo;
     if (seo) {
-      setDynamicSeo({
+      setSeo({
         metaTitle:
           seo.metaTitle || seo.seoTitle || seo.title || seo.metaTitleFallback,
         metaDescription: seo.metaDescription || seo.seoDescription || '',
@@ -166,7 +166,7 @@ const GitBookTemplate = ({
         payload?.page?.title || '',
         entityTitle,
       ].filter(Boolean);
-      setDynamicSeo({
+      setSeo({
         metaTitle: fallbackTitleParts.join(' | '),
         metaDescription: '',
         canonical: payload?.page?.path || undefined,
@@ -180,7 +180,7 @@ const GitBookTemplate = ({
     return true;
   }, []);
 
-  useDynamicSeo(dynamicSeo);
+  useDynamicSeo(seo);
 
   return (
     <FragmentProvider>
@@ -203,7 +203,7 @@ const GitBookTemplate = ({
             versionName={versionName}
             versions={versions}
             distanceFromTop={menuDistanceFromTop}
-            onGuideNavigate={updateDynamicContent}
+            onGuideNavigate={updateContent}
             hasProductHeader={hasProductHeader}
           />
         )}
@@ -220,12 +220,12 @@ const GitBookTemplate = ({
           }}
         >
           <Box sx={{ paddingX: '40px' }}>
-            <ProductBreadcrumbs breadcrumbs={dynamicBreadcrumbs} />
+            <ProductBreadcrumbs breadcrumbs={breadcrumbs} />
           </Box>
           <Box sx={{ padding: '0 40px 32px 40px' }}>
             <GitBookContent
-              content={dynamicContent.body}
-              config={dynamicContent.bodyConfig}
+              content={content.body}
+              config={content.bodyConfig}
             />
           </Box>
         </Stack>
@@ -248,9 +248,9 @@ const GitBookTemplate = ({
               }}
             >
               <GuideInPageMenu
-                assetsPrefix={dynamicContent.bodyConfig.assetsPrefix}
-                pagePath={dynamicContent.path}
-                inPageMenu={dynamicContent.body}
+                assetsPrefix={content.bodyConfig.assetsPrefix}
+                pagePath={content.path}
+                inPageMenu={content.body}
                 title={t('productGuidePage.onThisPage')}
                 hasProductHeader={hasProductHeader}
               />
