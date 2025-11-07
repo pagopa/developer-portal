@@ -71,7 +71,7 @@ export function makeTutorialListPagesProps(
               const currentDate = new Date(current.attributes.updatedAt);
               return currentDate > latestDate ? current : latest;
             }).attributes.updatedAt
-          : undefined;
+          : '';
 
       return {
         updatedAt: updatedAt,

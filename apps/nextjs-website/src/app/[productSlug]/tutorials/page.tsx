@@ -69,7 +69,7 @@ const TutorialsPage = async ({ params }: ProductParams) => {
     ],
     seo: tutorialListPage?.seo,
   });
-  const mappedTutorials = tutorialListPage?.tutorials.map((tutorial) => {
+  const mappedTutorials = tutorialListPage?.tutorials?.map((tutorial) => {
     return {
       tags: tutorial.tags || [],
       title: tutorial.title,

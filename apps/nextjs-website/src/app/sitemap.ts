@@ -13,6 +13,7 @@ import {
   getWebinarsProps,
   getSolutionsProps,
   getQuickStartGuidesProps,
+  getHomepageProps,
 } from '@/lib/cmsApi';
 import { baseUrl } from '@/config';
 import {
@@ -50,12 +51,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const solutionsMetadata = await getSolutionsMetadata();
   const releaseNotesMetadata = await getReleaseNotesMetadata();
   const productPages = await getProductsPagesProps(productSlugs);
-
+  const homePage = await getHomepageProps();
   // Base routes
   const routes = [
     {
       url: baseUrl,
-      lastModified: new Date(),
+      lastModified: new Date(homePage.updatedAt),
       changeFrequency: 'daily' as const,
       priority: 1,
     },
@@ -75,7 +76,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const quickStartRoutes = quickStartParams.map((quickStart) => ({
     url: `${baseUrl}/${quickStart.product.slug}/quick-start`,
-    lastModified: new Date(quickStart.updatedAt || new Date().toISOString()),
+    lastModified: new Date(quickStart.updatedAt || Date.now()),
     changeFrequency: 'weekly' as const,
     priority: 0.8,
   }));
@@ -83,7 +84,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Case histories
   const caseHistoryRoutes = caseHistories.map(({ slug, updatedAt }) => ({
     url: `${baseUrl}/case-histories/${slug}`,
-    lastModified: new Date(updatedAt || new Date().toISOString()),
+    lastModified: new Date(updatedAt || Date.now()),
     changeFrequency: 'weekly' as const,
     priority: 0.7,
   }));
@@ -96,25 +97,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     return [
       {
         url: `${baseUrl}/${productSlug}/overview`,
-        lastModified: new Date(
-          routes?.overview.updatedAt || new Date().toISOString()
-        ),
+        lastModified: new Date(routes?.overview.updatedAt || Date.now()),
         changeFrequency: 'weekly' as const,
         priority: 0.8,
       },
       {
         url: `${baseUrl}/${productSlug}/tutorials`,
-        lastModified: new Date(
-          routes?.tutorialList?.updatedAt || new Date().toISOString()
-        ),
+        lastModified: new Date(routes?.tutorialList?.updatedAt || Date.now()),
         changeFrequency: 'weekly' as const,
         priority: 0.7,
       },
       {
         url: `${baseUrl}/${productSlug}/guides`,
-        lastModified: new Date(
-          routes?.guides.updatedAt || new Date().toISOString()
-        ),
+        lastModified: new Date(routes?.guides.updatedAt || Date.now()),
         changeFrequency: 'weekly' as const,
         priority: 0.7,
       },
@@ -125,7 +120,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const apiRoutes = apiDataParams.map(
     ({ productSlug, apiDataSlug, updatedAt }) => ({
       url: `${baseUrl}/${productSlug}/api/${apiDataSlug}`,
-      lastModified: new Date(updatedAt || new Date().toISOString()),
+      lastModified: new Date(updatedAt || Date.now()),
       changeFrequency: 'weekly' as const,
       priority: 0.6,
     })
@@ -134,7 +129,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Guide list pages
   const guidePagesRoutes = guideListPages.map((guide) => ({
     url: `${baseUrl}/${guide.product.slug}/guides`,
-    lastModified: new Date(guide.updatedAt || new Date().toISOString()),
+    lastModified: new Date(guide.updatedAt || Date.now()),
     changeFrequency: 'weekly' as const,
     priority: 0.6,
   }));
@@ -142,7 +137,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const tutorials = await getTutorialsProps();
   const tutorialRoutes = tutorials.map((tutorial) => ({
     url: `${baseUrl}${tutorial.path}`,
-    lastModified: new Date(tutorial.updatedAt || new Date().toISOString()),
+    lastModified: new Date(tutorial.updatedAt || Date.now()),
     changeFrequency: 'weekly' as const,
     priority: 0.6,
   }));
@@ -150,7 +145,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const webinars = await getWebinarsProps();
   const webinarRoutes = webinars.map((webinar) => ({
     url: `${baseUrl}/webinars/${webinar.slug}`,
-    lastModified: new Date(webinar.updatedAt || new Date().toISOString()),
+    lastModified: new Date(webinar.updatedAt || Date.now()),
     changeFrequency: 'weekly' as const,
     priority: 0.6,
   }));
@@ -158,40 +153,46 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const solutions = await getSolutionsProps();
   const solutionRoutes = solutions.map((solution) => ({
     url: `${baseUrl}/solutions/${solution.slug}`,
-    lastModified: new Date(solution.updatedAt || new Date().toISOString()),
+    lastModified: new Date(solution.updatedAt || Date.now()),
     changeFrequency: 'weekly' as const,
     priority: 0.6,
   }));
 
   const solutionsDetailRoutes = solutions.map((solution) => ({
     url: `${baseUrl}/solutions/${solution.slug}/details`,
-    lastModified: new Date(solution.updatedAt || new Date().toISOString()),
+    lastModified: new Date(solution.updatedAt || Date.now()),
     changeFrequency: 'weekly' as const,
     priority: 0.6,
   }));
 
-  const lastSolutionUpdatedAt = solutions.reduce((latest, current) => {
-    const latestDate = new Date(latest.updatedAt || '');
-    const currentDate = new Date(current.updatedAt || '');
-    return currentDate > latestDate ? current : latest;
-  }, { updatedAt: '' }).updatedAt;
-  const lastWebinarUpdatedAt = webinars.reduce((latest, current) => {
-    const latestDate = new Date(latest.updatedAt || '');
-    const currentDate = new Date(current.updatedAt || '');
-    return currentDate > latestDate ? current : latest;
-  }, { updatedAt: '' }).updatedAt;
+  const lastSolutionUpdatedAt =
+    solutions.length <= 0
+      ? ''
+      : solutions.reduce((latest, current) => {
+          const latestDate = new Date(latest.updatedAt || '');
+          const currentDate = new Date(current.updatedAt || '');
+          return currentDate > latestDate ? current : latest;
+        }).updatedAt;
+  const lastWebinarUpdatedAt =
+    webinars.length <= 0
+      ? ''
+      : webinars.reduce((latest, current) => {
+          const latestDate = new Date(latest.updatedAt || '');
+          const currentDate = new Date(current.updatedAt || '');
+          return currentDate > latestDate ? current : latest;
+        }).updatedAt;
 
   // Add main section routes
   const sectionRoutes = [
     {
       url: `${baseUrl}/solutions`,
-      lastModified: new Date(lastSolutionUpdatedAt || new Date().toISOString()),
+      lastModified: new Date(lastSolutionUpdatedAt || Date.now()),
       changeFrequency: 'weekly' as const,
       priority: 0.8,
     },
     {
       url: `${baseUrl}/webinars`,
-      lastModified: new Date(lastWebinarUpdatedAt || new Date().toISOString()),
+      lastModified: new Date(lastWebinarUpdatedAt || Date.now()),
       changeFrequency: 'weekly' as const,
       priority: 0.8,
     },
@@ -200,7 +201,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Generate routes for guides from S3 metadata
   const s3GuideRoutes = guidesMetadata.map((guide: JsonMetadata) => ({
     url: `${baseUrl}${guide.path}`,
-    lastModified: new Date(guide.lastModified || new Date().toISOString()),
+    lastModified: new Date(guide.lastModified || Date.now()),
     changeFrequency: 'weekly' as const,
     priority: 0.6,
   }));
@@ -208,7 +209,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Generate routes for solutions from S3 metadata
   const s3SolutionRoutes = solutionsMetadata.map((solution: JsonMetadata) => ({
     url: `${baseUrl}${solution.path}`,
-    lastModified: new Date(solution.lastModified || new Date().toISOString()),
+    lastModified: new Date(solution.lastModified || Date.now()),
     changeFrequency: 'weekly' as const,
     priority: 0.6,
   }));
@@ -217,9 +218,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const s3ReleaseNoteRoutes = releaseNotesMetadata.map(
     (releaseNote: JsonMetadata) => ({
       url: `${baseUrl}${releaseNote.path}`,
-      lastModified: new Date(
-        releaseNote.lastModified || new Date().toISOString()
-      ),
+      lastModified: new Date(releaseNote.lastModified || Date.now()),
       changeFrequency: 'weekly' as const,
       priority: 0.6,
     })
