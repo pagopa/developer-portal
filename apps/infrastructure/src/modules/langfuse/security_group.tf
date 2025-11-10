@@ -58,7 +58,7 @@ resource "aws_security_group" "langfuse_cache" {
     protocol        = "-1"
     security_groups = []
     # security_groups = [aws_security_group.apprunner_vpc_connector.id, aws_security_group.langfuse_db.id, aws_security_group.langfuse_worker.id]
-    description     = "Ingress Allow all traffic from app and flower security groups"
+    description = "Ingress Allow all traffic from app and flower security groups"
   }
 
   egress {
