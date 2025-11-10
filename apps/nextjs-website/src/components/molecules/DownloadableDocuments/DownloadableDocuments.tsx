@@ -66,7 +66,7 @@ const DownloadableDocuments = ({ documents }: DownloadableDocumentsProps) => {
                       ),
                       href: downloadLink,
                     }}
-                    tags={tags}
+                    labels={tags}
                   />
                 </Grid>
               );
