@@ -5,7 +5,7 @@ resource "aws_service_discovery_private_dns_namespace" "langfuse" {
 }
 
 resource "aws_service_discovery_service" "clickhouse" {
-  name = "clickhouse"
+  name = "${local.prefix}-clickhouse"
 
   dns_config {
     namespace_id = aws_service_discovery_private_dns_namespace.langfuse.id

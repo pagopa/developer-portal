@@ -1,19 +1,12 @@
 variable "module" {
   type        = string
   description = "Prefix for resources"
-  default     = "monitoring"
+  default     = "langfuse"
 }
 
 variable "environment" {
   type        = string
   description = "Environment"
-}
-
-variable "tags" {
-  type = map(any)
-  default = {
-    CreatedBy = "Terraform"
-  }
 }
 
 variable "region" {
