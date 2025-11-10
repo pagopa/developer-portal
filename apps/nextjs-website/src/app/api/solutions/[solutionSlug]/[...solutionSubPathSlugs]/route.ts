@@ -1,4 +1,6 @@
 import { getSolutionDetail } from '@/lib/api';
+import { getUrlReplaceMapProps } from '@/lib/cmsApi';
+import { GitBookContentData } from '@/lib/types/gitBookContent';
 
 export async function GET(
   request: Request,
@@ -13,58 +15,61 @@ export async function GET(
 ) {
   const { solutionSlug, solutionSubPathSlugs } = params;
 
-  return getSolutionDetail(
-    solutionSlug,
-    Array.isArray(solutionSubPathSlugs) ? solutionSubPathSlugs : []
-  )
-    .then((data) => {
-      if (!data) {
-        return new Response(
-          JSON.stringify({ error: 'Solution page not found' }),
-          {
-            status: 404,
-            headers: { 'Content-Type': 'application/json' },
-          }
-        );
+  // eslint-disable-next-line functional/no-try-statements
+  try {
+    const [solutionData, urlReplaceMap] = await Promise.all([
+      getSolutionDetail(
+        solutionSlug,
+        Array.isArray(solutionSubPathSlugs) ? solutionSubPathSlugs : []
+      ),
+      getUrlReplaceMapProps(),
+    ]);
+
+    if (!solutionData) {
+      return new Response(
+        JSON.stringify({ error: 'Solution page not found' }),
+        {
+          status: 404,
+          headers: { 'Content-Type': 'application/json' },
+        }
+      );
+    }
+
+    const bodyConfig = {
+      isPageIndex: solutionData.page.isIndex,
+      pagePath: solutionData.page.path,
+      assetsPrefix: solutionData.source.assetsPrefix,
+      gitBookPagesWithTitle: [],
+      spaceToPrefix: [],
+      urlReplaces: urlReplaceMap,
+    };
+    const payload: GitBookContentData = {
+      page: solutionData.page,
+      solution: {
+        title: solutionData.title,
+        slug: solutionData.slug,
+        path: `/solutions/${solutionData.slug}`,
+      },
+      bodyConfig,
+      seo: solutionData.seo,
+    };
+    return new Response(JSON.stringify(payload), {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json',
+        'Cache-Control': 'no-store',
+      },
+    });
+  } catch (e) {
+    return new Response(
+      JSON.stringify({
+        error: 'Internal server error:',
+        details: JSON.stringify(e),
+      }),
+      {
+        status: 500,
+        headers: { 'Content-Type': 'application/json' },
       }
-      const bodyConfig = {
-        isPageIndex: data.page.isIndex,
-        pagePath: data.page.path,
-        assetsPrefix: data.source.assetsPrefix,
-        gitBookPagesWithTitle: [],
-        spaceToPrefix: [],
-      };
-      const payload = {
-        page: data.page,
-        solution: {
-          title: data.title,
-          slug: data.slug,
-          path: `/solutions/${data.slug}`,
-        },
-        bodyConfig,
-        source: data.source,
-        bannerLinks: data.bannerLinks ?? null,
-        seo: data.seo ?? null,
-      };
-      return new Response(JSON.stringify(payload), {
-        status: 200,
-        headers: {
-          'Content-Type': 'application/json',
-          'Cache-Control': 'no-store',
-        },
-      });
-    })
-    .catch(
-      (e: Error) =>
-        new Response(
-          JSON.stringify({
-            error: 'Internal server error:',
-            details: JSON.stringify(e),
-          }),
-          {
-            status: 500,
-            headers: { 'Content-Type': 'application/json' },
-          }
-        )
     );
+  }
 }

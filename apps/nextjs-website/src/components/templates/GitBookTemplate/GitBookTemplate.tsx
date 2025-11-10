@@ -1,7 +1,5 @@
 'use client';
-import { ProductGuidePageProps } from '@/app/[productSlug]/guides/[...productGuidePage]/page';
 import GuideMenu from '@/components/atoms/GuideMenu/GuideMenu';
-import { GuideMenuItemsProps } from '@/components/atoms/GuideMenu/Menu';
 import ProductBreadcrumbs from '@/components/atoms/ProductBreadcrumbs/ProductBreadcrumbs';
 import { FragmentProvider } from '@/components/organisms/FragmentProvider/FragmentProvider';
 import GuideInPageMenu from '@/components/organisms/GuideInPageMenu/GuideInPageMenu';
@@ -14,23 +12,26 @@ import { useState, useEffect, useCallback } from 'react';
 import { useDynamicSeo } from '@/hooks/useDynamicSeo';
 import {
   gitBookPageToBreadcrumbs,
+  pageToBreadcrumbs,
   productPageToBreadcrumbs,
 } from '@/helpers/breadcrumbs.helpers';
+import { compact } from 'lodash';
+import { GitBookContentData } from '@/lib/types/gitBookContent';
 
 export type GitBookTemplateProps = {
-  menuName: string;
-  initialBreadcrumbs: BreadcrumbSegment[];
-  menuDistanceFromTop?: number;
+  body: string;
   contentMarginTop?: number;
-  versions?: GuideMenuItemsProps['versions'];
-  versionName?: GuideMenuItemsProps['versionName'];
   hasHeader?: boolean;
   hasInPageMenu?: boolean;
   hasProductHeader?: boolean;
-} & Pick<
-  ProductGuidePageProps,
-  'menu' | 'body' | 'bodyConfig' | 'path' | 'pathPrefix'
->;
+  initialBreadcrumbs: BreadcrumbSegment[];
+  menu: string;
+  menuDistanceFromTop?: number;
+  menuName: string;
+  path: string;
+  pathPrefix: string;
+  versionName?: string;
+} & GitBookContentData;
 
 const GitBookTemplate = ({
   menuName,
@@ -39,7 +40,6 @@ const GitBookTemplate = ({
   menu,
   path,
   pathPrefix,
-  versionName,
   versions,
   initialBreadcrumbs,
   menuDistanceFromTop,
@@ -47,6 +47,7 @@ const GitBookTemplate = ({
   hasHeader = true,
   hasInPageMenu = true,
   hasProductHeader = true,
+  versionName,
 }: GitBookTemplateProps) => {
   const t = useTranslations();
   const responsiveContentMarginTop =
@@ -71,9 +72,8 @@ const GitBookTemplate = ({
     }
   }, [content.path]);
 
-  const updateContent = useCallback((data: unknown): boolean => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const payload = data as any;
+  const updateContent = useCallback((data: GitBookContentData): boolean => {
+    const payload = data;
     if (!payload?.page?.body) {
       return false;
     }
@@ -85,10 +85,10 @@ const GitBookTemplate = ({
         urlReplaces: prev.bodyConfig.urlReplaces,
       };
       return {
-        body: payload.page.body,
+        body: payload.page?.body || prev.body,
         bodyConfig: mergedBodyConfig,
-        path: payload.page.path ?? prev.path,
-        menu: payload.page.menu ?? prev.menu,
+        path: payload.page?.path ?? prev.path,
+        menu: payload.page?.menu ?? prev.menu,
       };
     });
 
@@ -115,10 +115,14 @@ const GitBookTemplate = ({
       ]);
       setBreadcrumbs([...guideCrumbs]);
     } else if (payload?.solution) {
-      const solutionCrumbs = buildBreadcrumbs([
+      const solutionCrumbs = pageToBreadcrumbs('solutions', [
+        {
+          name: payload.solution.title || '',
+          path: `/solutions/${payload.solution.slug}`,
+        },
         {
           name: payload.page.title,
-          path: payload.page.path,
+          path: `/solutions/${payload.solution.slug}/details/${payload.page?.path}`,
         },
       ]);
       setBreadcrumbs([...solutionCrumbs]);
@@ -137,31 +141,25 @@ const GitBookTemplate = ({
     }
 
     // SEO
-    const seo = payload?.seo;
-    if (seo) {
+    if (payload?.seo) {
       setSeo({
-        metaTitle:
-          seo.metaTitle || seo.seoTitle || seo.title || seo.metaTitleFallback,
-        metaDescription: seo.metaDescription || seo.seoDescription || '',
-        canonical: payload?.page?.path || undefined,
+        metaTitle: payload?.seo.metaTitle,
+        metaDescription: payload?.seo.metaDescription || '',
+        canonical: payload?.page?.path,
       });
     } else {
-      const guideTitleBits = [
+      const guideTitleBits = compact([
         payload?.guide?.name,
-        payload?.version && !payload?.version?.main && payload?.version?.name,
+        payload?.version && payload?.version?.name,
         payload?.product?.name,
-      ].filter(Boolean);
-      const solutionTitleBits = [payload?.solution?.title].filter(Boolean);
-      const releaseNoteTitleBits =
-        !payload?.guide && !payload?.solution && payload?.title
-          ? [payload.title]
-          : [];
-      const entityTitle =
-        guideTitleBits.length > 0
-          ? guideTitleBits.join(' ')
-          : solutionTitleBits.length > 0
-          ? solutionTitleBits.join(' ')
-          : releaseNoteTitleBits.join(' ');
+      ]);
+      const solutionTitleBits = compact([payload?.solution?.title]);
+      const releaseNoteTitleBits = compact([payload.title]);
+      const entityTitle = [
+        ...guideTitleBits,
+        ...solutionTitleBits,
+        ...releaseNoteTitleBits,
+      ].join(' ');
       const fallbackTitleParts = [
         payload?.page?.title || '',
         entityTitle,
@@ -201,7 +199,7 @@ const GitBookTemplate = ({
             linkPrefix={pathPrefix}
             name={menuName}
             versionName={versionName}
-            versions={versions}
+            versions={versions && [...versions]}
             distanceFromTop={menuDistanceFromTop}
             onGuideNavigate={updateContent}
             hasProductHeader={hasProductHeader}

@@ -1,5 +1,6 @@
 import { getReleaseNote } from '@/lib/api';
 import { getUrlReplaceMapProps } from '@/lib/cmsApi';
+import { GitBookContentData } from '@/lib/types/gitBookContent';
 
 export async function GET(
   request: Request,
@@ -30,24 +31,19 @@ export async function GET(
       }
 
       return getUrlReplaceMapProps().then((urlReplaceMap) => {
-        const {
-          bannerLinks,
-          page,
-          path,
-          product,
-          seo,
-          source,
-          title,
-          bodyConfig,
-        } = releaseNoteProps;
+        const { page, product, seo, source, title, bodyConfig } =
+          releaseNoteProps;
 
-        const payload = {
+        const payload: GitBookContentData = {
           page: page,
           product: {
-            slug: product.slug,
+            bannerLinks: product.bannerLinks,
+            hasGuideListPage: product.hasGuideListPage,
+            hasOverviewPage: product.hasOverviewPage,
+            isVisible: product.isVisible,
+            shortName: product.shortName,
             name: product.name,
-            hasGuideListPage: product.hasGuideListPage ?? false,
-            hasOverviewPage: product.hasOverviewPage ?? false,
+            slug: product.slug,
           },
           bodyConfig: {
             ...bodyConfig,
@@ -56,11 +52,8 @@ export async function GET(
             assetsPrefix: source.assetsPrefix,
             urlReplaces: urlReplaceMap,
           },
-          source: source,
-          bannerLinks: bannerLinks ?? null,
-          seo: seo ?? null,
+          seo: seo,
           title: title,
-          path: path,
         };
 
         return new Response(JSON.stringify(payload), {
