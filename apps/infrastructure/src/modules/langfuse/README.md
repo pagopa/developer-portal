@@ -49,7 +49,6 @@ No modules.
 | <a name="input_region"></a> [region](#input\_region) | AWS region on which to deploy | `string` | n/a | yes |
 | <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | VPC ID for Your Langfuse Environment | `string` | n/a | yes |
 | <a name="input_module"></a> [module](#input\_module) | Prefix for resources | `string` | `"langfuse"` | no |
-| <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | <pre>{<br/>  "CreatedBy": "Terraform"<br/>}</pre> | no |
 
 ## Outputs
 
