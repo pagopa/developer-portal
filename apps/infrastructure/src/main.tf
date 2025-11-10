@@ -268,7 +268,6 @@ module "langfuse" {
   source = "./modules/langfuse"
 
   environment        = var.environment
-  tags               = var.tags
   region             = var.aws_region
   vpc_id             = module.cms.vpc.id
   private_subnet_ids = module.cms.vpc.private_subnets

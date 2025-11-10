@@ -92,20 +92,18 @@
 # }
 
 resource "aws_security_group" "clickhouse" {
-  name   = "langfuse-clickhouse-sg"
+  name   = "${local.prefix}-clickhouse-sg"
   vpc_id = var.vpc_id
   tags = {
     Name = "langfuse_clickhouse_sg"
   }
 
-  # ADD WHEN READY
-  # ingress {
-  #   from_port       = 0
-  #   to_port         = 0
-  #   protocol        = "-1"
-  #   security_groups = []
-  #   # ADD WHEN READY: security_groups = [aws_security_group.apprunner_vpc_connector.id, aws_security_group.apprunner_vpc_connector.id, aws_security_group.langfuse_worker.id]
-  # }
+  ingress {
+    from_port       = 0
+    to_port         = 0
+    protocol        = "-1"
+    security_groups = []
+  }
 
   egress {
     from_port   = 0
@@ -116,7 +114,7 @@ resource "aws_security_group" "clickhouse" {
 }
 
 resource "aws_security_group" "efs" {
-  name        = "efs-clickhouse"
+  name        = "${local.prefix}-efs-clickhouse"
   description = "Allow EFS access from ECS tasks"
   vpc_id      = var.vpc_id
 

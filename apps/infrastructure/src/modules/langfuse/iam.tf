@@ -68,7 +68,7 @@
 # }
 
 resource "aws_iam_role" "langfuse_ecs_task_execute_role" {
-  name               = "LangfuseECSTaskExecuteRole"
+  name               = "Langfuse${title(var.environment)}EcsTaskExecuteRole"
   description        = "ECS Task Execution Role for Langfuse"
   path               = "/"
   assume_role_policy = data.aws_iam_policy_document.ecs_task_execute_assume_policy.json
@@ -89,7 +89,7 @@ data "aws_iam_policy_document" "ecs_task_execute_assume_policy" {
 }
 
 resource "aws_iam_policy" "langfuse_ecs_task_execute_role_policy" {
-  name        = "langfuseEcsTaskExecuteRolePolicy"
+  name        = "langfuse${title(var.environment)}EcsTaskExecuteRolePolicy"
   description = "ECS Task Execution Policy for Langfuse"
   policy      = data.aws_iam_policy_document.ecs_task_execute_role_policy.json
   tags = {
@@ -119,7 +119,7 @@ resource "aws_iam_role_policy_attachment" "ecs_task_execute_role_attachment" {
 }
 
 resource "aws_iam_role" "langfuse_task_role" {
-  name               = "LangfuseTaskRole"
+  name               = "Langfuse${title(var.environment)}TaskRole"
   description        = "Task Role for Langfuse"
   path               = "/"
   assume_role_policy = data.aws_iam_policy_document.langfuse_task_role_assume_policy.json
@@ -129,7 +129,7 @@ resource "aws_iam_role" "langfuse_task_role" {
 }
 
 resource "aws_iam_policy" "langfuse_task_role_policy" {
-  name        = "langfuseTaskRolePolicy"
+  name        = "langfuse${title(var.environment)}TaskRolePolicy"
   description = "Task Role Policy for Langfuse"
   policy      = data.aws_iam_policy_document.langfuse_instance_role_policy.json
   tags = {

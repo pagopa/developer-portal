@@ -5,7 +5,7 @@ locals {
 }
 
 resource "aws_ecs_cluster" "langfuse" {
-  name = "langfuse"
+  name = local.prefix
 
   setting {
     name  = "containerInsights"
@@ -40,9 +40,9 @@ resource "aws_ecs_cluster" "langfuse" {
 # }
 
 resource "aws_ecs_task_definition" "clickhouse" {
-  family                   = "clickhouse"
-  cpu                      = 1024
-  memory                   = 8192
+  family                   = "${local.prefix}-clickhouse"
+  cpu                      = 512
+  memory                   = 4096
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
 
@@ -50,7 +50,8 @@ resource "aws_ecs_task_definition" "clickhouse" {
   task_role_arn      = aws_iam_role.langfuse_task_role.arn
 
   volume {
-    name = "clickhouse_data"
+    name = "${local.prefix}-clickhouse_data"
+
     efs_volume_configuration {
       file_system_id = aws_efs_file_system.clickhouse_data.id
       root_directory = "/"
@@ -66,8 +67,8 @@ resource "aws_ecs_task_definition" "clickhouse" {
     {
       name      = "clickhouse"
       image     = "docker.io/clickhouse/clickhouse-server:25.8.8.26-alpine"
-      cpu       = 1024
-      memory    = 8192
+      cpu       = 512
+      memory    = 4096
       essential = true
 
       ulimits = [
@@ -127,7 +128,7 @@ resource "aws_ecs_task_definition" "clickhouse" {
       logConfiguration = {
         logDriver = "awslogs"
         options = {
-          awslogs-stream-prefix = "clickhouse"
+          awslogs-stream-prefix = "${local.prefix}-clickhouse"
           awslogs-region        = var.region
           awslogs-group         = aws_cloudwatch_log_group.clickhouse.name
           mode                  = "non-blocking",
@@ -136,7 +137,7 @@ resource "aws_ecs_task_definition" "clickhouse" {
 
       mountPoints = [
         {
-          sourceVolume  = "clickhouse_data"
+          sourceVolume  = "${local.prefix}-clickhouse_data"
           containerPath = "/var/lib/clickhouse"
           readOnly      = false
         },
