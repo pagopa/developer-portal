@@ -42,6 +42,11 @@ on:
         type: boolean
         required: true
         default: true
+      dir_names_filter:
+        description: 'Comma-separated list of dirNames to sync (leave empty to sync all)'
+        type: string
+        required: false
+        default: ''
 
   schedule:
     - cron: '0 23 * * *'  # Run daily at midnight UTC
@@ -115,6 +120,7 @@ jobs:
           GENERATE_SITEMAP_METADATA: 'true'
           SAVE_STRAPI_RESPONSES: 'true'
           METADATA_TYPE: ${{ inputs.metadata_type }}
+          DIR_NAMES_FILTER: ${{ inputs.dir_names_filter }}
         run: npm run sync-all-metadata -w gitbook-docs
 
       - name: Replace urls and include tags in docs
