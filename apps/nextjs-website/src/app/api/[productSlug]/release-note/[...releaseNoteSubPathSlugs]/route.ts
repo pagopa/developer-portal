@@ -15,7 +15,7 @@ export async function GET(
 ) {
   const { productSlug, releaseNoteSubPathSlugs } = params;
   const noteSegments = Array.isArray(releaseNoteSubPathSlugs)
-    ? releaseNoteSubPathSlugs
+    ? ['release-note', ...releaseNoteSubPathSlugs]
     : [];
 
   return getReleaseNote(productSlug, noteSegments)
