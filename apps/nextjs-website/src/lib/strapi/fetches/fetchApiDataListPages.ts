@@ -28,6 +28,7 @@ const makeStrapiApiDataListPagePopulate = () =>
       seo: {
         populate: '*,metaImage,metaSocial.image',
       },
+      enableFilters: true,
     },
   });
 
