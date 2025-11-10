@@ -72,8 +72,7 @@ const GitBookTemplate = ({
     }
   }, [content.path]);
 
-  const updateContent = useCallback((data: GitBookContentData): boolean => {
-    const payload = data;
+  const updateContent = useCallback((payload: GitBookContentData): boolean => {
     if (!payload?.page?.body) {
       return false;
     }

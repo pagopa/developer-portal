@@ -11,6 +11,7 @@ import GuideVersionSelector, {
   type GuideVersionSelectorProps,
 } from './GuideVersionSelector';
 import { Typography } from '@mui/material';
+import { GitBookContentData } from '../../../lib/types/gitBookContent';
 
 const StyledTreeItem = styled(TreeItem)(({ theme }) => ({
   [`&`]: {
@@ -96,8 +97,7 @@ export type GuideMenuItemsProps = Partial<GuideVersionSelectorProps> & {
   menu: string;
   linkPrefix: string;
   containerRef?: React.RefObject<HTMLDivElement>;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  onGuideNavigate?: (data: any) => boolean;
+  onGuideNavigate?: (payload: GitBookContentData) => boolean;
 };
 
 const GuideMenuItems = ({
