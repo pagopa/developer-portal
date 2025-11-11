@@ -34,6 +34,8 @@ No modules.
 | [aws_iam_role.langfuse_task_role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
 | [aws_iam_role_policy_attachment.ecs_task_execute_role_attachment](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_iam_role_policy_attachment.task_role_policy_attachment](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
+| [aws_s3_bucket.langfuse_blob](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket) | resource |
+| [aws_s3_bucket.langfuse_event](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket) | resource |
 | [aws_security_group.clickhouse](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
 | [aws_security_group.efs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
 | [aws_security_group.langfuse_cache](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
@@ -54,6 +56,7 @@ No modules.
 | <a name="input_region"></a> [region](#input\_region) | AWS region on which to deploy | `string` | n/a | yes |
 | <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | VPC ID for Your Langfuse Environment | `string` | n/a | yes |
 | <a name="input_cache_node_type"></a> [cache\_node\_type](#input\_cache\_node\_type) | Node type for Langfuse Cache/Queue(ElastiCache) | `string` | `"cache.t4g.micro"` | no |
+| <a name="input_force_delete"></a> [force\_delete](#input\_force\_delete) | Whether to force delete resources | `bool` | `false` | no |
 | <a name="input_module"></a> [module](#input\_module) | Prefix for resources | `string` | `"langfuse"` | no |
 
 ## Outputs

@@ -28,3 +28,9 @@ variable "cache_node_type" {
   description = "Node type for Langfuse Cache/Queue(ElastiCache)"
   default     = "cache.t4g.micro"
 }
+
+variable "force_delete" {
+  description = "Whether to force delete resources"
+  type        = bool
+  default     = false
+}
