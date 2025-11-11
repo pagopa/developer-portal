@@ -380,9 +380,9 @@ resource "aws_lambda_function" "ivs_video_processing_function" {
 
   environment {
     variables = {
-      VIDEO_BASE_URL           = "https://${var.custom_domain_name}"
-      STRAPI_API_URL           = var.strapi_api_url
-      STRASTRAPI_IVS_API_TOKEN = aws_ssm_parameter.strapi_api_key.name
+      VIDEO_BASE_URL       = "https://${var.custom_domain_name}"
+      STRAPI_API_URL       = var.strapi_api_url
+      STRAPI_IVS_API_TOKEN = aws_ssm_parameter.strapi_api_key.name
     }
   }
 
