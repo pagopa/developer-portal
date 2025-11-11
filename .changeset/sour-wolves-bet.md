@@ -1,5 +1,5 @@
 ---
-"infrastructure": major
+"infrastructure": minor
 ---
 
 Add RDS instance for Langfuse
