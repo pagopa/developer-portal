@@ -262,6 +262,16 @@ module "video_streaming" {
   custom_domain_name = "video.${var.dns_domain_name}"
   route53_zone_id    = module.core.hosted_zone_id
   environment        = var.environment
+  strapi_api_url     = "https://${keys(var.dns_domain_name_cms)[0]}"
+}
+
+module "langfuse" {
+  source = "./modules/langfuse"
+
+  environment        = var.environment
+  region             = var.aws_region
+  vpc_id             = module.cms.vpc.id
+  private_subnet_ids = module.cms.vpc.private_subnets
 }
 
 module "langfuse" {
