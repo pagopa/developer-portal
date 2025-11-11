@@ -317,9 +317,8 @@ resource "aws_iam_role_policy" "ivs_video_processing_policy" {
           "ssm:GetParameter",
           "ssm:GetParameters"
         ]
-        Effect = "Allow"
-        #TODDO: Restrict Resource
-        Resource = ["*"]
+        Effect   = "Allow"
+        Resource = aws_ssm_parameter.strapi_api_key.arn
       },
       {
         Action = [
