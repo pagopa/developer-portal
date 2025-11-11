@@ -44,31 +44,32 @@
 #   }
 # }
 
-# resource "aws_security_group" "langfuse_cache" {
-#   vpc_id      = var.vpc_id
-#   name        = "langfuse-cache-sg"
-#   description = "Langfuse Cache Security Group"
-#   tags = {
-#     Name = "langfuse_cache_sg"
-#   }
-#
-#   ingress {
-#     from_port       = 0
-#     to_port         = 0
-#     protocol        = "-1"
-#     security_groups = [aws_security_group.apprunner_vpc_connector.id, aws_security_group.langfuse_db.id, aws_security_group.langfuse_worker.id]
-#     description     = "Ingress Allow all traffic from app and flower security groups"
-#   }
-#
-#   egress {
-#     from_port   = 0
-#     to_port     = 0
-#     protocol    = "-1"
-#     cidr_blocks = ["0.0.0.0/0"]
-#     description = "Egress Allow all traffic"
-#   }
-# }
-#
+resource "aws_security_group" "langfuse_cache" {
+  vpc_id      = var.vpc_id
+  name        = "${local.prefix}-cache-sg"
+  description = "Langfuse Cache Security Group"
+  tags = {
+    Name = "langfuse_cache_sg"
+  }
+
+  ingress {
+    from_port       = 0
+    to_port         = 0
+    protocol        = "-1"
+    security_groups = []
+    # security_groups = [aws_security_group.apprunner_vpc_connector.id, aws_security_group.langfuse_db.id, aws_security_group.langfuse_worker.id]
+    description = "Ingress Allow all traffic from app and flower security groups"
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+    description = "Egress Allow all traffic"
+  }
+}
+
 # resource "aws_security_group" "langfuse_worker" {
 #   name   = "langfuse-worker-sg"
 #   vpc_id = var.vpc_id
@@ -103,6 +104,7 @@ resource "aws_security_group" "clickhouse" {
     to_port         = 0
     protocol        = "-1"
     security_groups = []
+    # security_groups = [aws_security_group.apprunner_vpc_connector.id, aws_security_group.langfuse_worker.id]
   }
 
   egress {
