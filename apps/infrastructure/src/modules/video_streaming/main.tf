@@ -372,7 +372,7 @@ resource "aws_lambda_function" "ivs_video_processing_function" {
   # Point to the placeholder code package
   filename         = data.archive_file.lambda_zip.output_path
   source_code_hash = data.archive_file.lambda_zip.output_base64sha256
-  
+
   timeout       = 30
   memory_size   = 512
   architectures = ["x86_64"]
