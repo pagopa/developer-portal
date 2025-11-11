@@ -317,9 +317,8 @@ resource "aws_iam_role_policy" "ivs_video_processing_policy" {
           "ssm:GetParameter",
           "ssm:GetParameters"
         ]
-        Effect = "Allow"
-        #TODDO: Restrict Resource
-        Resource = ["*"]
+        Effect   = "Allow"
+        Resource = aws_ssm_parameter.strapi_api_key.arn
       },
       {
         Action = [
@@ -349,6 +348,22 @@ locals {
 }
 
 
+resource "aws_ssm_parameter" "strapi_api_key" {
+  name        = "/ivs/strapi_api_key"
+  description = "Cookie domain script for OpenNext"
+  type        = "SecureString"
+  value       = "TODO"
+
+  lifecycle {
+    ignore_changes = [
+      insecure_value,
+      value
+    ]
+  }
+}
+
+
+
 resource "aws_lambda_function" "ivs_video_processing_function" {
   function_name = local.ivs_video_processing_lambda_name
   description   = "Lambda function that processes IVS video recordings when they become available."
@@ -368,8 +383,9 @@ resource "aws_lambda_function" "ivs_video_processing_function" {
 
   environment {
     variables = {
-      STRAPI_API_URL = "TODO"
-      STRAPI_API_KEY = "TODO"
+      VIDEO_BASE_URL           = "https://${var.custom_domain_name}"
+      STRAPI_API_URL           = var.strapi_api_url
+      STRASTRAPI_IVS_API_TOKEN = aws_ssm_parameter.strapi_api_key.name
     }
   }
 
