@@ -10,7 +10,7 @@ resource "aws_db_subnet_group" "postgres_subnet_grp" {
 resource "aws_rds_cluster" "langfuse_aurora_cluster" {
   cluster_identifier = "${local.prefix}-postgres"
   engine             = "aurora-postgresql"
-  engine_version     = "15.6"
+  engine_version     = "17"
   engine_mode        = "provisioned"
   # availability_zones  = var.availability_zones
   database_name       = "langfuse"
