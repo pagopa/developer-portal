@@ -1,18 +1,18 @@
-# resource "random_password" "langfuse_db_password" {
-#   length           = 16
-#   special          = true
-#   override_special = "_!%^"
-# }
-#
-# resource "aws_secretsmanager_secret" "langfuse_db_password" {
-#   name_prefix = "langfuse_database_password"
-# }
-#
-# resource "aws_secretsmanager_secret_version" "langfuse_db_password" {
-#   secret_id     = aws_secretsmanager_secret.langfuse_db_password.id
-#   secret_string = random_password.langfuse_db_password.result
-# }
-#
+resource "random_password" "langfuse_db_password" {
+  length           = 16
+  special          = true
+  override_special = "_!%^"
+}
+
+resource "aws_secretsmanager_secret" "langfuse_db_password" {
+  name_prefix = "langfuse_database_password"
+}
+
+resource "aws_secretsmanager_secret_version" "langfuse_db_password" {
+  secret_id     = aws_secretsmanager_secret.langfuse_db_password.id
+  secret_string = random_password.langfuse_db_password.result
+}
+
 # resource "aws_secretsmanager_secret" "langfuse_database_url" {
 #   name_prefix = "langfuse_database_url"
 # }

@@ -1,28 +1,29 @@
-# resource "aws_security_group" "langfuse_db" {
-#   name        = "langfuse-db-sg"
-#   description = "Access to Langfuse database"
-#   vpc_id      = var.vpc_id
-#
-#   ingress {
-#     from_port       = 5432
-#     to_port         = 5432
-#     protocol        = "tcp"
-#     security_groups = [aws_security_group.apprunner_vpc_connector.id, aws_security_group.langfuse_worker.id]
-#     description     = "Allow PostgreSQL access from langfuse web and worker"
-#   }
-#
-#   egress {
-#     from_port   = 0
-#     to_port     = 0
-#     protocol    = "-1"
-#     cidr_blocks = ["0.0.0.0/0"]
-#     description = "Allow all traffic out to the internet"
-#   }
-#
-#   tags = {
-#     Name = "langfuse_database_sg"
-#   }
-# }
+resource "aws_security_group" "langfuse_db" {
+  name        = "${local.prefix}-db-sg"
+  description = "Access to Langfuse database"
+  vpc_id      = var.vpc_id
+
+  ingress {
+    from_port       = 5432
+    to_port         = 5432
+    protocol        = "tcp"
+    security_groups = []
+    # security_groups = [aws_security_group.apprunner_vpc_connector.id, aws_security_group.langfuse_worker.id]
+    description = "Allow PostgreSQL access from langfuse web and worker"
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+    description = "Allow all traffic out to the internet"
+  }
+
+  tags = {
+    Name = "langfuse_database_sg"
+  }
+}
 
 # resource "aws_security_group" "apprunner_vpc_connector" {
 #   name = "apprunner-vpc-connector-sg"
