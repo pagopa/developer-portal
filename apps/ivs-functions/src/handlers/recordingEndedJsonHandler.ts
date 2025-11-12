@@ -1,7 +1,10 @@
 import { S3Event, S3EventRecord } from 'aws-lambda';
 import { RecordingEndedFile } from '../types/recordingEndedFile';
 import { StrapiWebinars } from '../types/strapiWebinars';
-import { fetchFromStrapiResponse } from '../helpers/fetchFromStrapiResponse';
+import {
+  fetchFromStrapiResponse,
+  getStrapiEnv,
+} from '../helpers/fetchFromStrapiResponse';
 
 const START_STREAMING_THRESHOLD_MS = 15 * 60 * 1000; // 15 minutes
 const FILE_SUFFIX = 'recording-ended.json';
@@ -23,6 +26,7 @@ export const recordingEndedS3EventHandler = async (event: S3Event) => {
   }
 
   try {
+    const strapiEnv = await getStrapiEnv();
     const key = decodeURIComponent(
       targetRecord.s3.object.key.replace(/\+/g, ' ')
     );
@@ -66,7 +70,7 @@ export const recordingEndedS3EventHandler = async (event: S3Event) => {
     ).toISOString()}`;
 
     const strapiWebinarsResponse: StrapiWebinars =
-      await fetchFromStrapiResponse(strapiWebinarsUrl);
+      await fetchFromStrapiResponse(strapiEnv, strapiWebinarsUrl);
 
     if (strapiWebinarsResponse.meta.pagination.total !== 1) {
       // eslint-disable-next-line functional/no-throw-statements
@@ -76,7 +80,7 @@ export const recordingEndedS3EventHandler = async (event: S3Event) => {
     }
     const webinar = strapiWebinarsResponse.data[0];
 
-    await fetchFromStrapiResponse(`api/webinars/${webinar.id}`, {
+    await fetchFromStrapiResponse(strapiEnv, `api/webinars/${webinar.id}`, {
       method: 'PUT',
       body: {
         data: {
