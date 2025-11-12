@@ -30,13 +30,13 @@ export const recordingEndedS3EventHandler = async (event: S3Event) => {
     const key = decodeURIComponent(
       targetRecord.s3.object.key.replace(/\+/g, ' ')
     );
-    const videoIvsBasePath = process.env.VIDEO_BASE_PATH;
-    if (!videoIvsBasePath) {
+    const videoIvsBaseUrl = process.env.VIDEO_BASE_URL;
+    if (!videoIvsBaseUrl) {
       // eslint-disable-next-line functional/no-throw-statements
-      throw new Error('Missing VIDEO_BASE_PATH in environment variables');
+      throw new Error('Missing VIDEO_BASE_URL in environment variables');
     }
 
-    const endRecordingUrl = `${videoIvsBasePath}/${key}`;
+    const endRecordingUrl = `${videoIvsBaseUrl}/${key}`;
 
     const s3Response = await fetch(endRecordingUrl);
 
@@ -57,7 +57,7 @@ export const recordingEndedS3EventHandler = async (event: S3Event) => {
     const hls = recordingEndedFile.media.hls;
 
     const newPlayerSrc = [
-      videoIvsBasePath,
+      videoIvsBaseUrl,
       ...key.split('/').slice(0, -2), // get to base path of VOD removing last two segments
       hls.path,
       hls.playlist,
