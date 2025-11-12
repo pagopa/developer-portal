@@ -4,7 +4,7 @@
   "description": "IVS S3 event processing Lambda functions",
   "scripts": {
     "lint": "eslint src",
-    "test": "jest",
+    "test": "jest --passWithNoTests",
     "build": "tsc"
   },
   "devDependencies": {
