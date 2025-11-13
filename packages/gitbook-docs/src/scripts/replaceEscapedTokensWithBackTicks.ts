@@ -36,15 +36,17 @@ export async function recursivelyAddBackticksToEscapedAngleTokens(
 ) {
   const items = await fs.promises.readdir(dirPath, { withFileTypes: true });
   for (const item of items) {
-    const fullPath = path.join(dirPath, item.name);
+    const pathWithDir = path.join(dirPath, item.name);
     if (item.isDirectory()) {
-      await recursivelyAddBackticksToEscapedAngleTokens(fullPath);
-    } else if (item.isFile() && fullPath.endsWith('.md')) {
+      await recursivelyAddBackticksToEscapedAngleTokens(pathWithDir);
+    } else if (item.isFile() && pathWithDir.endsWith('.md')) {
       try {
-        const updatedContent = await addBackticksEscapedAngleTokens(fullPath);
-        await fs.promises.writeFile(fullPath, updatedContent, 'utf8');
+        const updatedContent = await addBackticksEscapedAngleTokens(
+          pathWithDir
+        );
+        await fs.promises.writeFile(pathWithDir, updatedContent, 'utf8');
       } catch (error) {
-        console.error(`Error processing file ${fullPath}:`, error);
+        console.error(`Error processing file ${pathWithDir}:`, error);
       }
     }
   }
