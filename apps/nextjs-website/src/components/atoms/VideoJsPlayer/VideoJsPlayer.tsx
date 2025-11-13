@@ -11,6 +11,7 @@ import 'video.js/dist/video-js.css';
 import videojs from 'video.js';
 import { Box } from '@mui/material';
 import { amazonIvsVersion } from '@/config';
+import '@/styles/videojs-custom.css';
 
 interface PlayerProps {
   techOrder: string[];
@@ -47,7 +48,7 @@ const VideoJsPlayer = (props: PlayerProps) => {
   return (
     <Box sx={{ position: 'relative', paddingBottom: '56.25%' }}>
       <video
-        className={'video-js'}
+        className={'video-js vjs-theme-custom'}
         id='videojs-player'
         ref={videoEl}
         playsInline={props.playsInline}
