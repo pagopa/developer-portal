@@ -2,8 +2,8 @@ import * as fs from 'fs';
 import * as os from 'os';
 import * as path from 'path';
 import {
-  replaceEscapedTokensWithBackTicks,
-  recursivelyReplaceEscapedTokensWithBackTicks,
+  addBackticksEscapedAngleTokens,
+  recursivelyAddBackticksToEscapedAngleTokens,
 } from '../scripts/replaceEscapedTokensWithBackTicks';
 
 const fixturesRoot = path.join(__dirname, 'fixtures', 'replaceEscapedTokens');
@@ -34,26 +34,26 @@ describe('replaceEscapedTokensWithBackTicks (single file)', () => {
     const file = path.join(fixturesRoot, 'simple.md');
     const original = read(file);
     expect(original).toContain('<MyTag>');
-    const updated = await replaceEscapedTokensWithBackTicks(file);
+    const updated = await addBackticksEscapedAngleTokens(file);
     // Leading backslash preserved, < and > replaced with backticks
-    expect(updated).toContain('`MyTag`');
+    expect(updated).toContain('`<MyTag>`');
   });
 
   it('replaces multiple tokens in file', async () => {
     const file = path.join(fixturesRoot, 'multiple.md');
-    const updated = await replaceEscapedTokensWithBackTicks(file);
-    expect(updated).toContain('`First`');
-    expect(updated).toContain('`Second`');
-    expect(updated).toContain('`Inline`');
+    const updated = await addBackticksEscapedAngleTokens(file);
+    expect(updated).toContain('`<First>`');
+    expect(updated).toContain('`<Second>`');
+    expect(updated).toContain('`<Inline>`');
   });
 
   it('handles nested sequences increasing depth', async () => {
     const file = path.join(fixturesRoot, 'nested', 'outer.md');
-    const updated = await replaceEscapedTokensWithBackTicks(file);
+    const updated = await addBackticksEscapedAngleTokens(file);
     // Outer single
-    expect(updated).toContain('`Outer`');
-    // Nested pattern: <Outer <Inner>> -> `Outer `Inner`` (two closing backticks)
-    expect(updated).toMatch(/Nested sequence `Outer `Inner`` end\./);
+    expect(updated).toContain('`<Outer>`');
+    // Nested pattern: <Outer <Inner>> -> `<Outer <Inner>>` (two closing backticks)
+    expect(updated).toMatch(/Nested sequence `<Outer <Inner>>` end\./);
   });
 });
 
@@ -67,14 +67,14 @@ describe('recursivelyReplaceEscapedTokensWithBackTicks', () => {
     const beforeTxt = read(unaffected);
     expect(beforeTxt).toContain('\\<NotMarkdown>');
 
-    await recursivelyReplaceEscapedTokensWithBackTicks(tmp);
+    await recursivelyAddBackticksToEscapedAngleTokens(tmp);
 
     const afterOuter = read(nestedOuter);
     const afterInner = read(nestedInner);
     const afterTxt = read(unaffected);
 
-    expect(afterOuter).toContain('`Outer`');
-    expect(afterInner).toContain('`Inner`');
+    expect(afterOuter).toContain('`<Outer>`');
+    expect(afterInner).toContain('`<Inner>`');
     // .txt file should be untouched
     expect(afterTxt).toBe(beforeTxt);
   });

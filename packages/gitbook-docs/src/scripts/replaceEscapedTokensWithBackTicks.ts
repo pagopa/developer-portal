@@ -7,38 +7,41 @@ import { DOCUMENTATION_PATH } from '../helpers/documentationParsing.helper';
 import path from 'path';
 import fs from 'fs';
 
-export async function replaceEscapedTokensWithBackTicks(
+export async function addBackticksEscapedAngleTokens(
   filePath: string
 ): Promise<string> {
   let depth = 0;
   const fileContent = [...(await fs.promises.readFile(filePath, 'utf8'))];
   for (const index in fileContent) {
     if (fileContent[index] === '\\' && fileContent[Number(index) + 1] === '<') {
+      if (depth === 0) {
+        fileContent[index] = '`';
+      } else {
+        fileContent[index] = '';
+      }
       depth++;
-      fileContent[index] = '';
-      fileContent[Number(index) + 1] = '`';
     }
-    if (depth > 0 && fileContent[index] === '>') {
+    if (fileContent[index] === '>') {
+      if (depth === 1) {
+        fileContent[index] = '>`';
+      }
       depth--;
-      fileContent[index] = '`';
     }
   }
   return fileContent.join('');
 }
 
-export async function recursivelyReplaceEscapedTokensWithBackTicks(
+export async function recursivelyAddBackticksToEscapedAngleTokens(
   dirPath: string
 ) {
   const items = await fs.promises.readdir(dirPath, { withFileTypes: true });
   for (const item of items) {
     const fullPath = path.join(dirPath, item.name);
     if (item.isDirectory()) {
-      await recursivelyReplaceEscapedTokensWithBackTicks(fullPath);
+      await recursivelyAddBackticksToEscapedAngleTokens(fullPath);
     } else if (item.isFile() && fullPath.endsWith('.md')) {
       try {
-        const updatedContent = await replaceEscapedTokensWithBackTicks(
-          fullPath
-        );
+        const updatedContent = await addBackticksEscapedAngleTokens(fullPath);
         await fs.promises.writeFile(fullPath, updatedContent, 'utf8');
       } catch (error) {
         console.error(`Error processing file ${fullPath}:`, error);
@@ -50,9 +53,9 @@ export async function recursivelyReplaceEscapedTokensWithBackTicks(
 export async function main() {
   try {
     console.log(
-      "Starting to search and replace escaped '<' '>' tokens with backticks '`'..."
+      "Starting to search and soroound code block '\\<...>' elements with backticks '`'..."
     );
-    await recursivelyReplaceEscapedTokensWithBackTicks(DOCUMENTATION_PATH);
+    await recursivelyAddBackticksToEscapedAngleTokens(DOCUMENTATION_PATH);
   } catch (error) {
     console.error(
       'Error during replacing escaped tokens with backticks:',
@@ -64,7 +67,7 @@ export async function main() {
 }
 
 export default {
-  replaceEscapedTokensWithBackTicks,
-  recursivelyReplaceEscapedTokensWithBackTicks,
+  addBackticksEscapedAngleTokens,
+  recursivelyAddBackticksToEscapedAngleTokens,
   main,
 };
