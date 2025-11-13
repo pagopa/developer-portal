@@ -14,7 +14,6 @@ import { amazonIvsVersion } from '@/config';
 import '@/styles/videojs-custom.css';
 
 interface PlayerProps {
-  techOrder: string[];
   autoplay: boolean;
   controls: boolean;
   playsInline: boolean;
@@ -22,9 +21,12 @@ interface PlayerProps {
   poster?: string;
 }
 
+const TECH_ORDER_AMAZON_IVS = ['AmazonIVS'];
+
 const VideoJsPlayer = (props: PlayerProps) => {
   const videoEl = useRef<HTMLVideoElement>(null);
   useEffect(() => {
+    console.log('Need to reinitialize the player', props.autoplay, props.src);
     registerIVSTech(videojs, {
       wasmBinary: `https://player.live-video.net/${amazonIvsVersion}/amazon-ivs-wasmworker.min.wasm`,
       wasmWorker: `https://player.live-video.net/${amazonIvsVersion}/amazon-ivs-wasmworker.min.js`,
@@ -34,7 +36,7 @@ const VideoJsPlayer = (props: PlayerProps) => {
     const player = videojs(
       'videojs-player',
       {
-        techOrder: props.techOrder,
+        techOrder: TECH_ORDER_AMAZON_IVS,
         autoplay: props.autoplay,
       }
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -43,7 +45,7 @@ const VideoJsPlayer = (props: PlayerProps) => {
 
     player.enableIVSQualityPlugin();
     player.src(props.src);
-  }, [props.autoplay, props.src, props.techOrder]);
+  }, [props.autoplay, props.src]);
 
   return (
     <Box sx={{ position: 'relative', paddingBottom: '56.25%' }}>
