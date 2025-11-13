@@ -1,5 +1,16 @@
 # nextjs-website
 
+## 11.1.0
+
+### Minor Changes
+
+- d11e492: Manage webinar in live state when url is not live
+
+### Patch Changes
+
+- 81dad42: Link baseUrl configuration constant to environment variables
+- 1917d7d: Add missing enableFilters in makeProps, in Strapi model and in populate in fetchApiDataListPages
+
 ## 11.0.0
 
 ### Major Changes
