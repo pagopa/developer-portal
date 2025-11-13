@@ -19,6 +19,7 @@ export type StrapiApiDataListPage = {
     readonly apiData: StrapiBaseApiDataList;
     readonly bannerLinks: readonly StrapiBannerLink[];
     readonly seo?: StrapiSeo;
+    readonly enableFilters?: boolean;
   };
 };
 
