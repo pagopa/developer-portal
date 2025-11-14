@@ -51,7 +51,7 @@ jobs:
     environment: ${{ inputs.environment }}
     env:
       ENV_SHORT: ${{ fromJSON('{"dev":"d","uat":"u","prod":"p"}')[inputs.environment] }}
-      SITEMAP_URL: ${{ fromJSON('{"dev":"https://dev.","uat":"https://uat.","prod":"https://"}')[inputs.environment] }}developer.pagopa.it/sitemap.xml
+      SITEMAP_URL: https://${{ fromJSON('{"dev":"dev.","uat":"uat.","prod":""}')[inputs.environment] }}developer.pagopa.it/sitemap.xml
 
     steps:
       - name: Checkout current repository
