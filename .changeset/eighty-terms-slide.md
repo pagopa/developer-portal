@@ -2,4 +2,4 @@
 "nextjs-website": minor
 ---
 
-Refactor Heading to a generic atom component used in GitBookContent parts and Block Parts
+Refactor GitBookContent Heading to a generic atom component ContentHeading and use it fro GitBookContent and Block heading parts
