@@ -1,5 +1,11 @@
 # infrastructure
 
+## 6.1.1
+
+### Patch Changes
+
+- 6589094: Fix disable_custom_validator env variable default value
+
 ## 6.1.0
 
 ### Minor Changes
