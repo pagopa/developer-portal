@@ -64,8 +64,7 @@ const ContentHeading = ({
     return null;
   }
 
-  const headingId = id || createSlug(children ? children.toString() : '');
-
+  const headingId = createSlug(children ? children.toString() : id);
   return (
     <div
       id={headingId}
