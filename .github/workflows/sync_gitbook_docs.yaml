@@ -51,6 +51,7 @@ jobs:
     environment: ${{ inputs.environment }}
     env:
       ENV_SHORT: ${{ fromJSON('{"dev":"d","uat":"u","prod":"p"}')[inputs.environment] }}
+      SITEMAP_URL: ${{ fromJSON('{"dev":"https://dev.","uat":"https://uat.","prod":"https://"}')[inputs.environment] }}developer.pagopa.it/sitemap.xml
 
     steps:
       - name: Checkout current repository
@@ -116,6 +117,7 @@ jobs:
           STRAPI_API_TOKEN: ${{ secrets.STRAPI_API_TOKEN }}
           FETCH_FROM_STRAPI: ${{ vars.FETCH_FROM_STRAPI || 'true' }}
           NEXT_PUBLIC_COGNITO_REGION: ${{ vars.NEXT_PUBLIC_COGNITO_REGION || 'eu-south-1' }}
+          SITEMAP_URL: ${{ env.SITEMAP_URL || 'https://developer.pagopa.it/sitemap.xml' }}
         run: npm run generate-strapi-response-files -w gitbook-docs
 
       - name: Sync docs folder to S3
@@ -237,6 +239,7 @@ jobs:
           STRAPI_API_TOKEN: ${{ secrets.STRAPI_API_TOKEN }}
           FETCH_FROM_STRAPI: ${{ vars.FETCH_FROM_STRAPI || 'true' }}
           NEXT_PUBLIC_COGNITO_REGION: ${{ vars.NEXT_PUBLIC_COGNITO_REGION || 'eu-south-1' }}
+          SITEMAP_URL: https://developer.pagopa.it/sitemap.xml
         run: npm run generate-strapi-response-files -w gitbook-docs
 
       - name: Generate guides metadata
