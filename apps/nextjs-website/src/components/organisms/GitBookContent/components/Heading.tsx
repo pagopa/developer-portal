@@ -2,11 +2,6 @@ import { HeadingProps } from 'gitbook-docs/markdoc/schema/heading';
 import { ReactNode } from 'react';
 import ContentHeading from '@/components/atoms/ContentHeading/ContentHeading';
 
-const createSlug = (text: string) =>
-  text
-    .toLowerCase()
-    .replace(/[^a-z0-9\s-]/g, '')
-    .replace(/\s+/g, '-');
 
 export const SubHeading = ({
   level,
