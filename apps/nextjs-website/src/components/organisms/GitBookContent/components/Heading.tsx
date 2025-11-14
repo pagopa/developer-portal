@@ -11,7 +11,7 @@ export const SubHeading = ({
   return (
     <ContentHeading
       level={level}
-      id={createSlug(children ? children.toString() : id)}
+      id={id}
       skipH1={true}
     >
       {children}
