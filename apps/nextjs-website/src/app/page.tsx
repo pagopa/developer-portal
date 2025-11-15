@@ -58,6 +58,7 @@ export type HomepageProps = {
   readonly webinars: readonly Webinar[];
   readonly comingsoonDocumentation: ComingSoonDocumentationProps;
   readonly seo?: SEO;
+  readonly updatedAt: string;
 };
 
 export async function generateMetadata(): Promise<Metadata> {

@@ -10,6 +10,7 @@ import { StrapiTag } from '@/lib/strapi/types/tag';
 
 export type StrapiBaseTutorial = {
   readonly attributes: {
+    readonly updatedAt: string;
     readonly title: string;
     readonly slug: string;
     readonly publishedAt?: string;

@@ -129,6 +129,7 @@ export const strapiOverviews = {
             data: [
               {
                 attributes: {
+                  updatedAt: '',
                   description: 'test description',
                   icon: { data: mediaJpeg() },
                   title: 'Tutorial 1',
@@ -299,6 +300,7 @@ export const strapiOverviews = {
 
 export const overviewPageProps: OverviewPageProps = {
   path: '/pago-pa/overview',
+  updatedAt: '2023-01-01T00:00:00.000Z',
   product: {
     apiDataListPageUrl: '/pago-pa/api/api-rest',
     isVisible: true,
@@ -373,6 +375,7 @@ export const overviewPageProps: OverviewPageProps = {
     subtitle: 'Tutorials Description',
     list: [
       {
+        updatedAt: '2023-01-01T00:00:00.000Z',
         showInOverview: true,
         image: {
           url: 'https://example.com/example.jpg',
