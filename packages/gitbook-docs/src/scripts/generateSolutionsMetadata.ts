@@ -9,7 +9,7 @@ import {
   downloadS3File,
   listS3Files,
   makeS3Client,
-  writeMetadataJson,
+  putS3File,
 } from '../helpers/s3Bucket.helper';
 import { extractTitleFromMarkdown } from '../helpers/extractTitle.helper';
 import {
@@ -135,21 +135,21 @@ async function main() {
   const metadataItems = await convertSolutionToMetadataItems(strapiSolutions);
   console.log(`Converted solutions to ${metadataItems.length} metadata items`);
 
-  await writeMetadataJson(
+  await putS3File(
     metadataItems,
     S3_SOLUTIONS_METADATA_JSON_PATH,
     `${S3_BUCKET_NAME}`,
     s3Client
   );
 
-  await writeMetadataJson(
+  await putS3File(
     responseJson,
     SYNCED_SOLUTIONS_RESPONSE_JSON_PATH,
     `${S3_BUCKET_NAME}`,
     s3Client
   );
 
-  await writeMetadataJson(
+  await putS3File(
     solutionListPagesResponse,
     SYNCED_SOLUTION_LIST_PAGES_RESPONSE_JSON_PATH,
     `${S3_BUCKET_NAME}`,

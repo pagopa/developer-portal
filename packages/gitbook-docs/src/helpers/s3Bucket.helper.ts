@@ -129,7 +129,7 @@ export async function downloadS3File(
   }
 }
 
-export async function writeMetadataJson(
+export async function putS3File(
   items: MetadataItem[] | any,
   jsonPath: string,
   bucketName: string,
