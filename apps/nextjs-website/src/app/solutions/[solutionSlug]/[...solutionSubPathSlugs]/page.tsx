@@ -97,26 +97,28 @@ const Page = async ({ params }: { params: Params }) => {
     seo: solution.seo,
   });
 
+  const initialBreadcrumbs = [
+    ...pageToBreadcrumbs('solutions', [
+      {
+        name: props.solution.title,
+        path: `/solutions/${props.solution.slug}`,
+      },
+      {
+        name: page.title,
+        path: `/solutions/${
+          props.solution.slug
+        }/details/${params.solutionSubPathSlugs.join('/')}`,
+      },
+    ]),
+  ];
+
   return (
     <>
       {structuredData}
       <GitBookTemplate
         hasHeader={false}
         menuName={props.solution.title}
-        breadcrumbs={[
-          ...pageToBreadcrumbs('solutions', [
-            {
-              name: props.solution.title,
-              path: `/solutions/${props.solution.slug}`,
-            },
-            {
-              name: page.title,
-              path: `/solutions/${
-                props.solution.slug
-              }/details/${params.solutionSubPathSlugs.join('/')}`,
-            },
-          ]),
-        ]}
+        initialBreadcrumbs={initialBreadcrumbs}
         menuDistanceFromTop={0}
         contentMarginTop={0}
         hasProductHeader={false}

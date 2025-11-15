@@ -129,7 +129,7 @@ const Page = async ({ params }: { params: Params }) => {
     things: [convertSeoToStructuredDataArticle(seo)],
   });
 
-  const breadcrumbs = [
+  const initialBreadcrumbs = [
     ...productPageToBreadcrumbs(props.product, [
       {
         translate: true,
@@ -138,10 +138,7 @@ const Page = async ({ params }: { params: Params }) => {
           ? `/${props.product.slug}/guides`
           : '/',
       },
-      {
-        name: props.guide.name,
-        path: props.guide.path,
-      },
+      { name: props.guide.name, path: props.guide.path },
     ]),
   ];
 
@@ -154,7 +151,7 @@ const Page = async ({ params }: { params: Params }) => {
     >
       <GitBookTemplate
         menuName={props.guide.name}
-        breadcrumbs={breadcrumbs}
+        initialBreadcrumbs={initialBreadcrumbs}
         versionName={props.version.name}
         {...props}
       />
