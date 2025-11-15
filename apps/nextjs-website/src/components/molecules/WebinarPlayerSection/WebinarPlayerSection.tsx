@@ -21,12 +21,12 @@ import VideoJsPlayer from '@/components/atoms/VideoJsPlayer/VideoJsPlayer';
 type WebinarPlayerSectionProps = {
   webinar: Webinar;
   webinarState: WebinarState;
-  isPlayerVisible?: boolean;
+  showQuestionBox?: boolean;
 };
 const WebinarPlayerSection = ({
   webinar,
   webinarState,
-  isPlayerVisible = false,
+  showQuestionBox = false,
 }: WebinarPlayerSectionProps) => {
   const t = useTranslations('webinar');
   const { palette } = useTheme();
@@ -34,12 +34,13 @@ const WebinarPlayerSection = ({
   const [question, setQuestion] = useState('');
   const isSmallScreen = useMediaQuery('(max-width: 1000px)');
   const isQuestionFormAvailable = useMemo(
-    () => [WebinarState.live, WebinarState.comingSoon].includes(webinarState),
-    [webinarState]
+    () =>
+      [WebinarState.live, WebinarState.comingSoon].includes(webinarState) &&
+      showQuestionBox,
+    [webinarState, showQuestionBox]
   );
   return (
-    webinar.playerSrc &&
-    isPlayerVisible && (
+    webinar.playerSrc && (
       <div style={{ backgroundColor: palette.grey[50] }}>
         <EContainer>
           <Box
@@ -64,7 +65,6 @@ const WebinarPlayerSection = ({
                 <VimeoPlayer playerSrc={webinar.playerSrc} />
               ) : (
                 <VideoJsPlayer
-                  techOrder={['AmazonIVS']}
                   autoplay={webinarState === WebinarState.live}
                   controls={true}
                   playsInline={true}
