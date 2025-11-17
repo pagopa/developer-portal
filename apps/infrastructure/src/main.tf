@@ -264,3 +264,12 @@ module "video_streaming" {
   environment        = var.environment
   strapi_api_url     = "https://${keys(var.dns_domain_name_cms)[0]}"
 }
+
+module "langfuse" {
+  source = "./modules/langfuse"
+
+  environment        = var.environment
+  region             = var.aws_region
+  vpc_id             = module.cms.vpc.id
+  private_subnet_ids = module.cms.vpc.private_subnets
+}

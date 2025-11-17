@@ -339,7 +339,7 @@ resource "aws_iam_role_policy" "ivs_video_processing_policy" {
 # 1. Archive the Lambda source code into a ZIP file.
 data "archive_file" "lambda_zip" {
   type        = "zip"
-  source_file = "${path.module}/index.js"
+  source_dir  = "${path.module}/../../../../ivs-functions"
   output_path = "${path.module}/../../builds/ivs-video-processing.zip"
 }
 
@@ -350,7 +350,7 @@ locals {
 
 resource "aws_ssm_parameter" "strapi_api_key" {
   name        = "/ivs/strapi_api_key"
-  description = "Cookie domain script for OpenNext"
+  description = "Strapi api key for IVS video processing"
   type        = "SecureString"
   value       = "TODO"
 
@@ -361,8 +361,6 @@ resource "aws_ssm_parameter" "strapi_api_key" {
     ]
   }
 }
-
-
 
 resource "aws_lambda_function" "ivs_video_processing_function" {
   function_name = local.ivs_video_processing_lambda_name
@@ -375,7 +373,6 @@ resource "aws_lambda_function" "ivs_video_processing_function" {
   filename         = data.archive_file.lambda_zip.output_path
   source_code_hash = data.archive_file.lambda_zip.output_base64sha256
 
-
   timeout       = 30
   memory_size   = 512
   architectures = ["x86_64"]
@@ -383,18 +380,20 @@ resource "aws_lambda_function" "ivs_video_processing_function" {
 
   environment {
     variables = {
-      VIDEO_BASE_URL           = "https://${var.custom_domain_name}"
-      STRAPI_API_URL           = var.strapi_api_url
-      STRASTRAPI_IVS_API_TOKEN = aws_ssm_parameter.strapi_api_key.name
+      VIDEO_BASE_URL       = "https://${var.custom_domain_name}"
+      STRAPI_API_URL       = var.strapi_api_url
+      STRAPI_IVS_API_TOKEN = aws_ssm_parameter.strapi_api_key.name
     }
   }
 
+  /*
   lifecycle {
     ignore_changes = [
       filename,
       source_code_hash,
     ]
   }
+  */
 
   tags = {
     Name = local.ivs_video_processing_lambda_name
