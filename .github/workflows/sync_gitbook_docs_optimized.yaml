@@ -55,6 +55,7 @@ jobs:
     environment: ${{ inputs.environment }}
     env:
       ENV_SHORT: ${{ fromJSON('{"dev":"d","uat":"u","prod":"p"}')[inputs.environment] }}
+      SITEMAP_URL: https://${{ fromJSON('{"dev":"dev.","uat":"uat.","prod":""}')[inputs.environment || 'prod'] }}developer.pagopa.it/sitemap.xml
 
     steps:
       - name: Checkout current repository
@@ -109,6 +110,7 @@ jobs:
           GENERATE_SITEMAP_METADATA: 'true'
           SAVE_STRAPI_RESPONSES: 'true'
           METADATA_TYPE: ${{ inputs.metadata_type }}
+          SITEMAP_URL: ${{ env.SITEMAP_URL || 'https://developer.pagopa.it/sitemap.xml' }}
         run: npm run sync-all-metadata -w gitbook-docs
 
       - name: Replace urls and include tags in docs
@@ -138,6 +140,8 @@ jobs:
     outputs:
       environment: 'prod'
     environment: 'prod'
+    env:
+      SITEMAP_URL: https://${{ fromJSON('{"dev":"dev.","uat":"uat.","prod":""}')[github.event_name == 'workflow_dispatch' && inputs.environment || 'prod'] }}developer.pagopa.it/sitemap.xml
 
     steps:
       - name: Checkout current repository
@@ -192,6 +196,7 @@ jobs:
           GENERATE_SITEMAP_METADATA: 'true'
           SAVE_STRAPI_RESPONSES: 'true'
           METADATA_TYPE: 'all'
+          SITEMAP_URL: ${{ env.SITEMAP_URL || 'https://developer.pagopa.it/sitemap.xml' }}
         run: npm run sync-all-metadata -w gitbook-docs
 
       - name: Replace urls and include tags in docs
