@@ -54,6 +54,7 @@ import { fetchTags } from '@/lib/strapi/fetches/fetchTags';
 import { makeTagsProps } from '@/lib/strapi/makeProps/makeTags';
 import { isMarkDownPart, MarkDownPart } from '@/lib/strapi/types/part';
 import { getMarkdownContent } from '@/lib/api';
+import { fetchGuideListPages } from './strapi/fetches/fetchGuideListPages';
 
 // a BuildEnv instance ready to be used
 const buildEnv = pipe(
@@ -162,9 +163,7 @@ export const getOverviewsProps = async () => {
 };
 
 export const getGuideListPagesProps = async () => {
-  const strapiGuideList = (await fetchResponseFromCDN(
-    'synced-guide-list-pages-response.json'
-  )) as StrapiGuideListPages | undefined;
+  const strapiGuideList = await fetchGuideListPages(buildEnv);
   return strapiGuideList ? makeGuideListPagesProps(strapiGuideList) : [];
 };
 
