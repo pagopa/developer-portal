@@ -19,10 +19,7 @@ import {
 import { StrapiGuide } from '../helpers/strapiTypes';
 import { MetadataInfo } from '../helpers/guidesMetadataHelper';
 import { sitePathFromS3Path } from '../helpers/sitePathFromS3Path';
-import {
-  getSyncedGuideListPagesResponseJsonPath,
-  getSyncedGuidesResponseJsonPath,
-} from '../syncedResponses';
+import { getSyncedGuidesResponseJsonPath } from '../syncedResponses';
 
 // Load environment variables from .env file
 dotenv.config();
@@ -33,8 +30,6 @@ const S3_PATH_TO_GITBOOK_DOCS =
 const S3_GUIDE_METADATA_JSON_PATH =
   process.env.S3_GUIDE_METADATA_JSON_PATH || 'guides-metadata.json';
 const SYNCED_GUIDES_RESPONSE_JSON_PATH = getSyncedGuidesResponseJsonPath();
-const SYNCED_GUIDE_LIST_PAGES_RESPONSE_JSON_PATH =
-  getSyncedGuideListPagesResponseJsonPath();
 
 const s3Client = makeS3Client();
 
@@ -174,13 +169,6 @@ async function main() {
   await writeMetadataJson(
     responseJson,
     SYNCED_GUIDES_RESPONSE_JSON_PATH,
-    `${S3_BUCKET_NAME}`,
-    s3Client
-  );
-
-  await writeMetadataJson(
-    guideListPagesResponse,
-    SYNCED_GUIDE_LIST_PAGES_RESPONSE_JSON_PATH,
     `${S3_BUCKET_NAME}`,
     s3Client
   );

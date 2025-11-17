@@ -17,13 +17,6 @@ import { fetchFromStrapi } from '../helpers/fetchFromStrapi';
 import { MetadataInfo, MetadataType } from '../helpers/guidesMetadataHelper';
 import { sitePathFromS3Path } from '../helpers/sitePathFromS3Path';
 import { sitePathFromLocalPath } from '../helpers/sitePathFromLocalPath';
-import {
-  getSyncedGuideListPagesResponseJsonPath,
-  getSyncedGuidesResponseJsonPath,
-  getSyncedSolutionListPagesResponseJsonPath,
-  getSyncedSolutionsResponseJsonPath,
-  getSyncedReleaseNotesResponseJsonPath,
-} from '../syncedResponses';
 import { DOCUMENTATION_PATH } from '../helpers/documentationParsing.helper';
 import { baseUrl } from 'nextjs-website/src/config';
 import {
@@ -47,6 +40,13 @@ import {
   solutionListPageQueryString,
   solutionsQueryString,
 } from '../helpers/strapiQuery';
+import {
+  getSyncedApisDataResponseJsonPath,
+  getSyncedGuidesResponseJsonPath,
+  getSyncedProductsResponseJsonPath,
+  getSyncedReleaseNotesResponseJsonPath,
+  getSyncedSolutionsResponseJsonPath,
+} from '../syncedResponses';
 
 // Load environment variables
 dotenv.config();
@@ -75,11 +75,8 @@ const S3_RELEASE_NOTES_METADATA_JSON_PATH =
 
 const SITEMAP_URL = process.env.SITEMAP_URL || `${baseUrl}/sitemap.xml`;
 const S3_SITEMAP_PATH = process.env.S3_SITEMAP_PATH || 'sitemap.xml';
-const S3_PRODUCTS_METADATA_JSON_PATH =
-  process.env.S3_PRODUCTS_METADATA_JSON_PATH || 'synced-products-response.json';
-const S3_APIS_DATA_METADATA_JSON_PATH =
-  process.env.S3_APIS_DATA_METADATA_JSON_PATH ||
-  'synced-apis-data-response.json';
+const S3_PRODUCTS_METADATA_JSON_PATH = getSyncedProductsResponseJsonPath();
+const S3_APIS_DATA_METADATA_JSON_PATH = getSyncedApisDataResponseJsonPath();
 
 const DOCUMENTATION_ABSOLUTE_PATH = path.resolve(DOCUMENTATION_PATH);
 
@@ -591,24 +588,12 @@ async function main() {
         S3_BUCKET_NAME!,
         getS3Client()
       );
-      await writeMetadataJson(
-        strapiData.guideListPagesResponse,
-        getSyncedGuideListPagesResponseJsonPath(),
-        S3_BUCKET_NAME!,
-        getS3Client()
-      );
     }
 
     if (SAVE_STRAPI_RESPONSES && metadataFilter.solutions) {
       await writeMetadataJson(
         strapiData.solutionsRawResponse,
         getSyncedSolutionsResponseJsonPath(),
-        S3_BUCKET_NAME!,
-        getS3Client()
-      );
-      await writeMetadataJson(
-        strapiData.solutionListPageResponse,
-        getSyncedSolutionListPagesResponseJsonPath(),
         S3_BUCKET_NAME!,
         getS3Client()
       );

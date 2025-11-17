@@ -9,16 +9,17 @@ import { makeS3Client, writeMetadataJson } from '../helpers/s3Bucket.helper';
 import { StrapiApiData, StrapiProduct } from '../helpers/strapiTypes';
 import { baseUrl } from 'nextjs-website/src/config';
 import { PutObjectCommand } from '@aws-sdk/client-s3';
+import {
+  getSyncedApisDataResponseJsonPath,
+  getSyncedProductsResponseJsonPath,
+} from '../syncedResponses';
 
 dotenv.config();
 
 const SITEMAP_URL = process.env.SITEMAP_URL || `${baseUrl}/sitemap.xml`;
 const S3_SITEMAP_PATH = process.env.S3_SITEMAP_PATH || 'sitemap.xml';
-const S3_PRODUCTS_METADATA_JSON_PATH =
-  process.env.S3_PRODUCTS_METADATA_JSON_PATH || 'synced-products-response.json';
-const S3_APIS_DATA_METADATA_JSON_PATH =
-  process.env.S3_APIS_DATA_METADATA_JSON_PATH ||
-  'synced-apis-data-response.json';
+const S3_PRODUCTS_METADATA_JSON_PATH = getSyncedProductsResponseJsonPath();
+const S3_APIS_DATA_METADATA_JSON_PATH = getSyncedApisDataResponseJsonPath();
 const S3_BUCKET_NAME = process.env.S3_BUCKET_NAME;
 
 const s3Client = makeS3Client();
