@@ -21,7 +21,7 @@ from langfuse._client.span import (
 from src.modules.logger import get_logger
 from src.modules.settings import SETTINGS
 from src.modules.presidio import PresidioPII
-
+from src.models import tables
 
 LOGGER = get_logger(__name__)
 PRESIDIO = PresidioPII(config=SETTINGS.presidio_config)
@@ -198,6 +198,7 @@ def create_langfuse_trace(
     contexts: List[str],
     tags: List[str],
     spans: List[dict],
+    query_for_database: dict,
 ) -> None:
     """Creates a Langfuse trace from a list of span dictionaries.
     Args:
@@ -238,6 +239,12 @@ def create_langfuse_trace(
     root.end()
     LANGFUSE_CLIENT.flush()
     LOGGER.info(f"Created trace with ID: {trace_id} successfully!")
+
+    save_query_to_database(query_for_database: query_for_database) 
+
+
+def save_query_to_database(query_for_database: dict) -> None:
+    tables["queries"].put_item(Item=query_for_database)
 
 
 def add_langfuse_score(

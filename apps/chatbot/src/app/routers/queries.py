@@ -181,9 +181,21 @@ def evaluate_query(
     else:
         LOGGER.info(f"Skipping evaluation due to daily limit reached ({SETTINGS.max_daily_evaluations})")
 
-
-def save_query(bodyToSave: dict) -> None:
-    tables["queries"].put_item(Item=bodyToSave)
+def create_monitor_trace(trace_data: dict) -> None:
+    if sqs_queue_evaluate is None:
+        LOGGER.warning(
+            f"sqs_queue_evaluate is None, cannot send message {trace_data}"
+        )
+    else:
+        payload = {
+            "operation": "create_trace",
+            "data": trace_data,
+        }
+        sqs_response = sqs_queue_evaluate.send_message(
+            MessageBody=json.dumps(payload),
+            MessageGroupId=trace_data["trace_id"],  # Required for FIFO queues
+        )
+        LOGGER.info(f"sqs response: {sqs_response}")
 
 
 @router.post("/queries")
@@ -213,14 +225,6 @@ async def query_creation(
         references=answer_json["references"],
     )
     
-    evaluate_query(
-        query_str=query_str,
-        answer=answer,
-        answer_json=answer_json,
-        trace_id=trace_id,
-        messages=messages,
-    )
-
     bodyToReturn = prepare_body_to_return(
         query=query,
         session=session,
@@ -235,11 +239,30 @@ async def query_creation(
         answer_json=answer_json,
         now=now,
     )
+
+    # TODO: populate spans
+    trace_data = {
+        "trace_id": trace_id,
+        "user_id": userId,
+        "session_id": session["id"],
+        "query": query.question,
+        "chat_history": messages if messages else [],
+        "response": answer,
+        "contexts": answer_json.get("contexts", []),
+        "tags": ["chatbot-query"],
+        "spans": [],
+        "query_for_database": bodyToSave,
+    }
+    create_monitor_trace(trace_data)
     
-    try:
-        save_query(bodyToSave=bodyToSave)
-    except (BotoCoreError, ClientError) as e:
-        raise HTTPException(status_code=422, detail=f"[POST /queries] error: {e}")
+    evaluate_query(
+        query_str=query_str,
+        answer=answer,
+        answer_json=answer_json,
+        trace_id=trace_id,
+        messages=messages,
+    )
+    
     return bodyToReturn
 
 
