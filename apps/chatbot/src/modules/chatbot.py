@@ -27,6 +27,7 @@ from src.modules.logger import get_logger
 from src.modules.models import get_llm, get_embed_model
 from src.modules.agent import get_agent
 from src.modules.handlers import EventHandler
+# TODO: remove presidio
 from src.modules.presidio import PresidioPII
 from src.modules.settings import SETTINGS
 

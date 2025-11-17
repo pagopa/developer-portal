@@ -211,6 +211,7 @@ def create_langfuse_trace(
         contexts (List[str]): The retrieved contexts.
         tags (List[str]): The tags for the trace.
         spans (List[dict]): The list of span dictionaries.
+        query_for_database (dict): The query data to save to the database.
     """
 
     span_root = spans[0]
@@ -240,7 +241,9 @@ def create_langfuse_trace(
     LANGFUSE_CLIENT.flush()
     LOGGER.info(f"Created trace with ID: {trace_id} successfully!")
 
-    save_query_to_database(query_for_database: query_for_database) 
+    query_for_database["question"] = PRESIDIO.mask_pii(query_for_database["question"])
+    query_for_database["answer"] = PRESIDIO.mask_pii(query_for_database["answer"])
+    save_query_to_database(query_for_database=query_for_database)
 
 
 def save_query_to_database(query_for_database: dict) -> None:
