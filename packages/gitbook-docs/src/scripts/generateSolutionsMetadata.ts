@@ -18,7 +18,7 @@ import {
 } from '../helpers/fetchFromStrapi';
 import { sitePathFromS3Path } from '../helpers/sitePathFromS3Path';
 import { StrapiSolution } from '../helpers/strapiTypes';
-import { getSyncedSolutionsResponseJsonPath } from '../helpers/pathGetterHelper';
+import { getSyncedSolutionsResponseJsonPath } from '../syncedResponses';
 
 // Load environment variables from .env file
 dotenv.config();
