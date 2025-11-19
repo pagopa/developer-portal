@@ -625,7 +625,8 @@
         "productShowcaseLabel": "Come integrarsi? Inizia da qui"
     },
     "apiDataListPage": {
-        "explore": "Esplora le API"
+        "explore": "Esplora le API",
+        "noApiMessage": "Non sono presenti API della categoria selezionata"
     },
     "apiDataPage": {
         "soap": {

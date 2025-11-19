@@ -1,17 +1,16 @@
 import React from 'react';
 import SectionTitle from '@/components/molecules/SectionTitle/SectionTitle';
 import { Box } from '@mui/material';
-import CardsGrid from '@/components/molecules/CardsGrid/CardsGrid';
+import CardsGrid, {
+  CardProps,
+} from '@/components/molecules/CardsGrid/CardsGrid';
 
 type SolutionsShowcaseProps = {
   title?: string;
-  cards: {
-    title: string;
-    text: string;
-    href: string;
-    logoUrl: string;
-    tags?: { readonly label: string; readonly path?: string }[];
-  }[];
+  cards: readonly Pick<
+    CardProps,
+    'title' | 'text' | 'href' | 'icon' | 'labels'
+  >[];
   py?: number;
 };
 
@@ -26,11 +25,7 @@ const SolutionsShowcase = ({
       <CardsGrid
         ctaButtonsVariant={'contained'}
         cards={cards.map((card) => ({
-          title: card.title,
-          text: card.text,
-          href: card.href,
-          icon: card.logoUrl,
-          tags: card.tags,
+          ...card,
           useSrc: true,
         }))}
         containerSx={{

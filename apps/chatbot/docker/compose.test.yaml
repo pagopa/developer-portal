@@ -32,7 +32,7 @@ services:
       retries: 10
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    env_file: ../.env.test
+    env_file: ../.env.langfuse
 
   redis:
     image: redis/redis-stack:7.2.0-v13

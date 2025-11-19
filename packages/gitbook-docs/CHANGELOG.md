@@ -1,5 +1,11 @@
 # gitbook-docs
 
+## 1.3.1
+
+### Patch Changes
+
+- af1d820: Optimize GitBook sync workflow to reduce API calls and improve performance
+
 ## 1.3.0
 
 ### Minor Changes

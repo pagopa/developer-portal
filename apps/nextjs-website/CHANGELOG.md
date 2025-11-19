@@ -1,5 +1,53 @@
 # nextjs-website
 
+## 11.1.0
+
+### Minor Changes
+
+- d11e492: Manage webinar in live state when url is not live
+
+### Patch Changes
+
+- 81dad42: Link baseUrl configuration constant to environment variables
+- 1917d7d: Add missing enableFilters in makeProps, in Strapi model and in populate in fetchApiDataListPages
+
+## 11.0.0
+
+### Major Changes
+
+- 164c286: Add support for filters using tags in ApiDataListPages, refactor FilteredGridLayout to support cards
+
+### Minor Changes
+
+- 3788385: Fix issue with side menus in solutions
+
+### Patch Changes
+
+- Updated dependencies [af1d820]
+  - gitbook-docs@1.3.1
+
+## 10.4.0
+
+### Minor Changes
+
+- acb3aff: Add thumbnail to video.js webinar player and activate autoplay only if webinar is live
+
+### Patch Changes
+
+- 74e119a: Add 'noindex, follow' to non-main guide pages
+
+## 10.3.0
+
+### Minor Changes
+
+- b37ac58: Remove animation from auto scroll in GuideMenu
+
+## 10.2.1
+
+### Patch Changes
+
+- 92d3566: Fix height of GuideMenu component
+
 ## 10.2.0
 
 ### Minor Changes
