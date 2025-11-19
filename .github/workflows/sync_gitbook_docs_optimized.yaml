@@ -38,8 +38,8 @@ on:
         required: true
         default: false
 
-  schedule:
-    - cron: '0 23 * * *'  # Run daily at midnight UTC
+  # schedule:
+  #   - cron: '0 23 * * *'  # Run daily at midnight UTC
 
 permissions:
   id-token: write
