@@ -102,7 +102,3 @@
   display: none;
 }
 
-/* Nyan version */
-.vjs-theme-custom.nyan .vjs-play-progress {
-  background: linear-gradient(to bottom, #fe0000 0%, #fe9a01 16.666666667%, #fe9a01 16.666666667%, #ffff00 33.332666667%, #ffff00 33.332666667%, #32ff00 49.999326667%, #32ff00 49.999326667%, #0099fe 66.6659926%, #0099fe 66.6659926%, #6633ff 83.33266%, #6633ff 83.33266%);
-}

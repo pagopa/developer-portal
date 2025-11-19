@@ -26,7 +26,6 @@ const TECH_ORDER_AMAZON_IVS = ['AmazonIVS'];
 const VideoJsPlayer = (props: PlayerProps) => {
   const videoEl = useRef<HTMLVideoElement>(null);
   useEffect(() => {
-    console.log('Need to reinitialize the player', props.autoplay, props.src);
     registerIVSTech(videojs, {
       wasmBinary: `https://player.live-video.net/${amazonIvsVersion}/amazon-ivs-wasmworker.min.wasm`,
       wasmWorker: `https://player.live-video.net/${amazonIvsVersion}/amazon-ivs-wasmworker.min.js`,
