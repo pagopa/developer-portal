@@ -42,7 +42,6 @@ import {
   fetchResponseFromCDN,
   JsonMetadata,
 } from '@/helpers/s3Metadata.helpers';
-import { StrapiGuideListPages } from '@/lib/strapi/types/guideListPage';
 import { StrapiGuides } from '@/lib/strapi/types/guide';
 import { fetchUseCases } from '@/lib/strapi/fetches/fetchUseCases';
 import { makeUseCasesProps } from '@/lib/strapi/makeProps/makeUseCases';
@@ -52,6 +51,7 @@ import { fetchTags } from '@/lib/strapi/fetches/fetchTags';
 import { makeTagsProps } from '@/lib/strapi/makeProps/makeTags';
 import { isMarkDownPart, MarkDownPart } from '@/lib/strapi/types/part';
 import { getMarkdownContent } from '@/lib/api';
+import { fetchGuideListPages } from './strapi/fetches/fetchGuideListPages';
 import {
   getSyncedGuidesResponseJsonPath,
   getSyncedSolutionsResponseJsonPath,
@@ -169,9 +169,7 @@ export const getOverviewsProps = async () => {
 };
 
 export const getGuideListPagesProps = async () => {
-  const strapiGuideList = (await fetchResponseFromCDN(
-    'synced-guide-list-pages-response.json'
-  )) as StrapiGuideListPages | undefined;
+  const strapiGuideList = await fetchGuideListPages(buildEnv);
   return strapiGuideList ? makeGuideListPagesProps(strapiGuideList) : [];
 };
 
