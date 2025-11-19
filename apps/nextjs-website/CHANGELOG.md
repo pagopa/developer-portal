@@ -1,5 +1,17 @@
 # nextjs-website
 
+## 12.0.0
+
+### Major Changes
+
+- bc4e8a6: Use synced response instead of strapi fetch
+
+### Patch Changes
+
+- daf4500: Remove fetch from synced json for guide list pages
+- Updated dependencies [cc00738]
+  - gitbook-docs@1.3.2
+
 ## 11.2.0
 
 ### Minor Changes
