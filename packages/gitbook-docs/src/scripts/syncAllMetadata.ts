@@ -30,8 +30,6 @@ import {
   StrapiGuide,
   StrapiReleaseNote,
   StrapiSolution,
-  StrapiGuideListPageResponse,
-  StrapiSolutionListPageResponse,
   StrapiGuidesResponse,
   StrapiSolutionsResponse,
   StrapiReleaseNotesResponse,
@@ -40,11 +38,9 @@ import {
 } from '../helpers/strapiTypes';
 import {
   apisDataQueryString,
-  guideListPagesQueryString,
   guidesQueryString,
   productsQueryString,
   releaseNotesQueryString,
-  solutionListPageQueryString,
   solutionsQueryString,
 } from '../helpers/strapiQuery';
 
@@ -87,8 +83,6 @@ interface StrapiData {
   guidesRawResponse?: StrapiGuidesResponse;
   solutionsRawResponse?: StrapiSolutionsResponse;
   releaseNotesRawResponse?: StrapiReleaseNotesResponse;
-  guideListPagesResponse?: StrapiGuideListPageResponse[];
-  solutionListPageResponse?: StrapiSolutionListPageResponse[];
 }
 
 interface UrlParsingItem {
@@ -135,8 +129,6 @@ async function fetchAllStrapiData(): Promise<StrapiData> {
     guidesResult,
     solutionsResult,
     releaseNotesResult,
-    guideListPagesResponse,
-    solutionListPageResponse,
     productsResult,
     apisDataResult,
   ] = await Promise.all([
@@ -147,14 +139,6 @@ async function fetchAllStrapiData(): Promise<StrapiData> {
     // Release notes with full populate
     fetchFromStrapi<StrapiReleaseNote>(
       `api/release-notes/?${releaseNotesQueryString}`
-    ),
-    // Guide list pages
-    fetchFromStrapi<StrapiGuideListPageResponse>(
-      `api/guide-list-pages/?${guideListPagesQueryString}`
-    ),
-    // Solution list page
-    fetchFromStrapi<StrapiSolutionListPageResponse>(
-      `api/solution-list-page/?${solutionListPageQueryString}`
     ),
     // Products
     fetchFromStrapi<StrapiProduct>(`api/products?${productsQueryString}`),
@@ -175,8 +159,6 @@ async function fetchAllStrapiData(): Promise<StrapiData> {
     guidesRawResponse: guidesResult.responseJson,
     solutionsRawResponse: solutionsResult.responseJson,
     releaseNotesRawResponse: releaseNotesResult.responseJson,
-    guideListPagesResponse: guideListPagesResponse.data,
-    solutionListPageResponse: solutionListPageResponse.data,
   };
 }
 

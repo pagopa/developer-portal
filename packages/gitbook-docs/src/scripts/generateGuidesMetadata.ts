@@ -123,18 +123,6 @@ async function convertGuideToMetadataItems(
 async function main() {
   console.log('Starting to process Markdown files...');
 
-  // TODO: remove when Strapi will manage Metadata
-  // eslint-disable-next-line functional/no-let
-  let guideListPagesResponse;
-  try {
-    guideListPagesResponse = await getResponseFromStrapi(
-      'api/guide-list-pages/?populate[product][populate][0]=logo&populate[product][populate][1]=bannerLinks.icon&populate[product][populate][2]=overview&populate[product][populate][3]=quickstart_guide&populate[product][populate][4]=release_note&populate[product][populate][5]=api_data_list_page&populate[product][populate][6]=api_data_list_page.apiData.*&populate[product][populate][7]=api_data_list_page.apiData.apiRestDetail.*&populate[product][populate][8]=guide_list_page&populate[product][populate][9]=tutorial_list_page&populate[product][populate][10]=use_case_list_page&populate[guidesByCategory][populate][0]=guides.mobileImage&populate[guidesByCategory][populate][1]=guides.image&populate[guidesByCategory][populate][2]=guides.listItems&populate[bannerLinks][populate][0]=icon&populate[seo][populate]=*,metaImage,metaSocial.image'
-    );
-  } catch (error) {
-    console.error('Error fetching guide list pages from Strapi:', error);
-    process.exit(1);
-  }
-
   // TODO: restore this strapiGuidesUrl when Metadata will be managed by Strapi
   // const strapiGuidesUrl =
   //   'api/guides?populate[0]=product&populate[1]=versions&pagination[pageSize]=1000&pagination[page]=1';
