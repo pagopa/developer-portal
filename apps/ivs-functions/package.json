@@ -1,6 +1,6 @@
 {
   "name": "ivs-functions",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "IVS S3 event processing Lambda functions",
   "scripts": {
     "lint": "eslint src",
