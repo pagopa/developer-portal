@@ -81,7 +81,7 @@ export function makeApiDataListPagesProps(
           bannerLinks: attributes.bannerLinks.map(makeBannerLinkProps),
           seo: attributes.seo,
           updatedAt: attributes.updatedAt,
-          enableFilters: (product.tags && product.tags.length > 0) || undefined,
+          enableFilters: attributes.enableFilters,
           tags: product.tags,
         };
       } catch (error) {
