@@ -12,7 +12,7 @@ const releaseNotesPopulate = {
       ...productRelationsPopulate,
     },
     seo: {
-      populate: '*,metaImage,metaSocial.image',
+      populate: '*',
     },
   },
 };

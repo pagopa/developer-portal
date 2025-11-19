@@ -5,15 +5,16 @@ import { StrapiSolutions } from '@/lib/strapi/types/solutions';
 
 const solutionsPopulate = {
   populate: {
-    icon: 'icon',
     stats: '*',
     steps: {
       populate: {
-        products: '*',
+        products: {
+          populate: ['logo'],
+        },
       },
     },
     seo: {
-      populate: '*,metaImage,metaSocial.image',
+      populate: '*',
     },
     products: {
       populate: ['logo'],

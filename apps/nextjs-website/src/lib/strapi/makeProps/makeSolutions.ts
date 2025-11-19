@@ -9,33 +9,34 @@ export function makeSolutionsProps(
   strapiSolutions: StrapiSolutions
 ): ReadonlyArray<SolutionTemplateProps> {
   return compact(
-    strapiSolutions.data.map(({ attributes }) => {
+    strapiSolutions.data?.map(({ attributes }) => {
       if (!attributes.slug || !attributes.title) {
         console.error(
           `Error while processing Solution: missing title or slug. Title: ${attributes.title} | Slug: ${attributes.slug}. Skipping...`
         );
         return null;
       }
-
       try {
         return {
           ...attributes,
-          stats: [...attributes.stats],
-          steps: attributes.steps.map((step) => ({
+          stats: [...(attributes.stats || [])], // Aggiunto fallback array vuoto
+          steps: attributes.steps?.map((step) => ({
             ...step,
-            products: step.products.data.map((product) => ({
+            products: step.products?.data?.map((product) => ({
               ...product.attributes,
             })),
           })),
-          products: attributes.products.data.map(({ attributes }) => ({
+          products: attributes.products?.data?.map(({ attributes }) => ({
             ...attributes,
-            logo: attributes.logo.data?.attributes,
+            logo: attributes.logo?.data?.attributes,
           })),
-          icon: attributes.icon.data.attributes,
+          icon: attributes.icon?.data?.attributes,
           webinars: compact(
-            attributes.webinars.data.map((webinar) => makeWebinarProps(webinar))
+            attributes.webinars?.data?.map((webinar) =>
+              makeWebinarProps(webinar)
+            )
           ),
-          bannerLinks: attributes.bannerLinks.map((bannerLink) => ({
+          bannerLinks: attributes.bannerLinks?.map((bannerLink) => ({
             ...bannerLink,
             title: bannerLink.title || '',
             icon: bannerLink.icon?.data?.attributes,
@@ -46,7 +47,7 @@ export function makeSolutionsProps(
             title: attributes.caseHistories.title,
             subtitle: attributes.caseHistories.description,
             stories: compact(
-              attributes.caseHistories.case_histories.data.map(
+              attributes.caseHistories.case_histories?.data?.map(
                 (caseHistory) => {
                   if (!caseHistory.attributes.slug) {
                     console.error(
