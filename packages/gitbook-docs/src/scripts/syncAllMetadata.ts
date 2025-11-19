@@ -18,11 +18,11 @@ import { MetadataInfo, MetadataType } from '../helpers/guidesMetadataHelper';
 import { sitePathFromS3Path } from '../helpers/sitePathFromS3Path';
 import { sitePathFromLocalPath } from '../helpers/sitePathFromLocalPath';
 import {
-  getSyncedGuideListPagesResponseJsonPath,
   getSyncedGuidesResponseJsonPath,
-  getSyncedSolutionListPagesResponseJsonPath,
   getSyncedSolutionsResponseJsonPath,
   getSyncedReleaseNotesResponseJsonPath,
+  getSyncedProductsResponseJsonPath,
+  getSyncedApisDataResponseJsonPath,
 } from '../syncedResponses';
 import { DOCUMENTATION_PATH } from '../helpers/documentationParsing.helper';
 import { baseUrl } from 'nextjs-website/src/config';
@@ -75,11 +75,6 @@ const S3_RELEASE_NOTES_METADATA_JSON_PATH =
 
 const SITEMAP_URL = process.env.SITEMAP_URL || `${baseUrl}/sitemap.xml`;
 const S3_SITEMAP_PATH = process.env.S3_SITEMAP_PATH || 'sitemap.xml';
-const S3_PRODUCTS_METADATA_JSON_PATH =
-  process.env.S3_PRODUCTS_METADATA_JSON_PATH || 'synced-products-response.json';
-const S3_APIS_DATA_METADATA_JSON_PATH =
-  process.env.S3_APIS_DATA_METADATA_JSON_PATH ||
-  'synced-apis-data-response.json';
 
 const DOCUMENTATION_ABSOLUTE_PATH = path.resolve(DOCUMENTATION_PATH);
 
@@ -564,13 +559,13 @@ async function main() {
       console.log('Saving Strapi products, APIs data, and sitemap...');
       await putS3File(
         strapiData.products,
-        S3_PRODUCTS_METADATA_JSON_PATH,
+        getSyncedProductsResponseJsonPath(),
         S3_BUCKET_NAME!,
         getS3Client()
       );
       await putS3File(
         strapiData.apisData,
-        S3_APIS_DATA_METADATA_JSON_PATH,
+        getSyncedApisDataResponseJsonPath(),
         S3_BUCKET_NAME!,
         getS3Client()
       );
