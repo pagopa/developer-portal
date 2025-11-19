@@ -141,7 +141,7 @@ jobs:
       environment: 'prod'
     environment: 'prod'
     env:
-      SITEMAP_URL: https://${{ fromJSON('{"dev":"dev.","uat":"uat.","prod":""}')[github.event_name == 'workflow_dispatch' && inputs.environment || 'prod'] }}developer.pagopa.it/sitemap.xml
+      SITEMAP_URL: https://developer.pagopa.it/sitemap.xml
 
     steps:
       - name: Checkout current repository
