@@ -16,7 +16,6 @@ import { extractTitleFromMarkdown } from '../helpers/extractTitle.helper';
 import { fetchFromStrapi } from '../helpers/fetchFromStrapi';
 import { MetadataInfo, MetadataType } from '../helpers/guidesMetadataHelper';
 import { sitePathFromS3Path } from '../helpers/sitePathFromS3Path';
-import { sitePathFromLocalPath } from '../helpers/sitePathFromLocalPath';
 import {
   getSyncedGuideListPagesResponseJsonPath,
   getSyncedGuidesResponseJsonPath,
@@ -207,10 +206,19 @@ function generateUrlPath(
   metadataType: MetadataType = MetadataType.Guide,
   landingFile?: string
 ): string {
-  const isS3Path = filePath.includes(S3_PATH_TO_GITBOOK_DOCS);
-  const restOfPath = isS3Path
-    ? sitePathFromS3Path(filePath, landingFile)
-    : sitePathFromLocalPath(filePath, landingFile);
+  // Convert local path to S3 path if needed, then extract site path
+  const normalizedFilePath = filePath.replace(/\\/g, '/');
+  const normalizedS3Base = S3_PATH_TO_GITBOOK_DOCS.replace(/\\/g, '/').replace(
+    /^\/+/,
+    ''
+  );
+  const isAlreadyS3Path =
+    normalizedFilePath.startsWith(normalizedS3Base) ||
+    normalizedFilePath.startsWith(`/${normalizedS3Base}`);
+  const s3Path = isAlreadyS3Path
+    ? normalizedFilePath
+    : localPathToS3Path(filePath);
+  const restOfPath = sitePathFromS3Path(s3Path, landingFile);
 
   switch (metadataType) {
     case MetadataType.Guide:
