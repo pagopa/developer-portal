@@ -10,8 +10,6 @@ import { SolutionTemplateProps } from '@/components/templates/SolutionTemplate/S
 import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
 import { getItemFromPaths } from '@/helpers/structuredData.helpers';
 import PageNotFound from '@/app/not-found';
-import { REVALIDATE_LONG_INTERVAL } from '@/config';
-import { getSolutionsMetadata } from '@/helpers/s3Metadata.helpers';
 
 type SolutionDetailPageTemplateProps = {
   solution: SolutionTemplateProps;
@@ -27,24 +25,7 @@ type Params = {
   solutionSlug: string;
   solutionSubPathSlugs: string[];
 };
-// TODO: remove when solutions metadata will be managed in strapi
-export const revalidate = REVALIDATE_LONG_INTERVAL;
-
-const SOLUTION_SLUG_PATH_INDEX = 2;
-const SOLUTION_SUB_PATH_INDEX = 3;
-export async function generateStaticParams(): Promise<Params[]> {
-  const solutions = await getSolutionsMetadata();
-  const solutionParams = solutions
-    .map(({ path }) => path.split('/'))
-    .filter((paths) => paths.length > SOLUTION_SUB_PATH_INDEX)
-    .map((paths) => {
-      return {
-        solutionSlug: paths[SOLUTION_SLUG_PATH_INDEX],
-        solutionSubPathSlugs: paths.slice(SOLUTION_SUB_PATH_INDEX),
-      };
-    });
-  return solutionParams;
-}
+export const dynamic = 'force-dynamic';
 
 export async function generateMetadata({
   params,
