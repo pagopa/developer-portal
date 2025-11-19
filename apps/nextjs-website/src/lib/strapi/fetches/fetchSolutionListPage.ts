@@ -11,7 +11,6 @@ const makeStrapiSolutionListPagePopulate = () =>
           'bannerLinks.icon',
           'products.logo',
           'icon',
-          'icon.name',
           'stats',
           'steps',
           'steps.products',
@@ -29,7 +28,7 @@ const makeStrapiSolutionListPagePopulate = () =>
         populate: ['items.icon'],
       },
       seo: {
-        populate: '*,metaImage,metaSocial.image',
+        populate: '*',
       },
     },
   });

@@ -18,7 +18,7 @@ const makeStrapiCaseHistoriesPopulate = () =>
         populate: ['logo'],
       },
       seo: {
-        populate: '*,metaImage,metaSocial.image',
+        populate: '*',
       },
     },
   });

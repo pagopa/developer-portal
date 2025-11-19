@@ -24,6 +24,7 @@ export const fetchFromStrapi = <T>(path: string, populate: string) =>
                 method: 'GET',
                 headers: {
                   Authorization: `Bearer ${strapiApiToken}`,
+                  'Strapi-Response-Format': 'v4',
                 },
                 cache: 'no-store',
               }),
@@ -33,6 +34,8 @@ export const fetchFromStrapi = <T>(path: string, populate: string) =>
             if (response.status === 200) {
               return TE.tryCatch(() => response.json(), E.toError);
             } else {
+              // eslint-disable-next-line functional/no-expression-statements
+              console.log(`${strapiEndpoint}/api/${path}/?${populate}`);
               return TE.left(makeError(response));
             }
           }),
