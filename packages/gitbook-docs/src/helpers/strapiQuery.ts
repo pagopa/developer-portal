@@ -1,6 +1,6 @@
 import qs from 'qs';
 
-const STRAPI_PAGE_SIZE = 1000;
+const STRAPI_PAGE_SIZE = 250; // To increase page size over 250 strapi configuration must be updated by default this is the max limit
 
 const STRAPI_DEFAULT_PAGINATION = {
   pagination: {

@@ -9,7 +9,7 @@ import {
   downloadS3File,
   listS3Files,
   makeS3Client,
-  writeMetadataJson,
+  putS3File,
 } from '../helpers/s3Bucket.helper';
 import { extractTitleFromMarkdown } from '../helpers/extractTitle.helper';
 import {
@@ -164,21 +164,21 @@ async function main() {
   const metadataItems = await convertGuideToMetadataItems(strapiGuides);
   console.log(`Converted guides to ${metadataItems.length} metadata items`);
 
-  await writeMetadataJson(
+  await putS3File(
     metadataItems,
     S3_GUIDE_METADATA_JSON_PATH,
     `${S3_BUCKET_NAME}`,
     s3Client
   );
 
-  await writeMetadataJson(
+  await putS3File(
     responseJson,
     SYNCED_GUIDES_RESPONSE_JSON_PATH,
     `${S3_BUCKET_NAME}`,
     s3Client
   );
 
-  await writeMetadataJson(
+  await putS3File(
     guideListPagesResponse,
     SYNCED_GUIDE_LIST_PAGES_RESPONSE_JSON_PATH,
     `${S3_BUCKET_NAME}`,
