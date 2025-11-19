@@ -35,6 +35,7 @@ async function fetchFromStrapiResponse(url: string) {
   const response = await fetch(`${strapiEndpoint}/${url}`, {
     headers: {
       Authorization: `Bearer ${strapiApiToken}`,
+      'Strapi-Response-Format': 'v4',
     },
   });
 
