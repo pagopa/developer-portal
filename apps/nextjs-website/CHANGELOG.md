@@ -1,5 +1,54 @@
 # nextjs-website
 
+## 12.1.0
+
+### Minor Changes
+
+- ab5c9b6: Refactor GitBookContent Heading to a generic atom component ContentHeading and use it from GitBookContent and Block heading parts
+
+### Patch Changes
+
+- 859e21a: Fix autoplay logic
+- a9e0699: Avoid accessing local storage during first render to fix the undefined window error
+- ebba255: Fix missing image behaviour
+- Updated dependencies [0237257]
+  - gitbook-docs@1.4.0
+
+## 12.0.0
+
+### Major Changes
+
+- bc4e8a6: Use synced response instead of strapi fetch
+
+### Patch Changes
+
+- daf4500: Remove fetch from synced json for guide list pages
+- Updated dependencies [cc00738]
+  - gitbook-docs@1.3.2
+
+## 11.2.0
+
+### Minor Changes
+
+- 15e4314: Update style of guide version menu
+- ccd2ed2: Update videojs style and fix reload issue
+
+### Patch Changes
+
+- 5f76a21: Refactor release note and solution page components to remove unused metadata handling and enforce dynamic rendering
+- 67f8adf: Upgrade to Next.js 14.2.33
+
+## 11.1.0
+
+### Minor Changes
+
+- d11e492: Manage webinar in live state when url is not live
+
+### Patch Changes
+
+- 81dad42: Link baseUrl configuration constant to environment variables
+- 1917d7d: Add missing enableFilters in makeProps, in Strapi model and in populate in fetchApiDataListPages
+
 ## 11.0.0
 
 ### Major Changes
