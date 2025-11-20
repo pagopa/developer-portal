@@ -6,17 +6,14 @@ import { compact } from 'lodash';
 export function makeSolutionListPageProps(
   strapiSolutionsList: StrapiSolutionListPage
 ): SolutionListTemplateProps {
-  const {
-    data: { attributes },
-  } = strapiSolutionsList;
   return {
     ...strapiSolutionsList,
     hero: {
-      title: attributes.title,
-      subtitle: attributes.description,
+      title: strapiSolutionsList.data.title,
+      subtitle: strapiSolutionsList.data.description,
     },
     solutions: compact(
-      attributes.solutions.data.map(({ attributes }) => {
+      strapiSolutionsList.data.solutions.data.map((attributes) => {
         if (!attributes.slug) {
           console.error(
             `Error while processing Solution with title "${attributes.title}": missing slug. Skipping...`
@@ -27,43 +24,45 @@ export function makeSolutionListPageProps(
         return {
           name: attributes.title,
           description: attributes.description,
-          logo: attributes.icon.data.attributes,
+          logo: attributes.icon.data,
           slug: `solutions/${attributes.slug}`,
           labels: attributes.products.data.map((products) => ({
-            label: products.attributes.shortName,
-            path: `/${products.attributes.slug}`,
+            label: products.shortName,
+            path: `/${products.slug}`,
           })),
         };
       })
     ),
-    successStories: attributes.caseHistories && {
-      title: attributes.caseHistories.title,
-      subtitle: attributes.caseHistories.description,
+    successStories: strapiSolutionsList.data.caseHistories && {
+      title: strapiSolutionsList.data.caseHistories.title,
+      subtitle: strapiSolutionsList.data.caseHistories.description,
       stories: compact(
-        attributes.caseHistories.case_histories.data.map((caseHistory) => {
-          if (!caseHistory.attributes.slug) {
-            console.error(
-              `Error while processing CaseHistory with title "${caseHistory.attributes.title}": missing slug. Skipping...`
-            );
-            return null;
-          }
+        strapiSolutionsList.data.caseHistories.case_histories.data.map(
+          (caseHistory) => {
+            if (!caseHistory.slug) {
+              console.error(
+                `Error while processing CaseHistory with title "${caseHistory.title}": missing slug. Skipping...`
+              );
+              return null;
+            }
 
-          return {
-            title: caseHistory.attributes.title,
-            path: `case-histories/${caseHistory.attributes.slug}`,
-            image: caseHistory.attributes.image?.data?.attributes,
-          };
-        })
+            return {
+              title: caseHistory.title,
+              path: `case-histories/${caseHistory.slug}`,
+              image: caseHistory.image?.data,
+            };
+          }
+        )
       ),
     },
-    features: attributes.features && {
-      title: attributes.features.title,
-      items: attributes.features.items.map((item) => ({
+    features: strapiSolutionsList.data.features && {
+      title: strapiSolutionsList.data.features.title,
+      items: strapiSolutionsList.data.features.items.map((item) => ({
         title: item.title ?? '',
         content: item.content,
-        iconUrl: item.icon.data.attributes.url,
+        iconUrl: item.icon.data.url,
       })),
     },
-    seo: attributes.seo,
+    seo: strapiSolutionsList.data.seo,
   };
 }

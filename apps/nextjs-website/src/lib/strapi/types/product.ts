@@ -10,26 +10,20 @@ type Id = {
 };
 
 export type StrapiBaseProduct = {
-  readonly attributes: {
-    readonly name: string;
-    readonly shortName: string;
-    readonly slug: string;
-    readonly isVisible: boolean;
-  };
+  readonly name: string;
+  readonly shortName: string;
+  readonly slug: string;
+  readonly isVisible: boolean;
 };
 
 export type StrapiBaseProductWithBannerLinks = StrapiBaseProduct & {
-  readonly attributes: {
-    readonly bannerLinks?: readonly StrapiBannerLink[];
-  };
+  readonly bannerLinks?: readonly StrapiBannerLink[];
 };
 
 export type StrapiBaseProductWithoutBannerLinks = StrapiBaseProduct & {
-  readonly attributes: {
-    readonly description?: string;
-    readonly logo: {
-      readonly data?: StrapiMedia;
-    };
+  readonly description?: string;
+  readonly logo: {
+    readonly data?: StrapiMedia;
   };
 };
 
@@ -46,19 +40,16 @@ export type StrapiProductRelations = {
   readonly tags: StrapiComponent<readonly StrapiTag[] | undefined>;
 };
 
-export type StrapiBaseProductWithRelations = StrapiBaseProduct & {
-  readonly attributes: StrapiProductRelations & {
+export type StrapiBaseProductWithRelations = StrapiBaseProduct &
+  StrapiProductRelations & {
     readonly bannerLinks?: readonly StrapiBannerLink[];
   };
-};
 
-export type StrapiProduct = StrapiBaseProduct & {
-  readonly attributes: StrapiProductRelations & {
-    readonly bannerLinks?: readonly StrapiBannerLink[];
-    readonly description?: string;
-    readonly logo: {
-      readonly data: StrapiMedia;
-    };
+export type StrapiProduct = StrapiBaseProductWithRelations & {
+  readonly bannerLinks?: readonly StrapiBannerLink[];
+  readonly description?: string;
+  readonly logo: {
+    readonly data: StrapiMedia;
   };
 };
 

@@ -19,7 +19,7 @@ export function makeUseCasesProps(
   markdownContentDict: Record<string, string>
 ): readonly UseCaseProps[] {
   return compact(
-    strapiUseCases.data.map(({ attributes }) => {
+    strapiUseCases.data.map((attributes) => {
       if (!attributes.slug || !attributes.title) {
         console.error(
           `Error while processing UseCase: missing title or slug. Title: ${attributes.title} | Slug: ${attributes.slug}. Skipping...`
@@ -27,7 +27,7 @@ export function makeUseCasesProps(
         return null;
       }
 
-      if (!attributes.product.data.attributes.slug) {
+      if (!attributes.product.data.slug) {
         console.error(
           `Error while processing UseCase with title "${attributes.title}": missing product slug. Skipping...`
         );
@@ -38,16 +38,16 @@ export function makeUseCasesProps(
         return {
           coverImage: attributes.coverImage.data
             ? {
-                url: attributes.coverImage.data.attributes.url,
+                url: attributes.coverImage.data.url,
                 alternativeText:
-                  attributes.coverImage.data.attributes.alternativeText || '',
+                  attributes.coverImage.data.alternativeText || '',
               }
             : undefined,
           headerImage: attributes.headerImage?.data
             ? {
-                url: attributes.headerImage.data.attributes.url,
+                url: attributes.headerImage.data.url,
                 alternativeText:
-                  attributes.headerImage.data.attributes.alternativeText || '',
+                  attributes.headerImage.data.alternativeText || '',
               }
             : undefined,
           title: attributes.title,
@@ -55,23 +55,21 @@ export function makeUseCasesProps(
             ? new Date(attributes.publishedAt)
             : undefined,
           name: attributes.title,
-          path: `/${attributes.product.data.attributes.slug}/use-cases/${attributes.slug}`,
+          path: `/${attributes.product.data.slug}/use-cases/${attributes.slug}`,
           parts: compact(
             attributes.parts.map((part) =>
               makePartProps(part, markdownContentDict)
             )
           ),
-          productSlug: attributes.product.data.attributes.slug,
+          productSlug: attributes.product.data.slug,
           relatedLinks: attributes.relatedLinks,
           bannerLinks:
             attributes.bannerLinks && attributes.bannerLinks.length > 0
               ? attributes.bannerLinks?.map(makeBannerLinkProps)
-              : attributes.product.data?.attributes.bannerLinks?.map(
-                  makeBannerLinkProps
-                ),
+              : attributes.product.data?.bannerLinks?.map(makeBannerLinkProps),
           seo: attributes.seo,
           subtitle: attributes.subtitle,
-          tags: attributes.tags.data?.map((tag) => tag.attributes) || [],
+          tags: attributes.tags.data?.map((tag) => tag) || [],
           updatedAt: attributes.updatedAt,
         } satisfies UseCaseProps;
       } catch (error) {

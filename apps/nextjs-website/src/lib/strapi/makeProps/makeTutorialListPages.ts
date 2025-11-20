@@ -10,8 +10,8 @@ export function makeTutorialListPagesProps(
   strapiTutorialList: StrapiTutorialListPages
 ): readonly TutorialsPageProps[] {
   return compact(
-    strapiTutorialList.data.map(({ attributes }) => {
-      const slug = attributes.product.data?.attributes.slug;
+    strapiTutorialList.data.map((attributes) => {
+      const slug = attributes.product.data?.slug;
       if (!slug) {
         // eslint-disable-next-line functional/no-expression-statements
         console.error(
@@ -21,8 +21,8 @@ export function makeTutorialListPagesProps(
       }
 
       const tutorials: readonly Tutorial[] = compact(
-        attributes.tutorials.data.map(({ attributes: tutorialAttributes }) => {
-          const slug = tutorialAttributes.product?.data?.attributes?.slug;
+        attributes.tutorials.data.map((tutorialAttributes) => {
+          const slug = tutorialAttributes.product?.data?.slug;
           if (!slug) {
             console.error(
               `Error while processing Tutorial with title "${tutorialAttributes.title}": missing product slug. Skipping...`
@@ -47,10 +47,8 @@ export function makeTutorialListPagesProps(
                 ? new Date(tutorialAttributes.publishedAt)
                 : undefined,
               showInOverview: false,
-              image: tutorialAttributes.image.data?.attributes,
-              tags:
-                tutorialAttributes.tags?.data?.map((tag) => tag.attributes) ||
-                [],
+              image: tutorialAttributes.image.data,
+              tags: tutorialAttributes.tags?.data?.map((tag) => tag) || [],
             } satisfies Tutorial;
           } catch (error) {
             // eslint-disable-next-line functional/no-expression-statements
@@ -66,7 +64,7 @@ export function makeTutorialListPagesProps(
 
       return {
         name: attributes.title,
-        path: `/${attributes.product.data.attributes.slug}/tutorials`,
+        path: `/${attributes.product.data.slug}/tutorials`,
         product: makeBaseProductWithoutLogoProps(attributes.product.data),
         abstract: {
           title: attributes.title,
@@ -80,8 +78,8 @@ export function makeTutorialListPagesProps(
             ? attributes.bannerLinks.map((bannerLink) =>
                 makeBannerLinkProps(bannerLink)
               )
-            : attributes.product.data.attributes.bannerLinks?.map(
-                (bannerLink) => makeBannerLinkProps(bannerLink)
+            : attributes.product.data.bannerLinks?.map((bannerLink) =>
+                makeBannerLinkProps(bannerLink)
               ),
       };
     })

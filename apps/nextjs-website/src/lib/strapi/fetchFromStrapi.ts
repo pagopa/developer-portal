@@ -24,7 +24,6 @@ export const fetchFromStrapi = <T>(path: string, populate: string) =>
                 method: 'GET',
                 headers: {
                   Authorization: `Bearer ${strapiApiToken}`,
-                  'Strapi-Response-Format': 'v4',
                 },
                 cache: 'no-store',
               }),

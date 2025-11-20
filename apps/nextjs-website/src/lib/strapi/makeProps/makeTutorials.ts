@@ -18,7 +18,7 @@ export function makeTutorialsProps(
   markdownContentDict: Record<string, string>
 ): readonly TutorialProps[] {
   return compact(
-    strapiTutorials.data.map(({ attributes }) => {
+    strapiTutorials.data.map((attributes) => {
       // Controllo esistenza campi obbligatori minimi
       if (!attributes.slug || !attributes.title) {
         console.error(
@@ -28,7 +28,7 @@ export function makeTutorialsProps(
       }
 
       // Controllo esistenza product
-      if (!attributes.product?.data?.attributes?.slug) {
+      if (!attributes.product?.data?.slug) {
         console.error(
           `Error while processing Tutorial with title "${attributes.title}": missing product slug. Skipping...`
         );
@@ -40,9 +40,8 @@ export function makeTutorialsProps(
           // FIX 1: Aggiunto controllo su attributes.image con ?.
           image: attributes.image?.data
             ? {
-                url: attributes.image.data.attributes.url,
-                alternativeText:
-                  attributes.image.data.attributes.alternativeText || '',
+                url: attributes.image.data.url,
+                alternativeText: attributes.image.data.alternativeText || '',
               }
             : undefined,
 
@@ -54,7 +53,7 @@ export function makeTutorialsProps(
 
           name: attributes.title,
 
-          path: `/${attributes.product.data.attributes.slug}/tutorials/${attributes.slug}`,
+          path: `/${attributes.product.data.slug}/tutorials/${attributes.slug}`,
 
           // FIX 2: Aggiunto controllo su attributes.parts con ?. e fallback ad array vuoto
           parts: compact(
@@ -63,26 +62,24 @@ export function makeTutorialsProps(
             ) || []
           ),
 
-          productSlug: attributes.product.data.attributes.slug,
+          productSlug: attributes.product.data.slug,
 
           description: attributes.description || '',
 
           // FIX 3: Aggiunto controllo su attributes.icon
-          icon: attributes.icon?.data?.attributes || undefined,
+          icon: attributes.icon?.data || undefined,
 
           relatedLinks: attributes.relatedLinks,
 
           bannerLinks:
             attributes.bannerLinks && attributes.bannerLinks.length > 0
               ? attributes.bannerLinks.map(makeBannerLinkProps)
-              : attributes.product.data.attributes.bannerLinks?.map(
-                  makeBannerLinkProps
-                ),
+              : attributes.product.data.bannerLinks?.map(makeBannerLinkProps),
 
           seo: attributes.seo,
 
           // FIX 4: Aggiunto controllo su attributes.tags e attributes.tags.data
-          tags: attributes.tags?.data?.map((tag) => tag.attributes) || [],
+          tags: attributes.tags?.data?.map((tag) => tag) || [],
 
           updatedAt: attributes.updatedAt,
         } satisfies TutorialProps;

@@ -7,22 +7,19 @@ export function guideListPagesWithItemsMissingSlug() {
     ...guidesList,
     data: guidesList.data.map((guides) => ({
       ...guides,
-      attributes: {
-        ...guides.attributes,
-        guidesByCategory: guides.attributes.guidesByCategory.map(
-          (guidePerCategory) => ({
-            ...guidePerCategory,
-            guides: {
-              data: guidePerCategory.guides.data.map((guide) => ({
-                attributes: {
-                  ...guide.attributes,
-                  slug: undefined,
-                },
-              })),
-            },
-          })
-        ),
-      },
+      guidesByCategory: guides.attributes.guidesByCategory.map(
+        (guidePerCategory) => ({
+          ...guidePerCategory,
+          guides: {
+            data: guidePerCategory.guides.data.map((guide) => ({
+              attributes: {
+                ...guide.attributes,
+                slug: undefined,
+              },
+            })),
+          },
+        })
+      ),
     })),
   };
 }

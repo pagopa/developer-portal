@@ -6,15 +6,15 @@ import { compact } from 'lodash';
 export function makeCaseHistoriesProps(
   strapiCaseHistories: StrapiCaseHistories
 ): ReadonlyArray<CaseHistoryPageTemplateProps> {
-  return strapiCaseHistories.data.map(({ attributes }) => ({
+  return strapiCaseHistories.data.map((attributes) => ({
     ...attributes,
     updatedAt: attributes.updatedAt,
     parts: compact(attributes.parts.map((part) => makePartProps(part))),
-    products: attributes.products.data.map(({ attributes }) => ({
+    products: attributes.products.data.map((attributes) => ({
       ...attributes,
-      logo: attributes.logo.data?.attributes,
+      logo: attributes.logo.data,
     })),
-    image: attributes.image?.data?.attributes,
+    image: attributes.image?.data,
     seo: attributes.seo,
   }));
 }

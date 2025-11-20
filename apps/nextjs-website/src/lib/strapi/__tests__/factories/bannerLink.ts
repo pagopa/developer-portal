@@ -30,17 +30,15 @@ export function minimalBannerLink(): StrapiBannerLink {
     theme: undefined as any,
     icon: {
       data: {
-        attributes: {
-          name: 'minimal-icon.svg',
-          alternativeText: 'Minimal Icon',
-          caption: undefined,
-          width: 24,
-          height: 24,
-          ext: '.svg',
-          mime: 'image/svg+xml',
-          size: 0.5,
-          url: 'https://example.com/minimal-icon.svg',
-        },
+        name: 'minimal-icon.svg',
+        alternativeText: 'Minimal Icon',
+        caption: undefined,
+        width: 24,
+        height: 24,
+        ext: '.svg',
+        mime: 'image/svg+xml',
+        size: 0.5,
+        url: 'https://example.com/minimal-icon.svg',
       },
     },
   };

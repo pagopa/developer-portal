@@ -12,11 +12,8 @@ export async function makeApiDataListProps(
   const list = compact(
     await Promise.all(
       strapiApiDataList.data
-        .filter(
-          (apiPage) =>
-            apiPage.attributes.apiRestDetail || apiPage.attributes.apiSoapDetail
-        )
-        .map(async ({ attributes }) => {
+        .filter((apiPage) => apiPage.apiRestDetail || apiPage.apiSoapDetail)
+        .map(async (attributes) => {
           if (!attributes.apiRestDetail && !attributes.apiSoapDetail) {
             console.error(
               `Error while processing API Data with title "${attributes.title}": missing API details. Skipping...`
@@ -66,7 +63,7 @@ export async function makeApiDataListProps(
               bannerLinks:
                 attributes.bannerLinks.length > 0
                   ? attributes.bannerLinks.map(makeBannerLinkProps)
-                  : attributes.product.data.attributes.bannerLinks?.map(
+                  : attributes.product.data.bannerLinks?.map(
                       makeBannerLinkProps
                     ),
               seo: attributes.seo,

@@ -9,34 +9,39 @@ export function minimalApiDataList() {
     data: [
       {
         ...apiData,
-        attributes: {
-          ...apiData.attributes,
-          title: 'Minimal API Data',
-          description: undefined,
-          seo: undefined,
-          bannerLinks: [],
-          product: {
-            data: {
-              ...apiData.attributes.product.data,
-              attributes: {
-                ...(apiData.attributes.product.data?.attributes as any),
-                bannerLinks: undefined,
-              },
-            },
+        title: 'Minimal API Data',
+        description: undefined,
+        seo: undefined,
+        bannerLinks: [],
+        product: {
+          data: {
+            name: 'Minimal',
+            shortName: 'Min',
+            slug: 'minimal',
+            isVisible: true,
+            overview: apiData.product.data!.overview,
+            quickstart_guide: apiData.product.data!.quickstart_guide,
+            api_data_list_page: apiData.product.data!.api_data_list_page,
+            tutorial_list_page: apiData.product.data!.tutorial_list_page,
+            guide_list_page: apiData.product.data!.guide_list_page,
+            release_note: apiData.product.data!.release_note,
+            use_case_list_page: apiData.product.data!.use_case_list_page,
+            tags: apiData.product.data!.tags,
+            bannerLinks: undefined,
           },
-          apiRestDetail: {
-            slug: 'minimal-api',
-            specUrls: [
-              {
-                id: 1,
-                url: 'https://example.com/api.yaml',
-                name: undefined,
-                hideTryIt: false,
-              },
-            ],
-          },
-          apiSoapDetail: undefined,
         },
+        apiRestDetail: {
+          slug: 'minimal-api',
+          specUrls: [
+            {
+              id: 1,
+              url: 'https://example.com/api.yaml',
+              name: undefined,
+              hideTryIt: false,
+            },
+          ],
+        },
+        apiSoapDetail: undefined,
       },
     ],
   } satisfies StrapiApiDataList;
@@ -49,10 +54,7 @@ export function apiDataWithoutBannerLinks() {
     data: [
       {
         ...apiData,
-        attributes: {
-          ...apiData.attributes,
-          bannerLinks: [],
-        },
+        bannerLinks: [],
       },
     ],
   } satisfies StrapiApiDataList;
@@ -65,12 +67,9 @@ export function apiDataWithMissingProduct() {
     data: [
       {
         ...apiData,
-        attributes: {
-          ...apiData.attributes,
-          title: 'API Data Without Product',
-          product: {
-            data: undefined as any,
-          },
+        title: 'API Data Without Product',
+        product: {
+          data: undefined as any,
         },
       },
     ],
@@ -84,12 +83,9 @@ export function apiDataWithoutApiDetails() {
     data: [
       {
         ...apiData,
-        attributes: {
-          ...apiData.attributes,
-          title: 'API Data Without API Details',
-          apiRestDetail: undefined,
-          apiSoapDetail: undefined,
-        },
+        title: 'API Data Without API Details',
+        apiRestDetail: undefined,
+        apiSoapDetail: undefined,
       },
     ],
   } satisfies StrapiApiDataList;
@@ -102,15 +98,12 @@ export function apiDataWithInvalidRestApiDetails() {
     data: [
       {
         ...apiData,
-        attributes: {
-          ...apiData.attributes,
-          title: 'API Data Without API Details',
-          apiRestDetail: {
-            slug: '',
-            specUrls: [],
-          },
-          apiSoapDetail: undefined,
+        title: 'API Data Without API Details',
+        apiRestDetail: {
+          slug: '',
+          specUrls: [],
         },
+        apiSoapDetail: undefined,
       },
     ],
   } satisfies StrapiApiDataList;
@@ -123,15 +116,12 @@ export function apiDatalistWithItemMissingSlug() {
     data: [
       {
         ...apiData,
-        attributes: {
-          ...apiData.attributes,
-          title: 'API Data Without API Details',
-          apiRestDetail: undefined,
-          apiSoapDetail: {
-            slug: undefined as any,
-            repositoryUrl: 'https://example.com/soap.wsdl',
-            dirName: 'soap-dir',
-          },
+        title: 'API Data Without API Details',
+        apiRestDetail: undefined,
+        apiSoapDetail: {
+          slug: undefined as any,
+          repositoryUrl: 'https://example.com/soap.wsdl',
+          dirName: 'soap-dir',
         },
       },
     ],
@@ -154,20 +144,17 @@ export function mixedApiDataValidAndInvalid() {
       {
         ...validRestApi,
         id: 5,
-        attributes: {
-          ...validRestApi.attributes,
-          title: 'Another Valid REST API',
-          apiRestDetail: {
-            slug: 'another-valid-rest-api',
-            specUrls: [
-              {
-                id: 5,
-                url: 'https://example.com/another-api.yaml',
-                name: 'Another API',
-                hideTryIt: false,
-              },
-            ],
-          },
+        title: 'Another Valid REST API',
+        apiRestDetail: {
+          slug: 'another-valid-rest-api',
+          specUrls: [
+            {
+              id: 5,
+              url: 'https://example.com/another-api.yaml',
+              name: 'Another API',
+              hideTryIt: false,
+            },
+          ],
         },
       },
     ],
@@ -181,17 +168,23 @@ export function apiDataWithoutProductBannerLinks() {
     data: [
       {
         ...apiData,
-        attributes: {
-          ...apiData.attributes,
-          bannerLinks: [],
-          product: {
-            data: {
-              ...apiData.attributes.product.data,
-              attributes: {
-                ...(apiData.attributes.product.data?.attributes as any),
-                bannerLinks: [],
-              },
-            },
+        bannerLinks: [],
+        product: {
+          data: {
+            ...apiData.product.data,
+            name: apiData.product.data?.name || '',
+            shortName: apiData.product.data?.shortName || '',
+            slug: apiData.product.data?.slug || '',
+            isVisible: apiData.product.data?.isVisible || false,
+            overview: apiData.product.data!.overview,
+            quickstart_guide: apiData.product.data!.quickstart_guide,
+            api_data_list_page: apiData.product.data!.api_data_list_page,
+            tutorial_list_page: apiData.product.data!.tutorial_list_page,
+            guide_list_page: apiData.product.data!.guide_list_page,
+            release_note: apiData.product.data!.release_note,
+            use_case_list_page: apiData.product.data!.use_case_list_page,
+            tags: apiData.product.data!.tags,
+            bannerLinks: [],
           },
         },
       },
@@ -206,14 +199,10 @@ export function apiDataWithCorruptedProduct() {
     data: [
       {
         ...apiData,
-        attributes: {
-          ...apiData.attributes,
-          title: 'API Data With Corrupted Product',
-          product: {
-            data: {
-              ...apiData.attributes.product.data,
-              attributes: undefined as any,
-            },
+        title: 'API Data With Corrupted Product',
+        product: {
+          data: {
+            ...apiData.product.data,
           },
         },
       },
@@ -255,25 +244,22 @@ export function restApiDataWithMultipleSpecs() {
     data: [
       {
         ...restApi,
-        attributes: {
-          ...restApi.attributes,
-          apiRestDetail: {
-            slug: 'multi-spec-api',
-            specUrls: [
-              {
-                id: 1,
-                url: 'https://example.com/api1.yaml',
-                name: 'API 1',
-                hideTryIt: false,
-              },
-              {
-                id: 2,
-                url: 'https://example.com/api2.yaml',
-                name: 'API 2',
-                hideTryIt: true,
-              },
-            ],
-          },
+        apiRestDetail: {
+          slug: 'multi-spec-api',
+          specUrls: [
+            {
+              id: 1,
+              url: 'https://example.com/api1.yaml',
+              name: 'API 1',
+              hideTryIt: false,
+            },
+            {
+              id: 2,
+              url: 'https://example.com/api2.yaml',
+              name: 'API 2',
+              hideTryIt: true,
+            },
+          ],
         },
       },
     ],

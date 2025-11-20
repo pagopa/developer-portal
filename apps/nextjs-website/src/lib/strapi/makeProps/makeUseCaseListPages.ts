@@ -10,8 +10,8 @@ export function makeUseCaseListPagesProps(
   strapiUseCaseList: StrapiUseCaseListPages
 ): readonly UseCasesPageProps[] {
   return compact(
-    strapiUseCaseList.data.map(({ attributes }) => {
-      const slug = attributes.product.data?.attributes.slug;
+    strapiUseCaseList.data.map((attributes) => {
+      const slug = attributes.product.data?.slug;
       if (!slug) {
         // eslint-disable-next-line functional/no-expression-statements
         console.error(
@@ -21,8 +21,8 @@ export function makeUseCaseListPagesProps(
       }
 
       const useCases: readonly UseCase[] = compact(
-        attributes.useCases.data.map(({ attributes: useCaseAttributes }) => {
-          const slug = useCaseAttributes.product?.data?.attributes?.slug;
+        attributes.useCases.data.map((useCaseAttributes) => {
+          const slug = useCaseAttributes.product?.data?.slug;
           if (!slug) {
             console.error(
               `Error while processing UseCase with title "${useCaseAttributes.title}": missing product slug. Skipping...`
@@ -47,9 +47,8 @@ export function makeUseCaseListPagesProps(
                 ? new Date(useCaseAttributes.publishedAt)
                 : undefined,
               showInOverview: false,
-              coverImage: useCaseAttributes.coverImage.data?.attributes,
-              tags:
-                useCaseAttributes.tags.data?.map((tag) => tag.attributes) || [],
+              coverImage: useCaseAttributes.coverImage.data,
+              tags: useCaseAttributes.tags.data?.map((tag) => tag) || [],
             } satisfies UseCase;
           } catch (error) {
             // eslint-disable-next-line functional/no-expression-statements
@@ -65,7 +64,7 @@ export function makeUseCaseListPagesProps(
 
       return {
         name: attributes.title,
-        path: `/${attributes.product.data.attributes.slug}/use-cases`,
+        path: `/${attributes.product.data.slug}/use-cases`,
         product: makeBaseProductWithoutLogoProps(attributes.product.data),
         abstract: {
           title: attributes.title,
@@ -78,8 +77,8 @@ export function makeUseCaseListPagesProps(
             ? attributes.bannerLinks.map((bannerLink) =>
                 makeBannerLinkProps(bannerLink)
               )
-            : attributes.product.data.attributes.bannerLinks?.map(
-                (bannerLink) => makeBannerLinkProps(bannerLink)
+            : attributes.product.data.bannerLinks?.map((bannerLink) =>
+                makeBannerLinkProps(bannerLink)
               ),
         enableFilters: attributes.enableFilters,
       };

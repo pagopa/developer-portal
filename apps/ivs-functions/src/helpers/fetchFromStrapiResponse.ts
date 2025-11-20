@@ -38,7 +38,6 @@ export async function fetchFromStrapiResponse<T = unknown>(
   const method = opts?.method || 'GET';
   const headers: Record<string, string> = {
     Authorization: `Bearer ${env.ivsApiToken}`,
-    'Strapi-Response-Format': 'v4',
   };
 
   // eslint-disable-next-line functional/no-let

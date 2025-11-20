@@ -7,13 +7,11 @@ import { Paginated } from '@/lib/strapi/types/paginated';
 
 type StrapiWebinarSpeaker = {
   readonly id: number;
-  readonly attributes: {
-    readonly name: string;
-    readonly jobTitle: string;
-    readonly publishedAt: string;
-    readonly description?: BlocksContent;
-    readonly avatar: { readonly data?: StrapiMedia };
-  };
+  readonly name: string;
+  readonly jobTitle: string;
+  readonly publishedAt: string;
+  readonly description?: BlocksContent;
+  readonly avatar: { readonly data?: StrapiMedia };
 };
 
 type StrapiResource = {
@@ -38,30 +36,28 @@ type StrapiQuestionAndAnswer = {
 
 export type StrapiWebinar = {
   readonly id: number;
-  readonly attributes: {
-    readonly title: string;
-    readonly description: string;
-    readonly slug: string;
-    readonly publishedAt: string;
-    readonly isVisibleInList: boolean;
-    readonly coverImage: { readonly data: StrapiMedia };
-    readonly bodyContent?: BlocksContent;
-    readonly playerSrc?: string;
-    readonly playerCoverImage?: { readonly data?: StrapiMedia };
-    readonly startDatetime?: string;
-    readonly endDatetime?: string;
-    readonly subscribeParagraphLabel?: string;
-    readonly relatedLinks?: StrapiRelatedLinks;
-    readonly relatedResources?: StrapiRelatedResources;
-    readonly webinarSpeakers: {
-      readonly data: readonly StrapiWebinarSpeaker[];
-    };
-    readonly questionsAndAnswers?: readonly StrapiQuestionAndAnswer[];
-    readonly seo?: StrapiSeo;
-    readonly webinarCategory: { readonly data?: StrapiWebinarCategory };
-    readonly headerImage: { readonly data?: StrapiMedia };
-    readonly updatedAt: string;
+  readonly title: string;
+  readonly description: string;
+  readonly slug: string;
+  readonly publishedAt: string;
+  readonly isVisibleInList: boolean;
+  readonly coverImage: { readonly data: StrapiMedia };
+  readonly bodyContent?: BlocksContent;
+  readonly playerSrc?: string;
+  readonly playerCoverImage?: { readonly data?: StrapiMedia };
+  readonly startDatetime?: string;
+  readonly endDatetime?: string;
+  readonly subscribeParagraphLabel?: string;
+  readonly relatedLinks?: StrapiRelatedLinks;
+  readonly relatedResources?: StrapiRelatedResources;
+  readonly webinarSpeakers: {
+    readonly data: readonly StrapiWebinarSpeaker[];
   };
+  readonly questionsAndAnswers?: readonly StrapiQuestionAndAnswer[];
+  readonly seo?: StrapiSeo;
+  readonly webinarCategory: { readonly data?: StrapiWebinarCategory };
+  readonly headerImage: { readonly data?: StrapiMedia };
+  readonly updatedAt: string;
 };
 
 export type StrapiWebinars = Paginated<StrapiWebinar>;

@@ -9,7 +9,7 @@ export function makeSolutionsProps(
   strapiSolutions: StrapiSolutions
 ): ReadonlyArray<SolutionTemplateProps> {
   return compact(
-    strapiSolutions.data?.map(({ attributes }) => {
+    strapiSolutions.data?.map((attributes) => {
       if (!attributes.slug || !attributes.title) {
         console.error(
           `Error while processing Solution: missing title or slug. Title: ${attributes.title} | Slug: ${attributes.slug}. Skipping...`
@@ -23,14 +23,14 @@ export function makeSolutionsProps(
           steps: attributes.steps?.map((step) => ({
             ...step,
             products: step.products?.data?.map((product) => ({
-              ...product.attributes,
+              ...product,
             })),
           })),
-          products: attributes.products?.data?.map(({ attributes }) => ({
+          products: attributes.products?.data?.map((attributes) => ({
             ...attributes,
-            logo: attributes.logo?.data?.attributes,
+            logo: attributes.logo?.data,
           })),
-          icon: attributes.icon?.data?.attributes,
+          icon: attributes.icon?.data,
           webinars: compact(
             attributes.webinars?.data?.map((webinar) =>
               makeWebinarProps(webinar)
@@ -39,7 +39,7 @@ export function makeSolutionsProps(
           bannerLinks: attributes.bannerLinks?.map((bannerLink) => ({
             ...bannerLink,
             title: bannerLink.title || '',
-            icon: bannerLink.icon?.data?.attributes,
+            icon: bannerLink.icon?.data,
           })),
           solutionSlug: attributes.slug,
           path: `/solutions/${attributes.slug}/details`,
@@ -49,17 +49,17 @@ export function makeSolutionsProps(
             stories: compact(
               attributes.caseHistories.case_histories?.data?.map(
                 (caseHistory) => {
-                  if (!caseHistory.attributes.slug) {
+                  if (!caseHistory.slug) {
                     console.error(
-                      `Error while processing CaseHistory with title "${caseHistory.attributes.title}": missing slug. Skipping...`
+                      `Error while processing CaseHistory with title "${caseHistory.title}": missing slug. Skipping...`
                     );
                     return null;
                   }
 
                   return {
-                    title: caseHistory.attributes.title,
-                    path: `/case-histories/${caseHistory.attributes.slug}`,
-                    image: caseHistory.attributes.image?.data?.attributes,
+                    title: caseHistory.title,
+                    path: `/case-histories/${caseHistory.slug}`,
+                    image: caseHistory.image?.data,
                   };
                 }
               )

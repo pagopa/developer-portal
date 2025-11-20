@@ -7,37 +7,32 @@ import { compact } from 'lodash';
 import { StrapiBaseApiData } from '../types/apiDataList';
 
 function makeApiDataListPageCard(item: StrapiBaseApiData, slug: string) {
-  if (!item.attributes.apiRestDetail && !item.attributes.apiSoapDetail) {
+  if (!item.apiRestDetail && !item.apiSoapDetail) {
     console.error(
-      `Error while processing API Data with title "${item.attributes.title}": missing API details. Skipping...`
+      `Error while processing API Data with title "${item.title}": missing API details. Skipping...`
     );
     return null;
   }
 
-  if (
-    !item.attributes.apiRestDetail?.slug &&
-    !item.attributes.apiSoapDetail?.slug
-  ) {
+  if (!item.apiRestDetail?.slug && !item.apiSoapDetail?.slug) {
     console.error(`
-      Error while processing API Data with title "${item.attributes.title}": missing API slug. Skipping...`);
+      Error while processing API Data with title "${item.title}": missing API slug. Skipping...`);
     return null;
   }
 
   return {
     labels: [
       {
-        label: item.attributes.apiSoapDetail ? 'SOAP' : 'REST',
+        label: item.apiSoapDetail ? 'SOAP' : 'REST',
       },
     ].filter((label) => !!label.label),
-    title: item?.attributes?.title,
-    text: item?.attributes?.description || '',
-    icon: item?.attributes?.icon?.data?.attributes.url || '',
+    title: item?.title,
+    text: item?.description || '',
+    icon: item?.icon?.data?.url || '',
     href: `/${slug}/api/${
-      item.attributes.apiRestDetail
-        ? item.attributes.apiRestDetail?.slug
-        : item.attributes.apiSoapDetail?.slug
+      item.apiRestDetail ? item.apiRestDetail?.slug : item.apiSoapDetail?.slug
     }`,
-    tags: item.attributes.tags.data?.map((tag) => tag.attributes) || [],
+    tags: item.tags.data?.map((tag) => tag) || [],
   };
 }
 
@@ -45,8 +40,8 @@ export function makeApiDataListPagesProps(
   strapiApiDataListPages: StrapiApiDataListPages
 ): ReadonlyArray<ApiDataListPageTemplateProps> {
   return compact(
-    strapiApiDataListPages.data.map(({ attributes }) => {
-      const slug = attributes.product.data?.attributes.slug;
+    strapiApiDataListPages.data.map((attributes) => {
+      const slug = attributes.product.data?.slug;
       if (!slug) {
         console.error(
           `Error while processing API Data List Page with title "${attributes.title}": missing product slug. Skipping...`
@@ -67,7 +62,7 @@ export function makeApiDataListPagesProps(
           },
           product,
           apiDetailSlugs: compact(
-            attributes.apiData.data.map(({ attributes }) =>
+            attributes.apiData.data.map((attributes) =>
               attributes.apiRestDetail
                 ? attributes.apiRestDetail.slug
                 : attributes.apiSoapDetail?.slug

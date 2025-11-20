@@ -39,15 +39,13 @@ type StrapiEcosystem = {
 
 export type StrapiHomepage = {
   readonly data: {
-    readonly attributes: {
-      readonly comingsoonDocumentation: StrapiRelatedLinks;
-      readonly heroSlider: readonly StrapiHeroSlide[];
-      readonly newsShowcase?: StrapiNewsShowcase;
-      readonly ecosystem?: StrapiEcosystem;
-      readonly webinars: {
-        readonly data: readonly StrapiWebinar[];
-      };
-      readonly seo?: StrapiSeo;
+    readonly comingsoonDocumentation: StrapiRelatedLinks;
+    readonly heroSlider: readonly StrapiHeroSlide[];
+    readonly newsShowcase?: StrapiNewsShowcase;
+    readonly ecosystem?: StrapiEcosystem;
+    readonly webinars: {
+      readonly data: readonly StrapiWebinar[];
     };
+    readonly seo?: StrapiSeo;
   };
 };

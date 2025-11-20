@@ -9,34 +9,30 @@ import { StrapiComponent } from '@/lib/strapi/types/strapiComponent';
 import { StrapiTag } from '@/lib/strapi/types/tag';
 
 export type StrapiBaseTutorial = {
-  readonly attributes: {
-    readonly title: string;
-    readonly slug: string;
-    readonly publishedAt?: string;
-    readonly image: {
-      readonly data?: StrapiMedia;
-    };
-    readonly tags: StrapiComponent<readonly StrapiTag[] | undefined>;
-    readonly product: {
-      readonly data: StrapiBaseProductWithBannerLinks;
-    };
-    readonly icon: {
-      readonly data?: StrapiMedia;
-    };
-    readonly description?: string;
+  readonly title: string;
+  readonly slug: string;
+  readonly publishedAt?: string;
+  readonly image: {
+    readonly data?: StrapiMedia;
   };
+  readonly tags: StrapiComponent<readonly StrapiTag[] | undefined>;
+  readonly product: {
+    readonly data: StrapiBaseProductWithBannerLinks;
+  };
+  readonly icon: {
+    readonly data?: StrapiMedia;
+  };
+  readonly description?: string;
 };
 
 export type StrapiTutorial = StrapiBaseTutorial & {
-  readonly attributes: {
-    readonly createdAt: string;
-    readonly locale: string;
-    readonly parts: readonly StrapiPart[];
-    readonly updatedAt: string;
-    readonly bannerLinks?: readonly StrapiBannerLink[];
-    readonly relatedLinks?: StrapiRelatedLinks;
-    readonly seo?: StrapiSeo;
-  };
+  readonly createdAt: string;
+  readonly locale: string;
+  readonly parts: readonly StrapiPart[];
+  readonly updatedAt: string;
+  readonly bannerLinks?: readonly StrapiBannerLink[];
+  readonly relatedLinks?: StrapiRelatedLinks;
+  readonly seo?: StrapiSeo;
 };
 
 export type StrapiTutorials = Paginated<StrapiTutorial>;

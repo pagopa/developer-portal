@@ -70,24 +70,22 @@ export type StrapiPostIntegration = {
 
 export type StrapiOverview = {
   readonly id: number;
-  readonly attributes: {
-    readonly title: string;
-    readonly createdAt: string;
-    readonly updatedAt: string;
-    readonly publishedAt: string;
-    readonly subtitle: string;
-    readonly backgroundImage: { readonly data: StrapiMedia };
-    readonly features?: StrapiFeature;
-    readonly startInfoSection?: StrapiStartInfoSection;
-    readonly tutorialSection?: StrapiTutorialSection;
-    readonly useCaseSection?: StrapiUseCaseSection;
-    readonly postIntegration?: StrapiPostIntegration;
-    readonly relatedLinks?: StrapiRelatedLinks;
-    readonly product: { readonly data: StrapiProduct };
-    readonly bannerLinks: readonly StrapiBannerLink[];
-    readonly seo?: StrapiSeo;
-    readonly whatsNew?: StrapiNewsShowcase;
-  };
+  readonly title: string;
+  readonly createdAt: string;
+  readonly updatedAt: string;
+  readonly publishedAt: string;
+  readonly subtitle: string;
+  readonly backgroundImage: { readonly data: StrapiMedia };
+  readonly features?: StrapiFeature;
+  readonly startInfoSection?: StrapiStartInfoSection;
+  readonly tutorialSection?: StrapiTutorialSection;
+  readonly useCaseSection?: StrapiUseCaseSection;
+  readonly postIntegration?: StrapiPostIntegration;
+  readonly relatedLinks?: StrapiRelatedLinks;
+  readonly product: { readonly data: StrapiProduct };
+  readonly bannerLinks: readonly StrapiBannerLink[];
+  readonly seo?: StrapiSeo;
+  readonly whatsNew?: StrapiNewsShowcase;
 };
 
 export type StrapiOverviews = Paginated<StrapiOverview>;
