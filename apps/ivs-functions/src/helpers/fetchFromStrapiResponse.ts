@@ -1,23 +1,43 @@
+import { SSMClient } from '@aws-sdk/client-ssm';
+import { getParameter } from './ssmClientHelper';
+
+export type StrapiEnv = {
+  readonly apiUrl: string;
+  readonly ivsApiToken: string;
+};
+
+export async function getStrapiEnv(): Promise<StrapiEnv> {
+  const ssmClient = new SSMClient({});
+  const strapiApiToken = await getParameter(
+    process.env.STRAPI_IVS_API_TOKEN || '',
+    ssmClient
+  );
+  const strapiApiUrl = process.env.STRAPI_API_URL;
+
+  if (!strapiApiToken || !strapiApiUrl) {
+    // eslint-disable-next-line functional/no-throw-statements
+    throw new Error(
+      'getStrapiEnv - Missing Strapi configuration in environment variables'
+    );
+  }
+
+  return {
+    apiUrl: strapiApiUrl,
+    ivsApiToken: strapiApiToken,
+  };
+}
+
 export async function fetchFromStrapiResponse<T = unknown>(
+  env: StrapiEnv,
   path: string,
   opts?: {
     readonly method: 'GET' | 'PUT';
     readonly body: unknown;
   }
 ): Promise<T> {
-  const strapiEndpoint = process.env.STRAPI_API_URL;
-  const strapiApiToken = process.env.STRAPI_IVS_API_TOKEN;
-
-  if (!strapiEndpoint || !strapiApiToken) {
-    // eslint-disable-next-line functional/no-throw-statements
-    throw new Error(
-      'fetchFromStrapiResponse - Missing Strapi configuration in environment variables'
-    );
-  }
-
   const method = opts?.method || 'GET';
   const headers: Record<string, string> = {
-    Authorization: `Bearer ${strapiApiToken}`,
+    Authorization: `Bearer ${env.ivsApiToken}`,
   };
 
   // eslint-disable-next-line functional/no-let
@@ -27,7 +47,7 @@ export async function fetchFromStrapiResponse<T = unknown>(
     headers['Content-Type'] = 'application/json';
   }
 
-  const response = await fetch(`${strapiEndpoint}/${path}`, {
+  const response = await fetch(`${env.apiUrl}/${path}`, {
     method,
     headers: headers,
     body,

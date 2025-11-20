@@ -21,25 +21,30 @@ import VideoJsPlayer from '@/components/atoms/VideoJsPlayer/VideoJsPlayer';
 type WebinarPlayerSectionProps = {
   webinar: Webinar;
   webinarState: WebinarState;
-  isPlayerVisible?: boolean;
+  enableQuestionForm?: boolean;
+  reloadPlayerToken?: number;
 };
 const WebinarPlayerSection = ({
   webinar,
   webinarState,
-  isPlayerVisible = false,
+  enableQuestionForm = false,
+  reloadPlayerToken = 0,
 }: WebinarPlayerSectionProps) => {
   const t = useTranslations('webinar');
   const { palette } = useTheme();
   const [isQuestionFormExpanded, setIsQuestionFormExpanded] = useState(false);
   const [question, setQuestion] = useState('');
   const isSmallScreen = useMediaQuery('(max-width: 1000px)');
+  const isQuestionFormDisabled = useMemo(
+    () => !enableQuestionForm || webinarState !== WebinarState.live,
+    [enableQuestionForm, webinarState]
+  );
   const isQuestionFormAvailable = useMemo(
     () => [WebinarState.live, WebinarState.comingSoon].includes(webinarState),
     [webinarState]
   );
   return (
-    webinar.playerSrc &&
-    isPlayerVisible && (
+    webinar.playerSrc && (
       <div style={{ backgroundColor: palette.grey[50] }}>
         <EContainer>
           <Box
@@ -64,12 +69,12 @@ const WebinarPlayerSection = ({
                 <VimeoPlayer playerSrc={webinar.playerSrc} />
               ) : (
                 <VideoJsPlayer
-                  techOrder={['AmazonIVS']}
                   autoplay={webinarState === WebinarState.live}
                   controls={true}
                   playsInline={true}
                   src={webinar.playerSrc}
                   poster={webinar.playerCoverImageUrl}
+                  reloadToken={reloadPlayerToken}
                 />
               )}
             </Box>
@@ -81,7 +86,7 @@ const WebinarPlayerSection = ({
                       setIsQuestionFormExpanded(false);
                     }}
                     webinarSlug={webinar.slug}
-                    disabled={webinarState != WebinarState.live}
+                    disabled={isQuestionFormDisabled}
                     isSmallScreen={isSmallScreen}
                     question={question}
                     setQuestion={setQuestion}
