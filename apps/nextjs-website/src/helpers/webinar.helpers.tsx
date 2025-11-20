@@ -1,9 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Webinar } from '@/lib/types/webinar';
 
 const COMING_SOON_START_TIME_DELTA_MS = 39 * 30 * 60 * 1000;
 const CHECK_WEBINAR_STATUS_INTERVAL_MS = 500;
-const POLLING_WEBINAR_VIDEO_INTERVAL_MS = 60 * 1000; // every 60 seconds
+const POLLING_WEBINAR_VIDEO_INTERVAL_MS = 5 * 1000; // every 60 seconds
+const LIVE_STREAM_URL_PATTERN = /playback\.live-video.*\.m3u8$/;
 
 export enum WebinarState {
   future,
@@ -14,16 +15,29 @@ export enum WebinarState {
 }
 
 export const useWebinar = () => {
-  const [webinar, setWebinar] = useState<Webinar | null>(null);
+  const [webinar, setWebinarData] = useState<Webinar | null>(null);
   const [webinarState, setWebinarState] = useState<WebinarState>(
     WebinarState.unknown
   );
   const [isQuestionFormEnabled, setIsQuestionFormEnabled] =
     useState<boolean>(false);
+  const [isPlayerVisible, setIsPlayerVisible] = useState<boolean>(false);
+  const [hasLiveStreamStarted, setHasLiveStreamStarted] = useState(false);
+  const [livePlayerReloadToken, setLivePlayerReloadToken] = useState(0);
 
-  const updateIsQuestionFormEnabled = async (url?: string): Promise<void> => {
-    const liveUrlPattern = /playback\.live-video.*\.m3u8$/;
-    if (!url || !liveUrlPattern.test(url)) {
+  const setWebinar = (nextWebinar: Webinar | null) => {
+    const hasChanged = nextWebinar?.slug !== webinar?.slug;
+    setWebinarData(nextWebinar);
+    if (hasChanged) {
+      setIsQuestionFormEnabled(false);
+      setIsPlayerVisible(false);
+      setHasLiveStreamStarted(false);
+      setLivePlayerReloadToken(0);
+    }
+  };
+
+  const updateLiveStreamState = useCallback(async (url?: string): Promise<void> => {
+    if (!url || !LIVE_STREAM_URL_PATTERN.test(url)) {
       setIsQuestionFormEnabled(false);
       return;
     }
@@ -31,11 +45,26 @@ export const useWebinar = () => {
     // eslint-disable-next-line functional/no-try-statements
     try {
       const response = await fetch(url, { method: 'GET', cache: 'no-store' });
-      setIsQuestionFormEnabled(response.ok);
+      if (response.ok) {
+        setIsQuestionFormEnabled(true);
+        if (!hasLiveStreamStarted) {
+          setHasLiveStreamStarted(true);
+          setLivePlayerReloadToken((token) => token + 1);
+        }
+      } else {
+        setIsQuestionFormEnabled(false);
+      }
     } catch {
       setIsQuestionFormEnabled(false);
     }
-  };
+  }, [hasLiveStreamStarted]);
+
+  const isLiveStreamSource = useMemo(() => {
+    if (!webinar?.playerSrc) {
+      return false;
+    }
+    return LIVE_STREAM_URL_PATTERN.test(webinar.playerSrc);
+  }, [webinar?.playerSrc]);
 
   const startDateTimestamp =
     webinar?.startDateTime && new Date(webinar.startDateTime).getTime();
@@ -75,18 +104,49 @@ export const useWebinar = () => {
   }, [webinar]);
 
   useEffect(() => {
-    updateIsQuestionFormEnabled(webinar?.playerSrc);
+    if (!webinar?.playerSrc) {
+      setIsPlayerVisible(false);
+      setIsQuestionFormEnabled(false);
+      return;
+    }
+
+    if (!isLiveStreamSource) {
+      setIsPlayerVisible(true);
+      setIsQuestionFormEnabled(false);
+      return;
+    }
+
+    const shouldShowIvsPlayer = webinarState === WebinarState.live;
+    setIsPlayerVisible(shouldShowIvsPlayer);
+
+    const shouldPollLiveStream =
+      [WebinarState.live, WebinarState.comingSoon].includes(webinarState) &&
+      !hasLiveStreamStarted;
+
+    updateLiveStreamState(webinar.playerSrc);
+
+    if (!shouldPollLiveStream) {
+      return;
+    }
+
     const pollingIntervalId = setInterval(() => {
-      if (
-        webinar &&
-        [WebinarState.live, WebinarState.comingSoon].includes(webinarState)
-      ) {
-        updateIsQuestionFormEnabled(webinar.playerSrc);
-      }
+      updateLiveStreamState(webinar.playerSrc);
     }, POLLING_WEBINAR_VIDEO_INTERVAL_MS);
 
     return () => clearInterval(pollingIntervalId);
-  }, [webinarState]);
+  }, [
+    webinar?.playerSrc,
+    webinarState,
+    hasLiveStreamStarted,
+    updateLiveStreamState,
+    isLiveStreamSource,
+  ]);
 
-  return { webinarState, setWebinar, isQuestionFormEnabled };
+  return {
+    webinarState,
+    setWebinar,
+    isQuestionFormEnabled,
+    isPlayerVisible,
+    livePlayerReloadToken,
+  };
 };

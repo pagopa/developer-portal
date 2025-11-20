@@ -19,12 +19,15 @@ interface PlayerProps {
   playsInline: boolean;
   src: string;
   poster?: string;
+  reloadToken?: number;
 }
 
 const TECH_ORDER_AMAZON_IVS = ['AmazonIVS'];
 
 const VideoJsPlayer = (props: PlayerProps) => {
   const videoEl = useRef<HTMLVideoElement>(null);
+  const playerRef = useRef<videojs.Player & VideoJSIVSTech & VideoJSQualityPlugin>();
+
   useEffect(() => {
     registerIVSTech(videojs, {
       wasmBinary: `https://player.live-video.net/${amazonIvsVersion}/amazon-ivs-wasmworker.min.wasm`,
@@ -32,19 +35,41 @@ const VideoJsPlayer = (props: PlayerProps) => {
     });
     registerIVSQualityPlugin(videojs);
 
-    const player = videojs(
-      'videojs-player',
-      {
-        techOrder: TECH_ORDER_AMAZON_IVS,
-        autoplay: props.autoplay,
-      }
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-    ) as videojs.Player & VideoJSIVSTech & VideoJSQualityPlugin;
+    if (!videoEl.current) {
+      return;
+    }
+
+    const player = videojs(videoEl.current, {
+      techOrder: TECH_ORDER_AMAZON_IVS,
+      autoplay: props.autoplay,
+      controls: props.controls,
+      playsinline: props.playsInline,
+    }) as videojs.Player & VideoJSIVSTech & VideoJSQualityPlugin;
 
     player.enableIVSQualityPlugin();
-    player.src(props.src);
-  }, [props.autoplay, props.src]);
+    playerRef.current = player;
+
+    return () => {
+      playerRef.current?.dispose();
+      playerRef.current = undefined;
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!playerRef.current) {
+      return;
+    }
+
+    playerRef.current.autoplay(props.autoplay);
+    playerRef.current.controls(props.controls);
+    playerRef.current.playsinline(props.playsInline);
+    playerRef.current.src(props.src);
+    playerRef.current.poster(props.poster || '');
+
+    if (props.autoplay) {
+      playerRef.current.play().catch(() => undefined);
+    }
+  }, [props.autoplay, props.controls, props.playsInline, props.poster, props.reloadToken, props.src]);
 
   return (
     <Box sx={{ position: 'relative', paddingBottom: '56.25%' }}>
