@@ -15,6 +15,7 @@ export enum WebinarState {
 }
 
 export const useWebinar = () => {
+  // Setter is called setWebinarData because the real setter is at line 29, triggering side effects upon change
   const [webinar, setWebinarData] = useState<Webinar | null>(null);
   const [webinarState, setWebinarState] = useState<WebinarState>(
     WebinarState.unknown
