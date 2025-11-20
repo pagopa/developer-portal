@@ -1,5 +1,11 @@
 # gitbook-docs
 
+## 1.4.0
+
+### Minor Changes
+
+- 0237257: Remove unused synced response file
+
 ## 1.3.2
 
 ### Patch Changes
