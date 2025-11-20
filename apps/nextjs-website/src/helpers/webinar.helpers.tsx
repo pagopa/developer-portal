@@ -22,7 +22,7 @@ export const useWebinar = () => {
   const [isQuestionFormEnabled, setIsQuestionFormEnabled] =
     useState<boolean>(false);
   const [isPlayerVisible, setIsPlayerVisible] = useState<boolean>(false);
-  const [hasLiveStreamStarted, setHasLiveStreamStarted] = useState(false);
+  const [isLiveStreamAvailable, setIsLiveStreamAvailable] = useState(false);
   const [livePlayerReloadToken, setLivePlayerReloadToken] = useState(0);
 
   const setWebinar = (nextWebinar: Webinar | null) => {
@@ -31,33 +31,42 @@ export const useWebinar = () => {
     if (hasChanged) {
       setIsQuestionFormEnabled(false);
       setIsPlayerVisible(false);
-      setHasLiveStreamStarted(false);
+      setIsLiveStreamAvailable(false);
       setLivePlayerReloadToken(0);
     }
   };
 
-  const updateLiveStreamState = useCallback(async (url?: string): Promise<void> => {
-    if (!url || !LIVE_STREAM_URL_PATTERN.test(url)) {
-      setIsQuestionFormEnabled(false);
-      return;
-    }
-
-    // eslint-disable-next-line functional/no-try-statements
-    try {
-      const response = await fetch(url, { method: 'GET', cache: 'no-store' });
-      if (response.ok) {
-        setIsQuestionFormEnabled(true);
-        if (!hasLiveStreamStarted) {
-          setHasLiveStreamStarted(true);
-          setLivePlayerReloadToken((token) => token + 1);
-        }
-      } else {
+  const updateLiveStreamState = useCallback(
+    async (url?: string): Promise<void> => {
+      if (!url || !LIVE_STREAM_URL_PATTERN.test(url)) {
         setIsQuestionFormEnabled(false);
+        return;
       }
-    } catch {
-      setIsQuestionFormEnabled(false);
-    }
-  }, [hasLiveStreamStarted]);
+
+      // eslint-disable-next-line functional/no-try-statements
+      try {
+        const response = await fetch(url, { method: 'GET', cache: 'no-store' });
+        if (response.ok) {
+          setIsQuestionFormEnabled(true);
+          if (!isLiveStreamAvailable) {
+            setIsLiveStreamAvailable(true);
+            setLivePlayerReloadToken((token) => token + 1);
+          }
+        } else {
+          setIsQuestionFormEnabled(false);
+          if (isLiveStreamAvailable) {
+            setIsLiveStreamAvailable(false);
+          }
+        }
+      } catch {
+        setIsQuestionFormEnabled(false);
+        if (isLiveStreamAvailable) {
+          setIsLiveStreamAvailable(false);
+        }
+      }
+    },
+    [isLiveStreamAvailable]
+  );
 
   const isLiveStreamSource = useMemo(() => {
     if (!webinar?.playerSrc) {
@@ -119,9 +128,10 @@ export const useWebinar = () => {
     const shouldShowIvsPlayer = webinarState === WebinarState.live;
     setIsPlayerVisible(shouldShowIvsPlayer);
 
-    const shouldPollLiveStream =
-      [WebinarState.live, WebinarState.comingSoon].includes(webinarState) &&
-      !hasLiveStreamStarted;
+    const shouldPollLiveStream = [
+      WebinarState.live,
+      WebinarState.comingSoon,
+    ].includes(webinarState);
 
     updateLiveStreamState(webinar.playerSrc);
 
@@ -137,7 +147,7 @@ export const useWebinar = () => {
   }, [
     webinar?.playerSrc,
     webinarState,
-    hasLiveStreamStarted,
+    isLiveStreamAvailable,
     updateLiveStreamState,
     isLiveStreamSource,
   ]);

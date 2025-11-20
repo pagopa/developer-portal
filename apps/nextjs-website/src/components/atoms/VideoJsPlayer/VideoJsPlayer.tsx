@@ -26,7 +26,10 @@ const TECH_ORDER_AMAZON_IVS = ['AmazonIVS'];
 
 const VideoJsPlayer = (props: PlayerProps) => {
   const videoEl = useRef<HTMLVideoElement>(null);
-  const playerRef = useRef<videojs.Player & VideoJSIVSTech & VideoJSQualityPlugin>();
+  const playerRef = useRef<
+    // @ts-expect-error TS2322: Type 'undefined' is not assignable to type 'Player & VideoJSIVSTech & VideoJSQualityPlugin'.
+    videojs.Player & VideoJSIVSTech & VideoJSQualityPlugin
+  >();
 
   useEffect(() => {
     registerIVSTech(videojs, {
@@ -44,13 +47,16 @@ const VideoJsPlayer = (props: PlayerProps) => {
       autoplay: props.autoplay,
       controls: props.controls,
       playsinline: props.playsInline,
+      // @ts-expect-error TS2322: Type 'undefined' is not assignable to type 'Player & VideoJSIVSTech & VideoJSQualityPlugin'.
     }) as videojs.Player & VideoJSIVSTech & VideoJSQualityPlugin;
 
     player.enableIVSQualityPlugin();
+    //  eslint-disable-next-line functional/immutable-data
     playerRef.current = player;
 
     return () => {
       playerRef.current?.dispose();
+      // eslint-disable-next-line functional/immutable-data
       playerRef.current = undefined;
     };
   }, []);
@@ -69,7 +75,14 @@ const VideoJsPlayer = (props: PlayerProps) => {
     if (props.autoplay) {
       playerRef.current.play().catch(() => undefined);
     }
-  }, [props.autoplay, props.controls, props.playsInline, props.poster, props.reloadToken, props.src]);
+  }, [
+    props.autoplay,
+    props.controls,
+    props.playsInline,
+    props.poster,
+    props.reloadToken,
+    props.src,
+  ]);
 
   return (
     <Box sx={{ position: 'relative', paddingBottom: '56.25%' }}>
