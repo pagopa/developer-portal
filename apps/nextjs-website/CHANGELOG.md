@@ -1,5 +1,13 @@
 # nextjs-website
 
+## 13.0.0
+
+### Major Changes
+
+- 037a82d: Add route handlers for guides, release notes and solutions
+  Add fetch using route handlers
+  Add dynamic content update in GitBookTemplate
+
 ## 12.1.0
 
 ### Minor Changes
