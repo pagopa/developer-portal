@@ -155,25 +155,18 @@ async def query_creation(
     createdAtDate = createdAt[:10]
     bodyToReturn = {
         "id": trace_id,
+        "userId": user_id,
         "sessionId": session["id"],
         "question": query.question,
+        "messages": messages,
         "answer": answer,
+        "topics": answer_json.get("products", []),
+        "contexts": answer_json.get("contexts", []),
+        "traceSpans": answer_json.get("spans", []),
         "createdAt": createdAt,
         "createdAtDate": createdAtDate,
         "queriedAt": queriedAt,
         "badAnswer": False,
-    }
-
-    bodyToMonitor = {
-        "traceId": trace_id,
-        "userId": user_id,
-        "sessionId": session["id"],
-        "question": query.question,
-        "answer": answer,
-        "retrieved_contexts": answer_json["contexts"],
-        "products": answer_json.get("products", []),
-        "references": answer_json.get("references", []),
-        "spans": answer_json.get("spans", []),
     }
 
     days = int(os.getenv("EXPIRE_DAYS", 90))
