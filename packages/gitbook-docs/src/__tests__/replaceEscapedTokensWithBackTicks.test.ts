@@ -55,6 +55,14 @@ describe('replaceEscapedTokensWithBackTicks (single file)', () => {
     );
   });
 
+  it('handles nested sequences correctly', async () => {
+    const file = path.join(fixturesRoot, 'multiple.md');
+    const updated = await addBackticksEscapedAngleTokens(file);
+    expect(updated).toContain(
+      'Fifth multiple inline and nested <`<Inner>`>\\/`<Outer>`.'
+    );
+  });
+
   it('handles nested sequences increasing depth', async () => {
     const file = path.join(fixturesRoot, 'nested', 'outer.md');
     const updated = await addBackticksEscapedAngleTokens(file);

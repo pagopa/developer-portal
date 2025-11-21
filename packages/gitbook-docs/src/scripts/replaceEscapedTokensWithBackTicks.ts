@@ -25,7 +25,9 @@ export async function addBackticksEscapedAngleTokens(
       if (depth === 1) {
         fileContent[index] = '>`';
       }
-      depth--;
+      if (depth > 0) {
+        depth--;
+      }
     }
   }
   return fileContent.join('');
@@ -55,7 +57,7 @@ export async function recursivelyAddBackticksToEscapedAngleTokens(
 export async function main() {
   try {
     console.log(
-      "Starting to search and surround code block '\<...>' elements with backticks '`<...>`'"
+      "Starting to search and surround code block '\\<...>' elements with backticks '`<...>`'"
     );
     await recursivelyAddBackticksToEscapedAngleTokens(DOCUMENTATION_PATH);
   } catch (error) {
