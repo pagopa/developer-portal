@@ -55,7 +55,7 @@ export async function recursivelyAddBackticksToEscapedAngleTokens(
 export async function main() {
   try {
     console.log(
-      "Starting to search and soroound code block '\\<...>' elements with backticks '`'..."
+      "Starting to search and surround code block '\<...>' elements with backticks '`<...>`'"
     );
     await recursivelyAddBackticksToEscapedAngleTokens(DOCUMENTATION_PATH);
   } catch (error) {
