@@ -1,8 +1,8 @@
 import { Speaker } from '@/lib/types/speaker';
 import { BlocksContent } from '@strapi/blocks-react-renderer';
 import { SEO } from './seo';
-import { WebinarCategory } from '@/lib/types/webinarCategory';
 import { Media } from '@/lib/types/media';
+import { Tag } from '@/lib/types/tag';
 
 export type QuestionsAndAnswer = {
   readonly question: string;
@@ -13,6 +13,7 @@ export type Webinar = {
   readonly description: string;
   readonly bodyContent?: BlocksContent;
   readonly playerSrc?: string;
+  readonly playerCoverImageUrl?: string;
   readonly speakers?: readonly Speaker[];
   readonly startDateTime?: string;
   readonly endDateTime?: string;
@@ -47,7 +48,7 @@ export type Webinar = {
   readonly imagePath: string;
   readonly questionsAndAnswers?: readonly QuestionsAndAnswer[];
   readonly seo?: SEO;
-  readonly webinarCategory?: WebinarCategory;
+  readonly tag?: Tag;
   readonly headerImage?: Media;
   readonly updatedAt: string;
 };

@@ -1,68 +1,150 @@
 ---
+name: chatbot-test
+
 services:
-  api-test:
+  api:
+    platform: linux/amd64
     build:
       context: ..
-      dockerfile: docker/app.local.Dockerfile
+      dockerfile: docker/app.test.Dockerfile
     command: "./scripts/run.test.sh"
     env_file: ../.env.test
     volumes:
       - ..:/app
       - ./files/.aws:/root/.aws
-      - ./files/nextjs-website/out:/app/build-devp/out
     depends_on:
-      dynamodb-test:
+      redis:
+        condition: service_started
+      langfuse-web:
+        condition: service_started
+      langfuse-worker:
         condition: service_started
       motoserver:
         condition: service_started
-      langfuse-test:
-        condition: service_started
-      redis-test:
-        condition: service_started
-    networks:
-      - ntwtest
+      
 
-  postgres-test:
+  postgres:
     image: postgres:17.2-alpine
-    restart: always
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 3s
       timeout: 3s
       retries: 10
-    env_file: ../.env.test
-    networks:
-      - ntwtest
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    env_file: ../.env.langfuse
 
-  dynamodb-test:
-    image: amazon/dynamodb-local:2.5.2
-    environment:
-      - AWS_ACCESS_KEY_ID=dummy
-      - AWS_SECRET_ACCESS_KEY=dummy
-      - AWS_DEFAULT_REGION=local
-    networks:
-      - ntwtest
-
-  redis-test:
+  redis:
     image: redis/redis-stack:7.2.0-v13
-    networks:
-      - ntwtest
-
-  langfuse-test:
-    image: langfuse/langfuse:2
-    depends_on:
-      postgres-test:
-        condition: service_healthy
-    env_file: ../.env.test
     ports:
-      - "4002:3000"
-    networks:
-      - ntwtest
+      - "6379:6379"
+      - "8001:8001"
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 3s
+      timeout: 10s
+      retries: 10
+    volumes:
+      - redis_data:/data
+    depends_on:
+      redis-fix-perms:
+        condition: service_completed_successfully
 
+  redis-seed:
+    image: alpine:3.18
+    user: root
+    volumes:
+      - redis_data:/data
+      - ./files/redis-data/redis-dump.rdb:/seed/dump.rdb:ro
+    command: ["sh", "-c", "if [ -f /seed/dump.rdb ]; then cp -a /seed/dump.rdb /data/dump.rdb && chown redis:redis /data/dump.rdb 2>/dev/null || chown 1000:1000 /data/dump.rdb || true; fi"]
+    restart: "no"
+
+  redis-fix-perms:
+    # one-shot: ensure /data owned by redis user before redis starts
+    image: redis/redis-stack:7.2.0-v13
+    user: root
+    volumes:
+      - redis_data:/data
+    depends_on:
+      redis-seed:
+        condition: service_completed_successfully
+    command: ["sh", "-c", "chown -R redis:redis /data 2>/dev/null || chown -R 1000:1000 /data || true"]
+    restart: "no"
+    
   motoserver:
-    image: motoserver/moto:5.1.0
-    networks:
-      - ntwtest
+    image: motoserver/moto:5.1.14
+    environment:
+      - MOTO_PORT=3002
 
-networks:
-  ntwtest:
+  langfuse-worker:
+    image: docker.io/langfuse/langfuse-worker:3.115
+    depends_on: &langfuse-depends-on
+      postgres:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+      valkey:
+        condition: service_healthy
+      clickhouse:
+        condition: service_healthy
+    env_file: ../.env.langfuse
+
+  langfuse-web:
+    image: docker.io/langfuse/langfuse:3.115
+    depends_on: *langfuse-depends-on
+    ports:
+      - 4001:3000
+    env_file: ../.env.langfuse
+
+  clickhouse:
+    image: docker.io/clickhouse/clickhouse-server:25.8.8.26-alpine
+    user: "101:101"
+    environment:
+      CLICKHOUSE_DB: default
+      CLICKHOUSE_USER: clickhouse
+      CLICKHOUSE_PASSWORD: clickhouse
+    volumes:
+      - langfuse_clickhouse_data:/var/lib/clickhouse
+      - langfuse_clickhouse_logs:/var/log/clickhouse-server
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://0.0.0.0:8123/ping || exit 1
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 1s
+
+  minio:
+    image: docker.io/minio/minio:RELEASE.2025-09-07T16-13-09Z
+    entrypoint: sh
+    # create the 'langfuse' bucket before starting the service
+    command: -c 'mkdir -p /data/langfuse && minio server --address ":9000" --console-address ":9001" /data'
+    environment:
+      MINIO_ROOT_USER: minio
+      MINIO_ROOT_PASSWORD: miniosecret
+    healthcheck:
+      test: [ "CMD", "mc", "ready", "local" ]
+      interval: 1s
+      timeout: 5s
+      retries: 5
+      start_period: 1s
+
+  valkey:
+    image: valkey/valkey:8.1.4-alpine3.22
+    healthcheck:
+      test: [ "CMD", "valkey-cli", "ping" ]
+      interval: 3s
+      timeout: 10s
+      retries: 10
+      start_period: 5s
+
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+  langfuse_clickhouse_data:
+    driver: local
+  langfuse_clickhouse_logs:
+    driver: local
+  langfuse_minio_data:
+    driver: local

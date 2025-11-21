@@ -29,7 +29,9 @@ resource "aws_ssm_parameter" "strapi_api_token" {
 
 
 module "opennext" {
-  source = "github.com/pagopa/dx//infra/modules/aws_open_next?ref=opennext-module"
+  source  = "pagopa-dx/aws-open-next/aws"
+  version = "~> 0.0"
+
 
   custom_domain = {
     domain_name         = var.dns_domain_name
@@ -37,9 +39,8 @@ module "opennext" {
     hosted_zone_id      = var.hosted_zone_id
   }
 
-  are_previews_enabled = true
-  environment          = var.environment_information
-  node_major_version   = 22
+  environment        = var.environment_information
+  node_major_version = 22
 
   server = {
     environment_variables = {
@@ -55,6 +56,7 @@ module "opennext" {
       NEXT_PUBLIC_COGNITO_USER_POOL_WEB_CLIENT_ID = aws_cognito_user_pool_client.devportal_website.id
       NEXT_PUBLIC_ENVIRONMENT                     = var.environment
       NEXT_PUBLIC_ORGANIZATION_SOCIAL_LINKS       = "https://x.com/PagoPA,https://www.instagram.com/pagopaspa/,https://www.linkedin.com/company/pagopa/,https://medium.com/pagopa-spa"
+      NEXT_PUBLIC_WEBSITE_BASE_URL                = "https://${var.dns_domain_name}"
       NEXT_PUBLIC_WEBSITE_NAME                    = "DevPortal"
       NEXT_PUBLIC_FEEDBACK_FORM_ENABLED           = var.next_public_feedback_form_enabled
       NEXT_PUBLIC_SOAP_API_PAGE_ACTIVE            = var.next_public_soap_api_page_active
@@ -75,11 +77,9 @@ module "opennext" {
     }
   }
 
-  enable_alarms  = true
   alarms_actions = [aws_sns_topic.metric_alarm.arn]
 
   vpc = var.vpc
-
 
   tags = var.tags
 

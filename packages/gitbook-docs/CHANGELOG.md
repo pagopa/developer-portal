@@ -1,5 +1,43 @@
 # gitbook-docs
 
+## 1.4.0
+
+### Minor Changes
+
+- 0237257: Remove unused synced response file
+
+## 1.3.2
+
+### Patch Changes
+
+- cc00738: Rename writeMetadataJson to putS3File, fix sitePathFromLocalPath function by removing docs/dirName from path
+
+## 1.3.1
+
+### Patch Changes
+
+- af1d820: Optimize GitBook sync workflow to reduce API calls and improve performance
+
+## 1.3.0
+
+### Minor Changes
+
+- 5e89e42: Add visibility for h3 heading level
+
+## 1.2.0
+
+### Minor Changes
+
+- 6d0f79a: Add script for strapi response files generation
+- f1895e6: Add rendering for new markdown part
+- ff133a4: Add populate product use_case_list_page to query for guides and e release notes
+- c8c68af: Fix chat message parsing and update markdown parsing
+- 9184d73: Add rendering for GitBook Stepper and Step
+
+### Patch Changes
+
+- 9bcaab6: Hotfix for sitemap.xml generation
+
 ## 1.1.0
 
 ### Minor Changes

@@ -1,5 +1,74 @@
 # infrastructure
 
+## 6.1.1
+
+### Patch Changes
+
+- 6589094: Fix disable_custom_validator env variable default value
+
+## 6.1.0
+
+### Minor Changes
+
+- e4d1be2: Add ElastiCache resource into the Langfuse module
+- 36fdb33: Add S3 bucket into the Langfuse module
+- 23e5cdb: Lambda ivs change source and file path
+- 795a779: Add RDS instance for Langfuse
+- 4ba391b: Add NEXT_PUBLIC_WEBSITE_BASE_URL to website environment variables
+
+### Patch Changes
+
+- 11e4d0f: Create a new Langfuse module. Add the Clickhouse service to ECS.
+
+## 6.0.0
+
+### Major Changes
+
+- 4138d59: New lambda function to notify IVS end of streaming.
+
+## 5.3.0
+
+### Minor Changes
+
+- 1447dad: Strapi env variable disable_custom_validator = var.environment == "dev" ? "True" : "Fasle"
+- 2bd346d: Rightsize cpu and memory langfuse ecs task
+
+### Patch Changes
+
+- 2536043: Assignt cors policy to the cloudfront distribution for video streaming
+
+## 5.2.0
+
+### Minor Changes
+
+- 055fea6: Update env variable CHB_MODEL_MAXTOKENS
+- a2828db: Dead letter queue for the lambda chabot evaluate.
+
+## 5.1.0
+
+### Minor Changes
+
+- 03f36f7: Lambda evaluate update memori size and env variables.
+- 76096c3: ECR chatbot repository tags immutable
+- cdda8f5: Change IAM policy to allow lambda api to read static contents from S3
+- ffd44ff: Lambda chatbot index update timeout
+
+## 5.0.0
+
+### Major Changes
+
+- 070e4a1: Cloudfront distribution for video streaming
+- 3cacbdb: New module that creates aws ivs channels
+
+### Minor Changes
+
+- fea763f: Optional custom domain for cloudfront video streaming distribution
+
+### Patch Changes
+
+- 492fa6c: Use the registry release of the opennext terraform module
+- 0d6bb25: Changed CHB_MAX_TOKENS env var to 2048
+
 ## 4.0.0
 
 ### Major Changes

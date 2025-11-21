@@ -26,12 +26,14 @@ export const strapiApiDataList: StrapiApiDataList = {
             },
           ],
         },
+        tags: { data: undefined },
         icon: {
           data: mediaJpeg(),
         },
         product: {
           data: {
             attributes: {
+              isVisible: true,
               name: 'Test Product',
               slug: 'test-product',
               tags: { data: [] },
@@ -78,9 +80,11 @@ export const strapiApiDataList: StrapiApiDataList = {
             },
           },
         },
+        tags: { data: undefined },
         product: {
           data: {
             attributes: {
+              isVisible: true,
               name: 'SOAP Product',
               slug: 'soap-product',
               shortName: 'SP',
@@ -122,6 +126,7 @@ export const expectedApiDataPageProps: ReadonlyArray<ApiDataPageProps> = [
     specUrlsName: 'SEND Main',
     apiSoapUrlList: [],
     product: {
+      isVisible: true,
       name: 'Test Product',
       slug: 'test-product',
       shortName: 'TP',
@@ -139,6 +144,7 @@ export const expectedApiDataPageProps: ReadonlyArray<ApiDataPageProps> = [
     specUrlsName: 'Documentazione SOAP',
     apiSoapUrlList: expect.any(Array),
     product: {
+      isVisible: true,
       name: 'SOAP Product',
       slug: 'soap-product',
       shortName: 'SP',

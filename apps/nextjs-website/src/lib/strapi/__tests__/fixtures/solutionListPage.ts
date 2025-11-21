@@ -25,6 +25,7 @@ export const strapiSolutionListPage = {
                 data: [
                   {
                     attributes: {
+                      isVisible: true,
                       name: 'Product 1',
                       shortName: 'P1',
                       slug: 'product-1',
@@ -88,7 +89,7 @@ export const expectedSolutionListTemplateProps: SolutionListTemplateProps = {
         size: 123456,
       },
       slug: 'solutions/solution-1',
-      tags: [
+      labels: [
         {
           label: 'P1',
           path: '/product-1',

@@ -1,43 +1,56 @@
 'use client';
 import { HeadingProps } from 'gitbook-docs/markdoc/schema/heading';
-import React, { ReactNode, useEffect, useState } from 'react';
+import React, { ReactNode, useCallback } from 'react';
 import MUILink from '@mui/material/Link';
-import { Typography, useTheme } from '@mui/material';
+import { Box, Typography, useTheme } from '@mui/material';
 import { useFragment } from '@/components/organisms/FragmentProvider/FragmentProvider';
 
 const Heading = ({ level, id, children }: HeadingProps<ReactNode>) => {
   const isString = typeof children === 'string';
   const { palette } = useTheme();
-  const { fragment } = useFragment();
-  const [isCurrentFragment, setIsCurrentFragment] = useState(false);
+  const { fragment, setFragment } = useFragment();
+  const isCurrentFragment = fragment === `#${id}`;
+  const isLevel2 = level === 2;
 
-  useEffect(() => {
-    setIsCurrentFragment(fragment === `#${id}`);
-  }, [fragment, id]);
+  const handleClick = useCallback(() => {
+    setFragment(`#${id}`, { source: 'manual', suppressAutoForMs: 1500 });
+  }, [id, setFragment]);
 
   return (
-    <MUILink
-      href={`#${id}`}
-      title={isString ? children : ''}
+    <Box
       sx={{
-        display: 'block',
-        fontFamily: 'Titillium Web',
-        marginBottom: '12px',
-        textDecoration: 'none',
+        borderLeft: isLevel2 ? 'none' : `.5px solid ${palette.grey[300]}`,
+        marginLeft: isLevel2 ? '0px' : '9px',
+        marginTop: isLevel2 ? '8px' : '0',
+        paddingLeft: '8px',
+        paddingY: '6px',
+        ':hover': { backgroundColor: palette.action.hover },
       }}
     >
-      <Typography
+      <MUILink
+        href={`#${id}`}
+        title={isString ? children : ''}
+        onClick={handleClick}
         sx={{
-          color: isCurrentFragment
-            ? palette.primary.main
-            : palette.text.secondary,
-          fontSize: level === 2 ? 16 : 14,
-          fontWeight: isCurrentFragment ? 700 : 400,
+          display: 'block',
+          fontFamily: 'Titillium Web',
+          textDecoration: 'none',
         }}
       >
-        {children}
-      </Typography>
-    </MUILink>
+        <Typography
+          sx={{
+            color: isCurrentFragment
+              ? palette.primary.main
+              : palette.text.secondary,
+            fontSize: isLevel2 ? 15 : 13,
+            fontWeight: 400,
+            marginLeft: isLevel2 ? '0px' : '8px',
+          }}
+        >
+          {children}
+        </Typography>
+      </MUILink>
+    </Box>
   );
 };
 

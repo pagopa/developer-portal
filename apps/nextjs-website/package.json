@@ -1,6 +1,6 @@
 {
   "name": "nextjs-website",
-  "version": "9.0.1",
+  "version": "13.0.0",
   "private": true,
   "scripts": {
     "build": "next build --debug",
@@ -16,6 +16,8 @@
     "@aws-amplify/ui-react": "^5.3.1",
     "@aws-sdk/client-dynamodb": "^3.496.0",
     "@aws-sdk/credential-providers": "^3.496.0",
+    "amazon-ivs-player": "^1.45.0",
+    "video.js": "^8.23.4",
     "@emotion/react": "11.10.5",
     "@emotion/styled": "11.10.5",
     "@markdoc/markdoc": "0.3.0",
@@ -33,10 +35,10 @@
     "gitbook-docs": "*",
     "isomorphic-dompurify": "^2.24.0",
     "jsdom": "^25.0.0",
-    "mermaid": "^10.9.0",
+    "mermaid": "^10.9.4",
     "monocle-ts": "^2.3.13",
     "newtype-ts": "^0.3.5",
-    "next": "^14.2.30",
+    "next": "^14.2.33",
     "next-intl": "^2.20.2",
     "qs": "^6.11.2",
     "react": "^18.3.1",
@@ -49,6 +51,7 @@
     "swr": "^2.2.4"
   },
   "devDependencies": {
+    "@types/video.js": "^7.3.58",
     "@bufbuild/jest-environment-jsdom": "^0.1.1",
     "@testing-library/jest-dom": "^6.4.2",
     "@testing-library/react": "^14.1.2",

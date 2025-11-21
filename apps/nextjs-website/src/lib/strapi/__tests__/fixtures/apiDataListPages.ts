@@ -19,6 +19,7 @@ export const strapiApiDataListPages = {
         product: {
           data: {
             attributes: {
+              isVisible: true,
               name: 'SEND',
               slug: 'send',
               shortName: 'SEND',
@@ -65,6 +66,7 @@ export const strapiApiDataListPages = {
                   ],
                 },
                 apiSoapDetail: undefined,
+                tags: { data: undefined },
               },
             },
             {
@@ -93,6 +95,7 @@ export const strapiApiDataListPages = {
                   repositoryUrl: 'https://github.com/pagopa/send-soap',
                   dirName: 'send-soap',
                 },
+                tags: { data: undefined },
               },
             },
           ],
@@ -110,6 +113,7 @@ export const expectedApiDataListPageProps: ReadonlyArray<ApiDataListPageTemplate
         subtitle: 'Complete documentation for SEND APIs',
       },
       product: {
+        isVisible: true,
         name: 'SEND',
         slug: 'send',
         shortName: 'SEND',
@@ -122,14 +126,14 @@ export const expectedApiDataListPageProps: ReadonlyArray<ApiDataListPageTemplate
           text: 'Main SEND API for delivery notifications',
           icon: 'https://example.com/example.jpg',
           href: '/send/api/send-main',
-          tags: [{ label: 'REST' }],
+          labels: [{ label: 'REST' }],
         },
         {
           title: 'SEND SOAP API',
           text: 'SOAP API for legacy integrations',
           icon: 'https://example.com/soap-icon.svg',
           href: '/send/api/send-soap',
-          tags: [{ label: 'SOAP' }],
+          labels: [{ label: 'SOAP' }],
         },
       ],
       bannerLinks: expect.any(Array),

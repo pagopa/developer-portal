@@ -53,11 +53,12 @@ export const makeWebinarProps = (
         : undefined,
       startDateTime: strapiWebinar.attributes.startDatetime,
       endDateTime: strapiWebinar.attributes.endDatetime,
+      playerCoverImageUrl:
+        strapiWebinar.attributes.playerCoverImage?.data?.attributes.url,
       subscribeCtaLabel: strapiWebinar.attributes.subscribeParagraphLabel,
       imagePath: strapiWebinar.attributes.coverImage.data.attributes.url,
       seo: strapiWebinar.attributes.seo,
-      webinarCategory:
-        strapiWebinar.attributes.webinarCategory?.data?.attributes,
+      tag: strapiWebinar.attributes.webinarCategory?.data?.attributes,
       headerImage: strapiWebinar.attributes.headerImage?.data?.attributes,
       updatedAt: strapiWebinar.attributes.updatedAt,
     } satisfies Webinar;

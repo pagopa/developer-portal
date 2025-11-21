@@ -8,13 +8,12 @@ import { readdir, writeFile } from 'fs/promises';
 import * as fs from 'fs';
 import path from 'path';
 import { fetchFromStrapi } from '../helpers/fetchFromStrapi';
+import { MetadataInfo, MetadataType } from '../helpers/guidesMetadataHelper';
 import {
-  MetadataInfo,
-  MetadataType,
   StrapiGuide,
   StrapiReleaseNote,
   StrapiSolution,
-} from '../helpers/guidesMetadataHelper';
+} from '../helpers/strapiTypes';
 import { sitePathFromLocalPath } from '../helpers/sitePathFromLocalPath';
 import { DOCUMENTATION_PATH } from '../helpers/documentationParsing.helper';
 // Load environment variables from .env file

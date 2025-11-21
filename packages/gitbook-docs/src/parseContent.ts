@@ -26,6 +26,7 @@ import { pageLink } from './markdoc/schema/pageLink';
 import { processHtmlTokens } from './markdoc/tokenProcessor';
 import { PageTitlePath } from './parseDoc';
 import { convertEmojiToUnicode } from './convertEmojiToUnicode';
+import { step, stepper } from './markdoc/schema/stepper';
 
 export type ParseContentConfig = {
   readonly assetsPrefix: string;
@@ -60,6 +61,8 @@ const fileR = {
 
 const schema: ConfigType = {
   tags: {
+    stepper: stepper,
+    step: step,
     hint,
     img,
     figure,

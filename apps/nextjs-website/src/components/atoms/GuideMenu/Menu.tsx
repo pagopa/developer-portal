@@ -1,5 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
-import NextLink from 'next/link';
+import React, { useMemo } from 'react';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
@@ -12,6 +11,7 @@ import GuideVersionSelector, {
   type GuideVersionSelectorProps,
 } from './GuideVersionSelector';
 import { Typography } from '@mui/material';
+import { GitBookContentData } from '../../../lib/types/gitBookContent';
 
 const StyledTreeItem = styled(TreeItem)(({ theme }) => ({
   [`&`]: {
@@ -47,8 +47,12 @@ const StyledTreeItem = styled(TreeItem)(({ theme }) => ({
     position: 'relative',
   },
   [`& .${treeItemClasses.content} > .${treeItemClasses.label} > a`]: {
-    paddingTop: 10,
-    paddingBottom: 10,
+    paddingTop: 6,
+    paddingBottom: 6,
+    [theme.breakpoints.down('sm')]: {
+      paddingTop: 10,
+      paddingBottom: 10,
+    },
     paddingRight: 32,
   },
   [`& ul`]: {
@@ -56,7 +60,7 @@ const StyledTreeItem = styled(TreeItem)(({ theme }) => ({
     '--y': 'calc(var(--x) + 0)',
   },
   [`& li`]: {
-    '--x': 'calc(var(--y) + 24)',
+    '--x': 'calc(var(--y) + 12)',
   },
   ['& a']: {
     paddingLeft: 'calc(1px * var(--x))',
@@ -85,58 +89,6 @@ const StyledTreeItem = styled(TreeItem)(({ theme }) => ({
   },
 }));
 
-const components: RenderingComponents<React.ReactNode> = {
-  Item: ({ href, title, children }) => {
-    const ref = React.useRef<HTMLAnchorElement>(null);
-
-    useEffect(() => {
-      if (ref.current && ref.current.href === window.location.href) {
-        ref.current.scrollIntoView({ behavior: 'instant', block: 'center' });
-      }
-    }, []);
-
-    const label = (
-      <Typography
-        ref={ref}
-        variant='sidenav'
-        component={NextLink}
-        href={href}
-        style={{ textDecoration: 'none' }}
-      >
-        {title}
-      </Typography>
-    );
-
-    return (
-      <StyledTreeItem
-        key={href}
-        nodeId={href}
-        label={label}
-        disabled={false}
-        icon={href.startsWith('http') ? <OpenInNewIcon /> : undefined}
-      >
-        {children}
-      </StyledTreeItem>
-    );
-  },
-  Title: ({ children }) => (
-    <Typography
-      color='text.secondary'
-      style={{
-        paddingLeft: 32,
-        paddingTop: 24,
-        paddingBottom: 0,
-        textDecoration: 'none',
-        fontSize: 14,
-        fontWeight: 700,
-      }}
-      textTransform='uppercase'
-    >
-      {children}
-    </Typography>
-  ),
-};
-
 export type GuideMenuItemsProps = Partial<GuideVersionSelectorProps> & {
   name: string;
   assetsPrefix: string;
@@ -144,6 +96,8 @@ export type GuideMenuItemsProps = Partial<GuideVersionSelectorProps> & {
   expanded?: string[];
   menu: string;
   linkPrefix: string;
+  containerRef?: React.RefObject<HTMLDivElement>;
+  onGuideNavigate?: (payload: GitBookContentData) => boolean;
 };
 
 const GuideMenuItems = ({
@@ -155,11 +109,81 @@ const GuideMenuItems = ({
   menu,
   versionName,
   versions,
+  onGuideNavigate,
 }: GuideMenuItemsProps) => {
+  const components: RenderingComponents<React.ReactNode> = useMemo(
+    () => ({
+      Item: ({ href, title, children }) => {
+        const handleNavigate = (e: React.MouseEvent<HTMLAnchorElement>) => {
+          if (href.startsWith('http')) return; // external
+          e.preventDefault();
+          const cleanHref = href.split('#')[0];
+          const parts = cleanHref.split('/').filter(Boolean);
+          const apiPath = `/api/${parts.join('/')}`;
+          fetch(apiPath, { headers: { Accept: 'application/json' } })
+            .then((res) => (res.ok ? res.json() : undefined))
+            .then((data) => {
+              if (data && onGuideNavigate) {
+                onGuideNavigate(data);
+              }
+            })
+            .catch(() => undefined);
+        };
+        const label = (
+          <Typography
+            variant='sidenav'
+            component='a'
+            href={href}
+            onClick={handleNavigate}
+            color='text.secondary'
+            sx={{
+              textDecoration: 'none',
+              fontSize: { xs: '1rem', md: '.938rem' },
+              fontWeight: 400,
+            }}
+          >
+            {title}
+          </Typography>
+        );
+
+        return (
+          <StyledTreeItem
+            key={href}
+            nodeId={href}
+            label={label}
+            disabled={false}
+            icon={href.startsWith('http') ? <OpenInNewIcon /> : undefined}
+            data-active={href === currentPath ? 'true' : 'false'}
+          >
+            {children}
+          </StyledTreeItem>
+        );
+      },
+      Title: ({ children }) => (
+        <Typography
+          color='text.primary'
+          style={{
+            paddingLeft: 32,
+            paddingTop: 26,
+            paddingBottom: 6,
+            textDecoration: 'none',
+            fontSize: '.875rem',
+            fontWeight: 600,
+          }}
+          textTransform='uppercase'
+        >
+          {children}
+        </Typography>
+      ),
+    }),
+    [currentPath, onGuideNavigate]
+  );
+
   const children = useMemo(() => {
     const parsed = parseMenu(menu, { assetsPrefix, linkPrefix });
     return renderMenu(parsed, React, components);
-  }, [menu, assetsPrefix, linkPrefix]);
+  }, [menu, assetsPrefix, linkPrefix, components]);
+
   return (
     <>
       <Typography

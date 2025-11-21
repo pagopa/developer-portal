@@ -67,3 +67,7 @@ export type StrapiPart =
   | HtmlPart
   | MarkDownPart
   | QuotePart;
+
+export function isMarkDownPart(part: StrapiPart): part is MarkDownPart {
+  return part.__component === 'parts.markdown';
+}

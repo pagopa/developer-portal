@@ -8,7 +8,6 @@ import { Product } from '@/lib/types/product';
 import { Tutorial } from '@/lib/types/tutorialData';
 import StartInfo from '@/components/organisms/StartInfo/StartInfo';
 import RelatedLinks from '@/components/atoms/RelatedLinks/RelatedLinks';
-import TutorialsOverview from '@/components/organisms/TutorialsOverview/TutorialsOverview';
 import Feature from '@/editorialComponents/Feature/Feature';
 import { FeatureItem } from '@/editorialComponents/Feature/FeatureStackItem';
 import { GuideCardProps } from '@/components/molecules/GuideCard/GuideCard';
@@ -27,6 +26,9 @@ import {
 import NewsShowcase, {
   NewsShowcaseProps,
 } from '@/components/organisms/NewsShowcase/NewsShowcase';
+import { UseCase } from '@/lib/types/useCaseData';
+import TutorialsSectionPreviewCardsLayout from '@/components/organisms/TutorialsSectionPreviewCardsLayout/TutorialsSectionPreviewCardsLayout';
+import OverviewItemList from '@/components/organisms/OverviewItemList/OverviewItemList';
 const MAX_NUM_TUTORIALS_IN_OVERVIEW = 3;
 
 export type OverviewPageProps = {
@@ -65,6 +67,12 @@ export type OverviewPageProps = {
     readonly title?: string;
     readonly subtitle: string;
     readonly list: readonly Tutorial[];
+    readonly showCardsLayout: boolean;
+  };
+  readonly useCases?: {
+    readonly title?: string;
+    readonly description: string;
+    readonly list: readonly UseCase[];
   };
   readonly whatsNew?: NewsShowcaseProps;
   readonly postIntegration?: {
@@ -119,6 +127,7 @@ const OverviewPage = async ({ params }: ProductParams) => {
     feature,
     path,
     tutorials,
+    useCases,
     whatsNew,
     postIntegration,
     relatedLinks,
@@ -130,6 +139,24 @@ const OverviewPage = async ({ params }: ProductParams) => {
   const tutorialsListToShow = tutorials?.list
     ?.filter((tutorial) => tutorial.showInOverview)
     .slice(0, MAX_NUM_TUTORIALS_IN_OVERVIEW);
+
+  const mappedTutorials = tutorialsListToShow?.map((tutorial) => ({
+    ...tutorial,
+    image: tutorial.image,
+    link: {
+      url: tutorial.path,
+      text: 'shared.readTutorial',
+    },
+  }));
+
+  const mappedUseCases = useCases?.list.map((useCase) => ({
+    ...useCase,
+    image: useCase.coverImage,
+    link: {
+      url: useCase.path,
+      text: 'shared.readUseCase',
+    },
+  }));
 
   const structuredData = generateStructuredDataScripts({
     breadcrumbsItems: [productToBreadcrumb(product)],
@@ -169,15 +196,35 @@ const OverviewPage = async ({ params }: ProductParams) => {
           cards={startInfo.cards}
         />
       )}
-      {product?.hasTutorialListPage && tutorials && (
-        <TutorialsOverview
+      {product?.hasTutorialListPage &&
+      tutorials &&
+      !tutorials.showCardsLayout ? (
+        <OverviewItemList
           title={tutorials.title}
+          ctaLabelKey={'overview.tutorial.ctaLabel'}
           subtitle={tutorials.subtitle}
-          tutorialPath={{
+          itemPath={{
             path: `/${product.slug}/tutorials`,
             name: 'tutorials',
           }}
-          tutorials={[...(tutorialsListToShow || [])]}
+          items={[...(mappedTutorials || [])]}
+        />
+      ) : (
+        <TutorialsSectionPreviewCardsLayout
+          title={tutorials?.title || ''}
+          tutorials={tutorials?.list || []}
+        />
+      )}
+      {product?.hasUseCaseListPage && useCases && (
+        <OverviewItemList
+          title={useCases.title}
+          ctaLabelKey={'overview.useCases.title'}
+          subtitle={useCases.description}
+          itemPath={{
+            path: `/${product.slug}/use-cases`,
+            name: 'useCases',
+          }}
+          items={[...(mappedUseCases || [])]}
         />
       )}
       {whatsNew && (

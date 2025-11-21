@@ -33,6 +33,8 @@ import { ParseContentConfig } from 'gitbook-docs/parseContent';
 import SwaggerParameter from './components/Swagger/SwaggerParameter';
 import SwaggerResponse from './components/Swagger/SwaggerResponse';
 import SwaggerDescription from './components/Swagger/SwaggerDescription';
+import Stepper from '@/components/organisms/GitBookContent/components/Stepper';
+import Step from '@/components/organisms/GitBookContent/components/Step';
 
 type GitBookContentProps = {
   content: string;
@@ -71,6 +73,8 @@ const components: RenderingComponents<ReactNode> = {
   Card: Card,
   CardItem: CardItem,
   PageLink: PageLink,
+  Stepper: Stepper,
+  Step: Step,
   Br: () => <br />,
 };
 

@@ -4,10 +4,9 @@ import { BlocksContent, BlocksRenderer } from '@strapi/blocks-react-renderer';
 import Image from 'next/image';
 import { SxProps } from '@mui/system';
 import { computeId } from '../PartRendererMenu/PartRendererMenu';
-import { SITE_HEADER_HEIGHT } from '../SiteHeader/SiteHeader';
 import CodeBlockPart from '../CodeBlockPart/CodeBlockPart';
 import { ReactElement } from 'react';
-import { PRODUCT_HEADER_HEIGHT } from '@/components/atoms/ProductHeader/ProductHeader';
+import ContentHeading from '@/components/atoms/ContentHeading/ContentHeading';
 
 type BlocksRendererClientProps = {
   content?: BlocksContent;
@@ -33,7 +32,6 @@ const BlocksRendererClient = ({
   if (!content) return null;
 
   const textColor = color ? palette.primary[color] : palette.text.primary;
-  const scrollOffset = SITE_HEADER_HEIGHT + PRODUCT_HEADER_HEIGHT;
 
   return (
     <BlocksRenderer
@@ -74,17 +72,12 @@ const BlocksRendererClient = ({
           </Typography>
         ),
         heading: ({ children, level }) => (
-          <div
+          <ContentHeading
+            level={level}
             id={computeId('blockRenderer', children)}
-            style={{
-              marginTop: `-${scrollOffset}px`,
-              paddingTop: `${scrollOffset}px`,
-            }}
           >
-            <Typography marginY={4} variant={`h${level}`} color={textColor}>
-              {children}
-            </Typography>
-          </div>
+            {children}
+          </ContentHeading>
         ),
         list: ({ children }) => {
           return <ul style={listStyle}>{children}</ul>;
@@ -107,7 +100,7 @@ const BlocksRendererClient = ({
             } else if (Array.isArray(reactElement.props?.children)) {
               // Handle array of children, join them as text
               codeString = reactElement.props.children
-                .filter((child: any) => typeof child === 'string')
+                .filter((child: unknown) => typeof child === 'string')
                 .join('');
             }
           }

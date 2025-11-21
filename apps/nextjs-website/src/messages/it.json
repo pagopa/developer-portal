@@ -439,13 +439,16 @@
         }
     },
     "overview": {
-        "startInfo": {
+      "all": "Tutti",
+      "startInfo": {
             "title": "Si comincia da qui"
+        },
+        "tutorialsList": {
+          "ctaLabel": "Vai al tutorial"
         },
         "tutorial": {
             "title": "Esplora i tutorial",
             "ctaLabel": "Vedi tutti i tutorial",
-            "all": "Tutti",
             "noTutorialMessage": "Non sono presenti tutorial della categoria selezionata"
         },
         "postIntegration": {
@@ -455,8 +458,9 @@
             "title": "LINK UTILI"
         },
         "useCases": {
-            "all": "Tutti",
-            "noUseCaseMessage": "Non sono presenti casi d'uso della categoria selezionata"
+          "title": "Casi d'uso",
+          "ctaLabel": "Vedi tutti i casi d'uso",
+          "noUseCaseMessage": "Non sono presenti casi d'uso della categoria selezionata"
         }
     },
     "footer": {
@@ -621,7 +625,8 @@
         "productShowcaseLabel": "Come integrarsi? Inizia da qui"
     },
     "apiDataListPage": {
-        "explore": "Esplora le API"
+        "explore": "Esplora le API",
+        "noApiMessage": "Non sono presenti API della categoria selezionata"
     },
     "apiDataPage": {
         "soap": {

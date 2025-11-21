@@ -11,8 +11,7 @@ import {
   PutObjectCommand,
 } from '@aws-sdk/client-s3';
 import { Readable } from 'stream';
-import { SitemapItem } from '../sitemapItem';
-import { UrlParsingItem } from '../scripts/generateUrlParsingMetadata';
+import { MetadataItem } from '../metadataItem';
 
 type S3Credentials = {
   readonly accessKeyId: string;
@@ -130,40 +129,21 @@ export async function downloadS3File(
   }
 }
 
-export async function writeSitemapJson(
-  items: SitemapItem[] | any, // TODO: remove when Strapi will manage Metadata
+export async function putS3File(
+  items: MetadataItem[] | any,
   jsonPath: string,
   bucketName: string,
   client: S3Client
 ): Promise<void> {
-  const sitemapJson = JSON.stringify(items, null, 2);
+  const body = JSON.stringify(items, null, 2);
   console.log(`Uploading sitemap JSON to S3: ${jsonPath}`);
 
   await client.send(
     new PutObjectCommand({
       Bucket: bucketName,
       Key: jsonPath,
-      Body: sitemapJson,
+      Body: body,
     })
   );
   console.log(`Uploaded sitemap JSON to S3: ${jsonPath}`);
-}
-
-export async function writeUrlParsingMetadataJson(
-  items: UrlParsingItem[],
-  jsonPath: string,
-  bucketName: string,
-  client: S3Client
-): Promise<void> {
-  const urlParsingMetadata = JSON.stringify(items, null, 2);
-  console.log(`Uploading UrlParsing metadata JSON to S3: ${jsonPath}`);
-
-  await client.send(
-    new PutObjectCommand({
-      Bucket: bucketName,
-      Key: jsonPath,
-      Body: urlParsingMetadata,
-    })
-  );
-  console.log(`Uploaded UrlParsing metadata JSON to S3: ${jsonPath}`);
 }

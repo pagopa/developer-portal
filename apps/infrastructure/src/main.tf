@@ -35,6 +35,14 @@ provider "aws" {
     tags = var.tags
   }
 }
+provider "aws" {
+  alias  = "eu-central-1"
+  region = "eu-central-1"
+
+  default_tags {
+    tags = var.tags
+  }
+}
 
 provider "aws" {
   alias  = "eu-west-3"
@@ -233,4 +241,35 @@ module "docs_redirect" {
 
   environment = var.environment
   tags        = var.tags
+}
+
+
+module "video_streaming" {
+  source = "./modules/video_streaming"
+
+  providers = {
+    aws           = aws.eu-central-1
+    aws.us-east-1 = aws.us-east-1 #
+  }
+
+  project_name = "devportal-${local.env_short[var.environment]}"
+  ivs_channels = {
+    "channell-01" = {
+      name = "channel-01"
+    }
+  }
+
+  custom_domain_name = "video.${var.dns_domain_name}"
+  route53_zone_id    = module.core.hosted_zone_id
+  environment        = var.environment
+  strapi_api_url     = "https://${keys(var.dns_domain_name_cms)[0]}"
+}
+
+module "langfuse" {
+  source = "./modules/langfuse"
+
+  environment        = var.environment
+  region             = var.aws_region
+  vpc_id             = module.cms.vpc.id
+  private_subnet_ids = module.cms.vpc.private_subnets
 }
