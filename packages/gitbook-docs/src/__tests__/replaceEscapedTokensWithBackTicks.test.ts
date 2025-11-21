@@ -33,7 +33,7 @@ describe('replaceEscapedTokensWithBackTicks (single file)', () => {
   it('replaces a single escaped token', async () => {
     const file = path.join(fixturesRoot, 'simple.md');
     const original = read(file);
-    expect(original).toContain(' \<MyTag>');
+    expect(original).toContain(' \\<MyTag>');
     const updated = await addBackticksEscapedAngleTokens(file);
     // Leading backslash preserved, < and > replaced with backticks
     expect(updated).toContain(' `<MyTag>`');
