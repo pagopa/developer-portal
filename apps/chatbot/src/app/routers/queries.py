@@ -1,12 +1,7 @@
 import datetime
 import nh3
 import json
-<<<<<<< HEAD
-import uuid
-=======
-import os
 import secrets
->>>>>>> CAI-629-refactor-chatbot
 from botocore.exceptions import BotoCoreError, ClientError
 from boto3.dynamodb.conditions import Key
 from fastapi import APIRouter, Header, HTTPException
@@ -130,11 +125,7 @@ def prepare_body_to_save(
 
 
 def prepare_body_to_return(
-    query: Query, 
-    session: dict | None,
-    answer: str, 
-    trace_id: str, 
-    now: datetime
+    query: Query, session: dict | None, answer: str, trace_id: str, now: datetime
 ) -> dict:
 
     if query.queriedAt is None:
@@ -184,13 +175,14 @@ def evaluate_query(
             )
             LOGGER.info(f"sqs response: {sqs_response}")
     else:
-        LOGGER.info(f"Skipping evaluation due to daily limit reached ({SETTINGS.max_daily_evaluations})")
+        LOGGER.info(
+            f"Skipping evaluation due to daily limit reached ({SETTINGS.max_daily_evaluations})"
+        )
+
 
 def create_monitor_trace(trace_data: dict) -> None:
     if sqs_queue_evaluate is None:
-        LOGGER.warning(
-            f"sqs_queue_evaluate is None, cannot send message {trace_data}"
-        )
+        LOGGER.warning(f"sqs_queue_evaluate is None, cannot send message {trace_data}")
     else:
         payload = {
             "operation": "create_trace",
@@ -226,7 +218,7 @@ async def query_creation(
         response_str=answer_json["response"],
         references=answer_json["references"],
     )
-    
+
     bodyToReturn = prepare_body_to_return(
         query=query,
         session=session,
@@ -234,7 +226,7 @@ async def query_creation(
         trace_id=trace_id,
         now=now,
     )
-    
+
     bodyToSave = prepare_body_to_save(
         bodyToReturn=bodyToReturn,
         query=query,
@@ -255,7 +247,7 @@ async def query_creation(
         "query_for_database": bodyToSave,
     }
     create_monitor_trace(trace_data)
-    
+
     evaluate_query(
         query_str=query_str,
         answer=answer,
@@ -263,7 +255,7 @@ async def query_creation(
         trace_id=trace_id,
         messages=messages,
     )
-    
+
     return bodyToReturn
 
 
