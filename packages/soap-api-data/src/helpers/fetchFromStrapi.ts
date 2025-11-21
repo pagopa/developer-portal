@@ -5,7 +5,7 @@
 // In case of an error, the error will be thrown
 export async function fetchFromStrapi<T>(
   url: string
-): Promise<{ data: T[]; responseJson?: any }> {
+): Promise<{ data: T[]; responseJson?: unknown }> {
   const output = await fetchFromStrapiResponse(url);
   console.log(
     `Successfully fetched ${output.data?.length || 0} ${url} from Strapi`
