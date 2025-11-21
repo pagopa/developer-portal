@@ -1,6 +1,6 @@
 {
   "name": "gitbook-docs",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "private": true,
   "exports": {
     "./": "./dist/"
@@ -26,7 +26,8 @@
     "fetch-soap-api-from-strapi": "ts-node src/scripts/generateSoapApiRepositoriesList.ts",
     "generate-url-parsing-metadata": "ts-node src/scripts/generateUrlParsingMetadata.ts",
     "generate-strapi-response-files": "ts-node src/scripts/generateStrapiResponseFiles.ts",
-    "parse-docs": "ts-node src/scripts/parseDocUrlsAndIncludes.ts"
+    "parse-docs": "ts-node src/scripts/parseDocUrlsAndIncludes.ts",
+    "sync-all-metadata": "ts-node src/scripts/syncAllMetadata.ts"
   },
   "dependencies": {
     "@markdoc/markdoc": "0.3.0",

@@ -31,7 +31,7 @@ function makeApiDataListPageCard(item: StrapiBaseApiData, slug: string) {
     ].filter((label) => !!label.label),
     title: item?.attributes?.title,
     text: item?.attributes?.description || '',
-    icon: item?.attributes?.icon?.data?.attributes.url || '',
+    icon: item?.attributes?.icon?.data?.attributes.url || undefined,
     href: `/${slug}/api/${
       item.attributes.apiRestDetail
         ? item.attributes.apiRestDetail?.slug
@@ -81,7 +81,7 @@ export function makeApiDataListPagesProps(
           bannerLinks: attributes.bannerLinks.map(makeBannerLinkProps),
           seo: attributes.seo,
           updatedAt: attributes.updatedAt,
-          enableFilters: (product.tags && product.tags.length > 0) || undefined,
+          enableFilters: attributes.enableFilters,
           tags: product.tags,
         };
       } catch (error) {
