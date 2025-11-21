@@ -13,10 +13,10 @@ LOGGER = get_logger(__name__)
         "user_id": "user_123",
         "session_id": "session_456",
         "query": "what can you do for me?",
-        "chat_history": [],
+        "messages": [],
         "response": "I can provide information on how to improve your AI career by sharing insights on learning foundational AI skills, working on AI projects, and searching for a job in AI.",
         "contexts": ["context1", "context2"],
-        "spans": [
+        "traceSpans": [
             {
             "name": "ReActAgent.run",
             "context": {
@@ -131,13 +131,18 @@ LOGGER = get_logger(__name__)
 
 """
 { 
-    "add_score": {
-        "trace_id": "xxx",
-        "name": "answer_relevancy",
-        "score": 0.9,
-        "comment": null,
-        "data_type": "NUMERIC"
-    }
+    "add_score": [
+        {
+            "trace_id": "xxx",
+            "name": "answer_relevancy",
+            "score": 0.9,
+            "comment": None,
+            "data_type": "NUMERIC"
+        },
+        {
+        ...
+        }
+    ]
 }
 """
 
@@ -157,20 +162,21 @@ def lambda_handler(event, context):
                 user_id=payload.get("user_id"),
                 session_id=payload.get("session_id"),
                 query=payload.get("query"),
-                chat_history=payload.get("chat_history"),
+                messages=payload.get("messages"),
                 response=payload.get("response"),
                 contexts=payload.get("contexts"),
-                tags=payload.get("tags"),
-                spans=payload.get("spans"),
+                tags=payload.get("topics"),
+                spans=payload.get("traceSpans"),
             )
         elif operation == "add_score":
-            add_langfuse_score(
-                trace_id=payload.get("trace_id"),
-                name=payload.get("name"),
-                score=payload.get("score"),
-                comment=payload.get("comment"),
-                data_type=payload.get("data_type"),
-            )
+            for score_item in payload:
+                add_langfuse_score(
+                    trace_id=score_item.get("trace_id"),
+                    name=score_item.get("name"),
+                    score=score_item.get("score"),
+                    comment=score_item.get("comment"),
+                    data_type=score_item.get("data_type"),
+                )
         else:
             raise ValueError(f"Unknown operation: {operation}")
 
