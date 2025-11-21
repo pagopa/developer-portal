@@ -47,6 +47,14 @@ describe('replaceEscapedTokensWithBackTicks (single file)', () => {
     expect(updated).toContain('`<Inline>`');
   });
 
+  it('replaces multiple tokens in a single line', async () => {
+    const file = path.join(fixturesRoot, 'multiple.md');
+    const updated = await addBackticksEscapedAngleTokens(file);
+    expect(updated).toContain(
+      'Fourth multiple inline `<First>` `<Second>``<Third>`.'
+    );
+  });
+
   it('handles nested sequences increasing depth', async () => {
     const file = path.join(fixturesRoot, 'nested', 'outer.md');
     const updated = await addBackticksEscapedAngleTokens(file);
