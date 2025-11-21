@@ -9,24 +9,21 @@ export function minimalProduct() {
     data: [
       {
         ...strapiProduct,
-        attributes: {
-          ...strapiProduct.attributes,
-          name: 'Minimal Product',
-          slug: 'minimal-product',
-          shortName: 'MP',
-          description: undefined,
-          logo: {
-            data: strapiProduct.attributes.logo.data,
-          },
-          bannerLinks: [],
-          overview: { data: undefined },
-          quickstart_guide: { data: undefined },
-          api_data_list_page: { data: undefined },
-          guide_list_page: { data: undefined },
-          tutorial_list_page: { data: undefined },
-          release_note: { data: undefined },
-          use_case_list_page: { data: undefined },
+        name: 'Minimal Product',
+        slug: 'minimal-product',
+        shortName: 'MP',
+        description: undefined,
+        logo: {
+          data: strapiProduct.logo.data,
         },
+        bannerLinks: [],
+        overview: { data: undefined },
+        quickstart_guide: { data: undefined },
+        api_data_list_page: { data: undefined },
+        guide_list_page: { data: undefined },
+        tutorial_list_page: { data: undefined },
+        release_note: { data: undefined },
+        use_case_list_page: { data: undefined },
       },
     ],
   } satisfies StrapiProducts;
@@ -39,11 +36,8 @@ export function productsWithAnItemWithEmptySlug() {
     data: [
       {
         ...strapiProduct,
-        attributes: {
-          ...strapiProduct.attributes,
-          name: 'Product Without Slug',
-          slug: '',
-        },
+        name: 'Product Without Slug',
+        slug: '',
       },
     ],
   } satisfies StrapiProducts;
@@ -56,11 +50,8 @@ export function productsWithAnItemMissingSlug() {
     data: [
       {
         ...strapiProduct,
-        attributes: {
-          ...strapiProduct.attributes,
-          name: 'Product Without Slug',
-          slug: undefined as any,
-        },
+        name: 'Product Without Slug',
+        slug: undefined as any,
       },
     ],
   } satisfies StrapiProducts;
@@ -73,33 +64,24 @@ export function productWithMultipleApiData() {
     data: [
       {
         ...strapiProduct,
-        attributes: {
-          ...strapiProduct.attributes,
-          api_data_list_page: {
-            data: {
-              id: 1,
-              attributes: {
-                apiData: {
-                  data: [
-                    {
-                      attributes: {
-                        apiRestDetail: {
-                          slug: 'api-detail-1',
-                          specUrls: [],
-                        },
-                      },
-                    },
-                    {
-                      attributes: {
-                        apiRestDetail: {
-                          slug: 'api-detail-2',
-                          specUrls: [],
-                        },
-                      },
-                    },
-                  ],
+        api_data_list_page: {
+          data: {
+            id: 1,
+            apiData: {
+              data: [
+                {
+                  apiRestDetail: {
+                    slug: 'api-detail-1',
+                    specUrls: [],
+                  },
                 },
-              },
+                {
+                  apiRestDetail: {
+                    slug: 'api-detail-2',
+                    specUrls: [],
+                  },
+                },
+              ],
             },
           },
         },
@@ -115,16 +97,11 @@ export function productWithEmptyApiData() {
     data: [
       {
         ...strapiProduct,
-        attributes: {
-          ...strapiProduct.attributes,
-          api_data_list_page: {
-            data: {
-              id: 1,
-              attributes: {
-                apiData: {
-                  data: [],
-                },
-              },
+        api_data_list_page: {
+          data: {
+            id: 1,
+            apiData: {
+              data: [],
             },
           },
         },
@@ -140,11 +117,8 @@ export function productWithCorruptedData() {
     data: [
       {
         ...strapiProduct,
-        attributes: {
-          ...strapiProduct.attributes,
-          api_data_list_page: undefined as any,
-          name: 'Corrupted Product',
-        },
+        api_data_list_page: undefined as any,
+        name: 'Corrupted Product',
       },
     ],
   };
@@ -161,11 +135,8 @@ export function mixedValidAndInvalidProducts() {
       invalidProduct,
       {
         ...validProduct,
-        attributes: {
-          ...validProduct.attributes,
-          name: 'Another Valid Product',
-          slug: 'another-valid-product',
-        },
+        name: 'Another Valid Product',
+        slug: 'another-valid-product',
       },
     ],
   } satisfies StrapiProducts;
@@ -178,12 +149,5 @@ export function allInvalidProducts() {
       productsWithAnItemMissingSlug().data[0],
       productWithCorruptedData().data[0],
     ],
-  };
-}
-
-export function productWithMissingAttributes() {
-  return {
-    id: 1,
-    attributes: undefined as any,
   };
 }

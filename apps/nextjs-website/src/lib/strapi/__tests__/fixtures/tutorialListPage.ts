@@ -8,60 +8,52 @@ export const strapiTutorialListPages: StrapiTutorialListPages = {
   data: [
     {
       id: 1,
-      attributes: {
-        title: 'Tutorials',
-        description: 'Explore our tutorials',
-        bannerLinks: generateBannerLinks(1),
-        product: {
-          data: {
-            attributes: {
-              isVisible: true,
-              tags: { data: [] },
-              name: 'Product 1',
-              shortName: 'P1',
-              slug: 'product-1',
-              bannerLinks: generateBannerLinks(1),
-              overview: { data: undefined },
-              quickstart_guide: { data: undefined },
-              api_data_list_page: { data: undefined },
-              tutorial_list_page: { data: undefined },
-              guide_list_page: { data: undefined },
-              release_note: { data: undefined },
-              use_case_list_page: { data: undefined },
-            },
-          },
+      title: 'Tutorials',
+      description: 'Explore our tutorials',
+      bannerLinks: generateBannerLinks(1),
+      product: {
+        data: {
+          isVisible: true,
+          tags: { data: [] },
+          name: 'Product 1',
+          shortName: 'P1',
+          slug: 'product-1',
+          bannerLinks: generateBannerLinks(1),
+          overview: { data: undefined },
+          quickstart_guide: { data: undefined },
+          api_data_list_page: { data: undefined },
+          tutorial_list_page: { data: undefined },
+          guide_list_page: { data: undefined },
+          release_note: { data: undefined },
+          use_case_list_page: { data: undefined },
         },
-        tutorials: {
-          data: [
-            {
-              attributes: {
-                description: '',
-                icon: { data: mediaJpeg() },
-                tags: { data: [] },
-                title: 'Tutorial 1',
-                slug: 'tutorial-1',
-                publishedAt: fixedDateIsoString,
-                product: {
-                  data: {
-                    attributes: {
-                      isVisible: true,
-                      name: 'Product 1',
-                      shortName: 'P1',
-                      slug: 'product-1',
-                    },
-                  },
-                },
-                image: {
-                  data: mediaJpeg(),
-                },
+      },
+      tutorials: {
+        data: [
+          {
+            description: '',
+            icon: { data: mediaJpeg() },
+            tags: { data: [] },
+            title: 'Tutorial 1',
+            slug: 'tutorial-1',
+            publishedAt: fixedDateIsoString,
+            product: {
+              data: {
+                isVisible: true,
+                name: 'Product 1',
+                shortName: 'P1',
+                slug: 'product-1',
               },
             },
-          ],
-        },
-        seo: {
-          metaTitle: 'Tutorials SEO Title',
-          metaDescription: 'Tutorials SEO Description',
-        },
+            image: {
+              data: mediaJpeg(),
+            },
+          },
+        ],
+      },
+      seo: {
+        metaTitle: 'Tutorials SEO Title',
+        metaDescription: 'Tutorials SEO Description',
       },
     },
   ],

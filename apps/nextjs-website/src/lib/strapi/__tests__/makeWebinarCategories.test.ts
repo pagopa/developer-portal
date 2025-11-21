@@ -40,10 +40,7 @@ describe('makeWebinarCategoryProps', () => {
   it('should handle missing icon', () => {
     const category = {
       ...strapiWebinarCategories.data[0],
-      attributes: {
-        ...strapiWebinarCategories.data[0].attributes,
-        icon: undefined as any,
-      },
+      icon: undefined as any,
     } satisfies StrapiWebinarCategory;
 
     const result = makeWebinarCategoryProps(category);

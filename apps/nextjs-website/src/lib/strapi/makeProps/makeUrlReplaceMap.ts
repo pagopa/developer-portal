@@ -8,7 +8,7 @@ export function makeUrlReplaceMap(
   return strapiUrlReplacemap.data.urlToGuide.reduce((map, obj) => {
     return {
       ...map,
-      [obj.url]: `/${obj.guide.data?.product.data.attributes.slug}/guides/${
+      [obj.url]: `/${obj.guide.data?.product.data.slug}/guides/${
         obj.guide.data?.slug
       }${obj.subPath ? `/${obj.subPath}` : ''}`,
     };

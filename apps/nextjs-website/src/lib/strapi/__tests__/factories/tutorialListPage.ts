@@ -6,24 +6,19 @@ export function minimalTutorialListPages(): StrapiTutorialListPages {
     data: [
       {
         id: 1,
-        attributes: {
-          title: 'Minimal Tutorials',
-          description: '',
-          bannerLinks: [],
-          product: {
-            data: {
-              attributes: {
-                ...strapiTutorialListPages.data[0].attributes.product.data!
-                  .attributes,
-                bannerLinks: [],
-              },
-            },
+        title: 'Minimal Tutorials',
+        description: '',
+        bannerLinks: [],
+        product: {
+          data: {
+            ...strapiTutorialListPages.data[0].product.data!,
+            bannerLinks: [],
           },
-          tutorials: {
-            data: [],
-          },
-          seo: undefined,
         },
+        tutorials: {
+          data: [],
+        },
+        seo: undefined,
       },
     ],
     meta: {
@@ -42,16 +37,14 @@ export function tutorialListPagesWithItemMissingBannerLinks(): StrapiTutorialLis
     data: [
       {
         id: 1,
-        attributes: {
-          title: 'No Banner Tutorials',
-          description: 'No banner links',
-          bannerLinks: [],
-          product: minimalTutorialListPages().data[0].attributes.product,
-          tutorials: {
-            data: [],
-          },
-          seo: undefined,
+        title: 'No Banner Tutorials',
+        description: 'No banner links',
+        bannerLinks: [],
+        product: minimalTutorialListPages().data[0].product,
+        tutorials: {
+          data: [],
         },
+        seo: undefined,
       },
     ],
     meta: {

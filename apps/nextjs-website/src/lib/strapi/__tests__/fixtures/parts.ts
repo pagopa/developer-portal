@@ -53,14 +53,12 @@ export const quotePart: StrapiPart = {
   text: 'Quote text',
   backgroundImage: {
     data: {
-      attributes: {
-        url: 'https://example.com/image.jpg',
-        alternativeText: 'Alt text',
-        name: '',
-        ext: '',
-        mime: '',
-        size: 0,
-      },
+      url: 'https://example.com/image.jpg',
+      alternativeText: 'Alt text',
+      name: '',
+      ext: '',
+      mime: '',
+      size: 0,
     },
   },
 };

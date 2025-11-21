@@ -4,9 +4,7 @@ type Guide = {
   readonly title: string;
   readonly slug: string;
   readonly product: StrapiComponent<{
-    readonly attributes: {
-      readonly slug: string;
-    };
+    readonly slug: string;
   }>;
 };
 

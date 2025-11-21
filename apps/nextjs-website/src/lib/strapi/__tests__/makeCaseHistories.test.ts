@@ -56,7 +56,7 @@ describe('makeCaseHistoriesProps', () => {
     expect(firstElement.products[1]).toMatchObject({
       name: 'Second Product',
       slug: 'second-product',
-      logo: mediaJpeg().attributes,
+      logo: mediaJpeg(),
     });
   });
 

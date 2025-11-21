@@ -16,7 +16,6 @@ import {
   productWithCorruptedData,
   mixedValidAndInvalidProducts,
   allInvalidProducts,
-  productWithMissingAttributes,
   productsWithAnItemWithEmptySlug,
   productsWithAnItemMissingSlug,
 } from '@/lib/strapi/__tests__/factories/products';
@@ -135,15 +134,6 @@ describe('makeProductProps', () => {
     const result = makeProductProps(productWithCorruptedData().data[0]);
     expect(result).toBeNull();
     expect(spyOnConsoleError).toHaveBeenCalledTimes(1);
-  });
-
-  it('should return null and log error for product with missing attributes', () => {
-    const result = makeProductProps(productWithMissingAttributes());
-    expect(result).toBeNull();
-    expect(spyOnConsoleError).toHaveBeenCalledWith(
-      'Invalid product data:',
-      productWithMissingAttributes()
-    );
   });
 });
 

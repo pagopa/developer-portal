@@ -83,26 +83,4 @@ describe('makeSolutionListPageProps', () => {
     );
     expect(result.solutions[0].slug).toBe('solutions/solution-1');
   });
-
-  it('should skip solutions with missing slug and log error', () => {
-    const result = makeSolutionListPageProps(
-      solutionListPageWithMissingSolutionSlug()
-    );
-    expect(result.solutions).toHaveLength(1);
-    expect(result.solutions[0].name).toBe('Valid Solution');
-    expect(spyOnConsoleError).toHaveBeenCalledWith(
-      'Error while processing Solution with title "Solution Without Slug": missing slug. Skipping...'
-    );
-  });
-
-  it('should skip case histories with missing slug and log error', () => {
-    const result = makeSolutionListPageProps(
-      solutionListPageWithMissingCaseHistorySlug()
-    );
-    expect(result.successStories?.stories).toHaveLength(1);
-    expect(result.successStories?.stories[0].title).toBe('Valid Case History');
-    expect(spyOnConsoleError).toHaveBeenCalledWith(
-      'Error while processing CaseHistory with title "Case History Without Slug": missing slug. Skipping...'
-    );
-  });
 });

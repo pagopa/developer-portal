@@ -6,25 +6,20 @@ export function minimalUseCaseListPages(): StrapiUseCaseListPages {
     data: [
       {
         id: 1,
-        attributes: {
-          title: 'Minimal Use Cases',
-          description: '',
-          bannerLinks: [],
-          product: {
-            data: {
-              attributes: {
-                ...strapiTutorialListPages.data[0].attributes.product.data!
-                  .attributes,
-                bannerLinks: [],
-              },
-            },
+        title: 'Minimal Use Cases',
+        description: '',
+        bannerLinks: [],
+        product: {
+          data: {
+            ...strapiTutorialListPages.data[0].product.data!,
+            bannerLinks: [],
           },
-          useCases: {
-            data: [],
-          },
-          seo: undefined,
-          enableFilters: undefined,
         },
+        useCases: {
+          data: [],
+        },
+        seo: undefined,
+        enableFilters: undefined,
       },
     ],
     meta: {
@@ -43,17 +38,15 @@ export function useCaseListPagesWithItemMissingBannerLinks(): StrapiUseCaseListP
     data: [
       {
         id: 1,
-        attributes: {
-          title: 'No Banner Tutorials',
-          description: 'No banner links',
-          bannerLinks: [],
-          product: minimalUseCaseListPages().data[0].attributes.product,
-          useCases: {
-            data: [],
-          },
-          seo: undefined,
-          enableFilters: true,
+        title: 'No Banner Tutorials',
+        description: 'No banner links',
+        bannerLinks: [],
+        product: minimalUseCaseListPages().data[0].product,
+        useCases: {
+          data: [],
         },
+        seo: undefined,
+        enableFilters: true,
       },
     ],
     meta: {

@@ -7,17 +7,11 @@ export function guideListWithItemsWithEmptyProductSlug() {
     ...strapiGuideData,
     data: strapiGuideData.data.map((guide) => ({
       ...guide,
-      attributes: {
-        ...guide.attributes,
-        product: {
-          ...guide.attributes.product,
-          data: {
-            ...guide.attributes.product.data,
-            attributes: {
-              ...guide.attributes.product.data.attributes,
-              slug: '',
-            },
-          },
+      product: {
+        ...guide.product,
+        data: {
+          ...guide.product.data,
+          slug: '',
         },
       },
     })),
@@ -29,17 +23,11 @@ export function guideListWithMissingProductSlug() {
     ...strapiGuideData,
     data: strapiGuideData.data.map((guide) => ({
       ...guide,
-      attributes: {
-        ...guide.attributes,
-        product: {
-          ...guide.attributes.product,
-          data: {
-            ...guide.attributes.product.data,
-            attributes: {
-              ...guide.attributes.product.data.attributes,
-              slug: undefined as any,
-            },
-          },
+      product: {
+        ...guide.product,
+        data: {
+          ...guide.product.data,
+          slug: undefined as any,
         },
       },
     })),

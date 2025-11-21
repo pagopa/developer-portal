@@ -96,11 +96,11 @@ export const getTagsProps = async () => {
 export const getTutorialsProps = async () => {
   const strapiTutorials = await fetchTutorials(buildEnv);
   const tutorialsWithMarkdown = strapiTutorials.data.filter((tutorial) => {
-    const parts = tutorial?.attributes?.parts ?? [];
+    const parts = tutorial?.parts ?? [];
     return parts.some((part) => part?.__component === 'parts.markdown');
   });
   const allMarkdownParts = tutorialsWithMarkdown.flatMap((tutorial) =>
-    (tutorial?.attributes?.parts ?? []).filter(
+    (tutorial?.parts ?? []).filter(
       (part) => part?.__component === 'parts.markdown'
     )
   );
@@ -227,7 +227,7 @@ export const getReleaseNoteProps = async (
 export const getUseCasesProps = async () => {
   const strapiUseCases = await fetchUseCases(buildEnv);
   const allMarkdownParts = strapiUseCases.data.flatMap((useCase) =>
-    (useCase?.attributes?.parts ?? []).filter(isMarkDownPart)
+    (useCase?.parts ?? []).filter(isMarkDownPart)
   );
   const contentPromises = allMarkdownParts.map(async (part) => {
     const { dirName, pathToFile } = part;

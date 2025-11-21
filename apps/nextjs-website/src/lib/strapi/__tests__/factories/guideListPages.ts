@@ -7,19 +7,15 @@ export function guideListPagesWithItemsMissingSlug() {
     ...guidesList,
     data: guidesList.data.map((guides) => ({
       ...guides,
-      guidesByCategory: guides.attributes.guidesByCategory.map(
-        (guidePerCategory) => ({
-          ...guidePerCategory,
-          guides: {
-            data: guidePerCategory.guides.data.map((guide) => ({
-              attributes: {
-                ...guide.attributes,
-                slug: undefined,
-              },
-            })),
-          },
-        })
-      ),
+      guidesByCategory: guides.guidesByCategory.map((guidePerCategory) => ({
+        ...guidePerCategory,
+        guides: {
+          data: guidePerCategory.guides.data.map((guide) => ({
+            ...guide,
+            slug: undefined,
+          })),
+        },
+      })),
     })),
   };
 }
@@ -30,23 +26,15 @@ export function guideListPagesWithItemsMissingImages() {
     ...guidesList,
     data: guidesList.data.map((guides) => ({
       ...guides,
-      attributes: {
-        ...guides.attributes,
-        guidesByCategory: guides.attributes.guidesByCategory.map(
-          (guidePerCategory) => ({
-            ...guidePerCategory,
-            guides: {
-              data: guidePerCategory.guides.data.map((guide) => ({
-                attributes: {
-                  ...guide.attributes,
-                  image: undefined,
-                  mobileImage: undefined,
-                },
-              })),
-            },
-          })
-        ),
-      },
+      guidesByCategory: guides.guidesByCategory.map((guidePerCategory) => ({
+        ...guidePerCategory,
+        guides: {
+          data: guidePerCategory.guides.data.map(() => ({
+            image: undefined,
+            mobileImage: undefined,
+          })),
+        },
+      })),
     })),
   };
 }
@@ -57,25 +45,17 @@ export function guideListPagesWithItemsMissingListItem() {
     ...guidesList,
     data: guidesList.data.map((guides) => ({
       ...guides,
-      attributes: {
-        ...guides.attributes,
-        guidesByCategory: guides.attributes.guidesByCategory.map(
-          (guidePerCategory) => ({
-            ...guidePerCategory,
-            guides: {
-              data: [
-                {
-                  attributes: {
-                    ...guidePerCategory.guides.data[0].attributes,
-                    listItems: undefined,
-                  },
-                },
-                ...guidePerCategory.guides.data.slice(1),
-              ],
+      guidesByCategory: guides.guidesByCategory.map((guidePerCategory) => ({
+        ...guidePerCategory,
+        guides: {
+          data: [
+            {
+              listItems: undefined,
             },
-          })
-        ),
-      },
+            ...guidePerCategory.guides.data.slice(1),
+          ],
+        },
+      })),
     })),
   };
 }
@@ -86,11 +66,8 @@ export function guideListPagesWithItemsWithWrongDataType() {
     ...guidesList,
     data: guidesList.data.map((guides) => ({
       ...guides,
-      attributes: {
-        ...guides.attributes,
-        title: 12345, // Wrong data type: it should be a string
-        description: 67890, // Wrong data type: it should be a string
-      },
+      title: 12345, // Wrong data type: it should be a string
+      description: 67890, // Wrong data type: it should be a string
     })),
   };
 }
@@ -101,16 +78,10 @@ export function guideListPagesWithItemMissingProductSlug() {
     ...guidesList,
     data: guidesList.data.map((guides) => ({
       ...guides,
-      attributes: {
-        ...guides.attributes,
-        product: {
-          data: {
-            ...guides.attributes.product.data,
-            attributes: {
-              ...guides.attributes.product.data.attributes,
-              slug: undefined,
-            },
-          },
+      product: {
+        data: {
+          ...guides.product.data,
+          slug: undefined,
         },
       },
     })),

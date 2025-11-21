@@ -7,144 +7,137 @@ const fixedDateIsoString = new Date('2024-01-01T00:00:00.000Z').toISOString();
 
 export const strapiHomepage: StrapiHomepage = {
   data: {
-    attributes: {
-      comingsoonDocumentation: {
-        title: 'Coming Soon Documentation',
-        links: [
+    comingsoonDocumentation: {
+      title: 'Coming Soon Documentation',
+      links: [
+        {
+          text: 'Documentation Link',
+          href: '/docs',
+        },
+      ],
+    },
+    heroSlider: [
+      {
+        title: 'Hero Title',
+        subhead: [
           {
-            text: 'Documentation Link',
-            href: '/docs',
+            type: 'paragraph',
+            children: [{ type: 'text', text: 'Hero subhead content' }],
+          },
+        ],
+        subheadColor: 'main',
+        titleColor: 'contrastText',
+        callToAction: {
+          link: {
+            text: 'Get Started',
+            href: '/get-started',
+          },
+          variant: 'contained',
+        },
+        backgroundImage: {
+          data: mediaJpeg(),
+        },
+      },
+    ],
+    newsShowcase: {
+      ...newsShowcase,
+      items: {
+        data: newsShowcase.items.data.map((item) => ({
+          ...item,
+          publishedAt: fixedDateIsoString,
+          link: item.link
+            ? {
+                ...item.link,
+                target: item.link.target || undefined,
+              }
+            : item.link,
+          title: item.title,
+          comingSoon: item.comingSoon,
+          label: item.label,
+          image: item.image,
+        })),
+      },
+    },
+    ecosystem: {
+      title: 'Our Ecosystem',
+      productsTabName: 'Products',
+      products: {
+        data: [
+          {
+            isVisible: true,
+            tags: { data: [] },
+            name: 'Product 1',
+            shortName: 'P1',
+            slug: 'product-1',
+            description: 'Product 1 description',
+            logo: { data: mediaJpeg() },
+            bannerLinks: [],
+            overview: { data: { id: 1 } },
+            quickstart_guide: { data: { id: 1 } },
+            api_data_list_page: { data: undefined },
+            tutorial_list_page: { data: { id: 1 } },
+            guide_list_page: { data: { id: 1 } },
+            release_note: { data: { id: 1 } },
+            use_case_list_page: { data: { id: 1 } },
           },
         ],
       },
-      heroSlider: [
-        {
-          title: 'Hero Title',
-          subhead: [
-            {
-              type: 'paragraph',
-              children: [{ type: 'text', text: 'Hero subhead content' }],
-            },
-          ],
-          subheadColor: 'main',
-          titleColor: 'contrastText',
-          callToAction: {
-            link: {
-              text: 'Get Started',
-              href: '/get-started',
-            },
-            variant: 'contained',
+      solutionsTabName: 'Solutions',
+      solutions: {
+        data: [
+          {
+            slug: 'solution-1',
+            icon: { data: mediaJpeg() },
+            kickerTitle: 'Solution Kicker',
+            title: 'Solution 1',
+            description: 'Solution 1 description',
+            dirName: 'solution-1-dir',
+            landingUseCaseFile: 'use-case.md',
           },
-          backgroundImage: {
-            data: mediaJpeg(),
+        ],
+      },
+      solutionsCta: {
+        link: {
+          text: 'View All Solutions',
+          href: '/solutions',
+        },
+        variant: 'outlined',
+      },
+    },
+    webinars: {
+      data: [
+        {
+          id: 1,
+          title: 'Webinar Title',
+          slug: 'webinar-title',
+          description: 'Webinar Description',
+          playerSrc: 'https://example.com/player',
+          isVisibleInList: true,
+          publishedAt: fixedDateIsoString,
+          updatedAt: fixedDateIsoString,
+          coverImage: { data: mediaJpeg() },
+          relatedLinks: {
+            title: 'Related Links',
+            links: [
+              {
+                text: 'Link 1',
+                href: '/link-1',
+              },
+            ],
+          },
+          webinarSpeakers: { data: [] },
+          webinarCategory: {
+            data: undefined,
+          },
+          headerImage: {
+            data: undefined,
           },
         },
       ],
-      newsShowcase: {
-        ...newsShowcase,
-        items: {
-          data: newsShowcase.items.data.map((item) => ({
-            ...item,
-            attributes: {
-              ...item.attributes,
-              publishedAt: fixedDateIsoString,
-              link: item.attributes.link
-                ? {
-                    ...item.attributes.link,
-                    target: item.attributes.link.target || undefined,
-                  }
-                : item.attributes.link,
-            },
-          })),
-        },
-      },
-      ecosystem: {
-        title: 'Our Ecosystem',
-        productsTabName: 'Products',
-        products: {
-          data: [
-            {
-              attributes: {
-                isVisible: true,
-                tags: { data: [] },
-                name: 'Product 1',
-                shortName: 'P1',
-                slug: 'product-1',
-                description: 'Product 1 description',
-                logo: { data: mediaJpeg() },
-                bannerLinks: [],
-                overview: { data: { id: 1 } },
-                quickstart_guide: { data: { id: 1 } },
-                api_data_list_page: { data: undefined },
-                tutorial_list_page: { data: { id: 1 } },
-                guide_list_page: { data: { id: 1 } },
-                release_note: { data: { id: 1 } },
-                use_case_list_page: { data: { id: 1 } },
-              },
-            },
-          ],
-        },
-        solutionsTabName: 'Solutions',
-        solutions: {
-          data: [
-            {
-              attributes: {
-                slug: 'solution-1',
-                icon: { data: mediaJpeg() },
-                kickerTitle: 'Solution Kicker',
-                title: 'Solution 1',
-                description: 'Solution 1 description',
-                dirName: 'solution-1-dir',
-                landingUseCaseFile: 'use-case.md',
-              },
-            },
-          ],
-        },
-        solutionsCta: {
-          link: {
-            text: 'View All Solutions',
-            href: '/solutions',
-          },
-          variant: 'outlined',
-        },
-      },
-      webinars: {
-        data: [
-          {
-            id: 1,
-            attributes: {
-              title: 'Webinar Title',
-              slug: 'webinar-title',
-              description: 'Webinar Description',
-              playerSrc: 'https://example.com/player',
-              isVisibleInList: true,
-              publishedAt: fixedDateIsoString,
-              updatedAt: fixedDateIsoString,
-              coverImage: { data: mediaJpeg() },
-              relatedLinks: {
-                title: 'Related Links',
-                links: [
-                  {
-                    text: 'Link 1',
-                    href: '/link-1',
-                  },
-                ],
-              },
-              webinarSpeakers: { data: [] },
-              webinarCategory: {
-                data: undefined,
-              },
-              headerImage: {
-                data: undefined,
-              },
-            },
-          },
-        ],
-      },
-      seo: {
-        metaTitle: 'Homepage SEO Title',
-        metaDescription: 'Homepage SEO Description',
-      },
+    },
+    seo: {
+      metaTitle: 'Homepage SEO Title',
+      metaDescription: 'Homepage SEO Description',
     },
   },
 };

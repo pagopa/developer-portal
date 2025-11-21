@@ -8,69 +8,59 @@ export const strapiUseCaseListPages: StrapiUseCaseListPages = {
   data: [
     {
       id: 1,
-      attributes: {
-        title: 'Use Cases',
-        description: 'Explore our use cases',
-        bannerLinks: generateBannerLinks(1),
-        product: {
-          data: {
-            attributes: {
-              isVisible: true,
-              name: 'Product 1',
-              shortName: 'P1',
-              slug: 'product-1',
-              bannerLinks: generateBannerLinks(1),
-              overview: { data: undefined },
-              quickstart_guide: { data: undefined },
-              api_data_list_page: { data: undefined },
-              tutorial_list_page: { data: undefined },
-              guide_list_page: { data: undefined },
-              release_note: { data: undefined },
-              use_case_list_page: { data: undefined },
-              tags: { data: [] },
-            },
-          },
+      title: 'Use Cases',
+      description: 'Explore our use cases',
+      bannerLinks: generateBannerLinks(1),
+      product: {
+        data: {
+          isVisible: true,
+          name: 'Product 1',
+          shortName: 'P1',
+          slug: 'product-1',
+          bannerLinks: generateBannerLinks(1),
+          overview: { data: undefined },
+          quickstart_guide: { data: undefined },
+          api_data_list_page: { data: undefined },
+          tutorial_list_page: { data: undefined },
+          guide_list_page: { data: undefined },
+          release_note: { data: undefined },
+          use_case_list_page: { data: undefined },
+          tags: { data: [] },
         },
-        useCases: {
-          data: [
-            {
-              attributes: {
-                title: 'Use Case 1',
-                slug: 'use-case-1',
-                publishedAt: fixedDateIsoString,
-                product: {
-                  data: {
-                    attributes: {
-                      isVisible: true,
-                      name: 'Product 1',
-                      shortName: 'P1',
-                      slug: 'product-1',
-                    },
-                  },
-                },
-                coverImage: {
-                  data: mediaJpeg(),
-                },
-                tags: {
-                  data: [
-                    {
-                      attributes: {
-                        name: 'Tag1',
-                        icon: { data: mediaJpeg() },
-                      },
-                    },
-                  ],
-                },
+      },
+      useCases: {
+        data: [
+          {
+            title: 'Use Case 1',
+            slug: 'use-case-1',
+            publishedAt: fixedDateIsoString,
+            product: {
+              data: {
+                isVisible: true,
+                name: 'Product 1',
+                shortName: 'P1',
+                slug: 'product-1',
               },
             },
-          ],
-        },
-        seo: {
-          metaTitle: 'Use Cases SEO Title',
-          metaDescription: 'Use Cases SEO Description',
-        },
-        enableFilters: true,
+            coverImage: {
+              data: mediaJpeg(),
+            },
+            tags: {
+              data: [
+                {
+                  name: 'Tag1',
+                  icon: { data: mediaJpeg() },
+                },
+              ],
+            },
+          },
+        ],
       },
+      seo: {
+        metaTitle: 'Use Cases SEO Title',
+        metaDescription: 'Use Cases SEO Description',
+      },
+      enableFilters: true,
     },
   ],
   meta: {

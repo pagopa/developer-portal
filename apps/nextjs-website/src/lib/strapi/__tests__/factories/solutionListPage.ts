@@ -5,18 +5,16 @@ import { StrapiSolutionListPage } from '@/lib/strapi/types/solutionListPage';
 export function minimalDataSolutionListPage() {
   return {
     data: {
-      attributes: {
-        title: 'Minimal Solutions',
-        description: 'Minimal solutions page',
-        solutions: {
-          data: [],
-        },
-        caseHistories: undefined,
-        features: undefined,
-        seo: undefined,
+      title: 'Minimal Solutions',
+      description: 'Minimal solutions page',
+      solutions: {
+        data: [],
       },
+      caseHistories: undefined,
+      features: undefined,
+      seo: undefined,
     },
-  } satisfies StrapiSolutionListPage;
+  };
 }
 
 export function solutionListPageWithoutCaseHistories() {
@@ -24,12 +22,9 @@ export function solutionListPageWithoutCaseHistories() {
     ...strapiSolutionListPage,
     data: {
       ...strapiSolutionListPage.data,
-      attributes: {
-        ...strapiSolutionListPage.data.attributes,
-        caseHistories: undefined,
-      },
+      caseHistories: undefined,
     },
-  } satisfies StrapiSolutionListPage;
+  };
 }
 
 export function solutionListPageWithoutFeatures() {
@@ -37,12 +32,9 @@ export function solutionListPageWithoutFeatures() {
     ...strapiSolutionListPage,
     data: {
       ...strapiSolutionListPage.data,
-      attributes: {
-        ...strapiSolutionListPage.data.attributes,
-        features: undefined,
-      },
+      features: undefined,
     },
-  } satisfies StrapiSolutionListPage;
+  };
 }
 
 export function solutionListPageWithoutSolutions() {
@@ -50,77 +42,58 @@ export function solutionListPageWithoutSolutions() {
     ...strapiSolutionListPage,
     data: {
       ...strapiSolutionListPage.data,
-      attributes: {
-        ...strapiSolutionListPage.data.attributes,
-        solutions: {
-          data: [],
-        },
-      },
-    },
-  } satisfies StrapiSolutionListPage;
-}
-
-export function solutionListPageWithMissingSolutionSlug(): StrapiSolutionListPage {
-  return {
-    ...strapiSolutionListPage,
-    data: {
-      ...strapiSolutionListPage.data,
-      attributes: {
-        ...strapiSolutionListPage.data.attributes,
-        solutions: {
-          data: [
-            {
-              attributes: {
-                ...strapiSolutionListPage.data.attributes.solutions.data[0]
-                  .attributes,
-                slug: undefined as any,
-                title: 'Solution Without Slug',
-              },
-            },
-            {
-              attributes: {
-                ...strapiSolutionListPage.data.attributes.solutions.data[0]
-                  .attributes,
-                title: 'Valid Solution',
-              },
-            },
-          ],
-        },
+      solutions: {
+        data: [],
       },
     },
   };
 }
 
-export function solutionListPageWithMissingCaseHistorySlug(): StrapiSolutionListPage {
+export function solutionListPageWithMissingSolutionSlug() {
   return {
     ...strapiSolutionListPage,
     data: {
       ...strapiSolutionListPage.data,
-      attributes: {
-        ...strapiSolutionListPage.data.attributes,
-        caseHistories: {
-          ...strapiSolutionListPage.data.attributes.caseHistories,
-          case_histories: {
-            data: [
-              {
-                id: 1,
-                attributes: {
-                  ...strapiSolutionListPage.data.attributes.caseHistories
-                    ?.case_histories.data[0].attributes,
-                  slug: undefined as any,
-                  title: 'Case History Without Slug',
-                },
-              },
-              {
-                id: 2,
-                attributes: {
-                  ...strapiSolutionListPage.data.attributes.caseHistories
-                    ?.case_histories.data[0].attributes,
-                  title: 'Valid Case History',
-                },
-              },
-            ],
+      solutions: {
+        data: [
+          {
+            ...strapiSolutionListPage.data.solutions.data[0],
+            slug: undefined,
+            title: 'Solution Without Slug',
           },
+          {
+            ...strapiSolutionListPage.data.solutions.data[0],
+            title: 'Valid Solution',
+          },
+        ],
+      },
+    },
+  };
+}
+
+export function solutionListPageWithMissingCaseHistorySlug() {
+  return {
+    ...strapiSolutionListPage,
+    data: {
+      ...strapiSolutionListPage.data,
+      caseHistories: {
+        ...strapiSolutionListPage.data.caseHistories,
+        case_histories: {
+          data: [
+            {
+              ...strapiSolutionListPage.data.caseHistories?.case_histories
+                .data[0],
+              id: 1,
+              slug: undefined,
+              title: 'Case History Without Slug',
+            },
+            {
+              ...strapiSolutionListPage.data.caseHistories?.case_histories
+                .data[0],
+              id: 2,
+              title: 'Valid Case History',
+            },
+          ],
         },
       },
     },

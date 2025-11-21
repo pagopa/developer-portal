@@ -4,22 +4,20 @@ import { StrapiHomepage } from '@/lib/strapi/types/homepage';
 export function minimalDataHomepage() {
   return {
     data: {
-      attributes: {
-        comingsoonDocumentation: {
-          title: 'Minimal Documentation',
-          links: [],
-        },
-        heroSlider: [
-          {
-            title: 'Minimal Hero',
-            backgroundImage: { data: undefined },
-          },
-        ],
-        newsShowcase: undefined,
-        ecosystem: undefined,
-        webinars: { data: [] },
-        seo: undefined,
+      comingsoonDocumentation: {
+        title: 'Minimal Documentation',
+        links: [],
       },
+      heroSlider: [
+        {
+          title: 'Minimal Hero',
+          backgroundImage: { data: undefined },
+        },
+      ],
+      newsShowcase: undefined,
+      ecosystem: undefined,
+      webinars: { data: [] },
+      seo: undefined,
     },
   } satisfies StrapiHomepage;
 }
@@ -29,10 +27,7 @@ export function homepageWithoutNewsShowcase() {
     ...strapiHomepage,
     data: {
       ...strapiHomepage.data,
-      attributes: {
-        ...strapiHomepage.data.attributes,
-        newsShowcase: undefined,
-      },
+      newsShowcase: undefined,
     },
   } satisfies StrapiHomepage;
 }
@@ -42,10 +37,7 @@ export function homepageWithoutEcosystem() {
     ...strapiHomepage,
     data: {
       ...strapiHomepage.data,
-      attributes: {
-        ...strapiHomepage.data.attributes,
-        ecosystem: undefined,
-      },
+      ecosystem: undefined,
     },
   } satisfies StrapiHomepage;
 }
@@ -55,11 +47,8 @@ export function homepageWithoutWebinars() {
     ...strapiHomepage,
     data: {
       ...strapiHomepage.data,
-      attributes: {
-        ...strapiHomepage.data.attributes,
-        webinars: {
-          data: [],
-        },
+      webinars: {
+        data: [],
       },
     },
   } satisfies StrapiHomepage;
@@ -70,10 +59,7 @@ export function homepageWithoutSeo() {
     ...strapiHomepage,
     data: {
       ...strapiHomepage.data,
-      attributes: {
-        ...strapiHomepage.data.attributes,
-        seo: undefined,
-      },
+      seo: undefined,
     },
   } satisfies StrapiHomepage;
 }

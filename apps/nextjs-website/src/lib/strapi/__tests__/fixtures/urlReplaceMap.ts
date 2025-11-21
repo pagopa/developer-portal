@@ -3,30 +3,24 @@ import { productJson } from './product';
 
 export const strapiUrlReplaceMapFixture: StrapiUrlReplaceMap = {
   data: {
-    attributes: {
-      urlToGuide: [
-        {
-          id: 1,
-          url: 'getting-started',
-          subPath: 'step-2',
-          guide: {
-            data: {
-              attributes: {
-                title: 'Getting started',
-                slug: 'getting-started',
-                product: {
-                  data: {
-                    attributes: {
-                      slug: productJson.data.attributes.slug,
-                    },
-                  },
-                },
+    urlToGuide: [
+      {
+        id: 1,
+        url: 'getting-started',
+        subPath: 'step-2',
+        guide: {
+          data: {
+            title: 'Getting started',
+            slug: 'getting-started',
+            product: {
+              data: {
+                slug: productJson.data.slug,
               },
             },
           },
         },
-      ],
-    },
+      },
+    ],
   },
 };
 

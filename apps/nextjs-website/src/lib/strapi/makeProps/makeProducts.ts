@@ -20,7 +20,6 @@ export function makeProductProps(product: StrapiProduct): Product | null {
     console.error('Invalid product data:', product);
     return null;
   }
-
   if (!product.slug || !product.name) {
     console.error(
       `Error while processing Product: missing title or slug. Title: ${product.name} | Slug: ${product.slug}. Skipping...`

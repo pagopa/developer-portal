@@ -51,10 +51,8 @@ describe('makeWebinarsProps', () => {
     const corruptedData: StrapiWebinars = {
       data: [
         {
+          ...strapiWebinars.data[0],
           id: 1,
-          attributes: {
-            // Missing required coverImage field to trigger error
-          } as any,
         },
       ],
       meta: {

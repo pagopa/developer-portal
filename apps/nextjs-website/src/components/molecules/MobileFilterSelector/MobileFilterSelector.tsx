@@ -22,9 +22,7 @@ type MobileFilterSelectorProps = {
   selectorFilters: readonly {
     name: string;
     icon: {
-      data: {
-        attributes: Media;
-      };
+      data: Media;
     };
   }[];
 };
@@ -96,7 +94,7 @@ const MobileFilterSelector = ({
               }}
               isHeader={true}
               label={selectorFilters[selectedFilter].name}
-              icon={selectorFilters[selectedFilter].icon.data.attributes}
+              icon={selectorFilters[selectedFilter].icon.data}
             />
           )}
         </AccordionSummary>
@@ -115,7 +113,7 @@ const MobileFilterSelector = ({
                   return;
                 }}
                 label={category.name}
-                icon={category.icon.data.attributes}
+                icon={category.icon.data}
                 isLast={index == selectorFilters.length - 1}
               />
             ))}
