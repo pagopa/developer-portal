@@ -1,5 +1,3 @@
-import copy
-import time
 from typing import Union, Tuple, Optional, List, Dict
 
 from llama_index.core import PromptTemplate
@@ -19,9 +17,6 @@ from llama_index.core.agent.workflow import (
     AgentSetup,
 )
 from llama_index.core.tools.types import ToolOutput
-
-# from llama_index.core.instrumentation import get_dispatcher
-# from llama_index.core.instrumentation.span_handlers import SimpleSpanHandler
 
 from openinference.instrumentation.llama_index import LlamaIndexInstrumentor
 from opentelemetry.sdk.trace import TracerProvider
@@ -51,9 +46,6 @@ RESPONSE_TYPE = Union[
 
 TRACE_PROVIDER = TracerProvider()
 EXPORTER = DictSpanExporter()
-# ROOT_DISPATCHER = get_dispatcher()
-# SIMPLE_SPAN_HANDLER = SimpleSpanHandler()
-# ROOT_DISPATCHER.add_span_handler(SIMPLE_SPAN_HANDLER)
 TRACE_PROVIDER.add_span_processor(SimpleSpanProcessor(EXPORTER))
 LlamaIndexInstrumentor().instrument(tracer_provider=TRACE_PROVIDER)
 
@@ -62,12 +54,9 @@ class Chatbot:
     def __init__(
         self,
     ):
-        start_time = time.time()
         self.model = get_llm()
         self.embed_model = get_embed_model()
         self.qa_prompt_tmpl, self.ref_prompt_tmpl = self._get_prompt_templates()
-        end_time = time.time() - start_time
-        LOGGER.info(f">>>>> Chatbot initialized in {end_time:.3f} secs. <<<<<")
 
     def _get_prompt_templates(
         self,
@@ -163,15 +152,11 @@ class Chatbot:
         messages: Optional[List[Dict[str, str]]] | None = None,
     ) -> dict:
 
-        start_time = time.time()
         agent = get_agent(
             llm=self.model,
             embed_model=self.embed_model,
             text_qa_template=self.qa_prompt_tmpl,
             refine_template=self.ref_prompt_tmpl,
-        )
-        LOGGER.info(
-            f">>>>>>> Agent initialized in {time.time() - start_time:.3f} secs. <<<<<<<<"
         )
 
         chat_history = self._messages_to_chathistory(messages)

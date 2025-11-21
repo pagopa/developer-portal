@@ -130,7 +130,7 @@ async def query_creation(
     if can_evaluate():
         evaluation_data = {
             "query_str": query_str,
-            "response_str": answer_json["response"],
+            "response_str": answer,
             "retrieved_contexts": answer_json["contexts"],
             "trace_id": trace_id,
             "messages": messages,
