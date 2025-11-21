@@ -21,14 +21,16 @@ export async function getResponseFromStrapi(url: string) {
 }
 
 // In case of an error, the error will be thrown
+const MISSING_STRAPI_CONFIG_ERROR = 'Missing Strapi configuration in environment variables';
+
 async function fetchFromStrapiResponse(url: string) {
   console.log('Fetching from Strapi...');
   const strapiEndpoint = process.env.STRAPI_ENDPOINT;
   const strapiApiToken = process.env.STRAPI_API_TOKEN;
 
   if (!strapiEndpoint || !strapiApiToken) {
-    console.error('Missing Strapi configuration in environment variables');
-    throw new Error('Missing Strapi configuration in environment variables');
+    console.error(MISSING_STRAPI_CONFIG_ERROR);
+    throw new Error(MISSING_STRAPI_CONFIG_ERROR);
   }
 
   const response = await fetch(`${strapiEndpoint}/${url}`, {
