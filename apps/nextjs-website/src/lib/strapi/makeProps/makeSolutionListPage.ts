@@ -9,11 +9,11 @@ export function makeSolutionListPageProps(
   return {
     ...strapiSolutionsList,
     hero: {
-      title: strapiSolutionsList.data.title,
-      subtitle: strapiSolutionsList.data.description,
+      title: strapiSolutionsList.title,
+      subtitle: strapiSolutionsList.description,
     },
     solutions: compact(
-      strapiSolutionsList.data.solutions.data.map((attributes) => {
+      strapiSolutionsList.solutions.map((attributes) => {
         if (!attributes.slug) {
           console.error(
             `Error while processing Solution with title "${attributes.title}": missing slug. Skipping...`
@@ -24,45 +24,43 @@ export function makeSolutionListPageProps(
         return {
           name: attributes.title,
           description: attributes.description,
-          logo: attributes.icon.data,
+          logo: attributes.icon,
           slug: `solutions/${attributes.slug}`,
-          labels: attributes.products.data.map((products) => ({
+          labels: attributes.products.map((products) => ({
             label: products.shortName,
             path: `/${products.slug}`,
           })),
         };
       })
     ),
-    successStories: strapiSolutionsList.data.caseHistories && {
-      title: strapiSolutionsList.data.caseHistories.title,
-      subtitle: strapiSolutionsList.data.caseHistories.description,
+    successStories: strapiSolutionsList.caseHistories && {
+      title: strapiSolutionsList.caseHistories.title,
+      subtitle: strapiSolutionsList.caseHistories.description,
       stories: compact(
-        strapiSolutionsList.data.caseHistories.case_histories.data.map(
-          (caseHistory) => {
-            if (!caseHistory.slug) {
-              console.error(
-                `Error while processing CaseHistory with title "${caseHistory.title}": missing slug. Skipping...`
-              );
-              return null;
-            }
-
-            return {
-              title: caseHistory.title,
-              path: `case-histories/${caseHistory.slug}`,
-              image: caseHistory.image?.data,
-            };
+        strapiSolutionsList.caseHistories.case_histories.map((caseHistory) => {
+          if (!caseHistory.slug) {
+            console.error(
+              `Error while processing CaseHistory with title "${caseHistory.title}": missing slug. Skipping...`
+            );
+            return null;
           }
-        )
+
+          return {
+            title: caseHistory.title,
+            path: `case-histories/${caseHistory.slug}`,
+            image: caseHistory.image,
+          };
+        })
       ),
     },
-    features: strapiSolutionsList.data.features && {
-      title: strapiSolutionsList.data.features.title,
-      items: strapiSolutionsList.data.features.items.map((item) => ({
+    features: strapiSolutionsList.features && {
+      title: strapiSolutionsList.features.title,
+      items: strapiSolutionsList.features.items.map((item) => ({
         title: item.title ?? '',
         content: item.content,
-        iconUrl: item.icon.data.url,
+        iconUrl: item.icon.url,
       })),
     },
-    seo: strapiSolutionsList.data.seo,
+    seo: strapiSolutionsList.seo,
   };
 }

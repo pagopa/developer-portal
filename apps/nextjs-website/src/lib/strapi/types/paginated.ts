@@ -6,8 +6,7 @@ type Pagination = {
 };
 
 export type Paginated<T> = {
-  readonly data: readonly T[];
   readonly meta: {
     readonly pagination: Pagination;
   };
-};
+} & readonly T[];

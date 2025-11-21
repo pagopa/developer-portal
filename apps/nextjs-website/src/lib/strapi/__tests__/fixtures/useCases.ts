@@ -4,21 +4,19 @@ import { generateBannerLinks } from '@/lib/strapi/__tests__/factories/bannerLink
 import { StrapiUseCases } from '../../types/useCase';
 
 export const strapiUseCases: StrapiUseCases = {
-  data: [
+  ...[
     {
       title: 'UseCase Title',
       subtitle: 'UseCase Subtitle',
       slug: 'use-case-title',
       publishedAt: '2024-01-01T00:00:00.000Z',
       createdAt: '2024-01-01T00:00:00.000Z',
-      coverImage: { data: mediaJpeg() },
-      headerImage: { data: mediaJpeg() },
+      coverImage: mediaJpeg(),
+      headerImage: mediaJpeg(),
       locale: 'en-US',
       product: {
-        data: {
-          ...product,
-          bannerLinks: generateBannerLinks(1),
-        },
+        ...product,
+        bannerLinks: generateBannerLinks(1),
       },
       parts: [
         {
@@ -42,14 +40,12 @@ export const strapiUseCases: StrapiUseCases = {
         metaTitle: 'SEO Title',
         metaDescription: 'SEO Description',
       },
-      tags: {
-        data: [
-          {
-            name: 'Tag1',
-            icon: { data: mediaJpeg() },
-          },
-        ],
-      },
+      tags: [
+        {
+          name: 'Tag1',
+          icon: mediaJpeg(),
+        },
+      ],
       updatedAt: '2024-01-02T00:00:00.000Z',
     },
   ],

@@ -2,26 +2,20 @@ import { StrapiUrlReplaceMap } from '@/lib/strapi/types/urlReplaceMap';
 import { productJson } from './product';
 
 export const strapiUrlReplaceMapFixture: StrapiUrlReplaceMap = {
-  data: {
-    urlToGuide: [
-      {
-        id: 1,
-        url: 'getting-started',
-        subPath: 'step-2',
-        guide: {
-          data: {
-            title: 'Getting started',
-            slug: 'getting-started',
-            product: {
-              data: {
-                slug: productJson.data.slug,
-              },
-            },
-          },
+  urlToGuide: [
+    {
+      id: 1,
+      url: 'getting-started',
+      subPath: 'step-2',
+      guide: {
+        title: 'Getting started',
+        slug: 'getting-started',
+        product: {
+          slug: productJson.slug,
         },
       },
-    ],
-  },
+    },
+  ],
 };
 
 export const expectedUrlReplaceMapFixture = {

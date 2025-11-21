@@ -9,9 +9,7 @@ export type StrapiReleaseNote = {
   readonly createdAt: string;
   readonly dirName: string;
   readonly landingFile: string;
-  readonly product: {
-    readonly data?: StrapiBaseProductWithRelations;
-  };
+  readonly product?: StrapiBaseProductWithRelations;
   readonly publishedAt: string;
   readonly seo?: StrapiSeo;
   readonly title: string;

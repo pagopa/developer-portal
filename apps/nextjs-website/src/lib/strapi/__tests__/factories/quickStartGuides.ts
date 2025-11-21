@@ -5,26 +5,24 @@ import { strapiQuickStartGuides } from '../fixtures/quickStartGuides';
 
 export function minimalQuickStartGuides(): StrapiQuickStartGuides {
   return {
-    data: [
+    ...[
       {
         id: 1,
         title: 'Minimal Quick Start',
         description: '',
         updatedAt: '2024-01-01T00:00:00.000Z',
-        product: strapiQuickStartGuides.data[0].product,
+        product: strapiQuickStartGuides[0].product,
         bannerLinks: [],
         seo: undefined,
-        quickstartGuideItems: {
-          data: [
-            {
-              id: 1,
-              title: 'Minimal Step',
-              anchor: 'minimal-step',
-              publishedAt: '2024-01-01T00:00:00.000Z',
-              parts: [minimalAlertPart()],
-            },
-          ],
-        },
+        quickstartGuideItems: [
+          {
+            id: 1,
+            title: 'Minimal Step',
+            anchor: 'minimal-step',
+            publishedAt: '2024-01-01T00:00:00.000Z',
+            parts: [minimalAlertPart()],
+          },
+        ],
       },
     ],
     meta: {
@@ -40,7 +38,7 @@ export function minimalQuickStartGuides(): StrapiQuickStartGuides {
 
 export function emptyQuickStartGuides(): StrapiQuickStartGuides {
   return {
-    data: [],
+    ...[],
     meta: {
       pagination: {
         page: 1,
@@ -54,17 +52,14 @@ export function emptyQuickStartGuides(): StrapiQuickStartGuides {
 
 export function quickStartGuidesWithMissingProductSlug(): StrapiQuickStartGuides {
   return {
-    ...strapiQuickStartGuides,
-    data: strapiQuickStartGuides.data.map((quickStart, index) => {
+    meta: strapiQuickStartGuides.meta,
+    ...strapiQuickStartGuides.map((quickStart, index) => {
       if (index === 0) {
         return {
           ...quickStart,
           product: {
-            ...quickStart.product,
-            data: {
-              ...quickStart.product.data!,
-              slug: undefined as any,
-            },
+            ...quickStart.product!,
+            slug: undefined as any,
           },
         };
       }

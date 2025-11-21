@@ -20,10 +20,10 @@ export const makeWebinarProps = (
     return {
       ...strapiWebinar,
       speakers:
-        strapiWebinar.webinarSpeakers.data.length > 0
-          ? strapiWebinar.webinarSpeakers.data.map((speaker) => ({
+        strapiWebinar.webinarSpeakers.length > 0
+          ? strapiWebinar.webinarSpeakers.map((speaker) => ({
               ...speaker,
-              avatar: speaker.avatar?.data,
+              avatar: speaker.avatar,
             }))
           : undefined,
       questionsAndAnswers: strapiWebinar.questionsAndAnswers?.length
@@ -37,11 +37,11 @@ export const makeWebinarProps = (
                 ...resource,
                 subtitle: resource.subtitle,
                 description: resource.description,
-                image: resource.image?.data,
+                image: resource.image,
               })
             ),
             downloadableDocuments: (
-              strapiWebinar.relatedResources.downloadableDocuments?.data || []
+              strapiWebinar.relatedResources.downloadableDocuments || []
             ).map((attributes) => ({
               title: attributes.caption || attributes.name,
               downloadLink: attributes.url,
@@ -52,12 +52,12 @@ export const makeWebinarProps = (
         : undefined,
       startDateTime: strapiWebinar.startDatetime,
       endDateTime: strapiWebinar.endDatetime,
-      playerCoverImageUrl: strapiWebinar.playerCoverImage?.data?.url,
+      playerCoverImageUrl: strapiWebinar.playerCoverImage?.url,
       subscribeCtaLabel: strapiWebinar.subscribeParagraphLabel,
-      imagePath: strapiWebinar.coverImage.data.url,
+      imagePath: strapiWebinar.coverImage.url,
       seo: strapiWebinar.seo,
-      tag: strapiWebinar.webinarCategory?.data,
-      headerImage: strapiWebinar.headerImage?.data,
+      tag: strapiWebinar.webinarCategory,
+      headerImage: strapiWebinar.headerImage,
       updatedAt: strapiWebinar.updatedAt,
     } satisfies Webinar;
   } catch (error) {
@@ -75,6 +75,6 @@ export function makeWebinarsProps(
   strapiWebinars: StrapiWebinars
 ): WebinarsProps {
   return compact([
-    ...strapiWebinars.data.map((webinar) => makeWebinarProps(webinar)),
+    ...strapiWebinars.map((webinar) => makeWebinarProps(webinar)),
   ]);
 }

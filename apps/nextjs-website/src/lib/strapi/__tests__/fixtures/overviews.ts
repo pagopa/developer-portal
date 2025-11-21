@@ -7,7 +7,7 @@ import { OverviewPageProps } from '@/app/[productSlug]/overview/page';
 export const dateNow = new Date();
 
 export const strapiOverviews = {
-  data: [
+  ...[
     {
       id: 1,
       title: 'Test Overview',
@@ -15,45 +15,37 @@ export const strapiOverviews = {
       createdAt: '2023-01-01T00:00:00.000Z',
       updatedAt: '2023-01-01T00:00:00.000Z',
       publishedAt: '2023-01-01T00:00:00.000Z',
-      backgroundImage: {
-        data: mediaJpeg(),
-      },
+      backgroundImage: mediaJpeg(),
       product: {
-        data: {
-          ...product,
-          tags: { data: [] },
-          bannerLinks: generateBannerLinks(1),
-          overview: { data: { id: 1 } },
-          quickstart_guide: { data: { id: 2 } },
-          api_data_list_page: {
-            data: {
-              id: 3,
-              apiData: {
-                data: [
+        ...product,
+        tags: [],
+        bannerLinks: generateBannerLinks(1),
+        overview: 1,
+        quickstart_guide: 2,
+        api_data_list_page: {
+          id: 3,
+          apiData: [
+            {
+              apiRestDetail: {
+                slug: 'api-rest',
+                specUrls: [
                   {
-                    apiRestDetail: {
-                      slug: 'api-rest',
-                      specUrls: [
-                        {
-                          id: 1,
-                          name: 'OpenAPI Spec',
-                          url: '/api-rest/openapi.json',
-                          hideTryIt: false,
-                        },
-                      ],
-                    },
-                    apiSoapDetail: undefined,
+                    id: 1,
+                    name: 'OpenAPI Spec',
+                    url: '/api-rest/openapi.json',
+                    hideTryIt: false,
                   },
                 ],
               },
+              apiSoapDetail: undefined,
             },
-          },
-          tutorial_list_page: { data: { id: 4 } },
-          release_note: { data: { id: 5 } },
-          guide_list_page: { data: { id: 6 } },
-          use_case_list_page: { data: { id: 7 } },
-          logo: { data: mediaJpeg() },
+          ],
         },
+        tutorial_list_page: 4,
+        release_note: 5,
+        guide_list_page: 6,
+        use_case_list_page: 7,
+        logo: mediaJpeg(),
       },
       features: {
         title: 'Features Title',
@@ -63,7 +55,7 @@ export const strapiOverviews = {
             id: 1,
             title: 'Feature 1',
             content: undefined,
-            icon: { data: mediaJpeg() },
+            icon: mediaJpeg(),
             theme: 'dark',
           },
         ],
@@ -80,7 +72,7 @@ export const strapiOverviews = {
             title: 'Start Info Item',
             description: 'Start info description',
             path: '/start-path',
-            icon: { data: mediaJpeg() },
+            icon: mediaJpeg(),
           },
         ],
       },
@@ -88,49 +80,41 @@ export const strapiOverviews = {
         title: 'Tutorials Title',
         showCardsLayout: false,
         description: 'Tutorials Description',
-        tutorials: {
-          data: [
-            {
-              description: 'test description',
-              icon: { data: mediaJpeg() },
-              title: 'Tutorial 1',
-              tags: { data: [] },
-              slug: 'tutorial-1',
-              image: { data: mediaJpeg() },
-              product: {
-                data: {
-                  isVisible: true,
-                  slug: 'test-product',
-                  name: 'Test Product',
-                  shortName: 'TestProd',
-                },
-              },
-              publishedAt: dateNow.toISOString(),
+        tutorials: [
+          {
+            description: 'test description',
+            icon: mediaJpeg(),
+            title: 'Tutorial 1',
+            tags: [],
+            slug: 'tutorial-1',
+            image: mediaJpeg(),
+            product: {
+              isVisible: true,
+              slug: 'test-product',
+              name: 'Test Product',
+              shortName: 'TestProd',
             },
-          ],
-        },
+            publishedAt: dateNow.toISOString(),
+          },
+        ],
       },
       useCaseSection: {
         title: 'Use Cases Title',
         description: 'Use Cases Description',
-        useCases: {
-          data: [
-            {
-              title: 'Use Case 1',
-              tags: { data: [] },
-              slug: 'use-case-1',
-              coverImage: { data: mediaJpeg() },
-              product: {
-                data: {
-                  isVisible: true,
-                  slug: 'test-product',
-                  name: 'Test Product',
-                  shortName: 'TestProd',
-                },
-              },
+        useCases: [
+          {
+            title: 'Use Case 1',
+            tags: [],
+            slug: 'use-case-1',
+            coverImage: mediaJpeg(),
+            product: {
+              isVisible: true,
+              slug: 'test-product',
+              name: 'Test Product',
+              shortName: 'TestProd',
             },
-          ],
-        },
+          },
+        ],
       },
       whatsNew: {
         title: "What's New Title",
@@ -140,22 +124,20 @@ export const strapiOverviews = {
           href: '/whats-new',
           target: '_self',
         },
-        items: {
-          data: [
-            {
-              title: 'News Item 1',
-              label: 'New',
-              comingSoon: false,
-              publishedAt: dateNow.toISOString(),
-              link: {
-                text: 'Read More',
-                href: '/news/item-1',
-                target: '_self',
-              },
-              image: { data: mediaJpeg() },
+        items: [
+          {
+            title: 'News Item 1',
+            label: 'New',
+            comingSoon: false,
+            publishedAt: dateNow.toISOString(),
+            link: {
+              text: 'Read More',
+              href: '/news/item-1',
+              target: '_self',
             },
-          ],
-        },
+            image: mediaJpeg(),
+          },
+        ],
       },
       postIntegration: {
         title: 'Post Integration Title',
@@ -176,21 +158,19 @@ export const strapiOverviews = {
             ],
             linkText: 'Download',
             linkHref: '/documents/doc1.pdf',
-            image: { data: mediaJpeg() },
-            mobileImage: { data: mediaJpeg() },
+            image: mediaJpeg(),
+            mobileImage: mediaJpeg(),
           },
         ],
-        guides: {
-          data: [
-            {
-              title: 'Guide 1',
-              slug: 'guide-1',
-              listItems: [{ text: 'Guide item 1' }, { text: 'Guide item 2' }],
-              image: { data: mediaJpeg() },
-              mobileImage: { data: mediaJpeg() },
-            },
-          ],
-        },
+        guides: [
+          {
+            title: 'Guide 1',
+            slug: 'guide-1',
+            listItems: [{ text: 'Guide item 1' }, { text: 'Guide item 2' }],
+            image: mediaJpeg(),
+            mobileImage: mediaJpeg(),
+          },
+        ],
         serviceModels: [
           {
             title: 'Service Model 1',

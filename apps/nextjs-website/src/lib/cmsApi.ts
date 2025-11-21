@@ -95,7 +95,7 @@ export const getTagsProps = async () => {
 
 export const getTutorialsProps = async () => {
   const strapiTutorials = await fetchTutorials(buildEnv);
-  const tutorialsWithMarkdown = strapiTutorials.data.filter((tutorial) => {
+  const tutorialsWithMarkdown = strapiTutorials.filter((tutorial) => {
     const parts = tutorial?.parts ?? [];
     return parts.some((part) => part?.__component === 'parts.markdown');
   });
@@ -203,7 +203,7 @@ export const getSolutionProps = async (
   jsonMetadata?: JsonMetadata
 ) => {
   const strapiSolutions = await fetchSolution(solutionsSlug)(buildEnv);
-  if (!strapiSolutions || strapiSolutions.data.length < 1) {
+  if (!strapiSolutions || strapiSolutions.length < 1) {
     // eslint-disable-next-line functional/no-throw-statements
     throw new Error('Failed to fetch data');
   }
@@ -216,7 +216,7 @@ export const getReleaseNoteProps = async (
   jsonMetadata?: JsonMetadata
 ) => {
   const strapiReleaseNotes = await fetchReleaseNote(productSlug)(buildEnv);
-  if (!strapiReleaseNotes || strapiReleaseNotes.data.length < 1) {
+  if (!strapiReleaseNotes || strapiReleaseNotes.length < 1) {
     // eslint-disable-next-line functional/no-throw-statements
     throw new Error('Failed to fetch data');
   }
@@ -226,7 +226,7 @@ export const getReleaseNoteProps = async (
 
 export const getUseCasesProps = async () => {
   const strapiUseCases = await fetchUseCases(buildEnv);
-  const allMarkdownParts = strapiUseCases.data.flatMap((useCase) =>
+  const allMarkdownParts = strapiUseCases.flatMap((useCase) =>
     (useCase?.parts ?? []).filter(isMarkDownPart)
   );
   const contentPromises = allMarkdownParts.map(async (part) => {

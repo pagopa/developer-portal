@@ -8,9 +8,7 @@ type DesktopFilterSelectorProps = {
   setSelectedFilter: (selectedFilter: number) => void;
   selectorFilters: readonly {
     name: string;
-    icon: {
-      data: Media;
-    };
+    icon: Media;
   }[];
 };
 
@@ -45,7 +43,7 @@ const DesktopFilterSelector = ({
           }}
           isSelected={index === selectedFilter}
           label={category.name}
-          icon={category.icon.data}
+          icon={category.icon}
         ></FilterButton>
       ))}
     </Stack>

@@ -8,11 +8,9 @@ export type StrapiTutorialsListPage = {
   readonly id: number;
   readonly bannerLinks: readonly StrapiBannerLink[];
   readonly description: string;
-  readonly product: {
-    readonly data?: StrapiBaseProductWithRelations;
-  };
+  readonly product?: StrapiBaseProductWithRelations;
   readonly title: string;
-  readonly tutorials: { readonly data: readonly StrapiBaseTutorial[] };
+  readonly tutorials: readonly StrapiBaseTutorial[];
   readonly seo?: StrapiSeo;
   readonly enableFilters?: boolean;
 };

@@ -12,7 +12,7 @@ import { compact } from 'lodash';
 export function makeProductsProps(
   strapiProducts: StrapiProducts
 ): ReadonlyArray<Product> {
-  return compact(strapiProducts.data.map(makeProductProps));
+  return compact(strapiProducts.map(makeProductProps));
 }
 
 export function makeProductProps(product: StrapiProduct): Product | null {
@@ -32,7 +32,7 @@ export function makeProductProps(product: StrapiProduct): Product | null {
     return {
       ...makeBaseProductWithoutLogoProps(product),
       description: product.description,
-      logo: product.logo?.data,
+      logo: product.logo,
     };
   } catch (error) {
     console.error(
@@ -47,16 +47,16 @@ export function makeProductProps(product: StrapiProduct): Product | null {
 function getApiDataListPageUrl(
   product: StrapiBaseProductWithRelations
 ): string | undefined {
-  const apiDataList = product.api_data_list_page.data;
+  const apiDataList = product.api_data_list_page;
   // if there is no api data, return undefined
-  if (!apiDataList || apiDataList.apiData.data.length === 0) return;
+  if (!apiDataList || apiDataList.apiData.length === 0) return;
 
   const productSlug = product.slug;
-  const apiData = apiDataList.apiData.data[0];
+  const apiData = apiDataList.apiData[0];
 
   if (
     apiDataList &&
-    apiDataList.apiData.data.length === 1 &&
+    apiDataList.apiData.length === 1 &&
     apiData.apiRestDetail?.slug
   ) {
     return `/${productSlug}/api/${apiData.apiRestDetail.slug}`;
@@ -79,18 +79,18 @@ export function makeBaseProductWithoutLogoProps(
     bannerLinks: product.bannerLinks?.map(makeBannerLinkProps) || [],
     isVisible: product.isVisible,
     hasApiDataListPage: !!(
-      product.api_data_list_page.data &&
-      product.api_data_list_page.data.apiData.data.length > 0
+      product.api_data_list_page &&
+      product.api_data_list_page.apiData.length > 0
     ),
-    hasGuideListPage: !!product.guide_list_page.data,
-    hasOverviewPage: !!product.overview.data,
-    hasQuickstartGuidePage: !!product.quickstart_guide.data,
-    hasReleaseNotePage: !!product.release_note.data,
-    hasTutorialListPage: !!product.tutorial_list_page.data,
-    hasUseCaseListPage: !!product.use_case_list_page.data,
+    hasGuideListPage: !!product.guide_list_page,
+    hasOverviewPage: !!product.overview,
+    hasQuickstartGuidePage: !!product.quickstart_guide,
+    hasReleaseNotePage: !!product.release_note,
+    hasTutorialListPage: !!product.tutorial_list_page,
+    hasUseCaseListPage: !!product.use_case_list_page,
     name: product.name,
     shortName: product.shortName,
     slug: product.slug,
-    tags: product.tags?.data?.map((tag) => tag) || [],
+    tags: product.tags?.map((tag) => tag) || [],
   } satisfies Product;
 }

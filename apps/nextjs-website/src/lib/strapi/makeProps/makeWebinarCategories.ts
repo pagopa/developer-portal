@@ -7,7 +7,7 @@ import { WebinarCategory } from '@/lib/types/webinarCategory';
 export function makeWebinarCategoriesProps(
   strapiWebinarCategories: StrapiWebinarCategories
 ): ReadonlyArray<WebinarCategory> {
-  return strapiWebinarCategories.data.map(makeWebinarCategoryProps);
+  return strapiWebinarCategories.map(makeWebinarCategoryProps);
 }
 
 export function makeWebinarCategoryProps(

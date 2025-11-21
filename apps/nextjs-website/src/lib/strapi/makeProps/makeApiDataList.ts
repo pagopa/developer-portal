@@ -11,7 +11,7 @@ export async function makeApiDataListProps(
 ): Promise<ReadonlyArray<ApiDataPageProps>> {
   const list = compact(
     await Promise.all(
-      strapiApiDataList.data
+      strapiApiDataList
         .filter((apiPage) => apiPage.apiRestDetail || apiPage.apiSoapDetail)
         .map(async (attributes) => {
           if (!attributes.apiRestDetail && !attributes.apiSoapDetail) {
@@ -31,7 +31,7 @@ export async function makeApiDataListProps(
             return null;
           }
 
-          if (!attributes.product.data) {
+          if (!attributes.product) {
             console.error(
               `Error while processing API Data with title "${attributes.title}": missing product data. Skipping...`
             );
@@ -40,9 +40,7 @@ export async function makeApiDataListProps(
 
           // eslint-disable-next-line functional/no-try-statements
           try {
-            const product = makeBaseProductWithoutLogoProps(
-              attributes.product.data
-            );
+            const product = makeBaseProductWithoutLogoProps(attributes.product);
             return {
               ...attributes,
               product,
@@ -63,9 +61,7 @@ export async function makeApiDataListProps(
               bannerLinks:
                 attributes.bannerLinks.length > 0
                   ? attributes.bannerLinks.map(makeBannerLinkProps)
-                  : attributes.product.data.bannerLinks?.map(
-                      makeBannerLinkProps
-                    ),
+                  : attributes.product.bannerLinks?.map(makeBannerLinkProps),
               seo: attributes.seo,
             } satisfies ApiDataPageProps;
           } catch (error) {

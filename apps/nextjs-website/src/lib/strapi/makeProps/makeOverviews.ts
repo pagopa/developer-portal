@@ -11,8 +11,8 @@ export function makeOverviewsProps(
   strapiOverviews: StrapiOverviews
 ): ReadonlyArray<OverviewPageProps> {
   return compact(
-    strapiOverviews.data.map((attributes) => {
-      const productData = attributes.product.data;
+    strapiOverviews.map((attributes) => {
+      const productData = attributes.product;
       if (!productData.slug) {
         console.error(
           `Error while processing Overview with title "${attributes.title}": missing product slug. Skipping...`
@@ -22,11 +22,11 @@ export function makeOverviewsProps(
 
       try {
         return {
-          path: `/${attributes.product.data?.slug}/overview`,
-          product: makeBaseProductWithoutLogoProps(attributes.product.data),
+          path: `/${attributes.product?.slug}/overview`,
+          product: makeBaseProductWithoutLogoProps(attributes.product),
           hero: {
-            backgroundImage: attributes.backgroundImage.data.url,
-            altText: attributes.backgroundImage.data.alternativeText || '',
+            backgroundImage: attributes.backgroundImage.url,
+            altText: attributes.backgroundImage.alternativeText || '',
             title: attributes.title,
             subtitle: attributes.subtitle,
           },
@@ -35,7 +35,7 @@ export function makeOverviewsProps(
             subtitle: attributes.features.subtitle,
             items:
               attributes.features.items.map((item) => ({
-                iconUrl: item.icon.data?.url,
+                iconUrl: item.icon?.url,
                 content: item.content,
                 title: item.title || '',
               })) || [],
@@ -53,7 +53,7 @@ export function makeOverviewsProps(
                 text: item.description,
                 href: item.path,
                 useSrc: true,
-                iconName: item.icon.data.url,
+                iconName: item.icon.url,
               })) || [],
           },
           tutorials: attributes.tutorialSection && {
@@ -62,13 +62,13 @@ export function makeOverviewsProps(
             showCardsLayout: attributes.tutorialSection.showCardsLayout,
             list:
               compact(
-                attributes.tutorialSection.tutorials.data.map((tutorial) => {
+                attributes.tutorialSection.tutorials.map((tutorial) => {
                   if (!tutorial.slug) {
                     console.error('tutorial slug is missing:', tutorial.title);
                     return null;
                   }
 
-                  if (!tutorial.product.data.slug) {
+                  if (!tutorial.product?.slug) {
                     console.error(
                       "tutorial's product slug is missing:",
                       tutorial.title
@@ -76,17 +76,16 @@ export function makeOverviewsProps(
                     return null;
                   }
                   return {
-                    icon: tutorial.icon.data,
+                    icon: tutorial.icon,
                     description: tutorial.description,
                     showInOverview: true,
-                    image: tutorial.image.data && {
-                      url: tutorial.image.data.url,
-                      alternativeText:
-                        tutorial.image.data.alternativeText || '',
+                    image: tutorial.image && {
+                      url: tutorial.image.url,
+                      alternativeText: tutorial.image.alternativeText || '',
                     },
                     title: tutorial.title,
                     name: 'shared.moreInfo',
-                    path: `/${tutorial.product.data.slug}/tutorials/${tutorial.slug}`,
+                    path: `/${tutorial.product.slug}/tutorials/${tutorial.slug}`,
                   };
                 })
               ) || [],
@@ -96,13 +95,13 @@ export function makeOverviewsProps(
             description: attributes.useCaseSection.description,
             list:
               compact(
-                attributes.useCaseSection.useCases.data.map((useCase) => {
+                attributes.useCaseSection.useCases.map((useCase) => {
                   if (!useCase.slug) {
                     console.error('use case slug is missing:', useCase.title);
                     return null;
                   }
 
-                  if (!useCase.product.data.slug) {
+                  if (!useCase.product.slug) {
                     console.error(
                       "use case's product slug is missing:",
                       useCase.title
@@ -115,14 +114,13 @@ export function makeOverviewsProps(
                       (useCase.publishedAt && new Date(useCase.publishedAt)) ||
                       undefined,
                     showInOverview: true,
-                    coverImage: useCase.coverImage.data && {
-                      url: useCase.coverImage.data.url,
-                      alternativeText:
-                        useCase.coverImage.data.alternativeText || '',
+                    coverImage: useCase.coverImage && {
+                      url: useCase.coverImage.url,
+                      alternativeText: useCase.coverImage.alternativeText || '',
                     },
                     title: useCase.title,
                     name: 'shared.moreInfo',
-                    path: `/${useCase.product.data.slug}/use-cases/${useCase.slug}`,
+                    path: `/${useCase.product.slug}/use-cases/${useCase.slug}`,
                   } satisfies UseCase;
                 })
               ) || [],
@@ -137,7 +135,7 @@ export function makeOverviewsProps(
                 target: attributes.whatsNew.link.target,
               },
             }),
-            items: attributes.whatsNew.items.data.map((item) => ({
+            items: attributes.whatsNew.items.map((item) => ({
               comingSoon: item.comingSoon,
               title: item.title,
               publishedAt: new Date(item.publishedAt),
@@ -147,9 +145,9 @@ export function makeOverviewsProps(
                 url: item.link.href,
                 target: item.link.target,
               },
-              image: item.image?.data && {
-                url: item.image.data.url,
-                alternativeText: item.image.data.alternativeText || '',
+              image: item.image && {
+                url: item.image.url,
+                alternativeText: item.image.alternativeText || '',
               },
             })),
           },
@@ -169,8 +167,8 @@ export function makeOverviewsProps(
                   title: 'guideListPage.cardSection.listItemsTitle',
                   translate: false,
                 },
-                imagePath: document.image.data.url,
-                mobileImagePath: document.mobileImage.data.url,
+                imagePath: document.image.url,
+                mobileImagePath: document.mobileImage.url,
                 link: {
                   label: document.linkText,
                   href: document.linkHref,
@@ -178,7 +176,7 @@ export function makeOverviewsProps(
                 },
               })),
               ...compact(
-                attributes.postIntegration.guides.data.map((guide) => {
+                attributes.postIntegration.guides.map((guide) => {
                   if (!guide.slug) {
                     console.error(
                       "post-integration guide's product slug is missing:",
@@ -194,8 +192,8 @@ export function makeOverviewsProps(
                       title: 'guideListPage.cardSection.listItemsTitle',
                       translate: false,
                     },
-                    imagePath: guide.image.data.url,
-                    mobileImagePath: guide.mobileImage.data.url,
+                    imagePath: guide.image.url,
+                    mobileImagePath: guide.mobileImage.url,
                     link: {
                       label: 'shared.goToGuide',
                       href: `guides/${guide.slug}`,
@@ -217,7 +215,7 @@ export function makeOverviewsProps(
           bannerLinks:
             attributes.bannerLinks.length > 0
               ? attributes.bannerLinks.map(makeBannerLinkProps)
-              : attributes.product.data?.bannerLinks?.map(makeBannerLinkProps),
+              : attributes.product?.bannerLinks?.map(makeBannerLinkProps),
           seo: attributes.seo,
         } satisfies OverviewPageProps;
       } catch (error) {

@@ -1,22 +1,18 @@
-import { StrapiComponent } from './strapiComponent';
-
 type Guide = {
   readonly title: string;
   readonly slug: string;
-  readonly product: StrapiComponent<{
+  readonly product: {
     readonly slug: string;
-  }>;
+  };
 };
 
 export type StrapiUrlToGuide = {
   readonly id: number;
   readonly url: string;
   readonly subPath?: string;
-  readonly guide: StrapiComponent<Guide | undefined>;
+  readonly guide?: Guide;
 };
 
 export type StrapiUrlReplaceMap = {
-  readonly data: {
-    readonly urlToGuide: readonly StrapiUrlToGuide[];
-  };
+  readonly urlToGuide: readonly StrapiUrlToGuide[];
 };

@@ -29,7 +29,7 @@ describe('makeWebinarCategoriesProps', () => {
 
 describe('makeWebinarCategoryProps', () => {
   it('should transform single strapi webinar category', () => {
-    const category = strapiWebinarCategories.data[0];
+    const category = strapiWebinarCategories[0];
     const result = makeWebinarCategoryProps(category);
     expect(result).toEqual({
       name: 'Payments',
@@ -39,7 +39,7 @@ describe('makeWebinarCategoryProps', () => {
 
   it('should handle missing icon', () => {
     const category = {
-      ...strapiWebinarCategories.data[0],
+      ...strapiWebinarCategories[0],
       icon: undefined as any,
     } satisfies StrapiWebinarCategory;
 

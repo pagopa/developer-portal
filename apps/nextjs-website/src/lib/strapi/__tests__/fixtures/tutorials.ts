@@ -4,22 +4,20 @@ import { product } from '@/lib/strapi/__tests__/fixtures/product';
 import { generateBannerLinks } from '@/lib/strapi/__tests__/factories/bannerLink';
 
 export const strapiTutorials: StrapiTutorials = {
-  data: [
+  ...[
     {
       description: '',
-      icon: { data: mediaJpeg() },
-      tags: { data: [] },
+      icon: mediaJpeg(),
+      tags: [],
       title: 'Tutorial Title',
       slug: 'tutorial-title',
       publishedAt: '2024-01-01T00:00:00.000Z',
       createdAt: '2024-01-01T00:00:00.000Z',
-      image: { data: mediaJpeg() },
+      image: mediaJpeg(),
       locale: 'en-US',
       product: {
-        data: {
-          ...product,
-          bannerLinks: generateBannerLinks(1),
-        },
+        ...product,
+        bannerLinks: generateBannerLinks(1),
       },
       parts: [
         {

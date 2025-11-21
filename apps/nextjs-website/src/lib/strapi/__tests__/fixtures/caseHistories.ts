@@ -1,10 +1,11 @@
-import { StrapiCaseHistories } from '@/lib/strapi/types/caseHistories';
+import { StrapiCaseHistory } from '@/lib/strapi/types/caseHistories';
 import { mediaJpeg } from '@/lib/strapi/__tests__/factories/media';
 import { product } from '@/lib/strapi/__tests__/fixtures/product';
 import { CaseHistoryPageTemplateProps } from '@/components/templates/CaseHistoryTemplate/CaseHistoryPageTemplate';
+import { Paginated } from '@/lib/strapi/types/paginated';
 
-export const strapiCaseHistories: StrapiCaseHistories = {
-  data: [
+export const strapiCaseHistories: Paginated<StrapiCaseHistory> = {
+  ...[
     {
       id: 1,
       slug: 'case-history-title',
@@ -12,17 +13,13 @@ export const strapiCaseHistories: StrapiCaseHistories = {
       description: 'Case history description',
       publishedAt: '2024-01-01T00:00:00.000Z',
       updatedAt: '2024-01-02T00:00:00.000Z',
-      image: { data: mediaJpeg() },
-      products: {
-        data: [
-          {
-            ...product,
-            logo: {
-              data: mediaJpeg(),
-            },
-          },
-        ],
-      },
+      image: mediaJpeg(),
+      products: [
+        {
+          ...product,
+          logo: mediaJpeg(),
+        },
+      ],
       parts: [
         {
           __component: 'parts.code-block',

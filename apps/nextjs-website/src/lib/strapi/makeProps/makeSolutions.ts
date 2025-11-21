@@ -9,7 +9,7 @@ export function makeSolutionsProps(
   strapiSolutions: StrapiSolutions
 ): ReadonlyArray<SolutionTemplateProps> {
   return compact(
-    strapiSolutions.data?.map((attributes) => {
+    strapiSolutions?.map((attributes) => {
       if (!attributes.slug || !attributes.title) {
         console.error(
           `Error while processing Solution: missing title or slug. Title: ${attributes.title} | Slug: ${attributes.slug}. Skipping...`
@@ -22,24 +22,22 @@ export function makeSolutionsProps(
           stats: [...(attributes.stats || [])], // Aggiunto fallback array vuoto
           steps: attributes.steps?.map((step) => ({
             ...step,
-            products: step.products?.data?.map((product) => ({
+            products: step.products?.map((product) => ({
               ...product,
             })),
           })),
-          products: attributes.products?.data?.map((attributes) => ({
+          products: attributes.products?.map((attributes) => ({
             ...attributes,
-            logo: attributes.logo?.data,
+            logo: attributes.logo,
           })),
-          icon: attributes.icon?.data,
+          icon: attributes.icon,
           webinars: compact(
-            attributes.webinars?.data?.map((webinar) =>
-              makeWebinarProps(webinar)
-            )
+            attributes.webinars?.map((webinar) => makeWebinarProps(webinar))
           ),
           bannerLinks: attributes.bannerLinks?.map((bannerLink) => ({
             ...bannerLink,
             title: bannerLink.title || '',
-            icon: bannerLink.icon?.data,
+            icon: bannerLink.icon,
           })),
           solutionSlug: attributes.slug,
           path: `/solutions/${attributes.slug}/details`,
@@ -47,22 +45,20 @@ export function makeSolutionsProps(
             title: attributes.caseHistories.title,
             subtitle: attributes.caseHistories.description,
             stories: compact(
-              attributes.caseHistories.case_histories?.data?.map(
-                (caseHistory) => {
-                  if (!caseHistory.slug) {
-                    console.error(
-                      `Error while processing CaseHistory with title "${caseHistory.title}": missing slug. Skipping...`
-                    );
-                    return null;
-                  }
-
-                  return {
-                    title: caseHistory.title,
-                    path: `/case-histories/${caseHistory.slug}`,
-                    image: caseHistory.image?.data,
-                  };
+              attributes.caseHistories.case_histories?.map((caseHistory) => {
+                if (!caseHistory.slug) {
+                  console.error(
+                    `Error while processing CaseHistory with title "${caseHistory.title}": missing slug. Skipping...`
+                  );
+                  return null;
                 }
-              )
+
+                return {
+                  title: caseHistory.title,
+                  path: `/case-histories/${caseHistory.slug}`,
+                  image: caseHistory.image,
+                };
+              })
             ),
           },
           seo: attributes.seo,

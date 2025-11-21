@@ -28,11 +28,11 @@ function makeApiDataListPageCard(item: StrapiBaseApiData, slug: string) {
     ].filter((label) => !!label.label),
     title: item?.title,
     text: item?.description || '',
-    icon: item?.icon?.data?.url || '',
+    icon: item?.icon?.url || '',
     href: `/${slug}/api/${
       item.apiRestDetail ? item.apiRestDetail?.slug : item.apiSoapDetail?.slug
     }`,
-    tags: item.tags.data?.map((tag) => tag) || [],
+    tags: item.tags?.map((tag) => tag) || [],
   };
 }
 
@@ -40,8 +40,8 @@ export function makeApiDataListPagesProps(
   strapiApiDataListPages: StrapiApiDataListPages
 ): ReadonlyArray<ApiDataListPageTemplateProps> {
   return compact(
-    strapiApiDataListPages.data.map((attributes) => {
-      const slug = attributes.product.data?.slug;
+    strapiApiDataListPages.map((attributes) => {
+      const slug = attributes.product?.slug;
       if (!slug) {
         console.error(
           `Error while processing API Data List Page with title "${attributes.title}": missing product slug. Skipping...`
@@ -51,9 +51,7 @@ export function makeApiDataListPagesProps(
 
       // eslint-disable-next-line functional/no-try-statements
       try {
-        const product = makeBaseProductWithoutLogoProps(
-          attributes.product.data
-        );
+        const product = makeBaseProductWithoutLogoProps(attributes.product);
         return {
           ...attributes,
           hero: {
@@ -62,14 +60,14 @@ export function makeApiDataListPagesProps(
           },
           product,
           apiDetailSlugs: compact(
-            attributes.apiData.data.map((attributes) =>
+            attributes.apiData.map((attributes) =>
               attributes.apiRestDetail
                 ? attributes.apiRestDetail.slug
                 : attributes.apiSoapDetail?.slug
             )
           ),
           cards: compact(
-            attributes.apiData.data.map((item) =>
+            attributes.apiData.map((item) =>
               makeApiDataListPageCard(item, slug)
             )
           ),

@@ -6,7 +6,7 @@ type StrapiNewsItem = {
   readonly title: string;
   readonly link: StrapiLink;
   readonly publishedAt: string;
-  readonly image?: { readonly data: StrapiMedia };
+  readonly image?: StrapiMedia;
   readonly label?: string;
 };
 
@@ -14,7 +14,5 @@ export type StrapiNewsShowcase = {
   readonly title: string;
   readonly subTitle?: string;
   readonly link?: StrapiLink;
-  readonly items: {
-    readonly data: ReadonlyArray<StrapiNewsItem>;
-  };
+  readonly items: ReadonlyArray<StrapiNewsItem>;
 };

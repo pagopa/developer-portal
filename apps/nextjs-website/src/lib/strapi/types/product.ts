@@ -1,6 +1,5 @@
 import { StrapiBannerLink } from '@/lib/strapi/types/bannerLink';
 import { StrapiMedia } from '@/lib/strapi/types/media';
-import { StrapiComponent } from '@/lib/strapi/types/strapiComponent';
 import { StrapiApiDataListPageWithoutProduct } from '@/lib/strapi/types/apiDataListPages';
 import { Paginated } from '@/lib/strapi/types/paginated';
 import { StrapiTag } from '@/lib/strapi/types/tag';
@@ -22,22 +21,18 @@ export type StrapiBaseProductWithBannerLinks = StrapiBaseProduct & {
 
 export type StrapiBaseProductWithoutBannerLinks = StrapiBaseProduct & {
   readonly description?: string;
-  readonly logo: {
-    readonly data?: StrapiMedia;
-  };
+  readonly logo?: StrapiMedia;
 };
 
 export type StrapiProductRelations = {
-  readonly overview: StrapiComponent<Id | undefined>;
-  readonly quickstart_guide: StrapiComponent<Id | undefined>;
-  readonly api_data_list_page: StrapiComponent<
-    StrapiApiDataListPageWithoutProduct | undefined
-  >;
-  readonly tutorial_list_page: StrapiComponent<Id | undefined>;
-  readonly guide_list_page: StrapiComponent<Id | undefined>;
-  readonly release_note: StrapiComponent<Id | undefined>;
-  readonly use_case_list_page: StrapiComponent<Id | undefined>;
-  readonly tags: StrapiComponent<readonly StrapiTag[] | undefined>;
+  readonly overview?: number;
+  readonly quickstart_guide?: number;
+  readonly api_data_list_page?: StrapiApiDataListPageWithoutProduct;
+  readonly tutorial_list_page?: number;
+  readonly guide_list_page?: number;
+  readonly release_note?: number;
+  readonly use_case_list_page?: number;
+  readonly tags?: readonly StrapiTag[];
 };
 
 export type StrapiBaseProductWithRelations = StrapiBaseProduct &
@@ -48,9 +43,7 @@ export type StrapiBaseProductWithRelations = StrapiBaseProduct &
 export type StrapiProduct = StrapiBaseProductWithRelations & {
   readonly bannerLinks?: readonly StrapiBannerLink[];
   readonly description?: string;
-  readonly logo: {
-    readonly data: StrapiMedia;
-  };
+  readonly logo?: StrapiMedia;
 };
 
 export type StrapiProducts = Paginated<StrapiProduct>;

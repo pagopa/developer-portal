@@ -13,12 +13,8 @@ type StrapiGuideVersion = {
 export type StrapiBaseGuide = {
   readonly title: string;
   readonly slug: string;
-  readonly image: {
-    readonly data: StrapiMedia;
-  };
-  readonly mobileImage: {
-    readonly data: StrapiMedia;
-  };
+  readonly image: StrapiMedia;
+  readonly mobileImage: StrapiMedia;
   readonly listItems: ReadonlyArray<{
     readonly text: string;
   }>;
@@ -26,9 +22,7 @@ export type StrapiBaseGuide = {
 
 export type StrapiGuide = StrapiBaseGuide & {
   readonly versions: ReadonlyArray<StrapiGuideVersion>;
-  readonly product: {
-    readonly data?: StrapiBaseProductWithRelations;
-  };
+  readonly product?: StrapiBaseProductWithRelations;
   readonly bannerLinks: ReadonlyArray<StrapiBannerLink>;
   readonly seo?: StrapiSeo;
 };

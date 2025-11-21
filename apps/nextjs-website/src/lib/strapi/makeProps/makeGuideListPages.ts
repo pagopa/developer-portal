@@ -13,8 +13,8 @@ export function makeGuideListPagesProps(
   strapiGuideListPages: StrapiGuideListPages
 ): readonly GuideListPageProps[] {
   return compact(
-    strapiGuideListPages.data.map((attributes) => {
-      const productData = attributes.product.data;
+    strapiGuideListPages.map((attributes) => {
+      const productData = attributes.product;
       if (!productData?.slug) {
         console.error(
           `Error while processing GuideListPage with title "${attributes.title}": missing product slug. Skipping...`
@@ -28,9 +28,7 @@ export function makeGuideListPagesProps(
           ...attributes.guidesByCategory.map(({ category, guides }) => ({
             title: category,
             guides: compact(
-              guides.data.map((guide) =>
-                makeGuideCardProps(guide, product.slug)
-              )
+              guides.map((guide) => makeGuideCardProps(guide, product.slug))
             ),
           })),
         ];
@@ -78,8 +76,8 @@ function makeGuideCardProps(
         listItems: guide.listItems.map(({ text }) => text),
         translate: true,
       },
-      imagePath: guide.image?.data?.url,
-      mobileImagePath: guide.mobileImage?.data?.url,
+      imagePath: guide.image?.url,
+      mobileImagePath: guide.mobileImage?.url,
       link: {
         label: 'guideListPage.cardSection.linkLabel',
         href: `/${productSlug}/guides/${guide.slug}`,

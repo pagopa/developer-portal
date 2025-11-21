@@ -2,31 +2,28 @@ import { StrapiBaseProductWithRelations } from '@/lib/strapi/types/product';
 import { StrapiBannerLink } from '@/lib/strapi/types/bannerLink';
 import { StrapiSeo } from '@/lib/strapi/types/seo';
 import {
-  StrapiBaseApiData,
-  StrapiBaseApiDataList,
+  StrapiApiData,
+  StrapiApiDataList,
 } from '@/lib/strapi/types/apiDataList';
-import { StrapiComponent } from './strapiComponent';
 
 export type StrapiApiDataListPage = {
   readonly id: number;
   readonly title: string;
   readonly description?: string;
-  readonly product: {
-    readonly data?: StrapiBaseProductWithRelations;
-  };
+  readonly product?: StrapiBaseProductWithRelations;
   readonly updatedAt: string;
-  readonly apiData: StrapiBaseApiDataList;
+  readonly apiData: StrapiApiDataList;
   readonly bannerLinks: readonly StrapiBannerLink[];
   readonly seo?: StrapiSeo;
   readonly enableFilters?: boolean;
 };
+
 export type StrapiApiDataListPageWithoutProduct = {
   readonly id: number;
-  readonly apiData: StrapiComponent<
-    readonly Pick<StrapiBaseApiData, 'apiRestDetail' | 'apiSoapDetail'>[]
-  >;
+  readonly apiData: readonly Pick<
+    StrapiApiData,
+    'apiRestDetail' | 'apiSoapDetail'
+  >[];
 };
 
-export type StrapiApiDataListPages = StrapiComponent<
-  readonly StrapiApiDataListPage[]
->;
+export type StrapiApiDataListPages = readonly StrapiApiDataListPage[];

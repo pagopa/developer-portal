@@ -6,11 +6,11 @@ import { SolutionTemplateProps } from '@/components/templates/SolutionTemplate/S
 const fixedDateIsoString = new Date('2024-01-01T00:00:00.000Z').toISOString();
 
 export const strapiSolutions = {
-  data: [
+  ...[
     {
       id: 1,
       slug: 'solution-title',
-      icon: { data: mediaJpeg() },
+      icon: mediaJpeg(),
       kickerTitle: 'Solution Kicker',
       title: 'Solution Title',
       description: 'Solution Description',
@@ -28,16 +28,14 @@ export const strapiSolutions = {
               children: [{ type: 'text', text: 'Step content' }],
             },
           ],
-          products: {
-            data: [
-              {
-                isVisible: true,
-                name: 'Product 1',
-                shortName: 'P1',
-                slug: 'product-1',
-              },
-            ],
-          },
+          products: [
+            {
+              isVisible: true,
+              name: 'Product 1',
+              shortName: 'P1',
+              slug: 'product-1',
+            },
+          ],
         },
       ],
       stats: [
@@ -48,67 +46,55 @@ export const strapiSolutions = {
       ],
       statsSource: 'Stats source',
       bannerLinks: generateBannerLinks(1),
-      webinars: {
-        data: [
-          {
-            id: 1,
-            title: 'Webinar Title',
-            slug: 'webinar-title',
-            description: 'Webinar Description',
-            playerSrc: 'https://example.com/player',
-            isVisibleInList: true,
-            publishedAt: fixedDateIsoString,
-            updatedAt: fixedDateIsoString,
-            coverImage: { data: mediaJpeg() },
-            relatedLinks: {
-              title: 'Related Links',
-              links: [
-                {
-                  text: 'Link 1',
-                  href: '/link-1',
-                },
-              ],
-            },
-            webinarSpeakers: {
-              data: [],
-            },
-            webinarCategory: {
-              data: undefined,
-            },
-            headerImage: {
-              data: undefined,
-            },
+      webinars: [
+        {
+          id: 1,
+          title: 'Webinar Title',
+          slug: 'webinar-title',
+          description: 'Webinar Description',
+          playerSrc: 'https://example.com/player',
+          isVisibleInList: true,
+          publishedAt: fixedDateIsoString,
+          updatedAt: fixedDateIsoString,
+          coverImage: mediaJpeg(),
+          relatedLinks: {
+            title: 'Related Links',
+            links: [
+              {
+                text: 'Link 1',
+                href: '/link-1',
+              },
+            ],
           },
-        ],
-      },
-      products: {
-        data: [
-          {
-            isVisible: true,
-            name: 'Product 1',
-            shortName: 'P1',
-            slug: 'product-1',
-            description: 'Product description',
-            logo: { data: mediaJpeg() },
-          },
-        ],
-      },
+          webinarSpeakers: [],
+          webinarCategory: undefined,
+          headerImage: undefined,
+        },
+      ],
+      products: [
+        {
+          isVisible: true,
+          name: 'Product 1',
+          shortName: 'P1',
+          slug: 'product-1',
+          description: 'Product description',
+          logo: mediaJpeg(),
+        },
+      ],
       caseHistories: {
         title: 'Case Studies',
         description: 'Success stories',
-        case_histories: {
-          data: [
-            {
-              id: 1,
-              slug: 'case-history-1',
-              title: 'Case History 1',
-              description: 'Case history description',
-              publishedAt: fixedDateIsoString,
-              updatedAt: fixedDateIsoString,
-              image: { data: mediaJpeg() },
-            },
-          ],
-        },
+        case_histories: [
+          {
+            id: 1,
+            slug: 'case-history-1',
+            title: 'Case History 1',
+            description: 'Case history description',
+            publishedAt: fixedDateIsoString,
+            updatedAt: fixedDateIsoString,
+            image: mediaJpeg(),
+          },
+        ],
       },
       seo: {
         metaTitle: 'SEO Title',

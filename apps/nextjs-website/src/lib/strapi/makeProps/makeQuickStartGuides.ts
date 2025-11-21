@@ -28,8 +28,8 @@ export function makeQuickStartGuidesProps(
   strapiQuickStarts: StrapiQuickStartGuides
 ): QuickStartGuidesPageProps {
   return compact(
-    strapiQuickStarts.data.map((quickStart) => {
-      if (!quickStart.product.data?.slug) {
+    strapiQuickStarts.map((quickStart) => {
+      if (!quickStart.product?.slug) {
         console.error(
           `Error while processing QuickStartGuide with id ${quickStart.id}: missing product slug. Skipping...`
         );
@@ -43,16 +43,16 @@ export function makeQuickStartGuidesProps(
             description: quickStart.description,
           },
           updatedAt: quickStart.updatedAt,
-          defaultStepAnchor: quickStart.quickstartGuideItems.data[0].anchor,
-          product: makeBaseProductWithoutLogoProps(quickStart.product.data),
-          steps: quickStart.quickstartGuideItems.data.map((item) =>
+          defaultStepAnchor: quickStart.quickstartGuideItems[0].anchor,
+          product: makeBaseProductWithoutLogoProps(quickStart.product),
+          steps: quickStart.quickstartGuideItems.map((item) =>
             makeStepFromQuickstartGuideItems(item)
           ),
-          path: `/${quickStart.product.data.slug}/quick-start`,
+          path: `/${quickStart.product.slug}/quick-start`,
           bannerLinks:
             quickStart.bannerLinks.length > 0
               ? quickStart.bannerLinks.map(makeBannerLinkProps)
-              : quickStart.product.data.bannerLinks?.map(makeBannerLinkProps),
+              : quickStart.product.bannerLinks?.map(makeBannerLinkProps),
           seo: quickStart.seo,
         } satisfies QuickStartGuidePageProps;
       } catch (error) {

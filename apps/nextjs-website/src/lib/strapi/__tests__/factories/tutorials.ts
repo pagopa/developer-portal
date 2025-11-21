@@ -5,14 +5,14 @@ import { StrapiTutorials } from '@/lib/strapi/types/tutorial';
 export function tutorialsWithAnItemMissingSlug(): StrapiTutorials {
   return {
     ...strapiTutorials,
-    data: [
+    ...[
       {
-        ...strapiTutorials.data[0],
+        ...strapiTutorials[0],
         title: 'Tutorial Without Slug',
         slug: undefined as any,
       },
       {
-        ...strapiTutorials.data[0],
+        ...strapiTutorials[0],
         title: 'Valid Tutorial',
         slug: 'valid-tutorial',
       },
@@ -23,29 +23,25 @@ export function tutorialsWithAnItemMissingSlug(): StrapiTutorials {
 export function tutorialsWithAnItemMissingProductSlug(): StrapiTutorials {
   return {
     ...strapiTutorials,
-    data: [
+    ...[
       {
-        ...strapiTutorials.data[0],
+        ...strapiTutorials[0],
         title: 'Tutorial Without Product Slug',
         slug: 'tutorial-without-product-slug',
         product: {
-          data: {
-            ...strapiTutorials.data[0].product.data,
-            name: 'Product Without Slug',
-            slug: undefined as any,
-          },
+          ...strapiTutorials[0].product!,
+          name: 'Product Without Slug',
+          slug: undefined as any,
         },
       },
       {
-        ...strapiTutorials.data[0],
+        ...strapiTutorials[0],
         title: 'Valid Tutorial',
         slug: 'valid-tutorial',
         product: {
-          data: {
-            ...strapiTutorials.data[0].product.data,
-            name: 'Valid Product',
-            slug: 'valid-product',
-          },
+          ...strapiTutorials[0].product!,
+          name: 'Valid Product',
+          slug: 'valid-product',
         },
       },
     ],
@@ -53,10 +49,10 @@ export function tutorialsWithAnItemMissingProductSlug(): StrapiTutorials {
 }
 
 export function minimalDataTutorials() {
-  const strapiTutorial = strapiTutorials.data[0];
+  const strapiTutorial = strapiTutorials[0];
   return {
     ...strapiTutorials,
-    data: [
+    ...[
       {
         ...strapiTutorial,
         title: 'Minimal Data Tutorial',
@@ -66,17 +62,17 @@ export function minimalDataTutorials() {
         parts: [],
         relatedLinks: undefined,
         seo: undefined,
-        image: { data: undefined },
+        image: undefined,
       },
     ],
   } satisfies StrapiTutorials;
 }
 
 export function tutorialsWithItemMissingData() {
-  const strapiTutorial = strapiTutorials.data[0];
+  const strapiTutorial = strapiTutorials[0];
   return {
     ...strapiTutorials,
-    data: [
+    ...[
       {
         ...strapiTutorial,
         title: undefined,
@@ -89,13 +85,13 @@ export function tutorialsWithItemMissingData() {
 }
 
 export function tutorialsWithItemMissingMandatoryData() {
-  const strapiTutorial = tutorialsWithItemMissingData().data[0];
+  const strapiTutorial = tutorialsWithItemMissingData()[0];
   return {
     ...strapiTutorials,
-    data: [
+    ...[
       {
         ...strapiTutorial,
-        product: { data: undefined },
+        product: undefined,
       },
     ],
   };

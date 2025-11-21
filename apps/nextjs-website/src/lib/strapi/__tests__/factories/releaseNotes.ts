@@ -3,10 +3,10 @@ import { strapiReleaseNotes } from '@/lib/strapi/__tests__/fixtures/releaseNotes
 import { StrapiReleaseNotes } from '@/lib/strapi/types/releaseNotes';
 
 export function minimalDataReleaseNotes() {
-  const strapiReleaseNote = strapiReleaseNotes.data[0];
+  const strapiReleaseNote = strapiReleaseNotes[0];
   return {
     ...strapiReleaseNotes,
-    data: [
+    ...[
       {
         ...strapiReleaseNote,
         title: 'Minimal Release Notes',
@@ -15,10 +15,8 @@ export function minimalDataReleaseNotes() {
         bannerLinks: [],
         seo: undefined,
         product: {
-          data: {
-            ...strapiReleaseNote.product.data!,
-            bannerLinks: undefined,
-          },
+          ...strapiReleaseNote.product!,
+          bannerLinks: undefined,
         },
       },
     ],
@@ -26,10 +24,10 @@ export function minimalDataReleaseNotes() {
 }
 
 export function releaseNotesWithoutBannerLinks() {
-  const strapiReleaseNote = strapiReleaseNotes.data[0];
+  const strapiReleaseNote = strapiReleaseNotes[0];
   return {
     ...strapiReleaseNotes,
-    data: [
+    ...[
       {
         ...strapiReleaseNote,
         bannerLinks: [],
@@ -39,18 +37,16 @@ export function releaseNotesWithoutBannerLinks() {
 }
 
 export function releaseNotesWithoutProductBannerLinks() {
-  const strapiReleaseNote = strapiReleaseNotes.data[0];
+  const strapiReleaseNote = strapiReleaseNotes[0];
   return {
     ...strapiReleaseNotes,
-    data: [
+    ...[
       {
         ...strapiReleaseNote,
         bannerLinks: [],
         product: {
-          data: {
-            ...strapiReleaseNote.product.data!,
-            bannerLinks: [],
-          },
+          ...strapiReleaseNote.product!,
+          bannerLinks: [],
         },
       },
     ],
@@ -58,18 +54,16 @@ export function releaseNotesWithoutProductBannerLinks() {
 }
 
 export function releaseNotesWithMissingProductSlug() {
-  const strapiReleaseNote = strapiReleaseNotes.data[0];
+  const strapiReleaseNote = strapiReleaseNotes[0];
   return {
     ...strapiReleaseNotes,
-    data: [
+    ...[
       {
         ...strapiReleaseNote,
         title: 'Release Note Without Product Slug',
         product: {
-          data: {
-            ...strapiReleaseNote.product.data!,
-            slug: undefined as any,
-          },
+          ...strapiReleaseNote.product!,
+          slug: undefined as any,
         },
       },
     ],

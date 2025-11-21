@@ -13,31 +13,29 @@ export const baseProductJson = {
 };
 
 export const productJson = {
-  data: {
-    id: 8,
-    name: 'Firma con IO',
-    description:
-      'Richiedi la Firma Elettronica Certificata su contratti e documenti. Le cittadine e i cittadini possono firmare direttamente sull’app IO.',
-    slug: 'firma-con-io',
-    createdAt: '2024-03-26T16:05:30.593Z',
-    updatedAt: '2024-07-11T19:28:06.709Z',
-    publishedAt: '2024-03-26T16:05:32.226Z',
-    locale: 'it',
-    shortName: 'Firma con IO',
-    logo: mediaVectorJson,
-    bannerLinks: bannerLinksJson,
-    overview: { data: null },
-    quickstart_guide: { data: null },
-    api_data_list_page: { data: null },
-    tutorial_list_page: { data: null },
-    guide_list_page: { data: null },
-    release_note: { data: null },
-    use_case_list_page: { data: null },
-  },
+  id: 8,
+  name: 'Firma con IO',
+  description:
+    'Richiedi la Firma Elettronica Certificata su contratti e documenti. Le cittadine e i cittadini possono firmare direttamente sull’app IO.',
+  slug: 'firma-con-io',
+  createdAt: '2024-03-26T16:05:30.593Z',
+  updatedAt: '2024-07-11T19:28:06.709Z',
+  publishedAt: '2024-03-26T16:05:32.226Z',
+  locale: 'it',
+  shortName: 'Firma con IO',
+  logo: mediaVectorJson,
+  bannerLinks: bannerLinksJson,
+  overview: null,
+  quickstart_guide: null,
+  api_data_list_page: null,
+  tutorial_list_page: null,
+  guide_list_page: null,
+  release_note: null,
+  use_case_list_page: null,
 };
 
 export const productsJson = {
-  data: [productJson.data],
+  ...[productJson],
 };
 
 export const product = {

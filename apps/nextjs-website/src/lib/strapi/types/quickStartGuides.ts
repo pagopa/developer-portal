@@ -1,4 +1,3 @@
-import { StrapiComponent } from '@/lib/strapi/types/strapiComponent';
 import { StrapiBaseProductWithRelations } from '@/lib/strapi/types/product';
 import { StrapiBannerLink } from '@/lib/strapi/types/bannerLink';
 import { StrapiSeo } from '@/lib/strapi/types/seo';
@@ -17,12 +16,8 @@ export type StrapiQuickStartGuide = {
   readonly id: number;
   readonly bannerLinks: readonly StrapiBannerLink[];
   readonly description: string;
-  readonly product: {
-    readonly data?: StrapiBaseProductWithRelations;
-  };
-  readonly quickstartGuideItems: StrapiComponent<
-    readonly StrapiQuickStartGuideItem[]
-  >;
+  readonly product?: StrapiBaseProductWithRelations;
+  readonly quickstartGuideItems: readonly StrapiQuickStartGuideItem[];
   readonly seo?: StrapiSeo;
   readonly title: string;
   readonly updatedAt: string;

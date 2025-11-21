@@ -5,14 +5,14 @@ import { StrapiUseCases } from '@/lib/strapi/types/useCase';
 export function useCasesWithAnItemMissingSlug(): StrapiUseCases {
   return {
     ...strapiUseCases,
-    data: [
+    ...[
       {
-        ...strapiUseCases.data[0],
+        ...strapiUseCases[0],
         title: 'UseCase Without Slug',
         slug: undefined as any,
       },
       {
-        ...strapiUseCases.data[0],
+        ...strapiUseCases[0],
         title: 'Valid UseCase',
         slug: 'valid-use-case',
       },
@@ -23,29 +23,25 @@ export function useCasesWithAnItemMissingSlug(): StrapiUseCases {
 export function useCasesWithAnItemMissingProductSlug(): StrapiUseCases {
   return {
     ...strapiUseCases,
-    data: [
+    ...[
       {
-        ...strapiUseCases.data[0],
+        ...strapiUseCases[0],
         title: 'UseCase Without Product Slug',
         slug: 'use-case-without-product-slug',
         product: {
-          data: {
-            ...strapiUseCases.data[0].product.data,
-            name: 'Product Without Slug',
-            slug: undefined as any,
-          },
+          ...strapiUseCases[0].product!,
+          name: 'Product Without Slug',
+          slug: undefined as any,
         },
       },
       {
-        ...strapiUseCases.data[0],
+        ...strapiUseCases[0],
         title: 'Valid UseCase',
         slug: 'valid-use-case',
         product: {
-          data: {
-            ...strapiUseCases.data[0].product.data,
-            name: 'Valid Product',
-            slug: 'valid-product',
-          },
+          ...strapiUseCases[0].product!,
+          name: 'Valid Product',
+          slug: 'valid-product',
         },
       },
     ],
@@ -53,10 +49,10 @@ export function useCasesWithAnItemMissingProductSlug(): StrapiUseCases {
 }
 
 export function minimalDataUseCases() {
-  const strapiUseCase = strapiUseCases.data[0];
+  const strapiUseCase = strapiUseCases[0];
   return {
     ...strapiUseCases,
-    data: [
+    ...[
       {
         ...strapiUseCase,
         title: 'Minimal Data UseCase',
@@ -67,18 +63,18 @@ export function minimalDataUseCases() {
         parts: [],
         relatedLinks: undefined,
         seo: undefined,
-        coverImage: { data: undefined },
-        headerImage: { data: undefined },
+        coverImage: undefined,
+        headerImage: undefined,
       },
     ],
   } satisfies StrapiUseCases;
 }
 
 export function useCasesWithItemMissingData() {
-  const strapiUseCase = strapiUseCases.data[0];
+  const strapiUseCase = strapiUseCases[0];
   return {
     ...strapiUseCases,
-    data: [
+    ...[
       {
         ...strapiUseCase,
         title: undefined,
@@ -91,13 +87,13 @@ export function useCasesWithItemMissingData() {
 }
 
 export function useCasesWithItemMissingMandatoryData() {
-  const useCase = useCasesWithItemMissingData().data[0];
+  const useCase = useCasesWithItemMissingData()[0];
   return {
     ...strapiUseCases,
-    data: [
+    ...[
       {
         ...useCase,
-        product: { data: undefined },
+        product: undefined,
       },
     ],
   };

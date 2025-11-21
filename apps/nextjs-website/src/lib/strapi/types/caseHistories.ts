@@ -11,15 +11,11 @@ export type StrapiBaseCaseHistory = {
   readonly description?: string;
   readonly publishedAt: string;
   readonly updatedAt: string;
-  readonly image?: {
-    readonly data?: StrapiMedia;
-  };
+  readonly image?: StrapiMedia;
 };
 
 export type StrapiCaseHistory = StrapiBaseCaseHistory & {
-  readonly products: {
-    readonly data: readonly StrapiBaseProductWithoutBannerLinks[];
-  };
+  readonly products: readonly StrapiBaseProductWithoutBannerLinks[];
   readonly parts: readonly StrapiPart[];
   readonly seo?: StrapiSeo;
 };

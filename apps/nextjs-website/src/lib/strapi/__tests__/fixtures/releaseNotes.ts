@@ -5,7 +5,7 @@ import { generateBannerLinks } from '@/lib/strapi/__tests__/factories/bannerLink
 const fixedDateIsoString = new Date('2024-01-01T00:00:00.000Z').toISOString();
 
 export const strapiReleaseNotes: StrapiReleaseNotes = {
-  data: [
+  ...[
     {
       id: 1,
       dirName: 'release-notes-dir',
@@ -13,21 +13,19 @@ export const strapiReleaseNotes: StrapiReleaseNotes = {
       title: 'Release Notes Title',
       bannerLinks: generateBannerLinks(2),
       product: {
-        data: {
-          isVisible: true,
-          tags: { data: [] },
-          name: 'Test Product',
-          slug: 'test-product',
-          shortName: 'TP',
-          bannerLinks: generateBannerLinks(1),
-          overview: { data: { id: 0 } },
-          quickstart_guide: { data: { id: 0 } },
-          api_data_list_page: { data: undefined },
-          guide_list_page: { data: { id: 0 } },
-          tutorial_list_page: { data: { id: 0 } },
-          release_note: { data: { id: 0 } },
-          use_case_list_page: { data: { id: 0 } },
-        },
+        isVisible: true,
+        tags: [],
+        name: 'Test Product',
+        slug: 'test-product',
+        shortName: 'TP',
+        bannerLinks: generateBannerLinks(1),
+        overview: 0,
+        quickstart_guide: 0,
+        api_data_list_page: undefined,
+        guide_list_page: 0,
+        tutorial_list_page: 0,
+        release_note: 0,
+        use_case_list_page: 0,
       },
       seo: {
         metaTitle: 'Release Notes SEO Title',

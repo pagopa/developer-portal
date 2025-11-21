@@ -5,23 +5,16 @@ import { StrapiRelatedLinks } from '@/lib/strapi/types/link';
 import { StrapiSeo } from '@/lib/strapi/types/seo';
 import { Paginated } from '@/lib/strapi/types/paginated';
 import { StrapiPart } from '@/lib/strapi/types/part';
-import { StrapiComponent } from '@/lib/strapi/types/strapiComponent';
 import { StrapiTag } from '@/lib/strapi/types/tag';
 
 export type StrapiBaseUseCase = {
-  readonly coverImage: {
-    readonly data?: StrapiMedia;
-  };
-  readonly headerImage?: {
-    readonly data?: StrapiMedia;
-  };
-  readonly product: {
-    readonly data: StrapiBaseProductWithBannerLinks;
-  };
+  readonly coverImage?: StrapiMedia;
+  readonly headerImage?: StrapiMedia;
+  readonly product: StrapiBaseProductWithBannerLinks;
   readonly publishedAt?: string;
   readonly slug: string;
   readonly subtitle?: string;
-  readonly tags: StrapiComponent<readonly StrapiTag[] | undefined>;
+  readonly tags?: readonly StrapiTag[];
   readonly title: string;
 };
 

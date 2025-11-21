@@ -8,14 +8,10 @@ export type StrapiGuideListPage = {
   readonly id: number;
   readonly title: string;
   readonly description: string;
-  readonly product: {
-    readonly data?: StrapiBaseProductWithRelations;
-  };
+  readonly product?: StrapiBaseProductWithRelations;
   readonly guidesByCategory: ReadonlyArray<{
     readonly category: string;
-    readonly guides: {
-      readonly data: ReadonlyArray<StrapiBaseGuide>;
-    };
+    readonly guides: ReadonlyArray<StrapiBaseGuide>;
   }>;
   readonly bannerLinks: ReadonlyArray<StrapiBannerLink>;
   readonly seo?: StrapiSeo;

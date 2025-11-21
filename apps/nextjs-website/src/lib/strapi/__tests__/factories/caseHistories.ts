@@ -1,12 +1,13 @@
 import { mediaJpeg } from '@/lib/strapi/__tests__/factories/media';
 import { strapiCaseHistories } from '@/lib/strapi/__tests__/fixtures/caseHistories';
 import { StrapiCaseHistories } from '@/lib/strapi/types/caseHistories';
+import { StrapiBaseProductWithoutBannerLinks } from '@/lib/strapi/types/product';
 
 export function minimalDataCaseHistories() {
-  const strapiCaseHistory = strapiCaseHistories.data[0];
+  const strapiCaseHistory = strapiCaseHistories[0];
   return {
     ...strapiCaseHistories,
-    data: [
+    ...[
       {
         ...strapiCaseHistory,
         title: 'Minimal Data Case History',
@@ -23,10 +24,10 @@ export function minimalDataCaseHistories() {
 }
 
 export function caseHistoriesWithMissingData() {
-  const strapiCaseHistory = strapiCaseHistories.data[0];
+  const strapiCaseHistory = strapiCaseHistories[0];
   return {
     ...strapiCaseHistories,
-    data: [
+    ...[
       {
         ...strapiCaseHistory,
         title: undefined,
@@ -39,20 +40,20 @@ export function caseHistoriesWithMissingData() {
 }
 
 export function caseHistoryWithMissingMandatoryData() {
-  const strapiCaseHistory = caseHistoriesWithMissingData().data[0];
+  const strapiCaseHistory = caseHistoriesWithMissingData()[0];
   return {
     ...strapiCaseHistories,
     data: [
       {
         ...strapiCaseHistory,
-        products: { data: [] },
+        products: [],
       },
     ],
   };
 }
 
 export function caseHistoriesWithMultipleProducts() {
-  const strapiCaseHistory = strapiCaseHistories.data[0];
+  const strapiCaseHistory = strapiCaseHistories[0];
   const secondProduct = {
     isVisible: true,
     name: 'Second Product',
@@ -65,22 +66,23 @@ export function caseHistoriesWithMultipleProducts() {
 
   return {
     ...strapiCaseHistories,
-    data: [
+    ...[
       {
         ...strapiCaseHistory,
-        products: {
-          data: [...strapiCaseHistory.products.data, secondProduct],
-        },
+        products: [
+          ...strapiCaseHistory.products,
+          secondProduct,
+        ] as readonly StrapiBaseProductWithoutBannerLinks[],
       },
     ],
   } satisfies StrapiCaseHistories;
 }
 
 export function caseHistoriesWithoutImage() {
-  const strapiCaseHistory = strapiCaseHistories.data[0];
+  const strapiCaseHistory = strapiCaseHistories[0];
   return {
     ...strapiCaseHistories,
-    data: [
+    ...[
       {
         ...strapiCaseHistory,
         image: undefined,

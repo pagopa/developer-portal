@@ -9,12 +9,10 @@ export type StrapiUseCaseListPage = {
   readonly bannerLinks: readonly StrapiBannerLink[];
   readonly description: string;
   readonly enableFilters: boolean | undefined;
-  readonly product: {
-    readonly data?: StrapiBaseProductWithRelations;
-  };
+  readonly product?: StrapiBaseProductWithRelations;
   readonly seo?: StrapiSeo;
   readonly title: string;
-  readonly useCases: { readonly data: readonly StrapiBaseUseCase[] };
+  readonly useCases: readonly StrapiBaseUseCase[];
 };
 
 export type StrapiUseCaseListPages = Paginated<StrapiUseCaseListPage>;
