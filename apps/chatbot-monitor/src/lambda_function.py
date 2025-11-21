@@ -139,13 +139,15 @@ LOGGER = get_logger(__name__)
             "receiptHandle": "AQEBwJnKyrHigUMZj6rYigCgxlaS3SLy0a...",
             "body": {
                "operation": "add_score",
-                "data": {
-                    "trace_id": "44043274333370565950845722362369470811",
-                    "name": "answer_relevancy",
-                    "score": 0.9,
-                    "comment": null,
-                    "data_type": "NUMERIC"
-                }
+                "data": [
+                    {
+                        "trace_id": "44043274333370565950845722362369470811",
+                        "name": "answer_relevancy",
+                        "score": 0.9,
+                        "comment": null,
+                        "data_type": "NUMERIC"
+                    }
+                ]
             }
         }
     ]
@@ -160,38 +162,33 @@ def lambda_handler(event, context):
     for record in event.get("Records", []):
         body = record.get("body", "{}")
         body = json.loads(body)
-    
-        operation = body.get("opertion")
 
+        operation = body.get("operation")
+        data = body.get("data", {})
         if operation == "create_trace":
             create_langfuse_trace(
-                trace_id=body.get("trace_id"),
-                user_id=body.get("user_id"),
-                session_id=body.get("session_id"),
-                query=body.get("query"),
-                chat_history=body.get("chat_history"),
-                response=body.get("response"),
-                contexts=body.get("contexts"),
-                tags=body.get("tags"),
-                spans=body.get("spans"),
-                query_for_database=body.get("query_for_database"),
+                trace_id=data.get("trace_id"),
+                user_id=data.get("user_id"),
+                session_id=data.get("session_id"),
+                query=data.get("query"),
+                messages=data.get("messages"),
+                response=data.get("response"),
+                contexts=data.get("contexts"),
+                tags=data.get("topics"),
+                spans=data.get("traceSpans"),
             )
         elif operation == "add_score":
-            add_langfuse_score(
-            trace_id=body.get("trace_id"),
-            name=body.get("name"),
-            score=body.get("score"),
-            comment=body.get("comment"),
-            data_type=body.get("data_type"),
-            )
+            for score in data:
+                add_langfuse_score(
+                    trace_id=score.get("trace_id"),
+                    name=score.get("name"),
+                    score=score.get("score"),
+                    comment=score.get("comment"),
+                    data_type=score.get("data_type"),
+                )
         else:
             LOGGER.warning(f"Unknown operation: {operation}")
-        
-        results.append(
-            {
-            "operation": operation,
-            "trace_id": body.get("trace_id")
-            }
-        )
+
+        results.append({"operation": operation, "trace_id": body.get("trace_id")})
 
     return {"statusCode": 200, "result": results, "event": event}

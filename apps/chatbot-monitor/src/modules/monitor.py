@@ -188,12 +188,35 @@ def create_langfuse_child(
     obs.end()
 
 
+def mask_chat_history(messages: List[Dict[str, str]]) -> List[Dict[str, str]]:
+    """Masks PII in the chat history.
+    Args:
+        chat_history (List[Dict[str, str]]): The chat history.
+
+    Returns:
+        List[Dict[str, str]]: The masked chat history.
+    """
+
+    chat_history = []
+    if messages:
+        for message in messages:
+            user_content = message["question"]
+            assistant_content = message["answer"]
+            chat_history.append(
+                {
+                    "user": PRESIDIO.mask_pii(user_content),
+                    "assistant": PRESIDIO.mask_pii(assistant_content),
+                }
+            )
+    return chat_history
+
+
 def create_langfuse_trace(
     trace_id: str,
     user_id: str,
     session_id: str,
     query: str,
-    chat_history: List[Dict[str, str]],
+    messages: List[Dict[str, str]],
     response: str,
     contexts: List[str],
     tags: List[str],
@@ -206,7 +229,7 @@ def create_langfuse_trace(
         user_id (str): The ID of the user.
         session_id (str): The ID of the session.
         query (str): The user query.
-        chat_history (List[Dict[str, str]]): The chat history.
+        messages (List[Dict[str, str]]): The chat messages between the user and the assistant.
         response (str): The chat response.
         contexts (List[str]): The retrieved contexts.
         tags (List[str]): The tags for the trace.
@@ -229,7 +252,7 @@ def create_langfuse_trace(
     root.update_trace(
         input={
             "query": PRESIDIO.mask_pii(query),
-            "chat_history": chat_history,
+            "chat_history": mask_chat_history(messages),
         },
         output=PRESIDIO.mask_pii(response),
         metadata={"contexts": contexts},

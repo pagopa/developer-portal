@@ -1,5 +1,11 @@
 # ivs-functions
 
+## 2.0.0
+
+### Major Changes
+
+- 682ca62: Add SSM client to manage env var
+
 ## 1.0.0
 
 ### Major Changes

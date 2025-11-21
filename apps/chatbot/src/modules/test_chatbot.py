@@ -10,7 +10,7 @@ from src.modules.models import get_llm, get_embed_model
 from src.modules.chatbot import Chatbot, LANGFUSE_CLIENT
 
 
-LOGGER = get_logger(__name__)
+LOGGER = get_logger(__name__, level=SETTINGS.log_level)
 CHATBOT = Chatbot()
 
 

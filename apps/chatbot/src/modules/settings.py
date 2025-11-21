@@ -7,12 +7,14 @@ from pydantic_settings import BaseSettings
 
 from src.modules.logger import get_logger
 
-LOGGER = get_logger(__name__)
+
+LOGGER = get_logger(__name__, level=os.getenv("LOG_LEVEL", "info"))
 CWF = Path(__file__)
 ROOT = CWF.parent.parent.parent.absolute().__str__()
 PARAMS = yaml.safe_load(open(os.path.join(ROOT, "config", "params.yaml"), "r"))
 PROMPTS = yaml.safe_load(open(os.path.join(ROOT, "config", "prompts.yaml"), "r"))
 AWS_SESSION = boto3.Session()
+
 
 def get_ssm_parameter(name: str | None, default: str | None = None) -> str | None:
     """
@@ -38,6 +40,7 @@ def get_ssm_parameter(name: str | None, default: str | None = None) -> str | Non
         return default
 
     return value
+
 
 GOOGLE_SERVICE_ACCOUNT = get_ssm_parameter(
     os.getenv("CHB_AWS_SSM_GOOGLE_SERVICE_ACCOUNT")
@@ -66,8 +69,8 @@ class ChatbotSettings(BaseSettings):
         "AWS_REGION"
     )
     auth_cognito_userpool_id: str = (
-        mock_user_pool_id() 
-        if os.getenv("ENVIRONMENT", "local") in ["test", "local"] 
+        mock_user_pool_id()
+        if os.getenv("ENVIRONMENT", "local") in ["test", "local"]
         else os.getenv("AUTH_COGNITO_USERPOOL_ID")
     )
     google_api_key: str = get_ssm_parameter(
@@ -78,20 +81,13 @@ class ChatbotSettings(BaseSettings):
     strapi_api_key: str = get_ssm_parameter(
         os.getenv("CHB_AWS_SSM_STRAPI_API_KEY"), os.getenv("CHB_STRAPI_API_KEY", "")
     )
-    langfuse_host: str = os.getenv("CHB_LANGFUSE_HOST")
-    langfuse_public_key: str = get_ssm_parameter(
-        os.getenv("CHB_AWS_SSM_LANGFUSE_PUBLIC_KEY"),
-        os.getenv("LANGFUSE_INIT_PROJECT_PUBLIC_KEY"),
-    )
-    langfuse_secret_key: str = get_ssm_parameter(
-        os.getenv("CHB_AWS_SSM_LANGFUSE_SECRET_KEY"),
-        os.getenv("LANGFUSE_INIT_PROJECT_SECRET_KEY"),
-    )
     cors_domains: str = os.getenv("CORS_DOMAINS", '["*"]')
     log_level: str = os.getenv("LOG_LEVEL", "info")
-    max_daily_evaluations: int = int(os.getenv("CHB_MAX_DAILY_EVALUATIONS", "200")
+    max_daily_evaluations: int = int(os.getenv("CHB_MAX_DAILY_EVALUATIONS", "200"))
     expire_days: int = int(os.getenv("EXPIRE_DAYS", "90"))
-    session_max_duration_days: float = float(os.getenv("CHB_SESSION_MAX_DURATION_DAYS", "1"))
+    session_max_duration_days: float = float(
+        os.getenv("CHB_SESSION_MAX_DURATION_DAYS", "1")
+    )
 
     # RAG settings
     embed_batch_size: int = int(os.getenv("CHB_EMBED_BATCH_SIZE", "100"))

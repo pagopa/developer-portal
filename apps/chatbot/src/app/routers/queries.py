@@ -1,7 +1,12 @@
 import datetime
 import nh3
 import json
+<<<<<<< HEAD
 import uuid
+=======
+import os
+import secrets
+>>>>>>> CAI-629-refactor-chatbot
 from botocore.exceptions import BotoCoreError, ClientError
 from boto3.dynamodb.conditions import Key
 from fastapi import APIRouter, Header, HTTPException
@@ -205,7 +210,7 @@ async def query_creation(
 ):
 
     now = datetime.datetime.now(datetime.UTC)
-    trace_id = str(uuid.uuid4())
+    trace_id = secrets.token_hex(16)
     userId = current_user_id(authorization)
     session = find_or_create_session(userId, now=now)
     salt = session_salt(session["id"])
@@ -215,9 +220,6 @@ async def query_creation(
 
     answer_json = await chatbot.chat_generate(
         query_str=query_str,
-        trace_id=trace_id,
-        session_id=session["id"],
-        user_id=user_id,
         messages=messages,
     )
     answer = get_final_response(
@@ -240,17 +242,16 @@ async def query_creation(
         now=now,
     )
 
-    # TODO: populate spans
     trace_data = {
         "trace_id": trace_id,
-        "user_id": userId,
+        "user_id": user_id,
         "session_id": session["id"],
         "query": query.question,
         "chat_history": messages if messages else [],
         "response": answer,
         "contexts": answer_json.get("contexts", []),
-        "tags": ["chatbot-query"],
-        "spans": [],
+        "tags": answer_json.get("products", []),
+        "spans": answer_json.get("spans", []),
         "query_for_database": bodyToSave,
     }
     create_monitor_trace(trace_data)
@@ -298,4 +299,3 @@ async def queries_fetching(
         result = dbResponse.get("Items", [])
 
     return result
-
