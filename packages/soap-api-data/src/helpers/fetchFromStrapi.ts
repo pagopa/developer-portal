@@ -21,7 +21,8 @@ export async function getResponseFromStrapi(url: string) {
 }
 
 // In case of an error, the error will be thrown
-const MISSING_STRAPI_CONFIG_ERROR = 'Missing Strapi configuration in environment variables';
+const MISSING_STRAPI_CONFIG_ERROR =
+  'Missing Strapi configuration in environment variables';
 
 async function fetchFromStrapiResponse(url: string) {
   console.log('Fetching from Strapi...');
