@@ -36,7 +36,7 @@ describe('replaceEscapedTokensWithBackTicks (single file)', () => {
     expect(original).toContain(' \<MyTag>');
     const updated = await addBackticksEscapedAngleTokens(file);
     // Leading backslash preserved, < and > replaced with backticks
-    expect(updated).toContain('`<MyTag>`');
+    expect(updated).toContain(' `<MyTag>`');
   });
 
   it('replaces multiple tokens in file', async () => {
