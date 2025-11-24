@@ -43,6 +43,11 @@ const WebinarPlayerSection = ({
     () => [WebinarState.live, WebinarState.comingSoon].includes(webinarState),
     [webinarState]
   );
+  const startPlaybackFromSeconds =
+    typeof webinar.onDemandVideoStartPoint === 'number' &&
+    webinar.onDemandVideoStartPoint > 0
+      ? webinar.onDemandVideoStartPoint
+      : undefined;
   return (
     webinar.playerSrc && (
       <div style={{ backgroundColor: palette.grey[50] }}>
@@ -75,6 +80,7 @@ const WebinarPlayerSection = ({
                   src={webinar.playerSrc}
                   poster={webinar.playerCoverImageUrl}
                   reloadToken={reloadPlayerToken}
+                  startFromSeconds={startPlaybackFromSeconds}
                 />
               )}
             </Box>

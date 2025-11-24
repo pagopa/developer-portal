@@ -48,6 +48,7 @@ export type StrapiWebinar = {
     readonly bodyContent?: BlocksContent;
     readonly playerSrc?: string;
     readonly playerCoverImage?: { readonly data?: StrapiMedia };
+    readonly onDemandVideoStartPoint?: number;
     readonly startDatetime?: string;
     readonly endDatetime?: string;
     readonly subscribeParagraphLabel?: string;

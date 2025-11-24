@@ -1,3 +1,4 @@
+/* eslint-disable functional/no-try-statements */
 'use client';
 
 import { useEffect, useRef } from 'react';
@@ -20,6 +21,7 @@ interface PlayerProps {
   src: string;
   poster?: string;
   reloadToken?: number;
+  startFromSeconds?: number;
 }
 
 const TECH_ORDER_AMAZON_IVS = ['AmazonIVS'];
@@ -83,6 +85,38 @@ const VideoJsPlayer = (props: PlayerProps) => {
     props.reloadToken,
     props.src,
   ]);
+
+  useEffect(() => {
+    if (!playerRef.current) {
+      return;
+    }
+    const startFromSeconds =
+      typeof props.startFromSeconds === 'number' ? props.startFromSeconds : 0;
+    if (startFromSeconds <= 0) {
+      return;
+    }
+    const player = playerRef.current;
+    const seekTo = Math.max(startFromSeconds, 0);
+
+    const seekToStart = () => {
+      try {
+        player.currentTime(seekTo);
+      } catch {
+        // Ignore seek errors and leave playback at current time
+      }
+    };
+
+    if (player.readyState() > 0) {
+      seekToStart();
+      return;
+    }
+
+    player.one('loadedmetadata', seekToStart);
+
+    return () => {
+      player.off('loadedmetadata', seekToStart);
+    };
+  }, [props.reloadToken, props.src, props.startFromSeconds]);
 
   return (
     <Box sx={{ position: 'relative', paddingBottom: '56.25%' }}>
