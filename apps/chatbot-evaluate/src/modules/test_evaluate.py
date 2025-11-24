@@ -55,7 +55,6 @@ def test_evaluation() -> None:
     query_str = "text text text text text"
     response_str = "text text text text text"
     scores = JUDGE.evaluate(
-        trace_id="test_trace_id",
         query_str=query_str,
         response_str=response_str,
         retrieved_contexts=contexts,
