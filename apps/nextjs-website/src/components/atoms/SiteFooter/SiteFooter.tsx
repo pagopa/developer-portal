@@ -127,7 +127,7 @@ const SiteFooter = () => {
           linkType: 'external',
         },
         {
-          ariaLabel: t('services.links.centroStella.ariaLabel'),
+          ariaLabel: t('services.links.pari.ariaLabel'),
           href: 'https://www.pagopa.it/prodotti-e-servizi/pari/',
           label: t('services.links.pari.label'),
           linkType: 'external',
