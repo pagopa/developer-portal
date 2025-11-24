@@ -1,5 +1,11 @@
 # chatbot
 
+## 7.1.2
+
+### Patch Changes
+
+- 5c4d9b6: Set default postgresql password for test
+
 ## 7.1.1
 
 ### Patch Changes

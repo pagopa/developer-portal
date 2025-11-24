@@ -31,7 +31,7 @@ function makeApiDataListPageCard(item: StrapiBaseApiData, slug: string) {
     ].filter((label) => !!label.label),
     title: item?.attributes?.title,
     text: item?.attributes?.description || '',
-    icon: item?.attributes?.icon?.data?.attributes.url || '',
+    icon: item?.attributes?.icon?.data?.attributes.url || undefined,
     href: `/${slug}/api/${
       item.attributes.apiRestDetail
         ? item.attributes.apiRestDetail?.slug
