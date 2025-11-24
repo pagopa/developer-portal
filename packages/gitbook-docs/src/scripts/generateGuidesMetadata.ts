@@ -19,10 +19,7 @@ import {
 import { StrapiGuide } from '../helpers/strapiTypes';
 import { MetadataInfo } from '../helpers/guidesMetadataHelper';
 import { sitePathFromS3Path } from '../helpers/sitePathFromS3Path';
-import {
-  getSyncedGuideListPagesResponseJsonPath,
-  getSyncedGuidesResponseJsonPath,
-} from '../syncedResponses';
+import { getSyncedGuidesResponseJsonPath } from '../syncedResponses';
 
 // Load environment variables from .env file
 dotenv.config();
@@ -33,8 +30,6 @@ const S3_PATH_TO_GITBOOK_DOCS =
 const S3_GUIDE_METADATA_JSON_PATH =
   process.env.S3_GUIDE_METADATA_JSON_PATH || 'guides-metadata.json';
 const SYNCED_GUIDES_RESPONSE_JSON_PATH = getSyncedGuidesResponseJsonPath();
-const SYNCED_GUIDE_LIST_PAGES_RESPONSE_JSON_PATH =
-  getSyncedGuideListPagesResponseJsonPath();
 
 const s3Client = makeS3Client();
 
@@ -128,18 +123,6 @@ async function convertGuideToMetadataItems(
 async function main() {
   console.log('Starting to process Markdown files...');
 
-  // TODO: remove when Strapi will manage Metadata
-  // eslint-disable-next-line functional/no-let
-  let guideListPagesResponse;
-  try {
-    guideListPagesResponse = await getResponseFromStrapi(
-      'api/guide-list-pages/?populate[product][populate][0]=logo&populate[product][populate][1]=bannerLinks.icon&populate[product][populate][2]=overview&populate[product][populate][3]=quickstart_guide&populate[product][populate][4]=release_note&populate[product][populate][5]=api_data_list_page&populate[product][populate][6]=api_data_list_page.apiData.*&populate[product][populate][7]=api_data_list_page.apiData.apiRestDetail.*&populate[product][populate][8]=guide_list_page&populate[product][populate][9]=tutorial_list_page&populate[product][populate][10]=use_case_list_page&populate[guidesByCategory][populate][0]=guides.mobileImage&populate[guidesByCategory][populate][1]=guides.image&populate[guidesByCategory][populate][2]=guides.listItems&populate[bannerLinks][populate][0]=icon&populate[seo][populate]=*,metaImage,metaSocial.image'
-    );
-  } catch (error) {
-    console.error('Error fetching guide list pages from Strapi:', error);
-    process.exit(1);
-  }
-
   // TODO: restore this strapiGuidesUrl when Metadata will be managed by Strapi
   // const strapiGuidesUrl =
   //   'api/guides?populate[0]=product&populate[1]=versions&pagination[pageSize]=1000&pagination[page]=1';
@@ -174,13 +157,6 @@ async function main() {
   await putS3File(
     responseJson,
     SYNCED_GUIDES_RESPONSE_JSON_PATH,
-    `${S3_BUCKET_NAME}`,
-    s3Client
-  );
-
-  await putS3File(
-    guideListPagesResponse,
-    SYNCED_GUIDE_LIST_PAGES_RESPONSE_JSON_PATH,
     `${S3_BUCKET_NAME}`,
     s3Client
   );

@@ -1,5 +1,27 @@
 # nextjs-website
 
+## 13.0.0
+
+### Major Changes
+
+- 037a82d: Add route handlers for guides, release notes and solutions
+  Add fetch using route handlers
+  Add dynamic content update in GitBookTemplate
+
+## 12.1.0
+
+### Minor Changes
+
+- ab5c9b6: Refactor GitBookContent Heading to a generic atom component ContentHeading and use it from GitBookContent and Block heading parts
+
+### Patch Changes
+
+- 859e21a: Fix autoplay logic
+- a9e0699: Avoid accessing local storage during first render to fix the undefined window error
+- ebba255: Fix missing image behaviour
+- Updated dependencies [0237257]
+  - gitbook-docs@1.4.0
+
 ## 12.0.0
 
 ### Major Changes

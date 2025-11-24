@@ -22,11 +22,13 @@ type WebinarPlayerSectionProps = {
   webinar: Webinar;
   webinarState: WebinarState;
   enableQuestionForm?: boolean;
+  reloadPlayerToken?: number;
 };
 const WebinarPlayerSection = ({
   webinar,
   webinarState,
   enableQuestionForm = false,
+  reloadPlayerToken = 0,
 }: WebinarPlayerSectionProps) => {
   const t = useTranslations('webinar');
   const { palette } = useTheme();
@@ -72,6 +74,7 @@ const WebinarPlayerSection = ({
                   playsInline={true}
                   src={webinar.playerSrc}
                   poster={webinar.playerCoverImageUrl}
+                  reloadToken={reloadPlayerToken}
                 />
               )}
             </Box>
