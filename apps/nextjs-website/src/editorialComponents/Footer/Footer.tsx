@@ -21,7 +21,6 @@ export const Footer = ({
   legalInfo,
   links: { aboutUs, resources, followUs, services },
   showFundedByNextGenerationEULogo = false,
-  ...langProps
 }: FooterProps) => (
   <Box
     borderColor='divider'
