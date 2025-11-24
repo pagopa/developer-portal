@@ -60,7 +60,7 @@ jobs:
       - name: Build Cognito Functions
         run: npm run build -w cognito-functions
 
-      - name: Build Cognito Functions
+      - name: Build IVS Functions
         run: npm run build -w ivs-functions
       
       - name: Pull & update submodules recursively
