@@ -4,21 +4,13 @@ import React from 'react';
 import { useTranslations } from 'next-intl';
 import { Divider } from '@mui/material';
 import { Footer } from '@/editorialComponents/Footer';
-import { defaultLanguage, isProduction, languages } from '@/config';
+import { isProduction } from '@/config';
 import type {
   FooterLinksType,
   PreLoginFooterLinksType,
 } from '@/editorialComponents/Footer/types';
 
-type SiteFooterProps = {
-  readonly activeLanguage?: { id: string; value: string };
-  onLanguageChange?: () => null;
-};
-
-const SiteFooter = ({
-  activeLanguage = defaultLanguage,
-  onLanguageChange = () => null,
-}: SiteFooterProps) => {
+const SiteFooter = () => {
   const t = useTranslations('footer');
 
   const links: PreLoginFooterLinksType = {
@@ -201,9 +193,6 @@ const SiteFooter = ({
     <>
       <Divider />
       <Footer
-        onLanguageChanged={onLanguageChange}
-        activeLanguage={activeLanguage}
-        languages={languages}
         companyLink={companyLink}
         legalInfo={legalInfo}
         links={footerLinks}
