@@ -40,7 +40,7 @@ const TutorialsSectionPreviewCardsLayout = ({
           title: tutorial.title || '',
           ctaLabel: t('overview.tutorialsList.ctaLabel'),
           text: tutorial.description || '',
-          icon: tutorial.icon?.url || '',
+          icon: tutorial.icon?.url,
           useSrc: tutorial.icon !== undefined,
           href: tutorial.path,
         }))}

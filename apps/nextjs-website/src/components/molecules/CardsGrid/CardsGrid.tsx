@@ -14,7 +14,7 @@ export type CardProps = {
   text: string;
   href?: string;
   ctaLabel?: string;
-  icon: string;
+  icon?: string;
   iconColor?: string;
   labels?: { readonly label: string; readonly path?: string }[];
   useSrc: boolean;
@@ -80,11 +80,13 @@ const CardsGrid = ({
                       variant: ctaButtonsVariant,
                     }}
                     icon={
-                      <IconWrapper
-                        color={iconColor || palette.text.primary}
-                        icon={icon}
-                        useSrc={useSrc}
-                      />
+                      icon && (
+                        <IconWrapper
+                          color={iconColor || palette.text.primary}
+                          icon={icon}
+                          useSrc={useSrc}
+                        />
+                      )
                     }
                     labels={labels}
                   />
