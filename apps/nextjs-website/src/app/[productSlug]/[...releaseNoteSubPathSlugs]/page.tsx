@@ -24,34 +24,15 @@ import {
   makeMetadataFromStrapi,
 } from '@/helpers/metadata.helpers';
 import { BreadcrumbSegment } from '@/lib/types/path';
-import { baseUrl, REVALIDATE_LONG_INTERVAL } from '@/config';
+import { baseUrl } from '@/config';
 import PageNotFound from '@/app/not-found';
-import { getReleaseNotesMetadata } from '@/helpers/s3Metadata.helpers';
 
 type ReleaseNotePageStaticParams = {
   productSlug: string;
   releaseNoteSubPathSlugs: string[];
 };
-// TODO: remove when release notes metadata will be managed in strapi
-export const revalidate = REVALIDATE_LONG_INTERVAL;
+export const dynamic = 'force-dynamic';
 
-const PRODUCT_SLUG_PATH_INDEX = 1;
-const RELEASE_NOTE_SUB_PATH_INDEX = 2;
-export async function generateStaticParams(): Promise<
-  ReleaseNotePageStaticParams[]
-> {
-  const releaseNotes = await getReleaseNotesMetadata();
-  const releaseNoteParams = releaseNotes
-    .map(({ path }) => path.split('/'))
-    .filter((paths) => paths.length > RELEASE_NOTE_SUB_PATH_INDEX)
-    .map((paths) => {
-      return {
-        productSlug: paths[PRODUCT_SLUG_PATH_INDEX],
-        releaseNoteSubPathSlugs: paths.slice(RELEASE_NOTE_SUB_PATH_INDEX),
-      };
-    });
-  return releaseNoteParams;
-}
 export async function generateMetadata({
   params,
 }: {
@@ -145,6 +126,16 @@ const ReleaseNotePage = async ({
     things: [convertSeoToStructuredDataArticle(seo)],
   });
 
+  const initialBreadcrumbs = [
+    ...productPageToBreadcrumbs(product, [
+      {
+        name: title,
+        path: `/${product.slug}/release-note`,
+      },
+      ...breadcrumbs,
+    ]),
+  ];
+
   return (
     <ProductLayout
       product={product}
@@ -154,15 +145,7 @@ const ReleaseNotePage = async ({
     >
       <GitBookTemplate
         menuName={title}
-        breadcrumbs={[
-          ...productPageToBreadcrumbs(product, [
-            {
-              name: title,
-              path: `/${product.slug}/release-note`,
-            },
-            ...breadcrumbs,
-          ]),
-        ]}
+        initialBreadcrumbs={initialBreadcrumbs}
         hasInPageMenu={false}
         {...props}
       />
