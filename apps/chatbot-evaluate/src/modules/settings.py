@@ -65,5 +65,9 @@ class ChatbotSettings(BaseSettings):
     # prompts
     condense_prompt_str: str = PROMPTS["condense_prompt_str"]
 
+    aws_sqs_queue_monitor_name: str = os.getenv(
+        "CHB_AWS_SQS_QUEUE_MONITOR_NAME", "chatbot-monitor-queue"
+    )
+
 
 SETTINGS = ChatbotSettings()

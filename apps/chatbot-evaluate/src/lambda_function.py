@@ -2,9 +2,12 @@ import json
 
 from src.modules.judge import Judge
 from src.modules.logger import get_logger
+from src.modules.sqs import get_sqs_monitor_queue
+
 
 LOGGER = get_logger(__name__)
 JUDGE = Judge()
+SQS_MONITOR = get_sqs_monitor_queue()
 
 # SQS event example:
 """ {
@@ -60,16 +63,30 @@ def lambda_handler(event, context):
         body = record.get("body", "{}")
         body = json.loads(body)
         trace_id = body.get("trace_id", "")
-        results.append(
-            {
-                "trace_id": trace_id,
-                "scores": JUDGE.evaluate(
-                    query_str=body.get("query_str", ""),
-                    response_str=body.get("response_str", ""),
-                    retrieved_contexts=body.get("retrieved_contexts", []),
-                    messages=body.get("messages", None),
-                ),
-            }
+
+        scores = JUDGE.evaluate(
+            query_str=body.get("query_str", ""),
+            response_str=body.get("response_str", ""),
+            retrieved_contexts=body.get("retrieved_contexts", []),
+            messages=body.get("messages", None),
         )
 
-    return {"statusCode": 200, "result": results, "event": event}
+        for k, v in scores.items():
+            results.append(
+                {
+                    "trace_id": trace_id,
+                    "name": k,
+                    "score": v,
+                    "comment": None,
+                    "data_type": "NUMERIC",
+                }
+            )
+
+        try:
+            sqs_response = SQS_MONITOR.send_message(
+                MessageBody=json.dumps(results),
+                MessageGroupId=trace_id,  # Required for FIFO queues
+            )
+            LOGGER.info(f"sqs response: {sqs_response}")
+        except Exception as e:
+            LOGGER.error(f"Failed to send SQS message for trace_id {trace_id}: {e}")
