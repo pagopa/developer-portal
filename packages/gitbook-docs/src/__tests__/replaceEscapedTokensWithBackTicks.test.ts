@@ -71,6 +71,14 @@ describe('replaceEscapedTokensWithBackTicks (single file)', () => {
     // Nested pattern: <Outer <Inner>> -> `<Outer <Inner>>` (two closing backticks)
     expect(updated).toMatch(/Nested sequence `<Outer <Inner>>` end\./);
   });
+
+  it('handles nested sequences followed by multiple escaped tokens', async () => {
+    const file = path.join(fixturesRoot, 'nested', 'outer.md');
+    const updated = await addBackticksEscapedAngleTokens(file);
+    expect(updated).toContain(
+      'Parse sequence of escaped tokens after a nested one `<Outer <Inner>>` `<One>``<Two>` `<Three>`'
+    );
+  });
 });
 
 describe('recursivelyReplaceEscapedTokensWithBackTicks', () => {
