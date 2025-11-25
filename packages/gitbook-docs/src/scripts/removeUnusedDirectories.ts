@@ -17,7 +17,7 @@ import {
   deleteS3Directory,
   downloadS3File,
   makeS3Client,
-  writeMetadataJson,
+  putS3File,
 } from '../helpers/s3Bucket.helper';
 import { S3Client } from '@aws-sdk/client-s3';
 import path from 'path';
@@ -248,7 +248,7 @@ async function main() {
         getS3Client()
       );
     });
-    await writeMetadataJson(
+    await putS3File(
       dirNames,
       S3_DIRNAME_FILE_PATH,
       S3_BUCKET_NAME!,
