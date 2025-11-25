@@ -3,7 +3,9 @@ import json
 from src.modules.logger import get_logger
 from src.modules.monitor import create_langfuse_trace, add_langfuse_score
 
+
 LOGGER = get_logger(__name__)
+
 
 # payload example
 """
@@ -138,7 +140,7 @@ LOGGER = get_logger(__name__)
             "messageId": "059f36b4-87a3-44ab-83d2-661975830a7d",
             "receiptHandle": "AQEBwJnKyrHigUMZj6rYigCgxlaS3SLy0a...",
             "body": {
-               "operation": "add_score",
+                "operation": "add_scores",
                 "data": [
                     {
                         "trace_id": "44043274333370565950845722362369470811",
@@ -177,7 +179,7 @@ def lambda_handler(event, context):
                 tags=data.get("topics"),
                 spans=data.get("traceSpans"),
             )
-        elif operation == "add_score":
+        elif operation == "add_scores":
             for score in data:
                 add_langfuse_score(
                     trace_id=score.get("trace_id"),
