@@ -21,6 +21,7 @@ from langfuse._client.span import (
 from src.modules.logger import get_logger
 from src.modules.settings import SETTINGS
 from src.modules.presidio import PresidioPII
+from src.database_models import tables
 
 
 LOGGER = get_logger(__name__)
@@ -221,6 +222,7 @@ def create_langfuse_trace(
     contexts: List[str],
     tags: List[str],
     spans: List[dict],
+    query_for_database: dict,
 ) -> None:
     """Creates a Langfuse trace from a list of span dictionaries.
     Args:
@@ -233,6 +235,7 @@ def create_langfuse_trace(
         contexts (List[str]): The retrieved contexts.
         tags (List[str]): The tags for the trace.
         spans (List[dict]): The list of span dictionaries.
+        query_for_database (dict): The query data to save to the database.
     """
 
     span_root = spans[0]
@@ -247,12 +250,15 @@ def create_langfuse_trace(
         child["attributes"]["openinference.span.kind"] = "SPAN"
         [create_langfuse_child(root, child, spans) for child in root_children]
 
+    query_masked = PRESIDIO.mask_pii(query)
+    response_masked = PRESIDIO.mask_pii(response)
+
     root.update_trace(
         input={
-            "query": PRESIDIO.mask_pii(query),
+            "query": query_masked,
             "chat_history": mask_chat_history(messages),
         },
-        output=PRESIDIO.mask_pii(response),
+        output=response_masked,
         metadata={"contexts": contexts},
         user_id=user_id,
         session_id=session_id,
@@ -261,6 +267,14 @@ def create_langfuse_trace(
     root.end()
     LANGFUSE_CLIENT.flush()
     LOGGER.info(f"Created trace with ID: {trace_id} successfully!")
+
+    query_for_database["question"] = query_masked
+    query_for_database["answer"] = response_masked
+    save_query_to_database(query_for_database=query_for_database)
+
+
+def save_query_to_database(query_for_database: dict) -> None:
+    tables["queries"].put_item(Item=query_for_database)
 
 
 def add_langfuse_score(

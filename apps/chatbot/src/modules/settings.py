@@ -7,6 +7,7 @@ from pydantic_settings import BaseSettings
 
 from src.modules.logger import get_logger
 
+
 LOGGER = get_logger(__name__, level=os.getenv("LOG_LEVEL", "info"))
 CWF = Path(__file__)
 ROOT = CWF.parent.parent.parent.absolute().__str__()
@@ -82,6 +83,11 @@ class ChatbotSettings(BaseSettings):
     )
     cors_domains: str = os.getenv("CORS_DOMAINS", '["*"]')
     log_level: str = os.getenv("LOG_LEVEL", "info")
+    max_daily_evaluations: int = int(os.getenv("CHB_MAX_DAILY_EVALUATIONS", "200"))
+    expire_days: int = int(os.getenv("EXPIRE_DAYS", "90"))
+    session_max_duration_days: float = float(
+        os.getenv("CHB_SESSION_MAX_DURATION_DAYS", "1")
+    )
 
     # RAG settings
     embed_batch_size: int = int(os.getenv("CHB_EMBED_BATCH_SIZE", "100"))
