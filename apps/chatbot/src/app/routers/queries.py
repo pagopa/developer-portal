@@ -239,19 +239,11 @@ async def query_creation(
         "user_id": user_id,
         "session_id": session["id"],
         "query": query.question,
-<<<<<<< HEAD
-        "chat_history": messages if messages else [],
-        "response": answer,
-        "contexts": answer_json.get("contexts", []),
-        "tags": answer_json.get("products", []),
-        "spans": answer_json.get("spans", []),
-=======
         "messages": messages if messages else [],
         "response": answer,
         "contexts": answer_json.get("contexts", []),
         "tags": answer_json.get("products", []),
         "traceSpans": answer_json.get("spans", []),
->>>>>>> CAI-629-refactor-chatbot
         "query_for_database": bodyToSave,
     }
     create_monitor_trace(trace_data)
