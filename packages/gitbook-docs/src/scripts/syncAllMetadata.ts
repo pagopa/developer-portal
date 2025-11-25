@@ -13,7 +13,7 @@ import { MetadataItem } from '../metadataItem';
 import {
   downloadS3File,
   makeS3Client,
-  putS3File
+  putS3File,
 } from '../helpers/s3Bucket.helper';
 import { S3Client } from '@aws-sdk/client-s3';
 import { extractTitleFromMarkdown } from '../helpers/extractTitle.helper';
