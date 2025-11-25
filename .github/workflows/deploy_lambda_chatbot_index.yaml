@@ -1,4 +1,5 @@
-name: Deploy Lambda Chatbot index
+name: Deploy Lambda Chatbot Refresh Index
+run-name: Deploy Lambda Chatbot Refresh Index to ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.environment || 'dev' }}
 
 on:
   push:
