@@ -43,7 +43,7 @@ export const makeHomepageProps = (
           title: product.attributes.name,
           text: product.attributes.description ?? '',
           href: `${product.attributes.slug}/overview`,
-          icon: product.attributes.logo.data?.attributes.url || '',
+          icon: product.attributes.logo.data?.attributes.url || undefined,
           useSrc: true,
         })
       ),

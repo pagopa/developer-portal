@@ -1,5 +1,27 @@
 # chatbot
 
+## 7.1.2
+
+### Patch Changes
+
+- 5c4d9b6: Set default postgresql password for test
+
+## 7.1.1
+
+### Patch Changes
+
+- 39ab9cf: Let local tests work with Langfuse V3
+
+## 7.1.0
+
+### Minor Changes
+
+- 736a638: Replace Langfuse v2 with Langufuse v3.112.0 in the local environment
+
+### Patch Changes
+
+- 8681c49: fix settings
+
 ## 7.0.4
 
 ### Patch Changes

@@ -1,5 +1,29 @@
 # gitbook-docs
 
+## 1.4.0
+
+### Minor Changes
+
+- 0237257: Remove unused synced response file
+
+## 1.3.2
+
+### Patch Changes
+
+- cc00738: Rename writeMetadataJson to putS3File, fix sitePathFromLocalPath function by removing docs/dirName from path
+
+## 1.3.1
+
+### Patch Changes
+
+- af1d820: Optimize GitBook sync workflow to reduce API calls and improve performance
+
+## 1.3.0
+
+### Minor Changes
+
+- 5e89e42: Add visibility for h3 heading level
+
 ## 1.2.0
 
 ### Minor Changes

@@ -7,6 +7,7 @@ import {
   isChatbotActive,
   isProduction,
   matomoScriptSrc,
+  SITE_HEADER_HEIGHT,
   useNewCookie,
 } from '@/config';
 import { Metadata } from 'next';
@@ -28,6 +29,7 @@ import NextIntlContext from '@/components/atoms/NextIntlContext/NextIntlContext'
 import ChatbotProvider from '@/components/organisms/ChatbotProvider/ChatbotProvider';
 import { ErrorBoundary } from 'next/dist/client/components/error-boundary';
 import Error from './error';
+import { Box } from '@mui/material';
 
 // TODO: remove PREVIOUS_MATOMO_TAG_MANAGER_SCRIPT script, usePreviousScript when the migration to the new tag manager is completed
 const PREVIOUS_MATOMO_TAG_MANAGER_SCRIPT =
@@ -143,7 +145,7 @@ export default async function RootLayout({
                 <ErrorBoundary
                   errorComponent={Error}
                 >
-                  <main>{children}</main>
+                  <main><Box sx={{ marginTop: `${SITE_HEADER_HEIGHT}px` }}>{children}</Box></main>
                 </ErrorBoundary>
                 <SiteFooter />
               </ChatbotProvider>

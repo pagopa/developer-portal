@@ -1,5 +1,121 @@
 # nextjs-website
 
+## 13.0.0
+
+### Major Changes
+
+- 037a82d: Add route handlers for guides, release notes and solutions
+  Add fetch using route handlers
+  Add dynamic content update in GitBookTemplate
+
+## 12.1.0
+
+### Minor Changes
+
+- ab5c9b6: Refactor GitBookContent Heading to a generic atom component ContentHeading and use it from GitBookContent and Block heading parts
+
+### Patch Changes
+
+- 859e21a: Fix autoplay logic
+- a9e0699: Avoid accessing local storage during first render to fix the undefined window error
+- ebba255: Fix missing image behaviour
+- Updated dependencies [0237257]
+  - gitbook-docs@1.4.0
+
+## 12.0.0
+
+### Major Changes
+
+- bc4e8a6: Use synced response instead of strapi fetch
+
+### Patch Changes
+
+- daf4500: Remove fetch from synced json for guide list pages
+- Updated dependencies [cc00738]
+  - gitbook-docs@1.3.2
+
+## 11.2.0
+
+### Minor Changes
+
+- 15e4314: Update style of guide version menu
+- ccd2ed2: Update videojs style and fix reload issue
+
+### Patch Changes
+
+- 5f76a21: Refactor release note and solution page components to remove unused metadata handling and enforce dynamic rendering
+- 67f8adf: Upgrade to Next.js 14.2.33
+
+## 11.1.0
+
+### Minor Changes
+
+- d11e492: Manage webinar in live state when url is not live
+
+### Patch Changes
+
+- 81dad42: Link baseUrl configuration constant to environment variables
+- 1917d7d: Add missing enableFilters in makeProps, in Strapi model and in populate in fetchApiDataListPages
+
+## 11.0.0
+
+### Major Changes
+
+- 164c286: Add support for filters using tags in ApiDataListPages, refactor FilteredGridLayout to support cards
+
+### Minor Changes
+
+- 3788385: Fix issue with side menus in solutions
+
+### Patch Changes
+
+- Updated dependencies [af1d820]
+  - gitbook-docs@1.3.1
+
+## 10.4.0
+
+### Minor Changes
+
+- acb3aff: Add thumbnail to video.js webinar player and activate autoplay only if webinar is live
+
+### Patch Changes
+
+- 74e119a: Add 'noindex, follow' to non-main guide pages
+
+## 10.3.0
+
+### Minor Changes
+
+- b37ac58: Remove animation from auto scroll in GuideMenu
+
+## 10.2.1
+
+### Patch Changes
+
+- 92d3566: Fix height of GuideMenu component
+
+## 10.2.0
+
+### Minor Changes
+
+- 5e89e42: Adjust padding for heading in Guide contend and for section and items in the left menu, adjust font-size and weight for right in guide menu
+- 1cae187: Change ProductHeader behaviour to be fixed on desktop and maintain the old behaviour on mobile
+- 5c1bf8b: Change guides' fontSize, fontWeight and paddings to improve readability
+- 9160917: Aling layout and typography of tutorial in page menu to the guide in page menu
+- dc9eae7: Add scroll behaviour to GuideInPageMenu
+
+### Patch Changes
+
+- 5e51549: Adjust layout styles in Step and Stepper components for improved alignment
+- c8dae53: Update code inline styling
+- dc9eae7: Fix gitbook template lateral menu to have the higlighted element reflecting the currently displayed section
+- a236eb9: Fix: Adjust page layout top margin to prevent content from being hidden behind the site and product headers.
+- 6efe983: Sort products in Desktop and Mobile site headers
+- 0b9a01d: Add indentation for h3 level guide in page menu items and a left continous border, add hover effect with changing background color for all items in guide in page menu
+- 1cae187: Remove auto scrolling behaviour from Guide content, set minimum height for GitBookTemplate content and align GitBook's menus and content
+- Updated dependencies [5e89e42]
+  - gitbook-docs@1.3.0
+
 ## 10.1.0
 
 ### Minor Changes

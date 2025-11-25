@@ -1,6 +1,6 @@
 'use client';
 import Hero from '@/editorialComponents/Hero/Hero';
-import CardsGrid from '@/components/molecules/CardsGrid/CardsGrid';
+import { FilteredGridLayout } from '@/components/organisms/FilteredGridLayout/FilteredGridLayout';
 import { Box } from '@mui/material';
 import { Theme } from '@/editorialComponents/types/components';
 import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
@@ -9,6 +9,8 @@ import { useTranslations } from 'next-intl';
 import { SEO } from '@/lib/types/seo';
 import { Product } from '@/lib/types/product';
 import { StrapiBaseApiDataList } from '@/lib/strapi/types/apiDataList';
+import { Tag } from '@/lib/types/tag';
+import { CardProps } from '@/components/molecules/CardsGrid/CardsGrid';
 
 export type ApiDataListPageTemplateProps = {
   readonly hero: {
@@ -18,14 +20,12 @@ export type ApiDataListPageTemplateProps = {
   };
   readonly product: Product;
   readonly apiDetailSlugs: readonly string[];
-  readonly cards: {
-    readonly title: string;
-    readonly text: string;
-    readonly ctaLabel?: string;
-    readonly href?: string;
-    readonly icon: string;
-    readonly tags?: { label: string }[];
-  }[];
+  readonly cards: Pick<
+    CardProps,
+    'title' | 'text' | 'ctaLabel' | 'href' | 'icon' | 'labels' | 'tags'
+  >[];
+  readonly tags?: readonly Tag[];
+  readonly enableFilters?: boolean;
   readonly updatedAt: string;
   readonly bannerLinks: BannerLinkProps[];
   readonly theme?: Theme;
@@ -38,6 +38,8 @@ const ApiDataListTemplate = ({
   cards,
   bannerLinks,
   theme = 'light',
+  tags = [],
+  enableFilters,
 }: ApiDataListPageTemplateProps) => {
   const t = useTranslations('');
 
@@ -54,18 +56,15 @@ const ApiDataListTemplate = ({
         }}
       />
       <Box paddingBottom={6}>
-        <CardsGrid
-          ctaButtonsVariant='outlined'
+        <FilteredGridLayout
           cards={cards.map((card) => ({
             ...card,
             useSrc: true,
             ctaLabel: t('apiDataListPage.explore'),
           }))}
-          cardSize={{ xs: 12, md: 4 }}
-          containerSx={{
-            pt: '22px',
-            mt: '-22px',
-          }}
+          tags={tags}
+          enableFilters={enableFilters}
+          noItemsMessageKey={'apiDataListPage.noApiMessage'}
         />
       </Box>
       {bannerLinks && <BannerLinks bannerLinks={bannerLinks} />}
