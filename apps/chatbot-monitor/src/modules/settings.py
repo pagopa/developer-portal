@@ -54,6 +54,7 @@ class ChatbotSettings(BaseSettings):
         os.getenv("LANGFUSE_INIT_PROJECT_SECRET_KEY"),
     )
     presidio_config: dict = PARAMS["config_presidio"]
+    query_table_prefix: str = os.getenv("CHB_QUERY_TABLE_PREFIX", "chatbot")
 
 
 SETTINGS = ChatbotSettings()

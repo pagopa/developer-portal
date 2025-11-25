@@ -24,7 +24,11 @@ LOGGER = get_logger(__name__)
                     "chat_history": [],
                     "response": "I can provide information on how to improve your AI career by sharing insights on learning foundational AI skills, working on AI projects, and searching for a job in AI.",
                     "contexts": ["context1", "context2"],
+<<<<<<< HEAD
                     "spans": [
+=======
+                    "traceSpans": [
+>>>>>>> CAI-629-refactor-chatbot
                         {
                             "name": "ReActAgent.run",
                             "context": {
@@ -178,6 +182,7 @@ def lambda_handler(event, context):
                 contexts=data.get("contexts"),
                 tags=data.get("topics"),
                 spans=data.get("traceSpans"),
+                query_for_database=data.get("query_for_database"),
             )
         elif operation == "add_scores":
             for score in data:
