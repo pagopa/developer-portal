@@ -537,9 +537,9 @@
                     "ariaLabel": "Vai al link: Piattaforma pagoPA",
                     "label": "Piattaforma pagoPA"
                 },
-                "centroStella": {
-                    "ariaLabel": "Vai al link: Centro stella",
-                    "label": "Centro stella"
+                "pari": {
+                    "ariaLabel": "Vai al link: PARI",
+                    "label": "PARI"
                 },
                 "checkIBAN": {
                     "ariaLabel": "Vai al link: Check IBAN",
