@@ -1,4 +1,5 @@
-name: Deploy Lambda evaluate
+name: Deploy Lambda Evaluate
+run-name: Deploy Lambda Evaluate to ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.environment || 'dev' }} by @${{ github.actor }}
 
 on:
   push:
@@ -44,7 +45,7 @@ jobs:
           echo "matrix=$matrixStringifiedObject" >> $GITHUB_OUTPUT
     
   deploy:
-    name: Deploy lambda monitor ${{ matrix.environment }}
+    name: Deploy lambda evaluate ${{ matrix.environment }}
     if: ${{ needs.setup.outputs.matrix != '' }}
     runs-on: ubuntu-24.04
     needs: [ setup ]
