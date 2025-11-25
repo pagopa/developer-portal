@@ -82,11 +82,14 @@ def lambda_handler(event, context):
                 }
             )
 
+        payload_to_monitor = json.dumps({"operation": "add_scores", "data": results})
         try:
             sqs_response = SQS_MONITOR.send_message(
-                MessageBody=json.dumps(results),
+                MessageBody=payload_to_monitor,
                 MessageGroupId=trace_id,  # Required for FIFO queues
             )
             LOGGER.info(f"sqs response: {sqs_response}")
         except Exception as e:
-            LOGGER.error(f"Failed to send SQS message for trace_id {trace_id}: {e}")
+            LOGGER.error(
+                f"Failed to send SQS message {payload_to_monitor} to chatbot-monitor: {e}"
+            )
