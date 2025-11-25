@@ -291,12 +291,15 @@ def add_langfuse_score(
             Defaults to None.
     """
 
-    LANGFUSE_CLIENT.create_score(
-        trace_id=trace_id,
-        name=name,
-        value=score,
-        data_type=data_type,
-        comment=comment,
-    )
-    LANGFUSE_CLIENT.flush()
-    LOGGER.info(f"Added {name}: {score} to trace with ID: {trace_id} successfully!")
+    try:
+        LANGFUSE_CLIENT.create_score(
+            trace_id=trace_id,
+            name=name,
+            value=score,
+            data_type=data_type,
+            comment=comment,
+        )
+        LANGFUSE_CLIENT.flush()
+        LOGGER.info(f"Added {name}: {score} to trace with ID: {trace_id} successfully!")
+    except Exception as e:
+        LOGGER.error(f"Failed to add score to trace {trace_id}: {e}")
