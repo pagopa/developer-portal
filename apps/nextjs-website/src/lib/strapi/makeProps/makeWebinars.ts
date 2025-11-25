@@ -22,34 +22,34 @@ export const makeWebinarProps = (
       speakers:
         strapiWebinar.attributes.webinarSpeakers.data.length > 0
           ? strapiWebinar.attributes.webinarSpeakers.data.map((speaker) => ({
-            ...speaker.attributes,
-            avatar: speaker.attributes.avatar?.data?.attributes,
-          }))
+              ...speaker.attributes,
+              avatar: speaker.attributes.avatar?.data?.attributes,
+            }))
           : undefined,
       questionsAndAnswers: strapiWebinar.attributes.questionsAndAnswers?.length
         ? strapiWebinar.attributes.questionsAndAnswers
         : undefined,
       relatedResources: strapiWebinar.attributes.relatedResources
         ? {
-          title: strapiWebinar.attributes.relatedResources.title,
-          resources: (
-            strapiWebinar.attributes.relatedResources.resources || []
-          ).map((resource) => ({
-            ...resource,
-            subtitle: resource.subtitle,
-            description: resource.description,
-            image: resource.image?.data?.attributes,
-          })),
-          downloadableDocuments: (
-            strapiWebinar.attributes.relatedResources.downloadableDocuments
-              ?.data || []
-          ).map(({ attributes }) => ({
-            title: attributes.caption || attributes.name,
-            downloadLink: attributes.url,
-            size: attributes.size,
-            extension: attributes.ext.replace('.', '').toUpperCase(),
-          })),
-        }
+            title: strapiWebinar.attributes.relatedResources.title,
+            resources: (
+              strapiWebinar.attributes.relatedResources.resources || []
+            ).map((resource) => ({
+              ...resource,
+              subtitle: resource.subtitle,
+              description: resource.description,
+              image: resource.image?.data?.attributes,
+            })),
+            downloadableDocuments: (
+              strapiWebinar.attributes.relatedResources.downloadableDocuments
+                ?.data || []
+            ).map(({ attributes }) => ({
+              title: attributes.caption || attributes.name,
+              downloadLink: attributes.url,
+              size: attributes.size,
+              extension: attributes.ext.replace('.', '').toUpperCase(),
+            })),
+          }
         : undefined,
       startDateTime: strapiWebinar.attributes.startDatetime,
       endDateTime: strapiWebinar.attributes.endDatetime,
