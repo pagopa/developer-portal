@@ -79,13 +79,6 @@ const webinarPopulate = {
     },
   },
 };
-
-interface StrapiData {
-  readonly guides: readonly StrapiGuide[];
-  readonly solutions: readonly StrapiSolution[];
-  readonly releaseNotes: readonly StrapiReleaseNote[];
-}
-
 const STRAPI_PAGE_SIZE = 1000;
 
 const STRAPI_DEFAULT_PAGINATION = {
