@@ -1,7 +1,7 @@
 import json
 
-from src.modules.monitor import create_langfuse_trace, add_langfuse_score
 from src.modules.logger import get_logger
+from src.modules.monitor import create_langfuse_trace, add_langfuse_score
 
 LOGGER = get_logger(__name__)
 
