@@ -43,10 +43,10 @@ const WebinarPlayerSection = ({
     () => [WebinarState.live, WebinarState.comingSoon].includes(webinarState),
     [webinarState]
   );
-  const startPlaybackFromSeconds =
-    typeof webinar.onDemandVideoStartPoint === 'number' &&
-    webinar.onDemandVideoStartPoint > 0
-      ? webinar.onDemandVideoStartPoint
+  const videoOnDemandStartAt =
+    typeof webinar.videoOnDemandStartAt === 'number' &&
+    webinar.videoOnDemandStartAt > 0
+      ? webinar.videoOnDemandStartAt
       : undefined;
   return (
     webinar.playerSrc && (
@@ -80,7 +80,7 @@ const WebinarPlayerSection = ({
                   src={webinar.playerSrc}
                   poster={webinar.playerCoverImageUrl}
                   reloadToken={reloadPlayerToken}
-                  startFromSeconds={startPlaybackFromSeconds}
+                  startFromSeconds={videoOnDemandStartAt}
                 />
               )}
             </Box>

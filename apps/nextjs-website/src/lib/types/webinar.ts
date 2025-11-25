@@ -14,7 +14,7 @@ export type Webinar = {
   readonly bodyContent?: BlocksContent;
   readonly playerSrc?: string;
   readonly playerCoverImageUrl?: string;
-  readonly onDemandVideoStartPoint?: number;
+  readonly videoOnDemandStartAt?: number;
   readonly speakers?: readonly Speaker[];
   readonly startDateTime?: string;
   readonly endDateTime?: string;
