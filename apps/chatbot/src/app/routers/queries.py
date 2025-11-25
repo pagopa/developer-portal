@@ -113,9 +113,9 @@ def prepare_body_to_save(
     expires_at = int((now + datetime.timedelta(days=days)).timestamp())
 
     bodyToSave = bodyToReturn.copy()
-    bodyToSave["question"] = chatbot.mask_pii(query.question)
+    bodyToSave["question"] = query.question
     bodyToSave["answer"] = get_final_response(
-        response_str=chatbot.mask_pii(answer_json["response"]),
+        response_str=answer_json["response"],
         references=answer_json["references"],
     )
     bodyToSave["topics"] = answer_json.get("products", [])
@@ -239,11 +239,11 @@ async def query_creation(
         "user_id": user_id,
         "session_id": session["id"],
         "query": query.question,
-        "chat_history": messages if messages else [],
+        "messages": messages if messages else [],
         "response": answer,
         "contexts": answer_json.get("contexts", []),
         "tags": answer_json.get("products", []),
-        "spans": answer_json.get("spans", []),
+        "traceSpans": answer_json.get("spans", []),
         "query_for_database": bodyToSave,
     }
     create_monitor_trace(trace_data)
