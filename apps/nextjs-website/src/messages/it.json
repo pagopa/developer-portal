@@ -209,7 +209,7 @@
             "alreadyHaveAnAccount": "Hai già un account?",
             "whyCreateAccount": "Perché iscriversi a PagoPA DevPortal",
             "passwordError": "Non rispetta i requisiti.",
-            "passwordPolicy": "Minimo 8 caratteri, almeno un numero, almeno una lettera maiuscola e una minuscola, e almeno un carattere speciale",
+            "passwordPolicy": "Minimo 8 caratteri, almeno un numero, una lettera maiuscola, una minuscola e un carattere speciale",
             "emailSent": "Email inviata a {email}",
             "advantages": {
                 "exclusive_contents": {
