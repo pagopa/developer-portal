@@ -21,7 +21,8 @@ from langfuse._client.span import (
 from src.modules.logger import get_logger
 from src.modules.settings import SETTINGS
 from src.modules.presidio import PresidioPII
-from src.models import tables
+from src.database_models import tables
+
 
 LOGGER = get_logger(__name__)
 PRESIDIO = PresidioPII(config=SETTINGS.presidio_config)
