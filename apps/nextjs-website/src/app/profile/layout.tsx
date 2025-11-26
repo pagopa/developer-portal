@@ -6,7 +6,6 @@ import { usePathname } from 'next/navigation';
 import Spinner from '@/components/atoms/Spinner/Spinner';
 import DesktopProfileMenu from '@/components/molecules/DesktopProfileMenu/DesktopProfileMenu';
 import MobileProfileMenu from '@/components/molecules/MobileProfileMenu/MobileProfileMenu';
-import EContainer from '@/editorialComponents/EContainer/EContainer';
 import { useUser } from '@/helpers/user.helper';
 
 const ProfileLayout = ({ children }: { children: ReactNode }) => {
@@ -22,9 +21,9 @@ const ProfileLayout = ({ children }: { children: ReactNode }) => {
   }
 
   return (
-    <>
+    <Box width='100%'>
       <MobileProfileMenu userFullName={userFullName} />
-      <EContainer>
+      <Box sx={{ maxWidth: '1980px', px: 0, mx: 'auto' }}>
         <Box sx={{ display: 'flex', mt: { xs: '60px', md: 0 }, width: '100%' }}>
           <DesktopProfileMenu
             currentPathname={pathname}
@@ -32,8 +31,8 @@ const ProfileLayout = ({ children }: { children: ReactNode }) => {
           />
           {children}
         </Box>
-      </EContainer>
-    </>
+      </Box>
+    </Box>
   );
 };
 
