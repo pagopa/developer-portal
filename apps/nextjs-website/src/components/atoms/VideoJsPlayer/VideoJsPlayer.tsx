@@ -74,7 +74,7 @@ const VideoJsPlayer = (props: PlayerProps) => {
     playerRef.current.src(props.src);
     playerRef.current.poster(props.poster || '');
 
-    if (props.autoplay && !props.startFromSeconds) {
+    if (props.autoplay && !props.videoOnDemandStartAt) {
       playerRef.current.play().catch(() => undefined);
     }
   }, [
@@ -84,7 +84,7 @@ const VideoJsPlayer = (props: PlayerProps) => {
     props.poster,
     props.reloadToken,
     props.src,
-    props.startFromSeconds,
+    props.videoOnDemandStartAt,
   ]);
 
   useEffect(() => {
@@ -92,13 +92,15 @@ const VideoJsPlayer = (props: PlayerProps) => {
       return;
     }
     const videoOnDemandStartAt =
-      typeof props.startFromSeconds === 'number' ? props.startFromSeconds : 0;
+      typeof props.videoOnDemandStartAt === 'number'
+        ? props.videoOnDemandStartAt
+        : 0;
 
-    if (startFromSeconds <= 0) {
+    if (videoOnDemandStartAt <= 0) {
       return;
     }
     const player = playerRef.current;
-    const seekTo = Math.max(startFromSeconds, 0);
+    const seekTo = Math.max(videoOnDemandStartAt, 0);
 
     // Flag to ensure we only enforce the seek once per prop change
     // eslint-disable-next-line functional/no-let
@@ -158,7 +160,7 @@ const VideoJsPlayer = (props: PlayerProps) => {
       player.off('durationchange', onDurationChange);
       player.off('play', onPlay);
     };
-  }, [props.reloadToken, props.src, props.startFromSeconds]);
+  }, [props.reloadToken, props.src, props.videoOnDemandStartAt]);
 
   return (
     <Box sx={{ position: 'relative', paddingBottom: '56.25%' }}>
