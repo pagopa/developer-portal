@@ -19,7 +19,6 @@ export function makeTutorialsProps(
 ): readonly TutorialProps[] {
   return compact(
     strapiTutorials.data.map(({ attributes }) => {
-      // Checking mandatory fields
       if (!attributes.slug || !attributes.title) {
         console.error(
           `Error while processing Tutorial: missing title or slug. Title: ${attributes.title} | Slug: ${attributes.slug}. Skipping...`
@@ -27,7 +26,6 @@ export function makeTutorialsProps(
         return null;
       }
 
-      // Controllo esistenza product
       if (!attributes.product?.data?.attributes?.slug) {
         console.error(
           `Error while processing Tutorial with title "${attributes.title}": missing product slug. Skipping...`
@@ -37,7 +35,6 @@ export function makeTutorialsProps(
 
       try {
         return {
-          // FIX 1: Aggiunto controllo su attributes.image con ?.
           image: attributes.image?.data
             ? {
                 url: attributes.image.data.attributes.url,
@@ -56,7 +53,6 @@ export function makeTutorialsProps(
 
           path: `/${attributes.product.data.attributes.slug}/tutorials/${attributes.slug}`,
 
-          // FIX 2: Aggiunto controllo su attributes.parts con ?. e fallback ad array vuoto
           parts: compact(
             attributes.parts?.map((part) =>
               makePartProps(part, markdownContentDict)
@@ -67,7 +63,6 @@ export function makeTutorialsProps(
 
           description: attributes.description || '',
 
-          // FIX 3: Aggiunto controllo su attributes.icon
           icon: attributes.icon?.data?.attributes || undefined,
 
           relatedLinks: attributes.relatedLinks,
@@ -81,7 +76,6 @@ export function makeTutorialsProps(
 
           seo: attributes.seo,
 
-          // FIX 4: Aggiunto controllo su attributes.tags e attributes.tags.data
           tags: attributes.tags?.data?.map((tag) => tag.attributes) || [],
 
           updatedAt: attributes.updatedAt,
