@@ -4,15 +4,15 @@ import { Auth } from 'aws-amplify';
 import { useTranslations } from 'next-intl';
 import React, { useEffect, useState } from 'react';
 
-import { InfoCardItemProfileProps } from '@/components/atoms/InfoCardItem/InfoCardItemProfile';
+import { ProfileDataCardItemProps } from '@/components/atoms/InfoCardItem/ProfileDataCardItem';
 import { InfoCardItemProps } from '@/components/atoms/InfoCardItem/InfoCardItem';
 import DeleteSection from '@/components/molecules/DeleteSection/DeleteSection';
-import { ProfileInfoCard } from '@/components/organisms/Auth/ProfileInfoCard';
+import { ProfileAccountCard } from '@/components/organisms/Auth/ProfileAccountCard';
 import { useUser } from '@/helpers/user.helper';
 import { useRouter } from 'next/navigation';
 import ConfirmationModal from '@/components/atoms/ConfirmationModal/ConfirmationModal';
 import PasswordFormWrapper from '@/components/organisms/Auth/PasswordFormWrapper';
-import { InfoCardProfile } from '@/components/molecules/InfoCard/InfoCardProfile';
+import { ProfileDataCard } from '@/components/molecules/ProfileDataCard/InfoCardProfile';
 import EmailFormWrapper from '@/components/organisms/EmailFormWrapper/EmailFormWrapper';
 import { companyRoles } from '@/config';
 
@@ -27,7 +27,7 @@ const PersonalData = () => {
   }));
 
   const [profileDataSectionItems, setProfileDataSectionItems] = useState<
-    InfoCardItemProfileProps[]
+    ProfileDataCardItemProps[]
   >([]);
 
   useEffect(() => {
@@ -178,10 +178,10 @@ const PersonalData = () => {
         sx={{ padding: { xs: '40px 24px', md: '80px 40px' }, width: '100%' }}
       >
         <Typography variant='h4'>{t('profile.personalData.title')}</Typography>
-        <InfoCardProfile
+        <ProfileDataCard
           cardTitle={t('profile.personalData.dataSection')}
           items={profileDataSectionItems}
-          onValue={(items: InfoCardItemProfileProps[]) => {
+          onValue={(items: ProfileDataCardItemProps[]) => {
             const oldItems = [...profileDataSectionItems];
 
             if (!user) return null;
@@ -209,7 +209,7 @@ const PersonalData = () => {
             return null;
           }}
         />
-        <ProfileInfoCard
+        <ProfileAccountCard
           cardTitle={t('profile.personalData.accountSection')}
           items={accountSectionItems}
           renderItem={renderItem}
