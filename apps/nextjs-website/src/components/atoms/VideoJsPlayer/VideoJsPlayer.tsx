@@ -27,6 +27,7 @@ interface PlayerProps {
 const TECH_ORDER_AMAZON_IVS = ['AmazonIVS'];
 
 const VideoJsPlayer = (props: PlayerProps) => {
+  console.log('VideoJsPlayer: props.startFromSeconds', props.startFromSeconds);
   const videoEl = useRef<HTMLVideoElement>(null);
   const playerRef = useRef<
     // @ts-expect-error TS2322: Type 'undefined' is not assignable to type 'Player & VideoJSIVSTech & VideoJSQualityPlugin'.
@@ -74,7 +75,7 @@ const VideoJsPlayer = (props: PlayerProps) => {
     playerRef.current.src(props.src);
     playerRef.current.poster(props.poster || '');
 
-    if (props.autoplay) {
+    if (props.autoplay && !props.startFromSeconds) {
       playerRef.current.play().catch(() => undefined);
     }
   }, [
@@ -84,6 +85,7 @@ const VideoJsPlayer = (props: PlayerProps) => {
     props.poster,
     props.reloadToken,
     props.src,
+    props.startFromSeconds,
   ]);
 
   useEffect(() => {
@@ -92,6 +94,7 @@ const VideoJsPlayer = (props: PlayerProps) => {
     }
     const startFromSeconds =
       typeof props.startFromSeconds === 'number' ? props.startFromSeconds : 0;
+    console.log('VideoJsPlayer: effective startFromSeconds', startFromSeconds);
     if (startFromSeconds <= 0) {
       return;
     }
@@ -103,6 +106,9 @@ const VideoJsPlayer = (props: PlayerProps) => {
       try {
         player.currentTime(seekTo);
         console.log('VideoJsPlayer: seek command sent');
+        if (props.autoplay) {
+          player.play().catch(() => undefined);
+        }
       } catch (e) {
         console.error('VideoJsPlayer: seek failed', e);
       }
@@ -122,7 +128,7 @@ const VideoJsPlayer = (props: PlayerProps) => {
     return () => {
       player.off('loadedmetadata', seekToStart);
     };
-  }, [props.reloadToken, props.src, props.startFromSeconds]);
+  }, [props.reloadToken, props.src, props.startFromSeconds, props.autoplay]);
 
   return (
     <Box sx={{ position: 'relative', paddingBottom: '56.25%' }}>
