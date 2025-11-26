@@ -99,19 +99,25 @@ const VideoJsPlayer = (props: PlayerProps) => {
     const seekTo = Math.max(startFromSeconds, 0);
 
     const seekToStart = () => {
+      console.log('VideoJsPlayer: attempting seek to', seekTo);
       try {
         player.currentTime(seekTo);
-      } catch {
-        // Ignore seek errors and leave playback at current time
+        console.log('VideoJsPlayer: seek command sent');
+      } catch (e) {
+        console.error('VideoJsPlayer: seek failed', e);
       }
     };
 
+    console.log('VideoJsPlayer: readyState', player.readyState());
     if (player.readyState() > 0) {
       seekToStart();
       return;
     }
 
-    player.one('loadedmetadata', seekToStart);
+    player.one('loadedmetadata', () => {
+      console.log('VideoJsPlayer: loadedmetadata fired');
+      seekToStart();
+    });
 
     return () => {
       player.off('loadedmetadata', seekToStart);
