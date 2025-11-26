@@ -103,7 +103,10 @@ const VideoJsPlayer = (props: PlayerProps) => {
 
     const seekToStart = (eventName: string) => {
       console.log(`VideoJsPlayer: [${eventName}] attempting seek to`, seekTo);
-      console.log(`VideoJsPlayer: [${eventName}] current time:`, player.currentTime());
+      console.log(
+        `VideoJsPlayer: [${eventName}] current time:`,
+        player.currentTime()
+      );
       console.log(`VideoJsPlayer: [${eventName}] duration:`, player.duration());
 
       try {
@@ -112,7 +115,11 @@ const VideoJsPlayer = (props: PlayerProps) => {
 
         if (props.autoplay) {
           console.log(`VideoJsPlayer: [${eventName}] autoplaying`);
-          player.play().catch((e: unknown) => console.error(`VideoJsPlayer: [${eventName}] play failed`, e));
+          player
+            .play()
+            .catch((e: unknown) =>
+              console.error(`VideoJsPlayer: [${eventName}] play failed`, e)
+            );
         }
       } catch (e: unknown) {
         console.error(`VideoJsPlayer: [${eventName}] seek failed`, e);
