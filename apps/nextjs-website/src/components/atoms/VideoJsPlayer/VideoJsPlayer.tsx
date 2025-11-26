@@ -102,16 +102,28 @@ const VideoJsPlayer = (props: PlayerProps) => {
     const seekTo = Math.max(startFromSeconds, 0);
 
     const seekToStart = (eventName: string) => {
+      const duration = player.duration();
       console.log(`VideoJsPlayer: [${eventName}] attempting seek to`, seekTo);
       console.log(
         `VideoJsPlayer: [${eventName}] current time:`,
         player.currentTime()
       );
-      console.log(`VideoJsPlayer: [${eventName}] duration:`, player.duration());
+      console.log(`VideoJsPlayer: [${eventName}] duration:`, duration);
+
+      if (duration === 0) {
+        console.log(`VideoJsPlayer: [${eventName}] duration is 0, waiting...`);
+        return;
+      }
 
       try {
         player.currentTime(seekTo);
         console.log(`VideoJsPlayer: [${eventName}] seek command sent`);
+
+        // Remove listeners once we've attempted to seek with a valid duration
+        player.off('loadedmetadata', onLoadedMetadata);
+        player.off('loadeddata', onLoadedData);
+        player.off('canplay', onCanPlay);
+        player.off('durationchange', onDurationChange);
 
         if (props.autoplay) {
           console.log(`VideoJsPlayer: [${eventName}] autoplaying`);
@@ -126,7 +138,7 @@ const VideoJsPlayer = (props: PlayerProps) => {
       }
     };
 
-    if (player.readyState() > 0) {
+    if (player.readyState() > 0 && player.duration() > 0) {
       seekToStart('immediate');
       return;
     }
@@ -134,15 +146,18 @@ const VideoJsPlayer = (props: PlayerProps) => {
     const onLoadedMetadata = () => seekToStart('loadedmetadata');
     const onLoadedData = () => seekToStart('loadeddata');
     const onCanPlay = () => seekToStart('canplay');
+    const onDurationChange = () => seekToStart('durationchange');
 
-    player.one('loadedmetadata', onLoadedMetadata);
-    player.one('loadeddata', onLoadedData);
-    player.one('canplay', onCanPlay);
+    player.on('loadedmetadata', onLoadedMetadata);
+    player.on('loadeddata', onLoadedData);
+    player.on('canplay', onCanPlay);
+    player.on('durationchange', onDurationChange);
 
     return () => {
       player.off('loadedmetadata', onLoadedMetadata);
       player.off('loadeddata', onLoadedData);
       player.off('canplay', onCanPlay);
+      player.off('durationchange', onDurationChange);
     };
   }, [props.reloadToken, props.src, props.startFromSeconds, props.autoplay]);
 
