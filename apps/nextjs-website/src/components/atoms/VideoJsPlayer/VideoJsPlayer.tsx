@@ -27,7 +27,6 @@ interface PlayerProps {
 const TECH_ORDER_AMAZON_IVS = ['AmazonIVS'];
 
 const VideoJsPlayer = (props: PlayerProps) => {
-  console.log('VideoJsPlayer: props.startFromSeconds', props.startFromSeconds);
   const videoEl = useRef<HTMLVideoElement>(null);
   const playerRef = useRef<
     // @ts-expect-error TS2322: Type 'undefined' is not assignable to type 'Player & VideoJSIVSTech & VideoJSQualityPlugin'.
@@ -94,7 +93,7 @@ const VideoJsPlayer = (props: PlayerProps) => {
     }
     const startFromSeconds =
       typeof props.startFromSeconds === 'number' ? props.startFromSeconds : 0;
-    console.log('VideoJsPlayer: effective startFromSeconds', startFromSeconds);
+
     if (startFromSeconds <= 0) {
       return;
     }
@@ -109,24 +108,15 @@ const VideoJsPlayer = (props: PlayerProps) => {
       if (hasSought) return;
 
       const duration = player.duration();
-      console.log(`VideoJsPlayer: [${eventName}] attempting seek to`, seekTo);
-      console.log(
-        `VideoJsPlayer: [${eventName}] current time:`,
-        player.currentTime()
-      );
-      console.log(`VideoJsPlayer: [${eventName}] duration:`, duration);
 
       if (duration > 0) {
         try {
           player.currentTime(seekTo);
-          console.log(`VideoJsPlayer: [${eventName}] seek command sent`);
           // We don't set hasSought = true here for 'loadedmetadata' etc.
           // because we want to double-check on 'play' just in case.
         } catch (e: unknown) {
           console.error(`VideoJsPlayer: [${eventName}] seek failed`, e);
         }
-      } else {
-        console.log(`VideoJsPlayer: [${eventName}] duration is 0, waiting...`);
       }
     };
 
@@ -136,16 +126,9 @@ const VideoJsPlayer = (props: PlayerProps) => {
       const currentTime = player.currentTime();
       const timeDiff = Math.abs(currentTime - seekTo);
 
-      console.log(
-        `VideoJsPlayer: [play] checking time. Current: ${currentTime}, Target: ${seekTo}, Diff: ${timeDiff}`
-      );
-
       // If we are significantly off (e.g. > 1s), force the seek
       if (timeDiff > 1) {
-        console.log(`VideoJsPlayer: [play] forcing seek to ${seekTo}`);
         player.currentTime(seekTo);
-      } else {
-        console.log(`VideoJsPlayer: [play] time is correct, no seek needed`);
       }
 
       // Mark as sought so we don't interfere with future seeks/scrubbing
