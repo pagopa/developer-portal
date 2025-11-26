@@ -19,7 +19,7 @@ export function makeSolutionsProps(
       try {
         return {
           ...attributes,
-          stats: [...(attributes.stats || [])], // Aggiunto fallback array vuoto
+          stats: [...(attributes.stats || [])], // Empty array fallback
           steps: attributes.steps?.map((step) => ({
             ...step,
             products: step.products?.data?.map((product) => ({
