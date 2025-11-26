@@ -80,7 +80,7 @@ const WebinarPlayerSection = ({
                   src={webinar.playerSrc}
                   poster={webinar.playerCoverImageUrl}
                   reloadToken={reloadPlayerToken}
-                  startFromSeconds={videoOnDemandStartAt}
+                  videoOnDemandStartAt={videoOnDemandStartAt}
                 />
               )}
             </Box>

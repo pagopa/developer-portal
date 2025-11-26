@@ -21,7 +21,7 @@ interface PlayerProps {
   src: string;
   poster?: string;
   reloadToken?: number;
-  startFromSeconds?: number;
+  videoOnDemandStartAt?: number;
 }
 
 const TECH_ORDER_AMAZON_IVS = ['AmazonIVS'];
@@ -91,7 +91,7 @@ const VideoJsPlayer = (props: PlayerProps) => {
     if (!playerRef.current) {
       return;
     }
-    const startFromSeconds =
+    const videoOnDemandStartAt =
       typeof props.startFromSeconds === 'number' ? props.startFromSeconds : 0;
 
     if (startFromSeconds <= 0) {
