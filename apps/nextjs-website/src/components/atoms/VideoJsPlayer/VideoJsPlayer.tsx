@@ -101,7 +101,12 @@ const VideoJsPlayer = (props: PlayerProps) => {
     const player = playerRef.current;
     const seekTo = Math.max(startFromSeconds, 0);
 
-    const seekToStart = (eventName: string) => {
+    // Flag to ensure we only enforce the seek once per prop change
+    let hasSought = false;
+
+    const attemptSeek = (eventName: string) => {
+      if (hasSought) return;
+
       const duration = player.duration();
       console.log(`VideoJsPlayer: [${eventName}] attempting seek to`, seekTo);
       console.log(
@@ -110,56 +115,66 @@ const VideoJsPlayer = (props: PlayerProps) => {
       );
       console.log(`VideoJsPlayer: [${eventName}] duration:`, duration);
 
-      if (duration === 0) {
-        console.log(`VideoJsPlayer: [${eventName}] duration is 0, waiting...`);
-        return;
-      }
-
-      try {
-        player.currentTime(seekTo);
-        console.log(`VideoJsPlayer: [${eventName}] seek command sent`);
-
-        // Remove listeners once we've attempted to seek with a valid duration
-        player.off('loadedmetadata', onLoadedMetadata);
-        player.off('loadeddata', onLoadedData);
-        player.off('canplay', onCanPlay);
-        player.off('durationchange', onDurationChange);
-
-        if (props.autoplay) {
-          console.log(`VideoJsPlayer: [${eventName}] autoplaying`);
-          player
-            .play()
-            .catch((e: unknown) =>
-              console.error(`VideoJsPlayer: [${eventName}] play failed`, e)
-            );
+      if (duration > 0) {
+        try {
+          player.currentTime(seekTo);
+          console.log(`VideoJsPlayer: [${eventName}] seek command sent`);
+          // We don't set hasSought = true here for 'loadedmetadata' etc.
+          // because we want to double-check on 'play' just in case.
+        } catch (e: unknown) {
+          console.error(`VideoJsPlayer: [${eventName}] seek failed`, e);
         }
-      } catch (e: unknown) {
-        console.error(`VideoJsPlayer: [${eventName}] seek failed`, e);
+      } else {
+        console.log(`VideoJsPlayer: [${eventName}] duration is 0, waiting...`);
       }
     };
 
+    const onPlay = () => {
+      if (hasSought) return;
+
+      const currentTime = player.currentTime();
+      const timeDiff = Math.abs(currentTime - seekTo);
+
+      console.log(
+        `VideoJsPlayer: [play] checking time. Current: ${currentTime}, Target: ${seekTo}, Diff: ${timeDiff}`
+      );
+
+      // If we are significantly off (e.g. > 1s), force the seek
+      if (timeDiff > 1) {
+        console.log(`VideoJsPlayer: [play] forcing seek to ${seekTo}`);
+        player.currentTime(seekTo);
+      } else {
+        console.log(`VideoJsPlayer: [play] time is correct, no seek needed`);
+      }
+
+      // Mark as sought so we don't interfere with future seeks/scrubbing
+      hasSought = true;
+    };
+
+    // Attempt early seek if possible
     if (player.readyState() > 0 && player.duration() > 0) {
-      seekToStart('immediate');
-      return;
+      attemptSeek('immediate');
     }
 
-    const onLoadedMetadata = () => seekToStart('loadedmetadata');
-    const onLoadedData = () => seekToStart('loadeddata');
-    const onCanPlay = () => seekToStart('canplay');
-    const onDurationChange = () => seekToStart('durationchange');
+    const onLoadedMetadata = () => attemptSeek('loadedmetadata');
+    const onLoadedData = () => attemptSeek('loadeddata');
+    const onCanPlay = () => attemptSeek('canplay');
+    const onDurationChange = () => attemptSeek('durationchange');
 
     player.on('loadedmetadata', onLoadedMetadata);
     player.on('loadeddata', onLoadedData);
     player.on('canplay', onCanPlay);
     player.on('durationchange', onDurationChange);
+    player.on('play', onPlay);
 
     return () => {
       player.off('loadedmetadata', onLoadedMetadata);
       player.off('loadeddata', onLoadedData);
       player.off('canplay', onCanPlay);
       player.off('durationchange', onDurationChange);
+      player.off('play', onPlay);
     };
-  }, [props.reloadToken, props.src, props.startFromSeconds, props.autoplay]);
+  }, [props.reloadToken, props.src, props.startFromSeconds]);
 
   return (
     <Box sx={{ position: 'relative', paddingBottom: '56.25%' }}>
