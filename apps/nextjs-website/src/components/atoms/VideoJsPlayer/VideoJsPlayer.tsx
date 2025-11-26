@@ -102,6 +102,7 @@ const VideoJsPlayer = (props: PlayerProps) => {
     const seekTo = Math.max(startFromSeconds, 0);
 
     // Flag to ensure we only enforce the seek once per prop change
+    // eslint-disable-next-line functional/no-let
     let hasSought = false;
 
     const attemptSeek = (eventName: string) => {
