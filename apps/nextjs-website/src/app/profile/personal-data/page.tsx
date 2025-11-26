@@ -12,7 +12,7 @@ import { useUser } from '@/helpers/user.helper';
 import { useRouter } from 'next/navigation';
 import ConfirmationModal from '@/components/atoms/ConfirmationModal/ConfirmationModal';
 import PasswordFormWrapper from '@/components/organisms/Auth/PasswordFormWrapper';
-import { ProfileDataCard } from '@/components/molecules/ProfileDataCard/InfoCardProfile';
+import { ProfileDataCard } from '@/components/molecules/ProfileDataCard/ProfileDataCard';
 import EmailFormWrapper from '@/components/organisms/EmailFormWrapper/EmailFormWrapper';
 import { companyRoles } from '@/config';
 
