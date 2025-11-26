@@ -82,7 +82,7 @@ export const ProfileDataCard = ({
   ) : null;
 
   return (
-    <Card raised sx={{ padding: 4, maxWidth: '700px' }}>
+    <Card raised sx={{ padding: 4, maxWidth: '900px' }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
         <Typography variant='h6' fontWeight={700} mt={1}>
           {cardTitle}
