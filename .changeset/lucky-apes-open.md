@@ -2,4 +2,4 @@
 "nextjs-website": patch
 ---
 
-Implement start seconds for webinars
+Implement custom start time for  video on demand playback
