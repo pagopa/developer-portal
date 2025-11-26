@@ -19,7 +19,7 @@ export function makeTutorialsProps(
 ): readonly TutorialProps[] {
   return compact(
     strapiTutorials.data.map(({ attributes }) => {
-      // Controllo esistenza campi obbligatori minimi
+      // Checking mandatory fields
       if (!attributes.slug || !attributes.title) {
         console.error(
           `Error while processing Tutorial: missing title or slug. Title: ${attributes.title} | Slug: ${attributes.slug}. Skipping...`
