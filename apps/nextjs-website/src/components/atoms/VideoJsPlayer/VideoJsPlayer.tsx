@@ -27,6 +27,7 @@ interface PlayerProps {
 const TECH_ORDER_AMAZON_IVS = ['AmazonIVS'];
 
 const VideoJsPlayer = (props: PlayerProps) => {
+  console.log('VideoJsPlayer: props.startFromSeconds', props.startFromSeconds);
   const videoEl = useRef<HTMLVideoElement>(null);
   const playerRef = useRef<
     // @ts-expect-error TS2322: Type 'undefined' is not assignable to type 'Player & VideoJSIVSTech & VideoJSQualityPlugin'.
@@ -93,32 +94,48 @@ const VideoJsPlayer = (props: PlayerProps) => {
     }
     const startFromSeconds =
       typeof props.startFromSeconds === 'number' ? props.startFromSeconds : 0;
+    console.log('VideoJsPlayer: effective startFromSeconds', startFromSeconds);
     if (startFromSeconds <= 0) {
       return;
     }
     const player = playerRef.current;
     const seekTo = Math.max(startFromSeconds, 0);
 
-    const seekToStart = () => {
+    const seekToStart = (eventName: string) => {
+      console.log(`VideoJsPlayer: [${eventName}] attempting seek to`, seekTo);
+      console.log(`VideoJsPlayer: [${eventName}] current time:`, player.currentTime());
+      console.log(`VideoJsPlayer: [${eventName}] duration:`, player.duration());
+
       try {
         player.currentTime(seekTo);
+        console.log(`VideoJsPlayer: [${eventName}] seek command sent`);
+
         if (props.autoplay) {
-          player.play().catch(() => undefined);
+          console.log(`VideoJsPlayer: [${eventName}] autoplaying`);
+          player.play().catch((e: unknown) => console.error(`VideoJsPlayer: [${eventName}] play failed`, e));
         }
-      } catch {
-        // Ignore seek errors
+      } catch (e: unknown) {
+        console.error(`VideoJsPlayer: [${eventName}] seek failed`, e);
       }
     };
 
-    if (player.readyState() > 1) {
-      seekToStart();
+    if (player.readyState() > 0) {
+      seekToStart('immediate');
       return;
     }
 
-    player.one('loadeddata', seekToStart);
+    const onLoadedMetadata = () => seekToStart('loadedmetadata');
+    const onLoadedData = () => seekToStart('loadeddata');
+    const onCanPlay = () => seekToStart('canplay');
+
+    player.one('loadedmetadata', onLoadedMetadata);
+    player.one('loadeddata', onLoadedData);
+    player.one('canplay', onCanPlay);
 
     return () => {
-      player.off('loadeddata', seekToStart);
+      player.off('loadedmetadata', onLoadedMetadata);
+      player.off('loadeddata', onLoadedData);
+      player.off('canplay', onCanPlay);
     };
   }, [props.reloadToken, props.src, props.startFromSeconds, props.autoplay]);
 
