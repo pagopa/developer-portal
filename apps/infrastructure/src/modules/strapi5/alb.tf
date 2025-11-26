@@ -2,7 +2,7 @@
 module "cms_load_balancer" {
   source = "git::https://github.com/terraform-aws-modules/terraform-aws-alb.git?ref=3e9c6cbaf4c1d858c3bbee6f086f0c8ef17522ab" # v9.6.0
 
-  name                  = "cms-load-balancer"
+  name                  = "cms-load-balancer-v5"
   vpc_id                = data.aws_vpc.cms.id
   subnets               = data.aws_subnets.public.ids
   security_groups       = [aws_security_group.cms_lb.id]
@@ -25,14 +25,14 @@ module "cms_load_balancer" {
       protocol        = "HTTPS"
       certificate_arn = module.cms_ssl_certificate.acm_certificate_arn
       forward = {
-        target_group_key = "cms-target-group"
+        target_group_key = "cms-target-group-v5"
       }
     }
   }
 
   target_groups = {
-    cms-target-group = {
-      name        = "cms-target-group"
+    cms-target-group-v5 = {
+      name        = "cms-target-group-v5"
       protocol    = "HTTP"
       port        = var.cms_app_port
       target_type = "ip"
@@ -57,7 +57,7 @@ module "cms_load_balancer" {
 module "cms_load_balancer_internal" {
   source = "git::https://github.com/terraform-aws-modules/terraform-aws-alb.git?ref=3e9c6cbaf4c1d858c3bbee6f086f0c8ef17522ab" # v9.6.0
 
-  name                  = "cms-load-balancer-internal"
+  name                  = "cms-load-balancer-internal-v5"
   vpc_id                = data.aws_vpc.cms.id
   subnets               = data.aws_subnets.private.ids
   security_groups       = [aws_security_group.cms_lb.id]
@@ -70,14 +70,14 @@ module "cms_load_balancer_internal" {
       port     = 8080
       protocol = "HTTP"
       forward = {
-        target_group_key = "cms-target-group-internal"
+        target_group_key = "cms-target-group-internal-v5"
       }
     }
   }
 
   target_groups = {
-    cms-target-group-internal = {
-      name        = "cms-target-group-internal"
+    cms-target-group-internal-v5 = {
+      name        = "cms-target-group-internal-v5"
       protocol    = "HTTP"
       port        = var.cms_app_port
       target_type = "ip"
@@ -98,18 +98,17 @@ module "cms_load_balancer_internal" {
 }
 
 # Private Route53 zone for internal DNS
-resource "aws_route53_zone" "internal" {
-  name = "internal.${var.dns_domain_name}"
-  vpc {
-    vpc_id = data.aws_vpc.cms.id
-  }
+data "aws_route53_zone" "internal" {
+  name         = "internal.${var.dns_domain_name}"
+  private_zone = true
+  vpc_id       = data.aws_vpc.cms.id
 }
 
 
 # DNS record for the internal load balancer
 resource "aws_route53_record" "cms_internal" {
-  zone_id = aws_route53_zone.internal.zone_id
-  name    = "cms"
+  zone_id = data.aws_route53_zone.internal.zone_id
+  name    = "cmsv5"
   type    = "A"
   alias {
     name                   = module.cms_load_balancer_internal.dns_name

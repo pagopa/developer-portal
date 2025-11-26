@@ -30,7 +30,7 @@ data "aws_iam_policy_document" "deploy_github" {
 }
 
 resource "aws_iam_policy" "deploy_cms" {
-  name        = "DeployCms"
+  name        = "DeployCmsV5"
   description = "Policy to allow to deploy the cms"
 
   policy = jsonencode({
@@ -114,7 +114,7 @@ data "aws_iam_policy_document" "ecs_task_execution" {
 module "iam_policy_ecs_task_execution" {
   source = "git::https://github.com/terraform-aws-modules/terraform-aws-iam.git//modules/iam-policy?ref=f37809108f86d8fbdf17f735df734bf4abe69315" # v5.34.0
 
-  name   = "CMSTaskExecutionPolicies"
+  name   = "CMSTaskExecutionPoliciesV5"
   path   = "/"
   policy = data.aws_iam_policy_document.ecs_task_execution.json
 }
@@ -154,7 +154,7 @@ data "aws_iam_policy_document" "ecs_task_role_ssm" {
 module "iam_policy_ecs_task_role_s3" {
   source = "git::https://github.com/terraform-aws-modules/terraform-aws-iam.git//modules/iam-policy?ref=f37809108f86d8fbdf17f735df734bf4abe69315" # v5.34.0
 
-  name   = "CMSTaskRolePoliciesS3"
+  name   = "CMSTaskRolePoliciesS3V5"
   path   = "/"
   policy = data.aws_iam_policy_document.ecs_task_role_s3.json
 }
@@ -162,7 +162,7 @@ module "iam_policy_ecs_task_role_s3" {
 module "iam_policy_ecs_task_role_ssm" {
   source = "git::https://github.com/terraform-aws-modules/terraform-aws-iam.git//modules/iam-policy?ref=f37809108f86d8fbdf17f735df734bf4abe69315" # v5.34.0
 
-  name   = "CMSTaskRolePoliciesSSM"
+  name   = "CMSTaskRolePoliciesSSMV5"
   path   = "/"
   policy = data.aws_iam_policy_document.ecs_task_role_ssm.json
 }
@@ -170,7 +170,7 @@ module "iam_policy_ecs_task_role_ssm" {
 module "iam_policy_cms" {
   source = "git::https://github.com/terraform-aws-modules/terraform-aws-iam.git//modules/iam-policy?ref=f37809108f86d8fbdf17f735df734bf4abe69315" # v5.34.0
 
-  name        = "S3UploadImages"
+  name        = "S3UploadImagesV5"
   path        = "/"
   description = "Policy to allow to manage files in S3 bucket"
 
@@ -192,7 +192,7 @@ module "iam_policy_cms" {
   })
 }
 
-/* TODO
+
 data "aws_iam_policy_document" "s3_iam_policy_cms" {
   statement {
     actions = ["s3:GetObject"]
@@ -206,4 +206,3 @@ data "aws_iam_policy_document" "s3_iam_policy_cms" {
     }
   }
 }
-*/

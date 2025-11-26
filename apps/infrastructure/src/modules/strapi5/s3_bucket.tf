@@ -18,7 +18,7 @@ module "s3_bucket_cms" {
     enabled = true
   }
 
-  # TODO
-  //attach_policy = true
-  //policy        = data.aws_iam_policy_document.s3_iam_policy_cms.json
+
+  attach_policy = true
+  policy        = data.aws_iam_policy_document.s3_iam_policy_cms.json
 }

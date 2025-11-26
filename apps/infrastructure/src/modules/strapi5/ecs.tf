@@ -81,12 +81,12 @@ module "cms_ecs_service" {
 
   load_balancer = {
     cms-target-group = {
-      target_group_arn = module.cms_load_balancer.target_groups["cms-target-group"].arn
+      target_group_arn = module.cms_load_balancer.target_groups["cms-target-group-v5"].arn
       container_name   = "cms-docker"
       container_port   = var.cms_app_port
     }
     cms-load-balancer-internal = {
-      target_group_arn = module.cms_load_balancer_internal.target_groups["cms-target-group-internal"].arn
+      target_group_arn = module.cms_load_balancer_internal.target_groups["cms-target-group-internal-v5"].arn
       container_name   = "cms-docker"
       container_port   = var.cms_app_port
     }
