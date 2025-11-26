@@ -10,8 +10,8 @@ module "cms_rds" {
   database_name               = "strapidb"
   master_username             = "postgres"
   master_password             = module.secret_cms_database_password.value
-  vpc_id                      = module.vpc.vpc_id
-  db_subnet_group_name        = module.vpc.database_subnet_group_name
+  vpc_id                      = data.aws_vpc.cms.id
+  db_subnet_group_name        = data.aws_db_subnet_group.cms.name
   vpc_security_group_ids      = [aws_security_group.cms_database.id]
   apply_immediately           = true
   skip_final_snapshot         = true

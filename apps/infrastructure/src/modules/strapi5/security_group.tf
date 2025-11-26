@@ -5,7 +5,7 @@
 resource "aws_security_group" "cms_lb" {
   name        = "cms-lb"
   description = "Ingress - Load Balancer"
-  vpc_id      = module.vpc.vpc_id
+  vpc_id      = data.aws_vpc.cms.id
 
   ingress {
     protocol    = "tcp"
@@ -19,7 +19,7 @@ resource "aws_security_group" "cms_lb" {
     from_port = 8080
     to_port   = 8080
     #TODO: replace the cidr block with security group of the backend.
-    cidr_blocks = [module.vpc.vpc_cidr_block]
+    cidr_blocks = [data.aws_vpc.cms.cidr_block]
   }
 
   ingress {
@@ -48,7 +48,7 @@ resource "aws_security_group" "cms_lb" {
 resource "aws_security_group" "ecs_tasks" {
   name        = "cms-ecs-tasks"
   description = "allow inbound access from the ALB only"
-  vpc_id      = module.vpc.vpc_id
+  vpc_id      = data.aws_vpc.cms.id
 
   ingress {
     protocol        = "tcp"
@@ -75,7 +75,7 @@ resource "aws_security_group" "ecs_tasks" {
 resource "aws_security_group" "cms_database" {
   name        = "cms-database"
   description = "Ingress - RDS instance"
-  vpc_id      = module.vpc.vpc_id
+  vpc_id      = data.aws_vpc.cms.id
 
   ingress {
     protocol  = "tcp"

@@ -76,7 +76,7 @@ module "cms_ecs_service" {
   autoscaling_min_capacity       = var.environment == "prod" ? 2 : 1
 
   security_group_ids = [aws_security_group.ecs_tasks.id]
-  subnet_ids         = module.vpc.private_subnets
+  subnet_ids         = data.aws_subnets.private.ids
   assign_public_ip   = false
 
   load_balancer = {

@@ -3,8 +3,8 @@ module "cms_load_balancer" {
   source = "git::https://github.com/terraform-aws-modules/terraform-aws-alb.git?ref=3e9c6cbaf4c1d858c3bbee6f086f0c8ef17522ab" # v9.6.0
 
   name                  = "cms-load-balancer"
-  vpc_id                = module.vpc.vpc_id
-  subnets               = module.vpc.public_subnets
+  vpc_id                = data.aws_vpc.cms.id
+  subnets               = data.aws_subnets.public.ids
   security_groups       = [aws_security_group.cms_lb.id]
   internal              = false
   create_security_group = false
@@ -36,7 +36,7 @@ module "cms_load_balancer" {
       protocol    = "HTTP"
       port        = var.cms_app_port
       target_type = "ip"
-      vpc_id      = module.vpc.vpc_id
+      vpc_id      = data.aws_vpc.cms.id
 
       health_check = {
         healthy_threshold   = "3"
@@ -58,8 +58,8 @@ module "cms_load_balancer_internal" {
   source = "git::https://github.com/terraform-aws-modules/terraform-aws-alb.git?ref=3e9c6cbaf4c1d858c3bbee6f086f0c8ef17522ab" # v9.6.0
 
   name                  = "cms-load-balancer-internal"
-  vpc_id                = module.vpc.vpc_id
-  subnets               = module.vpc.private_subnets
+  vpc_id                = data.aws_vpc.cms.id
+  subnets               = data.aws_subnets.private.ids
   security_groups       = [aws_security_group.cms_lb.id]
   internal              = true
   create_security_group = false
@@ -81,7 +81,7 @@ module "cms_load_balancer_internal" {
       protocol    = "HTTP"
       port        = var.cms_app_port
       target_type = "ip"
-      vpc_id      = module.vpc.vpc_id
+      vpc_id      = data.aws_vpc.cms.id
 
       health_check = {
         healthy_threshold   = "3"
@@ -101,7 +101,7 @@ module "cms_load_balancer_internal" {
 resource "aws_route53_zone" "internal" {
   name = "internal.${var.dns_domain_name}"
   vpc {
-    vpc_id = module.vpc.vpc_id
+    vpc_id = data.aws_vpc.cms.id
   }
 }
 
