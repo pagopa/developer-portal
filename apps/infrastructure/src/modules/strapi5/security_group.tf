@@ -3,7 +3,7 @@
 # Traffic to the ECS cluster should only come from the ALB
 
 resource "aws_security_group" "cms_lb" {
-  name        = "cms-lb"
+  name        = "cms-lb-v5"
   description = "Ingress - Load Balancer"
   vpc_id      = data.aws_vpc.cms.id
 
@@ -46,7 +46,7 @@ resource "aws_security_group" "cms_lb" {
 ### AWS ECS Security Group ###
 # Traffic to the ECS cluster should only come from the ALB
 resource "aws_security_group" "ecs_tasks" {
-  name        = "cms-ecs-tasks"
+  name        = "cms-ecs-tasks-v5"
   description = "allow inbound access from the ALB only"
   vpc_id      = data.aws_vpc.cms.id
 
@@ -73,7 +73,7 @@ resource "aws_security_group" "ecs_tasks" {
 ### AWS RDS Security Group ###
 # Traffic to the DB should only come from ECS
 resource "aws_security_group" "cms_database" {
-  name        = "cms-database"
+  name        = "cms-database-v5"
   description = "Ingress - RDS instance"
   vpc_id      = data.aws_vpc.cms.id
 
