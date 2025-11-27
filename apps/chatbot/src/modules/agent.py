@@ -6,7 +6,7 @@ from llama_index.core.agent.workflow import ReActAgent
 from src.modules.settings import SETTINGS
 from src.modules.vector_index import load_index_redis
 from src.modules.models import get_llm, get_embed_model
-from src.modules.agent_tools import get_query_engine_tool, get_identity_tool
+from src.modules.agent_tools import get_query_engine_tool
 
 
 def get_agent(
@@ -35,17 +35,13 @@ def get_agent(
         refine_template=refine_template,
     )
 
-    identity_tool = get_identity_tool(
-        identity_prompt=SETTINGS.identity_prompt_str,
-    )
-
     agent = ReActAgent(
         name="rag_agent",
         description=(
             "A ReAct agent that uses RAG (Retrieval-Augmented Generation) to answer questions. "
             "It retrieves relevant information from the index and generates a structured response."
         ),
-        tools=[query_engine_tool, identity_tool],
+        tools=[query_engine_tool],
         llm=llm_agent,
     )
 
