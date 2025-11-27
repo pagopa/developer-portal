@@ -77,9 +77,6 @@ class ChatbotSettings(BaseSettings):
         default=os.getenv("CHB_AWS_GOOGLE_API_KEY"),
     )
     google_service_account: dict = GOOGLE_JSON_ACCOUNT_INFO
-    strapi_api_key: str = get_ssm_parameter(
-        os.getenv("CHB_AWS_SSM_STRAPI_API_KEY"), os.getenv("CHB_STRAPI_API_KEY", "")
-    )
     langfuse_host: str = os.getenv("CHB_LANGFUSE_HOST")
     langfuse_public_key: str = get_ssm_parameter(
         os.getenv("CHB_AWS_SSM_LANGFUSE_PUBLIC_KEY"),
