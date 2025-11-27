@@ -141,12 +141,12 @@ jobs:
               dir=$(echo "$dir" | xargs)
               if [[ -n "$dir" ]]; then
                 echo "Syncing directory: $dir"
-                aws s3 sync "docs/$dir" "s3://devportal-${{ env.ENV_SHORT }}-website-static-content/devportal-docs/docs/$dir" --delete ${{ inputs.incremental_mode == true && ' --size-only' || '' }}
+                aws s3 sync "docs/$dir" "s3://devportal-${{ env.ENV_SHORT }}-website-static-content/devportal-docs/docs/$dir" --delete --exclude "**/metadata.json" ${{ inputs.incremental_mode == true && ' --size-only' || '' }}
               fi
             done
           else
             echo "Syncing all docs"
-            aws s3 sync docs s3://devportal-${{ env.ENV_SHORT }}-website-static-content/devportal-docs/docs --delete ${{ inputs.incremental_mode == true && ' --size-only' || '' }}
+            aws s3 sync docs s3://devportal-${{ env.ENV_SHORT }}-website-static-content/devportal-docs/docs --delete --exclude "**/metadata.json" ${{ inputs.incremental_mode == true && ' --size-only' || '' }}
           fi
 
       - name: Invalidate CloudFront asset bucket cache
@@ -232,7 +232,7 @@ jobs:
       - name: Sync docs folder to S3
         working-directory: ./devportal-docs
         run: |
-          aws s3 sync docs s3://devportal-p-website-static-content/devportal-docs/docs --delete --size-only
+          aws s3 sync docs s3://devportal-p-website-static-content/devportal-docs/docs --delete --exclude "**/metadata.json" --size-only
 
       - name: Invalidate CloudFront asset bucket cache
         run: |
