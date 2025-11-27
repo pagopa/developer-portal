@@ -3,4 +3,4 @@
 "chatbot": patch
 ---
 
-Removed strapi api key from chatbot and chatbot-index
+Remove strapi_api_key from chatbot and chatbot-index
