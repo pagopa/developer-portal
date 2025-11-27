@@ -61,8 +61,8 @@ const GENERATE_URL_METADATA = process.env.GENERATE_URL_METADATA !== 'false';
 const GENERATE_SITEMAP_METADATA =
   process.env.GENERATE_SITEMAP_METADATA !== 'false';
 const SAVE_STRAPI_RESPONSES = process.env.SAVE_STRAPI_RESPONSES !== 'false';
-const GENERATE_SINGLE_METADATA_FILE =
-  process.env.GENERATE_SINGLE_METADATA_FILE !== 'false';
+const GENERATE_ROOT_METADATA_FILE =
+  process.env.GENERATE_ROOT_METADATA_FILE !== 'false';
 
 // Optional filter to sync only specific directories
 // Format: comma-separated list of dirNames (e.g., "dir1,dir2,dir3")
@@ -571,7 +571,7 @@ async function main() {
     console.log(`Generate URL metadata: ${GENERATE_URL_METADATA}`);
     console.log(`Generate sitemap metadata: ${GENERATE_SITEMAP_METADATA}`);
     console.log(`Save Strapi responses: ${SAVE_STRAPI_RESPONSES}`);
-    console.log(`Generate single file: ${GENERATE_SINGLE_METADATA_FILE}`);
+    console.log(`Generate root metadata file: ${GENERATE_ROOT_METADATA_FILE}`);
     if (DIR_NAMES_FILTER) {
       console.log(
         `DirName filter active: ${DIR_NAMES_FILTER.length} directories specified`
@@ -656,7 +656,7 @@ async function main() {
     if (GENERATE_SITEMAP_METADATA && metadataFilter.guides) {
       console.log('Processing guides metadata...');
       const guidesSitemap = await processGuidesMetadata(strapiData.guides);
-      if (GENERATE_SINGLE_METADATA_FILE) {
+      if (GENERATE_ROOT_METADATA_FILE) {
         await putS3File(
           guidesSitemap.flat(),
           S3_GUIDE_METADATA_JSON_PATH,
@@ -687,7 +687,7 @@ async function main() {
       const solutionsSitemap = await processSolutionsMetadata(
         strapiData.solutions
       );
-      if (GENERATE_SINGLE_METADATA_FILE) {
+      if (GENERATE_ROOT_METADATA_FILE) {
         await putS3File(
           solutionsSitemap.flat(),
           S3_SOLUTIONS_METADATA_JSON_PATH,
@@ -718,7 +718,7 @@ async function main() {
       const releaseNotesSitemap = await processReleaseNotesMetadata(
         strapiData.releaseNotes
       );
-      if (GENERATE_SINGLE_METADATA_FILE) {
+      if (GENERATE_ROOT_METADATA_FILE) {
         await putS3File(
           releaseNotesSitemap.flat(),
           S3_RELEASE_NOTES_METADATA_JSON_PATH,

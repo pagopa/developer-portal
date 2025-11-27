@@ -12,11 +12,6 @@ on:
           - dev
           - uat
           - prod
-      call_reindex:
-        description: 'Trigger reindex workflow after docs sync'
-        type: boolean
-        required: true
-        default: false
       metadata_type:
         description: 'Type of metadata to generate'
         type: choice
@@ -32,13 +27,13 @@ on:
         type: boolean
         required: true
         default: true
-      inivalidate_opennext_cache:
+      invalidate_opennext_cache:
         description: 'Invalidate opennext cloufront cache'
         type: boolean
         required: true
         default: false
-      generate_single_metadata_file:
-        description: 'Generate a single metadata file instead of multiple ones'
+      generate_root_metadata_file:
+        description: 'Generate root metadata file alongside folder-specific ones'
         type: boolean
         required: true
         default: true
@@ -116,7 +111,7 @@ jobs:
           S3_PATH_TO_GITBOOK_DOCS: ${{ vars.S3_PATH_TO_GITBOOK_DOCS || 'devportal-docs/docs' }}
           NEXT_PUBLIC_COGNITO_REGION: ${{ vars.NEXT_PUBLIC_COGNITO_REGION || 'eu-south-1' }}
           FETCH_FROM_STRAPI: ${{ vars.FETCH_FROM_STRAPI || 'true' }}
-          GENERATE_SINGLE_METADATA_FILE: ${{ inputs.generate_single_metadata_file == true && 'true' || 'false' }}
+          GENERATE_ROOT_METADATA_FILE: ${{ inputs.generate_root_metadata_file == true && 'true' || 'false' }}
           GENERATE_URL_METADATA: 'true'
           GENERATE_SITEMAP_METADATA: 'true'
           SAVE_STRAPI_RESPONSES: 'true'
@@ -219,7 +214,7 @@ jobs:
           S3_PATH_TO_GITBOOK_DOCS: ${{ vars.S3_PATH_TO_GITBOOK_DOCS || 'devportal-docs/docs' }}
           NEXT_PUBLIC_COGNITO_REGION: ${{ vars.NEXT_PUBLIC_COGNITO_REGION || 'eu-south-1' }}
           FETCH_FROM_STRAPI: ${{ vars.FETCH_FROM_STRAPI || 'true' }}
-          GENERATE_SINGLE_METADATA_FILE: ${{ inputs.generate_single_metadata_file == true && 'true' || 'false' }}
+          GENERATE_ROOT_METADATA_FILE: ${{ inputs.generate_root_metadata_file == true && 'true' || 'false' }}
           GENERATE_URL_METADATA: 'true'
           GENERATE_SITEMAP_METADATA: 'true'
           SAVE_STRAPI_RESPONSES: 'true'
