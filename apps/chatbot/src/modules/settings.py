@@ -14,6 +14,7 @@ PARAMS = yaml.safe_load(open(os.path.join(ROOT, "config", "params.yaml"), "r"))
 PROMPTS = yaml.safe_load(open(os.path.join(ROOT, "config", "prompts.yaml"), "r"))
 AWS_SESSION = boto3.Session()
 
+
 def get_ssm_parameter(name: str | None, default: str | None = None) -> str | None:
     """
     Retrieves a specific value from AWS Systems Manager's Parameter Store.
@@ -38,6 +39,7 @@ def get_ssm_parameter(name: str | None, default: str | None = None) -> str | Non
         return default
 
     return value
+
 
 GOOGLE_SERVICE_ACCOUNT = get_ssm_parameter(
     os.getenv("CHB_AWS_SSM_GOOGLE_SERVICE_ACCOUNT")
@@ -66,8 +68,8 @@ class ChatbotSettings(BaseSettings):
         "AWS_REGION"
     )
     auth_cognito_userpool_id: str = (
-        mock_user_pool_id() 
-        if os.getenv("ENVIRONMENT", "local") in ["test", "local"] 
+        mock_user_pool_id()
+        if os.getenv("ENVIRONMENT", "local") in ["test", "local"]
         else os.getenv("AUTH_COGNITO_USERPOOL_ID")
     )
     google_api_key: str = get_ssm_parameter(
@@ -118,7 +120,6 @@ class ChatbotSettings(BaseSettings):
     )
 
     # prompts
-    identity_prompt_str: str = PROMPTS["identity_prompt_str"]
     qa_prompt_str: str = PROMPTS["qa_prompt_str"]
     react_system_str: str = PROMPTS["react_system_header_str"]
     refine_prompt_str: str = PROMPTS["refine_prompt_str"]
