@@ -79,6 +79,8 @@ const S3_SOLUTIONS_METADATA_JSON_PATH =
 const S3_RELEASE_NOTES_METADATA_JSON_PATH =
   process.env.S3_RELEASE_NOTES_METADATA_JSON_PATH ||
   'release-notes-metadata.json';
+const S3_DIRNAME_METADATA_JSON_PATH =
+  process.env.S3_DIRNAME_METADATA_JSON_PATH || 'metadata.json';
 
 const SITEMAP_URL = process.env.SITEMAP_URL || `${baseUrl}/sitemap.xml`;
 const S3_SITEMAP_PATH = process.env.S3_SITEMAP_PATH || 'sitemap.xml';
@@ -668,7 +670,7 @@ async function main() {
             path.join(
               DOCUMENTATION_PATH,
               guidesMetadata[0].dirName,
-              S3_GUIDE_METADATA_JSON_PATH
+              S3_DIRNAME_METADATA_JSON_PATH
             ),
             S3_BUCKET_NAME!,
             getS3Client()
@@ -698,7 +700,7 @@ async function main() {
             path.join(
               DOCUMENTATION_PATH,
               solutionMetadata[0].dirName,
-              S3_SOLUTIONS_METADATA_JSON_PATH
+              S3_DIRNAME_METADATA_JSON_PATH
             ),
             S3_BUCKET_NAME!,
             getS3Client()
@@ -728,7 +730,7 @@ async function main() {
             path.join(
               DOCUMENTATION_PATH,
               releaseNote[0].dirName,
-              S3_RELEASE_NOTES_METADATA_JSON_PATH
+              S3_DIRNAME_METADATA_JSON_PATH
             ),
             S3_BUCKET_NAME!,
             getS3Client()

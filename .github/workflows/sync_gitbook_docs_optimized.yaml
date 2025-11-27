@@ -123,6 +123,7 @@ jobs:
           METADATA_TYPE: ${{ inputs.metadata_type }}
           DIR_NAMES_FILTER: ${{ inputs.dir_names_filter }}
           SITEMAP_URL: ${{ env.SITEMAP_URL || 'https://developer.pagopa.it/sitemap.xml' }}
+          S3_DIRNAME_METADATA_JSON_PATH: ${{ vars.S3_DIRNAME_METADATA_JSON_PATH }}
         run: npm run sync-all-metadata -w gitbook-docs
 
       - name: Replace urls and include tags in docs
