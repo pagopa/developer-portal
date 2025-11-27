@@ -2,6 +2,7 @@ import * as qs from 'qs';
 import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
 import { productRelationsPopulate } from '@/lib/strapi/fetches/fetchProducts';
 import { StrapiReleaseNotes } from '@/lib/strapi/types/releaseNotes';
+import { RootEntity } from '@/lib/strapi/types/rootEntity';
 
 const releaseNotesPopulate = {
   populate: {
@@ -38,7 +39,7 @@ const makeStrapiReleaseNotePopulate = (productSlug: string) =>
   });
 
 export const fetchReleaseNote = (productSlug: string) =>
-  fetchFromStrapi<StrapiReleaseNotes>(
+  fetchFromStrapi<RootEntity<StrapiReleaseNotes>>(
     'release-notes',
     makeStrapiReleaseNotePopulate(productSlug)
   );

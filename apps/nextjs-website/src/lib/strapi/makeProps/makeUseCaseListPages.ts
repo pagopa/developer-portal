@@ -5,12 +5,13 @@ import { compact } from 'lodash';
 import { StrapiUseCaseListPages } from '@/lib/strapi/types/useCaseListPage';
 import { UseCase } from '@/lib/types/useCaseData';
 import { UseCasesPageProps } from '@/app/[productSlug]/use-cases/page';
+import { RootEntity } from '@/lib/strapi/types/rootEntity';
 
 export function makeUseCaseListPagesProps(
-  strapiUseCaseList: StrapiUseCaseListPages
+  strapiUseCaseList: RootEntity<StrapiUseCaseListPages>
 ): readonly UseCasesPageProps[] {
   return compact(
-    strapiUseCaseList.map((attributes) => {
+    strapiUseCaseList.data.map((attributes) => {
       const slug = attributes.product?.slug;
       if (!slug) {
         // eslint-disable-next-line functional/no-expression-statements

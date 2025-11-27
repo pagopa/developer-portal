@@ -7,6 +7,7 @@ import { RelatedLinksProps } from '@/components/atoms/RelatedLinks/RelatedLinks'
 import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
 import { StrapiTutorials } from '@/lib/strapi/types/tutorial';
 import { compact } from 'lodash';
+import { RootEntity } from '@/lib/strapi/types/rootEntity';
 
 export type TutorialProps = Tutorial & {
   readonly productSlug: string;
@@ -14,11 +15,11 @@ export type TutorialProps = Tutorial & {
   readonly bannerLinks?: readonly BannerLinkProps[];
 };
 export function makeTutorialsProps(
-  strapiTutorials: StrapiTutorials,
+  strapiTutorials: RootEntity<StrapiTutorials>,
   markdownContentDict: Record<string, string>
 ): readonly TutorialProps[] {
   return compact(
-    strapiTutorials.map((attributes) => {
+    strapiTutorials.data.map((attributes) => {
       // Controllo esistenza campi obbligatori minimi
       if (!attributes.slug || !attributes.title) {
         console.error(

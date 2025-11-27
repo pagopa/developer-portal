@@ -95,7 +95,7 @@ export const getTagsProps = async () => {
 
 export const getTutorialsProps = async () => {
   const strapiTutorials = await fetchTutorials(buildEnv);
-  const tutorialsWithMarkdown = strapiTutorials.filter((tutorial) => {
+  const tutorialsWithMarkdown = strapiTutorials.data.filter((tutorial) => {
     const parts = tutorial?.parts ?? [];
     return parts.some((part) => part?.__component === 'parts.markdown');
   });
@@ -127,8 +127,7 @@ export const getQuickStartGuidesProps = async () => {
 
 export const getUrlReplaceMapProps = async () => {
   const strapiUrlReplaceMap = await fetchUrlReplaceMap(buildEnv);
-  const processed = makeUrlReplaceMap(strapiUrlReplaceMap);
-  return processed;
+  return makeUrlReplaceMap(strapiUrlReplaceMap);
 };
 
 export const getApiDataListPagesProps = async () => {
@@ -165,7 +164,9 @@ export const getGuideListPagesProps = async () => {
   const strapiGuideList = (await fetchResponseFromCDN(
     'synced-guide-list-pages-response.json'
   )) as StrapiGuideListPages | undefined;
-  return strapiGuideList ? makeGuideListPagesProps(strapiGuideList) : [];
+  return strapiGuideList
+    ? makeGuideListPagesProps({ data: strapiGuideList })
+    : [];
 };
 
 export const getGuideProps = async (
@@ -185,7 +186,7 @@ export const getGuidePageProps = async (
     'synced-guides-response.json'
   )) as StrapiGuides | undefined;
   // eslint-disable-next-line functional/no-expression-statements
-  const guides = strapiGuides ? makeGuidesProps(strapiGuides) : [];
+  const guides = strapiGuides ? makeGuidesProps({ data: strapiGuides }) : [];
   const guide = guides.filter(
     (g) => g.guide.slug === guideSlug && g.product.slug === productSlug
   )[0];
@@ -203,7 +204,7 @@ export const getSolutionProps = async (
   jsonMetadata?: JsonMetadata
 ) => {
   const strapiSolutions = await fetchSolution(solutionsSlug)(buildEnv);
-  if (!strapiSolutions || strapiSolutions.length < 1) {
+  if (!strapiSolutions || strapiSolutions.data.length < 1) {
     // eslint-disable-next-line functional/no-throw-statements
     throw new Error('Failed to fetch data');
   }
@@ -216,7 +217,7 @@ export const getReleaseNoteProps = async (
   jsonMetadata?: JsonMetadata
 ) => {
   const strapiReleaseNotes = await fetchReleaseNote(productSlug)(buildEnv);
-  if (!strapiReleaseNotes || strapiReleaseNotes.length < 1) {
+  if (!strapiReleaseNotes || strapiReleaseNotes.data.length < 1) {
     // eslint-disable-next-line functional/no-throw-statements
     throw new Error('Failed to fetch data');
   }
@@ -226,7 +227,7 @@ export const getReleaseNoteProps = async (
 
 export const getUseCasesProps = async () => {
   const strapiUseCases = await fetchUseCases(buildEnv);
-  const allMarkdownParts = strapiUseCases.flatMap((useCase) =>
+  const allMarkdownParts = strapiUseCases.data.flatMap((useCase) =>
     (useCase?.parts ?? []).filter(isMarkDownPart)
   );
   const contentPromises = allMarkdownParts.map(async (part) => {

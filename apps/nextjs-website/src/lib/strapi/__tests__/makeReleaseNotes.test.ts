@@ -42,7 +42,7 @@ describe('makeReleaseNotesProps', () => {
 
   it('should handle empty data array', () => {
     const emptyData: StrapiReleaseNotes = {
-      data: [],
+      ...[],
       meta: {
         pagination: {
           page: 1,

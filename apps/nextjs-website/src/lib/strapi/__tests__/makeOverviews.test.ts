@@ -47,7 +47,7 @@ describe('makeOverviewsProps', () => {
 
   it('should handle empty data array', () => {
     const emptyData: StrapiOverviews = {
-      data: [],
+      ...[],
       meta: {
         pagination: {
           page: 1,

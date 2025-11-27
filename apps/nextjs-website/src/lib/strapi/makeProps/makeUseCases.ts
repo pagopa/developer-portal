@@ -7,6 +7,7 @@ import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
 import { compact } from 'lodash';
 import { StrapiUseCases } from '@/lib/strapi/types/useCase';
 import { UseCase } from '@/lib/types/useCaseData';
+import { RootEntity } from '@/lib/strapi/types/rootEntity';
 
 export type UseCaseProps = UseCase & {
   readonly productSlug: string;
@@ -15,11 +16,11 @@ export type UseCaseProps = UseCase & {
 };
 
 export function makeUseCasesProps(
-  strapiUseCases: StrapiUseCases,
+  strapiUseCases: RootEntity<StrapiUseCases>,
   markdownContentDict: Record<string, string>
 ): readonly UseCaseProps[] {
   return compact(
-    strapiUseCases.map((attributes) => {
+    strapiUseCases.data.map((attributes) => {
       if (!attributes.slug || !attributes.title) {
         console.error(
           `Error while processing UseCase: missing title or slug. Title: ${attributes.title} | Slug: ${attributes.slug}. Skipping...`

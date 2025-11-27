@@ -87,7 +87,7 @@ describe('makeUseCasesProps', () => {
 
   it('should handle empty data array', () => {
     const emptyData: StrapiUseCases = {
-      data: [],
+      ...[],
       meta: {
         pagination: {
           page: 1,

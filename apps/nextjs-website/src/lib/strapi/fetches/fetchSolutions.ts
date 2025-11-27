@@ -2,6 +2,7 @@ import * as qs from 'qs';
 import { webinarPopulate } from '@/lib/strapi/fetches/fetchWebinars';
 import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
 import { StrapiSolutions } from '@/lib/strapi/types/solutions';
+import { RootEntity } from '@/lib/strapi/types/rootEntity';
 
 const solutionsPopulate = {
   populate: {
@@ -34,7 +35,7 @@ const makeStrapiSolutionsPopulate = () =>
     ...solutionsPopulate,
   });
 
-export const fetchSolutions = fetchFromStrapi<StrapiSolutions>(
+export const fetchSolutions = fetchFromStrapi<RootEntity<StrapiSolutions>>(
   'solutions',
   makeStrapiSolutionsPopulate()
 );
@@ -48,7 +49,7 @@ const makeStrapiSolutionPopulate = (solutionSlug: string) =>
   });
 
 export const fetchSolution = (solutionSlug: string) =>
-  fetchFromStrapi<StrapiSolutions>(
+  fetchFromStrapi<RootEntity<StrapiSolutions>>(
     'solutions',
     makeStrapiSolutionPopulate(solutionSlug)
   );

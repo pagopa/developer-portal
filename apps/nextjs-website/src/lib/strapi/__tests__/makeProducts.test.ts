@@ -33,7 +33,19 @@ describe('makeProductsProps', () => {
   });
 
   it('should handle minimal product data', () => {
-    const result = makeProductsProps(_.cloneDeep(minimalProduct()));
+    const result = makeProductsProps(
+      _.cloneDeep({
+        ...minimalProduct(),
+        meta: {
+          pagination: {
+            page: 1,
+            pageSize: 25,
+            pageCount: 1,
+            total: 1,
+          },
+        },
+      })
+    );
     expect(result).toHaveLength(1);
     expect(result[0].name).toBe('Minimal Product');
     expect(result[0].slug).toBe('minimal-product');
@@ -50,7 +62,7 @@ describe('makeProductsProps', () => {
 
   it('should handle empty data array', () => {
     const emptyData: StrapiProducts = {
-      data: [],
+      ...[],
       meta: { pagination: { page: 1, pageSize: 25, pageCount: 1, total: 0 } },
     };
     const result = makeProductsProps(emptyData);
@@ -58,7 +70,17 @@ describe('makeProductsProps', () => {
   });
 
   it('should skip products without slug and log error', () => {
-    const result = makeProductsProps(productsWithAnItemMissingSlug());
+    const result = makeProductsProps({
+      ...productsWithAnItemMissingSlug(),
+      meta: {
+        pagination: {
+          page: 1,
+          pageSize: 25,
+          pageCount: 1,
+          total: 1,
+        },
+      },
+    });
 
     expect(result).toHaveLength(0);
     expect(spyOnConsoleError).toHaveBeenCalledWith(
@@ -67,19 +89,49 @@ describe('makeProductsProps', () => {
   });
 
   it('should handle products with multiple API data (returns general API URL)', () => {
-    const result = makeProductsProps(productWithMultipleApiData());
+    const result = makeProductsProps({
+      ...productWithMultipleApiData(),
+      meta: {
+        pagination: {
+          page: 1,
+          pageSize: 25,
+          pageCount: 1,
+          total: 1,
+        },
+      },
+    });
     expect(result[0].hasApiDataListPage).toBe(true);
     expect(result[0].apiDataListPageUrl).toBe('/test-product/api');
   });
 
   it('should handle products with empty API data', () => {
-    const result = makeProductsProps(productWithEmptyApiData());
+    const result = makeProductsProps({
+      ...productWithEmptyApiData(),
+      meta: {
+        pagination: {
+          page: 1,
+          pageSize: 25,
+          pageCount: 1,
+          total: 1,
+        },
+      },
+    });
     expect(result[0].hasApiDataListPage).toBe(false);
     expect(result[0].apiDataListPageUrl).toBeUndefined();
   });
 
   it('should handle corrupted data with try/catch and log error', () => {
-    const result = makeProductsProps(productWithCorruptedData());
+    const result = makeProductsProps({
+      ...productWithCorruptedData(),
+      meta: {
+        pagination: {
+          page: 1,
+          pageSize: 25,
+          pageCount: 1,
+          total: 1,
+        },
+      },
+    });
 
     expect(result).toHaveLength(0);
     expect(spyOnConsoleError).toHaveBeenCalledWith(
@@ -90,7 +142,17 @@ describe('makeProductsProps', () => {
   });
 
   it('should handle mixed valid and invalid products', () => {
-    const result = makeProductsProps(mixedValidAndInvalidProducts());
+    const result = makeProductsProps({
+      ...mixedValidAndInvalidProducts(),
+      meta: {
+        pagination: {
+          page: 1,
+          pageSize: 25,
+          pageCount: 1,
+          total: 1,
+        },
+      },
+    });
 
     expect(result).toHaveLength(2);
     expect(result[0].name).toBe('Test Product');
@@ -101,7 +163,17 @@ describe('makeProductsProps', () => {
   });
 
   it('should return empty array when all products are invalid', () => {
-    const result = makeProductsProps(allInvalidProducts());
+    const result = makeProductsProps({
+      ...allInvalidProducts(),
+      meta: {
+        pagination: {
+          page: 1,
+          pageSize: 25,
+          pageCount: 1,
+          total: 1,
+        },
+      },
+    });
 
     expect(result).toHaveLength(0);
     expect(spyOnConsoleError).toHaveBeenCalledTimes(2);
@@ -118,12 +190,12 @@ describe('makeProductProps', () => {
   });
 
   it('should transform single strapi product to product props', () => {
-    const result = makeProductProps(strapiProducts.data[0]);
+    const result = makeProductProps(strapiProducts[0]);
     expect(result).toMatchObject(expectedProduct);
   });
 
   it('should return null for product without slug', () => {
-    const result = makeProductProps(productsWithAnItemMissingSlug().data[0]);
+    const result = makeProductProps(productsWithAnItemMissingSlug()[0]);
     expect(result).toBeNull();
     expect(spyOnConsoleError).toHaveBeenCalledWith(
       'Error while processing Product: missing title or slug. Title: Product Without Slug | Slug: undefined. Skipping...'
@@ -131,7 +203,7 @@ describe('makeProductProps', () => {
   });
 
   it('should return null and log error for corrupted product', () => {
-    const result = makeProductProps(productWithCorruptedData().data[0]);
+    const result = makeProductProps(productWithCorruptedData()[0]);
     expect(result).toBeNull();
     expect(spyOnConsoleError).toHaveBeenCalledTimes(1);
   });
@@ -139,7 +211,7 @@ describe('makeProductProps', () => {
 
 describe('makeBaseProductWithoutLogoProps', () => {
   it('should create base product props without logo', () => {
-    const result = makeBaseProductWithoutLogoProps(strapiProducts.data[0]);
+    const result = makeBaseProductWithoutLogoProps(strapiProducts[0]);
 
     expect(result).toEqual({
       slug: 'test-product',
@@ -160,31 +232,31 @@ describe('makeBaseProductWithoutLogoProps', () => {
   });
 
   it('should handle product with no banner links', () => {
-    const result = makeBaseProductWithoutLogoProps(minimalProduct().data[0]);
+    const result = makeBaseProductWithoutLogoProps(minimalProduct()[0]);
     expect(result.bannerLinks).toEqual([]);
   });
 
   it('should correctly determine API data list page URL for single API', () => {
-    const result = makeBaseProductWithoutLogoProps(strapiProducts.data[0]);
+    const result = makeBaseProductWithoutLogoProps(strapiProducts[0]);
     expect(result.apiDataListPageUrl).toBe('/test-product/api/api-detail');
   });
 
   it('should correctly determine API data list page URL for multiple APIs', () => {
     const result = makeBaseProductWithoutLogoProps(
-      productWithMultipleApiData().data[0]
+      productWithMultipleApiData()[0]
     );
     expect(result.apiDataListPageUrl).toBe('/test-product/api');
   });
 
   it('should handle undefined API data list page', () => {
-    const result = makeBaseProductWithoutLogoProps(minimalProduct().data[0]);
+    const result = makeBaseProductWithoutLogoProps(minimalProduct()[0]);
     expect(result.hasApiDataListPage).toBe(false);
     expect(result.apiDataListPageUrl).toBeUndefined();
   });
 
   it('should throw error for product without slug', () => {
     expect(() =>
-      makeBaseProductWithoutLogoProps(productsWithAnItemMissingSlug().data[0])
+      makeBaseProductWithoutLogoProps(productsWithAnItemMissingSlug()[0])
     ).toThrow(
       Error(
         'Error while processing Product with name "Product Without Slug": missing slug. Skipping...'
@@ -194,7 +266,7 @@ describe('makeBaseProductWithoutLogoProps', () => {
 
   it('should throw error for product with empty slug', () => {
     expect(() =>
-      makeBaseProductWithoutLogoProps(productsWithAnItemWithEmptySlug().data[0])
+      makeBaseProductWithoutLogoProps(productsWithAnItemWithEmptySlug()[0])
     ).toThrow(
       Error(
         'Error while processing Product with name "Product Without Slug": missing slug. Skipping...'

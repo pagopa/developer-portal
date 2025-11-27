@@ -2,6 +2,7 @@ import * as qs from 'qs';
 import { productRelationsPopulate } from './fetchProducts';
 import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
 import { StrapiUseCases } from '../types/useCase';
+import { RootEntity } from '@/lib/strapi/types/rootEntity';
 
 const makeStrapiUseCasesPopulate = () =>
   qs.stringify({
@@ -31,7 +32,7 @@ const makeStrapiUseCasesPopulate = () =>
     },
   });
 
-export const fetchUseCases = fetchFromStrapi<StrapiUseCases>(
+export const fetchUseCases = fetchFromStrapi<RootEntity<StrapiUseCases>>(
   'use-cases',
   makeStrapiUseCasesPopulate()
 );

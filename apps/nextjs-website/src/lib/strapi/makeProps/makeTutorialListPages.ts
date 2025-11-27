@@ -5,12 +5,13 @@ import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
 import { makeBaseProductWithoutLogoProps } from './makeProducts';
 import { StrapiTutorialListPages } from '@/lib/strapi/types/tutorialsListPage';
 import { compact } from 'lodash';
+import { RootEntity } from '@/lib/strapi/types/rootEntity';
 
 export function makeTutorialListPagesProps(
-  strapiTutorialList: StrapiTutorialListPages
+  strapiTutorialList: RootEntity<StrapiTutorialListPages>
 ): readonly TutorialsPageProps[] {
   return compact(
-    strapiTutorialList.map((attributes) => {
+    strapiTutorialList.data.map((attributes) => {
       const slug = attributes.product?.slug;
       if (!slug) {
         // eslint-disable-next-line functional/no-expression-statements

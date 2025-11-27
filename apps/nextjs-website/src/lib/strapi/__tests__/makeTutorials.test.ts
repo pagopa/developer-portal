@@ -80,7 +80,7 @@ describe('makeTutorialsProps', () => {
 
   it('should handle empty data array', () => {
     const emptyData: StrapiTutorials = {
-      data: [],
+      ...[],
       meta: {
         pagination: {
           page: 1,

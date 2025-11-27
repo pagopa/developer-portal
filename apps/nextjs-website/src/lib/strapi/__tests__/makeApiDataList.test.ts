@@ -61,7 +61,7 @@ describe('makeApiDataListProps', () => {
 
   it('should handle empty data array', async () => {
     const emptyData: StrapiApiDataList = {
-      data: [],
+      ...[],
     };
     const result = await makeApiDataListProps(emptyData);
     expect(result).toHaveLength(0);

@@ -5,13 +5,14 @@ import { makeBaseProductWithoutLogoProps } from '@/lib/strapi/makeProps/makeProd
 import { makeApiSoapUrlList } from '@/lib/strapi/makeProps/makeApiSoapUrlList';
 import { StrapiApiDataList } from '@/lib/strapi/types/apiDataList';
 import { compact } from 'lodash';
+import { RootEntity } from '@/lib/strapi/types/rootEntity';
 
 export async function makeApiDataListProps(
-  strapiApiDataList: StrapiApiDataList
+  strapiApiDataList: RootEntity<StrapiApiDataList>
 ): Promise<ReadonlyArray<ApiDataPageProps>> {
   const list = compact(
     await Promise.all(
-      strapiApiDataList
+      strapiApiDataList.data
         .filter((apiPage) => apiPage.apiRestDetail || apiPage.apiSoapDetail)
         .map(async (attributes) => {
           if (!attributes.apiRestDetail && !attributes.apiSoapDetail) {

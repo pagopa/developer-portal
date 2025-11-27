@@ -3,11 +3,12 @@ import {
   StrapiWebinarCategory,
 } from '@/lib/strapi/types/webinarCategory';
 import { WebinarCategory } from '@/lib/types/webinarCategory';
+import { RootEntity } from '@/lib/strapi/types/rootEntity';
 
 export function makeWebinarCategoriesProps(
-  strapiWebinarCategories: StrapiWebinarCategories
+  strapiWebinarCategories: RootEntity<StrapiWebinarCategories>
 ): ReadonlyArray<WebinarCategory> {
-  return strapiWebinarCategories.map(makeWebinarCategoryProps);
+  return strapiWebinarCategories.data.map(makeWebinarCategoryProps);
 }
 
 export function makeWebinarCategoryProps(

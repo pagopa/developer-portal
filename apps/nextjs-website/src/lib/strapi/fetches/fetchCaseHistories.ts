@@ -1,6 +1,7 @@
 import * as qs from 'qs';
 import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
 import { StrapiCaseHistories } from '@/lib/strapi/types/caseHistories';
+import { RootEntity } from '@/lib/strapi/types/rootEntity';
 
 const makeStrapiCaseHistoriesPopulate = () =>
   qs.stringify({
@@ -23,7 +24,6 @@ const makeStrapiCaseHistoriesPopulate = () =>
     },
   });
 
-export const fetchCaseHistories = fetchFromStrapi<StrapiCaseHistories>(
-  'case-histories',
-  makeStrapiCaseHistoriesPopulate()
-);
+export const fetchCaseHistories = fetchFromStrapi<
+  RootEntity<StrapiCaseHistories>
+>('case-histories', makeStrapiCaseHistoriesPopulate());

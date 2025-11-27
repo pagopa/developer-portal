@@ -2,11 +2,12 @@ import { CaseHistoryPageTemplateProps } from '@/components/templates/CaseHistory
 import { makePartProps } from '@/lib/strapi/makeProps/makePart';
 import { StrapiCaseHistories } from '@/lib/strapi/types/caseHistories';
 import { compact } from 'lodash';
+import { RootEntity } from '@/lib/strapi/types/rootEntity';
 
 export function makeCaseHistoriesProps(
-  strapiCaseHistories: StrapiCaseHistories
+  strapiCaseHistories: RootEntity<StrapiCaseHistories>
 ): ReadonlyArray<CaseHistoryPageTemplateProps> {
-  return strapiCaseHistories.map((attributes) => ({
+  return strapiCaseHistories.data.map((attributes) => ({
     ...attributes,
     updatedAt: attributes.updatedAt,
     parts: compact(attributes.parts.map((part) => makePartProps(part))),

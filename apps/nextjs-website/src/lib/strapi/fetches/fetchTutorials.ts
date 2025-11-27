@@ -2,6 +2,7 @@ import * as qs from 'qs';
 import { productRelationsPopulate } from './fetchProducts';
 import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
 import { StrapiTutorials } from '@/lib/strapi/types/tutorial';
+import { RootEntity } from '@/lib/strapi/types/rootEntity';
 
 const makeStrapiTutorialsPopulate = () =>
   qs.stringify({
@@ -30,7 +31,7 @@ const makeStrapiTutorialsPopulate = () =>
     },
   });
 
-export const fetchTutorials = fetchFromStrapi<StrapiTutorials>(
+export const fetchTutorials = fetchFromStrapi<RootEntity<StrapiTutorials>>(
   'tutorials',
   makeStrapiTutorialsPopulate()
 );

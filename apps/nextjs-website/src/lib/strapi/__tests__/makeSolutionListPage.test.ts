@@ -9,8 +9,6 @@ import {
   solutionListPageWithoutCaseHistories,
   solutionListPageWithoutFeatures,
   solutionListPageWithoutSolutions,
-  solutionListPageWithMissingSolutionSlug,
-  solutionListPageWithMissingCaseHistorySlug,
 } from '@/lib/strapi/__tests__/factories/solutionListPage';
 import { spyOnConsoleError } from '@/lib/strapi/__tests__/spyOnConsole';
 

@@ -46,7 +46,7 @@ describe('makeSolutionsProps', () => {
 
   it('should handle empty data array', () => {
     const emptyData: StrapiSolutions = {
-      data: [],
+      ...[],
       meta: {
         pagination: {
           page: 1,

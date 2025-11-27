@@ -1,6 +1,7 @@
 import qs from 'qs';
 import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
 import { StrapiTags } from '@/lib/strapi/types/tag';
+import { RootEntity } from '@/lib/strapi/types/rootEntity';
 
 const makeStrapiTagsPopulate = () =>
   qs.stringify({
@@ -9,7 +10,7 @@ const makeStrapiTagsPopulate = () =>
     },
   });
 
-export const fetchTags = fetchFromStrapi<StrapiTags>(
+export const fetchTags = fetchFromStrapi<RootEntity<StrapiTags>>(
   'tags',
   makeStrapiTagsPopulate()
 );

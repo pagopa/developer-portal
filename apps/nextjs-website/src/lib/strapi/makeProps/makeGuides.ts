@@ -5,12 +5,13 @@ import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
 import { makeBaseProductWithoutLogoProps } from './makeProducts';
 import { StrapiGuides } from '@/lib/strapi/types/guide';
 import { compact } from 'lodash';
+import { RootEntity } from '@/lib/strapi/types/rootEntity';
 
 export function makeGuidesProps(
-  strapiGuides: StrapiGuides
+  strapiGuides: RootEntity<StrapiGuides>
 ): readonly GuideDefinition[] {
   return compact(
-    strapiGuides.map((attributes) => {
+    strapiGuides.data.map((attributes) => {
       if (!attributes.slug || !attributes.title) {
         console.error(
           `Error while processing Guide: missing title or slug. Title: ${attributes.title} | Slug: ${attributes.slug}. Skipping...`

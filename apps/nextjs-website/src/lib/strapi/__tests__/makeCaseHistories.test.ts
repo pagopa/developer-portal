@@ -35,7 +35,7 @@ describe('makeCaseHistoriesProps', () => {
 
   it('should handle empty data array', () => {
     const emptyData: StrapiCaseHistories = {
-      data: [],
+      ...[],
       meta: {
         pagination: {
           page: 1,

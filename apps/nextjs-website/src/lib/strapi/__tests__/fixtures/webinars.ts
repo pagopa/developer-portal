@@ -9,10 +9,8 @@ export const webinarSpeaker = {
   publishedAt: '2024-01-01T00:00:00.000Z',
   description: undefined,
   avatar: {
-    data: {
-      ...mediaJpeg(),
-      name: 'avatar.jpg',
-    },
+    ...mediaJpeg(),
+    name: 'avatar.jpg',
   },
 };
 
@@ -23,10 +21,8 @@ export const resource = {
   subtitle: 'Resource Subtitle',
   description: undefined,
   image: {
-    data: {
-      ...mediaJpeg(),
-      name: 'resource.jpg',
-    },
+    ...mediaJpeg(),
+    name: 'resource.jpg',
   },
 };
 
@@ -40,7 +36,7 @@ export const downloadableDocument = {
 };
 
 export const strapiWebinars: StrapiWebinars = {
-  data: [
+  ...[
     {
       id: 1,
       title: 'Webinar Title',
@@ -49,10 +45,8 @@ export const strapiWebinars: StrapiWebinars = {
       publishedAt: '2024-01-01T00:00:00.000Z',
       isVisibleInList: true,
       coverImage: {
-        data: {
-          ...mediaJpeg(),
-          name: 'cover.jpg',
-        },
+        ...mediaJpeg(),
+        name: 'cover.jpg',
       },
       bodyContent: undefined,
       playerSrc: 'https://player.example.com',
@@ -63,9 +57,9 @@ export const strapiWebinars: StrapiWebinars = {
       relatedResources: {
         title: 'Related Resources',
         resources: [resource],
-        downloadableDocuments: { data: [downloadableDocument] },
+        downloadableDocuments: [downloadableDocument],
       },
-      webinarSpeakers: { data: [webinarSpeaker] },
+      webinarSpeakers: [webinarSpeaker],
       questionsAndAnswers: [
         {
           question: 'What is this webinar about?',
@@ -79,17 +73,13 @@ export const strapiWebinars: StrapiWebinars = {
       ],
       seo: { metaTitle: 'SEO Webinar', metaDescription: 'SEO Description' },
       webinarCategory: {
-        data: {
-          id: 1,
-          name: 'Category 1',
-          icon: { data: mediaJpeg() },
-        },
+        id: 1,
+        name: 'Category 1',
+        icon: { ...mediaJpeg() },
       },
       headerImage: {
-        data: {
-          ...mediaJpeg(),
-          name: 'header.jpg',
-        },
+        ...mediaJpeg(),
+        name: 'header.jpg',
       },
       updatedAt: '2024-01-02T00:00:00.000Z',
     },
@@ -105,8 +95,8 @@ export const strapiWebinars: StrapiWebinars = {
 };
 
 export const strapiWebinarsWithMissingData: StrapiWebinars = {
-  data: [
-    ...strapiWebinars.data,
+  ...[
+    ...strapiWebinars,
     {
       id: 2,
       title: 'Minimal Webinar',
@@ -115,28 +105,22 @@ export const strapiWebinarsWithMissingData: StrapiWebinars = {
       publishedAt: '2024-01-01T00:00:00.000Z',
       isVisibleInList: true,
       coverImage: {
-        data: {
-          url: 'https://example.com/minimal.jpg',
-          name: 'minimal.jpg',
-          ext: '',
-          mime: '',
-          size: 0,
-        },
+        url: 'https://example.com/minimal.jpg',
+        name: 'minimal.jpg',
+        ext: '',
+        mime: '',
+        size: 0,
       },
-      webinarSpeakers: { data: [] },
+      webinarSpeakers: [],
       updatedAt: '2024-01-02T00:00:00.000Z',
       webinarCategory: {
-        data: {
-          id: 1,
-          name: 'Category 1',
-          icon: { data: mediaJpeg() },
-        },
+        id: 1,
+        name: 'Category 1',
+        icon: { ...mediaJpeg() },
       },
       headerImage: {
-        data: {
-          ...mediaJpeg(),
-          name: 'header.jpg',
-        },
+        ...mediaJpeg(),
+        name: 'header.jpg',
       },
     },
   ],
@@ -196,10 +180,8 @@ export const webinarProps = {
   tag: {
     name: 'Category 1',
     icon: {
-      data: {
-        ...mediaJpeg(),
-        name: 'example.jpg',
-      },
+      ...mediaJpeg(),
+      name: 'example.jpg',
     },
   },
   headerImage: {

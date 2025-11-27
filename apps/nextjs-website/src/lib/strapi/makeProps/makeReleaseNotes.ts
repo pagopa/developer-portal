@@ -5,12 +5,13 @@ import { makeBaseProductWithoutLogoProps } from '@/lib/strapi/makeProps/makeProd
 import { ReleaseNotePageProps } from '@/app/[productSlug]/[...releaseNoteSubPathSlugs]/page';
 import { StrapiReleaseNotes } from '@/lib/strapi/types/releaseNotes';
 import { compact } from 'lodash';
+import { RootEntity } from '@/lib/strapi/types/rootEntity';
 
 export function makeReleaseNotesProps(
-  strapiReleaseNotes: StrapiReleaseNotes
+  strapiReleaseNotes: RootEntity<StrapiReleaseNotes>
 ): ReadonlyArray<ReleaseNotePageProps> {
   return compact(
-    strapiReleaseNotes.map((attributes) => {
+    strapiReleaseNotes.data.map((attributes) => {
       if (!attributes.product?.slug) {
         console.error(
           `Error while processing ReleaseNote with title "${attributes.title}": missing product slug. Skipping...`

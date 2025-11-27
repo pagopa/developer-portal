@@ -5,12 +5,12 @@ import { Step } from '@/lib/types/step';
 import { makePartProps } from '@/lib/strapi/makeProps/makePart';
 import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
 import { makeBaseProductWithoutLogoProps } from '@/lib/strapi/makeProps/makeProducts';
-import { StrapiPart } from '@/lib/strapi/types/part';
 import {
   StrapiQuickStartGuideItem,
   StrapiQuickStartGuides,
 } from '@/lib/strapi/types/quickStartGuides';
 import { compact } from 'lodash';
+import { RootEntity } from '@/lib/strapi/types/rootEntity';
 
 export type QuickStartGuidesPageProps = readonly QuickStartGuidePageProps[];
 
@@ -25,10 +25,10 @@ function makeStepFromQuickstartGuideItems(
 }
 
 export function makeQuickStartGuidesProps(
-  strapiQuickStarts: StrapiQuickStartGuides
+  strapiQuickStarts: RootEntity<StrapiQuickStartGuides>
 ): QuickStartGuidesPageProps {
   return compact(
-    strapiQuickStarts.map((quickStart) => {
+    strapiQuickStarts.data.map((quickStart) => {
       if (!quickStart.product?.slug) {
         console.error(
           `Error while processing QuickStartGuide with id ${quickStart.id}: missing product slug. Skipping...`

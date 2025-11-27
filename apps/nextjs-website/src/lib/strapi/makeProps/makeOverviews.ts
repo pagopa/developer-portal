@@ -6,12 +6,13 @@ import { makeBaseProductWithoutLogoProps } from './makeProducts';
 import { StrapiOverviews } from '@/lib/strapi/types/overviews';
 import { compact } from 'lodash';
 import { UseCase } from '../../types/useCaseData';
+import { RootEntity } from '@/lib/strapi/types/rootEntity';
 
 export function makeOverviewsProps(
-  strapiOverviews: StrapiOverviews
+  strapiOverviews: RootEntity<StrapiOverviews>
 ): ReadonlyArray<OverviewPageProps> {
   return compact(
-    strapiOverviews.map((attributes) => {
+    strapiOverviews.data.map((attributes) => {
       const productData = attributes.product;
       if (!productData.slug) {
         console.error(

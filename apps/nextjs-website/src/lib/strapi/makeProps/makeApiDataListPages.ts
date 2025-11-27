@@ -5,6 +5,7 @@ import { makeBaseProductWithoutLogoProps } from '@/lib/strapi/makeProps/makeProd
 import { StrapiApiDataListPages } from '@/lib/strapi/types/apiDataListPages';
 import { compact } from 'lodash';
 import { StrapiBaseApiData } from '../types/apiDataList';
+import { RootEntity } from '@/lib/strapi/types/rootEntity';
 
 function makeApiDataListPageCard(item: StrapiBaseApiData, slug: string) {
   if (!item.apiRestDetail && !item.apiSoapDetail) {
@@ -37,10 +38,10 @@ function makeApiDataListPageCard(item: StrapiBaseApiData, slug: string) {
 }
 
 export function makeApiDataListPagesProps(
-  strapiApiDataListPages: StrapiApiDataListPages
+  strapiApiDataListPages: RootEntity<StrapiApiDataListPages>
 ): ReadonlyArray<ApiDataListPageTemplateProps> {
   return compact(
-    strapiApiDataListPages.map((attributes) => {
+    strapiApiDataListPages.data.map((attributes) => {
       const slug = attributes.product?.slug;
       if (!slug) {
         console.error(

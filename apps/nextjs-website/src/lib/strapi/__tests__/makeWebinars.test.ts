@@ -33,7 +33,7 @@ describe('makeWebinarsProps', () => {
 
   it('should handle empty data array', () => {
     const emptyData: StrapiWebinars = {
-      data: [],
+      ...[],
       meta: {
         pagination: {
           page: 1,
@@ -49,9 +49,9 @@ describe('makeWebinarsProps', () => {
 
   it('should handle corrupted data with try/catch and log error', () => {
     const corruptedData: StrapiWebinars = {
-      data: [
+      ...[
         {
-          ...strapiWebinars.data[0],
+          ...strapiWebinars[0],
           id: 1,
         },
       ],
