@@ -31,7 +31,12 @@ export function parseUrlsFromMarkdown(
   // eslint-disable-next-line functional/no-let
   let updatedFileContent = fileContent;
   for (const match of allMatches) {
-    const replace = replaceUrl(currentDocMetadata, allDocsMetadata, match[2]);
+    const replace = replaceUrl(
+      currentDocMetadata,
+      allDocsMetadata,
+      match[2],
+      filePath
+    );
     updatedFileContent = updatedFileContent.replaceAll(
       '(' + (match[2] || '') + ')',
       '(' + replace + ')'
@@ -52,7 +57,8 @@ export function parseUrlsFromMarkdown(
 export function replaceUrl(
   currentDocMetadata: UrlParsingMetadata | undefined,
   allDocsMetadata: UrlParsingMetadata[] = [],
-  value: string
+  value: string,
+  filePath?: string
 ): string {
   if (!currentDocMetadata) return value;
   // Clean up the URL by removing mentions, README.md, and .md extensions
@@ -63,16 +69,32 @@ export function replaceUrl(
     .filter((val) => {
       return val != '';
     });
+  const splitPath = filePath
+    ? filePath
+        .replace(' "mention"', '')
+        .replace('.md', '')
+        .split('/')
+        .filter((val) => {
+          return val != '';
+        })
+    : [];
   const lastPart = splitValue.at(-1) || '';
-  const secondToLastPart = splitValue.at(-2) || '';
+  const secondToLastPart = splitValue.at(-2) || splitPath.at(-2) || '';
   const name = lastPart.replace('.md', '').split('#')[0];
 
   // Skip processing for very short names (likely not valid guide names)
   if (name.length <= 1) {
     return value;
   }
+  const perfectMatch =
+    splitValue.length > 1
+      ? currentDocMetadata.docs.filter((doc) => doc.path.includes(value))
+      : [];
+  const nameMatch = currentDocMetadata.docs.filter((doc) =>
+    doc.path.includes(name)
+  );
   // Find guides that contain the extracted name in their path
-  const docs = currentDocMetadata.docs.filter((doc) => doc.path.includes(name));
+  const docs = [perfectMatch.length > 0 ? perfectMatch : nameMatch].flat();
   if (docs.length <= 0) {
     const dirName = value.split('/s/').slice(1)[0]?.split('/')[0];
     const externalDocs = allDocsMetadata.filter(
