@@ -117,7 +117,6 @@ class ChatbotSettings(BaseSettings):
     )
 
     # prompts
-    identity_prompt_str: str = PROMPTS["identity_prompt_str"]
     qa_prompt_str: str = PROMPTS["qa_prompt_str"]
     react_system_str: str = PROMPTS["react_system_header_str"]
     refine_prompt_str: str = PROMPTS["refine_prompt_str"]
