@@ -5,7 +5,6 @@ import Typography from '@mui/material/Typography';
 import { useTranslations } from 'next-intl';
 import { profileMenuItems } from '@/config';
 import Link from 'next/link';
-import { includes } from 'fp-ts/lib/string';
 
 type DesktopProfileMenuProps = {
   currentPathname: string;
@@ -62,7 +61,11 @@ const DesktopProfileMenu = ({
                 component={Link}
                 key={index}
                 href={href}
-                sx={{ textDecoration: 'none', color: palette.text.primary }}
+                sx={{
+                  textDecoration: 'none',
+                  color: palette.text.primary,
+                  fontSize: '.938rem',
+                }}
               >
                 <Box
                   sx={{
@@ -73,9 +76,9 @@ const DesktopProfileMenu = ({
                       ? palette.primary.main + '14'
                       : 'unset',
                     backgroundOpacity: isCurrent ? 0.08 : 1,
-                    padding: '10px 32px',
+                    padding: '6px 32px',
                     cursor: 'pointer',
-                    fontWeight: 600,
+                    fontWeight: 400,
                     color: isCurrent ? palette.primary.dark : 'inherit',
                   }}
                 >
