@@ -138,12 +138,13 @@ export async function putS3File(
   const body = JSON.stringify(items, null, 2);
   console.log(`Uploading file to S3: ${path}`);
 
-  await client.send(
+  const result = await client.send(
     new PutObjectCommand({
       Bucket: bucketName,
       Key: path,
       Body: body,
     })
   );
-  console.log(`Uploaded file to S3: ${path}`);
+
+  console.log(`Uploaded file to S3: ${path}, Result: ${JSON.stringify(result)}`);
 }
