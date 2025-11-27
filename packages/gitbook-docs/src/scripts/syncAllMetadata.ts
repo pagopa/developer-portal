@@ -39,6 +39,9 @@ import {
   apisDataQueryString,
   guidesQueryString,
   productsQueryString,
+  solutionListPageQueryString,
+  getSolutionsQueryString,
+  getReleaseNotesQueryString,
   releaseNotesQueryString,
   solutionsQueryString,
 } from '../helpers/strapiQuery';
@@ -60,6 +63,13 @@ const GENERATE_SITEMAP_METADATA =
 const SAVE_STRAPI_RESPONSES = process.env.SAVE_STRAPI_RESPONSES !== 'false';
 const GENERATE_SINGLE_METADATA_FILE =
   process.env.GENERATE_SINGLE_METADATA_FILE !== 'false';
+
+// Optional filter to sync only specific directories
+// Format: comma-separated list of dirNames (e.g., "dir1,dir2,dir3")
+// When provided, only guides/solutions/release-notes with matching dirNames will be synced
+const DIR_NAMES_FILTER = process.env.DIR_NAMES_FILTER
+  ? process.env.DIR_NAMES_FILTER.split(',').map((name) => name.trim())
+  : undefined;
 
 // S3 paths for metadata files
 const S3_GUIDE_METADATA_JSON_PATH =
@@ -125,6 +135,13 @@ function getS3Client(): S3Client {
 // Fetch all data from Strapi in one go
 async function fetchAllStrapiData(): Promise<StrapiData> {
   console.log('Fetching all data from Strapi...');
+  if (DIR_NAMES_FILTER) {
+    console.log(
+      `Applying dirName filter: ${DIR_NAMES_FILTER.join(', ')} (${
+        DIR_NAMES_FILTER.length
+      } directories)`
+    );
+  }
 
   const [
     guidesResult,
@@ -134,12 +151,16 @@ async function fetchAllStrapiData(): Promise<StrapiData> {
     apisDataResult,
   ] = await Promise.all([
     // Guides with full populate
+    // NOTE: Cannot filter by versions.dirName server-side due to Strapi v4 component array limitation
+    // Client-side filtering will be applied later in processGuidesMetadata
     fetchFromStrapi<StrapiGuide>(`api/guides?${guidesQueryString}`),
-    // Solutions with full populate
-    fetchFromStrapi<StrapiSolution>(`api/solutions/?${solutionsQueryString}`),
-    // Release notes with full populate
+    // Solutions with dirName filter (if provided)
+    fetchFromStrapi<StrapiSolution>(
+      `api/solutions/?${getSolutionsQueryString(DIR_NAMES_FILTER)}`
+    ),
+    // Release notes with dirName filter (if provided)
     fetchFromStrapi<StrapiReleaseNote>(
-      `api/release-notes/?${releaseNotesQueryString}`
+      `api/release-notes/?${getReleaseNotesQueryString(DIR_NAMES_FILTER)}`
     ),
     // Products
     fetchFromStrapi<StrapiProduct>(`api/products?${productsQueryString}`),
@@ -245,14 +266,20 @@ async function processGuidesMetadata(
   const guideInfoList: MetadataInfo[] = guides
     .filter((guide) => !!guide.attributes.product?.data?.attributes?.slug)
     .flatMap((guide) =>
-      guide.attributes.versions.map((version) => ({
-        versionName: version.version,
-        isMainVersion: version.main,
-        dirName: version.dirName,
-        slug: guide.attributes.slug,
-        productSlug: `${guide.attributes.product?.data?.attributes?.slug}`,
-        metadataType: MetadataType.Guide,
-      }))
+      guide.attributes.versions
+        // Client-side filtering for guides: filter by dirName if DIR_NAMES_FILTER is provided
+        .filter(
+          (version) =>
+            !DIR_NAMES_FILTER || DIR_NAMES_FILTER.includes(version.dirName)
+        )
+        .map((version) => ({
+          versionName: version.version,
+          isMainVersion: version.main,
+          dirName: version.dirName,
+          slug: guide.attributes.slug,
+          productSlug: `${guide.attributes.product?.data?.attributes?.slug}`,
+          metadataType: MetadataType.Guide,
+        }))
     );
 
   const items: MetadataItem[][] = [];
@@ -543,6 +570,11 @@ async function main() {
     console.log(`Generate sitemap metadata: ${GENERATE_SITEMAP_METADATA}`);
     console.log(`Save Strapi responses: ${SAVE_STRAPI_RESPONSES}`);
     console.log(`Generate single file: ${GENERATE_SINGLE_METADATA_FILE}`);
+    if (DIR_NAMES_FILTER) {
+      console.log(
+        `DirName filter active: ${DIR_NAMES_FILTER.length} directories specified`
+      );
+    }
 
     // Fetch all data from Strapi once
     const strapiData = await fetchAllStrapiData();

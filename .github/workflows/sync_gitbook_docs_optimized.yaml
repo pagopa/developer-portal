@@ -42,6 +42,11 @@ on:
         type: boolean
         required: true
         default: true
+      dir_names_filter:
+        description: 'Comma-separated list of dirNames to sync (leave empty to sync all)'
+        type: string
+        required: false
+        default: ''
 
   # schedule:
   #   - cron: '0 23 * * *'  # Run daily at midnight UTC
@@ -116,6 +121,7 @@ jobs:
           GENERATE_SITEMAP_METADATA: 'true'
           SAVE_STRAPI_RESPONSES: 'true'
           METADATA_TYPE: ${{ inputs.metadata_type }}
+          DIR_NAMES_FILTER: ${{ inputs.dir_names_filter }}
           SITEMAP_URL: ${{ env.SITEMAP_URL || 'https://developer.pagopa.it/sitemap.xml' }}
         run: npm run sync-all-metadata -w gitbook-docs
 
@@ -130,8 +136,22 @@ jobs:
       - name: Sync docs folder to S3
         if: inputs.generate_metadata_only == false
         working-directory: ./devportal-docs
+        env:
+          DIR_NAMES_FILTER: ${{ inputs.dir_names_filter }}
         run: |
-          aws s3 sync docs s3://devportal-${{ env.ENV_SHORT }}-website-static-content/devportal-docs/docs --delete ${{ inputs.incremental_mode == true && ' --size-only' || '' }}
+          if [[ -n "$DIR_NAMES_FILTER" ]]; then
+            IFS=',' read -ra DIRS <<< "$DIR_NAMES_FILTER"
+            for dir in "${DIRS[@]}"; do
+              dir=$(echo "$dir" | xargs)
+              if [[ -n "$dir" ]]; then
+                echo "Syncing directory: $dir"
+                aws s3 sync "docs/$dir" "s3://devportal-${{ env.ENV_SHORT }}-website-static-content/devportal-docs/docs/$dir" --delete ${{ inputs.incremental_mode == true && ' --size-only' || '' }}
+              fi
+            done
+          else
+            echo "Syncing all docs"
+            aws s3 sync docs s3://devportal-${{ env.ENV_SHORT }}-website-static-content/devportal-docs/docs --delete ${{ inputs.incremental_mode == true && ' --size-only' || '' }}
+          fi
 
       - name: Invalidate CloudFront asset bucket cache
         run: |
