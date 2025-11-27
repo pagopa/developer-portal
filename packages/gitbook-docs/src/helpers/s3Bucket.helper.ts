@@ -146,5 +146,7 @@ export async function putS3File(
     })
   );
 
-  console.log(`Uploaded file to S3: ${path}, Result: ${JSON.stringify(result)}`);
+  console.log(
+    `Uploaded file to S3: ${path}, Result: ${JSON.stringify(result)}`
+  );
 }
