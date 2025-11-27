@@ -141,10 +141,9 @@ export const useWebinar = () => {
     setIsPlayerVisible(shouldShowIvsPlayer);
     setIsQuestionFormEnabled(isLiveStreamOnAir);
 
-    const shouldPollLiveStream = [
-      WebinarState.live,
-      WebinarState.comingSoon,
-    ].includes(webinarState);
+    const shouldPollLiveStream =
+      [WebinarState.live, WebinarState.comingSoon].includes(webinarState) ||
+      isLiveStreamOnAir;
 
     updateLiveStreamState(webinar.playerSrc);
 
