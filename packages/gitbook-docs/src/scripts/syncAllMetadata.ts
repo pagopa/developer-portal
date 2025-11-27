@@ -663,20 +663,21 @@ async function main() {
           S3_BUCKET_NAME!,
           getS3Client()
         );
-      } else {
-        guidesSitemap.map(async (guidesMetadata) => {
-          await putS3File(
-            guidesMetadata,
-            path.join(
-              DOCUMENTATION_PATH,
-              guidesMetadata[0].dirName,
-              S3_DIRNAME_METADATA_JSON_PATH
-            ),
-            S3_BUCKET_NAME!,
-            getS3Client()
-          );
-        });
       }
+
+      guidesSitemap.map(async (guidesMetadata) => {
+        await putS3File(
+          guidesMetadata,
+          path.join(
+            S3_PATH_TO_GITBOOK_DOCS,
+            guidesMetadata[0].dirName,
+            S3_DIRNAME_METADATA_JSON_PATH
+          ),
+          S3_BUCKET_NAME!,
+          getS3Client()
+        );
+      });
+
       console.log(`Saved ${guidesSitemap.length} guide items to S3`);
     }
 
@@ -693,20 +694,21 @@ async function main() {
           S3_BUCKET_NAME!,
           getS3Client()
         );
-      } else {
-        solutionsSitemap.map(async (solutionMetadata) => {
-          await putS3File(
-            solutionMetadata,
-            path.join(
-              DOCUMENTATION_PATH,
-              solutionMetadata[0].dirName,
-              S3_DIRNAME_METADATA_JSON_PATH
-            ),
-            S3_BUCKET_NAME!,
-            getS3Client()
-          );
-        });
       }
+
+      solutionsSitemap.map(async (solutionMetadata) => {
+        await putS3File(
+          solutionMetadata,
+          path.join(
+            S3_PATH_TO_GITBOOK_DOCS,
+            solutionMetadata[0].dirName,
+            S3_DIRNAME_METADATA_JSON_PATH
+          ),
+          S3_BUCKET_NAME!,
+          getS3Client()
+        );
+      });
+
       console.log(`Saved ${solutionsSitemap.length} solution items to S3`);
     }
 
@@ -723,20 +725,21 @@ async function main() {
           S3_BUCKET_NAME!,
           getS3Client()
         );
-      } else {
-        releaseNotesSitemap.map(async (releaseNote) => {
-          await putS3File(
-            releaseNote,
-            path.join(
-              DOCUMENTATION_PATH,
-              releaseNote[0].dirName,
-              S3_DIRNAME_METADATA_JSON_PATH
-            ),
-            S3_BUCKET_NAME!,
-            getS3Client()
-          );
-        });
       }
+
+      releaseNotesSitemap.map(async (releaseNote) => {
+        await putS3File(
+          releaseNote,
+          path.join(
+            S3_PATH_TO_GITBOOK_DOCS,
+            releaseNote[0].dirName,
+            S3_DIRNAME_METADATA_JSON_PATH
+          ),
+          S3_BUCKET_NAME!,
+          getS3Client()
+        );
+      });
+
       console.log(
         `Saved ${releaseNotesSitemap.length} release note items to S3`
       );
