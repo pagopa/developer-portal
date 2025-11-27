@@ -17,8 +17,6 @@ const productRelationsPopulate = {
     'quickstart_guide',
     'release_note',
     'api_data_list_page',
-    'api_data_list_page.apiData.*',
-    'api_data_list_page.apiData.apiRestDetail.*',
     'guide_list_page',
     'tutorial_list_page',
     'use_case_list_page',
@@ -28,7 +26,7 @@ const productRelationsPopulate = {
 const webinarPopulate = {
   populate: {
     coverImage: {
-      populate: ['image'],
+      populate: '*',
     },
     webinarSpeakers: {
       populate: ['avatar'],
@@ -47,14 +45,14 @@ const webinarPopulate = {
       },
     },
     seo: {
-      populate: '*,metaImage,metaSocial.image',
+      populate: '*',
     },
     questionsAndAnswers: '*',
     webinarCategory: {
-      populate: ['icon'],
+      populate: '*',
     },
     headerImage: {
-      populate: ['image'],
+      populate: '*',
     },
   },
 };
@@ -65,8 +63,8 @@ const guidesPopulate = {
     mobileImage: { populate: '*' },
     listItems: { populate: '*' },
     versions: { populate: '*' },
-    bannerLinks: { populate: ['icon'] },
-    seo: { populate: '*,metaImage,metaSocial.image' },
+    bannerLinks: { populate: '*' },
+    seo: { populate: '*' },
     product: {
       ...productRelationsPopulate,
     },
@@ -91,17 +89,13 @@ const releaseNotesPopulate = {
         'quickstart_guide',
         'release_note',
         'api_data_list_page',
-        'api_data_list_page.apiData.*',
-        'api_data_list_page.apiData.apiRestDetail.slug',
-        'api_data_list_page.apiData.apiRestDetail.specUrls',
-        'api_data_list_page.apiData.apiSoapDetail.*',
         'guide_list_page',
         'tutorial_list_page',
         'use_case_list_page',
       ],
     },
     seo: {
-      populate: '*,metaImage,metaSocial.image',
+      populate: '*',
     },
   },
 };
@@ -121,19 +115,19 @@ const solutionsPopulate = {
       },
     },
     seo: {
-      populate: '*,metaImage,metaSocial.image',
+      populate: '*',
     },
     products: {
-      populate: ['logo'],
+      populate: '*',
     },
     bannerLinks: {
-      populate: ['icon'],
+      populate: '*',
     },
     webinars: {
       ...webinarPopulate,
     },
     caseHistories: {
-      populate: ['case_histories', 'case_histories.image'],
+      populate: '*',
     },
   },
 };
@@ -178,15 +172,15 @@ const guideListPagesPopulate = {
     guidesByCategory: {
       populate: {
         guides: {
-          populate: ['mobileImage', 'image', 'listItems'],
+          populate: '*',
         },
       },
     },
     bannerLinks: {
-      populate: ['icon'],
+      populate: '*',
     },
     seo: {
-      populate: '*,metaImage,metaSocial.image',
+      populate: '*',
     },
   },
 };
@@ -201,28 +195,21 @@ const solutionListPagePopulate = {
     solutions: {
       populate: [
         'bannerLinks',
-        'bannerLinks.icon',
-        'products.logo',
         'icon',
-        'icon.name',
         'stats',
         'steps',
-        'steps.products',
         'webinars',
-        'webinars.coverImage',
         'caseHistories',
-        'caseHistories.case_histories',
-        'caseHistories.case_histories.image',
       ],
     },
     caseHistories: {
-      populate: ['case_histories', 'case_histories.image'],
+      populate: '*',
     },
     features: {
-      populate: ['items.icon'],
+      populate: '*',
     },
     seo: {
-      populate: '*,metaImage,metaSocial.image',
+      populate: '*',
     },
   },
 };

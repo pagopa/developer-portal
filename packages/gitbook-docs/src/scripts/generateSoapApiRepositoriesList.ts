@@ -24,7 +24,7 @@ async function main() {
   // eslint-disable-next-line functional/no-try-statements
   try {
     const { data } = await fetchFromStrapi<StrapiSoapApiDetails>(
-      'api/apis-data/?populate[apiSoapDetail][populate][0]=slug&populate[apiSoapDetail][populate][1]=repositoryUrl&populate[apiSoapDetail][populate][2]=dirName&filters[apiSoapDetail][$null]=false'
+      'api/apis-data?populate[apiSoapDetail][populate]=*&filters[apiSoapDetail][$null]=false'
     );
     strapiSoapApiDetails = data;
   } catch (error) {
