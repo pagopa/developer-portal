@@ -61,7 +61,11 @@ const DesktopProfileMenu = ({
                 component={Link}
                 key={index}
                 href={href}
-                sx={{ textDecoration: 'none', color: palette.text.primary }}
+                sx={{
+                  textDecoration: 'none',
+                  color: palette.text.primary,
+                  fontSize: '.938rem',
+                }}
               >
                 <Box
                   sx={{
@@ -72,7 +76,7 @@ const DesktopProfileMenu = ({
                       ? palette.primary.main + '14'
                       : 'unset',
                     backgroundOpacity: isCurrent ? 0.08 : 1,
-                    padding: '10px 32px',
+                    padding: '6px 32px',
                     cursor: 'pointer',
                     fontWeight: 600,
                     color: isCurrent ? palette.primary.dark : 'inherit',
