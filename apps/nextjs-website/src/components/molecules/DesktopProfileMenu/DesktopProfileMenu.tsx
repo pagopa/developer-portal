@@ -78,7 +78,7 @@ const DesktopProfileMenu = ({
                     backgroundOpacity: isCurrent ? 0.08 : 1,
                     padding: '6px 32px',
                     cursor: 'pointer',
-                    fontWeight: 600,
+                    fontWeight: 400,
                     color: isCurrent ? palette.primary.dark : 'inherit',
                   }}
                 >
