@@ -91,29 +91,27 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   // Product routes
   const productRoutes = productSlugs.flatMap((productSlug) => {
+    const hasTutorials = getTutorialListPageProps(productSlug) !== undefined;
     const routes = productPages.find((productPage) => {
       return productPage.overview.product.slug === productSlug;
     });
-    return [
+    const returnArray = [
       {
         url: `${baseUrl}/${productSlug}/overview`,
         lastModified: new Date(routes?.overview.updatedAt || Date.now()),
         changeFrequency: 'weekly' as const,
         priority: 0.8,
       },
-      {
+    ];
+    if (hasTutorials)
+      // eslint-disable-next-line functional/immutable-data,functional/no-expression-statements
+      returnArray.push({
         url: `${baseUrl}/${productSlug}/tutorials`,
         lastModified: new Date(routes?.tutorialList?.updatedAt || Date.now()),
         changeFrequency: 'weekly' as const,
         priority: 0.7,
-      },
-      {
-        url: `${baseUrl}/${productSlug}/guides`,
-        lastModified: new Date(routes?.guides.updatedAt || Date.now()),
-        changeFrequency: 'weekly' as const,
-        priority: 0.7,
-      },
-    ];
+      });
+    return returnArray;
   });
 
   // API routes
@@ -127,7 +125,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   );
 
   // Guide list pages
-  const guidePagesRoutes = guideListPages.map((guide) => ({
+  const guideListPagesRoutes = guideListPages.map((guide) => ({
     url: `${baseUrl}/${guide.product.slug}/guides`,
     lastModified: new Date(guide.updatedAt || Date.now()),
     changeFrequency: 'weekly' as const,
@@ -230,7 +228,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...caseHistoryRoutes,
     ...productRoutes,
     ...apiRoutes,
-    ...guidePagesRoutes,
+    ...guideListPagesRoutes,
     ...tutorialRoutes,
     ...webinarRoutes,
     ...solutionRoutes,
