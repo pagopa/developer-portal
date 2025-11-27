@@ -2,7 +2,6 @@ import { Box, Container, Stack } from '@mui/material';
 import { FundedByNextGenerationEU } from '@/editorialComponents/FundedByNextGenerationEU';
 import { type Generic } from '../types/components';
 import { FooterColumn } from './components/FooterColumn';
-import { LangSwitch, type LangSwitchProps } from './components/LangSwitch';
 import { LegalInfo } from './components/LegalInfo';
 import type {
   CompanyLinkType,
@@ -10,7 +9,7 @@ import type {
   FooterColumnIcon,
 } from './types';
 
-export interface FooterProps extends LangSwitchProps {
+export interface FooterProps {
   companyLink: CompanyLinkType;
   legalInfo: string | Generic | Generic[];
   links: PreLoginFooterLinksType;
@@ -22,7 +21,6 @@ export const Footer = ({
   legalInfo,
   links: { aboutUs, resources, followUs, services },
   showFundedByNextGenerationEULogo = false,
-  ...langProps
 }: FooterProps) => (
   <Box
     borderColor='divider'
@@ -56,7 +54,6 @@ export const Footer = ({
             data={followUs}
             icons={followUs.socialLinks as FooterColumnIcon[]}
           />
-          {!!langProps?.languages?.length && <LangSwitch {...langProps} />}
         </Stack>
         {showFundedByNextGenerationEULogo && (
           <FundedByNextGenerationEU size={180} />
