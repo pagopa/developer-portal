@@ -1,3 +1,4 @@
+/* eslint-disable functional/no-try-statements */
 'use client';
 
 import { useEffect, useRef } from 'react';
@@ -20,6 +21,7 @@ interface PlayerProps {
   src: string;
   poster?: string;
   reloadToken?: number;
+  videoOnDemandStartAt?: number;
 }
 
 const TECH_ORDER_AMAZON_IVS = ['AmazonIVS'];
@@ -72,7 +74,7 @@ const VideoJsPlayer = (props: PlayerProps) => {
     playerRef.current.src(props.src);
     playerRef.current.poster(props.poster || '');
 
-    if (props.autoplay) {
+    if (props.autoplay && !props.videoOnDemandStartAt) {
       playerRef.current.play().catch(() => undefined);
     }
   }, [
@@ -82,7 +84,83 @@ const VideoJsPlayer = (props: PlayerProps) => {
     props.poster,
     props.reloadToken,
     props.src,
+    props.videoOnDemandStartAt,
   ]);
+
+  useEffect(() => {
+    if (!playerRef.current) {
+      return;
+    }
+    const videoOnDemandStartAt =
+      typeof props.videoOnDemandStartAt === 'number'
+        ? props.videoOnDemandStartAt
+        : 0;
+
+    if (videoOnDemandStartAt <= 0) {
+      return;
+    }
+    const player = playerRef.current;
+    const seekTo = Math.max(videoOnDemandStartAt, 0);
+
+    // Flag to ensure we only enforce the seek once per prop change
+    // eslint-disable-next-line functional/no-let
+    let hasSought = false;
+
+    const attemptSeek = (eventName: string) => {
+      if (hasSought) return;
+
+      const duration = player.duration();
+
+      if (duration > 0) {
+        try {
+          player.currentTime(seekTo);
+          // We don't set hasSought = true here for 'loadedmetadata' etc.
+          // because we want to double-check on 'play' just in case.
+        } catch (e: unknown) {
+          console.error(`VideoJsPlayer: [${eventName}] seek failed`, e);
+        }
+      }
+    };
+
+    const onPlay = () => {
+      if (hasSought) return;
+
+      const currentTime = player.currentTime();
+      const timeDiff = Math.abs(currentTime - seekTo);
+
+      // If we are significantly off (e.g. > 1s), force the seek
+      if (timeDiff > 1) {
+        player.currentTime(seekTo);
+      }
+
+      // Mark as sought so we don't interfere with future seeks/scrubbing
+      hasSought = true;
+    };
+
+    // Attempt early seek if possible
+    if (player.readyState() > 0 && player.duration() > 0) {
+      attemptSeek('immediate');
+    }
+
+    const onLoadedMetadata = () => attemptSeek('loadedmetadata');
+    const onLoadedData = () => attemptSeek('loadeddata');
+    const onCanPlay = () => attemptSeek('canplay');
+    const onDurationChange = () => attemptSeek('durationchange');
+
+    player.on('loadedmetadata', onLoadedMetadata);
+    player.on('loadeddata', onLoadedData);
+    player.on('canplay', onCanPlay);
+    player.on('durationchange', onDurationChange);
+    player.on('play', onPlay);
+
+    return () => {
+      player.off('loadedmetadata', onLoadedMetadata);
+      player.off('loadeddata', onLoadedData);
+      player.off('canplay', onCanPlay);
+      player.off('durationchange', onDurationChange);
+      player.off('play', onPlay);
+    };
+  }, [props.reloadToken, props.src, props.videoOnDemandStartAt]);
 
   return (
     <Box sx={{ position: 'relative', paddingBottom: '56.25%' }}>
