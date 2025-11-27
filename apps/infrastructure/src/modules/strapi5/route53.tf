@@ -6,8 +6,6 @@ locals {
 }
 
 
-/*
-
 resource "aws_route53_record" "certificate" {
   for_each = {
     for dvo in local.domain_validations_options : dvo.domain_name => {
@@ -25,7 +23,6 @@ resource "aws_route53_record" "certificate" {
   zone_id         = var.hosted_zone_id
 }
 
-*/
 
 # Add DNS record for CMS Strapi
 module "cms_dns_records" {

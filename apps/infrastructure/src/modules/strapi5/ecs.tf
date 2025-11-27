@@ -57,7 +57,7 @@ resource "aws_ecs_task_definition" "cms_task_def" {
 module "cms_ecs_service" {
   source = "git::https://github.com/terraform-aws-modules/terraform-aws-ecs.git//modules/service?ref=8b97783def49997d18a6fcb00dc21ce1edc0f538" # v5.9.0
 
-  name                           = "cms-ecs"
+  name                           = "cms-ecs-v5"
   cluster_arn                    = data.aws_ecs_cluster.cms_ecs_cluster.arn
   desired_count                  = 1
   create_task_definition         = false
