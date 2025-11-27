@@ -37,7 +37,6 @@ def test_ssm_params() -> None:
         assert SETTINGS.google_service_account is not None
 
     assert SETTINGS.index_id is not None
-    assert SETTINGS.strapi_api_key is not None
 
 
 def test_connection_redis() -> None:
@@ -53,17 +52,6 @@ def test_connection_redis() -> None:
 
 def test_connection_langfuse():
     assert LANGFUSE_CLIENT.auth_check() is True
-
-
-def test_strapi_connection() -> None:
-
-    url = SETTINGS.website_url.replace("https://", "https://cms.")
-    url += "/api/apis-data?populate[product]=*&populate[apiRestDetail][populate][specUrls]=*"
-    headers = {"Authorization": f"Bearer {SETTINGS.strapi_api_key}"}
-
-    response = requests.get(url, headers=headers)
-    LOGGER.info(f"Fetching API data from {url}")
-    assert response.status_code == 200
 
 
 def test_models() -> None:

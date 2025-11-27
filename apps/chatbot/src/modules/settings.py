@@ -78,9 +78,6 @@ class ChatbotSettings(BaseSettings):
         default=os.getenv("CHB_AWS_GOOGLE_API_KEY"),
     )
     google_service_account: dict = GOOGLE_JSON_ACCOUNT_INFO
-    strapi_api_key: str = get_ssm_parameter(
-        os.getenv("CHB_AWS_SSM_STRAPI_API_KEY"), os.getenv("CHB_STRAPI_API_KEY", "")
-    )
     cors_domains: str = os.getenv("CORS_DOMAINS", '["*"]')
     log_level: str = os.getenv("LOG_LEVEL", "info")
     max_daily_evaluations: int = int(os.getenv("CHB_MAX_DAILY_EVALUATIONS", "200"))
@@ -117,7 +114,6 @@ class ChatbotSettings(BaseSettings):
     )
 
     # prompts
-    identity_prompt_str: str = PROMPTS["identity_prompt_str"]
     qa_prompt_str: str = PROMPTS["qa_prompt_str"]
     react_system_str: str = PROMPTS["react_system_header_str"]
     refine_prompt_str: str = PROMPTS["refine_prompt_str"]
