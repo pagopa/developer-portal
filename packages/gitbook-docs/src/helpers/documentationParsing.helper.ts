@@ -78,8 +78,20 @@ export function replaceUrl(
           return val != '';
         })
     : [];
+
   const lastPart = splitValue.at(-1) || '';
-  const secondToLastPart = splitValue.at(-2) || splitPath.at(-2) || '';
+  const splitValues = [splitValue.at(-3), splitValue.at(-2)].filter(
+    (value) => value !== undefined
+  ) as string[];
+  const splitPaths = [splitPath.at(-3), splitPath.at(-2)].filter(
+    (value) => value !== undefined
+  ) as string[];
+  const urlPartsBeforeName =
+    splitValues.length > 0
+      ? splitValues.join('/')
+      : splitPaths.length > 0
+      ? splitPaths.join('/')
+      : '';
   const name = lastPart.replace('.md', '').split('#')[0];
 
   // Skip processing for very short names (likely not valid guide names)
@@ -114,7 +126,9 @@ export function replaceUrl(
       .sort((doc1, doc2) => {
         return doc1.path.length - doc2.path.length;
       })
-      .find((guide) => guide.path.includes([secondToLastPart, name].join('/')));
+      .find((guide) =>
+        guide.path.includes([urlPartsBeforeName, name].join('/'))
+      );
     return doc ? doc?.url + urlEnding : docs[0].url + urlEnding;
   }
 }
