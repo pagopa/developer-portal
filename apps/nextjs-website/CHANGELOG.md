@@ -1,5 +1,11 @@
 # nextjs-website
 
+## 13.2.0
+
+### Minor Changes
+
+- cbca7f2: Add UpdatedAt to tutorials and tutorialListPage, Update lastmod in sitemap
+
 ## 13.1.0
 
 ### Minor Changes
