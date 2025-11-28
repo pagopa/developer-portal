@@ -81,6 +81,7 @@ export function makeOverviewsProps(
                     return null;
                   }
                   return {
+                    updatedAt: tutorial.attributes.updatedAt,
                     icon: tutorial.attributes.icon.data?.attributes,
                     description: tutorial.attributes.description,
                     showInOverview: true,

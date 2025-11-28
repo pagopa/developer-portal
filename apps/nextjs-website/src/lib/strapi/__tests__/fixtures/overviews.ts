@@ -129,7 +129,7 @@ export const strapiOverviews = {
             data: [
               {
                 attributes: {
-                  updatedAt: '',
+                  updatedAt: '2023-01-01T00:00:00.000Z',
                   description: 'test description',
                   icon: { data: mediaJpeg() },
                   title: 'Tutorial 1',
@@ -177,6 +177,7 @@ export const strapiOverviews = {
                       },
                     },
                   },
+                  publishedAt: '2023-01-01T00:00:00.000Z',
                 },
               },
             ],
@@ -412,6 +413,7 @@ export const overviewPageProps: OverviewPageProps = {
         title: 'Use Case 1',
         name: 'shared.moreInfo',
         path: '/test-product/use-cases/use-case-1',
+        publishedAt: new Date('2023-01-01T00:00:00.000Z'),
       },
     ],
   },
