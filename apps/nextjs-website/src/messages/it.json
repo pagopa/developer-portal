@@ -130,7 +130,7 @@
             "reduce": "Riduci",
             "expand": "Espandi",
             "questionBox": "Question box",
-            "notLive": "Non appena sarà iniziato l’evento qui potrai scrivere le tue domande"
+            "notLive": "Puoi scrivere le tue domande solo quando l'evento è in corso"
         },
         "warnings": {
             "email": "Il giorno prima dell'evento riceverai una email con i dettagli.",
