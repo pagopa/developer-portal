@@ -131,19 +131,22 @@ export async function downloadS3File(
 
 export async function putS3File(
   items: MetadataItem[] | any,
-  jsonPath: string,
+  path: string,
   bucketName: string,
   client: S3Client
 ): Promise<void> {
   const body = JSON.stringify(items, null, 2);
-  console.log(`Uploading sitemap JSON to S3: ${jsonPath}`);
+  console.log(`Uploading file to S3: ${path}`);
 
-  await client.send(
+  const result = await client.send(
     new PutObjectCommand({
       Bucket: bucketName,
-      Key: jsonPath,
+      Key: path,
       Body: body,
     })
   );
-  console.log(`Uploaded sitemap JSON to S3: ${jsonPath}`);
+
+  console.log(
+    `Uploaded file to S3: ${path}, Result: ${JSON.stringify(result)}`
+  );
 }
