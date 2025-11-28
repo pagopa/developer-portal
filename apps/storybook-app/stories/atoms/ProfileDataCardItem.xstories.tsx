@@ -1,16 +1,16 @@
 import React from 'react';
 import { Meta, StoryObj } from '@storybook/react';
 import { NextIntlClientProvider } from 'next-intl';
-import { InfoCardItemProfile } from 'nextjs-website/src/components/atoms/InfoCardItem/InfoCardItemProfile';
+import { ProfileDataCardItem } from 'nextjs-website/src/components/atoms/InfoCardItem/ProfileDataCardItem';
 
-const meta: Meta<typeof InfoCardItemProfile> = {
+const meta: Meta<typeof ProfileDataCardItem> = {
   title: 'Atoms/InfoCardItemProfile',
-  component: InfoCardItemProfile,
+  component: ProfileDataCardItem,
 };
 
 export default meta;
 
-export const Showcase: StoryObj<typeof InfoCardItemProfile> = {
+export const Showcase: StoryObj<typeof ProfileDataCardItem> = {
   args: {
     title: 'This is the title',
     editable: true,
@@ -20,7 +20,7 @@ export const Showcase: StoryObj<typeof InfoCardItemProfile> = {
   },
   render: (props) => (
     <NextIntlClientProvider locale='it' messages={{}}>
-      <InfoCardItemProfile {...props} />
+      <ProfileDataCardItem {...props} />
     </NextIntlClientProvider>
   ),
 };

@@ -1,5 +1,16 @@
 # gitbook-docs
 
+## 1.5.0
+
+### Minor Changes
+
+- 656bd0b: Fix url generation for path with only filename of similar paths
+
+### Patch Changes
+
+- 5885dd7: Add script and action to generate multiple metadata files during sync
+- 5885dd7: Sync only provided folders if workflow variable DIR_NAMES_FILTER is set
+
 ## 1.4.0
 
 ### Minor Changes

@@ -22,12 +22,14 @@ type WebinarPlayerSectionProps = {
   webinar: Webinar;
   webinarState: WebinarState;
   enableQuestionForm?: boolean;
+  isLiveStreamAvailable?: boolean;
   reloadPlayerToken?: number;
 };
 const WebinarPlayerSection = ({
   webinar,
   webinarState,
   enableQuestionForm = false,
+  isLiveStreamAvailable = false,
   reloadPlayerToken = 0,
 }: WebinarPlayerSectionProps) => {
   const t = useTranslations('webinar');
@@ -36,13 +38,20 @@ const WebinarPlayerSection = ({
   const [question, setQuestion] = useState('');
   const isSmallScreen = useMediaQuery('(max-width: 1000px)');
   const isQuestionFormDisabled = useMemo(
-    () => !enableQuestionForm || webinarState !== WebinarState.live,
-    [enableQuestionForm, webinarState]
+    () => !enableQuestionForm,
+    [enableQuestionForm]
   );
   const isQuestionFormAvailable = useMemo(
-    () => [WebinarState.live, WebinarState.comingSoon].includes(webinarState),
-    [webinarState]
+    () =>
+      [WebinarState.live, WebinarState.comingSoon].includes(webinarState) ||
+      isLiveStreamAvailable,
+    [webinarState, isLiveStreamAvailable]
   );
+  const videoOnDemandStartAt =
+    typeof webinar.videoOnDemandStartAt === 'number' &&
+    webinar.videoOnDemandStartAt > 0
+      ? webinar.videoOnDemandStartAt
+      : undefined;
   return (
     webinar.playerSrc && (
       <div style={{ backgroundColor: palette.grey[50] }}>
@@ -69,12 +78,16 @@ const WebinarPlayerSection = ({
                 <VimeoPlayer playerSrc={webinar.playerSrc} />
               ) : (
                 <VideoJsPlayer
-                  autoplay={webinarState === WebinarState.live}
+                  autoplay={[
+                    WebinarState.live,
+                    WebinarState.comingSoon,
+                  ].includes(webinarState)}
                   controls={true}
                   playsInline={true}
                   src={webinar.playerSrc}
                   poster={webinar.playerCoverImageUrl}
                   reloadToken={reloadPlayerToken}
+                  videoOnDemandStartAt={videoOnDemandStartAt}
                 />
               )}
             </Box>

@@ -37,7 +37,7 @@ const DeleteSection = ({ user }: DeleteSectionProps) => {
   }, [user, router]);
 
   return (
-    <Box display={'flex'} flexDirection={'column'} maxWidth={'700px'}>
+    <Box display={'flex'} flexDirection={'column'} maxWidth={'900px'}>
       <Typography
         variant='h6'
         sx={{

@@ -2,7 +2,7 @@ import { type InfoCardItemProps } from '@/components/atoms/InfoCardItem/InfoCard
 import { Box, Card, Typography } from '@mui/material';
 import { PropsWithChildren } from 'react';
 
-export type ProfileInfoCardProps = PropsWithChildren<{
+export type ProfileAccountCardProps = PropsWithChildren<{
   cardTitle: string;
   items: InfoCardItemProps[];
   renderItem: (
@@ -12,13 +12,13 @@ export type ProfileInfoCardProps = PropsWithChildren<{
   ) => React.ReactNode;
 }>;
 
-export const ProfileInfoCard = ({
+export const ProfileAccountCard = ({
   cardTitle,
   items,
   renderItem,
-}: ProfileInfoCardProps) => {
+}: ProfileAccountCardProps) => {
   return (
-    <Card raised sx={{ padding: 4, maxWidth: '700px' }}>
+    <Card raised sx={{ padding: 4, maxWidth: '900px' }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
         <Typography variant='h6' fontWeight={700} mt={1}>
           {cardTitle}
