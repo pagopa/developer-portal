@@ -13,7 +13,7 @@ import { ButtonNaked } from '@pagopa/mui-italia';
 import { useTranslations } from 'next-intl';
 import { ReactNode } from 'react';
 
-export type InfoCardItemProfileProps = {
+export type ProfileDataCardItemProps = {
   title: string;
   value?: string;
   valueFallback?: ReactNode;
@@ -24,14 +24,14 @@ export type InfoCardItemProfileProps = {
   | { type: 'text' }
 );
 
-export type InfoCardItemEditingProfileProps = {
+export type ProfileDataCardItemEditingProps = {
   editing: boolean;
   onValue?: (value: string) => null;
   onInsertPressed: () => null;
 };
 
-export const InfoCardItemProfile = (
-  infoCardItem: InfoCardItemProfileProps & InfoCardItemEditingProfileProps
+export const ProfileDataCardItem = (
+  infoCardItem: ProfileDataCardItemProps & ProfileDataCardItemEditingProps
 ) => {
   const t = useTranslations();
 

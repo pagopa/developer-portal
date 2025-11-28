@@ -3,9 +3,13 @@
   "version": "2.0.0",
   "description": "IVS S3 event processing Lambda functions",
   "scripts": {
+    "clean": "shx rm -rf dist/ out/",
+    "precompile": "npm run clean",
     "lint": "eslint src",
     "test": "jest --passWithNoTests",
-    "build": "tsc"
+    "compile": "tsc",
+    "build": "node esbuild.config.mjs",
+    "postbuild": "cd out && zip -r ivs-functions.zip ."
   },
   "devDependencies": {
     "@eslint/eslintrc": "^2.1.4",

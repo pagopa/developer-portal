@@ -27,10 +27,12 @@ const WebinarHeaderBanner: FC<WebinarHeaderBannerProps> = ({ webinars }) => {
     );
   });
 
-  const webinar = webinars.find(
-    ({ endDateTime }: Webinar) =>
-      endDateTime && new Date(endDateTime).getTime() > new Date().getTime()
-  );
+  const webinar = webinars
+    .filter((w) => w.isVisibleInList)
+    .find(
+      ({ endDateTime }: Webinar) =>
+        endDateTime && new Date(endDateTime).getTime() > new Date().getTime()
+    );
   const { slug, title: text, endDateTime } = webinar || {};
   const [visible, setVisible] = useState(true);
 
