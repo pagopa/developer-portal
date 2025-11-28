@@ -12,11 +12,6 @@ on:
           - dev
           - uat
           - prod
-      call_reindex:
-        description: 'Trigger reindex workflow after docs sync'
-        type: boolean
-        required: true
-        default: false
       metadata_type:
         description: 'Type of metadata to generate'
         type: choice
@@ -32,11 +27,21 @@ on:
         type: boolean
         required: true
         default: true
-      inivalidate_opennext_cache:
+      invalidate_opennext_cache:
         description: 'Invalidate opennext cloufront cache'
         type: boolean
         required: true
         default: false
+      generate_root_metadata_file:
+        description: 'Generate root metadata file alongside folder-specific ones'
+        type: boolean
+        required: true
+        default: true
+      dir_names_filter:
+        description: 'Comma-separated list of dirNames to sync (leave empty to sync all)'
+        type: string
+        required: false
+        default: ''
 
   # schedule:
   #   - cron: '0 23 * * *'  # Run daily at midnight UTC
@@ -106,11 +111,14 @@ jobs:
           S3_PATH_TO_GITBOOK_DOCS: ${{ vars.S3_PATH_TO_GITBOOK_DOCS || 'devportal-docs/docs' }}
           NEXT_PUBLIC_COGNITO_REGION: ${{ vars.NEXT_PUBLIC_COGNITO_REGION || 'eu-south-1' }}
           FETCH_FROM_STRAPI: ${{ vars.FETCH_FROM_STRAPI || 'true' }}
+          GENERATE_ROOT_METADATA_FILE: ${{ inputs.generate_root_metadata_file == true && 'true' || 'false' }}
           GENERATE_URL_METADATA: 'true'
           GENERATE_SITEMAP_METADATA: 'true'
           SAVE_STRAPI_RESPONSES: 'true'
           METADATA_TYPE: ${{ inputs.metadata_type }}
+          DIR_NAMES_FILTER: ${{ inputs.dir_names_filter }}
           SITEMAP_URL: ${{ env.SITEMAP_URL || 'https://developer.pagopa.it/sitemap.xml' }}
+          S3_DIRNAME_METADATA_JSON_PATH: ${{ vars.S3_DIRNAME_METADATA_JSON_PATH }}
         run: npm run sync-all-metadata -w gitbook-docs
 
       - name: Replace urls and include tags in docs
@@ -124,8 +132,22 @@ jobs:
       - name: Sync docs folder to S3
         if: inputs.generate_metadata_only == false
         working-directory: ./devportal-docs
+        env:
+          DIR_NAMES_FILTER: ${{ inputs.dir_names_filter }}
         run: |
-          aws s3 sync docs s3://devportal-${{ env.ENV_SHORT }}-website-static-content/devportal-docs/docs --delete ${{ inputs.incremental_mode == true && ' --size-only' || '' }}
+          if [[ -n "$DIR_NAMES_FILTER" ]]; then
+            IFS=',' read -ra DIRS <<< "$DIR_NAMES_FILTER"
+            for dir in "${DIRS[@]}"; do
+              dir=$(echo "$dir" | xargs)
+              if [[ -n "$dir" ]]; then
+                echo "Syncing directory: $dir"
+                aws s3 sync "docs/$dir" "s3://devportal-${{ env.ENV_SHORT }}-website-static-content/devportal-docs/docs/$dir" --delete --exclude "metadata.json" ${{ inputs.incremental_mode == true && ' --size-only' || '' }}
+              fi
+            done
+          else
+            echo "Syncing all docs"
+            aws s3 sync docs s3://devportal-${{ env.ENV_SHORT }}-website-static-content/devportal-docs/docs --delete --exclude "**/metadata.json" ${{ inputs.incremental_mode == true && ' --size-only' || '' }}
+          fi
 
       - name: Invalidate CloudFront asset bucket cache
         run: |
@@ -192,6 +214,7 @@ jobs:
           S3_PATH_TO_GITBOOK_DOCS: ${{ vars.S3_PATH_TO_GITBOOK_DOCS || 'devportal-docs/docs' }}
           NEXT_PUBLIC_COGNITO_REGION: ${{ vars.NEXT_PUBLIC_COGNITO_REGION || 'eu-south-1' }}
           FETCH_FROM_STRAPI: ${{ vars.FETCH_FROM_STRAPI || 'true' }}
+          GENERATE_ROOT_METADATA_FILE: ${{ inputs.generate_root_metadata_file == true && 'true' || 'false' }}
           GENERATE_URL_METADATA: 'true'
           GENERATE_SITEMAP_METADATA: 'true'
           SAVE_STRAPI_RESPONSES: 'true'
@@ -214,7 +237,7 @@ jobs:
       - name: Sync docs folder to S3
         working-directory: ./devportal-docs
         run: |
-          aws s3 sync docs s3://devportal-p-website-static-content/devportal-docs/docs --delete --size-only
+          aws s3 sync docs s3://devportal-p-website-static-content/devportal-docs/docs --delete --exclude "**/metadata.json" --size-only
 
       - name: Invalidate CloudFront asset bucket cache
         run: |
