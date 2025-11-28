@@ -23,13 +23,15 @@ describe('makeSolutionListPageProps', () => {
 
   it('should transform strapi solution list page to solution list template props', () => {
     const result = makeSolutionListPageProps(
-      _.cloneDeep(strapiSolutionListPage)
+      _.cloneDeep({ data: strapiSolutionListPage })
     );
     expect(result).toMatchObject(expectedSolutionListTemplateProps);
   });
 
   it('should handle minimal data with missing optional fields', () => {
-    const result = makeSolutionListPageProps(minimalDataSolutionListPage());
+    const result = makeSolutionListPageProps({
+      data: minimalDataSolutionListPage(),
+    });
     expect(result).not.toBeNull();
     expect(result.hero.title).toBe('Minimal Solutions');
     expect(result.solutions).toEqual([]);
@@ -39,25 +41,27 @@ describe('makeSolutionListPageProps', () => {
   });
 
   it('should handle solution list page without case histories', () => {
-    const result = makeSolutionListPageProps(
-      solutionListPageWithoutCaseHistories()
-    );
+    const result = makeSolutionListPageProps({
+      data: solutionListPageWithoutCaseHistories(),
+    });
     expect(result.successStories).toBeUndefined();
     expect(result.solutions).toBeDefined();
     expect(result.features).toBeDefined();
   });
 
   it('should handle solution list page without features', () => {
-    const result = makeSolutionListPageProps(solutionListPageWithoutFeatures());
+    const result = makeSolutionListPageProps({
+      data: solutionListPageWithoutFeatures(),
+    });
     expect(result.features).toBeUndefined();
     expect(result.successStories).toBeDefined();
     expect(result.solutions).toBeDefined();
   });
 
   it('should handle solution list page without solutions', () => {
-    const result = makeSolutionListPageProps(
-      solutionListPageWithoutSolutions()
-    );
+    const result = makeSolutionListPageProps({
+      data: solutionListPageWithoutSolutions(),
+    });
     expect(result.solutions).toEqual([]);
     expect(result.successStories).toBeDefined();
     expect(result.features).toBeDefined();
@@ -65,7 +69,7 @@ describe('makeSolutionListPageProps', () => {
 
   it('should correctly map solution tags from products', () => {
     const result = makeSolutionListPageProps(
-      _.cloneDeep(strapiSolutionListPage)
+      _.cloneDeep({ data: strapiSolutionListPage })
     );
     expect(result.solutions[0].labels).toEqual([
       {
@@ -77,7 +81,7 @@ describe('makeSolutionListPageProps', () => {
 
   it('should correctly build solution slug path', () => {
     const result = makeSolutionListPageProps(
-      _.cloneDeep(strapiSolutionListPage)
+      _.cloneDeep({ data: strapiSolutionListPage })
     );
     expect(result.solutions[0].slug).toBe('solutions/solution-1');
   });

@@ -23,14 +23,16 @@ describe('makeReleaseNotesProps', () => {
   });
 
   it('should transform strapi release notes to release note page props', () => {
-    const result = makeReleaseNotesProps(_.cloneDeep(strapiReleaseNotes));
+    const result = makeReleaseNotesProps(
+      _.cloneDeep({ data: strapiReleaseNotes })
+    );
     expect(result).toHaveLength(1);
     expect(result[0]).toMatchObject(expectedReleaseNotePageProps);
   });
 
   it('should handle minimal data with missing optional fields', () => {
     const result = makeReleaseNotesProps(
-      _.cloneDeep(minimalDataReleaseNotes())
+      _.cloneDeep({ data: minimalDataReleaseNotes() })
     );
     expect(result).toHaveLength(1);
     expect(result[0].title).toBe('Minimal Release Notes');
@@ -52,43 +54,47 @@ describe('makeReleaseNotesProps', () => {
         },
       },
     };
-    const result = makeReleaseNotesProps(emptyData);
+    const result = makeReleaseNotesProps({ data: emptyData });
     expect(result).toHaveLength(0);
   });
 
   it('should use product banner links when release note banner links are empty', () => {
-    const result = makeReleaseNotesProps(releaseNotesWithoutBannerLinks());
+    const result = makeReleaseNotesProps({
+      data: releaseNotesWithoutBannerLinks(),
+    });
     expect(result[0].bannerLinks).toBeDefined();
     expect(result[0].bannerLinks).toHaveLength(1);
     expect(result[0].bannerLinks?.[0].title).toBe('Banner Link 1');
   });
 
   it('should handle release notes without banner links and without product banner links', () => {
-    const result = makeReleaseNotesProps(
-      releaseNotesWithoutProductBannerLinks()
-    );
+    const result = makeReleaseNotesProps({
+      data: releaseNotesWithoutProductBannerLinks(),
+    });
     expect(result[0].bannerLinks).toEqual([]);
   });
 
   it('should correctly generate path from product slug', () => {
-    const result = makeReleaseNotesProps(strapiReleaseNotes);
+    const result = makeReleaseNotesProps({ data: strapiReleaseNotes });
     expect(result[0].path).toBe('/test-product/release-note');
   });
 
   it('should prioritize release note banner links over product banner links', () => {
-    const result = makeReleaseNotesProps(strapiReleaseNotes);
+    const result = makeReleaseNotesProps({ data: strapiReleaseNotes });
     expect(result[0].bannerLinks).toHaveLength(2);
     expect(result[0].bannerLinks?.[0].title).toBe('Banner Link 1');
     expect(result[0].bannerLinks?.[1].title).toBe('Banner Link 2');
   });
 
   it('should handle release notes with product that has undefined banner links', () => {
-    const result = makeReleaseNotesProps(minimalDataReleaseNotes());
+    const result = makeReleaseNotesProps({ data: minimalDataReleaseNotes() });
     expect(result[0].bannerLinks).toBeUndefined();
   });
 
   it('should throw error for release note whose product has missing slug', () => {
-    const result = makeReleaseNotesProps(releaseNotesWithMissingProductSlug());
+    const result = makeReleaseNotesProps({
+      data: releaseNotesWithMissingProductSlug(),
+    });
     expect(result).toHaveLength(0);
     expect(spyOnConsoleError).toHaveBeenCalledWith(
       'Error while processing ReleaseNote with title "Release Note Without Product Slug": missing product slug. Skipping...'

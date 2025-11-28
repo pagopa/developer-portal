@@ -27,7 +27,7 @@ describe('makeProductsProps', () => {
   });
 
   it('should transform strapi products to product props', () => {
-    const result = makeProductsProps(_.cloneDeep(strapiProducts));
+    const result = makeProductsProps(_.cloneDeep({ data: strapiProducts }));
     expect(result).toHaveLength(1);
     expect(result[0]).toMatchObject(expectedProduct);
   });
@@ -35,13 +35,15 @@ describe('makeProductsProps', () => {
   it('should handle minimal product data', () => {
     const result = makeProductsProps(
       _.cloneDeep({
-        ...minimalProduct(),
-        meta: {
-          pagination: {
-            page: 1,
-            pageSize: 25,
-            pageCount: 1,
-            total: 1,
+        data: {
+          ...minimalProduct(),
+          meta: {
+            pagination: {
+              page: 1,
+              pageSize: 25,
+              pageCount: 1,
+              total: 1,
+            },
           },
         },
       })
@@ -65,23 +67,24 @@ describe('makeProductsProps', () => {
       ...[],
       meta: { pagination: { page: 1, pageSize: 25, pageCount: 1, total: 0 } },
     };
-    const result = makeProductsProps(emptyData);
+    const result = makeProductsProps({ data: emptyData });
     expect(result).toHaveLength(0);
   });
 
   it('should skip products without slug and log error', () => {
     const result = makeProductsProps({
-      ...productsWithAnItemMissingSlug(),
-      meta: {
-        pagination: {
-          page: 1,
-          pageSize: 25,
-          pageCount: 1,
-          total: 1,
+      data: {
+        ...productsWithAnItemMissingSlug(),
+        meta: {
+          pagination: {
+            page: 1,
+            pageSize: 25,
+            pageCount: 1,
+            total: 1,
+          },
         },
       },
     });
-
     expect(result).toHaveLength(0);
     expect(spyOnConsoleError).toHaveBeenCalledWith(
       'Error while processing Product: missing title or slug. Title: Product Without Slug | Slug: undefined. Skipping...'
@@ -90,13 +93,15 @@ describe('makeProductsProps', () => {
 
   it('should handle products with multiple API data (returns general API URL)', () => {
     const result = makeProductsProps({
-      ...productWithMultipleApiData(),
-      meta: {
-        pagination: {
-          page: 1,
-          pageSize: 25,
-          pageCount: 1,
-          total: 1,
+      data: {
+        ...productWithMultipleApiData(),
+        meta: {
+          pagination: {
+            page: 1,
+            pageSize: 25,
+            pageCount: 1,
+            total: 1,
+          },
         },
       },
     });
@@ -106,13 +111,15 @@ describe('makeProductsProps', () => {
 
   it('should handle products with empty API data', () => {
     const result = makeProductsProps({
-      ...productWithEmptyApiData(),
-      meta: {
-        pagination: {
-          page: 1,
-          pageSize: 25,
-          pageCount: 1,
-          total: 1,
+      data: {
+        ...productWithEmptyApiData(),
+        meta: {
+          pagination: {
+            page: 1,
+            pageSize: 25,
+            pageCount: 1,
+            total: 1,
+          },
         },
       },
     });
@@ -122,13 +129,15 @@ describe('makeProductsProps', () => {
 
   it('should handle corrupted data with try/catch and log error', () => {
     const result = makeProductsProps({
-      ...productWithCorruptedData(),
-      meta: {
-        pagination: {
-          page: 1,
-          pageSize: 25,
-          pageCount: 1,
-          total: 1,
+      data: {
+        ...productWithCorruptedData(),
+        meta: {
+          pagination: {
+            page: 1,
+            pageSize: 25,
+            pageCount: 1,
+            total: 1,
+          },
         },
       },
     });
@@ -143,13 +152,15 @@ describe('makeProductsProps', () => {
 
   it('should handle mixed valid and invalid products', () => {
     const result = makeProductsProps({
-      ...mixedValidAndInvalidProducts(),
-      meta: {
-        pagination: {
-          page: 1,
-          pageSize: 25,
-          pageCount: 1,
-          total: 1,
+      data: {
+        ...mixedValidAndInvalidProducts(),
+        meta: {
+          pagination: {
+            page: 1,
+            pageSize: 25,
+            pageCount: 1,
+            total: 1,
+          },
         },
       },
     });
@@ -164,13 +175,15 @@ describe('makeProductsProps', () => {
 
   it('should return empty array when all products are invalid', () => {
     const result = makeProductsProps({
-      ...allInvalidProducts(),
-      meta: {
-        pagination: {
-          page: 1,
-          pageSize: 25,
-          pageCount: 1,
-          total: 1,
+      data: {
+        ...allInvalidProducts(),
+        meta: {
+          pagination: {
+            page: 1,
+            pageSize: 25,
+            pageCount: 1,
+            total: 1,
+          },
         },
       },
     });

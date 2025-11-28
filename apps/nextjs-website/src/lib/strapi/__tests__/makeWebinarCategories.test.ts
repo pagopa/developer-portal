@@ -8,7 +8,9 @@ import { mediaJpeg } from './factories/media';
 
 describe('makeWebinarCategoriesProps', () => {
   it('should transform strapi webinar categories to WebinarCategory array', () => {
-    const result = makeWebinarCategoriesProps(strapiWebinarCategories);
+    const result = makeWebinarCategoriesProps({
+      data: strapiWebinarCategories,
+    });
     expect(result).toHaveLength(2);
     expect(result[0]).toEqual({
       name: 'Payments',
@@ -22,7 +24,7 @@ describe('makeWebinarCategoriesProps', () => {
 
   it('should handle empty categories array', () => {
     const emptyCategories = { ...strapiWebinarCategories, data: [] };
-    const result = makeWebinarCategoriesProps(emptyCategories);
+    const result = makeWebinarCategoriesProps({ data: emptyCategories });
     expect(result).toEqual([]);
   });
 });

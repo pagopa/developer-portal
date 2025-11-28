@@ -2,6 +2,7 @@
 import { Webinar } from '../../types/webinar';
 import { StrapiWebinar, StrapiWebinars } from '@/lib/strapi/types/webinars';
 import { compact } from 'lodash';
+import { RootEntity } from '@/lib/strapi/types/rootEntity';
 
 export type WebinarsProps = readonly Webinar[];
 
@@ -72,9 +73,9 @@ export const makeWebinarProps = (
 };
 
 export function makeWebinarsProps(
-  strapiWebinars: StrapiWebinars
+  strapiWebinars: RootEntity<StrapiWebinars>
 ): WebinarsProps {
   return compact([
-    ...strapiWebinars.map((webinar) => makeWebinarProps(webinar)),
+    ...strapiWebinars.data.map((webinar) => makeWebinarProps(webinar)),
   ]);
 }

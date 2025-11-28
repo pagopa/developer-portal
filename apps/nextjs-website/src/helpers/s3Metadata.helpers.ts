@@ -1,6 +1,8 @@
 /* eslint-disable functional/no-let */
 /* eslint-disable functional/no-expression-statements */
 import { staticContentsUrl } from '@/config';
+import * as path from 'node:path';
+import * as fs from 'node:fs';
 
 export interface JsonMetadata {
   readonly path: string;
@@ -111,7 +113,25 @@ export async function downloadFileAsText(
   return await requestPromise;
 }
 
-async function fetchFromCDN(path: string, config?: RequestInit) {
+async function fetchFromCDN(
+  filePath: string,
+  config?: RequestInit,
+  useLocal = false
+) {
+  if (useLocal) {
+    // eslint-disable-next-line functional/no-try-statements
+    try {
+      const localPath = path.join(process.cwd(), filePath);
+
+      const fileContent = fs.readFileSync(localPath, 'utf-8');
+      return JSON.parse(fileContent);
+    } catch (error) {
+      // eslint-disable-next-line functional/no-throw-statements
+      throw new Error(
+        `Failed to read local file at ${filePath}: ${(error as Error).message}`
+      );
+    }
+  }
   if (!staticContentsUrl) {
     // eslint-disable-next-line functional/no-throw-statements
     throw new Error(
@@ -138,7 +158,7 @@ export async function fetchResponseFromCDN(path: string) {
   // Create the request promise and cache it
   const requestPromise = withRetries(
     async () => {
-      return await fetchFromCDN(path, { cache: 'no-store' });
+      return await fetchFromCDN(path, { cache: 'no-store' }, true);
     },
     `response fetch from ${path}`,
     undefined

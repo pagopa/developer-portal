@@ -1,6 +1,7 @@
 import * as qs from 'qs';
 import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
 import { StrapiWebinars } from '@/lib/strapi/types/webinars';
+import { RootEntity } from '@/lib/strapi/types/rootEntity';
 
 export const webinarPopulate = {
   populate: {
@@ -39,7 +40,7 @@ export const webinarPopulate = {
 
 const makeStrapiWebinarsPopulate = () => qs.stringify(webinarPopulate);
 
-export const fetchWebinars = fetchFromStrapi<StrapiWebinars>(
+export const fetchWebinars = fetchFromStrapi<RootEntity<StrapiWebinars>>(
   'webinars',
   makeStrapiWebinarsPopulate()
 );

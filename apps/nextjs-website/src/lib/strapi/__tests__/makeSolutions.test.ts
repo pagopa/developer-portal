@@ -24,13 +24,15 @@ describe('makeSolutionsProps', () => {
   });
 
   it('should transform strapi solutions to solution props', () => {
-    const result = makeSolutionsProps(_.cloneDeep(strapiSolutions));
+    const result = makeSolutionsProps(_.cloneDeep({ data: strapiSolutions }));
     expect(result).toHaveLength(1);
     expect(result[0]).toMatchObject(expectedSolutionTemplateProps);
   });
 
   it('should handle minimal data with missing optional fields', () => {
-    const result = makeSolutionsProps(_.cloneDeep(minimalDataSolutions()));
+    const result = makeSolutionsProps(
+      _.cloneDeep({ data: minimalDataSolutions() })
+    );
     expect(result).toHaveLength(1);
     const firstElement = result[0];
     expect(firstElement.description).toBeUndefined();
@@ -56,22 +58,28 @@ describe('makeSolutionsProps', () => {
         },
       },
     };
-    const result = makeSolutionsProps(emptyData);
+    const result = makeSolutionsProps({ data: emptyData });
     expect(result).toHaveLength(0);
   });
 
   it('should handle solutions without case histories', () => {
-    const result = makeSolutionsProps(solutionsWithItemWithoutCaseHistories());
+    const result = makeSolutionsProps({
+      data: solutionsWithItemWithoutCaseHistories(),
+    });
     expect(result[0].successStories).toBeUndefined();
   });
 
   it('should handle solutions without webinars', () => {
-    const result = makeSolutionsProps(solutionsWithItemWithoutWebinars());
+    const result = makeSolutionsProps({
+      data: solutionsWithItemWithoutWebinars(),
+    });
     expect(result[0].webinars).toEqual([]);
   });
 
   it('should skip solutions with missing slug and log error', () => {
-    const result = makeSolutionsProps(solutionsWithItemMissingSolutionSlug());
+    const result = makeSolutionsProps({
+      data: solutionsWithItemMissingSolutionSlug(),
+    });
     expect(result).toHaveLength(1);
     expect(result[0].title).toBe('Valid Solution');
     expect(result[0].solutionSlug).toBe('valid-solution');
@@ -81,9 +89,9 @@ describe('makeSolutionsProps', () => {
   });
 
   it('should skip case histories with missing slug and log error', () => {
-    const result = makeSolutionsProps(
-      solutionsWithItemMissingCaseHistorySlug()
-    );
+    const result = makeSolutionsProps({
+      data: solutionsWithItemMissingCaseHistorySlug(),
+    });
     expect(result).toHaveLength(1);
     expect(result[0].successStories?.stories).toHaveLength(1);
     expect(result[0].successStories?.stories[0].title).toBe(

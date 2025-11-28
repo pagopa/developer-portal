@@ -25,14 +25,16 @@ describe('makeOverviewsProps', () => {
   });
 
   it('should transform strapi overviews to overview page props', () => {
-    const result = makeOverviewsProps(_.cloneDeep(strapiOverviews));
+    const result = makeOverviewsProps(_.cloneDeep({ data: strapiOverviews }));
 
     expect(result).toHaveLength(1);
     expect(result[0]).toEqual(overviewPageProps);
   });
 
   it('should handle minimal data with null optional fields', () => {
-    const result = makeOverviewsProps(_.cloneDeep(minimalDataSingleOverview()));
+    const result = makeOverviewsProps(
+      _.cloneDeep({ data: minimalDataSingleOverview() })
+    );
 
     expect(result).toHaveLength(1);
     const firseElement = result[0];
@@ -58,13 +60,15 @@ describe('makeOverviewsProps', () => {
       },
     };
 
-    const result = makeOverviewsProps(emptyData);
+    const result = makeOverviewsProps({ data: emptyData });
 
     expect(result).toHaveLength(0);
   });
 
   it('should log an error and skip overview with empty product slug', () => {
-    const result = makeOverviewsProps(overviewsWithItemWithEmptyProductSlug());
+    const result = makeOverviewsProps({
+      data: overviewsWithItemWithEmptyProductSlug(),
+    });
     expect(result).toHaveLength(0);
     expect(spyOnConsoleError).toHaveBeenCalledWith(
       'Error while processing Overview with title "Test Overview": missing product slug. Skipping...'
@@ -72,7 +76,9 @@ describe('makeOverviewsProps', () => {
   });
 
   it('should log an error and skip overview with missing product slug', () => {
-    const result = makeOverviewsProps(overviewsWithItemWithEmptyProductSlug());
+    const result = makeOverviewsProps({
+      data: overviewsWithItemWithEmptyProductSlug(),
+    });
     expect(result).toHaveLength(0);
     expect(spyOnConsoleError).toHaveBeenCalledWith(
       'Error while processing Overview with title "Test Overview": missing product slug. Skipping...'
@@ -80,9 +86,9 @@ describe('makeOverviewsProps', () => {
   });
 
   it('should log an error and skip tutorials with missing product slug', () => {
-    const result = makeOverviewsProps(
-      overviewsWithItemMissingTutorialProductSlug()
-    );
+    const result = makeOverviewsProps({
+      data: overviewsWithItemMissingTutorialProductSlug(),
+    });
     expect(result).toHaveLength(1);
     expect(result[0].tutorials?.list).toHaveLength(0);
     expect(spyOnConsoleError).toHaveBeenCalledWith(
@@ -92,7 +98,9 @@ describe('makeOverviewsProps', () => {
   });
 
   it('should log an error and skip tutorials with missing product slug', () => {
-    const result = makeOverviewsProps(overviewsWithItemMissingTutorialSlug());
+    const result = makeOverviewsProps({
+      data: overviewsWithItemMissingTutorialSlug(),
+    });
     expect(result).toHaveLength(1);
     expect(result[0].tutorials?.list).toHaveLength(0);
     expect(spyOnConsoleError).toHaveBeenCalledWith(
@@ -102,18 +110,18 @@ describe('makeOverviewsProps', () => {
   });
 
   it('should log an error and skip guides with empty product slug', () => {
-    const result = makeOverviewsProps(
-      overviewsWithItemWithEmptyGuideProductSlug()
-    );
+    const result = makeOverviewsProps({
+      data: overviewsWithItemWithEmptyGuideProductSlug(),
+    });
     expect(result).toHaveLength(1);
     expect(result[0].postIntegration?.guides).toHaveLength(1);
     expect(result[0].postIntegration?.guides?.[0].title).toBe('Document 1');
   });
 
   it('should log an error and skip guides with missing product slug', () => {
-    const result = makeOverviewsProps(
-      overviewsWithItemMissingGuideProductSlug()
-    );
+    const result = makeOverviewsProps({
+      data: overviewsWithItemMissingGuideProductSlug(),
+    });
     expect(result).toHaveLength(1);
     expect(result[0].postIntegration?.guides).toHaveLength(1);
     expect(result[0].postIntegration?.guides?.[0].title).toBe('Document 1');

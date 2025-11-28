@@ -10,13 +10,15 @@ import {
 
 describe('makeUrlReplaceMap', () => {
   it('should map a single entry with subPath', () => {
-    const urlReplaceMap = makeUrlReplaceMap(strapiUrlReplaceMapFixture);
+    const urlReplaceMap = makeUrlReplaceMap({
+      data: strapiUrlReplaceMapFixture,
+    });
     expect(urlReplaceMap).toEqual(expectedUrlReplaceMapFixture);
   });
 
   it('should map a single entry without subPath', () => {
     const data = urlReplaceMapSingle({ subPath: undefined });
-    const urlReplaceMap = makeUrlReplaceMap(data);
+    const urlReplaceMap = makeUrlReplaceMap({ data: data });
 
     expect(urlReplaceMap).toEqual({
       'source-url': '/product-slug/guides/guide-slug',
@@ -25,7 +27,7 @@ describe('makeUrlReplaceMap', () => {
 
   it('should map multiple entries', () => {
     const data = urlReplaceMapMultiple();
-    const urlReplaceMap = makeUrlReplaceMap(data);
+    const urlReplaceMap = makeUrlReplaceMap({ data: data });
 
     expect(urlReplaceMap).toEqual({
       a: '/product-slug/guides/guide-slug',
