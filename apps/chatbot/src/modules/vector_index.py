@@ -20,7 +20,7 @@ from src.modules.logger import get_logger
 from src.modules.settings import SETTINGS
 
 
-LOGGER = get_logger(__name__)
+LOGGER = get_logger(__name__, level=SETTINGS.log_level)
 REDIS_CLIENT = Redis.from_url(SETTINGS.redis_url, socket_timeout=10)
 REDIS_ASYNC_CLIENT = aredis.Redis.from_pool(
     aredis.ConnectionPool.from_url(SETTINGS.redis_url)
