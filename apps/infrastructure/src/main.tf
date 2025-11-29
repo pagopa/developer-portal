@@ -275,3 +275,29 @@ module "langfuse" {
   vpc_id             = module.cms.vpc.id
   private_subnet_ids = module.cms.vpc.private_subnets
 }
+
+
+# strapi-v5  for testing purposes only
+module "strapi_v5" {
+  source = "./modules/strapi5"
+
+  count = var.environment == "dev" ? 1 : 0
+
+  providers = {
+    aws           = aws
+    aws.us-east-1 = aws.us-east-1
+  }
+
+  environment       = var.environment
+  github_repository = var.github_cms_repository
+  tags              = var.tags
+
+  dns_domain_name           = var.dns_domain_name
+  dns_domain_name_cms       = "strapiv5.${var.dns_domain_name}"
+  hosted_zone_id            = module.core.hosted_zone_id
+  ac_integration_is_enabled = var.ac_integration_is_enabled
+  ac_base_url_param         = var.ac_integration_is_enabled ? module.active_campaign[0].base_url_param : null
+  ac_api_key_param          = var.ac_integration_is_enabled ? module.active_campaign[0].api_key_param : null
+  cms_app_image_tag         = var.cms_app_image_tag
+  rds_scaling_configuration = var.rds_cms_scaling_configuration
+}
