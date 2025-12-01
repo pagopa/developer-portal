@@ -366,14 +366,18 @@ async function processGuidesMetadata(
   return items;
 }
 
-function getMainVersionsDirNames(guides: StrapiGuide[]): string[] {
-  return compact(
-    guides.flatMap((guide) =>
-      guide.attributes.versions.map(
-        (version) => version.main && version.dirName
+function getMainVersionsDirNames(guides: StrapiGuide[]): {
+  dirNames: string[];
+} {
+  return {
+    dirNames: compact(
+      guides.flatMap((guide) =>
+        guide.attributes.versions.map(
+          (version) => version.main && version.dirName
+        )
       )
-    )
-  );
+    ),
+  };
 }
 
 // Process solutions metadata
@@ -672,10 +676,10 @@ async function main() {
 
     const mainVersionsDirNames = getMainVersionsDirNames(strapiData.guides);
     console.log(
-      `Processed ${mainVersionsDirNames.length} main version guide items.`
+      `Processed ${mainVersionsDirNames.dirNames.length} main version guide items.`
     );
 
-    const s3MainVersionsDirNameFile = await downloadS3File(
+    const s3MainVersionsDirNamesFile = await downloadS3File(
       S3_MAIN_GUIDE_VERSIONS_DIRNAMES_JSON_PATH,
       S3_BUCKET_NAME!,
       getS3Client()
@@ -683,22 +687,22 @@ async function main() {
       console.log(
         `No existing main versions dirNames file found in S3: ${error}. Returning empty list.`
       );
-      return '{[]}';
+      return '{ dirNames: [] }';
     });
 
-    const s3MainVersionsDirNames: string[] = JSON.parse(
-      s3MainVersionsDirNameFile
+    const s3MainVersionsDirNames: { dirNames: string[] } = JSON.parse(
+      s3MainVersionsDirNamesFile
     );
 
-    const setMainNames = new Set(mainVersionsDirNames);
+    const setMainNames = new Set(mainVersionsDirNames.dirNames);
 
-    const dirNamesToRemove: string[] = s3MainVersionsDirNames.filter(
+    const dirNamesToRemove: string[] = s3MainVersionsDirNames.dirNames.filter(
       (dirNames) => !setMainNames.has(dirNames)
     );
 
     if (dirNamesToRemove.length > 0) {
       await putS3File(
-        dirNamesToRemove,
+        { dirNames: dirNamesToRemove },
         S3_OLD_MAIN_GUIDE_VERSIONS_DIRNAMES_TO_REMOVE_JSON_PATH,
         S3_BUCKET_NAME!,
         getS3Client()
