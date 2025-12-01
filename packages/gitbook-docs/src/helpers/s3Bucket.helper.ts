@@ -9,6 +9,7 @@ import {
   ListObjectsV2Command,
   GetObjectCommand,
   PutObjectCommand,
+  DeleteObjectsCommand,
 } from '@aws-sdk/client-s3';
 import { Readable } from 'stream';
 import { MetadataItem } from '../metadataItem';
@@ -149,4 +150,62 @@ export async function putS3File(
   console.log(
     `Uploaded file to S3: ${path}, Result: ${JSON.stringify(result)}`
   );
+}
+export async function deleteS3Directory(
+  prefix: string,
+  bucketName: string,
+  client: S3Client
+): Promise<void> {
+  console.log(`Deleting directory: ${prefix} from bucket: ${bucketName}`);
+  const filesToDelete = await listS3Files(prefix, bucketName, client);
+
+  if (filesToDelete.length === 0) {
+    console.log('No file found with given prefix. Nothing to delete.');
+    return;
+  }
+
+  console.log(`Found ${filesToDelete.length} files to delete.`);
+
+  const objectsToDelete = filesToDelete.map((key) => ({ Key: key }));
+
+  try {
+    const batchSize = 1000;
+    for (let i = 0; i < objectsToDelete.length; i += batchSize) {
+      const batch = objectsToDelete.slice(i, i + batchSize);
+
+      const deleteCommand = new DeleteObjectsCommand({
+        Bucket: bucketName,
+        Delete: {
+          Objects: batch,
+          Quiet: false, // set to true to disable verbose output
+        },
+      });
+
+      console.log(
+        `Deleting batch ${i / batchSize + 1}/${Math.ceil(
+          objectsToDelete.length / batchSize
+        )}...`
+      );
+      const output = await client.send(deleteCommand);
+
+      // Logs specific object errors
+      if (output.Errors && output.Errors.length > 0) {
+        console.error(
+          `There was a problem deleting batch: ${i / batchSize + 1}:`
+        );
+        output.Errors.forEach((error) => {
+          console.error(`- ${error.Key}: ${error.Message}`);
+        });
+      }
+    }
+
+    console.log(`Successfully deleted files under prefix: ${prefix}`);
+  } catch (error) {
+    console.error(
+      `There was an error deleting files under prefix: ${prefix}:`,
+      error
+    );
+    /* eslint-disable functional/no-throw-statements */
+    throw error;
+  }
 }
