@@ -64,13 +64,9 @@ async function fetchAllDirNamesFromStrapi(): Promise<{ dirNames: string[] }> {
   );
 
   const guidesDirNames = guidesResult.data
-    .map((guide) => {
-      return guide.attributes.versions
-        .map((version) => {
-          return version.dirName;
-        })
-        .flat();
-    })
+    .map((guide) =>
+      guide.attributes.versions.map((version) => version.dirName).flat()
+    )
     .flat();
 
   const solutionsDirNames = solutionsResult.data.map((solution) => {
@@ -99,16 +95,18 @@ async function main() {
     const s3DirNames: { dirNames: string[] } = JSON.parse(s3DirNamesContent);
     const setDirNames = new Set(strapiDirNames.dirNames);
 
-    const directoriesToRemove: string[] = s3DirNames.dirNames.filter(
+    const directoriesToDelete: string[] = s3DirNames.dirNames.filter(
       (dirName) => !setDirNames.has(dirName)
     );
-    directoriesToRemove.forEach((dirName) => {
-      deleteS3Directory(
-        path.join(S3_PATH_TO_GITBOOK_DOCS, dirName),
-        S3_BUCKET_NAME!,
-        getS3Client()
-      );
-    });
+    await Promise.all(
+      directoriesToDelete.map((dirName) =>
+        deleteS3Directory(
+          path.join(S3_PATH_TO_GITBOOK_DOCS, dirName),
+          S3_BUCKET_NAME!,
+          getS3Client()
+        )
+      )
+    );
     await putS3File(
       strapiDirNames,
       S3_DIRNAMES_JSON_PATH,
@@ -116,7 +114,10 @@ async function main() {
       getS3Client()
     );
   } catch (error) {
-    console.error('Error during metadata sync:', error);
+    console.error(
+      'Error while trying to delete unused directories from S3:',
+      error
+    );
     process.exit(1);
   }
 }

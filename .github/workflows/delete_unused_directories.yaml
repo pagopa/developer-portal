@@ -1,4 +1,4 @@
-name: Delete unused documentation directories from s3 bucket
+name: Delete unused documentation directories from S3 bucket
 
 on:
   workflow_dispatch:
@@ -19,7 +19,7 @@ permissions:
 
 jobs:
   manual_delete_unused_directories:
-    name: Delete unused directory on s3 (manual on ${{ inputs.environment }})
+    name: Delete unused directory on S3 (manual on ${{ inputs.environment }})
     if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     outputs:
@@ -28,6 +28,9 @@ jobs:
     env:
       ENV_SHORT: ${{ fromJSON('{"dev":"d","uat":"u","prod":"p"}')[inputs.environment] }}
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
       - name: Setup Node.JS
         uses: ./.github/actions/setup-node
 
@@ -61,6 +64,6 @@ jobs:
           S3_BUCKET_NAME: devportal-${{ env.ENV_SHORT }}-website-static-content
           S3_PATH_TO_GITBOOK_DOCS: ${{ vars.S3_PATH_TO_GITBOOK_DOCS || 'devportal-docs/docs' }}
           FETCH_FROM_STRAPI: ${{ vars.FETCH_FROM_STRAPI || 'true' }}
-          S3_DIRNAME_FILE_PATH: ${{ vars.S3_DIRNAME_FILE_PATH || 'all_dirNames.json' }}
-        run: npm run remove-unused-directories -w gitbook-docs
+          S3_DIRNAMES_JSON_PATH: ${{ vars.S3_DIRNAMES_JSON_PATH || 'dirNames.json' }}
+        run: npm run delete-unused-directories -w gitbook-docs
 
