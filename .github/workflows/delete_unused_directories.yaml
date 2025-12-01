@@ -60,10 +60,11 @@ jobs:
       - name: Delete unused documentation
         env:
           ENV_SHORT: ${{ env.ENV_SHORT }}
-          STRAPI_API_TOKEN: ${{ secrets.STRAPI_API_TOKEN }}
-          S3_BUCKET_NAME: devportal-${{ env.ENV_SHORT }}-website-static-content
-          S3_PATH_TO_GITBOOK_DOCS: ${{ vars.S3_PATH_TO_GITBOOK_DOCS || 'devportal-docs/docs' }}
           FETCH_FROM_STRAPI: ${{ vars.FETCH_FROM_STRAPI || 'true' }}
+          S3_BUCKET_NAME: devportal-${{ env.ENV_SHORT }}-website-static-content
           S3_DIRNAMES_JSON_PATH: ${{ vars.S3_DIRNAMES_JSON_PATH || 'dirNames.json' }}
+          S3_PATH_TO_GITBOOK_DOCS: ${{ vars.S3_PATH_TO_GITBOOK_DOCS || 'devportal-docs/docs' }}
+          STRAPI_API_TOKEN: ${{ secrets.STRAPI_API_TOKEN }}
+          STRAPI_ENDPOINT: ${{ vars.STRAPI_ENDPOINT }}
         run: npm run delete-unused-directories -w gitbook-docs
 
