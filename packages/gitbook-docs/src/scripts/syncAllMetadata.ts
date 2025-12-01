@@ -687,7 +687,7 @@ async function main() {
       console.log(
         `No existing main versions dirNames file found in S3: ${error}. Returning empty list.`
       );
-      return '{ dirNames: [] }';
+      return '{ "dirNames": [] }';
     });
 
     const s3MainVersionsDirNames: { dirNames: string[] } = JSON.parse(
