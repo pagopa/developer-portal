@@ -4,7 +4,7 @@ data "aws_ecs_cluster" "cms_ecs_cluster" {
 }
 
 resource "aws_ecs_task_definition" "cms_task_def" {
-  family                   = "cms-task-def"
+  family                   = "cms-task-def-v5"
   execution_role_arn       = module.iam_role_ecs_task_execution.iam_role_arn
   task_role_arn            = module.iam_role_task_role.iam_role_arn
   network_mode             = "awsvpc"
