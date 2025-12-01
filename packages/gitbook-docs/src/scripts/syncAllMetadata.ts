@@ -43,12 +43,10 @@ import {
   apisDataQueryString,
   guidesQueryString,
   productsQueryString,
-  solutionListPageQueryString,
   getSolutionsQueryString,
   getReleaseNotesQueryString,
-  releaseNotesQueryString,
-  solutionsQueryString,
 } from '../helpers/strapiQuery';
+import { compact } from 'lodash';
 
 // Load environment variables
 dotenv.config();
@@ -74,12 +72,12 @@ const GENERATE_ROOT_METADATA_FILE =
 const DIR_NAMES_FILTER = process.env.DIR_NAMES_FILTER
   ? process.env.DIR_NAMES_FILTER.split(',').map((name) => name.trim())
   : undefined;
-const S3_MAIN_VERSION_GUIDE_METADATA_JSON_PATH =
-  process.env.S3_MAIN_VERSION_GUIDE_METADATA_JSON_PATH ||
-  'main-version-guides-metadata.json';
-const S3_OLD_GUIDE_VERSION_TO_REMOVE_JSON_PATH =
-  process.env.S3_OLD_GUIDE_VERSION_TO_REMOVE_JSON_PATH ||
-  'old-versions-to-remove.json';
+const S3_MAIN_GUIDE_VERSIONS_DIRNAMES_JSON_PATH =
+  process.env.S3_MAIN_GUIDE_VERSIONS_DIRNAMES_JSON_PATH ||
+  'main-guide-versions-dirNames.json';
+const S3_OLD_MAIN_GUIDE_VERSIONS_DIRNAMES_TO_REMOVE_JSON_PATH =
+  process.env.S3_OLD_MAIN_GUIDE_VERSIONS_DIRNAMES_TO_REMOVE_JSON_PATH ||
+  'old-main-guide-versions-dirNames-to-remove.json';
 
 // S3 paths for metadata files
 const S3_GUIDE_METADATA_JSON_PATH =
@@ -368,28 +366,14 @@ async function processGuidesMetadata(
   return items;
 }
 
-async function processMainVersionMetadata(
-  guides: StrapiGuide[]
-): Promise<string[]> {
-  const guideInfoList: MetadataInfo[] = guides
-    .filter((guide) => !!guide.attributes.product?.data?.attributes?.slug)
-    .flatMap((guide) =>
-      guide.attributes.versions.map((version) => ({
-        versionName: version.version,
-        isMainVersion: version.main,
-        dirName: version.dirName,
-        slug: guide.attributes.slug,
-        productSlug: `${guide.attributes.product?.data?.attributes?.slug}`,
-        metadataType: MetadataType.Guide,
-      }))
+function getMainVersionsDirNames(guides: StrapiGuide[]): string[] {
+  return compact(
+    guides.flatMap((guide) =>
+      guide.attributes.versions.map(
+        (version) => version.main && version.dirName
+      )
     )
-    .filter((guide) => guide.isMainVersion);
-  const items: string[] = [];
-  guideInfoList.map((guideInfo) => {
-    console.log('Processing main version for guide:', guideInfo.dirName);
-    items.push(guideInfo.dirName);
-  });
-  return items;
+  );
 }
 
 // Process solutions metadata
@@ -686,37 +670,37 @@ async function main() {
       );
     }
 
-    const mainVersionItems = await processMainVersionMetadata(
-      strapiData.guides
-    );
+    const mainVersionsDirNames = getMainVersionsDirNames(strapiData.guides);
     console.log(
-      `Processed ${mainVersionItems.length} main version guide items.`
+      `Processed ${mainVersionsDirNames.length} main version guide items.`
     );
 
-    const s3MainVersionItems = await downloadS3File(
-      S3_MAIN_VERSION_GUIDE_METADATA_JSON_PATH,
+    const s3MainVersionsDirNameFile = await downloadS3File(
+      S3_MAIN_GUIDE_VERSIONS_DIRNAMES_JSON_PATH,
       S3_BUCKET_NAME!,
       getS3Client()
     );
-    const s3DirNames: string[] = JSON.parse(s3MainVersionItems);
+    const s3MainVersionsDirNames: string[] = JSON.parse(
+      s3MainVersionsDirNameFile
+    );
 
-    const setMainNames = new Set(mainVersionItems);
+    const setMainNames = new Set(mainVersionsDirNames);
 
-    const directoriesToRemove: string[] = s3DirNames.filter(
-      (dirName) => !setMainNames.has(dirName)
+    const directoriesToRemove: string[] = s3MainVersionsDirNames.filter(
+      (dirNames) => !setMainNames.has(dirNames)
     );
 
     if (directoriesToRemove.length > 0) {
       await putS3File(
         directoriesToRemove,
-        S3_OLD_GUIDE_VERSION_TO_REMOVE_JSON_PATH,
+        S3_OLD_MAIN_GUIDE_VERSIONS_DIRNAMES_TO_REMOVE_JSON_PATH,
         S3_BUCKET_NAME!,
         getS3Client()
       );
     }
     await putS3File(
-      mainVersionItems,
-      S3_MAIN_VERSION_GUIDE_METADATA_JSON_PATH,
+      mainVersionsDirNames,
+      S3_MAIN_GUIDE_VERSIONS_DIRNAMES_JSON_PATH,
       S3_BUCKET_NAME!,
       getS3Client()
     );
