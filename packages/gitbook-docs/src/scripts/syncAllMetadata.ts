@@ -679,7 +679,13 @@ async function main() {
       S3_MAIN_GUIDE_VERSIONS_DIRNAMES_JSON_PATH,
       S3_BUCKET_NAME!,
       getS3Client()
-    );
+    ).catch((error) => {
+      console.log(
+        `No existing main versions dirNames file found in S3: ${error}. Returning empty list.`
+      );
+      return '{[]}';
+    });
+
     const s3MainVersionsDirNames: string[] = JSON.parse(
       s3MainVersionsDirNameFile
     );
