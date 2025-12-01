@@ -20,7 +20,7 @@ from src.app.sessions import (
 from src.app.chatbot_init import chatbot
 from src.modules.settings import SETTINGS
 
-LOGGER = get_logger(__name__)
+LOGGER = get_logger(__name__, level=SETTINGS.log_level)
 router = APIRouter()
 
 

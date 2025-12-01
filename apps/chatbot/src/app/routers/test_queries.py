@@ -2,6 +2,7 @@ import os
 from fastapi.testclient import TestClient
 from src.app.main import app
 from src.app.mock_aws_services import mock_signup
+from src.modules.settings import SETTINGS
 
 cognito_mock = mock_signup()
 os.environ["AUTH_COGNITO_USERPOOL_ID"] = cognito_mock["user_pool_id"]

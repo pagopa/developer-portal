@@ -186,6 +186,7 @@ def lambda_handler(event, context):
                     score=score.get("score"),
                     comment=score.get("comment"),
                     data_type=score.get("data_type"),
+                    query_for_database=score.get("query_for_database"),
                 )
         else:
             LOGGER.warning(f"Unknown operation: {operation}")

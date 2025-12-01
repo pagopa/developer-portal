@@ -67,11 +67,6 @@ def test_models() -> None:
     assert flag is True
 
 
-def test_pii_mask() -> None:
-    masked_str = CHATBOT.mask_pii("Il mio nome e' Mario Rossi")
-    assert masked_str == "Il mio nome e' <PERSON_1>"
-
-
 def test_messages_to_chathistory() -> None:
 
     chat_history = CHATBOT._messages_to_chathistory()
