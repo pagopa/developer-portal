@@ -75,9 +75,9 @@ const DIR_NAMES_FILTER = process.env.DIR_NAMES_FILTER
 const S3_MAIN_GUIDE_VERSIONS_DIRNAMES_JSON_PATH =
   process.env.S3_MAIN_GUIDE_VERSIONS_DIRNAMES_JSON_PATH ||
   'main-guide-versions-dirNames.json';
-const S3_OLD_MAIN_GUIDE_VERSIONS_DIRNAMES_TO_REMOVE_JSON_PATH =
-  process.env.S3_OLD_MAIN_GUIDE_VERSIONS_DIRNAMES_TO_REMOVE_JSON_PATH ||
-  'old-main-guide-versions-dirNames-to-remove.json';
+const S3_MAIN_GUIDE_VERSIONS_DIRNAMES_TO_REMOVE_JSON_PATH =
+  process.env.S3_MAIN_GUIDE_VERSIONS_DIRNAMES_TO_REMOVE_JSON_PATH ||
+  'main-guide-versions-dirNames-to-remove.json';
 
 // S3 paths for metadata files
 const S3_GUIDE_METADATA_JSON_PATH =
@@ -703,7 +703,7 @@ async function main() {
     if (dirNamesToRemove.length > 0) {
       await putS3File(
         { dirNames: dirNamesToRemove },
-        S3_OLD_MAIN_GUIDE_VERSIONS_DIRNAMES_TO_REMOVE_JSON_PATH,
+        S3_MAIN_GUIDE_VERSIONS_DIRNAMES_TO_REMOVE_JSON_PATH,
         S3_BUCKET_NAME!,
         getS3Client()
       );
