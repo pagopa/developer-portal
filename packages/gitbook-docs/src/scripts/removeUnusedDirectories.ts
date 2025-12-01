@@ -11,7 +11,6 @@ import {
   StrapiReleaseNote,
   StrapiSolution,
 } from '../helpers/strapiTypes';
-import qs from 'qs';
 import dotenv from 'dotenv';
 import {
   deleteS3Directory,
@@ -21,6 +20,11 @@ import {
 } from '../helpers/s3Bucket.helper';
 import { S3Client } from '@aws-sdk/client-s3';
 import path from 'path';
+import {
+  guidesQueryString,
+  releaseNotesQueryString,
+  solutionsQueryString,
+} from '../helpers/strapiQuery';
 
 const S3_PATH_TO_GITBOOK_DOCS =
   process.env.S3_PATH_TO_GITBOOK_DOCS || 'devportal-docs/docs';
@@ -30,143 +34,6 @@ const S3_DIRNAME_FILE_PATH =
 // Load environment variables
 dotenv.config();
 
-const productRelationsPopulate = {
-  populate: [
-    'logo',
-    'bannerLinks.icon',
-    'overview',
-    'quickstart_guide',
-    'release_note',
-    'api_data_list_page',
-    'api_data_list_page.apiData.*',
-    'api_data_list_page.apiData.apiRestDetail.*',
-    'guide_list_page',
-    'tutorial_list_page',
-    'use_case_list_page',
-  ],
-};
-
-const webinarPopulate = {
-  populate: {
-    coverImage: {
-      populate: ['image'],
-    },
-    webinarSpeakers: {
-      populate: ['avatar'],
-    },
-    relatedLinks: {
-      populate: ['links'],
-    },
-    relatedResources: {
-      populate: {
-        resources: {
-          populate: ['image'],
-        },
-        downloadableDocuments: {
-          populate: '*',
-        },
-      },
-    },
-    seo: {
-      populate: '*,metaImage,metaSocial.image',
-    },
-    questionsAndAnswers: '*',
-    webinarCategory: {
-      populate: ['icon'],
-    },
-    headerImage: {
-      populate: ['image'],
-    },
-  },
-};
-const STRAPI_PAGE_SIZE = 1000;
-
-const STRAPI_DEFAULT_PAGINATION = {
-  pagination: {
-    pageSize: STRAPI_PAGE_SIZE,
-    page: 1,
-  },
-};
-
-const guidesPopulate = {
-  populate: {
-    image: { populate: '*' },
-    mobileImage: { populate: '*' },
-    listItems: { populate: '*' },
-    versions: { populate: '*' },
-    bannerLinks: { populate: ['icon'] },
-    seo: { populate: '*,metaImage,metaSocial.image' },
-    product: {
-      ...productRelationsPopulate,
-    },
-  },
-};
-
-const guidesQueryParams = {
-  ...guidesPopulate,
-  ...STRAPI_DEFAULT_PAGINATION,
-};
-
-const solutionsPopulate = {
-  populate: {
-    icon: 'icon',
-    stats: '*',
-    steps: {
-      populate: {
-        products: '*',
-      },
-    },
-    seo: {
-      populate: '*,metaImage,metaSocial.image',
-    },
-    products: {
-      populate: ['logo'],
-    },
-    bannerLinks: {
-      populate: ['icon'],
-    },
-    webinars: {
-      ...webinarPopulate,
-    },
-    caseHistories: {
-      populate: ['case_histories', 'case_histories.image'],
-    },
-  },
-};
-
-const solutionsQueryParams = {
-  ...solutionsPopulate,
-  ...STRAPI_DEFAULT_PAGINATION,
-};
-
-const releaseNotesQueryParams = {
-  populate: {
-    bannerLinks: {
-      populate: ['icon'],
-    },
-    product: {
-      populate: [
-        'logo',
-        'bannerLinks.icon',
-        'overview',
-        'quickstart_guide',
-        'release_note',
-        'api_data_list_page',
-        'api_data_list_page.apiData.*',
-        'api_data_list_page.apiData.apiRestDetail.slug',
-        'api_data_list_page.apiData.apiRestDetail.specUrls',
-        'api_data_list_page.apiData.apiSoapDetail.*',
-        'guide_list_page',
-        'tutorial_list_page',
-        'use_case_list_page',
-      ],
-    },
-    seo: {
-      populate: '*,metaImage,metaSocial.image',
-    },
-  },
-  ...STRAPI_DEFAULT_PAGINATION,
-};
 let s3Client: S3Client | undefined;
 
 function getS3Client(): S3Client {
@@ -176,11 +43,7 @@ function getS3Client(): S3Client {
   return s3Client;
 }
 
-const guidesQueryString = qs.stringify(guidesQueryParams);
-const solutionsQueryString = qs.stringify(solutionsQueryParams);
-const releaseNotesQueryString = qs.stringify(releaseNotesQueryParams);
-
-async function fetchAllDirNamesFromStrapi(): Promise<string[]> {
+async function fetchAllDirNamesFromStrapi(): Promise<{ dirNames: string[] }> {
   console.log('Fetching all data from Strapi...');
 
   const [guidesResult, solutionsResult, releaseNotesResult] = await Promise.all(
@@ -216,22 +79,27 @@ async function fetchAllDirNamesFromStrapi(): Promise<string[]> {
   const releaseNotesDirNames = releaseNotesResult.data.map((releaseNote) => {
     return releaseNote.attributes.dirName;
   });
-  return [guidesDirNames, solutionsDirNames, releaseNotesDirNames].flat();
+  return {
+    dirNames: [guidesDirNames, solutionsDirNames, releaseNotesDirNames].flat(),
+  };
 }
 
 // Main function
 async function main() {
   try {
-    const dirNames = await fetchAllDirNamesFromStrapi();
+    const strapiDirNames = await fetchAllDirNamesFromStrapi();
     const s3DirNamesContent = await downloadS3File(
       S3_DIRNAME_FILE_PATH,
       S3_BUCKET_NAME!,
       getS3Client()
-    );
-    const s3DirNames: string[] = JSON.parse(s3DirNamesContent);
-    const setDirNames = new Set(dirNames);
+    ).catch((error) => {
+      console.log(error);
+      return '{"dirNames": []}';
+    });
+    const s3DirNames: { dirNames: string[] } = JSON.parse(s3DirNamesContent);
+    const setDirNames = new Set(strapiDirNames.dirNames);
 
-    const directoriesToRemove: string[] = s3DirNames.filter(
+    const directoriesToRemove: string[] = s3DirNames.dirNames.filter(
       (dirName) => !setDirNames.has(dirName)
     );
     directoriesToRemove.forEach((dirName) => {
@@ -242,7 +110,7 @@ async function main() {
       );
     });
     await putS3File(
-      dirNames,
+      strapiDirNames,
       S3_DIRNAME_FILE_PATH,
       S3_BUCKET_NAME!,
       getS3Client()
