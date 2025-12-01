@@ -1,5 +1,74 @@
 # nextjs-website
 
+## 13.1.0
+
+### Minor Changes
+
+- 5d72634: Replace Centro Sella link and label with PARI link and label
+- f3602c9: Keep question and stream if webinar change to past state but streaming is running
+- b58020f: Refactor webinar banner in homepage logic
+- 01b8f0c: Align profile page layout to the same margin and content width to be coherent with the rest of the website
+- e605b32: Remove LangSwitch component
+- 94f2306: Add LanguageSelector component and its storybook story
+
+### Patch Changes
+
+- 2d061b9: Update question box disabled label
+- f3602c9: Fix player visibility in coming soon webinar state
+- d9ae0d8: Implement custom start time for video on demand playback
+- e605b32: Fix build missing aria label for Centro Sella replaced with aria lable for PARI
+- bfbf79e: Add missing requisite for password in password error label
+- Updated dependencies [656bd0b]
+- Updated dependencies [5885dd7]
+- Updated dependencies [5885dd7]
+  - gitbook-docs@1.5.0
+
+## 13.0.0
+
+### Major Changes
+
+- 037a82d: Add route handlers for guides, release notes and solutions
+  Add fetch using route handlers
+  Add dynamic content update in GitBookTemplate
+
+## 12.1.0
+
+### Minor Changes
+
+- ab5c9b6: Refactor GitBookContent Heading to a generic atom component ContentHeading and use it from GitBookContent and Block heading parts
+
+### Patch Changes
+
+- 859e21a: Fix autoplay logic
+- a9e0699: Avoid accessing local storage during first render to fix the undefined window error
+- ebba255: Fix missing image behaviour
+- Updated dependencies [0237257]
+  - gitbook-docs@1.4.0
+
+## 12.0.0
+
+### Major Changes
+
+- bc4e8a6: Use synced response instead of strapi fetch
+
+### Patch Changes
+
+- daf4500: Remove fetch from synced json for guide list pages
+- Updated dependencies [cc00738]
+  - gitbook-docs@1.3.2
+
+## 11.2.0
+
+### Minor Changes
+
+- 15e4314: Update style of guide version menu
+- ccd2ed2: Update videojs style and fix reload issue
+
+### Patch Changes
+
+- 5f76a21: Refactor release note and solution page components to remove unused metadata handling and enforce dynamic rendering
+- 67f8adf: Upgrade to Next.js 14.2.33
+
 ## 11.1.0
 
 ### Minor Changes

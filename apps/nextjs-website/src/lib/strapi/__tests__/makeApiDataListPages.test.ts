@@ -44,7 +44,7 @@ describe('makeApiDataListPagesProps', () => {
     expect(firstElement.seo).toBeUndefined();
     expect(firstElement.cards).toHaveLength(1);
     expect(firstElement.cards[0].title).toBe('Minimal API');
-    expect(firstElement.cards[0].icon).toBe('');
+    expect(firstElement.cards[0].icon).toBe(undefined);
     expect(firstElement.apiData).toBeDefined();
   });
 
@@ -165,7 +165,7 @@ describe('makeApiDataListPagesProps', () => {
 
   it('should handle API data with missing icon', () => {
     const result = makeApiDataListPagesProps(minimalApiDataListPages());
-    expect(result[0].cards[0].icon).toBe('');
+    expect(result[0].cards[0].icon).toBe(undefined);
   });
 
   it('should correctly generate href for cards', () => {

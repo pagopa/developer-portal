@@ -1,6 +1,6 @@
 import qs from 'qs';
 
-const STRAPI_PAGE_SIZE = 1000;
+const STRAPI_PAGE_SIZE = 250; // To increase page size over 250 strapi configuration must be updated by default this is the max limit
 
 const STRAPI_DEFAULT_PAGINATION = {
   pagination: {
@@ -230,3 +230,50 @@ export const guideListPagesQueryString = qs.stringify(
 export const solutionListPageQueryString = qs.stringify(
   solutionListPageQueryParams
 );
+
+/**
+ * Generate query strings with optional dirName filtering.
+ *
+ * NOTE: For guides, filtering by versions.dirName is not possible server-side because
+ * 'versions' is a repeatable component field. While Strapi v4 documentation doesn't
+ * explicitly prohibit filtering on components, testing confirmed it doesn't work
+ * for nested properties within repeatable components (filters[versions][dirName] returns no results).
+ * Client-side filtering must be applied after fetching all guides.
+ *
+ * Reference: https://docs-v4.strapi.io/dev-docs/api/rest/filters-locale-publication
+ * (Strapi docs confirm filtering limitations on dynamic zones and media fields, but don't
+ * explicitly document repeatable component filtering behavior)
+ */
+export function getSolutionsQueryString(dirNames?: readonly string[]): string {
+  const params = {
+    ...solutionsQueryParams,
+    ...(dirNames && dirNames.length > 0
+      ? {
+          filters: {
+            dirName: {
+              $in: dirNames,
+            },
+          },
+        }
+      : {}),
+  };
+  return qs.stringify(params);
+}
+
+export function getReleaseNotesQueryString(
+  dirNames?: readonly string[]
+): string {
+  const params = {
+    ...releaseNotesQueryParams,
+    ...(dirNames && dirNames.length > 0
+      ? {
+          filters: {
+            dirName: {
+              $in: dirNames,
+            },
+          },
+        }
+      : {}),
+  };
+  return qs.stringify(params);
+}

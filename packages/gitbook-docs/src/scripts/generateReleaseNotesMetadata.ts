@@ -9,7 +9,7 @@ import {
   downloadS3File,
   listS3Files,
   makeS3Client,
-  writeMetadataJson,
+  putS3File,
 } from '../helpers/s3Bucket.helper';
 import { extractTitleFromMarkdown } from '../helpers/extractTitle.helper';
 import { fetchFromStrapi } from '../helpers/fetchFromStrapi';
@@ -123,7 +123,7 @@ async function main() {
     `Converted release notes to ${metadataItems.length} metadata items`
   );
 
-  await writeMetadataJson(
+  await putS3File(
     metadataItems,
     S3_RELEASE_NOTES_METADATA_JSON_PATH,
     `${S3_BUCKET_NAME}`,
@@ -131,7 +131,7 @@ async function main() {
   );
 
   // TODO: remove when Strapi will manage Metadata
-  await writeMetadataJson(
+  await putS3File(
     responseJson,
     SYNCED_RELEASE_NOTES_RESPONSE_JSON_PATH,
     `${S3_BUCKET_NAME}`,

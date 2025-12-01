@@ -55,6 +55,7 @@ export const makeWebinarProps = (
       endDateTime: strapiWebinar.attributes.endDatetime,
       playerCoverImageUrl:
         strapiWebinar.attributes.playerCoverImage?.data?.attributes.url,
+      videoOnDemandStartAt: strapiWebinar.attributes.videoOnDemandStartAt,
       subscribeCtaLabel: strapiWebinar.attributes.subscribeParagraphLabel,
       imagePath: strapiWebinar.attributes.coverImage.data.attributes.url,
       seo: strapiWebinar.attributes.seo,

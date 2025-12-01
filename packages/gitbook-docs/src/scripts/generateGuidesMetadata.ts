@@ -9,7 +9,7 @@ import {
   downloadS3File,
   listS3Files,
   makeS3Client,
-  writeMetadataJson,
+  putS3File,
 } from '../helpers/s3Bucket.helper';
 import { extractTitleFromMarkdown } from '../helpers/extractTitle.helper';
 import {
@@ -19,10 +19,7 @@ import {
 import { StrapiGuide } from '../helpers/strapiTypes';
 import { MetadataInfo } from '../helpers/guidesMetadataHelper';
 import { sitePathFromS3Path } from '../helpers/sitePathFromS3Path';
-import {
-  getSyncedGuideListPagesResponseJsonPath,
-  getSyncedGuidesResponseJsonPath,
-} from '../syncedResponses';
+import { getSyncedGuidesResponseJsonPath } from '../syncedResponses';
 
 // Load environment variables from .env file
 dotenv.config();
@@ -33,8 +30,6 @@ const S3_PATH_TO_GITBOOK_DOCS =
 const S3_GUIDE_METADATA_JSON_PATH =
   process.env.S3_GUIDE_METADATA_JSON_PATH || 'guides-metadata.json';
 const SYNCED_GUIDES_RESPONSE_JSON_PATH = getSyncedGuidesResponseJsonPath();
-const SYNCED_GUIDE_LIST_PAGES_RESPONSE_JSON_PATH =
-  getSyncedGuideListPagesResponseJsonPath();
 
 const s3Client = makeS3Client();
 
@@ -128,18 +123,6 @@ async function convertGuideToMetadataItems(
 async function main() {
   console.log('Starting to process Markdown files...');
 
-  // TODO: remove when Strapi will manage Metadata
-  // eslint-disable-next-line functional/no-let
-  let guideListPagesResponse;
-  try {
-    guideListPagesResponse = await getResponseFromStrapi(
-      'api/guide-list-pages?populate[product][populate]=*&populate[guidesByCategory][populate]=*&populate[bannerLinks][populate][0]=icon&populate[seo][populate]=*'
-    );
-  } catch (error) {
-    console.error('Error fetching guide list pages from Strapi:', error);
-    process.exit(1);
-  }
-
   // TODO: restore this strapiGuidesUrl when Metadata will be managed by Strapi
   // const strapiGuidesUrl =
   //   'api/guides?populate[0]=product&populate[1]=versions&pagination[pageSize]=1000&pagination[page]=1';
@@ -164,23 +147,16 @@ async function main() {
   const metadataItems = await convertGuideToMetadataItems(strapiGuides);
   console.log(`Converted guides to ${metadataItems.length} metadata items`);
 
-  await writeMetadataJson(
+  await putS3File(
     metadataItems,
     S3_GUIDE_METADATA_JSON_PATH,
     `${S3_BUCKET_NAME}`,
     s3Client
   );
 
-  await writeMetadataJson(
+  await putS3File(
     responseJson,
     SYNCED_GUIDES_RESPONSE_JSON_PATH,
-    `${S3_BUCKET_NAME}`,
-    s3Client
-  );
-
-  await writeMetadataJson(
-    guideListPagesResponse,
-    SYNCED_GUIDE_LIST_PAGES_RESPONSE_JSON_PATH,
     `${S3_BUCKET_NAME}`,
     s3Client
   );

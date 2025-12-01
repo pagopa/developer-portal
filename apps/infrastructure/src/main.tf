@@ -268,6 +268,8 @@ module "video_streaming" {
 module "langfuse" {
   source = "./modules/langfuse"
 
+  count = var.environment == "dev" ? 1 : 0
+
   environment        = var.environment
   region             = var.aws_region
   vpc_id             = module.cms.vpc.id
