@@ -686,13 +686,13 @@ async function main() {
 
     const setMainNames = new Set(mainVersionsDirNames);
 
-    const directoriesToRemove: string[] = s3MainVersionsDirNames.filter(
+    const dirNamesToRemove: string[] = s3MainVersionsDirNames.filter(
       (dirNames) => !setMainNames.has(dirNames)
     );
 
-    if (directoriesToRemove.length > 0) {
+    if (dirNamesToRemove.length > 0) {
       await putS3File(
-        directoriesToRemove,
+        dirNamesToRemove,
         S3_OLD_MAIN_GUIDE_VERSIONS_DIRNAMES_TO_REMOVE_JSON_PATH,
         S3_BUCKET_NAME!,
         getS3Client()
