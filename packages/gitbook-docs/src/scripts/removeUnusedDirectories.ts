@@ -29,8 +29,8 @@ import {
 const S3_PATH_TO_GITBOOK_DOCS =
   process.env.S3_PATH_TO_GITBOOK_DOCS || 'devportal-docs/docs';
 const S3_BUCKET_NAME = process.env.S3_BUCKET_NAME;
-const S3_DIRNAME_FILE_PATH =
-  process.env.S3_DIRNAME_FILE_PATH || 'all_dirNames.json';
+const S3_DIRNAMES_JSON_PATH =
+  process.env.S3_DIRNAMES_JSON_PATH || 'dirNames.json';
 // Load environment variables
 dotenv.config();
 
@@ -89,7 +89,7 @@ async function main() {
   try {
     const strapiDirNames = await fetchAllDirNamesFromStrapi();
     const s3DirNamesContent = await downloadS3File(
-      S3_DIRNAME_FILE_PATH,
+      S3_DIRNAMES_JSON_PATH,
       S3_BUCKET_NAME!,
       getS3Client()
     ).catch((error) => {
@@ -111,7 +111,7 @@ async function main() {
     });
     await putS3File(
       strapiDirNames,
-      S3_DIRNAME_FILE_PATH,
+      S3_DIRNAMES_JSON_PATH,
       S3_BUCKET_NAME!,
       getS3Client()
     );
