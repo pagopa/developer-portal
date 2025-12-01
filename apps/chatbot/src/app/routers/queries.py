@@ -30,7 +30,9 @@ def can_evaluate() -> bool:
     This is based on the amount of daily query
     """
     max_daily_evaluations = int(os.getenv("CHB_MAX_DAILY_EVALUATIONS", "200"))
-    return count_queries_created_today() < max_daily_evaluations
+    result = count_queries_created_today() < max_daily_evaluations
+    LOGGER.debug(f"[can_evaluate] result: {result}")
+    return result
 
 
 def count_queries_created_today() -> int:
@@ -127,7 +129,7 @@ async def query_creation(
         response_str=answer_json["response"],
         references=answer_json["references"],
     )
-
+    
     if can_evaluate():
         evaluation_data = {
             "query_str": query_str,
@@ -215,3 +217,4 @@ async def queries_fetching(
         result = dbResponse.get("Items", [])
 
     return result
+

@@ -60,21 +60,23 @@ export async function generateMetadata({
   if (props?.seo) {
     return makeMetadataFromStrapi(props?.seo);
   }
-
-  return makeMetadata({
-    title: [
-      props ? props.page.title : '',
-      props
-        ? [props.guide.name, !props.version.main && props.version.name]
-            .filter(Boolean)
-            .join(' ')
-        : [],
-      props ? props.product.name : '',
-    ]
-      .filter(Boolean)
-      .join(' | '),
-    url: props?.page.path,
-  });
+  return {
+    ...(props.version.main ? {} : { robots: 'noindex, follow' }),
+    ...makeMetadata({
+      title: [
+        props ? props.page.title : '',
+        props
+          ? [props.guide.name, !props.version.main && props.version.name]
+              .filter(Boolean)
+              .join(' ')
+          : [],
+        props ? props.product.name : '',
+      ]
+        .filter(Boolean)
+        .join(' | '),
+      url: props?.page.path,
+    }),
+  };
 }
 
 const Page = async ({ params }: { params: Params }) => {
@@ -127,7 +129,7 @@ const Page = async ({ params }: { params: Params }) => {
     things: [convertSeoToStructuredDataArticle(seo)],
   });
 
-  const breadcrumbs = [
+  const initialBreadcrumbs = [
     ...productPageToBreadcrumbs(props.product, [
       {
         translate: true,
@@ -136,10 +138,7 @@ const Page = async ({ params }: { params: Params }) => {
           ? `/${props.product.slug}/guides`
           : '/',
       },
-      {
-        name: props.guide.name,
-        path: props.guide.path,
-      },
+      { name: props.guide.name, path: props.guide.path },
     ]),
   ];
 
@@ -152,7 +151,7 @@ const Page = async ({ params }: { params: Params }) => {
     >
       <GitBookTemplate
         menuName={props.guide.name}
-        breadcrumbs={breadcrumbs}
+        initialBreadcrumbs={initialBreadcrumbs}
         versionName={props.version.name}
         {...props}
       />

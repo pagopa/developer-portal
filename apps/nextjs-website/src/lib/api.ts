@@ -136,7 +136,9 @@ export async function getTutorialListPageProps(productSlug?: string) {
   const props =
     tutorialListPages.find(({ product }) => product.slug === productSlug) ||
     null;
-
+  if (!props) {
+    return undefined;
+  }
   return manageUndefinedAndAddProducts(props);
 }
 

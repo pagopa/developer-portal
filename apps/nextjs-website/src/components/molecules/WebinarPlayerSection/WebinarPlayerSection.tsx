@@ -21,20 +21,37 @@ import VideoJsPlayer from '@/components/atoms/VideoJsPlayer/VideoJsPlayer';
 type WebinarPlayerSectionProps = {
   webinar: Webinar;
   webinarState: WebinarState;
+  enableQuestionForm?: boolean;
+  isLiveStreamAvailable?: boolean;
+  reloadPlayerToken?: number;
 };
 const WebinarPlayerSection = ({
   webinar,
   webinarState,
+  enableQuestionForm = false,
+  isLiveStreamAvailable = false,
+  reloadPlayerToken = 0,
 }: WebinarPlayerSectionProps) => {
   const t = useTranslations('webinar');
   const { palette } = useTheme();
   const [isQuestionFormExpanded, setIsQuestionFormExpanded] = useState(false);
   const [question, setQuestion] = useState('');
   const isSmallScreen = useMediaQuery('(max-width: 1000px)');
-  const isQuestionFormAvailable = useMemo(
-    () => [WebinarState.live, WebinarState.comingSoon].includes(webinarState),
-    [webinarState]
+  const isQuestionFormDisabled = useMemo(
+    () => !enableQuestionForm,
+    [enableQuestionForm]
   );
+  const isQuestionFormAvailable = useMemo(
+    () =>
+      [WebinarState.live, WebinarState.comingSoon].includes(webinarState) ||
+      isLiveStreamAvailable,
+    [webinarState, isLiveStreamAvailable]
+  );
+  const videoOnDemandStartAt =
+    typeof webinar.videoOnDemandStartAt === 'number' &&
+    webinar.videoOnDemandStartAt > 0
+      ? webinar.videoOnDemandStartAt
+      : undefined;
   return (
     webinar.playerSrc && (
       <div style={{ backgroundColor: palette.grey[50] }}>
@@ -61,11 +78,16 @@ const WebinarPlayerSection = ({
                 <VimeoPlayer playerSrc={webinar.playerSrc} />
               ) : (
                 <VideoJsPlayer
-                  techOrder={['AmazonIVS']}
-                  autoplay={true}
+                  autoplay={[
+                    WebinarState.live,
+                    WebinarState.comingSoon,
+                  ].includes(webinarState)}
                   controls={true}
                   playsInline={true}
                   src={webinar.playerSrc}
+                  poster={webinar.playerCoverImageUrl}
+                  reloadToken={reloadPlayerToken}
+                  videoOnDemandStartAt={videoOnDemandStartAt}
                 />
               )}
             </Box>
@@ -77,7 +99,7 @@ const WebinarPlayerSection = ({
                       setIsQuestionFormExpanded(false);
                     }}
                     webinarSlug={webinar.slug}
-                    disabled={webinarState != WebinarState.live}
+                    disabled={isQuestionFormDisabled}
                     isSmallScreen={isSmallScreen}
                     question={question}
                     setQuestion={setQuestion}

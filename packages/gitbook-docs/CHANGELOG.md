@@ -1,5 +1,40 @@
 # gitbook-docs
 
+## 1.5.0
+
+### Minor Changes
+
+- 656bd0b: Fix url generation for path with only filename of similar paths
+
+### Patch Changes
+
+- 5885dd7: Add script and action to generate multiple metadata files during sync
+- 5885dd7: Sync only provided folders if workflow variable DIR_NAMES_FILTER is set
+
+## 1.4.0
+
+### Minor Changes
+
+- 0237257: Remove unused synced response file
+
+## 1.3.2
+
+### Patch Changes
+
+- cc00738: Rename writeMetadataJson to putS3File, fix sitePathFromLocalPath function by removing docs/dirName from path
+
+## 1.3.1
+
+### Patch Changes
+
+- af1d820: Optimize GitBook sync workflow to reduce API calls and improve performance
+
+## 1.3.0
+
+### Minor Changes
+
+- 5e89e42: Add visibility for h3 heading level
+
 ## 1.2.0
 
 ### Minor Changes

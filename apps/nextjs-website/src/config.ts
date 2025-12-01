@@ -48,6 +48,8 @@ export const isFeedbackFormEnabled =
   process.env.NEXT_PUBLIC_FEEDBACK_FORM_ENABLED === 'true';
 export const chatMaxHistoryMessages =
   parseInt(`${process.env.NEXT_PUBLIC_CHAT_MAX_HISTORY_MESSAGES}`) || 10;
+// Array that defines the header level for which to show component in the in-page menu
+export const headingLevelsToShowInMenu = [2, 3];
 
 export const amplifyConfig = {
   Auth: {
@@ -79,9 +81,8 @@ export const profileMenuItems: readonly {
 
 export const snackbarAutoHideDurationMs = 10_000;
 
-export const baseUrl = isProduction
-  ? 'https://developer.pagopa.it'
-  : 'https://dev.developer.pagopa.it';
+export const baseUrl =
+  process.env.NEXT_PUBLIC_WEBSITE_BASE_URL || 'https://developer.pagopa.it';
 
 export const defaultOgTagImage = `${baseUrl}/images/dev-portal-home.jpg`;
 export const resetResendEmailAfterMs = 4_000;
