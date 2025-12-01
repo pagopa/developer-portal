@@ -18,14 +18,14 @@ describe('makeWebinarsProps', () => {
   });
 
   it('should transform strapi webinars to webinars props', () => {
-    const result = makeWebinarsProps(_.cloneDeep(strapiWebinars));
+    const result = makeWebinarsProps(_.cloneDeep({ data: strapiWebinars }));
     expect(result).toHaveLength(1);
     expect(result[0]).toMatchObject(webinarProps);
   });
 
   it('should handle a payload with two object with the second one with missing data and successfully return webinar props with only one item', () => {
     const result = makeWebinarsProps(
-      _.cloneDeep(strapiWebinarsWithMissingData)
+      _.cloneDeep({ data: strapiWebinarsWithMissingData })
     );
     expect(result).toHaveLength(1);
     expect(result[0]).toMatchObject(webinarProps);
@@ -43,7 +43,7 @@ describe('makeWebinarsProps', () => {
         },
       },
     };
-    const result = makeWebinarsProps(emptyData);
+    const result = makeWebinarsProps({ data: emptyData });
     expect(result).toHaveLength(0);
   });
 
@@ -65,7 +65,7 @@ describe('makeWebinarsProps', () => {
       },
     };
 
-    const result = makeWebinarsProps(corruptedData);
+    const result = makeWebinarsProps({ data: corruptedData });
 
     expect(result).toHaveLength(0);
     expect(spyOnConsoleError).toHaveBeenCalledWith(
