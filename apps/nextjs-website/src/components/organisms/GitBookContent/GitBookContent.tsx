@@ -93,4 +93,5 @@ const GitBookContent = ({
     React,
     hideLevel1Headings ? hideH1Components : components
   );
+
 export default GitBookContent;
