@@ -22,6 +22,7 @@ const makeStrapiUseCaseListPagePopulate = () =>
     },
   });
 
-export const fetchUseCaseListPages = fetchFromStrapi<
-  RootEntity<StrapiUseCaseListPages>
->('use-case-list-pages', makeStrapiUseCaseListPagePopulate());
+export const fetchUseCaseListPages = fetchFromStrapi<StrapiUseCaseListPages>(
+  'use-case-list-pages',
+  makeStrapiUseCaseListPagePopulate()
+);

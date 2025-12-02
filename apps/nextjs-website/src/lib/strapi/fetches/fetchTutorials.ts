@@ -31,7 +31,7 @@ const makeStrapiTutorialsPopulate = () =>
     },
   });
 
-export const fetchTutorials = fetchFromStrapi<RootEntity<StrapiTutorials>>(
+export const fetchTutorials = fetchFromStrapi<StrapiTutorials>(
   'tutorials',
   makeStrapiTutorialsPopulate()
 );

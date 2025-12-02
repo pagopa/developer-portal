@@ -7,7 +7,7 @@ import { OverviewPageProps } from '@/app/[productSlug]/overview/page';
 export const dateNow = new Date();
 
 export const strapiOverviews = {
-  ...[
+  data: [
     {
       id: 1,
       title: 'Test Overview',

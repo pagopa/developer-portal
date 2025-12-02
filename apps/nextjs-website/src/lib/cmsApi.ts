@@ -164,9 +164,7 @@ export const getGuideListPagesProps = async () => {
   const strapiGuideList = (await fetchResponseFromCDN(
     'synced-guide-list-pages-response.json'
   )) as StrapiGuideListPages | undefined;
-  return strapiGuideList
-    ? makeGuideListPagesProps({ data: strapiGuideList })
-    : [];
+  return strapiGuideList ? makeGuideListPagesProps(strapiGuideList) : [];
 };
 
 export const getGuideProps = async (
@@ -186,7 +184,7 @@ export const getGuidePageProps = async (
     'synced-guides-response.json'
   )) as StrapiGuides | undefined;
   // eslint-disable-next-line functional/no-expression-statements
-  const guides = strapiGuides ? makeGuidesProps({ data: strapiGuides }) : [];
+  const guides = strapiGuides ? makeGuidesProps(strapiGuides) : [];
   const guide = guides.filter(
     (g) => g.guide.slug === guideSlug && g.product.slug === productSlug
   )[0];

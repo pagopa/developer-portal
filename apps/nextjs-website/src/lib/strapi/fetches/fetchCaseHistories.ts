@@ -24,6 +24,7 @@ const makeStrapiCaseHistoriesPopulate = () =>
     },
   });
 
-export const fetchCaseHistories = fetchFromStrapi<
-  RootEntity<StrapiCaseHistories>
->('case-histories', makeStrapiCaseHistoriesPopulate());
+export const fetchCaseHistories = fetchFromStrapi<StrapiCaseHistories>(
+  'case-histories',
+  makeStrapiCaseHistoriesPopulate()
+);

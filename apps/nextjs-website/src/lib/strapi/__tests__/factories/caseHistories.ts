@@ -4,7 +4,7 @@ import { StrapiCaseHistories } from '@/lib/strapi/types/caseHistories';
 import { StrapiBaseProductWithoutBannerLinks } from '@/lib/strapi/types/product';
 
 export function minimalDataCaseHistories() {
-  const strapiCaseHistory = strapiCaseHistories[0];
+  const strapiCaseHistory = strapiCaseHistories.data[0];
   return {
     ...strapiCaseHistories,
     ...[
@@ -24,7 +24,7 @@ export function minimalDataCaseHistories() {
 }
 
 export function caseHistoriesWithMissingData() {
-  const strapiCaseHistory = strapiCaseHistories[0];
+  const strapiCaseHistory = strapiCaseHistories.data[0];
   return {
     ...strapiCaseHistories,
     ...[
@@ -40,7 +40,7 @@ export function caseHistoriesWithMissingData() {
 }
 
 export function caseHistoryWithMissingMandatoryData() {
-  const strapiCaseHistory = caseHistoriesWithMissingData()[0];
+  const strapiCaseHistory = caseHistoriesWithMissingData().data[0];
   return {
     ...strapiCaseHistories,
     data: [
@@ -53,7 +53,7 @@ export function caseHistoryWithMissingMandatoryData() {
 }
 
 export function caseHistoriesWithMultipleProducts() {
-  const strapiCaseHistory = strapiCaseHistories[0];
+  const strapiCaseHistory = strapiCaseHistories.data[0];
   const secondProduct = {
     isVisible: true,
     name: 'Second Product',
@@ -66,7 +66,7 @@ export function caseHistoriesWithMultipleProducts() {
 
   return {
     ...strapiCaseHistories,
-    ...[
+    data: [
       {
         ...strapiCaseHistory,
         products: [
@@ -79,7 +79,7 @@ export function caseHistoriesWithMultipleProducts() {
 }
 
 export function caseHistoriesWithoutImage() {
-  const strapiCaseHistory = strapiCaseHistories[0];
+  const strapiCaseHistory = strapiCaseHistories.data[0];
   return {
     ...strapiCaseHistories,
     ...[

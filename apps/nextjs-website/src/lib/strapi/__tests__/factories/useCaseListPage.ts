@@ -3,14 +3,14 @@ import { StrapiUseCaseListPages } from '@/lib/strapi/types/useCaseListPage';
 
 export function minimalUseCaseListPages(): StrapiUseCaseListPages {
   return {
-    ...[
+    data: [
       {
         id: 1,
         title: 'Minimal Use Cases',
         description: '',
         bannerLinks: [],
         product: {
-          ...strapiTutorialListPages[0].product!,
+          ...strapiTutorialListPages.data[0].product!,
           bannerLinks: [],
         },
         useCases: [],
@@ -31,13 +31,13 @@ export function minimalUseCaseListPages(): StrapiUseCaseListPages {
 
 export function useCaseListPagesWithItemMissingBannerLinks(): StrapiUseCaseListPages {
   return {
-    ...[
+    data: [
       {
         id: 1,
         title: 'No Banner Tutorials',
         description: 'No banner links',
         bannerLinks: [],
-        product: minimalUseCaseListPages()[0].product,
+        product: minimalUseCaseListPages().data[0].product,
         useCases: [],
         seo: undefined,
         enableFilters: true,
@@ -56,7 +56,7 @@ export function useCaseListPagesWithItemMissingBannerLinks(): StrapiUseCaseListP
 
 export function emptyUseCaseListPages(): StrapiUseCaseListPages {
   return {
-    ...[],
+    data: [],
     meta: {
       pagination: {
         page: 1,

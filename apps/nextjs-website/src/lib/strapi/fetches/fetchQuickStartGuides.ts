@@ -23,6 +23,7 @@ const makeStrapiQuickStartGuidesPopulate = () =>
     },
   });
 
-export const fetchQuickStartGuides = fetchFromStrapi<
-  RootEntity<StrapiQuickStartGuides>
->('quickstart-guides', makeStrapiQuickStartGuidesPopulate());
+export const fetchQuickStartGuides = fetchFromStrapi<StrapiQuickStartGuides>(
+  'quickstart-guides',
+  makeStrapiQuickStartGuidesPopulate()
+);

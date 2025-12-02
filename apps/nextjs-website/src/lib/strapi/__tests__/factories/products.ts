@@ -3,7 +3,7 @@ import { strapiProducts } from '@/lib/strapi/__tests__/fixtures/products';
 import { StrapiProduct } from '@/lib/strapi/types/product';
 
 export function minimalProduct(): readonly StrapiProduct[] {
-  const strapiProduct = strapiProducts[0];
+  const strapiProduct = strapiProducts.data[0];
   return [
     {
       ...strapiProduct,
@@ -25,7 +25,7 @@ export function minimalProduct(): readonly StrapiProduct[] {
 }
 
 export function productsWithAnItemWithEmptySlug(): readonly StrapiProduct[] {
-  const strapiProduct = strapiProducts[0];
+  const strapiProduct = strapiProducts.data[0];
   return [
     {
       ...strapiProduct,
@@ -36,7 +36,7 @@ export function productsWithAnItemWithEmptySlug(): readonly StrapiProduct[] {
 }
 
 export function productsWithAnItemMissingSlug(): readonly StrapiProduct[] {
-  const strapiProduct = strapiProducts[0];
+  const strapiProduct = strapiProducts.data[0];
   return [
     {
       ...strapiProduct,
@@ -47,7 +47,7 @@ export function productsWithAnItemMissingSlug(): readonly StrapiProduct[] {
 }
 
 export function productWithMultipleApiData(): readonly StrapiProduct[] {
-  const strapiProduct = strapiProducts[0];
+  const strapiProduct = strapiProducts.data[0];
   return [
     {
       ...strapiProduct,
@@ -73,7 +73,7 @@ export function productWithMultipleApiData(): readonly StrapiProduct[] {
 }
 
 export function productWithEmptyApiData(): readonly StrapiProduct[] {
-  const strapiProduct = strapiProducts[0];
+  const strapiProduct = strapiProducts.data[0];
   return [
     {
       ...strapiProduct,
@@ -86,7 +86,7 @@ export function productWithEmptyApiData(): readonly StrapiProduct[] {
 }
 
 export function productWithCorruptedData(): readonly StrapiProduct[] {
-  const strapiProduct = strapiProducts[0];
+  const strapiProduct = strapiProducts.data[0];
   return [
     {
       ...strapiProduct,
@@ -97,7 +97,7 @@ export function productWithCorruptedData(): readonly StrapiProduct[] {
 }
 
 export function mixedValidAndInvalidProducts(): readonly StrapiProduct[] {
-  const validProduct = strapiProducts[0];
+  const validProduct = strapiProducts.data[0];
   const invalidProduct = productsWithAnItemMissingSlug()[0];
   return [
     validProduct,

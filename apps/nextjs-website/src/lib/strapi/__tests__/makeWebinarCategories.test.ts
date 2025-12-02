@@ -8,9 +8,7 @@ import { mediaJpeg } from './factories/media';
 
 describe('makeWebinarCategoriesProps', () => {
   it('should transform strapi webinar categories to WebinarCategory array', () => {
-    const result = makeWebinarCategoriesProps({
-      data: strapiWebinarCategories,
-    });
+    const result = makeWebinarCategoriesProps(strapiWebinarCategories);
     expect(result).toHaveLength(2);
     expect(result[0]).toEqual({
       name: 'Payments',
@@ -24,14 +22,14 @@ describe('makeWebinarCategoriesProps', () => {
 
   it('should handle empty categories array', () => {
     const emptyCategories = { ...strapiWebinarCategories, data: [] };
-    const result = makeWebinarCategoriesProps({ data: emptyCategories });
+    const result = makeWebinarCategoriesProps(emptyCategories);
     expect(result).toEqual([]);
   });
 });
 
 describe('makeWebinarCategoryProps', () => {
   it('should transform single strapi webinar category', () => {
-    const category = strapiWebinarCategories[0];
+    const category = strapiWebinarCategories.data[0];
     const result = makeWebinarCategoryProps(category);
     expect(result).toEqual({
       name: 'Payments',
@@ -41,7 +39,7 @@ describe('makeWebinarCategoryProps', () => {
 
   it('should handle missing icon', () => {
     const category = {
-      ...strapiWebinarCategories[0],
+      ...strapiWebinarCategories.data[0],
       icon: undefined as any,
     } satisfies StrapiWebinarCategory;
 

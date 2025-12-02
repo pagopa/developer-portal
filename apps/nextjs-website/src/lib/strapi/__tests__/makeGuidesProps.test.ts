@@ -20,20 +20,18 @@ describe('makeGuidesProps', () => {
   });
 
   it('should return an empty array when no guides are provided', () => {
-    const result = makeGuidesProps({ data: strapiEmptyGuideData });
+    const result = makeGuidesProps(strapiEmptyGuideData);
     expect(result).toEqual([]);
   });
 
   it('should return an array containing only one object of type GuideDefinition', () => {
-    const result = makeGuidesProps({ data: strapiGuideData });
+    const result = makeGuidesProps(strapiGuideData);
     expect(result).toHaveLength(1);
     expect(result).toEqual(guideProps);
   });
 
   it('should return an empty array when the product slug is an empty string', () => {
-    const result = makeGuidesProps({
-      data: guideListWithItemsWithEmptyProductSlug(),
-    });
+    const result = makeGuidesProps(guideListWithItemsWithEmptyProductSlug());
     expect(result).toEqual([]);
     expect(spyOnConsoleError).toHaveBeenCalledWith(
       'Error while processing Guide with name "SACI": missing the product slug. Skipping...'
@@ -41,7 +39,7 @@ describe('makeGuidesProps', () => {
   });
 
   it('should return an empty array when the product slug is undefined', () => {
-    const result = makeGuidesProps({ data: guideListWithMissingProductSlug() });
+    const result = makeGuidesProps(guideListWithMissingProductSlug());
     expect(result).toEqual([]);
     expect(spyOnConsoleError).toHaveBeenCalledWith(
       'Error while processing Guide with name "SACI": missing the product slug. Skipping...'

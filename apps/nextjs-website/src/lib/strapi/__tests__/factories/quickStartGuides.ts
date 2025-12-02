@@ -5,13 +5,13 @@ import { strapiQuickStartGuides } from '../fixtures/quickStartGuides';
 
 export function minimalQuickStartGuides(): StrapiQuickStartGuides {
   return {
-    ...[
+    data: [
       {
         id: 1,
         title: 'Minimal Quick Start',
         description: '',
         updatedAt: '2024-01-01T00:00:00.000Z',
-        product: strapiQuickStartGuides[0].product,
+        product: strapiQuickStartGuides.data[0].product,
         bannerLinks: [],
         seo: undefined,
         quickstartGuideItems: [
@@ -38,7 +38,7 @@ export function minimalQuickStartGuides(): StrapiQuickStartGuides {
 
 export function emptyQuickStartGuides(): StrapiQuickStartGuides {
   return {
-    ...[],
+    data: [],
     meta: {
       pagination: {
         page: 1,
@@ -53,7 +53,7 @@ export function emptyQuickStartGuides(): StrapiQuickStartGuides {
 export function quickStartGuidesWithMissingProductSlug(): StrapiQuickStartGuides {
   return {
     meta: strapiQuickStartGuides.meta,
-    ...strapiQuickStartGuides.map((quickStart, index) => {
+    data: strapiQuickStartGuides.data.map((quickStart, index) => {
       if (index === 0) {
         return {
           ...quickStart,

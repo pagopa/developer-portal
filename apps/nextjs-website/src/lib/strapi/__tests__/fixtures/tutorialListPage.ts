@@ -5,7 +5,7 @@ import { mediaJpeg } from '../factories/media';
 const fixedDateIsoString = new Date('2025-01-01T00:00:00.000Z').toISOString();
 
 export const strapiTutorialListPages: StrapiTutorialListPages = {
-  ...[
+  data: [
     {
       id: 1,
       title: 'Tutorials',

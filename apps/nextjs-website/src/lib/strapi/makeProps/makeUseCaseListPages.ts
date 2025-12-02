@@ -8,7 +8,7 @@ import { UseCasesPageProps } from '@/app/[productSlug]/use-cases/page';
 import { RootEntity } from '@/lib/strapi/types/rootEntity';
 
 export function makeUseCaseListPagesProps(
-  strapiUseCaseList: RootEntity<StrapiUseCaseListPages>
+  strapiUseCaseList: StrapiUseCaseListPages
 ): readonly UseCasesPageProps[] {
   return compact(
     strapiUseCaseList.data.map((attributes) => {

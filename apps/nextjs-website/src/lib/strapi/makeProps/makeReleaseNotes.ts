@@ -8,7 +8,7 @@ import { compact } from 'lodash';
 import { RootEntity } from '@/lib/strapi/types/rootEntity';
 
 export function makeReleaseNotesProps(
-  strapiReleaseNotes: RootEntity<StrapiReleaseNotes>
+  strapiReleaseNotes: StrapiReleaseNotes
 ): ReadonlyArray<ReleaseNotePageProps> {
   return compact(
     strapiReleaseNotes.data.map((attributes) => {

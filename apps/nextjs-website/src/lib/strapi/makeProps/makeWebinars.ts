@@ -73,7 +73,7 @@ export const makeWebinarProps = (
 };
 
 export function makeWebinarsProps(
-  strapiWebinars: RootEntity<StrapiWebinars>
+  strapiWebinars: StrapiWebinars
 ): WebinarsProps {
   return compact([
     ...strapiWebinars.data.map((webinar) => makeWebinarProps(webinar)),

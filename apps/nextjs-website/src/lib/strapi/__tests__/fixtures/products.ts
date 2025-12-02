@@ -4,7 +4,7 @@ import { generateBannerLinks } from '@/lib/strapi/__tests__/factories/bannerLink
 import { mediaJpeg } from '@/lib/strapi/__tests__/factories/media';
 
 export const strapiProducts: StrapiProducts = {
-  ...[
+  data: [
     {
       isVisible: true,
       tags: [],

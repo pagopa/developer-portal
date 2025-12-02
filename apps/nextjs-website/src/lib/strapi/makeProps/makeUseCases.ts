@@ -16,7 +16,7 @@ export type UseCaseProps = UseCase & {
 };
 
 export function makeUseCasesProps(
-  strapiUseCases: RootEntity<StrapiUseCases>,
+  strapiUseCases: StrapiUseCases,
   markdownContentDict: Record<string, string>
 ): readonly UseCaseProps[] {
   return compact(

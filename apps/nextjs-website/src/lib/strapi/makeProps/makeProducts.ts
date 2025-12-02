@@ -11,7 +11,7 @@ import { compact } from 'lodash';
 import { RootEntity } from '@/lib/strapi/types/rootEntity';
 
 export function makeProductsProps(
-  strapiProducts: RootEntity<StrapiProducts>
+  strapiProducts: StrapiProducts
 ): ReadonlyArray<Product> {
   return compact(strapiProducts.data.map(makeProductProps));
 }

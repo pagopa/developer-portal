@@ -25,14 +25,12 @@ describe('makeGuideListPageProps', () => {
   });
 
   it('should return an empty array when no guides are provided', () => {
-    const result = makeGuideListPagesProps({
-      data: strapiEmptyGuideListPagesData,
-    });
+    const result = makeGuideListPagesProps(strapiEmptyGuideListPagesData);
     expect(result).toEqual([]);
   });
 
   it('should return an array with a single element with the guides for the PagoPA product', () => {
-    const result = makeGuideListPagesProps({ data: strapiGuideListPagesData });
+    const result = makeGuideListPagesProps(strapiGuideListPagesData);
     expect(result).toHaveLength(1);
     expect(result).toEqual(guideListPagesProps);
   });
@@ -40,9 +38,7 @@ describe('makeGuideListPageProps', () => {
   it('should return a single element array of type GuideListPageProps with only one guide', () => {
     const guideListWithMissingSlugsData =
       guideListPagesWithItemsMissingSlug() as unknown as StrapiGuideListPages;
-    const result = makeGuideListPagesProps({
-      data: guideListWithMissingSlugsData,
-    });
+    const result = makeGuideListPagesProps(guideListWithMissingSlugsData);
     expect(result).toHaveLength(1);
     expect(result[0]).toEqual({
       ...guideListPagesProps[0],
@@ -60,9 +56,7 @@ describe('makeGuideListPageProps', () => {
   it('should return a single element array of type GuideListPageProps with guides without images', () => {
     const guideListWithMissingImagesData =
       guideListPagesWithItemsMissingImages() as unknown as StrapiGuideListPages;
-    const result = makeGuideListPagesProps({
-      data: guideListWithMissingImagesData,
-    });
+    const result = makeGuideListPagesProps(guideListWithMissingImagesData);
     expect(result).toHaveLength(1);
     expect(result[0]).toEqual({
       ...guideListPagesProps[0],
@@ -80,7 +74,7 @@ describe('makeGuideListPageProps', () => {
   it('should return a single element array of type GuideListPageProps with only one guide', () => {
     const guideListWithInvalidData =
       guideListPagesWithItemsMissingListItem() as unknown as StrapiGuideListPages;
-    const result = makeGuideListPagesProps({ data: guideListWithInvalidData });
+    const result = makeGuideListPagesProps(guideListWithInvalidData);
     expect(result).toHaveLength(1);
     expect(result[0].guidesSections).toHaveLength(2);
     expect(result[0].guidesSections?.[0].guides).toHaveLength(1);
@@ -100,9 +94,9 @@ describe('makeGuideListPageProps', () => {
   });
 
   it('should return an empty array if all guide list pages have missing product slugs', () => {
-    const result = makeGuideListPagesProps({
-      data: guideListPagesWithItemMissingProductSlug(),
-    });
+    const result = makeGuideListPagesProps(
+      guideListPagesWithItemMissingProductSlug()
+    );
     expect(result).toHaveLength(0);
     expect(spyOnConsoleError).toHaveBeenCalledWith(
       'Error while processing GuideListPage with title "Guide e manuali": missing product slug. Skipping...'

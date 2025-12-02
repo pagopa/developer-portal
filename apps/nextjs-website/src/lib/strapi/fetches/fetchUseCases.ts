@@ -32,7 +32,7 @@ const makeStrapiUseCasesPopulate = () =>
     },
   });
 
-export const fetchUseCases = fetchFromStrapi<RootEntity<StrapiUseCases>>(
+export const fetchUseCases = fetchFromStrapi<StrapiUseCases>(
   'use-cases',
   makeStrapiUseCasesPopulate()
 );

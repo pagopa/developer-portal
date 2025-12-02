@@ -5,7 +5,7 @@ import { strapiGuideData } from '../fixtures/guides';
 export function guideListWithItemsWithEmptyProductSlug() {
   return {
     ...strapiGuideData,
-    ...strapiGuideData.map((guide) => ({
+    ...strapiGuideData.data.map((guide) => ({
       ...guide,
       product: {
         ...guide.product,
@@ -21,7 +21,7 @@ export function guideListWithItemsWithEmptyProductSlug() {
 export function guideListWithMissingProductSlug() {
   return {
     ...strapiGuideData,
-    ...strapiGuideData.map((guide) => ({
+    ...strapiGuideData.data.map((guide) => ({
       ...guide,
       product: {
         ...guide.product,

@@ -3,14 +3,14 @@ import { strapiTutorialListPages } from '../fixtures/tutorialListPage';
 
 export function minimalTutorialListPages(): StrapiTutorialListPages {
   return {
-    ...[
+    data: [
       {
         id: 1,
         title: 'Minimal Tutorials',
         description: '',
         bannerLinks: [],
         product: {
-          ...strapiTutorialListPages.at(0)!.product!,
+          ...strapiTutorialListPages.data[0].product!,
           bannerLinks: [],
         },
         tutorials: [],
@@ -30,13 +30,13 @@ export function minimalTutorialListPages(): StrapiTutorialListPages {
 
 export function tutorialListPagesWithItemMissingBannerLinks(): StrapiTutorialListPages {
   return {
-    ...[
+    data: [
       {
         id: 1,
         title: 'No Banner Tutorials',
         description: 'No banner links',
         bannerLinks: [],
-        product: minimalTutorialListPages().at(0)!.product,
+        product: minimalTutorialListPages().data[0]!.product,
         tutorials: [],
         seo: undefined,
       },
@@ -54,7 +54,7 @@ export function tutorialListPagesWithItemMissingBannerLinks(): StrapiTutorialLis
 
 export function emptyTutorialListPages(): StrapiTutorialListPages {
   return {
-    ...[],
+    data: [],
     meta: {
       pagination: {
         page: 1,

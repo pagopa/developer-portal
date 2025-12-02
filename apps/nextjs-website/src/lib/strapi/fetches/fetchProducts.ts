@@ -42,7 +42,7 @@ const makeStrapiProductsPopulate = () =>
     ...productRelationsPopulate,
   });
 
-export const fetchProducts = fetchFromStrapi<RootEntity<StrapiProducts>>(
+export const fetchProducts = fetchFromStrapi<StrapiProducts>(
   'products',
   makeStrapiProductsPopulate()
 );

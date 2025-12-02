@@ -25,16 +25,14 @@ describe('makeOverviewsProps', () => {
   });
 
   it('should transform strapi overviews to overview page props', () => {
-    const result = makeOverviewsProps(_.cloneDeep({ data: strapiOverviews }));
+    const result = makeOverviewsProps(_.cloneDeep(strapiOverviews));
 
     expect(result).toHaveLength(1);
     expect(result[0]).toEqual(overviewPageProps);
   });
 
   it('should handle minimal data with null optional fields', () => {
-    const result = makeOverviewsProps(
-      _.cloneDeep({ data: minimalDataSingleOverview() })
-    );
+    const result = makeOverviewsProps(_.cloneDeep(minimalDataSingleOverview()));
 
     expect(result).toHaveLength(1);
     const firseElement = result[0];
@@ -49,7 +47,7 @@ describe('makeOverviewsProps', () => {
 
   it('should handle empty data array', () => {
     const emptyData: StrapiOverviews = {
-      ...[],
+      data: [],
       meta: {
         pagination: {
           page: 1,
@@ -60,15 +58,13 @@ describe('makeOverviewsProps', () => {
       },
     };
 
-    const result = makeOverviewsProps({ data: emptyData });
+    const result = makeOverviewsProps(emptyData);
 
     expect(result).toHaveLength(0);
   });
 
   it('should log an error and skip overview with empty product slug', () => {
-    const result = makeOverviewsProps({
-      data: overviewsWithItemWithEmptyProductSlug(),
-    });
+    const result = makeOverviewsProps(overviewsWithItemWithEmptyProductSlug());
     expect(result).toHaveLength(0);
     expect(spyOnConsoleError).toHaveBeenCalledWith(
       'Error while processing Overview with title "Test Overview": missing product slug. Skipping...'
@@ -76,9 +72,7 @@ describe('makeOverviewsProps', () => {
   });
 
   it('should log an error and skip overview with missing product slug', () => {
-    const result = makeOverviewsProps({
-      data: overviewsWithItemWithEmptyProductSlug(),
-    });
+    const result = makeOverviewsProps(overviewsWithItemWithEmptyProductSlug());
     expect(result).toHaveLength(0);
     expect(spyOnConsoleError).toHaveBeenCalledWith(
       'Error while processing Overview with title "Test Overview": missing product slug. Skipping...'
@@ -86,9 +80,9 @@ describe('makeOverviewsProps', () => {
   });
 
   it('should log an error and skip tutorials with missing product slug', () => {
-    const result = makeOverviewsProps({
-      data: overviewsWithItemMissingTutorialProductSlug(),
-    });
+    const result = makeOverviewsProps(
+      overviewsWithItemMissingTutorialProductSlug()
+    );
     expect(result).toHaveLength(1);
     expect(result[0].tutorials?.list).toHaveLength(0);
     expect(spyOnConsoleError).toHaveBeenCalledWith(
@@ -98,9 +92,7 @@ describe('makeOverviewsProps', () => {
   });
 
   it('should log an error and skip tutorials with missing product slug', () => {
-    const result = makeOverviewsProps({
-      data: overviewsWithItemMissingTutorialSlug(),
-    });
+    const result = makeOverviewsProps(overviewsWithItemMissingTutorialSlug());
     expect(result).toHaveLength(1);
     expect(result[0].tutorials?.list).toHaveLength(0);
     expect(spyOnConsoleError).toHaveBeenCalledWith(
@@ -110,18 +102,18 @@ describe('makeOverviewsProps', () => {
   });
 
   it('should log an error and skip guides with empty product slug', () => {
-    const result = makeOverviewsProps({
-      data: overviewsWithItemWithEmptyGuideProductSlug(),
-    });
+    const result = makeOverviewsProps(
+      overviewsWithItemWithEmptyGuideProductSlug()
+    );
     expect(result).toHaveLength(1);
     expect(result[0].postIntegration?.guides).toHaveLength(1);
     expect(result[0].postIntegration?.guides?.[0].title).toBe('Document 1');
   });
 
   it('should log an error and skip guides with missing product slug', () => {
-    const result = makeOverviewsProps({
-      data: overviewsWithItemMissingGuideProductSlug(),
-    });
+    const result = makeOverviewsProps(
+      overviewsWithItemMissingGuideProductSlug()
+    );
     expect(result).toHaveLength(1);
     expect(result[0].postIntegration?.guides).toHaveLength(1);
     expect(result[0].postIntegration?.guides?.[0].title).toBe('Document 1');

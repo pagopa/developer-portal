@@ -36,7 +36,7 @@ export const downloadableDocument = {
 };
 
 export const strapiWebinars: StrapiWebinars = {
-  ...[
+  data: [
     {
       id: 1,
       title: 'Webinar Title',
@@ -95,8 +95,8 @@ export const strapiWebinars: StrapiWebinars = {
 };
 
 export const strapiWebinarsWithMissingData: StrapiWebinars = {
-  ...[
-    ...strapiWebinars,
+  data: [
+    ...strapiWebinars.data,
     {
       id: 2,
       title: 'Minimal Webinar',

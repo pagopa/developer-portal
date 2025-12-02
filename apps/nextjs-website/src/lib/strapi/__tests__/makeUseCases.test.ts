@@ -20,7 +20,7 @@ describe('makeUseCasesProps', () => {
 
   it('should transform strapi use cases to use cases props', () => {
     console.log(strapiUseCases);
-    const result = makeUseCasesProps({ data: strapiUseCases }, {});
+    const result = makeUseCasesProps(strapiUseCases, {});
     expect(result).toHaveLength(1);
     expect(result[0]).toMatchObject({
       coverImage: {
@@ -72,7 +72,7 @@ describe('makeUseCasesProps', () => {
   });
 
   it('should handle minimal data with missing optional fields', () => {
-    const result = makeUseCasesProps({ data: minimalDataUseCases() }, {});
+    const result = makeUseCasesProps(minimalDataUseCases(), {});
     expect(result).toHaveLength(1);
     const firstElement = result[0];
     expect(firstElement.title).toBe('Minimal Data UseCase');
@@ -88,7 +88,7 @@ describe('makeUseCasesProps', () => {
 
   it('should handle empty data array', () => {
     const emptyData: StrapiUseCases = {
-      ...[],
+      data: [],
       meta: {
         pagination: {
           page: 1,
@@ -98,15 +98,12 @@ describe('makeUseCasesProps', () => {
         },
       },
     };
-    const result = makeUseCasesProps({ data: emptyData }, {});
+    const result = makeUseCasesProps(emptyData, {});
     expect(result).toHaveLength(0);
   });
 
   it('should skip use cases with missing use case slug and log error', () => {
-    const result = makeUseCasesProps(
-      { data: useCasesWithAnItemMissingSlug() },
-      {}
-    );
+    const result = makeUseCasesProps(useCasesWithAnItemMissingSlug(), {});
     expect(result).toHaveLength(1);
     const firstElement = result[0];
     expect(firstElement.title).toBe('Valid UseCase');
@@ -118,7 +115,7 @@ describe('makeUseCasesProps', () => {
 
   it('should skip use cases with missing product slug and log error', () => {
     const result = makeUseCasesProps(
-      { data: useCasesWithAnItemMissingProductSlug() },
+      useCasesWithAnItemMissingProductSlug(),
       {}
     );
     expect(result).toHaveLength(1);

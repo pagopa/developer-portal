@@ -3,10 +3,10 @@ import { strapiReleaseNotes } from '@/lib/strapi/__tests__/fixtures/releaseNotes
 import { StrapiReleaseNotes } from '@/lib/strapi/types/releaseNotes';
 
 export function minimalDataReleaseNotes() {
-  const strapiReleaseNote = strapiReleaseNotes[0];
+  const strapiReleaseNote = strapiReleaseNotes.data[0];
   return {
     ...strapiReleaseNotes,
-    ...[
+    data: [
       {
         ...strapiReleaseNote,
         title: 'Minimal Release Notes',
@@ -24,10 +24,10 @@ export function minimalDataReleaseNotes() {
 }
 
 export function releaseNotesWithoutBannerLinks() {
-  const strapiReleaseNote = strapiReleaseNotes[0];
+  const strapiReleaseNote = strapiReleaseNotes.data[0];
   return {
     ...strapiReleaseNotes,
-    ...[
+    data: [
       {
         ...strapiReleaseNote,
         bannerLinks: [],
@@ -37,10 +37,10 @@ export function releaseNotesWithoutBannerLinks() {
 }
 
 export function releaseNotesWithoutProductBannerLinks() {
-  const strapiReleaseNote = strapiReleaseNotes[0];
+  const strapiReleaseNote = strapiReleaseNotes.data[0];
   return {
     ...strapiReleaseNotes,
-    ...[
+    data: [
       {
         ...strapiReleaseNote,
         bannerLinks: [],
@@ -54,10 +54,10 @@ export function releaseNotesWithoutProductBannerLinks() {
 }
 
 export function releaseNotesWithMissingProductSlug() {
-  const strapiReleaseNote = strapiReleaseNotes[0];
+  const strapiReleaseNote = strapiReleaseNotes.data[0];
   return {
     ...strapiReleaseNotes,
-    ...[
+    data: [
       {
         ...strapiReleaseNote,
         title: 'Release Note Without Product Slug',

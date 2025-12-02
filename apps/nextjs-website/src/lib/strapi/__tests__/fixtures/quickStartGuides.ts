@@ -2,7 +2,7 @@ import { StrapiQuickStartGuides } from '@/lib/strapi/types/quickStartGuides';
 import { alertPart, codeBlockPart } from './parts';
 
 export const strapiQuickStartGuides: StrapiQuickStartGuides = {
-  ...[
+  data: [
     {
       id: 1,
       title: 'Quick Start Guide Title',

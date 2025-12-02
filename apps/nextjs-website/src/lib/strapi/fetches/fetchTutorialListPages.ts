@@ -22,6 +22,7 @@ const makeStrapiTutorialListPagePopulate = () =>
     },
   });
 
-export const fetchTutorialListPages = fetchFromStrapi<
-  RootEntity<StrapiTutorialListPages>
->('tutorial-list-pages', makeStrapiTutorialListPagePopulate());
+export const fetchTutorialListPages = fetchFromStrapi<StrapiTutorialListPages>(
+  'tutorial-list-pages',
+  makeStrapiTutorialListPagePopulate()
+);

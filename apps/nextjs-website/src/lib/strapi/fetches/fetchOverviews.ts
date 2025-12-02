@@ -51,7 +51,7 @@ const makeStrapiOverviewsPopulate = () =>
     },
   });
 
-export const fetchOverviews = fetchFromStrapi<RootEntity<StrapiOverviews>>(
+export const fetchOverviews = fetchFromStrapi<StrapiOverviews>(
   'overviews',
   makeStrapiOverviewsPopulate()
 );

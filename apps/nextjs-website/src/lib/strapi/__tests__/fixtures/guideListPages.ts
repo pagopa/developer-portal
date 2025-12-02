@@ -5,7 +5,7 @@ import { product } from '@/lib/strapi/__tests__/fixtures/product';
 const dateNow = new Date().toISOString();
 
 export const strapiEmptyGuideListPagesData = {
-  ...[],
+  data: [],
   meta: {
     pagination: {
       page: 1,
@@ -17,7 +17,7 @@ export const strapiEmptyGuideListPagesData = {
 } satisfies StrapiGuideListPages;
 
 export const strapiGuideListPagesData = {
-  ...[
+  data: [
     {
       id: 48,
       title: 'Guide e manuali',

@@ -10,7 +10,7 @@ const makeStrapiTagsPopulate = () =>
     },
   });
 
-export const fetchTags = fetchFromStrapi<RootEntity<StrapiTags>>(
+export const fetchTags = fetchFromStrapi<StrapiTags>(
   'tags',
   makeStrapiTagsPopulate()
 );

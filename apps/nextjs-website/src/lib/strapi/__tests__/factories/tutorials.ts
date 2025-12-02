@@ -5,14 +5,14 @@ import { StrapiTutorials } from '@/lib/strapi/types/tutorial';
 export function tutorialsWithAnItemMissingSlug(): StrapiTutorials {
   return {
     ...strapiTutorials,
-    ...[
+    data: [
       {
-        ...strapiTutorials[0],
+        ...strapiTutorials.data[0],
         title: 'Tutorial Without Slug',
         slug: undefined as any,
       },
       {
-        ...strapiTutorials[0],
+        ...strapiTutorials.data[0],
         title: 'Valid Tutorial',
         slug: 'valid-tutorial',
       },
@@ -25,21 +25,21 @@ export function tutorialsWithAnItemMissingProductSlug(): StrapiTutorials {
     ...strapiTutorials,
     ...[
       {
-        ...strapiTutorials[0],
+        ...strapiTutorials.data[0],
         title: 'Tutorial Without Product Slug',
         slug: 'tutorial-without-product-slug',
         product: {
-          ...strapiTutorials[0].product!,
+          ...strapiTutorials.data[0].product!,
           name: 'Product Without Slug',
           slug: undefined as any,
         },
       },
       {
-        ...strapiTutorials[0],
+        ...strapiTutorials.data[0],
         title: 'Valid Tutorial',
         slug: 'valid-tutorial',
         product: {
-          ...strapiTutorials[0].product!,
+          ...strapiTutorials.data[0].product!,
           name: 'Valid Product',
           slug: 'valid-product',
         },
@@ -49,7 +49,7 @@ export function tutorialsWithAnItemMissingProductSlug(): StrapiTutorials {
 }
 
 export function minimalDataTutorials() {
-  const strapiTutorial = strapiTutorials[0];
+  const strapiTutorial = strapiTutorials.data[0];
   return {
     ...strapiTutorials,
     ...[
@@ -69,7 +69,7 @@ export function minimalDataTutorials() {
 }
 
 export function tutorialsWithItemMissingData() {
-  const strapiTutorial = strapiTutorials[0];
+  const strapiTutorial = strapiTutorials.data[0];
   return {
     ...strapiTutorials,
     ...[
@@ -85,7 +85,7 @@ export function tutorialsWithItemMissingData() {
 }
 
 export function tutorialsWithItemMissingMandatoryData() {
-  const strapiTutorial = tutorialsWithItemMissingData()[0];
+  const strapiTutorial = tutorialsWithItemMissingData().data[0];
   return {
     ...strapiTutorials,
     ...[

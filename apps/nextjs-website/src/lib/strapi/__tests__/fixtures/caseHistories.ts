@@ -5,7 +5,7 @@ import { CaseHistoryPageTemplateProps } from '@/components/templates/CaseHistory
 import { Paginated } from '@/lib/strapi/types/paginated';
 
 export const strapiCaseHistories: Paginated<StrapiCaseHistory> = {
-  ...[
+  data: [
     {
       id: 1,
       slug: 'case-history-title',

@@ -19,10 +19,7 @@ describe('makeTutorialsProps', () => {
   });
 
   it('should transform strapi tutorials to tutorials props', () => {
-    const result = makeTutorialsProps(
-      _.cloneDeep({ data: strapiTutorials }),
-      {}
-    );
+    const result = makeTutorialsProps(_.cloneDeep(strapiTutorials), {});
     expect(result).toHaveLength(1);
     expect(result[0]).toMatchObject({
       image: {
@@ -69,7 +66,7 @@ describe('makeTutorialsProps', () => {
   });
 
   it('should handle minimal data with missing optional fields', () => {
-    const result = makeTutorialsProps({ data: minimalDataTutorials() }, {});
+    const result = makeTutorialsProps(minimalDataTutorials(), {});
     expect(result).toHaveLength(1);
     const firstElement = result[0];
     expect(firstElement.title).toBe('Minimal Data Tutorial');
@@ -83,7 +80,7 @@ describe('makeTutorialsProps', () => {
 
   it('should handle empty data array', () => {
     const emptyData: StrapiTutorials = {
-      ...[],
+      data: [],
       meta: {
         pagination: {
           page: 1,
@@ -93,15 +90,12 @@ describe('makeTutorialsProps', () => {
         },
       },
     };
-    const result = makeTutorialsProps({ data: emptyData }, {});
+    const result = makeTutorialsProps(emptyData, {});
     expect(result).toHaveLength(0);
   });
 
   it('should skip tutorials with missing tutorial slug and log error', () => {
-    const result = makeTutorialsProps(
-      { data: tutorialsWithAnItemMissingSlug() },
-      {}
-    );
+    const result = makeTutorialsProps(tutorialsWithAnItemMissingSlug(), {});
     expect(result).toHaveLength(1);
     const firstElement = result[0];
     expect(firstElement.title).toBe('Valid Tutorial');
@@ -113,7 +107,7 @@ describe('makeTutorialsProps', () => {
 
   it('should skip tutorials with missing product slug and log error', () => {
     const result = makeTutorialsProps(
-      { data: tutorialsWithAnItemMissingProductSlug() },
+      tutorialsWithAnItemMissingProductSlug(),
       {}
     );
     expect(result).toHaveLength(1);

@@ -8,7 +8,7 @@ import { compact } from 'lodash';
 import { RootEntity } from '@/lib/strapi/types/rootEntity';
 
 export function makeTutorialListPagesProps(
-  strapiTutorialList: RootEntity<StrapiTutorialListPages>
+  strapiTutorialList: StrapiTutorialListPages
 ): readonly TutorialsPageProps[] {
   return compact(
     strapiTutorialList.data.map((attributes) => {

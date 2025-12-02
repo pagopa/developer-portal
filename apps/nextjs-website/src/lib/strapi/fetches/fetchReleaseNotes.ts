@@ -39,7 +39,7 @@ const makeStrapiReleaseNotePopulate = (productSlug: string) =>
   });
 
 export const fetchReleaseNote = (productSlug: string) =>
-  fetchFromStrapi<RootEntity<StrapiReleaseNotes>>(
+  fetchFromStrapi<StrapiReleaseNotes>(
     'release-notes',
     makeStrapiReleaseNotePopulate(productSlug)
   );

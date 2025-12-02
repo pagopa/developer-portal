@@ -11,7 +11,7 @@ import { StrapiGuideListPages } from '@/lib/strapi/types/guideListPage';
 import { RootEntity } from '@/lib/strapi/types/rootEntity';
 
 export function makeGuideListPagesProps(
-  strapiGuideListPages: RootEntity<StrapiGuideListPages>
+  strapiGuideListPages: StrapiGuideListPages
 ): readonly GuideListPageProps[] {
   return compact(
     strapiGuideListPages.data.map((attributes) => {

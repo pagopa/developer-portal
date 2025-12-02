@@ -8,7 +8,7 @@ import { compact } from 'lodash';
 import { RootEntity } from '@/lib/strapi/types/rootEntity';
 
 export function makeGuidesProps(
-  strapiGuides: RootEntity<StrapiGuides>
+  strapiGuides: StrapiGuides
 ): readonly GuideDefinition[] {
   return compact(
     strapiGuides.data.map((attributes) => {

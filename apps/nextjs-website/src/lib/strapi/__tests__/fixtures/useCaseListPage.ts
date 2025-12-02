@@ -5,7 +5,7 @@ import { StrapiUseCaseListPages } from '@/lib/strapi/types/useCaseListPage';
 const fixedDateIsoString = new Date('2025-01-01T00:00:00.000Z').toISOString();
 
 export const strapiUseCaseListPages: StrapiUseCaseListPages = {
-  ...[
+  data: [
     {
       id: 1,
       title: 'Use Cases',

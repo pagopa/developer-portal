@@ -15,7 +15,7 @@ export type TutorialProps = Tutorial & {
   readonly bannerLinks?: readonly BannerLinkProps[];
 };
 export function makeTutorialsProps(
-  strapiTutorials: RootEntity<StrapiTutorials>,
+  strapiTutorials: StrapiTutorials,
   markdownContentDict: Record<string, string>
 ): readonly TutorialProps[] {
   return compact(

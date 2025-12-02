@@ -5,7 +5,7 @@ import { generateBannerLinks } from '@/lib/strapi/__tests__/factories/bannerLink
 const fixedDateIsoString = new Date('2024-01-01T00:00:00.000Z').toISOString();
 
 export const strapiReleaseNotes: StrapiReleaseNotes = {
-  ...[
+  data: [
     {
       id: 1,
       dirName: 'release-notes-dir',

@@ -9,7 +9,7 @@ import { UseCase } from '../../types/useCaseData';
 import { RootEntity } from '@/lib/strapi/types/rootEntity';
 
 export function makeOverviewsProps(
-  strapiOverviews: RootEntity<StrapiOverviews>
+  strapiOverviews: StrapiOverviews
 ): ReadonlyArray<OverviewPageProps> {
   return compact(
     strapiOverviews.data.map((attributes) => {

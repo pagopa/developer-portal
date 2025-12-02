@@ -2,7 +2,7 @@ import { strapiGuideListPagesData } from '@/lib/strapi/__tests__/fixtures/guideL
 import { StrapiGuideListPages } from '@/lib/strapi/types/guideListPage';
 
 export function guideListPagesWithItemsMissingSlug() {
-  return strapiGuideListPagesData.map((guides) => ({
+  return strapiGuideListPagesData.data.map((guides) => ({
     ...guides,
     guidesByCategory: guides.guidesByCategory.map((guidePerCategory) => ({
       ...guidePerCategory,
@@ -15,7 +15,7 @@ export function guideListPagesWithItemsMissingSlug() {
 }
 
 export function guideListPagesWithItemsMissingImages() {
-  return strapiGuideListPagesData.map((guides) => ({
+  return strapiGuideListPagesData.data.map((guides) => ({
     ...guides,
     guidesByCategory: guides.guidesByCategory.map((guidePerCategory) => ({
       ...guidePerCategory,
@@ -28,7 +28,7 @@ export function guideListPagesWithItemsMissingImages() {
 }
 
 export function guideListPagesWithItemsMissingListItem() {
-  return strapiGuideListPagesData.map((guides) => ({
+  return strapiGuideListPagesData.data.map((guides) => ({
     ...guides,
     guidesByCategory: guides.guidesByCategory.map((guidePerCategory) => ({
       ...guidePerCategory,
@@ -43,7 +43,7 @@ export function guideListPagesWithItemsMissingListItem() {
 }
 
 export function guideListPagesWithItemsWithWrongDataType() {
-  return strapiGuideListPagesData.map((guides) => ({
+  return strapiGuideListPagesData.data.map((guides) => ({
     ...guides,
     title: 12345, // Wrong data type: it should be a string
     description: 67890, // Wrong data type: it should be a string
@@ -51,7 +51,7 @@ export function guideListPagesWithItemsWithWrongDataType() {
 }
 
 export function guideListPagesWithItemMissingProductSlug() {
-  return strapiGuideListPagesData.map((guides) => ({
+  return strapiGuideListPagesData.data.map((guides) => ({
     ...guides,
     product: {
       ...guides.product,

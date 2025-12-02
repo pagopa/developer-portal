@@ -3,7 +3,7 @@ import { GuideDefinition } from '@/helpers/makeDocs.helpers';
 import { product } from '@/lib/strapi/__tests__/fixtures/product';
 
 export const strapiEmptyGuideData = {
-  ...[],
+  data: [],
   meta: {
     pagination: {
       page: 1,
@@ -15,7 +15,7 @@ export const strapiEmptyGuideData = {
 } satisfies StrapiGuides;
 
 export const strapiGuideData = {
-  ...[
+  data: [
     {
       title: 'SACI',
       slug: 'saci',

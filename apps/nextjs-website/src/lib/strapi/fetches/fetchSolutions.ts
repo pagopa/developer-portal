@@ -35,7 +35,7 @@ const makeStrapiSolutionsPopulate = () =>
     ...solutionsPopulate,
   });
 
-export const fetchSolutions = fetchFromStrapi<RootEntity<StrapiSolutions>>(
+export const fetchSolutions = fetchFromStrapi<StrapiSolutions>(
   'solutions',
   makeStrapiSolutionsPopulate()
 );
@@ -49,7 +49,7 @@ const makeStrapiSolutionPopulate = (solutionSlug: string) =>
   });
 
 export const fetchSolution = (solutionSlug: string) =>
-  fetchFromStrapi<RootEntity<StrapiSolutions>>(
+  fetchFromStrapi<StrapiSolutions>(
     'solutions',
     makeStrapiSolutionPopulate(solutionSlug)
   );

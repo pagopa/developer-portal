@@ -40,7 +40,7 @@ export const webinarPopulate = {
 
 const makeStrapiWebinarsPopulate = () => qs.stringify(webinarPopulate);
 
-export const fetchWebinars = fetchFromStrapi<RootEntity<StrapiWebinars>>(
+export const fetchWebinars = fetchFromStrapi<StrapiWebinars>(
   'webinars',
   makeStrapiWebinarsPopulate()
 );

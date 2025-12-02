@@ -25,7 +25,7 @@ function makeStepFromQuickstartGuideItems(
 }
 
 export function makeQuickStartGuidesProps(
-  strapiQuickStarts: RootEntity<StrapiQuickStartGuides>
+  strapiQuickStarts: StrapiQuickStartGuides
 ): QuickStartGuidesPageProps {
   return compact(
     strapiQuickStarts.data.map((quickStart) => {

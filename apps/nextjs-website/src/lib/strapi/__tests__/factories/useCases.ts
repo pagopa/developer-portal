@@ -5,14 +5,14 @@ import { StrapiUseCases } from '@/lib/strapi/types/useCase';
 export function useCasesWithAnItemMissingSlug(): StrapiUseCases {
   return {
     ...strapiUseCases,
-    ...[
+    data: [
       {
-        ...strapiUseCases[0],
+        ...strapiUseCases.data[0],
         title: 'UseCase Without Slug',
         slug: undefined as any,
       },
       {
-        ...strapiUseCases[0],
+        ...strapiUseCases.data[0],
         title: 'Valid UseCase',
         slug: 'valid-use-case',
       },
@@ -23,23 +23,23 @@ export function useCasesWithAnItemMissingSlug(): StrapiUseCases {
 export function useCasesWithAnItemMissingProductSlug(): StrapiUseCases {
   return {
     ...strapiUseCases,
-    ...[
+    data: [
       {
-        ...strapiUseCases[0],
+        ...strapiUseCases.data[0],
         title: 'UseCase Without Product Slug',
         slug: 'use-case-without-product-slug',
         product: {
-          ...strapiUseCases[0].product!,
+          ...strapiUseCases.data[0].product!,
           name: 'Product Without Slug',
           slug: undefined as any,
         },
       },
       {
-        ...strapiUseCases[0],
+        ...strapiUseCases.data[0],
         title: 'Valid UseCase',
         slug: 'valid-use-case',
         product: {
-          ...strapiUseCases[0].product!,
+          ...strapiUseCases.data[0].product!,
           name: 'Valid Product',
           slug: 'valid-product',
         },
@@ -49,10 +49,10 @@ export function useCasesWithAnItemMissingProductSlug(): StrapiUseCases {
 }
 
 export function minimalDataUseCases() {
-  const strapiUseCase = strapiUseCases[0];
+  const strapiUseCase = strapiUseCases.data[0];
   return {
     ...strapiUseCases,
-    ...[
+    data: [
       {
         ...strapiUseCase,
         title: 'Minimal Data UseCase',
@@ -71,10 +71,10 @@ export function minimalDataUseCases() {
 }
 
 export function useCasesWithItemMissingData() {
-  const strapiUseCase = strapiUseCases[0];
+  const strapiUseCase = strapiUseCases.data[0];
   return {
     ...strapiUseCases,
-    ...[
+    data: [
       {
         ...strapiUseCase,
         title: undefined,
@@ -87,10 +87,10 @@ export function useCasesWithItemMissingData() {
 }
 
 export function useCasesWithItemMissingMandatoryData() {
-  const useCase = useCasesWithItemMissingData()[0];
+  const useCase = useCasesWithItemMissingData().data[0];
   return {
     ...strapiUseCases,
-    ...[
+    data: [
       {
         ...useCase,
         product: undefined,

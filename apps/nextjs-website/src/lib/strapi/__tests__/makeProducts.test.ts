@@ -27,7 +27,7 @@ describe('makeProductsProps', () => {
   });
 
   it('should transform strapi products to product props', () => {
-    const result = makeProductsProps(_.cloneDeep({ data: strapiProducts }));
+    const result = makeProductsProps(_.cloneDeep(strapiProducts));
     expect(result).toHaveLength(1);
     expect(result[0]).toMatchObject(expectedProduct);
   });
@@ -37,13 +37,13 @@ describe('makeProductsProps', () => {
       _.cloneDeep({
         data: {
           ...minimalProduct(),
-          meta: {
-            pagination: {
-              page: 1,
-              pageSize: 25,
-              pageCount: 1,
-              total: 1,
-            },
+        },
+        meta: {
+          pagination: {
+            page: 1,
+            pageSize: 25,
+            pageCount: 1,
+            total: 1,
           },
         },
       })
@@ -64,10 +64,10 @@ describe('makeProductsProps', () => {
 
   it('should handle empty data array', () => {
     const emptyData: StrapiProducts = {
-      ...[],
+      data: [],
       meta: { pagination: { page: 1, pageSize: 25, pageCount: 1, total: 0 } },
     };
-    const result = makeProductsProps({ data: emptyData });
+    const result = makeProductsProps(emptyData);
     expect(result).toHaveLength(0);
   });
 
@@ -75,13 +75,13 @@ describe('makeProductsProps', () => {
     const result = makeProductsProps({
       data: {
         ...productsWithAnItemMissingSlug(),
-        meta: {
-          pagination: {
-            page: 1,
-            pageSize: 25,
-            pageCount: 1,
-            total: 1,
-          },
+      },
+      meta: {
+        pagination: {
+          page: 1,
+          pageSize: 25,
+          pageCount: 1,
+          total: 1,
         },
       },
     });
@@ -95,13 +95,13 @@ describe('makeProductsProps', () => {
     const result = makeProductsProps({
       data: {
         ...productWithMultipleApiData(),
-        meta: {
-          pagination: {
-            page: 1,
-            pageSize: 25,
-            pageCount: 1,
-            total: 1,
-          },
+      },
+      meta: {
+        pagination: {
+          page: 1,
+          pageSize: 25,
+          pageCount: 1,
+          total: 1,
         },
       },
     });
@@ -113,13 +113,13 @@ describe('makeProductsProps', () => {
     const result = makeProductsProps({
       data: {
         ...productWithEmptyApiData(),
-        meta: {
-          pagination: {
-            page: 1,
-            pageSize: 25,
-            pageCount: 1,
-            total: 1,
-          },
+      },
+      meta: {
+        pagination: {
+          page: 1,
+          pageSize: 25,
+          pageCount: 1,
+          total: 1,
         },
       },
     });
@@ -131,13 +131,13 @@ describe('makeProductsProps', () => {
     const result = makeProductsProps({
       data: {
         ...productWithCorruptedData(),
-        meta: {
-          pagination: {
-            page: 1,
-            pageSize: 25,
-            pageCount: 1,
-            total: 1,
-          },
+      },
+      meta: {
+        pagination: {
+          page: 1,
+          pageSize: 25,
+          pageCount: 1,
+          total: 1,
         },
       },
     });
@@ -154,13 +154,13 @@ describe('makeProductsProps', () => {
     const result = makeProductsProps({
       data: {
         ...mixedValidAndInvalidProducts(),
-        meta: {
-          pagination: {
-            page: 1,
-            pageSize: 25,
-            pageCount: 1,
-            total: 1,
-          },
+      },
+      meta: {
+        pagination: {
+          page: 1,
+          pageSize: 25,
+          pageCount: 1,
+          total: 1,
         },
       },
     });
@@ -177,13 +177,13 @@ describe('makeProductsProps', () => {
     const result = makeProductsProps({
       data: {
         ...allInvalidProducts(),
-        meta: {
-          pagination: {
-            page: 1,
-            pageSize: 25,
-            pageCount: 1,
-            total: 1,
-          },
+      },
+      meta: {
+        pagination: {
+          page: 1,
+          pageSize: 25,
+          pageCount: 1,
+          total: 1,
         },
       },
     });
@@ -203,7 +203,7 @@ describe('makeProductProps', () => {
   });
 
   it('should transform single strapi product to product props', () => {
-    const result = makeProductProps(strapiProducts[0]);
+    const result = makeProductProps(strapiProducts.data[0]);
     expect(result).toMatchObject(expectedProduct);
   });
 
@@ -224,7 +224,7 @@ describe('makeProductProps', () => {
 
 describe('makeBaseProductWithoutLogoProps', () => {
   it('should create base product props without logo', () => {
-    const result = makeBaseProductWithoutLogoProps(strapiProducts[0]);
+    const result = makeBaseProductWithoutLogoProps(strapiProducts.data[0]);
 
     expect(result).toEqual({
       slug: 'test-product',
@@ -250,7 +250,7 @@ describe('makeBaseProductWithoutLogoProps', () => {
   });
 
   it('should correctly determine API data list page URL for single API', () => {
-    const result = makeBaseProductWithoutLogoProps(strapiProducts[0]);
+    const result = makeBaseProductWithoutLogoProps(strapiProducts.data[0]);
     expect(result.apiDataListPageUrl).toBe('/test-product/api/api-detail');
   });
 

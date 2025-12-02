@@ -10,7 +10,7 @@ import {
 describe('makeTutorialListPagesProps', () => {
   it('should transform strapi tutorial list pages to tutorials page props', () => {
     const result = makeTutorialListPagesProps(
-      _.cloneDeep({ data: strapiTutorialListPages })
+      _.cloneDeep(strapiTutorialListPages)
     );
     expect(result).toHaveLength(1);
     const page = result[0];
@@ -28,9 +28,7 @@ describe('makeTutorialListPagesProps', () => {
   });
 
   it('should handle minimal tutorial list pages', () => {
-    const result = makeTutorialListPagesProps({
-      data: minimalTutorialListPages(),
-    });
+    const result = makeTutorialListPagesProps(minimalTutorialListPages());
     expect(result).toHaveLength(1);
     const page = result[0];
     expect(page.abstract?.title).toBe('Minimal Tutorials');
@@ -40,16 +38,16 @@ describe('makeTutorialListPagesProps', () => {
   });
 
   it('should handle tutorial list pages without banner links', () => {
-    const result = makeTutorialListPagesProps({
-      data: tutorialListPagesWithItemMissingBannerLinks(),
-    });
+    const result = makeTutorialListPagesProps(
+      tutorialListPagesWithItemMissingBannerLinks()
+    );
     expect(result).toHaveLength(1);
     expect(result[0].bannerLinks).toEqual([]);
   });
 
   it('should handle tutorial list pages with banner links', () => {
     const result = makeTutorialListPagesProps(
-      _.cloneDeep({ data: strapiTutorialListPages })
+      _.cloneDeep(strapiTutorialListPages)
     );
     expect(result).toHaveLength(1);
     const firstElement = result[0];
@@ -60,9 +58,7 @@ describe('makeTutorialListPagesProps', () => {
   });
 
   it('should handle empty tutorial list pages', () => {
-    const result = makeTutorialListPagesProps({
-      data: emptyTutorialListPages(),
-    });
+    const result = makeTutorialListPagesProps(emptyTutorialListPages());
     expect(result).toHaveLength(0);
   });
 });

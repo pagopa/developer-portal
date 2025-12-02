@@ -7,7 +7,7 @@ import { compact } from 'lodash';
 import { RootEntity } from '@/lib/strapi/types/rootEntity';
 
 export function makeSolutionsProps(
-  strapiSolutions: RootEntity<StrapiSolutions>
+  strapiSolutions: StrapiSolutions
 ): ReadonlyArray<SolutionTemplateProps> {
   return compact(
     strapiSolutions?.data.map((attributes) => {
