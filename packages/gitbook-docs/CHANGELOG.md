@@ -1,5 +1,16 @@
 # gitbook-docs
 
+## 1.6.0
+
+### Minor Changes
+
+- c07937e: Add script and workflow to delete old directories from S3 bucket
+
+### Patch Changes
+
+- aa491f6: Remove replaceAll('\\')
+- 0cc1935: Add generation of file containing all main versions dirNames
+
 ## 1.5.0
 
 ### Minor Changes
