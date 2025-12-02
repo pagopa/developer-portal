@@ -19,7 +19,8 @@ describe('makeUseCasesProps', () => {
   });
 
   it('should transform strapi use cases to use cases props', () => {
-    const result = makeUseCasesProps(_.cloneDeep({ data: strapiUseCases }), {});
+    console.log(strapiUseCases);
+    const result = makeUseCasesProps({ data: strapiUseCases }, {});
     expect(result).toHaveLength(1);
     expect(result[0]).toMatchObject({
       coverImage: {
