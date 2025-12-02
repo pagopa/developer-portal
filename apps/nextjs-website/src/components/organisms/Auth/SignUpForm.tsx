@@ -33,6 +33,7 @@ const defaults = {
   firstName: '',
   lastName: '',
   mailinglistAccepted: false,
+  surveyAccepted: false,
   role: '',
   company: '',
   confirmPassword: '',
