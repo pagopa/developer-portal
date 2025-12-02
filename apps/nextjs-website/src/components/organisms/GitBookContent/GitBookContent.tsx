@@ -87,14 +87,10 @@ const GitBookContent = ({
   content,
   config,
   hideLevel1Headings = false,
-}: GitBookContentProps) => (
-  <>
-    <pre>{content}</pre>
-    {renderContent(
-      parseContent(content, config),
-      React,
-      hideLevel1Headings ? hideH1Components : components
-    )}
-  </>
-);
+}: GitBookContentProps) =>
+  renderContent(
+    parseContent(content, config),
+    React,
+    hideLevel1Headings ? hideH1Components : components
+  );
 export default GitBookContent;
