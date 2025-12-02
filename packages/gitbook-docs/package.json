@@ -27,7 +27,8 @@
     "generate-url-parsing-metadata": "ts-node src/scripts/generateUrlParsingMetadata.ts",
     "generate-strapi-response-files": "ts-node src/scripts/generateStrapiResponseFiles.ts",
     "parse-docs": "ts-node src/scripts/parseDocUrlsAndIncludes.ts",
-    "sync-all-metadata": "ts-node src/scripts/syncAllMetadata.ts"
+    "sync-all-metadata": "ts-node src/scripts/syncAllMetadata.ts",
+    "delete-unused-directories": "ts-node src/scripts/deleteUnusedDirectories.ts"
   },
   "dependencies": {
     "@markdoc/markdoc": "0.3.0",

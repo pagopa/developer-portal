@@ -141,7 +141,6 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
       </Box>
       {user &&
         isSubscribed &&
-        isPlayerVisible &&
         ![WebinarState.future, WebinarState.unknown].includes(webinarState) && (
           <WebinarPlayerSection
             webinar={webinar}
@@ -149,6 +148,7 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
             enableQuestionForm={isQuestionFormEnabled}
             reloadPlayerToken={livePlayerReloadToken}
             isLiveStreamAvailable={isLiveStreamAvailable}
+            isPlayerVisible={isPlayerVisible}
           ></WebinarPlayerSection>
         )}
       {webinar.subscribeCtaLabel && (
