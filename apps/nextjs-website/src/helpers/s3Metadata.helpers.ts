@@ -172,8 +172,8 @@ export async function fetchMetadataFromCDN<T>(
 
 const S3_PATH_TO_GITBOOK_DOCS =
   process.env.S3_PATH_TO_GITBOOK_DOCS || 'devportal-docs/docs';
-const S3_GUIDES_METADATA_JSON_PATH =
-  process.env.S3_GUIDES_METADATA_JSON_PATH || 'guides-metadata.json';
+const S3_METADATA_JSON_PATH =
+  process.env.S3_METADATA_JSON_PATH || 'metadata.json';
 const S3_SOLUTIONS_METADATA_JSON_PATH =
   process.env.S3_SOLUTIONS_METADATA_JSON_PATH || 'solutions-metadata.json';
 const S3_RELEASE_NOTES_METADATA_JSON_PATH =
@@ -212,12 +212,8 @@ export const getGuidesMetadata = async (dirName?: string) => {
 
   guidesMetadataCache = await fetchMetadataFromCDN<JsonMetadata>(
     dirName
-      ? path.join(
-          S3_PATH_TO_GITBOOK_DOCS,
-          dirName,
-          S3_GUIDES_METADATA_JSON_PATH
-        )
-      : S3_GUIDES_METADATA_JSON_PATH
+      ? path.join(S3_PATH_TO_GITBOOK_DOCS, dirName, S3_METADATA_JSON_PATH)
+      : S3_METADATA_JSON_PATH
   );
   guidesMetadataCacheTime = now;
 
