@@ -39,7 +39,7 @@ async function main() {
   let strapiApisData;
   try {
     const { data } = await fetchFromStrapi<StrapiApiData>(
-      'api/apis-data?populate[product]=*&populate[apiRestDetail][populate][specUrls]=*'
+      'api/apis-data?populate[product][populate]=*&populate[apiRestDetail][populate][specUrls]=*'
     );
     strapiApisData = data;
   } catch (error) {
