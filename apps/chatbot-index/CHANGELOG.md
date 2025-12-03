@@ -1,5 +1,11 @@
 # chatbot-index
 
+## 2.1.1
+
+### Patch Changes
+
+- dfc4d9f: Remove strapi_api_key from chatbot and chatbot-index
+
 ## 2.1.0
 
 ### Minor Changes

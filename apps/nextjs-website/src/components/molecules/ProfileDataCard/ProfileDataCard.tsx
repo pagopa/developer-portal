@@ -1,26 +1,26 @@
 'use client';
 import InfoCardEditButton from '@/components/atoms/InfoCardEditButton/InfoCardEditButton';
 import {
-  InfoCardItemProfile,
-  InfoCardItemProfileProps,
-} from '@/components/atoms/InfoCardItem/InfoCardItemProfile';
+  ProfileDataCardItem,
+  ProfileDataCardItemProps,
+} from '@/components/atoms/InfoCardItem/ProfileDataCardItem';
 import { isProduction } from '@/config';
 import { Box, Button, Card, Divider, Stack, Typography } from '@mui/material';
 import { ButtonNaked } from '@pagopa/mui-italia';
 import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 
-export type InfoCardProfileProps = {
+export type ProfileDataCardProps = {
   cardTitle: string;
-  items: InfoCardItemProfileProps[];
-  onValue?: (items: InfoCardItemProfileProps[]) => null;
+  items: ProfileDataCardItemProps[];
+  onValue?: (items: ProfileDataCardItemProps[]) => null;
 };
 
-export const InfoCardProfile = ({
+export const ProfileDataCard = ({
   cardTitle,
   items,
   onValue,
-}: InfoCardProfileProps) => {
+}: ProfileDataCardProps) => {
   const t = useTranslations('profile');
 
   const [dataSectionItems, setDataSectionItems] = useState([...items]);
@@ -82,7 +82,7 @@ export const InfoCardProfile = ({
   ) : null;
 
   return (
-    <Card raised sx={{ padding: 4, maxWidth: '700px' }}>
+    <Card raised sx={{ padding: 4, maxWidth: '900px' }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
         <Typography variant='h6' fontWeight={700} mt={1}>
           {cardTitle}
@@ -91,7 +91,7 @@ export const InfoCardProfile = ({
       </Box>
       {dataSectionItems.map((item, index) => (
         <Box key={index}>
-          <InfoCardItemProfile
+          <ProfileDataCardItem
             {...item}
             valueFallback={addValueComponent}
             editing={editing}

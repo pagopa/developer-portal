@@ -76,7 +76,7 @@
             "wrongPassword": "La password inserita non risulta corretta",
             "requiredCurrentPassword": "È necessario inserire la password attuale",
             "passwordsNotMatch": "Le password non corrispondono",
-            "passwordPolicy": "Non rispetta i requisiti. Minimo 8 caratteri, almeno un numero, almeno una lettera maiuscola e almeno un carattere speciale",
+            "passwordPolicy": "Non rispetta i requisiti. Minimo 8 caratteri, almeno un numero, una lettera maiuscola, una minuscola e un carattere speciale",
             "cancel": "Annulla",
             "save": "Conferma",
             "dialog": {
@@ -130,7 +130,7 @@
             "reduce": "Riduci",
             "expand": "Espandi",
             "questionBox": "Question box",
-            "notLive": "Non appena sarà iniziato l’evento qui potrai scrivere le tue domande"
+            "notLive": "Puoi scrivere le tue domande solo quando l'evento è in corso"
         },
         "warnings": {
             "email": "Il giorno prima dell'evento riceverai una email con i dettagli.",
@@ -209,7 +209,7 @@
             "alreadyHaveAnAccount": "Hai già un account?",
             "whyCreateAccount": "Perché iscriversi a PagoPA DevPortal",
             "passwordError": "Non rispetta i requisiti.",
-            "passwordPolicy": "Minimo 8 caratteri, almeno un numero, almeno una lettera maiuscola e almeno un carattere speciale",
+            "passwordPolicy": "Minimo 8 caratteri, almeno un numero, una lettera maiuscola, una minuscola e un carattere speciale",
             "emailSent": "Email inviata a {email}",
             "advantages": {
                 "exclusive_contents": {

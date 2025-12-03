@@ -1,6 +1,6 @@
 {
   "name": "gitbook-docs",
-  "version": "1.4.0",
+  "version": "1.6.0",
   "private": true,
   "exports": {
     "./": "./dist/"
@@ -26,7 +26,9 @@
     "generate-url-parsing-metadata": "ts-node src/scripts/generateUrlParsingMetadata.ts",
     "generate-strapi-response-files": "ts-node src/scripts/generateStrapiResponseFiles.ts",
     "parse-docs": "ts-node src/scripts/parseDocUrlsAndIncludes.ts",
-    "sync-all-metadata": "ts-node src/scripts/syncAllMetadata.ts"
+    "replace-escaped-tokens-with-back-ticks": "ts-node src/scripts/replaceEscapedTokensWithBackTicks.ts",
+    "sync-all-metadata": "ts-node src/scripts/syncAllMetadata.ts",
+    "delete-unused-directories": "ts-node src/scripts/deleteUnusedDirectories.ts"
   },
   "dependencies": {
     "@markdoc/markdoc": "0.3.0",

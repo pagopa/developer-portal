@@ -1,5 +1,44 @@
 # nextjs-website
 
+## 13.2.0
+
+### Minor Changes
+
+- cbca7f2: Add UpdatedAt to tutorials and tutorialListPage, Update lastmod in sitemap
+- 91f84c8: Add fallaback for webinar in the past missing relative vod
+
+### Patch Changes
+
+- a0b2db1: Fix VideoJS live font
+- 22a1548: Fix parsing pipes in code blocks in html tables
+- Updated dependencies [aa491f6]
+- Updated dependencies [c07937e]
+- Updated dependencies [0cc1935]
+  - gitbook-docs@1.6.0
+
+## 13.1.0
+
+### Minor Changes
+
+- 5d72634: Replace Centro Sella link and label with PARI link and label
+- f3602c9: Keep question and stream if webinar change to past state but streaming is running
+- b58020f: Refactor webinar banner in homepage logic
+- 01b8f0c: Align profile page layout to the same margin and content width to be coherent with the rest of the website
+- e605b32: Remove LangSwitch component
+- 94f2306: Add LanguageSelector component and its storybook story
+
+### Patch Changes
+
+- 2d061b9: Update question box disabled label
+- f3602c9: Fix player visibility in coming soon webinar state
+- d9ae0d8: Implement custom start time for video on demand playback
+- e605b32: Fix build missing aria label for Centro Sella replaced with aria lable for PARI
+- bfbf79e: Add missing requisite for password in password error label
+- Updated dependencies [656bd0b]
+- Updated dependencies [5885dd7]
+- Updated dependencies [5885dd7]
+  - gitbook-docs@1.5.0
+
 ## 13.0.0
 
 ### Major Changes
