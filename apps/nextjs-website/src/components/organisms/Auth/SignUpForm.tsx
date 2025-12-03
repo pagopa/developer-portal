@@ -156,6 +156,7 @@ const SignUpForm = ({
     role,
     username,
     mailinglistAccepted,
+    surveyAccepted,
   } = userData;
 
   return (
@@ -305,7 +306,7 @@ const SignUpForm = ({
                   control={
                     <Checkbox
                       name='surveyAccepted'
-                      checked={userData.surveyAccepted}
+                      checked={surveyAccepted}
                       sx={{ marginTop: '-4px' }}
                       onChange={handleInputChange}
                     />
