@@ -9,6 +9,7 @@ const user: User = {
   given_name: 'Giovanni',
   family_name: 'Doe',
   'custom:mailinglist_accepted': 'true',
+  'custom:survey_accepted': 'false',
   'custom:company_type': 'Test Co',
   'custom:job_role': 'Developer',
 };
@@ -28,6 +29,7 @@ describe.skip('Active campaign integration contact flow', () => {
       given_name: 'new given_name',
       family_name: 'new family_name',
       'custom:mailinglist_accepted': 'true',
+      'custom:survey_accepted': 'true',
       'custom:company_type': 'new company_type',
       'custom:job_role': 'new job_role',
     };

@@ -70,6 +70,7 @@ describe('Helpers: listUsersCommandOutputToUser', () => {
       given_name: 'Giovanni',
       family_name: 'Doe',
       'custom:mailinglist_accepted': 'true',
+      'custom:survey_accepted': 'true',
       'custom:company_type': 'gestore-di-pubblico-servizio',
       'custom:job_role': 'Developer',
     };
