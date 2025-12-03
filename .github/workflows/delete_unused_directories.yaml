@@ -1,0 +1,70 @@
+name: Delete unused documentation directories from S3 bucket
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'The environment used as target'
+        type: choice
+        required: true
+        default: dev
+        options:
+          - dev
+          - uat
+          - prod
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  manual_delete_unused_directories:
+    name: Delete unused directory on S3 (manual on ${{ inputs.environment }})
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    outputs:
+      environment: ${{ inputs.environment }}
+    environment: ${{ inputs.environment }}
+    env:
+      ENV_SHORT: ${{ fromJSON('{"dev":"d","uat":"u","prod":"p"}')[inputs.environment] }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.JS
+        uses: ./.github/actions/setup-node
+
+      - name: Cache npm dependencies
+        id: cache-npm
+        uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-npm-
+
+      - name: Install dependencies
+        run: |
+          npm config set cache ~/.npm
+          npm ci
+
+      - name: Compile packages
+        run: npm run compile
+
+      - name: Configure AWS Credentials
+        uses: ./.github/actions/configure-aws-credentials
+        with:
+          aws_region: eu-south-1
+          role_to_assume: ${{ secrets.DEPLOY_IAM_ROLE }}
+
+      - name: Delete unused documentation
+        env:
+          ENV_SHORT: ${{ env.ENV_SHORT }}
+          FETCH_FROM_STRAPI: ${{ vars.FETCH_FROM_STRAPI || 'true' }}
+          S3_BUCKET_NAME: devportal-${{ env.ENV_SHORT }}-website-static-content
+          S3_DIRNAMES_JSON_PATH: ${{ vars.S3_DIRNAMES_JSON_PATH || 'dirNames.json' }}
+          S3_PATH_TO_GITBOOK_DOCS: ${{ vars.S3_PATH_TO_GITBOOK_DOCS || 'devportal-docs/docs' }}
+          STRAPI_API_TOKEN: ${{ secrets.STRAPI_API_TOKEN }}
+          STRAPI_ENDPOINT: ${{ vars.STRAPI_ENDPOINT }}
+        run: npm run delete-unused-directories -w gitbook-docs
+

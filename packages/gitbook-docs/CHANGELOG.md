@@ -1,5 +1,27 @@
 # gitbook-docs
 
+## 1.6.0
+
+### Minor Changes
+
+- c07937e: Add script and workflow to delete old directories from S3 bucket
+
+### Patch Changes
+
+- aa491f6: Remove replaceAll('\\')
+- 0cc1935: Add generation of file containing all main versions dirNames
+
+## 1.5.0
+
+### Minor Changes
+
+- 656bd0b: Fix url generation for path with only filename of similar paths
+
+### Patch Changes
+
+- 5885dd7: Add script and action to generate multiple metadata files during sync
+- 5885dd7: Sync only provided folders if workflow variable DIR_NAMES_FILTER is set
+
 ## 1.4.0
 
 ### Minor Changes

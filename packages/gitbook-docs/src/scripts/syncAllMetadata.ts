@@ -10,7 +10,11 @@ import { writeFile } from 'fs/promises';
 import * as fs from 'fs';
 import path from 'path';
 import { MetadataItem } from '../metadataItem';
-import { makeS3Client, putS3File } from '../helpers/s3Bucket.helper';
+import {
+  downloadS3File,
+  makeS3Client,
+  putS3File,
+} from '../helpers/s3Bucket.helper';
 import { S3Client } from '@aws-sdk/client-s3';
 import { extractTitleFromMarkdown } from '../helpers/extractTitle.helper';
 import { fetchFromStrapi } from '../helpers/fetchFromStrapi';
@@ -39,12 +43,10 @@ import {
   apisDataQueryString,
   guidesQueryString,
   productsQueryString,
-  solutionListPageQueryString,
   getSolutionsQueryString,
   getReleaseNotesQueryString,
-  releaseNotesQueryString,
-  solutionsQueryString,
 } from '../helpers/strapiQuery';
+import { compact } from 'lodash';
 
 // Load environment variables
 dotenv.config();
@@ -70,6 +72,12 @@ const GENERATE_ROOT_METADATA_FILE =
 const DIR_NAMES_FILTER = process.env.DIR_NAMES_FILTER
   ? process.env.DIR_NAMES_FILTER.split(',').map((name) => name.trim())
   : undefined;
+const S3_MAIN_GUIDE_VERSIONS_DIRNAMES_JSON_PATH =
+  process.env.S3_MAIN_GUIDE_VERSIONS_DIRNAMES_JSON_PATH ||
+  'main-guide-versions-dirNames.json';
+const S3_MAIN_GUIDE_VERSIONS_DIRNAMES_TO_REMOVE_JSON_PATH =
+  process.env.S3_MAIN_GUIDE_VERSIONS_DIRNAMES_TO_REMOVE_JSON_PATH ||
+  'main-guide-versions-dirNames-to-remove.json';
 
 // S3 paths for metadata files
 const S3_GUIDE_METADATA_JSON_PATH =
@@ -356,6 +364,20 @@ async function processGuidesMetadata(
   }
 
   return items;
+}
+
+function getMainVersionsDirNames(guides: StrapiGuide[]): {
+  dirNames: string[];
+} {
+  return {
+    dirNames: compact(
+      guides.flatMap((guide) =>
+        guide.attributes.versions.map(
+          (version) => version.main && version.dirName
+        )
+      )
+    ),
+  };
 }
 
 // Process solutions metadata
@@ -651,6 +673,47 @@ async function main() {
         `URL parsing metadata saved to ${URL_PARSING_METADATA_JSON_PATH}`
       );
     }
+
+    const mainVersionsDirNames = getMainVersionsDirNames(strapiData.guides);
+    console.log(
+      `Processed ${mainVersionsDirNames.dirNames.length} main version guide items.`
+    );
+
+    const s3MainVersionsDirNamesFile = await downloadS3File(
+      S3_MAIN_GUIDE_VERSIONS_DIRNAMES_JSON_PATH,
+      S3_BUCKET_NAME!,
+      getS3Client()
+    ).catch((error) => {
+      console.log(
+        `No existing main versions dirNames file found in S3: ${error}. Returning empty list.`
+      );
+      return '{ "dirNames": [] }';
+    });
+
+    const s3MainVersionsDirNames: { dirNames: string[] } = JSON.parse(
+      s3MainVersionsDirNamesFile
+    );
+
+    const setMainNames = new Set(mainVersionsDirNames.dirNames);
+
+    const dirNamesToRemove: string[] = s3MainVersionsDirNames.dirNames.filter(
+      (dirNames) => !setMainNames.has(dirNames)
+    );
+
+    if (dirNamesToRemove.length > 0) {
+      await putS3File(
+        { dirNames: dirNamesToRemove },
+        S3_MAIN_GUIDE_VERSIONS_DIRNAMES_TO_REMOVE_JSON_PATH,
+        S3_BUCKET_NAME!,
+        getS3Client()
+      );
+    }
+    await putS3File(
+      mainVersionsDirNames,
+      S3_MAIN_GUIDE_VERSIONS_DIRNAMES_JSON_PATH,
+      S3_BUCKET_NAME!,
+      getS3Client()
+    );
 
     // Process and save guides metadata
     if (GENERATE_SITEMAP_METADATA && metadataFilter.guides) {
