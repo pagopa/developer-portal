@@ -16,7 +16,7 @@ from src.modules.settings import SETTINGS
 # from src.modules.documents import get_product_list
 
 
-LOGGER = get_logger(__name__)
+LOGGER = get_logger(__name__, level=SETTINGS.log_level)
 # PRODUCTS = get_product_list() + ["api", "webinars"]
 PRODUCTS = [
     "pago-pa",

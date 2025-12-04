@@ -12,6 +12,7 @@ ROOT = CWF.parent.parent.parent.absolute().__str__()
 PARAMS = yaml.safe_load(open(os.path.join(ROOT, "config", "params.yaml"), "r"))
 AWS_SESSION = boto3.Session()
 
+
 def get_ssm_parameter(name: str | None, default: str | None = None) -> str | None:
     """
     Retrieves a specific value from AWS Systems Manager's Parameter Store.
@@ -52,6 +53,7 @@ class ChatbotSettings(BaseSettings):
         os.getenv("LANGFUSE_INIT_PROJECT_SECRET_KEY"),
     )
     presidio_config: dict = PARAMS["config_presidio"]
+    query_table_prefix: str = os.getenv("CHB_QUERY_TABLE_PREFIX", "chatbot")
 
 
 SETTINGS = ChatbotSettings()

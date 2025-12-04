@@ -1,8 +1,7 @@
 import datetime
 import nh3
 import json
-import os
-import uuid
+import secrets
 from botocore.exceptions import BotoCoreError, ClientError
 from boto3.dynamodb.conditions import Key
 from fastapi import APIRouter, Header, HTTPException
@@ -19,6 +18,7 @@ from src.app.sessions import (
     get_user_session,
 )
 from src.app.chatbot_init import chatbot
+from src.modules.settings import SETTINGS
 
 LOGGER = get_logger(__name__)
 router = APIRouter()
@@ -29,9 +29,8 @@ def can_evaluate() -> bool:
     Decide whether to evaluate the query or not.
     This is based on the amount of daily query
     """
-    max_daily_evaluations = int(os.getenv("CHB_MAX_DAILY_EVALUATIONS", "200"))
+    max_daily_evaluations = SETTINGS.max_daily_evaluations
     result = count_queries_created_today() < max_daily_evaluations
-    LOGGER.debug(f"[can_evaluate] result: {result}")
     return result
 
 
@@ -103,51 +102,31 @@ def get_final_response(response_str: str, references: List[str]) -> str:
     return response_str
 
 
-@router.post("/queries")
-async def query_creation(
+def prepare_body_to_save(
+    bodyToReturn: dict,
     query: Query,
-    authorization: Annotated[str | None, Header()] = None,
-):
+    answer_json: dict,
+    now: datetime,
+) -> dict:
 
-    now = datetime.datetime.now(datetime.UTC)
-    trace_id = str(uuid.uuid4())
-    userId = current_user_id(authorization)
-    session = find_or_create_session(userId, now=now)
-    salt = session_salt(session["id"])
-    query_str = nh3.clean(query.question)
-    user_id = hash_func(userId, salt)
-    messages = [item.model_dump() for item in query.history] if query.history else None
+    days = SETTINGS.expire_days
+    expires_at = int((now + datetime.timedelta(days=days)).timestamp())
 
-    answer_json = await chatbot.chat_generate(
-        query_str=query_str,
-        trace_id=trace_id,
-        session_id=session["id"],
-        user_id=user_id,
-        messages=messages,
-    )
-    answer = get_final_response(
+    bodyToSave = bodyToReturn.copy()
+    bodyToSave["question"] = query.question
+    bodyToSave["answer"] = get_final_response(
         response_str=answer_json["response"],
         references=answer_json["references"],
     )
-    
-    if can_evaluate():
-        evaluation_data = {
-            "query_str": query_str,
-            "response_str": answer,
-            "retrieved_contexts": answer_json["contexts"],
-            "trace_id": trace_id,
-            "messages": messages,
-        }
-        if sqs_queue_evaluate is None:
-            LOGGER.warning(
-                f"sqs_queue_evaluate is None, cannot send message {evaluation_data}"
-            )
-        else:
-            sqs_response = sqs_queue_evaluate.send_message(
-                MessageBody=json.dumps(evaluation_data),
-                MessageGroupId=trace_id,  # Required for FIFO queues
-            )
-            LOGGER.info(f"sqs response: {sqs_response}")
+    bodyToSave["topics"] = answer_json.get("products", [])
+    bodyToSave["expiresAt"] = expires_at
+
+    return bodyToSave
+
+
+def prepare_body_to_return(
+    query: Query, session: dict | None, answer: str, trace_id: str, now: datetime
+) -> dict:
 
     if query.queriedAt is None:
         queriedAt = now.isoformat()
@@ -167,21 +146,116 @@ async def query_creation(
         "badAnswer": False,
     }
 
-    days = int(os.getenv("EXPIRE_DAYS", 90))
-    expires_at = int((now + datetime.timedelta(days=days)).timestamp())
+    return bodyToReturn
 
-    bodyToSave = bodyToReturn.copy()
-    bodyToSave["question"] = chatbot.mask_pii(query.question)
-    bodyToSave["answer"] = get_final_response(
-        response_str=chatbot.mask_pii(answer_json["response"]),
+
+def evaluate_query(
+    query_str: str,
+    answer: str,
+    answer_json: dict,
+    trace_id: str,
+    messages: List[dict],
+) -> None:
+    if can_evaluate():
+        evaluation_data = {
+            "query_str": query_str,
+            "response_str": answer,
+            "retrieved_contexts": answer_json["contexts"],
+            "trace_id": trace_id,
+            "messages": messages,
+        }
+        if sqs_queue_evaluate is None:
+            LOGGER.warning(
+                f"sqs_queue_evaluate is None, cannot send message {evaluation_data}"
+            )
+        else:
+            sqs_response = sqs_queue_evaluate.send_message(
+                MessageBody=json.dumps(evaluation_data),
+                MessageGroupId=trace_id,  # Required for FIFO queues
+            )
+            LOGGER.info(f"sqs response: {sqs_response}")
+    else:
+        LOGGER.info(
+            f"Skipping evaluation due to daily limit reached ({SETTINGS.max_daily_evaluations})"
+        )
+
+
+def create_monitor_trace(trace_data: dict) -> None:
+    if sqs_queue_evaluate is None:
+        LOGGER.warning(f"sqs_queue_evaluate is None, cannot send message {trace_data}")
+    else:
+        payload = {
+            "operation": "create_trace",
+            "data": trace_data,
+        }
+        sqs_response = sqs_queue_evaluate.send_message(
+            MessageBody=json.dumps(payload),
+            MessageGroupId=trace_data["trace_id"],  # Required for FIFO queues
+        )
+        LOGGER.info(f"sqs response: {sqs_response}")
+
+
+@router.post("/queries")
+async def query_creation(
+    query: Query,
+    authorization: Annotated[str | None, Header()] = None,
+):
+
+    now = datetime.datetime.now(datetime.UTC)
+    trace_id = secrets.token_hex(16)
+    userId = current_user_id(authorization)
+    session = find_or_create_session(userId, now=now)
+    salt = session_salt(session["id"])
+    query_str = nh3.clean(query.question)
+    user_id = hash_func(userId, salt)
+    messages = [item.model_dump() for item in query.history] if query.history else None
+
+    answer_json = await chatbot.chat_generate(
+        query_str=query_str,
+        messages=messages,
+    )
+    answer = get_final_response(
+        response_str=answer_json["response"],
         references=answer_json["references"],
     )
-    bodyToSave["topics"] = answer_json.get("products", [])
-    bodyToSave["expiresAt"] = expires_at
-    try:
-        tables["queries"].put_item(Item=bodyToSave)
-    except (BotoCoreError, ClientError) as e:
-        raise HTTPException(status_code=422, detail=f"[POST /queries] error: {e}")
+
+    bodyToReturn = prepare_body_to_return(
+        query=query,
+        session=session,
+        answer=answer,
+        trace_id=trace_id,
+        now=now,
+    )
+
+    bodyToSave = prepare_body_to_save(
+        bodyToReturn=bodyToReturn,
+        query=query,
+        answer_json=answer_json,
+        now=now,
+    )
+
+    trace_data = {
+        "trace_id": trace_id,
+        "user_id": user_id,
+        "session_id": session["id"],
+        "query": query.question,
+        "messages": messages if messages else [],
+        "response": answer,
+        "contexts": answer_json.get("contexts", []),
+        "tags": answer_json.get("products", []),
+        "traceSpans": answer_json.get("spans", []),
+        "query_for_database": bodyToSave,
+    }
+    create_monitor_trace(trace_data)
+
+    evaluate_query(
+        query_str=query_str,
+        answer=answer,
+        answer_json=answer_json,
+        trace_id=trace_id,
+        messages=messages,
+    )
+
     return bodyToReturn
 
 
@@ -217,4 +291,3 @@ async def queries_fetching(
         result = dbResponse.get("Items", [])
 
     return result
-
