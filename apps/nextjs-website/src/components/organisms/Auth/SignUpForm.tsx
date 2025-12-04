@@ -33,6 +33,7 @@ const defaults = {
   firstName: '',
   lastName: '',
   mailinglistAccepted: false,
+  surveyAccepted: false,
   role: '',
   company: '',
   confirmPassword: '',
@@ -155,6 +156,7 @@ const SignUpForm = ({
     role,
     username,
     mailinglistAccepted,
+    surveyAccepted,
   } = userData;
 
   return (
@@ -299,6 +301,18 @@ const SignUpForm = ({
                   }
                   label={t('auth.signUp.confirmComunications')}
                   sx={{ alignItems: 'flex-start' }}
+                />
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      name='surveyAccepted'
+                      checked={surveyAccepted}
+                      sx={{ marginTop: '-4px' }}
+                      onChange={handleInputChange}
+                    />
+                  }
+                  label={t('auth.signUp.confirmSurvey')}
+                  sx={{ alignItems: 'flex-start', marginTop: 2 }}
                 />
               </Grid>
               <Stack pt={3}>

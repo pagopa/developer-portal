@@ -13,15 +13,17 @@ import {
 } from '@mui/material';
 import Link from 'next/link';
 import React, { ReactNode, useState } from 'react';
-import { ButtonNaked } from '@/editorialComponents/Footer/components/ButtonNaked';
 import { useUser } from '@/helpers/user.helper';
 import { snackbarAutoHideDurationMs } from '@/config';
+import AgreementItem from '@/components/atoms/AgreementItem/AgreementItem';
 
 // TODO: Remove this code duplication and manage messages with a dedicated service
 interface Info {
   message: string;
   isError: boolean;
 }
+
+type SubscribeField = 'mailinglist' | 'survey';
 
 const Agreements = () => {
   const t = useTranslations();
@@ -33,17 +35,24 @@ const Agreements = () => {
 
   const hasAcceptedMailingListSubscription =
     user?.attributes['custom:mailinglist_accepted'] === 'true';
+  const hasAcceptedSurveySubscription =
+    user?.attributes['custom:survey_accepted'] === 'true';
 
   const [isSubscriptionButtonDisabled, setIsSubscriptionButtonDisabled] =
     useState(false);
 
-  const handleSubscribe = () => {
+  const handleSubscribe = (field: SubscribeField) => {
     if (user) {
       setIsSubscriptionButtonDisabled(true);
       setUserAttributes(
         {
           ...user.attributes,
-          'custom:mailinglist_accepted': 'true',
+          'custom:mailinglist_accepted': `${
+            field === 'mailinglist' ? true : hasAcceptedMailingListSubscription
+          }`,
+          'custom:survey_accepted': `${
+            field === 'survey' ? true : hasAcceptedSurveySubscription
+          }`,
         },
         () => {
           setIsSubscriptionButtonDisabled(false);
@@ -51,7 +60,11 @@ const Agreements = () => {
         },
         () => {
           setInfo({
-            message: t('profile.agreements.newsletter.error.subscribe'),
+            message: t(
+              `profile.agreements.${
+                field === 'mailinglist' ? 'newsletter' : 'survey'
+              }.error.subscribe`
+            ),
             isError: true,
           });
           setIsSubscriptionButtonDisabled(false);
@@ -60,13 +73,18 @@ const Agreements = () => {
       );
     }
   };
-  const handleUnsubscribe = () => {
+  const handleUnsubscribe = (field: SubscribeField) => {
     if (user) {
       setIsSubscriptionButtonDisabled(true);
       setUserAttributes(
         {
           ...user.attributes,
-          'custom:mailinglist_accepted': 'false',
+          'custom:mailinglist_accepted': `${
+            field === 'mailinglist' ? false : hasAcceptedMailingListSubscription
+          }`,
+          'custom:survey_accepted': `${
+            field === 'survey' ? false : hasAcceptedSurveySubscription
+          }`,
         },
         () => {
           setIsSubscriptionButtonDisabled(false);
@@ -74,7 +92,11 @@ const Agreements = () => {
         },
         () => {
           setInfo({
-            message: t('profile.agreements.newsletter.error.unsubscribe'),
+            message: t(
+              `profile.agreements.${
+                field === 'mailinglist' ? 'newsletter' : 'survey'
+              }.error.unsubscribe`
+            ),
             isError: true,
           });
           setIsSubscriptionButtonDisabled(false);
@@ -124,63 +146,29 @@ const Agreements = () => {
         <Typography variant='h4' sx={{ marginBottom: '40px' }}>
           {t('profile.agreements.title')}
         </Typography>
-        <Typography
-          variant='h6'
-          sx={{
-            marginBottom: '24px',
-            fontSize: '16px !important',
-            fontWeight: '600',
-          }}
-        >
-          {t('profile.agreements.newsletter.title')}
-        </Typography>
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: { xs: 'column', md: 'row' },
-            gap: { xs: '10px', md: '100px' },
-          }}
-        >
-          <Typography
-            variant='body2'
-            sx={{
-              fontSize: '14px',
-              color: palette.text.secondary,
-            }}
-          >
-            {t('profile.agreements.newsletter.description')}
-          </Typography>
-          <Box
-            sx={{
-              margin: 0,
-              padding: 0,
-              minWidth: '110px',
-              textAlign: 'right',
-            }}
-          >
-            {hasAcceptedMailingListSubscription ? (
-              <ButtonNaked
-                disabled={loading || isSubscriptionButtonDisabled}
-                sx={{
-                  color: palette.error.dark,
-                  whiteSpace: 'nowrap',
-                }}
-                onClick={handleUnsubscribe}
-              >
-                {t('profile.agreements.newsletter.unsubscribe')}
-              </ButtonNaked>
-            ) : (
-              <ButtonNaked
-                disabled={loading || isSubscriptionButtonDisabled}
-                sx={{ whiteSpace: 'nowrap' }}
-                onClick={handleSubscribe}
-                color='primary'
-              >
-                {t('profile.agreements.newsletter.subscribe')}
-              </ButtonNaked>
-            )}
-          </Box>
-        </Box>
+        <AgreementItem
+          title={t('profile.agreements.newsletter.title')}
+          description={t('profile.agreements.newsletter.description')}
+          subscribed={hasAcceptedMailingListSubscription}
+          loading={loading}
+          disabled={isSubscriptionButtonDisabled}
+          onSubscribe={() => handleSubscribe('mailinglist')}
+          onUnsubscribe={() => handleUnsubscribe('mailinglist')}
+          subscribeLabel={t('profile.agreements.newsletter.subscribe')}
+          unsubscribeLabel={t('profile.agreements.newsletter.unsubscribe')}
+        ></AgreementItem>
+        <Box sx={{ marginY: '32px' }} />
+        <AgreementItem
+          title={t('profile.agreements.survey.title')}
+          description={t('profile.agreements.survey.description')}
+          subscribed={hasAcceptedSurveySubscription}
+          loading={loading}
+          disabled={isSubscriptionButtonDisabled}
+          onSubscribe={() => handleSubscribe('survey')}
+          onUnsubscribe={() => handleUnsubscribe('survey')}
+          subscribeLabel={t('profile.agreements.survey.subscribe')}
+          unsubscribeLabel={t('profile.agreements.survey.unsubscribe')}
+        ></AgreementItem>
         <Divider sx={{ marginY: '32px' }} />
         <Typography
           variant='h6'
