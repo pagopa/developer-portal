@@ -2,4 +2,4 @@
 "nextjs-website": minor
 ---
 
-Add checkbox for survey in sign up form
+Add checkbox for survey in sign-up form
