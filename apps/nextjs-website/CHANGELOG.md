@@ -1,5 +1,21 @@
 # nextjs-website
 
+## 13.2.0
+
+### Minor Changes
+
+- cbca7f2: Add UpdatedAt to tutorials and tutorialListPage, Update lastmod in sitemap
+- 91f84c8: Add fallaback for webinar in the past missing relative vod
+
+### Patch Changes
+
+- a0b2db1: Fix VideoJS live font
+- 22a1548: Fix parsing pipes in code blocks in html tables
+- Updated dependencies [aa491f6]
+- Updated dependencies [c07937e]
+- Updated dependencies [0cc1935]
+  - gitbook-docs@1.6.0
+
 ## 13.1.0
 
 ### Minor Changes
