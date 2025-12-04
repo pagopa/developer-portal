@@ -112,10 +112,7 @@ const WebinarPlayerSection = ({
                 <VimeoPlayer playerSrc={webinar.playerSrc} />
               ) : (
                 <VideoJsPlayer
-                  autoplay={[
-                    WebinarState.live,
-                    WebinarState.comingSoon,
-                  ].includes(webinarState)}
+                  autoplay={isLiveStreamAvailable}
                   controls={true}
                   playsInline={true}
                   src={webinar.playerSrc}
