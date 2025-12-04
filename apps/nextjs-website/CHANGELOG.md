@@ -1,5 +1,23 @@
 # nextjs-website
 
+## 14.0.0
+
+### Major Changes
+
+- eb11304: Add survey_accepted setting to types and agreement page
+
+### Minor Changes
+
+- 68ba7d9: Set autoplay to true only if streaming is live
+- eb11304: Add checkbox for survey in sign-up form
+
+### Patch Changes
+
+- Updated dependencies [99974e3]
+- Updated dependencies [aca24cc]
+- Updated dependencies [9adc296]
+  - gitbook-docs@1.7.0
+
 ## 13.2.0
 
 ### Minor Changes
