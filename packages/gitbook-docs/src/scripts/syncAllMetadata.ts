@@ -15,36 +15,36 @@ import {
   makeS3Client,
   putS3File,
 } from '../helpers/s3Bucket.helper';
-import { S3Client } from '@aws-sdk/client-s3';
+import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { extractTitleFromMarkdown } from '../helpers/extractTitle.helper';
 import { fetchFromStrapi } from '../helpers/fetchFromStrapi';
 import { MetadataInfo, MetadataType } from '../helpers/guidesMetadataHelper';
 import { sitePathFromS3Path } from '../helpers/sitePathFromS3Path';
 import {
-  getSyncedGuidesResponseJsonPath,
-  getSyncedSolutionsResponseJsonPath,
-  getSyncedReleaseNotesResponseJsonPath,
-  getSyncedProductsResponseJsonPath,
   getSyncedApisDataResponseJsonPath,
+  getSyncedGuidesResponseJsonPath,
+  getSyncedProductsResponseJsonPath,
+  getSyncedReleaseNotesResponseJsonPath,
+  getSyncedSolutionsResponseJsonPath,
 } from '../syncedResponses';
 import { DOCUMENTATION_PATH } from '../helpers/documentationParsing.helper';
 import { baseUrl } from 'nextjs-website/src/config';
 import {
-  StrapiGuide,
-  StrapiReleaseNote,
-  StrapiSolution,
-  StrapiGuidesResponse,
-  StrapiSolutionsResponse,
-  StrapiReleaseNotesResponse,
-  StrapiProduct,
   StrapiApiData,
+  StrapiGuide,
+  StrapiGuidesResponse,
+  StrapiProduct,
+  StrapiReleaseNote,
+  StrapiReleaseNotesResponse,
+  StrapiSolution,
+  StrapiSolutionsResponse,
 } from '../helpers/strapiTypes';
 import {
   apisDataQueryString,
+  getReleaseNotesQueryString,
+  getSolutionsQueryString,
   guidesQueryString,
   productsQueryString,
-  getSolutionsQueryString,
-  getReleaseNotesQueryString,
 } from '../helpers/strapiQuery';
 import { compact } from 'lodash';
 
@@ -60,8 +60,9 @@ const URL_PARSING_METADATA_JSON_PATH =
   '../../url-parsing-metadata.json';
 const METADATA_TYPE = (process.env.METADATA_TYPE || 'all').toLowerCase();
 const GENERATE_URL_METADATA = process.env.GENERATE_URL_METADATA !== 'false';
-const GENERATE_SITEMAP_METADATA =
-  process.env.GENERATE_SITEMAP_METADATA !== 'false';
+
+// TODO: rename
+const GENERATE_METADATA = process.env.GENERATE_SITEMAP_METADATA !== 'false';
 const SAVE_STRAPI_RESPONSES = process.env.SAVE_STRAPI_RESPONSES !== 'false';
 const GENERATE_ROOT_METADATA_FILE =
   process.env.GENERATE_ROOT_METADATA_FILE !== 'false';
@@ -591,7 +592,7 @@ async function main() {
     console.log('Starting unified metadata sync...');
     console.log(`Metadata type: ${METADATA_TYPE}`);
     console.log(`Generate URL metadata: ${GENERATE_URL_METADATA}`);
-    console.log(`Generate sitemap metadata: ${GENERATE_SITEMAP_METADATA}`);
+    console.log(`Generate metadata: ${GENERATE_METADATA}`);
     console.log(`Save Strapi responses: ${SAVE_STRAPI_RESPONSES}`);
     console.log(`Generate root metadata file: ${GENERATE_ROOT_METADATA_FILE}`);
     if (DIR_NAMES_FILTER) {
@@ -625,11 +626,13 @@ async function main() {
         getS3Client()
       );
       const sitemapXml = await fetchSitemapXml();
-      await putS3File(
-        sitemapXml,
-        S3_SITEMAP_PATH,
-        S3_BUCKET_NAME!,
-        getS3Client()
+
+      await getS3Client().send(
+        new PutObjectCommand({
+          Bucket: `${S3_BUCKET_NAME}`,
+          Key: S3_SITEMAP_PATH,
+          Body: sitemapXml,
+        })
       );
     }
 
@@ -716,19 +719,19 @@ async function main() {
     );
 
     // Process and save guides metadata
-    if (GENERATE_SITEMAP_METADATA && metadataFilter.guides) {
+    if (GENERATE_METADATA && metadataFilter.guides) {
       console.log('Processing guides metadata...');
-      const guidesSitemap = await processGuidesMetadata(strapiData.guides);
+      const guidesMetadata = await processGuidesMetadata(strapiData.guides);
       if (GENERATE_ROOT_METADATA_FILE) {
         await putS3File(
-          guidesSitemap.flat(),
+          guidesMetadata.flat(),
           S3_GUIDE_METADATA_JSON_PATH,
           S3_BUCKET_NAME!,
           getS3Client()
         );
       }
 
-      guidesSitemap.map(async (guidesMetadata) => {
+      guidesMetadata.map(async (guidesMetadata) => {
         await putS3File(
           guidesMetadata,
           path.join(
@@ -741,25 +744,25 @@ async function main() {
         );
       });
 
-      console.log(`Saved ${guidesSitemap.length} guide items to S3`);
+      console.log(`Saved ${guidesMetadata.length} guide items to S3`);
     }
 
     // Process and save solutions metadata
-    if (GENERATE_SITEMAP_METADATA && metadataFilter.solutions) {
+    if (GENERATE_METADATA && metadataFilter.solutions) {
       console.log('Processing solutions metadata...');
-      const solutionsSitemap = await processSolutionsMetadata(
+      const solutionsMetadata = await processSolutionsMetadata(
         strapiData.solutions
       );
       if (GENERATE_ROOT_METADATA_FILE) {
         await putS3File(
-          solutionsSitemap.flat(),
+          solutionsMetadata.flat(),
           S3_SOLUTIONS_METADATA_JSON_PATH,
           S3_BUCKET_NAME!,
           getS3Client()
         );
       }
 
-      solutionsSitemap.map(async (solutionMetadata) => {
+      solutionsMetadata.map(async (solutionMetadata) => {
         await putS3File(
           solutionMetadata,
           path.join(
@@ -772,25 +775,25 @@ async function main() {
         );
       });
 
-      console.log(`Saved ${solutionsSitemap.length} solution items to S3`);
+      console.log(`Saved ${solutionsMetadata.length} solution items to S3`);
     }
 
     // Process and save release notes metadata
-    if (GENERATE_SITEMAP_METADATA && metadataFilter.releaseNotes) {
+    if (GENERATE_METADATA && metadataFilter.releaseNotes) {
       console.log('Processing release notes metadata...');
-      const releaseNotesSitemap = await processReleaseNotesMetadata(
+      const releaseNotesMetadata = await processReleaseNotesMetadata(
         strapiData.releaseNotes
       );
       if (GENERATE_ROOT_METADATA_FILE) {
         await putS3File(
-          releaseNotesSitemap.flat(),
+          releaseNotesMetadata.flat(),
           S3_RELEASE_NOTES_METADATA_JSON_PATH,
           S3_BUCKET_NAME!,
           getS3Client()
         );
       }
 
-      releaseNotesSitemap.map(async (releaseNote) => {
+      releaseNotesMetadata.map(async (releaseNote) => {
         await putS3File(
           releaseNote,
           path.join(
@@ -804,7 +807,7 @@ async function main() {
       });
 
       console.log(
-        `Saved ${releaseNotesSitemap.length} release note items to S3`
+        `Saved ${releaseNotesMetadata.length} release note items to S3`
       );
     }
 
