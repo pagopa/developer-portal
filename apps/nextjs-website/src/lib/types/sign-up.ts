@@ -7,4 +7,5 @@ export type SignUpUserData = {
   readonly company: string;
   readonly role: string;
   readonly mailinglistAccepted: boolean;
+  readonly surveyAccepted: boolean;
 };

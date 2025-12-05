@@ -1,5 +1,16 @@
 # gitbook-docs
 
+## 1.7.0
+
+### Minor Changes
+
+- aca24cc: Add script to replace escaped tokens with backticks to fix code blocks not parsed correctly
+
+### Patch Changes
+
+- 99974e3: Fix sitemap creation in S3 in optimized sync
+- 9adc296: Remove generateSoapApiRepositoriesList script from package
+
 ## 1.6.0
 
 ### Minor Changes

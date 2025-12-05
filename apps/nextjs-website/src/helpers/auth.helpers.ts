@@ -34,6 +34,8 @@ export const generateSignUpData = (userData: SignUpUserData) => ({
     family_name: userData.lastName,
     'custom:privacy_accepted': 'true',
     'custom:mailinglist_accepted': `${userData.mailinglistAccepted}`,
+    'custom:survey_accepted':
+      userData.surveyAccepted === true ? 'true' : 'false',
     'custom:job_role': userData.role,
     'custom:company_type': userData.company,
   },
