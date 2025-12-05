@@ -1,4 +1,5 @@
 name: Deploy Lambda Active Campaign Syncer
+run-name: Deploy Lambda Active Campaign Syncer to ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.environment || 'dev' }}
 
 on:
   push:
