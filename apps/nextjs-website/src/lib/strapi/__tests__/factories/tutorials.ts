@@ -23,7 +23,7 @@ export function tutorialsWithAnItemMissingSlug(): StrapiTutorials {
 export function tutorialsWithAnItemMissingProductSlug(): StrapiTutorials {
   return {
     ...strapiTutorials,
-    ...[
+    data: [
       {
         ...strapiTutorials.data[0],
         title: 'Tutorial Without Product Slug',
@@ -52,7 +52,7 @@ export function minimalDataTutorials() {
   const strapiTutorial = strapiTutorials.data[0];
   return {
     ...strapiTutorials,
-    ...[
+    data: [
       {
         ...strapiTutorial,
         title: 'Minimal Data Tutorial',

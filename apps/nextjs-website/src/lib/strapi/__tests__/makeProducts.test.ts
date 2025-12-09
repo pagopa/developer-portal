@@ -35,9 +35,7 @@ describe('makeProductsProps', () => {
   it('should handle minimal product data', () => {
     const result = makeProductsProps(
       _.cloneDeep({
-        data: {
-          ...minimalProduct(),
-        },
+        data: [...minimalProduct()],
         meta: {
           pagination: {
             page: 1,
@@ -73,9 +71,7 @@ describe('makeProductsProps', () => {
 
   it('should skip products without slug and log error', () => {
     const result = makeProductsProps({
-      data: {
-        ...productsWithAnItemMissingSlug(),
-      },
+      data: [...productsWithAnItemMissingSlug()],
       meta: {
         pagination: {
           page: 1,
@@ -93,9 +89,7 @@ describe('makeProductsProps', () => {
 
   it('should handle products with multiple API data (returns general API URL)', () => {
     const result = makeProductsProps({
-      data: {
-        ...productWithMultipleApiData(),
-      },
+      data: [...productWithMultipleApiData()],
       meta: {
         pagination: {
           page: 1,
@@ -111,9 +105,7 @@ describe('makeProductsProps', () => {
 
   it('should handle products with empty API data', () => {
     const result = makeProductsProps({
-      data: {
-        ...productWithEmptyApiData(),
-      },
+      data: [...productWithEmptyApiData()],
       meta: {
         pagination: {
           page: 1,
@@ -129,9 +121,7 @@ describe('makeProductsProps', () => {
 
   it('should handle corrupted data with try/catch and log error', () => {
     const result = makeProductsProps({
-      data: {
-        ...productWithCorruptedData(),
-      },
+      data: [...productWithCorruptedData()],
       meta: {
         pagination: {
           page: 1,
@@ -152,9 +142,7 @@ describe('makeProductsProps', () => {
 
   it('should handle mixed valid and invalid products', () => {
     const result = makeProductsProps({
-      data: {
-        ...mixedValidAndInvalidProducts(),
-      },
+      data: [...mixedValidAndInvalidProducts()],
       meta: {
         pagination: {
           page: 1,
@@ -175,9 +163,7 @@ describe('makeProductsProps', () => {
 
   it('should return empty array when all products are invalid', () => {
     const result = makeProductsProps({
-      data: {
-        ...allInvalidProducts(),
-      },
+      data: [...allInvalidProducts()],
       meta: {
         pagination: {
           page: 1,

@@ -5,14 +5,11 @@ import { strapiGuideData } from '../fixtures/guides';
 export function guideListWithItemsWithEmptyProductSlug() {
   return {
     ...strapiGuideData,
-    ...strapiGuideData.data.map((guide) => ({
+    data: strapiGuideData.data.map((guide) => ({
       ...guide,
       product: {
         ...guide.product,
-        data: {
-          ...guide.product,
-          slug: '',
-        },
+        slug: undefined as any,
       },
     })),
   } satisfies StrapiGuides;
@@ -25,10 +22,8 @@ export function guideListWithMissingProductSlug() {
       ...guide,
       product: {
         ...guide.product,
-        data: {
-          ...guide.product,
-          slug: undefined as any,
-        },
+        ...guide.product,
+        slug: undefined as any,
       },
     })),
   } satisfies StrapiGuides;

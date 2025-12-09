@@ -32,6 +32,7 @@ describe('makeGuidesProps', () => {
 
   it('should return an empty array when the product slug is an empty string', () => {
     const result = makeGuidesProps(guideListWithItemsWithEmptyProductSlug());
+    console.log('-------------------', result[0].product);
     expect(result).toEqual([]);
     expect(spyOnConsoleError).toHaveBeenCalledWith(
       'Error while processing Guide with name "SACI": missing the product slug. Skipping...'

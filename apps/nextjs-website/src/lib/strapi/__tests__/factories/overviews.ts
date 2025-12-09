@@ -5,7 +5,7 @@ import { strapiOverviews } from '@/lib/strapi/__tests__/fixtures/overviews';
 export function minimalDataSingleOverview(): StrapiOverviews {
   return {
     ...strapiOverviews,
-    ...[
+    data: [
       {
         ...strapiOverviews.data[0],
         features: undefined,

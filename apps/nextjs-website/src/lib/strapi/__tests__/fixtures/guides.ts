@@ -21,7 +21,7 @@ export const strapiGuideData = {
       slug: 'saci',
       image: {
         name: 'pagoPA Guide Manual.png',
-        alternativeText: '',
+        alternativeText: undefined,
         caption: undefined,
         width: 1156,
         height: 580,
@@ -32,7 +32,7 @@ export const strapiGuideData = {
       },
       mobileImage: {
         name: 'saci.png',
-        alternativeText: '',
+        alternativeText: undefined,
         caption: undefined,
         width: 1156,
         height: 580,
@@ -88,7 +88,7 @@ export const strapiGuideData = {
             theme: 'dark',
             icon: {
               name: 'headset_78d50d9321_5bd20d1a6b.svg',
-              alternativeText: '',
+              alternativeText: undefined,
               caption: undefined,
               width: 24,
               height: 24,
@@ -121,7 +121,7 @@ export const strapiGuideData = {
             theme: 'light',
             icon: {
               name: 'feedback_1504fc4fbf.svg',
-              alternativeText: '',
+              alternativeText: undefined,
               caption: undefined,
               width: 24,
               height: 24,

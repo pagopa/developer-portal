@@ -108,33 +108,30 @@ export function solutionsWithItemMissingCaseHistorySlug(): StrapiSolutions {
         caseHistories: {
           title: 'Success Stories',
           description: 'Our success stories',
-          case_histories: {
-            ...strapiSolution?.caseHistories,
-            ...[
-              {
-                ...strapiSolution?.caseHistories?.case_histories[0],
-                id: 1,
-                title: 'Case History Without Slug',
-                slug: undefined as any,
-                image: {
-                  ...strapiSolution?.caseHistories?.case_histories[0].image,
-                  url: '/test-image.png',
-                  name: 'Test Image',
-                },
+          case_histories: [
+            {
+              ...strapiSolution?.caseHistories?.case_histories[0],
+              id: 1,
+              title: 'Case History Without Slug',
+              slug: undefined as any,
+              image: {
+                ...strapiSolution?.caseHistories?.case_histories[0].image,
+                url: '/test-image.png',
+                name: 'Test Image',
               },
-              {
-                ...strapiSolution?.caseHistories?.case_histories[0],
-                id: 2,
-                title: 'Valid Case History',
-                slug: 'valid-case-history',
-                image: {
-                  ...strapiSolution?.caseHistories?.case_histories[0].image,
-                  url: '/valid-image.png',
-                  name: 'Valid Image',
-                },
+            },
+            {
+              ...strapiSolution?.caseHistories?.case_histories[0],
+              id: 2,
+              title: 'Valid Case History',
+              slug: 'valid-case-history',
+              image: {
+                ...strapiSolution?.caseHistories?.case_histories[0].image,
+                url: '/valid-image.png',
+                name: 'Valid Image',
               },
-            ],
-          },
+            },
+          ],
         },
       },
     ],

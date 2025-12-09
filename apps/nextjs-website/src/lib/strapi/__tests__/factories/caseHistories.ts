@@ -59,9 +59,7 @@ export function caseHistoriesWithMultipleProducts() {
     name: 'Second Product',
     shortName: 'SecondProd',
     slug: 'second-product',
-    logo: {
-      data: mediaJpeg(),
-    },
+    logo: mediaJpeg(),
   };
 
   return {

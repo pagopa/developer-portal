@@ -33,11 +33,6 @@ export const fetchFromStrapi = <T>(path: string, populate: string) =>
             if (response.status === 200) {
               return TE.tryCatch(() => response.json(), E.toError);
             } else {
-              // eslint-disable-next-line functional/no-expression-statements
-              console.log(
-                'Errore! ',
-                `${strapiEndpoint}/api/${path}/?${populate}`
-              );
               return TE.left(makeError(response));
             }
           }),
