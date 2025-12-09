@@ -34,8 +34,7 @@ on:
         required: true
         default: true
 
-  # schedule:
-  #   - cron: '0 23 * * *'  # Run daily at midnight UTC
+
 
 # Permissions needed for AWS OIDC authentication
 permissions:
@@ -120,6 +119,11 @@ jobs:
           NEXT_PUBLIC_COGNITO_REGION: ${{ vars.NEXT_PUBLIC_COGNITO_REGION || 'eu-south-1' }}
           SITEMAP_URL: ${{ env.SITEMAP_URL || 'https://developer.pagopa.it/sitemap.xml' }}
         run: npm run generate-strapi-response-files -w gitbook-docs
+
+      - name: Replace escaped tokens with backticks in docs
+        env:
+          DOCUMENTATION_PATH: ${{ vars.DOCUMENTATION_PATH || '../../devportal-docs/docs' }}
+        run: npm run replace-escaped-tokens-with-backticks -w gitbook-docs
 
       - name: Sync docs folder to S3
         if: inputs.generate_metadata_only == false
