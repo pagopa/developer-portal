@@ -7,7 +7,7 @@ export function minimalDataCaseHistories() {
   const strapiCaseHistory = strapiCaseHistories.data[0];
   return {
     ...strapiCaseHistories,
-    ...[
+    data: [
       {
         ...strapiCaseHistory,
         title: 'Minimal Data Case History',
@@ -80,7 +80,7 @@ export function caseHistoriesWithoutImage() {
   const strapiCaseHistory = strapiCaseHistories.data[0];
   return {
     ...strapiCaseHistories,
-    ...[
+    data: [
       {
         ...strapiCaseHistory,
         image: undefined,
