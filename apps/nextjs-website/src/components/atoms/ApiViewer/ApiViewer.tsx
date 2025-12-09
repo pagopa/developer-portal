@@ -1,21 +1,58 @@
+/* eslint-disable functional/immutable-data */
+/* eslint-disable functional/no-this-expressions */
 'use client';
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import { Box, useTheme } from '@mui/material';
+import { PRODUCT_HEADER_HEIGHT, SITE_HEADER_HEIGHT } from '@/config';
 import 'rapidoc';
 
 type ApiViewerProps = {
   specURL: string;
 };
 
+const scrollOffset = SITE_HEADER_HEIGHT + PRODUCT_HEADER_HEIGHT;
+
 const ApiViewer: FC<ApiViewerProps> = ({ specURL }) => {
   const { palette } = useTheme();
+
+  useEffect(() => {
+    // Handle initial load with hash
+    if (window.location.hash) {
+      window.scrollTo({ top: 0 });
+    }
+
+    // Intercept History API calls to handle navigation
+    const originalPushState = history.pushState;
+    const originalReplaceState = history.replaceState;
+
+    const handleHistoryChange = () => {
+      window.scrollTo({ top: 0 });
+    };
+
+    history.pushState = function (...args) {
+      originalPushState.apply(this, args);
+      handleHistoryChange();
+    };
+
+    history.replaceState = function (...args) {
+      originalReplaceState.apply(this, args);
+      handleHistoryChange();
+    };
+
+    window.addEventListener('popstate', handleHistoryChange);
+
+    return () => {
+      history.pushState = originalPushState;
+      history.replaceState = originalReplaceState;
+      window.removeEventListener('popstate', handleHistoryChange);
+    };
+  }, []);
 
   return (
     <Box
       sx={{
-        mt: 0,
         display: 'flex',
-        height: '100%',
+        height: `calc(100vh - ${scrollOffset}px)`,
         width: '100%',
         overflow: 'hidden',
       }}
