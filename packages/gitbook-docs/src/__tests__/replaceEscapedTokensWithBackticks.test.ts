@@ -4,7 +4,7 @@ import * as path from 'path';
 import {
   addBackticksEscapedAngleTokens,
   recursivelyAddBackticksToEscapedAngleTokens,
-} from '../scripts/replaceEscapedTokensWithBackTicks';
+} from '../scripts/replaceEscapedTokensWithBackticks';
 
 const fixturesRoot = path.join(__dirname, 'fixtures', 'replaceEscapedTokens');
 
@@ -29,7 +29,7 @@ const createTempDirWithCopy = (): string => {
   return tmpDir;
 };
 
-describe('replaceEscapedTokensWithBackTicks (single file)', () => {
+describe('replaceEscapedTokensWithBackticks (single file)', () => {
   it('replaces a single escaped token', async () => {
     const file = path.join(fixturesRoot, 'simple.md');
     const original = read(file);
@@ -81,7 +81,7 @@ describe('replaceEscapedTokensWithBackTicks (single file)', () => {
   });
 });
 
-describe('recursivelyReplaceEscapedTokensWithBackTicks', () => {
+describe('recursivelyReplaceEscapedTokensWithBackticks', () => {
   it('updates only .md files recursively and leaves other extensions untouched', async () => {
     const tmp = createTempDirWithCopy();
     const nestedOuter = path.join(tmp, 'nested', 'outer.md');

@@ -103,6 +103,11 @@ jobs:
         if: inputs.generate_metadata_only == false
         run: npm run parse-docs -w gitbook-docs
 
+      - name: Replace escaped tokens with backticks in docs
+        env:
+          DOCUMENTATION_PATH: ${{ vars.DOCUMENTATION_PATH || '../../devportal-docs/docs' }}
+        run: npm run replace-escaped-tokens-with-backticks -w gitbook-docs
+
       - name: Configure AWS Credentials
         uses: ./.github/actions/configure-aws-credentials
         with:
