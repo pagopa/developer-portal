@@ -15,3 +15,13 @@ output "ivs_channel_details" {
   }
 
 }
+
+output "dead_letter_queue_url" {
+  description = "The URL of the SQS dead letter queue for failed Lambda invocations."
+  value       = aws_sqs_queue.ivs_video_processing_dlq.url
+}
+
+output "dead_letter_queue_arn" {
+  description = "The ARN of the SQS dead letter queue for failed Lambda invocations."
+  value       = aws_sqs_queue.ivs_video_processing_dlq.arn
+}
