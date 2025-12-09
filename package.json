@@ -20,12 +20,11 @@
     "@changesets/cli": "^2.27.1",
     "@types/lodash": "^4.17.20",
     "husky": "^8.0.3",
-    "turbo": "^2.5.5"
+    "turbo": "^2.5.8"
   },
   "dependencies": {
     "crypto-js": "^4.2.0",
     "elliptic": "^6.6.1",
-    "koa": "^3.0.0",
     "rapidoc": "^9.3.8"
   },
   "packageManager": "npm@9.8.1",

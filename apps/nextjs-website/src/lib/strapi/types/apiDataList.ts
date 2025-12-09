@@ -3,6 +3,7 @@ import { StrapiBaseProductWithRelations } from '@/lib/strapi/types/product';
 import { StrapiBannerLink } from '@/lib/strapi/types/bannerLink';
 import { StrapiSeo } from '@/lib/strapi/types/seo';
 import { StrapiComponent } from './strapiComponent';
+import { StrapiTag } from './tag';
 
 type StrapiUrl = {
   readonly id: number;
@@ -28,6 +29,7 @@ export type StrapiBaseApiData = {
       readonly repositoryUrl: string;
       readonly dirName: string;
     };
+    readonly tags: StrapiComponent<readonly StrapiTag[] | undefined>;
   };
 };
 

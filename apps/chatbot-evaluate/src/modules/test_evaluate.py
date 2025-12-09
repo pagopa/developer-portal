@@ -6,7 +6,6 @@ from src.modules.settings import AWS_SESSION, SETTINGS
 
 LOGGER = get_logger(__name__)
 JUDGE = Judge()
-WEBSITE_URL = SETTINGS.website_url
 
 
 def test_aws_credentials() -> None:

@@ -35,6 +35,7 @@ export const strapiTutorialListPages: StrapiTutorialListPages = {
           data: [
             {
               attributes: {
+                updatedAt: '2023-01-01T00:00:00.000Z',
                 description: '',
                 icon: { data: mediaJpeg() },
                 tags: { data: [] },

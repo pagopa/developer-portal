@@ -1,5 +1,23 @@
 # chatbot-index
 
+## 2.1.1
+
+### Patch Changes
+
+- dfc4d9f: Remove strapi_api_key from chatbot and chatbot-index
+
+## 2.1.0
+
+### Minor Changes
+
+- b6291ed: Add Docker compose for test
+
+## 2.0.2
+
+### Patch Changes
+
+- 07d1049: Align settings.py file to chatbot module
+
 ## 2.0.1
 
 ### Patch Changes

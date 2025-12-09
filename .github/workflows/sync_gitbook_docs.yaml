@@ -32,11 +32,6 @@ on:
         type: boolean
         required: true
         default: true
-      inivalidate_opennext_cache:
-        description: 'Invalidate opennext cloufront cache'
-        type: boolean
-        required: true
-        default: false
 
   schedule:
     - cron: '0 23 * * *'  # Run daily at midnight UTC
@@ -56,6 +51,7 @@ jobs:
     environment: ${{ inputs.environment }}
     env:
       ENV_SHORT: ${{ fromJSON('{"dev":"d","uat":"u","prod":"p"}')[inputs.environment] }}
+      SITEMAP_URL: https://${{ fromJSON('{"dev":"dev.","uat":"uat.","prod":""}')[inputs.environment] }}developer.pagopa.it/sitemap.xml
 
     steps:
       - name: Checkout current repository
@@ -107,6 +103,11 @@ jobs:
         if: inputs.generate_metadata_only == false
         run: npm run parse-docs -w gitbook-docs
 
+      - name: Replace escaped tokens with backticks in docs
+        env:
+          DOCUMENTATION_PATH: ${{ vars.DOCUMENTATION_PATH || '../../devportal-docs/docs' }}
+        run: npm run replace-escaped-tokens-with-backticks -w gitbook-docs
+
       - name: Configure AWS Credentials
         uses: ./.github/actions/configure-aws-credentials
         with:
@@ -121,7 +122,14 @@ jobs:
           STRAPI_API_TOKEN: ${{ secrets.STRAPI_API_TOKEN }}
           FETCH_FROM_STRAPI: ${{ vars.FETCH_FROM_STRAPI || 'true' }}
           NEXT_PUBLIC_COGNITO_REGION: ${{ vars.NEXT_PUBLIC_COGNITO_REGION || 'eu-south-1' }}
+          SITEMAP_URL: ${{ env.SITEMAP_URL || 'https://developer.pagopa.it/sitemap.xml' }}
         run: npm run generate-strapi-response-files -w gitbook-docs
+
+      - name: Sync docs folder to S3
+        if: inputs.generate_metadata_only == false
+        working-directory: ./devportal-docs
+        run: |
+          aws s3 sync docs s3://devportal-${{ env.ENV_SHORT }}-website-static-content/devportal-docs/docs --delete ${{ inputs.incremental_mode == true && ' --size-only' || '' }}
 
       - name: Generate guides metadata      
         if: inputs.metadata_type == 'guides' || inputs.metadata_type == 'all'
@@ -161,23 +169,10 @@ jobs:
           NEXT_PUBLIC_COGNITO_REGION: ${{ vars.NEXT_PUBLIC_COGNITO_REGION || 'eu-south-1' }}
         run: npm run generate-release-notes-metadata -w gitbook-docs
 
-      - name: Sync docs folder to S3
-        if: inputs.generate_metadata_only == false
-        working-directory: ./devportal-docs
-        run: |
-          aws s3 sync docs s3://devportal-${{ env.ENV_SHORT }}-website-static-content/devportal-docs/docs --delete ${{ inputs.incremental_mode == true && ' --size-only' || '' }}
-
       - name: Invalidate CloudFront asset bucket cache
         run: |
           aws cloudfront create-invalidation \
             --distribution-id ${{ vars.ASSET_BUCKET_CLOUDFRONT_DISTRIBUTION_ID }} \
-            --paths "/*"
-        
-      - name: Invalidate CloudFront opennext cache
-        if: inputs.inivalidate_opennext_cache == true
-        run: |
-          aws cloudfront create-invalidation \
-            --distribution-id ${{ vars.OPENNEXT_CLOUDFRONT_DISTRIBUTION_ID }} \
             --paths "/*"
 
   scheduled_sync_gitbook_docs:
@@ -235,6 +230,11 @@ jobs:
           URL_PARSING_METADATA_JSON_PATH: ${{ vars.URL_PARSING_METADATA_JSON_PATH || '../../url-parsing-metadata.json' }}
         run: npm run parse-docs -w gitbook-docs
 
+      - name: Replace escaped tokens with backticks in docs
+        env:
+          DOCUMENTATION_PATH: ${{ vars.DOCUMENTATION_PATH || '../../devportal-docs/docs' }}
+        run: npm run replace-escaped-tokens-with-backticks -w gitbook-docs
+
       - name: Configure AWS Credentials
         uses: ./.github/actions/configure-aws-credentials
         with:
@@ -249,6 +249,7 @@ jobs:
           STRAPI_API_TOKEN: ${{ secrets.STRAPI_API_TOKEN }}
           FETCH_FROM_STRAPI: ${{ vars.FETCH_FROM_STRAPI || 'true' }}
           NEXT_PUBLIC_COGNITO_REGION: ${{ vars.NEXT_PUBLIC_COGNITO_REGION || 'eu-south-1' }}
+          SITEMAP_URL: https://developer.pagopa.it/sitemap.xml
         run: npm run generate-strapi-response-files -w gitbook-docs
 
       - name: Generate guides metadata

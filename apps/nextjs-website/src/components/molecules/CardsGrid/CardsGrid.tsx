@@ -5,26 +5,30 @@ import EContainer from '@/editorialComponents/EContainer/EContainer';
 import CtaCard from '@/components/atoms/CtaCard/CtaCard';
 import IconWrapper from '@/components/atoms/IconWrapper/IconWrapper';
 import { useTranslations } from 'next-intl';
+import { Tag } from '@/lib/types/tag';
+
+export type CardProps = {
+  target?: '_blank' | '_self' | '_parent' | '_top';
+  comingSoon?: boolean;
+  title: string;
+  text: string;
+  href?: string;
+  ctaLabel?: string;
+  icon?: string;
+  iconColor?: string;
+  labels?: { readonly label: string; readonly path?: string }[];
+  useSrc: boolean;
+  tags?: readonly Tag[];
+};
 
 export type CardsGridProps = {
-  cardSize?: {
+  readonly cardSize?: {
     xs: boolean | GridSize;
     md: boolean | GridSize;
   };
-  containerSx?: SxProps;
-  ctaButtonsVariant?: 'text' | 'contained' | 'outlined';
-  cards: {
-    target?: '_blank' | '_self' | '_parent' | '_top';
-    comingSoon?: boolean;
-    title: string;
-    text: string;
-    href?: string;
-    ctaLabel?: string;
-    icon: string;
-    iconColor?: string;
-    tags?: { readonly label: string; readonly path?: string }[];
-    useSrc: boolean;
-  }[];
+  readonly containerSx?: SxProps;
+  readonly ctaButtonsVariant?: 'text' | 'contained' | 'outlined';
+  readonly cards: readonly CardProps[];
 };
 
 const CardsGrid = ({
@@ -50,7 +54,7 @@ const CardsGrid = ({
                 icon,
                 comingSoon,
                 iconColor,
-                tags,
+                labels,
                 ctaLabel,
                 useSrc,
               },
@@ -76,13 +80,15 @@ const CardsGrid = ({
                       variant: ctaButtonsVariant,
                     }}
                     icon={
-                      <IconWrapper
-                        color={iconColor || palette.text.primary}
-                        icon={icon}
-                        useSrc={useSrc}
-                      />
+                      icon && (
+                        <IconWrapper
+                          color={iconColor || palette.text.primary}
+                          icon={icon}
+                          useSrc={useSrc}
+                        />
+                      )
                     }
-                    tags={tags}
+                    labels={labels}
                   />
                 </Grid>
               );

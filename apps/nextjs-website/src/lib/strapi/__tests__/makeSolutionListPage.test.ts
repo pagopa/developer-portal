@@ -69,7 +69,7 @@ describe('makeSolutionListPageProps', () => {
     const result = makeSolutionListPageProps(
       _.cloneDeep(strapiSolutionListPage)
     );
-    expect(result.solutions[0].tags).toEqual([
+    expect(result.solutions[0].labels).toEqual([
       {
         label: 'P1',
         path: '/product-1',

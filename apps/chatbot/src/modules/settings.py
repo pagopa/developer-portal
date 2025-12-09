@@ -14,6 +14,7 @@ PARAMS = yaml.safe_load(open(os.path.join(ROOT, "config", "params.yaml"), "r"))
 PROMPTS = yaml.safe_load(open(os.path.join(ROOT, "config", "prompts.yaml"), "r"))
 AWS_SESSION = boto3.Session()
 
+
 def get_ssm_parameter(name: str | None, default: str | None = None) -> str | None:
     """
     Retrieves a specific value from AWS Systems Manager's Parameter Store.
@@ -23,22 +24,22 @@ def get_ssm_parameter(name: str | None, default: str | None = None) -> str | Non
     :return: The value of the requested parameter.
     """
 
-    SSM_CLIENT = AWS_SESSION.client("ssm")
+    ssm_client = AWS_SESSION.client("ssm")
     LOGGER.info(f"get_ssm_parameter {name}...")
 
     if name is None:
         name = "none-params-in-ssm"
     try:
-        # Get the requested parameter
-        response = SSM_CLIENT.get_parameter(Name=name, WithDecryption=True)
+        response = ssm_client.get_parameter(Name=name, WithDecryption=True)
         value = response["Parameter"]["Value"]
-    except SSM_CLIENT.exceptions.ParameterNotFound:
+    except ssm_client.exceptions.ParameterNotFound:
         LOGGER.warning(
             f"Parameter {name} not found in SSM, returning default: {default}"
         )
         return default
 
     return value
+
 
 GOOGLE_SERVICE_ACCOUNT = get_ssm_parameter(
     os.getenv("CHB_AWS_SSM_GOOGLE_SERVICE_ACCOUNT")
@@ -67,8 +68,8 @@ class ChatbotSettings(BaseSettings):
         "AWS_REGION"
     )
     auth_cognito_userpool_id: str = (
-        mock_user_pool_id() 
-        if os.getenv("ENVIRONMENT", "local") in ["test", "local"] 
+        mock_user_pool_id()
+        if os.getenv("ENVIRONMENT", "local") in ["test", "local"]
         else os.getenv("AUTH_COGNITO_USERPOOL_ID")
     )
     google_api_key: str = get_ssm_parameter(
@@ -76,9 +77,6 @@ class ChatbotSettings(BaseSettings):
         default=os.getenv("CHB_AWS_GOOGLE_API_KEY"),
     )
     google_service_account: dict = GOOGLE_JSON_ACCOUNT_INFO
-    strapi_api_key: str = get_ssm_parameter(
-        os.getenv("CHB_AWS_SSM_STRAPI_API_KEY"), os.getenv("CHB_STRAPI_API_KEY", "")
-    )
     langfuse_host: str = os.getenv("CHB_LANGFUSE_HOST")
     langfuse_public_key: str = get_ssm_parameter(
         os.getenv("CHB_AWS_SSM_LANGFUSE_PUBLIC_KEY"),
@@ -119,7 +117,6 @@ class ChatbotSettings(BaseSettings):
     )
 
     # prompts
-    identity_prompt_str: str = PROMPTS["identity_prompt_str"]
     qa_prompt_str: str = PROMPTS["qa_prompt_str"]
     react_system_str: str = PROMPTS["react_system_header_str"]
     refine_prompt_str: str = PROMPTS["refine_prompt_str"]

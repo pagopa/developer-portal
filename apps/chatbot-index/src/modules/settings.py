@@ -1,5 +1,5 @@
-import os
 import boto3
+import os
 import yaml
 from pathlib import Path
 from pydantic_settings import BaseSettings
@@ -12,7 +12,6 @@ CWF = Path(__file__)
 ROOT = CWF.parent.parent.parent.absolute().__str__()
 PARAMS = yaml.safe_load(open(os.path.join(ROOT, "config", "params.yaml"), "r"))
 AWS_SESSION = boto3.Session()
-SSM_CLIENT = AWS_SESSION.client("ssm")
 
 
 def get_ssm_parameter(name: str | None, default: str | None = None) -> str | None:
@@ -24,40 +23,21 @@ def get_ssm_parameter(name: str | None, default: str | None = None) -> str | Non
     :return: The value of the requested parameter.
     """
 
+    ssm_client = AWS_SESSION.client("ssm")
     LOGGER.info(f"get_ssm_parameter {name}...")
 
     if name is None:
-        name = "/none/param"
+        name = "none-params-in-ssm"
     try:
-        # Get the requested parameter
-        response = SSM_CLIENT.get_parameter(Name=name, WithDecryption=True)
+        response = ssm_client.get_parameter(Name=name, WithDecryption=True)
         value = response["Parameter"]["Value"]
-    except SSM_CLIENT.exceptions.ParameterNotFound:
+    except ssm_client.exceptions.ParameterNotFound:
         LOGGER.warning(
             f"Parameter {name} not found in SSM, returning default: {default}"
         )
         return default
 
     return value
-
-
-def put_ssm_parameter(name: str, value: str) -> None:
-    """
-    Puts a specific value into AWS Systems Manager's Parameter Store.
-    :param name: The name of the parameter to put.
-    :param value: The value to store in the parameter.
-    """
-
-    LOGGER.debug(f"Putting parameter {name} to SSM")
-    try:
-        SSM_CLIENT.put_parameter(
-            Name=name,
-            Value=value,
-            Type="String",
-            Overwrite=True,
-        )
-    except Exception as e:
-        LOGGER.error(e)
 
 
 class ChatbotSettings(BaseSettings):
@@ -67,9 +47,6 @@ class ChatbotSettings(BaseSettings):
     google_api_key: str = get_ssm_parameter(
         name=os.getenv("CHB_AWS_SSM_GOOGLE_API_KEY"),
         default=os.getenv("CHB_AWS_GOOGLE_API_KEY"),
-    )
-    strapi_api_key: str = get_ssm_parameter(
-        os.getenv("CHB_AWS_SSM_STRAPI_API_KEY"), os.getenv("CHB_STRAPI_API_KEY", "")
     )
 
     # RAG settings

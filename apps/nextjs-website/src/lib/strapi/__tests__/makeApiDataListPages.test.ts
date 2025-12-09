@@ -44,7 +44,7 @@ describe('makeApiDataListPagesProps', () => {
     expect(firstElement.seo).toBeUndefined();
     expect(firstElement.cards).toHaveLength(1);
     expect(firstElement.cards[0].title).toBe('Minimal API');
-    expect(firstElement.cards[0].icon).toBe('');
+    expect(firstElement.cards[0].icon).toBe(undefined);
     expect(firstElement.apiData).toBeDefined();
   });
 
@@ -67,8 +67,8 @@ describe('makeApiDataListPagesProps', () => {
     expect(result).toHaveLength(1);
     const firstElement = result[0];
     expect(firstElement.cards).toHaveLength(2);
-    expect(firstElement.cards[0].tags?.[0].label).toBe('REST');
-    expect(firstElement.cards[1].tags?.[0].label).toBe('SOAP');
+    expect(firstElement.cards[0].labels?.[0].label).toBe('REST');
+    expect(firstElement.cards[1].labels?.[0].label).toBe('SOAP');
     expect(firstElement.apiDetailSlugs).toEqual(['rest-api', 'soap-api']);
   });
 
@@ -113,7 +113,7 @@ describe('makeApiDataListPagesProps', () => {
   it('should correctly identify REST API type', () => {
     const result = makeApiDataListPagesProps(strapiApiDataListPages);
     const restCard = result[0].cards.find(
-      (card) => card.tags?.[0].label === 'REST'
+      (card) => card.labels?.[0].label === 'REST'
     );
     expect(restCard).toBeDefined();
     expect(restCard?.title).toBe('SEND Main API');
@@ -123,7 +123,7 @@ describe('makeApiDataListPagesProps', () => {
   it('should correctly identify SOAP API type', () => {
     const result = makeApiDataListPagesProps(strapiApiDataListPages);
     const soapCard = result[0].cards.find(
-      (card) => card.tags?.[0].label === 'SOAP'
+      (card) => card.labels?.[0].label === 'SOAP'
     );
     expect(soapCard).toBeDefined();
     expect(soapCard?.title).toBe('SEND SOAP API');
@@ -165,7 +165,7 @@ describe('makeApiDataListPagesProps', () => {
 
   it('should handle API data with missing icon', () => {
     const result = makeApiDataListPagesProps(minimalApiDataListPages());
-    expect(result[0].cards[0].icon).toBe('');
+    expect(result[0].cards[0].icon).toBe(undefined);
   });
 
   it('should correctly generate href for cards', () => {
