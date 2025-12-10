@@ -1,5 +1,17 @@
 # nextjs-website
 
+## 14.1.0
+
+### Minor Changes
+
+- 50b70b6: Replace Stoplight Elements API viewer with RapiDoc
+
+### Patch Changes
+
+- 50b70b6: Fix api scrolling behaviour
+- Updated dependencies [1496d24]
+  - gitbook-docs@1.7.1
+
 ## 14.0.0
 
 ### Major Changes

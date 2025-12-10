@@ -1,5 +1,11 @@
 # gitbook-docs
 
+## 1.7.1
+
+### Patch Changes
+
+- 1496d24: Fix replaceEscapedTokensWithBackticks script name
+
 ## 1.7.0
 
 ### Minor Changes
