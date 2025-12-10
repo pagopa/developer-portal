@@ -35,10 +35,8 @@ export type ApiDataPageProps = {
   readonly seo?: SEO;
 } & ProductLayoutProps;
 
-export const generateMetadata = async (
-  { params }: ApiDataParams,
-  parent: ResolvingMetadata
-): Promise<Metadata> => {
+export const generateMetadata = async (props: ApiDataParams, parent: ResolvingMetadata): Promise<Metadata> => {
+  const params = await props.params;
   const resolvedParent = await parent;
   const ApiDataProps = await getApiData(params.apiDataSlug);
 
@@ -56,7 +54,8 @@ export const generateMetadata = async (
   });
 };
 
-const ApiDataPage = async ({ params }: ApiDataParams) => {
+const ApiDataPage = async (props: ApiDataParams) => {
+  const params = await props.params;
   const apiDataProps = await getApiData(params.apiDataSlug);
 
   const structuredData = generateStructuredDataScripts({

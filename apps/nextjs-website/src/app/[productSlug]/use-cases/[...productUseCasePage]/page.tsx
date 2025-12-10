@@ -16,11 +16,12 @@ type Params = {
   productUseCasePage: Array<string>;
 };
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Params;
-}): Promise<Metadata | undefined> {
+export async function generateMetadata(
+  props: {
+    params: Promise<Params>;
+  }
+): Promise<Metadata | undefined> {
+  const params = await props.params;
   const productSlug = params?.productSlug;
   const useCasePath = params?.productUseCasePage?.join('/');
   const useCaseProps = await getUseCase(productSlug, [useCasePath]);
@@ -38,7 +39,8 @@ export async function generateMetadata({
   }
 }
 
-const Page = async ({ params }: { params: Params }) => {
+const Page = async (props: { params: Promise<Params> }) => {
+  const params = await props.params;
   const productSlug = params?.productSlug;
   const useCasePath = params?.productUseCasePage?.join('/');
 

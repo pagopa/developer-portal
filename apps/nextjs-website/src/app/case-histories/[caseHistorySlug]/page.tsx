@@ -16,11 +16,12 @@ type Params = {
   caseHistorySlug: string;
 };
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Params;
-}): Promise<Metadata> {
+export async function generateMetadata(
+  props: {
+    params: Promise<Params>;
+  }
+): Promise<Metadata> {
+  const params = await props.params;
   const caseHistory = await getCaseHistory(params?.caseHistorySlug);
 
   if (caseHistory?.seo) {
@@ -34,7 +35,8 @@ export async function generateMetadata({
   });
 }
 
-const Page = async ({ params }: { params: Params }) => {
+const Page = async (props: { params: Promise<Params> }) => {
+  const params = await props.params;
   const caseHistory = await getCaseHistory(params?.caseHistorySlug);
 
   const structuredData = generateStructuredDataScripts({

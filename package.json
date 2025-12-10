@@ -28,5 +28,9 @@
     "rapidoc": "^9.3.8"
   },
   "packageManager": "npm@9.8.1",
-  "name": "developer-portal"
+  "name": "developer-portal",
+  "overrides": {
+    "@types/react": "19.2.7",
+    "@types/react-dom": "19.2.3"
+  }
 }
