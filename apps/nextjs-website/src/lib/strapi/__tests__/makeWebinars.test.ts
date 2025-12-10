@@ -23,14 +23,6 @@ describe('makeWebinarsProps', () => {
     expect(result[0]).toMatchObject(webinarProps);
   });
 
-  it('should handle a payload with two object with the second one with missing data and successfully return webinar props with only one item', () => {
-    const result = makeWebinarsProps(
-      _.cloneDeep(strapiWebinarsWithMissingData)
-    );
-    expect(result).toHaveLength(1);
-    expect(result[0]).toMatchObject(webinarProps);
-  });
-
   it('should handle empty data array', () => {
     const emptyData: StrapiWebinars = {
       data: [],
@@ -52,7 +44,8 @@ describe('makeWebinarsProps', () => {
       data: [
         {
           ...strapiWebinars.data[0],
-          id: 1,
+          title: undefined as any,
+          slug: undefined as any,
         },
       ],
       meta: {

@@ -9,7 +9,7 @@ export function guideListWithItemsWithEmptyProductSlug() {
       ...guide,
       product: {
         ...guide.product,
-        slug: undefined as any,
+        slug: '',
       },
     })),
   } satisfies StrapiGuides;
@@ -18,7 +18,7 @@ export function guideListWithItemsWithEmptyProductSlug() {
 export function guideListWithMissingProductSlug() {
   return {
     ...strapiGuideData,
-    ...strapiGuideData.data.map((guide) => ({
+    data: strapiGuideData.data.map((guide) => ({
       ...guide,
       product: {
         ...guide.product,

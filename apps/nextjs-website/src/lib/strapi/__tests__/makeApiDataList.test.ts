@@ -62,10 +62,8 @@ describe('makeApiDataListProps', () => {
   });
 
   it('should handle empty data array', async () => {
-    const emptyData: StrapiApiDataList = {
-      ...[],
-    };
-    const result = await makeApiDataListProps({ data: emptyData });
+    const emptyData: StrapiApiDataList = [];
+    const result = await makeApiDataListProps({ data: [...emptyData] });
     expect(result).toHaveLength(0);
   });
 
@@ -131,7 +129,9 @@ describe('makeApiDataListProps', () => {
   });
 
   it('should return empty array when all api data are invalid', async () => {
-    const result = await makeApiDataListProps({ data: allInvalidApiData() });
+    const result = await makeApiDataListProps({
+      data: [...allInvalidApiData()],
+    });
     expect(result).toHaveLength(0);
     expect(spyOnConsoleError).toHaveBeenCalled();
   });

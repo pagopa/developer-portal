@@ -90,7 +90,7 @@ export function productWithCorruptedData(): readonly StrapiProduct[] {
   return [
     {
       ...strapiProduct,
-      api_data_list_page: undefined as any,
+      api_data_list_page: 'corrupted api data' as any,
       name: 'Corrupted Product',
     },
   ];

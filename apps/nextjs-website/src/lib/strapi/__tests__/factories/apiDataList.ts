@@ -168,9 +168,7 @@ export function apiDataWithCorruptedProduct() {
     {
       ...apiData,
       title: 'API Data With Corrupted Product',
-      product: {
-        ...apiData.product,
-      },
+      product: undefined as any,
     },
   ] as StrapiApiDataList;
 }

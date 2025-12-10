@@ -12,11 +12,11 @@ describe('makeWebinarCategoriesProps', () => {
     expect(result).toHaveLength(2);
     expect(result[0]).toEqual({
       name: 'Payments',
-      icon: { data: mediaJpeg() },
+      icon: mediaJpeg(),
     });
     expect(result[1]).toEqual({
       name: 'Onboarding',
-      icon: { data: mediaJpeg() },
+      icon: mediaJpeg(),
     });
   });
 
@@ -33,7 +33,7 @@ describe('makeWebinarCategoryProps', () => {
     const result = makeWebinarCategoryProps(category);
     expect(result).toEqual({
       name: 'Payments',
-      icon: { data: mediaJpeg() },
+      icon: mediaJpeg(),
     });
   });
 

@@ -25,7 +25,7 @@ export async function makeApiDataListProps(
             attributes.apiRestDetail?.slug ||
             attributes.apiSoapDetail?.slug ||
             '';
-          if (!apiDataSlug) {
+          if (!apiDataSlug || apiDataSlug.length === 0) {
             console.error(
               `Error while processing API Data with title "${attributes.title}": missing API slug. Skipping...`
             );
