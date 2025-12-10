@@ -1,11 +1,7 @@
 import { makeWebinarsProps } from '@/lib/strapi/makeProps/makeWebinars';
 import { StrapiWebinars } from '@/lib/strapi/types/webinars';
 import _ from 'lodash';
-import {
-  strapiWebinars,
-  strapiWebinarsWithMissingData,
-  webinarProps,
-} from './fixtures/webinars';
+import { strapiWebinars, webinarProps } from './fixtures/webinars';
 import { spyOnConsoleError } from '@/lib/strapi/__tests__/spyOnConsole';
 
 describe('makeWebinarsProps', () => {
