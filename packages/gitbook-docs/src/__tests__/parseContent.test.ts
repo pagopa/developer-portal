@@ -732,6 +732,35 @@ describe('parseContent', () => {
     ]);
   });
 
+  it('should keep inline code with pipes inside tables intact', () => {
+    const table =
+      '| Segmento | Regex | Esempio |\n' +
+      '| --- | --- | --- |\n' +
+      '| Prefisso | `9/|6/|7/|8/` | `9/` |';
+    expect(parseContent(table, config)).toStrictEqual([
+      new Markdoc.Tag('Table', { headerIsHidden: false }, [
+        new Markdoc.Tag('TableHead', {}, [
+          new Markdoc.Tag('TableR', {}, [
+            new Markdoc.Tag('TableH', {}, ['Segmento']),
+            new Markdoc.Tag('TableH', {}, ['Regex']),
+            new Markdoc.Tag('TableH', {}, ['Esempio']),
+          ]),
+        ]),
+        new Markdoc.Tag('TableBody', {}, [
+          new Markdoc.Tag('TableR', {}, [
+            new Markdoc.Tag('TableD', {}, ['Prefisso']),
+            new Markdoc.Tag('TableD', {}, [
+              new Markdoc.Tag('StyledText', { style: 'code' }, ['9/|6/|7/|8/']),
+            ]),
+            new Markdoc.Tag('TableD', {}, [
+              new Markdoc.Tag('StyledText', { style: 'code' }, ['9/']),
+            ]),
+          ]),
+        ]),
+      ]),
+    ]);
+  });
+
   it('should parse paragraph inside table td', () => {
     const table =
       '| col A | col B |\n| --------- | --------- |\n| <p>1 - A</p>     | 1 - B     |\n| 2 - A     | 2 - B     |';

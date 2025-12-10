@@ -32,6 +32,16 @@
                 "title": "Iscrizione alla newsletter",
                 "unsubscribe": "Annulla iscrizione"
             },
+            "survey": {
+                "description": "Consentimi di partecipare ai sondaggi su prodotti e servizi PagoPA. Se attivo, potrai ricevere inviti occasionali a compilare questionari.",
+                "error": {
+                    "subscribe": "C'è stato un errore nell'adesione ai sondaggi, riprova più tardi o contatta l'assistenza tecnica.",
+                    "unsubscribe": "C'è stato un errore nella revoca del consenso ai sondaggi, riprova più tardi o contatta l'assistenza tecnica."
+                },
+                "subscribe": "Consenti",
+                "title": "Consenso ai sondaggi",
+                "unsubscribe": "Revoca consenso"
+            },
             "privacy": {
                 "basicData": "PagoPA raccoglie dati personali di base che ti permettono di creare e utilizzare il tuo account su DevPortal. Questi dati sono raccolti durante la registrazione e l'aggiornamento del tuo profilo. PagoPA garantisce che i tuoi dati vengano gestiti in modo sicuro e ne giustifica l’utilizzo secondo l’informativa Privacy di PagoPA. I tuoi dati personali di base verranno conservati fino a quando avrai un account attivo su PagoPA DevPortal.",
                 "title": "Privacy",
@@ -76,7 +86,7 @@
             "wrongPassword": "La password inserita non risulta corretta",
             "requiredCurrentPassword": "È necessario inserire la password attuale",
             "passwordsNotMatch": "Le password non corrispondono",
-            "passwordPolicy": "Non rispetta i requisiti. Minimo 8 caratteri, almeno un numero, almeno una lettera maiuscola e almeno un carattere speciale",
+            "passwordPolicy": "Non rispetta i requisiti. Minimo 8 caratteri, almeno un numero, una lettera maiuscola, una minuscola e un carattere speciale",
             "cancel": "Annulla",
             "save": "Conferma",
             "dialog": {
@@ -130,7 +140,7 @@
             "reduce": "Riduci",
             "expand": "Espandi",
             "questionBox": "Question box",
-            "notLive": "Non appena sarà iniziato l’evento qui potrai scrivere le tue domande"
+            "notLive": "Puoi scrivere le tue domande solo quando l'evento è in corso"
         },
         "warnings": {
             "email": "Il giorno prima dell'evento riceverai una email con i dettagli.",
@@ -205,11 +215,12 @@
             "createYourAccount": "Crea il tuo account",
             "passwordMismatchError": "Le password non combaciano",
             "confirmComunications": "Inviami email relative alle risorse e agli aggiornamenti sui prodotti. Se questa casella è selezionata, PagoPA ti invierà di tanto in tanto delle email utili e pertinenti. Puoi annullare l'iscrizione in qualsiasi momento.",
+            "confirmSurvey": "Consentimi di partecipare ai sondaggi su prodotti e servizi PagoPA. Se questa casella è selezionata, potrai ricevere inviti occasionali a compilare questionari. Puoi revocare il consenso in qualsiasi momento.",
             "acceptPolicy": "Cliccando su iscriviti dichiari di aver preso visione della nostra <policy>informativa privacy</policy> e dei nostri <terms>termini e condizioni d'uso</terms>.",
             "alreadyHaveAnAccount": "Hai già un account?",
             "whyCreateAccount": "Perché iscriversi a PagoPA DevPortal",
             "passwordError": "Non rispetta i requisiti.",
-            "passwordPolicy": "Minimo 8 caratteri, almeno un numero, almeno una lettera maiuscola e almeno un carattere speciale",
+            "passwordPolicy": "Minimo 8 caratteri, almeno un numero, una lettera maiuscola, una minuscola e un carattere speciale",
             "emailSent": "Email inviata a {email}",
             "advantages": {
                 "exclusive_contents": {
@@ -537,9 +548,9 @@
                     "ariaLabel": "Vai al link: Piattaforma pagoPA",
                     "label": "Piattaforma pagoPA"
                 },
-                "centroStella": {
-                    "ariaLabel": "Vai al link: Centro stella",
-                    "label": "Centro stella"
+                "pari": {
+                    "ariaLabel": "Vai al link: PARI",
+                    "label": "PARI"
                 },
                 "checkIBAN": {
                     "ariaLabel": "Vai al link: Check IBAN",
@@ -625,7 +636,8 @@
         "productShowcaseLabel": "Come integrarsi? Inizia da qui"
     },
     "apiDataListPage": {
-        "explore": "Esplora le API"
+        "explore": "Esplora le API",
+        "noApiMessage": "Non sono presenti API della categoria selezionata"
     },
     "apiDataPage": {
         "soap": {

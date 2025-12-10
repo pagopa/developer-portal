@@ -34,13 +34,13 @@ runs:
         STRAPI_ENDPOINT: ${{ inputs.strapi-endpoint }}
         STRAPI_API_TOKEN: ${{ inputs.strapi-api-token }}
       run: |
-        echo "Running fetch-soap-api-from-strapi..."
-        npm run fetch-soap-api-from-strapi -w gitbook-docs
+        echo "Running generate-soap-api-repositories-list..."
+        npm run generate-soap-api-repositories-list -w soap-api-data
 
     - name: Clone each SOAP repository
       shell: bash
       run: |
-        json_file="./packages/gitbook-docs/__soap_tmp_output__/soap-api-repositories.json"
+        json_file="./packages/soap-api-data/__soap_tmp_output__/soap-api-repositories.json"
         clone_dir="${{ inputs.soap-api-directory }}"
         
         mkdir -p "$clone_dir"

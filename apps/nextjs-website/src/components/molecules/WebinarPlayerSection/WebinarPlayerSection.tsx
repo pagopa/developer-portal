@@ -17,24 +17,75 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { Stack } from '@mui/system';
 import { useTranslations } from 'next-intl';
 import VideoJsPlayer from '@/components/atoms/VideoJsPlayer/VideoJsPlayer';
+import Image from 'next/image';
 
 type WebinarPlayerSectionProps = {
   webinar: Webinar;
   webinarState: WebinarState;
+  enableQuestionForm?: boolean;
+  isLiveStreamAvailable?: boolean;
+  reloadPlayerToken?: number;
+  isPlayerVisible?: boolean;
 };
 const WebinarPlayerSection = ({
   webinar,
   webinarState,
+  enableQuestionForm = false,
+  isLiveStreamAvailable = false,
+  reloadPlayerToken = 0,
+  isPlayerVisible = true,
 }: WebinarPlayerSectionProps) => {
   const t = useTranslations('webinar');
   const { palette } = useTheme();
   const [isQuestionFormExpanded, setIsQuestionFormExpanded] = useState(false);
   const [question, setQuestion] = useState('');
   const isSmallScreen = useMediaQuery('(max-width: 1000px)');
-  const isQuestionFormAvailable = useMemo(
-    () => [WebinarState.live, WebinarState.comingSoon].includes(webinarState),
-    [webinarState]
+  const isQuestionFormDisabled = useMemo(
+    () => !enableQuestionForm,
+    [enableQuestionForm]
   );
+  const isQuestionFormAvailable = useMemo(
+    () =>
+      [WebinarState.live, WebinarState.comingSoon].includes(webinarState) ||
+      isLiveStreamAvailable,
+    [webinarState, isLiveStreamAvailable]
+  );
+
+  if (!isPlayerVisible) {
+    return webinar.playerCoverImageUrl ? (
+      <div style={{ backgroundColor: palette.grey[50] }}>
+        <EContainer>
+          <Box
+            sx={{
+              display: 'flex',
+              flexGrow: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <Image
+              src={webinar.playerCoverImageUrl}
+              alt={webinar.title}
+              width={0}
+              height={0}
+              sizes='100vw'
+              style={{
+                width: '100%',
+                height: 'auto',
+                marginBottom: '16px',
+              }}
+            />
+          </Box>
+        </EContainer>
+      </div>
+    ) : null;
+  }
+
+  const videoOnDemandStartAt =
+    typeof webinar.videoOnDemandStartAt === 'number' &&
+    webinar.videoOnDemandStartAt > 0
+      ? webinar.videoOnDemandStartAt
+      : undefined;
   return (
     webinar.playerSrc && (
       <div style={{ backgroundColor: palette.grey[50] }}>
@@ -61,11 +112,13 @@ const WebinarPlayerSection = ({
                 <VimeoPlayer playerSrc={webinar.playerSrc} />
               ) : (
                 <VideoJsPlayer
-                  techOrder={['AmazonIVS']}
-                  autoplay={true}
+                  autoplay={isLiveStreamAvailable}
                   controls={true}
                   playsInline={true}
                   src={webinar.playerSrc}
+                  poster={webinar.playerCoverImageUrl}
+                  reloadToken={reloadPlayerToken}
+                  videoOnDemandStartAt={videoOnDemandStartAt}
                 />
               )}
             </Box>
@@ -77,7 +130,7 @@ const WebinarPlayerSection = ({
                       setIsQuestionFormExpanded(false);
                     }}
                     webinarSlug={webinar.slug}
-                    disabled={webinarState != WebinarState.live}
+                    disabled={isQuestionFormDisabled}
                     isSmallScreen={isSmallScreen}
                     question={question}
                     setQuestion={setQuestion}

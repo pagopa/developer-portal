@@ -4,10 +4,15 @@ import yaml
 from pathlib import Path
 from pydantic_settings import BaseSettings
 
+from src.modules.logger import get_logger
+
+
+LOGGER = get_logger(__name__)
 CWF = Path(__file__)
 ROOT = CWF.parent.parent.parent.absolute().__str__()
 PROMPTS = yaml.safe_load(open(os.path.join(ROOT, "config", "prompts.yaml"), "r"))
 AWS_SESSION = boto3.Session()
+
 
 def get_ssm_parameter(name: str | None, default: str | None = None) -> str | None:
     """
@@ -34,12 +39,13 @@ def get_ssm_parameter(name: str | None, default: str | None = None) -> str | Non
 
     return value
 
+
 class ChatbotSettings(BaseSettings):
     """Settings for the chatbot evaluation."""
 
     # api
     environment: str = os.getenv("ENVIRONMENT", os.getenv("environment", "local"))
-    aws_endpoint_url: str | None = os.getenv("AWS_ENDPOINT_URL")    
+    aws_endpoint_url: str | None = os.getenv("AWS_ENDPOINT_URL")
     google_api_key: str = get_ssm_parameter(
         name=os.getenv("CHB_AWS_SSM_GOOGLE_API_KEY"),
         default=os.getenv("CHB_AWS_GOOGLE_API_KEY"),

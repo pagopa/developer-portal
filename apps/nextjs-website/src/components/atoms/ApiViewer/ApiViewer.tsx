@@ -1,26 +1,85 @@
+/* eslint-disable functional/immutable-data */
+/* eslint-disable functional/no-this-expressions */
 'use client';
-import { FC } from 'react';
-import { API } from '@stoplight/elements';
-import '@stoplight/elements/styles.min.css';
-import { Product } from '@/lib/types/product';
+import { FC, useEffect } from 'react';
+import { Box, useTheme } from '@mui/material';
+import { PRODUCT_HEADER_HEIGHT, SITE_HEADER_HEIGHT } from '@/config';
+import 'rapidoc';
 
 type ApiViewerProps = {
   specURL: string;
-  product: Product;
-  hideTryIt?: boolean;
 };
-const ApiViewer: FC<ApiViewerProps> = ({
-  hideTryIt = true,
-  specURL,
-  product,
-}) => {
+
+const scrollOffset = SITE_HEADER_HEIGHT + PRODUCT_HEADER_HEIGHT;
+
+const ApiViewer: FC<ApiViewerProps> = ({ specURL }) => {
+  const { palette } = useTheme();
+
+  useEffect(() => {
+    // Handle initial load with hash
+    if (window.location.hash) {
+      window.scrollTo({ top: 0 });
+    }
+
+    // Intercept History API calls to handle navigation
+    const originalPushState = history.pushState;
+    const originalReplaceState = history.replaceState;
+
+    const handleHistoryChange = () => {
+      window.scrollTo({ top: 0 });
+    };
+
+    history.pushState = function (...args) {
+      originalPushState.apply(this, args);
+      handleHistoryChange();
+    };
+
+    history.replaceState = function (...args) {
+      originalReplaceState.apply(this, args);
+      handleHistoryChange();
+    };
+
+    window.addEventListener('popstate', handleHistoryChange);
+
+    return () => {
+      history.pushState = originalPushState;
+      history.replaceState = originalReplaceState;
+      window.removeEventListener('popstate', handleHistoryChange);
+    };
+  }, []);
+
   return (
-    <API
-      apiDescriptionUrl={specURL}
-      hideTryIt={hideTryIt}
-      basePath={`/${product.slug}/api`}
-      router={typeof window === 'undefined' ? 'memory' : 'hash'}
-    />
+    <Box
+      sx={{
+        display: 'flex',
+        height: `calc(100vh - ${scrollOffset}px)`,
+        width: '100%',
+        overflow: 'hidden',
+      }}
+    >
+      <rapi-doc
+        allow-advanced-search='false'
+        allow-authentication='false'
+        allow-server-selection='false'
+        allow-try='false'
+        auto-scroll='false'
+        bg-color={palette.background.paper}
+        font-size='large'
+        mono-font='Titillium Web'
+        nav-bg-color={palette.grey[50]}
+        nav-text-color={palette.text.primary}
+        primary-color={palette.primary.main}
+        regular-font='Titillium Web'
+        render-style='focused'
+        scroll-y-offset='0'
+        show-components='true'
+        show-header='false'
+        show-method-in-nav-bar='as-plain-text'
+        spec-url={specURL}
+        text-color={palette.text.primary}
+        theme={palette.mode}
+      ></rapi-doc>
+    </Box>
   );
 };
 

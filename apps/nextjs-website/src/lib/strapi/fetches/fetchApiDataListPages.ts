@@ -16,6 +16,7 @@ const makeStrapiApiDataListPagePopulate = () =>
           },
           icon: { populate: '*' },
           product: { populate: 'logo' },
+          tags: { populate: '*' },
         },
       },
       product: {
@@ -27,6 +28,7 @@ const makeStrapiApiDataListPagePopulate = () =>
       seo: {
         populate: '*,metaImage,metaSocial.image',
       },
+      enableFilters: true,
     },
   });
 

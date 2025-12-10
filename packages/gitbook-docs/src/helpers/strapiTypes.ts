@@ -90,3 +90,40 @@ export interface StrapiApiData {
     };
   };
 }
+
+// Raw Strapi response types for the full API responses
+export interface StrapiGuidesResponse {
+  readonly data: readonly StrapiGuide[];
+  readonly meta?: {
+    readonly pagination?: {
+      readonly page?: number;
+      readonly pageSize?: number;
+      readonly pageCount?: number;
+      readonly total?: number;
+    };
+  };
+}
+
+export interface StrapiSolutionsResponse {
+  readonly data: readonly StrapiSolution[];
+  readonly meta?: {
+    readonly pagination?: {
+      readonly page?: number;
+      readonly pageSize?: number;
+      readonly pageCount?: number;
+      readonly total?: number;
+    };
+  };
+}
+
+export interface StrapiReleaseNotesResponse {
+  readonly data: readonly StrapiReleaseNote[];
+  readonly meta?: {
+    readonly pagination?: {
+      readonly page?: number;
+      readonly pageSize?: number;
+      readonly pageCount?: number;
+      readonly total?: number;
+    };
+  };
+}

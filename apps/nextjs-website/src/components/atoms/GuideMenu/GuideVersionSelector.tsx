@@ -25,9 +25,12 @@ const GuideVersionSelector = ({
       icons={{ opened: <ExpandLess />, closed: <ExpandMore /> }}
       buttonStyle={{
         color: palette.action.active,
-        display: 'flex',
+        border: '0.5px solid grey',
+        margin: '5px 0 30px 30px',
+        padding: '5px',
+        width: '150px',
+        backgroundColor: 'white',
         justifyContent: 'space-between',
-        padding: '16px 32px',
       }}
       menuStyle={{
         style: {
@@ -36,10 +39,6 @@ const GuideVersionSelector = ({
           left: 0,
           right: 0,
         },
-      }}
-      menuAnchorOrigin={{
-        vertical: 'bottom',
-        horizontal: 'center',
       }}
     />
   );
