@@ -8,7 +8,6 @@ import {
   StrapiProducts,
 } from '@/lib/strapi/types/product';
 import { compact } from 'lodash';
-import { RootEntity } from '@/lib/strapi/types/rootEntity';
 
 export function makeProductsProps(
   strapiProducts: StrapiProducts

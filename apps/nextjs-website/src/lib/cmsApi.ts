@@ -162,7 +162,7 @@ export const getOverviewsProps = async () => {
 
 export const getGuideListPagesProps = async () => {
   const strapiGuideList = (await fetchResponseFromCDN(
-    'synced-guide-list-pages-response.json'
+    'synced-guide-list-pages-response.v5.json'
   )) as StrapiGuideListPages | undefined;
   return strapiGuideList ? makeGuideListPagesProps(strapiGuideList) : [];
 };
@@ -181,7 +181,7 @@ export const getGuidePageProps = async (
 ) => {
   // TODO: restore this when Strapi will manage guides metadata
   const strapiGuides = (await fetchResponseFromCDN(
-    'synced-guides-response.json'
+    'synced-guides-response.v5.json'
   )) as StrapiGuides | undefined;
   // eslint-disable-next-line functional/no-expression-statements
   const guides = strapiGuides ? makeGuidesProps(strapiGuides) : [];
