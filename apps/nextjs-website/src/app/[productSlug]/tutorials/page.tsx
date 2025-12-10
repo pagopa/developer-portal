@@ -32,7 +32,10 @@ export type TutorialsPageProps = {
   readonly enableFilters?: boolean;
 } & ProductLayoutProps;
 
-export async function generateMetadata(props: ProductParams, parent: ResolvingMetadata): Promise<Metadata> {
+export async function generateMetadata(
+  props: ProductParams,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
   const params = await props.params;
   const resolvedParent = await parent;
   const tutorialListPage = await getTutorialListPageProps(params.productSlug);

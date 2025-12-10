@@ -31,7 +31,10 @@ export type UseCasesPageProps = {
   readonly enableFilters: boolean | undefined;
 } & ProductLayoutProps;
 
-export async function generateMetadata(props: ProductParams, parent: ResolvingMetadata): Promise<Metadata> {
+export async function generateMetadata(
+  props: ProductParams,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
   const params = await props.params;
   const resolvedParent = await parent;
   const { product, abstract, path, seo } = await getUseCaseListPageProps(

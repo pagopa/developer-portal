@@ -33,7 +33,10 @@ export type GuideListPageProps = {
   readonly updatedAt?: string;
 } & ProductLayoutProps;
 
-export const generateMetadata = async (props: ProductParams, parent: ResolvingMetadata): Promise<Metadata> => {
+export const generateMetadata = async (
+  props: ProductParams,
+  parent: ResolvingMetadata
+): Promise<Metadata> => {
   const params = await props.params;
   const resolvedParent = await parent;
   const { path, abstract, seo, product } = await getGuideListPages(

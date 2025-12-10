@@ -32,7 +32,10 @@ export type QuickStartGuidePageProps = {
   readonly seo?: SEO;
 } & ProductLayoutProps;
 
-export async function generateMetadata(props: ProductParams, parent: ResolvingMetadata): Promise<Metadata> {
+export async function generateMetadata(
+  props: ProductParams,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
   const params = await props.params;
   const resolvedParent = await parent;
   const { abstract, path, product, seo } = await getQuickStartGuide(

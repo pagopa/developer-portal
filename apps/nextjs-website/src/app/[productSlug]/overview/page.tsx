@@ -101,7 +101,10 @@ export type OverviewPageProps = {
   readonly seo?: SEO;
 } & ProductLayoutProps;
 
-export async function generateMetadata(props: ProductParams, parent: ResolvingMetadata): Promise<Metadata> {
+export async function generateMetadata(
+  props: ProductParams,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
   const params = await props.params;
   const resolvedParent = await parent;
   const { product, path, seo, hero } = await getOverview(params.productSlug);

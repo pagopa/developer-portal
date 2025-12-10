@@ -14,11 +14,9 @@ type Params = {
 };
 export const dynamic = 'force-dynamic';
 
-export async function generateMetadata(
-  props: {
-    params: Promise<Params>;
-  }
-): Promise<Metadata> {
+export async function generateMetadata(props: {
+  params: Promise<Params>;
+}): Promise<Metadata> {
   const params = await props.params;
   const solution = await getSolution(params?.solutionSlug);
 

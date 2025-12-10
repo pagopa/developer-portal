@@ -47,11 +47,9 @@ export type ProductGuidePageProps = {
   bodyConfig: ParseContentConfig;
 } & ProductLayoutProps;
 
-export async function generateMetadata(
-  props0: {
-    params: Promise<Params>;
-  }
-): Promise<Metadata> {
+export async function generateMetadata(props0: {
+  params: Promise<Params>;
+}): Promise<Metadata> {
   const params = await props0.params;
   const props = await getGuidePage(
     params?.productGuidePage ?? [''],

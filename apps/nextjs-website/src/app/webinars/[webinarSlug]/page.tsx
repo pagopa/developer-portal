@@ -15,11 +15,9 @@ type Params = {
   webinarSlug: string;
 };
 
-export async function generateMetadata(
-  props: {
-    params: Promise<Params>;
-  }
-): Promise<Metadata> {
+export async function generateMetadata(props: {
+  params: Promise<Params>;
+}): Promise<Metadata> {
   const params = await props.params;
   const webinar = await getWebinar(params?.webinarSlug);
 

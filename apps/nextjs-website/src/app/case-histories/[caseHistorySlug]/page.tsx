@@ -16,11 +16,9 @@ type Params = {
   caseHistorySlug: string;
 };
 
-export async function generateMetadata(
-  props: {
-    params: Promise<Params>;
-  }
-): Promise<Metadata> {
+export async function generateMetadata(props: {
+  params: Promise<Params>;
+}): Promise<Metadata> {
   const params = await props.params;
   const caseHistory = await getCaseHistory(params?.caseHistorySlug);
 

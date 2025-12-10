@@ -33,11 +33,9 @@ type ReleaseNotePageStaticParams = {
 };
 export const dynamic = 'force-dynamic';
 
-export async function generateMetadata(
-  props0: {
-    params: Promise<ReleaseNotePageStaticParams>;
-  }
-): Promise<Metadata> {
+export async function generateMetadata(props0: {
+  params: Promise<ReleaseNotePageStaticParams>;
+}): Promise<Metadata> {
   const params = await props0.params;
   if (params.productSlug === 'unknown') {
     return makeMetadata({
@@ -70,11 +68,9 @@ export type ReleaseNotePageProps = {
   readonly title: string;
 } & ProductLayoutProps;
 
-const ReleaseNotePage = async (
-  props0: {
-    params: Promise<ReleaseNotePageStaticParams>;
-  }
-) => {
+const ReleaseNotePage = async (props0: {
+  params: Promise<ReleaseNotePageStaticParams>;
+}) => {
   const params = await props0.params;
   if (params.productSlug === 'unknown') {
     return <PageNotFound />;

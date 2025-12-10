@@ -35,7 +35,10 @@ export type ApiDataPageProps = {
   readonly seo?: SEO;
 } & ProductLayoutProps;
 
-export const generateMetadata = async (props: ApiDataParams, parent: ResolvingMetadata): Promise<Metadata> => {
+export const generateMetadata = async (
+  props: ApiDataParams,
+  parent: ResolvingMetadata
+): Promise<Metadata> => {
   const params = await props.params;
   const resolvedParent = await parent;
   const ApiDataProps = await getApiData(params.apiDataSlug);
