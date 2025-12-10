@@ -95,7 +95,6 @@ jobs:
         run: npm run compile
 
       - name: Generate UrlReplace metadata
-        if: inputs.generate_metadata_only == false
         env:
           ENVIRONMENT: ${{ github.event_name == 'workflow_dispatch' && inputs.environment || 'dev' }}
           DOCUMENTATION_PATH: ${{ vars.DOCUMENTATION_PATH || '../../devportal-docs/docs' }}
@@ -109,7 +108,6 @@ jobs:
           ENVIRONMENT: ${{ github.event_name == 'workflow_dispatch' && inputs.environment || 'dev' }}
           DOCUMENTATION_PATH: ${{ vars.DOCUMENTATION_PATH || '../../devportal-docs/docs' }}
           URL_PARSING_METADATA_JSON_PATH: ${{ vars.URL_PARSING_METADATA_JSON_PATH || '../../url-parsing-metadata.json' }}
-        if: inputs.generate_metadata_only == false
         run: npm run parse-docs -w gitbook-docs
 
       - name: Replace escaped tokens with backticks in docs
@@ -145,7 +143,6 @@ jobs:
         run: npm run sync-all-metadata -w gitbook-docs
 
       - name: Replace urls and include tags in docs
-        if: inputs.generate_metadata_only == false
         env:
           ENVIRONMENT: ${{ inputs.environment }}
           DOCUMENTATION_PATH: ${{ vars.DOCUMENTATION_PATH || '../../devportal-docs/docs' }}
@@ -153,7 +150,6 @@ jobs:
         run: npm run parse-docs -w gitbook-docs
 
       - name: Sync docs folder to S3
-        if: inputs.generate_metadata_only == false
         working-directory: ./devportal-docs
         env:
           DIR_NAMES_FILTER: ${{ inputs.dir_names_filter }}
