@@ -56,22 +56,22 @@ def read_file_from_s3(
         raise KeyError(f"Error reading {bucket_name}/{file_path} from S3: {e}")
 
 
-def read_metadata_from_s3(
+def get_metadata_from_s3(
     docs_parent_folder: str | None = None,
     bucket_name: str | None = None,
-) -> Tuple[List[dict], List[dict], List[dict]]:
+) -> List[Dict[str, str]]:
     """Reads metadata files from an S3 bucket.
     Args:
         docs_parent_folder (str): The parent folder in the S3 bucket where the metadata files
             are located.
         bucket_name (str): The name of the S3 bucket.
     Returns:
-        Tuple[List[dict], List[dict], List[dict]]: A tuple containing three lists of dictionaries:
-            - guides metadata
-            - solutions metadata
-            - release notes metadata
+        List[Dict[str, str]]: list containing the metadata dictionaries.
     """
 
+    docs_parent_folder = (
+        docs_parent_folder if docs_parent_folder else DOCS_PARENT_FOLDER
+    )
     bucket_name = bucket_name if bucket_name else SETTINGS.bucket_static_content
     main_folders_content = json.loads(read_file_from_s3(MAIN_GUIDES_FOLDER_FILEPATH))
     main_folders_list = main_folders_content["dirNames"]
@@ -81,7 +81,7 @@ def read_metadata_from_s3(
         metadata.append(
             json.loads(
                 read_file_from_s3(
-                    os.path.join(DOCS_PARENT_FOLDER, folder_name, "metadata.json")
+                    os.path.join(docs_parent_folder, folder_name, "metadata.json")
                 )
             )
         )
@@ -334,7 +334,7 @@ def get_static_and_dynamic_metadata(
         static_metadata = []
         dynamic_metadata = []
 
-        all_metadata = read_metadata_from_s3()
+        all_metadata = get_metadata_from_s3()
         all_url_metadata = [
             SETTINGS.website_url + item["path"] for item in all_metadata
         ]
