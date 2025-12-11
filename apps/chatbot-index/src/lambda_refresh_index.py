@@ -13,7 +13,6 @@ from src.modules.vector_index import DiscoveryVectorIndex
 
 LOGGER = get_logger(__name__)
 VECTOR_INDEX = DiscoveryVectorIndex()
-MAIN_FILE_PATH = "pippobaudo.json"
 DIRNAMES_TO_REMOVE_PATH = "main-guide-versions-dirNames-to-remove.json"
 ROOT_FOLDERS_IN_BUCKET = "devportal-docs/docs/"
 
@@ -104,15 +103,6 @@ def read_payload(payload: dict) -> Tuple[List[Dict[str, str]], List[str]]:
     event_action = event_name.split(":")[0]
 
     if event_action == "ObjectCreated":
-      if object_key == MAIN_FILE_PATH:
-        try:
-          list_of_folders = json.loads(read_file_from_s3(object_key))
-        except json.JSONDecodeError as e:
-          LOGGER.warning(f"Failed to decode {object_key}: {e}")
-          list_of_folders = []
-        for folder in list_of_folders:
-          VECTOR_INDEX.remove_docs_in_folder(folder_path=folder)
-
       try:
         idx = s3_paths.index(object_key)
         doc_info = filtered_metadata[idx]
