@@ -1,5 +1,11 @@
 # chatbot
 
+## 7.1.4
+
+### Patch Changes
+
+- eacd5eb: Hot fix product list
+
 ## 7.1.3
 
 ### Patch Changes
