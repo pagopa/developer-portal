@@ -1,5 +1,5 @@
 name: Sync GitBook Docs (Optimized)
-run-name: Sync GitBook Docs (Optimized) in ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.environment || 'dev' }}
+run-name: Sync GitBook Docs (Optimized) in ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.environment || github.event_name == 'schedule' && 'prod' || 'dev' }}
 
 on:
   workflow_dispatch:
@@ -133,7 +133,7 @@ jobs:
           NEXT_PUBLIC_COGNITO_REGION: ${{ vars.NEXT_PUBLIC_COGNITO_REGION || 'eu-south-1' }}
           FETCH_FROM_STRAPI: ${{ vars.FETCH_FROM_STRAPI || 'true' }}
           GENERATE_ROOT_METADATA_FILE: ${{ inputs.generate_root_metadata_file == true && 'true' || 'false' }}
-          GENERATE_URL_METADATA: 'false'
+          GENERATE_URL_METADATA: 'true'
           GENERATE_SITEMAP_METADATA: 'true'
           SAVE_STRAPI_RESPONSES: 'true'
           METADATA_TYPE: ${{ inputs.metadata_type }}
@@ -141,8 +141,6 @@ jobs:
           SITEMAP_URL: ${{ env.SITEMAP_URL || 'https://developer.pagopa.it/sitemap.xml' }}
           S3_DIRNAME_METADATA_JSON_PATH: ${{ vars.S3_DIRNAME_METADATA_JSON_PATH }}
         run: npm run sync-all-metadata -w gitbook-docs
-
-
 
       - name: Sync docs folder to S3
         working-directory: ./devportal-docs
@@ -235,13 +233,6 @@ jobs:
           METADATA_TYPE: 'all'
           SITEMAP_URL: 'https://developer.pagopa.it/sitemap.xml'
         run: npm run sync-all-metadata -w gitbook-docs
-
-      - name: Replace urls and include tags in docs
-        env:
-          ENVIRONMENT: 'prod'
-          DOCUMENTATION_PATH: ${{ vars.DOCUMENTATION_PATH || '../../devportal-docs/docs' }}
-          URL_PARSING_METADATA_JSON_PATH: ${{ vars.URL_PARSING_METADATA_JSON_PATH || '../../url-parsing-metadata.json' }}
-        run: npm run parse-docs -w gitbook-docs
 
       - name: Replace escaped tokens with backticks in docs
         env:

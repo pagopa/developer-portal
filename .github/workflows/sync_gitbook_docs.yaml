@@ -1,5 +1,5 @@
 name: Sync GitBook Docs
-run-name: Sync GitBook Docs in ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.environment || 'dev' }}
+run-name: Sync GitBook Docs in ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.environment || github.event_name == 'schedule' && 'prod' || 'dev' }}
 
 on:
   workflow_dispatch:
