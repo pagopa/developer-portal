@@ -142,12 +142,7 @@ jobs:
           S3_DIRNAME_METADATA_JSON_PATH: ${{ vars.S3_DIRNAME_METADATA_JSON_PATH }}
         run: npm run sync-all-metadata -w gitbook-docs
 
-      - name: Replace urls and include tags in docs
-        env:
-          ENVIRONMENT: ${{ inputs.environment }}
-          DOCUMENTATION_PATH: ${{ vars.DOCUMENTATION_PATH || '../../devportal-docs/docs' }}
-          URL_PARSING_METADATA_JSON_PATH: ${{ vars.URL_PARSING_METADATA_JSON_PATH || '../../url-parsing-metadata.json' }}
-        run: npm run parse-docs -w gitbook-docs
+
 
       - name: Sync docs folder to S3
         working-directory: ./devportal-docs
