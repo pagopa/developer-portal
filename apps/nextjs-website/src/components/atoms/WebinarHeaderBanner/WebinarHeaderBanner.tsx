@@ -6,7 +6,7 @@ import {
   IconButton,
   Link as MuiLink,
 } from '@mui/material';
-import { FC, useState } from 'react';
+import { FC, useState, useEffect } from 'react';
 import VideoLibraryIcon from '@mui/icons-material/VideoLibrary';
 import CloseIcon from '@mui/icons-material/Close';
 import EastIcon from '@mui/icons-material/East';
@@ -27,14 +27,21 @@ const WebinarHeaderBanner: FC<WebinarHeaderBannerProps> = ({ webinars }) => {
     );
   });
 
-  const webinar = webinars.find(
-    ({ endDateTime }: Webinar) =>
-      endDateTime && new Date(endDateTime).getTime() > new Date().getTime()
-  );
+  const webinar = webinars
+    .filter((w) => w.isVisibleInList)
+    .find(
+      ({ endDateTime }: Webinar) =>
+        endDateTime && new Date(endDateTime).getTime() > new Date().getTime()
+    );
   const { slug, title: text, endDateTime } = webinar || {};
-  const storedDateTime = slug;
-  const shouldShow = !storedDateTime || new Date(storedDateTime) < new Date();
-  const [visible, setVisible] = useState(shouldShow);
+  const [visible, setVisible] = useState(true);
+
+  useEffect(() => {
+    if (!slug) return;
+    const storedDateTime = window.localStorage.getItem(slug);
+    const shouldShow = !storedDateTime || new Date(storedDateTime) < new Date();
+    setVisible(shouldShow);
+  }, [slug]);
 
   const { palette } = useTheme();
   const t = useTranslations('homepage');

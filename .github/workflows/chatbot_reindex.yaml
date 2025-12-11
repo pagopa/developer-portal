@@ -1,5 +1,6 @@
 ---
 name: Chatbot Reindex
+run-name: Chatbot Reindex in ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.environment || 'dev' }}
 
 on:
   workflow_dispatch:

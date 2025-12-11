@@ -8,6 +8,7 @@ import { StrapiPart } from '@/lib/strapi/types/part';
 import { StrapiTag } from '@/lib/strapi/types/tag';
 
 export type StrapiBaseTutorial = {
+  readonly updatedAt: string;
   readonly title: string;
   readonly slug: string;
   readonly publishedAt?: string;

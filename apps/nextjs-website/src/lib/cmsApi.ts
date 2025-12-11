@@ -12,7 +12,6 @@ import { fetchQuickStartGuides } from './strapi/fetches/fetchQuickStartGuides';
 import { makeQuickStartGuidesProps } from './strapi/makeProps/makeQuickStartGuides';
 import { makeCaseHistoriesProps } from './strapi/makeProps/makeCaseHistories';
 import { fetchCaseHistories } from './strapi/fetches/fetchCaseHistories';
-import { fetchSolution, fetchSolutions } from './strapi/fetches/fetchSolutions';
 import { makeSolutionsProps } from './strapi/makeProps/makeSolutions';
 import { makeSolutionListPageProps } from './strapi/makeProps/makeSolutionListPage';
 import { fetchSolutionListPage } from './strapi/fetches/fetchSolutionListPage';
@@ -31,7 +30,6 @@ import { makeTutorialListPagesProps } from './strapi/makeProps/makeTutorialListP
 import { fetchUrlReplaceMap } from './strapi/fetches/fetchUrlReplaceMap';
 import { makeUrlReplaceMap } from './strapi/makeProps/makeUrlReplaceMap';
 import { makeReleaseNotesProps } from '@/lib/strapi/makeProps/makeReleaseNotes';
-import { fetchReleaseNote } from '@/lib/strapi/fetches/fetchReleaseNotes';
 import {
   makeGuide as makeGuideS3,
   makeSolution as makeSolutionS3,
@@ -44,7 +42,6 @@ import {
   fetchResponseFromCDN,
   JsonMetadata,
 } from '@/helpers/s3Metadata.helpers';
-import { StrapiGuideListPages } from '@/lib/strapi/types/guideListPage';
 import { StrapiGuides } from '@/lib/strapi/types/guide';
 import { fetchUseCases } from '@/lib/strapi/fetches/fetchUseCases';
 import { makeUseCasesProps } from '@/lib/strapi/makeProps/makeUseCases';
@@ -54,6 +51,14 @@ import { fetchTags } from '@/lib/strapi/fetches/fetchTags';
 import { makeTagsProps } from '@/lib/strapi/makeProps/makeTags';
 import { isMarkDownPart, MarkDownPart } from '@/lib/strapi/types/part';
 import { getMarkdownContent } from '@/lib/api';
+import { fetchGuideListPages } from './strapi/fetches/fetchGuideListPages';
+import {
+  getSyncedGuidesResponseJsonPath,
+  getSyncedSolutionsResponseJsonPath,
+  getSyncedReleaseNotesResponseJsonPath,
+} from 'gitbook-docs/syncedResponses';
+import { StrapiSolutions } from './strapi/types/solutions';
+import { StrapiReleaseNotes } from './strapi/types/releaseNotes';
 
 // a BuildEnv instance ready to be used
 const buildEnv = pipe(
@@ -146,8 +151,10 @@ export const getCaseHistoriesProps = async () => {
 };
 
 export const getSolutionsProps = async () => {
-  const strapiSolutions = await fetchSolutions(buildEnv);
-  return makeSolutionsProps(strapiSolutions);
+  const strapiSolutions = (await fetchResponseFromCDN(
+    getSyncedSolutionsResponseJsonPath()
+  )) as StrapiSolutions | undefined;
+  return strapiSolutions ? makeSolutionsProps(strapiSolutions) : [];
 };
 
 export const getSolutionListPageProps = async () => {
@@ -161,9 +168,7 @@ export const getOverviewsProps = async () => {
 };
 
 export const getGuideListPagesProps = async () => {
-  const strapiGuideList = (await fetchResponseFromCDN(
-    'synced-guide-list-pages-response.v5.json'
-  )) as StrapiGuideListPages | undefined;
+  const strapiGuideList = await fetchGuideListPages(buildEnv);
   return strapiGuideList ? makeGuideListPagesProps(strapiGuideList) : [];
 };
 
@@ -179,9 +184,8 @@ export const getGuidePageProps = async (
   guideSlug: string,
   productSlug: string
 ) => {
-  // TODO: restore this when Strapi will manage guides metadata
   const strapiGuides = (await fetchResponseFromCDN(
-    'synced-guides-response.v5.json'
+    getSyncedGuidesResponseJsonPath()
   )) as StrapiGuides | undefined;
   // eslint-disable-next-line functional/no-expression-statements
   const guides = strapiGuides ? makeGuidesProps(strapiGuides) : [];
@@ -201,12 +205,19 @@ export const getSolutionProps = async (
   solutionsSlug: string,
   jsonMetadata?: JsonMetadata
 ) => {
-  const strapiSolutions = await fetchSolution(solutionsSlug)(buildEnv);
+  const strapiSolutions = (await fetchResponseFromCDN(
+    getSyncedSolutionsResponseJsonPath()
+  )) as StrapiSolutions | undefined;
   if (!strapiSolutions || strapiSolutions.data.length < 1) {
     // eslint-disable-next-line functional/no-throw-statements
-    throw new Error('Failed to fetch data');
+    throw new Error('Failed to fetch solution data');
   }
-  const solution = makeSolutionsProps(strapiSolutions)[0];
+  const solutions = makeSolutionsProps(strapiSolutions);
+  const solution = solutions.find((s) => s.slug === solutionsSlug);
+  if (!solution) {
+    // eslint-disable-next-line functional/no-throw-statements
+    throw new Error(`No solution found matching slug "${solutionsSlug}"`);
+  }
   return await makeSolutionS3(solution, jsonMetadata);
 };
 
@@ -214,12 +225,23 @@ export const getReleaseNoteProps = async (
   productSlug: string,
   jsonMetadata?: JsonMetadata
 ) => {
-  const strapiReleaseNotes = await fetchReleaseNote(productSlug)(buildEnv);
+  const strapiReleaseNotes = (await fetchResponseFromCDN(
+    getSyncedReleaseNotesResponseJsonPath()
+  )) as StrapiReleaseNotes | undefined;
   if (!strapiReleaseNotes || strapiReleaseNotes.data.length < 1) {
     // eslint-disable-next-line functional/no-throw-statements
-    throw new Error('Failed to fetch data');
+    throw new Error('Failed to fetch release data');
   }
-  const releaseNote = makeReleaseNotesProps(strapiReleaseNotes)[0];
+  const releaseNotes = makeReleaseNotesProps(strapiReleaseNotes);
+  const releaseNote = releaseNotes.find(
+    (rn) => rn.product.slug === productSlug
+  );
+  if (!releaseNote) {
+    // eslint-disable-next-line functional/no-throw-statements
+    throw new Error(
+      `No release data found matching product slug "${productSlug}"`
+    );
+  }
   return await makeReleaseNoteS3(releaseNote, jsonMetadata);
 };
 

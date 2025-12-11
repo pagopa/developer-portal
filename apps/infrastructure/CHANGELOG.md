@@ -1,5 +1,17 @@
 # infrastructure
 
+## 7.0.0
+
+### Major Changes
+
+- 3799b28: Add new custom field 'survey_accepted' to cognito user
+
+## 6.1.1
+
+### Patch Changes
+
+- 6589094: Fix disable_custom_validator env variable default value
+
 ## 6.1.0
 
 ### Minor Changes

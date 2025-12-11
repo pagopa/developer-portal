@@ -2,7 +2,6 @@
 import { Webinar } from '../../types/webinar';
 import { StrapiWebinar, StrapiWebinars } from '@/lib/strapi/types/webinars';
 import { compact } from 'lodash';
-import { RootEntity } from '@/lib/strapi/types/rootEntity';
 
 export type WebinarsProps = readonly Webinar[];
 
@@ -55,6 +54,7 @@ export const makeWebinarProps = (
       endDateTime: strapiWebinar.endDatetime,
       playerCoverImageUrl: strapiWebinar.playerCoverImage?.url,
       subscribeCtaLabel: strapiWebinar.subscribeParagraphLabel,
+      videoOnDemandStartAt: strapiWebinar.videoOnDemandStartAt,
       imagePath: strapiWebinar.coverImage.url,
       seo: strapiWebinar.seo,
       tag: strapiWebinar.webinarCategory,

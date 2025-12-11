@@ -28,6 +28,7 @@ export const strapiTutorialListPages: StrapiTutorialListPages = {
       },
       tutorials: [
         {
+          updatedAt: '2023-01-01T00:00:00.000Z',
           description: '',
           icon: mediaJpeg(),
           tags: [],

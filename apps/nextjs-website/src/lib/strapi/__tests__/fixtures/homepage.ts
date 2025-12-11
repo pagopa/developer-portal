@@ -127,6 +127,7 @@ export const strapiHomepage: StrapiHomepage = {
 };
 
 export const expectedHomepageProps: HomepageProps = {
+  updatedAt: new Date().toISOString(),
   comingsoonDocumentation: {
     title: 'Coming Soon Documentation',
     links: [
