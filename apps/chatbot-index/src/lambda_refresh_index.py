@@ -138,17 +138,17 @@ def read_payload(payload: dict) -> Tuple[List[Dict[str, str]], List[str]]:
         #   ]
         # }
         try:
-          dirnames_to_remove = json.loads(read_file_from_s3(object_key)).get("dirNames", [])
+            dirnames = json.loads(read_file_from_s3(object_key)).get("dirNames", [])
         except json.JSONDecodeError as e:
-          LOGGER.warning(f"Failed to decode {object_key}: {e}")
-          dirnames_to_remove = []
-        
-        dirnames_to_remove.append([f"{ROOT_FOLDERS_IN_BUCKET}{dirname}/" for dirname in dirnames_to_remove])
+            LOGGER.warning(f"Failed to decode {object_key}: {e}")
+            dirnames = []
+
+        dirnames_to_remove.extend(dirnames)
 
     elif event_action == "ObjectRemoved":
-      static_docs_ids_to_delete.append(object_key)
+        static_docs_ids_to_delete.append(object_key)
     else:
-      LOGGER.info(f"Unhandled event type: {event_name}")
+        LOGGER.info(f"Unhandled event type: {event_name}")
 
   # flatten array
   dirnames_to_remove = [item for sublist in dirnames_to_remove for item in sublist]
