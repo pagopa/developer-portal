@@ -150,8 +150,6 @@ def read_payload(payload: dict) -> Tuple[List[Dict[str, str]], List[str]]:
     else:
         LOGGER.info(f"Unhandled event type: {event_name}")
 
-  # flatten array
-  dirnames_to_remove = [item for sublist in dirnames_to_remove for item in sublist]
   return static_docs_to_update, static_docs_ids_to_delete, dirnames_to_remove
 
 
