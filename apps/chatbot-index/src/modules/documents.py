@@ -12,9 +12,6 @@ from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 from urllib.parse import quote
 from typing import Tuple, List, Dict
 import xml.etree.ElementTree as ET
@@ -30,9 +27,7 @@ LOGGER = get_logger(__name__)
 AWS_S3_CLIENT = AWS_SESSION.client("s3")
 SITEMAP_S3_FILEPATH = "sitemap.xml"
 DOCS_PARENT_FOLDER = "devportal-docs/docs/"
-GUIDES_METADATA_S3_FILEPATH = "guides-metadata.json"
-RELEASE_NOTES_METADATA_S3_FILEPATH = "release-notes-metadata.json"
-SOLUTIONS_METADATA_S3_FILEPATH = "solutions-metadata.json"
+MAIN_GUIDES_FOLDER_FILEPATH = "main-guide-versions-dirNames.json"
 PRODUCTS_S3_FILEPATH = "synced-products-response.json"
 APIS_DATA_S3_FILEPATH = "synced-apis-data-response.json"
 
@@ -78,37 +73,20 @@ def read_metadata_from_s3(
     """
 
     bucket_name = bucket_name if bucket_name else SETTINGS.bucket_static_content
-    paginator = AWS_S3_CLIENT.get_paginator("list_objects")
-    docs_parent_folder = (
-        docs_parent_folder if docs_parent_folder else DOCS_PARENT_FOLDER
-    )
-    pages = paginator.paginate(Bucket=bucket_name, Prefix=docs_parent_folder)
-    guides, solutions, release_notes = [], [], []
+    main_folders_content = json.loads(read_file_from_s3(MAIN_GUIDES_FOLDER_FILEPATH))
+    main_folders_list = main_folders_content["dirNames"]
 
-    for page in pages:
-        if "Contents" in page:
-            for obj in page["Contents"]:
-                key = obj["Key"]
-                if key.endswith(GUIDES_METADATA_S3_FILEPATH):
-                    guides_metadata_content = read_file_from_s3(
-                        key,
-                        bucket_name,
-                    )
-                    guides += json.loads(guides_metadata_content)
-                if key.endswith(SOLUTIONS_METADATA_S3_FILEPATH):
-                    solutions_metadata_content = read_file_from_s3(
-                        key,
-                        bucket_name,
-                    )
-                    solutions += json.loads(solutions_metadata_content)
-                if key.endswith(RELEASE_NOTES_METADATA_S3_FILEPATH):
-                    release_notes_metadata_content = read_file_from_s3(
-                        key,
-                        bucket_name,
-                    )
-                    release_notes += json.loads(release_notes_metadata_content)
+    metadata = []
+    for folder_name in main_folders_list:
+        metadata.append(
+            json.loads(
+                read_file_from_s3(
+                    os.path.join(DOCS_PARENT_FOLDER, folder_name, "metadata.json")
+                )
+            )
+        )
 
-    return guides + solutions + release_notes
+    return metadata
 
 
 def remove_figure_blocks(md_text):
