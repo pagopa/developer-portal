@@ -129,6 +129,7 @@ export const strapiOverviews = {
             data: [
               {
                 attributes: {
+                  updatedAt: '2023-01-01T00:00:00.000Z',
                   description: 'test description',
                   icon: { data: mediaJpeg() },
                   title: 'Tutorial 1',
@@ -176,6 +177,7 @@ export const strapiOverviews = {
                       },
                     },
                   },
+                  publishedAt: '2023-01-01T00:00:00.000Z',
                 },
               },
             ],
@@ -299,6 +301,7 @@ export const strapiOverviews = {
 
 export const overviewPageProps: OverviewPageProps = {
   path: '/pago-pa/overview',
+  updatedAt: '2023-01-01T00:00:00.000Z',
   product: {
     apiDataListPageUrl: '/pago-pa/api/api-rest',
     isVisible: true,
@@ -373,6 +376,7 @@ export const overviewPageProps: OverviewPageProps = {
     subtitle: 'Tutorials Description',
     list: [
       {
+        updatedAt: '2023-01-01T00:00:00.000Z',
         showInOverview: true,
         image: {
           url: 'https://example.com/example.jpg',
@@ -409,6 +413,7 @@ export const overviewPageProps: OverviewPageProps = {
         title: 'Use Case 1',
         name: 'shared.moreInfo',
         path: '/test-product/use-cases/use-case-1',
+        publishedAt: new Date('2023-01-01T00:00:00.000Z'),
       },
     ],
   },

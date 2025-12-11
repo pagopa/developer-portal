@@ -1,6 +1,6 @@
 {
   "name": "gitbook-docs",
-  "version": "1.3.0",
+  "version": "1.7.1",
   "private": true,
   "exports": {
     "./": "./dist/"
@@ -23,10 +23,12 @@
     "generate-guides-metadata": "ts-node src/scripts/generateGuidesMetadata.ts",
     "generate-solutions-metadata": "ts-node src/scripts/generateSolutionsMetadata.ts",
     "generate-release-notes-metadata": "ts-node src/scripts/generateReleaseNotesMetadata.ts",
-    "fetch-soap-api-from-strapi": "ts-node src/scripts/generateSoapApiRepositoriesList.ts",
     "generate-url-parsing-metadata": "ts-node src/scripts/generateUrlParsingMetadata.ts",
     "generate-strapi-response-files": "ts-node src/scripts/generateStrapiResponseFiles.ts",
-    "parse-docs": "ts-node src/scripts/parseDocUrlsAndIncludes.ts"
+    "parse-docs": "ts-node src/scripts/parseDocUrlsAndIncludes.ts",
+    "replace-escaped-tokens-with-backticks": "ts-node src/scripts/replaceEscapedTokensWithBackticks.ts",
+    "sync-all-metadata": "ts-node src/scripts/syncAllMetadata.ts",
+    "delete-unused-directories": "ts-node src/scripts/deleteUnusedDirectories.ts"
   },
   "dependencies": {
     "@markdoc/markdoc": "0.3.0",

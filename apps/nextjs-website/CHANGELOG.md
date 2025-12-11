@@ -1,5 +1,156 @@
 # nextjs-website
 
+## 14.1.0
+
+### Minor Changes
+
+- 50b70b6: Replace Stoplight Elements API viewer with RapiDoc
+
+### Patch Changes
+
+- 50b70b6: Fix api scrolling behaviour
+- Updated dependencies [1496d24]
+  - gitbook-docs@1.7.1
+
+## 14.0.0
+
+### Major Changes
+
+- eb11304: Add survey_accepted setting to types and agreement page
+
+### Minor Changes
+
+- 68ba7d9: Set autoplay to true only if streaming is live
+- eb11304: Add checkbox for survey in sign-up form
+
+### Patch Changes
+
+- Updated dependencies [99974e3]
+- Updated dependencies [aca24cc]
+- Updated dependencies [9adc296]
+  - gitbook-docs@1.7.0
+
+## 13.2.0
+
+### Minor Changes
+
+- cbca7f2: Add UpdatedAt to tutorials and tutorialListPage, Update lastmod in sitemap
+- 91f84c8: Add fallaback for webinar in the past missing relative vod
+
+### Patch Changes
+
+- a0b2db1: Fix VideoJS live font
+- 22a1548: Fix parsing pipes in code blocks in html tables
+- Updated dependencies [aa491f6]
+- Updated dependencies [c07937e]
+- Updated dependencies [0cc1935]
+  - gitbook-docs@1.6.0
+
+## 13.1.0
+
+### Minor Changes
+
+- 5d72634: Replace Centro Sella link and label with PARI link and label
+- f3602c9: Keep question and stream if webinar change to past state but streaming is running
+- b58020f: Refactor webinar banner in homepage logic
+- 01b8f0c: Align profile page layout to the same margin and content width to be coherent with the rest of the website
+- e605b32: Remove LangSwitch component
+- 94f2306: Add LanguageSelector component and its storybook story
+
+### Patch Changes
+
+- 2d061b9: Update question box disabled label
+- f3602c9: Fix player visibility in coming soon webinar state
+- d9ae0d8: Implement custom start time for video on demand playback
+- e605b32: Fix build missing aria label for Centro Sella replaced with aria lable for PARI
+- bfbf79e: Add missing requisite for password in password error label
+- Updated dependencies [656bd0b]
+- Updated dependencies [5885dd7]
+- Updated dependencies [5885dd7]
+  - gitbook-docs@1.5.0
+
+## 13.0.0
+
+### Major Changes
+
+- 037a82d: Add route handlers for guides, release notes and solutions
+  Add fetch using route handlers
+  Add dynamic content update in GitBookTemplate
+
+## 12.1.0
+
+### Minor Changes
+
+- ab5c9b6: Refactor GitBookContent Heading to a generic atom component ContentHeading and use it from GitBookContent and Block heading parts
+
+### Patch Changes
+
+- 859e21a: Fix autoplay logic
+- a9e0699: Avoid accessing local storage during first render to fix the undefined window error
+- ebba255: Fix missing image behaviour
+- Updated dependencies [0237257]
+  - gitbook-docs@1.4.0
+
+## 12.0.0
+
+### Major Changes
+
+- bc4e8a6: Use synced response instead of strapi fetch
+
+### Patch Changes
+
+- daf4500: Remove fetch from synced json for guide list pages
+- Updated dependencies [cc00738]
+  - gitbook-docs@1.3.2
+
+## 11.2.0
+
+### Minor Changes
+
+- 15e4314: Update style of guide version menu
+- ccd2ed2: Update videojs style and fix reload issue
+
+### Patch Changes
+
+- 5f76a21: Refactor release note and solution page components to remove unused metadata handling and enforce dynamic rendering
+- 67f8adf: Upgrade to Next.js 14.2.33
+
+## 11.1.0
+
+### Minor Changes
+
+- d11e492: Manage webinar in live state when url is not live
+
+### Patch Changes
+
+- 81dad42: Link baseUrl configuration constant to environment variables
+- 1917d7d: Add missing enableFilters in makeProps, in Strapi model and in populate in fetchApiDataListPages
+
+## 11.0.0
+
+### Major Changes
+
+- 164c286: Add support for filters using tags in ApiDataListPages, refactor FilteredGridLayout to support cards
+
+### Minor Changes
+
+- 3788385: Fix issue with side menus in solutions
+
+### Patch Changes
+
+- Updated dependencies [af1d820]
+  - gitbook-docs@1.3.1
+
+## 10.4.0
+
+### Minor Changes
+
+- acb3aff: Add thumbnail to video.js webinar player and activate autoplay only if webinar is live
+
+### Patch Changes
+
+- 74e119a: Add 'noindex, follow' to non-main guide pages
+
 ## 10.3.0
 
 ### Minor Changes

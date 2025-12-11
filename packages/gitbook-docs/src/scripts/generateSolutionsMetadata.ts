@@ -9,7 +9,7 @@ import {
   downloadS3File,
   listS3Files,
   makeS3Client,
-  writeMetadataJson,
+  putS3File,
 } from '../helpers/s3Bucket.helper';
 import { extractTitleFromMarkdown } from '../helpers/extractTitle.helper';
 import {
@@ -18,10 +18,7 @@ import {
 } from '../helpers/fetchFromStrapi';
 import { sitePathFromS3Path } from '../helpers/sitePathFromS3Path';
 import { StrapiSolution } from '../helpers/strapiTypes';
-import {
-  getSyncedSolutionListPagesResponseJsonPath,
-  getSyncedSolutionsResponseJsonPath,
-} from '../syncedResponses';
+import { getSyncedSolutionsResponseJsonPath } from '../syncedResponses';
 
 // Load environment variables from .env file
 dotenv.config();
@@ -33,8 +30,6 @@ const S3_SOLUTIONS_METADATA_JSON_PATH =
   process.env.S3_SOLUTIONS_METADATA_JSON_PATH || 'solutions-metadata.json';
 const SYNCED_SOLUTIONS_RESPONSE_JSON_PATH =
   getSyncedSolutionsResponseJsonPath();
-const SYNCED_SOLUTION_LIST_PAGES_RESPONSE_JSON_PATH =
-  getSyncedSolutionListPagesResponseJsonPath();
 
 const s3Client = makeS3Client();
 function generateUrlPath(
@@ -103,18 +98,6 @@ async function convertSolutionToMetadataItems(
 async function main() {
   console.log('Starting to process Markdown files...');
 
-  // TODO: remove when Strapi will manage Metadata
-  // eslint-disable-next-line functional/no-let
-  let solutionListPagesResponse;
-  try {
-    solutionListPagesResponse = await getResponseFromStrapi(
-      'api/solution-list-page/?populate%5Bsolutions%5D%5Bpopulate%5D%5B0%5D=bannerLinks&populate%5Bsolutions%5D%5Bpopulate%5D%5B1%5D=bannerLinks.icon&populate%5Bsolutions%5D%5Bpopulate%5D%5B2%5D=products.logo&populate%5Bsolutions%5D%5Bpopulate%5D%5B3%5D=icon&populate%5Bsolutions%5D%5Bpopulate%5D%5B4%5D=icon.name&populate%5Bsolutions%5D%5Bpopulate%5D%5B5%5D=stats&populate%5Bsolutions%5D%5Bpopulate%5D%5B6%5D=steps&populate%5Bsolutions%5D%5Bpopulate%5D%5B7%5D=steps.products&populate%5Bsolutions%5D%5Bpopulate%5D%5B8%5D=webinars&populate%5Bsolutions%5D%5Bpopulate%5D%5B9%5D=webinars.coverImage&populate%5Bsolutions%5D%5Bpopulate%5D%5B10%5D=caseHistories&populate%5Bsolutions%5D%5Bpopulate%5D%5B11%5D=caseHistories.case_histories&populate%5Bsolutions%5D%5Bpopulate%5D%5B12%5D=caseHistories.case_histories.image&populate%5BcaseHistories%5D%5Bpopulate%5D%5B0%5D=case_histories&populate%5BcaseHistories%5D%5Bpopulate%5D%5B1%5D=case_histories.image&populate%5Bfeatures%5D%5Bpopulate%5D%5B0%5D=items.icon&populate%5Bseo%5D%5Bpopulate%5D=%2A%2CmetaImage%2CmetaSocial.image'
-    );
-  } catch (error) {
-    console.error('Error fetching solution list pages from Strapi:', error);
-    process.exit(1);
-  }
-
   // eslint-disable-next-line functional/no-let
   let strapiSolutions;
   // eslint-disable-next-line functional/no-let
@@ -135,23 +118,16 @@ async function main() {
   const metadataItems = await convertSolutionToMetadataItems(strapiSolutions);
   console.log(`Converted solutions to ${metadataItems.length} metadata items`);
 
-  await writeMetadataJson(
+  await putS3File(
     metadataItems,
     S3_SOLUTIONS_METADATA_JSON_PATH,
     `${S3_BUCKET_NAME}`,
     s3Client
   );
 
-  await writeMetadataJson(
+  await putS3File(
     responseJson,
     SYNCED_SOLUTIONS_RESPONSE_JSON_PATH,
-    `${S3_BUCKET_NAME}`,
-    s3Client
-  );
-
-  await writeMetadataJson(
-    solutionListPagesResponse,
-    SYNCED_SOLUTION_LIST_PAGES_RESPONSE_JSON_PATH,
     `${S3_BUCKET_NAME}`,
     s3Client
   );

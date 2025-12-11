@@ -1,5 +1,7 @@
 import Markdoc, { Schema } from '@markdoc/markdoc';
 
+export const inlineCodePipePlaceholder = '__MARKDOC_INLINE_CODE_PIPE__';
+
 export type StyledTextProps = {
   readonly style: 'strong' | 'italic' | 'code' | 'strikethrough';
   readonly children: string;
@@ -31,7 +33,11 @@ export const strikethrough: Schema = {
 export const code: Schema = {
   transform: (node) => {
     // Remove the double backtick (``) provided by the gitbook sync
-    const children = [node.attributes.content.replace('``', '')];
+    const children = [
+      node.attributes.content
+        .replace('``', '')
+        .replaceAll(inlineCodePipePlaceholder, '|'),
+    ];
     return new Markdoc.Tag(tagName, { style: 'code' }, children);
   },
 };

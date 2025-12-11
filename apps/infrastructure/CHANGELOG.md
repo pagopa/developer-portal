@@ -1,5 +1,31 @@
 # infrastructure
 
+## 7.0.0
+
+### Major Changes
+
+- 3799b28: Add new custom field 'survey_accepted' to cognito user
+
+## 6.1.1
+
+### Patch Changes
+
+- 6589094: Fix disable_custom_validator env variable default value
+
+## 6.1.0
+
+### Minor Changes
+
+- e4d1be2: Add ElastiCache resource into the Langfuse module
+- 36fdb33: Add S3 bucket into the Langfuse module
+- 23e5cdb: Lambda ivs change source and file path
+- 795a779: Add RDS instance for Langfuse
+- 4ba391b: Add NEXT_PUBLIC_WEBSITE_BASE_URL to website environment variables
+
+### Patch Changes
+
+- 11e4d0f: Create a new Langfuse module. Add the Clickhouse service to ECS.
+
 ## 6.0.0
 
 ### Major Changes
