@@ -133,7 +133,7 @@ jobs:
           NEXT_PUBLIC_COGNITO_REGION: ${{ vars.NEXT_PUBLIC_COGNITO_REGION || 'eu-south-1' }}
           FETCH_FROM_STRAPI: ${{ vars.FETCH_FROM_STRAPI || 'true' }}
           GENERATE_ROOT_METADATA_FILE: ${{ inputs.generate_root_metadata_file == true && 'true' || 'false' }}
-          GENERATE_URL_METADATA: 'true'
+          GENERATE_URL_METADATA: 'false'
           GENERATE_SITEMAP_METADATA: 'true'
           SAVE_STRAPI_RESPONSES: 'true'
           METADATA_TYPE: ${{ inputs.metadata_type }}
