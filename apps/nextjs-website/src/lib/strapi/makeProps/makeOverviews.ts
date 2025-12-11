@@ -6,7 +6,6 @@ import { makeBaseProductWithoutLogoProps } from './makeProducts';
 import { StrapiOverviews } from '@/lib/strapi/types/overviews';
 import { compact } from 'lodash';
 import { UseCase } from '../../types/useCaseData';
-import { RootEntity } from '@/lib/strapi/types/rootEntity';
 
 export function makeOverviewsProps(
   strapiOverviews: StrapiOverviews
@@ -23,6 +22,7 @@ export function makeOverviewsProps(
 
       try {
         return {
+          updatedAt: attributes.updatedAt,
           path: `/${attributes.product?.slug}/overview`,
           product: makeBaseProductWithoutLogoProps(attributes.product),
           hero: {
@@ -80,6 +80,7 @@ export function makeOverviewsProps(
                     icon: tutorial.icon,
                     description: tutorial.description,
                     showInOverview: true,
+                    updatedAt: tutorial.updatedAt,
                     image: tutorial.image && {
                       url: tutorial.image.url,
                       alternativeText: tutorial.image.alternativeText || '',

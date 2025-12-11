@@ -5,7 +5,6 @@ import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
 import { makeBaseProductWithoutLogoProps } from './makeProducts';
 import { StrapiTutorialListPages } from '@/lib/strapi/types/tutorialsListPage';
 import { compact } from 'lodash';
-import { RootEntity } from '@/lib/strapi/types/rootEntity';
 
 export function makeTutorialListPagesProps(
   strapiTutorialList: StrapiTutorialListPages
@@ -64,12 +63,12 @@ export function makeTutorialListPagesProps(
         })
       );
       const updatedAt =
-        attributes.tutorials.data.length > 0
-          ? attributes.tutorials.data.reduce((latest, current) => {
-              const latestDate = new Date(latest.attributes.updatedAt);
-              const currentDate = new Date(current.attributes.updatedAt);
+        attributes.tutorials.length > 0
+          ? attributes.tutorials.reduce((latest, current) => {
+              const latestDate = new Date(latest.updatedAt);
+              const currentDate = new Date(current.updatedAt);
               return currentDate > latestDate ? current : latest;
-            }).attributes.updatedAt
+            }).updatedAt
           : '';
 
       return {

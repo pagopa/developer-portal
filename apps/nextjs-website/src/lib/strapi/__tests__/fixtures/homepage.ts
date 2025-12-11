@@ -6,6 +6,7 @@ import { newsShowcase } from '@/lib/strapi/__tests__/fixtures/newsShowcase';
 const fixedDateIsoString = new Date('2024-01-01T00:00:00.000Z').toISOString();
 
 export const strapiHomepage: StrapiHomepage = {
+  updatedAt: fixedDateIsoString,
   comingsoonDocumentation: {
     title: 'Coming Soon Documentation',
     links: [
@@ -127,7 +128,7 @@ export const strapiHomepage: StrapiHomepage = {
 };
 
 export const expectedHomepageProps: HomepageProps = {
-  updatedAt: new Date().toISOString(),
+  updatedAt: fixedDateIsoString,
   comingsoonDocumentation: {
     title: 'Coming Soon Documentation',
     links: [
@@ -264,7 +265,7 @@ export const expectedHomepageProps: HomepageProps = {
       },
       isVisibleInList: true,
       imagePath: 'https://example.com/example.jpg',
-      updatedAt: '2024-01-01T00:00:00.000Z',
+      updatedAt: fixedDateIsoString,
     },
   ],
   seo: {

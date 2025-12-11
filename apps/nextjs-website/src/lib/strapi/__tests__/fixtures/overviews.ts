@@ -82,6 +82,7 @@ export const strapiOverviews = {
         description: 'Tutorials Description',
         tutorials: [
           {
+            updatedAt: '2023-01-01T00:00:00.000Z',
             description: 'test description',
             icon: mediaJpeg(),
             title: 'Tutorial 1',
@@ -106,6 +107,7 @@ export const strapiOverviews = {
             title: 'Use Case 1',
             tags: [],
             slug: 'use-case-1',
+            publishedAt: '2023-01-01T00:00:00.000Z',
             coverImage: mediaJpeg(),
             product: {
               isVisible: true,

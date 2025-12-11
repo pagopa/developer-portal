@@ -7,6 +7,7 @@ import { RootEntity } from '@/lib/strapi/types/rootEntity';
 export const makeHomepageProps = (
   strapiHomepage: RootEntity<StrapiHomepage>
 ): HomepageProps => ({
+  updatedAt: strapiHomepage.data.updatedAt,
   comingsoonDocumentation: strapiHomepage.data.comingsoonDocumentation,
   hero: strapiHomepage.data.heroSlider.map((slide) => ({
     ...slide,

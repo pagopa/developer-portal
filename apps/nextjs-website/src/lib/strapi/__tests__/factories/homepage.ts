@@ -3,6 +3,7 @@ import { StrapiHomepage } from '@/lib/strapi/types/homepage';
 
 export function minimalDataHomepage() {
   return {
+    updatedAt: new Date().toISOString(),
     comingsoonDocumentation: {
       title: 'Minimal Documentation',
       links: [],

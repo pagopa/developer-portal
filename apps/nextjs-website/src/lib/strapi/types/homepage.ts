@@ -38,4 +38,5 @@ export type StrapiHomepage = {
   readonly ecosystem?: StrapiEcosystem;
   readonly webinars: readonly StrapiWebinar[];
   readonly seo?: StrapiSeo;
+  readonly updatedAt: string;
 };
