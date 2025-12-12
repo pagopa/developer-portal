@@ -93,6 +93,8 @@ def get_metadata_from_s3(
             )
 
         metadata.extend(folder_metadata)
+    if not metadata:
+        raise ValueError("No metadata found in S3.")
 
     return metadata
 
