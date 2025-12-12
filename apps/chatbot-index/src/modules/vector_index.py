@@ -309,6 +309,9 @@ class DiscoveryVectorIndex:
                 LOGGER.error(f"Error deleting Static Documents: {e}")
 
     def refresh_index_dynamic_docs(self) -> None:
+        """
+        Refreshes the vector index by updating dynamic documents and removing obsolete ones.
+        """
 
         ref_doc_info = self.index.storage_context.docstore.get_all_ref_doc_info()
         ref_doc_ids = list(ref_doc_info.keys())
@@ -356,6 +359,27 @@ class DiscoveryVectorIndex:
                 self._delete_docs(dynamic_doc_ids_to_remove)
             except Exception as e:
                 LOGGER.error(f"Error deleting Dynamic Documents: {e}")
+
+    def remove_docs_in_folder(self, folder_name: str) -> None:
+        """
+        Removes all documents in the specified folder from the vector index.
+        Args:
+            folder_name (str): The folder path whose documents need to be removed.
+        """
+
+        ref_doc_info = self.index.storage_context.docstore.get_all_ref_doc_info()
+        ref_doc_ids = list(ref_doc_info.keys())
+        doc_ids_to_remove = []
+
+        for doc_id in ref_doc_ids:
+            if folder_name in doc_id:
+                doc_ids_to_remove.append(doc_id)
+
+        if doc_ids_to_remove:
+            try:
+                self._delete_docs(doc_ids_to_remove)
+            except Exception as e:
+                LOGGER.error(f"Error deleting documents in folder {folder_name}: {e}")
 
     def refresh_index(
         self,
