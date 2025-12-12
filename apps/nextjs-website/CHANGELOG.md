@@ -1,5 +1,12 @@
 # nextjs-website
 
+## 14.1.1
+
+### Patch Changes
+
+- 8547c8e: Remove faulty id generation logic
+- 1afc223: Fix scroll to anchor in gitbook template
+
 ## 14.1.0
 
 ### Minor Changes
