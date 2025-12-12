@@ -67,7 +67,7 @@ const GitBookTemplate = ({
   } | null>(null);
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== 'undefined' && !window.location.hash) {
       window.scrollTo({ top: 0 });
     }
   }, [content.path]);
