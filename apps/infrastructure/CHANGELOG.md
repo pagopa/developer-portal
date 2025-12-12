@@ -1,5 +1,11 @@
 # infrastructure
 
+## 7.1.0
+
+### Minor Changes
+
+- 5f5dc68: Update lambda env variables with new gemini models.
+
 ## 7.0.0
 
 ### Major Changes
