@@ -5,6 +5,7 @@ from src.modules.settings import SETTINGS
 from src.modules.logger import get_logger
 from src.modules.documents import (
     read_file_from_s3,
+    get_metadata_from_s3,
     get_sitemap_urls,
     filter_urls,
 )
@@ -67,25 +68,7 @@ def read_payload(payload: dict) -> Tuple[List[Dict[str, str]], List[str]]:
     filtered_urls = filter_urls(urls_list)
     filtered_paths = [url.replace(SETTINGS.website_url, "") for url in filtered_urls]
 
-    try:
-        guides_metadata = json.loads(read_file_from_s3("guides-metadata.json"))
-    except json.JSONDecodeError as e:
-        LOGGER.warning(f"Failed to decode guides-metadata.json: {e}")
-        guides_metadata = []
-    try:
-        release_notes_metadata = json.loads(
-            read_file_from_s3("release-notes-metadata.json")
-        )
-    except json.JSONDecodeError as e:
-        LOGGER.warning(f"Failed to decode release-notes-metadata.json: {e}")
-        release_notes_metadata = []
-    try:
-        solutions_metadata = json.loads(read_file_from_s3("solutions-metadata.json"))
-    except json.JSONDecodeError as e:
-        LOGGER.warning(f"Failed to decode solutions-metadata.json: {e}")
-        solutions_metadata = []
-
-    all_metadata = guides_metadata + release_notes_metadata + solutions_metadata
+    all_metadata = get_metadata_from_s3()
     filtered_metadata = []
     s3_paths = []
     for metadata in all_metadata:
@@ -130,10 +113,12 @@ def read_payload(payload: dict) -> Tuple[List[Dict[str, str]], List[str]]:
                 #   ]
                 # }
                 try:
-                    dirnames = json.loads(read_file_from_s3(object_key)).get(
-                        "dirNames", []
+                    s3_content = read_file_from_s3(object_key)
+                    dirnames = (
+                        json.loads(s3_content).get("dirNames", []) if s3_content else []
                     )
-                except json.JSONDecodeError as e:
+
+                except Exception as e:
                     LOGGER.warning(f"Failed to decode {object_key}: {e}")
                     dirnames = []
 
@@ -143,6 +128,13 @@ def read_payload(payload: dict) -> Tuple[List[Dict[str, str]], List[str]]:
             static_docs_ids_to_delete.append(object_key)
         else:
             LOGGER.info(f"Unhandled event type: {event_name}")
+
+    # Remove eventual duplicates
+    static_docs_to_update = [
+        dict(t) for t in set(tuple(d.items()) for d in static_docs_to_update)
+    ]
+    static_docs_ids_to_delete = list(set(static_docs_ids_to_delete))
+    dirnames_to_remove = list(set(dirnames_to_remove))
 
     return static_docs_to_update, static_docs_ids_to_delete, dirnames_to_remove
 

@@ -40,10 +40,11 @@ def read_file_from_s3(
     Args:
         file_path (str): The path to the file in the S3 bucket.
     Returns:
-        str: The content of the file as a string.
+        str | None: The content of the file as a string, or None if the file is not found.
     """
 
     bucket_name = bucket_name if bucket_name else SETTINGS.bucket_static_content
+    text = ""
     try:
         response = AWS_S3_CLIENT.get_object(
             Bucket=bucket_name,
@@ -51,9 +52,10 @@ def read_file_from_s3(
         )
         text = response["Body"].read().decode("utf-8")
 
-        return text
     except Exception as e:
-        raise KeyError(f"Error reading {bucket_name}/{file_path} from S3: {e}")
+        LOGGER.error(f"Error reading {bucket_name}/{file_path} from S3: {e}")
+
+    return text
 
 
 def get_metadata_from_s3(
@@ -73,18 +75,24 @@ def get_metadata_from_s3(
         docs_parent_folder if docs_parent_folder else DOCS_PARENT_FOLDER
     )
     bucket_name = bucket_name if bucket_name else SETTINGS.bucket_static_content
-    main_folders_content = json.loads(read_file_from_s3(MAIN_GUIDES_FOLDER_FILEPATH))
-    main_folders_list = main_folders_content["dirNames"]
+    s3_content = read_file_from_s3(MAIN_GUIDES_FOLDER_FILEPATH)
+    main_folders_content = json.loads(s3_content) if s3_content else {"dirNames": []}
+    main_folders_list = main_folders_content.get("dirNames", [])
 
     metadata = []
     for folder_name in main_folders_list:
-        metadata.append(
-            json.loads(
-                read_file_from_s3(
-                    os.path.join(docs_parent_folder, folder_name, "metadata.json")
-                )
+        folder_metadata = {}
+        try:
+            s3_content = read_file_from_s3(
+                os.path.join(docs_parent_folder, folder_name, "metadata.json")
             )
-        )
+            folder_metadata = json.loads(s3_content) if s3_content else {}
+        except Exception as e:
+            LOGGER.warning(
+                f"Failed to decode metadata.json in folder {docs_parent_folder}/{folder_name}: {e}"
+            )
+
+        metadata.extend(folder_metadata)
 
     return metadata
 
@@ -109,18 +117,19 @@ def get_product_list(file_path: str | None = None) -> List[str]:
     """
     file_path = file_path if file_path else PRODUCTS_S3_FILEPATH
 
-    s3_data = read_file_from_s3(file_path)
-    products = json.loads(s3_data)
+    s3_content = read_file_from_s3(file_path)
     product_list = []
-    if s3_data:
-        products = json.loads(s3_data)
+    if s3_content:
+        products = json.loads(s3_content)
         for product in products:
             try:
                 product_slug = product["attributes"]["slug"]
                 product_list.append(product_slug)
             except KeyError as e:
                 LOGGER.error(f"Error extracting product slug: {e}")
-    LOGGER.info(f"Found {len(product_list)} products: {product_list}.")
+        LOGGER.info(f"Found {len(product_list)} products: {product_list}.")
+    else:
+        raise ValueError("Product data content is empty.")
     return product_list
 
 
@@ -173,20 +182,23 @@ def get_sitemap_urls(file_path: str | None = None) -> List[Dict[str, str]]:
     sitemap_path = file_path if file_path else SITEMAP_S3_FILEPATH
 
     sitemap_content = read_file_from_s3(sitemap_path)
-    root = ET.fromstring(sitemap_content)
-    ns = {"ns": "http://www.sitemaps.org/schemas/sitemap/0.9"}
+    if sitemap_content:
+        root = ET.fromstring(sitemap_content)
+        ns = {"ns": "http://www.sitemaps.org/schemas/sitemap/0.9"}
 
-    sitemap = []
-    for entry in root.findall("ns:url", ns) + root.findall("ns:sitemap", ns):
-        loc = entry.find("ns:loc", ns)
-        lastmod = entry.find("ns:lastmod", ns)
-        sitemap.append(
-            {
-                "url": loc.text if loc is not None else "N/A",
-                "lastmod": lastmod.text if lastmod is not None else "N/A",
-            }
-        )
-    LOGGER.info(f"Found {len(sitemap)} URLs in the sitemap.")
+        sitemap = []
+        for entry in root.findall("ns:url", ns) + root.findall("ns:sitemap", ns):
+            loc = entry.find("ns:loc", ns)
+            lastmod = entry.find("ns:lastmod", ns)
+            sitemap.append(
+                {
+                    "url": loc.text if loc is not None else "N/A",
+                    "lastmod": lastmod.text if lastmod is not None else "N/A",
+                }
+            )
+        LOGGER.info(f"Found {len(sitemap)} URLs in the sitemap.")
+    else:
+        raise ValueError("Sitemap content is empty.")
 
     return sitemap
 
@@ -228,6 +240,8 @@ def get_apidata(file_path: str | None = None) -> dict:
     file_path = file_path if file_path else APIS_DATA_S3_FILEPATH
 
     s3_data = read_file_from_s3(file_path)
+    if not s3_data:
+        raise ValueError("API data content is empty.")
     return json.loads(s3_data)
 
 
@@ -376,19 +390,25 @@ def get_static_docs(static_metadata: List[dict]) -> List[Document]:
         url = item["url"]
         title = item["title"]
         text = read_file_from_s3(item["s3_file_path"])
-        text = remove_figure_blocks(text)
 
-        static_docs.append(
-            Document(
-                id_=item["s3_file_path"],
-                text=text,
-                metadata={
-                    "filepath": url.replace(SETTINGS.website_url, ""),
-                    "title": title,
-                    "language": "it",
-                },
+        if text:
+            text = remove_figure_blocks(text)
+
+            static_docs.append(
+                Document(
+                    id_=item["s3_file_path"],
+                    text=text,
+                    metadata={
+                        "filepath": url.replace(SETTINGS.website_url, ""),
+                        "title": title,
+                        "language": "it",
+                    },
+                )
             )
-        )
+        else:
+            LOGGER.warning(
+                f"Discarded reading {item['s3_file_path']} due to empty content."
+            )
 
     return static_docs
 
