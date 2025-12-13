@@ -2,6 +2,7 @@ import * as qs from 'qs';
 import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
 import { productRelationsPopulate } from '@/lib/strapi/fetches/fetchProducts';
 import { StrapiTutorialListPages } from '@/lib/strapi/types/tutorialsListPage';
+import { RootEntity } from '@/lib/strapi/types/rootEntity';
 
 const makeStrapiTutorialListPagePopulate = () =>
   qs.stringify({
@@ -16,9 +17,8 @@ const makeStrapiTutorialListPagePopulate = () =>
         populate: ['icon'],
       },
       seo: {
-        populate: '*,metaImage,metaSocial.image',
+        populate: '*',
       },
-      enableFilters: true,
     },
   });
 

@@ -5,17 +5,13 @@ export const strapiWebinarCategories: StrapiWebinarCategories = {
   data: [
     {
       id: 1,
-      attributes: {
-        name: 'Payments',
-        icon: { data: mediaJpeg() },
-      },
+      name: 'Payments',
+      icon: mediaJpeg(),
     },
     {
       id: 2,
-      attributes: {
-        name: 'Onboarding',
-        icon: { data: mediaJpeg() },
-      },
+      name: 'Onboarding',
+      icon: mediaJpeg(),
     },
   ],
   meta: {
