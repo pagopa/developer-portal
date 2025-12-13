@@ -1,6 +1,7 @@
 /* eslint-disable functional/no-let */
 /* eslint-disable functional/no-expression-statements */
 import { staticContentsUrl } from '@/config';
+import * as path from 'node:path';
 
 export interface JsonMetadata {
   readonly path: string;
@@ -169,8 +170,10 @@ export async function fetchMetadataFromCDN<T>(
   return await requestPromise;
 }
 
-const S3_GUIDES_METADATA_JSON_PATH =
-  process.env.S3_GUIDES_METADATA_JSON_PATH || 'guides-metadata.json';
+const S3_PATH_TO_GITBOOK_DOCS =
+  process.env.S3_PATH_TO_GITBOOK_DOCS || 'devportal-docs/docs';
+const S3_METADATA_JSON_PATH =
+  process.env.S3_METADATA_JSON_PATH || 'metadata.json';
 const S3_SOLUTIONS_METADATA_JSON_PATH =
   process.env.S3_SOLUTIONS_METADATA_JSON_PATH || 'solutions-metadata.json';
 const S3_RELEASE_NOTES_METADATA_JSON_PATH =
@@ -197,7 +200,7 @@ let releaseNotesMetadataCacheTime = 0;
 
 const METADATA_CACHE_TTL = 5 * 60 * 1000; // 5 minutes
 
-export const getGuidesMetadata = async () => {
+export const getGuidesMetadata = async (dirName?: string) => {
   const now = Date.now();
 
   if (
@@ -208,7 +211,9 @@ export const getGuidesMetadata = async () => {
   }
 
   guidesMetadataCache = await fetchMetadataFromCDN<JsonMetadata>(
-    S3_GUIDES_METADATA_JSON_PATH
+    dirName
+      ? path.join(S3_PATH_TO_GITBOOK_DOCS, dirName, S3_METADATA_JSON_PATH)
+      : S3_METADATA_JSON_PATH
   );
   guidesMetadataCacheTime = now;
 
