@@ -1,6 +1,5 @@
 import datetime
 import hashlib
-import os
 import uuid
 
 from boto3.dynamodb.conditions import Key
@@ -10,6 +9,7 @@ from fastapi import HTTPException
 from src.app.chatbot_init import chatbot
 from src.modules.monitor import add_langfuse_score
 from src.modules.logger import get_logger
+from src.modules.settings import SETTINGS
 from src.app.models import QueryFeedback, tables
 from src.app.jwt_check import verify_jwt
 
@@ -34,12 +34,11 @@ def current_user_id(authorization: str | None = None) -> str:
                 return decoded["username"]
 
 
-def find_or_create_session(userId: str, now: datetime.datetime):
+def find_or_create_session(userId: str, now: datetime.datetime) -> dict | None:
     if userId is None:
         return None
 
-    SESSION_MAX_DURATION_DAYS = float(os.getenv("CHB_SESSION_MAX_DURATION_DAYS", "1"))
-    datetimeLimit = now - datetime.timedelta(SESSION_MAX_DURATION_DAYS - 1)
+    datetimeLimit = now - datetime.timedelta(SETTINGS.session_max_duration_days - 1)
     startOfDay = datetime.datetime.combine(datetimeLimit, datetime.time.min)
     # trovare una sessione con createdAt > datetimeLimit
     try:
@@ -58,7 +57,7 @@ def find_or_create_session(userId: str, now: datetime.datetime):
 
     items = dbResponse.get("Items", [])
     if len(items) == 0:
-        days = int(os.getenv("EXPIRE_DAYS", 90))
+        days = SETTINGS.expire_days
         expires_at = int((now + datetime.timedelta(days=days)).timestamp())
 
         body = {
