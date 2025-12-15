@@ -66,7 +66,7 @@ def get_metadata_from_s3(
     Args:
         docs_parent_folder (str | None): The parent folder in the S3 bucket where the metadata files
             are located.
-        bucket_name (str): The name of the S3 bucket.
+        bucket_name (str | None): The name of the S3 bucket.
     Returns:
         List[Dict[str, str]]: list containing the metadata dictionaries.
     """
