@@ -1,4 +1,5 @@
 name: Sync GitBook Docs (Optimized)
+run-name: Sync GitBook Docs (Optimized) in ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.environment || 'dev' }}
 
 on:
   workflow_dispatch:
@@ -43,8 +44,8 @@ on:
         required: false
         default: ''
 
-  # schedule:
-  #   - cron: '0 23 * * *'  # Run daily at midnight UTC
+#  schedule:
+#    - cron: '0 23 * * *'  # Run daily at midnight UTC
 
 permissions:
   id-token: write
@@ -93,6 +94,26 @@ jobs:
       - name: Compile packages
         run: npm run compile
 
+      - name: Generate UrlReplace metadata
+        env:
+          ENVIRONMENT: ${{ github.event_name == 'workflow_dispatch' && inputs.environment || 'dev' }}
+          DOCUMENTATION_PATH: ${{ vars.DOCUMENTATION_PATH || '../../devportal-docs/docs' }}
+          URL_PARSING_METADATA_JSON_PATH: ${{ vars.URL_PARSING_METADATA_JSON_PATH || '../../url-parsing-metadata.json' }}
+          STRAPI_ENDPOINT: ${{ vars.STRAPI_ENDPOINT }}
+          STRAPI_API_TOKEN: ${{ secrets.STRAPI_API_TOKEN }}
+        run: npm run generate-url-parsing-metadata -w gitbook-docs
+
+      - name: Replace urls and include tags in docs
+        env:
+          ENVIRONMENT: ${{ github.event_name == 'workflow_dispatch' && inputs.environment || 'dev' }}
+          DOCUMENTATION_PATH: ${{ vars.DOCUMENTATION_PATH || '../../devportal-docs/docs' }}
+          URL_PARSING_METADATA_JSON_PATH: ${{ vars.URL_PARSING_METADATA_JSON_PATH || '../../url-parsing-metadata.json' }}
+        run: npm run parse-docs -w gitbook-docs
+
+      - name: Replace escaped tokens with backticks in docs
+        env:
+          DOCUMENTATION_PATH: ${{ vars.DOCUMENTATION_PATH || '../../devportal-docs/docs' }}
+        run: npm run replace-escaped-tokens-with-backticks -w gitbook-docs
       - name: Configure AWS Credentials
         uses: ./.github/actions/configure-aws-credentials
         with:
@@ -122,7 +143,6 @@ jobs:
         run: npm run sync-all-metadata -w gitbook-docs
 
       - name: Replace urls and include tags in docs
-        if: inputs.generate_metadata_only == false
         env:
           ENVIRONMENT: ${{ inputs.environment }}
           DOCUMENTATION_PATH: ${{ vars.DOCUMENTATION_PATH || '../../devportal-docs/docs' }}
@@ -130,7 +150,6 @@ jobs:
         run: npm run parse-docs -w gitbook-docs
 
       - name: Sync docs folder to S3
-        if: inputs.generate_metadata_only == false
         working-directory: ./devportal-docs
         env:
           DIR_NAMES_FILTER: ${{ inputs.dir_names_filter }}
@@ -228,6 +247,11 @@ jobs:
           DOCUMENTATION_PATH: ${{ vars.DOCUMENTATION_PATH || '../../devportal-docs/docs' }}
           URL_PARSING_METADATA_JSON_PATH: ${{ vars.URL_PARSING_METADATA_JSON_PATH || '../../url-parsing-metadata.json' }}
         run: npm run parse-docs -w gitbook-docs
+
+      - name: Replace escaped tokens with backticks in docs
+        env:
+          DOCUMENTATION_PATH: ${{ vars.DOCUMENTATION_PATH || '../../devportal-docs/docs' }}
+        run: npm run replace-escaped-tokens-with-backticks -w gitbook-docs
 
       - name: Sync docs folder to S3
         working-directory: ./devportal-docs

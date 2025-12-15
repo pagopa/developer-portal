@@ -1,4 +1,5 @@
 name: Sync GitBook Docs
+run-name: Sync GitBook Docs in ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.environment || 'dev' }}
 
 on:
   workflow_dispatch:
@@ -120,6 +121,11 @@ jobs:
           SITEMAP_URL: ${{ env.SITEMAP_URL || 'https://developer.pagopa.it/sitemap.xml' }}
         run: npm run generate-strapi-response-files -w gitbook-docs
 
+      - name: Replace escaped tokens with backticks in docs
+        env:
+          DOCUMENTATION_PATH: ${{ vars.DOCUMENTATION_PATH || '../../devportal-docs/docs' }}
+        run: npm run replace-escaped-tokens-with-backticks -w gitbook-docs
+
       - name: Sync docs folder to S3
         if: inputs.generate_metadata_only == false
         working-directory: ./devportal-docs
@@ -224,6 +230,11 @@ jobs:
           DOCUMENTATION_PATH: ${{ vars.DOCUMENTATION_PATH || '../../devportal-docs/docs' }}
           URL_PARSING_METADATA_JSON_PATH: ${{ vars.URL_PARSING_METADATA_JSON_PATH || '../../url-parsing-metadata.json' }}
         run: npm run parse-docs -w gitbook-docs
+
+      - name: Replace escaped tokens with backticks in docs
+        env:
+          DOCUMENTATION_PATH: ${{ vars.DOCUMENTATION_PATH || '../../devportal-docs/docs' }}
+        run: npm run replace-escaped-tokens-with-backticks -w gitbook-docs
 
       - name: Configure AWS Credentials
         uses: ./.github/actions/configure-aws-credentials

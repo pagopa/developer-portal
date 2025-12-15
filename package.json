@@ -24,7 +24,8 @@
   },
   "dependencies": {
     "crypto-js": "^4.2.0",
-    "elliptic": "^6.6.1"
+    "elliptic": "^6.6.1",
+    "rapidoc": "^9.3.8"
   },
   "packageManager": "npm@9.8.1",
   "name": "developer-portal"

@@ -1,5 +1,51 @@
 # nextjs-website
 
+## 14.1.0
+
+### Minor Changes
+
+- 50b70b6: Replace Stoplight Elements API viewer with RapiDoc
+
+### Patch Changes
+
+- 50b70b6: Fix api scrolling behaviour
+- Updated dependencies [1496d24]
+  - gitbook-docs@1.7.1
+
+## 14.0.0
+
+### Major Changes
+
+- eb11304: Add survey_accepted setting to types and agreement page
+
+### Minor Changes
+
+- 68ba7d9: Set autoplay to true only if streaming is live
+- eb11304: Add checkbox for survey in sign-up form
+
+### Patch Changes
+
+- Updated dependencies [99974e3]
+- Updated dependencies [aca24cc]
+- Updated dependencies [9adc296]
+  - gitbook-docs@1.7.0
+
+## 13.2.0
+
+### Minor Changes
+
+- cbca7f2: Add UpdatedAt to tutorials and tutorialListPage, Update lastmod in sitemap
+- 91f84c8: Add fallaback for webinar in the past missing relative vod
+
+### Patch Changes
+
+- a0b2db1: Fix VideoJS live font
+- 22a1548: Fix parsing pipes in code blocks in html tables
+- Updated dependencies [aa491f6]
+- Updated dependencies [c07937e]
+- Updated dependencies [0cc1935]
+  - gitbook-docs@1.6.0
+
 ## 13.1.0
 
 ### Minor Changes
