@@ -27,7 +27,9 @@ LOGGER = get_logger(__name__)
 AWS_S3_CLIENT = AWS_SESSION.client("s3")
 SITEMAP_S3_FILEPATH = "sitemap.xml"
 DOCS_PARENT_FOLDER = "devportal-docs/docs/"
-MAIN_GUIDES_FOLDER_FILEPATH = "main-guide-versions-dirNames.json"
+GUIDES_FOLDER_FILEPATH = "main-guide-versions-dirNames.json"
+SOLUTIONS_FOLDER_FILEPATH = "solutions-dirNames.json"
+RELEASE_NOTES_FOLDER_FILEPATH = "release-notes-dirNames.json"
 PRODUCTS_S3_FILEPATH = "synced-products-response.json"
 APIS_DATA_S3_FILEPATH = "synced-apis-data-response.json"
 
@@ -58,6 +60,52 @@ def read_file_from_s3(
     return text
 
 
+def get_folders_list(
+    guides_folders_filepath: str | None,
+    solution_folders_filepath: str | None,
+    release_notes_folders_filepath: str | None,
+) -> List[str]:
+    """Reads folder names from S3 files.
+    Args:
+        guides_folders_filepath (str | None): The S3 file path for guides folder names.
+        solution_folders_filepath (str | None): The S3 file path for solution folder names.
+        release_notes_folders_filepath (str | None): The S3 file path for release notes folder names.
+    Returns:
+        List[str]: A list of folder names."""
+
+    guides_folders_filepath = (
+        guides_folders_filepath if guides_folders_filepath else GUIDES_FOLDER_FILEPATH
+    )
+    solution_folders_filepath = (
+        solution_folders_filepath
+        if solution_folders_filepath
+        else SOLUTIONS_FOLDER_FILEPATH
+    )
+    release_notes_folders_filepath = (
+        release_notes_folders_filepath
+        if release_notes_folders_filepath
+        else RELEASE_NOTES_FOLDER_FILEPATH
+    )
+
+    folders_list = []
+    for filepath in [
+        guides_folders_filepath,
+        solution_folders_filepath,
+        release_notes_folders_filepath,
+    ]:
+        s3_content = read_file_from_s3(filepath)
+        if s3_content:
+            try:
+                folders_content = json.loads(s3_content)
+            except Exception as e:
+                LOGGER.warning(f"Failed to decode {filepath}: {e}")
+                folders_content = {"dirNames": []}
+
+        folders_list.extend(folders_content.get("dirNames", []))
+
+    return folders_list
+
+
 def get_metadata_from_s3(
     docs_parent_folder: str | None = None,
     bucket_name: str | None = None,
@@ -75,18 +123,10 @@ def get_metadata_from_s3(
         docs_parent_folder if docs_parent_folder else DOCS_PARENT_FOLDER
     )
     bucket_name = bucket_name if bucket_name else SETTINGS.bucket_static_content
-    s3_content = read_file_from_s3(MAIN_GUIDES_FOLDER_FILEPATH)
-    if s3_content:
-        try:
-            main_folders_content = json.loads(s3_content)
-        except Exception as e:
-            LOGGER.warning(f"Failed to decode {MAIN_GUIDES_FOLDER_FILEPATH}: {e}")
-            main_folders_content = {"dirNames": []}
 
-    main_folders_list = main_folders_content.get("dirNames", [])
-
+    folders_list = get_folders_list()
     metadata = []
-    for folder_name in main_folders_list:
+    for folder_name in folders_list:
         folder_metadata = []
         try:
             s3_content = read_file_from_s3(
