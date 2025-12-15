@@ -153,6 +153,6 @@ def lambda_handler(event, context):
 
     if len(dirnames_to_remove) > 0:
         for dirname in dirnames_to_remove:
-            VECTOR_INDEX.remove_docs_in_folder(folder_path=dirname)
+            VECTOR_INDEX.remove_docs_in_folder(folder_name=dirname)
 
     return {"statusCode": 200, "result": True, "event": event}
