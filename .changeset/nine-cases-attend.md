@@ -2,4 +2,4 @@
 "chatbot-index": patch
 ---
 
-Remove from vector index removed dirs
+Remove documents from the vector index when directories are marked for removal in the main-guide-versions-dirNames-to-remove.json file
