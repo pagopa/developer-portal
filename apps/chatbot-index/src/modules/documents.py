@@ -81,12 +81,12 @@ def get_metadata_from_s3(
 
     metadata = []
     for folder_name in main_folders_list:
-        folder_metadata = {}
+        folder_metadata = []
         try:
             s3_content = read_file_from_s3(
                 os.path.join(docs_parent_folder, folder_name, "metadata.json")
             )
-            folder_metadata = json.loads(s3_content) if s3_content else {}
+            folder_metadata = json.loads(s3_content) if s3_content else []
         except Exception as e:
             LOGGER.warning(
                 f"Failed to decode metadata.json in folder {docs_parent_folder}/{folder_name}: {e}"
