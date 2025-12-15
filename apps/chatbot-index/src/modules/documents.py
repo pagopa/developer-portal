@@ -76,7 +76,13 @@ def get_metadata_from_s3(
     )
     bucket_name = bucket_name if bucket_name else SETTINGS.bucket_static_content
     s3_content = read_file_from_s3(MAIN_GUIDES_FOLDER_FILEPATH)
-    main_folders_content = json.loads(s3_content) if s3_content else {"dirNames": []}
+    if s3_content:
+        try:
+            main_folders_content = json.loads(s3_content)
+        except Exception as e:
+            LOGGER.warning(f"Failed to decode {MAIN_GUIDES_FOLDER_FILEPATH}: {e}")
+            main_folders_content = {"dirNames": []}
+
     main_folders_list = main_folders_content.get("dirNames", [])
 
     metadata = []
