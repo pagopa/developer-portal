@@ -731,13 +731,13 @@ async function main() {
         );
       }
 
-      guidesMetadata.map(async (guidesMetadata) => {
-        if (guidesMetadata.length > 0) {
+      guidesMetadata.map(async (guideMetadata) => {
+        if (guideMetadata.length > 0) {
           await putS3File(
-            guidesMetadata,
+            guideMetadata,
             path.join(
               S3_PATH_TO_GITBOOK_DOCS,
-              guidesMetadata[0].dirName,
+              guideMetadata[0].dirName,
               S3_DIRNAME_METADATA_JSON_PATH
             ),
             S3_BUCKET_NAME!,
