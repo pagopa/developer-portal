@@ -15,7 +15,6 @@ from src.modules.vector_index import DiscoveryVectorIndex
 LOGGER = get_logger(__name__)
 VECTOR_INDEX = DiscoveryVectorIndex()
 DIRNAMES_TO_REMOVE_PATH = "main-guide-versions-dirNames-to-remove.json"
-ROOT_FOLDERS_IN_BUCKET = "devportal-docs/docs/"
 
 # S3 event example:
 
