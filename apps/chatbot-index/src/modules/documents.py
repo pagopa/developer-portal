@@ -61,9 +61,9 @@ def read_file_from_s3(
 
 
 def get_folders_list(
-    guides_folders_filepath: str | None,
-    solution_folders_filepath: str | None,
-    release_notes_folders_filepath: str | None,
+    guides_folders_filepath: str | None = None,
+    solution_folders_filepath: str | None = None,
+    release_notes_folders_filepath: str | None = None,
 ) -> List[str]:
     """Reads folder names from S3 files.
     Args:
