@@ -23,27 +23,36 @@ on:
           - guides
           - solutions
           - release_notes
-      generate_metadata_only:
-        description: 'Generate metadata only without syncing docs'
-        type: boolean
-        required: true
-        default: false
       incremental_mode:
         description: 'Run sync in incremental mode by checking only file size'
         type: boolean
         required: true
         default: true
+      invalidate_opennext_cache:
+        description: 'Invalidate opennext cloufront cache'
+        type: boolean
+        required: true
+        default: false
+      generate_root_metadata_file:
+        description: 'Generate root metadata file alongside folder-specific ones'
+        type: boolean
+        required: true
+        default: true
+      dir_names_filter:
+        description: 'Comma-separated list of dirNames to sync (leave empty to sync all)'
+        type: string
+        required: false
+        default: ''
 
   schedule:
     - cron: '0 23 * * *'  # Run daily at midnight UTC
 
-# Permissions needed for AWS OIDC authentication
 permissions:
   id-token: write
   contents: read
 
 jobs:
-  sync_gitbook_docs:
+  manual_sync_gitbook_docs:
     name: Sync gitbook Docs to S3 (manual on ${{ inputs.environment }})
     if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
@@ -59,7 +68,6 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Checkout devportal-docs repo
-        if: inputs.generate_metadata_only == false
         uses: actions/checkout@v4
         with:
           repository: pagopa/devportal-docs
@@ -77,9 +85,9 @@ jobs:
           key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-npm-
-                                  
+
       - name: Install dependencies
-        run: | 
+        run: |
           npm config set cache ~/.npm
           npm ci
 
@@ -87,7 +95,6 @@ jobs:
         run: npm run compile
 
       - name: Generate UrlReplace metadata
-        if: inputs.generate_metadata_only == false
         env:
           ENVIRONMENT: ${{ github.event_name == 'workflow_dispatch' && inputs.environment || 'dev' }}
           DOCUMENTATION_PATH: ${{ vars.DOCUMENTATION_PATH || '../../devportal-docs/docs' }}
@@ -101,74 +108,58 @@ jobs:
           ENVIRONMENT: ${{ github.event_name == 'workflow_dispatch' && inputs.environment || 'dev' }}
           DOCUMENTATION_PATH: ${{ vars.DOCUMENTATION_PATH || '../../devportal-docs/docs' }}
           URL_PARSING_METADATA_JSON_PATH: ${{ vars.URL_PARSING_METADATA_JSON_PATH || '../../url-parsing-metadata.json' }}
-        if: inputs.generate_metadata_only == false
         run: npm run parse-docs -w gitbook-docs
 
+      - name: Replace escaped tokens with backticks in docs
+        env:
+          DOCUMENTATION_PATH: ${{ vars.DOCUMENTATION_PATH || '../../devportal-docs/docs' }}
+        run: npm run replace-escaped-tokens-with-backticks -w gitbook-docs
       - name: Configure AWS Credentials
         uses: ./.github/actions/configure-aws-credentials
         with:
           aws_region: eu-south-1
           role_to_assume: ${{ secrets.DEPLOY_IAM_ROLE }}
 
-      - name: Generate Strapi Response Files
+      - name: Generate all metadata
         env:
-          ENVIRONMENT: ${{ github.event_name == 'workflow_dispatch' && inputs.environment || 'dev' }}
-          S3_BUCKET_NAME: devportal-${{ env.ENV_SHORT }}-website-static-content
+          ENVIRONMENT: ${{ inputs.environment }}
+          DOCUMENTATION_PATH: ${{ vars.DOCUMENTATION_PATH || '../../devportal-docs/docs' }}
+          URL_PARSING_METADATA_JSON_PATH: ${{ vars.URL_PARSING_METADATA_JSON_PATH || '../../url-parsing-metadata.json' }}
           STRAPI_ENDPOINT: ${{ vars.STRAPI_ENDPOINT }}
           STRAPI_API_TOKEN: ${{ secrets.STRAPI_API_TOKEN }}
-          FETCH_FROM_STRAPI: ${{ vars.FETCH_FROM_STRAPI || 'true' }}
+          S3_BUCKET_NAME: devportal-${{ env.ENV_SHORT }}-website-static-content
+          S3_DOC_EXTRACTION_BUCKET_NAME: ${{ vars.S3_DOC_EXTRACTION_BUCKET_NAME }}
+          S3_PATH_TO_GITBOOK_DOCS: ${{ vars.S3_PATH_TO_GITBOOK_DOCS || 'devportal-docs/docs' }}
           NEXT_PUBLIC_COGNITO_REGION: ${{ vars.NEXT_PUBLIC_COGNITO_REGION || 'eu-south-1' }}
+          FETCH_FROM_STRAPI: ${{ vars.FETCH_FROM_STRAPI || 'true' }}
+          GENERATE_ROOT_METADATA_FILE: ${{ inputs.generate_root_metadata_file == true && 'true' || 'false' }}
+          GENERATE_URL_METADATA: 'true'
+          GENERATE_SITEMAP_METADATA: 'true'
+          SAVE_STRAPI_RESPONSES: 'true'
+          METADATA_TYPE: ${{ inputs.metadata_type }}
+          DIR_NAMES_FILTER: ${{ inputs.dir_names_filter }}
           SITEMAP_URL: ${{ env.SITEMAP_URL || 'https://developer.pagopa.it/sitemap.xml' }}
-        run: npm run generate-strapi-response-files -w gitbook-docs
-
-      - name: Replace escaped tokens with backticks in docs
-        env:
-          DOCUMENTATION_PATH: ${{ vars.DOCUMENTATION_PATH || '../../devportal-docs/docs' }}
-        run: npm run replace-escaped-tokens-with-backticks -w gitbook-docs
+          S3_DIRNAME_METADATA_JSON_PATH: ${{ vars.S3_DIRNAME_METADATA_JSON_PATH }}
+        run: npm run sync-all-metadata -w gitbook-docs
 
       - name: Sync docs folder to S3
-        if: inputs.generate_metadata_only == false
         working-directory: ./devportal-docs
+        env:
+          DIR_NAMES_FILTER: ${{ inputs.dir_names_filter }}
         run: |
-          aws s3 sync docs s3://devportal-${{ env.ENV_SHORT }}-website-static-content/devportal-docs/docs --delete ${{ inputs.incremental_mode == true && ' --size-only' || '' }}
-
-      - name: Generate guides metadata      
-        if: inputs.metadata_type == 'guides' || inputs.metadata_type == 'all'
-        env:
-          ENVIRONMENT: ${{ github.event_name == 'workflow_dispatch' && inputs.environment || 'dev' }}
-          S3_BUCKET_NAME: devportal-${{ env.ENV_SHORT }}-website-static-content
-          S3_DOC_EXTRACTION_BUCKET_NAME: ${{ vars.S3_DOC_EXTRACTION_BUCKET_NAME }}
-          S3_PATH_TO_GITBOOK_DOCS: ${{ vars.S3_PATH_TO_GITBOOK_DOCS || 'devportal-docs/docs' }}
-          STRAPI_ENDPOINT: ${{ vars.STRAPI_ENDPOINT }}
-          STRAPI_API_TOKEN: ${{ secrets.STRAPI_API_TOKEN }}
-          FETCH_FROM_STRAPI: ${{ vars.FETCH_FROM_STRAPI || 'true' }}
-          NEXT_PUBLIC_COGNITO_REGION: ${{ vars.NEXT_PUBLIC_COGNITO_REGION || 'eu-south-1' }}
-        run: npm run generate-guides-metadata -w gitbook-docs
-        
-      - name: Generate solutions metadata      
-        if: inputs.metadata_type == 'solutions' || inputs.metadata_type == 'all'
-        env:
-          ENVIRONMENT: ${{ github.event_name == 'workflow_dispatch' && inputs.environment || 'dev' }}
-          S3_BUCKET_NAME: devportal-${{ env.ENV_SHORT }}-website-static-content         
-          S3_PATH_TO_GITBOOK_DOCS: ${{ vars.S3_PATH_TO_GITBOOK_DOCS || 'devportal-docs/docs' }}
-          STRAPI_ENDPOINT: ${{ vars.STRAPI_ENDPOINT }}
-          STRAPI_API_TOKEN: ${{ secrets.STRAPI_API_TOKEN }}
-          FETCH_FROM_STRAPI: ${{ vars.FETCH_FROM_STRAPI || 'true' }}
-          NEXT_PUBLIC_COGNITO_REGION: ${{ vars.NEXT_PUBLIC_COGNITO_REGION || 'eu-south-1' }}
-        run: npm run generate-solutions-metadata -w gitbook-docs
-        
-      - name: Generate release notes metadata
-        if: inputs.metadata_type == 'release_notes' || inputs.metadata_type == 'all'
-        env:
-          ENVIRONMENT: ${{ github.event_name == 'workflow_dispatch' && inputs.environment || 'dev' }}
-          S3_BUCKET_NAME: devportal-${{ env.ENV_SHORT }}-website-static-content
-          S3_DOC_EXTRACTION_BUCKET_NAME: ${{ vars.S3_DOC_EXTRACTION_BUCKET_NAME }}
-          S3_PATH_TO_GITBOOK_DOCS: ${{ vars.S3_PATH_TO_GITBOOK_DOCS || 'devportal-docs/docs' }}
-          STRAPI_ENDPOINT: ${{ vars.STRAPI_ENDPOINT }}
-          STRAPI_API_TOKEN: ${{ secrets.STRAPI_API_TOKEN }}
-          FETCH_FROM_STRAPI: ${{ vars.FETCH_FROM_STRAPI || 'true' }}
-          NEXT_PUBLIC_COGNITO_REGION: ${{ vars.NEXT_PUBLIC_COGNITO_REGION || 'eu-south-1' }}
-        run: npm run generate-release-notes-metadata -w gitbook-docs
+          if [[ -n "$DIR_NAMES_FILTER" ]]; then
+            IFS=',' read -ra DIRS <<< "$DIR_NAMES_FILTER"
+            for dir in "${DIRS[@]}"; do
+              dir=$(echo "$dir" | xargs)
+              if [[ -n "$dir" ]]; then
+                echo "Syncing directory: $dir"
+                aws s3 sync "docs/$dir" "s3://devportal-${{ env.ENV_SHORT }}-website-static-content/devportal-docs/docs/$dir" --delete --exclude "metadata.json" ${{ inputs.incremental_mode == true && ' --size-only' || '' }}
+              fi
+            done
+          else
+            echo "Syncing all docs"
+            aws s3 sync docs s3://devportal-${{ env.ENV_SHORT }}-website-static-content/devportal-docs/docs --delete --exclude "**/metadata.json" ${{ inputs.incremental_mode == true && ' --size-only' || '' }}
+          fi
 
       - name: Invalidate CloudFront asset bucket cache
         run: |
@@ -183,6 +174,8 @@ jobs:
     outputs:
       environment: 'prod'
     environment: 'prod'
+    env:
+      SITEMAP_URL: https://developer.pagopa.it/sitemap.xml
 
     steps:
       - name: Checkout current repository
@@ -215,94 +208,44 @@ jobs:
       - name: Compile packages
         run: npm run compile
 
-      - name: Generate UrlReplace metadata
-        env:
-          ENVIRONMENT: 'prod'
-          DOCUMENTATION_PATH: ${{ vars.DOCUMENTATION_PATH || '../../devportal-docs/docs' }}
-          URL_PARSING_METADATA_JSON_PATH: ${{ vars.URL_PARSING_METADATA_JSON_PATH || '../../url-parsing-metadata.json' }}
-          STRAPI_ENDPOINT: ${{ vars.STRAPI_ENDPOINT }}
-          STRAPI_API_TOKEN: ${{ secrets.STRAPI_API_TOKEN }}
-        run: npm run generate-url-parsing-metadata -w gitbook-docs
-
-      - name: Replace urls and include tags in docs
-        env:
-          ENVIRONMENT: 'prod'
-          DOCUMENTATION_PATH: ${{ vars.DOCUMENTATION_PATH || '../../devportal-docs/docs' }}
-          URL_PARSING_METADATA_JSON_PATH: ${{ vars.URL_PARSING_METADATA_JSON_PATH || '../../url-parsing-metadata.json' }}
-        run: npm run parse-docs -w gitbook-docs
-
-      - name: Replace escaped tokens with backticks in docs
-        env:
-          DOCUMENTATION_PATH: ${{ vars.DOCUMENTATION_PATH || '../../devportal-docs/docs' }}
-        run: npm run replace-escaped-tokens-with-backticks -w gitbook-docs
-
       - name: Configure AWS Credentials
         uses: ./.github/actions/configure-aws-credentials
         with:
           aws_region: eu-south-1
           role_to_assume: ${{ secrets.DEPLOY_IAM_ROLE }}
 
-      - name: Generate Strapi Response Files
+      - name: Generate all metadata
         env:
           ENVIRONMENT: 'prod'
-          S3_BUCKET_NAME: devportal-p-website-static-content
+          DOCUMENTATION_PATH: ${{ vars.DOCUMENTATION_PATH || '../../devportal-docs/docs' }}
+          URL_PARSING_METADATA_JSON_PATH: ${{ vars.URL_PARSING_METADATA_JSON_PATH || '../../url-parsing-metadata.json' }}
           STRAPI_ENDPOINT: ${{ vars.STRAPI_ENDPOINT }}
           STRAPI_API_TOKEN: ${{ secrets.STRAPI_API_TOKEN }}
-          FETCH_FROM_STRAPI: ${{ vars.FETCH_FROM_STRAPI || 'true' }}
-          NEXT_PUBLIC_COGNITO_REGION: ${{ vars.NEXT_PUBLIC_COGNITO_REGION || 'eu-south-1' }}
-          SITEMAP_URL: https://developer.pagopa.it/sitemap.xml
-        run: npm run generate-strapi-response-files -w gitbook-docs
-
-      - name: Generate guides metadata
-        env:
-          ENVIRONMENT: 'prod'
           S3_BUCKET_NAME: devportal-p-website-static-content
           S3_DOC_EXTRACTION_BUCKET_NAME: ${{ vars.S3_DOC_EXTRACTION_BUCKET_NAME }}
           S3_PATH_TO_GITBOOK_DOCS: ${{ vars.S3_PATH_TO_GITBOOK_DOCS || 'devportal-docs/docs' }}
-          STRAPI_ENDPOINT: ${{ vars.STRAPI_ENDPOINT }}
-          STRAPI_API_TOKEN: ${{ secrets.STRAPI_API_TOKEN }}
-          FETCH_FROM_STRAPI: ${{ vars.FETCH_FROM_STRAPI || 'true' }}
           NEXT_PUBLIC_COGNITO_REGION: ${{ vars.NEXT_PUBLIC_COGNITO_REGION || 'eu-south-1' }}
-        run: npm run generate-guides-metadata -w gitbook-docs
+          FETCH_FROM_STRAPI: ${{ vars.FETCH_FROM_STRAPI || 'true' }}
+          GENERATE_ROOT_METADATA_FILE: ${{ inputs.generate_root_metadata_file == true && 'true' || 'false' }}
+          GENERATE_URL_METADATA: 'true'
+          GENERATE_SITEMAP_METADATA: 'true'
+          SAVE_STRAPI_RESPONSES: 'true'
+          METADATA_TYPE: 'all'
+          SITEMAP_URL: 'https://developer.pagopa.it/sitemap.xml'
+        run: npm run sync-all-metadata -w gitbook-docs
 
-      - name: Generate solutions metadata
+      - name: Replace escaped tokens with backticks in docs
         env:
-          ENVIRONMENT: 'prod'
-          S3_BUCKET_NAME: devportal-p-website-static-content
-          S3_PATH_TO_GITBOOK_DOCS: ${{ vars.S3_PATH_TO_GITBOOK_DOCS || 'devportal-docs/docs' }}
-          STRAPI_ENDPOINT: ${{ vars.STRAPI_ENDPOINT }}
-          STRAPI_API_TOKEN: ${{ secrets.STRAPI_API_TOKEN }}
-          FETCH_FROM_STRAPI: ${{ vars.FETCH_FROM_STRAPI || 'true' }}
-          NEXT_PUBLIC_COGNITO_REGION: ${{ vars.NEXT_PUBLIC_COGNITO_REGION || 'eu-south-1' }}
-        run: npm run generate-solutions-metadata -w gitbook-docs
-
-      - name: Generate release notes metadata
-        env:
-          ENVIRONMENT: 'prod'
-          S3_BUCKET_NAME: devportal-p-website-static-content
-          S3_DOC_EXTRACTION_BUCKET_NAME: ${{ vars.S3_DOC_EXTRACTION_BUCKET_NAME }}
-          S3_PATH_TO_GITBOOK_DOCS: ${{ vars.S3_PATH_TO_GITBOOK_DOCS || 'devportal-docs/docs' }}
-          STRAPI_ENDPOINT: ${{ vars.STRAPI_ENDPOINT }}
-          STRAPI_API_TOKEN: ${{ secrets.STRAPI_API_TOKEN }}
-          FETCH_FROM_STRAPI: ${{ vars.FETCH_FROM_STRAPI || 'true' }}
-          NEXT_PUBLIC_COGNITO_REGION: ${{ vars.NEXT_PUBLIC_COGNITO_REGION || 'eu-south-1' }}
-        run: npm run generate-release-notes-metadata -w gitbook-docs
+          DOCUMENTATION_PATH: ${{ vars.DOCUMENTATION_PATH || '../../devportal-docs/docs' }}
+        run: npm run replace-escaped-tokens-with-backticks -w gitbook-docs
 
       - name: Sync docs folder to S3
         working-directory: ./devportal-docs
         run: |
-          aws s3 sync docs s3://devportal-p-website-static-content/devportal-docs/docs --delete --size-only
+          aws s3 sync docs s3://devportal-p-website-static-content/devportal-docs/docs --delete --exclude "**/metadata.json" --size-only
 
       - name: Invalidate CloudFront asset bucket cache
         run: |
           aws cloudfront create-invalidation \
             --distribution-id ${{ vars.ASSET_BUCKET_CLOUDFRONT_DISTRIBUTION_ID }} \
             --paths "/*"
-
-      - name: Trigger reindex workflow
-        run: |
-          curl -X POST \
-          -H "Authorization: token ${{ secrets.TAG_GITHUB_PAT }}" \
-          -H "Accept: application/vnd.github+json" \
-          https://api.github.com/repos/${{ github.repository }}/actions/workflows/141828151/dispatches \
-          -d '{"ref":"main","inputs":{"environment":"prod"}}'
