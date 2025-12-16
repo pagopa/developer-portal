@@ -1,5 +1,6 @@
 // Components
 import { styled } from '@mui/material';
+import { ReactElement } from 'react';
 
 import { theme } from '@pagopa/mui-italia/dist/theme';
 
@@ -53,7 +54,7 @@ export const FundedByNextGenerationEU = ({
   size = 200,
   color = 'dark',
   variant = 'outline',
-}: FundedByNextGenerationEUPropsProps): JSX.Element => (
+}: FundedByNextGenerationEUPropsProps): ReactElement => (
   <StyledSvg
     viewBox='0 0 1174 270'
     focusable='false'

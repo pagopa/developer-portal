@@ -30,6 +30,7 @@
   "packageManager": "npm@9.8.1",
   "name": "developer-portal",
   "overrides": {
+    "ajv": "^8.17.1",
     "@types/react": "19.2.7",
     "@types/react-dom": "19.2.3"
   }

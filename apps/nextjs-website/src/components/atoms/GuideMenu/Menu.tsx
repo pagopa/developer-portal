@@ -28,9 +28,9 @@ const StyledTreeItem = styled(TreeItem)(({ theme }) => ({
     alignItems: 'space-between',
   },
   [`& .${treeItemClasses.content}:has(.${treeItemClasses.iconContainer}:empty)`]:
-    {
-      paddingRight: 0,
-    },
+  {
+    paddingRight: 0,
+  },
   [`& .${treeItemClasses.iconContainer}`]: {
     justifyContent: 'flex-end',
     marginRight: 0,
@@ -96,7 +96,7 @@ export type GuideMenuItemsProps = Partial<GuideVersionSelectorProps> & {
   expanded?: string[];
   menu: string;
   linkPrefix: string;
-  containerRef?: React.RefObject<HTMLDivElement>;
+  containerRef?: React.RefObject<HTMLDivElement | null>;
   onGuideNavigate?: (payload: GitBookContentData) => boolean;
 };
 

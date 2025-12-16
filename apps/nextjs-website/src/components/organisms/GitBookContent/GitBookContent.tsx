@@ -42,7 +42,7 @@ type GitBookContentProps = {
   hideLevel1Headings?: boolean;
 };
 
-const components: RenderingComponents<ReactNode> = {
+const components: any = {
   StyledText: StyledText,
   Swagger: Swagger,
   SwaggerParameter: SwaggerParameter,
@@ -78,7 +78,7 @@ const components: RenderingComponents<ReactNode> = {
   Br: () => <br />,
 };
 
-const hideH1Components: RenderingComponents<ReactNode> = {
+const hideH1Components: any = {
   ...components,
   Heading: SubHeading,
 };

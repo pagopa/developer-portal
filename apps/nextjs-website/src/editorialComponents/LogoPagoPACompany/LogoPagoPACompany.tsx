@@ -1,5 +1,6 @@
 // Components
 import { styled } from '@mui/material';
+import { ReactElement } from 'react';
 
 import { theme } from '@pagopa/mui-italia/dist/theme';
 
@@ -32,7 +33,7 @@ export const LogoPagoPACompany = ({
   size = 120,
   color = 'default',
   variant = 'default',
-}: LogoPagoPACompanyProps): JSX.Element => (
+}: LogoPagoPACompanyProps): ReactElement => (
   <StyledSvg
     viewBox='0 0 119 33'
     focusable='false'

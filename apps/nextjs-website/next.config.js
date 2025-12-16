@@ -19,6 +19,7 @@ const nextConfig = {
     cpus: 1,
     workerThreads: false,
   },
+  serverExternalPackages: ['jsdom', 'isomorphic-dompurify'],
   eslint: {
     ignoreDuringBuilds: true,
   },

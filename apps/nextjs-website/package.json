@@ -16,8 +16,6 @@
     "@aws-amplify/ui-react": "^5.3.1",
     "@aws-sdk/client-dynamodb": "^3.496.0",
     "@aws-sdk/credential-providers": "^3.496.0",
-    "amazon-ivs-player": "^1.45.0",
-    "video.js": "^8.23.4",
     "@emotion/react": "11.10.5",
     "@emotion/styled": "11.10.5",
     "@markdoc/markdoc": "0.3.0",
@@ -27,8 +25,9 @@
     "@mui/utils": "5.14.5",
     "@opennextjs/aws": "^3.6.3",
     "@pagopa/mui-italia": "1.0.1",
-
     "@strapi/blocks-react-renderer": "^1.0.1",
+    "ajv": "^8.17.1",
+    "amazon-ivs-player": "^1.45.0",
     "aws-amplify": "^5.3.11",
     "dompurify": "^3.2.5",
     "fp-ts": "^2.13.1",
@@ -48,10 +47,10 @@
     "sst": "3.14.25",
     "swagger-ui": "^5.9.1",
     "swiper": "^11.2.4",
-    "swr": "^2.2.4"
+    "swr": "^2.2.4",
+    "video.js": "^8.23.4"
   },
   "devDependencies": {
-    "@types/video.js": "^7.3.58",
     "@bufbuild/jest-environment-jsdom": "^0.1.1",
     "@testing-library/jest-dom": "^6.4.2",
     "@testing-library/react": "^14.1.2",
@@ -62,6 +61,7 @@
     "@types/react-dom": "19.2.3",
     "@types/react-syntax-highlighter": "^15.5.7",
     "@types/swagger-ui": "^3.52.4",
+    "@types/video.js": "^7.3.58",
     "eslint": "8.47.0",
     "eslint-config-custom": "*",
     "eslint-config-next": "^15.0.3",
