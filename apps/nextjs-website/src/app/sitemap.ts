@@ -102,7 +102,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Product routes
   const productRoutes = productSlugs.flatMap((productSlug) => {
     const routes = productPages.find((productPage) => {
-      return productPage.overview?.product.slug === productSlug;
+      return (
+        productPage.overview?.product.slug === productSlug ||
+        productPage.tutorialList?.product.slug === productSlug
+      );
     });
     const hasTutorials = routes?.tutorialList !== undefined;
     const returnArray = [

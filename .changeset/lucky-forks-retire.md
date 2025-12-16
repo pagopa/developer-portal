@@ -2,4 +2,4 @@
 "nextjs-website": minor
 ---
 
-Fix to sitemap generation
+Fix sitemap generation
