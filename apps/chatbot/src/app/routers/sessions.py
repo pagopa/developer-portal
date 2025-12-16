@@ -105,7 +105,8 @@ async def query_feedback(
             )
 
             feedback = query.feedback.model_dump()
-            feedback["user_comment"] = chatbot.mask_pii(feedback["user_comment"])
+            # TODO: database action will be moved to chatbot-monitor, with presidio
+            # feedback["user_comment"] = chatbot.mask_pii(feedback["user_comment"])
 
             dbResponse = tables["queries"].update_item(
                 Key={"sessionId": sessionId, "id": id},
