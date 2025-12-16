@@ -90,6 +90,11 @@ const S3_RELEASE_NOTES_METADATA_JSON_PATH =
   'release-notes-metadata.json';
 const S3_DIRNAME_METADATA_JSON_PATH =
   process.env.S3_DIRNAME_METADATA_JSON_PATH || 'metadata.json';
+const S3_SOLUTIONS_DIRNAMES_JSON_PATH =
+  process.env.S3_SOLUTIONS_DIRNAMES_JSON_PATH || 'solutions-dirNames.json';
+const S3_RELEASE_NOTES_DIRNAMES_JSON_PATH =
+  process.env.S3_RELEASE_NOTES_DIRNAMES_JSON_PATH ||
+  'release-notes-dirNames.json';
 
 const SITEMAP_URL = process.env.SITEMAP_URL || `${baseUrl}/sitemap.xml`;
 const S3_SITEMAP_PATH = process.env.S3_SITEMAP_PATH || 'sitemap.xml';
@@ -148,8 +153,7 @@ async function fetchAllStrapiData(): Promise<StrapiData> {
   console.log('Fetching all data from Strapi...');
   if (DIR_NAMES_FILTER) {
     console.log(
-      `Applying dirName filter: ${DIR_NAMES_FILTER.join(', ')} (${
-        DIR_NAMES_FILTER.length
+      `Applying dirName filter: ${DIR_NAMES_FILTER.join(', ')} (${DIR_NAMES_FILTER.length
       } directories)`
     );
   }
@@ -377,6 +381,24 @@ function getMainVersionsDirNames(guides: StrapiGuide[]): {
           (version) => version.main && version.dirName
         )
       )
+    ),
+  };
+}
+
+function getSolutionsDirNames(solutions: StrapiSolution[]): {
+  dirNames: string[];
+} {
+  return {
+    dirNames: compact(solutions.map((solution) => solution.attributes.dirName)),
+  };
+}
+
+function getReleaseNotesDirNames(releaseNotes: StrapiReleaseNote[]): {
+  dirNames: string[];
+} {
+  return {
+    dirNames: compact(
+      releaseNotes.map((releaseNote) => releaseNote.attributes.dirName)
     ),
   };
 }
@@ -718,6 +740,30 @@ async function main() {
       getS3Client()
     );
 
+    const solutionsDirNames = getSolutionsDirNames(strapiData.solutions);
+    console.log(
+      `Processed ${solutionsDirNames.dirNames.length} solution items.`
+    );
+    await putS3File(
+      solutionsDirNames,
+      S3_SOLUTIONS_DIRNAMES_JSON_PATH,
+      S3_BUCKET_NAME!,
+      getS3Client()
+    );
+
+    const releaseNotesDirNames = getReleaseNotesDirNames(
+      strapiData.releaseNotes
+    );
+    console.log(
+      `Processed ${releaseNotesDirNames.dirNames.length} release note items.`
+    );
+    await putS3File(
+      releaseNotesDirNames,
+      S3_RELEASE_NOTES_DIRNAMES_JSON_PATH,
+      S3_BUCKET_NAME!,
+      getS3Client()
+    );
+
     // Process and save guides metadata
     if (GENERATE_METADATA && metadataFilter.guides) {
       console.log('Processing guides metadata...');
@@ -731,17 +777,19 @@ async function main() {
         );
       }
 
-      guidesMetadata.map(async (guidesMetadata) => {
-        await putS3File(
-          guidesMetadata,
-          path.join(
-            S3_PATH_TO_GITBOOK_DOCS,
-            guidesMetadata[0].dirName,
-            S3_DIRNAME_METADATA_JSON_PATH
-          ),
-          S3_BUCKET_NAME!,
-          getS3Client()
-        );
+      guidesMetadata.map(async (guideMetadata) => {
+        if (guideMetadata.length > 0) {
+          await putS3File(
+            guideMetadata,
+            path.join(
+              S3_PATH_TO_GITBOOK_DOCS,
+              guideMetadata[0].dirName,
+              S3_DIRNAME_METADATA_JSON_PATH
+            ),
+            S3_BUCKET_NAME!,
+            getS3Client()
+          );
+        }
       });
 
       console.log(`Saved ${guidesMetadata.length} guide items to S3`);
@@ -763,16 +811,18 @@ async function main() {
       }
 
       solutionsMetadata.map(async (solutionMetadata) => {
-        await putS3File(
-          solutionMetadata,
-          path.join(
-            S3_PATH_TO_GITBOOK_DOCS,
-            solutionMetadata[0].dirName,
-            S3_DIRNAME_METADATA_JSON_PATH
-          ),
-          S3_BUCKET_NAME!,
-          getS3Client()
-        );
+        if (solutionMetadata.length > 0) {
+          await putS3File(
+            solutionMetadata,
+            path.join(
+              S3_PATH_TO_GITBOOK_DOCS,
+              solutionMetadata[0].dirName,
+              S3_DIRNAME_METADATA_JSON_PATH
+            ),
+            S3_BUCKET_NAME!,
+            getS3Client()
+          );
+        }
       });
 
       console.log(`Saved ${solutionsMetadata.length} solution items to S3`);
@@ -794,16 +844,18 @@ async function main() {
       }
 
       releaseNotesMetadata.map(async (releaseNote) => {
-        await putS3File(
-          releaseNote,
-          path.join(
-            S3_PATH_TO_GITBOOK_DOCS,
-            releaseNote[0].dirName,
-            S3_DIRNAME_METADATA_JSON_PATH
-          ),
-          S3_BUCKET_NAME!,
-          getS3Client()
-        );
+        if (releaseNote.length > 0) {
+          await putS3File(
+            releaseNote,
+            path.join(
+              S3_PATH_TO_GITBOOK_DOCS,
+              releaseNote[0].dirName,
+              S3_DIRNAME_METADATA_JSON_PATH
+            ),
+            S3_BUCKET_NAME!,
+            getS3Client()
+          );
+        }
       });
 
       console.log(
