@@ -36,6 +36,7 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
     isQuestionFormEnabled,
     isPlayerVisible,
     livePlayerReloadToken,
+    isLiveStreamAvailable,
   } = useWebinar();
   const showHeaderImage =
     webinarState === WebinarState.future && webinar.headerImage;
@@ -140,13 +141,14 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
       </Box>
       {user &&
         isSubscribed &&
-        isPlayerVisible &&
         ![WebinarState.future, WebinarState.unknown].includes(webinarState) && (
           <WebinarPlayerSection
             webinar={webinar}
             webinarState={webinarState}
             enableQuestionForm={isQuestionFormEnabled}
             reloadPlayerToken={livePlayerReloadToken}
+            isLiveStreamAvailable={isLiveStreamAvailable}
+            isPlayerVisible={isPlayerVisible}
           ></WebinarPlayerSection>
         )}
       {webinar.subscribeCtaLabel && (

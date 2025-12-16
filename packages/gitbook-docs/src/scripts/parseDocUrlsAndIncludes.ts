@@ -52,7 +52,7 @@ async function recursiveParseMarkdownFiles(
         guideMetadata,
         metadata,
         fullPath
-      ).replaceAll('\\', '');
+      );
       try {
         fs.writeFileSync(fullPath, urlParsedFileContent, 'utf8');
       } catch (error) {

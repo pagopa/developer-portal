@@ -1,3 +1,6 @@
+/* eslint-disable functional/no-expression-statements */
+/* eslint-disable functional/no-loop-statements */
+/* eslint-disable functional/no-let */
 import Markdoc, { ConfigType, RenderableTreeNode } from '@markdoc/markdoc';
 import { document } from './markdoc/schema/document';
 import { hint } from './markdoc/schema/hint';
@@ -27,6 +30,7 @@ import { processHtmlTokens } from './markdoc/tokenProcessor';
 import { PageTitlePath } from './parseDoc';
 import { convertEmojiToUnicode } from './convertEmojiToUnicode';
 import { step, stepper } from './markdoc/schema/stepper';
+import { inlineCodePipePlaceholder } from './markdoc/schema/styledText';
 
 export type ParseContentConfig = {
   readonly assetsPrefix: string;
@@ -57,6 +61,36 @@ const summaryR = pairedHtmlTag('summary');
 const fileR = {
   regex: /({% file src="[^"]+" %}(?!.*{% \/file %}))/gis,
   replace: '$1\n{% /file %}',
+};
+
+const preservePipesInInlineCode = (markdown: string): string => {
+  let cursor = 0;
+  let result = '';
+  while (cursor < markdown.length) {
+    const openBacktick = markdown.indexOf('`', cursor);
+    if (openBacktick === -1) {
+      result += markdown.slice(cursor);
+      break;
+    }
+    result += markdown.slice(cursor, openBacktick);
+    let delimiterEnd = openBacktick + 1;
+    while (markdown[delimiterEnd] === '`') {
+      delimiterEnd += 1;
+    }
+    const delimiter = markdown.slice(openBacktick, delimiterEnd);
+    const closingBacktick = markdown.indexOf(delimiter, delimiterEnd);
+    if (closingBacktick === -1) {
+      result += markdown.slice(openBacktick);
+      break;
+    }
+    const codeContent = markdown.slice(delimiterEnd, closingBacktick);
+    const sanitizedContent = codeContent.includes('|')
+      ? codeContent.replaceAll('|', inlineCodePipePlaceholder)
+      : codeContent;
+    result += delimiter + sanitizedContent + delimiter;
+    cursor = closingBacktick + delimiter.length;
+  }
+  return result;
 };
 
 const schema: ConfigType = {
@@ -111,7 +145,7 @@ export const parseAst = (markdown: string) => {
   // A better alternative could be to parse the html:
   // https://github.com/markdoc/markdoc/issues/10#issuecomment-1492560830
   // In this way many RegExp can be removed
-  const markdoc = markdown
+  const markdoc = preservePipesInInlineCode(markdown)
     .replaceAll('{% end', '\n{% /')
     .replaceAll(imgR.regex, imgR.replace)
     .replaceAll(figureR.regex, figureR.replace)
