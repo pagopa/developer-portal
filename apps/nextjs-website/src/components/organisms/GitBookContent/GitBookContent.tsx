@@ -1,7 +1,7 @@
 'use client';
 import { parseContent } from 'gitbook-docs/parseContent';
-import { RenderingComponents, renderContent } from 'gitbook-docs/renderContent';
-import React, { ReactNode } from 'react';
+import { renderContent } from 'gitbook-docs/renderContent';
+import React from 'react';
 import Table, {
   TableBody,
   TableD,
@@ -42,6 +42,7 @@ type GitBookContentProps = {
   hideLevel1Headings?: boolean;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const components: any = {
   StyledText: StyledText,
   Swagger: Swagger,
@@ -78,6 +79,7 @@ const components: any = {
   Br: () => <br />,
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const hideH1Components: any = {
   ...components,
   Heading: SubHeading,

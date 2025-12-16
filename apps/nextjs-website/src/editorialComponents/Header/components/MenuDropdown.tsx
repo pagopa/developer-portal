@@ -24,7 +24,7 @@ type DropdownItem = Generic | DropdownLink;
 
 export interface MenuDropdownProp
   extends Partial<Omit<LinkProps, 'children'>>,
-  CommonProps {
+    CommonProps {
   label: string;
   active?: boolean;
   items?: DropdownItem[];
@@ -72,12 +72,12 @@ export const MenuDropdown = (props: MenuDropdownProp) => {
 
   const menuEventsHandlers = md
     ? {
-      onMouseEnter: hoverOnMenu,
-      onMouseLeave: leavesMenu,
-    }
+        onMouseEnter: hoverOnMenu,
+        onMouseLeave: leavesMenu,
+      }
     : {
-      onClick: toggleMenu,
-    };
+        onClick: toggleMenu,
+      };
 
   const Dropdown = ({
     children,

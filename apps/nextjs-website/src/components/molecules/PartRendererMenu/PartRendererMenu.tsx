@@ -154,7 +154,10 @@ export function computeId(type: string, children: ReactNode | string): string {
 
   if (!Array.isArray(children)) {
     // if children is react element and has props text return that
-    if (isValidElement(children) && 'text' in (children.props as any)) {
+    if (
+      isValidElement(children) &&
+      'text' in (children.props as Record<string, unknown>)
+    ) {
       const text = generateIdFromString(
         (children.props as { text: string }).text
       );

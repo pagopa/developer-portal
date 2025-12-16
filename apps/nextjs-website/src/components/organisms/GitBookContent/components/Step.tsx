@@ -22,7 +22,7 @@ const Step = ({ stepNumber, children }: StepProps<ReactNode>) => {
     if (
       headingElement === null &&
       isValidElement(child) &&
-      'level' in (child.props as any) &&
+      'level' in (child.props as Record<string, unknown>) &&
       (child.props as { level?: unknown }).level === 3
     ) {
       headingElement = child;

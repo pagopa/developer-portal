@@ -55,15 +55,15 @@ const GuideMenu = (menuProps: GuideMenuProps) => {
 
   const topStyle = menuProps.hasHeader
     ? {
-      xs: topOffsetXs + 62,
-      sm: topOffsetXs + 75,
-      md: SITE_HEADER_HEIGHT + productHeaderHeight,
-    }
+        xs: topOffsetXs + 62,
+        sm: topOffsetXs + 75,
+        md: SITE_HEADER_HEIGHT + productHeaderHeight,
+      }
     : {
-      xs: topOffsetXs,
-      sm: topOffsetXs,
-      md: topOffsetXs,
-    };
+        xs: topOffsetXs,
+        sm: topOffsetXs,
+        md: topOffsetXs,
+      };
 
   const handleClick = useCallback(() => {
     setOpen((prev) => !prev);

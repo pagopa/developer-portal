@@ -28,9 +28,9 @@ const StyledTreeItem = styled(TreeItem)(({ theme }) => ({
     alignItems: 'space-between',
   },
   [`& .${treeItemClasses.content}:has(.${treeItemClasses.iconContainer}:empty)`]:
-  {
-    paddingRight: 0,
-  },
+    {
+      paddingRight: 0,
+    },
   [`& .${treeItemClasses.iconContainer}`]: {
     justifyContent: 'flex-end',
     marginRight: 0,
