@@ -24,11 +24,7 @@ LOGGER = get_logger(__name__)
                     "chat_history": [],
                     "response": "I can provide information on how to improve your AI career by sharing insights on learning foundational AI skills, working on AI projects, and searching for a job in AI.",
                     "contexts": ["context1", "context2"],
-<<<<<<< HEAD
-                    "spans": [
-=======
                     "traceSpans": [
->>>>>>> CAI-629-refactor-chatbot
                         {
                             "name": "ReActAgent.run",
                             "context": {
