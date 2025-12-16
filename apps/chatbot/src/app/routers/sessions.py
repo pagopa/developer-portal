@@ -7,7 +7,7 @@ from typing import Annotated
 from src.app.models import QueryFeedback, tables
 from src.modules.logger import get_logger
 from src.app.chatbot_init import chatbot
-from src.app.sessions import current_user_id, add_langfuse_score_query
+from src.app.sessions import current_user_id
 
 router = APIRouter()
 
@@ -87,7 +87,8 @@ async def query_feedback(
 
     try:
         if query.feedback:
-            add_langfuse_score_query(query_id=id, query_feedback=query)
+            # TODO: enqueue langfuse request in SQS
+            # add_langfuse_score_query(query_id=id, query_feedback=query)
 
             if query.feedback.user_response_relevancy is None:
                 query.feedback.user_response_relevancy = 0
