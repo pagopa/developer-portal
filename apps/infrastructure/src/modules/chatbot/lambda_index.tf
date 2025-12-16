@@ -159,5 +159,12 @@ resource "aws_s3_bucket_notification" "index_lambda_trigger" {
     filter_suffix       = ".md"
   }
 
+  lambda_function {
+    lambda_function_arn = aws_lambda_function.chatbot_index_lambda.arn
+    events              = ["s3:ObjectCreated:*"]
+    filter_prefix       = ""
+    filter_suffix       = "main-guide-versions-dirNames-to-remove.json"
+  }
+
   depends_on = [aws_lambda_permission.allow_s3_invoke_index]
 }
