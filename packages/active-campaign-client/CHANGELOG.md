@@ -1,5 +1,11 @@
 # active-campaign-client
 
+## 0.6.0
+
+### Minor Changes
+
+- 69a9440: Active campaign lambda manage survey field added to cognito
+
 ## 0.5.2
 
 ### Patch Changes

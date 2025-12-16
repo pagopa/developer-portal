@@ -34,6 +34,7 @@ const MAX_NUM_TUTORIALS_IN_OVERVIEW = 3;
 export type OverviewPageProps = {
   readonly path: string;
   readonly product: Product;
+  readonly updatedAt: string;
   readonly hero: {
     readonly backgroundImage: string;
     readonly altText: string;

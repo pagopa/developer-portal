@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Webinar } from '@/lib/types/webinar';
 
-const COMING_SOON_START_TIME_DELTA_MS = 39 * 30 * 60 * 1000;
+const COMING_SOON_START_TIME_DELTA_MS = 39 * 30 * 60 * 1000; // 19.5 hours
 const CHECK_WEBINAR_STATUS_INTERVAL_MS = 500;
 const POLLING_WEBINAR_VIDEO_INTERVAL_MS = 60 * 1000; // every 60 seconds
 const LIVE_STREAM_URL_PATTERN = /playback\.live-video.*\.m3u8$/;
@@ -126,13 +126,24 @@ export const useWebinar = () => {
       return;
     }
 
-    const shouldShowIvsPlayer = webinarState === WebinarState.live;
-    setIsPlayerVisible(shouldShowIvsPlayer);
+    const currentTimestamp = new Date().getTime();
+    const startDateTimestamp =
+      !!webinar?.startDateTime && new Date(webinar.startDateTime).getTime();
 
-    const shouldPollLiveStream = [
-      WebinarState.live,
-      WebinarState.comingSoon,
-    ].includes(webinarState);
+    const isLiveStreamOnAir =
+      isLiveStreamAvailable &&
+      !!startDateTimestamp &&
+      startDateTimestamp < currentTimestamp;
+
+    const shouldShowIvsPlayer =
+      [WebinarState.live, WebinarState.comingSoon].includes(webinarState) ||
+      isLiveStreamOnAir;
+    setIsPlayerVisible(shouldShowIvsPlayer);
+    setIsQuestionFormEnabled(isLiveStreamOnAir);
+
+    const shouldPollLiveStream =
+      [WebinarState.live, WebinarState.comingSoon].includes(webinarState) ||
+      isLiveStreamOnAir;
 
     updateLiveStreamState(webinar.playerSrc);
 
@@ -147,6 +158,7 @@ export const useWebinar = () => {
     return () => clearInterval(pollingIntervalId);
   }, [
     webinar?.playerSrc,
+    webinar?.startDateTime,
     webinarState,
     isLiveStreamAvailable,
     updateLiveStreamState,
@@ -158,6 +170,7 @@ export const useWebinar = () => {
     setWebinar,
     isQuestionFormEnabled,
     isPlayerVisible,
+    isLiveStreamAvailable,
     livePlayerReloadToken,
   };
 };

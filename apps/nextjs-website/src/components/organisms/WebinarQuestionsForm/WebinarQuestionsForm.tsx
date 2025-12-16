@@ -38,7 +38,6 @@ type WebinarQuestionsFormProps = {
 export const WebinarQuestionsForm = ({
   disabled = false,
   webinarSlug,
-  webinarState,
   toggleFormVisibility,
   isSmallScreen,
   question,
@@ -92,10 +91,6 @@ export const WebinarQuestionsForm = ({
   const startIcon = hasFormState ? (
     <CheckIcon sx={{ color: '#6CC66A' }} />
   ) : null;
-  const isWebinarLive = useMemo(
-    () => [WebinarState.live].includes(webinarState),
-    [webinarState]
-  );
   const btnLabel =
     formState === 'submitted'
       ? t('questionsForm.submitted')
@@ -183,7 +178,7 @@ export const WebinarQuestionsForm = ({
             gap: '24px',
           }}
         >
-          {isWebinarLive ? (
+          {!disabled ? (
             <>
               <Typography
                 variant='body2'
