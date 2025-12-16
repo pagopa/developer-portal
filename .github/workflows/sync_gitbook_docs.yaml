@@ -159,8 +159,31 @@ jobs:
               fi
             done
           else
-            echo "Syncing all docs"
-            aws s3 sync docs s3://devportal-${{ env.ENV_SHORT }}-website-static-content/devportal-docs/docs --delete --exclude "**/metadata.json" ${{ inputs.incremental_mode == true && ' --size-only' || '' }}
+            echo "Fetching directory lists from S3..."
+            # Define S3 paths for the JSON files
+            S3_MAIN_GUIDES="s3://devportal-${{ env.ENV_SHORT }}-website-static-content/${{ vars.S3_MAIN_GUIDE_VERSIONS_DIRNAMES_JSON_PATH || 'main-guide-versions-dirNames.json' }}"
+            S3_SOLUTIONS="s3://devportal-${{ env.ENV_SHORT }}-website-static-content/${{ vars.S3_SOLUTIONS_DIRNAMES_JSON_PATH || 'solutions-dirNames.json' }}"
+            S3_RELEASE_NOTES="s3://devportal-${{ env.ENV_SHORT }}-website-static-content/${{ vars.S3_RELEASE_NOTES_DIRNAMES_JSON_PATH || 'release-notes-dirNames.json' }}"
+
+            # Download JSON files
+            aws s3 cp "$S3_MAIN_GUIDES" main_guides.json || echo '{"dirNames": []}' > main_guides.json
+            aws s3 cp "$S3_SOLUTIONS" solutions.json || echo '{"dirNames": []}' > solutions.json
+            aws s3 cp "$S3_RELEASE_NOTES" release_notes.json || echo '{"dirNames": []}' > release_notes.json
+
+            # Extract and combine unique directory names
+            DIRS=$(cat main_guides.json solutions.json release_notes.json | jq -r '.dirNames[]' | sort | uniq)
+
+            if [[ -z "$DIRS" ]]; then
+              echo "No directories found to sync."
+            else
+              echo "Syncing registered directories..."
+              for dir in $DIRS; do
+                if [[ -n "$dir" ]]; then
+                  echo "Syncing directory: $dir"
+                  aws s3 sync "docs/$dir" "s3://devportal-${{ env.ENV_SHORT }}-website-static-content/devportal-docs/docs/$dir" --delete --exclude "metadata.json" ${{ inputs.incremental_mode == true && ' --size-only' || '' }}
+                fi
+              done
+            fi
           fi
 
       - name: Invalidate CloudFront asset bucket cache
@@ -246,7 +269,31 @@ jobs:
       - name: Sync docs folder to S3
         working-directory: ./devportal-docs
         run: |
-          aws s3 sync docs s3://devportal-p-website-static-content/devportal-docs/docs --delete --exclude "**/metadata.json" --size-only
+          echo "Fetching directory lists from S3..."
+          # Define S3 paths for the JSON files (prod environment)
+          S3_MAIN_GUIDES="s3://devportal-p-website-static-content/${{ vars.S3_MAIN_GUIDE_VERSIONS_DIRNAMES_JSON_PATH || 'main-guide-versions-dirNames.json' }}"
+          S3_SOLUTIONS="s3://devportal-p-website-static-content/${{ vars.S3_SOLUTIONS_DIRNAMES_JSON_PATH || 'solutions-dirNames.json' }}"
+          S3_RELEASE_NOTES="s3://devportal-p-website-static-content/${{ vars.S3_RELEASE_NOTES_DIRNAMES_JSON_PATH || 'release-notes-dirNames.json' }}"
+
+          # Download JSON files
+          aws s3 cp "$S3_MAIN_GUIDES" main_guides.json || echo '{"dirNames": []}' > main_guides.json
+          aws s3 cp "$S3_SOLUTIONS" solutions.json || echo '{"dirNames": []}' > solutions.json
+          aws s3 cp "$S3_RELEASE_NOTES" release_notes.json || echo '{"dirNames": []}' > release_notes.json
+
+          # Extract and combine unique directory names
+          DIRS=$(cat main_guides.json solutions.json release_notes.json | jq -r '.dirNames[]' | sort | uniq)
+
+          if [[ -z "$DIRS" ]]; then
+            echo "No directories found to sync."
+          else
+            echo "Syncing registered directories..."
+            for dir in $DIRS; do
+              if [[ -n "$dir" ]]; then
+                echo "Syncing directory: $dir"
+                aws s3 sync "docs/$dir" "s3://devportal-p-website-static-content/devportal-docs/docs/$dir" --delete --exclude "**/metadata.json" --size-only
+              fi
+            done
+          fi
 
       - name: Invalidate CloudFront asset bucket cache
         run: |
