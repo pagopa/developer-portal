@@ -12,6 +12,7 @@ export type DevPortalUser = CognitoUser & {
     readonly 'custom:company_type': string;
     readonly 'custom:job_role': string;
     readonly 'custom:mailinglist_accepted': 'true' | 'false';
+    readonly 'custom:survey_accepted'?: 'true' | 'false';
     readonly 'custom:privacy_accepted': boolean;
     readonly 'custom:user_preferences'?: string;
   };

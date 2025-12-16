@@ -10,7 +10,7 @@ from src.modules.models import get_llm, get_embed_model
 from src.modules.chatbot import Chatbot, LANGFUSE_CLIENT
 
 
-LOGGER = get_logger(__name__)
+LOGGER = get_logger(__name__, level=SETTINGS.log_level)
 CHATBOT = Chatbot()
 
 
@@ -37,7 +37,6 @@ def test_ssm_params() -> None:
         assert SETTINGS.google_service_account is not None
 
     assert SETTINGS.index_id is not None
-    assert SETTINGS.strapi_api_key is not None
 
 
 def test_connection_redis() -> None:
@@ -55,17 +54,6 @@ def test_connection_langfuse():
     assert LANGFUSE_CLIENT.auth_check() is True
 
 
-def test_strapi_connection() -> None:
-
-    url = SETTINGS.website_url.replace("https://", "https://cms.")
-    url += "/api/apis-data?populate[product]=*&populate[apiRestDetail][populate][specUrls]=*"
-    headers = {"Authorization": f"Bearer {SETTINGS.strapi_api_key}"}
-
-    response = requests.get(url, headers=headers)
-    LOGGER.info(f"Fetching API data from {url}")
-    assert response.status_code == 200
-
-
 def test_models() -> None:
 
     flag = False
@@ -77,11 +65,6 @@ def test_models() -> None:
         LOGGER.error(e)
 
     assert flag is True
-
-
-def test_pii_mask() -> None:
-    masked_str = CHATBOT.mask_pii("Il mio nome e' Mario Rossi")
-    assert masked_str == "Il mio nome e' <PERSON_1>"
 
 
 def test_messages_to_chathistory() -> None:

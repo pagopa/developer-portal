@@ -1,5 +1,24 @@
 # chatbot
 
+## 7.1.4
+
+### Patch Changes
+
+- eacd5eb: Hot fix product list
+
+## 7.1.3
+
+### Patch Changes
+
+- dfc4d9f: Remove strapi_api_key from chatbot and chatbot-index
+- e8c4687: Update of the ReAct prompt engineering to always reply in italian keeping a professional tone
+
+## 7.1.2
+
+### Patch Changes
+
+- 5c4d9b6: Set default postgresql password for test
+
 ## 7.1.1
 
 ### Patch Changes

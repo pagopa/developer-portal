@@ -1,7 +1,6 @@
 from src.modules.logger import get_logger
 from src.modules.models import get_llm, get_embed_model
 from src.modules.judge import Judge
-from src.modules.monitor import LANGFUSE_CLIENT
 from src.modules.settings import AWS_SESSION, SETTINGS
 
 LOGGER = get_logger(__name__)
@@ -25,10 +24,6 @@ def test_ssm_params() -> None:
     if SETTINGS.provider == "google":
         GOOGLE_API_KEY = SETTINGS.google_api_key
         assert GOOGLE_API_KEY is not None
-
-
-def test_connection_langfuse():
-    assert LANGFUSE_CLIENT.auth_check() is True
 
 
 def test_models() -> None:
@@ -55,7 +50,6 @@ def test_evaluation() -> None:
     query_str = "text text text text text"
     response_str = "text text text text text"
     scores = JUDGE.evaluate(
-        trace_id="test_trace_id",
         query_str=query_str,
         response_str=response_str,
         retrieved_contexts=contexts,

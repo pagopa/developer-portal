@@ -317,9 +317,8 @@ resource "aws_iam_role_policy" "ivs_video_processing_policy" {
           "ssm:GetParameter",
           "ssm:GetParameters"
         ]
-        Effect = "Allow"
-        #TODDO: Restrict Resource
-        Resource = ["*"]
+        Effect   = "Allow"
+        Resource = aws_ssm_parameter.strapi_api_key.arn
       },
       {
         Action = [
@@ -337,17 +336,28 @@ resource "aws_iam_role_policy" "ivs_video_processing_policy" {
 }
 
 
-# 1. Archive the Lambda source code into a ZIP file.
-data "archive_file" "lambda_zip" {
-  type        = "zip"
-  source_file = "${path.module}/index.js"
-  output_path = "${path.module}/../../builds/ivs-video-processing.zip"
-}
-
 locals {
   ivs_video_processing_lambda_name = "${var.project_name}-ivs-video-processing"
 }
 
+
+resource "aws_ssm_parameter" "strapi_api_key" {
+  name        = "/ivs/strapi_api_key"
+  description = "Strapi api key for IVS video processing"
+  type        = "SecureString"
+  value       = "TODO"
+
+  lifecycle {
+    ignore_changes = [
+      insecure_value,
+      value
+    ]
+  }
+}
+
+locals {
+  filename = "${path.root}/../../ivs-functions/out/ivs-functions.zip"
+}
 
 resource "aws_lambda_function" "ivs_video_processing_function" {
   function_name = local.ivs_video_processing_lambda_name
@@ -357,9 +367,8 @@ resource "aws_lambda_function" "ivs_video_processing_function" {
   runtime = "nodejs22.x"
 
   # Point to the placeholder code package
-  filename         = data.archive_file.lambda_zip.output_path
-  source_code_hash = data.archive_file.lambda_zip.output_base64sha256
-
+  filename         = local.filename
+  source_code_hash = filebase64sha256(local.filename)
 
   timeout       = 30
   memory_size   = 512
@@ -368,17 +377,20 @@ resource "aws_lambda_function" "ivs_video_processing_function" {
 
   environment {
     variables = {
-      STRAPI_API_URL = "TODO"
-      STRAPI_API_KEY = "TODO"
+      VIDEO_BASE_URL       = "https://${var.custom_domain_name}"
+      STRAPI_API_URL       = var.strapi_api_url
+      STRAPI_IVS_API_TOKEN = aws_ssm_parameter.strapi_api_key.name
     }
   }
 
+  /*
   lifecycle {
     ignore_changes = [
       filename,
       source_code_hash,
     ]
   }
+  */
 
   tags = {
     Name = local.ivs_video_processing_lambda_name

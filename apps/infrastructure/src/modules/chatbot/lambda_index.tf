@@ -113,7 +113,7 @@ resource "aws_lambda_function" "chatbot_index_lambda" {
       CHB_EMBED_MODEL_ID                    = var.models.embeddings
       CHB_EMBED_RETRIES                     = 30
       CHB_EMBED_RETRY_MIN_SECONDS           = 1.5
-      CHB_MODEL_MAXTOKENS                   = 768
+      CHB_MODEL_MAXTOKENS                   = 2048
       CHB_MODEL_ID                          = var.models.generation
       CHB_MODEL_TEMPERATURE                 = 0.3
       CHB_PROVIDER                          = var.models.provider

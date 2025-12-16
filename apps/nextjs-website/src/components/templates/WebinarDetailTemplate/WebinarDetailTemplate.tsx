@@ -30,7 +30,14 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
   const [error, setError] = useState<string | null>(null);
   const { user } = useUser();
   const [isSubscribed, setIsSubscribed] = useState(false);
-  const { webinarState, setWebinar, isPlayerVisible } = useWebinar();
+  const {
+    webinarState,
+    setWebinar,
+    isQuestionFormEnabled,
+    isPlayerVisible,
+    livePlayerReloadToken,
+    isLiveStreamAvailable,
+  } = useWebinar();
   const showHeaderImage =
     webinarState === WebinarState.future && webinar.headerImage;
 
@@ -138,6 +145,9 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
           <WebinarPlayerSection
             webinar={webinar}
             webinarState={webinarState}
+            enableQuestionForm={isQuestionFormEnabled}
+            reloadPlayerToken={livePlayerReloadToken}
+            isLiveStreamAvailable={isLiveStreamAvailable}
             isPlayerVisible={isPlayerVisible}
           ></WebinarPlayerSection>
         )}

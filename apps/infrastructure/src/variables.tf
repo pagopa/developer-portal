@@ -91,6 +91,12 @@ variable "cms_app_image_tag" {
   type        = string
 }
 
+variable "strapi_v5_image_tag" {
+  description = "Docker image tag for the Strapi v5 application"
+  type        = string
+  default     = null
+}
+
 # CMS Strapi DNS
 variable "dns_domain_name_cms" {
   description = "DNS domain name of the Developer Portal's CMS"
@@ -156,7 +162,7 @@ variable "chatbot_ecs_monitoring" {
     image_uri = optional(string, "ghcr.io/langfuse/langfuse:sha-9375250")
     port      = optional(number, 3000)
   })
-  description = "Redis configuration for the AI chatbot"
+  description = "Langfuse configuration for the AI chatbot"
 
   default = {
     cpu       = 512
