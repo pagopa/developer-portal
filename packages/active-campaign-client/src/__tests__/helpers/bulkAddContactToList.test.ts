@@ -7,6 +7,7 @@ const user: User = {
   given_name: 'Giovanni',
   family_name: 'Doe',
   'custom:mailinglist_accepted': 'true',
+  'custom:survey_accepted': 'false',
   'custom:company_type': 'Test Co',
   'custom:job_role': 'Developer',
 };
