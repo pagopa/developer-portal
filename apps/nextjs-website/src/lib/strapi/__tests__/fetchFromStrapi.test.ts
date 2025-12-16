@@ -217,6 +217,7 @@ describe('fetchFromStrapi', () => {
         method: 'GET',
         headers: {
           Authorization: 'Bearer aStrapiApiToken',
+          'Strapi-Response-Format': 'v4',
         },
         cache: 'no-store',
       }
