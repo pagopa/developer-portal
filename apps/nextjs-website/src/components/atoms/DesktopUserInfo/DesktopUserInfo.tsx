@@ -43,7 +43,9 @@ const DesktopUserInfo: FC = () => {
       router.replace('/');
     } else {
       // router.refresh(); is not enough beacuse it will not clean current state of components
-      typeof window !== 'undefined' && window.location.reload();
+      if (typeof window !== 'undefined') {
+        window.location.reload();
+      }
     }
 
     handleClose();

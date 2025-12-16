@@ -62,7 +62,9 @@ export const ProfileDataCard = ({
         onClick={() => {
           if (isButtonDisabled) return;
           setEditing(false);
-          onValue && onValue(dataSectionItems);
+          if (onValue) {
+            onValue(dataSectionItems);
+          }
         }}
       >
         {t('personalData.save')}

@@ -46,7 +46,9 @@ export const ProfileDataCardItem = (
                 label={infoCardItem.title}
                 value={infoCardItem.value ?? ''}
                 onChange={({ target: { value } }) => {
-                  infoCardItem.onValue && infoCardItem.onValue(value);
+                  if (infoCardItem.onValue) {
+                    infoCardItem.onValue(value);
+                  }
                 }}
                 helperText={t('shared.requiredFieldError')}
               />
@@ -57,7 +59,9 @@ export const ProfileDataCardItem = (
                 id={infoCardItem.title}
                 type={'text'}
                 onChange={({ target: { value } }) => {
-                  infoCardItem.onValue && infoCardItem.onValue(value);
+                  if (infoCardItem.onValue) {
+                    infoCardItem.onValue(value);
+                  }
                 }}
                 value={infoCardItem.value}
                 label={infoCardItem.title}

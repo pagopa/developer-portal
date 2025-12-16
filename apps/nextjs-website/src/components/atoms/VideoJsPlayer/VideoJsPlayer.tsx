@@ -61,7 +61,7 @@ const VideoJsPlayer = (props: PlayerProps) => {
       // eslint-disable-next-line functional/immutable-data
       playerRef.current = undefined;
     };
-  }, []);
+  }, [props.autoplay, props.controls, props.playsInline]);
 
   useEffect(() => {
     if (!playerRef.current) {

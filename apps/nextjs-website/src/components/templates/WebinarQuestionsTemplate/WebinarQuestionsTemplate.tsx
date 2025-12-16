@@ -31,8 +31,10 @@ const WebinarQuestionsTemplate = ({
   });
 
   useEffect(() => {
-    webinar && setWebinar(webinar);
-  }, [webinar]);
+    if (webinar) {
+      setWebinar(webinar);
+    }
+  }, [webinar, setWebinar]);
 
   useEffect(() => {
     setQuestions(data ?? []);

@@ -105,7 +105,8 @@ const EditEmailForm = ({ onSave, onCancel }: EditEmailFormProps) => {
         label={t('personalData.fields.email')}
         value={formValue.email}
         onChange={handleEmailChange}
-        helperText={t('changeEmail.wrongEmail')}
+        error={!!errors.email}
+        helperText={errors.email || t('changeEmail.wrongEmail')}
         customValidators={emailValidators}
         sx={{ marginBottom: { xs: 0, md: 3 } }}
       />

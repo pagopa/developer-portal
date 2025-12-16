@@ -1,4 +1,4 @@
-`use client`;
+'use client';
 import Accordion from '@mui/material/Accordion';
 import MuiAccordionSummary, {
   AccordionSummaryProps,

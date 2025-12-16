@@ -37,7 +37,7 @@ export const swaggerDescription: Schema = {
   },
 };
 
-export type SwaggerParameterProps<A> = {
+export type SwaggerParameterProps = {
   readonly in: string;
   readonly name: string;
   readonly required: boolean;

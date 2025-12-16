@@ -39,7 +39,9 @@ const ConfirmationContent = () => {
         .catch((error) => {
           // TODO: remove console warn and handle errors: [CodeMismatchException, ExpiredCodeException, InternalErrorException, LimitExceededException]
           // see apps/nextjs-website/src/app/auth/email-confirmation/page.tsx
-          !isProduction && console.warn(error);
+          if (!isProduction) {
+            console.warn(error);
+          }
           switch (error.code) {
             case 'AliasExistsException':
               setState(State.alreadyConfirmed);

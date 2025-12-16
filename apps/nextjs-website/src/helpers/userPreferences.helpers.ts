@@ -28,7 +28,7 @@ export function userPreferencesFromAttributes(
       subscribedWebinarSlugs:
         userPreferencesParsed.subscribedWebinarSlugs.filter(Boolean),
     };
-  } catch (error) {
+  } catch {
     return DEFAULT_USER_PREFERENCES;
   }
 }
