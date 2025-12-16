@@ -59,7 +59,12 @@ def lambda_handler(event, context):
     LOGGER.debug(f"event: {event}")
 
     results = []
-    for record in event.get("Records", []):
+
+    # extract unique records
+    unique_records = [
+        dict(t) for t in set(tuple(r.items()) for r in event.get("Records", []))
+    ]
+    for record in unique_records:
         body = record.get("body", "{}")
         body = json.loads(body)
         trace_id = body.get("trace_id", "")
