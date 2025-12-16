@@ -153,7 +153,8 @@ async function fetchAllStrapiData(): Promise<StrapiData> {
   console.log('Fetching all data from Strapi...');
   if (DIR_NAMES_FILTER) {
     console.log(
-      `Applying dirName filter: ${DIR_NAMES_FILTER.join(', ')} (${DIR_NAMES_FILTER.length
+      `Applying dirName filter: ${DIR_NAMES_FILTER.join(', ')} (${
+        DIR_NAMES_FILTER.length
       } directories)`
     );
   }
