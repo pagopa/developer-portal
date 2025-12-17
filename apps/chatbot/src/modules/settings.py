@@ -1,5 +1,6 @@
 import boto3
 import os
+import re
 import json
 import yaml
 from pathlib import Path
@@ -13,7 +14,32 @@ CWF = Path(__file__)
 ROOT = CWF.parent.parent.parent.absolute().__str__()
 PARAMS = yaml.safe_load(open(os.path.join(ROOT, "config", "params.yaml"), "r"))
 PROMPTS = yaml.safe_load(open(os.path.join(ROOT, "config", "prompts.yaml"), "r"))
+CHANGELOG_PATH = os.path.join(ROOT, "CHANGELOG.md")
 AWS_SESSION = boto3.Session()
+AWS_SSM_CLIENT = AWS_SESSION.client("ssm")
+
+
+def extract_latest_version(filepath: str | None = None) -> str | None:
+    """Extracts the first version number found under a '##' heading.
+    Args:
+        filepath (str | None): Path to the changelog file. If None, defaults to CHANGELOG.md in the root directory.
+    Returns:
+        str | None: The latest version number as a string, or None if not found.
+    """
+
+    filepath = filepath if filepath else CHANGELOG_PATH
+
+    version_pattern = r"^##\s+(\d+\.\d+\.\d+)"
+    try:
+        with open(filepath, "r", encoding="utf-8") as f:
+            for line in f:
+                match = re.search(version_pattern, line)
+                if match:
+                    return match.group(1)
+    except FileNotFoundError:
+        LOGGER.error(f"Error: {filepath} not found.")
+        return None
+    return None
 
 
 def get_ssm_parameter(name: str | None, default: str | None = None) -> str | None:
@@ -25,21 +51,41 @@ def get_ssm_parameter(name: str | None, default: str | None = None) -> str | Non
     :return: The value of the requested parameter.
     """
 
-    ssm_client = AWS_SESSION.client("ssm")
     LOGGER.info(f"get_ssm_parameter {name}...")
 
     if name is None:
         name = "none-params-in-ssm"
     try:
-        response = ssm_client.get_parameter(Name=name, WithDecryption=True)
+        response = AWS_SSM_CLIENT.get_parameter(Name=name, WithDecryption=True)
         value = response["Parameter"]["Value"]
-    except ssm_client.exceptions.ParameterNotFound:
+    except AWS_SSM_CLIENT.exceptions.ParameterNotFound:
         LOGGER.warning(
             f"Parameter {name} not found in SSM, returning default: {default}"
         )
         return default
 
     return value
+
+
+def update_ssm_parameter(name: str, new_value: str) -> None:
+    """Updates or creates an SSM parameter with the new version.
+    Args:
+        name (str): The name of the SSM parameter.
+        new_value (str): The new value to set for the parameter.
+    """
+
+    value = get_ssm_parameter(name)
+    if value != new_value:
+        try:
+            response = AWS_SSM_CLIENT.put_parameter(
+                Name=name,
+                Value=new_value,
+                Type="String",
+                Overwrite=True,
+            )
+            LOGGER.info(f"Successfully updated {name} with {new_value} to SSM.")
+        except Exception as e:
+            LOGGER.error(f"Error updating {name} to SSM: {e}")
 
 
 GOOGLE_SERVICE_ACCOUNT = get_ssm_parameter(
@@ -123,6 +169,12 @@ class ChatbotSettings(BaseSettings):
     website_url: str = os.getenv("CHB_WEBSITE_URL")
 
     # API
+    release: str = (
+        update_ssm_parameter(
+            name=os.getenv("CHB_AWS_SSM_CHATBOT_RELEASE"),
+            new_value=extract_latest_version(),
+        ),
+    )
     query_table_prefix: str = os.getenv("CHB_QUERY_TABLE_PREFIX", "chatbot")
     aws_sqs_queue_evaluate_name: str = os.getenv(
         "CHB_AWS_SQS_QUEUE_EVALUATE_NAME", "chatbot-evaluate"
