@@ -1,9 +1,12 @@
 /* eslint-disable functional/no-expression-statements */
 import { NextRequest, NextResponse } from 'next/server';
+import { isI18nActive } from '@/config';
 
 const locales = ['en', 'it'];
 
 export function middleware(request: NextRequest) {
+  if (!isI18nActive) return;
+
   const { pathname } = request.nextUrl;
   const pathnameHasLocale = locales.some(
     (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`
