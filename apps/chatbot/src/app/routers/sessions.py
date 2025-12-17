@@ -6,7 +6,6 @@ from typing import Annotated
 
 from src.app.models import QueryFeedback, tables
 from src.modules.logger import get_logger
-from src.app.chatbot_init import chatbot
 from src.app.sessions import current_user_id, add_langfuse_score_query
 from src.modules.settings import SETTINGS
 

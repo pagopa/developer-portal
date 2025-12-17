@@ -1,6 +1,5 @@
 from opentelemetry.sdk.trace import ReadableSpan
 from opentelemetry.sdk.trace.export import SpanExporter, SpanExportResult
-from openinference.instrumentation.llama_index import LlamaIndexInstrumentor
 
 
 class DictSpanExporter(SpanExporter):

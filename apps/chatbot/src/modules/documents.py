@@ -1,5 +1,4 @@
 import json
-import requests
 from typing import List
 
 from src.modules.logger import get_logger

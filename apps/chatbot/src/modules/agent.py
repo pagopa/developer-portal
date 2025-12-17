@@ -1,6 +1,6 @@
 from llama_index.core.llms.llm import LLM
 from llama_index.core.base.embeddings.base import BaseEmbedding
-from llama_index.core import VectorStoreIndex, PromptTemplate
+from llama_index.core import PromptTemplate
 from llama_index.core.agent.workflow import ReActAgent
 
 from src.modules.settings import SETTINGS
