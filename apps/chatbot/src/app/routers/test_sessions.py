@@ -1,9 +1,11 @@
 import os
 import time
+from urllib import response
 from fastapi.testclient import TestClient
 from src.app.main import app
 from src.app.mock_aws_services import mock_signup
 from src.app.routers.test_queries import post_queries
+from src.modules.settings import SETTINGS
 
 cognito_mock = mock_signup()
 os.environ["AUTH_COGNITO_USERPOOL_ID"] = cognito_mock["user_pool_id"]
@@ -85,3 +87,5 @@ def test_query_feedback_with_only_bad_answer() -> None:
     assert "id" in json.keys()
     assert "sessionId" in json.keys()
     assert "badAnswer" in json.keys()
+    assert "feedback" in json.keys()
+

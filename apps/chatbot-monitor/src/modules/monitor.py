@@ -283,6 +283,7 @@ def add_langfuse_score(
     score: float,
     comment: str | None = None,
     data_type: Optional[Literal["NUMERIC", "BOOLEAN"]] = None,
+    query_for_database: dict = {},
 ) -> None:
     """Adds a score to an existing Langfuse trace.
     Args:
@@ -306,3 +307,48 @@ def add_langfuse_score(
         LOGGER.info(f"Added {name}: {score} to trace with ID: {trace_id} successfully!")
     except Exception as e:
         LOGGER.error(f"Failed to add score to trace {trace_id}: {e}")
+
+    save_feedback_to_database(query_for_database=query_for_database)
+
+
+def save_feedback_to_database(query_for_database: dict) -> None:
+    if "feedback" in query_for_database:
+        if "user_comment" in query_for_database["feedback"]:
+            query_for_database["feedback"]["user_comment"] = PRESIDIO.mask_pii(query_for_database["feedback"]["user_comment"])
+    
+            if (
+                "id" in query_for_database and \
+                "sessionId" in query_for_database and \
+                "badAnswer" in query_for_database and \
+                "feedback" in query_for_database
+            ):
+                tables["queries"].update_item(
+                    Key={"sessionId": query_for_database["sessionId"], "id": query_for_database["id"]},
+                    UpdateExpression="SET #badAnswer = :badAnswer, #feedback = :feedback",
+                    ExpressionAttributeNames={
+                        "#badAnswer": "badAnswer",
+                        "#feedback": "feedback",
+                    },
+                    ExpressionAttributeValues={
+                        ":badAnswer": query_for_database["badAnswer"],
+                        ":feedback": query_for_database["feedback"],
+                    },
+                    ReturnValues="ALL_NEW",
+                )
+    else:
+        if (
+            "id" in query_for_database and \
+            "sessionId" in query_for_database and \
+            "badAnswer" in query_for_database
+        ):
+            tables["queries"].update_item(
+                Key={"sessionId": query_for_database["sessionId"], "id": query_for_database["id"]},
+                UpdateExpression="SET #badAnswer = :badAnswer",
+                ExpressionAttributeNames={
+                    "#badAnswer": "badAnswer"
+                },
+                ExpressionAttributeValues={
+                    ":badAnswer": query_for_database["badAnswer"]
+                },
+                ReturnValues="ALL_NEW",
+            )
