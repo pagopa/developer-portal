@@ -3,16 +3,13 @@ import { Button, Menu, MenuItem } from '@mui/material';
 import { Language as LanguageIcon } from '@mui/icons-material';
 
 type LanguageSelectorProps = {
-  readonly locales: ReadonlyArray<{ code: string; name: string }>;
+  readonly locales: ReadonlyArray<{ code: string; label: string }>;
   readonly currentLocale: string;
-  // eslint-disable-next-line functional/no-return-void
-  readonly onLocaleChange: (locale: string) => void;
 };
 
 const LanguageSelector = ({
   locales,
   currentLocale,
-  onLocaleChange,
 }: LanguageSelectorProps) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -23,11 +20,6 @@ const LanguageSelector = ({
 
   const handleClose = () => {
     setAnchorEl(null);
-  };
-
-  const handleLocaleSelect = (locale: string) => {
-    onLocaleChange(locale);
-    handleClose();
   };
 
   const currentLocaleName =
@@ -54,11 +46,15 @@ const LanguageSelector = ({
         {locales.map((locale) => (
           <MenuItem
             key={locale.code}
-            onClick={() => handleLocaleSelect(locale.code)}
             selected={locale.code === currentLocale}
             disableRipple
           >
-            {locale.name}
+            <a
+              href={`/${locale.code}`}
+              style={{ textDecoration: 'none', color: 'inherit' }}
+            >
+              {locale.label}
+            </a>
           </MenuItem>
         ))}
       </Menu>

@@ -108,27 +108,29 @@ export default async function RootLayout({
     notFound();
   }
 
+  const currentLocale = 'it'; // to be replaced with dynamic locale when i18n will be enabled
+
   return (
-    <html lang='it' className={titilliumWeb.variable}>
+    <html lang={currentLocale} className={titilliumWeb.variable}>
       <head>
         {isProduction && (
           <Script
-            id='matomo-tag-manager'
-            key='script-matomo-tag-manager'
+            id="matomo-tag-manager"
+            key="script-matomo-tag-manager"
             dangerouslySetInnerHTML={{
               __html: useNewCookie
                 ? MATOMO_TAG_MANAGER_SCRIPT
                 : PREVIOUS_MATOMO_TAG_MANAGER_SCRIPT,
             }}
-            strategy='lazyOnload'
+            strategy="lazyOnload"
           />
         )}
       </head>
       <ThemeRegistry options={{ key: 'mui' }}>
         <NextIntlContext
-          locale={'it'}
+          locale={currentLocale}
           messages={messages}
-          timeZone='Europe/Rome'
+          timeZone="Europe/Rome"
         >
           <BodyWrapper>
             <CookieBannerScript
@@ -141,11 +143,13 @@ export default async function RootLayout({
             />
             <AuthProvider>
               <ChatbotProvider isChatbotVisible={isChatbotActive}>
-                <SiteHeader products={products} />
-                <ErrorBoundary
-                  errorComponent={Error}
-                >
-                  <main><Box sx={{ marginTop: `${SITE_HEADER_HEIGHT}px` }}>{children}</Box></main>
+                <SiteHeader locale={currentLocale} products={products} />
+                <ErrorBoundary errorComponent={Error}>
+                  <main>
+                    <Box sx={{ marginTop: `${SITE_HEADER_HEIGHT}px` }}>
+                      {children}
+                    </Box>
+                  </main>
                 </ErrorBoundary>
                 <SiteFooter />
               </ChatbotProvider>
