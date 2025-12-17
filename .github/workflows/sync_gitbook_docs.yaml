@@ -161,17 +161,13 @@ jobs:
           else
             echo "Fetching directory lists from S3..."
             # Define S3 paths for the JSON files
-            S3_MAIN_GUIDES="s3://devportal-${{ env.ENV_SHORT }}-website-static-content/${{ vars.S3_MAIN_GUIDE_VERSIONS_DIRNAMES_JSON_PATH || 'main-guide-versions-dirNames.json' }}"
-            S3_SOLUTIONS="s3://devportal-${{ env.ENV_SHORT }}-website-static-content/${{ vars.S3_SOLUTIONS_DIRNAMES_JSON_PATH || 'solutions-dirNames.json' }}"
-            S3_RELEASE_NOTES="s3://devportal-${{ env.ENV_SHORT }}-website-static-content/${{ vars.S3_RELEASE_NOTES_DIRNAMES_JSON_PATH || 'release-notes-dirNames.json' }}"
+            S3_DIRNAMES="s3://devportal-${{ env.ENV_SHORT }}-website-static-content/${{ vars.S3_DIRNAMES_JSON_PATH || 'dirNames.json' }}"
 
             # Download JSON files
-            aws s3 cp "$S3_MAIN_GUIDES" main_guides.json || echo '{"dirNames": []}' > main_guides.json
-            aws s3 cp "$S3_SOLUTIONS" solutions.json || echo '{"dirNames": []}' > solutions.json
-            aws s3 cp "$S3_RELEASE_NOTES" release_notes.json || echo '{"dirNames": []}' > release_notes.json
+            aws s3 cp "$S3_DIRNAMES" dirNames.json || echo '{"dirNames": []}' > dirNames.json
 
             # Extract and combine unique directory names
-            DIRS=$(cat main_guides.json solutions.json release_notes.json | jq -r '.dirNames[]' | sort | uniq)
+            DIRS=$(cat dirNames.json | jq -r '.dirNames[]' | sort | uniq)
 
             if [[ -z "$DIRS" ]]; then
               echo "No directories found to sync."
@@ -271,17 +267,13 @@ jobs:
         run: |
           echo "Fetching directory lists from S3..."
           # Define S3 paths for the JSON files (prod environment)
-          S3_MAIN_GUIDES="s3://devportal-p-website-static-content/${{ vars.S3_MAIN_GUIDE_VERSIONS_DIRNAMES_JSON_PATH || 'main-guide-versions-dirNames.json' }}"
-          S3_SOLUTIONS="s3://devportal-p-website-static-content/${{ vars.S3_SOLUTIONS_DIRNAMES_JSON_PATH || 'solutions-dirNames.json' }}"
-          S3_RELEASE_NOTES="s3://devportal-p-website-static-content/${{ vars.S3_RELEASE_NOTES_DIRNAMES_JSON_PATH || 'release-notes-dirNames.json' }}"
+          S3_DIRNAMES="s3://devportal-p-website-static-content/${{ vars.S3_DIRNAMES_JSON_PATH || 'dirNames.json' }}"
 
           # Download JSON files
-          aws s3 cp "$S3_MAIN_GUIDES" main_guides.json || echo '{"dirNames": []}' > main_guides.json
-          aws s3 cp "$S3_SOLUTIONS" solutions.json || echo '{"dirNames": []}' > solutions.json
-          aws s3 cp "$S3_RELEASE_NOTES" release_notes.json || echo '{"dirNames": []}' > release_notes.json
+          aws s3 cp "$S3_DIRNAMES" dirNames.json || echo '{"dirNames": []}' > dirNames.json
 
           # Extract and combine unique directory names
-          DIRS=$(cat main_guides.json solutions.json release_notes.json | jq -r '.dirNames[]' | sort | uniq)
+          DIRS=$(cat dirNames.json | jq -r '.dirNames[]' | sort | uniq)
 
           if [[ -z "$DIRS" ]]; then
             echo "No directories found to sync."
