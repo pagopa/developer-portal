@@ -170,7 +170,8 @@ jobs:
             DIRS=$(cat dirNames.json | jq -r '.dirNames[]' | sort | uniq)
 
             if [[ -z "$DIRS" ]]; then
-              echo "No directories found to sync."
+              echo "No directories found to sync. Syncing all docs"
+              aws s3 sync docs s3://devportal-${{ env.ENV_SHORT }}-website-static-content/devportal-docs/docs --delete --exclude "**/metadata.json" ${{ inputs.incremental_mode == true && ' --size-only' || '' }}
             else
               echo "Syncing registered directories..."
               for dir in $DIRS; do
@@ -276,7 +277,8 @@ jobs:
           DIRS=$(cat dirNames.json | jq -r '.dirNames[]' | sort | uniq)
 
           if [[ -z "$DIRS" ]]; then
-            echo "No directories found to sync."
+            echo "No directories found to sync. Syncing all docs"
+            aws s3 sync docs s3://devportal-p-website-static-content/devportal-docs/docs --delete --exclude "**/metadata.json" --size-only
           else
             echo "Syncing registered directories..."
             for dir in $DIRS; do
