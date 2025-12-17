@@ -10,7 +10,7 @@ LOG_LEVEL_MAP = {
 }
 
 
-def get_logger(name: str, level: str) -> logging.Logger:
+def get_logger(name: str, level: str = "info") -> logging.Logger:
     formatter = logging.Formatter(
         fmt="%(asctime)s %(levelname)s [%(name)s] [%(funcName)s]: %(message)s"
     )
@@ -19,7 +19,7 @@ def get_logger(name: str, level: str) -> logging.Logger:
     handler.setFormatter(formatter)
 
     logger = logging.getLogger(name)
-    logger.setLevel(LOG_LEVEL_MAP.get(level, logging.INFO))
+    logger.setLevel(LOG_LEVEL_MAP.get(level, "info"))
 
     if not logger.handlers:  # Prevent adding multiple handlers
         logger.addHandler(handler)

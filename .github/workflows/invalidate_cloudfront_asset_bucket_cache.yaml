@@ -1,4 +1,5 @@
 name: Invalidate CloudFront asset bucket cache
+run-name: Invalidate CloudFront asset bucket cache in ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.environment || 'dev' }}
 
 on:
   workflow_dispatch:

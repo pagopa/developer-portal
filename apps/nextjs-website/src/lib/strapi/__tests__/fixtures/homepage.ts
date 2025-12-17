@@ -8,6 +8,7 @@ const fixedDateIsoString = new Date('2024-01-01T00:00:00.000Z').toISOString();
 export const strapiHomepage: StrapiHomepage = {
   data: {
     attributes: {
+      updatedAt: new Date().toISOString(),
       comingsoonDocumentation: {
         title: 'Coming Soon Documentation',
         links: [
@@ -150,6 +151,7 @@ export const strapiHomepage: StrapiHomepage = {
 };
 
 export const expectedHomepageProps: HomepageProps = {
+  updatedAt: new Date().toISOString(),
   comingsoonDocumentation: {
     title: 'Coming Soon Documentation',
     links: [

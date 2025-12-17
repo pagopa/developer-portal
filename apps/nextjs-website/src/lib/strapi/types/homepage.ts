@@ -40,6 +40,7 @@ type StrapiEcosystem = {
 export type StrapiHomepage = {
   readonly data: {
     readonly attributes: {
+      readonly updatedAt: string;
       readonly comingsoonDocumentation: StrapiRelatedLinks;
       readonly heroSlider: readonly StrapiHeroSlide[];
       readonly newsShowcase?: StrapiNewsShowcase;

@@ -19,13 +19,13 @@ from src.modules.settings import SETTINGS
 LOGGER = get_logger(__name__, level=SETTINGS.log_level)
 # PRODUCTS = get_product_list() + ["api", "webinars"]
 PRODUCTS = [
-    "pago-pa",
     "firma-con-io",
-    "app-io",
+    "pari",
+    "pago-pa",
     "send",
     "pdnd-interoperabilita",
-    "api",
-    "webinars",
+    "app-io",
+    "srtp",
 ]
 
 

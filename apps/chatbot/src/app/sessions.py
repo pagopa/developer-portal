@@ -133,6 +133,17 @@ def get_user_session(userId: str, sessionId: str) -> dict | None:
     item = dbResponse.get("Item")
     return item if item else None
 
+# TODO: enqueue langfuse request in SQS
+# def add_langfuse_score_query(query_id: str, query_feedback: QueryFeedback):
+#     if query_feedback.badAnswer is not None:
+#         bad_answer = -1 if query_feedback.badAnswer else 0
+#         add_langfuse_score(
+#             trace_id=query_id,
+#             name="user-feedback",
+#             value=bad_answer,
+#             comment=query_feedback.feedback.user_comment,
+#             data_type="NUMERIC",
+#         )
 
 def add_langfuse_score_query(
         query_id: str, 
