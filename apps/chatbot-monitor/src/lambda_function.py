@@ -2,9 +2,9 @@ import json
 
 from src.modules.logger import get_logger
 from src.modules.monitor import create_langfuse_trace, add_langfuse_score
+from src.modules.settings import SETTINGS
 
-
-LOGGER = get_logger(__name__)
+LOGGER = get_logger(__name__, level=SETTINGS.log_level)
 
 
 # payload example

@@ -6,7 +6,6 @@ from pydantic_settings import BaseSettings
 
 from src.modules.logger import get_logger
 
-
 LOGGER = get_logger(__name__)
 CWF = Path(__file__)
 ROOT = CWF.parent.parent.parent.absolute().__str__()

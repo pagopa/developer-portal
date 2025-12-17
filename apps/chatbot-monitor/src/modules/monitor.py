@@ -24,7 +24,7 @@ from src.modules.presidio import PresidioPII
 from src.database_models import tables
 
 
-LOGGER = get_logger(__name__)
+LOGGER = get_logger(__name__, level=SETTINGS.log_level)
 PRESIDIO = PresidioPII(config=SETTINGS.presidio_config)
 LANGFUSE_CLIENT = Langfuse(
     public_key=SETTINGS.langfuse_public_key,
