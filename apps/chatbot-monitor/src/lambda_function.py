@@ -2,9 +2,9 @@ import json
 
 from src.modules.logger import get_logger
 from src.modules.monitor import create_langfuse_trace, add_langfuse_score
+from src.modules.settings import SETTINGS
 
-
-LOGGER = get_logger(__name__)
+LOGGER = get_logger(__name__, level=SETTINGS.log_level)
 
 
 # payload example
@@ -188,6 +188,7 @@ def lambda_handler(event, context):
                     score=score.get("score"),
                     comment=score.get("comment"),
                     data_type=score.get("data_type"),
+                    query_for_database=score.get("query_for_database"),
                 )
         else:
             LOGGER.warning(f"Unknown operation: {operation}")

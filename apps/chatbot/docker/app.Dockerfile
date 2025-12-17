@@ -14,6 +14,5 @@ RUN poetry install --only main
 
 COPY . ${LAMBDA_TASK_ROOT}
 RUN python ./scripts/nltk_download.py
-RUN python ./scripts/spacy_download.py
 
 CMD ["src.app.main.handler"]
