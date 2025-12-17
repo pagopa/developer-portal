@@ -97,7 +97,6 @@
                     }
                 ]
             },
-            ...
             {
                 "name": "ReActAgent._done",
                 "context": {
