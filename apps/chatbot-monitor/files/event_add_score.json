@@ -1,9 +1,0 @@
-{ 
-    "add_score": {
-        "trace_id": "xxx",
-        "name": "answer_relevancy",
-        "score": 0.9,
-        "comment": null,
-        "data_type": "NUMERIC"
-    }
-}
