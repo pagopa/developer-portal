@@ -12,6 +12,7 @@ import Typography from '@mui/material/Typography';
 import NextLink from 'next/link';
 import MobileUserInfo from '@/components/atoms/MobileUserInfo/MobileUserInfo';
 import { SITE_HEADER_HEIGHT } from '@/config';
+import MobileLanguageSelector from '@/components/atoms/MobileLanguageSelector/MobileLanguageSelector';
 
 export const MobileSiteHeaderStyledTreeItem = styled(TreeItem)(({ theme }) => ({
   [`&`]: {
@@ -109,7 +110,7 @@ export const MobileSiteHeaderStyledTreeItem = styled(TreeItem)(({ theme }) => ({
   },
 }));
 
-const MobileSiteHeader = ({ products }: SiteHeaderProps) => {
+const MobileSiteHeader = ({ locale, products }: SiteHeaderProps) => {
   const t = useTranslations('devPortal');
   const { palette } = useTheme();
 
@@ -151,7 +152,7 @@ const MobileSiteHeader = ({ products }: SiteHeaderProps) => {
       }}
     >
       <Button
-        variant='naked'
+        variant="naked"
         disableElevation
         onClick={handleClick}
         endIcon={isOpen ? <ArrowDropUp /> : <ArrowDropDown />}
@@ -172,7 +173,7 @@ const MobileSiteHeader = ({ products }: SiteHeaderProps) => {
         }}
       >
         <TreeView
-          aria-label='multi-select'
+          aria-label="multi-select"
           defaultCollapseIcon={<ArrowDropUp />}
           defaultExpandIcon={<ArrowDropDown />}
           multiSelect
@@ -186,7 +187,7 @@ const MobileSiteHeader = ({ products }: SiteHeaderProps) => {
               return (
                 <Typography
                   key={index}
-                  variant='body1'
+                  variant="body1"
                   component={NextLink}
                   href={`/${product.slug}/overview`}
                   onClick={handleClick}
@@ -207,7 +208,7 @@ const MobileSiteHeader = ({ products }: SiteHeaderProps) => {
             label={
               <Typography
                 component={NextLink}
-                variant='body1'
+                variant="body1"
                 href={'/solutions'}
                 onClick={handleClick}
                 style={{
@@ -227,7 +228,7 @@ const MobileSiteHeader = ({ products }: SiteHeaderProps) => {
             label={
               <Typography
                 component={NextLink}
-                variant='body1'
+                variant="body1"
                 href={'/webinars'}
                 onClick={handleClick}
                 style={{
@@ -245,6 +246,14 @@ const MobileSiteHeader = ({ products }: SiteHeaderProps) => {
 
           <Divider sx={{ marginTop: -2, marginBottom: 2 }} />
           <MobileUserInfo onClick={handleClick} />
+          <Divider sx={{ marginTop: -2, marginBottom: 2 }} />
+          <MobileLanguageSelector
+            locales={[
+              { code: 'it', label: 'IT' },
+              { code: 'en', label: 'EN' },
+            ]}
+            currentLocale={locale}
+          />
         </TreeView>
       </Box>
     </Box>

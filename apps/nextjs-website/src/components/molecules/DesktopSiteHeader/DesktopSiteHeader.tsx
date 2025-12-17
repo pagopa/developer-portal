@@ -53,11 +53,11 @@ const DesktopSiteHeader = ({ locale, products }: SiteHeaderProps) => {
           locales={[
             {
               code: 'en',
-              label: 'English',
+              label: 'EN',
             },
             {
               code: 'it',
-              label: 'Italiano',
+              label: 'IT',
             },
           ]}
           currentLocale={locale}

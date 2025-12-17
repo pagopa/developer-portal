@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Button, Menu, MenuItem } from '@mui/material';
-import { Language as LanguageIcon } from '@mui/icons-material';
+import { Language } from '@mui/icons-material';
 
-type LanguageSelectorProps = {
+export type LanguageSelectorProps = {
   readonly locales: ReadonlyArray<{ code: string; label: string }>;
   readonly currentLocale: string;
 };
@@ -22,15 +22,15 @@ const LanguageSelector = ({
     setAnchorEl(null);
   };
 
-  const currentLocaleName =
-    locales.find((locale) => locale.code === currentLocale)?.name ||
+  const currentLocaleLabel =
+    locales.find((locale) => locale.code === currentLocale)?.label ||
     currentLocale.toUpperCase();
 
   return (
     <>
       <Button
         onClick={handleClick}
-        startIcon={<LanguageIcon />}
+        startIcon={<Language />}
         sx={{
           textTransform: 'none',
           color: 'inherit',
@@ -40,7 +40,7 @@ const LanguageSelector = ({
         }}
         disableRipple
       >
-        {currentLocaleName}
+        {currentLocaleLabel}
       </Button>
       <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
         {locales.map((locale) => (
