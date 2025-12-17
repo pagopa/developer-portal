@@ -12,9 +12,6 @@ from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 from urllib.parse import quote
 from typing import Tuple, List, Dict
 import xml.etree.ElementTree as ET
@@ -29,9 +26,10 @@ logging.getLogger("botocore").setLevel(logging.ERROR)
 LOGGER = get_logger(__name__)
 AWS_S3_CLIENT = AWS_SESSION.client("s3")
 SITEMAP_S3_FILEPATH = "sitemap.xml"
-GUIDES_METADATA_S3_FILEPATH = "guides-metadata.json"
-RELEASE_NOTES_METADATA_S3_FILEPATH = "release-notes-metadata.json"
-SOLUTIONS_METADATA_S3_FILEPATH = "solutions-metadata.json"
+DOCS_PARENT_FOLDER = "devportal-docs/docs/"
+GUIDES_FOLDER_FILEPATH = "main-guide-versions-dirNames.json"
+SOLUTIONS_FOLDER_FILEPATH = "solutions-dirNames.json"
+RELEASE_NOTES_FOLDER_FILEPATH = "release-notes-dirNames.json"
 PRODUCTS_S3_FILEPATH = "synced-products-response.json"
 APIS_DATA_S3_FILEPATH = "synced-apis-data-response.json"
 
@@ -44,10 +42,11 @@ def read_file_from_s3(
     Args:
         file_path (str): The path to the file in the S3 bucket.
     Returns:
-        str: The content of the file as a string.
+        str | None: The content of the file as a string, or None if the file is not found.
     """
 
     bucket_name = bucket_name if bucket_name else SETTINGS.bucket_static_content
+    text = ""
     try:
         response = AWS_S3_CLIENT.get_object(
             Bucket=bucket_name,
@@ -55,9 +54,95 @@ def read_file_from_s3(
         )
         text = response["Body"].read().decode("utf-8")
 
-        return text
     except Exception as e:
-        raise KeyError(f"Error reading {bucket_name}/{file_path} from S3: {e}")
+        LOGGER.error(f"Error reading {bucket_name}/{file_path} from S3: {e}")
+
+    return text
+
+
+def get_folders_list(
+    guides_folders_filepath: str | None = None,
+    solution_folders_filepath: str | None = None,
+    release_notes_folders_filepath: str | None = None,
+) -> List[str]:
+    """Reads folder names from S3 files.
+    Args:
+        guides_folders_filepath (str | None): The S3 file path for guides folder names.
+        solution_folders_filepath (str | None): The S3 file path for solution folder names.
+        release_notes_folders_filepath (str | None): The S3 file path for release notes folder names.
+    Returns:
+        List[str]: A list of folder names."""
+
+    guides_folders_filepath = (
+        guides_folders_filepath if guides_folders_filepath else GUIDES_FOLDER_FILEPATH
+    )
+    solution_folders_filepath = (
+        solution_folders_filepath
+        if solution_folders_filepath
+        else SOLUTIONS_FOLDER_FILEPATH
+    )
+    release_notes_folders_filepath = (
+        release_notes_folders_filepath
+        if release_notes_folders_filepath
+        else RELEASE_NOTES_FOLDER_FILEPATH
+    )
+
+    folders_list = []
+    for filepath in [
+        guides_folders_filepath,
+        solution_folders_filepath,
+        release_notes_folders_filepath,
+    ]:
+        s3_content = read_file_from_s3(filepath)
+        if s3_content:
+            try:
+                folders_content = json.loads(s3_content)
+            except Exception as e:
+                LOGGER.warning(f"Failed to decode {filepath}: {e}")
+                folders_content = {"dirNames": []}
+
+        folders_list.extend(folders_content.get("dirNames", []))
+
+    return folders_list
+
+
+def get_metadata_from_s3(
+    docs_parent_folder: str | None = None,
+    bucket_name: str | None = None,
+) -> List[Dict[str, str]]:
+    """Reads metadata files from an S3 bucket.
+    Args:
+        docs_parent_folder (str | None): The parent folder in the S3 bucket where the metadata files
+            are located.
+        bucket_name (str | None): The name of the S3 bucket.
+    Returns:
+        List[Dict[str, str]]: list containing the metadata dictionaries.
+    """
+
+    docs_parent_folder = (
+        docs_parent_folder if docs_parent_folder else DOCS_PARENT_FOLDER
+    )
+    bucket_name = bucket_name if bucket_name else SETTINGS.bucket_static_content
+
+    folders_list = get_folders_list()
+    metadata = []
+    for folder_name in folders_list:
+        folder_metadata = []
+        try:
+            s3_content = read_file_from_s3(
+                os.path.join(docs_parent_folder, folder_name, "metadata.json")
+            )
+            folder_metadata = json.loads(s3_content) if s3_content else []
+        except Exception as e:
+            LOGGER.warning(
+                f"Failed to decode metadata.json in folder {docs_parent_folder}/{folder_name}: {e}"
+            )
+
+        metadata.extend(folder_metadata)
+    if not metadata:
+        raise ValueError("No metadata found in S3.")
+
+    return metadata
 
 
 def remove_figure_blocks(md_text):
@@ -80,18 +165,19 @@ def get_product_list(file_path: str | None = None) -> List[str]:
     """
     file_path = file_path if file_path else PRODUCTS_S3_FILEPATH
 
-    s3_data = read_file_from_s3(file_path)
-    products = json.loads(s3_data)
+    s3_content = read_file_from_s3(file_path)
     product_list = []
-    if s3_data:
-        products = json.loads(s3_data)
+    if s3_content:
+        products = json.loads(s3_content)
         for product in products:
             try:
                 product_slug = product["attributes"]["slug"]
                 product_list.append(product_slug)
             except KeyError as e:
                 LOGGER.error(f"Error extracting product slug: {e}")
-    LOGGER.info(f"Found {len(product_list)} products: {product_list}.")
+        LOGGER.info(f"Found {len(product_list)} products: {product_list}.")
+    else:
+        raise ValueError("Product data content is empty.")
     return product_list
 
 
@@ -144,20 +230,23 @@ def get_sitemap_urls(file_path: str | None = None) -> List[Dict[str, str]]:
     sitemap_path = file_path if file_path else SITEMAP_S3_FILEPATH
 
     sitemap_content = read_file_from_s3(sitemap_path)
-    root = ET.fromstring(sitemap_content)
-    ns = {"ns": "http://www.sitemaps.org/schemas/sitemap/0.9"}
+    if sitemap_content:
+        root = ET.fromstring(sitemap_content)
+        ns = {"ns": "http://www.sitemaps.org/schemas/sitemap/0.9"}
 
-    sitemap = []
-    for entry in root.findall("ns:url", ns) + root.findall("ns:sitemap", ns):
-        loc = entry.find("ns:loc", ns)
-        lastmod = entry.find("ns:lastmod", ns)
-        sitemap.append(
-            {
-                "url": loc.text if loc is not None else "N/A",
-                "lastmod": lastmod.text if lastmod is not None else "N/A",
-            }
-        )
-    LOGGER.info(f"Found {len(sitemap)} URLs in the sitemap.")
+        sitemap = []
+        for entry in root.findall("ns:url", ns) + root.findall("ns:sitemap", ns):
+            loc = entry.find("ns:loc", ns)
+            lastmod = entry.find("ns:lastmod", ns)
+            sitemap.append(
+                {
+                    "url": loc.text if loc is not None else "N/A",
+                    "lastmod": lastmod.text if lastmod is not None else "N/A",
+                }
+            )
+        LOGGER.info(f"Found {len(sitemap)} URLs in the sitemap.")
+    else:
+        raise ValueError("Sitemap content is empty.")
 
     return sitemap
 
@@ -199,6 +288,8 @@ def get_apidata(file_path: str | None = None) -> dict:
     file_path = file_path if file_path else APIS_DATA_S3_FILEPATH
 
     s3_data = read_file_from_s3(file_path)
+    if not s3_data:
+        raise ValueError("API data content is empty.")
     return json.loads(s3_data)
 
 
@@ -284,30 +375,16 @@ def get_api_docs() -> List[Document]:
 
 def get_static_and_dynamic_metadata(
     sitemap_path: str | None = None,
-    guides_path: str | None = None,
-    solutions_path: str | None = None,
-    release_notes_path: str | None = None,
 ) -> Tuple[List[dict], List[dict]]:
     """
     Fetches static and dynamic URLs from the sitemap and metadata files.
     Args:
         sitemap_path (str): The S3 file path to fetch the sitemap from.
-        guides_path (str): The S3 file path to fetch the guides metadata from.
-        solutions_path (str): The S3 file path to fetch the solutions metadata from.
-        release_notes_path (str): The S3 file path to fetch the release notes metadata from
     Returns:
         Tuple[List[dict], List[dict]]: A tuple containing two lists:
             - A list of dictionaries with static URLs and their S3 file paths.
             - A list of dictionaries with dynamic URLs and their last modified dates.
     """
-
-    guides_path = guides_path if guides_path else GUIDES_METADATA_S3_FILEPATH
-    solutions_path = (
-        solutions_path if solutions_path else SOLUTIONS_METADATA_S3_FILEPATH
-    )
-    release_notes_path = (
-        release_notes_path if release_notes_path else RELEASE_NOTES_METADATA_S3_FILEPATH
-    )
 
     sitemap = get_sitemap_urls(sitemap_path)
     if not sitemap:
@@ -319,10 +396,7 @@ def get_static_and_dynamic_metadata(
         static_metadata = []
         dynamic_metadata = []
 
-        guides_metadata = json.loads(read_file_from_s3(guides_path))
-        release_notes_metadata = json.loads(read_file_from_s3(release_notes_path))
-        solutions_metadata = json.loads(read_file_from_s3(solutions_path))
-        all_metadata = guides_metadata + release_notes_metadata + solutions_metadata
+        all_metadata = get_metadata_from_s3()
         all_url_metadata = [
             SETTINGS.website_url + item["path"] for item in all_metadata
         ]
@@ -364,19 +438,25 @@ def get_static_docs(static_metadata: List[dict]) -> List[Document]:
         url = item["url"]
         title = item["title"]
         text = read_file_from_s3(item["s3_file_path"])
-        text = remove_figure_blocks(text)
 
-        static_docs.append(
-            Document(
-                id_=item["s3_file_path"],
-                text=text,
-                metadata={
-                    "filepath": url.replace(SETTINGS.website_url, ""),
-                    "title": title,
-                    "language": "it",
-                },
+        if text:
+            text = remove_figure_blocks(text)
+
+            static_docs.append(
+                Document(
+                    id_=item["s3_file_path"],
+                    text=text,
+                    metadata={
+                        "filepath": url.replace(SETTINGS.website_url, ""),
+                        "title": title,
+                        "language": "it",
+                    },
+                )
             )
-        )
+        else:
+            LOGGER.warning(
+                f"Discarded reading {item['s3_file_path']} due to empty content."
+            )
 
     return static_docs
 
