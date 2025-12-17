@@ -152,7 +152,7 @@ const MobileSiteHeader = ({ locale, products }: SiteHeaderProps) => {
       }}
     >
       <Button
-        variant="naked"
+        variant='naked'
         disableElevation
         onClick={handleClick}
         endIcon={isOpen ? <ArrowDropUp /> : <ArrowDropDown />}
@@ -173,7 +173,7 @@ const MobileSiteHeader = ({ locale, products }: SiteHeaderProps) => {
         }}
       >
         <TreeView
-          aria-label="multi-select"
+          aria-label='multi-select'
           defaultCollapseIcon={<ArrowDropUp />}
           defaultExpandIcon={<ArrowDropDown />}
           multiSelect
@@ -187,7 +187,7 @@ const MobileSiteHeader = ({ locale, products }: SiteHeaderProps) => {
               return (
                 <Typography
                   key={index}
-                  variant="body1"
+                  variant='body1'
                   component={NextLink}
                   href={`/${product.slug}/overview`}
                   onClick={handleClick}
@@ -208,7 +208,7 @@ const MobileSiteHeader = ({ locale, products }: SiteHeaderProps) => {
             label={
               <Typography
                 component={NextLink}
-                variant="body1"
+                variant='body1'
                 href={'/solutions'}
                 onClick={handleClick}
                 style={{
@@ -228,7 +228,7 @@ const MobileSiteHeader = ({ locale, products }: SiteHeaderProps) => {
             label={
               <Typography
                 component={NextLink}
-                variant="body1"
+                variant='body1'
                 href={'/webinars'}
                 onClick={handleClick}
                 style={{
