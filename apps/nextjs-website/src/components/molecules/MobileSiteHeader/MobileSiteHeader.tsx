@@ -6,7 +6,8 @@ import { useTranslations } from 'next-intl';
 import { Box, Divider, useTheme } from '@mui/material';
 import ArrowDropUp from '@mui/icons-material/ArrowDropUp';
 import ArrowDropDown from '@mui/icons-material/ArrowDropDown';
-import { TreeItem, TreeView } from '@mui/lab';
+import { TreeItem } from '@mui/x-tree-view/TreeItem';
+import { SimpleTreeView } from '@mui/x-tree-view/SimpleTreeView';
 
 import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
@@ -172,14 +173,16 @@ const MobileSiteHeader = ({ products }: SiteHeaderProps) => {
           zIndex: 200,
         }}
       >
-        <TreeView
+        <SimpleTreeView
           aria-label='multi-select'
-          defaultCollapseIcon={<ArrowDropUp />}
-          defaultExpandIcon={<ArrowDropDown />}
+          slots={{
+            collapseIcon: ArrowDropUp,
+            expandIcon: ArrowDropDown,
+          }}
           multiSelect
         >
           <MobileSiteHeaderStyledTreeItem
-            nodeId={t('siteHeader.products')}
+            itemId={t('siteHeader.products')}
             label={t('siteHeader.products')}
             disabled={false}
           >
@@ -204,7 +207,7 @@ const MobileSiteHeader = ({ products }: SiteHeaderProps) => {
           </MobileSiteHeaderStyledTreeItem>
 
           <MobileSiteHeaderStyledTreeItem
-            nodeId={'siteHeader.solutions'}
+            itemId={'siteHeader.solutions'}
             label={
               <Typography
                 component={NextLink}
@@ -224,7 +227,7 @@ const MobileSiteHeader = ({ products }: SiteHeaderProps) => {
             }
           />
           <MobileSiteHeaderStyledTreeItem
-            nodeId={'siteHeader.webinars'}
+            itemId={'siteHeader.webinars'}
             label={
               <Typography
                 component={NextLink}
@@ -246,7 +249,7 @@ const MobileSiteHeader = ({ products }: SiteHeaderProps) => {
 
           <Divider sx={{ marginTop: -2, marginBottom: 2 }} />
           <MobileUserInfo onClick={handleClick} />
-        </TreeView>
+        </SimpleTreeView>
       </Box>
     </Box>
   );

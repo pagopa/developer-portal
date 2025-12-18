@@ -23,6 +23,7 @@
     "@mui/lab": "5.0.0-alpha.173",
     "@mui/material": "^5.16.14",
     "@mui/utils": "^5.16.14",
+    "@mui/x-tree-view": "^8.22.0",
     "@opennextjs/aws": "^3.6.3",
     "@strapi/blocks-react-renderer": "^1.0.1",
     "ajv": "^8.17.1",

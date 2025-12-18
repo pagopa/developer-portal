@@ -32,7 +32,7 @@ export interface MenuDropdownProp
 
 export const MenuDropdown = (props: MenuDropdownProp) => {
   // props
-  const { label, items, theme, ...button } = props;
+  const { label, items, theme, active, ...button } = props;
 
   // state
   const [menuHover, setMenuHover] = useState(false);

@@ -2,7 +2,8 @@ import React, { useMemo } from 'react';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
-import { TreeItem, TreeView } from '@mui/lab';
+import { TreeItem } from '@mui/x-tree-view/TreeItem';
+import { SimpleTreeView } from '@mui/x-tree-view/SimpleTreeView';
 
 import { styled } from '@mui/material/styles';
 import { RenderingComponents, renderMenu } from 'gitbook-docs/renderMenu';
@@ -150,7 +151,7 @@ const GuideMenuItems = ({
         return (
           <StyledTreeItem
             key={href}
-            nodeId={href}
+            itemId={href}
             label={label}
             disabled={false}
             icon={href.startsWith('http') ? <OpenInNewIcon /> : undefined}
@@ -201,14 +202,16 @@ const GuideMenuItems = ({
       {versions && versionName && (
         <GuideVersionSelector versions={versions} versionName={versionName} />
       )}
-      <TreeView
-        defaultCollapseIcon={<ExpandLessIcon />}
-        defaultExpanded={expanded}
-        selected={currentPath}
-        defaultExpandIcon={<ExpandMoreIcon />}
+      <SimpleTreeView
+        slots={{
+          collapseIcon: ExpandLessIcon,
+          expandIcon: ExpandMoreIcon,
+        }}
+        defaultExpandedItems={expanded}
+        selectedItems={currentPath}
       >
         {children}
-      </TreeView>
+      </SimpleTreeView>
     </>
   );
 };
