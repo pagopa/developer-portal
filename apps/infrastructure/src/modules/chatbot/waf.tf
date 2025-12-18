@@ -112,7 +112,7 @@ resource "aws_wafv2_web_acl" "chatbot" {
 resource "aws_wafv2_web_acl_association" "chatbot" {
   resource_arn = "${aws_api_gateway_rest_api.api.arn}/stages/${aws_api_gateway_stage.api_stage.stage_name}"
   web_acl_arn  = aws_wafv2_web_acl.chatbot.arn
-  
+
 
   depends_on = [
     aws_api_gateway_deployment.stage,
