@@ -40,7 +40,7 @@ function Tab({ id, children }: TabProps) {
     <Box
       onClick={() => setActiveTabID(id)}
       sx={{
-        backgroundColor: isActive ? palette.primary.light : 'transparent',
+        backgroundColor: isActive ? palette.primaryAction.selected : 'transparent',
         borderRight: isActive ? `2px solid ${tabColor}` : 'none',
         '& > div > span': {
           color: isActive ? tabColor : palette.text.primary,

@@ -197,7 +197,7 @@ const foundation = {
     },
     primaryAction: {
       hover: 'rgba(0, 115, 230, 0.12)',
-      selected: 'rgba(0, 115, 230, 0.08)',
+      selected: 'rgba(0, 115, 230, 0.12)',
     },
     divider: '#E3E7EB',
     error: {

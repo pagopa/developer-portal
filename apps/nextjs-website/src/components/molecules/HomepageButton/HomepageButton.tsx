@@ -19,7 +19,7 @@ const HomepageButton = ({
   return (
     <Button
       size={'medium'}
-      color="primary"
+      sx={{ color: 'common.black' }}
       component={Link}
       aria-label={completeTitle}
       href={href}

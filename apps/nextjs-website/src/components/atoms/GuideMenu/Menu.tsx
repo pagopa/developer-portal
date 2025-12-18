@@ -86,6 +86,12 @@ const StyledTreeItem = styled(TreeItem)(({ theme }) => ({
   [`& .Mui-selected`]: {
     borderRight: `2px solid ${theme.palette.primary.dark}`,
   },
+  [`& .MuiTreeItem-content.Mui-selected`]: {
+    backgroundColor: theme.palette.primaryAction.selected,
+  },
+  [`& .MuiTreeItem-content.Mui-selected:hover`]: {
+    backgroundColor: theme.palette.primaryAction.selected,
+  },
   [`& .Mui-selected > .MuiTreeItem-label > *`]: {
     color: theme.palette.primary.dark,
   },
