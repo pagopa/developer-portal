@@ -2,4 +2,4 @@
 "nextjs-website": minor
 ---
 
-Update nextjs verrsion to 15
+Update Next.js version to 15
