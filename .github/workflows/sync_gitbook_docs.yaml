@@ -246,6 +246,7 @@ jobs:
           SAVE_STRAPI_RESPONSES: 'true'
           METADATA_TYPE: 'all'
           SITEMAP_URL: 'https://developer.pagopa.it/sitemap.xml'
+          S3_DIRNAME_METADATA_JSON_PATH: ${{ vars.S3_DIRNAME_METADATA_JSON_PATH }}
           S3_SOLUTIONS_DIRNAMES_JSON_PATH: ${{ vars.S3_SOLUTIONS_DIRNAMES_JSON_PATH || 'solutions-dirNames.json' }}
           S3_RELEASE_NOTES_DIRNAMES_JSON_PATH: ${{ vars.S3_RELEASE_NOTES_DIRNAMES_JSON_PATH || 'release-notes-dirNames.json' }}
         run: npm run sync-all-metadata -w gitbook-docs
