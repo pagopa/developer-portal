@@ -33,6 +33,10 @@ const listUsersCommandOutput: ListUsersCommandOutput = {
           Value: 'true',
         },
         {
+          Name: 'custom:survey_accepted',
+          Value: 'true',
+        },
+        {
           Name: 'custom:user_preferences',
           Value:
             '{"subscribedWebinarSlugs":["comunicazioni-a-valore-legale","nuove-api-io","live","cooming-soon","test","always-live","PagoPA-multe"]}',
@@ -70,6 +74,7 @@ describe('Helpers: listUsersCommandOutputToUser', () => {
       given_name: 'Giovanni',
       family_name: 'Doe',
       'custom:mailinglist_accepted': 'true',
+      'custom:survey_accepted': 'true',
       'custom:company_type': 'gestore-di-pubblico-servizio',
       'custom:job_role': 'Developer',
     };

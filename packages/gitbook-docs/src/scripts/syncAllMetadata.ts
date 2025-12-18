@@ -10,38 +10,43 @@ import { writeFile } from 'fs/promises';
 import * as fs from 'fs';
 import path from 'path';
 import { MetadataItem } from '../metadataItem';
-import { makeS3Client, putS3File } from '../helpers/s3Bucket.helper';
-import { S3Client } from '@aws-sdk/client-s3';
+import {
+  downloadS3File,
+  makeS3Client,
+  putS3File,
+} from '../helpers/s3Bucket.helper';
+import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { extractTitleFromMarkdown } from '../helpers/extractTitle.helper';
 import { fetchFromStrapi } from '../helpers/fetchFromStrapi';
 import { MetadataInfo, MetadataType } from '../helpers/guidesMetadataHelper';
 import { sitePathFromS3Path } from '../helpers/sitePathFromS3Path';
 import {
-  getSyncedGuidesResponseJsonPath,
-  getSyncedSolutionsResponseJsonPath,
-  getSyncedReleaseNotesResponseJsonPath,
-  getSyncedProductsResponseJsonPath,
   getSyncedApisDataResponseJsonPath,
+  getSyncedGuidesResponseJsonPath,
+  getSyncedProductsResponseJsonPath,
+  getSyncedReleaseNotesResponseJsonPath,
+  getSyncedSolutionsResponseJsonPath,
 } from '../syncedResponses';
 import { DOCUMENTATION_PATH } from '../helpers/documentationParsing.helper';
 import { baseUrl } from 'nextjs-website/src/config';
 import {
-  StrapiGuide,
-  StrapiReleaseNote,
-  StrapiSolution,
-  StrapiGuidesResponse,
-  StrapiSolutionsResponse,
-  StrapiReleaseNotesResponse,
-  StrapiProduct,
   StrapiApiData,
+  StrapiGuide,
+  StrapiGuidesResponse,
+  StrapiProduct,
+  StrapiReleaseNote,
+  StrapiReleaseNotesResponse,
+  StrapiSolution,
+  StrapiSolutionsResponse,
 } from '../helpers/strapiTypes';
 import {
   apisDataQueryString,
+  getReleaseNotesQueryString,
+  getSolutionsQueryString,
   guidesQueryString,
   productsQueryString,
-  releaseNotesQueryString,
-  solutionsQueryString,
 } from '../helpers/strapiQuery';
+import { compact } from 'lodash';
 
 // Load environment variables
 dotenv.config();
@@ -55,9 +60,25 @@ const URL_PARSING_METADATA_JSON_PATH =
   '../../url-parsing-metadata.json';
 const METADATA_TYPE = (process.env.METADATA_TYPE || 'all').toLowerCase();
 const GENERATE_URL_METADATA = process.env.GENERATE_URL_METADATA !== 'false';
-const GENERATE_SITEMAP_METADATA =
-  process.env.GENERATE_SITEMAP_METADATA !== 'false';
+
+// TODO: rename
+const GENERATE_METADATA = process.env.GENERATE_SITEMAP_METADATA !== 'false';
 const SAVE_STRAPI_RESPONSES = process.env.SAVE_STRAPI_RESPONSES !== 'false';
+const GENERATE_ROOT_METADATA_FILE =
+  process.env.GENERATE_ROOT_METADATA_FILE !== 'false';
+
+// Optional filter to sync only specific directories
+// Format: comma-separated list of dirNames (e.g., "dir1,dir2,dir3")
+// When provided, only guides/solutions/release-notes with matching dirNames will be synced
+const DIR_NAMES_FILTER = process.env.DIR_NAMES_FILTER
+  ? process.env.DIR_NAMES_FILTER.split(',').map((name) => name.trim())
+  : undefined;
+const S3_MAIN_GUIDE_VERSIONS_DIRNAMES_JSON_PATH =
+  process.env.S3_MAIN_GUIDE_VERSIONS_DIRNAMES_JSON_PATH ||
+  'main-guide-versions-dirNames.json';
+const S3_MAIN_GUIDE_VERSIONS_DIRNAMES_TO_REMOVE_JSON_PATH =
+  process.env.S3_MAIN_GUIDE_VERSIONS_DIRNAMES_TO_REMOVE_JSON_PATH ||
+  'main-guide-versions-dirNames-to-remove.json';
 
 // S3 paths for metadata files
 const S3_GUIDE_METADATA_JSON_PATH =
@@ -67,6 +88,13 @@ const S3_SOLUTIONS_METADATA_JSON_PATH =
 const S3_RELEASE_NOTES_METADATA_JSON_PATH =
   process.env.S3_RELEASE_NOTES_METADATA_JSON_PATH ||
   'release-notes-metadata.json';
+const S3_DIRNAME_METADATA_JSON_PATH =
+  process.env.S3_DIRNAME_METADATA_JSON_PATH || 'metadata.json';
+const S3_SOLUTIONS_DIRNAMES_JSON_PATH =
+  process.env.S3_SOLUTIONS_DIRNAMES_JSON_PATH || 'solutions-dirNames.json';
+const S3_RELEASE_NOTES_DIRNAMES_JSON_PATH =
+  process.env.S3_RELEASE_NOTES_DIRNAMES_JSON_PATH ||
+  'release-notes-dirNames.json';
 
 const SITEMAP_URL = process.env.SITEMAP_URL || `${baseUrl}/sitemap.xml`;
 const S3_SITEMAP_PATH = process.env.S3_SITEMAP_PATH || 'sitemap.xml';
@@ -123,6 +151,13 @@ function getS3Client(): S3Client {
 // Fetch all data from Strapi in one go
 async function fetchAllStrapiData(): Promise<StrapiData> {
   console.log('Fetching all data from Strapi...');
+  if (DIR_NAMES_FILTER) {
+    console.log(
+      `Applying dirName filter: ${DIR_NAMES_FILTER.join(', ')} (${
+        DIR_NAMES_FILTER.length
+      } directories)`
+    );
+  }
 
   const [
     guidesResult,
@@ -132,12 +167,16 @@ async function fetchAllStrapiData(): Promise<StrapiData> {
     apisDataResult,
   ] = await Promise.all([
     // Guides with full populate
+    // NOTE: Cannot filter by versions.dirName server-side due to Strapi v4 component array limitation
+    // Client-side filtering will be applied later in processGuidesMetadata
     fetchFromStrapi<StrapiGuide>(`api/guides?${guidesQueryString}`),
-    // Solutions with full populate
-    fetchFromStrapi<StrapiSolution>(`api/solutions/?${solutionsQueryString}`),
-    // Release notes with full populate
+    // Solutions with dirName filter (if provided)
+    fetchFromStrapi<StrapiSolution>(
+      `api/solutions/?${getSolutionsQueryString(DIR_NAMES_FILTER)}`
+    ),
+    // Release notes with dirName filter (if provided)
     fetchFromStrapi<StrapiReleaseNote>(
-      `api/release-notes/?${releaseNotesQueryString}`
+      `api/release-notes/?${getReleaseNotesQueryString(DIR_NAMES_FILTER)}`
     ),
     // Products
     fetchFromStrapi<StrapiProduct>(`api/products?${productsQueryString}`),
@@ -239,21 +278,27 @@ async function getMarkdownFilesRecursively(dir: string): Promise<string[]> {
 // Process guide metadata
 async function processGuidesMetadata(
   guides: StrapiGuide[]
-): Promise<MetadataItem[]> {
+): Promise<MetadataItem[][]> {
   const guideInfoList: MetadataInfo[] = guides
     .filter((guide) => !!guide.attributes.product?.data?.attributes?.slug)
     .flatMap((guide) =>
-      guide.attributes.versions.map((version) => ({
-        versionName: version.version,
-        isMainVersion: version.main,
-        dirName: version.dirName,
-        slug: guide.attributes.slug,
-        productSlug: `${guide.attributes.product?.data?.attributes?.slug}`,
-        metadataType: MetadataType.Guide,
-      }))
+      guide.attributes.versions
+        // Client-side filtering for guides: filter by dirName if DIR_NAMES_FILTER is provided
+        .filter(
+          (version) =>
+            !DIR_NAMES_FILTER || DIR_NAMES_FILTER.includes(version.dirName)
+        )
+        .map((version) => ({
+          versionName: version.version,
+          isMainVersion: version.main,
+          dirName: version.dirName,
+          slug: guide.attributes.slug,
+          productSlug: `${guide.attributes.product?.data?.attributes?.slug}`,
+          metadataType: MetadataType.Guide,
+        }))
     );
 
-  const items: MetadataItem[] = [];
+  const items: MetadataItem[][] = [];
 
   for (const guideInfo of guideInfoList) {
     const guideDir = path.join(DOCUMENTATION_PATH, guideInfo.dirName);
@@ -262,6 +307,7 @@ async function processGuidesMetadata(
       continue;
     }
 
+    const guideItems: MetadataItem[] = [];
     const guideFiles = await getMarkdownFilesRecursively(guideDir);
     const menuLocalPath = guideFiles.find((file) =>
       file.replace(/\\/g, '/').endsWith(`${guideInfo.dirName}/SUMMARY.md`)
@@ -302,7 +348,7 @@ async function processGuidesMetadata(
           version: guideInfo.versionName,
         };
 
-        items.push(baseItem);
+        guideItems.push(baseItem);
 
         if (guideInfo.isMainVersion) {
           const versionlessPath = generateUrlPath(
@@ -313,28 +359,62 @@ async function processGuidesMetadata(
             MetadataType.Guide
           );
 
-          items.push({
+          guideItems.push({
             ...baseItem,
             path: versionlessPath,
           });
         }
       }
     }
+    items.push(guideItems);
   }
 
   return items;
 }
 
+function getMainVersionsDirNames(guides: StrapiGuide[]): {
+  dirNames: string[];
+} {
+  return {
+    dirNames: compact(
+      guides.flatMap((guide) =>
+        guide.attributes.versions.map(
+          (version) => version.main && version.dirName
+        )
+      )
+    ),
+  };
+}
+
+function getSolutionsDirNames(solutions: StrapiSolution[]): {
+  dirNames: string[];
+} {
+  return {
+    dirNames: compact(solutions.map((solution) => solution.attributes.dirName)),
+  };
+}
+
+function getReleaseNotesDirNames(releaseNotes: StrapiReleaseNote[]): {
+  dirNames: string[];
+} {
+  return {
+    dirNames: compact(
+      releaseNotes.map((releaseNote) => releaseNote.attributes.dirName)
+    ),
+  };
+}
+
 // Process solutions metadata
 async function processSolutionsMetadata(
   solutions: StrapiSolution[]
-): Promise<MetadataItem[]> {
-  const items: MetadataItem[] = [];
+): Promise<MetadataItem[][]> {
+  const items: MetadataItem[][] = [];
 
   for (const solution of solutions) {
     const dirName = solution.attributes.dirName;
     if (!dirName) continue;
 
+    const itemList: MetadataItem[] = [];
     const solutionDir = path.join(DOCUMENTATION_PATH, dirName);
     if (!fs.existsSync(solutionDir)) {
       console.warn(`Solution directory not found for ${dirName}`);
@@ -373,7 +453,7 @@ async function processSolutionsMetadata(
           solution.attributes.landingUseCaseFile
         );
 
-        items.push({
+        itemList.push({
           path,
           dirName,
           contentS3Path: localPathToS3Path(filePath),
@@ -382,6 +462,7 @@ async function processSolutionsMetadata(
         });
       }
     }
+    items.push(itemList);
   }
 
   return items;
@@ -390,13 +471,14 @@ async function processSolutionsMetadata(
 // Process release notes metadata
 async function processReleaseNotesMetadata(
   releaseNotes: StrapiReleaseNote[]
-): Promise<MetadataItem[]> {
-  const items: MetadataItem[] = [];
+): Promise<MetadataItem[][]> {
+  const items: MetadataItem[][] = [];
 
   for (const releaseNote of releaseNotes) {
     const dirName = releaseNote.attributes.dirName;
     if (!dirName) continue;
 
+    const itemList: MetadataItem[] = [];
     const releaseNoteDir = path.join(DOCUMENTATION_PATH, dirName);
     if (!fs.existsSync(releaseNoteDir)) {
       console.warn(`Release note directory not found for ${dirName}`);
@@ -437,7 +519,7 @@ async function processReleaseNotesMetadata(
           releaseNote.attributes.landingFile
         );
 
-        items.push({
+        itemList.push({
           path,
           dirName,
           contentS3Path: localPathToS3Path(filePath),
@@ -446,6 +528,7 @@ async function processReleaseNotesMetadata(
         });
       }
     }
+    items.push(itemList);
   }
 
   return items;
@@ -532,8 +615,14 @@ async function main() {
     console.log('Starting unified metadata sync...');
     console.log(`Metadata type: ${METADATA_TYPE}`);
     console.log(`Generate URL metadata: ${GENERATE_URL_METADATA}`);
-    console.log(`Generate sitemap metadata: ${GENERATE_SITEMAP_METADATA}`);
+    console.log(`Generate metadata: ${GENERATE_METADATA}`);
     console.log(`Save Strapi responses: ${SAVE_STRAPI_RESPONSES}`);
+    console.log(`Generate root metadata file: ${GENERATE_ROOT_METADATA_FILE}`);
+    if (DIR_NAMES_FILTER) {
+      console.log(
+        `DirName filter active: ${DIR_NAMES_FILTER.length} directories specified`
+      );
+    }
 
     // Fetch all data from Strapi once
     const strapiData = await fetchAllStrapiData();
@@ -560,11 +649,13 @@ async function main() {
         getS3Client()
       );
       const sitemapXml = await fetchSitemapXml();
-      await putS3File(
-        sitemapXml,
-        S3_SITEMAP_PATH,
-        S3_BUCKET_NAME!,
-        getS3Client()
+
+      await getS3Client().send(
+        new PutObjectCommand({
+          Bucket: `${S3_BUCKET_NAME}`,
+          Key: S3_SITEMAP_PATH,
+          Body: sitemapXml,
+        })
       );
     }
 
@@ -609,48 +700,167 @@ async function main() {
       );
     }
 
-    // Process and save guides metadata
-    if (GENERATE_SITEMAP_METADATA && metadataFilter.guides) {
-      console.log('Processing guides metadata...');
-      const guidesSitemap = await processGuidesMetadata(strapiData.guides);
+    const mainVersionsDirNames = getMainVersionsDirNames(strapiData.guides);
+    console.log(
+      `Processed ${mainVersionsDirNames.dirNames.length} main version guide items.`
+    );
+
+    const s3MainVersionsDirNamesFile = await downloadS3File(
+      S3_MAIN_GUIDE_VERSIONS_DIRNAMES_JSON_PATH,
+      S3_BUCKET_NAME!,
+      getS3Client()
+    ).catch((error) => {
+      console.log(
+        `No existing main versions dirNames file found in S3: ${error}. Returning empty list.`
+      );
+      return '{ "dirNames": [] }';
+    });
+
+    const s3MainVersionsDirNames: { dirNames: string[] } = JSON.parse(
+      s3MainVersionsDirNamesFile
+    );
+
+    const setMainNames = new Set(mainVersionsDirNames.dirNames);
+
+    const dirNamesToRemove: string[] = s3MainVersionsDirNames.dirNames.filter(
+      (dirNames) => !setMainNames.has(dirNames)
+    );
+
+    if (dirNamesToRemove.length > 0) {
       await putS3File(
-        guidesSitemap,
-        S3_GUIDE_METADATA_JSON_PATH,
+        { dirNames: dirNamesToRemove },
+        S3_MAIN_GUIDE_VERSIONS_DIRNAMES_TO_REMOVE_JSON_PATH,
         S3_BUCKET_NAME!,
         getS3Client()
       );
-      console.log(`Saved ${guidesSitemap.length} guide items to S3`);
+    }
+    await putS3File(
+      mainVersionsDirNames,
+      S3_MAIN_GUIDE_VERSIONS_DIRNAMES_JSON_PATH,
+      S3_BUCKET_NAME!,
+      getS3Client()
+    );
+
+    const solutionsDirNames = getSolutionsDirNames(strapiData.solutions);
+    console.log(
+      `Processed ${solutionsDirNames.dirNames.length} solution items.`
+    );
+    await putS3File(
+      solutionsDirNames,
+      S3_SOLUTIONS_DIRNAMES_JSON_PATH,
+      S3_BUCKET_NAME!,
+      getS3Client()
+    );
+
+    const releaseNotesDirNames = getReleaseNotesDirNames(
+      strapiData.releaseNotes
+    );
+    console.log(
+      `Processed ${releaseNotesDirNames.dirNames.length} release note items.`
+    );
+    await putS3File(
+      releaseNotesDirNames,
+      S3_RELEASE_NOTES_DIRNAMES_JSON_PATH,
+      S3_BUCKET_NAME!,
+      getS3Client()
+    );
+
+    // Process and save guides metadata
+    if (GENERATE_METADATA && metadataFilter.guides) {
+      console.log('Processing guides metadata...');
+      const guidesMetadata = await processGuidesMetadata(strapiData.guides);
+      if (GENERATE_ROOT_METADATA_FILE) {
+        await putS3File(
+          guidesMetadata.flat(),
+          S3_GUIDE_METADATA_JSON_PATH,
+          S3_BUCKET_NAME!,
+          getS3Client()
+        );
+      }
+
+      guidesMetadata.map(async (guideMetadata) => {
+        if (guideMetadata.length > 0) {
+          await putS3File(
+            guideMetadata,
+            path.join(
+              S3_PATH_TO_GITBOOK_DOCS,
+              guideMetadata[0].dirName,
+              S3_DIRNAME_METADATA_JSON_PATH
+            ),
+            S3_BUCKET_NAME!,
+            getS3Client()
+          );
+        }
+      });
+
+      console.log(`Saved ${guidesMetadata.length} guide items to S3`);
     }
 
     // Process and save solutions metadata
-    if (GENERATE_SITEMAP_METADATA && metadataFilter.solutions) {
+    if (GENERATE_METADATA && metadataFilter.solutions) {
       console.log('Processing solutions metadata...');
-      const solutionsSitemap = await processSolutionsMetadata(
+      const solutionsMetadata = await processSolutionsMetadata(
         strapiData.solutions
       );
-      await putS3File(
-        solutionsSitemap,
-        S3_SOLUTIONS_METADATA_JSON_PATH,
-        S3_BUCKET_NAME!,
-        getS3Client()
-      );
-      console.log(`Saved ${solutionsSitemap.length} solution items to S3`);
+      if (GENERATE_ROOT_METADATA_FILE) {
+        await putS3File(
+          solutionsMetadata.flat(),
+          S3_SOLUTIONS_METADATA_JSON_PATH,
+          S3_BUCKET_NAME!,
+          getS3Client()
+        );
+      }
+
+      solutionsMetadata.map(async (solutionMetadata) => {
+        if (solutionMetadata.length > 0) {
+          await putS3File(
+            solutionMetadata,
+            path.join(
+              S3_PATH_TO_GITBOOK_DOCS,
+              solutionMetadata[0].dirName,
+              S3_DIRNAME_METADATA_JSON_PATH
+            ),
+            S3_BUCKET_NAME!,
+            getS3Client()
+          );
+        }
+      });
+
+      console.log(`Saved ${solutionsMetadata.length} solution items to S3`);
     }
 
     // Process and save release notes metadata
-    if (GENERATE_SITEMAP_METADATA && metadataFilter.releaseNotes) {
+    if (GENERATE_METADATA && metadataFilter.releaseNotes) {
       console.log('Processing release notes metadata...');
-      const releaseNotesSitemap = await processReleaseNotesMetadata(
+      const releaseNotesMetadata = await processReleaseNotesMetadata(
         strapiData.releaseNotes
       );
-      await putS3File(
-        releaseNotesSitemap,
-        S3_RELEASE_NOTES_METADATA_JSON_PATH,
-        S3_BUCKET_NAME!,
-        getS3Client()
-      );
+      if (GENERATE_ROOT_METADATA_FILE) {
+        await putS3File(
+          releaseNotesMetadata.flat(),
+          S3_RELEASE_NOTES_METADATA_JSON_PATH,
+          S3_BUCKET_NAME!,
+          getS3Client()
+        );
+      }
+
+      releaseNotesMetadata.map(async (releaseNote) => {
+        if (releaseNote.length > 0) {
+          await putS3File(
+            releaseNote,
+            path.join(
+              S3_PATH_TO_GITBOOK_DOCS,
+              releaseNote[0].dirName,
+              S3_DIRNAME_METADATA_JSON_PATH
+            ),
+            S3_BUCKET_NAME!,
+            getS3Client()
+          );
+        }
+      });
+
       console.log(
-        `Saved ${releaseNotesSitemap.length} release note items to S3`
+        `Saved ${releaseNotesMetadata.length} release note items to S3`
       );
     }
 
