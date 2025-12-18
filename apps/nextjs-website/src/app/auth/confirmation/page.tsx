@@ -9,7 +9,7 @@ import { useTranslations } from 'next-intl';
 import PageBackgroundWrapper from '@/components/atoms/PageBackgroundWrapper/PageBackgroundWrapper';
 import SingleCard from '@/components/atoms/SingleCard/SingleCard';
 import { isProduction } from '@/config';
-import { IllusError } from '@pagopa/mui-italia';
+import { ErrorOutline as ErrorOutlineIcon } from '@mui/icons-material';
 import AccountAlreadyConfirmed from '@/components/organisms/Auth/AccountAlreadyConfirmed';
 
 enum State {
@@ -82,7 +82,7 @@ const ConfirmationContent = () => {
       return (
         <PageBackgroundWrapper>
           <SingleCard
-            icon={<IllusError />}
+            icon={<ErrorOutlineIcon sx={{ fontSize: 64, color: 'error.main' }} />}
             title={t('confirmation.title')}
             cta={
               <Button

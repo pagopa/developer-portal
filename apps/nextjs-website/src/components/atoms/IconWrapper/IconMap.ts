@@ -23,8 +23,7 @@ import TrendingUp from '@mui/icons-material/TrendingUp';
 import Twitter from '@mui/icons-material/Twitter';
 import VpnKey from '@mui/icons-material/VpnKey';
 import Code from '@mui/icons-material/Code';
-import { MediumIcon } from '@pagopa/mui-italia/dist/icons/MediumIcon';
-import { ChangeCircle, TimerOutlined } from '@mui/icons-material';
+import { ChangeCircle, TimerOutlined, Article as ArticleIcon } from '@mui/icons-material';
 
 export const ICON_MAP = {
   AccountBalance: AccountBalance,
@@ -42,7 +41,7 @@ export const ICON_MAP = {
   LinkedIn: LinkedIn,
   LiveHelp: LiveHelp,
   MarkEmailRead: MarkEmailRead,
-  Medium: MediumIcon,
+  Medium: ArticleIcon,
   MenuBook: MenuBook,
   MessageRounded: MessageRounded,
   Payment: Payment,

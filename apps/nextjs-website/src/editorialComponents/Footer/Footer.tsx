@@ -1,5 +1,4 @@
 import { Box, Container, Stack } from '@mui/material';
-import { FundedByNextGenerationEU } from '@/editorialComponents/FundedByNextGenerationEU';
 import { type Generic } from '../types/components';
 import { FooterColumn } from './components/FooterColumn';
 import { LegalInfo } from './components/LegalInfo';
@@ -56,7 +55,7 @@ export const Footer = ({
           />
         </Stack>
         {showFundedByNextGenerationEULogo && (
-          <FundedByNextGenerationEU size={180} />
+          <Box>Funded by NextGenerationEU</Box>
         )}
       </Box>
     </Container>

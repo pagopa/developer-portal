@@ -1,5 +1,4 @@
-import { Stack, Typography, Box } from '@mui/material';
-import { Tag } from '@pagopa/mui-italia';
+import { Chip, Stack, Typography, Box } from '@mui/material';
 import { BlocksContent } from '@strapi/blocks-react-renderer';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
@@ -42,7 +41,7 @@ const SolutionStep = ({
         <Box display='flex' flexWrap={'wrap'} gap={1}>
           {products.map((product, index) => (
             <Link key={index} href={product.href}>
-              <Tag value={product.label} color='primary' variant='light' />
+              <Chip label={product.label} color='primary' variant='outlined' size="small" />
             </Link>
           ))}
         </Box>

@@ -12,7 +12,7 @@ import {
   useTheme,
 } from '@mui/material';
 import { validateEmail } from '@/helpers/auth.helpers';
-import { IllusDataSecurity } from '@pagopa/mui-italia';
+import { Security as SecurityIcon } from '@mui/icons-material';
 import { Dispatch, SetStateAction, useCallback, useState } from 'react';
 import { useTranslations } from 'next-intl';
 
@@ -72,7 +72,7 @@ const ResetPasswordForm = ({
         <Grid container justifyContent='center'>
           <Grid item xs={10}>
             <Stack pt={4} display='flex' alignItems='center'>
-              <IllusDataSecurity />
+              <SecurityIcon sx={{ fontSize: 80, color: 'primary.main' }} />
             </Stack>
             <Typography variant='h4' pt={5} mb={4} textAlign='center'>
               {resetPassword('title')}

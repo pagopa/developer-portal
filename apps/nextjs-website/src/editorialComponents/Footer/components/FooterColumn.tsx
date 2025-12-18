@@ -5,7 +5,6 @@ import {
   type CompanyLinkType,
   type PreLoginFooterSingleSectionType,
 } from '../types';
-import { LogoPagoPACompany } from '@/editorialComponents/LogoPagoPACompany';
 import Link from 'next/link';
 import IconWrapper from '@/components/atoms/IconWrapper/IconWrapper';
 
@@ -35,7 +34,7 @@ export const FooterColumn = ({
         href={companyLink.href ?? hrefNoOp}
         sx={{ display: 'inline-flex' }}
       >
-        <LogoPagoPACompany />
+        <Typography variant="h6" component="span">PagoPA</Typography>
       </LinkMui>
     )}
 

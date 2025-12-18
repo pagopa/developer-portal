@@ -7,7 +7,7 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import { IllusEmailValidation } from '@pagopa/mui-italia';
+import { MarkEmailRead as MarkEmailReadIcon } from '@mui/icons-material';
 import { useTranslations } from 'next-intl';
 
 interface ResetPasswordSuccessProps {
@@ -38,7 +38,7 @@ const ResetPasswordSuccess = ({
         <Grid container justifyContent='center'>
           <Grid item xs={10}>
             <Stack pt={4} display='flex' alignItems='center'>
-              <IllusEmailValidation />
+              <MarkEmailReadIcon sx={{ fontSize: 80, color: 'primary.main' }} />
             </Stack>
             <Typography variant='h4' pt={5} mb={4} textAlign='center'>
               {resetPassword('checkEmailTitle')}

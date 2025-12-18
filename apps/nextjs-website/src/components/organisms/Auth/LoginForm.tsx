@@ -1,5 +1,5 @@
 import { LoginFunction } from '@/lib/types/loginFunction';
-import { Visibility, VisibilityOff } from '@mui/icons-material';
+import { Login as LoginIcon, Visibility, VisibilityOff } from '@mui/icons-material';
 import {
   Box,
   Button,
@@ -17,7 +17,7 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
-import { IllusLogin } from '@pagopa/mui-italia';
+
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import {
@@ -136,7 +136,7 @@ const LoginForm = ({
           <Grid item xs={10}>
             <form>
               <Stack pt={4} display='flex' alignItems='center'>
-                <IllusLogin />
+                <LoginIcon sx={{ fontSize: 80, color: 'primary.main' }} />
               </Stack>
               <Typography variant='h4' pt={8} mb={4} textAlign='center'>
                 {login('loginToYourAccount')}

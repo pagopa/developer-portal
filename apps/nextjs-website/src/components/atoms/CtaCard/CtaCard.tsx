@@ -6,12 +6,12 @@ import {
   CardActions,
   CardContent,
   CardMedia,
+  Chip,
   styled,
   SxProps,
   Typography,
 } from '@mui/material';
 import { Variant } from '@mui/material/styles/createTypography';
-import { Tag } from '@pagopa/mui-italia';
 import Link from 'next/link';
 import React, { ReactNode } from 'react';
 
@@ -92,7 +92,7 @@ const CtaCard = ({
                     '& > span': { marginBottom: 1 },
                   }}
                 >
-                  <Tag value={label.label} color='primary' variant='light' />
+                  <Chip label={label.label} color='primary' variant='outlined' size="small" />
                 </Box>
               ))}
             </Box>

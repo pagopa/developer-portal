@@ -9,7 +9,7 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { ButtonNaked } from '@pagopa/mui-italia';
+import { Button } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import { ReactNode } from 'react';
 
@@ -20,9 +20,9 @@ export type ProfileDataCardItemProps = {
   editable: boolean;
   required: boolean;
 } & (
-  | { type: 'select'; values: { title: string; value: string }[] }
-  | { type: 'text' }
-);
+    | { type: 'select'; values: { title: string; value: string }[] }
+    | { type: 'text' }
+  );
 
 export type ProfileDataCardItemEditingProps = {
   editing: boolean;
@@ -145,18 +145,18 @@ export const ProfileDataCardItem = (
         >
           {infoCardItem.type === 'select'
             ? infoCardItem.values.find(
-                ({ value }) => value === infoCardItem.value
-              )?.title
+              ({ value }) => value === infoCardItem.value
+            )?.title
             : infoCardItem.value}
         </Typography>
       ) : (
-        <ButtonNaked
+        <Button
           onClick={infoCardItem.onInsertPressed}
           color='primary'
           sx={{ paddingLeft: 0, paddingRight: 0 }}
         >
           {t('profile.insert')}
-        </ButtonNaked>
+        </Button>
       )}
     </Stack>
   );

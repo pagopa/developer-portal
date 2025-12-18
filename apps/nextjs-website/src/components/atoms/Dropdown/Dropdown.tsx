@@ -6,7 +6,6 @@ import MenuItem from '@mui/material/MenuItem';
 import Link from 'next/link';
 import ArrowDropDown from '@mui/icons-material/ArrowDropDown';
 import ArrowDropUp from '@mui/icons-material/ArrowDropUp';
-import { ButtonNaked } from '@pagopa/mui-italia';
 import { PaperProps, PopoverOrigin, SxProps } from '@mui/material';
 
 type DropdownProps = {
@@ -42,7 +41,7 @@ const Dropdown = ({
       <Button
         aria-controls={open ? `${label}-menu` : undefined}
         aria-expanded={open ? 'true' : undefined}
-        variant='naked'
+        variant='text'
         disableElevation
         onClick={handleClick}
         endIcon={
@@ -79,18 +78,17 @@ const Dropdown = ({
         {items.map((item, index) => {
           return (
             <MenuItem key={index} onClick={handleClose} disableRipple>
-              <ButtonNaked
+              <Button
                 style={{ justifyContent: 'flex-start' }}
                 fullWidth={true}
                 size='medium'
-                weight='light'
                 component={Link}
                 aria-label={item.label}
                 href={item.href}
                 title={item.label}
               >
                 {item.label}
-              </ButtonNaked>
+              </Button>
             </MenuItem>
           );
         })}
