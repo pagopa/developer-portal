@@ -18,9 +18,13 @@ export function makeContactPayload(user: User): ContactPayload {
           value: user['custom:job_role'],
         },
         {
-          field: '3',
+          field: '3', // id 3 in prod env (field id '4' in dev)
           value:
             user['custom:mailinglist_accepted'] === 'true' ? 'TRUE' : 'FALSE',
+        },
+        {
+          field: '4', // id 4 in prod env (field id '5' in dev)
+          value: user['custom:survey_accepted'] === 'true' ? 'TRUE' : 'FALSE',
         },
       ],
     },

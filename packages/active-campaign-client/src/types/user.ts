@@ -4,6 +4,7 @@ export type User = {
   readonly given_name: string;
   readonly family_name: string;
   readonly 'custom:mailinglist_accepted': string;
+  readonly 'custom:survey_accepted'?: string;
   readonly 'custom:company_type': string;
   readonly 'custom:job_role': string;
 };

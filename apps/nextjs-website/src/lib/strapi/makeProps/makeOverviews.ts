@@ -22,6 +22,7 @@ export function makeOverviewsProps(
 
       try {
         return {
+          updatedAt: attributes.updatedAt,
           path: `/${attributes.product.data?.attributes.slug}/overview`,
           product: makeBaseProductWithoutLogoProps(attributes.product.data),
           hero: {
@@ -80,6 +81,7 @@ export function makeOverviewsProps(
                     return null;
                   }
                   return {
+                    updatedAt: tutorial.attributes.updatedAt,
                     icon: tutorial.attributes.icon.data?.attributes,
                     description: tutorial.attributes.description,
                     showInOverview: true,
