@@ -90,6 +90,11 @@ const S3_RELEASE_NOTES_METADATA_JSON_PATH =
   'release-notes-metadata.json';
 const S3_DIRNAME_METADATA_JSON_PATH =
   process.env.S3_DIRNAME_METADATA_JSON_PATH || 'metadata.json';
+const S3_SOLUTIONS_DIRNAMES_JSON_PATH =
+  process.env.S3_SOLUTIONS_DIRNAMES_JSON_PATH || 'solutions-dirNames.json';
+const S3_RELEASE_NOTES_DIRNAMES_JSON_PATH =
+  process.env.S3_RELEASE_NOTES_DIRNAMES_JSON_PATH ||
+  'release-notes-dirNames.json';
 
 const SITEMAP_URL = process.env.SITEMAP_URL || `${baseUrl}/sitemap.xml`;
 const S3_SITEMAP_PATH = process.env.S3_SITEMAP_PATH || 'sitemap.xml';
@@ -377,6 +382,24 @@ function getMainVersionsDirNames(guides: StrapiGuide[]): {
           (version) => version.main && version.dirName
         )
       )
+    ),
+  };
+}
+
+function getSolutionsDirNames(solutions: StrapiSolution[]): {
+  dirNames: string[];
+} {
+  return {
+    dirNames: compact(solutions.map((solution) => solution.attributes.dirName)),
+  };
+}
+
+function getReleaseNotesDirNames(releaseNotes: StrapiReleaseNote[]): {
+  dirNames: string[];
+} {
+  return {
+    dirNames: compact(
+      releaseNotes.map((releaseNote) => releaseNote.attributes.dirName)
     ),
   };
 }
@@ -714,6 +737,30 @@ async function main() {
     await putS3File(
       mainVersionsDirNames,
       S3_MAIN_GUIDE_VERSIONS_DIRNAMES_JSON_PATH,
+      S3_BUCKET_NAME!,
+      getS3Client()
+    );
+
+    const solutionsDirNames = getSolutionsDirNames(strapiData.solutions);
+    console.log(
+      `Processed ${solutionsDirNames.dirNames.length} solution items.`
+    );
+    await putS3File(
+      solutionsDirNames,
+      S3_SOLUTIONS_DIRNAMES_JSON_PATH,
+      S3_BUCKET_NAME!,
+      getS3Client()
+    );
+
+    const releaseNotesDirNames = getReleaseNotesDirNames(
+      strapiData.releaseNotes
+    );
+    console.log(
+      `Processed ${releaseNotesDirNames.dirNames.length} release note items.`
+    );
+    await putS3File(
+      releaseNotesDirNames,
+      S3_RELEASE_NOTES_DIRNAMES_JSON_PATH,
       S3_BUCKET_NAME!,
       getS3Client()
     );

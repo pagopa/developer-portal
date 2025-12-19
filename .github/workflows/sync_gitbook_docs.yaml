@@ -94,26 +94,6 @@ jobs:
       - name: Compile packages
         run: npm run compile
 
-      - name: Generate UrlReplace metadata
-        env:
-          ENVIRONMENT: ${{ github.event_name == 'workflow_dispatch' && inputs.environment || 'dev' }}
-          DOCUMENTATION_PATH: ${{ vars.DOCUMENTATION_PATH || '../../devportal-docs/docs' }}
-          URL_PARSING_METADATA_JSON_PATH: ${{ vars.URL_PARSING_METADATA_JSON_PATH || '../../url-parsing-metadata.json' }}
-          STRAPI_ENDPOINT: ${{ vars.STRAPI_ENDPOINT }}
-          STRAPI_API_TOKEN: ${{ secrets.STRAPI_API_TOKEN }}
-        run: npm run generate-url-parsing-metadata -w gitbook-docs
-
-      - name: Replace urls and include tags in docs
-        env:
-          ENVIRONMENT: ${{ github.event_name == 'workflow_dispatch' && inputs.environment || 'dev' }}
-          DOCUMENTATION_PATH: ${{ vars.DOCUMENTATION_PATH || '../../devportal-docs/docs' }}
-          URL_PARSING_METADATA_JSON_PATH: ${{ vars.URL_PARSING_METADATA_JSON_PATH || '../../url-parsing-metadata.json' }}
-        run: npm run parse-docs -w gitbook-docs
-
-      - name: Replace escaped tokens with backticks in docs
-        env:
-          DOCUMENTATION_PATH: ${{ vars.DOCUMENTATION_PATH || '../../devportal-docs/docs' }}
-        run: npm run replace-escaped-tokens-with-backticks -w gitbook-docs
       - name: Configure AWS Credentials
         uses: ./.github/actions/configure-aws-credentials
         with:
@@ -140,7 +120,21 @@ jobs:
           DIR_NAMES_FILTER: ${{ inputs.dir_names_filter }}
           SITEMAP_URL: ${{ env.SITEMAP_URL || 'https://developer.pagopa.it/sitemap.xml' }}
           S3_DIRNAME_METADATA_JSON_PATH: ${{ vars.S3_DIRNAME_METADATA_JSON_PATH }}
+          S3_SOLUTIONS_DIRNAMES_JSON_PATH: ${{ vars.S3_SOLUTIONS_DIRNAMES_JSON_PATH || 'solutions-dirNames.json' }}
+          S3_RELEASE_NOTES_DIRNAMES_JSON_PATH: ${{ vars.S3_RELEASE_NOTES_DIRNAMES_JSON_PATH || 'release-notes-dirNames.json' }}
         run: npm run sync-all-metadata -w gitbook-docs
+
+      - name: Replace urls and include tags in docs
+        env:
+          ENVIRONMENT: ${{ github.event_name == 'workflow_dispatch' && inputs.environment || 'dev' }}
+          DOCUMENTATION_PATH: ${{ vars.DOCUMENTATION_PATH || '../../devportal-docs/docs' }}
+          URL_PARSING_METADATA_JSON_PATH: ${{ vars.URL_PARSING_METADATA_JSON_PATH || '../../url-parsing-metadata.json' }}
+        run: npm run parse-docs -w gitbook-docs
+
+      - name: Replace escaped tokens with backticks in docs
+        env:
+          DOCUMENTATION_PATH: ${{ vars.DOCUMENTATION_PATH || '../../devportal-docs/docs' }}
+        run: npm run replace-escaped-tokens-with-backticks -w gitbook-docs
 
       - name: Sync docs folder to S3
         working-directory: ./devportal-docs
@@ -157,8 +151,28 @@ jobs:
               fi
             done
           else
-            echo "Syncing all docs"
-            aws s3 sync docs s3://devportal-${{ env.ENV_SHORT }}-website-static-content/devportal-docs/docs --delete --exclude "**/metadata.json" ${{ inputs.incremental_mode == true && ' --size-only' || '' }}
+            echo "Fetching directory lists from S3..."
+            # Define S3 paths for the JSON files
+            S3_DIRNAMES="s3://devportal-${{ env.ENV_SHORT }}-website-static-content/${{ vars.S3_DIRNAMES_JSON_PATH || 'dirNames.json' }}"
+
+            # Download JSON files
+            aws s3 cp "$S3_DIRNAMES" dirNames.json || echo '{"dirNames": []}' > dirNames.json
+
+            # Extract and combine unique directory names
+            DIRS=$(cat dirNames.json | jq -r '.dirNames[]' | sort | uniq)
+
+            if [[ -z "$DIRS" ]]; then
+              echo "No directories found to sync. Syncing all docs"
+              aws s3 sync docs s3://devportal-${{ env.ENV_SHORT }}-website-static-content/devportal-docs/docs --delete --exclude "**/metadata.json" ${{ inputs.incremental_mode == true && ' --size-only' || '' }}
+            else
+              echo "Syncing registered directories..."
+              for dir in $DIRS; do
+                if [[ -n "$dir" ]]; then
+                  echo "Syncing directory: $dir"
+                  aws s3 sync "docs/$dir" "s3://devportal-${{ env.ENV_SHORT }}-website-static-content/devportal-docs/docs/$dir" --delete --exclude "metadata.json" ${{ inputs.incremental_mode == true && ' --size-only' || '' }}
+                fi
+              done
+            fi
           fi
 
       - name: Invalidate CloudFront asset bucket cache
@@ -232,7 +246,17 @@ jobs:
           SAVE_STRAPI_RESPONSES: 'true'
           METADATA_TYPE: 'all'
           SITEMAP_URL: 'https://developer.pagopa.it/sitemap.xml'
+          S3_DIRNAME_METADATA_JSON_PATH: ${{ vars.S3_DIRNAME_METADATA_JSON_PATH }}
+          S3_SOLUTIONS_DIRNAMES_JSON_PATH: ${{ vars.S3_SOLUTIONS_DIRNAMES_JSON_PATH || 'solutions-dirNames.json' }}
+          S3_RELEASE_NOTES_DIRNAMES_JSON_PATH: ${{ vars.S3_RELEASE_NOTES_DIRNAMES_JSON_PATH || 'release-notes-dirNames.json' }}
         run: npm run sync-all-metadata -w gitbook-docs
+
+      - name: Replace urls and include tags in docs
+        env:
+          ENVIRONMENT: 'prod'
+          DOCUMENTATION_PATH: ${{ vars.DOCUMENTATION_PATH || '../../devportal-docs/docs' }}
+          URL_PARSING_METADATA_JSON_PATH: ${{ vars.URL_PARSING_METADATA_JSON_PATH || '../../url-parsing-metadata.json' }}
+        run: npm run parse-docs -w gitbook-docs
 
       - name: Replace escaped tokens with backticks in docs
         env:
@@ -242,7 +266,28 @@ jobs:
       - name: Sync docs folder to S3
         working-directory: ./devportal-docs
         run: |
-          aws s3 sync docs s3://devportal-p-website-static-content/devportal-docs/docs --delete --exclude "**/metadata.json" --size-only
+          echo "Fetching directory lists from S3..."
+          # Define S3 paths for the JSON files (prod environment)
+          S3_DIRNAMES="s3://devportal-p-website-static-content/${{ vars.S3_DIRNAMES_JSON_PATH || 'dirNames.json' }}"
+
+          # Download JSON files
+          aws s3 cp "$S3_DIRNAMES" dirNames.json || echo '{"dirNames": []}' > dirNames.json
+
+          # Extract and combine unique directory names
+          DIRS=$(cat dirNames.json | jq -r '.dirNames[]' | sort | uniq)
+
+          if [[ -z "$DIRS" ]]; then
+            echo "No directories found to sync. Syncing all docs"
+            aws s3 sync docs s3://devportal-p-website-static-content/devportal-docs/docs --delete --exclude "**/metadata.json" --size-only
+          else
+            echo "Syncing registered directories..."
+            for dir in $DIRS; do
+              if [[ -n "$dir" ]]; then
+                echo "Syncing directory: $dir"
+                aws s3 sync "docs/$dir" "s3://devportal-p-website-static-content/devportal-docs/docs/$dir" --delete --exclude "**/metadata.json" --size-only
+              fi
+            done
+          fi
 
       - name: Invalidate CloudFront asset bucket cache
         run: |
