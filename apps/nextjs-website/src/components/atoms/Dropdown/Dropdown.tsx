@@ -49,22 +49,22 @@ const Dropdown = ({
             ? icons?.opened || <ArrowDropUp />
             : icons?.closed || <ArrowDropDown />
         }
-        sx={buttonStyle}
+        sx={{ margin: 0, padding: 0, ...buttonStyle }}
       >
         {label}
       </Button>
       <Menu
-        elevation={0}
+        elevation={8}
         anchorOrigin={
           menuAnchorOrigin || {
             vertical: 'bottom',
-            horizontal: 'right',
+            horizontal: 'left',
           }
         }
         transformOrigin={
           menuTransformOrigin || {
             vertical: 'top',
-            horizontal: 'center',
+            horizontal: 'left',
           }
         }
         MenuListProps={{
@@ -73,22 +73,35 @@ const Dropdown = ({
         anchorEl={anchorEl}
         open={open}
         onClose={handleClose}
-        PaperProps={menuStyle}
+        PaperProps={{
+          ...menuStyle,
+          sx: {
+            borderRadius: 2,
+            marginTop: 1,
+            ...menuStyle?.sx,
+          },
+        }}
       >
         {items.map((item, index) => {
           return (
-            <MenuItem key={index} onClick={handleClose} disableRipple>
-              <Button
-                style={{ justifyContent: 'flex-start' }}
-                fullWidth={true}
-                size='medium'
-                component={Link}
-                aria-label={item.label}
-                href={item.href}
-                title={item.label}
-              >
-                {item.label}
-              </Button>
+            <MenuItem
+              key={index}
+              onClick={handleClose}
+              disableRipple
+              component={Link}
+              href={item.href}
+              sx={{
+                color: 'text.primary',
+                fontSize: '16px',
+                paddingY: 1,
+                justifyContent: 'flex-start',
+                '&:hover': {
+                  backgroundColor: 'action.hover',
+                  color: 'primary.main', // Optional: highlight on hover
+                },
+              }}
+            >
+              {item.label}
             </MenuItem>
           );
         })}

@@ -32,9 +32,10 @@ export const FooterColumn = ({
         role='link'
         aria-label={companyLink.ariaLabel}
         href={companyLink.href ?? hrefNoOp}
-        sx={{ display: 'inline-flex' }}
+        sx={{ display: 'inline-flex', color: 'secondary.main' }}
       >
         <svg
+          fill='currentColor'
           viewBox='0 0 119 33'
           focusable='false'
           aria-labelledby='logo-pagoPA-company-titleID'
