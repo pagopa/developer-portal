@@ -1,5 +1,12 @@
 # chatbot-index
 
+## 2.1.2
+
+### Patch Changes
+
+- eacb45a: Remove documents from the vector index when directories are marked for removal in the main-guide-versions-dirNames-to-remove.json file
+- 2e158b8: Update the reading of the metadata files stored in the S3 bucket
+
 ## 2.1.1
 
 ### Patch Changes
