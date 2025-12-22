@@ -24,6 +24,185 @@ resource "aws_s3_bucket_ownership_controls" "ivs_recordings_oc" {
   }
 }
 
+# S3 bucket for access logs
+resource "aws_s3_bucket" "ivs_recordings_logs" {
+  bucket = "${var.project_name}-recordings-logs-${random_id.suffix.hex}"
+}
+
+resource "aws_s3_bucket_public_access_block" "ivs_recordings_logs_pac" {
+  bucket = aws_s3_bucket.ivs_recordings_logs.id
+
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+}
+
+resource "aws_s3_bucket_ownership_controls" "ivs_recordings_logs_oc" {
+  bucket = aws_s3_bucket.ivs_recordings_logs.id
+  rule {
+    object_ownership = "BucketOwnerPreferred"
+  }
+}
+
+resource "aws_s3_bucket_acl" "ivs_recordings_logs_acl" {
+  bucket = aws_s3_bucket.ivs_recordings_logs.id
+  acl    = "log-delivery-write"
+
+  depends_on = [aws_s3_bucket_ownership_controls.ivs_recordings_logs_oc]
+}
+
+# Enable access logging for ivs_recordings bucket
+resource "aws_s3_bucket_logging" "ivs_recordings_logging" {
+  bucket = aws_s3_bucket.ivs_recordings.id
+
+  target_bucket = aws_s3_bucket.ivs_recordings_logs.id
+  target_prefix = "access-logs/"
+}
+
+# S3 bucket for Athena query results
+resource "aws_s3_bucket" "athena_results" {
+  bucket = "${var.project_name}-athena-results-${random_id.suffix.hex}"
+}
+
+resource "aws_s3_bucket_public_access_block" "athena_results_pac" {
+  bucket = aws_s3_bucket.athena_results.id
+
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+}
+
+resource "aws_s3_bucket_lifecycle_configuration" "athena_results_lifecycle" {
+  bucket = aws_s3_bucket.athena_results.id
+
+  rule {
+    id     = "delete-old-results"
+    status = "Enabled"
+
+    expiration {
+      days = 30
+    }
+  }
+}
+
+# Athena Database
+resource "aws_athena_database" "s3_access_logs" {
+  name   = "${replace(var.project_name, "-", "_")}_s3_access_logs"
+  bucket = aws_s3_bucket.athena_results.id
+}
+
+# Athena Workgroup
+resource "aws_athena_workgroup" "s3_logs" {
+  name = "${var.project_name}-s3-logs"
+
+  configuration {
+    enforce_workgroup_configuration    = true
+    publish_cloudwatch_metrics_enabled = true
+
+    result_configuration {
+      output_location = "s3://${aws_s3_bucket.athena_results.bucket}/query-results/"
+
+      encryption_configuration {
+        encryption_option = "SSE_S3"
+      }
+    }
+  }
+}
+
+# Athena Named Query for creating the S3 access logs table
+resource "aws_athena_named_query" "create_s3_access_logs_table" {
+  name      = "create_s3_access_logs_table"
+  database  = aws_athena_database.s3_access_logs.name
+  workgroup = aws_athena_workgroup.s3_logs.id
+  query     = <<-EOQ
+    CREATE EXTERNAL TABLE IF NOT EXISTS s3_access_logs (
+      bucketowner STRING,
+      bucket_name STRING,
+      requestdatetime STRING,
+      remoteip STRING,
+      requester STRING,
+      requestid STRING,
+      operation STRING,
+      key STRING,
+      request_uri STRING,
+      httpstatus STRING,
+      errorcode STRING,
+      bytessent BIGINT,
+      objectsize BIGINT,
+      totaltime STRING,
+      turnaroundtime STRING,
+      referrer STRING,
+      useragent STRING,
+      versionid STRING,
+      hostid STRING,
+      sigv STRING,
+      ciphersuite STRING,
+      authtype STRING,
+      endpoint STRING,
+      tlsversion STRING
+    )
+    ROW FORMAT SERDE 'org.apache.hadoop.hive.serde2.RegexSerDe'
+    WITH SERDEPROPERTIES (
+      'serialization.format' = '1',
+      'input.regex' = '([^ ]*) ([^ ]*) \\[(.*?)\\] ([^ ]*) ([^ ]*) ([^ ]*) ([^ ]*) ([^ ]*) (\"[^\"]*\"|-) (-|[0-9]*) ([^ ]*) ([^ ]*) ([^ ]*) ([^ ]*) ([^ ]*) ([^ ]*) (\"[^\"]*\"|-) ([^ ]*)(?: ([^ ]*) ([^ ]*) ([^ ]*) ([^ ]*) ([^ ]*) ([^ ]*))?.*$'
+    )
+    LOCATION 's3://${aws_s3_bucket.ivs_recordings_logs.bucket}/access-logs/'
+  EOQ
+
+  description = "Creates the S3 access logs table for querying IVS recordings bucket access logs"
+}
+
+# Athena Named Query for sample queries
+resource "aws_athena_named_query" "sample_queries" {
+  name      = "sample_s3_access_log_queries"
+  database  = aws_athena_database.s3_access_logs.name
+  workgroup = aws_athena_workgroup.s3_logs.id
+  query     = <<-EOQ
+    -- Sample queries for S3 access logs
+
+    -- 1. Count requests by HTTP status
+    SELECT httpstatus, COUNT(*) as count
+    FROM s3_access_logs
+    GROUP BY httpstatus
+    ORDER BY count DESC;
+
+    -- 2. Top 10 most accessed objects
+    SELECT key, COUNT(*) as access_count
+    FROM s3_access_logs
+    WHERE key != '-'
+    GROUP BY key
+    ORDER BY access_count DESC
+    LIMIT 10;
+
+    -- 3. Requests by remote IP
+    SELECT remoteip, COUNT(*) as request_count
+    FROM s3_access_logs
+    GROUP BY remoteip
+    ORDER BY request_count DESC
+    LIMIT 20;
+
+    -- 4. Total bytes sent by day
+    SELECT 
+      DATE_PARSE(requestdatetime, '%d/%b/%Y:%H:%i:%s %z') as request_date,
+      SUM(bytessent) as total_bytes
+    FROM s3_access_logs
+    WHERE bytessent > 0
+    GROUP BY DATE_PARSE(requestdatetime, '%d/%b/%Y:%H:%i:%s %z')
+    ORDER BY request_date DESC;
+
+    -- 5. Error requests
+    SELECT requestdatetime, remoteip, operation, key, httpstatus, errorcode
+    FROM s3_access_logs
+    WHERE httpstatus >= '400'
+    ORDER BY requestdatetime DESC
+    LIMIT 100;
+  EOQ
+
+  description = "Sample queries for analyzing S3 access logs"
+}
+
 # A single IAM Role and Policy for IVS to access the S3 Bucket
 resource "aws_iam_role" "ivs_recording_role" {
   name = "${var.project_name}-ivs-s3-role"

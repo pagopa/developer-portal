@@ -15,3 +15,23 @@ output "ivs_channel_details" {
   }
 
 }
+
+output "s3_access_logs_bucket_name" {
+  description = "The name of the S3 bucket where access logs are stored."
+  value       = aws_s3_bucket.ivs_recordings_logs.id
+}
+
+output "athena_database_name" {
+  description = "The name of the Athena database for querying S3 access logs."
+  value       = aws_athena_database.s3_access_logs.name
+}
+
+output "athena_workgroup_name" {
+  description = "The name of the Athena workgroup for running queries."
+  value       = aws_athena_workgroup.s3_logs.name
+}
+
+output "athena_results_bucket_name" {
+  description = "The name of the S3 bucket where Athena query results are stored."
+  value       = aws_s3_bucket.athena_results.id
+}
