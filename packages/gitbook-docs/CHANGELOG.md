@@ -1,5 +1,13 @@
 # gitbook-docs
 
+## 1.7.2
+
+### Patch Changes
+
+- 89d22fa: Add validation to skip S3 uploads for empty metadata arrays
+- 711e8eb: Fix linting error
+- 309541d: Add extraction and S3 upload of solutions and release notes directory names.
+
 ## 1.7.1
 
 ### Patch Changes
