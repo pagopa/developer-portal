@@ -2,16 +2,6 @@ import { mediaVectorJson } from './media';
 import { bannerLinksJson } from '@/lib/strapi/__tests__/fixtures/bannerLinksJson';
 import { Product } from '@/lib/types/product';
 
-export const baseProductJson = {
-  data: {
-    id: 8,
-    isVisible: true,
-    name: 'Firma con IO',
-    slug: 'firma-con-io',
-    shortName: 'Firma con IO',
-  },
-};
-
 export const productJson = {
   id: 8,
   name: 'Firma con IO',
