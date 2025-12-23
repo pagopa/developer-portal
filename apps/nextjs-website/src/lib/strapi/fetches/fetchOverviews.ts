@@ -2,11 +2,14 @@ import * as qs from 'qs';
 import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
 import { productRelationsPopulate } from './fetchProducts';
 import { StrapiOverviews } from '@/lib/strapi/types/overviews';
+import { RootEntity } from '@/lib/strapi/types/rootEntity';
 
 const makeStrapiOverviewsPopulate = () =>
   qs.stringify({
     populate: {
-      backgroundImage: '*',
+      backgroundImage: {
+        populate: '*',
+      },
       product: {
         ...productRelationsPopulate,
       },
@@ -26,7 +29,7 @@ const makeStrapiOverviewsPopulate = () =>
         populate: ['useCases.coverImage', 'useCases.product'],
       },
       seo: {
-        populate: '*,metaImage,metaSocial.image',
+        populate: '*',
       },
       postIntegration: {
         populate: [

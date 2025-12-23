@@ -36,19 +36,15 @@ export const FilteredGridLayout = ({
     {
       name: t('overview.all'),
       icon: {
-        data: {
-          attributes: {
-            name: 'all.svg',
-            alternativeText: '',
-            caption: '',
-            width: 32,
-            height: 32,
-            size: 32,
-            ext: '.svg',
-            mime: 'image/svg',
-            url: '/icons/all.svg',
-          },
-        },
+        name: 'all.svg',
+        alternativeText: '',
+        caption: '',
+        width: 32,
+        height: 32,
+        size: 32,
+        ext: '.svg',
+        mime: 'image/svg',
+        url: '/icons/all.svg',
       },
     },
     ...tags,

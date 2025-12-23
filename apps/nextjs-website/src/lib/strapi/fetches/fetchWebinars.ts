@@ -1,14 +1,15 @@
 import * as qs from 'qs';
 import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
 import { StrapiWebinars } from '@/lib/strapi/types/webinars';
+import { RootEntity } from '@/lib/strapi/types/rootEntity';
 
 export const webinarPopulate = {
   populate: {
     coverImage: {
-      populate: ['image'],
+      populate: '*',
     },
     playerCoverImage: {
-      populate: ['image'],
+      populate: '*',
     },
     webinarSpeakers: {
       populate: ['avatar'],
@@ -19,7 +20,7 @@ export const webinarPopulate = {
     relatedResources: {
       populate: {
         resources: {
-          populate: ['image'],
+          populate: '*',
         },
         downloadableDocuments: {
           populate: '*',
@@ -27,12 +28,12 @@ export const webinarPopulate = {
       },
     },
     seo: {
-      populate: '*,metaImage,metaSocial.image',
+      populate: '*',
     },
     questionsAndAnswers: '*',
     webinarCategory: { populate: ['icon'] },
     headerImage: {
-      populate: ['image'],
+      populate: '*',
     },
   },
 };
