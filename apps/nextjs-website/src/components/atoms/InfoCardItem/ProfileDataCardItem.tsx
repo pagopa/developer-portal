@@ -9,7 +9,7 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { ButtonNaked } from '@pagopa/mui-italia';
+import { Button } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import { ReactNode } from 'react';
 
@@ -46,7 +46,9 @@ export const ProfileDataCardItem = (
                 label={infoCardItem.title}
                 value={infoCardItem.value ?? ''}
                 onChange={({ target: { value } }) => {
-                  infoCardItem.onValue && infoCardItem.onValue(value);
+                  if (infoCardItem.onValue) {
+                    infoCardItem.onValue(value);
+                  }
                 }}
                 helperText={t('shared.requiredFieldError')}
               />
@@ -57,7 +59,9 @@ export const ProfileDataCardItem = (
                 id={infoCardItem.title}
                 type={'text'}
                 onChange={({ target: { value } }) => {
-                  infoCardItem.onValue && infoCardItem.onValue(value);
+                  if (infoCardItem.onValue) {
+                    infoCardItem.onValue(value);
+                  }
                 }}
                 value={infoCardItem.value}
                 label={infoCardItem.title}
@@ -146,13 +150,13 @@ export const ProfileDataCardItem = (
             : infoCardItem.value}
         </Typography>
       ) : (
-        <ButtonNaked
+        <Button
           onClick={infoCardItem.onInsertPressed}
           color='primary'
           sx={{ paddingLeft: 0, paddingRight: 0 }}
         >
           {t('profile.insert')}
-        </ButtonNaked>
+        </Button>
       )}
     </Stack>
   );

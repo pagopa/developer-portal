@@ -12,7 +12,12 @@ const EmbedLink = ({ url }: EmbedLinkProps) => {
     <Card variant='outlined'>
       <CardActionArea>
         <CardContent>
-          <ButtonNaked color='text' size='medium' href={url} component={Link}>
+          <ButtonNaked
+            color='primary'
+            size='medium'
+            href={url}
+            component={Link}
+          >
             {url}
           </ButtonNaked>
         </CardContent>

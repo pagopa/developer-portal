@@ -17,7 +17,7 @@ export async function removeArrayOfListFromContact(event: {
         await new Promise((resolve) =>
           setTimeout(resolve, resyncTimeoutMilliseconds)
         ); // wait to avoid rate limiting
-      } catch (e) {
+      } catch {
         unsubscriptionsWithErrors.push(id.toString());
       }
     },

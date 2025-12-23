@@ -6,7 +6,7 @@ import {
 } from '@/components/atoms/InfoCardItem/ProfileDataCardItem';
 import { isProduction } from '@/config';
 import { Box, Button, Card, Divider, Stack, Typography } from '@mui/material';
-import { ButtonNaked } from '@pagopa/mui-italia';
+
 import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 
@@ -43,18 +43,16 @@ export const ProfileDataCard = ({
     />
   ) : (
     <Stack sx={{ display: 'flex', flexDirection: 'row' }}>
-      <ButtonNaked
+      <Button
         color='primary'
-        fontWeight={600}
-        fontSize={16}
-        sx={{ paddingLeft: 0, paddingRight: 0 }}
+        sx={{ paddingLeft: 0, paddingRight: 0, fontWeight: 600, fontSize: 16 }}
         onClick={() => {
           setEditing(false);
           setDataSectionItems([...items]);
         }}
       >
         {t('personalData.cancel')}
-      </ButtonNaked>
+      </Button>
       <Button
         disabled={isButtonDisabled}
         variant='contained'
@@ -62,7 +60,9 @@ export const ProfileDataCard = ({
         onClick={() => {
           if (isButtonDisabled) return;
           setEditing(false);
-          onValue && onValue(dataSectionItems);
+          if (onValue) {
+            onValue(dataSectionItems);
+          }
         }}
       >
         {t('personalData.save')}
@@ -71,14 +71,12 @@ export const ProfileDataCard = ({
   );
 
   const addValueComponent = !isProduction ? (
-    <ButtonNaked
+    <Button
       color='primary'
-      fontWeight={600}
-      fontSize={16}
-      sx={{ paddingLeft: 0, paddingRight: 0 }}
+      sx={{ paddingLeft: 0, paddingRight: 0, fontWeight: 600, fontSize: 16 }}
     >
       {t('personalData.addField')}
-    </ButtonNaked>
+    </Button>
   ) : null;
 
   return (

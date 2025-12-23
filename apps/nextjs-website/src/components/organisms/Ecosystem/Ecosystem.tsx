@@ -3,7 +3,7 @@ import React from 'react';
 import { Box, useTheme } from '@mui/material';
 import TabComponent from '@/components/atoms/TabComponent/TabComponent';
 import CardsGrid from '@/components/molecules/CardsGrid/CardsGrid';
-import { ButtonNaked } from '@pagopa/mui-italia';
+import { Button } from '@mui/material';
 import Link from 'next/link';
 import { HomepageProps } from '@/app/page';
 import SectionTitle from '@/components/molecules/SectionTitle/SectionTitle';
@@ -62,7 +62,7 @@ const Ecosystem = ({
                   )}
                   {solutionsCta && (
                     <Box textAlign={'center'}>
-                      <ButtonNaked
+                      <Button
                         component={Link}
                         href={solutionsCta.link.href}
                         color={'primary'}
@@ -71,7 +71,7 @@ const Ecosystem = ({
                         target={solutionsCta.link.target ?? '_self'}
                       >
                         {solutionsCta.link.text}
-                      </ButtonNaked>
+                      </Button>
                     </Box>
                   )}
                 </>

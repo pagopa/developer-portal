@@ -42,6 +42,7 @@ describe('makeWebinarCategoryProps', () => {
       ...strapiWebinarCategories.data[0],
       attributes: {
         ...strapiWebinarCategories.data[0].attributes,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         icon: undefined as any,
       },
     } satisfies StrapiWebinarCategory;

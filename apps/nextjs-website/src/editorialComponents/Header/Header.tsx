@@ -1,7 +1,7 @@
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import { useTheme, type SxProps } from '@mui/material/styles';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { type CommonProps } from '../types/components';
 import { Ctas, type CtaProps } from '../Ctas/Ctas';
 import { HamburgerMenu } from './components/HamburgerMenu';
@@ -25,9 +25,9 @@ export const Header = (props: HeaderProps) => {
     setHeaderOpen(false);
   };
 
-  const onResize = () => {
+  const onResize = useCallback(() => {
     closeHeader();
-  };
+  }, []);
 
   useEffect(() => {
     window.addEventListener('resize', onResize);
@@ -35,7 +35,7 @@ export const Header = (props: HeaderProps) => {
     return () => {
       window.removeEventListener('resize', onResize);
     };
-  }, []);
+  }, [onResize]);
 
   const { palette } = useTheme();
   const backgroundColor =

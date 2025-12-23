@@ -4,15 +4,14 @@ import { GitBookContentData } from '@/lib/types/gitBookContent';
 
 export async function GET(
   request: Request,
-  {
-    params,
-  }: {
-    readonly params: {
+  props: {
+    readonly params: Promise<{
       readonly productSlug: string;
       readonly releaseNoteSubPathSlugs: readonly string[];
-    };
+    }>;
   }
 ) {
+  const params = await props.params;
   const { productSlug, releaseNoteSubPathSlugs } = params;
   const noteSegments = Array.isArray(releaseNoteSubPathSlugs)
     ? ['release-note', ...releaseNoteSubPathSlugs]

@@ -2,6 +2,17 @@
 import { Box } from '@mui/material';
 import Script from 'next/script';
 
+// Define window interface for OneTrust
+interface OneTrustWindow extends Window {
+  OneTrust: {
+    NoticeApi: {
+      Initialized: Promise<void>;
+      // eslint-disable-next-line functional/no-return-void
+      LoadNotices: (urls: string[]) => void;
+    };
+  };
+}
+
 const TermsOfServiceTemplate = () => {
   return (
     <Box py={6}>
@@ -14,14 +25,13 @@ const TermsOfServiceTemplate = () => {
         src='https://privacyportalde-cdn.onetrust.com/privacy-notice-scripts/otnotice-1.0.min.js'
         type='text/javascript'
         id='otprivacy-notice-script'
+        // eslint-disable-next-line functional/no-return-void
         onReady={() => {
-          // eslint-disable-next-line no-var
-          var settings =
-            'eyJjYWxsYmFja1VybCI6Imh0dHBzOi8vcHJpdmFjeXBvcnRhbC1kZS5vbmV0cnVzdC5jb20vcmVxdWVzdC92MS9wcml2YWN5Tm90aWNlcy9zdGF0cy92aWV3cyJ9';
-          if ((window as any).OneTrust) {
+          const oneTrustWindow = window as unknown as OneTrustWindow;
+          if (oneTrustWindow.OneTrust) {
             // To ensure external settings are loaded, use the Initialized promise:
-            (window as any).OneTrust.NoticeApi.Initialized.then(() => {
-              (window as any).OneTrust.NoticeApi.LoadNotices([
+            oneTrustWindow.OneTrust.NoticeApi.Initialized.then(() => {
+              oneTrustWindow.OneTrust.NoticeApi.LoadNotices([
                 'https://privacyportalde-cdn.onetrust.com/77f17844-04c3-4969-a11d-462ee77acbe1/privacy-notices/30a52037-d537-4347-9dfc-cfc0cc7d5d13.json',
               ]);
             });

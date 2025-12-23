@@ -32,9 +32,10 @@ export type UseCasesPageProps = {
 } & ProductLayoutProps;
 
 export async function generateMetadata(
-  { params }: ProductParams,
+  props: ProductParams,
   parent: ResolvingMetadata
 ): Promise<Metadata> {
+  const params = await props.params;
   const resolvedParent = await parent;
   const { product, abstract, path, seo } = await getUseCaseListPageProps(
     params.productSlug
@@ -53,7 +54,8 @@ export async function generateMetadata(
   });
 }
 
-const UseCasesPage = async ({ params }: ProductParams) => {
+const UseCasesPage = async (props: ProductParams) => {
+  const params = await props.params;
   const { productSlug } = params;
   const { abstract, bannerLinks, path, useCases, seo, product, enableFilters } =
     await getUseCaseListPageProps(productSlug);
