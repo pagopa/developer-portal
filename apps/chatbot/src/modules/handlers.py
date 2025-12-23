@@ -43,7 +43,7 @@ except ImportError:
 from src.modules.logger import get_logger
 
 
-LOGGER = get_logger(__name__)
+LOGGER = get_logger(__name__, level=os.getenv("LOG_LEVEL", "info"))
 MODEL_ID = os.getenv("CHB_MODEL_ID")
 EMBED_MODEL_ID = os.getenv("CHB_EMBED_MODEL_ID")
 RERANKER_ID = os.getenv("CHB_RERANKER_ID")

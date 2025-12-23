@@ -6,7 +6,6 @@ from llama_index.core.llms import ChatMessage, MessageRole
 from src.modules.logger import get_logger
 from src.modules.models import get_llm, get_embed_model
 from src.modules.evaluator import Evaluator
-from src.modules.monitor import add_langfuse_score
 from src.modules.settings import SETTINGS
 
 
@@ -54,7 +53,6 @@ class Judge:
 
     def evaluate(
         self,
-        trace_id: str,
         query_str: str,
         response_str: str,
         retrieved_contexts: List[str],
@@ -74,12 +72,5 @@ class Judge:
             response_str=response_str,
             retrieved_contexts=retrieved_contexts,
         )
-        for key, value in scores.items():
-            add_langfuse_score(
-                trace_id=trace_id,
-                name=key,
-                value=value,
-                data_type="NUMERIC",
-            )
 
         return scores

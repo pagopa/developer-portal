@@ -21,6 +21,7 @@ from langfuse._client.span import (
 from src.modules.logger import get_logger
 from src.modules.settings import SETTINGS
 from src.modules.presidio import PresidioPII
+from src.database_models import tables
 
 
 LOGGER = get_logger(__name__)
@@ -188,16 +189,40 @@ def create_langfuse_child(
     obs.end()
 
 
+def mask_chat_history(messages: List[Dict[str, str]]) -> List[Dict[str, str]]:
+    """Masks PII in the chat history.
+    Args:
+        chat_history (List[Dict[str, str]]): The chat history.
+
+    Returns:
+        List[Dict[str, str]]: The masked chat history.
+    """
+
+    chat_history = []
+    if messages:
+        for message in messages:
+            user_content = message["question"]
+            assistant_content = message["answer"]
+            chat_history.append(
+                {
+                    "user": PRESIDIO.mask_pii(user_content),
+                    "assistant": PRESIDIO.mask_pii(assistant_content),
+                }
+            )
+    return chat_history
+
+
 def create_langfuse_trace(
     trace_id: str,
     user_id: str,
     session_id: str,
     query: str,
-    chat_history: List[Dict[str, str]],
+    messages: List[Dict[str, str]],
     response: str,
     contexts: List[str],
     tags: List[str],
     spans: List[dict],
+    query_for_database: dict,
 ) -> None:
     """Creates a Langfuse trace from a list of span dictionaries.
     Args:
@@ -205,11 +230,12 @@ def create_langfuse_trace(
         user_id (str): The ID of the user.
         session_id (str): The ID of the session.
         query (str): The user query.
-        chat_history (List[Dict[str, str]]): The chat history.
+        messages (List[Dict[str, str]]): The chat messages between the user and the assistant.
         response (str): The chat response.
         contexts (List[str]): The retrieved contexts.
         tags (List[str]): The tags for the trace.
         spans (List[dict]): The list of span dictionaries.
+        query_for_database (dict): The query data to save to the database.
     """
 
     span_root = spans[0]
@@ -224,12 +250,15 @@ def create_langfuse_trace(
         child["attributes"]["openinference.span.kind"] = "SPAN"
         [create_langfuse_child(root, child, spans) for child in root_children]
 
+    query_masked = PRESIDIO.mask_pii(query)
+    response_masked = PRESIDIO.mask_pii(response)
+
     root.update_trace(
         input={
-            "query": PRESIDIO.mask_pii(query),
-            "chat_history": chat_history,
+            "query": query_masked,
+            "chat_history": mask_chat_history(messages),
         },
-        output=PRESIDIO.mask_pii(response),
+        output=response_masked,
         metadata={"contexts": contexts},
         user_id=user_id,
         session_id=session_id,
@@ -238,6 +267,14 @@ def create_langfuse_trace(
     root.end()
     LANGFUSE_CLIENT.flush()
     LOGGER.info(f"Created trace with ID: {trace_id} successfully!")
+
+    query_for_database["question"] = query_masked
+    query_for_database["answer"] = response_masked
+    save_query_to_database(query_for_database=query_for_database)
+
+
+def save_query_to_database(query_for_database: dict) -> None:
+    tables["queries"].put_item(Item=query_for_database)
 
 
 def add_langfuse_score(
@@ -257,12 +294,15 @@ def add_langfuse_score(
             Defaults to None.
     """
 
-    LANGFUSE_CLIENT.create_score(
-        trace_id=trace_id,
-        name=name,
-        value=score,
-        data_type=data_type,
-        comment=comment,
-    )
-    LANGFUSE_CLIENT.flush()
-    LOGGER.info(f"Added {name}: {score} to trace with ID: {trace_id} successfully!")
+    try:
+        LANGFUSE_CLIENT.create_score(
+            trace_id=trace_id,
+            name=name,
+            value=score,
+            data_type=data_type,
+            comment=comment,
+        )
+        LANGFUSE_CLIENT.flush()
+        LOGGER.info(f"Added {name}: {score} to trace with ID: {trace_id} successfully!")
+    except Exception as e:
+        LOGGER.error(f"Failed to add score to trace {trace_id}: {e}")
