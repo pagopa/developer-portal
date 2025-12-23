@@ -71,8 +71,7 @@ export function minimalDataTutorials() {
 export function tutorialsWithItemMissingData() {
   const strapiTutorial = strapiTutorials.data[0];
   return {
-    ...strapiTutorials,
-    ...[
+    data: [
       {
         ...strapiTutorial,
         title: undefined,
