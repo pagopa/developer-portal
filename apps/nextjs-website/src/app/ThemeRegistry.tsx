@@ -4,7 +4,15 @@ import createCache from '@emotion/cache';
 import { useServerInsertedHTML } from 'next/navigation';
 import { CacheProvider } from '@emotion/react';
 import CssBaseline from '@mui/material/CssBaseline';
-import { createTheme, ThemeProvider, alpha, Theme, Palette, PaletteColorOptions, PaletteColor } from '@mui/material';
+import {
+  createTheme,
+  ThemeProvider,
+  alpha,
+  Theme,
+  Palette,
+  PaletteColorOptions,
+  PaletteColor,
+} from '@mui/material';
 import type { Options } from '@emotion/cache';
 import { CSSProperties } from 'react';
 import { indigo } from '@mui/material/colors';
@@ -161,12 +169,20 @@ declare module '@mui/material/Chip' {
   }
 }
 
-
 // --- Foundation (Base Theme) ---
 const shadowValues = {
-  4: `0px 2px 4px -1px ${alpha(shadowColor, 0.1)}, 0px 4px 5px ${alpha(shadowColor, 0.05)}, 0px 1px 10px ${alpha(shadowColor, 0.1)}`,
-  8: `0px 8px 10px -5px ${alpha(shadowColor, 0.1)}, 0px 16px 24px 2px ${alpha(shadowColor, 0.05)}, 0px 6px 30px 5px ${alpha(shadowColor, 0.1)}`,
-  16: `0px 8px 10px -5px ${alpha(shadowColor, 0.1)}, 0px 16px 24px 2px ${alpha(shadowColor, 0.05)}, 0px 6px 30px 5px ${alpha(shadowColor, 0.1)}`,
+  4: `0px 2px 4px -1px ${alpha(shadowColor, 0.1)}, 0px 4px 5px ${alpha(
+    shadowColor,
+    0.05
+  )}, 0px 1px 10px ${alpha(shadowColor, 0.1)}`,
+  8: `0px 8px 10px -5px ${alpha(shadowColor, 0.1)}, 0px 16px 24px 2px ${alpha(
+    shadowColor,
+    0.05
+  )}, 0px 6px 30px 5px ${alpha(shadowColor, 0.1)}`,
+  16: `0px 8px 10px -5px ${alpha(shadowColor, 0.1)}, 0px 16px 24px 2px ${alpha(
+    shadowColor,
+    0.05
+  )}, 0px 6px 30px 5px ${alpha(shadowColor, 0.1)}`,
 };
 const shadowsArray = Array(25).fill('none') as any;
 
@@ -178,14 +194,29 @@ const foundation = {
     mode: 'light',
     common: { black: '#000', white: '#fff' },
     background: { paper: '#FFFFFF', default: '#F2F2F2' },
-    primary: { main: '#0073E6', light: '#2185E9', dark: '#0062C3', contrastText: '#FFFFFF', 100: '#C4DCF5' },
-    secondary: { main: '#00C5CA', light: '#21CDD1', dark: '#00A7AC', contrastText: '#FFFFFF' },
+    primary: {
+      main: '#0073E6',
+      light: '#2185E9',
+      dark: '#0062C3',
+      contrastText: '#FFFFFF',
+      100: '#C4DCF5',
+    },
+    secondary: {
+      main: '#00C5CA',
+      light: '#21CDD1',
+      dark: '#00A7AC',
+      contrastText: '#FFFFFF',
+    },
     pagoPA: { main: '#0066CC', contrastText: '#fff' },
     checkIban: { main: '#008CA8', contrastText: '#fff' },
     europeanUnion: { main: '#264CA4', contrastText: '#fff' },
     indigo: { main: indigo[500], contrastText: '#fff' },
     negative: { main: '#FFFFFF', contrastText: '#0066CC' },
-    text: { primary: colorTextPrimary, secondary: '#5C6F82', disabled: '#A2ADB8' },
+    text: {
+      primary: colorTextPrimary,
+      secondary: '#5C6F82',
+      disabled: '#A2ADB8',
+    },
     action: {
       active: '#5C6F82',
       hover: 'rgba(23, 50, 77, 0.08)',
@@ -201,20 +232,40 @@ const foundation = {
     },
     divider: '#E3E7EB',
     error: {
-      main: '#FE6666', dark: '#D85757', light: '#FE7A7A', extraLight: '#FB9EAC',
-      contrastText: colorTextPrimary, 100: '#FFE0E0', 850: '#761F1F',
+      main: '#FE6666',
+      dark: '#D85757',
+      light: '#FE7A7A',
+      extraLight: '#FB9EAC',
+      contrastText: colorTextPrimary,
+      100: '#FFE0E0',
+      850: '#761F1F',
     },
     info: {
-      main: '#6BCFFB', dark: '#5BB0D5', light: '#7ED5FC', extraLight: '#86E1FD',
-      contrastText: colorTextPrimary, 100: '#E1F5FE', 850: '#215C76',
+      main: '#6BCFFB',
+      dark: '#5BB0D5',
+      light: '#7ED5FC',
+      extraLight: '#86E1FD',
+      contrastText: colorTextPrimary,
+      100: '#E1F5FE',
+      850: '#215C76',
     },
     success: {
-      main: '#6CC66A', dark: '#5CA85A', light: '#7FCD7D', extraLight: '#B5E2B4',
-      contrastText: colorTextPrimary, 100: '#E1F4E1', 850: '#224021',
+      main: '#6CC66A',
+      dark: '#5CA85A',
+      light: '#7FCD7D',
+      extraLight: '#B5E2B4',
+      contrastText: colorTextPrimary,
+      100: '#E1F4E1',
+      850: '#224021',
     },
     warning: {
-      main: '#FFCB46', dark: '#D9AD3C', light: '#FFD25E', extraLight: '#FFE5A3',
-      contrastText: colorTextPrimary, 100: '#FFF5DA', 850: '#614C15',
+      main: '#FFCB46',
+      dark: '#D9AD3C',
+      light: '#FFD25E',
+      extraLight: '#FFE5A3',
+      contrastText: colorTextPrimary,
+      100: '#FFF5DA',
+      850: '#614C15',
     },
   },
   typography: {
@@ -235,55 +286,92 @@ const foundation = {
 export const theme = createTheme(foundation as any, {
   typography: {
     headline: {
-      fontSize: pxToRem(58), fontFamily: mainTypeface, color: colorTextPrimary,
-      lineHeight: 1.1, fontWeight: 700,
+      fontSize: pxToRem(58),
+      fontFamily: mainTypeface,
+      color: colorTextPrimary,
+      lineHeight: 1.1,
+      fontWeight: 700,
     },
     h1: {
-      fontSize: pxToRem(42), lineHeight: 1.1, fontWeight: 700,
+      fontSize: pxToRem(42),
+      lineHeight: 1.1,
+      fontWeight: 700,
       [`@media (min-width:640px)`]: { fontSize: pxToRem(50), lineHeight: 1.08 },
     },
     h2: {
-      fontSize: pxToRem(36), lineHeight: 1.1, fontWeight: 700,
+      fontSize: pxToRem(36),
+      lineHeight: 1.1,
+      fontWeight: 700,
       [`@media (min-width:640px)`]: { fontSize: pxToRem(44), lineHeight: 1.09 },
     },
     h3: {
-      fontSize: pxToRem(32), lineHeight: 1.125, fontWeight: 700,
+      fontSize: pxToRem(32),
+      lineHeight: 1.125,
+      fontWeight: 700,
       [`@media (min-width:640px)`]: { fontSize: pxToRem(38), lineHeight: 1.1 },
     },
     h4: {
-      fontSize: pxToRem(28), lineHeight: 1.15, fontWeight: 700,
-      [`@media (min-width:640px)`]: { fontSize: pxToRem(32), lineHeight: 1.125 },
+      fontSize: pxToRem(28),
+      lineHeight: 1.15,
+      fontWeight: 700,
+      [`@media (min-width:640px)`]: {
+        fontSize: pxToRem(32),
+        lineHeight: 1.125,
+      },
     },
     h5: {
-      fontSize: pxToRem(24), lineHeight: 1.15, fontWeight: 600,
+      fontSize: pxToRem(24),
+      lineHeight: 1.15,
+      fontWeight: 600,
       [`@media (min-width:640px)`]: { fontSize: pxToRem(28), lineHeight: 1.5 },
     },
     h6: {
-      fontSize: pxToRem(22), lineHeight: 1.18, fontWeight: 600,
+      fontSize: pxToRem(22),
+      lineHeight: 1.18,
+      fontWeight: 600,
       [`@media (min-width:640px)`]: { fontSize: pxToRem(24), lineHeight: 1.15 },
     },
     sidenav: {
-      fontFamily: mainTypeface, fontSize: pxToRem(18), lineHeight: 1.35,
-      color: colorTextPrimary, fontWeight: 600,
+      fontFamily: mainTypeface,
+      fontSize: pxToRem(18),
+      lineHeight: 1.35,
+      color: colorTextPrimary,
+      fontWeight: 600,
     },
     body1: {
-      fontSize: pxToRem(18), lineHeight: 1.5, fontWeight: 400, letterSpacing: 0,
+      fontSize: pxToRem(18),
+      lineHeight: 1.5,
+      fontWeight: 400,
+      letterSpacing: 0,
     },
     body2: {
-      fontSize: pxToRem(16), lineHeight: 1.4, fontWeight: 400, letterSpacing: 0.15,
+      fontSize: pxToRem(16),
+      lineHeight: 1.4,
+      fontWeight: 400,
+      letterSpacing: 0.15,
     },
     button: { lineHeight: 1.2, textTransform: 'none', letterSpacing: 0 },
     caption: { fontSize: pxToRem(14), lineHeight: 1.4, fontWeight: 400 },
     'caption-semibold': {
-      fontFamily: mainTypeface, fontSize: pxToRem(14), lineHeight: 1.4,
-      color: colorTextPrimary, fontWeight: 600,
+      fontFamily: mainTypeface,
+      fontSize: pxToRem(14),
+      lineHeight: 1.4,
+      color: colorTextPrimary,
+      fontWeight: 600,
     },
     monospaced: {
-      fontFamily: monospacedTypeface, fontSize: pxToRem(16), lineHeight: 1.4,
-      color: colorTextPrimary, letterSpacing: '0.15px', fontWeight: 400,
+      fontFamily: monospacedTypeface,
+      fontSize: pxToRem(16),
+      lineHeight: 1.4,
+      color: colorTextPrimary,
+      letterSpacing: '0.15px',
+      fontWeight: 400,
     },
     overline: {
-      fontSize: pxToRem(14), lineHeight: 1.15, fontWeight: 700, letterSpacing: 1,
+      fontSize: pxToRem(14),
+      lineHeight: 1.15,
+      fontWeight: 700,
+      letterSpacing: 1,
     },
     subtitle1: { fontWeight: 600 },
     subtitle2: { fontSize: pxToRem(14), fontWeight: 600 },
@@ -309,9 +397,24 @@ export const theme = createTheme(foundation as any, {
             '&:hover': { backgroundColor: '#0055AA' },
           },
         },
-        sizeSmall: { height: '40px', padding: '0 20px', fontSize: pxToRem(14), lineHeight: 1.25 },
-        sizeMedium: { height: '48px', padding: '0 24px', fontSize: pxToRem(16), lineHeight: 1.25 },
-        sizeLarge: { height: '56px', padding: '0 24px', fontSize: pxToRem(18), lineHeight: 1.2 },
+        sizeSmall: {
+          height: '40px',
+          padding: '0 20px',
+          fontSize: pxToRem(14),
+          lineHeight: 1.25,
+        },
+        sizeMedium: {
+          height: '48px',
+          padding: '0 24px',
+          fontSize: pxToRem(16),
+          lineHeight: 1.25,
+        },
+        sizeLarge: {
+          height: '56px',
+          padding: '0 24px',
+          fontSize: pxToRem(18),
+          lineHeight: 1.2,
+        },
         outlined: {
           borderWidth: '2px',
           '&:hover': { borderWidth: '2px' },
@@ -319,11 +422,17 @@ export const theme = createTheme(foundation as any, {
         },
         outlinedPrimary: {
           borderColor: foundation.palette.primary.main,
-          '&:hover': { color: foundation.palette.primary.dark, borderColor: 'currentColor' },
+          '&:hover': {
+            color: foundation.palette.primary.dark,
+            borderColor: 'currentColor',
+          },
         },
         outlinedError: {
           borderColor: foundation.palette.error.main,
-          '&:hover': { color: foundation.palette.error.dark, borderColor: 'currentColor' },
+          '&:hover': {
+            color: foundation.palette.error.dark,
+            borderColor: 'currentColor',
+          },
           '&.Mui-focusVisible': {
             borderRadius: focusBorderRadius,
             outline: `solid ${focusWidth} ${foundation.palette.error.main}`,
@@ -336,8 +445,14 @@ export const theme = createTheme(foundation as any, {
         {
           props: { variant: 'naked' },
           style: {
-            color: foundation.palette.text.primary, padding: 0, height: 'auto', minWidth: 'auto',
-            '&:hover': { color: alpha(foundation.palette.text.primary, 0.8), backgroundColor: 'transparent' },
+            color: foundation.palette.text.primary,
+            padding: 0,
+            height: 'auto',
+            minWidth: 'auto',
+            '&:hover': {
+              color: alpha(foundation.palette.text.primary, 0.8),
+              backgroundColor: 'transparent',
+            },
             '&.Mui-focusVisible': {
               borderRadius: focusBorderRadius,
               outline: `solid ${focusWidth} ${foundation.palette.text.primary}`,
@@ -379,8 +494,12 @@ export const theme = createTheme(foundation as any, {
       styleOverrides: {
         root: {
           color: foundation.palette.primary.main,
-          '&:hover': { backgroundColor: alpha(foundation.palette.primary.main, 0.08) },
-          '&:active': { backgroundColor: alpha(foundation.palette.primary.main, 0.2) },
+          '&:hover': {
+            backgroundColor: alpha(foundation.palette.primary.main, 0.08),
+          },
+          '&:active': {
+            backgroundColor: alpha(foundation.palette.primary.main, 0.2),
+          },
           '&.Mui-focusVisible': {
             backgroundColor: alpha(foundation.palette.primary.main, 0.2),
             outline: `solid ${focusWidth} ${foundation.palette.primary.main}`,
@@ -402,8 +521,12 @@ export const theme = createTheme(foundation as any, {
     MuiTooltip: {
       styleOverrides: {
         tooltip: {
-          fontSize: pxToRem(14), backgroundColor: '#455B71', fontWeight: 600,
-          textAlign: 'center', boxShadow: '0px 8px 10px -5px rgba(0, 43, 85, 0.1), 0px 16px 24px 2px rgba(0, 43, 85, 0.05), 0px 6px 30px 5px rgba(0, 43, 85, 0.1)',
+          fontSize: pxToRem(14),
+          backgroundColor: '#455B71',
+          fontWeight: 600,
+          textAlign: 'center',
+          boxShadow:
+            '0px 8px 10px -5px rgba(0, 43, 85, 0.1), 0px 16px 24px 2px rgba(0, 43, 85, 0.05), 0px 6px 30px 5px rgba(0, 43, 85, 0.1)',
         },
         arrow: { color: '#455B71' },
       },
@@ -439,7 +562,10 @@ export const theme = createTheme(foundation as any, {
           [`@media (min-width:640px)`]: { padding: '16px' },
         },
         icon: {
-          opacity: 1, padding: 0, alignItems: 'center', marginRight: '8px',
+          opacity: 1,
+          padding: 0,
+          alignItems: 'center',
+          marginRight: '8px',
           [`@media (min-width:640px)`]: { marginRight: '16px' },
         },
         message: { padding: 0, overflow: 'inherit' },
@@ -475,18 +601,24 @@ export const theme = createTheme(foundation as any, {
     MuiAlertTitle: {
       styleOverrides: {
         root: {
-          fontSize: pxToRem(16), fontWeight: 600, letterSpacing: 0.15, margin: 0,
+          fontSize: pxToRem(16),
+          fontWeight: 600,
+          letterSpacing: 0.15,
+          margin: 0,
           [`@media (min-width:640px)`]: { fontSize: pxToRem(16) },
         },
       },
     },
     MuiCard: { styleOverrides: { root: { borderRadius: '8px' } } },
     MuiCardContent: { styleOverrides: { root: { padding: '24px' } } },
-    MuiCardActions: { styleOverrides: { root: { padding: '24px', paddingTop: 0 } } },
+    MuiCardActions: {
+      styleOverrides: { root: { padding: '24px', paddingTop: 0 } },
+    },
     MuiSnackbarContent: {
       styleOverrides: {
         root: {
-          padding: '16px', color: foundation.palette.text.primary,
+          padding: '16px',
+          color: foundation.palette.text.primary,
           backgroundColor: '#FFFFFF',
           boxShadow: '0px 2px 4px -1px rgba(0, 43, 85, 0.1)',
         },

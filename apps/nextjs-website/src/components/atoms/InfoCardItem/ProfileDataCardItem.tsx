@@ -20,9 +20,9 @@ export type ProfileDataCardItemProps = {
   editable: boolean;
   required: boolean;
 } & (
-    | { type: 'select'; values: { title: string; value: string }[] }
-    | { type: 'text' }
-  );
+  | { type: 'select'; values: { title: string; value: string }[] }
+  | { type: 'text' }
+);
 
 export type ProfileDataCardItemEditingProps = {
   editing: boolean;
@@ -145,8 +145,8 @@ export const ProfileDataCardItem = (
         >
           {infoCardItem.type === 'select'
             ? infoCardItem.values.find(
-              ({ value }) => value === infoCardItem.value
-            )?.title
+                ({ value }) => value === infoCardItem.value
+              )?.title
             : infoCardItem.value}
         </Typography>
       ) : (

@@ -29,8 +29,7 @@ const StyledTreeItem = styled(TreeItem)(({ theme }) => ({
     paddingRight: 32,
     alignItems: 'space-between',
   },
-  [`& .MuiTreeItem-content:has(.MuiTreeItem-iconContainer:empty)`]:
-  {
+  [`& .MuiTreeItem-content:has(.MuiTreeItem-iconContainer:empty)`]: {
     paddingRight: 0,
   },
   [`& .MuiTreeItem-iconContainer`]: {

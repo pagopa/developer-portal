@@ -65,7 +65,12 @@ const ChangePasswordContent = () => {
     case State.errorLink:
       return (
         <PageBackgroundWrapper>
-          <SingleCard icon={<ErrorOutlineIcon sx={{ fontSize: 64, color: 'error.main' }} />} title={confirmation('title')} />
+          <SingleCard
+            icon={
+              <ErrorOutlineIcon sx={{ fontSize: 64, color: 'error.main' }} />
+            }
+            title={confirmation('title')}
+          />
         </PageBackgroundWrapper>
       );
     case State.success:

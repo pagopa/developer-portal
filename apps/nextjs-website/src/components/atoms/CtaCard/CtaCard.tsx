@@ -92,7 +92,12 @@ const CtaCard = ({
                     '& > span': { marginBottom: 1 },
                   }}
                 >
-                  <Chip label={label.label} color='primary' variant='outlined' size="small" />
+                  <Chip
+                    label={label.label}
+                    color='primary'
+                    variant='outlined'
+                    size='small'
+                  />
                 </Box>
               ))}
             </Box>

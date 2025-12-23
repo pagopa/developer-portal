@@ -85,9 +85,9 @@ export default function WebinarQuestionRow({
         <Typography fontStyle={'italic'} fontSize={14}>
           {!isHidden
             ? question.id.createdAt.toLocaleTimeString(
-              defaultLocale,
-              timeOptions
-            )
+                defaultLocale,
+                timeOptions
+              )
             : ''}
         </Typography>
         <Typography>
@@ -115,9 +115,7 @@ export default function WebinarQuestionRow({
           )}
           {!isHidden && isHighlighted && (
             <IconButton
-              onClick={() =>
-                navigator.clipboard.writeText(question.question)
-              }
+              onClick={() => navigator.clipboard.writeText(question.question)}
               sx={{ color: tcColor }}
             >
               <ContentCopyIcon />

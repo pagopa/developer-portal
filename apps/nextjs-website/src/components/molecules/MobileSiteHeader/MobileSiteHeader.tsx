@@ -36,8 +36,7 @@ export const MobileSiteHeaderStyledTreeItem = styled(TreeItem)(({ theme }) => ({
   [`& .MuiTreeItem-content:hover`]: {
     backgroundColor: `${theme.palette.common.white} !important`,
   },
-  [`& .MuiTreeItem-content:has(.MuiTreeItem-iconContainer:empty)`]:
-  {
+  [`& .MuiTreeItem-content:has(.MuiTreeItem-iconContainer:empty)`]: {
     paddingRight: 0,
   },
   [`& .MuiTreeItem-iconContainer`]: {

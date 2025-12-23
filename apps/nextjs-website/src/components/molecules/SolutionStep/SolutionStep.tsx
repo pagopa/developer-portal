@@ -41,7 +41,12 @@ const SolutionStep = ({
         <Box display='flex' flexWrap={'wrap'} gap={1}>
           {products.map((product, index) => (
             <Link key={index} href={product.href}>
-              <Chip label={product.label} color='primary' variant='outlined' size="small" />
+              <Chip
+                label={product.label}
+                color='primary'
+                variant='outlined'
+                size='small'
+              />
             </Link>
           ))}
         </Box>

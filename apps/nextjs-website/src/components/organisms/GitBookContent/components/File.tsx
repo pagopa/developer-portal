@@ -2,7 +2,6 @@ import { Button } from '@mui/material';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import { FileProps } from 'gitbook-docs/markdoc/schema/file';
 
-
 const File = ({ src, filename }: FileProps) => (
   <Button
     variant='outlined'

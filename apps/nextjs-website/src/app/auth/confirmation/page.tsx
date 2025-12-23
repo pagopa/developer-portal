@@ -82,7 +82,9 @@ const ConfirmationContent = () => {
       return (
         <PageBackgroundWrapper>
           <SingleCard
-            icon={<ErrorOutlineIcon sx={{ fontSize: 64, color: 'error.main' }} />}
+            icon={
+              <ErrorOutlineIcon sx={{ fontSize: 64, color: 'error.main' }} />
+            }
             title={t('confirmation.title')}
             cta={
               <Button

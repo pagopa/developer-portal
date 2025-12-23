@@ -61,8 +61,8 @@ const ConfirmLogin = ({
   const helperText = errors.codeError
     ? confirmLogin('invalidCode')
     : errors.emptyCode
-      ? confirmLogin('emptyCode')
-      : '';
+    ? confirmLogin('emptyCode')
+    : '';
 
   return (
     <Box

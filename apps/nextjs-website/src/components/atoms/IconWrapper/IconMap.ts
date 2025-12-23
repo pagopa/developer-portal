@@ -23,7 +23,11 @@ import TrendingUp from '@mui/icons-material/TrendingUp';
 import Twitter from '@mui/icons-material/Twitter';
 import VpnKey from '@mui/icons-material/VpnKey';
 import Code from '@mui/icons-material/Code';
-import { ChangeCircle, TimerOutlined, Article as ArticleIcon } from '@mui/icons-material';
+import {
+  ChangeCircle,
+  TimerOutlined,
+  Article as ArticleIcon,
+} from '@mui/icons-material';
 
 export const ICON_MAP = {
   AccountBalance: AccountBalance,
