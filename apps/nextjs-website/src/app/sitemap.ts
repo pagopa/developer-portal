@@ -31,7 +31,7 @@ function getProductsPagesProps(
 ) {
   return productSlugs.map((productSlug) => {
     const overview = overviewProps.find(
-      (overviewData) => overviewData.product.slug === productSlug
+      (overviewData) => overviewData.product?.slug === productSlug
     );
     const tutorialList = tutorialListPages.find(
       ({ product }) => product.slug === productSlug
