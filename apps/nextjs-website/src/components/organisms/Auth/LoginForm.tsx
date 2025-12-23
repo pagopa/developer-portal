@@ -187,6 +187,7 @@ const LoginForm = ({
                             onClick={handleClickShowPassword}
                             onMouseDown={handleMouseDownPassword}
                             edge='end'
+                            sx={{ color: 'action.active' }}
                           >
                             {showPassword ? <VisibilityOff /> : <Visibility />}
                           </IconButton>

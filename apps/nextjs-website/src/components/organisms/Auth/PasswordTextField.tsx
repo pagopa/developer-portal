@@ -36,6 +36,7 @@ export const PasswordTextField = ({
             event.preventDefault();
           }}
           edge='end'
+          sx={{ color: 'action.active' }}
         >
           {showPassword ? <VisibilityOff /> : <Visibility />}
         </IconButton>
