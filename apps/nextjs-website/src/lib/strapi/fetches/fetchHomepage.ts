@@ -15,32 +15,23 @@ const makeStrapiHomepagePopulate = () =>
       newsShowcase: {
         populate: ['link', 'items.image', 'items.link'],
       },
-      productsShowcase: {
-        populate: ['products.logo'],
-      },
       webinars: webinarPopulate,
       ecosystem: {
-        populate: [
-          'products.logo',
-          'products.bannerLinks.icon',
-          'products.overview',
-          'products.release_note',
-          'products.quickstart_guide',
-          'products.api_data_list_page',
-          'products.api_data_list_page.apiData.*',
-          'products.api_data_list_page.apiData.apiRestDetail.slug',
-          'products.api_data_list_page.apiData.apiRestDetail.specUrls',
-          'products.api_data_list_page.apiData.apiSoapDetail.*',
-          'products.guide_list_page',
-          'products.tutorial_list_page',
-          'solutions.icon',
-          'solutions.product.logo',
-          'solutionsCta.link',
-        ],
+        populate: {
+          products: {
+            populate: ['logo'],
+          },
+          solutions: {
+            populate: '*',
+          },
+          solutionsCta: {
+            populate: ['link'],
+          },
+        },
       },
-      seo: {
-        populate: '*,metaImage,metaSocial.image',
-      },
+    },
+    seo: {
+      populate: '*',
     },
   });
 
