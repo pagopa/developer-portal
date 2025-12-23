@@ -12,6 +12,7 @@ import Typography from '@mui/material/Typography';
 import NextLink from 'next/link';
 import MobileUserInfo from '@/components/atoms/MobileUserInfo/MobileUserInfo';
 import { SITE_HEADER_HEIGHT } from '@/config';
+import MobileLanguageSelector from '@/components/atoms/MobileLanguageSelector/MobileLanguageSelector';
 
 export const MobileSiteHeaderStyledTreeItem = styled(TreeItem)(({ theme }) => ({
   [`&`]: {
@@ -109,7 +110,7 @@ export const MobileSiteHeaderStyledTreeItem = styled(TreeItem)(({ theme }) => ({
   },
 }));
 
-const MobileSiteHeader = ({ products }: SiteHeaderProps) => {
+const MobileSiteHeader = ({ locale, products }: SiteHeaderProps) => {
   const t = useTranslations('devPortal');
   const { palette } = useTheme();
 
@@ -245,6 +246,14 @@ const MobileSiteHeader = ({ products }: SiteHeaderProps) => {
 
           <Divider sx={{ marginTop: -2, marginBottom: 2 }} />
           <MobileUserInfo onClick={handleClick} />
+          <Divider sx={{ marginTop: -2, marginBottom: 2 }} />
+          <MobileLanguageSelector
+            locales={[
+              { code: 'it', label: 'IT' },
+              { code: 'en', label: 'EN' },
+            ]}
+            currentLocale={locale}
+          />
         </TreeView>
       </Box>
     </Box>
