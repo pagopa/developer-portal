@@ -24,13 +24,13 @@ resource "aws_s3_bucket_ownership_controls" "ivs_recordings_oc" {
   }
 }
 
-# S3 bucket for access logs
-resource "aws_s3_bucket" "ivs_recordings_logs" {
-  bucket = "${var.project_name}-recordings-logs-${random_id.suffix.hex}"
+# S3 bucket for CloudFront access logs
+resource "aws_s3_bucket" "cloudfront_logs" {
+  bucket = "${var.project_name}-cloudfront-logs-${random_id.suffix.hex}"
 }
 
-resource "aws_s3_bucket_public_access_block" "ivs_recordings_logs_pac" {
-  bucket = aws_s3_bucket.ivs_recordings_logs.id
+resource "aws_s3_bucket_public_access_block" "cloudfront_logs_pac" {
+  bucket = aws_s3_bucket.cloudfront_logs.id
 
   block_public_acls       = true
   block_public_policy     = true
@@ -38,26 +38,58 @@ resource "aws_s3_bucket_public_access_block" "ivs_recordings_logs_pac" {
   restrict_public_buckets = true
 }
 
-resource "aws_s3_bucket_ownership_controls" "ivs_recordings_logs_oc" {
-  bucket = aws_s3_bucket.ivs_recordings_logs.id
+resource "aws_s3_bucket_ownership_controls" "cloudfront_logs_oc" {
+  bucket = aws_s3_bucket.cloudfront_logs.id
   rule {
     object_ownership = "BucketOwnerPreferred"
   }
 }
 
-resource "aws_s3_bucket_acl" "ivs_recordings_logs_acl" {
-  bucket = aws_s3_bucket.ivs_recordings_logs.id
-  acl    = "log-delivery-write"
+resource "aws_s3_bucket_acl" "cloudfront_logs_acl" {
+  bucket = aws_s3_bucket.cloudfront_logs.id
+  acl    = "private"
 
-  depends_on = [aws_s3_bucket_ownership_controls.ivs_recordings_logs_oc]
+  depends_on = [aws_s3_bucket_ownership_controls.cloudfront_logs_oc]
 }
 
-# Enable access logging for ivs_recordings bucket
-resource "aws_s3_bucket_logging" "ivs_recordings_logging" {
-  bucket = aws_s3_bucket.ivs_recordings.id
+# S3 bucket policy to allow CloudFront to write logs
+resource "aws_s3_bucket_policy" "cloudfront_logs_policy" {
+  bucket = aws_s3_bucket.cloudfront_logs.id
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Sid    = "AWSCloudFrontLogDeliveryWrite",
+        Effect = "Allow",
+        Principal = {
+          Service = "cloudfront.amazonaws.com"
+        },
+        Action   = "s3:PutObject",
+        Resource = "${aws_s3_bucket.cloudfront_logs.arn}/*",
+        Condition = {
+          StringEquals = {
+            "AWS:SourceArn" = aws_cloudfront_distribution.s3_distribution.arn
+          }
+        }
+      },
+      {
+        Sid    = "AWSCloudFrontLogDeliveryAclCheck",
+        Effect = "Allow",
+        Principal = {
+          Service = "cloudfront.amazonaws.com"
+        },
+        Action   = "s3:GetBucketAcl",
+        Resource = aws_s3_bucket.cloudfront_logs.arn,
+        Condition = {
+          StringEquals = {
+            "AWS:SourceArn" = aws_cloudfront_distribution.s3_distribution.arn
+          }
+        }
+      }
+    ]
+  })
 
-  target_bucket = aws_s3_bucket.ivs_recordings_logs.id
-  target_prefix = "access-logs/"
+  depends_on = [aws_s3_bucket_public_access_block.cloudfront_logs_pac]
 }
 
 # S3 bucket for Athena query results
@@ -88,14 +120,14 @@ resource "aws_s3_bucket_lifecycle_configuration" "athena_results_lifecycle" {
 }
 
 # Athena Database
-resource "aws_athena_database" "s3_access_logs" {
-  name   = "${replace(var.project_name, "-", "_")}_s3_access_logs"
+resource "aws_athena_database" "cloudfront_logs" {
+  name   = "${replace(var.project_name, "-", "_")}_cloudfront_logs"
   bucket = aws_s3_bucket.athena_results.id
 }
 
 # Athena Workgroup
-resource "aws_athena_workgroup" "s3_logs" {
-  name = "${var.project_name}-s3-logs"
+resource "aws_athena_workgroup" "cloudfront_logs" {
+  name = "${var.project_name}-cloudfront-logs"
 
   configuration {
     enforce_workgroup_configuration    = true
@@ -111,96 +143,149 @@ resource "aws_athena_workgroup" "s3_logs" {
   }
 }
 
-# Athena Named Query for creating the S3 access logs table
-resource "aws_athena_named_query" "create_s3_access_logs_table" {
-  name      = "create_s3_access_logs_table"
-  database  = aws_athena_database.s3_access_logs.name
-  workgroup = aws_athena_workgroup.s3_logs.id
+# Athena Named Query for creating the CloudFront access logs table
+resource "aws_athena_named_query" "create_cloudfront_logs_table" {
+  name      = "create_cloudfront_logs_table"
+  database  = aws_athena_database.cloudfront_logs.name
+  workgroup = aws_athena_workgroup.cloudfront_logs.id
   query     = <<-EOQ
-    CREATE EXTERNAL TABLE IF NOT EXISTS s3_access_logs (
-      bucketowner STRING,
-      bucket_name STRING,
-      requestdatetime STRING,
-      remoteip STRING,
-      requester STRING,
-      requestid STRING,
-      operation STRING,
-      key STRING,
-      request_uri STRING,
-      httpstatus STRING,
-      errorcode STRING,
-      bytessent BIGINT,
-      objectsize BIGINT,
-      totaltime STRING,
-      turnaroundtime STRING,
-      referrer STRING,
-      useragent STRING,
-      versionid STRING,
-      hostid STRING,
-      sigv STRING,
-      ciphersuite STRING,
-      authtype STRING,
-      endpoint STRING,
-      tlsversion STRING
+    CREATE EXTERNAL TABLE IF NOT EXISTS cloudfront_logs (
+      log_date DATE,
+      log_time STRING,
+      x_edge_location STRING,
+      sc_bytes BIGINT,
+      c_ip STRING,
+      cs_method STRING,
+      cs_host STRING,
+      cs_uri_stem STRING,
+      sc_status INT,
+      cs_referer STRING,
+      cs_user_agent STRING,
+      cs_uri_query STRING,
+      cs_cookie STRING,
+      x_edge_result_type STRING,
+      x_edge_request_id STRING,
+      x_host_header STRING,
+      cs_protocol STRING,
+      cs_bytes BIGINT,
+      time_taken FLOAT,
+      x_forwarded_for STRING,
+      ssl_protocol STRING,
+      ssl_cipher STRING,
+      x_edge_response_result_type STRING,
+      cs_protocol_version STRING,
+      fle_status STRING,
+      fle_encrypted_fields INT,
+      c_port INT,
+      time_to_first_byte FLOAT,
+      x_edge_detailed_result_type STRING,
+      sc_content_type STRING,
+      sc_content_len BIGINT,
+      sc_range_start BIGINT,
+      sc_range_end BIGINT
     )
-    ROW FORMAT SERDE 'org.apache.hadoop.hive.serde2.RegexSerDe'
-    WITH SERDEPROPERTIES (
-      'serialization.format' = '1',
-      'input.regex' = '([^ ]*) ([^ ]*) \\[(.*?)\\] ([^ ]*) ([^ ]*) ([^ ]*) ([^ ]*) ([^ ]*) (\"[^\"]*\"|-) (-|[0-9]*) ([^ ]*) ([^ ]*) ([^ ]*) ([^ ]*) ([^ ]*) ([^ ]*) (\"[^\"]*\"|-) ([^ ]*)(?: ([^ ]*) ([^ ]*) ([^ ]*) ([^ ]*) ([^ ]*) ([^ ]*))?.*$'
-    )
-    LOCATION 's3://${aws_s3_bucket.ivs_recordings_logs.bucket}/access-logs/'
+    ROW FORMAT DELIMITED
+    FIELDS TERMINATED BY '\t'
+    LOCATION 's3://${aws_s3_bucket.cloudfront_logs.bucket}/'
+    TBLPROPERTIES ('skip.header.line.count'='2')
   EOQ
 
-  description = "Creates the S3 access logs table for querying IVS recordings bucket access logs"
+  description = "Creates the CloudFront access logs table for querying video distribution access logs"
 }
 
 # Athena Named Query for sample queries
-resource "aws_athena_named_query" "sample_queries" {
-  name      = "sample_s3_access_log_queries"
-  database  = aws_athena_database.s3_access_logs.name
-  workgroup = aws_athena_workgroup.s3_logs.id
+resource "aws_athena_named_query" "sample_cloudfront_queries" {
+  name      = "sample_cloudfront_log_queries"
+  database  = aws_athena_database.cloudfront_logs.name
+  workgroup = aws_athena_workgroup.cloudfront_logs.id
   query     = <<-EOQ
-    -- Sample queries for S3 access logs
+    -- Sample queries for CloudFront access logs
 
     -- 1. Count requests by HTTP status
-    SELECT httpstatus, COUNT(*) as count
-    FROM s3_access_logs
-    GROUP BY httpstatus
+    SELECT sc_status, COUNT(*) as count
+    FROM cloudfront_logs
+    GROUP BY sc_status
     ORDER BY count DESC;
 
-    -- 2. Top 10 most accessed objects
-    SELECT key, COUNT(*) as access_count
-    FROM s3_access_logs
-    WHERE key != '-'
-    GROUP BY key
+    -- 2. Top 10 most accessed videos
+    SELECT cs_uri_stem, COUNT(*) as access_count
+    FROM cloudfront_logs
+    WHERE cs_uri_stem LIKE '%.m3u8' OR cs_uri_stem LIKE '%.ts'
+    GROUP BY cs_uri_stem
     ORDER BY access_count DESC
     LIMIT 10;
 
-    -- 3. Requests by remote IP
-    SELECT remoteip, COUNT(*) as request_count
-    FROM s3_access_logs
-    GROUP BY remoteip
+    -- 3. Requests by client IP
+    SELECT c_ip, COUNT(*) as request_count
+    FROM cloudfront_logs
+    GROUP BY c_ip
     ORDER BY request_count DESC
     LIMIT 20;
 
-    -- 4. Total bytes sent by day
+    -- 4. Total bytes served by day
     SELECT 
-      DATE_PARSE(requestdatetime, '%d/%b/%Y:%H:%i:%s %z') as request_date,
-      SUM(bytessent) as total_bytes
-    FROM s3_access_logs
-    WHERE bytessent > 0
-    GROUP BY DATE_PARSE(requestdatetime, '%d/%b/%Y:%H:%i:%s %z')
-    ORDER BY request_date DESC;
+      log_date,
+      SUM(sc_bytes) as total_bytes_sent,
+      COUNT(*) as total_requests
+    FROM cloudfront_logs
+    GROUP BY log_date
+    ORDER BY log_date DESC;
 
-    -- 5. Error requests
-    SELECT requestdatetime, remoteip, operation, key, httpstatus, errorcode
-    FROM s3_access_logs
-    WHERE httpstatus >= '400'
-    ORDER BY requestdatetime DESC
+    -- 5. Cache hit/miss analysis
+    SELECT 
+      x_edge_result_type,
+      COUNT(*) as count,
+      ROUND(COUNT(*) * 100.0 / SUM(COUNT(*)) OVER(), 2) as percentage
+    FROM cloudfront_logs
+    GROUP BY x_edge_result_type
+    ORDER BY count DESC;
+
+    -- 6. Error requests (4xx and 5xx)
+    SELECT log_date, log_time, c_ip, cs_method, cs_uri_stem, sc_status, x_edge_result_type
+    FROM cloudfront_logs
+    WHERE sc_status >= 400
+    ORDER BY log_date DESC, log_time DESC
     LIMIT 100;
+
+    -- 7. Average response time by URI
+    SELECT 
+      cs_uri_stem,
+      COUNT(*) as request_count,
+      ROUND(AVG(time_taken), 3) as avg_time_taken,
+      ROUND(AVG(time_to_first_byte), 3) as avg_ttfb
+    FROM cloudfront_logs
+    GROUP BY cs_uri_stem
+    HAVING COUNT(*) > 10
+    ORDER BY avg_time_taken DESC
+    LIMIT 20;
+
+    -- 8. Bandwidth consumption by edge location
+    SELECT 
+      x_edge_location,
+      COUNT(*) as requests,
+      SUM(sc_bytes) as total_bytes
+    FROM cloudfront_logs
+    GROUP BY x_edge_location
+    ORDER BY total_bytes DESC
+    LIMIT 15;
+
+    -- 9. User agents analysis (devices/browsers accessing videos)
+    SELECT 
+      CASE 
+        WHEN cs_user_agent LIKE '%Mobile%' THEN 'Mobile'
+        WHEN cs_user_agent LIKE '%Tablet%' OR cs_user_agent LIKE '%iPad%' THEN 'Tablet'
+        ELSE 'Desktop'
+      END as device_type,
+      COUNT(*) as count
+    FROM cloudfront_logs
+    GROUP BY CASE 
+        WHEN cs_user_agent LIKE '%Mobile%' THEN 'Mobile'
+        WHEN cs_user_agent LIKE '%Tablet%' OR cs_user_agent LIKE '%iPad%' THEN 'Tablet'
+        ELSE 'Desktop'
+      END;
   EOQ
 
-  description = "Sample queries for analyzing S3 access logs"
+  description = "Sample queries for analyzing CloudFront access logs"
 }
 
 # A single IAM Role and Policy for IVS to access the S3 Bucket
@@ -294,6 +379,13 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
   is_ipv6_enabled = true
   comment         = "CDN for IVS video recordings"
   #default_root_object = "index.html" # Optional, good practice
+
+  # Enable access logging
+  logging_config {
+    include_cookies = false
+    bucket          = aws_s3_bucket.cloudfront_logs.bucket_domain_name
+    prefix          = "cloudfront/"
+  }
 
   default_cache_behavior {
     allowed_methods  = ["GET", "HEAD"]
