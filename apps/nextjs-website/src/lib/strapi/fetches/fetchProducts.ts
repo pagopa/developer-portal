@@ -19,6 +19,7 @@ export const productRelationsPopulate = {
     'tutorial_list_page',
     'use_case_list_page',
     'tags.icon',
+    'localizations',
   ],
 };
 
@@ -30,4 +31,9 @@ const makeStrapiProductsPopulate = () =>
 export const fetchProducts = fetchFromStrapi<StrapiProducts>(
   'products',
   makeStrapiProductsPopulate()
+);
+
+export const fetchAllProducts = fetchFromStrapi<StrapiProducts>(
+  'products',
+  makeStrapiProductsPopulate() + '&locale=all'
 );

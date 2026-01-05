@@ -58,6 +58,10 @@ export type SolutionTemplateProps = {
   readonly path?: string;
   readonly seo?: SEO;
   readonly updatedAt?: string;
+  readonly localizations?: ReadonlyArray<{
+    readonly locale: string;
+    readonly slug: string;
+  }>;
 };
 
 const SolutionTemplate = ({

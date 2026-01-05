@@ -11,6 +11,8 @@ export const strapiTutorialListPages: StrapiTutorialListPages = {
       attributes: {
         title: 'Tutorials',
         description: 'Explore our tutorials',
+        locale: 'it',
+        updatedAt: fixedDateIsoString,
         bannerLinks: generateBannerLinks(1),
         product: {
           data: {
@@ -20,6 +22,8 @@ export const strapiTutorialListPages: StrapiTutorialListPages = {
               name: 'Product 1',
               shortName: 'P1',
               slug: 'product-1',
+              locale: 'it',
+              updatedAt: fixedDateIsoString,
               bannerLinks: generateBannerLinks(1),
               overview: { data: undefined },
               quickstart_guide: { data: undefined },
@@ -41,6 +45,7 @@ export const strapiTutorialListPages: StrapiTutorialListPages = {
                 tags: { data: [] },
                 title: 'Tutorial 1',
                 slug: 'tutorial-1',
+                locale: 'it',
                 publishedAt: fixedDateIsoString,
                 product: {
                   data: {
@@ -49,6 +54,8 @@ export const strapiTutorialListPages: StrapiTutorialListPages = {
                       name: 'Product 1',
                       shortName: 'P1',
                       slug: 'product-1',
+                      locale: 'it',
+                      updatedAt: fixedDateIsoString,
                     },
                   },
                 },

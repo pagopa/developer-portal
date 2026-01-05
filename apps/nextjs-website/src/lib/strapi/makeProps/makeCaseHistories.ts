@@ -16,5 +16,11 @@ export function makeCaseHistoriesProps(
     })),
     image: attributes.image?.data?.attributes,
     seo: attributes.seo,
+    localizations:
+      attributes.localizations?.data.map((l) => ({
+        locale: l.attributes.locale,
+        slug: l.attributes.slug,
+      })) || [],
+    locale: attributes.locale,
   }));
 }

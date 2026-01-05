@@ -18,6 +18,8 @@ const product: Product = {
     url: 'test',
   },
   slug: 'path',
+  locale: 'it',
+  updatedAt: '2024-01-01T00:00:00.000Z',
   hasOverviewPage: true,
   bannerLinks: [],
 };

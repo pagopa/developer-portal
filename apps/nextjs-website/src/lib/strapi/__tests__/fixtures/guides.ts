@@ -20,6 +20,8 @@ export const strapiGuideData = {
       attributes: {
         title: 'SACI',
         slug: 'saci',
+        locale: 'it',
+        updatedAt: '2023-01-01T00:00:00.000Z',
         image: {
           data: {
             attributes: {
@@ -105,6 +107,8 @@ export const strapiGuideData = {
               name: 'Piattaforma pagoPA',
               slug: 'pago-pa',
               shortName: 'pagoPA',
+              locale: 'it',
+              updatedAt: '2023-01-01T00:00:00.000Z',
               bannerLinks: [
                 {
                   id: 384,

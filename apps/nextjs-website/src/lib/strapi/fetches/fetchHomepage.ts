@@ -41,10 +41,18 @@ const makeStrapiHomepagePopulate = () =>
       seo: {
         populate: '*,metaImage,metaSocial.image',
       },
+      localizations: {
+        populate: ['locale'],
+      },
     },
   });
 
 export const fetchHomepage = fetchFromStrapi<StrapiHomepage>(
   'homepage',
   makeStrapiHomepagePopulate()
+);
+
+export const fetchAllHomepage = fetchFromStrapi<StrapiHomepage>(
+  'homepage',
+  makeStrapiHomepagePopulate() + '&locale=all'
 );

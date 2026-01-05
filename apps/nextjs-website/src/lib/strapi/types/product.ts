@@ -15,6 +15,17 @@ export type StrapiBaseProduct = {
     readonly shortName: string;
     readonly slug: string;
     readonly isVisible: boolean;
+    readonly localizations?: {
+      readonly data: ReadonlyArray<{
+        readonly attributes: {
+          readonly locale: string;
+          readonly slug: string;
+          readonly updatedAt: string;
+        };
+      }>;
+    };
+    readonly locale: string;
+    readonly updatedAt: string;
   };
 };
 

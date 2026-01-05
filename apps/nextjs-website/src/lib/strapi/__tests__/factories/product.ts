@@ -15,6 +15,8 @@ export function baseProduct(): StrapiBaseProduct {
       name: 'Test Product',
       shortName: 'TP',
       slug: 'test-product',
+      locale: 'it',
+      updatedAt: '2023-01-01T00:00:00.000Z',
     },
   };
 }
@@ -147,6 +149,8 @@ export function productWithAllRelations(): StrapiProduct {
       shortName: 'FFP',
       tags: { data: [] },
       slug: 'full-feature-product',
+      locale: 'it',
+      updatedAt: '2023-01-01T00:00:00.000Z',
       bannerLinks: generateBannerLinks(3),
       description: 'A product with all available relations and features',
       logo: {
@@ -196,6 +200,8 @@ export function productWithMissingMandatoryFields(): Partial<StrapiProduct> {
       tags: { data: [] },
       shortName: undefined as any,
       slug: undefined as any,
+      locale: 'it',
+      updatedAt: '2023-01-01T00:00:00.000Z',
       bannerLinks: [],
       description: 'Product with missing mandatory fields',
       logo: {

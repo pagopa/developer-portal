@@ -41,6 +41,8 @@ export async function GET(
         name: guideData.product.name,
         shortName: guideData.product.shortName,
         slug: guideData.product.slug,
+        locale: guideData.product.locale,
+        updatedAt: guideData.product.updatedAt,
       },
       version: guideData.version,
       versions: guideData.versions,

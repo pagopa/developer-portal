@@ -23,6 +23,8 @@ export type StrapiBaseGuide = {
     readonly listItems: ReadonlyArray<{
       readonly text: string;
     }>;
+    readonly locale: string;
+    readonly updatedAt: string;
   };
 };
 

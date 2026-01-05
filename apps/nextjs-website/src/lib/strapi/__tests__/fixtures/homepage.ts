@@ -9,6 +9,7 @@ export const strapiHomepage: StrapiHomepage = {
   data: {
     attributes: {
       updatedAt: new Date().toISOString(),
+      locale: 'it',
       comingsoonDocumentation: {
         title: 'Coming Soon Documentation',
         links: [
@@ -71,6 +72,8 @@ export const strapiHomepage: StrapiHomepage = {
                 name: 'Product 1',
                 shortName: 'P1',
                 slug: 'product-1',
+                locale: 'it',
+                updatedAt: fixedDateIsoString,
                 description: 'Product 1 description',
                 logo: { data: mediaJpeg() },
                 bannerLinks: [],
@@ -94,6 +97,8 @@ export const strapiHomepage: StrapiHomepage = {
                 icon: { data: mediaJpeg() },
                 kickerTitle: 'Solution Kicker',
                 title: 'Solution 1',
+                locale: 'it',
+                updatedAt: fixedDateIsoString,
                 description: 'Solution 1 description',
                 dirName: 'solution-1-dir',
                 landingUseCaseFile: 'use-case.md',
@@ -121,6 +126,7 @@ export const strapiHomepage: StrapiHomepage = {
               isVisibleInList: true,
               publishedAt: fixedDateIsoString,
               updatedAt: fixedDateIsoString,
+              locale: 'it',
               coverImage: { data: mediaJpeg() },
               relatedLinks: {
                 title: 'Related Links',
@@ -151,6 +157,7 @@ export const strapiHomepage: StrapiHomepage = {
 };
 
 export const expectedHomepageProps: HomepageProps = {
+  locale: 'it',
   updatedAt: new Date().toISOString(),
   comingsoonDocumentation: {
     title: 'Coming Soon Documentation',
@@ -289,6 +296,7 @@ export const expectedHomepageProps: HomepageProps = {
       isVisibleInList: true,
       imagePath: 'https://example.com/example.jpg',
       updatedAt: '2024-01-01T00:00:00.000Z',
+      locale: 'it',
     },
   ],
   seo: {

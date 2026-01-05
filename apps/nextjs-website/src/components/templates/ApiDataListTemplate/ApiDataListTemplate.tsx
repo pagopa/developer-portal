@@ -31,6 +31,13 @@ export type ApiDataListPageTemplateProps = {
   readonly theme?: Theme;
   readonly apiData: StrapiBaseApiDataList;
   readonly seo?: SEO;
+  readonly localizations?: ReadonlyArray<{
+    readonly locale: string;
+    readonly slug: string;
+  }>;
+  readonly sort?: 'alphabetical' | 'date';
+  readonly path: string;
+  readonly locale: string;
 };
 
 const ApiDataListTemplate = ({

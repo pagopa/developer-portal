@@ -41,6 +41,13 @@ export type SolutionListTemplateProps = {
     }[];
   };
   readonly seo?: SEO;
+  readonly localizations?: ReadonlyArray<{
+    readonly locale: string;
+    readonly slug: string;
+  }>;
+  readonly sort?: 'date' | 'alphabetic';
+  readonly updatedAt?: string;
+  readonly locale: string;
 };
 
 const SolutionListTemplate = ({

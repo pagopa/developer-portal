@@ -52,4 +52,9 @@ export type Webinar = {
   readonly tag?: Tag;
   readonly headerImage?: Media;
   readonly updatedAt: string;
+  readonly localizations?: ReadonlyArray<{
+    readonly locale: string;
+    readonly slug: string;
+  }>;
+  readonly locale: string;
 };

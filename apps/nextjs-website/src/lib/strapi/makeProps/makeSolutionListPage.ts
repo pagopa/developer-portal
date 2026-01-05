@@ -65,5 +65,12 @@ export function makeSolutionListPageProps(
       })),
     },
     seo: attributes.seo,
-  };
+    localizations:
+      attributes.localizations?.data.map((l) => ({
+        locale: l.attributes.locale,
+        slug: l.attributes.slug,
+      })) || [],
+    locale: attributes.locale,
+    updatedAt: attributes.updatedAt,
+  } satisfies SolutionListTemplateProps;
 }

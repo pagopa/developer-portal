@@ -62,6 +62,16 @@ export type StrapiWebinar = {
     readonly webinarCategory: { readonly data?: StrapiWebinarCategory };
     readonly headerImage: { readonly data?: StrapiMedia };
     readonly updatedAt: string;
+    readonly localizations?: {
+      readonly data: ReadonlyArray<{
+        readonly attributes: {
+          readonly locale: string;
+          readonly slug: string;
+          readonly updatedAt: string;
+        };
+      }>;
+    };
+    readonly locale: string;
   };
 };
 

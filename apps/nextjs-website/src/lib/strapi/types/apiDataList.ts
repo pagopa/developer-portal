@@ -30,6 +30,8 @@ export type StrapiBaseApiData = {
       readonly dirName: string;
     };
     readonly tags: StrapiComponent<readonly StrapiTag[] | undefined>;
+    readonly locale: string;
+    readonly updatedAt: string;
   };
 };
 
@@ -40,6 +42,8 @@ export type StrapiApiData = StrapiBaseApiData & {
     };
     readonly bannerLinks: readonly StrapiBannerLink[];
     readonly seo?: StrapiSeo;
+    readonly locale: string;
+    readonly updatedAt: string;
   };
 };
 

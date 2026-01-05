@@ -14,6 +14,8 @@ export const strapiApiDataList: StrapiApiDataList = {
         },
         title: 'SEND Main',
         description: 'Main SEND API for delivery notifications',
+        locale: 'it',
+        updatedAt: '2024-01-01T00:00:00.000Z',
         apiSoapDetail: undefined,
         apiRestDetail: {
           slug: 'send-main',
@@ -33,12 +35,14 @@ export const strapiApiDataList: StrapiApiDataList = {
         product: {
           data: {
             attributes: {
-              isVisible: true,
               name: 'Test Product',
               slug: 'test-product',
               tags: { data: [] },
               shortName: 'TP',
+              locale: 'it',
+              updatedAt: '2024-01-01T00:00:00.000Z',
               bannerLinks: generateBannerLinks(1),
+              isVisible: true,
               overview: { data: { id: 0 } },
               quickstart_guide: { data: { id: 0 } },
               api_data_list_page: { data: undefined },
@@ -59,6 +63,8 @@ export const strapiApiDataList: StrapiApiDataList = {
         title: 'Documentazione SOAP',
         description:
           'Consulta tutti gli schemi XSD e WSDL che seguono le diverse release SANP',
+        locale: 'it',
+        updatedAt: '2024-01-01T00:00:00.000Z',
         apiRestDetail: undefined,
         apiSoapDetail: {
           repositoryUrl: 'https://github.com/pagopa/pagopa-api/',
@@ -84,12 +90,14 @@ export const strapiApiDataList: StrapiApiDataList = {
         product: {
           data: {
             attributes: {
-              isVisible: true,
               name: 'SOAP Product',
               slug: 'soap-product',
               shortName: 'SP',
               tags: { data: [] },
+              locale: 'it',
+              updatedAt: '2024-01-01T00:00:00.000Z',
               bannerLinks: generateBannerLinks(1),
+              isVisible: true,
               overview: { data: { id: 0 } },
               quickstart_guide: { data: { id: 0 } },
               api_data_list_page: { data: undefined },
@@ -130,6 +138,7 @@ export const expectedApiDataPageProps: ReadonlyArray<ApiDataPageProps> = [
       name: 'Test Product',
       slug: 'test-product',
       shortName: 'TP',
+      locale: 'it',
       bannerLinks: expect.any(Array),
     },
     bannerLinks: expect.any(Array),
@@ -148,6 +157,7 @@ export const expectedApiDataPageProps: ReadonlyArray<ApiDataPageProps> = [
       name: 'SOAP Product',
       slug: 'soap-product',
       shortName: 'SP',
+      locale: 'it',
       bannerLinks: expect.any(Array),
     },
     bannerLinks: expect.any(Array),

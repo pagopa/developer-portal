@@ -19,10 +19,18 @@ const makeStrapiUseCaseListPagePopulate = () =>
       useCases: {
         populate: ['coverImage', 'product', 'tags'],
       },
+      localizations: {
+        populate: '*',
+      },
     },
   });
 
 export const fetchUseCaseListPages = fetchFromStrapi<StrapiUseCaseListPages>(
   'use-case-list-pages',
   makeStrapiUseCaseListPagePopulate()
+);
+
+export const fetchAllUseCaseListPages = fetchFromStrapi<StrapiUseCaseListPages>(
+  'use-case-list-pages',
+  makeStrapiUseCaseListPagePopulate() + '&locale=all'
 );

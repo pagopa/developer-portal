@@ -19,4 +19,10 @@ export type Product = {
   readonly shortName: string;
   readonly slug: string;
   readonly tags?: readonly Tag[];
+  readonly localizations?: ReadonlyArray<{
+    readonly locale: string;
+    readonly slug: string;
+  }>;
+  readonly locale: string;
+  readonly updatedAt?: string;
 };

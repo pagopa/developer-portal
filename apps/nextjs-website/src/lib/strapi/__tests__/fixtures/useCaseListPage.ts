@@ -11,6 +11,8 @@ export const strapiUseCaseListPages: StrapiUseCaseListPages = {
       attributes: {
         title: 'Use Cases',
         description: 'Explore our use cases',
+        locale: 'it',
+        updatedAt: fixedDateIsoString,
         bannerLinks: generateBannerLinks(1),
         product: {
           data: {
@@ -19,6 +21,8 @@ export const strapiUseCaseListPages: StrapiUseCaseListPages = {
               name: 'Product 1',
               shortName: 'P1',
               slug: 'product-1',
+              locale: 'it',
+              updatedAt: fixedDateIsoString,
               bannerLinks: generateBannerLinks(1),
               overview: { data: undefined },
               quickstart_guide: { data: undefined },
@@ -37,6 +41,8 @@ export const strapiUseCaseListPages: StrapiUseCaseListPages = {
               attributes: {
                 title: 'Use Case 1',
                 slug: 'use-case-1',
+                locale: 'it',
+                updatedAt: fixedDateIsoString,
                 publishedAt: fixedDateIsoString,
                 product: {
                   data: {
@@ -45,6 +51,8 @@ export const strapiUseCaseListPages: StrapiUseCaseListPages = {
                       name: 'Product 1',
                       shortName: 'P1',
                       slug: 'product-1',
+                      locale: 'it',
+                      updatedAt: fixedDateIsoString,
                     },
                   },
                 },

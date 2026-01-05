@@ -10,6 +10,7 @@ export const strapiApiDataListPages = {
       attributes: {
         title: 'SEND API Documentation',
         description: 'Complete documentation for SEND APIs',
+        locale: 'it',
         seo: {
           metaTitle: 'SEND API Documentation',
           metaDescription: 'Complete documentation for SEND APIs',
@@ -23,6 +24,8 @@ export const strapiApiDataListPages = {
               name: 'SEND',
               slug: 'send',
               shortName: 'SEND',
+              locale: 'it',
+              updatedAt: '2024-01-02T00:00:00.000Z',
               bannerLinks: generateBannerLinks(1),
               overview: { data: { id: 1 } },
               quickstart_guide: { data: { id: 1 } },
@@ -67,6 +70,8 @@ export const strapiApiDataListPages = {
                 },
                 apiSoapDetail: undefined,
                 tags: { data: undefined },
+                locale: 'it',
+                updatedAt: '2024-01-02T00:00:00.000Z',
               },
             },
             {
@@ -96,6 +101,8 @@ export const strapiApiDataListPages = {
                   dirName: 'send-soap',
                 },
                 tags: { data: undefined },
+                locale: 'it',
+                updatedAt: '2024-01-02T00:00:00.000Z',
               },
             },
           ],
@@ -118,6 +125,8 @@ export const expectedApiDataListPageProps: ReadonlyArray<ApiDataListPageTemplate
         slug: 'send',
         shortName: 'SEND',
         bannerLinks: expect.any(Array),
+        locale: 'it',
+        updatedAt: '2024-01-02T00:00:00.000Z',
       },
       apiDetailSlugs: ['send-main', 'send-soap'],
       cards: [
@@ -142,8 +151,10 @@ export const expectedApiDataListPageProps: ReadonlyArray<ApiDataListPageTemplate
         metaDescription: 'Complete documentation for SEND APIs',
       },
       updatedAt: '2024-01-02T00:00:00.000Z',
+      locale: 'it',
       apiData: {
         data: expect.any(Array),
       },
+      path: '/send/api',
     },
   ];

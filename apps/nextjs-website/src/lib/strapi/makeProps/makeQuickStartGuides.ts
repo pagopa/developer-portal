@@ -60,6 +60,12 @@ export function makeQuickStartGuidesProps(
                   makeBannerLinkProps
                 ),
           seo: quickStart.attributes.seo,
+          localizations:
+            quickStart.attributes.localizations?.data.map((l) => ({
+              locale: l.attributes.locale,
+              slug: l.attributes.slug,
+            })) || [],
+          locale: quickStart.attributes.locale,
         } satisfies QuickStartGuidePageProps;
       } catch (error) {
         console.error(

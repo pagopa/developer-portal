@@ -62,6 +62,12 @@ export const makeWebinarProps = (
       tag: strapiWebinar.attributes.webinarCategory?.data?.attributes,
       headerImage: strapiWebinar.attributes.headerImage?.data?.attributes,
       updatedAt: strapiWebinar.attributes.updatedAt,
+      localizations:
+        strapiWebinar.attributes.localizations?.data.map((l) => ({
+          locale: l.attributes.locale,
+          slug: l.attributes.slug,
+        })) || [],
+      locale: strapiWebinar.attributes.locale,
     } satisfies Webinar;
   } catch (error) {
     // eslint-disable-next-line functional/no-expression-statements

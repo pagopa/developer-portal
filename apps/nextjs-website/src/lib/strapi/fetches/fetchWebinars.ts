@@ -34,6 +34,9 @@ export const webinarPopulate = {
     headerImage: {
       populate: ['image'],
     },
+    localizations: {
+      populate: '*',
+    },
   },
 };
 
@@ -42,4 +45,9 @@ const makeStrapiWebinarsPopulate = () => qs.stringify(webinarPopulate);
 export const fetchWebinars = fetchFromStrapi<StrapiWebinars>(
   'webinars',
   makeStrapiWebinarsPopulate()
+);
+
+export const fetchAllWebinars = fetchFromStrapi<StrapiWebinars>(
+  'webinars',
+  makeStrapiWebinarsPopulate() + '&locale=all'
 );

@@ -73,6 +73,12 @@ export function makeUseCasesProps(
           subtitle: attributes.subtitle,
           tags: attributes.tags.data?.map((tag) => tag.attributes) || [],
           updatedAt: attributes.updatedAt,
+          localizations:
+            attributes.localizations?.data.map((l) => ({
+              locale: l.attributes.locale,
+              slug: l.attributes.slug,
+            })) || [],
+          locale: attributes.locale,
         } satisfies UseCaseProps;
       } catch (error) {
         console.error(

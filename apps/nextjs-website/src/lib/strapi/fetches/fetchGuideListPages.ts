@@ -25,3 +25,8 @@ export const fetchGuideListPages = fetchFromStrapi<StrapiGuideListPages>(
   'guide-list-pages',
   makeStrapiGuideListPopulate()
 );
+
+export const fetchAllGuideListPages = fetchFromStrapi<StrapiGuideListPages>(
+  'guide-list-pages',
+  makeStrapiGuideListPopulate() + '&locale=all'
+);

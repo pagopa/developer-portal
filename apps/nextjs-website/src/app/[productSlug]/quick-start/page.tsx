@@ -30,6 +30,12 @@ export type QuickStartGuidePageProps = {
   readonly defaultStepAnchor?: string;
   readonly steps?: ReadonlyArray<Step>;
   readonly seo?: SEO;
+  readonly localizations?: ReadonlyArray<{
+    readonly locale: string;
+    readonly slug: string;
+  }>;
+  readonly locale: string;
+  readonly path: string;
 } & ProductLayoutProps;
 
 export async function generateMetadata(

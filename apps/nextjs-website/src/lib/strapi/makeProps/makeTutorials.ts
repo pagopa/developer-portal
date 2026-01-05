@@ -67,6 +67,12 @@ export function makeTutorialsProps(
           seo: attributes.seo,
           tags: attributes.tags.data?.map((tag) => tag.attributes) || [],
           updatedAt: attributes.updatedAt,
+          localizations:
+            attributes.localizations?.data.map((l) => ({
+              locale: l.attributes.locale,
+              slug: l.attributes.slug,
+            })) || [],
+          locale: attributes.locale,
         } satisfies TutorialProps;
       } catch (error) {
         console.error(

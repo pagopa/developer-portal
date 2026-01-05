@@ -15,6 +15,16 @@ export type StrapiBaseCaseHistory = {
     readonly image?: {
       readonly data?: StrapiMedia;
     };
+    readonly localizations?: {
+      readonly data: ReadonlyArray<{
+        readonly attributes: {
+          readonly locale: string;
+          readonly slug: string;
+          readonly updatedAt: string;
+        };
+      }>;
+    };
+    readonly locale: string;
   };
 };
 

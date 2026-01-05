@@ -18,4 +18,9 @@ export type Tutorial = {
   readonly seo?: SEO;
   readonly tags?: readonly Tag[];
   readonly updatedAt?: string;
+  readonly localizations?: ReadonlyArray<{
+    readonly locale: string;
+    readonly slug: string;
+  }>;
+  readonly locale: string;
 } & Path;

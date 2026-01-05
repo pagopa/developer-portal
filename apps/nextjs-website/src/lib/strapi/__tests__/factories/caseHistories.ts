@@ -68,6 +68,8 @@ export function caseHistoriesWithMultipleProducts() {
       name: 'Second Product',
       shortName: 'SecondProd',
       slug: 'second-product',
+      locale: 'it',
+      updatedAt: '2024-01-02T00:00:00.000Z',
       logo: {
         data: mediaJpeg(),
       },

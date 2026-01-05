@@ -48,6 +48,11 @@ export function makeGuideListPagesProps(
               : productData.attributes.bannerLinks?.map(makeBannerLinkProps),
           seo: attributes.seo,
           updatedAt: attributes.updatedAt,
+          localizations:
+            attributes.localizations?.data.map((l) => ({
+              locale: l.attributes.locale,
+            })) || [],
+          locale: attributes.locale,
         } satisfies GuideListPageProps;
       } catch (error) {
         console.error(

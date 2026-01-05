@@ -29,6 +29,16 @@ export type StrapiQuickStartGuide = {
     readonly seo?: StrapiSeo;
     readonly title: string;
     readonly updatedAt: string;
+    readonly localizations?: {
+      readonly data: ReadonlyArray<{
+        readonly attributes: {
+          readonly locale: string;
+          readonly slug: string;
+          readonly updatedAt: string;
+        };
+      }>;
+    };
+    readonly locale: string;
   };
 };
 

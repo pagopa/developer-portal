@@ -59,7 +59,19 @@ import {
 } from 'gitbook-docs/syncedResponses';
 import { StrapiSolutions } from './strapi/types/solutions';
 import { StrapiReleaseNotes } from './strapi/types/releaseNotes';
-
+import { fetchAllHomepage } from '@/lib/strapi/fetches/fetchHomepage';
+import { fetchAllWebinars } from './strapi/fetches/fetchWebinars';
+import { fetchAllProducts } from '@/lib/strapi/fetches/fetchProducts';
+import { fetchAllCaseHistories } from './strapi/fetches/fetchCaseHistories';
+import { fetchAllTutorials } from './strapi/fetches/fetchTutorials';
+import { fetchAllQuickStartGuides } from './strapi/fetches/fetchQuickStartGuides';
+import { fetchAllSolutionListPage } from './strapi/fetches/fetchSolutionListPage';
+import { fetchAllApiDataListPages } from './strapi/fetches/fetchApiDataListPages';
+import { fetchAllUseCaseListPages } from '@/lib/strapi/fetches/fetchUseCaseListPages';
+import { fetchAllUseCases } from '@/lib/strapi/fetches/fetchUseCases';
+import { fetchAllGuideListPages } from './strapi/fetches/fetchGuideListPages';
+import { fetchAllOverviews } from '@/lib/strapi/fetches/fetchOverviews';
+import { fetchAllTutorialListPages } from './strapi/fetches/fetchTutorialListPages';
 // a BuildEnv instance ready to be used
 const buildEnv = pipe(
   makeBuildConfig(Object.keys(secrets).length > 0 ? secrets : process.env),
@@ -265,4 +277,104 @@ export const getUseCasesProps = async () => {
 export const getUseCaseListPagesProps = async () => {
   const strapiUseCasesListPages = await fetchUseCaseListPages(buildEnv);
   return makeUseCaseListPagesProps(strapiUseCasesListPages);
+};
+
+export const getAllHomepageProps = async () => {
+  const strapiHomepage = await fetchAllHomepage(buildEnv);
+  return makeHomepageProps(strapiHomepage);
+};
+
+export const getAllWebinarsProps = async () => {
+  const strapiWebinars = await fetchAllWebinars(buildEnv);
+  return makeWebinarsProps(strapiWebinars);
+};
+
+export const getAllProductsProps = async () => {
+  const strapiProducts = await fetchAllProducts(buildEnv);
+  const products = makeProductsProps(strapiProducts);
+  return [...products].sort((productA, productB) =>
+    productA.name.localeCompare(productB.name)
+  );
+};
+
+export const getAllTutorialsProps = async () => {
+  const strapiTutorials = await fetchAllTutorials(buildEnv);
+  const tutorialsWithMarkdown = strapiTutorials.data.filter((tutorial) => {
+    const parts = tutorial?.attributes?.parts ?? [];
+    return parts.some((part) => part?.__component === 'parts.markdown');
+  });
+  const allMarkdownParts = tutorialsWithMarkdown.flatMap((tutorial) =>
+    (tutorial?.attributes?.parts ?? []).filter(
+      (part) => part?.__component === 'parts.markdown'
+    )
+  );
+  const contentPromises = allMarkdownParts.map(async (part) => {
+    const { dirName, pathToFile } = part as MarkDownPart;
+    const key = `${dirName}/${pathToFile}`;
+    const content = await getMarkdownContent(dirName, pathToFile);
+    return [key, content];
+  });
+  const resolvedContentPairs = await Promise.all(contentPromises);
+  const markdownContentDict = Object.fromEntries(resolvedContentPairs);
+  return makeTutorialsProps(strapiTutorials, markdownContentDict);
+};
+
+export const getAllTutorialListPagesProps = async () => {
+  const strapiTutorialListPages = await fetchAllTutorialListPages(buildEnv);
+  return makeTutorialListPagesProps(strapiTutorialListPages);
+};
+
+export const getAllQuickStartGuidesProps = async () => {
+  const strapiQuickStartGuides = await fetchAllQuickStartGuides(buildEnv);
+  return makeQuickStartGuidesProps(strapiQuickStartGuides);
+};
+
+export const getAllApiDataListPagesProps = async () => {
+  const strapiApiDataListPages = await fetchAllApiDataListPages(buildEnv);
+  return makeApiDataListPagesProps(strapiApiDataListPages);
+};
+
+export const getAllCaseHistoriesProps = async () => {
+  const strapiCaseHistories = await fetchAllCaseHistories(buildEnv);
+  return makeCaseHistoriesProps(strapiCaseHistories);
+};
+
+export const getAllSolutionListPageProps = async () => {
+  const strapiSolutionListPage = await fetchAllSolutionListPage(buildEnv);
+  return makeSolutionListPageProps(strapiSolutionListPage);
+};
+
+export const getAllOverviewsProps = async () => {
+  const strapiOverviews = await fetchAllOverviews(buildEnv);
+  return makeOverviewsProps(strapiOverviews);
+};
+
+export const getAllGuideListPagesProps = async () => {
+  const strapiGuideList = await fetchAllGuideListPages(buildEnv);
+  return strapiGuideList ? makeGuideListPagesProps(strapiGuideList) : [];
+};
+
+export const getAllUseCasesProps = async () => {
+  const strapiUseCases = await fetchAllUseCases(buildEnv);
+  const allMarkdownParts = strapiUseCases.data.flatMap((useCase) =>
+    (useCase?.attributes?.parts ?? []).filter(isMarkDownPart)
+  );
+  const contentPromises = allMarkdownParts.map(async (part) => {
+    const { dirName, pathToFile } = part;
+    const key = `${dirName}/${pathToFile}`;
+    const content = await getMarkdownContent(dirName, pathToFile);
+    return [key, content];
+  });
+  const resolvedContentPairs = await Promise.all(contentPromises);
+  const markdownContentDict = Object.fromEntries(resolvedContentPairs);
+  return makeUseCasesProps(strapiUseCases, markdownContentDict);
+};
+
+export const getAllUseCaseListPagesProps = async () => {
+  const strapiUseCasesListPages = await fetchAllUseCaseListPages(buildEnv);
+  return makeUseCaseListPagesProps(strapiUseCasesListPages);
+};
+
+export const getAllSolutionsProps = async () => {
+  return getSolutionsProps();
 };

@@ -94,6 +94,7 @@ export function makeOverviewsProps(
                     title: tutorial.attributes.title,
                     name: 'shared.moreInfo',
                     path: `/${tutorial.attributes.product.data.attributes.slug}/tutorials/${tutorial.attributes.slug}`,
+                    locale: tutorial.attributes.locale,
                   };
                 })
               ) || [],
@@ -135,6 +136,7 @@ export function makeOverviewsProps(
                     title: useCase.attributes.title,
                     name: 'shared.moreInfo',
                     path: `/${useCase.attributes.product.data.attributes.slug}/use-cases/${useCase.attributes.slug}`,
+                    locale: useCase.attributes.locale,
                   } satisfies UseCase;
                 })
               ) || [],
@@ -237,6 +239,11 @@ export function makeOverviewsProps(
                   makeBannerLinkProps
                 ),
           seo: attributes.seo,
+          localizations:
+            attributes.localizations?.data.map((l) => ({
+              locale: l.attributes.locale,
+            })) || [],
+          locale: attributes.locale,
         } satisfies OverviewPageProps;
       } catch (error) {
         console.error(
