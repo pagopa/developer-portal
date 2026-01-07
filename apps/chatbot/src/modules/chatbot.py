@@ -176,4 +176,6 @@ class Chatbot:
             }
             LOGGER.error(f"Exception: {e}")
 
+        response_json["release"] = SETTINGS.release
+
         return response_json

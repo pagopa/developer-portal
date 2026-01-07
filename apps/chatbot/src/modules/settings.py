@@ -45,10 +45,11 @@ def extract_latest_version(filepath: str | None = None) -> str | None:
 def get_ssm_parameter(name: str | None, default: str | None = None) -> str | None:
     """
     Retrieves a specific value from AWS Systems Manager's Parameter Store.
-
-    :param name: The name of the parameter to retrieve.
-    :param default: The default value to return if the parameter is not found.
-    :return: The value of the requested parameter.
+    Args:
+        name (str | None): The name of the parameter to retrieve.
+        default (str | None): The default value to return if the parameter is not found.
+    Returns:
+        str | None: The value of the parameter, or the default value if not found.
     """
 
     LOGGER.info(f"get_ssm_parameter {name}...")
@@ -65,27 +66,6 @@ def get_ssm_parameter(name: str | None, default: str | None = None) -> str | Non
         return default
 
     return value
-
-
-def update_ssm_parameter(name: str, new_value: str) -> None:
-    """Updates or creates an SSM parameter with the new version.
-    Args:
-        name (str): The name of the SSM parameter.
-        new_value (str): The new value to set for the parameter.
-    """
-
-    value = get_ssm_parameter(name)
-    if value != new_value:
-        try:
-            response = AWS_SSM_CLIENT.put_parameter(
-                Name=name,
-                Value=new_value,
-                Type="String",
-                Overwrite=True,
-            )
-            LOGGER.info(f"Successfully updated {name} with {new_value} to SSM.")
-        except Exception as e:
-            LOGGER.error(f"Error updating {name} to SSM: {e}")
 
 
 GOOGLE_SERVICE_ACCOUNT = get_ssm_parameter(
@@ -169,12 +149,7 @@ class ChatbotSettings(BaseSettings):
     website_url: str = os.getenv("CHB_WEBSITE_URL")
 
     # API
-    release: str = (
-        update_ssm_parameter(
-            name=os.getenv("CHB_AWS_SSM_CHATBOT_RELEASE"),
-            new_value=extract_latest_version(),
-        ),
-    )
+    release: str = extract_latest_version() or "---"
     query_table_prefix: str = os.getenv("CHB_QUERY_TABLE_PREFIX", "chatbot")
     aws_sqs_queue_evaluate_name: str = os.getenv(
         "CHB_AWS_SQS_QUEUE_EVALUATE_NAME", "chatbot-evaluate"
