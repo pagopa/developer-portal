@@ -48,12 +48,6 @@ const asLineHeight = (level: number) =>
 
 const scrollOffset = SITE_HEADER_HEIGHT + PRODUCT_HEADER_HEIGHT;
 
-const createSlug = (text: string) =>
-  text
-    .toLowerCase()
-    .replace(/[^a-z0-9\s-]/g, '')
-    .replace(/\s+/g, '-');
-
 const ContentHeading = ({
   level,
   id,
@@ -64,10 +58,9 @@ const ContentHeading = ({
     return null;
   }
 
-  const headingId = createSlug(children ? children.toString() : id || '');
   return (
     <div
-      id={headingId}
+      id={id}
       style={{
         marginTop: `-${scrollOffset}px`,
         paddingTop: `${scrollOffset}px`,

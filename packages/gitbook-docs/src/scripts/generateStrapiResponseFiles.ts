@@ -65,12 +65,19 @@ async function main() {
   for (const { data, path } of metadataJsons) {
     await putS3File(data, path, `${S3_BUCKET_NAME}`, s3Client);
   }
-  await s3Client.send(
+  const putSitemapToS3Result = await s3Client.send(
     new PutObjectCommand({
       Bucket: `${S3_BUCKET_NAME}`,
       Key: S3_SITEMAP_PATH,
       Body: siteMap,
     })
+  );
+  console.log(
+    `Uploaded sitemap to S3: ${S3_SITEMAP_PATH}, Result: ${JSON.stringify(
+      putSitemapToS3Result,
+      null,
+      2
+    )}`
   );
 }
 

@@ -3,12 +3,18 @@ from typing import Tuple, List, Dict
 
 from src.modules.settings import SETTINGS
 from src.modules.logger import get_logger
-from src.modules.documents import read_file_from_s3, get_sitemap_urls, filter_urls
+from src.modules.documents import (
+    read_file_from_s3,
+    get_metadata_from_s3,
+    get_sitemap_urls,
+    filter_urls,
+)
 from src.modules.vector_index import DiscoveryVectorIndex
 
 
 LOGGER = get_logger(__name__)
 VECTOR_INDEX = DiscoveryVectorIndex()
+DIRNAMES_TO_REMOVE_PATH = "main-guide-versions-dirNames-to-remove.json"
 
 # S3 event example:
 
@@ -61,13 +67,7 @@ def read_payload(payload: dict) -> Tuple[List[Dict[str, str]], List[str]]:
     filtered_urls = filter_urls(urls_list)
     filtered_paths = [url.replace(SETTINGS.website_url, "") for url in filtered_urls]
 
-    guides_metadata = json.loads(read_file_from_s3("guides-metadata.json"))
-    release_notes_metadata = json.loads(
-        read_file_from_s3("release-notes-metadata.json")
-    )
-    solutions_metadata = json.loads(read_file_from_s3("solutions-metadata.json"))
-
-    all_metadata = guides_metadata + release_notes_metadata + solutions_metadata
+    all_metadata = get_metadata_from_s3()
     filtered_metadata = []
     s3_paths = []
     for metadata in all_metadata:
@@ -77,6 +77,7 @@ def read_payload(payload: dict) -> Tuple[List[Dict[str, str]], List[str]]:
 
     static_docs_to_update = []
     static_docs_ids_to_delete = []
+    dirnames_to_remove = []
 
     for record in payload.get("Records", []):
         event_name = record.get("eventName", "")
@@ -86,9 +87,7 @@ def read_payload(payload: dict) -> Tuple[List[Dict[str, str]], List[str]]:
         event_action = event_name.split(":")[0]
 
         if event_action == "ObjectCreated":
-
             try:
-                LOGGER.info(f"object_key: {object_key}")
                 idx = s3_paths.index(object_key)
                 doc_info = filtered_metadata[idx]
 
@@ -105,22 +104,54 @@ def read_payload(payload: dict) -> Tuple[List[Dict[str, str]], List[str]]:
                 )
                 continue
 
+            if object_key == DIRNAMES_TO_REMOVE_PATH:
+                # DIRNAMES_TO_REMOVE_PATH content example:
+                # {
+                #   "dirNames": [
+                #     "6MUyXVMtPXJBZM12qMoI"
+                #   ]
+                # }
+                try:
+                    s3_content = read_file_from_s3(object_key)
+                    dirnames = (
+                        json.loads(s3_content).get("dirNames", []) if s3_content else []
+                    )
+
+                except Exception as e:
+                    LOGGER.warning(f"Failed to decode {object_key}: {e}")
+                    dirnames = []
+
+                dirnames_to_remove.extend(dirnames)
+
         elif event_action == "ObjectRemoved":
             static_docs_ids_to_delete.append(object_key)
         else:
             LOGGER.info(f"Unhandled event type: {event_name}")
 
-    return static_docs_to_update, static_docs_ids_to_delete
+    # Remove eventual duplicates
+    static_docs_to_update = [
+        dict(t) for t in set(tuple(d.items()) for d in static_docs_to_update)
+    ]
+    static_docs_ids_to_delete = list(set(static_docs_ids_to_delete))
+    dirnames_to_remove = list(set(dirnames_to_remove))
+
+    return static_docs_to_update, static_docs_ids_to_delete, dirnames_to_remove
 
 
 def lambda_handler(event, context):
     LOGGER.info(f"event: {event}")
 
-    static_docs_to_update, static_docs_ids_to_delete = read_payload(event)
+    static_docs_to_update, static_docs_ids_to_delete, dirnames_to_remove = read_payload(
+        event
+    )
     if len(static_docs_to_update) > 0 or len(static_docs_ids_to_delete) > 0:
         VECTOR_INDEX.refresh_index(
             static_docs_to_update=static_docs_to_update,
             static_docs_ids_to_delete=static_docs_ids_to_delete,
         )
+
+    if len(dirnames_to_remove) > 0:
+        for dirname in dirnames_to_remove:
+            VECTOR_INDEX.remove_docs_in_folder(folder_name=dirname)
 
     return {"statusCode": 200, "result": True, "event": event}
