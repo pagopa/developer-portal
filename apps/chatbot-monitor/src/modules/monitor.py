@@ -26,11 +26,6 @@ from src.database_models import tables
 
 LOGGER = get_logger(__name__)
 PRESIDIO = PresidioPII(config=SETTINGS.presidio_config)
-LANGFUSE_CLIENT = Langfuse(
-    public_key=SETTINGS.langfuse_public_key,
-    secret_key=SETTINGS.langfuse_secret_key,
-    host=SETTINGS.langfuse_host,
-)
 SPAN_TYPES = Union[
     LangfuseAgent,
     LangfuseChain,
@@ -216,6 +211,7 @@ def create_langfuse_trace(
     trace_id: str,
     user_id: str,
     session_id: str,
+    release: str,
     query: str,
     messages: List[Dict[str, str]],
     response: str,
@@ -229,6 +225,7 @@ def create_langfuse_trace(
         trace_id (str): The ID of the trace.
         user_id (str): The ID of the user.
         session_id (str): The ID of the session.
+        release (str): The release version.
         query (str): The user query.
         messages (List[Dict[str, str]]): The chat messages between the user and the assistant.
         response (str): The chat response.
@@ -238,10 +235,17 @@ def create_langfuse_trace(
         query_for_database (dict): The query data to save to the database.
     """
 
+    langfuse_client = Langfuse(
+        public_key=SETTINGS.langfuse_public_key,
+        secret_key=SETTINGS.langfuse_secret_key,
+        host=SETTINGS.langfuse_host,
+        release=release,
+    )
+
     span_root = spans[0]
     root_span_id = span_root["context"]["span_id"]
     spans = link_spans_groups(spans, root_span_id)
-    root = LANGFUSE_CLIENT.start_span(
+    root = langfuse_client.start_span(
         name=trace_id, trace_context=TraceContext(trace_id=trace_id)
     )
 
@@ -265,7 +269,7 @@ def create_langfuse_trace(
         tags=tags,
     )
     root.end()
-    LANGFUSE_CLIENT.flush()
+    langfuse_client.flush()
     LOGGER.info(f"Created trace with ID: {trace_id} successfully!")
 
     query_for_database["question"] = query_masked
@@ -294,15 +298,21 @@ def add_langfuse_score(
             Defaults to None.
     """
 
+    langfuse_client = Langfuse(
+        public_key=SETTINGS.langfuse_public_key,
+        secret_key=SETTINGS.langfuse_secret_key,
+        host=SETTINGS.langfuse_host,
+    )
+
     try:
-        LANGFUSE_CLIENT.create_score(
+        langfuse_client.create_score(
             trace_id=trace_id,
             name=name,
             value=score,
             data_type=data_type,
             comment=comment,
         )
-        LANGFUSE_CLIENT.flush()
+        langfuse_client.flush()
         LOGGER.info(f"Added {name}: {score} to trace with ID: {trace_id} successfully!")
     except Exception as e:
         LOGGER.error(f"Failed to add score to trace {trace_id}: {e}")

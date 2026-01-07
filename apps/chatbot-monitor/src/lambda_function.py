@@ -172,6 +172,7 @@ def lambda_handler(event, context):
                 trace_id=data.get("trace_id"),
                 user_id=data.get("user_id"),
                 session_id=data.get("session_id"),
+                release=data.get("release"),
                 query=data.get("query"),
                 messages=data.get("messages"),
                 response=data.get("response"),
