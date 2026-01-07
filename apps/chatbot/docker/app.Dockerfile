@@ -12,7 +12,12 @@ COPY poetry.lock $LAMBDA_TASK_ROOT
 RUN poetry config virtualenvs.create false
 RUN poetry install --only main
 
-COPY . ${LAMBDA_TASK_ROOT}
+COPY ./pyproject.toml .
+COPY ./poetry.lock .
+COPY ./CHANGELOG.md .
+COPY ./src ./src
+COPY ./config ./config
+COPY ./scripts ./scripts
 RUN python ./scripts/nltk_download.py
 RUN python ./scripts/spacy_download.py
 

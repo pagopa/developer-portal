@@ -27,6 +27,7 @@ RUN pip install --upgrade pip \
 WORKDIR /app
 COPY ./pyproject.toml .
 COPY ./poetry.lock .
+COPY ./CHANGELOG.md .
 COPY ./src ./src
 COPY ./config ./config
 COPY ./scripts ./scripts
