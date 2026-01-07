@@ -12,21 +12,11 @@ from llama_index.core.tools import QueryEngineTool, FunctionTool
 
 from src.modules.logger import get_logger
 from src.modules.settings import SETTINGS
-
-# from src.modules.documents import get_product_list
+from src.modules.documents import get_product_list
 
 
 LOGGER = get_logger(__name__)
-# PRODUCTS = get_product_list() + ["api", "webinars"]
-PRODUCTS = [
-    "firma-con-io",
-    "pari",
-    "pago-pa",
-    "send",
-    "pdnd-interoperabilita",
-    "app-io",
-    "srtp",
-]
+PRODUCTS = get_product_list() + ["api", "webinars"]
 
 
 class Reference(BaseModel):
