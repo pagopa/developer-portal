@@ -6,11 +6,13 @@ from pydantic_settings import BaseSettings
 
 from src.modules.logger import get_logger
 
+
 LOGGER = get_logger(__name__)
 CWF = Path(__file__)
 ROOT = CWF.parent.parent.parent.absolute().__str__()
 PARAMS = yaml.safe_load(open(os.path.join(ROOT, "config", "params.yaml"), "r"))
 AWS_SESSION = boto3.Session()
+
 
 def get_ssm_parameter(name: str | None, default: str | None = None) -> str | None:
     """
@@ -52,6 +54,7 @@ class ChatbotSettings(BaseSettings):
         os.getenv("LANGFUSE_INIT_PROJECT_SECRET_KEY"),
     )
     presidio_config: dict = PARAMS["config_presidio"]
+    query_table_prefix: str = os.getenv("CHB_QUERY_TABLE_PREFIX", "chatbot")
 
 
 SETTINGS = ChatbotSettings()
