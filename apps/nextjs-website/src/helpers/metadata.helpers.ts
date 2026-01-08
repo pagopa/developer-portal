@@ -38,6 +38,15 @@ export const makeMetadata: MakeMetadataFunction = ({
     url: url || '',
     openGraph,
     twitter,
+    alternates: {
+      canonical: url,
+      languages: url
+        ? {
+            it: url,
+            'x-default': url,
+          }
+        : undefined,
+    },
   };
 };
 
@@ -82,6 +91,12 @@ export const makeMetadataFromStrapi = (seo: SEO): Metadata => {
     viewport: seo.metaViewport,
     alternates: {
       canonical: seo.canonicalURL,
+      languages: seo.canonicalURL
+        ? {
+            it: seo.canonicalURL,
+            'x-default': seo.canonicalURL,
+          }
+        : undefined,
     },
     openGraph: enhanceOpenGraphMetadata(baseMetadata.openGraph, seo),
     twitter: enhanceTwitterMetadata(baseMetadata.twitter, seo),
