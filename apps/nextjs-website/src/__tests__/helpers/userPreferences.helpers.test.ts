@@ -19,6 +19,7 @@ const attributesWithoutUserPreferences: DevPortalUser['attributes'] = {
   'custom:company_type': 'ente-pubblico',
   'custom:job_role': 'developer',
   'custom:mailinglist_accepted': 'true',
+  'custom:survey_accepted': 'false',
   'custom:privacy_accepted': true,
 };
 

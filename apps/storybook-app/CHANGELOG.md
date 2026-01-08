@@ -1,5 +1,11 @@
 # storybook-app
 
+## 1.2.0
+
+### Minor Changes
+
+- 94f2306: Add LanguageSelector component and its storybook story
+
 ## 1.1.1
 
 ### Patch Changes

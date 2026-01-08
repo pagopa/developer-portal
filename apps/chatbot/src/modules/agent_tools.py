@@ -19,13 +19,13 @@ from src.modules.settings import SETTINGS
 LOGGER = get_logger(__name__)
 # PRODUCTS = get_product_list() + ["api", "webinars"]
 PRODUCTS = [
-    "pago-pa",
     "firma-con-io",
-    "app-io",
+    "pari",
+    "pago-pa",
     "send",
     "pdnd-interoperabilita",
-    "api",
-    "webinars",
+    "app-io",
+    "srtp",
 ]
 
 
@@ -114,7 +114,7 @@ def get_query_engine_tool(
         query_engine=query_engine,
         name="rag_tool",
         description=(
-            "This tool is your primary resource for answering questions about PagoPA Developer Portal products and services."
+            "This tool is your primary resource for answering questions about PagoPA Developer Portal."
         ),
     )
 

@@ -61,7 +61,6 @@ resource "aws_iam_role_policy" "lambda_index_policy" {
         Effect = "Allow"
         Resource = [
           module.google_api_key_ssm_parameter.ssm_parameter_arn,
-          module.strapi_api_key_ssm_parameter.ssm_parameter_arn,
         ]
       },
       {
@@ -107,13 +106,12 @@ resource "aws_lambda_function" "chatbot_index_lambda" {
     variables = {
       CHB_AWS_SSM_GOOGLE_API_KEY            = module.google_api_key_ssm_parameter.ssm_parameter_name
       CHB_AWS_SSM_GOOGLE_SERVICE_ACCOUNT    = module.google_service_account_ssm_parameter.ssm_parameter_name
-      CHB_AWS_SSM_STRAPI_API_KEY            = module.strapi_api_key_ssm_parameter.ssm_parameter_name
       CHB_EMBED_BATCH_SIZE                  = 100
       CHB_EMBEDDING_DIM                     = 768
       CHB_EMBED_MODEL_ID                    = var.models.embeddings
       CHB_EMBED_RETRIES                     = 30
       CHB_EMBED_RETRY_MIN_SECONDS           = 1.5
-      CHB_MODEL_MAXTOKENS                   = 768
+      CHB_MODEL_MAXTOKENS                   = 2048
       CHB_MODEL_ID                          = var.models.generation
       CHB_MODEL_TEMPERATURE                 = 0.3
       CHB_PROVIDER                          = var.models.provider
@@ -157,6 +155,13 @@ resource "aws_s3_bucket_notification" "index_lambda_trigger" {
     events              = ["s3:ObjectCreated:*", "s3:ObjectRemoved:*"]
     filter_prefix       = ""
     filter_suffix       = ".md"
+  }
+
+  lambda_function {
+    lambda_function_arn = aws_lambda_function.chatbot_index_lambda.arn
+    events              = ["s3:ObjectCreated:*"]
+    filter_prefix       = ""
+    filter_suffix       = "main-guide-versions-dirNames-to-remove.json"
   }
 
   depends_on = [aws_lambda_permission.allow_s3_invoke_index]

@@ -1,5 +1,11 @@
 # chatbot-evaluate
 
+## 1.0.5
+
+### Patch Changes
+
+- cb13a14: Fix bug in chatbot evaluate: importing the logger
+
 ## 1.0.4
 
 ### Patch Changes

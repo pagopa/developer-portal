@@ -104,6 +104,13 @@ export const useUser = () => {
     return () => cancel();
   }, []);
 
+  const userFullName =
+    (user &&
+      [user.attributes['given_name'], user.attributes['family_name']].join(
+        ' '
+      )) ||
+    '';
+
   return {
     user,
     webinarSubscriptions,
@@ -112,6 +119,7 @@ export const useUser = () => {
     aligned,
     reloadUser,
     isUserLoggedIn,
+    userFullName,
   };
 };
 

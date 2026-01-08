@@ -6,6 +6,7 @@ import { compact } from 'lodash';
 export const makeHomepageProps = (
   strapiHomepage: StrapiHomepage
 ): HomepageProps => ({
+  updatedAt: strapiHomepage.data.attributes.updatedAt,
   comingsoonDocumentation:
     strapiHomepage.data.attributes.comingsoonDocumentation,
   hero: strapiHomepage.data.attributes.heroSlider.map((slide) => ({
@@ -42,7 +43,7 @@ export const makeHomepageProps = (
           title: product.attributes.name,
           text: product.attributes.description ?? '',
           href: `${product.attributes.slug}/overview`,
-          icon: product.attributes.logo.data?.attributes.url || '',
+          icon: product.attributes.logo.data?.attributes.url || undefined,
           useSrc: true,
         })
       ),
