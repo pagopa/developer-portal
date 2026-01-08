@@ -13,6 +13,7 @@ import NextLink from 'next/link';
 import MobileUserInfo from '@/components/atoms/MobileUserInfo/MobileUserInfo';
 import { SITE_HEADER_HEIGHT } from '@/config';
 import MobileLanguageSelector from '@/components/atoms/MobileLanguageSelector/MobileLanguageSelector';
+import { SUPPORTED_LOCALES } from '../../../locales';
 
 export const MobileSiteHeaderStyledTreeItem = styled(TreeItem)(({ theme }) => ({
   [`&`]: {
@@ -248,10 +249,7 @@ const MobileSiteHeader = ({ locale, products }: SiteHeaderProps) => {
           <MobileUserInfo onClick={handleClick} />
           <Divider sx={{ marginTop: -2, marginBottom: 2 }} />
           <MobileLanguageSelector
-            locales={[
-              { code: 'it', label: 'IT' },
-              { code: 'en', label: 'EN' },
-            ]}
+            locales={SUPPORTED_LOCALES}
             currentLocale={locale}
           />
         </TreeView>

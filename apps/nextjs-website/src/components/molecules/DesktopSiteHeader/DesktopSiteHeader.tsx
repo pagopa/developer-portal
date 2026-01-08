@@ -7,6 +7,7 @@ import { SiteHeaderProps } from '@/components/molecules/SiteHeader/SiteHeader';
 import { useTranslations } from 'next-intl';
 import LanguageSelector from '@/components/atoms/LanguageSelector/LanguageSelector';
 import { isI18nActive } from '@/config';
+import { SUPPORTED_LOCALES } from '../../../locales';
 
 const DesktopSiteHeader = ({ locale, products }: SiteHeaderProps) => {
   const t = useTranslations('devPortal');
@@ -49,19 +50,7 @@ const DesktopSiteHeader = ({ locale, products }: SiteHeaderProps) => {
       </LinkMui>
       <DesktopUserInfo />
       {isI18nActive && (
-        <LanguageSelector
-          locales={[
-            {
-              code: 'en',
-              label: 'EN',
-            },
-            {
-              code: 'it',
-              label: 'IT',
-            },
-          ]}
-          currentLocale={locale}
-        />
+        <LanguageSelector locales={SUPPORTED_LOCALES} currentLocale={locale} />
       )}
     </Box>
   );
