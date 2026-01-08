@@ -6,7 +6,7 @@ import React from 'react';
 import { SiteHeaderProps } from '@/components/molecules/SiteHeader/SiteHeader';
 import { useTranslations } from 'next-intl';
 
-const DesktopSiteHeader = ({ products }: SiteHeaderProps) => {
+const DesktopSiteHeader = ({ currentLocale, products }: SiteHeaderProps) => {
   const t = useTranslations('devPortal');
 
   return (
@@ -23,7 +23,7 @@ const DesktopSiteHeader = ({ products }: SiteHeaderProps) => {
       <Dropdown
         label={t('siteHeader.products')}
         items={products.map((product) => ({
-          href: `/${product.slug}/overview`,
+          href: `/${currentLocale}/${product.slug}/overview`,
           label: product.name,
         }))}
       />
@@ -31,7 +31,7 @@ const DesktopSiteHeader = ({ products }: SiteHeaderProps) => {
         component={Link}
         color='primary.main'
         underline='none'
-        href={'/solutions'}
+        href={`/${currentLocale}/solutions`}
         sx={{ fontSize: '16px', fontWeight: 600 }}
       >
         {t('siteHeader.solutions')}
@@ -40,7 +40,7 @@ const DesktopSiteHeader = ({ products }: SiteHeaderProps) => {
         component={Link}
         color='primary.main'
         underline='none'
-        href={'/webinars'}
+        href={`/${currentLocale}/webinars`}
         sx={{ fontSize: '16px', fontWeight: 600 }}
       >
         {t('siteHeader.webinars')}
