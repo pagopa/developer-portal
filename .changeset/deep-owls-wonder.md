@@ -3,4 +3,4 @@
 "chatbot": patch
 ---
 
-Considering only products that have field isVisible to True
+Replacing the hardcoded product list with a the function in order to consider only products that have the isVisible field equal to True
