@@ -3,4 +3,4 @@
 "chatbot": patch
 ---
 
-Add release version to langfuse from chatbot to chatbot-monitor
+Add chatbot version to langfuse as tag
