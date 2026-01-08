@@ -147,7 +147,7 @@ resource "aws_ecs_task_definition" "clickhouse" {
 }
 
 resource "aws_ecs_task_definition" "langfuse_worker" {
-  family                   = "${local.prefix}-worker"
+  family                   = "langfuse-worker"
   cpu                      = 2048
   memory                   = 4096
   network_mode             = "awsvpc"
@@ -164,7 +164,7 @@ resource "aws_ecs_task_definition" "langfuse_worker" {
   container_definitions = jsonencode([
     {
       name      = "worker"
-      image     = "ocker.io/langfuse/langfuse-worker:3.115"
+      image     = "docker.io/langfuse/langfuse-worker:3.115"
       cpu       = 2048
       memory    = 4096
       essential = true
@@ -267,7 +267,7 @@ resource "aws_ecs_task_definition" "langfuse_worker" {
 }
 
 resource "aws_ecs_service" "langfuse_worker" {
-  name            = "${local.prefix}_worker"
+  name            = "langfuse_worker"
   cluster         = aws_ecs_cluster.langfuse.arn
   task_definition = aws_ecs_task_definition.langfuse_worker.arn
   desired_count   = var.worker_desire_count
