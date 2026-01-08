@@ -61,7 +61,6 @@ resource "aws_iam_role_policy" "lambda_index_policy" {
         Effect = "Allow"
         Resource = [
           module.google_api_key_ssm_parameter.ssm_parameter_arn,
-          module.strapi_api_key_ssm_parameter.ssm_parameter_arn,
         ]
       },
       {
@@ -107,7 +106,6 @@ resource "aws_lambda_function" "chatbot_index_lambda" {
     variables = {
       CHB_AWS_SSM_GOOGLE_API_KEY            = module.google_api_key_ssm_parameter.ssm_parameter_name
       CHB_AWS_SSM_GOOGLE_SERVICE_ACCOUNT    = module.google_service_account_ssm_parameter.ssm_parameter_name
-      CHB_AWS_SSM_STRAPI_API_KEY            = module.strapi_api_key_ssm_parameter.ssm_parameter_name
       CHB_EMBED_BATCH_SIZE                  = 100
       CHB_EMBEDDING_DIM                     = 768
       CHB_EMBED_MODEL_ID                    = var.models.embeddings
