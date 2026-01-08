@@ -32,7 +32,7 @@ def read_file_from_s3(
         text = response["Body"].read().decode("utf-8")
 
     except Exception as e:
-        print(f"Error reading {bucket_name}/{file_path} from S3: {e}")
+        LOGGER.error(f"Error reading {bucket_name}/{file_path} from S3: {e}")
 
     return text
 
@@ -59,5 +59,5 @@ def get_product_list(file_path: str | None = None) -> List[str]:
                 print(f"Error extracting product slug: {e}")
         print(f"Found {len(product_list)} products: {product_list}.")
     else:
-        raise ValueError("Product data content is empty.")
+        LOGGER.warning("Product data content is empty.")
     return product_list
