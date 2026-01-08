@@ -14,6 +14,7 @@ import { getApiDataListPages } from '@/lib/api';
 import { Metadata } from 'next';
 
 type Params = {
+  locale: string;
   productSlug: string;
 };
 
@@ -57,7 +58,7 @@ const ApiDataListPage = async (props: { params: Promise<Params> }) => {
     return (
       <ProductLayout
         product={apiDataListPageProps.product}
-        path={`/${apiDataListPageProps.product.slug}/api`}
+        path={`/${params.locale}/${apiDataListPageProps.product.slug}/api`}
         showBreadcrumbs
         structuredData={structuredData}
       >
