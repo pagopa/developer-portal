@@ -56,8 +56,8 @@ def get_product_list(file_path: str | None = None) -> List[str]:
                 if product["attributes"]["isVisible"]:
                     product_list.append(product["attributes"]["slug"])
             except KeyError as e:
-                print(f"Error extracting product slug: {e}")
-        print(f"Found {len(product_list)} products: {product_list}.")
+                LOGGER.error(f"Error extracting product slug: {e}")
+        LOGGER.info(f"Found {len(product_list)} products: {product_list}.")
     else:
         LOGGER.warning("Product data content is empty.")
     return product_list
