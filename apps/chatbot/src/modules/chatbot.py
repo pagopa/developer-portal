@@ -176,6 +176,6 @@ class Chatbot:
             }
             LOGGER.error(f"Exception: {e}")
 
-        response_json["release"] = SETTINGS.release
+        response_json["products"].append(f"chatbot@{SETTINGS.chatbot_release}")
 
         return response_json

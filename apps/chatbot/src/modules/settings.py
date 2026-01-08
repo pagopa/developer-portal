@@ -113,6 +113,7 @@ class ChatbotSettings(BaseSettings):
     )
 
     # RAG settings
+    chatbot_release: str = extract_latest_version() or "---"
     embed_batch_size: int = int(os.getenv("CHB_EMBED_BATCH_SIZE", "100"))
     embed_dim: int = int(os.getenv("CHB_EMBEDDING_DIM", "768"))
     embed_model_id: str = os.getenv("CHB_EMBED_MODEL_ID", "gemini-embedding-001")
@@ -149,7 +150,6 @@ class ChatbotSettings(BaseSettings):
     website_url: str = os.getenv("CHB_WEBSITE_URL")
 
     # API
-    release: str = extract_latest_version() or "---"
     query_table_prefix: str = os.getenv("CHB_QUERY_TABLE_PREFIX", "chatbot")
     aws_sqs_queue_evaluate_name: str = os.getenv(
         "CHB_AWS_SQS_QUEUE_EVALUATE_NAME", "chatbot-evaluate"
