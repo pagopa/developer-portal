@@ -7,6 +7,7 @@ import React, { FC } from 'react';
 import { useTranslations } from 'next-intl';
 import { useScrollUp } from './useScrollUp';
 import { SITE_HEADER_HEIGHT } from '@/config';
+import { useParams } from 'next/navigation';
 
 type ProductHeaderProps = {
   product: Product;
@@ -18,8 +19,14 @@ const ProductHeader: FC<ProductHeaderProps> = ({ product, path }) => {
   const t = useTranslations();
   const scrollUp = useScrollUp();
   const themeVariant = palette.mode;
+  const currentLocale = useParams<{ locale: string }>().locale;
 
-  const menu = productToMenuItems(product, path, themeVariant).map((item) => ({
+  const menu = productToMenuItems(
+    currentLocale,
+    product,
+    path,
+    themeVariant
+  ).map((item) => ({
     ...item,
     label: t(item.label),
   }));
@@ -36,7 +43,7 @@ const ProductHeader: FC<ProductHeaderProps> = ({ product, path }) => {
       <Header
         menu={menu}
         product={{
-          href: `/${product.slug}/overview`,
+          href: `/${currentLocale}/${product.slug}/overview`,
           name: product.name,
         }}
         theme={themeVariant}

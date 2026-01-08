@@ -28,6 +28,7 @@ import { baseUrl } from '@/config';
 import PageNotFound from '@/app/[locale]/not-found';
 
 type ReleaseNotePageStaticParams = {
+  locale: string;
   productSlug: string;
   releaseNoteSubPathSlugs: string[];
 };
@@ -137,7 +138,7 @@ const ReleaseNotePage = async (props0: {
   return (
     <ProductLayout
       product={product}
-      path={path}
+      path={`/${params.locale}/${path}`}
       bannerLinks={bannerLinks}
       structuredData={structuredData}
     >
