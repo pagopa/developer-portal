@@ -1,6 +1,6 @@
 /* eslint-disable functional/no-try-statements */
 /* eslint-disable functional/no-expression-statements */
-import { OverviewPageProps } from '@/app/[productSlug]/overview/page';
+import { OverviewPageProps } from '@/app/[locale]/[productSlug]/overview/page';
 import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
 import { makeBaseProductWithoutLogoProps } from './makeProducts';
 import { StrapiOverviews } from '@/lib/strapi/types/overviews';

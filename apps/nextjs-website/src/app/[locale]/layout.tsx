@@ -15,7 +15,7 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import '@/styles/globals.css';
-import ThemeRegistry from './ThemeRegistry';
+import ThemeRegistry from '../ThemeRegistry';
 import { getProducts } from '@/lib/api';
 import SiteFooter from '@/components/atoms/SiteFooter/SiteFooter';
 import SiteHeader from '@/components/molecules/SiteHeader/SiteHeader';
@@ -93,8 +93,10 @@ export default async function RootLayout({
   // Layouts must accept a children prop.
   // This will be populated with nested layouts or pages
   children,
+  params,
 }: {
   children: React.ReactNode;
+  params: Promise<{ locale: string }>;
 }) {
   const products = [...(await getProducts()).filter((product) => product.isVisible)];
 
@@ -103,32 +105,34 @@ export default async function RootLayout({
   let messages;
   // eslint-disable-next-line functional/no-try-statements
   try {
-    messages = (await import('../messages/it.json')).default;
+    messages = (await import('../../messages/it.json')).default;
   } catch {
     notFound();
   }
 
+  const currentLocale = (await params).locale
+
   return (
-    <html lang='it' className={titilliumWeb.variable}>
+    <html lang={currentLocale} className={titilliumWeb.variable}>
       <head>
         {isProduction && (
           <Script
-            id='matomo-tag-manager'
-            key='script-matomo-tag-manager'
+            id="matomo-tag-manager"
+            key="script-matomo-tag-manager"
             dangerouslySetInnerHTML={{
               __html: useNewCookie
                 ? MATOMO_TAG_MANAGER_SCRIPT
                 : PREVIOUS_MATOMO_TAG_MANAGER_SCRIPT,
             }}
-            strategy='lazyOnload'
+            strategy="lazyOnload"
           />
         )}
       </head>
       <ThemeRegistry options={{ key: 'mui' }}>
         <NextIntlContext
-          locale={'it'}
+          locale={currentLocale}
           messages={messages}
-          timeZone='Europe/Rome'
+          timeZone="Europe/Rome"
         >
           <BodyWrapper>
             <CookieBannerScript
@@ -141,11 +145,13 @@ export default async function RootLayout({
             />
             <AuthProvider>
               <ChatbotProvider isChatbotVisible={isChatbotActive}>
-                <SiteHeader products={products} />
-                <ErrorBoundary
-                  errorComponent={Error}
-                >
-                  <main><Box sx={{ marginTop: `${SITE_HEADER_HEIGHT}px` }}>{children}</Box></main>
+                <SiteHeader currentLocale={currentLocale} products={products} />
+                <ErrorBoundary errorComponent={Error}>
+                  <main>
+                    <Box sx={{ marginTop: `${SITE_HEADER_HEIGHT}px` }}>
+                      {children}
+                    </Box>
+                  </main>
                 </ErrorBoundary>
                 <SiteFooter />
               </ChatbotProvider>

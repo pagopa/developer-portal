@@ -6,7 +6,7 @@ import { ResetPasswordSteps } from '@/lib/types/resetPasswordSteps';
 import { useCallback, useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Auth } from 'aws-amplify';
-import PageNotFound from '@/app/not-found';
+import PageNotFound from '@/app/[locale]/not-found';
 import { useTranslations } from 'next-intl';
 import Spinner from '@/components/atoms/Spinner/Spinner';
 import PageBackgroundWrapper from '@/components/atoms/PageBackgroundWrapper/PageBackgroundWrapper';

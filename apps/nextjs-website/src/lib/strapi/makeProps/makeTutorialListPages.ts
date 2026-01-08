@@ -1,5 +1,5 @@
 /* eslint-disable functional/no-expression-statements */
-import { TutorialsPageProps } from '@/app/[productSlug]/tutorials/page';
+import { TutorialsPageProps } from '@/app/[locale]/[productSlug]/tutorials/page';
 import { Tutorial } from '@/lib/types/tutorialData';
 import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
 import { makeBaseProductWithoutLogoProps } from './makeProducts';

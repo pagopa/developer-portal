@@ -9,7 +9,7 @@ import { getUrlReplaceMapProps } from '@/lib/cmsApi';
 import { SolutionTemplateProps } from '@/components/templates/SolutionTemplate/SolutionTemplate';
 import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
 import { getItemFromPaths } from '@/helpers/structuredData.helpers';
-import PageNotFound from '@/app/not-found';
+import PageNotFound from '@/app/[locale]/not-found';
 
 type SolutionDetailPageTemplateProps = {
   solution: SolutionTemplateProps;

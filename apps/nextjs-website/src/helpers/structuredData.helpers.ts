@@ -1,5 +1,5 @@
-import { ApiDataPageProps } from '@/app/[productSlug]/api/[apiDataSlug]/page';
-import { QuickStartGuidePageProps } from '@/app/[productSlug]/quick-start/page';
+import { ApiDataPageProps } from '@/app/[locale]/[productSlug]/api/[apiDataSlug]/page';
+import { QuickStartGuidePageProps } from '@/app/[locale]/[productSlug]/quick-start/page';
 import { baseUrl, organizationInfo, websiteName } from '@/config';
 import { Media } from '@/lib/types/media';
 import { Product } from '@/lib/types/product';

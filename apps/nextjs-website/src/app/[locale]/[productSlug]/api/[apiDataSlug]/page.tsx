@@ -9,7 +9,7 @@ import {
   makeMetadataFromStrapi,
 } from '@/helpers/metadata.helpers';
 import { ApiDataParams } from '@/lib/types/apiDataParams';
-import PageNotFound from '@/app/not-found';
+import PageNotFound from '@/app/[locale]/not-found';
 import { SEO } from '@/lib/types/seo';
 import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
 import {

@@ -1,5 +1,5 @@
 'use client';
-import PageNotFound from '@/app/not-found';
+import PageNotFound from '@/app/[locale]/not-found';
 import React from 'react';
 import { Box } from '@mui/material';
 import { usePathname } from 'next/navigation';

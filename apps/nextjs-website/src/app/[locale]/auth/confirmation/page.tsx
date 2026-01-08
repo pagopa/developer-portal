@@ -1,6 +1,6 @@
 'use client';
 import { Button } from '@mui/material';
-import PageNotFound from '@/app/not-found';
+import PageNotFound from '@/app/[locale]/not-found';
 import { Auth } from 'aws-amplify';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useCallback, useEffect, useState, Suspense } from 'react';

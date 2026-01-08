@@ -25,7 +25,7 @@ import {
 } from '@/helpers/metadata.helpers';
 import { BreadcrumbSegment } from '@/lib/types/path';
 import { baseUrl } from '@/config';
-import PageNotFound from '@/app/not-found';
+import PageNotFound from '@/app/[locale]/not-found';
 
 type ReleaseNotePageStaticParams = {
   productSlug: string;

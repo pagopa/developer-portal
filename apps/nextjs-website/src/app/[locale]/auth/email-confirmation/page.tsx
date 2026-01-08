@@ -1,10 +1,10 @@
 'use client';
-import PageNotFound from '@/app/not-found';
+import PageNotFound from '@/app/[locale]/not-found';
 import { Auth } from 'aws-amplify';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState, Suspense } from 'react';
 import Spinner from '@/components/atoms/Spinner/Spinner';
-import ExpiredCode from '@/app/auth/expired-code/page';
+import ExpiredCode from '@/app/[locale]/auth/expired-code/page';
 
 enum State {
   loading = 'loading',

@@ -1,5 +1,5 @@
 import { StrapiApiDataList } from '@/lib/strapi/types/apiDataList';
-import { ApiDataPageProps } from '@/app/[productSlug]/api/[apiDataSlug]/page';
+import { ApiDataPageProps } from '@/app/[locale]/[productSlug]/api/[apiDataSlug]/page';
 import { generateBannerLinks } from '@/lib/strapi/__tests__/factories/bannerLink';
 import { mediaJpeg } from '../factories/media';
 

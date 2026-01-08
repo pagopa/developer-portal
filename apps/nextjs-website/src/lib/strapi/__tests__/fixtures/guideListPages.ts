@@ -1,5 +1,5 @@
 import { StrapiGuideListPages } from '@/lib/strapi/types/guideListPage';
-import { GuideListPageProps } from '@/app/[productSlug]/guides/page';
+import { GuideListPageProps } from '@/app/[locale]/[productSlug]/guides/page';
 import { product } from '@/lib/strapi/__tests__/fixtures/product';
 
 const dateNow = new Date().toISOString();

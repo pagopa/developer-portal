@@ -19,7 +19,7 @@ import {
   convertSeoToStructuredDataArticle,
   productToBreadcrumb,
 } from '@/helpers/structuredData.helpers';
-import PageNotFound from '@/app/not-found';
+import PageNotFound from '@/app/[locale]/not-found';
 
 export const dynamic = 'force-dynamic';
 

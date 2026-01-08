@@ -110,7 +110,7 @@ export const MobileSiteHeaderStyledTreeItem = styled(TreeItem)(({ theme }) => ({
   },
 }));
 
-const MobileSiteHeader = ({ products }: SiteHeaderProps) => {
+const MobileSiteHeader = ({ currentLocale, products }: SiteHeaderProps) => {
   const t = useTranslations('devPortal');
   const { palette } = useTheme();
 
@@ -191,7 +191,7 @@ const MobileSiteHeader = ({ products }: SiteHeaderProps) => {
                   key={index}
                   variant='body1'
                   component={NextLink}
-                  href={`/${product.slug}/overview`}
+                  href={`/${currentLocale}/${product.slug}/overview`}
                   onClick={handleClick}
                   style={{
                     color: palette.primary.dark,
@@ -211,7 +211,7 @@ const MobileSiteHeader = ({ products }: SiteHeaderProps) => {
               <Typography
                 component={NextLink}
                 variant='body1'
-                href={'/solutions'}
+                href={`/${currentLocale}/solutions`}
                 onClick={handleClick}
                 style={{
                   color: palette.primary.dark,
@@ -231,7 +231,7 @@ const MobileSiteHeader = ({ products }: SiteHeaderProps) => {
               <Typography
                 component={NextLink}
                 variant='body1'
-                href={'/webinars'}
+                href={`/${currentLocale}/webinars`}
                 onClick={handleClick}
                 style={{
                   color: palette.primary.dark,
