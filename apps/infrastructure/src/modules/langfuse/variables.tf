@@ -30,10 +30,10 @@ variable "private_subnet_ids" {
   type        = list(string)
 }
 
-# variable "public_subnet_ids" {
-#   description = "Public subnet IDs used to expose Langfuse through the load balancer"
-#   type        = list(string)
-# }
+variable "public_subnet_ids" {
+  description = "Public subnet IDs used to expose Langfuse through the load balancer"
+  type        = list(string)
+}
 
 variable "database_user" {
   description = "Database user for Langfuse Aurora Serverless v2"
