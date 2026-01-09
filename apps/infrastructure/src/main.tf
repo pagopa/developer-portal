@@ -274,6 +274,8 @@ module "langfuse" {
   region             = var.aws_region
   vpc_id             = module.cms.vpc.id
   private_subnet_ids = module.cms.vpc.private_subnets
+  web_salt           = "yIuodv61mg8Nchg0VzuVSKxRf2F+5R88/jybIRMeCUg="                     # generated-base64 with openssl rand -base64 32
+  encryption_key     = "d8e84722a8d90705670145236be10d4f94d3397ea49685154a4d02776ee1f33b" # generated-hex-key with openssl rand -hex 32
 }
 
 
