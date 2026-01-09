@@ -1,5 +1,11 @@
 # infrastructure
 
+## 7.2.0
+
+### Minor Changes
+
+- c103445: Add Langfuse worker to the Fargate task
+
 ## 7.1.0
 
 ### Minor Changes
