@@ -61,7 +61,10 @@ const VideoJsPlayer = (props: PlayerProps) => {
       // eslint-disable-next-line functional/immutable-data
       playerRef.current = undefined;
     };
-  }, [props.autoplay, props.controls, props.playsInline]);
+
+    // NOTE: Autoplay is correctly set on initialization only, it should not be a dependency here
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [props.controls, props.playsInline]);
 
   useEffect(() => {
     if (!playerRef.current) {

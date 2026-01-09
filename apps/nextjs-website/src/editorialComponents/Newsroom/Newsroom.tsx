@@ -6,6 +6,7 @@ import { useMemo } from 'react';
 import EContainer from '../EContainer/EContainer';
 import { useTranslations } from 'next-intl';
 import { Variant } from '@mui/material/styles/createTypography';
+import Tag from '@/components/atoms/Tag/Tag';
 
 export interface INewsroomItem {
   comingSoonLabel?: string;
@@ -114,23 +115,7 @@ const Item = (props: INewsroomItem) => {
           </Typography>
         )}
         {label && (
-          <Box
-            sx={{
-              borderRadius: 1,
-              maxHeight: '24px',
-              flexGrow: '0',
-              backgroundColor: '#C4DCF5',
-              maxWidth: '50%',
-              textAlign: 'center',
-              textOverflow: 'ellipsis',
-              overflow: 'hidden',
-              display: 'inline-block',
-            }}
-          >
-            <Typography fontSize={14} fontWeight={600} sx={{ marginX: '8px' }}>
-              {label}
-            </Typography>
-          </Box>
+          <Tag label={label} backgroundColor={theme.palette.primary[100]} />
         )}
       </Box>
       <div
