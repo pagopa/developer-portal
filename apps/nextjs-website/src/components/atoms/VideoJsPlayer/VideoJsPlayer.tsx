@@ -46,7 +46,7 @@ const VideoJsPlayer = (props: PlayerProps) => {
 
     const player = videojs(videoEl.current, {
       techOrder: TECH_ORDER_AMAZON_IVS,
-      autoplay: props.autoplay,
+      autoplay: false,
       controls: props.controls,
       playsinline: props.playsInline,
       // @ts-expect-error TS2322: Type 'undefined' is not assignable to type 'Player & VideoJSIVSTech & VideoJSQualityPlugin'.
@@ -61,7 +61,7 @@ const VideoJsPlayer = (props: PlayerProps) => {
       // eslint-disable-next-line functional/immutable-data
       playerRef.current = undefined;
     };
-  }, [props.autoplay, props.controls, props.playsInline]);
+  }, [props.controls, props.playsInline]);
 
   useEffect(() => {
     if (!playerRef.current) {
