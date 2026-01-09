@@ -7,18 +7,14 @@ export function tutorialsWithAnItemMissingSlug(): StrapiTutorials {
     ...strapiTutorials,
     data: [
       {
-        attributes: {
-          ...strapiTutorials.data[0].attributes,
-          title: 'Tutorial Without Slug',
-          slug: undefined as any,
-        },
+        ...strapiTutorials.data[0],
+        title: 'Tutorial Without Slug',
+        slug: undefined as any,
       },
       {
-        attributes: {
-          ...strapiTutorials.data[0].attributes,
-          title: 'Valid Tutorial',
-          slug: 'valid-tutorial',
-        },
+        ...strapiTutorials.data[0],
+        title: 'Valid Tutorial',
+        slug: 'valid-tutorial',
       },
     ],
   };
@@ -29,35 +25,23 @@ export function tutorialsWithAnItemMissingProductSlug(): StrapiTutorials {
     ...strapiTutorials,
     data: [
       {
-        attributes: {
-          ...strapiTutorials.data[0].attributes,
-          title: 'Tutorial Without Product Slug',
-          slug: 'tutorial-without-product-slug',
-          product: {
-            data: {
-              attributes: {
-                ...strapiTutorials.data[0].attributes.product.data.attributes,
-                name: 'Product Without Slug',
-                slug: undefined as any,
-              },
-            },
-          },
+        ...strapiTutorials.data[0],
+        title: 'Tutorial Without Product Slug',
+        slug: 'tutorial-without-product-slug',
+        product: {
+          ...strapiTutorials.data[0].product!,
+          name: 'Product Without Slug',
+          slug: undefined as any,
         },
       },
       {
-        attributes: {
-          ...strapiTutorials.data[0].attributes,
-          title: 'Valid Tutorial',
-          slug: 'valid-tutorial',
-          product: {
-            data: {
-              attributes: {
-                ...strapiTutorials.data[0].attributes.product.data.attributes,
-                name: 'Valid Product',
-                slug: 'valid-product',
-              },
-            },
-          },
+        ...strapiTutorials.data[0],
+        title: 'Valid Tutorial',
+        slug: 'valid-tutorial',
+        product: {
+          ...strapiTutorials.data[0].product!,
+          name: 'Valid Product',
+          slug: 'valid-product',
         },
       },
     ],
@@ -70,17 +54,15 @@ export function minimalDataTutorials() {
     ...strapiTutorials,
     data: [
       {
-        attributes: {
-          ...strapiTutorial.attributes,
-          title: 'Minimal Data Tutorial',
-          slug: 'minimal-data-tutorial',
-          publishedAt: '2023-01-01T00:00:00Z',
-          locale: 'en-US',
-          parts: [],
-          relatedLinks: undefined,
-          seo: undefined,
-          image: { data: undefined },
-        },
+        ...strapiTutorial,
+        title: 'Minimal Data Tutorial',
+        slug: 'minimal-data-tutorial',
+        publishedAt: '2023-01-01T00:00:00Z',
+        locale: 'en-US',
+        parts: [],
+        relatedLinks: undefined,
+        seo: undefined,
+        image: undefined,
       },
     ],
   } satisfies StrapiTutorials;
@@ -89,16 +71,13 @@ export function minimalDataTutorials() {
 export function tutorialsWithItemMissingData() {
   const strapiTutorial = strapiTutorials.data[0];
   return {
-    strapiTutorials,
     data: [
       {
-        attributes: {
-          ...strapiTutorial.attributes,
-          title: undefined,
-          slug: undefined,
-          publishedAt: undefined,
-          locale: undefined,
-        },
+        ...strapiTutorial,
+        title: undefined,
+        slug: undefined,
+        publishedAt: undefined,
+        locale: undefined,
       },
     ],
   };
@@ -108,13 +87,10 @@ export function tutorialsWithItemMissingMandatoryData() {
   const strapiTutorial = tutorialsWithItemMissingData().data[0];
   return {
     ...strapiTutorials,
-    data: [
+    ...[
       {
         ...strapiTutorial,
-        attributes: {
-          ...strapiTutorial.attributes,
-          product: { data: undefined },
-        },
+        product: undefined,
       },
     ],
   };

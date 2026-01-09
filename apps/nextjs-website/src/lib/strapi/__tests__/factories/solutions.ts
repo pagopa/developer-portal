@@ -9,18 +9,15 @@ export function minimalDataSolutions() {
     data: [
       {
         ...strapiSolution,
-        attributes: {
-          ...strapiSolution.attributes,
-          title: 'Minimal Data Solution',
-          slug: 'minimal-data-solution',
-          description: undefined,
-          introductionToSteps: undefined,
-          steps: [],
-          stats: [],
-          statsSource: undefined,
-          caseHistories: undefined,
-          seo: undefined,
-        },
+        title: 'Minimal Data Solution',
+        slug: 'minimal-data-solution',
+        description: undefined,
+        introductionToSteps: undefined,
+        steps: [],
+        stats: [],
+        statsSource: undefined,
+        caseHistories: undefined,
+        seo: undefined,
       },
     ],
   } satisfies StrapiSolutions;
@@ -33,12 +30,9 @@ export function solutionsWithItemMissingData() {
     data: [
       {
         ...strapiSolution,
-        attributes: {
-          ...strapiSolution.attributes,
-          title: undefined,
-          slug: undefined,
-          description: undefined,
-        },
+        title: undefined,
+        slug: undefined,
+        description: undefined,
       },
     ],
   };
@@ -51,10 +45,7 @@ export function solutionWithItemMissingMandatoryData() {
     data: [
       {
         ...strapiSolution,
-        attributes: {
-          ...strapiSolution.attributes,
-          icon: { data: undefined },
-        },
+        icon: undefined,
       },
     ],
   };
@@ -67,10 +58,7 @@ export function solutionsWithItemWithoutCaseHistories() {
     data: [
       {
         ...strapiSolution,
-        attributes: {
-          ...strapiSolution.attributes,
-          caseHistories: undefined,
-        },
+        caseHistories: undefined,
       },
     ],
   } satisfies StrapiSolutions;
@@ -83,12 +71,7 @@ export function solutionsWithItemWithoutWebinars() {
     data: [
       {
         ...strapiSolution,
-        attributes: {
-          ...strapiSolution.attributes,
-          webinars: {
-            data: [],
-          },
-        },
+        webinars: [],
       },
     ],
   } satisfies StrapiSolutions;
@@ -101,83 +84,54 @@ export function solutionsWithItemMissingSolutionSlug() {
     data: [
       {
         ...strapiSolution,
-        attributes: {
-          ...strapiSolution.attributes,
-          title: 'Solution Without Slug',
-          slug: undefined as any,
-        },
+        title: 'Solution Without Slug',
+        slug: undefined as any,
       },
       {
         ...strapiSolution,
-        attributes: {
-          ...strapiSolution.attributes,
-          title: 'Valid Solution',
-          slug: 'valid-solution',
-        },
+        title: 'Valid Solution',
+        slug: 'valid-solution',
       },
     ],
   } satisfies StrapiSolutions;
 }
 
-export function solutionsWithItemMissingCaseHistorySlug() {
+export function solutionsWithItemMissingCaseHistorySlug(): StrapiSolutions {
   const strapiSolution = strapiSolutions.data[0];
   return {
     ...strapiSolutions,
     data: [
       {
         ...strapiSolution,
-        attributes: {
-          ...strapiSolution.attributes,
-          title: 'Solution with Case History Missing Slug',
-          slug: 'solution-with-case-history-missing-slug',
-          caseHistories: {
-            title: 'Success Stories',
-            description: 'Our success stories',
-            case_histories: {
-              data: [
-                {
-                  id: 1,
-                  attributes: {
-                    ...strapiSolution.attributes.caseHistories?.case_histories
-                      .data[0].attributes,
-                    title: 'Case History Without Slug',
-                    slug: undefined as any,
-                    image: {
-                      data: {
-                        attributes: {
-                          ...strapiSolution.attributes.caseHistories
-                            ?.case_histories.data[0].attributes.image.data
-                            .attributes,
-                          url: '/test-image.png',
-                          name: 'Test Image',
-                        },
-                      },
-                    },
-                  },
-                },
-                {
-                  id: 2,
-                  attributes: {
-                    ...strapiSolution.attributes.caseHistories?.case_histories
-                      .data[0].attributes,
-                    title: 'Valid Case History',
-                    slug: 'valid-case-history',
-                    image: {
-                      data: {
-                        attributes: {
-                          ...strapiSolution.attributes.caseHistories
-                            ?.case_histories.data[0].attributes.image.data
-                            .attributes,
-                          url: '/valid-image.png',
-                          name: 'Valid Image',
-                        },
-                      },
-                    },
-                  },
-                },
-              ],
+        title: 'Solution with Case History Missing Slug',
+        slug: 'solution-with-case-history-missing-slug',
+        caseHistories: {
+          title: 'Success Stories',
+          description: 'Our success stories',
+          case_histories: [
+            {
+              ...strapiSolution?.caseHistories?.case_histories[0],
+              id: 1,
+              title: 'Case History Without Slug',
+              slug: undefined as any,
+              image: {
+                ...strapiSolution?.caseHistories?.case_histories[0].image,
+                url: '/test-image.png',
+                name: 'Test Image',
+              },
             },
-          },
+            {
+              ...strapiSolution?.caseHistories?.case_histories[0],
+              id: 2,
+              title: 'Valid Case History',
+              slug: 'valid-case-history',
+              image: {
+                ...strapiSolution?.caseHistories?.case_histories[0].image,
+                url: '/valid-image.png',
+                name: 'Valid Image',
+              },
+            },
+          ],
         },
       },
     ],

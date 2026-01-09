@@ -1,6 +1,7 @@
 import * as qs from 'qs';
 import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
 import { StrapiCaseHistories } from '@/lib/strapi/types/caseHistories';
+import { RootEntity } from '@/lib/strapi/types/rootEntity';
 
 const makeStrapiCaseHistoriesPopulate = () =>
   qs.stringify({
@@ -18,7 +19,7 @@ const makeStrapiCaseHistoriesPopulate = () =>
         populate: ['logo'],
       },
       seo: {
-        populate: '*,metaImage,metaSocial.image',
+        populate: '*',
       },
     },
   });

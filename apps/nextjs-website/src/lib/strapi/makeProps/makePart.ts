@@ -44,7 +44,7 @@ export function makePartProps(
       return {
         component: 'quote',
         quote: strapiPart.text,
-        backgroundImage: strapiPart.backgroundImage.data?.attributes,
+        backgroundImage: strapiPart.backgroundImage,
       };
     case 'parts.markdown':
       if (!markdownContentDict)
