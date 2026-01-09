@@ -62,6 +62,9 @@ export function replaceUrl(
   filePath?: string
 ): string {
   if (!currentDocMetadata) return value;
+  if (/^https?:/.test(value)) {
+    return value;
+  }
   // Clean up the URL by removing mentions, README.md, and .md extensions
   const splitValue = value
     .replace(' "mention"', '')
