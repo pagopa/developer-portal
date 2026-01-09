@@ -1,5 +1,19 @@
 # nextjs-website
 
+## 14.1.1
+
+### Patch Changes
+
+- 802a191: Translate
+- 8547c8e: Remove faulty id generation logic
+- 87d3496: Add i18n feature flag to toggle the feature during development
+- 1afc223: Fix scroll to anchor in gitbook template
+- Updated dependencies [89d22fa]
+- Updated dependencies [711e8eb]
+- Updated dependencies [309541d]
+- Updated dependencies [c26b1d7]
+  - gitbook-docs@1.7.2
+
 ## 14.1.0
 
 ### Minor Changes
