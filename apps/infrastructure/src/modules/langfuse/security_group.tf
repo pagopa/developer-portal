@@ -7,7 +7,7 @@ resource "aws_security_group" "langfuse_db" {
     from_port       = 5432
     to_port         = 5432
     protocol        = "tcp"
-    security_groups = [aws_security_group.apprunner_vpc_connector.id, aws_security_group.langfuse_worker.id]
+    security_groups = [aws_security_group.langfuse_worker.id, aws_security_group.langfuse_web.id]
     description     = "Allow PostgreSQL access from langfuse web and worker"
   }
 
@@ -24,6 +24,7 @@ resource "aws_security_group" "langfuse_db" {
   }
 }
 
+# Is it needed?
 resource "aws_security_group" "apprunner_vpc_connector" {
   name = "apprunner-vpc-connector-sg"
   tags_all = {
@@ -80,7 +81,7 @@ resource "aws_security_group" "langfuse_cache" {
     from_port       = 0
     to_port         = 0
     protocol        = "-1"
-    security_groups = [aws_security_group.apprunner_vpc_connector.id, aws_security_group.langfuse_db.id, aws_security_group.langfuse_worker.id]
+    security_groups = [aws_security_group.langfuse_db.id, aws_security_group.langfuse_worker.id, aws_security_group.langfuse_web.id]
     description     = "Ingress Allow all traffic from app and flower security groups"
   }
 
@@ -104,7 +105,29 @@ resource "aws_security_group" "langfuse_worker" {
     from_port       = 0
     to_port         = 0
     protocol        = "-1"
-    security_groups = [aws_security_group.apprunner_vpc_connector.id]
+    security_groups = [aws_security_group.langfuse_web.id]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+resource "aws_security_group" "langfuse_web" {
+  name   = "langfuse-web-sg"
+  vpc_id = var.vpc_id
+  tags = {
+    Name = "langfuse_web_sg"
+  }
+
+  ingress {
+    from_port       = 0
+    to_port         = 0
+    protocol        = "-1"
+    security_groups = []
   }
 
   egress {
@@ -126,7 +149,7 @@ resource "aws_security_group" "clickhouse" {
     from_port       = 0
     to_port         = 0
     protocol        = "-1"
-    security_groups = [aws_security_group.apprunner_vpc_connector.id, aws_security_group.langfuse_worker.id]
+    security_groups = [aws_security_group.langfuse_web.id, aws_security_group.langfuse_worker.id]
   }
 
   egress {

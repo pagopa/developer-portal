@@ -78,6 +78,12 @@ variable "worker_desire_count" {
   default     = 1
 }
 
+variable "web_desire_count" {
+  description = "Desired count for Langfuse Web"
+  type        = number
+  default     = 1
+}
+
 variable "encryption_key" {
   description = "Used to encrypt sensitive data. Must be 256 bits, 64 string characters in hex format, generate via: openssl rand -hex 32"
   type        = string
