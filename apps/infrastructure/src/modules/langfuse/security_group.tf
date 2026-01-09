@@ -7,9 +7,8 @@ resource "aws_security_group" "langfuse_db" {
     from_port       = 5432
     to_port         = 5432
     protocol        = "tcp"
-    security_groups = [aws_security_group.langfuse_worker.id]
-    # security_groups = [aws_security_group.apprunner_vpc_connector.id, aws_security_group.langfuse_worker.id]
-    description = "Allow PostgreSQL access from langfuse web and worker"
+    security_groups = [aws_security_group.apprunner_vpc_connector.id, aws_security_group.langfuse_worker.id]
+    description     = "Allow PostgreSQL access from langfuse web and worker"
   }
 
   egress {
@@ -25,23 +24,47 @@ resource "aws_security_group" "langfuse_db" {
   }
 }
 
-# resource "aws_security_group" "apprunner_vpc_connector" {
-#   name = "apprunner-vpc-connector-sg"
-#   tags_all = {
-#     Name = "apprunner_vpc_connector_sg"
-#   }
+resource "aws_security_group" "apprunner_vpc_connector" {
+  name = "apprunner-vpc-connector-sg"
+  tags_all = {
+    Name = "apprunner_vpc_connector_sg"
+  }
+  vpc_id = var.vpc_id
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = -1
+    cidr_blocks = ["0.0.0.0/0"]
+    description = "Allow all traffic out to the internet"
+  }
+
+  tags = {
+    Name = "apprunner_vpc_connector_sg"
+  }
+}
+
+# resource "aws_security_group" "apprunner_ingress_sg" {
+#   name   = "${local.prefix}-apprunner-ingress-sg"
 #   vpc_id = var.vpc_id
+#
+#   ingress {
+#     from_port       = 443
+#     to_port         = 443
+#     protocol        = "tcp"
+#     security_groups = [aws_security_group.langfuse_lb.id]
+#   }
 #
 #   egress {
 #     from_port   = 0
 #     to_port     = 0
-#     protocol    = -1
+#     protocol    = "-1"
 #     cidr_blocks = ["0.0.0.0/0"]
 #     description = "Allow all traffic out to the internet"
 #   }
 #
 #   tags = {
-#     Name = "apprunner_vpc_connector_sg"
+#     Name = "apprunner_ingress_sg"
 #   }
 # }
 
@@ -57,9 +80,8 @@ resource "aws_security_group" "langfuse_cache" {
     from_port       = 0
     to_port         = 0
     protocol        = "-1"
-    security_groups = [aws_security_group.langfuse_db.id, aws_security_group.langfuse_worker.id]
-    # security_groups = [aws_security_group.apprunner_vpc_connector.id, aws_security_group.langfuse_db.id, aws_security_group.langfuse_worker.id]
-    description = "Ingress Allow all traffic from app and flower security groups"
+    security_groups = [aws_security_group.apprunner_vpc_connector.id, aws_security_group.langfuse_db.id, aws_security_group.langfuse_worker.id]
+    description     = "Ingress Allow all traffic from app and flower security groups"
   }
 
   egress {
@@ -82,8 +104,7 @@ resource "aws_security_group" "langfuse_worker" {
     from_port       = 0
     to_port         = 0
     protocol        = "-1"
-    security_groups = []
-    # security_groups = [aws_security_group.apprunner_vpc_connector.id]
+    security_groups = [aws_security_group.apprunner_vpc_connector.id]
   }
 
   egress {
@@ -105,8 +126,7 @@ resource "aws_security_group" "clickhouse" {
     from_port       = 0
     to_port         = 0
     protocol        = "-1"
-    security_groups = [aws_security_group.langfuse_worker.id]
-    # security_groups = [aws_security_group.apprunner_vpc_connector.id, aws_security_group.langfuse_worker.id]
+    security_groups = [aws_security_group.apprunner_vpc_connector.id, aws_security_group.langfuse_worker.id]
   }
 
   egress {
