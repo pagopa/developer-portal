@@ -4,7 +4,8 @@ import Wrapper from './Wrapper';
 
 describe('EmailFormWrapper', () => {
   const mockOnCancel = jest.fn();
-  const mockOnSave = jest.fn((email: string) => Promise.resolve());
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const mockOnSave = jest.fn((_email: string) => Promise.resolve());
   const mockOnEdit = jest.fn();
 
   const item = {

@@ -117,7 +117,7 @@ const GuideInPageMenu = ({
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, [inPageMenu, setFragmentFromScroll]);
+  }, [inPageMenu, setFragmentFromScroll, productHeaderHeight]);
 
   return (
     nodes.length > 0 && (

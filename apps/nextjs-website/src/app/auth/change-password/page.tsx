@@ -11,7 +11,7 @@ import { useTranslations } from 'next-intl';
 import Spinner from '@/components/atoms/Spinner/Spinner';
 import PageBackgroundWrapper from '@/components/atoms/PageBackgroundWrapper/PageBackgroundWrapper';
 import SingleCard from '@/components/atoms/SingleCard/SingleCard';
-import { IllusError } from '@pagopa/mui-italia/dist/illustrations/Error';
+import { ErrorOutline as ErrorOutlineIcon } from '@mui/icons-material';
 
 enum State {
   loading = 'loading',
@@ -65,7 +65,12 @@ const ChangePasswordContent = () => {
     case State.errorLink:
       return (
         <PageBackgroundWrapper>
-          <SingleCard icon={<IllusError />} title={confirmation('title')} />
+          <SingleCard
+            icon={
+              <ErrorOutlineIcon sx={{ fontSize: 64, color: 'error.main' }} />
+            }
+            title={confirmation('title')}
+          />
         </PageBackgroundWrapper>
       );
     case State.success:

@@ -49,7 +49,9 @@ export const Response = ({ code, content, description }: ResponseProps) => {
   ) : undefined;
 
   const handleToggle = () => {
-    hasDetails && setOpen(!open);
+    if (hasDetails) {
+      setOpen(!open);
+    }
   };
 
   return (

@@ -1,7 +1,7 @@
 /* eslint-disable functional/immutable-data */
 /* eslint-disable functional/no-this-expressions */
 'use client';
-import { FC, useEffect } from 'react';
+import { ElementType, FC, useEffect } from 'react';
 import { Box, useTheme } from '@mui/material';
 import { PRODUCT_HEADER_HEIGHT, SITE_HEADER_HEIGHT } from '@/config';
 import 'rapidoc';
@@ -48,6 +48,9 @@ const ApiViewer: FC<ApiViewerProps> = ({ specURL }) => {
     };
   }, []);
 
+  // Cast strict TS error for custom element
+  const RapiDoc = 'rapi-doc' as unknown as ElementType;
+
   return (
     <Box
       sx={{
@@ -57,7 +60,7 @@ const ApiViewer: FC<ApiViewerProps> = ({ specURL }) => {
         overflow: 'hidden',
       }}
     >
-      <rapi-doc
+      <RapiDoc
         allow-advanced-search='false'
         allow-authentication='false'
         allow-server-selection='false'
@@ -78,7 +81,7 @@ const ApiViewer: FC<ApiViewerProps> = ({ specURL }) => {
         spec-url={specURL}
         text-color={palette.text.primary}
         theme={palette.mode}
-      ></rapi-doc>
+      />
     </Box>
   );
 };

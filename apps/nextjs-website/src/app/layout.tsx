@@ -104,7 +104,7 @@ export default async function RootLayout({
   // eslint-disable-next-line functional/no-try-statements
   try {
     messages = (await import('../messages/it.json')).default;
-  } catch (error) {
+  } catch {
     notFound();
   }
 

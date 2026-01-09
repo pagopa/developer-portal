@@ -17,11 +17,10 @@ type Params = {
   productSlug: string;
 };
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Params;
+export async function generateMetadata(props: {
+  params: Promise<Params>;
 }): Promise<Metadata> {
+  const params = await props.params;
   const apiDataListPage = await getApiDataListPages(params?.productSlug);
 
   if (apiDataListPage?.seo) {
@@ -37,7 +36,8 @@ export async function generateMetadata({
   });
 }
 
-const ApiDataListPage = async ({ params }: { params: Params }) => {
+const ApiDataListPage = async (props: { params: Promise<Params> }) => {
+  const params = await props.params;
   const apiDataListPageProps = await getApiDataListPages(params.productSlug);
 
   const structuredData = generateStructuredDataScripts({

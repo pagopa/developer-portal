@@ -4,6 +4,7 @@
 /* eslint-disable functional/immutable-data */
 /* eslint-disable functional/no-try-statements */
 import path from 'path';
+import * as fs from 'fs';
 
 export const DOCUMENTATION_PATH =
   process.env.DOCUMENTATION_PATH || '../../devportal-docs/docs';
@@ -165,8 +166,6 @@ export async function getIncludeContent(
   includePath: string,
   filePath: string
 ): Promise<string> {
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const fs = require('fs');
   const mappedIncludePath = mapIncludePath(includePath, filePath);
   if (!fs.existsSync(mappedIncludePath)) {
     console.log('no file found for', mappedIncludePath);

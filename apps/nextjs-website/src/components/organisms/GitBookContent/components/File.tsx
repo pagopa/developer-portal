@@ -1,10 +1,9 @@
-import { ButtonNaked } from '@pagopa/mui-italia/dist/components/ButtonNaked';
+import { Button } from '@mui/material';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import { FileProps } from 'gitbook-docs/markdoc/schema/file';
-import Paper from '@mui/material/Paper';
 
 const File = ({ src, filename }: FileProps) => (
-  <Paper
+  <Button
     variant='outlined'
     sx={{
       p: 3,
@@ -15,9 +14,10 @@ const File = ({ src, filename }: FileProps) => (
       whiteSpace: 'pre-wrap',
       wordWrap: 'break-word',
       wordBreak: 'break-all',
+      textTransform: 'none',
+      textAlign: 'left',
     }}
-    component={ButtonNaked}
-    color='text'
+    color='primary'
     size='medium'
     href={src}
     target='_blank'
@@ -25,7 +25,7 @@ const File = ({ src, filename }: FileProps) => (
     fullWidth={true}
   >
     {filename}
-  </Paper>
+  </Button>
 );
 
 export default File;
