@@ -275,6 +275,15 @@ resource "aws_route53_record" "cdn_alias_record" {
 
 ## Lambda function that notifiy when a recording is available ##
 
+resource "aws_sqs_queue" "ivs_video_processing_dlq" {
+  name                      = "${var.project_name}-ivs-video-processing-dlq"
+  message_retention_seconds = 1209600 # 14 days
+
+  tags = {
+    Name = "${var.project_name}-ivs-video-processing-dlq"
+  }
+}
+
 resource "aws_cloudwatch_log_group" "lambda_index_logs" {
   name              = "/aws/lambda/${aws_lambda_function.ivs_video_processing_function.function_name}"
   retention_in_days = 14
@@ -330,6 +339,13 @@ resource "aws_iam_role_policy" "ivs_video_processing_policy" {
           "${aws_s3_bucket.ivs_recordings.arn}/*",
           aws_s3_bucket.ivs_recordings.arn
         ]
+      },
+      {
+        Action = [
+          "sqs:SendMessage"
+        ]
+        Effect   = "Allow"
+        Resource = aws_sqs_queue.ivs_video_processing_dlq.arn
       }
     ]
   })
@@ -374,6 +390,10 @@ resource "aws_lambda_function" "ivs_video_processing_function" {
   memory_size   = 512
   architectures = ["x86_64"]
   role          = aws_iam_role.ivs_video_processing_function.arn
+
+  dead_letter_config {
+    target_arn = aws_sqs_queue.ivs_video_processing_dlq.arn
+  }
 
   environment {
     variables = {
