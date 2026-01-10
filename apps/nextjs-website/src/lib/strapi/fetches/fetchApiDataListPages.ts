@@ -9,10 +9,10 @@ const makeStrapiApiDataListPagePopulate = () =>
       apiData: {
         populate: {
           apiRestDetail: {
-            populate: ['slug', 'specUrls'],
+            populate: '*',
           },
           apiSoapDetail: {
-            populate: ['slug', 'repositoryUrl', 'dirName'],
+            populate: '*',
           },
           icon: { populate: '*' },
           product: { populate: 'logo' },
@@ -26,9 +26,8 @@ const makeStrapiApiDataListPagePopulate = () =>
         populate: ['icon'],
       },
       seo: {
-        populate: '*,metaImage,metaSocial.image',
+        populate: '*',
       },
-      enableFilters: true,
     },
   });
 
