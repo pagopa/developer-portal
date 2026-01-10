@@ -12,6 +12,7 @@ export function minimalQuickStartGuides(): StrapiQuickStartGuides {
           title: 'Minimal Quick Start',
           description: '',
           updatedAt: '2024-01-01T00:00:00.000Z',
+          locale: 'it',
           product: strapiQuickStartGuides.data[0].attributes.product,
           bannerLinks: [],
           seo: undefined,

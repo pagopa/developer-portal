@@ -49,6 +49,14 @@ export type StrapiHomepage = {
         readonly data: readonly StrapiWebinar[];
       };
       readonly seo?: StrapiSeo;
+      readonly localizations?: {
+        readonly data: ReadonlyArray<{
+          readonly attributes: {
+            readonly locale: string;
+          };
+        }>;
+      };
+      readonly locale: string;
     };
   };
 };

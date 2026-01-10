@@ -34,6 +34,8 @@ export type StrapiBaseSolution = {
     readonly description?: string;
     readonly dirName: string;
     readonly landingUseCaseFile: string;
+    readonly locale: string;
+    readonly updatedAt: string;
   };
 };
 
@@ -48,6 +50,8 @@ export type StrapiBaseSolutionWithProducts = {
     readonly description?: string;
     readonly dirName: string;
     readonly landingUseCaseFile: string;
+    readonly locale: string;
+    readonly updatedAt: string;
     readonly products: {
       readonly data: readonly StrapiBaseProductWithoutBannerLinks[];
     };
@@ -68,6 +72,7 @@ export type StrapiSolution = {
     readonly landingUseCaseFile: string;
     readonly publishedAt: string;
     readonly updatedAt: string;
+    readonly locale: string;
     readonly introductionToSteps?: string;
     readonly steps: readonly StrapiStep[];
     readonly stats: readonly StrapiStat[];
@@ -81,6 +86,14 @@ export type StrapiSolution = {
     };
     readonly caseHistories?: StrapiCaseHistoriesComponent;
     readonly seo?: StrapiSeo;
+    readonly localizations?: {
+      readonly data: ReadonlyArray<{
+        readonly attributes: {
+          readonly locale: string;
+          readonly slug: string;
+        };
+      }>;
+    };
   };
 };
 

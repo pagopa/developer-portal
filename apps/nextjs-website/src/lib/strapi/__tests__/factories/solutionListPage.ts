@@ -8,6 +8,8 @@ export function minimalDataSolutionListPage() {
       attributes: {
         title: 'Minimal Solutions',
         description: 'Minimal solutions page',
+        locale: 'it',
+        updatedAt: '2025-01-01T00:00:00.000Z',
         solutions: {
           data: [],
         },

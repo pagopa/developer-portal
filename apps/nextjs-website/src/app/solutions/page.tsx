@@ -37,6 +37,7 @@ const Page = async () => {
         solutions={solutionsList.solutions}
         features={solutionsList.features}
         successStories={solutionsList.successStories}
+        locale={solutionsList.locale}
       />
     </>
   );

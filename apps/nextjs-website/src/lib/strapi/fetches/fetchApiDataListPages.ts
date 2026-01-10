@@ -29,10 +29,18 @@ const makeStrapiApiDataListPagePopulate = () =>
         populate: '*,metaImage,metaSocial.image',
       },
       enableFilters: true,
+      localizations: {
+        populate: '*',
+      },
     },
   });
 
 export const fetchApiDataListPages = fetchFromStrapi<StrapiApiDataListPages>(
   'api-data-list-pages',
   makeStrapiApiDataListPagePopulate()
+);
+
+export const fetchAllApiDataListPages = fetchFromStrapi<StrapiApiDataListPages>(
+  'api-data-list-pages',
+  makeStrapiApiDataListPagePopulate() + '&locale=all'
 );

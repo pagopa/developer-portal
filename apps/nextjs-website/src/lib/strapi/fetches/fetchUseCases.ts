@@ -28,10 +28,18 @@ const makeStrapiUseCasesPopulate = () =>
       tags: {
         populate: '*',
       },
+      localizations: {
+        populate: '*',
+      },
     },
   });
 
 export const fetchUseCases = fetchFromStrapi<StrapiUseCases>(
   'use-cases',
   makeStrapiUseCasesPopulate()
+);
+
+export const fetchAllUseCases = fetchFromStrapi<StrapiUseCases>(
+  'use-cases',
+  makeStrapiUseCasesPopulate() + '&locale=all'
 );

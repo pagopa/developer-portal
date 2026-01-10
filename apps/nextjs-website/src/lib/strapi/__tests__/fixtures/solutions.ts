@@ -11,6 +11,7 @@ export const strapiSolutions = {
       id: 1,
       attributes: {
         slug: 'solution-title',
+        locale: 'it',
         icon: { data: mediaJpeg() },
         kickerTitle: 'Solution Kicker',
         title: 'Solution Title',
@@ -37,6 +38,8 @@ export const strapiSolutions = {
                     name: 'Product 1',
                     shortName: 'P1',
                     slug: 'product-1',
+                    locale: 'it',
+                    updatedAt: fixedDateIsoString,
                   },
                 },
               ],
@@ -58,6 +61,7 @@ export const strapiSolutions = {
               attributes: {
                 title: 'Webinar Title',
                 slug: 'webinar-title',
+                locale: 'it',
                 description: 'Webinar Description',
                 playerSrc: 'https://example.com/player',
                 isVisibleInList: true,
@@ -94,6 +98,8 @@ export const strapiSolutions = {
                 name: 'Product 1',
                 shortName: 'P1',
                 slug: 'product-1',
+                locale: 'it',
+                updatedAt: fixedDateIsoString,
                 description: 'Product description',
                 logo: { data: mediaJpeg() },
               },
@@ -109,6 +115,7 @@ export const strapiSolutions = {
                 id: 1,
                 attributes: {
                   slug: 'case-history-1',
+                  locale: 'it',
                   title: 'Case History 1',
                   description: 'Case history description',
                   publishedAt: fixedDateIsoString,
@@ -209,6 +216,7 @@ export const expectedSolutionTemplateProps: SolutionTemplateProps = {
       isVisibleInList: true,
       imagePath: 'https://example.com/example.jpg',
       updatedAt: '2024-01-01T00:00:00.000Z',
+      locale: 'it',
     },
   ],
   bannerLinks: [

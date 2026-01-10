@@ -20,6 +20,16 @@ export type StrapiApiDataListPage = {
     readonly bannerLinks: readonly StrapiBannerLink[];
     readonly seo?: StrapiSeo;
     readonly enableFilters?: boolean;
+    readonly localizations?: {
+      readonly data: ReadonlyArray<{
+        readonly attributes: {
+          readonly locale: string;
+          readonly slug: string;
+          readonly updatedAt: string;
+        };
+      }>;
+    };
+    readonly locale: string;
   };
 };
 

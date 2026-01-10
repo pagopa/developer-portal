@@ -29,6 +29,13 @@ export type UseCasesPageProps = {
   readonly useCases: readonly UseCase[];
   readonly seo?: SEO;
   readonly enableFilters: boolean | undefined;
+  readonly localizations?: ReadonlyArray<{
+    readonly locale: string;
+    readonly slug: string;
+  }>;
+  readonly locale: string;
+  readonly updatedAt: string;
+  readonly path: string;
 } & ProductLayoutProps;
 
 export async function generateMetadata(

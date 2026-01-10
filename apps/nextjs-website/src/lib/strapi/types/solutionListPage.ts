@@ -14,6 +14,17 @@ export type StrapiSolutionListPage = {
       };
       readonly features?: StrapiFeatures;
       readonly seo?: StrapiSeo;
+      readonly localizations?: {
+        readonly data: ReadonlyArray<{
+          readonly attributes: {
+            readonly locale: string;
+            readonly slug: string;
+            readonly updatedAt: string;
+          };
+        }>;
+      };
+      readonly locale: string;
+      readonly updatedAt: string;
     };
   };
 };

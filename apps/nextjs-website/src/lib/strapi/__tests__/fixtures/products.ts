@@ -11,6 +11,8 @@ export const strapiProducts: StrapiProducts = {
         tags: { data: [] },
         name: 'Test Product',
         slug: 'test-product',
+        locale: 'it',
+        updatedAt: '2024-01-01T00:00:00.000Z',
         shortName: 'TP',
         description: 'Test product description',
         logo: {
@@ -51,6 +53,8 @@ export const strapiProducts: StrapiProducts = {
 export const expectedProduct: Product = {
   isVisible: true,
   name: 'Test Product',
+  locale: 'it',
+  updatedAt: '2024-01-01T00:00:00.000Z',
   slug: 'test-product',
   shortName: 'TP',
   description: 'Test product description',

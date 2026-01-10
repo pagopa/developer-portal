@@ -6,6 +6,7 @@ export function minimalDataHomepage() {
     data: {
       attributes: {
         updatedAt: Date.now().toString(),
+        locale: 'it',
         comingsoonDocumentation: {
           title: 'Minimal Documentation',
           links: [],

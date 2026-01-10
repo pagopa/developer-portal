@@ -27,10 +27,18 @@ const makeStrapiTutorialsPopulate = () =>
       tags: {
         populate: '*',
       },
+      localizations: {
+        populate: '*',
+      },
     },
   });
 
 export const fetchTutorials = fetchFromStrapi<StrapiTutorials>(
   'tutorials',
   makeStrapiTutorialsPopulate()
+);
+
+export const fetchAllTutorials = fetchFromStrapi<StrapiTutorials>(
+  'tutorials',
+  makeStrapiTutorialsPopulate() + '&locale=all'
 );

@@ -20,10 +20,18 @@ const makeStrapiCaseHistoriesPopulate = () =>
       seo: {
         populate: '*,metaImage,metaSocial.image',
       },
+      localizations: {
+        populate: '*',
+      },
     },
   });
 
 export const fetchCaseHistories = fetchFromStrapi<StrapiCaseHistories>(
   'case-histories',
   makeStrapiCaseHistoriesPopulate()
+);
+
+export const fetchAllCaseHistories = fetchFromStrapi<StrapiCaseHistories>(
+  'case-histories',
+  makeStrapiCaseHistoriesPopulate() + '&locale=all'
 );

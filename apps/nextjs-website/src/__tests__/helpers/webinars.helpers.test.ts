@@ -32,6 +32,7 @@ const testWebinar: Webinar = {
     },
   ],
   slug: 'test-2024-03-14',
+  locale: 'it',
   isVisibleInList: false,
   imagePath: '/images/webinar-cover-pago-pa-multe-14-marzo.jpg',
   speakers: [],

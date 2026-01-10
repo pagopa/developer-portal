@@ -52,3 +52,8 @@ export const fetchOverviews = fetchFromStrapi<StrapiOverviews>(
   'overviews',
   makeStrapiOverviewsPopulate()
 );
+
+export const fetchAllOverviews = fetchFromStrapi<StrapiOverviews>(
+  'overviews',
+  makeStrapiOverviewsPopulate() + '&locale=all'
+);

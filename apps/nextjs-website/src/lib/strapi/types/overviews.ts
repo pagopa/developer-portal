@@ -87,6 +87,14 @@ export type StrapiOverview = {
     readonly bannerLinks: readonly StrapiBannerLink[];
     readonly seo?: StrapiSeo;
     readonly whatsNew?: StrapiNewsShowcase;
+    readonly localizations?: {
+      readonly data: ReadonlyArray<{
+        readonly attributes: {
+          readonly locale: string;
+        };
+      }>;
+    };
+    readonly locale: string;
   };
 };
 

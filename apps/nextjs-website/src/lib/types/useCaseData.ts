@@ -20,4 +20,9 @@ export type UseCase = {
   readonly tags?: readonly Tag[];
   readonly title: string;
   readonly updatedAt?: string;
+  readonly localizations?: ReadonlyArray<{
+    readonly locale: string;
+    readonly slug: string;
+  }>;
+  readonly locale: string;
 } & Path;

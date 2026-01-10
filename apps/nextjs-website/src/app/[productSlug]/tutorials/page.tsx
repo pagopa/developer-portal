@@ -30,6 +30,11 @@ export type TutorialsPageProps = {
   readonly tutorials: readonly Tutorial[];
   readonly seo?: SEO;
   readonly enableFilters?: boolean;
+  readonly localizations?: ReadonlyArray<{
+    readonly locale: string;
+  }>;
+  readonly locale: string;
+  readonly path: string;
 } & ProductLayoutProps;
 
 export async function generateMetadata(

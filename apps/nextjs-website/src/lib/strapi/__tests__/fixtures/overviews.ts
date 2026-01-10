@@ -16,6 +16,7 @@ export const strapiOverviews = {
         createdAt: '2023-01-01T00:00:00.000Z',
         updatedAt: '2023-01-01T00:00:00.000Z',
         publishedAt: '2023-01-01T00:00:00.000Z',
+        locale: 'it',
         backgroundImage: {
           data: mediaJpeg(),
         },
@@ -23,6 +24,8 @@ export const strapiOverviews = {
           data: {
             attributes: {
               ...product,
+              locale: 'it',
+              updatedAt: '2023-01-01T00:00:00.000Z',
               tags: { data: [] },
               bannerLinks: generateBannerLinks(1),
               overview: {
@@ -130,6 +133,7 @@ export const strapiOverviews = {
               {
                 attributes: {
                   updatedAt: '2023-01-01T00:00:00.000Z',
+                  locale: 'it',
                   description: 'test description',
                   icon: { data: mediaJpeg() },
                   title: 'Tutorial 1',
@@ -145,6 +149,8 @@ export const strapiOverviews = {
                         slug: 'test-product',
                         name: 'Test Product',
                         shortName: 'TestProd',
+                        locale: 'it',
+                        updatedAt: '2023-01-01T00:00:00.000Z',
                       },
                     },
                   },
@@ -164,6 +170,7 @@ export const strapiOverviews = {
                   title: 'Use Case 1',
                   tags: { data: [] },
                   slug: 'use-case-1',
+                  locale: 'it',
                   coverImage: {
                     data: mediaJpeg(),
                   },
@@ -174,10 +181,13 @@ export const strapiOverviews = {
                         slug: 'test-product',
                         name: 'Test Product',
                         shortName: 'TestProd',
+                        locale: 'it',
+                        updatedAt: '2023-01-01T00:00:00.000Z',
                       },
                     },
                   },
                   publishedAt: '2023-01-01T00:00:00.000Z',
+                  updatedAt: '2023-01-01T00:00:00.000Z',
                 },
               },
             ],
@@ -260,6 +270,8 @@ export const strapiOverviews = {
                   mobileImage: {
                     data: mediaJpeg(),
                   },
+                  locale: 'it',
+                  updatedAt: '2023-01-01T00:00:00.000Z',
                 },
               },
             ],
@@ -302,12 +314,15 @@ export const strapiOverviews = {
 export const overviewPageProps: OverviewPageProps = {
   path: '/pago-pa/overview',
   updatedAt: '2023-01-01T00:00:00.000Z',
+  locale: 'it',
   product: {
     apiDataListPageUrl: '/pago-pa/api/api-rest',
     isVisible: true,
     name: 'Piattaforma pagoPA',
     slug: 'pago-pa',
     shortName: 'pagoPA',
+    locale: 'it',
+    updatedAt: '2023-01-01T00:00:00.000Z',
     hasApiDataListPage: true,
     hasGuideListPage: true,
     hasOverviewPage: true,
@@ -397,6 +412,7 @@ export const overviewPageProps: OverviewPageProps = {
         title: 'Tutorial 1',
         name: 'shared.moreInfo',
         path: '/test-product/tutorials/tutorial-1',
+        locale: 'it',
       },
     ],
   },
@@ -414,6 +430,7 @@ export const overviewPageProps: OverviewPageProps = {
         name: 'shared.moreInfo',
         path: '/test-product/use-cases/use-case-1',
         publishedAt: new Date('2023-01-01T00:00:00.000Z'),
+        locale: 'it',
       },
     ],
   },

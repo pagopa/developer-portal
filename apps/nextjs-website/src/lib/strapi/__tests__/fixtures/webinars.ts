@@ -7,6 +7,7 @@ export const webinarSpeaker = {
   attributes: {
     name: 'Speaker Name',
     jobTitle: 'Speaker Job',
+    locale: 'it',
     publishedAt: '2024-01-01T00:00:00.000Z',
     description: undefined,
     avatar: {
@@ -55,6 +56,7 @@ export const strapiWebinars: StrapiWebinars = {
         title: 'Webinar Title',
         description: 'Webinar Description',
         slug: 'webinar-title',
+        locale: 'it',
         publishedAt: '2024-01-01T00:00:00.000Z',
         isVisibleInList: true,
         coverImage: {
@@ -123,6 +125,7 @@ export const strapiWebinarsWithMissingData: StrapiWebinars = {
         title: 'Minimal Webinar',
         description: 'Minimal Description',
         slug: 'minimal-webinar',
+        locale: 'it',
         publishedAt: '2024-01-01T00:00:00.000Z',
         isVisibleInList: true,
         coverImage: {
@@ -148,6 +151,7 @@ export const webinarProps = {
   title: 'Webinar Title',
   description: 'Webinar Description',
   slug: 'webinar-title',
+  locale: 'it',
   isVisibleInList: true,
   speakers: [
     {

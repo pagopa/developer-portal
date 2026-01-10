@@ -24,6 +24,8 @@ export type StrapiBaseUseCase = {
     readonly subtitle?: string;
     readonly tags: StrapiComponent<readonly StrapiTag[] | undefined>;
     readonly title: string;
+    readonly locale: string;
+    readonly updatedAt: string;
   };
 };
 
@@ -36,6 +38,15 @@ export type StrapiUseCase = StrapiBaseUseCase & {
     readonly bannerLinks?: readonly StrapiBannerLink[];
     readonly relatedLinks?: StrapiRelatedLinks;
     readonly seo?: StrapiSeo;
+    readonly localizations?: {
+      readonly data: ReadonlyArray<{
+        readonly attributes: {
+          readonly locale: string;
+          readonly slug: string;
+          readonly updatedAt: string;
+        };
+      }>;
+    };
   };
 };
 

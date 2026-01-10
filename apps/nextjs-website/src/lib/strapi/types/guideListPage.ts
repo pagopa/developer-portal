@@ -21,6 +21,14 @@ export type StrapiGuideListPage = {
     readonly bannerLinks: ReadonlyArray<StrapiBannerLink>;
     readonly seo?: StrapiSeo;
     readonly updatedAt: string;
+    readonly localizations?: {
+      readonly data: ReadonlyArray<{
+        readonly attributes: {
+          readonly locale: string;
+        };
+      }>;
+    };
+    readonly locale: string;
   };
 };
 

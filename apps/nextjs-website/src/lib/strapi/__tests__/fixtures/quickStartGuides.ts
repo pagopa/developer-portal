@@ -9,6 +9,7 @@ export const strapiQuickStartGuides: StrapiQuickStartGuides = {
         title: 'Quick Start Guide Title',
         description: 'Quick Start Guide Description',
         updatedAt: '2024-01-01T00:00:00.000Z',
+        locale: 'it',
         product: {
           data: {
             attributes: {
@@ -17,6 +18,8 @@ export const strapiQuickStartGuides: StrapiQuickStartGuides = {
               name: 'Product Name',
               shortName: 'Product',
               slug: 'product-slug',
+              locale: 'it',
+              updatedAt: '2024-01-01T00:00:00.000Z',
               bannerLinks: [],
               overview: {
                 data: {

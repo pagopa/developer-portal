@@ -27,6 +27,8 @@ export const strapiGuideListPagesData = {
         product: {
           data: {
             attributes: {
+              locale: 'it',
+              updatedAt: dateNow,
               isVisible: true,
               tags: { data: [] },
               name: 'Piattaforma pagoPA',
@@ -179,8 +181,20 @@ export const strapiGuideListPagesData = {
                         },
                         {
                           attributes: {
-                            apiSoapDetail: undefined,
                             apiRestDetail: undefined,
+                            apiSoapDetail: undefined,
+                          },
+                        },
+                        {
+                          attributes: {
+                            apiRestDetail: undefined,
+                            apiSoapDetail: undefined,
+                          },
+                        },
+                        {
+                          attributes: {
+                            apiRestDetail: undefined,
+                            apiSoapDetail: undefined,
                           },
                         },
                         {
@@ -295,6 +309,8 @@ export const strapiGuideListPagesData = {
                         },
                       },
                     },
+                    locale: 'it',
+                    updatedAt: dateNow,
                   },
                 },
                 {
@@ -345,6 +361,8 @@ export const strapiGuideListPagesData = {
                         },
                       },
                     },
+                    locale: 'it',
+                    updatedAt: dateNow,
                   },
                 },
               ],
@@ -402,6 +420,8 @@ export const strapiGuideListPagesData = {
                         },
                       },
                     },
+                    locale: 'it',
+                    updatedAt: dateNow,
                   },
                 },
               ],
@@ -410,6 +430,7 @@ export const strapiGuideListPagesData = {
         ],
         bannerLinks: [],
         seo: undefined,
+        locale: 'it',
         updatedAt: dateNow,
       },
     },
@@ -427,6 +448,7 @@ export const strapiGuideListPagesData = {
 export const guideListPagesProps = [
   {
     path: '/pago-pa/guides',
+    locale: 'it',
     abstract: {
       title: 'Guide e manuali',
       description:

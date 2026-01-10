@@ -31,10 +31,18 @@ const makeStrapiSolutionListPagePopulate = () =>
       seo: {
         populate: '*,metaImage,metaSocial.image',
       },
+      localizations: {
+        populate: '*',
+      },
     },
   });
 
 export const fetchSolutionListPage = fetchFromStrapi<StrapiSolutionListPage>(
   'solution-list-page',
   makeStrapiSolutionListPagePopulate()
+);
+
+export const fetchAllSolutionListPage = fetchFromStrapi<StrapiSolutionListPage>(
+  'solution-list-page',
+  makeStrapiSolutionListPagePopulate() + '&locale=all'
 );

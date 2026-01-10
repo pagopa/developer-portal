@@ -70,4 +70,9 @@ export const makeHomepageProps = (
       makeWebinarProps(webinar)
     )
   ),
+  localizations:
+    strapiHomepage.data.attributes.localizations?.data.map((l) => ({
+      locale: l.attributes.locale,
+    })) || [],
+  locale: strapiHomepage.data.attributes.locale,
 });

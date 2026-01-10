@@ -26,3 +26,9 @@ export const fetchTutorialListPages = fetchFromStrapi<StrapiTutorialListPages>(
   'tutorial-list-pages',
   makeStrapiTutorialListPagePopulate()
 );
+
+export const fetchAllTutorialListPages =
+  fetchFromStrapi<StrapiTutorialListPages>(
+    'tutorial-list-pages',
+    makeStrapiTutorialListPagePopulate() + '&locale=all'
+  );

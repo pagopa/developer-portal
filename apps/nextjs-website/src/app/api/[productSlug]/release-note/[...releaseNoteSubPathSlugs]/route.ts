@@ -44,6 +44,8 @@ export async function GET(
             shortName: product.shortName,
             name: product.name,
             slug: product.slug,
+            locale: product.locale,
+            updatedAt: product.updatedAt,
           },
           bodyConfig: {
             ...bodyConfig,

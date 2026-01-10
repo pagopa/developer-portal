@@ -16,6 +16,17 @@ export type StrapiUseCaseListPage = {
     readonly seo?: StrapiSeo;
     readonly title: string;
     readonly useCases: { readonly data: readonly StrapiBaseUseCase[] };
+    readonly localizations?: {
+      readonly data: ReadonlyArray<{
+        readonly attributes: {
+          readonly locale: string;
+          readonly slug: string;
+          readonly updatedAt: string;
+        };
+      }>;
+    };
+    readonly locale: string;
+    readonly updatedAt: string;
   };
 };
 

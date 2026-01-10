@@ -94,5 +94,12 @@ export function makeBaseProductWithoutLogoProps(
     shortName: product.attributes.shortName,
     slug: product.attributes.slug,
     tags: product.attributes.tags?.data?.map((tag) => tag.attributes) || [],
+    updatedAt: product.attributes.updatedAt,
+    localizations:
+      product.attributes.localizations?.data.map((l) => ({
+        locale: l.attributes.locale,
+        slug: l.attributes.slug,
+      })) || [],
+    locale: product.attributes.locale,
   } satisfies Product;
 }

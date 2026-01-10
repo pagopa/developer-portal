@@ -13,12 +13,15 @@ export const strapiCaseHistories: StrapiCaseHistories = {
         description: 'Case history description',
         publishedAt: '2024-01-01T00:00:00.000Z',
         updatedAt: '2024-01-02T00:00:00.000Z',
+        locale: 'it',
         image: { data: mediaJpeg() },
         products: {
           data: [
             {
               attributes: {
                 ...product,
+                locale: 'it',
+                updatedAt: '2024-01-02T00:00:00.000Z',
                 logo: {
                   data: mediaJpeg(),
                 },
@@ -56,6 +59,7 @@ export const caseHistoriesPageTemplateProps: CaseHistoryPageTemplateProps = {
   title: 'Case History Title',
   description: 'Case history description',
   updatedAt: '2024-01-02T00:00:00.000Z',
+  locale: 'it',
   image: mediaJpeg().attributes,
   products: [
     {

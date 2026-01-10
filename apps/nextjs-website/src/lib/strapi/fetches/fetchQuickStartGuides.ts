@@ -19,10 +19,18 @@ const makeStrapiQuickStartGuidesPopulate = () =>
       seo: {
         populate: '*,metaImage,metaSocial.image',
       },
+      localizations: {
+        populate: '*',
+      },
     },
   });
 
 export const fetchQuickStartGuides = fetchFromStrapi<StrapiQuickStartGuides>(
   'quickstart-guides',
   makeStrapiQuickStartGuidesPopulate()
+);
+
+export const fetchAllQuickStartGuides = fetchFromStrapi<StrapiQuickStartGuides>(
+  'quickstart-guides',
+  makeStrapiQuickStartGuidesPopulate() + '&locale=all'
 );

@@ -52,6 +52,7 @@ export function makeTutorialListPagesProps(
               tags:
                 tutorialAttributes.tags?.data?.map((tag) => tag.attributes) ||
                 [],
+              locale: tutorialAttributes.locale,
             } satisfies Tutorial;
           } catch (error) {
             // eslint-disable-next-line functional/no-expression-statements
@@ -93,6 +94,11 @@ export function makeTutorialListPagesProps(
             : attributes.product.data.attributes.bannerLinks?.map(
                 (bannerLink) => makeBannerLinkProps(bannerLink)
               ),
+        localizations:
+          attributes.localizations?.data.map((l) => ({
+            locale: l.attributes.locale,
+          })) || [],
+        locale: attributes.locale,
       };
     })
   );

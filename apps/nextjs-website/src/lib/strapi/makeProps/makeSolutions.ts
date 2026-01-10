@@ -66,6 +66,11 @@ export function makeSolutionsProps(
           },
           seo: attributes.seo,
           updatedAt: attributes.updatedAt,
+          localizations:
+            attributes.localizations?.data.map((l) => ({
+              locale: l.attributes.locale,
+              slug: l.attributes.slug,
+            })) || [],
         };
       } catch (error) {
         console.error(

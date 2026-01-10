@@ -10,6 +10,8 @@ export const strapiSolutionListPage = {
     attributes: {
       title: 'Solutions',
       description: 'Explore our solutions',
+      updatedAt: fixedDateIsoString,
+      locale: 'it',
       solutions: {
         data: [
           {
@@ -21,6 +23,8 @@ export const strapiSolutionListPage = {
               description: 'Solution 1 Description',
               dirName: 'solution-1-dir',
               landingUseCaseFile: 'use-case-1.md',
+              locale: 'it',
+              updatedAt: fixedDateIsoString,
               products: {
                 data: [
                   {
@@ -29,6 +33,8 @@ export const strapiSolutionListPage = {
                       name: 'Product 1',
                       shortName: 'P1',
                       slug: 'product-1',
+                      locale: 'it',
+                      updatedAt: fixedDateIsoString,
                       description: 'Product 1 description',
                       logo: { data: mediaJpeg() },
                     },
@@ -48,6 +54,7 @@ export const strapiSolutionListPage = {
               id: 1,
               attributes: {
                 slug: 'case-history-1',
+                locale: 'it',
                 title: 'Case History 1',
                 description: 'Case history description',
                 publishedAt: fixedDateIsoString,
@@ -76,6 +83,8 @@ export const expectedSolutionListTemplateProps: SolutionListTemplateProps = {
     title: 'Solutions',
     subtitle: 'Explore our solutions',
   },
+  locale: 'it',
+  updatedAt: fixedDateIsoString,
   solutions: [
     {
       name: 'Solution 1',

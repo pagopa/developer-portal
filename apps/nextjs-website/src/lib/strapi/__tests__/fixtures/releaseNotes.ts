@@ -12,6 +12,7 @@ export const strapiReleaseNotes: StrapiReleaseNotes = {
         dirName: 'release-notes-dir',
         landingFile: 'release-notes.md',
         title: 'Release Notes Title',
+        locale: 'it',
         bannerLinks: generateBannerLinks(2),
         product: {
           data: {
@@ -21,6 +22,8 @@ export const strapiReleaseNotes: StrapiReleaseNotes = {
               name: 'Test Product',
               slug: 'test-product',
               shortName: 'TP',
+              locale: 'it',
+              updatedAt: fixedDateIsoString,
               bannerLinks: generateBannerLinks(1),
               overview: { data: { id: 0 } },
               quickstart_guide: { data: { id: 0 } },
@@ -87,6 +90,7 @@ export const expectedReleaseNotePageProps: ReleaseNotePageProps = {
     name: 'Test Product',
     slug: 'test-product',
     shortName: 'TP',
+    locale: 'it',
     bannerLinks: [
       {
         title: 'Banner Link 1',

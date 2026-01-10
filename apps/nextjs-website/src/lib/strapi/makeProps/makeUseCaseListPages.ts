@@ -50,6 +50,7 @@ export function makeUseCaseListPagesProps(
               coverImage: useCaseAttributes.coverImage.data?.attributes,
               tags:
                 useCaseAttributes.tags.data?.map((tag) => tag.attributes) || [],
+              locale: useCaseAttributes.locale,
             } satisfies UseCase;
           } catch (error) {
             // eslint-disable-next-line functional/no-expression-statements
@@ -82,6 +83,13 @@ export function makeUseCaseListPagesProps(
                 (bannerLink) => makeBannerLinkProps(bannerLink)
               ),
         enableFilters: attributes.enableFilters,
+        localizations:
+          attributes.localizations?.data.map((l) => ({
+            locale: l.attributes.locale,
+            slug: l.attributes.slug,
+          })) || [],
+        locale: attributes.locale,
+        updatedAt: attributes.updatedAt,
       };
     })
   );

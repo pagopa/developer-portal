@@ -99,6 +99,10 @@ export type OverviewPageProps = {
     }[];
   };
   readonly seo?: SEO;
+  readonly localizations?: ReadonlyArray<{
+    readonly locale: string;
+  }>;
+  readonly locale: string;
 } & ProductLayoutProps;
 
 export async function generateMetadata(

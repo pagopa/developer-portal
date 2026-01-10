@@ -83,6 +83,13 @@ export function makeApiDataListPagesProps(
           updatedAt: attributes.updatedAt,
           enableFilters: attributes.enableFilters,
           tags: product.tags,
+          localizations:
+            attributes.localizations?.data.map((l) => ({
+              locale: l.attributes.locale,
+              slug: l.attributes.slug,
+            })) || [],
+          locale: attributes.locale,
+          path: `/${slug}/api`,
         };
       } catch (error) {
         // eslint-disable-next-line functional/no-expression-statements
