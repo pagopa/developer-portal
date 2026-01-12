@@ -123,6 +123,11 @@ resource "aws_s3_bucket_lifecycle_configuration" "athena_results_lifecycle" {
     id     = "delete-old-results"
     status = "Enabled"
 
+
+    filter {
+      prefix = ""
+    }
+
     expiration {
       days = 30
     }
