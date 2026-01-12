@@ -108,14 +108,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       );
     });
     const hasTutorials = routes?.tutorialList !== undefined;
-    const returnArray = [
-      {
+    const returnArray = [];
+    if (routes?.overview)
+      // eslint-disable-next-line functional/immutable-data,functional/no-expression-statements
+      returnArray.push({
         url: `${baseUrl}/${productSlug}/overview`,
         lastModified: new Date(routes?.overview?.updatedAt || Date.now()),
         changeFrequency: 'weekly' as const,
         priority: 0.8,
-      },
-    ];
+      });
     if (hasTutorials)
       // eslint-disable-next-line functional/immutable-data,functional/no-expression-statements
       returnArray.push({
