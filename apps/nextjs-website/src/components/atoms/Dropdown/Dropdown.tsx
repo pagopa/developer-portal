@@ -100,7 +100,6 @@ const Dropdown = ({
                 ...menuItemStyle,
                 '&:hover': {
                   backgroundColor: 'action.hover',
-                  color: 'primary.main', // Optional: highlight on hover
                 },
               }}
             >
