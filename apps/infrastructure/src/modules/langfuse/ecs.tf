@@ -512,6 +512,12 @@ resource "aws_ecs_service" "langfuse_web" {
   service_connect_configuration {
     enabled = true
   }
+
+  load_balancer {
+    target_group_arn = module.langfuse_load_balancer.target_groups["web-target-group"].arn
+    container_name   = "web"
+    container_port   = 3000
+  }
 }
 
 resource "aws_ecs_service" "clickhouse" {
