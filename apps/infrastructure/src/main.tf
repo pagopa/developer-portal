@@ -275,9 +275,6 @@ module "langfuse" {
   vpc_id             = module.cms.vpc.id
   private_subnet_ids = module.cms.vpc.private_subnets
   public_subnet_ids  = module.cms.vpc.public_subnets
-  web_next_secret    = "Lra5MpRE2UpmUqUHt6EHBspC+AWt7k1COKl9MWJbU6Q="
-  web_salt           = "yIuodv61mg8Nchg0VzuVSKxRf2F+5R88/jybIRMeCUg="
-  encryption_key     = "d8e84722a8d90705670145236be10d4f94d3397ea49685154a4d02776ee1f33b"
   custom_domain_id   = module.core.hosted_zone_id
   custom_domain_name = var.dns_domain_name
 }

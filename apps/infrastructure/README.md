@@ -99,3 +99,32 @@ And finally execute the following command that upload state to S3. Reply yes to 
 ### Step 4: Add the IAM role as GitHub environment secret
 
 In order to allow github to manage the aws resources you have to add the `IAM_ROLE` environment secret filled with the `arn` of `GitHubActionIACRole` role. Find the `arn` of the role via management console. 
+
+
+## How to update the Infrastructure documentation
+
+```sh
+cd apps/infrastructure/src
+terraform fmt -recursive .
+terraform-docs markdown --output-file README.md --output-mode replace  --sort-by required .
+```
+
+## How to update the Langufuse Docker image
+
+Set the value of the following environment variables:
+
+```sh
+export AWS_ACCOUNT_ID=<AWS_ACCOUNT_ID>
+export AWS_REGION=<AWS_REGION>
+```
+
+Login to AWS ECR:
+
+```sh
+aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com
+```
+
+```sh
+docker pull --platform linux/amd64 docker.io/langfuse/langfuse:3.115
+docker tag langfuse/langfuse:3 ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/langfuse
+```

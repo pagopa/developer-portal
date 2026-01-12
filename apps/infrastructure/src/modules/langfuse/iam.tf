@@ -118,6 +118,31 @@ resource "aws_iam_role_policy_attachment" "ecs_task_execute_role_attachment" {
   policy_arn = aws_iam_policy.langfuse_ecs_task_execute_role_policy.arn
 }
 
+resource "aws_iam_policy" "langfuse_ssm_read" {
+  name        = "Langfuse${title(var.environment)}SSMReadPolicy"
+  description = "Task Role SSM Read Policy for Langfuse"
+  policy      = data.aws_iam_policy_document.langfuse_ssm_read_policy_doc.json
+  tags = {
+    Name = "langfuse_ssm_read_policy"
+  }
+}
+
+data "aws_iam_policy_document" "langfuse_ssm_read_policy_doc" {
+  statement {
+    actions = [
+      "ssm:GetParameter",
+      "ssm:GetParameters",
+    ]
+    effect    = "Allow"
+    resources = ["arn:aws:ssm:${var.region}:${data.aws_caller_identity.current.account_id}:parameter/chatbot/langfuse/*"]
+  }
+}
+
+resource "aws_iam_role_policy_attachment" "langfuse_attach_ssm" {
+  role       = aws_iam_role.langfuse_ecs_task_execute_role.name
+  policy_arn = aws_iam_policy.langfuse_ssm_read.arn
+}
+
 resource "aws_iam_role" "langfuse_task_role" {
   name               = "Langfuse${title(var.environment)}TaskRole"
   description        = "Task Role for Langfuse"

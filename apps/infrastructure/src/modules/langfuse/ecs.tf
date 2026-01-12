@@ -174,14 +174,6 @@ resource "aws_ecs_task_definition" "langfuse_worker" {
       portMappings = [{ containerPort : 3030 }]
       environment = [
         {
-          name  = "SALT"
-          value = var.web_salt
-        },
-        {
-          name  = "ENCRIPTION_KEY"
-          value = var.encryption_key
-        },
-        {
           name  = "TELEMETRY_ENABLED"
           value = "true"
         },
@@ -251,6 +243,14 @@ resource "aws_ecs_task_definition" "langfuse_worker" {
           name      = "CLICKHOUSE_PASSWORD"
           valueFrom = aws_secretsmanager_secret.clickhouse_password.arn
         },
+        {
+          name      = "SALT"
+          valueFrom = module.salt.ssm_parameter_arn
+        },
+        {
+          name      = "ENCRYPTION_KEY"
+          valueFrom = module.encryption_key.ssm_parameter_arn
+        },
       ]
 
       logConfiguration = {
@@ -296,18 +296,6 @@ resource "aws_ecs_task_definition" "langfuse_web" {
         {
           name  = "NEXTAUTH_URL"
           value = "https://${local.langfuse_domain_name}"
-        },
-        {
-          name  = "NEXTAUTH_SECRET"
-          value = var.web_next_secret
-        },
-        {
-          name  = "SALT"
-          value = var.web_salt
-        },
-        {
-          name  = "ENCRYPTION_KEY"
-          value = var.encryption_key
         },
         {
           name  = "HOSTNAME"
@@ -396,6 +384,34 @@ resource "aws_ecs_task_definition" "langfuse_web" {
         {
           name  = "LANGFUSE_RETURN_FROM_CLICKHOUSE"
           value = "true"
+        },
+        {
+          name  = "AUTH_COGNITO_ALLOW_ACCOUNT_LINKING",
+          value = "true"
+        },
+        {
+          name  = "LANGFUSE_INIT_ORG_ID",
+          value = "pagopa"
+        },
+        {
+          name  = "LANGFUSE_INIT_ORG_NAME",
+          value = "PagoPA"
+        },
+        {
+          name  = "AUTH_DISABLE_USERNAME_PASSWORD",
+          value = "true"
+        },
+        {
+          name  = "AUTH_DISABLE_SIGNUP",
+          value = "false"
+        },
+        {
+          name  = "LANGFUSE_INIT_USER_EMAIL",
+          value = local.langfuse_master_email
+        },
+        {
+          name  = "LANGFUSE_INIT_USER_NAME",
+          value = local.langfuse_master_user_name
         }
       ]
       secrets = [
@@ -406,6 +422,34 @@ resource "aws_ecs_task_definition" "langfuse_web" {
         {
           name      = "CLICKHOUSE_PASSWORD"
           valueFrom = aws_secretsmanager_secret.clickhouse_password.arn
+        },
+        {
+          name      = "NEXTAUTH_SECRET"
+          valueFrom = module.nextauth_secret.ssm_parameter_arn
+        },
+        {
+          name      = "SALT"
+          valueFrom = module.salt.ssm_parameter_arn
+        },
+        {
+          name      = "ENCRYPTION_KEY"
+          valueFrom = module.encryption_key.ssm_parameter_arn
+        },
+        {
+          name      = "AUTH_COGNITO_CLIENT_ID",
+          valueFrom = module.user_pool_client_id.ssm_parameter_arn
+        },
+        {
+          name      = "AUTH_COGNITO_CLIENT_SECRET",
+          valueFrom = module.user_pool_client_secret.ssm_parameter_arn
+        },
+        {
+          name      = "AUTH_COGNITO_ISSUER",
+          valueFrom = module.user_pool_issuer.ssm_parameter_arn
+        },
+        {
+          name      = "LANGFUSE_INIT_USER_PASSWORD",
+          valueFrom = module.master_user_password.ssm_parameter_arn
         },
       ]
 
