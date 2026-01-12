@@ -46,7 +46,7 @@ export const ProfileDataCardItem = (
                 InputProps={{
                   sx: {
                     '& input': {
-                      fontWeight: 700,
+                      fontWeight: 600,
                     },
                   },
                 }}
@@ -65,7 +65,7 @@ export const ProfileDataCardItem = (
                 InputProps={{
                   sx: {
                     '& input': {
-                      fontWeight: 700,
+                      fontWeight: 600,
                     },
                   },
                 }}
@@ -117,7 +117,7 @@ export const ProfileDataCardItem = (
                 sx={{
                   padding: '8.5px 14px',
                   '& .MuiSelect-select': {
-                    fontWeight: 700,
+                    fontWeight: 600,
                   },
                 }}
                 inputProps={{
