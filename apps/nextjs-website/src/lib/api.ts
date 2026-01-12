@@ -126,9 +126,9 @@ export async function getTutorial(
 }
 
 export async function getTutorialListPageProps(productSlug?: string) {
-  const tutorialListPages = (await getTutorialListPagesProps()).find(
-    ({ product }) => product.slug === productSlug
-  );
+  const tutorialListPages = manageUndefined(
+    await getTutorialListPagesProps()
+  ).find(({ product }) => product.slug === productSlug);
   return manageUndefinedAndAddProducts(tutorialListPages);
 }
 
