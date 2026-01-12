@@ -62,8 +62,8 @@ const SignUpForm = ({
   const t = useTranslations();
   const { palette } = useTheme();
   const boldInputSx = {
-    '& .MuiInputBase-input': { fontWeight: 700 },
-    '& .MuiSelect-select': { fontWeight: 700 },
+    '& .MuiInputBase-input': { fontWeight: 600 },
+    '& .MuiSelect-select': { fontWeight: 600 },
   };
   const [userData, setUserData] = useState<SignUpUserData>(defaults);
   const [fieldErrors, setFieldErrors] = useState<Partial<SignUpFieldsError>>(

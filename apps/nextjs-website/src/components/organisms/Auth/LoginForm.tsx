@@ -163,7 +163,7 @@ const LoginForm = ({
                   sx={{
                     width: '100%',
                     backgroundColor: palette.background.paper,
-                    '& .MuiInputBase-input': { fontWeight: 700 },
+                    '& .MuiInputBase-input': { fontWeight: 600 },
                   }}
                   value={formData.username}
                   variant='outlined'
@@ -198,7 +198,7 @@ const LoginForm = ({
                     label={`${shared('password')}`}
                     required
                     size='small'
-                    sx={{ '& .MuiInputBase-input': { fontWeight: 700 } }}
+                    sx={{ '& .MuiInputBase-input': { fontWeight: 600 } }}
                     type={showPassword ? 'text' : 'password'}
                     variant='outlined'
                     onChange={handleChangeInput}
