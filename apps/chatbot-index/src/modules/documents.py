@@ -41,6 +41,7 @@ def read_file_from_s3(
     """Reads a file from an S3 bucket.
     Args:
         file_path (str): The path to the file in the S3 bucket.
+        bucket_name (str | None): The name of the S3 bucket. If None, uses the default bucket name.
     Returns:
         str | None: The content of the file as a string, or None if the file is not found.
     """
@@ -171,8 +172,8 @@ def get_product_list(file_path: str | None = None) -> List[str]:
         products = json.loads(s3_content)
         for product in products:
             try:
-                product_slug = product["attributes"]["slug"]
-                product_list.append(product_slug)
+                if product["attributes"]["isVisible"]:
+                    product_list.append(product["attributes"]["slug"])
             except KeyError as e:
                 LOGGER.error(f"Error extracting product slug: {e}")
         LOGGER.info(f"Found {len(product_list)} products: {product_list}.")
