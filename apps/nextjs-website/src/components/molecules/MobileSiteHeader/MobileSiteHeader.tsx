@@ -13,7 +13,7 @@ import NextLink from 'next/link';
 import MobileUserInfo from '@/components/atoms/MobileUserInfo/MobileUserInfo';
 import { i18nActive, SITE_HEADER_HEIGHT } from '@/config';
 import MobileLanguageSelector from '@/components/atoms/MobileLanguageSelector/MobileLanguageSelector';
-import { SUPPORTED_LOCALES } from '../../../locales';
+import { SUPPORTED_LOCALES } from '@/locales';
 
 export const MobileSiteHeaderStyledTreeItem = styled(TreeItem)(({ theme }) => ({
   [`&`]: {
