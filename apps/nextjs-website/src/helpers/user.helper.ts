@@ -8,6 +8,7 @@ import { redirect } from 'next/navigation';
 import { useCallback, useState, useEffect } from 'react';
 
 export const useUser = () => {
+  const { authStatus } = useAuthenticator((context) => [context.authStatus]);
   const [isLoaded, setLoading] = useState<boolean>(true);
   const [aligned, setAligned] = useState<boolean>(false);
   const [user, setUser] = useState<DevPortalUser | null>(null);
@@ -24,13 +25,21 @@ export const useUser = () => {
 
   const isUserLoggedIn = useCallback(
     async (user?: DevPortalUser | null) => {
-      const info = await Auth.currentUserInfo();
-      if (!info?.username) {
-        signOutUser(user);
+      if (authStatus === 'unauthenticated') {
+        return false;
       }
-      return !!info?.username;
+      try {
+        const info = await Auth.currentUserInfo();
+        if (!info?.username) {
+          signOutUser(user);
+        }
+        return !!info?.username;
+      } catch {
+        signOutUser(user);
+        return false;
+      }
     },
-    [signOutUser]
+    [authStatus, signOutUser]
   );
 
   const fetchUserAndSubscriptions = useCallback(async () => {
@@ -83,8 +92,17 @@ export const useUser = () => {
   }, [user, isUserLoggedIn]);
 
   useEffect(() => {
-    fetchUserAndSubscriptions();
-  }, [fetchUserAndSubscriptions]);
+    if (authStatus === 'authenticated') {
+      fetchUserAndSubscriptions();
+      return;
+    }
+    if (authStatus === 'unauthenticated') {
+      setLoading(false);
+      setAligned(true);
+      setUser(null);
+      setSubscriptions([]);
+    }
+  }, [authStatus, fetchUserAndSubscriptions]);
 
   useEffect(() => {
     const cancel = Hub.listen('auth', (event) => {
