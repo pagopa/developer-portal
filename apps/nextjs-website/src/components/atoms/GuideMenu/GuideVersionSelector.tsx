@@ -27,10 +27,20 @@ const GuideVersionSelector = ({
         color: palette.action.active,
         border: '0.5px solid grey',
         margin: '5px 0 30px 30px',
-        padding: '5px',
+        padding: '0px 8px',
+        minHeight: 32,
+        height: 32,
+        lineHeight: 1,
+        fontSize: '14px',
         width: '150px',
         backgroundColor: 'white',
         justifyContent: 'space-between',
+      }}
+      menuItemStyle={{
+        paddingY: 0.5,
+        minHeight: 28,
+        fontSize: '14px',
+        lineHeight: 1.2,
       }}
       menuStyle={{
         style: {

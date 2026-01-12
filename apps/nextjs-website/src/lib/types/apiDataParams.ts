@@ -1,6 +1,6 @@
 export type ApiDataParams = {
-  readonly params: {
+  readonly params: Promise<{
     readonly productSlug: string;
     readonly apiDataSlug: string;
-  };
+  }>;
 };

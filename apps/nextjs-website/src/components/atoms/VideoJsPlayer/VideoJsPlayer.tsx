@@ -31,7 +31,7 @@ const VideoJsPlayer = (props: PlayerProps) => {
   const playerRef = useRef<
     // @ts-expect-error TS2322: Type 'undefined' is not assignable to type 'Player & VideoJSIVSTech & VideoJSQualityPlugin'.
     videojs.Player & VideoJSIVSTech & VideoJSQualityPlugin
-  >();
+  >(undefined);
 
   useEffect(() => {
     registerIVSTech(videojs, {
@@ -61,7 +61,10 @@ const VideoJsPlayer = (props: PlayerProps) => {
       // eslint-disable-next-line functional/immutable-data
       playerRef.current = undefined;
     };
-  }, []);
+
+    // NOTE: Autoplay is correctly set on initialization only, it should not be a dependency here
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [props.controls, props.playsInline]);
 
   useEffect(() => {
     if (!playerRef.current) {

@@ -61,6 +61,10 @@ const SignUpForm = ({
 }: SignUpFormProps) => {
   const t = useTranslations();
   const { palette } = useTheme();
+  const boldInputSx = {
+    '& .MuiInputBase-input': { fontWeight: 600 },
+    '& .MuiSelect-select': { fontWeight: 600 },
+  };
   const [userData, setUserData] = useState<SignUpUserData>(defaults);
   const [fieldErrors, setFieldErrors] = useState<Partial<SignUpFieldsError>>(
     {}
@@ -183,6 +187,7 @@ const SignUpForm = ({
                     sx={{
                       backgroundColor: 'white',
                       width: '100%',
+                      ...boldInputSx,
                     }}
                     size='small'
                     value={firstName}
@@ -200,6 +205,7 @@ const SignUpForm = ({
                     sx={{
                       backgroundColor: 'white',
                       width: '100%',
+                      ...boldInputSx,
                     }}
                     size='small'
                     value={lastName}
@@ -219,6 +225,7 @@ const SignUpForm = ({
                   sx={{
                     backgroundColor: 'white',
                     width: '100%',
+                    ...boldInputSx,
                   }}
                   size='small'
                   value={username}
@@ -265,6 +272,7 @@ const SignUpForm = ({
                     name='company'
                     select={true}
                     size='small'
+                    sx={boldInputSx}
                     value={company}
                     onChange={handleInputChange}
                   >
@@ -282,6 +290,7 @@ const SignUpForm = ({
                   name='role'
                   sx={{
                     backgroundColor: palette.background.paper,
+                    ...boldInputSx,
                   }}
                   size='small'
                   value={role}
