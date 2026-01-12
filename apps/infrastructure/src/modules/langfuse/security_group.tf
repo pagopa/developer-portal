@@ -24,51 +24,6 @@ resource "aws_security_group" "langfuse_db" {
   }
 }
 
-# Is it needed?
-resource "aws_security_group" "apprunner_vpc_connector" {
-  name = "apprunner-vpc-connector-sg"
-  tags_all = {
-    Name = "apprunner_vpc_connector_sg"
-  }
-  vpc_id = var.vpc_id
-
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = -1
-    cidr_blocks = ["0.0.0.0/0"]
-    description = "Allow all traffic out to the internet"
-  }
-
-  tags = {
-    Name = "apprunner_vpc_connector_sg"
-  }
-}
-
-# resource "aws_security_group" "apprunner_ingress_sg" {
-#   name   = "${local.prefix}-apprunner-ingress-sg"
-#   vpc_id = var.vpc_id
-#
-#   ingress {
-#     from_port       = 443
-#     to_port         = 443
-#     protocol        = "tcp"
-#     security_groups = [aws_security_group.langfuse_lb.id]
-#   }
-#
-#   egress {
-#     from_port   = 0
-#     to_port     = 0
-#     protocol    = "-1"
-#     cidr_blocks = ["0.0.0.0/0"]
-#     description = "Allow all traffic out to the internet"
-#   }
-#
-#   tags = {
-#     Name = "apprunner_ingress_sg"
-#   }
-# }
-
 resource "aws_security_group" "langfuse_cache" {
   vpc_id      = var.vpc_id
   name        = "${local.prefix}-cache-sg"
@@ -78,9 +33,9 @@ resource "aws_security_group" "langfuse_cache" {
   }
 
   ingress {
-    from_port       = 0
-    to_port         = 0
-    protocol        = "-1"
+    from_port       = 6379
+    to_port         = 6379
+    protocol        = "tcp"
     security_groups = [aws_security_group.langfuse_db.id, aws_security_group.langfuse_worker.id, aws_security_group.langfuse_web.id]
     description     = "Ingress Allow all traffic from app and flower security groups"
   }
@@ -102,9 +57,9 @@ resource "aws_security_group" "langfuse_worker" {
   }
 
   ingress {
-    from_port       = 0
-    to_port         = 0
-    protocol        = "-1"
+    from_port       = 3030
+    to_port         = 3030
+    protocol        = "tcp"
     security_groups = [aws_security_group.langfuse_web.id]
   }
 
@@ -124,10 +79,10 @@ resource "aws_security_group" "langfuse_web" {
   }
 
   ingress {
-    from_port       = 0
-    to_port         = 0
-    protocol        = "-1"
-    security_groups = []
+    from_port       = 3000
+    to_port         = 3000
+    protocol        = "tcp"
+    security_groups = [aws_security_group.lb.id]
   }
 
   egress {
@@ -146,9 +101,16 @@ resource "aws_security_group" "clickhouse" {
   }
 
   ingress {
-    from_port       = 0
-    to_port         = 0
-    protocol        = "-1"
+    from_port       = 8123
+    to_port         = 8123
+    protocol        = "tcp"
+    security_groups = [aws_security_group.langfuse_web.id, aws_security_group.langfuse_worker.id]
+  }
+
+  ingress {
+    from_port       = 9000
+    to_port         = 9000
+    protocol        = "tcp"
     security_groups = [aws_security_group.langfuse_web.id, aws_security_group.langfuse_worker.id]
   }
 
