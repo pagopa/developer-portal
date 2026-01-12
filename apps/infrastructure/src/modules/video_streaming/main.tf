@@ -762,22 +762,22 @@ resource "aws_iam_role_policy" "firehose_s3_policy" {
 
 # 3. Lambda Function
 
-data "archive_file" "stream_lambda_function" {
+data "archive_file" "ingest_lambda_function" {
   type        = "zip"
   source_file = "${path.module}/lambda/lambda_function.py"
-  output_path = "${path.module}/lambda_function.zip"
+  output_path = "${path.cwd}/builds/stream_count_lambda_function.zip"
 }
 
 # Lambda Role (To write to Kinesis)
 resource "aws_iam_role" "lambda_role" {
   name = "heartbeat_lambda_role"
   assume_role_policy = jsonencode({
-    Version   = "2012-10-17"
+    Version = "2012-10-17"
     Statement = [
-      { 
-        Action = "sts:AssumeRole", 
-        Effect = "Allow", 
-        Principal = { Service = "lambda.amazonaws.com" } 
+      {
+        Action    = "sts:AssumeRole",
+        Effect    = "Allow",
+        Principal = { Service = "lambda.amazonaws.com" }
       }
     ]
   })
@@ -796,12 +796,12 @@ resource "aws_iam_role_policy" "lambda_kinesis_policy" {
 }
 
 resource "aws_lambda_function" "ingest_lambda" {
-  filename         = data.archive_file.stream_lambda_function.output_path
+  filename         = data.archive_file.ingest_lambda_function.output_path
   function_name    = "${var.project_name}-heartbeat-ingest"
   role             = aws_iam_role.lambda_role.arn
   handler          = "lambda_function.lambda_handler"
   runtime          = "python3.13"
-  source_code_hash = data.archive_file.stream_lambda_function.output_base64sha256
+  source_code_hash = data.archive_file.ingest_lambda_function.output_base64sha256
 
   environment {
     variables = {
@@ -832,7 +832,7 @@ resource "aws_iam_role_policy" "lambda_firehose_policy" {
 # Create the Athena Database
 resource "aws_athena_database" "webinar_db" {
   name   = "webinar_analytics"
-  bucket = aws_s3_bucket.heartbeat_storage.id 
+  bucket = aws_s3_bucket.heartbeat_storage.id
 }
 
 # Athena Workgroup
