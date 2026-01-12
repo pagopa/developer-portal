@@ -97,6 +97,7 @@ const CtaCard = ({
                     sx={{
                       paddingY: 0.2,
                       maxHeight: 'auto',
+                      maxWidth: 'auto',
                       marginBottom: 1,
                     }}
                   />
