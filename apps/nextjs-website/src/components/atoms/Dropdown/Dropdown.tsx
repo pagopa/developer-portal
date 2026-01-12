@@ -14,6 +14,7 @@ type DropdownProps = {
   icons?: { opened?: ReactNode; closed?: ReactNode };
   buttonStyle?: SxProps;
   menuStyle?: Partial<PaperProps>;
+  menuItemStyle?: SxProps;
   menuAnchorOrigin?: PopoverOrigin;
   menuTransformOrigin?: PopoverOrigin;
 };
@@ -24,6 +25,7 @@ const Dropdown = ({
   icons,
   buttonStyle,
   menuStyle,
+  menuItemStyle,
   menuAnchorOrigin,
   menuTransformOrigin,
 }: DropdownProps) => {
@@ -95,9 +97,9 @@ const Dropdown = ({
                 fontSize: '16px',
                 paddingY: 1,
                 justifyContent: 'flex-start',
+                ...menuItemStyle,
                 '&:hover': {
                   backgroundColor: 'action.hover',
-                  color: 'primary.main', // Optional: highlight on hover
                 },
               }}
             >

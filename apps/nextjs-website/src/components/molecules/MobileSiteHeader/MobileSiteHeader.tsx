@@ -65,8 +65,8 @@ export const MobileSiteHeaderStyledTreeItem = styled(TreeItem)(({ theme }) => ({
   },
   [`& .MuiTreeItem-content > .MuiTreeItem-label > a`]: {
     color: theme.palette.primary.dark,
-    paddingTop: 16,
-    paddingBottom: 16,
+    paddingTop: 14,
+    paddingBottom: 14,
     paddingRight: 32,
   },
   [`& ul`]: {
@@ -82,10 +82,13 @@ export const MobileSiteHeaderStyledTreeItem = styled(TreeItem)(({ theme }) => ({
   [`& .MuiTreeItem-group`]: {
     marginLeft: 0,
     marginRight: 0,
-    marginBottom: 0,
+    marginBottom: 8,
   },
-  [`& .MuiTreeItem-group a`]: {
-    marginBottom: 16,
+
+  [`& .MuiCollapse-wrapperInner a`]: {
+    marginBottom: 4,
+    paddingTop: 4,
+    paddingBottom: 4,
   },
   [`& .MuiTreeItem-group .MuiTreeItem-label`]: {
     paddingLeft: 0,
@@ -146,15 +149,17 @@ const MobileSiteHeader = ({ products }: SiteHeaderProps) => {
         direction: 'row',
         display: { xs: 'flex', sm: 'none' },
         flexGrow: 1,
-        paddingLeft: 2,
-        gap: 4,
-        justifyContent: 'end',
+        width: '100%',
+        paddingRight: 2,
+        gap: 2,
+        justifyContent: 'flex-end',
       }}
     >
       <Button
         variant='text'
         disableElevation
         onClick={handleClick}
+        sx={{ marginLeft: 'auto', marginRight: '-30px' }}
         endIcon={isOpen ? <ArrowDropUp /> : <ArrowDropDown />}
       >
         {t('siteHeader.label')}

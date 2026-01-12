@@ -59,6 +59,7 @@ export const PasswordTextField = ({
           name={id}
           required
           size='small'
+          sx={{ '& .MuiInputBase-input': { fontWeight: 600 } }}
           type={type}
           value={password}
           onChange={onChange}

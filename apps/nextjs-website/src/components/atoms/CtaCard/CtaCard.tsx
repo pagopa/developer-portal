@@ -6,7 +6,6 @@ import {
   CardActions,
   CardContent,
   CardMedia,
-  Chip,
   styled,
   SxProps,
   Typography,
@@ -14,6 +13,7 @@ import {
 import { Variant } from '@mui/material/styles/createTypography';
 import Link from 'next/link';
 import React, { ReactNode } from 'react';
+import Tag from '@/components/atoms/Tag/Tag';
 
 export type CtaCardProps = {
   readonly title: string;
@@ -92,11 +92,14 @@ const CtaCard = ({
                     '& > span': { marginBottom: 1 },
                   }}
                 >
-                  <Chip
+                  <Tag
                     label={label.label}
-                    color='primary'
-                    variant='outlined'
-                    size='small'
+                    sx={{
+                      paddingY: 0.2,
+                      maxHeight: 'auto',
+                      maxWidth: 'auto',
+                      marginBottom: 1,
+                    }}
                   />
                 </Box>
               ))}
