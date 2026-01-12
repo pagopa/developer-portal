@@ -1,6 +1,6 @@
 module "codebuild" {
-  source  = "pagopa-dx/github-selfhosted-runner-on-codebuild/aws"
-  version = "~> 0.0"
+  source  = "../github_selfhosted_runner_on_codebuild"
+  #version = "~> 0.0"
   name    = "${var.environment}-github-runner"
   # The full environment name (dev, uat, prod) instead of the short one (d, u, p)
   # allows to use the self-hosted runner for the current environment according to

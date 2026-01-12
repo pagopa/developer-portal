@@ -1,5 +1,5 @@
 module "ssl_certificate" {
-  source      = "git::https://github.com/terraform-aws-modules/terraform-aws-acm.git?ref=8d0b22f1f242a1b36e29b8cb38aaeac9b887500d" # v5.0.0
+  source      = "git::https://github.com/terraform-aws-modules/terraform-aws-acm.git?ref=5d113fa07675fc42237907a621b68ac97109043e" # v6.3.0
   domain_name = "dummy.${var.dns_chatbot_hosted_zone.name}"
   zone_id     = var.dns_chatbot_hosted_zone.id
 
@@ -13,7 +13,7 @@ module "ssl_certificate" {
 }
 
 module "ssl_certificate_us_east_1" {
-  source = "git::https://github.com/terraform-aws-modules/terraform-aws-acm.git?ref=8d0b22f1f242a1b36e29b8cb38aaeac9b887500d" # v5.0.0
+  source = "git::https://github.com/terraform-aws-modules/terraform-aws-acm.git?ref=5d113fa07675fc42237907a621b68ac97109043e" # v6.3.0
   providers = {
     aws = aws.us-east-1
   }
@@ -31,7 +31,7 @@ module "ssl_certificate_us_east_1" {
 }
 
 module "internal_ssl_certificate" {
-  source      = "git::https://github.com/terraform-aws-modules/terraform-aws-acm.git?ref=8d0b22f1f242a1b36e29b8cb38aaeac9b887500d" # v5.0.0
+  source      = "git::https://github.com/terraform-aws-modules/terraform-aws-acm.git?ref=5d113fa07675fc42237907a621b68ac97109043e" # v6.3.0
   domain_name = "dummy.${aws_route53_zone.chatbot_internal.name}"
   zone_id     = var.dns_chatbot_hosted_zone.id
 
