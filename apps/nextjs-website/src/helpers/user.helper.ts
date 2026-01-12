@@ -28,6 +28,7 @@ export const useUser = () => {
       if (authStatus === 'unauthenticated') {
         return false;
       }
+      // eslint-disable-next-line functional/no-try-statements
       try {
         const info = await Auth.currentUserInfo();
         if (!info?.username) {
