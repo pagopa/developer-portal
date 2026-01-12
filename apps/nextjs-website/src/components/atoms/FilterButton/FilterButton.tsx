@@ -39,7 +39,7 @@ const FilterButton = ({
           color: palette.text.primary,
           backgroundColor: isSelected ? palette.background.paper : '#EBF4FD',
           '&.MuiButton-contained:hover': {
-            backgroundColor: '#F3F9FF',
+            backgroundColor: '#D5E5F6',
           },
         }}
         onClick={onClick}
