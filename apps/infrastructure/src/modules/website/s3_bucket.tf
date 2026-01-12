@@ -37,6 +37,12 @@ resource "aws_s3_bucket_lifecycle_configuration" "website_standalone" {
     }
 
     status = "Enabled"
+
+    #TODO: this is warkaround for TF not allowing empty prefix. I might be fixed in future versions
+    filter {
+      prefix = ""
+    }
+
   }
 }
 

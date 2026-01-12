@@ -1,5 +1,5 @@
 terraform {
-  required_version = "~> 1.13.0"
+  required_version = "~> 1.14.3"
 
   backend "s3" {}
 
@@ -237,7 +237,7 @@ module "docs_redirect" {
     aws.us-east-1 = aws.us-east-1
   }
 
-  cloudfront_function_code = data.http.docs_redirect_cf_function_code.body
+  cloudfront_function_code = data.http.docs_redirect_cf_function_code.response_body
 
   environment = var.environment
   tags        = var.tags
