@@ -232,6 +232,10 @@ resource "aws_ecs_task_definition" "langfuse_worker" {
         {
           name  = "NODE_OPTIONS"
           value = "--max-old-space-size=4096"
+        },
+        {
+          name  = "LANGFUSE_ENABLE_BACKGROUND_MIGRATIONS",
+          value = "false"
         }
       ]
       secrets = [
@@ -412,6 +416,10 @@ resource "aws_ecs_task_definition" "langfuse_web" {
         {
           name  = "LANGFUSE_INIT_USER_NAME",
           value = local.langfuse_master_user_name
+        },
+        {
+          name  = "LANGFUSE_ENABLE_BACKGROUND_MIGRATIONS",
+          value = "false"
         }
       ]
       secrets = [
