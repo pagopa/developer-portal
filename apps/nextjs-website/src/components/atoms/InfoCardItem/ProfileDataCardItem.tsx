@@ -43,6 +43,13 @@ export const ProfileDataCardItem = (
             infoCardItem.required ? (
               <RequiredTextField
                 inputProps={{ maxlength: 100 }}
+                InputProps={{
+                  sx: {
+                    '& input': {
+                      fontWeight: 700,
+                    },
+                  },
+                }}
                 label={infoCardItem.title}
                 value={infoCardItem.value ?? ''}
                 onChange={({ target: { value } }) => {
@@ -55,6 +62,13 @@ export const ProfileDataCardItem = (
             ) : (
               <TextField
                 inputProps={{ maxlength: 100 }}
+                InputProps={{
+                  sx: {
+                    '& input': {
+                      fontWeight: 700,
+                    },
+                  },
+                }}
                 variant='outlined'
                 id={infoCardItem.title}
                 type={'text'}
@@ -100,7 +114,12 @@ export const ProfileDataCardItem = (
                       ?.value || ''
                   )
                 }
-                sx={{ padding: '8.5px 14px' }}
+                sx={{
+                  padding: '8.5px 14px',
+                  '& .MuiSelect-select': {
+                    fontWeight: 700,
+                  },
+                }}
                 inputProps={{
                   sx: {
                     padding: 0,
