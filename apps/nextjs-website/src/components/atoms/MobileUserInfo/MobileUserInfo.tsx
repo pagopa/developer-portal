@@ -24,7 +24,7 @@ const MobileUserInfo = ({ onClick }: MobileUserInfoProps) => {
   const { palette } = useTheme();
 
   const signOut = useCallback(async () => {
-    onClick && onClick();
+    if (onClick) onClick();
     await Auth.signOut().then(() => {
       flushChatQueriesFromLocalStorage();
     });
@@ -34,9 +34,11 @@ const MobileUserInfo = ({ onClick }: MobileUserInfoProps) => {
       router.replace('/');
     } else {
       // router.refresh(); is not enough beacuse it will not clean current state of components
-      typeof window !== 'undefined' && window.location.reload();
+      if (typeof window !== 'undefined') {
+        window.location.reload();
+      }
     }
-  }, [pathname, router]);
+  }, [pathname, router, onClick]);
 
   return (
     <>
@@ -76,7 +78,7 @@ const MobileUserInfo = ({ onClick }: MobileUserInfoProps) => {
       )}
       {user && (
         <MobileSiteHeaderStyledTreeItem
-          nodeId={'siteHeader.userInfo'}
+          itemId={'siteHeader.userInfo'}
           label={
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
               <PersonOutline

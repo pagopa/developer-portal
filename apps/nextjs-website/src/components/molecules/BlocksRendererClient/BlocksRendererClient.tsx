@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { SxProps } from '@mui/system';
 import { computeId } from '../PartRendererMenu/PartRendererMenu';
 import CodeBlockPart from '../CodeBlockPart/CodeBlockPart';
-import { ReactElement } from 'react';
+import { ReactElement, isValidElement } from 'react';
 import ContentHeading from '@/components/atoms/ContentHeading/ContentHeading';
 
 type BlocksRendererClientProps = {
@@ -89,15 +89,13 @@ const BlocksRendererClient = ({
 
           if (typeof children === 'string') {
             codeString = children;
-          } else if (
-            children &&
-            typeof children === 'object' &&
-            'props' in children
-          ) {
-            const reactElement = children as ReactElement;
-            if (typeof reactElement.props?.children === 'string') {
+          } else if (isValidElement(children)) {
+            const reactElement = children as ReactElement<{
+              children?: string | string[];
+            }>;
+            if (typeof reactElement.props.children === 'string') {
               codeString = reactElement.props.children;
-            } else if (Array.isArray(reactElement.props?.children)) {
+            } else if (Array.isArray(reactElement.props.children)) {
               // Handle array of children, join them as text
               codeString = reactElement.props.children
                 .filter((child: unknown) => typeof child === 'string')

@@ -17,11 +17,11 @@ export interface CtaProps extends CommonProps {
 export const Ctas = ({ ctaButtons, theme, reverse }: CtaProps) => {
   const buttonsThemeDefault: ButtonProps[] = [
     {
-      color: theme === 'dark' ? 'negative' : 'primary',
+      color: theme === 'dark' ? 'error' : 'primary',
       variant: 'contained',
     },
     {
-      color: theme === 'dark' ? 'negative' : 'primary',
+      color: theme === 'dark' ? 'error' : 'primary',
       variant: 'outlined',
     },
   ];

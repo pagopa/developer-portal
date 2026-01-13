@@ -21,7 +21,7 @@ const metadata = loadMetadata(URL_PARSING_METADATA_JSON_PATH);
 
 function loadMetadata(filePath: string): UrlParsingMetadata[] {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const { readFileSync } = require('fs');
+  const { readFileSync } = fs;
   const file = readFileSync(filePath, 'utf8');
   return JSON.parse(file);
 }

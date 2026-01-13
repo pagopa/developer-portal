@@ -7,7 +7,7 @@ export const convertEmojiToUnicode = (match: string): string => {
     return result.unicode;
   }
   const fallbackResult = emojiData.find(({ tags }) =>
-    tags?.some((tag) => tag === emojiName)
+    tags?.some((tag: string) => tag === emojiName)
   );
   return fallbackResult?.unicode ? fallbackResult.unicode : match;
 };
