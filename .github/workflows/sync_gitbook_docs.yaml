@@ -191,6 +191,13 @@ jobs:
             fi
           fi
 
+      - name: Sync sitemap  to S3
+        env:
+          ENVIRONMENT: ${{ inputs.environment }}
+          S3_BUCKET_NAME: devportal-${{ env.ENV_SHORT }}-website-static-content
+          SITEMAP_URL: ${{ env.SITEMAP_URL || 'https://developer.pagopa.it/sitemap.xml' }}
+        run: npm run sync-sitemap -w gitbook-docs
+
       - name: Invalidate CloudFront asset bucket cache
         run: |
           aws cloudfront create-invalidation \
@@ -315,6 +322,13 @@ jobs:
               fi
             done
           fi
+
+      - name: Sync sitemap  to S3
+        env:
+          ENVIRONMENT: 'prod'
+          S3_BUCKET_NAME: devportal-p-website-static-content
+          SITEMAP_URL: 'https://developer.pagopa.it/sitemap.xml'
+        run: npm run sync-sitemap -w gitbook-docs
 
       - name: Invalidate CloudFront asset bucket cache
         run: |
