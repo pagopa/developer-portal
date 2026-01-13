@@ -19,8 +19,8 @@ import {
   getSolutionsMetadata,
   JsonMetadata,
 } from '@/helpers/s3Metadata.helpers';
-import { OverviewPageProps } from '@/app/[productSlug]/overview/page';
-import { TutorialsPageProps } from '@/app/[productSlug]/tutorials/page';
+import { OverviewPageProps } from '@/app/[locale]/[productSlug]/overview/page';
+import { TutorialsPageProps } from '@/app/[locale]/[productSlug]/tutorials/page';
 
 export const dynamic = 'force-dynamic';
 
