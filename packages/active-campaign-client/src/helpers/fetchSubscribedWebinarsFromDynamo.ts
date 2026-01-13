@@ -20,7 +20,7 @@ export async function fetchSubscribedWebinarsFromDynamo(
       statusCode: 200,
       body: JSON.stringify(response.Items),
     };
-  } catch (error) {
+  } catch {
     return {
       statusCode: 500,
       body: JSON.stringify({ message: 'Internal server error' }),

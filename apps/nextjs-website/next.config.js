@@ -1,11 +1,8 @@
-/** @type {import('next').NextConfig} */
-/*
-  Since version 13.1 of NextJS, it is possible to use the transpilePackages
-  option within the configuration file instead of using external packages
-  (as documented here: https://pagopa.atlassian.net/browse/MUI-141).
+const createNextIntlPlugin = require('next-intl/plugin');
 
-  NextJS reference: https://nextjs.org/docs/advanced-features/compiler#module-transpilation
- */
+const withNextIntl = createNextIntlPlugin();
+
+/** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: false,
   output: 'standalone',
@@ -22,7 +19,11 @@ const nextConfig = {
     cpus: 1,
     workerThreads: false,
   },
+  serverExternalPackages: ['jsdom', 'isomorphic-dompurify'],
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
 };
 
 // eslint-disable-next-line
-module.exports = nextConfig;
+module.exports = withNextIntl(nextConfig);

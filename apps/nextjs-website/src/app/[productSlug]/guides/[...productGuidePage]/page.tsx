@@ -47,11 +47,10 @@ export type ProductGuidePageProps = {
   bodyConfig: ParseContentConfig;
 } & ProductLayoutProps;
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Params;
+export async function generateMetadata(props0: {
+  params: Promise<Params>;
 }): Promise<Metadata> {
+  const params = await props0.params;
   const props = await getGuidePage(
     params?.productGuidePage ?? [''],
     params?.productSlug
@@ -79,7 +78,8 @@ export async function generateMetadata({
   };
 }
 
-const Page = async ({ params }: { params: Params }) => {
+const Page = async (props0: { params: Promise<Params> }) => {
+  const params = await props0.params;
   const [guideProps, urlReplaceMap] = await Promise.all([
     getGuidePage(params?.productGuidePage ?? [''], params?.productSlug),
     getUrlReplaceMapProps(),

@@ -108,6 +108,7 @@ describe('makePartProps', () => {
   });
 
   it('should return null for unknown part type', () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const result = makePartProps({ __component: 'parts.unknown' } as any);
     expect(result).toBeNull();
   });

@@ -6,7 +6,6 @@
 /* eslint-disable functional/no-let */
 
 import dotenv from 'dotenv';
-import { writeFile } from 'fs/promises';
 import * as fs from 'fs';
 import path from 'path';
 import { MetadataItem } from '../metadataItem';
@@ -665,7 +664,7 @@ async function main() {
     if (GENERATE_URL_METADATA) {
       console.log('Generating URL parsing metadata...');
       const urlParsingMetadata = await generateUrlParsingMetadata(strapiData);
-      await writeFile(
+      await fs.promises.writeFile(
         URL_PARSING_METADATA_JSON_PATH,
         JSON.stringify(urlParsingMetadata, null, 2)
       );

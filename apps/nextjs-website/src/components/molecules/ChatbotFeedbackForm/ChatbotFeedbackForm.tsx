@@ -7,7 +7,7 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, SyntheticEvent, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { styled } from '@mui/material/styles';
 import StarIcon from '@mui/icons-material/Star';
@@ -90,7 +90,7 @@ const ChatbotFeedbackForm = ({
         >
           <StyledRating
             value={userResponseRelevancy}
-            onChange={(event, newValue) => {
+            onChange={(event: SyntheticEvent, newValue: number | null) => {
               setUserResponseRelevancy(newValue || 0);
             }}
             emptyIcon={
@@ -116,7 +116,7 @@ const ChatbotFeedbackForm = ({
         >
           <StyledRating
             value={userFaithfullness}
-            onChange={(event, newValue) => {
+            onChange={(event: SyntheticEvent, newValue: number | null) => {
               setUserFaithfullness(newValue || 0);
             }}
             emptyIcon={

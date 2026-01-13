@@ -34,9 +34,10 @@ export type GuideListPageProps = {
 } & ProductLayoutProps;
 
 export const generateMetadata = async (
-  { params }: ProductParams,
+  props: ProductParams,
   parent: ResolvingMetadata
 ): Promise<Metadata> => {
+  const params = await props.params;
   const resolvedParent = await parent;
   const { path, abstract, seo, product } = await getGuideListPages(
     params?.productSlug
@@ -54,7 +55,8 @@ export const generateMetadata = async (
   });
 };
 
-const GuideListPage = async ({ params }: ProductParams) => {
+const GuideListPage = async (props0: ProductParams) => {
+  const params = await props0.params;
   const { abstract, bannerLinks, guidesSections, path, product, seo } =
     await getGuideListPages(params?.productSlug);
 
