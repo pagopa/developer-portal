@@ -64,7 +64,6 @@ export function makeUseCaseListPagesProps(
       );
 
       return {
-        locale: 'it', // Temporary hardcoded value until we have localization in Strapi
         path: `/${attributes.product.data.attributes.slug}/use-cases`,
         product: makeBaseProductWithoutLogoProps(attributes.product.data),
         abstract: {

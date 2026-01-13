@@ -73,7 +73,6 @@ const GuideListPage = async (props0: ProductParams) => {
 
   return (
     <ProductLayout
-      locale={params.locale}
       product={product}
       path={path}
       bannerLinks={bannerLinks}

@@ -80,7 +80,6 @@ const QuickStartGuidesPage = async (props: ProductParams) => {
 
   return (
     <ProductLayout
-      locale={params.locale}
       product={product}
       path={path}
       showBreadcrumbs

@@ -92,7 +92,6 @@ const UseCasesPage = async (props: ProductParams) => {
 
   return (
     <ProductLayout
-      locale={params.locale}
       product={product}
       path={path}
       bannerLinks={bannerLinks}

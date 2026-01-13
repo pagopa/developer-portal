@@ -53,7 +53,6 @@ export const strapiReleaseNotes: StrapiReleaseNotes = {
 };
 
 export const expectedReleaseNotePageProps: ReleaseNotePageProps = {
-  locale: 'it',
   bannerLinks: [
     {
       title: 'Banner Link 1',

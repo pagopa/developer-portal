@@ -22,7 +22,6 @@ export function makeOverviewsProps(
 
       try {
         return {
-          locale: 'it', // Temporary hardcoded value until we have localization in Strapi
           updatedAt: attributes.updatedAt,
           path: `/${attributes.product.data?.attributes.slug}/overview`,
           product: makeBaseProductWithoutLogoProps(attributes.product.data),

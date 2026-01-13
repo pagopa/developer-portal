@@ -74,7 +74,6 @@ export function makeTutorialListPagesProps(
           : '';
 
       return {
-        locale: 'it', // Temporary hardcoded value until we have localization in Strapi
         updatedAt: updatedAt,
         name: attributes.title,
         path: `/${attributes.product.data.attributes.slug}/tutorials`,

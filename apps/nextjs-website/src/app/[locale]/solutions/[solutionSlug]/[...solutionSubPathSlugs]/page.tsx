@@ -40,7 +40,7 @@ export async function generateMetadata(props0: {
   return makeMetadata({
     title: props?.title,
     url: props
-      ? `/${props.locale}/solutions/${
+      ? `/${params.locale}/solutions/${
           props?.slug
         }/${params.solutionSubPathSlugs.join('/')}`
       : `/${params.locale}`,
@@ -119,7 +119,6 @@ const Page = async (props0: { params: Promise<Params> }) => {
     <>
       {structuredData}
       <GitBookTemplate
-        locale={params.locale}
         hasHeader={false}
         menuName={props.solution.title}
         initialBreadcrumbs={initialBreadcrumbs}

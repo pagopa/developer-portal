@@ -18,9 +18,9 @@ import { Media } from '@/lib/types/media';
 import NewsShowcase from '@/components/organisms/NewsShowcase/NewsShowcase';
 import { SEO } from '@/lib/types/seo';
 import { isNonEmpty } from 'fp-ts/lib/Array';
+import { useParams } from 'next/navigation';
 
 export type SolutionTemplateProps = {
-  readonly locale: string;
   readonly slug: string;
   readonly kickerTitle: string;
   readonly title: string;
@@ -62,7 +62,6 @@ export type SolutionTemplateProps = {
 };
 
 const SolutionTemplate = ({
-  locale: currentLocale,
   slug,
   kickerTitle,
   title,
@@ -78,6 +77,7 @@ const SolutionTemplate = ({
 }: SolutionTemplateProps) => {
   const { palette, spacing } = useTheme();
   const t = useTranslations();
+  const locale = useParams<{ locale: string }>().locale;
 
   const solutionDetailPath = `/solutions/${slug}/details`;
 
@@ -87,10 +87,10 @@ const SolutionTemplate = ({
         <Box sx={{ marginBottom: spacing(10) }}>
           <ProductBreadcrumbs
             breadcrumbs={[
-              ...pageToBreadcrumbs(currentLocale, 'solutions', [
+              ...pageToBreadcrumbs(locale, 'solutions', [
                 {
                   name: title,
-                  path: `/${currentLocale}/solutions/${slug}`,
+                  path: `/${locale}/solutions/${slug}`,
                 },
               ]),
             ]}
@@ -111,7 +111,7 @@ const SolutionTemplate = ({
             content: step.content,
             products: step.products.map((product) => ({
               label: product.shortName,
-              href: `/${currentLocale}/${product.slug}/overview`,
+              href: `/${locale}/${product.slug}/overview`,
             })),
           }))}
         />

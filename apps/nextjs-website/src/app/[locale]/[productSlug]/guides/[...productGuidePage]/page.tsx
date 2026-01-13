@@ -104,7 +104,6 @@ const Page = async (props0: { params: Promise<Params> }) => {
 
   const props: ProductGuidePageProps = {
     ...page,
-    locale: currentLocale,
     product,
     guide,
     version,
@@ -147,7 +146,6 @@ const Page = async (props0: { params: Promise<Params> }) => {
 
   return (
     <ProductLayout
-      locale={currentLocale}
       product={props.product}
       path={props.path}
       bannerLinks={props.bannerLinks}

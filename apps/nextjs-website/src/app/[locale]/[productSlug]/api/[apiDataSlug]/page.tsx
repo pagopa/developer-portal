@@ -83,7 +83,6 @@ const ApiDataPage = async (props: ApiDataParams) => {
   if (apiDataProps && apiDataProps.product) {
     return (
       <ProductLayout
-        locale={params.locale}
         product={apiDataProps.product}
         path={path}
         breadcrumbSegments={[

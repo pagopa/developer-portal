@@ -28,7 +28,6 @@ export function makeReleaseNotesProps(
                 ),
           dirName: attributes.dirName,
           landingFile: attributes.landingFile,
-          locale: 'it', // Temporary hardcoded value until we have localization in Strapi
           path: `/${attributes.product.data?.attributes.slug}/release-note`,
           product: makeBaseProductWithoutLogoProps(attributes.product.data),
           seo: attributes.seo,

@@ -96,7 +96,6 @@ const TutorialsPage = async (props: ProductParams) => {
 
   return (
     <ProductLayout
-      locale={params.locale}
       product={tutorialListPage?.product}
       path={tutorialListPage?.path}
       bannerLinks={tutorialListPage?.bannerLinks}

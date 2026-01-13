@@ -13,6 +13,7 @@ import { Part } from '@/lib/types/part';
 import { ReactNode } from 'react';
 import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
 import EContainer from '../../../editorialComponents/EContainer/EContainer';
+import { useParams } from 'next/navigation';
 
 type UseCasePageTemplateProps = {
   readonly locale: string;
@@ -31,7 +32,6 @@ type UseCasePageTemplateProps = {
 };
 
 const UseCaseTemplate = ({
-  locale,
   bannerLinks,
   headerImage,
   parts,
@@ -44,10 +44,10 @@ const UseCaseTemplate = ({
 }: UseCasePageTemplateProps) => {
   const { palette } = useTheme();
   const isSmallScreen = useMediaQuery('(max-width: 1000px)');
+  const locale = useParams<{ locale: string }>().locale;
 
   return (
     <ProductLayout
-      locale={locale}
       product={product}
       path={path}
       structuredData={structuredData}

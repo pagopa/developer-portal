@@ -37,7 +37,6 @@ const TutorialTemplate = ({
 }: TutorialPageTemplateProps) => {
   return (
     <ProductLayout
-      locale={locale}
       product={product}
       path={path}
       structuredData={structuredData}

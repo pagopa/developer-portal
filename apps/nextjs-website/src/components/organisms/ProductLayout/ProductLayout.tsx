@@ -11,9 +11,9 @@ import EContainer from '@/editorialComponents/EContainer/EContainer';
 import ContentWrapper from '@/components/atoms/ContentWrapper/ContentWrapper';
 import { Box } from '@mui/material';
 import { PRODUCT_HEADER_HEIGHT, SITE_HEADER_HEIGHT } from '@/config';
+import { useParams } from 'next/navigation';
 
 export type ProductLayoutProps = {
-  readonly locale: string;
   readonly product?: Product;
   readonly path?: string;
   readonly breadcrumbSegments?: BreadcrumbSegment[];
@@ -27,7 +27,6 @@ type LayoutPropsWithChildren = {
 } & ProductLayoutProps;
 
 const ProductLayout: FC<LayoutPropsWithChildren> = ({
-  locale,
   path,
   breadcrumbSegments: paths,
   product,
@@ -36,6 +35,7 @@ const ProductLayout: FC<LayoutPropsWithChildren> = ({
   showBreadcrumbs = false,
   structuredData,
 }) => {
+  const params = useParams<{ locale: string }>();
   return (
     <Box
       sx={{
@@ -52,7 +52,9 @@ const ProductLayout: FC<LayoutPropsWithChildren> = ({
       {product && showBreadcrumbs && (
         <EContainer sx={{ paddingTop: 3 }}>
           <ProductBreadcrumbs
-            breadcrumbs={[...productPageToBreadcrumbs(locale, product, paths)]}
+            breadcrumbs={[
+              ...productPageToBreadcrumbs(params.locale, product, paths),
+            ]}
           />
         </EContainer>
       )}

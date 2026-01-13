@@ -13,9 +13,9 @@ import { Box, Typography, useTheme } from '@mui/material';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
 import { Media } from '@/lib/types/media';
 import { SEO } from '@/lib/types/seo';
+import { useParams } from 'next/navigation';
 
 export type CaseHistoryPageTemplateProps = {
-  readonly locale: string;
   readonly slug: string;
   readonly title: string;
   readonly image?: Media;
@@ -30,7 +30,6 @@ export type CaseHistoryPageTemplateProps = {
 };
 
 const CaseHistoryPageTemplate = ({
-  locale,
   slug,
   title,
   description,
@@ -39,6 +38,7 @@ const CaseHistoryPageTemplate = ({
 }: CaseHistoryPageTemplateProps) => {
   const { palette } = useTheme();
   const t = useTranslations();
+  const locale = useParams<{ locale: string }>().locale;
 
   const cards = products
     .map((product) => {

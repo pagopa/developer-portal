@@ -17,10 +17,10 @@ import {
 } from '@/helpers/breadcrumbs.helpers';
 import { compact } from 'lodash';
 import { GitBookContentData } from '@/lib/types/gitBookContent';
+import { useParams } from 'next/navigation';
 
 export type GitBookTemplateProps = {
   body: string;
-  locale: string;
   contentMarginTop?: number;
   hasHeader?: boolean;
   hasInPageMenu?: boolean;
@@ -35,7 +35,6 @@ export type GitBookTemplateProps = {
 } & GitBookContentData;
 
 const GitBookTemplate = ({
-  locale,
   menuName,
   body,
   bodyConfig,
@@ -52,6 +51,7 @@ const GitBookTemplate = ({
   versionName,
 }: GitBookTemplateProps) => {
   const t = useTranslations();
+  const locale = useParams<{ locale: string }>().locale;
   const responsiveContentMarginTop =
     (contentMarginTop && `${contentMarginTop}px`) || 0;
   const [content, setContent] = useState({

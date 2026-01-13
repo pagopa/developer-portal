@@ -108,7 +108,6 @@ export const strapiApiDataList: StrapiApiDataList = {
 
 export const expectedApiDataPageProps: ReadonlyArray<ApiDataPageProps> = [
   {
-    locale: 'it',
     seo: {
       metaTitle: 'SEND Main API',
       metaDescription: 'SEND Main API Documentation',
@@ -136,7 +135,6 @@ export const expectedApiDataPageProps: ReadonlyArray<ApiDataPageProps> = [
     bannerLinks: expect.any(Array),
   },
   {
-    locale: 'it',
     seo: undefined,
     title: 'Documentazione SOAP',
     apiSoapUrl: 'https://github.com/pagopa/pagopa-api/',

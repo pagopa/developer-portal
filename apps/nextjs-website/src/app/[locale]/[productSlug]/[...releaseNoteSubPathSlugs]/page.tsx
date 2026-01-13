@@ -137,14 +137,12 @@ const ReleaseNotePage = async (props0: {
 
   return (
     <ProductLayout
-      locale={params.locale}
       product={product}
       path={`/${params.locale}/${path}`}
       bannerLinks={bannerLinks}
       structuredData={structuredData}
     >
       <GitBookTemplate
-        locale={params.locale}
         menuName={title}
         initialBreadcrumbs={initialBreadcrumbs}
         hasInPageMenu={false}

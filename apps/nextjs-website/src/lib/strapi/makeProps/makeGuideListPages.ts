@@ -35,7 +35,6 @@ export function makeGuideListPagesProps(
           })),
         ];
         return {
-          locale: 'it', // Temporary hardcoded value until we have localization in Strapi
           path: `/${productData.attributes.slug}/guides`,
           product,
           abstract: {
