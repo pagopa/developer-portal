@@ -1,12 +1,20 @@
 module "codebuild" {
-  source  = "../github_selfhosted_runner_on_codebuild"
-  #version = "~> 0.0"
+  source  = "pagopa-dx/github-selfhosted-runner-on-codebuild/aws"
+  version = "~> 1.1.0"
   name    = "${var.environment}-github-runner"
   # The full environment name (dev, uat, prod) instead of the short one (d, u, p)
   # allows to use the self-hosted runner for the current environment according to
   # the standard "environment" input variable
-  environment = merge(var.environment_information, { env_short = var.environment })
+  #environment = merge(var.environment_information, { env_short = var.environment })
 
+  environment = {
+    prefix          = "dx"
+    env_short       = var.environment
+    region          = "eu-south-1"
+    domain          = "modules"
+    app_name        = "developer-portal"
+    instance_number = "01"
+  }
   tier = "l"
 
   repository = {
