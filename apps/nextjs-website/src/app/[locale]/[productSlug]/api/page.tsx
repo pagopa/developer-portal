@@ -32,7 +32,7 @@ export async function generateMetadata(props: {
     title: [apiDataListPage?.hero.title, apiDataListPage?.product.name]
       .filter(Boolean)
       .join(' | '),
-    url: `${baseUrl}/${apiDataListPage?.product.slug}/api`,
+    url: `${baseUrl}/${params.locale}/${apiDataListPage?.product.slug}/api`,
     locale: 'it_IT',
   });
 }
@@ -43,20 +43,32 @@ const ApiDataListPage = async (props: { params: Promise<Params> }) => {
 
   const structuredData = generateStructuredDataScripts({
     breadcrumbsItems: [
-      productToBreadcrumb(apiDataListPageProps?.product),
+      productToBreadcrumb(params.locale, apiDataListPageProps?.product),
       {
         name:
           apiDataListPageProps?.seo?.metaTitle ||
           apiDataListPageProps?.hero.title,
-        item: breadcrumbItemByProduct(apiDataListPageProps?.product, ['api']),
+        item: breadcrumbItemByProduct(
+          params.locale,
+          apiDataListPageProps?.product,
+          ['api']
+        ),
       },
     ],
     seo: apiDataListPageProps?.seo,
   });
 
   if (apiDataListPageProps) {
+    apiDataListPageProps.cards.forEach((card) => {
+      if (card.href) {
+        // eslint-disable-next-line functional/immutable-data
+        card.href = `/${params.locale}${card.href}`;
+      }
+    });
+
     return (
       <ProductLayout
+        locale={params.locale}
         product={apiDataListPageProps.product}
         path={`/${params.locale}/${apiDataListPageProps.product.slug}/api`}
         showBreadcrumbs

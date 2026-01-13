@@ -62,11 +62,15 @@ const TutorialsPage = async (props: ProductParams) => {
 
   const structuredData = generateStructuredDataScripts({
     breadcrumbsItems: [
-      productToBreadcrumb(tutorialListPage?.product),
+      productToBreadcrumb(params.locale, tutorialListPage?.product),
       {
         name:
           tutorialListPage?.seo?.metaTitle || tutorialListPage?.abstract?.title,
-        item: breadcrumbItemByProduct(tutorialListPage?.product, ['tutorials']),
+        item: breadcrumbItemByProduct(
+          params.locale,
+          tutorialListPage?.product,
+          ['tutorials']
+        ),
       },
     ],
     seo: tutorialListPage?.seo,
@@ -92,6 +96,7 @@ const TutorialsPage = async (props: ProductParams) => {
 
   return (
     <ProductLayout
+      locale={params.locale}
       product={tutorialListPage?.product}
       path={tutorialListPage?.path}
       bannerLinks={tutorialListPage?.bannerLinks}

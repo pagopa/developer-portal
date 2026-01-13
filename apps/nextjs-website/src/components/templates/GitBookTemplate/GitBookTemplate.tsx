@@ -20,6 +20,7 @@ import { GitBookContentData } from '@/lib/types/gitBookContent';
 
 export type GitBookTemplateProps = {
   body: string;
+  locale: string;
   contentMarginTop?: number;
   hasHeader?: boolean;
   hasInPageMenu?: boolean;
@@ -34,6 +35,7 @@ export type GitBookTemplateProps = {
 } & GitBookContentData;
 
 const GitBookTemplate = ({
+  locale,
   menuName,
   body,
   bodyConfig,
@@ -95,13 +97,13 @@ const GitBookTemplate = ({
       if (!payload?.product) {
         return segments; // fallback
       }
-      return productPageToBreadcrumbs(payload.product, [
+      return productPageToBreadcrumbs(locale, payload.product, [
         {
           translate: true,
           name: 'devPortal.productHeader.guides',
           path: payload.product.hasGuideListPage
-            ? `/${payload.product.slug}/guides`
-            : '/',
+            ? `/${locale}/${payload.product.slug}/guides`
+            : `/${locale}`,
         },
         ...segments,
       ]);
@@ -114,14 +116,14 @@ const GitBookTemplate = ({
       ]);
       setBreadcrumbs([...guideCrumbs]);
     } else if (payload?.solution) {
-      const solutionCrumbs = pageToBreadcrumbs('solutions', [
+      const solutionCrumbs = pageToBreadcrumbs(locale, 'solutions', [
         {
           name: payload.solution.title || '',
-          path: `/solutions/${payload.solution.slug}`,
+          path: `/${locale}/solutions/${payload.solution.slug}`,
         },
         {
           name: payload.page.title,
-          path: `/solutions/${payload.solution.slug}/details/${payload.page?.path}`,
+          path: `/${locale}/solutions/${payload.solution.slug}/details/${payload.page?.path}`,
         },
       ]);
       setBreadcrumbs([...solutionCrumbs]);

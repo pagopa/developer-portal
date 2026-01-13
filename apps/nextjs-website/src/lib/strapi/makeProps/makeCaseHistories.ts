@@ -8,6 +8,7 @@ export function makeCaseHistoriesProps(
 ): ReadonlyArray<CaseHistoryPageTemplateProps> {
   return strapiCaseHistories.data.map(({ attributes }) => ({
     ...attributes,
+    locale: 'it', // Temporary hardcoded value until we have localization in Strapi
     updatedAt: attributes.updatedAt,
     parts: compact(attributes.parts.map((part) => makePartProps(part))),
     products: attributes.products.data.map(({ attributes }) => ({

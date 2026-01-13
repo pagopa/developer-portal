@@ -62,10 +62,10 @@ const UseCasesPage = async (props: ProductParams) => {
 
   const structuredData = generateStructuredDataScripts({
     breadcrumbsItems: [
-      productToBreadcrumb(product),
+      productToBreadcrumb(params.locale, product),
       {
         name: seo?.metaTitle || abstract?.title,
-        item: breadcrumbItemByProduct(product, ['use-cases']),
+        item: breadcrumbItemByProduct(params.locale, product, ['use-cases']),
       },
     ],
     seo: seo,
@@ -92,6 +92,7 @@ const UseCasesPage = async (props: ProductParams) => {
 
   return (
     <ProductLayout
+      locale={params.locale}
       product={product}
       path={path}
       bannerLinks={bannerLinks}

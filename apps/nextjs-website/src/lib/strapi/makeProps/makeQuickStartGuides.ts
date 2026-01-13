@@ -59,6 +59,7 @@ export function makeQuickStartGuidesProps(
                   makeBannerLinkProps
                 ),
           seo: quickStart.attributes.seo,
+          locale: 'it', // Temporary hardcoded value until we have localization in Strapi
         } satisfies QuickStartGuidePageProps;
       } catch (error) {
         console.error(

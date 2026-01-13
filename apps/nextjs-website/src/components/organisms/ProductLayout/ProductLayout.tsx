@@ -13,6 +13,7 @@ import { Box } from '@mui/material';
 import { PRODUCT_HEADER_HEIGHT, SITE_HEADER_HEIGHT } from '@/config';
 
 export type ProductLayoutProps = {
+  readonly locale: string;
   readonly product?: Product;
   readonly path?: string;
   readonly breadcrumbSegments?: BreadcrumbSegment[];
@@ -26,6 +27,7 @@ type LayoutPropsWithChildren = {
 } & ProductLayoutProps;
 
 const ProductLayout: FC<LayoutPropsWithChildren> = ({
+  locale,
   path,
   breadcrumbSegments: paths,
   product,
@@ -50,7 +52,7 @@ const ProductLayout: FC<LayoutPropsWithChildren> = ({
       {product && showBreadcrumbs && (
         <EContainer sx={{ paddingTop: 3 }}>
           <ProductBreadcrumbs
-            breadcrumbs={[...productPageToBreadcrumbs(product, paths)]}
+            breadcrumbs={[...productPageToBreadcrumbs(locale, product, paths)]}
           />
         </EContainer>
       )}

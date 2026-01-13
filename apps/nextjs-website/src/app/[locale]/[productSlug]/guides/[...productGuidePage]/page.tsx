@@ -24,6 +24,7 @@ import PageNotFound from '@/app/[locale]/not-found';
 export const dynamic = 'force-dynamic';
 
 type Params = {
+  locale: string;
   productSlug: string;
   productGuidePage: Array<string>;
 };
@@ -80,6 +81,7 @@ export async function generateMetadata(props0: {
 
 const Page = async (props0: { params: Promise<Params> }) => {
   const params = await props0.params;
+  const currentLocale = params.locale;
   const [guideProps, urlReplaceMap] = await Promise.all([
     getGuidePage(params?.productGuidePage ?? [''], params?.productSlug),
     getUrlReplaceMapProps(),
@@ -102,6 +104,7 @@ const Page = async (props0: { params: Promise<Params> }) => {
 
   const props: ProductGuidePageProps = {
     ...page,
+    locale: currentLocale,
     product,
     guide,
     version,
@@ -116,10 +119,10 @@ const Page = async (props0: { params: Promise<Params> }) => {
 
   const structuredData = generateStructuredDataScripts({
     breadcrumbsItems: [
-      productToBreadcrumb(props.product),
+      productToBreadcrumb(currentLocale, props.product),
       {
         name: seo?.metaTitle || page.title,
-        item: breadcrumbItemByProduct(props.product, [
+        item: breadcrumbItemByProduct(currentLocale, props.product, [
           'guides',
           ...(params?.productGuidePage || []),
         ]),
@@ -130,13 +133,13 @@ const Page = async (props0: { params: Promise<Params> }) => {
   });
 
   const initialBreadcrumbs = [
-    ...productPageToBreadcrumbs(props.product, [
+    ...productPageToBreadcrumbs(currentLocale, props.product, [
       {
         translate: true,
         name: 'devPortal.productHeader.guides',
         path: props.product.hasGuideListPage
-          ? `/${props.product.slug}/guides`
-          : '/',
+          ? `/${currentLocale}/${props.product.slug}/guides`
+          : `/${currentLocale}`,
       },
       { name: props.guide.name, path: props.guide.path },
     ]),
@@ -144,6 +147,7 @@ const Page = async (props0: { params: Promise<Params> }) => {
 
   return (
     <ProductLayout
+      locale={currentLocale}
       product={props.product}
       path={props.path}
       bannerLinks={props.bannerLinks}

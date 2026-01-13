@@ -4,10 +4,13 @@ import { makeMetadata } from '@/helpers/metadata.helpers';
 import { Metadata } from 'next';
 import ContentWrapper from '@/components/atoms/ContentWrapper/ContentWrapper';
 
-export async function generateMetadata(): Promise<Metadata> {
+export async function generateMetadata(props: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const params = await props.params;
   return makeMetadata({
     title: 'Termini e condizioni',
-    url: `${baseUrl}/terms-of-service`,
+    url: `${baseUrl}/${params.locale}/terms-of-service`,
     locale: 'it_IT',
   });
 }

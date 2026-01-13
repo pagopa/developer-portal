@@ -426,6 +426,7 @@ export const strapiGuideListPagesData = {
 
 export const guideListPagesProps = [
   {
+    locale: 'it',
     path: '/pago-pa/guides',
     abstract: {
       title: 'Guide e manuali',

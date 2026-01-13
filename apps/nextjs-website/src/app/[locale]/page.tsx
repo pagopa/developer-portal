@@ -61,7 +61,10 @@ export type HomepageProps = {
   readonly updatedAt: string;
 };
 
-export async function generateMetadata(): Promise<Metadata> {
+export async function generateMetadata(props: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const params = await props.params;
   const homepage = await getHomepageProps();
 
   return homepage.seo
@@ -69,7 +72,7 @@ export async function generateMetadata(): Promise<Metadata> {
     : makeMetadata({
         title: 'PagoPA DevPortal',
         description: 'Il portale per gli sviluppatori di PagoPA',
-        url: baseUrl,
+        url: `${baseUrl}/${params.locale}`,
         locale: 'it_IT',
       });
 }

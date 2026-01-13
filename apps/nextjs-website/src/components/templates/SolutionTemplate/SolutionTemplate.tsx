@@ -20,6 +20,7 @@ import { SEO } from '@/lib/types/seo';
 import { isNonEmpty } from 'fp-ts/lib/Array';
 
 export type SolutionTemplateProps = {
+  readonly locale: string;
   readonly slug: string;
   readonly kickerTitle: string;
   readonly title: string;
@@ -61,6 +62,7 @@ export type SolutionTemplateProps = {
 };
 
 const SolutionTemplate = ({
+  locale: currentLocale,
   slug,
   kickerTitle,
   title,
@@ -85,10 +87,10 @@ const SolutionTemplate = ({
         <Box sx={{ marginBottom: spacing(10) }}>
           <ProductBreadcrumbs
             breadcrumbs={[
-              ...pageToBreadcrumbs('solutions', [
+              ...pageToBreadcrumbs(currentLocale, 'solutions', [
                 {
                   name: title,
-                  path: slug,
+                  path: `/${currentLocale}/solutions/${slug}`,
                 },
               ]),
             ]}
@@ -109,7 +111,7 @@ const SolutionTemplate = ({
             content: step.content,
             products: step.products.map((product) => ({
               label: product.shortName,
-              href: `/${product.slug}/overview`,
+              href: `/${currentLocale}/${product.slug}/overview`,
             })),
           }))}
         />

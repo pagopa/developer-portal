@@ -15,6 +15,7 @@ import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
 import EContainer from '../../../editorialComponents/EContainer/EContainer';
 
 type UseCasePageTemplateProps = {
+  readonly locale: string;
   readonly bannerLinks?: ReadonlyArray<BannerLinkProps>;
   readonly headerImage?: {
     readonly url: string;
@@ -30,6 +31,7 @@ type UseCasePageTemplateProps = {
 };
 
 const UseCaseTemplate = ({
+  locale,
   bannerLinks,
   headerImage,
   parts,
@@ -45,6 +47,7 @@ const UseCaseTemplate = ({
 
   return (
     <ProductLayout
+      locale={locale}
       product={product}
       path={path}
       structuredData={structuredData}
@@ -64,13 +67,13 @@ const UseCaseTemplate = ({
           <EContainer>
             <ProductBreadcrumbs
               breadcrumbs={[
-                ...productPageToBreadcrumbs(product, [
+                ...productPageToBreadcrumbs(locale, product, [
                   {
                     translate: true,
                     name: 'devPortal.productHeader.useCases',
                     path: product.hasUseCaseListPage
-                      ? `/${product.slug}/use-cases`
-                      : '',
+                      ? `/${locale}/${product.slug}/use-cases`
+                      : `/${locale}`,
                   },
                   {
                     name: title,

@@ -114,10 +114,10 @@ const ReleaseNotePage = async (props0: {
 
   const structuredData = generateStructuredDataScripts({
     breadcrumbsItems: [
-      productToBreadcrumb(product),
+      productToBreadcrumb(params.locale, product),
       {
         name: title,
-        item: `${baseUrl}/${product.slug}/release-note`,
+        item: `${baseUrl}/${params.locale}/${product.slug}/release-note`,
       },
       ...breadcrumbsItems,
     ],
@@ -126,10 +126,10 @@ const ReleaseNotePage = async (props0: {
   });
 
   const initialBreadcrumbs = [
-    ...productPageToBreadcrumbs(product, [
+    ...productPageToBreadcrumbs(params.locale, product, [
       {
         name: title,
-        path: `/${product.slug}/release-note`,
+        path: `/${params.locale}/${product.slug}/release-note`,
       },
       ...breadcrumbs,
     ]),
@@ -137,12 +137,14 @@ const ReleaseNotePage = async (props0: {
 
   return (
     <ProductLayout
+      locale={params.locale}
       product={product}
       path={`/${params.locale}/${path}`}
       bannerLinks={bannerLinks}
       structuredData={structuredData}
     >
       <GitBookTemplate
+        locale={params.locale}
         menuName={title}
         initialBreadcrumbs={initialBreadcrumbs}
         hasInPageMenu={false}

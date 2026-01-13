@@ -15,6 +15,7 @@ import { Media } from '@/lib/types/media';
 import { SEO } from '@/lib/types/seo';
 
 export type CaseHistoryPageTemplateProps = {
+  readonly locale: string;
   readonly slug: string;
   readonly title: string;
   readonly image?: Media;
@@ -29,6 +30,7 @@ export type CaseHistoryPageTemplateProps = {
 };
 
 const CaseHistoryPageTemplate = ({
+  locale,
   slug,
   title,
   description,
@@ -58,10 +60,10 @@ const CaseHistoryPageTemplate = ({
         <Box sx={{ marginBottom: 10 }}>
           <ProductBreadcrumbs
             breadcrumbs={[
-              ...pageToBreadcrumbs('solutions', [
+              ...pageToBreadcrumbs(locale, 'solutions', [
                 {
                   name: title,
-                  path: slug,
+                  path: `/${locale}/solutions/${slug}`,
                 },
               ]),
             ]}

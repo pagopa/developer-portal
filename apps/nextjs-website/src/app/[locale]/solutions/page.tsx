@@ -16,14 +16,15 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export const dynamic = 'force-dynamic';
 
-const Page = async () => {
+const Page = async (props: { params: Promise<{ locale: string }> }) => {
+  const params = await props.params;
   const solutionsList = await getSolutionListPage();
 
   const structuredData = generateStructuredDataScripts({
     breadcrumbsItems: [
       {
         name: solutionsList.seo?.metaTitle,
-        item: getItemFromPaths(['solutions']),
+        item: getItemFromPaths(params.locale, ['solutions']),
       },
     ],
     seo: solutionsList.seo,

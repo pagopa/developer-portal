@@ -63,10 +63,10 @@ const ApiDataPage = async (props: ApiDataParams) => {
 
   const structuredData = generateStructuredDataScripts({
     breadcrumbsItems: [
-      productToBreadcrumb(apiDataProps.product),
+      productToBreadcrumb(params.locale, apiDataProps.product),
       {
         name: apiDataProps?.seo?.metaTitle || apiDataProps?.title,
-        item: breadcrumbItemByProduct(apiDataProps.product, [
+        item: breadcrumbItemByProduct(params.locale, apiDataProps.product, [
           'api',
           `${apiDataProps.apiDataSlug}`,
         ]),
@@ -77,12 +77,13 @@ const ApiDataPage = async (props: ApiDataParams) => {
   });
 
   const path = apiDataProps.product?.slug
-    ? `/${apiDataProps.product.slug}/api/${params.apiDataSlug}`
+    ? `/${params.locale}/${apiDataProps.product.slug}/api/${params.apiDataSlug}`
     : '';
 
   if (apiDataProps && apiDataProps.product) {
     return (
       <ProductLayout
+        locale={params.locale}
         product={apiDataProps.product}
         path={path}
         breadcrumbSegments={[
@@ -90,7 +91,7 @@ const ApiDataPage = async (props: ApiDataParams) => {
             translate: true,
             name: 'devPortal.productHeader.api',
             path: apiDataProps.product.hasApiDataListPage
-              ? `/${apiDataProps.product.slug}/api`
+              ? `/${params.locale}/${apiDataProps.product.slug}/api`
               : '',
           },
           { name: apiDataProps.title || '', path: path },

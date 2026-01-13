@@ -12,6 +12,7 @@ import { Suspense } from 'react';
 import Spinner from '@/components/atoms/Spinner/Spinner';
 
 type Params = {
+  locale: string;
   webinarSlug: string;
 };
 
@@ -41,11 +42,11 @@ const Page = async (props: { params: Promise<Params> }) => {
     breadcrumbsItems: [
       {
         name: 'Webinars',
-        item: getItemFromPaths(['webinars']),
+        item: getItemFromPaths(params.locale, ['webinars']),
       },
       {
         name: webinar.seo?.metaTitle,
-        item: getItemFromPaths(['webinars', webinar.slug]),
+        item: getItemFromPaths(params.locale, ['webinars', webinar.slug]),
       },
     ],
     seo: webinar.seo,
@@ -55,7 +56,7 @@ const Page = async (props: { params: Promise<Params> }) => {
     <>
       {structuredData}
       <Suspense fallback={<Spinner />}>
-        <WebinarDetailTemplate webinar={webinar} />
+        <WebinarDetailTemplate locale={params.locale} webinar={webinar} />
       </Suspense>
     </>
   );

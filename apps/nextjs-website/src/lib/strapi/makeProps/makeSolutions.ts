@@ -20,6 +20,7 @@ export function makeSolutionsProps(
       try {
         return {
           ...attributes,
+          locale: 'it', // Temporary hardcoded value until we have localization in Strapi
           stats: [...attributes.stats],
           steps: attributes.steps.map((step) => ({
             ...step,

@@ -15,6 +15,7 @@ import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
 import { PRODUCT_HEADER_HEIGHT, SITE_HEADER_HEIGHT } from '@/config';
 
 type TutorialPageTemplateProps = {
+  readonly locale: string;
   readonly bannerLinks?: ReadonlyArray<BannerLinkProps>;
   readonly parts?: ReadonlyArray<Part>;
   readonly path: string;
@@ -25,6 +26,7 @@ type TutorialPageTemplateProps = {
 };
 
 const TutorialTemplate = ({
+  locale,
   parts,
   path,
   product,
@@ -35,6 +37,7 @@ const TutorialTemplate = ({
 }: TutorialPageTemplateProps) => {
   return (
     <ProductLayout
+      locale={locale}
       product={product}
       path={path}
       structuredData={structuredData}
@@ -74,13 +77,13 @@ const TutorialTemplate = ({
               >
                 <ProductBreadcrumbs
                   breadcrumbs={[
-                    ...productPageToBreadcrumbs(product, [
+                    ...productPageToBreadcrumbs(locale, product, [
                       {
                         translate: true,
                         name: 'devPortal.productHeader.tutorials',
                         path: product.hasTutorialListPage
-                          ? `/${product.slug}/tutorials`
-                          : '',
+                          ? `/${locale}/${product.slug}/tutorials`
+                          : `/${locale}`,
                       },
                       {
                         name: title,

@@ -13,6 +13,7 @@ import {
 } from '@/helpers/structuredData.helpers';
 
 type Params = {
+  locale: string;
   caseHistorySlug: string;
 };
 
@@ -41,7 +42,10 @@ const Page = async (props: { params: Promise<Params> }) => {
     breadcrumbsItems: [
       {
         name: caseHistory.seo?.metaTitle || caseHistory.title,
-        item: getItemFromPaths(['case-histories', caseHistory.slug]),
+        item: getItemFromPaths(params.locale, [
+          'case-histories',
+          caseHistory.slug,
+        ]),
       },
     ],
     seo: caseHistory.seo,

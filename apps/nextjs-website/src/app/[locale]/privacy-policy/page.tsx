@@ -4,10 +4,13 @@ import { makeMetadata } from '@/helpers/metadata.helpers';
 import { Metadata } from 'next';
 import ContentWrapper from '@/components/atoms/ContentWrapper/ContentWrapper';
 
-export async function generateMetadata(): Promise<Metadata> {
+export async function generateMetadata(props: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const params = await props.params;
   return makeMetadata({
     title: 'Privacy Policy',
-    url: `${baseUrl}/privacy-policy`,
+    url: `${baseUrl}/${params.locale}/privacy-policy`,
     locale: 'it_IT',
   });
 }

@@ -10,6 +10,7 @@ import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataS
 import { getItemFromPaths } from '@/helpers/structuredData.helpers';
 
 type Params = {
+  locale: string;
   solutionSlug: string;
 };
 export const dynamic = 'force-dynamic';
@@ -39,11 +40,11 @@ const Page = async (props: { params: Promise<Params> }) => {
     breadcrumbsItems: [
       {
         name: 'Solutions',
-        item: getItemFromPaths(['solutions']),
+        item: getItemFromPaths(params.locale, ['solutions']),
       },
       {
         name: solution.seo?.metaTitle,
-        item: getItemFromPaths(['solutions', solution.slug]),
+        item: getItemFromPaths(params.locale, ['solutions', solution.slug]),
       },
     ],
     seo: solution.seo,

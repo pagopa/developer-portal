@@ -12,6 +12,7 @@ import {
 } from '@/helpers/structuredData.helpers';
 
 type Params = {
+  locale: string;
   productSlug: string;
   productTutorialPage: Array<string>;
 };
@@ -46,19 +47,21 @@ const Page = async (props: { params: Promise<Params> }) => {
 
   const structuredData = generateStructuredDataScripts({
     breadcrumbsItems: [
-      productToBreadcrumb(strapiTutorialProps.product),
+      productToBreadcrumb(params.locale, strapiTutorialProps.product),
       {
         name: strapiTutorialProps.seo?.metaTitle || strapiTutorialProps.title,
-        item: breadcrumbItemByProduct(strapiTutorialProps.product, [
-          'tutorials',
-          ...(params?.productTutorialPage || []),
-        ]),
+        item: breadcrumbItemByProduct(
+          params.locale,
+          strapiTutorialProps.product,
+          ['tutorials', ...(params?.productTutorialPage || [])]
+        ),
       },
     ],
     seo: strapiTutorialProps.seo,
   });
   return (
     <TutorialTemplate
+      locale={params.locale}
       bannerLinks={strapiTutorialProps.bannerLinks}
       parts={strapiTutorialProps.parts}
       path={strapiTutorialProps.path}

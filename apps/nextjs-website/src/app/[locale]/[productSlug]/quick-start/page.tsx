@@ -69,10 +69,10 @@ const QuickStartGuidesPage = async (props: ProductParams) => {
 
   const structuredData = generateStructuredDataScripts({
     breadcrumbsItems: [
-      productToBreadcrumb(product),
+      productToBreadcrumb(params.locale, product),
       {
         name: seo?.metaTitle || abstract?.title,
-        item: breadcrumbItemByProduct(product, ['quick-start']),
+        item: breadcrumbItemByProduct(params.locale, product, ['quick-start']),
       },
     ],
     seo: seo,
@@ -80,6 +80,7 @@ const QuickStartGuidesPage = async (props: ProductParams) => {
 
   return (
     <ProductLayout
+      locale={params.locale}
       product={product}
       path={path}
       showBreadcrumbs

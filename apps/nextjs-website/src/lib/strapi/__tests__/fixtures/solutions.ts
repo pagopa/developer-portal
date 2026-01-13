@@ -137,6 +137,7 @@ export const strapiSolutions = {
 } satisfies StrapiSolutions;
 
 export const expectedSolutionTemplateProps: SolutionTemplateProps = {
+  locale: 'it',
   slug: 'solution-title',
   icon: {
     url: 'https://example.com/example.jpg',

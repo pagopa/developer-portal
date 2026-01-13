@@ -22,6 +22,7 @@ type SolutionDetailPageTemplateProps = {
 };
 
 type Params = {
+  locale: string;
   solutionSlug: string;
   solutionSubPathSlugs: string[];
 };
@@ -39,8 +40,10 @@ export async function generateMetadata(props0: {
   return makeMetadata({
     title: props?.title,
     url: props
-      ? `/solutions/${props?.slug}/${params.solutionSubPathSlugs.join('/')}`
-      : '',
+      ? `/${props.locale}/solutions/${
+          props?.slug
+        }/${params.solutionSubPathSlugs.join('/')}`
+      : `/${params.locale}`,
   });
 }
 
@@ -77,17 +80,17 @@ const Page = async (props0: { params: Promise<Params> }) => {
     breadcrumbsItems: [
       {
         name: 'Solutions',
-        item: getItemFromPaths(['solutions']),
+        item: getItemFromPaths(params.locale, ['solutions']),
       },
       {
         name: solution.seo?.metaTitle,
-        item: getItemFromPaths(['solutions', solution.slug]),
+        item: getItemFromPaths(params.locale, ['solutions', solution.slug]),
       },
       {
         name: page.title,
         item:
           params?.solutionSubPathSlugs &&
-          getItemFromPaths([
+          getItemFromPaths(params.locale, [
             'solutions',
             solution.slug,
             ...params.solutionSubPathSlugs,
@@ -98,14 +101,14 @@ const Page = async (props0: { params: Promise<Params> }) => {
   });
 
   const initialBreadcrumbs = [
-    ...pageToBreadcrumbs('solutions', [
+    ...pageToBreadcrumbs(params.locale, 'solutions', [
       {
         name: props.solution.title,
-        path: `/solutions/${props.solution.slug}`,
+        path: `/${params.locale}/solutions/${props.solution.slug}`,
       },
       {
         name: page.title,
-        path: `/solutions/${
+        path: `/${params.locale}/solutions/${
           props.solution.slug
         }/details/${params.solutionSubPathSlugs.join('/')}`,
       },
@@ -116,6 +119,7 @@ const Page = async (props0: { params: Promise<Params> }) => {
     <>
       {structuredData}
       <GitBookTemplate
+        locale={params.locale}
         hasHeader={false}
         menuName={props.solution.title}
         initialBreadcrumbs={initialBreadcrumbs}

@@ -162,13 +162,14 @@ const OverviewPage = async (props: ProductParams) => {
   }));
 
   const structuredData = generateStructuredDataScripts({
-    breadcrumbsItems: [productToBreadcrumb(product)],
+    breadcrumbsItems: [productToBreadcrumb(params.locale, product)],
     seo: seo,
     things: [convertSeoToStructuredDataArticle(seo)],
   });
 
   return (
     <ProductLayout
+      locale={params.locale}
       product={product}
       path={path}
       bannerLinks={bannerLinks}

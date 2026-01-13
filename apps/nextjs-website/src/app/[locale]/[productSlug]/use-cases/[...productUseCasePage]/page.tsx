@@ -12,6 +12,7 @@ import {
 import UseCaseTemplate from '@/components/templates/UseCaseTemplate/UseCaseTemplate';
 
 type Params = {
+  locale: string;
   productSlug: string;
   productUseCasePage: Array<string>;
 };
@@ -46,19 +47,21 @@ const Page = async (props: { params: Promise<Params> }) => {
 
   const structuredData = generateStructuredDataScripts({
     breadcrumbsItems: [
-      productToBreadcrumb(strapiUseCaseProps.product),
+      productToBreadcrumb(params.locale, strapiUseCaseProps.product),
       {
         name: strapiUseCaseProps.seo?.metaTitle || strapiUseCaseProps.title,
-        item: breadcrumbItemByProduct(strapiUseCaseProps.product, [
-          'use-cases',
-          ...(params?.productUseCasePage || []),
-        ]),
+        item: breadcrumbItemByProduct(
+          params.locale,
+          strapiUseCaseProps.product,
+          ['use-cases', ...(params?.productUseCasePage || [])]
+        ),
       },
     ],
     seo: strapiUseCaseProps.seo,
   });
   return (
     <UseCaseTemplate
+      locale={params.locale}
       bannerLinks={strapiUseCaseProps.bannerLinks}
       headerImage={strapiUseCaseProps.headerImage}
       parts={strapiUseCaseProps.parts}

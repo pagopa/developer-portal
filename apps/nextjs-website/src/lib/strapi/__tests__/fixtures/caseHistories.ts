@@ -52,6 +52,7 @@ export const strapiCaseHistories: StrapiCaseHistories = {
 };
 
 export const caseHistoriesPageTemplateProps: CaseHistoryPageTemplateProps = {
+  locale: 'it',
   slug: 'case-history-title',
   title: 'Case History Title',
   description: 'Case history description',

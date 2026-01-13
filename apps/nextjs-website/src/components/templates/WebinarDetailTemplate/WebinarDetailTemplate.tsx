@@ -21,10 +21,14 @@ import RelatedResources from '@/components/molecules/RelatedResources/RelatedRes
 import QuestionsAndAnswers from '@/components/molecules/QuestionsAndAnswers/QuestionsAndAnswers';
 
 type WebinarDetailTemplateProps = {
+  locale: string;
   webinar: Webinar;
 };
 
-const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
+const WebinarDetailTemplate = ({
+  locale,
+  webinar,
+}: WebinarDetailTemplateProps) => {
   const t = useTranslations('webinar');
   const { palette } = useTheme();
   const [error, setError] = useState<string | null>(null);
@@ -107,10 +111,10 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
           <ProductBreadcrumbs
             textColor={showHeaderImage ? 'white' : palette.text.primary}
             breadcrumbs={[
-              ...pageToBreadcrumbs('webinars', [
+              ...pageToBreadcrumbs(locale, 'webinars', [
                 {
                   name: webinar.title,
-                  path: webinar.slug,
+                  path: `/${locale}/webinars/${webinar.slug}`,
                 },
               ]),
             ]}

@@ -64,7 +64,7 @@ export function makeUseCaseListPagesProps(
       );
 
       return {
-        name: attributes.title,
+        locale: 'it', // Temporary hardcoded value until we have localization in Strapi
         path: `/${attributes.product.data.attributes.slug}/use-cases`,
         product: makeBaseProductWithoutLogoProps(attributes.product.data),
         abstract: {
@@ -82,7 +82,7 @@ export function makeUseCaseListPagesProps(
                 (bannerLink) => makeBannerLinkProps(bannerLink)
               ),
         enableFilters: attributes.enableFilters,
-      };
+      } satisfies UseCasesPageProps;
     })
   );
 }
