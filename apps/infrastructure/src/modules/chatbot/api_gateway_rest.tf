@@ -9,17 +9,22 @@ resource "aws_api_gateway_rest_api" "api" {
 
 resource "aws_api_gateway_deployment" "stage" {
   rest_api_id = aws_api_gateway_rest_api.api.id
-  stage_name  = var.environment
 
   depends_on = [
     aws_api_gateway_integration.chatbot
   ]
 }
 
+resource "aws_api_gateway_stage" "api_stage" {
+  deployment_id = aws_api_gateway_deployment.stage.id
+  rest_api_id   = aws_api_gateway_rest_api.api.id
+  stage_name    = var.environment
+}
+
 resource "aws_api_gateway_base_path_mapping" "path_mapping" {
   api_id      = aws_api_gateway_rest_api.api.id
   domain_name = aws_api_gateway_domain_name.domain_name.domain_name
-  stage_name  = aws_api_gateway_deployment.stage.stage_name
+  stage_name  = aws_api_gateway_stage.api_stage.stage_name
 }
 
 resource "aws_api_gateway_domain_name" "domain_name" {
@@ -70,7 +75,7 @@ resource "aws_api_gateway_method" "chatbot_cors" {
 
 resource "aws_api_gateway_method_settings" "chatbot" {
   rest_api_id = aws_api_gateway_rest_api.api.id
-  stage_name  = aws_api_gateway_deployment.stage.stage_name
+  stage_name  = aws_api_gateway_stage.api_stage.stage_name
   method_path = "*/*"
 
   settings {

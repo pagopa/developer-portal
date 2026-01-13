@@ -109,6 +109,7 @@ const EditEmailForm = ({ onSave, onCancel }: EditEmailFormProps) => {
         error={!!errors.email}
         helperText={errors.email || t('changeEmail.wrongEmail')}
         customValidators={emailValidators}
+        InputProps={{ sx: { '& input': { fontWeight: 600 } } }}
         sx={{ marginBottom: { xs: 0, md: 3 } }}
       />
       <Stack
