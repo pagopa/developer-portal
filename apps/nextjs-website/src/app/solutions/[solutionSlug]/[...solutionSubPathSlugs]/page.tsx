@@ -27,11 +27,10 @@ type Params = {
 };
 export const dynamic = 'force-dynamic';
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Params;
+export async function generateMetadata(props0: {
+  params: Promise<Params>;
 }): Promise<Metadata> {
+  const params = await props0.params;
   const props = await getSolutionDetail(
     params?.solutionSlug,
     params?.solutionSubPathSlugs
@@ -45,7 +44,8 @@ export async function generateMetadata({
   });
 }
 
-const Page = async ({ params }: { params: Params }) => {
+const Page = async (props0: { params: Promise<Params> }) => {
+  const params = await props0.params;
   const solutionProps = await getSolutionDetail(
     params?.solutionSlug,
     params?.solutionSubPathSlugs

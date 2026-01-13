@@ -135,6 +135,17 @@ jobs:
         env:
           DOCUMENTATION_PATH: ${{ vars.DOCUMENTATION_PATH || '../../devportal-docs/docs' }}
         run: npm run replace-escaped-tokens-with-backticks -w gitbook-docs
+      
+      - name: Delete unused documentation
+        env:
+          ENV_SHORT: ${{ env.ENV_SHORT }}
+          FETCH_FROM_STRAPI: ${{ vars.FETCH_FROM_STRAPI || 'true' }}
+          S3_BUCKET_NAME: devportal-${{ env.ENV_SHORT }}-website-static-content
+          S3_DIRNAMES_JSON_PATH: ${{ vars.S3_DIRNAMES_JSON_PATH || 'dirNames.json' }}
+          S3_PATH_TO_GITBOOK_DOCS: ${{ vars.S3_PATH_TO_GITBOOK_DOCS || 'devportal-docs/docs' }}
+          STRAPI_API_TOKEN: ${{ secrets.STRAPI_API_TOKEN }}
+          STRAPI_ENDPOINT: ${{ vars.STRAPI_ENDPOINT }}
+        run: npm run delete-unused-directories -w gitbook-docs
 
       - name: Sync docs folder to S3
         working-directory: ./devportal-docs
@@ -174,6 +185,13 @@ jobs:
               done
             fi
           fi
+
+      - name: Sync sitemap  to S3
+        env:
+          ENVIRONMENT: ${{ inputs.environment }}
+          S3_BUCKET_NAME: devportal-${{ env.ENV_SHORT }}-website-static-content
+          SITEMAP_URL: ${{ env.SITEMAP_URL || 'https://developer.pagopa.it/sitemap.xml' }}
+        run: npm run sync-sitemap -w gitbook-docs
 
       - name: Invalidate CloudFront asset bucket cache
         run: |
@@ -262,6 +280,17 @@ jobs:
         env:
           DOCUMENTATION_PATH: ${{ vars.DOCUMENTATION_PATH || '../../devportal-docs/docs' }}
         run: npm run replace-escaped-tokens-with-backticks -w gitbook-docs
+      
+      - name: Delete unused documentation
+        env:
+          ENV_SHORT: p
+          FETCH_FROM_STRAPI: ${{ vars.FETCH_FROM_STRAPI || 'true' }}
+          S3_BUCKET_NAME: devportal-p-website-static-content
+          S3_DIRNAMES_JSON_PATH: ${{ vars.S3_DIRNAMES_JSON_PATH || 'dirNames.json' }}
+          S3_PATH_TO_GITBOOK_DOCS: ${{ vars.S3_PATH_TO_GITBOOK_DOCS || 'devportal-docs/docs' }}
+          STRAPI_API_TOKEN: ${{ secrets.STRAPI_API_TOKEN }}
+          STRAPI_ENDPOINT: ${{ vars.STRAPI_ENDPOINT }}
+        run: npm run delete-unused-directories -w gitbook-docs
 
       - name: Sync docs folder to S3
         working-directory: ./devportal-docs
@@ -288,6 +317,13 @@ jobs:
               fi
             done
           fi
+
+      - name: Sync sitemap  to S3
+        env:
+          ENVIRONMENT: 'prod'
+          S3_BUCKET_NAME: devportal-p-website-static-content
+          SITEMAP_URL: 'https://developer.pagopa.it/sitemap.xml'
+        run: npm run sync-sitemap -w gitbook-docs
 
       - name: Invalidate CloudFront asset bucket cache
         run: |
