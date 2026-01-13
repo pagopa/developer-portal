@@ -283,9 +283,9 @@ jobs:
       
       - name: Delete unused documentation
         env:
-          ENV_SHORT: ${{ env.ENV_SHORT }}
+          ENV_SHORT: p
           FETCH_FROM_STRAPI: ${{ vars.FETCH_FROM_STRAPI || 'true' }}
-          S3_BUCKET_NAME: devportal-${{ env.ENV_SHORT }}-website-static-content
+          S3_BUCKET_NAME: devportal-p-website-static-content
           S3_DIRNAMES_JSON_PATH: ${{ vars.S3_DIRNAMES_JSON_PATH || 'dirNames.json' }}
           S3_PATH_TO_GITBOOK_DOCS: ${{ vars.S3_PATH_TO_GITBOOK_DOCS || 'devportal-docs/docs' }}
           STRAPI_API_TOKEN: ${{ secrets.STRAPI_API_TOKEN }}
