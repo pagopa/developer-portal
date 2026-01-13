@@ -208,7 +208,7 @@ const OverviewPage = async (props: ProductParams) => {
           ctaLabelKey={'overview.tutorial.ctaLabel'}
           subtitle={tutorials.subtitle}
           itemPath={{
-            path: `/${product.slug}/tutorials`,
+            path: `/${params.locale}/${product.slug}/tutorials`,
             name: 'tutorials',
           }}
           items={[...(mappedTutorials || [])]}
@@ -225,7 +225,7 @@ const OverviewPage = async (props: ProductParams) => {
           ctaLabelKey={'overview.useCases.title'}
           subtitle={useCases.description}
           itemPath={{
-            path: `/${product.slug}/use-cases`,
+            path: `/${params.locale}/${product.slug}/use-cases`,
             name: 'useCases',
           }}
           items={[...(mappedUseCases || [])]}
