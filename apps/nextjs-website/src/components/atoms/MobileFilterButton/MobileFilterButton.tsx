@@ -48,7 +48,7 @@ const MobileFilterButton = ({
           color: palette.text.primary,
           backgroundColor: palette.background.paper,
           '&:hover': {
-            backgroundColor: palette.grey[50],
+            backgroundColor: '#D5E5F6',
           },
           '&:disabled': {
             fontWeight: 700,

@@ -2,7 +2,9 @@ import React, { useMemo } from 'react';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
-import { TreeItem, TreeView, treeItemClasses } from '@mui/lab';
+import { TreeItem } from '@mui/x-tree-view/TreeItem';
+import { SimpleTreeView } from '@mui/x-tree-view/SimpleTreeView';
+
 import { styled } from '@mui/material/styles';
 import { RenderingComponents, renderMenu } from 'gitbook-docs/renderMenu';
 import { parseMenu } from 'gitbook-docs/parseMenu';
@@ -17,7 +19,7 @@ const StyledTreeItem = styled(TreeItem)(({ theme }) => ({
   [`&`]: {
     '--x': 32,
   },
-  [`& .${treeItemClasses.content}`]: {
+  [`& .MuiTreeItem-content`]: {
     boxSizing: 'border-box',
     flexDirection: 'row-reverse',
     width: '100%',
@@ -27,26 +29,25 @@ const StyledTreeItem = styled(TreeItem)(({ theme }) => ({
     paddingRight: 32,
     alignItems: 'space-between',
   },
-  [`& .${treeItemClasses.content}:has(.${treeItemClasses.iconContainer}:empty)`]:
-    {
-      paddingRight: 0,
-    },
-  [`& .${treeItemClasses.iconContainer}`]: {
+  [`& .MuiTreeItem-content:has(.MuiTreeItem-iconContainer:empty)`]: {
+    paddingRight: 0,
+  },
+  [`& .MuiTreeItem-iconContainer`]: {
     justifyContent: 'flex-end',
     marginRight: 0,
     paddingRight: 0,
     paddingLeft: 0,
   },
-  [`& .${treeItemClasses.iconContainer}:empty`]: {
+  [`& .MuiTreeItem-iconContainer:empty`]: {
     display: 'none',
   },
-  [`& .${treeItemClasses.content} > .${treeItemClasses.label}`]: {
+  [`& .MuiTreeItem-content > .MuiTreeItem-label`]: {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'stretch',
     position: 'relative',
   },
-  [`& .${treeItemClasses.content} > .${treeItemClasses.label} > a`]: {
+  [`& .MuiTreeItem-content > .MuiTreeItem-label > a`]: {
     paddingTop: 6,
     paddingBottom: 6,
     [theme.breakpoints.down('sm')]: {
@@ -65,26 +66,32 @@ const StyledTreeItem = styled(TreeItem)(({ theme }) => ({
   ['& a']: {
     paddingLeft: 'calc(1px * var(--x))',
   },
-  [`& .${treeItemClasses.group}`]: {
+  [`& .MuiTreeItem-group`]: {
     marginLeft: 0,
     marginRight: 0,
   },
-  [`& .${treeItemClasses.group} .${treeItemClasses.label}`]: {
+  [`& .MuiTreeItem-group .MuiTreeItem-label`]: {
     paddingLeft: 0,
     paddingRight: 0,
   },
-  [`& .${treeItemClasses.label}`]: {
+  [`& .MuiTreeItem-label`]: {
     padding: 0,
     paddingLeft: 0,
   },
-  [`& .${treeItemClasses.root}`]: {
+  [`& .MuiTreeItem-root`]: {
     margin: 0,
     paddingLeft: 0,
   },
-  [`& .${treeItemClasses.selected}`]: {
+  [`& .Mui-selected`]: {
     borderRight: `2px solid ${theme.palette.primary.dark}`,
   },
-  [`& .${treeItemClasses.selected} > .${treeItemClasses.label} > *`]: {
+  [`& .MuiTreeItem-content.Mui-selected`]: {
+    backgroundColor: theme.palette.primaryAction.selected,
+  },
+  [`& .MuiTreeItem-content.Mui-selected:hover`]: {
+    backgroundColor: theme.palette.primaryAction.selected,
+  },
+  [`& .Mui-selected > .MuiTreeItem-label > *`]: {
     color: theme.palette.primary.dark,
   },
 }));
@@ -96,7 +103,7 @@ export type GuideMenuItemsProps = Partial<GuideVersionSelectorProps> & {
   expanded?: string[];
   menu: string;
   linkPrefix: string;
-  containerRef?: React.RefObject<HTMLDivElement>;
+  containerRef?: React.RefObject<HTMLDivElement | null>;
   onGuideNavigate?: (payload: GitBookContentData) => boolean;
 };
 
@@ -149,7 +156,7 @@ const GuideMenuItems = ({
         return (
           <StyledTreeItem
             key={href}
-            nodeId={href}
+            itemId={href}
             label={label}
             disabled={false}
             icon={href.startsWith('http') ? <OpenInNewIcon /> : undefined}
@@ -200,14 +207,16 @@ const GuideMenuItems = ({
       {versions && versionName && (
         <GuideVersionSelector versions={versions} versionName={versionName} />
       )}
-      <TreeView
-        defaultCollapseIcon={<ExpandLessIcon />}
-        defaultExpanded={expanded}
-        selected={currentPath}
-        defaultExpandIcon={<ExpandMoreIcon />}
+      <SimpleTreeView
+        slots={{
+          collapseIcon: ExpandLessIcon,
+          expandIcon: ExpandMoreIcon,
+        }}
+        defaultExpandedItems={expanded}
+        selectedItems={currentPath}
       >
         {children}
-      </TreeView>
+      </SimpleTreeView>
     </>
   );
 };

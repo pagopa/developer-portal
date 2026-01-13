@@ -4,15 +4,14 @@ import { GitBookContentData } from '@/lib/types/gitBookContent';
 
 export async function GET(
   request: Request,
-  {
-    params,
-  }: {
-    readonly params: {
+  props: {
+    readonly params: Promise<{
       readonly productSlug: string;
       readonly productGuidePage: readonly string[];
-    };
+    }>;
   }
 ) {
+  const params = await props.params;
   const { productSlug, productGuidePage } = params;
   const guideSegments = Array.isArray(productGuidePage) ? productGuidePage : [];
 

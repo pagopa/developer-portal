@@ -1,6 +1,6 @@
 'use client';
 import { Part } from '@/lib/types/part';
-import React, { ReactNode } from 'react';
+import React, { ReactNode, isValidElement } from 'react';
 
 import { Box, Typography, useTheme } from '@mui/material';
 
@@ -154,8 +154,13 @@ export function computeId(type: string, children: ReactNode | string): string {
 
   if (!Array.isArray(children)) {
     // if children is react element and has props text return that
-    if (children && typeof children === 'object' && 'props' in children) {
-      const text = generateIdFromString(children.props.text);
+    if (
+      isValidElement(children) &&
+      'text' in (children.props as Record<string, unknown>)
+    ) {
+      const text = generateIdFromString(
+        (children.props as { text: string }).text
+      );
       return `${type}-${text}`;
     }
 

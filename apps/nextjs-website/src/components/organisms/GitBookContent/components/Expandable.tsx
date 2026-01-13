@@ -1,15 +1,17 @@
 import React, { ReactNode } from 'react';
 import Paragraph from './Paragraph';
-import MuiAccordion, { AccordionProps } from '@mui/material/Accordion';
-import MuiAccordionDetails from '@mui/material/AccordionDetails';
-import MuiAccordionSummary, {
+import {
+  Accordion as MuiAccordion,
+  AccordionDetails as MuiAccordionDetails,
+  AccordionProps,
+  AccordionSummary as MuiAccordionSummary,
   AccordionSummaryProps,
-} from '@mui/material/AccordionSummary';
+  styled,
+} from '@mui/material';
 import {
   ExpandableProps,
   ExpandableSummaryProps,
 } from 'gitbook-docs/markdoc/schema/details';
-import { styled } from '@mui/material';
 import { KeyboardArrowRight } from '@mui/icons-material';
 
 const Accordion = styled((props: AccordionProps) => (
