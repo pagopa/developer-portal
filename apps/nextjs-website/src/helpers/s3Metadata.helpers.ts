@@ -220,7 +220,7 @@ export const getGuidesMetadata = async (dirName?: string) => {
   return guidesMetadataCache || [];
 };
 
-export const getSolutionsMetadata = async () => {
+export const getSolutionsMetadata = async (dirName?: string) => {
   const now = Date.now();
 
   if (
@@ -230,15 +230,22 @@ export const getSolutionsMetadata = async () => {
     return solutionsMetadataCache;
   }
 
+  await fetchMetadataFromCDN<JsonMetadata>(
+    dirName
+      ? path.join(S3_PATH_TO_GITBOOK_DOCS, dirName, S3_METADATA_JSON_PATH)
+      : S3_METADATA_JSON_PATH
+  );
   solutionsMetadataCache = await fetchMetadataFromCDN<JsonMetadata>(
-    S3_SOLUTIONS_METADATA_JSON_PATH
+    dirName
+      ? path.join(S3_PATH_TO_GITBOOK_DOCS, dirName, S3_METADATA_JSON_PATH)
+      : S3_SOLUTIONS_METADATA_JSON_PATH
   );
   solutionsMetadataCacheTime = now;
 
   return solutionsMetadataCache || [];
 };
 
-export const getReleaseNotesMetadata = async () => {
+export const getReleaseNotesMetadata = async (dirName?: string) => {
   const now = Date.now();
 
   if (
@@ -249,7 +256,9 @@ export const getReleaseNotesMetadata = async () => {
   }
 
   releaseNotesMetadataCache = await fetchMetadataFromCDN<JsonMetadata>(
-    S3_RELEASE_NOTES_METADATA_JSON_PATH
+    dirName
+      ? path.join(S3_PATH_TO_GITBOOK_DOCS, dirName, S3_METADATA_JSON_PATH)
+      : S3_RELEASE_NOTES_METADATA_JSON_PATH
   );
   releaseNotesMetadataCacheTime = now;
 

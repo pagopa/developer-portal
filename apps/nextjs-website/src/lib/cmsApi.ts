@@ -222,6 +222,19 @@ export const getSolutionProps = async (
   return await makeSolutionS3(solution, jsonMetadata);
 };
 
+export const getStrapiReleaseNotes = async (productSlug: string) => {
+  const strapiReleaseNotes = (await fetchResponseFromCDN(
+    getSyncedReleaseNotesResponseJsonPath()
+  )) as StrapiReleaseNotes | undefined;
+  if (!strapiReleaseNotes || strapiReleaseNotes.data.length < 1) {
+    // eslint-disable-next-line functional/no-throw-statements
+    throw new Error('Failed to fetch release data');
+  }
+  return strapiReleaseNotes.data.find(
+    (x) => x.attributes.product.data?.attributes.slug === productSlug
+  );
+};
+
 export const getReleaseNoteProps = async (
   productSlug: string,
   jsonMetadata?: JsonMetadata

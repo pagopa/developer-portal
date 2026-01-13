@@ -13,6 +13,7 @@ import {
   getSolutionListPageProps,
   getSolutionProps,
   getSolutionsProps,
+  getStrapiReleaseNotes,
   getTutorialListPagesProps,
   getTutorialsProps,
   getUseCaseListPagesProps,
@@ -207,7 +208,16 @@ export async function getReleaseNote(
   const releaseNotesPath = `/${productSlug}/${releaseNoteSubPathSlugs?.join(
     '/'
   )}`;
-  const releaseNotesMetadata = await getReleaseNotesMetadata();
+
+  const releaseNote = await getStrapiReleaseNotes(productSlug);
+  if (!releaseNote) {
+    // eslint-disable-next-line functional/no-throw-statements
+    throw new Error('Failed to fetch release data');
+  }
+
+  const releaseNotesMetadata = await getReleaseNotesMetadata(
+    releaseNote.attributes.dirName
+  );
 
   const releaseNoteProps = await getReleaseNoteProps(
     productSlug,
@@ -257,7 +267,13 @@ export async function getSolutionDetail(
   solutionSlug: string,
   solutionSubPathSlugs: readonly string[]
 ) {
-  const solutionsMetadata = await getSolutionsMetadata();
+  const solutionData = await getSolution(solutionSlug);
+  if (!solutionData) {
+    // eslint-disable-next-line functional/no-expression-statements
+    console.error('no solution data found');
+    return undefined;
+  }
+  const solutionsMetadata = await getSolutionsMetadata(solutionData.dirName);
 
   return await getSolutionProps(
     solutionSlug,
