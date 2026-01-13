@@ -152,32 +152,37 @@ jobs:
         env:
           DIR_NAMES_FILTER: ${{ inputs.dir_names_filter }}
         run: |
+          echo "Fetching directory lists from S3 to validate publication status..."
+          # Define S3 paths for the JSON files
+          S3_DIRNAMES="s3://devportal-${{ env.ENV_SHORT }}-website-static-content/${{ vars.S3_DIRNAMES_JSON_PATH || 'dirNames.json' }}"
+
+          # Download JSON files
+          aws s3 cp "$S3_DIRNAMES" dirNames.json || echo '{"dirNames": []}' > dirNames.json
+
+          # Extract and combine unique directory names
+          VALID_DIRS=$(cat dirNames.json | jq -r '.dirNames[]' | sort | uniq)
+
           if [[ -n "$DIR_NAMES_FILTER" ]]; then
             IFS=',' read -ra DIRS <<< "$DIR_NAMES_FILTER"
             for dir in "${DIRS[@]}"; do
               dir=$(echo "$dir" | xargs)
               if [[ -n "$dir" ]]; then
-                echo "Syncing directory: $dir"
-                aws s3 sync "docs/$dir" "s3://devportal-${{ env.ENV_SHORT }}-website-static-content/devportal-docs/docs/$dir" --delete --exclude "metadata.json" ${{ inputs.incremental_mode == true && ' --size-only' || '' }}
+                # Check if dir is in VALID_DIRS
+                if echo "$VALID_DIRS" | grep -F -q -x "$dir"; then
+                    echo "Syncing directory: $dir"
+                    aws s3 sync "docs/$dir" "s3://devportal-${{ env.ENV_SHORT }}-website-static-content/devportal-docs/docs/$dir" --delete --exclude "metadata.json" ${{ inputs.incremental_mode == true && ' --size-only' || '' }}
+                else
+                    echo "Skipping directory $dir as it is not in the published list."
+                fi
               fi
             done
           else
-            echo "Fetching directory lists from S3..."
-            # Define S3 paths for the JSON files
-            S3_DIRNAMES="s3://devportal-${{ env.ENV_SHORT }}-website-static-content/${{ vars.S3_DIRNAMES_JSON_PATH || 'dirNames.json' }}"
-
-            # Download JSON files
-            aws s3 cp "$S3_DIRNAMES" dirNames.json || echo '{"dirNames": []}' > dirNames.json
-
-            # Extract and combine unique directory names
-            DIRS=$(cat dirNames.json | jq -r '.dirNames[]' | sort | uniq)
-
-            if [[ -z "$DIRS" ]]; then
+            if [[ -z "$VALID_DIRS" ]]; then
               echo "No directories found to sync. Syncing all docs"
               aws s3 sync docs s3://devportal-${{ env.ENV_SHORT }}-website-static-content/devportal-docs/docs --delete --exclude "**/metadata.json" ${{ inputs.incremental_mode == true && ' --size-only' || '' }}
             else
               echo "Syncing registered directories..."
-              for dir in $DIRS; do
+              for dir in $VALID_DIRS; do
                 if [[ -n "$dir" ]]; then
                   echo "Syncing directory: $dir"
                   aws s3 sync "docs/$dir" "s3://devportal-${{ env.ENV_SHORT }}-website-static-content/devportal-docs/docs/$dir" --delete --exclude "metadata.json" ${{ inputs.incremental_mode == true && ' --size-only' || '' }}
