@@ -2,7 +2,6 @@ import * as qs from 'qs';
 import { productRelationsPopulate } from './fetchProducts';
 import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
 import { StrapiUseCases } from '../types/useCase';
-import { RootEntity } from '@/lib/strapi/types/rootEntity';
 
 const makeStrapiUseCasesPopulate = () =>
   qs.stringify({
@@ -11,12 +10,21 @@ const makeStrapiUseCasesPopulate = () =>
         populate: ['icon'],
       },
       coverImage: {
-        populate: ['image'],
+        populate: '*',
       },
       headerImage: {
-        populate: ['image'],
+        populate: '*',
       },
-      parts: '*',
+      parts: {
+        on: {
+          'parts.html': { populate: '*' },
+          'parts.alert': { populate: '*' },
+          'parts.ck-editor': { populate: '*' },
+          'parts.code-block': { populate: '*' },
+          'parts.embed-html': { populate: '*' },
+          'parts.markdown': { populate: '*' },
+        },
+      },
       product: {
         ...productRelationsPopulate,
       },
@@ -24,7 +32,7 @@ const makeStrapiUseCasesPopulate = () =>
         populate: ['links'],
       },
       seo: {
-        populate: '*,metaImage,metaSocial.image',
+        populate: '*',
       },
       tags: {
         populate: '*',
