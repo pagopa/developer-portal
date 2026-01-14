@@ -18,7 +18,6 @@ import {
 } from './dynamodb/webinar';
 import { WebinarQuestionDynamoDb } from './dynamodb/types/webinarQuestion';
 import { compact } from 'lodash';
-import { item } from 'gitbook-docs/markdoc/schema/item';
 
 export type WebinarEnv = {
   readonly dynamoDBClient: DynamoDBClient;

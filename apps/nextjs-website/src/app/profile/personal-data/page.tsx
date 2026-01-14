@@ -2,7 +2,7 @@
 import { Box, Divider, Stack, Typography } from '@mui/material';
 import { Auth } from 'aws-amplify';
 import { useTranslations } from 'next-intl';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 import { ProfileDataCardItemProps } from '@/components/atoms/InfoCardItem/ProfileDataCardItem';
 import { InfoCardItemProps } from '@/components/atoms/InfoCardItem/InfoCardItem';
@@ -21,10 +21,14 @@ const PersonalData = () => {
   const router = useRouter();
   const { user, setUserAttributes } = useUser();
 
-  const companyRolesValues = companyRoles.map((role) => ({
-    title: t('auth.signUp.companyRoles.' + role),
-    value: role,
-  }));
+  const companyRolesValues = useMemo(
+    () =>
+      companyRoles.map((role) => ({
+        title: t('auth.signUp.companyRoles.' + role),
+        value: role,
+      })),
+    [t]
+  );
 
   const [profileDataSectionItems, setProfileDataSectionItems] = useState<
     ProfileDataCardItemProps[]
@@ -62,7 +66,7 @@ const PersonalData = () => {
         required: false,
       },
     ]);
-  }, [user?.attributes]);
+  }, [user?.attributes, companyRolesValues, t]);
 
   const [editItem, setEditItem] = useState<InfoCardItemProps | null>(null);
   const [showConfirmationModal, setShowConfirmationModal] = useState<

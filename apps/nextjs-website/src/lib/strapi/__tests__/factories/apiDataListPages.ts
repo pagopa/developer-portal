@@ -146,10 +146,12 @@ export function apiDataListPageWithInvalidApiData(): StrapiApiDataListPages {
               {
                 id: 1,
                 attributes: {
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
                   title: undefined as any,
                   description: 'API without title',
                   icon: { data: undefined },
                   apiRestDetail: {
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     slug: undefined as any,
                     specUrls: [],
                   },
