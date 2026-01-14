@@ -6,8 +6,6 @@ from src.modules.logger import get_logger
 from src.modules.documents import (
     read_file_from_s3,
     get_metadata_from_s3,
-    get_sitemap_urls,
-    filter_urls,
 )
 from src.modules.vector_index import DiscoveryVectorIndex
 
