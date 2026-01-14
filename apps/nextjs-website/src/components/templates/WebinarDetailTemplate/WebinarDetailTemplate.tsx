@@ -42,8 +42,10 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
     webinarState === WebinarState.future && webinar.headerImage;
 
   useEffect(() => {
-    webinar && setWebinar(webinar);
-  }, [webinar]);
+    if (webinar) {
+      setWebinar(webinar);
+    }
+  }, [webinar, setWebinar]);
 
   const bodyContent = useMemo(
     () =>

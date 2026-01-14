@@ -12,7 +12,7 @@ import { ActiveCampaignList } from '../types/activeCampaignList';
 
 const MAX_NUMBER_OF_LISTS = '1000';
 
-function getSizeInKB(obj: any): number {
+function getSizeInKB(obj: unknown): number {
   const objectAsString = JSON.stringify(obj);
   const sizeInBytes = new Blob([objectAsString]).size;
   return sizeInBytes / 1024;
@@ -99,7 +99,7 @@ export class ActiveCampaignClient {
           if (res.statusCode && res.statusCode >= 200 && res.statusCode < 300) {
             try {
               resolve(JSON.parse(data));
-            } catch (error) {
+            } catch {
               reject(new Error('Failed to parse response data'));
             }
           } else {

@@ -43,7 +43,9 @@ const DesktopUserInfo: FC = () => {
       router.replace('/');
     } else {
       // router.refresh(); is not enough beacuse it will not clean current state of components
-      typeof window !== 'undefined' && window.location.reload();
+      if (typeof window !== 'undefined') {
+        window.location.reload();
+      }
     }
 
     handleClose();
@@ -155,12 +157,17 @@ const DesktopUserInfo: FC = () => {
                   textDecoration: 'none',
                   color: palette.text.primary,
                   p: 2,
+                  fontSize: 16,
+                  fontWeight: 600,
                 }}
               >
                 {t('shared.yourData')}
               </MuiLink>
             </MenuItem>
-            <MenuItem onClick={signOut} sx={{ p: 2 }}>
+            <MenuItem
+              onClick={signOut}
+              sx={{ px: 2, py: 1, fontSize: 16, fontWeight: 600 }}
+            >
               {t('auth.logout')}
               <ListItemIcon sx={{ ml: 1 }}>
                 <Logout fontSize='small' sx={{ color: palette.text.primary }} />
