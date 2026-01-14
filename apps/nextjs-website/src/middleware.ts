@@ -16,6 +16,6 @@ export function middleware(request: NextRequest) {
 export const config = {
   matcher: [
     // Exclude Next internals, API, known public files, and paths already starting with a locale
-    '/((?!_next/static|_next/image|api|favicon.ico|robots.txt|sitemap.xml|.*\\.(?:png|jpg|jpeg|gif|webp|svg|ico|css|js|map|txt|xml|json|woff2?|ttf|eot)$|en(?:/|$)|it(?:/|$)).*)',
+    '/((?!_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml|.*\\.(?:png|jpg|jpeg|gif|webp|svg|ico|css|js|map|txt|xml|json|woff2?|ttf|eot)$|en(?:/|$)|it(?:/|$)).*)',
   ],
 };
