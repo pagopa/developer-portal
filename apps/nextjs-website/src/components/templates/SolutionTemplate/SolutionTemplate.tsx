@@ -77,7 +77,7 @@ const SolutionTemplate = ({
 }: SolutionTemplateProps) => {
   const { palette, spacing } = useTheme();
   const t = useTranslations();
-  const locale = useParams<{ locale: string }>().locale;
+  const { locale } = useParams<{ locale: string }>();
 
   const solutionDetailPath = `/solutions/${slug}/details`;
 

@@ -43,7 +43,7 @@ const UseCaseTemplate = ({
 }: UseCasePageTemplateProps) => {
   const { palette } = useTheme();
   const isSmallScreen = useMediaQuery('(max-width: 1000px)');
-  const locale = useParams<{ locale: string }>().locale;
+  const { locale } = useParams<{ locale: string }>();
 
   return (
     <ProductLayout

@@ -38,7 +38,7 @@ const CaseHistoryPageTemplate = ({
 }: CaseHistoryPageTemplateProps) => {
   const { palette } = useTheme();
   const t = useTranslations();
-  const locale = useParams<{ locale: string }>().locale;
+  const { locale } = useParams<{ locale: string }>();
 
   const cards = products
     .map((product) => {
