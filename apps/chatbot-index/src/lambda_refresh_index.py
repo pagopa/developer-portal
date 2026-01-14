@@ -61,7 +61,6 @@ DIRNAMES_TO_REMOVE_PATH = "main-guide-versions-dirNames-to-remove.json"
 def read_payload(payload: dict) -> Tuple[List[Dict[str, str]], List[str]]:
 
     all_metadata = get_metadata_from_s3()
-    filtered_metadata = []
     s3_paths = [metadata.get("contentS3Path") for metadata in all_metadata]
 
     static_docs_to_update = []
@@ -78,7 +77,7 @@ def read_payload(payload: dict) -> Tuple[List[Dict[str, str]], List[str]]:
         if event_action == "ObjectCreated":
             try:
                 idx = s3_paths.index(object_key)
-                doc_info = filtered_metadata[idx]
+                doc_info = all_metadata[idx]
 
                 static_docs_to_update.append(
                     {
