@@ -374,52 +374,56 @@ def get_api_docs() -> List[Document]:
     return docs
 
 
-def get_static_and_dynamic_metadata(
-    sitemap_path: str | None = None,
-) -> Tuple[List[dict], List[dict]]:
+def get_static_metadata() -> List[dict]:
     """
-    Fetches static and dynamic URLs from the sitemap and metadata files.
-    Args:
-        sitemap_path (str): The S3 file path to fetch the sitemap from.
+    Fetches static metadata from S3.
     Returns:
-        Tuple[List[dict], List[dict]]: A tuple containing two lists:
-            - A list of dictionaries with static URLs and their S3 file paths.
-            - A list of dictionaries with dynamic URLs and their last modified dates.
+        List[dict]: A list of dictionaries containing static metadata.
     """
 
-    sitemap = get_sitemap_urls(sitemap_path)
-    if not sitemap:
-        return [], []
-    else:
-        sitemap_urls = [item["url"] for item in sitemap]
-        sitemap_filtered_urls = filter_urls(sitemap_urls)
+    static_metadata = []
+    all_metadata = get_metadata_from_s3()
 
-        static_metadata = []
-        dynamic_metadata = []
+    for item in all_metadata:
+        static_metadata.append(
+            {
+                "url": SETTINGS.website_url + item["path"],
+                "s3_file_path": item["contentS3Path"],
+                "title": item["title"],
+            }
+        )
 
-        all_metadata = get_metadata_from_s3()
-        all_url_metadata = [
-            SETTINGS.website_url + item["path"] for item in all_metadata
-        ]
+    LOGGER.info(f"Found {len(static_metadata)} static URLs.")
+    return static_metadata
 
-        for url in sitemap_filtered_urls:
-            if url in all_url_metadata:
-                idx = all_url_metadata.index(url)
-                static_metadata.append(
-                    {
-                        "url": url,
-                        "s3_file_path": all_metadata[idx]["contentS3Path"],
-                        "title": all_metadata[idx]["title"],
-                    }
-                )
-            else:
-                idx = sitemap_urls.index(url)
-                dynamic_metadata.append(sitemap[idx])
 
-    LOGGER.info(
-        f"Found {len(static_metadata)} static URLs and {len(dynamic_metadata)} dynamic URLs."
-    )
-    return static_metadata, dynamic_metadata
+def get_dynamic_metadata(static_metadata: List[dict]) -> List[dict]:
+    """
+    Fetches dynamic metadata by comparing sitemap URLs with static metadata.
+    Args:
+        static_metadata (List[dict]): A list of dictionaries containing static metadata.
+    Returns:
+        List[dict]: A list of dictionaries containing dynamic metadata.
+    """
+
+    dynamic_metadata = []
+    sitemap = get_sitemap_urls()
+    all_url_metadata = [item["url"] for item in static_metadata]
+    sitemap_urls = [item["url"] for item in sitemap]
+    sitemap_filtered_urls = filter_urls(sitemap_urls)
+
+    for url in sitemap_filtered_urls:
+        if url not in all_url_metadata:
+            idx = all_url_metadata.index(url)
+            dynamic_metadata.append(
+                {
+                    "url": url,
+                    "lastmod": sitemap[idx]["lastmod"],
+                }
+            )
+
+    LOGGER.info(f"Found {len(dynamic_metadata)} dynamic URLs.")
+    return dynamic_metadata
 
 
 def get_static_docs(static_metadata: List[dict]) -> List[Document]:

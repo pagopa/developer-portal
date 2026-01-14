@@ -144,14 +144,17 @@ def lambda_handler(event, context):
     static_docs_to_update, static_docs_ids_to_delete, dirnames_to_remove = read_payload(
         event
     )
-    if len(static_docs_to_update) > 0 or len(static_docs_ids_to_delete) > 0:
-        VECTOR_INDEX.refresh_index(
-            static_docs_to_update=static_docs_to_update,
-            static_docs_ids_to_delete=static_docs_ids_to_delete,
-        )
+    index = VECTOR_INDEX.get_index()
+    if index:
+        if len(static_docs_to_update) > 0 or len(static_docs_ids_to_delete) > 0:
+            VECTOR_INDEX.refresh_index_static_docs(
+                index,
+                static_docs_to_update=static_docs_to_update,
+                static_docs_ids_to_delete=static_docs_ids_to_delete,
+            )
 
-    if len(dirnames_to_remove) > 0:
-        for dirname in dirnames_to_remove:
-            VECTOR_INDEX.remove_docs_in_folder(folder_name=dirname)
+        if len(dirnames_to_remove) > 0:
+            for dirname in dirnames_to_remove:
+                VECTOR_INDEX.remove_docs_in_folder(index, folder_name=dirname)
 
     return {"statusCode": 200, "result": True, "event": event}
