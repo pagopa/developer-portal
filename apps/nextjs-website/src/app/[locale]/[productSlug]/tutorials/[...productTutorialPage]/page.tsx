@@ -61,7 +61,6 @@ const Page = async (props: { params: Promise<Params> }) => {
   });
   return (
     <TutorialTemplate
-      locale={params.locale}
       bannerLinks={strapiTutorialProps.bannerLinks}
       parts={strapiTutorialProps.parts}
       path={strapiTutorialProps.path}

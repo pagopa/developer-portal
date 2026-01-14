@@ -61,7 +61,7 @@ export function productToMenuItems(
       ? {
           label: 'devPortal.productHeader.releaseNote',
           href: `/${locale}/${product.slug}/release-note`,
-          active: path.startsWith(`/${product.slug}/release-note`),
+          active: path.startsWith(`/${locale}/${product.slug}/release-note`),
           theme,
         }
       : null,

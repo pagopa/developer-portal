@@ -59,13 +59,6 @@ const ApiDataListPage = async (props: { params: Promise<Params> }) => {
   });
 
   if (apiDataListPageProps) {
-    apiDataListPageProps.cards.forEach((card) => {
-      if (card.href) {
-        // eslint-disable-next-line functional/immutable-data
-        card.href = `/${params.locale}${card.href}`;
-      }
-    });
-
     return (
       <ProductLayout
         product={apiDataListPageProps.product}

@@ -16,7 +16,6 @@ import EContainer from '../../../editorialComponents/EContainer/EContainer';
 import { useParams } from 'next/navigation';
 
 type UseCasePageTemplateProps = {
-  readonly locale: string;
   readonly bannerLinks?: ReadonlyArray<BannerLinkProps>;
   readonly headerImage?: {
     readonly url: string;
@@ -44,7 +43,7 @@ const UseCaseTemplate = ({
 }: UseCasePageTemplateProps) => {
   const { palette } = useTheme();
   const isSmallScreen = useMediaQuery('(max-width: 1000px)');
-  const locale = useParams<{ locale: string }>().locale;
+  const { locale } = useParams<{ locale: string }>();
 
   return (
     <ProductLayout

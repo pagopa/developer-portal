@@ -19,7 +19,7 @@ const ProductHeader: FC<ProductHeaderProps> = ({ product, path }) => {
   const t = useTranslations();
   const scrollUp = useScrollUp();
   const themeVariant = palette.mode;
-  const currentLocale = useParams<{ locale: string }>().locale;
+  const { locale: currentLocale } = useParams<{ locale: string }>();
 
   const menu = productToMenuItems(
     currentLocale,
