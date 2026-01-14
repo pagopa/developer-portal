@@ -61,7 +61,6 @@ const Page = async (props: { params: Promise<Params> }) => {
   });
   return (
     <UseCaseTemplate
-      locale={params.locale}
       bannerLinks={strapiUseCaseProps.bannerLinks}
       headerImage={strapiUseCaseProps.headerImage}
       parts={strapiUseCaseProps.parts}

@@ -16,7 +16,6 @@ import EContainer from '../../../editorialComponents/EContainer/EContainer';
 import { useParams } from 'next/navigation';
 
 type UseCasePageTemplateProps = {
-  readonly locale: string;
   readonly bannerLinks?: ReadonlyArray<BannerLinkProps>;
   readonly headerImage?: {
     readonly url: string;

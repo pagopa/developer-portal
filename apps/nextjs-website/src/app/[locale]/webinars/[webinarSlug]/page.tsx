@@ -56,7 +56,7 @@ const Page = async (props: { params: Promise<Params> }) => {
     <>
       {structuredData}
       <Suspense fallback={<Spinner />}>
-        <WebinarDetailTemplate locale={params.locale} webinar={webinar} />
+        <WebinarDetailTemplate webinar={webinar} />
       </Suspense>
     </>
   );

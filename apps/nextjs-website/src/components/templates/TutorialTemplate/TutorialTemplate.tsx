@@ -13,9 +13,9 @@ import PartRendererMenu from '@/components/molecules/PartRendererMenu/PartRender
 import { ReactNode } from 'react';
 import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
 import { PRODUCT_HEADER_HEIGHT, SITE_HEADER_HEIGHT } from '@/config';
+import { useParams } from 'next/navigation';
 
 type TutorialPageTemplateProps = {
-  readonly locale: string;
   readonly bannerLinks?: ReadonlyArray<BannerLinkProps>;
   readonly parts?: ReadonlyArray<Part>;
   readonly path: string;
@@ -26,7 +26,6 @@ type TutorialPageTemplateProps = {
 };
 
 const TutorialTemplate = ({
-  locale,
   parts,
   path,
   product,
@@ -35,6 +34,7 @@ const TutorialTemplate = ({
   title,
   structuredData,
 }: TutorialPageTemplateProps) => {
+  const { locale } = useParams<{ locale: string }>();
   return (
     <ProductLayout
       product={product}
