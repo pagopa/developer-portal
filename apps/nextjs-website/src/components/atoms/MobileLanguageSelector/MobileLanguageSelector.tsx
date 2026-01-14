@@ -19,7 +19,7 @@ const MobileLanguageSelector = ({
   return (
     <>
       <MobileSiteHeaderStyledTreeItem
-        nodeId={'siteHeader.languageMenu'}
+        itemId={'siteHeader.languageMenu'}
         label={
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Language
