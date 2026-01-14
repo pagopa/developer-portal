@@ -320,9 +320,9 @@ class DiscoveryVectorIndex:
                 self._update_docs(index, docs_to_update)
             except Exception as e:
                 LOGGER.error(f"Error updating Static Documents: {e}")
-        if static_doc_ids_to_delete:
+        if static_docs_ids_to_delete:
             try:
-                self._delete_docs(index, static_doc_ids_to_delete)
+                self._delete_docs(index, static_docs_ids_to_delete)
             except Exception as e:
                 LOGGER.error(f"Error deleting Static Documents: {e}")
 
