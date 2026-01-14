@@ -131,6 +131,7 @@ export async function downloadS3File(
 }
 
 export async function putS3File(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   items: MetadataItem[] | any,
   path: string,
   bucketName: string,

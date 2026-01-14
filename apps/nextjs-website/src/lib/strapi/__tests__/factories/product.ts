@@ -133,6 +133,7 @@ export function strapiProductWithoutLogo(): StrapiProduct {
     attributes: {
       ...strapiProduct().attributes,
       logo: {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         data: null as any, // Simulating missing logo data
       },
     },
@@ -192,9 +193,12 @@ export function productWithMissingMandatoryFields(): Partial<StrapiProduct> {
   return {
     attributes: {
       isVisible: true,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       name: undefined as any,
       tags: { data: [] },
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       shortName: undefined as any,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       slug: undefined as any,
       bannerLinks: [],
       description: 'Product with missing mandatory fields',

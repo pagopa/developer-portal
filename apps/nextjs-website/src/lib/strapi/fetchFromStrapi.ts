@@ -50,6 +50,7 @@ export const fetchFromStrapi = <T>(path: string, populate: string) =>
     )
   );
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function nullsToUndefined(obj: any): any {
   if (obj === null) return undefined;
   if (Array.isArray(obj)) {
