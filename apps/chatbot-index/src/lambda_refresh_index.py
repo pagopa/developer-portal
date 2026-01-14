@@ -62,18 +62,9 @@ DIRNAMES_TO_REMOVE_PATH = "main-guide-versions-dirNames-to-remove.json"
 
 def read_payload(payload: dict) -> Tuple[List[Dict[str, str]], List[str]]:
 
-    sitemap = get_sitemap_urls()
-    urls_list = [item["url"] for item in sitemap]
-    filtered_urls = filter_urls(urls_list)
-    filtered_paths = [url.replace(SETTINGS.website_url, "") for url in filtered_urls]
-
     all_metadata = get_metadata_from_s3()
     filtered_metadata = []
-    s3_paths = []
-    for metadata in all_metadata:
-        if metadata.get("path") in filtered_paths:
-            filtered_metadata.append(metadata)
-            s3_paths.append(metadata.get("contentS3Path"))
+    s3_paths = [metadata.get("contentS3Path") for metadata in all_metadata]
 
     static_docs_to_update = []
     static_docs_ids_to_delete = []
