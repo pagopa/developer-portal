@@ -293,7 +293,7 @@ class DiscoveryVectorIndex:
         self,
         index: VectorStoreIndex,
         static_docs_to_update: List[Dict[str, str]],
-        static_doc_ids_to_delete: List[str],
+        static_docs_ids_to_delete: List[str],
     ) -> None:
         """
         Refreshes the vector index by updating and deleting documents as specified.
@@ -405,4 +405,3 @@ class DiscoveryVectorIndex:
                 self._delete_docs(index, doc_ids_to_remove)
             except Exception as e:
                 LOGGER.error(f"Error deleting documents in folder {folder_name}: {e}")
-
