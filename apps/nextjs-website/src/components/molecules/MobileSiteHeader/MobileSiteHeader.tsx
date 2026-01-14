@@ -6,7 +6,9 @@ import { useTranslations } from 'next-intl';
 import { Box, Divider, useTheme } from '@mui/material';
 import ArrowDropUp from '@mui/icons-material/ArrowDropUp';
 import ArrowDropDown from '@mui/icons-material/ArrowDropDown';
-import { TreeItem, treeItemClasses, TreeView } from '@mui/lab';
+import { TreeItem } from '@mui/x-tree-view/TreeItem';
+import { SimpleTreeView } from '@mui/x-tree-view/SimpleTreeView';
+
 import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import NextLink from 'next/link';
@@ -20,7 +22,7 @@ export const MobileSiteHeaderStyledTreeItem = styled(TreeItem)(({ theme }) => ({
     '--x': 16,
     marginBottom: 16,
   },
-  [`& .${treeItemClasses.content}`]: {
+  [`& .MuiTreeItem-content`]: {
     backgroundColor: `${theme.palette.common.white} !important`,
     color: theme.palette.primary.dark,
     display: 'flex',
@@ -30,17 +32,16 @@ export const MobileSiteHeaderStyledTreeItem = styled(TreeItem)(({ theme }) => ({
     padding: 0,
     margin: 0,
   },
-  [`& .${treeItemClasses.content} .${treeItemClasses.focused}`]: {
+  [`& .MuiTreeItem-content .Mui-focused`]: {
     backgroundColor: `${theme.palette.common.white} !important`,
   },
-  [`& .${treeItemClasses.content}:hover`]: {
+  [`& .MuiTreeItem-content:hover`]: {
     backgroundColor: `${theme.palette.common.white} !important`,
   },
-  [`& .${treeItemClasses.content}:has(.${treeItemClasses.iconContainer}:empty)`]:
-    {
-      paddingRight: 0,
-    },
-  [`& .${treeItemClasses.iconContainer}`]: {
+  [`& .MuiTreeItem-content:has(.MuiTreeItem-iconContainer:empty)`]: {
+    paddingRight: 0,
+  },
+  [`& .MuiTreeItem-iconContainer`]: {
     marginTop: 0,
     marginLeft: 8,
     marginRight: 0,
@@ -48,10 +49,10 @@ export const MobileSiteHeaderStyledTreeItem = styled(TreeItem)(({ theme }) => ({
     paddingRight: 0,
     paddingLeft: 0,
   },
-  [`& .${treeItemClasses.iconContainer}:empty`]: {
+  [`& .MuiTreeItem-iconContainer:empty`]: {
     display: 'none',
   },
-  [`& .${treeItemClasses.content} > .${treeItemClasses.label}`]: {
+  [`& .MuiTreeItem-content > .MuiTreeItem-label`]: {
     color: theme.palette.primary.dark,
     fontSize: 18,
     fontWeight: 600,
@@ -64,10 +65,10 @@ export const MobileSiteHeaderStyledTreeItem = styled(TreeItem)(({ theme }) => ({
     marginBottom: 16,
     padding: 0,
   },
-  [`& .${treeItemClasses.content} > .${treeItemClasses.label} > a`]: {
+  [`& .MuiTreeItem-content > .MuiTreeItem-label > a`]: {
     color: theme.palette.primary.dark,
-    paddingTop: 16,
-    paddingBottom: 16,
+    paddingTop: 14,
+    paddingBottom: 14,
     paddingRight: 32,
   },
   [`& ul`]: {
@@ -80,33 +81,36 @@ export const MobileSiteHeaderStyledTreeItem = styled(TreeItem)(({ theme }) => ({
   ['& a']: {
     paddingLeft: 'calc(1px * var(--x))',
   },
-  [`& .${treeItemClasses.group}`]: {
+  [`& .MuiTreeItem-group`]: {
     marginLeft: 0,
     marginRight: 0,
-    marginBottom: 0,
+    marginBottom: 8,
   },
-  [`& .${treeItemClasses.group} a`]: {
-    marginBottom: 16,
+
+  [`& .MuiCollapse-wrapperInner a`]: {
+    marginBottom: 4,
+    paddingTop: 4,
+    paddingBottom: 4,
   },
-  [`& .${treeItemClasses.group} .${treeItemClasses.label}`]: {
+  [`& .MuiTreeItem-group .MuiTreeItem-label`]: {
     paddingLeft: 0,
     paddingRight: 0,
   },
-  [`& .${treeItemClasses.label}`]: {
+  [`& .MuiTreeItem-label`]: {
     padding: 0,
     paddingLeft: 0,
   },
-  [`& .${treeItemClasses.root}`]: {
+  [`& .MuiTreeItem-root`]: {
     margin: 0,
     paddingLeft: 0,
   },
-  [`& .${treeItemClasses.selected}`]: {
+  [`& .Mui-selected`]: {
     backgroundColor: `${theme.palette.common.white} !important`,
   },
-  [`& .${treeItemClasses.content} .${treeItemClasses.selected}`]: {
+  [`& .MuiTreeItem-content .Mui-selected`]: {
     backgroundColor: `${theme.palette.common.white} !important`,
   },
-  [`& .${treeItemClasses.selected} > .${treeItemClasses.label} > *`]: {
+  [`& .Mui-selected > .MuiTreeItem-label > *`]: {
     color: theme.palette.primary.dark,
   },
 }));
@@ -147,15 +151,17 @@ const MobileSiteHeader = ({ locale, products }: SiteHeaderProps) => {
         direction: 'row',
         display: { xs: 'flex', sm: 'none' },
         flexGrow: 1,
-        paddingLeft: 2,
-        gap: 4,
-        justifyContent: 'end',
+        width: '100%',
+        paddingRight: 2,
+        gap: 2,
+        justifyContent: 'flex-end',
       }}
     >
       <Button
-        variant='naked'
+        variant='text'
         disableElevation
         onClick={handleClick}
+        sx={{ marginLeft: 'auto', marginRight: '-30px' }}
         endIcon={isOpen ? <ArrowDropUp /> : <ArrowDropDown />}
       >
         {t('siteHeader.label')}
@@ -173,14 +179,16 @@ const MobileSiteHeader = ({ locale, products }: SiteHeaderProps) => {
           zIndex: 200,
         }}
       >
-        <TreeView
+        <SimpleTreeView
           aria-label='multi-select'
-          defaultCollapseIcon={<ArrowDropUp />}
-          defaultExpandIcon={<ArrowDropDown />}
+          slots={{
+            collapseIcon: ArrowDropUp,
+            expandIcon: ArrowDropDown,
+          }}
           multiSelect
         >
           <MobileSiteHeaderStyledTreeItem
-            nodeId={t('siteHeader.products')}
+            itemId={t('siteHeader.products')}
             label={t('siteHeader.products')}
             disabled={false}
           >
@@ -205,7 +213,7 @@ const MobileSiteHeader = ({ locale, products }: SiteHeaderProps) => {
           </MobileSiteHeaderStyledTreeItem>
 
           <MobileSiteHeaderStyledTreeItem
-            nodeId={'siteHeader.solutions'}
+            itemId={'siteHeader.solutions'}
             label={
               <Typography
                 component={NextLink}
@@ -225,7 +233,7 @@ const MobileSiteHeader = ({ locale, products }: SiteHeaderProps) => {
             }
           />
           <MobileSiteHeaderStyledTreeItem
-            nodeId={'siteHeader.webinars'}
+            itemId={'siteHeader.webinars'}
             label={
               <Typography
                 component={NextLink}
@@ -256,7 +264,7 @@ const MobileSiteHeader = ({ locale, products }: SiteHeaderProps) => {
               />
             </>
           )}
-        </TreeView>
+        </SimpleTreeView>
       </Box>
     </Box>
   );

@@ -1,5 +1,5 @@
 'use client';
-import { IllusDataSecurity } from '@pagopa/mui-italia';
+import { Security as SecurityIcon } from '@mui/icons-material';
 import {
   Box,
   Button,
@@ -88,7 +88,7 @@ const ChangePasswordForm = ({
         <Grid container justifyContent='center'>
           <Grid item xs={10}>
             <Stack pt={4} display='flex' alignItems='center'>
-              <IllusDataSecurity />
+              <SecurityIcon sx={{ fontSize: 80, color: 'primary.main' }} />
             </Stack>
             <Typography variant='h4' pt={8} mb={4} textAlign='center'>
               {resetPassword('newPassword')}

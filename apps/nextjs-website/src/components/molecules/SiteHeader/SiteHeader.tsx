@@ -38,8 +38,6 @@ const SiteHeader = (
       <Stack
         ref={ref}
         sx={{
-          paddingTop: '7px',
-          paddingBottom: '6px',
           px: 3,
           backgroundColor: palette.common.white,
           minHeight: SITE_HEADER_HEIGHT,

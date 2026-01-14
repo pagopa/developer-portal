@@ -126,14 +126,10 @@ export async function getTutorial(
 }
 
 export async function getTutorialListPageProps(productSlug?: string) {
-  const tutorialListPages = await getTutorialListPagesProps();
-  const props =
-    tutorialListPages.find(({ product }) => product.slug === productSlug) ||
-    null;
-  if (!props) {
-    return undefined;
-  }
-  return manageUndefinedAndAddProducts(props);
+  const tutorialListPages = manageUndefined(
+    await getTutorialListPagesProps()
+  ).find(({ product }) => product.slug === productSlug);
+  return manageUndefinedAndAddProducts(tutorialListPages);
 }
 
 export async function getVisibleInListWebinars(): Promise<readonly Webinar[]> {
