@@ -6,7 +6,6 @@
 /* eslint-disable functional/no-let */
 
 import dotenv from 'dotenv';
-import { writeFile } from 'fs/promises';
 import * as fs from 'fs';
 import path from 'path';
 import { MetadataItem } from '../metadataItem';
@@ -15,7 +14,7 @@ import {
   makeS3Client,
   putS3File,
 } from '../helpers/s3Bucket.helper';
-import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
+import { S3Client } from '@aws-sdk/client-s3';
 import { extractTitleFromMarkdown } from '../helpers/extractTitle.helper';
 import { fetchFromStrapi } from '../helpers/fetchFromStrapi';
 import { MetadataInfo, MetadataType } from '../helpers/guidesMetadataHelper';
@@ -28,7 +27,6 @@ import {
   getSyncedSolutionsResponseJsonPath,
 } from '../syncedResponses';
 import { DOCUMENTATION_PATH } from '../helpers/documentationParsing.helper';
-import { baseUrl } from 'nextjs-website/src/config';
 import {
   StrapiApiData,
   StrapiGuide,
@@ -96,9 +94,6 @@ const S3_RELEASE_NOTES_DIRNAMES_JSON_PATH =
   process.env.S3_RELEASE_NOTES_DIRNAMES_JSON_PATH ||
   'release-notes-dirNames.json';
 
-const SITEMAP_URL = process.env.SITEMAP_URL || `${baseUrl}/sitemap.xml`;
-const S3_SITEMAP_PATH = process.env.S3_SITEMAP_PATH || 'sitemap.xml';
-
 const DOCUMENTATION_ABSOLUTE_PATH = path.resolve(DOCUMENTATION_PATH);
 
 interface StrapiData {
@@ -153,7 +148,8 @@ async function fetchAllStrapiData(): Promise<StrapiData> {
   console.log('Fetching all data from Strapi...');
   if (DIR_NAMES_FILTER) {
     console.log(
-      `Applying dirName filter: ${DIR_NAMES_FILTER.join(', ')} (${DIR_NAMES_FILTER.length
+      `Applying dirName filter: ${DIR_NAMES_FILTER.join(', ')} (${
+        DIR_NAMES_FILTER.length
       } directories)`
     );
   }
@@ -197,19 +193,6 @@ async function fetchAllStrapiData(): Promise<StrapiData> {
     solutionsRawResponse: solutionsResult.responseJson,
     releaseNotesRawResponse: releaseNotesResult.responseJson,
   };
-}
-
-async function fetchSitemapXml(): Promise<string> {
-  console.log(`Fetching sitemap from ${SITEMAP_URL}...`);
-  const response = await fetch(SITEMAP_URL);
-  if (!response.ok) {
-    // eslint
-    // eslint-disable-next-line functional/no-throw-statements
-    throw new Error(
-      `Failed to fetch sitemap: ${response.status} ${response.statusText}`
-    );
-  }
-  return await response.text();
 }
 
 // Generate URL path helper functions
@@ -647,15 +630,6 @@ async function main() {
         S3_BUCKET_NAME!,
         getS3Client()
       );
-      const sitemapXml = await fetchSitemapXml();
-
-      await getS3Client().send(
-        new PutObjectCommand({
-          Bucket: `${S3_BUCKET_NAME}`,
-          Key: S3_SITEMAP_PATH,
-          Body: sitemapXml,
-        })
-      );
     }
 
     // Save synced responses
@@ -690,7 +664,7 @@ async function main() {
     if (GENERATE_URL_METADATA) {
       console.log('Generating URL parsing metadata...');
       const urlParsingMetadata = await generateUrlParsingMetadata(strapiData);
-      await writeFile(
+      await fs.promises.writeFile(
         URL_PARSING_METADATA_JSON_PATH,
         JSON.stringify(urlParsingMetadata, null, 2)
       );

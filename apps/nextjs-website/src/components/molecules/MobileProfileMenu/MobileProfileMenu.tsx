@@ -140,7 +140,7 @@ const MobileProfileMenu = ({ userFullName }: MobileProfileMenuProps) => {
             <Typography
               variant='h6'
               noWrap
-              sx={{ fontSize: '22px', fontWeight: 700, padding: '12px 24px' }}
+              sx={{ fontSize: '22px', fontWeight: 600, padding: '12px 24px' }}
             >
               {userFullName}
             </Typography>

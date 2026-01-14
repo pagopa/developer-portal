@@ -51,7 +51,6 @@
 | <a name="module_salt"></a> [salt](#module\_salt) | git::https://github.com/terraform-aws-modules/terraform-aws-ssm-parameter.git | 77d2c139784197febbc8f8e18a33d23eb4736879 |
 | <a name="module_ssl_certificate"></a> [ssl\_certificate](#module\_ssl\_certificate) | git::https://github.com/terraform-aws-modules/terraform-aws-acm.git | 8d0b22f1f242a1b36e29b8cb38aaeac9b887500d |
 | <a name="module_ssl_certificate_us_east_1"></a> [ssl\_certificate\_us\_east\_1](#module\_ssl\_certificate\_us\_east\_1) | git::https://github.com/terraform-aws-modules/terraform-aws-acm.git | 8d0b22f1f242a1b36e29b8cb38aaeac9b887500d |
-| <a name="module_strapi_api_key_ssm_parameter"></a> [strapi\_api\_key\_ssm\_parameter](#module\_strapi\_api\_key\_ssm\_parameter) | git::https://github.com/terraform-aws-modules/terraform-aws-ssm-parameter.git | 77d2c139784197febbc8f8e18a33d23eb4736879 |
 | <a name="module_user_pool_client_id"></a> [user\_pool\_client\_id](#module\_user\_pool\_client\_id) | git::https://github.com/terraform-aws-modules/terraform-aws-ssm-parameter.git | 77d2c139784197febbc8f8e18a33d23eb4736879 |
 | <a name="module_user_pool_client_secret"></a> [user\_pool\_client\_secret](#module\_user\_pool\_client\_secret) | git::https://github.com/terraform-aws-modules/terraform-aws-ssm-parameter.git | 77d2c139784197febbc8f8e18a33d23eb4736879 |
 | <a name="module_user_pool_issuer"></a> [user\_pool\_issuer](#module\_user\_pool\_issuer) | git::https://github.com/terraform-aws-modules/terraform-aws-ssm-parameter.git | 77d2c139784197febbc8f8e18a33d23eb4736879 |
@@ -72,6 +71,7 @@
 | [aws_api_gateway_method_settings.chatbot](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_method_settings) | resource |
 | [aws_api_gateway_resource.chatbot](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_resource) | resource |
 | [aws_api_gateway_rest_api.api](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_rest_api) | resource |
+| [aws_api_gateway_stage.api_stage](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_stage) | resource |
 | [aws_cloudwatch_dashboard.chatbot_dashboard](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_dashboard) | resource |
 | [aws_cloudwatch_event_rule.lambda_invocation_rule](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_event_rule) | resource |
 | [aws_cloudwatch_event_target.lambda_target](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_event_target) | resource |

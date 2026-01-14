@@ -1,5 +1,5 @@
 terraform {
-  required_version = "~> 1.13.0"
+  required_version = "~> 1.14.3"
 
   backend "s3" {}
 
@@ -237,7 +237,7 @@ module "docs_redirect" {
     aws.us-east-1 = aws.us-east-1
   }
 
-  cloudfront_function_code = data.http.docs_redirect_cf_function_code.body
+  cloudfront_function_code = data.http.docs_redirect_cf_function_code.response_body
 
   environment = var.environment
   tags        = var.tags
@@ -274,6 +274,8 @@ module "langfuse" {
   region             = var.aws_region
   vpc_id             = module.cms.vpc.id
   private_subnet_ids = module.cms.vpc.private_subnets
+  web_salt           = "yIuodv61mg8Nchg0VzuVSKxRf2F+5R88/jybIRMeCUg="                     # generated-base64 with openssl rand -base64 32
+  encryption_key     = "d8e84722a8d90705670145236be10d4f94d3397ea49685154a4d02776ee1f33b" # generated-hex-key with openssl rand -hex 32
 }
 
 

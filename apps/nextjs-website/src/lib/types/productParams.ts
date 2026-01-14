@@ -1,3 +1,3 @@
 export type ProductParams = {
-  readonly params: { readonly productSlug: string };
+  readonly params: Promise<{ readonly productSlug: string }>;
 };

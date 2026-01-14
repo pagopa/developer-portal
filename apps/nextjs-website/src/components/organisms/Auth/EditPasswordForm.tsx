@@ -1,5 +1,4 @@
-import { ButtonNaked } from '@pagopa/mui-italia';
-import { Stack, Typography } from '@mui/material';
+import { Button, Stack, Typography } from '@mui/material';
 import { useState } from 'react';
 
 import { PasswordTextField } from './PasswordTextField';
@@ -69,16 +68,18 @@ export const EditPasswordForm = ({
 
   const actions = (
     <>
-      <ButtonNaked
-        color='primary'
-        sx={{ paddingLeft: 0, paddingRight: 0 }}
-        onClick={onCancel}
-      >
-        {t('changePassword.cancel')}
-      </ButtonNaked>
-      <ButtonNaked variant='contained' color='primary' onClick={handleSave}>
-        {t('changePassword.save')}
-      </ButtonNaked>
+      <>
+        <Button
+          color='primary'
+          sx={{ paddingLeft: 0, paddingRight: 0 }}
+          onClick={onCancel}
+        >
+          {t('changePassword.cancel')}
+        </Button>
+        <Button variant='contained' color='primary' onClick={handleSave}>
+          {t('changePassword.save')}
+        </Button>
+      </>
     </>
   );
 
