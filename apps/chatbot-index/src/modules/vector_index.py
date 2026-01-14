@@ -406,28 +406,3 @@ class DiscoveryVectorIndex:
             except Exception as e:
                 LOGGER.error(f"Error deleting documents in folder {folder_name}: {e}")
 
-    # def refresh_index(
-    #     self,
-    #     static_docs_to_update: List[Dict[str, str]],
-    #     static_docs_ids_to_delete: List[str],
-    # ) -> None:
-    #     """
-    #     Refreshes the vector index by updating static and dynamic documents.
-
-    #     Args:
-    #         static_docs_to_update (list[dict]): List of dictionaries containing document metadata to update.
-    #         static_docs_ids_to_delete (list[str]): List of document IDs to delete from the index.
-    #     """
-
-    #     self.index = self.get_index()
-    #     self.api_docs = get_api_docs()
-    #     self.static_metadata, self.dynamic_metadata = get_static_and_dynamic_metadata()
-
-    #     LOGGER.info("Refreshing vector index with API docs...")
-    #     self.refresh_index_api_docs()
-    #     LOGGER.info("Refreshing vector index with static docs...")
-    #     self.refresh_index_static_docs(static_docs_to_update, static_docs_ids_to_delete)
-
-    #     LOGGER.info("Refreshing vector index with dynamic docs...")
-    #     self.refresh_index_dynamic_docs()
-    #     LOGGER.info("Refreshing vector index successfully.")
