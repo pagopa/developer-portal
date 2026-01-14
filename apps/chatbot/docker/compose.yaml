@@ -239,6 +239,21 @@ services:
       retries: 10
       start_period: 5s
 
+  sqs-lambda-monitor-runner:
+    build:
+      context: ../../chatbot-monitor
+      dockerfile: ../chatbot-monitor/docker/sqs_lambda_monitor_runner.Dockerfile
+    command: python scripts/sqs_lambda_monitor_runner.py
+    environment:
+      - AWS_REGION=us-east-1
+      - AWS_ENDPOINT_URL=http://motoserver:3000
+      - SQS_QUEUE_NAME=chatbot-monitor-queue
+    volumes:
+      - ../../chatbot-monitor:/app
+    depends_on:
+      motoserver:
+        condition: service_started
+
 volumes:
   postgres_data:
     driver: local
