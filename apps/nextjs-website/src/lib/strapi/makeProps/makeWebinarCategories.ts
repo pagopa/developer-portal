@@ -3,7 +3,6 @@ import {
   StrapiWebinarCategory,
 } from '@/lib/strapi/types/webinarCategory';
 import { WebinarCategory } from '@/lib/types/webinarCategory';
-import { RootEntity } from '@/lib/strapi/types/rootEntity';
 
 export function makeWebinarCategoriesProps(
   strapiWebinarCategories: StrapiWebinarCategories

@@ -10,7 +10,6 @@ import {
   StrapiQuickStartGuides,
 } from '@/lib/strapi/types/quickStartGuides';
 import { compact } from 'lodash';
-import { RootEntity } from '@/lib/strapi/types/rootEntity';
 
 export type QuickStartGuidesPageProps = readonly QuickStartGuidePageProps[];
 

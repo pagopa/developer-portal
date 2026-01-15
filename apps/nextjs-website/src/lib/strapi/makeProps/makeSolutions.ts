@@ -4,7 +4,6 @@ import { SolutionTemplateProps } from '@/components/templates/SolutionTemplate/S
 import { StrapiSolutions } from '@/lib/strapi/types/solutions';
 import { makeWebinarProps } from '@/lib/strapi/makeProps/makeWebinars';
 import { compact } from 'lodash';
-import { RootEntity } from '@/lib/strapi/types/rootEntity';
 
 export function makeSolutionsProps(
   strapiSolutions: StrapiSolutions

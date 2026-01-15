@@ -7,7 +7,6 @@ import { RelatedLinksProps } from '@/components/atoms/RelatedLinks/RelatedLinks'
 import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
 import { StrapiTutorials } from '@/lib/strapi/types/tutorial';
 import { compact } from 'lodash';
-import { RootEntity } from '@/lib/strapi/types/rootEntity';
 
 export type TutorialProps = Tutorial & {
   readonly productSlug: string;

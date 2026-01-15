@@ -8,7 +8,6 @@ import { GuideCardProps } from '@/components/molecules/GuideCard/GuideCard';
 import { StrapiBaseGuide } from '@/lib/strapi/types/guide';
 import { compact } from 'lodash';
 import { StrapiGuideListPages } from '@/lib/strapi/types/guideListPage';
-import { RootEntity } from '@/lib/strapi/types/rootEntity';
 
 export function makeGuideListPagesProps(
   strapiGuideListPages: StrapiGuideListPages

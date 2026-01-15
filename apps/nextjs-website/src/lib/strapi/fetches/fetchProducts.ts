@@ -1,7 +1,6 @@
 import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
 import qs from 'qs';
 import { StrapiProducts } from '@/lib/strapi/types/product';
-import { RootEntity } from '@/lib/strapi/types/rootEntity';
 
 // TODO: divide this populate in more specific ones for query optimization
 export const productRelationsPopulate = {

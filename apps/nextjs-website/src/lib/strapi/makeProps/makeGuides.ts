@@ -5,7 +5,6 @@ import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
 import { makeBaseProductWithoutLogoProps } from './makeProducts';
 import { StrapiGuides } from '@/lib/strapi/types/guide';
 import { compact } from 'lodash';
-import { RootEntity } from '@/lib/strapi/types/rootEntity';
 
 export function makeGuidesProps(
   strapiGuides: StrapiGuides
