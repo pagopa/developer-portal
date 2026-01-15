@@ -331,7 +331,6 @@ class DiscoveryVectorIndex:
             None
         """
 
-        dynamic_metadata = get_dynamic_metadata(static_metadata)
         ref_doc_info = index.storage_context.docstore.get_all_ref_doc_info()
         ref_doc_ids = list(ref_doc_info.keys())
         dynamic_ref_doc_ids = [
@@ -339,6 +338,8 @@ class DiscoveryVectorIndex:
             for doc_id in ref_doc_ids
             if "/api/" not in doc_id and ".md" not in doc_id
         ]
+
+        dynamic_metadata = get_dynamic_metadata(static_metadata)
         dynamic_doc_ids = [
             item.url.replace(SETTINGS.website_url, "") for item in dynamic_metadata
         ]
