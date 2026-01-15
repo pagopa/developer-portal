@@ -237,7 +237,8 @@ const fetchReleaseNotes = async () => {
 export const getStrapiReleaseNotes = async (productSlug: string) => {
   const strapiReleaseNotes = await fetchReleaseNotes();
   return strapiReleaseNotes.data.find(
-    (x) => x.attributes.product.data?.attributes.slug === productSlug
+    (strapiReleaseNote) =>
+      strapiReleaseNote.attributes.product.data?.attributes.slug === productSlug
   );
 };
 
