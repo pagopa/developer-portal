@@ -1,5 +1,4 @@
-import { ButtonNaked } from '@pagopa/mui-italia';
-import { Stack, Typography } from '@mui/material';
+import { Button, Stack, Typography } from '@mui/material';
 import { useCallback, useState } from 'react';
 
 import { useTranslations } from 'next-intl';
@@ -68,16 +67,18 @@ const EditEmailForm = ({ onSave, onCancel }: EditEmailFormProps) => {
 
   const actions = (
     <>
-      <ButtonNaked
-        color='primary'
-        sx={{ paddingLeft: 0, paddingRight: 0 }}
-        onClick={onCancel}
-      >
-        {t('changeEmail.cancel')}
-      </ButtonNaked>
-      <ButtonNaked variant='contained' color='primary' onClick={handleSave}>
-        {t('changeEmail.save')}
-      </ButtonNaked>
+      <>
+        <Button
+          color='primary'
+          sx={{ paddingLeft: 0, paddingRight: 0 }}
+          onClick={onCancel}
+        >
+          {t('changeEmail.cancel')}
+        </Button>
+        <Button variant='contained' color='primary' onClick={handleSave}>
+          {t('changeEmail.save')}
+        </Button>
+      </>
     </>
   );
 
@@ -105,8 +106,10 @@ const EditEmailForm = ({ onSave, onCancel }: EditEmailFormProps) => {
         label={t('personalData.fields.email')}
         value={formValue.email}
         onChange={handleEmailChange}
-        helperText={t('changeEmail.wrongEmail')}
+        error={!!errors.email}
+        helperText={errors.email || t('changeEmail.wrongEmail')}
         customValidators={emailValidators}
+        InputProps={{ sx: { '& input': { fontWeight: 600 } } }}
         sx={{ marginBottom: { xs: 0, md: 3 } }}
       />
       <Stack

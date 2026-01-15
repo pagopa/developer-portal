@@ -20,7 +20,7 @@ export async function addArrayOfListToContact(event: {
         await new Promise((resolve) =>
           setTimeout(resolve, resyncTimeoutMilliseconds)
         ); // wait to avoid rate limiting
-      } catch (e) {
+      } catch {
         subscriptionsWithErrors.push(webinarSlug);
       }
     },

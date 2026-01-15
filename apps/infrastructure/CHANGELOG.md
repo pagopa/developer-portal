@@ -1,5 +1,15 @@
 # infrastructure
 
+## 7.1.0
+
+### Minor Changes
+
+- a660a7b: Fix terraform code since the apigateway deployment does not support anymore the attribute stage. Stage is a resource itself.
+- 320da57: Removed strapi api key env variable in lambda chatbot
+- a639266: New S3 trigger for lambda chatbot index: changes on file main-guide-versions-dirNames-to-remove.json
+- ecf7bb9: Temporary infra to host strapiv5 for testing
+- 5f5dc68: Update lambda env variables with new gemini models.
+
 ## 7.0.0
 
 ### Major Changes

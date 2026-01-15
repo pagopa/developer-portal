@@ -2,5 +2,8 @@
   "root": true,
   "extends": [
     "custom"
-  ]
+  ],
+  "rules": {
+    "@typescript-eslint/no-duplicate-enum-values": "off"
+  }
 }
