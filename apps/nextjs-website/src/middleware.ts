@@ -1,22 +1,25 @@
 /* eslint-disable functional/no-expression-statements */
 import { NextRequest, NextResponse } from 'next/server';
-import { i18nActive } from '@/config';
-
-const locales = ['en', 'it'];
+import { defaultLocale, i18nActive } from '@/config';
+import { SUPPORTED_LOCALES } from '@/locales';
 
 export function middleware(request: NextRequest) {
   if (!i18nActive) return;
 
   const { pathname } = request.nextUrl;
-  const pathnameHasLocale = locales.some(
-    (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`
+  const pathnameHasLocale = SUPPORTED_LOCALES.some(
+    (locale) =>
+      pathname.startsWith(`/${locale.code}/`) || pathname === `/${locale.code}`
   );
 
   if (pathnameHasLocale) return;
 
-  console.info(`Rewriting path ${pathname} to include default locale 'it'`);
+  const defaultLangCode = defaultLocale.split('-')[0];
+  console.info(
+    `Rewriting path ${pathname} to include default locale '${defaultLangCode}'`
+  );
   // eslint-disable-next-line functional/immutable-data
-  request.nextUrl.pathname = `/it${pathname}`;
+  request.nextUrl.pathname = `/${defaultLangCode}${pathname}`;
   return NextResponse.rewrite(request.nextUrl);
 }
 
