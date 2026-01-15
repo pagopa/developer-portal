@@ -12,7 +12,7 @@ export type StrapiApiDataListPage = {
   readonly description?: string;
   readonly product?: StrapiBaseProductWithRelations;
   readonly updatedAt: string;
-  readonly apiData: StrapiApiDataList;
+  readonly api_data: StrapiApiDataList;
   readonly bannerLinks: readonly StrapiBannerLink[];
   readonly seo?: StrapiSeo;
   readonly enableFilters?: boolean;
@@ -20,7 +20,7 @@ export type StrapiApiDataListPage = {
 
 export type StrapiApiDataListPageWithoutProduct = {
   readonly id: number;
-  readonly apiData: readonly Pick<
+  readonly api_data: readonly Pick<
     StrapiApiData,
     'apiRestDetail' | 'apiSoapDetail'
   >[];

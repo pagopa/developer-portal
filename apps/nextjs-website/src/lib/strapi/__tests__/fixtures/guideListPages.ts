@@ -118,7 +118,7 @@ export const strapiGuideListPagesData = {
         release_note: undefined,
         api_data_list_page: {
           id: 45,
-          apiData: [
+          api_data: [
             {
               apiRestDetail: undefined,
               apiSoapDetail: undefined,

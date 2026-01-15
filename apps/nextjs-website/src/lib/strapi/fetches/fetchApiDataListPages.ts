@@ -7,7 +7,7 @@ import { RootEntity } from '@/lib/strapi/types/rootEntity';
 const makeStrapiApiDataListPagePopulate = () =>
   qs.stringify({
     populate: {
-      apiData: {
+      api_data: {
         populate: {
           apiRestDetail: {
             populate: '*',

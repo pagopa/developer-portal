@@ -30,6 +30,7 @@ export const fetchFromStrapi = <T>(path: string, populate: string) =>
             E.toError
           ),
           TE.chain((response) => {
+            console.log('Url ---> ',`${strapiEndpoint}/api/${path}/?${populate}`)
             if (response.status === 200) {
               return TE.tryCatch(() => response.json(), E.toError);
             } else {

@@ -24,7 +24,7 @@ export const strapiOverviews = {
         quickstart_guide: 2,
         api_data_list_page: {
           id: 3,
-          apiData: [
+          api_data: [
             {
               apiRestDetail: {
                 slug: 'api-rest',

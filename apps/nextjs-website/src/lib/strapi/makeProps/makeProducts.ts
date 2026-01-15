@@ -49,14 +49,14 @@ function getApiDataListPageUrl(
 ): string | undefined {
   const apiDataList = product.api_data_list_page;
   // if there is no api data, return undefined
-  if (!apiDataList || apiDataList.apiData.length === 0) return;
+  if (!apiDataList || apiDataList.api_data.length === 0) return;
 
   const productSlug = product.slug;
-  const apiData = apiDataList.apiData[0];
+  const apiData = apiDataList.api_data[0];
 
   if (
     apiDataList &&
-    apiDataList.apiData.length === 1 &&
+    apiDataList.api_data.length === 1 &&
     apiData.apiRestDetail?.slug
   ) {
     return `/${productSlug}/api/${apiData.apiRestDetail.slug}`;
@@ -80,7 +80,7 @@ export function makeBaseProductWithoutLogoProps(
     isVisible: product.isVisible,
     hasApiDataListPage: !!(
       product.api_data_list_page &&
-      product.api_data_list_page.apiData.length > 0
+      product.api_data_list_page.api_data.length > 0
     ),
     hasGuideListPage: !!product.guide_list_page,
     hasOverviewPage: !!product.overview,

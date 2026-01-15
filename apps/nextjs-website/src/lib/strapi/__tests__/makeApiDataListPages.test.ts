@@ -45,7 +45,7 @@ describe('makeApiDataListPagesProps', () => {
     expect(firstElement.cards).toHaveLength(1);
     expect(firstElement.cards[0].title).toBe('Minimal API');
     expect(firstElement.cards[0].icon).toBe('');
-    expect(firstElement.apiData).toBeDefined();
+    expect(firstElement.api_data).toBeDefined();
   });
 
   it('should handle empty data array', () => {

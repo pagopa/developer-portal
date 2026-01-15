@@ -61,14 +61,14 @@ export function makeApiDataListPagesProps(
           },
           product,
           apiDetailSlugs: compact(
-            attributes.apiData.map((attributes) =>
+            attributes.api_data.map((attributes) =>
               attributes.apiRestDetail
                 ? attributes.apiRestDetail.slug
                 : attributes.apiSoapDetail?.slug
             )
           ),
           cards: compact(
-            attributes.apiData.map((item) =>
+            attributes.api_data.map((item) =>
               makeApiDataListPageCard(item, slug)
             )
           ),

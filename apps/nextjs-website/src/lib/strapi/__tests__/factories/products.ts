@@ -53,7 +53,7 @@ export function productWithMultipleApiData(): readonly StrapiProduct[] {
       ...strapiProduct,
       api_data_list_page: {
         id: 1,
-        apiData: [
+        api_data: [
           {
             apiRestDetail: {
               slug: 'api-detail-1',
@@ -79,7 +79,7 @@ export function productWithEmptyApiData(): readonly StrapiProduct[] {
       ...strapiProduct,
       api_data_list_page: {
         id: 1,
-        apiData: [],
+        api_data: [],
       },
     },
   ];

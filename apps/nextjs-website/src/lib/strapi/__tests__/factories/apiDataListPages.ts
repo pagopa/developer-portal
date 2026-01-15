@@ -10,7 +10,7 @@ export function minimalApiDataListPages(): StrapiApiDataListPages {
       description: undefined,
       seo: undefined,
       bannerLinks: [],
-      apiData: [
+      api_data: [
         {
           id: 1,
           title: 'Minimal API',
@@ -35,7 +35,7 @@ export function apiDataListPageWithEmptyApiData(): StrapiApiDataListPages {
     {
       ...page,
       title: 'Empty API List Page',
-      apiData: [],
+      api_data: [],
     },
   ];
 }
@@ -46,7 +46,7 @@ export function apiDataListPageWithMixedApiTypes(): StrapiApiDataListPages {
     {
       ...page,
       title: 'Mixed API Types Page',
-      apiData: [
+      api_data: [
         // Valid REST API
         {
           id: 1,
@@ -108,7 +108,7 @@ export function apiDataListPageWithInvalidApiData(): StrapiApiDataListPages {
     {
       ...page,
       title: 'Invalid API Data Page',
-      apiData: [
+      api_data: [
         {
           id: 1,
           bannerLinks: [],
@@ -147,7 +147,7 @@ export function multipleApiDataListPages(): StrapiApiDataListPages {
       id: 2,
       title: 'Second API List Page',
       description: 'Another API list page',
-      apiData: [
+      api_data: [
         {
           id: 10,
           bannerLinks: [],
@@ -175,7 +175,7 @@ export function apiDataListPageWithBothRestAndSoap(): StrapiApiDataListPages {
   return [
     {
       ...page,
-      apiData: [
+      api_data: [
         {
           id: 1,
           bannerLinks: [],

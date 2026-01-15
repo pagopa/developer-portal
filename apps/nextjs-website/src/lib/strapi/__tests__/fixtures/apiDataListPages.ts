@@ -24,7 +24,7 @@ export const strapiApiDataListPages: StrapiApiDataListPages = [
       quickstart_guide: 1,
       api_data_list_page: {
         id: 1,
-        apiData: [],
+        api_data: [],
       },
       guide_list_page: 1,
       tutorial_list_page: 1,
@@ -32,7 +32,7 @@ export const strapiApiDataListPages: StrapiApiDataListPages = [
       use_case_list_page: 1,
       tags: [],
     },
-    apiData: [
+    api_data: [
       {
         id: 1,
         bannerLinks: [],
@@ -102,14 +102,14 @@ export const expectedApiDataListPageProps: ReadonlyArray<ApiDataListPageTemplate
           text: 'Main SEND API for delivery notifications',
           icon: 'https://example.com/example.jpg',
           href: '/send/api/send-main',
-          labels: [{ label: 'REST' }],
+          labels: [{label: 'REST'}],
         },
         {
           title: 'SEND SOAP API',
           text: 'SOAP API for legacy integrations',
           icon: 'https://example.com/soap-icon.svg',
           href: '/send/api/send-soap',
-          labels: [{ label: 'SOAP' }],
+          labels: [{label: 'SOAP'}],
         },
       ],
       bannerLinks: expect.any(Array),
@@ -118,6 +118,6 @@ export const expectedApiDataListPageProps: ReadonlyArray<ApiDataListPageTemplate
         metaDescription: 'Complete documentation for SEND APIs',
       },
       updatedAt: '2024-01-02T00:00:00.000Z',
-      apiData: expect.any(Array),
+      api_data: expect.any(Array),
     },
   ];

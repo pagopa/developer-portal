@@ -125,7 +125,7 @@ export function productWithAllRelations(): StrapiProduct {
     quickstart_guide: 2,
     api_data_list_page: {
       id: 10,
-      apiData: [
+      api_data: [
         {
           apiRestDetail: {
             slug: 'test-api',
