@@ -2,4 +2,4 @@
 "nextjs-website": minor
 ---
 
-Update guide fetch from cdn to use multiple metadata files
+Update Guide, Solutions and Release-notes fetchFromCdn to use multiple metadata files
