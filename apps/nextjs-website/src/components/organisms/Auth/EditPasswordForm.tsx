@@ -1,9 +1,10 @@
-import { Button, Stack, Typography } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 import { useState } from 'react';
 
 import { PasswordTextField } from './PasswordTextField';
 import { useTranslations } from 'next-intl';
 import { passwordMatcher } from '@/helpers/auth.helpers';
+import { ButtonNaked } from '@/components/atoms/ButtonNaked/ButtonNaked';
 
 type EditPasswordFormProps = {
   // eslint-disable-next-line functional/no-return-void
@@ -68,18 +69,16 @@ export const EditPasswordForm = ({
 
   const actions = (
     <>
-      <>
-        <Button
-          color='primary'
-          sx={{ paddingLeft: 0, paddingRight: 0 }}
-          onClick={onCancel}
-        >
-          {t('changePassword.cancel')}
-        </Button>
-        <Button variant='contained' color='primary' onClick={handleSave}>
-          {t('changePassword.save')}
-        </Button>
-      </>
+      <ButtonNaked
+        color='primary'
+        sx={{ paddingLeft: 0, paddingRight: 0 }}
+        onClick={onCancel}
+      >
+        {t('changePassword.cancel')}
+      </ButtonNaked>
+      <ButtonNaked variant='contained' color='primary' onClick={handleSave}>
+        {t('changePassword.save')}
+      </ButtonNaked>
     </>
   );
 

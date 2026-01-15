@@ -1,6 +1,7 @@
 import ConfirmationModal from '@/components/atoms/ConfirmationModal/ConfirmationModal';
 import { DevPortalUser } from '@/lib/types/auth';
-import { Box, Button, Typography, useTheme } from '@mui/material';
+import { Box, Typography, useTheme } from '@mui/material';
+import { ButtonNaked } from '@/components/atoms/ButtonNaked/ButtonNaked';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import { useCallback, useState } from 'react';
@@ -64,7 +65,7 @@ const DeleteSection = ({ user }: DeleteSectionProps) => {
           {t('personalData.deleteAccount.sectionLabel')}
         </Typography>
         <Box sx={{ margin: 0, padding: 0 }}>
-          <Button
+          <ButtonNaked
             component={'button'}
             onClick={() => setOpenDeleteModal(true)}
             color='error'
@@ -72,7 +73,7 @@ const DeleteSection = ({ user }: DeleteSectionProps) => {
             sx={{ whiteSpace: 'nowrap', color: palette.error.dark }}
           >
             {t('personalData.deleteAccount.buttonLabel')}
-          </Button>
+          </ButtonNaked>
         </Box>
         <ConfirmationModal
           title={t('personalData.deleteAccount.modalTitle')}
