@@ -26,37 +26,7 @@ const productRelationsPopulate = {
 };
 
 const webinarPopulate = {
-  populate: {
-    coverImage: {
-      populate: ['image'],
-    },
-    webinarSpeakers: {
-      populate: ['avatar'],
-    },
-    relatedLinks: {
-      populate: ['links'],
-    },
-    relatedResources: {
-      populate: {
-        resources: {
-          populate: ['image'],
-        },
-        downloadableDocuments: {
-          populate: '*',
-        },
-      },
-    },
-    seo: {
-      populate: '*',
-    },
-    questionsAndAnswers: '*',
-    webinarCategory: {
-      populate: ['icon'],
-    },
-    headerImage: {
-      populate: ['image'],
-    },
-  },
+  populate: '*',
 };
 
 const guidesPopulate = {
@@ -81,18 +51,18 @@ const guidesQueryParams = {
 const releaseNotesPopulate = {
   populate: {
     bannerLinks: {
-      populate: ['icon'],
+      populate: ['*'],
     },
     product: {
       populate: [
         'logo',
-        'bannerLinks.icon',
+        'bannerLinks',
         'overview',
         'quickstart_guide',
         'release_note',
         'api_data_list_page',
         'api_data_list_page.api_data',
-        'api_data_list_page.api_data.apiRestDetail.slug',
+        'api_data_list_page.api_data.apiRestDetail',
         'api_data_list_page.api_data.apiRestDetail.specUrls',
         'api_data_list_page.api_data.apiSoapDetail',
         'guide_list_page',
@@ -113,21 +83,25 @@ const releaseNotesQueryParams = {
 
 const solutionsPopulate = {
   populate: {
-    icon: 'icon',
+    icon: {
+      populate: '*',
+    },
     stats: '*',
     steps: {
       populate: {
-        products: '*',
+        products: {
+          populate: '*',
+        },
       },
     },
     seo: {
       populate: '*',
     },
     products: {
-      populate: ['logo'],
+      populate: '*',
     },
     bannerLinks: {
-      populate: ['icon'],
+      populate: ['*'],
     },
     webinars: {
       ...webinarPopulate,
@@ -183,7 +157,7 @@ const guideListPagesPopulate = {
       },
     },
     bannerLinks: {
-      populate: ['icon'],
+      populate: ['*'],
     },
     seo: {
       populate: '*',
@@ -201,10 +175,8 @@ const solutionListPagePopulate = {
     solutions: {
       populate: [
         'bannerLinks',
-        'bannerLinks.icon',
         'products.logo',
         'icon',
-        'icon.name',
         'stats',
         'steps',
         'steps.products',
