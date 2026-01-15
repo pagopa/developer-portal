@@ -8,10 +8,9 @@ module "codebuild" {
   #environment = merge(var.environment_information, { env_short = var.environment })
 
   environment = {
-    prefix          = "dx"
+    prefix          = "devportal"
     env_short       = var.environment
     region          = "eu-south-1"
-    domain          = "modules"
     app_name        = "developer-portal"
     instance_number = "01"
   }
