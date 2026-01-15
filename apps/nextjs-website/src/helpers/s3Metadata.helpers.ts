@@ -230,11 +230,6 @@ export const getSolutionsMetadata = async (dirName?: string) => {
     return solutionsMetadataCache;
   }
 
-  await fetchMetadataFromCDN<JsonMetadata>(
-    dirName
-      ? path.join(S3_PATH_TO_GITBOOK_DOCS, dirName, S3_METADATA_JSON_PATH)
-      : S3_METADATA_JSON_PATH
-  );
   solutionsMetadataCache = await fetchMetadataFromCDN<JsonMetadata>(
     dirName
       ? path.join(S3_PATH_TO_GITBOOK_DOCS, dirName, S3_METADATA_JSON_PATH)
