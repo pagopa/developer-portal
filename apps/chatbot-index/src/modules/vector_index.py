@@ -21,8 +21,8 @@ from tqdm import tqdm
 
 from src.modules.logger import get_logger
 from src.modules.documents import (
+    StaticMetadata,
     get_documents,
-    get_static_metadata,
     get_dynamic_metadata,
     get_api_docs,
     get_static_docs,
@@ -292,7 +292,7 @@ class DiscoveryVectorIndex:
     def refresh_index_static_docs(
         self,
         index: VectorStoreIndex,
-        static_docs_to_update: List[Dict[str, str]],
+        static_docs_to_update: List[StaticMetadata],
         static_docs_ids_to_delete: List[str],
     ) -> None:
         """
@@ -300,19 +300,13 @@ class DiscoveryVectorIndex:
 
         Args:
             index (VectorStoreIndex): The vector store index instance.
-            static_docs_to_update (list[dict]): List of dictionaries containing document metadata to update.
+            static_docs_to_update (list[StaticMetadata]): List of StaticMetadata objects containing document metadata to update.
             static_docs_ids_to_delete (list[str]): List of document IDs to delete from the index.
         Returns:
             None
         """
 
-        static_metadata = get_static_metadata()
-        static_docs_to_update_filtered = []
-        for doc in static_docs_to_update:
-            if doc in static_metadata:
-                static_docs_to_update_filtered.append(doc)
-
-        docs_to_update = get_static_docs(static_docs_to_update_filtered)
+        docs_to_update = get_static_docs(static_docs_to_update)
 
         LOGGER.info("Refreshing vector index with static docs...")
         if docs_to_update:
@@ -327,12 +321,12 @@ class DiscoveryVectorIndex:
                 LOGGER.error(f"Error deleting Static Documents: {e}")
 
     def refresh_index_dynamic_docs(
-        self, index: VectorStoreIndex, static_metadata: List[dict]
+        self, index: VectorStoreIndex, static_metadata: List[StaticMetadata]
     ) -> None:
         """
         Refreshes the vector index by updating dynamic documents and removing obsolete ones.
         Args:
-            static_metadata (list[dict]): List of dictionaries containing static document metadata.
+            static_metadata (list[StaticMetadata]): List of StaticMetadata objects containing static document metadata.
         Returns:
             None
         """
@@ -346,7 +340,7 @@ class DiscoveryVectorIndex:
             if "/api/" not in doc_id and ".md" not in doc_id
         ]
         dynamic_doc_ids = [
-            item["url"].replace(SETTINGS.website_url, "") for item in dynamic_metadata
+            item.url.replace(SETTINGS.website_url, "") for item in dynamic_metadata
         ]
 
         dynamic_docs_to_update = []
@@ -354,8 +348,8 @@ class DiscoveryVectorIndex:
 
         LOGGER.info("Refreshing vector index with dynamic docs...")
         for item in dynamic_metadata:
-            doc_id = item["url"].replace(SETTINGS.website_url, "")
-            lastmod = item["lastmod"]
+            doc_id = item.url.replace(SETTINGS.website_url, "")
+            lastmod = item.lastmod
 
             if doc_id in ref_doc_ids:
                 last_mod_ref_doc_info = ref_doc_info[doc_id].metadata["lastmod"]

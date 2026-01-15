@@ -4,8 +4,10 @@ from typing import Tuple, List, Dict
 from src.modules.settings import SETTINGS
 from src.modules.logger import get_logger
 from src.modules.documents import (
+    StaticMetadata,
+    get_folders_list,
     read_file_from_s3,
-    get_metadata_from_s3,
+    get_one_metadata_from_s3,
 )
 from src.modules.vector_index import DiscoveryVectorIndex
 
@@ -58,10 +60,16 @@ DIRNAMES_TO_REMOVE_PATH = "main-guide-versions-dirNames-to-remove.json"
 """
 
 
-def read_payload(payload: dict) -> Tuple[List[Dict[str, str]], List[str]]:
-
-    all_metadata = get_metadata_from_s3()
-    s3_paths = [metadata.get("contentS3Path") for metadata in all_metadata]
+def read_payload(payload: dict) -> Tuple[List[StaticMetadata], List[str], List[str]]:
+    """Reads the S3 event payload and extracts the necessary information for updating the index.
+    Args:
+        payload (dict): The S3 event payload.
+    Returns:
+        Tuple[List[StaticMetadata], List[str], List[str]]: A tuple containing three elements:
+            - A list of StaticMetadata objects to update in the index.
+            - A list of S3 object keys to delete from the index.
+            - A list of directory names to remove from the index.
+    """
 
     static_docs_to_update = []
     static_docs_ids_to_delete = []
@@ -76,16 +84,27 @@ def read_payload(payload: dict) -> Tuple[List[Dict[str, str]], List[str]]:
 
         if event_action == "ObjectCreated":
             try:
-                idx = s3_paths.index(object_key)
-                doc_info = all_metadata[idx]
+                folders_list = get_folders_list()
+                metadata = get_one_metadata_from_s3(
+                    object_key.split("/")[
+                        2
+                    ],  # "devportal-docs/docs/<folder_name>/.../file.md"
+                    folders_list=folders_list,
+                )
+
+                # all_metadata = get_metadata_from_s3()
+                # s3_paths = [metadata.get("contentS3Path") for metadata in all_metadata]
+                # idx = s3_paths.index(object_key)
+                # doc_info = all_metadata[idx]
 
                 static_docs_to_update.append(
-                    {
-                        "url": SETTINGS.website_url + doc_info.get("path"),
-                        "s3_file_path": doc_info.get("contentS3Path"),
-                        "title": doc_info.get("title"),
-                    }
+                    StaticMetadata(
+                        url=SETTINGS.website_url + metadata.get("path"),
+                        s3_file_path=metadata.get("contentS3Path"),
+                        title=metadata.get("title"),
+                    )
                 )
+
             except Exception as e:
                 LOGGER.warning(
                     f"File {object_key} not in metadata files. Skipping because {e}"
