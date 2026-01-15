@@ -136,9 +136,7 @@ def read_payload(payload: dict) -> Tuple[List[StaticMetadata], List[str], List[s
             LOGGER.info(f"Unhandled event type: {event_name}")
 
     # Remove eventual duplicates
-    static_docs_to_update = [
-        dict(t) for t in set(tuple(d.items()) for d in static_docs_to_update)
-    ]
+    static_docs_to_update = list({m.url: m for m in static_docs_to_update}.values())
     static_docs_ids_to_delete = list(set(static_docs_ids_to_delete))
     dirnames_to_remove = list(set(dirnames_to_remove))
 
