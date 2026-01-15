@@ -27,6 +27,8 @@ services:
         condition: service_started
       evaluate:
         condition: service_started
+      monitor:
+        condition: service_started
 
   evaluate:
     build:
@@ -35,12 +37,12 @@ services:
     env_file: ../.env.local
     environment:
       - PYTHONPATH=/var/task
-    ports:
-      - "8081:8080"
+    #    ports:
+    #      - "8081:8080"
     volumes:
       - ../chatbot-evaluate:/app
-    entrypoint: ["/usr/local/bin/aws-lambda-rie", "python3"]
-    command: ["-m", "awslambdaric", "src.lambda_function.lambda_handler"]
+    entrypoint: [ "/usr/local/bin/aws-lambda-rie", "python3" ]
+    command: [ "-m", "awslambdaric", "src.lambda_function.lambda_handler" ]
 
   refresh-index:
     platform: linux/amd64
@@ -50,8 +52,8 @@ services:
     env_file: ../../chatbot-index/.env.local
     environment:
       - PYTHONPATH=/var/task
-    ports:
-      - "8082:8080"
+    #   ports:
+    #     - "8082:8080"
     volumes:
       - ../chatbot-index:/app
     depends_on:
@@ -59,8 +61,8 @@ services:
         condition: service_started
       redis:
         condition: service_started
-    entrypoint: ["/usr/local/bin/aws-lambda-rie", "python3"]
-    command: ["-m", "awslambdaric", "src.lambda_refresh_index.lambda_handler"]
+    entrypoint: [ "/usr/local/bin/aws-lambda-rie", "python3" ]
+    command: [ "-m", "awslambdaric", "src.lambda_refresh_index.lambda_handler" ]
 
   create-index:
     build:
@@ -75,15 +77,30 @@ services:
       redis:
         condition: service_started
 
+  monitor:
+    build:
+      context: ../../chatbot-monitor
+      dockerfile: ../chatbot-monitor/docker/lambda_monitor.Dockerfile
+    env_file: ../.env.local
+    environment:
+      - PYTHONPATH=/var/task
+    #    ports:
+    #      - "8083:8080"
+    volumes:
+      - ../chatbot-monitor:/app
+      - ./files/.aws:/root/.aws
+    entrypoint: [ "/usr/local/bin/aws-lambda-rie", "python3" ]
+    command: [ "-m", "awslambdaric", "src.lambda_function.lambda_handler" ]
+
   postgres:
     image: postgres:17.2-alpine
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
       interval: 3s
       timeout: 3s
       retries: 10
-    ports:
-      - "5432:5432"
+    #    ports:
+    #      - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     env_file: ../.env.local
@@ -97,11 +114,11 @@ services:
 
   redis:
     image: redis/redis-stack:7.2.0-v13
-    ports:
-      - "6379:6379"
-      - "8001:8001"
+    #    ports:
+    #      - "6379:6379"
+    #      - "8001:8001"
     healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
+      test: [ "CMD", "redis-cli", "ping" ]
       interval: 3s
       timeout: 10s
       retries: 10
@@ -117,12 +134,7 @@ services:
     volumes:
       - redis_data:/data
       - ./files/redis-data/redis-dump.rdb:/seed/dump.rdb:ro
-    command:
-      [
-        "sh",
-        "-c",
-        "if [ -f /seed/dump.rdb ]; then cp -a /seed/dump.rdb /data/dump.rdb && chown redis:redis /data/dump.rdb 2>/dev/null || chown 1000:1000 /data/dump.rdb || true; fi",
-      ]
+    command: [ "sh", "-c", "if [ -f /seed/dump.rdb ]; then cp -a /seed/dump.rdb /data/dump.rdb && chown redis:redis /data/dump.rdb 2>/dev/null || chown 1000:1000 /data/dump.rdb || true; fi" ]
     restart: "no"
 
   redis-fix-perms:
@@ -134,12 +146,7 @@ services:
     depends_on:
       redis-seed:
         condition: service_completed_successfully
-    command:
-      [
-        "sh",
-        "-c",
-        "chown -R redis:redis /data 2>/dev/null || chown -R 1000:1000 /data || true",
-      ]
+    command: [ "sh", "-c", "chown -R redis:redis /data 2>/dev/null || chown -R 1000:1000 /data || true" ]
     restart: "no"
 
   jupyter:
@@ -164,9 +171,9 @@ services:
     command: jupyter-lab --no-browser --allow-root --ip=0.0.0.0
 
   motoserver:
-    image: motoserver/moto:5.1.14
+    image: motoserver/moto:5.1.19
     environment:
-      - MOTO_PORT=3002
+      - MOTO_PORT=5000
 
   langfuse-worker:
     image: docker.io/langfuse/langfuse-worker:3.115
@@ -224,7 +231,7 @@ services:
     volumes:
       - langfuse_minio_data:/data
     healthcheck:
-      test: ["CMD", "mc", "ready", "local"]
+      test: [ "CMD", "mc", "ready", "local" ]
       interval: 1s
       timeout: 5s
       retries: 5
@@ -233,25 +240,23 @@ services:
   valkey:
     image: valkey/valkey:8.1.4-alpine3.22
     healthcheck:
-      test: ["CMD", "valkey-cli", "ping"]
+      test: [ "CMD", "valkey-cli", "ping" ]
       interval: 3s
       timeout: 10s
       retries: 10
       start_period: 5s
 
-  sqs-lambda-monitor-runner:
+  sqs_to_lambda:
     build:
       context: ../../chatbot-monitor
-      dockerfile: ../chatbot-monitor/docker/sqs_lambda_monitor_runner.Dockerfile
-    command: python scripts/sqs_lambda_monitor_runner.py
-    environment:
-      - AWS_REGION=us-east-1
-      - AWS_ENDPOINT_URL=http://motoserver:3000
-      - SQS_QUEUE_NAME=chatbot-monitor-queue
+      dockerfile: ../chatbot-monitor/docker/sqs_to_lambda.Dockerfile
+    env_file: ../.env.local
+    command: python scripts/sqs_to_lambda.py
     volumes:
       - ../../chatbot-monitor:/app
+      - ./files/.aws:/root/.aws
     depends_on:
-      motoserver:
+      api:
         condition: service_started
 
 volumes:

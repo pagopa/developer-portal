@@ -6,7 +6,7 @@ from pydantic_settings import BaseSettings
 
 from src.modules.logger import get_logger
 
-LOGGER = get_logger(__name__)
+LOGGER = get_logger(__name__, level=os.getenv("LOG_LEVEL", "info"))
 CWF = Path(__file__)
 ROOT = CWF.parent.parent.parent.absolute().__str__()
 PARAMS = yaml.safe_load(open(os.path.join(ROOT, "config", "params.yaml"), "r"))
@@ -54,6 +54,7 @@ class ChatbotSettings(BaseSettings):
     )
     presidio_config: dict = PARAMS["config_presidio"]
     query_table_prefix: str = os.getenv("CHB_QUERY_TABLE_PREFIX", "chatbot")
+    log_level: str = os.getenv("LOG_LEVEL", "info")
 
 
 SETTINGS = ChatbotSettings()
