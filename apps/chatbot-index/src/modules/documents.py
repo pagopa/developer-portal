@@ -503,7 +503,7 @@ def get_static_docs(static_metadata: List[StaticMetadata]) -> List[Document]:
 
             static_docs.append(
                 Document(
-                    id_=item["s3_file_path"],
+                    id_=item.s3_file_path,
                     text=text,
                     metadata={
                         "filepath": url.replace(SETTINGS.website_url, ""),
@@ -514,7 +514,7 @@ def get_static_docs(static_metadata: List[StaticMetadata]) -> List[Document]:
             )
         else:
             LOGGER.warning(
-                f"Discarded reading {item['s3_file_path']} due to empty content."
+                f"Discarded reading {item.s3_file_path} due to empty content."
             )
 
     return static_docs
