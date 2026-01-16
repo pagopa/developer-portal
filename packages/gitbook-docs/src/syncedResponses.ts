@@ -1,15 +1,14 @@
 export const getSyncedGuidesResponseJsonPath = () =>
-  process.env.SYNCED_GUIDES_RESPONSE_JSON_PATH || 'synced-guides-response.json';
+  'synced-guides-response.v5.json';
 
 export const getSyncedSolutionsResponseJsonPath = () =>
-  'synced-solutions-response.json';
+  'synced-solutions-response.v5.json';
 
 export const getSyncedReleaseNotesResponseJsonPath = () =>
-  'synced-release-notes-response.json';
+  'synced-release-notes-response.v5.json';
 
 export const getSyncedProductsResponseJsonPath = () =>
-  process.env.S3_PRODUCTS_METADATA_JSON_PATH || 'synced-products-response.json';
+  'synced-products-response.v5.json';
 
 export const getSyncedApisDataResponseJsonPath = () =>
-  process.env.S3_APIS_DATA_METADATA_JSON_PATH ||
-  'synced-apis-data-response.json';
+  'synced-apis-data-response.v5.json';
