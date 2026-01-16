@@ -91,12 +91,13 @@ def read_payload(payload: dict) -> Tuple[List[StaticMetadata], List[str], List[s
                     ],  # "devportal-docs/docs/<folder_name>/.../file.md"
                     folders_list=folders_list,
                 )
-
+                s3_paths = [m["contentS3Path"] for m in metadata]
+                idx = s3_paths.index(object_key)
                 static_docs_to_update.append(
                     StaticMetadata(
-                        url=SETTINGS.website_url + metadata.get("path"),
-                        s3_file_path=metadata.get("contentS3Path"),
-                        title=metadata.get("title"),
+                        url=SETTINGS.website_url + metadata[idx].get("path"),
+                        s3_file_path=metadata[idx].get("contentS3Path"),
+                        title=metadata[idx].get("title"),
                     )
                 )
 
