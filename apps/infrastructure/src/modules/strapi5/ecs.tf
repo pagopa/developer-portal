@@ -55,7 +55,7 @@ resource "aws_ecs_task_definition" "cms_task_def" {
 }
 
 module "cms_ecs_service" {
-  source = "git::https://github.com/terraform-aws-modules/terraform-aws-ecs.git//modules/service?ref=8b97783def49997d18a6fcb00dc21ce1edc0f538" # v5.9.0
+  source = "git::https://github.com/terraform-aws-modules/terraform-aws-ecs.git//modules/service?ref=378d0cb7e8fde47e8ddf58461ed1974486dbbd5d" # v7.1.0
 
   name                           = "cms-ecs-v5"
   cluster_arn                    = data.aws_ecs_cluster.cms_ecs_cluster.arn

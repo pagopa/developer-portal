@@ -32,7 +32,7 @@
     "dompurify": "^3.2.5",
     "fp-ts": "^2.13.1",
     "gitbook-docs": "*",
-    "isomorphic-dompurify": "^2.24.0",
+    "isomorphic-dompurify": "2.24.0",
     "jsdom": "^25.0.0",
     "mermaid": "^10.9.4",
     "monocle-ts": "^2.3.13",

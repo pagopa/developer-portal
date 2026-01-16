@@ -5,6 +5,9 @@ import DesktopUserInfo from '@/components/atoms/DesktopUserInfo/DesktopUserInfo'
 import React from 'react';
 import { SiteHeaderProps } from '@/components/molecules/SiteHeader/SiteHeader';
 import { useTranslations } from 'next-intl';
+import LanguageSelector from '@/components/atoms/LanguageSelector/LanguageSelector';
+import { i18nActive } from '@/config';
+import { SUPPORTED_LOCALES } from '../../../locales';
 
 const DesktopSiteHeader = ({ currentLocale, products }: SiteHeaderProps) => {
   const t = useTranslations('devPortal');
@@ -26,6 +29,11 @@ const DesktopSiteHeader = ({ currentLocale, products }: SiteHeaderProps) => {
           href: `/${currentLocale}/${product.slug}/overview`,
           label: product.name,
         }))}
+        menuStyle={{
+          sx: {
+            marginTop: '17px',
+          },
+        }}
       />
       <LinkMui
         component={Link}
@@ -46,6 +54,12 @@ const DesktopSiteHeader = ({ currentLocale, products }: SiteHeaderProps) => {
         {t('siteHeader.webinars')}
       </LinkMui>
       <DesktopUserInfo />
+      {i18nActive && (
+        <LanguageSelector
+          locales={SUPPORTED_LOCALES}
+          currentLocale={currentLocale}
+        />
+      )}
     </Box>
   );
 };
