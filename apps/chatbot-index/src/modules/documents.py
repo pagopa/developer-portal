@@ -124,7 +124,7 @@ def get_one_metadata_from_s3(
     folders_list: List[str],
     docs_parent_folder: str | None = None,
     bucket_name: str | None = None,
-) -> Dict[str, str]:
+) -> List[Dict[str, str]]:
     """
     Reads a single metadata file from S3 bucket.
     Args:
@@ -145,7 +145,7 @@ def get_one_metadata_from_s3(
             os.path.join(docs_parent_folder, folder_name, "metadata.json")
         )
         try:
-            folder_metadata = json.loads(s3_content)[0] if s3_content else {}
+            folder_metadata = json.loads(s3_content) if s3_content else {}
         except Exception as e:
             LOGGER.warning(
                 f"Failed to decode metadata.json in folder {docs_parent_folder}/{folder_name}: {e}"
