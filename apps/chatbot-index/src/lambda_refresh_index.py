@@ -83,31 +83,32 @@ def read_payload(payload: dict) -> Tuple[List[StaticMetadata], List[str], List[s
         event_action = event_name.split(":")[0]
 
         if event_action == "ObjectCreated":
-            try:
-                folders_list = get_folders_list()
-                metadata = get_one_metadata_from_s3(
-                    object_key.split("/")[
-                        2
-                    ],  # "devportal-docs/docs/<folder_name>/.../file.md"
-                    folders_list=folders_list,
-                )
-                s3_paths = [m["contentS3Path"] for m in metadata]
-                idx = s3_paths.index(object_key)
-                static_docs_to_update.append(
-                    StaticMetadata(
-                        url=SETTINGS.website_url + metadata[idx].get("path"),
-                        s3_file_path=metadata[idx].get("contentS3Path"),
-                        title=metadata[idx].get("title"),
+            if object_key != DIRNAMES_TO_REMOVE_PATH:
+                try:
+                    folders_list = get_folders_list()
+                    metadata = get_one_metadata_from_s3(
+                        object_key.split("/")[
+                            2
+                        ],  # "devportal-docs/docs/<folder_name>/.../file.md"
+                        folders_list=folders_list,
                     )
-                )
+                    s3_paths = [m["contentS3Path"] for m in metadata]
+                    idx = s3_paths.index(object_key)
+                    static_docs_to_update.append(
+                        StaticMetadata(
+                            url=SETTINGS.website_url + metadata[idx].get("path"),
+                            s3_file_path=metadata[idx].get("contentS3Path"),
+                            title=metadata[idx].get("title"),
+                        )
+                    )
 
-            except Exception as e:
-                LOGGER.warning(
-                    f"File {object_key} not in metadata files. Skipping because {e}"
-                )
-                continue
+                except Exception as e:
+                    LOGGER.warning(
+                        f"File {object_key} not in metadata files. Skipping because {e}"
+                    )
+                    continue
 
-            if object_key == DIRNAMES_TO_REMOVE_PATH:
+            else:
                 # DIRNAMES_TO_REMOVE_PATH content example:
                 # {
                 #   "dirNames": [
