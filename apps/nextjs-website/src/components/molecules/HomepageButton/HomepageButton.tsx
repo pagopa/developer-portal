@@ -1,6 +1,6 @@
 'use client';
+import { ButtonNaked } from '@/components/atoms/ButtonNaked/ButtonNaked';
 import SiteLabel from '@/components/atoms/SiteLabel/SiteLabel';
-import { Button } from '@mui/material';
 import Link from 'next/link';
 import React from 'react';
 
@@ -17,22 +17,16 @@ const HomepageButton = ({
 }: HomepageButtonProps) => {
   const completeTitle = [title, boldTitle].join(' ');
   return (
-    <Button
+    <ButtonNaked
       size={'medium'}
-      sx={{
-        color: 'common.black',
-        marginLeft: 0,
-        paddingLeft: 0,
-        paddingRight: 0,
-        marginRight: 0,
-      }}
+      weight={'light'}
       component={Link}
       aria-label={completeTitle}
       href={href}
       title={completeTitle}
     >
       <SiteLabel title={title} color={'inherit'} boldTitle={boldTitle} />
-    </Button>
+    </ButtonNaked>
   );
 };
 
