@@ -1,4 +1,5 @@
 'use client';
+import { ButtonNaked } from '@/components/atoms/ButtonNaked/ButtonNaked';
 import InfoCardEditButton from '@/components/atoms/InfoCardEditButton/InfoCardEditButton';
 import {
   ProfileDataCardItem,
@@ -43,16 +44,18 @@ export const ProfileDataCard = ({
     />
   ) : (
     <Stack sx={{ display: 'flex', flexDirection: 'row' }}>
-      <Button
+      <ButtonNaked
         color='primary'
-        sx={{ paddingLeft: 0, paddingRight: 0, fontWeight: 600, fontSize: 16 }}
+        fontWeight={600}
+        fontSize={16}
+        sx={{ paddingLeft: 0, paddingRight: 0 }}
         onClick={() => {
           setEditing(false);
           setDataSectionItems([...items]);
         }}
       >
         {t('personalData.cancel')}
-      </Button>
+      </ButtonNaked>
       <Button
         disabled={isButtonDisabled}
         variant='contained'
