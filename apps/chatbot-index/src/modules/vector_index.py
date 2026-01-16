@@ -74,7 +74,7 @@ LlamaIndexSettings.node_parser = SentenceSplitter(
 )
 
 
-def build_index_redis(clean_redis: bool = False) -> VectorStoreIndex:
+def build_index_redis(clean_redis: bool = True) -> VectorStoreIndex:
     """
     Builds a new vector index and stores it in Redis.
     Returns:
