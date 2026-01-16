@@ -62,7 +62,10 @@ export function replaceUrl(
   filePath?: string
 ): string {
   if (!currentDocMetadata) return value;
-  if (/^https?:/.test(value)) {
+  if (
+    /^https?:/.test(value) &&
+    !/^https?:\/\/(localhost|127\.0\.0\.1|app\.gitbook\.com)/.test(value)
+  ) {
     return value;
   }
   // Clean up the URL by removing mentions, README.md, and .md extensions
