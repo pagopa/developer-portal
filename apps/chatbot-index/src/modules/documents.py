@@ -129,7 +129,7 @@ def get_one_metadata_from_s3(
     Reads a single metadata file from S3 bucket.
     Args:
         folder_name (str): The folder name in the S3 bucket where the metadata file is located.
-        main_folders_list (List[str]): The list of valid folder names.
+        folders_list (List[str]): The list of valid folder names.
         docs_parent_folder (str | None): The parent folder in the S3 bucket where the metadata files
             are located.
         bucket_name (str | None): The name of the S3 bucket.
