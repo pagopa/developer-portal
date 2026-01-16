@@ -43,7 +43,7 @@ const Dropdown = ({
       <Button
         aria-controls={open ? `${label}-menu` : undefined}
         aria-expanded={open ? 'true' : undefined}
-        variant='text'
+        variant='naked'
         disableElevation
         onClick={handleClick}
         endIcon={

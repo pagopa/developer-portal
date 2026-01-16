@@ -29,6 +29,11 @@ const DesktopSiteHeader = ({ locale, products }: SiteHeaderProps) => {
           href: `/${product.slug}/overview`,
           label: product.name,
         }))}
+        menuStyle={{
+          sx: {
+            marginTop: '17px',
+          },
+        }}
       />
       <LinkMui
         component={Link}

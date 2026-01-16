@@ -32,6 +32,7 @@ const LanguageSelector = ({
         onClick={handleClick}
         startIcon={<Language />}
         sx={{
+          paddingX: 2,
           textTransform: 'none',
           color: 'inherit',
           '&:hover': {
@@ -42,7 +43,14 @@ const LanguageSelector = ({
       >
         {currentLocaleLabel}
       </Button>
-      <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
+      <Menu
+        sx={{
+          marginTop: '5px',
+        }}
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+      >
         {locales.map((locale) => (
           <MenuItem
             key={locale.code}

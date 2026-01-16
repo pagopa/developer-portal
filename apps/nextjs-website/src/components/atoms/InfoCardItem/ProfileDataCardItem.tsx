@@ -9,7 +9,7 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { Button } from '@mui/material';
+import { ButtonNaked } from '@/components/atoms/ButtonNaked/ButtonNaked';
 import { useTranslations } from 'next-intl';
 import { ReactNode } from 'react';
 
@@ -169,13 +169,13 @@ export const ProfileDataCardItem = (
             : infoCardItem.value}
         </Typography>
       ) : (
-        <Button
+        <ButtonNaked
           onClick={infoCardItem.onInsertPressed}
           color='primary'
           sx={{ paddingLeft: 0, paddingRight: 0 }}
         >
           {t('profile.insert')}
-        </Button>
+        </ButtonNaked>
       )}
     </Stack>
   );
