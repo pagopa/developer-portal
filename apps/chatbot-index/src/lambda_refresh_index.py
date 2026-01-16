@@ -92,11 +92,6 @@ def read_payload(payload: dict) -> Tuple[List[StaticMetadata], List[str], List[s
                     folders_list=folders_list,
                 )
 
-                # all_metadata = get_metadata_from_s3()
-                # s3_paths = [metadata.get("contentS3Path") for metadata in all_metadata]
-                # idx = s3_paths.index(object_key)
-                # doc_info = all_metadata[idx]
-
                 static_docs_to_update.append(
                     StaticMetadata(
                         url=SETTINGS.website_url + metadata.get("path"),
