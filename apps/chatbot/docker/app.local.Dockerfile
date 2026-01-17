@@ -39,4 +39,7 @@ RUN poetry install --with dev
 
 RUN python ./scripts/nltk_download.py
 
-CMD ["fastapi", "dev", "src/app/main.py", "--port", "8080", "--host", "0.0.0.0", "--loop", "asyncio"]
+RUN chmod +x ./scripts/entrypoint.sh
+
+ENTRYPOINT ["./scripts/entrypoint.sh"]
+CMD ["hypercorn", "-b", "0.0.0.0:8080", "--reload", "src.app.main:app"]

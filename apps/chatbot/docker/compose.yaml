@@ -7,7 +7,6 @@ services:
     build:
       context: ..
       dockerfile: docker/app.local.Dockerfile
-    command: "./scripts/run.local.sh"
     env_file: ../.env.local
     ports:
       - "8080:8080"
@@ -25,9 +24,9 @@ services:
         condition: service_started
       motoserver:
         condition: service_started
-      evaluate:
+      sqs_monitor_listener:
         condition: service_started
-      monitor:
+      sqs_evaluate_listener:
         condition: service_started
 
   evaluate:
@@ -41,6 +40,7 @@ services:
     #      - "8081:8080"
     volumes:
       - ../chatbot-evaluate:/app
+      - ./files/.aws:/root/.aws
     entrypoint: [ "/usr/local/bin/aws-lambda-rie", "python3" ]
     command: [ "-m", "awslambdaric", "src.lambda_function.lambda_handler" ]
 
@@ -172,6 +172,8 @@ services:
 
   motoserver:
     image: motoserver/moto:5.1.19
+    ports:
+      - 5000:5000
     environment:
       - MOTO_PORT=5000
 
@@ -246,17 +248,36 @@ services:
       retries: 10
       start_period: 5s
 
-  sqs_to_lambda:
+  sqs_monitor_listener:
     build:
-      context: ../../chatbot-monitor
-      dockerfile: ../chatbot-monitor/docker/sqs_to_lambda.Dockerfile
+      context: ..
+      dockerfile: docker/sqs_to_lambda.Dockerfile
     env_file: ../.env.local
-    command: python scripts/sqs_to_lambda.py
+    environment:
+      - PYTHONUNBUFFERED=1
+    command: python scripts/sqs_to_lambda.py --queue monitor
     volumes:
-      - ../../chatbot-monitor:/app
       - ./files/.aws:/root/.aws
     depends_on:
-      api:
+      monitor:
+        condition: service_started
+      motoserver:
+        condition: service_started
+
+  sqs_evaluate_listener:
+    build:
+      context: ..
+      dockerfile: docker/sqs_to_lambda.Dockerfile
+    env_file: ../.env.local
+    environment:
+      - PYTHONUNBUFFERED=1
+    command: python scripts/sqs_to_lambda.py --queue evaluate
+    volumes:
+      - ./files/.aws:/root/.aws
+    depends_on:
+      evaluate:
+        condition: service_started
+      motoserver:
         condition: service_started
 
 volumes:

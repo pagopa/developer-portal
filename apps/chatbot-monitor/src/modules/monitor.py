@@ -86,11 +86,21 @@ def get_children(all_spans: List[dict], parent_id: str) -> List[dict]:
 
 
 def create_langfuse_child(
-    span: SPAN_TYPES, child: dict, all_spans: List[dict]
+    span: SPAN_TYPES, child: dict, all_spans: List[dict], visited: set = None
 ) -> SPAN_TYPES:
     """Creates a Langfuse span from a child span dictionary and attaches it to the parent span."""
-
+    
+    if visited is None:
+        visited = set()
+    
     span_id = child["context"]["span_id"]
+    
+    # Cycle detection: if we've already visited this span, skip it
+    if span_id in visited:
+        LOGGER.warning(f"Cycle detected: span_id {span_id} already visited. Skipping to prevent infinite recursion.")
+        return span
+    
+    visited.add(span_id)
     attributes = child["attributes"]
     span_kind = attributes["openinference.span.kind"]
     input_tokens = attributes.get("input_tokens", 0)
@@ -169,7 +179,7 @@ def create_langfuse_child(
 
     children = get_children(all_spans, span_id)
     if children:
-        [create_langfuse_child(obs, child, all_spans) for child in children]
+        [create_langfuse_child(obs, child, all_spans, visited) for child in children]
         duration_children = sum(
             [
                 (

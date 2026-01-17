@@ -10,7 +10,6 @@ echo "-=-=-=-= AWS_REGION: $AWS_REGION"
 echo '-=-=-=-= init AWS local services'
 ./scripts/s3-init.sh
 ./scripts/dynamodb-init.sh
-./scripts/sqs-init.sh
 
 echo '-=-=-=-= run FastAPI'
 hypercorn -b 0.0.0.0:8080 --reload src.app.main:app

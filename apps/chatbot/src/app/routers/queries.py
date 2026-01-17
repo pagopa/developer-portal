@@ -6,7 +6,7 @@ from botocore.exceptions import BotoCoreError, ClientError
 from boto3.dynamodb.conditions import Key
 from fastapi import APIRouter, Header, HTTPException
 from typing import List, Annotated
-from src.app.sqs_init import sqs_queue_evaluate
+from src.app.sqs_init import sqs_queue_monitor
 from src.app.models import Query, tables
 from src.modules.logger import get_logger
 from src.app.sessions import (
@@ -149,50 +149,25 @@ def prepare_body_to_return(
     return bodyToReturn
 
 
-def evaluate_query(
-    query_str: str,
-    answer: str,
-    answer_json: dict,
-    trace_id: str,
-    messages: List[dict],
-) -> None:
-    if can_evaluate():
-        evaluation_data = {
-            "query_str": query_str,
-            "response_str": answer,
-            "retrieved_contexts": answer_json["contexts"],
-            "trace_id": trace_id,
-            "messages": messages,
-        }
-        if sqs_queue_evaluate is None:
-            LOGGER.warning(
-                f"sqs_queue_evaluate is None, cannot send message {evaluation_data}"
-            )
-        else:
-            sqs_response = sqs_queue_evaluate.send_message(
-                MessageBody=json.dumps(evaluation_data),
-                MessageGroupId=trace_id,  # Required for FIFO queues
-            )
-            LOGGER.info(f"sqs response: {sqs_response}")
-    else:
-        LOGGER.info(
-            f"Skipping evaluation due to daily limit reached ({SETTINGS.max_daily_evaluations})"
-        )
-
-
-def create_monitor_trace(trace_data: dict) -> None:
-    if sqs_queue_evaluate is None:
-        LOGGER.warning(f"sqs_queue_evaluate is None, cannot send message {trace_data}")
+def create_monitor_trace(trace_data: dict, should_evaluate: bool) -> None:
+    """Send trace creation message to monitor queue.
+    
+    The monitor lambda will create the trace, then enqueue evaluation if requested.
+    This prevents race conditions by ensuring trace exists before scores are added.
+    """
+    if sqs_queue_monitor is None:
+        LOGGER.warning(f"sqs_queue_monitor is None, cannot send message {trace_data}")
     else:
         payload = {
             "operation": "create_trace",
             "data": trace_data,
+            "should_evaluate": should_evaluate,
         }
-        sqs_response = sqs_queue_evaluate.send_message(
+        sqs_response = sqs_queue_monitor.send_message(
             MessageBody=json.dumps(payload),
             MessageGroupId=trace_data["trace_id"],  # Required for FIFO queues
         )
-        LOGGER.info(f"sqs response: {sqs_response}")
+        LOGGER.info(f"sqs response queue {sqs_queue_monitor} : {sqs_response}")
 
 
 @router.post("/queries")
@@ -246,15 +221,9 @@ async def query_creation(
         "traceSpans": answer_json.get("spans", []),
         "query_for_database": bodyToSave,
     }
-    create_monitor_trace(trace_data)
-
-    evaluate_query(
-        query_str=query_str,
-        answer=answer,
-        answer_json=answer_json,
-        trace_id=trace_id,
-        messages=messages,
-    )
+    # Send to monitor queue with evaluation flag
+    # Monitor will create trace, then enqueue evaluation if needed
+    create_monitor_trace(trace_data, should_evaluate=can_evaluate())
 
     return bodyToReturn
 
