@@ -1,0 +1,68 @@
+---
+name: Chatbot Refresh API and Dynamic Docs
+run-name: Chatbot Refresh API and Dynamic Docs in ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.environment || 'dev' }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'The environment used as target'
+        type: choice
+        required: true
+        default: dev
+        options:
+          - dev
+          - uat
+          - prod
+      document_type:
+        description: 'The document type to refresh'
+        type: choice
+        required: true
+        default: both
+        options:
+          - api
+          - dynamic
+          - both
+
+  # Allows external webhook trigger
+  repository_dispatch:
+    types:
+      - webhook
+
+# These permissions are needed to interact with GitHub's OIDC Token endpoint.
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  manual_refresh_api_dynamic_docs_index:
+    name: MANUAL refresh api and dynamic docs in index on ${{ matrix.environment }}
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: codebuild-${{ inputs.environment }}-github-runner-${{ github.run_id }}-${{ github.run_attempt }}
+    environment: ${{ inputs.environment }}
+
+    concurrency:
+      group: ${{ github.workflow }}-${{ inputs.environment }}
+      cancel-in-progress: false
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502
+        with:
+          role-to-assume: ${{ secrets.IAM_ROLE_CHATBOT_REINDEX }}
+          aws-region: eu-south-1
+
+      - name: Refresh API Docs Vector Index
+        if: inputs.document_type == 'api' || inputs.document_type == 'both'
+        uses: ./.github/actions/refresh-api-docs-vector-index
+        with:
+          chatbot_lambda_name: ${{ vars.CHATBOT_LAMBDA_NAME }}
+
+      - name: Refresh Dynamic Docs Vector Index
+        if: inputs.document_type == 'dynamic' || inputs.document_type == 'both'
+        uses: ./.github/actions/refresh-dynamic-docs-vector-index
+        with:
+          chatbot_lambda_name: ${{ vars.CHATBOT_LAMBDA_NAME }}
