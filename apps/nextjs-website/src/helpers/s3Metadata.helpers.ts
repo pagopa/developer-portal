@@ -17,6 +17,10 @@ export interface SoapApiJsonMetadata {
   readonly contentS3Paths: readonly string[];
 }
 
+export interface SolutionsDirNames {
+  readonly dirNames: readonly string[];
+}
+
 const delay = (ms: number): Promise<void> =>
   new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -52,6 +56,16 @@ async function withRetries<T>(
 
       return result;
     } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : String(error);
+
+      if (errorMessage === '404' || errorMessage === '403') {
+        console.warn(
+          `Resource not found (${errorMessage}) during ${operationName}. Skipping retries.`
+        );
+        return fallbackValue;
+      }
+
       lastError = error instanceof Error ? error : new Error(String(error));
       // eslint-disable-next-line no-console
       console.error(
@@ -127,8 +141,18 @@ async function fetchFromCDN(path: string, config?: RequestInit) {
   });
 
   if (!response || !response.ok) {
+    if (response?.status === 404) {
+      // eslint-disable-next-line functional/no-throw-statements
+      throw new Error('404');
+    }
+    if (response?.status === 403) {
+      // eslint-disable-next-line functional/no-throw-statements
+      throw new Error('403');
+    }
     // eslint-disable-next-line functional/no-throw-statements
-    throw new Error('Response is null');
+    throw new Error(
+      `Failed to fetch: ${response?.statusText || 'Unknown error'}`
+    );
   }
 
   return response.json();
@@ -171,16 +195,19 @@ export async function fetchMetadataFromCDN<T>(
 
 const S3_GUIDES_METADATA_JSON_PATH =
   process.env.S3_GUIDES_METADATA_JSON_PATH || 'guides-metadata.json';
-const S3_SOLUTIONS_METADATA_JSON_PATH =
-  process.env.S3_SOLUTIONS_METADATA_JSON_PATH || 'solutions-metadata.json';
 const S3_RELEASE_NOTES_METADATA_JSON_PATH =
   process.env.S3_RELEASE_NOTES_METADATA_JSON_PATH ||
   'release-notes-metadata.json';
 const S3_SOAP_API_METADATA_JSON_PATH =
   process.env.S3_SOAP_API_METADATA_JSON_PATH ||
   'soap-api/soap-api-metadata.json';
+const S3_SOLUTIONS_DIRNAMES_JSON_PATH =
+  process.env.S3_SOLUTIONS_DIRNAMES_JSON_PATH || 'solutions-dirNames.json';
+const S3_DIRNAME_METADATA_JSON_PATH =
+  process.env.S3_DIRNAME_METADATA_JSON_PATH || 'metadata.json';
 
 let guidesMetadataCache: readonly JsonMetadata[] | null = null;
+// eslint-disable-next-line functional/no-let
 let solutionsMetadataCache: readonly JsonMetadata[] | null = null;
 let releaseNotesMetadataCache: readonly JsonMetadata[] | null = null;
 let soapApiMetadataCache: readonly SoapApiJsonMetadata[] | null = null;
@@ -215,6 +242,46 @@ export const getGuidesMetadata = async () => {
   return guidesMetadataCache || [];
 };
 
+export const getSolutionsDirNames = async () => {
+  const response = await fetchFromCDN(S3_SOLUTIONS_DIRNAMES_JSON_PATH, {
+    cache: 'no-store',
+  });
+  return response as SolutionsDirNames;
+};
+
+async function batchFetchMetadata(
+  dirNames: readonly string[],
+  concurrencyLimit: number
+): Promise<readonly JsonMetadata[]> {
+  const chunks = Array.from(
+    { length: Math.ceil(dirNames.length / concurrencyLimit) },
+    (_, i) =>
+      dirNames.slice(
+        i * concurrencyLimit,
+        i * concurrencyLimit + concurrencyLimit
+      )
+  );
+
+  return await chunks.reduce<Promise<readonly JsonMetadata[]>>(
+    async (previousPromise, chunk) => {
+      const acc = await previousPromise;
+      const chunkPromises = chunk.map((dirName) =>
+        fetchMetadataFromCDN<JsonMetadata>(
+          `${dirName}/${S3_DIRNAME_METADATA_JSON_PATH}`
+        )
+      );
+      const chunkResults = await Promise.all(chunkPromises);
+      const validResults = chunkResults.reduce<readonly JsonMetadata[]>(
+        (flat, item) => (item ? [...flat, ...item] : flat),
+        []
+      );
+
+      return [...acc, ...validResults];
+    },
+    Promise.resolve([])
+  );
+}
+
 export const getSolutionsMetadata = async () => {
   const now = Date.now();
 
@@ -225,9 +292,20 @@ export const getSolutionsMetadata = async () => {
     return solutionsMetadataCache;
   }
 
-  solutionsMetadataCache = await fetchMetadataFromCDN<JsonMetadata>(
-    S3_SOLUTIONS_METADATA_JSON_PATH
-  );
+  const dirNamesData = await getSolutionsDirNames();
+  // eslint-disable-next-line functional/no-let
+  let solutions: readonly JsonMetadata[] = [];
+
+  if (
+    dirNamesData &&
+    dirNamesData.dirNames &&
+    Array.isArray(dirNamesData.dirNames)
+  ) {
+    const dirNames = dirNamesData.dirNames as readonly string[];
+    solutions = await batchFetchMetadata(dirNames, 5); // Concurrency 5
+  }
+
+  solutionsMetadataCache = solutions;
   solutionsMetadataCacheTime = now;
 
   return solutionsMetadataCache || [];
