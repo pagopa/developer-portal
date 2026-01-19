@@ -1,4 +1,4 @@
-import { Button, Stack, Typography } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 import { useCallback, useState } from 'react';
 
 import { useTranslations } from 'next-intl';
@@ -6,6 +6,7 @@ import { emailMatcher } from '@/helpers/auth.helpers';
 import RequiredTextField, {
   ValidatorFunction,
 } from '@/components/molecules/RequiredTextField/RequiredTextField';
+import { ButtonNaked } from '@/components/atoms/ButtonNaked/ButtonNaked';
 
 type EditEmailFormProps = {
   onSave: (email: string) => Promise<void>;
@@ -67,18 +68,16 @@ const EditEmailForm = ({ onSave, onCancel }: EditEmailFormProps) => {
 
   const actions = (
     <>
-      <>
-        <Button
-          color='primary'
-          sx={{ paddingLeft: 0, paddingRight: 0 }}
-          onClick={onCancel}
-        >
-          {t('changeEmail.cancel')}
-        </Button>
-        <Button variant='contained' color='primary' onClick={handleSave}>
-          {t('changeEmail.save')}
-        </Button>
-      </>
+      <ButtonNaked
+        color='primary'
+        sx={{ paddingLeft: 0, paddingRight: 0 }}
+        onClick={onCancel}
+      >
+        {t('changeEmail.cancel')}
+      </ButtonNaked>
+      <ButtonNaked variant='contained' color='primary' onClick={handleSave}>
+        {t('changeEmail.save')}
+      </ButtonNaked>
     </>
   );
 
