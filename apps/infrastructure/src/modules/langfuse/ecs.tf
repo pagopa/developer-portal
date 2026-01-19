@@ -509,6 +509,10 @@ resource "aws_ecs_service" "langfuse_web" {
     Name = "langfuse_web"
   }
 
+  service_registries {
+    registry_arn = aws_service_discovery_service.langfuse-web.arn
+  }
+
   service_connect_configuration {
     enabled = true
   }
