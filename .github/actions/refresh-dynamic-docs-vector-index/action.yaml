@@ -38,7 +38,7 @@ runs:
         cd apps/chatbot-index
         bash ./docker/chrome-installer.sh
 
-    - name: Refresh API and Dynamic Docs in Vector Index
+    - name: Refresh Dynamic Docs in Vector Index
       shell: bash
       run: |
         cd apps/chatbot-index
