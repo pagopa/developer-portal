@@ -9,7 +9,7 @@ import { baseUrl } from '@/config';
 import {
   getGuidesMetadata,
   getReleaseNotesMetadata,
-  getSolutionsMetadata,
+  getSolutionsMetadataByDirNames,
   JsonMetadata,
 } from '@/helpers/s3Metadata.helpers';
 import {
@@ -142,7 +142,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // These are stored in S3 and retrieved via legacy helpers.
   // We keep them ensuring no missing legacy content.
   const guidesMetadata = await getGuidesMetadata();
-  const solutionsMetadata = await getSolutionsMetadata();
+  const solutionDirNames = Array.from(
+    new Set(
+      solutions
+        .map((solution) => solution.dirName)
+        .filter((dirName): dirName is string => Boolean(dirName))
+    )
+  );
+  const solutionsMetadata = await getSolutionsMetadataByDirNames(
+    solutionDirNames
+  );
   const releaseNotesMetadata = await getReleaseNotesMetadata();
 
   const s3GuideRoutes = guidesMetadata.map((guide: JsonMetadata) => ({
