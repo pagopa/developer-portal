@@ -58,7 +58,11 @@ jobs:
       - name: Refresh API Docs Vector Index
         if: inputs.document_type == 'api' || inputs.document_type == 'both'
         uses: ./.github/actions/refresh-api-docs-vector-index
+        with:
+          chatbot_lambda_name: ${{ vars.CHATBOT_LAMBDA_NAME }}
 
       - name: Refresh Dynamic Docs Vector Index
         if: inputs.document_type == 'dynamic' || inputs.document_type == 'both'
         uses: ./.github/actions/refresh-dynamic-docs-vector-index
+        with:
+          chatbot_lambda_name: ${{ vars.CHATBOT_LAMBDA_NAME }}

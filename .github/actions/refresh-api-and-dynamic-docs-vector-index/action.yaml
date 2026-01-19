@@ -7,6 +7,10 @@ inputs:
     description: 'The AWS region selected'
     required: false
     default: 'eu-south-1'
+  chatbot_lambda_name:
+    description: the name of the chatbot lambda function
+    required: true
+    default: ''
 
 runs:
   using: "composite"

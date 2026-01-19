@@ -347,3 +347,5 @@ jobs:
 
       - name: Refresh API and Dynamic Docs Vector Index
         uses: ./.github/actions/refresh-api-and-dynamic-docs-vector-index
+        with:
+          chatbot_lambda_name: ${{ vars.CHATBOT_LAMBDA_NAME }}
