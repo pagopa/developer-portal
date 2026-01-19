@@ -14,7 +14,7 @@ import {
   makeS3Client,
   putS3File,
 } from '../helpers/s3Bucket.helper';
-import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
+import { S3Client } from '@aws-sdk/client-s3';
 import { extractTitleFromMarkdown } from '../helpers/extractTitle.helper';
 import { fetchFromStrapi } from '../helpers/fetchFromStrapi';
 import { MetadataInfo, MetadataType } from '../helpers/guidesMetadataHelper';
@@ -27,7 +27,6 @@ import {
   getSyncedSolutionsResponseJsonPath,
 } from '../syncedResponses';
 import { DOCUMENTATION_PATH } from '../helpers/documentationParsing.helper';
-import { baseUrl } from 'nextjs-website/src/config';
 import {
   StrapiApiData,
   StrapiGuide,
@@ -94,9 +93,6 @@ const S3_SOLUTIONS_DIRNAMES_JSON_PATH =
 const S3_RELEASE_NOTES_DIRNAMES_JSON_PATH =
   process.env.S3_RELEASE_NOTES_DIRNAMES_JSON_PATH ||
   'release-notes-dirNames.json';
-
-const SITEMAP_URL = process.env.SITEMAP_URL || `${baseUrl}/sitemap.xml`;
-const S3_SITEMAP_PATH = process.env.S3_SITEMAP_PATH || 'sitemap.xml';
 
 const DOCUMENTATION_ABSOLUTE_PATH = path.resolve(DOCUMENTATION_PATH);
 
@@ -197,19 +193,6 @@ async function fetchAllStrapiData(): Promise<StrapiData> {
     solutionsRawResponse: solutionsResult.responseJson,
     releaseNotesRawResponse: releaseNotesResult.responseJson,
   };
-}
-
-async function fetchSitemapXml(): Promise<string> {
-  console.log(`Fetching sitemap from ${SITEMAP_URL}...`);
-  const response = await fetch(SITEMAP_URL);
-  if (!response.ok) {
-    // eslint
-    // eslint-disable-next-line functional/no-throw-statements
-    throw new Error(
-      `Failed to fetch sitemap: ${response.status} ${response.statusText}`
-    );
-  }
-  return await response.text();
 }
 
 // Generate URL path helper functions
@@ -646,15 +629,6 @@ async function main() {
         getSyncedApisDataResponseJsonPath(),
         S3_BUCKET_NAME!,
         getS3Client()
-      );
-      const sitemapXml = await fetchSitemapXml();
-
-      await getS3Client().send(
-        new PutObjectCommand({
-          Bucket: `${S3_BUCKET_NAME}`,
-          Key: S3_SITEMAP_PATH,
-          Body: sitemapXml,
-        })
       );
     }
 
