@@ -54,6 +54,7 @@ export async function generateMetadata(props0: {
   const params = await props0.params;
   const props = await getGuidePage(
     params?.productGuidePage ?? [''],
+    params?.locale,
     params?.productSlug
   );
 
@@ -83,7 +84,11 @@ const Page = async (props0: { params: Promise<Params> }) => {
   const params = await props0.params;
   const currentLocale = params.locale;
   const [guideProps, urlReplaceMap] = await Promise.all([
-    getGuidePage(params?.productGuidePage ?? [''], params?.productSlug),
+    getGuidePage(
+      params?.productGuidePage ?? [''],
+      params?.locale,
+      params?.productSlug
+    ),
     getUrlReplaceMapProps(),
   ]);
 

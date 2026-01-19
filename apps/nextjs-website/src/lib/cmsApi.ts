@@ -175,18 +175,20 @@ export const getGuideListPagesProps = async () => {
 
 export const getGuideProps = async (
   guidePaths: ReadonlyArray<string>,
+  locale: string,
   productSlug: string
 ) => {
-  const guide = await getGuidePageProps(guidePaths[0], productSlug);
+  const guide = await getGuidePageProps(guidePaths[0], locale, productSlug);
   return await makeGuideS3({ guideDefinition: guide, guidePaths });
 };
 
 export const getGuidePageProps = async (
   guideSlug: string,
+  locale: string,
   productSlug: string
 ) => {
   const strapiGuides = (await fetchResponseFromCDN(
-    getSyncedGuidesResponseJsonPath()
+    `${locale}/${getSyncedGuidesResponseJsonPath()}`
   )) as StrapiGuides | undefined;
   // eslint-disable-next-line functional/no-expression-statements
   const guides = strapiGuides ? makeGuidesProps(strapiGuides) : [];

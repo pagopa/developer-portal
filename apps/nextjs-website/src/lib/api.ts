@@ -51,12 +51,17 @@ export async function getMarkdownContent(
 
 export async function getGuidePage(
   guidePaths: ReadonlyArray<string>,
+  locale: string,
   productSlug: string
 ) {
   // Fetch data in parallel instead of sequential
   const [products, guideProps, guidesMetadata] = await Promise.all([
     getProducts(),
-    getGuidePageProps(guidePaths.length > 0 ? guidePaths[0] : '', productSlug),
+    getGuidePageProps(
+      guidePaths.length > 0 ? guidePaths[0] : '',
+      locale,
+      productSlug
+    ),
     getGuidesMetadata(),
   ]);
 
