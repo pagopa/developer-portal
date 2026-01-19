@@ -464,15 +464,16 @@ def get_dynamic_metadata(
     sitemap = get_sitemap_urls()
     all_url_metadata = [item.url for item in static_metadata]
     sitemap_urls = [item["url"] for item in sitemap]
+    sitemap_url_to_lastmod = {item["url"]: item["lastmod"] for item in sitemap}
     sitemap_filtered_urls = filter_urls(sitemap_urls)
 
     for url in sitemap_filtered_urls:
         if url not in all_url_metadata:
-            idx = sitemap_filtered_urls.index(url)
+            lastmod = sitemap_url_to_lastmod.get(url)
             dynamic_metadata.append(
                 DynamicMetadata(
                     url=url,
-                    lastmod=sitemap[idx]["lastmod"],
+                    lastmod=lastmod,
                 )
             )
 
