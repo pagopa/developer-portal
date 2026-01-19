@@ -30,3 +30,18 @@ output "security_groups" {
     redis = aws_security_group.nlb.id
   }
 }
+
+output "cognito_user_pool_id" {
+  description = "ID of the Cognito user pool used for chatbot authentication"
+  value       = aws_cognito_user_pool.monitoring.id
+}
+
+output "cognito_user_pool_endpoint" {
+  description = "Endpoint of the Cognito user pool used for chatbot authentication"
+  value       = aws_cognito_user_pool.monitoring.endpoint
+}
+
+output "cognito_master_user_password_param_arn" {
+  description = "ARN of the SSM parameter storing the chatbot Cognito master user password"
+  value       = module.master_user_password.ssm_parameter_arn
+}

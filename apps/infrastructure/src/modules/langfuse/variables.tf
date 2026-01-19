@@ -91,3 +91,21 @@ variable "force_delete" {
   type        = bool
   default     = false
 }
+
+variable "cognito_user_pool_id" {
+  description = "Existing Cognito user pool ID to reuse instead of creating a dedicated one"
+  type        = string
+  default     = null
+}
+
+variable "cognito_user_pool_endpoint" {
+  description = "Existing Cognito user pool endpoint to reuse instead of creating a dedicated one"
+  type        = string
+  default     = null
+}
+
+variable "master_user_password_param_arn" {
+  description = "ARN of the SSM parameter containing the Cognito master user password when reusing an existing user pool"
+  type        = string
+  default     = null
+}

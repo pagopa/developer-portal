@@ -445,19 +445,19 @@ resource "aws_ecs_task_definition" "langfuse_web" {
         },
         {
           name      = "AUTH_COGNITO_CLIENT_ID",
-          valueFrom = module.user_pool_client_id.ssm_parameter_arn
+          valueFrom = local.user_pool_client_id_param_arn
         },
         {
           name      = "AUTH_COGNITO_CLIENT_SECRET",
-          valueFrom = module.user_pool_client_secret.ssm_parameter_arn
+          valueFrom = local.user_pool_client_secret_param_arn
         },
         {
           name      = "AUTH_COGNITO_ISSUER",
-          valueFrom = module.user_pool_issuer.ssm_parameter_arn
+          valueFrom = local.user_pool_issuer_param_arn
         },
         {
           name      = "LANGFUSE_INIT_USER_PASSWORD",
-          valueFrom = module.master_user_password.ssm_parameter_arn
+          valueFrom = local.master_user_password_param_arn
         },
       ]
 

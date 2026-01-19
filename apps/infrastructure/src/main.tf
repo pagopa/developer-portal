@@ -277,6 +277,11 @@ module "langfuse" {
   public_subnet_ids  = module.cms.vpc.public_subnets
   custom_domain_id   = module.core.hosted_zone_id
   custom_domain_name = var.dns_domain_name
+
+  # Use the Cognito User Pool created by the Chatbot module
+  cognito_user_pool_id           = module.chatbot[0].cognito_user_pool_id
+  cognito_user_pool_endpoint     = module.chatbot[0].cognito_user_pool_endpoint
+  master_user_password_param_arn = module.chatbot[0].cognito_master_user_password_param_arn
 }
 
 
