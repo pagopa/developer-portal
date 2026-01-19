@@ -46,8 +46,8 @@ on:
       refresh_vector_index:
         description: 'Refresh API and/or Dynamic docs in the vector index (static docs are handled by triggering lambda with S3 events)'
         type: boolean
-        required: true
-        default: true
+        required: false
+        default: false
 
   schedule:
     - cron: '0 23 * * *'  # Run daily at midnight UTC
@@ -209,13 +209,9 @@ jobs:
             --distribution-id ${{ vars.ASSET_BUCKET_CLOUDFRONT_DISTRIBUTION_ID }} \
             --paths "/*"
 
-      - name: Refresh API Docs Vector Index
+      - name: Refresh API and Dynamic Docs Vector Index
         if: inputs.refresh_vector_index == true
-        uses: ./.github/actions/refresh-api-docs-vector-index
-        
-      - name: Refresh Dynamic Docs Vector Index
-        if: inputs.refresh_vector_index == true
-        uses: ./.github/actions/refresh-dynamic-docs-vector-index
+        uses: ./.github/actions/refresh-api-and-dynamic-docs-vector-index
 
   scheduled_sync_gitbook_docs:
     name: Sync gitbook Docs to S3 (scheduled on prod)
@@ -349,8 +345,5 @@ jobs:
             --distribution-id ${{ vars.ASSET_BUCKET_CLOUDFRONT_DISTRIBUTION_ID }} \
             --paths "/*"
 
-      - name: Refresh API Docs Vector Index
-        uses: ./.github/actions/refresh-api-docs-vector-index
-
-      - name: Refresh Dynamic Docs Vector Index
-        uses: ./.github/actions/refresh-dynamic-docs-vector-index
+      - name: Refresh API and Dynamic Docs Vector Index
+        uses: ./.github/actions/refresh-api-and-dynamic-docs-vector-index
