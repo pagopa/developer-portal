@@ -259,7 +259,8 @@ async function getMarkdownFilesRecursively(dir: string): Promise<string[]> {
 
 // Process guide metadata
 async function processGuidesMetadata(
-  guides: StrapiGuide[]
+  guides: StrapiGuide[],
+  skipFilter = false
 ): Promise<MetadataItem[][]> {
   const guideInfoList: MetadataInfo[] = guides
     .filter((guide) => !!guide.attributes.product?.data?.attributes?.slug)
@@ -268,7 +269,9 @@ async function processGuidesMetadata(
         // Client-side filtering for guides: filter by dirName if DIR_NAMES_FILTER is provided
         .filter(
           (version) =>
-            !DIR_NAMES_FILTER || DIR_NAMES_FILTER.includes(version.dirName)
+            skipFilter ||
+            !DIR_NAMES_FILTER ||
+            DIR_NAMES_FILTER.includes(version.dirName)
         )
         .map((version) => ({
           versionName: version.version,
@@ -743,8 +746,12 @@ async function main() {
       console.log('Processing guides metadata...');
       const guidesMetadata = await processGuidesMetadata(strapiData.guides);
       if (GENERATE_ROOT_METADATA_FILE) {
+        const allGuidesMetadata = await processGuidesMetadata(
+          strapiData.guides,
+          true
+        );
         await putS3File(
-          guidesMetadata.flat(),
+          allGuidesMetadata.flat(),
           S3_GUIDE_METADATA_JSON_PATH,
           S3_BUCKET_NAME!,
           getS3Client()
