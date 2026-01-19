@@ -43,6 +43,11 @@ on:
         type: string
         required: false
         default: ''
+      refresh_vector_index:
+        description: 'Refresh API and/or Dynamic docs in the vector index (static docs are handled by triggering lambda with S3 events)'
+        type: boolean
+        required: true
+        default: true
 
   schedule:
     - cron: '0 23 * * *'  # Run daily at midnight UTC
@@ -204,6 +209,18 @@ jobs:
             --distribution-id ${{ vars.ASSET_BUCKET_CLOUDFRONT_DISTRIBUTION_ID }} \
             --paths "/*"
 
+      - name: Refresh API Docs Vector Index
+        if: inputs.refresh_vector_index == true && 'true' || 'false'
+        uses: ./.github/actions/refresh-api-docs-vector-index
+        with:
+          chatbot_lambda_name: ${{ vars.CHATBOT_LAMBDA_NAME }}
+
+      - name: Refresh Dynamic Docs Vector Index
+        if: inputs.refresh_vector_index == true && 'true' || 'false'
+        uses: ./.github/actions/refresh-dynamic-docs-vector-index
+        with:
+          chatbot_lambda_name: ${{ vars.CHATBOT_LAMBDA_NAME }}
+
   scheduled_sync_gitbook_docs:
     name: Sync gitbook Docs to S3 (scheduled on prod)
     if: github.event_name == 'schedule'
@@ -335,3 +352,13 @@ jobs:
           aws cloudfront create-invalidation \
             --distribution-id ${{ vars.ASSET_BUCKET_CLOUDFRONT_DISTRIBUTION_ID }} \
             --paths "/*"
+
+      - name: Refresh API Docs Vector Index
+        uses: ./.github/actions/refresh-api-docs-vector-index
+        with:
+          chatbot_lambda_name: ${{ vars.CHATBOT_LAMBDA_NAME }}
+
+      - name: Refresh Dynamic Docs Vector Index
+        uses: ./.github/actions/refresh-dynamic-docs-vector-index
+        with:
+          chatbot_lambda_name: ${{ vars.CHATBOT_LAMBDA_NAME }}
