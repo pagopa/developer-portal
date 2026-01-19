@@ -14,6 +14,7 @@ import GuideVersionSelector, {
 } from './GuideVersionSelector';
 import { Typography } from '@mui/material';
 import { GitBookContentData } from '../../../lib/types/gitBookContent';
+import { includes } from 'lodash';
 
 const StyledTreeItem = styled(TreeItem)(({ theme }) => ({
   [`&`]: {

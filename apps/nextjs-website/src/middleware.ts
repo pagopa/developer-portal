@@ -1,11 +1,19 @@
 /* eslint-disable functional/no-expression-statements */
 import { NextRequest, NextResponse } from 'next/server';
 import { i18nActive } from '@/config';
+import { SUPPORTED_LOCALES } from './locales';
 
 export function middleware(request: NextRequest) {
   if (!i18nActive) return;
 
   const { pathname } = request.nextUrl;
+  console.log('Middleware invoked for pathname:', pathname);
+  const pathnameHasLocale = SUPPORTED_LOCALES.some(
+    (locale) =>
+      pathname.startsWith(`/${locale.code}/`) || pathname === `/${locale.code}`
+  );
+
+  if (pathnameHasLocale) return;
 
   console.info(`Rewriting path ${pathname} to include default locale 'it'`);
   // eslint-disable-next-line functional/immutable-data
@@ -15,7 +23,7 @@ export function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    // Exclude Next internals, API, known public files, and paths already starting with a locale
-    '/((?!_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml|.*\\.(?:png|jpg|jpeg|gif|webp|svg|ico|css|js|map|txt|xml|json|woff2?|ttf|eot)$|en(?:/|$)|it(?:/|$)).*)',
+    // Exclude Next internals, API, known public files
+    '/((?!_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml|.*\\.(?:png|jpg|jpeg|gif|webp|svg|ico|css|js|map|txt|xml|json|woff2?|ttf|eot)$).*)',
   ],
 };
