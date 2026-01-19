@@ -205,7 +205,9 @@ export const getGuidesMetadata = async (dirName?: string) => {
 
   if (
     guidesMetadataCache &&
-    now - guidesMetadataCacheTime < METADATA_CACHE_TTL
+    now - guidesMetadataCacheTime < METADATA_CACHE_TTL &&
+    (dirName === undefined ||
+      guidesMetadataCache.some((m) => m.dirName === dirName))
   ) {
     return guidesMetadataCache;
   }
