@@ -1,7 +1,8 @@
 'use client';
 import ArrowBack from '@mui/icons-material/ArrowBack';
 import ArrowForward from '@mui/icons-material/ArrowForward';
-import { Box, Button, useTheme } from '@mui/material';
+import { Box, useTheme } from '@mui/material';
+import { ButtonNaked } from '@/components/atoms/ButtonNaked/ButtonNaked';
 import React, { createElement } from 'react';
 
 type NavigationArrowProps = {
@@ -23,7 +24,7 @@ const NavigationArrow = ({ direction, hidden }: NavigationArrowProps) => {
 
   return (
     <Box visibility={{ xs: 'hidden', sm: 'visible' }}>
-      <Button
+      <ButtonNaked
         sx={{
           ...boxSx,
           zIndex: 10,
@@ -41,7 +42,7 @@ const NavigationArrow = ({ direction, hidden }: NavigationArrowProps) => {
         }}
       >
         {arrowIcon}
-      </Button>
+      </ButtonNaked>
     </Box>
   );
 };
