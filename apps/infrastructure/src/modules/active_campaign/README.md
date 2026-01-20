@@ -14,8 +14,8 @@ No requirements.
 |------|--------|---------|
 | <a name="module_active_campaign_api_key"></a> [active\_campaign\_api\_key](#module\_active\_campaign\_api\_key) | git::https://github.com/terraform-aws-modules/terraform-aws-ssm-parameter.git | 77d2c139784197febbc8f8e18a33d23eb4736879 |
 | <a name="module_active_campaign_base_url"></a> [active\_campaign\_base\_url](#module\_active\_campaign\_base\_url) | git::https://github.com/terraform-aws-modules/terraform-aws-ssm-parameter.git | 77d2c139784197febbc8f8e18a33d23eb4736879 |
-| <a name="module_lambda_resync"></a> [lambda\_resync](#module\_lambda\_resync) | git::github.com/terraform-aws-modules/terraform-aws-lambda.git | 177ee12ae387ed683c8cce5992b0278311951e8d |
-| <a name="module_lambda_sync"></a> [lambda\_sync](#module\_lambda\_sync) | git::github.com/terraform-aws-modules/terraform-aws-lambda.git | 177ee12ae387ed683c8cce5992b0278311951e8d |
+| <a name="module_lambda_resync"></a> [lambda\_resync](#module\_lambda\_resync) | git::github.com/terraform-aws-modules/terraform-aws-lambda.git | 9633abb6b6d275d3a28604dbfa755098470420d4 |
+| <a name="module_lambda_sync"></a> [lambda\_sync](#module\_lambda\_sync) | git::github.com/terraform-aws-modules/terraform-aws-lambda.git | 9633abb6b6d275d3a28604dbfa755098470420d4 |
 
 ## Resources
 
