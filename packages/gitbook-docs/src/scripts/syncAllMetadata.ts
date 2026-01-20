@@ -816,7 +816,7 @@ async function main() {
             }
           } catch (error) {
             console.error(
-              `Error saving guide metadata for dirName ${solutionMetadata[0]?.dirName}:`,
+              `Error saving solutions metadata for dirName ${solutionMetadata[0]?.dirName}:`,
               error
             );
           }
