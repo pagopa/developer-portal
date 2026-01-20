@@ -216,7 +216,7 @@ export const getGuidesMetadata = async (dirName?: string) => {
   guidesMetadataCache = await fetchMetadataFromCDN<JsonMetadata>(
     dirName
       ? path.join(S3_PATH_TO_GITBOOK_DOCS, dirName, S3_METADATA_JSON_PATH)
-      : S3_METADATA_JSON_PATH
+      : S3_GUIDES_METADATA_JSON_PATH
   );
   guidesMetadataCacheTime = now;
 
