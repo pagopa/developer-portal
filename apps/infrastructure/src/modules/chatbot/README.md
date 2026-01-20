@@ -46,8 +46,8 @@
 | <a name="module_nlb"></a> [nlb](#module\_nlb) | git::https://github.com/terraform-aws-modules/terraform-aws-alb.git | 3e9c6cbaf4c1d858c3bbee6f086f0c8ef17522ab |
 | <a name="module_postgres_url"></a> [postgres\_url](#module\_postgres\_url) | git::https://github.com/terraform-aws-modules/terraform-aws-ssm-parameter.git | 77d2c139784197febbc8f8e18a33d23eb4736879 |
 | <a name="module_rds"></a> [rds](#module\_rds) | git::https://github.com/terraform-aws-modules/terraform-aws-rds-aurora.git | 7bf5933100eb355b13854232e5d63c62ea7cad35 |
-| <a name="module_s3_bucket_kb"></a> [s3\_bucket\_kb](#module\_s3\_bucket\_kb) | git::https://github.com/terraform-aws-modules/terraform-aws-s3-bucket.git | 3a1c80b29fdf8fc682d2749456ec36ecbaf4ce14 |
-| <a name="module_s3_bucket_llamaindex"></a> [s3\_bucket\_llamaindex](#module\_s3\_bucket\_llamaindex) | git::https://github.com/terraform-aws-modules/terraform-aws-s3-bucket.git | 3a1c80b29fdf8fc682d2749456ec36ecbaf4ce14 |
+| <a name="module_s3_bucket_kb"></a> [s3\_bucket\_kb](#module\_s3\_bucket\_kb) | git::https://github.com/terraform-aws-modules/terraform-aws-s3-bucket.git | 8eecd4bfe167b3606755a0f8150514e9dcb2bf67 |
+| <a name="module_s3_bucket_llamaindex"></a> [s3\_bucket\_llamaindex](#module\_s3\_bucket\_llamaindex) | git::https://github.com/terraform-aws-modules/terraform-aws-s3-bucket.git | 8eecd4bfe167b3606755a0f8150514e9dcb2bf67 |
 | <a name="module_salt"></a> [salt](#module\_salt) | git::https://github.com/terraform-aws-modules/terraform-aws-ssm-parameter.git | 77d2c139784197febbc8f8e18a33d23eb4736879 |
 | <a name="module_ssl_certificate"></a> [ssl\_certificate](#module\_ssl\_certificate) | git::https://github.com/terraform-aws-modules/terraform-aws-acm.git | 5d113fa07675fc42237907a621b68ac97109043e |
 | <a name="module_ssl_certificate_us_east_1"></a> [ssl\_certificate\_us\_east\_1](#module\_ssl\_certificate\_us\_east\_1) | git::https://github.com/terraform-aws-modules/terraform-aws-acm.git | 5d113fa07675fc42237907a621b68ac97109043e |

@@ -1,6 +1,6 @@
 # Lambda Function for SQS FIFO
 module "lambda_resync" {
-  source = "git::github.com/terraform-aws-modules/terraform-aws-lambda.git?ref=9633abb6b6d275d3a28604dbfa755098470420d4" # v6.5.0
+  source = "git::github.com/terraform-aws-modules/terraform-aws-lambda.git?ref=177ee12ae387ed683c8cce5992b0278311951e8d" # 8.2.0
 
   function_name = "${local.prefix}-resync-lambda"
   description   = "Lambda function that resyncs Active Campaign failed events"

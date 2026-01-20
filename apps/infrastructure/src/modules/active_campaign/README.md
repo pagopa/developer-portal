@@ -1,6 +1,3 @@
-# active_campaign
-
-<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 No requirements.
@@ -17,8 +14,8 @@ No requirements.
 |------|--------|---------|
 | <a name="module_active_campaign_api_key"></a> [active\_campaign\_api\_key](#module\_active\_campaign\_api\_key) | git::https://github.com/terraform-aws-modules/terraform-aws-ssm-parameter.git | 77d2c139784197febbc8f8e18a33d23eb4736879 |
 | <a name="module_active_campaign_base_url"></a> [active\_campaign\_base\_url](#module\_active\_campaign\_base\_url) | git::https://github.com/terraform-aws-modules/terraform-aws-ssm-parameter.git | 77d2c139784197febbc8f8e18a33d23eb4736879 |
-| <a name="module_lambda_resync"></a> [lambda\_resync](#module\_lambda\_resync) | git::github.com/terraform-aws-modules/terraform-aws-lambda.git | 9633abb6b6d275d3a28604dbfa755098470420d4 |
-| <a name="module_lambda_sync"></a> [lambda\_sync](#module\_lambda\_sync) | git::github.com/terraform-aws-modules/terraform-aws-lambda.git | 9633abb6b6d275d3a28604dbfa755098470420d4 |
+| <a name="module_lambda_resync"></a> [lambda\_resync](#module\_lambda\_resync) | git::github.com/terraform-aws-modules/terraform-aws-lambda.git | 177ee12ae387ed683c8cce5992b0278311951e8d |
+| <a name="module_lambda_sync"></a> [lambda\_sync](#module\_lambda\_sync) | git::github.com/terraform-aws-modules/terraform-aws-lambda.git | 177ee12ae387ed683c8cce5992b0278311951e8d |
 
 ## Resources
 
@@ -49,12 +46,12 @@ No requirements.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_aws_region"></a> [aws\_region](#input\_aws\_region) | AWS region to create resources. Default Milan | `string` | `"eu-south-1"` | no |
-| <a name="input_cognito_user_pool"></a> [cognito\_user\_pool](#input\_cognito\_user\_pool) | The cognito user pool used to authenticate api calls | <pre>object({<br>    id        = string<br>    arn       = string<br>    domain    = string<br>    region    = string<br>    client_id = string<br>    endpoint  = string<br>  })</pre> | n/a | yes |
+| <a name="input_cognito_user_pool"></a> [cognito\_user\_pool](#input\_cognito\_user\_pool) | The cognito user pool used to authenticate api calls | <pre>object({<br/>    id        = string<br/>    arn       = string<br/>    domain    = string<br/>    region    = string<br/>    client_id = string<br/>    endpoint  = string<br/>  })</pre> | n/a | yes |
 | <a name="input_environment"></a> [environment](#input\_environment) | Environment | `string` | n/a | yes |
+| <a name="input_webinar_subscriptions_ddb"></a> [webinar\_subscriptions\_ddb](#input\_webinar\_subscriptions\_ddb) | n/a | <pre>object({<br/>    name       = string<br/>    arn        = string<br/>    stream_arn = string<br/>  })</pre> | n/a | yes |
+| <a name="input_aws_region"></a> [aws\_region](#input\_aws\_region) | AWS region to create resources. Default Milan | `string` | `"eu-south-1"` | no |
 | <a name="input_module"></a> [module](#input\_module) | Prefix for resources | `string` | `"ac"` | no |
-| <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | <pre>{<br>  "CostCenter": "BD110 - PORTALS E TOOLS",<br>  "CreatedBy": "Terraform",<br>  "ManagementTeam": "team_cloudgaap_ai",<br>  "Owner": "CloudGaaP-AI",<br>  "Wbs": "BD110 - PORTALS E TOOLS"<br>}</pre> | no |
-| <a name="input_webinar_subscriptions_ddb"></a> [webinar\_subscriptions\_ddb](#input\_webinar\_subscriptions\_ddb) | n/a | <pre>object({<br>    name       = string<br>    arn        = string<br>    stream_arn = string<br>  })</pre> | n/a | yes |
+| <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | <pre>{<br/>  "CostCenter": "BD110 - PORTALS E TOOLS",<br/>  "CreatedBy": "Terraform",<br/>  "ManagementTeam": "team_cloudgaap_ai",<br/>  "Owner": "CloudGaaP-AI",<br/>  "Wbs": "BD110 - PORTALS E TOOLS"<br/>}</pre> | no |
 
 ## Outputs
 
@@ -62,4 +59,3 @@ No requirements.
 |------|-------------|
 | <a name="output_api_key_param"></a> [api\_key\_param](#output\_api\_key\_param) | n/a |
 | <a name="output_base_url_param"></a> [base\_url\_param](#output\_base\_url\_param) | n/a |
-<!-- END_TF_DOCS -->
