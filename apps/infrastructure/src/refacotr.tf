@@ -110,12 +110,15 @@ locals {
 }
 
 
-
 import {
   to = module.chatbot[0].aws_api_gateway_stage.api_stage
   id = "${local.api_stages[var.environment].api_id}/${var.environment}"
 }
 
+import {
+  to = module.active_campaign[0].module.lambda_resync.aws_iam_role_policy.logs[0]
+  id = "ac-prod-resync-lambda:ac-prod-resync-lambda-logs"
+}
 
 removed {
   from = module.website.aws_s3_bucket.website
