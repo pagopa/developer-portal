@@ -208,7 +208,7 @@ export async function getReleaseNote(
   const releaseNote = await getStrapiReleaseNotes(productSlug);
   if (!releaseNote) {
     // eslint-disable-next-line functional/no-throw-statements
-    throw new Error('Failed to fetch release data');
+    throw new Error('Failed to fetch release notes data');
   }
 
   const releaseNotesMetadata = await getReleaseNotesMetadata(
