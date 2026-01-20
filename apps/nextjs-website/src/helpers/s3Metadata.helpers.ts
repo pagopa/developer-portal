@@ -228,7 +228,8 @@ export const getSolutionsMetadata = async (dirName?: string) => {
 
   if (
     solutionsMetadataCache &&
-    now - solutionsMetadataCacheTime < METADATA_CACHE_TTL
+    now - solutionsMetadataCacheTime < METADATA_CACHE_TTL &&
+    (!dirName || solutionsMetadataCache.some((m) => m.dirName === dirName))
   ) {
     return solutionsMetadataCache;
   }
@@ -248,7 +249,8 @@ export const getReleaseNotesMetadata = async (dirName?: string) => {
 
   if (
     releaseNotesMetadataCache &&
-    now - releaseNotesMetadataCacheTime < METADATA_CACHE_TTL
+    now - releaseNotesMetadataCacheTime < METADATA_CACHE_TTL &&
+    (!dirName || releaseNotesMetadataCache.some((m) => m.dirName === dirName))
   ) {
     return releaseNotesMetadataCache;
   }
