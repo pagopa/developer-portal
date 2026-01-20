@@ -170,7 +170,7 @@ export async function fetchMetadataFromCDN<T>(
 }
 
 const S3_GUIDES_METADATA_JSON_PATH =
-  process.env.S3_GUIDES_METADATA_JSON_PATH || 'guides-metadata.json';
+  process.env.S3_GUIDES_METADATA_JSON_PATH || 'guides-metadata.v5.json';
 const S3_SOLUTIONS_METADATA_JSON_PATH =
   process.env.S3_SOLUTIONS_METADATA_JSON_PATH || 'solutions-metadata.json';
 const S3_RELEASE_NOTES_METADATA_JSON_PATH =
