@@ -172,6 +172,8 @@ export async function fetchMetadataFromCDN<T>(
 
 const S3_PATH_TO_GITBOOK_DOCS =
   process.env.S3_PATH_TO_GITBOOK_DOCS || 'devportal-docs/docs';
+const S3_GUIDES_METADATA_JSON_PATH =
+  process.env.S3_GUIDES_METADATA_JSON_PATH || 'guides-metadata.json';
 const S3_METADATA_JSON_PATH =
   process.env.S3_METADATA_JSON_PATH || 'metadata.json';
 const S3_SOLUTIONS_METADATA_JSON_PATH =
