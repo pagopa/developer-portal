@@ -744,20 +744,33 @@ async function main() {
             !DIR_NAMES_FILTER || DIR_NAMES_FILTER.includes(version.dirName)
         )
       );
-      filteredGuidesMetadata.map(async (guideMetadata) => {
-        if (guideMetadata.length > 0) {
-          await putS3File(
-            guideMetadata,
-            path.join(
-              S3_PATH_TO_GITBOOK_DOCS,
-              guideMetadata[0].dirName,
-              S3_DIRNAME_METADATA_JSON_PATH
-            ),
-            S3_BUCKET_NAME!,
-            getS3Client()
-          );
+      const promises = compact(filteredGuidesMetadata).map(
+        async (guideMetadata) => {
+          try {
+            if (guideMetadata.length > 0 && guideMetadata[0].dirName) {
+              await putS3File(
+                guideMetadata,
+                path.join(
+                  S3_PATH_TO_GITBOOK_DOCS,
+                  guideMetadata[0].dirName,
+                  S3_DIRNAME_METADATA_JSON_PATH
+                ),
+                S3_BUCKET_NAME!,
+                getS3Client()
+              );
+            }
+          } catch (error) {
+            console.error(
+              `Error saving guide metadata for dirName ${guideMetadata[0]?.dirName}:`,
+              error
+            );
+          }
         }
-      });
+      );
+
+      await Promise.all(promises);
+      console.log(`Saved ${filteredGuidesMetadata.length} guide items to S3`);
+
       if (GENERATE_ROOT_METADATA_FILE) {
         const allGuidesMetadata = await processGuidesMetadata(
           guidesMetadataInfo
@@ -768,8 +781,11 @@ async function main() {
           S3_BUCKET_NAME!,
           getS3Client()
         );
+
+        console.log(
+          `Saved ${allGuidesMetadata.length} guide items to guides-metadata root file in S3`
+        );
       }
-      console.log(`Saved ${filteredGuidesMetadata.length} guide items to S3`);
     }
 
     // Process and save solutions metadata
