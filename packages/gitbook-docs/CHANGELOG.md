@@ -1,5 +1,12 @@
 # gitbook-docs
 
+## 1.7.3
+
+### Patch Changes
+
+- fffee8c: Fix check on url to parse
+- 5d8e960: Move sitemap generation after the s3 sync
+
 ## 1.7.2
 
 ### Patch Changes
