@@ -877,7 +877,7 @@ async function main() {
             }
           } catch (error) {
             console.error(
-              `Error saving guide metadata for dirName ${releaseNotesMetadata[0]?.dirName}:`,
+              `Error saving release notes metadata for dirName ${releaseNotesMetadata[0]?.dirName}:`,
               error
             );
           }
