@@ -744,7 +744,6 @@ async function main() {
     // Process and save guides metadata
     if (GENERATE_METADATA && metadataFilter.guides) {
       console.log('Processing guides metadata...');
-      const guidesMetadata = await processGuidesMetadata(strapiData.guides);
       if (GENERATE_ROOT_METADATA_FILE) {
         const allGuidesMetadata = await processGuidesMetadata(
           strapiData.guides,
@@ -758,6 +757,7 @@ async function main() {
         );
       }
 
+      const guidesMetadata = await processGuidesMetadata(strapiData.guides);
       guidesMetadata.map(async (guideMetadata) => {
         if (guideMetadata.length > 0) {
           await putS3File(
