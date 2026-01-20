@@ -257,32 +257,25 @@ async function getMarkdownFilesRecursively(dir: string): Promise<string[]> {
   return files.flat();
 }
 
-// Process guide metadata
-async function processGuidesMetadata(
-  guides: StrapiGuide[],
-  skipFilter = false
-): Promise<MetadataItem[][]> {
-  const guideInfoList: MetadataInfo[] = guides
+function mapGuidesToMetadataInfo(guides: StrapiGuide[]): MetadataInfo[] {
+  return guides
     .filter((guide) => !!guide.attributes.product?.data?.attributes?.slug)
     .flatMap((guide) =>
-      guide.attributes.versions
-        // Client-side filtering for guides: filter by dirName if DIR_NAMES_FILTER is provided
-        .filter(
-          (version) =>
-            skipFilter ||
-            !DIR_NAMES_FILTER ||
-            DIR_NAMES_FILTER.includes(version.dirName)
-        )
-        .map((version) => ({
-          versionName: version.version,
-          isMainVersion: version.main,
-          dirName: version.dirName,
-          slug: guide.attributes.slug,
-          productSlug: `${guide.attributes.product?.data?.attributes?.slug}`,
-          metadataType: MetadataType.Guide,
-        }))
+      guide.attributes.versions.map((version) => ({
+        versionName: version.version,
+        isMainVersion: version.main,
+        dirName: version.dirName,
+        slug: guide.attributes.slug,
+        productSlug: `${guide.attributes.product?.data?.attributes?.slug}`,
+        metadataType: MetadataType.Guide,
+      }))
     );
+}
 
+// Process guide metadata
+async function processGuidesMetadata(
+  guideInfoList: MetadataInfo[]
+): Promise<MetadataItem[][]> {
   const items: MetadataItem[][] = [];
 
   for (const guideInfo of guideInfoList) {
@@ -744,21 +737,14 @@ async function main() {
     // Process and save guides metadata
     if (GENERATE_METADATA && metadataFilter.guides) {
       console.log('Processing guides metadata...');
-      if (GENERATE_ROOT_METADATA_FILE) {
-        const allGuidesMetadata = await processGuidesMetadata(
-          strapiData.guides,
-          true
-        );
-        await putS3File(
-          allGuidesMetadata.flat(),
-          S3_GUIDE_METADATA_JSON_PATH,
-          S3_BUCKET_NAME!,
-          getS3Client()
-        );
-      }
-
-      const guidesMetadata = await processGuidesMetadata(strapiData.guides);
-      guidesMetadata.map(async (guideMetadata) => {
+      const guidesMetadataInfo = mapGuidesToMetadataInfo(strapiData.guides);
+      const filteredGuidesMetadata = await processGuidesMetadata(
+        guidesMetadataInfo.filter(
+          (version) =>
+            !DIR_NAMES_FILTER || DIR_NAMES_FILTER.includes(version.dirName)
+        )
+      );
+      filteredGuidesMetadata.map(async (guideMetadata) => {
         if (guideMetadata.length > 0) {
           await putS3File(
             guideMetadata,
@@ -772,8 +758,18 @@ async function main() {
           );
         }
       });
-
-      console.log(`Saved ${guidesMetadata.length} guide items to S3`);
+      if (GENERATE_ROOT_METADATA_FILE) {
+        const allGuidesMetadata = await processGuidesMetadata(
+          guidesMetadataInfo
+        );
+        await putS3File(
+          allGuidesMetadata.flat(),
+          S3_GUIDE_METADATA_JSON_PATH,
+          S3_BUCKET_NAME!,
+          getS3Client()
+        );
+      }
+      console.log(`Saved ${filteredGuidesMetadata.length} guide items to S3`);
     }
 
     // Process and save solutions metadata
