@@ -265,9 +265,8 @@ export async function getSolutionDetail(
 ) {
   const solutionData = await getSolution(solutionSlug);
   if (!solutionData) {
-    // eslint-disable-next-line functional/no-expression-statements
-    console.error('no solution data found');
-    return undefined;
+    // eslint-disable-next-line functional/no-throw-statements
+    throw new Error('Failed to fetch solution data');
   }
   const solutionsMetadata = await getSolutionsMetadata(solutionData.dirName);
 
