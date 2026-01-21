@@ -169,13 +169,9 @@ export async function fetchMetadataFromCDN<T>(
   return await requestPromise;
 }
 
-const S3_GUIDES_METADATA_JSON_PATH =
-  process.env.S3_GUIDES_METADATA_JSON_PATH || 'guides-metadata.v5.json';
-const S3_SOLUTIONS_METADATA_JSON_PATH =
-  process.env.S3_SOLUTIONS_METADATA_JSON_PATH || 'solutions-metadata.v5.json';
-const S3_RELEASE_NOTES_METADATA_JSON_PATH =
-  process.env.S3_RELEASE_NOTES_METADATA_JSON_PATH ||
-  'release-notes-metadata.v5.json';
+const S3_GUIDES_METADATA_JSON_PATH = 'guides-metadata.v5.json';
+const S3_SOLUTIONS_METADATA_JSON_PATH = 'solutions-metadata.v5.json';
+const S3_RELEASE_NOTES_METADATA_JSON_PATH = 'release-notes-metadata.v5.json';
 const S3_SOAP_API_METADATA_JSON_PATH =
   process.env.S3_SOAP_API_METADATA_JSON_PATH ||
   'soap-api/soap-api-metadata.json';
