@@ -60,7 +60,7 @@ jobs:
   manual_sync_gitbook_docs:
     name: Sync gitbook Docs to S3 (manual on ${{ inputs.environment }})
     if: github.event_name == 'workflow_dispatch'
-    runs-on: codebuild-${{ inputs.environment }}-github-runner-${{ github.run_id }}-${{ github.run_attempt }}
+    runs-on: ubuntu-latest
     outputs:
       environment: ${{ inputs.environment }}
     environment: ${{ inputs.environment }}
@@ -209,14 +209,10 @@ jobs:
             --distribution-id ${{ vars.ASSET_BUCKET_CLOUDFRONT_DISTRIBUTION_ID }} \
             --paths "/*"
 
-      - name: Refresh API and Dynamic Docs Vector Index
-        if: inputs.refresh_vector_index == true
-        uses: ./.github/actions/refresh-api-and-dynamic-docs-vector-index
-
   scheduled_sync_gitbook_docs:
     name: Sync gitbook Docs to S3 (scheduled on prod)
     if: github.event_name == 'schedule'
-    runs-on: codebuild-${{ inputs.environment }}-github-runner-${{ github.run_id }}-${{ github.run_attempt }}
+    runs-on: ubuntu-latest
     outputs:
       environment: 'prod'
     environment: 'prod'
@@ -344,8 +340,3 @@ jobs:
           aws cloudfront create-invalidation \
             --distribution-id ${{ vars.ASSET_BUCKET_CLOUDFRONT_DISTRIBUTION_ID }} \
             --paths "/*"
-
-      - name: Refresh API and Dynamic Docs Vector Index
-        uses: ./.github/actions/refresh-api-and-dynamic-docs-vector-index
-        with:
-          chatbot_lambda_name: ${{ vars.CHATBOT_LAMBDA_NAME }}
