@@ -17,7 +17,7 @@ on:
         description: 'The type of action to perform'
         type: choice
         required: true
-        default: all
+        default: both
         options:
           - both
           - api
