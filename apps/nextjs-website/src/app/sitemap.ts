@@ -51,9 +51,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     .map((product) => product.slug);
 
   // Fetch metadata from S3
-  const guidesMetadata = await getGuidesMetadata();
-  const solutionsMetadata = await getSolutionsMetadata();
-  const releaseNotesMetadata = await getReleaseNotesMetadata();
+  const guidesMetadata = await getGuidesMetadata('it'); // TODO: remove hardcoded locale once i18n development on sitemap has been completed
+  const solutionsMetadata = await getSolutionsMetadata('it'); // TODO: remove hardcoded locale once i18n development on sitemap has been completed
+  const releaseNotesMetadata = await getReleaseNotesMetadata('it'); // TODO: remove hardcoded locale once i18n development on sitemap has been completed
   const overviews = await getOverviewsProps();
   const tutorialListPages = await getTutorialListPagesProps();
   const productPages = getProductsPagesProps(
@@ -162,7 +162,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.6,
   }));
 
-  const solutions = await getSolutionsProps();
+  const solutions = await getSolutionsProps('it'); // TODO: remove hardcoded locale once i18n development on sitemap has been completed
   const solutionRoutes = solutions.map((solution) => ({
     url: `${baseUrl}/solutions/${solution.slug}`,
     lastModified: new Date(solution.updatedAt || Date.now()),

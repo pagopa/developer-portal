@@ -141,9 +141,9 @@ export const getApiDataListPagesProps = async () => {
   return makeApiDataListPagesProps(strapiApiDataListPages);
 };
 
-export const getApiDataProps = async () => {
+export const getApiDataProps = async (locale: string) => {
   const strapiApiDataList = await fetchApiDataList(buildEnv);
-  return await makeApiDataListProps(strapiApiDataList);
+  return await makeApiDataListProps(locale, strapiApiDataList);
 };
 
 export const getCaseHistoriesProps = async () => {

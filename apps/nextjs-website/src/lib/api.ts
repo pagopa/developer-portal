@@ -185,9 +185,9 @@ export async function getProduct(productSlug: string) {
   return props;
 }
 
-export async function getApiData(apiDataSlug: string) {
+export async function getApiData(locale: string, apiDataSlug: string) {
   const props = manageUndefined(
-    (await getApiDataProps()).find(
+    (await getApiDataProps(locale)).find(
       (apiData) => apiData.apiDataSlug === apiDataSlug
     )
   );
