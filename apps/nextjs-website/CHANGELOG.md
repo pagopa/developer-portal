@@ -1,5 +1,25 @@
 # nextjs-website
 
+## 15.0.0
+
+### Major Changes
+
+- 8352eb1: Add middelware to rewrite paths without locale into ones with default locale /it
+
+### Minor Changes
+
+- c82e979: Update Next.js version to 15
+- ae6c681: Fix sitemap generation
+- c755822: Add language selection menu in site header
+
+### Patch Changes
+
+- 95f22b0: Fix dependency version causing next 15 not to load up properly
+- 4b327bb: Fix style regression
+- Updated dependencies [fffee8c]
+- Updated dependencies [5d8e960]
+  - gitbook-docs@1.7.3
+
 ## 14.1.1
 
 ### Patch Changes
