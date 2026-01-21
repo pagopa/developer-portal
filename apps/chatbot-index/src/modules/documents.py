@@ -7,6 +7,7 @@ import yaml
 import tqdm
 import requests
 import html2text
+from pydantic import BaseModel
 from tempfile import mkdtemp
 from bs4 import BeautifulSoup
 from selenium import webdriver
@@ -32,6 +33,17 @@ SOLUTIONS_FOLDER_FILEPATH = "solutions-dirNames.json"
 RELEASE_NOTES_FOLDER_FILEPATH = "release-notes-dirNames.json"
 PRODUCTS_S3_FILEPATH = "synced-products-response.json"
 APIS_DATA_S3_FILEPATH = "synced-apis-data-response.json"
+
+
+class StaticMetadata(BaseModel):
+    url: str
+    s3_file_path: str
+    title: str
+
+
+class DynamicMetadata(BaseModel):
+    url: str
+    lastmod: str
 
 
 def read_file_from_s3(
@@ -107,11 +119,51 @@ def get_folders_list(
     return folders_list
 
 
+def get_one_metadata_from_s3(
+    folder_name: str,
+    folders_list: List[str],
+    docs_parent_folder: str | None = None,
+    bucket_name: str | None = None,
+) -> List[Dict[str, str]]:
+    """
+    Reads a single metadata file from S3 bucket.
+    Args:
+        folder_name (str): The folder name in the S3 bucket where the metadata file is located.
+        folders_list (List[str]): The list of valid folder names.
+        docs_parent_folder (str | None): The parent folder in the S3 bucket where the metadata files
+            are located.
+        bucket_name (str | None): The name of the S3 bucket.
+    Returns:
+        Dict[str, str]: The metadata dictionary."""
+
+    docs_parent_folder = (
+        docs_parent_folder if docs_parent_folder else DOCS_PARENT_FOLDER
+    )
+    bucket_name = bucket_name if bucket_name else SETTINGS.bucket_static_content
+    if folder_name in folders_list:
+        s3_content = read_file_from_s3(
+            os.path.join(docs_parent_folder, folder_name, "metadata.json")
+        )
+        try:
+            folder_metadata = json.loads(s3_content) if s3_content else {}
+        except Exception as e:
+            LOGGER.warning(
+                f"Failed to decode metadata.json in folder {docs_parent_folder}/{folder_name}: {e}"
+            )
+
+    else:
+        folder_metadata = {}
+        LOGGER.warning(f"Folder name {folder_name} not found in folders list.")
+
+    return folder_metadata
+
+
 def get_metadata_from_s3(
     docs_parent_folder: str | None = None,
     bucket_name: str | None = None,
 ) -> List[Dict[str, str]]:
-    """Reads metadata files from an S3 bucket.
+    """
+    Reads metadata files from S3 bucket.
     Args:
         docs_parent_folder (str | None): The parent folder in the S3 bucket where the metadata files
             are located.
@@ -374,59 +426,66 @@ def get_api_docs() -> List[Document]:
     return docs
 
 
-def get_static_and_dynamic_metadata(
-    sitemap_path: str | None = None,
-) -> Tuple[List[dict], List[dict]]:
+def get_static_metadata() -> List[StaticMetadata]:
     """
-    Fetches static and dynamic URLs from the sitemap and metadata files.
-    Args:
-        sitemap_path (str): The S3 file path to fetch the sitemap from.
+    Get the metadata from S3 and maps them into static metadata to create later LlamaIndex Documents.
     Returns:
-        Tuple[List[dict], List[dict]]: A tuple containing two lists:
-            - A list of dictionaries with static URLs and their S3 file paths.
-            - A list of dictionaries with dynamic URLs and their last modified dates.
+        List[StaticMetadata]: A list of StaticMetadata objects containing static metadata.
     """
 
-    sitemap = get_sitemap_urls(sitemap_path)
-    if not sitemap:
-        return [], []
-    else:
-        sitemap_urls = [item["url"] for item in sitemap]
-        sitemap_filtered_urls = filter_urls(sitemap_urls)
+    static_metadata = []
+    all_metadata = get_metadata_from_s3()
 
-        static_metadata = []
-        dynamic_metadata = []
+    for item in all_metadata:
+        static_metadata.append(
+            StaticMetadata(
+                url=SETTINGS.website_url + item["path"],
+                s3_file_path=item["contentS3Path"],
+                title=item["title"],
+            )
+        )
 
-        all_metadata = get_metadata_from_s3()
-        all_url_metadata = [
-            SETTINGS.website_url + item["path"] for item in all_metadata
-        ]
+    LOGGER.info(f"Found {len(static_metadata)} static URLs.")
+    return static_metadata
 
-        for url in sitemap_filtered_urls:
-            if url in all_url_metadata:
-                idx = all_url_metadata.index(url)
-                static_metadata.append(
-                    {
-                        "url": url,
-                        "s3_file_path": all_metadata[idx]["contentS3Path"],
-                        "title": all_metadata[idx]["title"],
-                    }
+
+def get_dynamic_metadata(
+    static_metadata: List[StaticMetadata],
+) -> List[DynamicMetadata]:
+    """
+    Fetches dynamic metadata by comparing sitemap URLs with static metadata.
+    Args:
+        static_metadata (List[StaticMetadata]): A list of StaticMetadata objects containing static metadata.
+    Returns:
+        List[DynamicMetadata]: A list of DynamicMetadata objects containing dynamic metadata.
+    """
+
+    dynamic_metadata = []
+    sitemap = get_sitemap_urls()
+    all_url_metadata = [item.url for item in static_metadata]
+    sitemap_urls = [item["url"] for item in sitemap]
+    sitemap_url_to_lastmod = {item["url"]: item["lastmod"] for item in sitemap}
+    sitemap_filtered_urls = filter_urls(sitemap_urls)
+
+    for url in sitemap_filtered_urls:
+        if url not in all_url_metadata:
+            lastmod = sitemap_url_to_lastmod.get(url)
+            dynamic_metadata.append(
+                DynamicMetadata(
+                    url=url,
+                    lastmod=lastmod,
                 )
-            else:
-                idx = sitemap_urls.index(url)
-                dynamic_metadata.append(sitemap[idx])
+            )
 
-    LOGGER.info(
-        f"Found {len(static_metadata)} static URLs and {len(dynamic_metadata)} dynamic URLs."
-    )
-    return static_metadata, dynamic_metadata
+    LOGGER.info(f"Found {len(dynamic_metadata)} dynamic URLs.")
+    return dynamic_metadata
 
 
-def get_static_docs(static_metadata: List[dict]) -> List[Document]:
+def get_static_docs(static_metadata: List[StaticMetadata]) -> List[Document]:
     """
     Fetches static documents from the provided metadata.
     Args:
-        static_metadata (List[dict]): A list of dictionaries containing metadata for static documents.
+        static_metadata (List[StaticMetadata]): A list of StaticMetadata objects containing metadata for static documents.
     Returns:
         List[Document]: A list of Document objects containing the content and metadata.
     """
@@ -436,16 +495,16 @@ def get_static_docs(static_metadata: List[dict]) -> List[Document]:
         static_metadata, total=len(static_metadata), desc="Getting static documents"
     ):
 
-        url = item["url"]
-        title = item["title"]
-        text = read_file_from_s3(item["s3_file_path"])
+        url = item.url
+        title = item.title
+        text = read_file_from_s3(item.s3_file_path)
 
         if text:
             text = remove_figure_blocks(text)
 
             static_docs.append(
                 Document(
-                    id_=item["s3_file_path"],
+                    id_=item.s3_file_path,
                     text=text,
                     metadata={
                         "filepath": url.replace(SETTINGS.website_url, ""),
@@ -456,17 +515,17 @@ def get_static_docs(static_metadata: List[dict]) -> List[Document]:
             )
         else:
             LOGGER.warning(
-                f"Discarded reading {item['s3_file_path']} due to empty content."
+                f"Discarded reading {item.s3_file_path} due to empty content."
             )
 
     return static_docs
 
 
-def get_dynamic_docs(dynamic_metadata: List[dict]) -> List[Document]:
+def get_dynamic_docs(dynamic_metadata: List[DynamicMetadata]) -> List[Document]:
     """
     Fetches dynamic documents from the provided metadata using Selenium.
     Args:
-        dynamic_metadata (List[dict]): A list of dictionaries containing metadata for dynamic documents.
+        dynamic_metadata (List[DynamicMetadata]): A list of DynamicMetadata objects containing metadata for dynamic documents.
     Returns:
         List[Document]: A list of Document objects containing the content and metadata.
     """
@@ -502,8 +561,8 @@ def get_dynamic_docs(dynamic_metadata: List[dict]) -> List[Document]:
     for item in tqdm.tqdm(
         dynamic_metadata, total=len(dynamic_metadata), desc="Getting dynamic documents"
     ):
-        url = item["url"]
-        lastmod = item["lastmod"]
+        url = item.url
+        lastmod = item.lastmod
 
         try:
             driver.get(url)
@@ -554,7 +613,8 @@ def get_documents() -> List[Document]:
         List[Document]: A list of Document objects containing the content and metadata.
     """
 
-    static_metadata, dynamic_metadata = get_static_and_dynamic_metadata()
+    static_metadata = get_static_metadata()
+    dynamic_metadata = get_dynamic_metadata(static_metadata)
 
     api_docs = get_api_docs()
     static_docs = get_static_docs(static_metadata)
