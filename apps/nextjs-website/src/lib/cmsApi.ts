@@ -59,7 +59,6 @@ import {
 } from 'gitbook-docs/syncedResponses';
 import { StrapiSolutions } from './strapi/types/solutions';
 import { StrapiReleaseNotes } from './strapi/types/releaseNotes';
-import { product } from '@/lib/strapi/__tests__/fixtures/product';
 
 // a BuildEnv instance ready to be used
 const buildEnv = pipe(
@@ -236,8 +235,7 @@ const fetchReleaseNotes = async () => {
 export const getStrapiReleaseNotes = async (productSlug: string) => {
   const strapiReleaseNotes = await fetchReleaseNotes();
   return strapiReleaseNotes.data.find(
-    (strapiReleaseNote) =>
-      strapiReleaseNote.attributes.product.data?.attributes.slug === productSlug
+    (strapiReleaseNote) => strapiReleaseNote.product?.slug === productSlug
   );
 };
 
