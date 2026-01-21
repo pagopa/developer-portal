@@ -42,6 +42,5 @@ runs:
       shell: bash
       run: |
         cd apps/chatbot-index
-        PYTHONPATH=. 
-        poetry run python src/modules/refresh_dynamic_docs.py
-        poetry run python src/modules/refresh_api_docs.py
+        PYTHONPATH=. poetry run python src/modules/refresh_dynamic_docs.py
+        PYTHONPATH=. poetry run python src/modules/refresh_api_docs.py
