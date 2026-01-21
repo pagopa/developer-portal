@@ -60,7 +60,7 @@ jobs:
   manual_sync_gitbook_docs:
     name: Sync gitbook Docs to S3 (manual on ${{ inputs.environment }})
     if: github.event_name == 'workflow_dispatch'
-    runs-on: ubuntu-latest
+    runs-on: codebuild-${{ inputs.environment }}-github-runner-${{ github.run_id }}-${{ github.run_attempt }}
     outputs:
       environment: ${{ inputs.environment }}
     environment: ${{ inputs.environment }}
@@ -216,7 +216,7 @@ jobs:
   scheduled_sync_gitbook_docs:
     name: Sync gitbook Docs to S3 (scheduled on prod)
     if: github.event_name == 'schedule'
-    runs-on: ubuntu-latest
+    runs-on: codebuild-${{ inputs.environment }}-github-runner-${{ github.run_id }}-${{ github.run_attempt }}
     outputs:
       environment: 'prod'
     environment: 'prod'
