@@ -112,6 +112,7 @@ export async function downloadFileAsText(
 }
 
 async function fetchFromCDN(path: string, config?: RequestInit) {
+  console.log(`Fetching from CDN: ${path}`);
   if (!staticContentsUrl) {
     // eslint-disable-next-line functional/no-throw-statements
     throw new Error(
@@ -197,7 +198,7 @@ let releaseNotesMetadataCacheTime = 0;
 
 const METADATA_CACHE_TTL = 5 * 60 * 1000; // 5 minutes
 
-export const getGuidesMetadata = async () => {
+export const getGuidesMetadata = async (locale: string) => {
   const now = Date.now();
 
   if (
@@ -208,14 +209,14 @@ export const getGuidesMetadata = async () => {
   }
 
   guidesMetadataCache = await fetchMetadataFromCDN<JsonMetadata>(
-    S3_GUIDES_METADATA_JSON_PATH
+    `${locale}/${S3_GUIDES_METADATA_JSON_PATH}`
   );
   guidesMetadataCacheTime = now;
 
   return guidesMetadataCache || [];
 };
 
-export const getSolutionsMetadata = async () => {
+export const getSolutionsMetadata = async (locale: string) => {
   const now = Date.now();
 
   if (
@@ -226,14 +227,14 @@ export const getSolutionsMetadata = async () => {
   }
 
   solutionsMetadataCache = await fetchMetadataFromCDN<JsonMetadata>(
-    S3_SOLUTIONS_METADATA_JSON_PATH
+    `${locale}/${S3_SOLUTIONS_METADATA_JSON_PATH}`
   );
   solutionsMetadataCacheTime = now;
 
   return solutionsMetadataCache || [];
 };
 
-export const getReleaseNotesMetadata = async () => {
+export const getReleaseNotesMetadata = async (locale: string) => {
   const now = Date.now();
 
   if (
@@ -244,17 +245,17 @@ export const getReleaseNotesMetadata = async () => {
   }
 
   releaseNotesMetadataCache = await fetchMetadataFromCDN<JsonMetadata>(
-    S3_RELEASE_NOTES_METADATA_JSON_PATH
+    `${locale}/${S3_RELEASE_NOTES_METADATA_JSON_PATH}`
   );
   releaseNotesMetadataCacheTime = now;
 
   return releaseNotesMetadataCache || [];
 };
 
-export const getSoapApiMetadata = async () => {
+export const getSoapApiMetadata = async (locale: string) => {
   if (!soapApiMetadataCache) {
     soapApiMetadataCache = await fetchMetadataFromCDN<SoapApiJsonMetadata>(
-      S3_SOAP_API_METADATA_JSON_PATH
+      `${locale}/${S3_SOAP_API_METADATA_JSON_PATH}`
     );
   }
   return soapApiMetadataCache || [];

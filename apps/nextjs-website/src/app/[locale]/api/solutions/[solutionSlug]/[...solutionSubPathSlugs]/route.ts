@@ -7,18 +7,20 @@ export async function GET(
   props: {
     readonly params: Promise<{
       readonly solutionSlug: string;
+      readonly locale: string;
       readonly solutionSubPathSlugs: readonly string[];
     }>;
   }
 ) {
   const params = await props.params;
-  const { solutionSlug, solutionSubPathSlugs } = params;
+  const { solutionSlug, locale, solutionSubPathSlugs } = params;
 
   // eslint-disable-next-line functional/no-try-statements
   try {
     const [solutionData, urlReplaceMap] = await Promise.all([
       getSolutionDetail(
         solutionSlug,
+        locale,
         Array.isArray(solutionSubPathSlugs) ? solutionSubPathSlugs : []
       ),
       getUrlReplaceMapProps(),
@@ -47,7 +49,7 @@ export async function GET(
       solution: {
         title: solutionData.title,
         slug: solutionData.slug,
-        path: `/solutions/${solutionData.slug}`,
+        path: `/${locale}/solutions/${solutionData.slug}`,
       },
       bodyConfig,
       seo: solutionData.seo,

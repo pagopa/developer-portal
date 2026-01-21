@@ -62,7 +62,7 @@ export async function getGuidePage(
       locale,
       productSlug
     ),
-    getGuidesMetadata(),
+    getGuidesMetadata(locale),
   ]);
 
   // Path construction
@@ -196,16 +196,18 @@ export async function getApiData(apiDataSlug: string) {
 
 export async function getReleaseNote(
   productSlug: string,
+  locale: string,
   releaseNoteSubPathSlugs?: readonly string[]
 ) {
   const products = await getProducts();
   const releaseNotesPath = `/${productSlug}/${releaseNoteSubPathSlugs?.join(
     '/'
   )}`;
-  const releaseNotesMetadata = await getReleaseNotesMetadata();
+  const releaseNotesMetadata = await getReleaseNotesMetadata(locale);
 
   const releaseNoteProps = await getReleaseNoteProps(
     productSlug,
+    locale,
     releaseNotesMetadata.find(({ path }) => path === releaseNotesPath)
   );
 
@@ -236,9 +238,9 @@ export async function getReleaseNote(
   };
 }
 
-export async function getSolution(solutionSlug?: string) {
+export async function getSolution(locale: string, solutionSlug?: string) {
   const props = manageUndefined(
-    (await getSolutionsProps()).find(({ slug }) => slug === solutionSlug)
+    (await getSolutionsProps(locale)).find(({ slug }) => slug === solutionSlug)
   );
   return props;
 }
@@ -250,12 +252,14 @@ export async function getSolutionListPage() {
 
 export async function getSolutionDetail(
   solutionSlug: string,
+  locale: string,
   solutionSubPathSlugs: readonly string[]
 ) {
-  const solutionsMetadata = await getSolutionsMetadata();
+  const solutionsMetadata = await getSolutionsMetadata(locale);
 
   return await getSolutionProps(
     solutionSlug,
+    locale,
     solutionsMetadata.find(
       ({ path }) =>
         path === `/solutions/${solutionSlug}/${solutionSubPathSlugs.join('/')}`

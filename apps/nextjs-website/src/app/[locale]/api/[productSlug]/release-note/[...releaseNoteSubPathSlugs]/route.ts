@@ -7,6 +7,7 @@ export async function GET(
   props: {
     readonly params: Promise<{
       readonly productSlug: string;
+      readonly locale: string;
       readonly releaseNoteSubPathSlugs: readonly string[];
     }>;
   }
@@ -17,7 +18,7 @@ export async function GET(
     ? ['release-note', ...releaseNoteSubPathSlugs]
     : [];
 
-  return getReleaseNote(productSlug, noteSegments)
+  return getReleaseNote(productSlug, params.locale, noteSegments)
     .then(async (releaseNoteProps) => {
       if (!releaseNoteProps) {
         return new Response(

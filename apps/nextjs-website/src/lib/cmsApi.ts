@@ -151,9 +151,9 @@ export const getCaseHistoriesProps = async () => {
   return makeCaseHistoriesProps(strapiCaseHistories);
 };
 
-export const getSolutionsProps = async () => {
+export const getSolutionsProps = async (locale: string) => {
   const strapiSolutions = (await fetchResponseFromCDN(
-    getSyncedSolutionsResponseJsonPath()
+    `${locale}/${getSyncedSolutionsResponseJsonPath()}`
   )) as StrapiSolutions | undefined;
   return strapiSolutions ? makeSolutionsProps(strapiSolutions) : [];
 };
@@ -179,7 +179,7 @@ export const getGuideProps = async (
   productSlug: string
 ) => {
   const guide = await getGuidePageProps(guidePaths[0], locale, productSlug);
-  return await makeGuideS3({ guideDefinition: guide, guidePaths });
+  return await makeGuideS3({ guideDefinition: guide, locale, guidePaths });
 };
 
 export const getGuidePageProps = async (
@@ -206,10 +206,11 @@ export const getGuidePageProps = async (
 
 export const getSolutionProps = async (
   solutionsSlug: string,
+  locale: string,
   jsonMetadata?: JsonMetadata
 ) => {
   const strapiSolutions = (await fetchResponseFromCDN(
-    getSyncedSolutionsResponseJsonPath()
+    `${locale}/${getSyncedSolutionsResponseJsonPath()}`
   )) as StrapiSolutions | undefined;
   if (!strapiSolutions || strapiSolutions.data.length < 1) {
     // eslint-disable-next-line functional/no-throw-statements
@@ -221,15 +222,16 @@ export const getSolutionProps = async (
     // eslint-disable-next-line functional/no-throw-statements
     throw new Error(`No solution found matching slug "${solutionsSlug}"`);
   }
-  return await makeSolutionS3(solution, jsonMetadata);
+  return await makeSolutionS3(solution, locale, jsonMetadata);
 };
 
 export const getReleaseNoteProps = async (
   productSlug: string,
+  locale: string,
   jsonMetadata?: JsonMetadata
 ) => {
   const strapiReleaseNotes = (await fetchResponseFromCDN(
-    getSyncedReleaseNotesResponseJsonPath()
+    `${locale}/${getSyncedReleaseNotesResponseJsonPath()}`
   )) as StrapiReleaseNotes | undefined;
   if (!strapiReleaseNotes || strapiReleaseNotes.data.length < 1) {
     // eslint-disable-next-line functional/no-throw-statements
@@ -245,7 +247,7 @@ export const getReleaseNoteProps = async (
       `No release data found matching product slug "${productSlug}"`
     );
   }
-  return await makeReleaseNoteS3(releaseNote, jsonMetadata);
+  return await makeReleaseNoteS3(releaseNote, locale, jsonMetadata);
 };
 
 export const getUseCasesProps = async () => {

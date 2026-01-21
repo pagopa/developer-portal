@@ -34,6 +34,7 @@ export async function generateMetadata(props0: {
   const params = await props0.params;
   const props = await getSolutionDetail(
     params?.solutionSlug,
+    params?.locale,
     params?.solutionSubPathSlugs
   );
 
@@ -51,6 +52,7 @@ const Page = async (props0: { params: Promise<Params> }) => {
   const params = await props0.params;
   const solutionProps = await getSolutionDetail(
     params?.solutionSlug,
+    params?.locale,
     params?.solutionSubPathSlugs
   );
 

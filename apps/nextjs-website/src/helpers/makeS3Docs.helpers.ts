@@ -93,18 +93,20 @@ export const makeTutorials = async (props: {
 export const makeGuide = (props: {
   readonly guideDefinition: GuideDefinition;
   readonly guidePaths: readonly string[];
+  readonly locale: string;
 }) => {
   const {
     guidePaths,
     guideDefinition: { product, guide, versions, bannerLinks },
   } = props;
-  const guidePath = `/${product.slug}/guides/${guide.slug}`;
+  const guidePath = `${props.locale}/${product.slug}/guides/${guide.slug}`;
   const docs = versions
     .filter(
       ({ version, main }) =>
         guidePaths.some((path) => path === version) || main === true
     )
     .flatMap(({ main = false, version, dirName }) => {
+      const dirPath = `${props.locale}/${s3DocsPath}/${dirName}`;
       const item = {
         product: product,
         guide: {
@@ -124,8 +126,8 @@ export const makeGuide = (props: {
         source: {
           pathPrefix: `${guidePath}/${version}`,
           version,
-          assetsPrefix: `${staticContentsUrl}/${s3DocsPath}/${dirName}`,
-          dirPath: `${s3DocsPath}/${dirName}`,
+          assetsPrefix: `${staticContentsUrl}/${dirPath}`,
+          dirPath: dirPath,
           spaceId: dirName,
         },
         bannerLinks: bannerLinks,
@@ -140,14 +142,16 @@ export const makeGuide = (props: {
 
 export const makeSolution = (
   solution: SolutionTemplateProps,
+  locale: string,
   jsonMetadata?: JsonMetadata
 ) => {
+  const dirPath = `${locale}/${s3DocsPath}/${solution.dirName}`;
   const doc = {
     ...solution,
     source: {
-      pathPrefix: `/solutions/${solution.slug}/details`,
-      assetsPrefix: `${staticContentsUrl}/${s3DocsPath}/${solution.dirName}`,
-      dirPath: `${s3DocsPath}/${solution.dirName}`,
+      pathPrefix: `${locale}/solutions/${solution.slug}/details`,
+      assetsPrefix: `${staticContentsUrl}/${dirPath}`,
+      dirPath: dirPath,
       spaceId: solution.dirName,
     },
   };
@@ -157,14 +161,16 @@ export const makeSolution = (
 
 export const makeReleaseNote = (
   releaseNote: ReleaseNotePageProps,
+  locale: string,
   jsonMetadata?: JsonMetadata
 ) => {
+  const dirPath = `${locale}/${s3DocsPath}/${releaseNote.dirName}`;
   const doc = {
     ...releaseNote,
     source: {
-      pathPrefix: `/${releaseNote.product.slug}/release-note`,
-      assetsPrefix: `${staticContentsUrl}/${s3DocsPath}/${releaseNote.dirName}`,
-      dirPath: `${s3DocsPath}/${releaseNote.dirName}`,
+      pathPrefix: `${locale}/${releaseNote.product.slug}/release-note`,
+      assetsPrefix: `${staticContentsUrl}/${dirPath}`,
+      dirPath: dirPath,
       spaceId: releaseNote.dirName,
     },
   };
