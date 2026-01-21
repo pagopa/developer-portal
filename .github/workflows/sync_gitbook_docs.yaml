@@ -43,11 +43,6 @@ on:
         type: string
         required: false
         default: ''
-      refresh_vector_index:
-        description: 'Refresh API and/or Dynamic docs in the vector index (static docs are handled by triggering lambda with S3 events)'
-        type: boolean
-        required: false
-        default: false
 
   schedule:
     - cron: '0 23 * * *'  # Run daily at midnight UTC
