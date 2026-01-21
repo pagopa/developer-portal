@@ -1,10 +1,10 @@
-import { ButtonNaked } from '@pagopa/mui-italia';
 import { Stack, Typography } from '@mui/material';
 import { useState } from 'react';
 
 import { PasswordTextField } from './PasswordTextField';
 import { useTranslations } from 'next-intl';
 import { passwordMatcher } from '@/helpers/auth.helpers';
+import { ButtonNaked } from '@/components/atoms/ButtonNaked/ButtonNaked';
 
 type EditPasswordFormProps = {
   // eslint-disable-next-line functional/no-return-void

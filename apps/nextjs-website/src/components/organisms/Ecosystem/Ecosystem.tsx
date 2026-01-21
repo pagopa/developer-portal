@@ -3,10 +3,10 @@ import React from 'react';
 import { Box, useTheme } from '@mui/material';
 import TabComponent from '@/components/atoms/TabComponent/TabComponent';
 import CardsGrid from '@/components/molecules/CardsGrid/CardsGrid';
-import { ButtonNaked } from '@pagopa/mui-italia';
 import Link from 'next/link';
 import { HomepageProps } from '@/app/page';
 import SectionTitle from '@/components/molecules/SectionTitle/SectionTitle';
+import { ButtonNaked } from '@/components/atoms/ButtonNaked/ButtonNaked';
 
 const Ecosystem = ({
   title,

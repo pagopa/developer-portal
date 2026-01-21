@@ -14,7 +14,7 @@ export const ButtonNaked = <C extends React.ElementType>(
   const {
     children,
     buttonRef,
-    color = 'text',
+    color = 'primary',
     weight = 'default',
     ...rest
   } = props;
@@ -24,7 +24,7 @@ export const ButtonNaked = <C extends React.ElementType>(
         fontWeight: weight === 'default' ? '600' : '400',
         letterSpacing: 0.3,
       }}
-      variant='naked'
+      variant='text'
       size='small'
       color={color}
       disableRipple

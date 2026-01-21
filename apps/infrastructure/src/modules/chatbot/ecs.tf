@@ -52,7 +52,7 @@ resource "aws_ecs_task_definition" "ecs_redis_task_def" {
 }
 
 module "ecs_service" {
-  source = "git::https://github.com/terraform-aws-modules/terraform-aws-ecs.git//modules/service?ref=8b97783def49997d18a6fcb00dc21ce1edc0f538" # v5.9.0
+  source = "git::https://github.com/terraform-aws-modules/terraform-aws-ecs.git//modules/service?ref=378d0cb7e8fde47e8ddf58461ed1974486dbbd5d" # v7.1.0
 
   name                           = "redis"
   cluster_arn                    = module.ecs_cluster.arn
@@ -151,7 +151,7 @@ resource "aws_ecs_task_definition" "monitoring_task_def" {
 }
 
 module "monitoring_ecs_service" {
-  source = "git::https://github.com/terraform-aws-modules/terraform-aws-ecs.git//modules/service?ref=8b97783def49997d18a6fcb00dc21ce1edc0f538" # v5.9.0
+  source = "git::https://github.com/terraform-aws-modules/terraform-aws-ecs.git//modules/service?ref=378d0cb7e8fde47e8ddf58461ed1974486dbbd5d" # v7.1.0
 
   name                           = "langfuse-ecs"
   cluster_arn                    = module.ecs_cluster.arn

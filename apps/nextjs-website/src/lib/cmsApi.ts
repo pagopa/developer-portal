@@ -221,10 +221,7 @@ export const getSolutionProps = async (
   return await makeSolutionS3(solution, jsonMetadata);
 };
 
-export const getReleaseNoteProps = async (
-  productSlug: string,
-  jsonMetadata?: JsonMetadata
-) => {
+const fetchReleaseNotes = async () => {
   const strapiReleaseNotes = (await fetchResponseFromCDN(
     getSyncedReleaseNotesResponseJsonPath()
   )) as StrapiReleaseNotes | undefined;
@@ -232,6 +229,21 @@ export const getReleaseNoteProps = async (
     // eslint-disable-next-line functional/no-throw-statements
     throw new Error('Failed to fetch release data');
   }
+  return strapiReleaseNotes;
+};
+
+export const getStrapiReleaseNotes = async (productSlug: string) => {
+  const strapiReleaseNotes = await fetchReleaseNotes();
+  return strapiReleaseNotes.data.find(
+    (strapiReleaseNote) => strapiReleaseNote.product?.slug === productSlug
+  );
+};
+
+export const getReleaseNoteProps = async (
+  productSlug: string,
+  jsonMetadata?: JsonMetadata
+) => {
+  const strapiReleaseNotes = await fetchReleaseNotes();
   const releaseNotes = makeReleaseNotesProps(strapiReleaseNotes);
   const releaseNote = releaseNotes.find(
     (rn) => rn.product.slug === productSlug

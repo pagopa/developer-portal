@@ -1,4 +1,3 @@
-import { ButtonNaked } from '@pagopa/mui-italia';
 import { Stack, Typography } from '@mui/material';
 import { useCallback, useState } from 'react';
 
@@ -7,6 +6,7 @@ import { emailMatcher } from '@/helpers/auth.helpers';
 import RequiredTextField, {
   ValidatorFunction,
 } from '@/components/molecules/RequiredTextField/RequiredTextField';
+import { ButtonNaked } from '@/components/atoms/ButtonNaked/ButtonNaked';
 
 type EditEmailFormProps = {
   onSave: (email: string) => Promise<void>;
@@ -105,8 +105,10 @@ const EditEmailForm = ({ onSave, onCancel }: EditEmailFormProps) => {
         label={t('personalData.fields.email')}
         value={formValue.email}
         onChange={handleEmailChange}
-        helperText={t('changeEmail.wrongEmail')}
+        error={!!errors.email}
+        helperText={errors.email || t('changeEmail.wrongEmail')}
         customValidators={emailValidators}
+        InputProps={{ sx: { '& input': { fontWeight: 600 } } }}
         sx={{ marginBottom: { xs: 0, md: 3 } }}
       />
       <Stack

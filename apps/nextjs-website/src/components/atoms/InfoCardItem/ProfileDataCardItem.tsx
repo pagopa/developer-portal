@@ -9,7 +9,7 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { ButtonNaked } from '@pagopa/mui-italia';
+import { ButtonNaked } from '@/components/atoms/ButtonNaked/ButtonNaked';
 import { useTranslations } from 'next-intl';
 import { ReactNode } from 'react';
 
@@ -43,21 +43,39 @@ export const ProfileDataCardItem = (
             infoCardItem.required ? (
               <RequiredTextField
                 inputProps={{ maxlength: 100 }}
+                InputProps={{
+                  sx: {
+                    '& input': {
+                      fontWeight: 600,
+                    },
+                  },
+                }}
                 label={infoCardItem.title}
                 value={infoCardItem.value ?? ''}
                 onChange={({ target: { value } }) => {
-                  infoCardItem.onValue && infoCardItem.onValue(value);
+                  if (infoCardItem.onValue) {
+                    infoCardItem.onValue(value);
+                  }
                 }}
                 helperText={t('shared.requiredFieldError')}
               />
             ) : (
               <TextField
                 inputProps={{ maxlength: 100 }}
+                InputProps={{
+                  sx: {
+                    '& input': {
+                      fontWeight: 600,
+                    },
+                  },
+                }}
                 variant='outlined'
                 id={infoCardItem.title}
                 type={'text'}
                 onChange={({ target: { value } }) => {
-                  infoCardItem.onValue && infoCardItem.onValue(value);
+                  if (infoCardItem.onValue) {
+                    infoCardItem.onValue(value);
+                  }
                 }}
                 value={infoCardItem.value}
                 label={infoCardItem.title}
@@ -96,7 +114,12 @@ export const ProfileDataCardItem = (
                       ?.value || ''
                   )
                 }
-                sx={{ padding: '8.5px 14px' }}
+                sx={{
+                  padding: '8.5px 14px',
+                  '& .MuiSelect-select': {
+                    fontWeight: 600,
+                  },
+                }}
                 inputProps={{
                   sx: {
                     padding: 0,

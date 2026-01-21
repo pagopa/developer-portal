@@ -92,6 +92,28 @@ moved {
   to   = module.langfuse[0]
 }
 
+locals {
+  api_stages = {
+    dev = {
+      api_id     = "alhaa4pmf0"
+      stage_name = "dev"
+    }
+    uat = {
+      api_id     = "vy3s5vbpn8" # Replace with actual UAT API ID if different
+      stage_name = "uat"
+    }
+    prod = {
+      api_id     = "35z2b93836" # Replace with actual PROD API ID if different
+      stage_name = "prod"
+    }
+  }
+}
+
+
+import {
+  to = module.chatbot[0].aws_api_gateway_stage.api_stage
+  id = "${local.api_stages[var.environment].api_id}/${var.environment}"
+}
 
 removed {
   from = module.website.aws_s3_bucket.website
