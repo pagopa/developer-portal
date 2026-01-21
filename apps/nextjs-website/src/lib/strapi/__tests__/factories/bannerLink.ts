@@ -27,6 +27,7 @@ export function minimalBannerLink(): StrapiBannerLink {
     id: 1,
     title: undefined,
     content: undefined,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     theme: undefined as any,
     icon: {
       name: 'minimal-icon.svg',

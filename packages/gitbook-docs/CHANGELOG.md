@@ -1,5 +1,21 @@
 # gitbook-docs
 
+## 1.7.3
+
+### Patch Changes
+
+- fffee8c: Fix check on url to parse
+- 5d8e960: Move sitemap generation after the s3 sync
+
+## 1.7.2
+
+### Patch Changes
+
+- 89d22fa: Add validation to skip S3 uploads for empty metadata arrays
+- 711e8eb: Fix linting error
+- 309541d: Add extraction and S3 upload of solutions and release notes directory names.
+- c26b1d7: Fix issue with script parsing www urls
+
 ## 1.7.1
 
 ### Patch Changes

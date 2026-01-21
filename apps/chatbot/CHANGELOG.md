@@ -1,5 +1,11 @@
 # chatbot
 
+## 7.1.5
+
+### Patch Changes
+
+- fe24c9a: Replacing the hardcoded product list with a the function in order to consider only products that have the isVisible field equal to True
+
 ## 7.1.4
 
 ### Patch Changes

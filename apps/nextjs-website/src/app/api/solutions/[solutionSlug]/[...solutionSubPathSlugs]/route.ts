@@ -4,15 +4,14 @@ import { GitBookContentData } from '@/lib/types/gitBookContent';
 
 export async function GET(
   request: Request,
-  {
-    params,
-  }: {
-    readonly params: {
+  props: {
+    readonly params: Promise<{
       readonly solutionSlug: string;
       readonly solutionSubPathSlugs: readonly string[];
-    };
+    }>;
   }
 ) {
+  const params = await props.params;
   const { solutionSlug, solutionSubPathSlugs } = params;
 
   // eslint-disable-next-line functional/no-try-statements

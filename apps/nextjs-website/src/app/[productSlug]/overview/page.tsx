@@ -102,9 +102,10 @@ export type OverviewPageProps = {
 } & ProductLayoutProps;
 
 export async function generateMetadata(
-  { params }: ProductParams,
+  props: ProductParams,
   parent: ResolvingMetadata
 ): Promise<Metadata> {
+  const params = await props.params;
   const resolvedParent = await parent;
   const { product, path, seo, hero } = await getOverview(params.productSlug);
 
@@ -121,7 +122,8 @@ export async function generateMetadata(
   });
 }
 
-const OverviewPage = async ({ params }: ProductParams) => {
+const OverviewPage = async (props: ProductParams) => {
+  const params = await props.params;
   const {
     hero,
     startInfo,
