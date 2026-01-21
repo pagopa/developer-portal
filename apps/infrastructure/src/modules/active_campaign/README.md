@@ -1,6 +1,3 @@
-# active_campaign
-
-<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 No requirements.
@@ -49,12 +46,12 @@ No requirements.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_aws_region"></a> [aws\_region](#input\_aws\_region) | AWS region to create resources. Default Milan | `string` | `"eu-south-1"` | no |
-| <a name="input_cognito_user_pool"></a> [cognito\_user\_pool](#input\_cognito\_user\_pool) | The cognito user pool used to authenticate api calls | <pre>object({<br>    id        = string<br>    arn       = string<br>    domain    = string<br>    region    = string<br>    client_id = string<br>    endpoint  = string<br>  })</pre> | n/a | yes |
+| <a name="input_cognito_user_pool"></a> [cognito\_user\_pool](#input\_cognito\_user\_pool) | The cognito user pool used to authenticate api calls | <pre>object({<br/>    id        = string<br/>    arn       = string<br/>    domain    = string<br/>    region    = string<br/>    client_id = string<br/>    endpoint  = string<br/>  })</pre> | n/a | yes |
 | <a name="input_environment"></a> [environment](#input\_environment) | Environment | `string` | n/a | yes |
+| <a name="input_webinar_subscriptions_ddb"></a> [webinar\_subscriptions\_ddb](#input\_webinar\_subscriptions\_ddb) | n/a | <pre>object({<br/>    name       = string<br/>    arn        = string<br/>    stream_arn = string<br/>  })</pre> | n/a | yes |
+| <a name="input_aws_region"></a> [aws\_region](#input\_aws\_region) | AWS region to create resources. Default Milan | `string` | `"eu-south-1"` | no |
 | <a name="input_module"></a> [module](#input\_module) | Prefix for resources | `string` | `"ac"` | no |
-| <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | <pre>{<br>  "CostCenter": "BD110 - PORTALS E TOOLS",<br>  "CreatedBy": "Terraform",<br>  "ManagementTeam": "team_cloudgaap_ai",<br>  "Owner": "CloudGaaP-AI",<br>  "Wbs": "BD110 - PORTALS E TOOLS"<br>}</pre> | no |
-| <a name="input_webinar_subscriptions_ddb"></a> [webinar\_subscriptions\_ddb](#input\_webinar\_subscriptions\_ddb) | n/a | <pre>object({<br>    name       = string<br>    arn        = string<br>    stream_arn = string<br>  })</pre> | n/a | yes |
+| <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | <pre>{<br/>  "CostCenter": "BD110 - PORTALS E TOOLS",<br/>  "CreatedBy": "Terraform",<br/>  "ManagementTeam": "team_cloudgaap_ai",<br/>  "Owner": "CloudGaaP-AI",<br/>  "Wbs": "BD110 - PORTALS E TOOLS"<br/>}</pre> | no |
 
 ## Outputs
 
@@ -62,4 +59,3 @@ No requirements.
 |------|-------------|
 | <a name="output_api_key_param"></a> [api\_key\_param](#output\_api\_key\_param) | n/a |
 | <a name="output_base_url_param"></a> [base\_url\_param](#output\_base\_url\_param) | n/a |
-<!-- END_TF_DOCS -->
