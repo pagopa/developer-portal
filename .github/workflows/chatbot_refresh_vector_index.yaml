@@ -51,7 +51,7 @@ jobs:
         uses: ./.github/actions/configure-aws-credentials
         with:
           aws_region: eu-south-1
-          role_to_assume: ${{ secrets.DEPLOY_IAM_ROLE }}
+          role_to_assume: ${{ secrets.IAM_ROLE_CHATBOT_REINDEX }}
 
       - name: Refresh API Docs Vector Index
         if: github.event.inputs.action_type == 'api'
