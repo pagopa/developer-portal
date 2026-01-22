@@ -1,7 +1,6 @@
 locals {
-  clickhouse_db       = "default"
-  clickhouse_user     = "clickhouse"
-  clickhouse_password = random_password.clickhouse_password.result
+  clickhouse_db   = "default"
+  clickhouse_user = "clickhouse"
 }
 
 resource "aws_ecs_cluster" "langfuse" {
@@ -104,10 +103,6 @@ resource "aws_ecs_task_definition" "clickhouse" {
           value = local.clickhouse_user
         },
         {
-          name  = "CLICKHOUSE_PASSWORD"
-          value = local.clickhouse_password
-        },
-        {
           name  = "AWS_REGION"
           value = var.region
         },
@@ -115,6 +110,13 @@ resource "aws_ecs_task_definition" "clickhouse" {
         #   name = "S3_BUCKET"
         #   value = aws_s3_bucket.langfuse_clickhouse.id
         # }
+      ]
+
+      secrets = [
+        {
+          name      = "CLICKHOUSE_PASSWORD"
+          valueFrom = aws_secretsmanager_secret.clickhouse_password.arn
+        }
       ]
 
       healthCheck = {
