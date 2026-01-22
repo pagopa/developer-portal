@@ -1,6 +1,6 @@
 ---
-name: refresh-static-docs-vector-index
-description: Refresh Static Docs for Chatbot LLamaindex Vector Index
+name: add-missing-static-docs-vector-index
+description: Add Missing Static Docs for Chatbot LLamaindex Vector Index
 
 inputs:
   aws_region:
@@ -32,8 +32,8 @@ runs:
         poetry config virtualenvs.create false
         poetry install --only main --no-interaction
 
-    - name: Refresh Static Docs in Vector Index
+    - name: Add Missing Static Docs in Vector Index
       shell: bash
       run: |
         cd apps/chatbot-index
-        PYTHONPATH=. poetry run python src/modules/refresh_static_docs.py
+        PYTHONPATH=. poetry run python src/modules/add_missing_static_docs.py

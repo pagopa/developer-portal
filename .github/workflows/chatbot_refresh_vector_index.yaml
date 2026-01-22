@@ -22,7 +22,7 @@ on:
           - all
           - api
           - dynamic
-          - static
+          - add missing static
 
   schedule:
     - cron: '0 1 * * *'  # Run daily at 01:00 AM UTC (03:00 AM CEST) to refresh the index in prod
@@ -33,7 +33,7 @@ permissions:
 
 jobs:
   manual_refresh:
-    name: Refresh API and Dynamic Vector Index (manual on ${{ inputs.environment }})
+    name: Refresh Docs in Vector Index (manual on ${{ inputs.environment }})
     if: github.event_name == 'workflow_dispatch'
     runs-on: codebuild-${{ inputs.environment }}-github-runner-${{ github.run_id }}-${{ github.run_attempt }}
     outputs:
@@ -61,9 +61,9 @@ jobs:
         if: github.event.inputs.action_type == 'dynamic'
         uses: ./.github/actions/refresh-dynamic-docs-vector-index
 
-      - name: Refresh Static Docs Vector Index
-        if: github.event.inputs.action_type == 'static'
-        uses: ./.github/actions/refresh-static-docs-vector-index
+      - name: Add Missing Static Docs in Vector Index
+        if: github.event.inputs.action_type == 'add missing static'
+        uses: ./.github/actions/add-missing-static-docs-vector-index
 
       - name: Refresh All Docs Vector Index
         if: github.event.inputs.action_type == 'all'
