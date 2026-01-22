@@ -1,5 +1,5 @@
-name: Refresh Vector Index
-run-name: Refresh Vector Index in ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.environment || github.event_name == 'schedule' && 'prod' || 'dev' }}
+name: Chatbot Refresh Vector Index
+run-name: Chatbot Refresh Vector Index in ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.environment || github.event_name == 'schedule' && 'prod' || 'dev' }}
 
 on:
   workflow_dispatch:
@@ -33,7 +33,7 @@ permissions:
 
 jobs:
   manual_refresh:
-    name: Refresh Docs in Vector Index (manual on ${{ inputs.environment }})
+    name: Chatbot Refresh Docs in Vector Index (manual on ${{ inputs.environment }})
     if: github.event_name == 'workflow_dispatch'
     runs-on: codebuild-${{ inputs.environment }}-github-runner-${{ github.run_id }}-${{ github.run_attempt }}
     outputs:
@@ -70,7 +70,7 @@ jobs:
         uses: ./.github/actions/refresh-all-docs-vector-index
 
   scheduled_refresh:
-    name: Refresh All Docs Vector Index (scheduled on prod)
+    name: Chatbot Refresh All Docs Vector Index (scheduled on prod)
     if: github.event_name == 'schedule'
     runs-on: codebuild-prod-github-runner-${{ github.run_id }}-${{ github.run_attempt }}
     outputs:
