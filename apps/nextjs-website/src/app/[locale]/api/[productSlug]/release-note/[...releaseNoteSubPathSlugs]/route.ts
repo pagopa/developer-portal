@@ -18,7 +18,7 @@ export async function GET(
     ? ['release-note', ...releaseNoteSubPathSlugs]
     : [];
 
-  return getReleaseNote(productSlug, params.locale, noteSegments)
+  return getReleaseNote(params.locale, productSlug, noteSegments)
     .then(async (releaseNoteProps) => {
       if (!releaseNoteProps) {
         return new Response(

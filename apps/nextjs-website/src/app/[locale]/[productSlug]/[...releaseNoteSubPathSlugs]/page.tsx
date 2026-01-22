@@ -45,8 +45,8 @@ export async function generateMetadata(props0: {
     });
   }
   const props = await getReleaseNote(
-    params?.productSlug,
     params?.locale,
+    params?.productSlug,
     params?.releaseNoteSubPathSlugs
   );
 
@@ -78,8 +78,8 @@ const ReleaseNotePage = async (props0: {
     return <PageNotFound />;
   }
   const releaseNoteProps = await getReleaseNote(
-    params.productSlug,
     params.locale,
+    params.productSlug,
     params.releaseNoteSubPathSlugs
   );
 
