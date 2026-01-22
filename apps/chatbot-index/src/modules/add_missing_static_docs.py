@@ -60,6 +60,9 @@ if __name__ == "__main__":
             folders_to_remove.append(ref_folder)
 
     if index:
-        VECTOR_INDEX.refresh_index_static_docs(index, static_docs_to_add, [])
-        VECTOR_INDEX.remove_docs_in_folder(index, folders_to_remove)
+        if static_docs_to_add:
+            VECTOR_INDEX.refresh_index_static_docs(index, static_docs_to_add, [])
+        if folders_to_remove:
+            for folder_to_remove in folders_to_remove:
+                VECTOR_INDEX.remove_docs_in_folder(index, folder_to_remove)
         LOGGER.info("Static docs refresh process completed.")
