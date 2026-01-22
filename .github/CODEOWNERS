@@ -1,26 +1,26 @@
 # Default owners
-* @pagopa/devportal-maintain @MarcoPonchia @marcobottaro @tommaso1
+* @pagopa/devportal-maintain @MarcoPonchia @marcobottaro @tommaso1 @MarBert
 
 # Website
-apps/nextjs-website/ @MarcoPonchia @marcobottaro @tommaso1
+apps/nextjs-website/ @MarcoPonchia @marcobottaro @tommaso1 @MarBert
 
 # Email templates
-apps/cognito-functions/src/templates/ @MarcoPonchia @marcobottaro @tommaso1
+apps/cognito-functions/src/templates/ @MarcoPonchia @marcobottaro @tommaso1 @MarBert
 
 # Storybook
-apps/storybook-app/ @MarcoPonchia @marcobottaro @tommaso1
+apps/storybook-app/ @MarcoPonchia @marcobottaro @tommaso1 @MarBert
 
 # GitBook docs
-packages/gitbook-docs/ @MarcoPonchia @marcobottaro @tommaso1
+packages/gitbook-docs/ @MarcoPonchia @marcobottaro @tommaso1 @MarBert
 
 # Active Campaign Client
-packages/active-campaign-client/ @MarcoPonchia @marcobottaro @tommaso1
+packages/active-campaign-client/ @MarcoPonchia @marcobottaro @tommaso1 @MarBert
 
 # IVS Functions
-packages/ivs-functions/ @MarcoPonchia @marcobottaro @tommaso1
+packages/ivs-functions/ @MarcoPonchia @marcobottaro @tommaso1 @MarBert
 
 # Lint rules
-**/.eslintrc.json @pagopa/devportal-maintain @MarcoPonchia @marcobottaro @tommaso1
+**/.eslintrc.json @pagopa/devportal-maintain @MarcoPonchia @marcobottaro @tommaso1 @MarBert
 
 .changeset/README.md @pagopa/devportal-maintain
 .changeset/config.json @pagopa/devportal-maintain
@@ -29,6 +29,6 @@ packages/ivs-functions/ @MarcoPonchia @marcobottaro @tommaso1
 .changeset/*
 
 # Required to merge Push next releases PR
-package-lock.json @pagopa/devportal-maintain @MarcoPonchia @marcobottaro @tommaso1
-**/package.json @pagopa/devportal-maintain @MarcoPonchia @marcobottaro @tommaso1
-**/CHANGELOG.md @pagopa/devportal-maintain @MarcoPonchia @marcobottaro @tommaso1
+package-lock.json @pagopa/devportal-maintain @MarcoPonchia @marcobottaro @tommaso1 @MarBert
+**/package.json @pagopa/devportal-maintain @MarcoPonchia @marcobottaro @tommaso1 @MarBert
+**/CHANGELOG.md @pagopa/devportal-maintain @MarcoPonchia @marcobottaro @tommaso1 @MarBert
