@@ -38,7 +38,6 @@ data "aws_iam_policy_document" "ecs_task_execute_role_policy" {
       aws_secretsmanager_secret.clickhouse_password.arn,
       aws_secretsmanager_secret.langfuse_api_key.arn,
       aws_secretsmanager_secret.langfuse_db_password.arn,
-      aws_secretsmanager_secret.langfuse_redis_password.arn,
     ]
   }
 
@@ -48,8 +47,14 @@ data "aws_iam_policy_document" "ecs_task_execute_role_policy" {
       "logs:CreateLogStream",
       "logs:PutLogEvents",
     ]
-    effect    = "Allow"
-    resources = ["*"]
+    effect = "Allow"
+    resources = [
+      aws_cloudwatch_log_group.clickhouse_logs.arn,
+      aws_cloudwatch_log_group.langfuse_api_logs.arn,
+      aws_cloudwatch_log_group.langfuse_worker_logs.arn,
+      aws_cloudwatch_log_group.langfuse_scheduler_logs.arn,
+      aws_cloudwatch_log_group.langfuse_webhook_logs.arn,
+    ]
   }
 }
 
