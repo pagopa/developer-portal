@@ -135,21 +135,23 @@ export async function putS3File(
   items: MetadataItem[] | any,
   path: string,
   bucketName: string,
-  client: S3Client
+  client: S3Client,
+  locale?: string
 ): Promise<void> {
   const body = JSON.stringify(items, null, 2);
-  console.log(`Uploading file to S3: ${path}`);
+  const localizedPath = locale ? `${locale}/${path}` : path;
+  console.log(`Uploading file to S3: ${localizedPath}`);
 
   const result = await client.send(
     new PutObjectCommand({
       Bucket: bucketName,
-      Key: path,
+      Key: localizedPath,
       Body: body,
     })
   );
 
   console.log(
-    `Uploaded file to S3: ${path}, Result: ${JSON.stringify(result)}`
+    `Uploaded file to S3: ${localizedPath}, Result: ${JSON.stringify(result)}`
   );
 }
 export async function deleteS3Directory(
