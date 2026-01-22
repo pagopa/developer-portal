@@ -21,9 +21,9 @@ import {
 import { S3Client } from '@aws-sdk/client-s3';
 import path from 'path';
 import {
-  guidesQueryString,
-  releaseNotesQueryString,
-  solutionsQueryString,
+  getGuidesQueryString,
+  getReleaseNotesQueryString,
+  getSolutionsQueryString,
 } from '../helpers/strapiQuery';
 
 const S3_PATH_TO_GITBOOK_DOCS =
@@ -31,6 +31,8 @@ const S3_PATH_TO_GITBOOK_DOCS =
 const S3_BUCKET_NAME = process.env.S3_BUCKET_NAME;
 const S3_DIRNAMES_JSON_PATH =
   process.env.S3_DIRNAMES_JSON_PATH || 'dirNames.json';
+const LOCALE = process.env.LOCALE;
+
 // Load environment variables
 dotenv.config();
 
@@ -49,12 +51,16 @@ async function fetchAllDirNamesFromStrapi(): Promise<{ dirNames: string[] }> {
   const [guidesResult, solutionsResult, releaseNotesResult] = await Promise.all(
     [
       // Guides with full populate
-      fetchFromStrapi<StrapiGuide>(`api/guides?${guidesQueryString}`),
+      fetchFromStrapi<StrapiGuide>(
+        `api/guides?${getGuidesQueryString(LOCALE)}`
+      ),
       // Solutions with full populate
-      fetchFromStrapi<StrapiSolution>(`api/solutions/?${solutionsQueryString}`),
+      fetchFromStrapi<StrapiSolution>(
+        `api/solutions/?${getSolutionsQueryString(LOCALE)}`
+      ),
       // Release notes with full populate
       fetchFromStrapi<StrapiReleaseNote>(
-        `api/release-notes/?${releaseNotesQueryString}`
+        `api/release-notes/?${getReleaseNotesQueryString(LOCALE)}`
       ),
     ]
   );
@@ -111,7 +117,8 @@ async function main() {
       strapiDirNames,
       S3_DIRNAMES_JSON_PATH,
       S3_BUCKET_NAME!,
-      getS3Client()
+      getS3Client(),
+      LOCALE
     );
   } catch (error) {
     console.error(

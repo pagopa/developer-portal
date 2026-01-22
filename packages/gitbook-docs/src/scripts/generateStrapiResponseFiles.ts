@@ -20,6 +20,7 @@ const S3_APIS_DATA_METADATA_JSON_PATH =
   process.env.S3_APIS_DATA_METADATA_JSON_PATH ||
   'synced-apis-data-response.json';
 const S3_BUCKET_NAME = process.env.S3_BUCKET_NAME;
+const LOCALE = process.env.LOCALE;
 
 const s3Client = makeS3Client();
 async function main() {
@@ -27,7 +28,9 @@ async function main() {
   // eslint-disable-next-line functional/no-let
   let strapiProducts;
   try {
-    const { data } = await fetchFromStrapi<StrapiProduct>('api/products');
+    const { data } = await fetchFromStrapi<StrapiProduct>(
+      `api/products/?[locale]=${LOCALE || 'it'}`
+    );
     strapiProducts = data;
   } catch (error) {
     console.error('Error fetching Products from Strapi:', error);
@@ -39,7 +42,9 @@ async function main() {
   let strapiApisData;
   try {
     const { data } = await fetchFromStrapi<StrapiApiData>(
-      'api/apis-data?populate[product]=*&populate[apiRestDetail][populate][specUrls]=*'
+      `api/apis-data/?[locale]=${
+        LOCALE || 'it'
+      }&populate[product]=*&populate[apiRestDetail][populate][specUrls]=*`
     );
     strapiApisData = data;
   } catch (error) {
@@ -63,7 +68,7 @@ async function main() {
     { data: strapiApisData, path: S3_APIS_DATA_METADATA_JSON_PATH },
   ];
   for (const { data, path } of metadataJsons) {
-    await putS3File(data, path, `${S3_BUCKET_NAME}`, s3Client);
+    await putS3File(data, path, `${S3_BUCKET_NAME}`, s3Client, LOCALE);
   }
   const putSitemapToS3Result = await s3Client.send(
     new PutObjectCommand({

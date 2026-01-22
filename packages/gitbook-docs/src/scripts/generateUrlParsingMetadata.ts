@@ -22,6 +22,7 @@ dotenv.config();
 const URL_PARSING_METADATA_JSON_PATH =
   process.env.URL_PARSING_METADATA_JSON_PATH ||
   '../../url-parsing-metadata.json';
+const LOCALE = process.env.LOCALE;
 
 export type UrlParsingItem = {
   dirName: string;
@@ -163,7 +164,9 @@ async function main() {
   let strapiGuides;
   try {
     const { data } = await fetchFromStrapi<StrapiGuide>(
-      'api/guides?populate[0]=product&populate[1]=versions&pagination[pageSize]=1000&pagination[page]=1'
+      `api/guides/?[locale]=${
+        LOCALE || 'it'
+      }&populate[0]=product&populate[1]=versions&pagination[pageSize]=1000&pagination[page]=1`
     );
     strapiGuides = data;
     console.log(`Fetched ${strapiGuides.length} guides from Strapi`);
@@ -175,7 +178,9 @@ async function main() {
   let strapiSolutions;
   try {
     const { data } = await fetchFromStrapi<StrapiSolution>(
-      'api/solutions?pagination[pageSize]=1000&pagination[page]=1'
+      `api/solutions?[locale]=${
+        LOCALE || 'it'
+      }&pagination[pageSize]=1000&pagination[page]=1`
     );
     strapiSolutions = data;
     console.log(`Fetched ${strapiSolutions.length} solutions from Strapi`);
@@ -187,7 +192,9 @@ async function main() {
   let strapiReleaseNotes;
   try {
     const { data } = await fetchFromStrapi<StrapiReleaseNote>(
-      'api/release-notes?populate[0]=product&pagination[pageSize]=1000&pagination[page]=1'
+      `api/release-notes?[locale]=${
+        LOCALE || 'it'
+      }&populate[0]=product&pagination[pageSize]=1000&pagination[page]=1`
     );
     strapiReleaseNotes = data;
     console.log(

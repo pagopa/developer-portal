@@ -27,6 +27,7 @@ const S3_PATH_TO_GITBOOK_DOCS =
 const S3_GUIDE_METADATA_JSON_PATH =
   process.env.S3_GUIDE_METADATA_JSON_PATH || 'guides-metadata.json';
 const SYNCED_GUIDES_RESPONSE_JSON_PATH = getSyncedGuidesResponseJsonPath();
+const LOCALE = process.env.LOCALE;
 
 const s3Client = makeS3Client();
 
@@ -119,12 +120,9 @@ async function convertGuideToMetadataItems(
 
 async function main() {
   console.log('Starting to process Markdown files...');
-
-  // TODO: restore this strapiGuidesUrl when Metadata will be managed by Strapi
-  // const strapiGuidesUrl =
-  //   'api/guides?populate[0]=product&populate[1]=versions&pagination[pageSize]=1000&pagination[page]=1';
-  const strapiGuidesUrl =
-    'api/guides/?populate[image][populate]=*&populate[mobileImage][populate]=*&populate[listItems][populate]=*&populate[versions][populate]=*&populate[bannerLinks][populate][0]=icon&populate[seo][populate]=metaSocial.image&populate[product][populate][0]=logo&populate[product][populate][1]=bannerLinks.icon&populate[product][populate][2]=overview&populate[product][populate][3]=quickstart_guide&populate[product][populate][4]=release_note&populate[product][populate][5]=api_data_list_page&populate[product][populate][6]=api_data_list_page.apiData.*&populate[product][populate][7]=api_data_list_page.apiData.apiRestDetail.*&populate[product][populate][8]=guide_list_page&populate[product][populate][9]=tutorial_list_page&populate[product][populate][10]=use_case_list_page';
+  const strapiGuidesUrl = `api/guides/?[locale]=${
+    LOCALE || 'it'
+  }&populate[image][populate]=*&populate[mobileImage][populate]=*&populate[listItems][populate]=*&populate[versions][populate]=*&populate[bannerLinks][populate][0]=icon&populate[seo][populate]=metaSocial.image&populate[product][populate][0]=logo&populate[product][populate][1]=bannerLinks.icon&populate[product][populate][2]=overview&populate[product][populate][3]=quickstart_guide&populate[product][populate][4]=release_note&populate[product][populate][5]=api_data_list_page&populate[product][populate][6]=api_data_list_page.apiData.*&populate[product][populate][7]=api_data_list_page.apiData.apiRestDetail.*&populate[product][populate][8]=guide_list_page&populate[product][populate][9]=tutorial_list_page&populate[product][populate][10]=use_case_list_page`;
 
   // eslint-disable-next-line functional/no-let
   let strapiGuides;
@@ -148,14 +146,16 @@ async function main() {
     metadataItems,
     S3_GUIDE_METADATA_JSON_PATH,
     `${S3_BUCKET_NAME}`,
-    s3Client
+    s3Client,
+    LOCALE
   );
 
   await putS3File(
     responseJson,
     SYNCED_GUIDES_RESPONSE_JSON_PATH,
     `${S3_BUCKET_NAME}`,
-    s3Client
+    s3Client,
+    LOCALE
   );
 }
 

@@ -28,6 +28,7 @@ const S3_RELEASE_NOTES_METADATA_JSON_PATH =
   'release-notes-metadata.json';
 const SYNCED_RELEASE_NOTES_RESPONSE_JSON_PATH =
   getSyncedReleaseNotesResponseJsonPath();
+const LOCALE = process.env.LOCALE;
 
 const s3Client = makeS3Client();
 
@@ -105,7 +106,9 @@ async function main() {
   let responseJson;
   try {
     const result = await fetchFromStrapi<StrapiReleaseNote>(
-      'api/release-notes/?populate[bannerLinks][populate][0]=icon&populate[product][populate][0]=logo&populate[product][populate][1]=bannerLinks.icon&populate[product][populate][2]=overview&populate[product][populate][3]=quickstart_guide&populate[product][populate][4]=release_note&populate[product][populate][5]=api_data_list_page&populate[product][populate][6]=api_data_list_page.apiData.*&populate[product][populate][7]=api_data_list_page.apiData.apiRestDetail.slug&populate[product][populate][8]=api_data_list_page.apiData.apiRestDetail.specUrls&populate[product][populate][9]=api_data_list_page.apiData.apiSoapDetail.*&populate[product][populate][10]=guide_list_page&populate[product][populate][11]=tutorial_list_page&populate[product][populate][12]=use_case_list_page&populate[seo][populate]=*,metaImage,metaSocial.image&pagination[pageSize]=1000&pagination[page]=1'
+      `api/release-notes/?[locale]=${
+        LOCALE || 'it'
+      }&populate[bannerLinks][populate][0]=icon&populate[product][populate][0]=logo&populate[product][populate][1]=bannerLinks.icon&populate[product][populate][2]=overview&populate[product][populate][3]=quickstart_guide&populate[product][populate][4]=release_note&populate[product][populate][5]=api_data_list_page&populate[product][populate][6]=api_data_list_page.apiData.*&populate[product][populate][7]=api_data_list_page.apiData.apiRestDetail.slug&populate[product][populate][8]=api_data_list_page.apiData.apiRestDetail.specUrls&populate[product][populate][9]=api_data_list_page.apiData.apiSoapDetail.*&populate[product][populate][10]=guide_list_page&populate[product][populate][11]=tutorial_list_page&populate[product][populate][12]=use_case_list_page&populate[seo][populate]=*,metaImage,metaSocial.image&pagination[pageSize]=1000&pagination[page]=1`
     );
     strapiReleaseNotes = result.data;
     responseJson = result.responseJson;
@@ -127,7 +130,8 @@ async function main() {
     metadataItems,
     S3_RELEASE_NOTES_METADATA_JSON_PATH,
     `${S3_BUCKET_NAME}`,
-    s3Client
+    s3Client,
+    LOCALE
   );
 
   // TODO: remove when Strapi will manage Metadata
@@ -135,7 +139,8 @@ async function main() {
     responseJson,
     SYNCED_RELEASE_NOTES_RESPONSE_JSON_PATH,
     `${S3_BUCKET_NAME}`,
-    s3Client
+    s3Client,
+    LOCALE
   );
 }
 

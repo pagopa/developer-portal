@@ -38,11 +38,11 @@ import {
   StrapiSolutionsResponse,
 } from '../helpers/strapiTypes';
 import {
-  apisDataQueryString,
+  getApisDataQueryString,
+  getGuidesQueryString,
+  getProductsQueryString,
   getReleaseNotesQueryString,
   getSolutionsQueryString,
-  guidesQueryString,
-  productsQueryString,
 } from '../helpers/strapiQuery';
 import { compact } from 'lodash';
 
@@ -93,6 +93,7 @@ const S3_SOLUTIONS_DIRNAMES_JSON_PATH =
 const S3_RELEASE_NOTES_DIRNAMES_JSON_PATH =
   process.env.S3_RELEASE_NOTES_DIRNAMES_JSON_PATH ||
   'release-notes-dirNames.json';
+const LOCALE = process.env.LOCALE;
 
 const DOCUMENTATION_ABSOLUTE_PATH = path.resolve(DOCUMENTATION_PATH);
 
@@ -161,22 +162,27 @@ async function fetchAllStrapiData(): Promise<StrapiData> {
     productsResult,
     apisDataResult,
   ] = await Promise.all([
+    // TODO: manage locale here
     // Guides with full populate
     // NOTE: Cannot filter by versions.dirName server-side due to Strapi v4 component array limitation
     // Client-side filtering will be applied later in processGuidesMetadata
-    fetchFromStrapi<StrapiGuide>(`api/guides?${guidesQueryString}`),
+    fetchFromStrapi<StrapiGuide>(`api/guides?${getGuidesQueryString(LOCALE)}`),
     // Solutions with dirName filter (if provided)
     fetchFromStrapi<StrapiSolution>(
-      `api/solutions/?${getSolutionsQueryString()}`
+      `api/solutions/?${getSolutionsQueryString(LOCALE)}`
     ),
     // Release notes with dirName filter (if provided)
     fetchFromStrapi<StrapiReleaseNote>(
-      `api/release-notes/?${getReleaseNotesQueryString()}`
+      `api/release-notes/?${getReleaseNotesQueryString(LOCALE)}`
     ),
     // Products
-    fetchFromStrapi<StrapiProduct>(`api/products?${productsQueryString}`),
+    fetchFromStrapi<StrapiProduct>(
+      `api/products?${getProductsQueryString(LOCALE)}`
+    ),
     // APIs data
-    fetchFromStrapi<StrapiApiData>(`api/apis-data?${apisDataQueryString}`),
+    fetchFromStrapi<StrapiApiData>(
+      `api/apis-data?${getApisDataQueryString(LOCALE)}`
+    ),
   ]);
 
   console.log(
@@ -618,13 +624,15 @@ async function main() {
         strapiData.products,
         getSyncedProductsResponseJsonPath(),
         S3_BUCKET_NAME!,
-        getS3Client()
+        getS3Client(),
+        LOCALE
       );
       await putS3File(
         strapiData.apisData,
         getSyncedApisDataResponseJsonPath(),
         S3_BUCKET_NAME!,
-        getS3Client()
+        getS3Client(),
+        LOCALE
       );
     }
 
@@ -634,7 +642,8 @@ async function main() {
         strapiData.guidesRawResponse,
         getSyncedGuidesResponseJsonPath(),
         S3_BUCKET_NAME!,
-        getS3Client()
+        getS3Client(),
+        LOCALE
       );
     }
 
@@ -643,7 +652,8 @@ async function main() {
         strapiData.solutionsRawResponse,
         getSyncedSolutionsResponseJsonPath(),
         S3_BUCKET_NAME!,
-        getS3Client()
+        getS3Client(),
+        LOCALE
       );
     }
 
@@ -652,7 +662,8 @@ async function main() {
         strapiData.releaseNotesRawResponse,
         getSyncedReleaseNotesResponseJsonPath(),
         S3_BUCKET_NAME!,
-        getS3Client()
+        getS3Client(),
+        LOCALE
       );
     }
 
@@ -700,14 +711,16 @@ async function main() {
         { dirNames: dirNamesToRemove },
         S3_MAIN_GUIDE_VERSIONS_DIRNAMES_TO_REMOVE_JSON_PATH,
         S3_BUCKET_NAME!,
-        getS3Client()
+        getS3Client(),
+        LOCALE
       );
     }
     await putS3File(
       mainVersionsDirNames,
       S3_MAIN_GUIDE_VERSIONS_DIRNAMES_JSON_PATH,
       S3_BUCKET_NAME!,
-      getS3Client()
+      getS3Client(),
+      LOCALE
     );
 
     const solutionsDirNames = getSolutionsDirNames(strapiData.solutions);
@@ -718,7 +731,8 @@ async function main() {
       solutionsDirNames,
       S3_SOLUTIONS_DIRNAMES_JSON_PATH,
       S3_BUCKET_NAME!,
-      getS3Client()
+      getS3Client(),
+      LOCALE
     );
 
     const releaseNotesDirNames = getReleaseNotesDirNames(
@@ -731,7 +745,8 @@ async function main() {
       releaseNotesDirNames,
       S3_RELEASE_NOTES_DIRNAMES_JSON_PATH,
       S3_BUCKET_NAME!,
-      getS3Client()
+      getS3Client(),
+      LOCALE
     );
 
     // Process and save guides metadata
@@ -756,7 +771,8 @@ async function main() {
                   S3_DIRNAME_METADATA_JSON_PATH
                 ),
                 S3_BUCKET_NAME!,
-                getS3Client()
+                getS3Client(),
+                LOCALE
               );
             }
           } catch (error) {
@@ -779,7 +795,8 @@ async function main() {
           allGuidesMetadata.flat(),
           S3_GUIDE_METADATA_JSON_PATH,
           S3_BUCKET_NAME!,
-          getS3Client()
+          getS3Client(),
+          LOCALE
         );
 
         console.log(
@@ -811,7 +828,8 @@ async function main() {
                   S3_DIRNAME_METADATA_JSON_PATH
                 ),
                 S3_BUCKET_NAME!,
-                getS3Client()
+                getS3Client(),
+                LOCALE
               );
             }
           } catch (error) {
@@ -837,7 +855,8 @@ async function main() {
           solutionsMetadata.flat(),
           S3_SOLUTIONS_METADATA_JSON_PATH,
           S3_BUCKET_NAME!,
-          getS3Client()
+          getS3Client(),
+          LOCALE
         );
 
         console.log(
@@ -872,7 +891,8 @@ async function main() {
                   S3_DIRNAME_METADATA_JSON_PATH
                 ),
                 S3_BUCKET_NAME!,
-                getS3Client()
+                getS3Client(),
+                LOCALE
               );
             }
           } catch (error) {
@@ -898,7 +918,8 @@ async function main() {
           releaseNotesMetadata.flat(),
           S3_RELEASE_NOTES_METADATA_JSON_PATH,
           S3_BUCKET_NAME!,
-          getS3Client()
+          getS3Client(),
+          LOCALE
         );
 
         console.log(
