@@ -116,7 +116,7 @@ def get_folders_list(
 
         folders_list.extend(folders_content.get("dirNames", []))
 
-    return folders_list
+    return list(set(folders_list))
 
 
 def get_one_metadata_from_s3(
