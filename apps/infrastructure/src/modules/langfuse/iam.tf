@@ -33,10 +33,9 @@ data "aws_iam_policy_document" "ecs_task_execute_role_policy" {
     actions = [
       "secretsmanager:GetSecretValue",
     ]
-    effect = ["Allow"]
+    effect = "Allow"
     resources = [
       aws_secretsmanager_secret.clickhouse_password.arn,
-      aws_secretsmanager_secret.langfuse_api_key.arn,
       aws_secretsmanager_secret.langfuse_db_password.arn,
     ]
   }
@@ -49,11 +48,9 @@ data "aws_iam_policy_document" "ecs_task_execute_role_policy" {
     ]
     effect = "Allow"
     resources = [
-      aws_cloudwatch_log_group.clickhouse_logs.arn,
-      aws_cloudwatch_log_group.langfuse_api_logs.arn,
-      aws_cloudwatch_log_group.langfuse_worker_logs.arn,
-      aws_cloudwatch_log_group.langfuse_scheduler_logs.arn,
-      aws_cloudwatch_log_group.langfuse_webhook_logs.arn,
+      aws_cloudwatch_log_group.clickhouse.arn,
+      aws_cloudwatch_log_group.langfuse_worker.arn,
+      aws_cloudwatch_log_group.langfuse_web.arn,
     ]
   }
 }
