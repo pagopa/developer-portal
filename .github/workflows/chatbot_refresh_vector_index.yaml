@@ -1,5 +1,5 @@
-name: Refresh API and Dynamic Vector Index
-run-name: Refresh API and Dynamic Vector Index in ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.environment || github.event_name == 'schedule' && 'prod' || 'dev' }}
+name: Chatbot Refresh Vector Index
+run-name: Chatbot Refresh Vector Index in ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.environment || github.event_name == 'schedule' && 'prod' || 'dev' }}
 
 on:
   workflow_dispatch:
@@ -17,15 +17,15 @@ on:
         description: 'The type of action to perform'
         type: choice
         required: true
-        default: both
+        default: all
         options:
-          - both
+          - all
           - api
           - dynamic
-
+          - add missing static
 
   schedule:
-    - cron: '0 1 * * *'  # Run daily at midnight UTC
+    - cron: '0 1 * * *'  # Run daily at 01:00 AM UTC (03:00 AM CEST) to refresh the index in prod
 
 permissions:
   id-token: write
@@ -33,7 +33,7 @@ permissions:
 
 jobs:
   manual_refresh:
-    name: Refresh API and Dynamic Vector Index (manual on ${{ inputs.environment }})
+    name: Chatbot Refresh Docs in Vector Index (manual on ${{ inputs.environment }})
     if: github.event_name == 'workflow_dispatch'
     runs-on: codebuild-${{ inputs.environment }}-github-runner-${{ github.run_id }}-${{ github.run_attempt }}
     outputs:
@@ -61,12 +61,16 @@ jobs:
         if: github.event.inputs.action_type == 'dynamic'
         uses: ./.github/actions/refresh-dynamic-docs-vector-index
 
-      - name: Refresh API and Dynamic Docs Vector Index
-        if: github.event.inputs.action_type == 'both'
-        uses: ./.github/actions/refresh-api-and-dynamic-docs-vector-index
+      - name: Add Missing Static Docs in Vector Index
+        if: github.event.inputs.action_type == 'add missing static'
+        uses: ./.github/actions/add-missing-static-docs-vector-index
+
+      - name: Refresh All Docs Vector Index
+        if: github.event.inputs.action_type == 'all'
+        uses: ./.github/actions/refresh-all-docs-vector-index
 
   scheduled_refresh:
-    name: Refresh API and Dynamic Vector Index (scheduled on prod)
+    name: Chatbot Refresh All Docs Vector Index (scheduled on prod)
     if: github.event_name == 'schedule'
     runs-on: codebuild-prod-github-runner-${{ github.run_id }}-${{ github.run_attempt }}
     outputs:
@@ -85,7 +89,7 @@ jobs:
           aws_region: eu-south-1
           role_to_assume: ${{ secrets.IAM_ROLE_CHATBOT_REINDEX }}
 
-      - name: Refresh API and Dynamic Docs Vector Index
-        uses: ./.github/actions/refresh-api-and-dynamic-docs-vector-index
+      - name: Refresh All Docs Vector Index
+        uses: ./.github/actions/refresh-all-docs-vector-index
         with:
           chatbot_lambda_name: ${{ vars.CHATBOT_LAMBDA_NAME }}
