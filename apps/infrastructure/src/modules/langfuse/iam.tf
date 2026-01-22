@@ -31,16 +31,27 @@ resource "aws_iam_policy" "langfuse_ecs_task_execute_role_policy" {
 data "aws_iam_policy_document" "ecs_task_execute_role_policy" {
   statement {
     actions = [
-      "secretsmanager:*",
+      "secretsmanager:GetSecretValue",
+    ]
+    effect = "Allow"
+    resources = [
+      aws_secretsmanager_secret.clickhouse_password.arn,
+      aws_secretsmanager_secret.langfuse_db_password.arn,
+    ]
+  }
+
+  statement {
+    actions = [
+      "logs:CreateLogGroup",
       "logs:CreateLogStream",
       "logs:PutLogEvents",
-      "ecr:GetAuthorizationToken",
-      "ecr:BatchCheckLayerAvailability",
-      "ecr:GetDownloadUrlForLayer",
-      "ecr:BatchGetImage",
     ]
-    effect    = "Allow"
-    resources = ["*"]
+    effect = "Allow"
+    resources = [
+      aws_cloudwatch_log_group.clickhouse.arn,
+      aws_cloudwatch_log_group.langfuse_worker.arn,
+      aws_cloudwatch_log_group.langfuse_web.arn,
+    ]
   }
 }
 
@@ -67,7 +78,6 @@ data "aws_iam_policy_document" "langfuse_ssm_read_policy_doc" {
     effect = "Allow"
     resources = [
       "arn:aws:ssm:${var.region}:${data.aws_caller_identity.current.account_id}:parameter/chatbot/langfuse/*",
-
       # Include also chatbot monitoring parameters for shared use
       "arn:aws:ssm:${var.region}:${data.aws_caller_identity.current.account_id}:parameter/chatbot/monitoring/*",
     ]
