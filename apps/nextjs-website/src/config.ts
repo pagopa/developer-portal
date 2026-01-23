@@ -137,5 +137,3 @@ export const signUpAdvantages = [
 
 export const SITE_HEADER_HEIGHT = 48;
 export const PRODUCT_HEADER_HEIGHT = 77;
-
-export const i18nActive = process.env.NEXT_PUBLIC_I18N_ACTIVE === 'true';

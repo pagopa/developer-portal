@@ -6,8 +6,7 @@ import React from 'react';
 import { SiteHeaderProps } from '@/components/molecules/SiteHeader/SiteHeader';
 import { useTranslations } from 'next-intl';
 import LanguageSelector from '@/components/atoms/LanguageSelector/LanguageSelector';
-import { i18nActive } from '@/config';
-import { SUPPORTED_LOCALES } from '../../../locales';
+import { SUPPORTED_LOCALES } from '@/locales';
 
 const DesktopSiteHeader = ({ currentLocale, products }: SiteHeaderProps) => {
   const t = useTranslations('devPortal');
@@ -54,12 +53,10 @@ const DesktopSiteHeader = ({ currentLocale, products }: SiteHeaderProps) => {
         {t('siteHeader.webinars')}
       </LinkMui>
       <DesktopUserInfo />
-      {i18nActive && (
-        <LanguageSelector
-          locales={SUPPORTED_LOCALES}
-          currentLocale={currentLocale}
-        />
-      )}
+      <LanguageSelector
+        locales={SUPPORTED_LOCALES}
+        currentLocale={currentLocale}
+      />
     </Box>
   );
 };
