@@ -43,6 +43,11 @@ on:
         type: string
         required: false
         default: ''
+      locale:
+        description: 'Locale to sync to (e.g. "it"). Leave empty for root.'
+        type: string
+        required: false
+        default: ''
 
   schedule:
     - cron: '0 23 * * *'  # Run daily at midnight UTC
@@ -122,6 +127,7 @@ jobs:
           S3_DIRNAME_METADATA_JSON_PATH: ${{ vars.S3_DIRNAME_METADATA_JSON_PATH }}
           S3_SOLUTIONS_DIRNAMES_JSON_PATH: ${{ vars.S3_SOLUTIONS_DIRNAMES_JSON_PATH || 'solutions-dirNames.json' }}
           S3_RELEASE_NOTES_DIRNAMES_JSON_PATH: ${{ vars.S3_RELEASE_NOTES_DIRNAMES_JSON_PATH || 'release-notes-dirNames.json' }}
+          LOCALE: ${{ inputs.locale }}
         run: npm run sync-all-metadata -w gitbook-docs
 
       - name: Replace urls and include tags in docs
@@ -129,6 +135,7 @@ jobs:
           ENVIRONMENT: ${{ github.event_name == 'workflow_dispatch' && inputs.environment || 'dev' }}
           DOCUMENTATION_PATH: ${{ vars.DOCUMENTATION_PATH || '../../devportal-docs/docs' }}
           URL_PARSING_METADATA_JSON_PATH: ${{ vars.URL_PARSING_METADATA_JSON_PATH || '../../url-parsing-metadata.json' }}
+          LOCALE: ${{ inputs.locale }}
         run: npm run parse-docs -w gitbook-docs
 
       - name: Replace escaped tokens with backticks in docs
@@ -145,6 +152,7 @@ jobs:
           S3_PATH_TO_GITBOOK_DOCS: ${{ vars.S3_PATH_TO_GITBOOK_DOCS || 'devportal-docs/docs' }}
           STRAPI_API_TOKEN: ${{ secrets.STRAPI_API_TOKEN }}
           STRAPI_ENDPOINT: ${{ vars.STRAPI_ENDPOINT }}
+          LOCALE: ${{ inputs.locale }}
         run: npm run delete-unused-directories -w gitbook-docs
 
       - name: Sync docs folder to S3
@@ -170,7 +178,11 @@ jobs:
                 # Check if dir is in VALID_DIRS
                 if echo "$VALID_DIRS" | grep -F -q -x "$dir"; then
                     echo "Syncing directory: $dir"
-                    aws s3 sync "docs/$dir" "s3://devportal-${{ env.ENV_SHORT }}-website-static-content/devportal-docs/docs/$dir" --delete --exclude "metadata.json" ${{ inputs.incremental_mode == true && ' --size-only' || '' }}
+                    if [[ -n "${{ inputs.locale }}" ]]; then
+                      aws s3 sync "docs/$dir" "s3://devportal-${{ env.ENV_SHORT }}-website-static-content/${{ inputs.locale }}/devportal-docs/docs/$dir" --delete --exclude "metadata.json" ${{ inputs.incremental_mode == true && ' --size-only' || '' }}
+                    else
+                      aws s3 sync "docs/$dir" "s3://devportal-${{ env.ENV_SHORT }}-website-static-content/devportal-docs/docs/$dir" --delete --exclude "metadata.json" ${{ inputs.incremental_mode == true && ' --size-only' || '' }}
+                    fi
                 else
                     echo "Skipping directory $dir as it is not in the published list."
                 fi
@@ -179,13 +191,21 @@ jobs:
           else
             if [[ -z "$VALID_DIRS" ]]; then
               echo "No directories found to sync. Syncing all docs"
-              aws s3 sync docs s3://devportal-${{ env.ENV_SHORT }}-website-static-content/devportal-docs/docs --delete --exclude "**/metadata.json" ${{ inputs.incremental_mode == true && ' --size-only' || '' }}
+              if [[ -n "${{ inputs.locale }}" ]]; then
+                aws s3 sync docs s3://devportal-${{ env.ENV_SHORT }}-website-static-content/${{ inputs.locale }}/devportal-docs/docs --delete --exclude "**/metadata.json" ${{ inputs.incremental_mode == true && ' --size-only' || '' }}
+              else
+                aws s3 sync docs s3://devportal-${{ env.ENV_SHORT }}-website-static-content/devportal-docs/docs --delete --exclude "**/metadata.json" ${{ inputs.incremental_mode == true && ' --size-only' || '' }}
+              fi
             else
               echo "Syncing registered directories..."
               for dir in $VALID_DIRS; do
                 if [[ -n "$dir" ]]; then
                   echo "Syncing directory: $dir"
-                  aws s3 sync "docs/$dir" "s3://devportal-${{ env.ENV_SHORT }}-website-static-content/devportal-docs/docs/$dir" --delete --exclude "metadata.json" ${{ inputs.incremental_mode == true && ' --size-only' || '' }}
+                  if [[ -n "${{ inputs.locale }}" ]]; then
+                    aws s3 sync "docs/$dir" "s3://devportal-${{ env.ENV_SHORT }}-website-static-content/${{ inputs.locale }}/devportal-docs/docs/$dir" --delete --exclude "metadata.json" ${{ inputs.incremental_mode == true && ' --size-only' || '' }}
+                  else
+                    aws s3 sync "docs/$dir" "s3://devportal-${{ env.ENV_SHORT }}-website-static-content/devportal-docs/docs/$dir" --delete --exclude "metadata.json" ${{ inputs.incremental_mode == true && ' --size-only' || '' }}
+                  fi
                 fi
               done
             fi
