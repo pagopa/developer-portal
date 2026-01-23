@@ -25,7 +25,7 @@ on:
           - add missing static
 
   schedule:
-    - cron: '0 1 * * *'  # Run daily at 01:00 AM UTC (03:00 AM CEST) to refresh the index in prod
+    - cron: '0 22 * * *'  # Run daily at 10:00 PM UTC (11:00 PM CEST) to refresh the index in prod
 
 permissions:
   id-token: write
