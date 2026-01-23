@@ -3,6 +3,7 @@ from src.modules.documents import (
     get_one_metadata_from_s3,
     get_folders_list,
     StaticMetadata,
+    DOCS_PARENT_FOLDER,
 )
 from src.modules.vector_index import DiscoveryVectorIndex
 from src.modules.settings import SETTINGS
@@ -24,7 +25,9 @@ if __name__ == "__main__":
     index = VECTOR_INDEX.get_index()
     ref_doc_info = index.storage_context.docstore.get_all_ref_doc_info()
     ref_doc_ids = list(ref_doc_info.keys())
-    ref_folders = [doc_id.split("/")[2] for doc_id in ref_doc_ids]
+    ref_folders = [
+        doc_id.split("/")[2] for doc_id in ref_doc_ids if DOCS_PARENT_FOLDER in doc_id
+    ]
     ref_folders = list(set(ref_folders))
 
     static_docs_to_add = []
@@ -57,6 +60,9 @@ if __name__ == "__main__":
             folders_to_remove.append(ref_folder)
 
     if index:
-        VECTOR_INDEX.refresh_index_static_docs(index, static_docs_to_add, [])
-        VECTOR_INDEX.remove_docs_in_folder(index, folders_to_remove)
+        if static_docs_to_add:
+            VECTOR_INDEX.refresh_index_static_docs(index, static_docs_to_add, [])
+        if folders_to_remove:
+            for folder_to_remove in folders_to_remove:
+                VECTOR_INDEX.remove_docs_in_folder(index, folder_to_remove)
         LOGGER.info("Static docs refresh process completed.")
