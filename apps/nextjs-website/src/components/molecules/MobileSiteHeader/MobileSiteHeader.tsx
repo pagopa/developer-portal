@@ -13,7 +13,7 @@ import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import NextLink from 'next/link';
 import MobileUserInfo from '@/components/atoms/MobileUserInfo/MobileUserInfo';
-import { i18nActive, SITE_HEADER_HEIGHT } from '@/config';
+import { SITE_HEADER_HEIGHT } from '@/config';
 import MobileLanguageSelector from '@/components/atoms/MobileLanguageSelector/MobileLanguageSelector';
 import { SUPPORTED_LOCALES } from '@/locales';
 
@@ -257,15 +257,11 @@ const MobileSiteHeader = ({ currentLocale, products }: SiteHeaderProps) => {
 
           <Divider sx={{ marginTop: -2, marginBottom: 2 }} />
           <MobileUserInfo onClick={handleClick} />
-          {i18nActive && (
-            <>
-              <Divider sx={{ marginTop: -2, marginBottom: 2 }} />
-              <MobileLanguageSelector
-                locales={SUPPORTED_LOCALES}
-                currentLocale={currentLocale}
-              />
-            </>
-          )}
+          <Divider sx={{ marginTop: -2, marginBottom: 2 }} />
+          <MobileLanguageSelector
+            locales={SUPPORTED_LOCALES}
+            currentLocale={currentLocale}
+          />
         </SimpleTreeView>
       </Box>
     </Box>
