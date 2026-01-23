@@ -135,7 +135,6 @@ jobs:
           ENVIRONMENT: ${{ github.event_name == 'workflow_dispatch' && inputs.environment || 'dev' }}
           DOCUMENTATION_PATH: ${{ vars.DOCUMENTATION_PATH || '../../devportal-docs/docs' }}
           URL_PARSING_METADATA_JSON_PATH: ${{ vars.URL_PARSING_METADATA_JSON_PATH || '../../url-parsing-metadata.json' }}
-          LOCALE: ${{ inputs.locale }}
         run: npm run parse-docs -w gitbook-docs
 
       - name: Replace escaped tokens with backticks in docs
