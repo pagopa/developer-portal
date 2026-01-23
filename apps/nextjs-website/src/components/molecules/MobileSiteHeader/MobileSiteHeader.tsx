@@ -254,7 +254,6 @@ const MobileSiteHeader = ({ currentLocale, products }: SiteHeaderProps) => {
               </Typography>
             }
           />
-
           <Divider sx={{ marginTop: -2, marginBottom: 2 }} />
           <MobileUserInfo onClick={handleClick} />
           <Divider sx={{ marginTop: -2, marginBottom: 2 }} />
