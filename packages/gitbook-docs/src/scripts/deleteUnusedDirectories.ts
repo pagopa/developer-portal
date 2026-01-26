@@ -26,6 +26,10 @@ import {
   getSolutionsQueryString,
 } from '../helpers/strapiQuery';
 
+// TODO: handle everything using dirNames; the action should consider the file based on the language and delete folders accordingly
+// so use 'it/dirNames.json' for the localized version (evaluate whether to work in parallel on the empty/root folder and the Italian one)
+// therefore, if language is IT, operate both in the root and in 'it', and vice versa
+
 const S3_PATH_TO_GITBOOK_DOCS =
   process.env.S3_PATH_TO_GITBOOK_DOCS || 'devportal-docs/docs';
 const S3_BUCKET_NAME = process.env.S3_BUCKET_NAME;
