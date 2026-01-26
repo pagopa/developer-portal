@@ -187,7 +187,7 @@ export const getGuidePageProps = async (
   const strapiGuides = (await fetchResponseFromCDN(
     getSyncedGuidesResponseJsonPath()
   )) as StrapiGuides | undefined;
-  // eslint-disable-next-line functional/no-expression-statements
+
   const guides = strapiGuides ? makeGuidesProps(strapiGuides) : [];
   const guide = guides.filter(
     (g) => g.guide.slug === guideSlug && g.product.slug === productSlug
