@@ -65,7 +65,7 @@ resource "aws_ecs_task_definition" "clickhouse" {
   container_definitions = jsonencode([
     {
       name      = "clickhouse"
-      image     = "docker.io/clickhouse/clickhouse-server:25.8.8.26-alpine"
+      image     = "${aws_ecr_repository.clickhouse.repository_url}:25.8.8.26-alpine"
       cpu       = 512
       memory    = 4096
       essential = true

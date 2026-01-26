@@ -53,6 +53,28 @@ data "aws_iam_policy_document" "ecs_task_execute_role_policy" {
       aws_cloudwatch_log_group.langfuse_web.arn,
     ]
   }
+
+  # GetAuthorizationToken does not support resource-level permissions
+  statement {
+    actions = [
+      "ecr:GetAuthorizationToken",
+    ]
+    effect    = "Allow"
+    resources = ["*"]
+  }
+
+  # Image pull operations scoped to specific ECR repositories
+  statement {
+    actions = [
+      "ecr:BatchCheckLayerAvailability",
+      "ecr:GetDownloadUrlForLayer",
+      "ecr:BatchGetImage",
+    ]
+    effect = "Allow"
+    resources = [
+      aws_ecr_repository.clickhouse.arn,
+    ]
+  }
 }
 
 resource "aws_iam_role_policy_attachment" "ecs_task_execute_role_attachment" {
