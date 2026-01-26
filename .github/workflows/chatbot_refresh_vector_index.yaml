@@ -2,28 +2,6 @@ name: Chatbot Refresh Vector Index
 run-name: Chatbot Refresh Vector Index in ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.environment || github.event_name == 'schedule' && 'prod' || 'dev' }}
 
 on:
-  workflow_dispatch:
-    inputs:
-      environment:
-        description: 'The environment used as target'
-        type: choice
-        required: true
-        default: dev
-        options:
-          - dev
-          - uat
-          - prod
-      action_type:
-        description: 'The type of action to perform'
-        type: choice
-        required: true
-        default: all
-        options:
-          - all
-          - api
-          - dynamic
-          - add missing static
-
   schedule:
     - cron: '*/5 * * * *'  # Run every 5 minutes  # Run daily at 10:00 PM UTC (11:00 PM CEST) to refresh the index in prod
 
@@ -32,72 +10,6 @@ permissions:
   contents: read
 
 jobs:
-  manual_refresh:
-    name: Chatbot Refresh Docs in Vector Index (manual on ${{ inputs.environment }})
-    if: github.event_name == 'workflow_dispatch'
-    runs-on: codebuild-${{ inputs.environment }}-github-runner-${{ github.run_id }}-${{ github.run_attempt }}
-    outputs:
-      environment: ${{ inputs.environment }}
-    environment: ${{ inputs.environment }}
-    env:
-      ENV_SHORT: ${{ fromJSON('{"dev":"d","uat":"u","prod":"p"}')[inputs.environment] }}
-      SITEMAP_URL: https://${{ fromJSON('{"dev":"dev.","uat":"uat.","prod":""}')[inputs.environment] }}developer.pagopa.it/sitemap.xml
-
-    steps:
-      - name: Checkout current repository
-        uses: actions/checkout@v4
-
-      - name: Configure AWS Credentials
-        uses: ./.github/actions/configure-aws-credentials
-        with:
-          aws_region: eu-south-1
-          role_to_assume: ${{ secrets.IAM_ROLE_CHATBOT_REINDEX }}
-
-      - name: Refresh API Docs Vector Index
-        if: github.event.inputs.action_type == 'api'
-        uses: ./.github/actions/refresh-api-docs-vector-index
-
-      - name: Refresh Dynamic Docs Vector Index
-        if: github.event.inputs.action_type == 'dynamic'
-        uses: ./.github/actions/refresh-dynamic-docs-vector-index
-
-      - name: Add Missing Static Docs in Vector Index
-        if: github.event.inputs.action_type == 'add missing static'
-        uses: ./.github/actions/add-missing-static-docs-vector-index
-
-      - name: Refresh All Docs Vector Index
-        if: github.event.inputs.action_type == 'all'
-        uses: ./.github/actions/refresh-all-docs-vector-index
-
-  scheduled_refresh:
-    name: Chatbot Refresh All Docs Vector Index (scheduled on prod)
-    if: github.event_name == 'schedule'
-    runs-on: ubuntu-24.04
-    outputs:
-      environment: 'prod'
-    environment: 'prod'
-    env:
-      SITEMAP_URL: https://developer.pagopa.it/sitemap.xml
-
-    steps:
-      - name: Checkout current repository
-        uses: actions/checkout@v4
-
-      - name: Configure AWS Credentials
-        uses: ./.github/actions/configure-aws-credentials
-        with:
-          aws_region: eu-south-1
-          role_to_assume: ${{ secrets.IAM_ROLE_CHATBOT_REINDEX }}
-
-      - name: Test bash
-        run: |
-          echo "Scheduled refresh job running..."
-
-#      - name: Refresh All Docs Vector Index
-#        uses: ./.github/actions/refresh-all-docs-vector-index
-#        with:
-#          chatbot_lambda_name: ${{ vars.CHATBOT_LAMBDA_NAME }}
-
   scheduled_test:
     name: Test
     runs-on: ubuntu-24.04
