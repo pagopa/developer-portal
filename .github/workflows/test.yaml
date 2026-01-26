@@ -1,0 +1,36 @@
+name: TEST Chatbot Refresh Vector Index
+run-name: TEST Chatbot Refresh Vector Index
+
+on:
+  schedule:
+    - cron: '* * * * *'  # Run every minute
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  scheduled_test:
+    name: Test
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Test bash
+        shell: bash
+        run: |
+          echo "scheduled_test: github.event_name ${{ github.event_name }} is equal to schedule ${{ github.event_name == 'schedule' }}"
+          echo "scheduled_test: CHATBOT_LAMBDA_NAME ${{ vars.CHATBOT_LAMBDA_NAME }}"
+          echo "scheduled_test: IAM_ROLE_CHATBOT_REINDEX ${{ secrets.IAM_ROLE_CHATBOT_REINDEX != '' }}"
+
+  scheduled_only_test:
+    name: Test
+    if: github.event_name == 'schedule'
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Test bash
+        shell: bash
+        run: |
+          echo "scheduled_only_test: github.event_name ${{ github.event_name }} is equal to schedule ${{ github.event_name == 'schedule' }}"
+          echo "scheduled_only_test: CHATBOT_LAMBDA_NAME ${{ vars.CHATBOT_LAMBDA_NAME }}"
+          echo "scheduled_only_test: IAM_ROLE_CHATBOT_REINDEX ${{ secrets.IAM_ROLE_CHATBOT_REINDEX != '' }}"
