@@ -37,20 +37,28 @@ export function generateUrlPath(
   slug: string,
   productSlug?: string,
   versionName?: string,
-  metadataType: MetadataType = MetadataType.Guide
+  metadataType: MetadataType = MetadataType.Guide,
+  locale?: string
 ): string {
   const restOfPath = sitePathFromLocalPath(filePath, undefined);
   switch (metadataType) {
     case MetadataType.Guide:
-      return [`/${productSlug}`, 'guides', slug, versionName, restOfPath]
+      return [
+        locale,
+        `/${productSlug}`,
+        'guides',
+        slug,
+        versionName,
+        restOfPath,
+      ]
         .filter(Boolean)
         .join('/');
     case MetadataType.Solution:
-      return ['/solutions', slug, 'details', restOfPath]
+      return [locale, '/solutions', slug, 'details', restOfPath]
         .filter(Boolean)
         .join('/');
     case MetadataType.ReleaseNote:
-      return [`/${productSlug}`, 'release-note', slug, restOfPath]
+      return [locale, `/${productSlug}`, 'release-note', slug, restOfPath]
         .filter(Boolean)
         .join('/');
   }
