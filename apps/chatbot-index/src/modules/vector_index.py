@@ -21,8 +21,9 @@ from tqdm import tqdm
 
 from src.modules.logger import get_logger
 from src.modules.documents import (
+    StaticMetadata,
     get_documents,
-    get_static_and_dynamic_metadata,
+    get_dynamic_metadata,
     get_api_docs,
     get_static_docs,
     get_dynamic_docs,
@@ -73,9 +74,11 @@ LlamaIndexSettings.node_parser = SentenceSplitter(
 )
 
 
-def build_index_redis(clean_redis: bool = False) -> VectorStoreIndex:
+def build_index_redis(clean_redis: bool = True) -> VectorStoreIndex:
     """
     Builds a new vector index and stores it in Redis.
+    Args:
+        clean_redis (bool): Flag indicating whether to clean the Redis database before building the index
     Returns:
         VectorStoreIndex: The newly created vector store index.
     """
@@ -161,35 +164,38 @@ class DiscoveryVectorIndex:
         index = build_index_redis()
         return index
 
-    def _update_docs(self, documents: List[Document] = []) -> None:
+    def _update_docs(
+        self, index: VectorStoreIndex, documents: List[Document] = []
+    ) -> None:
         """
         Adds and updates documents in the index and refreshes the reference documents.
 
         Args:
+            index (VectorStoreIndex): The vector store index instance.
             documents (list[Document]): List of Document objects to add or update.
         """
 
-        with self.index._callback_manager.as_trace("refresh_ref_docs"):
+        with index._callback_manager.as_trace("refresh_ref_docs"):
             refreshed_documents = [False] * len(documents)
 
             for i, doc in enumerate(documents):
 
                 nodes = LlamaIndexSettings.node_parser.get_nodes_from_documents([doc])
-                existing_doc_hash = (
-                    self.index.storage_context.docstore.get_document_hash(doc.id_)
+                existing_doc_hash = index.storage_context.docstore.get_document_hash(
+                    doc.id_
                 )
 
                 if existing_doc_hash is None:
                     refreshed_documents[i] = True
-                    with self.index._callback_manager.as_trace("insert_nodes"):
-                        self.index._insert(nodes)
-                        self.index.storage_context.index_store.add_index_struct(
-                            self.index._index_struct
+                    with index._callback_manager.as_trace("insert_nodes"):
+                        index._insert(nodes)
+                        index.storage_context.index_store.add_index_struct(
+                            index._index_struct
                         )
-                        self.index.storage_context.docstore.set_document_hash(
+                        index.storage_context.docstore.set_document_hash(
                             doc.id_, doc.hash
                         )
-                        self.index.storage_context.docstore.add_documents(
+                        index.storage_context.docstore.add_documents(
                             nodes,
                             allow_update=True,
                         )
@@ -197,17 +203,17 @@ class DiscoveryVectorIndex:
 
                 elif existing_doc_hash != doc.hash:
                     refreshed_documents[i] = True
-                    with self.index._callback_manager.as_trace("update_ref_doc"):
-                        self._delete_docs([doc.id_], update=True)
-                        with self.index._callback_manager.as_trace("insert_nodes"):
-                            self.index._insert(nodes)
-                            self.index.storage_context.index_store.add_index_struct(
-                                self.index._index_struct
+                    with index._callback_manager.as_trace("update_ref_doc"):
+                        self._delete_docs(index, [doc.id_], update=True)
+                        with index._callback_manager.as_trace("insert_nodes"):
+                            index._insert(nodes)
+                            index.storage_context.index_store.add_index_struct(
+                                index._index_struct
                             )
-                            self.index.storage_context.docstore.set_document_hash(
+                            index.storage_context.docstore.set_document_hash(
                                 doc.id_, doc.hash
                             )
-                            self.index.storage_context.docstore.add_documents(
+                            index.storage_context.docstore.add_documents(
                                 nodes,
                                 allow_update=True,
                             )
@@ -222,22 +228,28 @@ class DiscoveryVectorIndex:
                 f"Updated vector index successfully with {sum(refreshed_documents)} documents."
             )
 
-    def _delete_docs(self, documents_id: List[str] = [], update: bool = False) -> None:
+    def _delete_docs(
+        self,
+        index: VectorStoreIndex,
+        documents_id: List[str] = [],
+        update: bool = False,
+    ) -> None:
         """
         Deletes documents from the index and from the document store.
 
         Args:
+            index (VectorStoreIndex): The vector store index instance.
             documents (List[str]): List of Document IDs to delete.
             update (bool): Flag indicating if this deletion is part of an update operation.
         """
 
         for doc_id in documents_id:
-            self.index.delete_ref_doc(doc_id, delete_from_docstore=True)
+            index.delete_ref_doc(doc_id, delete_from_docstore=True)
 
-            ref_doc_info = self.index.storage_context.docstore.get_ref_doc_info(doc_id)
+            ref_doc_info = index.storage_context.docstore.get_ref_doc_info(doc_id)
             if ref_doc_info:
                 for node_id in ref_doc_info.node_ids:
-                    self.index.storage_context.docstore.delete_document(node_id)
+                    index.storage_context.docstore.delete_document(node_id)
 
             if not update:
                 LOGGER.info(f"Deleted from vector index document ID: {doc_id}")
@@ -245,13 +257,14 @@ class DiscoveryVectorIndex:
         if not update:
             LOGGER.info(f"Removed {len(documents_id)} from vector index successfully.")
 
-    def refresh_index_api_docs(self) -> None:
+    def refresh_index_api_docs(self, index: VectorStoreIndex) -> None:
         """
         Refreshes the vector index by updating API documentation and removing obsolete documents.
         """
 
-        api_doc_ids = [doc.id_ for doc in self.api_docs]
-        ref_doc_info = self.index.storage_context.docstore.get_all_ref_doc_info()
+        api_docs = get_api_docs()
+        api_doc_ids = [doc.id_ for doc in api_docs]
+        ref_doc_info = index.storage_context.docstore.get_all_ref_doc_info()
         ref_doc_ids = list(ref_doc_info.keys())
 
         ref_api_doc_ids = [
@@ -262,75 +275,84 @@ class DiscoveryVectorIndex:
 
         api_docs_to_remove = []
 
+        LOGGER.info("Refreshing vector index with API docs...")
         for doc_id in ref_api_doc_ids:
             if doc_id not in api_doc_ids:
                 api_docs_to_remove.append(doc_id)
 
-        if self.api_docs:
+        if api_docs:
             try:
-                self._update_docs(self.api_docs)
+                self._update_docs(index, api_docs)
             except Exception as e:
                 LOGGER.error(f"Error updating API Documents: {e}")
         if api_docs_to_remove:
             try:
-                self._delete_docs(api_docs_to_remove)
+                self._delete_docs(index, api_docs_to_remove)
             except Exception as e:
                 LOGGER.error(f"Error deleting API Documents: {e}")
 
     def refresh_index_static_docs(
         self,
-        static_docs_to_update: List[Dict[str, str]],
-        static_doc_ids_to_delete: List[str],
+        index: VectorStoreIndex,
+        static_docs_to_update: List[StaticMetadata],
+        static_docs_ids_to_delete: List[str],
     ) -> None:
         """
         Refreshes the vector index by updating and deleting documents as specified.
 
         Args:
-            static_docs_to_update (list[dict]): List of dictionaries containing document metadata to update.
+            index (VectorStoreIndex): The vector store index instance.
+            static_docs_to_update (list[StaticMetadata]): List of StaticMetadata objects containing document metadata to update.
             static_docs_ids_to_delete (list[str]): List of document IDs to delete from the index.
+        Returns:
+            None
         """
 
-        static_docs_to_update_filtered = []
-        for doc in static_docs_to_update:
-            if doc in self.static_metadata:
-                static_docs_to_update_filtered.append(doc)
+        docs_to_update = get_static_docs(static_docs_to_update)
 
-        docs_to_update = get_static_docs(static_docs_to_update_filtered)
-
+        LOGGER.info("Refreshing vector index with static docs...")
         if docs_to_update:
             try:
-                self._update_docs(docs_to_update)
+                self._update_docs(index, docs_to_update)
             except Exception as e:
                 LOGGER.error(f"Error updating Static Documents: {e}")
-        if static_doc_ids_to_delete:
+        if static_docs_ids_to_delete:
             try:
-                self._delete_docs(static_doc_ids_to_delete)
+                self._delete_docs(index, static_docs_ids_to_delete)
             except Exception as e:
                 LOGGER.error(f"Error deleting Static Documents: {e}")
 
-    def refresh_index_dynamic_docs(self) -> None:
+    def refresh_index_dynamic_docs(
+        self, index: VectorStoreIndex, static_metadata: List[StaticMetadata]
+    ) -> None:
         """
         Refreshes the vector index by updating dynamic documents and removing obsolete ones.
+        Args:
+            static_metadata (list[StaticMetadata]): List of StaticMetadata objects containing static document metadata.
+        Returns:
+            None
         """
 
-        ref_doc_info = self.index.storage_context.docstore.get_all_ref_doc_info()
+        ref_doc_info = index.storage_context.docstore.get_all_ref_doc_info()
         ref_doc_ids = list(ref_doc_info.keys())
         dynamic_ref_doc_ids = [
             doc_id
             for doc_id in ref_doc_ids
             if "/api/" not in doc_id and ".md" not in doc_id
         ]
+
+        dynamic_metadata = get_dynamic_metadata(static_metadata)
         dynamic_doc_ids = [
-            item["url"].replace(SETTINGS.website_url, "")
-            for item in self.dynamic_metadata
+            item.url.replace(SETTINGS.website_url, "") for item in dynamic_metadata
         ]
 
         dynamic_docs_to_update = []
         dynamic_doc_ids_to_remove = []
 
-        for item in self.dynamic_metadata:
-            doc_id = item["url"].replace(SETTINGS.website_url, "")
-            lastmod = item["lastmod"]
+        LOGGER.info("Refreshing vector index with dynamic docs...")
+        for item in dynamic_metadata:
+            doc_id = item.url.replace(SETTINGS.website_url, "")
+            lastmod = item.lastmod
 
             if doc_id in ref_doc_ids:
                 last_mod_ref_doc_info = ref_doc_info[doc_id].metadata["lastmod"]
@@ -351,23 +373,23 @@ class DiscoveryVectorIndex:
         if dynamic_docs_to_update:
             try:
                 dynamic_docs_to_update = get_dynamic_docs(dynamic_docs_to_update)
-                self._update_docs(dynamic_docs_to_update)
+                self._update_docs(index, dynamic_docs_to_update)
             except Exception as e:
                 LOGGER.error(f"Error updating Dynamic Documents: {e}")
         if dynamic_doc_ids_to_remove:
             try:
-                self._delete_docs(dynamic_doc_ids_to_remove)
+                self._delete_docs(index, dynamic_doc_ids_to_remove)
             except Exception as e:
                 LOGGER.error(f"Error deleting Dynamic Documents: {e}")
 
-    def remove_docs_in_folder(self, folder_name: str) -> None:
+    def remove_docs_in_folder(self, index: VectorStoreIndex, folder_name: str) -> None:
         """
         Removes all documents in the specified folder from the vector index.
         Args:
             folder_name (str): The folder path whose documents need to be removed.
         """
 
-        ref_doc_info = self.index.storage_context.docstore.get_all_ref_doc_info()
+        ref_doc_info = index.storage_context.docstore.get_all_ref_doc_info()
         ref_doc_ids = list(ref_doc_info.keys())
         doc_ids_to_remove = []
 
@@ -377,31 +399,6 @@ class DiscoveryVectorIndex:
 
         if doc_ids_to_remove:
             try:
-                self._delete_docs(doc_ids_to_remove)
+                self._delete_docs(index, doc_ids_to_remove)
             except Exception as e:
                 LOGGER.error(f"Error deleting documents in folder {folder_name}: {e}")
-
-    def refresh_index(
-        self,
-        static_docs_to_update: List[Dict[str, str]],
-        static_docs_ids_to_delete: List[str],
-    ) -> None:
-        """
-        Refreshes the vector index by updating static and dynamic documents.
-
-        Args:
-            static_docs_to_update (list[dict]): List of dictionaries containing document metadata to update.
-            static_docs_ids_to_delete (list[str]): List of document IDs to delete from the index.
-        """
-
-        self.index = self.get_index()
-        self.api_docs = get_api_docs()
-        self.static_metadata, self.dynamic_metadata = get_static_and_dynamic_metadata()
-
-        LOGGER.info(">>>>>>> Refreshing vector index with API docs...")
-        self.refresh_index_api_docs()
-        LOGGER.info(">>>>>>> Refreshing vector index with static docs...")
-        self.refresh_index_static_docs(static_docs_to_update, static_docs_ids_to_delete)
-        LOGGER.info(">>>>>>> Refreshing vector index with dynamic docs...")
-        self.refresh_index_dynamic_docs()
-        LOGGER.info(">>>>>>> Refreshed vector index successfully. <<<<<<<")

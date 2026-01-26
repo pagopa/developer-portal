@@ -1,18 +1,15 @@
 import React, { useState } from 'react';
 import { Button, Menu, MenuItem } from '@mui/material';
-import { Language as LanguageIcon } from '@mui/icons-material';
+import { Language } from '@mui/icons-material';
 
-type LanguageSelectorProps = {
-  readonly locales: ReadonlyArray<{ code: string; name: string }>;
+export type LanguageSelectorProps = {
+  readonly locales: ReadonlyArray<{ code: string; label: string }>;
   readonly currentLocale: string;
-  // eslint-disable-next-line functional/no-return-void
-  readonly onLocaleChange: (locale: string) => void;
 };
 
 const LanguageSelector = ({
   locales,
   currentLocale,
-  onLocaleChange,
 }: LanguageSelectorProps) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -25,21 +22,17 @@ const LanguageSelector = ({
     setAnchorEl(null);
   };
 
-  const handleLocaleSelect = (locale: string) => {
-    onLocaleChange(locale);
-    handleClose();
-  };
-
-  const currentLocaleName =
-    locales.find((locale) => locale.code === currentLocale)?.name ||
+  const currentLocaleLabel =
+    locales.find((locale) => locale.code === currentLocale)?.label ||
     currentLocale.toUpperCase();
 
   return (
     <>
       <Button
         onClick={handleClick}
-        startIcon={<LanguageIcon />}
+        startIcon={<Language />}
         sx={{
+          paddingX: 2,
           textTransform: 'none',
           color: 'inherit',
           '&:hover': {
@@ -48,17 +41,28 @@ const LanguageSelector = ({
         }}
         disableRipple
       >
-        {currentLocaleName}
+        {currentLocaleLabel}
       </Button>
-      <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
+      <Menu
+        sx={{
+          marginTop: '5px',
+        }}
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+      >
         {locales.map((locale) => (
           <MenuItem
             key={locale.code}
-            onClick={() => handleLocaleSelect(locale.code)}
             selected={locale.code === currentLocale}
             disableRipple
           >
-            {locale.name}
+            <a
+              href={`/${locale.code}`}
+              style={{ textDecoration: 'none', color: 'inherit' }}
+            >
+              {locale.label}
+            </a>
           </MenuItem>
         ))}
       </Menu>

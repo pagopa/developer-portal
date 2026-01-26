@@ -2,19 +2,19 @@
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 5.33.0 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 6.28.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 5.33.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 6.28.0 |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_codebuild"></a> [codebuild](#module\_codebuild) | pagopa-dx/github-selfhosted-runner-on-codebuild/aws | ~> 0.0 |
+| <a name="module_codebuild"></a> [codebuild](#module\_codebuild) | pagopa-dx/github-selfhosted-runner-on-codebuild/aws | ~> 1.1.0 |
 
 ## Resources
 
