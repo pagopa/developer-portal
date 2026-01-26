@@ -1,6 +1,7 @@
 name: Echo on push and schedule
 
 on:
+  workflow_dispatch: {}
   push: {}
   schedule:
     - cron: "*/10 * * * *"  # every 10 minutes (UTC)
