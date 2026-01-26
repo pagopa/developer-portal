@@ -23,7 +23,7 @@ export async function GET(
         locale,
         Array.isArray(solutionSubPathSlugs) ? solutionSubPathSlugs : []
       ),
-      getUrlReplaceMapProps(),
+      getUrlReplaceMapProps(locale),
     ]);
 
     if (!solutionData) {

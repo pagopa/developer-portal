@@ -64,20 +64,21 @@ export type HomepageProps = {
 export async function generateMetadata(props: {
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
-  const params = await props.params;
-  const homepage = await getHomepageProps();
+  const { locale } = await props.params;
+  const homepage = await getHomepageProps(locale);
 
   return homepage.seo
     ? makeMetadataFromStrapi(homepage.seo)
     : makeMetadata({
         title: 'PagoPA DevPortal',
         description: 'Il portale per gli sviluppatori di PagoPA',
-        url: `${baseUrl}/${params.locale}`,
+        url: `${baseUrl}/${locale}`,
         locale: 'it_IT',
       });
 }
 
-const Home = async () => {
+const Home = async (props0: { params: Promise<{ locale: string }> }) => {
+  const { locale } = await props0.params;
   const {
     webinars,
     hero,
@@ -85,7 +86,7 @@ const Home = async () => {
     ecosystem,
     comingsoonDocumentation,
     seo,
-  }: HomepageProps = await getHomepageProps();
+  }: HomepageProps = await getHomepageProps(locale);
 
   const structuredData = generateStructuredDataScripts({
     seo: seo,

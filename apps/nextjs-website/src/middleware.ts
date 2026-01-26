@@ -9,7 +9,8 @@ export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const pathnameHasLocale = SUPPORTED_LOCALES.some(
     (locale) =>
-      pathname.startsWith(`/${locale.code}/`) || pathname === `/${locale.code}`
+      pathname.startsWith(`/${locale.langCode}/`) ||
+      pathname === `/${locale.langCode}`
   );
 
   if (pathnameHasLocale) return;

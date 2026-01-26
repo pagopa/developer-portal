@@ -22,14 +22,14 @@ export async function generateMetadata(props: {
 }
 
 const Webinars = async (props: { params: Promise<{ locale: string }> }) => {
-  const params = await props.params;
-  const webinars = await getVisibleInListWebinars();
-  const categories = await getWebinarCategoriesProps();
+  const { locale } = await props.params;
+  const webinars = await getVisibleInListWebinars(locale);
+  const categories = await getWebinarCategoriesProps(locale);
 
   return (
     <Suspense fallback={<Spinner />}>
       <WebinarsTemplate
-        locale={params.locale}
+        locale={locale}
         webinars={webinars}
         categories={categories}
       />

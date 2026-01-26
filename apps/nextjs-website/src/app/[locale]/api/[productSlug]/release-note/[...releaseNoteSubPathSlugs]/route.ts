@@ -12,13 +12,12 @@ export async function GET(
     }>;
   }
 ) {
-  const params = await props.params;
-  const { productSlug, releaseNoteSubPathSlugs } = params;
+  const { locale, productSlug, releaseNoteSubPathSlugs } = await props.params;
   const noteSegments = Array.isArray(releaseNoteSubPathSlugs)
     ? ['release-note', ...releaseNoteSubPathSlugs]
     : [];
 
-  return getReleaseNote(params.locale, productSlug, noteSegments)
+  return getReleaseNote(locale, productSlug, noteSegments)
     .then(async (releaseNoteProps) => {
       if (!releaseNoteProps) {
         return new Response(
@@ -30,7 +29,7 @@ export async function GET(
         );
       }
 
-      return getUrlReplaceMapProps().then((urlReplaceMap) => {
+      return getUrlReplaceMapProps(locale).then((urlReplaceMap) => {
         const { page, product, seo, source, title, bodyConfig } =
           releaseNoteProps;
 

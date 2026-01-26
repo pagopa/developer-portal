@@ -37,17 +37,17 @@ export const dynamic = 'force-dynamic';
 export async function generateMetadata(props0: {
   params: Promise<ReleaseNotePageStaticParams>;
 }): Promise<Metadata> {
-  const params = await props0.params;
-  if (params.productSlug === 'unknown') {
+  const { locale, productSlug, releaseNoteSubPathSlugs } = await props0.params;
+  if (productSlug === 'unknown') {
     return makeMetadata({
       title: 'unknown',
       url: 'unknown',
     });
   }
   const props = await getReleaseNote(
-    params?.locale,
-    params?.productSlug,
-    params?.releaseNoteSubPathSlugs
+    locale,
+    productSlug,
+    releaseNoteSubPathSlugs
   );
 
   if (props?.seo) {
@@ -73,17 +73,17 @@ export type ReleaseNotePageProps = {
 const ReleaseNotePage = async (props0: {
   params: Promise<ReleaseNotePageStaticParams>;
 }) => {
-  const params = await props0.params;
-  if (params.productSlug === 'unknown') {
+  const { locale, productSlug, releaseNoteSubPathSlugs } = await props0.params;
+  if (productSlug === 'unknown') {
     return <PageNotFound />;
   }
   const releaseNoteProps = await getReleaseNote(
-    params.locale,
-    params.productSlug,
-    params.releaseNoteSubPathSlugs
+    locale,
+    productSlug,
+    releaseNoteSubPathSlugs
   );
 
-  const urlReplaceMap = await getUrlReplaceMapProps();
+  const urlReplaceMap = await getUrlReplaceMapProps(locale);
 
   if (!releaseNoteProps) {
     return <PageNotFound />;
@@ -116,10 +116,10 @@ const ReleaseNotePage = async (props0: {
 
   const structuredData = generateStructuredDataScripts({
     breadcrumbsItems: [
-      productToBreadcrumb(params.locale, product),
+      productToBreadcrumb(locale, product),
       {
         name: title,
-        item: `${baseUrl}/${params.locale}/${product.slug}/release-note`,
+        item: `${baseUrl}/${locale}/${product.slug}/release-note`,
       },
       ...breadcrumbsItems,
     ],
@@ -128,10 +128,10 @@ const ReleaseNotePage = async (props0: {
   });
 
   const initialBreadcrumbs = [
-    ...productPageToBreadcrumbs(params.locale, product, [
+    ...productPageToBreadcrumbs(locale, product, [
       {
         name: title,
-        path: `/${params.locale}/${product.slug}/release-note`,
+        path: `/${locale}/${product.slug}/release-note`,
       },
       ...breadcrumbs,
     ]),
@@ -140,7 +140,7 @@ const ReleaseNotePage = async (props0: {
   return (
     <ProductLayout
       product={product}
-      path={`/${params.locale}/${path}`}
+      path={`/${locale}/${path}`}
       bannerLinks={bannerLinks}
       structuredData={structuredData}
     >

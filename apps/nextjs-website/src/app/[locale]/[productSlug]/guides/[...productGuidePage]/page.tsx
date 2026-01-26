@@ -81,15 +81,11 @@ export async function generateMetadata(props0: {
 }
 
 const Page = async (props0: { params: Promise<Params> }) => {
-  const params = await props0.params;
-  const currentLocale = params.locale;
+  const { locale, productSlug, productGuidePage } = await props0.params;
+  const currentLocale = locale;
   const [guideProps, urlReplaceMap] = await Promise.all([
-    getGuidePage(
-      params?.productGuidePage ?? [''],
-      params?.locale,
-      params?.productSlug
-    ),
-    getUrlReplaceMapProps(),
+    getGuidePage(productGuidePage ?? [''], locale, productSlug),
+    getUrlReplaceMapProps(locale),
   ]);
 
   if (!guideProps) {
@@ -128,7 +124,7 @@ const Page = async (props0: { params: Promise<Params> }) => {
         name: seo?.metaTitle || page.title,
         item: breadcrumbItemByProduct(currentLocale, props.product, [
           'guides',
-          ...(params?.productGuidePage || []),
+          ...(productGuidePage || []),
         ]),
       },
     ],

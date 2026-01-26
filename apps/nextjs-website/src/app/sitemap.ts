@@ -42,11 +42,11 @@ function getProductsPagesProps(
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Get dynamic paths
-  const quickStartParams = await getQuickStartGuidesProps();
-  const apiDataParams = await getApiDataParams();
-  const guideListPages = await getGuideListPagesProps();
-  const caseHistories = await getCaseHistoriesProps();
-  const productSlugs = (await getProductsProps())
+  const quickStartParams = await getQuickStartGuidesProps('it');
+  const apiDataParams = await getApiDataParams('it');
+  const guideListPages = await getGuideListPagesProps('it');
+  const caseHistories = await getCaseHistoriesProps('it');
+  const productSlugs = (await getProductsProps('it'))
     .filter((product) => product.isVisible)
     .map((product) => product.slug);
 
@@ -54,14 +54,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const guidesMetadata = await getGuidesMetadata('it'); // TODO: remove hardcoded locale once i18n development on sitemap has been completed
   const solutionsMetadata = await getSolutionsMetadata('it'); // TODO: remove hardcoded locale once i18n development on sitemap has been completed
   const releaseNotesMetadata = await getReleaseNotesMetadata('it'); // TODO: remove hardcoded locale once i18n development on sitemap has been completed
-  const overviews = await getOverviewsProps();
-  const tutorialListPages = await getTutorialListPagesProps();
+  const overviews = await getOverviewsProps('it');
+  const tutorialListPages = await getTutorialListPagesProps('it');
   const productPages = getProductsPagesProps(
     productSlugs,
     overviews,
     tutorialListPages
   );
-  const homePage = await getHomepageProps();
+  const homePage = await getHomepageProps('it');
   // Base routes
   const routes = [
     {
@@ -146,7 +146,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.6,
   }));
 
-  const tutorials = await getTutorialsProps();
+  const tutorials = await getTutorialsProps('it');
   const tutorialRoutes = tutorials.map((tutorial) => ({
     url: `${baseUrl}${tutorial.path}`,
     lastModified: new Date(tutorial.updatedAt || Date.now()),
@@ -154,7 +154,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.6,
   }));
 
-  const webinars = await getWebinarsProps();
+  const webinars = await getWebinarsProps('it');
   const webinarRoutes = webinars.map((webinar) => ({
     url: `${baseUrl}/webinars/${webinar.slug}`,
     lastModified: new Date(webinar.updatedAt || Date.now()),

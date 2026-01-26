@@ -20,7 +20,7 @@ export async function GET(
   try {
     const [guideData, urlReplaceMap] = await Promise.all([
       getGuidePage(guideSegments, locale, productSlug),
-      getUrlReplaceMapProps(),
+      getUrlReplaceMapProps(locale),
     ]);
 
     if (!guideData) {

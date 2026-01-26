@@ -98,22 +98,22 @@ export default async function RootLayout({
   children: React.ReactNode;
   params: Promise<{ locale: string }>;
 }) {
-  const products = [...(await getProducts()).filter((product) => product.isVisible)];
+  const { locale } = await params;
+  const products = [...(await getProducts(locale)).filter((product) => product.isVisible)];
 
   // Disabled eslint rules to to follow https://next-intl-docs.vercel.app/docs/getting-started/app-router-client-components guide
   // eslint-disable-next-line functional/no-let
   let messages;
-  const currentLocale = (await params).locale
   // eslint-disable-next-line functional/no-try-statements
   try {
-    messages = (await import(`../../messages/${currentLocale}.json`)).default;
+    messages = (await import(`../../messages/${locale}.json`)).default;
   } catch {
     notFound();
   }
 
 
   return (
-    <html lang={currentLocale} className={titilliumWeb.variable}>
+    <html lang={locale} className={titilliumWeb.variable}>
       <head>
         {isProduction && (
           <Script
@@ -130,7 +130,7 @@ export default async function RootLayout({
       </head>
       <ThemeRegistry options={{ key: 'mui' }}>
         <NextIntlContext
-          locale={currentLocale}
+          locale={locale}
           messages={messages}
           timeZone="Europe/Rome"
         >
@@ -145,7 +145,7 @@ export default async function RootLayout({
             />
             <AuthProvider>
               <ChatbotProvider isChatbotVisible={isChatbotActive}>
-                <SiteHeader currentLocale={currentLocale} products={products} />
+                <SiteHeader currentLocale={locale} products={products} />
                 <ErrorBoundary errorComponent={Error}>
                   <main>
                     <Box sx={{ marginTop: `${SITE_HEADER_HEIGHT}px` }}>
