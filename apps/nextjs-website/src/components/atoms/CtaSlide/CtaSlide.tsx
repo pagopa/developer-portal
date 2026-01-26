@@ -1,7 +1,7 @@
 'use client';
 import { Media } from '@/lib/types/media';
 import { Box, Stack, Typography, useTheme } from '@mui/material';
-import { ButtonNaked } from '@pagopa/mui-italia';
+import { ButtonNaked } from '@/components/atoms/ButtonNaked/ButtonNaked';
 import { BlocksContent } from '@strapi/blocks-react-renderer';
 import Image from 'next/image';
 import Link from 'next/link';

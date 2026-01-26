@@ -1,5 +1,33 @@
 # infrastructure
 
+## 8.0.0
+
+### Major Changes
+
+- eb00a2f: Update aws terraform provider to version 6.x.x
+
+### Minor Changes
+
+- fcd57c1: Fix some warning popped up after AWS provider migration
+- 2f5fd3e: PoC to test option 3 and 4 described in RFC: RFC-DEV 048
+- a092bb0: Removed unused IAM user DevPortal
+- c103445: Add Langfuse worker to the Fargate task
+- 3c512ab: Removed terraform warning for derecation or missed and wrong attribute.
+
+### Patch Changes
+
+- eb00a2f: Update terraform provider to the latest available version.
+
+## 7.1.0
+
+### Minor Changes
+
+- a660a7b: Fix terraform code since the apigateway deployment does not support anymore the attribute stage. Stage is a resource itself.
+- 320da57: Removed strapi api key env variable in lambda chatbot
+- a639266: New S3 trigger for lambda chatbot index: changes on file main-guide-versions-dirNames-to-remove.json
+- ecf7bb9: Temporary infra to host strapiv5 for testing
+- 5f5dc68: Update lambda env variables with new gemini models.
+
 ## 7.0.0
 
 ### Major Changes

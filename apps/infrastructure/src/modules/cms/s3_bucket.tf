@@ -5,7 +5,7 @@ resource "random_integer" "bucket_random_integer" {
 }
 
 module "s3_bucket_cms" {
-  source = "git::https://github.com/terraform-aws-modules/terraform-aws-s3-bucket.git?ref=3a1c80b29fdf8fc682d2749456ec36ecbaf4ce14" # v4.1.0
+  source = "git::https://github.com/terraform-aws-modules/terraform-aws-s3-bucket.git?ref=8eecd4bfe167b3606755a0f8150514e9dcb2bf67" # v.5.10
 
   bucket                  = "cms-medialibrary-${random_integer.bucket_random_integer.result}"
   block_public_acls       = true
