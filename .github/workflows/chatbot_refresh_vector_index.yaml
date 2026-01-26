@@ -111,6 +111,5 @@ jobs:
       - name: Test bash
         run: |
           echo "github.event_name ${{ github.event_name }} is equal to schedule ${{ github.event_name == 'schedule' }}"
-          echo "environment ${{ environment }} should be equal to prod"
           echo "CHATBOT_LAMBDA_NAME ${{ vars.CHATBOT_LAMBDA_NAME }}"
           echo "IAM_ROLE_CHATBOT_REINDEX ${{ secrets.IAM_ROLE_CHATBOT_REINDEX != '' }}"
