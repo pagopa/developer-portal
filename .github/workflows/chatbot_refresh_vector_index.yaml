@@ -1,0 +1,27 @@
+name: Chatbot Refresh Vector Index
+run-name: Chatbot Refresh Vector Index in ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.environment || github.event_name == 'schedule' && 'prod' || 'dev' }}
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'  # Run every 5 minutes  # Run daily at 10:00 PM UTC (11:00 PM CEST) to refresh the index in prod
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  scheduled_test:
+    name: Test
+    runs-on: ubuntu-24.04
+    outputs:
+      environment: 'prod'
+    environment: 'prod'
+    env:
+      SITEMAP_URL: https://developer.pagopa.it/sitemap.xml
+
+    steps:
+      - name: Test bash
+        run: |
+          echo "github.event_name ${{ github.event_name }} is equal to schedule ${{ github.event_name == 'schedule' }}"
+          echo "CHATBOT_LAMBDA_NAME ${{ vars.CHATBOT_LAMBDA_NAME }}"
+          echo "IAM_ROLE_CHATBOT_REINDEX ${{ secrets.IAM_ROLE_CHATBOT_REINDEX != '' }}"
