@@ -1,5 +1,11 @@
 # chatbot-index
 
+## 2.2.0
+
+### Minor Changes
+
+- 62cbfdf: Lambda refreshes only the modifications in the buckets without considering API and dynamic documents
+
 ## 2.1.2
 
 ### Patch Changes

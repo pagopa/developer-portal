@@ -1,5 +1,23 @@
 # infrastructure
 
+## 8.0.0
+
+### Major Changes
+
+- eb00a2f: Update aws terraform provider to version 6.x.x
+
+### Minor Changes
+
+- fcd57c1: Fix some warning popped up after AWS provider migration
+- 2f5fd3e: PoC to test option 3 and 4 described in RFC: RFC-DEV 048
+- a092bb0: Removed unused IAM user DevPortal
+- c103445: Add Langfuse worker to the Fargate task
+- 3c512ab: Removed terraform warning for derecation or missed and wrong attribute.
+
+### Patch Changes
+
+- eb00a2f: Update terraform provider to the latest available version.
+
 ## 7.1.0
 
 ### Minor Changes
