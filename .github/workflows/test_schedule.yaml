@@ -1,0 +1,13 @@
+name: Echo on push and schedule
+
+on:
+  push: {}
+  schedule:
+    - cron: "*/10 * * * *"  # every 10 minutes (UTC)
+
+jobs:
+  echo:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print echo message
+        run: echo "Hello from GitHub Actions — run triggered by push or schedule"
