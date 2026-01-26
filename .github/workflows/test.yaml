@@ -3,7 +3,7 @@ run-name: TEST Chatbot Refresh Vector Index
 
 on:
   schedule:
-    - cron: '* * * * *'  # Run every minute
+    - cron: '0/5 * * * *'  # Run every 5 minutes
 
 permissions:
   id-token: write
