@@ -145,7 +145,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // --------------------------------------------------------------------------------
   // These are stored in S3 and retrieved via legacy helpers.
   // We keep them ensuring no missing legacy content.
-  // We keep them ensuring no missing legacy content.
   const guidesMetadata = await getGuidesMetadata();
   const guides = await getGuidesProps();
   const guidesDirNames = Array.from(
