@@ -77,10 +77,11 @@ const ApiViewer: FC<ApiViewerProps> = ({ specURL }) => {
         scroll-y-offset='0'
         show-components='true'
         show-header='false'
-        show-method-in-nav-bar='as-plain-text'
+        show-method-in-nav-bar='as-colored-block'
         spec-url={specURL}
         text-color={palette.text.primary}
         theme={palette.mode}
+        allow-spec-file-download='true'
       />
     </Box>
   );
