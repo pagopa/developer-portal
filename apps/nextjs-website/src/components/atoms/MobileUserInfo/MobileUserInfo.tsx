@@ -52,7 +52,7 @@ const MobileUserInfo = ({ onClick }: MobileUserInfoProps) => {
             alignItems: 'center',
             textDecoration: 'none',
             color: palette.text.primary,
-            marginBottom: 2,
+            marginBottom: 4,
           }}
         >
           <Typography
@@ -128,6 +128,7 @@ const MobileUserInfo = ({ onClick }: MobileUserInfoProps) => {
               textDecoration: 'none',
               color: palette.text.primary,
               justifyContent: 'start',
+              marginBottom: '8px !important',
             }}
           >
             <Typography
