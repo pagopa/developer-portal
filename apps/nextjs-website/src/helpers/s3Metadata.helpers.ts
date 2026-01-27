@@ -1,6 +1,7 @@
 /* eslint-disable functional/no-let */
 /* eslint-disable functional/no-expression-statements */
-import { staticContentsUrl } from '@/config';
+import { s3DocsPath, staticContentsUrl } from '@/config';
+import * as path from 'node:path';
 
 export interface JsonMetadata {
   readonly path: string;
@@ -52,6 +53,16 @@ async function withRetries<T>(
 
       return result;
     } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : String(error);
+
+      if (errorMessage === '404' || errorMessage === '403') {
+        console.warn(
+          `Resource not found (${errorMessage}) during ${operationName}. Skipping retries.`
+        );
+        return fallbackValue;
+      }
+
       lastError = error instanceof Error ? error : new Error(String(error));
       // eslint-disable-next-line no-console
       console.error(
@@ -127,8 +138,18 @@ async function fetchFromCDN(path: string, config?: RequestInit) {
   });
 
   if (!response || !response.ok) {
+    if (response?.status === 404) {
+      // eslint-disable-next-line functional/no-throw-statements
+      throw new Error('404');
+    }
+    if (response?.status === 403) {
+      // eslint-disable-next-line functional/no-throw-statements
+      throw new Error('403');
+    }
     // eslint-disable-next-line functional/no-throw-statements
-    throw new Error('Response is null');
+    throw new Error(
+      `Failed to fetch: ${response?.statusText || 'Unknown error'}`
+    );
   }
 
   return response.json();
@@ -169,8 +190,12 @@ export async function fetchMetadataFromCDN<T>(
   return await requestPromise;
 }
 
+const S3_PATH_TO_GITBOOK_DOCS =
+  process.env.S3_PATH_TO_GITBOOK_DOCS || 'devportal-docs/docs';
 const S3_GUIDES_METADATA_JSON_PATH =
   process.env.S3_GUIDES_METADATA_JSON_PATH || 'guides-metadata.json';
+const S3_METADATA_JSON_PATH =
+  process.env.S3_METADATA_JSON_PATH || 'metadata.json';
 const S3_SOLUTIONS_METADATA_JSON_PATH =
   process.env.S3_SOLUTIONS_METADATA_JSON_PATH || 'solutions-metadata.json';
 const S3_RELEASE_NOTES_METADATA_JSON_PATH =
@@ -197,54 +222,117 @@ let releaseNotesMetadataCacheTime = 0;
 
 const METADATA_CACHE_TTL = 5 * 60 * 1000; // 5 minutes
 
-export const getGuidesMetadata = async () => {
+export const getGuidesMetadata = async (dirName?: string) => {
   const now = Date.now();
 
   if (
     guidesMetadataCache &&
-    now - guidesMetadataCacheTime < METADATA_CACHE_TTL
+    now - guidesMetadataCacheTime < METADATA_CACHE_TTL &&
+    (!dirName || guidesMetadataCache.some((m) => m.dirName === dirName))
   ) {
     return guidesMetadataCache;
   }
 
   guidesMetadataCache = await fetchMetadataFromCDN<JsonMetadata>(
-    S3_GUIDES_METADATA_JSON_PATH
+    dirName
+      ? path.join(S3_PATH_TO_GITBOOK_DOCS, dirName, S3_METADATA_JSON_PATH)
+      : S3_GUIDES_METADATA_JSON_PATH
   );
   guidesMetadataCacheTime = now;
 
   return guidesMetadataCache || [];
 };
 
-export const getSolutionsMetadata = async () => {
+const removeTrailingSlash = (value: string) => value.replace(/\/+$/, '');
+
+const buildDirMetadataPath = (dirName: string) => {
+  const docsBase = s3DocsPath ? removeTrailingSlash(s3DocsPath) : '';
+  return docsBase
+    ? `${docsBase}/${dirName}/${S3_METADATA_JSON_PATH}`
+    : `${dirName}/${S3_METADATA_JSON_PATH}`;
+};
+
+async function batchFetchMetadata(
+  metadataPaths: readonly string[],
+  concurrencyLimit: number
+): Promise<readonly JsonMetadata[]> {
+  const chunks = Array.from(
+    { length: Math.ceil(metadataPaths.length / concurrencyLimit) },
+    (_, i) =>
+      metadataPaths.slice(
+        i * concurrencyLimit,
+        i * concurrencyLimit + concurrencyLimit
+      )
+  );
+
+  return await chunks.reduce<Promise<readonly JsonMetadata[]>>(
+    async (previousPromise, chunk) => {
+      const acc = await previousPromise;
+      const chunkPromises = chunk.map((metadataPath) =>
+        fetchMetadataFromCDN<JsonMetadata>(metadataPath)
+      );
+      const chunkResults = await Promise.all(chunkPromises);
+      const validResults = chunkResults.reduce<readonly JsonMetadata[]>(
+        (flat, item) => (item ? [...flat, ...item] : flat),
+        []
+      );
+
+      return [...acc, ...validResults];
+    },
+    Promise.resolve([])
+  );
+}
+
+export const getSolutionsMetadataByDirNames = async (
+  dirNames: readonly string[],
+  concurrencyLimit = 5
+) => {
+  if (!dirNames || dirNames.length === 0) {
+    return [];
+  }
+
+  const metadataPaths = dirNames.map((dirName) =>
+    buildDirMetadataPath(dirName)
+  );
+  return await batchFetchMetadata(metadataPaths, concurrencyLimit);
+};
+
+export const getSolutionsMetadata = async (dirName?: string) => {
   const now = Date.now();
 
   if (
     solutionsMetadataCache &&
-    now - solutionsMetadataCacheTime < METADATA_CACHE_TTL
+    now - solutionsMetadataCacheTime < METADATA_CACHE_TTL &&
+    (!dirName || solutionsMetadataCache.some((m) => m.dirName === dirName))
   ) {
     return solutionsMetadataCache;
   }
 
   solutionsMetadataCache = await fetchMetadataFromCDN<JsonMetadata>(
-    S3_SOLUTIONS_METADATA_JSON_PATH
+    dirName
+      ? path.join(S3_PATH_TO_GITBOOK_DOCS, dirName, S3_METADATA_JSON_PATH)
+      : S3_SOLUTIONS_METADATA_JSON_PATH
   );
   solutionsMetadataCacheTime = now;
 
   return solutionsMetadataCache || [];
 };
 
-export const getReleaseNotesMetadata = async () => {
+export const getReleaseNotesMetadata = async (dirName?: string) => {
   const now = Date.now();
 
   if (
     releaseNotesMetadataCache &&
-    now - releaseNotesMetadataCacheTime < METADATA_CACHE_TTL
+    now - releaseNotesMetadataCacheTime < METADATA_CACHE_TTL &&
+    (!dirName || releaseNotesMetadataCache.some((m) => m.dirName === dirName))
   ) {
     return releaseNotesMetadataCache;
   }
 
   releaseNotesMetadataCache = await fetchMetadataFromCDN<JsonMetadata>(
-    S3_RELEASE_NOTES_METADATA_JSON_PATH
+    dirName
+      ? path.join(S3_PATH_TO_GITBOOK_DOCS, dirName, S3_METADATA_JSON_PATH)
+      : S3_RELEASE_NOTES_METADATA_JSON_PATH
   );
   releaseNotesMetadataCacheTime = now;
 

@@ -88,10 +88,6 @@ export const defaultOgTagImage = `${baseUrl}/images/dev-portal-home.jpg`;
 export const resetResendEmailAfterMs = 4_000;
 export const fetchWebinarsQuestionsIntervalMs = 1_000;
 export const maxPastWebinarsInHome = 3;
-
-export const defaultLanguage = { id: 'it', value: 'Italiano' };
-export const languages = [defaultLanguage];
-
 export const defaultLocale = 'it-IT';
 
 export const dateOptions: Intl.DateTimeFormatOptions = {
@@ -141,3 +137,5 @@ export const signUpAdvantages = [
 
 export const SITE_HEADER_HEIGHT = 48;
 export const PRODUCT_HEADER_HEIGHT = 77;
+
+export const i18nActive = process.env.NEXT_PUBLIC_I18N_ACTIVE === 'true';

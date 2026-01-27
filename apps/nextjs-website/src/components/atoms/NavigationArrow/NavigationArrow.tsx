@@ -2,7 +2,7 @@
 import ArrowBack from '@mui/icons-material/ArrowBack';
 import ArrowForward from '@mui/icons-material/ArrowForward';
 import { Box, useTheme } from '@mui/material';
-import { ButtonNaked } from '@pagopa/mui-italia';
+import { ButtonNaked } from '@/components/atoms/ButtonNaked/ButtonNaked';
 import React, { createElement } from 'react';
 
 type NavigationArrowProps = {
@@ -35,11 +35,11 @@ const NavigationArrow = ({ direction, hidden }: NavigationArrowProps) => {
           height: 14,
           width: 14,
           padding: 2,
+          minWidth: 0,
           sm: {
             display: 'none',
           },
         }}
-        p={1}
       >
         {arrowIcon}
       </ButtonNaked>

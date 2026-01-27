@@ -1,4 +1,4 @@
-`use client`;
+'use client';
 import Accordion from '@mui/material/Accordion';
 import MuiAccordionSummary, {
   AccordionSummaryProps,
@@ -12,9 +12,8 @@ import { useSpec } from './hooks/useSpec';
 import { useTranslations } from 'next-intl';
 import { Operations } from './Operations';
 import { OpenAPIV3 } from 'openapi-types';
-import { styled } from '@mui/material';
+import { styled, useTheme } from '@mui/material';
 import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp';
-import { theme } from '@pagopa/mui-italia';
 
 const AccordionSummary = styled((props: AccordionSummaryProps) => (
   <MuiAccordionSummary
@@ -37,6 +36,7 @@ const Swagger = ({
 }: SwaggerProps<ReactNode>) => {
   const { spec } = useSpec(src);
   const t = useTranslations('swagger');
+  const theme = useTheme();
 
   if (spec && src) {
     const validOperations = { [path]: [method] as OpenAPIV3.HttpMethods[] };

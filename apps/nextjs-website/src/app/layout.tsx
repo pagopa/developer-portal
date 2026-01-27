@@ -104,12 +104,14 @@ export default async function RootLayout({
   // eslint-disable-next-line functional/no-try-statements
   try {
     messages = (await import('../messages/it.json')).default;
-  } catch (error) {
+  } catch {
     notFound();
   }
 
+  const currentLocale = 'it'; // to be replaced with dynamic locale when i18n will be enabled
+
   return (
-    <html lang='it' className={titilliumWeb.variable}>
+    <html lang={currentLocale} className={titilliumWeb.variable}>
       <head>
         {isProduction && (
           <Script
@@ -126,7 +128,7 @@ export default async function RootLayout({
       </head>
       <ThemeRegistry options={{ key: 'mui' }}>
         <NextIntlContext
-          locale={'it'}
+          locale={currentLocale}
           messages={messages}
           timeZone='Europe/Rome'
         >
@@ -141,11 +143,13 @@ export default async function RootLayout({
             />
             <AuthProvider>
               <ChatbotProvider isChatbotVisible={isChatbotActive}>
-                <SiteHeader products={products} />
-                <ErrorBoundary
-                  errorComponent={Error}
-                >
-                  <main><Box sx={{ marginTop: `${SITE_HEADER_HEIGHT}px` }}>{children}</Box></main>
+                <SiteHeader locale={currentLocale} products={products} />
+                <ErrorBoundary errorComponent={Error}>
+                  <main>
+                    <Box sx={{ marginTop: `${SITE_HEADER_HEIGHT}px` }}>
+                      {children}
+                    </Box>
+                  </main>
                 </ErrorBoundary>
                 <SiteFooter />
               </ChatbotProvider>
