@@ -260,6 +260,11 @@ export const getReleaseNoteProps = async (
   return await makeReleaseNoteS3(releaseNote, jsonMetadata);
 };
 
+export const getReleaseNotesProps = async () => {
+  const strapiReleaseNotes = await fetchReleaseNotes();
+  return makeReleaseNotesProps(strapiReleaseNotes);
+};
+
 export const getUseCasesProps = async () => {
   const strapiUseCases = await fetchUseCases(buildEnv);
   const allMarkdownParts = strapiUseCases.data.flatMap((useCase) =>

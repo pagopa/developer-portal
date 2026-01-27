@@ -318,6 +318,20 @@ export const getSolutionsMetadata = async (dirName?: string) => {
   return solutionsMetadataCache || [];
 };
 
+export const getReleaseNotesMetadataByDirNames = async (
+  dirNames: readonly string[],
+  concurrencyLimit = 5
+) => {
+  if (!dirNames || dirNames.length === 0) {
+    return [];
+  }
+
+  const metadataPaths = dirNames.map((dirName) =>
+    buildDirMetadataPath(dirName)
+  );
+  return await batchFetchMetadata(metadataPaths, concurrencyLimit);
+};
+
 export const getReleaseNotesMetadata = async (dirName?: string) => {
   const now = Date.now();
 
