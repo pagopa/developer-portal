@@ -1,10 +1,5 @@
 import type { MetadataRoute } from 'next';
-import {
-  getApiDataParams,
-  getGuideListPages,
-  getOverview,
-  getTutorialListPageProps,
-} from '@/lib/api';
+import { getApiDataParams } from '@/lib/api';
 import {
   getGuideListPagesProps,
   getCaseHistoriesProps,
@@ -14,6 +9,8 @@ import {
   getSolutionsProps,
   getQuickStartGuidesProps,
   getHomepageProps,
+  getOverviewsProps,
+  getTutorialListPagesProps,
 } from '@/lib/cmsApi';
 import { baseUrl } from '@/config';
 import {
@@ -22,18 +19,25 @@ import {
   getSolutionsMetadata,
   JsonMetadata,
 } from '@/helpers/s3Metadata.helpers';
+import { OverviewPageProps } from '@/app/[productSlug]/overview/page';
+import { TutorialsPageProps } from '@/app/[productSlug]/tutorials/page';
 
 export const dynamic = 'force-dynamic';
 
-async function getProductsPagesProps(productSlugs: readonly string[]) {
-  return Promise.all(
-    productSlugs.map(async (productSlug) => {
-      const overview = await getOverview(productSlug);
-      const tutorialList = await getTutorialListPageProps(productSlug);
-      const guides = await getGuideListPages(productSlug);
-      return { overview, tutorialList, guides };
-    })
-  );
+function getProductsPagesProps(
+  productSlugs: readonly string[],
+  overviewProps: readonly OverviewPageProps[],
+  tutorialListPages: readonly TutorialsPageProps[]
+) {
+  return productSlugs.map((productSlug) => {
+    const overview = overviewProps.find(
+      (overviewData) => overviewData.product?.slug === productSlug
+    );
+    const tutorialList = tutorialListPages.find(
+      ({ product }) => product.slug === productSlug
+    );
+    return { overview, tutorialList };
+  });
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
@@ -50,7 +54,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const guidesMetadata = await getGuidesMetadata();
   const solutionsMetadata = await getSolutionsMetadata();
   const releaseNotesMetadata = await getReleaseNotesMetadata();
-  const productPages = await getProductsPagesProps(productSlugs);
+  const overviews = await getOverviewsProps();
+  const tutorialListPages = await getTutorialListPagesProps();
+  const productPages = getProductsPagesProps(
+    productSlugs,
+    overviews,
+    tutorialListPages
+  );
   const homePage = await getHomepageProps();
   // Base routes
   const routes = [
@@ -91,18 +101,22 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   // Product routes
   const productRoutes = productSlugs.flatMap((productSlug) => {
-    const hasTutorials = getTutorialListPageProps(productSlug) !== undefined;
     const routes = productPages.find((productPage) => {
-      return productPage.overview.product.slug === productSlug;
+      return (
+        productPage.overview?.product.slug === productSlug ||
+        productPage.tutorialList?.product.slug === productSlug
+      );
     });
-    const returnArray = [
-      {
+    const hasTutorials = routes?.tutorialList !== undefined;
+    const returnArray = [];
+    if (routes?.overview)
+      // eslint-disable-next-line functional/immutable-data,functional/no-expression-statements
+      returnArray.push({
         url: `${baseUrl}/${productSlug}/overview`,
-        lastModified: new Date(routes?.overview.updatedAt || Date.now()),
+        lastModified: new Date(routes?.overview?.updatedAt || Date.now()),
         changeFrequency: 'weekly' as const,
         priority: 0.8,
-      },
-    ];
+      });
     if (hasTutorials)
       // eslint-disable-next-line functional/immutable-data,functional/no-expression-statements
       returnArray.push({

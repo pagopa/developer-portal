@@ -131,6 +131,7 @@ export const strapiWebinarsWithMissingData: StrapiWebinars = {
         // Optional fields omitted
         webinarSpeakers: { data: [] },
         updatedAt: '2024-01-02T00:00:00.000Z',
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } as any,
     },
   ],

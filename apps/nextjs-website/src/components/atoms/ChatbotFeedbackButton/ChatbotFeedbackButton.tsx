@@ -30,7 +30,6 @@ const ChatbotFeedbackButton = ({
   return (
     <>
       <IconButton
-        color='primary'
         onClick={() => onToggle(!isNegativeFeedbackGiven)}
         disabled={feedbackGiven}
         sx={{

@@ -48,7 +48,7 @@ const SubscribeToWebinarContent = ({
 
   const onSubscribe = useCallback(async () => {
     if (!webinarSlug || !username) {
-      handleErrorMessage && handleErrorMessage(t('genericSubscriptionError'));
+      if (handleErrorMessage) handleErrorMessage(t('genericSubscriptionError'));
       return null;
     }
 
@@ -62,7 +62,7 @@ const SubscribeToWebinarContent = ({
         }
       })
       .catch((error) => {
-        handleErrorMessage && handleErrorMessage(error.message);
+        if (handleErrorMessage) handleErrorMessage(error.message);
         setIsLoading(false);
       });
     return null;
@@ -74,7 +74,6 @@ const SubscribeToWebinarContent = ({
     pathname,
     reloadUser,
     router,
-    isUserLoggedIn,
   ]);
 
   const onSubscribeWithoutUser = () => {
@@ -91,7 +90,7 @@ const SubscribeToWebinarContent = ({
   const onUnsubscribe = async () => {
     const userLoggedIn = await isUserLoggedIn(user);
     if (!userLoggedIn || !webinarSlug || !username) {
-      handleErrorMessage && handleErrorMessage(t('genericSubscriptionError'));
+      if (handleErrorMessage) handleErrorMessage(t('genericSubscriptionError'));
       return null;
     }
 
@@ -101,7 +100,7 @@ const SubscribeToWebinarContent = ({
         reloadUser().then(() => setIsLoading(false));
       })
       .catch((error) => {
-        handleErrorMessage && handleErrorMessage(error.message);
+        if (handleErrorMessage) handleErrorMessage(error.message);
         setIsLoading(false);
       });
 

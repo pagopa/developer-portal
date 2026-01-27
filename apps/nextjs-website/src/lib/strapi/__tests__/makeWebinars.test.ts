@@ -54,6 +54,7 @@ describe('makeWebinarsProps', () => {
           id: 1,
           attributes: {
             // Missing required coverImage field to trigger error
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
           } as any,
         },
       ],

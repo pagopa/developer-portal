@@ -1,6 +1,6 @@
 {
   "name": "gitbook-docs",
-  "version": "1.7.1",
+  "version": "1.7.3",
   "private": true,
   "exports": {
     "./": "./dist/"
@@ -28,6 +28,7 @@
     "parse-docs": "ts-node src/scripts/parseDocUrlsAndIncludes.ts",
     "replace-escaped-tokens-with-backticks": "ts-node src/scripts/replaceEscapedTokensWithBackticks.ts",
     "sync-all-metadata": "ts-node src/scripts/syncAllMetadata.ts",
+    "sync-sitemap": "ts-node src/scripts/syncSitemap.ts",
     "delete-unused-directories": "ts-node src/scripts/deleteUnusedDirectories.ts"
   },
   "dependencies": {

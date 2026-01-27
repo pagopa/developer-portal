@@ -1,6 +1,6 @@
 'use client';
 import PageNotFound from '@/app/not-found';
-import React, { ReactNode } from 'react';
+import React from 'react';
 import { Box } from '@mui/material';
 import { usePathname } from 'next/navigation';
 import Spinner from '@/components/atoms/Spinner/Spinner';
@@ -8,7 +8,7 @@ import DesktopProfileMenu from '@/components/molecules/DesktopProfileMenu/Deskto
 import MobileProfileMenu from '@/components/molecules/MobileProfileMenu/MobileProfileMenu';
 import { useUser } from '@/helpers/user.helper';
 
-const ProfileLayout = ({ children }: { children: ReactNode }) => {
+const ProfileLayout = ({ children }: { children: React.ReactNode }) => {
   const { user, loading, userFullName } = useUser();
 
   const pathname = usePathname();

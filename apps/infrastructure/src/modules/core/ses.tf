@@ -12,5 +12,5 @@ module "ses_developer_pagopa_it" {
   ]
 
   ses_group_name = "DevPortalSES"
-  user_name      = var.environment == "uat" ? null : "DevPortal"
+  user_name      = null
 }

@@ -28,5 +28,24 @@
     "rapidoc": "^9.3.8"
   },
   "packageManager": "npm@9.8.1",
-  "name": "developer-portal"
+  "name": "developer-portal",
+  "overrides": {
+    "next": {
+      "ajv": "^8.17.1"
+    },
+    "eslint": {
+      "ajv": "^6.12.6"
+    },
+    "table": {
+      "ajv": "^6.12.6"
+    },
+    "optionator": {
+      "ajv": "^6.12.6"
+    },
+    "@eslint/eslintrc": {
+      "ajv": "^6.12.6"
+    },
+    "@types/react": "19.2.7",
+    "@types/react-dom": "19.2.3"
+  }
 }

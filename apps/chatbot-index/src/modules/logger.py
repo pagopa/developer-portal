@@ -12,7 +12,7 @@ LOG_LEVEL_MAP = {
 
 def get_logger(name: str, level: str = "info") -> logging.Logger:
     formatter = logging.Formatter(
-        fmt="%(asctime)s %(levelname)s [%(name)s] [%(funcName)s]: %(message)s"
+        fmt="%(levelname)s [%(name)s] [%(funcName)s]: %(message)s"
     )
 
     handler = logging.StreamHandler()

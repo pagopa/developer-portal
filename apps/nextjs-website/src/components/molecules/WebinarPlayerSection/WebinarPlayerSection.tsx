@@ -108,19 +108,15 @@ const WebinarPlayerSection = ({
                 },
               }}
             >
-              {webinar.playerSrc.includes('vimeo') ? (
-                <VimeoPlayer playerSrc={webinar.playerSrc} />
-              ) : (
-                <VideoJsPlayer
-                  autoplay={isLiveStreamAvailable}
-                  controls={true}
-                  playsInline={true}
-                  src={webinar.playerSrc}
-                  poster={webinar.playerCoverImageUrl}
-                  reloadToken={reloadPlayerToken}
-                  videoOnDemandStartAt={videoOnDemandStartAt}
-                />
-              )}
+              <VideoJsPlayer
+                autoplay={isLiveStreamAvailable}
+                controls={true}
+                playsInline={true}
+                src={webinar.playerSrc}
+                poster={webinar.playerCoverImageUrl}
+                reloadToken={reloadPlayerToken}
+                videoOnDemandStartAt={videoOnDemandStartAt}
+              />
             </Box>
             {isQuestionFormAvailable ? (
               isQuestionFormExpanded ? (

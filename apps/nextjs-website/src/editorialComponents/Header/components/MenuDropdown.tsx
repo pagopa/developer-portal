@@ -8,7 +8,7 @@ import {
   Link,
   type Theme,
 } from '@mui/material';
-import { useState } from 'react';
+import { ReactElement, useState } from 'react';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { type Generic, type CommonProps } from '../../types/components';
 import { isJSX } from '../../utils';
@@ -32,7 +32,7 @@ export interface MenuDropdownProp
 
 export const MenuDropdown = (props: MenuDropdownProp) => {
   // props
-  const { label, active, theme, items, ...button } = props;
+  const { label, items, theme, active, ...button } = props;
 
   // state
   const [menuHover, setMenuHover] = useState(false);
@@ -82,7 +82,7 @@ export const MenuDropdown = (props: MenuDropdownProp) => {
   const Dropdown = ({
     children,
     ...stackProps
-  }: { children: JSX.Element[] } & StackProps) =>
+  }: { children: ReactElement[] } & StackProps) =>
     md ? (
       <DialogBubble
         {...stackProps}

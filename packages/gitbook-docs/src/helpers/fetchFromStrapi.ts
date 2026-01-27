@@ -5,6 +5,7 @@
 // In case of an error, the error will be thrown
 export async function fetchFromStrapi<T>(
   url: string
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): Promise<{ data: T[]; responseJson?: any }> {
   const output = await fetchFromStrapiResponse(url);
   console.log(

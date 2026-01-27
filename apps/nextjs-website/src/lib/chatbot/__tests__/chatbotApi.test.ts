@@ -88,18 +88,6 @@ const getQueriesResponses = {
   },
 };
 
-const badResponse = {
-  200: {
-    id: 'queryId',
-    sessionId: 1234,
-    queriedAt: '2024-02-08T11:12:02.142Z',
-    question: 'question',
-    answer: 'answer',
-    createdAt: '2024-02-08T11:12:02.438Z',
-    badAnswer: false,
-  },
-};
-
 describe('chatbotApi', () => {
   it('chatbotApi::postQuery should return a query response given a 200 response', async () => {
     const { env, fetchMock } = makeTestEnv();

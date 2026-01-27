@@ -11,7 +11,7 @@ import { useTranslations } from 'next-intl';
 import { ChatbotWriting } from '@/components/atoms/ChatbotWriting/ChatbotWriting';
 import { ChatSkeleton } from '@/components/atoms/ChatSkeleton/ChatSkeleton';
 import { useUser } from '@/helpers/user.helper';
-import { baseUrl, isFeedbackFormEnabled } from '@/config';
+import { baseUrl } from '@/config';
 import AlertPart from '@/components/atoms/AlertPart/AlertPart';
 import { ChatbotErrorsType } from '@/helpers/chatbot.helper';
 import ChatbotFeedbackForm from '@/components/molecules/ChatbotFeedbackForm/ChatbotFeedbackForm';
@@ -88,7 +88,7 @@ const Chat = ({
         ])
       ),
     ],
-    [queries, t, user]
+    [queries, t, user, mustFillFeedbackForm]
   ) satisfies Message[];
 
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -104,7 +104,13 @@ const Chat = ({
       }
     }
     setInstantScroll(false);
-  }, [messages, instantScroll, setInstantScroll, isAwaitingResponse]);
+  }, [
+    messages,
+    instantScroll,
+    setInstantScroll,
+    isAwaitingResponse,
+    queriesCount,
+  ]);
 
   return (
     <>

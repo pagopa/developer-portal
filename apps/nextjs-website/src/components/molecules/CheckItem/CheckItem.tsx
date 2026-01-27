@@ -16,7 +16,7 @@ const CheckItem = ({ title, description, isComingSoon }: CheckItemProps) => {
   return (
     <Grid container alignItems='flex-start' mb={4}>
       <Grid item xs={1} mr={3}>
-        <CheckCircle sx={{ fontSize: 40, color: palette.info.extraLight }} />
+        <CheckCircle sx={{ fontSize: 40, color: palette.info.light }} />
       </Grid>
       <Grid item xs={10}>
         <Box>

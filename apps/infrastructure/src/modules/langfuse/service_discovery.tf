@@ -16,7 +16,7 @@ resource "aws_service_discovery_service" "clickhouse" {
     }
   }
 
-  health_check_custom_config {
+  health_check_config {
     failure_threshold = 1
   }
 }

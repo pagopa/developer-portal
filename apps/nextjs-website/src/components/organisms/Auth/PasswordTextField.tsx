@@ -36,6 +36,7 @@ export const PasswordTextField = ({
             event.preventDefault();
           }}
           edge='end'
+          sx={{ color: 'action.active' }}
         >
           {showPassword ? <VisibilityOff /> : <Visibility />}
         </IconButton>
@@ -58,6 +59,7 @@ export const PasswordTextField = ({
           name={id}
           required
           size='small'
+          sx={{ '& .MuiInputBase-input': { fontWeight: 600 } }}
           type={type}
           value={password}
           onChange={onChange}

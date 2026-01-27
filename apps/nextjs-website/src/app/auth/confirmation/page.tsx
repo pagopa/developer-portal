@@ -9,7 +9,7 @@ import { useTranslations } from 'next-intl';
 import PageBackgroundWrapper from '@/components/atoms/PageBackgroundWrapper/PageBackgroundWrapper';
 import SingleCard from '@/components/atoms/SingleCard/SingleCard';
 import { isProduction } from '@/config';
-import { IllusError } from '@pagopa/mui-italia';
+import { ErrorOutline as ErrorOutlineIcon } from '@mui/icons-material';
 import AccountAlreadyConfirmed from '@/components/organisms/Auth/AccountAlreadyConfirmed';
 
 enum State {
@@ -39,7 +39,9 @@ const ConfirmationContent = () => {
         .catch((error) => {
           // TODO: remove console warn and handle errors: [CodeMismatchException, ExpiredCodeException, InternalErrorException, LimitExceededException]
           // see apps/nextjs-website/src/app/auth/email-confirmation/page.tsx
-          !isProduction && console.warn(error);
+          if (!isProduction) {
+            console.warn(error);
+          }
           switch (error.code) {
             case 'AliasExistsException':
               setState(State.alreadyConfirmed);
@@ -80,7 +82,9 @@ const ConfirmationContent = () => {
       return (
         <PageBackgroundWrapper>
           <SingleCard
-            icon={<IllusError />}
+            icon={
+              <ErrorOutlineIcon sx={{ fontSize: 64, color: 'error.main' }} />
+            }
             title={t('confirmation.title')}
             cta={
               <Button

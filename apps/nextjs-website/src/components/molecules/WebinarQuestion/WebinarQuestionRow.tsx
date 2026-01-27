@@ -7,13 +7,14 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
-import { CopyToClipboardButton } from '@pagopa/mui-italia';
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import ThumbUpAlt from '@mui/icons-material/ThumbUpAlt';
+import ThumbUpOffAlt from '@mui/icons-material/ThumbUpOffAlt';
 import DOMPurify from 'dompurify';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import Visibility from '@mui/icons-material/Visibility';
 import { useTranslations } from 'next-intl';
 import { defaultLocale, timeOptions } from '@/config';
-import { ThumbUpAlt, ThumbUpOffAlt } from '@mui/icons-material';
 
 type WebinarQuestionRowProps = {
   question: WebinarQuestion;
@@ -113,10 +114,12 @@ export default function WebinarQuestionRow({
             </IconButton>
           )}
           {!isHidden && isHighlighted && (
-            <CopyToClipboardButton
+            <IconButton
+              onClick={() => navigator.clipboard.writeText(question.question)}
               sx={{ color: tcColor }}
-              value={DOMPurify.sanitize(question.question)}
-            ></CopyToClipboardButton>
+            >
+              <ContentCopyIcon />
+            </IconButton>
           )}
         </Box>
       </TableCell>

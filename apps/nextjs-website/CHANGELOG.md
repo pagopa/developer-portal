@@ -1,5 +1,39 @@
 # nextjs-website
 
+## 15.0.0
+
+### Major Changes
+
+- 8352eb1: Add middelware to rewrite paths without locale into ones with default locale /it
+
+### Minor Changes
+
+- c82e979: Update Next.js version to 15
+- ae6c681: Fix sitemap generation
+- c755822: Add language selection menu in site header
+
+### Patch Changes
+
+- 95f22b0: Fix dependency version causing next 15 not to load up properly
+- 4b327bb: Fix style regression
+- Updated dependencies [fffee8c]
+- Updated dependencies [5d8e960]
+  - gitbook-docs@1.7.3
+
+## 14.1.1
+
+### Patch Changes
+
+- 802a191: Translate
+- 8547c8e: Remove faulty id generation logic
+- 87d3496: Add i18n feature flag to toggle the feature during development
+- 1afc223: Fix scroll to anchor in gitbook template
+- Updated dependencies [89d22fa]
+- Updated dependencies [711e8eb]
+- Updated dependencies [309541d]
+- Updated dependencies [c26b1d7]
+  - gitbook-docs@1.7.2
+
 ## 14.1.0
 
 ### Minor Changes

@@ -1,7 +1,9 @@
 FROM public.ecr.aws/lambda/python:3.12
-ARG DEBIAN_FRONTEND=noninteractive
 
 ENV PYTHONPATH=$LAMBDA_TASK_ROOT
+
+RUN dnf install -y \
+  git
 
 RUN pip install --upgrade pip \
   && pip install poetry

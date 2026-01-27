@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import PageBackgroundWrapper from '@/components/atoms/PageBackgroundWrapper/PageBackgroundWrapper';
 import SingleCard from '@/components/atoms/SingleCard/SingleCard';
-import { IllusError } from '@pagopa/mui-italia';
+import { ErrorOutline as ErrorOutlineIcon } from '@mui/icons-material';
 
 const ExpiredCode = () => {
   const t = useTranslations('auth');
@@ -12,7 +12,7 @@ const ExpiredCode = () => {
   return (
     <PageBackgroundWrapper>
       <SingleCard
-        icon={<IllusError />}
+        icon={<ErrorOutlineIcon sx={{ fontSize: 64, color: 'error.main' }} />}
         title={t('expiredCode.expiredLink')}
         cta={
           <Button

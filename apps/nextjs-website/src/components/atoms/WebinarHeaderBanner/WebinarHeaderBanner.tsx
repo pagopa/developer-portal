@@ -94,7 +94,9 @@ const WebinarHeaderBanner: FC<WebinarHeaderBannerProps> = ({ webinars }) => {
       <IconButton
         onClick={() => {
           setVisible(false);
-          slug && window?.localStorage.setItem(slug, endDateTime);
+          if (slug) {
+            window?.localStorage.setItem(slug, endDateTime);
+          }
         }}
       >
         <CloseIcon sx={{ color: palette.common.white }}></CloseIcon>

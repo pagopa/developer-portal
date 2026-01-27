@@ -110,12 +110,10 @@ locals {
 }
 
 
-
 import {
   to = module.chatbot[0].aws_api_gateway_stage.api_stage
   id = "${local.api_stages[var.environment].api_id}/${var.environment}"
 }
-
 
 removed {
   from = module.website.aws_s3_bucket.website

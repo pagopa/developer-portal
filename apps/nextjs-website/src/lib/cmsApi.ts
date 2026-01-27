@@ -59,6 +59,7 @@ import {
 } from 'gitbook-docs/syncedResponses';
 import { StrapiSolutions } from './strapi/types/solutions';
 import { StrapiReleaseNotes } from './strapi/types/releaseNotes';
+import { product } from '@/lib/strapi/__tests__/fixtures/product';
 
 // a BuildEnv instance ready to be used
 const buildEnv = pipe(
@@ -222,10 +223,7 @@ export const getSolutionProps = async (
   return await makeSolutionS3(solution, jsonMetadata);
 };
 
-export const getReleaseNoteProps = async (
-  productSlug: string,
-  jsonMetadata?: JsonMetadata
-) => {
+const fetchReleaseNotes = async () => {
   const strapiReleaseNotes = (await fetchResponseFromCDN(
     getSyncedReleaseNotesResponseJsonPath()
   )) as StrapiReleaseNotes | undefined;
@@ -233,6 +231,22 @@ export const getReleaseNoteProps = async (
     // eslint-disable-next-line functional/no-throw-statements
     throw new Error('Failed to fetch release data');
   }
+  return strapiReleaseNotes;
+};
+
+export const getStrapiReleaseNotes = async (productSlug: string) => {
+  const strapiReleaseNotes = await fetchReleaseNotes();
+  return strapiReleaseNotes.data.find(
+    (strapiReleaseNote) =>
+      strapiReleaseNote.attributes.product.data?.attributes.slug === productSlug
+  );
+};
+
+export const getReleaseNoteProps = async (
+  productSlug: string,
+  jsonMetadata?: JsonMetadata
+) => {
+  const strapiReleaseNotes = await fetchReleaseNotes();
   const releaseNotes = makeReleaseNotesProps(strapiReleaseNotes);
   const releaseNote = releaseNotes.find(
     (rn) => rn.product.slug === productSlug

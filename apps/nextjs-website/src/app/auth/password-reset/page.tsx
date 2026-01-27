@@ -4,7 +4,7 @@ import { Grid } from '@mui/material';
 import { useCallback, useState } from 'react';
 import { SendResetPasswordSteps } from '@/lib/types/sendResetPasswordSteps';
 import { Auth } from 'aws-amplify';
-import { useRouter } from 'next/navigation';
+
 import ResetPasswordForm from '@/components/organisms/Auth/ResetPasswordForm';
 import ResetPasswordSuccess from '@/components/organisms/Auth/ResetPasswordSuccess';
 import PageBackgroundWrapper from '@/components/atoms/PageBackgroundWrapper/PageBackgroundWrapper';
@@ -14,8 +14,6 @@ const PasswordReset = () => {
   const [sendResetPasswordSteps, setSendResetPasswordSteps] = useState(
     SendResetPasswordSteps.SEND_EMAIL
   );
-
-  const router = useRouter();
 
   const handleResetPassword = useCallback(async () => {
     const success = await Auth.forgotPassword(email).catch(() => {
@@ -30,7 +28,7 @@ const PasswordReset = () => {
   const onBackStep = useCallback(() => {
     setSendResetPasswordSteps(SendResetPasswordSteps.SEND_EMAIL);
     return null;
-  }, [router, email]);
+  }, []);
 
   return (
     <PageBackgroundWrapper>

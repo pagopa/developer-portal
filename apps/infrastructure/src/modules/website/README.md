@@ -2,14 +2,14 @@
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 5.33.0 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 6.28.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 5.33.0 |
-| <a name="provider_aws.us-east-1"></a> [aws.us-east-1](#provider\_aws.us-east-1) | >= 5.33.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 6.28.0 |
+| <a name="provider_aws.us-east-1"></a> [aws.us-east-1](#provider\_aws.us-east-1) | >= 6.28.0 |
 | <a name="provider_random"></a> [random](#provider\_random) | n/a |
 
 ## Modules
@@ -58,7 +58,7 @@
 | <a name="module_dynamodb_webinar_subscriptions"></a> [dynamodb\_webinar\_subscriptions](#module\_dynamodb\_webinar\_subscriptions) | git::github.com/terraform-aws-modules/terraform-aws-dynamodb-table.git | 715399dbe24f6443820bf5de80f6100b35d56355 |
 | <a name="module_dynamodb_write_capacity_utilization_alarm"></a> [dynamodb\_write\_capacity\_utilization\_alarm](#module\_dynamodb\_write\_capacity\_utilization\_alarm) | git::https://github.com/terraform-aws-modules/terraform-aws-cloudwatch.git//modules/metric-alarm | 0b4aa2b9aa19060205965a938de89a7bf0ff477b |
 | <a name="module_dynamodb_write_throttle_events_webinar_questions_alarm"></a> [dynamodb\_write\_throttle\_events\_webinar\_questions\_alarm](#module\_dynamodb\_write\_throttle\_events\_webinar\_questions\_alarm) | git::https://github.com/terraform-aws-modules/terraform-aws-cloudwatch.git//modules/metric-alarm | 0b4aa2b9aa19060205965a938de89a7bf0ff477b |
-| <a name="module_opennext"></a> [opennext](#module\_opennext) | github.com/pagopa/dx//infra/modules/aws_open_next | opennext-module |
+| <a name="module_opennext"></a> [opennext](#module\_opennext) | pagopa-dx/aws-open-next/aws | ~> 0.0 |
 | <a name="module_ses_bounce_rate_alarm"></a> [ses\_bounce\_rate\_alarm](#module\_ses\_bounce\_rate\_alarm) | git::https://github.com/terraform-aws-modules/terraform-aws-cloudwatch.git//modules/metric-alarm | 0b4aa2b9aa19060205965a938de89a7bf0ff477b |
 | <a name="module_ses_daily_sending_quota_alarm"></a> [ses\_daily\_sending\_quota\_alarm](#module\_ses\_daily\_sending\_quota\_alarm) | git::https://github.com/terraform-aws-modules/terraform-aws-cloudwatch.git//modules/metric-alarm | 0b4aa2b9aa19060205965a938de89a7bf0ff477b |
 | <a name="module_ses_reputation_complaint_rate_alarm"></a> [ses\_reputation\_complaint\_rate\_alarm](#module\_ses\_reputation\_complaint\_rate\_alarm) | git::https://github.com/terraform-aws-modules/terraform-aws-cloudwatch.git//modules/metric-alarm | 0b4aa2b9aa19060205965a938de89a7bf0ff477b |
@@ -116,7 +116,7 @@
 |------|-------------|------|---------|:--------:|
 | <a name="input_dns_domain_name"></a> [dns\_domain\_name](#input\_dns\_domain\_name) | DNS domain for the Developer Portal product | `string` | n/a | yes |
 | <a name="input_environment"></a> [environment](#input\_environment) | Environment | `string` | n/a | yes |
-| <a name="input_environment_information"></a> [environment\_information](#input\_environment\_information) | Values which are used to generate resource names and location short names. They are all mandatory except for domain, which should not be used only in the case of a resource used by multiple domains. | <pre>object({<br/>    prefix          = string<br/>    env_short       = string<br/>    location        = string<br/>    domain          = optional(string)<br/>    app_name        = string<br/>    instance_number = string<br/>  })</pre> | n/a | yes |
+| <a name="input_environment_information"></a> [environment\_information](#input\_environment\_information) | Values which are used to generate resource names and location short names. They are all mandatory except for domain, which should not be used only in the case of a resource used by multiple domains. | <pre>object({<br/>    prefix          = string<br/>    env_short       = string<br/>    location        = string<br/>    domain          = optional(string)<br/>    app_name        = string<br/>    instance_number = string<br/>    region          = string<br/>  })</pre> | n/a | yes |
 | <a name="input_github_repository"></a> [github\_repository](#input\_github\_repository) | The repository where the IaC workflows will run | `string` | n/a | yes |
 | <a name="input_hosted_zone_id"></a> [hosted\_zone\_id](#input\_hosted\_zone\_id) | The ID of the hosted zone to create the public DNS records in | `string` | n/a | yes |
 | <a name="input_next_cms_interlan_alb_dns_name"></a> [next\_cms\_interlan\_alb\_dns\_name](#input\_next\_cms\_interlan\_alb\_dns\_name) | The DNS name of the internal ALB for the CMS | `string` | n/a | yes |

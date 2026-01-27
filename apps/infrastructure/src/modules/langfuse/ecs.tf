@@ -146,145 +146,145 @@ resource "aws_ecs_task_definition" "clickhouse" {
   ])
 }
 
-# resource "aws_ecs_task_definition" "langfuse_worker" {
-#   family                   = "langfuse-worker"
-#   cpu                      = 2048
-#   memory                   = 4096
-#   network_mode             = "awsvpc"
-#   requires_compatibilities = ["FARGATE"]
-#
-#   execution_role_arn = aws_iam_role.langfuse_ecs_task_execute_role.arn
-#   task_role_arn      = aws_iam_role.langfuse_task_role.arn
-#
-#   runtime_platform {
-#     operating_system_family = "LINUX"
-#     cpu_architecture = "ARM64"
-#   }
-#
-#   container_definitions = jsonencode([
-#     {
-#       name      = "worker"
-#       image     = "${aws_ecr_repository.langfuse_worker.repository_url}:latest"
-#       cpu       = 2048
-#       memory    = 4096
-#       essential = true
-#       linuxParameters = {
-#         initProcessEnabled = true
-#       }
-#       portMappings = [{ containerPort : 3030 }]
-#       environment = [
-#         {
-#           name  = "SALT"
-#           value = var.web_salt
-#         },
-#         {
-#           name  = "ENCRIPTION_KEY"
-#           value = var.encryption_key
-#         },
-#         {
-#           name  = "TELEMETRY_ENABLED"
-#           value = "true"
-#         },
-#         {
-#           name  = "LANGFUSE_ENABLE_EXPERIMENTAL_FEATURES"
-#           value = "true"
-#         },
-#         {
-#           name  = "CLICKHOUSE_MIGRATION_URL"
-#           value = "clickhouse://${aws_service_discovery_service.clickhouse.name}.${aws_service_discovery_private_dns_namespace.langfuse.name}:9000"
-#         },
-#         {
-#           name  = "CLICKHOUSE_URL"
-#           value = "http://${aws_service_discovery_service.clickhouse.name}.${aws_service_discovery_private_dns_namespace.langfuse.name}:8123"
-#         },
-#         {
-#           name  = "CLICKHOUSE_USER"
-#           value = local.clickhouse_user
-#         },
-#         {
-#           name  = "CLICKHOUSE_CLUSTER_ENABLED"
-#           value = "false"
-#         },
-#         {
-#           name  = "LANGFUSE_S3_EVENT_UPLOAD_BUCKET"
-#           value = aws_s3_bucket.langfuse_event.id
-#         },
-#         {
-#           name  = "LANGFUSE_S3_EVENT_UPLOAD_REGION"
-#           value = var.region
-#         },
-#         {
-#           name  = "LANGFUSE_S3_EVENT_UPLOAD_PREFIX"
-#           value = "events/"
-#         },
-#         {
-#           name  = "LANGFUSE_S3_MEDIA_UPLOAD_BUCKET"
-#           value = aws_s3_bucket.langfuse_blob.id
-#         },
-#         {
-#           name  = "LANGFUSE_S3_MEDIA_UPLOAD_ENABLED"
-#           value = "true"
-#         },
-#         {
-#           name  = "REDIS_HOST"
-#           value = aws_elasticache_replication_group.langfuse_cache.primary_endpoint_address
-#         },
-#         {
-#           name  = "REDIS_PORT"
-#           value = "6379"
-#         },
-#         {
-#           name  = "REDIS_AUTH"
-#           value = aws_elasticache_replication_group.langfuse_cache.auth_token
-#         },
-#         {
-#           name  = "NODE_OPTIONS"
-#           value = "--max-old-space-size=4096"
-#         }
-#       ]
-#       secrets = [
-#         {
-#           name      = "DATABASE_URL"
-#           valueFrom = aws_secretsmanager_secret.langfuse_database_url.arn
-#         },
-#         {
-#           name      = "CLICKHOUSE_PASSWORD"
-#           valueFrom = aws_secretsmanager_secret.clickhouse_password.arn
-#         },
-#       ]
-#
-#       logConfiguration = {
-#         logDriver = "awslogs"
-#         options = {
-#           awslogs-stream-prefix = "langfuse-worker"
-#           awslogs-region        = var.region
-#           awslogs-group         = aws_cloudwatch_log_group.langfuse_worker.name
-#         }
-#       }
-#
-#     },
-#   ])
-# }
+resource "aws_ecs_task_definition" "langfuse_worker" {
+  family                   = "langfuse-worker"
+  cpu                      = 2048
+  memory                   = 4096
+  network_mode             = "awsvpc"
+  requires_compatibilities = ["FARGATE"]
 
-# resource "aws_ecs_service" "langfuse_worker" {
-#   name            = "langfuse_worker"
-#   cluster         = aws_ecs_cluster.langfuse.arn
-#   task_definition = aws_ecs_task_definition.langfuse_worker.arn
-#   desired_count   = var.worker_desire_count
-#   launch_type     = "FARGATE"
-#
-#   network_configuration {
-#     security_groups = [aws_security_group.langfuse_worker.id]
-#     subnets         = var.private_subnet_ids
-#   }
-#   tags = {
-#     Name = "langfuse_worker"
-#   }
-#
-#   service_connect_configuration {
-#     enabled = true
-#   }
-# }
+  execution_role_arn = aws_iam_role.langfuse_ecs_task_execute_role.arn
+  task_role_arn      = aws_iam_role.langfuse_task_role.arn
+
+  runtime_platform {
+    operating_system_family = "LINUX"
+    cpu_architecture        = "ARM64"
+  }
+
+  container_definitions = jsonencode([
+    {
+      name      = "worker"
+      image     = "docker.io/langfuse/langfuse-worker:3.115"
+      cpu       = 2048
+      memory    = 4096
+      essential = true
+      linuxParameters = {
+        initProcessEnabled = true
+      }
+      portMappings = [{ containerPort : 3030 }]
+      environment = [
+        {
+          name  = "SALT"
+          value = var.web_salt
+        },
+        {
+          name  = "ENCRIPTION_KEY"
+          value = var.encryption_key
+        },
+        {
+          name  = "TELEMETRY_ENABLED"
+          value = "true"
+        },
+        {
+          name  = "LANGFUSE_ENABLE_EXPERIMENTAL_FEATURES"
+          value = "true"
+        },
+        {
+          name  = "CLICKHOUSE_MIGRATION_URL"
+          value = "clickhouse://${aws_service_discovery_service.clickhouse.name}.${aws_service_discovery_private_dns_namespace.langfuse.name}:9000"
+        },
+        {
+          name  = "CLICKHOUSE_URL"
+          value = "http://${aws_service_discovery_service.clickhouse.name}.${aws_service_discovery_private_dns_namespace.langfuse.name}:8123"
+        },
+        {
+          name  = "CLICKHOUSE_USER"
+          value = local.clickhouse_user
+        },
+        {
+          name  = "CLICKHOUSE_CLUSTER_ENABLED"
+          value = "false"
+        },
+        {
+          name  = "LANGFUSE_S3_EVENT_UPLOAD_BUCKET"
+          value = aws_s3_bucket.langfuse_event.id
+        },
+        {
+          name  = "LANGFUSE_S3_EVENT_UPLOAD_REGION"
+          value = var.region
+        },
+        {
+          name  = "LANGFUSE_S3_EVENT_UPLOAD_PREFIX"
+          value = "events/"
+        },
+        {
+          name  = "LANGFUSE_S3_MEDIA_UPLOAD_BUCKET"
+          value = aws_s3_bucket.langfuse_blob.id
+        },
+        {
+          name  = "LANGFUSE_S3_MEDIA_UPLOAD_ENABLED"
+          value = "true"
+        },
+        {
+          name  = "REDIS_HOST"
+          value = aws_elasticache_replication_group.langfuse_cache.primary_endpoint_address
+        },
+        {
+          name  = "REDIS_PORT"
+          value = "6379"
+        },
+        {
+          name  = "REDIS_AUTH"
+          value = aws_elasticache_replication_group.langfuse_cache.auth_token
+        },
+        {
+          name  = "NODE_OPTIONS"
+          value = "--max-old-space-size=4096"
+        }
+      ]
+      secrets = [
+        {
+          name      = "DATABASE_URL"
+          valueFrom = aws_secretsmanager_secret.langfuse_database_url.arn
+        },
+        {
+          name      = "CLICKHOUSE_PASSWORD"
+          valueFrom = aws_secretsmanager_secret.clickhouse_password.arn
+        },
+      ]
+
+      logConfiguration = {
+        logDriver = "awslogs"
+        options = {
+          awslogs-stream-prefix = "langfuse-worker"
+          awslogs-region        = var.region
+          awslogs-group         = aws_cloudwatch_log_group.langfuse_worker.name
+        }
+      }
+
+    },
+  ])
+}
+
+resource "aws_ecs_service" "langfuse_worker" {
+  name            = "langfuse_worker"
+  cluster         = aws_ecs_cluster.langfuse.arn
+  task_definition = aws_ecs_task_definition.langfuse_worker.arn
+  desired_count   = var.worker_desire_count
+  launch_type     = "FARGATE"
+
+  network_configuration {
+    security_groups = [aws_security_group.langfuse_worker.id]
+    subnets         = var.private_subnet_ids
+  }
+  tags = {
+    Name = "langfuse_worker"
+  }
+
+  service_connect_configuration {
+    enabled = true
+  }
+}
 
 resource "aws_ecs_service" "clickhouse" {
   name            = "clickhouse"

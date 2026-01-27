@@ -8,6 +8,7 @@ import { redirect } from 'next/navigation';
 import { useCallback, useState, useEffect } from 'react';
 
 export const useUser = () => {
+  const { authStatus } = useAuthenticator((context) => [context.authStatus]);
   const [isLoaded, setLoading] = useState<boolean>(true);
   const [aligned, setAligned] = useState<boolean>(false);
   const [user, setUser] = useState<DevPortalUser | null>(null);
@@ -15,23 +16,35 @@ export const useUser = () => {
     readonly WebinarSubscription[]
   >([]);
 
-  const signOutUser = async (user?: DevPortalUser | null) => {
+  const signOutUser = useCallback(async (user?: DevPortalUser | null) => {
     await Auth.signOut();
     if (user?.username) {
       setUser(null);
     }
-  };
+  }, []);
 
-  const isUserLoggedIn = async (user?: DevPortalUser | null) => {
-    const info = await Auth.currentUserInfo();
-    if (!info?.username) {
-      signOutUser(user);
-    }
-    return !!info?.username;
-  };
+  const isUserLoggedIn = useCallback(
+    async (user?: DevPortalUser | null) => {
+      if (authStatus === 'unauthenticated') {
+        return false;
+      }
+      // eslint-disable-next-line functional/no-try-statements
+      try {
+        const info = await Auth.currentUserInfo();
+        if (!info?.username) {
+          signOutUser(user);
+        }
+        return !!info?.username;
+      } catch {
+        signOutUser(user);
+        return false;
+      }
+    },
+    [authStatus, signOutUser]
+  );
 
   const fetchUserAndSubscriptions = useCallback(async () => {
-    const user = await Auth.currentAuthenticatedUser().catch((e) => {
+    const user = await Auth.currentAuthenticatedUser().catch(() => {
       setLoading(false);
       setAligned(true);
       setUser(null);
@@ -61,11 +74,11 @@ export const useUser = () => {
     return await Auth.updateUserAttributes(user, attributes)
       .then(() => {
         fetchUserAndSubscriptions();
-        onSuccess && onSuccess();
+        if (onSuccess) onSuccess();
         setAligned(true);
       })
       .catch(() => {
-        onFail && onFail();
+        if (onFail) onFail();
         setAligned(true);
       });
   };
@@ -77,11 +90,20 @@ export const useUser = () => {
 
   useEffect(() => {
     isUserLoggedIn(user);
-  }, [user]);
+  }, [user, isUserLoggedIn]);
 
   useEffect(() => {
-    fetchUserAndSubscriptions();
-  }, []);
+    if (authStatus === 'authenticated') {
+      fetchUserAndSubscriptions();
+      return;
+    }
+    if (authStatus === 'unauthenticated') {
+      setLoading(false);
+      setAligned(true);
+      setUser(null);
+      setSubscriptions([]);
+    }
+  }, [authStatus, fetchUserAndSubscriptions]);
 
   useEffect(() => {
     const cancel = Hub.listen('auth', (event) => {
@@ -102,7 +124,7 @@ export const useUser = () => {
     });
 
     return () => cancel();
-  }, []);
+  }, [signOutUser]);
 
   const userFullName =
     (user &&

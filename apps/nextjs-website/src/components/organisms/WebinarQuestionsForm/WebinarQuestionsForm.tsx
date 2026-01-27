@@ -13,7 +13,7 @@ import {
   useTheme,
 } from '@mui/material';
 import { useTranslations } from 'next-intl';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useState } from 'react';
 import ForumIcon from '@mui/icons-material/Forum';
 import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';

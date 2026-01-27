@@ -11,12 +11,11 @@ export default meta;
 export const Showcase: StoryObj<typeof LanguageSelector> = {
   args: {
     locales: [
-      { code: 'en', name: 'EN' },
-      { code: 'it', name: 'IT' },
-      { code: 'fr', name: 'FR' },
-      { code: 'de', name: 'DE' },
+      { code: 'en', label: 'EN' },
+      { code: 'it', label: 'IT' },
+      { code: 'fr', label: 'FR' },
+      { code: 'de', label: 'DE' },
     ],
     currentLocale: 'en',
-    onLocaleChange: (lang) => console.log(`Selected language: ${lang}`),
   },
 };

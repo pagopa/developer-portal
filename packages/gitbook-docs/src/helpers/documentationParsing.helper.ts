@@ -4,6 +4,7 @@
 /* eslint-disable functional/immutable-data */
 /* eslint-disable functional/no-try-statements */
 import path from 'path';
+import * as fs from 'fs';
 
 export const DOCUMENTATION_PATH =
   process.env.DOCUMENTATION_PATH || '../../devportal-docs/docs';
@@ -61,6 +62,12 @@ export function replaceUrl(
   filePath?: string
 ): string {
   if (!currentDocMetadata) return value;
+  if (
+    /^https?:/.test(value) &&
+    !/^https?:\/\/(localhost|127\.0\.0\.1|app\.gitbook\.com)/.test(value)
+  ) {
+    return value;
+  }
   // Clean up the URL by removing mentions, README.md, and .md extensions
   const splitValue = value
     .replace(' "mention"', '')
@@ -162,8 +169,6 @@ export async function getIncludeContent(
   includePath: string,
   filePath: string
 ): Promise<string> {
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const fs = require('fs');
   const mappedIncludePath = mapIncludePath(includePath, filePath);
   if (!fs.existsSync(mappedIncludePath)) {
     console.log('no file found for', mappedIncludePath);

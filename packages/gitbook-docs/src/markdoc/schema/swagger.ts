@@ -41,7 +41,7 @@ export type SwaggerParameterProps<A> = {
   readonly in: string;
   readonly name: string;
   readonly required: boolean;
-  readonly children: string;
+  readonly children: A;
 };
 
 export const swaggerParameter: Schema = {

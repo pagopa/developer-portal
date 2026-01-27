@@ -131,7 +131,8 @@ data "aws_iam_policy_document" "ecs_task_role_s3" {
       "s3:PutObjectAcl"
     ]
     resources = [
-      module.s3_bucket_cms.s3_bucket_arn
+      module.s3_bucket_cms.s3_bucket_arn,
+      "${module.s3_bucket_cms.s3_bucket_arn}/*"
     ]
   }
 }

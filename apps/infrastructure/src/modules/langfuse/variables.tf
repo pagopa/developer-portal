@@ -40,11 +40,11 @@ variable "database_user" {
 #   description = "Used to validate login session cookies, generate secret with at least 256 entropy using openssl rand -base64 32."
 #   type        = string
 # }
-#
-# variable "web_salt" {
-#   description = "Used to salt hashed API keys, generate secret with at least 256 entropy using openssl rand -base64 32."
-#   type        = string
-# }
+
+variable "web_salt" {
+  description = "Used to salt hashed API keys, generate secret with at least 256 entropy using openssl rand -base64 32."
+  type        = string
+}
 
 # variable "custom_domain_name" {
 #   description = "Langfuse and Grafana custom domain name. If you set example.com, the domain will be langfuse.example.com and grafana.example.com"
@@ -66,17 +66,17 @@ variable "cache_node_type" {
 #   type        = bool
 #   default     = false
 # }
-#
-# variable "worker_desire_count" {
-#   description = "Desired count for Langfuse Worker(s)"
-#   type        = number
-#   default     = 1
-# }
-#
-# variable "encryption_key" {
-#   description = "Used to encrypt sensitive data. Must be 256 bits, 64 string characters in hex format, generate via: openssl rand -hex 32."
-#   type        = string
-# }
+
+variable "worker_desire_count" {
+  description = "Desired count for Langfuse Worker(s)"
+  type        = number
+  default     = 1
+}
+
+variable "encryption_key" {
+  description = "Used to encrypt sensitive data. Must be 256 bits, 64 string characters in hex format, generate via: openssl rand -hex 32."
+  type        = string
+}
 
 variable "database_max_capacity" {
   description = "Maximum capacity for Langfuse DB Aurora Serverless v2"

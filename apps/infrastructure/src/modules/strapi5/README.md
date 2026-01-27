@@ -2,13 +2,13 @@
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 5.33.0 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 6.28.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 5.33.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 6.28.0 |
 | <a name="provider_random"></a> [random](#provider\_random) | n/a |
 
 ## Modules
@@ -17,12 +17,12 @@
 |------|--------|---------|
 | <a name="module_cloudfront_cms"></a> [cloudfront\_cms](#module\_cloudfront\_cms) | git::https://github.com/terraform-aws-modules/terraform-aws-cloudfront.git | ed0f1f983f606304e00ad9f48399bd2fe0b79233 |
 | <a name="module_cms_dns_records"></a> [cms\_dns\_records](#module\_cms\_dns\_records) | git::https://github.com/terraform-aws-modules/terraform-aws-route53.git//modules/records | bc63328714550fd903d2574b263833c9ce1c867e |
-| <a name="module_cms_ecs_service"></a> [cms\_ecs\_service](#module\_cms\_ecs\_service) | git::https://github.com/terraform-aws-modules/terraform-aws-ecs.git//modules/service | 8b97783def49997d18a6fcb00dc21ce1edc0f538 |
+| <a name="module_cms_ecs_service"></a> [cms\_ecs\_service](#module\_cms\_ecs\_service) | git::https://github.com/terraform-aws-modules/terraform-aws-ecs.git//modules/service | 378d0cb7e8fde47e8ddf58461ed1974486dbbd5d |
 | <a name="module_cms_load_balancer"></a> [cms\_load\_balancer](#module\_cms\_load\_balancer) | git::https://github.com/terraform-aws-modules/terraform-aws-alb.git | 3e9c6cbaf4c1d858c3bbee6f086f0c8ef17522ab |
 | <a name="module_cms_load_balancer_internal"></a> [cms\_load\_balancer\_internal](#module\_cms\_load\_balancer\_internal) | git::https://github.com/terraform-aws-modules/terraform-aws-alb.git | 3e9c6cbaf4c1d858c3bbee6f086f0c8ef17522ab |
 | <a name="module_cms_log_group"></a> [cms\_log\_group](#module\_cms\_log\_group) | git::https://github.com/terraform-aws-modules/terraform-aws-cloudwatch.git//modules/log-group | bf969da953bdbea229392255d2b36e7b720e917e |
 | <a name="module_cms_rds"></a> [cms\_rds](#module\_cms\_rds) | git::https://github.com/terraform-aws-modules/terraform-aws-rds-aurora.git | 7bf5933100eb355b13854232e5d63c62ea7cad35 |
-| <a name="module_cms_ssl_certificate"></a> [cms\_ssl\_certificate](#module\_cms\_ssl\_certificate) | git::https://github.com/terraform-aws-modules/terraform-aws-acm.git | 8d0b22f1f242a1b36e29b8cb38aaeac9b887500d |
+| <a name="module_cms_ssl_certificate"></a> [cms\_ssl\_certificate](#module\_cms\_ssl\_certificate) | git::https://github.com/terraform-aws-modules/terraform-aws-acm.git | 5d113fa07675fc42237907a621b68ac97109043e |
 | <a name="module_ecr"></a> [ecr](#module\_ecr) | git::https://github.com/terraform-aws-modules/terraform-aws-ecr.git | 9f4b587846551110b0db199ea5599f016570fefe |
 | <a name="module_iam_policy_cms"></a> [iam\_policy\_cms](#module\_iam\_policy\_cms) | git::https://github.com/terraform-aws-modules/terraform-aws-iam.git//modules/iam-policy | f37809108f86d8fbdf17f735df734bf4abe69315 |
 | <a name="module_iam_policy_ecs_task_execution"></a> [iam\_policy\_ecs\_task\_execution](#module\_iam\_policy\_ecs\_task\_execution) | git::https://github.com/terraform-aws-modules/terraform-aws-iam.git//modules/iam-policy | f37809108f86d8fbdf17f735df734bf4abe69315 |
@@ -30,14 +30,14 @@
 | <a name="module_iam_policy_ecs_task_role_ssm"></a> [iam\_policy\_ecs\_task\_role\_ssm](#module\_iam\_policy\_ecs\_task\_role\_ssm) | git::https://github.com/terraform-aws-modules/terraform-aws-iam.git//modules/iam-policy | f37809108f86d8fbdf17f735df734bf4abe69315 |
 | <a name="module_iam_role_ecs_task_execution"></a> [iam\_role\_ecs\_task\_execution](#module\_iam\_role\_ecs\_task\_execution) | git::https://github.com/terraform-aws-modules/terraform-aws-iam.git//modules/iam-assumable-role | f37809108f86d8fbdf17f735df734bf4abe69315 |
 | <a name="module_iam_role_task_role"></a> [iam\_role\_task\_role](#module\_iam\_role\_task\_role) | git::https://github.com/terraform-aws-modules/terraform-aws-iam.git//modules/iam-assumable-role | f37809108f86d8fbdf17f735df734bf4abe69315 |
-| <a name="module_s3_bucket_cms"></a> [s3\_bucket\_cms](#module\_s3\_bucket\_cms) | git::https://github.com/terraform-aws-modules/terraform-aws-s3-bucket.git | 3a1c80b29fdf8fc682d2749456ec36ecbaf4ce14 |
+| <a name="module_s3_bucket_cms"></a> [s3\_bucket\_cms](#module\_s3\_bucket\_cms) | git::https://github.com/terraform-aws-modules/terraform-aws-s3-bucket.git | 8eecd4bfe167b3606755a0f8150514e9dcb2bf67 |
 | <a name="module_secret_cms_admin_jwt_secret"></a> [secret\_cms\_admin\_jwt\_secret](#module\_secret\_cms\_admin\_jwt\_secret) | git::https://github.com/terraform-aws-modules/terraform-aws-ssm-parameter.git | 28784d318fcb1d5b632e38a4c1f567dd138fcd83 |
 | <a name="module_secret_cms_api_token_salt"></a> [secret\_cms\_api\_token\_salt](#module\_secret\_cms\_api\_token\_salt) | git::https://github.com/terraform-aws-modules/terraform-aws-ssm-parameter.git | 28784d318fcb1d5b632e38a4c1f567dd138fcd83 |
 | <a name="module_secret_cms_app_keys"></a> [secret\_cms\_app\_keys](#module\_secret\_cms\_app\_keys) | git::https://github.com/terraform-aws-modules/terraform-aws-ssm-parameter.git | 28784d318fcb1d5b632e38a4c1f567dd138fcd83 |
 | <a name="module_secret_cms_database_password"></a> [secret\_cms\_database\_password](#module\_secret\_cms\_database\_password) | git::https://github.com/terraform-aws-modules/terraform-aws-ssm-parameter.git | 28784d318fcb1d5b632e38a4c1f567dd138fcd83 |
 | <a name="module_secret_cms_jwt_secret"></a> [secret\_cms\_jwt\_secret](#module\_secret\_cms\_jwt\_secret) | git::https://github.com/terraform-aws-modules/terraform-aws-ssm-parameter.git | 28784d318fcb1d5b632e38a4c1f567dd138fcd83 |
 | <a name="module_secret_cms_transfer_token_salt"></a> [secret\_cms\_transfer\_token\_salt](#module\_secret\_cms\_transfer\_token\_salt) | git::https://github.com/terraform-aws-modules/terraform-aws-ssm-parameter.git | 28784d318fcb1d5b632e38a4c1f567dd138fcd83 |
-| <a name="module_strapi_media_library_ssl_certificate"></a> [strapi\_media\_library\_ssl\_certificate](#module\_strapi\_media\_library\_ssl\_certificate) | git::https://github.com/terraform-aws-modules/terraform-aws-acm.git | 8d0b22f1f242a1b36e29b8cb38aaeac9b887500d |
+| <a name="module_strapi_media_library_ssl_certificate"></a> [strapi\_media\_library\_ssl\_certificate](#module\_strapi\_media\_library\_ssl\_certificate) | git::https://github.com/terraform-aws-modules/terraform-aws-acm.git | 5d113fa07675fc42237907a621b68ac97109043e |
 
 ## Resources
 

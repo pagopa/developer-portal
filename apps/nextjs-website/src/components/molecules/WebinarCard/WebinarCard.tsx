@@ -39,8 +39,10 @@ const WebinarCard = ({
   const { webinarState, setWebinar } = useWebinar();
 
   useEffect(() => {
-    webinar && setWebinar(webinar);
-  }, [webinar]);
+    if (webinar) {
+      setWebinar(webinar);
+    }
+  }, [webinar, setWebinar]);
 
   const linkButton: React.ReactNode = useMemo(() => {
     if ([WebinarState.unknown, WebinarState.past].includes(webinarState)) {
@@ -55,7 +57,7 @@ const WebinarCard = ({
         color={theme.palette.primary.main}
       />
     );
-  }, [isSubscribed, webinarState]);
+  }, [isSubscribed, webinarState, webinar.slug, t, theme.palette.primary.main]);
 
   return (
     <Card

@@ -1,0 +1,16 @@
+[
+  {
+    "MetricName": "ActiveViewers",
+    "Dimensions": [{ "Name": "WebinarId", "Value": "WEBINAR_123" }],
+    "Unit": "Count",
+    "Value": 1,
+    "StorageResolution": 1
+  },
+  {
+    "MetricName": "ActiveViewers",
+    "Dimensions": [{ "Name": "WebinarId", "Value": "WEBINAR_456" }],
+    "Unit": "Count",
+    "Value": 2,
+    "StorageResolution": 1
+  }
+]

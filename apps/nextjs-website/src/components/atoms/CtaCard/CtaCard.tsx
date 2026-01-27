@@ -11,9 +11,9 @@ import {
   Typography,
 } from '@mui/material';
 import { Variant } from '@mui/material/styles/createTypography';
-import { Tag } from '@pagopa/mui-italia';
 import Link from 'next/link';
 import React, { ReactNode } from 'react';
+import Tag from '@/components/atoms/Tag/Tag';
 
 export type CtaCardProps = {
   readonly title: string;
@@ -92,7 +92,15 @@ const CtaCard = ({
                     '& > span': { marginBottom: 1 },
                   }}
                 >
-                  <Tag value={label.label} color='primary' variant='light' />
+                  <Tag
+                    label={label.label}
+                    sx={{
+                      paddingY: 0.2,
+                      maxHeight: 'auto',
+                      maxWidth: 'auto',
+                      marginBottom: 1,
+                    }}
+                  />
                 </Box>
               ))}
             </Box>
