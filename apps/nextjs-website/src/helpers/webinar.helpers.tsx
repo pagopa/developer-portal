@@ -81,7 +81,7 @@ export const useWebinar = () => {
   const endDateTimestamp =
     webinar?.endDateTime && new Date(webinar.endDateTime).getTime();
 
-  const handleWebinarState = (): WebinarState => {
+  const handleWebinarState = useCallback((): WebinarState => {
     const currentTimestamp = new Date().getTime();
     if (!webinar || !startDateTimestamp || !endDateTimestamp) {
       return WebinarState.unknown;
@@ -100,7 +100,7 @@ export const useWebinar = () => {
     }
     if (startDateTimestamp > currentTimestamp) return WebinarState.future;
     return WebinarState.unknown;
-  };
+  }, [webinar, startDateTimestamp, endDateTimestamp]);
 
   useEffect(() => {
     if (webinarState === WebinarState.past) return;
@@ -111,7 +111,7 @@ export const useWebinar = () => {
 
     // Cleanup the intervals when the component is unmounted
     return () => clearInterval(intervalId);
-  }, [webinar]);
+  }, [webinar, webinarState, handleWebinarState]);
 
   useEffect(() => {
     if (!webinar?.playerSrc) {

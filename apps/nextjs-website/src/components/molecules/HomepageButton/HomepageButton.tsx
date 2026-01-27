@@ -1,6 +1,6 @@
 'use client';
+import { ButtonNaked } from '@/components/atoms/ButtonNaked/ButtonNaked';
 import SiteLabel from '@/components/atoms/SiteLabel/SiteLabel';
-import { ButtonNaked } from '@pagopa/mui-italia';
 import Link from 'next/link';
 import React from 'react';
 

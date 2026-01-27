@@ -1,9 +1,9 @@
 import { Stack, Typography, Box } from '@mui/material';
-import { Tag } from '@pagopa/mui-italia';
 import { BlocksContent } from '@strapi/blocks-react-renderer';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import BlocksRendererClient from '../BlocksRendererClient/BlocksRendererClient';
+import Tag from '@/components/atoms/Tag/Tag';
 
 type SolutionStepProps = {
   title: string;
@@ -42,7 +42,15 @@ const SolutionStep = ({
         <Box display='flex' flexWrap={'wrap'} gap={1}>
           {products.map((product, index) => (
             <Link key={index} href={product.href}>
-              <Tag value={product.label} color='primary' variant='light' />
+              <Tag
+                label={product.label}
+                sx={{
+                  paddingY: 0.2,
+                  maxHeight: 'auto',
+                  maxWidth: 'auto',
+                  marginBottom: 1,
+                }}
+              />
             </Link>
           ))}
         </Box>

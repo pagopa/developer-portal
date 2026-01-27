@@ -1,12 +1,12 @@
 terraform {
-  required_version = "~> 1.13.0"
+  required_version = "~> 1.14.3"
 
   backend "s3" {}
 
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 5.0"
+      version = "~> 6.0"
     }
 
     awscc = {
@@ -237,7 +237,7 @@ module "docs_redirect" {
     aws.us-east-1 = aws.us-east-1
   }
 
-  cloudfront_function_code = data.http.docs_redirect_cf_function_code.body
+  cloudfront_function_code = data.http.docs_redirect_cf_function_code.response_body
 
   environment = var.environment
   tags        = var.tags
@@ -274,6 +274,14 @@ module "langfuse" {
   region             = var.aws_region
   vpc_id             = module.cms.vpc.id
   private_subnet_ids = module.cms.vpc.private_subnets
+  public_subnet_ids  = module.cms.vpc.public_subnets
+  custom_domain_id   = module.core.hosted_zone_id
+  custom_domain_name = var.dns_domain_name
+
+  # Use the Cognito User Pool created by the Chatbot module
+  cognito_user_pool_id           = module.chatbot[0].cognito_user_pool_id
+  cognito_user_pool_endpoint     = module.chatbot[0].cognito_user_pool_endpoint
+  master_user_password_param_arn = module.chatbot[0].cognito_master_user_password_param_arn
 }
 
 
