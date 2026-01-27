@@ -1,6 +1,6 @@
 ---
-name: refresh-api-and-dynamic-docs-vector-index
-description: Refresh API and Dynamic Docs for Chatbot LLamaindex Vector Index
+name: refresh-all-docs-vector-index
+description: Refresh All Docs for Chatbot LLamaindex Vector Index
 
 inputs:
   aws_region:
@@ -38,9 +38,10 @@ runs:
         cd apps/chatbot-index
         bash ./docker/chrome-installer.sh
 
-    - name: Refresh API and Dynamic Docs in Vector Index
+    - name: Refresh All Docs in Vector Index
       shell: bash
       run: |
         cd apps/chatbot-index
         PYTHONPATH=. poetry run python src/modules/refresh_dynamic_docs.py
         PYTHONPATH=. poetry run python src/modules/refresh_api_docs.py
+        PYTHONPATH=. poetry run python src/modules/add_missing_static_docs.py
