@@ -170,7 +170,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const s3ReleaseNoteRoutes = releaseNotesMetadata.map(
     (releaseNote: JsonMetadata) => ({
-      url: `${baseUrl}${releaseNote.path}`,
+      url: `${baseUrl}${releaseNote.path.replace(
+        '/release-note',
+        '/release-notes'
+      )}`,
       lastModified: new Date(releaseNote.lastModified || Date.now()),
       changeFrequency: 'weekly' as const,
       priority: 0.6,

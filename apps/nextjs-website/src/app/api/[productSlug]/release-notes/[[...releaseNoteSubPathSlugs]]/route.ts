@@ -13,9 +13,10 @@ export async function GET(
 ) {
   const params = await props.params;
   const { productSlug, releaseNoteSubPathSlugs } = params;
-  const noteSegments = Array.isArray(releaseNoteSubPathSlugs)
-    ? ['release-note', ...releaseNoteSubPathSlugs]
-    : [];
+  const noteSegments = [
+    'release-note',
+    ...(Array.isArray(releaseNoteSubPathSlugs) ? releaseNoteSubPathSlugs : []),
+  ];
 
   return getReleaseNote(productSlug, noteSegments)
     .then(async (releaseNoteProps) => {

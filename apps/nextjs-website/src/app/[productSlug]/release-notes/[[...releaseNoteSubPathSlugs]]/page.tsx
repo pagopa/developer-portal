@@ -43,10 +43,10 @@ export async function generateMetadata(props0: {
       url: 'unknown',
     });
   }
-  const props = await getReleaseNote(
-    params?.productSlug,
-    params?.releaseNoteSubPathSlugs
-  );
+  const props = await getReleaseNote(params?.productSlug, [
+    'release-note',
+    ...(params?.releaseNoteSubPathSlugs || []),
+  ]);
 
   if (props?.seo) {
     return makeMetadataFromStrapi(props?.seo);
@@ -77,7 +77,8 @@ const ReleaseNotePage = async (props0: {
   }
   const releaseNoteProps = await getReleaseNote(
     params.productSlug,
-    params.releaseNoteSubPathSlugs
+    // Add "release-note" path segment to match the path stored in S3 metadata
+    ['release-note', ...(params.releaseNoteSubPathSlugs || [])]
   );
 
   const urlReplaceMap = await getUrlReplaceMapProps();
@@ -116,7 +117,7 @@ const ReleaseNotePage = async (props0: {
       productToBreadcrumb(product),
       {
         name: title,
-        item: `${baseUrl}/${product.slug}/release-note`,
+        item: `${baseUrl}/${product.slug}/release-notes`,
       },
       ...breadcrumbsItems,
     ],
@@ -128,7 +129,7 @@ const ReleaseNotePage = async (props0: {
     ...productPageToBreadcrumbs(product, [
       {
         name: title,
-        path: `/${product.slug}/release-note`,
+        path: `/${product.slug}/release-notes`,
       },
       ...breadcrumbs,
     ]),
