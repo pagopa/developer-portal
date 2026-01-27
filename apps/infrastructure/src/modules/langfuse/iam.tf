@@ -37,6 +37,7 @@ data "aws_iam_policy_document" "ecs_task_execute_role_policy" {
     resources = [
       aws_secretsmanager_secret.clickhouse_password.arn,
       aws_secretsmanager_secret.langfuse_db_password.arn,
+      aws_secretsmanager_secret.langfuse_database_url.arn,
     ]
   }
 
@@ -48,9 +49,9 @@ data "aws_iam_policy_document" "ecs_task_execute_role_policy" {
     ]
     effect = "Allow"
     resources = [
-      aws_cloudwatch_log_group.clickhouse.arn,
-      aws_cloudwatch_log_group.langfuse_worker.arn,
-      aws_cloudwatch_log_group.langfuse_web.arn,
+      "${aws_cloudwatch_log_group.clickhouse.arn}:*",
+      "${aws_cloudwatch_log_group.langfuse_worker.arn}:*",
+      "${aws_cloudwatch_log_group.langfuse_web.arn}:*",
     ]
   }
 
@@ -72,7 +73,7 @@ data "aws_iam_policy_document" "ecs_task_execute_role_policy" {
     ]
     effect = "Allow"
     resources = [
-      aws_ecr_repository.clickhouse.arn,
+      for repo in aws_ecr_repository.repositories : repo.arn
     ]
   }
 }

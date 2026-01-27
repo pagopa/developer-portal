@@ -39,7 +39,7 @@ resource "aws_ecs_cluster" "langfuse" {
 # }
 
 resource "aws_ecs_task_definition" "clickhouse" {
-  family                   = "${local.prefix}-clickhouse"
+  family                   = "langfuse-clickhouse"
   cpu                      = 512
   memory                   = 4096
   network_mode             = "awsvpc"
@@ -49,7 +49,7 @@ resource "aws_ecs_task_definition" "clickhouse" {
   task_role_arn      = aws_iam_role.langfuse_task_role.arn
 
   volume {
-    name = "${local.prefix}-clickhouse_data"
+    name = "langfuse-clickhouse_data"
 
     efs_volume_configuration {
       file_system_id = aws_efs_file_system.clickhouse_data.id
@@ -65,7 +65,7 @@ resource "aws_ecs_task_definition" "clickhouse" {
   container_definitions = jsonencode([
     {
       name      = "clickhouse"
-      image     = "${aws_ecr_repository.clickhouse.repository_url}:25.8.8.26-alpine"
+      image     = "${aws_ecr_repository.repositories["clickhouse"].repository_url}:25.8.8.26-alpine"
       cpu       = 512
       memory    = 4096
       essential = true
@@ -130,7 +130,7 @@ resource "aws_ecs_task_definition" "clickhouse" {
       logConfiguration = {
         logDriver = "awslogs"
         options = {
-          awslogs-stream-prefix = "${local.prefix}-clickhouse"
+          awslogs-stream-prefix = "langfuse-clickhouse"
           awslogs-region        = var.region
           awslogs-group         = aws_cloudwatch_log_group.clickhouse.name
           mode                  = "non-blocking",
@@ -139,7 +139,7 @@ resource "aws_ecs_task_definition" "clickhouse" {
 
       mountPoints = [
         {
-          sourceVolume  = "${local.prefix}-clickhouse_data"
+          sourceVolume  = "langfuse-clickhouse_data"
           containerPath = "/var/lib/clickhouse"
           readOnly      = false
         },
@@ -166,7 +166,7 @@ resource "aws_ecs_task_definition" "langfuse_worker" {
   container_definitions = jsonencode([
     {
       name      = "worker"
-      image     = "docker.io/langfuse/langfuse-worker:3.115"
+      image     = "${aws_ecr_repository.repositories["langfuse-worker"].repository_url}:3.115"
       cpu       = 2048
       memory    = 4096
       essential = true
@@ -290,7 +290,7 @@ resource "aws_ecs_task_definition" "langfuse_web" {
   container_definitions = jsonencode([
     {
       name      = "web"
-      image     = "docker.io/langfuse/langfuse:3.115"
+      image     = "${aws_ecr_repository.repositories["langfuse-web"].repository_url}:3.115"
       cpu       = 2048
       memory    = 4096
       essential = true

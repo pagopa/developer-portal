@@ -16,7 +16,15 @@ resource "aws_service_discovery_service" "clickhouse" {
     }
   }
 
+  /*
   health_check_config {
+    failure_threshold = 1
+  }
+  */
+
+  #Deprecated in favor of health_check_config
+
+  health_check_custom_config {
     failure_threshold = 1
   }
 }
@@ -40,14 +48,11 @@ resource "aws_service_discovery_service" "langfuse-web" {
   }
   */
 
-  /*
-  Deprecated in favor of health_check_config
+
+  #Deprecated in favor of health_check_config
+
   health_check_custom_config {
     failure_threshold = 1
   }
-  */
 
-  lifecycle {
-    create_before_destroy = true
-  }
 }
