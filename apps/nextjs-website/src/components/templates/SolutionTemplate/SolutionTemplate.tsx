@@ -79,7 +79,7 @@ const SolutionTemplate = ({
   const t = useTranslations();
   const { locale } = useParams<{ locale: string }>();
 
-  const solutionDetailPath = `/solutions/${slug}/details`;
+  const solutionDetailPath = `/${locale}/solutions/${slug}/details`;
 
   return (
     <>
@@ -90,7 +90,7 @@ const SolutionTemplate = ({
               ...pageToBreadcrumbs(locale, 'solutions', [
                 {
                   name: title,
-                  path: `/${locale}/solutions/${slug}`,
+                  path: slug,
                 },
               ]),
             ]}
