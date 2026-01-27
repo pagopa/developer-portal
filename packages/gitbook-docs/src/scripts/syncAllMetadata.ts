@@ -145,7 +145,7 @@ function getS3Client(): S3Client {
 }
 
 // Fetch all data from Strapi in one go
-async function fetchAllStrapiData(): Promise<StrapiData> {
+async function fetchAllStrapiData(locale?: string): Promise<StrapiData> {
   console.log('Fetching all data from Strapi...');
   if (DIR_NAMES_FILTER) {
     console.log(
@@ -162,26 +162,25 @@ async function fetchAllStrapiData(): Promise<StrapiData> {
     productsResult,
     apisDataResult,
   ] = await Promise.all([
-    // TODO: manage locale here
     // Guides with full populate
     // NOTE: Cannot filter by versions.dirName server-side due to Strapi v4 component array limitation
     // Client-side filtering will be applied later in processGuidesMetadata
-    fetchFromStrapi<StrapiGuide>(`api/guides?${getGuidesQueryString(LOCALE)}`),
+    fetchFromStrapi<StrapiGuide>(`api/guides?${getGuidesQueryString(locale)}`),
     // Solutions with dirName filter (if provided)
     fetchFromStrapi<StrapiSolution>(
-      `api/solutions/?${getSolutionsQueryString(LOCALE)}`
+      `api/solutions/?${getSolutionsQueryString(locale)}`
     ),
     // Release notes with dirName filter (if provided)
     fetchFromStrapi<StrapiReleaseNote>(
-      `api/release-notes/?${getReleaseNotesQueryString(LOCALE)}`
+      `api/release-notes/?${getReleaseNotesQueryString(locale)}`
     ),
     // Products
     fetchFromStrapi<StrapiProduct>(
-      `api/products?${getProductsQueryString(LOCALE)}`
+      `api/products?${getProductsQueryString(locale)}`
     ),
     // APIs data
     fetchFromStrapi<StrapiApiData>(
-      `api/apis-data?${getApisDataQueryString(LOCALE)}`
+      `api/apis-data?${getApisDataQueryString(locale)}`
     ),
   ]);
 
@@ -208,7 +207,8 @@ function generateUrlPath(
   productSlug?: string,
   versionName?: string,
   metadataType: MetadataType = MetadataType.Guide,
-  landingFile?: string
+  landingFile?: string,
+  locale?: string
 ): string {
   // Convert local path to S3 path if needed, then extract site path
   const normalizedFilePath = filePath.replace(/\\/g, '/');
@@ -226,15 +226,22 @@ function generateUrlPath(
 
   switch (metadataType) {
     case MetadataType.Guide:
-      return [`/${productSlug}`, 'guides', slug, versionName, restOfPath]
+      return [
+        locale,
+        `/${productSlug}`,
+        'guides',
+        slug,
+        versionName,
+        restOfPath,
+      ]
         .filter(Boolean)
         .join('/');
     case MetadataType.Solution:
-      return ['/solutions', slug, 'details', restOfPath]
+      return [locale, '/solutions', slug, 'details', restOfPath]
         .filter(Boolean)
         .join('/');
     case MetadataType.ReleaseNote:
-      return [`/${productSlug}`, 'release-note', slug, restOfPath]
+      return [locale, `/${productSlug}`, 'release-note', slug, restOfPath]
         .filter(Boolean)
         .join('/');
   }
@@ -320,7 +327,8 @@ async function processGuidesMetadata(
           guideInfo.slug,
           guideInfo.productSlug,
           guideInfo.versionName,
-          MetadataType.Guide
+          MetadataType.Guide,
+          LOCALE
         );
 
         const baseItem: MetadataItem = {
@@ -340,7 +348,8 @@ async function processGuidesMetadata(
             guideInfo.slug,
             guideInfo.productSlug,
             undefined,
-            MetadataType.Guide
+            MetadataType.Guide,
+            LOCALE
           );
 
           guideItems.push({
@@ -434,7 +443,8 @@ async function processSolutionsMetadata(
           undefined,
           undefined,
           MetadataType.Solution,
-          solution.attributes.landingUseCaseFile
+          solution.attributes.landingUseCaseFile,
+          LOCALE
         );
 
         itemList.push({
@@ -500,7 +510,8 @@ async function processReleaseNotesMetadata(
           productSlug,
           undefined,
           MetadataType.ReleaseNote,
-          releaseNote.attributes.landingFile
+          releaseNote.attributes.landingFile,
+          LOCALE
         );
 
         itemList.push({
@@ -580,7 +591,8 @@ async function generateUrlParsingMetadata(
         info.slug,
         info.productSlug,
         info.versionName,
-        info.metadataType
+        info.metadataType,
+        LOCALE
       ),
     }));
 
@@ -602,6 +614,7 @@ async function main() {
     console.log(`Generate metadata: ${GENERATE_METADATA}`);
     console.log(`Save Strapi responses: ${SAVE_STRAPI_RESPONSES}`);
     console.log(`Generate root metadata file: ${GENERATE_ROOT_METADATA_FILE}`);
+    console.log(`Using locale: ${LOCALE}`);
     if (DIR_NAMES_FILTER) {
       console.log(
         `DirName filter active: ${DIR_NAMES_FILTER.length} directories specified`
@@ -609,7 +622,7 @@ async function main() {
     }
 
     // Fetch all data from Strapi once
-    const strapiData = await fetchAllStrapiData();
+    const strapiData = await fetchAllStrapiData(LOCALE);
 
     const metadataFilter = {
       guides: METADATA_TYPE === 'all' || METADATA_TYPE === 'guides',

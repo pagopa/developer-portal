@@ -153,7 +153,8 @@ async function convertDocToUrlParsingItems(
           docInfo.slug,
           docInfo.productSlug,
           docInfo.versionName,
-          docInfo.metadataType
+          docInfo.metadataType,
+          LOCALE
         );
         item.docs.push({
           path: filePath || '',
