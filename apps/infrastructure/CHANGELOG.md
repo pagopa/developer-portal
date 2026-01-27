@@ -1,5 +1,13 @@
 # infrastructure
 
+## 8.1.0
+
+### Minor Changes
+
+- cbff12b: Add Langfuse web v3
+- cbff12b: Add RDS instance for Langfuse
+- fe78f6a: Fix strapi v5 ecs task role iam policy
+
 ## 8.0.0
 
 ### Major Changes
