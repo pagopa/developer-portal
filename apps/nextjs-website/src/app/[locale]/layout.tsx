@@ -117,14 +117,14 @@ export default async function RootLayout({
       <head>
         {isProduction && (
           <Script
-            id="matomo-tag-manager"
-            key="script-matomo-tag-manager"
+            id='matomo-tag-manager'
+            key='script-matomo-tag-manager'
             dangerouslySetInnerHTML={{
               __html: useNewCookie
                 ? MATOMO_TAG_MANAGER_SCRIPT
                 : PREVIOUS_MATOMO_TAG_MANAGER_SCRIPT,
             }}
-            strategy="lazyOnload"
+            strategy='lazyOnload'
           />
         )}
       </head>
@@ -132,7 +132,7 @@ export default async function RootLayout({
         <NextIntlContext
           locale={currentLocale}
           messages={messages}
-          timeZone="Europe/Rome"
+          timeZone='Europe/Rome'
         >
           <BodyWrapper>
             <CookieBannerScript
