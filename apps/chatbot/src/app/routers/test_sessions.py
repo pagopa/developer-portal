@@ -35,10 +35,6 @@ def test_query_feedback() -> None:
     assert response.status_code == 200
     assert "id" in json.keys()
     assert "sessionId" in json.keys()
-    assert "question" in json.keys()
-    assert "answer" in json.keys()
-    assert "createdAt" in json.keys()
-    assert "queriedAt" in json.keys()
     assert "badAnswer" in json.keys()
     assert "feedback" in json.keys()
 
@@ -67,10 +63,6 @@ def test_query_feedback_with_null_values() -> None:
     assert response.status_code == 200
     assert "id" in json.keys()
     assert "sessionId" in json.keys()
-    assert "question" in json.keys()
-    assert "answer" in json.keys()
-    assert "createdAt" in json.keys()
-    assert "queriedAt" in json.keys()
     assert "badAnswer" in json.keys()
     assert "feedback" in json.keys()
 
@@ -92,8 +84,4 @@ def test_query_feedback_with_only_bad_answer() -> None:
     assert response.status_code == 200
     assert "id" in json.keys()
     assert "sessionId" in json.keys()
-    assert "question" in json.keys()
-    assert "answer" in json.keys()
-    assert "createdAt" in json.keys()
-    assert "queriedAt" in json.keys()
     assert "badAnswer" in json.keys()

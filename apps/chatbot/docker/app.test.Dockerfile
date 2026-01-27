@@ -27,6 +27,7 @@ RUN pip install --upgrade pip \
 WORKDIR /app
 COPY ./pyproject.toml .
 COPY ./poetry.lock .
+COPY ./CHANGELOG.md .
 COPY ./src ./src
 COPY ./config ./config
 COPY ./scripts ./scripts
@@ -36,6 +37,5 @@ RUN poetry config virtualenvs.create false
 RUN poetry install --with test
 
 RUN python ./scripts/nltk_download.py
-RUN python ./scripts/spacy_download.py
 
 CMD ["fastapi", "dev", "src/app/main.py", "--port", "8080", "--host", "0.0.0.0", "--loop", "asyncio"]
