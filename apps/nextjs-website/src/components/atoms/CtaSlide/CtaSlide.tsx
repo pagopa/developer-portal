@@ -1,6 +1,7 @@
 'use client';
 import { Media } from '@/lib/types/media';
-import { Box, Button, Stack, Typography, useTheme } from '@mui/material';
+import { Box, Stack, Typography, useTheme } from '@mui/material';
+import { ButtonNaked } from '@/components/atoms/ButtonNaked/ButtonNaked';
 import { BlocksContent } from '@strapi/blocks-react-renderer';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -71,16 +72,16 @@ const CtaSlide = ({
         </Typography>
         <Box mt={4}>
           {cta && (
-            <Button
+            <ButtonNaked
               component={Link}
               href={cta.link.href}
-              color={'primary'}
+              color={'negative'}
               variant={cta.variant || 'contained'}
               sx={{ mb: 6 }}
               target={cta.link.target ?? '_self'}
             >
               {cta.link.text}
-            </Button>
+            </ButtonNaked>
           )}
         </Box>
       </Stack>

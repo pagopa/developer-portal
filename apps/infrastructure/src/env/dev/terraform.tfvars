@@ -24,7 +24,7 @@ use_custom_certificate = true
 
 cms_app_image_tag = "2f58049234766894fdfbd4a1d2ae1ccc74c37503"
 
-strapi_v5_image_tag = "e584ff5"
+strapi_v5_image_tag = "361cd936ff7ad44b960c1667d847f7ee615290c6"
 
 # CMS Strapi DNS
 dns_domain_name_cms = {

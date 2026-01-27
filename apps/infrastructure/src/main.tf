@@ -6,7 +6,7 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 5.0"
+      version = "~> 6.0"
     }
 
     awscc = {
@@ -274,8 +274,14 @@ module "langfuse" {
   region             = var.aws_region
   vpc_id             = module.cms.vpc.id
   private_subnet_ids = module.cms.vpc.private_subnets
-  web_salt           = "yIuodv61mg8Nchg0VzuVSKxRf2F+5R88/jybIRMeCUg="                     # generated-base64 with openssl rand -base64 32
-  encryption_key     = "d8e84722a8d90705670145236be10d4f94d3397ea49685154a4d02776ee1f33b" # generated-hex-key with openssl rand -hex 32
+  public_subnet_ids  = module.cms.vpc.public_subnets
+  custom_domain_id   = module.core.hosted_zone_id
+  custom_domain_name = var.dns_domain_name
+
+  # Use the Cognito User Pool created by the Chatbot module
+  cognito_user_pool_id           = module.chatbot[0].cognito_user_pool_id
+  cognito_user_pool_endpoint     = module.chatbot[0].cognito_user_pool_endpoint
+  master_user_password_param_arn = module.chatbot[0].cognito_master_user_password_param_arn
 }
 
 

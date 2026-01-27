@@ -30,31 +30,26 @@ variable "private_subnet_ids" {
   type        = list(string)
 }
 
+variable "public_subnet_ids" {
+  description = "Public subnet IDs used to expose Langfuse through the load balancer"
+  type        = list(string)
+}
+
 variable "database_user" {
   description = "Database user for Langfuse Aurora Serverless v2"
   type        = string
   default     = "langfuse"
 }
 
-# variable "web_next_secret" {
-#   description = "Used to validate login session cookies, generate secret with at least 256 entropy using openssl rand -base64 32."
-#   type        = string
-# }
-
-variable "web_salt" {
-  description = "Used to salt hashed API keys, generate secret with at least 256 entropy using openssl rand -base64 32."
+variable "custom_domain_name" {
+  description = "Langfuse and Grafana custom domain name. If you set example.com, the domain will be langfuse.example.com and grafana.example.com"
   type        = string
 }
 
-# variable "custom_domain_name" {
-#   description = "Langfuse and Grafana custom domain name. If you set example.com, the domain will be langfuse.example.com and grafana.example.com"
-#   type        = string
-# }
-#
-# variable "custom_domain_id" {
-#   description = "Route53 Hosted Zone ID for custom domain"
-#   type        = string
-# }
+variable "custom_domain_id" {
+  description = "Route53 Hosted Zone ID for custom domain"
+  type        = string
+}
 
 variable "cache_node_type" {
   description = "Node type for Langfuse Cache/Queue(ElastiCache)"
@@ -73,9 +68,10 @@ variable "worker_desire_count" {
   default     = 1
 }
 
-variable "encryption_key" {
-  description = "Used to encrypt sensitive data. Must be 256 bits, 64 string characters in hex format, generate via: openssl rand -hex 32."
-  type        = string
+variable "web_desire_count" {
+  description = "Desired count for Langfuse Web"
+  type        = number
+  default     = 1
 }
 
 variable "database_max_capacity" {
@@ -94,4 +90,22 @@ variable "force_delete" {
   description = "Whether to force delete resources"
   type        = bool
   default     = false
+}
+
+variable "cognito_user_pool_id" {
+  description = "Existing Cognito user pool ID to reuse instead of creating a dedicated one"
+  type        = string
+  default     = null
+}
+
+variable "cognito_user_pool_endpoint" {
+  description = "Existing Cognito user pool endpoint to reuse instead of creating a dedicated one"
+  type        = string
+  default     = null
+}
+
+variable "master_user_password_param_arn" {
+  description = "ARN of the SSM parameter containing the Cognito master user password when reusing an existing user pool"
+  type        = string
+  default     = null
 }
