@@ -119,10 +119,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     items.length <= 0
       ? ''
       : items.reduce((latest, current) => {
-        const latestDate = new Date(latest.updatedAt || '');
-        const currentDate = new Date(current.updatedAt || '');
-        return currentDate > latestDate ? current : latest;
-      }).updatedAt;
+          const latestDate = new Date(latest.updatedAt || '');
+          const currentDate = new Date(current.updatedAt || '');
+          return currentDate > latestDate ? current : latest;
+        }).updatedAt;
 
   // Main Section Routes (Aggregators)
   const sectionRoutes = [
@@ -160,10 +160,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   );
 
   // Merge legacy and new metadata
-  const allGuidesMetadata = [
-    ...guidesMetadata,
-    ...guidesMetadataByDirNames,
-  ];
+  const allGuidesMetadata = [...guidesMetadata, ...guidesMetadataByDirNames];
 
   // Remove duplicates
   const uniqueGuidesMetadata = Array.from(
@@ -202,9 +199,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   // Remove duplicates based on path
   const uniqueReleaseNotesMetadata = Array.from(
-    new Map(
-      allReleaseNotesMetadata.map((time) => [time.path, time])
-    ).values()
+    new Map(allReleaseNotesMetadata.map((time) => [time.path, time])).values()
   );
 
   const s3GuideRoutes = uniqueGuidesMetadata.map((guide: JsonMetadata) => ({
@@ -250,55 +245,55 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
     const overviewRoute = relations?.overview?.data
       ? [
-        {
-          url: `${baseUrl}/${productSlug}/overview`,
-          lastModified: new Date(
-            relations.overview.data.attributes.updatedAt || Date.now()
-          ),
-          changeFrequency: 'weekly' as const,
-          priority: 0.8,
-        },
-      ]
+          {
+            url: `${baseUrl}/${productSlug}/overview`,
+            lastModified: new Date(
+              relations.overview.data.attributes.updatedAt || Date.now()
+            ),
+            changeFrequency: 'weekly' as const,
+            priority: 0.8,
+          },
+        ]
       : [];
 
     const quickStartRoute = relations?.quickstart_guide?.data
       ? [
-        {
-          url: `${baseUrl}/${productSlug}/quick-start`,
-          lastModified: new Date(
-            relations.quickstart_guide.data.attributes.updatedAt || Date.now()
-          ),
-          changeFrequency: 'weekly' as const,
-          priority: 0.8,
-        },
-      ]
+          {
+            url: `${baseUrl}/${productSlug}/quick-start`,
+            lastModified: new Date(
+              relations.quickstart_guide.data.attributes.updatedAt || Date.now()
+            ),
+            changeFrequency: 'weekly' as const,
+            priority: 0.8,
+          },
+        ]
       : [];
 
     const tutorialListRoute = relations?.tutorial_list_page?.data
       ? [
-        {
-          url: `${baseUrl}/${productSlug}/tutorials`,
-          lastModified: new Date(
-            relations.tutorial_list_page.data.attributes.updatedAt ||
-            Date.now()
-          ),
-          changeFrequency: 'weekly' as const,
-          priority: 0.7,
-        },
-      ]
+          {
+            url: `${baseUrl}/${productSlug}/tutorials`,
+            lastModified: new Date(
+              relations.tutorial_list_page.data.attributes.updatedAt ||
+                Date.now()
+            ),
+            changeFrequency: 'weekly' as const,
+            priority: 0.7,
+          },
+        ]
       : [];
 
     const guideListRoute = relations?.guide_list_page?.data
       ? [
-        {
-          url: `${baseUrl}/${productSlug}/guides`,
-          lastModified: new Date(
-            relations.guide_list_page.data.attributes.updatedAt || Date.now()
-          ),
-          changeFrequency: 'weekly' as const,
-          priority: 0.6,
-        },
-      ]
+          {
+            url: `${baseUrl}/${productSlug}/guides`,
+            lastModified: new Date(
+              relations.guide_list_page.data.attributes.updatedAt || Date.now()
+            ),
+            changeFrequency: 'weekly' as const,
+            priority: 0.6,
+          },
+        ]
       : [];
 
     // B. Fetch Collections linked to this Product (Tutorials, APIs)
@@ -325,13 +320,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         api.attributes.apiSoapDetail?.slug;
       return apiSlug
         ? [
-          {
-            url: `${baseUrl}/${productSlug}/api/${apiSlug}`,
-            lastModified: new Date(api.attributes.updatedAt || Date.now()),
-            changeFrequency: 'weekly' as const,
-            priority: 0.6,
-          },
-        ]
+            {
+              url: `${baseUrl}/${productSlug}/api/${apiSlug}`,
+              lastModified: new Date(api.attributes.updatedAt || Date.now()),
+              changeFrequency: 'weekly' as const,
+              priority: 0.6,
+            },
+          ]
         : [];
     });
 
