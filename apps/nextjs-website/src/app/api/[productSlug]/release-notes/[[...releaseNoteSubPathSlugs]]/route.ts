@@ -7,7 +7,7 @@ export async function GET(
   props: {
     readonly params: Promise<{
       readonly productSlug: string;
-      readonly releaseNoteSubPathSlugs: readonly string[];
+      readonly releaseNoteSubPathSlugs?: readonly string[];
     }>;
   }
 ) {
