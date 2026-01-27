@@ -182,6 +182,13 @@ export const getGuideProps = async (
   return await makeGuideS3({ guideDefinition: guide, guidePaths });
 };
 
+export const getGuidesProps = async () => {
+  const strapiGuides = (await fetchResponseFromCDN(
+    getSyncedGuidesResponseJsonPath()
+  )) as StrapiGuides | undefined;
+  return strapiGuides ? makeGuidesProps(strapiGuides) : [];
+};
+
 export const getGuidePageProps = async (
   guideSlug: string,
   productSlug: string

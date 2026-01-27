@@ -5,6 +5,7 @@ import {
   getSolutionsProps,
   getWebinarsProps,
   getReleaseNotesProps,
+  getGuidesProps,
 } from '@/lib/cmsApi';
 import { baseUrl } from '@/config';
 import {
@@ -12,6 +13,7 @@ import {
   getReleaseNotesMetadata,
   getSolutionsMetadataByDirNames,
   getReleaseNotesMetadataByDirNames,
+  getGuidesMetadataByDirNames,
   JsonMetadata,
 } from '@/helpers/s3Metadata.helpers';
 import {
@@ -143,7 +145,31 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // --------------------------------------------------------------------------------
   // These are stored in S3 and retrieved via legacy helpers.
   // We keep them ensuring no missing legacy content.
+  // We keep them ensuring no missing legacy content.
   const guidesMetadata = await getGuidesMetadata();
+  const guides = await getGuidesProps();
+  const guidesDirNames = Array.from(
+    new Set(
+      guides
+        .flatMap((guide) => guide.versions.map((version) => version.dirName))
+        .filter((dirName): dirName is string => Boolean(dirName))
+    )
+  );
+  const guidesMetadataByDirNames = await getGuidesMetadataByDirNames(
+    guidesDirNames
+  );
+
+  // Merge legacy and new metadata
+  const allGuidesMetadata = [
+    ...guidesMetadata,
+    ...guidesMetadataByDirNames,
+  ];
+
+  // Remove duplicates
+  const uniqueGuidesMetadata = Array.from(
+    new Map(allGuidesMetadata.map((guide) => [guide.path, guide])).values()
+  );
+
   const solutionDirNames = Array.from(
     new Set(
       solutions
@@ -181,7 +207,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ).values()
   );
 
-  const s3GuideRoutes = guidesMetadata.map((guide: JsonMetadata) => ({
+  const s3GuideRoutes = uniqueGuidesMetadata.map((guide: JsonMetadata) => ({
     url: `${baseUrl}${guide.path}`,
     lastModified: new Date(guide.lastModified || Date.now()),
     changeFrequency: 'weekly' as const,
