@@ -7,6 +7,7 @@ import dotenv from 'dotenv';
 import { MetadataItem } from '../metadataItem';
 import {
   downloadS3File,
+  getLocalizedPath,
   listS3Files,
   makeS3Client,
   putS3File,
@@ -33,13 +34,16 @@ const s3Client = makeS3Client();
 function generateUrlPath(
   filePath: string,
   productSlug: string,
-  landingFile: string
+  landingFile: string,
+  locale?: string
 ): string {
   const restOfPath = sitePathFromS3Path(filePath, landingFile);
   if (!restOfPath) {
-    return `/${productSlug}/release-note`;
+    return [locale, `/${productSlug}/release-note`].filter(Boolean).join('/');
   } else {
-    return `/${productSlug}/release-note/${restOfPath}`;
+    return [locale, `/${productSlug}/release-note/${restOfPath}`]
+      .filter(Boolean)
+      .join('/');
   }
 }
 
@@ -85,8 +89,8 @@ async function convertReleaseNoteToMetadataItems(
         items.push({
           path,
           dirName,
-          contentS3Path: filePath,
-          menuS3Path: menuPath,
+          contentS3Path: getLocalizedPath(filePath, LOCALE),
+          menuS3Path: getLocalizedPath(menuPath, LOCALE),
           title: title || path.split('/').pop() || 'Untitled',
         });
       }
@@ -126,19 +130,17 @@ async function main() {
 
   await putS3File(
     metadataItems,
-    S3_RELEASE_NOTES_METADATA_JSON_PATH,
+    getLocalizedPath(S3_RELEASE_NOTES_METADATA_JSON_PATH, LOCALE),
     `${S3_BUCKET_NAME}`,
-    s3Client,
-    LOCALE
+    s3Client
   );
 
   // TODO: remove when Strapi will manage Metadata
   await putS3File(
     responseJson,
-    getSyncedReleaseNotesResponseJsonFile,
+    getLocalizedPath(getSyncedReleaseNotesResponseJsonFile, LOCALE),
     `${S3_BUCKET_NAME}`,
-    s3Client,
-    LOCALE
+    s3Client
   );
 }
 

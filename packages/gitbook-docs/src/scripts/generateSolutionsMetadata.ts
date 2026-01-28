@@ -7,6 +7,7 @@ import dotenv from 'dotenv';
 import { MetadataItem } from '../metadataItem';
 import {
   downloadS3File,
+  getLocalizedPath,
   listS3Files,
   makeS3Client,
   putS3File,
@@ -31,13 +32,16 @@ const s3Client = makeS3Client();
 function generateUrlPath(
   filePath: string,
   slug: string,
-  landingUseCaseFile: string
+  landingUseCaseFile: string,
+  locale?: string
 ): string {
   const restOfPath = sitePathFromS3Path(filePath, landingUseCaseFile);
   if (!restOfPath) {
-    return `/solutions/${slug}/details`;
+    return [locale, `/solutions/${slug}/details`].filter(Boolean).join('/');
   } else {
-    return `/solutions/${slug}/details/${restOfPath}`;
+    return [locale, `/solutions/${slug}/details/${restOfPath}`]
+      .filter(Boolean)
+      .join('/');
   }
 }
 
@@ -81,8 +85,8 @@ async function convertSolutionToMetadataItems(
         items.push({
           path,
           dirName,
-          contentS3Path: filePath,
-          menuS3Path: menuPath,
+          contentS3Path: getLocalizedPath(filePath, LOCALE),
+          menuS3Path: getLocalizedPath(menuPath, LOCALE),
           title: title || path.split('/').pop() || 'Untitled',
         });
       }
@@ -118,18 +122,16 @@ async function main() {
 
   await putS3File(
     metadataItems,
-    S3_SOLUTIONS_METADATA_JSON_PATH,
+    getLocalizedPath(S3_SOLUTIONS_METADATA_JSON_PATH, LOCALE),
     `${S3_BUCKET_NAME}`,
-    s3Client,
-    LOCALE
+    s3Client
   );
 
   await putS3File(
     responseJson,
-    getSyncedSolutionsResponseJsonFile,
+    getLocalizedPath(getSyncedSolutionsResponseJsonFile, LOCALE),
     `${S3_BUCKET_NAME}`,
-    s3Client,
-    LOCALE
+    s3Client
   );
 }
 

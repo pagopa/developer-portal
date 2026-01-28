@@ -7,6 +7,7 @@ import dotenv from 'dotenv';
 import { MetadataItem } from '../metadataItem';
 import {
   downloadS3File,
+  getLocalizedPath,
   listS3Files,
   makeS3Client,
   putS3File,
@@ -34,10 +35,18 @@ function generateUrlPath(
   filePath: string,
   guideSlug: string,
   productSlug: string,
-  versionName?: string
+  versionName?: string,
+  locale?: string
 ): string {
   const restOfPath = sitePathFromS3Path(filePath, undefined);
-  return [`/${productSlug}`, 'guides', guideSlug, versionName, restOfPath]
+  return [
+    locale,
+    `/${productSlug}`,
+    'guides',
+    guideSlug,
+    versionName,
+    restOfPath,
+  ]
     .filter(Boolean)
     .join('/');
 }
@@ -89,13 +98,14 @@ async function convertGuideToMetadataItems(
           filePath,
           guideInfo.slug,
           guideInfo.productSlug,
-          guideInfo.versionName
+          guideInfo.versionName,
+          LOCALE
         );
         const item = {
           path,
           dirName: guideInfo.dirName,
-          contentS3Path: filePath,
-          menuS3Path: menuPath,
+          contentS3Path: getLocalizedPath(filePath, LOCALE),
+          menuS3Path: getLocalizedPath(menuPath, LOCALE),
           title: title || path.split('/').pop() || 'Untitled',
           version: guideInfo.versionName,
         };
@@ -104,7 +114,9 @@ async function convertGuideToMetadataItems(
           const path = generateUrlPath(
             filePath,
             guideInfo.slug,
-            guideInfo.productSlug
+            guideInfo.productSlug,
+            undefined,
+            LOCALE
           );
           items.push({
             ...item,
@@ -143,18 +155,16 @@ async function main() {
 
   await putS3File(
     metadataItems,
-    S3_GUIDE_METADATA_JSON_PATH,
+    getLocalizedPath(S3_GUIDE_METADATA_JSON_PATH, LOCALE),
     `${S3_BUCKET_NAME}`,
-    s3Client,
-    LOCALE
+    s3Client
   );
 
   await putS3File(
     responseJson,
-    getSyncedGuidesResponseJsonFile,
+    getLocalizedPath(getSyncedGuidesResponseJsonFile, LOCALE),
     `${S3_BUCKET_NAME}`,
-    s3Client,
-    LOCALE
+    s3Client
   );
 }
 

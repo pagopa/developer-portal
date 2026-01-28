@@ -335,8 +335,8 @@ async function processGuidesMetadata(
         const baseItem: MetadataItem = {
           path,
           dirName: guideInfo.dirName,
-          contentS3Path: localPathToS3Path(filePath),
-          menuS3Path,
+          contentS3Path: getLocalizedPath(localPathToS3Path(filePath), LOCALE),
+          menuS3Path: getLocalizedPath(menuS3Path, LOCALE),
           title: title || path.split('/').pop() || 'Untitled',
           version: guideInfo.versionName,
         };
@@ -451,8 +451,8 @@ async function processSolutionsMetadata(
         itemList.push({
           path,
           dirName,
-          contentS3Path: localPathToS3Path(filePath),
-          menuS3Path,
+          contentS3Path: getLocalizedPath(localPathToS3Path(filePath), LOCALE),
+          menuS3Path: getLocalizedPath(menuS3Path, LOCALE),
           title: title || path.split('/').pop() || 'Untitled',
         });
       }
@@ -518,8 +518,8 @@ async function processReleaseNotesMetadata(
         itemList.push({
           path,
           dirName,
-          contentS3Path: localPathToS3Path(filePath),
-          menuS3Path,
+          contentS3Path: getLocalizedPath(localPathToS3Path(filePath), LOCALE),
+          menuS3Path: getLocalizedPath(menuS3Path, LOCALE),
           title: title || path.split('/').pop() || 'Untitled',
         });
       }
