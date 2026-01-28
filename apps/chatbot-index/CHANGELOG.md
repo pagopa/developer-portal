@@ -1,5 +1,16 @@
 # chatbot-index
 
+## 2.3.0
+
+### Minor Changes
+
+- d4def7d: Add script to add missing folders to the vector index
+
+### Patch Changes
+
+- 9fa183e: Fix to consider only docIDs that belong to static docs when adding missing folders md files to vector index
+- da6c4d9: The refresh of the API and Dynamic docs is handled indipendently on a github workflow and not anymore in the lambda function
+
 ## 2.2.0
 
 ### Minor Changes

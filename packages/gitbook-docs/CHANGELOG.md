@@ -1,5 +1,11 @@
 # gitbook-docs
 
+## 1.7.4
+
+### Patch Changes
+
+- a50ce75: Fix issue with root file generation using dirnames filter
+
 ## 1.7.3
 
 ### Patch Changes
