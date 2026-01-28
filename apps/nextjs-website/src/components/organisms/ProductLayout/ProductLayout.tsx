@@ -35,7 +35,8 @@ const ProductLayout: FC<LayoutPropsWithChildren> = ({
   showBreadcrumbs = false,
   structuredData,
 }) => {
-  const params = useParams<{ locale: string }>();
+  const { locale } = useParams<{ locale: string }>();
+  const pathWithLocale = `/${locale}${path}`;
   return (
     <Box
       sx={{
@@ -48,13 +49,17 @@ const ProductLayout: FC<LayoutPropsWithChildren> = ({
       }}
     >
       {structuredData}
-      {product && path && <ProductHeader product={product} path={path} />}
+      {product && path && (
+        <ProductHeader
+          locale={locale}
+          product={product}
+          path={pathWithLocale}
+        />
+      )}
       {product && showBreadcrumbs && (
         <EContainer sx={{ paddingTop: 3 }}>
           <ProductBreadcrumbs
-            breadcrumbs={[
-              ...productPageToBreadcrumbs(params.locale, product, paths),
-            ]}
+            breadcrumbs={[...productPageToBreadcrumbs(locale, product, paths)]}
           />
         </EContainer>
       )}
