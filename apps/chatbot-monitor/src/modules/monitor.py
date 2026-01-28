@@ -286,6 +286,10 @@ def add_langfuse_score(
 
 
 def save_feedback_to_database(query_for_database: dict) -> None:
+    # Handle None or invalid input
+    if not query_for_database or not isinstance(query_for_database, dict):
+        return
+
     if "feedback" in query_for_database:
         if "user_comment" in query_for_database["feedback"]:
             query_for_database["feedback"]["user_comment"] = PRESIDIO.mask_pii(
