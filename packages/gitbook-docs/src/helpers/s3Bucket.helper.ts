@@ -29,10 +29,10 @@ export function makeS3Client(): S3Client {
   const credentials: S3Credentials | undefined =
     !!S3_ACCESS_KEY_ID && !!S3_SECRET_ACCESS_KEY
       ? {
-        accessKeyId: S3_ACCESS_KEY_ID,
-        secretAccessKey: S3_SECRET_ACCESS_KEY,
-        sessionToken: process.env.S3_SESSION_TOKEN,
-      }
+          accessKeyId: S3_ACCESS_KEY_ID,
+          secretAccessKey: S3_SECRET_ACCESS_KEY,
+          sessionToken: process.env.S3_SESSION_TOKEN,
+        }
       : undefined;
 
   // Check if required environment variables are set
