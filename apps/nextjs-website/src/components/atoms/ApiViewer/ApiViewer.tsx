@@ -48,6 +48,40 @@ const ApiViewer: FC<ApiViewerProps> = ({ specURL }) => {
     };
   }, []);
 
+  useEffect(() => {
+    const rapidocEl = document.getElementById('my-rapidoc');
+
+    if (!rapidocEl) return;
+
+    const injectStyles = () => {
+      if (
+        rapidocEl.shadowRoot &&
+        !rapidocEl.shadowRoot.getElementById('custom-margin-fix')
+      ) {
+        const style = document.createElement('style');
+        style.id = 'custom-margin-fix';
+        style.innerHTML = `
+          #api-info {
+            margin-left: 0 !important;
+          }
+        `;
+        rapidocEl.shadowRoot.appendChild(style);
+      }
+    };
+
+    injectStyles();
+
+    customElements.whenDefined('rapi-doc').then(() => {
+      injectStyles();
+    });
+
+    rapidocEl.addEventListener('spec-loaded', injectStyles);
+
+    return () => {
+      rapidocEl.removeEventListener('spec-loaded', injectStyles);
+    };
+  }, []);
+
   // Cast strict TS error for custom element
   const RapiDoc = 'rapi-doc' as unknown as ElementType;
 
@@ -61,9 +95,11 @@ const ApiViewer: FC<ApiViewerProps> = ({ specURL }) => {
       }}
     >
       <RapiDoc
+        id='my-rapidoc'
         allow-advanced-search='false'
         allow-authentication='false'
         allow-server-selection='false'
+        allow-spec-file-download='true'
         allow-try='false'
         auto-scroll='false'
         bg-color={palette.background.paper}
@@ -77,11 +113,10 @@ const ApiViewer: FC<ApiViewerProps> = ({ specURL }) => {
         scroll-y-offset='0'
         show-components='true'
         show-header='false'
-        show-method-in-nav-bar='as-colored-block'
+        show-method-in-nav-bar='as-plain-text'
         spec-url={specURL}
         text-color={palette.text.primary}
         theme={palette.mode}
-        allow-spec-file-download='true'
       />
     </Box>
   );
