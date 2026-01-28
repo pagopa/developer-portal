@@ -95,7 +95,6 @@ const ApiViewer: FC<ApiViewerProps> = ({ specURL }) => {
       }}
     >
       <RapiDoc
-        id='my-rapidoc'
         allow-advanced-search='false'
         allow-authentication='false'
         allow-server-selection='false'
@@ -104,6 +103,7 @@ const ApiViewer: FC<ApiViewerProps> = ({ specURL }) => {
         auto-scroll='false'
         bg-color={palette.background.paper}
         font-size='large'
+        id='my-rapidoc'
         mono-font='Titillium Web'
         nav-bg-color={palette.grey[50]}
         nav-text-color={palette.text.primary}
