@@ -234,7 +234,9 @@ def create_langfuse_trace(
         user_id=user_id,
         session_id=session_id,
         metadata={
-            "latency": get_latency(root_span["start_time"], spans[-1]["end_time"]),
+            "latency": get_latency(
+                root_span["start_time"], sorted_spans[-1]["end_time"]
+            ),
             "contexts": contexts,
         },
     )
