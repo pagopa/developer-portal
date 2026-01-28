@@ -1,5 +1,5 @@
 ---
-"nextjs-website": patch
+"nextjs-website": minor
 ---
 
 Add download button to API pages
