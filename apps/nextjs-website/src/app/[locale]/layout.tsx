@@ -104,9 +104,10 @@ export default async function RootLayout({
   // Disabled eslint rules to to follow https://next-intl-docs.vercel.app/docs/getting-started/app-router-client-components guide
   // eslint-disable-next-line functional/no-let
   let messages;
+  const currentLocale = (await params).locale
   // eslint-disable-next-line functional/no-try-statements
   try {
-    messages = (await import('../../messages/it.json')).default;
+    messages = (await import(`../../messages/${currentLocale}.json`)).default;
   } catch {
     notFound();
   }
