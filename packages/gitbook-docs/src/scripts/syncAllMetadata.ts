@@ -11,6 +11,7 @@ import path from 'path';
 import { MetadataItem } from '../metadataItem';
 import {
   downloadS3File,
+  getLocalizedPath,
   makeS3Client,
   putS3File,
 } from '../helpers/s3Bucket.helper';
@@ -20,11 +21,11 @@ import { fetchFromStrapi } from '../helpers/fetchFromStrapi';
 import { MetadataInfo, MetadataType } from '../helpers/guidesMetadataHelper';
 import { sitePathFromS3Path } from '../helpers/sitePathFromS3Path';
 import {
-  getSyncedApisDataResponseJsonPath,
-  getSyncedGuidesResponseJsonPath,
-  getSyncedProductsResponseJsonPath,
-  getSyncedReleaseNotesResponseJsonPath,
-  getSyncedSolutionsResponseJsonPath,
+  getSyncedApisDataResponseJsonFile,
+  getSyncedGuidesResponseJsonFile,
+  getSyncedProductsResponseJsonFile,
+  getSyncedReleaseNotesResponseJsonFile,
+  getSyncedSolutionsResponseJsonFile,
 } from '../syncedResponses';
 import { DOCUMENTATION_PATH } from '../helpers/documentationParsing.helper';
 import {
@@ -38,11 +39,11 @@ import {
   StrapiSolutionsResponse,
 } from '../helpers/strapiTypes';
 import {
-  apisDataQueryString,
+  getApisDataQueryString,
+  getGuidesQueryString,
+  getProductsQueryString,
   getReleaseNotesQueryString,
   getSolutionsQueryString,
-  guidesQueryString,
-  productsQueryString,
 } from '../helpers/strapiQuery';
 import { compact } from 'lodash';
 
@@ -93,6 +94,7 @@ const S3_SOLUTIONS_DIRNAMES_JSON_PATH =
 const S3_RELEASE_NOTES_DIRNAMES_JSON_PATH =
   process.env.S3_RELEASE_NOTES_DIRNAMES_JSON_PATH ||
   'release-notes-dirNames.json';
+const LOCALE = process.env.LOCALE;
 
 const DOCUMENTATION_ABSOLUTE_PATH = path.resolve(DOCUMENTATION_PATH);
 
@@ -144,7 +146,7 @@ function getS3Client(): S3Client {
 }
 
 // Fetch all data from Strapi in one go
-async function fetchAllStrapiData(): Promise<StrapiData> {
+async function fetchAllStrapiData(locale?: string): Promise<StrapiData> {
   console.log('Fetching all data from Strapi...');
   if (DIR_NAMES_FILTER) {
     console.log(
@@ -164,19 +166,23 @@ async function fetchAllStrapiData(): Promise<StrapiData> {
     // Guides with full populate
     // NOTE: Cannot filter by versions.dirName server-side due to Strapi v4 component array limitation
     // Client-side filtering will be applied later in processGuidesMetadata
-    fetchFromStrapi<StrapiGuide>(`api/guides?${guidesQueryString}`),
+    fetchFromStrapi<StrapiGuide>(`api/guides?${getGuidesQueryString(locale)}`),
     // Solutions with dirName filter (if provided)
     fetchFromStrapi<StrapiSolution>(
-      `api/solutions/?${getSolutionsQueryString()}`
+      `api/solutions/?${getSolutionsQueryString(locale)}`
     ),
     // Release notes with dirName filter (if provided)
     fetchFromStrapi<StrapiReleaseNote>(
-      `api/release-notes/?${getReleaseNotesQueryString()}`
+      `api/release-notes/?${getReleaseNotesQueryString(locale)}`
     ),
     // Products
-    fetchFromStrapi<StrapiProduct>(`api/products?${productsQueryString}`),
+    fetchFromStrapi<StrapiProduct>(
+      `api/products?${getProductsQueryString(locale)}`
+    ),
     // APIs data
-    fetchFromStrapi<StrapiApiData>(`api/apis-data?${apisDataQueryString}`),
+    fetchFromStrapi<StrapiApiData>(
+      `api/apis-data?${getApisDataQueryString(locale)}`
+    ),
   ]);
 
   console.log(
@@ -202,7 +208,8 @@ function generateUrlPath(
   productSlug?: string,
   versionName?: string,
   metadataType: MetadataType = MetadataType.Guide,
-  landingFile?: string
+  landingFile?: string,
+  locale?: string
 ): string {
   // Convert local path to S3 path if needed, then extract site path
   const normalizedFilePath = filePath.replace(/\\/g, '/');
@@ -220,15 +227,22 @@ function generateUrlPath(
 
   switch (metadataType) {
     case MetadataType.Guide:
-      return [`/${productSlug}`, 'guides', slug, versionName, restOfPath]
+      return [
+        locale,
+        `/${productSlug}`,
+        'guides',
+        slug,
+        versionName,
+        restOfPath,
+      ]
         .filter(Boolean)
         .join('/');
     case MetadataType.Solution:
-      return ['/solutions', slug, 'details', restOfPath]
+      return [locale, '/solutions', slug, 'details', restOfPath]
         .filter(Boolean)
         .join('/');
     case MetadataType.ReleaseNote:
-      return [`/${productSlug}`, 'release-note', slug, restOfPath]
+      return [locale, `/${productSlug}`, 'release-note', slug, restOfPath]
         .filter(Boolean)
         .join('/');
   }
@@ -314,14 +328,15 @@ async function processGuidesMetadata(
           guideInfo.slug,
           guideInfo.productSlug,
           guideInfo.versionName,
-          MetadataType.Guide
+          MetadataType.Guide,
+          LOCALE
         );
 
         const baseItem: MetadataItem = {
           path,
           dirName: guideInfo.dirName,
-          contentS3Path: localPathToS3Path(filePath),
-          menuS3Path,
+          contentS3Path: getLocalizedPath(localPathToS3Path(filePath), LOCALE),
+          menuS3Path: getLocalizedPath(menuS3Path, LOCALE),
           title: title || path.split('/').pop() || 'Untitled',
           version: guideInfo.versionName,
         };
@@ -334,7 +349,8 @@ async function processGuidesMetadata(
             guideInfo.slug,
             guideInfo.productSlug,
             undefined,
-            MetadataType.Guide
+            MetadataType.Guide,
+            LOCALE
           );
 
           guideItems.push({
@@ -428,14 +444,15 @@ async function processSolutionsMetadata(
           undefined,
           undefined,
           MetadataType.Solution,
-          solution.attributes.landingUseCaseFile
+          solution.attributes.landingUseCaseFile,
+          LOCALE
         );
 
         itemList.push({
           path,
           dirName,
-          contentS3Path: localPathToS3Path(filePath),
-          menuS3Path,
+          contentS3Path: getLocalizedPath(localPathToS3Path(filePath), LOCALE),
+          menuS3Path: getLocalizedPath(menuS3Path, LOCALE),
           title: title || path.split('/').pop() || 'Untitled',
         });
       }
@@ -494,14 +511,15 @@ async function processReleaseNotesMetadata(
           productSlug,
           undefined,
           MetadataType.ReleaseNote,
-          releaseNote.attributes.landingFile
+          releaseNote.attributes.landingFile,
+          LOCALE
         );
 
         itemList.push({
           path,
           dirName,
-          contentS3Path: localPathToS3Path(filePath),
-          menuS3Path,
+          contentS3Path: getLocalizedPath(localPathToS3Path(filePath), LOCALE),
+          menuS3Path: getLocalizedPath(menuS3Path, LOCALE),
           title: title || path.split('/').pop() || 'Untitled',
         });
       }
@@ -574,7 +592,8 @@ async function generateUrlParsingMetadata(
         info.slug,
         info.productSlug,
         info.versionName,
-        info.metadataType
+        info.metadataType,
+        LOCALE
       ),
     }));
 
@@ -596,6 +615,7 @@ async function main() {
     console.log(`Generate metadata: ${GENERATE_METADATA}`);
     console.log(`Save Strapi responses: ${SAVE_STRAPI_RESPONSES}`);
     console.log(`Generate root metadata file: ${GENERATE_ROOT_METADATA_FILE}`);
+    console.log(`Using locale: ${LOCALE}`);
     if (DIR_NAMES_FILTER) {
       console.log(
         `DirName filter active: ${DIR_NAMES_FILTER.length} directories specified`
@@ -603,7 +623,7 @@ async function main() {
     }
 
     // Fetch all data from Strapi once
-    const strapiData = await fetchAllStrapiData();
+    const strapiData = await fetchAllStrapiData(LOCALE);
 
     const metadataFilter = {
       guides: METADATA_TYPE === 'all' || METADATA_TYPE === 'guides',
@@ -616,13 +636,13 @@ async function main() {
       console.log('Saving Strapi products, APIs data, and sitemap...');
       await putS3File(
         strapiData.products,
-        getSyncedProductsResponseJsonPath(),
+        getLocalizedPath(getSyncedProductsResponseJsonFile, LOCALE),
         S3_BUCKET_NAME!,
         getS3Client()
       );
       await putS3File(
         strapiData.apisData,
-        getSyncedApisDataResponseJsonPath(),
+        getLocalizedPath(getSyncedApisDataResponseJsonFile, LOCALE),
         S3_BUCKET_NAME!,
         getS3Client()
       );
@@ -632,7 +652,7 @@ async function main() {
     if (SAVE_STRAPI_RESPONSES && metadataFilter.guides) {
       await putS3File(
         strapiData.guidesRawResponse,
-        getSyncedGuidesResponseJsonPath(),
+        getLocalizedPath(getSyncedGuidesResponseJsonFile, LOCALE),
         S3_BUCKET_NAME!,
         getS3Client()
       );
@@ -641,7 +661,7 @@ async function main() {
     if (SAVE_STRAPI_RESPONSES && metadataFilter.solutions) {
       await putS3File(
         strapiData.solutionsRawResponse,
-        getSyncedSolutionsResponseJsonPath(),
+        getLocalizedPath(getSyncedSolutionsResponseJsonFile, LOCALE),
         S3_BUCKET_NAME!,
         getS3Client()
       );
@@ -650,7 +670,7 @@ async function main() {
     if (SAVE_STRAPI_RESPONSES && metadataFilter.releaseNotes) {
       await putS3File(
         strapiData.releaseNotesRawResponse,
-        getSyncedReleaseNotesResponseJsonPath(),
+        getLocalizedPath(getSyncedReleaseNotesResponseJsonFile, LOCALE),
         S3_BUCKET_NAME!,
         getS3Client()
       );
@@ -675,7 +695,7 @@ async function main() {
     );
 
     const s3MainVersionsDirNamesFile = await downloadS3File(
-      S3_MAIN_GUIDE_VERSIONS_DIRNAMES_JSON_PATH,
+      getLocalizedPath(S3_MAIN_GUIDE_VERSIONS_DIRNAMES_JSON_PATH, LOCALE),
       S3_BUCKET_NAME!,
       getS3Client()
     ).catch((error) => {
@@ -698,14 +718,17 @@ async function main() {
     if (dirNamesToRemove.length > 0) {
       await putS3File(
         { dirNames: dirNamesToRemove },
-        S3_MAIN_GUIDE_VERSIONS_DIRNAMES_TO_REMOVE_JSON_PATH,
+        getLocalizedPath(
+          S3_MAIN_GUIDE_VERSIONS_DIRNAMES_TO_REMOVE_JSON_PATH,
+          LOCALE
+        ),
         S3_BUCKET_NAME!,
         getS3Client()
       );
     }
     await putS3File(
       mainVersionsDirNames,
-      S3_MAIN_GUIDE_VERSIONS_DIRNAMES_JSON_PATH,
+      getLocalizedPath(S3_MAIN_GUIDE_VERSIONS_DIRNAMES_JSON_PATH, LOCALE),
       S3_BUCKET_NAME!,
       getS3Client()
     );
@@ -716,7 +739,7 @@ async function main() {
     );
     await putS3File(
       solutionsDirNames,
-      S3_SOLUTIONS_DIRNAMES_JSON_PATH,
+      getLocalizedPath(S3_SOLUTIONS_DIRNAMES_JSON_PATH, LOCALE),
       S3_BUCKET_NAME!,
       getS3Client()
     );
@@ -729,7 +752,7 @@ async function main() {
     );
     await putS3File(
       releaseNotesDirNames,
-      S3_RELEASE_NOTES_DIRNAMES_JSON_PATH,
+      getLocalizedPath(S3_RELEASE_NOTES_DIRNAMES_JSON_PATH, LOCALE),
       S3_BUCKET_NAME!,
       getS3Client()
     );
@@ -748,13 +771,14 @@ async function main() {
         async (guideMetadata) => {
           try {
             if (guideMetadata.length > 0 && guideMetadata[0].dirName) {
+              const filePath = path.join(
+                S3_PATH_TO_GITBOOK_DOCS,
+                guideMetadata[0].dirName,
+                S3_DIRNAME_METADATA_JSON_PATH
+              );
               await putS3File(
                 guideMetadata,
-                path.join(
-                  S3_PATH_TO_GITBOOK_DOCS,
-                  guideMetadata[0].dirName,
-                  S3_DIRNAME_METADATA_JSON_PATH
-                ),
+                getLocalizedPath(filePath, LOCALE),
                 S3_BUCKET_NAME!,
                 getS3Client()
               );
@@ -777,7 +801,7 @@ async function main() {
         );
         await putS3File(
           allGuidesMetadata.flat(),
-          S3_GUIDE_METADATA_JSON_PATH,
+          getLocalizedPath(S3_GUIDE_METADATA_JSON_PATH, LOCALE),
           S3_BUCKET_NAME!,
           getS3Client()
         );
@@ -803,13 +827,14 @@ async function main() {
         async (solutionMetadata) => {
           try {
             if (solutionMetadata.length > 0 && solutionMetadata[0].dirName) {
+              const filePath = path.join(
+                S3_PATH_TO_GITBOOK_DOCS,
+                solutionMetadata[0].dirName,
+                S3_DIRNAME_METADATA_JSON_PATH
+              );
               await putS3File(
                 solutionMetadata,
-                path.join(
-                  S3_PATH_TO_GITBOOK_DOCS,
-                  solutionMetadata[0].dirName,
-                  S3_DIRNAME_METADATA_JSON_PATH
-                ),
+                getLocalizedPath(filePath, LOCALE),
                 S3_BUCKET_NAME!,
                 getS3Client()
               );
@@ -835,7 +860,7 @@ async function main() {
         );
         await putS3File(
           solutionsMetadata.flat(),
-          S3_SOLUTIONS_METADATA_JSON_PATH,
+          getLocalizedPath(S3_SOLUTIONS_METADATA_JSON_PATH, LOCALE),
           S3_BUCKET_NAME!,
           getS3Client()
         );
@@ -864,13 +889,14 @@ async function main() {
               releaseNotesMetadata.length > 0 &&
               releaseNotesMetadata[0].dirName
             ) {
+              const filePath = path.join(
+                S3_PATH_TO_GITBOOK_DOCS,
+                releaseNotesMetadata[0].dirName,
+                S3_DIRNAME_METADATA_JSON_PATH
+              );
               await putS3File(
                 releaseNotesMetadata,
-                path.join(
-                  S3_PATH_TO_GITBOOK_DOCS,
-                  releaseNotesMetadata[0].dirName,
-                  S3_DIRNAME_METADATA_JSON_PATH
-                ),
+                getLocalizedPath(filePath, LOCALE),
                 S3_BUCKET_NAME!,
                 getS3Client()
               );
@@ -896,7 +922,7 @@ async function main() {
         );
         await putS3File(
           releaseNotesMetadata.flat(),
-          S3_RELEASE_NOTES_METADATA_JSON_PATH,
+          getLocalizedPath(S3_RELEASE_NOTES_METADATA_JSON_PATH, LOCALE),
           S3_BUCKET_NAME!,
           getS3Client()
         );

@@ -7,6 +7,7 @@ import dotenv from 'dotenv';
 import { MetadataItem } from '../metadataItem';
 import {
   downloadS3File,
+  getLocalizedPath,
   listS3Files,
   makeS3Client,
   putS3File,
@@ -16,7 +17,7 @@ import { fetchFromStrapi } from '../helpers/fetchFromStrapi';
 import { StrapiGuide } from '../helpers/strapiTypes';
 import { MetadataInfo } from '../helpers/guidesMetadataHelper';
 import { sitePathFromS3Path } from '../helpers/sitePathFromS3Path';
-import { getSyncedGuidesResponseJsonPath } from '../syncedResponses';
+import { getSyncedGuidesResponseJsonFile } from '../syncedResponses';
 
 // Load environment variables from .env file
 dotenv.config();
@@ -26,7 +27,7 @@ const S3_PATH_TO_GITBOOK_DOCS =
   process.env.S3_PATH_TO_GITBOOK_DOCS || 'devportal-docs/docs';
 const S3_GUIDE_METADATA_JSON_PATH =
   process.env.S3_GUIDE_METADATA_JSON_PATH || 'guides-metadata.json';
-const SYNCED_GUIDES_RESPONSE_JSON_PATH = getSyncedGuidesResponseJsonPath();
+const LOCALE = process.env.LOCALE;
 
 const s3Client = makeS3Client();
 
@@ -34,10 +35,18 @@ function generateUrlPath(
   filePath: string,
   guideSlug: string,
   productSlug: string,
-  versionName?: string
+  versionName?: string,
+  locale?: string
 ): string {
   const restOfPath = sitePathFromS3Path(filePath, undefined);
-  return [`/${productSlug}`, 'guides', guideSlug, versionName, restOfPath]
+  return [
+    locale,
+    `/${productSlug}`,
+    'guides',
+    guideSlug,
+    versionName,
+    restOfPath,
+  ]
     .filter(Boolean)
     .join('/');
 }
@@ -89,13 +98,14 @@ async function convertGuideToMetadataItems(
           filePath,
           guideInfo.slug,
           guideInfo.productSlug,
-          guideInfo.versionName
+          guideInfo.versionName,
+          LOCALE
         );
         const item = {
           path,
           dirName: guideInfo.dirName,
-          contentS3Path: filePath,
-          menuS3Path: menuPath,
+          contentS3Path: getLocalizedPath(filePath, LOCALE),
+          menuS3Path: getLocalizedPath(menuPath, LOCALE),
           title: title || path.split('/').pop() || 'Untitled',
           version: guideInfo.versionName,
         };
@@ -104,7 +114,9 @@ async function convertGuideToMetadataItems(
           const path = generateUrlPath(
             filePath,
             guideInfo.slug,
-            guideInfo.productSlug
+            guideInfo.productSlug,
+            undefined,
+            LOCALE
           );
           items.push({
             ...item,
@@ -119,12 +131,9 @@ async function convertGuideToMetadataItems(
 
 async function main() {
   console.log('Starting to process Markdown files...');
-
-  // TODO: restore this strapiGuidesUrl when Metadata will be managed by Strapi
-  // const strapiGuidesUrl =
-  //   'api/guides?populate[0]=product&populate[1]=versions&pagination[pageSize]=1000&pagination[page]=1';
-  const strapiGuidesUrl =
-    'api/guides/?populate[image][populate]=*&populate[mobileImage][populate]=*&populate[listItems][populate]=*&populate[versions][populate]=*&populate[bannerLinks][populate][0]=icon&populate[seo][populate]=metaSocial.image&populate[product][populate][0]=logo&populate[product][populate][1]=bannerLinks.icon&populate[product][populate][2]=overview&populate[product][populate][3]=quickstart_guide&populate[product][populate][4]=release_note&populate[product][populate][5]=api_data_list_page&populate[product][populate][6]=api_data_list_page.apiData.*&populate[product][populate][7]=api_data_list_page.apiData.apiRestDetail.*&populate[product][populate][8]=guide_list_page&populate[product][populate][9]=tutorial_list_page&populate[product][populate][10]=use_case_list_page';
+  const strapiGuidesUrl = `api/guides/?[locale]=${
+    LOCALE || 'it'
+  }&populate[image][populate]=*&populate[mobileImage][populate]=*&populate[listItems][populate]=*&populate[versions][populate]=*&populate[bannerLinks][populate][0]=icon&populate[seo][populate]=metaSocial.image&populate[product][populate][0]=logo&populate[product][populate][1]=bannerLinks.icon&populate[product][populate][2]=overview&populate[product][populate][3]=quickstart_guide&populate[product][populate][4]=release_note&populate[product][populate][5]=api_data_list_page&populate[product][populate][6]=api_data_list_page.apiData.*&populate[product][populate][7]=api_data_list_page.apiData.apiRestDetail.*&populate[product][populate][8]=guide_list_page&populate[product][populate][9]=tutorial_list_page&populate[product][populate][10]=use_case_list_page`;
 
   // eslint-disable-next-line functional/no-let
   let strapiGuides;
@@ -146,14 +155,14 @@ async function main() {
 
   await putS3File(
     metadataItems,
-    S3_GUIDE_METADATA_JSON_PATH,
+    getLocalizedPath(S3_GUIDE_METADATA_JSON_PATH, LOCALE),
     `${S3_BUCKET_NAME}`,
     s3Client
   );
 
   await putS3File(
     responseJson,
-    SYNCED_GUIDES_RESPONSE_JSON_PATH,
+    getLocalizedPath(getSyncedGuidesResponseJsonFile, LOCALE),
     `${S3_BUCKET_NAME}`,
     s3Client
   );
