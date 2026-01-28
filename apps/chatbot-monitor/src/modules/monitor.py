@@ -183,7 +183,10 @@ def create_langfuse_trace(
     session_id: str,
     query: str,
     messages: List[Dict[str, str]],
-    response_json: Dict[str, Any],
+    response: str,
+    contexts: List[str],
+    tags: List[str],
+    spans: List[Dict[str, Any]],
     query_for_database: dict,
     trace_name: str = "Discovery ReAct Orchestrator",
 ):
@@ -195,21 +198,25 @@ def create_langfuse_trace(
         user_id (str): The ID of the user.
         session_id (str): The ID of the session.
         query (str): The user query.
-        response_json (Dict[str, Any]): The response JSON containing spans and other data.
+        messages (List[Dict[str, str]]): The chatbot history.
+        response (str): The response string.
+        contexts (List[str]): The list of context strings.
+        tags (List[str]): The list of tag strings.
+        spans (List[Dict[str, Any]]): The list of span dictionaries.
         query_for_database (dict): The query data to save to the database.
         trace_name (str): The name of the trace.
     Returns:
         None (trace is created and sent to Langfuse)
     """
-    if not response_json["spans"]:
-        print("No spans found in data")
+    if not spans:
+        LOGGER.error("No spans given in input, skipping Langfuse trace creation.")
         return None
 
     LOGGER.info(f"Creating trace with ID: {trace_id}")
-    root_span = response_json["spans"][0]
+    root_span = spans[0]
     root_span_id = root_span["context"]["span_id"]
-    spans = link_spans_groups(response_json["spans"], root_span_id)
-    sorted_spans = sorted(spans, key=lambda x: x["start_time"])
+    linked_spans = link_spans_groups(spans, root_span_id)
+    sorted_spans = sorted(linked_spans, key=lambda x: x["start_time"])
 
     root = LANGFUSE_CLIENT.start_span(
         name=trace_name,
@@ -219,7 +226,7 @@ def create_langfuse_trace(
     process_span(sorted_spans[0], root, sorted_spans)
 
     masked_query = PRESIDIO.mask_pii(query)
-    masked_response = PRESIDIO.mask_pii(response_json["response"])
+    masked_response = PRESIDIO.mask_pii(response)
 
     root.update_trace(
         input={
@@ -227,14 +234,14 @@ def create_langfuse_trace(
             "chat_history": mask_chat_history(messages),
         },
         output=masked_response,
-        tags=response_json["products"] if response_json["products"] else ["none"],
+        tags=tags if tags else ["none"],
         user_id=user_id,
         session_id=session_id,
         metadata={
             "latency": get_latency(
                 root_span["start_time"], sorted_spans[-1]["end_time"]
             ),
-            "contexts": response_json["contexts"],
+            "contexts": contexts,
         },
     )
 
