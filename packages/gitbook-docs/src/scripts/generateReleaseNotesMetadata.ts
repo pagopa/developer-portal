@@ -84,7 +84,8 @@ async function convertReleaseNoteToMetadataItems(
         const path = generateUrlPath(
           filePath,
           productSlug,
-          releaseNote.attributes.landingFile
+          releaseNote.attributes.landingFile,
+          LOCALE
         );
         items.push({
           path,

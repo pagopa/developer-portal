@@ -80,7 +80,8 @@ async function convertSolutionToMetadataItems(
         const path = generateUrlPath(
           filePath,
           solution.attributes.slug,
-          solution.attributes.landingUseCaseFile
+          solution.attributes.landingUseCaseFile,
+          LOCALE
         );
         items.push({
           path,
