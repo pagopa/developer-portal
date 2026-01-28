@@ -24,6 +24,7 @@
 | <a name="module_docs_redirect"></a> [docs\_redirect](#module\_docs\_redirect) | ./modules/docs_redirect | n/a |
 | <a name="module_identity"></a> [identity](#module\_identity) | ./identity | n/a |
 | <a name="module_langfuse"></a> [langfuse](#module\_langfuse) | ./modules/langfuse | n/a |
+| <a name="module_strapi_v5"></a> [strapi\_v5](#module\_strapi\_v5) | ./modules/strapi5 | n/a |
 | <a name="module_video_streaming"></a> [video\_streaming](#module\_video\_streaming) | ./modules/video_streaming | n/a |
 | <a name="module_website"></a> [website](#module\_website) | ./modules/website | n/a |
 
@@ -59,6 +60,7 @@
 | <a name="input_log_retention_days"></a> [log\_retention\_days](#input\_log\_retention\_days) | The number of days logs should be retained. Default is 90 days. | `number` | `90` | no |
 | <a name="input_publish_cloudfront_functions"></a> [publish\_cloudfront\_functions](#input\_publish\_cloudfront\_functions) | Defines if cloudfront functions should be published | `bool` | `false` | no |
 | <a name="input_rds_cms_scaling_configuration"></a> [rds\_cms\_scaling\_configuration](#input\_rds\_cms\_scaling\_configuration) | Scaling configuration for the RDS Aurora instance | <pre>object({<br/>    min_capacity = number<br/>    max_capacity = number<br/>  })</pre> | <pre>{<br/>  "max_capacity": 1,<br/>  "min_capacity": 0.5<br/>}</pre> | no |
+| <a name="input_strapi_v5_image_tag"></a> [strapi\_v5\_image\_tag](#input\_strapi\_v5\_image\_tag) | Docker image tag for the Strapi v5 application | `string` | `null` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | <pre>{<br/>  "CreatedBy": "Terraform"<br/>}</pre> | no |
 | <a name="input_use_custom_certificate"></a> [use\_custom\_certificate](#input\_use\_custom\_certificate) | Enable CDN https support with a custom certificate instead using the default one | `bool` | `true` | no |
 | <a name="input_website_is_standalone"></a> [website\_is\_standalone](#input\_website\_is\_standalone) | If true, the website will be deployed in standalone mode (Amplify), otherwise static deployment is used (S3 + Cloudfront) | `bool` | `false` | no |
