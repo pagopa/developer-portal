@@ -15,6 +15,7 @@ import dotenv from 'dotenv';
 import {
   deleteS3Directory,
   downloadS3File,
+  getLocalizedPath,
   makeS3Client,
   putS3File,
 } from '../helpers/s3Bucket.helper';
@@ -90,11 +91,8 @@ async function fetchAllDirNamesFromStrapi(): Promise<{ dirNames: string[] }> {
 async function main() {
   try {
     const strapiDirNames = await fetchAllDirNamesFromStrapi();
-    const dirnameJsonPath = [LOCALE, S3_DIRNAMES_JSON_PATH]
-      .filter(Boolean)
-      .join('/');
     const s3DirNamesContent = await downloadS3File(
-      dirnameJsonPath,
+      getLocalizedPath(S3_DIRNAMES_JSON_PATH, LOCALE),
       S3_BUCKET_NAME!,
       getS3Client()
     ).catch((error) => {
@@ -118,10 +116,9 @@ async function main() {
     );
     await putS3File(
       strapiDirNames,
-      dirnameJsonPath,
+      getLocalizedPath(S3_DIRNAMES_JSON_PATH, LOCALE),
       S3_BUCKET_NAME!,
-      getS3Client(),
-      LOCALE
+      getS3Client()
     );
   } catch (error) {
     console.error(

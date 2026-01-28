@@ -29,10 +29,10 @@ export function makeS3Client(): S3Client {
   const credentials: S3Credentials | undefined =
     !!S3_ACCESS_KEY_ID && !!S3_SECRET_ACCESS_KEY
       ? {
-          accessKeyId: S3_ACCESS_KEY_ID,
-          secretAccessKey: S3_SECRET_ACCESS_KEY,
-          sessionToken: process.env.S3_SESSION_TOKEN,
-        }
+        accessKeyId: S3_ACCESS_KEY_ID,
+        secretAccessKey: S3_SECRET_ACCESS_KEY,
+        sessionToken: process.env.S3_SESSION_TOKEN,
+      }
       : undefined;
 
   // Check if required environment variables are set
@@ -130,28 +130,30 @@ export async function downloadS3File(
   }
 }
 
+export function getLocalizedPath(path: string, locale?: string): string {
+  return locale ? `${locale}/${path}` : path;
+}
+
 export async function putS3File(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   items: MetadataItem[] | any,
   path: string,
   bucketName: string,
-  client: S3Client,
-  locale?: string
+  client: S3Client
 ): Promise<void> {
   const body = JSON.stringify(items, null, 2);
-  const localizedPath = locale ? `${locale}/${path}` : path;
-  console.log(`Uploading file to S3: ${localizedPath}`);
+  console.log(`Uploading file to S3: ${path}`);
 
   const result = await client.send(
     new PutObjectCommand({
       Bucket: bucketName,
-      Key: localizedPath,
+      Key: path,
       Body: body,
     })
   );
 
   console.log(
-    `Uploaded file to S3: ${localizedPath}, Result: ${JSON.stringify(result)}`
+    `Uploaded file to S3: ${path}, Result: ${JSON.stringify(result)}`
   );
 }
 export async function deleteS3Directory(

@@ -11,6 +11,7 @@ import path from 'path';
 import { MetadataItem } from '../metadataItem';
 import {
   downloadS3File,
+  getLocalizedPath,
   makeS3Client,
   putS3File,
 } from '../helpers/s3Bucket.helper';
@@ -635,17 +636,15 @@ async function main() {
       console.log('Saving Strapi products, APIs data, and sitemap...');
       await putS3File(
         strapiData.products,
-        getSyncedProductsResponseJsonFile,
+        getLocalizedPath(getSyncedProductsResponseJsonFile, LOCALE),
         S3_BUCKET_NAME!,
-        getS3Client(),
-        LOCALE
+        getS3Client()
       );
       await putS3File(
         strapiData.apisData,
-        getSyncedApisDataResponseJsonFile,
+        getLocalizedPath(getSyncedApisDataResponseJsonFile, LOCALE),
         S3_BUCKET_NAME!,
-        getS3Client(),
-        LOCALE
+        getS3Client()
       );
     }
 
@@ -653,30 +652,27 @@ async function main() {
     if (SAVE_STRAPI_RESPONSES && metadataFilter.guides) {
       await putS3File(
         strapiData.guidesRawResponse,
-        getSyncedGuidesResponseJsonFile,
+        getLocalizedPath(getSyncedGuidesResponseJsonFile, LOCALE),
         S3_BUCKET_NAME!,
-        getS3Client(),
-        LOCALE
+        getS3Client()
       );
     }
 
     if (SAVE_STRAPI_RESPONSES && metadataFilter.solutions) {
       await putS3File(
         strapiData.solutionsRawResponse,
-        getSyncedSolutionsResponseJsonFile,
+        getLocalizedPath(getSyncedSolutionsResponseJsonFile, LOCALE),
         S3_BUCKET_NAME!,
-        getS3Client(),
-        LOCALE
+        getS3Client()
       );
     }
 
     if (SAVE_STRAPI_RESPONSES && metadataFilter.releaseNotes) {
       await putS3File(
         strapiData.releaseNotesRawResponse,
-        getSyncedReleaseNotesResponseJsonFile,
+        getLocalizedPath(getSyncedReleaseNotesResponseJsonFile, LOCALE),
         S3_BUCKET_NAME!,
-        getS3Client(),
-        LOCALE
+        getS3Client()
       );
     }
 
@@ -699,7 +695,7 @@ async function main() {
     );
 
     const s3MainVersionsDirNamesFile = await downloadS3File(
-      S3_MAIN_GUIDE_VERSIONS_DIRNAMES_JSON_PATH,
+      getLocalizedPath(S3_MAIN_GUIDE_VERSIONS_DIRNAMES_JSON_PATH, LOCALE),
       S3_BUCKET_NAME!,
       getS3Client()
     ).catch((error) => {
@@ -722,18 +718,19 @@ async function main() {
     if (dirNamesToRemove.length > 0) {
       await putS3File(
         { dirNames: dirNamesToRemove },
-        S3_MAIN_GUIDE_VERSIONS_DIRNAMES_TO_REMOVE_JSON_PATH,
+        getLocalizedPath(
+          S3_MAIN_GUIDE_VERSIONS_DIRNAMES_TO_REMOVE_JSON_PATH,
+          LOCALE
+        ),
         S3_BUCKET_NAME!,
-        getS3Client(),
-        LOCALE
+        getS3Client()
       );
     }
     await putS3File(
       mainVersionsDirNames,
-      S3_MAIN_GUIDE_VERSIONS_DIRNAMES_JSON_PATH,
+      getLocalizedPath(S3_MAIN_GUIDE_VERSIONS_DIRNAMES_JSON_PATH, LOCALE),
       S3_BUCKET_NAME!,
-      getS3Client(),
-      LOCALE
+      getS3Client()
     );
 
     const solutionsDirNames = getSolutionsDirNames(strapiData.solutions);
@@ -742,10 +739,9 @@ async function main() {
     );
     await putS3File(
       solutionsDirNames,
-      S3_SOLUTIONS_DIRNAMES_JSON_PATH,
+      getLocalizedPath(S3_SOLUTIONS_DIRNAMES_JSON_PATH, LOCALE),
       S3_BUCKET_NAME!,
-      getS3Client(),
-      LOCALE
+      getS3Client()
     );
 
     const releaseNotesDirNames = getReleaseNotesDirNames(
@@ -756,10 +752,9 @@ async function main() {
     );
     await putS3File(
       releaseNotesDirNames,
-      S3_RELEASE_NOTES_DIRNAMES_JSON_PATH,
+      getLocalizedPath(S3_RELEASE_NOTES_DIRNAMES_JSON_PATH, LOCALE),
       S3_BUCKET_NAME!,
-      getS3Client(),
-      LOCALE
+      getS3Client()
     );
 
     // Process and save guides metadata
@@ -776,16 +771,16 @@ async function main() {
         async (guideMetadata) => {
           try {
             if (guideMetadata.length > 0 && guideMetadata[0].dirName) {
+              const filePath = path.join(
+                S3_PATH_TO_GITBOOK_DOCS,
+                guideMetadata[0].dirName,
+                S3_DIRNAME_METADATA_JSON_PATH
+              );
               await putS3File(
                 guideMetadata,
-                path.join(
-                  S3_PATH_TO_GITBOOK_DOCS,
-                  guideMetadata[0].dirName,
-                  S3_DIRNAME_METADATA_JSON_PATH
-                ),
+                getLocalizedPath(filePath, LOCALE),
                 S3_BUCKET_NAME!,
-                getS3Client(),
-                LOCALE
+                getS3Client()
               );
             }
           } catch (error) {
@@ -806,10 +801,9 @@ async function main() {
         );
         await putS3File(
           allGuidesMetadata.flat(),
-          S3_GUIDE_METADATA_JSON_PATH,
+          getLocalizedPath(S3_GUIDE_METADATA_JSON_PATH, LOCALE),
           S3_BUCKET_NAME!,
-          getS3Client(),
-          LOCALE
+          getS3Client()
         );
 
         console.log(
@@ -833,16 +827,16 @@ async function main() {
         async (solutionMetadata) => {
           try {
             if (solutionMetadata.length > 0 && solutionMetadata[0].dirName) {
+              const filePath = path.join(
+                S3_PATH_TO_GITBOOK_DOCS,
+                solutionMetadata[0].dirName,
+                S3_DIRNAME_METADATA_JSON_PATH
+              );
               await putS3File(
                 solutionMetadata,
-                path.join(
-                  S3_PATH_TO_GITBOOK_DOCS,
-                  solutionMetadata[0].dirName,
-                  S3_DIRNAME_METADATA_JSON_PATH
-                ),
+                getLocalizedPath(filePath, LOCALE),
                 S3_BUCKET_NAME!,
-                getS3Client(),
-                LOCALE
+                getS3Client()
               );
             }
           } catch (error) {
@@ -866,10 +860,9 @@ async function main() {
         );
         await putS3File(
           solutionsMetadata.flat(),
-          S3_SOLUTIONS_METADATA_JSON_PATH,
+          getLocalizedPath(S3_SOLUTIONS_METADATA_JSON_PATH, LOCALE),
           S3_BUCKET_NAME!,
-          getS3Client(),
-          LOCALE
+          getS3Client()
         );
 
         console.log(
@@ -896,16 +889,16 @@ async function main() {
               releaseNotesMetadata.length > 0 &&
               releaseNotesMetadata[0].dirName
             ) {
+              const filePath = path.join(
+                S3_PATH_TO_GITBOOK_DOCS,
+                releaseNotesMetadata[0].dirName,
+                S3_DIRNAME_METADATA_JSON_PATH
+              );
               await putS3File(
                 releaseNotesMetadata,
-                path.join(
-                  S3_PATH_TO_GITBOOK_DOCS,
-                  releaseNotesMetadata[0].dirName,
-                  S3_DIRNAME_METADATA_JSON_PATH
-                ),
+                getLocalizedPath(filePath, LOCALE),
                 S3_BUCKET_NAME!,
-                getS3Client(),
-                LOCALE
+                getS3Client()
               );
             }
           } catch (error) {
@@ -929,10 +922,9 @@ async function main() {
         );
         await putS3File(
           releaseNotesMetadata.flat(),
-          S3_RELEASE_NOTES_METADATA_JSON_PATH,
+          getLocalizedPath(S3_RELEASE_NOTES_METADATA_JSON_PATH, LOCALE),
           S3_BUCKET_NAME!,
-          getS3Client(),
-          LOCALE
+          getS3Client()
         );
 
         console.log(
