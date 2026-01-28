@@ -15,7 +15,7 @@ import { extractTitleFromMarkdown } from '../helpers/extractTitle.helper';
 import { fetchFromStrapi } from '../helpers/fetchFromStrapi';
 import { sitePathFromS3Path } from '../helpers/sitePathFromS3Path';
 import { StrapiSolution } from '../helpers/strapiTypes';
-import { getSyncedSolutionsResponseJsonPath } from '../syncedResponses';
+import { getSyncedSolutionsResponseJsonFile } from '../syncedResponses';
 
 // Load environment variables from .env file
 dotenv.config();
@@ -25,8 +25,6 @@ const S3_PATH_TO_GITBOOK_DOCS =
   process.env.S3_PATH_TO_GITBOOK_DOCS || 'devportal-docs/docs';
 const S3_SOLUTIONS_METADATA_JSON_PATH =
   process.env.S3_SOLUTIONS_METADATA_JSON_PATH || 'solutions-metadata.json';
-const SYNCED_SOLUTIONS_RESPONSE_JSON_PATH =
-  getSyncedSolutionsResponseJsonPath();
 const LOCALE = process.env.LOCALE;
 
 const s3Client = makeS3Client();
@@ -128,7 +126,7 @@ async function main() {
 
   await putS3File(
     responseJson,
-    SYNCED_SOLUTIONS_RESPONSE_JSON_PATH,
+    getSyncedSolutionsResponseJsonFile,
     `${S3_BUCKET_NAME}`,
     s3Client,
     LOCALE

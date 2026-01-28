@@ -16,7 +16,7 @@ import { fetchFromStrapi } from '../helpers/fetchFromStrapi';
 import { StrapiGuide } from '../helpers/strapiTypes';
 import { MetadataInfo } from '../helpers/guidesMetadataHelper';
 import { sitePathFromS3Path } from '../helpers/sitePathFromS3Path';
-import { getSyncedGuidesResponseJsonPath } from '../syncedResponses';
+import { getSyncedGuidesResponseJsonFile } from '../syncedResponses';
 
 // Load environment variables from .env file
 dotenv.config();
@@ -26,7 +26,6 @@ const S3_PATH_TO_GITBOOK_DOCS =
   process.env.S3_PATH_TO_GITBOOK_DOCS || 'devportal-docs/docs';
 const S3_GUIDE_METADATA_JSON_PATH =
   process.env.S3_GUIDE_METADATA_JSON_PATH || 'guides-metadata.json';
-const SYNCED_GUIDES_RESPONSE_JSON_PATH = getSyncedGuidesResponseJsonPath();
 const LOCALE = process.env.LOCALE;
 
 const s3Client = makeS3Client();
@@ -152,7 +151,7 @@ async function main() {
 
   await putS3File(
     responseJson,
-    SYNCED_GUIDES_RESPONSE_JSON_PATH,
+    getSyncedGuidesResponseJsonFile,
     `${S3_BUCKET_NAME}`,
     s3Client,
     LOCALE

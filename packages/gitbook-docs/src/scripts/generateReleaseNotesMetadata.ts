@@ -15,7 +15,7 @@ import { extractTitleFromMarkdown } from '../helpers/extractTitle.helper';
 import { fetchFromStrapi } from '../helpers/fetchFromStrapi';
 import { sitePathFromS3Path } from '../helpers/sitePathFromS3Path';
 import { StrapiReleaseNote } from '../helpers/strapiTypes';
-import { getSyncedReleaseNotesResponseJsonPath } from '../syncedResponses';
+import { getSyncedReleaseNotesResponseJsonFile } from '../syncedResponses';
 
 // Load environment variables from .env file
 dotenv.config();
@@ -26,8 +26,6 @@ const S3_PATH_TO_GITBOOK_DOCS =
 const S3_RELEASE_NOTES_METADATA_JSON_PATH =
   process.env.S3_RELEASE_NOTES_METADATA_JSON_PATH ||
   'release-notes-metadata.json';
-const SYNCED_RELEASE_NOTES_RESPONSE_JSON_PATH =
-  getSyncedReleaseNotesResponseJsonPath();
 const LOCALE = process.env.LOCALE;
 
 const s3Client = makeS3Client();
@@ -137,7 +135,7 @@ async function main() {
   // TODO: remove when Strapi will manage Metadata
   await putS3File(
     responseJson,
-    SYNCED_RELEASE_NOTES_RESPONSE_JSON_PATH,
+    getSyncedReleaseNotesResponseJsonFile,
     `${S3_BUCKET_NAME}`,
     s3Client,
     LOCALE

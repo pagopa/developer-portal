@@ -20,11 +20,11 @@ import { fetchFromStrapi } from '../helpers/fetchFromStrapi';
 import { MetadataInfo, MetadataType } from '../helpers/guidesMetadataHelper';
 import { sitePathFromS3Path } from '../helpers/sitePathFromS3Path';
 import {
-  getSyncedApisDataResponseJsonPath,
-  getSyncedGuidesResponseJsonPath,
-  getSyncedProductsResponseJsonPath,
-  getSyncedReleaseNotesResponseJsonPath,
-  getSyncedSolutionsResponseJsonPath,
+  getSyncedApisDataResponseJsonFile,
+  getSyncedGuidesResponseJsonFile,
+  getSyncedProductsResponseJsonFile,
+  getSyncedReleaseNotesResponseJsonFile,
+  getSyncedSolutionsResponseJsonFile,
 } from '../syncedResponses';
 import { DOCUMENTATION_PATH } from '../helpers/documentationParsing.helper';
 import {
@@ -635,14 +635,14 @@ async function main() {
       console.log('Saving Strapi products, APIs data, and sitemap...');
       await putS3File(
         strapiData.products,
-        getSyncedProductsResponseJsonPath(),
+        getSyncedProductsResponseJsonFile,
         S3_BUCKET_NAME!,
         getS3Client(),
         LOCALE
       );
       await putS3File(
         strapiData.apisData,
-        getSyncedApisDataResponseJsonPath(),
+        getSyncedApisDataResponseJsonFile,
         S3_BUCKET_NAME!,
         getS3Client(),
         LOCALE
@@ -653,7 +653,7 @@ async function main() {
     if (SAVE_STRAPI_RESPONSES && metadataFilter.guides) {
       await putS3File(
         strapiData.guidesRawResponse,
-        getSyncedGuidesResponseJsonPath(),
+        getSyncedGuidesResponseJsonFile,
         S3_BUCKET_NAME!,
         getS3Client(),
         LOCALE
@@ -663,7 +663,7 @@ async function main() {
     if (SAVE_STRAPI_RESPONSES && metadataFilter.solutions) {
       await putS3File(
         strapiData.solutionsRawResponse,
-        getSyncedSolutionsResponseJsonPath(),
+        getSyncedSolutionsResponseJsonFile,
         S3_BUCKET_NAME!,
         getS3Client(),
         LOCALE
@@ -673,7 +673,7 @@ async function main() {
     if (SAVE_STRAPI_RESPONSES && metadataFilter.releaseNotes) {
       await putS3File(
         strapiData.releaseNotesRawResponse,
-        getSyncedReleaseNotesResponseJsonPath(),
+        getSyncedReleaseNotesResponseJsonFile,
         S3_BUCKET_NAME!,
         getS3Client(),
         LOCALE
