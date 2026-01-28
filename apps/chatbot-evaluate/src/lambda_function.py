@@ -61,9 +61,11 @@ def lambda_handler(event, context):
     results = []
 
     # extract unique records
-    unique_records = [
-        dict(t) for t in set(tuple(r.items()) for r in event.get("Records", []))
-    ]
+    records = event.get("Records", [])
+    unique_records = []
+    for record in records:
+        if record not in unique_records:
+            unique_records.append(record)
     for record in unique_records:
         body = record.get("body", "{}")
         body = json.loads(body)
