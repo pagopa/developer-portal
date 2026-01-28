@@ -115,7 +115,6 @@ def mask_chat_history(messages: List[Dict[str, str]]) -> List[Dict[str, str]]:
 def process_span(
     span: Dict[str, Any],
     parent_span: LangfuseSpan = None,
-    all_spans: List[Dict[str, Any]] = [],
 ) -> SPAN_TYPES:
     """Process a span and create a Langfuse observation.
 
@@ -170,10 +169,6 @@ def process_span(
             metadata={"latency": get_latency(span["start_time"], span["end_time"])},
         )
 
-    children = get_children(all_spans, span_id)
-    if children:
-        for child_span in children:
-            process_span(child_span, observation, all_spans)
     observation.end()
 
 
@@ -223,7 +218,8 @@ def create_langfuse_trace(
         trace_context=TraceContext(trace_id=trace_id),
     )
 
-    process_span(sorted_spans[0], root, sorted_spans)
+    for span in sorted_spans[1:]:
+        process_span(span, root)
 
     masked_query = PRESIDIO.mask_pii(query)
     masked_response = PRESIDIO.mask_pii(response)
@@ -238,9 +234,7 @@ def create_langfuse_trace(
         user_id=user_id,
         session_id=session_id,
         metadata={
-            "latency": get_latency(
-                root_span["start_time"], sorted_spans[-1]["end_time"]
-            ),
+            "latency": get_latency(root_span["start_time"], spans[-1]["end_time"]),
             "contexts": contexts,
         },
     )
