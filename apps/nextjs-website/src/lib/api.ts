@@ -212,7 +212,7 @@ export async function getReleaseNote(
   }
 
   const releaseNotesMetadata = await getReleaseNotesMetadata(
-    releaseNote.attributes.dirName
+    releaseNote.dirName
   );
 
   const releaseNoteProps = await getReleaseNoteProps(

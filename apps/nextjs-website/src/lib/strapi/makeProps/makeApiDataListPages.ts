@@ -5,48 +5,44 @@ import { makeBaseProductWithoutLogoProps } from '@/lib/strapi/makeProps/makeProd
 import { StrapiApiDataListPages } from '@/lib/strapi/types/apiDataListPages';
 import { compact } from 'lodash';
 import { StrapiBaseApiData } from '../types/apiDataList';
+import { RootEntity } from '@/lib/strapi/types/rootEntity';
 
 function makeApiDataListPageCard(item: StrapiBaseApiData, slug: string) {
-  if (!item.attributes.apiRestDetail && !item.attributes.apiSoapDetail) {
+  if (!item.apiRestDetail && !item.apiSoapDetail) {
     console.error(
-      `Error while processing API Data with title "${item.attributes.title}": missing API details. Skipping...`
+      `Error while processing API Data with title "${item.title}": missing API details. Skipping...`
     );
     return null;
   }
 
-  if (
-    !item.attributes.apiRestDetail?.slug &&
-    !item.attributes.apiSoapDetail?.slug
-  ) {
+  if (!item.apiRestDetail?.slug && !item.apiSoapDetail?.slug) {
     console.error(`
-      Error while processing API Data with title "${item.attributes.title}": missing API slug. Skipping...`);
+      Error while processing API Data with title "${item.title}": missing API slug. Skipping...`);
     return null;
   }
 
   return {
     labels: [
       {
-        label: item.attributes.apiSoapDetail ? 'SOAP' : 'REST',
+        label: item.apiSoapDetail ? 'SOAP' : 'REST',
       },
     ].filter((label) => !!label.label),
-    title: item?.attributes?.title,
-    text: item?.attributes?.description || '',
-    icon: item?.attributes?.icon?.data?.attributes.url || undefined,
+    title: item?.title,
+    text: item?.description || '',
+    icon: item?.icon?.url || '',
     href: `/${slug}/api/${
-      item.attributes.apiRestDetail
-        ? item.attributes.apiRestDetail?.slug
-        : item.attributes.apiSoapDetail?.slug
+      item.apiRestDetail ? item.apiRestDetail?.slug : item.apiSoapDetail?.slug
     }`,
-    tags: item.attributes.tags.data?.map((tag) => tag.attributes) || [],
+    tags: item.tags?.map((tag) => tag) || [],
   };
 }
 
 export function makeApiDataListPagesProps(
-  strapiApiDataListPages: StrapiApiDataListPages
+  strapiApiDataListPages: RootEntity<StrapiApiDataListPages>
 ): ReadonlyArray<ApiDataListPageTemplateProps> {
   return compact(
-    strapiApiDataListPages.data.map(({ attributes }) => {
-      const slug = attributes.product.data?.attributes.slug;
+    strapiApiDataListPages.data.map((attributes) => {
+      const slug = attributes.product?.slug;
       if (!slug) {
         console.error(
           `Error while processing API Data List Page with title "${attributes.title}": missing product slug. Skipping...`
@@ -56,9 +52,7 @@ export function makeApiDataListPagesProps(
 
       // eslint-disable-next-line functional/no-try-statements
       try {
-        const product = makeBaseProductWithoutLogoProps(
-          attributes.product.data
-        );
+        const product = makeBaseProductWithoutLogoProps(attributes.product);
         return {
           ...attributes,
           hero: {
@@ -67,14 +61,14 @@ export function makeApiDataListPagesProps(
           },
           product,
           apiDetailSlugs: compact(
-            attributes.apiData.data.map(({ attributes }) =>
+            attributes.api_data.map((attributes) =>
               attributes.apiRestDetail
                 ? attributes.apiRestDetail.slug
                 : attributes.apiSoapDetail?.slug
             )
           ),
           cards: compact(
-            attributes.apiData.data.map((item) =>
+            attributes.api_data.map((item) =>
               makeApiDataListPageCard(item, slug)
             )
           ),

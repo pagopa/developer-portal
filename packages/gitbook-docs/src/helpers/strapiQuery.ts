@@ -17,8 +17,8 @@ const productRelationsPopulate = {
     'quickstart_guide',
     'release_note',
     'api_data_list_page',
-    'api_data_list_page.apiData.*',
-    'api_data_list_page.apiData.apiRestDetail.*',
+    'api_data_list_page.api_data',
+    'api_data_list_page.api_data.apiRestDetail',
     'guide_list_page',
     'tutorial_list_page',
     'use_case_list_page',
@@ -26,37 +26,7 @@ const productRelationsPopulate = {
 };
 
 const webinarPopulate = {
-  populate: {
-    coverImage: {
-      populate: ['image'],
-    },
-    webinarSpeakers: {
-      populate: ['avatar'],
-    },
-    relatedLinks: {
-      populate: ['links'],
-    },
-    relatedResources: {
-      populate: {
-        resources: {
-          populate: ['image'],
-        },
-        downloadableDocuments: {
-          populate: '*',
-        },
-      },
-    },
-    seo: {
-      populate: '*,metaImage,metaSocial.image',
-    },
-    questionsAndAnswers: '*',
-    webinarCategory: {
-      populate: ['icon'],
-    },
-    headerImage: {
-      populate: ['image'],
-    },
-  },
+  populate: '*',
 };
 
 const guidesPopulate = {
@@ -66,7 +36,7 @@ const guidesPopulate = {
     listItems: { populate: '*' },
     versions: { populate: '*' },
     bannerLinks: { populate: ['icon'] },
-    seo: { populate: '*,metaImage,metaSocial.image' },
+    seo: { populate: '*' },
     product: {
       ...productRelationsPopulate,
     },
@@ -81,27 +51,27 @@ const guidesQueryParams = {
 const releaseNotesPopulate = {
   populate: {
     bannerLinks: {
-      populate: ['icon'],
+      populate: ['*'],
     },
     product: {
       populate: [
         'logo',
-        'bannerLinks.icon',
+        'bannerLinks',
         'overview',
         'quickstart_guide',
         'release_note',
         'api_data_list_page',
-        'api_data_list_page.apiData.*',
-        'api_data_list_page.apiData.apiRestDetail.slug',
-        'api_data_list_page.apiData.apiRestDetail.specUrls',
-        'api_data_list_page.apiData.apiSoapDetail.*',
+        'api_data_list_page.api_data',
+        'api_data_list_page.api_data.apiRestDetail',
+        'api_data_list_page.api_data.apiRestDetail.specUrls',
+        'api_data_list_page.api_data.apiSoapDetail',
         'guide_list_page',
         'tutorial_list_page',
         'use_case_list_page',
       ],
     },
     seo: {
-      populate: '*,metaImage,metaSocial.image',
+      populate: '*',
     },
   },
 };
@@ -113,21 +83,25 @@ const releaseNotesQueryParams = {
 
 const solutionsPopulate = {
   populate: {
-    icon: 'icon',
+    icon: {
+      populate: '*',
+    },
     stats: '*',
     steps: {
       populate: {
-        products: '*',
+        products: {
+          populate: '*',
+        },
       },
     },
     seo: {
-      populate: '*,metaImage,metaSocial.image',
+      populate: '*',
     },
     products: {
-      populate: ['logo'],
+      populate: '*',
     },
     bannerLinks: {
-      populate: ['icon'],
+      populate: ['*'],
     },
     webinars: {
       ...webinarPopulate,
@@ -183,10 +157,10 @@ const guideListPagesPopulate = {
       },
     },
     bannerLinks: {
-      populate: ['icon'],
+      populate: ['*'],
     },
     seo: {
-      populate: '*,metaImage,metaSocial.image',
+      populate: '*',
     },
   },
 };
@@ -201,10 +175,8 @@ const solutionListPagePopulate = {
     solutions: {
       populate: [
         'bannerLinks',
-        'bannerLinks.icon',
         'products.logo',
         'icon',
-        'icon.name',
         'stats',
         'steps',
         'steps.products',
@@ -222,7 +194,7 @@ const solutionListPagePopulate = {
       populate: ['items.icon'],
     },
     seo: {
-      populate: '*,metaImage,metaSocial.image',
+      populate: '*',
     },
   },
 };

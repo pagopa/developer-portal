@@ -9,15 +9,14 @@ const makeStrapiUseCaseListPagePopulate = () =>
       bannerLinks: {
         populate: ['icon'],
       },
-      enableFilters: true,
       product: {
         ...productRelationsPopulate,
       },
       seo: {
-        populate: '*,metaImage,metaSocial.image',
+        populate: '*',
       },
       useCases: {
-        populate: ['coverImage', 'product', 'tags'],
+        populate: '*',
       },
     },
   });

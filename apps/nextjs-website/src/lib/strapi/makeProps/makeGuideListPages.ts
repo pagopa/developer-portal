@@ -13,9 +13,9 @@ export function makeGuideListPagesProps(
   strapiGuideListPages: StrapiGuideListPages
 ): readonly GuideListPageProps[] {
   return compact(
-    strapiGuideListPages.data.map(({ attributes }) => {
-      const productData = attributes.product.data;
-      if (!productData?.attributes.slug) {
+    strapiGuideListPages.data.map((attributes) => {
+      const productData = attributes.product;
+      if (!productData?.slug) {
         console.error(
           `Error while processing GuideListPage with title "${attributes.title}": missing product slug. Skipping...`
         );
@@ -28,14 +28,12 @@ export function makeGuideListPagesProps(
           ...attributes.guidesByCategory.map(({ category, guides }) => ({
             title: category,
             guides: compact(
-              guides.data.map((guide) =>
-                makeGuideCardProps(guide, product.slug)
-              )
+              guides.map((guide) => makeGuideCardProps(guide, product.slug))
             ),
           })),
         ];
         return {
-          path: `/${productData.attributes.slug}/guides`,
+          path: `/${productData.slug}/guides`,
           product,
           abstract: {
             title: attributes.title,
@@ -45,13 +43,13 @@ export function makeGuideListPagesProps(
           bannerLinks:
             attributes.bannerLinks.length > 0
               ? attributes.bannerLinks.map(makeBannerLinkProps)
-              : productData.attributes.bannerLinks?.map(makeBannerLinkProps),
+              : productData.bannerLinks?.map(makeBannerLinkProps),
           seo: attributes.seo,
           updatedAt: attributes.updatedAt,
         } satisfies GuideListPageProps;
       } catch (error) {
         console.error(
-          `Error while processing Guide List Page for product with slug "${productData.attributes.slug}":`,
+          `Error while processing Guide List Page for product with slug "${productData.slug}":`,
           error,
           'Skipping...'
         );
@@ -65,24 +63,24 @@ function makeGuideCardProps(
   guide: StrapiBaseGuide,
   productSlug: string
 ): GuideCardProps | null {
-  if (!guide.attributes.slug) {
+  if (!guide.slug) {
     console.error('guide slug is missing:', guide);
     return null;
   }
 
   try {
     return {
-      title: guide.attributes.title,
+      title: guide.title,
       description: {
         title: 'guideListPage.cardSection.listItemsTitle',
-        listItems: guide.attributes.listItems.map(({ text }) => text),
+        listItems: guide.listItems.map(({ text }) => text),
         translate: true,
       },
-      imagePath: guide.attributes.image?.data?.attributes?.url,
-      mobileImagePath: guide.attributes.mobileImage?.data?.attributes?.url,
+      imagePath: guide.image?.url,
+      mobileImagePath: guide.mobileImage?.url,
       link: {
         label: 'guideListPage.cardSection.linkLabel',
-        href: `/${productSlug}/guides/${guide.attributes.slug}`,
+        href: `/${productSlug}/guides/${guide.slug}`,
         translate: true,
       },
     } satisfies GuideCardProps;

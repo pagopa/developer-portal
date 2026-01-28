@@ -13,13 +13,13 @@ export type TutorialProps = Tutorial & {
   readonly relatedLinks?: RelatedLinksProps;
   readonly bannerLinks?: readonly BannerLinkProps[];
 };
-
 export function makeTutorialsProps(
   strapiTutorials: StrapiTutorials,
   markdownContentDict: Record<string, string>
 ): readonly TutorialProps[] {
   return compact(
-    strapiTutorials.data.map(({ attributes }) => {
+    strapiTutorials.data.map((attributes) => {
+      // Controllo esistenza campi obbligatori minimi
       if (!attributes.slug || !attributes.title) {
         console.error(
           `Error while processing Tutorial: missing title or slug. Title: ${attributes.title} | Slug: ${attributes.slug}. Skipping...`
@@ -27,7 +27,8 @@ export function makeTutorialsProps(
         return null;
       }
 
-      if (!attributes.product.data.attributes.slug) {
+      // Controllo esistenza product
+      if (!attributes.product?.slug) {
         console.error(
           `Error while processing Tutorial with title "${attributes.title}": missing product slug. Skipping...`
         );
@@ -36,36 +37,46 @@ export function makeTutorialsProps(
 
       try {
         return {
-          image: attributes.image.data
+          image: attributes.image
             ? {
-                url: attributes.image.data.attributes.url,
-                alternativeText:
-                  attributes.image.data.attributes.alternativeText || '',
+                url: attributes.image.url,
+                alternativeText: attributes.image.alternativeText || '',
               }
             : undefined,
+
           title: attributes.title,
+
           publishedAt: attributes.publishedAt
             ? new Date(attributes.publishedAt)
             : undefined,
+
           name: attributes.title,
-          path: `/${attributes.product.data.attributes.slug}/tutorials/${attributes.slug}`,
+
+          path: `/${attributes.product.slug}/tutorials/${attributes.slug}`,
+
           parts: compact(
-            attributes.parts.map((part) =>
+            attributes.parts?.map((part) =>
               makePartProps(part, markdownContentDict)
-            )
+            ) || []
           ),
-          productSlug: attributes.product.data.attributes.slug,
+
+          productSlug: attributes.product.slug,
+
           description: attributes.description || '',
-          icon: attributes.icon.data?.attributes || undefined,
+
+          icon: attributes.icon || undefined,
+
           relatedLinks: attributes.relatedLinks,
+
           bannerLinks:
             attributes.bannerLinks && attributes.bannerLinks.length > 0
-              ? attributes.bannerLinks?.map(makeBannerLinkProps)
-              : attributes.product.data?.attributes.bannerLinks?.map(
-                  makeBannerLinkProps
-                ),
+              ? attributes.bannerLinks.map(makeBannerLinkProps)
+              : attributes.product.bannerLinks?.map(makeBannerLinkProps),
+
           seo: attributes.seo,
-          tags: attributes.tags.data?.map((tag) => tag.attributes) || [],
+
+          tags: attributes.tags?.map((tag) => tag) || [],
+
           updatedAt: attributes.updatedAt,
         } satisfies TutorialProps;
       } catch (error) {

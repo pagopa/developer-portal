@@ -10,7 +10,7 @@ export function makeGuidesProps(
   strapiGuides: StrapiGuides
 ): readonly GuideDefinition[] {
   return compact(
-    strapiGuides.data.map(({ attributes }) => {
+    strapiGuides.data.map((attributes) => {
       if (!attributes.slug || !attributes.title) {
         console.error(
           `Error while processing Guide: missing title or slug. Title: ${attributes.title} | Slug: ${attributes.slug}. Skipping...`
@@ -18,7 +18,7 @@ export function makeGuidesProps(
         return null;
       }
 
-      if (!attributes.product.data?.attributes.slug) {
+      if (!attributes.product?.slug) {
         console.error(
           `Error while processing Guide with name "${attributes.title}": missing the product slug. Skipping...`
         );
@@ -26,9 +26,7 @@ export function makeGuidesProps(
       }
 
       try {
-        const product = makeBaseProductWithoutLogoProps(
-          attributes.product.data
-        );
+        const product = makeBaseProductWithoutLogoProps(attributes.product);
         return {
           product,
           guide: {
@@ -39,9 +37,7 @@ export function makeGuidesProps(
           bannerLinks:
             attributes.bannerLinks.length > 0
               ? attributes.bannerLinks.map(makeBannerLinkProps)
-              : attributes.product.data.attributes.bannerLinks?.map(
-                  makeBannerLinkProps
-                ) || [],
+              : attributes.product.bannerLinks?.map(makeBannerLinkProps) || [],
           seo: attributes.seo,
         };
       } catch (error) {

@@ -166,8 +166,7 @@ export function quickStartToStructuredDataHowTo(
     name: quickStart.seo?.metaTitle,
     description: quickStart.abstract?.description,
     image:
-      quickStart.seo?.metaImage?.data?.attributes &&
-      mediaToImageObject(quickStart.seo.metaImage.data.attributes),
+      quickStart.seo?.metaImage && mediaToImageObject(quickStart.seo.metaImage),
     step: steps,
   });
 }
@@ -255,9 +254,7 @@ export function convertSeoToStructuredDataArticle(
         url: seo?.canonicalURL,
         author: organization,
         about: seo?.keywords,
-        image:
-          seo?.metaImage?.data?.attributes &&
-          mediaToImageObject(seo.metaImage.data.attributes),
+        image: seo?.metaImage && mediaToImageObject(seo.metaImage),
       }),
     }
   );
