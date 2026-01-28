@@ -198,6 +198,7 @@ def create_langfuse_trace(
         user_id (str): The ID of the user.
         session_id (str): The ID of the session.
         query (str): The user query.
+        messages (List[Dict[str, str]]): The chatbot history.
         response (str): The response string.
         contexts (List[str]): The list of context strings.
         tags (List[str]): The list of tag strings.
