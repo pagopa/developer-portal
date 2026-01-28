@@ -7,19 +7,22 @@ import React, { FC } from 'react';
 import { useTranslations } from 'next-intl';
 import { useScrollUp } from './useScrollUp';
 import { SITE_HEADER_HEIGHT } from '@/config';
-import { useParams } from 'next/navigation';
 
 type ProductHeaderProps = {
+  locale: string;
   product: Product;
   path: string;
 };
 
-const ProductHeader: FC<ProductHeaderProps> = ({ product, path }) => {
+const ProductHeader: FC<ProductHeaderProps> = ({
+  locale: currentLocale,
+  product,
+  path,
+}) => {
   const { palette } = useTheme();
   const t = useTranslations();
   const scrollUp = useScrollUp();
   const themeVariant = palette.mode;
-  const { locale: currentLocale } = useParams<{ locale: string }>();
 
   const menu = productToMenuItems(
     currentLocale,

@@ -6,11 +6,6 @@ export type Locale = {
 
 export const SUPPORTED_LOCALES: readonly Locale[] = [
   {
-    langCode: 'en',
-    locale: 'en-US',
-    label: 'EN',
-  },
-  {
     langCode: 'it',
     locale: 'it-IT',
     label: 'IT',

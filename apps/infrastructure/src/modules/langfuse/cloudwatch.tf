@@ -1,3 +1,11 @@
+resource "aws_cloudwatch_log_group" "langfuse_web" {
+  name              = "/aws/ecs/langfuse_web_log"
+  retention_in_days = 14
+  tags = {
+    Name = "langfuse_web"
+  }
+}
+
 resource "aws_cloudwatch_log_group" "langfuse_worker" {
   name              = "/aws/ecs/langfuse_worker_log"
   retention_in_days = 14

@@ -99,7 +99,7 @@ export const makeGuide = (props: {
     guidePaths,
     guideDefinition: { product, guide, versions, bannerLinks },
   } = props;
-  const guidePath = `${props.locale}/${product.slug}/guides/${guide.slug}`;
+  const guidePath = `/${props.locale}/${product.slug}/guides/${guide.slug}`;
   const docs = versions
     .filter(
       ({ version, main }) =>
@@ -168,7 +168,7 @@ export const makeReleaseNote = (
   const doc = {
     ...releaseNote,
     source: {
-      pathPrefix: `${locale}/${releaseNote.product.slug}/release-note`,
+      pathPrefix: `/${locale}/${releaseNote.product.slug}/release-note`,
       assetsPrefix: `${staticContentsUrl}/${dirPath}`,
       dirPath: dirPath,
       spaceId: releaseNote.dirName,

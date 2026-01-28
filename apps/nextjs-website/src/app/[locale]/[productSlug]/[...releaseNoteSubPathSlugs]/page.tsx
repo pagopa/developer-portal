@@ -140,7 +140,7 @@ const ReleaseNotePage = async (props0: {
   return (
     <ProductLayout
       product={product}
-      path={`/${locale}/${path}`}
+      path={path}
       bannerLinks={bannerLinks}
       structuredData={structuredData}
     >
