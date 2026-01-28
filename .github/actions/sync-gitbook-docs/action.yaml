@@ -48,6 +48,47 @@ inputs:
     description: 'Type of metadata to generate (all, guides, solutions, release_notes)'
     required: false
     default: 'all'
+  strapi_endpoint:
+    description: 'Strapi Endpoint'
+    required: true
+  documentation_path:
+    description: 'Path to documentation'
+    required: false
+    default: '../../devportal-docs/docs'
+  url_parsing_metadata_json_path:
+    description: 'Path to URL parsing metadata JSON'
+    required: false
+    default: '../../url-parsing-metadata.json'
+  s3_doc_extraction_bucket_name:
+    description: 'S3 Bucket name for doc extraction'
+    required: true
+  s3_path_to_gitbook_docs:
+    description: 'S3 Path to GitBook docs'
+    required: false
+    default: 'devportal-docs/docs'
+  next_public_cognito_region:
+    description: 'Cognito Region'
+    required: false
+    default: 'eu-south-1'
+  fetch_from_strapi:
+    description: 'Fetch from Strapi'
+    required: false
+    default: 'true'
+  s3_dirname_metadata_json_path:
+    description: 'S3 Dirname Metadata JSON Path'
+    required: true
+  s3_solutions_dirnames_json_path:
+    description: 'S3 Solutions Dirnames JSON Path'
+    required: false
+    default: 'solutions-dirNames.json'
+  s3_release_notes_dirnames_json_path:
+    description: 'S3 Release Notes Dirnames JSON Path'
+    required: false
+    default: 'release-notes-dirNames.json'
+  s3_dirnames_json_path:
+    description: 'S3 Dirnames JSON Path'
+    required: false
+    default: 'dirNames.json'
 
 runs:
   using: "composite"
@@ -106,15 +147,15 @@ runs:
       shell: bash
       env:
         ENVIRONMENT: ${{ inputs.environment }}
-        DOCUMENTATION_PATH: ${{ vars.DOCUMENTATION_PATH || '../../devportal-docs/docs' }}
-        URL_PARSING_METADATA_JSON_PATH: ${{ vars.URL_PARSING_METADATA_JSON_PATH || '../../url-parsing-metadata.json' }}
-        STRAPI_ENDPOINT: ${{ vars.STRAPI_ENDPOINT }}
+        DOCUMENTATION_PATH: ${{ inputs.documentation_path }}
+        URL_PARSING_METADATA_JSON_PATH: ${{ inputs.url_parsing_metadata_json_path }}
+        STRAPI_ENDPOINT: ${{ inputs.strapi_endpoint }}
         STRAPI_API_TOKEN: ${{ inputs.strapi_api_token }}
         S3_BUCKET_NAME: devportal-${{ env.ENV_SHORT }}-website-static-content
-        S3_DOC_EXTRACTION_BUCKET_NAME: ${{ vars.S3_DOC_EXTRACTION_BUCKET_NAME }}
-        S3_PATH_TO_GITBOOK_DOCS: ${{ vars.S3_PATH_TO_GITBOOK_DOCS || 'devportal-docs/docs' }}
-        NEXT_PUBLIC_COGNITO_REGION: ${{ vars.NEXT_PUBLIC_COGNITO_REGION || 'eu-south-1' }}
-        FETCH_FROM_STRAPI: ${{ vars.FETCH_FROM_STRAPI || 'true' }}
+        S3_DOC_EXTRACTION_BUCKET_NAME: ${{ inputs.s3_doc_extraction_bucket_name }}
+        S3_PATH_TO_GITBOOK_DOCS: ${{ inputs.s3_path_to_gitbook_docs }}
+        NEXT_PUBLIC_COGNITO_REGION: ${{ inputs.next_public_cognito_region }}
+        FETCH_FROM_STRAPI: ${{ inputs.fetch_from_strapi }}
         GENERATE_ROOT_METADATA_FILE: ${{ inputs.generate_root_metadata_file == 'true' && 'true' || 'false' }}
         GENERATE_URL_METADATA: 'true'
         GENERATE_SITEMAP_METADATA: 'true'
@@ -122,9 +163,9 @@ runs:
         METADATA_TYPE: ${{ inputs.metadata_type }}
         DIR_NAMES_FILTER: ${{ inputs.dir_names_filter }}
         SITEMAP_URL: ${{ env.SITEMAP_URL }}
-        S3_DIRNAME_METADATA_JSON_PATH: ${{ vars.S3_DIRNAME_METADATA_JSON_PATH }}
-        S3_SOLUTIONS_DIRNAMES_JSON_PATH: ${{ vars.S3_SOLUTIONS_DIRNAMES_JSON_PATH || 'solutions-dirNames.json' }}
-        S3_RELEASE_NOTES_DIRNAMES_JSON_PATH: ${{ vars.S3_RELEASE_NOTES_DIRNAMES_JSON_PATH || 'release-notes-dirNames.json' }}
+        S3_DIRNAME_METADATA_JSON_PATH: ${{ inputs.s3_dirname_metadata_json_path }}
+        S3_SOLUTIONS_DIRNAMES_JSON_PATH: ${{ inputs.s3_solutions_dirnames_json_path }}
+        S3_RELEASE_NOTES_DIRNAMES_JSON_PATH: ${{ inputs.s3_release_notes_dirnames_json_path }}
         LOCALE: ${{ inputs.locale }}
       run: npm run sync-all-metadata -w gitbook-docs
 
@@ -132,26 +173,26 @@ runs:
       shell: bash
       env:
         ENVIRONMENT: ${{ inputs.environment }}
-        DOCUMENTATION_PATH: ${{ vars.DOCUMENTATION_PATH || '../../devportal-docs/docs' }}
-        URL_PARSING_METADATA_JSON_PATH: ${{ vars.URL_PARSING_METADATA_JSON_PATH || '../../url-parsing-metadata.json' }}
+        DOCUMENTATION_PATH: ${{ inputs.documentation_path }}
+        URL_PARSING_METADATA_JSON_PATH: ${{ inputs.url_parsing_metadata_json_path }}
       run: npm run parse-docs -w gitbook-docs
 
     - name: Replace escaped tokens with backticks in docs
       shell: bash
       env:
-        DOCUMENTATION_PATH: ${{ vars.DOCUMENTATION_PATH || '../../devportal-docs/docs' }}
+        DOCUMENTATION_PATH: ${{ inputs.documentation_path }}
       run: npm run replace-escaped-tokens-with-backticks -w gitbook-docs
 
     - name: Delete unused documentation
       shell: bash
       env:
         ENV_SHORT: ${{ env.ENV_SHORT }}
-        FETCH_FROM_STRAPI: ${{ vars.FETCH_FROM_STRAPI || 'true' }}
+        FETCH_FROM_STRAPI: ${{ inputs.fetch_from_strapi }}
         S3_BUCKET_NAME: devportal-${{ env.ENV_SHORT }}-website-static-content
-        S3_DIRNAMES_JSON_PATH: ${{ vars.S3_DIRNAMES_JSON_PATH || 'dirNames.json' }}
-        S3_PATH_TO_GITBOOK_DOCS: ${{ vars.S3_PATH_TO_GITBOOK_DOCS || 'devportal-docs/docs' }}
+        S3_DIRNAMES_JSON_PATH: ${{ inputs.s3_dirnames_json_path }}
+        S3_PATH_TO_GITBOOK_DOCS: ${{ inputs.s3_path_to_gitbook_docs }}
         STRAPI_API_TOKEN: ${{ inputs.strapi_api_token }}
-        STRAPI_ENDPOINT: ${{ vars.STRAPI_ENDPOINT }}
+        STRAPI_ENDPOINT: ${{ inputs.strapi_endpoint }}
         LOCALE: ${{ inputs.locale }}
       run: npm run delete-unused-directories -w gitbook-docs
 
@@ -159,7 +200,7 @@ runs:
       shell: bash
       env:
         ENV_SHORT: ${{ env.ENV_SHORT }}
-        S3_DIRNAMES_JSON_PATH: ${{ vars.S3_DIRNAMES_JSON_PATH || 'dirNames.json' }}
+        S3_DIRNAMES_JSON_PATH: ${{ inputs.s3_dirnames_json_path }}
       run: |
         echo "Fetching directory lists from S3 to validate publication status..."
         S3_DIRNAMES="s3://devportal-${{ env.ENV_SHORT }}-website-static-content/${{ env.S3_DIRNAMES_JSON_PATH }}"
