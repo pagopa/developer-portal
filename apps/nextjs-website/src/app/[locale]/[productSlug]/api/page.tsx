@@ -62,7 +62,7 @@ const ApiDataListPage = async (props: { params: Promise<Params> }) => {
     return (
       <ProductLayout
         product={apiDataListPageProps.product}
-        path={`/${params.locale}/${apiDataListPageProps.product.slug}/api`}
+        path={`/${apiDataListPageProps.product.slug}/api`}
         showBreadcrumbs
         structuredData={structuredData}
       >

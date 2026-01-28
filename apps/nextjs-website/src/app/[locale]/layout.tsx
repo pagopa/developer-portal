@@ -98,6 +98,7 @@ export default async function RootLayout({
   children: React.ReactNode;
   params: Promise<{ locale: string }>;
 }) {
+  const { locale } = await params;
   const products = [...(await getProducts()).filter((product) => product.isVisible)];
 
   // Disabled eslint rules to to follow https://next-intl-docs.vercel.app/docs/getting-started/app-router-client-components guide
@@ -111,28 +112,27 @@ export default async function RootLayout({
     notFound();
   }
 
-
   return (
-    <html lang={currentLocale} className={titilliumWeb.variable}>
+    <html lang={locale} className={titilliumWeb.variable}>
       <head>
         {isProduction && (
           <Script
-            id="matomo-tag-manager"
-            key="script-matomo-tag-manager"
+            id='matomo-tag-manager'
+            key='script-matomo-tag-manager'
             dangerouslySetInnerHTML={{
               __html: useNewCookie
                 ? MATOMO_TAG_MANAGER_SCRIPT
                 : PREVIOUS_MATOMO_TAG_MANAGER_SCRIPT,
             }}
-            strategy="lazyOnload"
+            strategy='lazyOnload'
           />
         )}
       </head>
       <ThemeRegistry options={{ key: 'mui' }}>
         <NextIntlContext
-          locale={currentLocale}
+          locale={locale}
           messages={messages}
-          timeZone="Europe/Rome"
+          timeZone='Europe/Rome'
         >
           <BodyWrapper>
             <CookieBannerScript
@@ -145,7 +145,7 @@ export default async function RootLayout({
             />
             <AuthProvider>
               <ChatbotProvider isChatbotVisible={isChatbotActive}>
-                <SiteHeader currentLocale={currentLocale} products={products} />
+                <SiteHeader currentLocale={locale} products={products} />
                 <ErrorBoundary errorComponent={Error}>
                   <main>
                     <Box sx={{ marginTop: `${SITE_HEADER_HEIGHT}px` }}>
