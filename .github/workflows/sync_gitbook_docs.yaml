@@ -45,7 +45,7 @@ on:
         default: ''
 
   schedule:
-    - cron: '0 23 * * *'  # Run daily at midnight UTC
+    - cron: '10 11 * * *'  # Run daily at midnight UTC
 
 permissions:
   id-token: write
@@ -318,7 +318,7 @@ jobs:
             for dir in $DIRS; do
               if [[ -n "$dir" ]]; then
                 echo "Syncing directory: $dir"
-                aws s3 sync "docs/$dir" "s3://devportal-p-website-static-content/devportal-docs/docs/$dir" --delete --exclude "**/metadata.json" --size-only
+                aws s3 sync "docs/$dir" "s3://devportal-p-website-static-content/devportal-docs/docs/$dir" --delete --exclude "metadata.json" --size-only
               fi
             done
           fi
