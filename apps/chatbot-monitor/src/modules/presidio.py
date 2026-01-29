@@ -161,6 +161,9 @@ class PresidioPII:
         return results
 
     def mask_pii(self, text: str, results: List[RecognizerResult] | None = None):
+        # Handle None or empty strings
+        if not text:
+            return ""
 
         if results is None:
             results = self.detect_pii(text)
