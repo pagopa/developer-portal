@@ -49,7 +49,7 @@ const ApiViewer: FC<ApiViewerProps> = ({ specURL }) => {
   }, []);
 
   useEffect(() => {
-    const rapidocEl = document.getElementById('my-rapidoc');
+    const rapidocEl = document.getElementById('rapidoc-component');
 
     if (!rapidocEl) return;
 
@@ -103,7 +103,7 @@ const ApiViewer: FC<ApiViewerProps> = ({ specURL }) => {
         auto-scroll='false'
         bg-color={palette.background.paper}
         font-size='large'
-        id='my-rapidoc'
+        id='rapidoc-component'
         mono-font='Titillium Web'
         nav-bg-color={palette.grey[50]}
         nav-text-color={palette.text.primary}
