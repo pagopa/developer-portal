@@ -95,13 +95,25 @@ async function convertSolutionToMetadataItems(
 async function main() {
   console.log('Starting to process Markdown files...');
 
+  // TODO: remove when Strapi will manage Metadata
+  // eslint-disable-next-line functional/no-let
+  let solutionListPagesResponse;
+  try {
+    solutionListPagesResponse = await getResponseFromStrapi(
+      'api/solution-list-page?populate[solutions][populate][0]=bannerLinks&populate[solutions][populate][1]=bannerLinks.icon&populate[solutions][populate][2]=products.logo&populate[solutions][populate][3]=icon&populate[solutions][populate][4]=stats&populate[solutions][populate][5]=steps&populate[solutions][populate][6]=steps.products&populate[solutions][populate][7]=webinars&populate[solutions][populate][8]=webinars.coverImage&populate[solutions][populate][9]=caseHistories&populate[solutions][populate][10]=caseHistories.case_histories&populate[solutions][populate][11]=caseHistories.case_histories.image&populate[caseHistories][populate][0]=case_histories&populate[caseHistories][populate][1]=case_histories.image&populate[features][populate][0]=items.icon&populate[seo][populate]=*'
+    );
+  } catch (error) {
+    console.error('Error fetching solution list pages from Strapi:', error);
+    process.exit(1);
+  }
+
   // eslint-disable-next-line functional/no-let
   let strapiSolutions;
   // eslint-disable-next-line functional/no-let
   let responseJson;
   try {
     const result = await fetchFromStrapi<StrapiSolution>(
-      'api/solutions/?populate[icon]=icon&populate[stats]=*&populate[steps][populate][products]=*&populate[seo][populate]=*,metaImage,metaSocial.image&populate[products][populate][0]=logo&populate[bannerLinks][populate][0]=icon&populate[webinars][populate][coverImage][populate][0]=image&populate[webinars][populate][webinarSpeakers][populate][0]=avatar&populate[webinars][populate][relatedLinks][populate][0]=links&populate[webinars][populate][relatedResources][populate][resources][populate][0]=image&populate[webinars][populate][relatedResources][populate][downloadableDocuments][populate]=*&populate[webinars][populate][seo][populate]=*,metaImage,metaSocial.image&populate[webinars][populate][questionsAndAnswers]=*&populate[webinars][populate][webinarCategory][populate][0]=icon&populate[webinars][populate][headerImage][populate][0]=image&populate[caseHistories][populate][0]=case_histories&populate[caseHistories][populate][1]=case_histories.image&pagination[pageSize]=1000&pagination[page]=1'
+      'api/solutions?populate[icon]=true&populate[stats]=*&populate[seo][populate]=*&populate[steps][populate]=*&populate[products][populate]=*&populate[bannerLinks][populate][0]=icon&populate[caseHistories][populate][0]=case_histories&populate[webinars][populate][webinarSpeakers][populate][0]=avatar&populate[webinars][populate][relatedLinks][populate][0]=links&populate[webinars][populate][relatedResources][populate]=*&populate[webinars][populate][seo][populate]=*&populate[webinars][populate][questionsAndAnswers]=*&populate[webinars][populate][webinarCategory][populate][0]=icon&pagination[pageSize]=1000&pagination[page]=1'
     );
     strapiSolutions = result.data;
     responseJson = result.responseJson;

@@ -124,7 +124,7 @@ async function main() {
   // const strapiGuidesUrl =
   //   'api/guides?populate[0]=product&populate[1]=versions&pagination[pageSize]=1000&pagination[page]=1';
   const strapiGuidesUrl =
-    'api/guides/?populate[image][populate]=*&populate[mobileImage][populate]=*&populate[listItems][populate]=*&populate[versions][populate]=*&populate[bannerLinks][populate][0]=icon&populate[seo][populate]=metaSocial.image&populate[product][populate][0]=logo&populate[product][populate][1]=bannerLinks.icon&populate[product][populate][2]=overview&populate[product][populate][3]=quickstart_guide&populate[product][populate][4]=release_note&populate[product][populate][5]=api_data_list_page&populate[product][populate][6]=api_data_list_page.apiData.*&populate[product][populate][7]=api_data_list_page.apiData.apiRestDetail.*&populate[product][populate][8]=guide_list_page&populate[product][populate][9]=tutorial_list_page&populate[product][populate][10]=use_case_list_page';
+    'api/guides?populate[image][populate]=*&populate[mobileImage][populate]=*&populate[listItems][populate]=*&populate[versions][populate]=*&populate[bannerLinks][populate][0]=icon&populate[seo][populate]=metaSocial.image&populate[product][populate]=*';
 
   // eslint-disable-next-line functional/no-let
   let strapiGuides;
