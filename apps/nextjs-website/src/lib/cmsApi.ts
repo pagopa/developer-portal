@@ -70,36 +70,39 @@ const buildEnv = pipe(
   })
 );
 
-export const getHomepageProps = async () => {
-  const strapiHomepage = await fetchHomepage(buildEnv);
+export const getHomepageProps = async (locale: string) => {
+  const strapiHomepage = await fetchHomepage(locale, buildEnv);
   return makeHomepageProps(strapiHomepage);
 };
 
-export const getWebinarsProps = async () => {
-  const strapiWebinars = await fetchWebinars(buildEnv);
+export const getWebinarsProps = async (locale: string) => {
+  const strapiWebinars = await fetchWebinars(locale, buildEnv);
   return makeWebinarsProps(strapiWebinars);
 };
 
-export const getProductsProps = async () => {
-  const strapiProducts = await fetchProducts(buildEnv);
+export const getProductsProps = async (locale: string) => {
+  const strapiProducts = await fetchProducts(locale, buildEnv);
   const products = makeProductsProps(strapiProducts);
   return [...products].sort((productA, productB) =>
     productA.name.localeCompare(productB.name)
   );
 };
 
-export const getWebinarCategoriesProps = async () => {
-  const strapiWebinarCategories = await fetchWebinarCategories(buildEnv);
+export const getWebinarCategoriesProps = async (locale: string) => {
+  const strapiWebinarCategories = await fetchWebinarCategories(
+    locale,
+    buildEnv
+  );
   return makeWebinarCategoriesProps(strapiWebinarCategories);
 };
 
-export const getTagsProps = async () => {
-  const strapiTags = await fetchTags(buildEnv);
+export const getTagsProps = async (locale: string) => {
+  const strapiTags = await fetchTags(locale, buildEnv);
   return makeTagsProps(strapiTags);
 };
 
-export const getTutorialsProps = async () => {
-  const strapiTutorials = await fetchTutorials(buildEnv);
+export const getTutorialsProps = async (locale: string) => {
+  const strapiTutorials = await fetchTutorials(locale, buildEnv);
   const tutorialsWithMarkdown = strapiTutorials.data.filter((tutorial) => {
     const parts = tutorial?.attributes?.parts ?? [];
     return parts.some((part) => part?.__component === 'parts.markdown');
@@ -120,34 +123,37 @@ export const getTutorialsProps = async () => {
   return makeTutorialsProps(strapiTutorials, markdownContentDict);
 };
 
-export const getTutorialListPagesProps = async () => {
-  const strapiTutorialListPages = await fetchTutorialListPages(buildEnv);
+export const getTutorialListPagesProps = async (locale: string) => {
+  const strapiTutorialListPages = await fetchTutorialListPages(
+    locale,
+    buildEnv
+  );
   return makeTutorialListPagesProps(strapiTutorialListPages);
 };
 
-export const getQuickStartGuidesProps = async () => {
-  const strapiQuickStartGuides = await fetchQuickStartGuides(buildEnv);
+export const getQuickStartGuidesProps = async (locale: string) => {
+  const strapiQuickStartGuides = await fetchQuickStartGuides(locale, buildEnv);
   return makeQuickStartGuidesProps(strapiQuickStartGuides);
 };
 
-export const getUrlReplaceMapProps = async () => {
-  const strapiUrlReplaceMap = await fetchUrlReplaceMap(buildEnv);
+export const getUrlReplaceMapProps = async (locale: string) => {
+  const strapiUrlReplaceMap = await fetchUrlReplaceMap(locale, buildEnv);
   const processed = makeUrlReplaceMap(strapiUrlReplaceMap);
   return processed;
 };
 
-export const getApiDataListPagesProps = async () => {
-  const strapiApiDataListPages = await fetchApiDataListPages(buildEnv);
+export const getApiDataListPagesProps = async (locale: string) => {
+  const strapiApiDataListPages = await fetchApiDataListPages(locale, buildEnv);
   return makeApiDataListPagesProps(strapiApiDataListPages);
 };
 
 export const getApiDataProps = async (locale: string) => {
-  const strapiApiDataList = await fetchApiDataList(buildEnv);
+  const strapiApiDataList = await fetchApiDataList(locale, buildEnv);
   return await makeApiDataListProps(locale, strapiApiDataList);
 };
 
-export const getCaseHistoriesProps = async () => {
-  const strapiCaseHistories = await fetchCaseHistories(buildEnv);
+export const getCaseHistoriesProps = async (locale: string) => {
+  const strapiCaseHistories = await fetchCaseHistories(locale, buildEnv);
   return makeCaseHistoriesProps(strapiCaseHistories);
 };
 
@@ -158,18 +164,18 @@ export const getSolutionsProps = async (locale: string) => {
   return strapiSolutions ? makeSolutionsProps(strapiSolutions) : [];
 };
 
-export const getSolutionListPageProps = async () => {
-  const strapiSolutionListPage = await fetchSolutionListPage(buildEnv);
+export const getSolutionListPageProps = async (locale: string) => {
+  const strapiSolutionListPage = await fetchSolutionListPage(locale, buildEnv);
   return makeSolutionListPageProps(strapiSolutionListPage);
 };
 
-export const getOverviewsProps = async () => {
-  const strapiOverviews = await fetchOverviews(buildEnv);
+export const getOverviewsProps = async (locale: string) => {
+  const strapiOverviews = await fetchOverviews(locale, buildEnv);
   return makeOverviewsProps(strapiOverviews);
 };
 
-export const getGuideListPagesProps = async () => {
-  const strapiGuideList = await fetchGuideListPages(buildEnv);
+export const getGuideListPagesProps = async (locale: string) => {
+  const strapiGuideList = await fetchGuideListPages(locale, buildEnv);
   return strapiGuideList ? makeGuideListPagesProps(strapiGuideList) : [];
 };
 
@@ -266,8 +272,8 @@ export const getReleaseNoteProps = async (
   return await makeReleaseNoteS3(releaseNote, locale, jsonMetadata);
 };
 
-export const getUseCasesProps = async () => {
-  const strapiUseCases = await fetchUseCases(buildEnv);
+export const getUseCasesProps = async (locale: string) => {
+  const strapiUseCases = await fetchUseCases(locale, buildEnv);
   const allMarkdownParts = strapiUseCases.data.flatMap((useCase) =>
     (useCase?.attributes?.parts ?? []).filter(isMarkDownPart)
   );
@@ -282,7 +288,7 @@ export const getUseCasesProps = async () => {
   return makeUseCasesProps(strapiUseCases, markdownContentDict);
 };
 
-export const getUseCaseListPagesProps = async () => {
-  const strapiUseCasesListPages = await fetchUseCaseListPages(buildEnv);
+export const getUseCaseListPagesProps = async (locale: string) => {
+  const strapiUseCasesListPages = await fetchUseCaseListPages(locale, buildEnv);
   return makeUseCaseListPagesProps(strapiUseCasesListPages);
 };

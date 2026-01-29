@@ -36,9 +36,9 @@ export async function generateMetadata(
   props: ProductParams,
   parent: ResolvingMetadata
 ): Promise<Metadata> {
-  const params = await props.params;
+  const { locale, productSlug } = await props.params;
   const resolvedParent = await parent;
-  const tutorialListPage = await getTutorialListPageProps(params.productSlug);
+  const tutorialListPage = await getTutorialListPageProps(locale, productSlug);
 
   if (tutorialListPage?.seo) {
     return makeMetadataFromStrapi(tutorialListPage.seo);
@@ -56,21 +56,18 @@ export async function generateMetadata(
 }
 
 const TutorialsPage = async (props: ProductParams) => {
-  const params = await props.params;
-  const { productSlug } = params;
-  const tutorialListPage = await getTutorialListPageProps(productSlug);
+  const { locale, productSlug } = await props.params;
+  const tutorialListPage = await getTutorialListPageProps(locale, productSlug);
 
   const structuredData = generateStructuredDataScripts({
     breadcrumbsItems: [
-      productToBreadcrumb(params.locale, tutorialListPage?.product),
+      productToBreadcrumb(locale, tutorialListPage?.product),
       {
         name:
           tutorialListPage?.seo?.metaTitle || tutorialListPage?.abstract?.title,
-        item: breadcrumbItemByProduct(
-          params.locale,
-          tutorialListPage?.product,
-          ['tutorials']
-        ),
+        item: breadcrumbItemByProduct(locale, tutorialListPage?.product, [
+          'tutorials',
+        ]),
       },
     ],
     seo: tutorialListPage?.seo,

@@ -49,18 +49,18 @@ export async function generateMetadata(props0: {
 }
 
 const Page = async (props0: { params: Promise<Params> }) => {
-  const params = await props0.params;
+  const { locale, solutionSlug, solutionSubPathSlugs } = await props0.params;
   const solutionProps = await getSolutionDetail(
-    params?.solutionSlug,
-    params?.locale,
-    params?.solutionSubPathSlugs
+    solutionSlug,
+    locale,
+    solutionSubPathSlugs
   );
 
   if (!solutionProps) {
     return <PageNotFound />;
   }
 
-  const urlReplaceMap = await getUrlReplaceMapProps();
+  const urlReplaceMap = await getUrlReplaceMapProps(locale);
   const solution = solutionProps;
   const page = solution.page;
   const source = solution.source;
@@ -82,20 +82,20 @@ const Page = async (props0: { params: Promise<Params> }) => {
     breadcrumbsItems: [
       {
         name: 'Solutions',
-        item: getItemFromPaths(params.locale, ['solutions']),
+        item: getItemFromPaths(locale, ['solutions']),
       },
       {
         name: solution.seo?.metaTitle,
-        item: getItemFromPaths(params.locale, ['solutions', solution.slug]),
+        item: getItemFromPaths(locale, ['solutions', solution.slug]),
       },
       {
         name: page.title,
         item:
-          params?.solutionSubPathSlugs &&
-          getItemFromPaths(params.locale, [
+          solutionSubPathSlugs &&
+          getItemFromPaths(locale, [
             'solutions',
             solution.slug,
-            ...params.solutionSubPathSlugs,
+            ...solutionSubPathSlugs,
           ]),
       },
     ],
@@ -103,16 +103,16 @@ const Page = async (props0: { params: Promise<Params> }) => {
   });
 
   const initialBreadcrumbs = [
-    ...pageToBreadcrumbs(params.locale, 'solutions', [
+    ...pageToBreadcrumbs(locale, 'solutions', [
       {
         name: props.solution.title,
-        path: `/${params.locale}/solutions/${props.solution.slug}`,
+        path: `/${locale}/solutions/${props.solution.slug}`,
       },
       {
         name: page.title,
-        path: `/${params.locale}/solutions/${
+        path: `/${locale}/solutions/${
           props.solution.slug
-        }/details/${params.solutionSubPathSlugs.join('/')}`,
+        }/details/${solutionSubPathSlugs.join('/')}`,
       },
     ]),
   ];

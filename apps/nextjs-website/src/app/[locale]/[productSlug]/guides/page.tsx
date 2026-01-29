@@ -37,10 +37,11 @@ export const generateMetadata = async (
   props: ProductParams,
   parent: ResolvingMetadata
 ): Promise<Metadata> => {
-  const params = await props.params;
+  const { locale, productSlug } = await props.params;
   const resolvedParent = await parent;
   const { path, abstract, seo, product } = await getGuideListPages(
-    params?.productSlug
+    locale,
+    productSlug
   );
 
   if (seo) {
@@ -56,16 +57,16 @@ export const generateMetadata = async (
 };
 
 const GuideListPage = async (props0: ProductParams) => {
-  const params = await props0.params;
+  const { locale, productSlug } = await props0.params;
   const { abstract, bannerLinks, guidesSections, path, product, seo } =
-    await getGuideListPages(params?.productSlug);
+    await getGuideListPages(locale, productSlug);
 
   const structuredData = generateStructuredDataScripts({
     breadcrumbsItems: [
-      productToBreadcrumb(params.locale, product),
+      productToBreadcrumb(locale, product),
       {
         name: seo?.metaTitle || abstract?.title,
-        item: breadcrumbItemByProduct(params.locale, product, ['guides']),
+        item: breadcrumbItemByProduct(locale, product, ['guides']),
       },
     ],
     seo: seo,

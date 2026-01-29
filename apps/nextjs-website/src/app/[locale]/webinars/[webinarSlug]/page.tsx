@@ -19,8 +19,8 @@ type Params = {
 export async function generateMetadata(props: {
   params: Promise<Params>;
 }): Promise<Metadata> {
-  const params = await props.params;
-  const webinar = await getWebinar(params?.webinarSlug);
+  const { locale, webinarSlug } = await props.params;
+  const webinar = await getWebinar(locale, webinarSlug);
 
   if (webinar.seo) {
     return makeMetadataFromStrapi(webinar.seo);
@@ -28,25 +28,25 @@ export async function generateMetadata(props: {
 
   return makeMetadata({
     title: webinar.title,
-    url: `${baseUrl}/webinars/${webinar.slug}`,
+    url: `${baseUrl}/${locale}/webinars/${webinar.slug}`,
     locale: 'it_IT',
     image: webinar.imagePath,
   });
 }
 
 const Page = async (props: { params: Promise<Params> }) => {
-  const params = await props.params;
-  const webinar = await getWebinar(params?.webinarSlug);
+  const { locale, webinarSlug } = await props.params;
+  const webinar = await getWebinar(locale, webinarSlug);
 
   const structuredData = generateStructuredDataScripts({
     breadcrumbsItems: [
       {
         name: 'Webinars',
-        item: getItemFromPaths(params.locale, ['webinars']),
+        item: getItemFromPaths(locale, ['webinars']),
       },
       {
         name: webinar.seo?.metaTitle,
-        item: getItemFromPaths(params.locale, ['webinars', webinar.slug]),
+        item: getItemFromPaths(locale, ['webinars', webinar.slug]),
       },
     ],
     seo: webinar.seo,
