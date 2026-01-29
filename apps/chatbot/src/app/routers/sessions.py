@@ -5,13 +5,15 @@ from fastapi import APIRouter, Header, HTTPException
 from typing import Annotated
 
 from src.app.models import QueryFeedback, tables
-from src.modules.logger import get_logger
 from src.app.sessions import current_user_id, add_langfuse_score_query
+
+from src.modules.logger import get_logger
 from src.modules.settings import SETTINGS
 
 router = APIRouter()
 
 LOGGER = get_logger(__name__, level=SETTINGS.log_level)
+
 
 # retrieve sessions of current user
 @router.get("/sessions")
@@ -88,26 +90,34 @@ async def query_feedback(
     feedback = None
     if query.feedback:
         if query.feedback.user_response_relevancy is None:
-            query.feedback.user_response_relevancy = Decimal('0')
+            query.feedback.user_response_relevancy = Decimal("0")
 
         query.feedback.user_response_relevancy = Decimal(
             str(query.feedback.user_response_relevancy)
         )
 
         if query.feedback.user_faithfullness is None:
-            query.feedback.user_faithfullness = Decimal('0')
+            query.feedback.user_faithfullness = Decimal("0")
 
         query.feedback.user_faithfullness = Decimal(
             str(query.feedback.user_faithfullness)
         )
 
         feedback = query.feedback.model_dump()
-        
+
         # Convert Decimal values to float for JSON serialization
-        if 'user_response_relevancy' in feedback and feedback['user_response_relevancy'] is not None:
-            feedback['user_response_relevancy'] = float(feedback['user_response_relevancy'])
-        if 'user_faithfullness' in feedback and feedback['user_faithfullness'] is not None:
-            feedback['user_faithfullness'] = float(feedback['user_faithfullness'])
+        if (
+            "user_response_relevancy" in feedback
+            and feedback["user_response_relevancy"] is not None
+        ):
+            feedback["user_response_relevancy"] = float(
+                feedback["user_response_relevancy"]
+            )
+        if (
+            "user_faithfullness" in feedback
+            and feedback["user_faithfullness"] is not None
+        ):
+            feedback["user_faithfullness"] = float(feedback["user_faithfullness"])
 
     query_for_database = {
         "id": id,
@@ -116,11 +126,9 @@ async def query_feedback(
         "feedback": feedback,
     }
     add_langfuse_score_query(
-        query_id=id, 
-        query_feedback=query,
-        query_for_database=query_for_database
+        query_id=id, query_feedback=query, query_for_database=query_for_database
     )
-    
+
     return {
         "id": id,
         "sessionId": sessionId,
