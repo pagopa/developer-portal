@@ -13,6 +13,7 @@ import { Part } from '@/lib/types/part';
 import { ReactNode } from 'react';
 import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
 import EContainer from '../../../editorialComponents/EContainer/EContainer';
+import { useParams } from 'next/navigation';
 
 type UseCasePageTemplateProps = {
   readonly bannerLinks?: ReadonlyArray<BannerLinkProps>;
@@ -42,6 +43,7 @@ const UseCaseTemplate = ({
 }: UseCasePageTemplateProps) => {
   const { palette } = useTheme();
   const isSmallScreen = useMediaQuery('(max-width: 1000px)');
+  const { locale } = useParams<{ locale: string }>();
 
   return (
     <ProductLayout
@@ -64,13 +66,13 @@ const UseCaseTemplate = ({
           <EContainer>
             <ProductBreadcrumbs
               breadcrumbs={[
-                ...productPageToBreadcrumbs(product, [
+                ...productPageToBreadcrumbs(locale, product, [
                   {
                     translate: true,
                     name: 'devPortal.productHeader.useCases',
                     path: product.hasUseCaseListPage
-                      ? `/${product.slug}/use-cases`
-                      : '',
+                      ? `/${locale}/${product.slug}/use-cases`
+                      : `/${locale}`,
                   },
                   {
                     name: title,

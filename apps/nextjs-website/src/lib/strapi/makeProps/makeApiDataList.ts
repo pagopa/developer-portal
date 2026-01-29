@@ -1,5 +1,5 @@
 /* eslint-disable functional/no-expression-statements */
-import { ApiDataPageProps } from '@/app/[productSlug]/api/[apiDataSlug]/page';
+import { ApiDataPageProps } from '@/app/[locale]/[productSlug]/api/[apiDataSlug]/page';
 import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
 import { makeBaseProductWithoutLogoProps } from '@/lib/strapi/makeProps/makeProducts';
 import { makeApiSoapUrlList } from '@/lib/strapi/makeProps/makeApiSoapUrlList';
