@@ -18,13 +18,14 @@ interface StrapiSoapApiDetails {
 async function main() {
   const outputDir = process.env.OUTPUT_DIR || '__soap_tmp_output__';
   const outputPath = resolve(outputDir, 'soap-api-repositories.json');
+  const locale = process.env.LOCALE || 'it';
 
   // eslint-disable-next-line functional/no-let
   let strapiSoapApiDetails;
   // eslint-disable-next-line functional/no-try-statements
   try {
     const { data } = await fetchFromStrapi<StrapiSoapApiDetails>(
-      'api/apis-data/?populate[apiSoapDetail][populate][0]=slug&populate[apiSoapDetail][populate][1]=repositoryUrl&populate[apiSoapDetail][populate][2]=dirName&filters[apiSoapDetail][$null]=false'
+      `api/apis-data/?[locale]=${locale}?populate[apiSoapDetail][populate][0]=slug&populate[apiSoapDetail][populate][1]=repositoryUrl&populate[apiSoapDetail][populate][2]=dirName&filters[apiSoapDetail][$null]=false`
     );
     strapiSoapApiDetails = data;
   } catch (error) {

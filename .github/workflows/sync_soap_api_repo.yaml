@@ -40,6 +40,7 @@ jobs:
           soap-api-directory: ./soap-api
           strapi-endpoint: ${{ vars.STRAPI_ENDPOINT }}
           strapi-api-token: ${{ secrets.STRAPI_API_TOKEN }}
+          locale: ${{ inputs.locale }}
 
       - name: Copy WSDL Viewer Library to SOAP Repos
         uses: ./.github/actions/copy-wsdl-stylesheet-to-soap-repos
