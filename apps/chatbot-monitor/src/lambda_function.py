@@ -170,9 +170,6 @@ def lambda_handler(event, context):
 
     results = []
     for record in event.get("Records", []):
-
-        LOGGER.info(f">>>>>>>>>>>>>>> Processing record: {record}")
-
         body = json.loads(record.get("body", "{}"))
         data = decompress_payload(body.get("data", ""))
         operation = body.get("operation")

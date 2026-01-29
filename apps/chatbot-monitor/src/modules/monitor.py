@@ -1,5 +1,5 @@
 from datetime import datetime
-
+from decimal import Decimal
 from typing import Optional, List, Dict, Literal, Union, Any
 from langfuse import Langfuse
 from langfuse.types import TraceContext
@@ -239,8 +239,27 @@ def create_langfuse_trace(
     save_query_to_database(query_for_database=query_for_database)
 
 
+def convert_floats_to_decimal(obj: Any) -> Any:
+    """Recursively convert float values to Decimal for DynamoDB compatibility.
+
+    Args:
+        obj: The object to convert (can be dict, list, float, or any other type)
+
+    Returns:
+        The object with all float values converted to Decimal
+    """
+    if isinstance(obj, float):
+        return Decimal(str(obj))
+    elif isinstance(obj, dict):
+        return {k: convert_floats_to_decimal(v) for k, v in obj.items()}
+    elif isinstance(obj, list):
+        return [convert_floats_to_decimal(item) for item in obj]
+    else:
+        return obj
+
+
 def save_query_to_database(query_for_database: dict) -> None:
-    tables["queries"].put_item(Item=query_for_database)
+    tables["queries"].put_item(Item=convert_floats_to_decimal(query_for_database))
 
 
 def add_langfuse_score(
@@ -304,10 +323,12 @@ def save_feedback_to_database(query_for_database: dict) -> None:
                         "#badAnswer": "badAnswer",
                         "#feedback": "feedback",
                     },
-                    ExpressionAttributeValues={
-                        ":badAnswer": query_for_database["badAnswer"],
-                        ":feedback": query_for_database["feedback"],
-                    },
+                    ExpressionAttributeValues=convert_floats_to_decimal(
+                        {
+                            ":badAnswer": query_for_database["badAnswer"],
+                            ":feedback": query_for_database["feedback"],
+                        }
+                    ),
                     ReturnValues="ALL_NEW",
                 )
     else:
@@ -323,8 +344,8 @@ def save_feedback_to_database(query_for_database: dict) -> None:
                 },
                 UpdateExpression="SET #badAnswer = :badAnswer",
                 ExpressionAttributeNames={"#badAnswer": "badAnswer"},
-                ExpressionAttributeValues={
-                    ":badAnswer": query_for_database["badAnswer"]
-                },
+                ExpressionAttributeValues=convert_floats_to_decimal(
+                    {":badAnswer": query_for_database["badAnswer"]}
+                ),
                 ReturnValues="ALL_NEW",
             )
