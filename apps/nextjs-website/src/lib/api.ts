@@ -129,7 +129,7 @@ export async function getTutorial(
   productTutorialPage?: ReadonlyArray<string>
 ) {
   const tutorialSubPath = productTutorialPage?.join('/');
-  const tutorialPath = `/${productSlug}/tutorials/${tutorialSubPath}`;
+  const tutorialPath = `${locale}/${productSlug}/tutorials/${tutorialSubPath}`;
 
   const product = await getProduct(locale, productSlug);
 
@@ -220,7 +220,7 @@ export async function getReleaseNote(
   releaseNoteSubPathSlugs?: readonly string[]
 ) {
   const products = await getProducts(locale);
-  const releaseNotesPath = `/${productSlug}/${releaseNoteSubPathSlugs?.join(
+  const releaseNotesPath = `${locale}/${productSlug}/${releaseNoteSubPathSlugs?.join(
     '/'
   )}`;
 
@@ -311,7 +311,7 @@ export async function getUseCase(
   productUseCasePage?: ReadonlyArray<string>
 ) {
   const useCaseSubPath = productUseCasePage?.join('/');
-  const useCasePath = `/${productSlug}/use-cases/${useCaseSubPath}`;
+  const useCasePath = `${locale}/${productSlug}/use-cases/${useCaseSubPath}`;
 
   const product = await getProduct(locale, productSlug);
 
