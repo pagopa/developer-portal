@@ -52,7 +52,7 @@ const DesktopSiteHeader = ({ currentLocale, products }: SiteHeaderProps) => {
       >
         {t('siteHeader.webinars')}
       </LinkMui>
-      <DesktopUserInfo />
+      <DesktopUserInfo currentLocale={currentLocale} />
       <LanguageSelector
         locales={SUPPORTED_LOCALES}
         currentLocale={currentLocale}
