@@ -13,6 +13,11 @@ on:
           - dev
           - uat
           - prod
+      locale:
+        description: 'Locale to sync to (e.g. "it"). Leave empty for root.'
+        type: string
+        required: false
+        default: ''
 
 # Permissions needed for AWS OIDC authentication
 permissions:
@@ -60,5 +65,9 @@ jobs:
 
       - name: Sync soap-api folder to S3
         run: |
-          FIRST_LETTER="${{ inputs.environment }}" && FIRST_LETTER="${FIRST_LETTER:0:1}" && \
-          aws s3 sync soap-api s3://devportal-${FIRST_LETTER}-website-static-content/soap-api --delete
+          FIRST_LETTER="${{ inputs.environment }}" && FIRST_LETTER="${FIRST_LETTER:0:1}"
+          if [[ -n "${{ inputs.locale }}" ]]; then
+            aws s3 sync soap-api s3://devportal-${FIRST_LETTER}-website-static-content/${{ inputs.locale }}/soap-api --delete
+          else
+            aws s3 sync soap-api s3://devportal-${FIRST_LETTER}-website-static-content/soap-api --delete
+          fi
