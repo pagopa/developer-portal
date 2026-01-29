@@ -7,15 +7,16 @@ export async function GET(
   props: {
     readonly params: Promise<{
       readonly productSlug: string;
-      readonly releaseNoteSubPathSlugs: readonly string[];
+      readonly releaseNoteSubPathSlugs?: readonly string[];
     }>;
   }
 ) {
   const params = await props.params;
   const { productSlug, releaseNoteSubPathSlugs } = params;
-  const noteSegments = Array.isArray(releaseNoteSubPathSlugs)
-    ? ['release-note', ...releaseNoteSubPathSlugs]
-    : [];
+  const noteSegments = [
+    'release-note',
+    ...(Array.isArray(releaseNoteSubPathSlugs) ? releaseNoteSubPathSlugs : []),
+  ];
 
   return getReleaseNote(productSlug, noteSegments)
     .then(async (releaseNoteProps) => {
