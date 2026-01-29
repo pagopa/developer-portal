@@ -4,4 +4,4 @@
 "chatbot": minor
 ---
 
-Refactor chabot, chatbot-evaluate and chatbot-monitor to compress and decompress payload from/to AWS SQS
+Refactor chatbot, chatbot-evaluate and chatbot-monitor to compress and decompress payload from/to AWS SQS
