@@ -201,16 +201,29 @@ async function fetchAllStrapiData(locale?: string): Promise<StrapiData> {
   };
 }
 
+function buildPathFromSegments(segments: Array<string | undefined>): string {
+  return '/' + segments.filter(Boolean).join('/');
+}
+
 // Generate URL path helper functions
-function generateUrlPath(
-  filePath: string,
-  slug: string,
-  productSlug?: string,
-  versionName?: string,
-  metadataType: MetadataType = MetadataType.Guide,
-  landingFile?: string,
-  locale?: string
-): string {
+function generateUrlPath(options: {
+  filePath: string;
+  slug: string;
+  productSlug?: string;
+  versionName?: string;
+  metadataType?: MetadataType;
+  landingFile?: string;
+  locale?: string;
+}): string {
+  const {
+    filePath,
+    slug,
+    productSlug,
+    versionName,
+    metadataType = MetadataType.Guide,
+    landingFile,
+    locale,
+  } = options;
   // Convert local path to S3 path if needed, then extract site path
   const normalizedFilePath = filePath.replace(/\\/g, '/');
   const normalizedS3Base = S3_PATH_TO_GITBOOK_DOCS.replace(/\\/g, '/').replace(
@@ -227,24 +240,30 @@ function generateUrlPath(
 
   switch (metadataType) {
     case MetadataType.Guide:
-      return [
+      return buildPathFromSegments([
         locale,
-        `/${productSlug}`,
+        productSlug,
         'guides',
         slug,
         versionName,
         restOfPath,
-      ]
-        .filter(Boolean)
-        .join('/');
+      ]);
     case MetadataType.Solution:
-      return [locale, '/solutions', slug, 'details', restOfPath]
-        .filter(Boolean)
-        .join('/');
+      return buildPathFromSegments([
+        locale,
+        'solutions',
+        slug,
+        'details',
+        restOfPath,
+      ]);
     case MetadataType.ReleaseNote:
-      return [locale, `/${productSlug}`, 'release-note', slug, restOfPath]
-        .filter(Boolean)
-        .join('/');
+      return buildPathFromSegments([
+        locale,
+        productSlug,
+        'release-note',
+        slug,
+        restOfPath,
+      ]);
   }
 }
 
@@ -323,14 +342,14 @@ async function processGuidesMetadata(
       const title = extractTitleFromMarkdown(content);
 
       if (menuS3Path && content) {
-        const path = generateUrlPath(
+        const path = generateUrlPath({
           filePath,
-          guideInfo.slug,
-          guideInfo.productSlug,
-          guideInfo.versionName,
-          MetadataType.Guide,
-          LOCALE
-        );
+          slug: guideInfo.slug,
+          productSlug: guideInfo.productSlug,
+          versionName: guideInfo.versionName,
+          metadataType: MetadataType.Guide,
+          locale: LOCALE,
+        });
 
         const baseItem: MetadataItem = {
           path,
@@ -344,14 +363,13 @@ async function processGuidesMetadata(
         guideItems.push(baseItem);
 
         if (guideInfo.isMainVersion) {
-          const versionlessPath = generateUrlPath(
+          const versionlessPath = generateUrlPath({
             filePath,
-            guideInfo.slug,
-            guideInfo.productSlug,
-            undefined,
-            MetadataType.Guide,
-            LOCALE
-          );
+            slug: guideInfo.slug,
+            productSlug: guideInfo.productSlug,
+            metadataType: MetadataType.Guide,
+            locale: LOCALE,
+          });
 
           guideItems.push({
             ...baseItem,
@@ -438,15 +456,13 @@ async function processSolutionsMetadata(
       const title = extractTitleFromMarkdown(content);
 
       if (menuS3Path && content) {
-        const path = generateUrlPath(
+        const path = generateUrlPath({
           filePath,
-          solution.attributes.slug,
-          undefined,
-          undefined,
-          MetadataType.Solution,
-          solution.attributes.landingUseCaseFile,
-          LOCALE
-        );
+          slug: solution.attributes.slug,
+          metadataType: MetadataType.Solution,
+          landingFile: solution.attributes.landingUseCaseFile,
+          locale: LOCALE,
+        });
 
         itemList.push({
           path,
@@ -505,15 +521,14 @@ async function processReleaseNotesMetadata(
         releaseNote.attributes.product?.data?.attributes?.slug;
 
       if (dirName && menuS3Path && content && productSlug) {
-        const path = generateUrlPath(
+        const path = generateUrlPath({
           filePath,
-          releaseNote.attributes.slug,
-          productSlug,
-          undefined,
-          MetadataType.ReleaseNote,
-          releaseNote.attributes.landingFile,
-          LOCALE
-        );
+          slug: releaseNote.attributes.slug,
+          productSlug: productSlug,
+          metadataType: MetadataType.ReleaseNote,
+          landingFile: releaseNote.attributes.landingFile,
+          locale: LOCALE,
+        });
 
         itemList.push({
           path,
@@ -587,14 +602,14 @@ async function generateUrlParsingMetadata(
 
     const docs = files.map((filePath) => ({
       path: filePath,
-      url: generateUrlPath(
+      url: generateUrlPath({
         filePath,
-        info.slug,
-        info.productSlug,
-        info.versionName,
-        info.metadataType,
-        LOCALE
-      ),
+        slug: info.slug,
+        productSlug: info.productSlug,
+        versionName: info.versionName,
+        metadataType: info.metadataType,
+        locale: LOCALE,
+      }),
     }));
 
     urlParsingItems.push({

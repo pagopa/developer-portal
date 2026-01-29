@@ -68,7 +68,7 @@ async function main() {
     { data: strapiApisData, path: S3_APIS_DATA_METADATA_JSON_PATH },
   ];
   for (const { data, path } of metadataJsons) {
-    await putS3File(data, path, `${S3_BUCKET_NAME}`, s3Client, LOCALE);
+    await putS3File(data, path, `${S3_BUCKET_NAME}`, s3Client);
   }
   const putSitemapToS3Result = await s3Client.send(
     new PutObjectCommand({
