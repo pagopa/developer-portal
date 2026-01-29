@@ -198,7 +198,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   // Remove duplicates based on path
   const uniqueReleaseNotesMetadata = Array.from(
-    new Map(allReleaseNotesMetadata.map((time) => [time.path, time])).values()
+    new Map(
+      allReleaseNotesMetadata.map((releaseNote) => [
+        releaseNote.path,
+        releaseNote,
+      ])
+    ).values()
   );
 
   const s3GuideRoutes = uniqueGuidesMetadata.map((guide: JsonMetadata) => ({
