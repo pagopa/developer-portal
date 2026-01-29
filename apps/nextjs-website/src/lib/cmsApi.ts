@@ -141,9 +141,9 @@ export const getApiDataListPagesProps = async () => {
   return makeApiDataListPagesProps(strapiApiDataListPages);
 };
 
-export const getApiDataProps = async () => {
+export const getApiDataProps = async (locale: string) => {
   const strapiApiDataList = await fetchApiDataList(buildEnv);
-  return await makeApiDataListProps(strapiApiDataList);
+  return await makeApiDataListProps(locale, strapiApiDataList);
 };
 
 export const getCaseHistoriesProps = async () => {
@@ -151,9 +151,9 @@ export const getCaseHistoriesProps = async () => {
   return makeCaseHistoriesProps(strapiCaseHistories);
 };
 
-export const getSolutionsProps = async () => {
+export const getSolutionsProps = async (locale: string) => {
   const strapiSolutions = (await fetchResponseFromCDN(
-    getSyncedSolutionsResponseJsonPath()
+    `${locale}/${getSyncedSolutionsResponseJsonPath()}`
   )) as StrapiSolutions | undefined;
   return strapiSolutions ? makeSolutionsProps(strapiSolutions) : [];
 };
@@ -175,18 +175,20 @@ export const getGuideListPagesProps = async () => {
 
 export const getGuideProps = async (
   guidePaths: ReadonlyArray<string>,
+  locale: string,
   productSlug: string
 ) => {
-  const guide = await getGuidePageProps(guidePaths[0], productSlug);
-  return await makeGuideS3({ guideDefinition: guide, guidePaths });
+  const guide = await getGuidePageProps(guidePaths[0], locale, productSlug);
+  return await makeGuideS3({ guideDefinition: guide, locale, guidePaths });
 };
 
 export const getGuidePageProps = async (
   guideSlug: string,
+  locale: string,
   productSlug: string
 ) => {
   const strapiGuides = (await fetchResponseFromCDN(
-    getSyncedGuidesResponseJsonPath()
+    `${locale}/${getSyncedGuidesResponseJsonPath()}`
   )) as StrapiGuides | undefined;
   // eslint-disable-next-line functional/no-expression-statements
   const guides = strapiGuides ? makeGuidesProps(strapiGuides) : [];
@@ -204,10 +206,11 @@ export const getGuidePageProps = async (
 
 export const getSolutionProps = async (
   solutionsSlug: string,
+  locale: string,
   jsonMetadata?: JsonMetadata
 ) => {
   const strapiSolutions = (await fetchResponseFromCDN(
-    getSyncedSolutionsResponseJsonPath()
+    `${locale}/${getSyncedSolutionsResponseJsonPath()}`
   )) as StrapiSolutions | undefined;
   if (!strapiSolutions || strapiSolutions.data.length < 1) {
     // eslint-disable-next-line functional/no-throw-statements
@@ -219,12 +222,12 @@ export const getSolutionProps = async (
     // eslint-disable-next-line functional/no-throw-statements
     throw new Error(`No solution found matching slug "${solutionsSlug}"`);
   }
-  return await makeSolutionS3(solution, jsonMetadata);
+  return await makeSolutionS3(solution, locale, jsonMetadata);
 };
 
-const fetchReleaseNotes = async () => {
+const fetchReleaseNotes = async (locale: string) => {
   const strapiReleaseNotes = (await fetchResponseFromCDN(
-    getSyncedReleaseNotesResponseJsonPath()
+    `${locale}/${getSyncedReleaseNotesResponseJsonPath()}`
   )) as StrapiReleaseNotes | undefined;
   if (!strapiReleaseNotes || strapiReleaseNotes.data.length < 1) {
     // eslint-disable-next-line functional/no-throw-statements
@@ -233,8 +236,11 @@ const fetchReleaseNotes = async () => {
   return strapiReleaseNotes;
 };
 
-export const getStrapiReleaseNotes = async (productSlug: string) => {
-  const strapiReleaseNotes = await fetchReleaseNotes();
+export const getStrapiReleaseNotes = async (
+  locale: string,
+  productSlug: string
+) => {
+  const strapiReleaseNotes = await fetchReleaseNotes(locale);
   return strapiReleaseNotes.data.find(
     (strapiReleaseNote) =>
       strapiReleaseNote.attributes.product.data?.attributes.slug === productSlug
@@ -242,10 +248,11 @@ export const getStrapiReleaseNotes = async (productSlug: string) => {
 };
 
 export const getReleaseNoteProps = async (
+  locale: string,
   productSlug: string,
   jsonMetadata?: JsonMetadata
 ) => {
-  const strapiReleaseNotes = await fetchReleaseNotes();
+  const strapiReleaseNotes = await fetchReleaseNotes(locale);
   const releaseNotes = makeReleaseNotesProps(strapiReleaseNotes);
   const releaseNote = releaseNotes.find(
     (rn) => rn.product.slug === productSlug
@@ -256,7 +263,7 @@ export const getReleaseNoteProps = async (
       `No release data found matching product slug "${productSlug}"`
     );
   }
-  return await makeReleaseNoteS3(releaseNote, jsonMetadata);
+  return await makeReleaseNoteS3(releaseNote, locale, jsonMetadata);
 };
 
 export const getUseCasesProps = async () => {

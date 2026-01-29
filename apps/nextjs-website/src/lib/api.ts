@@ -52,12 +52,18 @@ export async function getMarkdownContent(
 
 export async function getGuidePage(
   guidePaths: ReadonlyArray<string>,
+  locale: string,
   productSlug: string
 ) {
   // Fetch data in parallel instead of sequential
   const [products, guideProps] = await Promise.all([
     getProducts(),
-    getGuidePageProps(guidePaths.length > 0 ? guidePaths[0] : '', productSlug),
+    getGuidePageProps(
+      guidePaths.length > 0 ? guidePaths[0] : '',
+      locale,
+      productSlug
+    ),
+    getGuidesMetadata(locale),
   ]);
 
   // Path construction
@@ -187,9 +193,9 @@ export async function getProduct(productSlug: string) {
   return props;
 }
 
-export async function getApiData(apiDataSlug: string) {
+export async function getApiData(locale: string, apiDataSlug: string) {
   const props = manageUndefined(
-    (await getApiDataProps()).find(
+    (await getApiDataProps(locale)).find(
       (apiData) => apiData.apiDataSlug === apiDataSlug
     )
   );
@@ -197,6 +203,7 @@ export async function getApiData(apiDataSlug: string) {
 }
 
 export async function getReleaseNote(
+  locale: string,
   productSlug: string,
   releaseNoteSubPathSlugs?: readonly string[]
 ) {
@@ -205,17 +212,19 @@ export async function getReleaseNote(
     '/'
   )}`;
 
-  const releaseNote = await getStrapiReleaseNotes(productSlug);
+  const releaseNote = await getStrapiReleaseNotes(locale, productSlug);
   if (!releaseNote) {
     // eslint-disable-next-line functional/no-throw-statements
     throw new Error('Failed to fetch release notes data');
   }
 
   const releaseNotesMetadata = await getReleaseNotesMetadata(
+    locale,
     releaseNote.attributes.dirName
   );
 
   const releaseNoteProps = await getReleaseNoteProps(
+    locale,
     productSlug,
     releaseNotesMetadata.find(({ path }) => path === releaseNotesPath)
   );
@@ -247,9 +256,9 @@ export async function getReleaseNote(
   };
 }
 
-export async function getSolution(solutionSlug?: string) {
+export async function getSolution(locale: string, solutionSlug?: string) {
   const props = manageUndefined(
-    (await getSolutionsProps()).find(({ slug }) => slug === solutionSlug)
+    (await getSolutionsProps(locale)).find(({ slug }) => slug === solutionSlug)
   );
   return props;
 }
@@ -261,6 +270,7 @@ export async function getSolutionListPage() {
 
 export async function getSolutionDetail(
   solutionSlug: string,
+  locale: string,
   solutionSubPathSlugs: readonly string[]
 ) {
   const solutionData = await getSolution(solutionSlug);
@@ -268,10 +278,14 @@ export async function getSolutionDetail(
     // eslint-disable-next-line functional/no-throw-statements
     throw new Error('Failed to fetch solution data');
   }
-  const solutionsMetadata = await getSolutionsMetadata(solutionData.dirName);
+  const solutionsMetadata = await getSolutionsMetadata(
+    locale,
+    solutionData.dirName
+  );
 
   return await getSolutionProps(
     solutionSlug,
+    locale,
     solutionsMetadata.find(
       ({ path }) =>
         path === `/solutions/${solutionSlug}/${solutionSubPathSlugs.join('/')}`

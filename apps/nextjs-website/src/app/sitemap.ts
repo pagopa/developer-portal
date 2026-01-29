@@ -52,7 +52,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const homePage = await getHomepageProps();
   const caseHistories = await getCaseHistoriesProps();
   const webinars = await getWebinarsProps();
-  const solutions = await getSolutionsProps();
+  const solutions = await getSolutionsProps('it'); // TODO: remove hardcoded locale once i18n development on sitemap has been completed
 
   // Base static routes
   const baseRoutes = [
@@ -141,7 +141,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // --------------------------------------------------------------------------------
   // These are stored in S3 and retrieved via legacy helpers.
   // We keep them ensuring no missing legacy content.
-  const guidesMetadata = await getGuidesMetadata();
+  const guidesMetadata = await getGuidesMetadata('it'); // TODO: remove hardcoded locale once i18n development on sitemap has been completed
   const solutionDirNames = Array.from(
     new Set(
       solutions
@@ -152,7 +152,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const solutionsMetadata = await getSolutionsMetadataByDirNames(
     solutionDirNames
   );
-  const releaseNotesMetadata = await getReleaseNotesMetadata();
+  const releaseNotesMetadata = await getReleaseNotesMetadata('it'); // TODO: remove hardcoded locale once i18n development on sitemap has been completed
 
   const s3GuideRoutes = guidesMetadata.map((guide: JsonMetadata) => ({
     url: `${baseUrl}${guide.path}`,

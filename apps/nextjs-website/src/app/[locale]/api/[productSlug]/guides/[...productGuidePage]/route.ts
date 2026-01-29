@@ -6,19 +6,20 @@ export async function GET(
   request: Request,
   props: {
     readonly params: Promise<{
+      readonly locale: string;
       readonly productSlug: string;
       readonly productGuidePage: readonly string[];
     }>;
   }
 ) {
   const params = await props.params;
-  const { productSlug, productGuidePage } = params;
+  const { locale, productSlug, productGuidePage } = params;
   const guideSegments = Array.isArray(productGuidePage) ? productGuidePage : [];
 
   // eslint-disable-next-line functional/no-try-statements
   try {
     const [guideData, urlReplaceMap] = await Promise.all([
-      getGuidePage(guideSegments, productSlug),
+      getGuidePage(guideSegments, locale, productSlug),
       getUrlReplaceMapProps(),
     ]);
 
