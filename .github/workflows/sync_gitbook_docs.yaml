@@ -170,7 +170,7 @@ jobs:
                 # Check if dir is in VALID_DIRS
                 if echo "$VALID_DIRS" | grep -F -q -x "$dir"; then
                     echo "Syncing directory: $dir"
-                    aws s3 sync "docs/$dir" "s3://devportal-${{ env.ENV_SHORT }}-website-static-content/devportal-docs/docs/$dir" --delete --exclude "**/metadata.json ${{ inputs.incremental_mode == true && ' --size-only' || '' }}
+                    aws s3 sync "docs/$dir" "s3://devportal-${{ env.ENV_SHORT }}-website-static-content/devportal-docs/docs/$dir" --delete --exclude "**/metadata.json" ${{ inputs.incremental_mode == true && ' --size-only' || '' }}
                 else
                     echo "Skipping directory $dir as it is not in the published list."
                 fi
@@ -185,7 +185,7 @@ jobs:
               for dir in $VALID_DIRS; do
                 if [[ -n "$dir" ]]; then
                   echo "Syncing directory: $dir"
-                  aws s3 sync "docs/$dir" "s3://devportal-${{ env.ENV_SHORT }}-website-static-content/devportal-docs/docs/$dir" --delete --exclude "**/metadata.json ${{ inputs.incremental_mode == true && ' --size-only' || '' }}
+                  aws s3 sync "docs/$dir" "s3://devportal-${{ env.ENV_SHORT }}-website-static-content/devportal-docs/docs/$dir" --delete --exclude "**/metadata.json" ${{ inputs.incremental_mode == true && ' --size-only' || '' }}
                 fi
               done
             fi
