@@ -48,6 +48,40 @@ const ApiViewer: FC<ApiViewerProps> = ({ specURL }) => {
     };
   }, []);
 
+  useEffect(() => {
+    const rapidocEl = document.getElementById('rapidoc-component');
+
+    if (!rapidocEl) return;
+
+    const injectStyles = () => {
+      if (
+        rapidocEl.shadowRoot &&
+        !rapidocEl.shadowRoot.getElementById('custom-margin-fix')
+      ) {
+        const style = document.createElement('style');
+        style.id = 'custom-margin-fix';
+        style.innerHTML = `
+          #api-info {
+            margin-left: 0 !important;
+          }
+        `;
+        rapidocEl.shadowRoot.appendChild(style);
+      }
+    };
+
+    injectStyles();
+
+    customElements.whenDefined('rapi-doc').then(() => {
+      injectStyles();
+    });
+
+    rapidocEl.addEventListener('spec-loaded', injectStyles);
+
+    return () => {
+      rapidocEl.removeEventListener('spec-loaded', injectStyles);
+    };
+  }, []);
+
   // Cast strict TS error for custom element
   const RapiDoc = 'rapi-doc' as unknown as ElementType;
 
@@ -64,10 +98,12 @@ const ApiViewer: FC<ApiViewerProps> = ({ specURL }) => {
         allow-advanced-search='false'
         allow-authentication='false'
         allow-server-selection='false'
+        allow-spec-file-download='true'
         allow-try='false'
         auto-scroll='false'
         bg-color={palette.background.paper}
         font-size='large'
+        id='rapidoc-component'
         mono-font='Titillium Web'
         nav-bg-color={palette.grey[50]}
         nav-text-color={palette.text.primary}
