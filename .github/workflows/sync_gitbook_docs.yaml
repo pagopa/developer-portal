@@ -45,7 +45,7 @@ on:
         default: ''
 
   schedule:
-    - cron: '10 11 * * *'  # Run daily at midnight UTC
+    - cron: '15 10 * * *'  # Run daily at midnight UTC
 
 permissions:
   id-token: write
