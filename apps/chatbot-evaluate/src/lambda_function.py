@@ -2,6 +2,7 @@ import json
 
 from src.modules.judge import Judge
 from src.modules.logger import get_logger
+from src.modules.codec import compress_payload
 from src.modules.sqs import get_sqs_monitor_queue
 
 
@@ -89,7 +90,12 @@ def lambda_handler(event, context):
                 }
             )
 
-    payload_to_monitor = json.dumps({"operation": "add_scores", "data": results})
+    payload_to_monitor = json.dumps(
+        {
+            "operation": "add_scores",
+            "data": compress_payload(results),
+        }
+    )
     try:
         sqs_response = SQS_MONITOR.send_message(
             MessageBody=payload_to_monitor,
