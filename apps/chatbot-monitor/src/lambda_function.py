@@ -1,7 +1,11 @@
 import json
 
 from src.modules.logger import get_logger
-from src.modules.monitor import create_langfuse_trace, add_langfuse_score
+from src.modules.monitor import (
+    create_langfuse_trace,
+    add_langfuse_score,
+)
+from src.modules.codec import decompress_payload
 from src.modules.settings import SETTINGS
 from src.modules.sqs import get_sqs_evaluate_queue
 
@@ -166,11 +170,13 @@ def lambda_handler(event, context):
 
     results = []
     for record in event.get("Records", []):
-        body = record.get("body", "{}")
-        body = json.loads(body)
 
+        LOGGER.info(f">>>>>>>>>>>>>>> Processing record: {record}")
+
+        body = json.loads(record.get("body", "{}"))
+        data = decompress_payload(body.get("data", ""))
         operation = body.get("operation")
-        data = body.get("data", {})
+
         if operation == "create_trace":
             create_langfuse_trace(
                 trace_id=data.get("trace_id"),
@@ -206,6 +212,11 @@ def lambda_handler(event, context):
                     LOGGER.error(f"Failed to enqueue evaluation: {e}")
 
         elif operation == "add_scores":
+
+            LOGGER.info(f">>>>>>>>>>>>>>>>> Score data: {data}")
+            if not isinstance(data, list):
+                data = [data]
+
             for score in data:
                 add_langfuse_score(
                     trace_id=score.get("trace_id"),

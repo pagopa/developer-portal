@@ -2,13 +2,14 @@ import datetime
 import nh3
 import json
 import secrets
+from typing import Dict, Any
 from botocore.exceptions import BotoCoreError, ClientError
 from boto3.dynamodb.conditions import Key
 from fastapi import APIRouter, Header, HTTPException
 from typing import List, Annotated
+
 from src.app.sqs_init import sqs_queue_monitor
 from src.app.models import Query, tables
-from src.modules.logger import get_logger
 from src.app.sessions import (
     current_user_id,
     find_or_create_session,
@@ -18,7 +19,10 @@ from src.app.sessions import (
     get_user_session,
 )
 from src.app.chatbot_init import chatbot
+
+from src.modules.logger import get_logger
 from src.modules.settings import SETTINGS
+from src.modules.codec import compress_payload
 
 LOGGER = get_logger(__name__, level=SETTINGS.log_level)
 router = APIRouter()
@@ -151,7 +155,7 @@ def prepare_body_to_return(
 
 def create_monitor_trace(trace_data: dict, should_evaluate: bool) -> None:
     """Send trace creation message to monitor queue.
-    
+
     The monitor lambda will create the trace, then enqueue evaluation if requested.
     This prevents race conditions by ensuring trace exists before scores are added.
     """
@@ -160,7 +164,7 @@ def create_monitor_trace(trace_data: dict, should_evaluate: bool) -> None:
     else:
         payload = {
             "operation": "create_trace",
-            "data": trace_data,
+            "data": compress_payload(trace_data),
             "should_evaluate": should_evaluate,
         }
         sqs_response = sqs_queue_monitor.send_message(

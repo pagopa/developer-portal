@@ -1,4 +1,3 @@
-import json
 from datetime import datetime
 
 from typing import Optional, List, Dict, Literal, Union, Any
@@ -21,6 +20,7 @@ from src.modules.logger import get_logger
 from src.modules.settings import SETTINGS
 from src.modules.presidio import PresidioPII
 from src.database_models import tables
+from src.modules.codec import safe_json_load
 
 
 LOGGER = get_logger(__name__, level=SETTINGS.log_level)
@@ -77,16 +77,6 @@ def nanoseconds_to_datetime(ns_timestamp):
 def get_latency(start_time: int, end_time: int) -> float:
     """Calculate latency in seconds."""
     return nanoseconds_to_datetime(end_time - start_time).timestamp()
-
-
-def safe_json_load(value):
-    """Parse JSON string attributes into Python objects."""
-    if isinstance(value, str):
-        try:
-            return json.loads(value)
-        except json.JSONDecodeError:
-            return value
-    return value
 
 
 def mask_chat_history(messages: List[Dict[str, str]]) -> List[Dict[str, str]]:
