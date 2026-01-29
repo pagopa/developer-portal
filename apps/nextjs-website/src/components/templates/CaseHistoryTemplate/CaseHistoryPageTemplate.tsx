@@ -13,6 +13,7 @@ import { Box, Typography, useTheme } from '@mui/material';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
 import { Media } from '@/lib/types/media';
 import { SEO } from '@/lib/types/seo';
+import { useParams } from 'next/navigation';
 
 export type CaseHistoryPageTemplateProps = {
   readonly slug: string;
@@ -37,6 +38,7 @@ const CaseHistoryPageTemplate = ({
 }: CaseHistoryPageTemplateProps) => {
   const { palette } = useTheme();
   const t = useTranslations();
+  const { locale } = useParams<{ locale: string }>();
 
   const cards = products
     .map((product) => {
@@ -58,10 +60,10 @@ const CaseHistoryPageTemplate = ({
         <Box sx={{ marginBottom: 10 }}>
           <ProductBreadcrumbs
             breadcrumbs={[
-              ...pageToBreadcrumbs('solutions', [
+              ...pageToBreadcrumbs(locale, 'solutions', [
                 {
                   name: title,
-                  path: slug,
+                  path: `/${locale}/${slug}`,
                 },
               ]),
             ]}

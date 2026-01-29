@@ -1,9 +1,9 @@
 'use client';
 
-import { ApiDataPageProps } from '@/app/[productSlug]/api/[apiDataSlug]/page';
+import { ApiDataPageProps } from '@/app/[locale]/[productSlug]/api/[apiDataSlug]/page';
 import ApiRestSection from '@/components/molecules/ApiRestSection/ApiRestSection';
 import ApiSoapSection from '@/components/molecules/ApiSoapSection/ApiSoapSection';
-import PageNotFound from '@/app/not-found';
+import PageNotFound from '@/app/[locale]/not-found';
 import React from 'react';
 
 export type ApiPageProps = {

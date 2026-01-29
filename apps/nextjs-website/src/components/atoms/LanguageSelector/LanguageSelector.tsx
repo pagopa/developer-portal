@@ -29,6 +29,7 @@ const LanguageSelector = ({
   return (
     <>
       <Button
+        disabled={locales.length <= 1}
         onClick={handleClick}
         startIcon={<Language />}
         sx={{

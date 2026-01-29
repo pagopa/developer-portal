@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import { getWebinarQuestionList } from '@/lib/webinarApi';
 import Spinner from '@/components/atoms/Spinner/Spinner';
 import useSWR from 'swr';
-import PageNotFound from '@/app/not-found';
+import PageNotFound from '@/app/[locale]/not-found';
 import { fetchWebinarsQuestionsIntervalMs } from '@/config';
 import { useUser } from '@/helpers/user.helper';
 import WebinarQuestionsTable from '@/components/organisms/WebinarQuestionsTable/WebinarQuestionsTable';

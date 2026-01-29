@@ -1,5 +1,5 @@
-import { ApiDataPageProps } from '@/app/[productSlug]/api/[apiDataSlug]/page';
-import { QuickStartGuidePageProps } from '@/app/[productSlug]/quick-start/page';
+import { ApiDataPageProps } from '@/app/[locale]/[productSlug]/api/[apiDataSlug]/page';
+import { QuickStartGuidePageProps } from '@/app/[locale]/[productSlug]/quick-start/page';
 import { baseUrl, organizationInfo, websiteName } from '@/config';
 import { Media } from '@/lib/types/media';
 import { Product } from '@/lib/types/product';
@@ -25,8 +25,8 @@ import {
 
 export const homeBreadCrumb = { name: websiteName, item: baseUrl };
 
-export function productToBreadcrumb(product?: Product) {
-  const item = breadcrumbItemByProduct(product, ['overview']);
+export function productToBreadcrumb(locale: string, product?: Product) {
+  const item = breadcrumbItemByProduct(locale, product, ['overview']);
   return {
     name: product?.name,
     item,
@@ -34,16 +34,17 @@ export function productToBreadcrumb(product?: Product) {
 }
 
 export function breadcrumbItemByProduct(
+  locale: string,
   product?: Product,
   paths?: readonly string[]
 ) {
   return product?.slug && paths
-    ? [baseUrl, product.slug, ...paths].join('/')
+    ? [baseUrl, locale, product.slug, ...paths].join('/')
     : undefined;
 }
 
-export function getItemFromPaths(paths?: readonly string[]) {
-  return paths ? [baseUrl, ...paths].join('/') : undefined;
+export function getItemFromPaths(locale: string, paths?: readonly string[]) {
+  return paths ? [baseUrl, locale, ...paths].join('/') : undefined;
 }
 
 export const organization: Organization = {

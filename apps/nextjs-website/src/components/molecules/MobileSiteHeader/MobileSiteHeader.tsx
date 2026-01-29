@@ -13,7 +13,7 @@ import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import NextLink from 'next/link';
 import MobileUserInfo from '@/components/atoms/MobileUserInfo/MobileUserInfo';
-import { i18nActive, SITE_HEADER_HEIGHT } from '@/config';
+import { SITE_HEADER_HEIGHT } from '@/config';
 import MobileLanguageSelector from '@/components/atoms/MobileLanguageSelector/MobileLanguageSelector';
 import { SUPPORTED_LOCALES } from '@/locales';
 
@@ -86,7 +86,9 @@ export const MobileSiteHeaderStyledTreeItem = styled(TreeItem)(({ theme }) => ({
     marginRight: 0,
     marginBottom: 8,
   },
-
+  [`& .MuiTreeItem-group a`]: {
+    marginBottom: 16,
+  },
   [`& .MuiCollapse-wrapperInner a`]: {
     marginBottom: 4,
     paddingTop: 4,
@@ -115,7 +117,7 @@ export const MobileSiteHeaderStyledTreeItem = styled(TreeItem)(({ theme }) => ({
   },
 }));
 
-const MobileSiteHeader = ({ locale, products }: SiteHeaderProps) => {
+const MobileSiteHeader = ({ currentLocale, products }: SiteHeaderProps) => {
   const t = useTranslations('devPortal');
   const { palette } = useTheme();
 
@@ -198,7 +200,7 @@ const MobileSiteHeader = ({ locale, products }: SiteHeaderProps) => {
                   key={index}
                   variant='body1'
                   component={NextLink}
-                  href={`/${product.slug}/overview`}
+                  href={`/${currentLocale}/${product.slug}/overview`}
                   onClick={handleClick}
                   style={{
                     color: palette.primary.dark,
@@ -218,7 +220,7 @@ const MobileSiteHeader = ({ locale, products }: SiteHeaderProps) => {
               <Typography
                 component={NextLink}
                 variant='body1'
-                href={'/solutions'}
+                href={`/${currentLocale}/solutions`}
                 onClick={handleClick}
                 style={{
                   color: palette.primary.dark,
@@ -238,7 +240,7 @@ const MobileSiteHeader = ({ locale, products }: SiteHeaderProps) => {
               <Typography
                 component={NextLink}
                 variant='body1'
-                href={'/webinars'}
+                href={`/${currentLocale}/webinars`}
                 onClick={handleClick}
                 style={{
                   color: palette.primary.dark,
@@ -252,18 +254,13 @@ const MobileSiteHeader = ({ locale, products }: SiteHeaderProps) => {
               </Typography>
             }
           />
-
           <Divider sx={{ marginTop: -2, marginBottom: 2 }} />
           <MobileUserInfo onClick={handleClick} />
-          {i18nActive && (
-            <>
-              <Divider sx={{ marginTop: -2, marginBottom: 2 }} />
-              <MobileLanguageSelector
-                locales={SUPPORTED_LOCALES}
-                currentLocale={locale}
-              />
-            </>
-          )}
+          <Divider sx={{ marginTop: -2, marginBottom: 2 }} />
+          <MobileLanguageSelector
+            locales={SUPPORTED_LOCALES}
+            currentLocale={currentLocale}
+          />
         </SimpleTreeView>
       </Box>
     </Box>

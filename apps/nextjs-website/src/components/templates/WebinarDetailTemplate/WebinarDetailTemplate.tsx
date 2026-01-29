@@ -19,6 +19,7 @@ import { pageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
 import ProductBreadcrumbs from '@/components/atoms/ProductBreadcrumbs/ProductBreadcrumbs';
 import RelatedResources from '@/components/molecules/RelatedResources/RelatedResources';
 import QuestionsAndAnswers from '@/components/molecules/QuestionsAndAnswers/QuestionsAndAnswers';
+import { useParams } from 'next/navigation';
 
 type WebinarDetailTemplateProps = {
   webinar: Webinar;
@@ -26,6 +27,7 @@ type WebinarDetailTemplateProps = {
 
 const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
   const t = useTranslations('webinar');
+  const { locale } = useParams<{ locale: string }>();
   const { palette } = useTheme();
   const [error, setError] = useState<string | null>(null);
   const { user } = useUser();
@@ -107,10 +109,10 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
           <ProductBreadcrumbs
             textColor={showHeaderImage ? 'white' : palette.text.primary}
             breadcrumbs={[
-              ...pageToBreadcrumbs('webinars', [
+              ...pageToBreadcrumbs(locale, 'webinars', [
                 {
                   name: webinar.title,
-                  path: webinar.slug,
+                  path: `/${locale}/webinars/${webinar.slug}`,
                 },
               ]),
             ]}
