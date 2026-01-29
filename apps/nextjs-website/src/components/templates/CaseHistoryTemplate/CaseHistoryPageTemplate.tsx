@@ -63,7 +63,7 @@ const CaseHistoryPageTemplate = ({
               ...pageToBreadcrumbs(locale, 'solutions', [
                 {
                   name: title,
-                  path: slug,
+                  path: `/${locale}/${slug}`,
                 },
               ]),
             ]}
