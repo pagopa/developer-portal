@@ -163,7 +163,6 @@ SQS_EVALUATE = get_sqs_evaluate_queue()
 
 
 def lambda_handler(event, context):
-    # LOGGER.debug(f"event: {event}")
 
     results = []
     for record in event.get("Records", []):
@@ -173,14 +172,6 @@ def lambda_handler(event, context):
         operation = body.get("operation")
         data = body.get("data", {})
         if operation == "create_trace":
-            # Debug: Log span structure
-            spans = data.get("traceSpans", [])
-            # LOGGER.info(f"Processing {len(spans)} spans for trace {data.get('trace_id')}")
-            # for i, span in enumerate(spans[:5]):  # Log first 5 spans
-            # LOGGER.debug(f"Span {i}: name={span.get('name')}, span_id={span.get('context', {}).get('span_id')}, parent_id={span.get('parent_id')}")
-            # pass
-
-            # Create trace in Langfuse
             create_langfuse_trace(
                 trace_id=data.get("trace_id"),
                 user_id=data.get("user_id"),
@@ -207,12 +198,10 @@ def lambda_handler(event, context):
                     "messages": data.get("messages", []),
                 }
                 try:
-                    sqs_response = SQS_EVALUATE.send_message(
+                    SQS_EVALUATE.send_message(
                         MessageBody=json.dumps(evaluation_payload),
                         MessageGroupId=data.get("trace_id"),  # Required for FIFO queues
                     )
-                    # LOGGER.info(f"Enqueued evaluation: {sqs_response}")
-                    LOGGER.info(f"Enqueued evaluation")
                 except Exception as e:
                     LOGGER.error(f"Failed to enqueue evaluation: {e}")
 
