@@ -11,7 +11,7 @@ llama-index-embeddings-google-genai = "^0.3.1"
 llama-index-llms-google-genai = "^0.7.3"
 python = ">=3.12,<3.14"
 pyyaml = "^6.0.2"
-ragas = "^0.3.9"
+ragas = "^0.2.0"
 toml = "^0.10.2"
 
 [tool.poetry.group.test.dependencies]
