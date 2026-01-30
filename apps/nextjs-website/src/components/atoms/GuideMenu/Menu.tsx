@@ -20,6 +20,7 @@ const StyledTreeItem = styled(TreeItem)(({ theme }) => ({
     '--x': 32,
   },
   [`& .MuiTreeItem-content`]: {
+    borderRadius: '0',
     boxSizing: 'border-box',
     flexDirection: 'row-reverse',
     width: '100%',
@@ -212,7 +213,6 @@ const GuideMenuItems = ({
           collapseIcon: ExpandLessIcon,
           expandIcon: ExpandMoreIcon,
         }}
-        defaultExpandedItems={expanded}
         selectedItems={currentPath}
       >
         {children}
