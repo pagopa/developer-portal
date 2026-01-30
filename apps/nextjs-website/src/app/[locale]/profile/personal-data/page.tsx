@@ -9,7 +9,7 @@ import { InfoCardItemProps } from '@/components/atoms/InfoCardItem/InfoCardItem'
 import DeleteSection from '@/components/molecules/DeleteSection/DeleteSection';
 import { ProfileAccountCard } from '@/components/organisms/Auth/ProfileAccountCard';
 import { useUser } from '@/helpers/user.helper';
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import ConfirmationModal from '@/components/atoms/ConfirmationModal/ConfirmationModal';
 import PasswordFormWrapper from '@/components/organisms/Auth/PasswordFormWrapper';
 import { ProfileDataCard } from '@/components/molecules/ProfileDataCard/ProfileDataCard';
@@ -20,6 +20,7 @@ const PersonalData = () => {
   const t = useTranslations();
   const router = useRouter();
   const { user, setUserAttributes } = useUser();
+  const locale = useParams<{ locale: string }>().locale;
 
   const companyRolesValues = useMemo(
     () =>
@@ -154,7 +155,7 @@ const PersonalData = () => {
             label: t('profile.changePassword.dialog.confirmLabel'),
             onClick: () => {
               Auth.signOut().then(() => {
-                router.replace('/auth/login');
+                router.replace(`/${locale}/auth/login`);
               });
               return null;
             },
