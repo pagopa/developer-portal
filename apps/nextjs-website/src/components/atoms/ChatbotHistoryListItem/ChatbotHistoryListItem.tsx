@@ -2,6 +2,7 @@ import { defaultLocale } from '@/config';
 import { Session } from '@/lib/chatbot/queries';
 import { ListItem, ListItemButton, Typography, useTheme } from '@mui/material';
 import { useTranslations } from 'next-intl';
+import { useParams } from 'next/navigation';
 
 type DateFormatOptions = {
   locale?: string;
@@ -22,6 +23,7 @@ type ChatbotHistoryListItemProps = {
 };
 
 const ChatbotHistoryListItem = ({ session }: ChatbotHistoryListItemProps) => {
+  const locale = useParams<{ locale: string }>().locale;
   const { palette } = useTheme();
   const t = useTranslations();
   const formattedDate = new Intl.DateTimeFormat(
@@ -42,7 +44,7 @@ const ChatbotHistoryListItem = ({ session }: ChatbotHistoryListItemProps) => {
           alignContent: 'center',
           backgroundColor: '#fafafa',
         }}
-        href={`/profile/chatbot-history?sessionId=${session.id}`}
+        href={`/${locale}/profile/chatbot-history?sessionId=${session.id}`}
       >
         <Typography
           color={palette.text.primary}
