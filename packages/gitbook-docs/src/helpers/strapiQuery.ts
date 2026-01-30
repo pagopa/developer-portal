@@ -170,80 +170,6 @@ const apisDataQueryParams = {
   ...STRAPI_DEFAULT_PAGINATION,
 };
 
-const guideListPagesPopulate = {
-  populate: {
-    product: {
-      ...productRelationsPopulate,
-    },
-    guidesByCategory: {
-      populate: {
-        guides: {
-          populate: ['mobileImage', 'image', 'listItems'],
-        },
-      },
-    },
-    bannerLinks: {
-      populate: ['icon'],
-    },
-    seo: {
-      populate: '*,metaImage,metaSocial.image',
-    },
-  },
-};
-
-const guideListPagesQueryParams = {
-  ...guideListPagesPopulate,
-  ...STRAPI_DEFAULT_PAGINATION,
-};
-
-const solutionListPagePopulate = {
-  populate: {
-    solutions: {
-      populate: [
-        'bannerLinks',
-        'bannerLinks.icon',
-        'products.logo',
-        'icon',
-        'icon.name',
-        'stats',
-        'steps',
-        'steps.products',
-        'webinars',
-        'webinars.coverImage',
-        'caseHistories',
-        'caseHistories.case_histories',
-        'caseHistories.case_histories.image',
-      ],
-    },
-    caseHistories: {
-      populate: ['case_histories', 'case_histories.image'],
-    },
-    features: {
-      populate: ['items.icon'],
-    },
-    seo: {
-      populate: '*,metaImage,metaSocial.image',
-    },
-  },
-};
-
-const solutionListPageQueryParams = {
-  ...solutionListPagePopulate,
-  ...STRAPI_DEFAULT_PAGINATION,
-};
-
-export const guidesQueryString = qs.stringify(guidesQueryParams);
-export const solutionsQueryString = qs.stringify(solutionsQueryParams);
-export const productsQueryString = qs.stringify(productsQueryParams);
-export const apisDataQueryString = qs.stringify(apisDataQueryParams);
-export const releaseNotesQueryString = qs.stringify(releaseNotesQueryParams);
-export const guideListPagesQueryString = qs.stringify(
-  guideListPagesQueryParams
-);
-export const solutionListPageQueryString = qs.stringify(
-  solutionListPageQueryParams
-);
-
 /**
  * Generate query strings with optional dirName filtering.
  *
@@ -257,8 +183,12 @@ export const solutionListPageQueryString = qs.stringify(
  * (Strapi docs confirm filtering limitations on dynamic zones and media fields, but don't
  * explicitly document repeatable component filtering behavior)
  */
-export function getSolutionsQueryString(dirNames?: readonly string[]): string {
+export function getSolutionsQueryString(
+  locale?: string,
+  dirNames?: readonly string[]
+): string {
   const params = {
+    locale: locale || 'it',
     ...solutionsQueryParams,
     ...(dirNames && dirNames.length > 0
       ? {
@@ -274,9 +204,11 @@ export function getSolutionsQueryString(dirNames?: readonly string[]): string {
 }
 
 export function getReleaseNotesQueryString(
+  locale?: string,
   dirNames?: readonly string[]
 ): string {
   const params = {
+    locale: locale || 'it',
     ...releaseNotesQueryParams,
     ...(dirNames && dirNames.length > 0
       ? {
@@ -287,6 +219,30 @@ export function getReleaseNotesQueryString(
           },
         }
       : {}),
+  };
+  return qs.stringify(params);
+}
+
+export function getGuidesQueryString(locale?: string): string {
+  const params = {
+    locale: locale || 'it',
+    ...guidesQueryParams,
+  };
+  return qs.stringify(params);
+}
+
+export function getProductsQueryString(locale?: string): string {
+  const params = {
+    locale: locale || 'it',
+    ...productsQueryParams,
+  };
+  return qs.stringify(params);
+}
+
+export function getApisDataQueryString(locale?: string): string {
+  const params = {
+    locale: locale || 'it',
+    ...apisDataQueryParams,
   };
   return qs.stringify(params);
 }
