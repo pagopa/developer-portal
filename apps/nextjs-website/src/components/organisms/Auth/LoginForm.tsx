@@ -29,6 +29,7 @@ import {
   useState,
 } from 'react';
 import { validateEmail, validateField } from '@/helpers/auth.helpers';
+import { useParams } from 'next/navigation';
 
 interface LoginFormProps {
   onLogin: LoginFunction;
@@ -46,6 +47,7 @@ const LoginForm = ({
   noAccount = false,
   submitting = false,
 }: LoginFormProps) => {
+  const { locale } = useParams<{ locale: string }>();
   const signUp = useTranslations('auth.signUp');
   const login = useTranslations('auth.login');
   const shared = useTranslations('shared');
@@ -236,7 +238,7 @@ const LoginForm = ({
               >
                 <Typography
                   component={Link}
-                  href='/auth/password-reset'
+                  href={`/${locale}/auth/password-reset`}
                   fontSize={16}
                   variant='caption-semibold'
                   color={palette.primary.main}
@@ -257,7 +259,7 @@ const LoginForm = ({
                 </Typography>
                 <Typography
                   component={Link}
-                  href='/auth/sign-up'
+                  href={`/${locale}/auth/sign-up`}
                   fontSize={16}
                   variant='caption-semibold'
                   color={palette.primary.main}

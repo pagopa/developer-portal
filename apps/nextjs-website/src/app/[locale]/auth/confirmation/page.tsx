@@ -2,7 +2,7 @@
 import { Button } from '@mui/material';
 import PageNotFound from '@/app/[locale]/not-found';
 import { Auth } from 'aws-amplify';
-import { useSearchParams, useRouter } from 'next/navigation';
+import { useSearchParams, useRouter, useParams } from 'next/navigation';
 import { useCallback, useEffect, useState, Suspense } from 'react';
 import Spinner from '@/components/atoms/Spinner/Spinner';
 import { useTranslations } from 'next-intl';
@@ -20,6 +20,7 @@ enum State {
 }
 
 const ConfirmationContent = () => {
+  const locale = useParams<{ locale: string }>().locale;
   const searchParams = useSearchParams();
   const router = useRouter();
   const username = searchParams.get('username');
@@ -34,7 +35,7 @@ const ConfirmationContent = () => {
       Auth.confirmSignUp(username, code)
         .then(() => {
           // eslint-disable-next-line functional/immutable-data
-          router.push('/auth/account-activated');
+          router.push(`/${locale}/auth/account-activated`);
         })
         .catch((error) => {
           // TODO: remove console warn and handle errors: [CodeMismatchException, ExpiredCodeException, InternalErrorException, LimitExceededException]
@@ -56,7 +57,7 @@ const ConfirmationContent = () => {
     } else {
       setState(State.error);
     }
-  }, [username, code, router]);
+  }, [username, code, router, locale]);
 
   const onResendEmail = useCallback(async () => {
     setSubmitting(true);
@@ -77,7 +78,7 @@ const ConfirmationContent = () => {
     case State.error:
       return <PageNotFound />;
     case State.alreadyConfirmed:
-      return <AccountAlreadyConfirmed />;
+      return <AccountAlreadyConfirmed locale={locale} />;
     case State.resendCode:
       return (
         <PageBackgroundWrapper>

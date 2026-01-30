@@ -7,12 +7,14 @@ import WebinarListItem from '@/components/molecules/WebinarListItem/WebinarListI
 import EContainer from '@/editorialComponents/EContainer/EContainer';
 import { useTranslations } from 'next-intl';
 import LinkButton from '@/components/atoms/LinkButton/LinkButton';
+import { useParams } from 'next/navigation';
 
 type PastWebinarsProps = {
   webinars: Webinar[];
 };
 
 const PastWebinarsShowcase = ({ webinars }: PastWebinarsProps) => {
+  const { locale } = useParams<{ locale: string }>();
   const t = useTranslations('webinar.pastWebinars');
 
   return (
@@ -28,7 +30,7 @@ const PastWebinarsShowcase = ({ webinars }: PastWebinarsProps) => {
             alignItems='center'
             color='primary.main'
           >
-            <LinkButton href={'/webinars'} label={t('cta')} />
+            <LinkButton href={`/${locale}/webinars`} label={t('cta')} />
           </Stack>
         </Box>
         <Box pb={4} width={'100%'}>

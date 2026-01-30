@@ -26,6 +26,7 @@ import { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import { PasswordTextField } from './PasswordTextField';
 import PoliciesParagraph from './PoliciesParagraph';
 import { companyRoles } from '@/config';
+import { useParams } from 'next/navigation';
 
 const defaults = {
   username: '',
@@ -59,6 +60,7 @@ const SignUpForm = ({
   userAlreadyExist,
   submitting = false,
 }: SignUpFormProps) => {
+  const { locale } = useParams<{ locale: string }>();
   const t = useTranslations();
   const { palette } = useTheme();
   const boldInputSx = {
@@ -356,7 +358,7 @@ const SignUpForm = ({
               <Typography
                 component={Link}
                 fontSize={16}
-                href='/auth/login'
+                href={`/${locale}/auth/login`}
                 variant='caption-semibold'
                 color={palette.primary.main}
               >

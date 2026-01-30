@@ -144,7 +144,7 @@ export default async function RootLayout({
             />
             <AuthProvider>
               <ChatbotProvider isChatbotVisible={isChatbotActive}>
-                <SiteHeader currentLocale={locale} products={products} />
+                <SiteHeader locale={locale} products={products} />
                 <ErrorBoundary errorComponent={Error}>
                   <main>
                     <Box sx={{ marginTop: `${SITE_HEADER_HEIGHT}px` }}>

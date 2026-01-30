@@ -19,7 +19,7 @@ import { useTranslations } from 'next-intl';
 import { useRouter, usePathname } from 'next/navigation';
 import { flushChatQueriesFromLocalStorage } from '@/helpers/chatbot.helper';
 
-const DesktopUserInfo: FC<{ currentLocale: string }> = ({ currentLocale }) => {
+const DesktopUserInfo: FC<{ locale: string }> = ({ locale }) => {
   const t = useTranslations();
   const router = useRouter();
   const pathname = usePathname();
@@ -40,7 +40,7 @@ const DesktopUserInfo: FC<{ currentLocale: string }> = ({ currentLocale }) => {
 
     // Check if the user in an auth only page
     if (['/auth', '/profile'].some((path) => pathname.match(path))) {
-      router.replace('/');
+      router.replace(`/${locale}/`);
     } else {
       // router.refresh(); is not enough beacuse it will not clean current state of components
       if (typeof window !== 'undefined') {
@@ -49,14 +49,15 @@ const DesktopUserInfo: FC<{ currentLocale: string }> = ({ currentLocale }) => {
     }
 
     handleClose();
-  }, [pathname, router]);
-
+  }, [pathname, router, locale]);
   const handleClick = useCallback((event: React.MouseEvent<HTMLElement>) => {
     setMenu(event.currentTarget);
   }, []);
 
   const loginHref =
-    pathname !== '/' ? `/auth/login?redirect=${btoa(pathname)}` : '/auth/login';
+    pathname !== `/${locale}`
+      ? `/auth/login?redirect=${btoa(pathname)}`
+      : '/auth/login';
 
   return (
     <Stack
@@ -68,7 +69,7 @@ const DesktopUserInfo: FC<{ currentLocale: string }> = ({ currentLocale }) => {
     >
       {!user && !loading && (
         <MuiLink
-          href={`/${currentLocale}${loginHref}`}
+          href={`/${locale}${loginHref}`}
           component={Link}
           sx={{
             display: 'flex',
@@ -150,7 +151,7 @@ const DesktopUserInfo: FC<{ currentLocale: string }> = ({ currentLocale }) => {
             >
               <MuiLink
                 component={Link}
-                href={`/${currentLocale}/profile/personal-data`}
+                href={`/${locale}/profile/personal-data`}
                 sx={{
                   alignSelf: 'stretch',
                   textDecoration: 'none',
