@@ -318,7 +318,7 @@ jobs:
             for dir in $DIRS; do
               if [[ -n "$dir" ]]; then
                 echo "Syncing directory: $dir"
-                aws s3 sync "docs/$dir" "s3://devportal-p-website-static-content/devportal-docs/docs/$dir" --delete --exclude "**/metadata.json" --size-only
+                aws s3 sync "docs/$dir" "s3://devportal-p-website-static-content/devportal-docs/docs/$dir" --delete --exclude "metadata.json" --size-only
               fi
             done
           fi

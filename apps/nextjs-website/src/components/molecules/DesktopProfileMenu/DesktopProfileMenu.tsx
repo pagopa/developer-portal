@@ -7,11 +7,13 @@ import { profileMenuItems } from '@/config';
 import Link from 'next/link';
 
 type DesktopProfileMenuProps = {
+  locale: string;
   currentPathname: string;
   userFullName: string;
 };
 
 const DesktopProfileMenu = ({
+  locale,
   currentPathname,
   userFullName,
 }: DesktopProfileMenuProps) => {
@@ -54,13 +56,13 @@ const DesktopProfileMenu = ({
         </Box>
         {profileMenuItems.map(
           ({ label, href }: { label: string; href: string }, index: number) => {
-            const isCurrent = currentPathname.startsWith(href);
+            const isCurrent = currentPathname.startsWith(`/${locale}${href}`);
 
             return (
               <MuiLink
                 component={Link}
                 key={index}
-                href={href}
+                href={`/${locale}${href}`}
                 sx={{
                   textDecoration: 'none',
                   color: palette.text.primary,
