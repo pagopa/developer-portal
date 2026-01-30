@@ -6,7 +6,7 @@ import PageBackgroundWrapper from '@/components/atoms/PageBackgroundWrapper/Page
 import SingleCard from '@/components/atoms/SingleCard/SingleCard';
 import { ErrorOutline as ErrorOutlineIcon } from '@mui/icons-material';
 
-const ExpiredCode = () => {
+const ExpiredCode = ({ locale }: { locale: string }) => {
   const t = useTranslations('auth');
 
   return (
@@ -18,7 +18,7 @@ const ExpiredCode = () => {
           <Button
             variant='contained'
             component={Link}
-            href='/profile/personal-data'
+            href={`/${locale}/profile/personal-data`}
           >
             {t('expiredCode.goToProfile')}
           </Button>

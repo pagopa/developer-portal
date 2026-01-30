@@ -9,7 +9,7 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import { Product } from '@/lib/types/product';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import Link from 'next/link';
@@ -31,6 +31,7 @@ const ApiSoapSection = ({
   apiRepositoryUrl,
   apiUrls,
 }: ApiSoapSectionProps) => {
+  const { locale } = useParams<{ locale: string }>();
   const t = useTranslations();
   const { palette } = useTheme();
   const iframeRef = useRef<HTMLIFrameElement>(null);
@@ -63,7 +64,9 @@ const ApiSoapSection = ({
 
     if (spec?.name) {
       router.replace(
-        `/${product.slug}/api/${apiSlug}?spec=${encodeURIComponent(spec.name)}`
+        `/${locale}/${product.slug}/api/${apiSlug}?spec=${encodeURIComponent(
+          spec.name
+        )}`
       );
     }
 

@@ -1,7 +1,7 @@
 'use client';
 import PageNotFound from '@/app/[locale]/not-found';
 import { Auth } from 'aws-amplify';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState, Suspense } from 'react';
 import Spinner from '@/components/atoms/Spinner/Spinner';
 import ExpiredCode from '@/app/[locale]/auth/expired-code/page';
@@ -12,7 +12,7 @@ enum State {
   error = 'error',
 }
 
-const EmailConfirmationContent = () => {
+const EmailConfirmationContent = ({ locale }: { locale: string }) => {
   const searchParams = useSearchParams();
   const router = useRouter();
   const code = searchParams.get('code');
@@ -24,7 +24,7 @@ const EmailConfirmationContent = () => {
       Auth.verifyCurrentUserAttributeSubmit('email', code)
         .then(() => {
           // eslint-disable-next-line functional/immutable-data
-          router.push('/auth/account-activated');
+          router.push(`/${locale}/auth/account-activated`);
           Auth.signOut();
         })
         .catch((error) => {
@@ -43,22 +43,22 @@ const EmailConfirmationContent = () => {
     } else {
       setState(State.error);
     }
-  }, [code, router]);
+  }, [code, router, locale]);
 
   switch (state) {
     case State.error:
       return <PageNotFound />;
     case State.expiredCode:
-      return <ExpiredCode />;
+      return <ExpiredCode locale={locale} />;
     default:
       return <Spinner />;
   }
 };
 
-const EmailConfirmation = () => {
+const EmailConfirmation = ({ locale }: { locale: string }) => {
   return (
     <Suspense fallback={<Spinner />}>
-      <EmailConfirmationContent />
+      <EmailConfirmationContent locale={locale} />
     </Suspense>
   );
 };
