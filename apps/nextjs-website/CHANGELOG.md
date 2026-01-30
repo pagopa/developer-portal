@@ -1,5 +1,21 @@
 # nextjs-website
 
+## 16.0.0
+
+### Major Changes
+
+- 8514938: Add locale route parameter, add support for locale in all app pages and layout component
+
+### Minor Changes
+
+- 8514938: Remove english from supported locales and add disabled state for the language selection menu if the supported locales are less than 2
+- 8514938: Fix mobile header menu spacing
+
+### Patch Changes
+
+- 8514938: Remove i18n featureflag
+- 7af09fb: Implement combined guide and release notes metadata retrieval from CDN and S3 for comprehensive sitemap generation.
+
 ## 15.1.0
 
 ### Minor Changes
