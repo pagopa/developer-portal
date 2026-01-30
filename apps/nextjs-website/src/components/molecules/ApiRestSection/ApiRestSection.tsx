@@ -1,5 +1,5 @@
 'use client';
-import { Suspense, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import {
   Box,
   FormControl,
@@ -15,8 +15,16 @@ import {
 import { Product } from '@/lib/types/product';
 import { getStyles } from '@/components/molecules/ApiRestSection/ApiRestSection.styles';
 import { useRouter, useSearchParams } from 'next/navigation';
-import ApiViewer from '@/components/atoms/ApiViewer/ApiViewer';
 import Spinner from '@/components/atoms/Spinner/Spinner';
+import dynamic from 'next/dynamic';
+
+const ApiViewer = dynamic(
+  () => import('@/components/atoms/ApiViewer/ApiViewer'),
+  {
+    loading: () => <Spinner />,
+    ssr: false,
+  }
+);
 
 export type ApiRestPageProps = {
   readonly product: Product;
@@ -121,9 +129,7 @@ const ApiRestSection = ({
           </StyledFormControl>
         </Stack>
       )}
-      <Suspense fallback={<Spinner />}>
-        <ApiViewer specURL={selectedApi.url} />
-      </Suspense>
+      <ApiViewer specURL={selectedApi.url} />
     </Box>
   );
 };
