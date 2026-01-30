@@ -15,6 +15,7 @@ import { baseUrl } from '@/config';
 import AlertPart from '@/components/atoms/AlertPart/AlertPart';
 import { ChatbotErrorsType } from '@/helpers/chatbot.helper';
 import ChatbotFeedbackForm from '@/components/molecules/ChatbotFeedbackForm/ChatbotFeedbackForm';
+import { useParams } from 'next/navigation';
 
 type ChatProps = {
   queries: Query[];
@@ -46,6 +47,7 @@ const Chat = ({
   error,
   disabled,
 }: ChatProps) => {
+  const locale = useParams<{ locale: string }>().locale;
   const t = useTranslations();
   const { palette } = useTheme();
   const [instantScroll, setInstantScroll] = useState(scrollToBottom);
@@ -125,7 +127,7 @@ const Chat = ({
         >
           <Stack direction={'row'} paddingY={'0.25rem'}>
             <Button
-              href='/profile/chatbot-history'
+              href={`/${locale}/profile/chatbot-history`}
               size='small'
               sx={{ margin: '0.4rem', paddingX: '0.4rem' }}
             >
