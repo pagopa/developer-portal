@@ -55,7 +55,6 @@ module "opennext" {
       NEXT_PUBLIC_COGNITO_USER_POOL_ID            = aws_cognito_user_pool.devportal.id
       NEXT_PUBLIC_COGNITO_USER_POOL_WEB_CLIENT_ID = aws_cognito_user_pool_client.devportal_website.id
       NEXT_PUBLIC_ENVIRONMENT                     = var.environment
-      NEXT_PUBLIC_I18N_ACTIVE_LANGUAGES           = "false"
       NEXT_PUBLIC_ORGANIZATION_SOCIAL_LINKS       = "https://x.com/PagoPA,https://www.instagram.com/pagopaspa/,https://www.linkedin.com/company/pagopa/,https://medium.com/pagopa-spa"
       NEXT_PUBLIC_WEBSITE_BASE_URL                = "https://${var.dns_domain_name}"
       NEXT_PUBLIC_WEBSITE_NAME                    = "DevPortal"
