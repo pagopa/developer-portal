@@ -49,13 +49,14 @@ const EmailConfirmationContent = ({ locale }: { locale: string }) => {
     case State.error:
       return <PageNotFound />;
     case State.expiredCode:
-      return <ExpiredCode locale={locale} />;
+      return <ExpiredCode />;
     default:
       return <Spinner />;
   }
 };
 
-const EmailConfirmation = ({ locale }: { locale: string }) => {
+const EmailConfirmation = () => {
+  const { locale } = useParams<{ locale: string }>();
   return (
     <Suspense fallback={<Spinner />}>
       <EmailConfirmationContent locale={locale} />
