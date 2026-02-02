@@ -77,7 +77,7 @@ const ReleaseNotePage = async (props0: {
   }
   const releaseNoteProps = await getReleaseNote(
     params.productSlug,
-    // Add "release-note" path segment to match the path stored in S3 metadata
+    // Prepend the "release-note" path segment expected by the release notes backend
     ['release-note', ...(params.releaseNoteSubPathSlugs || [])]
   );
 
