@@ -131,5 +131,8 @@ class ChatbotSettings(BaseSettings):
         "CHB_AWS_SQS_QUEUE_EVALUATE_NAME", "chatbot-evaluate"
     )
 
+    # other
+    language_code: str = os.getenv("CHB_LANGUAGE_CODE_STATIC_FILES", "it")
+
 
 SETTINGS = ChatbotSettings()
