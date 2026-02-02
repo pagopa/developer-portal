@@ -55,7 +55,6 @@ refine_prompt_str: |
   Task:
     Given the new context, refine the original answer to better answer the query.
     If the context isn't useful, return the original answer.
-    The answer must be in Italian.
 
     Answer:   
 
