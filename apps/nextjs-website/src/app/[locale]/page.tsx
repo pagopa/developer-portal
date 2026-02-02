@@ -24,7 +24,6 @@ import { Webinar } from '@/lib/types/webinar';
 import { SEO } from '@/lib/types/seo';
 import WebinarHeaderBanner from '@/components/atoms/WebinarHeaderBanner/WebinarHeaderBanner';
 import WebinarsSection from '@/components/organisms/WebinarsSection/WebinarsSection';
-import { cons } from 'fp-ts/lib/ReadonlyNonEmptyArray';
 
 type EcosystemSolutionsCtaProps = {
   readonly variant?: 'text' | 'contained' | 'outlined';
