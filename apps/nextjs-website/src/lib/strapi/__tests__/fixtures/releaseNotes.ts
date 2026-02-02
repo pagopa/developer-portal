@@ -1,5 +1,5 @@
 import { StrapiReleaseNotes } from '@/lib/strapi/types/releaseNotes';
-import { ReleaseNotePageProps } from '@/app/[productSlug]/release-notes/[[...releaseNoteSubPathSlugs]]/page';
+import { ReleaseNotePageProps } from '@/app/[productSlug]/release-note/[[...releaseNoteSubPathSlugs]]/page';
 import { generateBannerLinks } from '@/lib/strapi/__tests__/factories/bannerLink';
 
 const fixedDateIsoString = new Date('2024-01-01T00:00:00.000Z').toISOString();

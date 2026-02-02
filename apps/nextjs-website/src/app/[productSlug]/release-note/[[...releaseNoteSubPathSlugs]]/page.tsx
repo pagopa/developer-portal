@@ -117,7 +117,7 @@ const ReleaseNotePage = async (props0: {
       productToBreadcrumb(product),
       {
         name: title,
-        item: `${baseUrl}/${product.slug}/release-notes`,
+        item: `${baseUrl}/${product.slug}/release-note`,
       },
       ...breadcrumbsItems,
     ],
@@ -129,7 +129,7 @@ const ReleaseNotePage = async (props0: {
     ...productPageToBreadcrumbs(product, [
       {
         name: title,
-        path: `/${product.slug}/release-notes`,
+        path: `/${product.slug}/release-note`,
       },
       ...breadcrumbs,
     ]),
