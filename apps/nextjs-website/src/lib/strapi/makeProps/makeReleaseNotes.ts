@@ -24,8 +24,8 @@ export function makeReleaseNotesProps(
             attributes.bannerLinks.length > 0
               ? attributes.bannerLinks.map(makeBannerLinkProps)
               : attributes.product.data?.attributes.bannerLinks?.map(
-                makeBannerLinkProps
-              ),
+                  makeBannerLinkProps
+                ),
           dirName: attributes.dirName,
           landingFile: attributes.landingFile,
           path: `/${attributes.product.data?.attributes.slug}/release-note`,
