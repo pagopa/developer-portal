@@ -11,7 +11,7 @@ import {
 import { useUser } from '@/helpers/user.helper';
 import { isChatbotActive } from '@/config';
 import Spinner from '@/components/atoms/Spinner/Spinner';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import ChatbotHistoryDetailLayout from '@/components/organisms/ChatbotHistoryDetailLayout/ChatbotHistoryDetailLayout';
 import { Query } from '@/lib/chatbot/queries';
 import { isEmpty } from 'lodash';
@@ -27,6 +27,7 @@ const ChatbotHistoryContent = () => {
     getSessionsByPage,
   } = useChatbot(true);
   const router = useRouter();
+  const locale = useParams<{ locale: string }>().locale;
 
   const searchParams = useSearchParams();
   const sessionId = searchParams.get('sessionId');
@@ -51,7 +52,7 @@ const ChatbotHistoryContent = () => {
   }, []); // Needs to run only once
 
   if (!isChatbotActive) {
-    router.replace('/not-found');
+    router.replace(`/${locale}/not-found`);
     return null;
   }
 
@@ -90,7 +91,7 @@ const ChatbotHistoryContent = () => {
                   if (typeof window !== 'undefined') {
                     // router.replace() or push() are not enough because they will not clean current state of components
                     // eslint-disable-next-line functional/immutable-data
-                    window.location.href = '/profile/chatbot-history';
+                    window.location.href = `/${locale}/profile/chatbot-history`;
                   }
                 });
                 return null;
