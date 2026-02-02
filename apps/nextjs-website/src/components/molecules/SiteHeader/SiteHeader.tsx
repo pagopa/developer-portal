@@ -14,7 +14,7 @@ export type SiteHeaderProps = {
 };
 
 const SiteHeader = (
-  { locale: locale, products }: SiteHeaderProps,
+  { locale, products }: SiteHeaderProps,
   ref: ForwardedRef<HTMLDivElement>
 ) => {
   const { palette } = useTheme();

@@ -56,8 +56,8 @@ const DesktopUserInfo: FC<{ locale: string }> = ({ locale }) => {
 
   const loginHref =
     pathname !== `/${locale}`
-      ? `/auth/login?redirect=${btoa(pathname)}`
-      : '/auth/login';
+      ? `auth/login?redirect=${btoa(pathname)}`
+      : 'auth/login';
 
   return (
     <Stack
@@ -69,7 +69,7 @@ const DesktopUserInfo: FC<{ locale: string }> = ({ locale }) => {
     >
       {!user && !loading && (
         <MuiLink
-          href={`/${locale}${loginHref}`}
+          href={`/${locale}/${loginHref}`}
           component={Link}
           sx={{
             display: 'flex',
