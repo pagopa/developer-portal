@@ -246,7 +246,9 @@ export const getGuidesMetadata = async (dirName?: string) => {
 const removeTrailingSlash = (value: string) => value.replace(/\/+$/, '');
 
 const buildDirMetadataPath = (dirName: string) => {
-  const docsBase = s3DocsPath ? removeTrailingSlash(s3DocsPath) : '';
+  const docsBase = s3DocsPath
+    ? removeTrailingSlash(s3DocsPath)
+    : removeTrailingSlash(S3_PATH_TO_GITBOOK_DOCS);
   return docsBase
     ? `${docsBase}/${dirName}/${S3_METADATA_JSON_PATH}`
     : `${dirName}/${S3_METADATA_JSON_PATH}`;
@@ -283,6 +285,20 @@ async function batchFetchMetadata(
   );
 }
 
+export const getGuidesMetadataByDirNames = async (
+  dirNames: readonly string[],
+  concurrencyLimit = 5
+) => {
+  if (!dirNames || dirNames.length === 0) {
+    return [];
+  }
+
+  const metadataPaths = dirNames.map((dirName) =>
+    buildDirMetadataPath(dirName)
+  );
+  return await batchFetchMetadata(metadataPaths, concurrencyLimit);
+};
+
 export const getSolutionsMetadataByDirNames = async (
   dirNames: readonly string[],
   concurrencyLimit = 5
@@ -316,6 +332,20 @@ export const getSolutionsMetadata = async (dirName?: string) => {
   solutionsMetadataCacheTime = now;
 
   return solutionsMetadataCache || [];
+};
+
+export const getReleaseNotesMetadataByDirNames = async (
+  dirNames: readonly string[],
+  concurrencyLimit = 5
+) => {
+  if (!dirNames || dirNames.length === 0) {
+    return [];
+  }
+
+  const metadataPaths = dirNames.map((dirName) =>
+    buildDirMetadataPath(dirName)
+  );
+  return await batchFetchMetadata(metadataPaths, concurrencyLimit);
 };
 
 export const getReleaseNotesMetadata = async (dirName?: string) => {
