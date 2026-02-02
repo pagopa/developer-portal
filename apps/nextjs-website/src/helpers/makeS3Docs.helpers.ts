@@ -16,7 +16,7 @@ import {
   parseS3Doc,
 } from './parseS3Doc.helpers';
 import { SolutionTemplateProps } from '@/components/templates/SolutionTemplate/SolutionTemplate';
-import { ReleaseNotePageProps } from '@/app/[productSlug]/release-note/[[...releaseNoteSubPathSlugs]]/page';
+import { ReleaseNotePageProps } from '@/app/[locale]/[productSlug]/release-note/[[...releaseNoteSubPathSlugs]]/page';
 import { JsonMetadata } from './s3Metadata.helpers';
 
 export type TutorialsDefinition = {

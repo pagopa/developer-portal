@@ -59,7 +59,6 @@ import {
 } from 'gitbook-docs/syncedResponses';
 import { StrapiSolutions } from './strapi/types/solutions';
 import { StrapiReleaseNotes } from './strapi/types/releaseNotes';
-import { product } from '@/lib/strapi/__tests__/fixtures/product';
 
 // a BuildEnv instance ready to be used
 const buildEnv = pipe(
@@ -182,6 +181,13 @@ export const getGuideProps = async (
   return await makeGuideS3({ guideDefinition: guide, guidePaths });
 };
 
+export const getGuidesProps = async () => {
+  const strapiGuides = (await fetchResponseFromCDN(
+    getSyncedGuidesResponseJsonPath()
+  )) as StrapiGuides | undefined;
+  return strapiGuides ? makeGuidesProps(strapiGuides) : [];
+};
+
 export const getGuidePageProps = async (
   guideSlug: string,
   productSlug: string
@@ -258,6 +264,11 @@ export const getReleaseNoteProps = async (
     );
   }
   return await makeReleaseNoteS3(releaseNote, jsonMetadata);
+};
+
+export const getReleaseNotesProps = async () => {
+  const strapiReleaseNotes = await fetchReleaseNotes();
+  return makeReleaseNotesProps(strapiReleaseNotes);
 };
 
 export const getUseCasesProps = async () => {

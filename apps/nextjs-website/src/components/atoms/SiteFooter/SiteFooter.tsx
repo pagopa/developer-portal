@@ -9,8 +9,10 @@ import type {
   FooterLinksType,
   PreLoginFooterLinksType,
 } from '@/editorialComponents/Footer/types';
+import { useParams } from 'next/navigation';
 
 const SiteFooter = () => {
+  const locale = useParams<{ locale: string }>().locale;
   const t = useTranslations('footer');
 
   const links: PreLoginFooterLinksType = {
@@ -81,13 +83,13 @@ const SiteFooter = () => {
       links: [
         {
           ariaLabel: t('resources.links.privacyPolicy.ariaLabel'),
-          href: '/privacy-policy',
+          href: `/${locale}/privacy-policy`,
           label: t('resources.links.privacyPolicy.label'),
           linkType: 'internal',
         },
         {
           ariaLabel: t('resources.links.termsOfService.ariaLabel'),
-          href: '/terms-of-service',
+          href: `/${locale}/terms-of-service`,
           label: t('resources.links.termsOfService.label'),
           linkType: 'internal',
         },
