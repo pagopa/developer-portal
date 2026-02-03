@@ -23,10 +23,14 @@ import {
 } from '@mui/material';
 
 type MobileProfileMenuProps = {
+  locale: string;
   userFullName: string | null;
 };
 
-const MobileProfileMenu = ({ userFullName }: MobileProfileMenuProps) => {
+const MobileProfileMenu = ({
+  locale,
+  userFullName,
+}: MobileProfileMenuProps) => {
   const { palette } = useTheme();
   const t = useTranslations('profile');
   const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('lg'));
@@ -52,7 +56,7 @@ const MobileProfileMenu = ({ userFullName }: MobileProfileMenuProps) => {
         <MenuItem key={index} onClick={handleClose} sx={{ p: 0 }}>
           <MuiLink
             component={Link}
-            href={href}
+            href={`/${locale}${href}`}
             sx={{
               alignSelf: 'stretch',
               textDecoration: 'none',
