@@ -4,15 +4,21 @@ import React from 'react';
 
 import Wrapper from '../../../../__tests__/components/Wrapper';
 import labels from '@/messages/it.json';
+import { useParams } from 'next/navigation';
 
 const errorsRegex = RegExp(labels.shared.requiredFieldError, 'i');
 const emailErrorRegex = RegExp(labels.shared.emailFieldError, 'i');
 const fieldsErrorsRegex = RegExp(labels.auth.login.noAccountError, 'i');
 const actionRegex = RegExp(labels.auth.login.action, 'i');
 
+jest.mock('next/navigation', () => ({
+  useParams: jest.fn(),
+}));
+
 describe('LoginForm', () => {
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   const mockOnLogin = jest.fn(async () => {});
+  jest.mocked(useParams).mockReturnValue({ locale: 'it' });
 
   beforeEach(() => {
     jest.clearAllMocks();
