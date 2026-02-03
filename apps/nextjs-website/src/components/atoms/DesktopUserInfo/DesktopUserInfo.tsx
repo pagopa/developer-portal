@@ -19,7 +19,7 @@ import { useTranslations } from 'next-intl';
 import { useRouter, usePathname } from 'next/navigation';
 import { flushChatQueriesFromLocalStorage } from '@/helpers/chatbot.helper';
 
-const DesktopUserInfo: FC = () => {
+const DesktopUserInfo: FC<{ locale: string }> = ({ locale }) => {
   const t = useTranslations();
   const router = useRouter();
   const pathname = usePathname();
@@ -55,6 +55,9 @@ const DesktopUserInfo: FC = () => {
     setMenu(event.currentTarget);
   }, []);
 
+  const loginHref =
+    pathname !== '/' ? `/auth/login?redirect=${btoa(pathname)}` : '/auth/login';
+
   return (
     <Stack
       flexGrow={1}
@@ -65,11 +68,7 @@ const DesktopUserInfo: FC = () => {
     >
       {!user && !loading && (
         <MuiLink
-          href={
-            pathname !== '/'
-              ? `/auth/login?redirect=${btoa(pathname)}`
-              : '/auth/login'
-          }
+          href={`/${locale}${loginHref}`}
           component={Link}
           sx={{
             display: 'flex',
@@ -151,7 +150,7 @@ const DesktopUserInfo: FC = () => {
             >
               <MuiLink
                 component={Link}
-                href='/profile/personal-data'
+                href={`/${locale}/profile/personal-data`}
                 sx={{
                   alignSelf: 'stretch',
                   textDecoration: 'none',

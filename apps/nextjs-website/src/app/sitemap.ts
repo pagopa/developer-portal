@@ -4,12 +4,16 @@ import {
   getHomepageProps,
   getSolutionsProps,
   getWebinarsProps,
+  getReleaseNotesProps,
+  getGuidesProps,
 } from '@/lib/cmsApi';
 import { baseUrl } from '@/config';
 import {
   getGuidesMetadata,
   getReleaseNotesMetadata,
   getSolutionsMetadataByDirNames,
+  getReleaseNotesMetadataByDirNames,
+  getGuidesMetadataByDirNames,
   JsonMetadata,
 } from '@/helpers/s3Metadata.helpers';
 import {
@@ -142,6 +146,26 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // These are stored in S3 and retrieved via legacy helpers.
   // We keep them ensuring no missing legacy content.
   const guidesMetadata = await getGuidesMetadata('it'); // TODO: remove hardcoded locale once i18n development on sitemap has been completed
+  const guides = await getGuidesProps();
+  const guidesDirNames = Array.from(
+    new Set(
+      guides
+        .flatMap((guide) => guide.versions.map((version) => version.dirName))
+        .filter((dirName): dirName is string => Boolean(dirName))
+    )
+  );
+  const guidesMetadataByDirNames = await getGuidesMetadataByDirNames(
+    guidesDirNames
+  );
+
+  // Merge legacy and new metadata
+  const allGuidesMetadata = [...guidesMetadata, ...guidesMetadataByDirNames];
+
+  // Remove duplicates
+  const uniqueGuidesMetadata = Array.from(
+    new Map(allGuidesMetadata.map((guide) => [guide.path, guide])).values()
+  );
+
   const solutionDirNames = Array.from(
     new Set(
       solutions
@@ -153,8 +177,36 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     solutionDirNames
   );
   const releaseNotesMetadata = await getReleaseNotesMetadata('it'); // TODO: remove hardcoded locale once i18n development on sitemap has been completed
+  const releaseNotes = await getReleaseNotesProps('it'); // TODO: remove hardcoded locale once i18n development on sitemap has been completed
+  const releaseNotesDirNames = Array.from(
+    new Set(
+      releaseNotes
+        .map((releaseNote) => releaseNote.dirName)
+        .filter((dirName): dirName is string => Boolean(dirName))
+    )
+  );
 
-  const s3GuideRoutes = guidesMetadata.map((guide: JsonMetadata) => ({
+  const releaseNotesMetadataByDirNames =
+    await getReleaseNotesMetadataByDirNames(releaseNotesDirNames);
+
+  // Merge legacy and new metadata to ensure no missing content
+  // Prioritize distributed metadata if duplicates exist (though they shouldn't)
+  const allReleaseNotesMetadata = [
+    ...releaseNotesMetadata,
+    ...releaseNotesMetadataByDirNames,
+  ];
+
+  // Remove duplicates based on path
+  const uniqueReleaseNotesMetadata = Array.from(
+    new Map(
+      allReleaseNotesMetadata.map((releaseNote) => [
+        releaseNote.path,
+        releaseNote,
+      ])
+    ).values()
+  );
+
+  const s3GuideRoutes = uniqueGuidesMetadata.map((guide: JsonMetadata) => ({
     url: `${baseUrl}${guide.path}`,
     lastModified: new Date(guide.lastModified || Date.now()),
     changeFrequency: 'weekly' as const,
@@ -168,7 +220,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.6,
   }));
 
-  const s3ReleaseNoteRoutes = releaseNotesMetadata.map(
+  const s3ReleaseNoteRoutes = uniqueReleaseNotesMetadata.map(
     (releaseNote: JsonMetadata) => ({
       url: `${baseUrl}${releaseNote.path}`,
       lastModified: new Date(releaseNote.lastModified || Date.now()),
