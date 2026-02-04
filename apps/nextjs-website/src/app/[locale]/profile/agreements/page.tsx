@@ -16,6 +16,7 @@ import React, { ReactNode, useState } from 'react';
 import { useUser } from '@/helpers/user.helper';
 import { snackbarAutoHideDurationMs } from '@/config';
 import AgreementItem from '@/components/atoms/AgreementItem/AgreementItem';
+import { useParams } from 'next/navigation';
 
 // TODO: Remove this code duplication and manage messages with a dedicated service
 interface Info {
@@ -28,6 +29,7 @@ type SubscribeField = 'mailinglist' | 'survey';
 const Agreements = () => {
   const t = useTranslations();
   const { user, loading, setUserAttributes } = useUser();
+  const locale = useParams<{ locale: string }>().locale;
 
   const { palette } = useTheme();
 
@@ -111,7 +113,7 @@ const Agreements = () => {
       component={Link}
       color='primary.main'
       underline='none'
-      href={'/privacy-policy'}
+      href={`/${locale}/privacy-policy`}
       aria-label={t(
         'profile.agreements.privacy.statement.labelOfLinkToReplace'
       )}
