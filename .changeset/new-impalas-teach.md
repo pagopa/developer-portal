@@ -2,4 +2,4 @@
 "nextjs-website": patch
 ---
 
-update release notes folder structure
+Update release notes folder structure
