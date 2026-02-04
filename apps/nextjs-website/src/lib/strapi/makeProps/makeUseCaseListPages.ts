@@ -4,7 +4,7 @@ import { makeBaseProductWithoutLogoProps } from './makeProducts';
 import { compact } from 'lodash';
 import { StrapiUseCaseListPages } from '@/lib/strapi/types/useCaseListPage';
 import { UseCase } from '@/lib/types/useCaseData';
-import { UseCasesPageProps } from '@/app/[productSlug]/use-cases/page';
+import { UseCasesPageProps } from '@/app/[locale]/[productSlug]/use-cases/page';
 
 export function makeUseCaseListPagesProps(
   strapiUseCaseList: StrapiUseCaseListPages
@@ -63,7 +63,6 @@ export function makeUseCaseListPagesProps(
       );
 
       return {
-        name: attributes.title,
         path: `/${attributes.product.slug}/use-cases`,
         product: makeBaseProductWithoutLogoProps(attributes.product),
         abstract: {
@@ -81,7 +80,7 @@ export function makeUseCaseListPagesProps(
                 makeBannerLinkProps(bannerLink)
               ),
         enableFilters: attributes.enableFilters,
-      };
+      } satisfies UseCasesPageProps;
     })
   );
 }

@@ -1,0 +1,47 @@
+---
+name: refresh-all-docs-vector-index
+description: Refresh All Docs for Chatbot LLamaindex Vector Index
+
+inputs:
+  aws_region:
+    description: 'The AWS region selected'
+    required: false
+    default: 'eu-south-1'
+  chatbot_lambda_name:
+    description: the name of the chatbot lambda function
+    required: true
+    default: ''
+
+runs:
+  using: "composite"
+  steps:
+    - name: Setup Python
+      uses: kishaningithub/setup-python-amazon-linux@282d998c8f2c4678ac4f872e4dc3b7d167b59fa7  # v1
+      with:
+        python-version: '3.12'
+
+    - name: Install poetry with pip
+      shell: bash
+      run: |
+        pip install poetry
+
+    - name: Install python libraries
+      shell: bash
+      run: |
+        cd apps/chatbot-index
+        poetry config virtualenvs.create false
+        poetry install --only main --no-interaction
+
+    - name: Install chrome dependencies
+      shell: bash
+      run: |
+        cd apps/chatbot-index
+        bash ./docker/chrome-installer.sh
+
+    - name: Refresh All Docs in Vector Index
+      shell: bash
+      run: |
+        cd apps/chatbot-index
+        PYTHONPATH=. poetry run python src/modules/refresh_dynamic_docs.py
+        PYTHONPATH=. poetry run python src/modules/refresh_api_docs.py
+        PYTHONPATH=. poetry run python src/modules/add_missing_static_docs.py

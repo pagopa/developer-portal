@@ -1,6 +1,6 @@
 /* eslint-disable functional/no-let */
 /* eslint-disable functional/no-expression-statements */
-import { staticContentsUrl } from '@/config';
+import { s3DocsPath, staticContentsUrl } from '@/config';
 import * as path from 'node:path';
 
 export interface JsonMetadata {
@@ -53,6 +53,16 @@ async function withRetries<T>(
 
       return result;
     } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : String(error);
+
+      if (errorMessage === '404' || errorMessage === '403') {
+        console.warn(
+          `Resource not found (${errorMessage}) during ${operationName}. Skipping retries.`
+        );
+        return fallbackValue;
+      }
+
       lastError = error instanceof Error ? error : new Error(String(error));
       // eslint-disable-next-line no-console
       console.error(
@@ -128,8 +138,18 @@ async function fetchFromCDN(path: string, config?: RequestInit) {
   });
 
   if (!response || !response.ok) {
+    if (response?.status === 404) {
+      // eslint-disable-next-line functional/no-throw-statements
+      throw new Error('404');
+    }
+    if (response?.status === 403) {
+      // eslint-disable-next-line functional/no-throw-statements
+      throw new Error('403');
+    }
     // eslint-disable-next-line functional/no-throw-statements
-    throw new Error('Response is null');
+    throw new Error(
+      `Failed to fetch: ${response?.statusText || 'Unknown error'}`
+    );
   }
 
   return response.json();
@@ -223,6 +243,76 @@ export const getGuidesMetadata = async (dirName?: string) => {
   return guidesMetadataCache || [];
 };
 
+const removeTrailingSlash = (value: string) => value.replace(/\/+$/, '');
+
+const buildDirMetadataPath = (dirName: string) => {
+  const docsBase = s3DocsPath
+    ? removeTrailingSlash(s3DocsPath)
+    : removeTrailingSlash(S3_PATH_TO_GITBOOK_DOCS);
+  return docsBase
+    ? `${docsBase}/${dirName}/${S3_METADATA_JSON_PATH}`
+    : `${dirName}/${S3_METADATA_JSON_PATH}`;
+};
+
+async function batchFetchMetadata(
+  metadataPaths: readonly string[],
+  concurrencyLimit: number
+): Promise<readonly JsonMetadata[]> {
+  const chunks = Array.from(
+    { length: Math.ceil(metadataPaths.length / concurrencyLimit) },
+    (_, i) =>
+      metadataPaths.slice(
+        i * concurrencyLimit,
+        i * concurrencyLimit + concurrencyLimit
+      )
+  );
+
+  return await chunks.reduce<Promise<readonly JsonMetadata[]>>(
+    async (previousPromise, chunk) => {
+      const acc = await previousPromise;
+      const chunkPromises = chunk.map((metadataPath) =>
+        fetchMetadataFromCDN<JsonMetadata>(metadataPath)
+      );
+      const chunkResults = await Promise.all(chunkPromises);
+      const validResults = chunkResults.reduce<readonly JsonMetadata[]>(
+        (flat, item) => (item ? [...flat, ...item] : flat),
+        []
+      );
+
+      return [...acc, ...validResults];
+    },
+    Promise.resolve([])
+  );
+}
+
+export const getGuidesMetadataByDirNames = async (
+  dirNames: readonly string[],
+  concurrencyLimit = 5
+) => {
+  if (!dirNames || dirNames.length === 0) {
+    return [];
+  }
+
+  const metadataPaths = dirNames.map((dirName) =>
+    buildDirMetadataPath(dirName)
+  );
+  return await batchFetchMetadata(metadataPaths, concurrencyLimit);
+};
+
+export const getSolutionsMetadataByDirNames = async (
+  dirNames: readonly string[],
+  concurrencyLimit = 5
+) => {
+  if (!dirNames || dirNames.length === 0) {
+    return [];
+  }
+
+  const metadataPaths = dirNames.map((dirName) =>
+    buildDirMetadataPath(dirName)
+  );
+  return await batchFetchMetadata(metadataPaths, concurrencyLimit);
+};
+
 export const getSolutionsMetadata = async (dirName?: string) => {
   const now = Date.now();
 
@@ -242,6 +332,20 @@ export const getSolutionsMetadata = async (dirName?: string) => {
   solutionsMetadataCacheTime = now;
 
   return solutionsMetadataCache || [];
+};
+
+export const getReleaseNotesMetadataByDirNames = async (
+  dirNames: readonly string[],
+  concurrencyLimit = 5
+) => {
+  if (!dirNames || dirNames.length === 0) {
+    return [];
+  }
+
+  const metadataPaths = dirNames.map((dirName) =>
+    buildDirMetadataPath(dirName)
+  );
+  return await batchFetchMetadata(metadataPaths, concurrencyLimit);
 };
 
 export const getReleaseNotesMetadata = async (dirName?: string) => {

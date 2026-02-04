@@ -23,9 +23,9 @@ import TrendingUp from '@mui/icons-material/TrendingUp';
 import Twitter from '@mui/icons-material/Twitter';
 import VpnKey from '@mui/icons-material/VpnKey';
 import Code from '@mui/icons-material/Code';
+import { ChangeCircle, TimerOutlined } from '@mui/icons-material';
 import React from 'react';
 import { SvgIcon, type SvgIconProps } from '@mui/material';
-import { ChangeCircle, TimerOutlined } from '@mui/icons-material';
 
 const MediumIcon = (props: SvgIconProps) =>
   React.createElement(
