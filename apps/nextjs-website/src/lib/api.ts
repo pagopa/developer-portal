@@ -273,7 +273,7 @@ export async function getSolutionDetail(
   locale: string,
   solutionSubPathSlugs: readonly string[]
 ) {
-  const solutionData = await getSolution(solutionSlug);
+  const solutionData = await getSolution(locale, solutionSlug);
   if (!solutionData) {
     // eslint-disable-next-line functional/no-throw-statements
     throw new Error('Failed to fetch solution data');
@@ -288,7 +288,8 @@ export async function getSolutionDetail(
     locale,
     solutionsMetadata.find(
       ({ path }) =>
-        path === `/solutions/${solutionSlug}/${solutionSubPathSlugs.join('/')}`
+        path ===
+        `/${locale}/solutions/${solutionSlug}/${solutionSubPathSlugs.join('/')}`
     )
   );
 }
