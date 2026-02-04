@@ -229,7 +229,7 @@ describe('fetchFromStrapi', () => {
 
     await fetchFromStrapi<TestResponse>('test-path', 'populate=*')('it', env);
     expect(fetchMock).toHaveBeenCalledWith(
-      'aStrapiEndpoint/api/test-path/?populate=*',
+      'aStrapiEndpoint/api/test-path/?locale=it&populate=*',
       {
         method: 'GET',
         headers: {
