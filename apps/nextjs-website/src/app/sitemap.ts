@@ -239,13 +239,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Then iterate and fetch details for each product.
   // This avoids massive payload transfers and allows for granular optimization.
   const productRoutesPromises = productItems.map(async (productItem) => {
-    const { slug: productSlug } = productItem.attributes;
+    const { slug: productSlug } = productItem;
 
     // A. Fetch Single Pages linked to this Product (Overview, QuickStart, Lists)
     // ------------------------------------------------------------------------
     const singlePagesData = await fetchProductSinglePages(productSlug);
-    const relations = singlePagesData.data[0]
-      ?.attributes as unknown as SitemapProductRelations;
+    const relations = singlePagesData
+      .data[0] as unknown as SitemapProductRelations;
 
     const overviewRoute = relations?.overview?.data
       ? [
@@ -306,10 +306,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // Tutorials (Individual Pages)
     const tutorialsData = await fetchProductTutorials(productSlug);
     const tutorialRoutes = tutorialsData.data
-      .filter((tutorial) => tutorial.attributes.slug)
+      .filter((tutorial) => tutorial.slug)
       .map((tutorial) => ({
-        url: `${baseUrl}/${productSlug}/tutorials/${tutorial.attributes.slug}`,
-        lastModified: new Date(tutorial.attributes.updatedAt || Date.now()),
+        url: `${baseUrl}/${productSlug}/tutorials/${tutorial.slug}`,
+        lastModified: new Date(tutorial.updatedAt || Date.now()),
         changeFrequency: 'weekly' as const,
         priority: 0.6,
       }));
@@ -317,7 +317,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // API Data (Individual Pages)
     const apisData = await fetchProductApiData(productSlug);
     const apiRoutes = (
-      apisData.data as unknown as readonly SitemapApiData[]
+      apisData as unknown as readonly SitemapApiData[]
     ).flatMap((api) => {
       const apiSlug =
         api.attributes.apiRestDetail?.slug ||
