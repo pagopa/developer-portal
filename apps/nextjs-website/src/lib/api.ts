@@ -68,7 +68,8 @@ export async function getGuidePage(
 
   // Path construction
   const guidePath = [
-    `/${guideProps.product.slug}`,
+    `/${locale}`,
+    guideProps.product.slug,
     'guides',
     ...guidePaths,
   ].join('/');
@@ -208,7 +209,7 @@ export async function getReleaseNote(
   releaseNoteSubPathSlugs?: readonly string[]
 ) {
   const products = await getProducts();
-  const releaseNotesPath = `/${productSlug}/${releaseNoteSubPathSlugs?.join(
+  const releaseNotesPath = `${locale}/${productSlug}/${releaseNoteSubPathSlugs?.join(
     '/'
   )}`;
 
