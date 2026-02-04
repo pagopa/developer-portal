@@ -71,7 +71,8 @@ export async function getGuidePage(
 
   // Path construction
   const guidePath = [
-    `/${guideProps.product.slug}`,
+    `/${locale}`,
+    guideProps.product.slug,
     'guides',
     ...guidePaths,
   ].join('/');
@@ -300,7 +301,8 @@ export async function getSolutionDetail(
     locale,
     solutionsMetadata.find(
       ({ path }) =>
-        path === `/solutions/${solutionSlug}/${solutionSubPathSlugs.join('/')}`
+        path ===
+        `/${locale}/solutions/${solutionSlug}/${solutionSubPathSlugs.join('/')}`
     )
   );
 }
