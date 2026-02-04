@@ -20,7 +20,11 @@ const StyledTreeItem = styled(TreeItem)(({ theme }) => ({
   [`&`]: {
     '--x': 32,
   },
+  [`& .custom-mui-focused`]: {
+    backgroundColor: '#DFE2E5',
+  },
   [`& .MuiTreeItem-content`]: {
+    borderRadius: '0',
     boxSizing: 'border-box',
     flexDirection: 'row-reverse',
     width: '100%',
@@ -111,7 +115,6 @@ export type GuideMenuItemsProps = Partial<GuideVersionSelectorProps> & {
 const GuideMenuItems = ({
   assetsPrefix,
   currentPath,
-  expanded = [],
   name,
   linkPrefix,
   menu,
@@ -124,8 +127,10 @@ const GuideMenuItems = ({
     () => ({
       Item: ({ href, title, children }) => {
         const handleNavigate = (e: React.MouseEvent<HTMLAnchorElement>) => {
+          e.stopPropagation();
           if (href.startsWith('http')) return; // external
           e.preventDefault();
+          e.currentTarget.classList.add('custom-mui-focused');
           const cleanHref = href.split('#')[0];
           const parts = cleanHref.split('/').filter(Boolean);
           const apiPath = `/${locale}/api/${parts.join('/')}`;
@@ -214,7 +219,6 @@ const GuideMenuItems = ({
           collapseIcon: ExpandLessIcon,
           expandIcon: ExpandMoreIcon,
         }}
-        defaultExpandedItems={expanded}
         selectedItems={currentPath}
       >
         {children}
