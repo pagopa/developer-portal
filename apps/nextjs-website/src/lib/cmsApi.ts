@@ -245,15 +245,7 @@ const fetchReleaseNotes = async (locale: string) => {
   )) as StrapiReleaseNotes | undefined;
   if (!strapiReleaseNotes || strapiReleaseNotes.data.length < 1) {
     // eslint-disable-next-line functional/no-throw-statements
-    console.error(
-      'Failed to fetch release data from strapi',
-      locale,
-      strapiReleaseNotes
-    );
-    return {
-      data: [],
-      meta: { pagination: { page: 1, pageSize: 10, pageCount: 0, total: 0 } },
-    };
+    throw new Error('Failed to fetch release notes');
   }
   return strapiReleaseNotes;
 };
