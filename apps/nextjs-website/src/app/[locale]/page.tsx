@@ -77,7 +77,8 @@ export async function generateMetadata(props: {
       });
 }
 
-const Home = async () => {
+const Home = async ({ params }: { params: Promise<{ locale: string }> }) => {
+  const { locale } = await params;
   const {
     webinars,
     hero,
@@ -96,7 +97,7 @@ const Home = async () => {
     <>
       {structuredData}
       <ContentWrapper>
-        <WebinarHeaderBanner webinars={[...webinars]} />
+        <WebinarHeaderBanner locale={locale} webinars={[...webinars]} />
 
         <HeroSwiper
           cards={hero.map((itemProp, index) => ({
