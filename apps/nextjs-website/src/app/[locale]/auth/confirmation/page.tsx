@@ -20,7 +20,7 @@ enum State {
 }
 
 const ConfirmationContent = () => {
-  const locale = useParams<{ locale: string }>().locale;
+  const { locale } = useParams<{ locale: string }>();
   const searchParams = useSearchParams();
   const router = useRouter();
   const username = searchParams.get('username');
