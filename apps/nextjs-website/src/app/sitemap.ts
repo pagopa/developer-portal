@@ -146,7 +146,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // These are stored in S3 and retrieved via legacy helpers.
   // We keep them ensuring no missing legacy content.
   const guidesMetadata = await getGuidesMetadata('it'); // TODO: remove hardcoded locale once i18n development on sitemap has been completed
-  const guides = await getGuidesProps();
+  const guides = await getGuidesProps('it'); // TODO: remove hardcoded locale once i18n development on sitemap has been completed
   const guidesDirNames = Array.from(
     new Set(
       guides
