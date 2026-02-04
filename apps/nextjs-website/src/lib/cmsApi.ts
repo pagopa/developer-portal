@@ -245,7 +245,7 @@ const fetchReleaseNotes = async (locale: string) => {
   )) as StrapiReleaseNotes | undefined;
   if (!strapiReleaseNotes || strapiReleaseNotes.data.length < 1) {
     // eslint-disable-next-line functional/no-throw-statements
-    throw new Error('Failed to fetch release notes');
+    throw new Error('Failed to fetch release notes data');
   }
   return strapiReleaseNotes;
 };
