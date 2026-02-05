@@ -454,6 +454,14 @@ resource "aws_cloudfront_response_headers_policy" "cors_policy" {
   name    = "cors-policy-video-streaming"
   comment = "Cors policy for video streaming."
 
+  custom_headers_config {
+    items {
+      header   = "Server"
+      override = true
+      value    = "None"
+    }
+  }
+
   cors_config {
     access_control_allow_credentials = false
 
