@@ -19,7 +19,10 @@ const TutorialsSectionPreviewCardsLayout = ({
 }: TutorialsSectionPreviewCardsLayoutProps) => {
   const t = useTranslations();
   const theme = useTheme();
-  const backgroundColor = backgroundVariant === 'white' ? theme.palette.background.paper : theme.palette.grey[50];
+  const backgroundColor =
+    backgroundVariant === 'white'
+      ? theme.palette.background.paper
+      : theme.palette.grey[50];
   return (
     <Box
       sx={{
