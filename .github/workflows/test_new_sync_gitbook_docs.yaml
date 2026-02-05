@@ -108,12 +108,12 @@ jobs:
           s3_dirnames_json_path: ${{ vars.S3_DIRNAMES_JSON_PATH || 'dirNames.json' }}
 
   scheduled_sync_gitbook_docs:
-    name: Sync gitbook Docs to S3 (scheduled on prod)
+    name: Sync gitbook Docs to S3 (scheduled on uat)
     if: github.event_name == 'schedule'
     runs-on: ubuntu-latest
     outputs:
-      environment: 'prod'
-    environment: 'prod'
+      environment: 'uat'
+    environment: 'uat'
 
     steps:
       - name: Checkout current repository
@@ -122,7 +122,7 @@ jobs:
       - name: Sync GitBook Docs
         uses: ./.github/actions/sync-gitbook-docs
         with:
-          environment: 'prod'
+          environment: 'uat'
           deploy_iam_role: ${{ secrets.DEPLOY_IAM_ROLE }}
           strapi_api_token: ${{ secrets.STRAPI_API_TOKEN }}
           asset_bucket_cloudfront_distribution_id: ${{ vars.ASSET_BUCKET_CLOUDFRONT_DISTRIBUTION_ID }}
