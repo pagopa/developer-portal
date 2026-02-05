@@ -215,7 +215,7 @@ export const getSolutionProps = async (
   const strapiSolutions = (await fetchResponseFromCDN(
     getSyncedSolutionsResponseJsonPath()
   )) as StrapiSolutions | undefined;
-  if (!strapiSolutions || strapiSolutions.data.length < 1) {
+  if (!strapiSolutions) {
     // eslint-disable-next-line functional/no-throw-statements
     throw new Error('Failed to fetch solution data');
   }
@@ -232,7 +232,7 @@ const fetchReleaseNotes = async () => {
   const strapiReleaseNotes = (await fetchResponseFromCDN(
     getSyncedReleaseNotesResponseJsonPath()
   )) as StrapiReleaseNotes | undefined;
-  if (!strapiReleaseNotes || strapiReleaseNotes.data.length < 1) {
+  if (!strapiReleaseNotes) {
     // eslint-disable-next-line functional/no-throw-statements
     throw new Error('Failed to fetch release data');
   }
