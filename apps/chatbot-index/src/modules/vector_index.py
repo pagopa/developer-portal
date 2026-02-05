@@ -37,28 +37,7 @@ REDIS_CLIENT = Redis.from_url(SETTINGS.redis_url, socket_timeout=10)
 REDIS_ASYNC_CLIENT = aredis.Redis.from_pool(
     aredis.ConnectionPool.from_url(SETTINGS.redis_url)
 )
-REDIS_SCHEMA = IndexSchema.from_dict(
-    {
-        "index": {
-            "name": f"{SETTINGS.index_id}",
-            "prefix": f"{SETTINGS.index_id}/vector",
-        },
-        "fields": [
-            {"name": "id", "type": "tag", "attrs": {"sortable": False}},
-            {"name": "doc_id", "type": "tag", "attrs": {"sortable": False}},
-            {"name": "text", "type": "text", "attrs": {"weight": 1.0}},
-            {
-                "name": "vector",
-                "type": "vector",
-                "attrs": {
-                    "dims": SETTINGS.embed_dim,
-                    "algorithm": "flat",
-                    "distance_metric": "cosine",
-                },
-            },
-        ],
-    }
-)
+
 REDIS_KVSTORE = RedisKVStore(
     redis_client=REDIS_CLIENT, async_redis_client=REDIS_ASYNC_CLIENT
 )
@@ -74,28 +53,56 @@ LlamaIndexSettings.node_parser = SentenceSplitter(
 )
 
 
-def build_index_redis(clean_redis: bool = True) -> VectorStoreIndex:
+def get_redis_schema(index_id: str | None = None) -> IndexSchema:
+    """
+    Creates the Redis index schema for vector storage.
+    Args:
+        index_id (str): The identifier for the index.
+    Returns:
+        IndexSchema: The Redis index schema.
+    """
+
+    if index_id is None:
+        index_id = SETTINGS.index_id
+
+    return IndexSchema.from_dict(
+        {
+            "index": {
+                "name": f"{index_id}",
+                "prefix": f"{index_id}/vector",
+            },
+            "fields": [
+                {"name": "id", "type": "tag", "attrs": {"sortable": False}},
+                {"name": "doc_id", "type": "tag", "attrs": {"sortable": False}},
+                {"name": "text", "type": "text", "attrs": {"weight": 1.0}},
+                {
+                    "name": "vector",
+                    "type": "vector",
+                    "attrs": {
+                        "dims": SETTINGS.embed_dim,
+                        "algorithm": "flat",
+                        "distance_metric": "cosine",
+                    },
+                },
+            ],
+        }
+    )
+
+
+def build_index_redis(index_id: str, clean_redis: bool = True) -> VectorStoreIndex:
     """
     Builds a new vector index and stores it in Redis.
     Args:
+        index_id (str): The identifier for the index.
         clean_redis (bool): Flag indicating whether to clean the Redis database before building the index
     Returns:
         VectorStoreIndex: The newly created vector store index.
     """
 
-    if clean_redis:
-        for key in tqdm(REDIS_CLIENT.scan_iter(), total=REDIS_CLIENT.dbsize()):
-            REDIS_CLIENT.delete(key)
-        LOGGER.info("Redis is now empty.")
-
-    documents = get_documents()
-
-    nodes = LlamaIndexSettings.node_parser.get_nodes_from_documents(documents)
-
     redis_vector_store = RedisVectorStore(
         redis_client=REDIS_CLIENT,
         overwrite=True,
-        schema=REDIS_SCHEMA,
+        schema=get_redis_schema(index_id),
     )
 
     storage_context = StorageContext.from_defaults(
@@ -103,21 +110,28 @@ def build_index_redis(clean_redis: bool = True) -> VectorStoreIndex:
         docstore=REDIS_DOCSTORE,
         index_store=REDIS_INDEX_STORE,
     )
+
+    if clean_redis:
+        redis_vector_store.delete_index()
+        LOGGER.info(f"Cleaned Redis from index: {index_id}.")
+
+    documents = get_documents()
+    nodes = LlamaIndexSettings.node_parser.get_nodes_from_documents(documents)
     storage_context.docstore.add_documents(nodes)
 
-    LOGGER.info(f"Creating vector index: {SETTINGS.index_id} ...")
+    LOGGER.info(f"Creating vector index: {index_id} ...")
     index = VectorStoreIndex(nodes, storage_context=storage_context)
-    index.set_index_id(SETTINGS.index_id)
-    LOGGER.info(
-        f"{SETTINGS.index_id} has been created successfully and stored in Redis."
-    )
+    index.set_index_id(index_id)
+    LOGGER.info(f"{index_id} has been created successfully and stored in Redis.")
 
     return index
 
 
-def load_index_redis() -> VectorStoreIndex:
+def load_index_redis(index_id: str) -> VectorStoreIndex:
     """
     Loads an existing vector index from Redis using the provided llm and embed_model.
+    Args:
+        index_id (str): The identifier for the index.
     Returns:
         VectorStoreIndex: The loaded vector store index.
     """
@@ -126,7 +140,7 @@ def load_index_redis() -> VectorStoreIndex:
         redis_vector_store = RedisVectorStore(
             redis_client=REDIS_CLIENT,
             overwrite=False,
-            schema=REDIS_SCHEMA,
+            schema=get_redis_schema(index_id),
         )
 
         LOGGER.info("Loading vector index from Redis...")
@@ -137,9 +151,9 @@ def load_index_redis() -> VectorStoreIndex:
         )
 
         index = load_index_from_storage(
-            storage_context=storage_context, index_id=SETTINGS.index_id
+            storage_context=storage_context, index_id=index_id
         )
-        LOGGER.info(f"Loaded index {SETTINGS.index_id} from Redis successfully.")
+        LOGGER.info(f"Loaded index {index_id} from Redis successfully.")
         return index
 
     except Exception as e:
@@ -159,9 +173,16 @@ class DiscoveryVectorIndex:
             )
         return index
 
-    def create_index(self) -> VectorStoreIndex:
-        """Creates a new vector index and stores it in Redis."""
-        index = build_index_redis()
+    def create_index(self, index_id: str, clean_redis: bool = True) -> VectorStoreIndex:
+        """Creates a new vector index and stores it in Redis.
+        Args:
+            index_id (str): The identifier for the index.
+            clean_redis (bool): Flag indicating whether to clean the Redis database before building the index
+        Returns:
+            VectorStoreIndex: The newly created vector store index.
+        """
+
+        index = build_index_redis(index_id, clean_redis)
         return index
 
     def _update_docs(

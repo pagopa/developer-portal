@@ -21,6 +21,7 @@ from llama_index.core import Document
 
 from src.modules.logger import get_logger
 from src.modules.settings import SETTINGS, AWS_SESSION
+from src.modules.codec import safe_json_load
 
 
 logging.getLogger("botocore").setLevel(logging.ERROR)
@@ -48,17 +49,16 @@ class DynamicMetadata(BaseModel):
 
 def read_file_from_s3(
     file_path: str,
-    bucket_name: str | None = None,
+    bucket_name: str,
 ) -> str:
     """Reads a file from an S3 bucket.
     Args:
         file_path (str): The path to the file in the S3 bucket.
-        bucket_name (str | None): The name of the S3 bucket. If None, uses the default bucket name.
+        bucket_name (str): The name of the S3 bucket.
     Returns:
         str | None: The content of the file as a string, or None if the file is not found.
     """
 
-    bucket_name = bucket_name if bucket_name else SETTINGS.bucket_static_content
     text = ""
     try:
         response = AWS_S3_CLIENT.get_object(
@@ -77,12 +77,14 @@ def get_folders_list(
     guides_folders_filepath: str | None = None,
     solution_folders_filepath: str | None = None,
     release_notes_folders_filepath: str | None = None,
+    bucket_name: str | None = None,
 ) -> List[str]:
     """Reads folder names from S3 files.
     Args:
         guides_folders_filepath (str | None): The S3 file path for guides folder names.
         solution_folders_filepath (str | None): The S3 file path for solution folder names.
         release_notes_folders_filepath (str | None): The S3 file path for release notes folder names.
+        bucket_name (str | None): The name of the S3 bucket.
     Returns:
         List[str]: A list of folder names."""
 
@@ -106,10 +108,10 @@ def get_folders_list(
         solution_folders_filepath,
         release_notes_folders_filepath,
     ]:
-        s3_content = read_file_from_s3(filepath)
+        s3_content = read_file_from_s3(filepath, bucket_name)
         if s3_content:
             try:
-                folders_content = json.loads(s3_content)
+                folders_content = safe_json_load(s3_content)
             except Exception as e:
                 LOGGER.warning(f"Failed to decode {filepath}: {e}")
                 folders_content = {"dirNames": []}
@@ -139,13 +141,13 @@ def get_one_metadata_from_s3(
     docs_parent_folder = (
         docs_parent_folder if docs_parent_folder else DOCS_PARENT_FOLDER
     )
-    bucket_name = bucket_name if bucket_name else SETTINGS.bucket_static_content
     if folder_name in folders_list:
         s3_content = read_file_from_s3(
-            os.path.join(docs_parent_folder, folder_name, "metadata.json")
+            os.path.join(docs_parent_folder, folder_name, "metadata.json"),
+            bucket_name,
         )
         try:
-            folder_metadata = json.loads(s3_content) if s3_content else {}
+            folder_metadata = safe_json_load(s3_content) if s3_content else {}
         except Exception as e:
             LOGGER.warning(
                 f"Failed to decode metadata.json in folder {docs_parent_folder}/{folder_name}: {e}"
@@ -158,42 +160,78 @@ def get_one_metadata_from_s3(
     return folder_metadata
 
 
+def check_folder_existence(
+    docs_parent_folder: str, folder_name: str, bucket_name: str
+) -> bool:
+    """
+    Checks if the specified folder exists in the S3 bucket.
+    Args:
+        docs_parent_folder (str): The parent folder in the S3 bucket where the specified folder is expected to be located.
+        folder_name (str): The name of the folder to check for existence.
+        bucket_name (str): The name of the S3 bucket.
+    Returns:
+        bool: True if the specified folder exists, False otherwise.
+    """
+
+    flag = False
+    response = AWS_S3_CLIENT.list_objects_v2(
+        Bucket=bucket_name,
+        Prefix=os.path.join(docs_parent_folder, folder_name),
+        MaxKeys=1,
+    )
+    contents = response.get("Contents", [])
+    if contents:
+        flag = True
+
+    return flag
+
+
 def get_metadata_from_s3(
-    docs_parent_folder: str | None = None,
-    bucket_name: str | None = None,
+    docs_parent_folder: str,
+    bucket_name: str,
 ) -> List[Dict[str, str]]:
     """
     Reads metadata files from S3 bucket.
     Args:
-        docs_parent_folder (str | None): The parent folder in the S3 bucket where the metadata files
+        docs_parent_folder (str): The parent folder in the S3 bucket where the metadata files
             are located.
-        bucket_name (str | None): The name of the S3 bucket.
+        bucket_name (str): The name of the S3 bucket.
     Returns:
         List[Dict[str, str]]: list containing the metadata dictionaries.
     """
 
-    docs_parent_folder = (
-        docs_parent_folder if docs_parent_folder else DOCS_PARENT_FOLDER
-    )
-    bucket_name = bucket_name if bucket_name else SETTINGS.bucket_static_content
+    flag = check_folder_existence(docs_parent_folder, "extraction", bucket_name)
 
-    folders_list = get_folders_list()
-    metadata = []
-    for folder_name in folders_list:
-        folder_metadata = []
-        try:
-            s3_content = read_file_from_s3(
-                os.path.join(docs_parent_folder, folder_name, "metadata.json")
-            )
-            folder_metadata = json.loads(s3_content) if s3_content else []
-        except Exception as e:
-            LOGGER.warning(
-                f"Failed to decode metadata.json in folder {docs_parent_folder}/{folder_name}: {e}"
-            )
+    if flag:
+        s3_resource = AWS_SESSION.resource("s3")
+        bucket = s3_resource.Bucket(bucket_name)
 
-        metadata.extend(folder_metadata)
+        metadata = [
+            {"contentS3Path": obj.key}
+            for obj in bucket.objects.filter(Prefix=f"{docs_parent_folder}/parsing/")
+            if obj.key.lower().endswith(".json")
+        ]
+    else:
+        folders_list = get_folders_list(bucket_name=bucket_name)
+        metadata = []
+        for folder_name in folders_list:
+            folder_metadata = []
+            try:
+                s3_content = read_file_from_s3(
+                    os.path.join(docs_parent_folder, folder_name, "metadata.json"),
+                    bucket_name,
+                )
+                folder_metadata = safe_json_load(s3_content) if s3_content else []
+            except Exception as e:
+                LOGGER.warning(
+                    f"Failed to decode metadata.json in folder {docs_parent_folder}/{folder_name}: {e}"
+                )
+
+            metadata.extend(folder_metadata)
     if not metadata:
-        raise ValueError("No metadata found in S3.")
+        LOGGER.warning(
+            f"In the S3 bucket {bucket_name} there are no metadata.json files found. Skipping..."
+        )
 
     return metadata
 
@@ -208,20 +246,23 @@ def remove_figure_blocks(md_text):
     return re.sub(r"<figure[\s\S]*?</figure>", "", md_text, flags=re.IGNORECASE)
 
 
-def get_product_list(file_path: str | None = None) -> List[str]:
+def get_product_list(
+    file_path: str | None = None, bucket_name: str | None = None
+) -> List[str]:
     """
     Fetches a list of products from AWS S3.
     Args:
         file_path (str): The S3 file path to fetch the product data from.
+        bucket_name (str | None): The name of the S3 bucket.
     Returns:
         List[str]: A list of product slugs. If the request fails, an empty list is returned.
     """
     file_path = file_path if file_path else PRODUCTS_S3_FILEPATH
 
-    s3_content = read_file_from_s3(file_path)
+    s3_content = read_file_from_s3(file_path, bucket_name)
     product_list = []
     if s3_content:
-        products = json.loads(s3_content)
+        products = safe_json_load(s3_content)
         for product in products:
             try:
                 if product["attributes"]["isVisible"]:
@@ -271,18 +312,20 @@ def filter_urls(urls: List[str]) -> List[str]:
     return filtered_urls
 
 
-def get_sitemap_urls(file_path: str | None = None) -> List[Dict[str, str]]:
+def get_sitemap_urls(
+    file_path: str | None = None, bucket_name: str | None = None
+) -> List[Dict[str, str]]:
     """
     Fetches URLs from a sitemap XML file.
     Args:
         file_path (str): The S3 file path to fetch the sitemap from.
+        bucket_name (str | None): The name of the S3 bucket.
     Returns:
         List[Dict[str, str]]: A list of dictionaries containing URLs and their last modified dates.
     """
 
     sitemap_path = file_path if file_path else SITEMAP_S3_FILEPATH
-
-    sitemap_content = read_file_from_s3(sitemap_path)
+    sitemap_content = read_file_from_s3(sitemap_path, bucket_name)
     if sitemap_content:
         root = ET.fromstring(sitemap_content)
         ns = {"ns": "http://www.sitemaps.org/schemas/sitemap/0.9"}
@@ -330,20 +373,21 @@ def html2markdown(html: str) -> Tuple[str, str]:
     return title, content.strip()
 
 
-def get_apidata(file_path: str | None = None) -> dict:
+def get_apidata(file_path: str | None = None, bucket_name: str | None = None) -> dict:
     """
     Fetches API data from AWS S3.
     Args:
         file_path (str): The S3 file path to fetch the API data from.
+        bucket_name (str): The name of the S3 bucket.
     Returns:
         dict: Parsed JSON data from the API response.
     """
     file_path = file_path if file_path else APIS_DATA_S3_FILEPATH
 
-    s3_data = read_file_from_s3(file_path)
+    s3_data = read_file_from_s3(file_path, bucket_name)
     if not s3_data:
         raise ValueError("API data content is empty.")
-    return json.loads(s3_data)
+    return safe_json_load(s3_data)
 
 
 def read_api_url(url: str) -> str:
@@ -362,7 +406,7 @@ def read_api_url(url: str) -> str:
         if url.endswith(".yaml") or url.endswith(".yml"):
             data = yaml.safe_load(response.text)
         elif url.endswith(".json"):
-            data = json.loads(response.text)
+            data = safe_json_load(response.text)
         else:
             raise ValueError("Unsupported file format. Use .yaml, .yml, or .json.")
 
@@ -387,18 +431,20 @@ def read_api_url(url: str) -> str:
     return txt
 
 
-def get_api_docs() -> List[Document]:
+def get_api_docs(
+    file_path: str | None = None, bucket_name: str | None = None
+) -> List[Document]:
     """
     Creates API documentation in Markdown format from the provided API data.
 
     Args:
-        api_data (dict): The API data to convert into documentation.
-
+        file_path (str | None): The S3 file path to fetch the API data from.
+        bucket_name (str | None): The name of the S3 bucket.
     Returns:
         list: The llama-index Documents list.
     """
 
-    api_data = get_apidata()
+    api_data = get_apidata(file_path, bucket_name)
     docs = []
     for data in tqdm.tqdm(api_data, total=len(api_data), desc="Getting API docs"):
         title = data["attributes"]["title"]
@@ -426,22 +472,28 @@ def get_api_docs() -> List[Document]:
     return docs
 
 
-def get_static_metadata() -> List[StaticMetadata]:
+def get_static_metadata(bucket_name: str | None = None) -> List[StaticMetadata]:
     """
     Get the metadata from S3 and maps them into static metadata to create later LlamaIndex Documents.
+    Args:
+        bucket_name (str | None): The name of the S3 bucket.
     Returns:
         List[StaticMetadata]: A list of StaticMetadata objects containing static metadata.
     """
 
     static_metadata = []
-    all_metadata = get_metadata_from_s3()
+    all_metadata = get_metadata_from_s3(bucket_name=bucket_name)
 
     for item in all_metadata:
+
+        path = item.get("path", "")
+        url = os.path.join(SETTINGS.website_url, path) if path else ""
+
         static_metadata.append(
             StaticMetadata(
-                url=SETTINGS.website_url + item["path"],
+                url=url,
                 s3_file_path=item["contentS3Path"],
-                title=item["title"],
+                title=item.get("title", ""),
             )
         )
 
@@ -451,17 +503,21 @@ def get_static_metadata() -> List[StaticMetadata]:
 
 def get_dynamic_metadata(
     static_metadata: List[StaticMetadata],
+    sitemap_file_path: str | None = None,
+    bucket_name: str | None = None,
 ) -> List[DynamicMetadata]:
     """
     Fetches dynamic metadata by comparing sitemap URLs with static metadata.
     Args:
         static_metadata (List[StaticMetadata]): A list of StaticMetadata objects containing static metadata.
+        sitemap_file_path (str | None): The S3 file path to fetch the sitemap from.
+        bucket_name (str | None): The name of the S3 bucket.
     Returns:
         List[DynamicMetadata]: A list of DynamicMetadata objects containing dynamic metadata.
     """
 
     dynamic_metadata = []
-    sitemap = get_sitemap_urls()
+    sitemap = get_sitemap_urls(sitemap_file_path, bucket_name)
     all_url_metadata = [item.url for item in static_metadata]
     sitemap_urls = [item["url"] for item in sitemap]
     sitemap_url_to_lastmod = {item["url"]: item["lastmod"] for item in sitemap}
@@ -481,11 +537,14 @@ def get_dynamic_metadata(
     return dynamic_metadata
 
 
-def get_static_docs(static_metadata: List[StaticMetadata]) -> List[Document]:
+def get_static_docs(
+    static_metadata: List[StaticMetadata], bucket_name: str | None = None
+) -> List[Document]:
     """
     Fetches static documents from the provided metadata.
     Args:
         static_metadata (List[StaticMetadata]): A list of StaticMetadata objects containing metadata for static documents.
+        bucket_name (str | None): The name of the S3 bucket.
     Returns:
         List[Document]: A list of Document objects containing the content and metadata.
     """
@@ -497,9 +556,20 @@ def get_static_docs(static_metadata: List[StaticMetadata]) -> List[Document]:
 
         url = item.url
         title = item.title
-        text = read_file_from_s3(item.s3_file_path)
+        content = read_file_from_s3(item.s3_file_path, bucket_name)
+        content = safe_json_load(content)
 
-        if text:
+        if content:
+
+            if isinstance(content, str):
+                text = content
+                language = "it"
+            if isinstance(content, dict):
+                text = content.get("content", "")
+                title = content.get("title", "")
+                language = content.get("language", "it")
+                url = content.get("url", url)
+
             text = remove_figure_blocks(text)
 
             static_docs.append(
@@ -509,7 +579,7 @@ def get_static_docs(static_metadata: List[StaticMetadata]) -> List[Document]:
                     metadata={
                         "filepath": url.replace(SETTINGS.website_url, ""),
                         "title": title,
-                        "language": "it",
+                        "language": language,
                     },
                 )
             )
@@ -606,19 +676,47 @@ def get_dynamic_docs(dynamic_metadata: List[DynamicMetadata]) -> List[Document]:
     return dynamic_docs
 
 
-def get_documents() -> List[Document]:
+def get_documents(
+    sitemap_file_path: str | None,
+    api_file_path: str | None,
+    bucket_name: str | None = None,
+) -> List[Document]:
     """
     Fetches documents from static and dynamic sources.
+    Args:
+        sitemap_file_path (str | None): The S3 file path to fetch the sitemap from.
+        api_file_path (str | None): The S3 file path to fetch the API data from.
+        bucket_name (str | None): The name of the S3 bucket.
     Returns:
         List[Document]: A list of Document objects containing the content and metadata.
     """
 
-    static_metadata = get_static_metadata()
-    dynamic_metadata = get_dynamic_metadata(static_metadata)
+    bucket_name = bucket_name if bucket_name else SETTINGS.bucket_static_content
 
-    api_docs = get_api_docs()
-    static_docs = get_static_docs(static_metadata)
-    dynamic_docs = get_dynamic_docs(dynamic_metadata)
+    static_metadata = get_static_metadata(bucket_name=bucket_name)
+
+    if sitemap_file_path:
+        dynamic_metadata = get_dynamic_metadata(
+            static_metadata, sitemap_file_path, bucket_name
+        )
+    else:
+        dynamic_metadata = None
+
+    if api_file_path:
+        api_docs = get_api_docs(api_file_path, bucket_name)
+    else:
+        api_docs = []
+
+    if static_metadata:
+        static_docs = get_static_docs(static_metadata, bucket_name)
+    else:
+        static_docs = []
+
+    if dynamic_metadata:
+        dynamic_docs = get_dynamic_docs(dynamic_metadata)
+    else:
+        dynamic_docs = []
+
     docs = api_docs + static_docs + dynamic_docs
 
     LOGGER.info(f"Total number of fetched documents: {len(docs)}")
