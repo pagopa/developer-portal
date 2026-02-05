@@ -28,6 +28,7 @@ RUN curl -Lo /usr/local/bin/aws-lambda-rie \
 WORKDIR /app
 COPY ./pyproject.toml .
 COPY ./poetry.lock .
+COPY ./CHANGELOG.md .
 COPY ./src ./src
 COPY ./config ./config
 COPY ./scripts ./scripts
