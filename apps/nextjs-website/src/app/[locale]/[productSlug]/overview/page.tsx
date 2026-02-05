@@ -139,6 +139,24 @@ const OverviewPage = async (props: ProductParams) => {
     product,
   } = await getOverview(params.productSlug);
 
+  // Calculate which sections will be shown to determine alternating backgrounds
+  const sectionsToShow = [
+    startInfo ? 'startInfo' : null,
+    product?.hasTutorialListPage && tutorials ? 'tutorials' : null,
+    product?.hasUseCaseListPage && useCases ? 'useCases' : null,
+    whatsNew ? 'whatsNew' : null,
+    product?.hasGuideListPage && postIntegration ? 'postIntegration' : null,
+    relatedLinks ? 'relatedLinks' : null,
+  ].filter(Boolean) as string[];
+
+  // Create a map of section name to background variant, alternating starting with 'lightGrey'
+  const backgroundVariants = Object.fromEntries(
+    sectionsToShow.map((section, index) => [
+      section,
+      index % 2 === 0 ? 'lightGrey' : 'white',
+    ])
+  ) as Record<string, 'white' | 'lightGrey'>;
+
   const tutorialsListToShow = tutorials?.list
     ?.filter((tutorial) => tutorial.showInOverview)
     .slice(0, MAX_NUM_TUTORIALS_IN_OVERVIEW);
@@ -197,6 +215,7 @@ const OverviewPage = async (props: ProductParams) => {
           title={startInfo.title}
           cta={startInfo.cta}
           cards={startInfo.cards}
+          backgroundVariant={backgroundVariants['startInfo']}
         />
       )}
       {product?.hasTutorialListPage &&
@@ -211,11 +230,13 @@ const OverviewPage = async (props: ProductParams) => {
               name: 'tutorials',
             }}
             items={[...(mappedTutorials || [])]}
+            backgroundVariant={backgroundVariants['tutorials']}
           />
         ) : (
           <TutorialsSectionPreviewCardsLayout
             title={tutorials?.title || ''}
             tutorials={tutorials?.list || []}
+            backgroundVariant={backgroundVariants['tutorials']}
           />
         ))}
       {product?.hasUseCaseListPage && useCases && (
@@ -228,6 +249,7 @@ const OverviewPage = async (props: ProductParams) => {
             name: 'useCases',
           }}
           items={[...(mappedUseCases || [])]}
+          backgroundVariant={backgroundVariants['useCases']}
         />
       )}
       {whatsNew && (
@@ -236,7 +258,8 @@ const OverviewPage = async (props: ProductParams) => {
           subtitle={whatsNew.subtitle}
           link={whatsNew.link}
           items={[...whatsNew.items]}
-          backgroundVariant='lightGrey'
+          paddingTop={14}
+          backgroundVariant={backgroundVariants['whatsNew']}
         />
       )}
       {product?.hasGuideListPage && postIntegration && (
@@ -254,14 +277,14 @@ const OverviewPage = async (props: ProductParams) => {
             postIntegration.serviceModels && [...postIntegration.serviceModels]
           }
           guides={postIntegration.guides}
-          backgroundVariant={whatsNew ? 'white' : 'lightGrey'}
+          backgroundVariant={backgroundVariants['postIntegration']}
         />
       )}
       {relatedLinks && (
         <RelatedLinks
           title={relatedLinks.title}
           links={relatedLinks.links}
-          backgroundVariant={whatsNew ? 'lightGrey' : 'white'}
+          backgroundVariant={backgroundVariants['relatedLinks']}
         />
       )}
     </ProductLayout>
