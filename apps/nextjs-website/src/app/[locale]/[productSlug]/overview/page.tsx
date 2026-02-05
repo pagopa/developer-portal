@@ -200,24 +200,24 @@ const OverviewPage = async (props: ProductParams) => {
         />
       )}
       {product?.hasTutorialListPage &&
-      tutorials &&
-      !tutorials.showCardsLayout ? (
-        <OverviewItemList
-          title={tutorials.title}
-          ctaLabelKey={'overview.tutorial.ctaLabel'}
-          subtitle={tutorials.subtitle}
-          itemPath={{
-            path: `/${params.locale}/${product.slug}/tutorials`,
-            name: 'tutorials',
-          }}
-          items={[...(mappedTutorials || [])]}
-        />
-      ) : (
-        <TutorialsSectionPreviewCardsLayout
-          title={tutorials?.title || ''}
-          tutorials={tutorials?.list || []}
-        />
-      )}
+        tutorials &&
+        (!tutorials.showCardsLayout ? (
+          <OverviewItemList
+            title={tutorials.title}
+            ctaLabelKey={'overview.tutorial.ctaLabel'}
+            subtitle={tutorials.subtitle}
+            itemPath={{
+              path: `/${params.locale}/${product.slug}/tutorials`,
+              name: 'tutorials',
+            }}
+            items={[...(mappedTutorials || [])]}
+          />
+        ) : (
+          <TutorialsSectionPreviewCardsLayout
+            title={tutorials?.title || ''}
+            tutorials={tutorials?.list || []}
+          />
+        ))}
       {product?.hasUseCaseListPage && useCases && (
         <OverviewItemList
           title={useCases.title}
@@ -232,7 +232,6 @@ const OverviewPage = async (props: ProductParams) => {
       )}
       {whatsNew && (
         <NewsShowcase
-          marginTop={15}
           title={whatsNew.title}
           subtitle={whatsNew.subtitle}
           link={whatsNew.link}
