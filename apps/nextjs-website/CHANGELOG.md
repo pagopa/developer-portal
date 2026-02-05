@@ -1,5 +1,19 @@
 # nextjs-website
 
+## 15.1.0
+
+### Minor Changes
+
+- 1a9b19a: Update Guide, Solutions and Release-notes fetchFromCdn to use multiple metadata files
+- c14fd1d: Add download button to API pages
+
+### Patch Changes
+
+- a05102e: Generate solution sitemap routes by reading per-solution `metadata.json` files from S3 instead of relying on a single aggregated file.
+- c9b0ceb: Optimize sitemap generation by fetching products first and using partial data to reduce load
+- Updated dependencies [a50ce75]
+  - gitbook-docs@1.7.4
+
 ## 15.0.0
 
 ### Major Changes

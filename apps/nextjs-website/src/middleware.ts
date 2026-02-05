@@ -1,11 +1,9 @@
 /* eslint-disable functional/no-expression-statements */
 import { NextRequest, NextResponse } from 'next/server';
-import { defaultLocale, i18nActive } from '@/config';
+import { defaultLocale } from '@/config';
 import { SUPPORTED_LOCALES } from '@/locales';
 
 export function middleware(request: NextRequest) {
-  if (!i18nActive) return;
-
   const { pathname } = request.nextUrl;
   const pathnameHasLocale = SUPPORTED_LOCALES.some(
     (locale) =>
@@ -24,5 +22,8 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/((?!_next).*)'],
+  matcher: [
+    // Exclude Next internals, API, known public files
+    '/((?!_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml|.*\\.(?:png|jpg|jpeg|gif|webp|svg|ico|css|js|map|txt|xml|json|woff2?|ttf|eot)$).*)',
+  ],
 };

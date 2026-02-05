@@ -1,5 +1,6 @@
 import boto3
 import os
+import re
 import json
 import yaml
 from pathlib import Path
@@ -12,27 +13,52 @@ CWF = Path(__file__)
 ROOT = CWF.parent.parent.parent.absolute().__str__()
 PARAMS = yaml.safe_load(open(os.path.join(ROOT, "config", "params.yaml"), "r"))
 PROMPTS = yaml.safe_load(open(os.path.join(ROOT, "config", "prompts.yaml"), "r"))
+CHANGELOG_PATH = os.path.join(ROOT, "CHANGELOG.md")
 AWS_SESSION = boto3.Session()
+AWS_SSM_CLIENT = AWS_SESSION.client("ssm")
+
+
+def extract_latest_version(filepath: str | None = None) -> str | None:
+    """Extracts the first version number found under a '##' heading.
+    Args:
+        filepath (str | None): Path to the changelog file. If None, defaults to CHANGELOG.md in the root directory.
+    Returns:
+        str | None: The latest version number as a string, or None if not found.
+    """
+
+    filepath = filepath if filepath else CHANGELOG_PATH
+
+    version_pattern = r"^##\s+(\d+\.\d+\.\d+)"
+    try:
+        with open(filepath, "r", encoding="utf-8") as f:
+            for line in f:
+                match = re.search(version_pattern, line)
+                if match:
+                    return match.group(1)
+    except FileNotFoundError:
+        LOGGER.error(f"Error: {filepath} not found.")
+        return None
+    return None
 
 
 def get_ssm_parameter(name: str | None, default: str | None = None) -> str | None:
     """
     Retrieves a specific value from AWS Systems Manager's Parameter Store.
-
-    :param name: The name of the parameter to retrieve.
-    :param default: The default value to return if the parameter is not found.
-    :return: The value of the requested parameter.
+    Args:
+        name (str | None): The name of the parameter to retrieve.
+        default (str | None): The default value to return if the parameter is not found.
+    Returns:
+        str | None: The value of the parameter, or the default value if not found.
     """
 
-    ssm_client = AWS_SESSION.client("ssm")
     LOGGER.info(f"get_ssm_parameter {name}...")
 
     if name is None:
         name = "none-params-in-ssm"
     try:
-        response = ssm_client.get_parameter(Name=name, WithDecryption=True)
+        response = AWS_SSM_CLIENT.get_parameter(Name=name, WithDecryption=True)
         value = response["Parameter"]["Value"]
-    except ssm_client.exceptions.ParameterNotFound:
+    except AWS_SSM_CLIENT.exceptions.ParameterNotFound:
         LOGGER.warning(
             f"Parameter {name} not found in SSM, returning default: {default}"
         )
@@ -86,6 +112,7 @@ class ChatbotSettings(BaseSettings):
     )
 
     # RAG settings
+    chatbot_release: str = extract_latest_version() or "---"
     embed_batch_size: int = int(os.getenv("CHB_EMBED_BATCH_SIZE", "100"))
     embed_dim: int = int(os.getenv("CHB_EMBEDDING_DIM", "768"))
     embed_model_id: str = os.getenv("CHB_EMBED_MODEL_ID", "gemini-embedding-001")
