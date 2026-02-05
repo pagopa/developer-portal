@@ -4,8 +4,10 @@ import { Button, Typography } from '@mui/material';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import SingleCard from '@/components/atoms/SingleCard/SingleCard';
+import { useParams } from 'next/navigation';
 
 const AccountActivatedCard = () => {
+  const { locale } = useParams<{ locale: string }>();
   const t = useTranslations('auth');
 
   return (
@@ -13,7 +15,11 @@ const AccountActivatedCard = () => {
       icon={<IconFireworks />}
       title={t('accountActivated.yourAccountIsActive')}
       cta={
-        <Button variant='contained' component={Link} href='/auth/login'>
+        <Button
+          variant='contained'
+          component={Link}
+          href={`/${locale}/auth/login`}
+        >
           {t('accountActivated.goToLogin')}
         </Button>
       }

@@ -9,12 +9,12 @@ import DesktopSiteHeader from '@/components/molecules/DesktopSiteHeader/DesktopS
 import { SITE_HEADER_HEIGHT } from '@/config';
 
 export type SiteHeaderProps = {
-  currentLocale: string;
+  locale: string;
   products: Product[];
 };
 
 const SiteHeader = (
-  { currentLocale, products }: SiteHeaderProps,
+  { locale, products }: SiteHeaderProps,
   ref: ForwardedRef<HTMLDivElement>
 ) => {
   const { palette } = useTheme();
@@ -48,18 +48,12 @@ const SiteHeader = (
         alignItems='center'
       >
         <HomepageButton
-          href={`/${currentLocale}`}
+          href={`/${locale}`}
           title={t('title')}
           boldTitle={t('company')}
         />
-        <MobileSiteHeader
-          currentLocale={currentLocale}
-          products={productsWithOverview}
-        />
-        <DesktopSiteHeader
-          currentLocale={currentLocale}
-          products={productsWithOverview}
-        />
+        <MobileSiteHeader locale={locale} products={productsWithOverview} />
+        <DesktopSiteHeader locale={locale} products={productsWithOverview} />
       </Stack>
       <Divider />
     </Box>
