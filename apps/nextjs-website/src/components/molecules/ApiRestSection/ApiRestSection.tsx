@@ -105,11 +105,19 @@ const ApiRestSection = ({
         <Stack
           sx={styles.selectContainer}
           direction='row'
-          justifyContent='flex-end'
+          justifyContent='flex-start'
           alignContent='center'
+          marginLeft={'17px'}
         >
           <StyledFormControl size='medium'>
-            <InputLabel id='select-api-label'>{specURLsName}</InputLabel>
+            <InputLabel
+              id='select-api-label'
+              sx={{
+                color: `${palette.primary.main} !important`,
+              }}
+            >
+              {specURLsName}
+            </InputLabel>
             <Select
               labelId='select-api-label'
               value={selectedItemURL}

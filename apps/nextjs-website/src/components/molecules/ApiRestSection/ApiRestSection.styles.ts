@@ -5,18 +5,18 @@ export const getStyles = (palette: Palette) => {
   return {
     select: {
       minWidth: { sx: 'auto', sm: '400px' },
-      color: white,
+      color: palette.text.primary,
       margin: 1,
       '& .MuiOutlinedInput-notchedOutline': {
-        borderColor: `${white} !important`, // !important is needed due to MUI that overwrite style via javascript
+        borderColor: `${palette.primary.main} !important`, // !important is needed due to MUI that overwrite style via javascript
       },
 
       '& .MuiSelect-icon': {
-        color: white,
+        color: palette.primary.main,
       },
     },
     selectContainer: {
-      background: palette.primary.dark,
+      background: white,
       height: 72,
       paddingRight: 2,
     },

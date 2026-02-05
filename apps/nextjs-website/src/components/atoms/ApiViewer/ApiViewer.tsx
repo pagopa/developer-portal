@@ -64,6 +64,19 @@ const ApiViewer: FC<ApiViewerProps> = ({ specURL }) => {
           #api-info {
             margin-left: 0 !important;
           }
+          .nav-method {
+            border-radius: 4px !important; 
+            min-width: 48px !important;
+            min-height: 22px !important;
+            padding-top: 2px !important;
+            font-size: 12px !important;
+            font-weight: 600 !important;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background-color: #E6EFF8 !important;
+            margin-right: 8px !important; 
+          }
         `;
         rapidocEl.shadowRoot.appendChild(style);
       }
@@ -86,39 +99,41 @@ const ApiViewer: FC<ApiViewerProps> = ({ specURL }) => {
   const RapiDoc = 'rapi-doc' as unknown as ElementType;
 
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        height: `calc(100vh - ${scrollOffset}px)`,
-        width: '100%',
-        overflow: 'hidden',
-      }}
-    >
-      <RapiDoc
-        allow-advanced-search='false'
-        allow-authentication='false'
-        allow-server-selection='false'
-        allow-spec-file-download='true'
-        allow-try='false'
-        auto-scroll='false'
-        bg-color={palette.background.paper}
-        font-size='large'
-        id='rapidoc-component'
-        mono-font='Titillium Web'
-        nav-bg-color={palette.grey[50]}
-        nav-text-color={palette.text.primary}
-        primary-color={palette.primary.main}
-        regular-font='Titillium Web'
-        render-style='focused'
-        scroll-y-offset='0'
-        show-components='true'
-        show-header='false'
-        show-method-in-nav-bar='as-plain-text'
-        spec-url={specURL}
-        text-color={palette.text.primary}
-        theme={palette.mode}
-      />
-    </Box>
+    <>
+      <Box
+        sx={{
+          display: 'flex',
+          height: `calc(100vh - ${scrollOffset}px)`,
+          width: '100%',
+          overflow: 'hidden',
+        }}
+      >
+        <RapiDoc
+          allow-advanced-search='false'
+          allow-authentication='false'
+          allow-server-selection='false'
+          allow-spec-file-download='true'
+          allow-try='false'
+          auto-scroll='false'
+          bg-color={palette.background.paper}
+          font-size='large'
+          id='rapidoc-component'
+          mono-font='Titillium Web'
+          nav-bg-color={palette.grey[50]}
+          nav-text-color={palette.text.primary}
+          primary-color={palette.primary.main}
+          regular-font='Titillium Web'
+          render-style='focused'
+          scroll-y-offset='0'
+          show-components='true'
+          show-header='false'
+          show-method-in-nav-bar='as-colored-block'
+          spec-url={specURL}
+          text-color={palette.text.primary}
+          theme={palette.mode}
+        />
+      </Box>
+    </>
   );
 };
 
