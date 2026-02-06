@@ -94,7 +94,6 @@ const ApiRestSection = ({
   const borderColor = palette.divider;
   const styles = getStyles(palette);
 
-  console.log(palette);
   return (
     <Box
       sx={{
