@@ -183,7 +183,7 @@ export const getGuideProps = async (
 
 export const getGuidesProps = async () => {
   const strapiGuides = (await fetchResponseFromCDN(
-    getSyncedGuidesResponseJsonPath()
+    getSyncedGuidesResponseJsonFile
   )) as StrapiGuides | undefined;
   return strapiGuides ? makeGuidesProps(strapiGuides) : [];
 };
