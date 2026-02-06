@@ -1,5 +1,6 @@
 from typing import List
 import numpy as np
+import logging
 
 from llama_index.core.llms.llm import BaseLLM
 from llama_index.core.embeddings import BaseEmbedding
@@ -12,6 +13,11 @@ from ragas.metrics import (
     ResponseRelevancy,
     LLMContextPrecisionWithoutReference,
 )
+
+from src.modules.settings import SETTINGS
+
+
+logging.getLogger("ragas").setLevel(logging.ERROR)
 
 
 class Evaluator:
@@ -41,24 +47,33 @@ class Evaluator:
         )
         dataset = EvaluationDataset([sample])
 
-        result = evaluate(
-            dataset=dataset,
-            metrics=[
-                self.response_relevancy,
-                self.context_precision,
-                self.faithfulness,
-            ],
-            show_progress=False,
-        )
-        scores = result.scores[0]
-        scores["context_precision"] = scores.pop(
-            "llm_context_precision_without_reference"
-        )
+        if SETTINGS.provider == "mock":
+            scores = {
+                "answer_relevancy_mock": 0.0,
+                "context_precision_mock": 0.0,
+                "faithfulness_mock": 0.0,
+            }
 
-        for k, v in scores.items():
-            if v is None or np.isnan(v):
-                scores[k] = 0.0
-            else:
-                scores[k] = float(v)
+        else:
+
+            result = evaluate(
+                dataset=dataset,
+                metrics=[
+                    self.response_relevancy,
+                    self.context_precision,
+                    self.faithfulness,
+                ],
+                show_progress=False,
+            )
+            scores = result.scores[0]
+            scores["context_precision"] = scores.pop(
+                "llm_context_precision_without_reference"
+            )
+
+            for k, v in scores.items():
+                if v is None or np.isnan(v):
+                    scores[k] = 0.0
+                else:
+                    scores[k] = float(v)
 
         return scores

@@ -18,13 +18,12 @@ RUN pip install --upgrade pip \
 
 RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && \
   unzip awscliv2.zip && \
-  ./aws/install
+  ./aws/install && \
+  rm awscliv2.zip
 
-RUN mkdir -p /tmp/.aws-lambda-rie \
-  && curl -Lo /tmp/.aws-lambda-rie/aws-lambda-rie https://github.com/aws/aws-lambda-runtime-interface-emulator/releases/latest/download/aws-lambda-rie \
-  && chmod +x /tmp/.aws-lambda-rie/aws-lambda-rie \
-  && cp /tmp/.aws-lambda-rie/aws-lambda-rie /usr/local/bin/aws-lambda-rie \
-  && rm -rf /tmp/.aws-lambda-rie
+RUN curl -Lo /usr/local/bin/aws-lambda-rie \
+  https://github.com/aws/aws-lambda-runtime-interface-emulator/releases/latest/download/aws-lambda-rie && \
+  chmod +x /usr/local/bin/aws-lambda-rie
 
 WORKDIR /app
 COPY ./pyproject.toml .
@@ -41,4 +40,7 @@ RUN poetry install --with dev
 
 RUN python ./scripts/nltk_download.py
 
-CMD ["fastapi", "dev", "src/app/main.py", "--port", "8080", "--host", "0.0.0.0", "--loop", "asyncio"]
+RUN chmod +x ./scripts/entrypoint.sh
+
+ENTRYPOINT ["./scripts/entrypoint.sh"]
+CMD ["hypercorn", "-b", "0.0.0.0:8080", "--reload", "src.app.main:app"]

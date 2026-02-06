@@ -1,8 +1,3 @@
-import os
-import boto3
-import requests
-from llama_index.core.async_utils import asyncio_run
-
 from src.modules.logger import get_logger
 from src.modules.settings import SETTINGS, AWS_SESSION
 from src.modules.vector_index import REDIS_CLIENT

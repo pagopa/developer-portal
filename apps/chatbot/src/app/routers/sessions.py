@@ -5,13 +5,15 @@ from fastapi import APIRouter, Header, HTTPException
 from typing import Annotated
 
 from src.app.models import QueryFeedback, tables
+from src.app.sessions import current_user_id, add_langfuse_score_query
+
 from src.modules.logger import get_logger
-from src.app.chatbot_init import chatbot
-from src.app.sessions import current_user_id
+from src.modules.settings import SETTINGS
 
 router = APIRouter()
 
-LOGGER = get_logger(__name__)
+LOGGER = get_logger(__name__, level=SETTINGS.log_level)
+
 
 # retrieve sessions of current user
 @router.get("/sessions")
@@ -85,59 +87,51 @@ async def query_feedback(
     authorization: Annotated[str | None, Header()] = None,
 ):
 
-    try:
-        if query.feedback:
-            # TODO: enqueue langfuse request in SQS
-            # add_langfuse_score_query(query_id=id, query_feedback=query)
+    feedback = None
+    if query.feedback:
+        if query.feedback.user_response_relevancy is None:
+            query.feedback.user_response_relevancy = Decimal("0")
 
-            if query.feedback.user_response_relevancy is None:
-                query.feedback.user_response_relevancy = 0
-
-            query.feedback.user_response_relevancy = Decimal(
-                str(query.feedback.user_response_relevancy)
-            )
-
-            if query.feedback.user_faithfullness is None:
-                query.feedback.user_faithfullness = 0
-
-            query.feedback.user_faithfullness = Decimal(
-                str(query.feedback.user_faithfullness)
-            )
-
-            feedback = query.feedback.model_dump()
-            # TODO: database action will be moved to chatbot-monitor, with presidio
-            # feedback["user_comment"] = chatbot.mask_pii(feedback["user_comment"])
-
-            dbResponse = tables["queries"].update_item(
-                Key={"sessionId": sessionId, "id": id},
-                UpdateExpression="SET #badAnswer = :badAnswer, #feedback = :feedback",
-                ExpressionAttributeNames={
-                    "#badAnswer": "badAnswer",
-                    "#feedback": "feedback",
-                },
-                ExpressionAttributeValues={
-                    ":badAnswer": query.badAnswer,
-                    ":feedback": feedback,
-                },
-                ReturnValues="ALL_NEW",
-            )
-
-        else:
-            dbResponse = tables["queries"].update_item(
-                Key={"sessionId": sessionId, "id": id},
-                UpdateExpression="SET #badAnswer = :badAnswer",
-                ExpressionAttributeNames={"#badAnswer": "badAnswer"},
-                ExpressionAttributeValues={":badAnswer": query.badAnswer},
-                ReturnValues="ALL_NEW",
-            )
-
-    except (BotoCoreError, ClientError) as e:
-        raise HTTPException(
-            status_code=422,
-            detail=(f"[query_feedback] id: {id} sessionId: {sessionId}, error: {e}"),
+        query.feedback.user_response_relevancy = Decimal(
+            str(query.feedback.user_response_relevancy)
         )
 
-    if "Attributes" in dbResponse:
-        return dbResponse.get("Attributes")
-    else:
-        raise HTTPException(status_code=404, detail="Record not found")
+        if query.feedback.user_faithfullness is None:
+            query.feedback.user_faithfullness = Decimal("0")
+
+        query.feedback.user_faithfullness = Decimal(
+            str(query.feedback.user_faithfullness)
+        )
+
+        feedback = query.feedback.model_dump()
+
+        # Convert Decimal values to float for JSON serialization
+        if (
+            "user_response_relevancy" in feedback
+            and feedback["user_response_relevancy"] is not None
+        ):
+            feedback["user_response_relevancy"] = float(
+                feedback["user_response_relevancy"]
+            )
+        if (
+            "user_faithfullness" in feedback
+            and feedback["user_faithfullness"] is not None
+        ):
+            feedback["user_faithfullness"] = float(feedback["user_faithfullness"])
+
+    query_for_database = {
+        "id": id,
+        "sessionId": sessionId,
+        "badAnswer": query.badAnswer,
+        "feedback": feedback,
+    }
+    add_langfuse_score_query(
+        query_id=id, query_feedback=query, query_for_database=query_for_database
+    )
+
+    return {
+        "id": id,
+        "sessionId": sessionId,
+        "badAnswer": query.badAnswer,
+        "feedback": feedback,
+    }

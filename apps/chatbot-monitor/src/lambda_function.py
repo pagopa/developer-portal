@@ -1,10 +1,16 @@
 import json
 
 from src.modules.logger import get_logger
-from src.modules.monitor import create_langfuse_trace, add_langfuse_score
+from src.modules.monitor import (
+    create_langfuse_trace,
+    add_langfuse_score,
+)
+from src.modules.codec import decompress_payload
+from src.modules.settings import SETTINGS
+from src.modules.sqs import get_sqs_evaluate_queue
 
-
-LOGGER = get_logger(__name__)
+LOGGER = get_logger(__name__, level=SETTINGS.log_level)
+SQS_EVALUATE = get_sqs_evaluate_queue()
 
 
 # payload example
@@ -92,7 +98,9 @@ LOGGER = get_logger(__name__)
                             "attributes": {
                                 "llm.model_name": "gemini-2.5-flash-lite",
                                 "llm.invocation_parameters": "{\"context_window\":1049344,\"num_output\":768,\"is_chat_model\":true,\"is_function_calling_model\":true,\"model_name\":\"gemini-2.5-flash-lite\"}",
-                                "input.value": "{\"messages\": [\"ChatMessage(role=<MessageRole.SYSTEM: 'system'>, additional_kwargs={}, blocks=[TextBlock(block_type='text', text='You are designed to help with a variety of tasks, from answering questions to providing summaries to other types of analyses.\\\\n\\\\n## Tools\\\\n\\\\nYou have access to a wide variety of tools. You are responsible for using the tools in any sequence you deem appropriate to complete the task at hand.\\\\nThis may require breaking the task into subtasks and using different tools to complete each subtask.\\\\n\\\\nYou have access to the following tools:\\\\n> Tool Name: rag_tool\\\\nTool Description: This tool is your primary resource for answering questions how to improve a career in AI.\\\\nTool Args: {\\\"properties\\\": {\\\"input\\\": {\\\"title\\\": \\\"Input\\\", \\\"type\\\": \\\"string\\\"}}, \\\"required\\\": [\\\"input\\\"], \\\"type\\\": \\\"object\\\"}\\\\n\\\\n\\\\n\\\\n## Output Format\\\\n\\\\nPlease answer in the same language as the question and use the following format:\\\\n\\\\n```\\\\nThought: The current language of the user is: (user\\\\'s language). I need to use a tool to help me answer the question.\\\\nAction: tool name (one of rag_tool) if using a tool.\\\\nAction Input: the input to the tool, in a JSON format representing the kwargs (e.g. {\\\"input\\\": \\\"hello world\\\", \\\"num_beams\\\": 5})\\\\n```\\\\n\\\\nPlease ALWAYS start with a Thought.\\\\n\\\\nNEVER surround your response with markdown code markers. You may use code markers within your response if you need to.\\\\n\\\\nPlease use a valid JSON format for the Action Input. Do NOT do this {\\\\'input\\\\': \\\\'hello world\\\\', \\\\'num_beams\\\\': 5}. If you include the \\\"Action:\\\" line, then you MUST include the \\\"Action Input:\\\" line too, even if the tool does not need kwargs, in that case you MUST use \\\"Action Input: {}\\\".\\\\n\\\\nIf this format is used, the tool will respond in the following format:\\\\n\\\\n```\\\\nObservation: tool response\\\\n```\\\\n\\\\nYou should keep repeating the above format till you have enough information to answer the question without using any more tools. At that point, you MUST respond in one of the following two formats:\\\\n\\\\n```\\\\nThought: I can answer without using any more tools. I\\\\'ll use the user\\\\'s language to answer\\\\nAnswer: [your answer here (In the same language as the user\\\\'s question)]\\\\n```\\\\n\\\\n```\\\\nThought: I cannot answer the question with the provided tools.\\\\nAnswer: [your answer here (In the same language as the user\\\\'s question)]\\\\n```\\\\n\\\\n## Current Conversation\\\\n\\\\nBelow is the current conversation consisting of interleaving human and assistant messages.\\\\n')])\", \"ChatMessage(role=<MessageRole.USER: 'user'>, additional_kwargs={}, blocks=[TextBlock(block_type='text', text='what can you do for me?')])\"]}",
+                                "input.value": "{\"messages\": [\"ChatMessage(role=<MessageRole.SYSTEM: 'system'>, additional_kwargs={}, blocks=[TextBlock(block_type='text', text='You are designed to help with a variety of tasks, from answering questions to providing summaries to other types of analyses.\\\\n\\\\n## Tools\\\\n\\\\nYou have access to a wide variety of tools. You are responsible for using the tools in any sequence you deem appropriate to complete the task at hand.\\\\nThis may require breaking the task into subtasks and using different tools to complete each subtask.\\\\n\\\\nYou have access to the following tools:\\\\n> Tool Name: rag_tool\\\\nTool Description: This tool is your primary resource for answering questions how to improve a career in AI.\\\\nTool Args: {\\\\\"properties\\\\\": {\\\\\"input\\\\\": {\\\\\"title\\\\\": \\\\\"Input\\\\\", \\\\\"type\\\\\": \\\\\"string\\\\\"}}, \\\\\"required\\\\\": [\\\\\"input\\\\\"], \\\\\"type\\\\\": \\\\\"object\\\\\"}\\\\n\\\\n\\\\n\\\\n## Output Format\\\\n\\\\nPlease answer in the same language as the question and use the following format:\\\\n\\\\n```\\\\nThought: The current language of the user is: (user\\'s language). I need to use a tool to help me answer the question.\\\\nAction: tool name (one of rag_tool) if using a tool.\\\\nAction Input: the input to the tool, in a JSON format representing the kwargs (e.g. {\\\\\"input\\\\\": \\\\\"hello world\\\\\", \\\\\"num_beams\\\\\": 5})\\\\n```\\\\n\\\\nPlease ALWAYS start with a Thought.\\\\n\\\\nNEVER surround your response with markdown code markers. You may use code markers within your response if you need to.\\\\n\\\\nPlease use a valid JSON format for the Action Input. Do NOT do this {\\\'input\\':\\\'hello world\\', \\'num_beams\\': 5}. If you include the \\\"Action:\\\" line, then you MUST include the \\\"Action Input:\\\" line too, even if the tool does not need kwargs, in that case you MUST use \\\"Action Input: {}\\\".\\\\n\\\\nIf this format is used, the tool will respond in the following format:\\\\n\\\\n```\\\\nObservation: tool response\\\\n```\\\\n\\\\nYou should keep repeating the above format till you have enough information to answer the question without using any more tools. At that point, you MUST respond in one of the following two formats:\\\\n\\\\n```\\\\nThought: I can answer without using any more tools. I\\'ll use the user\\'s language to answer\\\\nAnswer: [your answer here (In the same language as the user\\'s question)]\\\\n```\\\\n\\\\n```\\\\nThought: I cannot answer the question with the provided tools.\\\\nAnswer: [your answer here (In the same language as the user\\'s question)]\\\\n```\\\\n\\\\n## Current Conversation\\\\n\\\\nBelow is the current conversation consisting of interleaving human and assistant messages.\\\\n')]\", \"ChatMessage(role=<MessageRole.USER: 'user'>, additional_kwargs={}, blocks=[TextBlock(block_type='text', text='what can you do for me?')])\"]}"
+
+,
                                 "input.mime_type": "application/json",
                                 "llm.input_messages.0.message.role": "system",
                                 "llm.input_messages.0.message.content": "You are designed to help with a variety of tasks, from answering questions to providing summaries to other types of analyses.\n\n## Tools\n\nYou have access to a wide variety of tools. You are responsible for using the tools in any sequence you deem appropriate to complete the task at hand.\nThis may require breaking the task into subtasks and using different tools to complete each subtask.\n\nYou have access to the following tools:\n> Tool Name: rag_tool\nTool Description: This tool is your primary resource for answering questions how to improve a career in AI.\nTool Args: {\"properties\": {\"input\": {\"title\": \"Input\", \"type\": \"string\"}}, \"required\": [\"input\"], \"type\": \"object\"}\n\n\n\n## Output Format\n\nPlease answer in the same language as the question and use the following format:\n\n```\nThought: The current language of the user is: (user's language). I need to use a tool to help me answer the question.\nAction: tool name (one of rag_tool) if using a tool.\nAction Input: the input to the tool, in a JSON format representing the kwargs (e.g. {\"input\": \"hello world\", \"num_beams\": 5})\n```\n\nPlease ALWAYS start with a Thought.\n\nNEVER surround your response with markdown code markers. You may use code markers within your response if you need to.\n\nPlease use a valid JSON format for the Action Input. Do NOT do this {'input': 'hello world', 'num_beams': 5}. If you include the \"Action:\" line, then you MUST include the \"Action Input:\" line too, even if the tool does not need kwargs, in that case you MUST use \"Action Input: {}\".\n\nIf this format is used, the tool will respond in the following format:\n\n```\nObservation: tool response\n```\n\nYou should keep repeating the above format till you have enough information to answer the question without using any more tools. At that point, you MUST respond in one of the following two formats:\n\n```\nThought: I can answer without using any more tools. I'll use the user's language to answer\nAnswer: [your answer here (In the same language as the user's question)]\n```\n\n```\nThought: I cannot answer the question with the provided tools.\nAnswer: [your answer here (In the same language as the user's question)]\n```\n\n## Current Conversation\n\nBelow is the current conversation consisting of interleaving human and assistant messages.\n",
@@ -133,7 +141,8 @@ LOGGER = get_logger(__name__)
                             "events": []
                         }
                     ]
-                }
+                },
+                "should_evaluate": true
             }
         },
         {
@@ -158,15 +167,13 @@ LOGGER = get_logger(__name__)
 
 
 def lambda_handler(event, context):
-    LOGGER.debug(f"event: {event}")
 
     results = []
     for record in event.get("Records", []):
-        body = record.get("body", "{}")
-        body = json.loads(body)
-
+        body = json.loads(record.get("body", "{}"))
+        data = decompress_payload(body.get("data", ""))
         operation = body.get("operation")
-        data = body.get("data", {})
+
         if operation == "create_trace":
             create_langfuse_trace(
                 trace_id=data.get("trace_id"),
@@ -180,7 +187,33 @@ def lambda_handler(event, context):
                 spans=data.get("traceSpans"),
                 query_for_database=data.get("query_for_database"),
             )
+
+            # Enqueue evaluation if requested
+            if body.get("should_evaluate", False):
+                LOGGER.info(
+                    f"Enqueuing evaluation for trace_id: {data.get('trace_id')}"
+                )
+                evaluation_payload = {
+                    "trace_id": data.get("trace_id"),
+                    "query_str": data.get("query"),
+                    "response_str": data.get("response"),
+                    "retrieved_contexts": data.get("contexts", []),
+                    "messages": data.get("messages", []),
+                }
+                try:
+                    SQS_EVALUATE.send_message(
+                        MessageBody=json.dumps(evaluation_payload),
+                        MessageGroupId=data.get("trace_id"),  # Required for FIFO queues
+                    )
+                except Exception as e:
+                    LOGGER.error(f"Failed to enqueue evaluation: {e}")
+
         elif operation == "add_scores":
+
+            LOGGER.info(f">>>>>>>>>>>>>>>>> Score data: {data}")
+            if not isinstance(data, list):
+                data = [data]
+
             for score in data:
                 add_langfuse_score(
                     trace_id=score.get("trace_id"),
@@ -188,6 +221,7 @@ def lambda_handler(event, context):
                     score=score.get("score"),
                     comment=score.get("comment"),
                     data_type=score.get("data_type"),
+                    query_for_database=score.get("query_for_database"),
                 )
         else:
             LOGGER.warning(f"Unknown operation: {operation}")

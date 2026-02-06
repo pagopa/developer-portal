@@ -2,6 +2,7 @@ import json
 
 from src.modules.judge import Judge
 from src.modules.logger import get_logger
+from src.modules.codec import compress_payload
 from src.modules.sqs import get_sqs_monitor_queue
 
 
@@ -61,9 +62,11 @@ def lambda_handler(event, context):
     results = []
 
     # extract unique records
-    unique_records = [
-        dict(t) for t in set(tuple(r.items()) for r in event.get("Records", []))
-    ]
+    records = event.get("Records", [])
+    unique_records = []
+    for record in records:
+        if record not in unique_records:
+            unique_records.append(record)
     for record in unique_records:
         body = record.get("body", "{}")
         body = json.loads(body)
@@ -87,7 +90,12 @@ def lambda_handler(event, context):
                 }
             )
 
-    payload_to_monitor = json.dumps({"operation": "add_scores", "data": results})
+    payload_to_monitor = json.dumps(
+        {
+            "operation": "add_scores",
+            "data": compress_payload(results),
+        }
+    )
     try:
         sqs_response = SQS_MONITOR.send_message(
             MessageBody=payload_to_monitor,

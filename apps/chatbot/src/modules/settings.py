@@ -8,7 +8,6 @@ from pydantic_settings import BaseSettings
 
 from src.modules.logger import get_logger
 
-
 LOGGER = get_logger(__name__, level=os.getenv("LOG_LEVEL", "info"))
 CWF = Path(__file__)
 ROOT = CWF.parent.parent.parent.absolute().__str__()
@@ -135,7 +134,6 @@ class ChatbotSettings(BaseSettings):
     chunk_overlap: int = PARAMS["vector_index"]["chunk_overlap"]
     chunk_size: int = PARAMS["vector_index"]["chunk_size"]
     index_id: str = PARAMS["vector_index"]["index_id"]
-    presidio_config: dict = PARAMS["config_presidio"]
     bucket_static_content: str = os.getenv(
         "CHB_AWS_S3_BUCKET_NAME_STATIC_CONTENT", "devportal-d-website-static-content"
     )
@@ -151,6 +149,11 @@ class ChatbotSettings(BaseSettings):
 
     # API
     query_table_prefix: str = os.getenv("CHB_QUERY_TABLE_PREFIX", "chatbot")
+
+    # sqs
+    aws_sqs_queue_monitor_name: str = os.getenv(
+        "CHB_AWS_SQS_QUEUE_MONITOR_NAME", "chatbot-monitor"
+    )
     aws_sqs_queue_evaluate_name: str = os.getenv(
         "CHB_AWS_SQS_QUEUE_EVALUATE_NAME", "chatbot-evaluate"
     )
