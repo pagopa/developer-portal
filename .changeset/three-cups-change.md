@@ -2,4 +2,4 @@
 "parser": minor
 ---
 
-Add puppeteer to parser app
+Add Puppeteer to parser app
