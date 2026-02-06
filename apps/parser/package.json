@@ -2,6 +2,9 @@
   "name": "parser",
   "version": "0.1.0",
   "private": true,
-  "scripts": {
+  "scripts": {},
+  "dependencies": {
+    "puppeteer": "^24.37.1"
   }
 }
+
