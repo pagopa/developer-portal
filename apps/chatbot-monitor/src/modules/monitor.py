@@ -30,18 +30,6 @@ LANGFUSE_CLIENT = Langfuse(
     secret_key=SETTINGS.langfuse_secret_key,
     host=SETTINGS.langfuse_host,
 )
-SPAN_TYPES = Union[
-    LangfuseAgent,
-    LangfuseChain,
-    LangfuseEmbedding,
-    LangfuseEvaluator,
-    LangfuseEvent,
-    LangfuseGeneration,
-    LangfuseGuardrail,
-    LangfuseRetriever,
-    LangfuseSpan,
-    LangfuseTool,
-]
 
 
 def link_spans_groups(spans: List[dict], root_span_id: str) -> List[dict]:
@@ -105,7 +93,7 @@ def mask_chat_history(messages: List[Dict[str, str]]) -> List[Dict[str, str]]:
 def process_span(
     span: Dict[str, Any],
     parent_span: LangfuseSpan = None,
-) -> SPAN_TYPES:
+) -> None:
     """Process a span and create a Langfuse observation.
 
     Args:
@@ -113,7 +101,7 @@ def process_span(
         parent_span (LangfuseSpan, optional): The parent Langfuse span. Defaults to None.
         all_spans (List[Dict[str, Any]], optional): The list of all spans. Defaults to [].
     Returns:
-        SPAN_TYPES: The created Langfuse observation.
+        None: The created Langfuse observation.
     """
 
     span_id = span["context"]["span_id"]
