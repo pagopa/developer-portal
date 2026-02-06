@@ -74,7 +74,7 @@ const ApiViewer: FC<ApiViewerProps> = ({ specURL }) => {
             justify-content: center;
             align-items: center;
             text-align: center;
-            background-color: #E6EFF8 !important;
+            background-color: ${palette.info[100]} !important;
             margin-right: 8px !important; 
           }
         `;
@@ -93,47 +93,45 @@ const ApiViewer: FC<ApiViewerProps> = ({ specURL }) => {
     return () => {
       rapidocEl.removeEventListener('spec-loaded', injectStyles);
     };
-  }, []);
+  }, [palette.info]);
 
   // Cast strict TS error for custom element
   const RapiDoc = 'rapi-doc' as unknown as ElementType;
 
   return (
-    <>
-      <Box
-        sx={{
-          display: 'flex',
-          height: `calc(100vh - ${scrollOffset}px)`,
-          width: '100%',
-          overflow: 'hidden',
-        }}
-      >
-        <RapiDoc
-          allow-advanced-search='false'
-          allow-authentication='false'
-          allow-server-selection='false'
-          allow-spec-file-download='true'
-          allow-try='false'
-          auto-scroll='false'
-          bg-color={palette.background.paper}
-          font-size='large'
-          id='rapidoc-component'
-          mono-font='Titillium Web'
-          nav-bg-color={palette.grey[50]}
-          nav-text-color={palette.text.primary}
-          primary-color={palette.primary.main}
-          regular-font='Titillium Web'
-          render-style='focused'
-          scroll-y-offset='0'
-          show-components='true'
-          show-header='false'
-          show-method-in-nav-bar='as-colored-block'
-          spec-url={specURL}
-          text-color={palette.text.primary}
-          theme={palette.mode}
-        />
-      </Box>
-    </>
+    <Box
+      sx={{
+        display: 'flex',
+        height: `calc(100vh - ${scrollOffset}px)`,
+        width: '100%',
+        overflow: 'hidden',
+      }}
+    >
+      <RapiDoc
+        allow-advanced-search='false'
+        allow-authentication='false'
+        allow-server-selection='false'
+        allow-spec-file-download='true'
+        allow-try='false'
+        auto-scroll='false'
+        bg-color={palette.background.paper}
+        font-size='large'
+        id='rapidoc-component'
+        mono-font='Titillium Web'
+        nav-bg-color={palette.grey[50]}
+        nav-text-color={palette.text.primary}
+        primary-color={palette.primary.main}
+        regular-font='Titillium Web'
+        render-style='focused'
+        scroll-y-offset='0'
+        show-components='true'
+        show-header='false'
+        show-method-in-nav-bar='as-colored-block'
+        spec-url={specURL}
+        text-color={palette.text.primary}
+        theme={palette.mode}
+      />
+    </Box>
   );
 };
 

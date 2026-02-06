@@ -55,7 +55,7 @@ const ApiRestSection = ({
   specURLs,
   specURLsName,
 }: ApiRestPageProps) => {
-  const { palette } = useTheme();
+  const { palette, spacing } = useTheme();
 
   const [selectedItemURL, setSelectedItemURL] = useState(specURLs[0].url);
 
@@ -94,6 +94,7 @@ const ApiRestSection = ({
   const borderColor = palette.divider;
   const styles = getStyles(palette);
 
+  console.log(palette);
   return (
     <Box
       sx={{
@@ -107,7 +108,7 @@ const ApiRestSection = ({
           direction='row'
           justifyContent='flex-start'
           alignContent='center'
-          marginLeft={'17px'}
+          marginLeft={spacing(2.125)}
         >
           <StyledFormControl size='medium'>
             <InputLabel
