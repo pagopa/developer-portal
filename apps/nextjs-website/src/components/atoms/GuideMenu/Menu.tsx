@@ -14,6 +14,7 @@ import GuideVersionSelector, {
 } from './GuideVersionSelector';
 import { Typography } from '@mui/material';
 import { GitBookContentData } from '@/lib/types/gitBookContent';
+import { useParams } from 'next/navigation';
 
 const StyledTreeItem = styled(TreeItem)(({ theme }) => ({
   [`&`]: {
@@ -121,6 +122,7 @@ const GuideMenuItems = ({
   versions,
   onGuideNavigate,
 }: GuideMenuItemsProps) => {
+  const { locale } = useParams<{ locale: string }>();
   const components: RenderingComponents<React.ReactNode> = useMemo(
     () => ({
       Item: ({ href, title, children }) => {
@@ -131,7 +133,7 @@ const GuideMenuItems = ({
           e.currentTarget.classList.add('custom-mui-focused');
           const cleanHref = href.split('#')[0];
           const parts = cleanHref.split('/').filter(Boolean);
-          const apiPath = `/api/${parts.join('/')}`;
+          const apiPath = `/${locale}/api/${parts.join('/')}`;
           fetch(apiPath, { headers: { Accept: 'application/json' } })
             .then((res) => (res.ok ? res.json() : undefined))
             .then((data) => {
@@ -188,7 +190,7 @@ const GuideMenuItems = ({
         </Typography>
       ),
     }),
-    [currentPath, onGuideNavigate]
+    [currentPath, onGuideNavigate, locale]
   );
 
   const children = useMemo(() => {
