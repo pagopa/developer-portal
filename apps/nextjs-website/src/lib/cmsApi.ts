@@ -161,7 +161,7 @@ export const getSolutionsProps = async (locale: string) => {
   const strapiSolutions = (await fetchResponseFromCDN(
     `${locale}/${getSyncedSolutionsResponseJsonPath()}`
   )) as StrapiSolutions | undefined;
-  return strapiSolutions ? makeSolutionsProps(strapiSolutions) : [];
+  return strapiSolutions ? makeSolutionsProps(locale, strapiSolutions) : [];
 };
 
 export const getSolutionListPageProps = async (locale: string) => {
@@ -231,7 +231,7 @@ export const getSolutionProps = async (
     // eslint-disable-next-line functional/no-throw-statements
     throw new Error('Failed to fetch solution data');
   }
-  const solutions = makeSolutionsProps(strapiSolutions);
+  const solutions = makeSolutionsProps(locale, strapiSolutions);
   const solution = solutions.find((s) => s.slug === solutionsSlug);
   if (!solution) {
     // eslint-disable-next-line functional/no-throw-statements
