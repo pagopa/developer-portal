@@ -12,7 +12,6 @@ import {
 } from '@/helpers/metadata.helpers';
 import { getApiDataListPages } from '@/lib/api';
 import { Metadata } from 'next';
-import { SUPPORTED_LOCALES } from '@/locales';
 
 type Params = {
   locale: string;
@@ -34,8 +33,7 @@ export async function generateMetadata(props: {
       .filter(Boolean)
       .join(' | '),
     url: `${baseUrl}/${locale}/${apiDataListPage?.product.slug}/api`,
-    locale: SUPPORTED_LOCALES.find(({ langCode }) => langCode === locale)
-      ?.locale,
+    langCode: locale,
   });
 }
 

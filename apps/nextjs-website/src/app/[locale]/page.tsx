@@ -73,7 +73,7 @@ export async function generateMetadata(props: {
         title: 'PagoPA DevPortal',
         description: 'Il portale per gli sviluppatori di PagoPA',
         url: `${baseUrl}/${locale}`,
-        locale: 'it_IT',
+        langCode: locale,
       });
 }
 

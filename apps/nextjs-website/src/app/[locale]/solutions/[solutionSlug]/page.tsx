@@ -18,8 +18,8 @@ export const dynamic = 'force-dynamic';
 export async function generateMetadata(props: {
   params: Promise<Params>;
 }): Promise<Metadata> {
-  const params = await props.params;
-  const solution = await getSolution(params.locale, params?.solutionSlug);
+  const { locale, solutionSlug } = await props.params;
+  const solution = await getSolution(locale, solutionSlug);
 
   if (solution.seo) {
     return makeMetadataFromStrapi(solution.seo);
@@ -27,24 +27,24 @@ export async function generateMetadata(props: {
 
   return makeMetadata({
     title: solution.title,
-    url: `${baseUrl}/solutions/${solution.slug}`,
-    locale: 'it_IT',
+    url: `${baseUrl}/${locale}/solutions/${solution.slug}`,
+    langCode: locale,
   });
 }
 
 const Page = async (props: { params: Promise<Params> }) => {
-  const params = await props.params;
-  const solution = await getSolution(params.locale, params?.solutionSlug);
+  const { locale, solutionSlug } = await props.params;
+  const solution = await getSolution(locale, solutionSlug);
 
   const structuredData = generateStructuredDataScripts({
     breadcrumbsItems: [
       {
         name: 'Solutions',
-        item: getItemFromPaths(params.locale, ['solutions']),
+        item: getItemFromPaths(locale, ['solutions']),
       },
       {
         name: solution.seo?.metaTitle,
-        item: getItemFromPaths(params.locale, ['solutions', solution.slug]),
+        item: getItemFromPaths(locale, ['solutions', solution.slug]),
       },
     ],
     seo: solution.seo,

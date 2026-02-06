@@ -5,7 +5,6 @@ import { getItemFromPaths } from '@/helpers/structuredData.helpers';
 import { Metadata } from 'next';
 import { makeMetadata } from '@/helpers/metadata.helpers';
 import { baseUrl } from '@/config';
-import { SUPPORTED_LOCALES } from '../../../locales';
 
 export async function generateMetadata(props: {
   params: Promise<{ locale: string }>;
@@ -14,8 +13,7 @@ export async function generateMetadata(props: {
   return makeMetadata({
     title: 'Soluzioni',
     url: `${baseUrl}/${locale}/solutions`,
-    locale: SUPPORTED_LOCALES.find(({ langCode }) => langCode === locale)
-      ?.locale,
+    langCode: locale,
   });
 }
 

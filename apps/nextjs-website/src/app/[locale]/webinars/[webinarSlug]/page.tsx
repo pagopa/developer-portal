@@ -29,7 +29,7 @@ export async function generateMetadata(props: {
   return makeMetadata({
     title: webinar.title,
     url: `${baseUrl}/${locale}/webinars/${webinar.slug}`,
-    locale: 'it_IT',
+    langCode: locale,
     image: webinar.imagePath,
   });
 }

@@ -11,7 +11,6 @@ import {
   convertSeoToStructuredDataArticle,
   getItemFromPaths,
 } from '@/helpers/structuredData.helpers';
-import { SUPPORTED_LOCALES } from '../../../../locales';
 
 type Params = {
   locale: string;
@@ -31,8 +30,7 @@ export async function generateMetadata(props: {
   return makeMetadata({
     title: caseHistory.title,
     url: `${baseUrl}/${locale}/case-histories/${caseHistory.slug}`,
-    locale: SUPPORTED_LOCALES.find(({ langCode }) => langCode === locale)
-      ?.locale,
+    langCode: locale,
   });
 }
 
