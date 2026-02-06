@@ -17,6 +17,7 @@ import {
 } from '@/helpers/breadcrumbs.helpers';
 import { compact } from 'lodash';
 import { GitBookContentData } from '@/lib/types/gitBookContent';
+import { useParams } from 'next/navigation';
 
 export type GitBookTemplateProps = {
   body: string;
@@ -50,6 +51,7 @@ const GitBookTemplate = ({
   versionName,
 }: GitBookTemplateProps) => {
   const t = useTranslations();
+  const locale = useParams<{ locale: string }>().locale;
   const responsiveContentMarginTop =
     (contentMarginTop && `${contentMarginTop}px`) || 0;
   const [content, setContent] = useState({
@@ -72,110 +74,113 @@ const GitBookTemplate = ({
     }
   }, [content.path]);
 
-  const updateContent = useCallback((payload: GitBookContentData): boolean => {
-    if (!payload?.page?.body) {
-      return false;
-    }
-
-    setContent((prev) => {
-      const mergedBodyConfig = {
-        ...prev.bodyConfig,
-        ...payload.bodyConfig,
-        urlReplaces: prev.bodyConfig.urlReplaces,
-      };
-      return {
-        body: payload.page?.body || prev.body,
-        bodyConfig: mergedBodyConfig,
-        path: payload.page?.path ?? prev.path,
-        menu: payload.page?.menu ?? prev.menu,
-      };
-    });
-
-    const buildBreadcrumbs = (segments: readonly BreadcrumbSegment[]) => {
-      if (!payload?.product) {
-        return segments; // fallback
+  const updateContent = useCallback(
+    (payload: GitBookContentData): boolean => {
+      if (!payload?.page?.body) {
+        return false;
       }
-      return productPageToBreadcrumbs(payload.product, [
-        {
-          translate: true,
-          name: 'devPortal.productHeader.guides',
-          path: payload.product.hasGuideListPage
-            ? `/${payload.product.slug}/guides`
-            : '/',
-        },
-        ...segments,
-      ]);
-    };
 
-    // Dynamic breadcrumbs cases
-    if (payload?.product && payload?.guide) {
-      const guideCrumbs = buildBreadcrumbs([
-        { name: payload.guide.name, path: payload.guide.path },
-      ]);
-      setBreadcrumbs([...guideCrumbs]);
-    } else if (payload?.solution) {
-      const solutionCrumbs = pageToBreadcrumbs('solutions', [
-        {
-          name: payload.solution.title || '',
-          path: `/solutions/${payload.solution.slug}`,
-        },
-        {
-          name: payload.page.title,
-          path: `/solutions/${payload.solution.slug}/details/${payload.page?.path}`,
-        },
-      ]);
-      setBreadcrumbs([...solutionCrumbs]);
-    } else if (!payload?.guide && !payload?.solution && payload?.title) {
-      const isReleaseNote = (payload.page?.path || '').includes(
-        '/release-note'
-      );
-      if (isReleaseNote && payload.bodyConfig) {
-        const gbPageSegments = gitBookPageToBreadcrumbs(
-          payload.bodyConfig.pagePath,
-          payload.bodyConfig.gitBookPagesWithTitle
+      setContent((prev) => {
+        const mergedBodyConfig = {
+          ...prev.bodyConfig,
+          ...payload.bodyConfig,
+          urlReplaces: prev.bodyConfig.urlReplaces,
+        };
+        return {
+          body: payload.page?.body || prev.body,
+          bodyConfig: mergedBodyConfig,
+          path: payload.page?.path ?? prev.path,
+          menu: payload.page?.menu ?? prev.menu,
+        };
+      });
+
+      const buildBreadcrumbs = (segments: readonly BreadcrumbSegment[]) => {
+        if (!payload?.product) {
+          return segments; // fallback
+        }
+        return productPageToBreadcrumbs(locale, payload.product, [
+          {
+            translate: true,
+            name: 'devPortal.productHeader.guides',
+            path: payload.product.hasGuideListPage
+              ? `/${locale}/${payload.product.slug}/guides`
+              : `/${locale}`,
+          },
+          ...segments,
+        ]);
+      };
+
+      // Dynamic breadcrumbs cases
+      if (payload?.product && payload?.guide) {
+        const guideCrumbs = buildBreadcrumbs([
+          { name: payload.guide.name, path: payload.guide.path },
+        ]);
+        setBreadcrumbs([...guideCrumbs]);
+      } else if (payload?.solution) {
+        const solutionCrumbs = pageToBreadcrumbs(locale, 'solutions', [
+          {
+            name: payload.solution.title || '',
+            path: `/${locale}/solutions/${payload.solution.slug}`,
+          },
+          {
+            name: payload.page.title,
+            path: `/${locale}/solutions/${payload.solution.slug}/details/${payload.page?.path}`,
+          },
+        ]);
+        setBreadcrumbs([...solutionCrumbs]);
+      } else if (!payload?.guide && !payload?.solution && payload?.title) {
+        const isReleaseNote = (payload.page?.path || '').includes(
+          '/release-note'
         );
-        const rnCrumbs = buildBreadcrumbs(gbPageSegments);
-        setBreadcrumbs([...rnCrumbs]);
+        if (isReleaseNote && payload.bodyConfig) {
+          const gbPageSegments = gitBookPageToBreadcrumbs(
+            payload.bodyConfig.pagePath,
+            payload.bodyConfig.gitBookPagesWithTitle
+          );
+          const rnCrumbs = buildBreadcrumbs(gbPageSegments);
+          setBreadcrumbs([...rnCrumbs]);
+        }
       }
-    }
 
-    // SEO
-    if (payload?.seo) {
-      setSeo({
-        metaTitle: payload?.seo.metaTitle,
-        metaDescription: payload?.seo.metaDescription || '',
-        canonical: payload?.page?.path,
-      });
-    } else {
-      const guideTitleBits = compact([
-        payload?.guide?.name,
-        payload?.version && payload?.version?.name,
-        payload?.product?.name,
-      ]);
-      const solutionTitleBits = compact([payload?.solution?.title]);
-      const releaseNoteTitleBits = compact([payload.title]);
-      const entityTitle = [
-        ...guideTitleBits,
-        ...solutionTitleBits,
-        ...releaseNoteTitleBits,
-      ].join(' ');
-      const fallbackTitleParts = [
-        payload?.page?.title || '',
-        entityTitle,
-      ].filter(Boolean);
-      setSeo({
-        metaTitle: fallbackTitleParts.join(' | '),
-        metaDescription: '',
-        canonical: payload?.page?.path || undefined,
-      });
-    }
-    if (typeof window !== 'undefined' && payload?.page?.path) {
-      if (window.location.pathname !== payload.page.path) {
-        window.history.pushState({}, '', payload.page.path);
+      // SEO
+      if (payload?.seo) {
+        setSeo({
+          metaTitle: payload?.seo.metaTitle,
+          metaDescription: payload?.seo.metaDescription || '',
+          canonical: payload?.page?.path,
+        });
+      } else {
+        const guideTitleBits = compact([
+          payload?.guide?.name,
+          payload?.version && payload?.version?.name,
+          payload?.product?.name,
+        ]);
+        const solutionTitleBits = compact([payload?.solution?.title]);
+        const releaseNoteTitleBits = compact([payload.title]);
+        const entityTitle = [
+          ...guideTitleBits,
+          ...solutionTitleBits,
+          ...releaseNoteTitleBits,
+        ].join(' ');
+        const fallbackTitleParts = [
+          payload?.page?.title || '',
+          entityTitle,
+        ].filter(Boolean);
+        setSeo({
+          metaTitle: fallbackTitleParts.join(' | '),
+          metaDescription: '',
+          canonical: payload?.page?.path || undefined,
+        });
       }
-    }
-    return true;
-  }, []);
+      if (typeof window !== 'undefined' && payload?.page?.path) {
+        if (window.location.pathname !== payload.page.path) {
+          window.history.pushState({}, '', payload.page.path);
+        }
+      }
+      return true;
+    },
+    [locale]
+  );
 
   useDynamicSeo(seo);
 

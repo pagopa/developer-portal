@@ -1,3 +1,4 @@
+'use client';
 import ProductBreadcrumbs from '@/components/atoms/ProductBreadcrumbs/ProductBreadcrumbs';
 import { productPageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
 import { FragmentProvider } from '@/components/organisms/FragmentProvider/FragmentProvider';
@@ -13,6 +14,7 @@ import PartRendererMenu from '@/components/molecules/PartRendererMenu/PartRender
 import { ReactNode } from 'react';
 import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
 import { PRODUCT_HEADER_HEIGHT, SITE_HEADER_HEIGHT } from '@/config';
+import { useParams } from 'next/navigation';
 
 type TutorialPageTemplateProps = {
   readonly bannerLinks?: ReadonlyArray<BannerLinkProps>;
@@ -33,6 +35,7 @@ const TutorialTemplate = ({
   title,
   structuredData,
 }: TutorialPageTemplateProps) => {
+  const { locale } = useParams<{ locale: string }>();
   return (
     <ProductLayout
       product={product}
@@ -74,13 +77,13 @@ const TutorialTemplate = ({
               >
                 <ProductBreadcrumbs
                   breadcrumbs={[
-                    ...productPageToBreadcrumbs(product, [
+                    ...productPageToBreadcrumbs(locale, product, [
                       {
                         translate: true,
                         name: 'devPortal.productHeader.tutorials',
                         path: product.hasTutorialListPage
-                          ? `/${product.slug}/tutorials`
-                          : '',
+                          ? `/${locale}/${product.slug}/tutorials`
+                          : `/${locale}`,
                       },
                       {
                         name: title,

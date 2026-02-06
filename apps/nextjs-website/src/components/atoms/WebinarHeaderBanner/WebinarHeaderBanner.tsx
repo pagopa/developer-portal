@@ -15,10 +15,14 @@ import { Webinar } from '@/lib/types/webinar';
 import { useTranslations } from 'next-intl';
 
 export type WebinarHeaderBannerProps = {
+  locale: string;
   webinars: Webinar[];
 };
 
-const WebinarHeaderBanner: FC<WebinarHeaderBannerProps> = ({ webinars }) => {
+const WebinarHeaderBanner: FC<WebinarHeaderBannerProps> = ({
+  locale,
+  webinars,
+}) => {
   // eslint-disable-next-line functional/immutable-data
   webinars.sort((a, b) => {
     return (
@@ -85,7 +89,7 @@ const WebinarHeaderBanner: FC<WebinarHeaderBannerProps> = ({ webinars }) => {
             height: 28,
             marginLeft: '16px',
           }}
-          href={'/webinars/' + slug}
+          href={`/${locale}/webinars/${slug}`}
         >
           {t('webinarBannerButtonContent')}
           <EastIcon sx={{ height: 30, ml: 1 }} />

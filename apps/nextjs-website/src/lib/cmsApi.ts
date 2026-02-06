@@ -181,6 +181,13 @@ export const getGuideProps = async (
   return await makeGuideS3({ guideDefinition: guide, guidePaths });
 };
 
+export const getGuidesProps = async () => {
+  const strapiGuides = (await fetchResponseFromCDN(
+    getSyncedGuidesResponseJsonPath()
+  )) as StrapiGuides | undefined;
+  return strapiGuides ? makeGuidesProps(strapiGuides) : [];
+};
+
 export const getGuidePageProps = async (
   guideSlug: string,
   productSlug: string
@@ -209,7 +216,7 @@ export const getSolutionProps = async (
   const strapiSolutions = (await fetchResponseFromCDN(
     getSyncedSolutionsResponseJsonFile
   )) as StrapiSolutions | undefined;
-  if (!strapiSolutions || strapiSolutions.data.length < 1) {
+  if (!strapiSolutions) {
     // eslint-disable-next-line functional/no-throw-statements
     throw new Error('Failed to fetch solution data');
   }
@@ -226,7 +233,7 @@ const fetchReleaseNotes = async () => {
   const strapiReleaseNotes = (await fetchResponseFromCDN(
     getSyncedReleaseNotesResponseJsonFile
   )) as StrapiReleaseNotes | undefined;
-  if (!strapiReleaseNotes || strapiReleaseNotes.data.length < 1) {
+  if (!strapiReleaseNotes) {
     // eslint-disable-next-line functional/no-throw-statements
     throw new Error('Failed to fetch release data');
   }
@@ -257,6 +264,11 @@ export const getReleaseNoteProps = async (
     );
   }
   return await makeReleaseNoteS3(releaseNote, jsonMetadata);
+};
+
+export const getReleaseNotesProps = async () => {
+  const strapiReleaseNotes = await fetchReleaseNotes();
+  return makeReleaseNotesProps(strapiReleaseNotes);
 };
 
 export const getUseCasesProps = async () => {

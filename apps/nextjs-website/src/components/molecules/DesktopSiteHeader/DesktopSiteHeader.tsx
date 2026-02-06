@@ -6,8 +6,7 @@ import React from 'react';
 import { SiteHeaderProps } from '@/components/molecules/SiteHeader/SiteHeader';
 import { useTranslations } from 'next-intl';
 import LanguageSelector from '@/components/atoms/LanguageSelector/LanguageSelector';
-import { i18nActive } from '@/config';
-import { SUPPORTED_LOCALES } from '../../../locales';
+import { SUPPORTED_LOCALES } from '@/locales';
 
 const DesktopSiteHeader = ({ locale, products }: SiteHeaderProps) => {
   const t = useTranslations('devPortal');
@@ -26,7 +25,7 @@ const DesktopSiteHeader = ({ locale, products }: SiteHeaderProps) => {
       <Dropdown
         label={t('siteHeader.products')}
         items={products.map((product) => ({
-          href: `/${product.slug}/overview`,
+          href: `/${locale}/${product.slug}/overview`,
           label: product.name,
         }))}
         menuStyle={{
@@ -39,7 +38,7 @@ const DesktopSiteHeader = ({ locale, products }: SiteHeaderProps) => {
         component={Link}
         color='primary.main'
         underline='none'
-        href={'/solutions'}
+        href={`/${locale}/solutions`}
         sx={{ fontSize: '16px', fontWeight: 600 }}
       >
         {t('siteHeader.solutions')}
@@ -48,15 +47,13 @@ const DesktopSiteHeader = ({ locale, products }: SiteHeaderProps) => {
         component={Link}
         color='primary.main'
         underline='none'
-        href={'/webinars'}
+        href={`/${locale}/webinars`}
         sx={{ fontSize: '16px', fontWeight: 600 }}
       >
         {t('siteHeader.webinars')}
       </LinkMui>
-      <DesktopUserInfo />
-      {i18nActive && (
-        <LanguageSelector locales={SUPPORTED_LOCALES} currentLocale={locale} />
-      )}
+      <DesktopUserInfo locale={locale} />
+      <LanguageSelector locales={SUPPORTED_LOCALES} currentLocale={locale} />
     </Box>
   );
 };

@@ -6,7 +6,7 @@ import React, { useCallback } from 'react';
 import { useUser } from '@/helpers/user.helper';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
-import { usePathname, useRouter } from 'next/navigation';
+import { useParams, usePathname, useRouter } from 'next/navigation';
 import { MobileSiteHeaderStyledTreeItem } from '@/components/molecules/MobileSiteHeader/MobileSiteHeader';
 import { flushChatQueriesFromLocalStorage } from '@/helpers/chatbot.helper';
 
@@ -16,6 +16,7 @@ type MobileUserInfoProps = {
 };
 
 const MobileUserInfo = ({ onClick }: MobileUserInfoProps) => {
+  const { locale } = useParams<{ locale: string }>();
   const t = useTranslations();
   const router = useRouter();
   const pathname = usePathname();
@@ -31,20 +32,20 @@ const MobileUserInfo = ({ onClick }: MobileUserInfoProps) => {
 
     // Check if the user in an auth only page
     if (['/auth', '/profile'].some((path) => pathname.match(path))) {
-      router.replace('/');
+      router.replace(`/${locale}/`);
     } else {
       // router.refresh(); is not enough beacuse it will not clean current state of components
       if (typeof window !== 'undefined') {
         window.location.reload();
       }
     }
-  }, [pathname, router, onClick]);
+  }, [pathname, router, onClick, locale]);
 
   return (
     <>
       {!user && !loading && (
         <MuiLink
-          href='/auth/login'
+          href={`/${locale}/auth/login`}
           component={Link}
           onClick={onClick}
           sx={{
@@ -52,7 +53,7 @@ const MobileUserInfo = ({ onClick }: MobileUserInfoProps) => {
             alignItems: 'center',
             textDecoration: 'none',
             color: palette.text.primary,
-            marginBottom: 2,
+            marginBottom: 4,
           }}
         >
           <Typography
@@ -109,7 +110,7 @@ const MobileUserInfo = ({ onClick }: MobileUserInfoProps) => {
             variant='body1'
             component={Link}
             onClick={onClick}
-            href={'/profile/personal-data'}
+            href={`/${locale}/profile/personal-data`}
             style={{
               color: palette.primary.dark,
               display: 'block',
@@ -119,7 +120,7 @@ const MobileUserInfo = ({ onClick }: MobileUserInfoProps) => {
             {t('shared.yourData')}
           </Typography>
           <MuiLink
-            href='/auth/login'
+            href={`/${locale}/auth/login`}
             component={Link}
             onClick={signOut}
             sx={{
@@ -128,6 +129,7 @@ const MobileUserInfo = ({ onClick }: MobileUserInfoProps) => {
               textDecoration: 'none',
               color: palette.text.primary,
               justifyContent: 'start',
+              marginBottom: '8px !important',
             }}
           >
             <Typography
