@@ -34,29 +34,29 @@ type ReleaseNotePageStaticParams = {
 };
 export const dynamic = 'force-dynamic';
 
-export async function generateMetadata(props0: {
+export async function generateMetadata(props: {
   params: Promise<ReleaseNotePageStaticParams>;
 }): Promise<Metadata> {
-  const { locale, productSlug, releaseNoteSubPathSlugs } = await props0.params;
+  const { locale, productSlug, releaseNoteSubPathSlugs } = await props.params;
   if (productSlug === 'unknown') {
     return makeMetadata({
       title: 'unknown',
       url: 'unknown',
     });
   }
-  const props = await getReleaseNote(
+  const releaseNoteData = await getReleaseNote(
     locale,
     productSlug,
     releaseNoteSubPathSlugs
   );
 
-  if (props?.seo) {
-    return makeMetadataFromStrapi(props?.seo);
+  if (releaseNoteData?.seo) {
+    return makeMetadataFromStrapi(releaseNoteData?.seo);
   }
 
   return makeMetadata({
-    title: props?.page.title,
-    url: props?.page.path,
+    title: releaseNoteData?.page.title,
+    url: releaseNoteData?.page.path,
   });
 }
 
@@ -70,10 +70,10 @@ export type ReleaseNotePageProps = {
   readonly title: string;
 } & ProductLayoutProps;
 
-const ReleaseNotePage = async (props0: {
+const ReleaseNotePage = async (props: {
   params: Promise<ReleaseNotePageStaticParams>;
 }) => {
-  const { locale, productSlug, releaseNoteSubPathSlugs } = await props0.params;
+  const { locale, productSlug, releaseNoteSubPathSlugs } = await props.params;
   if (productSlug === 'unknown') {
     return <PageNotFound />;
   }
@@ -92,7 +92,7 @@ const ReleaseNotePage = async (props0: {
   const { bannerLinks, page, path, product, seo, source, title, bodyConfig } =
     releaseNoteProps;
 
-  const props = {
+  const gitBookProps = {
     ...page,
     pathPrefix: source.pathPrefix,
     bodyConfig: {
@@ -148,7 +148,7 @@ const ReleaseNotePage = async (props0: {
         menuName={title}
         initialBreadcrumbs={initialBreadcrumbs}
         hasInPageMenu={false}
-        {...props}
+        {...gitBookProps}
       />
     </ProductLayout>
   );
