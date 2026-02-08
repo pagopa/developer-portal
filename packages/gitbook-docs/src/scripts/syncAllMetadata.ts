@@ -39,9 +39,9 @@ import {
 } from '../helpers/strapiTypes';
 import {
   apisDataQueryString,
+  getGuidesQueryString,
   getReleaseNotesQueryString,
   getSolutionsQueryString,
-  guidesQueryString,
   productsQueryString,
 } from '../helpers/strapiQuery';
 import { compact } from 'lodash';
@@ -148,8 +148,7 @@ async function fetchAllStrapiData(): Promise<StrapiData> {
   console.log('Fetching all data from Strapi...');
   if (DIR_NAMES_FILTER) {
     console.log(
-      `Applying dirName filter: ${DIR_NAMES_FILTER.join(', ')} (${
-        DIR_NAMES_FILTER.length
+      `Applying dirName filter: ${DIR_NAMES_FILTER.join(', ')} (${DIR_NAMES_FILTER.length
       } directories)`
     );
   }
@@ -161,10 +160,10 @@ async function fetchAllStrapiData(): Promise<StrapiData> {
     productsResult,
     apisDataResult,
   ] = await Promise.all([
-    // Guides with full populate
-    // NOTE: Cannot filter by versions.dirName server-side due to Strapi v4 component array limitation
-    // Client-side filtering will be applied later in processGuidesMetadata
-    fetchFromStrapi<StrapiGuide>(`api/guides?${guidesQueryString}`),
+    // Guides with full populate and optional dirName filtering
+    fetchFromStrapi<StrapiGuide>(
+      `api/guides?${getGuidesQueryString(DIR_NAMES_FILTER)}`
+    ),
     // Solutions with dirName filter (if provided)
     fetchFromStrapi<StrapiSolution>(
       `api/solutions/?${getSolutionsQueryString()}`

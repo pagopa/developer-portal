@@ -21,7 +21,7 @@ import {
 import { S3Client } from '@aws-sdk/client-s3';
 import path from 'path';
 import {
-  guidesQueryString,
+  getGuidesQueryString,
   releaseNotesQueryString,
   solutionsQueryString,
 } from '../helpers/strapiQuery';
@@ -49,7 +49,7 @@ async function fetchAllDirNamesFromStrapi(): Promise<{ dirNames: string[] }> {
   const [guidesResult, solutionsResult, releaseNotesResult] = await Promise.all(
     [
       // Guides with full populate
-      fetchFromStrapi<StrapiGuide>(`api/guides?${guidesQueryString}`),
+      fetchFromStrapi<StrapiGuide>(`api/guides?${getGuidesQueryString()}`),
       // Solutions with full populate
       fetchFromStrapi<StrapiSolution>(`api/solutions/?${solutionsQueryString}`),
       // Release notes with full populate

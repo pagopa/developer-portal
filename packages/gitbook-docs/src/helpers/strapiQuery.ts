@@ -232,7 +232,6 @@ const solutionListPageQueryParams = {
   ...STRAPI_DEFAULT_PAGINATION,
 };
 
-export const guidesQueryString = qs.stringify(guidesQueryParams);
 export const solutionsQueryString = qs.stringify(solutionsQueryParams);
 export const productsQueryString = qs.stringify(productsQueryParams);
 export const apisDataQueryString = qs.stringify(apisDataQueryParams);
@@ -243,6 +242,28 @@ export const guideListPagesQueryString = qs.stringify(
 export const solutionListPageQueryString = qs.stringify(
   solutionListPageQueryParams
 );
+
+/**
+ * Generate query string for guides with optional dirName filtering.
+ * Uses deep filtering on the 'versions' component.
+ */
+export function getGuidesQueryString(dirNames?: readonly string[]): string {
+  const params = {
+    ...guidesQueryParams,
+    ...(dirNames && dirNames.length > 0
+      ? {
+        filters: {
+          versions: {
+            dirName: {
+              $in: dirNames,
+            },
+          },
+        },
+      }
+      : {}),
+  };
+  return qs.stringify(params);
+}
 
 /**
  * Generate query strings with optional dirName filtering.
@@ -262,12 +283,12 @@ export function getSolutionsQueryString(dirNames?: readonly string[]): string {
     ...solutionsQueryParams,
     ...(dirNames && dirNames.length > 0
       ? {
-          filters: {
-            dirName: {
-              $in: dirNames,
-            },
+        filters: {
+          dirName: {
+            $in: dirNames,
           },
-        }
+        },
+      }
       : {}),
   };
   return qs.stringify(params);
@@ -280,12 +301,12 @@ export function getReleaseNotesQueryString(
     ...releaseNotesQueryParams,
     ...(dirNames && dirNames.length > 0
       ? {
-          filters: {
-            dirName: {
-              $in: dirNames,
-            },
+        filters: {
+          dirName: {
+            $in: dirNames,
           },
-        }
+        },
+      }
       : {}),
   };
   return qs.stringify(params);
