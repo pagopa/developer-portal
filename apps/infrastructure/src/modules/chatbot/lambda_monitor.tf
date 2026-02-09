@@ -75,7 +75,7 @@ resource "aws_iam_role_policy" "lambda_monitor_policy" {
           "sqs:DeleteMessage",
           "sqs:GetQueueAttributes",
         ]
-        Resource = aws_sqs_queue.chatbot_monitor_queue.arn
+        Resource = aws_sqs_queue.chatbot_queue["monitor"].arn
       },
       {
         Effect = "Allow"
@@ -83,7 +83,7 @@ resource "aws_iam_role_policy" "lambda_monitor_policy" {
           "sqs:SendMessage",
 
         ]
-        Resource = aws_sqs_queue.chatbot_monitor_queue_dlq.arn
+        Resource = aws_sqs_queue.chatbot_dlq["monitor"].arn
       },
       {
         Effect = "Allow"
@@ -165,7 +165,7 @@ resource "aws_lambda_function" "chatbot_monitor_lambda" {
 }
 
 resource "aws_lambda_event_source_mapping" "monitor_lambda_sqs" {
-  event_source_arn = aws_sqs_queue.chatbot_monitor_queue.arn
+  event_source_arn = aws_sqs_queue.chatbot_queue["monitor"].arn
   function_name    = aws_lambda_function.chatbot_monitor_lambda.arn
   enabled          = true
   batch_size       = 5
@@ -183,11 +183,11 @@ resource "aws_lambda_function_event_invoke_config" "lambda_monitor" {
   /*
   destination_config {
     on_failure {
-      destination = aws_sqs_queue.chatbot_monitor_queue_dlq.arn
+      destination = aws_sqs_queue.chatbot_dlq["monitor"].arn
     }
 
     on_success {
-      destination = aws_sqs_queue.chatbot_monitor_queue_dlq.arn
+      destination = aws_sqs_queue.chatbot_dlq["monitor"].arn
     }
   }
   */

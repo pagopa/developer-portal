@@ -34,7 +34,7 @@ locals {
     LOG_LEVEL                             = "INFO"
     NLTK_DATA                             = "_static/nltk_cache/"
     TIKTOKEN_CACHE_DIR                    = "/tmp/tiktoken"
-    CHB_AWS_SQS_QUEUE_EVALUATE_NAME       = aws_sqs_queue.chatbot_evaluate_queue.name
+    CHB_AWS_SQS_QUEUE_EVALUATE_NAME       = aws_sqs_queue.chatbot_queue["evaluate"].name
   }
 }
 
@@ -341,7 +341,7 @@ resource "aws_iam_policy" "chatbot_monitor_queue" {
       {
         Effect   = "Allow"
         Action   = ["sqs:SendMessage", "sqs:GetQueueUrl"]
-        Resource = aws_sqs_queue.chatbot_evaluate_queue.arn
+        Resource = aws_sqs_queue.chatbot_queue["evaluate"].arn
       }
     ]
   })
