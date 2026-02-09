@@ -1,5 +1,7 @@
 // import * as puppeteer from 'puppeteer';
 
+// TODO: this file is a placeholder
+
 /**
  * Parser script that processes an array of URLs
  * Requires PARSER_VECTOR_INDEX_ID environment variable
