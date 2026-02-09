@@ -83,7 +83,7 @@ const ApiViewer: FC<ApiViewerProps> = ({ specURL }) => {
             padding-bottom: 8px !important;
           }
           .section-gap--read-mode {
-          border-top: 0px !important;
+            border-top: 0 !important;
           }
           .nav-method {
             border-radius: 4px !important; 
