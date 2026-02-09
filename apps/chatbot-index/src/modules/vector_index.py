@@ -37,7 +37,6 @@ REDIS_CLIENT = Redis.from_url(SETTINGS.redis_url, socket_timeout=10)
 REDIS_ASYNC_CLIENT = aredis.Redis.from_pool(
     aredis.ConnectionPool.from_url(SETTINGS.redis_url)
 )
-
 REDIS_KVSTORE = RedisKVStore(
     redis_client=REDIS_CLIENT, async_redis_client=REDIS_ASYNC_CLIENT
 )
@@ -54,16 +53,14 @@ LlamaIndexSettings.node_parser = SentenceSplitter(
 
 
 def get_redis_schema(index_id: str | None = None) -> IndexSchema:
-    """
-    Creates the Redis index schema for vector storage.
+    """Defines the schema for the Redis vector store index.
     Args:
-        index_id (str): The identifier for the index.
+        index_id (str | None): Optional identifier for the index. If not provided, it defaults to the value in SETTINGS.index_id.
     Returns:
-        IndexSchema: The Redis index schema.
+        IndexSchema: The schema definition for the Redis vector store index.
     """
 
-    if index_id is None:
-        index_id = SETTINGS.index_id
+    index_id = index_id if index_id else SETTINGS.index_id
 
     return IndexSchema.from_dict(
         {
@@ -89,15 +86,41 @@ def get_redis_schema(index_id: str | None = None) -> IndexSchema:
     )
 
 
-def build_index_redis(index_id: str, clean_redis: bool = True) -> VectorStoreIndex:
+def build_index_redis(
+    index_id: str,
+    static: bool,
+    dynamic: bool,
+    api: bool,
+    structured: bool,
+    clean_redis: bool = True,
+) -> VectorStoreIndex:
     """
     Builds a new vector index and stores it in Redis.
     Args:
-        index_id (str): The identifier for the index.
+        index_id (str): The identifier for the index to be created.
+        static (bool): Flag indicating whether to include static documents in the index
+        dynamic (bool): Flag indicating whether to include dynamic documents in the index
+        api (bool): Flag indicating whether to include API documentation in the index
+        structured (bool): Flag indicating whether to include structured documents in the index
         clean_redis (bool): Flag indicating whether to clean the Redis database before building the index
     Returns:
         VectorStoreIndex: The newly created vector store index.
     """
+
+    if clean_redis:
+        index = load_index_redis(index_id)
+        if index:
+            ref_docs_info = index.storage_context.docstore.get_all_ref_doc_info()
+            for ref_doc_id, ref_doc_info in ref_docs_info.items():
+                index.delete_ref_doc(ref_doc_id, delete_from_docstore=True)
+                if ref_doc_info:
+                    for node_id in ref_doc_info.node_ids:
+                        index.storage_context.docstore.delete_document(node_id)
+        LOGGER.info(f"Redis is now cleaned from {index_id}.")
+
+    documents = get_documents(index_id, static, dynamic, api, structured)
+
+    nodes = LlamaIndexSettings.node_parser.get_nodes_from_documents(documents)
 
     redis_vector_store = RedisVectorStore(
         redis_client=REDIS_CLIENT,
@@ -110,31 +133,26 @@ def build_index_redis(index_id: str, clean_redis: bool = True) -> VectorStoreInd
         docstore=REDIS_DOCSTORE,
         index_store=REDIS_INDEX_STORE,
     )
-
-    if clean_redis:
-        redis_vector_store.delete_index()
-        LOGGER.info(f"Cleaned Redis from index: {index_id}.")
-
-    documents = get_documents()
-    nodes = LlamaIndexSettings.node_parser.get_nodes_from_documents(documents)
     storage_context.docstore.add_documents(nodes)
 
-    LOGGER.info(f"Creating vector index: {index_id} ...")
+    LOGGER.info(f"Creating vector index: {SETTINGS.index_id} ...")
     index = VectorStoreIndex(nodes, storage_context=storage_context)
-    index.set_index_id(index_id)
-    LOGGER.info(f"{index_id} has been created successfully and stored in Redis.")
+    index.set_index_id(SETTINGS.index_id)
+    LOGGER.info(
+        f"{SETTINGS.index_id} has been created successfully and stored in Redis."
+    )
 
     return index
 
 
-def load_index_redis(index_id: str) -> VectorStoreIndex:
+def load_index_redis(index_id: str | None = None) -> VectorStoreIndex:
     """
     Loads an existing vector index from Redis using the provided llm and embed_model.
-    Args:
-        index_id (str): The identifier for the index.
     Returns:
         VectorStoreIndex: The loaded vector store index.
     """
+
+    index_id = index_id if index_id else SETTINGS.index_id
 
     try:
         redis_vector_store = RedisVectorStore(
@@ -173,16 +191,27 @@ class DiscoveryVectorIndex:
             )
         return index
 
-    def create_index(self, index_id: str, clean_redis: bool = True) -> VectorStoreIndex:
+    def create_index(
+        self,
+        static: bool,
+        dynamic: bool,
+        api: bool,
+        structured: bool,
+        clean_redis: bool,
+    ) -> VectorStoreIndex:
         """Creates a new vector index and stores it in Redis.
         Args:
-            index_id (str): The identifier for the index.
+            static (bool): Flag indicating whether to include static documents in the index
+            dynamic (bool): Flag indicating whether to include dynamic documents in the index
+            api (bool): Flag indicating whether to include API documentation in the index
+            structured (bool): Flag indicating whether to include structured documents in the index
             clean_redis (bool): Flag indicating whether to clean the Redis database before building the index
         Returns:
             VectorStoreIndex: The newly created vector store index.
         """
-
-        index = build_index_redis(index_id, clean_redis)
+        index = build_index_redis(
+            self.index_id, static, dynamic, api, structured, clean_redis
+        )
         return index
 
     def _update_docs(

@@ -10,15 +10,40 @@ VECTOR_INDEX = DiscoveryVectorIndex()
 
 if __name__ == "__main__":
 
-    parser = argparse.ArgumentParser(description="Create a vector index.")
-    parser.add_argument(
-        "--index_id", type=str, help="The identifier for the vector index."
+    parser = argparse.ArgumentParser(
+        description="Create a vector index for the chatbot."
     )
     parser.add_argument(
-        "--clean_redis",
+        "--static",
         action="store_true",
-        help="Flag indicating whether to clean the Redis database before building the index.",
+        help="Include static documents in the index",
+    )
+    parser.add_argument(
+        "--dynamic",
+        action="store_true",
+        help="Include dynamic documents in the index",
+    )
+    parser.add_argument(
+        "--api",
+        action="store_true",
+        help="Include API documents in the index",
+    )
+    parser.add_argument(
+        "--structured",
+        action="store_true",
+        help="Include structured documents in the index",
+    )
+    parser.add_argument(
+        "--clean-redis",
+        action="store_true",
+        help="Clean the Redis database before building the index",
     )
     args = parser.parse_args()
 
-    VECTOR_INDEX.create_index(args.index_id, args.clean_redis)
+    VECTOR_INDEX.create_index(
+        static=args.static,
+        dynamic=args.dynamic,
+        api=args.api,
+        structured=args.structured,
+        clean_redis=args.clean_redis,
+    )
