@@ -12,7 +12,7 @@ services:
       - "8080:8080"
     volumes:
       - ..:/app
-      - ./files/.aws:/root/.aws
+      - ./files/.aws:/home/appuser/.aws
     depends_on:
       redis:
         condition: service_started
@@ -40,7 +40,7 @@ services:
     #      - "8081:8080"
     volumes:
       - ../chatbot-evaluate:/app
-      - ./files/.aws:/root/.aws
+      - ./files/.aws:/home/appuser/.aws
     entrypoint: [ "/usr/local/bin/aws-lambda-rie", "python3" ]
     command: [ "-m", "awslambdaric", "src.lambda_function.lambda_handler" ]
 
