@@ -109,6 +109,17 @@ locals {
   }
 }
 
+moved {
+  from = module.chatbot[0].aws_sqs_queue.chatbot_evaluate_queue
+  to   = module.chatbot[0].aws_sqs_queue.chatbot_queue["evaluate"]
+}
+
+
+moved {
+  from = module.chatbot[0].aws_sqs_queue.chatbot_evaluate_queue_dlq
+  to   = module.chatbot[0].aws_sqs_queue.chatbot_dlq["evaluate"]
+}
+
 
 import {
   to = module.chatbot[0].aws_api_gateway_stage.api_stage

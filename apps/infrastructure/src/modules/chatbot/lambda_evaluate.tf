@@ -6,18 +6,7 @@ resource "aws_cloudwatch_log_group" "lambda_evaluate_logs" {
 resource "aws_iam_role" "lambda_evaluate_role" {
   name                  = "${local.prefix}-evaluate-lambda"
   force_detach_policies = true
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Action = "sts:AssumeRole"
-        Effect = "Allow"
-        Principal = {
-          Service = "lambda.amazonaws.com"
-        }
-      }
-    ]
-  })
+  assume_role_policy    = data.aws_iam_policy_document.lambda_assume_role.json
 }
 
 
