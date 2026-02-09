@@ -118,4 +118,6 @@ No requirements.
 
 ## Outputs
 
-No outputs.
+| Name | Description |
+|------|-------------|
+| <a name="output_service_discovery_endpoint"></a> [service\_discovery\_endpoint](#output\_service\_discovery\_endpoint) | The private address of the service discovery of langfuse-web |

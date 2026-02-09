@@ -196,6 +196,7 @@
 | <a name="input_ecs_redis"></a> [ecs\_redis](#input\_ecs\_redis) | Redis configuration for the AI chatbot | <pre>object({<br/>    cpu       = number<br/>    memory    = number<br/>    image_uri = string<br/>    port      = number<br/>  })</pre> | n/a | yes |
 | <a name="input_environment"></a> [environment](#input\_environment) | Environment | `string` | n/a | yes |
 | <a name="input_github_repository"></a> [github\_repository](#input\_github\_repository) | The repository where the IaC workflows will run | `string` | n/a | yes |
+| <a name="input_langfuse_service_discovery_endpoint"></a> [langfuse\_service\_discovery\_endpoint](#input\_langfuse\_service\_discovery\_endpoint) | The service discovery endpoint for Langfuse | `string` | n/a | yes |
 | <a name="input_models"></a> [models](#input\_models) | The models used by the AI chatbot | <pre>object({<br/>    provider   = string<br/>    generation = string<br/>    embeddings = string<br/>    reranker   = string<br/>  })</pre> | n/a | yes |
 | <a name="input_s3_bucket_name_static_content"></a> [s3\_bucket\_name\_static\_content](#input\_s3\_bucket\_name\_static\_content) | The name of the S3 bucket for static content | `string` | n/a | yes |
 | <a name="input_security_groups"></a> [security\_groups](#input\_security\_groups) | The security groups used to deploy the resources | `map(string)` | n/a | yes |

@@ -162,3 +162,8 @@ variable "models" {
 
   description = "The models used by the AI chatbot"
 }
+
+variable "langfuse_service_discovery_endpoint" {
+  type        = string
+  description = "The service discovery endpoint for Langfuse"
+}

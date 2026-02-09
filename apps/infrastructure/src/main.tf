@@ -184,6 +184,8 @@ module "chatbot" {
   github_repository             = var.github_repository
   ecs_monitoring                = var.chatbot_ecs_monitoring
   models                        = var.chatbot_models
+
+  langfuse_service_discovery_endpoint = var.environment == "dev" ? module.langfuse[0].service_discovery_endpoint : null
 }
 
 module "cicd" {
