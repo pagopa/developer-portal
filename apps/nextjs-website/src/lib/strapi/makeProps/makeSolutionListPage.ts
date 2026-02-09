@@ -62,7 +62,7 @@ export function makeSolutionListPageProps(
       items: attributes.features.items.map((item) => ({
         title: item.title ?? '',
         content: item.content,
-        iconUrl: `/${locale}/${item.icon.data.attributes.url}`,
+        iconUrl: item.icon.data.attributes.url,
       })),
     },
     seo: attributes.seo,
