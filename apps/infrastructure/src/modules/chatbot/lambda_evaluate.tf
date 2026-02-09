@@ -105,6 +105,8 @@ resource "aws_lambda_function" "chatbot_evaluate_lambda" {
 
   environment {
     variables = {
+      #--- TODO ---#
+      # REMOVE ALL LANGFUSE VARIABLES, THEY ARE NOT USED IN THIS LAMBDA, AND SHOULD NOT BE PRESENT
       CHB_AWS_SSM_LANGFUSE_PUBLIC_KEY = module.langfuse_public_key.ssm_parameter_name
       CHB_AWS_SSM_LANGFUSE_SECRET_KEY = module.langfuse_secret_key.ssm_parameter_name
       CHB_LANGFUSE_HOST               = "https://${local.priv_monitoring_host}"
