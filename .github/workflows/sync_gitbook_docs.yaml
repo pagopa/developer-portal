@@ -48,16 +48,7 @@ on:
         type: string
         required: false
         default: ''
-      documentation_repository:
-        description: 'Repository containing the documentation'
-        type: string
-        required: false
-        default: 'pagopa/devportal-docs'
-      documentation_branch:
-        description: 'Branch of the documentation repository'
-        type: string
-        required: false
-        default: 'docs/from-gitbook'
+
 
   schedule:
     - cron: '0 23 * * *'  # Run daily at midnight UTC
@@ -85,8 +76,8 @@ jobs:
           environment: ${{ inputs.environment }}
           locale: ${{ inputs.locale }}
           dir_names_filter: ${{ inputs.dir_names_filter }}
-          documentation_repository: ${{ inputs.documentation_repository }}
-          documentation_branch: ${{ inputs.documentation_branch }}
+          documentation_repository: ${{ inputs.locale == 'en' && 'pagopa/devportal-docs-translations' || 'pagopa/devportal-docs' }}
+          documentation_branch: ${{ inputs.locale == 'en' && 'main' || 'docs/from-gitbook' }}
           deploy_iam_role: ${{ secrets.DEPLOY_IAM_ROLE }}
           strapi_api_token: ${{ secrets.STRAPI_API_TOKEN }}
           asset_bucket_cloudfront_distribution_id: ${{ vars.ASSET_BUCKET_CLOUDFRONT_DISTRIBUTION_ID }}
