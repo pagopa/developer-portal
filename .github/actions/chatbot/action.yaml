@@ -42,4 +42,4 @@ runs:
       shell: bash
       run: |
         cd apps/chatbot-index
-        PYTHONPATH=. poetry run python src/modules/create_vector_index.py
+        PYTHONPATH=. poetry run python src/modules/create_vector_index.py --static --dynamic --api --clean-redis
