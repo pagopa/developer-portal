@@ -1,5 +1,4 @@
 
-import fetch from 'node-fetch';
 import puppeteer from 'puppeteer-extra';
 import StealthPlugin from 'puppeteer-extra-plugin-stealth';
 import { Browser, Page } from 'puppeteer';
@@ -25,7 +24,7 @@ void (async () => {
     await assertReachable(env.baseUrl);
     ensureDirectory(env.outputDirectory);
 
-    const browser = await puppeteer.launch({ headless: false });
+    const browser = await puppeteer.launch({ headless: true });
     const root: ParseNode = { url: env.baseUrl };
 
     const baseUrlObject = new URL(env.baseUrl);
@@ -49,6 +48,12 @@ void (async () => {
     handleError(error);
   }
 })();
+
+
+async function fetch(input: any, init?: any): Promise<any> {
+  const { default: nodeFetch } = await import('node-fetch');
+  return nodeFetch(input, init);
+}
 
 
 async function parsePageFn(browser: Browser, url: string): Promise<ParseMetadata | null> {
