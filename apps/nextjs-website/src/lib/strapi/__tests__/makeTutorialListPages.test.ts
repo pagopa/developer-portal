@@ -24,7 +24,7 @@ describe('makeTutorialListPagesProps', () => {
     expect(page.tutorials).toHaveLength(1);
     const firstElement = page.tutorials[0];
     expect(firstElement.title).toBe('Tutorial 1');
-    expect(firstElement.path).toBe('/product-1/tutorials/tutorial-1');
+    expect(firstElement.path).toBe('/it/product-1/tutorials/tutorial-1');
     expect(firstElement.image?.url).toBe('https://example.com/example.jpg');
   });
 

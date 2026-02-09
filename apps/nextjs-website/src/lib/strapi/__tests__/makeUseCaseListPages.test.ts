@@ -24,7 +24,7 @@ describe('makeUseCaseListPagesProps', () => {
     expect(page.useCases).toHaveLength(1);
     const firstElement = page.useCases[0];
     expect(firstElement.title).toBe('Use Case 1');
-    expect(firstElement.path).toBe('/product-1/use-cases/use-case-1');
+    expect(firstElement.path).toBe('/it/product-1/use-cases/use-case-1');
     expect(firstElement.coverImage?.url).toBe(
       'https://example.com/example.jpg'
     );

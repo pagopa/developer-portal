@@ -28,7 +28,7 @@ describe('makeTutorialsProps', () => {
       },
       title: 'Tutorial Title',
       name: 'Tutorial Title',
-      path: '/pago-pa/tutorials/tutorial-title',
+      path: '/it/pago-pa/tutorials/tutorial-title',
       productSlug: 'pago-pa',
       parts: [
         {
@@ -71,7 +71,9 @@ describe('makeTutorialsProps', () => {
     const firstElement = result[0];
     expect(firstElement.title).toBe('Minimal Data Tutorial');
     expect(firstElement.productSlug).toBe('pago-pa');
-    expect(firstElement.path).toBe('/pago-pa/tutorials/minimal-data-tutorial');
+    expect(firstElement.path).toBe(
+      '/it/pago-pa/tutorials/minimal-data-tutorial'
+    );
     expect(firstElement.image).toBeUndefined();
     expect(firstElement.parts).toEqual([]);
     expect(firstElement.relatedLinks).toBeUndefined();
@@ -103,7 +105,7 @@ describe('makeTutorialsProps', () => {
     expect(result).toHaveLength(1);
     const firstElement = result[0];
     expect(firstElement.title).toBe('Valid Tutorial');
-    expect(firstElement.path).toBe('/pago-pa/tutorials/valid-tutorial');
+    expect(firstElement.path).toBe('/it/pago-pa/tutorials/valid-tutorial');
     expect(spyOnConsoleError).toHaveBeenCalledWith(
       'Error while processing Tutorial: missing title or slug. Title: Tutorial Without Slug | Slug: undefined. Skipping...'
     );
@@ -119,7 +121,9 @@ describe('makeTutorialsProps', () => {
     const firstElement = result[0];
     expect(firstElement.title).toBe('Valid Tutorial');
     expect(firstElement.productSlug).toBe('valid-product');
-    expect(firstElement.path).toBe('/valid-product/tutorials/valid-tutorial');
+    expect(firstElement.path).toBe(
+      '/it/valid-product/tutorials/valid-tutorial'
+    );
     expect(spyOnConsoleError).toHaveBeenCalledWith(
       'Error while processing Tutorial with title "Tutorial Without Product Slug": missing product slug. Skipping...'
     );

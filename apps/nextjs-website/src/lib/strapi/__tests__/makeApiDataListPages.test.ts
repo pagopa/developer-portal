@@ -125,7 +125,7 @@ describe('makeApiDataListPagesProps', () => {
     );
     expect(restCard).toBeDefined();
     expect(restCard?.title).toBe('SEND Main API');
-    expect(restCard?.href).toBe('/send/api/send-main');
+    expect(restCard?.href).toBe('/it/send/api/send-main');
   });
 
   it('should correctly identify SOAP API type', () => {
@@ -135,7 +135,7 @@ describe('makeApiDataListPagesProps', () => {
     );
     expect(soapCard).toBeDefined();
     expect(soapCard?.title).toBe('SEND SOAP API');
-    expect(soapCard?.href).toBe('/send/api/send-soap');
+    expect(soapCard?.href).toBe('/it/send/api/send-soap');
   });
 
   it('should correctly map banner links', () => {
@@ -181,8 +181,8 @@ describe('makeApiDataListPagesProps', () => {
     const result = makeApiDataListPagesProps('it', strapiApiDataListPages);
     const firstElement = result[0];
     expect(firstElement.cards).toHaveLength(2);
-    expect(firstElement.cards[0].href).toBe('/send/api/send-main');
-    expect(firstElement.cards[1].href).toBe('/send/api/send-soap');
+    expect(firstElement.cards[0].href).toBe('/it/send/api/send-main');
+    expect(firstElement.cards[1].href).toBe('/it/send/api/send-soap');
   });
 
   it('should prioritize REST slug over SOAP slug in apiDetailSlugs', () => {

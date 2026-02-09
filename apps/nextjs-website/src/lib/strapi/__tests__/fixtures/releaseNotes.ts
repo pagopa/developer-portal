@@ -81,7 +81,7 @@ export const expectedReleaseNotePageProps: ReleaseNotePageProps = {
   ],
   dirName: 'release-notes-dir',
   landingFile: 'release-notes.md',
-  path: '/test-product/release-note',
+  path: '/it/test-product/release-note',
   product: {
     isVisible: true,
     name: 'Test Product',

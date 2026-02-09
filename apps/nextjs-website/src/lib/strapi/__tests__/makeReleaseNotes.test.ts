@@ -77,7 +77,7 @@ describe('makeReleaseNotesProps', () => {
 
   it('should correctly generate path from product slug', () => {
     const result = makeReleaseNotesProps('it', _.cloneDeep(strapiReleaseNotes));
-    expect(result[0].path).toBe('/test-product/release-note');
+    expect(result[0].path).toBe('/it/test-product/release-note');
   });
 
   it('should prioritize release note banner links over product banner links', () => {

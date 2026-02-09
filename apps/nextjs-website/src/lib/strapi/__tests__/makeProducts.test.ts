@@ -70,7 +70,7 @@ describe('makeProductsProps', () => {
   it('should handle products with multiple API data (returns general API URL)', () => {
     const result = makeProductsProps('it', productWithMultipleApiData());
     expect(result[0].hasApiDataListPage).toBe(true);
-    expect(result[0].apiDataListPageUrl).toBe('/test-product/api');
+    expect(result[0].apiDataListPageUrl).toBe('/it/test-product/api');
   });
 
   it('should handle products with empty API data', () => {
@@ -163,7 +163,7 @@ describe('makeBaseProductWithoutLogoProps', () => {
       shortName: 'TP',
       isVisible: true,
       hasApiDataListPage: true,
-      apiDataListPageUrl: '/test-product/api/api-detail',
+      apiDataListPageUrl: '/it/test-product/api/api-detail',
       hasTutorialListPage: true,
       hasGuideListPage: true,
       hasOverviewPage: true,
@@ -188,7 +188,7 @@ describe('makeBaseProductWithoutLogoProps', () => {
       'it',
       strapiProducts.data[0]
     );
-    expect(result.apiDataListPageUrl).toBe('/test-product/api/api-detail');
+    expect(result.apiDataListPageUrl).toBe('/it/test-product/api/api-detail');
   });
 
   it('should correctly determine API data list page URL for multiple APIs', () => {
@@ -196,7 +196,7 @@ describe('makeBaseProductWithoutLogoProps', () => {
       'it',
       productWithMultipleApiData().data[0]
     );
-    expect(result.apiDataListPageUrl).toBe('/test-product/api');
+    expect(result.apiDataListPageUrl).toBe('/it/test-product/api');
   });
 
   it('should handle undefined API data list page', () => {

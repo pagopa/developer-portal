@@ -82,7 +82,7 @@ describe('makeSolutionListPageProps', () => {
     expect(result.solutions[0].labels).toEqual([
       {
         label: 'P1',
-        path: '/product-1',
+        path: '/it/product-1',
       },
     ]);
   });
