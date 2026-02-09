@@ -28,43 +28,43 @@ type Params = {
 };
 export const dynamic = 'force-dynamic';
 
-export async function generateMetadata(props0: {
+export async function generateMetadata(props: {
   params: Promise<Params>;
 }): Promise<Metadata> {
-  const params = await props0.params;
-  const props = await getSolutionDetail(
+  const params = await props.params;
+  const solutionDetail = await getSolutionDetail(
     params?.solutionSlug,
     params?.locale,
     params?.solutionSubPathSlugs
   );
 
   return makeMetadata({
-    title: props?.title,
-    url: props
+    title: solutionDetail?.title,
+    url: solutionDetail
       ? `/${params.locale}/solutions/${
-          props?.slug
+          solutionDetail?.slug
         }/${params.solutionSubPathSlugs.join('/')}`
       : `/${params.locale}`,
   });
 }
 
-const Page = async (props0: { params: Promise<Params> }) => {
-  const { locale, solutionSlug, solutionSubPathSlugs } = await props0.params;
-  const solutionProps = await getSolutionDetail(
+const Page = async (props: { params: Promise<Params> }) => {
+  const { locale, solutionSlug, solutionSubPathSlugs } = await props.params;
+  const solutionDetail = await getSolutionDetail(
     solutionSlug,
     locale,
     solutionSubPathSlugs
   );
 
-  if (!solutionProps) {
+  if (!solutionDetail) {
     return <PageNotFound />;
   }
 
   const urlReplaceMap = await getUrlReplaceMapProps(locale);
-  const solution = solutionProps;
+  const solution = solutionDetail;
   const page = solution.page;
   const source = solution.source;
-  const props: SolutionDetailPageTemplateProps = {
+  const solutionDetailPageProps: SolutionDetailPageTemplateProps = {
     ...solution.page,
     solution,
     pathPrefix: source.pathPrefix,
@@ -105,13 +105,13 @@ const Page = async (props0: { params: Promise<Params> }) => {
   const initialBreadcrumbs = [
     ...pageToBreadcrumbs(locale, 'solutions', [
       {
-        name: props.solution.title,
-        path: `/${locale}/solutions/${props.solution.slug}`,
+        name: solutionDetailPageProps.solution.title,
+        path: `/${locale}/solutions/${solutionDetailPageProps.solution.slug}`,
       },
       {
         name: page.title,
         path: `/${locale}/solutions/${
-          props.solution.slug
+          solutionDetailPageProps.solution.slug
         }/details/${solutionSubPathSlugs.join('/')}`,
       },
     ]),
@@ -122,12 +122,12 @@ const Page = async (props0: { params: Promise<Params> }) => {
       {structuredData}
       <GitBookTemplate
         hasHeader={false}
-        menuName={props.solution.title}
+        menuName={solutionDetailPageProps.solution.title}
         initialBreadcrumbs={initialBreadcrumbs}
         menuDistanceFromTop={0}
         contentMarginTop={0}
         hasProductHeader={false}
-        {...props}
+        {...solutionDetailPageProps}
       />
     </>
   );
