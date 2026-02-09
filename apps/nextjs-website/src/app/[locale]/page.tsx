@@ -97,8 +97,9 @@ const Home = async (props: { params: Promise<{ locale: string }> }) => {
     <>
       {structuredData}
       <ContentWrapper>
-        <WebinarHeaderBanner webinars={[...webinars]} />
-
+        {webinars && (
+          <WebinarHeaderBanner locale={locale} webinars={webinars} />
+        )}
         <HeroSwiper
           cards={hero.map((itemProp, index) => ({
             ...itemProp,
@@ -119,11 +120,13 @@ const Home = async (props: { params: Promise<{ locale: string }> }) => {
           />
         )}
         {ecosystem && <Ecosystem {...ecosystem} />}
-        <WebinarsSection webinars={[...webinars]} />
-        <RelatedLinks
-          title={comingsoonDocumentation.title}
-          links={[...comingsoonDocumentation.links]}
-        />
+        <WebinarsSection webinars={webinars} />
+        {comingsoonDocumentation.links && (
+          <RelatedLinks
+            title={comingsoonDocumentation.title}
+            links={comingsoonDocumentation.links}
+          />
+        )}
       </ContentWrapper>
     </>
   );
