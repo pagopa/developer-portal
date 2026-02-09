@@ -11,6 +11,22 @@ inputs:
     description: the name of the chatbot lambda function
     required: true
     default: ''
+  static:
+    description: 'Whether to create vector index using static data'
+    required: true
+    default: 'true'
+  dynamic:
+    description: 'Whether to create vector index using dynamic data'
+    required: true
+    default: 'true'
+  api:
+    description: 'Whether to create vector index using api data'
+    required: true
+    default: 'true'
+  structured:
+    description: 'Whether to create vector index using structured data'
+    required: true
+    default: 'false'
 
 runs:
   using: "composite"
@@ -42,4 +58,4 @@ runs:
       shell: bash
       run: |
         cd apps/chatbot-index
-        PYTHONPATH=. poetry run python src/modules/create_vector_index.py --static --dynamic --api --clean-redis
+        PYTHONPATH=. poetry run python src/modules/create_vector_index.py ${{ inputs.static == true && ' --static' || '' }} ${{ inputs.dynamic == true && ' --dynamic' || '' }} ${{ inputs.api == true && ' --api' || '' }} ${{ inputs.structured == true && ' --structured' || '' }} --clean-redis

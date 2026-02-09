@@ -14,6 +14,16 @@ on:
           - dev
           - uat
           - prod
+      action_type:
+        description: 'The type of action to perform'
+        type: choice
+        required: true
+        default: structured
+        options:
+          - api
+          - dynamic
+          - static
+          - structured
 
   # Allows external webhook trigger
   repository_dispatch:
@@ -81,4 +91,9 @@ jobs:
       - name: Chatbot Vector Index
         uses: ./.github/actions/chatbot
         with:
+          all: ${{ github.event.inputs.action_type == 'all' && 'true' || 'false' }}
+          api: ${{ github.event.inputs.action_type == 'api' && 'true' || 'false' }}
           chatbot_lambda_name: ${{ vars.CHATBOT_LAMBDA_NAME }}
+          dynamic: ${{ github.event.inputs.action_type == 'dynamic' && 'true' || 'false' }}
+          static: ${{ github.event.inputs.action_type == 'static' && 'true' || 'false' }}
+          structured: ${{ github.event.inputs.action_type == 'structured' && 'true' || 'false' }}
