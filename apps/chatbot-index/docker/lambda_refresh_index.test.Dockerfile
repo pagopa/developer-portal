@@ -32,4 +32,8 @@ COPY ./scripts ${LAMBDA_TASK_ROOT}/scripts
 COPY ./config ${LAMBDA_TASK_ROOT}/config
 COPY ./docker/files ${LAMBDA_TASK_ROOT}/files
 
+RUN chown -R 1000:1000 ${LAMBDA_TASK_ROOT}
+
+USER 1000
+
 CMD ["src.lambda_refresh_index.lambda_handler"]

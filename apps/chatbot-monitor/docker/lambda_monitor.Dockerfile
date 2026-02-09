@@ -21,4 +21,8 @@ COPY ./docker/files ${LAMBDA_TASK_ROOT}/files
 RUN python ./scripts/nltk_download.py
 RUN python ./scripts/spacy_download.py
 
+RUN chown -R 1000:1000 ${LAMBDA_TASK_ROOT}
+
+USER 1000
+
 CMD ["src.lambda_function.lambda_handler"]
