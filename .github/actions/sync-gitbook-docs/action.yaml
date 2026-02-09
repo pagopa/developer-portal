@@ -96,6 +96,7 @@ runs:
     - name: Setup Environment Variables
       shell: bash
       run: |
+        echo "::group::Setup Environment Variables"
         # Calculate ENV_SHORT
         if [[ "${{ inputs.environment }}" == "dev" ]]; then
           echo "ENV_SHORT=d" >> $GITHUB_ENV
@@ -107,6 +108,7 @@ runs:
           echo "ENV_SHORT=p" >> $GITHUB_ENV
           echo "SITEMAP_URL=https://developer.pagopa.it/sitemap.xml" >> $GITHUB_ENV
         fi
+        echo "::endgroup::"
 
     - name: Checkout devportal-docs repo
       uses: actions/checkout@v4
@@ -130,12 +132,17 @@ runs:
     - name: Install dependencies
       shell: bash
       run: |
+        echo "::group::Install dependencies"
         npm config set cache ~/.npm
         npm ci
+        echo "::endgroup::"
 
     - name: Compile packages
       shell: bash
-      run: npm run compile
+      run: |
+        echo "::group::Compile packages"
+        npm run compile
+        echo "::endgroup::"
 
     - name: Configure AWS Credentials
       uses: ./.github/actions/configure-aws-credentials
@@ -167,7 +174,10 @@ runs:
         S3_SOLUTIONS_DIRNAMES_JSON_PATH: ${{ inputs.s3_solutions_dirnames_json_path }}
         S3_RELEASE_NOTES_DIRNAMES_JSON_PATH: ${{ inputs.s3_release_notes_dirnames_json_path }}
         LOCALE: ${{ inputs.locale }}
-      run: npm run sync-all-metadata -w gitbook-docs
+      run: |
+        echo "::group::Generate all metadata"
+        npm run sync-all-metadata -w gitbook-docs
+        echo "::endgroup::"
 
     - name: Replace urls and include tags in docs
       shell: bash
@@ -175,13 +185,19 @@ runs:
         ENVIRONMENT: ${{ inputs.environment }}
         DOCUMENTATION_PATH: ${{ inputs.documentation_path }}
         URL_PARSING_METADATA_JSON_PATH: ${{ inputs.url_parsing_metadata_json_path }}
-      run: npm run parse-docs -w gitbook-docs
+      run: |
+        echo "::group::Replace urls and include tags in docs"
+        npm run parse-docs -w gitbook-docs
+        echo "::endgroup::"
 
     - name: Replace escaped tokens with backticks in docs
       shell: bash
       env:
         DOCUMENTATION_PATH: ${{ inputs.documentation_path }}
-      run: npm run replace-escaped-tokens-with-backticks -w gitbook-docs
+      run: |
+        echo "::group::Replace escaped tokens with backticks in docs"
+        npm run replace-escaped-tokens-with-backticks -w gitbook-docs
+        echo "::endgroup::"
 
     - name: Delete unused documentation
       shell: bash
@@ -194,7 +210,10 @@ runs:
         STRAPI_API_TOKEN: ${{ inputs.strapi_api_token }}
         STRAPI_ENDPOINT: ${{ inputs.strapi_endpoint }}
         LOCALE: ${{ inputs.locale }}
-      run: npm run delete-unused-directories -w gitbook-docs
+      run: |
+        echo "::group::Delete unused documentation"
+        npm run delete-unused-directories -w gitbook-docs
+        echo "::endgroup::"
 
     - name: Fetch directory lists from S3
       shell: bash
@@ -202,9 +221,11 @@ runs:
         ENV_SHORT: ${{ env.ENV_SHORT }}
         S3_DIRNAMES_JSON_PATH: ${{ inputs.s3_dirnames_json_path }}
       run: |
+        echo "::group::Fetch directory lists from S3"
         echo "Fetching directory lists from S3 to validate publication status..."
         S3_DIRNAMES="s3://devportal-${{ env.ENV_SHORT }}-website-static-content/${{ env.S3_DIRNAMES_JSON_PATH }}"
         aws s3 cp "$S3_DIRNAMES" dirNames.json || echo '{"dirNames": []}' > dirNames.json
+        echo "::endgroup::"
 
     - name: Sync filtered docs folder to S3
       if: inputs.dir_names_filter != ''
@@ -215,6 +236,7 @@ runs:
         ENV_SHORT: ${{ env.ENV_SHORT }}
         LOCALE: ${{ inputs.locale }}
       run: |
+        echo "::group::Sync filtered docs folder to S3"
         # Extract unique directory names from downloaded json
         VALID_DIRS=$(cat ../dirNames.json | jq -r '.dirNames[]' | sort | uniq)
         
@@ -235,6 +257,7 @@ runs:
             fi
           fi
         done
+        echo "::endgroup::"
 
     - name: Sync all docs folder to S3
       if: inputs.dir_names_filter == ''
@@ -244,6 +267,7 @@ runs:
         ENV_SHORT: ${{ env.ENV_SHORT }}
         LOCALE: ${{ inputs.locale }}
       run: |
+        echo "::group::Sync all docs folder to S3"
         # Extract unique directory names from downloaded json
         VALID_DIRS=$(cat ../dirNames.json | jq -r '.dirNames[]' | sort | uniq)
 
@@ -267,6 +291,7 @@ runs:
             fi
           done
         fi
+        echo "::endgroup::"
 
     - name: Sync sitemap to S3
       shell: bash
@@ -274,19 +299,26 @@ runs:
         ENVIRONMENT: ${{ inputs.environment }}
         S3_BUCKET_NAME: devportal-${{ env.ENV_SHORT }}-website-static-content
         SITEMAP_URL: ${{ env.SITEMAP_URL }}
-      run: npm run sync-sitemap -w gitbook-docs
+      run: |
+        echo "::group::Sync sitemap to S3"
+        npm run sync-sitemap -w gitbook-docs
+        echo "::endgroup::"
 
     - name: Invalidate CloudFront asset bucket cache
       shell: bash
       run: |
+        echo "::group::Invalidate CloudFront asset bucket cache"
         aws cloudfront create-invalidation \
           --distribution-id ${{ inputs.asset_bucket_cloudfront_distribution_id }} \
           --paths "/*"
+        echo "::endgroup::"
 
     - name: Invalidate OpenNext CloudFront cache
       if: inputs.invalidate_opennext_cache == 'true'
       shell: bash
       run: |
+        echo "::group::Invalidate OpenNext CloudFront cache"
         aws cloudfront create-invalidation \
           --distribution-id ${{ inputs.opennext_cloudfront_distribution_id }} \
           --paths "/*"
+        echo "::endgroup::"
