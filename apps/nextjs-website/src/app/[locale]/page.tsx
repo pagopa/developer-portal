@@ -97,7 +97,7 @@ const Home = async (props: { params: Promise<{ locale: string }> }) => {
     <>
       {structuredData}
       <ContentWrapper>
-        {webinars && (
+        {webinars.length > 0 && (
           <WebinarHeaderBanner locale={locale} webinars={webinars} />
         )}
         <HeroSwiper
@@ -120,8 +120,8 @@ const Home = async (props: { params: Promise<{ locale: string }> }) => {
           />
         )}
         {ecosystem && <Ecosystem {...ecosystem} />}
-        <WebinarsSection webinars={webinars} />
-        {comingsoonDocumentation.links && (
+        {webinars.length > 0 && <WebinarsSection webinars={webinars} />}
+        {comingsoonDocumentation.links.length > 0 && (
           <RelatedLinks
             title={comingsoonDocumentation.title}
             links={comingsoonDocumentation.links}
