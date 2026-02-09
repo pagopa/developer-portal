@@ -236,7 +236,7 @@ describe('fetchFromStrapi', () => {
           Authorization: 'Bearer aStrapiApiToken',
         },
         cache: 'no-store',
-      },
+      }
     );
   });
 
