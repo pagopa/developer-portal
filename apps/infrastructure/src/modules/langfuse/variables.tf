@@ -109,3 +109,9 @@ variable "master_user_password_param_arn" {
   type        = string
   default     = null
 }
+
+variable "lambda_monitor_security_group_id" {
+  description = "Security group ID of the lambda monitor to allow access to langfuse-web"
+  type        = string
+  default     = null
+}

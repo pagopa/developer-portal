@@ -14,4 +14,6 @@ module "langfuse" {
   cognito_user_pool_id           = aws_cognito_user_pool.monitoring.id
   cognito_user_pool_endpoint     = aws_cognito_user_pool.monitoring.endpoint
   master_user_password_param_arn = module.master_user_password.ssm_parameter_arn
+
+  lambda_security_group_id = aws_security_group.lambda.id
 }
