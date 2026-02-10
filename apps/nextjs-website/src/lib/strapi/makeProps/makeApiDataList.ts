@@ -45,6 +45,7 @@ export async function makeApiDataListProps(
           // eslint-disable-next-line functional/no-try-statements
           try {
             const product = makeBaseProductWithoutLogoProps(
+              locale,
               attributes.product.data
             );
             return {

@@ -114,7 +114,10 @@ describe('fetchFromStrapi', () => {
       statusText: 'OK',
       json: () => Promise.resolve(strapiResponses[200]),
     });
-    const actual = fetchFromStrapi<TestResponse>('aPath', 'aPopulate')(env);
+    const actual = fetchFromStrapi<TestResponse>('aPath', 'aPopulate')(
+      'it',
+      env
+    );
     const expected = {
       data: {
         id: 1,
@@ -136,7 +139,10 @@ describe('fetchFromStrapi', () => {
       statusText: 'OK',
       json: () => Promise.resolve(strapiResponses['200WithNulls']),
     });
-    const actual = fetchFromStrapi<TestResponse>('aPath', 'aPopulate')(env);
+    const actual = fetchFromStrapi<TestResponse>('aPath', 'aPopulate')(
+      'it',
+      env
+    );
     const expected = {
       data: {
         id: 1,
@@ -163,7 +169,10 @@ describe('fetchFromStrapi', () => {
       statusText: 'Unauthorized',
       json: () => Promise.resolve(strapiResponses[401]),
     });
-    const actual = fetchFromStrapi<TestResponse>('aPath', 'aPopulate')(env);
+    const actual = fetchFromStrapi<TestResponse>('aPath', 'aPopulate')(
+      'it',
+      env
+    );
     const expected = new Error('401 - Unauthorized');
     await expect(actual).rejects.toStrictEqual(expected);
   });
@@ -175,7 +184,10 @@ describe('fetchFromStrapi', () => {
       statusText: 'Not Found',
       json: () => Promise.resolve(strapiResponses[404]),
     });
-    const actual = fetchFromStrapi<TestResponse>('aPath', 'aPopulate')(env);
+    const actual = fetchFromStrapi<TestResponse>('aPath', 'aPopulate')(
+      'it',
+      env
+    );
     const expected = new Error('404 - Not Found');
     await expect(actual).rejects.toStrictEqual(expected);
   });
@@ -183,7 +195,10 @@ describe('fetchFromStrapi', () => {
   it('should return error given a fetch rejection', async () => {
     const { env, fetchMock } = makeTestEnv();
     fetchMock.mockRejectedValueOnce(new Error('Network error'));
-    const actual = fetchFromStrapi<TestResponse>('aPath', 'aPopulate')(env);
+    const actual = fetchFromStrapi<TestResponse>('aPath', 'aPopulate')(
+      'it',
+      env
+    );
     const expected = new Error('Network error');
     await expect(actual).rejects.toStrictEqual(expected);
   });
@@ -196,7 +211,10 @@ describe('fetchFromStrapi', () => {
       // eslint-disable-next-line functional/no-promise-reject
       json: () => Promise.reject(new Error('Invalid JSON')),
     });
-    const actual = fetchFromStrapi<TestResponse>('aPath', 'aPopulate')(env);
+    const actual = fetchFromStrapi<TestResponse>('aPath', 'aPopulate')(
+      'it',
+      env
+    );
     const expected = new Error('Invalid JSON');
     await expect(actual).rejects.toStrictEqual(expected);
   });
@@ -209,10 +227,9 @@ describe('fetchFromStrapi', () => {
       json: () => Promise.resolve(strapiResponses[200]),
     });
 
-    await fetchFromStrapi<TestResponse>('test-path', 'populate=*')(env);
-
+    await fetchFromStrapi<TestResponse>('test-path', 'populate=*')('it', env);
     expect(fetchMock).toHaveBeenCalledWith(
-      'aStrapiEndpoint/api/test-path/?populate=*',
+      'aStrapiEndpoint/api/test-path/?locale=it&populate=*',
       {
         method: 'GET',
         headers: {
@@ -234,7 +251,7 @@ describe('fetchFromStrapi', () => {
       const actual = fetchFromStrapi<StrapiSuccessResponse>(
         'aPath',
         'aPopulate'
-      )(env);
+      )('it', env);
       const expected = strapiResponses[200];
       expect(await actual).toStrictEqual(expected);
     });
@@ -246,10 +263,10 @@ describe('fetchFromStrapi', () => {
         statusText: 'Unauthorized',
         json: () => Promise.resolve(strapiResponses[401]),
       });
-      const actual = fetchFromStrapi<StrapiErrorResponse>(
-        'aPath',
-        'aPopulate'
-      )(env);
+      const actual = fetchFromStrapi<StrapiErrorResponse>('aPath', 'aPopulate')(
+        'it',
+        env
+      );
       const expected = new Error('401 - Unauthorized');
       await expect(actual).rejects.toStrictEqual(expected);
     });
@@ -261,10 +278,10 @@ describe('fetchFromStrapi', () => {
         statusText: 'Not Found',
         json: () => Promise.resolve(strapiResponses[404]),
       });
-      const actual = fetchFromStrapi<StrapiErrorResponse>(
-        'aPath',
-        'aPopulate'
-      )(env);
+      const actual = fetchFromStrapi<StrapiErrorResponse>('aPath', 'aPopulate')(
+        'it',
+        env
+      );
       const expected = new Error('404 - Not Found');
       await expect(actual).rejects.toStrictEqual(expected);
     });
@@ -275,7 +292,7 @@ describe('fetchFromStrapi', () => {
       const actual = fetchFromStrapi<StrapiSuccessResponse>(
         'aPath',
         'aPopulate'
-      )(env);
+      )('it', env);
       const expected = new Error('[object Object]');
       await expect(actual).rejects.toStrictEqual(expected);
     });
@@ -290,7 +307,7 @@ describe('fetchFromStrapi', () => {
       const actual = await fetchFromStrapi<CustomResponse>(
         'aPath',
         'aPopulate'
-      )(env);
+      )('it', env);
       expect(actual['someField']).toBeUndefined();
       expect(actual['anotherField']).toBeUndefined();
     });

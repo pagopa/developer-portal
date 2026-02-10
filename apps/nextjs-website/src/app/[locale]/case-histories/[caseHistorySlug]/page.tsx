@@ -20,8 +20,8 @@ type Params = {
 export async function generateMetadata(props: {
   params: Promise<Params>;
 }): Promise<Metadata> {
-  const params = await props.params;
-  const caseHistory = await getCaseHistory(params?.caseHistorySlug);
+  const { locale, caseHistorySlug } = await props.params;
+  const caseHistory = await getCaseHistory(locale, caseHistorySlug);
 
   if (caseHistory?.seo) {
     return makeMetadataFromStrapi(caseHistory.seo);
@@ -29,23 +29,20 @@ export async function generateMetadata(props: {
 
   return makeMetadata({
     title: caseHistory.title,
-    url: `${baseUrl}/case-histories/${caseHistory.slug}`,
-    locale: 'it_IT',
+    url: `${baseUrl}/${locale}/case-histories/${caseHistory.slug}`,
+    langCode: locale,
   });
 }
 
 const Page = async (props: { params: Promise<Params> }) => {
-  const params = await props.params;
-  const caseHistory = await getCaseHistory(params?.caseHistorySlug);
+  const { locale, caseHistorySlug } = await props.params;
+  const caseHistory = await getCaseHistory(locale, caseHistorySlug);
 
   const structuredData = generateStructuredDataScripts({
     breadcrumbsItems: [
       {
         name: caseHistory.seo?.metaTitle || caseHistory.title,
-        item: getItemFromPaths(params.locale, [
-          'case-histories',
-          caseHistory.slug,
-        ]),
+        item: getItemFromPaths(locale, ['case-histories', caseHistory.slug]),
       },
     ],
     seo: caseHistory.seo,

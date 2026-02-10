@@ -99,7 +99,7 @@ export default async function RootLayout({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
-  const products = [...(await getProducts()).filter((product) => product.isVisible)];
+  const products = [...(await getProducts(locale)).filter((product) => product.isVisible)];
 
   // Disabled eslint rules to to follow https://next-intl-docs.vercel.app/docs/getting-started/app-router-client-components guide
   // eslint-disable-next-line functional/no-let

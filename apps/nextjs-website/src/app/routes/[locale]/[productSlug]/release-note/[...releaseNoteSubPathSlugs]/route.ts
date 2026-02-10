@@ -4,7 +4,9 @@ import { GitBookContentData } from '@/lib/types/gitBookContent';
 
 export async function GET(
   request: Request,
-  props: {
+  {
+    params,
+  }: {
     readonly params: Promise<{
       readonly locale: string;
       readonly productSlug: string;
@@ -12,14 +14,13 @@ export async function GET(
     }>;
   }
 ) {
-  const params = await props.params;
-  const { productSlug, releaseNoteSubPathSlugs } = params;
+  const { locale, productSlug, releaseNoteSubPathSlugs } = await params;
   const noteSegments = [
     'release-note',
     ...(Array.isArray(releaseNoteSubPathSlugs) ? releaseNoteSubPathSlugs : []),
   ];
 
-  return getReleaseNote(params.locale, productSlug, noteSegments)
+  return getReleaseNote(locale, productSlug, noteSegments)
     .then(async (releaseNoteProps) => {
       if (!releaseNoteProps) {
         return new Response(
@@ -31,7 +32,7 @@ export async function GET(
         );
       }
 
-      return getUrlReplaceMapProps().then((urlReplaceMap) => {
+      return getUrlReplaceMapProps(locale).then((urlReplaceMap) => {
         const { page, product, seo, source, title, bodyConfig } =
           releaseNoteProps;
 

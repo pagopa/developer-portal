@@ -98,7 +98,7 @@ export const expectedProduct: Product = {
     },
   ],
   hasApiDataListPage: true,
-  apiDataListPageUrl: '/test-product/api/api-detail',
+  apiDataListPageUrl: '/it/test-product/api/api-detail',
   hasTutorialListPage: true,
   hasGuideListPage: true,
   hasOverviewPage: true,

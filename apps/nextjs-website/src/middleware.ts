@@ -3,11 +3,14 @@ import { NextRequest, NextResponse } from 'next/server';
 import { defaultLocale } from '@/config';
 import { SUPPORTED_LOCALES } from '@/locales';
 
+// This middleware redirects URLs without locale prefixes to include the default locale,
+// maintaining backwards compatibility with legacy indexed URLs and CMS' resources URLs
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const pathnameHasLocale = SUPPORTED_LOCALES.some(
     (locale) =>
-      pathname.startsWith(`/${locale.code}/`) || pathname === `/${locale.code}`
+      pathname.startsWith(`/${locale.langCode}/`) ||
+      pathname === `/${locale.langCode}`
   );
 
   if (pathnameHasLocale) return;

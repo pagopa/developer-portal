@@ -70,36 +70,39 @@ const buildEnv = pipe(
   })
 );
 
-export const getHomepageProps = async () => {
-  const strapiHomepage = await fetchHomepage(buildEnv);
-  return makeHomepageProps(strapiHomepage);
+export const getHomepageProps = async (locale: string) => {
+  const strapiHomepage = await fetchHomepage(locale, buildEnv);
+  return makeHomepageProps(locale, strapiHomepage);
 };
 
-export const getWebinarsProps = async () => {
-  const strapiWebinars = await fetchWebinars(buildEnv);
+export const getWebinarsProps = async (locale: string) => {
+  const strapiWebinars = await fetchWebinars(locale, buildEnv);
   return makeWebinarsProps(strapiWebinars);
 };
 
-export const getProductsProps = async () => {
-  const strapiProducts = await fetchProducts(buildEnv);
-  const products = makeProductsProps(strapiProducts);
+export const getProductsProps = async (locale: string) => {
+  const strapiProducts = await fetchProducts(locale, buildEnv);
+  const products = makeProductsProps(locale, strapiProducts);
   return [...products].sort((productA, productB) =>
     productA.name.localeCompare(productB.name)
   );
 };
 
-export const getWebinarCategoriesProps = async () => {
-  const strapiWebinarCategories = await fetchWebinarCategories(buildEnv);
+export const getWebinarCategoriesProps = async (locale: string) => {
+  const strapiWebinarCategories = await fetchWebinarCategories(
+    locale,
+    buildEnv
+  );
   return makeWebinarCategoriesProps(strapiWebinarCategories);
 };
 
-export const getTagsProps = async () => {
-  const strapiTags = await fetchTags(buildEnv);
+export const getTagsProps = async (locale: string) => {
+  const strapiTags = await fetchTags(locale, buildEnv);
   return makeTagsProps(strapiTags);
 };
 
-export const getTutorialsProps = async () => {
-  const strapiTutorials = await fetchTutorials(buildEnv);
+export const getTutorialsProps = async (locale: string) => {
+  const strapiTutorials = await fetchTutorials(locale, buildEnv);
   const tutorialsWithMarkdown = strapiTutorials.data.filter((tutorial) => {
     const parts = tutorial?.attributes?.parts ?? [];
     return parts.some((part) => part?.__component === 'parts.markdown');
@@ -117,37 +120,41 @@ export const getTutorialsProps = async () => {
   });
   const resolvedContentPairs = await Promise.all(contentPromises);
   const markdownContentDict = Object.fromEntries(resolvedContentPairs);
-  return makeTutorialsProps(strapiTutorials, markdownContentDict);
+  return makeTutorialsProps(locale, strapiTutorials, markdownContentDict);
 };
 
-export const getTutorialListPagesProps = async () => {
-  const strapiTutorialListPages = await fetchTutorialListPages(buildEnv);
-  return makeTutorialListPagesProps(strapiTutorialListPages);
+export const getTutorialListPagesProps = async (locale: string) => {
+  const strapiTutorialListPages = await fetchTutorialListPages(
+    locale,
+    buildEnv
+  );
+  return makeTutorialListPagesProps(locale, strapiTutorialListPages);
 };
 
-export const getQuickStartGuidesProps = async () => {
-  const strapiQuickStartGuides = await fetchQuickStartGuides(buildEnv);
-  return makeQuickStartGuidesProps(strapiQuickStartGuides);
+export const getQuickStartGuidesProps = async (locale: string) => {
+  const strapiQuickStartGuides = await fetchQuickStartGuides(locale, buildEnv);
+  return makeQuickStartGuidesProps(locale, strapiQuickStartGuides);
 };
 
-export const getUrlReplaceMapProps = async () => {
-  const strapiUrlReplaceMap = await fetchUrlReplaceMap(buildEnv);
-  const processed = makeUrlReplaceMap(strapiUrlReplaceMap);
+export const getUrlReplaceMapProps = async (locale: string) => {
+  // TODO: fix locale not managed for url replace map
+  const strapiUrlReplaceMap = await fetchUrlReplaceMap(locale, buildEnv);
+  const processed = makeUrlReplaceMap(locale, strapiUrlReplaceMap);
   return processed;
 };
 
-export const getApiDataListPagesProps = async () => {
-  const strapiApiDataListPages = await fetchApiDataListPages(buildEnv);
-  return makeApiDataListPagesProps(strapiApiDataListPages);
+export const getApiDataListPagesProps = async (locale: string) => {
+  const strapiApiDataListPages = await fetchApiDataListPages(locale, buildEnv);
+  return makeApiDataListPagesProps(locale, strapiApiDataListPages);
 };
 
 export const getApiDataProps = async (locale: string) => {
-  const strapiApiDataList = await fetchApiDataList(buildEnv);
+  const strapiApiDataList = await fetchApiDataList(locale, buildEnv);
   return await makeApiDataListProps(locale, strapiApiDataList);
 };
 
-export const getCaseHistoriesProps = async () => {
-  const strapiCaseHistories = await fetchCaseHistories(buildEnv);
+export const getCaseHistoriesProps = async (locale: string) => {
+  const strapiCaseHistories = await fetchCaseHistories(locale, buildEnv);
   return makeCaseHistoriesProps(strapiCaseHistories);
 };
 
@@ -155,22 +162,24 @@ export const getSolutionsProps = async (locale: string) => {
   const strapiSolutions = (await fetchResponseFromCDN(
     `${locale}/${getSyncedSolutionsResponseJsonPath()}`
   )) as StrapiSolutions | undefined;
-  return strapiSolutions ? makeSolutionsProps(strapiSolutions) : [];
+  return strapiSolutions ? makeSolutionsProps(locale, strapiSolutions) : [];
 };
 
-export const getSolutionListPageProps = async () => {
-  const strapiSolutionListPage = await fetchSolutionListPage(buildEnv);
-  return makeSolutionListPageProps(strapiSolutionListPage);
+export const getSolutionListPageProps = async (locale: string) => {
+  const strapiSolutionListPage = await fetchSolutionListPage(locale, buildEnv);
+  return makeSolutionListPageProps(locale, strapiSolutionListPage);
 };
 
-export const getOverviewsProps = async () => {
-  const strapiOverviews = await fetchOverviews(buildEnv);
-  return makeOverviewsProps(strapiOverviews);
+export const getOverviewsProps = async (locale: string) => {
+  const strapiOverviews = await fetchOverviews(locale, buildEnv);
+  return makeOverviewsProps(locale, strapiOverviews);
 };
 
-export const getGuideListPagesProps = async () => {
-  const strapiGuideList = await fetchGuideListPages(buildEnv);
-  return strapiGuideList ? makeGuideListPagesProps(strapiGuideList) : [];
+export const getGuideListPagesProps = async (locale: string) => {
+  const strapiGuideList = await fetchGuideListPages(locale, buildEnv);
+  return strapiGuideList
+    ? makeGuideListPagesProps(locale, strapiGuideList)
+    : [];
 };
 
 export const getGuideProps = async (
@@ -182,11 +191,11 @@ export const getGuideProps = async (
   return await makeGuideS3({ guideDefinition: guide, locale, guidePaths });
 };
 
-export const getGuidesProps = async () => {
+export const getGuidesProps = async (locale: string) => {
   const strapiGuides = (await fetchResponseFromCDN(
     getSyncedGuidesResponseJsonPath()
   )) as StrapiGuides | undefined;
-  return strapiGuides ? makeGuidesProps(strapiGuides) : [];
+  return strapiGuides ? makeGuidesProps(locale, strapiGuides) : [];
 };
 
 export const getGuidePageProps = async (
@@ -198,7 +207,7 @@ export const getGuidePageProps = async (
     `${locale}/${getSyncedGuidesResponseJsonPath()}`
   )) as StrapiGuides | undefined;
   // eslint-disable-next-line functional/no-expression-statements
-  const guides = strapiGuides ? makeGuidesProps(strapiGuides) : [];
+  const guides = strapiGuides ? makeGuidesProps(locale, strapiGuides) : [];
   const guide = guides.filter(
     (g) => g.guide.slug === guideSlug && g.product.slug === productSlug
   )[0];
@@ -223,7 +232,7 @@ export const getSolutionProps = async (
     // eslint-disable-next-line functional/no-throw-statements
     throw new Error('Failed to fetch solution data');
   }
-  const solutions = makeSolutionsProps(strapiSolutions);
+  const solutions = makeSolutionsProps(locale, strapiSolutions);
   const solution = solutions.find((s) => s.slug === solutionsSlug);
   if (!solution) {
     // eslint-disable-next-line functional/no-throw-statements
@@ -260,7 +269,7 @@ export const getReleaseNoteProps = async (
   jsonMetadata?: JsonMetadata
 ) => {
   const strapiReleaseNotes = await fetchReleaseNotes(locale);
-  const releaseNotes = makeReleaseNotesProps(strapiReleaseNotes);
+  const releaseNotes = makeReleaseNotesProps(locale, strapiReleaseNotes);
   const releaseNote = releaseNotes.find(
     (rn) => rn.product.slug === productSlug
   );
@@ -275,11 +284,11 @@ export const getReleaseNoteProps = async (
 
 export const getReleaseNotesProps = async (locale: string) => {
   const strapiReleaseNotes = await fetchReleaseNotes(locale);
-  return makeReleaseNotesProps(strapiReleaseNotes);
+  return makeReleaseNotesProps(locale, strapiReleaseNotes);
 };
 
-export const getUseCasesProps = async () => {
-  const strapiUseCases = await fetchUseCases(buildEnv);
+export const getUseCasesProps = async (locale: string) => {
+  const strapiUseCases = await fetchUseCases(locale, buildEnv);
   const allMarkdownParts = strapiUseCases.data.flatMap((useCase) =>
     (useCase?.attributes?.parts ?? []).filter(isMarkDownPart)
   );
@@ -291,10 +300,10 @@ export const getUseCasesProps = async () => {
   });
   const resolvedContentPairs = await Promise.all(contentPromises);
   const markdownContentDict = Object.fromEntries(resolvedContentPairs);
-  return makeUseCasesProps(strapiUseCases, markdownContentDict);
+  return makeUseCasesProps(locale, strapiUseCases, markdownContentDict);
 };
 
-export const getUseCaseListPagesProps = async () => {
-  const strapiUseCasesListPages = await fetchUseCaseListPages(buildEnv);
-  return makeUseCaseListPagesProps(strapiUseCasesListPages);
+export const getUseCaseListPagesProps = async (locale: string) => {
+  const strapiUseCasesListPages = await fetchUseCaseListPages(locale, buildEnv);
+  return makeUseCaseListPagesProps(locale, strapiUseCasesListPages);
 };

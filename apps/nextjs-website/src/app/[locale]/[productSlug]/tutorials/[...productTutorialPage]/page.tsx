@@ -20,10 +20,9 @@ type Params = {
 export async function generateMetadata(props: {
   params: Promise<Params>;
 }): Promise<Metadata | undefined> {
-  const params = await props.params;
-  const productSlug = params?.productSlug;
-  const tutorialPath = params?.productTutorialPage?.join('/');
-  const tutorialProps = await getTutorial(productSlug, [tutorialPath]);
+  const { locale, productSlug, productTutorialPage } = await props.params;
+  const tutorialPath = productTutorialPage?.join('/');
+  const tutorialProps = await getTutorial(locale, productSlug, [tutorialPath]);
   if (tutorialProps) {
     const { title, path, seo } = tutorialProps;
 
@@ -39,22 +38,21 @@ export async function generateMetadata(props: {
 }
 
 const Page = async (props: { params: Promise<Params> }) => {
-  const params = await props.params;
-  const productSlug = params?.productSlug;
-  const tutorialPath = params?.productTutorialPage?.join('/');
+  const { locale, productSlug, productTutorialPage } = await props.params;
+  const tutorialPath = productTutorialPage?.join('/');
 
-  const strapiTutorialProps = await getTutorial(productSlug, [tutorialPath]);
-
+  const strapiTutorialProps = await getTutorial(locale, productSlug, [
+    tutorialPath,
+  ]);
   const structuredData = generateStructuredDataScripts({
     breadcrumbsItems: [
-      productToBreadcrumb(params.locale, strapiTutorialProps.product),
+      productToBreadcrumb(locale, strapiTutorialProps.product),
       {
         name: strapiTutorialProps.seo?.metaTitle || strapiTutorialProps.title,
-        item: breadcrumbItemByProduct(
-          params.locale,
-          strapiTutorialProps.product,
-          ['tutorials', ...(params?.productTutorialPage || [])]
-        ),
+        item: breadcrumbItemByProduct(locale, strapiTutorialProps.product, [
+          'tutorials',
+          ...(productTutorialPage || []),
+        ]),
       },
     ],
     seo: strapiTutorialProps.seo,

@@ -53,9 +53,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // --------------------------------------------------------------------------------
   // 1. Fetch Global / Static Pages
   // --------------------------------------------------------------------------------
-  const homePage = await getHomepageProps();
-  const caseHistories = await getCaseHistoriesProps();
-  const webinars = await getWebinarsProps();
+  const homePage = await getHomepageProps('it'); // TODO: remove hardcoded locale once i18n development on sitemap has been completed
+  const caseHistories = await getCaseHistoriesProps('it'); // TODO: remove hardcoded locale once i18n development on sitemap has been completed
+  const webinars = await getWebinarsProps('it'); // TODO: remove hardcoded locale once i18n development on sitemap has been completed
   const solutions = await getSolutionsProps('it'); // TODO: remove hardcoded locale once i18n development on sitemap has been completed
 
   // Base static routes
@@ -146,7 +146,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // These are stored in S3 and retrieved via legacy helpers.
   // We keep them ensuring no missing legacy content.
   const guidesMetadata = await getGuidesMetadata('it'); // TODO: remove hardcoded locale once i18n development on sitemap has been completed
-  const guides = await getGuidesProps();
+  const guides = await getGuidesProps('it'); // TODO: remove hardcoded locale once i18n development on sitemap has been completed
   const guidesDirNames = Array.from(
     new Set(
       guides
@@ -233,7 +233,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // 3. Fetch Product Routes (Iterative Strategy)
   // --------------------------------------------------------------------------------
   // First, fetch all product slugs.
-  const productsResult = await fetchProductSlugs();
+  const productsResult = await fetchProductSlugs('it'); // TODO: remove hardcoded locale once i18n development on sitemap has been completed
   const productItems = productsResult.data;
 
   // Then iterate and fetch details for each product.
@@ -243,7 +243,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
     // A. Fetch Single Pages linked to this Product (Overview, QuickStart, Lists)
     // ------------------------------------------------------------------------
-    const singlePagesData = await fetchProductSinglePages(productSlug);
+    const singlePagesData = await fetchProductSinglePages('it', productSlug); // TODO: remove hardcoded locale once i18n development on sitemap has been completed
     const relations = singlePagesData.data[0]
       ?.attributes as unknown as SitemapProductRelations;
 
@@ -304,7 +304,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // ------------------------------------------------------------------------
 
     // Tutorials (Individual Pages)
-    const tutorialsData = await fetchProductTutorials(productSlug);
+    const tutorialsData = await fetchProductTutorials('it', productSlug); // TODO: remove hardcoded locale once i18n development on sitemap has been completed
     const tutorialRoutes = tutorialsData.data
       .filter((tutorial) => tutorial.attributes.slug)
       .map((tutorial) => ({
@@ -315,7 +315,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       }));
 
     // API Data (Individual Pages)
-    const apisData = await fetchProductApiData(productSlug);
+    const apisData = await fetchProductApiData('it', productSlug); // TODO: remove hardcoded locale once i18n development on sitemap has been completed
     const apiRoutes = (
       apisData.data as unknown as readonly SitemapApiData[]
     ).flatMap((api) => {
