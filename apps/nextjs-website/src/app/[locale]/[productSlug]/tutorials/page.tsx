@@ -84,7 +84,7 @@ const TutorialsPage = async (props: ProductParams) => {
       },
       href: {
         label: 'shared.readTutorial',
-        link: tutorial.path,
+        link: tutorial.redirectPath || tutorial.path,
         translate: true,
       },
       img: {

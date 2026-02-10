@@ -67,6 +67,7 @@ export function makeTutorialsProps(
           seo: attributes.seo,
           tags: attributes.tags.data?.map((tag) => tag.attributes) || [],
           updatedAt: attributes.updatedAt,
+          redirectPath: attributes.redirectPath,
         } satisfies TutorialProps;
       } catch (error) {
         console.error(

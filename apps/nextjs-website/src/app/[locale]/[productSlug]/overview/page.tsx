@@ -165,7 +165,7 @@ const OverviewPage = async (props: ProductParams) => {
     ...tutorial,
     image: tutorial.image,
     link: {
-      url: tutorial.path,
+      url: tutorial.redirectPath || tutorial.path,
       text: 'shared.readTutorial',
     },
   }));
