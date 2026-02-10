@@ -41,10 +41,17 @@ jobs:
         working-directory: apps/parser
         run: npm ci
       
-      - name: Run Parser Script
+      - name: Run Parser for each URL
         env:
-          PARSER_VECTOR_INDEX_ID: ${{ secrets.PARSER_VECTOR_INDEX_ID }}
+          VECTOR_INDEX_ID: ${{ secrets.VECTOR_INDEX_ID }}
+        working-directory: apps/parser
         run: |
-          # Convert multi-line input to array and pass as arguments
-          urls=$(echo "${{ inputs.urls }}" | tr '\n' ' ')
-          npx tsx apps/parser/src/parser.ts $urls
+          # Loop through each URL sequentially
+          while IFS= read -r url; do
+            if [ -n "$url" ]; then
+              echo "=== Parsing: $url ==="
+              URL="$url" npx tsx src/parser.ts
+              echo "=== Completed: $url ==="
+              echo ""
+            fi
+          done <<< "${{ inputs.urls }}"
