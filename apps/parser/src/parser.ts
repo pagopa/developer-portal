@@ -99,12 +99,17 @@ async function persistSnapshot(snapshot: ParseMetadata): Promise<void> {
 
 
 function deriveSubPath(targetUrl: string): string {
-  const parsed = new URL(targetUrl);
-  const sanitizedTarget = stripUrlDecorations(targetUrl);
-  if (sanitizedTarget === env.sanitizedBaseUrl) {
+  const base = new URL(env.baseUrl);
+  const target = new URL(targetUrl);
+  let relPath = target.pathname;
+  if (base.pathname !== '/' && relPath.startsWith(base.pathname)) {
+    relPath = relPath.slice(base.pathname.length);
+    if (!relPath.startsWith('/')) relPath = '/' + relPath;
+  }
+  if (stripUrlDecorations(targetUrl) === env.sanitizedBaseUrl || relPath === '/' || relPath === '') {
     return '/';
   }
-  return `${parsed.pathname}${parsed.search}${parsed.hash}` || '/';
+  return `${relPath}${target.search}${target.hash}` || '/';
 }
 
 
