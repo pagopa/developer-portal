@@ -40,6 +40,10 @@ if __name__ == "__main__":
     )
     args = parser.parse_args()
 
+    assert (
+        args.static or args.dynamic or args.api
+    ) != args.structured, "Structured documents cannot be combined with static, dynamic, or API documents."
+
     VECTOR_INDEX.create_index(
         static=args.static,
         dynamic=args.dynamic,
