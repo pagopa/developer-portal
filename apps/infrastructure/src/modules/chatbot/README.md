@@ -37,6 +37,7 @@
 | <a name="module_index_id_ssm_parameter_local"></a> [index\_id\_ssm\_parameter\_local](#module\_index\_id\_ssm\_parameter\_local) | git::https://github.com/terraform-aws-modules/terraform-aws-ssm-parameter.git | 77d2c139784197febbc8f8e18a33d23eb4736879 |
 | <a name="module_internal_monitoring_load_balancer"></a> [internal\_monitoring\_load\_balancer](#module\_internal\_monitoring\_load\_balancer) | git::https://github.com/terraform-aws-modules/terraform-aws-alb.git | 3e9c6cbaf4c1d858c3bbee6f086f0c8ef17522ab |
 | <a name="module_internal_ssl_certificate"></a> [internal\_ssl\_certificate](#module\_internal\_ssl\_certificate) | git::https://github.com/terraform-aws-modules/terraform-aws-acm.git | 5d113fa07675fc42237907a621b68ac97109043e |
+| <a name="module_langfuse"></a> [langfuse](#module\_langfuse) | ../langfuse | n/a |
 | <a name="module_langfuse_public_key"></a> [langfuse\_public\_key](#module\_langfuse\_public\_key) | git::https://github.com/terraform-aws-modules/terraform-aws-ssm-parameter.git | 77d2c139784197febbc8f8e18a33d23eb4736879 |
 | <a name="module_langfuse_secret_key"></a> [langfuse\_secret\_key](#module\_langfuse\_secret\_key) | git::https://github.com/terraform-aws-modules/terraform-aws-ssm-parameter.git | 77d2c139784197febbc8f8e18a33d23eb4736879 |
 | <a name="module_master_user_password"></a> [master\_user\_password](#module\_master\_user\_password) | git::https://github.com/terraform-aws-modules/terraform-aws-ssm-parameter.git | 77d2c139784197febbc8f8e18a33d23eb4736879 |
@@ -196,7 +197,7 @@
 | <a name="input_ecs_redis"></a> [ecs\_redis](#input\_ecs\_redis) | Redis configuration for the AI chatbot | <pre>object({<br/>    cpu       = number<br/>    memory    = number<br/>    image_uri = string<br/>    port      = number<br/>  })</pre> | n/a | yes |
 | <a name="input_environment"></a> [environment](#input\_environment) | Environment | `string` | n/a | yes |
 | <a name="input_github_repository"></a> [github\_repository](#input\_github\_repository) | The repository where the IaC workflows will run | `string` | n/a | yes |
-| <a name="input_langfuse_service_discovery_endpoint"></a> [langfuse\_service\_discovery\_endpoint](#input\_langfuse\_service\_discovery\_endpoint) | The service discovery endpoint for Langfuse | `string` | n/a | yes |
+| <a name="input_hosted_zone_id"></a> [hosted\_zone\_id](#input\_hosted\_zone\_id) | The Route53 hosted zone ID for custom domain | `string` | n/a | yes |
 | <a name="input_models"></a> [models](#input\_models) | The models used by the AI chatbot | <pre>object({<br/>    provider   = string<br/>    generation = string<br/>    embeddings = string<br/>    reranker   = string<br/>  })</pre> | n/a | yes |
 | <a name="input_s3_bucket_name_static_content"></a> [s3\_bucket\_name\_static\_content](#input\_s3\_bucket\_name\_static\_content) | The name of the S3 bucket for static content | `string` | n/a | yes |
 | <a name="input_security_groups"></a> [security\_groups](#input\_security\_groups) | The security groups used to deploy the resources | `map(string)` | n/a | yes |

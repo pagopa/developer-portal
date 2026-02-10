@@ -163,7 +163,7 @@ variable "models" {
   description = "The models used by the AI chatbot"
 }
 
-variable "langfuse_service_discovery_endpoint" {
+variable "hosted_zone_id" {
   type        = string
-  description = "The service discovery endpoint for Langfuse"
+  description = "The Route53 hosted zone ID for custom domain"
 }

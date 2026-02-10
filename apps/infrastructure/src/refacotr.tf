@@ -120,6 +120,11 @@ moved {
   to   = module.chatbot[0].aws_sqs_queue.chatbot_dlq["evaluate"]
 }
 
+moved {
+  from = module.langfuse[0]
+  to   = module.chatbot[0].module.langfuse[0]
+}
+
 
 import {
   to = module.chatbot[0].aws_api_gateway_stage.api_stage

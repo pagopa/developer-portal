@@ -185,7 +185,7 @@ module "chatbot" {
   ecs_monitoring                = var.chatbot_ecs_monitoring
   models                        = var.chatbot_models
 
-  langfuse_service_discovery_endpoint = var.environment == "dev" ? module.langfuse[0].service_discovery_endpoint : null
+  hosted_zone_id = module.core.hosted_zone_id
 }
 
 module "cicd" {
@@ -266,26 +266,6 @@ module "video_streaming" {
   environment        = var.environment
   strapi_api_url     = "https://${keys(var.dns_domain_name_cms)[0]}"
 }
-
-module "langfuse" {
-  source = "./modules/langfuse"
-
-  count = var.environment == "dev" ? 1 : 0
-
-  environment        = var.environment
-  region             = var.aws_region
-  vpc_id             = module.cms.vpc.id
-  private_subnet_ids = module.cms.vpc.private_subnets
-  public_subnet_ids  = module.cms.vpc.public_subnets
-  custom_domain_id   = module.core.hosted_zone_id
-  custom_domain_name = var.dns_domain_name
-
-  # Use the Cognito User Pool created by the Chatbot module
-  cognito_user_pool_id           = module.chatbot[0].cognito_user_pool_id
-  cognito_user_pool_endpoint     = module.chatbot[0].cognito_user_pool_endpoint
-  master_user_password_param_arn = module.chatbot[0].cognito_master_user_password_param_arn
-}
-
 
 # strapi-v5  for testing purposes only
 module "strapi_v5" {
