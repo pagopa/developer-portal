@@ -2,4 +2,4 @@
 "chatbot-index": minor
 ---
 
-"create index now considers also structured data"
+Create index now also considers structured data
