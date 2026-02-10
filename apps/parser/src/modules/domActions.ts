@@ -31,7 +31,11 @@ export async function expandInteractiveSections(page: Page): Promise<void> {
         const isCollapsed =
           ariaExpanded === 'false' || target.classList.contains('collapsed');
 
-        if (isToggleButton || isCollapsed || selector === '[data-toggle]') {
+        const shouldClick =
+          (isToggleButton && ariaExpanded !== 'true') ||
+          isCollapsed ||
+          selector === '[data-toggle]';
+        if (shouldClick) {
           target.click();
           target.setAttribute('data-expanded', 'true');
         }
