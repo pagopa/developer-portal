@@ -5,19 +5,15 @@ import { Paginated } from '@/lib/strapi/types/paginated';
 
 export type StrapiReleaseNote = {
   readonly id: number;
-  readonly attributes: {
-    readonly bannerLinks: readonly StrapiBannerLink[];
-    readonly createdAt: string;
-    readonly dirName: string;
-    readonly landingFile: string;
-    readonly product: {
-      readonly data?: StrapiBaseProductWithRelations;
-    };
-    readonly publishedAt: string;
-    readonly seo?: StrapiSeo;
-    readonly title: string;
-    readonly updatedAt: string;
-  };
+  readonly bannerLinks: readonly StrapiBannerLink[];
+  readonly createdAt: string;
+  readonly dirName: string;
+  readonly landingFile: string;
+  readonly product?: StrapiBaseProductWithRelations;
+  readonly publishedAt: string;
+  readonly seo?: StrapiSeo;
+  readonly title: string;
+  readonly updatedAt: string;
 };
 
 export type StrapiReleaseNotes = Paginated<StrapiReleaseNote>;

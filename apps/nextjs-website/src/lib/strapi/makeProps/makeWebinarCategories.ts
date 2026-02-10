@@ -14,7 +14,7 @@ export function makeWebinarCategoryProps(
   webinarCategory: StrapiWebinarCategory
 ): WebinarCategory {
   return {
-    name: webinarCategory.attributes.name,
-    icon: webinarCategory.attributes.icon,
+    name: webinarCategory.name,
+    icon: webinarCategory.icon,
   };
 }

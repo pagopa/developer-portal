@@ -10,8 +10,8 @@ export function makeUseCaseListPagesProps(
   strapiUseCaseList: StrapiUseCaseListPages
 ): readonly UseCasesPageProps[] {
   return compact(
-    strapiUseCaseList.data.map(({ attributes }) => {
-      const slug = attributes.product.data?.attributes.slug;
+    strapiUseCaseList.data.map((attributes) => {
+      const slug = attributes.product?.slug;
       if (!slug) {
         // eslint-disable-next-line functional/no-expression-statements
         console.error(
@@ -21,8 +21,8 @@ export function makeUseCaseListPagesProps(
       }
 
       const useCases: readonly UseCase[] = compact(
-        attributes.useCases.data.map(({ attributes: useCaseAttributes }) => {
-          const slug = useCaseAttributes.product?.data?.attributes?.slug;
+        attributes.useCases.map((useCaseAttributes) => {
+          const slug = useCaseAttributes.product?.slug;
           if (!slug) {
             console.error(
               `Error while processing UseCase with title "${useCaseAttributes.title}": missing product slug. Skipping...`
@@ -47,9 +47,8 @@ export function makeUseCaseListPagesProps(
                 ? new Date(useCaseAttributes.publishedAt)
                 : undefined,
               showInOverview: false,
-              coverImage: useCaseAttributes.coverImage.data?.attributes,
-              tags:
-                useCaseAttributes.tags.data?.map((tag) => tag.attributes) || [],
+              coverImage: useCaseAttributes.coverImage,
+              tags: useCaseAttributes.tags?.map((tag) => tag) || [],
             } satisfies UseCase;
           } catch (error) {
             // eslint-disable-next-line functional/no-expression-statements
@@ -64,8 +63,8 @@ export function makeUseCaseListPagesProps(
       );
 
       return {
-        path: `/${attributes.product.data.attributes.slug}/use-cases`,
-        product: makeBaseProductWithoutLogoProps(attributes.product.data),
+        path: `/${attributes.product.slug}/use-cases`,
+        product: makeBaseProductWithoutLogoProps(attributes.product),
         abstract: {
           title: attributes.title,
           description: attributes.description,
@@ -77,8 +76,8 @@ export function makeUseCaseListPagesProps(
             ? attributes.bannerLinks.map((bannerLink) =>
                 makeBannerLinkProps(bannerLink)
               )
-            : attributes.product.data.attributes.bannerLinks?.map(
-                (bannerLink) => makeBannerLinkProps(bannerLink)
+            : attributes.product.bannerLinks?.map((bannerLink) =>
+                makeBannerLinkProps(bannerLink)
               ),
         enableFilters: attributes.enableFilters,
       } satisfies UseCasesPageProps;

@@ -5,7 +5,6 @@ import {
   strapiEmptyGuideListPagesData,
   strapiGuideListPagesData,
 } from '@/lib/strapi/__tests__/fixtures/guideListPages';
-import { StrapiGuideListPages } from '@/lib/strapi/types/guideListPage';
 import {
   guideListPagesWithItemMissingProductSlug,
   guideListPagesWithItemsMissingListItem,
@@ -36,8 +35,17 @@ describe('makeGuideListPageProps', () => {
   });
 
   it('should return a single element array of type GuideListPageProps with only one guide', () => {
-    const guideListWithMissingSlugsData =
-      guideListPagesWithItemsMissingSlug() as unknown as StrapiGuideListPages;
+    const guideListWithMissingSlugsData = {
+      data: [...guideListPagesWithItemsMissingSlug()],
+      meta: {
+        pagination: {
+          page: 1,
+          pageSize: 1,
+          pageCount: 1,
+          total: 1,
+        },
+      },
+    };
     const result = makeGuideListPagesProps(guideListWithMissingSlugsData);
     expect(result).toHaveLength(1);
     expect(result[0]).toEqual({
@@ -54,8 +62,17 @@ describe('makeGuideListPageProps', () => {
   });
 
   it('should return a single element array of type GuideListPageProps with guides without images', () => {
-    const guideListWithMissingImagesData =
-      guideListPagesWithItemsMissingImages() as unknown as StrapiGuideListPages;
+    const guideListWithMissingImagesData = {
+      data: [...guideListPagesWithItemsMissingImages()],
+      meta: {
+        pagination: {
+          page: 1,
+          pageSize: 1,
+          pageCount: 1,
+          total: 1,
+        },
+      },
+    };
     const result = makeGuideListPagesProps(guideListWithMissingImagesData);
     expect(result).toHaveLength(1);
     expect(result[0]).toEqual({
@@ -72,8 +89,7 @@ describe('makeGuideListPageProps', () => {
   });
 
   it('should return a single element array of type GuideListPageProps with only one guide', () => {
-    const guideListWithInvalidData =
-      guideListPagesWithItemsMissingListItem() as unknown as StrapiGuideListPages;
+    const guideListWithInvalidData = guideListPagesWithItemsMissingListItem();
     const result = makeGuideListPagesProps(guideListWithInvalidData);
     expect(result).toHaveLength(1);
     expect(result[0].guidesSections).toHaveLength(2);

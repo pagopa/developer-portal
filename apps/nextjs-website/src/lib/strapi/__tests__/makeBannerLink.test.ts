@@ -90,19 +90,15 @@ describe('makeBannerLinkProps', () => {
     const customBannerLink = {
       ...strapiBannerLink,
       icon: {
-        data: {
-          attributes: {
-            name: 'custom-icon.png',
-            alternativeText: 'Custom Icon',
-            caption: 'Icon caption',
-            width: 256,
-            height: 256,
-            ext: '.png',
-            mime: 'image/png',
-            size: 64,
-            url: 'https://example.com/custom-icon.png',
-          },
-        },
+        name: 'custom-icon.png',
+        alternativeText: 'Custom Icon',
+        caption: 'Icon caption',
+        width: 256,
+        height: 256,
+        ext: '.png',
+        mime: 'image/png',
+        size: 64,
+        url: 'https://example.com/custom-icon.png',
       },
     };
 

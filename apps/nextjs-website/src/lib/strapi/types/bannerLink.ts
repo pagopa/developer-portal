@@ -5,6 +5,6 @@ export type StrapiBannerLink = {
   readonly id: number;
   readonly title?: string;
   readonly content?: BlocksContent;
-  readonly icon: { readonly data: StrapiMedia };
+  readonly icon: StrapiMedia;
   readonly theme: 'light' | 'dark';
 };

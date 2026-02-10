@@ -1,11 +1,7 @@
 import { makeWebinarsProps } from '@/lib/strapi/makeProps/makeWebinars';
 import { StrapiWebinars } from '@/lib/strapi/types/webinars';
 import _ from 'lodash';
-import {
-  strapiWebinars,
-  strapiWebinarsWithMissingData,
-  webinarProps,
-} from './fixtures/webinars';
+import { strapiWebinars, webinarProps } from './fixtures/webinars';
 import { spyOnConsoleError } from '@/lib/strapi/__tests__/spyOnConsole';
 
 describe('makeWebinarsProps', () => {
@@ -19,14 +15,6 @@ describe('makeWebinarsProps', () => {
 
   it('should transform strapi webinars to webinars props', () => {
     const result = makeWebinarsProps(_.cloneDeep(strapiWebinars));
-    expect(result).toHaveLength(1);
-    expect(result[0]).toMatchObject(webinarProps);
-  });
-
-  it('should handle a payload with two object with the second one with missing data and successfully return webinar props with only one item', () => {
-    const result = makeWebinarsProps(
-      _.cloneDeep(strapiWebinarsWithMissingData)
-    );
     expect(result).toHaveLength(1);
     expect(result[0]).toMatchObject(webinarProps);
   });
@@ -51,11 +39,9 @@ describe('makeWebinarsProps', () => {
     const corruptedData: StrapiWebinars = {
       data: [
         {
-          id: 1,
-          attributes: {
-            // Missing required coverImage field to trigger error
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          } as any,
+          ...strapiWebinars.data[0],
+          title: undefined as any,
+          slug: undefined as any,
         },
       ],
       meta: {

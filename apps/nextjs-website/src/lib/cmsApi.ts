@@ -101,11 +101,11 @@ export const getTagsProps = async () => {
 export const getTutorialsProps = async () => {
   const strapiTutorials = await fetchTutorials(buildEnv);
   const tutorialsWithMarkdown = strapiTutorials.data.filter((tutorial) => {
-    const parts = tutorial?.attributes?.parts ?? [];
+    const parts = tutorial?.parts ?? [];
     return parts.some((part) => part?.__component === 'parts.markdown');
   });
   const allMarkdownParts = tutorialsWithMarkdown.flatMap((tutorial) =>
-    (tutorial?.attributes?.parts ?? []).filter(
+    (tutorial?.parts ?? []).filter(
       (part) => part?.__component === 'parts.markdown'
     )
   );
@@ -132,8 +132,7 @@ export const getQuickStartGuidesProps = async () => {
 
 export const getUrlReplaceMapProps = async () => {
   const strapiUrlReplaceMap = await fetchUrlReplaceMap(buildEnv);
-  const processed = makeUrlReplaceMap(strapiUrlReplaceMap);
-  return processed;
+  return makeUrlReplaceMap(strapiUrlReplaceMap);
 };
 
 export const getApiDataListPagesProps = async () => {
@@ -195,7 +194,7 @@ export const getGuidePageProps = async (
   const strapiGuides = (await fetchResponseFromCDN(
     getSyncedGuidesResponseJsonPath()
   )) as StrapiGuides | undefined;
-  // eslint-disable-next-line functional/no-expression-statements
+
   const guides = strapiGuides ? makeGuidesProps(strapiGuides) : [];
   const guide = guides.filter(
     (g) => g.guide.slug === guideSlug && g.product.slug === productSlug
@@ -243,8 +242,7 @@ const fetchReleaseNotes = async () => {
 export const getStrapiReleaseNotes = async (productSlug: string) => {
   const strapiReleaseNotes = await fetchReleaseNotes();
   return strapiReleaseNotes.data.find(
-    (strapiReleaseNote) =>
-      strapiReleaseNote.attributes.product.data?.attributes.slug === productSlug
+    (strapiReleaseNote) => strapiReleaseNote.product?.slug === productSlug
   );
 };
 
@@ -274,7 +272,7 @@ export const getReleaseNotesProps = async () => {
 export const getUseCasesProps = async () => {
   const strapiUseCases = await fetchUseCases(buildEnv);
   const allMarkdownParts = strapiUseCases.data.flatMap((useCase) =>
-    (useCase?.attributes?.parts ?? []).filter(isMarkDownPart)
+    (useCase?.parts ?? []).filter(isMarkDownPart)
   );
   const contentPromises = allMarkdownParts.map(async (part) => {
     const { dirName, pathToFile } = part;

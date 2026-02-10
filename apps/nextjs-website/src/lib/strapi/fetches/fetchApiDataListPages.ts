@@ -2,17 +2,18 @@ import * as qs from 'qs';
 import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
 import { productRelationsPopulate } from '@/lib/strapi/fetches/fetchProducts';
 import { StrapiApiDataListPages } from '@/lib/strapi/types/apiDataListPages';
+import { RootEntity } from '@/lib/strapi/types/rootEntity';
 
 const makeStrapiApiDataListPagePopulate = () =>
   qs.stringify({
     populate: {
-      apiData: {
+      api_data: {
         populate: {
           apiRestDetail: {
-            populate: ['slug', 'specUrls'],
+            populate: '*',
           },
           apiSoapDetail: {
-            populate: ['slug', 'repositoryUrl', 'dirName'],
+            populate: '*',
           },
           icon: { populate: '*' },
           product: { populate: 'logo' },
@@ -26,13 +27,11 @@ const makeStrapiApiDataListPagePopulate = () =>
         populate: ['icon'],
       },
       seo: {
-        populate: '*,metaImage,metaSocial.image',
+        populate: '*',
       },
-      enableFilters: true,
     },
   });
 
-export const fetchApiDataListPages = fetchFromStrapi<StrapiApiDataListPages>(
-  'api-data-list-pages',
-  makeStrapiApiDataListPagePopulate()
-);
+export const fetchApiDataListPages = fetchFromStrapi<
+  RootEntity<StrapiApiDataListPages>
+>('api-data-list-pages', makeStrapiApiDataListPagePopulate());

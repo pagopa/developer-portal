@@ -8,9 +8,9 @@ import BannerLinks from '@/components/molecules/BannerLinks/BannerLinks';
 import { useTranslations } from 'next-intl';
 import { SEO } from '@/lib/types/seo';
 import { Product } from '@/lib/types/product';
-import { StrapiBaseApiDataList } from '@/lib/strapi/types/apiDataList';
 import { Tag } from '@/lib/types/tag';
 import { CardProps } from '@/components/molecules/CardsGrid/CardsGrid';
+import { StrapiApiDataList } from '@/lib/strapi/types/apiDataList';
 
 export type ApiDataListPageTemplateProps = {
   readonly hero: {
@@ -29,7 +29,7 @@ export type ApiDataListPageTemplateProps = {
   readonly updatedAt: string;
   readonly bannerLinks: BannerLinkProps[];
   readonly theme?: Theme;
-  readonly apiData: StrapiBaseApiDataList;
+  readonly api_data: StrapiApiDataList;
   readonly seo?: SEO;
 };
 
