@@ -8,6 +8,42 @@ import { HomepageProps } from '@/app/[locale]/page';
 import SectionTitle from '@/components/molecules/SectionTitle/SectionTitle';
 import { ButtonNaked } from '@/components/atoms/ButtonNaked/ButtonNaked';
 
+const TabContent: React.FC<
+  Pick<
+    Required<HomepageProps>['ecosystem']['tabContents'][number],
+    'items' | 'cta'
+  >
+> = ({ items, cta }) => (
+  <>
+    {items && (
+      <CardsGrid
+        ctaButtonsVariant={'contained'}
+        cards={items}
+        containerSx={{
+          px: '22px',
+          py: '22px',
+          mt: '-22px',
+          mx: '-22px',
+        }}
+      />
+    )}
+    {cta && (
+      <Box textAlign={'center'}>
+        <ButtonNaked
+          component={Link}
+          href={cta.link.href}
+          color={'primary'}
+          variant={cta.variant || 'contained'}
+          sx={{ mb: 3 }}
+          target={cta.link.target ?? '_self'}
+        >
+          {cta.link.text}
+        </ButtonNaked>
+      </Box>
+    )}
+  </>
+);
+
 const Ecosystem = ({
   title,
   tabContents,
@@ -32,70 +68,14 @@ const Ecosystem = ({
           <TabComponent
             items={tabContents.map(({ name, items, cta }) => ({
               title: name,
-              content: (
-                <>
-                  {items && (
-                    <CardsGrid
-                      ctaButtonsVariant={'contained'}
-                      cards={items}
-                      containerSx={{
-                        px: '22px',
-                        py: '22px',
-                        mt: '-22px',
-                        mx: '-22px',
-                      }}
-                    />
-                  )}
-                  {cta && (
-                    <Box textAlign={'center'}>
-                      <ButtonNaked
-                        component={Link}
-                        href={cta.link.href}
-                        color={'primary'}
-                        variant={cta.variant || 'contained'}
-                        sx={{ mb: 3 }}
-                        target={cta.link.target ?? '_self'}
-                      >
-                        {cta.link.text}
-                      </ButtonNaked>
-                    </Box>
-                  )}
-                </>
-              ),
+              content: <TabContent items={items} cta={cta} />,
             }))}
             variant='fullWidth'
             centered
             sx={{ px: 0 }}
           />
         ) : (
-          <>
-            {tabContents[0].items && (
-              <CardsGrid
-                ctaButtonsVariant={'contained'}
-                cards={tabContents[0].items}
-                containerSx={{
-                  px: '22px',
-                  py: '22px',
-                  mt: '-22px',
-                  mx: '-22px',
-                }}
-              />
-            )}
-            {tabContents[0].cta && (
-              <Box textAlign={'center'}>
-                <ButtonNaked
-                  component={Link}
-                  href={tabContents[0].cta.link.href}
-                  color={'primary'}
-                  variant={tabContents[0].cta.variant || 'contained'}
-                  sx={{ mb: 3 }}
-                  target={tabContents[0].cta.link.target ?? '_self'}
-                >
-                  {tabContents[0].cta.link.text}
-                </ButtonNaked>
-              </Box>
-            )}
-          </>
+          <TabContent items={tabContents[0].items} cta={tabContents[0].cta} />
         )}
       </Box>
     </Box>
