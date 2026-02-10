@@ -90,6 +90,7 @@ export async function getGuidePage(
       guidePath,
       guidesMetadata,
       products,
+      locale,
     })
   );
 }

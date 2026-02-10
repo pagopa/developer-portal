@@ -137,6 +137,7 @@ export const getQuickStartGuidesProps = async (locale: string) => {
 };
 
 export const getUrlReplaceMapProps = async (locale: string) => {
+  // TODO: fix locale not managed for url replace map
   const strapiUrlReplaceMap = await fetchUrlReplaceMap(locale, buildEnv);
   const processed = makeUrlReplaceMap(locale, strapiUrlReplaceMap);
   return processed;
