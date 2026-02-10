@@ -11,10 +11,17 @@ import { SITE_HEADER_HEIGHT } from '@/config';
 export type SiteHeaderProps = {
   currentLocale: string;
   products: Product[];
+  isSolutionListPagePresent: boolean;
+  isWebinarPagePresent: boolean;
 };
 
 const SiteHeader = (
-  { currentLocale, products }: SiteHeaderProps,
+  {
+    currentLocale,
+    products,
+    isSolutionListPagePresent,
+    isWebinarPagePresent,
+  }: SiteHeaderProps,
   ref: ForwardedRef<HTMLDivElement>
 ) => {
   const { palette } = useTheme();
@@ -55,10 +62,14 @@ const SiteHeader = (
         <MobileSiteHeader
           currentLocale={currentLocale}
           products={productsWithOverview}
+          isSolutionListPagePresent={isSolutionListPagePresent}
+          isWebinarPagePresent={isWebinarPagePresent}
         />
         <DesktopSiteHeader
           currentLocale={currentLocale}
           products={productsWithOverview}
+          isSolutionListPagePresent={isSolutionListPagePresent}
+          isWebinarPagePresent={isWebinarPagePresent}
         />
       </Stack>
       <Divider />

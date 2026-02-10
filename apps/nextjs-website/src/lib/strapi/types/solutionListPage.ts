@@ -8,6 +8,7 @@ export type StrapiSolutionListPage = {
     readonly attributes: {
       readonly title: string;
       readonly description: string;
+      readonly locale: string;
       readonly caseHistories?: StrapiCaseHistoriesComponent;
       readonly solutions: {
         readonly data: readonly StrapiBaseSolutionWithProducts[];

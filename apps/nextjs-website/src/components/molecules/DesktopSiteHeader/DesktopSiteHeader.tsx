@@ -8,7 +8,12 @@ import { useTranslations } from 'next-intl';
 import LanguageSelector from '@/components/atoms/LanguageSelector/LanguageSelector';
 import { SUPPORTED_LOCALES } from '@/locales';
 
-const DesktopSiteHeader = ({ currentLocale, products }: SiteHeaderProps) => {
+const DesktopSiteHeader = ({
+  currentLocale,
+  products,
+  isSolutionListPagePresent,
+  isWebinarPagePresent,
+}: SiteHeaderProps) => {
   const t = useTranslations('devPortal');
 
   return (
@@ -34,24 +39,28 @@ const DesktopSiteHeader = ({ currentLocale, products }: SiteHeaderProps) => {
           },
         }}
       />
-      <LinkMui
-        component={Link}
-        color='primary.main'
-        underline='none'
-        href={`/${currentLocale}/solutions`}
-        sx={{ fontSize: '16px', fontWeight: 600 }}
-      >
-        {t('siteHeader.solutions')}
-      </LinkMui>
-      <LinkMui
-        component={Link}
-        color='primary.main'
-        underline='none'
-        href={`/${currentLocale}/webinars`}
-        sx={{ fontSize: '16px', fontWeight: 600 }}
-      >
-        {t('siteHeader.webinars')}
-      </LinkMui>
+      {isSolutionListPagePresent && (
+        <LinkMui
+          component={Link}
+          color='primary.main'
+          underline='none'
+          href={`/${currentLocale}/solutions`}
+          sx={{ fontSize: '16px', fontWeight: 600 }}
+        >
+          {t('siteHeader.solutions')}
+        </LinkMui>
+      )}
+      {isWebinarPagePresent && (
+        <LinkMui
+          component={Link}
+          color='primary.main'
+          underline='none'
+          href={`/${currentLocale}/webinars`}
+          sx={{ fontSize: '16px', fontWeight: 600 }}
+        >
+          {t('siteHeader.webinars')}
+        </LinkMui>
+      )}
       <DesktopUserInfo locale={currentLocale} />
       <LanguageSelector
         locales={SUPPORTED_LOCALES}
