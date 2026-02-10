@@ -37,31 +37,51 @@ export const makeHomepageProps = (
   ...(strapiHomepage.data.attributes.ecosystem && {
     ecosystem: {
       title: strapiHomepage.data.attributes.ecosystem.title || '',
-      productsTabName: strapiHomepage.data.attributes.ecosystem.productsTabName,
-      products: strapiHomepage.data.attributes.ecosystem.products.data.map(
-        (product) => ({
-          title: product.attributes.name,
-          text: product.attributes.description ?? '',
-          href: `${product.attributes.slug}/overview`,
-          icon: product.attributes.logo.data?.attributes.url || undefined,
-          useSrc: true,
-        })
-      ),
-      solutionsTabName:
-        strapiHomepage.data.attributes.ecosystem.solutionsTabName,
-      solutions: strapiHomepage.data.attributes.ecosystem.solutions.data.map(
-        (solution) => ({
-          title: solution.attributes.title,
-          text: solution.attributes.description ?? '',
-          href: `/solutions/${solution.attributes.slug}`,
-          icon: solution.attributes.icon.data.attributes.url,
-          useSrc: true,
-        })
-      ),
-      solutionsCta: strapiHomepage.data.attributes.ecosystem.solutionsCta && {
-        variant: strapiHomepage.data.attributes.ecosystem.solutionsCta.variant,
-        link: strapiHomepage.data.attributes.ecosystem.solutionsCta.link,
-      },
+      tabContents: [
+        ...(strapiHomepage.data.attributes.ecosystem.products.data.length
+          ? [
+              {
+                name: strapiHomepage.data.attributes.ecosystem.productsTabName,
+                items:
+                  strapiHomepage.data.attributes.ecosystem.products.data.map(
+                    (product) => ({
+                      title: product.attributes.name,
+                      text: product.attributes.description ?? '',
+                      href: `${product.attributes.slug}/overview`,
+                      icon:
+                        product.attributes.logo.data?.attributes.url ||
+                        undefined,
+                      useSrc: true,
+                    })
+                  ),
+              },
+            ]
+          : []),
+        ...(strapiHomepage.data.attributes.ecosystem.solutions.data.length
+          ? [
+              {
+                name: strapiHomepage.data.attributes.ecosystem.solutionsTabName,
+                items:
+                  strapiHomepage.data.attributes.ecosystem.solutions.data.map(
+                    (solution) => ({
+                      title: solution.attributes.title,
+                      text: solution.attributes.description ?? '',
+                      href: `/solutions/${solution.attributes.slug}`,
+                      icon: solution.attributes.icon.data.attributes.url,
+                      useSrc: true,
+                    })
+                  ),
+                cta: strapiHomepage.data.attributes.ecosystem.solutionsCta && {
+                  variant:
+                    strapiHomepage.data.attributes.ecosystem.solutionsCta
+                      .variant,
+                  link: strapiHomepage.data.attributes.ecosystem.solutionsCta
+                    .link,
+                },
+              },
+            ]
+          : []),
+      ],
     },
   }),
   seo: strapiHomepage?.data?.attributes?.seo,

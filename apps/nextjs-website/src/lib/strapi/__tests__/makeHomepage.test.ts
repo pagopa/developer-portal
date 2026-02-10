@@ -76,7 +76,7 @@ describe('makeHomepageProps', () => {
 
   it('should correctly map ecosystem products and solutions', () => {
     const result = makeHomepageProps(_.cloneDeep(strapiHomepage));
-    expect(result.ecosystem?.products).toEqual([
+    expect(result.ecosystem?.tabContents[0]?.items).toEqual([
       {
         title: 'Product 1',
         text: 'Product 1 description',
@@ -85,7 +85,7 @@ describe('makeHomepageProps', () => {
         useSrc: true,
       },
     ]);
-    expect(result.ecosystem?.solutions).toEqual([
+    expect(result.ecosystem?.tabContents[1]?.items).toEqual([
       {
         title: 'Solution 1',
         text: 'Solution 1 description',

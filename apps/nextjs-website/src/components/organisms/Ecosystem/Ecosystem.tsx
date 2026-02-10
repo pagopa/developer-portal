@@ -10,13 +10,14 @@ import { ButtonNaked } from '@/components/atoms/ButtonNaked/ButtonNaked';
 
 const Ecosystem = ({
   title,
-  products,
-  productsTabName,
-  solutionsTabName,
-  solutions,
-  solutionsCta,
+  tabContents,
 }: Required<HomepageProps>['ecosystem']) => {
   const theme = useTheme();
+
+  if (!tabContents || tabContents.length === 0) {
+    return null;
+  }
+
   return (
     <Box pt={10} pb={0} sx={{ backgroundColor: theme.palette.grey[50] }}>
       {title && <SectionTitle margin={'0 0 1.75rem 0'} title={title} />}
@@ -27,31 +28,16 @@ const Ecosystem = ({
           paddingX: 4,
         }}
       >
-        <TabComponent
-          items={[
-            {
-              title: productsTabName,
-              content: (
-                <CardsGrid
-                  ctaButtonsVariant={'contained'}
-                  cards={products}
-                  containerSx={{
-                    px: '22px',
-                    py: '22px',
-                    mt: '-22px',
-                    mx: '-22px',
-                  }}
-                />
-              ),
-            },
-            {
-              title: solutionsTabName,
+        {tabContents.length > 1 ? (
+          <TabComponent
+            items={tabContents.map(({ name, items, cta }) => ({
+              title: name,
               content: (
                 <>
-                  {solutions && (
+                  {items && (
                     <CardsGrid
                       ctaButtonsVariant={'contained'}
-                      cards={solutions}
+                      cards={items}
                       containerSx={{
                         px: '22px',
                         py: '22px',
@@ -60,28 +46,57 @@ const Ecosystem = ({
                       }}
                     />
                   )}
-                  {solutionsCta && (
+                  {cta && (
                     <Box textAlign={'center'}>
                       <ButtonNaked
                         component={Link}
-                        href={solutionsCta.link.href}
+                        href={cta.link.href}
                         color={'primary'}
-                        variant={solutionsCta.variant || 'contained'}
+                        variant={cta.variant || 'contained'}
                         sx={{ mb: 3 }}
-                        target={solutionsCta.link.target ?? '_self'}
+                        target={cta.link.target ?? '_self'}
                       >
-                        {solutionsCta.link.text}
+                        {cta.link.text}
                       </ButtonNaked>
                     </Box>
                   )}
                 </>
               ),
-            },
-          ]}
-          variant='fullWidth'
-          centered
-          sx={{ px: 0 }}
-        />
+            }))}
+            variant='fullWidth'
+            centered
+            sx={{ px: 0 }}
+          />
+        ) : (
+          <>
+            {tabContents[0].items && (
+              <CardsGrid
+                ctaButtonsVariant={'contained'}
+                cards={tabContents[0].items}
+                containerSx={{
+                  px: '22px',
+                  py: '22px',
+                  mt: '-22px',
+                  mx: '-22px',
+                }}
+              />
+            )}
+            {tabContents[0].cta && (
+              <Box textAlign={'center'}>
+                <ButtonNaked
+                  component={Link}
+                  href={tabContents[0].cta.link.href}
+                  color={'primary'}
+                  variant={tabContents[0].cta.variant || 'contained'}
+                  sx={{ mb: 3 }}
+                  target={tabContents[0].cta.link.target ?? '_self'}
+                >
+                  {tabContents[0].cta.link.text}
+                </ButtonNaked>
+              </Box>
+            )}
+          </>
+        )}
       </Box>
     </Box>
   );

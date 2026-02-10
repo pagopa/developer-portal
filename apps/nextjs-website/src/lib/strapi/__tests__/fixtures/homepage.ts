@@ -243,33 +243,39 @@ export const expectedHomepageProps: HomepageProps = {
   },
   ecosystem: {
     title: 'Our Ecosystem',
-    productsTabName: 'Products',
-    products: [
+    tabContents: [
       {
-        title: 'Product 1',
-        text: 'Product 1 description',
-        href: 'product-1/overview',
-        icon: 'https://example.com/example.jpg',
-        useSrc: true,
+        name: 'Products',
+        items: [
+          {
+            title: 'Product 1',
+            text: 'Product 1 description',
+            href: 'product-1/overview',
+            icon: 'https://example.com/example.jpg',
+            useSrc: true,
+          },
+        ],
+      },
+      {
+        name: 'Solutions',
+        items: [
+          {
+            title: 'Solution 1',
+            text: 'Solution 1 description',
+            href: '/solutions/solution-1',
+            icon: 'https://example.com/example.jpg',
+            useSrc: true,
+          },
+        ],
+        cta: {
+          variant: 'outlined',
+          link: {
+            text: 'View All Solutions',
+            href: '/solutions',
+          },
+        },
       },
     ],
-    solutionsTabName: 'Solutions',
-    solutions: [
-      {
-        title: 'Solution 1',
-        text: 'Solution 1 description',
-        href: '/solutions/solution-1',
-        icon: 'https://example.com/example.jpg',
-        useSrc: true,
-      },
-    ],
-    solutionsCta: {
-      variant: 'outlined',
-      link: {
-        text: 'View All Solutions',
-        href: '/solutions',
-      },
-    },
   },
   webinars: [
     {
