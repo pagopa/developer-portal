@@ -616,7 +616,9 @@ def get_structured_docs(parent_folder: str, bucket_name: str) -> List[Document]:
     """
 
     bucket = AWS_S3_RESOURCE.Bucket(bucket_name)
-    prefix = os.path.join(parent_folder, EXTRACTOR_FOLDER)
+    prefix = "/".join(
+        part.strip("/") for part in (parent_folder, EXTRACTOR_FOLDER) if part
+    )
 
     structured_docs = []
     for obj in bucket.objects.filter(Prefix=prefix):
