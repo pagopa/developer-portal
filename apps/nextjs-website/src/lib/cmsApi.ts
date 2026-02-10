@@ -138,7 +138,7 @@ export const getQuickStartGuidesProps = async (locale: string) => {
 
 export const getUrlReplaceMapProps = async (locale: string) => {
   const strapiUrlReplaceMap = await fetchUrlReplaceMap(locale, buildEnv);
-  const processed = makeUrlReplaceMap(strapiUrlReplaceMap);
+  const processed = makeUrlReplaceMap(locale, strapiUrlReplaceMap);
   return processed;
 };
 
