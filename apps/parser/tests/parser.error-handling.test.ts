@@ -36,7 +36,7 @@ async function captureParserError(url: string): Promise<string> {
       env: {
         ...process.env,
         URL: url,
-        VECTOR_INDEX_NAME: 'test-vector-index',
+        PARSER_VECTOR_INDEX_NAME: 'test-parseer-vector-index',
       },
       timeout: 30_000,
     });
