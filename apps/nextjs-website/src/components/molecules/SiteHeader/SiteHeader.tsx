@@ -11,10 +11,17 @@ import { SITE_HEADER_HEIGHT } from '@/config';
 export type SiteHeaderProps = {
   locale: string;
   products: Product[];
+  shouldShowLinkToSolutions: boolean;
+  shouldShowLinkToWebinars: boolean;
 };
 
 const SiteHeader = (
-  { locale, products }: SiteHeaderProps,
+  {
+    locale,
+    products,
+    shouldShowLinkToSolutions,
+    shouldShowLinkToWebinars,
+  }: SiteHeaderProps,
   ref: ForwardedRef<HTMLDivElement>
 ) => {
   const { palette } = useTheme();
@@ -52,8 +59,18 @@ const SiteHeader = (
           title={t('title')}
           boldTitle={t('company')}
         />
-        <MobileSiteHeader locale={locale} products={productsWithOverview} />
-        <DesktopSiteHeader locale={locale} products={productsWithOverview} />
+        <MobileSiteHeader
+          locale={locale}
+          products={productsWithOverview}
+          shouldShowLinkToSolutions={shouldShowLinkToSolutions}
+          shouldShowLinkToWebinars={shouldShowLinkToWebinars}
+        />
+        <DesktopSiteHeader
+          locale={locale}
+          products={productsWithOverview}
+          shouldShowLinkToSolutions={shouldShowLinkToSolutions}
+          shouldShowLinkToWebinars={shouldShowLinkToWebinars}
+        />
       </Stack>
       <Divider />
     </Box>
