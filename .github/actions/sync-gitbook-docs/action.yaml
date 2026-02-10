@@ -220,10 +220,15 @@ runs:
       env:
         ENV_SHORT: ${{ env.ENV_SHORT }}
         S3_DIRNAMES_JSON_PATH: ${{ inputs.s3_dirnames_json_path }}
+        LOCALE: ${{ inputs.locale }}
       run: |
         echo "::group::Fetch directory lists from S3"
         echo "Fetching directory lists from S3 to validate publication status..."
-        S3_DIRNAMES="s3://devportal-${{ env.ENV_SHORT }}-website-static-content/${{ env.S3_DIRNAMES_JSON_PATH }}"
+        if [[ -n "$LOCALE" ]]; then
+          S3_DIRNAMES="s3://devportal-${{ env.ENV_SHORT }}-website-static-content/$LOCALE/${{ env.S3_DIRNAMES_JSON_PATH }}"
+        else
+          S3_DIRNAMES="s3://devportal-${{ env.ENV_SHORT }}-website-static-content/${{ env.S3_DIRNAMES_JSON_PATH }}"
+        fi
         aws s3 cp "$S3_DIRNAMES" dirNames.json || echo '{"dirNames": []}' > dirNames.json
         echo "::endgroup::"
 
