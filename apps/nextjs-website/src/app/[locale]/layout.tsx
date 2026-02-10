@@ -16,7 +16,7 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import '@/styles/globals.css';
 import ThemeRegistry from '../ThemeRegistry';
-import { getProducts, getSolutionListPage } from '@/lib/api';
+import { getProducts, getSolutionListPage, getVisibleInListWebinars } from '@/lib/api';
 import SiteFooter from '@/components/atoms/SiteFooter/SiteFooter';
 import SiteHeader from '@/components/molecules/SiteHeader/SiteHeader';
 import { notFound } from 'next/navigation';
