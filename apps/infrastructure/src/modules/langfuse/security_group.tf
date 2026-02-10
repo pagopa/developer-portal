@@ -94,13 +94,13 @@ resource "aws_security_group" "langfuse_web" {
 }
 
 resource "aws_security_group_rule" "langfuse_web_lambda_ingress" {
-  count                    = var.lambda_monitor_security_group_id != null ? 1 : 0
+  count                    = var.lambda_security_group_id != null ? 1 : 0
   type                     = "ingress"
   from_port                = 3000
   to_port                  = 3000
   protocol                 = "tcp"
   security_group_id        = aws_security_group.langfuse_web.id
-  source_security_group_id = var.lambda_monitor_security_group_id
+  source_security_group_id = var.lambda_security_group_id
   description              = "Allow lambda monitor access to langfuse-web"
 }
 
