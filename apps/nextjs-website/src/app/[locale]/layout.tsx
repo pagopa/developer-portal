@@ -125,7 +125,7 @@ export default async function RootLayout({
                 ? MATOMO_TAG_MANAGER_SCRIPT
                 : PREVIOUS_MATOMO_TAG_MANAGER_SCRIPT,
             }}
-            strategy="lazyOnload"
+            strategy='lazyOnload'
           />
         )}
       </head>
