@@ -26,7 +26,7 @@ from src.modules.codec import safe_json_load
 
 logging.getLogger("botocore").setLevel(logging.ERROR)
 LOGGER = get_logger(__name__)
-AWS_S3_CLIENT = AWS_SESSION.client("s3")
+AWS_S3_RESOURCE = AWS_SESSION.resource("s3")
 SITEMAP_S3_FILEPATH = "sitemap.xml"
 DOCS_PARENT_FOLDER = "devportal-docs/docs/"
 GUIDES_FOLDER_FILEPATH = "main-guide-versions-dirNames.json"
@@ -63,11 +63,8 @@ def read_file_from_s3(
     bucket_name = bucket_name if bucket_name else SETTINGS.bucket_static_content
     text = ""
     try:
-        response = AWS_S3_CLIENT.get_object(
-            Bucket=bucket_name,
-            Key=file_path,
-        )
-        text = response["Body"].read().decode("utf-8")
+        obj = AWS_S3_RESOURCE.Object(bucket_name, file_path)
+        return obj.get()["Body"].read().decode("utf-8")
 
     except Exception as e:
         LOGGER.error(f"Error reading {bucket_name}/{file_path} from S3: {e}")
@@ -618,13 +615,11 @@ def get_structured_docs(parent_folder: str, bucket_name: str) -> List[Document]:
         List[Document]: A list of Document objects containing the content and metadata of the structured documents
     """
 
-    s3_resource = AWS_SESSION.resource("s3")
-    bucket = s3_resource.Bucket(bucket_name)
+    bucket = AWS_S3_RESOURCE.Bucket(bucket_name)
+    prefix = os.path.join(parent_folder, EXTRACTOR_FOLDER)
 
     structured_docs = []
-    for obj in bucket.objects.filter(
-        Prefix=os.path.join(parent_folder, EXTRACTOR_FOLDER)
-    ):
+    for obj in bucket.objects.filter(Prefix=prefix):
         if obj.key.lower().endswith(".json"):
 
             json_file_path = obj.key
