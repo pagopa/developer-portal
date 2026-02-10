@@ -176,14 +176,17 @@ function toIsoOrNull(value: string | null): string | null {
 }
 
 async function assertReachable(url: string): Promise<void> {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
+
   try {
     const res = await fetch(url, {
       method: 'GET',
       headers: {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
       },
-      timeout: REQUEST_TIMEOUT_MS
-    } as any);
+      signal: controller.signal
+    });
 
     const text = await res.text();
 
@@ -199,6 +202,11 @@ async function assertReachable(url: string): Promise<void> {
       throw new Error(`Status ${res.status}`);
     }
   } catch (error) {
+    if ((error as Error).name === 'AbortError') {
+      throw new Error(`Target ${url} is unreachable: request timed out`);
+    }
     throw new Error(`Target ${url} is unreachable: ${(error as Error).message}`);
+  } finally {
+    clearTimeout(timeoutId);
   }
 }
