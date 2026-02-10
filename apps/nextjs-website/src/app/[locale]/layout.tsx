@@ -16,7 +16,7 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import '@/styles/globals.css';
 import ThemeRegistry from '../ThemeRegistry';
-import { getProducts, getSolutionListPage } from '@/lib/api';
+import { getProducts, getSolutionListPage, getVisibleInListWebinars } from '@/lib/api';
 import SiteFooter from '@/components/atoms/SiteFooter/SiteFooter';
 import SiteHeader from '@/components/molecules/SiteHeader/SiteHeader';
 import { notFound } from 'next/navigation';
@@ -30,7 +30,6 @@ import ChatbotProvider from '@/components/organisms/ChatbotProvider/ChatbotProvi
 import { ErrorBoundary } from 'next/dist/client/components/error-boundary';
 import Error from './error';
 import { Box } from '@mui/material';
-import { getWebinarsProps } from '@/lib/cmsApi';
 
 // TODO: remove PREVIOUS_MATOMO_TAG_MANAGER_SCRIPT script, usePreviousScript when the migration to the new tag manager is completed
 const PREVIOUS_MATOMO_TAG_MANAGER_SCRIPT =
@@ -102,7 +101,7 @@ export default async function RootLayout({
   const { locale } = await params;
   const products = [...(await getProducts(locale)).filter((product) => product.isVisible)];
   const shouldShowLinkToSolutions = await getSolutionListPage(locale).then((data) => data.solutions.length > 0).catch(() => false);
-  const shouldShowLinkToWebinars = await getWebinarsProps(locale).then((webinars) => webinars.length > 0).catch(() => false);
+  const shouldShowLinkToWebinars = await getVisibleInListWebinars(locale).then((webinars) => webinars.length > 0).catch(() => false);
 
   // Disabled eslint rules to to follow https://next-intl-docs.vercel.app/docs/getting-started/app-router-client-components guide
   // eslint-disable-next-line functional/no-let
