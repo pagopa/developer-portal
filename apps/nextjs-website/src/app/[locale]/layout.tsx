@@ -30,7 +30,7 @@ import ChatbotProvider from '@/components/organisms/ChatbotProvider/ChatbotProvi
 import { ErrorBoundary } from 'next/dist/client/components/error-boundary';
 import Error from './error';
 import { Box } from '@mui/material';
-import { getWebinarsProps } from '../../lib/cmsApi';
+import { getWebinarsProps } from '@/lib/cmsApi';
 
 // TODO: remove PREVIOUS_MATOMO_TAG_MANAGER_SCRIPT script, usePreviousScript when the migration to the new tag manager is completed
 const PREVIOUS_MATOMO_TAG_MANAGER_SCRIPT =
@@ -119,14 +119,14 @@ export default async function RootLayout({
       <head>
         {isProduction && (
           <Script
-            id="matomo-tag-manager"
-            key="script-matomo-tag-manager"
+            id='matomo-tag-manager'
+            key='script-matomo-tag-manager'
             dangerouslySetInnerHTML={{
               __html: useNewCookie
                 ? MATOMO_TAG_MANAGER_SCRIPT
                 : PREVIOUS_MATOMO_TAG_MANAGER_SCRIPT,
             }}
-            strategy="lazyOnload"
+            strategy='lazyOnload'
           />
         )}
       </head>
@@ -134,7 +134,7 @@ export default async function RootLayout({
         <NextIntlContext
           locale={locale}
           messages={messages}
-          timeZone="Europe/Rome"
+          timeZone='Europe/Rome'
         >
           <BodyWrapper>
             <CookieBannerScript
