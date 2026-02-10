@@ -16,6 +16,10 @@ on:
           - dev
           - uat
           - prod
+      parser_vector_index_name:
+        description: 'Parser Vector Index Name (optional, overrides secret)'
+        required: false
+        type: string
 
 permissions:
   id-token: write
@@ -43,7 +47,7 @@ jobs:
       
       - name: Run Parser for each URL
         env:
-          VECTOR_INDEX_ID: ${{ secrets.VECTOR_INDEX_ID }}
+          PARSER_VECTOR_INDEX_NAME: ${{ inputs.parser_vector_index_name || secrets.PARSER_VECTOR_INDEX_NAME }}
         working-directory: apps/parser
         run: |
           # Loop through each URL sequentially
