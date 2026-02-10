@@ -133,7 +133,7 @@ export default async function RootLayout({
         <NextIntlContext
           locale={locale}
           messages={messages}
-          timeZone="Europe/Rome"
+          timeZone='Europe/Rome'
         >
           <BodyWrapper>
             <CookieBannerScript
