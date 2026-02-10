@@ -109,13 +109,12 @@ def build_index_redis(
 
     if clean_redis:
         index = load_index_redis(index_id)
-        if index:
-            ref_docs_info = index.storage_context.docstore.get_all_ref_doc_info()
-            for ref_doc_id, ref_doc_info in ref_docs_info.items():
-                index.delete_ref_doc(ref_doc_id, delete_from_docstore=True)
-                if ref_doc_info:
-                    for node_id in ref_doc_info.node_ids:
-                        index.storage_context.docstore.delete_document(node_id)
+        ref_docs_info = index.storage_context.docstore.get_all_ref_doc_info()
+        for ref_doc_id, ref_doc_info in ref_docs_info.items():
+            index.delete_ref_doc(ref_doc_id, delete_from_docstore=True)
+            if ref_doc_info:
+                for node_id in ref_doc_info.node_ids:
+                    index.storage_context.docstore.delete_document(node_id)
         LOGGER.info(f"Redis is now cleaned from {index_id}.")
 
     documents = get_documents(index_id, static, dynamic, api, structured)
