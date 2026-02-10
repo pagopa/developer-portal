@@ -58,4 +58,4 @@ runs:
       shell: bash
       run: |
         cd apps/chatbot-index
-        PYTHONPATH=. poetry run python src/modules/create_vector_index.py ${{ inputs.static == true && ' --static' || '' }} ${{ inputs.dynamic == true && ' --dynamic' || '' }} ${{ inputs.api == true && ' --api' || '' }} ${{ inputs.structured == true && ' --structured' || '' }} --clean-redis
+        PYTHONPATH=. poetry run python src/modules/create_vector_index.py ${{ inputs.static == 'true' && ' --static' || '' }} ${{ inputs.dynamic == 'true' && ' --dynamic' || '' }} ${{ inputs.api == 'true' && ' --api' || '' }} ${{ inputs.structured == 'true' && ' --structured' || '' }} --clean-redis
