@@ -56,7 +56,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const allLocalesSitemaps = await Promise.all(
     SUPPORTED_LOCALES.map(async (locale) => {
       const localeCode = locale.langCode;
-      const localeUrlPrefix = `${baseUrl}/${localeCode}`;
+      const localizedUrlPrefix = `${baseUrl}/${localeCode}`;
 
       // --------------------------------------------------------------------------------
       // 1. Fetch Global / Static Pages
@@ -69,19 +69,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       // Base static routes
       const baseRoutes = [
         {
-          url: localeUrlPrefix,
+          url: localizedUrlPrefix,
           lastModified: new Date(homePage.updatedAt),
           changeFrequency: 'daily' as const,
           priority: 1,
         },
         {
-          url: `${localeUrlPrefix}/privacy-policy`,
+          url: `${localizedUrlPrefix}/privacy-policy`,
           lastModified: new Date(), // Standard static page
           changeFrequency: 'monthly' as const,
           priority: 0.3,
         },
         {
-          url: `${localeUrlPrefix}/terms-of-service`,
+          url: `${localizedUrlPrefix}/terms-of-service`,
           lastModified: new Date(), // Standard static page
           changeFrequency: 'monthly' as const,
           priority: 0.3,
@@ -90,7 +90,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
       // Case History routes (Global collection)
       const caseHistoryRoutes = caseHistories.map(({ slug, updatedAt }) => ({
-        url: `${localeUrlPrefix}/case-histories/${slug}`,
+        url: `${localizedUrlPrefix}/case-histories/${slug}`,
         lastModified: new Date(updatedAt || Date.now()),
         changeFrequency: 'weekly' as const,
         priority: 0.7,
@@ -98,7 +98,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
       // Webinar routes (Global collection)
       const webinarRoutes = webinars.map((webinar) => ({
-        url: `${localeUrlPrefix}/webinars/${webinar.slug}`,
+        url: `${localizedUrlPrefix}/webinars/${webinar.slug}`,
         lastModified: new Date(webinar.updatedAt || Date.now()),
         changeFrequency: 'weekly' as const,
         priority: 0.6,
@@ -106,7 +106,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
       // Solution routes (Global collection)
       const solutionRoutes = solutions.map((solution) => ({
-        url: `${localeUrlPrefix}/solutions/${solution.slug}`,
+        url: `${localizedUrlPrefix}/solutions/${solution.slug}`,
         lastModified: new Date(solution.updatedAt || Date.now()),
         changeFrequency: 'weekly' as const,
         priority: 0.6,
@@ -114,7 +114,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
       // Solution Details routes
       const solutionsDetailRoutes = solutions.map((solution) => ({
-        url: `${localeUrlPrefix}/solutions/${solution.slug}/details`,
+        url: `${localizedUrlPrefix}/solutions/${solution.slug}/details`,
         lastModified: new Date(solution.updatedAt || Date.now()),
         changeFrequency: 'weekly' as const,
         priority: 0.6,
@@ -135,13 +135,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       // Main Section Routes (Aggregators)
       const sectionRoutes = [
         {
-          url: `${localeUrlPrefix}/solutions`,
+          url: `${localizedUrlPrefix}/solutions`,
           lastModified: new Date(getLastUpdate(solutions) || Date.now()),
           changeFrequency: 'weekly' as const,
           priority: 0.8,
         },
         {
-          url: `${localeUrlPrefix}/webinars`,
+          url: `${localizedUrlPrefix}/webinars`,
           lastModified: new Date(getLastUpdate(webinars) || Date.now()),
           changeFrequency: 'weekly' as const,
           priority: 0.8,
@@ -284,7 +284,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         const overviewRoute = relations?.overview?.data
           ? [
               {
-                url: `${localeUrlPrefix}/${productSlug}/overview`,
+                url: `${localizedUrlPrefix}/${productSlug}/overview`,
                 lastModified: new Date(
                   relations.overview.data.attributes.updatedAt || Date.now()
                 ),
@@ -297,7 +297,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         const quickStartRoute = relations?.quickstart_guide?.data
           ? [
               {
-                url: `${localeUrlPrefix}/${productSlug}/quick-start`,
+                url: `${localizedUrlPrefix}/${productSlug}/quick-start`,
                 lastModified: new Date(
                   relations.quickstart_guide.data.attributes.updatedAt ||
                     Date.now()
@@ -311,7 +311,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         const tutorialListRoute = relations?.tutorial_list_page?.data
           ? [
               {
-                url: `${localeUrlPrefix}/${productSlug}/tutorials`,
+                url: `${localizedUrlPrefix}/${productSlug}/tutorials`,
                 lastModified: new Date(
                   relations.tutorial_list_page.data.attributes.updatedAt ||
                     Date.now()
@@ -325,7 +325,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         const guideListRoute = relations?.guide_list_page?.data
           ? [
               {
-                url: `${localeUrlPrefix}/${productSlug}/guides`,
+                url: `${localizedUrlPrefix}/${productSlug}/guides`,
                 lastModified: new Date(
                   relations.guide_list_page.data.attributes.updatedAt ||
                     Date.now()
@@ -347,7 +347,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         const tutorialRoutes = tutorialsData.data
           .filter((tutorial) => tutorial.attributes.slug)
           .map((tutorial) => ({
-            url: `${localeUrlPrefix}/${productSlug}/tutorials/${tutorial.attributes.slug}`,
+            url: `${localizedUrlPrefix}/${productSlug}/tutorials/${tutorial.attributes.slug}`,
             lastModified: new Date(tutorial.attributes.updatedAt || Date.now()),
             changeFrequency: 'weekly' as const,
             priority: 0.6,
@@ -364,7 +364,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
           return apiSlug
             ? [
                 {
-                  url: `${localeUrlPrefix}/${productSlug}/api/${apiSlug}`,
+                  url: `${localizedUrlPrefix}/${productSlug}/api/${apiSlug}`,
                   lastModified: new Date(
                     api.attributes.updatedAt || Date.now()
                   ),
