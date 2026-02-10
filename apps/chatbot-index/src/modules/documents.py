@@ -693,12 +693,16 @@ def get_documents(
 
     docs = []
 
+    static_metadata = None
+
     if static:
         static_metadata = get_static_metadata()
         static_docs = get_static_docs(static_metadata)
         docs.extend(static_docs)
 
     if dynamic:
+        if static_metadata is None:
+            static_metadata = get_static_metadata()
         dynamic_metadata = get_dynamic_metadata(static_metadata)
         dynamic_docs = get_dynamic_docs(dynamic_metadata)
         docs.extend(dynamic_docs)
