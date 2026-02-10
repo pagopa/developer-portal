@@ -25,6 +25,7 @@ type StartInfoProps = {
     href: string;
     iconName?: string;
   };
+  backgroundVariant?: 'white' | 'lightGrey';
 };
 
 const StartInfo = ({
@@ -32,13 +33,16 @@ const StartInfo = ({
   cards,
   cta,
   cardVariant = 'contained',
+  backgroundVariant = 'white',
 }: StartInfoProps) => {
   const { palette } = useTheme();
   const t = useTranslations();
+  const backgroundColor =
+    backgroundVariant === 'white' ? palette.background.paper : palette.grey[50];
 
   return (
     <>
-      <Box pt={10} pb={6} sx={{ backgroundColor: palette.grey[50] }}>
+      <Box pt={10} pb={6} sx={{ backgroundColor: backgroundColor }}>
         <Box mb={2}>
           <SectionTitle
             title={title || t('overview.startInfo.title')}
@@ -67,7 +71,7 @@ const StartInfo = ({
         />
       </Box>
       {cta && (
-        <Box py={2} sx={{ backgroundColor: palette.grey[50] }}>
+        <Box py={2} sx={{ backgroundColor: backgroundColor }}>
           <Stack
             spacing={2}
             direction={{ md: 'row', xs: 'column' }}

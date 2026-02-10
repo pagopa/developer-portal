@@ -83,9 +83,8 @@ export async function generateMetadata(props: {
   };
 }
 
-const Page = async (props: { params: Promise<Params> }) => {
-  const { locale, productSlug, productGuidePage } = await props.params;
-  const currentLocale = locale;
+const Page = async ({ params }: { params: Promise<Params> }) => {
+  const { locale, productSlug, productGuidePage } = await params;
   const [guidePageProps, urlReplaceMap] = await Promise.all([
     getGuidePage(productGuidePage ?? [''], locale, productSlug),
     getUrlReplaceMapProps(locale),
@@ -122,14 +121,13 @@ const Page = async (props: { params: Promise<Params> }) => {
 
   const structuredData = generateStructuredDataScripts({
     breadcrumbsItems: [
-      productToBreadcrumb(currentLocale, productGuidePageProps.product),
+      productToBreadcrumb(locale, productGuidePageProps.product),
       {
         name: seo?.metaTitle || page.title,
-        item: breadcrumbItemByProduct(
-          currentLocale,
-          productGuidePageProps.product,
-          ['guides', ...(productGuidePage || [])]
-        ),
+        item: breadcrumbItemByProduct(locale, productGuidePageProps.product, [
+          'guides',
+          ...(productGuidePage || []),
+        ]),
       },
     ],
     seo: seo,
@@ -137,13 +135,13 @@ const Page = async (props: { params: Promise<Params> }) => {
   });
 
   const initialBreadcrumbs = [
-    ...productPageToBreadcrumbs(currentLocale, productGuidePageProps.product, [
+    ...productPageToBreadcrumbs(locale, productGuidePageProps.product, [
       {
         translate: true,
         name: 'devPortal.productHeader.guides',
         path: productGuidePageProps.product.hasGuideListPage
-          ? `/${currentLocale}/${productGuidePageProps.product.slug}/guides`
-          : `/${currentLocale}`,
+          ? `/${locale}/${productGuidePageProps.product.slug}/guides`
+          : `/${locale}`,
       },
       {
         name: productGuidePageProps.guide.name,

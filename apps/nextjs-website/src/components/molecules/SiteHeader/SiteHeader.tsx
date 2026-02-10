@@ -9,7 +9,7 @@ import DesktopSiteHeader from '@/components/molecules/DesktopSiteHeader/DesktopS
 import { SITE_HEADER_HEIGHT } from '@/config';
 
 export type SiteHeaderProps = {
-  currentLocale: string;
+  locale: string;
   products: Product[];
   shouldShowLinkToSolutions: boolean;
   shouldShowLinkToWebinars: boolean;
@@ -17,7 +17,7 @@ export type SiteHeaderProps = {
 
 const SiteHeader = (
   {
-    currentLocale,
+    locale,
     products,
     shouldShowLinkToSolutions,
     shouldShowLinkToWebinars,
@@ -55,18 +55,18 @@ const SiteHeader = (
         alignItems='center'
       >
         <HomepageButton
-          href={`/${currentLocale}`}
+          href={`/${locale}`}
           title={t('title')}
           boldTitle={t('company')}
         />
         <MobileSiteHeader
-          currentLocale={currentLocale}
+          locale={locale}
           products={productsWithOverview}
           shouldShowLinkToSolutions={shouldShowLinkToSolutions}
           shouldShowLinkToWebinars={shouldShowLinkToWebinars}
         />
         <DesktopSiteHeader
-          currentLocale={currentLocale}
+          locale={locale}
           products={productsWithOverview}
           shouldShowLinkToSolutions={shouldShowLinkToSolutions}
           shouldShowLinkToWebinars={shouldShowLinkToWebinars}

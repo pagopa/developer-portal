@@ -64,6 +64,19 @@ const ApiViewer: FC<ApiViewerProps> = ({ specURL }) => {
           #api-info {
             margin-left: 0 !important;
           }
+          .nav-method {
+            border-radius: 4px !important; 
+            min-width: 48px !important;
+            min-height: 22px !important;
+            padding-top: 2px !important;
+            font-size: 12px !important;
+            font-weight: 600 !important;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background-color: ${palette.info[100]} !important;
+            margin-right: 8px !important; 
+          }
         `;
         rapidocEl.shadowRoot.appendChild(style);
       }
@@ -80,7 +93,7 @@ const ApiViewer: FC<ApiViewerProps> = ({ specURL }) => {
     return () => {
       rapidocEl.removeEventListener('spec-loaded', injectStyles);
     };
-  }, []);
+  }, [palette.info]);
 
   // Cast strict TS error for custom element
   const RapiDoc = 'rapi-doc' as unknown as ElementType;

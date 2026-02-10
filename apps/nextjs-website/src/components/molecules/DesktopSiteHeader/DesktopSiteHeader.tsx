@@ -9,7 +9,7 @@ import LanguageSelector from '@/components/atoms/LanguageSelector/LanguageSelect
 import { SUPPORTED_LOCALES } from '@/locales';
 
 const DesktopSiteHeader = ({
-  currentLocale,
+  locale,
   products,
   shouldShowLinkToSolutions,
   shouldShowLinkToWebinars,
@@ -30,7 +30,7 @@ const DesktopSiteHeader = ({
       <Dropdown
         label={t('siteHeader.products')}
         items={products.map((product) => ({
-          href: `/${currentLocale}/${product.slug}/overview`,
+          href: `/${locale}/${product.slug}/overview`,
           label: product.name,
         }))}
         menuStyle={{
@@ -44,7 +44,7 @@ const DesktopSiteHeader = ({
           component={Link}
           color='primary.main'
           underline='none'
-          href={`/${currentLocale}/solutions`}
+          href={`/${locale}/solutions`}
           sx={{ fontSize: '16px', fontWeight: 600 }}
         >
           {t('siteHeader.solutions')}
@@ -55,17 +55,14 @@ const DesktopSiteHeader = ({
           component={Link}
           color='primary.main'
           underline='none'
-          href={`/${currentLocale}/webinars`}
+          href={`/${locale}/webinars`}
           sx={{ fontSize: '16px', fontWeight: 600 }}
         >
           {t('siteHeader.webinars')}
         </LinkMui>
       )}
-      <DesktopUserInfo locale={currentLocale} />
-      <LanguageSelector
-        locales={SUPPORTED_LOCALES}
-        currentLocale={currentLocale}
-      />
+      <DesktopUserInfo locale={locale} />
+      <LanguageSelector locales={SUPPORTED_LOCALES} currentLocale={locale} />
     </Box>
   );
 };

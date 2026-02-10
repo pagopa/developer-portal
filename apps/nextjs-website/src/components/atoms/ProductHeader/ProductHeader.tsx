@@ -14,25 +14,18 @@ type ProductHeaderProps = {
   path: string;
 };
 
-const ProductHeader: FC<ProductHeaderProps> = ({
-  locale: currentLocale,
-  product,
-  path,
-}) => {
+const ProductHeader: FC<ProductHeaderProps> = ({ locale, product, path }) => {
   const { palette } = useTheme();
   const t = useTranslations();
   const scrollUp = useScrollUp();
   const themeVariant = palette.mode;
 
-  const menu = productToMenuItems(
-    currentLocale,
-    product,
-    path,
-    themeVariant
-  ).map((item) => ({
-    ...item,
-    label: t(item.label),
-  }));
+  const menu = productToMenuItems(locale, product, path, themeVariant).map(
+    (item) => ({
+      ...item,
+      label: t(item.label),
+    })
+  );
   return (
     <Box
       sx={{
@@ -46,7 +39,7 @@ const ProductHeader: FC<ProductHeaderProps> = ({
       <Header
         menu={menu}
         product={{
-          href: `/${currentLocale}/${product.slug}/overview`,
+          href: `/${locale}/${product.slug}/overview`,
           name: product.name,
         }}
         theme={themeVariant}

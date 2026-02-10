@@ -118,7 +118,7 @@ export const MobileSiteHeaderStyledTreeItem = styled(TreeItem)(({ theme }) => ({
 }));
 
 const MobileSiteHeader = ({
-  currentLocale,
+  locale,
   products,
   shouldShowLinkToSolutions,
   shouldShowLinkToWebinars,
@@ -205,7 +205,7 @@ const MobileSiteHeader = ({
                   key={index}
                   variant='body1'
                   component={NextLink}
-                  href={`/${currentLocale}/${product.slug}/overview`}
+                  href={`/${locale}/${product.slug}/overview`}
                   onClick={handleClick}
                   style={{
                     color: palette.primary.dark,
@@ -225,7 +225,7 @@ const MobileSiteHeader = ({
                 <Typography
                   component={NextLink}
                   variant='body1'
-                  href={`/${currentLocale}/solutions`}
+                  href={`/${locale}/solutions`}
                   onClick={handleClick}
                   style={{
                     color: palette.primary.dark,
@@ -247,7 +247,7 @@ const MobileSiteHeader = ({
                 <Typography
                   component={NextLink}
                   variant='body1'
-                  href={`/${currentLocale}/webinars`}
+                  href={`/${locale}/webinars`}
                   onClick={handleClick}
                   style={{
                     color: palette.primary.dark,
@@ -267,7 +267,7 @@ const MobileSiteHeader = ({
           <Divider sx={{ marginTop: -2, marginBottom: 2 }} />
           <MobileLanguageSelector
             locales={SUPPORTED_LOCALES}
-            currentLocale={currentLocale}
+            currentLocale={locale}
           />
         </SimpleTreeView>
       </Box>

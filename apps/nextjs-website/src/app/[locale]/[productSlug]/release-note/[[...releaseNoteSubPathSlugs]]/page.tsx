@@ -34,29 +34,30 @@ type ReleaseNotePageStaticParams = {
 };
 export const dynamic = 'force-dynamic';
 
-export async function generateMetadata(props: {
+export async function generateMetadata({
+  params,
+}: {
   params: Promise<ReleaseNotePageStaticParams>;
 }): Promise<Metadata> {
-  const { locale, productSlug, releaseNoteSubPathSlugs } = await props.params;
+  const { locale, productSlug, releaseNoteSubPathSlugs } = await params;
   if (productSlug === 'unknown') {
     return makeMetadata({
       title: 'unknown',
       url: 'unknown',
     });
   }
-  const releaseNoteData = await getReleaseNote(
-    locale,
-    productSlug,
-    releaseNoteSubPathSlugs
-  );
+  const props = await getReleaseNote(locale, productSlug, [
+    'release-note',
+    ...(releaseNoteSubPathSlugs || []),
+  ]);
 
-  if (releaseNoteData?.seo) {
-    return makeMetadataFromStrapi(releaseNoteData?.seo);
+  if (props?.seo) {
+    return makeMetadataFromStrapi(props?.seo);
   }
 
   return makeMetadata({
-    title: releaseNoteData?.page.title,
-    url: releaseNoteData?.page.path,
+    title: props?.page.title,
+    url: props?.page.path,
   });
 }
 
@@ -70,17 +71,20 @@ export type ReleaseNotePageProps = {
   readonly title: string;
 } & ProductLayoutProps;
 
-const ReleaseNotePage = async (props: {
+const ReleaseNotePage = async ({
+  params,
+}: {
   params: Promise<ReleaseNotePageStaticParams>;
 }) => {
-  const { locale, productSlug, releaseNoteSubPathSlugs } = await props.params;
+  const { locale, productSlug, releaseNoteSubPathSlugs } = await params;
   if (productSlug === 'unknown') {
     return <PageNotFound />;
   }
   const releaseNoteProps = await getReleaseNote(
     locale,
     productSlug,
-    releaseNoteSubPathSlugs
+    // Prepend the "release-note" path segment expected by the release notes backend
+    ['release-note', ...(releaseNoteSubPathSlugs || [])]
   );
 
   const urlReplaceMap = await getUrlReplaceMapProps(locale);
