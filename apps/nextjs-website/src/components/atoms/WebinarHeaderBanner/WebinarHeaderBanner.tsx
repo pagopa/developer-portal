@@ -13,21 +13,22 @@ import EastIcon from '@mui/icons-material/East';
 import Link from 'next/link';
 import { Webinar } from '@/lib/types/webinar';
 import { useTranslations } from 'next-intl';
+import { sortBy } from 'lodash';
 
 export type WebinarHeaderBannerProps = {
-  webinars: Webinar[];
+  locale: string;
+  webinars: readonly Webinar[];
 };
 
-const WebinarHeaderBanner: FC<WebinarHeaderBannerProps> = ({ webinars }) => {
-  // eslint-disable-next-line functional/immutable-data
-  webinars.sort((a, b) => {
-    return (
-      new Date(a.startDateTime ?? 0).getTime() -
-      new Date(b.startDateTime ?? 0).getTime()
-    );
-  });
+const WebinarHeaderBanner: FC<WebinarHeaderBannerProps> = ({
+  locale,
+  webinars,
+}) => {
+  const sortedWebinars = sortBy(webinars, (webinar) =>
+    new Date(webinar.startDateTime ?? 0).getTime()
+  );
 
-  const webinar = webinars
+  const webinar = sortedWebinars
     .filter((w) => w.isVisibleInList)
     .find(
       ({ endDateTime }: Webinar) =>
@@ -85,7 +86,7 @@ const WebinarHeaderBanner: FC<WebinarHeaderBannerProps> = ({ webinars }) => {
             height: 28,
             marginLeft: '16px',
           }}
-          href={'/webinars/' + slug}
+          href={`/${locale}/webinars/${slug}`}
         >
           {t('webinarBannerButtonContent')}
           <EastIcon sx={{ height: 30, ml: 1 }} />

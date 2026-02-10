@@ -25,7 +25,7 @@ import { SEO } from '@/lib/types/seo';
 import WebinarHeaderBanner from '@/components/atoms/WebinarHeaderBanner/WebinarHeaderBanner';
 import WebinarsSection from '@/components/organisms/WebinarsSection/WebinarsSection';
 
-type EcosystemSolutionsCtaProps = {
+type EcosystemCtaProps = {
   readonly variant?: 'text' | 'contained' | 'outlined';
   readonly link: {
     readonly href: string;
@@ -34,13 +34,15 @@ type EcosystemSolutionsCtaProps = {
   };
 };
 
+type TabContentProps = {
+  readonly name: string;
+  readonly items?: CardsGridProps['cards'];
+  readonly cta?: EcosystemCtaProps;
+};
+
 type EcosystemProps = {
   readonly title: string;
-  readonly productsTabName: string;
-  readonly products: CardsGridProps['cards'];
-  readonly solutionsTabName: string;
-  readonly solutions?: CardsGridProps['cards'];
-  readonly solutionsCta?: EcosystemSolutionsCtaProps;
+  readonly tabContents: readonly TabContentProps[];
 };
 
 type ComingSoonDocumentationProps = {
@@ -97,20 +99,23 @@ const Home = async (props: { params: Promise<{ locale: string }> }) => {
     <>
       {structuredData}
       <ContentWrapper>
-        <WebinarHeaderBanner webinars={[...webinars]} />
-
-        <HeroSwiper
-          cards={hero.map((itemProp, index) => ({
-            ...itemProp,
-            child: itemProp.subhead && (
-              <BlocksRendererClient
-                key={index}
-                content={itemProp.subhead}
-                color={itemProp.subheadColor}
-              />
-            ),
-          }))}
-        />
+        {webinars.length > 0 && (
+          <WebinarHeaderBanner locale={locale} webinars={webinars} />
+        )}
+        {hero && (
+          <HeroSwiper
+            cards={hero.map((itemProp, index) => ({
+              ...itemProp,
+              child: itemProp.subhead && (
+                <BlocksRendererClient
+                  key={index}
+                  content={itemProp.subhead}
+                  color={itemProp.subheadColor}
+                />
+              ),
+            }))}
+          />
+        )}
         {newsShowcase && (
           <NewsShowcase
             marginTop={5}
@@ -119,11 +124,13 @@ const Home = async (props: { params: Promise<{ locale: string }> }) => {
           />
         )}
         {ecosystem && <Ecosystem {...ecosystem} />}
-        <WebinarsSection webinars={[...webinars]} />
-        <RelatedLinks
-          title={comingsoonDocumentation.title}
-          links={[...comingsoonDocumentation.links]}
-        />
+        {webinars.length > 0 && <WebinarsSection webinars={webinars} />}
+        {comingsoonDocumentation.links.length > 0 && (
+          <RelatedLinks
+            title={comingsoonDocumentation.title}
+            links={comingsoonDocumentation.links}
+          />
+        )}
       </ContentWrapper>
     </>
   );
