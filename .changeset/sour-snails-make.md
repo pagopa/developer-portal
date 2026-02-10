@@ -2,4 +2,4 @@
 "nextjs-website": patch
 ---
 
-Sitemap with i18n
+Add support to i18n to the sitemap
