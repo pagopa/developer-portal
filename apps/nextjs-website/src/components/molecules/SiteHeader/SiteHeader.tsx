@@ -11,16 +11,16 @@ import { SITE_HEADER_HEIGHT } from '@/config';
 export type SiteHeaderProps = {
   currentLocale: string;
   products: Product[];
-  isSolutionListPagePresent: boolean;
-  isWebinarPagePresent: boolean;
+  shouldShowLinkToSolutions: boolean;
+  shouldShowLinkToWebinars: boolean;
 };
 
 const SiteHeader = (
   {
     currentLocale,
     products,
-    isSolutionListPagePresent,
-    isWebinarPagePresent,
+    shouldShowLinkToSolutions,
+    shouldShowLinkToWebinars,
   }: SiteHeaderProps,
   ref: ForwardedRef<HTMLDivElement>
 ) => {
@@ -62,14 +62,14 @@ const SiteHeader = (
         <MobileSiteHeader
           currentLocale={currentLocale}
           products={productsWithOverview}
-          isSolutionListPagePresent={isSolutionListPagePresent}
-          isWebinarPagePresent={isWebinarPagePresent}
+          shouldShowLinkToSolutions={shouldShowLinkToSolutions}
+          shouldShowLinkToWebinars={shouldShowLinkToWebinars}
         />
         <DesktopSiteHeader
           currentLocale={currentLocale}
           products={productsWithOverview}
-          isSolutionListPagePresent={isSolutionListPagePresent}
-          isWebinarPagePresent={isWebinarPagePresent}
+          shouldShowLinkToSolutions={shouldShowLinkToSolutions}
+          shouldShowLinkToWebinars={shouldShowLinkToWebinars}
         />
       </Stack>
       <Divider />

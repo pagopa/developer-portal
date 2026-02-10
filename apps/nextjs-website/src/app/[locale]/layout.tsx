@@ -101,8 +101,8 @@ export default async function RootLayout({
 }) {
   const { locale } = await params;
   const products = [...(await getProducts(locale)).filter((product) => product.isVisible)];
-  const isSolutionListPagePresent = await getSolutionListPage(locale).then((data) => data.solutions.length > 0).catch(() => false);
-  const isWebinarPagePresent = await getWebinarsProps(locale).then((webinars) => webinars.length > 0).catch(() => false);
+  const shouldShowLinkToSolutions = await getSolutionListPage(locale).then((data) => data.solutions.length > 0).catch(() => false);
+  const shouldShowLinkToWebinars = await getWebinarsProps(locale).then((webinars) => webinars.length > 0).catch(() => false);
 
   // Disabled eslint rules to to follow https://next-intl-docs.vercel.app/docs/getting-started/app-router-client-components guide
   // eslint-disable-next-line functional/no-let
@@ -119,14 +119,14 @@ export default async function RootLayout({
       <head>
         {isProduction && (
           <Script
-            id='matomo-tag-manager'
-            key='script-matomo-tag-manager'
+            id="matomo-tag-manager"
+            key="script-matomo-tag-manager"
             dangerouslySetInnerHTML={{
               __html: useNewCookie
                 ? MATOMO_TAG_MANAGER_SCRIPT
                 : PREVIOUS_MATOMO_TAG_MANAGER_SCRIPT,
             }}
-            strategy='lazyOnload'
+            strategy="lazyOnload"
           />
         )}
       </head>
@@ -134,7 +134,7 @@ export default async function RootLayout({
         <NextIntlContext
           locale={locale}
           messages={messages}
-          timeZone='Europe/Rome'
+          timeZone="Europe/Rome"
         >
           <BodyWrapper>
             <CookieBannerScript
@@ -147,7 +147,12 @@ export default async function RootLayout({
             />
             <AuthProvider>
               <ChatbotProvider isChatbotVisible={isChatbotActive}>
-                <SiteHeader currentLocale={locale} products={products} isSolutionListPagePresent={isSolutionListPagePresent} isWebinarPagePresent={isWebinarPagePresent} />
+                <SiteHeader
+                  currentLocale={locale}
+                  products={products}
+                  shouldShowLinkToSolutions={shouldShowLinkToSolutions}
+                  shouldShowLinkToWebinars={shouldShowLinkToWebinars}
+                />
                 <ErrorBoundary errorComponent={Error}>
                   <main>
                     <Box sx={{ marginTop: `${SITE_HEADER_HEIGHT}px` }}>

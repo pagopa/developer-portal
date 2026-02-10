@@ -11,8 +11,8 @@ import { SUPPORTED_LOCALES } from '@/locales';
 const DesktopSiteHeader = ({
   currentLocale,
   products,
-  isSolutionListPagePresent,
-  isWebinarPagePresent,
+  shouldShowLinkToSolutions,
+  shouldShowLinkToWebinars,
 }: SiteHeaderProps) => {
   const t = useTranslations('devPortal');
 
@@ -39,7 +39,7 @@ const DesktopSiteHeader = ({
           },
         }}
       />
-      {isSolutionListPagePresent && (
+      {shouldShowLinkToSolutions && (
         <LinkMui
           component={Link}
           color='primary.main'
@@ -50,7 +50,7 @@ const DesktopSiteHeader = ({
           {t('siteHeader.solutions')}
         </LinkMui>
       )}
-      {isWebinarPagePresent && (
+      {shouldShowLinkToWebinars && (
         <LinkMui
           component={Link}
           color='primary.main'

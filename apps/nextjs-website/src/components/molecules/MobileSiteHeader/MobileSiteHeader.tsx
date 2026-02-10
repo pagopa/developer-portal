@@ -120,8 +120,8 @@ export const MobileSiteHeaderStyledTreeItem = styled(TreeItem)(({ theme }) => ({
 const MobileSiteHeader = ({
   currentLocale,
   products,
-  isSolutionListPagePresent,
-  isWebinarPagePresent,
+  shouldShowLinkToSolutions,
+  shouldShowLinkToWebinars,
 }: SiteHeaderProps) => {
   const t = useTranslations('devPortal');
   const { palette } = useTheme();
@@ -218,7 +218,7 @@ const MobileSiteHeader = ({
               );
             })}
           </MobileSiteHeaderStyledTreeItem>
-          {isSolutionListPagePresent && (
+          {shouldShowLinkToSolutions && (
             <MobileSiteHeaderStyledTreeItem
               itemId={'siteHeader.solutions'}
               label={
@@ -240,7 +240,7 @@ const MobileSiteHeader = ({
               }
             />
           )}
-          {isWebinarPagePresent && (
+          {shouldShowLinkToWebinars && (
             <MobileSiteHeaderStyledTreeItem
               itemId={'siteHeader.webinars'}
               label={
