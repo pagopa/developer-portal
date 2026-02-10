@@ -221,6 +221,9 @@ def get_product_list(file_path: str | None = None) -> List[str]:
     product_list = []
     if s3_content:
         products = safe_json_load(s3_content)
+        assert isinstance(
+            products, list
+        ), f"Expected product data to be a list, got {type(products)}"
         for product in products:
             try:
                 if product["attributes"]["isVisible"]:
@@ -632,6 +635,9 @@ def get_structured_docs(parent_folder: str, bucket_name: str) -> List[Document]:
                 else filename_split[-1]
             )
             s3_content = safe_json_load(read_file_from_s3(json_file_path, bucket_name))
+            assert isinstance(
+                s3_content, dict
+            ), f"Expected structured document content to be a dict, got {type(s3_content)} for file {json_file_path}"
             structured_docs.append(
                 Document(
                     id_=filename,
