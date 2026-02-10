@@ -250,7 +250,7 @@ export const expectedHomepageProps: HomepageProps = {
           {
             title: 'Product 1',
             text: 'Product 1 description',
-            href: 'product-1/overview',
+            href: '/it/product-1/overview',
             icon: 'https://example.com/example.jpg',
             useSrc: true,
           },
@@ -262,7 +262,7 @@ export const expectedHomepageProps: HomepageProps = {
           {
             title: 'Solution 1',
             text: 'Solution 1 description',
-            href: '/solutions/solution-1',
+            href: '/it/solutions/solution-1',
             icon: 'https://example.com/example.jpg',
             useSrc: true,
           },

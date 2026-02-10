@@ -72,7 +72,7 @@ const buildEnv = pipe(
 
 export const getHomepageProps = async (locale: string) => {
   const strapiHomepage = await fetchHomepage(locale, buildEnv);
-  return makeHomepageProps(strapiHomepage);
+  return makeHomepageProps(locale, strapiHomepage);
 };
 
 export const getWebinarsProps = async (locale: string) => {

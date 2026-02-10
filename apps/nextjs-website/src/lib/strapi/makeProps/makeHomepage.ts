@@ -4,6 +4,7 @@ import { HomepageProps } from '@/app/[locale]/page';
 import { compact } from 'lodash';
 
 export const makeHomepageProps = (
+  locale: string,
   strapiHomepage: StrapiHomepage
 ): HomepageProps => ({
   updatedAt: strapiHomepage.data.attributes.updatedAt,
@@ -47,7 +48,7 @@ export const makeHomepageProps = (
                     (product) => ({
                       title: product.attributes.name,
                       text: product.attributes.description ?? '',
-                      href: `${product.attributes.slug}/overview`,
+                      href: `/${locale}/${product.attributes.slug}/overview`,
                       icon:
                         product.attributes.logo.data?.attributes.url ||
                         undefined,
@@ -66,7 +67,7 @@ export const makeHomepageProps = (
                     (solution) => ({
                       title: solution.attributes.title,
                       text: solution.attributes.description ?? '',
-                      href: `/solutions/${solution.attributes.slug}`,
+                      href: `/${locale}/solutions/${solution.attributes.slug}`,
                       icon: solution.attributes.icon.data.attributes.url,
                       useSrc: true,
                     })
