@@ -18,19 +18,15 @@ describe('Parser error handling', () => {
   it('handles non-resolving URLs gracefully', async () => {
     const result = await captureParserError(nonExistingHost);
     console.log('Non-resolving URL result:', result);
-    expect(
-      /ENOTFOUND|EAI_AGAIN|getaddrinfo|unreachable|error/i.test(result) ||
-      result === 'Parser unexpectedly succeeded'
-    ).toBe(true);
+    expect(result).not.toBe('Parser unexpectedly succeeded');
+    expect(/ENOTFOUND|EAI_AGAIN|getaddrinfo|unreachable|error/i.test(result)).toBe(true);
   });
 
   it('handles unreachable hosts gracefully', async () => {
     const result = await captureParserError(unreachableHost);
     console.log('Unreachable host result:', result);
-    expect(
-      /ECONNREFUSED|connect|unreachable|error/i.test(result) ||
-      result === 'Parser unexpectedly succeeded'
-    ).toBe(true);
+    expect(result).not.toBe('Parser unexpectedly succeeded');
+    expect(/ECONNREFUSED|connect|unreachable|error/i.test(result)).toBe(true);
   });
 });
 
@@ -40,7 +36,7 @@ async function captureParserError(url: string): Promise<string> {
       env: {
         ...process.env,
         URL: url,
-        VECTOR_INDEX_NAME: 'test-vector-index',
+        PARSER_VECTOR_INDEX_NAME: 'test-parseer-vector-index',
       },
       timeout: 30_000,
     });

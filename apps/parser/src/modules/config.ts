@@ -17,7 +17,7 @@ export function resolveEnv(): EnvConfig {
   const sanitizedBaseUrl = stripUrlDecorations(baseUrl);
   const parsedDepth = Number.parseInt(process.env.DEPTH ?? `${DEFAULT_DEPTH}`, 10);
   const maxDepth = Number.isNaN(parsedDepth) ? DEFAULT_DEPTH : Math.max(parsedDepth, 0);
-  const vectorIndexName = process.env.VECTOR_INDEX_NAME?.trim();
+  const vectorIndexName = process.env.PARSER_VECTOR_INDEX_NAME?.trim();
   const derivedOutput = buildDefaultOutputDirectory(vectorIndexName, sanitizedBaseUrl);
   const outputDirectory = process.env.OUTDIR?.trim().length
     ? process.env.OUTDIR

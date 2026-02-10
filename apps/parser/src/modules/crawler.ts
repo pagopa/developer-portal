@@ -134,8 +134,8 @@ function isWithinScope(url: string, scope: string, hostToken: string): boolean {
 export function buildVisitKey(rawUrl: string): string {
   try {
     const url = new URL(rawUrl);
-    const normalizedBase = normalizeUrl(url.toString());
-    return url.hash ? `${normalizedBase}${url.hash}` : normalizedBase;
+    url.hash = '';
+    return normalizeUrl(url.toString());
   } catch (_error) {
     return rawUrl;
   }

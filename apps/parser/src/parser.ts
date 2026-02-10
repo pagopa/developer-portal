@@ -10,6 +10,7 @@ import { expandInteractiveSections } from './modules/domActions';
 import { ParseNode, ParseMetadata } from './modules/types';
 import { normalizeUrl, stripUrlDecorations } from './utils/url';
 import { sanitizeFilename } from './utils/sanitizeFilename';
+import crypto from 'crypto';
 
 puppeteer.use(StealthPlugin());
 
@@ -82,7 +83,18 @@ async function persistSnapshot(snapshot: ParseMetadata): Promise<void> {
   const preferredName = subPath === '/' ? 'root' : subPath;
   const sanitizedName = sanitizeFilename(preferredName, { replacement: '_' });
   const trimmedName = sanitizedName.replace(/^_+/, '') || sanitizedName;
-  await saveMetadata(env.outputDirectory, `${trimmedName}.json`, snapshot);
+
+  const FILENAME_LENGTH_THRESHOLD = 255;
+
+  let finalName = trimmedName;
+  if (trimmedName.length > FILENAME_LENGTH_THRESHOLD) {
+    const normalizedUrl = normalizeUrl(snapshot.url);
+    const hash = crypto.createHash('sha1').update(normalizedUrl).digest('hex').slice(0, 10);
+    const prefix = trimmedName.slice(0, 240);
+    finalName = `${prefix}_${hash}`;
+  }
+
+  await saveMetadata(env.outputDirectory, `${finalName}.json`, snapshot);
 }
 
 
@@ -176,14 +188,17 @@ function toIsoOrNull(value: string | null): string | null {
 }
 
 async function assertReachable(url: string): Promise<void> {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
+
   try {
     const res = await fetch(url, {
       method: 'GET',
       headers: {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
       },
-      timeout: REQUEST_TIMEOUT_MS
-    } as any);
+      signal: controller.signal
+    });
 
     const text = await res.text();
 
@@ -199,6 +214,11 @@ async function assertReachable(url: string): Promise<void> {
       throw new Error(`Status ${res.status}`);
     }
   } catch (error) {
+    if ((error as Error).name === 'AbortError') {
+      throw new Error(`Target ${url} is unreachable: request timed out`);
+    }
     throw new Error(`Target ${url} is unreachable: ${(error as Error).message}`);
+  } finally {
+    clearTimeout(timeoutId);
   }
 }
