@@ -118,8 +118,8 @@ export default async function RootLayout({
       <head>
         {isProduction && (
           <Script
-            id="matomo-tag-manager"
-            key="script-matomo-tag-manager"
+            id='matomo-tag-manager'
+            key='script-matomo-tag-manager'
             dangerouslySetInnerHTML={{
               __html: useNewCookie
                 ? MATOMO_TAG_MANAGER_SCRIPT
