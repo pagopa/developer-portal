@@ -22,8 +22,9 @@ Environment variables:
 
 - `URL` (required): root page for the parse.
 - `DEPTH` (optional, default `2`): max depth for recursion.
-- `VECTOR_INDEX_NAME` (required unless `OUTDIR` is provided): base directory name where parsed data will be stored as `<VECTOR_INDEX_NAME>/parsing/<sanitized(baseUrl)>/`.
+- `VECTOR_INDEX_NAME` (optional): base directory name where parsed data will be stored as `<VECTOR_INDEX_NAME>/parsing/<sanitized(baseUrl)>/`.
 - `OUTDIR` (optional): fully override the destination directory.
+    - If neither `VECTOR_INDEX_NAME` nor `OUTDIR` is provided, the output directory defaults to `output/<sanitized(baseUrl)>/parsing/`.
 
 `<sanitized(baseUrl)>` and `<sanitized(path)>` refer to filesystem-safe versions of the URL components (illegal characters replaced with `_`), ensuring predictable, human-readable filenames.
 
