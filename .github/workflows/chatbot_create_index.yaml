@@ -91,7 +91,6 @@ jobs:
       - name: Chatbot Vector Index
         uses: ./.github/actions/chatbot
         with:
-          all: ${{ github.event.inputs.action_type == 'all' && 'true' || 'false' }}
           api: ${{ github.event.inputs.action_type == 'api' && 'true' || 'false' }}
           chatbot_lambda_name: ${{ vars.CHATBOT_LAMBDA_NAME }}
           dynamic: ${{ github.event.inputs.action_type == 'dynamic' && 'true' || 'false' }}
