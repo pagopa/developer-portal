@@ -209,7 +209,7 @@ export async function getReleaseNote(
   releaseNoteSubPathSlugs?: readonly string[]
 ) {
   const products = await getProducts();
-  const releaseNotesPath = `${locale}/${productSlug}/${releaseNoteSubPathSlugs?.join(
+  const releaseNotesPath = `/${locale}/${productSlug}/${releaseNoteSubPathSlugs?.join(
     '/'
   )}`;
 
