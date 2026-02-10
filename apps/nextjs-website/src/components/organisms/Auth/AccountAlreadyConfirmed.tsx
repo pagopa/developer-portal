@@ -5,7 +5,7 @@ import { ErrorOutline as ErrorOutlineIcon } from '@mui/icons-material';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 
-const AccountAlreadyConfirmed = () => {
+const AccountAlreadyConfirmed = ({ locale }: { locale: string }) => {
   const accountAlreadyConfirmed = useTranslations(
     'auth.login.accountAlreadyConfirmed'
   );
@@ -19,7 +19,7 @@ const AccountAlreadyConfirmed = () => {
             component={Link}
             disabled={false}
             variant='contained'
-            href='auth/login'
+            href={`/${locale}/auth/login`}
           >
             {accountAlreadyConfirmed('goToLogin')}
           </Button>

@@ -44,11 +44,10 @@ export async function generateMetadata(props0: {
       url: 'unknown',
     });
   }
-  const props = await getReleaseNote(
-    params?.locale,
-    params?.productSlug,
-    params?.releaseNoteSubPathSlugs
-  );
+  const props = await getReleaseNote(params?.locale, params?.productSlug, [
+    'release-note',
+    ...(params?.releaseNoteSubPathSlugs || []),
+  ]);
 
   if (props?.seo) {
     return makeMetadataFromStrapi(props?.seo);
@@ -80,7 +79,8 @@ const ReleaseNotePage = async (props0: {
   const releaseNoteProps = await getReleaseNote(
     params.locale,
     params.productSlug,
-    params.releaseNoteSubPathSlugs
+    // Prepend the "release-note" path segment expected by the release notes backend
+    ['release-note', ...(params.releaseNoteSubPathSlugs || [])]
   );
 
   const urlReplaceMap = await getUrlReplaceMapProps();

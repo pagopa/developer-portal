@@ -28,7 +28,7 @@ export function productToMenuItems(
     product.hasApiDataListPage
       ? {
           label: 'devPortal.productHeader.api',
-          href: `/${locale}/${product.apiDataListPageUrl}`,
+          href: `/${locale}${product.apiDataListPageUrl}`,
           active: path.startsWith(`/${locale}/${product.slug}/api`),
           theme,
         }

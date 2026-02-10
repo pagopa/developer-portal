@@ -8,7 +8,7 @@ import { useTranslations } from 'next-intl';
 import LanguageSelector from '@/components/atoms/LanguageSelector/LanguageSelector';
 import { SUPPORTED_LOCALES } from '@/locales';
 
-const DesktopSiteHeader = ({ currentLocale, products }: SiteHeaderProps) => {
+const DesktopSiteHeader = ({ locale, products }: SiteHeaderProps) => {
   const t = useTranslations('devPortal');
 
   return (
@@ -25,7 +25,7 @@ const DesktopSiteHeader = ({ currentLocale, products }: SiteHeaderProps) => {
       <Dropdown
         label={t('siteHeader.products')}
         items={products.map((product) => ({
-          href: `/${currentLocale}/${product.slug}/overview`,
+          href: `/${locale}/${product.slug}/overview`,
           label: product.name,
         }))}
         menuStyle={{
@@ -38,7 +38,7 @@ const DesktopSiteHeader = ({ currentLocale, products }: SiteHeaderProps) => {
         component={Link}
         color='primary.main'
         underline='none'
-        href={`/${currentLocale}/solutions`}
+        href={`/${locale}/solutions`}
         sx={{ fontSize: '16px', fontWeight: 600 }}
       >
         {t('siteHeader.solutions')}
@@ -47,16 +47,13 @@ const DesktopSiteHeader = ({ currentLocale, products }: SiteHeaderProps) => {
         component={Link}
         color='primary.main'
         underline='none'
-        href={`/${currentLocale}/webinars`}
+        href={`/${locale}/webinars`}
         sx={{ fontSize: '16px', fontWeight: 600 }}
       >
         {t('siteHeader.webinars')}
       </LinkMui>
-      <DesktopUserInfo locale={currentLocale} />
-      <LanguageSelector
-        locales={SUPPORTED_LOCALES}
-        currentLocale={currentLocale}
-      />
+      <DesktopUserInfo locale={locale} />
+      <LanguageSelector locales={SUPPORTED_LOCALES} currentLocale={locale} />
     </Box>
   );
 };

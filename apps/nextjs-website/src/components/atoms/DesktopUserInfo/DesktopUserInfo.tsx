@@ -40,7 +40,7 @@ const DesktopUserInfo: FC<{ locale: string }> = ({ locale }) => {
 
     // Check if the user in an auth only page
     if (['/auth', '/profile'].some((path) => pathname.match(path))) {
-      router.replace('/');
+      router.replace(`/${locale}/`);
     } else {
       // router.refresh(); is not enough beacuse it will not clean current state of components
       if (typeof window !== 'undefined') {
@@ -49,14 +49,15 @@ const DesktopUserInfo: FC<{ locale: string }> = ({ locale }) => {
     }
 
     handleClose();
-  }, [pathname, router]);
-
+  }, [pathname, router, locale]);
   const handleClick = useCallback((event: React.MouseEvent<HTMLElement>) => {
     setMenu(event.currentTarget);
   }, []);
 
   const loginHref =
-    pathname !== '/' ? `/auth/login?redirect=${btoa(pathname)}` : '/auth/login';
+    pathname !== `/${locale}`
+      ? `auth/login?redirect=${btoa(pathname)}`
+      : 'auth/login';
 
   return (
     <Stack
