@@ -21,6 +21,7 @@ from llama_index.core import Document
 
 from src.modules.logger import get_logger
 from src.modules.settings import SETTINGS, AWS_SESSION
+from src.modules.codec import safe_json_load
 
 
 logging.getLogger("botocore").setLevel(logging.ERROR)
@@ -110,7 +111,7 @@ def get_folders_list(
         s3_content = read_file_from_s3(filepath)
         if s3_content:
             try:
-                folders_content = json.loads(s3_content)
+                folders_content = safe_json_load(s3_content)
             except Exception as e:
                 LOGGER.warning(f"Failed to decode {filepath}: {e}")
                 folders_content = {"dirNames": []}
@@ -146,7 +147,7 @@ def get_one_metadata_from_s3(
             os.path.join(docs_parent_folder, folder_name, "metadata.json")
         )
         try:
-            folder_metadata = json.loads(s3_content) if s3_content else {}
+            folder_metadata = safe_json_load(s3_content) if s3_content else {}
         except Exception as e:
             LOGGER.warning(
                 f"Failed to decode metadata.json in folder {docs_parent_folder}/{folder_name}: {e}"
@@ -186,7 +187,7 @@ def get_metadata_from_s3(
             s3_content = read_file_from_s3(
                 os.path.join(docs_parent_folder, folder_name, "metadata.json")
             )
-            folder_metadata = json.loads(s3_content) if s3_content else []
+            folder_metadata = safe_json_load(s3_content) if s3_content else []
         except Exception as e:
             LOGGER.warning(
                 f"Failed to decode metadata.json in folder {docs_parent_folder}/{folder_name}: {e}"
@@ -222,7 +223,7 @@ def get_product_list(file_path: str | None = None) -> List[str]:
     s3_content = read_file_from_s3(file_path)
     product_list = []
     if s3_content:
-        products = json.loads(s3_content)
+        products = safe_json_load(s3_content)
         for product in products:
             try:
                 if product["attributes"]["isVisible"]:
@@ -344,7 +345,7 @@ def get_apidata(file_path: str | None = None) -> dict:
     s3_data = read_file_from_s3(file_path)
     if not s3_data:
         raise ValueError("API data content is empty.")
-    return json.loads(s3_data)
+    return safe_json_load(s3_data)
 
 
 def read_api_url(url: str) -> str:
@@ -363,7 +364,7 @@ def read_api_url(url: str) -> str:
         if url.endswith(".yaml") or url.endswith(".yml"):
             data = yaml.safe_load(response.text)
         elif url.endswith(".json"):
-            data = json.loads(response.text)
+            data = safe_json_load(response.text)
         else:
             raise ValueError("Unsupported file format. Use .yaml, .yml, or .json.")
 
@@ -633,7 +634,7 @@ def get_structured_docs(parent_folder: str, bucket_name: str) -> List[Document]:
                 if len(filename_split) >= 2
                 else filename_split[-1]
             )
-            s3_content = json.loads(read_file_from_s3(json_file_path, bucket_name))
+            s3_content = safe_json_load(read_file_from_s3(json_file_path, bucket_name))
             structured_docs.append(
                 Document(
                     id_=filename,
