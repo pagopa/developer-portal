@@ -16,7 +16,7 @@ locals {
     CHB_ENGINE_SIMILARITY_TOPK      = "5"
     CHB_GOOGLE_PROJECT_ID           = module.google_project_id_ssm_parameter.ssm_parameter_name
     CHB_GOOGLE_API_KEY              = "/chatbot/google_api_key"
-    CHB_LANGFUSE_HOST               = module.langfuse[0].service_discovery_endpoint
+    CHB_LANGFUSE_HOST               = try(module.langfuse[0].service_discovery_endpoint, "https://${local.priv_monitoring_host}")
     CHB_MODEL_ID                    = var.models.generation
     CHB_MODEL_MAXTOKENS             = 2048
     CHB_MODEL_TEMPERATURE           = "0.3"
