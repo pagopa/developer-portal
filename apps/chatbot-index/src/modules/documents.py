@@ -607,33 +607,6 @@ def get_dynamic_docs(dynamic_metadata: List[DynamicMetadata]) -> List[Document]:
     return dynamic_docs
 
 
-def decode_str(text: str) -> str:
-    """
-    Decodes a URL-encoded string.
-    Args:
-        text (str): The URL-encoded string to decode.
-    Returns:
-        str: The decoded string.
-    """
-    return text
-
-
-def decode_file_path(path: str) -> str:
-    """
-    Decodes a URL-encoded file path.
-    Args:
-        path (str): The URL-encoded file path to decode.
-    Returns:
-        str: The decoded file path.
-    """
-
-    split_path = path.split("/")
-    url = decode_str(split_path[-2])
-    filename = decode_str(split_path[-1])
-
-    return os.path.join(url, filename)
-
-
 def get_structured_docs(parent_folder: str, bucket_name: str) -> List[Document]:
     """
     Fetches structured documents from a specified S3 bucket and parent folder.
@@ -654,14 +627,19 @@ def get_structured_docs(parent_folder: str, bucket_name: str) -> List[Document]:
         if obj.key.lower().endswith(".json"):
 
             json_file_path = obj.key
-            filename = os.path.basename(json_file_path).replace(f".json", "")
+            filename_split = json_file_path.split("/")
+            filename = (
+                os.path.join(filename_split[-2], filename_split[-1])
+                if len(filename_split) >= 2
+                else filename_split[-1]
+            )
             s3_content = json.loads(read_file_from_s3(json_file_path, bucket_name))
             structured_docs.append(
                 Document(
                     id_=filename,
                     text=s3_content.get("text", ""),
                     metadata={
-                        "filepath": decode_file_path(json_file_path),
+                        "filepath": json_file_path,
                         "language": s3_content.get("language", ""),
                         "lastmod": s3_content.get("lastmod", ""),
                         "title": s3_content.get("title", ""),
