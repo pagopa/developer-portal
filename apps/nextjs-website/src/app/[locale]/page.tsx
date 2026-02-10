@@ -79,8 +79,8 @@ export async function generateMetadata(props: {
       });
 }
 
-const Home = async (props: { params: Promise<{ locale: string }> }) => {
-  const { locale } = await props.params;
+const Home = async ({ params }: { params: Promise<{ locale: string }> }) => {
+  const { locale } = await params;
   const {
     webinars,
     hero,

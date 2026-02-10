@@ -9,18 +9,24 @@ import { useTranslations } from 'next-intl';
 type TutorialsSectionPreviewCardsLayoutProps = {
   title: string;
   tutorials: readonly Tutorial[];
+  backgroundVariant?: 'white' | 'lightGrey';
 };
 
 const TutorialsSectionPreviewCardsLayout = ({
   title,
   tutorials,
+  backgroundVariant = 'white',
 }: TutorialsSectionPreviewCardsLayoutProps) => {
   const t = useTranslations();
   const theme = useTheme();
+  const backgroundColor =
+    backgroundVariant === 'white'
+      ? theme.palette.background.paper
+      : theme.palette.grey[50];
   return (
     <Box
       sx={{
-        backgroundColor: theme.palette.grey[50],
+        backgroundColor: backgroundColor,
       }}
     >
       <Box sx={{ paddingTop: '80px', paddingBottom: '48px' }}>

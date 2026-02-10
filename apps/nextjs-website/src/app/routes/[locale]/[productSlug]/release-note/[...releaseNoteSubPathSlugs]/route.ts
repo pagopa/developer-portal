@@ -4,18 +4,21 @@ import { GitBookContentData } from '@/lib/types/gitBookContent';
 
 export async function GET(
   request: Request,
-  props: {
+  {
+    params,
+  }: {
     readonly params: Promise<{
-      readonly productSlug: string;
       readonly locale: string;
-      readonly releaseNoteSubPathSlugs: readonly string[];
+      readonly productSlug: string;
+      readonly releaseNoteSubPathSlugs?: readonly string[];
     }>;
   }
 ) {
-  const { locale, productSlug, releaseNoteSubPathSlugs } = await props.params;
-  const noteSegments = Array.isArray(releaseNoteSubPathSlugs)
-    ? ['release-note', ...releaseNoteSubPathSlugs]
-    : [];
+  const { locale, productSlug, releaseNoteSubPathSlugs } = await params;
+  const noteSegments = [
+    'release-note',
+    ...(Array.isArray(releaseNoteSubPathSlugs) ? releaseNoteSubPathSlugs : []),
+  ];
 
   return getReleaseNote(locale, productSlug, noteSegments)
     .then(async (releaseNoteProps) => {

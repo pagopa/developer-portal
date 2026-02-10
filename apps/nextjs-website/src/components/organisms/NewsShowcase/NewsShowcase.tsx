@@ -32,6 +32,7 @@ export type NewsShowcaseProps = {
   readonly marginTop?: number;
   readonly newsMarginTop?: number;
   readonly items: readonly NewsShowcaseItemProps[];
+  readonly paddingTop?: number;
   readonly backgroundVariant?: 'white' | 'lightGrey';
 };
 
@@ -43,6 +44,7 @@ const NewsShowcase = ({
   items,
   newsMarginTop = 2,
   backgroundVariant = 'white',
+  paddingTop,
 }: NewsShowcaseProps) => {
   const theme = useTheme();
   const t = useTranslations();
@@ -67,6 +69,7 @@ const NewsShowcase = ({
     <Box
       sx={{
         marginTop: marginTop,
+        paddingTop: paddingTop,
         backgroundColor: backgroundColor[backgroundVariant],
       }}
     >
