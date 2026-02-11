@@ -34,12 +34,12 @@ export function resolveEnv(): EnvConfig {
   const sanitizedBaseUrl = UrlWithoutAnchors(baseUrl);
   const parsedDepth = Number.parseInt(depth ?? `${DEFAULT_DEPTH}`, 10);
   const maxDepth = Number.isNaN(parsedDepth) ? DEFAULT_DEPTH : Math.max(parsedDepth, 0);
-  const outputDirectory = buildDefaultOutputDirectory(vectorIndexName, sanitizedBaseUrl);
+  const outputDirectory = generateOutputDirectoryPath(vectorIndexName, sanitizedBaseUrl);
   
   return { baseUrl, sanitizedBaseUrl, outputDirectory, maxDepth };
 }
 
-function buildDefaultOutputDirectory(
+function generateOutputDirectoryPath(
   vectorIndexName: string | undefined,
   sanitizedBaseUrl: string
 ): string {
