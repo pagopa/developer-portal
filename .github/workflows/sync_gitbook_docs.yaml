@@ -51,7 +51,8 @@ on:
 
 
   schedule:
-    - cron: '0 23 * * *'  # Run daily at midnight UTC
+    # - cron: '0 23 * * *'  # Run daily at midnight UTC
+    - cron: '0 8 * * *'  # Run daily at 8:00 AM UTC (9:00 AM in Italy) TODO: restore '0 23 * * *' after testing
 
 permissions:
   id-token: write
@@ -133,3 +134,70 @@ jobs:
           s3_solutions_dirnames_json_path: ${{ vars.S3_SOLUTIONS_DIRNAMES_JSON_PATH || 'solutions-dirNames.json' }}
           s3_release_notes_dirnames_json_path: ${{ vars.S3_RELEASE_NOTES_DIRNAMES_JSON_PATH || 'release-notes-dirNames.json' }}
           s3_dirnames_json_path: ${{ vars.S3_DIRNAMES_JSON_PATH || 'dirNames.json' }}
+
+  # TODO: replace scheduled_sync_gitbook_docs with this once production sync will be released in production environment and tested to work correctly
+  # scheduled_sync_gitbook_docs:
+  #   name: Sync gitbook Docs to S3 (scheduled on prod)
+  #   if: github.event_name == 'schedule'
+  #   runs-on: ubuntu-latest
+  #   outputs:
+  #     environment: 'prod'
+  #   environment: 'prod'
+
+  #   steps:
+  #     - name: Checkout current repository
+  #       uses: actions/checkout@v4
+
+  #     - name: Sync GitBook Docs using 'it' locale
+  #       uses: ./.github/actions/sync-gitbook-docs
+  #       with:
+  #         environment: 'prod'
+  #         locale: 'it'
+  #         documentation_repository: 'pagopa/devportal-docs'
+  #         documentation_branch: 'docs/from-gitbook'
+  #         deploy_iam_role: ${{ secrets.DEPLOY_IAM_ROLE }}
+  #         strapi_api_token: ${{ secrets.STRAPI_API_TOKEN }}
+  #         asset_bucket_cloudfront_distribution_id: ${{ vars.ASSET_BUCKET_CLOUDFRONT_DISTRIBUTION_ID }}
+  #         opennext_cloudfront_distribution_id: ${{ vars.OPENNEXT_CLOUDFRONT_DISTRIBUTION_ID }}
+  #         invalidate_opennext_cache: false
+  #         incremental_mode: true
+  #         generate_root_metadata_file: true
+  #         metadata_type: 'all'
+  #         strapi_endpoint: ${{ vars.STRAPI_ENDPOINT }}
+  #         documentation_path: ${{ vars.DOCUMENTATION_PATH || '../../devportal-docs/docs' }}
+  #         url_parsing_metadata_json_path: ${{ vars.URL_PARSING_METADATA_JSON_PATH || '../../url-parsing-metadata.json' }}
+  #         s3_doc_extraction_bucket_name: ${{ vars.S3_DOC_EXTRACTION_BUCKET_NAME }}
+  #         s3_path_to_gitbook_docs: ${{ vars.S3_PATH_TO_GITBOOK_DOCS || 'devportal-docs/docs' }}
+  #         next_public_cognito_region: ${{ vars.NEXT_PUBLIC_COGNITO_REGION || 'eu-south-1' }}
+  #         fetch_from_strapi: ${{ vars.FETCH_FROM_STRAPI || 'true' }}
+  #         s3_dirname_metadata_json_path: ${{ vars.S3_DIRNAME_METADATA_JSON_PATH }}
+  #         s3_solutions_dirnames_json_path: ${{ vars.S3_SOLUTIONS_DIRNAMES_JSON_PATH || 'solutions-dirNames.json' }}
+  #         s3_release_notes_dirnames_json_path: ${{ vars.S3_RELEASE_NOTES_DIRNAMES_JSON_PATH || 'release-notes-dirNames.json' }}
+  #         s3_dirnames_json_path: ${{ vars.S3_DIRNAMES_JSON_PATH || 'dirNames.json' }}
+
+  #     - name: Sync GitBook Docs using 'en' locale
+  #       uses: ./.github/actions/sync-gitbook-docs
+  #       with:
+  #         environment: 'prod'
+  #         locale: 'en'
+  #         documentation_repository: 'pagopa/devportal-docs-translations'
+  #         documentation_branch: 'main'
+  #         deploy_iam_role: ${{ secrets.DEPLOY_IAM_ROLE }}
+  #         strapi_api_token: ${{ secrets.STRAPI_API_TOKEN }}
+  #         asset_bucket_cloudfront_distribution_id: ${{ vars.ASSET_BUCKET_CLOUDFRONT_DISTRIBUTION_ID }}
+  #         opennext_cloudfront_distribution_id: ${{ vars.OPENNEXT_CLOUDFRONT_DISTRIBUTION_ID }}
+  #         invalidate_opennext_cache: false
+  #         incremental_mode: true
+  #         generate_root_metadata_file: true
+  #         metadata_type: 'all'
+  #         strapi_endpoint: ${{ vars.STRAPI_ENDPOINT }}
+  #         documentation_path: ${{ vars.DOCUMENTATION_PATH || '../../devportal-docs/docs' }}
+  #         url_parsing_metadata_json_path: ${{ vars.URL_PARSING_METADATA_JSON_PATH || '../../url-parsing-metadata.json' }}
+  #         s3_doc_extraction_bucket_name: ${{ vars.S3_DOC_EXTRACTION_BUCKET_NAME }}
+  #         s3_path_to_gitbook_docs: ${{ vars.S3_PATH_TO_GITBOOK_DOCS || 'devportal-docs/docs' }}
+  #         next_public_cognito_region: ${{ vars.NEXT_PUBLIC_COGNITO_REGION || 'eu-south-1' }}
+  #         fetch_from_strapi: ${{ vars.FETCH_FROM_STRAPI || 'true' }}
+  #         s3_dirname_metadata_json_path: ${{ vars.S3_DIRNAME_METADATA_JSON_PATH }}
+  #         s3_solutions_dirnames_json_path: ${{ vars.S3_SOLUTIONS_DIRNAMES_JSON_PATH || 'solutions-dirNames.json' }}
+  #         s3_release_notes_dirnames_json_path: ${{ vars.S3_RELEASE_NOTES_DIRNAMES_JSON_PATH || 'release-notes-dirNames.json' }}
+  #         s3_dirnames_json_path: ${{ vars.S3_DIRNAMES_JSON_PATH || 'dirNames.json' }}
