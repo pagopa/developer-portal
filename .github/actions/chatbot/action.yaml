@@ -27,6 +27,10 @@ inputs:
     description: 'Whether to create vector index using structured data'
     required: true
     default: 'false'
+  index_id:
+    description: 'The indexID to create'
+    required: true
+    default: 'devportal-index'
 
 runs:
   using: "composite"
@@ -58,4 +62,5 @@ runs:
       shell: bash
       run: |
         cd apps/chatbot-index
+        export CHB_INDEX_ID=${{ inputs.index_id }}
         PYTHONPATH=. poetry run python src/modules/create_vector_index.py ${{ inputs.static == 'true' && ' --static' || '' }} ${{ inputs.dynamic == 'true' && ' --dynamic' || '' }} ${{ inputs.api == 'true' && ' --api' || '' }} ${{ inputs.structured == 'true' && ' --structured' || '' }} --clean-redis

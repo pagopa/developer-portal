@@ -14,16 +14,23 @@ on:
           - dev
           - uat
           - prod
-      action_type:
-        description: 'The type of action to perform'
+      docs_type:
+        description: 'The type of documents to vectorize'
         type: choice
         required: true
-        default: structured
         options:
           - api
           - dynamic
           - static
           - structured
+      index_id:
+        type: choice
+        description: 'The indexID to create'
+        required: true
+        default: devportal-index
+        options:
+          - devportal-index
+          - cittadino-index
 
   # Allows external webhook trigger
   repository_dispatch:
@@ -91,8 +98,9 @@ jobs:
       - name: Chatbot Vector Index
         uses: ./.github/actions/chatbot
         with:
-          api: ${{ github.event.inputs.action_type == 'api' && 'true' || 'false' }}
+          api: ${{ github.event.inputs.docs_type == 'api' && 'true' || 'false' }}
           chatbot_lambda_name: ${{ vars.CHATBOT_LAMBDA_NAME }}
-          dynamic: ${{ github.event.inputs.action_type == 'dynamic' && 'true' || 'false' }}
-          static: ${{ github.event.inputs.action_type == 'static' && 'true' || 'false' }}
-          structured: ${{ github.event.inputs.action_type == 'structured' && 'true' || 'false' }}
+          dynamic: ${{ github.event.inputs.docs_type == 'dynamic' && 'true' || 'false' }}
+          index_id: ${{ github.event.inputs.index_id }}
+          static: ${{ github.event.inputs.docs_type == 'static' && 'true' || 'false' }}
+          structured: ${{ github.event.inputs.docs_type == 'structured' && 'true' || 'false' }}
