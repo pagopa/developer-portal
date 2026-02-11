@@ -72,7 +72,7 @@ const buildEnv = pipe(
 
 export const getHomepageProps = async (locale: string) => {
   const strapiHomepage = await fetchHomepage(locale, buildEnv);
-  return makeHomepageProps(strapiHomepage);
+  return makeHomepageProps(locale, strapiHomepage);
 };
 
 export const getWebinarsProps = async (locale: string) => {
@@ -137,8 +137,9 @@ export const getQuickStartGuidesProps = async (locale: string) => {
 };
 
 export const getUrlReplaceMapProps = async (locale: string) => {
+  // TODO: fix locale not managed for url replace map
   const strapiUrlReplaceMap = await fetchUrlReplaceMap(locale, buildEnv);
-  const processed = makeUrlReplaceMap(strapiUrlReplaceMap);
+  const processed = makeUrlReplaceMap(locale, strapiUrlReplaceMap);
   return processed;
 };
 
@@ -227,7 +228,7 @@ export const getSolutionProps = async (
   const strapiSolutions = (await fetchResponseFromCDN(
     `${locale}/${getSyncedSolutionsResponseJsonPath()}`
   )) as StrapiSolutions | undefined;
-  if (!strapiSolutions || strapiSolutions.data.length < 1) {
+  if (!strapiSolutions) {
     // eslint-disable-next-line functional/no-throw-statements
     throw new Error('Failed to fetch solution data');
   }
@@ -244,7 +245,7 @@ const fetchReleaseNotes = async (locale: string) => {
   const strapiReleaseNotes = (await fetchResponseFromCDN(
     `${locale}/${getSyncedReleaseNotesResponseJsonPath()}`
   )) as StrapiReleaseNotes | undefined;
-  if (!strapiReleaseNotes || strapiReleaseNotes.data.length < 1) {
+  if (!strapiReleaseNotes) {
     // eslint-disable-next-line functional/no-throw-statements
     throw new Error('Failed to fetch release data');
   }

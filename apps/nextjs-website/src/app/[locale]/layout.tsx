@@ -9,27 +9,31 @@ import {
   matomoScriptSrc,
   SITE_HEADER_HEIGHT,
   useNewCookie,
-} from '@/config';
-import { Metadata } from 'next';
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
-import '@/styles/globals.css';
-import ThemeRegistry from '../ThemeRegistry';
-import { getProducts } from '@/lib/api';
-import SiteFooter from '@/components/atoms/SiteFooter/SiteFooter';
-import SiteHeader from '@/components/molecules/SiteHeader/SiteHeader';
-import { notFound } from 'next/navigation';
-import AuthProvider from '@/components/organisms/Auth/AuthProvider';
-import CookieBannerScript from '@/components/atoms/CookieBannerScript/CookieBannerScript';
-import BodyWrapper from '@/components/atoms/BodyWrapper/BodyWrapper';
-import Script from 'next/script';
-import { Titillium_Web } from 'next/font/google';
-import NextIntlContext from '@/components/atoms/NextIntlContext/NextIntlContext';
-import ChatbotProvider from '@/components/organisms/ChatbotProvider/ChatbotProvider';
-import { ErrorBoundary } from 'next/dist/client/components/error-boundary';
-import Error from './error';
-import { Box } from '@mui/material';
+} from "@/config";
+import { Metadata } from "next";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import "@/styles/globals.css";
+import ThemeRegistry from "../ThemeRegistry";
+import {
+  getProducts,
+  getSolutionListPage,
+  getVisibleInListWebinars,
+} from "@/lib/api";
+import SiteFooter from "@/components/atoms/SiteFooter/SiteFooter";
+import SiteHeader from "@/components/molecules/SiteHeader/SiteHeader";
+import { notFound } from "next/navigation";
+import AuthProvider from "@/components/organisms/Auth/AuthProvider";
+import CookieBannerScript from "@/components/atoms/CookieBannerScript/CookieBannerScript";
+import BodyWrapper from "@/components/atoms/BodyWrapper/BodyWrapper";
+import Script from "next/script";
+import { Titillium_Web } from "next/font/google";
+import NextIntlContext from "@/components/atoms/NextIntlContext/NextIntlContext";
+import ChatbotProvider from "@/components/organisms/ChatbotProvider/ChatbotProvider";
+import { ErrorBoundary } from "next/dist/client/components/error-boundary";
+import Error from "./error";
+import { Box } from "@mui/material";
 
 // TODO: remove PREVIOUS_MATOMO_TAG_MANAGER_SCRIPT script, usePreviousScript when the migration to the new tag manager is completed
 const PREVIOUS_MATOMO_TAG_MANAGER_SCRIPT =
@@ -78,11 +82,11 @@ const MATOMO_TAG_MANAGER_SCRIPT =
 `;
 
 const titilliumWeb = Titillium_Web({
-  fallback: ['serif'],
-  subsets: ['latin'],
-  style: 'normal',
-  variable: '--font-titillium-web',
-  weight: ['400', '600', '700'],
+  fallback: ["serif"],
+  subsets: ["latin"],
+  style: "normal",
+  variable: "--font-titillium-web",
+  weight: ["400", "600", "700"],
 });
 
 export const metadata: Metadata = {
@@ -99,7 +103,15 @@ export default async function RootLayout({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
-  const products = [...(await getProducts(locale)).filter((product) => product.isVisible)];
+  const products = [
+    ...(await getProducts(locale)).filter((product) => product.isVisible),
+  ];
+  const shouldShowLinkToSolutions = await getSolutionListPage(locale)
+    .then((data) => data.solutions.length > 0)
+    .catch(() => false);
+  const shouldShowLinkToWebinars = await getVisibleInListWebinars(locale)
+    .then((webinars) => webinars.length > 0)
+    .catch(() => false);
 
   // Disabled eslint rules to to follow https://next-intl-docs.vercel.app/docs/getting-started/app-router-client-components guide
   // eslint-disable-next-line functional/no-let
@@ -116,22 +128,22 @@ export default async function RootLayout({
       <head>
         {isProduction && (
           <Script
-            id='matomo-tag-manager'
-            key='script-matomo-tag-manager'
+            id="matomo-tag-manager"
+            key="script-matomo-tag-manager"
             dangerouslySetInnerHTML={{
               __html: useNewCookie
                 ? MATOMO_TAG_MANAGER_SCRIPT
                 : PREVIOUS_MATOMO_TAG_MANAGER_SCRIPT,
             }}
-            strategy='lazyOnload'
+            strategy="lazyOnload"
           />
         )}
       </head>
-      <ThemeRegistry options={{ key: 'mui' }}>
+      <ThemeRegistry options={{ key: "mui" }}>
         <NextIntlContext
           locale={locale}
           messages={messages}
-          timeZone='Europe/Rome'
+          timeZone="Europe/Rome"
         >
           <BodyWrapper>
             <CookieBannerScript
@@ -139,12 +151,17 @@ export default async function RootLayout({
               cookieScript={
                 useNewCookie
                   ? cookieScriptUrl
-                  : 'https://cdn.cookielaw.org/scripttemplates/otSDKStub.js'
+                  : "https://cdn.cookielaw.org/scripttemplates/otSDKStub.js"
               }
             />
             <AuthProvider>
               <ChatbotProvider isChatbotVisible={isChatbotActive}>
-                <SiteHeader currentLocale={locale} products={products} />
+                <SiteHeader
+                  locale={locale}
+                  products={products}
+                  shouldShowLinkToSolutions={shouldShowLinkToSolutions}
+                  shouldShowLinkToWebinars={shouldShowLinkToWebinars}
+                />
                 <ErrorBoundary errorComponent={Error}>
                   <main>
                     <Box sx={{ marginTop: `${SITE_HEADER_HEIGHT}px` }}>
