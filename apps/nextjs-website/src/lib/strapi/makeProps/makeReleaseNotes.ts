@@ -2,11 +2,12 @@
 /* eslint-disable functional/no-expression-statements */
 import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
 import { makeBaseProductWithoutLogoProps } from '@/lib/strapi/makeProps/makeProducts';
-import { ReleaseNotePageProps } from '@/app/[locale]/[productSlug]/[...releaseNoteSubPathSlugs]/page';
+import { ReleaseNotePageProps } from '@/app/[locale]/[productSlug]/release-note/[[...releaseNoteSubPathSlugs]]/page';
 import { StrapiReleaseNotes } from '@/lib/strapi/types/releaseNotes';
 import { compact } from 'lodash';
 
 export function makeReleaseNotesProps(
+  locale: string,
   strapiReleaseNotes: StrapiReleaseNotes
 ): ReadonlyArray<ReleaseNotePageProps> {
   return compact(
@@ -28,8 +29,11 @@ export function makeReleaseNotesProps(
                 ),
           dirName: attributes.dirName,
           landingFile: attributes.landingFile,
-          path: `/${attributes.product.data?.attributes.slug}/release-note`,
-          product: makeBaseProductWithoutLogoProps(attributes.product.data),
+          path: `/${locale}/${attributes.product.data?.attributes.slug}/release-note`,
+          product: makeBaseProductWithoutLogoProps(
+            locale,
+            attributes.product.data
+          ),
           seo: attributes.seo,
           title: attributes.title,
         };

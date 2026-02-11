@@ -12,12 +12,12 @@ export const dynamic = 'force-dynamic';
 export async function generateMetadata(props: {
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
-  const params = await props.params;
+  const { locale } = await props.params;
   return makeMetadata({
     title: 'PagoPA DevPortal - Webinars',
     description: 'I nostri webinar',
-    url: `${baseUrl}/${params.locale}/webinars`,
-    locale: 'it_IT',
+    url: `${baseUrl}/${locale}/webinars`,
+    langCode: locale,
   });
 }
 

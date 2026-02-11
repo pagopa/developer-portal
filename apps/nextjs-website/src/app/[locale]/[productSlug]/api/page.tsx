@@ -34,8 +34,7 @@ export async function generateMetadata(props: {
       .filter(Boolean)
       .join(' | '),
     url: `${baseUrl}/${locale}/${apiDataListPage?.product.slug}/api`,
-    locale: SUPPORTED_LOCALES.find(({ langCode }) => langCode === locale)
-      ?.locale,
+    langCode: locale,
   });
 }
 

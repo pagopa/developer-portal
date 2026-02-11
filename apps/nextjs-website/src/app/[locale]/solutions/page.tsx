@@ -14,8 +14,7 @@ export async function generateMetadata(props: {
   return makeMetadata({
     title: 'Soluzioni',
     url: `${baseUrl}/${locale}/solutions`,
-    locale: SUPPORTED_LOCALES.find(({ langCode }) => langCode === locale)
-      ?.locale,
+    langCode: locale,
   });
 }
 

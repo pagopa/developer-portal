@@ -71,7 +71,8 @@ export async function getGuidePage(
 
   // Path construction
   const guidePath = [
-    `/${guideProps.product.slug}`,
+    `/${locale}`,
+    guideProps.product.slug,
     'guides',
     ...guidePaths,
   ].join('/');
@@ -89,6 +90,7 @@ export async function getGuidePage(
       guidePath,
       guidesMetadata,
       products,
+      locale,
     })
   );
 }
@@ -129,7 +131,7 @@ export async function getTutorial(
   productTutorialPage?: ReadonlyArray<string>
 ) {
   const tutorialSubPath = productTutorialPage?.join('/');
-  const tutorialPath = `${locale}/${productSlug}/tutorials/${tutorialSubPath}`;
+  const tutorialPath = `/${locale}/${productSlug}/tutorials/${tutorialSubPath}`;
 
   const product = await getProduct(locale, productSlug);
 
@@ -220,7 +222,7 @@ export async function getReleaseNote(
   releaseNoteSubPathSlugs?: readonly string[]
 ) {
   const products = await getProducts(locale);
-  const releaseNotesPath = `${locale}/${productSlug}/${releaseNoteSubPathSlugs?.join(
+  const releaseNotesPath = `/${locale}/${productSlug}/${releaseNoteSubPathSlugs?.join(
     '/'
   )}`;
 
@@ -300,7 +302,8 @@ export async function getSolutionDetail(
     locale,
     solutionsMetadata.find(
       ({ path }) =>
-        path === `/solutions/${solutionSlug}/${solutionSubPathSlugs.join('/')}`
+        path ===
+        `/${locale}/solutions/${solutionSlug}/${solutionSubPathSlugs.join('/')}`
     )
   );
 }
@@ -311,7 +314,7 @@ export async function getUseCase(
   productUseCasePage?: ReadonlyArray<string>
 ) {
   const useCaseSubPath = productUseCasePage?.join('/');
-  const useCasePath = `${locale}/${productSlug}/use-cases/${useCaseSubPath}`;
+  const useCasePath = `/${locale}/${productSlug}/use-cases/${useCaseSubPath}`;
 
   const product = await getProduct(locale, productSlug);
 

@@ -16,7 +16,7 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import '@/styles/globals.css';
 import ThemeRegistry from '../ThemeRegistry';
-import { getProducts } from '@/lib/api';
+import { getProducts, getSolutionListPage, getVisibleInListWebinars } from '@/lib/api';
 import SiteFooter from '@/components/atoms/SiteFooter/SiteFooter';
 import SiteHeader from '@/components/molecules/SiteHeader/SiteHeader';
 import { notFound } from 'next/navigation';
@@ -100,6 +100,8 @@ export default async function RootLayout({
 }) {
   const { locale } = await params;
   const products = [...(await getProducts(locale)).filter((product) => product.isVisible)];
+  const shouldShowLinkToSolutions = await getSolutionListPage(locale).then((data) => data.solutions.length > 0).catch(() => false);
+  const shouldShowLinkToWebinars = await getVisibleInListWebinars(locale).then((webinars) => webinars.length > 0).catch(() => false);
 
   // Disabled eslint rules to to follow https://next-intl-docs.vercel.app/docs/getting-started/app-router-client-components guide
   // eslint-disable-next-line functional/no-let
@@ -144,7 +146,12 @@ export default async function RootLayout({
             />
             <AuthProvider>
               <ChatbotProvider isChatbotVisible={isChatbotActive}>
-                <SiteHeader currentLocale={locale} products={products} />
+                <SiteHeader
+                  locale={locale}
+                  products={products}
+                  shouldShowLinkToSolutions={shouldShowLinkToSolutions}
+                  shouldShowLinkToWebinars={shouldShowLinkToWebinars}
+                />
                 <ErrorBoundary errorComponent={Error}>
                   <main>
                     <Box sx={{ marginTop: `${SITE_HEADER_HEIGHT}px` }}>

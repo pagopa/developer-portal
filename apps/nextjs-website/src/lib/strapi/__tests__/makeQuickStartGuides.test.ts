@@ -6,6 +6,7 @@ import {
   quickStartGuidesWithMissingProductSlug,
 } from './factories/quickStartGuides';
 import { spyOnConsoleError } from './spyOnConsole';
+import { cloneDeep } from 'lodash';
 
 describe('makeQuickStartGuidesProps', () => {
   beforeEach(() => {
@@ -17,7 +18,10 @@ describe('makeQuickStartGuidesProps', () => {
   });
 
   it('should transform strapi quick start guides to page props', () => {
-    const result = makeQuickStartGuidesProps(strapiQuickStartGuides);
+    const result = makeQuickStartGuidesProps(
+      'it',
+      cloneDeep(strapiQuickStartGuides)
+    );
     expect(result).toHaveLength(1);
     const firstElement = result[0];
     expect(firstElement.abstract?.title).toBe('Quick Start Guide Title');
@@ -33,7 +37,7 @@ describe('makeQuickStartGuidesProps', () => {
   });
 
   it('should handle minimal quick start guides', () => {
-    const result = makeQuickStartGuidesProps(minimalQuickStartGuides());
+    const result = makeQuickStartGuidesProps('it', minimalQuickStartGuides());
     expect(result).toHaveLength(1);
     const firstElement = result[0];
     expect(firstElement.abstract?.title).toBe('Minimal Quick Start');
@@ -45,12 +49,13 @@ describe('makeQuickStartGuidesProps', () => {
   });
 
   it('should handle empty quick start guides', () => {
-    const result = makeQuickStartGuidesProps(emptyQuickStartGuides());
+    const result = makeQuickStartGuidesProps('it', emptyQuickStartGuides());
     expect(result).toHaveLength(0);
   });
 
   it('should handle quick start guides with missing product slug', () => {
     const result = makeQuickStartGuidesProps(
+      'it',
       quickStartGuidesWithMissingProductSlug()
     );
     expect(result).toHaveLength(0);

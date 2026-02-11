@@ -3,6 +3,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { defaultLocale } from '@/config';
 import { SUPPORTED_LOCALES } from '@/locales';
 
+// This middleware redirects URLs without locale prefixes to include the default locale,
+// maintaining backwards compatibility with legacy indexed URLs and CMS' resources URLs
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const pathnameHasLocale = SUPPORTED_LOCALES.some(
@@ -25,6 +27,6 @@ export function middleware(request: NextRequest) {
 export const config = {
   matcher: [
     // Exclude Next internals, API, known public files
-    '/((?!_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml|.*\\.(?:png|jpg|jpeg|gif|webp|svg|ico|css|js|map|txt|xml|json|woff2?|ttf|eot)$).*)',
+    '/((?!_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml|routes/|.*\\.(?:png|jpg|jpeg|gif|webp|svg|ico|css|js|map|txt|xml|json|woff2?|ttf|eot)$).*)',
   ],
 };

@@ -34,21 +34,22 @@ type ReleaseNotePageStaticParams = {
 };
 export const dynamic = 'force-dynamic';
 
-export async function generateMetadata(props0: {
+export async function generateMetadata({
+  params,
+}: {
   params: Promise<ReleaseNotePageStaticParams>;
 }): Promise<Metadata> {
-  const { locale, productSlug, releaseNoteSubPathSlugs } = await props0.params;
+  const { locale, productSlug, releaseNoteSubPathSlugs } = await params;
   if (productSlug === 'unknown') {
     return makeMetadata({
       title: 'unknown',
       url: 'unknown',
     });
   }
-  const props = await getReleaseNote(
-    locale,
-    productSlug,
-    releaseNoteSubPathSlugs
-  );
+  const props = await getReleaseNote(locale, productSlug, [
+    'release-note',
+    ...(releaseNoteSubPathSlugs || []),
+  ]);
 
   if (props?.seo) {
     return makeMetadataFromStrapi(props?.seo);
@@ -70,17 +71,20 @@ export type ReleaseNotePageProps = {
   readonly title: string;
 } & ProductLayoutProps;
 
-const ReleaseNotePage = async (props0: {
+const ReleaseNotePage = async ({
+  params,
+}: {
   params: Promise<ReleaseNotePageStaticParams>;
 }) => {
-  const { locale, productSlug, releaseNoteSubPathSlugs } = await props0.params;
+  const { locale, productSlug, releaseNoteSubPathSlugs } = await params;
   if (productSlug === 'unknown') {
     return <PageNotFound />;
   }
   const releaseNoteProps = await getReleaseNote(
     locale,
     productSlug,
-    releaseNoteSubPathSlugs
+    // Prepend the "release-note" path segment expected by the release notes backend
+    ['release-note', ...(releaseNoteSubPathSlugs || [])]
   );
 
   const urlReplaceMap = await getUrlReplaceMapProps(locale);
@@ -92,7 +96,7 @@ const ReleaseNotePage = async (props0: {
   const { bannerLinks, page, path, product, seo, source, title, bodyConfig } =
     releaseNoteProps;
 
-  const props = {
+  const gitBookProps = {
     ...page,
     pathPrefix: source.pathPrefix,
     bodyConfig: {
@@ -148,7 +152,7 @@ const ReleaseNotePage = async (props0: {
         menuName={title}
         initialBreadcrumbs={initialBreadcrumbs}
         hasInPageMenu={false}
-        {...props}
+        {...gitBookProps}
       />
     </ProductLayout>
   );

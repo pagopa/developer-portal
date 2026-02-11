@@ -56,8 +56,8 @@ export const generateMetadata = async (
   });
 };
 
-const GuideListPage = async (props0: ProductParams) => {
-  const { locale, productSlug } = await props0.params;
+const GuideListPage = async (props: ProductParams) => {
+  const { locale, productSlug } = await props.params;
   const { abstract, bannerLinks, guidesSections, path, product, seo } =
     await getGuideListPages(locale, productSlug);
 

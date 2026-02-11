@@ -31,8 +31,7 @@ export async function generateMetadata(props: {
   return makeMetadata({
     title: caseHistory.title,
     url: `${baseUrl}/${locale}/case-histories/${caseHistory.slug}`,
-    locale: SUPPORTED_LOCALES.find(({ langCode }) => langCode === locale)
-      ?.locale,
+    langCode: locale,
   });
 }
 

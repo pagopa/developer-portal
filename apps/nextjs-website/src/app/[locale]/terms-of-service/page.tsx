@@ -7,11 +7,11 @@ import ContentWrapper from '@/components/atoms/ContentWrapper/ContentWrapper';
 export async function generateMetadata(props: {
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
-  const params = await props.params;
+  const { locale } = await props.params;
   return makeMetadata({
     title: 'Termini e condizioni',
-    url: `${baseUrl}/${params.locale}/terms-of-service`,
-    locale: 'it_IT',
+    url: `${baseUrl}/${locale}/terms-of-service`,
+    langCode: locale,
   });
 }
 

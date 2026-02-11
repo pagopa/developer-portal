@@ -117,7 +117,12 @@ export const MobileSiteHeaderStyledTreeItem = styled(TreeItem)(({ theme }) => ({
   },
 }));
 
-const MobileSiteHeader = ({ currentLocale, products }: SiteHeaderProps) => {
+const MobileSiteHeader = ({
+  locale,
+  products,
+  shouldShowLinkToSolutions,
+  shouldShowLinkToWebinars,
+}: SiteHeaderProps) => {
   const t = useTranslations('devPortal');
   const { palette } = useTheme();
 
@@ -200,7 +205,7 @@ const MobileSiteHeader = ({ currentLocale, products }: SiteHeaderProps) => {
                   key={index}
                   variant='body1'
                   component={NextLink}
-                  href={`/${currentLocale}/${product.slug}/overview`}
+                  href={`/${locale}/${product.slug}/overview`}
                   onClick={handleClick}
                   style={{
                     color: palette.primary.dark,
@@ -213,53 +218,56 @@ const MobileSiteHeader = ({ currentLocale, products }: SiteHeaderProps) => {
               );
             })}
           </MobileSiteHeaderStyledTreeItem>
-
-          <MobileSiteHeaderStyledTreeItem
-            itemId={'siteHeader.solutions'}
-            label={
-              <Typography
-                component={NextLink}
-                variant='body1'
-                href={`/${currentLocale}/solutions`}
-                onClick={handleClick}
-                style={{
-                  color: palette.primary.dark,
-                  display: 'block',
-                  textDecoration: 'none',
-                  fontWeight: 600,
-                  padding: 0,
-                }}
-              >
-                {t('siteHeader.solutions')}
-              </Typography>
-            }
-          />
-          <MobileSiteHeaderStyledTreeItem
-            itemId={'siteHeader.webinars'}
-            label={
-              <Typography
-                component={NextLink}
-                variant='body1'
-                href={`/${currentLocale}/webinars`}
-                onClick={handleClick}
-                style={{
-                  color: palette.primary.dark,
-                  display: 'block',
-                  textDecoration: 'none',
-                  fontWeight: 600,
-                  padding: 0,
-                }}
-              >
-                {t('siteHeader.webinars')}
-              </Typography>
-            }
-          />
+          {shouldShowLinkToSolutions && (
+            <MobileSiteHeaderStyledTreeItem
+              itemId={'siteHeader.solutions'}
+              label={
+                <Typography
+                  component={NextLink}
+                  variant='body1'
+                  href={`/${locale}/solutions`}
+                  onClick={handleClick}
+                  style={{
+                    color: palette.primary.dark,
+                    display: 'block',
+                    textDecoration: 'none',
+                    fontWeight: 600,
+                    padding: 0,
+                  }}
+                >
+                  {t('siteHeader.solutions')}
+                </Typography>
+              }
+            />
+          )}
+          {shouldShowLinkToWebinars && (
+            <MobileSiteHeaderStyledTreeItem
+              itemId={'siteHeader.webinars'}
+              label={
+                <Typography
+                  component={NextLink}
+                  variant='body1'
+                  href={`/${locale}/webinars`}
+                  onClick={handleClick}
+                  style={{
+                    color: palette.primary.dark,
+                    display: 'block',
+                    textDecoration: 'none',
+                    fontWeight: 600,
+                    padding: 0,
+                  }}
+                >
+                  {t('siteHeader.webinars')}
+                </Typography>
+              }
+            />
+          )}
           <Divider sx={{ marginTop: -2, marginBottom: 2 }} />
           <MobileUserInfo onClick={handleClick} />
           <Divider sx={{ marginTop: -2, marginBottom: 2 }} />
           <MobileLanguageSelector
             locales={SUPPORTED_LOCALES}
-            currentLocale={currentLocale}
+            currentLocale={locale}
           />
         </SimpleTreeView>
       </Box>
