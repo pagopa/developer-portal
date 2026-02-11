@@ -3,6 +3,10 @@ name: chatbot
 description: Create Chatbot LLamaindex Vector Index
 
 inputs:
+  api:
+    description: 'Whether to create vector index using api data'
+    required: true
+    default: 'true'
   aws_region:
     description: 'The AWS region selected'
     required: false
@@ -11,6 +15,22 @@ inputs:
     description: the name of the chatbot lambda function
     required: true
     default: ''
+  dynamic:
+    description: 'Whether to create vector index using dynamic data'
+    required: true
+    default: 'true'
+  index_id:
+    description: 'The indexID to create'
+    required: true
+    default: 'devportal-index'
+  static:
+    description: 'Whether to create vector index using static data'
+    required: true
+    default: 'true'
+  structured:
+    description: 'Whether to create vector index using structured data'
+    required: true
+    default: 'false'
 
 runs:
   using: "composite"
@@ -42,4 +62,5 @@ runs:
       shell: bash
       run: |
         cd apps/chatbot-index
-        PYTHONPATH=. poetry run python src/modules/create_vector_index.py
+        export CHB_INDEX_ID=${{ inputs.index_id }}
+        PYTHONPATH=. poetry run python src/modules/create_vector_index.py ${{ inputs.static == 'true' && ' --static' || '' }} ${{ inputs.dynamic == 'true' && ' --dynamic' || '' }} ${{ inputs.api == 'true' && ' --api' || '' }} ${{ inputs.structured == 'true' && ' --structured' || '' }} --clean-redis

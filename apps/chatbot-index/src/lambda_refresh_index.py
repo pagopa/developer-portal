@@ -9,11 +9,11 @@ from src.modules.documents import (
     read_file_from_s3,
     get_one_metadata_from_s3,
 )
-from src.modules.vector_index import DiscoveryVectorIndex
+from src.modules.vector_index import LlamaVectorIndex
 
 
 LOGGER = get_logger(__name__)
-VECTOR_INDEX = DiscoveryVectorIndex()
+VECTOR_INDEX = LlamaVectorIndex()
 DIRNAMES_TO_REMOVE_PATH = "main-guide-versions-dirNames-to-remove.json"
 
 # S3 event example:
