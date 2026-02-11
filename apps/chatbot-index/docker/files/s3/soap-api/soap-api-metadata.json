@@ -1,0 +1,3 @@
+[
+  {"dirName": "pagopa-api", "contentS3Paths": ["pagopa-api/wsdl/nodeForPsp.wsdl.xml","pagopa-api/wsdl/nodeForPa.wsdl.xml","pagopa-api/wsdl/pspForNode.wsdl.xml","pagopa-api/wsdl/paForNode.wsdl.xml"]}
+]

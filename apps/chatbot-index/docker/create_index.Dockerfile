@@ -13,6 +13,10 @@ RUN apt-get update && \
   unzip \
   jq
 
+RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && \
+  unzip awscliv2.zip && \
+  ./aws/install
+
 COPY ./docker/chrome-installer.sh ./chrome-installer.sh
 RUN chmod +x ./chrome-installer.sh && \
   ./chrome-installer.sh && \

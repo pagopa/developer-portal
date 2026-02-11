@@ -1,0 +1,618 @@
+[
+  {
+    "id": 43,
+    "attributes": {
+      "title": "API folle",
+      "description": null,
+      "createdAt": "2025-11-14T16:38:34.599Z",
+      "updatedAt": "2026-01-07T13:49:28.236Z",
+      "publishedAt": "2026-01-07T13:49:28.228Z",
+      "locale": "it",
+      "product": {
+        "data": {
+          "id": 68,
+          "attributes": {
+            "name": "Prodotto delle nostre menti contorte",
+            "description": "descrizione cervellotica: il prodotto delle nostre menti contorte serve solo per fare dei test del meccanismo di sync",
+            "slug": "pdnmc",
+            "createdAt": "2025-11-14T15:47:43.475Z",
+            "updatedAt": "2026-02-03T14:11:10.733Z",
+            "publishedAt": "2025-12-17T14:50:12.401Z",
+            "locale": "it",
+            "shortName": "pdnmc",
+            "isVisible": true,
+            "logo": {
+              "data": {
+                "id": 500,
+                "attributes": {
+                  "name": "techmeet.svg",
+                  "alternativeText": null,
+                  "caption": null,
+                  "width": 32,
+                  "height": 32,
+                  "formats": null,
+                  "hash": "techmeet_adbb66de0a",
+                  "ext": ".svg",
+                  "mime": "image/svg+xml",
+                  "size": 1.98,
+                  "url": "https://cdn.dev.developer.pagopa.it/techmeet_adbb66de0a.svg",
+                  "previewUrl": null,
+                  "provider": "aws-s3",
+                  "provider_metadata": null,
+                  "createdAt": "2025-05-23T08:14:31.510Z",
+                  "updatedAt": "2025-12-11T08:07:45.341Z",
+                  "isUrlSigned": true
+                }
+              }
+            },
+            "bannerLinks": [],
+            "overview": {
+              "data": {
+                "id": 36,
+                "attributes": {
+                  "title": "Titolo overview cervellotica",
+                  "subtitle": "Sottotitolo",
+                  "createdAt": "2025-11-14T15:50:45.140Z",
+                  "updatedAt": "2026-01-16T10:49:58.638Z",
+                  "publishedAt": "2025-12-17T14:50:08.409Z",
+                  "locale": "it"
+                }
+              }
+            },
+            "quickstart_guide": {
+              "data": {
+                "id": 34,
+                "attributes": {
+                  "title": "Quick start cervellotica",
+                  "description": "desc",
+                  "createdAt": "2025-11-14T16:22:58.248Z",
+                  "updatedAt": "2025-12-17T14:51:08.903Z",
+                  "publishedAt": "2025-12-17T14:51:08.890Z",
+                  "locale": "it"
+                }
+              }
+            },
+            "api_data_list_page": {
+              "data": {
+                "id": 36,
+                "attributes": {
+                  "title": "Lista API incomprensibili",
+                  "description": null,
+                  "createdAt": "2025-11-14T16:37:33.615Z",
+                  "updatedAt": "2026-01-30T17:18:14.092Z",
+                  "publishedAt": "2026-01-07T13:49:25.223Z",
+                  "locale": "it",
+                  "enableFilters": true
+                }
+              }
+            },
+            "tutorial_list_page": {
+              "data": null
+            },
+            "use_case_list_page": {
+              "data": null
+            },
+            "guide_list_page": {
+              "data": {
+                "id": 36,
+                "attributes": {
+                  "title": "Pagina di lista delle guide cervellotiche",
+                  "description": "Descrizione della pagina di lista delle guide cervellotiche",
+                  "createdAt": "2025-11-14T16:04:45.619Z",
+                  "updatedAt": "2026-02-03T08:46:51.176Z",
+                  "publishedAt": "2026-01-14T16:22:45.135Z",
+                  "locale": "it"
+                }
+              }
+            },
+            "release_note": {
+              "data": null
+            },
+            "tags": {
+              "data": [
+                {
+                  "id": 1,
+                  "attributes": {
+                    "name": "Tag n. 1",
+                    "createdAt": "2025-10-10T12:59:00.379Z",
+                    "updatedAt": "2025-10-21T10:35:36.500Z",
+                    "publishedAt": "2025-10-10T12:59:02.606Z"
+                  }
+                },
+                {
+                  "id": 2,
+                  "attributes": {
+                    "name": "Tag n. 2",
+                    "createdAt": "2025-10-13T07:27:18.534Z",
+                    "updatedAt": "2025-10-13T07:27:19.449Z",
+                    "publishedAt": "2025-10-13T07:27:19.445Z"
+                  }
+                }
+              ]
+            },
+            "localizations": {
+              "data": []
+            }
+          }
+        }
+      },
+      "apiRestDetail": {
+        "id": 48,
+        "slug": "api-folle",
+        "specUrls": [
+          {
+            "id": 95,
+            "url": "https://raw.githubusercontent.com/pagopa/io-functions-services/master/openapi/index.yaml",
+            "name": null,
+            "hideTryIt": true
+          }
+        ]
+      },
+      "apiSoapDetail": null
+    }
+  },
+  {
+    "id": 44,
+    "attributes": {
+      "title": "Api follemente",
+      "description": null,
+      "createdAt": "2025-11-14T16:40:51.830Z",
+      "updatedAt": "2026-01-07T13:49:35.800Z",
+      "publishedAt": "2026-01-07T13:49:35.792Z",
+      "locale": "it",
+      "product": {
+        "data": {
+          "id": 68,
+          "attributes": {
+            "name": "Prodotto delle nostre menti contorte",
+            "description": "descrizione cervellotica: il prodotto delle nostre menti contorte serve solo per fare dei test del meccanismo di sync",
+            "slug": "pdnmc",
+            "createdAt": "2025-11-14T15:47:43.475Z",
+            "updatedAt": "2026-02-03T14:11:10.733Z",
+            "publishedAt": "2025-12-17T14:50:12.401Z",
+            "locale": "it",
+            "shortName": "pdnmc",
+            "isVisible": true,
+            "logo": {
+              "data": {
+                "id": 500,
+                "attributes": {
+                  "name": "techmeet.svg",
+                  "alternativeText": null,
+                  "caption": null,
+                  "width": 32,
+                  "height": 32,
+                  "formats": null,
+                  "hash": "techmeet_adbb66de0a",
+                  "ext": ".svg",
+                  "mime": "image/svg+xml",
+                  "size": 1.98,
+                  "url": "https://cdn.dev.developer.pagopa.it/techmeet_adbb66de0a.svg",
+                  "previewUrl": null,
+                  "provider": "aws-s3",
+                  "provider_metadata": null,
+                  "createdAt": "2025-05-23T08:14:31.510Z",
+                  "updatedAt": "2025-12-11T08:07:45.341Z",
+                  "isUrlSigned": true
+                }
+              }
+            },
+            "bannerLinks": [],
+            "overview": {
+              "data": {
+                "id": 36,
+                "attributes": {
+                  "title": "Titolo overview cervellotica",
+                  "subtitle": "Sottotitolo",
+                  "createdAt": "2025-11-14T15:50:45.140Z",
+                  "updatedAt": "2026-01-16T10:49:58.638Z",
+                  "publishedAt": "2025-12-17T14:50:08.409Z",
+                  "locale": "it"
+                }
+              }
+            },
+            "quickstart_guide": {
+              "data": {
+                "id": 34,
+                "attributes": {
+                  "title": "Quick start cervellotica",
+                  "description": "desc",
+                  "createdAt": "2025-11-14T16:22:58.248Z",
+                  "updatedAt": "2025-12-17T14:51:08.903Z",
+                  "publishedAt": "2025-12-17T14:51:08.890Z",
+                  "locale": "it"
+                }
+              }
+            },
+            "api_data_list_page": {
+              "data": {
+                "id": 36,
+                "attributes": {
+                  "title": "Lista API incomprensibili",
+                  "description": null,
+                  "createdAt": "2025-11-14T16:37:33.615Z",
+                  "updatedAt": "2026-01-30T17:18:14.092Z",
+                  "publishedAt": "2026-01-07T13:49:25.223Z",
+                  "locale": "it",
+                  "enableFilters": true
+                }
+              }
+            },
+            "tutorial_list_page": {
+              "data": null
+            },
+            "use_case_list_page": {
+              "data": null
+            },
+            "guide_list_page": {
+              "data": {
+                "id": 36,
+                "attributes": {
+                  "title": "Pagina di lista delle guide cervellotiche",
+                  "description": "Descrizione della pagina di lista delle guide cervellotiche",
+                  "createdAt": "2025-11-14T16:04:45.619Z",
+                  "updatedAt": "2026-02-03T08:46:51.176Z",
+                  "publishedAt": "2026-01-14T16:22:45.135Z",
+                  "locale": "it"
+                }
+              }
+            },
+            "release_note": {
+              "data": null
+            },
+            "tags": {
+              "data": [
+                {
+                  "id": 1,
+                  "attributes": {
+                    "name": "Tag n. 1",
+                    "createdAt": "2025-10-10T12:59:00.379Z",
+                    "updatedAt": "2025-10-21T10:35:36.500Z",
+                    "publishedAt": "2025-10-10T12:59:02.606Z"
+                  }
+                },
+                {
+                  "id": 2,
+                  "attributes": {
+                    "name": "Tag n. 2",
+                    "createdAt": "2025-10-13T07:27:18.534Z",
+                    "updatedAt": "2025-10-13T07:27:19.449Z",
+                    "publishedAt": "2025-10-13T07:27:19.445Z"
+                  }
+                }
+              ]
+            },
+            "localizations": {
+              "data": []
+            }
+          }
+        }
+      },
+      "apiRestDetail": {
+        "id": 53,
+        "slug": "api-follemente",
+        "specUrls": [
+          {
+            "id": 100,
+            "url": "https://raw.githubusercontent.com/pagopa/interop-att-eservices/refs/heads/develop/packages/keychain-mock/open-api/keychainMock_v1.0.yaml",
+            "name": "follemente",
+            "hideTryIt": true
+          }
+        ]
+      },
+      "apiSoapDetail": null
+    }
+  },
+  {
+    "id": 18,
+    "attributes": {
+      "title": "Documentazione SOAP",
+      "description": "Consulta tutti gli schemi XSD e WSDL che seguono le diverse release SANP",
+      "createdAt": "2024-07-16T12:07:27.383Z",
+      "updatedAt": "2026-01-29T14:51:28.575Z",
+      "publishedAt": "2026-01-29T14:51:28.565Z",
+      "locale": "it",
+      "product": {
+        "data": {
+          "id": 68,
+          "attributes": {
+            "name": "Prodotto delle nostre menti contorte",
+            "description": "descrizione cervellotica: il prodotto delle nostre menti contorte serve solo per fare dei test del meccanismo di sync",
+            "slug": "pdnmc",
+            "createdAt": "2025-11-14T15:47:43.475Z",
+            "updatedAt": "2026-02-03T14:11:10.733Z",
+            "publishedAt": "2025-12-17T14:50:12.401Z",
+            "locale": "it",
+            "shortName": "pdnmc",
+            "isVisible": true,
+            "logo": {
+              "data": {
+                "id": 500,
+                "attributes": {
+                  "name": "techmeet.svg",
+                  "alternativeText": null,
+                  "caption": null,
+                  "width": 32,
+                  "height": 32,
+                  "formats": null,
+                  "hash": "techmeet_adbb66de0a",
+                  "ext": ".svg",
+                  "mime": "image/svg+xml",
+                  "size": 1.98,
+                  "url": "https://cdn.dev.developer.pagopa.it/techmeet_adbb66de0a.svg",
+                  "previewUrl": null,
+                  "provider": "aws-s3",
+                  "provider_metadata": null,
+                  "createdAt": "2025-05-23T08:14:31.510Z",
+                  "updatedAt": "2025-12-11T08:07:45.341Z",
+                  "isUrlSigned": true
+                }
+              }
+            },
+            "bannerLinks": [],
+            "overview": {
+              "data": {
+                "id": 36,
+                "attributes": {
+                  "title": "Titolo overview cervellotica",
+                  "subtitle": "Sottotitolo",
+                  "createdAt": "2025-11-14T15:50:45.140Z",
+                  "updatedAt": "2026-01-16T10:49:58.638Z",
+                  "publishedAt": "2025-12-17T14:50:08.409Z",
+                  "locale": "it"
+                }
+              }
+            },
+            "quickstart_guide": {
+              "data": {
+                "id": 34,
+                "attributes": {
+                  "title": "Quick start cervellotica",
+                  "description": "desc",
+                  "createdAt": "2025-11-14T16:22:58.248Z",
+                  "updatedAt": "2025-12-17T14:51:08.903Z",
+                  "publishedAt": "2025-12-17T14:51:08.890Z",
+                  "locale": "it"
+                }
+              }
+            },
+            "api_data_list_page": {
+              "data": {
+                "id": 36,
+                "attributes": {
+                  "title": "Lista API incomprensibili",
+                  "description": null,
+                  "createdAt": "2025-11-14T16:37:33.615Z",
+                  "updatedAt": "2026-01-30T17:18:14.092Z",
+                  "publishedAt": "2026-01-07T13:49:25.223Z",
+                  "locale": "it",
+                  "enableFilters": true
+                }
+              }
+            },
+            "tutorial_list_page": {
+              "data": null
+            },
+            "use_case_list_page": {
+              "data": null
+            },
+            "guide_list_page": {
+              "data": {
+                "id": 36,
+                "attributes": {
+                  "title": "Pagina di lista delle guide cervellotiche",
+                  "description": "Descrizione della pagina di lista delle guide cervellotiche",
+                  "createdAt": "2025-11-14T16:04:45.619Z",
+                  "updatedAt": "2026-02-03T08:46:51.176Z",
+                  "publishedAt": "2026-01-14T16:22:45.135Z",
+                  "locale": "it"
+                }
+              }
+            },
+            "release_note": {
+              "data": null
+            },
+            "tags": {
+              "data": [
+                {
+                  "id": 1,
+                  "attributes": {
+                    "name": "Tag n. 1",
+                    "createdAt": "2025-10-10T12:59:00.379Z",
+                    "updatedAt": "2025-10-21T10:35:36.500Z",
+                    "publishedAt": "2025-10-10T12:59:02.606Z"
+                  }
+                },
+                {
+                  "id": 2,
+                  "attributes": {
+                    "name": "Tag n. 2",
+                    "createdAt": "2025-10-13T07:27:18.534Z",
+                    "updatedAt": "2025-10-13T07:27:19.449Z",
+                    "publishedAt": "2025-10-13T07:27:19.445Z"
+                  }
+                }
+              ]
+            },
+            "localizations": {
+              "data": []
+            }
+          }
+        }
+      },
+      "apiRestDetail": null,
+      "apiSoapDetail": {
+        "id": 1,
+        "repositoryUrl": "https://github.com/pagopa/pagopa-api/",
+        "dirName": "pagopa-api",
+        "slug": "pagopa-soap-api",
+        "branch": "develop",
+        "repositoryPath": "tree/develop/wsdl"
+      }
+    }
+  },
+  {
+    "id": 45,
+    "attributes": {
+      "title": "QDEV-2602_API Test Rapidoc",
+      "description": "Pagina per test su DEV-2602 \"L'utente può visualizzare la pagina del dettaglio API vedendo la nuova interfaccia\"",
+      "createdAt": "2026-01-30T17:17:43.697Z",
+      "updatedAt": "2026-01-30T18:12:41.240Z",
+      "publishedAt": "2026-01-30T17:17:50.086Z",
+      "locale": "it",
+      "product": {
+        "data": {
+          "id": 68,
+          "attributes": {
+            "name": "Prodotto delle nostre menti contorte",
+            "description": "descrizione cervellotica: il prodotto delle nostre menti contorte serve solo per fare dei test del meccanismo di sync",
+            "slug": "pdnmc",
+            "createdAt": "2025-11-14T15:47:43.475Z",
+            "updatedAt": "2026-02-03T14:11:10.733Z",
+            "publishedAt": "2025-12-17T14:50:12.401Z",
+            "locale": "it",
+            "shortName": "pdnmc",
+            "isVisible": true,
+            "logo": {
+              "data": {
+                "id": 500,
+                "attributes": {
+                  "name": "techmeet.svg",
+                  "alternativeText": null,
+                  "caption": null,
+                  "width": 32,
+                  "height": 32,
+                  "formats": null,
+                  "hash": "techmeet_adbb66de0a",
+                  "ext": ".svg",
+                  "mime": "image/svg+xml",
+                  "size": 1.98,
+                  "url": "https://cdn.dev.developer.pagopa.it/techmeet_adbb66de0a.svg",
+                  "previewUrl": null,
+                  "provider": "aws-s3",
+                  "provider_metadata": null,
+                  "createdAt": "2025-05-23T08:14:31.510Z",
+                  "updatedAt": "2025-12-11T08:07:45.341Z",
+                  "isUrlSigned": true
+                }
+              }
+            },
+            "bannerLinks": [],
+            "overview": {
+              "data": {
+                "id": 36,
+                "attributes": {
+                  "title": "Titolo overview cervellotica",
+                  "subtitle": "Sottotitolo",
+                  "createdAt": "2025-11-14T15:50:45.140Z",
+                  "updatedAt": "2026-01-16T10:49:58.638Z",
+                  "publishedAt": "2025-12-17T14:50:08.409Z",
+                  "locale": "it"
+                }
+              }
+            },
+            "quickstart_guide": {
+              "data": {
+                "id": 34,
+                "attributes": {
+                  "title": "Quick start cervellotica",
+                  "description": "desc",
+                  "createdAt": "2025-11-14T16:22:58.248Z",
+                  "updatedAt": "2025-12-17T14:51:08.903Z",
+                  "publishedAt": "2025-12-17T14:51:08.890Z",
+                  "locale": "it"
+                }
+              }
+            },
+            "api_data_list_page": {
+              "data": {
+                "id": 36,
+                "attributes": {
+                  "title": "Lista API incomprensibili",
+                  "description": null,
+                  "createdAt": "2025-11-14T16:37:33.615Z",
+                  "updatedAt": "2026-01-30T17:18:14.092Z",
+                  "publishedAt": "2026-01-07T13:49:25.223Z",
+                  "locale": "it",
+                  "enableFilters": true
+                }
+              }
+            },
+            "tutorial_list_page": {
+              "data": null
+            },
+            "use_case_list_page": {
+              "data": null
+            },
+            "guide_list_page": {
+              "data": {
+                "id": 36,
+                "attributes": {
+                  "title": "Pagina di lista delle guide cervellotiche",
+                  "description": "Descrizione della pagina di lista delle guide cervellotiche",
+                  "createdAt": "2025-11-14T16:04:45.619Z",
+                  "updatedAt": "2026-02-03T08:46:51.176Z",
+                  "publishedAt": "2026-01-14T16:22:45.135Z",
+                  "locale": "it"
+                }
+              }
+            },
+            "release_note": {
+              "data": null
+            },
+            "tags": {
+              "data": [
+                {
+                  "id": 1,
+                  "attributes": {
+                    "name": "Tag n. 1",
+                    "createdAt": "2025-10-10T12:59:00.379Z",
+                    "updatedAt": "2025-10-21T10:35:36.500Z",
+                    "publishedAt": "2025-10-10T12:59:02.606Z"
+                  }
+                },
+                {
+                  "id": 2,
+                  "attributes": {
+                    "name": "Tag n. 2",
+                    "createdAt": "2025-10-13T07:27:18.534Z",
+                    "updatedAt": "2025-10-13T07:27:19.449Z",
+                    "publishedAt": "2025-10-13T07:27:19.445Z"
+                  }
+                }
+              ]
+            },
+            "localizations": {
+              "data": []
+            }
+          }
+        }
+      },
+      "apiRestDetail": {
+        "id": 55,
+        "slug": "qdev2602-api-test",
+        "specUrls": [
+          {
+            "id": 103,
+            "url": "https://raw.githubusercontent.com/pagopa/pagopa-api/develop/openapi/gpd_fdr.json",
+            "name": "prima1",
+            "hideTryIt": true
+          },
+          {
+            "id": 104,
+            "url": "https://raw.githubusercontent.com/pagopa/pagopa-api/develop/openapi/gpd_fdr.json",
+            "name": "poi",
+            "hideTryIt": true
+          },
+          {
+            "id": 105,
+            "url": "https://raw.githubusercontent.com/pagopa/pagopa-api/develop/openapi/gpd_fdr.YAML",
+            "name": "YAML-Errato",
+            "hideTryIt": true
+          }
+        ]
+      },
+      "apiSoapDetail": null
+    }
+  }
+]
