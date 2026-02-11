@@ -235,29 +235,44 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         ).values()
       );
 
-      const s3GuideRoutes = uniqueGuidesMetadata.map((guide: JsonMetadata) => ({
-        url: `${baseUrl}${guide.path}`,
-        lastModified: new Date(guide.lastModified || Date.now()),
-        changeFrequency: 'weekly' as const,
-        priority: 0.6,
-      }));
-
-      const s3SolutionRoutes = solutionsMetadata.map(
-        (solution: JsonMetadata) => ({
-          url: `${baseUrl}${solution.path}`,
-          lastModified: new Date(solution.lastModified || Date.now()),
+      const s3GuideRoutes = uniqueGuidesMetadata.map((guide: JsonMetadata) => {
+        const guidePath = guide.path.startsWith(`/${localeCode}`)
+          ? guide.path
+          : `/${localeCode}${guide.path}`;
+        return {
+          url: `${baseUrl}${guidePath}`,
+          lastModified: new Date(guide.lastModified || Date.now()),
           changeFrequency: 'weekly' as const,
           priority: 0.6,
-        })
+        };
+      });
+
+      const s3SolutionRoutes = solutionsMetadata.map(
+        (solution: JsonMetadata) => {
+          const solutionPath = solution.path.startsWith(`/${localeCode}`)
+            ? solution.path
+            : `/${localeCode}${solution.path}`;
+          return {
+            url: `${baseUrl}${solutionPath}`,
+            lastModified: new Date(solution.lastModified || Date.now()),
+            changeFrequency: 'weekly' as const,
+            priority: 0.6,
+          };
+        }
       );
 
       const s3ReleaseNoteRoutes = uniqueReleaseNotesMetadata.map(
-        (releaseNote: JsonMetadata) => ({
-          url: `${baseUrl}${releaseNote.path}`,
-          lastModified: new Date(releaseNote.lastModified || Date.now()),
-          changeFrequency: 'weekly' as const,
-          priority: 0.6,
-        })
+        (releaseNote: JsonMetadata) => {
+          const notePath = releaseNote.path.startsWith(`/${localeCode}`)
+            ? releaseNote.path
+            : `/${localeCode}${releaseNote.path}`;
+          return {
+            url: `${baseUrl}${notePath}`,
+            lastModified: new Date(releaseNote.lastModified || Date.now()),
+            changeFrequency: 'weekly' as const,
+            priority: 0.6,
+          };
+        }
       );
 
       // --------------------------------------------------------------------------------
@@ -404,5 +419,22 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     })
   );
 
-  return allLocalesSitemaps.flat();
+  const flatSitemap = allLocalesSitemaps.flat();
+
+  // Deduplicate URLs - keep the entry with the most recent lastModified date
+  const deduplicatedSitemap = Array.from(
+    flatSitemap.reduce((map, entry) => {
+      const existing = map.get(entry.url);
+      if (
+        !existing ||
+        new Date(entry.lastModified || Date.now()) >
+          new Date(existing.lastModified || Date.now())
+      ) {
+        map.set(entry.url, entry);
+      }
+      return map;
+    }, new Map<string, MetadataRoute.Sitemap[number]>())
+  ).map(([, entry]) => entry);
+
+  return deduplicatedSitemap;
 }
