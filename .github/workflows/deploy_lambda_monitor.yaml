@@ -91,7 +91,7 @@ jobs:
           IMAGE_TAG: ${{ github.sha }}
         with:
             context: apps/chatbot-monitor
-            file: apps/chatbot-monitor/docker/lambda.Dockerfile
+            file: apps/chatbot-monitor/docker/lambda_monitor.Dockerfile
             push: true
             tags: ${{ env.ECR_REGISTRY }}/monitor:${{ env.IMAGE_TAG }}
             provenance: false
