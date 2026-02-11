@@ -82,7 +82,7 @@ Each visited page is saved as a JSON file:
 Run tests with:
 
 ```bash
-npm test
+npm run test
 ```
 
 Tests will compile the project and then execute Jest to ensure the CLI behaves as expected.
