@@ -53,9 +53,9 @@ import { isMarkDownPart, MarkDownPart } from '@/lib/strapi/types/part';
 import { getMarkdownContent } from '@/lib/api';
 import { fetchGuideListPages } from './strapi/fetches/fetchGuideListPages';
 import {
-  getSyncedGuidesResponseJsonPath,
-  getSyncedSolutionsResponseJsonPath,
-  getSyncedReleaseNotesResponseJsonPath,
+  getSyncedGuidesResponseJsonFile,
+  getSyncedSolutionsResponseJsonFile,
+  getSyncedReleaseNotesResponseJsonFile,
 } from 'gitbook-docs/syncedResponses';
 import { StrapiSolutions } from './strapi/types/solutions';
 import { StrapiReleaseNotes } from './strapi/types/releaseNotes';
@@ -153,7 +153,7 @@ export const getCaseHistoriesProps = async () => {
 
 export const getSolutionsProps = async () => {
   const strapiSolutions = (await fetchResponseFromCDN(
-    getSyncedSolutionsResponseJsonPath()
+    getSyncedSolutionsResponseJsonFile
   )) as StrapiSolutions | undefined;
   return strapiSolutions ? makeSolutionsProps(strapiSolutions) : [];
 };
@@ -183,7 +183,7 @@ export const getGuideProps = async (
 
 export const getGuidesProps = async () => {
   const strapiGuides = (await fetchResponseFromCDN(
-    getSyncedGuidesResponseJsonPath()
+    getSyncedGuidesResponseJsonFile
   )) as StrapiGuides | undefined;
   return strapiGuides ? makeGuidesProps(strapiGuides) : [];
 };
@@ -193,7 +193,7 @@ export const getGuidePageProps = async (
   productSlug: string
 ) => {
   const strapiGuides = (await fetchResponseFromCDN(
-    getSyncedGuidesResponseJsonPath()
+    getSyncedGuidesResponseJsonFile
   )) as StrapiGuides | undefined;
   // eslint-disable-next-line functional/no-expression-statements
   const guides = strapiGuides ? makeGuidesProps(strapiGuides) : [];
@@ -214,7 +214,7 @@ export const getSolutionProps = async (
   jsonMetadata?: JsonMetadata
 ) => {
   const strapiSolutions = (await fetchResponseFromCDN(
-    getSyncedSolutionsResponseJsonPath()
+    getSyncedSolutionsResponseJsonFile
   )) as StrapiSolutions | undefined;
   if (!strapiSolutions) {
     // eslint-disable-next-line functional/no-throw-statements
@@ -231,7 +231,7 @@ export const getSolutionProps = async (
 
 const fetchReleaseNotes = async () => {
   const strapiReleaseNotes = (await fetchResponseFromCDN(
-    getSyncedReleaseNotesResponseJsonPath()
+    getSyncedReleaseNotesResponseJsonFile
   )) as StrapiReleaseNotes | undefined;
   if (!strapiReleaseNotes) {
     // eslint-disable-next-line functional/no-throw-statements

@@ -15,15 +15,16 @@ import dotenv from 'dotenv';
 import {
   deleteS3Directory,
   downloadS3File,
+  getLocalizedPath,
   makeS3Client,
   putS3File,
 } from '../helpers/s3Bucket.helper';
 import { S3Client } from '@aws-sdk/client-s3';
 import path from 'path';
 import {
-  guidesQueryString,
-  releaseNotesQueryString,
-  solutionsQueryString,
+  getGuidesQueryString,
+  getReleaseNotesQueryString,
+  getSolutionsQueryString,
 } from '../helpers/strapiQuery';
 
 const S3_PATH_TO_GITBOOK_DOCS =
@@ -31,6 +32,8 @@ const S3_PATH_TO_GITBOOK_DOCS =
 const S3_BUCKET_NAME = process.env.S3_BUCKET_NAME;
 const S3_DIRNAMES_JSON_PATH =
   process.env.S3_DIRNAMES_JSON_PATH || 'dirNames.json';
+const LOCALE = process.env.LOCALE;
+
 // Load environment variables
 dotenv.config();
 
@@ -49,12 +52,16 @@ async function fetchAllDirNamesFromStrapi(): Promise<{ dirNames: string[] }> {
   const [guidesResult, solutionsResult, releaseNotesResult] = await Promise.all(
     [
       // Guides with full populate
-      fetchFromStrapi<StrapiGuide>(`api/guides?${guidesQueryString}`),
+      fetchFromStrapi<StrapiGuide>(
+        `api/guides?${getGuidesQueryString(LOCALE)}`
+      ),
       // Solutions with full populate
-      fetchFromStrapi<StrapiSolution>(`api/solutions/?${solutionsQueryString}`),
+      fetchFromStrapi<StrapiSolution>(
+        `api/solutions/?${getSolutionsQueryString(LOCALE)}`
+      ),
       // Release notes with full populate
       fetchFromStrapi<StrapiReleaseNote>(
-        `api/release-notes/?${releaseNotesQueryString}`
+        `api/release-notes/?${getReleaseNotesQueryString(LOCALE)}`
       ),
     ]
   );
@@ -85,7 +92,7 @@ async function main() {
   try {
     const strapiDirNames = await fetchAllDirNamesFromStrapi();
     const s3DirNamesContent = await downloadS3File(
-      S3_DIRNAMES_JSON_PATH,
+      getLocalizedPath(S3_DIRNAMES_JSON_PATH, LOCALE),
       S3_BUCKET_NAME!,
       getS3Client()
     ).catch((error) => {
@@ -109,7 +116,7 @@ async function main() {
     );
     await putS3File(
       strapiDirNames,
-      S3_DIRNAMES_JSON_PATH,
+      getLocalizedPath(S3_DIRNAMES_JSON_PATH, LOCALE),
       S3_BUCKET_NAME!,
       getS3Client()
     );

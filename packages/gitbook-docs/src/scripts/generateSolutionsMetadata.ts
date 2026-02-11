@@ -7,6 +7,7 @@ import dotenv from 'dotenv';
 import { MetadataItem } from '../metadataItem';
 import {
   downloadS3File,
+  getLocalizedPath,
   listS3Files,
   makeS3Client,
   putS3File,
@@ -15,7 +16,7 @@ import { extractTitleFromMarkdown } from '../helpers/extractTitle.helper';
 import { fetchFromStrapi } from '../helpers/fetchFromStrapi';
 import { sitePathFromS3Path } from '../helpers/sitePathFromS3Path';
 import { StrapiSolution } from '../helpers/strapiTypes';
-import { getSyncedSolutionsResponseJsonPath } from '../syncedResponses';
+import { getSyncedSolutionsResponseJsonFile } from '../syncedResponses';
 
 // Load environment variables from .env file
 dotenv.config();
@@ -25,20 +26,22 @@ const S3_PATH_TO_GITBOOK_DOCS =
   process.env.S3_PATH_TO_GITBOOK_DOCS || 'devportal-docs/docs';
 const S3_SOLUTIONS_METADATA_JSON_PATH =
   process.env.S3_SOLUTIONS_METADATA_JSON_PATH || 'solutions-metadata.json';
-const SYNCED_SOLUTIONS_RESPONSE_JSON_PATH =
-  getSyncedSolutionsResponseJsonPath();
+const LOCALE = process.env.LOCALE;
 
 const s3Client = makeS3Client();
 function generateUrlPath(
   filePath: string,
   slug: string,
-  landingUseCaseFile: string
+  landingUseCaseFile: string,
+  locale?: string
 ): string {
   const restOfPath = sitePathFromS3Path(filePath, landingUseCaseFile);
   if (!restOfPath) {
-    return `/solutions/${slug}/details`;
+    return [locale, `/solutions/${slug}/details`].filter(Boolean).join('/');
   } else {
-    return `/solutions/${slug}/details/${restOfPath}`;
+    return [locale, `/solutions/${slug}/details/${restOfPath}`]
+      .filter(Boolean)
+      .join('/');
   }
 }
 
@@ -77,13 +80,14 @@ async function convertSolutionToMetadataItems(
         const path = generateUrlPath(
           filePath,
           solution.attributes.slug,
-          solution.attributes.landingUseCaseFile
+          solution.attributes.landingUseCaseFile,
+          LOCALE
         );
         items.push({
           path,
           dirName,
-          contentS3Path: filePath,
-          menuS3Path: menuPath,
+          contentS3Path: getLocalizedPath(filePath, LOCALE),
+          menuS3Path: getLocalizedPath(menuPath, LOCALE),
           title: title || path.split('/').pop() || 'Untitled',
         });
       }
@@ -101,7 +105,9 @@ async function main() {
   let responseJson;
   try {
     const result = await fetchFromStrapi<StrapiSolution>(
-      'api/solutions/?populate[icon]=icon&populate[stats]=*&populate[steps][populate][products]=*&populate[seo][populate]=*,metaImage,metaSocial.image&populate[products][populate][0]=logo&populate[bannerLinks][populate][0]=icon&populate[webinars][populate][coverImage][populate][0]=image&populate[webinars][populate][webinarSpeakers][populate][0]=avatar&populate[webinars][populate][relatedLinks][populate][0]=links&populate[webinars][populate][relatedResources][populate][resources][populate][0]=image&populate[webinars][populate][relatedResources][populate][downloadableDocuments][populate]=*&populate[webinars][populate][seo][populate]=*,metaImage,metaSocial.image&populate[webinars][populate][questionsAndAnswers]=*&populate[webinars][populate][webinarCategory][populate][0]=icon&populate[webinars][populate][headerImage][populate][0]=image&populate[caseHistories][populate][0]=case_histories&populate[caseHistories][populate][1]=case_histories.image&pagination[pageSize]=1000&pagination[page]=1'
+      `api/solutions/?[locale]=${
+        LOCALE || 'it'
+      }&populate[icon]=icon&populate[stats]=*&populate[steps][populate][products]=*&populate[seo][populate]=*,metaImage,metaSocial.image&populate[products][populate][0]=logo&populate[bannerLinks][populate][0]=icon&populate[webinars][populate][coverImage][populate][0]=image&populate[webinars][populate][webinarSpeakers][populate][0]=avatar&populate[webinars][populate][relatedLinks][populate][0]=links&populate[webinars][populate][relatedResources][populate][resources][populate][0]=image&populate[webinars][populate][relatedResources][populate][downloadableDocuments][populate]=*&populate[webinars][populate][seo][populate]=*,metaImage,metaSocial.image&populate[webinars][populate][questionsAndAnswers]=*&populate[webinars][populate][webinarCategory][populate][0]=icon&populate[webinars][populate][headerImage][populate][0]=image&populate[caseHistories][populate][0]=case_histories&populate[caseHistories][populate][1]=case_histories.image&pagination[pageSize]=1000&pagination[page]=1`
     );
     strapiSolutions = result.data;
     responseJson = result.responseJson;
@@ -117,14 +123,14 @@ async function main() {
 
   await putS3File(
     metadataItems,
-    S3_SOLUTIONS_METADATA_JSON_PATH,
+    getLocalizedPath(S3_SOLUTIONS_METADATA_JSON_PATH, LOCALE),
     `${S3_BUCKET_NAME}`,
     s3Client
   );
 
   await putS3File(
     responseJson,
-    SYNCED_SOLUTIONS_RESPONSE_JSON_PATH,
+    getLocalizedPath(getSyncedSolutionsResponseJsonFile, LOCALE),
     `${S3_BUCKET_NAME}`,
     s3Client
   );
