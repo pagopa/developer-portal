@@ -55,7 +55,9 @@ export async function parsePages(
           if (allowedToken && !normalizedHref.includes(allowedToken)) continue;
           if (target.href === window.location.href) continue;
           unique.add(target.href);
-        } catch (_) {}
+        } catch (error) {
+          console.warn(`Failed to parse anchor href: ${href}`, error);
+        }
       }
 
       for (const frame of iframeSources) {
