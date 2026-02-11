@@ -34,3 +34,4 @@ RUN poetry install --only main
 COPY ./src ${LAMBDA_TASK_ROOT}/src
 COPY ./config ${LAMBDA_TASK_ROOT}/config
 COPY ./scripts ${LAMBDA_TASK_ROOT}/scripts
+COPY ./docker/files/s3 ${LAMBDA_TASK_ROOT}/files/s3
