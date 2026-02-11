@@ -11,6 +11,6 @@ export async function makeApiSoapUrlList(locale: string, apiDirName: string) {
   }
 
   return soapApiMetadata.contentS3Paths.map(
-    (url) => `${staticContentsUrl}/soap-api/${url}`
+    (url) => `${staticContentsUrl}/${locale}/soap-api/${url}`
   );
 }
