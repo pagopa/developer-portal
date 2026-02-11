@@ -185,7 +185,7 @@ const shadowValues = {
   )}, 0px 6px 30px 5px ${alpha(shadowColor, 0.1)}`,
 };
 // eslint-disable-next-line
-const shadowsArray = Array(25).fill('none') as any;
+const shadowsArray = Array(25).fill("none") as any;
 
 const foundation = {
   breakpoints: {
