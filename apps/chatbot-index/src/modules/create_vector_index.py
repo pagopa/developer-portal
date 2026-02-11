@@ -40,6 +40,19 @@ if __name__ == "__main__":
     )
     args = parser.parse_args()
 
+    # Validate source selection:
+    # - Structured documents cannot be combined with static, dynamic, or API documents.
+    # - At least one document source must be selected.
+    has_unstructured_source = args.static or args.dynamic or args.api
+    if args.structured and has_unstructured_source:
+        parser.error(
+            "Structured documents cannot be combined with static, dynamic, or API documents."
+        )
+    if not args.structured and not has_unstructured_source:
+        parser.error(
+            "No document sources selected. Use one or more of --static, --dynamic, --api, or --structured."
+        )
+
     VECTOR_INDEX.create_index(
         static=args.static,
         dynamic=args.dynamic,
