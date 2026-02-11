@@ -9,6 +9,7 @@ import { parsePages } from './modules/crawler';
 import { expandInteractiveSections } from './modules/dom-actions';
 import { ParseNode, ParseMetadata } from './modules/types';
 import { sanitizeUrlAsFilename, UrlWithoutAnchors } from './helpers/url-handling';
+import { assertReachable } from './modules/network';
 import crypto from 'crypto';
 
 puppeteer.use(StealthPlugin());
@@ -21,7 +22,7 @@ const parsedPages = new Map<string, ParseMetadata>();
 
 void (async () => {
   try {
-    await assertReachable(env.baseUrl);
+    await assertReachable(env.baseUrl, REQUEST_TIMEOUT_MS);
     ensureDirectory(env.outputDirectory);
 
     const browser = await puppeteer.launch({ headless: true });
@@ -190,40 +191,4 @@ function toIsoOrNull(value: string | null): string | null {
   }
   const date = new Date(value);
   return Number.isNaN(date.getTime()) ? null : date.toISOString();
-}
-
-async function assertReachable(url: string): Promise<void> {
-  const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
-
-  try {
-    const res = await fetch(url, {
-      method: 'GET',
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
-      },
-      signal: controller.signal
-    });
-
-    const text = await res.text();
-
-    // Detect Cloudflare challenge
-    if (
-      /cloudflare|just a moment|verify you are human/i.test(text)
-    ) {
-      console.warn('Cloudflare protection detected, skipping reachability check.');
-      return;
-    }
-
-    if (!res.ok && res.status !== 405) {
-      throw new Error(`Status ${res.status}`);
-    }
-  } catch (error) {
-    if ((error as Error).name === 'AbortError') {
-      throw new Error(`Target ${url} is unreachable: request timed out`);
-    }
-    throw new Error(`Target ${url} is unreachable: ${(error as Error).message}`);
-  } finally {
-    clearTimeout(timeoutId);
-  }
 }
