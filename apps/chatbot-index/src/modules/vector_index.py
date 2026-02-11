@@ -184,7 +184,7 @@ def load_index_redis(index_id: str | None = None) -> VectorStoreIndex:
         raise ValueError(f"Error loading index from Redis: {e}")
 
 
-class DiscoveryVectorIndex:
+class LlamaVectorIndex:
     def __init__(self):
         self.index_id = SETTINGS.index_id
 
