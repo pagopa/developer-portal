@@ -3,7 +3,6 @@ export const stripUrlDecorations = (rawUrl: string): string => {
   if (trimmed.length === 0) {
     return trimmed;
   }
-
   const [withoutParams] = trimmed.split(/[?#]/);
   return withoutParams !== '/' && withoutParams.endsWith('/')
     ? withoutParams.slice(0, -1)
@@ -25,8 +24,4 @@ export const normalizeUrl = (rawUrl: string): string => {
   } catch (_error) {
     return rawUrl;
   }
-};
-
-export const isRemoteUrl = (candidate: string): boolean => {
-  return /^https?:\/\//i.test(candidate.trim());
 };

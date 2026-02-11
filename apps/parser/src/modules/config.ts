@@ -9,19 +9,18 @@ export type EnvConfig = {
   readonly maxDepth: number;
 };
 
-const DEFAULT_BASE_URL = 'https://news.polymer-project.org/';
 const DEFAULT_DEPTH = 2;
 
 export function resolveEnv(): EnvConfig {
-  const baseUrl = process.env.URL?.trim().length ? process.env.URL : DEFAULT_BASE_URL;
+  const baseUrl = process.env.URL?.trim();
+  if (!baseUrl) {
+    throw new Error('Missing required URL.');
+  }
   const sanitizedBaseUrl = stripUrlDecorations(baseUrl);
   const parsedDepth = Number.parseInt(process.env.DEPTH ?? `${DEFAULT_DEPTH}`, 10);
   const maxDepth = Number.isNaN(parsedDepth) ? DEFAULT_DEPTH : Math.max(parsedDepth, 0);
-  const vectorIndexName = process.env.PARSER_VECTOR_INDEX_NAME?.trim();
-  const derivedOutput = buildDefaultOutputDirectory(vectorIndexName, sanitizedBaseUrl);
-  const outputDirectory = process.env.OUTDIR?.trim().length
-    ? process.env.OUTDIR
-    : derivedOutput;
+  const vectorIndexName = process.env.CHB_INDEX_ID?.trim();
+  const outputDirectory = buildDefaultOutputDirectory(vectorIndexName, sanitizedBaseUrl);
   return { baseUrl, sanitizedBaseUrl, outputDirectory, maxDepth };
 }
 

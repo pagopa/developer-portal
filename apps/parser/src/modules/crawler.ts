@@ -12,7 +12,8 @@ export async function parsePages(
   parsePageFn: (browser: Browser, url: string) => Promise<ParseMetadata | null>,
   baseOrigin: string,
   baseScope: string,
-  baseHostToken: string
+  baseHostToken: string,
+  navigationTimeout = 30000
 ): Promise<void> {
   const visitKey = buildVisitKey(node.url);
   if (parsedPages.has(visitKey) || depth > maxDepth) {
@@ -39,7 +40,7 @@ export async function parsePages(
   let anchors: string[] = [];
   try {
     page = await browser.newPage();
-    await page.goto(node.url, { waitUntil: 'networkidle2', timeout: 45000 });
+    await page.goto(node.url, { waitUntil: 'networkidle2', timeout: navigationTimeout });
     await expandInteractiveSections(page);
     anchors = await page.evaluate((allowedToken: string) => {
       const anchors = Array.from(document.querySelectorAll('a[href]'));

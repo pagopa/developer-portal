@@ -41,7 +41,8 @@ void (async () => {
       parsePageFn,
       baseOrigin,
       baseScope,
-      baseHostToken
+      baseHostToken,
+      NAVIGATION_TIMEOUT_MS
     );
     await browser.close();
     console.log(`Parsing complete! Data saved to ${env.outputDirectory}`);
