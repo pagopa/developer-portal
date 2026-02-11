@@ -14,15 +14,26 @@ on:
           - dev
           - uat
           - prod
-      docs_type:
-        description: 'The type of documents to vectorize'
-        type: choice
+      api:
+        description: 'Consider API documentation for index creation'
+        type: boolean
         required: true
-        options:
-          - api
-          - dynamic
-          - static
-          - structured
+        default: true
+      dynamic:
+        description: 'Consider dynamic documentation for index creation'
+        type: boolean
+        required: true
+        default: true
+      static:
+        description: 'Consider static documentation for index creation'
+        type: boolean
+        required: true
+        default: true
+      structured:
+        description: 'Consider structured documentation for index creation'
+        type: boolean
+        required: true
+        default: false
       index_id:
         type: choice
         description: 'The indexID to create'
@@ -98,9 +109,9 @@ jobs:
       - name: Chatbot Vector Index
         uses: ./.github/actions/chatbot
         with:
-          api: ${{ github.event.inputs.docs_type == 'api' && 'true' || 'false' }}
+          api: ${{ github.event.inputs.api && 'true' || 'false'}}
           chatbot_lambda_name: ${{ vars.CHATBOT_LAMBDA_NAME }}
-          dynamic: ${{ github.event.inputs.docs_type == 'dynamic' && 'true' || 'false' }}
+          dynamic: ${{ github.event.inputs.dynamic && 'true' || 'false' }}
           index_id: ${{ github.event.inputs.index_id }}
-          static: ${{ github.event.inputs.docs_type == 'static' && 'true' || 'false' }}
-          structured: ${{ github.event.inputs.docs_type == 'structured' && 'true' || 'false' }}
+          static: ${{ github.event.inputs.static && 'true' || 'false' }}
+          structured: ${{ github.event.inputs.structured && 'true' || 'false' }}

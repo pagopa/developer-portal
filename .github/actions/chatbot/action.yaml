@@ -3,6 +3,10 @@ name: chatbot
 description: Create Chatbot LLamaindex Vector Index
 
 inputs:
+  api:
+    description: 'Whether to create vector index using api data'
+    required: true
+    default: 'true'
   aws_region:
     description: 'The AWS region selected'
     required: false
@@ -11,26 +15,22 @@ inputs:
     description: the name of the chatbot lambda function
     required: true
     default: ''
-  static:
-    description: 'Whether to create vector index using static data'
-    required: true
-    default: 'true'
   dynamic:
     description: 'Whether to create vector index using dynamic data'
     required: true
     default: 'true'
-  api:
-    description: 'Whether to create vector index using api data'
+  index_id:
+    description: 'The indexID to create'
+    required: true
+    default: 'devportal-index'
+  static:
+    description: 'Whether to create vector index using static data'
     required: true
     default: 'true'
   structured:
     description: 'Whether to create vector index using structured data'
     required: true
     default: 'false'
-  index_id:
-    description: 'The indexID to create'
-    required: true
-    default: 'devportal-index'
 
 runs:
   using: "composite"
