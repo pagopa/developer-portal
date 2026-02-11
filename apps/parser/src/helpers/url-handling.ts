@@ -43,17 +43,6 @@ function validReplacementOrDefault(candidate: string): string {
   return candidate;
 }
 
-// export const stripUrlDecorations = (rawUrl: string): string => {
-//     const trimmed = rawUrl.trim();
-//     if (trimmed.length === 0) {
-//       return trimmed;
-//     }
-//     const [withoutParams] = trimmed.split(/[?#]/);
-//     return withoutParams !== '/' && withoutParams.endsWith('/')
-//       ? withoutParams.slice(0, -1)
-//       : withoutParams;
-//   };
-  
 export const UrlWithoutAnchors = (rawUrl: string): string => {
 try {
     const parsed = new URL(rawUrl);
@@ -66,7 +55,8 @@ try {
     return serialized.endsWith('/') ? serialized.slice(0, -1) : serialized;
     }
     return serialized;
-} catch (_error) {
+} catch (error) {
+    console.warn(`Failed to parse URL: ${rawUrl}`, error);
     return rawUrl;
 }
 };
