@@ -70,12 +70,14 @@ export async function parsePages(
           const normalizedSrc = target.href.toLowerCase();
           if (allowedToken && !normalizedSrc.includes(allowedToken)) continue;
           unique.add(target.href);
-        } catch (_) {}
+        } catch (error) {
+          console.warn(`Failed to parse iframe src: ${src}`, error);
+        }
       }
       return Array.from(unique);
     }, baseHostToken) as string[];
   } catch (error) {
-    // Ignore anchor extraction errors
+    console.warn(`Failed to extract anchors from ${node.url}`, error);
   } finally {
     if (page) await page.close();
   }
