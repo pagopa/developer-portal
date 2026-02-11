@@ -2,16 +2,18 @@ import json
 from typing import Any
 
 
-def safe_json_load(value: Any, default: Any = None) -> Any:
-    """Parse JSON string attributes into Python objects.
+from src.modules.logger import get_logger
 
-    If ``value`` is a JSON string, return the decoded Python object.
-    If decoding fails with ``json.JSONDecodeError``, return ``default``
-    instead. Non-string values are returned unchanged.
-    """
+
+LOGGER = get_logger(__name__)
+
+
+def safe_json_load(value: Any) -> Any:
+    """Parse JSON string attributes into Python objects."""
     if isinstance(value, str):
         try:
             return json.loads(value)
-        except json.JSONDecodeError:
-            return default
+        except json.JSONDecodeError as e:
+            LOGGER.warning(f"Failed to parse JSON string: {value}. Error: {e}")
+            return value
     return value
