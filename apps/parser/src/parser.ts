@@ -6,10 +6,9 @@ import { resolveEnv } from './modules/config';
 import { ensureDirectory, saveMetadata } from './modules/output';
 import { handleError } from './modules/errors';
 import { parsePages } from './modules/crawler';
-import { expandInteractiveSections } from './modules/domActions';
+import { expandInteractiveSections } from './modules/dom-actions';
 import { ParseNode, ParseMetadata } from './modules/types';
-import { normalizeUrl, stripUrlDecorations } from './utils/url';
-import { sanitizeFilename } from './utils/sanitizeFilename';
+import { sanitizeUrlAsFilename, UrlWithoutAnchors } from './helpers/url-handling';
 import crypto from 'crypto';
 
 puppeteer.use(StealthPlugin());
@@ -30,7 +29,7 @@ void (async () => {
 
     const baseUrlObject = new URL(env.baseUrl);
     const baseOrigin = baseUrlObject.origin;
-    const baseScope = normalizeUrl(env.baseUrl);
+    const baseScope = UrlWithoutAnchors(env.baseUrl);
     const baseHostToken = baseUrlObject.hostname.replace(/^www\./, '').toLowerCase();
     await parsePages(
       browser,
@@ -82,14 +81,14 @@ async function parsePageFn(browser: Browser, url: string): Promise<ParseMetadata
 async function persistSnapshot(snapshot: ParseMetadata): Promise<void> {
   const subPath = deriveSubPath(snapshot.url);
   const preferredName = subPath === '/' ? 'root' : subPath;
-  const sanitizedName = sanitizeFilename(preferredName, { replacement: '_' });
-  const trimmedName = sanitizedName.replace(/^_+/, '') || sanitizedName;
+  const sanitizedName = sanitizeUrlAsFilename(preferredName, { replacement: '-' });
+  const trimmedName = sanitizedName.replace(/^[-_]+/, '') || sanitizedName;
 
   const FILENAME_LENGTH_THRESHOLD = 255;
 
   let finalName = trimmedName;
   if (trimmedName.length > FILENAME_LENGTH_THRESHOLD) {
-    const normalizedUrl = normalizeUrl(snapshot.url);
+    const normalizedUrl = UrlWithoutAnchors(snapshot.url);
     const hash = crypto.createHash('sha1').update(normalizedUrl).digest('hex').slice(0, 10);
     const prefix = trimmedName.slice(0, 240);
     finalName = `${prefix}_${hash}`;
@@ -107,7 +106,7 @@ function deriveSubPath(targetUrl: string): string {
     relPath = relPath.slice(base.pathname.length);
     if (!relPath.startsWith('/')) relPath = '/' + relPath;
   }
-  if (stripUrlDecorations(targetUrl) === env.sanitizedBaseUrl || relPath === '/' || relPath === '') {
+  if (UrlWithoutAnchors(targetUrl) === env.sanitizedBaseUrl || relPath === '/' || relPath === '') {
     return '/';
   }
   return `${relPath}${target.search}${target.hash}` || '/';

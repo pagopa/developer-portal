@@ -1,7 +1,7 @@
 import { Browser } from 'puppeteer';
 import { ParseNode, ParseMetadata } from './types';
-import { normalizeUrl } from '../utils/url';
-import { expandInteractiveSections } from './domActions';
+import { UrlWithoutAnchors } from '../helpers/url-handling';
+import { expandInteractiveSections } from './dom-actions';
 
 export async function parsePages(
   browser: Browser,
@@ -20,7 +20,7 @@ export async function parsePages(
     return;
   }
 
-  const normalizedUrl = normalizeUrl(node.url);
+  const normalizedUrl = UrlWithoutAnchors(node.url);
   if (!isWithinScope(normalizedUrl, baseScope, baseHostToken)) {
     return;
   }
@@ -82,7 +82,7 @@ export async function parsePages(
   const scheduled = new Set<string>();
   const nextChildren: ParseNode[] = [];
   for (const href of anchors) {
-    const normalized = normalizeUrl(href);
+    const normalized = UrlWithoutAnchors(href);
     const visitCandidate = buildVisitKey(href);
     if (parsedPages.has(visitCandidate) || scheduled.has(visitCandidate)) continue;
     const lowerNormalized = normalized.toLowerCase();
@@ -136,7 +136,7 @@ export function buildVisitKey(rawUrl: string): string {
   try {
     const url = new URL(rawUrl);
     url.hash = '';
-    return normalizeUrl(url.toString());
+    return UrlWithoutAnchors(url.toString());
   } catch (_error) {
     return rawUrl;
   }
