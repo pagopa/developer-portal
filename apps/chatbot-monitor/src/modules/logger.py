@@ -19,7 +19,7 @@ def get_logger(name: str, level: str = "info") -> logging.Logger:
     handler.setFormatter(formatter)
 
     logger = logging.getLogger(name)
-    logger.setLevel(LOG_LEVEL_MAP.get(level, "info"))
+    logger.setLevel(LOG_LEVEL_MAP.get(level, logging.INFO))
 
     if not logger.handlers:  # Prevent adding multiple handlers
         logger.addHandler(handler)
