@@ -70,9 +70,11 @@ resource "aws_iam_role_policy" "lambda_evaluate_policy" {
         Effect = "Allow"
         Action = [
           "sqs:SendMessage",
-
         ]
-        Resource = aws_sqs_queue.chatbot_dlq["evaluate"].arn
+        Resource = [
+          aws_sqs_queue.chatbot_dlq["evaluate"].arn,
+          aws_sqs_queue.chatbot_queue["monitor"].arn,
+        ]
       },
       {
         Effect = "Allow"
