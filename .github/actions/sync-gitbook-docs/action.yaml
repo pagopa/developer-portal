@@ -110,7 +110,7 @@ runs:
         fi
         echo "::endgroup::"
 
-    - name: Checkout devportal-docs repo
+    - name: Checkout documentation repo
       uses: actions/checkout@v4
       with:
         repository: ${{ inputs.documentation_repository }}
