@@ -25,6 +25,7 @@ import {
   fetchProductApiData,
 } from '@/lib/strapi/fetches/fetchSitemapData';
 import { SUPPORTED_LOCALES } from '@/locales';
+import { compact, isEmpty } from 'lodash';
 
 export const dynamic = 'force-dynamic';
 
@@ -174,23 +175,20 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         solutionDirNames
       );
 
-      const sectionRoutes =
-        solutionsMetadata.length > 0
-          ? [
-              {
-                url: `${localizedUrlPrefix}/solutions`,
-                lastModified: new Date(getLastUpdate(solutions) || Date.now()),
-                changeFrequency: 'weekly' as const,
-                priority: 0.8,
-              },
-              {
-                url: `${localizedUrlPrefix}/webinars`,
-                lastModified: new Date(getLastUpdate(webinars) || Date.now()),
-                changeFrequency: 'weekly' as const,
-                priority: 0.8,
-              },
-            ]
-          : [];
+      const sectionRoutes = compact([
+        !isEmpty(solutionsMetadata) && {
+          url: `${localizedUrlPrefix}/solutions`,
+          lastModified: new Date(getLastUpdate(solutions) || Date.now()),
+          changeFrequency: 'weekly' as const,
+          priority: 0.8,
+        },
+        !isEmpty(webinars) && {
+          url: `${localizedUrlPrefix}/webinars`,
+          lastModified: new Date(getLastUpdate(webinars) || Date.now()),
+          changeFrequency: 'weekly' as const,
+          priority: 0.8,
+        },
+      ]);
 
       // Release Notes fetching with error handling
       // eslint-disable-next-line functional/no-let
