@@ -159,6 +159,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         )
       );
       const guidesMetadataByDirNames = await getGuidesMetadataByDirNames(
+        localeCode,
         guidesDirNames
       );
 
@@ -181,6 +182,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         )
       );
       const solutionsMetadata = await getSolutionsMetadataByDirNames(
+        localeCode,
         solutionDirNames
       );
 
@@ -225,7 +227,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       );
 
       const releaseNotesMetadataByDirNames =
-        await getReleaseNotesMetadataByDirNames(releaseNotesDirNames);
+        await getReleaseNotesMetadataByDirNames(
+          localeCode,
+          releaseNotesDirNames
+        );
 
       // Merge legacy and new metadata to ensure no missing content
       // Prioritize distributed metadata if duplicates exist (though they shouldn't)
