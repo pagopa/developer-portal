@@ -53,13 +53,12 @@ import { isMarkDownPart, MarkDownPart } from '@/lib/strapi/types/part';
 import { getMarkdownContent } from '@/lib/api';
 import { fetchGuideListPages } from './strapi/fetches/fetchGuideListPages';
 import {
-  getSyncedGuidesResponseJsonPath,
-  getSyncedSolutionsResponseJsonPath,
-  getSyncedReleaseNotesResponseJsonPath,
+  getSyncedGuidesResponseJsonFile,
+  getSyncedSolutionsResponseJsonFile,
+  getSyncedReleaseNotesResponseJsonFile,
 } from 'gitbook-docs/syncedResponses';
 import { StrapiSolutions } from './strapi/types/solutions';
 import { StrapiReleaseNotes } from './strapi/types/releaseNotes';
-import { product } from '@/lib/strapi/__tests__/fixtures/product';
 
 // a BuildEnv instance ready to be used
 const buildEnv = pipe(
@@ -154,7 +153,7 @@ export const getCaseHistoriesProps = async () => {
 
 export const getSolutionsProps = async () => {
   const strapiSolutions = (await fetchResponseFromCDN(
-    getSyncedSolutionsResponseJsonPath()
+    getSyncedSolutionsResponseJsonFile
   )) as StrapiSolutions | undefined;
   return strapiSolutions ? makeSolutionsProps(strapiSolutions) : [];
 };
@@ -182,12 +181,19 @@ export const getGuideProps = async (
   return await makeGuideS3({ guideDefinition: guide, guidePaths });
 };
 
+export const getGuidesProps = async () => {
+  const strapiGuides = (await fetchResponseFromCDN(
+    getSyncedGuidesResponseJsonFile
+  )) as StrapiGuides | undefined;
+  return strapiGuides ? makeGuidesProps(strapiGuides) : [];
+};
+
 export const getGuidePageProps = async (
   guideSlug: string,
   productSlug: string
 ) => {
   const strapiGuides = (await fetchResponseFromCDN(
-    getSyncedGuidesResponseJsonPath()
+    getSyncedGuidesResponseJsonFile
   )) as StrapiGuides | undefined;
   // eslint-disable-next-line functional/no-expression-statements
   const guides = strapiGuides ? makeGuidesProps(strapiGuides) : [];
@@ -208,9 +214,9 @@ export const getSolutionProps = async (
   jsonMetadata?: JsonMetadata
 ) => {
   const strapiSolutions = (await fetchResponseFromCDN(
-    getSyncedSolutionsResponseJsonPath()
+    getSyncedSolutionsResponseJsonFile
   )) as StrapiSolutions | undefined;
-  if (!strapiSolutions || strapiSolutions.data.length < 1) {
+  if (!strapiSolutions) {
     // eslint-disable-next-line functional/no-throw-statements
     throw new Error('Failed to fetch solution data');
   }
@@ -225,9 +231,9 @@ export const getSolutionProps = async (
 
 const fetchReleaseNotes = async () => {
   const strapiReleaseNotes = (await fetchResponseFromCDN(
-    getSyncedReleaseNotesResponseJsonPath()
+    getSyncedReleaseNotesResponseJsonFile
   )) as StrapiReleaseNotes | undefined;
-  if (!strapiReleaseNotes || strapiReleaseNotes.data.length < 1) {
+  if (!strapiReleaseNotes) {
     // eslint-disable-next-line functional/no-throw-statements
     throw new Error('Failed to fetch release data');
   }
@@ -258,6 +264,11 @@ export const getReleaseNoteProps = async (
     );
   }
   return await makeReleaseNoteS3(releaseNote, jsonMetadata);
+};
+
+export const getReleaseNotesProps = async () => {
+  const strapiReleaseNotes = await fetchReleaseNotes();
+  return makeReleaseNotesProps(strapiReleaseNotes);
 };
 
 export const getUseCasesProps = async () => {

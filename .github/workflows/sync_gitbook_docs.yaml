@@ -29,7 +29,7 @@ on:
         required: true
         default: true
       invalidate_opennext_cache:
-        description: 'Invalidate opennext cloufront cache'
+        description: 'Invalidate opennext CloudFront cache'
         type: boolean
         required: true
         default: false
@@ -43,9 +43,16 @@ on:
         type: string
         required: false
         default: ''
+      locale:
+        description: 'Locale to sync to (e.g. "it"). Leave empty for root.'
+        type: string
+        required: false
+        default: ''
+
 
   schedule:
-    - cron: '0 23 * * *'  # Run daily at midnight UTC
+    # - cron: '0 23 * * *'  # Run daily at midnight UTC
+    - cron: '0 8 * * *'  # Run daily at 8:00 AM UTC (9:00 AM in Italy) TODO: restore '0 23 * * *' after testing
 
 permissions:
   id-token: write
@@ -59,150 +66,38 @@ jobs:
     outputs:
       environment: ${{ inputs.environment }}
     environment: ${{ inputs.environment }}
-    env:
-      ENV_SHORT: ${{ fromJSON('{"dev":"d","uat":"u","prod":"p"}')[inputs.environment] }}
-      SITEMAP_URL: https://${{ fromJSON('{"dev":"dev.","uat":"uat.","prod":""}')[inputs.environment] }}developer.pagopa.it/sitemap.xml
 
     steps:
       - name: Checkout current repository
         uses: actions/checkout@v4
 
-      - name: Checkout devportal-docs repo
-        uses: actions/checkout@v4
+      - name: Sync GitBook Docs
+        uses: ./.github/actions/sync-gitbook-docs
         with:
-          repository: pagopa/devportal-docs
-          ref: docs/from-gitbook
-          path: devportal-docs
-
-      - name: Setup Node.JS
-        uses: ./.github/actions/setup-node
-
-      - name: Cache npm dependencies
-        id: cache-npm
-        uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-npm-
-
-      - name: Install dependencies
-        run: |
-          npm config set cache ~/.npm
-          npm ci
-
-      - name: Compile packages
-        run: npm run compile
-
-      - name: Configure AWS Credentials
-        uses: ./.github/actions/configure-aws-credentials
-        with:
-          aws_region: eu-south-1
-          role_to_assume: ${{ secrets.DEPLOY_IAM_ROLE }}
-
-      - name: Generate all metadata
-        env:
-          ENVIRONMENT: ${{ inputs.environment }}
-          DOCUMENTATION_PATH: ${{ vars.DOCUMENTATION_PATH || '../../devportal-docs/docs' }}
-          URL_PARSING_METADATA_JSON_PATH: ${{ vars.URL_PARSING_METADATA_JSON_PATH || '../../url-parsing-metadata.json' }}
-          STRAPI_ENDPOINT: ${{ vars.STRAPI_ENDPOINT }}
-          STRAPI_API_TOKEN: ${{ secrets.STRAPI_API_TOKEN }}
-          S3_BUCKET_NAME: devportal-${{ env.ENV_SHORT }}-website-static-content
-          S3_DOC_EXTRACTION_BUCKET_NAME: ${{ vars.S3_DOC_EXTRACTION_BUCKET_NAME }}
-          S3_PATH_TO_GITBOOK_DOCS: ${{ vars.S3_PATH_TO_GITBOOK_DOCS || 'devportal-docs/docs' }}
-          NEXT_PUBLIC_COGNITO_REGION: ${{ vars.NEXT_PUBLIC_COGNITO_REGION || 'eu-south-1' }}
-          FETCH_FROM_STRAPI: ${{ vars.FETCH_FROM_STRAPI || 'true' }}
-          GENERATE_ROOT_METADATA_FILE: ${{ inputs.generate_root_metadata_file == true && 'true' || 'false' }}
-          GENERATE_URL_METADATA: 'true'
-          GENERATE_SITEMAP_METADATA: 'true'
-          SAVE_STRAPI_RESPONSES: 'true'
-          METADATA_TYPE: ${{ inputs.metadata_type }}
-          DIR_NAMES_FILTER: ${{ inputs.dir_names_filter }}
-          SITEMAP_URL: ${{ env.SITEMAP_URL || 'https://developer.pagopa.it/sitemap.xml' }}
-          S3_DIRNAME_METADATA_JSON_PATH: ${{ vars.S3_DIRNAME_METADATA_JSON_PATH }}
-          S3_SOLUTIONS_DIRNAMES_JSON_PATH: ${{ vars.S3_SOLUTIONS_DIRNAMES_JSON_PATH || 'solutions-dirNames.json' }}
-          S3_RELEASE_NOTES_DIRNAMES_JSON_PATH: ${{ vars.S3_RELEASE_NOTES_DIRNAMES_JSON_PATH || 'release-notes-dirNames.json' }}
-        run: npm run sync-all-metadata -w gitbook-docs
-
-      - name: Replace urls and include tags in docs
-        env:
-          ENVIRONMENT: ${{ github.event_name == 'workflow_dispatch' && inputs.environment || 'dev' }}
-          DOCUMENTATION_PATH: ${{ vars.DOCUMENTATION_PATH || '../../devportal-docs/docs' }}
-          URL_PARSING_METADATA_JSON_PATH: ${{ vars.URL_PARSING_METADATA_JSON_PATH || '../../url-parsing-metadata.json' }}
-        run: npm run parse-docs -w gitbook-docs
-
-      - name: Replace escaped tokens with backticks in docs
-        env:
-          DOCUMENTATION_PATH: ${{ vars.DOCUMENTATION_PATH || '../../devportal-docs/docs' }}
-        run: npm run replace-escaped-tokens-with-backticks -w gitbook-docs
-      
-      - name: Delete unused documentation
-        env:
-          ENV_SHORT: ${{ env.ENV_SHORT }}
-          FETCH_FROM_STRAPI: ${{ vars.FETCH_FROM_STRAPI || 'true' }}
-          S3_BUCKET_NAME: devportal-${{ env.ENV_SHORT }}-website-static-content
-          S3_DIRNAMES_JSON_PATH: ${{ vars.S3_DIRNAMES_JSON_PATH || 'dirNames.json' }}
-          S3_PATH_TO_GITBOOK_DOCS: ${{ vars.S3_PATH_TO_GITBOOK_DOCS || 'devportal-docs/docs' }}
-          STRAPI_API_TOKEN: ${{ secrets.STRAPI_API_TOKEN }}
-          STRAPI_ENDPOINT: ${{ vars.STRAPI_ENDPOINT }}
-        run: npm run delete-unused-directories -w gitbook-docs
-
-      - name: Sync docs folder to S3
-        working-directory: ./devportal-docs
-        env:
-          DIR_NAMES_FILTER: ${{ inputs.dir_names_filter }}
-        run: |
-          echo "Fetching directory lists from S3 to validate publication status..."
-          # Define S3 paths for the JSON files
-          S3_DIRNAMES="s3://devportal-${{ env.ENV_SHORT }}-website-static-content/${{ vars.S3_DIRNAMES_JSON_PATH || 'dirNames.json' }}"
-
-          # Download JSON files
-          aws s3 cp "$S3_DIRNAMES" dirNames.json || echo '{"dirNames": []}' > dirNames.json
-
-          # Extract and combine unique directory names
-          VALID_DIRS=$(cat dirNames.json | jq -r '.dirNames[]' | sort | uniq)
-
-          if [[ -n "$DIR_NAMES_FILTER" ]]; then
-            IFS=',' read -ra DIRS <<< "$DIR_NAMES_FILTER"
-            for dir in "${DIRS[@]}"; do
-              dir=$(echo "$dir" | xargs)
-              if [[ -n "$dir" ]]; then
-                # Check if dir is in VALID_DIRS
-                if echo "$VALID_DIRS" | grep -F -q -x "$dir"; then
-                    echo "Syncing directory: $dir"
-                    aws s3 sync "docs/$dir" "s3://devportal-${{ env.ENV_SHORT }}-website-static-content/devportal-docs/docs/$dir" --delete --exclude "metadata.json" ${{ inputs.incremental_mode == true && ' --size-only' || '' }}
-                else
-                    echo "Skipping directory $dir as it is not in the published list."
-                fi
-              fi
-            done
-          else
-            if [[ -z "$VALID_DIRS" ]]; then
-              echo "No directories found to sync. Syncing all docs"
-              aws s3 sync docs s3://devportal-${{ env.ENV_SHORT }}-website-static-content/devportal-docs/docs --delete --exclude "**/metadata.json" ${{ inputs.incremental_mode == true && ' --size-only' || '' }}
-            else
-              echo "Syncing registered directories..."
-              for dir in $VALID_DIRS; do
-                if [[ -n "$dir" ]]; then
-                  echo "Syncing directory: $dir"
-                  aws s3 sync "docs/$dir" "s3://devportal-${{ env.ENV_SHORT }}-website-static-content/devportal-docs/docs/$dir" --delete --exclude "metadata.json" ${{ inputs.incremental_mode == true && ' --size-only' || '' }}
-                fi
-              done
-            fi
-          fi
-
-      - name: Sync sitemap  to S3
-        env:
-          ENVIRONMENT: ${{ inputs.environment }}
-          S3_BUCKET_NAME: devportal-${{ env.ENV_SHORT }}-website-static-content
-          SITEMAP_URL: ${{ env.SITEMAP_URL || 'https://developer.pagopa.it/sitemap.xml' }}
-        run: npm run sync-sitemap -w gitbook-docs
-
-      - name: Invalidate CloudFront asset bucket cache
-        run: |
-          aws cloudfront create-invalidation \
-            --distribution-id ${{ vars.ASSET_BUCKET_CLOUDFRONT_DISTRIBUTION_ID }} \
-            --paths "/*"
+          environment: ${{ inputs.environment }}
+          locale: ${{ inputs.locale }}
+          dir_names_filter: ${{ inputs.dir_names_filter }}
+          documentation_repository: ${{ inputs.locale == 'en' && 'pagopa/devportal-docs-translations' || 'pagopa/devportal-docs' }}
+          documentation_branch: ${{ inputs.locale == 'en' && 'main' || 'docs/from-gitbook' }}
+          deploy_iam_role: ${{ secrets.DEPLOY_IAM_ROLE }}
+          strapi_api_token: ${{ secrets.STRAPI_API_TOKEN }}
+          asset_bucket_cloudfront_distribution_id: ${{ vars.ASSET_BUCKET_CLOUDFRONT_DISTRIBUTION_ID }}
+          opennext_cloudfront_distribution_id: ${{ vars.OPENNEXT_CLOUDFRONT_DISTRIBUTION_ID }}
+          invalidate_opennext_cache: ${{ inputs.invalidate_opennext_cache }}
+          incremental_mode: ${{ inputs.incremental_mode }}
+          generate_root_metadata_file: ${{ inputs.generate_root_metadata_file }}
+          metadata_type: ${{ inputs.metadata_type }}
+          strapi_endpoint: ${{ vars.STRAPI_ENDPOINT }}
+          documentation_path: ${{ vars.DOCUMENTATION_PATH || '../../devportal-docs/docs' }}
+          url_parsing_metadata_json_path: ${{ vars.URL_PARSING_METADATA_JSON_PATH || '../../url-parsing-metadata.json' }}
+          s3_doc_extraction_bucket_name: ${{ vars.S3_DOC_EXTRACTION_BUCKET_NAME }}
+          s3_path_to_gitbook_docs: ${{ vars.S3_PATH_TO_GITBOOK_DOCS || 'devportal-docs/docs' }}
+          next_public_cognito_region: ${{ vars.NEXT_PUBLIC_COGNITO_REGION || 'eu-south-1' }}
+          fetch_from_strapi: ${{ vars.FETCH_FROM_STRAPI || 'true' }}
+          s3_dirname_metadata_json_path: ${{ vars.S3_DIRNAME_METADATA_JSON_PATH }}
+          s3_solutions_dirnames_json_path: ${{ vars.S3_SOLUTIONS_DIRNAMES_JSON_PATH || 'solutions-dirNames.json' }}
+          s3_release_notes_dirnames_json_path: ${{ vars.S3_RELEASE_NOTES_DIRNAMES_JSON_PATH || 'release-notes-dirNames.json' }}
+          s3_dirnames_json_path: ${{ vars.S3_DIRNAMES_JSON_PATH || 'dirNames.json' }}
 
   scheduled_sync_gitbook_docs:
     name: Sync gitbook Docs to S3 (scheduled on prod)
@@ -211,127 +106,98 @@ jobs:
     outputs:
       environment: 'prod'
     environment: 'prod'
-    env:
-      SITEMAP_URL: https://developer.pagopa.it/sitemap.xml
 
     steps:
       - name: Checkout current repository
         uses: actions/checkout@v4
 
-      - name: Checkout devportal-docs repo
-        uses: actions/checkout@v4
+      - name: Sync GitBook Docs
+        uses: ./.github/actions/sync-gitbook-docs
         with:
-          repository: pagopa/devportal-docs
-          ref: docs/from-gitbook
-          path: devportal-docs
+          environment: 'prod'
+          deploy_iam_role: ${{ secrets.DEPLOY_IAM_ROLE }}
+          strapi_api_token: ${{ secrets.STRAPI_API_TOKEN }}
+          asset_bucket_cloudfront_distribution_id: ${{ vars.ASSET_BUCKET_CLOUDFRONT_DISTRIBUTION_ID }}
+          opennext_cloudfront_distribution_id: ${{ vars.OPENNEXT_CLOUDFRONT_DISTRIBUTION_ID }}
+          invalidate_opennext_cache: false
+          incremental_mode: true
+          generate_root_metadata_file: true
+          metadata_type: 'all'
+          strapi_endpoint: ${{ vars.STRAPI_ENDPOINT }}
+          documentation_path: ${{ vars.DOCUMENTATION_PATH || '../../devportal-docs/docs' }}
+          url_parsing_metadata_json_path: ${{ vars.URL_PARSING_METADATA_JSON_PATH || '../../url-parsing-metadata.json' }}
+          s3_doc_extraction_bucket_name: ${{ vars.S3_DOC_EXTRACTION_BUCKET_NAME }}
+          s3_path_to_gitbook_docs: ${{ vars.S3_PATH_TO_GITBOOK_DOCS || 'devportal-docs/docs' }}
+          next_public_cognito_region: ${{ vars.NEXT_PUBLIC_COGNITO_REGION || 'eu-south-1' }}
+          fetch_from_strapi: ${{ vars.FETCH_FROM_STRAPI || 'true' }}
+          s3_dirname_metadata_json_path: ${{ vars.S3_DIRNAME_METADATA_JSON_PATH }}
+          s3_solutions_dirnames_json_path: ${{ vars.S3_SOLUTIONS_DIRNAMES_JSON_PATH || 'solutions-dirNames.json' }}
+          s3_release_notes_dirnames_json_path: ${{ vars.S3_RELEASE_NOTES_DIRNAMES_JSON_PATH || 'release-notes-dirNames.json' }}
+          s3_dirnames_json_path: ${{ vars.S3_DIRNAMES_JSON_PATH || 'dirNames.json' }}
 
-      - name: Setup Node.JS
-        uses: ./.github/actions/setup-node
+  # TODO: replace scheduled_sync_gitbook_docs with this once production sync will be released in production environment and tested to work correctly
+  # scheduled_sync_gitbook_docs:
+  #   name: Sync gitbook Docs to S3 (scheduled on prod)
+  #   if: github.event_name == 'schedule'
+  #   runs-on: ubuntu-latest
+  #   outputs:
+  #     environment: 'prod'
+  #   environment: 'prod'
 
-      - name: Cache npm dependencies
-        id: cache-npm
-        uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-npm-
+  #   steps:
+  #     - name: Checkout current repository
+  #       uses: actions/checkout@v4
 
-      - name: Install dependencies
-        run: |
-          npm config set cache ~/.npm
-          npm ci
+  #     - name: Sync GitBook Docs using 'it' locale
+  #       uses: ./.github/actions/sync-gitbook-docs
+  #       with:
+  #         environment: 'prod'
+  #         locale: 'it'
+  #         documentation_repository: 'pagopa/devportal-docs'
+  #         documentation_branch: 'docs/from-gitbook'
+  #         deploy_iam_role: ${{ secrets.DEPLOY_IAM_ROLE }}
+  #         strapi_api_token: ${{ secrets.STRAPI_API_TOKEN }}
+  #         asset_bucket_cloudfront_distribution_id: ${{ vars.ASSET_BUCKET_CLOUDFRONT_DISTRIBUTION_ID }}
+  #         opennext_cloudfront_distribution_id: ${{ vars.OPENNEXT_CLOUDFRONT_DISTRIBUTION_ID }}
+  #         invalidate_opennext_cache: false
+  #         incremental_mode: true
+  #         generate_root_metadata_file: true
+  #         metadata_type: 'all'
+  #         strapi_endpoint: ${{ vars.STRAPI_ENDPOINT }}
+  #         documentation_path: ${{ vars.DOCUMENTATION_PATH || '../../devportal-docs/docs' }}
+  #         url_parsing_metadata_json_path: ${{ vars.URL_PARSING_METADATA_JSON_PATH || '../../url-parsing-metadata.json' }}
+  #         s3_doc_extraction_bucket_name: ${{ vars.S3_DOC_EXTRACTION_BUCKET_NAME }}
+  #         s3_path_to_gitbook_docs: ${{ vars.S3_PATH_TO_GITBOOK_DOCS || 'devportal-docs/docs' }}
+  #         next_public_cognito_region: ${{ vars.NEXT_PUBLIC_COGNITO_REGION || 'eu-south-1' }}
+  #         fetch_from_strapi: ${{ vars.FETCH_FROM_STRAPI || 'true' }}
+  #         s3_dirname_metadata_json_path: ${{ vars.S3_DIRNAME_METADATA_JSON_PATH }}
+  #         s3_solutions_dirnames_json_path: ${{ vars.S3_SOLUTIONS_DIRNAMES_JSON_PATH || 'solutions-dirNames.json' }}
+  #         s3_release_notes_dirnames_json_path: ${{ vars.S3_RELEASE_NOTES_DIRNAMES_JSON_PATH || 'release-notes-dirNames.json' }}
+  #         s3_dirnames_json_path: ${{ vars.S3_DIRNAMES_JSON_PATH || 'dirNames.json' }}
 
-      - name: Compile packages
-        run: npm run compile
-
-      - name: Configure AWS Credentials
-        uses: ./.github/actions/configure-aws-credentials
-        with:
-          aws_region: eu-south-1
-          role_to_assume: ${{ secrets.DEPLOY_IAM_ROLE }}
-
-      - name: Generate all metadata
-        env:
-          ENVIRONMENT: 'prod'
-          DOCUMENTATION_PATH: ${{ vars.DOCUMENTATION_PATH || '../../devportal-docs/docs' }}
-          URL_PARSING_METADATA_JSON_PATH: ${{ vars.URL_PARSING_METADATA_JSON_PATH || '../../url-parsing-metadata.json' }}
-          STRAPI_ENDPOINT: ${{ vars.STRAPI_ENDPOINT }}
-          STRAPI_API_TOKEN: ${{ secrets.STRAPI_API_TOKEN }}
-          S3_BUCKET_NAME: devportal-p-website-static-content
-          S3_DOC_EXTRACTION_BUCKET_NAME: ${{ vars.S3_DOC_EXTRACTION_BUCKET_NAME }}
-          S3_PATH_TO_GITBOOK_DOCS: ${{ vars.S3_PATH_TO_GITBOOK_DOCS || 'devportal-docs/docs' }}
-          NEXT_PUBLIC_COGNITO_REGION: ${{ vars.NEXT_PUBLIC_COGNITO_REGION || 'eu-south-1' }}
-          FETCH_FROM_STRAPI: ${{ vars.FETCH_FROM_STRAPI || 'true' }}
-          GENERATE_ROOT_METADATA_FILE: ${{ inputs.generate_root_metadata_file == true && 'true' || 'false' }}
-          GENERATE_URL_METADATA: 'true'
-          GENERATE_SITEMAP_METADATA: 'true'
-          SAVE_STRAPI_RESPONSES: 'true'
-          METADATA_TYPE: 'all'
-          SITEMAP_URL: 'https://developer.pagopa.it/sitemap.xml'
-          S3_DIRNAME_METADATA_JSON_PATH: ${{ vars.S3_DIRNAME_METADATA_JSON_PATH }}
-          S3_SOLUTIONS_DIRNAMES_JSON_PATH: ${{ vars.S3_SOLUTIONS_DIRNAMES_JSON_PATH || 'solutions-dirNames.json' }}
-          S3_RELEASE_NOTES_DIRNAMES_JSON_PATH: ${{ vars.S3_RELEASE_NOTES_DIRNAMES_JSON_PATH || 'release-notes-dirNames.json' }}
-        run: npm run sync-all-metadata -w gitbook-docs
-
-      - name: Replace urls and include tags in docs
-        env:
-          ENVIRONMENT: 'prod'
-          DOCUMENTATION_PATH: ${{ vars.DOCUMENTATION_PATH || '../../devportal-docs/docs' }}
-          URL_PARSING_METADATA_JSON_PATH: ${{ vars.URL_PARSING_METADATA_JSON_PATH || '../../url-parsing-metadata.json' }}
-        run: npm run parse-docs -w gitbook-docs
-
-      - name: Replace escaped tokens with backticks in docs
-        env:
-          DOCUMENTATION_PATH: ${{ vars.DOCUMENTATION_PATH || '../../devportal-docs/docs' }}
-        run: npm run replace-escaped-tokens-with-backticks -w gitbook-docs
-      
-      - name: Delete unused documentation
-        env:
-          ENV_SHORT: p
-          FETCH_FROM_STRAPI: ${{ vars.FETCH_FROM_STRAPI || 'true' }}
-          S3_BUCKET_NAME: devportal-p-website-static-content
-          S3_DIRNAMES_JSON_PATH: ${{ vars.S3_DIRNAMES_JSON_PATH || 'dirNames.json' }}
-          S3_PATH_TO_GITBOOK_DOCS: ${{ vars.S3_PATH_TO_GITBOOK_DOCS || 'devportal-docs/docs' }}
-          STRAPI_API_TOKEN: ${{ secrets.STRAPI_API_TOKEN }}
-          STRAPI_ENDPOINT: ${{ vars.STRAPI_ENDPOINT }}
-        run: npm run delete-unused-directories -w gitbook-docs
-
-      - name: Sync docs folder to S3
-        working-directory: ./devportal-docs
-        run: |
-          echo "Fetching directory lists from S3..."
-          # Define S3 paths for the JSON files (prod environment)
-          S3_DIRNAMES="s3://devportal-p-website-static-content/${{ vars.S3_DIRNAMES_JSON_PATH || 'dirNames.json' }}"
-
-          # Download JSON files
-          aws s3 cp "$S3_DIRNAMES" dirNames.json || echo '{"dirNames": []}' > dirNames.json
-
-          # Extract and combine unique directory names
-          DIRS=$(cat dirNames.json | jq -r '.dirNames[]' | sort | uniq)
-
-          if [[ -z "$DIRS" ]]; then
-            echo "No directories found to sync. Syncing all docs"
-            aws s3 sync docs s3://devportal-p-website-static-content/devportal-docs/docs --delete --exclude "**/metadata.json" --size-only
-          else
-            echo "Syncing registered directories..."
-            for dir in $DIRS; do
-              if [[ -n "$dir" ]]; then
-                echo "Syncing directory: $dir"
-                aws s3 sync "docs/$dir" "s3://devportal-p-website-static-content/devportal-docs/docs/$dir" --delete --exclude "**/metadata.json" --size-only
-              fi
-            done
-          fi
-
-      - name: Sync sitemap  to S3
-        env:
-          ENVIRONMENT: 'prod'
-          S3_BUCKET_NAME: devportal-p-website-static-content
-          SITEMAP_URL: 'https://developer.pagopa.it/sitemap.xml'
-        run: npm run sync-sitemap -w gitbook-docs
-
-      - name: Invalidate CloudFront asset bucket cache
-        run: |
-          aws cloudfront create-invalidation \
-            --distribution-id ${{ vars.ASSET_BUCKET_CLOUDFRONT_DISTRIBUTION_ID }} \
-            --paths "/*"
+  #     - name: Sync GitBook Docs using 'en' locale
+  #       uses: ./.github/actions/sync-gitbook-docs
+  #       with:
+  #         environment: 'prod'
+  #         locale: 'en'
+  #         documentation_repository: 'pagopa/devportal-docs-translations'
+  #         documentation_branch: 'main'
+  #         deploy_iam_role: ${{ secrets.DEPLOY_IAM_ROLE }}
+  #         strapi_api_token: ${{ secrets.STRAPI_API_TOKEN }}
+  #         asset_bucket_cloudfront_distribution_id: ${{ vars.ASSET_BUCKET_CLOUDFRONT_DISTRIBUTION_ID }}
+  #         opennext_cloudfront_distribution_id: ${{ vars.OPENNEXT_CLOUDFRONT_DISTRIBUTION_ID }}
+  #         invalidate_opennext_cache: false
+  #         incremental_mode: true
+  #         generate_root_metadata_file: true
+  #         metadata_type: 'all'
+  #         strapi_endpoint: ${{ vars.STRAPI_ENDPOINT }}
+  #         documentation_path: ${{ vars.DOCUMENTATION_PATH || '../../devportal-docs/docs' }}
+  #         url_parsing_metadata_json_path: ${{ vars.URL_PARSING_METADATA_JSON_PATH || '../../url-parsing-metadata.json' }}
+  #         s3_doc_extraction_bucket_name: ${{ vars.S3_DOC_EXTRACTION_BUCKET_NAME }}
+  #         s3_path_to_gitbook_docs: ${{ vars.S3_PATH_TO_GITBOOK_DOCS || 'devportal-docs/docs' }}
+  #         next_public_cognito_region: ${{ vars.NEXT_PUBLIC_COGNITO_REGION || 'eu-south-1' }}
+  #         fetch_from_strapi: ${{ vars.FETCH_FROM_STRAPI || 'true' }}
+  #         s3_dirname_metadata_json_path: ${{ vars.S3_DIRNAME_METADATA_JSON_PATH }}
+  #         s3_solutions_dirnames_json_path: ${{ vars.S3_SOLUTIONS_DIRNAMES_JSON_PATH || 'solutions-dirNames.json' }}
+  #         s3_release_notes_dirnames_json_path: ${{ vars.S3_RELEASE_NOTES_DIRNAMES_JSON_PATH || 'release-notes-dirNames.json' }}
+  #         s3_dirnames_json_path: ${{ vars.S3_DIRNAMES_JSON_PATH || 'dirNames.json' }}

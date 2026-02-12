@@ -48,6 +48,53 @@ const ApiViewer: FC<ApiViewerProps> = ({ specURL }) => {
     };
   }, []);
 
+  useEffect(() => {
+    const rapidocEl = document.getElementById('rapidoc-component');
+
+    if (!rapidocEl) return;
+
+    const injectStyles = () => {
+      if (
+        rapidocEl.shadowRoot &&
+        !rapidocEl.shadowRoot.getElementById('custom-margin-fix')
+      ) {
+        const style = document.createElement('style');
+        style.id = 'custom-margin-fix';
+        style.innerHTML = `
+          #api-info {
+            margin-left: 0 !important;
+          }
+          .nav-method {
+            border-radius: 4px !important; 
+            min-width: 48px !important;
+            min-height: 22px !important;
+            padding-top: 2px !important;
+            font-size: 12px !important;
+            font-weight: 600 !important;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background-color: ${palette.info[100]} !important;
+            margin-right: 8px !important; 
+          }
+        `;
+        rapidocEl.shadowRoot.appendChild(style);
+      }
+    };
+
+    injectStyles();
+
+    customElements.whenDefined('rapi-doc').then(() => {
+      injectStyles();
+    });
+
+    rapidocEl.addEventListener('spec-loaded', injectStyles);
+
+    return () => {
+      rapidocEl.removeEventListener('spec-loaded', injectStyles);
+    };
+  }, [palette.info]);
+
   // Cast strict TS error for custom element
   const RapiDoc = 'rapi-doc' as unknown as ElementType;
 
@@ -64,10 +111,12 @@ const ApiViewer: FC<ApiViewerProps> = ({ specURL }) => {
         allow-advanced-search='false'
         allow-authentication='false'
         allow-server-selection='false'
+        allow-spec-file-download='true'
         allow-try='false'
         auto-scroll='false'
         bg-color={palette.background.paper}
         font-size='large'
+        id='rapidoc-component'
         mono-font='Titillium Web'
         nav-bg-color={palette.grey[50]}
         nav-text-color={palette.text.primary}

@@ -9,8 +9,8 @@ import DesktopSiteHeader from '@/components/molecules/DesktopSiteHeader/DesktopS
 import { SITE_HEADER_HEIGHT } from '@/config';
 
 export type SiteHeaderProps = {
-  readonly locale: string;
-  readonly products: Product[];
+  locale: string;
+  products: Product[];
 };
 
 const SiteHeader = (
@@ -47,7 +47,11 @@ const SiteHeader = (
         justifyContent={{ sm: 'space-between', md: 'start' }}
         alignItems='center'
       >
-        <HomepageButton title={t('title')} boldTitle={t('company')} />
+        <HomepageButton
+          href={`/${locale}`}
+          title={t('title')}
+          boldTitle={t('company')}
+        />
         <MobileSiteHeader locale={locale} products={productsWithOverview} />
         <DesktopSiteHeader locale={locale} products={productsWithOverview} />
       </Stack>
