@@ -14,6 +14,8 @@ const UrlParsingMetadata = {
       path: 'guide-with-hashtag/this-will-be-parsed',
       url: 'parsed-url-with-hashtag',
     },
+    { path: 'do-not-parse', url: 'https://www.external-link.com' },
+    { path: 'must-parse-this', url: 'https://app.gitbook.com' },
   ],
 };
 
@@ -38,6 +40,26 @@ describe('parseUrlsFromMarkdown', () => {
     );
     expect(res).toStrictEqual(
       'This is a test string [this-is-a-test](parsed-url)'
+    );
+  });
+
+  it('should not parse url if it is an external link', () => {
+    const res = parseUrlsFromMarkdown(
+      'This is a test string [external-link](https://www.external-link.com)',
+      UrlParsingMetadata
+    );
+    expect(res).toStrictEqual(
+      'This is a test string [external-link](https://www.external-link.com)'
+    );
+  });
+
+  it('should parse external urls from gitbook', () => {
+    const res = parseUrlsFromMarkdown(
+      'this is a test string [gitbook-link](https://app.gitbook.com)',
+      UrlParsingMetadata
+    );
+    expect(res).toStrictEqual(
+      'this is a test string [gitbook-link](must-parse-this)'
     );
   });
 

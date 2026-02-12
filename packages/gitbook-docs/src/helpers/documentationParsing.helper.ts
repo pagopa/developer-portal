@@ -103,6 +103,11 @@ export function replaceUrl(
 
   // Skip processing for very short names (likely not valid guide names)
   if (name.length <= 1) {
+    console.log(
+      '======================= SKIPPING ',
+      name.length,
+      ' name too short'
+    );
     return value;
   }
   const perfectMatch =
