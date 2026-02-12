@@ -107,6 +107,7 @@ resource "aws_lambda_function" "chatbot_evaluate_lambda" {
 
   environment {
     variables = {
+      ENVIRONMENT = var.environment
       #--- TODO ---#
       # REMOVE ALL LANGFUSE VARIABLES, THEY ARE NOT USED IN THIS LAMBDA, AND SHOULD NOT BE PRESENT
       CHB_AWS_SSM_LANGFUSE_PUBLIC_KEY = module.langfuse_public_key.ssm_parameter_name
@@ -117,7 +118,11 @@ resource "aws_lambda_function" "chatbot_evaluate_lambda" {
       CHB_AWS_SSM_GOOGLE_API_KEY      = module.google_api_key_ssm_parameter.ssm_parameter_name
       CHB_AWS_SSM_LANGFUSE_PUBLIC_KEY = module.langfuse_public_key.ssm_parameter_name
       CHB_AWS_SSM_LANGFUSE_SECRET_KEY = module.langfuse_secret_key.ssm_parameter_name
-      RAGAS_DO_NOT_TRACK              = "True"
+      CHB_AWS_SQS_QUEUE_MONITOR_NAME  = aws_sqs_queue.chatbot_queue["monitor"].name
+      CHB_AWS_SQS_QUEUE_EVALUATE_NAME = aws_sqs_queue.chatbot_queue["evaluate"].name
+
+      RAGAS_DO_NOT_TRACK = "True"
+
     }
   }
 
