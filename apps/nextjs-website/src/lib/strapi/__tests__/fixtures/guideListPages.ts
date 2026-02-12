@@ -426,7 +426,7 @@ export const strapiGuideListPagesData = {
 
 export const guideListPagesProps = [
   {
-    path: '/pago-pa/guides',
+    path: '/it/pago-pa/guides',
     abstract: {
       title: 'Guide e manuali',
       description:
@@ -453,7 +453,7 @@ export const guideListPagesProps = [
             mobileImagePath: 'http://0.0.0.0:1337/uploads/saci_9d9358115d.png',
             link: {
               label: 'guideListPage.cardSection.linkLabel',
-              href: '/pago-pa/guides/saci',
+              href: '/it/pago-pa/guides/saci',
               translate: true,
             },
           },
@@ -473,7 +473,7 @@ export const guideListPagesProps = [
             mobileImagePath: 'http://0.0.0.0:1337/uploads/sanp_b68c5c1525.png',
             link: {
               label: 'guideListPage.cardSection.linkLabel',
-              href: '/pago-pa/guides/sanp',
+              href: '/it/pago-pa/guides/sanp',
               translate: true,
             },
           },
@@ -500,7 +500,7 @@ export const guideListPagesProps = [
               'http://0.0.0.0:1337/uploads/guida_tecnica_sugli_avvisi_di_pagamento_df77a98f5f.png',
             link: {
               label: 'guideListPage.cardSection.linkLabel',
-              href: '/pago-pa/guides/avviso-pagamento',
+              href: '/it/pago-pa/guides/avviso-pagamento',
               translate: true,
             },
           },
