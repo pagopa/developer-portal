@@ -129,6 +129,8 @@ resource "aws_lambda_function" "chatbot_monitor_lambda" {
       CHB_LANGFUSE_HOST               = try(module.langfuse[0].service_discovery_endpoint, "https://${local.priv_monitoring_host}")
       CHB_AWS_SQS_QUEUE_EVALUATE_NAME = aws_sqs_queue.chatbot_queue["evaluate"].name
       CHB_AWS_SQS_QUEUE_MONITOR_NAME  = aws_sqs_queue.chatbot_queue["monitor"].name
+      CHB_QUERY_TABLE_PREFIX          = local.prefix
+      LOG_LEVEL                       = "INFO"
       RAGAS_DO_NOT_TRACK              = "True"
     }
   }
