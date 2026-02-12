@@ -16,6 +16,7 @@ puppeteer.use(StealthPlugin());
 
 const NAVIGATION_TIMEOUT_MS = 30_000;
 const REQUEST_TIMEOUT_MS = 10_000;
+const FILENAME_LENGTH_THRESHOLD = 255;
 
 const env = resolveEnv();
 const parsedPages = new Map<string, ParseMetadata>();
@@ -66,7 +67,7 @@ async function parsePageFn(browser: Browser, url: string): Promise<ParseMetadata
     await expandInteractiveSections(page);
     const rawMetadata = await page.evaluate(extractDocumentMetadata);
     const snapshot = serializeMetadata(rawMetadata);
-    await persistSnapshot(snapshot);
+    await persistSnapshot(snapshot, FILENAME_LENGTH_THRESHOLD);
     return snapshot;
   } catch (error) {
     console.error(`Error while parsing ${url}:`, (error as Error).message);
@@ -79,13 +80,11 @@ async function parsePageFn(browser: Browser, url: string): Promise<ParseMetadata
 }
 
 
-async function persistSnapshot(snapshot: ParseMetadata): Promise<void> {
+async function persistSnapshot(snapshot: ParseMetadata, FILENAME_LENGTH_THRESHOLD: number): Promise<void> {
   const subPath = deriveSubPath(snapshot.url);
   const preferredName = subPath === '/' ? 'root' : subPath;
   const sanitizedName = sanitizeUrlAsFilename(preferredName, { replacement: '-' });
   const trimmedName = sanitizedName.replace(/^[-_]+/, '') || sanitizedName;
-
-  const FILENAME_LENGTH_THRESHOLD = 255;
 
   let finalName = trimmedName;
   if (trimmedName.length > FILENAME_LENGTH_THRESHOLD) {
