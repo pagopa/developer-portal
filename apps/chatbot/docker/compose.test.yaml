@@ -24,7 +24,7 @@ services:
       
 
   postgres:
-    image: postgres:17.2-alpine
+    image: postgres:17.2-alpine@sha256:7e5df973a74872482e320dcbdeb055e178d6f42de0558b083892c50cda833c96
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 3s
@@ -35,7 +35,7 @@ services:
     env_file: ../.env.langfuse
 
   redis:
-    image: redis/redis-stack:7.2.0-v13
+    image: redis/redis-stack:7.2.0-v13@sha256:2b000b938e407d14acafa9b7affd4c5a94ceeec572b25b15dcef0d3a6c064d7e
     ports:
       - "6379:6379"
       - "8001:8001"
@@ -51,7 +51,7 @@ services:
         condition: service_completed_successfully
 
   redis-seed:
-    image: alpine:3.18
+    image: alpine:3.18@sha256:de0eb0b3f2a47ba1eb89389859a9bd88b28e82f5826b6969ad604979713c2d4f
     user: root
     volumes:
       - redis_data:/data
@@ -61,7 +61,7 @@ services:
 
   redis-fix-perms:
     # one-shot: ensure /data owned by redis user before redis starts
-    image: redis/redis-stack:7.2.0-v13
+    image: redis/redis-stack:7.2.0-v13@sha256:2b000b938e407d14acafa9b7affd4c5a94ceeec572b25b15dcef0d3a6c064d7e
     user: root
     volumes:
       - redis_data:/data
@@ -72,12 +72,12 @@ services:
     restart: "no"
     
   motoserver:
-    image: motoserver/moto:5.1.14
+    image: motoserver/moto:5.1.14@sha256:800719627036dc38dc699e9f314f624f2c98ac3d8bb754db078cb2698f08ee77
     environment:
       - MOTO_PORT=3002
 
   langfuse-worker:
-    image: docker.io/langfuse/langfuse-worker:3.115
+    image: docker.io/langfuse/langfuse-worker:3.115@sha256:c9dc71559f880bc82d7087ca6515b66ddf904dbf209ea578ea5fa17cd64b6ab0
     depends_on: &langfuse-depends-on
       postgres:
         condition: service_healthy
@@ -90,14 +90,14 @@ services:
     env_file: ../.env.langfuse
 
   langfuse-web:
-    image: docker.io/langfuse/langfuse:3.115
+    image: docker.io/langfuse/langfuse:3.115@sha256:48c51b585350a9de1e904df9410f5507afbfd94c079cf23efec1abf242c6f414
     depends_on: *langfuse-depends-on
     ports:
       - 4001:3000
     env_file: ../.env.langfuse
 
   clickhouse:
-    image: docker.io/clickhouse/clickhouse-server:25.8.8.26-alpine
+    image: docker.io/clickhouse/clickhouse-server:25.8.8.26-alpine@sha256:68b9d9eb4cb949a03d1f90b76fd8d396a5999dd57ba1ee914ea36c77716ce937
     user: "101:101"
     environment:
       CLICKHOUSE_DB: default
@@ -114,7 +114,7 @@ services:
       start_period: 1s
 
   minio:
-    image: docker.io/minio/minio:RELEASE.2025-09-07T16-13-09Z
+    image: docker.io/minio/minio:RELEASE.2025-09-07T16-13-09Z@sha256:14cea493d9a34af32f524e538b8346cf79f3321eff8e708c1e2960462bd8936e
     entrypoint: sh
     # create the 'langfuse' bucket before starting the service
     command: -c 'mkdir -p /data/langfuse && minio server --address ":9000" --console-address ":9001" /data'
@@ -129,7 +129,7 @@ services:
       start_period: 1s
 
   valkey:
-    image: valkey/valkey:8.1.4-alpine3.22
+    image: valkey/valkey:8.1.4-alpine3.22@sha256:e706d1213aaba6896c162bb6a3a9e1894e1a435f28f8f856d14fab2e10aa098b
     healthcheck:
       test: [ "CMD", "valkey-cli", "ping" ]
       interval: 3s
