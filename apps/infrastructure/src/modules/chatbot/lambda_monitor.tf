@@ -63,6 +63,7 @@ resource "aws_iam_role_policy" "lambda_monitor_policy" {
           "sqs:ReceiveMessage",
           "sqs:DeleteMessage",
           "sqs:GetQueueAttributes",
+          "sqs:SendMessage"
         ]
         Resource = aws_sqs_queue.chatbot_queue["monitor"].arn
       },
@@ -70,14 +71,7 @@ resource "aws_iam_role_policy" "lambda_monitor_policy" {
         Effect = "Allow"
         Action = [
           "sqs:SendMessage",
-
-        ]
-        Resource = aws_sqs_queue.chatbot_dlq["monitor"].arn
-      },
-      {
-        Effect = "Allow"
-        Action = [
-          "sqs:SendMessage",
+          "sqs:GetQueueUrl"
         ]
         Resource = aws_sqs_queue.chatbot_queue["evaluate"].arn
       },
@@ -120,12 +114,12 @@ resource "aws_lambda_function" "chatbot_monitor_lambda" {
   function_name = local.chatbot_monitor_lambda_name
   description   = "Lambda responsible for monitoring chatbot interactions"
 
-  image_uri    = "${module.ecr["monitor"].repository_url}:latest"
+  image_uri    = "${module.ecr["monitor"].repository_url}:laest"
   package_type = "Image"
 
-  timeout       = 600 # 10 minutes
-  memory_size   = 848
-  architectures = ["arm64"]
+  timeout       = 120 # two minutes, as some interactions might take longer to process
+  memory_size   = 2048
+  architectures = ["x86_64"]
   role          = aws_iam_role.lambda_monitor_role.arn
 
   environment {

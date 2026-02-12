@@ -78,6 +78,7 @@ resource "aws_security_group" "langfuse_web" {
     Name = "langfuse_web_sg"
   }
 
+  /*
   ingress {
     from_port       = 3000
     to_port         = 3000
@@ -85,6 +86,7 @@ resource "aws_security_group" "langfuse_web" {
     security_groups = [aws_security_group.lb.id]
   }
 
+*/
   egress {
     from_port   = 0
     to_port     = 0
@@ -94,13 +96,14 @@ resource "aws_security_group" "langfuse_web" {
 }
 
 resource "aws_security_group_rule" "langfuse_web_lambda_ingress" {
-  count                    = var.lambda_security_group_id != null ? 1 : 0
+  for_each = { for id in [aws_security_group.lb.id, var.lambda_security_group_id] : id => id if id != null }
+
   type                     = "ingress"
   from_port                = 3000
   to_port                  = 3000
   protocol                 = "tcp"
   security_group_id        = aws_security_group.langfuse_web.id
-  source_security_group_id = var.lambda_security_group_id
+  source_security_group_id = each.value
   description              = "Allow lambda monitor access to langfuse-web"
 }
 
