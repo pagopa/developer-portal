@@ -161,7 +161,7 @@ def add_langfuse_score_query(
             MessageGroupId=query_id,
         )
         LOGGER.info(
-            f"sqs response query_feedback.feedback.user_comment: {sqs_response}"
+            f"sqs response query_feedback.feedback.user_comment: {sqs_response[:100]}..."
         )
 
     if (
@@ -187,7 +187,7 @@ def add_langfuse_score_query(
             MessageGroupId=query_id,
         )
         LOGGER.info(
-            f"sqs response query_feedback.feedback.user_response_relevancy: {sqs_response}"
+            f"sqs response query_feedback.feedback.user_response_relevancy: {sqs_response[:100]}..."
         )
 
     if (
@@ -213,5 +213,5 @@ def add_langfuse_score_query(
             MessageGroupId=query_id,
         )
         LOGGER.info(
-            f"sqs response query_feedback.feedback.user_faithfullness: {sqs_response}"
+            f"sqs response query_feedback.feedback.user_faithfullness: {sqs_response[:100]}..."
         )
