@@ -1,4 +1,5 @@
 import { isProduction } from '@/config';
+
 export type Locale = {
   readonly langCode: string;
   readonly locale: string;
