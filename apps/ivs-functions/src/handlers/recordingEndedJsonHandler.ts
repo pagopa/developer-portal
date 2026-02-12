@@ -85,6 +85,7 @@ export const recordingEndedS3EventHandler = async (event: S3Event) => {
       body: {
         data: {
           playerSrc: newPlayerSrc,
+          cs_uri_query: webinar.attributes.slug,
         },
       },
     });
