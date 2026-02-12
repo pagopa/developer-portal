@@ -132,22 +132,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
               return currentDate > latestDate ? current : latest;
             }).updatedAt;
 
-      // Main Section Routes (Aggregators)
-      const sectionRoutes = [
-        {
-          url: `${localizedUrlPrefix}/solutions`,
-          lastModified: new Date(getLastUpdate(solutions) || Date.now()),
-          changeFrequency: 'weekly' as const,
-          priority: 0.8,
-        },
-        {
-          url: `${localizedUrlPrefix}/webinars`,
-          lastModified: new Date(getLastUpdate(webinars) || Date.now()),
-          changeFrequency: 'weekly' as const,
-          priority: 0.8,
-        },
-      ];
-
       // --------------------------------------------------------------------------------
       // 2. Fetch S3 Metadata (Guides, Solutions, Release Notes)
       // --------------------------------------------------------------------------------
@@ -189,6 +173,24 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       const solutionsMetadata = await getSolutionsMetadataByDirNames(
         solutionDirNames
       );
+
+      const sectionRoutes =
+        solutionsMetadata.length > 0
+          ? [
+              {
+                url: `${localizedUrlPrefix}/solutions`,
+                lastModified: new Date(getLastUpdate(solutions) || Date.now()),
+                changeFrequency: 'weekly' as const,
+                priority: 0.8,
+              },
+              {
+                url: `${localizedUrlPrefix}/webinars`,
+                lastModified: new Date(getLastUpdate(webinars) || Date.now()),
+                changeFrequency: 'weekly' as const,
+                priority: 0.8,
+              },
+            ]
+          : [];
 
       // Release Notes fetching with error handling
       // eslint-disable-next-line functional/no-let
