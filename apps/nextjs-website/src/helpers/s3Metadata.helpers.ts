@@ -222,7 +222,7 @@ let releaseNotesMetadataCacheTime = 0;
 
 const METADATA_CACHE_TTL = 5 * 60 * 1000; // 5 minutes
 
-export const getGuidesMetadata = async (dirName?: string) => {
+export const getGuidesMetadata = async (locale: string, dirName?: string) => {
   const now = Date.now();
 
   if (
@@ -235,8 +235,13 @@ export const getGuidesMetadata = async (dirName?: string) => {
 
   guidesMetadataCache = await fetchMetadataFromCDN<JsonMetadata>(
     dirName
-      ? path.join(S3_PATH_TO_GITBOOK_DOCS, dirName, S3_METADATA_JSON_PATH)
-      : S3_GUIDES_METADATA_JSON_PATH
+      ? path.join(
+          locale,
+          S3_PATH_TO_GITBOOK_DOCS,
+          dirName,
+          S3_METADATA_JSON_PATH
+        )
+      : `${locale}/${S3_GUIDES_METADATA_JSON_PATH}`
   );
   guidesMetadataCacheTime = now;
 
@@ -245,13 +250,13 @@ export const getGuidesMetadata = async (dirName?: string) => {
 
 const removeTrailingSlash = (value: string) => value.replace(/\/+$/, '');
 
-const buildDirMetadataPath = (dirName: string) => {
+const buildDirMetadataPath = (locale: string, dirName: string) => {
   const docsBase = s3DocsPath
     ? removeTrailingSlash(s3DocsPath)
     : removeTrailingSlash(S3_PATH_TO_GITBOOK_DOCS);
   return docsBase
-    ? `${docsBase}/${dirName}/${S3_METADATA_JSON_PATH}`
-    : `${dirName}/${S3_METADATA_JSON_PATH}`;
+    ? `${locale}/${docsBase}/${dirName}/${S3_METADATA_JSON_PATH}`
+    : `${locale}/${dirName}/${S3_METADATA_JSON_PATH}`;
 };
 
 async function batchFetchMetadata(
@@ -286,6 +291,7 @@ async function batchFetchMetadata(
 }
 
 export const getGuidesMetadataByDirNames = async (
+  locale: string,
   dirNames: readonly string[],
   concurrencyLimit = 5
 ) => {
@@ -294,12 +300,13 @@ export const getGuidesMetadataByDirNames = async (
   }
 
   const metadataPaths = dirNames.map((dirName) =>
-    buildDirMetadataPath(dirName)
+    buildDirMetadataPath(locale, dirName)
   );
   return await batchFetchMetadata(metadataPaths, concurrencyLimit);
 };
 
 export const getSolutionsMetadataByDirNames = async (
+  locale: string,
   dirNames: readonly string[],
   concurrencyLimit = 5
 ) => {
@@ -308,12 +315,15 @@ export const getSolutionsMetadataByDirNames = async (
   }
 
   const metadataPaths = dirNames.map((dirName) =>
-    buildDirMetadataPath(dirName)
+    buildDirMetadataPath(locale, dirName)
   );
   return await batchFetchMetadata(metadataPaths, concurrencyLimit);
 };
 
-export const getSolutionsMetadata = async (dirName?: string) => {
+export const getSolutionsMetadata = async (
+  locale: string,
+  dirName?: string
+) => {
   const now = Date.now();
 
   if (
@@ -326,8 +336,13 @@ export const getSolutionsMetadata = async (dirName?: string) => {
 
   solutionsMetadataCache = await fetchMetadataFromCDN<JsonMetadata>(
     dirName
-      ? path.join(S3_PATH_TO_GITBOOK_DOCS, dirName, S3_METADATA_JSON_PATH)
-      : S3_SOLUTIONS_METADATA_JSON_PATH
+      ? path.join(
+          locale,
+          S3_PATH_TO_GITBOOK_DOCS,
+          dirName,
+          S3_METADATA_JSON_PATH
+        )
+      : `${locale}/${S3_SOLUTIONS_METADATA_JSON_PATH}`
   );
   solutionsMetadataCacheTime = now;
 
@@ -335,6 +350,7 @@ export const getSolutionsMetadata = async (dirName?: string) => {
 };
 
 export const getReleaseNotesMetadataByDirNames = async (
+  locale: string,
   dirNames: readonly string[],
   concurrencyLimit = 5
 ) => {
@@ -343,12 +359,15 @@ export const getReleaseNotesMetadataByDirNames = async (
   }
 
   const metadataPaths = dirNames.map((dirName) =>
-    buildDirMetadataPath(dirName)
+    buildDirMetadataPath(locale, dirName)
   );
   return await batchFetchMetadata(metadataPaths, concurrencyLimit);
 };
 
-export const getReleaseNotesMetadata = async (dirName?: string) => {
+export const getReleaseNotesMetadata = async (
+  locale: string,
+  dirName?: string
+) => {
   const now = Date.now();
 
   if (
@@ -361,18 +380,23 @@ export const getReleaseNotesMetadata = async (dirName?: string) => {
 
   releaseNotesMetadataCache = await fetchMetadataFromCDN<JsonMetadata>(
     dirName
-      ? path.join(S3_PATH_TO_GITBOOK_DOCS, dirName, S3_METADATA_JSON_PATH)
-      : S3_RELEASE_NOTES_METADATA_JSON_PATH
+      ? path.join(
+          locale,
+          S3_PATH_TO_GITBOOK_DOCS,
+          dirName,
+          S3_METADATA_JSON_PATH
+        )
+      : `${locale}/${S3_RELEASE_NOTES_METADATA_JSON_PATH}`
   );
   releaseNotesMetadataCacheTime = now;
 
   return releaseNotesMetadataCache || [];
 };
 
-export const getSoapApiMetadata = async () => {
+export const getSoapApiMetadata = async (locale: string) => {
   if (!soapApiMetadataCache) {
     soapApiMetadataCache = await fetchMetadataFromCDN<SoapApiJsonMetadata>(
-      S3_SOAP_API_METADATA_JSON_PATH
+      `${locale}/${S3_SOAP_API_METADATA_JSON_PATH}`
     );
   }
   return soapApiMetadataCache || [];

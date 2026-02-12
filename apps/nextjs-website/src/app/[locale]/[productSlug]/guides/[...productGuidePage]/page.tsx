@@ -48,46 +48,49 @@ export type ProductGuidePageProps = {
   bodyConfig: ParseContentConfig;
 } & ProductLayoutProps;
 
-export async function generateMetadata(props0: {
+export async function generateMetadata(props: {
   params: Promise<Params>;
 }): Promise<Metadata> {
-  const params = await props0.params;
-  const props = await getGuidePage(
+  const params = await props.params;
+  const guidePageProps = await getGuidePage(
     params?.productGuidePage ?? [''],
+    params?.locale,
     params?.productSlug
   );
 
-  if (props?.seo) {
-    return makeMetadataFromStrapi(props?.seo);
+  if (guidePageProps?.seo) {
+    return makeMetadataFromStrapi(guidePageProps?.seo);
   }
   return {
-    ...(props.version.main ? {} : { robots: 'noindex, follow' }),
+    ...(guidePageProps.version.main ? {} : { robots: 'noindex, follow' }),
     ...makeMetadata({
       title: [
-        props ? props.page.title : '',
-        props
-          ? [props.guide.name, !props.version.main && props.version.name]
+        guidePageProps ? guidePageProps.page.title : '',
+        guidePageProps
+          ? [
+              guidePageProps.guide.name,
+              !guidePageProps.version.main && guidePageProps.version.name,
+            ]
               .filter(Boolean)
               .join(' ')
           : [],
-        props ? props.product.name : '',
+        guidePageProps ? guidePageProps.product.name : '',
       ]
         .filter(Boolean)
         .join(' | '),
-      url: props?.page.path,
+      url: guidePageProps?.page.path,
     }),
   };
 }
 
-const Page = async (props0: { params: Promise<Params> }) => {
-  const params = await props0.params;
-  const locale = params.locale;
-  const [guideProps, urlReplaceMap] = await Promise.all([
-    getGuidePage(params?.productGuidePage ?? [''], params?.productSlug),
-    getUrlReplaceMapProps(),
+const Page = async ({ params }: { params: Promise<Params> }) => {
+  const { locale, productSlug, productGuidePage } = await params;
+  const [guidePageProps, urlReplaceMap] = await Promise.all([
+    getGuidePage(productGuidePage ?? [''], locale, productSlug),
+    getUrlReplaceMapProps(locale),
   ]);
 
-  if (!guideProps) {
+  if (!guidePageProps) {
     return <PageNotFound />;
   }
   const {
@@ -100,9 +103,9 @@ const Page = async (props0: { params: Promise<Params> }) => {
     bannerLinks,
     seo,
     bodyConfig,
-  } = guideProps;
+  } = guidePageProps;
 
-  const props: ProductGuidePageProps = {
+  const productGuidePageProps: ProductGuidePageProps = {
     ...page,
     product,
     guide,
@@ -118,12 +121,12 @@ const Page = async (props0: { params: Promise<Params> }) => {
 
   const structuredData = generateStructuredDataScripts({
     breadcrumbsItems: [
-      productToBreadcrumb(locale, props.product),
+      productToBreadcrumb(locale, productGuidePageProps.product),
       {
         name: seo?.metaTitle || page.title,
-        item: breadcrumbItemByProduct(locale, props.product, [
+        item: breadcrumbItemByProduct(locale, productGuidePageProps.product, [
           'guides',
-          ...(params?.productGuidePage || []),
+          ...(productGuidePage || []),
         ]),
       },
     ],
@@ -132,30 +135,33 @@ const Page = async (props0: { params: Promise<Params> }) => {
   });
 
   const initialBreadcrumbs = [
-    ...productPageToBreadcrumbs(locale, props.product, [
+    ...productPageToBreadcrumbs(locale, productGuidePageProps.product, [
       {
         translate: true,
         name: 'devPortal.productHeader.guides',
-        path: props.product.hasGuideListPage
-          ? `/${locale}/${props.product.slug}/guides`
+        path: productGuidePageProps.product.hasGuideListPage
+          ? `/${locale}/${productGuidePageProps.product.slug}/guides`
           : `/${locale}`,
       },
-      { name: props.guide.name, path: props.guide.path },
+      {
+        name: productGuidePageProps.guide.name,
+        path: productGuidePageProps.guide.path,
+      },
     ]),
   ];
 
   return (
     <ProductLayout
-      product={props.product}
-      path={props.path}
-      bannerLinks={props.bannerLinks}
+      product={productGuidePageProps.product}
+      path={productGuidePageProps.path}
+      bannerLinks={productGuidePageProps.bannerLinks}
       structuredData={structuredData}
     >
       <GitBookTemplate
-        menuName={props.guide.name}
+        menuName={productGuidePageProps.guide.name}
         initialBreadcrumbs={initialBreadcrumbs}
-        versionName={props.version.name}
-        {...props}
+        versionName={productGuidePageProps.version.name}
+        {...productGuidePageProps}
       />
     </ProductLayout>
   );

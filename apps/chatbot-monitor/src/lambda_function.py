@@ -183,7 +183,7 @@ def lambda_handler(event, context):
                 messages=data.get("messages"),
                 response=data.get("response"),
                 contexts=data.get("contexts"),
-                tags=data.get("topics"),
+                tags=data.get("tags"),
                 spans=data.get("traceSpans"),
                 query_for_database=data.get("query_for_database"),
             )
@@ -210,7 +210,6 @@ def lambda_handler(event, context):
 
         elif operation == "add_scores":
 
-            LOGGER.info(f">>>>>>>>>>>>>>>>> Score data: {data}")
             if not isinstance(data, list):
                 data = [data]
 

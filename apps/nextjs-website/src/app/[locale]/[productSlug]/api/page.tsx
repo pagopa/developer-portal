@@ -12,6 +12,7 @@ import {
 } from '@/helpers/metadata.helpers';
 import { getApiDataListPages } from '@/lib/api';
 import { Metadata } from 'next';
+import { SUPPORTED_LOCALES } from '@/locales';
 
 type Params = {
   locale: string;
@@ -21,8 +22,8 @@ type Params = {
 export async function generateMetadata(props: {
   params: Promise<Params>;
 }): Promise<Metadata> {
-  const params = await props.params;
-  const apiDataListPage = await getApiDataListPages(params?.productSlug);
+  const { locale, productSlug } = await props.params;
+  const apiDataListPage = await getApiDataListPages(locale, productSlug);
 
   if (apiDataListPage?.seo) {
     return makeMetadataFromStrapi(apiDataListPage.seo);
@@ -32,27 +33,25 @@ export async function generateMetadata(props: {
     title: [apiDataListPage?.hero.title, apiDataListPage?.product.name]
       .filter(Boolean)
       .join(' | '),
-    url: `${baseUrl}/${params.locale}/${apiDataListPage?.product.slug}/api`,
-    locale: 'it_IT',
+    url: `${baseUrl}/${locale}/${apiDataListPage?.product.slug}/api`,
+    langCode: locale,
   });
 }
 
 const ApiDataListPage = async (props: { params: Promise<Params> }) => {
-  const params = await props.params;
-  const apiDataListPageProps = await getApiDataListPages(params.productSlug);
+  const { locale, productSlug } = await props.params;
+  const apiDataListPageProps = await getApiDataListPages(locale, productSlug);
 
   const structuredData = generateStructuredDataScripts({
     breadcrumbsItems: [
-      productToBreadcrumb(params.locale, apiDataListPageProps?.product),
+      productToBreadcrumb(locale, apiDataListPageProps?.product),
       {
         name:
           apiDataListPageProps?.seo?.metaTitle ||
           apiDataListPageProps?.hero.title,
-        item: breadcrumbItemByProduct(
-          params.locale,
-          apiDataListPageProps?.product,
-          ['api']
-        ),
+        item: breadcrumbItemByProduct(locale, apiDataListPageProps?.product, [
+          'api',
+        ]),
       },
     ],
     seo: apiDataListPageProps?.seo,

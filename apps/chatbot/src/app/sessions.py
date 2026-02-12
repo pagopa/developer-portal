@@ -160,9 +160,7 @@ def add_langfuse_score_query(
             MessageBody=json.dumps(payload),
             MessageGroupId=query_id,
         )
-        LOGGER.info(
-            f"sqs response query_feedback.feedback.user_comment: {sqs_response}"
-        )
+        
 
     if (
         query_feedback.feedback
@@ -186,9 +184,6 @@ def add_langfuse_score_query(
             MessageBody=json.dumps(payload),
             MessageGroupId=query_id,
         )
-        LOGGER.info(
-            f"sqs response query_feedback.feedback.user_response_relevancy: {sqs_response}"
-        )
 
     if (
         query_feedback.feedback
@@ -211,7 +206,4 @@ def add_langfuse_score_query(
         sqs_response = sqs_queue_monitor.send_message(
             MessageBody=json.dumps(payload),
             MessageGroupId=query_id,
-        )
-        LOGGER.info(
-            f"sqs response query_feedback.feedback.user_faithfullness: {sqs_response}"
         )

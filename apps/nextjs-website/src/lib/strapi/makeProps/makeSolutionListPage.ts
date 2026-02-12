@@ -4,6 +4,7 @@ import { StrapiSolutionListPage } from '@/lib/strapi/types/solutionListPage';
 import { compact } from 'lodash';
 
 export function makeSolutionListPageProps(
+  locale: string,
   strapiSolutionsList: StrapiSolutionListPage
 ): SolutionListTemplateProps {
   const {
@@ -31,7 +32,7 @@ export function makeSolutionListPageProps(
           slug: `solutions/${attributes.slug}`,
           labels: attributes.products.data.map((products) => ({
             label: products.attributes.shortName,
-            path: `/${products.attributes.slug}`,
+            path: `/${locale}/${products.attributes.slug}`,
           })),
         };
       })
@@ -50,7 +51,7 @@ export function makeSolutionListPageProps(
 
           return {
             title: caseHistory.attributes.title,
-            path: `case-histories/${caseHistory.attributes.slug}`,
+            path: `/${locale}/case-histories/${caseHistory.attributes.slug}`,
             image: caseHistory.attributes.image?.data?.attributes,
           };
         })

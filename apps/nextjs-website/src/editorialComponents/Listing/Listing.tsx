@@ -7,6 +7,7 @@ import {
   useTheme,
 } from '@mui/material';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
+import { useFormatter } from 'next-intl';
 import Link from 'next/link';
 import { useMemo } from 'react';
 
@@ -25,7 +26,7 @@ export interface ListingsProps {
     preDate?: string;
     date: Date;
     locale?: string;
-    options: Intl.DateTimeFormatOptions;
+    options: Parameters<ReturnType<typeof useFormatter>['dateTime']>[1];
   };
   name?: string;
   linksColor?: string;
@@ -77,6 +78,7 @@ const Listing = ({
   backgroundVariant = 'white',
 }: ListingsProps) => {
   const theme = useTheme();
+  const format = useFormatter();
 
   const backgroundColor = useMemo(
     () => ({
@@ -104,10 +106,7 @@ const Listing = ({
           fontWeight={600}
           mb={5}
         >
-          {`${date.preDate} ${new Intl.DateTimeFormat(
-            date.locale,
-            date.options
-          ).format(date.date)}`}
+          {`${date.preDate} ${format.dateTime(date.date, date.options)}`}
         </Typography>
       )}
       {name && (

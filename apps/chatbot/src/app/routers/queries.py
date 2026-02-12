@@ -171,7 +171,6 @@ def create_monitor_trace(trace_data: dict, should_evaluate: bool) -> None:
             MessageBody=json.dumps(payload),
             MessageGroupId=trace_data["trace_id"],  # Required for FIFO queues
         )
-        LOGGER.info(f"sqs response queue {sqs_queue_monitor} : {sqs_response}")
 
 
 @router.post("/queries")
