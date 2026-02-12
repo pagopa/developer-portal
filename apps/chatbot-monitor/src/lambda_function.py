@@ -210,7 +210,6 @@ def lambda_handler(event, context):
 
         elif operation == "add_scores":
 
-            LOGGER.info(f">>>>>>>>>>>>>>>>> Score data: {data}")
             if not isinstance(data, list):
                 data = [data]
 
