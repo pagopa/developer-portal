@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import {
   baseUrl,
   cookieCategory,
@@ -16,7 +15,11 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import '@/styles/globals.css';
 import ThemeRegistry from '../ThemeRegistry';
-import { getProducts, getSolutionListPage, getVisibleInListWebinars } from '@/lib/api';
+import {
+  getProducts,
+  getSolutionListPage,
+  getVisibleInListWebinars,
+} from '@/lib/api';
 import SiteFooter from '@/components/atoms/SiteFooter/SiteFooter';
 import SiteHeader from '@/components/molecules/SiteHeader/SiteHeader';
 import { notFound } from 'next/navigation';
@@ -62,7 +65,7 @@ const MATOMO_TAG_MANAGER_SCRIPT =
   }
 
   function consentSet() {
-    if (OnetrustActiveGroups.includes("${cookieCategory}")) {
+    if (OnetrustActiveGroups.includes('${cookieCategory}')) {
       _mtm.push({ event: 'consent_given' });
         _mtm.push({'mtm.startTime': (new Date().getTime()), 'event': 'mtm.Start'});
       var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
@@ -99,9 +102,15 @@ export default async function RootLayout({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
-  const products = [...(await getProducts(locale)).filter((product) => product.isVisible)];
-  const shouldShowLinkToSolutions = await getSolutionListPage(locale).then((data) => data.solutions.length > 0).catch(() => false);
-  const shouldShowLinkToWebinars = await getVisibleInListWebinars(locale).then((webinars) => webinars.length > 0).catch(() => false);
+  const products = [
+    ...(await getProducts(locale)).filter((product) => product.isVisible),
+  ];
+  const shouldShowLinkToSolutions = await getSolutionListPage(locale)
+    .then((data) => data.solutions.length > 0)
+    .catch(() => false);
+  const shouldShowLinkToWebinars = await getVisibleInListWebinars(locale)
+    .then((webinars) => webinars.length > 0)
+    .catch(() => false);
 
   // Disabled eslint rules to to follow https://next-intl-docs.vercel.app/docs/getting-started/app-router-client-components guide
   // eslint-disable-next-line functional/no-let
