@@ -5,6 +5,7 @@ import { getItemFromPaths } from '@/helpers/structuredData.helpers';
 import { Metadata } from 'next';
 import { makeMetadata } from '@/helpers/metadata.helpers';
 import { baseUrl } from '@/config';
+import { SUPPORTED_LOCALES } from '@/locales';
 
 export async function generateMetadata(props: {
   params: Promise<{ locale: string }>;

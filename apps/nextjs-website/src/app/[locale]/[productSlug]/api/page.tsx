@@ -12,6 +12,7 @@ import {
 } from '@/helpers/metadata.helpers';
 import { getApiDataListPages } from '@/lib/api';
 import { Metadata } from 'next';
+import { SUPPORTED_LOCALES } from '@/locales';
 
 type Params = {
   locale: string;
