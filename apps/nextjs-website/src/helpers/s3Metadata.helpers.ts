@@ -250,13 +250,13 @@ export const getGuidesMetadata = async (locale: string, dirName?: string) => {
 
 const removeTrailingSlash = (value: string) => value.replace(/\/+$/, '');
 
-const buildDirMetadataPath = (dirName: string) => {
+const buildDirMetadataPath = (locale: string, dirName: string) => {
   const docsBase = s3DocsPath
     ? removeTrailingSlash(s3DocsPath)
     : removeTrailingSlash(S3_PATH_TO_GITBOOK_DOCS);
   return docsBase
-    ? `${docsBase}/${dirName}/${S3_METADATA_JSON_PATH}`
-    : `${dirName}/${S3_METADATA_JSON_PATH}`;
+    ? `${locale}/${docsBase}/${dirName}/${S3_METADATA_JSON_PATH}`
+    : `${locale}/${dirName}/${S3_METADATA_JSON_PATH}`;
 };
 
 async function batchFetchMetadata(
@@ -291,6 +291,7 @@ async function batchFetchMetadata(
 }
 
 export const getGuidesMetadataByDirNames = async (
+  locale: string,
   dirNames: readonly string[],
   concurrencyLimit = 5
 ) => {
@@ -299,12 +300,13 @@ export const getGuidesMetadataByDirNames = async (
   }
 
   const metadataPaths = dirNames.map((dirName) =>
-    buildDirMetadataPath(dirName)
+    buildDirMetadataPath(locale, dirName)
   );
   return await batchFetchMetadata(metadataPaths, concurrencyLimit);
 };
 
 export const getSolutionsMetadataByDirNames = async (
+  locale: string,
   dirNames: readonly string[],
   concurrencyLimit = 5
 ) => {
@@ -313,7 +315,7 @@ export const getSolutionsMetadataByDirNames = async (
   }
 
   const metadataPaths = dirNames.map((dirName) =>
-    buildDirMetadataPath(dirName)
+    buildDirMetadataPath(locale, dirName)
   );
   return await batchFetchMetadata(metadataPaths, concurrencyLimit);
 };
@@ -348,6 +350,7 @@ export const getSolutionsMetadata = async (
 };
 
 export const getReleaseNotesMetadataByDirNames = async (
+  locale: string,
   dirNames: readonly string[],
   concurrencyLimit = 5
 ) => {
@@ -356,7 +359,7 @@ export const getReleaseNotesMetadataByDirNames = async (
   }
 
   const metadataPaths = dirNames.map((dirName) =>
-    buildDirMetadataPath(dirName)
+    buildDirMetadataPath(locale, dirName)
   );
   return await batchFetchMetadata(metadataPaths, concurrencyLimit);
 };
