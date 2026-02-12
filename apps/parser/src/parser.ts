@@ -7,9 +7,10 @@ import { ensureDirectory, saveMetadata } from './modules/output';
 import { handleError } from './modules/errors';
 import { parsePages } from './modules/crawler';
 import { expandInteractiveSections } from './modules/dom-actions';
-import { ParseNode, ParseMetadata } from './modules/types';
-import { sanitizeUrlAsFilename, UrlWithoutAnchors } from './helpers/url-handling';
+import { ParsedNode, ParsedMetadata } from './modules/types';
+import { sanitizeUrlAsFilename, UrlWithoutAnchors, deriveSubPath } from './helpers/url-handling';
 import { assertReachable } from './modules/network';
+import { toIsoOrNull } from './helpers/date-format';
 import crypto from 'crypto';
 
 puppeteer.use(StealthPlugin());
@@ -19,16 +20,14 @@ const REQUEST_TIMEOUT_MS = 10_000;
 const FILENAME_LENGTH_THRESHOLD = 255;
 
 const env = resolveEnv();
-const parsedPages = new Map<string, ParseMetadata>();
+const parsedPages = new Map<string, ParsedMetadata>();
 
 void (async () => {
   try {
     await assertReachable(env.baseUrl, REQUEST_TIMEOUT_MS);
     ensureDirectory(env.outputDirectory);
-
     const browser = await puppeteer.launch({ headless: true });
-    const root: ParseNode = { url: env.baseUrl };
-
+    const root: ParsedNode = { url: env.baseUrl };
     const baseUrlObject = new URL(env.baseUrl);
     const baseOrigin = baseUrlObject.origin;
     const baseScope = UrlWithoutAnchors(env.baseUrl);
@@ -52,14 +51,7 @@ void (async () => {
   }
 })();
 
-
-async function fetch(input: any, init?: any): Promise<any> {
-  const { default: nodeFetch } = await import('node-fetch');
-  return nodeFetch(input, init);
-}
-
-
-async function parsePageFn(browser: Browser, url: string): Promise<ParseMetadata | null> {
+async function parsePageFn(browser: Browser, url: string): Promise<ParsedMetadata | null> {
   let page: Page | undefined;
   try {
     page = await browser.newPage();
@@ -79,13 +71,11 @@ async function parsePageFn(browser: Browser, url: string): Promise<ParseMetadata
   }
 }
 
-
-async function persistSnapshot(snapshot: ParseMetadata, FILENAME_LENGTH_THRESHOLD: number): Promise<void> {
-  const subPath = deriveSubPath(snapshot.url);
+async function persistSnapshot(snapshot: ParsedMetadata, FILENAME_LENGTH_THRESHOLD: number): Promise<void> {
+  const subPath = deriveSubPath(snapshot.url, env.baseUrl, env.sanitizedBaseUrl);
   const preferredName = subPath === '/' ? 'root' : subPath;
   const sanitizedName = sanitizeUrlAsFilename(preferredName, { replacement: '-' });
   const trimmedName = sanitizedName.replace(/^[-_]+/, '') || sanitizedName;
-
   let finalName = trimmedName;
   if (trimmedName.length > FILENAME_LENGTH_THRESHOLD) {
     const normalizedUrl = UrlWithoutAnchors(snapshot.url);
@@ -93,27 +83,10 @@ async function persistSnapshot(snapshot: ParseMetadata, FILENAME_LENGTH_THRESHOL
     const prefix = trimmedName.slice(0, 240);
     finalName = `${prefix}_${hash}`;
   }
-
   await saveMetadata(env.outputDirectory, `${finalName}.json`, snapshot);
 }
 
-
-function deriveSubPath(targetUrl: string): string {
-  const base = new URL(env.baseUrl);
-  const target = new URL(targetUrl);
-  let relPath = target.pathname;
-  if (base.pathname !== '/' && relPath.startsWith(base.pathname)) {
-    relPath = relPath.slice(base.pathname.length);
-    if (!relPath.startsWith('/')) relPath = '/' + relPath;
-  }
-  if (UrlWithoutAnchors(targetUrl) === env.sanitizedBaseUrl || relPath === '/' || relPath === '') {
-    return '/';
-  }
-  return `${relPath}${target.search}${target.hash}` || '/';
-}
-
-
-function serializeMetadata(raw: RawDocumentMetadata): ParseMetadata {
+function serializeMetadata(raw: ParsedMetadata): ParsedMetadata {
   return {
     url: raw.url,
     title: raw.title,
@@ -125,18 +98,7 @@ function serializeMetadata(raw: RawDocumentMetadata): ParseMetadata {
   };
 }
 
-
-type RawDocumentMetadata = {
-  readonly title: string;
-  readonly url: string;
-  readonly bodyText: string;
-  readonly lang: string | null;
-  readonly keywords: string | null;
-  readonly datePublished: string | null;
-  readonly lastModified: string | null;
-};
-
-const extractDocumentMetadata = (): RawDocumentMetadata => {
+const extractDocumentMetadata = (): ParsedMetadata => {
   const getMeta = (name: string): string | null => {
     return (
       document.querySelector(`meta[name="${name}"]`)?.getAttribute('content') ||
@@ -144,15 +106,12 @@ const extractDocumentMetadata = (): RawDocumentMetadata => {
       null
     );
   };
-
   const metaTitle = getMeta('og:title') || getMeta('twitter:title');
   const documentTitle = document.title?.trim();
   const normalizedTitle = documentTitle?.length ? documentTitle : metaTitle || '';
-
   const normalizeText = (value: string | null | undefined): string => {
     return value ? value.replace(/\s+/g, ' ').trim() : '';
   };
-
   const mainText = normalizeText(document.querySelector('main')?.innerText);
   const iframeTexts = Array.from(document.querySelectorAll('iframe'))
     .map((frame) => {
@@ -163,12 +122,10 @@ const extractDocumentMetadata = (): RawDocumentMetadata => {
       }
     })
     .filter((text) => text.length > 0);
-
   const prioritizedTextParts = [mainText, ...iframeTexts].filter((text) => text.length > 0);
   const prioritizedText = prioritizedTextParts.join('\n\n').trim();
   const fallbackBody = normalizeText(document.body?.innerText ?? '');
   const bodyText = prioritizedText.length >= 120 ? prioritizedText : fallbackBody;
-
   return {
     title: normalizedTitle,
     url: window.location.href,
@@ -183,11 +140,3 @@ const extractDocumentMetadata = (): RawDocumentMetadata => {
         : getMeta('article:modified_time'),
   };
 };
-
-function toIsoOrNull(value: string | null): string | null {
-  if (!value) {
-    return null;
-  }
-  const date = new Date(value);
-  return Number.isNaN(date.getTime()) ? null : date.toISOString();
-}

@@ -1,12 +1,12 @@
-import type { Config } from 'jest';
+import type { Config } from "jest";
 
 const config: Config = {
   rootDir: __dirname,
-  testRegex: 'tests/.*\\.test\\.ts$',
+  testRegex: "tests/.*\\.test\\.ts$",
   transform: {
-    '^.+\\.ts$': ['ts-jest', { tsconfig: 'tsconfig.json' }],
+    "^.+\\.ts$": ["ts-jest", { tsconfig: "tsconfig.json" }],
   },
-  testEnvironment: 'node',
+  testEnvironment: "node",
   clearMocks: true,
   verbose: false,
 };

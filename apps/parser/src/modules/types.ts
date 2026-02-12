@@ -1,4 +1,15 @@
-export type ParseMetadata = {
+export type EnvConfig = {
+  readonly baseUrl: string;
+  readonly sanitizedBaseUrl: string;
+  readonly outputDirectory: string;
+  readonly maxDepth: number;
+};
+
+export type SanitizeOptions = {
+  readonly replacement?: string;
+};
+
+export type ParsedMetadata = {
   readonly url: string;
   readonly title: string;
   readonly bodyText: string;
@@ -8,7 +19,7 @@ export type ParseMetadata = {
   readonly lastModified: string | null;
 };
 
-export type ParseNode = {
+export type ParsedNode = {
   readonly url: string;
   title?: string;
   bodyText?: string;
@@ -16,5 +27,5 @@ export type ParseNode = {
   keywords?: string | null;
   datePublished?: string | null;
   lastModified?: string | null;
-  children?: ParseNode[];
+  children?: ParsedNode[];
 };

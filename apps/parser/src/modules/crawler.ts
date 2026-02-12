@@ -1,33 +1,33 @@
-import { Browser } from 'puppeteer';
-import { ParseNode, ParseMetadata } from './types';
-import { UrlWithoutAnchors } from '../helpers/url-handling';
-import { expandInteractiveSections } from './dom-actions';
+import { Browser } from "puppeteer";
+import { ParsedNode, ParsedMetadata } from "./types";
+import { UrlWithoutAnchors } from "../helpers/url-handling";
+import { expandInteractiveSections } from "./dom-actions";
 
 export async function parsePages(
   browser: Browser,
-  node: ParseNode,
+  node: ParsedNode,
   depth: number,
   maxDepth: number,
-  parsedPages: Map<string, ParseMetadata>,
-  parsePageFn: (browser: Browser, url: string) => Promise<ParseMetadata | null>,
+  parsedPages: Map<string, ParsedMetadata>,
+  parsePageFn: (
+    browser: Browser,
+    url: string,
+  ) => Promise<ParsedMetadata | null>,
   baseOrigin: string,
   baseScope: string,
   baseHostToken: string,
-  navigationTimeout = 30000
+  navigationTimeout = 30000,
 ): Promise<void> {
   const visitKey = buildVisitKey(node.url);
   if (parsedPages.has(visitKey) || depth > maxDepth) {
     return;
   }
-
   const normalizedUrl = UrlWithoutAnchors(node.url);
   if (!isWithinScope(normalizedUrl, baseScope, baseHostToken)) {
     return;
   }
-
   const metadata = await parsePageFn(browser, node.url);
   if (!metadata) return;
-
   parsedPages.set(visitKey, metadata);
   node.title = metadata.title;
   node.bodyText = metadata.bodyText;
@@ -35,20 +35,24 @@ export async function parsePages(
   node.keywords = metadata.keywords;
   node.datePublished = metadata.datePublished;
   node.lastModified = metadata.lastModified;
-
   let page;
   let anchors: string[] = [];
   try {
     page = await browser.newPage();
-    await page.goto(node.url, { waitUntil: 'networkidle2', timeout: navigationTimeout });
+    await page.goto(node.url, {
+      waitUntil: "networkidle2",
+      timeout: navigationTimeout,
+    });
     await expandInteractiveSections(page);
-    anchors = await page.evaluate((allowedToken: string) => {
-      const anchors = Array.from(document.querySelectorAll('a[href]'));
-      const iframeSources = Array.from(document.querySelectorAll('iframe[src]'));
+    anchors = (await page.evaluate((allowedToken: string) => {
+      const anchors = Array.from(document.querySelectorAll("a[href]"));
+      const iframeSources = Array.from(
+        document.querySelectorAll("iframe[src]"),
+      );
       const unique = new Set<string>();
       for (const anchor of anchors) {
         const href = (anchor as HTMLAnchorElement).href;
-        if (!href || !href.startsWith('http')) continue;
+        if (!href || !href.startsWith("http")) continue;
         try {
           const target = new URL(href, window.location.href);
           const normalizedHref = target.href.toLowerCase();
@@ -59,10 +63,9 @@ export async function parsePages(
           console.warn(`Failed to parse anchor href: ${href}`, error);
         }
       }
-
       for (const frame of iframeSources) {
         const src = (frame as HTMLIFrameElement).src;
-        if (!src || !src.startsWith('http')) {
+        if (!src || !src.startsWith("http")) {
           continue;
         }
         try {
@@ -75,20 +78,19 @@ export async function parsePages(
         }
       }
       return Array.from(unique);
-    }, baseHostToken) as string[];
+    }, baseHostToken)) as string[];
   } catch (error) {
     console.warn(`Failed to extract anchors from ${node.url}`, error);
   } finally {
     if (page) await page.close();
   }
-
-
   const scheduled = new Set<string>();
-  const nextChildren: ParseNode[] = [];
+  const nextChildren: ParsedNode[] = [];
   for (const href of anchors) {
     const normalized = UrlWithoutAnchors(href);
     const visitCandidate = buildVisitKey(href);
-    if (parsedPages.has(visitCandidate) || scheduled.has(visitCandidate)) continue;
+    if (parsedPages.has(visitCandidate) || scheduled.has(visitCandidate))
+      continue;
     const lowerNormalized = normalized.toLowerCase();
     if (baseHostToken && !lowerNormalized.includes(baseHostToken)) {
       continue;
@@ -100,7 +102,6 @@ export async function parsePages(
     nextChildren.push({ url: href });
   }
   node.children = nextChildren;
-
   if (!node.children || depth >= maxDepth) return;
   for (const child of node.children) {
     await parsePages(
@@ -112,7 +113,7 @@ export async function parsePages(
       parsePageFn,
       baseOrigin,
       baseScope,
-      baseHostToken
+      baseHostToken,
     );
   }
 }
@@ -133,13 +134,13 @@ function isWithinScope(url: string, scope: string, hostToken: string): boolean {
     return false;
   }
   const nextChar = lowerUrl.charAt(lowerScope.length);
-  return nextChar === '/' || nextChar === '?' || nextChar === '#';
+  return nextChar === "/" || nextChar === "?" || nextChar === "#";
 }
 
 export function buildVisitKey(rawUrl: string): string {
   try {
     const url = new URL(rawUrl);
-    url.hash = '';
+    url.hash = "";
     return UrlWithoutAnchors(url.toString());
   } catch (_error) {
     return rawUrl;
