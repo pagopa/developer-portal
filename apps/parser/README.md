@@ -17,7 +17,11 @@ This package provides a TypeScript CLI tool for recursively crawling a website, 
 	```bash
 	npm install
 	```
-2. **Build the project:**
+2. **Type-check & compile**
+	```bash
+	npm run compile
+	```
+3. **Build the project:**
 	```bash
 	npm run build
 	```
