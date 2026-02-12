@@ -54,9 +54,9 @@ import { isMarkDownPart, MarkDownPart } from '@/lib/strapi/types/part';
 import { getMarkdownContent } from '@/lib/api';
 import { fetchGuideListPages } from './strapi/fetches/fetchGuideListPages';
 import {
-  getSyncedGuidesResponseJsonPath,
-  getSyncedSolutionsResponseJsonPath,
-  getSyncedReleaseNotesResponseJsonPath,
+  getSyncedGuidesResponseJsonFile,
+  getSyncedSolutionsResponseJsonFile,
+  getSyncedReleaseNotesResponseJsonFile,
 } from 'gitbook-docs/syncedResponses';
 import { StrapiSolutions } from './strapi/types/solutions';
 import { StrapiReleaseNotes } from './strapi/types/releaseNotes';
@@ -160,7 +160,7 @@ export const getCaseHistoriesProps = async (locale: string) => {
 
 export const getSolutionsProps = async (locale: string) => {
   const strapiSolutions = (await fetchResponseFromCDN(
-    `${locale}/${getSyncedSolutionsResponseJsonPath()}`
+    `${locale}/${getSyncedSolutionsResponseJsonFile}`
   )) as StrapiSolutions | undefined;
   return strapiSolutions ? makeSolutionsProps(locale, strapiSolutions) : [];
 };
@@ -193,7 +193,7 @@ export const getGuideProps = async (
 
 export const getGuidesProps = async (locale: string) => {
   const strapiGuides = (await fetchResponseFromCDN(
-    getSyncedGuidesResponseJsonPath()
+    getSyncedGuidesResponseJsonFile
   )) as StrapiGuides | undefined;
   return strapiGuides ? makeGuidesProps(locale, strapiGuides) : [];
 };
@@ -204,7 +204,7 @@ export const getGuidePageProps = async (
   productSlug: string
 ) => {
   const strapiGuides = (await fetchResponseFromCDN(
-    `${locale}/${getSyncedGuidesResponseJsonPath()}`
+    `${locale}/${getSyncedGuidesResponseJsonFile}`
   )) as StrapiGuides | undefined;
   // eslint-disable-next-line functional/no-expression-statements
   const guides = strapiGuides ? makeGuidesProps(locale, strapiGuides) : [];
@@ -226,7 +226,7 @@ export const getSolutionProps = async (
   jsonMetadata?: JsonMetadata
 ) => {
   const strapiSolutions = (await fetchResponseFromCDN(
-    `${locale}/${getSyncedSolutionsResponseJsonPath()}`
+    `${locale}/${getSyncedSolutionsResponseJsonFile}`
   )) as StrapiSolutions | undefined;
   if (!strapiSolutions) {
     // eslint-disable-next-line functional/no-throw-statements
@@ -243,7 +243,7 @@ export const getSolutionProps = async (
 
 const fetchReleaseNotes = async (locale: string) => {
   const strapiReleaseNotes = (await fetchResponseFromCDN(
-    `${locale}/${getSyncedReleaseNotesResponseJsonPath()}`
+    `${locale}/${getSyncedReleaseNotesResponseJsonFile}`
   )) as StrapiReleaseNotes | undefined;
   if (!strapiReleaseNotes) {
     // eslint-disable-next-line functional/no-throw-statements
