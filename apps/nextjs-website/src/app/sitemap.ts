@@ -185,7 +185,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       );
 
       const sectionRoutes = compact([
-        !isEmpty(solutionsMetadata) && {
+        !isEmpty(solutions) && {
           url: `${localizedUrlPrefix}/solutions`,
           lastModified: new Date(getLastUpdate(solutions) || Date.now()),
           changeFrequency: 'weekly' as const,
