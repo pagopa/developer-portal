@@ -69,7 +69,7 @@ const DesktopUserInfo: FC<{ locale: string }> = ({ locale }) => {
     >
       {!user && !loading && (
         <MuiLink
-          href={`/${locale}${loginHref}`}
+          href={`/${locale}/${loginHref}`}
           component={Link}
           sx={{
             display: 'flex',
