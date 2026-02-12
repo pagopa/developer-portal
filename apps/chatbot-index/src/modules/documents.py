@@ -258,6 +258,10 @@ def filter_urls(urls: List[str]) -> List[str]:
         if pattern.search(file) or pattern2.search(file):
             continue
 
+        # Check language code exclusion
+        if "/en/" in file:
+            continue
+
         # Check static exclusions
         if "/auth/" in file or "/profile/" in file:
             continue
