@@ -1,7 +1,7 @@
 import { Browser } from 'puppeteer';
 import { ParseNode, ParseMetadata } from './types';
-import { normalizeUrl } from '../utils/url';
-import { expandInteractiveSections } from './domActions';
+import { UrlWithoutAnchors } from '../helpers/url-handling';
+import { expandInteractiveSections } from './dom-actions';
 
 export async function parsePages(
   browser: Browser,
@@ -12,14 +12,15 @@ export async function parsePages(
   parsePageFn: (browser: Browser, url: string) => Promise<ParseMetadata | null>,
   baseOrigin: string,
   baseScope: string,
-  baseHostToken: string
+  baseHostToken: string,
+  navigationTimeout = 30000
 ): Promise<void> {
   const visitKey = buildVisitKey(node.url);
   if (parsedPages.has(visitKey) || depth > maxDepth) {
     return;
   }
 
-  const normalizedUrl = normalizeUrl(node.url);
+  const normalizedUrl = UrlWithoutAnchors(node.url);
   if (!isWithinScope(normalizedUrl, baseScope, baseHostToken)) {
     return;
   }
@@ -39,7 +40,7 @@ export async function parsePages(
   let anchors: string[] = [];
   try {
     page = await browser.newPage();
-    await page.goto(node.url, { waitUntil: 'networkidle2', timeout: 45000 });
+    await page.goto(node.url, { waitUntil: 'networkidle2', timeout: navigationTimeout });
     await expandInteractiveSections(page);
     anchors = await page.evaluate((allowedToken: string) => {
       const anchors = Array.from(document.querySelectorAll('a[href]'));
@@ -54,7 +55,9 @@ export async function parsePages(
           if (allowedToken && !normalizedHref.includes(allowedToken)) continue;
           if (target.href === window.location.href) continue;
           unique.add(target.href);
-        } catch (_) {}
+        } catch (error) {
+          console.warn(`Failed to parse anchor href: ${href}`, error);
+        }
       }
 
       for (const frame of iframeSources) {
@@ -67,12 +70,14 @@ export async function parsePages(
           const normalizedSrc = target.href.toLowerCase();
           if (allowedToken && !normalizedSrc.includes(allowedToken)) continue;
           unique.add(target.href);
-        } catch (_) {}
+        } catch (error) {
+          console.warn(`Failed to parse iframe src: ${src}`, error);
+        }
       }
       return Array.from(unique);
     }, baseHostToken) as string[];
   } catch (error) {
-    // Ignore anchor extraction errors
+    console.warn(`Failed to extract anchors from ${node.url}`, error);
   } finally {
     if (page) await page.close();
   }
@@ -81,7 +86,7 @@ export async function parsePages(
   const scheduled = new Set<string>();
   const nextChildren: ParseNode[] = [];
   for (const href of anchors) {
-    const normalized = normalizeUrl(href);
+    const normalized = UrlWithoutAnchors(href);
     const visitCandidate = buildVisitKey(href);
     if (parsedPages.has(visitCandidate) || scheduled.has(visitCandidate)) continue;
     const lowerNormalized = normalized.toLowerCase();
@@ -135,7 +140,7 @@ export function buildVisitKey(rawUrl: string): string {
   try {
     const url = new URL(rawUrl);
     url.hash = '';
-    return normalizeUrl(url.toString());
+    return UrlWithoutAnchors(url.toString());
   } catch (_error) {
     return rawUrl;
   }

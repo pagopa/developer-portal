@@ -8,14 +8,14 @@ export type SanitizeOptions = {
   readonly replacement?: string;
 };
 
-const DEFAULT_REPLACEMENT = '_';
+const DEFAULT_REPLACEMENT = '-';
 
-export function sanitizeFilename(input: string, options?: SanitizeOptions): string {
+export function sanitizeUrlAsFilename(input: string, options?: SanitizeOptions): string {
   if (!input) {
     return DEFAULT_REPLACEMENT;
   }
 
-  const replacement = normalizeReplacement(options?.replacement ?? DEFAULT_REPLACEMENT);
+  const replacement = validReplacementOrDefault(options?.replacement ?? DEFAULT_REPLACEMENT);
   let sanitized = input
     .replace(ILLEGAL_RE, replacement)
     .replace(CONTROL_RE, replacement)
@@ -31,7 +31,7 @@ export function sanitizeFilename(input: string, options?: SanitizeOptions): stri
   return sanitized.slice(0, 255);
 }
 
-function normalizeReplacement(candidate: string): string {
+function validReplacementOrDefault(candidate: string): string {
   if (!candidate) {
     return DEFAULT_REPLACEMENT;
   }
@@ -42,3 +42,21 @@ function normalizeReplacement(candidate: string): string {
 
   return candidate;
 }
+
+export const UrlWithoutAnchors = (rawUrl: string): string => {
+try {
+    const parsed = new URL(rawUrl);
+    parsed.hash = '';
+    if (parsed.pathname.length > 1 && parsed.pathname.endsWith('/')) {
+    parsed.pathname = parsed.pathname.slice(0, -1);
+    }
+    const serialized = parsed.toString();
+    if (parsed.pathname === '/' && !parsed.search) {
+    return serialized.endsWith('/') ? serialized.slice(0, -1) : serialized;
+    }
+    return serialized;
+} catch (error) {
+    console.warn(`Failed to parse URL: ${rawUrl}`, error);
+    return rawUrl;
+}
+};
