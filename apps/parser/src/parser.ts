@@ -8,9 +8,12 @@ import { handleError } from './modules/errors';
 import { parsePages } from './modules/crawler';
 import { expandInteractiveSections } from './modules/dom-actions';
 import { ParseNode, ParseMetadata } from './modules/types';
-import { sanitizeUrlAsFilename, UrlWithoutAnchors } from './helpers/url-handling';
+import { sanitizeUrlAsFilename, UrlWithoutAnchors, isRemoteUrl } from './helpers/url-handling';
 import { assertReachable } from './modules/network';
 import crypto from 'crypto';
+import { parseStringPromise } from 'xml2js';
+import http from 'node:http';
+import https from 'node:https';
 
 puppeteer.use(StealthPlugin());
 
@@ -67,8 +70,8 @@ void (async () => {
     } catch (err) {
       console.warn(`Sitemap warning: Could not resolve sitemap URL: ${(err as Error).message}`);
     }
-    const alreadyParsed = new Set(Array.from(parsedPages.keys()).map(normalizeUrl));
-    const toParse = sitemapUrls.filter((url) => !alreadyParsed.has(normalizeUrl(url)));
+    const alreadyParsed = new Set(Array.from(parsedPages.keys()).map(UrlWithoutAnchors));
+    const toParse = sitemapUrls.filter((url) => !alreadyParsed.has(UrlWithoutAnchors(url)));
 
     if (toParse.length > 0) {
       console.log(`Parsing ${toParse.length} URLs from sitemap not seen in crawl...`);
@@ -88,11 +91,6 @@ void (async () => {
     handleError(error);
   }
 })();
-
-import { isRemoteUrl } from './utils/url';
-import { parseStringPromise } from 'xml2js';
-import http from 'node:http';
-import https from 'node:https';
 
 function resolveSitemapUrl(baseUrl: string): string {
   if (process.env.SITEMAP_URL?.trim()) return process.env.SITEMAP_URL.trim();
@@ -161,7 +159,7 @@ async function extractUrls(doc: SitemapXml, location: string): Promise<string[]>
     return doc.urlset.url
       .map((entry) => entry.loc?.[0])
       .filter((loc): loc is string => typeof loc === 'string')
-      .map((loc) => normalizeUrl(loc.replace(/\/$/, '')));
+      .map((loc) => UrlWithoutAnchors(loc.replace(/\/$/, '')));
   }
   if (doc && doc.sitemapindex?.sitemap) {
     const aggregated: string[] = [];
