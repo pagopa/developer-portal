@@ -72,7 +72,6 @@ resource "aws_iam_role_policy" "lambda_evaluate_policy" {
           "sqs:SendMessage",
         ]
         Resource = [
-          aws_sqs_queue.chatbot_dlq["evaluate"].arn,
           aws_sqs_queue.chatbot_queue["monitor"].arn,
         ]
       },
