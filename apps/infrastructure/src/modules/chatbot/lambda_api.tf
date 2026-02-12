@@ -4,8 +4,6 @@ locals {
     CHB_AWS_S3_BUCKET                  = module.s3_bucket_llamaindex.s3_bucket_id
     CHB_AWS_SSM_GOOGLE_API_KEY         = module.google_api_key_ssm_parameter.ssm_parameter_name
     CHB_AWS_SSM_GOOGLE_SERVICE_ACCOUNT = module.google_service_account_ssm_parameter.ssm_parameter_name
-    CHB_AWS_SSM_LANGFUSE_PUBLIC_KEY    = module.langfuse_public_key.ssm_parameter_name
-    CHB_AWS_SSM_LANGFUSE_SECRET_KEY    = module.langfuse_secret_key.ssm_parameter_name
     CHB_AWS_SSM_LLAMAINDEX_INDEX_ID    = module.index_id_ssm_parameter.ssm_parameter_name
     CHB_LLAMAINDEX_INDEX_ID            = module.index_id_ssm_parameter.ssm_parameter_name
     CHB_EMBED_MODEL_ID                 = var.models.embeddings
@@ -14,7 +12,6 @@ locals {
     CHB_ENGINE_SIMILARITY_TOPK         = "5"
     CHB_GOOGLE_PROJECT_ID              = module.google_project_id_ssm_parameter.ssm_parameter_name
     CHB_GOOGLE_API_KEY                 = "/chatbot/google_api_key"
-    CHB_LANGFUSE_HOST                  = "https://${local.priv_monitoring_host}"
     CHB_MODEL_ID                       = var.models.generation
     CHB_MODEL_MAXTOKENS                = 2048
     CHB_MODEL_TEMPERATURE              = "0.3"
@@ -34,7 +31,10 @@ locals {
     LOG_LEVEL                             = "INFO"
     NLTK_DATA                             = "_static/nltk_cache/"
     TIKTOKEN_CACHE_DIR                    = "/tmp/tiktoken"
-    CHB_AWS_SQS_QUEUE_EVALUATE_NAME       = aws_sqs_queue.chatbot_evaluate_queue.name
+    #--- TODO ---#
+    # REMOVE THE FOLLOWING VARIABLE, THE CHATBOT LAMBDA API WILL INTERACT WITH LAMBDA MONITOR VIA ITS QUEUE.
+    CHB_AWS_SQS_QUEUE_EVALUATE_NAME = aws_sqs_queue.chatbot_queue["evaluate"].name
+    CHB_AWS_SQS_QUEUE_MONITOR_NAME  = aws_sqs_queue.chatbot_queue["monitor"].name
   }
 }
 
@@ -83,18 +83,7 @@ resource "aws_cloudwatch_log_group" "lambda_logs" {
 resource "aws_iam_role" "lambda_role" {
   name                  = "${local.prefix}-api-lambda"
   force_detach_policies = true
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Action = "sts:AssumeRole"
-        Effect = "Allow"
-        Principal = {
-          Service = "lambda.amazonaws.com"
-        }
-      }
-    ]
-  })
+  assume_role_policy    = data.aws_iam_policy_document.lambda_assume_role.json
 }
 
 resource "aws_lambda_permission" "rest_apigw_lambda" {
@@ -341,7 +330,7 @@ resource "aws_iam_policy" "chatbot_monitor_queue" {
       {
         Effect   = "Allow"
         Action   = ["sqs:SendMessage", "sqs:GetQueueUrl"]
-        Resource = aws_sqs_queue.chatbot_evaluate_queue.arn
+        Resource = aws_sqs_queue.chatbot_queue["monitor"].arn
       }
     ]
   })

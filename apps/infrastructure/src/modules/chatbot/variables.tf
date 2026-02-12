@@ -162,3 +162,8 @@ variable "models" {
 
   description = "The models used by the AI chatbot"
 }
+
+variable "hosted_zone_id" {
+  type        = string
+  description = "The Route53 hosted zone ID for custom domain"
+}
