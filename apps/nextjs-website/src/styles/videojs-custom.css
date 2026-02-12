@@ -92,7 +92,7 @@
 .vjs-theme-custom .vjs-play-progress::before {
   height: 0.8em;
   width: 0.8em;
-  content: "";
+  content: '';
   background-color: var(--vjs-theme-custom--primary);
   border: 4px solid var(--vjs-theme-custom--secondary);
   border-radius: 0.8em;

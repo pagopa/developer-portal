@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import {
   baseUrl,
   cookieCategory,
@@ -9,31 +8,31 @@ import {
   matomoScriptSrc,
   SITE_HEADER_HEIGHT,
   useNewCookie,
-} from "@/config";
-import { Metadata } from "next";
-import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
-import "@/styles/globals.css";
-import ThemeRegistry from "../ThemeRegistry";
+} from '@/config';
+import { Metadata } from 'next';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import '@/styles/globals.css';
+import ThemeRegistry from '../ThemeRegistry';
 import {
   getProducts,
   getSolutionListPage,
   getVisibleInListWebinars,
-} from "@/lib/api";
-import SiteFooter from "@/components/atoms/SiteFooter/SiteFooter";
-import SiteHeader from "@/components/molecules/SiteHeader/SiteHeader";
-import { notFound } from "next/navigation";
-import AuthProvider from "@/components/organisms/Auth/AuthProvider";
-import CookieBannerScript from "@/components/atoms/CookieBannerScript/CookieBannerScript";
-import BodyWrapper from "@/components/atoms/BodyWrapper/BodyWrapper";
-import Script from "next/script";
-import { Titillium_Web } from "next/font/google";
-import NextIntlContext from "@/components/atoms/NextIntlContext/NextIntlContext";
-import ChatbotProvider from "@/components/organisms/ChatbotProvider/ChatbotProvider";
-import { ErrorBoundary } from "next/dist/client/components/error-boundary";
-import Error from "./error";
-import { Box } from "@mui/material";
+} from '@/lib/api';
+import SiteFooter from '@/components/atoms/SiteFooter/SiteFooter';
+import SiteHeader from '@/components/molecules/SiteHeader/SiteHeader';
+import { notFound } from 'next/navigation';
+import AuthProvider from '@/components/organisms/Auth/AuthProvider';
+import CookieBannerScript from '@/components/atoms/CookieBannerScript/CookieBannerScript';
+import BodyWrapper from '@/components/atoms/BodyWrapper/BodyWrapper';
+import Script from 'next/script';
+import { Titillium_Web } from 'next/font/google';
+import NextIntlContext from '@/components/atoms/NextIntlContext/NextIntlContext';
+import ChatbotProvider from '@/components/organisms/ChatbotProvider/ChatbotProvider';
+import { ErrorBoundary } from 'next/dist/client/components/error-boundary';
+import Error from './error';
+import { Box } from '@mui/material';
 
 // TODO: remove PREVIOUS_MATOMO_TAG_MANAGER_SCRIPT script, usePreviousScript when the migration to the new tag manager is completed
 const PREVIOUS_MATOMO_TAG_MANAGER_SCRIPT =
@@ -66,7 +65,7 @@ const MATOMO_TAG_MANAGER_SCRIPT =
   }
 
   function consentSet() {
-    if (OnetrustActiveGroups.includes("${cookieCategory}")) {
+    if (OnetrustActiveGroups.includes('${cookieCategory}')) {
       _mtm.push({ event: 'consent_given' });
         _mtm.push({'mtm.startTime': (new Date().getTime()), 'event': 'mtm.Start'});
       var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
@@ -82,11 +81,11 @@ const MATOMO_TAG_MANAGER_SCRIPT =
 `;
 
 const titilliumWeb = Titillium_Web({
-  fallback: ["serif"],
-  subsets: ["latin"],
-  style: "normal",
-  variable: "--font-titillium-web",
-  weight: ["400", "600", "700"],
+  fallback: ['serif'],
+  subsets: ['latin'],
+  style: 'normal',
+  variable: '--font-titillium-web',
+  weight: ['400', '600', '700'],
 });
 
 export const metadata: Metadata = {
@@ -128,22 +127,22 @@ export default async function RootLayout({
       <head>
         {isProduction && (
           <Script
-            id="matomo-tag-manager"
-            key="script-matomo-tag-manager"
+            id='matomo-tag-manager'
+            key='script-matomo-tag-manager'
             dangerouslySetInnerHTML={{
               __html: useNewCookie
                 ? MATOMO_TAG_MANAGER_SCRIPT
                 : PREVIOUS_MATOMO_TAG_MANAGER_SCRIPT,
             }}
-            strategy="lazyOnload"
+            strategy='lazyOnload'
           />
         )}
       </head>
-      <ThemeRegistry options={{ key: "mui" }}>
+      <ThemeRegistry options={{ key: 'mui' }}>
         <NextIntlContext
           locale={locale}
           messages={messages}
-          timeZone="Europe/Rome"
+          timeZone='Europe/Rome'
         >
           <BodyWrapper>
             <CookieBannerScript
@@ -151,7 +150,7 @@ export default async function RootLayout({
               cookieScript={
                 useNewCookie
                   ? cookieScriptUrl
-                  : "https://cdn.cookielaw.org/scripttemplates/otSDKStub.js"
+                  : 'https://cdn.cookielaw.org/scripttemplates/otSDKStub.js'
               }
             />
             <AuthProvider>
