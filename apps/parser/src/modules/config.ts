@@ -6,7 +6,7 @@ import {
 } from "../helpers/url-handling";
 import * as dotenv from "dotenv";
 
-const DEFAULT_DEPTH = 2;
+const DEFAULT_DEPTH = null;
 
 export function resolveEnv(): EnvConfig {
   let baseUrl = process.env.URL?.trim();

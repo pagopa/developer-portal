@@ -2,7 +2,7 @@ export type EnvConfig = {
   readonly baseUrl: string;
   readonly sanitizedBaseUrl: string;
   readonly outputDirectory: string;
-  readonly maxDepth: number;
+  readonly maxDepth: number | null | undefined;
 };
 
 export type SanitizeOptions = {

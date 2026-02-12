@@ -7,7 +7,6 @@ export async function parsePages(
   browser: Browser,
   node: ParsedNode,
   depth: number,
-  maxDepth: number,
   parsedPages: Map<string, ParsedMetadata>,
   parsePageFn: (
     browser: Browser,
@@ -17,9 +16,13 @@ export async function parsePages(
   baseScope: string,
   baseHostToken: string,
   navigationTimeout = 30000,
+  maxDepth?: number | null | undefined,
 ): Promise<void> {
   const visitKey = buildVisitKey(node.url);
-  if (parsedPages.has(visitKey) || depth > maxDepth) {
+  if (parsedPages.has(visitKey)) {
+    return;
+  }
+  if (typeof maxDepth === "number" && depth > maxDepth) {
     return;
   }
   const normalizedUrl = UrlWithoutAnchors(node.url);
@@ -102,18 +105,19 @@ export async function parsePages(
     nextChildren.push({ url: href });
   }
   node.children = nextChildren;
-  if (!node.children || depth >= maxDepth) return;
+  if (!node.children) return;
+  if (typeof maxDepth === "number" && depth >= maxDepth) return;
   for (const child of node.children) {
     await parsePages(
       browser,
       child,
       depth + 1,
-      maxDepth,
       parsedPages,
       parsePageFn,
       baseOrigin,
       baseScope,
       baseHostToken,
+      maxDepth ?? undefined,
     );
   }
 }

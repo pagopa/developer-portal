@@ -41,7 +41,7 @@ Create a `.env` file in the `apps/parser` directory with the following content:
 ```
 URL=https://example.com
 CHB_INDEX_ID=name_of_your_choice
-# DEPTH=2  # Optional, defaults to 2
+# DEPTH=2  # Optional, defaults to null
 ```
 
 #### b) Using command line variables
@@ -62,7 +62,7 @@ npm run parse
 
 - **`URL`** (required): The root page to start parsing from.
 - **`CHB_INDEX_ID`** (required): The base directory for storing parsed data. Output will be saved as `<CHB_INDEX_ID>/parsing/<sanitized(baseUrl)>/`.
-- **`DEPTH`** (optional, default: `2`): Maximum recursion depth for crawling links.
+- **`DEPTH`** (optional, default: null): Maximum recursion depth for crawling links, if specified.
 
 **Note:** The parser will first look for these variables in the environment. If not found, it will load them from `.env` in the `apps/parser` directory.
 

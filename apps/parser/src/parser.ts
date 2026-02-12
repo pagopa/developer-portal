@@ -1,18 +1,25 @@
-
-import puppeteer from 'puppeteer-extra';
-import StealthPlugin from 'puppeteer-extra-plugin-stealth';
-import { Browser, Page } from 'puppeteer';
-import { resolveEnv } from './modules/config';
-import { ensureDirectory, saveMetadata } from './modules/output';
-import { handleError } from './modules/errors';
-import { parsePages } from './modules/crawler';
-import { expandInteractiveSections } from './modules/dom-actions';
-import { ParsedNode, ParsedMetadata } from './modules/types';
-import { sanitizeUrlAsFilename, UrlWithoutAnchors, deriveSubPath } from './helpers/url-handling';
-import { assertReachable } from './modules/network';
-import { toIsoOrNull } from './helpers/date-format';
-import crypto from 'crypto';
-import { getSitemapUrl, fetchSitemapXml, parseSitemapXml } from './modules/sitemap';
+import puppeteer from "puppeteer-extra";
+import StealthPlugin from "puppeteer-extra-plugin-stealth";
+import { Browser, Page } from "puppeteer";
+import { resolveEnv } from "./modules/config";
+import { ensureDirectory, saveMetadata } from "./modules/output";
+import { handleError } from "./modules/errors";
+import { buildVisitKey, parsePages } from "./modules/crawler";
+import { expandInteractiveSections } from "./modules/dom-actions";
+import { ParsedNode, ParsedMetadata } from "./modules/types";
+import {
+  sanitizeUrlAsFilename,
+  UrlWithoutAnchors,
+  deriveSubPath,
+} from "./helpers/url-handling";
+import { assertReachable } from "./modules/network";
+import { toIsoOrNull } from "./helpers/date-format";
+import crypto from "crypto";
+import {
+  getSitemapUrl,
+  fetchSitemapXml,
+  parseSitemapXml,
+} from "./modules/sitemap";
 
 puppeteer.use(StealthPlugin());
 
@@ -23,7 +30,6 @@ const FILENAME_LENGTH_THRESHOLD = 255;
 const env = resolveEnv();
 const parsedPages = new Map<string, ParsedMetadata>();
 
-
 void (async () => {
   try {
     await assertReachable(env.baseUrl, REQUEST_TIMEOUT_MS);
@@ -33,54 +39,88 @@ void (async () => {
     const baseUrlObject = new URL(env.baseUrl);
     const baseOrigin = baseUrlObject.origin;
     const baseScope = UrlWithoutAnchors(env.baseUrl);
-    const baseHostToken = baseUrlObject.hostname.replace(/^www\./, '').toLowerCase();
+    const baseHostToken = baseUrlObject.hostname
+      .replace(/^www\./, "")
+      .toLowerCase();
     await parsePages(
       browser,
       root,
       0,
-      env.maxDepth,
       parsedPages,
       parsePageFn,
       baseOrigin,
       baseScope,
       baseHostToken,
-      NAVIGATION_TIMEOUT_MS
+      NAVIGATION_TIMEOUT_MS,
+      env.maxDepth,
     );
-    console.log('Crawling complete. Checking sitemap for unparsed URLs...');
+    console.log("Crawling complete. Checking sitemap for unparsed URLs...");
 
     let sitemapUrls: string[] = [];
     try {
       const sitemapUrl = getSitemapUrl(env.baseUrl);
-      let sitemapXml = '';
+      let sitemapXml = "";
       try {
         sitemapXml = await fetchSitemapXml(sitemapUrl);
       } catch (err) {
-        console.warn(`Sitemap warning: Failed to fetch ${sitemapUrl}: ${(err as Error).message}`);
+        console.warn(
+          `Sitemap warning: Failed to fetch ${sitemapUrl}: ${
+            (err as Error).message
+          }`,
+        );
       }
       if (sitemapXml) {
         try {
           sitemapUrls = await parseSitemapXml(sitemapXml, sitemapUrl);
         } catch (err) {
-          console.warn(`Sitemap warning: Failed to parse sitemap XML from ${sitemapUrl}: ${(err as Error).message}`);
+          console.warn(
+            `Sitemap warning: Failed to parse sitemap XML from ${sitemapUrl}: ${
+              (err as Error).message
+            }`,
+          );
         }
       }
     } catch (err) {
-      console.warn(`Sitemap warning: Could not resolve sitemap URL: ${(err as Error).message}`);
+      console.warn(
+        `Sitemap warning: Could not resolve sitemap URL: ${
+          (err as Error).message
+        }`,
+      );
     }
-    const alreadyParsed = new Set(Array.from(parsedPages.keys()).map(UrlWithoutAnchors));
-    const toParse = sitemapUrls.filter((url) => !alreadyParsed.has(UrlWithoutAnchors(url)));
+    const alreadyParsed = new Set(Array.from(parsedPages.keys()));
+    const toParse = sitemapUrls.filter(
+      (url) => !alreadyParsed.has(buildVisitKey(url)),
+    );
 
     if (toParse.length > 0) {
-      console.log(`Parsing ${toParse.length} URLs from sitemap not seen in crawl...`);
+      console.log(
+        `Parsing ${toParse.length} URLs from sitemap not seen in crawl...`,
+      );
       for (const url of toParse) {
         try {
-          await parsePageFn(browser, url);
+          // Use parsePages to ensure deduplication and parsedPages update
+          const node: ParsedNode = { url };
+          await parsePages(
+            browser,
+            node,
+            0,
+            parsedPages,
+            parsePageFn,
+            baseOrigin,
+            baseScope,
+            baseHostToken,
+            NAVIGATION_TIMEOUT_MS,
+            env.maxDepth,
+          );
         } catch (err) {
-          console.warn(`Failed to parse sitemap URL: ${url}:`, (err as Error).message);
+          console.warn(
+            `Failed to parse sitemap URL: ${url}:`,
+            (err as Error).message,
+          );
         }
       }
     } else {
-      console.log('No additional URLs found in sitemap.');
+      console.log("No additional URLs found in sitemap.");
     }
     await browser.close();
     console.log(`Parsing complete! Data saved to ${env.outputDirectory}`);
@@ -89,11 +129,17 @@ void (async () => {
   }
 })();
 
-async function parsePageFn(browser: Browser, url: string): Promise<ParsedMetadata | null> {
+async function parsePageFn(
+  browser: Browser,
+  url: string,
+): Promise<ParsedMetadata | null> {
   let page: Page | undefined;
   try {
     page = await browser.newPage();
-    await page.goto(url, { waitUntil: 'networkidle2', timeout: NAVIGATION_TIMEOUT_MS });
+    await page.goto(url, {
+      waitUntil: "networkidle2",
+      timeout: NAVIGATION_TIMEOUT_MS,
+    });
     await expandInteractiveSections(page);
     const rawMetadata = await page.evaluate(extractDocumentMetadata);
     const snapshot = serializeMetadata(rawMetadata);
@@ -109,15 +155,28 @@ async function parsePageFn(browser: Browser, url: string): Promise<ParsedMetadat
   }
 }
 
-async function persistSnapshot(snapshot: ParsedMetadata, FILENAME_LENGTH_THRESHOLD: number): Promise<void> {
-  const subPath = deriveSubPath(snapshot.url, env.baseUrl, env.sanitizedBaseUrl);
-  const preferredName = subPath === '/' ? 'root' : subPath;
-  const sanitizedName = sanitizeUrlAsFilename(preferredName, { replacement: '-' });
-  const trimmedName = sanitizedName.replace(/^[-_]+/, '') || sanitizedName;
+async function persistSnapshot(
+  snapshot: ParsedMetadata,
+  FILENAME_LENGTH_THRESHOLD: number,
+): Promise<void> {
+  const subPath = deriveSubPath(
+    snapshot.url,
+    env.baseUrl,
+    env.sanitizedBaseUrl,
+  );
+  const preferredName = subPath === "/" ? "root" : subPath;
+  const sanitizedName = sanitizeUrlAsFilename(preferredName, {
+    replacement: "-",
+  });
+  const trimmedName = sanitizedName.replace(/^[-_]+/, "") || sanitizedName;
   let finalName = trimmedName;
   if (trimmedName.length > FILENAME_LENGTH_THRESHOLD) {
     const normalizedUrl = UrlWithoutAnchors(snapshot.url);
-    const hash = crypto.createHash('sha1').update(normalizedUrl).digest('hex').slice(0, 10);
+    const hash = crypto
+      .createHash("sha1")
+      .update(normalizedUrl)
+      .digest("hex")
+      .slice(0, 10);
     const prefix = trimmedName.slice(0, 240);
     finalName = `${prefix}_${hash}`;
   }
@@ -139,42 +198,51 @@ function serializeMetadata(raw: ParsedMetadata): ParsedMetadata {
 const extractDocumentMetadata = (): ParsedMetadata => {
   const getMeta = (name: string): string | null => {
     return (
-      document.querySelector(`meta[name="${name}"]`)?.getAttribute('content') ||
-      document.querySelector(`meta[property="${name}"]`)?.getAttribute('content') ||
+      document.querySelector(`meta[name="${name}"]`)?.getAttribute("content") ||
+      document
+        .querySelector(`meta[property="${name}"]`)
+        ?.getAttribute("content") ||
       null
     );
   };
-  const metaTitle = getMeta('og:title') || getMeta('twitter:title');
+  const metaTitle = getMeta("og:title") || getMeta("twitter:title");
   const documentTitle = document.title?.trim();
-  const normalizedTitle = documentTitle?.length ? documentTitle : metaTitle || '';
+  const normalizedTitle = documentTitle?.length
+    ? documentTitle
+    : metaTitle || "";
   const normalizeText = (value: string | null | undefined): string => {
-    return value ? value.replace(/\s+/g, ' ').trim() : '';
+    return value ? value.replace(/\s+/g, " ").trim() : "";
   };
-  const mainText = normalizeText(document.querySelector('main')?.innerText);
-  const iframeTexts = Array.from(document.querySelectorAll('iframe'))
+  const mainText = normalizeText(document.querySelector("main")?.innerText);
+  const iframeTexts = Array.from(document.querySelectorAll("iframe"))
     .map((frame) => {
       try {
-        return normalizeText(frame.contentDocument?.body?.innerText ?? '');
+        return normalizeText(frame.contentDocument?.body?.innerText ?? "");
       } catch (_error) {
-        return '';
+        return "";
       }
     })
     .filter((text) => text.length > 0);
-  const prioritizedTextParts = [mainText, ...iframeTexts].filter((text) => text.length > 0);
-  const prioritizedText = prioritizedTextParts.join('\n\n').trim();
-  const fallbackBody = normalizeText(document.body?.innerText ?? '');
-  const bodyText = prioritizedText.length >= 120 ? prioritizedText : fallbackBody;
+  const prioritizedTextParts = [mainText, ...iframeTexts].filter(
+    (text) => text.length > 0,
+  );
+  const prioritizedText = prioritizedTextParts.join("\n\n").trim();
+  const fallbackBody = normalizeText(document.body?.innerText ?? "");
+  const bodyText =
+    prioritizedText.length >= 120 ? prioritizedText : fallbackBody;
   return {
     title: normalizedTitle,
     url: window.location.href,
     bodyText,
-    lang: document.documentElement.lang || getMeta('og:locale') || null,
-    keywords: getMeta('keywords') || getMeta('news_keywords'),
+    lang: document.documentElement.lang || getMeta("og:locale") || null,
+    keywords: getMeta("keywords") || getMeta("news_keywords"),
     datePublished:
-      getMeta('article:published_time') || getMeta('date') || getMeta('publish-date'),
+      getMeta("article:published_time") ||
+      getMeta("date") ||
+      getMeta("publish-date"),
     lastModified:
-      document.lastModified !== '01/01/1970 00:00:00'
+      document.lastModified !== "01/01/1970 00:00:00"
         ? document.lastModified
-        : getMeta('article:modified_time'),
+        : getMeta("article:modified_time"),
   };
 };
