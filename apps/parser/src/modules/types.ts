@@ -18,3 +18,8 @@ export type ParseNode = {
   lastModified?: string | null;
   children?: ParseNode[];
 };
+
+export type UrlEntry = { readonly loc?: readonly string[] };
+export type UrlSetNode = { readonly url?: readonly UrlEntry[] };
+export type SitemapIndexNode = { readonly sitemap?: readonly UrlEntry[] };
+export type SitemapXml = { readonly urlset?: UrlSetNode; readonly sitemapindex?: SitemapIndexNode };

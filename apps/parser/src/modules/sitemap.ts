@@ -3,6 +3,7 @@ import { UrlWithoutAnchors, isRemoteUrl } from '../helpers/url-handling';
 import { parseStringPromise } from 'xml2js';
 import http from 'node:http';
 import https from 'node:https';
+import { SitemapXml } from './types';
 
 
 export function getSitemapUrl(baseUrl: string): string {
@@ -67,23 +68,17 @@ response.on('end', () => resolve(fullData));
 }
 
 
-type UrlEntry = { readonly loc?: readonly string[] };
-type UrlSetNode = { readonly url?: readonly UrlEntry[] };
-type SitemapIndexNode = { readonly sitemap?: readonly UrlEntry[] };
-type SitemapXml = { readonly urlset?: UrlSetNode; readonly sitemapindex?: SitemapIndexNode };
-
-
 export async function parseSitemapXml(
   xml: string,
   location: string,
   fetchXml: (loc: string) => Promise<string> = fetchSitemapXml
 ): Promise<string[]> {
   const parsed = (await parseStringPromise(xml)) as SitemapXml;
-  return await extractUrls(parsed, location, fetchXml);
+  return await extractUrlsFromSitemap(parsed, location, fetchXml);
 }
 
 
-async function extractUrls(
+async function extractUrlsFromSitemap(
   doc: SitemapXml,
   location: string,
   fetchXml: (loc: string) => Promise<string>
@@ -102,11 +97,11 @@ async function extractUrls(
       try {
         const nestedXml = await fetchXml(loc);
         const nestedDoc = (await parseStringPromise(nestedXml)) as SitemapXml;
-        const nestedUrls = await extractUrls(nestedDoc, loc, fetchXml);
+        const nestedUrls = await extractUrlsFromSitemap(nestedDoc, loc, fetchXml);
         aggregated.push(...nestedUrls);
-      } catch (error) {
-        // For test: do not throw, just skip
-      }
+            } catch (error) {
+        console.warn(`Sitemap warning: Failed to fetch nested sitemap from ${loc}: ${(error as Error).message}`);
+            }
     }
     return aggregated;
   }

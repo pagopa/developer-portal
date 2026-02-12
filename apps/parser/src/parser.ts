@@ -8,12 +8,10 @@ import { handleError } from './modules/errors';
 import { parsePages } from './modules/crawler';
 import { expandInteractiveSections } from './modules/dom-actions';
 import { ParseNode, ParseMetadata } from './modules/types';
-import { sanitizeUrlAsFilename, UrlWithoutAnchors, isRemoteUrl } from './helpers/url-handling';
+import { sanitizeUrlAsFilename, UrlWithoutAnchors } from './helpers/url-handling';
 import { assertReachable } from './modules/network';
 import crypto from 'crypto';
-import { parseStringPromise } from 'xml2js';
-import http from 'node:http';
-import https from 'node:https';
+import { getSitemapUrl, fetchSitemapXml, parseSitemapXml } from './modules/sitemap';
 
 puppeteer.use(StealthPlugin());
 
@@ -53,7 +51,7 @@ void (async () => {
 
     let sitemapUrls: string[] = [];
     try {
-      const sitemapUrl = resolveSitemapUrl(env.baseUrl);
+      const sitemapUrl = getSitemapUrl(env.baseUrl);
       let sitemapXml = '';
       try {
         sitemapXml = await fetchSitemapXml(sitemapUrl);
@@ -91,95 +89,6 @@ void (async () => {
     handleError(error);
   }
 })();
-
-function resolveSitemapUrl(baseUrl: string): string {
-  if (process.env.SITEMAP_URL?.trim()) return process.env.SITEMAP_URL.trim();
-  try {
-    const base = new URL(baseUrl);
-    return new URL('/sitemap.xml', base).toString();
-  } catch (error) {
-    throw new Error(`Failed to derive sitemap URL from ${baseUrl}: ${(error as Error).message}`);
-  }
-}
-
-async function fetchSitemapXml(location: string): Promise<string> {
-  if (isRemoteUrl(location)) {
-    return await fetchRemoteXml(location);
-  }
-  const { readFile } = await import('node:fs/promises');
-  return await readFile(location, 'utf-8');
-}
-
-async function fetchRemoteXml(url: string, redirectLimit = 5): Promise<string> {
-  if (redirectLimit < 0) throw new Error('Too many redirects while fetching sitemap');
-  const transport = url.startsWith('https') ? https : http;
-  return await new Promise<string>((resolve, reject) => {
-    const request = transport.get(url, (response) => {
-      const statusCode = response.statusCode ?? 0;
-      if (statusCode >= 300 && statusCode < 400 && response.headers.location) {
-        const redirectedUrl = new URL(response.headers.location, url).toString();
-        response.resume();
-        fetchRemoteXml(redirectedUrl, redirectLimit - 1).then(resolve).catch(reject);
-        return;
-      }
-      if (statusCode >= 400) {
-        reject(new Error(`Failed to fetch ${url}: status ${statusCode}`));
-        response.resume();
-        return;
-      }
-      response.setEncoding('utf8');
-      let fullData = '';
-
-      response.on('data', (chunk: string) => {
-        fullData += chunk;
-      });
-
-      response.on('end', () => resolve(fullData));
-    });
-    request.on('error', (error) => reject(error));
-    request.setTimeout(10000, () => {
-      request.destroy();
-      reject(new Error(`Timeout while fetching ${url}`));
-    });
-  });
-}
-
-type UrlEntry = { readonly loc?: readonly string[] };
-type UrlSetNode = { readonly url?: readonly UrlEntry[] };
-type SitemapIndexNode = { readonly sitemap?: readonly UrlEntry[] };
-type SitemapXml = { readonly urlset?: UrlSetNode; readonly sitemapindex?: SitemapIndexNode };
-
-export async function parseSitemapXml(xml: string, location: string): Promise<string[]> {
-  const parsed = (await parseStringPromise(xml)) as SitemapXml;
-  return await extractUrls(parsed, location);
-}
-
-async function extractUrls(doc: SitemapXml, location: string): Promise<string[]> {
-  if (doc && doc.urlset?.url) {
-    return doc.urlset.url
-      .map((entry) => entry.loc?.[0])
-      .filter((loc): loc is string => typeof loc === 'string')
-      .map((loc) => UrlWithoutAnchors(loc.replace(/\/$/, '')));
-  }
-  if (doc && doc.sitemapindex?.sitemap) {
-    const aggregated: string[] = [];
-    for (const sitemapNode of doc.sitemapindex.sitemap) {
-      const loc = sitemapNode.loc?.[0];
-      if (!loc) continue;
-      try {
-        const nestedXml = await fetchSitemapXml(loc);
-        const nestedDoc = (await parseStringPromise(nestedXml)) as SitemapXml;
-        const nestedUrls = await extractUrls(nestedDoc, loc);
-        aggregated.push(...nestedUrls);
-      } catch (error) {
-        console.warn(`Sitemap warning: Failed to process sitemap ${loc}: ${(error as Error).message}`);
-      }
-    }
-    return aggregated;
-  }
-  console.warn(`Sitemap warning: Unknown sitemap format encountered while parsing ${location}`);
-  return [];
-}
 
 
 async function fetch(input: any, init?: any): Promise<any> {
