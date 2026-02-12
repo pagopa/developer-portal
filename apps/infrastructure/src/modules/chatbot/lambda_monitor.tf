@@ -91,7 +91,8 @@ resource "aws_iam_role_policy" "lambda_monitor_policy" {
           "dynamodb:PutItem",
           "dynamodb:Query",
           "dynamodb:BatchGetItem",
-          "dynamodb:BatchWriteItem"
+          "dynamodb:BatchWriteItem",
+          "dynamodb:UpdateItem",
         ]
         Resource = [
           module.dynamodb_chatbot_sessions.dynamodb_table_arn,

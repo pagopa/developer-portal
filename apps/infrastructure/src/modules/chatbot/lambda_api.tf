@@ -4,22 +4,17 @@ locals {
     CHB_AWS_S3_BUCKET                  = module.s3_bucket_llamaindex.s3_bucket_id
     CHB_AWS_SSM_GOOGLE_API_KEY         = module.google_api_key_ssm_parameter.ssm_parameter_name
     CHB_AWS_SSM_GOOGLE_SERVICE_ACCOUNT = module.google_service_account_ssm_parameter.ssm_parameter_name
-    # --- TODO ---#
-    # REMOVE ALL LANGFUSE VARIABLES, THEY ARE NOT USED IN THIS LAMBDA, AND SHOULD NOT BE PRESENT
-    CHB_AWS_SSM_LANGFUSE_PUBLIC_KEY = module.langfuse_public_key.ssm_parameter_name
-    CHB_AWS_SSM_LANGFUSE_SECRET_KEY = module.langfuse_secret_key.ssm_parameter_name
-    CHB_AWS_SSM_LLAMAINDEX_INDEX_ID = module.index_id_ssm_parameter.ssm_parameter_name
-    CHB_LLAMAINDEX_INDEX_ID         = module.index_id_ssm_parameter.ssm_parameter_name
-    CHB_EMBED_MODEL_ID              = var.models.embeddings
-    CHB_ENGINE_USE_ASYNC            = "False"
-    CHB_ENGINE_USE_STREAMING        = "False"
-    CHB_ENGINE_SIMILARITY_TOPK      = "5"
-    CHB_GOOGLE_PROJECT_ID           = module.google_project_id_ssm_parameter.ssm_parameter_name
-    CHB_GOOGLE_API_KEY              = "/chatbot/google_api_key"
-    CHB_LANGFUSE_HOST               = try(module.langfuse[0].service_discovery_endpoint, "https://${local.priv_monitoring_host}")
-    CHB_MODEL_ID                    = var.models.generation
-    CHB_MODEL_MAXTOKENS             = 2048
-    CHB_MODEL_TEMPERATURE           = "0.3"
+    CHB_AWS_SSM_LLAMAINDEX_INDEX_ID    = module.index_id_ssm_parameter.ssm_parameter_name
+    CHB_LLAMAINDEX_INDEX_ID            = module.index_id_ssm_parameter.ssm_parameter_name
+    CHB_EMBED_MODEL_ID                 = var.models.embeddings
+    CHB_ENGINE_USE_ASYNC               = "False"
+    CHB_ENGINE_USE_STREAMING           = "False"
+    CHB_ENGINE_SIMILARITY_TOPK         = "5"
+    CHB_GOOGLE_PROJECT_ID              = module.google_project_id_ssm_parameter.ssm_parameter_name
+    CHB_GOOGLE_API_KEY                 = "/chatbot/google_api_key"
+    CHB_MODEL_ID                       = var.models.generation
+    CHB_MODEL_MAXTOKENS                = 2048
+    CHB_MODEL_TEMPERATURE              = "0.3"
     # Be extremely careful when changing the provider
     # both the generation and the embedding models would be changed
     # embeddings size change would break the application and requires reindexing

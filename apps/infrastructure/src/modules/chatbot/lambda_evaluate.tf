@@ -70,6 +70,7 @@ resource "aws_iam_role_policy" "lambda_evaluate_policy" {
         Effect = "Allow"
         Action = [
           "sqs:SendMessage",
+          "sqs:GetQueueUrl",
         ]
         Resource = [
           aws_sqs_queue.chatbot_queue["monitor"].arn,
@@ -110,8 +111,6 @@ resource "aws_lambda_function" "chatbot_evaluate_lambda" {
       CHB_MODEL_TEMPERATURE           = 0
       CHB_MODEL_MAXTOKENS             = 2048
       CHB_AWS_SSM_GOOGLE_API_KEY      = module.google_api_key_ssm_parameter.ssm_parameter_name
-      CHB_AWS_SSM_LANGFUSE_PUBLIC_KEY = module.langfuse_public_key.ssm_parameter_name
-      CHB_AWS_SSM_LANGFUSE_SECRET_KEY = module.langfuse_secret_key.ssm_parameter_name
       CHB_AWS_SQS_QUEUE_MONITOR_NAME  = aws_sqs_queue.chatbot_queue["monitor"].name
       CHB_AWS_SQS_QUEUE_EVALUATE_NAME = aws_sqs_queue.chatbot_queue["evaluate"].name
       CHB_EMBED_BATCH_SIZE            = 100
