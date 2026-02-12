@@ -38,11 +38,20 @@ type SitemapProductRelation = {
   };
 };
 
+type SitemapApiDataRelation = {
+  readonly data?: {
+    readonly attributes: {
+      readonly updatedAt: string;
+    };
+  };
+};
+
 type SitemapProductRelations = {
   readonly overview?: SitemapProductRelation;
   readonly quickstart_guide?: SitemapProductRelation;
   readonly tutorial_list_page?: SitemapProductRelation;
   readonly guide_list_page?: SitemapProductRelation;
+  readonly api_data_list_page?: SitemapApiDataRelation;
 };
 
 type SitemapApiData = {
@@ -390,11 +399,26 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             : [];
         });
 
+        const apiListRoute = relations?.api_data_list_page?.data
+          ? [
+              {
+                url: `${localizedUrlPrefix}/${productSlug}/api`,
+                lastModified: new Date(
+                  relations.api_data_list_page.data.attributes.updatedAt ||
+                    Date.now()
+                ),
+                changeFrequency: 'weekly' as const,
+                priority: 0.6,
+              },
+            ]
+          : [];
+
         return [
           ...overviewRoute,
           ...quickStartRoute,
           ...tutorialListRoute,
           ...guideListRoute,
+          ...apiListRoute,
           ...tutorialRoutes,
           ...apiRoutes,
         ];
