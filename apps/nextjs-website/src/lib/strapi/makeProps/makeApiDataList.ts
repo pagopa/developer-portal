@@ -7,6 +7,7 @@ import { StrapiApiDataList } from '@/lib/strapi/types/apiDataList';
 import { compact } from 'lodash';
 
 export async function makeApiDataListProps(
+  locale: string,
   strapiApiDataList: StrapiApiDataList
 ): Promise<ReadonlyArray<ApiDataPageProps>> {
   const list = compact(
@@ -44,6 +45,7 @@ export async function makeApiDataListProps(
           // eslint-disable-next-line functional/no-try-statements
           try {
             const product = makeBaseProductWithoutLogoProps(
+              locale,
               attributes.product.data
             );
             return {
@@ -61,7 +63,10 @@ export async function makeApiDataListProps(
               apiSoapUrl: attributes.apiSoapDetail?.repositoryUrl,
               specUrlsName: attributes.title,
               apiSoapUrlList: attributes.apiSoapDetail
-                ? await makeApiSoapUrlList(attributes.apiSoapDetail.dirName)
+                ? await makeApiSoapUrlList(
+                    locale,
+                    attributes.apiSoapDetail.dirName
+                  )
                 : [],
               bannerLinks:
                 attributes.bannerLinks.length > 0

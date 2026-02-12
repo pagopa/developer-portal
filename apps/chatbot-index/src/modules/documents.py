@@ -27,12 +27,12 @@ logging.getLogger("botocore").setLevel(logging.ERROR)
 LOGGER = get_logger(__name__)
 AWS_S3_CLIENT = AWS_SESSION.client("s3")
 SITEMAP_S3_FILEPATH = "sitemap.xml"
-DOCS_PARENT_FOLDER = "devportal-docs/docs/"
-GUIDES_FOLDER_FILEPATH = "main-guide-versions-dirNames.json"
-SOLUTIONS_FOLDER_FILEPATH = "solutions-dirNames.json"
-RELEASE_NOTES_FOLDER_FILEPATH = "release-notes-dirNames.json"
-PRODUCTS_S3_FILEPATH = "synced-products-response.json"
-APIS_DATA_S3_FILEPATH = "synced-apis-data-response.json"
+DOCS_PARENT_FOLDER = f"{SETTINGS.language_code}/devportal-docs/docs/"
+GUIDES_FOLDER_FILEPATH = f"{SETTINGS.language_code}/main-guide-versions-dirNames.json"
+SOLUTIONS_FOLDER_FILEPATH = f"{SETTINGS.language_code}/solutions-dirNames.json"
+RELEASE_NOTES_FOLDER_FILEPATH = f"{SETTINGS.language_code}/release-notes-dirNames.json"
+PRODUCTS_S3_FILEPATH = f"{SETTINGS.language_code}/synced-products-response.json"
+APIS_DATA_S3_FILEPATH = f"{SETTINGS.language_code}/synced-apis-data-response.json"
 
 
 class StaticMetadata(BaseModel):

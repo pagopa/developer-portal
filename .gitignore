@@ -438,3 +438,6 @@ apps/infrastructure/src/builds
 __pycache__/
 autoflake_report*.txt
 vulture_report*.txt
+
+# Directory for cias local configurations
+.cias
