@@ -99,6 +99,7 @@ jobs:
       - name: AWS set lambda function image
         env:
             LAMBDA_NAME: chatbot-${{ matrix.environment }}-monitor-lambda
+            ECR_REPOSITORY: chatbot-monitor
         run: |
             aws lambda update-function-code \
             --function-name ${{ env.LAMBDA_NAME }} \
