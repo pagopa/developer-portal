@@ -1,7 +1,9 @@
 FROM public.ecr.aws/lambda/python:3.12
-ARG DEBIAN_FRONTEND=noninteractive
 
 ENV PYTHONPATH=$LAMBDA_TASK_ROOT
+
+RUN dnf install -y \
+  git
 
 RUN pip install --upgrade pip \
   && pip install poetry
@@ -13,5 +15,9 @@ RUN poetry config virtualenvs.create false
 RUN poetry install
 
 COPY ./ ${LAMBDA_TASK_ROOT}/
+
+RUN chown -R 1000:1000 ${LAMBDA_TASK_ROOT}
+
+USER 1000
 
 CMD ["src.lambda_function.lambda_handler"]

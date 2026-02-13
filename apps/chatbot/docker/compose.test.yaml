@@ -11,7 +11,7 @@ services:
     env_file: ../.env.test
     volumes:
       - ..:/app
-      - ./files/.aws:/root/.aws
+      - ./files/.aws:/home/appuser/.aws
     depends_on:
       redis:
         condition: service_started
@@ -21,17 +21,16 @@ services:
         condition: service_started
       motoserver:
         condition: service_started
-      
 
   postgres:
     image: postgres:17.2-alpine
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
       interval: 3s
       timeout: 3s
       retries: 10
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - postgres_data_test:/var/lib/postgresql/data
     env_file: ../.env.langfuse
 
   redis:
@@ -45,7 +44,7 @@ services:
       timeout: 10s
       retries: 10
     volumes:
-      - redis_data:/data
+      - redis_data_test:/data
     depends_on:
       redis-fix-perms:
         condition: service_completed_successfully
@@ -54,9 +53,9 @@ services:
     image: alpine:3.18
     user: root
     volumes:
-      - redis_data:/data
+      - redis_data_test:/data
       - ./files/redis-data/redis-dump.rdb:/seed/dump.rdb:ro
-    command: ["sh", "-c", "if [ -f /seed/dump.rdb ]; then cp -a /seed/dump.rdb /data/dump.rdb && chown redis:redis /data/dump.rdb 2>/dev/null || chown 1000:1000 /data/dump.rdb || true; fi"]
+    command: [ "sh", "-c", "if [ -f /seed/dump.rdb ]; then cp -a /seed/dump.rdb /data/dump.rdb && chown redis:redis /data/dump.rdb 2>/dev/null || chown 1000:1000 /data/dump.rdb || true; fi" ]
     restart: "no"
 
   redis-fix-perms:
@@ -64,13 +63,13 @@ services:
     image: redis/redis-stack:7.2.0-v13
     user: root
     volumes:
-      - redis_data:/data
+      - redis_data_test:/data
     depends_on:
       redis-seed:
         condition: service_completed_successfully
-    command: ["sh", "-c", "chown -R redis:redis /data 2>/dev/null || chown -R 1000:1000 /data || true"]
+    command: [ "sh", "-c", "chown -R redis:redis /data 2>/dev/null || chown -R 1000:1000 /data || true" ]
     restart: "no"
-    
+
   motoserver:
     image: motoserver/moto:5.1.14
     environment:
@@ -104,8 +103,8 @@ services:
       CLICKHOUSE_USER: clickhouse
       CLICKHOUSE_PASSWORD: clickhouse
     volumes:
-      - langfuse_clickhouse_data:/var/lib/clickhouse
-      - langfuse_clickhouse_logs:/var/log/clickhouse-server
+      - langfuse_clickhouse_data_test:/var/lib/clickhouse
+      - langfuse_clickhouse_logs_test:/var/log/clickhouse-server
     healthcheck:
       test: wget --no-verbose --tries=1 --spider http://0.0.0.0:8123/ping || exit 1
       interval: 5s
@@ -138,13 +137,13 @@ services:
       start_period: 5s
 
 volumes:
-  postgres_data:
+  postgres_data_test:
     driver: local
-  redis_data:
+  redis_data_test:
     driver: local
-  langfuse_clickhouse_data:
+  langfuse_clickhouse_data_test:
     driver: local
-  langfuse_clickhouse_logs:
+  langfuse_clickhouse_logs_test:
     driver: local
-  langfuse_minio_data:
+  langfuse_minio_data_test:
     driver: local

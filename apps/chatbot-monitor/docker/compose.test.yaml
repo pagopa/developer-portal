@@ -1,0 +1,105 @@
+---
+name: chatbot-monitor-test
+
+services:      
+
+  chatbot-monitor:
+    platform: linux/amd64
+    build:
+      context: ..
+      dockerfile: docker/lambda_monitor.test.Dockerfile
+    env_file: ../.env.test
+    volumes:
+      - ./files/.aws:/root/.aws
+    depends_on:
+      motoserver:
+        condition: service_started
+    command: ["src.lambda_function.lambda_handler"]
+    
+  motoserver:
+    image: motoserver/moto:5.1.14
+    environment:
+      - MOTO_PORT=3002
+
+  postgres:
+    image: postgres:17.2-alpine
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 3s
+      timeout: 3s
+      retries: 10
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    env_file: ../.env.langfuse
+  
+  langfuse-worker:
+    image: docker.io/langfuse/langfuse-worker:3.115
+    depends_on: &langfuse-depends-on
+      postgres:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+      valkey:
+        condition: service_healthy
+      clickhouse:
+        condition: service_healthy
+    env_file: ../.env.langfuse
+
+  langfuse-web:
+    image: docker.io/langfuse/langfuse:3.115
+    depends_on: *langfuse-depends-on
+    ports:
+      - 4001:3000
+    env_file: ../.env.langfuse
+
+  clickhouse:
+    image: docker.io/clickhouse/clickhouse-server:25.8.8.26-alpine
+    user: "101:101"
+    environment:
+      CLICKHOUSE_DB: default
+      CLICKHOUSE_USER: clickhouse
+      CLICKHOUSE_PASSWORD: clickhouse
+    volumes:
+      - langfuse_clickhouse_data:/var/lib/clickhouse
+      - langfuse_clickhouse_logs:/var/log/clickhouse-server
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://0.0.0.0:8123/ping || exit 1
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 1s
+
+  minio:
+    image: docker.io/minio/minio:RELEASE.2025-09-07T16-13-09Z
+    entrypoint: sh
+    # create the 'langfuse' bucket before starting the service
+    command: -c 'mkdir -p /data/langfuse && minio server --address ":9000" --console-address ":9001" /data'
+    environment:
+      MINIO_ROOT_USER: minio
+      MINIO_ROOT_PASSWORD: miniosecret
+    healthcheck:
+      test: [ "CMD", "mc", "ready", "local" ]
+      interval: 1s
+      timeout: 5s
+      retries: 5
+      start_period: 1s
+
+  valkey:
+    image: valkey/valkey:8.1.4-alpine3.22
+    healthcheck:
+      test: [ "CMD", "valkey-cli", "ping" ]
+      interval: 3s
+      timeout: 10s
+      retries: 10
+      start_period: 5s
+
+volumes:
+  postgres_data:
+    driver: local
+  langfuse_clickhouse_data:
+    driver: local
+  langfuse_clickhouse_logs:
+    driver: local
+  langfuse_minio_data:
+    driver: local
+
