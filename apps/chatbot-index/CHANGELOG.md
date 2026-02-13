@@ -1,5 +1,16 @@
 # chatbot-index
 
+## 2.4.0
+
+### Minor Changes
+
+- 2bc17a7: Add language code 'it' in the s3 paths
+- 4c96727: Fix deploy chatbot action continue on error
+
+### Patch Changes
+
+- ae2f4bc: Fix unconsideration of English pages as dynamics ones
+
 ## 2.3.0
 
 ### Minor Changes
