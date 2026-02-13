@@ -1,7 +1,6 @@
 /* eslint-disable functional/no-let */
 /* eslint-disable functional/no-expression-statements */
 import { s3DocsPath, staticContentsUrl } from '@/config';
-import { cons } from 'fp-ts/lib/ReadonlyNonEmptyArray';
 import * as path from 'node:path';
 
 export interface JsonMetadata {
