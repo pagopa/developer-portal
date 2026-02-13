@@ -3,10 +3,12 @@ export type EnvConfig = {
   readonly sanitizedBaseUrl: string;
   readonly outputDirectory: string;
   readonly maxDepth: number;
+  readonly validDomainVariants?: string[];
 };
 
 export type SanitizeOptions = {
   readonly replacement?: string;
+  readonly lengthThreshold?: number;
 };
 
 export type ParsedMetadata = {

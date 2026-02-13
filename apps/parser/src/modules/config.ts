@@ -12,12 +12,15 @@ export function resolveEnv(): EnvConfig {
   let baseUrl = process.env.URL?.trim();
   let depth = process.env.DEPTH?.trim();
   let vectorIndexName = process.env.CHB_INDEX_ID?.trim();
+  let validDomainVariants = process.env.validDomainVariants?.trim();
   if (!baseUrl || !depth || !vectorIndexName) {
     const parserHome = path.resolve(__dirname, "../../");
     dotenv.config({ path: path.join(parserHome, ".env") });
     baseUrl = baseUrl || process.env.URL?.trim();
     depth = depth || process.env.DEPTH?.trim();
     vectorIndexName = vectorIndexName || process.env.CHB_INDEX_ID?.trim();
+    validDomainVariants =
+      validDomainVariants || process.env.validDomainVariants?.trim();
   }
   if (!baseUrl) {
     throw new Error(
@@ -33,7 +36,24 @@ export function resolveEnv(): EnvConfig {
     vectorIndexName,
     sanitizedBaseUrl,
   );
-  return { baseUrl, sanitizedBaseUrl, outputDirectory, maxDepth };
+  let parsedValidDomainVariants: string[] = [];
+  if (validDomainVariants) {
+    try {
+      parsedValidDomainVariants = JSON.parse(validDomainVariants);
+      if (!Array.isArray(parsedValidDomainVariants)) {
+        parsedValidDomainVariants = [];
+      }
+    } catch (_error) {
+      parsedValidDomainVariants = [];
+    }
+  }
+  return {
+    baseUrl,
+    sanitizedBaseUrl,
+    outputDirectory,
+    maxDepth,
+    validDomainVariants: parsedValidDomainVariants,
+  };
 }
 
 function generateOutputDirectoryPath(

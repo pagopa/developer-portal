@@ -17,6 +17,7 @@ export async function parsePages(
   baseOrigin: string,
   baseScope: string,
   baseHostToken: string,
+  validDomainVariants: string[] = [],
   navigationTimeout = 30000,
 ): Promise<void> {
   const visitKey = buildVisitKey(node.url);
@@ -25,7 +26,9 @@ export async function parsePages(
     return;
   }
   const normalizedUrl = UrlWithoutAnchors(node.url);
-  if (!isWithinScope(normalizedUrl, baseScope, baseHostToken)) {
+  if (
+    !isWithinScope(normalizedUrl, baseScope, validDomainVariants)
+  ) {
     return;
   }
   const metadata = await parsePageFn(browser, node.url);
@@ -90,19 +93,21 @@ export async function parsePages(
   let newLinksCount = 0;
   for (const href of anchors) {
     const normalized = UrlWithoutAnchors(href);
-    const visitCandidate = buildVisitKey(href);
+    const visitCandidate = buildVisitKey(normalized);
     if (parsedPages.has(visitCandidate) || scheduledPages.has(visitCandidate))
       continue;
     const lowerNormalized = normalized.toLowerCase();
     if (baseHostToken && !lowerNormalized.includes(baseHostToken)) {
       continue;
     }
-    if (!isWithinScope(normalized, baseScope, baseHostToken)) {
+    if (
+      !isWithinScope(normalized, baseScope, validDomainVariants)
+    ) {
       continue;
     }
     scheduledPages.add(visitCandidate);
     newLinksCount += 1;
-    nextChildren.push({ url: href });
+    nextChildren.push({ url: normalized });
   }
   node.children = nextChildren;
   const totalKnown = parsedPages.size + scheduledPages.size;
@@ -126,33 +131,50 @@ export async function parsePages(
       baseOrigin,
       baseScope,
       baseHostToken,
+      validDomainVariants,
     );
   }
 }
 
-function isWithinScope(url: string, scope: string, hostToken: string): boolean {
-  if (hostToken && url.toLowerCase().includes(hostToken)) {
-    return true;
-  }
+function isWithinScope(
+  url: string,
+  scope: string,
+  validDomainVariants: string[] = [],
+): boolean {
   if (!scope) {
     return true;
   }
-  const lowerUrl = url.toLowerCase();
-  const lowerScope = scope.toLowerCase();
-  if (lowerUrl === lowerScope) {
-    return true;
-  }
-  if (!lowerUrl.startsWith(lowerScope)) {
+  try {
+    const urlObj = new URL(url);
+    const scopeObj = new URL(scope);
+    const urlDomain = urlObj.hostname.replace(/^www\./, "");
+    const scopeDomain = scopeObj.hostname.replace(/^www\./, "");
+    if (urlDomain === scopeDomain) {
+      return true;
+    }
+    const urlParts = urlDomain.split(".");
+    const scopeParts = scopeDomain.split(".");
+    if (urlParts.length > scopeParts.length) {
+      const subdomain = urlParts[0];
+      const domainWithoutSubdomain = urlParts.slice(1).join(".");
+      if (
+        domainWithoutSubdomain === scopeDomain &&
+        validDomainVariants.includes(subdomain)
+      ) {
+        return true;
+      }
+    }
+    return false;
+  } catch (_error) {
     return false;
   }
-  const nextChar = lowerUrl.charAt(lowerScope.length);
-  return nextChar === "/" || nextChar === "?" || nextChar === "#";
 }
 
 export function buildVisitKey(rawUrl: string): string {
   try {
     const url = new URL(rawUrl);
     url.hash = "";
+    url.hostname = url.hostname.replace(/^www\./, "");
     return UrlWithoutAnchors(url.toString());
   } catch (_error) {
     return rawUrl;

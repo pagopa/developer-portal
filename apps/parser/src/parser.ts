@@ -10,11 +10,9 @@ import { ParsedNode, ParsedMetadata } from "./modules/types";
 import {
   sanitizeUrlAsFilename,
   UrlWithoutAnchors,
-  deriveSubPath,
 } from "./helpers/url-handling";
 import { assertReachable } from "./modules/network";
 import { toIsoOrNull } from "./helpers/date-format";
-import crypto from "crypto";
 
 puppeteer.use(StealthPlugin());
 
@@ -50,6 +48,7 @@ void (async () => {
       baseOrigin,
       baseScope,
       baseHostToken,
+      env.validDomainVariants || [],
       NAVIGATION_TIMEOUT_MS,
     );
     await browser.close();
@@ -89,27 +88,10 @@ async function persistSnapshot(
   snapshot: ParsedMetadata,
   FILENAME_LENGTH_THRESHOLD: number,
 ): Promise<void> {
-  const subPath = deriveSubPath(
-    snapshot.url,
-    env.baseUrl,
-    env.sanitizedBaseUrl,
-  );
-  const preferredName = subPath === "/" ? "root" : subPath;
-  const sanitizedName = sanitizeUrlAsFilename(preferredName, {
+  const finalName = sanitizeUrlAsFilename(snapshot.url, {
     replacement: "-",
+    lengthThreshold: FILENAME_LENGTH_THRESHOLD,
   });
-  const trimmedName = sanitizedName.replace(/^[-_]+/, "") || sanitizedName;
-  let finalName = trimmedName;
-  if (trimmedName.length > FILENAME_LENGTH_THRESHOLD) {
-    const normalizedUrl = UrlWithoutAnchors(snapshot.url);
-    const hash = crypto
-      .createHash("sha1")
-      .update(normalizedUrl)
-      .digest("hex")
-      .slice(0, 10);
-    const prefix = trimmedName.slice(0, 240);
-    finalName = `${prefix}_${hash}`;
-  }
   await saveMetadata(env.outputDirectory, `${finalName}.json`, snapshot);
 }
 

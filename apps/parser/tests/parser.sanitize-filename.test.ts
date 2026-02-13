@@ -1,15 +1,21 @@
 import { sanitizeUrlAsFilename } from "../src/helpers/url-handling";
 
-describe("sanitizeFilename", () => {
-  it("replaces illegal characters", () => {
-    expect(sanitizeUrlAsFilename("file/name?with*illegal|chars.txt")).toBe(
-      "file-name-with-illegal-chars.txt",
+describe("sanitizeUrlAsFilename", () => {
+  it("sanitizes URL paths with query strings and fragments", () => {
+    expect(
+      sanitizeUrlAsFilename("/docs/guide?version=1.0&lang=en#section"),
+    ).toBe("docs-guide-version=1.0&lang=en#section");
+  });
+
+  it("sanitizes URL paths with special characters", () => {
+    expect(sanitizeUrlAsFilename("/api/v1/users:profile")).toBe(
+      "api-v1-users-profile",
     );
   });
 
-  it("replaces control characters", () => {
-    expect(sanitizeUrlAsFilename("file\u0000name\u0001.txt")).toBe(
-      "file-name-.txt",
+  it("sanitizes control characters in URL paths", () => {
+    expect(sanitizeUrlAsFilename("/path\u0000with\u0001control.html")).toBe(
+      "path-with-control.html",
     );
   });
 
@@ -41,46 +47,60 @@ describe("sanitizeFilename", () => {
     expect(sanitizeUrlAsFilename(undefined as unknown as string)).toBe("-");
   });
 
-  it("uses the replacement option", () => {
-    expect(sanitizeUrlAsFilename("file/name", { replacement: "-" })).toBe(
-      "file-name",
+  it("uses custom replacement option for URL paths", () => {
+    expect(sanitizeUrlAsFilename("/api/users/123", { replacement: "_" })).toBe(
+      "api_users_123",
     );
   });
 
-  it("falls back to default replacement for invalid replacement", () => {
-    expect(sanitizeUrlAsFilename("file/name", { replacement: "/" })).toBe(
-      "file-name",
-    );
-    expect(sanitizeUrlAsFilename("file/name", { replacement: "\u0000" })).toBe(
-      "file-name",
-    );
+  it("falls back to default replacement for invalid replacement chars", () => {
+    expect(
+      sanitizeUrlAsFilename("/docs/guide?ref=x", { replacement: "/" }),
+    ).toBe("docs-guide-ref=x");
+    expect(
+      sanitizeUrlAsFilename("/docs/guide", { replacement: "\u0000" }),
+    ).toBe("docs-guide");
   });
 
-  it("limits output to 255 characters", () => {
-    const longName = "a".repeat(300) + ".txt";
-    expect(sanitizeUrlAsFilename(longName).length).toBe(255);
+  it("appends hash suffix for URLs exceeding length threshold", () => {
+    const longUrl = "/docs/" + "very-long-path-segment/".repeat(20);
+    const result = sanitizeUrlAsFilename(longUrl, {
+      lengthThreshold: 255
+    });
+    expect(result.length).toBe(255);
   });
 
-  it("returns replacement for input with only illegal/control chars", () => {
-    expect(sanitizeUrlAsFilename("\u0000\u0001\u0002")).toBe("---");
-    expect(sanitizeUrlAsFilename("////")).toBe("----");
+  it("trims leading dashes from URL paths", () => {
+    expect(sanitizeUrlAsFilename("/////path")).toBe("path");
   });
 
-  it("returns unchanged valid filename", () => {
-    expect(sanitizeUrlAsFilename("valid-filename.txt")).toBe(
-      "valid-filename.txt",
-    );
-  });
-
-  it("ignores illegal replacement chars", () => {
-    expect(sanitizeUrlAsFilename("file/name", { replacement: "*" })).toBe(
-      "file-name",
+  it("returns unchanged valid URL path", () => {
+    expect(sanitizeUrlAsFilename("api-reference.html")).toBe(
+      "api-reference.html",
     );
   });
 
-  it("ignores control char replacement", () => {
-    expect(sanitizeUrlAsFilename("file/name", { replacement: "\u0000" })).toBe(
-      "file-name",
+  it("ignores illegal characters in replacement option", () => {
+    expect(sanitizeUrlAsFilename("/docs/guide", { replacement: "*" })).toBe(
+      "docs-guide",
+    );
+  });
+
+  it("ignores control chars in replacement option", () => {
+    expect(
+      sanitizeUrlAsFilename("/docs/guide", { replacement: "\u0000" }),
+    ).toBe("docs-guide");
+  });
+
+  it("sanitizes URL with subdomain path", () => {
+    expect(sanitizeUrlAsFilename("showcase.example.com/docs-guide")).toBe(
+      "showcase.example.com-docs-guide",
+    );
+  });
+
+  it("handles URL with numbers and hyphens", () => {
+    expect(sanitizeUrlAsFilename("/api/v2/resource-123")).toBe(
+      "api-v2-resource-123",
     );
   });
 });

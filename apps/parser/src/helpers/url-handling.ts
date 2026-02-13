@@ -1,4 +1,5 @@
 import { SanitizeOptions } from "../modules/types";
+import crypto from "crypto";
 
 const ILLEGAL_RE = /[\/\?<>\\:\*\|"]/g;
 const CONTROL_RE = /[\x00-\x1f\x80-\x9f]/g;
@@ -8,16 +9,24 @@ const WINDOWS_TRAILING_RE = /[\. ]+$/;
 const DEFAULT_REPLACEMENT = "-";
 
 export function sanitizeUrlAsFilename(
-  input: string,
+  url: string,
   options?: SanitizeOptions,
 ): string {
-  if (!input) {
+  if (!url) {
     return DEFAULT_REPLACEMENT;
+  }
+  let filenameBase = url;
+  try {
+    const urlObj = new URL(url);
+    filenameBase = `${urlObj.pathname}${urlObj.search}`;
+  } catch (_error) {
+    // If it's not a valid URL, use as-is
   }
   const replacement = validReplacementOrDefault(
     options?.replacement ?? DEFAULT_REPLACEMENT,
   );
-  let sanitized = input
+  let sanitized = filenameBase
+    .replace(/\/$/, "")
     .replace(ILLEGAL_RE, replacement)
     .replace(CONTROL_RE, replacement)
     .replace(RESERVED_RE, replacement)
@@ -27,7 +36,20 @@ export function sanitizeUrlAsFilename(
   if (sanitized.length === 0) {
     return replacement;
   }
-  return sanitized.slice(0, 255);
+  const trimmedName = sanitized.replace(/^[-_]+/, "") || sanitized;
+  if (
+    options?.lengthThreshold &&
+    trimmedName.length > options.lengthThreshold
+  ) {
+    const hash = crypto
+      .createHash("sha1")
+      .update(url)
+      .digest("hex")
+      .slice(0, 9);
+    const prefix = trimmedName.slice(0, options.lengthThreshold - 10);
+    return `${prefix}_${hash}`;
+  }
+  return trimmedName;
 }
 
 function validReplacementOrDefault(candidate: string): string {
