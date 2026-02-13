@@ -7,6 +7,7 @@ import { UseCase } from '@/lib/types/useCaseData';
 import { UseCasesPageProps } from '@/app/[locale]/[productSlug]/use-cases/page';
 
 export function makeUseCaseListPagesProps(
+  locale: string,
   strapiUseCaseList: StrapiUseCaseListPages
 ): readonly UseCasesPageProps[] {
   return compact(
@@ -41,7 +42,7 @@ export function makeUseCaseListPagesProps(
           try {
             return {
               name: useCaseAttributes.title,
-              path: `/${slug}/use-cases/${useCaseAttributes.slug}`,
+              path: `/${locale}/${slug}/use-cases/${useCaseAttributes.slug}`,
               title: useCaseAttributes.title,
               publishedAt: useCaseAttributes.publishedAt
                 ? new Date(useCaseAttributes.publishedAt)
@@ -64,8 +65,11 @@ export function makeUseCaseListPagesProps(
       );
 
       return {
-        path: `/${attributes.product.data.attributes.slug}/use-cases`,
-        product: makeBaseProductWithoutLogoProps(attributes.product.data),
+        path: `/${locale}/${attributes.product.data.attributes.slug}/use-cases`,
+        product: makeBaseProductWithoutLogoProps(
+          locale,
+          attributes.product.data
+        ),
         abstract: {
           title: attributes.title,
           description: attributes.description,

@@ -110,19 +110,26 @@ const fetchProductApiDataReader = (productSlug: string) =>
 // Optimized fetcher for Product Slugs.
 // Fetches all products but only selects 'slug', 'isVisible', and 'updatedAt' fields.
 // This is the first step in the sitemap generation: getting the list of all products.
-export const fetchProductSlugs = async () => fetchProductSlugsReader(buildEnv);
+export const fetchProductSlugs = async (locale: string) =>
+  fetchProductSlugsReader(locale, buildEnv);
 
 // Fetches the specific Single Pages associated with a Product (Overview, QuickStart, etc.).
 // This allows us to check existence and get 'updatedAt' for these pages for a specific product.
-export const fetchProductSinglePages = async (productSlug: string) =>
-  fetchProductSinglePagesReader(productSlug)(buildEnv);
+export const fetchProductSinglePages = async (
+  locale: string,
+  productSlug: string
+) => fetchProductSinglePagesReader(productSlug)(locale, buildEnv);
 
 // Fetches Tutorials for a specific product.
 // Only retrieves 'slug' and 'updatedAt' to build the sitemap URL.
-export const fetchProductTutorials = async (productSlug: string) =>
-  fetchProductTutorialsReader(productSlug)(buildEnv);
+export const fetchProductTutorials = async (
+  locale: string,
+  productSlug: string
+) => fetchProductTutorialsReader(productSlug)(locale, buildEnv);
 
 // Fetches API Data entries for a specific product.
 // We need 'updatedAt' and the slug from either 'apiRestDetail' or 'apiSoapDetail'.
-export const fetchProductApiData = async (productSlug: string) =>
-  fetchProductApiDataReader(productSlug)(buildEnv);
+export const fetchProductApiData = async (
+  locale: string,
+  productSlug: string
+) => fetchProductApiDataReader(productSlug)(locale, buildEnv);
