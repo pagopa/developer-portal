@@ -252,7 +252,7 @@ async function fetchMetadataWithCache<T extends { readonly dirName: string }>(
 
   metadataCache = [
     ...metadataCache.filter(
-      (item) => item.category !== metadataCategory || item.locale !== locale
+      (item) => !(item.category === metadataCategory && item.locale === locale)
     ),
     newCacheItem,
   ];
