@@ -64,6 +64,14 @@ const ApiViewer: FC<ApiViewerProps> = ({ specURL }) => {
           #api-info {
             margin-left: 0 !important;
           }
+          h1, h2, h3, h4, h5, #api-title, .title.tag {
+            margin: 0 !important;
+            color: ${palette.text.primary} !important;
+            padding-top: 24px !important;
+          }
+          .section-gap--read-mode {
+            border-top: 0 !important;
+          }
           .nav-method {
             border-radius: 4px !important; 
             min-width: 48px !important;
@@ -76,6 +84,41 @@ const ApiViewer: FC<ApiViewerProps> = ({ specURL }) => {
             text-align: center;
             background-color: ${palette.info[100]} !important;
             margin-right: 8px !important; 
+          }
+
+          h1, #api-title {
+            font-size: 2.375rem !important;
+            font-weight: 700 !important;
+            line-height: 2.625rem !important;
+            padding-bottom: 24px !important;
+          }
+        
+          h2, .title.tag {
+            font-size: 1.875rem !important;
+            font-weight: 600 !important;
+            line-height: 2.625rem !important;
+            padding-bottom: 8px !important;
+          }
+        
+          h3 {
+            font-size: 1.5rem !important;
+            font-weight: 600 !important;
+            line-height: 1.5rem !important;
+            padding-bottom: 8px !important;
+          }
+        
+          h4 {
+            font-size: 1.25rem !important;
+            font-weight: 600 !important;
+            line-height: 1.5rem !important;
+            padding-bottom: 8px !important;
+          }
+        
+          h5 {
+            font-size: 1rem !important;
+            font-weight: 600 !important;
+            line-height: 1.5rem !important;
+            padding-bottom: 8px !important;
           }
         `;
         rapidocEl.shadowRoot.appendChild(style);
@@ -93,7 +136,7 @@ const ApiViewer: FC<ApiViewerProps> = ({ specURL }) => {
     return () => {
       rapidocEl.removeEventListener('spec-loaded', injectStyles);
     };
-  }, [palette.info]);
+  }, [palette.info, palette.text.primary]);
 
   // Cast strict TS error for custom element
   const RapiDoc = 'rapi-doc' as unknown as ElementType;
