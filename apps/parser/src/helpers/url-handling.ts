@@ -118,3 +118,50 @@ export function deriveSubPath(
   }
   return `${relPath}${target.search}${target.hash}` || "/";
 }
+
+export function isWithinScope(
+  url: string,
+  scope: string,
+  validDomainVariants: string[] = [],
+): boolean {
+  if (!scope) {
+    return true;
+  }
+  // TODO: This function could be generalized to better handle edge cases. For now it performs a basic check to see if the URL is within the same domain or valid subdomain variants as the scope.
+  try {
+    const urlObj = new URL(url);
+    const scopeObj = new URL(scope);
+    const urlDomain = urlObj.hostname.replace(/^www\./, "");
+    const scopeDomain = scopeObj.hostname.replace(/^www\./, "");
+    if (urlDomain === scopeDomain) {
+      return true;
+    }
+    const urlParts = urlDomain.split(".");
+    const scopeParts = scopeDomain.split(".");
+    if (urlParts.length > scopeParts.length) {
+      const subdomain = urlParts[0];
+      const domainWithoutSubdomain = urlParts.slice(1).join(".");
+      if (
+        domainWithoutSubdomain === scopeDomain &&
+        validDomainVariants.includes(subdomain)
+      ) {
+        return true;
+      }
+    }
+    return false;
+  } catch (_error) {
+    return false;
+  }
+}
+
+export function buildVisitKey(rawUrl: string): string {
+  try {
+    const url = new URL(rawUrl);
+    url.hash = "";
+    url.hostname = url.hostname.replace(/^www\./, "");
+    return RemoveAnchorsFromUrl(url.toString());
+  } catch (error) {
+    console.warn(`Failed to build visit key for URL: ${rawUrl}`, error);
+    return rawUrl;
+  }
+}

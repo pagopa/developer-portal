@@ -1,8 +1,16 @@
-import { Browser } from "puppeteer";
+import { Browser, Page } from "puppeteer";
 import { ParsedNode, ParsedMetadata } from "./types";
-import { RemoveAnchorsFromUrl } from "../helpers/url-handling";
+import {
+  RemoveAnchorsFromUrl,
+  isWithinScope,
+  buildVisitKey,
+} from "../helpers/url-handling";
 import { expandInteractiveSections } from "./dom-actions";
+import { persistSnapshot } from "./output";
+import { OUTPUT_DIRECTORY, MAX_DEPTH, VALID_DOMAIN_VARIANTS, BASE_HOST_TOKEN, BASE_SCOPE } from "../main";
+import { extractDocumentMetadata, serializeMetadata } from "../helpers/metadata-handling";
 
+const NAVIGATION_TIMEOUT_MS = 30_000;
 const PAGE_NAVIGATION_OPTIONS = {
   waitUntil: "networkidle2" as const,
 };
@@ -11,29 +19,19 @@ export async function exploreAndParsePages(
   browser: Browser,
   node: ParsedNode,
   depth: number,
-  maxDepth: number,
   parsedPages: Map<string, ParsedMetadata>,
   scheduledPages: Set<string>,
-  parsePageFn: (
-    browser: Browser,
-    url: string,
-  ) => Promise<ParsedMetadata | null>,
-  baseOrigin: string,
-  baseScope: string,
-  baseHostToken: string,
-  validDomainVariants: string[] = [],
-  navigationTimeout = 30000,
 ): Promise<void> {
   const visitKey = buildVisitKey(node.url);
   scheduledPages.delete(visitKey);
-  if (parsedPages.has(visitKey) || depth > maxDepth) {
+  if (parsedPages.has(visitKey) || depth > MAX_DEPTH) {
     return;
   }
   const normalizedUrl = RemoveAnchorsFromUrl(node.url);
-  if (!isWithinScope(normalizedUrl, baseScope, validDomainVariants)) {
+  if (!isWithinScope(normalizedUrl, BASE_SCOPE, VALID_DOMAIN_VARIANTS)) {
     return;
   }
-  const metadata = await parsePageFn(browser, node.url);
+  const metadata = await generatePageParsedMetadata(browser, node.url);
   if (!metadata) return;
   parsedPages.set(visitKey, metadata);
   node.title = metadata.title;
@@ -48,7 +46,7 @@ export async function exploreAndParsePages(
     page = await browser.newPage();
     await page.goto(node.url, {
       ...PAGE_NAVIGATION_OPTIONS,
-      timeout: navigationTimeout,
+      timeout: NAVIGATION_TIMEOUT_MS,
     });
     await expandInteractiveSections(page);
     anchors = (await page.evaluate((allowedToken: string) => {
@@ -85,7 +83,7 @@ export async function exploreAndParsePages(
         }
       }
       return Array.from(unique);
-    }, baseHostToken)) as string[];
+    }, BASE_HOST_TOKEN)) as string[];
   } catch (error) {
     console.warn(`Failed to extract anchors from ${node.url}`, error);
   } finally {
@@ -99,10 +97,10 @@ export async function exploreAndParsePages(
     if (parsedPages.has(visitCandidate) || scheduledPages.has(visitCandidate))
       continue;
     const lowerNormalized = normalized.toLowerCase();
-    if (baseHostToken && !lowerNormalized.includes(baseHostToken)) {
+    if (BASE_HOST_TOKEN && !lowerNormalized.includes(BASE_HOST_TOKEN)) {
       continue;
     }
-    if (!isWithinScope(normalized, baseScope, validDomainVariants)) {
+    if (!isWithinScope(normalized, BASE_SCOPE, VALID_DOMAIN_VARIANTS)) {
       continue;
     }
     scheduledPages.add(visitCandidate);
@@ -118,67 +116,40 @@ export async function exploreAndParsePages(
       parsedPages.size
     }/${totalKnown} (${((parsedPages.size / totalKnown) * 100).toFixed(2)}%)`,
   );
-  if (!node.children || depth >= maxDepth) return;
+  if (!node.children || depth >= MAX_DEPTH) return;
   for (const child of node.children) {
     await exploreAndParsePages(
       browser,
       child,
       depth + 1,
-      maxDepth,
       parsedPages,
-      scheduledPages,
-      parsePageFn,
-      baseOrigin,
-      baseScope,
-      baseHostToken,
-      validDomainVariants,
+      scheduledPages
     );
   }
 }
 
-function isWithinScope(
+async function generatePageParsedMetadata(
+  browser: Browser,
   url: string,
-  scope: string,
-  validDomainVariants: string[] = [],
-): boolean {
-  if (!scope) {
-    return true;
-  }
-  // TODO: This function could be generalized to better handle edge cases. For now it performs a basic check to see if the URL is within the same domain or valid subdomain variants as the scope.
+): Promise<ParsedMetadata | null> {
+  let page: Page | undefined;
   try {
-    const urlObj = new URL(url);
-    const scopeObj = new URL(scope);
-    const urlDomain = urlObj.hostname.replace(/^www\./, "");
-    const scopeDomain = scopeObj.hostname.replace(/^www\./, "");
-    if (urlDomain === scopeDomain) {
-      return true;
-    }
-    const urlParts = urlDomain.split(".");
-    const scopeParts = scopeDomain.split(".");
-    if (urlParts.length > scopeParts.length) {
-      const subdomain = urlParts[0];
-      const domainWithoutSubdomain = urlParts.slice(1).join(".");
-      if (
-        domainWithoutSubdomain === scopeDomain &&
-        validDomainVariants.includes(subdomain)
-      ) {
-        return true;
-      }
-    }
-    return false;
-  } catch (_error) {
-    return false;
-  }
-}
-
-export function buildVisitKey(rawUrl: string): string {
-  try {
-    const url = new URL(rawUrl);
-    url.hash = "";
-    url.hostname = url.hostname.replace(/^www\./, "");
-    return RemoveAnchorsFromUrl(url.toString());
+    page = await browser.newPage();
+    await page.goto(url, {
+      waitUntil: "networkidle2",
+      timeout: NAVIGATION_TIMEOUT_MS,
+    });
+    await expandInteractiveSections(page);
+    const rawMetadata = await page.evaluate(extractDocumentMetadata);
+    const snapshot = serializeMetadata(rawMetadata);
+    await persistSnapshot(snapshot, OUTPUT_DIRECTORY);
+    return snapshot;
   } catch (error) {
-    console.warn(`Failed to build visit key for URL: ${rawUrl}`, error);
-    return rawUrl;
+    console.error(`Error while parsing ${url}:`, (error as Error).message);
+    return null;
+  } finally {
+    if (page) {
+      await page.close();
+    }
   }
 }
