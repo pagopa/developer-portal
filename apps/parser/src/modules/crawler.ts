@@ -144,6 +144,7 @@ function isWithinScope(
   if (!scope) {
     return true;
   }
+  // TODO: This function could be generalized to better handle edge cases. For now it performs a basic check to see if the URL is within the same domain or valid subdomain variants as the scope.
   try {
     const urlObj = new URL(url);
     const scopeObj = new URL(scope);
