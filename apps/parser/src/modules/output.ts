@@ -18,7 +18,7 @@ export async function persistSnapshot(
   let finalName = sanitizeUrlAsFilename(snapshot.url, {
     lengthThreshold: FILENAME_LENGTH_THRESHOLD,
   });
-  if (finalName === BASE_HOST_TOKEN) {
+  if (finalName.replace(/^www\./, "") === BASE_HOST_TOKEN) {
     finalName = "index";
   }
   await saveMetadata(outputDirectory, `${finalName}.json`, snapshot);

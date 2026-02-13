@@ -41,7 +41,7 @@ Create a `.env` file in the `apps/parser` directory with the following content:
 ```
 URL=https://example.com
 CHB_INDEX_ID=name_of_your_choice
-# DEPTH=2  # Optional, defaults to 2
+# DEPTH=2  # Optional, defaults to null
 ```
 
 #### b) Using command line variables

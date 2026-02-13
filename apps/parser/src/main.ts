@@ -5,7 +5,11 @@ import { ensureDirectory } from "./modules/output";
 import { handleError } from "./modules/errors";
 import { exploreAndParsePages } from "./modules/parser";
 import { ParsedNode, ParsedMetadata } from "./modules/types";
-import { RemoveAnchorsFromUrl, buildVisitKey } from "./helpers/url-handling";
+import {
+  RemoveAnchorsFromUrl,
+  buildVisitKey,
+  setBaseScope,
+} from "./helpers/url-handling";
 import { assertReachable } from "./modules/network";
 
 puppeteer.use(StealthPlugin());
@@ -20,6 +24,8 @@ export const BASE_HOST_TOKEN = new URL(env.baseUrl).hostname
   .replace(/^www\./, "")
   .toLowerCase();
 export const VALID_DOMAIN_VARIANTS = env.validDomainVariants || [];
+
+setBaseScope(BASE_SCOPE);
 
 void (async () => {
   try {

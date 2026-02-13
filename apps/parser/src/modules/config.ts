@@ -2,11 +2,11 @@ import path from "node:path";
 import { EnvConfig } from "./types";
 import {
   RemoveAnchorsFromUrl,
-  sanitizeUrlAsFilename,
+  sanitizeUrlAsDirectoryName,
 } from "../helpers/url-handling";
 import * as dotenv from "dotenv";
 
-const DEFAULT_DEPTH = 2;
+const DEFAULT_DEPTH = null;
 
 export function resolveEnv(): EnvConfig {
   let baseUrl = process.env.URL?.trim();
@@ -60,7 +60,7 @@ function generateOutputDirectoryPath(
   vectorIndexName: string | undefined,
   sanitizedBaseUrl: string,
 ): string {
-  const safeBaseSegment = sanitizeUrlAsFilename(sanitizedBaseUrl, {
+  const safeBaseSegment = sanitizeUrlAsDirectoryName(sanitizedBaseUrl, {
     replacement: "-",
   });
   if (!vectorIndexName) {

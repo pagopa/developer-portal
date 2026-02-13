@@ -33,7 +33,7 @@ export async function exploreAndParsePages(
 ): Promise<void> {
   const visitKey = buildVisitKey(node.url);
   scheduledPages.delete(visitKey);
-  if (parsedPages.has(visitKey) || depth > MAX_DEPTH) {
+  if (parsedPages.has(visitKey) || (MAX_DEPTH !== null && depth > MAX_DEPTH)) {
     return;
   }
   const normalizedUrl = RemoveAnchorsFromUrl(node.url);
@@ -125,7 +125,7 @@ export async function exploreAndParsePages(
       parsedPages.size
     }/${totalKnown} (${((parsedPages.size / totalKnown) * 100).toFixed(2)}%)`,
   );
-  if (!node.children || depth >= MAX_DEPTH) return;
+  if (!node.children || (MAX_DEPTH !== null && depth >= MAX_DEPTH)) return;
   for (const child of node.children) {
     await exploreAndParsePages(
       browser,
