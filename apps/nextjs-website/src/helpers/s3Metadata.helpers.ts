@@ -1,6 +1,7 @@
 /* eslint-disable functional/no-let */
 /* eslint-disable functional/no-expression-statements */
 import { s3DocsPath, staticContentsUrl } from '@/config';
+import { cons } from 'fp-ts/lib/ReadonlyNonEmptyArray';
 import * as path from 'node:path';
 
 export interface JsonMetadata {
@@ -224,8 +225,8 @@ async function fetchMetadataWithCache<T extends { readonly dirName: string }>(
 ): Promise<MetadataCacheItem<T>> {
   const now = Date.now();
   const cacheResult = metadataCache.find((item) => {
-    const categoryMatch =
-      item.category === metadataCategory && item.locale === locale;
+    const categoryMatch = item.category === metadataCategory;
+    const localeMatch = item.locale === locale;
     const timeMatch = item.data && now - item.refreshTime < METADATA_CACHE_TTL;
     const dirNameMatch =
       !dirName ||
@@ -233,7 +234,7 @@ async function fetchMetadataWithCache<T extends { readonly dirName: string }>(
         item.data.length > 0 &&
         'dirName' in item.data[0] &&
         item.data.some((m: Record<string, unknown>) => m.dirName === dirName));
-    return categoryMatch && timeMatch && dirNameMatch;
+    return categoryMatch && localeMatch && timeMatch && dirNameMatch;
   }) as MetadataCacheItem<T> | undefined;
 
   if (cacheResult) {
