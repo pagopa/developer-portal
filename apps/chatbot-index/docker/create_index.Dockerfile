@@ -2,6 +2,7 @@ FROM python:3.12.4-slim-bullseye
 ARG DEBIAN_FRONTEND=noninteractive
 
 ENV PYTHONPATH=/app
+ENV LAMBDA_TASK_ROOT=/app
 
 RUN apt-get update && \
   apt-get install -y \
@@ -25,3 +26,8 @@ COPY pyproject.toml $LAMBDA_TASK_ROOT
 COPY poetry.lock $LAMBDA_TASK_ROOT
 RUN poetry config virtualenvs.create false
 RUN poetry install --only main
+
+RUN groupadd -r appuser && useradd -r -g appuser -u 1000 appuser
+RUN chown -R appuser:appuser $LAMBDA_TASK_ROOT
+
+USER appuser

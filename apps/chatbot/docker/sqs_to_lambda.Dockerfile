@@ -11,5 +11,11 @@ COPY scripts/sqs_listener_entrypoint.sh scripts/sqs_listener_entrypoint.sh
 
 RUN chmod +x scripts/sqs-init.sh scripts/sqs_listener_entrypoint.sh
 
+RUN groupadd -r appuser && useradd -r -g appuser -u 1000 -d /home/appuser -m appuser
+RUN chown -R appuser:appuser /app /home/appuser
+
+ENV HOME=/home/appuser
+USER appuser
+
 ENTRYPOINT ["scripts/sqs_listener_entrypoint.sh"]
 CMD ["python", "scripts/sqs_to_lambda.py"]

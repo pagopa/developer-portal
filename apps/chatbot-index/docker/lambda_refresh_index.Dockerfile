@@ -22,4 +22,8 @@ RUN poetry install
 
 COPY ./ ${LAMBDA_TASK_ROOT}/
 
+RUN chown -R 1000:1000 ${LAMBDA_TASK_ROOT}
+
+USER 1000
+
 CMD ["src.lambda_refresh_index.lambda_handler"]

@@ -39,4 +39,9 @@ RUN poetry install --with test
 
 RUN python ./scripts/nltk_download.py
 
+RUN groupadd -r appuser && useradd -r -g appuser -u 1000 appuser
+RUN chown -R appuser:appuser /app
+
+USER appuser
+
 CMD ["fastapi", "dev", "src/app/main.py", "--port", "8080", "--host", "0.0.0.0", "--loop", "asyncio"]

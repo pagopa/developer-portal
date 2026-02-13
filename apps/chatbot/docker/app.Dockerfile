@@ -19,4 +19,8 @@ COPY ./config ./config
 COPY ./scripts ./scripts
 RUN python ./scripts/nltk_download.py
 
+RUN chown -R 1000:1000 ${LAMBDA_TASK_ROOT}
+
+USER 1000
+
 CMD ["src.app.main.handler"]
