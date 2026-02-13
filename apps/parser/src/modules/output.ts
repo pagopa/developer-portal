@@ -10,7 +10,10 @@ export function ensureDirectory(dir: string) {
   mkdirSync(dir, { recursive: true });
 }
 
-export async function persistSnapshot(snapshot: ParsedMetadata, outputDirectory: string): Promise<void> {
+export async function persistSnapshot(
+  snapshot: ParsedMetadata,
+  outputDirectory: string,
+): Promise<void> {
   const finalName = sanitizeUrlAsFilename(snapshot.url, {
     lengthThreshold: FILENAME_LENGTH_THRESHOLD,
   });

@@ -7,8 +7,17 @@ import {
 } from "../helpers/url-handling";
 import { expandInteractiveSections } from "./dom-actions";
 import { persistSnapshot } from "./output";
-import { OUTPUT_DIRECTORY, MAX_DEPTH, VALID_DOMAIN_VARIANTS, BASE_HOST_TOKEN, BASE_SCOPE } from "../main";
-import { extractDocumentMetadata, serializeMetadata } from "../helpers/metadata-handling";
+import {
+  OUTPUT_DIRECTORY,
+  MAX_DEPTH,
+  VALID_DOMAIN_VARIANTS,
+  BASE_HOST_TOKEN,
+  BASE_SCOPE,
+} from "../main";
+import {
+  extractDocumentMetadata,
+  serializeMetadata,
+} from "../helpers/metadata-handling";
 
 const NAVIGATION_TIMEOUT_MS = 30_000;
 const PAGE_NAVIGATION_OPTIONS = {
@@ -123,7 +132,7 @@ export async function exploreAndParsePages(
       child,
       depth + 1,
       parsedPages,
-      scheduledPages
+      scheduledPages,
     );
   }
 }

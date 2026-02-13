@@ -65,7 +65,7 @@ describe("sanitizeUrlAsFilename", () => {
   it("appends hash suffix for URLs exceeding length threshold", () => {
     const longUrl = "/docs/" + "very-long-path-segment/".repeat(20);
     const result = sanitizeUrlAsFilename(longUrl, {
-      lengthThreshold: 255
+      lengthThreshold: 255,
     });
     expect(result.length).toBe(255);
   });

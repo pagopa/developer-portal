@@ -5,10 +5,7 @@ import { ensureDirectory } from "./modules/output";
 import { handleError } from "./modules/errors";
 import { exploreAndParsePages } from "./modules/parser";
 import { ParsedNode, ParsedMetadata } from "./modules/types";
-import {
-  RemoveAnchorsFromUrl,
-  buildVisitKey,
-} from "./helpers/url-handling";
+import { RemoveAnchorsFromUrl, buildVisitKey } from "./helpers/url-handling";
 import { assertReachable } from "./modules/network";
 
 puppeteer.use(StealthPlugin());
@@ -31,13 +28,7 @@ void (async () => {
     const browser = await puppeteer.launch({ headless: true });
     const root: ParsedNode = { url: env.baseUrl };
     scheduledPages.add(buildVisitKey(env.baseUrl));
-    await exploreAndParsePages(
-      browser,
-      root,
-      0,
-      parsedPages,
-      scheduledPages,
-    );
+    await exploreAndParsePages(browser, root, 0, parsedPages, scheduledPages);
     await browser.close();
     console.log(`Parsing complete! Data saved to ${env.outputDirectory}`);
   } catch (error) {
