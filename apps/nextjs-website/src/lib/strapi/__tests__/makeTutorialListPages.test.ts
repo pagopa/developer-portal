@@ -10,6 +10,7 @@ import {
 describe('makeTutorialListPagesProps', () => {
   it('should transform strapi tutorial list pages to tutorials page props', () => {
     const result = makeTutorialListPagesProps(
+      'it',
       _.cloneDeep(strapiTutorialListPages)
     );
     expect(result).toHaveLength(1);
@@ -23,12 +24,12 @@ describe('makeTutorialListPagesProps', () => {
     expect(page.tutorials).toHaveLength(1);
     const firstElement = page.tutorials[0];
     expect(firstElement.title).toBe('Tutorial 1');
-    expect(firstElement.path).toBe('/product-1/tutorials/tutorial-1');
+    expect(firstElement.path).toBe('/it/product-1/tutorials/tutorial-1');
     expect(firstElement.image?.url).toBe('https://example.com/example.jpg');
   });
 
   it('should handle minimal tutorial list pages', () => {
-    const result = makeTutorialListPagesProps(minimalTutorialListPages());
+    const result = makeTutorialListPagesProps('it', minimalTutorialListPages());
     expect(result).toHaveLength(1);
     const page = result[0];
     expect(page.abstract?.title).toBe('Minimal Tutorials');
@@ -39,6 +40,7 @@ describe('makeTutorialListPagesProps', () => {
 
   it('should handle tutorial list pages without banner links', () => {
     const result = makeTutorialListPagesProps(
+      'it',
       tutorialListPagesWithItemMissingBannerLinks()
     );
     expect(result).toHaveLength(1);
@@ -47,6 +49,7 @@ describe('makeTutorialListPagesProps', () => {
 
   it('should handle tutorial list pages with banner links', () => {
     const result = makeTutorialListPagesProps(
+      'it',
       _.cloneDeep(strapiTutorialListPages)
     );
     expect(result).toHaveLength(1);
@@ -58,7 +61,7 @@ describe('makeTutorialListPagesProps', () => {
   });
 
   it('should handle empty tutorial list pages', () => {
-    const result = makeTutorialListPagesProps(emptyTutorialListPages());
+    const result = makeTutorialListPagesProps('it', emptyTutorialListPages());
     expect(result).toHaveLength(0);
   });
 });
