@@ -1,7 +1,7 @@
 import path from "node:path";
 import { EnvConfig } from "./types";
 import {
-  UrlWithoutAnchors,
+  RemoveAnchorsFromUrl,
   sanitizeUrlAsFilename,
 } from "../helpers/url-handling";
 import * as dotenv from "dotenv";
@@ -27,7 +27,7 @@ export function resolveEnv(): EnvConfig {
       "Missing required URL. Set URL in environment or .env file.",
     );
   }
-  const sanitizedBaseUrl = UrlWithoutAnchors(baseUrl);
+  const sanitizedBaseUrl = RemoveAnchorsFromUrl(baseUrl);
   const parsedDepth = Number.parseInt(depth ?? `${DEFAULT_DEPTH}`, 10);
   const maxDepth = Number.isNaN(parsedDepth)
     ? DEFAULT_DEPTH

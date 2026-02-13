@@ -13,6 +13,9 @@ export function sanitizeUrlAsFilename(
   options?: SanitizeOptions,
 ): string {
   if (!url) {
+    console.warn(
+      `Missing input url, sanitizing as default "${DEFAULT_REPLACEMENT}"`,
+    );
     return DEFAULT_REPLACEMENT;
   }
   let filenameBase = url;
@@ -59,18 +62,24 @@ export function sanitizeUrlAsFilename(
 
 function validReplacementOrDefault(candidate: string): string {
   if (!candidate) {
+    console.warn(
+      `Missing replacement character, using default "${DEFAULT_REPLACEMENT}"`,
+    );
     return DEFAULT_REPLACEMENT;
   }
   if (
     /[\/\?<>\\:\*\|"]/u.test(candidate) ||
     /[\x00-\x1f\x80-\x9f]/u.test(candidate)
   ) {
+    console.warn(
+      `Invalid replacement character: "${candidate}", using default "${DEFAULT_REPLACEMENT}"`,
+    );
     return DEFAULT_REPLACEMENT;
   }
   return candidate;
 }
 
-export const UrlWithoutAnchors = (rawUrl: string): string => {
+export const RemoveAnchorsFromUrl = (rawUrl: string): string => {
   try {
     const parsed = new URL(rawUrl);
     parsed.hash = "";
@@ -101,7 +110,7 @@ export function deriveSubPath(
     if (!relPath.startsWith("/")) relPath = "/" + relPath;
   }
   if (
-    UrlWithoutAnchors(targetUrl) === sanitizedBaseUrl ||
+    RemoveAnchorsFromUrl(targetUrl) === sanitizedBaseUrl ||
     relPath === "/" ||
     relPath === ""
   ) {

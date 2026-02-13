@@ -9,7 +9,7 @@ import { expandInteractiveSections } from "./modules/dom-actions";
 import { ParsedNode, ParsedMetadata } from "./modules/types";
 import {
   sanitizeUrlAsFilename,
-  UrlWithoutAnchors,
+  RemoveAnchorsFromUrl,
 } from "./helpers/url-handling";
 import { assertReachable } from "./modules/network";
 import { toIsoOrNull } from "./helpers/date-format";
@@ -18,7 +18,7 @@ puppeteer.use(StealthPlugin());
 
 const NAVIGATION_TIMEOUT_MS = 30_000;
 const REQUEST_TIMEOUT_MS = 10_000;
-const FILENAME_LENGTH_THRESHOLD = 255;
+const FILENAME_LENGTH_THRESHOLD = 250;
 
 const env = resolveEnv();
 const parsedPages = new Map<string, ParsedMetadata>();
@@ -32,7 +32,7 @@ void (async () => {
     const root: ParsedNode = { url: env.baseUrl };
     const baseUrlObject = new URL(env.baseUrl);
     const baseOrigin = baseUrlObject.origin;
-    const baseScope = UrlWithoutAnchors(env.baseUrl);
+    const baseScope = RemoveAnchorsFromUrl(env.baseUrl);
     const baseHostToken = baseUrlObject.hostname
       .replace(/^www\./, "")
       .toLowerCase();
@@ -72,7 +72,7 @@ async function parsePageFn(
     await expandInteractiveSections(page);
     const rawMetadata = await page.evaluate(extractDocumentMetadata);
     const snapshot = serializeMetadata(rawMetadata);
-    await persistSnapshot(snapshot, FILENAME_LENGTH_THRESHOLD);
+    await persistSnapshot(snapshot);
     return snapshot;
   } catch (error) {
     console.error(`Error while parsing ${url}:`, (error as Error).message);
@@ -84,10 +84,7 @@ async function parsePageFn(
   }
 }
 
-async function persistSnapshot(
-  snapshot: ParsedMetadata,
-  FILENAME_LENGTH_THRESHOLD: number,
-): Promise<void> {
+async function persistSnapshot(snapshot: ParsedMetadata): Promise<void> {
   const finalName = sanitizeUrlAsFilename(snapshot.url, {
     replacement: "-",
     lengthThreshold: FILENAME_LENGTH_THRESHOLD,

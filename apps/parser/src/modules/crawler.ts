@@ -1,7 +1,11 @@
 import { Browser } from "puppeteer";
 import { ParsedNode, ParsedMetadata } from "./types";
-import { UrlWithoutAnchors } from "../helpers/url-handling";
+import { RemoveAnchorsFromUrl } from "../helpers/url-handling";
 import { expandInteractiveSections } from "./dom-actions";
+
+const PAGE_NAVIGATION_OPTIONS = {
+  waitUntil: "networkidle2" as const,
+};
 
 export async function exploreAndParsePages(
   browser: Browser,
@@ -25,7 +29,7 @@ export async function exploreAndParsePages(
   if (parsedPages.has(visitKey) || depth > maxDepth) {
     return;
   }
-  const normalizedUrl = UrlWithoutAnchors(node.url);
+  const normalizedUrl = RemoveAnchorsFromUrl(node.url);
   if (!isWithinScope(normalizedUrl, baseScope, validDomainVariants)) {
     return;
   }
@@ -43,7 +47,7 @@ export async function exploreAndParsePages(
   try {
     page = await browser.newPage();
     await page.goto(node.url, {
-      waitUntil: "networkidle2",
+      ...PAGE_NAVIGATION_OPTIONS,
       timeout: navigationTimeout,
     });
     await expandInteractiveSections(page);
@@ -90,7 +94,7 @@ export async function exploreAndParsePages(
   const nextChildren: ParsedNode[] = [];
   let newLinksCount = 0;
   for (const href of anchors) {
-    const normalized = UrlWithoutAnchors(href);
+    const normalized = RemoveAnchorsFromUrl(href);
     const visitCandidate = buildVisitKey(normalized);
     if (parsedPages.has(visitCandidate) || scheduledPages.has(visitCandidate))
       continue;
@@ -172,8 +176,9 @@ export function buildVisitKey(rawUrl: string): string {
     const url = new URL(rawUrl);
     url.hash = "";
     url.hostname = url.hostname.replace(/^www\./, "");
-    return UrlWithoutAnchors(url.toString());
-  } catch (_error) {
+    return RemoveAnchorsFromUrl(url.toString());
+  } catch (error) {
+    console.warn(`Failed to build visit key for URL: ${rawUrl}`, error);
     return rawUrl;
   }
 }
