@@ -61,7 +61,7 @@ function generateOutputDirectoryPath(
   sanitizedBaseUrl: string,
 ): string {
   const safeBaseSegment = sanitizeUrlAsFilename(sanitizedBaseUrl, {
-    replacement: "_",
+    replacement: "-",
   });
   if (!vectorIndexName) {
     return `output/${safeBaseSegment}`;

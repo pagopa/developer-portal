@@ -4,7 +4,7 @@ import { Browser, Page } from "puppeteer";
 import { resolveEnv } from "./modules/config";
 import { ensureDirectory, saveMetadata } from "./modules/output";
 import { handleError } from "./modules/errors";
-import { buildVisitKey, parsePages } from "./modules/crawler";
+import { buildVisitKey, exploreAndParsePages } from "./modules/crawler";
 import { expandInteractiveSections } from "./modules/dom-actions";
 import { ParsedNode, ParsedMetadata } from "./modules/types";
 import {
@@ -37,7 +37,7 @@ void (async () => {
       .replace(/^www\./, "")
       .toLowerCase();
     scheduledPages.add(buildVisitKey(env.baseUrl));
-    await parsePages(
+    await exploreAndParsePages(
       browser,
       root,
       0,

@@ -3,7 +3,7 @@ import { ParsedNode, ParsedMetadata } from "./types";
 import { UrlWithoutAnchors } from "../helpers/url-handling";
 import { expandInteractiveSections } from "./dom-actions";
 
-export async function parsePages(
+export async function exploreAndParsePages(
   browser: Browser,
   node: ParsedNode,
   depth: number,
@@ -26,9 +26,7 @@ export async function parsePages(
     return;
   }
   const normalizedUrl = UrlWithoutAnchors(node.url);
-  if (
-    !isWithinScope(normalizedUrl, baseScope, validDomainVariants)
-  ) {
+  if (!isWithinScope(normalizedUrl, baseScope, validDomainVariants)) {
     return;
   }
   const metadata = await parsePageFn(browser, node.url);
@@ -100,9 +98,7 @@ export async function parsePages(
     if (baseHostToken && !lowerNormalized.includes(baseHostToken)) {
       continue;
     }
-    if (
-      !isWithinScope(normalized, baseScope, validDomainVariants)
-    ) {
+    if (!isWithinScope(normalized, baseScope, validDomainVariants)) {
       continue;
     }
     scheduledPages.add(visitCandidate);
@@ -120,7 +116,7 @@ export async function parsePages(
   );
   if (!node.children || depth >= maxDepth) return;
   for (const child of node.children) {
-    await parsePages(
+    await exploreAndParsePages(
       browser,
       child,
       depth + 1,

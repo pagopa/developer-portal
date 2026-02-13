@@ -18,7 +18,12 @@ export function sanitizeUrlAsFilename(
   let filenameBase = url;
   try {
     const urlObj = new URL(url);
-    filenameBase = `${urlObj.pathname}${urlObj.search}`;
+    const pathAndSearch = `${urlObj.pathname}${urlObj.search}`;
+    if (pathAndSearch === "/" || pathAndSearch === "") {
+      filenameBase = urlObj.hostname;
+    } else {
+      filenameBase = pathAndSearch;
+    }
   } catch (_error) {
     // If it's not a valid URL, use as-is
   }
