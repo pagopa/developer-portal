@@ -9,6 +9,7 @@ export async function parsePages(
   depth: number,
   maxDepth: number,
   parsedPages: Map<string, ParsedMetadata>,
+  scheduledPages: Set<string>,
   parsePageFn: (
     browser: Browser,
     url: string,
@@ -19,6 +20,7 @@ export async function parsePages(
   navigationTimeout = 30000,
 ): Promise<void> {
   const visitKey = buildVisitKey(node.url);
+  scheduledPages.delete(visitKey);
   if (parsedPages.has(visitKey) || depth > maxDepth) {
     return;
   }
@@ -84,12 +86,12 @@ export async function parsePages(
   } finally {
     if (page) await page.close();
   }
-  const scheduled = new Set<string>();
   const nextChildren: ParsedNode[] = [];
+  let newLinksCount = 0;
   for (const href of anchors) {
     const normalized = UrlWithoutAnchors(href);
     const visitCandidate = buildVisitKey(href);
-    if (parsedPages.has(visitCandidate) || scheduled.has(visitCandidate))
+    if (parsedPages.has(visitCandidate) || scheduledPages.has(visitCandidate))
       continue;
     const lowerNormalized = normalized.toLowerCase();
     if (baseHostToken && !lowerNormalized.includes(baseHostToken)) {
@@ -98,10 +100,19 @@ export async function parsePages(
     if (!isWithinScope(normalized, baseScope, baseHostToken)) {
       continue;
     }
-    scheduled.add(visitCandidate);
+    scheduledPages.add(visitCandidate);
+    newLinksCount += 1;
     nextChildren.push({ url: href });
   }
   node.children = nextChildren;
+  const totalKnown = parsedPages.size + scheduledPages.size;
+  console.log(
+    `Completed parsing of page ${
+      node.url
+    }. Found ${newLinksCount} new links. Progress: ${
+      parsedPages.size
+    }/${totalKnown} (${((parsedPages.size / totalKnown) * 100).toFixed(2)}%)`,
+  );
   if (!node.children || depth >= maxDepth) return;
   for (const child of node.children) {
     await parsePages(
@@ -110,6 +121,7 @@ export async function parsePages(
       depth + 1,
       maxDepth,
       parsedPages,
+      scheduledPages,
       parsePageFn,
       baseOrigin,
       baseScope,
