@@ -1,5 +1,11 @@
 # nextjs-website
 
+## 16.0.1
+
+### Patch Changes
+
+- c3c5642: Fix headers style for RapiDoc, remove blue separator lines
+
 ## 16.0.0
 
 ### Major Changes
