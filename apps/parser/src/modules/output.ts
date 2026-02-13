@@ -3,6 +3,7 @@ import { writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { ParsedMetadata } from "./types";
 import { sanitizeUrlAsFilename } from "../helpers/url-handling";
+import { BASE_HOST_TOKEN } from "../main";
 
 const FILENAME_LENGTH_THRESHOLD = 250;
 
@@ -14,9 +15,12 @@ export async function persistSnapshot(
   snapshot: ParsedMetadata,
   outputDirectory: string,
 ): Promise<void> {
-  const finalName = sanitizeUrlAsFilename(snapshot.url, {
+  let finalName = sanitizeUrlAsFilename(snapshot.url, {
     lengthThreshold: FILENAME_LENGTH_THRESHOLD,
   });
+  if (finalName === BASE_HOST_TOKEN) {
+    finalName = "index";
+  }
   await saveMetadata(outputDirectory, `${finalName}.json`, snapshot);
 }
 
