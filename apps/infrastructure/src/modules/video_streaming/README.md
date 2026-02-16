@@ -85,6 +85,5 @@ No modules.
 | <a name="output_athena_results_bucket_name"></a> [athena\_results\_bucket\_name](#output\_athena\_results\_bucket\_name) | The name of the S3 bucket where Athena query results are stored. |
 | <a name="output_athena_workgroup_name"></a> [athena\_workgroup\_name](#output\_athena\_workgroup\_name) | The name of the Athena workgroup for running queries. |
 | <a name="output_cloudfront_logs_bucket_name"></a> [cloudfront\_logs\_bucket\_name](#output\_cloudfront\_logs\_bucket\_name) | The name of the S3 bucket where CloudFront access logs are stored. |
-| <a name="output_ingest_metrics_endpoint"></a> [ingest\_metrics\_endpoint](#output\_ingest\_metrics\_endpoint) | Function url to post metrics for to viewer count. |
 | <a name="output_ivs_channel_details"></a> [ivs\_channel\_details](#output\_ivs\_channel\_details) | A map containing the details for each created IVS channel. |
 | <a name="output_s3_recording_bucket_name"></a> [s3\_recording\_bucket\_name](#output\_s3\_recording\_bucket\_name) | The name of the S3 bucket where all recordings will be stored. |
