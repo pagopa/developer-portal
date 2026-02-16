@@ -9,19 +9,12 @@ import * as dotenv from "dotenv";
 const DEFAULT_DEPTH = null;
 
 export function resolveEnv(): EnvConfig {
-  let baseUrl = process.env.URL?.trim();
-  let depth = process.env.DEPTH?.trim();
-  let vectorIndexName = process.env.CHB_INDEX_ID?.trim();
-  let validDomainVariants = process.env.VALID_DOMAIN_VARIANTS?.trim();
-  if (!baseUrl || !depth || !vectorIndexName) {
-    const parserHome = path.resolve(__dirname, "../../");
-    dotenv.config({ path: path.join(parserHome, ".env") });
-    baseUrl = baseUrl || process.env.URL?.trim();
-    depth = depth || process.env.DEPTH?.trim();
-    vectorIndexName = vectorIndexName || process.env.CHB_INDEX_ID?.trim();
-    validDomainVariants =
-      validDomainVariants || process.env.VALID_DOMAIN_VARIANTS?.trim();
-  }
+  const parserHome = path.resolve(__dirname, "../../");
+  dotenv.config({ path: path.join(parserHome, ".env") });
+  const baseUrl = process.env.URL?.trim();
+  const depth = process.env.DEPTH?.trim();
+  const vectorIndexName = process.env.CHB_INDEX_ID?.trim();
+  const validDomainVariants = process.env.VALID_DOMAIN_VARIANTS?.trim();
   if (!baseUrl) {
     throw new Error(
       "Missing required URL. Set URL in environment or .env file.",
