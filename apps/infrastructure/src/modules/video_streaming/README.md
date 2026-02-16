@@ -8,7 +8,6 @@
 
 | Name | Version |
 |------|---------|
-| <a name="provider_archive"></a> [archive](#provider\_archive) | n/a |
 | <a name="provider_aws"></a> [aws](#provider\_aws) | >= 6.28.0 |
 | <a name="provider_aws.us-east-1"></a> [aws.us-east-1](#provider\_aws.us-east-1) | >= 6.28.0 |
 | <a name="provider_random"></a> [random](#provider\_random) | n/a |
@@ -24,39 +23,27 @@ No modules.
 | [aws_acm_certificate.cdn_cert](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/acm_certificate) | resource |
 | [aws_acm_certificate_validation.cdn_cert_validation](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/acm_certificate_validation) | resource |
 | [aws_athena_database.cloudfront_logs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/athena_database) | resource |
-| [aws_athena_database.webinar_db](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/athena_database) | resource |
 | [aws_athena_named_query.create_cloudfront_logs_table](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/athena_named_query) | resource |
-| [aws_athena_named_query.create_webinar_count_table](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/athena_named_query) | resource |
 | [aws_athena_named_query.sample_cloudfront_queries](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/athena_named_query) | resource |
 | [aws_athena_workgroup.cloudfront_logs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/athena_workgroup) | resource |
-| [aws_athena_workgroup.webinar_analytics](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/athena_workgroup) | resource |
 | [aws_cloudfront_distribution.s3_distribution](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudfront_distribution) | resource |
 | [aws_cloudfront_origin_access_control.video_oac](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudfront_origin_access_control) | resource |
 | [aws_cloudfront_response_headers_policy.cors_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudfront_response_headers_policy) | resource |
 | [aws_cloudwatch_log_group.lambda_index_logs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_log_group) | resource |
 | [aws_cloudwatch_metric_alarm.lambda_errors](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_metric_alarm) | resource |
 | [aws_iam_policy.ivs_recording_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
-| [aws_iam_role.firehose_role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
 | [aws_iam_role.ivs_recording_role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
 | [aws_iam_role.ivs_video_processing_function](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
-| [aws_iam_role.lambda_role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
-| [aws_iam_role_policy.firehose_s3_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy) | resource |
 | [aws_iam_role_policy.ivs_video_processing_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy) | resource |
-| [aws_iam_role_policy.lambda_firehose_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy) | resource |
-| [aws_iam_role_policy.lambda_kinesis_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy) | resource |
 | [aws_iam_role_policy_attachment.ivs_recording_attach](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_ivs_channel.channels](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ivs_channel) | resource |
 | [aws_ivs_recording_configuration.main](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ivs_recording_configuration) | resource |
-| [aws_kinesis_firehose_delivery_stream.s3_delivery](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kinesis_firehose_delivery_stream) | resource |
-| [aws_lambda_function.ingest_lambda](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_function) | resource |
 | [aws_lambda_function.ivs_video_processing_function](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_function) | resource |
-| [aws_lambda_function_url.ingest_url](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_function_url) | resource |
 | [aws_lambda_permission.allow_s3_invoke_ivs_video_processing_function](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_permission) | resource |
 | [aws_route53_record.cdn_alias_record](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record) | resource |
 | [aws_route53_record.cert_validation](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record) | resource |
 | [aws_s3_bucket.athena_results](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket) | resource |
 | [aws_s3_bucket.cloudfront_logs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket) | resource |
-| [aws_s3_bucket.heartbeat_storage](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket) | resource |
 | [aws_s3_bucket.ivs_recordings](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket) | resource |
 | [aws_s3_bucket_acl.cloudfront_logs_acl](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_acl) | resource |
 | [aws_s3_bucket_lifecycle_configuration.athena_results_lifecycle](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_lifecycle_configuration) | resource |
@@ -74,7 +61,6 @@ No modules.
 | [aws_sns_topic_subscription.alerts](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/sns_topic_subscription) | resource |
 | [aws_ssm_parameter.strapi_api_key](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssm_parameter) | resource |
 | [random_id.suffix](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/id) | resource |
-| [archive_file.ingest_lambda_function](https://registry.terraform.io/providers/hashicorp/archive/latest/docs/data-sources/file) | data source |
 | [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
 | [aws_ivs_stream_key.channels](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ivs_stream_key) | data source |
 | [aws_route53_zone.selected](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/route53_zone) | data source |
@@ -99,6 +85,5 @@ No modules.
 | <a name="output_athena_results_bucket_name"></a> [athena\_results\_bucket\_name](#output\_athena\_results\_bucket\_name) | The name of the S3 bucket where Athena query results are stored. |
 | <a name="output_athena_workgroup_name"></a> [athena\_workgroup\_name](#output\_athena\_workgroup\_name) | The name of the Athena workgroup for running queries. |
 | <a name="output_cloudfront_logs_bucket_name"></a> [cloudfront\_logs\_bucket\_name](#output\_cloudfront\_logs\_bucket\_name) | The name of the S3 bucket where CloudFront access logs are stored. |
-| <a name="output_ingest_metrics_endpoint"></a> [ingest\_metrics\_endpoint](#output\_ingest\_metrics\_endpoint) | Function url to post metrics for to viewer count. |
 | <a name="output_ivs_channel_details"></a> [ivs\_channel\_details](#output\_ivs\_channel\_details) | A map containing the details for each created IVS channel. |
 | <a name="output_s3_recording_bucket_name"></a> [s3\_recording\_bucket\_name](#output\_s3\_recording\_bucket\_name) | The name of the S3 bucket where all recordings will be stored. |
