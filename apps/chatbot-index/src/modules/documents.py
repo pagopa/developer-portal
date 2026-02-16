@@ -643,7 +643,7 @@ def get_structured_docs(parent_folder: str, bucket_name: str) -> List[Document]:
                     id_=filename,
                     text=s3_content.get("text", ""),
                     metadata={
-                        "filepath": json_file_path,
+                        "filepath": s3_content.get("url", ""),
                         "language": s3_content.get("language", ""),
                         "lastmod": s3_content.get("lastmod", ""),
                         "title": s3_content.get("title", ""),
