@@ -25,6 +25,7 @@ export const extractDocumentMetadata = (): ParsedMetadata => {
       try {
         return normalizeText(frame.contentDocument?.body?.innerText ?? "");
       } catch (_error) {
+        console.warn("Failed to access iframe content:", _error);
         return "";
       }
     })

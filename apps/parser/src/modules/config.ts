@@ -41,9 +41,15 @@ export function resolveEnv(): EnvConfig {
     try {
       parsedValidDomainVariants = JSON.parse(validDomainVariants);
       if (!Array.isArray(parsedValidDomainVariants)) {
+        console.warn(
+          "Invalid validDomainVariants format: expected an array. Falling back to empty array.",
+        );
         parsedValidDomainVariants = [];
       }
     } catch (_error) {
+      console.warn(
+        "Failed to parse validDomainVariants as JSON. Falling back to empty array.",
+      );
       parsedValidDomainVariants = [];
     }
   }
