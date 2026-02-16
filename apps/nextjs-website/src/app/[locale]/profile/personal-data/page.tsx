@@ -15,6 +15,7 @@ import PasswordFormWrapper from '@/components/organisms/Auth/PasswordFormWrapper
 import { ProfileDataCard } from '@/components/molecules/ProfileDataCard/ProfileDataCard';
 import EmailFormWrapper from '@/components/organisms/EmailFormWrapper/EmailFormWrapper';
 import { companyRoles } from '@/config';
+import { SUPPORTED_LOCALES } from '@/locales';
 
 const PersonalData = () => {
   const t = useTranslations();
@@ -25,8 +26,19 @@ const PersonalData = () => {
   const companyRolesValues = useMemo(
     () =>
       companyRoles.map((role) => ({
-        title: t('auth.signUp.companyRoles.' + role),
+        title: t(`auth.signUp.companyRoles.${role}`),
         value: role,
+      })),
+    [t]
+  );
+
+  const preferredLanguageValues = useMemo(
+    () =>
+      SUPPORTED_LOCALES.map((locale) => ({
+        title: t(
+          `profile.personalData.commsPreferredLanguages.${locale.langCode}`
+        ),
+        value: locale.langCode,
       })),
     [t]
   );
@@ -38,6 +50,7 @@ const PersonalData = () => {
   useEffect(() => {
     setProfileDataSectionItems([
       {
+        id: 'name',
         title: t('profile.personalData.fields.name'),
         value: user?.attributes.given_name,
         editable: true,
@@ -45,6 +58,7 @@ const PersonalData = () => {
         required: true,
       },
       {
+        id: 'surname',
         title: t('profile.personalData.fields.surname'),
         value: user?.attributes.family_name,
         editable: true,
@@ -52,6 +66,7 @@ const PersonalData = () => {
         required: true,
       },
       {
+        id: 'job_role',
         title: t('profile.personalData.fields.role'),
         value: user?.attributes['custom:job_role'],
         editable: true,
@@ -59,6 +74,7 @@ const PersonalData = () => {
         required: false,
       },
       {
+        id: 'company',
         title: t('profile.personalData.fields.sector'),
         value: user?.attributes['custom:company_type'],
         editable: true,
@@ -66,8 +82,17 @@ const PersonalData = () => {
         values: companyRolesValues,
         required: false,
       },
+      {
+        id: 'preferred_language',
+        title: t('profile.personalData.fields.commsPreferredLanguage'),
+        value: user?.attributes['custom:preferred_language'],
+        editable: true,
+        type: 'select',
+        values: preferredLanguageValues,
+        required: false,
+      },
     ]);
-  }, [user?.attributes, companyRolesValues, t]);
+  }, [user?.attributes, companyRolesValues, preferredLanguageValues, t]);
 
   const [editItem, setEditItem] = useState<InfoCardItemProps | null>(null);
   const [showConfirmationModal, setShowConfirmationModal] = useState<
@@ -200,6 +225,9 @@ const PersonalData = () => {
                   'custom:job_role': items[2].value || '',
                   'custom:company_type':
                     items[3].value || user.attributes['custom:company_type'],
+                  'custom:preferred_language':
+                    items[4]?.value ||
+                    user.attributes['custom:preferred_language'],
                 },
               },
               () => {

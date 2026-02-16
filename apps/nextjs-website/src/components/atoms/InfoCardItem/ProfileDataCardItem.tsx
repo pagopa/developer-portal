@@ -14,6 +14,7 @@ import { useTranslations } from 'next-intl';
 import { ReactNode } from 'react';
 
 export type ProfileDataCardItemProps = {
+  id: string;
   title: string;
   value?: string;
   valueFallback?: ReactNode;
@@ -70,7 +71,7 @@ export const ProfileDataCardItem = (
                   },
                 }}
                 variant='outlined'
-                id={infoCardItem.title}
+                id={infoCardItem.id}
                 type={'text'}
                 onChange={({ target: { value } }) => {
                   if (infoCardItem.onValue) {
@@ -85,7 +86,7 @@ export const ProfileDataCardItem = (
           ) : (
             <>
               <InputLabel
-                id={'company-field'}
+                id={`${infoCardItem.id}-field`}
                 sx={{
                   backgroundColor: 'white',
                   top: '-8px',
@@ -100,8 +101,8 @@ export const ProfileDataCardItem = (
                 {infoCardItem.required ? '*' : ''}
               </InputLabel>
               <Select
-                labelId='company-field'
-                id='company-field-select'
+                labelId={`${infoCardItem.id}-field`}
+                id={`${infoCardItem.id}-field-select`}
                 value={
                   infoCardItem.values.find(
                     ({ value }) => value === infoCardItem.value
