@@ -42,6 +42,7 @@ Create a `.env` file in the `apps/parser` directory with the following content:
 URL=https://example.com
 CHB_INDEX_ID=name_of_your_choice
 # DEPTH=2  # Optional, defaults to null
+# VALID_DOMAIN_VARIANTS # Optional, defaults to null
 ```
 
 #### b) Using command line variables
@@ -58,11 +59,16 @@ npm run parse
 
 ---
 
+
 ## Environment Variables
 
 - **`URL`** (required): The root page to start parsing from.
 - **`CHB_INDEX_ID`** (required): The base directory for storing parsed data. Output will be saved as `<CHB_INDEX_ID>/parsing/<sanitized(baseUrl)>/`.
 - **`DEPTH`** (optional, default: `2`): Maximum recursion depth for crawling links.
+- **`VALID_DOMAIN_VARIANTS`** (optional): Restrict parsing to specific domain variants (subdomains) of the base URL. Provide a JSON array of allowed subdomain tokens. For example, if `URL="https://example.com"`:
+	- `VALID_DOMAIN_VARIANTS='["subdomain1", "subdomain2"]'` allows parsing `subdomain1.example.com` and `subdomain2.example.com`.
+	- Domains like `subdomain3.example.com` will be skipped unless `subdomain3` is listed.
+	- This variable controls which subdomains are included in the parsing scope, helping to avoid crawling unrelated or unwanted subdomains.
 
 **Note:** The parser will first look for these variables in the environment. If not found, it will load them from `.env` in the `apps/parser` directory.
 
