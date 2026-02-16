@@ -51,11 +51,11 @@ export type ProductGuidePageProps = {
 export async function generateMetadata(props: {
   params: Promise<Params>;
 }): Promise<Metadata> {
-  const params = await props.params;
+  const { locale, productGuidePage, productSlug } = await props.params;
   const guidePageProps = await getGuidePage(
-    params?.productGuidePage ?? [''],
-    params?.locale,
-    params?.productSlug
+    productGuidePage ?? [''],
+    locale,
+    productSlug
   );
 
   if (guidePageProps?.seo) {
