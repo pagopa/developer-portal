@@ -5,11 +5,7 @@ import { ensureDirectory } from "./modules/output";
 import { handleError } from "./modules/errors";
 import { exploreAndParsePages } from "./modules/parser";
 import { ParsedNode, ParsedMetadata } from "./modules/types";
-import {
-  RemoveAnchorsFromUrl,
-  buildVisitKey,
-  setBaseScope,
-} from "./helpers/url-handling";
+import { RemoveAnchorsFromUrl, buildVisitKey } from "./helpers/url-handling";
 import { assertReachable } from "./modules/network";
 
 puppeteer.use(StealthPlugin());
@@ -25,8 +21,6 @@ export const BASE_HOST_TOKEN = new URL(env.baseUrl).hostname
 export const VALID_DOMAIN_VARIANTS = env.validDomainVariants || [];
 
 let BASE_URL = env.baseUrl;
-let BASE_SCOPE = RemoveAnchorsFromUrl(env.baseUrl);
-setBaseScope(BASE_SCOPE);
 
 void (async () => {
   try {
@@ -52,12 +46,18 @@ void (async () => {
     } finally {
       if (page) await page.close();
     }
-    BASE_SCOPE = RemoveAnchorsFromUrl(finalUrl);
-    setBaseScope(BASE_SCOPE);
+    const BASE_SCOPE = RemoveAnchorsFromUrl(finalUrl);
     BASE_URL = finalUrl;
     const root: ParsedNode = { url: BASE_URL };
     scheduledPages.add(buildVisitKey(BASE_URL));
-    await exploreAndParsePages(browser, root, 0, parsedPages, scheduledPages);
+    await exploreAndParsePages(
+      browser,
+      root,
+      0,
+      parsedPages,
+      scheduledPages,
+      BASE_SCOPE,
+    );
     await browser.close();
     console.log(`Parsing complete! Data saved to ${env.outputDirectory}`);
   } catch (error) {

@@ -8,14 +8,9 @@ const WINDOWS_RESERVED_RE = /^(con|prn|aux|nul|com[0-9]|lpt[0-9])$/i;
 const WINDOWS_TRAILING_RE = /[\. ]+$/;
 const DEFAULT_REPLACEMENT = "-";
 
-let BASE_SCOPE: string;
-
-export function setBaseScope(scope: string): void {
-  BASE_SCOPE = scope;
-}
-
 export function sanitizeUrlAsFilename(
   url: string,
+  base_scope: string,
   options?: SanitizeOptions,
 ): string {
   if (!url) {
@@ -25,10 +20,10 @@ export function sanitizeUrlAsFilename(
     return DEFAULT_REPLACEMENT;
   }
   let filenameBase = url;
-  if (filenameBase === BASE_SCOPE) {
+  if (filenameBase === base_scope) {
     filenameBase = new URL(filenameBase).hostname.replace(/^www\./, "");
   } else {
-    const pathAndSearch = url.replace(BASE_SCOPE, "").replace(/^\/+/, "");
+    const pathAndSearch = url.replace(base_scope, "").replace(/^\/+/, "");
     if (!pathAndSearch || pathAndSearch === "/") {
       filenameBase = url.split("/").filter(Boolean).pop() || url;
     } else {
@@ -47,7 +42,11 @@ export function sanitizeUrlAsDirectoryName(
   return applySanitization(url, filenameBase, options);
 }
 
-function applySanitization(original_url:string, input: string, options?: SanitizeOptions): string {
+function applySanitization(
+  original_url: string,
+  input: string,
+  options?: SanitizeOptions,
+): string {
   const replacement = validReplacementOrDefault(
     options?.replacement ?? DEFAULT_REPLACEMENT,
   );
@@ -69,7 +68,10 @@ function applySanitization(original_url:string, input: string, options?: Sanitiz
   ) {
     const digest = crypto.createHash("sha1").update(original_url).digest();
     const hash = digest.subarray(0, 6).toString("base64url");
-    const prefix = trimmedName.slice(0, options.lengthThreshold - (hash.length + 1));
+    const prefix = trimmedName.slice(
+      0,
+      options.lengthThreshold - (hash.length + 1),
+    );
     return `${prefix}_${hash}`;
   }
   return trimmedName;
@@ -136,15 +138,16 @@ export function deriveSubPath(
 
 export function isWithinScope(
   url: string,
+  base_scope: string,
   validDomainVariants: string[] = [],
 ): boolean {
-  if (!BASE_SCOPE) {
+  if (!base_scope) {
     return true;
   }
   // TODO: This function could be generalized to better handle edge cases. For now it performs a basic check to see if the URL is within the same domain or valid subdomain variants as the scope.
   try {
     const urlObj = new URL(url);
-    const scopeObj = new URL(BASE_SCOPE);
+    const scopeObj = new URL(base_scope);
     const pathname = urlObj.pathname.toLowerCase();
     const fileExtensionRegex = /\.[a-z0-9]+$/;
     if (fileExtensionRegex.test(pathname)) {
