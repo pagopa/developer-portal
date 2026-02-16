@@ -84,8 +84,7 @@ export const recordingEndedS3EventHandler = async (event: S3Event) => {
       method: 'PUT',
       body: {
         data: {
-          playerSrc: newPlayerSrc,
-          cs_uri_query: webinar.attributes.slug,
+          playerSrc: `${newPlayerSrc}?cs_uri_query=${webinar.attributes.slug}`,
         },
       },
     });
