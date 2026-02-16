@@ -35,35 +35,7 @@ export function sanitizeUrlAsFilename(
       filenameBase = pathAndSearch;
     }
   }
-
-  const replacement = validReplacementOrDefault(
-    options?.replacement ?? DEFAULT_REPLACEMENT,
-  );
-  let sanitized = filenameBase
-    .replace(/\/$/, "")
-    .replace(ILLEGAL_RE, replacement)
-    .replace(CONTROL_RE, replacement)
-    .replace(RESERVED_RE, replacement)
-    .replace(WINDOWS_RESERVED_RE, replacement)
-    .replace(WINDOWS_TRAILING_RE, replacement)
-    .trim();
-  if (sanitized.length === 0) {
-    return replacement;
-  }
-  const trimmedName = sanitized.replace(/^[-_]+/, "") || sanitized;
-  if (
-    options?.lengthThreshold &&
-    trimmedName.length > options.lengthThreshold
-  ) {
-    const hash = crypto
-      .createHash("sha1")
-      .update(url)
-      .digest("hex")
-      .slice(0, 9);
-    const prefix = trimmedName.slice(0, options.lengthThreshold - 10);
-    return `${prefix}_${hash}`;
-  }
-  return trimmedName;
+  return applySanitization(url, filenameBase, options);
 }
 
 export function sanitizeUrlAsDirectoryName(
@@ -72,10 +44,14 @@ export function sanitizeUrlAsDirectoryName(
 ): string {
   let filenameBase = url;
   filenameBase = filenameBase.replace(/^(https?:\/\/)?(www\.)?/, "");
+  return applySanitization(url, filenameBase, options);
+}
+
+function applySanitization(original_url:string, input: string, options?: SanitizeOptions): string {
   const replacement = validReplacementOrDefault(
     options?.replacement ?? DEFAULT_REPLACEMENT,
   );
-  let sanitized = filenameBase
+  let sanitized = input
     .replace(/\/$/, "")
     .replace(ILLEGAL_RE, replacement)
     .replace(CONTROL_RE, replacement)
@@ -91,12 +67,9 @@ export function sanitizeUrlAsDirectoryName(
     options?.lengthThreshold &&
     trimmedName.length > options.lengthThreshold
   ) {
-    const hash = crypto
-      .createHash("sha1")
-      .update(url)
-      .digest("hex")
-      .slice(0, 9);
-    const prefix = trimmedName.slice(0, options.lengthThreshold - 10);
+    const digest = crypto.createHash("sha1").update(original_url).digest();
+    const hash = digest.subarray(0, 6).toString("base64url");
+    const prefix = trimmedName.slice(0, options.lengthThreshold - (hash.length + 1));
     return `${prefix}_${hash}`;
   }
   return trimmedName;
