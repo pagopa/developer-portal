@@ -169,6 +169,8 @@ services:
     image: motoserver/moto:5.1.14
     environment:
       - MOTO_PORT=3002
+    ports:
+      - "3002:3002"
 
   langfuse-worker:
     image: docker.io/langfuse/langfuse-worker:3.115
