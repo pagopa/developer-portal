@@ -47,12 +47,6 @@ export async function exploreAndParsePages(
   );
   if (!metadata) return;
   parsedPages.set(visitKey, metadata);
-  node.title = metadata.title;
-  node.bodyText = metadata.bodyText;
-  node.lang = metadata.lang;
-  node.keywords = metadata.keywords;
-  node.datePublished = metadata.datePublished;
-  node.lastModified = metadata.lastModified;
   let page;
   let anchors: string[] = [];
   try {
