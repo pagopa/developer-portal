@@ -10,7 +10,7 @@ const DEFAULT_REPLACEMENT = "-";
 
 export function sanitizeUrlAsFilename(
   url: string,
-  base_scope: string,
+  baseScope: string,
   options?: SanitizeOptions,
 ): string {
   if (!url) {
@@ -20,10 +20,10 @@ export function sanitizeUrlAsFilename(
     return DEFAULT_REPLACEMENT;
   }
   let filenameBase = url;
-  if (filenameBase === base_scope) {
+  if (filenameBase === baseScope) {
     filenameBase = new URL(filenameBase).hostname.replace(/^www\./, "");
   } else {
-    const pathAndSearch = url.replace(base_scope, "").replace(/^\/+/, "");
+    const pathAndSearch = url.replace(baseScope, "").replace(/^\/+/, "");
     if (!pathAndSearch || pathAndSearch === "/") {
       filenameBase = url.split("/").filter(Boolean).pop() || url;
     } else {
@@ -138,16 +138,16 @@ export function deriveSubPath(
 
 export function isWithinScope(
   url: string,
-  base_scope: string,
+  baseScope: string,
   validDomainVariants: string[] = [],
 ): boolean {
-  if (!base_scope) {
+  if (!baseScope) {
     return true;
   }
   // TODO: This function could be generalized to better handle edge cases. For now it performs a basic check to see if the URL is within the same domain or valid subdomain variants as the scope.
   try {
     const urlObj = new URL(url);
-    const scopeObj = new URL(base_scope);
+    const scopeObj = new URL(baseScope);
     const pathname = urlObj.pathname.toLowerCase();
     const fileExtensionRegex = /\.[a-z0-9]+$/;
     if (fileExtensionRegex.test(pathname)) {

@@ -13,10 +13,10 @@ export function ensureDirectory(dir: string) {
 
 export async function persistSnapshot(
   snapshot: ParsedMetadata,
-  base_scope: string,
+  baseScope: string,
   outputDirectory: string,
 ): Promise<void> {
-  let finalName = sanitizeUrlAsFilename(snapshot.url, base_scope, {
+  let finalName = sanitizeUrlAsFilename(snapshot.url, baseScope, {
     lengthThreshold: FILENAME_LENGTH_THRESHOLD,
   });
   if (finalName.replace(/^www\./, "") === BASE_HOST_TOKEN) {

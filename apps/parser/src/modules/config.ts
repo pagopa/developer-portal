@@ -12,7 +12,7 @@ export function resolveEnv(): EnvConfig {
   let baseUrl = process.env.URL?.trim();
   let depth = process.env.DEPTH?.trim();
   let vectorIndexName = process.env.CHB_INDEX_ID?.trim();
-  let validDomainVariants = process.env.validDomainVariants?.trim();
+  let validDomainVariants = process.env.VALID_DOMAIN_VARIANTS?.trim();
   if (!baseUrl || !depth || !vectorIndexName) {
     const parserHome = path.resolve(__dirname, "../../");
     dotenv.config({ path: path.join(parserHome, ".env") });
@@ -20,7 +20,7 @@ export function resolveEnv(): EnvConfig {
     depth = depth || process.env.DEPTH?.trim();
     vectorIndexName = vectorIndexName || process.env.CHB_INDEX_ID?.trim();
     validDomainVariants =
-      validDomainVariants || process.env.validDomainVariants?.trim();
+      validDomainVariants || process.env.VALID_DOMAIN_VARIANTS?.trim();
   }
   if (!baseUrl) {
     throw new Error(
@@ -42,13 +42,13 @@ export function resolveEnv(): EnvConfig {
       parsedValidDomainVariants = JSON.parse(validDomainVariants);
       if (!Array.isArray(parsedValidDomainVariants)) {
         console.warn(
-          "Invalid validDomainVariants format: expected an array. Falling back to empty array.",
+          "Invalid VALID_DOMAIN_VARIANTS format: expected an array. Falling back to empty array.",
         );
         parsedValidDomainVariants = [];
       }
     } catch (_error) {
       console.warn(
-        "Failed to parse validDomainVariants as JSON. Falling back to empty array.",
+        "Failed to parse VALID_DOMAIN_VARIANTS as JSON. Falling back to empty array.",
       );
       parsedValidDomainVariants = [];
     }

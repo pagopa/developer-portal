@@ -29,7 +29,7 @@ export async function exploreAndParsePages(
   depth: number,
   parsedPages: Map<string, ParsedMetadata>,
   scheduledPages: Set<string>,
-  base_scope: string,
+  baseScope: string,
 ): Promise<void> {
   const visitKey = buildVisitKey(node.url);
   scheduledPages.delete(visitKey);
@@ -37,13 +37,13 @@ export async function exploreAndParsePages(
     return;
   }
   const normalizedUrl = RemoveAnchorsFromUrl(node.url);
-  if (!isWithinScope(normalizedUrl, base_scope, VALID_DOMAIN_VARIANTS)) {
+  if (!isWithinScope(normalizedUrl, baseScope, VALID_DOMAIN_VARIANTS)) {
     return;
   }
   const metadata = await generatePageParsedMetadata(
     browser,
     node.url,
-    base_scope,
+    baseScope,
   );
   if (!metadata) return;
   parsedPages.set(visitKey, metadata);
@@ -113,7 +113,7 @@ export async function exploreAndParsePages(
     if (BASE_HOST_TOKEN && !lowerNormalized.includes(BASE_HOST_TOKEN)) {
       continue;
     }
-    if (!isWithinScope(normalized, base_scope, VALID_DOMAIN_VARIANTS)) {
+    if (!isWithinScope(normalized, baseScope, VALID_DOMAIN_VARIANTS)) {
       continue;
     }
     scheduledPages.add(visitCandidate);
@@ -137,7 +137,7 @@ export async function exploreAndParsePages(
       depth + 1,
       parsedPages,
       scheduledPages,
-      base_scope,
+      baseScope,
     );
   }
 }
@@ -145,7 +145,7 @@ export async function exploreAndParsePages(
 async function generatePageParsedMetadata(
   browser: Browser,
   url: string,
-  base_scope: string,
+  baseScope: string,
 ): Promise<ParsedMetadata | null> {
   let page: Page | undefined;
   try {
@@ -157,7 +157,7 @@ async function generatePageParsedMetadata(
     await expandInteractiveSections(page);
     const rawMetadata = await page.evaluate(extractDocumentMetadata);
     const snapshot = serializeMetadata(rawMetadata);
-    await persistSnapshot(snapshot, base_scope, OUTPUT_DIRECTORY);
+    await persistSnapshot(snapshot, baseScope, OUTPUT_DIRECTORY);
     return snapshot;
   } catch (error) {
     console.error(`Error while parsing ${url}:`, (error as Error).message);
