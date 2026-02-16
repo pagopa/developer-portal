@@ -12,7 +12,6 @@ import {
   MAX_DEPTH,
   VALID_DOMAIN_VARIANTS,
   BASE_HOST_TOKEN,
-  BASE_SCOPE,
 } from "../main";
 import {
   extractDocumentMetadata,
@@ -37,7 +36,7 @@ export async function exploreAndParsePages(
     return;
   }
   const normalizedUrl = RemoveAnchorsFromUrl(node.url);
-  if (!isWithinScope(normalizedUrl, BASE_SCOPE, VALID_DOMAIN_VARIANTS)) {
+  if (!isWithinScope(normalizedUrl, VALID_DOMAIN_VARIANTS)) {
     return;
   }
   const metadata = await generatePageParsedMetadata(browser, node.url);
@@ -109,7 +108,7 @@ export async function exploreAndParsePages(
     if (BASE_HOST_TOKEN && !lowerNormalized.includes(BASE_HOST_TOKEN)) {
       continue;
     }
-    if (!isWithinScope(normalized, BASE_SCOPE, VALID_DOMAIN_VARIANTS)) {
+    if (!isWithinScope(normalized, VALID_DOMAIN_VARIANTS)) {
       continue;
     }
     scheduledPages.add(visitCandidate);

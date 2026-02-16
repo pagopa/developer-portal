@@ -163,16 +163,20 @@ export function deriveSubPath(
 
 export function isWithinScope(
   url: string,
-  scope: string,
   validDomainVariants: string[] = [],
 ): boolean {
-  if (!scope) {
+  if (!BASE_SCOPE) {
     return true;
   }
   // TODO: This function could be generalized to better handle edge cases. For now it performs a basic check to see if the URL is within the same domain or valid subdomain variants as the scope.
   try {
     const urlObj = new URL(url);
-    const scopeObj = new URL(scope);
+    const scopeObj = new URL(BASE_SCOPE);
+    const pathname = urlObj.pathname.toLowerCase();
+    const fileExtensionRegex = /\.[a-z0-9]+$/;
+    if (fileExtensionRegex.test(pathname)) {
+      return false;
+    }
     const urlDomain = urlObj.hostname.replace(/^www\./, "");
     const scopeDomain = scopeObj.hostname.replace(/^www\./, "");
     if (urlDomain === scopeDomain) {
@@ -192,6 +196,7 @@ export function isWithinScope(
     }
     return false;
   } catch (_error) {
+    console.warn(`Failed to check if URL is within scope: ${url}`, _error);
     return false;
   }
 }
