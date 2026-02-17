@@ -12,15 +12,16 @@ import {
   MAX_DEPTH,
   VALID_DOMAIN_VARIANTS,
   BASE_HOST_TOKEN,
+  REQUEST_TIMEOUT_MS,
 } from "../main";
 import {
   extractDocumentMetadata,
   serializeMetadata,
 } from "../helpers/metadata-handling";
 
-const NAVIGATION_TIMEOUT_MS = 30_000;
 const PAGE_NAVIGATION_OPTIONS = {
   waitUntil: "networkidle2" as const,
+  timeout: REQUEST_TIMEOUT_MS,
 };
 
 export async function exploreAndParsePages(
@@ -53,7 +54,6 @@ export async function exploreAndParsePages(
     page = await browser.newPage();
     await page.goto(node.url, {
       ...PAGE_NAVIGATION_OPTIONS,
-      timeout: NAVIGATION_TIMEOUT_MS,
     });
     await expandInteractiveSections(page);
     anchors = (await page.evaluate((allowedToken: string) => {
@@ -145,8 +145,7 @@ async function generatePageParsedMetadata(
   try {
     page = await browser.newPage();
     await page.goto(url, {
-      waitUntil: "networkidle2",
-      timeout: NAVIGATION_TIMEOUT_MS,
+      ...PAGE_NAVIGATION_OPTIONS,
     });
     await expandInteractiveSections(page);
     const rawMetadata = await page.evaluate(extractDocumentMetadata);

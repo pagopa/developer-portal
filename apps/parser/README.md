@@ -41,6 +41,7 @@ URL='https://example.com'
 CHB_INDEX_ID='name_of_your_choice'
 # DEPTH=2  # Optional, defaults to null
 # VALID_DOMAIN_VARIANTS='["subdomain1", "subdomain2"]' # Optional, defaults to []
+# PUBLIC_PARSER_REQUEST_TIMEOUT_MS=30000 # Optional, defaults to 10000
 ```
 
 ### 2. Run the Parser
@@ -63,7 +64,7 @@ Set the following environment variables to control the parser’s behavior:
 	- `VALID_DOMAIN_VARIANTS='["subdomain1", "subdomain2"]'` allows parsing `subdomain1.example.com` and `subdomain2.example.com`.
 	- Domains like `subdomain3.example.com` will be skipped unless `subdomain3` is listed.
 	- This variable controls which subdomains are included in the parsing scope, helping to avoid crawling unrelated or unwanted subdomains.
-
+- **`PUBLIC_PARSER_REQUEST_TIMEOUT_MS`** (optional, default: 10000): This variable controls how long (in milliseconds) the parser will wait for a request to complete before timing out and terminating the operation.
 ---
 
 ## Output Structure

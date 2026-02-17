@@ -1,4 +1,4 @@
-const REQUEST_TIMEOUT_MS = 10_000;
+import { REQUEST_TIMEOUT_MS } from "../main";
 
 export async function assertReachable(
   url: string,

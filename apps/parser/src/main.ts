@@ -15,6 +15,7 @@ const parsedPages = new Map<string, ParsedMetadata>();
 const scheduledPages = new Set<string>();
 export const OUTPUT_DIRECTORY = env.outputDirectory;
 export const MAX_DEPTH = env.maxDepth;
+export const REQUEST_TIMEOUT_MS = env.requestTimeoutMs;
 export const BASE_HOST_TOKEN = new URL(env.baseUrl).hostname
   .replace(/^www\./, "")
   .toLowerCase();
@@ -33,7 +34,7 @@ void (async () => {
       page = await browser.newPage();
       const response = await page.goto(env.baseUrl, {
         waitUntil: "networkidle2",
-        timeout: 30_000,
+        timeout: REQUEST_TIMEOUT_MS,
       });
       if (response) {
         finalUrl = response.url();

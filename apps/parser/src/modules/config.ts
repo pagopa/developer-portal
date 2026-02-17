@@ -7,6 +7,7 @@ import {
 import * as dotenv from "dotenv";
 
 const DEFAULT_DEPTH = null;
+const DEFAULT_REQUEST_TIMEOUT_MS = 10_000;
 
 export function resolveEnv(): EnvConfig {
   const parserHome = path.resolve(__dirname, "../../");
@@ -20,6 +21,11 @@ export function resolveEnv(): EnvConfig {
       "Missing required URL. Set URL in environment or .env file.",
     );
   }
+  const requestTimeoutMs = Number.parseInt(
+    process.env.PUBLIC_PARSER_REQUEST_TIMEOUT_MS ??
+      `${DEFAULT_REQUEST_TIMEOUT_MS}`,
+    10,
+  );
   const sanitizedBaseUrl = RemoveAnchorsFromUrl(baseUrl);
   const parsedDepth = Number.parseInt(depth ?? `${DEFAULT_DEPTH}`, 10);
   const maxDepth = Number.isNaN(parsedDepth)
@@ -51,6 +57,7 @@ export function resolveEnv(): EnvConfig {
     sanitizedBaseUrl,
     outputDirectory,
     maxDepth,
+    requestTimeoutMs,
     validDomainVariants: parsedValidDomainVariants,
   };
 }

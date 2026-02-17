@@ -4,6 +4,7 @@ export type EnvConfig = {
   readonly outputDirectory: string;
   readonly maxDepth: number | null;
   readonly validDomainVariants?: string[];
+  readonly requestTimeoutMs: number;
 };
 
 export type SanitizeOptions = {
