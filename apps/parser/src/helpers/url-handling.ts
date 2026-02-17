@@ -13,12 +13,6 @@ export function sanitizeUrlAsFilename(
   baseScope: string,
   options?: SanitizeOptions,
 ): string {
-  if (!url) {
-    console.warn(
-      `Missing input url, sanitizing as default "${DEFAULT_REPLACEMENT}"`,
-    );
-    return DEFAULT_REPLACEMENT;
-  }
   let filenameBase = url;
   if (filenameBase === baseScope) {
     filenameBase = new URL(filenameBase).hostname.replace(/^www\./, "");
