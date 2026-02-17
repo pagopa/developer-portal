@@ -46,6 +46,10 @@ export function parseUrlsFromMarkdown(
       '"' + (match[2] || '') + '"',
       '"' + replace + '"'
     );
+    updatedFileContent = updatedFileContent.replaceAll(
+      "'" + (match[2] || '') + "'",
+      "'" + replace + "'"
+    );
   }
   if (allMatches.length > 0) {
     console.log('Replaced URLs in file: ', filePath || '');
@@ -103,11 +107,6 @@ export function replaceUrl(
 
   // Skip processing for very short names (likely not valid guide names)
   if (name.length <= 1) {
-    console.log(
-      '======================= SKIPPING ',
-      name.length,
-      ' name too short'
-    );
     return value;
   }
   const perfectMatch =

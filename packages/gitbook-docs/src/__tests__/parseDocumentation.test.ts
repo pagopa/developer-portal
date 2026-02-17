@@ -14,8 +14,9 @@ const UrlParsingMetadata = {
       path: 'guide-with-hashtag/this-will-be-parsed',
       url: 'parsed-url-with-hashtag',
     },
-    { path: 'do-not-parse', url: 'https://www.external-link.com' },
-    { path: 'must-parse-this', url: 'https://app.gitbook.com' },
+    { path: 'http://localhost:3000/some-doc', url: 'parsed-localhost' },
+    { path: 'https://www.external-link.com', url: 'do-not-parse' },
+    { path: 'https://app.gitbook.com', url: 'must-parse-this' },
   ],
 };
 
@@ -60,6 +61,76 @@ describe('parseUrlsFromMarkdown', () => {
     );
     expect(res).toStrictEqual(
       'this is a test string [gitbook-link](must-parse-this)'
+    );
+  });
+
+  it('should parse html anchor tags with double quotes', () => {
+    const res = parseUrlsFromMarkdown(
+      'Text <a href="this-is-a-test.md">link</a> text',
+      UrlParsingMetadata
+    );
+    expect(res).toStrictEqual('Text <a href="parsed-url">link</a> text');
+  });
+
+  it('should parse html anchor tags with single quotes', () => {
+    const res = parseUrlsFromMarkdown(
+      "Text <a href='this-is-a-test.md'>link</a> text",
+      UrlParsingMetadata
+    );
+    expect(res).toStrictEqual("Text <a href='parsed-url'>link</a> text");
+  });
+
+  it('should prioritize the correct match based on filePath context', () => {
+    const res = parseUrlsFromMarkdown(
+      'Check [this link](parse-this.md)',
+      UrlParsingMetadata,
+      [],
+      'parent/current-file.md'
+    );
+    expect(res).toStrictEqual('Check [this link](parsed-url)');
+  });
+
+  it('should resolve to the other parent based on filePath context', () => {
+    const res = parseUrlsFromMarkdown(
+      'Check [this link](parse-this.md)',
+      UrlParsingMetadata,
+      [],
+      'other-parent/current-file.md'
+    );
+    expect(res).toStrictEqual('Check [this link](different-parsed-url)');
+  });
+
+  // 3. TEST PER LOCALHOST E ECCEZIONI
+  it('should parse localhost links as internal links (allowing processing)', () => {
+    const res = parseUrlsFromMarkdown(
+      'Test [local](http://localhost:3000/some-doc)',
+      UrlParsingMetadata
+    );
+    expect(res).toStrictEqual('Test [local](parsed-localhost)');
+  });
+
+  // 4. TEST PER MENTIONS E PULIZIA
+  it('should clean up "mention" suffix and parse correctly', () => {
+    // Il codice fa .replace(' "mention"', '')
+    const res = parseUrlsFromMarkdown(
+      'User [test](this-is-a-test.md "mention")',
+      UrlParsingMetadata
+    );
+    expect(res).toStrictEqual('User [test](parsed-url)');
+  });
+
+  it('should ignore very short filenames (<= 1 char)', () => {
+    const res = parseUrlsFromMarkdown('Check [a](a.md)', UrlParsingMetadata);
+    expect(res).toStrictEqual('Check [a](a.md)');
+  });
+
+  it('should replace all occurrences of the same link', () => {
+    const res = parseUrlsFromMarkdown(
+      '[link](this-is-a-test.md) and again [link](this-is-a-test.md)',
+      UrlParsingMetadata
+    );
+    expect(res).toStrictEqual(
+      '[link](parsed-url) and again [link](parsed-url)'
     );
   });
 
