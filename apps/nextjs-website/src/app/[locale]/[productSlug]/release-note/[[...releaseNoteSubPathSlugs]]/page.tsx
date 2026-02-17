@@ -34,19 +34,21 @@ type ReleaseNotePageStaticParams = {
 };
 export const dynamic = 'force-dynamic';
 
-export async function generateMetadata(props0: {
+export async function generateMetadata({
+  params,
+}: {
   params: Promise<ReleaseNotePageStaticParams>;
 }): Promise<Metadata> {
-  const params = await props0.params;
-  if (params.productSlug === 'unknown') {
+  const { locale, productSlug, releaseNoteSubPathSlugs } = await params;
+  if (productSlug === 'unknown') {
     return makeMetadata({
       title: 'unknown',
       url: 'unknown',
     });
   }
-  const props = await getReleaseNote(params?.productSlug, [
+  const props = await getReleaseNote(locale, productSlug, [
     'release-note',
-    ...(params?.releaseNoteSubPathSlugs || []),
+    ...(releaseNoteSubPathSlugs || []),
   ]);
 
   if (props?.seo) {
@@ -69,20 +71,23 @@ export type ReleaseNotePageProps = {
   readonly title: string;
 } & ProductLayoutProps;
 
-const ReleaseNotePage = async (props0: {
+const ReleaseNotePage = async ({
+  params,
+}: {
   params: Promise<ReleaseNotePageStaticParams>;
 }) => {
-  const params = await props0.params;
-  if (params.productSlug === 'unknown') {
+  const { locale, productSlug, releaseNoteSubPathSlugs } = await params;
+  if (productSlug === 'unknown') {
     return <PageNotFound />;
   }
   const releaseNoteProps = await getReleaseNote(
-    params.productSlug,
+    locale,
+    productSlug,
     // Prepend the "release-note" path segment expected by the release notes backend
-    ['release-note', ...(params.releaseNoteSubPathSlugs || [])]
+    ['release-note', ...(releaseNoteSubPathSlugs || [])]
   );
 
-  const urlReplaceMap = await getUrlReplaceMapProps();
+  const urlReplaceMap = await getUrlReplaceMapProps(locale);
 
   if (!releaseNoteProps) {
     return <PageNotFound />;
@@ -91,7 +96,7 @@ const ReleaseNotePage = async (props0: {
   const { bannerLinks, page, path, product, seo, source, title, bodyConfig } =
     releaseNoteProps;
 
-  const props = {
+  const gitBookProps = {
     ...page,
     pathPrefix: source.pathPrefix,
     bodyConfig: {
@@ -115,10 +120,10 @@ const ReleaseNotePage = async (props0: {
 
   const structuredData = generateStructuredDataScripts({
     breadcrumbsItems: [
-      productToBreadcrumb(params.locale, product),
+      productToBreadcrumb(locale, product),
       {
         name: title,
-        item: `${baseUrl}/${params.locale}/${product.slug}/release-note`,
+        item: `${baseUrl}/${locale}/${product.slug}/release-note`,
       },
       ...breadcrumbsItems,
     ],
@@ -127,10 +132,10 @@ const ReleaseNotePage = async (props0: {
   });
 
   const initialBreadcrumbs = [
-    ...productPageToBreadcrumbs(params.locale, product, [
+    ...productPageToBreadcrumbs(locale, product, [
       {
         name: title,
-        path: `/${params.locale}/${product.slug}/release-note`,
+        path: `/${locale}/${product.slug}/release-note`,
       },
       ...breadcrumbs,
     ]),
@@ -147,7 +152,7 @@ const ReleaseNotePage = async (props0: {
         menuName={title}
         initialBreadcrumbs={initialBreadcrumbs}
         hasInPageMenu={false}
-        {...props}
+        {...gitBookProps}
       />
     </ProductLayout>
   );

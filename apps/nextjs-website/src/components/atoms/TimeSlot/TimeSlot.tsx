@@ -1,4 +1,9 @@
-import { dateOptions, defaultLocale, timeOptions } from '@/config';
+import {
+  longDateOptions,
+  timeSlotDateOptions,
+  timeSlotTimeOptions,
+} from '@/config';
+import { useFormatter } from 'next-intl';
 
 function isSameDay(start: Date, end: Date): boolean {
   return (
@@ -8,42 +13,32 @@ function isSameDay(start: Date, end: Date): boolean {
   );
 }
 
-/**
- * this function is used to format the date and time
- * in the format defined with dateOptions and timeOptions
- */
-function formattedDateTime(date: Date): string {
-  return `${date.toLocaleDateString(
-    defaultLocale,
-    dateOptions
-  )}, ${date.toLocaleTimeString(defaultLocale, timeOptions)}`;
-}
-
-/**
- * this function is used to return a formatted end date of the slot
- * it always shows time, but it shows the date only if end is different from start date
- */
-function conditionallyFormattedEndDate(
-  start?: Date,
-  end?: Date
-): string | undefined {
-  if (!end) return;
-
-  if (!start) return end.toLocaleDateString(defaultLocale, dateOptions);
-
-  return isSameDay(start, end)
-    ? end.toLocaleTimeString(defaultLocale, timeOptions)
-    : formattedDateTime(end);
-}
-
 type TimeSlotProps = {
   start?: string;
   end?: string;
 };
 
 const TimeSlot = ({ start, end }: TimeSlotProps) => {
+  const format = useFormatter();
   const startDate = start ? new Date(start) : undefined;
   const endDate = end ? new Date(end) : undefined;
+
+  const formattedDateTime = (date: Date) =>
+    format.dateTime(date, timeSlotDateOptions);
+
+  const conditionallyFormattedEndDate = (
+    start?: Date,
+    end?: Date
+  ): string | undefined => {
+    if (!end) return;
+
+    if (!start) return format.dateTime(end, longDateOptions);
+
+    return isSameDay(start, end)
+      ? format.dateTime(end, timeSlotTimeOptions)
+      : formattedDateTime(end);
+  };
+
   return [
     startDate && formattedDateTime(startDate),
     conditionallyFormattedEndDate(startDate, endDate),

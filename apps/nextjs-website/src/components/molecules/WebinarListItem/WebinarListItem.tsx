@@ -1,10 +1,10 @@
 import { Box, Grid, Stack, Typography } from '@mui/material';
+import { webinarDateOptions } from '@/config';
 import Image from 'next/image';
 import LinkButton from '@/components/atoms/LinkButton/LinkButton';
 import React from 'react';
 import { Webinar } from '@/lib/types/webinar';
-import { useTranslations } from 'next-intl';
-import { defaultLocale, dateOptions } from '@/config';
+import { useTranslations, useFormatter } from 'next-intl';
 
 type WebinarListItemProps = {
   webinar: Webinar;
@@ -12,6 +12,7 @@ type WebinarListItemProps = {
 
 const WebinarListItem = ({ webinar }: WebinarListItemProps) => {
   const t = useTranslations();
+  const format = useFormatter();
 
   return (
     <Grid
@@ -44,10 +45,7 @@ const WebinarListItem = ({ webinar }: WebinarListItemProps) => {
           fontWeight={400}
           my={2}
         >
-          {new Date(webinar.startDateTime).toLocaleDateString(
-            defaultLocale,
-            dateOptions
-          )}
+          {format.dateTime(new Date(webinar.startDateTime), webinarDateOptions)}
         </Typography>
       )}
       <Stack justifyContent='space-between' flexGrow={1}>

@@ -37,8 +37,11 @@ function manageUndefined<T>(props: undefined | null | T) {
   return props;
 }
 
-async function manageUndefinedAndAddProducts<T>(props: undefined | null | T) {
-  return { ...manageUndefined(props), products: await getProducts() };
+async function manageUndefinedAndAddProducts<T>(
+  locale: string,
+  props: undefined | null | T
+) {
+  return { ...manageUndefined(props), products: await getProducts(locale) };
 }
 
 export async function getMarkdownContent(
@@ -52,17 +55,23 @@ export async function getMarkdownContent(
 
 export async function getGuidePage(
   guidePaths: ReadonlyArray<string>,
+  locale: string,
   productSlug: string
 ) {
   // Fetch data in parallel instead of sequential
   const [products, guideProps] = await Promise.all([
-    getProducts(),
-    getGuidePageProps(guidePaths.length > 0 ? guidePaths[0] : '', productSlug),
+    getProducts(locale),
+    getGuidePageProps(
+      guidePaths.length > 0 ? guidePaths[0] : '',
+      locale,
+      productSlug
+    ),
   ]);
 
   // Path construction
   const guidePath = [
-    `/${guideProps.product.slug}`,
+    `/${locale}`,
+    guideProps.product.slug,
     'guides',
     ...guidePaths,
   ].join('/');
@@ -72,6 +81,7 @@ export async function getGuidePage(
   });
 
   const guidesMetadata = await getGuidesMetadata(
+    locale,
     guideToFind ? guideToFind.dirName : ''
   );
   return manageUndefined(
@@ -80,51 +90,53 @@ export async function getGuidePage(
       guidePath,
       guidesMetadata,
       products,
+      locale,
     })
   );
 }
 
-export async function getGuideListPages(productSlug?: string) {
+export async function getGuideListPages(locale: string, productSlug?: string) {
   const props = manageUndefined(
-    (await getGuideListPagesProps()).find(
+    (await getGuideListPagesProps(locale)).find(
       ({ product }) => product.slug === productSlug
     )
   );
-  return manageUndefinedAndAddProducts(props);
+  return manageUndefinedAndAddProducts(locale, props);
 }
 
-export async function getOverview(productSlug?: string) {
+export async function getOverview(locale: string, productSlug?: string) {
   return manageUndefined(
-    (await getOverviewsProps()).find(
+    (await getOverviewsProps(locale)).find(
       (overviewData) => overviewData.product.slug === productSlug
     )
   );
 }
 
-export async function getProducts(): Promise<readonly Product[]> {
-  return await getProductsProps();
+export async function getProducts(locale: string): Promise<readonly Product[]> {
+  return await getProductsProps(locale);
 }
 
-export async function getQuickStartGuide(productSlug?: string) {
+export async function getQuickStartGuide(locale: string, productSlug?: string) {
   const props = manageUndefined(
-    (await getQuickStartGuidesProps()).find(
+    (await getQuickStartGuidesProps(locale)).find(
       ({ product }) => product.slug === productSlug
     )
   );
-  return manageUndefinedAndAddProducts(props);
+  return manageUndefinedAndAddProducts(locale, props);
 }
 
 export async function getTutorial(
+  locale: string,
   productSlug: string,
   productTutorialPage?: ReadonlyArray<string>
 ) {
   const tutorialSubPath = productTutorialPage?.join('/');
-  const tutorialPath = `/${productSlug}/tutorials/${tutorialSubPath}`;
+  const tutorialPath = `/${locale}/${productSlug}/tutorials/${tutorialSubPath}`;
 
-  const product = await getProduct(productSlug);
+  const product = await getProduct(locale, productSlug);
 
   const props = manageUndefined(
-    (await getTutorialsProps()).find(({ path }) => path === tutorialPath)
+    (await getTutorialsProps(locale)).find(({ path }) => path === tutorialPath)
   );
   return {
     ...props,
@@ -132,36 +144,44 @@ export async function getTutorial(
   };
 }
 
-export async function getTutorialListPageProps(productSlug?: string) {
+export async function getTutorialListPageProps(
+  locale: string,
+  productSlug?: string
+) {
   const tutorialListPages = manageUndefined(
-    await getTutorialListPagesProps()
+    await getTutorialListPagesProps(locale)
   ).find(({ product }) => product.slug === productSlug);
-  return manageUndefinedAndAddProducts(tutorialListPages);
+  return manageUndefinedAndAddProducts(locale, tutorialListPages);
 }
 
-export async function getVisibleInListWebinars(): Promise<readonly Webinar[]> {
-  return (await getWebinarsProps()).filter(
+export async function getVisibleInListWebinars(
+  locale: string
+): Promise<readonly Webinar[]> {
+  return (await getWebinarsProps(locale)).filter(
     (webinar) => webinar.isVisibleInList
   );
 }
 
-export async function getWebinar(webinarSlug?: string): Promise<Webinar> {
+export async function getWebinar(
+  locale: string,
+  webinarSlug?: string
+): Promise<Webinar> {
   const props = manageUndefined(
-    (await getWebinarsProps()).find(({ slug }) => slug === webinarSlug)
+    (await getWebinarsProps(locale)).find(({ slug }) => slug === webinarSlug)
   );
   return props;
 }
 
-export async function getCaseHistory(caseHistorySlug?: string) {
+export async function getCaseHistory(locale: string, caseHistorySlug?: string) {
   return manageUndefined(
-    (await getCaseHistoriesProps()).find(
+    (await getCaseHistoriesProps(locale)).find(
       ({ slug }: { readonly slug: string }) => slug === caseHistorySlug
     )
   );
 }
 
-export async function getApiDataParams() {
-  const props = (await getApiDataListPagesProps()).flatMap(
+export async function getApiDataParams(locale: string) {
+  const props = (await getApiDataListPagesProps(locale)).flatMap(
     (apiDataListPageProps) =>
       apiDataListPageProps.apiDetailSlugs.map((apiDataSlug) => ({
         productSlug: apiDataListPageProps.product.slug,
@@ -173,23 +193,23 @@ export async function getApiDataParams() {
   return props || [];
 }
 
-export async function getApiDataListPages(productSlug: string) {
-  const props = (await getApiDataListPagesProps()).find(
+export async function getApiDataListPages(locale: string, productSlug: string) {
+  const props = (await getApiDataListPagesProps(locale)).find(
     (apiDataListPageProps) => apiDataListPageProps.product.slug === productSlug
   );
   return props;
 }
 
-export async function getProduct(productSlug: string) {
-  const props = (await getProductsProps()).find(
+export async function getProduct(locale: string, productSlug: string) {
+  const props = (await getProductsProps(locale)).find(
     (product) => product.slug === productSlug
   );
   return props;
 }
 
-export async function getApiData(apiDataSlug: string) {
+export async function getApiData(locale: string, apiDataSlug: string) {
   const props = manageUndefined(
-    (await getApiDataProps()).find(
+    (await getApiDataProps(locale)).find(
       (apiData) => apiData.apiDataSlug === apiDataSlug
     )
   );
@@ -197,25 +217,28 @@ export async function getApiData(apiDataSlug: string) {
 }
 
 export async function getReleaseNote(
+  locale: string,
   productSlug: string,
   releaseNoteSubPathSlugs?: readonly string[]
 ) {
-  const products = await getProducts();
-  const releaseNotesPath = `/${productSlug}/${releaseNoteSubPathSlugs?.join(
+  const products = await getProducts(locale);
+  const releaseNotesPath = `/${locale}/${productSlug}/${releaseNoteSubPathSlugs?.join(
     '/'
   )}`;
 
-  const releaseNote = await getStrapiReleaseNotes(productSlug);
+  const releaseNote = await getStrapiReleaseNotes(locale, productSlug);
   if (!releaseNote) {
     // eslint-disable-next-line functional/no-throw-statements
     throw new Error('Failed to fetch release notes data');
   }
 
   const releaseNotesMetadata = await getReleaseNotesMetadata(
+    locale,
     releaseNote.attributes.dirName
   );
 
   const releaseNoteProps = await getReleaseNoteProps(
+    locale,
     productSlug,
     releaseNotesMetadata.find(({ path }) => path === releaseNotesPath)
   );
@@ -247,49 +270,56 @@ export async function getReleaseNote(
   };
 }
 
-export async function getSolution(solutionSlug?: string) {
+export async function getSolution(locale: string, solutionSlug?: string) {
   const props = manageUndefined(
-    (await getSolutionsProps()).find(({ slug }) => slug === solutionSlug)
+    (await getSolutionsProps(locale)).find(({ slug }) => slug === solutionSlug)
   );
   return props;
 }
 
-export async function getSolutionListPage() {
-  const solutionListPageProps = await getSolutionListPageProps();
+export async function getSolutionListPage(locale: string) {
+  const solutionListPageProps = await getSolutionListPageProps(locale);
   return manageUndefined(solutionListPageProps);
 }
 
 export async function getSolutionDetail(
   solutionSlug: string,
+  locale: string,
   solutionSubPathSlugs: readonly string[]
 ) {
-  const solutionData = await getSolution(solutionSlug);
+  const solutionData = await getSolution(locale, solutionSlug);
   if (!solutionData) {
     // eslint-disable-next-line functional/no-throw-statements
     throw new Error('Failed to fetch solution data');
   }
-  const solutionsMetadata = await getSolutionsMetadata(solutionData.dirName);
+  const solutionsMetadata = await getSolutionsMetadata(
+    locale,
+    solutionData.dirName
+  );
 
   return await getSolutionProps(
     solutionSlug,
+    locale,
     solutionsMetadata.find(
       ({ path }) =>
-        path === `/solutions/${solutionSlug}/${solutionSubPathSlugs.join('/')}`
+        path ===
+        `/${locale}/solutions/${solutionSlug}/${solutionSubPathSlugs.join('/')}`
     )
   );
 }
 
 export async function getUseCase(
+  locale: string,
   productSlug: string,
   productUseCasePage?: ReadonlyArray<string>
 ) {
   const useCaseSubPath = productUseCasePage?.join('/');
-  const useCasePath = `/${productSlug}/use-cases/${useCaseSubPath}`;
+  const useCasePath = `/${locale}/${productSlug}/use-cases/${useCaseSubPath}`;
 
-  const product = await getProduct(productSlug);
+  const product = await getProduct(locale, productSlug);
 
   const props = manageUndefined(
-    (await getUseCasesProps()).find(({ path }) => path === useCasePath)
+    (await getUseCasesProps(locale)).find(({ path }) => path === useCasePath)
   );
   return {
     ...props,
@@ -297,11 +327,14 @@ export async function getUseCase(
   };
 }
 
-export async function getUseCaseListPageProps(productSlug?: string) {
-  const useCaseListPages = await getUseCaseListPagesProps();
+export async function getUseCaseListPageProps(
+  locale: string,
+  productSlug?: string
+) {
+  const useCaseListPages = await getUseCaseListPagesProps(locale);
   const props =
     useCaseListPages.find(({ product }) => product.slug === productSlug) ||
     null;
 
-  return manageUndefinedAndAddProducts(props);
+  return manageUndefinedAndAddProducts(locale, props);
 }

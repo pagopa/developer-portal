@@ -102,12 +102,12 @@ export type OverviewPageProps = {
 } & ProductLayoutProps;
 
 export async function generateMetadata(
-  props: ProductParams,
+  { params }: ProductParams,
   parent: ResolvingMetadata
 ): Promise<Metadata> {
-  const params = await props.params;
+  const { locale, productSlug } = await params;
   const resolvedParent = await parent;
-  const { product, path, seo, hero } = await getOverview(params.productSlug);
+  const { product, path, seo, hero } = await getOverview(locale, productSlug);
 
   if (seo) {
     return makeMetadataFromStrapi(seo);
@@ -122,8 +122,8 @@ export async function generateMetadata(
   });
 }
 
-const OverviewPage = async (props: ProductParams) => {
-  const params = await props.params;
+const OverviewPage = async ({ params }: ProductParams) => {
+  const { locale, productSlug } = await params;
   const {
     hero,
     startInfo,
@@ -137,7 +137,7 @@ const OverviewPage = async (props: ProductParams) => {
     bannerLinks,
     seo,
     product,
-  } = await getOverview(params.productSlug);
+  } = await getOverview(locale, productSlug);
 
   // Calculate which sections will be shown to determine alternating backgrounds
   const sectionsToShow = [
@@ -180,7 +180,7 @@ const OverviewPage = async (props: ProductParams) => {
   }));
 
   const structuredData = generateStructuredDataScripts({
-    breadcrumbsItems: [productToBreadcrumb(params.locale, product)],
+    breadcrumbsItems: [productToBreadcrumb(locale, product)],
     seo: seo,
     things: [convertSeoToStructuredDataArticle(seo)],
   });
@@ -226,7 +226,7 @@ const OverviewPage = async (props: ProductParams) => {
             ctaLabelKey={'overview.tutorial.ctaLabel'}
             subtitle={tutorials.subtitle}
             itemPath={{
-              path: `/${params.locale}/${product.slug}/tutorials`,
+              path: `/${locale}/${product.slug}/tutorials`,
               name: 'tutorials',
             }}
             items={[...(mappedTutorials || [])]}
@@ -245,7 +245,7 @@ const OverviewPage = async (props: ProductParams) => {
           ctaLabelKey={'overview.useCases.title'}
           subtitle={useCases.description}
           itemPath={{
-            path: `/${params.locale}/${product.slug}/use-cases`,
+            path: `/${locale}/${product.slug}/use-cases`,
             name: 'useCases',
           }}
           items={[...(mappedUseCases || [])]}
