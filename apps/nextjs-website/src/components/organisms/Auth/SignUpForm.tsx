@@ -22,23 +22,11 @@ import {
 } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
-import { ChangeEvent, useCallback, useEffect, useState } from 'react';
+import { ChangeEvent, useCallback, useEffect, useMemo, useState } from 'react';
 import { PasswordTextField } from './PasswordTextField';
 import PoliciesParagraph from './PoliciesParagraph';
 import { companyRoles } from '@/config';
 import { useParams } from 'next/navigation';
-
-const defaults = {
-  username: '',
-  password: '',
-  firstName: '',
-  lastName: '',
-  mailinglistAccepted: false,
-  surveyAccepted: false,
-  role: '',
-  company: '',
-  confirmPassword: '',
-};
 
 interface SignUpFormProps {
   // eslint-disable-next-line functional/no-return-void
@@ -61,13 +49,29 @@ const SignUpForm = ({
   submitting = false,
 }: SignUpFormProps) => {
   const { locale } = useParams<{ locale: string }>();
+  const defaultUserDataAttributes: SignUpUserData = useMemo(() => {
+    return {
+      username: '',
+      password: '',
+      firstName: '',
+      lastName: '',
+      mailinglistAccepted: false,
+      surveyAccepted: false,
+      role: '',
+      company: '',
+      confirmPassword: '',
+      preferredLanguage: locale,
+    };
+  }, [locale]);
   const t = useTranslations();
   const { palette } = useTheme();
   const boldInputSx = {
     '& .MuiInputBase-input': { fontWeight: 600 },
     '& .MuiSelect-select': { fontWeight: 600 },
   };
-  const [userData, setUserData] = useState<SignUpUserData>(defaults);
+  const [userData, setUserData] = useState<SignUpUserData>(
+    defaultUserDataAttributes
+  );
   const [fieldErrors, setFieldErrors] = useState<Partial<SignUpFieldsError>>(
     {}
   );
