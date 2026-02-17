@@ -40,10 +40,8 @@ void (async () => {
         finalUrl = response.url();
       }
     } catch (error) {
-      console.warn(
-        `Failed to detect redirect for base URL: ${env.baseUrl}`,
-        error,
-      );
+      console.warn(`Failed to reach the URL: ${env.baseUrl}`, error);
+      process.exit(1);
     } finally {
       if (page) await page.close();
     }
