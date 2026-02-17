@@ -28,15 +28,16 @@ export const heading = (excludeEmoji?: boolean): Schema => ({
       .map(
         (node: Node) =>
           node.attributes.content
-            .trim()
-            .toLowerCase()
-            .replace(/[^\p{L}\p{N}\p{P}\p{Z}^$\n]/gu, '')
-            .replace(/^\s*/, '')
             .normalize('NFD') // Split an accented letter in the base letter and the accent
             .replace(/[\u0300-\u036f]/g, '') // Remove all accents
-            .replace(/ /g, '-') // Replace spaces with -
+            .toLowerCase()
+            .replace(/[^a-z0-9]/g, '-') // Replace non-alphanumeric characters with -
+            .replace(/-+/g, '-') // Replace multiple - with single -
+            .replace(/^-+|-+$/g, '') // Remove leading and trailing -
       )
-      .join('-');
+      .join('-')
+      .replace(/-+/g, '-') // Replace multiple - with single - (in case join created them)
+      .replace(/^-+|-+$/g, ''); // Remove leading and trailing - (in case join created them)
 
     return new Markdoc.Tag(`Heading`, { ...attributes, id }, children);
   },
