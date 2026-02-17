@@ -162,7 +162,7 @@ export function buildVisitKey(rawUrl: string): string {
     const url = new URL(rawUrl);
     url.hash = "";
     url.hostname = url.hostname.replace(/^www\./, "");
-    return RemoveAnchorsFromUrl(url.hostname.toString()+'/'+url.pathname.toString());
+    return RemoveAnchorsFromUrl(url.hostname.toString()+url.pathname.toString());
   } catch (error) {
     console.warn(`Failed to build visit key for URL: ${rawUrl}`, error);
     return rawUrl;
