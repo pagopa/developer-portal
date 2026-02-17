@@ -31,22 +31,22 @@ export async function exploreAndParsePages(
   parsedPages: Map<string, ParsedMetadata>,
   scheduledPages: Set<string>,
   baseScope: string,
-): Promise<void> {
+): Promise<Map<string, ParsedMetadata>> {
   const visitKey = buildVisitKey(node.url);
   scheduledPages.delete(visitKey);
   if (parsedPages.has(visitKey) || (MAX_DEPTH !== null && depth > MAX_DEPTH)) {
-    return;
+    return parsedPages;
   }
   const normalizedUrl = RemoveAnchorsFromUrl(node.url);
   if (!isWithinScope(normalizedUrl, baseScope, VALID_DOMAIN_VARIANTS)) {
-    return;
+    return parsedPages;
   }
   const metadata = await generatePageParsedMetadata(
     browser,
     node.url,
     baseScope,
   );
-  if (!metadata) return;
+  if (!metadata) return parsedPages;
   parsedPages.set(visitKey, metadata);
   let page;
   let anchors: string[] = [];
@@ -123,9 +123,11 @@ export async function exploreAndParsePages(
       parsedPages.size
     }/${totalKnown} (${((parsedPages.size / totalKnown) * 100).toFixed(2)}%)`,
   );
-  if (!node.children || (MAX_DEPTH !== null && depth >= MAX_DEPTH)) return;
+  if (!node.children || (MAX_DEPTH !== null && depth >= MAX_DEPTH)) {
+    return parsedPages;
+  }
   for (const child of node.children) {
-    await exploreAndParsePages(
+    let newParsedPages = await exploreAndParsePages(
       browser,
       child,
       depth + 1,
@@ -133,7 +135,9 @@ export async function exploreAndParsePages(
       scheduledPages,
       baseScope,
     );
+    parsedPages = new Map([...parsedPages, ...newParsedPages]);
   }
+  return parsedPages;
 }
 
 async function generatePageParsedMetadata(

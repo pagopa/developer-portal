@@ -58,7 +58,7 @@ void (async () => {
     BASE_URL = finalUrl;
     const root: ParsedNode = { url: BASE_URL };
     scheduledPages.add(buildVisitKey(BASE_URL));
-    await exploreAndParsePages(
+    const allParsedPages = await exploreAndParsePages(
       browser,
       root,
       0,
@@ -67,7 +67,7 @@ void (async () => {
       BASE_SCOPE,
     );
     await browser.close();
-    console.log(`Parsing complete! Data saved to ${env.outputDirectory}`);
+    console.log(`Parsing complete! Parsed ${allParsedPages.size} pages. Data saved to ${env.outputDirectory}`);
   } catch (error) {
     handleError(error);
   }
