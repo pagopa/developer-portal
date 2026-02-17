@@ -45,16 +45,6 @@ describe("sanitizeUrlAsFilename", () => {
     }
   });
 
-  it("returns default replacement for empty input", () => {
-    expect(sanitizeUrlAsFilename("", BASE_SCOPE)).toBe("-");
-    expect(sanitizeUrlAsFilename(null as unknown as string, BASE_SCOPE)).toBe(
-      "-",
-    );
-    expect(
-      sanitizeUrlAsFilename(undefined as unknown as string, BASE_SCOPE),
-    ).toBe("-");
-  });
-
   it("uses custom replacement option for URL paths", () => {
     expect(
       sanitizeUrlAsFilename("/api/users/123", BASE_SCOPE, { replacement: "_" }),

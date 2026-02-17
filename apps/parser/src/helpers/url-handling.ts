@@ -13,27 +13,35 @@ export function sanitizeUrlAsFilename(
   baseScope: string,
   options?: SanitizeOptions,
 ): string {
-  let filenameBase = url;
-  if (filenameBase === baseScope) {
-    filenameBase = new URL(filenameBase).hostname.replace(/^www\./, "");
+  if (url === baseScope) {
+    return applySanitization(
+      url,
+      new URL(url).hostname.replace(/^www\./, ""),
+      options,
+    );
   } else {
     const pathAndSearch = url.replace(baseScope, "").replace(/^\/+/, "");
-    if (!pathAndSearch || pathAndSearch === "/") {
-      filenameBase = url.split("/").filter(Boolean).pop() || url;
+    if (pathAndSearch === "" || pathAndSearch === "/") {
+      return applySanitization(
+        url,
+        url.split("/").filter(Boolean).pop() || url,
+        options,
+      );
     } else {
-      filenameBase = pathAndSearch;
+      return applySanitization(url, pathAndSearch, options);
     }
   }
-  return applySanitization(url, filenameBase, options);
 }
 
 export function sanitizeUrlAsDirectoryName(
   url: string,
   options?: SanitizeOptions,
 ): string {
-  let filenameBase = url;
-  filenameBase = filenameBase.replace(/^(https?:\/\/)?(www\.)?/, "");
-  return applySanitization(url, filenameBase, options);
+  return applySanitization(
+    url,
+    url.replace(/^(https?:\/\/)?(www\.)?/, ""),
+    options,
+  );
 }
 
 function applySanitization(
@@ -44,7 +52,7 @@ function applySanitization(
   const replacement = validReplacementOrDefault(
     options?.replacement ?? DEFAULT_REPLACEMENT,
   );
-  let sanitized = input
+  const sanitized = input
     .replace(/\/$/, "")
     .replace(ILLEGAL_RE, replacement)
     .replace(CONTROL_RE, replacement)
@@ -108,28 +116,6 @@ export const RemoveAnchorsFromUrl = (rawUrl: string): string => {
   }
 };
 
-export function deriveSubPath(
-  targetUrl: string,
-  baseUrl: string,
-  sanitizedBaseUrl: string,
-): string {
-  const base = new URL(baseUrl);
-  const target = new URL(targetUrl);
-  let relPath = target.pathname;
-  if (base.pathname !== "/" && relPath.startsWith(base.pathname)) {
-    relPath = relPath.slice(base.pathname.length);
-    if (!relPath.startsWith("/")) relPath = "/" + relPath;
-  }
-  if (
-    RemoveAnchorsFromUrl(targetUrl) === sanitizedBaseUrl ||
-    relPath === "/" ||
-    relPath === ""
-  ) {
-    return "/";
-  }
-  return `${relPath}${target.search}${target.hash}` || "/";
-}
-
 export function isWithinScope(
   url: string,
   baseScope: string,
@@ -144,7 +130,7 @@ export function isWithinScope(
     const scopeObj = new URL(baseScope);
     const pathname = urlObj.pathname.toLowerCase();
     const fileExtensionRegex = /\.[a-z0-9]+$/;
-    if (fileExtensionRegex.test(pathname)) {
+    if (fileExtensionRegex.test(pathname) && !pathname.endsWith(".html")) {
       return false;
     }
     const urlDomain = urlObj.hostname.replace(/^www\./, "");
