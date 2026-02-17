@@ -65,5 +65,5 @@ function generateOutputDirectoryPath(
   if (!vectorIndexName) {
     return `output/${safeBaseSegment}`;
   }
-  return path.join(vectorIndexName, "parsing", safeBaseSegment);
+  return path.join(vectorIndexName, "parser", safeBaseSegment);
 }

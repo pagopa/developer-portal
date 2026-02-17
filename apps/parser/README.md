@@ -57,7 +57,7 @@ npm run parse
 Set the following environment variables to control the parser’s behavior:
 
 - **`URL`** (required): The root page to start parsing from.
-- **`CHB_INDEX_ID`** (required): The base directory for storing parsed data. Output will be saved as `<CHB_INDEX_ID>/parsing/<sanitized(baseUrl)>/`.
+- **`CHB_INDEX_ID`** (required): The base directory for storing parsed data. Output will be saved as `<CHB_INDEX_ID>/parser/<sanitized(baseUrl)>/`.
 - **`DEPTH`** (optional, default: null): Maximum recursion depth for crawling links. If set to null, the parsing won't have a maximum recursion depth and therefore will continue until all pages are parsed.
 - **`VALID_DOMAIN_VARIANTS`** (optional, default: '[]'): Allow parsing specific domain variants (subdomains) of the base URL. Provide a JSON array of allowed subdomain tokens. For example, if `URL="https://example.com"`:
 	- `VALID_DOMAIN_VARIANTS='["subdomain1", "subdomain2"]'` allows parsing `subdomain1.example.com` and `subdomain2.example.com`.
@@ -71,7 +71,7 @@ Set the following environment variables to control the parser’s behavior:
 Each visited page is saved as a JSON file:
 
 ```
-<CHB_INDEX_ID>/parsing/<sanitized(baseUrl)>/<sanitized(path)>.json
+<CHB_INDEX_ID>/parser/<sanitized(baseUrl)>/<sanitized(path)>.json
 ```
 
 - `<sanitized(baseUrl)>` and `<sanitized(path)>` are filesystem-safe versions of the URL components (illegal characters replaced with `-`).

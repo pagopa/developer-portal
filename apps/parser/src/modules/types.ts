@@ -23,11 +23,5 @@ export type ParsedMetadata = {
 
 export type ParsedNode = {
   readonly url: string;
-  title?: string;
-  bodyText?: string;
-  lang?: string | null;
-  keywords?: string | null;
-  datePublished?: string | null;
-  lastModified?: string | null;
   children?: ParsedNode[];
 };
