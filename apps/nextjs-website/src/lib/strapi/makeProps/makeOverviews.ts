@@ -8,6 +8,7 @@ import { compact } from 'lodash';
 import { UseCase } from '../../types/useCaseData';
 
 export function makeOverviewsProps(
+  locale: string,
   strapiOverviews: StrapiOverviews
 ): ReadonlyArray<OverviewPageProps> {
   return compact(
@@ -23,8 +24,11 @@ export function makeOverviewsProps(
       try {
         return {
           updatedAt: attributes.updatedAt,
-          path: `/${attributes.product.data?.attributes.slug}/overview`,
-          product: makeBaseProductWithoutLogoProps(attributes.product.data),
+          path: `/${locale}/${attributes.product.data?.attributes.slug}/overview`,
+          product: makeBaseProductWithoutLogoProps(
+            locale,
+            attributes.product.data
+          ),
           hero: {
             backgroundImage: attributes.backgroundImage.data.attributes.url,
             altText:
@@ -93,7 +97,7 @@ export function makeOverviewsProps(
                     },
                     title: tutorial.attributes.title,
                     name: 'shared.moreInfo',
-                    path: `/${tutorial.attributes.product.data.attributes.slug}/tutorials/${tutorial.attributes.slug}`,
+                    path: `${locale}/${tutorial.attributes.product.data.attributes.slug}/tutorials/${tutorial.attributes.slug}`,
                   };
                 })
               ) || [],
@@ -134,7 +138,7 @@ export function makeOverviewsProps(
                     },
                     title: useCase.attributes.title,
                     name: 'shared.moreInfo',
-                    path: `/${useCase.attributes.product.data.attributes.slug}/use-cases/${useCase.attributes.slug}`,
+                    path: `${locale}/${useCase.attributes.product.data.attributes.slug}/use-cases/${useCase.attributes.slug}`,
                   } satisfies UseCase;
                 })
               ) || [],

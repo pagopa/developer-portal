@@ -130,6 +130,10 @@ export async function downloadS3File(
   }
 }
 
+export function getLocalizedPath(path: string, locale?: string): string {
+  return locale ? `${locale}/${path}` : path;
+}
+
 export async function putS3File(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   items: MetadataItem[] | any,

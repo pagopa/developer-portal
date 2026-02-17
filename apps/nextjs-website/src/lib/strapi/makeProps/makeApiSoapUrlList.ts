@@ -1,8 +1,8 @@
 import { getSoapApiMetadata } from '@/helpers/s3Metadata.helpers';
 import { staticContentsUrl } from '@/config';
 
-export async function makeApiSoapUrlList(apiDirName: string) {
-  const soapApiMetadata = await getSoapApiMetadata().then((metadata) =>
+export async function makeApiSoapUrlList(locale: string, apiDirName: string) {
+  const soapApiMetadata = await getSoapApiMetadata(locale).then((metadata) =>
     metadata.find((item) => item.dirName === apiDirName)
   );
   if (!soapApiMetadata) {
@@ -11,6 +11,6 @@ export async function makeApiSoapUrlList(apiDirName: string) {
   }
 
   return soapApiMetadata.contentS3Paths.map(
-    (url) => `${staticContentsUrl}/soap-api/${url}`
+    (url) => `${staticContentsUrl}/${locale}/soap-api/${url}`
   );
 }
