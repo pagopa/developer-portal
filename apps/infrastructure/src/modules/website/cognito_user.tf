@@ -150,6 +150,7 @@ resource "aws_cognito_user_pool" "devportal" {
       max_length = 2048
     }
   }
+  
   schema {
     name                     = "preferred_language"
     attribute_data_type      = "String"
