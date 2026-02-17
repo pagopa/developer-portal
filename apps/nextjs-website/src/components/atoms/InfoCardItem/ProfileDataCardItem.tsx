@@ -150,7 +150,7 @@ export const ProfileDataCardItem = (
       <Typography
         variant='body2'
         fontSize={16}
-        minWidth={{ xs: 'auto', md: '170px' }}
+        minWidth={{ xs: 'auto', md: '270px' }}
       >
         {infoCardItem.title}
       </Typography>

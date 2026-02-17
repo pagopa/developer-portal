@@ -14,7 +14,7 @@ import ConfirmationModal from '@/components/atoms/ConfirmationModal/Confirmation
 import PasswordFormWrapper from '@/components/organisms/Auth/PasswordFormWrapper';
 import { ProfileDataCard } from '@/components/molecules/ProfileDataCard/ProfileDataCard';
 import EmailFormWrapper from '@/components/organisms/EmailFormWrapper/EmailFormWrapper';
-import { companyRoles } from '@/config';
+import { companyRoles, defaultLocale } from '@/config';
 import { SUPPORTED_LOCALES } from '@/locales';
 
 const PersonalData = () => {
@@ -85,7 +85,9 @@ const PersonalData = () => {
       {
         id: 'preferred_language',
         title: t('profile.personalData.fields.commsPreferredLanguage'),
-        value: user?.attributes['custom:preferred_language'],
+        value:
+          user?.attributes['custom:preferred_language'] ||
+          defaultLocale.split('-')[0],
         editable: true,
         type: 'select',
         values: preferredLanguageValues,
