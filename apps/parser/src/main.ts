@@ -45,6 +45,15 @@ void (async () => {
     } finally {
       if (page) await page.close();
     }
+    if (new URL(env.baseUrl).hostname !== new URL(finalUrl).hostname) {
+      console.error(
+        `Domain mismatch: original ${new URL(env.baseUrl).hostname} != final ${
+          new URL(finalUrl).hostname
+        }`,
+      );
+      await browser.close();
+      process.exit(1);
+    }
     const BASE_SCOPE = RemoveAnchorsFromUrl(finalUrl);
     BASE_URL = finalUrl;
     const root: ParsedNode = { url: BASE_URL };
