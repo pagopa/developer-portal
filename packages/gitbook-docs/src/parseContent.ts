@@ -62,6 +62,10 @@ const fileR = {
   regex: /({% file src="[^"]+" %}(?!.*{% \/file %}))/gis,
   replace: '$1\n{% /file %}',
 };
+const contentRefR = {
+  regex: new RegExp(`{% content-ref url="([^"]*)" %}[^\\n]`, 'g'),
+  replace: '{% content-ref url="$1" %}\n',
+};
 
 const preservePipesInInlineCode = (markdown: string): string => {
   let cursor = 0;
@@ -153,7 +157,8 @@ export const parseAst = (markdown: string) => {
     .replaceAll(markR.regex, markR.replace)
     .replaceAll(summaryR.regex, summaryR.replace)
     .replaceAll('{% @figma/embed', '{% figma-embed')
-    .replaceAll(/:([a-z0-9_]+):/g, convertEmojiToUnicode);
+    .replaceAll(/:([a-z0-9_]+):/g, convertEmojiToUnicode)
+    .replaceAll(contentRefR.regex, contentRefR.replace);
 
   const updatedMarkdoc = markdoc
     .split('{% file')

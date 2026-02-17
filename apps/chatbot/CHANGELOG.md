@@ -1,5 +1,15 @@
 # chatbot
 
+## 8.0.0
+
+### Major Changes
+
+- ca49e7f: The Chatbot replies using the same language as the user's question
+
+### Patch Changes
+
+- 2bc17a7: Add language code for product list retrieve from S3 to chatbot settings
+
 ## 7.1.5
 
 ### Patch Changes

@@ -8,15 +8,52 @@ import { HomepageProps } from '@/app/[locale]/page';
 import SectionTitle from '@/components/molecules/SectionTitle/SectionTitle';
 import { ButtonNaked } from '@/components/atoms/ButtonNaked/ButtonNaked';
 
+const TabContent: React.FC<
+  Pick<
+    Required<HomepageProps>['ecosystem']['tabContents'][number],
+    'items' | 'cta'
+  >
+> = ({ items, cta }) => (
+  <>
+    {items && (
+      <CardsGrid
+        ctaButtonsVariant={'contained'}
+        cards={items}
+        containerSx={{
+          px: '22px',
+          py: '22px',
+          mt: '-22px',
+          mx: '-22px',
+        }}
+      />
+    )}
+    {cta && (
+      <Box textAlign={'center'}>
+        <ButtonNaked
+          component={Link}
+          href={cta.link.href}
+          color={'primary'}
+          variant={cta.variant || 'contained'}
+          sx={{ mb: 3 }}
+          target={cta.link.target ?? '_self'}
+        >
+          {cta.link.text}
+        </ButtonNaked>
+      </Box>
+    )}
+  </>
+);
+
 const Ecosystem = ({
   title,
-  products,
-  productsTabName,
-  solutionsTabName,
-  solutions,
-  solutionsCta,
+  tabContents,
 }: Required<HomepageProps>['ecosystem']) => {
   const theme = useTheme();
+
+  if (!tabContents || tabContents.length === 0) {
+    return null;
+  }
+
   return (
     <Box pt={10} pb={0} sx={{ backgroundColor: theme.palette.grey[50] }}>
       {title && <SectionTitle margin={'0 0 1.75rem 0'} title={title} />}
@@ -27,61 +64,19 @@ const Ecosystem = ({
           paddingX: 4,
         }}
       >
-        <TabComponent
-          items={[
-            {
-              title: productsTabName,
-              content: (
-                <CardsGrid
-                  ctaButtonsVariant={'contained'}
-                  cards={products}
-                  containerSx={{
-                    px: '22px',
-                    py: '22px',
-                    mt: '-22px',
-                    mx: '-22px',
-                  }}
-                />
-              ),
-            },
-            {
-              title: solutionsTabName,
-              content: (
-                <>
-                  {solutions && (
-                    <CardsGrid
-                      ctaButtonsVariant={'contained'}
-                      cards={solutions}
-                      containerSx={{
-                        px: '22px',
-                        py: '22px',
-                        mt: '-22px',
-                        mx: '-22px',
-                      }}
-                    />
-                  )}
-                  {solutionsCta && (
-                    <Box textAlign={'center'}>
-                      <ButtonNaked
-                        component={Link}
-                        href={solutionsCta.link.href}
-                        color={'primary'}
-                        variant={solutionsCta.variant || 'contained'}
-                        sx={{ mb: 3 }}
-                        target={solutionsCta.link.target ?? '_self'}
-                      >
-                        {solutionsCta.link.text}
-                      </ButtonNaked>
-                    </Box>
-                  )}
-                </>
-              ),
-            },
-          ]}
-          variant='fullWidth'
-          centered
-          sx={{ px: 0 }}
-        />
+        {tabContents.length > 1 ? (
+          <TabComponent
+            items={tabContents.map(({ name, items, cta }) => ({
+              title: name,
+              content: <TabContent items={items} cta={cta} />,
+            }))}
+            variant='fullWidth'
+            centered
+            sx={{ px: 0 }}
+          />
+        ) : (
+          <TabContent items={tabContents[0].items} cta={tabContents[0].cta} />
+        )}
       </Box>
     </Box>
   );
