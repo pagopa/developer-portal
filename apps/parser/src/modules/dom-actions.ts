@@ -34,7 +34,16 @@ export async function expandInteractiveSections(page: Page): Promise<void> {
           isCollapsed ||
           selector === "[data-toggle]";
         if (shouldClick) {
-          target.click();
+          if (typeof target.click === "function") {
+            target.click();
+          } else {
+            const event = new MouseEvent("click", {
+              view: window,
+              bubbles: true,
+              cancelable: true,
+            });
+            target.dispatchEvent(event);
+          }
           target.setAttribute("data-expanded", "true");
         }
       });

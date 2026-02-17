@@ -16,11 +16,15 @@ export function sanitizeUrlAsFilename(
   if (url === baseScope) {
     return applySanitization(
       url,
-      new URL(url).hostname.replace(/^www\./, ""),
+      new URL(url).hostname.replace(/www\./, ""),
       options,
     );
   } else {
-    const pathAndSearch = url.replace(baseScope, "").replace(/^\/+/, "");
+    const sanitizedBaseScope = baseScope.replace(/www\./, "");
+    const pathAndSearch = url
+      .replace(/www\./, "")
+      .replace(sanitizedBaseScope, "")
+      .replace(/^\/+/, "");
     if (pathAndSearch === "" || pathAndSearch === "/") {
       return applySanitization(
         url,
@@ -133,8 +137,8 @@ export function isWithinScope(
     if (fileExtensionRegex.test(pathname) && !pathname.endsWith(".html")) {
       return false;
     }
-    const urlDomain = urlObj.hostname.replace(/^www\./, "");
-    const scopeDomain = scopeObj.hostname.replace(/^www\./, "");
+    const urlDomain = urlObj.hostname.replace(/www\./, "");
+    const scopeDomain = scopeObj.hostname.replace(/www\./, "");
     if (urlDomain === scopeDomain) {
       return true;
     }
@@ -161,8 +165,9 @@ export function buildVisitKey(rawUrl: string): string {
   try {
     const url = new URL(rawUrl);
     url.hash = "";
-    url.hostname = url.hostname.replace(/^www\./, "");
-    return RemoveAnchorsFromUrl(url.hostname.toString()+url.pathname.toString());
+    url.hostname = url.hostname.replace(/www\./, "");
+    url.search = "";
+    return RemoveAnchorsFromUrl(url.toString());
   } catch (error) {
     console.warn(`Failed to build visit key for URL: ${rawUrl}`, error);
     return rawUrl;
