@@ -1,5 +1,5 @@
 
-import { UrlWithoutAnchors, isRemoteUrl } from '../helpers/url-handling';
+import { RemoveAnchorsFromUrl, isRemoteUrl } from '../helpers/url-handling';
 import { parseStringPromise } from 'xml2js';
 import http from 'node:http';
 import https from 'node:https';
@@ -87,7 +87,7 @@ async function extractUrlsFromSitemap(
     return doc.urlset.url
       .map((entry) => entry.loc?.[0])
       .filter((loc): loc is string => typeof loc === 'string')
-      .map((loc) => UrlWithoutAnchors(loc.replace(/\/$/, '')));
+      .map((loc) => RemoveAnchorsFromUrl(loc.replace(/\/$/, '')));
   }
   if (doc.sitemapindex?.sitemap) {
     const aggregated: string[] = [];

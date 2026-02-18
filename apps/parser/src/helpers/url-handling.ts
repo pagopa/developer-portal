@@ -1,4 +1,5 @@
 import { SanitizeOptions } from "../modules/types";
+import crypto from "crypto";
 
 const ILLEGAL_RE = /[\/\?<>\\:\*\|"]/g;
 const CONTROL_RE = /[\x00-\x1f\x80-\x9f]/g;
@@ -8,16 +9,55 @@ const WINDOWS_TRAILING_RE = /[\. ]+$/;
 const DEFAULT_REPLACEMENT = "-";
 
 export function sanitizeUrlAsFilename(
+  url: string,
+  baseScope: string,
+  options?: SanitizeOptions,
+): string {
+  if (url === baseScope) {
+    return applySanitization(
+      url,
+      new URL(url).hostname.replace(/www\./, ""),
+      options,
+    );
+  } else {
+    const sanitizedBaseScope = baseScope.replace(/www\./, "");
+    const pathAndSearch = url
+      .replace(/www\./, "")
+      .replace(sanitizedBaseScope, "")
+      .replace(/^\/+/, "");
+    if (pathAndSearch === "" || pathAndSearch === "/") {
+      return applySanitization(
+        url,
+        url.split("/").filter(Boolean).pop() || url,
+        options,
+      );
+    } else {
+      return applySanitization(url, pathAndSearch, options);
+    }
+  }
+}
+
+export function sanitizeUrlAsDirectoryName(
+  url: string,
+  options?: SanitizeOptions,
+): string {
+  return applySanitization(
+    url,
+    url.replace(/^(https?:\/\/)?(www\.)?/, ""),
+    options,
+  );
+}
+
+function applySanitization(
+  original_url: string,
   input: string,
   options?: SanitizeOptions,
 ): string {
-  if (!input) {
-    return DEFAULT_REPLACEMENT;
-  }
   const replacement = validReplacementOrDefault(
     options?.replacement ?? DEFAULT_REPLACEMENT,
   );
-  let sanitized = input
+  const sanitized = input
+    .replace(/\/$/, "")
     .replace(ILLEGAL_RE, replacement)
     .replace(CONTROL_RE, replacement)
     .replace(RESERVED_RE, replacement)
@@ -27,23 +67,42 @@ export function sanitizeUrlAsFilename(
   if (sanitized.length === 0) {
     return replacement;
   }
-  return sanitized.slice(0, 255);
+  const trimmedName = sanitized.replace(/^[-_]+/, "") || sanitized;
+  if (
+    options?.lengthThreshold &&
+    trimmedName.length > options.lengthThreshold
+  ) {
+    const digest = crypto.createHash("sha1").update(original_url).digest();
+    const hash = digest.subarray(0, 6).toString("base64url");
+    const prefix = trimmedName.slice(
+      0,
+      options.lengthThreshold - (hash.length + 1),
+    );
+    return `${prefix}_${hash}`;
+  }
+  return trimmedName;
 }
 
 function validReplacementOrDefault(candidate: string): string {
   if (!candidate) {
+    console.warn(
+      `Missing replacement character, using default "${DEFAULT_REPLACEMENT}"`,
+    );
     return DEFAULT_REPLACEMENT;
   }
   if (
     /[\/\?<>\\:\*\|"]/u.test(candidate) ||
     /[\x00-\x1f\x80-\x9f]/u.test(candidate)
   ) {
+    console.warn(
+      `Invalid replacement character: "${candidate}", using default "${DEFAULT_REPLACEMENT}"`,
+    );
     return DEFAULT_REPLACEMENT;
   }
   return candidate;
 }
 
-export const UrlWithoutAnchors = (rawUrl: string): string => {
+export const RemoveAnchorsFromUrl = (rawUrl: string): string => {
   try {
     const parsed = new URL(rawUrl);
     parsed.hash = "";
@@ -70,24 +129,56 @@ export function isRemoteUrl(url: string): boolean {
   }
 }
 
-export function deriveSubPath(
-  targetUrl: string,
-  baseUrl: string,
-  sanitizedBaseUrl: string,
-): string {
-  const base = new URL(baseUrl);
-  const target = new URL(targetUrl);
-  let relPath = target.pathname;
-  if (base.pathname !== "/" && relPath.startsWith(base.pathname)) {
-    relPath = relPath.slice(base.pathname.length);
-    if (!relPath.startsWith("/")) relPath = "/" + relPath;
+export function isWithinScope(
+  url: string,
+  baseScope: string,
+  validDomainVariants: string[] = [],
+): boolean {
+  if (!baseScope) {
+    return true;
   }
-  if (
-    UrlWithoutAnchors(targetUrl) === sanitizedBaseUrl ||
-    relPath === "/" ||
-    relPath === ""
-  ) {
-    return "/";
+  // TODO: This function could be generalized to better handle edge cases. For now it performs a basic check to see if the URL is within the same domain or valid subdomain variants as the scope.
+  try {
+    const urlObj = new URL(url);
+    const scopeObj = new URL(baseScope);
+    const pathname = urlObj.pathname.toLowerCase();
+    const fileExtensionRegex = /\.[a-z0-9]+$/;
+    if (fileExtensionRegex.test(pathname) && !pathname.endsWith(".html")) {
+      return false;
+    }
+    const urlDomain = urlObj.hostname.replace(/www\./, "");
+    const scopeDomain = scopeObj.hostname.replace(/www\./, "");
+    if (urlDomain === scopeDomain) {
+      return true;
+    }
+    const urlParts = urlDomain.split(".");
+    const scopeParts = scopeDomain.split(".");
+    if (urlParts.length > scopeParts.length) {
+      const subdomain = urlParts[0];
+      const domainWithoutSubdomain = urlParts.slice(1).join(".");
+      if (
+        domainWithoutSubdomain === scopeDomain &&
+        validDomainVariants.includes(subdomain)
+      ) {
+        return true;
+      }
+    }
+    return false;
+  } catch (_error) {
+    console.warn(`Failed to check if URL is within scope: ${url}`, _error);
+    return false;
   }
-  return `${relPath}${target.search}${target.hash}` || "/";
+}
+
+export function buildVisitKey(rawUrl: string): string {
+  try {
+    const url = new URL(rawUrl);
+    url.hash = "";
+    url.hostname = url.hostname.replace(/www\./, "");
+    url.search = "";
+    return RemoveAnchorsFromUrl(url.toString());
+  } catch (error) {
+    console.warn(`Failed to build visit key for URL: ${rawUrl}`, error);
+    return rawUrl;
+  }
 }

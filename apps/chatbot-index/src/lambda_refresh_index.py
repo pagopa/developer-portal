@@ -1,5 +1,5 @@
 import json
-from typing import Tuple, List, Dict
+from typing import Tuple, List
 
 from src.modules.settings import SETTINGS
 from src.modules.logger import get_logger
@@ -8,6 +8,7 @@ from src.modules.documents import (
     get_folders_list,
     read_file_from_s3,
     get_one_metadata_from_s3,
+    DOCS_PARENT_FOLDER,
 )
 from src.modules.vector_index import DiscoveryVectorIndex
 
@@ -87,9 +88,7 @@ def read_payload(payload: dict) -> Tuple[List[StaticMetadata], List[str], List[s
                 try:
                     folders_list = get_folders_list()
                     metadata = get_one_metadata_from_s3(
-                        object_key.split("/")[
-                            2
-                        ],  # "devportal-docs/docs/<folder_name>/.../file.md"
+                        object_key.split(DOCS_PARENT_FOLDER)[1].split("/")[0],
                         folders_list=folders_list,
                     )
                     s3_paths = [m["contentS3Path"] for m in metadata]

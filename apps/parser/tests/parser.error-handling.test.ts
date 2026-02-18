@@ -11,6 +11,7 @@ const execFileAsync = promisify(execFile);
 const parserScript = path.resolve(__dirname, "../dist/parser.js");
 const nonExistingHost = "http://nonexistent-url-1234567890.com";
 const unreachableHost = "http://127.0.0.1:9";
+const redirectToMismatchedDomain = "http://ioapp.com";
 
 jest.setTimeout(60_000);
 
@@ -29,6 +30,13 @@ describe("Parser error handling", () => {
     console.log("Unreachable host result:", result);
     expect(result).not.toBe("Parser unexpectedly succeeded");
     expect(/ECONNREFUSED|connect|unreachable|error/i.test(result)).toBe(true);
+  });
+
+  it("handles redirect to mismatched domain", async () => {
+    const result = await captureParserError(redirectToMismatchedDomain);
+    console.log("Redirect to mismatched domain result:", result);
+    expect(result).not.toBe("Parser unexpectedly succeeded");
+    expect(/Domain mismatch|error/i.test(result)).toBe(true);
   });
 });
 

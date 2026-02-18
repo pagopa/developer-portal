@@ -15,6 +15,7 @@ export type TutorialProps = Tutorial & {
 };
 
 export function makeTutorialsProps(
+  locale: string,
   strapiTutorials: StrapiTutorials,
   markdownContentDict: Record<string, string>
 ): readonly TutorialProps[] {
@@ -48,7 +49,7 @@ export function makeTutorialsProps(
             ? new Date(attributes.publishedAt)
             : undefined,
           name: attributes.title,
-          path: `/${attributes.product.data.attributes.slug}/tutorials/${attributes.slug}`,
+          path: `/${locale}/${attributes.product.data.attributes.slug}/tutorials/${attributes.slug}`,
           parts: compact(
             attributes.parts.map((part) =>
               makePartProps(part, markdownContentDict)

@@ -1,12 +1,12 @@
 {
   "name": "parser",
-  "version": "1.0.0",
+  "version": "0.2.0",
   "private": true,
   "scripts": {
     "clean": "shx rm -rf dist",
     "compile": "tsc --project tsconfig.json",
     "build": "npm run clean && tsc --project tsconfig.build.json",
-    "parse": "npm run build && node dist/parser.js",
+    "parse": "npm run build && node dist/main.js",
     "test": "npm run build && jest -i"
   },
   "dependencies": {
