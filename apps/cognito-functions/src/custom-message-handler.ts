@@ -46,10 +46,11 @@ export const makeHandler =
       return { ...event, response };
     } else if (eventTrigger === 'CustomMessage_ForgotPassword') {
       const { codeParameter } = event.request;
-      const href = `https://${env.domain
-        }/auth/change-password?username=${sanitize(username)}&code=${sanitize(
-          codeParameter
-        )}`;
+      const href = `https://${
+        env.domain
+      }/auth/change-password?username=${sanitize(username)}&code=${sanitize(
+        codeParameter
+      )}`;
       const emailMessage = makeConfirmationForgotPasswordEmail(
         href,
         env.domain,
@@ -65,10 +66,11 @@ export const makeHandler =
       // eslint-disable-next-line functional/no-expression-statements
       console.log(`User ${username} has requested to update the email address`);
       const { codeParameter } = event.request;
-      const href = `https://${env.domain
-        }/auth/email-confirmation?username=${sanitize(username)}&code=${sanitize(
-          codeParameter
-        )}`;
+      const href = `https://${
+        env.domain
+      }/auth/email-confirmation?username=${sanitize(username)}&code=${sanitize(
+        codeParameter
+      )}`;
       const emailMessage = makeConfirmationUpdateEmailAddress(
         href,
         env.domain,
