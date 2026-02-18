@@ -241,10 +241,10 @@ class Chatbot:
         session_id: str | None = None,
         user_id: str | None = None,
         messages: Optional[List[Dict[str, str]]] | None = None,
-        context: str | None = None,
+        knowledge_base: str | None = None,
     ) -> dict:
 
-        # TODO: implement context
+        # TODO: implement knowledge base
 
         start_time = time.time()
         agent = get_agent(
