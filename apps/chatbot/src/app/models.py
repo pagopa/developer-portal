@@ -10,13 +10,13 @@ class QueryFromThePast(BaseModel):
     id: str | None = None
     question: str = Field(max_length=800)
     answer: str | None = None
-    context: str | None = None
+    knowledge_base: str | None = None
 
 
 class Query(BaseModel):
     question: str = Field(max_length=800)
     queriedAt: str | None = None
-    context: str | None = None
+    knowledge_base: str | None = None
     history: List[QueryFromThePast] | None = None
 
 
