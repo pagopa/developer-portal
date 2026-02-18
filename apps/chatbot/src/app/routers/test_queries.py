@@ -36,6 +36,8 @@ def test_post_queries() -> None:
     assert "queriedAt" in json.keys()
     assert "badAnswer" in json.keys()
     assert "chips" in json.keys()
+    assert isinstance(json["chips"], list)
+    assert all(isinstance(chip, str) for chip in json["chips"])
 
 
 def test_get_queries_no_auth() -> None:
