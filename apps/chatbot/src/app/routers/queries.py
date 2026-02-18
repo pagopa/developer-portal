@@ -12,9 +12,6 @@ from src.app.models import Query, QueryResponse, tables
 from src.modules.logger import get_logger
 from src.app.query_utilities import (
     can_evaluate,
-    count_queries_created_today,
-    backfill_created_at_date,
-    fix_unbalanced_code_blocks,
     get_final_response,
 )
 from src.app.sessions import (
