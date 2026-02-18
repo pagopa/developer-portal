@@ -77,7 +77,7 @@ def fix_unbalanced_code_blocks(text: str) -> str:
 def get_final_response(
     response_str: str,
     references: List[str],
-) -> dict:
+) -> str:
 
     response_str = fix_unbalanced_code_blocks(response_str)
     unique_references = list(dict.fromkeys(references))
