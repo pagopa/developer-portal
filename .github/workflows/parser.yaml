@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       urls:
-        description: 'URLs to parse (one per line)'
+        description: 'URLs to parse (comma-separated)'
         required: true
         type: string
       environment:
@@ -50,12 +50,14 @@ jobs:
           PARSER_VECTOR_INDEX_NAME: ${{ inputs.parser_vector_index_name || secrets.PARSER_VECTOR_INDEX_NAME }}
         working-directory: apps/parser
         run: |
-          # Loop through each URL sequentially
-          while IFS= read -r url; do
+          # Split comma-separated URLs and loop sequentially
+          IFS=',' read -ra url_array <<< "${{ inputs.urls }}"
+          for url in "${url_array[@]}"; do
+            url=$(echo "$url" | xargs)  # trim whitespace
             if [ -n "$url" ]; then
               echo "=== Parsing: $url ==="
-              URL="$url" npx tsx src/parser.ts
+              PARSER_VECTOR_INDEX_NAME="${PARSER_VECTOR_INDEX_NAME}" URL="${url}" npx tsx src/parser.ts
               echo "=== Completed: $url ==="
               echo ""
             fi
-          done <<< "${{ inputs.urls }}"
+          done
