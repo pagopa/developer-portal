@@ -72,7 +72,7 @@ export async function parsePages(
       return Array.from(unique);
     }, baseHostToken) as string[];
   } catch (error) {
-    // Ignore anchor extraction errors
+    console.error(`Failed to extract links from ${node.url}:`, error);
   } finally {
     if (page) await page.close();
   }
