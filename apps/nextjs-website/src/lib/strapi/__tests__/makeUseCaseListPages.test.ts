@@ -10,6 +10,7 @@ import {
 describe('makeUseCaseListPagesProps', () => {
   it('should transform strapi use case list pages to use cases page props', () => {
     const result = makeUseCaseListPagesProps(
+      'it',
       _.cloneDeep(strapiUseCaseListPages)
     );
     expect(result).toHaveLength(1);
@@ -23,14 +24,14 @@ describe('makeUseCaseListPagesProps', () => {
     expect(page.useCases).toHaveLength(1);
     const firstElement = page.useCases[0];
     expect(firstElement.title).toBe('Use Case 1');
-    expect(firstElement.path).toBe('/product-1/use-cases/use-case-1');
+    expect(firstElement.path).toBe('/it/product-1/use-cases/use-case-1');
     expect(firstElement.coverImage?.url).toBe(
       'https://example.com/example.jpg'
     );
   });
 
   it('should handle minimal use case list pages', () => {
-    const result = makeUseCaseListPagesProps(minimalUseCaseListPages());
+    const result = makeUseCaseListPagesProps('it', minimalUseCaseListPages());
     expect(result).toHaveLength(1);
     const page = result[0];
     expect(page.abstract?.title).toBe('Minimal Use Cases');
@@ -41,6 +42,7 @@ describe('makeUseCaseListPagesProps', () => {
 
   it('should handle use case list pages without banner links', () => {
     const result = makeUseCaseListPagesProps(
+      'it',
       useCaseListPagesWithItemMissingBannerLinks()
     );
     expect(result).toHaveLength(1);
@@ -49,6 +51,7 @@ describe('makeUseCaseListPagesProps', () => {
 
   it('should handle use case list pages with banner links', () => {
     const result = makeUseCaseListPagesProps(
+      'it',
       _.cloneDeep(strapiUseCaseListPages)
     );
     expect(result).toHaveLength(1);
@@ -60,7 +63,7 @@ describe('makeUseCaseListPagesProps', () => {
   });
 
   it('should handle empty use case list pages', () => {
-    const result = makeUseCaseListPagesProps(emptyUseCaseListPages());
+    const result = makeUseCaseListPagesProps('it', emptyUseCaseListPages());
     expect(result).toHaveLength(0);
   });
 });

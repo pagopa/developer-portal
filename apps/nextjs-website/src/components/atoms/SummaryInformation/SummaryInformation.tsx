@@ -5,8 +5,9 @@ import TimeSlot from '../TimeSlot/TimeSlot';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
 import LiveWebinarChip from '@/components/atoms/LiveWebinarChip/LiveWebinarChip';
 import { WebinarState } from '@/helpers/webinar.helpers';
+import { webinarDateOptions } from '@/config';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
-import { dateOptions, defaultLocale } from '@/config';
+import { useFormatter } from 'next-intl';
 
 export type SummaryInformationProps = {
   startDateTime?: string;
@@ -28,6 +29,7 @@ const SummaryInformation: FC<SummaryInformationProps> = ({
   textColor,
 }) => {
   const { palette } = useTheme();
+  const format = useFormatter();
   const isSmallScreen = useMediaQuery('(max-width: 1000px)');
   const showTimeSlot =
     startDateTime &&
@@ -97,10 +99,7 @@ const SummaryInformation: FC<SummaryInformationProps> = ({
                     color: textColor || palette.grey[600],
                   }}
                 >
-                  {new Date(endDateTime).toLocaleDateString(
-                    defaultLocale,
-                    dateOptions
-                  )}
+                  {format.dateTime(new Date(endDateTime), webinarDateOptions)}
                 </Typography>
               </Box>
             </Stack>

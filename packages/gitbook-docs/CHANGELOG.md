@@ -1,5 +1,15 @@
 # gitbook-docs
 
+## 1.8.0
+
+### Minor Changes
+
+- 8324e09: Manage locale as optional param
+
+### Patch Changes
+
+- d9c5d62: Fix parsing of content-ref tag opening and closing in the same line
+
 ## 1.7.4
 
 ### Patch Changes

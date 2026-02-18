@@ -18,7 +18,7 @@ import SubscribeToWebinar from '../SubscribeToWebinar/SubscribeToWebinar';
 import { useTranslations } from 'next-intl';
 import { useWebinar, WebinarState } from '@/helpers/webinar.helpers';
 import LiveWebinarChip from '@/components/atoms/LiveWebinarChip/LiveWebinarChip';
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 
 type WebinarCardProps = {
   webinar: Webinar;
@@ -33,6 +33,7 @@ const WebinarCard = ({
 }: WebinarCardProps) => {
   const theme = useTheme();
   const router = useRouter();
+  const { locale } = useParams<{ locale: string }>();
   const t = useTranslations('webinar');
   const [isSubscribed, setIsSubscribed] = useState(false);
   const isSmallScreen = useMediaQuery('(max-width: 1000px)');
@@ -52,12 +53,19 @@ const WebinarCard = ({
     return (
       <LinkButton
         disabled={false}
-        href={`/webinars/${webinar.slug}`}
+        href={`/${locale}/webinars/${webinar.slug}`}
         label={t(isSubscribed ? 'goToWebinar' : 'whyParticipate')}
         color={theme.palette.primary.main}
       />
     );
-  }, [isSubscribed, webinarState, webinar.slug, t, theme.palette.primary.main]);
+  }, [
+    isSubscribed,
+    webinarState,
+    webinar.slug,
+    t,
+    theme.palette.primary.main,
+    locale,
+  ]);
 
   return (
     <Card
@@ -108,7 +116,7 @@ const WebinarCard = ({
                   variant={'contained'}
                   onClick={() => {
                     // eslint-disable-next-line functional/immutable-data
-                    router.push(`/webinars/${webinar.slug}`);
+                    router.push(`/${locale}/webinars/${webinar.slug}`);
                     return null;
                   }}
                 >

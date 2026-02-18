@@ -1,6 +1,7 @@
 import { defaultOgTagImage, websiteName } from '@/config';
 import { SEO } from '@/lib/types/seo';
 import { Metadata, ResolvedMetadata } from 'next';
+import { SUPPORTED_LOCALES } from '@/locales';
 
 type MakeMetadataParams = {
   readonly parent?: ResolvedMetadata;
@@ -8,7 +9,7 @@ type MakeMetadataParams = {
   readonly description?: string;
   readonly url?: string;
   readonly image?: string;
-  readonly locale?: string;
+  readonly langCode?: string;
 };
 
 type MakeMetadataFunction = (params: MakeMetadataParams) => Metadata;
@@ -19,7 +20,7 @@ export const makeMetadata: MakeMetadataFunction = ({
   description,
   url,
   image: imageParam,
-  locale,
+  langCode,
 }) => {
   const previousTitle = parent?.title?.absolute || websiteName;
   const metadataTitle = title ? `${title} | ${previousTitle}` : previousTitle;
@@ -28,7 +29,7 @@ export const makeMetadata: MakeMetadataFunction = ({
     metadataTitle,
     description,
     image,
-    locale
+    SUPPORTED_LOCALES.find(({ langCode: code }) => code === langCode)?.locale
   );
   const twitter = getTwitterMetadata(metadataTitle, description, image);
 
