@@ -40,7 +40,7 @@ class QueryResponse(BaseModel):
     createdAtDate: str
     queriedAt: str
     badAnswer: bool = False
-    chips: List[str] = []
+    chips: List[str] = Field(default_factory=list)
 
 
 dynamodb = AWS_SESSION.resource("dynamodb")
