@@ -52,7 +52,7 @@ async def query_creation(
         session_id=session["id"],
         user_id=user_id,
         messages=messages,
-        context=query.context,
+        knowledge_base=query.knowledge_base,
     )
     answer = get_final_response(
         response_str=answer_json.get("response", ""),

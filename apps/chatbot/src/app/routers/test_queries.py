@@ -19,7 +19,11 @@ def post_queries(data: dict) -> dict:
 
 
 def test_post_queries() -> None:
-    data = {"question": "come ti chiami?", "queriedAt": "2024-11-11"}
+    data = {
+        "question": "come ti chiami?",
+        "queriedAt": "2024-11-11",
+        "knowledge_base": "developer-portal",
+    }
     response = post_queries(data)
 
     json = response.json()
