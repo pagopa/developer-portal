@@ -9,6 +9,8 @@ import * as T from 'fp-ts/Task';
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import { makePostConfirmationConfirmSignUpEmail } from './templates/post-confirmation-confirm-sign-up-message';
+import { sanitize } from './utils/sanitize';
+import { EMAIL_TRANSLATIONS } from './templates/translations';
 import { PostConfirmationTriggerEvent } from 'aws-lambda/trigger/cognito-user-pool-trigger/post-confirmation';
 
 const makeSesEmailParameters = (
@@ -50,15 +52,23 @@ export const makeHandler =
     event: PostConfirmationTriggerEvent
   ): Promise<PostConfirmationTriggerEvent> => {
     const { email, given_name } = event.request.userAttributes;
+    const locale = event.request.userAttributes['locale'] || 'it';
     if (email && event.triggerSource === 'PostConfirmation_ConfirmSignUp') {
-      const subject = 'Finalmente sei dei nostri';
+      const subject =
+        EMAIL_TRANSLATIONS.postConfirmation[
+          locale as keyof typeof EMAIL_TRANSLATIONS.postConfirmation
+        ]?.subject || EMAIL_TRANSLATIONS.postConfirmation.it.subject;
 
       const sendEmail = pipe(
         makeSesEmailParameters(
           email,
           config.fromEmailAddress,
           subject,
-          makePostConfirmationConfirmSignUpEmail(given_name, config.domain)
+          makePostConfirmationConfirmSignUpEmail(
+            sanitize(given_name),
+            config.domain,
+            locale
+          )
         ),
         (sendEmailCommandInput) => new SendEmailCommand(sendEmailCommandInput),
         (sendEmailCommand) =>

@@ -1,38 +1,33 @@
 import { parseMjmlToHtml } from './mjmlParser';
+import { EMAIL_TRANSLATIONS } from './translations';
 
-const TRANSLATIONS = {
-  previewText: 'Finalmente sei dei nostri',
-  title: 'Finalmente sei dei nostri',
-  hello: 'Ciao',
-  text:
-    'Siamo felici di averti a bordo.<br><br>' +
-    'Il DevPortal di PagoPA è il portale web unico, ufficiale e aggiornato per il reperimento di tutte le risorse utili all’integrazione con i nostri prodotti.<br><br><br>' +
-    'Al suo interno troverai:<br>' +
-    '<ul class="squared">' +
-    '  <li>Strumenti interattivi che offrono una vista sintetica del processo di integrazione di ogni prodotto;</li>' +
-    '  <li>Documentazione API, guide tecniche e manuali per approfondire tutte le informazioni di dettaglio;</li>' +
-    '  <li>Tutorial che ti accompagneranno nello svolgimento di task specifici.</li>' +
-    '</ul>',
-  goToLogin: 'Vai al login',
-  seeYouSoon: 'A presto,<br><br>il team DevPortal',
-  companyLegalDetails:
-    'PagoPA S.p.A. - Società per azioni con socio unico capitale sociale di euro 1,000,000 i.v.Sede legale in Roma, Piazza Colonna 370, CAP 00187Sede operativa in Roma, Via Sardegna 38, CAP 00187N. di iscrizione a Registro Imprese di Roma, CF e P.IVA 15376371009',
-  wrongRecipient:
-    'Ricevi questa e-mail perché hai creato un account su PagoPA DevPortal.',
-};
 export const makePostConfirmationConfirmSignUpEmail = (
   firstName: string,
-  domain: string
+  domain: string,
+  locale = 'it'
 ): string =>
-  parseMjmlToHtml(postConfirmationConfirmSignUpMessage(firstName, domain));
+  parseMjmlToHtml(
+    postConfirmationConfirmSignUpMessage(firstName, domain, locale)
+  );
 
 const postConfirmationConfirmSignUpMessage = (
   firstName: string,
-  domain: string
-): string => `
+  domain: string,
+  locale: string
+): string => {
+  const translations =
+    EMAIL_TRANSLATIONS.postConfirmation[
+      locale as keyof typeof EMAIL_TRANSLATIONS.postConfirmation
+    ] || EMAIL_TRANSLATIONS.postConfirmation.it;
+  const commonTranslations =
+    EMAIL_TRANSLATIONS.common[
+      locale as keyof typeof EMAIL_TRANSLATIONS.common
+    ] || EMAIL_TRANSLATIONS.common.it;
+
+  return `
 <mjml>
   <mj-head>
-    <mj-preview>${TRANSLATIONS.previewText}</mj-preview>
+    <mj-preview>${translations.previewText}</mj-preview>
     <mj-font name="Titillium Web" href="https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,400;0,700;1,400&display=swap" />
     <mj-style>
       .section {
@@ -76,33 +71,34 @@ const postConfirmationConfirmSignUpMessage = (
       </mj-column>
       <mj-column width="100%">
         <mj-text mj-class="title" align="left" color="#17324D" font-size="32px">${
-          TRANSLATIONS.title
+          translations.title
         }</mj-text>
       </mj-column>
       <mj-column css-class="container" width="100%" padding-top="22px">
         <mj-text mj-class="text" font-size="18px">${
-          TRANSLATIONS.hello
+          translations.hello
         } ${firstName},</mj-text>
         <mj-spacer height="36px" />
-        <mj-text mj-class="text" font-size="18px">${TRANSLATIONS.text}</mj-text>
+        <mj-text mj-class="text" font-size="18px">${translations.text}</mj-text>
         <mj-button align="left" background-color="#0073E6" href="${`https://${domain}/auth/login`}" font-size="16px" font-weight="700">
-          ${TRANSLATIONS.goToLogin}
+          ${translations.goToLogin}
         </mj-button>
         <mj-spacer height="48px" />
         <mj-text mj-class="text" font-size="18px">${
-          TRANSLATIONS.seeYouSoon
+          translations.seeYouSoon
         }</mj-text>
         <mj-spacer height="5px" />
         <mj-divider border-width="1px" border-style="solid" border-color="#E3E7EB" />
         <mj-spacer height="5px" />
         <mj-text mj-class="text" font-size="14px">${
-          TRANSLATIONS.wrongRecipient
+          translations.wrongRecipient
         }</mj-text>
         <mj-text mj-class="footer-text">${
-          TRANSLATIONS.companyLegalDetails
+          commonTranslations.companyLegalDetails
         }</mj-text>
       </mj-column>
     </mj-section>
   </mj-body>
 </mjml>
 `;
+};
