@@ -21,12 +21,11 @@ services:
         condition: service_started
       motoserver:
         condition: service_started
-      
 
   postgres:
     image: postgres:17.2-alpine
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
       interval: 3s
       timeout: 3s
       retries: 10
@@ -36,9 +35,6 @@ services:
 
   redis:
     image: redis/redis-stack:7.2.0-v13
-    ports:
-      - "6379:6379"
-      - "8001:8001"
     healthcheck:
       test: [ "CMD", "redis-cli", "ping" ]
       interval: 3s
@@ -56,7 +52,7 @@ services:
     volumes:
       - redis_data:/data
       - ./files/redis-data/redis-dump.rdb:/seed/dump.rdb:ro
-    command: ["sh", "-c", "if [ -f /seed/dump.rdb ]; then cp -a /seed/dump.rdb /data/dump.rdb && chown redis:redis /data/dump.rdb 2>/dev/null || chown 1000:1000 /data/dump.rdb || true; fi"]
+    command: [ "sh", "-c", "if [ -f /seed/dump.rdb ]; then cp -a /seed/dump.rdb /data/dump.rdb && chown redis:redis /data/dump.rdb 2>/dev/null || chown 1000:1000 /data/dump.rdb || true; fi" ]
     restart: "no"
 
   redis-fix-perms:
@@ -68,9 +64,9 @@ services:
     depends_on:
       redis-seed:
         condition: service_completed_successfully
-    command: ["sh", "-c", "chown -R redis:redis /data 2>/dev/null || chown -R 1000:1000 /data || true"]
+    command: [ "sh", "-c", "chown -R redis:redis /data 2>/dev/null || chown -R 1000:1000 /data || true" ]
     restart: "no"
-    
+
   motoserver:
     image: motoserver/moto:5.1.14
     environment:
