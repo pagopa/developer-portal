@@ -31,6 +31,7 @@ def test_post_queries() -> None:
     assert "createdAt" in json.keys()
     assert "queriedAt" in json.keys()
     assert "badAnswer" in json.keys()
+    assert "chips" in json.keys()
 
 
 def test_get_queries_no_auth() -> None:

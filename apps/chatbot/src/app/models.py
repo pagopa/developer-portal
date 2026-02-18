@@ -2,7 +2,7 @@ import os
 
 from decimal import Decimal
 from pydantic import BaseModel, Field
-from typing import List
+from typing import List, Optional
 from src.modules.settings import AWS_SESSION, SETTINGS
 
 
@@ -10,11 +10,13 @@ class QueryFromThePast(BaseModel):
     id: str | None = None
     question: str = Field(max_length=800)
     answer: str | None = None
+    context: str | None = None
 
 
 class Query(BaseModel):
     question: str = Field(max_length=800)
     queriedAt: str | None = None
+    context: str | None = None
     history: List[QueryFromThePast] | None = None
 
 
@@ -27,6 +29,18 @@ class Feedback(BaseModel):
 class QueryFeedback(BaseModel):
     badAnswer: bool = False
     feedback: Feedback | None = None
+
+
+class QueryResponse(BaseModel):
+    id: str
+    sessionId: str
+    question: str
+    answer: str
+    createdAt: str
+    createdAtDate: str
+    queriedAt: str
+    badAnswer: bool = False
+    chips: List[str] = []
 
 
 dynamodb = AWS_SESSION.resource("dynamodb")

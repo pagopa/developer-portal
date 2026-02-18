@@ -6,9 +6,9 @@ import uuid
 from botocore.exceptions import BotoCoreError, ClientError
 from boto3.dynamodb.conditions import Key
 from fastapi import APIRouter, Header, HTTPException
-from typing import List, Annotated
+from typing import Annotated
 from src.app.sqs_init import sqs_queue_evaluate
-from src.app.models import Query, tables
+from src.app.models import Query, QueryResponse, tables
 from src.modules.logger import get_logger
 from src.app.query_utilities import (
     can_evaluate,
@@ -52,10 +52,11 @@ async def query_creation(
         session_id=session["id"],
         user_id=user_id,
         messages=messages,
+        context=query.context,
     )
     answer = get_final_response(
-        response_str=answer_json["response"],
-        references=answer_json["references"],
+        response_str=answer_json.get("response", ""),
+        references=answer_json.get("references", []),
     )
 
     if can_evaluate():
@@ -84,21 +85,22 @@ async def query_creation(
 
     createdAt = now.isoformat()
     createdAtDate = createdAt[:10]
-    bodyToReturn = {
-        "id": trace_id,
-        "sessionId": session["id"],
-        "question": query.question,
-        "answer": answer,
-        "createdAt": createdAt,
-        "createdAtDate": createdAtDate,
-        "queriedAt": queriedAt,
-        "badAnswer": False,
-    }
+    bodyToReturn = QueryResponse(
+        id=trace_id,
+        sessionId=session["id"],
+        question=query.question,
+        answer=answer,
+        createdAt=createdAt,
+        createdAtDate=createdAtDate,
+        queriedAt=queriedAt,
+        badAnswer=False,
+        chips=answer_json.get("chips", []),
+    )
 
     days = int(os.getenv("EXPIRE_DAYS", 90))
     expires_at = int((now + datetime.timedelta(days=days)).timestamp())
 
-    bodyToSave = bodyToReturn.copy()
+    bodyToSave = bodyToReturn.model_dump()
     bodyToSave["question"] = chatbot.mask_pii(query.question)
     bodyToSave["answer"] = get_final_response(
         response_str=chatbot.mask_pii(answer_json["response"]),
