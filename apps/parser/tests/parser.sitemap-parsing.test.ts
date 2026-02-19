@@ -35,4 +35,16 @@ describe("Sitemap parsing", () => {
     );
     expect(urls).toEqual(["https://www.w3.org/section"]);
   });
+  it("removes anchors from sitemap URLs and keeps normalized URLs unchanged", async () => {
+    const xml = `<?xml version="1.0" encoding="UTF-8"?>
+      <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+        <url><loc>https://www.w3.org/page#section</loc></url>
+        <url><loc>https://www.w3.org/already-normalized</loc></url>
+      </urlset>`;
+    const urls = await parseSitemapXml(xml, "https://www.w3.org/sitemap.xml");
+    expect(urls.map(RemoveAnchorsFromUrl)).toEqual([
+      "https://www.w3.org/page",
+      "https://www.w3.org/already-normalized",
+    ]);
+  });
 });
