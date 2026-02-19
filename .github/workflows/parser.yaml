@@ -65,7 +65,7 @@ jobs:
                 continue
               fi
               echo "=== Parsing: $url ==="
-              PARSER_VECTOR_INDEX_NAME="${PARSER_VECTOR_INDEX_NAME}" URL="$url" npx tsx src/parser.ts
+              PARSER_VECTOR_INDEX_NAME="${PARSER_VECTOR_INDEX_NAME}" URL="$url" npx tsx src/main.ts
               echo "=== Completed: $url ==="
               echo ""
             fi
