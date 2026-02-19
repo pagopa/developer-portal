@@ -97,7 +97,7 @@ export function makeOverviewsProps(
                     },
                     title: tutorial.attributes.title,
                     name: 'shared.moreInfo',
-                    path: `${locale}/${tutorial.attributes.product.data.attributes.slug}/tutorials/${tutorial.attributes.slug}`,
+                    path: `/${locale}/${tutorial.attributes.product.data.attributes.slug}/tutorials/${tutorial.attributes.slug}`,
                   };
                 })
               ) || [],
@@ -138,7 +138,7 @@ export function makeOverviewsProps(
                     },
                     title: useCase.attributes.title,
                     name: 'shared.moreInfo',
-                    path: `${locale}/${useCase.attributes.product.data.attributes.slug}/use-cases/${useCase.attributes.slug}`,
+                    path: `/${locale}/${useCase.attributes.product.data.attributes.slug}/use-cases/${useCase.attributes.slug}`,
                   } satisfies UseCase;
                 })
               ) || [],
