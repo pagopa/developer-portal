@@ -365,10 +365,18 @@ export const theme = createTheme(foundation as Parameters<typeof createTheme>[0]
         subtitle2: { fontSize: pxToRem(14), fontWeight: 600 },
     },
     components: {
+        MuiCssBaseline: {
+            styleOverrides: {
+                body: {
+                    fontFamily: mainTypeface,
+                },
+            },
+        },
         MuiButton: {
             defaultProps: { disableElevation: true, disableFocusRipple: true },
             styleOverrides: {
                 root: {
+                    fontFamily: mainTypeface,
                     padding: '0 20px',
                     minHeight: pxToRem(24),
                     minWidth: pxToRem(24),
@@ -509,6 +517,7 @@ export const theme = createTheme(foundation as Parameters<typeof createTheme>[0]
         MuiTooltip: {
             styleOverrides: {
                 tooltip: {
+                    fontFamily: mainTypeface,
                     fontSize: pxToRem(14),
                     backgroundColor: '#455B71',
                     fontWeight: 600,
@@ -521,7 +530,11 @@ export const theme = createTheme(foundation as Parameters<typeof createTheme>[0]
         },
         MuiBreadcrumbs: {
             styleOverrides: {
-                root: { fontSize: pxToRem(16), color: foundation.palette.text.primary },
+                root: {
+                    fontFamily: mainTypeface,
+                    fontSize: pxToRem(16),
+                    color: foundation.palette.text.primary
+                },
                 li: {
                     'a:hover': { textDecoration: 'none' },
                     p: { fontSize: `${pxToRem(16)} !important` },
@@ -533,6 +546,7 @@ export const theme = createTheme(foundation as Parameters<typeof createTheme>[0]
         MuiStepLabel: {
             styleOverrides: {
                 label: {
+                    fontFamily: mainTypeface,
                     fontSize: pxToRem(14),
                     [`@media (min-width:640px)`]: { fontSize: pxToRem(14) },
                     '&.Mui-completed': { fontWeight: 600 },
@@ -543,6 +557,7 @@ export const theme = createTheme(foundation as Parameters<typeof createTheme>[0]
         MuiAlert: {
             styleOverrides: {
                 root: {
+                    fontFamily: mainTypeface,
                     borderLeft: `${alertBorderWidth} solid`,
                     padding: '8px',
                     color: colorTextPrimary,
@@ -556,7 +571,7 @@ export const theme = createTheme(foundation as Parameters<typeof createTheme>[0]
                     marginRight: '8px',
                     [`@media (min-width:640px)`]: { marginRight: '16px' },
                 },
-                message: { padding: 0, overflow: 'inherit' },
+                message: { padding: 0, overflow: 'inherit', fontFamily: mainTypeface },
                 action: { marginRight: 0, paddingTop: 0 },
                 outlined: {
                     backgroundColor: '#FFFFFF',
@@ -589,6 +604,7 @@ export const theme = createTheme(foundation as Parameters<typeof createTheme>[0]
         MuiAlertTitle: {
             styleOverrides: {
                 root: {
+                    fontFamily: mainTypeface,
                     fontSize: pxToRem(16),
                     fontWeight: 600,
                     letterSpacing: 0.15,
@@ -605,18 +621,19 @@ export const theme = createTheme(foundation as Parameters<typeof createTheme>[0]
         MuiSnackbarContent: {
             styleOverrides: {
                 root: {
+                    fontFamily: mainTypeface,
                     padding: '16px',
                     color: foundation.palette.text.primary,
                     backgroundColor: '#FFFFFF',
                     boxShadow: '0px 2px 4px -1px rgba(0, 43, 85, 0.1)',
                 },
                 action: { marginRight: 0 },
-                message: { padding: 0, fontSize: pxToRem(16) },
+                message: { padding: 0, fontSize: pxToRem(16), fontFamily: mainTypeface },
             },
         },
         MuiBadge: {
             styleOverrides: {
-                badge: { fontSize: pxToRem(14), fontWeight: 600, letterSpacing: 0.15 },
+                badge: { fontFamily: mainTypeface, fontSize: pxToRem(14), fontWeight: 600, letterSpacing: 0.15 },
             },
         },
     },
