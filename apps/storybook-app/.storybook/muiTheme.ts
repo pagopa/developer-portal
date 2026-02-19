@@ -179,7 +179,7 @@ const foundation = {
         values: { xs: 0, sm: 640, md: 900, lg: 1200, xl: 1536 },
     },
     palette: {
-        mode: 'light',
+        mode: 'light' as const,
         common: { black: '#000', white: '#fff' },
         background: { paper: '#FFFFFF', default: '#F2F2F2' },
         primary: {
