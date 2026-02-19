@@ -19,6 +19,7 @@ runs:
       shell: bash
       run: |
         # Split comma-separated URLs and loop sequentially
+        failed_urls=()
         IFS=',' read -ra url_array <<< "${{ inputs.urls }}"
         for url in "${url_array[@]}"; do
           url="$(echo "$url" | xargs)"  # trim whitespace
@@ -33,8 +34,20 @@ runs:
               continue
             fi
             echo "=== Parsing: $url ==="
-            PARSER_VECTOR_INDEX_NAME="${PARSER_VECTOR_INDEX_NAME}" URL="$url" npx tsx src/main.ts
-            echo "=== Completed: $url ==="
+            if PARSER_VECTOR_INDEX_NAME="${PARSER_VECTOR_INDEX_NAME}" URL="$url" npx tsx src/main.ts; then
+              echo "=== Completed: $url ==="
+            else
+              echo "=== FAILED: $url ==="
+              failed_urls+=("$url")
+            fi
             echo ""
           fi
         done
+
+        if [ ${#failed_urls[@]} -gt 0 ]; then
+          echo "::error::The following URLs failed to parse:"
+          for url in "${failed_urls[@]}"; do
+            echo "  - $url"
+          done
+          exit 1
+        fi
