@@ -3,7 +3,10 @@ import StealthPlugin from "puppeteer-extra-plugin-stealth";
 import { resolveEnv } from "./modules/config";
 import { ensureDirectory } from "./modules/output";
 import { handleError } from "./modules/errors";
-import { exploreAndParsePages } from "./modules/parser";
+import {
+  exploreAndParsePages,
+  generatePageParsedMetadata,
+} from "./modules/parser";
 import { ParsedNode, ParsedMetadata } from "./modules/types";
 import { RemoveAnchorsFromUrl, buildVisitKey } from "./helpers/url-handling";
 import { assertReachable } from "./modules/network";
@@ -116,18 +119,24 @@ void (async () => {
           env.baseUrl,
         )} not seen in crawl...`,
       );
+      const pagesFromCrawlSize = allParsedPages.size;
       for (const url of toParse) {
         try {
-          const node: ParsedNode = { url };
-          let newParsedPages = await exploreAndParsePages(
+          const metadata = await generatePageParsedMetadata(
             browser,
-            node,
-            0,
-            allParsedPages,
-            scheduledPages,
+            url,
             BASE_SCOPE,
           );
-          allParsedPages = new Map([...allParsedPages, ...newParsedPages]);
+          if (!metadata) continue;
+          allParsedPages.set(buildVisitKey(url), metadata);
+          console.log(
+            `Completed parsing of page ${url}. Progress: ${
+              allParsedPages.size - pagesFromCrawlSize
+            } / ${toParse.length} pages parsed (${(
+              ((allParsedPages.size - pagesFromCrawlSize) / toParse.length) *
+              100
+            ).toFixed(2)}%)`,
+          );
         } catch (err) {
           console.warn(
             `Failed to parse sitemap URL: ${url}:`,
