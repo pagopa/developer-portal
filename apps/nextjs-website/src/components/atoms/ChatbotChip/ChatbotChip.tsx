@@ -1,5 +1,5 @@
 'use client';
-import { Button } from '@mui/material';
+import { Button, useTheme } from '@mui/material';
 import React from 'react';
 
 type ChatbotChipProps = {
@@ -9,6 +9,8 @@ type ChatbotChipProps = {
 };
 
 const ChatbotChip = ({ label }: ChatbotChipProps) => {
+  const { palette } = useTheme();
+
   return (
     <Button
       variant={'outlined'}
@@ -25,6 +27,13 @@ const ChatbotChip = ({ label }: ChatbotChipProps) => {
         width: 'fit-content',
         minHeight: 0,
         height: 'fit-content',
+        transition: 'all 0.2s ease-in-out',
+
+        '&:hover': {
+          border: '1px solid',
+          backgroundColor: palette.primary.main,
+          color: palette.primary.contrastText,
+        },
       }}
     >
       {label}
