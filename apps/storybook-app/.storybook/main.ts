@@ -34,10 +34,12 @@ const config: StorybookConfig = {
         config.plugins!.push(new Dotenv({
             path: path.resolve(__dirname, '../../nextjs-website/.env'),
         }));
-        (config.resolve!.alias as Record<string, string>)['next/navigation'] = path.resolve(
-          __dirname,
-          'next-navigation-proxy.ts',
-        );
+        if (config.resolve) {
+          config.resolve.alias = {
+            ...config.resolve.alias,
+            'next/navigation': require.resolve('./nextNavigationProxy.ts'),
+          };
+        }
         return config;
     },
 };
