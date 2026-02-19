@@ -86,6 +86,8 @@ export async function parseSitemapXml(
 ): Promise<string[]> {
   const parsed = (await parseStringPromise(xml, {
     explicitArray: false,
+    ignoreAttrs: true,
+    xmlns: false,
   })) as SitemapXml;
   return await extractUrlsFromSitemap(parsed, location, fetchXml);
 }
@@ -116,6 +118,8 @@ async function extractUrlsFromSitemap(
         const nestedXml = await fetchXml(loc);
         const nestedDoc = (await parseStringPromise(nestedXml, {
           explicitArray: false,
+          ignoreAttrs: true,
+          xmlns: false,
         })) as SitemapXml;
         const nestedUrls = await extractUrlsFromSitemap(
           nestedDoc,
