@@ -8,12 +8,13 @@ type ChatbotChipProps = {
   onClick?: (question: string) => null;
 };
 
-const ChatbotChip = ({ label }: ChatbotChipProps) => {
+const ChatbotChip = ({ label, question, onClick }: ChatbotChipProps) => {
   const { palette } = useTheme();
 
   return (
     <Button
       variant={'outlined'}
+      onClick={() => onClick?.(question ?? label)}
       sx={{
         paddingX: '10px',
         paddingY: '2px',
