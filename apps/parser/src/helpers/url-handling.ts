@@ -134,7 +134,11 @@ export function isWithinScope(
     const scopeObj = new URL(baseScope);
     const pathname = urlObj.pathname.toLowerCase();
     const fileExtensionRegex = /\.[a-z0-9]+$/;
-    if (fileExtensionRegex.test(pathname) && !pathname.endsWith(".html")) {
+    if (
+      fileExtensionRegex.test(pathname) &&
+      !pathname.endsWith(".html") &&
+      !pathname.endsWith(".xml")
+    ) {
       return false;
     }
     const urlDomain = urlObj.hostname.replace(/www\./, "");

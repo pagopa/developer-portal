@@ -49,9 +49,10 @@ export async function fetchRemoteXml(
             console.warn(
               `Sitemap warning: Failed to fetch ${currentUrl}: status ${statusCode}`,
             );
-            resolve({ data: "" });
             response.resume();
-            return;
+            throw new Error(
+              `HTTP ${statusCode}: Failed to fetch ${currentUrl}`,
+            );
           }
           response.setEncoding("utf8");
           let fullData = "";
@@ -63,8 +64,9 @@ export async function fetchRemoteXml(
         request.on("error", (error) => reject(error));
         request.setTimeout(10000, () => {
           request.destroy();
-          console.warn(`Sitemap warning: Timeout while fetching ${currentUrl}`);
-          resolve({ data: "" });
+          throw new Error(
+            `Sitemap error: Timeout while fetching ${currentUrl}`,
+          );
         });
       },
     );
@@ -75,8 +77,7 @@ export async function fetchRemoteXml(
       return result.data;
     }
   }
-  console.warn("Sitemap warning: Too many redirects while fetching sitemap");
-  return "";
+  throw new Error("Sitemap error: Too many redirects while fetching sitemap");
 }
 
 export async function parseSitemapXml(

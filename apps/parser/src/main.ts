@@ -8,7 +8,11 @@ import {
   generatePageParsedMetadata,
 } from "./modules/parser";
 import { ParsedNode, ParsedMetadata } from "./modules/types";
-import { RemoveAnchorsFromUrl, buildVisitKey } from "./helpers/url-handling";
+import {
+  RemoveAnchorsFromUrl,
+  buildVisitKey,
+  isWithinScope,
+} from "./helpers/url-handling";
 import { assertReachable } from "./modules/network";
 import {
   fetchRemoteXml,
@@ -82,24 +86,30 @@ void (async () => {
     try {
       const sitemapUrl = getSitemapUrl(env.baseUrl);
       let sitemapXml = "";
-      try {
-        sitemapXml = await fetchRemoteXml(sitemapUrl);
-      } catch (err) {
+      if (!isWithinScope(sitemapUrl, BASE_SCOPE, VALID_DOMAIN_VARIANTS)) {
         console.warn(
-          `Sitemap warning: Failed to fetch ${sitemapUrl}: ${
-            (err as Error).message
-          }`,
+          `Derived sitemap URL ${sitemapUrl} is out of scope. Skipping sitemap parsing.`,
         );
-      }
-      if (sitemapXml) {
+      } else {
         try {
-          sitemapUrls = await parseSitemapXml(sitemapXml, sitemapUrl);
+          sitemapXml = await fetchRemoteXml(sitemapUrl);
         } catch (err) {
           console.warn(
-            `Sitemap warning: Failed to parse sitemap XML from ${sitemapUrl}: ${
+            `Sitemap warning: Failed to fetch ${sitemapUrl}: ${
               (err as Error).message
             }`,
           );
+        }
+        if (sitemapXml.trim()) {
+          try {
+            sitemapUrls = await parseSitemapXml(sitemapXml, sitemapUrl);
+          } catch (err) {
+            console.warn(
+              `Sitemap warning: Failed to parse sitemap XML from ${sitemapUrl}: ${
+                (err as Error).message
+              }`,
+            );
+          }
         }
       }
     } catch (err) {
@@ -121,6 +131,9 @@ void (async () => {
       );
       const pagesFromCrawlSize = allParsedPages.size;
       for (const url of toParse) {
+        if (!isWithinScope(url, BASE_SCOPE, VALID_DOMAIN_VARIANTS)) {
+          continue;
+        }
         try {
           const metadata = await generatePageParsedMetadata(
             browser,
