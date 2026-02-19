@@ -5,6 +5,7 @@ import React from 'react';
 type ChatbotChipProps = {
   label: string;
   question?: string;
+  // eslint-disable-next-line functional/no-return-void
   onClick?: (question: string) => void;
 };
 
