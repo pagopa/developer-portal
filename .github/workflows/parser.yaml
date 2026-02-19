@@ -1,4 +1,5 @@
 name: Run Parser
+run-name: Run Parser in ${{ inputs.environment }}
 
 on:
   workflow_dispatch:
@@ -43,7 +44,7 @@ jobs:
       
       - name: Install dependencies
         working-directory: apps/parser
-        run: npm ci
+        run: npm ci --audit=false --fund=false
       
       - name: Run Parser for each URL
         uses: ./.github/actions/parser

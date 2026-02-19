@@ -29,7 +29,7 @@ runs:
               echo "Skipping invalid URL (must start with http:// or https://): $url"
               continue
             fi
-            if [[ "$url" =~ [\'\"\\`\$\&\;\|\>\<\(\)\{\}] ]]; then
+            if [[ "$url" =~ ['"\\\`$&;|><(){}] ]]; then
               echo "Skipping URL containing disallowed characters: $url"
               continue
             fi
