@@ -7,6 +7,7 @@ import '@fontsource/titillium-web/400.css';
 import '@fontsource/titillium-web/600.css';
 import '@fontsource/titillium-web/700.css';
 import { Global, css } from '@emotion/react';
+import { nextIntlContextDecorator } from '../stories/next-intl-context.helper';
 
 const GlobalStyles = () => (
   <Global
@@ -32,6 +33,23 @@ export const parameters = {
   },
 };
 
+export const argTypes = {
+  locale: {
+    control: 'select',
+    options: ['it', 'en'],
+    description: 'Locale for internationalization',
+    table: {
+      category: 'Story',
+      defaultValue: { summary: 'it' },
+    },
+    type: { name: 'string', required: false },
+  },
+};
+
+export const args = {
+  locale: 'it',
+};
+
 const StoryContainer = ({ children }: { children: ReactNode }) => (
   <Box sx={{ backgroundColor: 'background.paper' }} data-chromatic='ignore'>
     {children}
@@ -47,4 +65,4 @@ export const withTheme: Decorator = (Story, context) => (
   </ThemeProvider>
 );
 
-export const decorators = [withTheme];
+export const decorators = [withTheme, nextIntlContextDecorator];

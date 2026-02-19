@@ -1,7 +1,6 @@
 import { Decorator, Meta, StoryObj } from '@storybook/nextjs';
 import Chat from '../../../nextjs-website/src/components/molecules/Chat/Chat';
 import React from 'react';
-import { nextIntlContextDecorator } from '../next-intl-context.helper';
 import { mockText } from '../mock-content.helper';
 
 const meta: Meta<typeof Chat> = {
@@ -42,7 +41,7 @@ export const Showcase: StoryObj<typeof Chat> = {
     },
     isAwaitingResponse: true,
   },
-  decorators: [decorator, nextIntlContextDecorator],
+  decorators: [decorator],
 };
 
 export const QueryError: StoryObj<typeof Chat> = {
@@ -60,7 +59,7 @@ export const QueryError: StoryObj<typeof Chat> = {
     },
     error: 'queryFailed',
   },
-  decorators: [decorator, nextIntlContextDecorator],
+  decorators: [decorator],
 };
 
 export const ChatbotServiceError: StoryObj<typeof Chat> = {
@@ -78,5 +77,5 @@ export const ChatbotServiceError: StoryObj<typeof Chat> = {
     },
     error: 'serviceDown',
   },
-  decorators: [decorator, nextIntlContextDecorator],
+  decorators: [decorator],
 };
