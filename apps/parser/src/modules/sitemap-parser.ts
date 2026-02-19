@@ -24,49 +24,59 @@ export async function fetchRemoteXml(
   url: string,
   redirectLimit = 5,
 ): Promise<string> {
-  if (redirectLimit < 0) {
-    console.warn("Sitemap warning: Too many redirects while fetching sitemap");
-    return "";
+  let currentUrl = url;
+  let remainingRedirects = redirectLimit;
+  while (remainingRedirects >= 0) {
+    const transport = currentUrl.startsWith("https") ? https : http;
+    const result = await new Promise<{ data: string; redirect?: string }>(
+      (resolve, reject) => {
+        const request = transport.get(currentUrl, (response) => {
+          const statusCode = response.statusCode ?? 0;
+          if (
+            statusCode >= 300 &&
+            statusCode < 400 &&
+            response.headers.location
+          ) {
+            const redirectedUrl = new URL(
+              response.headers.location,
+              currentUrl,
+            ).toString();
+            response.resume();
+            resolve({ data: "", redirect: redirectedUrl });
+            return;
+          }
+          if (statusCode >= 400) {
+            console.warn(
+              `Sitemap warning: Failed to fetch ${currentUrl}: status ${statusCode}`,
+            );
+            resolve({ data: "" });
+            response.resume();
+            return;
+          }
+          response.setEncoding("utf8");
+          let fullData = "";
+          response.on("data", (chunk: string) => {
+            fullData += chunk;
+          });
+          response.on("end", () => resolve({ data: fullData }));
+        });
+        request.on("error", (error) => reject(error));
+        request.setTimeout(10000, () => {
+          request.destroy();
+          console.warn(`Sitemap warning: Timeout while fetching ${currentUrl}`);
+          resolve({ data: "" });
+        });
+      },
+    );
+    if (result.redirect) {
+      currentUrl = result.redirect;
+      remainingRedirects--;
+    } else {
+      return result.data;
+    }
   }
-  const transport = url.startsWith("https") ? https : http;
-  return await new Promise<string>((resolve, reject) => {
-    const request = transport.get(url, (response) => {
-      const statusCode = response.statusCode ?? 0;
-      if (statusCode >= 300 && statusCode < 400 && response.headers.location) {
-        const redirectedUrl = new URL(
-          response.headers.location,
-          url,
-        ).toString();
-        response.resume();
-        fetchRemoteXml(redirectedUrl, redirectLimit - 1)
-          .then(resolve)
-          .catch(reject);
-        return;
-      }
-      if (statusCode >= 400) {
-        console.warn(
-          `Sitemap warning: Failed to fetch ${url}: status ${statusCode}`,
-        );
-        resolve("");
-        response.resume();
-        return;
-      }
-      response.setEncoding("utf8");
-      let fullData = "";
-
-      response.on("data", (chunk: string) => {
-        fullData += chunk;
-      });
-
-      response.on("end", () => resolve(fullData));
-    });
-    request.on("error", (error) => reject(error));
-    request.setTimeout(10000, () => {
-      request.destroy();
-      console.warn(`Sitemap warning: Timeout while fetching ${url}`);
-      resolve("");
-    });
-  });
+  console.warn("Sitemap warning: Too many redirects while fetching sitemap");
+  return "";
 }
 
 export async function parseSitemapXml(
