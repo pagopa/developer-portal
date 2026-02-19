@@ -9,6 +9,7 @@
   "devDependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
+    "@fontsource/titillium-web": "^5.2.8",
     "@mui/material": "^7.3.8",
     "@storybook/addon-docs": "^9.1.4",
     "@storybook/addon-links": "^9.1.4",
