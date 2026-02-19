@@ -271,7 +271,7 @@ const foundation = {
 };
 
 // --- Theme Creation ---
-export const theme = createTheme(foundation as any, {
+export const theme = createTheme(foundation as Parameters<typeof createTheme>[0], {
     typography: {
         headline: {
             fontSize: pxToRem(58),
