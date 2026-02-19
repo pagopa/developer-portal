@@ -49,25 +49,23 @@ const SignUpForm = ({
   submitting = false,
 }: SignUpFormProps) => {
   const { locale } = useParams<{ locale: string }>();
-  const defaultUserDataAttributes: SignUpUserData = useMemo(() => {
-    return {
-      username: '',
-      password: '',
-      firstName: '',
-      lastName: '',
-      mailinglistAccepted: false,
-      surveyAccepted: false,
-      role: '',
-      company: '',
-      confirmPassword: '',
-      preferredLanguage: locale,
-    };
-  }, [locale]);
   const t = useTranslations();
   const { palette } = useTheme();
   const boldInputSx = {
     '& .MuiInputBase-input': { fontWeight: 600 },
     '& .MuiSelect-select': { fontWeight: 600 },
+  };
+  const defaultUserDataAttributes: SignUpUserData = {
+    username: '',
+    password: '',
+    firstName: '',
+    lastName: '',
+    mailinglistAccepted: false,
+    surveyAccepted: false,
+    role: '',
+    company: '',
+    confirmPassword: '',
+    preferredLanguage: locale,
   };
   const [userData, setUserData] = useState<SignUpUserData>(
     defaultUserDataAttributes
