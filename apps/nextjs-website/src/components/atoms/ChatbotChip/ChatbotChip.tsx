@@ -2,7 +2,7 @@
 import { Button, useTheme } from '@mui/material';
 import React from 'react';
 
-type ChatbotChipProps = {
+export type ChatbotChipProps = {
   label: string;
   question?: string;
   // eslint-disable-next-line functional/no-return-void
