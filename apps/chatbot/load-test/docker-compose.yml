@@ -1,6 +1,6 @@
 services:
   master:
-    image: locustio/locust:2.32.1
+    image: locustio/locust:2.32.1@sha256:d0bd7649b89fb2ee981e382d6e9ae2932d898110707943ecff0ef108569b6a5f
     ports:
       - "8089:8089"
     volumes:
@@ -12,7 +12,7 @@ services:
       - "host.docker.internal:host-gateway"
 
   worker:
-    image: locustio/locust:2.32.1
+    image: locustio/locust:2.32.1@sha256:d0bd7649b89fb2ee981e382d6e9ae2932d898110707943ecff0ef108569b6a5f
     volumes:
       - ./:/mnt/locust
     command: -f /mnt/locust/locustfile.py --worker --master-host master

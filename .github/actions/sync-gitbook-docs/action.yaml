@@ -111,7 +111,7 @@ runs:
         echo "::endgroup::"
 
     - name: Checkout documentation repo
-      uses: actions/checkout@v4
+      uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
       with:
         repository: ${{ inputs.documentation_repository }}
         ref: ${{ inputs.documentation_branch }}
