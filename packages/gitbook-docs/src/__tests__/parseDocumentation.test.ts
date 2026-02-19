@@ -100,7 +100,6 @@ describe('parseUrlsFromMarkdown', () => {
     expect(res).toStrictEqual('Check [this link](different-parsed-url)');
   });
 
-  // 3. TEST PER LOCALHOST E ECCEZIONI
   it('should parse localhost links as internal links (allowing processing)', () => {
     const res = parseUrlsFromMarkdown(
       'Test [local](http://localhost:3000/some-doc)',
@@ -109,7 +108,6 @@ describe('parseUrlsFromMarkdown', () => {
     expect(res).toStrictEqual('Test [local](parsed-localhost)');
   });
 
-  // 4. TEST PER MENTIONS E PULIZIA
   it('should clean up "mention" suffix and parse correctly', () => {
     // Il codice fa .replace(' "mention"', '')
     const res = parseUrlsFromMarkdown(

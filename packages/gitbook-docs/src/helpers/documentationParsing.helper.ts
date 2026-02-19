@@ -38,18 +38,17 @@ export function parseUrlsFromMarkdown(
       match[2],
       filePath
     );
-    updatedFileContent = updatedFileContent.replaceAll(
-      '(' + (match[2] || '') + ')',
-      '(' + replace + ')'
+    const target = match[2] || '';
+    const escapedTarget = target.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const regex = new RegExp(
+      `\\(${escapedTarget}\\)|"${escapedTarget}"|'${escapedTarget}'`,
+      'g'
     );
-    updatedFileContent = updatedFileContent.replaceAll(
-      '"' + (match[2] || '') + '"',
-      '"' + replace + '"'
-    );
-    updatedFileContent = updatedFileContent.replaceAll(
-      "'" + (match[2] || '') + "'",
-      "'" + replace + "'"
-    );
+    updatedFileContent = updatedFileContent.replace(regex, (matchedString) => {
+      const firstChar = matchedString[0];
+      const lastChar = matchedString[matchedString.length - 1];
+      return `${firstChar}${replace}${lastChar}`;
+    });
   }
   if (allMatches.length > 0) {
     console.log('Replaced URLs in file: ', filePath || '');

@@ -1,5 +1,5 @@
 ---
-"gitbook-docs": minor
+"gitbook-docs": patch
 ---
 
-Add tests to cover all test cases for url parsing
+Add tests and a small backward-compatible fix for url parsing
