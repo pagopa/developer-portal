@@ -64,6 +64,36 @@ describe('parseUrlsFromMarkdown', () => {
     );
   });
 
+  it('should simultaneously replace urls in parentheses, double quotes, and single quotes in a single string', () => {
+    const res = parseUrlsFromMarkdown(
+      `Markdown link [test](this-is-a-test.md), HTML double <a href="this-is-a-test.md">link</a>, and HTML single <a href='this-is-a-test.md'>link</a>`,
+      UrlParsingMetadata
+    );
+    expect(res).toStrictEqual(
+      `Markdown link [test](parsed-url), HTML double <a href="parsed-url">link</a>, and HTML single <a href='parsed-url'>link</a>`
+    );
+  });
+
+  it('should safely escape regex special characters in the target path during replacement', () => {
+    const SpecialCharMetadata = {
+      dirName: 'special-test',
+      docs: [
+        {
+          path: 'path-with-[brackets]',
+          url: 'safe-parsed-url',
+        },
+      ],
+    };
+
+    const res = parseUrlsFromMarkdown(
+      'Check out this weird link: [link](path-with-[brackets].md)',
+      SpecialCharMetadata
+    );
+    expect(res).toStrictEqual(
+      'Check out this weird link: [link](safe-parsed-url)'
+    );
+  });
+
   it('should parse html anchor tags with double quotes', () => {
     const res = parseUrlsFromMarkdown(
       'Text <a href="this-is-a-test.md">link</a> text',
