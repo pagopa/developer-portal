@@ -75,7 +75,12 @@
         "sector": "Settore",
         "products": "Prodotti di interesse",
         "email": "Indirizzo email",
-        "password": "Password"
+        "password": "Password",
+        "commsPreferredLanguage": "Lingua preferita per le comunicazioni"
+      },
+      "commsPreferredLanguages": {
+        "it": "Italiano",
+        "en": "Inglese"
       }
     },
     "changePassword": {
