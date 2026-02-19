@@ -9,7 +9,18 @@ type ChatbotChipsContainerProps = {
 
 const ChatbotChipsContainer = ({ chips }: ChatbotChipsContainerProps) => {
   return (
-    <Box>
+    <Box
+      sx={{
+        display: 'flex',
+        flexWrap: 'wrap',
+        gap: '8px',
+        justifyContent: 'flex-end',
+        maxWidth: '100%',
+        height: 'fit-content',
+        maxHeight: '160px',
+        p: '4px',
+      }}
+    >
       {chips.map((chip, index) => (
         <ChatbotChip label={chip.label} key={index} />
       ))}
