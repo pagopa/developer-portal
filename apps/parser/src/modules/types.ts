@@ -27,7 +27,7 @@ export type ParsedNode = {
   children?: ParsedNode[];
 };
 
-export type UrlEntry = { readonly loc?: readonly string[] };
-export type UrlSetNode = { readonly url?: readonly UrlEntry[] };
-export type SitemapIndexNode = { readonly sitemap?: readonly UrlEntry[] };
-export type SitemapXml = { readonly urlset?: UrlSetNode; readonly sitemapindex?: SitemapIndexNode };
+export type SitemapXml = {
+  readonly urlset?: { readonly url?: readonly string[] };
+  readonly sitemapindex?: { readonly sitemap?: readonly string[] };
+};

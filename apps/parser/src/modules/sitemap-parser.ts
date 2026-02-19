@@ -90,50 +90,27 @@ export async function parseSitemapXml(
   return await extractUrlsFromSitemap(parsed, location, fetchXml);
 }
 
-function ensureArray<T>(value: T | readonly T[] | undefined): T[] {
-  if (value === undefined) return [];
-  return Array.isArray(value) ? (value as T[]) : [value as T];
-}
-
-function validateSingleString(
-  value: string | readonly string[] | undefined,
-  elementName: string,
-  location: string,
-): string | null {
-  if (value === undefined) return null;
-  if (Array.isArray(value)) {
-    throw new Error(
-      `Sitemap error: Multiple <${elementName}> elements found in ${location}. Sitemap is malformed.`,
-    );
-  }
-  if (typeof value !== "string") {
-    throw new Error(
-      `Sitemap error: Invalid <${elementName}> value in ${location}. Expected string.`,
-    );
-  }
-  return value;
-}
-
 async function extractUrlsFromSitemap(
   doc: SitemapXml,
   location: string,
   fetchXml: (loc: string) => Promise<string>,
 ): Promise<string[]> {
   if (doc.urlset?.url) {
-    const urls = ensureArray(doc.urlset.url);
+    const urls = Array.isArray(doc.urlset.url)
+      ? doc.urlset.url
+      : [doc.urlset.url];
     return urls
-      .map((entry) => {
-        const loc = validateSingleString(entry.loc, "loc", location);
-        return loc;
-      })
-      .filter((loc): loc is string => loc !== null)
+      .map((entry) => (typeof entry === "string" ? entry : entry?.loc))
+      .filter(Boolean)
       .map((loc) => RemoveAnchorsFromUrl(loc.replace(/\/$/, "")));
   }
   if (doc.sitemapindex?.sitemap) {
     const aggregated: string[] = [];
-    const sitemaps = ensureArray(doc.sitemapindex.sitemap);
-    for (const sitemapNode of sitemaps) {
-      const loc = validateSingleString(sitemapNode.loc, "loc", location);
+    const sitemaps = Array.isArray(doc.sitemapindex.sitemap)
+      ? doc.sitemapindex.sitemap
+      : [doc.sitemapindex.sitemap];
+    for (const entry of sitemaps) {
+      const loc = typeof entry === "string" ? entry : entry?.loc;
       if (!loc) continue;
       try {
         const nestedXml = await fetchXml(loc);

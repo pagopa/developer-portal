@@ -9,7 +9,7 @@ describe("Sitemap parsing", () => {
         <url><loc>https://www.w3.org/standards/</loc></url>
       </urlset>`;
     const urls = await parseSitemapXml(xml, "https://www.w3.org/sitemap.xml");
-    expect(urls.map(RemoveAnchorsFromUrl)).toEqual([
+    expect(urls).toEqual([
       "https://www.w3.org",
       "https://www.w3.org/standards",
     ]);
@@ -33,8 +33,6 @@ describe("Sitemap parsing", () => {
       "https://www.w3.org/sitemap.xml",
       mockFetchXml,
     );
-    expect(urls.map(RemoveAnchorsFromUrl)).toEqual([
-      "https://www.w3.org/section",
-    ]);
+    expect(urls).toEqual(["https://www.w3.org/section"]);
   });
 });
