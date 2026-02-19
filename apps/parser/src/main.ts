@@ -8,10 +8,10 @@ import { ParsedNode, ParsedMetadata } from "./modules/types";
 import { RemoveAnchorsFromUrl, buildVisitKey } from "./helpers/url-handling";
 import { assertReachable } from "./modules/network";
 import {
-  fetchSitemapXml,
+  fetchRemoteXml,
   getSitemapUrl,
   parseSitemapXml,
-} from "./modules/sitemap";
+} from "./modules/sitemap-parser";
 
 puppeteer.use(StealthPlugin());
 
@@ -80,7 +80,7 @@ void (async () => {
       const sitemapUrl = getSitemapUrl(env.baseUrl);
       let sitemapXml = "";
       try {
-        sitemapXml = await fetchSitemapXml(sitemapUrl);
+        sitemapXml = await fetchRemoteXml(sitemapUrl);
       } catch (err) {
         console.warn(
           `Sitemap warning: Failed to fetch ${sitemapUrl}: ${
@@ -112,7 +112,9 @@ void (async () => {
     );
     if (toParse.length > 0) {
       console.log(
-        `Parsing ${toParse.length} URLs from sitemap not seen in crawl...`,
+        `Parsing ${toParse.length} URLs from sitemap ${getSitemapUrl(
+          env.baseUrl,
+        )} not seen in crawl...`,
       );
       for (const url of toParse) {
         try {
