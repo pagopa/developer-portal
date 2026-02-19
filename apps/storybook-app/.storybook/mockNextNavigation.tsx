@@ -1,5 +1,5 @@
 import React from 'react';
-import { setMockParams } from './next-navigation-proxy';
+import { setMockParams } from './nextNavigationProxy';
 
 export function withMockedParams(locale = 'it') {
   setMockParams({ locale });

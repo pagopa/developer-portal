@@ -8,6 +8,7 @@ import '@fontsource/titillium-web/600.css';
 import '@fontsource/titillium-web/700.css';
 import { Global, css } from '@emotion/react';
 import { nextIntlContextDecorator } from '../stories/next-intl-context.helper';
+import { withMockedParams } from './mockNextNavigation';
 
 const GlobalStyles = () => (
   <Global
@@ -65,4 +66,8 @@ export const withTheme: Decorator = (Story, context) => (
   </ThemeProvider>
 );
 
-export const decorators = [withTheme, nextIntlContextDecorator];
+export const decorators = [
+  withTheme,
+  nextIntlContextDecorator, 
+  (Story: any, context: any) => withMockedParams(context.args.locale)(Story)
+];
