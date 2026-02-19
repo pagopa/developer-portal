@@ -46,27 +46,7 @@ jobs:
         run: npm ci
       
       - name: Run Parser for each URL
-        env:
-          PARSER_VECTOR_INDEX_NAME: ${{ inputs.parser_vector_index_name || secrets.PARSER_VECTOR_INDEX_NAME }}
-        working-directory: apps/parser
-        run: |
-          # Split comma-separated URLs and loop sequentially
-          IFS=',' read -ra url_array <<< "${{ inputs.urls }}"
-          for url in "${url_array[@]}"; do
-            url="$(echo "$url" | xargs)"  # trim whitespace
-            if [ -n "$url" ]; then
-              # Basic validation: require http/https and disallow dangerous shell metacharacters
-              if ! [[ "$url" =~ ^https?:// ]]; then
-                echo "Skipping invalid URL (must start with http:// or https://): $url"
-                continue
-              fi
-              if [[ "$url" =~ [\'\"\\\`\$\&\;\|\>\<\(\)\{\}] ]]; then
-                echo "Skipping URL containing disallowed characters: $url"
-                continue
-              fi
-              echo "=== Parsing: $url ==="
-              PARSER_VECTOR_INDEX_NAME="${PARSER_VECTOR_INDEX_NAME}" URL="$url" npx tsx src/main.ts
-              echo "=== Completed: $url ==="
-              echo ""
-            fi
-          done
+        uses: ./.github/actions/parser
+        with:
+          urls: ${{ inputs.urls }}
+          parser_vector_index_name: ${{ inputs.parser_vector_index_name || secrets.PARSER_VECTOR_INDEX_NAME }}
