@@ -5,7 +5,7 @@ import React from 'react';
 type ChatbotChipProps = {
   label: string;
   question?: string;
-  onClick?: (question: string) => null;
+  onClick?: (question: string) => void;
 };
 
 const ChatbotChip = ({ label, question, onClick }: ChatbotChipProps) => {
