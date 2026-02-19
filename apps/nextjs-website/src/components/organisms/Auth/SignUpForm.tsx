@@ -22,7 +22,7 @@ import {
 } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
-import { ChangeEvent, useCallback, useEffect, useMemo, useState } from 'react';
+import { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import { PasswordTextField } from './PasswordTextField';
 import PoliciesParagraph from './PoliciesParagraph';
 import { companyRoles } from '@/config';
