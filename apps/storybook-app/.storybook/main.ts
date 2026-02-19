@@ -30,11 +30,11 @@ const config: StorybookConfig = {
         if (!config.resolve?.alias) {
             config.resolve!.alias = {};
         }
-        config.resolve!.alias['@'] = path.resolve(__dirname, '../../nextjs-website/src');
+        (config.resolve!.alias as Record<string, string>)['@'] = path.resolve(__dirname, '../../nextjs-website/src');
         config.plugins!.push(new Dotenv({
             path: path.resolve(__dirname, '../../nextjs-website/.env'),
         }));
-        config.resolve.alias['next/navigation'] = path.resolve(
+        (config.resolve!.alias as Record<string, string>)['next/navigation'] = path.resolve(
           __dirname,
           'next-navigation-proxy.ts',
         );
