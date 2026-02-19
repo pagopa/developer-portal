@@ -57,6 +57,10 @@ const listUsersCommandOutput: ListUsersCommandOutput = {
           Name: 'sub',
           Value: 'c67ec280-799a-40d6-b398-2a2b31aefbbd',
         },
+        {
+          Name: 'custom:preferred_language',
+          Value: 'it',
+        },
       ],
       Enabled: true,
       UserStatus: 'CONFIRMED',
@@ -77,10 +81,12 @@ describe('Helpers: listUsersCommandOutputToUser', () => {
       'custom:survey_accepted': 'true',
       'custom:company_type': 'gestore-di-pubblico-servizio',
       'custom:job_role': 'Developer',
+      'custom:preferred_language': 'it',
     };
     expect(user).toBeDefined();
     Object.keys(expectedUser).forEach((value) => {
       const key = value as keyof User;
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       expect(user![key]).toBe(expectedUser[key]);
     });
   });

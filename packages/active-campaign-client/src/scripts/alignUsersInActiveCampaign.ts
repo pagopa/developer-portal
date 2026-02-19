@@ -171,26 +171,49 @@ async function main() {
     const chunk = chunks[i];
     const acPayload = chunk.map((userAndWebinars, index) => ({
       contact: {
-        email: userAndWebinars.username.Attributes.find((attr: any) => attr.Name === 'email')?.Value,
-        firstName: userAndWebinars.username.Attributes.find((attr: any) => attr.Name === 'given_name')?.Value,
-        lastName: userAndWebinars.username.Attributes.find((attr: any) => attr.Name === 'family_name')?.Value,
+        email: userAndWebinars.username.Attributes.find(
+          (attr: any) => attr.Name === 'email',
+        )?.Value,
+        firstName: userAndWebinars.username.Attributes.find(
+          (attr: any) => attr.Name === 'given_name',
+        )?.Value,
+        lastName: userAndWebinars.username.Attributes.find(
+          (attr: any) => attr.Name === 'family_name',
+        )?.Value,
         phone: `cognito:${userAndWebinars.username.Username}`,
         fieldValues: [
           {
             field: '2',
-            value: userAndWebinars.username.Attributes.find((attr: any) => attr.Name === 'custom:company_type')?.Value,
+            value: userAndWebinars.username.Attributes.find(
+              (attr: any) => attr.Name === 'custom:company_type',
+            )?.Value,
           },
           {
             field: '1',
-            value: userAndWebinars.username.Attributes.find((attr: any) => attr.Name === 'custom:job_role')?.Value,
+            value: userAndWebinars.username.Attributes.find(
+              (attr: any) => attr.Name === 'custom:job_role',
+            )?.Value,
           },
           {
             field: '3',
-            value: userAndWebinars.username.Attributes.find((attr: any) => attr.Name === 'custom:mailinglist_accepted')?.Value === 'true' ? 'TRUE' : 'FALSE',
+            value:
+              userAndWebinars.username.Attributes.find(
+                (attr: any) => attr.Name === 'custom:mailinglist_accepted',
+              )?.Value === 'true'
+                ? 'TRUE'
+                : 'FALSE',
+          },
+          {
+            field: '6', // id 5 in prod env (field id '6' in dev)
+            value: userAndWebinars.username.Attributes.find(
+              (attr: any) => attr.Name === 'custom:preferred_language',
+            )?.Value,
           },
         ],
       },
-      listIds: userAndWebinars.subscribedWebinars.map((webinar: any) => webinarIdByName[webinar]).filter(Boolean),
+      listIds: userAndWebinars.subscribedWebinars
+        .map((webinar: any) => webinarIdByName[webinar])
+        .filter(Boolean),
     }));
   
     const response = await activeCampaignClient.bulkAddContactToList(acPayload);

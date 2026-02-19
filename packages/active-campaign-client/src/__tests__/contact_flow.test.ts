@@ -12,6 +12,7 @@ const user: User = {
   'custom:survey_accepted': 'false',
   'custom:company_type': 'Test Co',
   'custom:job_role': 'Developer',
+  'custom:preferred_language': 'it',
 };
 
 // remove .skip to run the test, be aware it does a real API call so it will create, update and delete a contact in the active campaign account
@@ -32,6 +33,7 @@ describe.skip('Active campaign integration contact flow', () => {
       'custom:survey_accepted': 'true',
       'custom:company_type': 'new company_type',
       'custom:job_role': 'new job_role',
+      'custom:preferred_language': 'en',
     };
 
     const response = await updateContact(updatedUser);
