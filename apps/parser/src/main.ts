@@ -32,13 +32,16 @@ export const BASE_HOST_TOKEN = new URL(env.baseUrl).hostname
   .replace(/www\./, "")
   .toLowerCase();
 export const VALID_DOMAIN_VARIANTS = env.validDomainVariants || [];
+export const SHOULD_CREATE_FILES_LOCALLY = env.shouldCreateFilesLocally;
 
 let BASE_URL = env.baseUrl;
 
 void (async () => {
   try {
     await assertReachable(env.baseUrl);
-    ensureDirectory(env.outputDirectory);
+    if (SHOULD_CREATE_FILES_LOCALLY) {
+      ensureDirectory(env.outputDirectory);
+    }
     const browser = await puppeteer.launch({ headless: true });
     let finalUrl = env.baseUrl;
     let page;

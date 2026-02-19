@@ -26,6 +26,8 @@ export function resolveEnv(): EnvConfig {
       `${DEFAULT_REQUEST_TIMEOUT_MS}`,
     10,
   );
+  const shouldCreateFilesLocally =
+    process.env.SHOULD_CREATE_FILES_LOCALLY === "true";
   const sanitizedBaseUrl = RemoveAnchorsFromUrl(baseUrl);
   const parsedDepth = Number.parseInt(depth ?? `${DEFAULT_DEPTH}`, 10);
   const maxDepth = Number.isNaN(parsedDepth)
@@ -59,6 +61,7 @@ export function resolveEnv(): EnvConfig {
     maxDepth,
     requestTimeoutMs,
     validDomainVariants: parsedValidDomainVariants,
+    shouldCreateFilesLocally,
   };
 }
 

@@ -5,6 +5,7 @@ export type EnvConfig = {
   readonly maxDepth: number | null;
   readonly validDomainVariants?: string[];
   readonly requestTimeoutMs: number;
+  readonly shouldCreateFilesLocally: boolean;
 };
 
 export type SanitizeOptions = {

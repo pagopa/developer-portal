@@ -3,7 +3,7 @@ import { writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { ParsedMetadata } from "./types";
 import { sanitizeUrlAsFilename } from "../helpers/url-handling";
-import { BASE_HOST_TOKEN } from "../main";
+import { BASE_HOST_TOKEN, SHOULD_CREATE_FILES_LOCALLY } from "../main";
 
 const FILENAME_LENGTH_THRESHOLD = 250;
 
@@ -22,7 +22,9 @@ export async function persistSnapshot(
   if (finalName.replace(/www\./, "") === BASE_HOST_TOKEN) {
     finalName = "index";
   }
-  await saveMetadata(outputDirectory, `${finalName}.json`, snapshot);
+  if (SHOULD_CREATE_FILES_LOCALLY) {
+    await saveMetadata(outputDirectory, `${finalName}.json`, snapshot);
+  }
 }
 
 async function saveMetadata(dir: string, filename: string, metadata: object) {
