@@ -4,7 +4,7 @@ import { nextIntlContextDecorator } from '../next-intl-context.helper';
 import React from 'react';
 
 const meta: Meta<typeof ChatbotChip> = {
-  title: 'Atoms/ChatButton',
+  title: 'Atoms/ChatbotChip',
   component: ChatbotChip,
 };
 
