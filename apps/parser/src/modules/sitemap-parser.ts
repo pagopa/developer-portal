@@ -1,4 +1,4 @@
-import { RemoveAnchorsFromUrl, isRemoteUrl } from "../helpers/url-handling";
+import { RemoveAnchorsFromUrl } from "../helpers/url-handling";
 import { parseStringPromise } from "xml2js";
 import http from "node:http";
 import https from "node:https";
@@ -84,8 +84,34 @@ export async function parseSitemapXml(
   location: string,
   fetchXml: (loc: string) => Promise<string> = fetchRemoteXml,
 ): Promise<string[]> {
-  const parsed = (await parseStringPromise(xml)) as SitemapXml;
+  const parsed = (await parseStringPromise(xml, {
+    explicitArray: false,
+  })) as SitemapXml;
   return await extractUrlsFromSitemap(parsed, location, fetchXml);
+}
+
+function ensureArray<T>(value: T | readonly T[] | undefined): T[] {
+  if (value === undefined) return [];
+  return Array.isArray(value) ? (value as T[]) : [value as T];
+}
+
+function validateSingleString(
+  value: string | readonly string[] | undefined,
+  elementName: string,
+  location: string,
+): string | null {
+  if (value === undefined) return null;
+  if (Array.isArray(value)) {
+    throw new Error(
+      `Sitemap error: Multiple <${elementName}> elements found in ${location}. Sitemap is malformed.`,
+    );
+  }
+  if (typeof value !== "string") {
+    throw new Error(
+      `Sitemap error: Invalid <${elementName}> value in ${location}. Expected string.`,
+    );
+  }
+  return value;
 }
 
 async function extractUrlsFromSitemap(
@@ -94,19 +120,26 @@ async function extractUrlsFromSitemap(
   fetchXml: (loc: string) => Promise<string>,
 ): Promise<string[]> {
   if (doc.urlset?.url) {
-    return doc.urlset.url
-      .map((entry) => entry.loc?.[0])
-      .filter((loc): loc is string => typeof loc === "string")
+    const urls = ensureArray(doc.urlset.url);
+    return urls
+      .map((entry) => {
+        const loc = validateSingleString(entry.loc, "loc", location);
+        return loc;
+      })
+      .filter((loc): loc is string => loc !== null)
       .map((loc) => RemoveAnchorsFromUrl(loc.replace(/\/$/, "")));
   }
   if (doc.sitemapindex?.sitemap) {
     const aggregated: string[] = [];
-    for (const sitemapNode of doc.sitemapindex.sitemap) {
-      const loc = sitemapNode.loc?.[0];
+    const sitemaps = ensureArray(doc.sitemapindex.sitemap);
+    for (const sitemapNode of sitemaps) {
+      const loc = validateSingleString(sitemapNode.loc, "loc", location);
       if (!loc) continue;
       try {
         const nestedXml = await fetchXml(loc);
-        const nestedDoc = (await parseStringPromise(nestedXml)) as SitemapXml;
+        const nestedDoc = (await parseStringPromise(nestedXml, {
+          explicitArray: false,
+        })) as SitemapXml;
         const nestedUrls = await extractUrlsFromSitemap(
           nestedDoc,
           loc,
