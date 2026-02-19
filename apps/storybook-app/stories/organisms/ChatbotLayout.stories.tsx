@@ -71,5 +71,5 @@ export const LoadingChatSession: StoryObj<typeof ChatbotLayout> = {
       return null;
     },
   },
-  decorators: [decorator, nextIntlContextDecorator],
+  decorators: [decorator],
 };
