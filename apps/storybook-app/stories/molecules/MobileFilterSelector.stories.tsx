@@ -1,6 +1,5 @@
 import { Meta, StoryObj } from '@storybook/nextjs';
 import MobileFilterSelector from 'nextjs-website/src/components/molecules/MobileFilterSelector/MobileFilterSelector';
-import { nextIntlContextDecorator } from '../next-intl-context.helper';
 const meta: Meta<typeof MobileFilterSelector> = {
   title: 'Molecules/MobileFilterSelector',
   component: MobileFilterSelector,
@@ -109,5 +108,4 @@ export const Showcase: StoryObj<typeof MobileFilterSelector> = {
       },
     ],
   },
-  decorators: [nextIntlContextDecorator],
 };

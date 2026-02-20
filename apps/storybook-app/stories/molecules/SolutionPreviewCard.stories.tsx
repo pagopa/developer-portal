@@ -1,7 +1,6 @@
 import { Decorator, Meta, StoryObj } from '@storybook/nextjs';
 import SolutionPreviewCard from '../../../nextjs-website/src/components/molecules/SolutionPreviewCard/SolutionsPreviewCard';
 import React from 'react';
-import { nextIntlContextDecorator } from '../next-intl-context.helper';
 import { Box } from '@mui/material';
 
 const meta: Meta<typeof SolutionPreviewCard> = {
@@ -99,5 +98,5 @@ export const Showcase: StoryObj<typeof SolutionPreviewCard> = {
       },
     ],
   },
-  decorators: [nextIntlContextDecorator, decorator],
+  decorators: [decorator],
 };

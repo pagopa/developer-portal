@@ -2,7 +2,6 @@ import { Meta, StoryObj } from '@storybook/nextjs';
 import CaseHistoryPageTemplate from '../../../nextjs-website/src/components/templates/CaseHistoryTemplate/CaseHistoryPageTemplate';
 import { mockImageBlock, mockTextBlock } from '../mock-content.helper';
 import quoteMockProps from '../atoms/Quote.stories';
-import { nextIntlContextDecorator } from '../next-intl-context.helper';
 
 const meta: Meta<typeof CaseHistoryPageTemplate> = {
   title: 'Templates/CaseHistoryPageTemplate',
@@ -88,5 +87,4 @@ export const Showcase: StoryObj<typeof CaseHistoryPageTemplate> = {
       },
     ],
   },
-  decorators: [nextIntlContextDecorator],
 };

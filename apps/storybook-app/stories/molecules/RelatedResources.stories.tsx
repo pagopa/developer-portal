@@ -1,6 +1,5 @@
 import { Meta, StoryObj } from '@storybook/nextjs';
 import RelatedResources from 'nextjs-website/src/components/molecules/RelatedResources/RelatedResources';
-import { nextIntlContextDecorator } from '../next-intl-context.helper';
 
 const meta: Meta<typeof RelatedResources> = {
   title: 'Molecules/RelatedResources',
@@ -10,7 +9,6 @@ const meta: Meta<typeof RelatedResources> = {
 export default meta;
 
 export const Showcase: StoryObj<typeof RelatedResources> = {
-  decorators: [nextIntlContextDecorator],
   args: {
     resources: [
       {

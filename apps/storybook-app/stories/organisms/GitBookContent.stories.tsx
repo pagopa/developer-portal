@@ -1,6 +1,5 @@
 import { Decorator, Meta, StoryObj } from '@storybook/nextjs';
 import GitBookContent from 'nextjs-website/src/components/organisms/GitBookContent/GitBookContent';
-import { nextIntlContextDecorator } from '../next-intl-context.helper';
 import { Box } from '@mui/material';
 import React from 'react';
 
@@ -31,5 +30,5 @@ export const Showcase: StoryObj<typeof GitBookContent> = {
     content: mockMarkdown,
     config: mockConfig,
   },
-  decorators: [decorator, nextIntlContextDecorator],
+  decorators: [decorator],
 };
