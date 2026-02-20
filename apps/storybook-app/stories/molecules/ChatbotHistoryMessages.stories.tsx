@@ -1,7 +1,6 @@
 import { Decorator, Meta, StoryObj } from '@storybook/nextjs';
 import ChatbotHistoryMessages from '../../../nextjs-website/src/components/molecules/ChatbotHistoryMessages/ChatbotHistoryMessages';
 import React from 'react';
-import { nextIntlContextDecorator } from '../next-intl-context.helper';
 import { mockText } from '../mock-content.helper';
 
 const meta: Meta<typeof ChatbotHistoryMessages> = {
@@ -43,5 +42,5 @@ export const Showcase: StoryObj<typeof ChatbotHistoryMessages> = {
     ],
     userName: 'John Doe',
   },
-  decorators: [decorator, nextIntlContextDecorator],
+  decorators: [decorator],
 };

@@ -1,6 +1,5 @@
 import { Meta, StoryObj } from '@storybook/nextjs';
 import ChatInputText from '../../../nextjs-website/src/components/atoms/ChatInputText/ChatInputText';
-import { nextIntlContextDecorator } from '../next-intl-context.helper';
 
 const meta: Meta<typeof ChatInputText> = {
   title: 'Atoms/ChatInputText',
@@ -16,5 +15,4 @@ export const Showcase: StoryObj<typeof ChatInputText> = {
       return null;
     },
   },
-  decorators: [nextIntlContextDecorator],
 };

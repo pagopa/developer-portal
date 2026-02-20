@@ -1,7 +1,6 @@
 import { Meta, StoryObj } from '@storybook/nextjs';
 import UseCaseTemplate from 'nextjs-website/src/components/templates/UseCaseTemplate/UseCaseTemplate';
 import { mockImageBlock, mockTextBlock } from '../mock-content.helper';
-import { nextIntlContextDecorator } from '../next-intl-context.helper';
 import { productsFixture } from '../fixtures/productsFixture';
 
 const meta: Meta<typeof UseCaseTemplate> = {
@@ -71,5 +70,4 @@ export const Showcase: StoryObj<typeof UseCaseTemplate> = {
     ],
     product: productsFixture[1],
   },
-  decorators: [nextIntlContextDecorator],
 };

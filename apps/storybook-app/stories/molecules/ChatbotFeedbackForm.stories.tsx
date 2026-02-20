@@ -1,6 +1,5 @@
 import { Meta, StoryObj } from '@storybook/nextjs';
 import ChatbotFeedbackForm from 'nextjs-website/src/components/molecules/ChatbotFeedbackForm/ChatbotFeedbackForm';
-import { nextIntlContextDecorator } from '../next-intl-context.helper';
 
 const meta: Meta<typeof ChatbotFeedbackForm> = {
   title: 'Molecules/ChatbotFeedbackForm',
@@ -14,5 +13,4 @@ export const Showcase: StoryObj<typeof ChatbotFeedbackForm> = {
     sessionId: '',
     id: '',
   },
-  decorators: [nextIntlContextDecorator],
 };

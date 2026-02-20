@@ -66,7 +66,6 @@ export async function getGuidePage(
       locale,
       productSlug
     ),
-    getGuidesMetadata(locale),
   ]);
 
   // Path construction
@@ -82,6 +81,7 @@ export async function getGuidePage(
   });
 
   const guidesMetadata = await getGuidesMetadata(
+    locale,
     guideToFind ? guideToFind.dirName : ''
   );
   return manageUndefined(

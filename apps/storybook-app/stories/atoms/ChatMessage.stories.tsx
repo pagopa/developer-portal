@@ -1,7 +1,6 @@
 import { Decorator, Meta, StoryObj } from '@storybook/nextjs';
 import ChatMessage from '../../../nextjs-website/src/components/atoms/ChatMessage/ChatMessage';
 import React from 'react';
-import { nextIntlContextDecorator } from '../next-intl-context.helper';
 import { mockText } from '../mock-content.helper';
 
 const meta: Meta<typeof ChatMessage> = {
@@ -27,7 +26,7 @@ export const ChatBotMessage: StoryObj<typeof ChatMessage> = {
     timestamp: '2024-07-24T17:14:07.129Z',
     dateHeader: 'Oggi',
   },
-  decorators: [decorator, nextIntlContextDecorator],
+  decorators: [decorator],
 };
 
 export const UserMessage: StoryObj<typeof ChatMessage> = {
@@ -37,5 +36,5 @@ export const UserMessage: StoryObj<typeof ChatMessage> = {
     timestamp: '2024-07-24T17:14:08.129Z',
     dateHeader: 'Oggi',
   },
-  decorators: [decorator, nextIntlContextDecorator],
+  decorators: [decorator],
 };
