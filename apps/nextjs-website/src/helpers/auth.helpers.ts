@@ -38,5 +38,6 @@ export const generateSignUpData = (userData: SignUpUserData) => ({
       userData.surveyAccepted === true ? 'true' : 'false',
     'custom:job_role': userData.role,
     'custom:company_type': userData.company,
+    'custom:preferred_language': userData.preferredLanguage,
   },
 });
