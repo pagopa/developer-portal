@@ -42,6 +42,6 @@ function isCloudflareChallenge(html: string): boolean {
 }
 
 async function fetch(input: any, init?: any): Promise<any> {
-  const { default: nodeFetch } = await import("node-fetch");
+  const { default: nodeFetch } = await import("node-fetch-commonjs");
   return nodeFetch(input, init);
 }

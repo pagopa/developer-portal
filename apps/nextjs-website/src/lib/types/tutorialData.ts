@@ -18,4 +18,5 @@ export type Tutorial = {
   readonly seo?: SEO;
   readonly tags?: readonly Tag[];
   readonly updatedAt?: string;
+  readonly redirectPath?: string;
 } & Path;

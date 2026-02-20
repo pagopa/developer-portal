@@ -36,7 +36,7 @@ export const SHOULD_CREATE_FILES_LOCALLY = env.shouldCreateFilesLocally;
 
 let BASE_URL = env.baseUrl;
 
-void (async () => {
+async function main(): Promise<void> {
   try {
     await assertReachable(env.baseUrl);
     if (SHOULD_CREATE_FILES_LOCALLY) {
@@ -170,4 +170,8 @@ void (async () => {
   } catch (error) {
     handleError(error);
   }
-})();
+}
+
+if (require.main === module) {
+  void main();
+}

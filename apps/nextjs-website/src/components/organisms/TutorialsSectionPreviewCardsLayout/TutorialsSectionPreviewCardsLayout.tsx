@@ -48,7 +48,7 @@ const TutorialsSectionPreviewCardsLayout = ({
           text: tutorial.description || '',
           icon: tutorial.icon?.url,
           useSrc: tutorial.icon !== undefined,
-          href: tutorial.path,
+          href: tutorial.redirectPath || tutorial.path,
         }))}
       />
     </Box>
