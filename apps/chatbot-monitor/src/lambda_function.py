@@ -200,13 +200,20 @@ def lambda_handler(event, context):
                     "retrieved_contexts": data.get("contexts", []),
                     "messages": data.get("messages", []),
                 }
-                try:
-                    SQS_EVALUATE.send_message(
-                        MessageBody=json.dumps(evaluation_payload),
-                        MessageGroupId=data.get("trace_id"),  # Required for FIFO queues
+                if SQS_EVALUATE is None:
+                    LOGGER.error(
+                        "SQS evaluate queue is not available, skipping evaluation enqueue."
                     )
-                except Exception as e:
-                    LOGGER.error(f"Failed to enqueue evaluation: {e}")
+                else:
+                    try:
+                        SQS_EVALUATE.send_message(
+                            MessageBody=json.dumps(evaluation_payload),
+                            MessageGroupId=data.get(
+                                "trace_id"
+                            ),  # Required for FIFO queues
+                        )
+                    except Exception as e:
+                        LOGGER.error(f"Failed to enqueue evaluation: {e}")
 
         elif operation == "add_scores":
 
