@@ -26,6 +26,8 @@ from langfuse.llama_index import LlamaIndexInstrumentor
 from src.modules.logger import get_logger
 from src.modules.models import get_llm, get_embed_model
 from src.modules.agent import get_agent
+from src.modules.tools.rag_tool import get_query_engine_tool
+from src.modules.vector_index import load_index_redis
 from src.modules.handlers import EventHandler
 from src.modules.presidio import PresidioPII
 from src.modules.settings import SETTINGS
@@ -52,6 +54,9 @@ RESPONSE_TYPE = Union[
 ]
 
 
+DEVPORTAL_RAG_TOOL_DESCRIPTION = "This tool is your primary resource for answering questions about PagoPA Developer Portal."
+
+
 class Chatbot:
     def __init__(
         self,
@@ -74,6 +79,23 @@ class Chatbot:
         self.instrumentor._event_handler = EventHandler(langfuse_client=LANGFUSE_CLIENT)
         end_time = time.time() - start_time
         LOGGER.info(f">>>>>>> Chatbot initialized in {end_time:.3f} secs. <<<<<<<")
+
+        start_time = time.time()
+        self.discovery = get_agent(
+            name="DiscoveryAgent",
+            tools=[
+                get_query_engine_tool(
+                    index=load_index_redis(index_id=SETTINGS.devportal_index_id),
+                    name="DevPortalRAGTool",
+                    description=DEVPORTAL_RAG_TOOL_DESCRIPTION,
+                    text_qa_template=self.qa_prompt_tmpl,
+                    refine_template=self.ref_prompt_tmpl,
+                ),
+            ],
+        )
+        LOGGER.info(
+            f">>>>>>> Agent initialized in {time.time() - start_time:.3f} secs. <<<<<<<<"
+        )
 
     def _get_prompt_templates(
         self,
@@ -243,17 +265,6 @@ class Chatbot:
         messages: Optional[List[Dict[str, str]]] | None = None,
     ) -> dict:
 
-        start_time = time.time()
-        agent = get_agent(
-            llm=self.model,
-            embed_model=self.embed_model,
-            text_qa_template=self.qa_prompt_tmpl,
-            refine_template=self.ref_prompt_tmpl,
-        )
-        LOGGER.info(
-            f">>>>>>> Agent initialized in {time.time() - start_time:.3f} secs. <<<<<<<<"
-        )
-
         chat_history = self._messages_to_chathistory(messages)
         LOGGER.info(f"Langfuse trace id: {trace_id}")
 
@@ -261,7 +272,7 @@ class Chatbot:
             trace_id=trace_id, session_id=session_id, user_id=user_id
         ) as trace:
             try:
-                engine_response = await agent.run(query_str, chat_history)
+                engine_response = await self.discovery.run(query_str, chat_history)
                 response_json = self._get_response_json(engine_response)
 
             except Exception as e:
@@ -280,6 +291,6 @@ class Chatbot:
                 tags=response_json["products"],
             )
             trace.score(name="user-feedback", value=0, data_type="NUMERIC")
-        
+
         self.instrumentor.flush()
         return response_json
