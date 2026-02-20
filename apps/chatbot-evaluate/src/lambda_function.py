@@ -97,7 +97,7 @@ def lambda_handler(event, context):
         }
     )
     try:
-        sqs_response = SQS_MONITOR.send_message(
+        SQS_MONITOR.send_message(
             MessageBody=payload_to_monitor,
             MessageGroupId=trace_id,  # Required for FIFO queues
         )

@@ -289,42 +289,40 @@ def save_feedback_to_database(query_for_database: dict) -> None:
     if not query_for_database or not isinstance(query_for_database, dict):
         return
 
-    if "feedback" in query_for_database:
-        if "user_comment" in query_for_database["feedback"]:
-            query_for_database["feedback"]["user_comment"] = PRESIDIO.mask_pii(
-                query_for_database["feedback"]["user_comment"]
-            )
+    # Mask PII in user_comment if present (independent of DB update)
+    if (
+        "feedback" in query_for_database
+        and "user_comment" in query_for_database["feedback"]
+    ):
+        query_for_database["feedback"]["user_comment"] = PRESIDIO.mask_pii(
+            query_for_database["feedback"]["user_comment"]
+        )
 
-            if (
-                "id" in query_for_database
-                and "sessionId" in query_for_database
-                and "badAnswer" in query_for_database
-                and "feedback" in query_for_database
-            ):
-                tables["queries"].update_item(
-                    Key={
-                        "sessionId": query_for_database["sessionId"],
-                        "id": query_for_database["id"],
-                    },
-                    UpdateExpression="SET #badAnswer = :badAnswer, #feedback = :feedback",
-                    ExpressionAttributeNames={
-                        "#badAnswer": "badAnswer",
-                        "#feedback": "feedback",
-                    },
-                    ExpressionAttributeValues=convert_floats_to_decimal(
-                        {
-                            ":badAnswer": query_for_database["badAnswer"],
-                            ":feedback": query_for_database["feedback"],
-                        }
-                    ),
-                    ReturnValues="ALL_NEW",
-                )
-    else:
-        if (
-            "id" in query_for_database
-            and "sessionId" in query_for_database
-            and "badAnswer" in query_for_database
-        ):
+    if (
+        "id" in query_for_database
+        and "sessionId" in query_for_database
+        and "badAnswer" in query_for_database
+    ):
+        if "feedback" in query_for_database:
+            tables["queries"].update_item(
+                Key={
+                    "sessionId": query_for_database["sessionId"],
+                    "id": query_for_database["id"],
+                },
+                UpdateExpression="SET #badAnswer = :badAnswer, #feedback = :feedback",
+                ExpressionAttributeNames={
+                    "#badAnswer": "badAnswer",
+                    "#feedback": "feedback",
+                },
+                ExpressionAttributeValues=convert_floats_to_decimal(
+                    {
+                        ":badAnswer": query_for_database["badAnswer"],
+                        ":feedback": query_for_database["feedback"],
+                    }
+                ),
+                ReturnValues="ALL_NEW",
+            )
+        else:
             tables["queries"].update_item(
                 Key={
                     "sessionId": query_for_database["sessionId"],

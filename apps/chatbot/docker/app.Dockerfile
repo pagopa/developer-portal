@@ -11,8 +11,6 @@ COPY poetry.lock $LAMBDA_TASK_ROOT
 RUN poetry config virtualenvs.create false
 RUN poetry install --only main
 
-COPY ./pyproject.toml .
-COPY ./poetry.lock .
 COPY ./CHANGELOG.md .
 COPY ./src ./src
 COPY ./config ./config

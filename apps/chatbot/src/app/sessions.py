@@ -156,11 +156,10 @@ def add_langfuse_score_query(
                 }
             ),
         }
-        sqs_response = sqs_queue_monitor.send_message(
+        sqs_queue_monitor.send_message(
             MessageBody=json.dumps(payload),
             MessageGroupId=query_id,
         )
-        
 
     if (
         query_feedback.feedback
@@ -180,7 +179,7 @@ def add_langfuse_score_query(
                 }
             ),
         }
-        sqs_response = sqs_queue_monitor.send_message(
+        sqs_queue_monitor.send_message(
             MessageBody=json.dumps(payload),
             MessageGroupId=query_id,
         )
@@ -203,7 +202,7 @@ def add_langfuse_score_query(
                 }
             ),
         }
-        sqs_response = sqs_queue_monitor.send_message(
+        sqs_queue_monitor.send_message(
             MessageBody=json.dumps(payload),
             MessageGroupId=query_id,
         )
