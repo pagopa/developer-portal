@@ -7,10 +7,11 @@ import { Webinar } from '@/lib/types/webinar';
 import { useTranslations, useFormatter } from 'next-intl';
 
 type WebinarListItemProps = {
+  locale: string;
   webinar: Webinar;
 };
 
-const WebinarListItem = ({ webinar }: WebinarListItemProps) => {
+const WebinarListItem = ({ locale, webinar }: WebinarListItemProps) => {
   const t = useTranslations();
   const format = useFormatter();
 
@@ -52,7 +53,7 @@ const WebinarListItem = ({ webinar }: WebinarListItemProps) => {
         <Typography variant='h6'>{webinar.title}</Typography>
         <Box mt={2} color='primary.main'>
           <LinkButton
-            href={`/webinars/${webinar.slug}`}
+            href={`/${locale}/webinars/${webinar.slug}`}
             label={t('webinar.goToWebinar')}
           />
         </Box>

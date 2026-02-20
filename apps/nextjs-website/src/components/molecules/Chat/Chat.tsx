@@ -60,7 +60,7 @@ const Chat = ({
       firstMessage(
         user
           ? t('chatBot.welcomeMessage')
-          : t('chatBot.guestMessage', { host: baseUrl }),
+          : t('chatBot.guestMessage', { host: `${baseUrl}/${locale}` }),
         mustFillFeedbackForm
       ),
       ...compact(

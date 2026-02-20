@@ -37,7 +37,7 @@ const PastWebinarsShowcase = ({ webinars }: PastWebinarsProps) => {
           <Grid item md={12}>
             <Grid container spacing={4}>
               {webinars.map((webinar, i) => (
-                <WebinarListItem webinar={webinar} key={i} />
+                <WebinarListItem locale={locale} webinar={webinar} key={i} />
               ))}
             </Grid>
           </Grid>
