@@ -17,15 +17,21 @@ export function resolveEnv(): EnvConfig {
   const vectorIndexName = process.env.CHB_INDEX_ID?.trim();
   const validDomainVariants = process.env.VALID_DOMAIN_VARIANTS?.trim();
   if (!baseUrl) {
-    throw new Error(
-      "Missing required URL. Set URL in environment or .env file.",
-    );
+    throw new Error("Missing required URL. Set URL in .env file.");
   }
   const requestTimeoutMs = Number.parseInt(
     process.env.PUBLIC_PARSER_REQUEST_TIMEOUT_MS ??
       `${DEFAULT_REQUEST_TIMEOUT_MS}`,
     10,
   );
+  const shouldCreateFilesLocally =
+    process.env.SHOULD_CREATE_FILES_LOCALLY === "true";
+  const S3BucketName = process.env.S3_BUCKET_NAME?.trim();
+  if (!S3BucketName) {
+    throw new Error(
+      "Missing required S3 Bucket Name. Set S3_BUCKET_NAME in .env file.",
+    );
+  }
   const sanitizedBaseUrl = RemoveAnchorsFromUrl(baseUrl);
   const parsedDepth = Number.parseInt(depth ?? `${DEFAULT_DEPTH}`, 10);
   const maxDepth = Number.isNaN(parsedDepth)
@@ -59,6 +65,8 @@ export function resolveEnv(): EnvConfig {
     maxDepth,
     requestTimeoutMs,
     validDomainVariants: parsedValidDomainVariants,
+    shouldCreateFilesLocally,
+    S3BucketName,
   };
 }
 
