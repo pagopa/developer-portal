@@ -26,7 +26,7 @@ import {
 } from '@/lib/strapi/fetches/fetchSitemapData';
 import { SUPPORTED_LOCALES } from '@/locales';
 import { compact, isEmpty } from 'lodash';
-import { HomepageProps } from '@/[locale]/page';
+import { HomepageProps } from '@/app/[locale]/page';
 
 export const dynamic = 'force-dynamic';
 
