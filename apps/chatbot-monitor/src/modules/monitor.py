@@ -181,46 +181,45 @@ def create_langfuse_trace(
     Returns:
         None (trace is created and sent to Langfuse)
     """
-    if not spans:
-        LOGGER.error("No spans given in input, skipping Langfuse trace creation.")
-        return None
-
-    LOGGER.info(f"Creating trace with ID: {trace_id}")
-    root_span = spans[0]
-    root_span_id = root_span["context"]["span_id"]
-    linked_spans = link_spans_groups(spans, root_span_id)
-    sorted_spans = sorted(linked_spans, key=lambda x: x["start_time"])
-
-    root = LANGFUSE_CLIENT.start_span(
-        name=trace_name,
-        trace_context=TraceContext(trace_id=trace_id),
-    )
-
-    for span in sorted_spans[1:]:
-        process_span(span, root)
-
     masked_query = PRESIDIO.mask_pii(query)
     masked_response = PRESIDIO.mask_pii(response)
 
-    root.update_trace(
-        input={
-            "query": masked_query,
-            "chat_history": mask_chat_history(messages),
-        },
-        output=masked_response,
-        tags=tags if tags else ["none"],
-        user_id=user_id,
-        session_id=session_id,
-        metadata={
-            "latency": get_latency(
-                root_span["start_time"], sorted_spans[-1]["end_time"]
-            ),
-            "contexts": contexts,
-        },
-    )
+    if not spans:
+        LOGGER.error("No spans given in input, skipping Langfuse trace creation.")
+    else:
+        LOGGER.info(f"Creating trace with ID: {trace_id}")
+        root_span = spans[0]
+        root_span_id = root_span["context"]["span_id"]
+        linked_spans = link_spans_groups(spans, root_span_id)
+        sorted_spans = sorted(linked_spans, key=lambda x: x["start_time"])
 
-    root.end()
-    LANGFUSE_CLIENT.flush()
+        root = LANGFUSE_CLIENT.start_span(
+            name=trace_name,
+            trace_context=TraceContext(trace_id=trace_id),
+        )
+
+        for span in sorted_spans[1:]:
+            process_span(span, root)
+
+        root.update_trace(
+            input={
+                "query": masked_query,
+                "chat_history": mask_chat_history(messages),
+            },
+            output=masked_response,
+            tags=tags if tags else ["none"],
+            user_id=user_id,
+            session_id=session_id,
+            metadata={
+                "latency": get_latency(
+                    root_span["start_time"], sorted_spans[-1]["end_time"]
+                ),
+                "contexts": contexts,
+            },
+        )
+
+        root.end()
+        LANGFUSE_CLIENT.flush()
 
     query_for_database["question"] = masked_query
     query_for_database["answer"] = masked_response
