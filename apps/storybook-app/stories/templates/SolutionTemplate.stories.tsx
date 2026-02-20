@@ -1,6 +1,5 @@
 import { Meta, StoryObj } from '@storybook/nextjs';
 import SolutionTemplate from '../../../nextjs-website/src/components/templates/SolutionTemplate/SolutionTemplate';
-import { nextIntlContextDecorator } from '../next-intl-context.helper';
 import { authProviderDecorator } from '../auth-provider.helper';
 import { mockTextBlock } from '../mock-content.helper';
 import { productsFixture } from '../fixtures/productsFixture';
@@ -102,5 +101,5 @@ export const Showcase: StoryObj<typeof SolutionTemplate> = {
       },
     ],
   },
-  decorators: [authProviderDecorator, nextIntlContextDecorator],
+  decorators: [authProviderDecorator],
 };

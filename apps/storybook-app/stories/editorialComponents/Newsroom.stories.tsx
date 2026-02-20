@@ -2,7 +2,6 @@ import { Meta, StoryObj } from '@storybook/nextjs';
 import Newsroom, {
   INewsroomItem,
 } from '../../../nextjs-website/src/editorialComponents/Newsroom/Newsroom';
-import { nextIntlContextDecorator } from '../next-intl-context.helper';
 
 const meta: Meta<typeof Newsroom> = {
   title: 'EditorialComponents/Newsroom',
@@ -39,5 +38,4 @@ export const Showcase: StoryObj<typeof Newsroom> = {
     py: 0,
     items: items,
   },
-  decorators: [nextIntlContextDecorator],
 };
