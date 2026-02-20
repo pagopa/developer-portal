@@ -205,42 +205,17 @@ const S3_SOAP_API_METADATA_JSON_PATH =
   process.env.S3_SOAP_API_METADATA_JSON_PATH ||
   'soap-api/soap-api-metadata.json';
 
-let guidesMetadataCache: readonly JsonMetadata[] | null = null;
-let solutionsMetadataCache: readonly JsonMetadata[] | null = null;
-let releaseNotesMetadataCache: readonly JsonMetadata[] | null = null;
 let soapApiMetadataCache: readonly SoapApiJsonMetadata[] | null = null;
 
-// Add timestamp-based cache invalidation
-// eslint-disable-next-line functional/no-let
-let guidesMetadataCacheTime = 0;
-
-// eslint-disable-next-line functional/no-let
-let solutionsMetadataCacheTime = 0;
-
-// eslint-disable-next-line functional/no-let
-let releaseNotesMetadataCacheTime = 0;
-
-const METADATA_CACHE_TTL = 5 * 60 * 1000; // 5 minutes
-
 export const getGuidesMetadata = async (dirName?: string) => {
-  const now = Date.now();
+  const guidesMetadata: readonly JsonMetadata[] | null =
+    await fetchMetadataFromCDN<JsonMetadata>(
+      dirName
+        ? path.join(S3_PATH_TO_GITBOOK_DOCS, dirName, S3_METADATA_JSON_PATH)
+        : S3_GUIDES_METADATA_JSON_PATH
+    );
 
-  if (
-    guidesMetadataCache &&
-    now - guidesMetadataCacheTime < METADATA_CACHE_TTL &&
-    (!dirName || guidesMetadataCache.some((m) => m.dirName === dirName))
-  ) {
-    return guidesMetadataCache;
-  }
-
-  guidesMetadataCache = await fetchMetadataFromCDN<JsonMetadata>(
-    dirName
-      ? path.join(S3_PATH_TO_GITBOOK_DOCS, dirName, S3_METADATA_JSON_PATH)
-      : S3_GUIDES_METADATA_JSON_PATH
-  );
-  guidesMetadataCacheTime = now;
-
-  return guidesMetadataCache || [];
+  return guidesMetadata || [];
 };
 
 const removeTrailingSlash = (value: string) => value.replace(/\/+$/, '');
@@ -298,45 +273,25 @@ export const getSolutionsMetadataByDirNames = async (
 };
 
 export const getSolutionsMetadata = async (dirName?: string) => {
-  const now = Date.now();
+  const solutionsMetadata: readonly JsonMetadata[] | null =
+    await fetchMetadataFromCDN<JsonMetadata>(
+      dirName
+        ? path.join(S3_PATH_TO_GITBOOK_DOCS, dirName, S3_METADATA_JSON_PATH)
+        : S3_SOLUTIONS_METADATA_JSON_PATH
+    );
 
-  if (
-    solutionsMetadataCache &&
-    now - solutionsMetadataCacheTime < METADATA_CACHE_TTL &&
-    (!dirName || solutionsMetadataCache.some((m) => m.dirName === dirName))
-  ) {
-    return solutionsMetadataCache;
-  }
-
-  solutionsMetadataCache = await fetchMetadataFromCDN<JsonMetadata>(
-    dirName
-      ? path.join(S3_PATH_TO_GITBOOK_DOCS, dirName, S3_METADATA_JSON_PATH)
-      : S3_SOLUTIONS_METADATA_JSON_PATH
-  );
-  solutionsMetadataCacheTime = now;
-
-  return solutionsMetadataCache || [];
+  return solutionsMetadata || [];
 };
 
 export const getReleaseNotesMetadata = async (dirName?: string) => {
-  const now = Date.now();
+  const releaseNotesMetadata: readonly JsonMetadata[] | null =
+    await fetchMetadataFromCDN<JsonMetadata>(
+      dirName
+        ? path.join(S3_PATH_TO_GITBOOK_DOCS, dirName, S3_METADATA_JSON_PATH)
+        : S3_RELEASE_NOTES_METADATA_JSON_PATH
+    );
 
-  if (
-    releaseNotesMetadataCache &&
-    now - releaseNotesMetadataCacheTime < METADATA_CACHE_TTL &&
-    (!dirName || releaseNotesMetadataCache.some((m) => m.dirName === dirName))
-  ) {
-    return releaseNotesMetadataCache;
-  }
-
-  releaseNotesMetadataCache = await fetchMetadataFromCDN<JsonMetadata>(
-    dirName
-      ? path.join(S3_PATH_TO_GITBOOK_DOCS, dirName, S3_METADATA_JSON_PATH)
-      : S3_RELEASE_NOTES_METADATA_JSON_PATH
-  );
-  releaseNotesMetadataCacheTime = now;
-
-  return releaseNotesMetadataCache || [];
+  return releaseNotesMetadata || [];
 };
 
 export const getSoapApiMetadata = async () => {
