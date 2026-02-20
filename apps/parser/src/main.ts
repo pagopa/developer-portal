@@ -45,7 +45,10 @@ void (async () => {
     } finally {
       if (page) await page.close();
     }
-    if (new URL(env.baseUrl).hostname !== new URL(finalUrl).hostname) {
+    if (
+      new URL(env.baseUrl).hostname.replace(/www\./, "") !==
+      new URL(finalUrl).hostname.replace(/www\./, "")
+    ) {
       console.error(
         `Domain mismatch: original ${new URL(env.baseUrl).hostname} != final ${
           new URL(finalUrl).hostname
