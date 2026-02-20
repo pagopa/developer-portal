@@ -1,6 +1,6 @@
 {
   "name": "storybook-app",
-  "version": "1.2.0",
+  "version": "2.0.0",
   "private": true,
   "scripts": {
     "storybook": "storybook dev -p 6006 --no-open",
