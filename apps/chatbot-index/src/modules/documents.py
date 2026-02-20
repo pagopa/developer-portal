@@ -2,7 +2,6 @@ import os
 import re
 import logging
 import time
-import json
 import yaml
 import tqdm
 import requests
