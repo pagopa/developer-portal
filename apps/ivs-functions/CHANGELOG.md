@@ -1,5 +1,11 @@
 # ivs-functions
 
+## 2.0.1
+
+### Patch Changes
+
+- 1e30600: Add webinar's slug to parameters in PUT when a webinar ends
+
 ## 2.0.0
 
 ### Major Changes

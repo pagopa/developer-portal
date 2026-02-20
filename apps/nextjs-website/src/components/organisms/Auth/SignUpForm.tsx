@@ -28,18 +28,6 @@ import PoliciesParagraph from './PoliciesParagraph';
 import { companyRoles } from '@/config';
 import { useParams } from 'next/navigation';
 
-const defaults = {
-  username: '',
-  password: '',
-  firstName: '',
-  lastName: '',
-  mailinglistAccepted: false,
-  surveyAccepted: false,
-  role: '',
-  company: '',
-  confirmPassword: '',
-};
-
 interface SignUpFormProps {
   // eslint-disable-next-line functional/no-return-void
   onSignUp: (userData: SignUpUserData) => void;
@@ -67,7 +55,21 @@ const SignUpForm = ({
     '& .MuiInputBase-input': { fontWeight: 600 },
     '& .MuiSelect-select': { fontWeight: 600 },
   };
-  const [userData, setUserData] = useState<SignUpUserData>(defaults);
+  const defaultUserDataAttributes: SignUpUserData = {
+    username: '',
+    password: '',
+    firstName: '',
+    lastName: '',
+    mailinglistAccepted: false,
+    surveyAccepted: false,
+    role: '',
+    company: '',
+    confirmPassword: '',
+    preferredLanguage: locale,
+  };
+  const [userData, setUserData] = useState<SignUpUserData>(
+    defaultUserDataAttributes
+  );
   const [fieldErrors, setFieldErrors] = useState<Partial<SignUpFieldsError>>(
     {}
   );

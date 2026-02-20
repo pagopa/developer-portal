@@ -5,6 +5,7 @@ export type SignUpUserData = {
   readonly firstName: string;
   readonly lastName: string;
   readonly company: string;
+  readonly preferredLanguage: string;
   readonly role: string;
   readonly mailinglistAccepted: boolean;
   readonly surveyAccepted: boolean;
