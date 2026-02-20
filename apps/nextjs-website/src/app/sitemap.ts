@@ -26,6 +26,7 @@ import {
 } from '@/lib/strapi/fetches/fetchSitemapData';
 import { SUPPORTED_LOCALES } from '@/locales';
 import { compact, isEmpty } from 'lodash';
+import { HomepageProps } from '@/[locale]/page';
 
 export const dynamic = 'force-dynamic';
 
@@ -62,6 +63,15 @@ type SitemapApiData = {
   };
 };
 
+async function getHomepage(localeCode: string): Promise<HomepageProps | null> {
+  try {
+    return await getHomepageProps(localeCode);
+  } catch (error) {
+    console.error('Failed to fetch homepage data for sitemap:', error);
+    return null;
+  }
+}
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const allLocalesSitemaps = await Promise.all(
     SUPPORTED_LOCALES.map(async (locale) => {
@@ -71,7 +81,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       // --------------------------------------------------------------------------------
       // 1. Fetch Global / Static Pages
       // --------------------------------------------------------------------------------
-      const homePage = await getHomepageProps(localeCode);
+
+      // NOTE: if homepage data is not available, we return an empty sitemap for this locale.
+      const homePage = await getHomepage(localeCode);
+
+      if (!homePage) {
+        return [] as MetadataRoute.Sitemap;
+      }
+
       const caseHistories = await getCaseHistoriesProps(localeCode);
       const webinars = await getWebinarsProps(localeCode);
       const solutions = await getSolutionsProps(localeCode);
