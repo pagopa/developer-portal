@@ -16,7 +16,7 @@ DEFAULT_DESCRIPTION = (
 )
 
 
-def get_agent(
+def get_discovery_agent(
     name: str | None = None,
     description: str | None = None,
     tools: List[Union[BaseTool, Callable]] | None = None,
