@@ -34,6 +34,7 @@ SOLUTIONS_FOLDER_FILEPATH = f"{SETTINGS.language_code}/solutions-dirNames.json"
 RELEASE_NOTES_FOLDER_FILEPATH = f"{SETTINGS.language_code}/release-notes-dirNames.json"
 PRODUCTS_S3_FILEPATH = f"{SETTINGS.language_code}/synced-products-response.json"
 APIS_DATA_S3_FILEPATH = f"{SETTINGS.language_code}/synced-apis-data-response.json"
+EXTRACTOR_FOLDER = "extractor"
 
 
 class StaticMetadata(BaseModel):
