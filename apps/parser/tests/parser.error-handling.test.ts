@@ -8,7 +8,7 @@ type ExecFileResult = {
 };
 
 const execFileAsync = promisify(execFile);
-const parserScript = path.resolve(__dirname, "../dist/parser.js");
+const parserScript = path.resolve(__dirname, "../dist/main.js");
 const nonExistingHost = "http://nonexistent-url-1234567890.com";
 const unreachableHost = "http://127.0.0.1:9";
 const redirectToMismatchedDomain = "http://ioapp.com";

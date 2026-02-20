@@ -26,3 +26,8 @@ export type ParsedNode = {
   readonly url: string;
   children?: ParsedNode[];
 };
+
+export type SitemapXml = {
+  readonly urlset?: { readonly url?: readonly string[] };
+  readonly sitemapindex?: { readonly sitemap?: readonly string[] };
+};

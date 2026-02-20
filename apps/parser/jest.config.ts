@@ -2,7 +2,7 @@ import type { Config } from "jest";
 
 const config: Config = {
   rootDir: __dirname,
-  testRegex: "tests/.*\\.test\\.ts$",
+  testRegex: "(src/__tests__/.*|tests/.*)\\.test\\.ts$",
   transform: {
     "^.+\\.ts$": ["ts-jest", { tsconfig: "tsconfig.json" }],
   },
