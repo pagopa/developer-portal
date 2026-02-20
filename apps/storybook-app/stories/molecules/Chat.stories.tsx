@@ -2,6 +2,7 @@ import { Decorator, Meta, StoryObj } from '@storybook/nextjs';
 import Chat from '../../../nextjs-website/src/components/molecules/Chat/Chat';
 import React from 'react';
 import { mockText } from '../mock-content.helper';
+import { authProviderDecorator } from '../auth-provider.helper';
 
 const meta: Meta<typeof Chat> = {
   title: 'Molecules/Chat',
@@ -41,7 +42,7 @@ export const Showcase: StoryObj<typeof Chat> = {
     },
     isAwaitingResponse: true,
   },
-  decorators: [decorator],
+  decorators: [decorator, authProviderDecorator],
 };
 
 export const QueryError: StoryObj<typeof Chat> = {
@@ -59,7 +60,7 @@ export const QueryError: StoryObj<typeof Chat> = {
     },
     error: 'queryFailed',
   },
-  decorators: [decorator],
+  decorators: [decorator, authProviderDecorator],
 };
 
 export const ChatbotServiceError: StoryObj<typeof Chat> = {
@@ -77,5 +78,5 @@ export const ChatbotServiceError: StoryObj<typeof Chat> = {
     },
     error: 'serviceDown',
   },
-  decorators: [decorator],
+  decorators: [decorator, authProviderDecorator],
 };
