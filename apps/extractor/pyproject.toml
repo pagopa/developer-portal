@@ -1,0 +1,25 @@
+[tool.poetry]
+description = "Extractor service for JSON files re-elaboration"
+name = "extractor"
+package-mode = false
+readme = "README.md"
+version = "0.1.0"
+
+[tool.poetry.dependencies]
+python = ">=3.12,<3.14"
+llama-index = "^0.12.30"
+llama-index-llms-google-genai = "^0.1.7"
+llama-index-embeddings-google-genai = "^0.1.0"
+pydantic-settings = "^2.10.1"
+pyyaml = "^6.0.2"
+
+[tool.poetry.group.test.dependencies]
+pytest = "^8.3.5"
+
+[tool.poetry.group.dev.dependencies]
+jupyter = "^1.1.1"
+jupyterlab = "^4.4.10"
+
+[build-system]
+build-backend = "poetry.core.masonry.api"
+requires = ["poetry-core"]

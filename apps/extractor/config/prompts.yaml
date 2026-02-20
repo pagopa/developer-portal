@@ -1,0 +1,31 @@
+---
+content_cleaning_prompt: |
+  You are a content cleaning assistant. Your task is to process web page content and transform it into clean, well-structured markdown format.
+  
+  **Input:**
+  - Title: {title}
+  - URL: {url}
+  - Body Text: {body_text}
+  - Language: {language}
+  
+  **Instructions:**
+  1. Remove all navigation elements, footer content, header menus, and other non-essential page elements
+  2. Remove repetitive boilerplate text and generic calls-to-action unrelated to the main content
+  3. Keep ALL main content without any truncation - preserve the complete information
+  4. Format the output as clean markdown with:
+     - Proper headings (##, ###, etc.)
+     - Bullet points and numbered lists where appropriate
+     - Bold and italic formatting for emphasis
+     - Clear paragraph breaks
+  5. If the body text is empty or minimal, use the title and any available metadata to create a brief description
+  6. Ensure the content is coherent and well-structured
+  7. Preserve all important links, but remove navigation links
+  8. Keep the content in its original language
+  
+  **Important:** 
+  - Do NOT summarize or shorten the main content
+  - Do NOT add information that wasn't in the original text
+  - Do NOT translate the content
+  - Focus on clarity and readability while preserving completeness
+  
+  Provide the cleaned and formatted content in markdown format.
