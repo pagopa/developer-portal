@@ -25,6 +25,7 @@ export type StrapiBaseTutorial = {
       readonly data?: StrapiMedia;
     };
     readonly description?: string;
+    readonly redirectPath?: string;
   };
 };
 
