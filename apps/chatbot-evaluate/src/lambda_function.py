@@ -96,12 +96,17 @@ def lambda_handler(event, context):
             "data": compress_payload(results),
         }
     )
-    try:
-        SQS_MONITOR.send_message(
-            MessageBody=payload_to_monitor,
-            MessageGroupId=trace_id,  # Required for FIFO queues
-        )
-    except Exception as e:
+    if SQS_MONITOR is not None:
+        try:
+            SQS_MONITOR.send_message(
+                MessageBody=payload_to_monitor,
+                MessageGroupId=trace_id,  # Required for FIFO queues
+            )
+        except Exception as e:
+            LOGGER.error(
+                f"Failed to send SQS message {payload_to_monitor} to chatbot-monitor: {e}"
+            )
+    else:
         LOGGER.error(
-            f"Failed to send SQS message {payload_to_monitor} to chatbot-monitor: {e}"
+            "SQS_MONITOR queue is not initialized; cannot send monitoring message."
         )
