@@ -1,13 +1,9 @@
 from llama_index.core import (
-    Settings,
     VectorStoreIndex,
     StorageContext,
     load_index_from_storage,
 )
 from llama_index.core import Settings as LlamaIndexSettings
-from llama_index.core.base.llms.base import BaseLLM
-from llama_index.core.base.embeddings.base import BaseEmbedding
-from llama_index.core.node_parser import SentenceSplitter
 from llama_index.storage.docstore.redis import RedisDocumentStore
 from llama_index.storage.index_store.redis import RedisIndexStore
 from llama_index.storage.kvstore.redis import RedisKVStore
