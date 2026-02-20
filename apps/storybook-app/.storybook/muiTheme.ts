@@ -171,8 +171,11 @@ const shadowValues = {
         0.05
     )}, 0px 6px 30px 5px ${alpha(shadowColor, 0.1)}`,
 };
-// eslint-disable-next-line functional/immutable-data, @typescript-eslint/no-explicit-any
-const shadowsArray = Array(25).fill('none') as any;
+// eslint-disable-next-line functional/immutable-data
+const shadows: string[] = Array(25).fill('none');
+shadows[4] = shadowValues[4];
+shadows[8] = shadowValues[8];
+shadows[16] = shadowValues[16];
 
 const foundation = {
     breakpoints: {
@@ -265,7 +268,7 @@ const foundation = {
         fontSize: 16,
         htmlFontSize: 16,
     },
-    shadows: { ...shadowsArray, ...shadowValues },
+    shadows: shadows,
     shape: { borderRadius: 4 },
     spacing: 8,
 };
