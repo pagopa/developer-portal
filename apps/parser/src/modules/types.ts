@@ -6,6 +6,7 @@ export type EnvConfig = {
   readonly validDomainVariants?: string[];
   readonly requestTimeoutMs: number;
   readonly shouldCreateFilesLocally: boolean;
+  readonly S3BucketName: string;
 };
 
 export type SanitizeOptions = {

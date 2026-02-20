@@ -33,6 +33,7 @@ export const BASE_HOST_TOKEN = new URL(env.baseUrl).hostname
   .toLowerCase();
 export const VALID_DOMAIN_VARIANTS = env.validDomainVariants || [];
 export const SHOULD_CREATE_FILES_LOCALLY = env.shouldCreateFilesLocally;
+export const S3_BUCKET_NAME = env.S3BucketName;
 
 let BASE_URL = env.baseUrl;
 

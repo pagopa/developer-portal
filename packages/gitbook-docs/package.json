@@ -3,7 +3,9 @@
   "version": "1.8.1",
   "private": true,
   "exports": {
-    "./": "./dist/"
+    ".": "./dist/index.js",
+    "./*": "./dist/*.js",
+    "./helpers/s3Bucket.helper": "./dist/helpers/s3Bucket.helper.js"
   },
   "typesVersions": {
     "*": {
