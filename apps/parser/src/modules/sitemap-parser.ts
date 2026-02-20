@@ -3,6 +3,7 @@ import { parseStringPromise } from "xml2js";
 import http from "node:http";
 import https from "node:https";
 import { SitemapXml } from "./types";
+import { REQUEST_TIMEOUT_MS } from "../main";
 
 export function getSitemapUrl(baseUrl: string): string {
   const envUrl = process.env.SITEMAP_URL?.trim();
@@ -50,9 +51,10 @@ export async function fetchRemoteXml(
               `Sitemap warning: Failed to fetch ${currentUrl}: status ${statusCode}`,
             );
             response.resume();
-            throw new Error(
-              `HTTP ${statusCode}: Failed to fetch ${currentUrl}`,
+            reject(
+              new Error(`HTTP ${statusCode}: Failed to fetch ${currentUrl}`),
             );
+            return;
           }
           response.setEncoding("utf8");
           let fullData = "";
@@ -62,10 +64,10 @@ export async function fetchRemoteXml(
           response.on("end", () => resolve({ data: fullData }));
         });
         request.on("error", (error) => reject(error));
-        request.setTimeout(10000, () => {
+        request.setTimeout(REQUEST_TIMEOUT_MS, () => {
           request.destroy();
-          throw new Error(
-            `Sitemap error: Timeout while fetching ${currentUrl}`,
+          reject(
+            new Error(`Sitemap error: Timeout while fetching ${currentUrl}`),
           );
         });
       },

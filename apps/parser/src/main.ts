@@ -35,7 +35,7 @@ export const VALID_DOMAIN_VARIANTS = env.validDomainVariants || [];
 
 let BASE_URL = env.baseUrl;
 
-void (async () => {
+async function main(): Promise<void> {
   try {
     await assertReachable(env.baseUrl);
     ensureDirectory(env.outputDirectory);
@@ -167,4 +167,8 @@ void (async () => {
   } catch (error) {
     handleError(error);
   }
-})();
+}
+
+if (require.main === module) {
+  void main();
+}
