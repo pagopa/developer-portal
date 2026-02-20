@@ -1,6 +1,6 @@
 from llama_index.core.llms.llm import LLM
 from llama_index.core.base.embeddings.base import BaseEmbedding
-from llama_index.core import VectorStoreIndex, PromptTemplate
+from llama_index.core import PromptTemplate
 from llama_index.core.agent.workflow import ReActAgent
 
 from src.modules.settings import SETTINGS
@@ -26,7 +26,7 @@ def get_agent(
     llm_agent = get_llm(temperature=SETTINGS.temperature_agent)
     embed_model = embed_model if embed_model else get_embed_model()
 
-    index = load_index_redis(llm=llm_rag, embed_model=embed_model)
+    index = load_index_redis(SETTINGS.devportal_index_id)
     query_engine_tool = get_query_engine_tool(
         index=index,
         llm=llm_rag,
