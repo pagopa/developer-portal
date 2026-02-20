@@ -297,40 +297,33 @@ def save_feedback_to_database(query_for_database: dict) -> None:
             query_for_database["feedback"]["user_comment"]
         )
 
-    if (
-        "id" in query_for_database
-        and "sessionId" in query_for_database
-        and "badAnswer" in query_for_database
-    ):
-        if "feedback" in query_for_database:
-            tables["queries"].update_item(
-                Key={
-                    "sessionId": query_for_database["sessionId"],
-                    "id": query_for_database["id"],
-                },
-                UpdateExpression="SET #badAnswer = :badAnswer, #feedback = :feedback",
-                ExpressionAttributeNames={
-                    "#badAnswer": "badAnswer",
-                    "#feedback": "feedback",
-                },
-                ExpressionAttributeValues=convert_floats_to_decimal(
-                    {
-                        ":badAnswer": query_for_database["badAnswer"],
-                        ":feedback": query_for_database["feedback"],
-                    }
-                ),
-                ReturnValues="ALL_NEW",
-            )
-        else:
-            tables["queries"].update_item(
-                Key={
-                    "sessionId": query_for_database["sessionId"],
-                    "id": query_for_database["id"],
-                },
-                UpdateExpression="SET #badAnswer = :badAnswer",
-                ExpressionAttributeNames={"#badAnswer": "badAnswer"},
-                ExpressionAttributeValues=convert_floats_to_decimal(
-                    {":badAnswer": query_for_database["badAnswer"]}
-                ),
-                ReturnValues="ALL_NEW",
-            )
+    if "id" not in query_for_database or "sessionId" not in query_for_database:
+        return
+
+    update_parts = []
+    attr_names = {}
+    attr_values = {}
+
+    if "badAnswer" in query_for_database:
+        update_parts.append("#badAnswer = :badAnswer")
+        attr_names["#badAnswer"] = "badAnswer"
+        attr_values[":badAnswer"] = query_for_database["badAnswer"]
+
+    if "feedback" in query_for_database:
+        update_parts.append("#feedback = :feedback")
+        attr_names["#feedback"] = "feedback"
+        attr_values[":feedback"] = query_for_database["feedback"]
+
+    if not update_parts:
+        return
+
+    tables["queries"].update_item(
+        Key={
+            "sessionId": query_for_database["sessionId"],
+            "id": query_for_database["id"],
+        },
+        UpdateExpression="SET " + ", ".join(update_parts),
+        ExpressionAttributeNames=attr_names,
+        ExpressionAttributeValues=convert_floats_to_decimal(attr_values),
+        ReturnValues="ALL_NEW",
+    )
