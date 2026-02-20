@@ -2,7 +2,6 @@ import os
 import re
 import logging
 import time
-import json
 import yaml
 import tqdm
 import requests
@@ -21,11 +20,12 @@ from llama_index.core import Document
 
 from src.modules.logger import get_logger
 from src.modules.settings import SETTINGS, AWS_SESSION
+from src.modules.codec import safe_json_load
 
 
 logging.getLogger("botocore").setLevel(logging.ERROR)
 LOGGER = get_logger(__name__)
-AWS_S3_CLIENT = AWS_SESSION.client("s3")
+AWS_S3_RESOURCE = AWS_SESSION.resource("s3")
 SITEMAP_S3_FILEPATH = "sitemap.xml"
 DOCS_PARENT_FOLDER = f"{SETTINGS.language_code}/devportal-docs/docs/"
 GUIDES_FOLDER_FILEPATH = f"{SETTINGS.language_code}/main-guide-versions-dirNames.json"
@@ -33,6 +33,7 @@ SOLUTIONS_FOLDER_FILEPATH = f"{SETTINGS.language_code}/solutions-dirNames.json"
 RELEASE_NOTES_FOLDER_FILEPATH = f"{SETTINGS.language_code}/release-notes-dirNames.json"
 PRODUCTS_S3_FILEPATH = f"{SETTINGS.language_code}/synced-products-response.json"
 APIS_DATA_S3_FILEPATH = f"{SETTINGS.language_code}/synced-apis-data-response.json"
+EXTRACTOR_FOLDER = "extractor"
 
 
 class StaticMetadata(BaseModel):
@@ -61,11 +62,8 @@ def read_file_from_s3(
     bucket_name = bucket_name if bucket_name else SETTINGS.bucket_static_content
     text = ""
     try:
-        response = AWS_S3_CLIENT.get_object(
-            Bucket=bucket_name,
-            Key=file_path,
-        )
-        text = response["Body"].read().decode("utf-8")
+        obj = AWS_S3_RESOURCE.Object(bucket_name, file_path)
+        return obj.get()["Body"].read().decode("utf-8")
 
     except Exception as e:
         LOGGER.error(f"Error reading {bucket_name}/{file_path} from S3: {e}")
@@ -109,7 +107,7 @@ def get_folders_list(
         s3_content = read_file_from_s3(filepath)
         if s3_content:
             try:
-                folders_content = json.loads(s3_content)
+                folders_content = safe_json_load(s3_content)
             except Exception as e:
                 LOGGER.warning(f"Failed to decode {filepath}: {e}")
                 folders_content = {"dirNames": []}
@@ -145,7 +143,7 @@ def get_one_metadata_from_s3(
             os.path.join(docs_parent_folder, folder_name, "metadata.json")
         )
         try:
-            folder_metadata = json.loads(s3_content) if s3_content else {}
+            folder_metadata = safe_json_load(s3_content) if s3_content else {}
         except Exception as e:
             LOGGER.warning(
                 f"Failed to decode metadata.json in folder {docs_parent_folder}/{folder_name}: {e}"
@@ -185,7 +183,7 @@ def get_metadata_from_s3(
             s3_content = read_file_from_s3(
                 os.path.join(docs_parent_folder, folder_name, "metadata.json")
             )
-            folder_metadata = json.loads(s3_content) if s3_content else []
+            folder_metadata = safe_json_load(s3_content) if s3_content else []
         except Exception as e:
             LOGGER.warning(
                 f"Failed to decode metadata.json in folder {docs_parent_folder}/{folder_name}: {e}"
@@ -221,7 +219,10 @@ def get_product_list(file_path: str | None = None) -> List[str]:
     s3_content = read_file_from_s3(file_path)
     product_list = []
     if s3_content:
-        products = json.loads(s3_content)
+        products = safe_json_load(s3_content)
+        assert isinstance(
+            products, list
+        ), f"Expected product data to be a list, got {type(products)}"
         for product in products:
             try:
                 if product["attributes"]["isVisible"]:
@@ -347,7 +348,7 @@ def get_apidata(file_path: str | None = None) -> dict:
     s3_data = read_file_from_s3(file_path)
     if not s3_data:
         raise ValueError("API data content is empty.")
-    return json.loads(s3_data)
+    return safe_json_load(s3_data)
 
 
 def read_api_url(url: str) -> str:
@@ -366,7 +367,7 @@ def read_api_url(url: str) -> str:
         if url.endswith(".yaml") or url.endswith(".yml"):
             data = yaml.safe_load(response.text)
         elif url.endswith(".json"):
-            data = json.loads(response.text)
+            data = safe_json_load(response.text)
         else:
             raise ValueError("Unsupported file format. Use .yaml, .yml, or .json.")
 
@@ -610,20 +611,94 @@ def get_dynamic_docs(dynamic_metadata: List[DynamicMetadata]) -> List[Document]:
     return dynamic_docs
 
 
-def get_documents() -> List[Document]:
+def get_structured_docs(parent_folder: str, bucket_name: str) -> List[Document]:
+    """
+    Fetches structured documents from a specified S3 bucket and parent folder.
+    Args:
+        parent_folder (str): The parent folder in the S3 bucket where the structured documents are located.
+        bucket_name (str): The name of the S3 bucket to fetch the structured documents from.
+    Returns:
+        List[Document]: A list of Document objects containing the content and metadata of the structured documents
+    """
+
+    bucket = AWS_S3_RESOURCE.Bucket(bucket_name)
+    prefix = "/".join(
+        part.strip("/") for part in (parent_folder, EXTRACTOR_FOLDER) if part
+    )
+
+    structured_docs = []
+    for obj in bucket.objects.filter(Prefix=prefix):
+        if obj.key.lower().endswith(".json"):
+
+            json_file_path = obj.key
+            filename_split = json_file_path.split("/")
+            filename = (
+                os.path.join(filename_split[-2], filename_split[-1])
+                if len(filename_split) >= 2
+                else filename_split[-1]
+            )
+            s3_content = safe_json_load(read_file_from_s3(json_file_path, bucket_name))
+            assert isinstance(
+                s3_content, dict
+            ), f"Expected structured document content to be a dict, got {type(s3_content)} for file {json_file_path}"
+            structured_docs.append(
+                Document(
+                    id_=filename,
+                    text=s3_content.get("text", ""),
+                    metadata={
+                        "filepath": s3_content.get("url", ""),
+                        "language": s3_content.get("language", ""),
+                        "lastmod": s3_content.get("lastmod", ""),
+                        "title": s3_content.get("title", ""),
+                    },
+                )
+            )
+
+    return structured_docs
+
+
+def get_documents(
+    index_id: str,
+    static: bool,
+    dynamic: bool,
+    api: bool,
+    structured: bool,
+) -> List[Document]:
     """
     Fetches documents from static and dynamic sources.
+    Args:
+        index_id (str): The identifier for the index to which the documents will be added.
+        static (bool): Flag indicating whether to include static documents in the index
+        dynamic (bool): Flag indicating whether to include dynamic documents in the index
+        api (bool): Flag indicating whether to include API documentation in the index
+        structured (bool): Flag indicating whether to include structured documents in the index
     Returns:
         List[Document]: A list of Document objects containing the content and metadata.
     """
 
-    static_metadata = get_static_metadata()
-    dynamic_metadata = get_dynamic_metadata(static_metadata)
+    docs = []
 
-    api_docs = get_api_docs()
-    static_docs = get_static_docs(static_metadata)
-    dynamic_docs = get_dynamic_docs(dynamic_metadata)
-    docs = api_docs + static_docs + dynamic_docs
+    static_metadata = None
+
+    if static:
+        static_metadata = get_static_metadata()
+        static_docs = get_static_docs(static_metadata)
+        docs.extend(static_docs)
+
+    if dynamic:
+        if static_metadata is None:
+            static_metadata = get_static_metadata()
+        dynamic_metadata = get_dynamic_metadata(static_metadata)
+        dynamic_docs = get_dynamic_docs(dynamic_metadata)
+        docs.extend(dynamic_docs)
+
+    if api:
+        api_docs = get_api_docs()
+        docs.extend(api_docs)
+
+    if structured:
+        structured_docs = get_structured_docs(index_id, SETTINGS.bucket_static_content)
+        docs.extend(structured_docs)
 
     LOGGER.info(f"Total number of fetched documents: {len(docs)}")
     return docs

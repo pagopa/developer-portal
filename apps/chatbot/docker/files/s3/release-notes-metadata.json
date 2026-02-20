@@ -1,0 +1,65 @@
+[
+  {
+    "path": "/firma-con-io/release-note/2023/16-ottobre-2023",
+    "dirName": "JzXl8H23oVGyUzZoVWiY",
+    "contentS3Path": "devportal-docs/docs/JzXl8H23oVGyUzZoVWiY/2023/16-ottobre-2023.md",
+    "menuS3Path": "devportal-docs/docs/JzXl8H23oVGyUzZoVWiY/SUMMARY.md",
+    "title": "16 Ottobre 2023"
+  },
+  {
+    "path": "/firma-con-io/release-note/2023/20-marzo-2023",
+    "dirName": "JzXl8H23oVGyUzZoVWiY",
+    "contentS3Path": "devportal-docs/docs/JzXl8H23oVGyUzZoVWiY/2023/20-marzo-2023.md",
+    "menuS3Path": "devportal-docs/docs/JzXl8H23oVGyUzZoVWiY/SUMMARY.md",
+    "title": "20 Marzo 2023"
+  },
+  {
+    "path": "/firma-con-io/release-note/2023/23-luglio-2023",
+    "dirName": "JzXl8H23oVGyUzZoVWiY",
+    "contentS3Path": "devportal-docs/docs/JzXl8H23oVGyUzZoVWiY/2023/23-luglio-2023.md",
+    "menuS3Path": "devportal-docs/docs/JzXl8H23oVGyUzZoVWiY/SUMMARY.md",
+    "title": "23 Luglio 2023"
+  },
+  {
+    "path": "/firma-con-io/release-note/2023",
+    "dirName": "JzXl8H23oVGyUzZoVWiY",
+    "contentS3Path": "devportal-docs/docs/JzXl8H23oVGyUzZoVWiY/2023/README.md",
+    "menuS3Path": "devportal-docs/docs/JzXl8H23oVGyUzZoVWiY/SUMMARY.md",
+    "title": "2023"
+  },
+  {
+    "path": "/firma-con-io/release-note/2024/19-marzo-2024",
+    "dirName": "JzXl8H23oVGyUzZoVWiY",
+    "contentS3Path": "devportal-docs/docs/JzXl8H23oVGyUzZoVWiY/2024/19-marzo-2024.md",
+    "menuS3Path": "devportal-docs/docs/JzXl8H23oVGyUzZoVWiY/SUMMARY.md",
+    "title": "19 Marzo 2024"
+  },
+  {
+    "path": "/firma-con-io/release-note/2024/21-luglio-2024",
+    "dirName": "JzXl8H23oVGyUzZoVWiY",
+    "contentS3Path": "devportal-docs/docs/JzXl8H23oVGyUzZoVWiY/2024/21-luglio-2024.md",
+    "menuS3Path": "devportal-docs/docs/JzXl8H23oVGyUzZoVWiY/SUMMARY.md",
+    "title": "21 Luglio 2024"
+  },
+  {
+    "path": "/firma-con-io/release-note/2024/22-ottobre-2024",
+    "dirName": "JzXl8H23oVGyUzZoVWiY",
+    "contentS3Path": "devportal-docs/docs/JzXl8H23oVGyUzZoVWiY/2024/22-ottobre-2024.md",
+    "menuS3Path": "devportal-docs/docs/JzXl8H23oVGyUzZoVWiY/SUMMARY.md",
+    "title": "22 Ottobre 2024"
+  },
+  {
+    "path": "/firma-con-io/release-note/2024",
+    "dirName": "JzXl8H23oVGyUzZoVWiY",
+    "contentS3Path": "devportal-docs/docs/JzXl8H23oVGyUzZoVWiY/2024/README.md",
+    "menuS3Path": "devportal-docs/docs/JzXl8H23oVGyUzZoVWiY/SUMMARY.md",
+    "title": "2024"
+  },
+  {
+    "path": "/firma-con-io/release-note",
+    "dirName": "JzXl8H23oVGyUzZoVWiY",
+    "contentS3Path": "devportal-docs/docs/JzXl8H23oVGyUzZoVWiY/README.md",
+    "menuS3Path": "devportal-docs/docs/JzXl8H23oVGyUzZoVWiY/SUMMARY.md",
+    "title": "Ultime release notes"
+  }
+]

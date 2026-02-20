@@ -1,0 +1,65 @@
+[
+  {
+    "path": "/solutions/soluzione-notturna/details",
+    "dirName": "U87eExwlc3gfSLL6SQpJ",
+    "contentS3Path": "devportal-docs/docs/U87eExwlc3gfSLL6SQpJ/README.md",
+    "menuS3Path": "devportal-docs/docs/U87eExwlc3gfSLL6SQpJ/SUMMARY.md",
+    "title": "Introduzione"
+  },
+  {
+    "path": "/solutions/soluzione-notturna/details/attivazione-servizio-e-dichiarazione-di-occupazione",
+    "dirName": "U87eExwlc3gfSLL6SQpJ",
+    "contentS3Path": "devportal-docs/docs/U87eExwlc3gfSLL6SQpJ/attivazione-servizio-e-dichiarazione-di-occupazione.md",
+    "menuS3Path": "devportal-docs/docs/U87eExwlc3gfSLL6SQpJ/SUMMARY.md",
+    "title": "1️⃣ Attivazione servizio e dichiarazione di occupazione"
+  },
+  {
+    "path": "/solutions/soluzione-notturna/details/consegna-dellavviso-di-accertamento",
+    "dirName": "U87eExwlc3gfSLL6SQpJ",
+    "contentS3Path": "devportal-docs/docs/U87eExwlc3gfSLL6SQpJ/consegna-dellavviso-di-accertamento.md",
+    "menuS3Path": "devportal-docs/docs/U87eExwlc3gfSLL6SQpJ/SUMMARY.md",
+    "title": "7️⃣ Consegna dell'avviso di accertamento"
+  },
+  {
+    "path": "/solutions/soluzione-notturna/details/emissione-avviso-di-accertamento",
+    "dirName": "U87eExwlc3gfSLL6SQpJ",
+    "contentS3Path": "devportal-docs/docs/U87eExwlc3gfSLL6SQpJ/emissione-avviso-di-accertamento.md",
+    "menuS3Path": "devportal-docs/docs/U87eExwlc3gfSLL6SQpJ/SUMMARY.md",
+    "title": "6️⃣ Emissione avviso di accertamento"
+  },
+  {
+    "path": "/solutions/soluzione-notturna/details/emissione-prima-rata",
+    "dirName": "U87eExwlc3gfSLL6SQpJ",
+    "contentS3Path": "devportal-docs/docs/U87eExwlc3gfSLL6SQpJ/emissione-prima-rata.md",
+    "menuS3Path": "devportal-docs/docs/U87eExwlc3gfSLL6SQpJ/SUMMARY.md",
+    "title": "4️⃣ Emissione prima rata"
+  },
+  {
+    "path": "/solutions/soluzione-notturna/details/emissione-rata-unica",
+    "dirName": "U87eExwlc3gfSLL6SQpJ",
+    "contentS3Path": "devportal-docs/docs/U87eExwlc3gfSLL6SQpJ/emissione-rata-unica.md",
+    "menuS3Path": "devportal-docs/docs/U87eExwlc3gfSLL6SQpJ/SUMMARY.md",
+    "title": "2️⃣ Emissione rata unica"
+  },
+  {
+    "path": "/solutions/soluzione-notturna/details/pagamento-dellavviso-di-accertamento",
+    "dirName": "U87eExwlc3gfSLL6SQpJ",
+    "contentS3Path": "devportal-docs/docs/U87eExwlc3gfSLL6SQpJ/pagamento-dellavviso-di-accertamento.md",
+    "menuS3Path": "devportal-docs/docs/U87eExwlc3gfSLL6SQpJ/SUMMARY.md",
+    "title": "8️⃣ Pagamento dell'avviso di accertamento"
+  },
+  {
+    "path": "/solutions/soluzione-notturna/details/pagamento-prima-rata",
+    "dirName": "U87eExwlc3gfSLL6SQpJ",
+    "contentS3Path": "devportal-docs/docs/U87eExwlc3gfSLL6SQpJ/pagamento-prima-rata.md",
+    "menuS3Path": "devportal-docs/docs/U87eExwlc3gfSLL6SQpJ/SUMMARY.md",
+    "title": "5️⃣ Pagamento prima rata"
+  },
+  {
+    "path": "/solutions/soluzione-notturna/details/pagamento-rata-unica",
+    "dirName": "U87eExwlc3gfSLL6SQpJ",
+    "contentS3Path": "devportal-docs/docs/U87eExwlc3gfSLL6SQpJ/pagamento-rata-unica.md",
+    "menuS3Path": "devportal-docs/docs/U87eExwlc3gfSLL6SQpJ/SUMMARY.md",
+    "title": "3️⃣ Pagamento rata unica"
+  }
+]

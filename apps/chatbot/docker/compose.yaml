@@ -66,13 +66,15 @@ services:
     build:
       context: ../../chatbot-index
       dockerfile: ../chatbot-index/docker/create_index.Dockerfile
-    command: poetry run python ../chatbot-index/src/modules/create_vector_index.py
+    command: /app/scripts/run.create.index.sh
     env_file: ../../chatbot-index/.env.local
     volumes:
       - ./files/.aws:/root/.aws
-      - ../../nextjs-website/out:/app/build-devp/out
+      - ./files/s3:/app/files/s3
     depends_on:
       redis:
+        condition: service_started
+      motoserver:
         condition: service_started
 
   postgres:
@@ -167,6 +169,8 @@ services:
     image: motoserver/moto:5.1.14
     environment:
       - MOTO_PORT=3002
+    ports:
+      - "3002:3002"
 
   langfuse-worker:
     image: docker.io/langfuse/langfuse-worker:3.115

@@ -1,0 +1,690 @@
+[
+  {
+    "path": "/prodotto-strapii/guides/guida-strapi",
+    "dirName": "3FyVXetkmOApT9WPTwPN",
+    "contentS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/README.md",
+    "menuS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/SUMMARY.md",
+    "title": "Knowledge-base di SEND",
+    "version": "1"
+  },
+  {
+    "path": "/prodotto-strapii/guides/guida-strapi/api-changelog",
+    "dirName": "3FyVXetkmOApT9WPTwPN",
+    "contentS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/api-changelog/README.md",
+    "menuS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/SUMMARY.md",
+    "title": "API CHANGELOG",
+    "version": "1"
+  },
+  {
+    "path": "/prodotto-strapii/guides/guida-strapi/api-changelog/api-versione-ga-2.0",
+    "dirName": "3FyVXetkmOApT9WPTwPN",
+    "contentS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/api-changelog/api-versione-ga-2.0.md",
+    "menuS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/SUMMARY.md",
+    "title": "API VERSIONE GA 2.0",
+    "version": "1"
+  },
+  {
+    "path": "/prodotto-strapii/guides/guida-strapi/api-changelog/api-versione-ga-2.1",
+    "dirName": "3FyVXetkmOApT9WPTwPN",
+    "contentS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/api-changelog/api-versione-ga-2.1.md",
+    "menuS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/SUMMARY.md",
+    "title": "API VERSIONE GA 2.1",
+    "version": "1"
+  },
+  {
+    "path": "/prodotto-strapii/guides/guida-strapi/api-changelog/api-versione-ga-2.3",
+    "dirName": "3FyVXetkmOApT9WPTwPN",
+    "contentS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/api-changelog/api-versione-ga-2.3.md",
+    "menuS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/SUMMARY.md",
+    "title": "API VERSIONE GA 2.3",
+    "version": "1"
+  },
+  {
+    "path": "/prodotto-strapii/guides/guida-strapi/api-changelog/api-versione-ga-2.4",
+    "dirName": "3FyVXetkmOApT9WPTwPN",
+    "contentS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/api-changelog/api-versione-ga-2.4.md",
+    "menuS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/SUMMARY.md",
+    "title": "API VERSIONE GA 2.4",
+    "version": "1"
+  },
+  {
+    "path": "/prodotto-strapii/guides/guida-strapi/api-changelog/api-versione-ga24q4.a",
+    "dirName": "3FyVXetkmOApT9WPTwPN",
+    "contentS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/api-changelog/api-versione-ga24q4.a.md",
+    "menuS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/SUMMARY.md",
+    "title": "API VERSIONE GA24Q4.A",
+    "version": "1"
+  },
+  {
+    "path": "/prodotto-strapii/guides/guida-strapi/api-changelog/api-versione-ga24q4.b",
+    "dirName": "3FyVXetkmOApT9WPTwPN",
+    "contentS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/api-changelog/api-versione-ga24q4.b.md",
+    "menuS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/SUMMARY.md",
+    "title": "API VERSIONE GA24Q4.B",
+    "version": "1"
+  },
+  {
+    "path": "/prodotto-strapii/guides/guida-strapi/api-changelog/api-versione-ga24q4.c-1",
+    "dirName": "3FyVXetkmOApT9WPTwPN",
+    "contentS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/api-changelog/api-versione-ga24q4.c-1.md",
+    "menuS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/SUMMARY.md",
+    "title": "API VERSIONE GA25Q1.B",
+    "version": "1"
+  },
+  {
+    "path": "/prodotto-strapii/guides/guida-strapi/api-changelog/api-versione-ga24q4.c",
+    "dirName": "3FyVXetkmOApT9WPTwPN",
+    "contentS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/api-changelog/api-versione-ga24q4.c.md",
+    "menuS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/SUMMARY.md",
+    "title": "API VERSIONE GA24Q4.C",
+    "version": "1"
+  },
+  {
+    "path": "/prodotto-strapii/guides/guida-strapi/readme/api-di-stato-della-piattaforma",
+    "dirName": "3FyVXetkmOApT9WPTwPN",
+    "contentS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/readme/api-di-stato-della-piattaforma.md",
+    "menuS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/SUMMARY.md",
+    "title": "API di stato della Piattaforma",
+    "version": "1"
+  },
+  {
+    "path": "/prodotto-strapii/guides/guida-strapi/readme/creazione-e-gestione-degli-stream",
+    "dirName": "3FyVXetkmOApT9WPTwPN",
+    "contentS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/readme/creazione-e-gestione-degli-stream/README.md",
+    "menuS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/SUMMARY.md",
+    "title": "Creazione e gestione degli stream",
+    "version": "1"
+  },
+  {
+    "path": "/prodotto-strapii/guides/guida-strapi/readme/creazione-e-gestione-degli-stream/faq-sugli-streams",
+    "dirName": "3FyVXetkmOApT9WPTwPN",
+    "contentS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/readme/creazione-e-gestione-degli-stream/faq-sugli-streams.md",
+    "menuS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/SUMMARY.md",
+    "title": "FAQ sugli streams",
+    "version": "1"
+  },
+  {
+    "path": "/prodotto-strapii/guides/guida-strapi/readme/creazione-e-gestione-degli-stream/inserimento-e-creazione-stream-con-il-comando-curl",
+    "dirName": "3FyVXetkmOApT9WPTwPN",
+    "contentS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/readme/creazione-e-gestione-degli-stream/inserimento-e-creazione-stream-con-il-comando-curl.md",
+    "menuS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/SUMMARY.md",
+    "title": "Inserimento e creazione stream con il comando curl",
+    "version": "1"
+  },
+  {
+    "path": "/prodotto-strapii/guides/guida-strapi/readme/creazione-e-gestione-degli-stream/inserimento-e-creazione-stream-con-postman",
+    "dirName": "3FyVXetkmOApT9WPTwPN",
+    "contentS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/readme/creazione-e-gestione-degli-stream/inserimento-e-creazione-stream-con-postman.md",
+    "menuS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/SUMMARY.md",
+    "title": "Inserimento e creazione stream con Postman",
+    "version": "1"
+  },
+  {
+    "path": "/prodotto-strapii/guides/guida-strapi/readme/creazione-e-gestione-degli-stream/stream-di-timeline",
+    "dirName": "3FyVXetkmOApT9WPTwPN",
+    "contentS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/readme/creazione-e-gestione-degli-stream/stream-di-timeline/README.md",
+    "menuS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/SUMMARY.md",
+    "title": "Stream di timeline",
+    "version": "1"
+  },
+  {
+    "path": "/prodotto-strapii/guides/guida-strapi/readme/creazione-e-gestione-degli-stream/stream-di-timeline/decodifiche-send_analog",
+    "dirName": "3FyVXetkmOApT9WPTwPN",
+    "contentS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/readme/creazione-e-gestione-degli-stream/stream-di-timeline/decodifiche-send_analog.md",
+    "menuS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/SUMMARY.md",
+    "title": "Decodifiche SEND\\_ANALOG",
+    "version": "1"
+  },
+  {
+    "path": "/prodotto-strapii/guides/guida-strapi/readme/creazione-e-gestione-degli-stream/stream-di-timeline/decodifiche-send_digital",
+    "dirName": "3FyVXetkmOApT9WPTwPN",
+    "contentS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/readme/creazione-e-gestione-degli-stream/stream-di-timeline/decodifiche-send_digital.md",
+    "menuS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/SUMMARY.md",
+    "title": "Decodifiche SEND\\_DIGITAL",
+    "version": "1"
+  },
+  {
+    "path": "/prodotto-strapii/guides/guida-strapi/readme/creazione-e-gestione-degli-stream/stream-di-timeline/tipologie-di-scansioni-per-analog_delivery",
+    "dirName": "3FyVXetkmOApT9WPTwPN",
+    "contentS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/readme/creazione-e-gestione-degli-stream/stream-di-timeline/tipologie-di-scansioni-per-analog_delivery.md",
+    "menuS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/SUMMARY.md",
+    "title": "Tipologie di scansioni per ANALOG\\_DELIVERY",
+    "version": "1"
+  },
+  {
+    "path": "/prodotto-strapii/guides/guida-strapi/readme/full-digital-poste-italiane",
+    "dirName": "3FyVXetkmOApT9WPTwPN",
+    "contentS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/readme/full-digital-poste-italiane.md",
+    "menuS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/SUMMARY.md",
+    "title": "Full Digital - Poste Italiane",
+    "version": "1"
+  },
+  {
+    "path": "/prodotto-strapii/guides/guida-strapi/readme/generazione-client-e-definizioni-delle-api",
+    "dirName": "3FyVXetkmOApT9WPTwPN",
+    "contentS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/readme/generazione-client-e-definizioni-delle-api.md",
+    "menuS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/SUMMARY.md",
+    "title": "Generazione client e definizioni delle API",
+    "version": "1"
+  },
+  {
+    "path": "/prodotto-strapii/guides/guida-strapi/readme/inserimento-della-notifica",
+    "dirName": "3FyVXetkmOApT9WPTwPN",
+    "contentS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/readme/inserimento-della-notifica/README.md",
+    "menuS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/SUMMARY.md",
+    "title": "Inserimento della notifica",
+    "version": "1"
+  },
+  {
+    "path": "/prodotto-strapii/guides/guida-strapi/readme/inserimento-della-notifica/faq-inserimento-notifiche",
+    "dirName": "3FyVXetkmOApT9WPTwPN",
+    "contentS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/readme/inserimento-della-notifica/faq-inserimento-notifiche.md",
+    "menuS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/SUMMARY.md",
+    "title": "FAQ inserimento notifiche",
+    "version": "1"
+  },
+  {
+    "path": "/prodotto-strapii/guides/guida-strapi/readme/inserimento-della-notifica/inserimento-notifica-con-il-comando-curl",
+    "dirName": "3FyVXetkmOApT9WPTwPN",
+    "contentS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/readme/inserimento-della-notifica/inserimento-notifica-con-il-comando-curl.md",
+    "menuS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/SUMMARY.md",
+    "title": "Inserimento Notifica con il comando curl",
+    "version": "1"
+  },
+  {
+    "path": "/prodotto-strapii/guides/guida-strapi/readme/inserimento-della-notifica/inserimento-notifica-con-postman",
+    "dirName": "3FyVXetkmOApT9WPTwPN",
+    "contentS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/readme/inserimento-della-notifica/inserimento-notifica-con-postman.md",
+    "menuS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/SUMMARY.md",
+    "title": "Inserimento Notifica con Postman",
+    "version": "1"
+  },
+  {
+    "path": "/prodotto-strapii/guides/guida-strapi/readme/integrazione-send-pdnd-interoperabilita",
+    "dirName": "3FyVXetkmOApT9WPTwPN",
+    "contentS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/readme/integrazione-send-pdnd-interoperabilita/README.md",
+    "menuS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/SUMMARY.md",
+    "title": "Integrazione SEND - PDND Interoperabilità",
+    "version": "1"
+  },
+  {
+    "path": "/prodotto-strapii/guides/guida-strapi/readme/integrazione-send-pdnd-interoperabilita/configurare-laccesso-ad-interoperabilita",
+    "dirName": "3FyVXetkmOApT9WPTwPN",
+    "contentS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/readme/integrazione-send-pdnd-interoperabilita/configurare-laccesso-ad-interoperabilita.md",
+    "menuS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/SUMMARY.md",
+    "title": "Configurare l'accesso ad Interoperabilità",
+    "version": "1"
+  },
+  {
+    "path": "/prodotto-strapii/guides/guida-strapi/readme/integrazione-send-pdnd-interoperabilita/creazione-richiesta-di-fruizione-generazione-voucher-per-send-uat-piattaforma-notifiche",
+    "dirName": "3FyVXetkmOApT9WPTwPN",
+    "contentS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/readme/integrazione-send-pdnd-interoperabilita/creazione-richiesta-di-fruizione-generazione-voucher-per-send-uat-piattaforma-notifiche.md",
+    "menuS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/SUMMARY.md",
+    "title": "Creazione richiesta di fruizione generazione Voucher per SEND - UAT (Piattaforma Notifiche)",
+    "version": "1"
+  },
+  {
+    "path": "/prodotto-strapii/guides/guida-strapi/readme/integrazione-send-pdnd-interoperabilita/faq-su-interoperabilita",
+    "dirName": "3FyVXetkmOApT9WPTwPN",
+    "contentS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/readme/integrazione-send-pdnd-interoperabilita/faq-su-interoperabilita.md",
+    "menuS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/SUMMARY.md",
+    "title": "FAQ su Interoperabilità",
+    "version": "1"
+  },
+  {
+    "path": "/prodotto-strapii/guides/guida-strapi/readme/pagamenti-e-spese-di-notifica",
+    "dirName": "3FyVXetkmOApT9WPTwPN",
+    "contentS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/readme/pagamenti-e-spese-di-notifica/README.md",
+    "menuS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/SUMMARY.md",
+    "title": "Pagamenti e Spese di notifica",
+    "version": "1"
+  },
+  {
+    "path": "/prodotto-strapii/guides/guida-strapi/readme/pagamenti-e-spese-di-notifica/pagamenti-f24",
+    "dirName": "3FyVXetkmOApT9WPTwPN",
+    "contentS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/readme/pagamenti-e-spese-di-notifica/pagamenti-f24.md",
+    "menuS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/SUMMARY.md",
+    "title": "Pagamenti F24",
+    "version": "1"
+  },
+  {
+    "path": "/prodotto-strapii/guides/guida-strapi/readme/pagamenti-e-spese-di-notifica/pagamenti-pagopa",
+    "dirName": "3FyVXetkmOApT9WPTwPN",
+    "contentS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/readme/pagamenti-e-spese-di-notifica/pagamenti-pagopa.md",
+    "menuS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/SUMMARY.md",
+    "title": "Pagamenti pagoPA",
+    "version": "1"
+  },
+  {
+    "path": "/prodotto-strapii/guides/guida-strapi/readme/perfezionamento-della-notifica",
+    "dirName": "3FyVXetkmOApT9WPTwPN",
+    "contentS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/readme/perfezionamento-della-notifica.md",
+    "menuS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/SUMMARY.md",
+    "title": "Perfezionamento della notifica",
+    "version": "1"
+  },
+  {
+    "path": "/prodotto-strapii/guides/guida-strapi/readme/pn-test-di-validazione-avvenuta-integrazione-con-piattaforma-notifiche",
+    "dirName": "3FyVXetkmOApT9WPTwPN",
+    "contentS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/readme/pn-test-di-validazione-avvenuta-integrazione-con-piattaforma-notifiche.md",
+    "menuS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/SUMMARY.md",
+    "title": "PN-Test di validazione avvenuta integrazione con Piattaforma Notifiche",
+    "version": "1"
+  },
+  {
+    "path": "/prodotto-strapii/guides/guida-strapi/readme/supporto-al-bilinguismo-amministrativo",
+    "dirName": "3FyVXetkmOApT9WPTwPN",
+    "contentS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/readme/supporto-al-bilinguismo-amministrativo.md",
+    "menuS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/SUMMARY.md",
+    "title": "Supporto al bilinguismo amministrativo",
+    "version": "1"
+  },
+  {
+    "path": "/prodotto-strapii/guides/guida-strapi/readme/validazione-dei-test-con-il-tool-pnvalidator",
+    "dirName": "3FyVXetkmOApT9WPTwPN",
+    "contentS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/readme/validazione-dei-test-con-il-tool-pnvalidator.md",
+    "menuS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/SUMMARY.md",
+    "title": "Validazione dei test con il tool PnValidator",
+    "version": "1"
+  },
+  {
+    "path": "/prodotto-strapii/guides/guida-strapi/readme/validazione-della-richiesta-di-notifica",
+    "dirName": "3FyVXetkmOApT9WPTwPN",
+    "contentS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/readme/validazione-della-richiesta-di-notifica/README.md",
+    "menuS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/SUMMARY.md",
+    "title": "Validazione della Richiesta di Notifica",
+    "version": "1"
+  },
+  {
+    "path": "/prodotto-strapii/guides/guida-strapi/readme/validazione-della-richiesta-di-notifica/composizione-degli-indirizzi",
+    "dirName": "3FyVXetkmOApT9WPTwPN",
+    "contentS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/readme/validazione-della-richiesta-di-notifica/composizione-degli-indirizzi.md",
+    "menuS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/SUMMARY.md",
+    "title": "Composizione degli indirizzi",
+    "version": "1"
+  },
+  {
+    "path": "/prodotto-strapii/guides/guida-strapi/readme/validazione-della-richiesta-di-notifica/logiche-di-stampa-indirizzo",
+    "dirName": "3FyVXetkmOApT9WPTwPN",
+    "contentS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/readme/validazione-della-richiesta-di-notifica/logiche-di-stampa-indirizzo.md",
+    "menuS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/SUMMARY.md",
+    "title": "Logiche di stampa indirizzo",
+    "version": "1"
+  },
+  {
+    "path": "/prodotto-strapii/guides/guida-strapi/readme/validazione-della-richiesta-di-notifica/normalizzatore",
+    "dirName": "3FyVXetkmOApT9WPTwPN",
+    "contentS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/readme/validazione-della-richiesta-di-notifica/normalizzatore.md",
+    "menuS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/SUMMARY.md",
+    "title": "Normalizzatore",
+    "version": "1"
+  },
+  {
+    "path": "/prodotto-strapii/guides/guida-strapi/readme/workflow-di-notifica",
+    "dirName": "3FyVXetkmOApT9WPTwPN",
+    "contentS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/readme/workflow-di-notifica.md",
+    "menuS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/SUMMARY.md",
+    "title": "Workflow di Notifica",
+    "version": "1"
+  },
+  {
+    "path": "/prodotto-strapii/guides/guida-strapi/simulare-i-casi-di-test-in-ambiente-uat",
+    "dirName": "3FyVXetkmOApT9WPTwPN",
+    "contentS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/simulare-i-casi-di-test-in-ambiente-uat.md",
+    "menuS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/SUMMARY.md",
+    "title": "Simulare i casi di test in ambiente UAT",
+    "version": "1"
+  },
+  {
+    "path": "/prodotto-strapii/guides/guida-strapi/tassonomia-send",
+    "dirName": "3FyVXetkmOApT9WPTwPN",
+    "contentS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/tassonomia-send.md",
+    "menuS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/SUMMARY.md",
+    "title": "🏷️ Tassonomia SEND",
+    "version": "1"
+  },
+  {
+    "path": "/prodotto-strapii/guides/guida-strapi/1",
+    "dirName": "3FyVXetkmOApT9WPTwPN",
+    "contentS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/README.md",
+    "menuS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/SUMMARY.md",
+    "title": "Knowledge-base di SEND",
+    "version": "1"
+  },
+  {
+    "path": "/prodotto-strapii/guides/guida-strapi/1/api-changelog",
+    "dirName": "3FyVXetkmOApT9WPTwPN",
+    "contentS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/api-changelog/README.md",
+    "menuS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/SUMMARY.md",
+    "title": "API CHANGELOG",
+    "version": "1"
+  },
+  {
+    "path": "/prodotto-strapii/guides/guida-strapi/1/api-changelog/api-versione-ga-2.0",
+    "dirName": "3FyVXetkmOApT9WPTwPN",
+    "contentS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/api-changelog/api-versione-ga-2.0.md",
+    "menuS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/SUMMARY.md",
+    "title": "API VERSIONE GA 2.0",
+    "version": "1"
+  },
+  {
+    "path": "/prodotto-strapii/guides/guida-strapi/1/api-changelog/api-versione-ga-2.1",
+    "dirName": "3FyVXetkmOApT9WPTwPN",
+    "contentS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/api-changelog/api-versione-ga-2.1.md",
+    "menuS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/SUMMARY.md",
+    "title": "API VERSIONE GA 2.1",
+    "version": "1"
+  },
+  {
+    "path": "/prodotto-strapii/guides/guida-strapi/1/api-changelog/api-versione-ga-2.3",
+    "dirName": "3FyVXetkmOApT9WPTwPN",
+    "contentS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/api-changelog/api-versione-ga-2.3.md",
+    "menuS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/SUMMARY.md",
+    "title": "API VERSIONE GA 2.3",
+    "version": "1"
+  },
+  {
+    "path": "/prodotto-strapii/guides/guida-strapi/1/api-changelog/api-versione-ga-2.4",
+    "dirName": "3FyVXetkmOApT9WPTwPN",
+    "contentS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/api-changelog/api-versione-ga-2.4.md",
+    "menuS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/SUMMARY.md",
+    "title": "API VERSIONE GA 2.4",
+    "version": "1"
+  },
+  {
+    "path": "/prodotto-strapii/guides/guida-strapi/1/api-changelog/api-versione-ga24q4.a",
+    "dirName": "3FyVXetkmOApT9WPTwPN",
+    "contentS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/api-changelog/api-versione-ga24q4.a.md",
+    "menuS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/SUMMARY.md",
+    "title": "API VERSIONE GA24Q4.A",
+    "version": "1"
+  },
+  {
+    "path": "/prodotto-strapii/guides/guida-strapi/1/api-changelog/api-versione-ga24q4.b",
+    "dirName": "3FyVXetkmOApT9WPTwPN",
+    "contentS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/api-changelog/api-versione-ga24q4.b.md",
+    "menuS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/SUMMARY.md",
+    "title": "API VERSIONE GA24Q4.B",
+    "version": "1"
+  },
+  {
+    "path": "/prodotto-strapii/guides/guida-strapi/1/api-changelog/api-versione-ga24q4.c-1",
+    "dirName": "3FyVXetkmOApT9WPTwPN",
+    "contentS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/api-changelog/api-versione-ga24q4.c-1.md",
+    "menuS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/SUMMARY.md",
+    "title": "API VERSIONE GA25Q1.B",
+    "version": "1"
+  },
+  {
+    "path": "/prodotto-strapii/guides/guida-strapi/1/api-changelog/api-versione-ga24q4.c",
+    "dirName": "3FyVXetkmOApT9WPTwPN",
+    "contentS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/api-changelog/api-versione-ga24q4.c.md",
+    "menuS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/SUMMARY.md",
+    "title": "API VERSIONE GA24Q4.C",
+    "version": "1"
+  },
+  {
+    "path": "/prodotto-strapii/guides/guida-strapi/1/readme/api-di-stato-della-piattaforma",
+    "dirName": "3FyVXetkmOApT9WPTwPN",
+    "contentS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/readme/api-di-stato-della-piattaforma.md",
+    "menuS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/SUMMARY.md",
+    "title": "API di stato della Piattaforma",
+    "version": "1"
+  },
+  {
+    "path": "/prodotto-strapii/guides/guida-strapi/1/readme/creazione-e-gestione-degli-stream",
+    "dirName": "3FyVXetkmOApT9WPTwPN",
+    "contentS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/readme/creazione-e-gestione-degli-stream/README.md",
+    "menuS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/SUMMARY.md",
+    "title": "Creazione e gestione degli stream",
+    "version": "1"
+  },
+  {
+    "path": "/prodotto-strapii/guides/guida-strapi/1/readme/creazione-e-gestione-degli-stream/faq-sugli-streams",
+    "dirName": "3FyVXetkmOApT9WPTwPN",
+    "contentS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/readme/creazione-e-gestione-degli-stream/faq-sugli-streams.md",
+    "menuS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/SUMMARY.md",
+    "title": "FAQ sugli streams",
+    "version": "1"
+  },
+  {
+    "path": "/prodotto-strapii/guides/guida-strapi/1/readme/creazione-e-gestione-degli-stream/inserimento-e-creazione-stream-con-il-comando-curl",
+    "dirName": "3FyVXetkmOApT9WPTwPN",
+    "contentS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/readme/creazione-e-gestione-degli-stream/inserimento-e-creazione-stream-con-il-comando-curl.md",
+    "menuS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/SUMMARY.md",
+    "title": "Inserimento e creazione stream con il comando curl",
+    "version": "1"
+  },
+  {
+    "path": "/prodotto-strapii/guides/guida-strapi/1/readme/creazione-e-gestione-degli-stream/inserimento-e-creazione-stream-con-postman",
+    "dirName": "3FyVXetkmOApT9WPTwPN",
+    "contentS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/readme/creazione-e-gestione-degli-stream/inserimento-e-creazione-stream-con-postman.md",
+    "menuS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/SUMMARY.md",
+    "title": "Inserimento e creazione stream con Postman",
+    "version": "1"
+  },
+  {
+    "path": "/prodotto-strapii/guides/guida-strapi/1/readme/creazione-e-gestione-degli-stream/stream-di-timeline",
+    "dirName": "3FyVXetkmOApT9WPTwPN",
+    "contentS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/readme/creazione-e-gestione-degli-stream/stream-di-timeline/README.md",
+    "menuS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/SUMMARY.md",
+    "title": "Stream di timeline",
+    "version": "1"
+  },
+  {
+    "path": "/prodotto-strapii/guides/guida-strapi/1/readme/creazione-e-gestione-degli-stream/stream-di-timeline/decodifiche-send_analog",
+    "dirName": "3FyVXetkmOApT9WPTwPN",
+    "contentS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/readme/creazione-e-gestione-degli-stream/stream-di-timeline/decodifiche-send_analog.md",
+    "menuS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/SUMMARY.md",
+    "title": "Decodifiche SEND\\_ANALOG",
+    "version": "1"
+  },
+  {
+    "path": "/prodotto-strapii/guides/guida-strapi/1/readme/creazione-e-gestione-degli-stream/stream-di-timeline/decodifiche-send_digital",
+    "dirName": "3FyVXetkmOApT9WPTwPN",
+    "contentS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/readme/creazione-e-gestione-degli-stream/stream-di-timeline/decodifiche-send_digital.md",
+    "menuS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/SUMMARY.md",
+    "title": "Decodifiche SEND\\_DIGITAL",
+    "version": "1"
+  },
+  {
+    "path": "/prodotto-strapii/guides/guida-strapi/1/readme/creazione-e-gestione-degli-stream/stream-di-timeline/tipologie-di-scansioni-per-analog_delivery",
+    "dirName": "3FyVXetkmOApT9WPTwPN",
+    "contentS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/readme/creazione-e-gestione-degli-stream/stream-di-timeline/tipologie-di-scansioni-per-analog_delivery.md",
+    "menuS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/SUMMARY.md",
+    "title": "Tipologie di scansioni per ANALOG\\_DELIVERY",
+    "version": "1"
+  },
+  {
+    "path": "/prodotto-strapii/guides/guida-strapi/1/readme/full-digital-poste-italiane",
+    "dirName": "3FyVXetkmOApT9WPTwPN",
+    "contentS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/readme/full-digital-poste-italiane.md",
+    "menuS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/SUMMARY.md",
+    "title": "Full Digital - Poste Italiane",
+    "version": "1"
+  },
+  {
+    "path": "/prodotto-strapii/guides/guida-strapi/1/readme/generazione-client-e-definizioni-delle-api",
+    "dirName": "3FyVXetkmOApT9WPTwPN",
+    "contentS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/readme/generazione-client-e-definizioni-delle-api.md",
+    "menuS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/SUMMARY.md",
+    "title": "Generazione client e definizioni delle API",
+    "version": "1"
+  },
+  {
+    "path": "/prodotto-strapii/guides/guida-strapi/1/readme/inserimento-della-notifica",
+    "dirName": "3FyVXetkmOApT9WPTwPN",
+    "contentS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/readme/inserimento-della-notifica/README.md",
+    "menuS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/SUMMARY.md",
+    "title": "Inserimento della notifica",
+    "version": "1"
+  },
+  {
+    "path": "/prodotto-strapii/guides/guida-strapi/1/readme/inserimento-della-notifica/faq-inserimento-notifiche",
+    "dirName": "3FyVXetkmOApT9WPTwPN",
+    "contentS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/readme/inserimento-della-notifica/faq-inserimento-notifiche.md",
+    "menuS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/SUMMARY.md",
+    "title": "FAQ inserimento notifiche",
+    "version": "1"
+  },
+  {
+    "path": "/prodotto-strapii/guides/guida-strapi/1/readme/inserimento-della-notifica/inserimento-notifica-con-il-comando-curl",
+    "dirName": "3FyVXetkmOApT9WPTwPN",
+    "contentS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/readme/inserimento-della-notifica/inserimento-notifica-con-il-comando-curl.md",
+    "menuS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/SUMMARY.md",
+    "title": "Inserimento Notifica con il comando curl",
+    "version": "1"
+  },
+  {
+    "path": "/prodotto-strapii/guides/guida-strapi/1/readme/inserimento-della-notifica/inserimento-notifica-con-postman",
+    "dirName": "3FyVXetkmOApT9WPTwPN",
+    "contentS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/readme/inserimento-della-notifica/inserimento-notifica-con-postman.md",
+    "menuS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/SUMMARY.md",
+    "title": "Inserimento Notifica con Postman",
+    "version": "1"
+  },
+  {
+    "path": "/prodotto-strapii/guides/guida-strapi/1/readme/integrazione-send-pdnd-interoperabilita",
+    "dirName": "3FyVXetkmOApT9WPTwPN",
+    "contentS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/readme/integrazione-send-pdnd-interoperabilita/README.md",
+    "menuS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/SUMMARY.md",
+    "title": "Integrazione SEND - PDND Interoperabilità",
+    "version": "1"
+  },
+  {
+    "path": "/prodotto-strapii/guides/guida-strapi/1/readme/integrazione-send-pdnd-interoperabilita/configurare-laccesso-ad-interoperabilita",
+    "dirName": "3FyVXetkmOApT9WPTwPN",
+    "contentS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/readme/integrazione-send-pdnd-interoperabilita/configurare-laccesso-ad-interoperabilita.md",
+    "menuS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/SUMMARY.md",
+    "title": "Configurare l'accesso ad Interoperabilità",
+    "version": "1"
+  },
+  {
+    "path": "/prodotto-strapii/guides/guida-strapi/1/readme/integrazione-send-pdnd-interoperabilita/creazione-richiesta-di-fruizione-generazione-voucher-per-send-uat-piattaforma-notifiche",
+    "dirName": "3FyVXetkmOApT9WPTwPN",
+    "contentS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/readme/integrazione-send-pdnd-interoperabilita/creazione-richiesta-di-fruizione-generazione-voucher-per-send-uat-piattaforma-notifiche.md",
+    "menuS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/SUMMARY.md",
+    "title": "Creazione richiesta di fruizione generazione Voucher per SEND - UAT (Piattaforma Notifiche)",
+    "version": "1"
+  },
+  {
+    "path": "/prodotto-strapii/guides/guida-strapi/1/readme/integrazione-send-pdnd-interoperabilita/faq-su-interoperabilita",
+    "dirName": "3FyVXetkmOApT9WPTwPN",
+    "contentS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/readme/integrazione-send-pdnd-interoperabilita/faq-su-interoperabilita.md",
+    "menuS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/SUMMARY.md",
+    "title": "FAQ su Interoperabilità",
+    "version": "1"
+  },
+  {
+    "path": "/prodotto-strapii/guides/guida-strapi/1/readme/pagamenti-e-spese-di-notifica",
+    "dirName": "3FyVXetkmOApT9WPTwPN",
+    "contentS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/readme/pagamenti-e-spese-di-notifica/README.md",
+    "menuS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/SUMMARY.md",
+    "title": "Pagamenti e Spese di notifica",
+    "version": "1"
+  },
+  {
+    "path": "/prodotto-strapii/guides/guida-strapi/1/readme/pagamenti-e-spese-di-notifica/pagamenti-f24",
+    "dirName": "3FyVXetkmOApT9WPTwPN",
+    "contentS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/readme/pagamenti-e-spese-di-notifica/pagamenti-f24.md",
+    "menuS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/SUMMARY.md",
+    "title": "Pagamenti F24",
+    "version": "1"
+  },
+  {
+    "path": "/prodotto-strapii/guides/guida-strapi/1/readme/pagamenti-e-spese-di-notifica/pagamenti-pagopa",
+    "dirName": "3FyVXetkmOApT9WPTwPN",
+    "contentS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/readme/pagamenti-e-spese-di-notifica/pagamenti-pagopa.md",
+    "menuS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/SUMMARY.md",
+    "title": "Pagamenti pagoPA",
+    "version": "1"
+  },
+  {
+    "path": "/prodotto-strapii/guides/guida-strapi/1/readme/perfezionamento-della-notifica",
+    "dirName": "3FyVXetkmOApT9WPTwPN",
+    "contentS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/readme/perfezionamento-della-notifica.md",
+    "menuS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/SUMMARY.md",
+    "title": "Perfezionamento della notifica",
+    "version": "1"
+  },
+  {
+    "path": "/prodotto-strapii/guides/guida-strapi/1/readme/pn-test-di-validazione-avvenuta-integrazione-con-piattaforma-notifiche",
+    "dirName": "3FyVXetkmOApT9WPTwPN",
+    "contentS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/readme/pn-test-di-validazione-avvenuta-integrazione-con-piattaforma-notifiche.md",
+    "menuS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/SUMMARY.md",
+    "title": "PN-Test di validazione avvenuta integrazione con Piattaforma Notifiche",
+    "version": "1"
+  },
+  {
+    "path": "/prodotto-strapii/guides/guida-strapi/1/readme/supporto-al-bilinguismo-amministrativo",
+    "dirName": "3FyVXetkmOApT9WPTwPN",
+    "contentS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/readme/supporto-al-bilinguismo-amministrativo.md",
+    "menuS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/SUMMARY.md",
+    "title": "Supporto al bilinguismo amministrativo",
+    "version": "1"
+  },
+  {
+    "path": "/prodotto-strapii/guides/guida-strapi/1/readme/validazione-dei-test-con-il-tool-pnvalidator",
+    "dirName": "3FyVXetkmOApT9WPTwPN",
+    "contentS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/readme/validazione-dei-test-con-il-tool-pnvalidator.md",
+    "menuS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/SUMMARY.md",
+    "title": "Validazione dei test con il tool PnValidator",
+    "version": "1"
+  },
+  {
+    "path": "/prodotto-strapii/guides/guida-strapi/1/readme/validazione-della-richiesta-di-notifica",
+    "dirName": "3FyVXetkmOApT9WPTwPN",
+    "contentS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/readme/validazione-della-richiesta-di-notifica/README.md",
+    "menuS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/SUMMARY.md",
+    "title": "Validazione della Richiesta di Notifica",
+    "version": "1"
+  },
+  {
+    "path": "/prodotto-strapii/guides/guida-strapi/1/readme/validazione-della-richiesta-di-notifica/composizione-degli-indirizzi",
+    "dirName": "3FyVXetkmOApT9WPTwPN",
+    "contentS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/readme/validazione-della-richiesta-di-notifica/composizione-degli-indirizzi.md",
+    "menuS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/SUMMARY.md",
+    "title": "Composizione degli indirizzi",
+    "version": "1"
+  },
+  {
+    "path": "/prodotto-strapii/guides/guida-strapi/1/readme/validazione-della-richiesta-di-notifica/logiche-di-stampa-indirizzo",
+    "dirName": "3FyVXetkmOApT9WPTwPN",
+    "contentS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/readme/validazione-della-richiesta-di-notifica/logiche-di-stampa-indirizzo.md",
+    "menuS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/SUMMARY.md",
+    "title": "Logiche di stampa indirizzo",
+    "version": "1"
+  },
+  {
+    "path": "/prodotto-strapii/guides/guida-strapi/1/readme/validazione-della-richiesta-di-notifica/normalizzatore",
+    "dirName": "3FyVXetkmOApT9WPTwPN",
+    "contentS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/readme/validazione-della-richiesta-di-notifica/normalizzatore.md",
+    "menuS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/SUMMARY.md",
+    "title": "Normalizzatore",
+    "version": "1"
+  },
+  {
+    "path": "/prodotto-strapii/guides/guida-strapi/1/readme/workflow-di-notifica",
+    "dirName": "3FyVXetkmOApT9WPTwPN",
+    "contentS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/readme/workflow-di-notifica.md",
+    "menuS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/SUMMARY.md",
+    "title": "Workflow di Notifica",
+    "version": "1"
+  },
+  {
+    "path": "/prodotto-strapii/guides/guida-strapi/1/simulare-i-casi-di-test-in-ambiente-uat",
+    "dirName": "3FyVXetkmOApT9WPTwPN",
+    "contentS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/simulare-i-casi-di-test-in-ambiente-uat.md",
+    "menuS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/SUMMARY.md",
+    "title": "Simulare i casi di test in ambiente UAT",
+    "version": "1"
+  },
+  {
+    "path": "/prodotto-strapii/guides/guida-strapi/1/tassonomia-send",
+    "dirName": "3FyVXetkmOApT9WPTwPN",
+    "contentS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/tassonomia-send.md",
+    "menuS3Path": "devportal-docs/docs/3FyVXetkmOApT9WPTwPN/SUMMARY.md",
+    "title": "🏷️ Tassonomia SEND",
+    "version": "1"
+  }
+]

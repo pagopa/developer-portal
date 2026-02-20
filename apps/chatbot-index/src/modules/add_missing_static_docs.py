@@ -5,12 +5,12 @@ from src.modules.documents import (
     StaticMetadata,
     DOCS_PARENT_FOLDER,
 )
-from src.modules.vector_index import DiscoveryVectorIndex
+from src.modules.vector_index import LlamaVectorIndex
 from src.modules.settings import SETTINGS
 
 
 LOGGER = get_logger(__name__)
-VECTOR_INDEX = DiscoveryVectorIndex()
+VECTOR_INDEX = LlamaVectorIndex()
 
 
 if __name__ == "__main__":

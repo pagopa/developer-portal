@@ -1,0 +1,172 @@
+{
+  "data": [
+    {
+      "id": 2,
+      "documentId": "si8ii2g5trghz233nneddymh",
+      "title": "QDEV-3207_RN2",
+      "dirName": "ZfEot5IvH1XjEms6QJKs",
+      "landingFile": "README.md",
+      "createdAt": "2026-01-13T15:00:19.409Z",
+      "updatedAt": "2026-01-13T15:00:19.409Z",
+      "publishedAt": "2026-01-13T15:00:19.480Z",
+      "locale": "it",
+      "bannerLinks": [],
+      "product": {
+        "id": 5,
+        "documentId": "mqbhlf4qb503txag4d951nz6",
+        "name": "Prodotto su Strapi 5",
+        "slug": "pdnmc",
+        "shortName": "prod strapi 5",
+        "description": "Questo prodotto è su strapi 5",
+        "isVisible": true,
+        "createdAt": "2026-01-13T14:25:31.891Z",
+        "updatedAt": "2026-01-14T11:56:22.444Z",
+        "publishedAt": "2026-01-14T11:56:22.574Z",
+        "locale": "it",
+        "logo": {
+          "id": 1,
+          "documentId": "lsni12809j7ko47qybhn56o0",
+          "name": "Placeholder.png",
+          "alternativeText": null,
+          "caption": null,
+          "width": 304,
+          "height": 353,
+          "formats": {
+            "thumbnail": {
+              "ext": ".png",
+              "url": "/uploads/thumbnail_Placeholder_5a7ab33451.png",
+              "hash": "thumbnail_Placeholder_5a7ab33451",
+              "mime": "image/png",
+              "name": "thumbnail_Placeholder.png",
+              "path": null,
+              "size": 2.43,
+              "width": 134,
+              "height": 156,
+              "sizeInBytes": 2431
+            }
+          },
+          "hash": "Placeholder_5a7ab33451",
+          "ext": ".png",
+          "mime": "image/png",
+          "size": 1.97,
+          "url": "/uploads/Placeholder_5a7ab33451.png",
+          "previewUrl": null,
+          "provider": "local",
+          "provider_metadata": null,
+          "createdAt": "2026-01-13T14:25:20.557Z",
+          "updatedAt": "2026-01-13T14:25:20.557Z",
+          "publishedAt": "2026-01-13T14:25:20.557Z"
+        },
+        "bannerLinks": [],
+        "overview": {
+          "id": 2,
+          "documentId": "jvs204yw4b1fhvy8pfz9ihc0",
+          "title": "Overview strapi 5",
+          "subtitle": "overview strapi 5 ",
+          "createdAt": "2026-01-13T14:58:59.146Z",
+          "updatedAt": "2026-01-13T14:58:59.146Z",
+          "publishedAt": "2026-01-13T14:58:59.330Z",
+          "locale": "it"
+        },
+        "quickstart_guide": {
+          "id": 2,
+          "documentId": "ua3e1a28t43cmphmelvpo2dy",
+          "title": "Quickstart",
+          "description": "Quickstart",
+          "createdAt": "2026-01-13T14:59:28.363Z",
+          "updatedAt": "2026-01-13T14:59:28.363Z",
+          "publishedAt": "2026-01-13T14:59:28.437Z",
+          "locale": "it"
+        },
+        "release_note": {
+          "id": 2,
+          "documentId": "si8ii2g5trghz233nneddymh",
+          "title": "QDEV-3207_RN2",
+          "dirName": "ZfEot5IvH1XjEms6QJKs",
+          "landingFile": "README.md",
+          "createdAt": "2026-01-13T15:00:19.409Z",
+          "updatedAt": "2026-01-13T15:00:19.409Z",
+          "publishedAt": "2026-01-13T15:00:19.480Z",
+          "locale": "it"
+        },
+        "api_data_list_page": {
+          "id": 22,
+          "documentId": "dgg7tshdkoorwq9unpgfkkgs",
+          "title": "Apidata list",
+          "description": null,
+          "enableFilters": false,
+          "createdAt": "2026-01-15T10:12:16.764Z",
+          "updatedAt": "2026-01-15T10:12:16.764Z",
+          "publishedAt": "2026-01-15T10:12:16.864Z",
+          "locale": "it",
+          "api_data": [
+            {
+              "id": 6,
+              "documentId": "yhwizrh3biyq4u7cfzp2ymy6",
+              "title": "apipipi",
+              "description": "api",
+              "createdAt": "2026-01-14T09:41:47.782Z",
+              "updatedAt": "2026-01-15T14:01:46.473Z",
+              "publishedAt": "2026-01-15T14:01:46.621Z",
+              "locale": "it",
+              "apiRestDetail": {
+                "id": 5,
+                "slug": "google",
+                "specUrls": [
+                  {
+                    "id": 5,
+                    "url": "www.google.com",
+                    "name": "google",
+                    "hideTryIt": true
+                  }
+                ]
+              },
+              "apiSoapDetail": null
+            }
+          ]
+        },
+        "guide_list_page": {
+          "id": 4,
+          "documentId": "od44tyn3fs3pigvm61cdm12i",
+          "title": "Guide list",
+          "description": "Guide list strapi 5asadsad",
+          "createdAt": "2026-01-13T14:47:37.987Z",
+          "updatedAt": "2026-01-14T11:02:46.268Z",
+          "publishedAt": "2026-01-14T11:02:46.354Z",
+          "locale": "it"
+        },
+        "tutorial_list_page": {
+          "id": 2,
+          "documentId": "ytk1dam28uz7p13s3hk5vtpd",
+          "title": "List strapi 5",
+          "description": "Lista strapi 5",
+          "enableFilters": true,
+          "createdAt": "2026-01-13T15:12:00.774Z",
+          "updatedAt": "2026-01-13T15:12:00.774Z",
+          "publishedAt": "2026-01-13T15:12:00.860Z",
+          "locale": "it"
+        },
+        "use_case_list_page": {
+          "id": 2,
+          "documentId": "px7jhaq9aa33yvv7si12e5rl",
+          "title": "Use case list",
+          "description": "list",
+          "enableFilters": true,
+          "createdAt": "2026-01-13T15:12:50.921Z",
+          "updatedAt": "2026-01-13T15:12:50.921Z",
+          "publishedAt": "2026-01-13T15:12:50.998Z",
+          "locale": "it"
+        }
+      },
+      "seo": null
+    }
+  ],
+  "meta": {
+    "pagination": {
+      "page": 1,
+      "pageSize": 100,
+      "pageCount": 1,
+      "total": 1
+    }
+  }
+}

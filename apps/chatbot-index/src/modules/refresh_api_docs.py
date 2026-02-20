@@ -1,9 +1,9 @@
 from src.modules.logger import get_logger
-from src.modules.vector_index import DiscoveryVectorIndex
+from src.modules.vector_index import LlamaVectorIndex
 
 
 LOGGER = get_logger(__name__)
-VECTOR_INDEX = DiscoveryVectorIndex()
+VECTOR_INDEX = LlamaVectorIndex()
 
 
 if __name__ == "__main__":
