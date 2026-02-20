@@ -1,6 +1,6 @@
 {
   "name": "ivs-functions",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "IVS S3 event processing Lambda functions",
   "scripts": {
     "clean": "shx rm -rf dist/ out/",
