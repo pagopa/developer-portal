@@ -19,7 +19,11 @@ def post_queries(data: dict) -> dict:
 
 
 def test_post_queries() -> None:
-    data = {"question": "come ti chiami?", "queriedAt": "2024-11-11"}
+    data = {
+        "question": "come ti chiami?",
+        "queriedAt": "2024-11-11",
+        "knowledge_base": "developer-portal",
+    }
     response = post_queries(data)
 
     json = response.json()
@@ -31,6 +35,9 @@ def test_post_queries() -> None:
     assert "createdAt" in json.keys()
     assert "queriedAt" in json.keys()
     assert "badAnswer" in json.keys()
+    assert "chips" in json.keys()
+    assert isinstance(json["chips"], list)
+    assert all(isinstance(chip, str) for chip in json["chips"])
 
 
 def test_get_queries_no_auth() -> None:

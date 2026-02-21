@@ -241,7 +241,10 @@ class Chatbot:
         session_id: str | None = None,
         user_id: str | None = None,
         messages: Optional[List[Dict[str, str]]] | None = None,
+        knowledge_base: str | None = None,
     ) -> dict:
+
+        # TODO: implement knowledge base
 
         start_time = time.time()
         agent = get_agent(
@@ -280,6 +283,6 @@ class Chatbot:
                 tags=response_json["products"],
             )
             trace.score(name="user-feedback", value=0, data_type="NUMERIC")
-        
+
         self.instrumentor.flush()
         return response_json
