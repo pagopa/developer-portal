@@ -1,0 +1,53 @@
+name: Run Parser
+run-name: Run Parser in ${{ inputs.environment }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      urls:
+        description: 'URLs to parse (comma-separated)'
+        required: true
+        type: string
+      environment:
+        description: 'The environment used as target'
+        type: choice
+        required: true
+        default: dev
+        options:
+          - dev
+          - uat
+          - prod
+      parser_vector_index_name:
+        description: 'Parser Vector Index Name (optional, overrides secret)'
+        required: false
+        type: string
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  run-parser:
+    name: Run Parser Script (manual on ${{ inputs.environment }})
+    runs-on: ubuntu-22.04
+    environment: ${{ inputs.environment }}
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        working-directory: apps/parser
+        run: npm ci --audit=false --fund=false
+      
+      - name: Run Parser for each URL
+        uses: ./.github/actions/parser
+        with:
+          urls: ${{ inputs.urls }}
+          parser_vector_index_name: ${{ inputs.parser_vector_index_name || secrets.PARSER_VECTOR_INDEX_NAME }}
