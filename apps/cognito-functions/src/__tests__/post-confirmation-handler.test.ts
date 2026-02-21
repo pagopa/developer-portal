@@ -83,4 +83,41 @@ describe('Post confirmation handler', () => {
     await makeHandler(env)(event);
     expect(sesMock.send).not.toHaveBeenCalled();
   });
+  it('should escape HTML in given_name', async () => {
+    const { ses: sesMock } = env;
+    const sendEmailCommandCaptor = captor<SendEmailCommand>();
+    const event = makeEvent();
+    // eslint-disable-next-line functional/immutable-data
+    event.request.userAttributes.given_name =
+      '</mj-text><mj-button align="left" background-color="#0073E6" href="https://www.aizoongroup.com/" font-size="16px" font-weight="700">injected button!</mj-button><mj-text mj-class="text" font-size="18px">';
+
+    await makeHandler(env)(event);
+
+    expect(sesMock.send).toHaveBeenCalledWith(sendEmailCommandCaptor);
+    const body = sendEmailCommandCaptor.value.input.Message?.Body?.Html?.Data;
+    expect(body).not.toContain('<mj-button');
+    expect(body).toContain('&lt;/mj-text&gt;&lt;mj-button');
+  });
+
+  it('should send the email in English if locale is en', async () => {
+    const { ses: sesMock } = env;
+    const sendEmailCommandCaptor = captor<SendEmailCommand>();
+    const event = makeEvent();
+    // eslint-disable-next-line functional/immutable-data
+    event.request.userAttributes['locale'] = 'en';
+
+    await makeHandler(env)(event);
+
+    expect(sesMock.send).toHaveBeenCalledWith(sendEmailCommandCaptor);
+
+    // Check subject
+    expect(sendEmailCommandCaptor.value.input.Message?.Subject?.Data).toBe(
+      'Welcome to PagoPA DevPortal'
+    );
+
+    // Check body content
+    const body = sendEmailCommandCaptor.value.input.Message?.Body?.Html?.Data;
+    expect(body).toContain('Welcome to PagoPA DevPortal');
+    expect(body).toContain('We are happy to have you on board');
+  });
 });
