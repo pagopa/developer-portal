@@ -26,6 +26,10 @@ export function makeContactPayload(user: User): ContactPayload {
           field: '4', // id 4 in prod env (field id '5' in dev)
           value: user['custom:survey_accepted'] === 'true' ? 'TRUE' : 'FALSE',
         },
+        {
+          field: '6', // id 5 in prod env (field id '6' in dev)
+          value: user['custom:preferred_language'] || 'it',
+        },
       ],
     },
   };

@@ -10,6 +10,7 @@ const user: User = {
   'custom:survey_accepted': 'false',
   'custom:company_type': 'Test Co',
   'custom:job_role': 'Developer',
+  'custom:preferred_language': 'it',
 };
 
 describe.skip('Active campaign integration contact flow', () => {
