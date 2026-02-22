@@ -13,4 +13,5 @@ echo '-=-=-=-= init AWS local services'
 ./scripts/sqs-init.sh > /dev/null 2>&1
 
 echo '-=-=-=-= run pytest'
-poetry run pytest src/app
+rm -rf .pytest_cache 2>/dev/null || true
+pytest src/app
