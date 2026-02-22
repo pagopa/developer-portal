@@ -15,11 +15,10 @@ from presidio_anonymizer import AnonymizerEngine
 from presidio_anonymizer.entities import OperatorConfig
 
 from src.modules.logger import get_logger
-
+from src.modules.settings import SETTINGS
 
 logging.getLogger("presidio-analyzer").setLevel(logging.ERROR)
-LOGGER = get_logger(__name__)
-
+LOGGER = get_logger(__name__, level=SETTINGS.log_level)
 
 # see supported entities by Presidio with their description at:
 # https://microsoft.github.io/presidio/supported_entities/
@@ -162,6 +161,9 @@ class PresidioPII:
         return results
 
     def mask_pii(self, text: str, results: List[RecognizerResult] | None = None):
+        # Handle None or empty strings
+        if not text:
+            return ""
 
         if results is None:
             results = self.detect_pii(text)

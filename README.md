@@ -2,6 +2,9 @@
 
 In this repository you can find anything you need to work on the developer portal project.
 
+## Architecture Diagram
+See [docs/architecture/chatbot-system.md](docs/architecture/chatbot-system.md) for a high-level diagram of chatbot components and connections.
+
 ## Requirements
 
 - [Node.js](https://nodejs.org/docs/latest-v22.x/api/index.html)

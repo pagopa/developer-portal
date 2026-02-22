@@ -1,10 +1,11 @@
-from typing import List, Optional, Any
+from typing import List
+import numpy as np
+import logging
 
 from llama_index.core.llms.llm import BaseLLM
 from llama_index.core.embeddings import BaseEmbedding
 
 from ragas import SingleTurnSample, EvaluationDataset, evaluate
-from ragas.run_config import RunConfig
 from ragas.llms import LlamaIndexLLMWrapper
 from ragas.embeddings.base import LlamaIndexEmbeddingsWrapper
 from ragas.metrics import (
@@ -12,51 +13,11 @@ from ragas.metrics import (
     ResponseRelevancy,
     LLMContextPrecisionWithoutReference,
 )
-from langchain_core.callbacks import Callbacks
 
-from src.modules.logger import get_logger
-
-
-LOGGER = get_logger(__name__)
+from src.modules.settings import SETTINGS
 
 
-class RagasWrapper(LlamaIndexLLMWrapper):
-    def __init__(
-        self,
-        llm: BaseLLM,
-        run_config: Optional[RunConfig] = None,
-    ):
-        self.llm = llm
-        self._signature = type(self.llm).__name__.lower()
-        if run_config is None:
-            run_config = RunConfig()
-        self.set_run_config(run_config)
-
-    def check_args(
-        self,
-        n: int,
-        temperature: float,
-        stop: Optional[List[str]],
-        callbacks: Callbacks,
-    ) -> dict[str, Any]:
-        if n != 1:
-            LOGGER.warning("n values greater than 1 not support for LlamaIndex LLMs")
-        if temperature != 1e-8:
-            LOGGER.info("temperature kwarg passed to LlamaIndex LLM")
-        if stop is not None:
-            LOGGER.info("stop kwarg passed to LlamaIndex LLM")
-        if callbacks is not None:
-            LOGGER.debug(
-                "callbacks not supported for LlamaIndex LLMs, ignoring callbacks"
-            )
-        if self._signature in ["anthropic", "bedrock", "bedrockconverse"]:
-            return {"temperature": temperature}
-        else:
-            return {
-                "n": n,
-                "temperature": temperature,
-                "stop": stop,
-            }
+logging.getLogger("ragas").setLevel(logging.ERROR)
 
 
 class Evaluator:
@@ -67,9 +28,8 @@ class Evaluator:
         embedder: BaseEmbedding,
     ):
 
-        self.llm = RagasWrapper(llm=llm)
+        self.llm = LlamaIndexLLMWrapper(llm=llm)
         self.embedder = LlamaIndexEmbeddingsWrapper(embeddings=embedder)
-
         self.response_relevancy = ResponseRelevancy(
             llm=self.llm, embeddings=self.embedder
         )
@@ -87,20 +47,33 @@ class Evaluator:
         )
         dataset = EvaluationDataset([sample])
 
-        result = evaluate(
-            dataset=dataset,
-            metrics=[
-                self.response_relevancy,
-                self.context_precision,
-                self.faithfulness,
-            ],
-            llm=self.llm,
-            embeddings=self.embedder,
-            show_progress=False,
-        )
-        scores = result.scores[0]
-        scores["context_precision"] = scores.pop(
-            "llm_context_precision_without_reference"
-        )
+        if SETTINGS.provider == "mock":
+            scores = {
+                "answer_relevancy_mock": 0.0,
+                "context_precision_mock": 0.0,
+                "faithfulness_mock": 0.0,
+            }
+
+        else:
+
+            result = evaluate(
+                dataset=dataset,
+                metrics=[
+                    self.response_relevancy,
+                    self.context_precision,
+                    self.faithfulness,
+                ],
+                show_progress=False,
+            )
+            scores = result.scores[0]
+            scores["context_precision"] = scores.pop(
+                "llm_context_precision_without_reference"
+            )
+
+            for k, v in scores.items():
+                if v is None or np.isnan(v):
+                    scores[k] = 0.0
+                else:
+                    scores[k] = float(v)
 
         return scores

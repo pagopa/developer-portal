@@ -1,7 +1,7 @@
 from src.modules.logger import get_logger
 from src.modules.settings import SETTINGS, AWS_SESSION
 
-LOGGER = get_logger(__name__)
+LOGGER = get_logger(__name__, level=SETTINGS.log_level)
 
 COGNITO_USERNAME = "test_user"
 COGNITO_PASSWORD = "TestPassword123!"

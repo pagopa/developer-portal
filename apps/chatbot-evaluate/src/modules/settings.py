@@ -50,15 +50,6 @@ class ChatbotSettings(BaseSettings):
         name=os.getenv("CHB_AWS_SSM_GOOGLE_API_KEY"),
         default=os.getenv("CHB_AWS_GOOGLE_API_KEY"),
     )
-    langfuse_host: str = os.getenv("CHB_LANGFUSE_HOST")
-    langfuse_public_key: str = get_ssm_parameter(
-        os.getenv("CHB_AWS_SSM_LANGFUSE_PUBLIC_KEY"),
-        os.getenv("LANGFUSE_INIT_PROJECT_PUBLIC_KEY"),
-    )
-    langfuse_secret_key: str = get_ssm_parameter(
-        os.getenv("CHB_AWS_SSM_LANGFUSE_SECRET_KEY"),
-        os.getenv("LANGFUSE_INIT_PROJECT_SECRET_KEY"),
-    )
     log_level: str = os.getenv("LOG_LEVEL", "info")
 
     # models settings
@@ -73,6 +64,14 @@ class ChatbotSettings(BaseSettings):
 
     # prompts
     condense_prompt_str: str = PROMPTS["condense_prompt_str"]
+
+    # sqs
+    aws_sqs_queue_monitor_name: str = os.getenv(
+        "CHB_AWS_SQS_QUEUE_MONITOR_NAME", "chatbot-monitor"
+    )
+    aws_sqs_queue_evaluate_name: str = os.getenv(
+        "CHB_AWS_SQS_QUEUE_EVALUATE_NAME", "chatbot-evaluate"
+    )
 
 
 SETTINGS = ChatbotSettings()

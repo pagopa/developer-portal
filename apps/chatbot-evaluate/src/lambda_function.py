@@ -2,9 +2,13 @@ import json
 
 from src.modules.judge import Judge
 from src.modules.logger import get_logger
+from src.modules.codec import compress_payload
+from src.modules.sqs import get_sqs_monitor_queue
+
 
 LOGGER = get_logger(__name__)
 JUDGE = Judge()
+SQS_MONITOR = get_sqs_monitor_queue()
 
 # SQS event example:
 """ {
@@ -56,17 +60,53 @@ def lambda_handler(event, context):
     LOGGER.debug(f"event: {event}")
 
     results = []
-    for record in event.get("Records", []):
+
+    # extract unique records
+    records = event.get("Records", [])
+    unique_records = []
+    for record in records:
+        if record not in unique_records:
+            unique_records.append(record)
+    for record in unique_records:
         body = record.get("body", "{}")
         body = json.loads(body)
-        results.append(
-            JUDGE.evaluate(
-                trace_id=body.get("trace_id", ""),
-                query_str=body.get("query_str", ""),
-                response_str=body.get("response_str", ""),
-                retrieved_contexts=body.get("retrieved_contexts", []),
-                messages=body.get("messages", None),
-            )
+        trace_id = body.get("trace_id", "")
+
+        scores = JUDGE.evaluate(
+            query_str=body.get("query_str", ""),
+            response_str=body.get("response_str", ""),
+            retrieved_contexts=body.get("retrieved_contexts", []),
+            messages=body.get("messages", None),
         )
 
-    return {"statusCode": 200, "result": results, "event": event}
+        for k, v in scores.items():
+            results.append(
+                {
+                    "trace_id": trace_id,
+                    "name": k,
+                    "score": v,
+                    "comment": None,
+                    "data_type": "NUMERIC",
+                }
+            )
+
+    payload_to_monitor = json.dumps(
+        {
+            "operation": "add_scores",
+            "data": compress_payload(results),
+        }
+    )
+    if SQS_MONITOR is not None:
+        try:
+            SQS_MONITOR.send_message(
+                MessageBody=payload_to_monitor,
+                MessageGroupId=trace_id,  # Required for FIFO queues
+            )
+        except Exception as e:
+            LOGGER.error(
+                f"Failed to send SQS message {payload_to_monitor} to chatbot-monitor: {e}"
+            )
+    else:
+        LOGGER.error(
+            "SQS_MONITOR queue is not initialized; cannot send monitoring message."
+        )

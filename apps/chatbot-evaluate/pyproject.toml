@@ -6,22 +6,12 @@ readme = "README.md"
 version = "0.1.0"
 
 [tool.poetry.dependencies]
-# cryptography = "^44.0.2"
-# hypercorn = "^0.17.3"
-langfuse = "^2.60.2"
-llama-index = "^0.12.30"
-llama-index-embeddings-bedrock = "^0.5.0"
-llama-index-embeddings-google-genai = "^0.1.0"
-llama-index-llms-bedrock-converse = "^0.4.15"
-llama-index-llms-google-genai = "^0.1.7"
-# nh3 = "^0.2.21"
-# pyproject-hooks = "^1.2.0"
+llama-index = "^0.14.8"
+llama-index-embeddings-google-genai = "^0.3.1"
+llama-index-llms-google-genai = "^0.7.3"
 python = ">=3.12,<3.14"
-# python-dotenv = "^1.1.0"
-# python-jose = "^3.4.0"
 pyyaml = "^6.0.2"
-ragas = "^0.2.14"
-# requests-auth-aws-sigv4 = "^0.7"
+ragas = "^0.2.0"
 toml = "^0.10.2"
 
 [tool.poetry.group.test.dependencies]
@@ -29,7 +19,7 @@ httpx = "^0.28.1"
 pytest = "^8.3.5"
 
 [tool.poetry.group.dev.dependencies]
-
+jupyter = "^1.1.1"
 
 [build-system]
 build-backend = "poetry.core.masonry.api"

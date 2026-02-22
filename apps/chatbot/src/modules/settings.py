@@ -1,5 +1,6 @@
 import boto3
 import os
+import re
 import json
 import yaml
 from pathlib import Path
@@ -7,32 +8,57 @@ from pydantic_settings import BaseSettings
 
 from src.modules.logger import get_logger
 
-LOGGER = get_logger(__name__)
+LOGGER = get_logger(__name__, level=os.getenv("LOG_LEVEL", "info"))
 CWF = Path(__file__)
 ROOT = CWF.parent.parent.parent.absolute().__str__()
 PARAMS = yaml.safe_load(open(os.path.join(ROOT, "config", "params.yaml"), "r"))
 PROMPTS = yaml.safe_load(open(os.path.join(ROOT, "config", "prompts.yaml"), "r"))
+CHANGELOG_PATH = os.path.join(ROOT, "CHANGELOG.md")
 AWS_SESSION = boto3.Session()
+AWS_SSM_CLIENT = AWS_SESSION.client("ssm")
+
+
+def extract_latest_version(filepath: str | None = None) -> str | None:
+    """Extracts the first version number found under a '##' heading.
+    Args:
+        filepath (str | None): Path to the changelog file. If None, defaults to CHANGELOG.md in the root directory.
+    Returns:
+        str | None: The latest version number as a string, or None if not found.
+    """
+
+    filepath = filepath if filepath else CHANGELOG_PATH
+
+    version_pattern = r"^##\s+(\d+\.\d+\.\d+)"
+    try:
+        with open(filepath, "r", encoding="utf-8") as f:
+            for line in f:
+                match = re.search(version_pattern, line)
+                if match:
+                    return match.group(1)
+    except FileNotFoundError:
+        LOGGER.error(f"Error: {filepath} not found.")
+        return None
+    return None
 
 
 def get_ssm_parameter(name: str | None, default: str | None = None) -> str | None:
     """
     Retrieves a specific value from AWS Systems Manager's Parameter Store.
-
-    :param name: The name of the parameter to retrieve.
-    :param default: The default value to return if the parameter is not found.
-    :return: The value of the requested parameter.
+    Args:
+        name (str | None): The name of the parameter to retrieve.
+        default (str | None): The default value to return if the parameter is not found.
+    Returns:
+        str | None: The value of the parameter, or the default value if not found.
     """
 
-    ssm_client = AWS_SESSION.client("ssm")
     LOGGER.info(f"get_ssm_parameter {name}...")
 
     if name is None:
         name = "none-params-in-ssm"
     try:
-        response = ssm_client.get_parameter(Name=name, WithDecryption=True)
+        response = AWS_SSM_CLIENT.get_parameter(Name=name, WithDecryption=True)
         value = response["Parameter"]["Value"]
-    except ssm_client.exceptions.ParameterNotFound:
+    except AWS_SSM_CLIENT.exceptions.ParameterNotFound:
         LOGGER.warning(
             f"Parameter {name} not found in SSM, returning default: {default}"
         )
@@ -77,19 +103,16 @@ class ChatbotSettings(BaseSettings):
         default=os.getenv("CHB_AWS_GOOGLE_API_KEY"),
     )
     google_service_account: dict = GOOGLE_JSON_ACCOUNT_INFO
-    langfuse_host: str = os.getenv("CHB_LANGFUSE_HOST")
-    langfuse_public_key: str = get_ssm_parameter(
-        os.getenv("CHB_AWS_SSM_LANGFUSE_PUBLIC_KEY"),
-        os.getenv("LANGFUSE_INIT_PROJECT_PUBLIC_KEY"),
-    )
-    langfuse_secret_key: str = get_ssm_parameter(
-        os.getenv("CHB_AWS_SSM_LANGFUSE_SECRET_KEY"),
-        os.getenv("LANGFUSE_INIT_PROJECT_SECRET_KEY"),
-    )
     cors_domains: str = os.getenv("CORS_DOMAINS", '["*"]')
     log_level: str = os.getenv("LOG_LEVEL", "info")
+    max_daily_evaluations: int = int(os.getenv("CHB_MAX_DAILY_EVALUATIONS", "200"))
+    expire_days: int = int(os.getenv("EXPIRE_DAYS", "90"))
+    session_max_duration_days: float = float(
+        os.getenv("CHB_SESSION_MAX_DURATION_DAYS", "1")
+    )
 
     # RAG settings
+    chatbot_release: str = extract_latest_version() or "---"
     embed_batch_size: int = int(os.getenv("CHB_EMBED_BATCH_SIZE", "100"))
     embed_dim: int = int(os.getenv("CHB_EMBEDDING_DIM", "768"))
     embed_model_id: str = os.getenv("CHB_EMBED_MODEL_ID", "gemini-embedding-001")
@@ -111,7 +134,6 @@ class ChatbotSettings(BaseSettings):
     chunk_overlap: int = PARAMS["vector_index"]["chunk_overlap"]
     chunk_size: int = PARAMS["vector_index"]["chunk_size"]
     index_id: str = PARAMS["vector_index"]["index_id"]
-    presidio_config: dict = PARAMS["config_presidio"]
     bucket_static_content: str = os.getenv(
         "CHB_AWS_S3_BUCKET_NAME_STATIC_CONTENT", "devportal-d-website-static-content"
     )
@@ -127,6 +149,11 @@ class ChatbotSettings(BaseSettings):
 
     # API
     query_table_prefix: str = os.getenv("CHB_QUERY_TABLE_PREFIX", "chatbot")
+
+    # sqs
+    aws_sqs_queue_monitor_name: str = os.getenv(
+        "CHB_AWS_SQS_QUEUE_MONITOR_NAME", "chatbot-monitor"
+    )
     aws_sqs_queue_evaluate_name: str = os.getenv(
         "CHB_AWS_SQS_QUEUE_EVALUATE_NAME", "chatbot-evaluate"
     )
