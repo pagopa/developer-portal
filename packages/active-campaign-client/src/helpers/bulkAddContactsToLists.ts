@@ -36,7 +36,6 @@ export async function bulkAddContactToList(
             field: customFieldIds.preferredLanguage,
             value: user['custom:preferred_language'] || 'it',
           },
-          },
         ],
       },
       listIds: listIds[index],
