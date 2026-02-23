@@ -11,6 +11,8 @@ import {
   productToBreadcrumb,
 } from '@/helpers/structuredData.helpers';
 
+import { redirect } from 'next/navigation';
+
 type Params = {
   locale: string;
   productSlug: string;
@@ -44,6 +46,13 @@ const Page = async (props: { params: Promise<Params> }) => {
   const strapiTutorialProps = await getTutorial(locale, productSlug, [
     tutorialPath,
   ]);
+
+  if (
+    strapiTutorialProps?.redirectPath &&
+    strapiTutorialProps.redirectPath !== strapiTutorialProps.path
+  ) {
+    redirect(strapiTutorialProps.redirectPath);
+  }
   const structuredData = generateStructuredDataScripts({
     breadcrumbsItems: [
       productToBreadcrumb(locale, strapiTutorialProps.product),

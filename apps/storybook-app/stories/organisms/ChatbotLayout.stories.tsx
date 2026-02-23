@@ -2,7 +2,7 @@ import { Decorator, Meta, StoryObj } from '@storybook/nextjs';
 import ChatbotLayout from 'nextjs-website/src/components/organisms/ChatbotLayout/ChatbotLayout';
 import React from 'react';
 import { mockText } from '../mock-content.helper';
-import { nextIntlContextDecorator } from '../next-intl-context.helper';
+import { authProviderDecorator } from '../auth-provider.helper';
 
 const meta: Meta<typeof ChatbotLayout> = {
   title: 'Organisms/ChatbotLayout',
@@ -34,7 +34,7 @@ export const NewChatSession: StoryObj<typeof ChatbotLayout> = {
       return null;
     },
   },
-  decorators: [decorator, nextIntlContextDecorator],
+  decorators: [decorator, authProviderDecorator],
 };
 
 export const ChatSessionWithMessages: StoryObj<typeof ChatbotLayout> = {
@@ -60,7 +60,7 @@ export const ChatSessionWithMessages: StoryObj<typeof ChatbotLayout> = {
     },
     isAwaitingResponse: true,
   },
-  decorators: [decorator, nextIntlContextDecorator],
+  decorators: [decorator, authProviderDecorator],
 };
 
 export const LoadingChatSession: StoryObj<typeof ChatbotLayout> = {
@@ -72,5 +72,5 @@ export const LoadingChatSession: StoryObj<typeof ChatbotLayout> = {
       return null;
     },
   },
-  decorators: [decorator, nextIntlContextDecorator],
+  decorators: [decorator, authProviderDecorator],
 };
