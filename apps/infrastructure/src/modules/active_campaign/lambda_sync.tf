@@ -9,11 +9,6 @@ module "lambda_sync" {
     AC_API_KEY_PARAM     = module.active_campaign_api_key.ssm_parameter_name
     AC_BASE_URL_PARAM    = module.active_campaign_base_url.ssm_parameter_name
     COGNITO_USER_POOL_ID = var.cognito_user_pool.id
-    AC_COMPANY_TYPE_FIELD_ID = module.active_campaign_company_type_field.ssm_parameter_name
-    AC_JOB_ROLE_FIELD_ID = module.active_campaign_job_role_field.ssm_parameter_name
-    AC_MAILING_LIST_ACCEPTED_FIELD_ID = module.active_campaign_mailing_list_accepted_field.ssm_parameter_name
-    AC_SURVEY_ACCEPTED_FIELD_ID = module.active_campaign_survey_accepted_field.ssm_parameter_name
-    AC_PREFERRED_LANGUAGE_FIELD_ID = module.active_campaign_preferred_language_field.ssm_parameter_name
   }
 
   runtime       = "nodejs20.x"
@@ -67,54 +62,3 @@ module "active_campaign_base_url" {
   secure_type          = true
   ignore_value_changes = true
 }
-
-module "active_campaign_company_type_field" {
-  source = "git::https://github.com/terraform-aws-modules/terraform-aws-ssm-parameter.git?ref=77d2c139784197febbc8f8e18a33d23eb4736879" # v1.1.0
-
-  name                 = "/ac/company_type_field_id"
-  value                = "Substitute with real company type field id from the console"
-  type                 = "SecureString"
-  secure_type          = true
-  ignore_value_changes = true
-}
-
-module "active_campaign_job_role_field" {
-  source = "git::https://github.com/terraform-aws-modules/terraform-aws-ssm-parameter.git?ref=77d2c139784197febbc8f8e18a33d23eb4736879" # v1.1.0
-
-  name                 = "/ac/job_role_field_id"
-  value                = "Substitute with real job role field id from the console"
-  type                 = "SecureString"
-  secure_type          = true
-  ignore_value_changes = true
-}
-
-module "active_campaign_mailing_list_accepted_field" {
-  source = "git::https://github.com/terraform-aws-modules/terraform-aws-ssm-parameter.git?ref=77d2c139784197febbc8f8e18a33d23eb4736879" # v1.1.0
-
-  name                 = "/ac/mailing_list_accepted_field_id"
-  value                = "Substitute with real mailing list accepted field id from the console"
-  type                 = "SecureString"
-  secure_type          = true
-  ignore_value_changes = true
-}
-
-module "active_campaign_survey_accepted_field" {
-  source = "git::https://github.com/terraform-aws-modules/terraform-aws-ssm-parameter.git?ref=77d2c139784197febbc8f8e18a33d23eb4736879" # v1.1.0
-
-  name                 = "/ac/survey_accepted_field_id"
-  value                = "Substitute with real survey accepted field id from the console"
-  type                 = "SecureString"
-  secure_type          = true
-  ignore_value_changes = true
-}
-
-module "active_campaign_preferred_language_field" {
-  source = "git::https://github.com/terraform-aws-modules/terraform-aws-ssm-parameter.git?ref=77d2c139784197febbc8f8e18a33d23eb4736879" # v1.1.0
-
-  name                 = "/ac/preferred_language_field_id"
-  value                = "Substitute with real preferred language field id from the console"
-  type                 = "SecureString"
-  secure_type          = true
-  ignore_value_changes = true
-}
-
