@@ -90,7 +90,7 @@ When you're done, shut down all the containers with:
 Build the Docker Compose for the tests with:
 
 ```bash
-docker compose -f docker/compose.test.yaml -p chatbot-test build
+./docker/docker-compose-build-tests.sh
 ```
 
 Sucessively, run:
