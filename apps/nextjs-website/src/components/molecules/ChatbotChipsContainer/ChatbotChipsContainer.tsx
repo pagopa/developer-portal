@@ -22,7 +22,7 @@ const ChatbotChipsContainer = ({ chips }: ChatbotChipsContainerProps) => {
       }}
     >
       {chips.map((chip, index) => (
-        <ChatbotChip label={chip.label} key={`${chip.label}-${index}`} />
+        <ChatbotChip {...chip} key={`${chip.label}-${index}`} />
       ))}
     </Box>
   );
