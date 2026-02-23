@@ -10,12 +10,18 @@ import {
 import { compact } from 'lodash';
 
 export function makeProductsProps(
+  locale: string,
   strapiProducts: StrapiProducts
 ): ReadonlyArray<Product> {
-  return compact(strapiProducts.data.map(makeProductProps));
+  return compact(
+    strapiProducts.data.map((product) => makeProductProps(locale, product))
+  );
 }
 
-export function makeProductProps(product: StrapiProduct): Product | null {
+export function makeProductProps(
+  locale: string,
+  product: StrapiProduct
+): Product | null {
   if (!product || !product.attributes) {
     console.error('Invalid product data:', product);
     return null;
@@ -31,7 +37,7 @@ export function makeProductProps(product: StrapiProduct): Product | null {
   // eslint-disable-next-line functional/no-try-statements
   try {
     return {
-      ...makeBaseProductWithoutLogoProps(product),
+      ...makeBaseProductWithoutLogoProps(locale, product),
       description: product.attributes.description,
       logo: product.attributes.logo?.data.attributes,
     };
@@ -46,6 +52,7 @@ export function makeProductProps(product: StrapiProduct): Product | null {
 }
 
 function getApiDataListPageUrl(
+  locale: string,
   product: StrapiBaseProductWithRelations
 ): string | undefined {
   const apiDataList = product.attributes.api_data_list_page.data;
@@ -60,13 +67,14 @@ function getApiDataListPageUrl(
     apiDataList.attributes.apiData.data.length === 1 &&
     apiData.attributes.apiRestDetail?.slug
   ) {
-    return `/${productSlug}/api/${apiData.attributes.apiRestDetail.slug}`;
+    return `/${locale}/${productSlug}/api/${apiData.attributes.apiRestDetail.slug}`;
   }
 
-  return `/${productSlug}/api`;
+  return `/${locale}/${productSlug}/api`;
 }
 
 export function makeBaseProductWithoutLogoProps(
+  locale: string,
   product: StrapiBaseProductWithRelations
 ): Product {
   if (!product.attributes.slug) {
@@ -76,7 +84,7 @@ export function makeBaseProductWithoutLogoProps(
   }
 
   return {
-    apiDataListPageUrl: getApiDataListPageUrl(product),
+    apiDataListPageUrl: getApiDataListPageUrl(locale, product),
     bannerLinks: product.attributes.bannerLinks?.map(makeBannerLinkProps) || [],
     isVisible: product.attributes.isVisible,
     hasApiDataListPage: !!(

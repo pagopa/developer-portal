@@ -7,6 +7,7 @@ import EContainer from '@/editorialComponents/EContainer/EContainer';
 import { snackbarAutoHideDurationMs } from '@/config';
 import WebinarCard from '@/components/molecules/WebinarCard/WebinarCard';
 import { useTranslations } from 'next-intl';
+import { useParams } from 'next/navigation';
 
 export type FutureWebinarsShowcaseProps = {
   link?: { href?: string; label: string };
@@ -27,6 +28,7 @@ const FutureWebinarsShowcase = ({
   description = 'description',
   webinars,
 }: FutureWebinarsShowcaseProps) => {
+  const { locale } = useParams<{ locale: string }>();
   const theme = useTheme();
   const t = useTranslations('webinar.webinarsSection');
   const [error, setError] = useState<string | null>(null);
@@ -65,7 +67,7 @@ const FutureWebinarsShowcase = ({
             {link && (
               <LinkButton
                 disabled={true}
-                href={link.href}
+                href={`/${locale}${link.href}`}
                 label={link.label}
                 color={theme.palette.common.white}
               />

@@ -20,10 +20,9 @@ type Params = {
 export async function generateMetadata(props: {
   params: Promise<Params>;
 }): Promise<Metadata | undefined> {
-  const params = await props.params;
-  const productSlug = params?.productSlug;
-  const useCasePath = params?.productUseCasePage?.join('/');
-  const useCaseProps = await getUseCase(productSlug, [useCasePath]);
+  const { locale, productSlug, productUseCasePage } = await props.params;
+  const useCasePath = productUseCasePage?.join('/');
+  const useCaseProps = await getUseCase(locale, productSlug, [useCasePath]);
   if (useCaseProps) {
     const { title, path, seo } = useCaseProps;
 
@@ -39,22 +38,22 @@ export async function generateMetadata(props: {
 }
 
 const Page = async (props: { params: Promise<Params> }) => {
-  const params = await props.params;
-  const productSlug = params?.productSlug;
-  const useCasePath = params?.productUseCasePage?.join('/');
+  const { locale, productSlug, productUseCasePage } = await props.params;
+  const useCasePath = productUseCasePage?.join('/');
 
-  const strapiUseCaseProps = await getUseCase(productSlug, [useCasePath]);
+  const strapiUseCaseProps = await getUseCase(locale, productSlug, [
+    useCasePath,
+  ]);
 
   const structuredData = generateStructuredDataScripts({
     breadcrumbsItems: [
-      productToBreadcrumb(params.locale, strapiUseCaseProps.product),
+      productToBreadcrumb(locale, strapiUseCaseProps.product),
       {
         name: strapiUseCaseProps.seo?.metaTitle || strapiUseCaseProps.title,
-        item: breadcrumbItemByProduct(
-          params.locale,
-          strapiUseCaseProps.product,
-          ['use-cases', ...(params?.productUseCasePage || [])]
-        ),
+        item: breadcrumbItemByProduct(locale, strapiUseCaseProps.product, [
+          'use-cases',
+          ...(productUseCasePage || []),
+        ]),
       },
     ],
     seo: strapiUseCaseProps.seo,

@@ -26,7 +26,9 @@ if __name__ == "__main__":
     ref_doc_info = index.storage_context.docstore.get_all_ref_doc_info()
     ref_doc_ids = list(ref_doc_info.keys())
     ref_folders = [
-        doc_id.split("/")[2] for doc_id in ref_doc_ids if DOCS_PARENT_FOLDER in doc_id
+        doc_id.split(DOCS_PARENT_FOLDER)[1].split("/")[0]
+        for doc_id in ref_doc_ids
+        if DOCS_PARENT_FOLDER in doc_id  # "it/devportal-docs/docs/<folder_name>/"
     ]
     ref_folders = list(set(ref_folders))
 

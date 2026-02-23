@@ -6,6 +6,7 @@ import { makeWebinarProps } from '@/lib/strapi/makeProps/makeWebinars';
 import { compact } from 'lodash';
 
 export function makeSolutionsProps(
+  locale: string,
   strapiSolutions: StrapiSolutions
 ): ReadonlyArray<SolutionTemplateProps> {
   return compact(
@@ -41,7 +42,7 @@ export function makeSolutionsProps(
             icon: bannerLink.icon?.data?.attributes,
           })),
           solutionSlug: attributes.slug,
-          path: `/solutions/${attributes.slug}/details`,
+          path: `/${locale}/solutions/${attributes.slug}/details`,
           successStories: attributes.caseHistories && {
             title: attributes.caseHistories.title,
             subtitle: attributes.caseHistories.description,

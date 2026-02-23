@@ -45,7 +45,7 @@ export const productsJson = {
 };
 
 export const product = {
-  apiDataListPageUrl: '/pago-pa/api',
+  apiDataListPageUrl: '/it/pago-pa/api',
   isVisible: true,
   name: 'Piattaforma pagoPA',
   slug: 'pago-pa',

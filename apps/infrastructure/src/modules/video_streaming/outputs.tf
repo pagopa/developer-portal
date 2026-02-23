@@ -35,8 +35,3 @@ output "athena_results_bucket_name" {
   description = "The name of the S3 bucket where Athena query results are stored."
   value       = aws_s3_bucket.athena_results.id
 }
-
-output "ingest_metrics_endpoint" {
-  value       = aws_lambda_function_url.ingest_url.function_url
-  description = "Function url to post metrics for to viewer count."
-}

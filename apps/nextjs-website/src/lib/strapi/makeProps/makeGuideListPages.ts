@@ -10,6 +10,7 @@ import { compact } from 'lodash';
 import { StrapiGuideListPages } from '@/lib/strapi/types/guideListPage';
 
 export function makeGuideListPagesProps(
+  locale: string,
   strapiGuideListPages: StrapiGuideListPages
 ): readonly GuideListPageProps[] {
   return compact(
@@ -23,19 +24,19 @@ export function makeGuideListPagesProps(
       }
 
       try {
-        const product = makeBaseProductWithoutLogoProps(productData);
+        const product = makeBaseProductWithoutLogoProps(locale, productData);
         const guidesSections: readonly GuidesSectionProps[] = [
           ...attributes.guidesByCategory.map(({ category, guides }) => ({
             title: category,
             guides: compact(
               guides.data.map((guide) =>
-                makeGuideCardProps(guide, product.slug)
+                makeGuideCardProps(locale, guide, product.slug)
               )
             ),
           })),
         ];
         return {
-          path: `/${productData.attributes.slug}/guides`,
+          path: `/${locale}/${productData.attributes.slug}/guides`,
           product,
           abstract: {
             title: attributes.title,
@@ -62,6 +63,7 @@ export function makeGuideListPagesProps(
 }
 
 function makeGuideCardProps(
+  locale: string,
   guide: StrapiBaseGuide,
   productSlug: string
 ): GuideCardProps | null {
@@ -82,7 +84,7 @@ function makeGuideCardProps(
       mobileImagePath: guide.attributes.mobileImage?.data?.attributes?.url,
       link: {
         label: 'guideListPage.cardSection.linkLabel',
-        href: `/${productSlug}/guides/${guide.attributes.slug}`,
+        href: `/${locale}/${productSlug}/guides/${guide.attributes.slug}`,
         translate: true,
       },
     } satisfies GuideCardProps;

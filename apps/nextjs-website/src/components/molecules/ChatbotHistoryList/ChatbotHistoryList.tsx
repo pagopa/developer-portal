@@ -1,3 +1,4 @@
+import { chatbotHeaderDateOptions } from '@/config';
 import {
   capitalize,
   Divider,
@@ -7,38 +8,24 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
-import { defaultLocale } from '@/config';
+import { useFormatter } from 'next-intl';
+import React from 'react';
 import ChatbotHistoryListItem from '@/components/atoms/ChatbotHistoryListItem/ChatbotHistoryListItem';
 import { Session } from '@/lib/chatbot/queries';
 
-type DateFormatOptions = {
-  locale?: string;
-  options?: Intl.DateTimeFormatOptions;
+type ChatbotHistoryListProps = {
+  readonly sessionsList: readonly Session[];
 };
 
-const DEFAULT_DATE_FORMAT = {
-  locale: defaultLocale,
-  options: {
-    month: 'long',
-    year: 'numeric',
-  },
-} satisfies DateFormatOptions;
-
-type ChatbotHistoryList = {
-  sessionsList: readonly Session[];
-};
-
-const ChatbotHistoryList = ({ sessionsList }: ChatbotHistoryList) => {
+const ChatbotHistoryList = ({ sessionsList }: ChatbotHistoryListProps) => {
   const { palette } = useTheme();
+  const format = useFormatter();
+
+  const formatDate = (date: string) =>
+    format.dateTime(new Date(date), chatbotHeaderDateOptions);
+
   const uniqueDates = Array.from(
-    new Set(
-      sessionsList.map((session) =>
-        new Intl.DateTimeFormat(
-          DEFAULT_DATE_FORMAT.locale,
-          DEFAULT_DATE_FORMAT.options
-        ).format(new Date(session.createdAt))
-      )
-    )
+    new Set(sessionsList.map((session) => formatDate(session.createdAt)))
   );
 
   return (
@@ -46,7 +33,8 @@ const ChatbotHistoryList = ({ sessionsList }: ChatbotHistoryList) => {
       {dateDividerSessionsItemsInterpolation(
         uniqueDates,
         sessionsList,
-        palette
+        palette,
+        format
       )}
     </List>
   );
@@ -57,21 +45,22 @@ export default ChatbotHistoryList;
 function dateDividerSessionsItemsInterpolation(
   dateDividers: string[],
   sessionsList: readonly Session[],
-  palette: Palette
+  palette: Palette,
+  format: ReturnType<typeof useFormatter>
 ) {
   const items = dateDividers.map((date) => {
     const sessions = sessionsList.filter(
       (session: Session) =>
-        new Intl.DateTimeFormat(
-          DEFAULT_DATE_FORMAT.locale,
-          DEFAULT_DATE_FORMAT.options
-        ).format(new Date(session.createdAt)) === date
+        format.dateTime(
+          new Date(session.createdAt),
+          chatbotHeaderDateOptions
+        ) === date
     );
     return sessions.map((session: Session) => session);
   });
 
   return items.flatMap((sameMonthItems) => (
-    <>
+    <React.Fragment key={sameMonthItems[0].createdAt}>
       <ListItem sx={{ padding: 0 }}>
         <Typography
           key={sameMonthItems[0].createdAt}
@@ -81,19 +70,19 @@ function dateDividerSessionsItemsInterpolation(
           sx={{ paddingY: '1rem' }}
         >
           {capitalize(
-            new Intl.DateTimeFormat(
-              DEFAULT_DATE_FORMAT.locale,
-              DEFAULT_DATE_FORMAT.options
-            ).format(new Date(sameMonthItems[0].createdAt))
+            format.dateTime(
+              new Date(sameMonthItems[0].createdAt),
+              chatbotHeaderDateOptions
+            )
           )}
         </Typography>
       </ListItem>
-      {sameMonthItems.map((item, index) => [
-        <ChatbotHistoryListItem key={item.id} session={item} />,
-        <>
+      {sameMonthItems.map((item, index) => (
+        <React.Fragment key={item.id}>
+          <ChatbotHistoryListItem session={item} />
           {sameMonthItems.length - 1 !== index && <Divider component='li' />}
-        </>,
-      ])}
-    </>
+        </React.Fragment>
+      ))}
+    </React.Fragment>
   ));
 }
