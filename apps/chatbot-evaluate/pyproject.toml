@@ -6,11 +6,11 @@ readme = "README.md"
 version = "0.1.0"
 
 [tool.poetry.dependencies]
-llama-index = "^0.14.8"
-llama-index-embeddings-google-genai = "^0.3.1"
-llama-index-llms-google-genai = "^0.7.3"
+llama-index = "^0.14.15"
+llama-index-embeddings-google-genai = "^0.3.2"
+llama-index-llms-google-genai = "^0.8.7"
 python = ">=3.12,<3.14"
-pyyaml = "^6.0.2"
+pyyaml = "^6.0.3"
 ragas = "^0.2.0"
 toml = "^0.10.2"
 
