@@ -39,7 +39,8 @@ export async function generateMetadata(
   const params = await props.params;
   const resolvedParent = await parent;
   const { abstract, path, product, seo } = await getQuickStartGuide(
-    params?.productSlug
+    params.locale,
+    params.productSlug
   );
 
   if (seo) {
@@ -65,7 +66,7 @@ const QuickStartGuidesPage = async (props: ProductParams) => {
     steps,
     seo,
     product,
-  } = await getQuickStartGuide(params?.productSlug);
+  } = await getQuickStartGuide(params.locale, params?.productSlug);
 
   const structuredData = generateStructuredDataScripts({
     breadcrumbsItems: [

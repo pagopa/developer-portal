@@ -1,5 +1,4 @@
 import { Meta, StoryObj } from '@storybook/nextjs';
-import { nextIntlContextDecorator } from '../next-intl-context.helper';
 import DesktopFilterSelector from 'nextjs-website/src/components/molecules/DesktopFilterSelector/DesktopFilterSelector';
 const meta: Meta<typeof DesktopFilterSelector> = {
   title: 'Molecules/DesktopFilterSelector',
@@ -109,5 +108,4 @@ export const Showcase: StoryObj<typeof DesktopFilterSelector> = {
       },
     ],
   },
-  decorators: [nextIntlContextDecorator],
 };

@@ -3,7 +3,10 @@
   --vjs-theme-custom--secondary: #fff;
 }
 
-.vjs-menu-item-text, .vjs-volume-tooltip, .vjs-time-tooltip, .vjs-live-display {
+.vjs-menu-item-text,
+.vjs-volume-tooltip,
+.vjs-time-tooltip,
+.vjs-live-display {
   font-family: var(--font-titillium-web) !important;
 }
 
@@ -53,7 +56,9 @@
   margin-top: 2.5em;
 }
 
-.vjs-theme-city .vjs-volume-panel:hover .vjs-volume-control.vjs-volume-horizontal {
+.vjs-theme-city
+  .vjs-volume-panel:hover
+  .vjs-volume-control.vjs-volume-horizontal {
   height: 100%;
 }
 
@@ -105,4 +110,3 @@
 .vjs-theme-custom .vjs-remaining-time {
   display: none;
 }
-

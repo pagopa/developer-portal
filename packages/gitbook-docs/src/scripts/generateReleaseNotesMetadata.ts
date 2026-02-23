@@ -7,6 +7,7 @@ import dotenv from 'dotenv';
 import { MetadataItem } from '../metadataItem';
 import {
   downloadS3File,
+  getLocalizedPath,
   listS3Files,
   makeS3Client,
   putS3File,
@@ -15,7 +16,7 @@ import { extractTitleFromMarkdown } from '../helpers/extractTitle.helper';
 import { fetchFromStrapi } from '../helpers/fetchFromStrapi';
 import { sitePathFromS3Path } from '../helpers/sitePathFromS3Path';
 import { StrapiReleaseNote } from '../helpers/strapiTypes';
-import { getSyncedReleaseNotesResponseJsonPath } from '../syncedResponses';
+import { getSyncedReleaseNotesResponseJsonFile } from '../syncedResponses';
 
 // Load environment variables from .env file
 dotenv.config();
@@ -26,21 +27,23 @@ const S3_PATH_TO_GITBOOK_DOCS =
 const S3_RELEASE_NOTES_METADATA_JSON_PATH =
   process.env.S3_RELEASE_NOTES_METADATA_JSON_PATH ||
   'release-notes-metadata.json';
-const SYNCED_RELEASE_NOTES_RESPONSE_JSON_PATH =
-  getSyncedReleaseNotesResponseJsonPath();
+const LOCALE = process.env.LOCALE;
 
 const s3Client = makeS3Client();
 
 function generateUrlPath(
   filePath: string,
   productSlug: string,
-  landingFile: string
+  landingFile: string,
+  locale?: string
 ): string {
   const restOfPath = sitePathFromS3Path(filePath, landingFile);
   if (!restOfPath) {
-    return `/${productSlug}/release-note`;
+    return [locale, `/${productSlug}/release-note`].filter(Boolean).join('/');
   } else {
-    return `/${productSlug}/release-note/${restOfPath}`;
+    return [locale, `/${productSlug}/release-note/${restOfPath}`]
+      .filter(Boolean)
+      .join('/');
   }
 }
 
@@ -81,13 +84,14 @@ async function convertReleaseNoteToMetadataItems(
         const path = generateUrlPath(
           filePath,
           productSlug,
-          releaseNote.attributes.landingFile
+          releaseNote.attributes.landingFile,
+          LOCALE
         );
         items.push({
           path,
           dirName,
-          contentS3Path: filePath,
-          menuS3Path: menuPath,
+          contentS3Path: getLocalizedPath(filePath, LOCALE),
+          menuS3Path: getLocalizedPath(menuPath, LOCALE),
           title: title || path.split('/').pop() || 'Untitled',
         });
       }
@@ -105,7 +109,9 @@ async function main() {
   let responseJson;
   try {
     const result = await fetchFromStrapi<StrapiReleaseNote>(
-      'api/release-notes/?populate[bannerLinks][populate][0]=icon&populate[product][populate][0]=logo&populate[product][populate][1]=bannerLinks.icon&populate[product][populate][2]=overview&populate[product][populate][3]=quickstart_guide&populate[product][populate][4]=release_note&populate[product][populate][5]=api_data_list_page&populate[product][populate][6]=api_data_list_page.apiData.*&populate[product][populate][7]=api_data_list_page.apiData.apiRestDetail.slug&populate[product][populate][8]=api_data_list_page.apiData.apiRestDetail.specUrls&populate[product][populate][9]=api_data_list_page.apiData.apiSoapDetail.*&populate[product][populate][10]=guide_list_page&populate[product][populate][11]=tutorial_list_page&populate[product][populate][12]=use_case_list_page&populate[seo][populate]=*,metaImage,metaSocial.image&pagination[pageSize]=1000&pagination[page]=1'
+      `api/release-notes/?[locale]=${
+        LOCALE || 'it'
+      }&populate[bannerLinks][populate][0]=icon&populate[product][populate][0]=logo&populate[product][populate][1]=bannerLinks.icon&populate[product][populate][2]=overview&populate[product][populate][3]=quickstart_guide&populate[product][populate][4]=release_note&populate[product][populate][5]=api_data_list_page&populate[product][populate][6]=api_data_list_page.apiData.*&populate[product][populate][7]=api_data_list_page.apiData.apiRestDetail.slug&populate[product][populate][8]=api_data_list_page.apiData.apiRestDetail.specUrls&populate[product][populate][9]=api_data_list_page.apiData.apiSoapDetail.*&populate[product][populate][10]=guide_list_page&populate[product][populate][11]=tutorial_list_page&populate[product][populate][12]=use_case_list_page&populate[seo][populate]=*,metaImage,metaSocial.image&pagination[pageSize]=1000&pagination[page]=1`
     );
     strapiReleaseNotes = result.data;
     responseJson = result.responseJson;
@@ -125,7 +131,7 @@ async function main() {
 
   await putS3File(
     metadataItems,
-    S3_RELEASE_NOTES_METADATA_JSON_PATH,
+    getLocalizedPath(S3_RELEASE_NOTES_METADATA_JSON_PATH, LOCALE),
     `${S3_BUCKET_NAME}`,
     s3Client
   );
@@ -133,7 +139,7 @@ async function main() {
   // TODO: remove when Strapi will manage Metadata
   await putS3File(
     responseJson,
-    SYNCED_RELEASE_NOTES_RESPONSE_JSON_PATH,
+    getLocalizedPath(getSyncedReleaseNotesResponseJsonFile, LOCALE),
     `${S3_BUCKET_NAME}`,
     s3Client
   );

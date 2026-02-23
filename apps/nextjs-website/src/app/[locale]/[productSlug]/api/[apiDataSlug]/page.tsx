@@ -41,7 +41,7 @@ export const generateMetadata = async (
 ): Promise<Metadata> => {
   const params = await props.params;
   const resolvedParent = await parent;
-  const ApiDataProps = await getApiData(params.apiDataSlug);
+  const ApiDataProps = await getApiData(params.locale, params.apiDataSlug);
 
   if (ApiDataProps?.seo) {
     return makeMetadataFromStrapi(ApiDataProps.seo);
@@ -59,7 +59,7 @@ export const generateMetadata = async (
 
 const ApiDataPage = async (props: ApiDataParams) => {
   const params = await props.params;
-  const apiDataProps = await getApiData(params.apiDataSlug);
+  const apiDataProps = await getApiData(params.locale, params.apiDataSlug);
 
   const structuredData = generateStructuredDataScripts({
     breadcrumbsItems: [

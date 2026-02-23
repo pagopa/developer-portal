@@ -3,7 +3,6 @@ import { Box } from '@mui/material';
 import ChatbotHistoryLayout from 'nextjs-website/src/components/organisms/ChatbotHistoryLayout/ChatbotHistoryLayout';
 import { sessionsList } from '../fixtures/chatbotFixtures';
 import React from 'react';
-import { nextIntlContextDecorator } from '../next-intl-context.helper';
 
 const meta: Meta<typeof ChatbotHistoryLayout> = {
   title: 'Organisms/ChatbotHistoryLayout',
@@ -29,5 +28,5 @@ export const NewChatSession: StoryObj<typeof ChatbotHistoryLayout> = {
       return null;
     },
   },
-  decorators: [decorator, nextIntlContextDecorator],
+  decorators: [decorator],
 };

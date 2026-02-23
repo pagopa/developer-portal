@@ -75,5 +75,8 @@ class ChatbotSettings(BaseSettings):
     redis_url: str = os.getenv("CHB_REDIS_URL")
     website_url: str = os.getenv("CHB_WEBSITE_URL")
 
+    # other
+    language_code: str = os.getenv("CHB_LANGUAGE_CODE_STATIC_FILES", "it")
+
 
 SETTINGS = ChatbotSettings()

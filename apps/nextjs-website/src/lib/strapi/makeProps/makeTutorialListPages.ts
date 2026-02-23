@@ -7,6 +7,7 @@ import { StrapiTutorialListPages } from '@/lib/strapi/types/tutorialsListPage';
 import { compact } from 'lodash';
 
 export function makeTutorialListPagesProps(
+  locale: string,
   strapiTutorialList: StrapiTutorialListPages
 ): readonly TutorialsPageProps[] {
   return compact(
@@ -42,7 +43,7 @@ export function makeTutorialListPagesProps(
             return {
               updatedAt: tutorialAttributes.updatedAt,
               name: tutorialAttributes.title,
-              path: `/${slug}/tutorials/${tutorialAttributes.slug}`,
+              path: `/${locale}/${slug}/tutorials/${tutorialAttributes.slug}`,
               title: tutorialAttributes.title,
               publishedAt: tutorialAttributes.publishedAt
                 ? new Date(tutorialAttributes.publishedAt)
@@ -76,8 +77,11 @@ export function makeTutorialListPagesProps(
       return {
         updatedAt: updatedAt,
         name: attributes.title,
-        path: `/${attributes.product.data.attributes.slug}/tutorials`,
-        product: makeBaseProductWithoutLogoProps(attributes.product.data),
+        path: `/${locale}/${attributes.product.data.attributes.slug}/tutorials`,
+        product: makeBaseProductWithoutLogoProps(
+          locale,
+          attributes.product.data
+        ),
         abstract: {
           title: attributes.title,
           description: attributes.description,

@@ -117,7 +117,12 @@ export const MobileSiteHeaderStyledTreeItem = styled(TreeItem)(({ theme }) => ({
   },
 }));
 
-const MobileSiteHeader = ({ locale, products }: SiteHeaderProps) => {
+const MobileSiteHeader = ({
+  locale,
+  products,
+  shouldShowLinkToSolutions,
+  shouldShowLinkToWebinars,
+}: SiteHeaderProps) => {
   const t = useTranslations('devPortal');
   const { palette } = useTheme();
 
@@ -213,47 +218,50 @@ const MobileSiteHeader = ({ locale, products }: SiteHeaderProps) => {
               );
             })}
           </MobileSiteHeaderStyledTreeItem>
-
-          <MobileSiteHeaderStyledTreeItem
-            itemId={'siteHeader.solutions'}
-            label={
-              <Typography
-                component={NextLink}
-                variant='body1'
-                href={`/${locale}/solutions`}
-                onClick={handleClick}
-                style={{
-                  color: palette.primary.dark,
-                  display: 'block',
-                  textDecoration: 'none',
-                  fontWeight: 600,
-                  padding: 0,
-                }}
-              >
-                {t('siteHeader.solutions')}
-              </Typography>
-            }
-          />
-          <MobileSiteHeaderStyledTreeItem
-            itemId={'siteHeader.webinars'}
-            label={
-              <Typography
-                component={NextLink}
-                variant='body1'
-                href={`/${locale}/webinars`}
-                onClick={handleClick}
-                style={{
-                  color: palette.primary.dark,
-                  display: 'block',
-                  textDecoration: 'none',
-                  fontWeight: 600,
-                  padding: 0,
-                }}
-              >
-                {t('siteHeader.webinars')}
-              </Typography>
-            }
-          />
+          {shouldShowLinkToSolutions && (
+            <MobileSiteHeaderStyledTreeItem
+              itemId={'siteHeader.solutions'}
+              label={
+                <Typography
+                  component={NextLink}
+                  variant='body1'
+                  href={`/${locale}/solutions`}
+                  onClick={handleClick}
+                  style={{
+                    color: palette.primary.dark,
+                    display: 'block',
+                    textDecoration: 'none',
+                    fontWeight: 600,
+                    padding: 0,
+                  }}
+                >
+                  {t('siteHeader.solutions')}
+                </Typography>
+              }
+            />
+          )}
+          {shouldShowLinkToWebinars && (
+            <MobileSiteHeaderStyledTreeItem
+              itemId={'siteHeader.webinars'}
+              label={
+                <Typography
+                  component={NextLink}
+                  variant='body1'
+                  href={`/${locale}/webinars`}
+                  onClick={handleClick}
+                  style={{
+                    color: palette.primary.dark,
+                    display: 'block',
+                    textDecoration: 'none',
+                    fontWeight: 600,
+                    padding: 0,
+                  }}
+                >
+                  {t('siteHeader.webinars')}
+                </Typography>
+              }
+            />
+          )}
           <Divider sx={{ marginTop: -2, marginBottom: 2 }} />
           <MobileUserInfo onClick={handleClick} />
           <Divider sx={{ marginTop: -2, marginBottom: 2 }} />

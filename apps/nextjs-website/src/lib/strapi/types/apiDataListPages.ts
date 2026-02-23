@@ -26,6 +26,7 @@ export type StrapiApiDataListPage = {
 export type StrapiApiDataListPageWithoutProduct = {
   readonly id: number;
   readonly attributes: {
+    readonly updatedAt: string;
     readonly apiData: StrapiComponent<
       readonly {
         readonly attributes: Pick<
