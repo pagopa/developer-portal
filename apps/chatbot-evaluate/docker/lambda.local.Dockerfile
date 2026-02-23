@@ -16,4 +16,10 @@ RUN poetry install
 
 COPY ./ ${LAMBDA_TASK_ROOT}/
 
+RUN echo "appuser:x:1000:1000::/home/appuser:/bin/sh" >> /etc/passwd \
+  && mkdir -p /home/appuser \
+  && chown -R 1000:1000 /home/appuser ${LAMBDA_TASK_ROOT}
+
+USER appuser
+
 CMD ["src.lambda_function.lambda_handler"]

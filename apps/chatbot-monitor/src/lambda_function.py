@@ -232,6 +232,6 @@ def lambda_handler(event, context):
         else:
             LOGGER.warning(f"Unknown operation: {operation}")
 
-        results.append({"operation": operation, "trace_id": data.get("trace_id")})
+        results.append({"operation": operation, "data": data})
 
     return {"statusCode": 200, "result": results, "event": event}
