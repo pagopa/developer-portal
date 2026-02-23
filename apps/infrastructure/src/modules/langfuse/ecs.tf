@@ -66,7 +66,7 @@ resource "aws_ecs_task_definition" "clickhouse" {
     {
       name      = "clickhouse"
       image     = "${aws_ecr_repository.repositories["clickhouse"].repository_url}:25.8.8.26-alpine"
-      cpu       = 512
+      cpu       = 1024
       memory    = 4096
       essential = true
 
