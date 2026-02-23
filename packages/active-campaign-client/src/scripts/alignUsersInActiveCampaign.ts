@@ -8,6 +8,7 @@ import { CognitoIdentityServiceProvider } from 'aws-sdk';
 import { DynamoDBClient, QueryCommand } from '@aws-sdk/client-dynamodb';
 import fs from 'fs';
 import dotenv from 'dotenv';
+import { customFieldIds } from '../config';
 
 dotenv.config();
 
@@ -183,19 +184,19 @@ async function main() {
         phone: `cognito:${userAndWebinars.username.Username}`,
         fieldValues: [
           {
-            field: '2',
+            field: customFieldIds.companyType,
             value: userAndWebinars.username.Attributes.find(
               (attr: any) => attr.Name === 'custom:company_type',
             )?.Value,
           },
           {
-            field: '1',
+            field: customFieldIds.jobRole,
             value: userAndWebinars.username.Attributes.find(
               (attr: any) => attr.Name === 'custom:job_role',
             )?.Value,
           },
           {
-            field: '3',
+            field: customFieldIds.mailingListAccepted,
             value:
               userAndWebinars.username.Attributes.find(
                 (attr: any) => attr.Name === 'custom:mailinglist_accepted',
@@ -204,7 +205,7 @@ async function main() {
                 : 'FALSE',
           },
           {
-            field: '6', // id 5 in prod env (field id '6' in dev)
+            field: customFieldIds.preferredLanguage,
             value: userAndWebinars.username.Attributes.find(
               (attr: any) => attr.Name === 'custom:preferred_language',
             )?.Value,

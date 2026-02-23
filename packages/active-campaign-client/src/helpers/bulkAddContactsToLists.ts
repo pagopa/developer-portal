@@ -2,6 +2,7 @@ import { APIGatewayProxyResult } from 'aws-lambda';
 import { acClient } from '../clients/activeCampaignClient';
 import { ContactPayload } from '../types/contactPayload';
 import { User } from '../types/user';
+import { customFieldIds } from '../config';
 
 export async function bulkAddContactToList(
   users: readonly User[],
@@ -19,17 +20,22 @@ export async function bulkAddContactToList(
         phone: `cognito:${user.username}`,
         fieldValues: [
           {
-            field: '2',
+            field: customFieldIds.companyType,
             value: user['custom:company_type'],
           },
           {
-            field: '1',
+            field: customFieldIds.jobRole,
             value: user['custom:job_role'],
           },
           {
-            field: '3',
+            field: customFieldIds.mailingListAccepted,
             value:
               user['custom:mailinglist_accepted'] === 'true' ? 'TRUE' : 'FALSE',
+          },
+          {
+            field: customFieldIds.preferredLanguage,
+            value:
+              user['custom:preferred_language'] === 'true' ? 'TRUE' : 'FALSE',
           },
         ],
       },
