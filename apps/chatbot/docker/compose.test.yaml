@@ -71,9 +71,8 @@ services:
     restart: "no"
 
   motoserver:
-    image: motoserver/moto:5.1.14
-    environment:
-      - MOTO_PORT=3002
+    image: motoserver/moto:5.1.21
+    env_file: ../.env.test
 
   langfuse-worker:
     image: docker.io/langfuse/langfuse-worker:3.115
