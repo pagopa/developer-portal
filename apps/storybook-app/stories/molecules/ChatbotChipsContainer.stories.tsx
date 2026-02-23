@@ -1,10 +1,9 @@
 import { Decorator, Meta, StoryObj } from '@storybook/nextjs';
 import ChatbotChipsContainer from 'nextjs-website/src/components/molecules/ChatbotChipsContainer/ChatbotChipsContainer';
-import { nextIntlContextDecorator } from '../next-intl-context.helper';
 import React from 'react';
 
 const meta: Meta<typeof ChatbotChipsContainer> = {
-  title: 'Atoms/ChatbotChipContainer',
+  title: 'Molecules/ChatbotChipsContainer',
   component: ChatbotChipsContainer,
 };
 
@@ -26,5 +25,5 @@ export const Showcase: StoryObj<typeof ChatbotChipsContainer> = {
       { label: 'Scaricare ricevute' },
     ],
   },
-  decorators: [decorator, nextIntlContextDecorator],
+  decorators: [decorator],
 };
