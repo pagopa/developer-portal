@@ -1,5 +1,12 @@
 # infrastructure
 
+## 8.2.0
+
+### Minor Changes
+
+- 2081c9b: Cleanup resources poc option 4 webinars metrics
+- 3a2b89f: Add "preferred_language" custom field to cognito_user schemas
+
 ## 8.1.0
 
 ### Minor Changes
