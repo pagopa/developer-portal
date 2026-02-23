@@ -34,8 +34,8 @@ export async function bulkAddContactToList(
           },
           {
             field: customFieldIds.preferredLanguage,
-            value:
-              user['custom:preferred_language'] === 'true' ? 'TRUE' : 'FALSE',
+            value: user['custom:preferred_language'] || 'it',
+          },
           },
         ],
       },
