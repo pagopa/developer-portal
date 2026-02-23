@@ -1,7 +1,6 @@
 import { Decorator, Meta, StoryObj } from '@storybook/nextjs';
 import ChatHistoryMessage from 'nextjs-website/src/components/atoms/ChatHistoryMessage/ChatHistoryMessage';
 import React from 'react';
-import { nextIntlContextDecorator } from '../next-intl-context.helper';
 import { mockText } from '../mock-content.helper';
 
 const meta: Meta<typeof ChatHistoryMessage> = {
@@ -27,7 +26,7 @@ export const ChatBotMessage: StoryObj<typeof ChatHistoryMessage> = {
     sender: 'Discovery',
     isQuestion: false,
   },
-  decorators: [decorator, nextIntlContextDecorator],
+  decorators: [decorator],
 };
 
 export const UserMessage: StoryObj<typeof ChatHistoryMessage> = {
@@ -37,5 +36,5 @@ export const UserMessage: StoryObj<typeof ChatHistoryMessage> = {
     sender: 'John Doe',
     isQuestion: true,
   },
-  decorators: [decorator, nextIntlContextDecorator],
+  decorators: [decorator],
 };

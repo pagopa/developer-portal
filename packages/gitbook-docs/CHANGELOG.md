@@ -1,5 +1,12 @@
 # gitbook-docs
 
+## 1.8.1
+
+### Patch Changes
+
+- 0d4e746: Align anchor link generation with GitBook logic (kebab-case, special chars to dash, no multiple dashes)
+- 88feabd: Fix inline tag rendering issue
+
 ## 1.8.0
 
 ### Minor Changes
