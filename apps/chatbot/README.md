@@ -2,7 +2,7 @@
 
 This folder contains all the details to build a RAG using the documentation provided in [`PagoPA Developer Portal`](https://developer.pagopa.it/).
 
-This chatbot uses [Google](https://ai.google.dev/) as provider.
+This chatbot uses [Google](https://ai.google.dev/) as provider, indeed the LLM and the embedder chosen are part of the [Gemini](https://ai.google.dev/gemini-api/docs/models) family.
 Even though the provider is Google, we stored its Gemini API key in the AWS SSM parameter store. So, be sure to have installed [aws-cli](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) and stored your credential in `~/.aws/credentials`.
 
 The multi agentic system and the Retrieval-Augmented Generation (RAG) tools are implemented using [llama-index](https://docs.llamaindex.ai/en/stable/). All the environmental variables, parameters, and prompts are listed and loaded in `src/modules/settings.py`.
