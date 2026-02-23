@@ -121,7 +121,9 @@ describe('parseContent', () => {
         config
       )
     ).toStrictEqual([
-      new Markdoc.Tag('Paragraph', {}, ['pre middle', ' ', ' post']),
+      new Markdoc.Tag('Paragraph', {}, ['pre']),
+      new Markdoc.Tag('Paragraph', {}, ['middle']),
+      new Markdoc.Tag('Paragraph', {}, ['post']),
     ]);
   });
 
@@ -132,9 +134,11 @@ describe('parseContent', () => {
         config
       )
     ).toStrictEqual([
-      new Markdoc.Tag('Paragraph', {}, ['pre This is a test']),
+      new Markdoc.Tag('Paragraph', {}, ['pre']),
+      new Markdoc.Tag('Paragraph', {}, ['This is a test']),
       new Markdoc.Tag('Paragraph', {}, ['test test']),
-      new Markdoc.Tag('Paragraph', {}, ['test', ' ', ' post']),
+      new Markdoc.Tag('Paragraph', {}, ['test']),
+      new Markdoc.Tag('Paragraph', {}, ['post']),
     ]);
   });
 

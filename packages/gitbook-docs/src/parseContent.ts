@@ -62,9 +62,13 @@ const fileR = {
   regex: /({% file src="[^"]+" %}(?!.*{% \/file %}))/gis,
   replace: '$1\n{% /file %}',
 };
-const contentRefR = {
-  regex: new RegExp(`{% content-ref url="([^"]*)" %}[^\\n]`, 'g'),
-  replace: '{% content-ref url="$1" %}\n',
+const addNewLineAfterCloseTag = {
+  regex: new RegExp(`%}(?!\n)`, 'g'),
+  replace: '%}\n',
+};
+const addNewLineBeforeOpenTag = {
+  regex: new RegExp(`(?!\n){%`, 'g'),
+  replace: '\n{%',
 };
 
 const preservePipesInInlineCode = (markdown: string): string => {
@@ -151,14 +155,15 @@ export const parseAst = (markdown: string) => {
   // In this way many RegExp can be removed
   const markdoc = preservePipesInInlineCode(markdown)
     .replaceAll('{% end', '\n{% /')
+    .replaceAll(addNewLineAfterCloseTag.regex, addNewLineAfterCloseTag.replace)
+    .replaceAll(addNewLineBeforeOpenTag.regex, addNewLineBeforeOpenTag.replace)
     .replaceAll(imgR.regex, imgR.replace)
     .replaceAll(figureR.regex, figureR.replace)
     .replaceAll(figcaptionR.regex, figcaptionR.replace)
     .replaceAll(markR.regex, markR.replace)
     .replaceAll(summaryR.regex, summaryR.replace)
     .replaceAll('{% @figma/embed', '{% figma-embed')
-    .replaceAll(/:([a-z0-9_]+):/g, convertEmojiToUnicode)
-    .replaceAll(contentRefR.regex, contentRefR.replace);
+    .replaceAll(/:([a-z0-9_]+):/g, convertEmojiToUnicode);
 
   const updatedMarkdoc = markdoc
     .split('{% file')
