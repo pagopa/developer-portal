@@ -13,6 +13,7 @@ services:
     volumes:
       - ..:/app
       - ./files/.aws:/home/appuser/.aws
+    command: [ "sh", "-c", "./scripts/run.local.sh" ]
     depends_on:
       redis:
         condition: service_started

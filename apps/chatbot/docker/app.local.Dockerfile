@@ -40,12 +40,9 @@ RUN poetry install --with dev
 
 RUN python ./scripts/nltk_download.py
 
-RUN chmod +x ./scripts/entrypoint.sh
-
 RUN groupadd -r appuser && useradd -r -g appuser -u 1000 appuser
 RUN chown -R appuser:appuser /app
 
 USER appuser
 
-ENTRYPOINT ["./scripts/entrypoint.sh"]
 CMD ["hypercorn", "-b", "0.0.0.0:8080", "--reload", "src.app.main:app"]
