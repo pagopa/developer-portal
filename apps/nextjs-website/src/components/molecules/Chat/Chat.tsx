@@ -216,8 +216,8 @@ const Chat = ({
             <ChatbotChipsContainer
               chips={chips.map((chip) => ({
                 ...chip,
-                onClick: () => {
-                  onSendQuery(chip.question ?? chip.label);
+                onClick: (query) => {
+                  onSendQuery(query);
                 },
               }))}
             />
