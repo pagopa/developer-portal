@@ -5,7 +5,7 @@ import { Box, Button, Paper, Stack, useTheme } from '@mui/material';
 import ChatInputText from '@/components/atoms/ChatInputText/ChatInputText';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { History } from '@mui/icons-material';
-import { Query } from '@/lib/chatbot/queries';
+import { ChatbotChip, Query } from '@/lib/chatbot/queries';
 import { compact } from 'lodash';
 import { useTranslations } from 'next-intl';
 import { ChatbotWriting } from '@/components/atoms/ChatbotWriting/ChatbotWriting';
@@ -13,9 +13,13 @@ import { ChatSkeleton } from '@/components/atoms/ChatSkeleton/ChatSkeleton';
 import { useUser } from '@/helpers/user.helper';
 import { baseUrl } from '@/config';
 import AlertPart from '@/components/atoms/AlertPart/AlertPart';
-import { ChatbotErrorsType } from '@/helpers/chatbot.helper';
+import {
+  ChatbotErrorsType,
+  getCurrentChipsFromQueries,
+} from '@/helpers/chatbot.helper';
 import ChatbotFeedbackForm from '@/components/molecules/ChatbotFeedbackForm/ChatbotFeedbackForm';
 import { useParams } from 'next/navigation';
+import ChatbotChipsContainer from '../ChatbotChipsContainer/ChatbotChipsContainer';
 
 type ChatProps = {
   queries: Query[];
@@ -55,6 +59,12 @@ const Chat = ({
   const [sessionId, setSessionId] = useState<string>('');
   const [id, setId] = useState<string>('');
   const [isFeedbackFormVisible, setIsFeedbackFormVisible] = useState(false);
+  const [chips, setChips] = useState<readonly ChatbotChip[]>([]);
+
+  useEffect(() => {
+    setChips(getCurrentChipsFromQueries(queries));
+  }, [queries]);
+
   const messages = useMemo(
     () => [
       firstMessage(
@@ -90,7 +100,7 @@ const Chat = ({
         ])
       ),
     ],
-    [queries, t, user, mustFillFeedbackForm]
+    [user, t, locale, mustFillFeedbackForm, queries]
   ) satisfies Message[];
 
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -202,6 +212,16 @@ const Chat = ({
             </Stack>
           ))}
           {isAwaitingResponse && <ChatbotWriting />}
+          {chips.length > 0 && (
+            <ChatbotChipsContainer
+              chips={chips.map((chip) => ({
+                ...chip,
+                onClick: () => {
+                  onSendQuery(chip.question ?? chip.label);
+                },
+              }))}
+            />
+          )}
           {error && (
             <Paper
               elevation={4}

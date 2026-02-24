@@ -7,7 +7,7 @@ import {
   getChatbotQueries,
   deleteChatbotSession,
 } from '@/lib/chatbotApi';
-import { PaginatedSessions, Query } from '@/lib/chatbot/queries';
+import { ChatbotChip, PaginatedSessions, Query } from '@/lib/chatbot/queries';
 import { chatMaxHistoryMessages } from '@/config';
 
 const HISTORY_PAGE_SIZE = 10;
@@ -66,6 +66,21 @@ function setFeedbackByQueryId(
     }
     return query;
   });
+}
+
+export function getCurrentChipsFromQueries(
+  queries: Query[]
+): readonly ChatbotChip[] {
+  if (!queries || queries.length === 0) {
+    return [];
+  }
+
+  const lastQuery = queries[queries.length - 1];
+  if (lastQuery.answer || !lastQuery.chips) {
+    return [];
+  }
+
+  return lastQuery.chips;
 }
 
 export const useChatbot = (isUserAuthenticated: boolean) => {

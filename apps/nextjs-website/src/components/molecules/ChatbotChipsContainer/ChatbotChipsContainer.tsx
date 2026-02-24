@@ -12,18 +12,27 @@ const ChatbotChipsContainer = ({ chips }: ChatbotChipsContainerProps) => {
     <Box
       sx={{
         display: 'flex',
-        flexWrap: 'wrap',
-        gap: '8px',
         justifyContent: 'flex-end',
-        maxWidth: '100%',
-        height: 'fit-content',
-        maxHeight: '160px',
-        p: '4px',
+        width: '100%',
       }}
     >
-      {chips.map((chip, index) => (
-        <ChatbotChip {...chip} key={`${chip.label}-${index}`} />
-      ))}
+      <Box
+        sx={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          gap: '8px',
+          justifyContent: 'flex-end',
+          maxWidth: '75%',
+          height: 'fit-content',
+          maxHeight: '160px',
+          p: '4px',
+          pb: '16px',
+        }}
+      >
+        {chips.map((chip, index) => (
+          <ChatbotChip {...chip} key={`${chip.label}-${index}`} />
+        ))}
+      </Box>
     </Box>
   );
 };
