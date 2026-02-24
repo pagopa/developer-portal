@@ -4,8 +4,8 @@ export type Query = {
   readonly question: string;
   readonly queriedAt: string;
   readonly answer: string | null;
-  readonly knowledgeBase: string | null;
   readonly createdAt: string | null;
+  readonly knowledgeBase?: string;
   readonly badAnswer?: boolean;
   readonly chips?: readonly ChatbotChip[];
 };
@@ -16,7 +16,7 @@ export type QueryWithHistory = Query & {
 
 export type QueryInput = Pick<
   QueryWithHistory,
-  'question' | 'queriedAt' | 'history'
+  'question' | 'queriedAt' | 'knowledgeBase' | 'history'
 >;
 
 export type Session = {

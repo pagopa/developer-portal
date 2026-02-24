@@ -88,6 +88,32 @@ const getQueriesResponses = {
   },
 };
 
+const getQueriesWithChipsResponse = {
+  200: [
+    {
+      id: 'queryId',
+      sessionId: 'sessionId',
+      queriedAt: '2024-02-08T11:12:02.142Z',
+      question: 'question',
+      answer: 'answer',
+      createdAt: '2024-02-08T11:12:02.438Z',
+      badAnswer: false,
+      chips: [
+        {
+          label: 'aChip',
+          question: 'aChipQuestion',
+          knowledgeBase: 'aChipKnowledgeBase',
+        },
+        {
+          label: 'anotherChip',
+          question: 'anotherChipQuestion',
+          knowledgeBase: 'anotherChipKnowledgeBase',
+        },
+      ],
+    },
+  ],
+};
+
 describe('chatbotApi', () => {
   it('chatbotApi::postQuery should return a query response given a 200 response', async () => {
     const { env, fetchMock } = makeTestEnv();
@@ -178,5 +204,73 @@ describe('chatbotApi', () => {
     })(env);
     const expected = {};
     await expect(actual).rejects.toStrictEqual(expected);
+  });
+  it('chatbotApi::postQuery with knowledgeBase should return a query response given a 200 response', async () => {
+    const { env, fetchMock } = makeTestEnv();
+    fetchMock.mockResolvedValueOnce({
+      status: 200,
+      statusText: 'OK',
+      json: () => Promise.resolve(postQueryResponses[200]),
+    });
+    const actual = postQuery({
+      queriedAt: 'aQueriedAt',
+      question: 'aQuery',
+      knowledgeBase: 'aKnowledgeBase',
+    })(env);
+    const expected = {
+      id: 'queryId',
+      sessionId: 'sessionId',
+      queriedAt: '2024-02-08T11:12:02.142Z',
+      question: 'question',
+      answer: 'answer',
+      createdAt: '2024-02-08T11:12:02.438Z',
+      badAnswer: false,
+      history: [
+        {
+          id: '1',
+          question: 'question',
+          answer: 'answer',
+        },
+        {
+          id: '2',
+          question: 'question',
+          answer: 'answer',
+        },
+      ],
+    };
+    expect(await actual).toStrictEqual(expected);
+  });
+  it('chatbotApi::getQueries with chips should return the queries of a session given a 200 response', async () => {
+    const { env, fetchMock } = makeTestEnv();
+    fetchMock.mockResolvedValueOnce({
+      status: 200,
+      statusText: 'OK',
+      json: () => Promise.resolve(getQueriesWithChipsResponse[200]),
+    });
+    const actual = getQueries('sessionId')(env);
+    const expected = [
+      {
+        id: 'queryId',
+        sessionId: 'sessionId',
+        queriedAt: '2024-02-08T11:12:02.142Z',
+        question: 'question',
+        answer: 'answer',
+        createdAt: '2024-02-08T11:12:02.438Z',
+        badAnswer: false,
+        chips: [
+          {
+            label: 'aChip',
+            question: 'aChipQuestion',
+            knowledgeBase: 'aChipKnowledgeBase',
+          },
+          {
+            label: 'anotherChip',
+            question: 'anotherChipQuestion',
+            knowledgeBase: 'anotherChipKnowledgeBase',
+          },
+        ],
+      },
+    ];
+    expect(await actual).toStrictEqual(expected);
   });
 });

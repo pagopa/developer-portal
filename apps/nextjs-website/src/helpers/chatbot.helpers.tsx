@@ -121,7 +121,7 @@ export const useChatbot = (isUserAuthenticated: boolean) => {
       queriedAt: queriedAt,
       badAnswer: false,
       answer: null,
-      knowledgeBase: knowledgeBase || null,
+      knowledgeBase: knowledgeBase,
       createdAt: null,
     };
     setHistoryQueries([...historyQueries, newQuery]);
