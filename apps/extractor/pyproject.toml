@@ -6,11 +6,12 @@ readme = "README.md"
 version = "0.1.0"
 
 [tool.poetry.dependencies]
-python = ">=3.12,<3.14"
+boto3 = "^1.40.4"
 llama-index = "^0.12.30"
 llama-index-llms-google-genai = "^0.1.7"
 llama-index-embeddings-google-genai = "^0.1.0"
 pydantic-settings = "^2.10.1"
+python = ">=3.12,<3.14"
 pyyaml = "^6.0.2"
 
 [tool.poetry.group.test.dependencies]

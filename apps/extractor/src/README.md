@@ -32,15 +32,13 @@ This project uses [Poetry](https://python-poetry.org/) for dependency management
 4. Configure environment variables in `.env`:
    ```bash
    # Required
-   EXT_AWS_GOOGLE_API_KEY=your_google_api_key_here
-   EXT_INPUT_FOLDER=./input
-   EXT_OUTPUT_FOLDER=./output
+   CHB_AWS_GOOGLE_API_KEY=google_api_key
+   CHB_INDEX_ID=chb_index_name
    
    # Optional (with defaults)
-   EXT_MODEL_ID=gemini-2.5-flash-lite
-   EXT_MODEL_TEMPERATURE=0.3
-   EXT_MODEL_MAXTOKENS=4096
-   LOG_LEVEL=info
+   CHB_MODEL_ID=gemini-2.5-flash-lite
+   CHB_MODEL_TEMPERATURE=0.3
+   CHB_MODEL_MAXTOKENS=4096
    ```
 
 ## Usage
