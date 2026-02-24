@@ -19,7 +19,7 @@ import {
 } from '@/helpers/chatbot.helpers';
 import ChatbotFeedbackForm from '@/components/molecules/ChatbotFeedbackForm/ChatbotFeedbackForm';
 import { useParams } from 'next/navigation';
-import ChatbotChipsContainer from '../ChatbotChipsContainer/ChatbotChipsContainer';
+import ChatbotChipsContainer from '@/components/molecules/ChatbotChipsContainer/ChatbotChipsContainer';
 
 type ChatProps = {
   queries: Query[];
