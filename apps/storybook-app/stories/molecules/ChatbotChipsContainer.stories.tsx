@@ -16,13 +16,34 @@ const decorator: Decorator = (story) => (
 export const Showcase: StoryObj<typeof ChatbotChipsContainer> = {
   args: {
     chips: [
-      { label: 'Documentazione API' },
-      { label: "Calcolare l'importo dovuto" },
-      { label: 'Verificare la regolarità dei pagamenti' },
-      { label: 'Ottenere un rimborso' },
-      { label: 'Richiedere assistenza' },
-      { label: 'Visualizzare lo storico pagamenti' },
-      { label: 'Scaricare ricevute' },
+      {
+        label: 'Documentazione API',
+        question: 'Mostrami la documentazione API',
+      },
+      {
+        label: "Calcolare l'importo dovuto",
+        question: "Come posso calcolare l'importo dovuto?",
+      },
+      {
+        label: 'Verificare la regolarità dei pagamenti',
+        question: 'Come posso verificare la regolarità dei pagamenti?',
+      },
+      {
+        label: 'Ottenere un rimborso',
+        question: 'Come posso ottenere un rimborso?',
+      },
+      {
+        label: 'Richiedere assistenza',
+        question: 'Come posso richiedere assistenza?',
+      },
+      {
+        label: 'Visualizzare lo storico pagamenti',
+        question: 'Come posso visualizzare lo storico dei pagamenti?',
+      },
+      {
+        label: 'Scaricare ricevute',
+        question: 'Come posso scaricare le ricevute?',
+      },
     ],
   },
   decorators: [decorator],
