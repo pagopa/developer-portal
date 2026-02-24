@@ -2,6 +2,7 @@
 name: chatbot
 
 services:
+  # api service emulates the API server, the main entrypoint of the application
   api:
     platform: linux/amd64
     build:
@@ -30,11 +31,12 @@ services:
       sqs_evaluate_listener:
         condition: service_started
 
+  # evaluate service emulates the AWS Lambda function that listen the SQS queue
   evaluate:
     build:
       context: ../../chatbot-evaluate
       dockerfile: ../chatbot-evaluate/docker/lambda.local.Dockerfile
-    env_file: ../.env.local
+    env_file: ../../chatbot-evaluate/.env.local
     environment:
       - PYTHONPATH=/var/task
     volumes:
@@ -43,6 +45,7 @@ services:
     entrypoint: [ "/usr/local/bin/aws-lambda-rie", "python3" ]
     command: [ "-m", "awslambdaric", "src.lambda_function.lambda_handler" ]
 
+  # refresh-index service emulates the AWS Lambda function
   refresh-index:
     platform: linux/amd64
     build:
@@ -61,6 +64,7 @@ services:
     entrypoint: [ "/usr/local/bin/aws-lambda-rie", "python3" ]
     command: [ "-m", "awslambdaric", "src.lambda_refresh_index.lambda_handler" ]
 
+  # create-index service emulates the Github action
   create-index:
     build:
       context: ../../chatbot-index
@@ -74,11 +78,12 @@ services:
       redis:
         condition: service_started
 
+  # monitor service emulates the AWS Lambda function that listen the SQS queue
   monitor:
     build:
       context: ../../chatbot-monitor
       dockerfile: ../chatbot-monitor/docker/lambda_monitor.local.Dockerfile
-    env_file: ../.env.local
+    env_file: ../../chatbot-monitor/.env.local
     environment:
       - PYTHONPATH=/var/task
     volumes:
@@ -96,7 +101,7 @@ services:
       retries: 10
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    env_file: ../.env.local
+    env_file: ../.env.langfuse
 
   dynamodb:
     image: amazon/dynamodb-local:2.5.2

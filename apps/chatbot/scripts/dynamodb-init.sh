@@ -5,7 +5,7 @@ AWS_ENDPOINT_URL=${AWS_ENDPOINT_URL:-"http://motoserver:5000"}
 
 aws dynamodb create-table \
   --endpoint-url $AWS_ENDPOINT_URL \
-  --cli-input-json file://./docker/files/dynamodb_schemas/$environment/sessions.json \
+  --cli-input-json file://./docker/files/dynamodb_schemas/$ENVIRONMENT/sessions.json \
   --region $AWS_REGION
 
 aws dynamodb update-time-to-live \
@@ -16,7 +16,7 @@ aws dynamodb update-time-to-live \
 
 aws dynamodb create-table \
   --endpoint-url $AWS_ENDPOINT_URL \
-  --cli-input-json file://./docker/files/dynamodb_schemas/$environment/queries.json \
+  --cli-input-json file://./docker/files/dynamodb_schemas/$ENVIRONMENT/queries.json \
   --region $AWS_REGION
 
 aws dynamodb update-time-to-live \
@@ -27,7 +27,7 @@ aws dynamodb update-time-to-live \
 
 aws dynamodb create-table \
 --endpoint-url $AWS_ENDPOINT_URL \
---cli-input-json file://./docker/files/dynamodb_schemas/$environment/salts.json \
+--cli-input-json file://./docker/files/dynamodb_schemas/$ENVIRONMENT/salts.json \
 --region $AWS_REGION
 
 aws dynamodb update-time-to-live \
