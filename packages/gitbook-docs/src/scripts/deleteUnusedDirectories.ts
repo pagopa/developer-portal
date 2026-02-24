@@ -110,6 +110,7 @@ async function main() {
     const directoriesToDelete: string[] = s3DirNames.dirNames.filter(
       (dirName) => !setDirNames.has(dirName)
     );
+    console.log(`Directories to delete: ${directoriesToDelete.join(', ')}`);
     await Promise.all(
       directoriesToDelete.map((dirName) =>
         deleteS3Directory(
