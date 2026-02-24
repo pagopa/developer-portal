@@ -1,8 +1,7 @@
+import { ApiDataListPagesRepository } from '@/lib/apiDataListPages';
 import { Product } from './types/product';
 import { Webinar } from '@/lib/types/webinar';
 import {
-  getApiDataListPagesProps,
-  getApiDataProps,
   getCaseHistoriesProps,
   getGuideListPagesProps,
   getGuidePageProps,
@@ -181,7 +180,7 @@ export async function getCaseHistory(locale: string, caseHistorySlug?: string) {
 }
 
 export async function getApiDataParams(locale: string) {
-  const props = (await getApiDataListPagesProps(locale)).flatMap(
+  const props = (await ApiDataListPagesRepository.getAll(locale)).flatMap(
     (apiDataListPageProps) =>
       apiDataListPageProps.apiDetailSlugs.map((apiDataSlug) => ({
         productSlug: apiDataListPageProps.product.slug,
@@ -193,25 +192,9 @@ export async function getApiDataParams(locale: string) {
   return props || [];
 }
 
-export async function getApiDataListPages(locale: string, productSlug: string) {
-  const props = (await getApiDataListPagesProps(locale)).find(
-    (apiDataListPageProps) => apiDataListPageProps.product.slug === productSlug
-  );
-  return props;
-}
-
 export async function getProduct(locale: string, productSlug: string) {
   const props = (await getProductsProps(locale)).find(
     (product) => product.slug === productSlug
-  );
-  return props;
-}
-
-export async function getApiData(locale: string, apiDataSlug: string) {
-  const props = manageUndefined(
-    (await getApiDataProps(locale)).find(
-      (apiData) => apiData.apiDataSlug === apiDataSlug
-    )
   );
   return props;
 }
