@@ -22,7 +22,7 @@ const ChatbotChipsContainer = ({ chips }: ChatbotChipsContainerProps) => {
           flexWrap: 'wrap',
           gap: '8px',
           justifyContent: 'flex-end',
-          maxWidth: '75%',
+          maxWidth: '85%',
           height: 'fit-content',
           maxHeight: '160px',
           p: '4px',

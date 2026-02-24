@@ -71,12 +71,12 @@ function setFeedbackByQueryId(
 export function getCurrentChipsFromQueries(
   queries: Query[]
 ): readonly ChatbotChip[] {
-  if (!queries || queries.length === 0) {
+  if (queries.length === 0) {
     return [];
   }
 
   const lastQuery = queries[queries.length - 1];
-  if (lastQuery.answer || !lastQuery.chips) {
+  if (!lastQuery.answer || !lastQuery.chips) {
     return [];
   }
 
