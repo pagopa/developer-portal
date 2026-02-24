@@ -16,7 +16,7 @@ import AlertPart from '@/components/atoms/AlertPart/AlertPart';
 import {
   ChatbotErrorsType,
   getCurrentChipsFromQueries,
-} from '@/helpers/chatbot.helper';
+} from '@/helpers/chatbot.helpers';
 import ChatbotFeedbackForm from '@/components/molecules/ChatbotFeedbackForm/ChatbotFeedbackForm';
 import { useParams } from 'next/navigation';
 import ChatbotChipsContainer from '../ChatbotChipsContainer/ChatbotChipsContainer';
