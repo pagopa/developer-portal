@@ -1,6 +1,7 @@
 'use client';
 import { Button, useTheme } from '@mui/material';
 import React from 'react';
+import { useTranslations } from 'next-intl';
 
 export type ChatbotChipProps = {
   label: string;
@@ -11,6 +12,7 @@ export type ChatbotChipProps = {
 
 const ChatbotChip = ({ label, question, onClick }: ChatbotChipProps) => {
   const { palette } = useTheme();
+  const t = useTranslations('chatBot.chip');
 
   const handleClick = onClick
     ? () => {
@@ -22,6 +24,7 @@ const ChatbotChip = ({ label, question, onClick }: ChatbotChipProps) => {
     <Button
       variant={'outlined'}
       onClick={handleClick}
+      aria-label={t('ariaLabel', { question: question ?? label })}
       sx={{
         paddingX: '10px',
         paddingY: '2px',
