@@ -1,8 +1,4 @@
-/* eslint-disable functional/no-expression-statements */
-import { pipe } from 'fp-ts/lib/function';
-import * as E from 'fp-ts/lib/Either';
-import { makeBuildConfig } from '@/BuildConfig';
-import { makeBuildEnv } from '@/BuildEnv';
+import { buildEnv } from '@/lib/buildEnv';
 import { makeHomepageProps } from './strapi/makeProps/makeHomepage';
 import { fetchHomepage } from '@/lib/strapi/fetches/fetchHomepage';
 import { makeWebinarsProps } from './strapi/makeProps/makeWebinars';
@@ -16,10 +12,7 @@ import { fetchCaseHistories } from './strapi/fetches/fetchCaseHistories';
 import { makeSolutionsProps } from './strapi/makeProps/makeSolutions';
 import { makeSolutionListPageProps } from './strapi/makeProps/makeSolutionListPage';
 import { fetchSolutionListPage } from './strapi/fetches/fetchSolutionListPage';
-import { fetchApiDataListPages } from './strapi/fetches/fetchApiDataListPages';
-import { makeApiDataListPagesProps } from './strapi/makeProps/makeApiDataListPages';
-import { makeApiDataListProps } from './strapi/makeProps/makeApiDataList';
-import { fetchApiDataList } from './strapi/fetches/fetchApiDataList';
+
 import { fetchProducts } from '@/lib/strapi/fetches/fetchProducts';
 import { makeProductsProps } from './strapi/makeProps/makeProducts';
 import { makeGuideListPagesProps } from './strapi/makeProps/makeGuideListPages';
@@ -28,6 +21,7 @@ import { fetchOverviews } from '@/lib/strapi/fetches/fetchOverviews';
 import { makeOverviewsProps } from '@/lib/strapi/makeProps/makeOverviews';
 import { fetchTutorialListPages } from './strapi/fetches/fetchTutorialListPages';
 import { makeTutorialListPagesProps } from './strapi/makeProps/makeTutorialListPages';
+
 import { fetchUrlReplaceMap } from './strapi/fetches/fetchUrlReplaceMap';
 import { makeUrlReplaceMap } from './strapi/makeProps/makeUrlReplaceMap';
 import { makeReleaseNotesProps } from '@/lib/strapi/makeProps/makeReleaseNotes';
@@ -36,7 +30,7 @@ import {
   makeSolution as makeSolutionS3,
   makeReleaseNote as makeReleaseNoteS3,
 } from '@/helpers/makeS3Docs.helpers';
-import { secrets } from '@/config';
+
 import { fetchWebinarCategories } from '@/lib/strapi/fetches/fetchWebinarCategories';
 import { makeWebinarCategoriesProps } from '@/lib/strapi/makeProps/makeWebinarCategories';
 import {
@@ -60,16 +54,6 @@ import {
 } from 'gitbook-docs/syncedResponses';
 import { StrapiSolutions } from './strapi/types/solutions';
 import { StrapiReleaseNotes } from './strapi/types/releaseNotes';
-
-// a BuildEnv instance ready to be used
-const buildEnv = pipe(
-  makeBuildConfig(Object.keys(secrets).length > 0 ? secrets : process.env),
-  E.map(makeBuildEnv),
-  E.getOrElseW((errors) => {
-    // eslint-disable-next-line functional/no-throw-statements
-    throw errors;
-  })
-);
 
 export const getHomepageProps = async (locale: string) => {
   const strapiHomepage = await fetchHomepage(locale, buildEnv);
@@ -140,16 +124,6 @@ export const getQuickStartGuidesProps = async (locale: string) => {
 export const getUrlReplaceMapProps = async (locale: string) => {
   const strapiUrlReplaceMap = await fetchUrlReplaceMap(locale, buildEnv);
   return makeUrlReplaceMap(locale, strapiUrlReplaceMap);
-};
-
-export const getApiDataListPagesProps = async (locale: string) => {
-  const strapiApiDataListPages = await fetchApiDataListPages(locale, buildEnv);
-  return makeApiDataListPagesProps(locale, strapiApiDataListPages);
-};
-
-export const getApiDataProps = async (locale: string) => {
-  const strapiApiDataList = await fetchApiDataList(locale, buildEnv);
-  return await makeApiDataListProps(locale, strapiApiDataList);
 };
 
 export const getCaseHistoriesProps = async (locale: string) => {
