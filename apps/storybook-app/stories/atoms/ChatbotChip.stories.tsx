@@ -16,6 +16,7 @@ const decorator: Decorator = (story) => (
 export const Showcase: StoryObj<typeof ChatbotChip> = {
   args: {
     label: 'Storico pagamenti',
+    question: 'Visualizza lo storico dei pagamenti',
   },
   decorators: [decorator],
 };
