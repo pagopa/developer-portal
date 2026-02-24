@@ -107,6 +107,7 @@ async function main() {
     const s3DirNames: { dirNames: string[] } = JSON.parse(s3DirNamesContent);
     console.log('FOUND s3DirNames:', s3DirNames.dirNames.join(', '));
     const setDirNames = new Set(strapiDirNames.dirNames);
+    console.log('FOUND setDirNames:', [...setDirNames].join(', '));
 
     const directoriesToDelete: string[] = s3DirNames.dirNames.filter(
       (dirName) => !setDirNames.has(dirName)
