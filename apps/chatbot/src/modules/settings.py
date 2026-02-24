@@ -51,8 +51,6 @@ def get_ssm_parameter(name: str | None, default: str | None = None) -> str | Non
         str | None: The value of the parameter, or the default value if not found.
     """
 
-    LOGGER.info(f"get_ssm_parameter {name}...")
-
     if name is None:
         name = "none-params-in-ssm"
     try:
