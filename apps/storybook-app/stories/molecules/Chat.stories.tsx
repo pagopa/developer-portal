@@ -75,14 +75,17 @@ export const QueryWithChips: StoryObj<typeof Chat> = {
           },
           {
             label: 'Richiedere assistenza',
+            question: 'Come posso richiedere assistenza?',
             knowledgeBase: 'support',
           },
           {
             label: 'Visualizzare lo storico pagamenti',
+            question: 'Come posso visualizzare lo storico dei pagamenti?',
             knowledgeBase: 'payment-history',
           },
           {
             label: 'Scaricare ricevute',
+            question: 'Come posso scaricare le ricevute?',
             knowledgeBase: 'receipt-download',
           },
         ],
