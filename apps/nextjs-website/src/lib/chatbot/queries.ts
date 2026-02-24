@@ -4,6 +4,7 @@ export type Query = {
   readonly question: string;
   readonly queriedAt: string;
   readonly answer: string | null;
+  readonly knowledgeBase: string | null;
   readonly createdAt: string | null;
   readonly badAnswer?: boolean;
   readonly chips?: readonly ChatbotChip[];
