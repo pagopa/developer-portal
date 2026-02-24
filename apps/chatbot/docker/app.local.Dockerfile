@@ -28,15 +28,16 @@ RUN curl -Lo /usr/local/bin/aws-lambda-rie \
 WORKDIR /app
 COPY ./pyproject.toml .
 COPY ./poetry.lock .
+
+RUN poetry config virtualenvs.create false
+RUN poetry install --with dev
+
 COPY ./CHANGELOG.md .
 COPY ./src ./src
 COPY ./config ./config
 COPY ./scripts ./scripts
 COPY ./notebooks ./notebooks
 COPY ./.google_service_account.json .
-
-RUN poetry config virtualenvs.create false
-RUN poetry install --with dev
 
 RUN python ./scripts/nltk_download.py
 

@@ -47,7 +47,7 @@ services:
     platform: linux/amd64
     build:
       context: ../../chatbot-index
-      dockerfile: ../chatbot-index/docker/lambda_refresh_index.Dockerfile
+      dockerfile: ../chatbot-index/docker/lambda_refresh_index.local.Dockerfile
     env_file: ../../chatbot-index/.env.local
     environment:
       - PYTHONPATH=/var/task
@@ -64,7 +64,7 @@ services:
   create-index:
     build:
       context: ../../chatbot-index
-      dockerfile: ../chatbot-index/docker/create_index.Dockerfile
+      dockerfile: ../chatbot-index/docker/create_index.local.Dockerfile
     command: poetry run python ../chatbot-index/src/modules/create_vector_index.py
     env_file: ../../chatbot-index/.env.local
     volumes:
@@ -77,7 +77,7 @@ services:
   monitor:
     build:
       context: ../../chatbot-monitor
-      dockerfile: ../chatbot-monitor/docker/lambda.local.Dockerfile
+      dockerfile: ../chatbot-monitor/docker/lambda_monitor.local.Dockerfile
     env_file: ../.env.local
     environment:
       - PYTHONPATH=/var/task
