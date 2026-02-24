@@ -10,12 +10,6 @@ module "lambda_resync" {
     AC_BASE_URL_PARAM          = module.active_campaign_base_url.ssm_parameter_name
     COGNITO_USER_POOL_ID       = var.cognito_user_pool.id
     DYNAMO_WEBINARS_TABLE_NAME = var.webinar_subscriptions_ddb.name
-    # Custom field id
-    AC_CONTACT_JOB_ROLE_FIELD_ID     = "1"
-    AC_COMPANY_TYPE_FIELD_ID         = "2"
-    AC_MAILINGLIST_ACCEPTED_FIELD_ID = var.environment == "dev" ? "4" : "3"
-    AC_SURVEY_ACCEPTED_FIELD_ID      = var.environment == "dev" ? "5" : "4"
-    AC_PREFERRED_LANGUAGE_FIELD_ID   = var.environment == "dev" ? "6" : "5"
   }
 
   runtime       = "nodejs20.x"
