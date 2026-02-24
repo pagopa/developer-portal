@@ -1,27 +1,29 @@
 # PagoPA Chatbot
 
-This folder contains all the details to build a multi agentic system with RAG using the documentation provided in [`PagoPA Developer Portal`](https://developer.pagopa.it/).
+This folder contains all the details to build a multi-agentic system (a system composed of multiple collaborating AI agents) with RAG (Retrieval-Augmented Generation, which enhances responses by retrieving relevant information from external sources) using the documentation provided in [`PagoPA Developer Portal`](https://developer.pagopa.it/).
 
-This chatbot uses [Google](https://ai.google.dev/) as provider, indeed the LLM and the embedder chosen are part of the [Gemini](https://ai.google.dev/gemini-api/docs/models) family.
+This chatbot uses [Google](https://ai.google.dev/) as provider; specifically, it uses the Gemini Pro LLM and the Gemini Pro Embedder models from the [Gemini](https://ai.google.dev/gemini-api/docs/models) family.
 Even though the provider is Google, we stored its Gemini API key in the AWS SSM parameter store.
 
-The multi agentic system and the Retrieval-Augmented Generation (RAG) tools are implemented using [llama-index](https://docs.llamaindex.ai/en/stable/). All the environmental variables, parameters, and prompts are listed and loaded in `src/modules/settings.py`.
+The multi agentic system and the Retrieval-Augmented Generation (RAG) tools are implemented using [llama-index](https://docs.llamaindex.ai/en/stable/).
 
+> **Note:** The environmental variables, parameters, and prompts referenced in `src/modules/settings.py` pertain to the Python backend service. If you are working with the TypeScript codebase, settings are managed via environment files (e.g., `.env.local`) and TypeScript configuration files.
 
+The LLM observability is done using [Langfuse](https://langfuse.com/) deployed on AWS.
 
-The monitoring is done using [Langfuse](https://langfuse.com/) deployed on AWS.
+This folder contains the code and the API that are deployed in an AWS lambda function called **AWS lambda API**, read below for furher information.
 
 ## Docker
 
-The Docker Compose is set to emulate the deployed application in AWS using [Motoserver](https://docs.getmoto.org/en/latest/). The infrastructure uses three AWS lambdas:
+The Docker Compose is set to emulate the deployed application in AWS using [Motoserver](https://docs.getmoto.org/en/latest/). The infrastructure uses multiple AWS lambdas:
 
-- [**AWS lambda API**](./README.md): receive the user's question and return the generated answer;
-- [**AWS lambda Monitor**](../chatbot-monitor/README.md): receive a payload from the **AWS lambda API** and creates a trace in Langfuse and stores in DynamoDB the chat history.
-- [**AWS lambda Evaluate**](../chatbot-evaluate/README.md): receive a payload from the **AWS lambda Monitor**, calculates the answer-relancy, the context precision, and the faithfulness between user's question, the generated answer, and the retrieved context. Successively this lambda send back a payload to the **AWS lambda Monitor** that stores such scores in Langfuse in the relative trace.
+- **AWS lambda API**: receives the user's question and returns the generated answer. Moreover, it sends a payload to a **AWS SQS Monitor**.
+- [**AWS lambda Monitor**](../chatbot-monitor/README.md): retrieves the payload from **AWS SQS Monitor** placed by **AWS lambda API** and creates a trace in Langfuse and stores in DynamoDB the chat history. Subsequently sends a payload to **AWS SQS Evaluate** to generate the scores for such trace.
+- [**AWS lambda Evaluate**](../chatbot-evaluate/README.md): retrieves the payload from **AWS SQS Evaluate** put by **AWS lambda Monitor** and calculates the answer-relevancy, the context precision, and the faithfulness between user's question, the generated answer, and the retrieved context. Subsequently, it sends back a payload to the **AWS SQS Monitor** which will be retrieved by the **AWS lambda Monitor** and writes the scores to the relative Langfuse trace.
 
 ![Architecture-flow-diagram](./images/flow-diagram.png)
 
-Moreover, there is a fourth AWS lambda, the [**AWS lambda Refresh Index**](../chatbot-index/README.md), which is triggered when a file in AWS S3 is added, updated, or removed. It refreshes the vector index by scraping the documentation and updating the Redis store.
+Moreover, there is a fourth AWS lambda, the [**AWS lambda Refresh Index**](../chatbot-index/README.md), which is triggered when a file in **AWS S3** is added, updated, or removed. It refreshes the vector index by scraping the documentation and updating the Redis store.
 
 ### Getting started
 
