@@ -8,7 +8,7 @@ services:
       context: ..
       dockerfile: docker/lambda_monitor.test.Dockerfile
     command: [ "src.lambda_function.lambda_handler" ]
-    env_file: ../../chatbot/.env.test
+    env_file: ../.env.test
     volumes:
       - ./files/.aws:/home/appuser/.aws
     depends_on:
