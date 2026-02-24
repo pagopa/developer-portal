@@ -87,6 +87,11 @@ def read_payload(payload: dict) -> Tuple[List[StaticMetadata], List[str], List[s
             if object_key != DIRNAMES_TO_REMOVE_PATH:
                 try:
                     folders_list = get_folders_list()
+                    LOGGER.info(f">>>>>>>>>>>> Object key: {object_key}")
+                    LOGGER.info(f">>>>>>>>>>>> Got folders list: {folders_list}")
+                    LOGGER.info(
+                        f">>>>>>>>>>>> Folder name: {object_key.split(DOCS_PARENT_FOLDER)[1].split('/')[0]}"
+                    )
                     metadata = get_one_metadata_from_s3(
                         object_key.split(DOCS_PARENT_FOLDER)[1].split("/")[0],
                         folders_list=folders_list,
