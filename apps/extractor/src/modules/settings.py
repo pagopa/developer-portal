@@ -27,7 +27,7 @@ class ExtractorSettings(BaseSettings):
     model_id: str = os.getenv("CHB_MODEL_ID", "gemini-2.5-flash-lite")
     temperature: float = float(os.getenv("CHB_MODEL_TEMPERATURE", "0.3"))
     max_tokens: int = int(os.getenv("CHB_MODEL_MAXTOKENS", "2048"))
-    provider: str = os.getenv("EXT_PROVIDER", "google")
+    provider: str = os.getenv("CHB_PROVIDER", "google")
 
     # Prompts
     content_cleaning_prompt: str = PROMPTS["content_cleaning_prompt"]
