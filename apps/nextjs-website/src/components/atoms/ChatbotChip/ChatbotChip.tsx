@@ -2,7 +2,7 @@
 import { Button, useTheme } from '@mui/material';
 import React from 'react';
 
-type ChatbotChipProps = {
+export type ChatbotChipProps = {
   label: string;
   question?: string;
   // eslint-disable-next-line functional/no-return-void
@@ -12,10 +12,16 @@ type ChatbotChipProps = {
 const ChatbotChip = ({ label, question, onClick }: ChatbotChipProps) => {
   const { palette } = useTheme();
 
+  const handleClick = onClick
+    ? () => {
+        onClick(question ?? label);
+      }
+    : undefined;
+
   return (
     <Button
       variant={'outlined'}
-      onClick={() => onClick?.(question ?? label)}
+      onClick={handleClick}
       sx={{
         paddingX: '10px',
         paddingY: '2px',
