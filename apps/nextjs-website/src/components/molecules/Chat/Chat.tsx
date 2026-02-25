@@ -23,7 +23,7 @@ import ChatbotChipsContainer from '@/components/molecules/ChatbotChipsContainer/
 
 type ChatProps = {
   queries: Query[];
-  onSendQuery: (query: string, knowledgeBase?: string) => null;
+  onSendQuery: (query: string, knowledgeBase?: string) => void;
   onSendFeedback: (
     hasNegativeFeedback: boolean,
     sessionId: string,
