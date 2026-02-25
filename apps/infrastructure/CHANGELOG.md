@@ -1,5 +1,11 @@
 # infrastructure
 
+## 8.3.0
+
+### Minor Changes
+
+- 0a34321: Lambda active campaigns update environment variables
+
 ## 8.2.0
 
 ### Minor Changes
