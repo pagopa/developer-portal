@@ -107,7 +107,7 @@ async function extractUrlsFromSitemap(
     return urls
       .map((entry) => (typeof entry === "string" ? entry : entry?.loc))
       .filter(Boolean)
-      .map((loc) => RemoveAnchorsFromUrl(loc.replace(/\/$/, "")));
+      .map((loc) => RemoveAnchorsFromUrl(loc));
   }
   if (doc.sitemapindex?.sitemap) {
     const aggregated: string[] = [];
