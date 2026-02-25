@@ -120,8 +120,10 @@ async function main(): Promise<void> {
       );
     }
     const alreadyParsed = new Set(Array.from(allParsedPages.keys()));
-    const toParse = sitemapUrls.filter(
-      (url) => !alreadyParsed.has(buildVisitKey(url)),
+    const toParse = Array.from(new Set(sitemapUrls)).filter(
+      (url) =>
+        !alreadyParsed.has(buildVisitKey(url)) &&
+        isWithinScope(url, BASE_SCOPE, VALID_DOMAIN_VARIANTS),
     );
     if (toParse.length > 0) {
       console.log(
@@ -131,9 +133,6 @@ async function main(): Promise<void> {
       );
       const pagesFromCrawlSize = allParsedPages.size;
       for (const url of toParse) {
-        if (!isWithinScope(url, BASE_SCOPE, VALID_DOMAIN_VARIANTS)) {
-          continue;
-        }
         try {
           const metadata = await generatePageParsedMetadata(
             browser,
