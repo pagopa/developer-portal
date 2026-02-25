@@ -3,7 +3,7 @@ import ChatMessage, {
 } from '@/components/atoms/ChatMessage/ChatMessage';
 import { Box, Button, Paper, Stack, useTheme } from '@mui/material';
 import ChatInputText from '@/components/atoms/ChatInputText/ChatInputText';
-import React, { use, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { History } from '@mui/icons-material';
 import { ChatbotChip, Query } from '@/lib/chatbot/queries';
 import { compact } from 'lodash';
