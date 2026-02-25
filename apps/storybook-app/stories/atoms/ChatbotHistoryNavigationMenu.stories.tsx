@@ -1,7 +1,6 @@
 import { Meta, StoryObj } from '@storybook/nextjs';
 import ChatbotHistoryNavigationMenu from '../../../nextjs-website/src/components/atoms/ChatbotHistoryNavigationMenu/ChatbotHistoryNavigationMenu';
 import { mockText } from '../mock-content.helper';
-import { nextIntlContextDecorator } from '../next-intl-context.helper';
 
 const meta: Meta<typeof ChatbotHistoryNavigationMenu> = {
   title: 'Atoms/ChatbotHistoryNavigationMenu',
@@ -21,5 +20,4 @@ export const Showcase: StoryObj<typeof ChatbotHistoryNavigationMenu> = {
       sessionTitle: mockText(5),
     },
   },
-  decorators: [nextIntlContextDecorator],
 };
