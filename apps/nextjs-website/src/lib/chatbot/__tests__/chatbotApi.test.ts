@@ -238,7 +238,12 @@ describe('chatbotApi', () => {
         },
       ],
     };
-    expect(await actual).toStrictEqual(expected);
+    const result = await actual;
+    expect(result).toStrictEqual(expected);
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    const [, options] = fetchMock.mock.calls[0];
+    const parsedBody = JSON.parse(options.body);
+    expect(parsedBody.knowledgeBase).toBe('aKnowledgeBase');
   });
   it('chatbotApi::getQueries with chips should return the queries of a session given a 200 response', async () => {
     const { env, fetchMock } = makeTestEnv();
