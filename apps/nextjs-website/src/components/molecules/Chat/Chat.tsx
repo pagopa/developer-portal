@@ -23,6 +23,7 @@ import ChatbotChipsContainer from '@/components/molecules/ChatbotChipsContainer/
 
 type ChatProps = {
   queries: Query[];
+  // eslint-disable-next-line functional/no-return-void
   onSendQuery: (query: string, knowledgeBase?: string) => void;
   onSendFeedback: (
     hasNegativeFeedback: boolean,
