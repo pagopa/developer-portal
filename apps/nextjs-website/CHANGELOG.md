@@ -1,5 +1,15 @@
 # nextjs-website
 
+## 16.1.1
+
+### Patch Changes
+
+- 0b75588: Fix sitemap when hompage is missing in some locale
+- 94a7407: Removed cache from S3 metadata helper
+- c190736: Add locale support to WebinarListItem for dynamic link generation and Add locale to authentication link in Chatobot's guest message
+- Updated dependencies [700e934]
+  - gitbook-docs@1.8.2
+
 ## 16.1.0
 
 ### Minor Changes
