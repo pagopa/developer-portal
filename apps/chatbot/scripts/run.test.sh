@@ -1,9 +1,9 @@
 #!/bin/bash
 
 AWS_REGION=${AWS_REGION:-"us-east-1"}
-AWS_ENDPOINT_URL=${AWS_ENDPOINT_URL:-"http://motoserver:3000"}
+AWS_ENDPOINT_URL=${AWS_ENDPOINT_URL:-"http://motoserver:5000"}
 
-echo "-=-=-=-= environment: $environment"
+echo "-=-=-=-= ENVIRONMENT: $ENVIRONMENT"
 echo "-=-=-=-= AWS_ENDPOINT_URL: $AWS_ENDPOINT_URL"
 echo "-=-=-=-= AWS_REGION: $AWS_REGION"
 
@@ -13,4 +13,5 @@ echo '-=-=-=-= init AWS local services'
 ./scripts/sqs-init.sh > /dev/null 2>&1
 
 echo '-=-=-=-= run pytest'
-poetry run pytest src/app
+rm -rf .pytest_cache 2>/dev/null || true
+pytest src/app

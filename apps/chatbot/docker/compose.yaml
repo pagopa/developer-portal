@@ -2,18 +2,19 @@
 name: chatbot
 
 services:
+  # api service emulates the API server, the main entrypoint of the application
   api:
     platform: linux/amd64
     build:
       context: ..
       dockerfile: docker/app.local.Dockerfile
-    command: "./scripts/run.local.sh"
     env_file: ../.env.local
     ports:
       - "8080:8080"
     volumes:
       - ..:/app
-      - ./files/.aws:/root/.aws
+      - ./files/.aws:/home/appuser/.aws
+    command: ["sh", "-c", "./scripts/run.local.sh"]
     depends_on:
       redis:
         condition: service_started
@@ -25,33 +26,34 @@ services:
         condition: service_started
       motoserver:
         condition: service_started
-      evaluate:
+      sqs_monitor_listener:
+        condition: service_started
+      sqs_evaluate_listener:
         condition: service_started
 
+  # evaluate service emulates the AWS Lambda function that listen the SQS queue
   evaluate:
     build:
       context: ../../chatbot-evaluate
-      dockerfile: ../chatbot-evaluate/docker/lambda.Dockerfile
-    env_file: ../.env.local
+      dockerfile: ../chatbot-evaluate/docker/lambda.local.Dockerfile
+    env_file: ../../chatbot-evaluate/.env.local
     environment:
       - PYTHONPATH=/var/task
-    ports:
-      - "8081:8080"
     volumes:
       - ../chatbot-evaluate:/app
+      - ./files/.aws:/home/appuser/.aws
     entrypoint: ["/usr/local/bin/aws-lambda-rie", "python3"]
     command: ["-m", "awslambdaric", "src.lambda_function.lambda_handler"]
 
+  # refresh-index service emulates the AWS Lambda function
   refresh-index:
     platform: linux/amd64
     build:
       context: ../../chatbot-index
-      dockerfile: ../chatbot-index/docker/lambda_refresh_index.Dockerfile
+      dockerfile: ../chatbot-index/docker/lambda_refresh_index.local.Dockerfile
     env_file: ../../chatbot-index/.env.local
     environment:
       - PYTHONPATH=/var/task
-    ports:
-      - "8082:8080"
     volumes:
       - ../chatbot-index:/app
     depends_on:
@@ -62,6 +64,7 @@ services:
     entrypoint: ["/usr/local/bin/aws-lambda-rie", "python3"]
     command: ["-m", "awslambdaric", "src.lambda_refresh_index.lambda_handler"]
 
+  # create-index service emulates the Github action
   create-index:
     build:
       context: ../../chatbot-index
@@ -69,13 +72,27 @@ services:
     command: /app/scripts/run.create.index.sh
     env_file: ../../chatbot-index/.env.local
     volumes:
-      - ./files/.aws:/root/.aws
+      - ./files/.aws:/home/appuser/.aws
       - ./files/s3:/app/files/s3
     depends_on:
       redis:
         condition: service_started
       motoserver:
         condition: service_started
+
+  # monitor service emulates the AWS Lambda function that listen the SQS queue
+  monitor:
+    build:
+      context: ../../chatbot-monitor
+      dockerfile: ../chatbot-monitor/docker/lambda_monitor.local.Dockerfile
+    env_file: ../../chatbot-monitor/.env.local
+    environment:
+      - PYTHONPATH=/var/task
+    volumes:
+      - ../chatbot-monitor:/app
+      - ./files/.aws:/home/appuser/.aws
+    entrypoint: ["/usr/local/bin/aws-lambda-rie", "python3"]
+    command: ["-m", "awslambdaric", "src.lambda_function.lambda_handler"]
 
   postgres:
     image: postgres:17.2-alpine
@@ -84,11 +101,9 @@ services:
       interval: 3s
       timeout: 3s
       retries: 10
-    ports:
-      - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    env_file: ../.env.local
+    env_file: ../.env.langfuse
 
   dynamodb:
     image: amazon/dynamodb-local:2.5.2
@@ -99,9 +114,9 @@ services:
 
   redis:
     image: redis/redis-stack:7.2.0-v13
-    ports:
-      - "6379:6379"
-      - "8001:8001"
+    # ports:
+    #   - "6379:6379"
+    #   - "8001:8001"
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 3s
@@ -152,7 +167,7 @@ services:
     ports:
       - 8888:8888
     volumes:
-      - ./files/.aws:/root/.aws
+      - ./files/.aws:/home/appuser/.aws
     env_file: ../.env.local
     depends_on:
       motoserver:
@@ -166,11 +181,8 @@ services:
     command: jupyter-lab --no-browser --allow-root --ip=0.0.0.0
 
   motoserver:
-    image: motoserver/moto:5.1.14
-    environment:
-      - MOTO_PORT=3002
-    ports:
-      - "3002:3002"
+    image: motoserver/moto:5.1.21
+    env_file: ../.env.local
 
   langfuse-worker:
     image: docker.io/langfuse/langfuse-worker:3.115
@@ -242,6 +254,38 @@ services:
       timeout: 10s
       retries: 10
       start_period: 5s
+
+  sqs_monitor_listener:
+    build:
+      context: ..
+      dockerfile: docker/sqs_to_lambda.Dockerfile
+    env_file: ../.env.local
+    environment:
+      - PYTHONUNBUFFERED=1
+    command: python scripts/sqs_to_lambda.py --queue monitor
+    volumes:
+      - ./files/.aws:/home/appuser/.aws
+    depends_on:
+      monitor:
+        condition: service_started
+      motoserver:
+        condition: service_started
+
+  sqs_evaluate_listener:
+    build:
+      context: ..
+      dockerfile: docker/sqs_to_lambda.Dockerfile
+    env_file: ../.env.local
+    environment:
+      - PYTHONUNBUFFERED=1
+    command: python scripts/sqs_to_lambda.py --queue evaluate
+    volumes:
+      - ./files/.aws:/home/appuser/.aws
+    depends_on:
+      evaluate:
+        condition: service_started
+      motoserver:
+        condition: service_started
 
 volumes:
   postgres_data:

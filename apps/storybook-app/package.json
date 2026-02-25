@@ -7,19 +7,23 @@
     "build-storybook": "storybook build"
   },
   "devDependencies": {
+    "@emotion/react": "11.10.5",
+    "@emotion/styled": "11.10.5",
+    "@fontsource/titillium-web": "^5.2.8",
+    "@mui/material": "^5.16.14",
+    "@storybook/addon-docs": "^9.1.4",
     "@storybook/addon-links": "^9.1.4",
     "@storybook/addon-onboarding": "^9.1.4",
     "@storybook/nextjs": "^9.1.4",
     "@types/dotenv-webpack": "^7.0.7",
     "dotenv-webpack": "^8.1.0",
-    "lazy-universal-dotenv": "^4.0.0",
     "eslint": "8.47.0",
     "eslint-config-custom": "*",
     "eslint-config-next": "^15.0.3",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "storybook": "^9.1.4",
     "eslint-plugin-storybook": "9.1.4",
-    "@storybook/addon-docs": "^9.1.4"
+    "lazy-universal-dotenv": "^4.0.0",
+    "react": "^19.0.0-rc-66855b96-20241106",
+    "react-dom": "^19.0.0-rc-66855b96-20241106",
+    "storybook": "^9.1.4"
   }
 }

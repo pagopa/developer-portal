@@ -1,6 +1,5 @@
 import { Meta, StoryObj } from '@storybook/nextjs';
 import SolutionListTemplate from '../../../nextjs-website/src/components/templates/SolutionListTemplate/SolutionListTemplate';
-import { nextIntlContextDecorator } from '../next-intl-context.helper';
 
 const meta: Meta<typeof SolutionListTemplate> = {
   title: 'Templates/SolutionListTemplate',
@@ -10,7 +9,6 @@ const meta: Meta<typeof SolutionListTemplate> = {
 export default meta;
 
 export const Showcase: StoryObj<typeof SolutionListTemplate> = {
-  decorators: [nextIntlContextDecorator],
   args: {
     hero: {
       backgroundImage: 'https://developer.pagopa.it/images/hero.jpg',
