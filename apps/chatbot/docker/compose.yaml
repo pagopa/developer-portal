@@ -103,7 +103,7 @@ services:
       retries: 10
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    env_file: ../.env.langfuse
+    env_file: ../../chatbot-monitor/.env.langfuse
 
   dynamodb:
     image: amazon/dynamodb-local:2.5.2
@@ -197,14 +197,14 @@ services:
         condition: service_healthy
     ports:
       - 127.0.0.1:3030:3030
-    env_file: ../.env.langfuse
+    env_file: ../../chatbot-monitor/.env.langfuse
 
   langfuse-web:
     image: docker.io/langfuse/langfuse:3.115
     depends_on: *langfuse-depends-on
     ports:
       - 4001:3000
-    env_file: ../.env.langfuse
+    env_file: ../../chatbot-monitor/.env.langfuse
 
   clickhouse:
     image: docker.io/clickhouse/clickhouse-server:25.8.8.26-alpine

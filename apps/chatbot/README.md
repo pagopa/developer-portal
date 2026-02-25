@@ -58,6 +58,12 @@ Note that there is the docker compose service `redis-seed` that load in Redis a 
 ./docker/docker-compose-run-create_index.sh
 ```
 
+If you want to visualize all the logs that belong to such flow, run:
+
+```bash
+./docker/docker-compose-logs-flow.sh
+```
+
 In the end, if you need to work with `jupyter-lab` and test yourself the chatbot components, you can run:
 
 ```bash
