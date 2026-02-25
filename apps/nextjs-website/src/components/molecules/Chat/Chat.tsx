@@ -60,7 +60,9 @@ const Chat = ({
   const [sessionId, setSessionId] = useState<string>('');
   const [id, setId] = useState<string>('');
   const [isFeedbackFormVisible, setIsFeedbackFormVisible] = useState(false);
-  const [chips, setChips] = useState<readonly ChatbotChip[]>([]);
+  const [chips, setChips] = useState<readonly ChatbotChip[]>(
+    getCurrentChipsFromQueries(queries)
+  );
 
   useEffect(() => {
     setChips(getCurrentChipsFromQueries(queries));
@@ -136,7 +138,6 @@ const Chat = ({
     isAwaitingResponse,
     queriesCount,
   ]);
-  console.log('Last Message: ', messages[messages.length - 1]);
 
   return (
     <>
@@ -195,11 +196,6 @@ const Chat = ({
           {messages.map((message, index) => (
             <Stack
               key={index}
-              ref={
-                index === messages.length - 1 && chips.length === 0
-                  ? scrollRef
-                  : null
-              }
               direction='row'
               width='100%'
               justifyContent={message.isQuestion ? 'flex-end' : 'flex-start'}
@@ -231,7 +227,7 @@ const Chat = ({
           ))}
           {isAwaitingResponse && <ChatbotWriting />}
           {chips.length > 0 && (
-            <Box ref={scrollRef}>
+            <div ref={scrollRef}>
               <ChatbotChipsContainer
                 chips={chips.map((chip) => ({
                   ...chip,
@@ -240,7 +236,7 @@ const Chat = ({
                   },
                 }))}
               />
-            </Box>
+            </div>
           )}
           {error && (
             <Paper
