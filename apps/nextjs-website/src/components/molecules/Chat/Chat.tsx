@@ -3,7 +3,7 @@ import ChatMessage, {
 } from '@/components/atoms/ChatMessage/ChatMessage';
 import { Box, Button, Paper, Stack, useTheme } from '@mui/material';
 import ChatInputText from '@/components/atoms/ChatInputText/ChatInputText';
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { use, useEffect, useMemo, useRef, useState } from 'react';
 import { History } from '@mui/icons-material';
 import { ChatbotChip, Query } from '@/lib/chatbot/queries';
 import { compact } from 'lodash';
@@ -123,6 +123,21 @@ const Chat = ({
     isAwaitingResponse,
     queriesCount,
   ]);
+
+  useEffect(() => {
+    const lastMessage = messages[messages.length - 1];
+    if (!lastMessage || lastMessage.isQuestion || chips.length === 0) {
+      return;
+    }
+
+    const selectChipsMessage = t(
+      'chatBot.responseEnhancements.choseChipsOrWriteMessage'
+    );
+    // eslint-disable-next-line functional/immutable-data
+    messages[
+      messages.length - 1
+    ].text = `${lastMessage.text}\n\n${selectChipsMessage}`;
+  }, [messages, t, chips.length]);
 
   return (
     <>
