@@ -66,8 +66,8 @@ const Chat = ({
     setChips(getCurrentChipsFromQueries(queries));
   }, [queries]);
 
-  const messages = useMemo(
-    () => [
+  const messages = useMemo(() => {
+    const msgs = [
       firstMessage(
         user
           ? t('chatBot.welcomeMessage')
@@ -75,34 +75,46 @@ const Chat = ({
         mustFillFeedbackForm
       ),
       ...compact(
-        queries.flatMap((q) => [
-          q.question && q.queriedAt
-            ? {
-                id: q.id,
-                text: q.question,
-                isQuestion: true,
-                sessionId: q.sessionId,
-                timestamp: q.queriedAt,
-                hasNegativeFeedback: false,
-                mustFillFeedbackForm: mustFillFeedbackForm,
-              }
-            : null,
-          q.answer && q.createdAt
-            ? {
-                id: q.id,
-                text: q.answer,
-                isQuestion: false,
-                sessionId: q.sessionId,
-                timestamp: q.createdAt,
-                hasNegativeFeedback: q.badAnswer || false,
-                mustFillFeedbackForm: mustFillFeedbackForm,
-              }
-            : null,
-        ])
+        queries.flatMap((q) => {
+          return [
+            q.question && q.queriedAt
+              ? {
+                  id: q.id,
+                  text: q.question,
+                  isQuestion: true,
+                  sessionId: q.sessionId,
+                  timestamp: q.queriedAt,
+                  hasNegativeFeedback: false,
+                  mustFillFeedbackForm: mustFillFeedbackForm,
+                }
+              : null,
+            q.answer && q.createdAt
+              ? {
+                  id: q.id,
+                  text: q.answer,
+                  isQuestion: false,
+                  sessionId: q.sessionId,
+                  timestamp: q.createdAt,
+                  hasNegativeFeedback: q.badAnswer || false,
+                  mustFillFeedbackForm: mustFillFeedbackForm,
+                }
+              : null,
+          ];
+        })
       ),
-    ],
-    [user, t, locale, mustFillFeedbackForm, queries]
-  ) satisfies Message[];
+    ];
+    return msgs.map((msg, index) => {
+      if (index !== msgs.length - 1 || msg.isQuestion || chips.length === 0) {
+        return msg;
+      }
+
+      const selectChipsMessage = t(
+        'chatBot.responseEnhancements.choseChipsOrWriteMessage'
+      );
+      // eslint-disable-next-line functional/immutable-data
+      return { ...msg, text: `${msg.text}\n\n${selectChipsMessage}` };
+    });
+  }, [user, t, locale, mustFillFeedbackForm, queries, chips.length]);
 
   const scrollRef = useRef<HTMLDivElement>(null);
   const [queriesCount, setQueriesCount] = useState(0);
@@ -124,21 +136,7 @@ const Chat = ({
     isAwaitingResponse,
     queriesCount,
   ]);
-
-  useEffect(() => {
-    const lastMessage = messages[messages.length - 1];
-    if (!lastMessage || lastMessage.isQuestion || chips.length === 0) {
-      return;
-    }
-
-    const selectChipsMessage = t(
-      'chatBot.responseEnhancements.choseChipsOrWriteMessage'
-    );
-    // eslint-disable-next-line functional/immutable-data
-    messages[
-      messages.length - 1
-    ].text = `${lastMessage.text}\n\n${selectChipsMessage}`;
-  }, [messages, t, chips.length]);
+  console.log('Last Message: ', messages[messages.length - 1]);
 
   return (
     <>
@@ -197,7 +195,11 @@ const Chat = ({
           {messages.map((message, index) => (
             <Stack
               key={index}
-              ref={index === messages.length - 1 ? scrollRef : null}
+              ref={
+                index === messages.length - 1 && chips.length === 0
+                  ? scrollRef
+                  : null
+              }
               direction='row'
               width='100%'
               justifyContent={message.isQuestion ? 'flex-end' : 'flex-start'}
@@ -229,14 +231,16 @@ const Chat = ({
           ))}
           {isAwaitingResponse && <ChatbotWriting />}
           {chips.length > 0 && (
-            <ChatbotChipsContainer
-              chips={chips.map((chip) => ({
-                ...chip,
-                onClick: (query) => {
-                  onSendQuery(query, chip.knowledgeBase);
-                },
-              }))}
-            />
+            <Box ref={scrollRef}>
+              <ChatbotChipsContainer
+                chips={chips.map((chip) => ({
+                  ...chip,
+                  onClick: (query) => {
+                    onSendQuery(query, chip.knowledgeBase);
+                  },
+                }))}
+              />
+            </Box>
           )}
           {error && (
             <Paper
