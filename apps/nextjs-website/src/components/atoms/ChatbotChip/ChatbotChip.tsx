@@ -42,6 +42,7 @@ const ChatbotChip = ({ label, question, onClick }: ChatbotChipProps) => {
 
         '&:hover': {
           border: '1px solid',
+          borderColor: palette.primary.main,
           backgroundColor: palette.primary.main,
           color: palette.primary.contrastText,
         },
