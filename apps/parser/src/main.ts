@@ -84,8 +84,17 @@ async function main(): Promise<void> {
       parsedPages,
       scheduledPages,
       BASE_SCOPE,
-      if (sitemapUrl) {
-        let sitemapXml = "";
+    );
+    console.log("Crawling complete. Checking sitemap for unparsed URLs...");
+    let sitemapUrls: string[] = [];
+    try {
+      const sitemapUrl = getSitemapUrl(env.baseUrl);
+      let sitemapXml = "";
+      if (!isWithinScope(sitemapUrl, BASE_SCOPE, VALID_DOMAIN_VARIANTS)) {
+        console.warn(
+          `Derived sitemap URL ${sitemapUrl} is out of scope. Skipping sitemap parsing.`,
+        );
+      } else {
         try {
           sitemapXml = await fetchRemoteXml(sitemapUrl);
         } catch (err) {
@@ -95,21 +104,6 @@ async function main(): Promise<void> {
             }`,
           );
         }
-        if (sitemapXml) {
-          try {
-            sitemapUrls = await parseSitemapXml(sitemapXml, sitemapUrl);
-          } catch (err) {
-            console.warn(
-              `Sitemap warning: Failed to parse sitemap XML from ${sitemapUrl}: ${
-                (err as Error).message
-              }`,
-            );
-          }
-        }
-      } else {
-        console.warn(
-          "Sitemap warning: Skipping sitemap processing because sitemap URL could not be determined.",
-        );
         if (sitemapXml.trim()) {
           try {
             sitemapUrls = await parseSitemapXml(sitemapXml, sitemapUrl);
