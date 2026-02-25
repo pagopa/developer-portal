@@ -87,6 +87,7 @@ async function main(): Promise<void> {
     );
     console.log("Crawling complete. Checking sitemap for unparsed URLs...");
     let sitemapUrls: string[] = [];
+    let pagesFromCrawlSize: number | undefined = undefined;
     try {
       const sitemapUrl = getSitemapUrl(env.baseUrl);
       let sitemapXml = "";
@@ -125,7 +126,7 @@ async function main(): Promise<void> {
     }
     const alreadyParsed = new Set(Array.from(allParsedPages.keys()));
     const toParse = sitemapUrls.filter(
-      (url) => !alreadyParsed.has(buildVisitKey(url)),
+      (url) => (!alreadyParsed.has(buildVisitKey(url)) && isWithinScope(url, BASE_SCOPE, VALID_DOMAIN_VARIANTS))
     );
     if (toParse.length > 0) {
       console.log(
@@ -133,11 +134,8 @@ async function main(): Promise<void> {
           env.baseUrl,
         )} not seen in crawl...`,
       );
-      const pagesFromCrawlSize = allParsedPages.size;
+      pagesFromCrawlSize = allParsedPages.size;
       for (const url of toParse) {
-        if (!isWithinScope(url, BASE_SCOPE, VALID_DOMAIN_VARIANTS)) {
-          continue;
-        }
         try {
           const metadata = await generatePageParsedMetadata(
             browser,
@@ -168,6 +166,13 @@ async function main(): Promise<void> {
     console.log(
       `Parsing complete! Parsed ${allParsedPages.size} pages. Data saved to ${env.outputDirectory}`,
     );
+    if (pagesFromCrawlSize !== undefined) {
+      if (allParsedPages.size - pagesFromCrawlSize < toParse.length) {
+        console.warn(
+          `Warning: Only parsed ${allParsedPages.size - pagesFromCrawlSize} out of ${toParse.length} URLs from sitemap.`,
+        );
+      }
+    }
   } catch (error) {
     handleError(error);
   }
