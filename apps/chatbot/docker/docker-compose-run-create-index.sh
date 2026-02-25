@@ -1,2 +1,2 @@
 #!/bin/bash
-docker compose -f docker/compose.yaml run create-index
+docker compose -f docker/compose.yaml run --rm create-index
