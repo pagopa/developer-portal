@@ -17,7 +17,7 @@ export function resolveEnv(): EnvConfig {
   const vectorIndexName = process.env.CHB_INDEX_ID?.trim();
   const validDomainVariants = process.env.VALID_DOMAIN_VARIANTS?.trim();
   if (!baseUrl) {
-    throw new Error("Missing required URL. Set URL in .env file.");
+    throw new Error("Missing required URL.");
   }
   const requestTimeoutMs = Number.parseInt(
     process.env.PUBLIC_PARSER_REQUEST_TIMEOUT_MS ??
@@ -27,9 +27,9 @@ export function resolveEnv(): EnvConfig {
   const shouldCreateFilesLocally =
     process.env.SHOULD_CREATE_FILES_LOCALLY === "true";
   const S3BucketName = process.env.S3_BUCKET_NAME?.trim();
-  if (!S3BucketName) {
+  if (!S3BucketName && !shouldCreateFilesLocally) {
     throw new Error(
-      "Missing required S3 Bucket Name. Set S3_BUCKET_NAME in .env file.",
+      "Missing required S3 Bucket Name.",
     );
   }
   const sanitizedBaseUrl = RemoveAnchorsFromUrl(baseUrl);
