@@ -36,7 +36,7 @@ In order to run the chatbot locally for the first time, you need to:
 cp .env.example .env.local
 ```
 
-Remember to do the same for the other services: `chatbot-monitor`, `chatbot-evaluate`, and `chatbot-index`.
+Remember to do the same for the other services: `chatbot-monitor`, `chatbot-evaluate`, and `chatbot-index`. Moreover, in order that the front-end is connected to the chatbot, create a `.env` file in the [nextjs-website](../nextjs-website) folder and set there `NEXT_PUBLIC_CHATBOT_HOST=http://localhost:8080` (check out the [README.md](../../README.md) in the root).
 
 - if you want to use Google as provider, `PROVIDER=google`, you need to create a Google service account (see this [page](https://docs.cloud.google.com/iam/docs/keys-create-delete)), export it into a JSON file, and stored in this folder as `.google_service_account.json`. Otherwise set the provider as `PROVIDER=mock`.
 
