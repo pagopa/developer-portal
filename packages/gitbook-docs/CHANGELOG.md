@@ -1,5 +1,11 @@
 # gitbook-docs
 
+## 1.8.2
+
+### Patch Changes
+
+- 700e934: Add localised path to directories to delete
+
 ## 1.8.1
 
 ### Patch Changes
