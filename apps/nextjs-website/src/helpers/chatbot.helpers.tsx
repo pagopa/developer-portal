@@ -136,6 +136,7 @@ export const useChatbot = (isUserAuthenticated: boolean) => {
     sendChatbotQuery({
       question: queryMessage,
       queriedAt: queriedAt,
+      knowledgeBase: knowledgeBase,
       history: previousQueries.slice(-chatMaxHistoryMessages),
     })
       .then((response) => {
