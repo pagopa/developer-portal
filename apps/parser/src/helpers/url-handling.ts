@@ -7,6 +7,9 @@ const RESERVED_RE = /^\.+$/;
 const WINDOWS_RESERVED_RE = /^(con|prn|aux|nul|com[0-9]|lpt[0-9])$/i;
 const WINDOWS_TRAILING_RE = /[\. ]+$/;
 const DEFAULT_REPLACEMENT = "-";
+const ILLEGAL_RE_UNICODE = /[\/\?<>\\:\*\|"]/u;
+const CONTROL_RE_UNICODE = /[\x00-\x1f\x80-\x9f]/u;
+const FILE_EXTENSION_REGEX = /\.[a-z0-9]+$/;
 
 export function sanitizeUrlAsFilename(
   url: string,
@@ -90,10 +93,7 @@ function validReplacementOrDefault(candidate: string): string {
     );
     return DEFAULT_REPLACEMENT;
   }
-  if (
-    /[\/\?<>\\:\*\|"]/u.test(candidate) ||
-    /[\x00-\x1f\x80-\x9f]/u.test(candidate)
-  ) {
+  if (ILLEGAL_RE_UNICODE.test(candidate) || CONTROL_RE_UNICODE.test(candidate)) {
     console.warn(
       `Invalid replacement character: "${candidate}", using default "${DEFAULT_REPLACEMENT}"`,
     );
@@ -133,8 +133,7 @@ export function isWithinScope(
     const urlObj = new URL(url);
     const scopeObj = new URL(baseScope);
     const pathname = urlObj.pathname.toLowerCase();
-    const fileExtensionRegex = /\.[a-z0-9]+$/;
-    if (fileExtensionRegex.test(pathname) && !pathname.endsWith(".html")) {
+    if (FILE_EXTENSION_REGEX.test(pathname) && !pathname.endsWith(".html")) {
       return false;
     }
     const urlDomain = urlObj.hostname.replace(/www\./, "");
