@@ -20,6 +20,7 @@ const makeEvent = (): PostConfirmationTriggerEvent => ({
       given_name: 'aGivenName',
       family_name: 'aFamilyName',
       email: 'a@email.com',
+      preferred_language: 'it',
     },
   },
   response: {
@@ -99,12 +100,12 @@ describe('Post confirmation handler', () => {
     expect(body).toContain('&lt;/mj-text&gt;&lt;mj-button');
   });
 
-  it('should send the email in English if locale is en', async () => {
+  it('should send the email in English if preferred_language is en', async () => {
     const { ses: sesMock } = env;
     const sendEmailCommandCaptor = captor<SendEmailCommand>();
     const event = makeEvent();
     // eslint-disable-next-line functional/immutable-data
-    event.request.userAttributes['locale'] = 'en';
+    event.request.userAttributes['preferred_language'] = 'en';
 
     await makeHandler(env)(event);
 
