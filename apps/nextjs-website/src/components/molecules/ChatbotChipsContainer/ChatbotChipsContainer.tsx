@@ -26,8 +26,7 @@ const ChatbotChipsContainer = ({ chips }: ChatbotChipsContainerProps) => {
           maxWidth: '85%',
           height: 'fit-content',
           maxHeight: '160px',
-          p: '4px',
-          pb: '16px',
+          padding: '4px 4px 16px 4px',
         }}
       >
         {chips.map((chip, index) => (
