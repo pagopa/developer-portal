@@ -19,7 +19,8 @@ export const makeHandler =
     const cognitoUserStatus =
       event.request.userAttributes['cognito:user_status'];
     const eventTrigger = event.triggerSource;
-    const localeAttributes = event.request.userAttributes['preferred_language'];
+    const localeAttributes =
+      event.request.userAttributes['custom:preferred_language'];
     const locale = localeAttributes ? localeAttributes : 'it'; // Default to 'it'
 
     if (

@@ -20,7 +20,7 @@ const makeEvent = (): PostConfirmationTriggerEvent => ({
       given_name: 'aGivenName',
       family_name: 'aFamilyName',
       email: 'a@email.com',
-      preferred_language: 'it',
+      'custom:preferred_language': 'it',
     },
   },
   response: {
@@ -105,7 +105,7 @@ describe('Post confirmation handler', () => {
     const sendEmailCommandCaptor = captor<SendEmailCommand>();
     const event = makeEvent();
     // eslint-disable-next-line functional/immutable-data
-    event.request.userAttributes['preferred_language'] = 'en';
+    event.request.userAttributes['custom:preferred_language'] = 'en';
 
     await makeHandler(env)(event);
 

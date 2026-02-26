@@ -52,7 +52,8 @@ export const makeHandler =
     event: PostConfirmationTriggerEvent
   ): Promise<PostConfirmationTriggerEvent> => {
     const { email, given_name } = event.request.userAttributes;
-    const locale = event.request.userAttributes['locale'] || 'it';
+    const locale =
+      event.request.userAttributes['custom:preferred_language'] || 'it';
     if (email && event.triggerSource === 'PostConfirmation_ConfirmSignUp') {
       const subject =
         EMAIL_TRANSLATIONS.postConfirmation[
