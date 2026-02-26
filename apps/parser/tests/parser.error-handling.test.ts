@@ -1,8 +1,6 @@
 import puppeteer from "puppeteer-extra";
 import StealthPlugin from "puppeteer-extra-plugin-stealth";
-import { execFile, ExecFileException } from "node:child_process";
-import path from "node:path";
-import { promisify } from "node:util";
+import { ExecFileException } from "node:child_process";
 import { assertReachable } from "../src/modules/network";
 
 puppeteer.use(StealthPlugin());
@@ -12,7 +10,6 @@ type ExecFileResult = {
   readonly stderr: string;
 };
 
-const execFileAsync = promisify(execFile);
 const nonExistingHost = "http://nonexistent-url-1234567890.com";
 const unreachableHost = "http://127.0.0.1:9";
 const redirectToMismatchedDomain = "http://ioapp.com";
