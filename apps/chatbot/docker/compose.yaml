@@ -68,7 +68,7 @@ services:
   create-index:
     build:
       context: ../../chatbot-index
-      dockerfile: ../chatbot-index/docker/create_index.Dockerfile
+      dockerfile: ../chatbot-index/docker/create_index.local.Dockerfile
     command: /app/scripts/run.create.index.sh
     env_file: ../../chatbot-index/.env.local
     volumes:
