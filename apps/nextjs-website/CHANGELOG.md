@@ -1,5 +1,32 @@
 # nextjs-website
 
+## 16.1.1
+
+### Patch Changes
+
+- 0b75588: Fix sitemap when hompage is missing in some locale
+- 94a7407: Removed cache from S3 metadata helper
+- c190736: Add locale support to WebinarListItem for dynamic link generation and Add locale to authentication link in Chatobot's guest message
+- Updated dependencies [700e934]
+  - gitbook-docs@1.8.2
+
+## 16.1.0
+
+### Minor Changes
+
+- 19a0ecf: Implement redirect on product overview page and tutorial list page if the tutorial has redirectPath set
+- 32dd008: Add custom field "preferred_language" in cognito user schemas
+- 69af2c9: Add preferred language support during user signup
+- dc06a71: Fix overview internal links
+
+### Patch Changes
+
+- c3c5642: Fix headers style for RapiDoc, remove blue separator lines
+- 19a0ecf: Add redirect to redirectPath if a user lands on a tutorial page with redirectPath set
+- Updated dependencies [0d4e746]
+- Updated dependencies [88feabd]
+  - gitbook-docs@1.8.1
+
 ## 16.0.0
 
 ### Major Changes

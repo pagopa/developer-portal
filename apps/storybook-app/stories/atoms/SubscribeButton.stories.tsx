@@ -1,7 +1,6 @@
 import React from 'react';
 import { Meta, StoryObj } from '@storybook/nextjs';
 import SubscribeButton from '../../../nextjs-website/src/components/atoms/SubscribeButton/SubscribeButton';
-import { nextIntlContextDecorator } from '../next-intl-context.helper';
 
 const meta: Meta<typeof SubscribeButton> = {
   title: 'Atoms/SubscribeButton',
@@ -17,7 +16,6 @@ export const Showcase: StoryObj<typeof SubscribeButton> = {
     onSubscribe: () => null,
   },
   render: (props) => <SubscribeButton {...props} />,
-  decorators: [nextIntlContextDecorator],
 };
 
 export const LoadingShowcase: StoryObj<typeof SubscribeButton> = {
@@ -27,5 +25,4 @@ export const LoadingShowcase: StoryObj<typeof SubscribeButton> = {
     onSubscribe: () => null,
   },
   render: (props) => <SubscribeButton {...props} />,
-  decorators: [nextIntlContextDecorator],
 };

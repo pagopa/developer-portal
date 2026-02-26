@@ -1,6 +1,5 @@
 import { Meta, StoryObj } from '@storybook/nextjs';
 import ApiDataListTemplate from 'nextjs-website/src/components/templates/ApiDataListTemplate/ApiDataListTemplate';
-import { nextIntlContextDecorator } from '../next-intl-context.helper';
 import { mockText, mockTextBlock } from '../mock-content.helper';
 
 const meta: Meta<typeof ApiDataListTemplate> = {
@@ -11,7 +10,6 @@ const meta: Meta<typeof ApiDataListTemplate> = {
 export default meta;
 
 export const Showcase: StoryObj<typeof ApiDataListTemplate> = {
-  decorators: [nextIntlContextDecorator],
   args: {
     hero: {
       title: 'API',
@@ -30,6 +28,7 @@ export const Showcase: StoryObj<typeof ApiDataListTemplate> = {
             label: 'REST',
           },
         ],
+        labels: [],
       },
       {
         title: mockText(3),
@@ -42,6 +41,7 @@ export const Showcase: StoryObj<typeof ApiDataListTemplate> = {
             label: 'SOAP',
           },
         ],
+        labels: [],
       },
       {
         title: mockText(3),
@@ -54,6 +54,7 @@ export const Showcase: StoryObj<typeof ApiDataListTemplate> = {
             label: 'REST',
           },
         ],
+        labels: [],
       },
       {
         title: mockText(3),
@@ -66,6 +67,7 @@ export const Showcase: StoryObj<typeof ApiDataListTemplate> = {
             label: 'REST',
           },
         ],
+        labels: [],
       },
     ],
     bannerLinks: [
