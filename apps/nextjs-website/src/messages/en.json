@@ -682,6 +682,9 @@
       "serviceDown": "The chatbot is currently unavailable. Please try again later.",
       "queryFailed": "The chatbot had trouble formulating the answer. Please try again."
     },
-    "thereAreNoMessages": "There are no messages in this session"
+    "thereAreNoMessages": "There are no messages in this session",
+    "chip": {
+      "ariaLabel": "Respond with: {question}"
+    }
   }
 }
