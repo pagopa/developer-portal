@@ -2,27 +2,23 @@
 name: chatbot-index-test
 
 services:      
-
   refresh-index:
     platform: linux/amd64
     build:
       context: ..
       dockerfile: docker/lambda_refresh_index.test.Dockerfile
+    command: ["src.lambda_refresh_index.lambda_handler"]
     env_file: ../.env.test
     volumes:
-      - ./files/.aws:/root/.aws
+      - ./files/.aws:/home/appuser/.aws
     depends_on:
       motoserver:
         condition: service_started
       redis:
         condition: service_started
-    command: ["src.lambda_refresh_index.lambda_handler"]
 
   redis:
     image: redis/redis-stack:7.2.0-v13
-    ports:
-      - "6379:6379"
-      - "8001:8001"
     healthcheck:
       test: [ "CMD", "redis-cli", "ping" ]
       interval: 3s
@@ -56,10 +52,8 @@ services:
     restart: "no"
     
   motoserver:
-    image: motoserver/moto:5.1.14
-    environment:
-      - MOTO_PORT=3002
-
+    image: motoserver/moto:5.1.21
+    env_file: ../.env.test
 
 volumes:
   redis_data:

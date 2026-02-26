@@ -108,6 +108,10 @@ def build_index_redis(
     """
 
     if clean_redis:
+        for key in REDIS_CLIENT.scan_iter():
+            REDIS_CLIENT.delete(key)
+        LOGGER.info("Redis database has been fully cleaned successfully.")
+    else:
         try:
             index = load_index_redis(index_id)
             ref_docs_info = index.storage_context.docstore.get_all_ref_doc_info()
@@ -116,7 +120,9 @@ def build_index_redis(
                 if ref_doc_info:
                     for node_id in ref_doc_info.node_ids:
                         index.storage_context.docstore.delete_document(node_id)
-            LOGGER.info(f"Redis is now cleaned from {index_id}.")
+            LOGGER.info(
+                f"Redis database has been cleared of the vector index with ID: {index_id}."
+            )
         except Exception as exc:
             LOGGER.warning(
                 "Skipping Redis cleanup for index '%s' because it could not be loaded: %s",

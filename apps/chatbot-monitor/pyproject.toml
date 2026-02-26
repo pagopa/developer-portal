@@ -16,7 +16,8 @@ pydantic-settings = "^2.11.0"
 python = ">=3.12,<3.14"
 
 [tool.poetry.group.test.dependencies]
-
+httpx = "^0.28.1"
+pytest = "^8.3.5"
 
 [tool.poetry.group.dev.dependencies]
 
