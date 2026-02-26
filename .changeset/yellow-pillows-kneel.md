@@ -1,5 +1,5 @@
 ---
-"chatbot": patch
+"chatbot": major
 ---
 
-Code refactor for tools and creation of the new rag tool
+New query engine tool regarding the cittadino documentation in Discovery.
