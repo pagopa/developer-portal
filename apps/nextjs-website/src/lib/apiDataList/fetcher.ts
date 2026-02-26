@@ -1,7 +1,7 @@
 import qs from 'qs';
 import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
 import { productRelationsPopulate } from '@/lib/strapi/fetches/fetchProducts';
-import { StrapiApiDataList } from './types';
+import { ApiDataList } from './types';
 
 import { buildEnv } from '@/lib/buildEnv';
 
@@ -28,7 +28,7 @@ const makeStrapiApiDataListPopulate = () =>
   });
 
 export const fetchApiDataList = (locale: string) =>
-  fetchFromStrapi<StrapiApiDataList>(
-    'apis-data',
-    makeStrapiApiDataListPopulate()
-  )(locale, buildEnv);
+  fetchFromStrapi<ApiDataList>('apis-data', makeStrapiApiDataListPopulate())(
+    locale,
+    buildEnv
+  );
