@@ -1,6 +1,11 @@
+import puppeteer from "puppeteer-extra";
+import StealthPlugin from "puppeteer-extra-plugin-stealth";
 import { execFile, ExecFileException } from "node:child_process";
 import path from "node:path";
 import { promisify } from "node:util";
+import { assertReachable } from "../src/modules/network";
+
+puppeteer.use(StealthPlugin());
 
 type ExecFileResult = {
   readonly stdout: string;
@@ -8,7 +13,6 @@ type ExecFileResult = {
 };
 
 const execFileAsync = promisify(execFile);
-const parserScript = path.resolve(__dirname, "../dist/parser.js");
 const nonExistingHost = "http://nonexistent-url-1234567890.com";
 const unreachableHost = "http://127.0.0.1:9";
 const redirectToMismatchedDomain = "http://ioapp.com";
@@ -42,14 +46,31 @@ describe("Parser error handling", () => {
 
 async function captureParserError(url: string): Promise<string> {
   try {
-    await execFileAsync("node", [parserScript], {
-      env: {
-        ...process.env,
-        URL: url,
-        CHB_INDEX_ID: "test-parseer-vector-index",
-      },
+    await assertReachable(url, 5000);
+    const browser = await puppeteer.launch({ headless: true });
+    let page;
+    let finalUrl = url;
+    page = await browser.newPage();
+    const response = await page.goto(url, {
+      waitUntil: "networkidle2",
       timeout: 30_000,
     });
+    if (response) {
+      finalUrl = response.url();
+    }
+    if (
+      new URL(url).hostname.replace("www.", "") !==
+      new URL(finalUrl).hostname.replace("www.", "")
+    ) {
+      console.log(
+        `Domain mismatch: original ${new URL(url).hostname} != final ${
+          new URL(finalUrl).hostname
+        }`,
+      );
+      await browser.close();
+      throw new Error("Domain mismatch");
+    }
+    await browser.close();
     return "Parser unexpectedly succeeded";
   } catch (error) {
     const execError = error as ExecFileException & ExecFileResult;

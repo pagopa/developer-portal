@@ -1,8 +1,6 @@
-import { REQUEST_TIMEOUT_MS } from "../main";
-
 export async function assertReachable(
   url: string,
-  timeoutMs: number = REQUEST_TIMEOUT_MS,
+  timeoutMs: number,
 ): Promise<void> {
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
@@ -42,6 +40,6 @@ function isCloudflareChallenge(html: string): boolean {
 }
 
 async function fetch(input: any, init?: any): Promise<any> {
-  const { default: nodeFetch } = await import("node-fetch");
+  const { default: nodeFetch } = await import("node-fetch-commonjs");
   return nodeFetch(input, init);
 }

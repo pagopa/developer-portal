@@ -25,7 +25,7 @@ let BASE_URL = env.baseUrl;
 
 void (async () => {
   try {
-    await assertReachable(env.baseUrl);
+    await assertReachable(env.baseUrl, REQUEST_TIMEOUT_MS);
     ensureDirectory(env.outputDirectory);
     const browser = await puppeteer.launch({ headless: true });
     let finalUrl = env.baseUrl;
