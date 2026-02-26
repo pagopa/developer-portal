@@ -3,11 +3,11 @@ import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
 import { makeBaseProductWithoutLogoProps } from '@/lib/strapi/makeProps/makeProducts';
 import { makeApiSoapUrlList } from '@/lib/strapi/makeProps/makeApiSoapUrlList';
 import { compact } from 'lodash';
-import { StrapiApiDataList, ApiDataPageProps } from './types';
+import { ApiDataList, ApiDataPageProps } from './types';
 
 export async function mapApiDataList(
   locale: string,
-  strapiApiDataList: StrapiApiDataList
+  strapiApiDataList: ApiDataList
 ): Promise<ReadonlyArray<ApiDataPageProps>> {
   const list = compact(
     await Promise.all(

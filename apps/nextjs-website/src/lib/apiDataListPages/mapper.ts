@@ -1,7 +1,7 @@
 /* eslint-disable functional/no-expression-statements */
 import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
 import { makeBaseProductWithoutLogoProps } from '@/lib/strapi/makeProps/makeProducts';
-import { StrapiApiDataListPages, ApiDataListPageTemplateProps } from './types';
+import { ApiDataListPages, ApiDataListPageTemplateProps } from './types';
 import { compact } from 'lodash';
 import { StrapiBaseApiData } from '@/lib/strapi/types/apiDataList';
 
@@ -46,7 +46,7 @@ function makeApiDataListPageCard(
 
 export function mapApiDataListPages(
   locale: string,
-  strapiApiDataListPages: StrapiApiDataListPages
+  strapiApiDataListPages: ApiDataListPages
 ): ReadonlyArray<ApiDataListPageTemplateProps> {
   return compact(
     strapiApiDataListPages.data.map(({ attributes }) => {
