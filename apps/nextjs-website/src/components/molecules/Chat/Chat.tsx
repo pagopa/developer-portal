@@ -3,10 +3,10 @@ import ChatMessage, {
 } from '@/components/atoms/ChatMessage/ChatMessage';
 import { Box, Button, Paper, Stack, useTheme } from '@mui/material';
 import ChatInputText from '@/components/atoms/ChatInputText/ChatInputText';
-import React, { use, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { History } from '@mui/icons-material';
 import { ChatbotChip, Query } from '@/lib/chatbot/queries';
-import { compact } from 'lodash';
+import { compact, isEmpty } from 'lodash';
 import { useTranslations } from 'next-intl';
 import { ChatbotWriting } from '@/components/atoms/ChatbotWriting/ChatbotWriting';
 import { ChatSkeleton } from '@/components/atoms/ChatSkeleton/ChatSkeleton';
@@ -59,14 +59,16 @@ const Chat = ({
   const [sessionId, setSessionId] = useState<string>('');
   const [id, setId] = useState<string>('');
   const [isFeedbackFormVisible, setIsFeedbackFormVisible] = useState(false);
-  const [chips, setChips] = useState<readonly ChatbotChip[]>([]);
+  const [chips, setChips] = useState<readonly ChatbotChip[]>(
+    getCurrentChipsFromQueries(queries)
+  );
 
   useEffect(() => {
     setChips(getCurrentChipsFromQueries(queries));
   }, [queries]);
 
-  const messages = useMemo(
-    () => [
+  const messages = useMemo(() => {
+    const msgs = [
       firstMessage(
         user
           ? t('chatBot.welcomeMessage')
@@ -74,34 +76,46 @@ const Chat = ({
         mustFillFeedbackForm
       ),
       ...compact(
-        queries.flatMap((q) => [
-          q.question && q.queriedAt
-            ? {
-                id: q.id,
-                text: q.question,
-                isQuestion: true,
-                sessionId: q.sessionId,
-                timestamp: q.queriedAt,
-                hasNegativeFeedback: false,
-                mustFillFeedbackForm: mustFillFeedbackForm,
-              }
-            : null,
-          q.answer && q.createdAt
-            ? {
-                id: q.id,
-                text: q.answer,
-                isQuestion: false,
-                sessionId: q.sessionId,
-                timestamp: q.createdAt,
-                hasNegativeFeedback: q.badAnswer || false,
-                mustFillFeedbackForm: mustFillFeedbackForm,
-              }
-            : null,
-        ])
+        queries.flatMap((q) => {
+          return [
+            q.question && q.queriedAt
+              ? {
+                  id: q.id,
+                  text: q.question,
+                  isQuestion: true,
+                  sessionId: q.sessionId,
+                  timestamp: q.queriedAt,
+                  hasNegativeFeedback: false,
+                  mustFillFeedbackForm: mustFillFeedbackForm,
+                }
+              : null,
+            q.answer && q.createdAt
+              ? {
+                  id: q.id,
+                  text: q.answer,
+                  isQuestion: false,
+                  sessionId: q.sessionId,
+                  timestamp: q.createdAt,
+                  hasNegativeFeedback: q.badAnswer || false,
+                  mustFillFeedbackForm: mustFillFeedbackForm,
+                }
+              : null,
+          ];
+        })
       ),
-    ],
-    [user, t, locale, mustFillFeedbackForm, queries]
-  ) satisfies Message[];
+    ];
+    return msgs.map((msg, index) => {
+      if (index !== msgs.length - 1 || msg.isQuestion || isEmpty(chips)) {
+        return msg;
+      }
+
+      const selectChipsMessage = t(
+        'chatBot.responseEnhancements.choseChipsOrWriteMessage'
+      );
+      // eslint-disable-next-line functional/immutable-data
+      return { ...msg, text: `${msg.text}\n\n${selectChipsMessage}` };
+    });
+  }, [user, t, locale, mustFillFeedbackForm, queries, chips]);
 
   const scrollRef = useRef<HTMLDivElement>(null);
   const [queriesCount, setQueriesCount] = useState(0);
@@ -123,21 +137,6 @@ const Chat = ({
     isAwaitingResponse,
     queriesCount,
   ]);
-
-  useEffect(() => {
-    const lastMessage = messages[messages.length - 1];
-    if (!lastMessage || lastMessage.isQuestion || chips.length === 0) {
-      return;
-    }
-
-    const selectChipsMessage = t(
-      'chatBot.responseEnhancements.choseChipsOrWriteMessage'
-    );
-    // eslint-disable-next-line functional/immutable-data
-    messages[
-      messages.length - 1
-    ].text = `${lastMessage.text}\n\n${selectChipsMessage}`;
-  }, [messages, t, chips.length]);
 
   return (
     <>
@@ -196,7 +195,11 @@ const Chat = ({
           {messages.map((message, index) => (
             <Stack
               key={index}
-              ref={index === messages.length - 1 ? scrollRef : null}
+              ref={
+                index === messages.length - 1 && isEmpty(chips)
+                  ? scrollRef
+                  : null
+              }
               direction='row'
               width='100%'
               justifyContent={message.isQuestion ? 'flex-end' : 'flex-start'}
@@ -227,15 +230,17 @@ const Chat = ({
             </Stack>
           ))}
           {isAwaitingResponse && <ChatbotWriting />}
-          {chips.length > 0 && (
-            <ChatbotChipsContainer
-              chips={chips.map((chip) => ({
-                ...chip,
-                onClick: (query) => {
-                  onSendQuery(query);
-                },
-              }))}
-            />
+          {!isEmpty(chips) && (
+            <div ref={scrollRef}>
+              <ChatbotChipsContainer
+                chips={chips.map((chip) => ({
+                  ...chip,
+                  onClick: (query) => {
+                    onSendQuery(query);
+                  },
+                }))}
+              />
+            </div>
           )}
           {error && (
             <Paper
