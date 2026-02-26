@@ -6,7 +6,7 @@ import ChatInputText from '@/components/atoms/ChatInputText/ChatInputText';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { History } from '@mui/icons-material';
 import { ChatbotChip, Query } from '@/lib/chatbot/queries';
-import { compact } from 'lodash';
+import { compact, isEmpty } from 'lodash';
 import { useTranslations } from 'next-intl';
 import { ChatbotWriting } from '@/components/atoms/ChatbotWriting/ChatbotWriting';
 import { ChatSkeleton } from '@/components/atoms/ChatSkeleton/ChatSkeleton';
@@ -106,7 +106,7 @@ const Chat = ({
       ),
     ];
     return msgs.map((msg, index) => {
-      if (index !== msgs.length - 1 || msg.isQuestion || chips.length === 0) {
+      if (index !== msgs.length - 1 || msg.isQuestion || isEmpty(chips)) {
         return msg;
       }
 
@@ -116,7 +116,7 @@ const Chat = ({
       // eslint-disable-next-line functional/immutable-data
       return { ...msg, text: `${msg.text}\n\n${selectChipsMessage}` };
     });
-  }, [user, t, locale, mustFillFeedbackForm, queries, chips.length]);
+  }, [user, t, locale, mustFillFeedbackForm, queries, chips]);
 
   const scrollRef = useRef<HTMLDivElement>(null);
   const [queriesCount, setQueriesCount] = useState(0);
@@ -196,6 +196,11 @@ const Chat = ({
           {messages.map((message, index) => (
             <Stack
               key={index}
+              ref={
+                index === messages.length - 1 && isEmpty(chips)
+                  ? scrollRef
+                  : null
+              }
               direction='row'
               width='100%'
               justifyContent={message.isQuestion ? 'flex-end' : 'flex-start'}
@@ -226,7 +231,7 @@ const Chat = ({
             </Stack>
           ))}
           {isAwaitingResponse && <ChatbotWriting />}
-          {chips.length > 0 && (
+          {!isEmpty(chips) && (
             <div ref={scrollRef}>
               <ChatbotChipsContainer
                 chips={chips.map((chip) => ({
