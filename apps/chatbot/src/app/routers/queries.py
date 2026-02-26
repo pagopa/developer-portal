@@ -106,6 +106,17 @@ def get_final_response(response_str: str, references: List[str]) -> str:
     return response_str
 
 
+def sanitize_messages(history):
+    if not history:
+        return None
+    messages = []
+    for item in history:
+        message = item.model_dump()
+        message["question"] = nh3.clean(item.question)
+        messages.append(message)
+    return messages
+
+
 def prepare_body_to_save(
     bodyToReturn: dict,
     query: Query,
@@ -186,7 +197,7 @@ async def query_creation(
     salt = session_salt(session["id"])
     query_str = nh3.clean(query.question)
     user_id = hash_func(userId, salt)
-    messages = [item.model_dump() for item in query.history] if query.history else None
+    messages = sanitize_messages(query.history)
 
     answer_json = await chatbot.chat_generate(
         query_str=query_str,

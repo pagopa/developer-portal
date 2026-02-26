@@ -60,6 +60,7 @@ def test_post_queries_history() -> None:
     response = post_queries(query_payload_history)
 
     json = response.json()
+
     assert response.status_code == 200
     assert "id" in json.keys()
     assert "sessionId" in json.keys()
