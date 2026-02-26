@@ -11,6 +11,10 @@ inputs:
     description: 'The AWS region selected'
     required: false
     default: 'eu-south-1'
+  clean_redis:
+    description: 'Clean Redis vector index before creating a new one'
+    required: true
+    default: 'false'
   chatbot_lambda_name:
     description: the name of the chatbot lambda function
     required: true
@@ -63,4 +67,4 @@ runs:
       run: |
         cd apps/chatbot-index
         export CHB_INDEX_ID=${{ inputs.index_id }}
-        PYTHONPATH=. poetry run python src/modules/create_vector_index.py ${{ inputs.static == 'true' && ' --static' || '' }} ${{ inputs.dynamic == 'true' && ' --dynamic' || '' }} ${{ inputs.api == 'true' && ' --api' || '' }} ${{ inputs.structured == 'true' && ' --structured' || '' }} --clean-redis
+        PYTHONPATH=. poetry run python src/modules/create_vector_index.py ${{ inputs.static == 'true' && ' --static' || '' }} ${{ inputs.dynamic == 'true' && ' --dynamic' || '' }} ${{ inputs.api == 'true' && ' --api' || '' }} ${{ inputs.structured == 'true' && ' --structured' || '' }} ${{ inputs.clean_redis == 'true' && ' --clean-redis' || '' }}

@@ -19,6 +19,11 @@ on:
         type: boolean
         required: true
         default: true
+      clean_redis:
+        description: 'Clean Redis vector index before creating a new one'
+        type: boolean
+        required: true
+        default: false
       dynamic:
         description: 'Consider dynamic documentation for index creation'
         type: boolean
@@ -111,6 +116,7 @@ jobs:
         with:
           api: ${{ github.event.inputs.api && 'true' || 'false'}}
           chatbot_lambda_name: ${{ vars.CHATBOT_LAMBDA_NAME }}
+          clean_redis: ${{ github.event.inputs.clean_redis && 'true' || 'false' }}
           dynamic: ${{ github.event.inputs.dynamic && 'true' || 'false' }}
           index_id: ${{ github.event.inputs.index_id }}
           static: ${{ github.event.inputs.static && 'true' || 'false' }}
