@@ -61,7 +61,7 @@ export const EMAIL_TRANSLATIONS = {
       subject: 'Verify new email address',
       previewText: 'Confirm the validity of this email',
       title: 'Verify new email address',
-      text: 'Hi,<br><br><br>It appears you requested to link this email address to your PagoPA DevPortal account. If so, use the button below to proceed.<br><br><br>This link enables in 3 minutes.',
+      text: 'Hi,<br><br><br>It appears you requested to link this email address to your PagoPA DevPortal account. If so, use the button below to proceed.<br><br><br>This link expires in 3 minutes.',
       emailVerification: 'Verify email',
       wrongRecipient:
         'You are receiving this email because you created an account on PagoPA DevPortal.<br>Not you? Ignore or delete this email.',
