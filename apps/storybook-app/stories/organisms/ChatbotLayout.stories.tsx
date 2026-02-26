@@ -63,6 +63,55 @@ export const ChatSessionWithMessages: StoryObj<typeof ChatbotLayout> = {
   decorators: [decorator, authProviderDecorator],
 };
 
+export const ChatSessionWithChips: StoryObj<typeof ChatbotLayout> = {
+  args: {
+    areChatbotQueriesLoaded: true,
+    queries: [
+      {
+        sessionId: 'sessionID',
+        question: mockText(5),
+        queriedAt: '2024-07-24T17:14:07.129Z',
+        answer: mockText(10),
+        createdAt: '2024-07-24T17:14:07.129Z',
+      },
+      {
+        sessionId: 'sessionID',
+        question: mockText(50),
+        queriedAt: '2024-07-24T17:14:07.129Z',
+        answer: mockText(10),
+        createdAt: '2024-07-24T17:14:07.129Z',
+        chips: [
+          {
+            label: 'Documentazione API',
+            question: 'Mostrami la documentazione API',
+            knowledgeBase: 'api-docs',
+          },
+          {
+            label: "Calcolare l'importo dovuto",
+            question: "Come posso calcolare l'importo dovuto?",
+            knowledgeBase: 'payment-calculation',
+          },
+          {
+            label: 'Verificare la regolarità dei pagamenti',
+            question: 'Come posso verificare la regolarità dei pagamenti?',
+            knowledgeBase: 'payment-verification',
+          },
+          {
+            label: 'Ottenere un rimborso',
+            question: 'Come posso ottenere un rimborso?',
+            knowledgeBase: 'refund',
+          },
+        ],
+      },
+    ],
+    onSendQuery: (query: string) => {
+      console.log(query);
+      return null;
+    },
+  },
+  decorators: [decorator, authProviderDecorator],
+};
+
 export const LoadingChatSession: StoryObj<typeof ChatbotLayout> = {
   args: {
     areChatbotQueriesLoaded: false,
