@@ -117,26 +117,16 @@ const Chat = ({
     });
   }, [user, t, locale, mustFillFeedbackForm, queries, chips]);
 
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const [queriesCount, setQueriesCount] = useState(0);
+  const bottomRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (messages.length !== queriesCount) {
-      setQueriesCount(messages.length);
-      if (scrollRef.current) {
-        scrollRef.current.scrollIntoView({
-          behavior: instantScroll ? 'auto' : 'smooth',
-        });
-      }
+    if (bottomRef.current) {
+      bottomRef.current.scrollIntoView({
+        behavior: instantScroll ? 'auto' : 'smooth',
+      });
     }
     setInstantScroll(false);
-  }, [
-    messages,
-    instantScroll,
-    setInstantScroll,
-    isAwaitingResponse,
-    queriesCount,
-  ]);
+  }, [messages, instantScroll, isAwaitingResponse, chips, error]);
 
   return (
     <>
@@ -195,11 +185,6 @@ const Chat = ({
           {messages.map((message, index) => (
             <Stack
               key={index}
-              ref={
-                index === messages.length - 1 && isEmpty(chips)
-                  ? scrollRef
-                  : null
-              }
               direction='row'
               width='100%'
               justifyContent={message.isQuestion ? 'flex-end' : 'flex-start'}
@@ -231,7 +216,7 @@ const Chat = ({
           ))}
           {isAwaitingResponse && <ChatbotWriting />}
           {!isEmpty(chips) && (
-            <div ref={scrollRef}>
+            <div>
               <ChatbotChipsContainer
                 chips={chips.map((chip) => ({
                   ...chip,
@@ -258,6 +243,7 @@ const Chat = ({
               />
             </Paper>
           )}
+          <div ref={bottomRef} />
         </Stack>
         {!disabled && !isFeedbackFormVisible && (
           <ChatInputText
