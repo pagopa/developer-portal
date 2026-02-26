@@ -4,7 +4,7 @@ import ChatbotChip, {
   ChatbotChipProps,
 } from '@/components/atoms/ChatbotChip/ChatbotChip';
 
-type ChatbotChipsContainerProps = {
+export type ChatbotChipsContainerProps = {
   chips: ChatbotChipProps[];
 };
 
