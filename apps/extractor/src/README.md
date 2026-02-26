@@ -31,22 +31,35 @@ This project uses [Poetry](https://python-poetry.org/) for dependency management
 
 4. Configure environment variables in `.env`:
    ```bash
-   # Required
-   CHB_AWS_GOOGLE_API_KEY=google_api_key
-   CHB_INDEX_ID=chb_index_name
+   # AWS Configuration
+   AWS_DEFAULT_REGION=eu-south-1
+   AWS_ENDPOINT_URL=http://localhost:5000
    
-   # Optional (with defaults)
+   # Google API Key
+   CHB_AWS_GOOGLE_API_KEY=your_google_api_key_here
+   
+   # LLM Configuration (optional, with defaults)
    CHB_MODEL_ID=gemini-2.5-flash-lite
    CHB_MODEL_TEMPERATURE=0.
    CHB_MODEL_MAXTOKENS=65535
+   CHB_PROVIDER=google
+   
+   # I/O Folders
+   EXT_INPUT_FOLDER=./input
+   EXT_OUTPUT_FOLDER=./output
    ```
+   
+   **Note:** For local testing, set `CHB_AWS_GOOGLE_API_KEY` directly. In production, the app uses AWS SSM Parameter Store via `CHB_AWS_SSM_GOOGLE_API_KEY`.
 
 ## Usage
 
 ### Running
 
 ```bash
-poetry run python -m extractor
+set -a
+source .env
+set +a
+PYTHONPATH=. poetry run python src/main.py
 ```
 
 ### Input Format

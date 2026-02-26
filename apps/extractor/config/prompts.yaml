@@ -20,12 +20,11 @@ content_cleaning_prompt: |
      - Bold and italic formatting for emphasis
      - Clear paragraph breaks
   5. Ensure the content is coherent and well-structured
-  6. Preserve all important links, but remove navigation links
-  7. Keep the content in its original language
+  6. Keep the content in its original language
   
   **Important:** 
   - Do NOT summarize or shorten the main content
-  - Do NOT add information that wasn't in the original text
+  - Do NOT add information or links that weren't in the original text
   - Do NOT translate the content
   - Focus on clarity and readability while preserving completeness
   

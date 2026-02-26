@@ -16,7 +16,7 @@ AWS_SESSION = boto3.Session()
 AWS_SSM_CLIENT = AWS_SESSION.client("ssm")
 
 
-def get_ssm_parameter(name: str | None, default: str | None = None) -> str | None:
+def get_ssm_parameter(name: str | None, default: str) -> str:
     """
     Retrieves a specific value from AWS Systems Manager's Parameter Store.
 
@@ -25,6 +25,10 @@ def get_ssm_parameter(name: str | None, default: str | None = None) -> str | Non
     :return: The value of the requested parameter.
     """
 
+    if AWS_SSM_CLIENT is None:
+        LOGGER.debug(f"AWS SSM client not available, using default for {name}")
+        return default
+    
     if name is None:
         name = "none-params-in-ssm"
     try:
@@ -32,12 +36,12 @@ def get_ssm_parameter(name: str | None, default: str | None = None) -> str | Non
         value = response["Parameter"]["Value"]
     except AWS_SSM_CLIENT.exceptions.ParameterNotFound:
         LOGGER.warning(
-            f"Parameter {name} not found in SSM, returning default: {default}"
+            f"Parameter {name} not found in SSM, returning default"
         )
         return default
     except Exception as e:
         LOGGER.warning(
-            f"Error accessing AWS SSM ({str(e)}), returning default: {default}"
+            f"Error accessing AWS SSM ({str(e)}), returning default"
         )
         return default
     return value
@@ -57,17 +61,14 @@ class ExtractorSettings(BaseSettings):
     )
 
     # LLM Model Configuration
-    model_id: str = os.getenv("EXT_MODEL_ID", "gemini-2.5-flash-lite")
-    temperature: float = float(os.getenv("EXT_MODEL_TEMPERATURE", "0."))
-    max_tokens: int = int(os.getenv("EXT_MODEL_MAXTOKENS", "65535"))
-    provider: str = os.getenv("EXT_PROVIDER", "google")
-
+    model_id: str = os.getenv("CHB_MODEL_ID", "gemini-2.5-flash-lite")
+    temperature: float = float(os.getenv("CHB_MODEL_TEMPERATURE", "0."))
+    max_tokens: int = int(os.getenv("CHB_MODEL_MAXTOKENS", "65535"))
+    provider: str = os.getenv("CHB_PROVIDER", "google")
     # Prompts
     content_cleaning_prompt: str = PROMPTS["content_cleaning_prompt"]
-
     # Logging
     log_level: str = os.getenv("LOG_LEVEL", "info")
-
 
 # Singleton instance
 SETTINGS = ExtractorSettings()
