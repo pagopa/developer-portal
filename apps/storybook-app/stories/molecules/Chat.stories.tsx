@@ -45,6 +45,60 @@ export const Showcase: StoryObj<typeof Chat> = {
   decorators: [decorator, authProviderDecorator],
 };
 
+export const QueryWithChips: StoryObj<typeof Chat> = {
+  args: {
+    queries: [
+      {
+        sessionId: 'sessionID',
+        question: mockText(12),
+        queriedAt: '2024-07-24T17:14:07.129Z',
+        chips: [
+          {
+            label: 'Documentazione API',
+            question: 'Mostrami la documentazione API',
+            knowledgeBase: 'api-docs',
+          },
+          {
+            label: "Calcolare l'importo dovuto",
+            question: "Come posso calcolare l'importo dovuto?",
+            knowledgeBase: 'payment-calculation',
+          },
+          {
+            label: 'Verificare la regolarità dei pagamenti',
+            question: 'Come posso verificare la regolarità dei pagamenti?',
+            knowledgeBase: 'payment-verification',
+          },
+          {
+            label: 'Ottenere un rimborso',
+            question: 'Come posso ottenere un rimborso?',
+            knowledgeBase: 'refund',
+          },
+          {
+            label: 'Richiedere assistenza',
+            question: 'Come posso richiedere assistenza?',
+            knowledgeBase: 'support',
+          },
+          {
+            label: 'Visualizzare lo storico pagamenti',
+            question: 'Come posso visualizzare lo storico dei pagamenti?',
+            knowledgeBase: 'payment-history',
+          },
+          {
+            label: 'Scaricare ricevute',
+            question: 'Come posso scaricare le ricevute?',
+            knowledgeBase: 'receipt-download',
+          },
+        ],
+      },
+    ],
+    onSendQuery: (query: string) => {
+      console.log(query);
+      return null;
+    },
+  },
+  decorators: [decorator, authProviderDecorator],
+};
+
 export const QueryError: StoryObj<typeof Chat> = {
   args: {
     queries: [

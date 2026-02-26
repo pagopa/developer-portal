@@ -12,7 +12,7 @@ import {
 import React from 'react';
 import { Query } from '@/lib/chatbot/queries';
 import { useTranslations } from 'next-intl';
-import { ChatbotErrorsType } from '@/helpers/chatbot.helper';
+import { ChatbotErrorsType } from '@/helpers/chatbot.helpers';
 import { getChatbotHealthz } from '@/lib/chatbotApi';
 
 type ChatbotLayoutProps = {
