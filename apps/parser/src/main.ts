@@ -90,26 +90,26 @@ async function main(): Promise<void> {
         console.warn(
           `Derived sitemap URL ${sitemapUrl} is out of scope. Skipping sitemap parsing.`,
         );
-      } else {
+        throw new Error("Sitemap URL out of scope");
+      }
+      try {
+        sitemapXml = await fetchRemoteXml(sitemapUrl);
+      } catch (err) {
+        console.warn(
+          `Sitemap warning: Failed to fetch ${sitemapUrl}: ${
+            (err as Error).message
+          }`,
+        );
+      }
+      if (sitemapXml.trim()) {
         try {
-          sitemapXml = await fetchRemoteXml(sitemapUrl);
+          sitemapUrls = await parseSitemapXml(sitemapXml, sitemapUrl);
         } catch (err) {
           console.warn(
-            `Sitemap warning: Failed to fetch ${sitemapUrl}: ${
+            `Sitemap warning: Failed to parse sitemap XML from ${sitemapUrl}: ${
               (err as Error).message
             }`,
           );
-        }
-        if (sitemapXml.trim()) {
-          try {
-            sitemapUrls = await parseSitemapXml(sitemapXml, sitemapUrl);
-          } catch (err) {
-            console.warn(
-              `Sitemap warning: Failed to parse sitemap XML from ${sitemapUrl}: ${
-                (err as Error).message
-              }`,
-            );
-          }
         }
       }
     } catch (err) {
