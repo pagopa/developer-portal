@@ -2,7 +2,7 @@ import { ParsedMetadata } from "../modules/types";
 import { toIsoOrNull } from "./date-format";
 
 export const extractDocumentMetadata = (): ParsedMetadata => {
-  const getMeta = (name: string): string | null => {
+  function getMeta(name: string): string | null {
     return (
       document.querySelector(`meta[name="${name}"]`)?.getAttribute("content") ||
       document
@@ -10,15 +10,16 @@ export const extractDocumentMetadata = (): ParsedMetadata => {
         ?.getAttribute("content") ||
       null
     );
-  };
+  }
+  function normalizeText(value: string | null | undefined): string {
+    return value ? value.replace(/\s+/g, " ").trim() : "";
+  }
+
   const metaTitle = getMeta("og:title") || getMeta("twitter:title");
   const documentTitle = document.title?.trim();
   const normalizedTitle = documentTitle?.length
     ? documentTitle
     : metaTitle || "";
-  const normalizeText = (value: string | null | undefined): string => {
-    return value ? value.replace(/\s+/g, " ").trim() : "";
-  };
   const mainText = normalizeText(document.querySelector("main")?.innerText);
   const iframeTexts = Array.from(document.querySelectorAll("iframe"))
     .map((frame) => {

@@ -29,7 +29,7 @@ export const OUTPUT_DIRECTORY = env.outputDirectory;
 export const MAX_DEPTH = env.maxDepth;
 export const REQUEST_TIMEOUT_MS = env.requestTimeoutMs;
 export const BASE_HOST_TOKEN = new URL(env.baseUrl).hostname
-  .replace(/www\./, "")
+  .replace("www.", "")
   .toLowerCase();
 export const VALID_DOMAIN_VARIANTS = env.validDomainVariants || [];
 
@@ -58,8 +58,8 @@ async function main(): Promise<void> {
       if (page) await page.close();
     }
     if (
-      new URL(env.baseUrl).hostname.replace(/www\./, "") !==
-      new URL(finalUrl).hostname.replace(/www\./, "")
+      new URL(env.baseUrl).hostname.replace("www.", "") !==
+      new URL(finalUrl).hostname.replace("www.", "")
     ) {
       console.error(
         `Domain mismatch: original ${new URL(env.baseUrl).hostname} != final ${

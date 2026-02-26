@@ -7,6 +7,9 @@ const RESERVED_RE = /^\.+$/;
 const WINDOWS_RESERVED_RE = /^(con|prn|aux|nul|com[0-9]|lpt[0-9])$/i;
 const WINDOWS_TRAILING_RE = /[\. ]+$/;
 const DEFAULT_REPLACEMENT = "-";
+const ILLEGAL_RE_UNICODE = /[\/\?<>\\:\*\|"]/u;
+const CONTROL_RE_UNICODE = /[\x00-\x1f\x80-\x9f]/u;
+const FILE_EXTENSION_REGEX = /\.[a-z0-9]+$/;
 
 export function sanitizeUrlAsFilename(
   url: string,
@@ -16,13 +19,13 @@ export function sanitizeUrlAsFilename(
   if (url === baseScope) {
     return applySanitization(
       url,
-      new URL(url).hostname.replace(/www\./, ""),
+      new URL(url).hostname.replace("www.", ""),
       options,
     );
   } else {
-    const sanitizedBaseScope = baseScope.replace(/www\./, "");
+    const sanitizedBaseScope = baseScope.replace("www.", "");
     const pathAndSearch = url
-      .replace(/www\./, "")
+      .replace("www.", "")
       .replace(sanitizedBaseScope, "")
       .replace(/^\/+/, "");
     if (pathAndSearch === "" || pathAndSearch === "/") {
@@ -90,10 +93,7 @@ function validReplacementOrDefault(candidate: string): string {
     );
     return DEFAULT_REPLACEMENT;
   }
-  if (
-    /[\/\?<>\\:\*\|"]/u.test(candidate) ||
-    /[\x00-\x1f\x80-\x9f]/u.test(candidate)
-  ) {
+  if (ILLEGAL_RE_UNICODE.test(candidate) || CONTROL_RE_UNICODE.test(candidate)) {
     console.warn(
       `Invalid replacement character: "${candidate}", using default "${DEFAULT_REPLACEMENT}"`,
     );
@@ -133,16 +133,15 @@ export function isWithinScope(
     const urlObj = new URL(url);
     const scopeObj = new URL(baseScope);
     const pathname = urlObj.pathname.toLowerCase();
-    const fileExtensionRegex = /\.[a-z0-9]+$/;
     if (
-      fileExtensionRegex.test(pathname) &&
+      FILE_EXTENSION_REGEX.test(pathname) &&
       !pathname.endsWith(".html") &&
       !pathname.endsWith(".xml")
     ) {
       return false;
     }
-    const urlDomain = urlObj.hostname.replace(/www\./, "");
-    const scopeDomain = scopeObj.hostname.replace(/www\./, "");
+    const urlDomain = urlObj.hostname.replace("www.", "");
+    const scopeDomain = scopeObj.hostname.replace("www.", "");
     if (urlDomain === scopeDomain) {
       return true;
     }
@@ -169,7 +168,7 @@ export function buildVisitKey(rawUrl: string): string {
   try {
     const url = new URL(rawUrl);
     url.hash = "";
-    url.hostname = url.hostname.replace(/www\./, "");
+    url.hostname = url.hostname.replace("www.", "");
     url.search = "";
     return RemoveAnchorsFromUrl(url.toString());
   } catch (error) {
