@@ -52,16 +52,18 @@ async def query_creation(
     answer_json = await chatbot.chat_generate(
         query_str=query_str,
         messages=messages,
+        knowledge_base=query.knowledge_base,
     )
     answer = get_final_response(
-        response_str=answer_json["response"],
-        references=answer_json["references"],
+        response_str=answer_json.get("response", ""),
+        references=answer_json.get("references", []),
     )
 
     bodyToReturn = prepare_body_to_return(
         query=query,
         session=session,
         answer=answer,
+        answer_json=answer_json,
         trace_id=trace_id,
         now=now,
     )
@@ -69,6 +71,7 @@ async def query_creation(
     bodyToSave = prepare_body_to_save(
         bodyToReturn=bodyToReturn,
         query=query,
+        answer=answer,
         answer_json=answer_json,
         now=now,
     )

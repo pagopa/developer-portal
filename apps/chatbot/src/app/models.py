@@ -14,6 +14,7 @@ class Query(BaseModel):
     question: str = Field(max_length=800)
     queriedAt: str | None = None
     history: List[QueryFromThePast] | None = None
+    knowledge_base: str | None = None
 
 
 class Feedback(BaseModel):
@@ -25,6 +26,18 @@ class Feedback(BaseModel):
 class QueryFeedback(BaseModel):
     badAnswer: bool = False
     feedback: Feedback | None = None
+
+
+class QueryResponse(BaseModel):
+    id: str
+    sessionId: str
+    question: str
+    answer: str
+    createdAt: str
+    createdAtDate: str
+    queriedAt: str
+    badAnswer: bool = False
+    chips: List[str] = Field(default_factory=list)
 
 
 dynamodb = AWS_SESSION.resource("dynamodb")

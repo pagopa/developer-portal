@@ -1,11 +1,10 @@
 import datetime
 import json
 from typing import List
-
 from boto3.dynamodb.conditions import Key
 
 from src.app.sqs_init import sqs_queue_monitor
-from src.app.models import Query, tables
+from src.app.models import Query, QueryResponse, tables
 from src.modules.logger import get_logger
 from src.modules.settings import SETTINGS
 from src.modules.codec import compress_payload
@@ -13,31 +12,14 @@ from src.modules.codec import compress_payload
 LOGGER = get_logger(__name__, level=SETTINGS.log_level)
 
 
-def prepare_body_to_save(
-    bodyToReturn: dict,
-    query: Query,
-    answer_json: dict,
-    now: datetime,
-) -> dict:
-
-    days = SETTINGS.expire_days
-    expires_at = int((now + datetime.timedelta(days=days)).timestamp())
-
-    bodyToSave = bodyToReturn.copy()
-    bodyToSave["question"] = query.question
-    bodyToSave["answer"] = get_final_response(
-        response_str=answer_json["response"],
-        references=answer_json["references"],
-    )
-    bodyToSave["topics"] = answer_json.get("products", [])
-    bodyToSave["expiresAt"] = expires_at
-
-    return bodyToSave
-
-
 def prepare_body_to_return(
-    query: Query, session: dict | None, answer: str, trace_id: str, now: datetime
-) -> dict:
+    query: Query,
+    session: dict | None,
+    answer: str,
+    answer_json: dict,
+    trace_id: str,
+    now: datetime,
+) -> QueryResponse:
 
     if query.queriedAt is None:
         queriedAt = now.isoformat()
@@ -46,18 +28,40 @@ def prepare_body_to_return(
 
     createdAt = now.isoformat()
     createdAtDate = createdAt[:10]
-    bodyToReturn = {
-        "id": trace_id,
-        "sessionId": session["id"],
-        "question": query.question,
-        "answer": answer,
-        "createdAt": createdAt,
-        "createdAtDate": createdAtDate,
-        "queriedAt": queriedAt,
-        "badAnswer": False,
-    }
+
+    bodyToReturn = QueryResponse(
+        id=trace_id,
+        sessionId=session["id"],
+        question=query.question,
+        answer=answer,
+        createdAt=createdAt,
+        createdAtDate=createdAtDate,
+        queriedAt=queriedAt,
+        badAnswer=False,
+        chips=answer_json.get("chips", []),
+    )
 
     return bodyToReturn
+
+
+def prepare_body_to_save(
+    bodyToReturn: QueryResponse,
+    query: Query,
+    answer: str,
+    answer_json: dict,
+    now: datetime,
+) -> dict:
+
+    days = SETTINGS.expire_days
+    expires_at = int((now + datetime.timedelta(days=days)).timestamp())
+
+    bodyToSave = bodyToReturn.model_dump()
+    bodyToSave["question"] = query.question
+    bodyToSave["answer"] = answer
+    bodyToSave["topics"] = answer_json.get("products", [])
+    bodyToSave["expiresAt"] = expires_at
+
+    return bodyToSave
 
 
 def create_monitor_trace(trace_data: dict, should_evaluate: bool) -> None:
