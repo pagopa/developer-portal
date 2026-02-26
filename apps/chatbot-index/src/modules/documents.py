@@ -419,10 +419,10 @@ def get_api_docs() -> List[Document]:
                     api_url += f"?spec={quote(spec_urls['name'])}"
                 docs.append(
                     Document(
-                        id_=api_url.replace(SETTINGS.website_url, ""),
+                        id_=api_url,
                         text=api_txt,
                         metadata={
-                            "filepath": api_url.replace(SETTINGS.website_url, ""),
+                            "url": api_url,
                             "title": title,
                         },
                     )
@@ -512,7 +512,7 @@ def get_static_docs(static_metadata: List[StaticMetadata]) -> List[Document]:
                     id_=item.s3_file_path,
                     text=text,
                     metadata={
-                        "filepath": url.replace(SETTINGS.website_url, ""),
+                        "url": url,
                         "title": title,
                         "language": "it",
                     },
@@ -582,10 +582,10 @@ def get_dynamic_docs(dynamic_metadata: List[DynamicMetadata]) -> List[Document]:
 
                 dynamic_docs.append(
                     Document(
-                        id_=url.replace(SETTINGS.website_url, ""),
+                        id_=url,
                         text=text,
                         metadata={
-                            "filepath": url.replace(SETTINGS.website_url, ""),
+                            "url": url,
                             "language": "it",
                             "lastmod": lastmod,
                             "title": title,
@@ -646,7 +646,7 @@ def get_structured_docs(parent_folder: str, bucket_name: str) -> List[Document]:
                     id_=filename,
                     text=s3_content.get("text", ""),
                     metadata={
-                        "filepath": s3_content.get("url", ""),
+                        "url": s3_content.get("url", ""),
                         "language": s3_content.get("language", ""),
                         "lastmod": s3_content.get("lastmod", ""),
                         "title": s3_content.get("title", ""),

@@ -12,7 +12,7 @@ class Reference(BaseModel):
     """a reference that support the generated answer."""
 
     title: str
-    filepath: str
+    url: str
 
 
 class RAGOutput(BaseModel):

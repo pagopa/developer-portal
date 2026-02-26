@@ -114,15 +114,8 @@ def build_index_redis(
     else:
         try:
             index = load_index_redis(index_id)
-            ref_docs_info = index.storage_context.docstore.get_all_ref_doc_info()
-            for ref_doc_id, ref_doc_info in ref_docs_info.items():
-                index.delete_ref_doc(ref_doc_id, delete_from_docstore=True)
-                if ref_doc_info:
-                    for node_id in ref_doc_info.node_ids:
-                        index.storage_context.docstore.delete_document(node_id)
-            LOGGER.info(
-                f"Redis database has been cleared of the vector index with ID: {index_id}."
-            )
+            REDIS_CLIENT.ft(index_id).dropindex(delete_documents=True)
+
         except Exception as exc:
             LOGGER.warning(
                 "Skipping Redis cleanup for index '%s' because it could not be loaded: %s",
@@ -404,16 +397,14 @@ class LlamaVectorIndex:
         ]
 
         dynamic_metadata = get_dynamic_metadata(static_metadata)
-        dynamic_doc_ids = [
-            item.url.replace(SETTINGS.website_url, "") for item in dynamic_metadata
-        ]
+        dynamic_doc_ids = [item.url for item in dynamic_metadata]
 
         dynamic_docs_to_update = []
         dynamic_doc_ids_to_remove = []
 
         LOGGER.info("Refreshing vector index with dynamic docs...")
         for item in dynamic_metadata:
-            doc_id = item.url.replace(SETTINGS.website_url, "")
+            doc_id = item.url
             lastmod = item.lastmod
 
             if doc_id in ref_doc_ids:
