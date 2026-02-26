@@ -2,4 +2,4 @@
 "extractor": minor
 ---
 
-Add extractor app
+Add extractor app with versioning and logging system
