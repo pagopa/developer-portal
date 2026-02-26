@@ -25,18 +25,18 @@ services:
   postgres:
     image: postgres:17.2-alpine
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 3s
       timeout: 3s
       retries: 10
     volumes:
       - postgres_data_test:/var/lib/postgresql/data
-    env_file: ../.env.langfuse
+    env_file: ../../chatbot-monitor/.env.langfuse
 
   redis:
     image: redis/redis-stack:7.2.0-v13
     healthcheck:
-      test: [ "CMD", "redis-cli", "ping" ]
+      test: ["CMD", "redis-cli", "ping"]
       interval: 3s
       timeout: 10s
       retries: 10
@@ -52,7 +52,12 @@ services:
     volumes:
       - redis_data_test:/data
       - ./files/redis-data/redis-dump.rdb:/seed/dump.rdb:ro
-    command: [ "sh", "-c", "if [ -f /seed/dump.rdb ]; then cp -a /seed/dump.rdb /data/dump.rdb && chown redis:redis /data/dump.rdb 2>/dev/null || chown 1000:1000 /data/dump.rdb || true; fi" ]
+    command:
+      [
+        "sh",
+        "-c",
+        "if [ -f /seed/dump.rdb ]; then cp -a /seed/dump.rdb /data/dump.rdb && chown redis:redis /data/dump.rdb 2>/dev/null || chown 1000:1000 /data/dump.rdb || true; fi",
+      ]
     restart: "no"
 
   redis-fix-perms:
@@ -64,7 +69,12 @@ services:
     depends_on:
       redis-seed:
         condition: service_completed_successfully
-    command: [ "sh", "-c", "chown -R redis:redis /data 2>/dev/null || chown -R 1000:1000 /data || true" ]
+    command:
+      [
+        "sh",
+        "-c",
+        "chown -R redis:redis /data 2>/dev/null || chown -R 1000:1000 /data || true",
+      ]
     restart: "no"
 
   motoserver:
@@ -82,14 +92,14 @@ services:
         condition: service_healthy
       clickhouse:
         condition: service_healthy
-    env_file: ../.env.langfuse
+    env_file: ../../chatbot-monitor/.env.langfuse
 
   langfuse-web:
     image: docker.io/langfuse/langfuse:3.115
     depends_on: *langfuse-depends-on
     ports:
       - 4001:3000
-    env_file: ../.env.langfuse
+    env_file: ../../chatbot-monitor/.env.langfuse
 
   clickhouse:
     image: docker.io/clickhouse/clickhouse-server:25.8.8.26-alpine
@@ -117,7 +127,7 @@ services:
       MINIO_ROOT_USER: minio
       MINIO_ROOT_PASSWORD: miniosecret
     healthcheck:
-      test: [ "CMD", "mc", "ready", "local" ]
+      test: ["CMD", "mc", "ready", "local"]
       interval: 1s
       timeout: 5s
       retries: 5
@@ -126,7 +136,7 @@ services:
   valkey:
     image: valkey/valkey:8.1.4-alpine3.22
     healthcheck:
-      test: [ "CMD", "valkey-cli", "ping" ]
+      test: ["CMD", "valkey-cli", "ping"]
       interval: 3s
       timeout: 10s
       retries: 10
