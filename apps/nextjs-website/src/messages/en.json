@@ -685,6 +685,9 @@
     "thereAreNoMessages": "There are no messages in this session",
     "chip": {
       "ariaLabel": "Respond with: {question}"
+    },
+    "responseEnhancements": {
+      "choseChipsOrWriteMessage": "To explore the topic further, __select an action__ or __write a new message__."
     }
   }
 }

@@ -3,9 +3,10 @@ export type Query = {
   readonly sessionId: string;
   readonly question: string;
   readonly queriedAt: string;
-  readonly badAnswer: boolean | undefined;
   readonly answer: string | null;
   readonly createdAt: string | null;
+  readonly badAnswer?: boolean;
+  readonly chips?: readonly ChatbotChip[];
 };
 
 export type QueryWithHistory = Query & {
@@ -29,4 +30,10 @@ export type PaginatedSessions = {
   readonly page: number;
   readonly size: number;
   readonly pages: number;
+};
+
+export type ChatbotChip = {
+  readonly label: string;
+  readonly question: string;
+  readonly knowledgeBase: string;
 };
