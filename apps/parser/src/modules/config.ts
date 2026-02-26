@@ -6,7 +6,6 @@ import {
 } from "../helpers/url-handling";
 import * as dotenv from "dotenv";
 
-const DEFAULT_DEPTH = null;
 const DEFAULT_REQUEST_TIMEOUT_MS = 10_000;
 
 export function resolveEnv(): EnvConfig {
@@ -33,10 +32,8 @@ export function resolveEnv(): EnvConfig {
     );
   }
   const sanitizedBaseUrl = RemoveAnchorsFromUrl(baseUrl);
-  const parsedDepth = Number.parseInt(depth ?? `${DEFAULT_DEPTH}`, 10);
-  const maxDepth = Number.isNaN(parsedDepth)
-    ? DEFAULT_DEPTH
-    : Math.max(parsedDepth, 0);
+  const parsedDepth = depth ? Number.parseInt(depth, 10) : null;
+  const maxDepth = parsedDepth ? Math.max(parsedDepth, 0) : null;
   const outputDirectory = generateOutputDirectoryPath(
     vectorIndexName,
     sanitizedBaseUrl,

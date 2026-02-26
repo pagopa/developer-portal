@@ -13,6 +13,7 @@ const TOGGLE_SELECTORS = [
 ];
 
 export async function expandInteractiveSections(page: Page): Promise<void> {
+  // This functions assumes that the page has already been navigated to and is fully loaded.
   await page.evaluate((selectors) => {
     document.querySelectorAll("details").forEach((element) => {
       (element as HTMLDetailsElement).open = true;
@@ -49,5 +50,4 @@ export async function expandInteractiveSections(page: Page): Promise<void> {
       });
     });
   }, TOGGLE_SELECTORS);
-  await new Promise((resolve) => setTimeout(resolve, 250));
 }

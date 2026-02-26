@@ -1,20 +1,21 @@
 import datetime
 import hashlib
-import os
 import uuid
+import json
 
 from boto3.dynamodb.conditions import Key
 from botocore.exceptions import BotoCoreError, ClientError
 from fastapi import HTTPException
 
-from src.app.chatbot_init import chatbot
-from src.modules.monitor import add_langfuse_score
 from src.modules.logger import get_logger
+from src.modules.settings import SETTINGS
+from src.modules.codec import compress_payload
+from src.app.sqs_init import sqs_queue_monitor
 from src.app.models import QueryFeedback, tables
 from src.app.jwt_check import verify_jwt
 
 
-LOGGER = get_logger(__name__)
+LOGGER = get_logger(__name__, level=SETTINGS.log_level)
 
 
 def current_user_id(authorization: str | None = None) -> str:
@@ -34,12 +35,11 @@ def current_user_id(authorization: str | None = None) -> str:
                 return decoded["username"]
 
 
-def find_or_create_session(userId: str, now: datetime.datetime):
+def find_or_create_session(userId: str, now: datetime.datetime) -> dict | None:
     if userId is None:
         return None
 
-    SESSION_MAX_DURATION_DAYS = float(os.getenv("CHB_SESSION_MAX_DURATION_DAYS", "1"))
-    datetimeLimit = now - datetime.timedelta(SESSION_MAX_DURATION_DAYS - 1)
+    datetimeLimit = now - datetime.timedelta(SETTINGS.session_max_duration_days - 1)
     startOfDay = datetime.datetime.combine(datetimeLimit, datetime.time.min)
     # trovare una sessione con createdAt > datetimeLimit
     try:
@@ -58,7 +58,7 @@ def find_or_create_session(userId: str, now: datetime.datetime):
 
     items = dbResponse.get("Items", [])
     if len(items) == 0:
-        days = int(os.getenv("EXPIRE_DAYS", 90))
+        days = SETTINGS.expire_days
         expires_at = int((now + datetime.timedelta(days=days)).timestamp())
 
         body = {
@@ -82,7 +82,7 @@ def find_or_create_session(userId: str, now: datetime.datetime):
     return body
 
 
-def create_session_record(body: dict):
+def create_session_record(body: dict) -> None:
     saltValue = str(uuid.uuid4())
     saltBody = {
         "sessionId": body["id"],
@@ -94,7 +94,7 @@ def create_session_record(body: dict):
     tables["salts"].put_item(Item=saltBody)
 
 
-def session_salt(sessionId: str):
+def session_salt(sessionId: str) -> str | None:
     try:
         dbResponse = tables["salts"].query(
             KeyConditionExpression=Key("sessionId").eq(sessionId)
@@ -117,7 +117,7 @@ def hash_func(user_id: str, salt: str) -> str:
     return hashlib.sha256(salted_user_id.encode()).hexdigest()
 
 
-def last_session_id(userId: str):
+def last_session_id(userId: str) -> str | None:
     dbResponse = tables["sessions"].query(
         IndexName="SessionsByCreatedAtIndex",
         KeyConditionExpression=Key("userId").eq(userId),
@@ -134,29 +134,75 @@ def get_user_session(userId: str, sessionId: str) -> dict | None:
     return item if item else None
 
 
-def add_langfuse_score_query(query_id: str, query_feedback: QueryFeedback):
+def add_langfuse_score_query(
+    query_id: str, query_feedback: QueryFeedback, query_for_database: dict
+) -> None:
+
     if query_feedback.badAnswer is not None:
         bad_answer = -1 if query_feedback.badAnswer else 0
-        add_langfuse_score(
-            trace_id=query_id,
-            name="user-feedback",
-            value=bad_answer,
-            comment=query_feedback.feedback.user_comment,
-            data_type="NUMERIC",
+        comment = (
+            query_feedback.feedback.user_comment if query_feedback.feedback else None
+        )
+        payload = {
+            "operation": "add_scores",
+            "data": compress_payload(
+                {
+                    "trace_id": query_id,
+                    "name": "user-feedback",
+                    "score": bad_answer,
+                    "comment": comment,
+                    "data_type": "NUMERIC",
+                    "query_for_database": query_for_database,
+                }
+            ),
+        }
+        sqs_queue_monitor.send_message(
+            MessageBody=json.dumps(payload),
+            MessageGroupId=query_id,
         )
 
-    if query_feedback.feedback.user_response_relevancy is not None:
-        add_langfuse_score(
-            trace_id=query_id,
-            name="user-response-relevancy",
-            value=query_feedback.feedback.user_response_relevancy,
-            data_type="NUMERIC",
+    if (
+        query_feedback.feedback
+        and query_feedback.feedback.user_response_relevancy is not None
+    ):
+
+        payload = {
+            "operation": "add_scores",
+            "data": compress_payload(
+                {
+                    "trace_id": query_id,
+                    "name": "user-response-relevancy",
+                    "score": float(query_feedback.feedback.user_response_relevancy),
+                    "comment": None,
+                    "data_type": "NUMERIC",
+                    "query_for_database": query_for_database,
+                }
+            ),
+        }
+        sqs_queue_monitor.send_message(
+            MessageBody=json.dumps(payload),
+            MessageGroupId=query_id,
         )
 
-    if query_feedback.feedback.user_faithfullness is not None:
-        add_langfuse_score(
-            trace_id=query_id,
-            name="user-faithfullness",
-            value=query_feedback.feedback.user_faithfullness,
-            data_type="NUMERIC",
+    if (
+        query_feedback.feedback
+        and query_feedback.feedback.user_faithfullness is not None
+    ):
+
+        payload = {
+            "operation": "add_scores",
+            "data": compress_payload(
+                {
+                    "trace_id": query_id,
+                    "name": "user-faithfullness",
+                    "score": float(query_feedback.feedback.user_faithfullness),
+                    "comment": None,
+                    "data_type": "NUMERIC",
+                    "query_for_database": query_for_database,
+                }
+            ),
+        }
+        sqs_queue_monitor.send_message(
+            MessageBody=json.dumps(payload),
+            MessageGroupId=query_id,
         )
