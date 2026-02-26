@@ -65,6 +65,7 @@ class ExtractorSettings(BaseSettings):
     temperature: float = float(os.getenv("CHB_MODEL_TEMPERATURE", "0."))
     max_tokens: int = int(os.getenv("CHB_MODEL_MAXTOKENS", "65535"))
     provider: str = os.getenv("CHB_PROVIDER", "google")
+
     # Prompts
     content_cleaning_prompt: str = PROMPTS["content_cleaning_prompt"]
     # Logging
