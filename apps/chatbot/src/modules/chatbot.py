@@ -102,6 +102,7 @@ class Chatbot:
     def _get_prompt_templates(
         self,
     ) -> Tuple[PromptTemplate, PromptTemplate]:
+        """Initializes the prompt templates for question-answering and refining responses."""
 
         qa_prompt_tmpl = PromptTemplate(
             SETTINGS.qa_prompt_str,
@@ -123,43 +124,58 @@ class Chatbot:
         return qa_prompt_tmpl, ref_prompt_tmpl
 
     def _get_response_json(self, engine_response: RESPONSE_TYPE) -> dict:
+        """Extracts the relevant information from the engine response and formats it into a JSON structure.
+        Args:
+            engine_response (RESPONSE_TYPE): The response object returned by the discovery agent, which may contain a structured response with the answer, products, references, and contexts.
+        Returns:
+            dict: A JSON-formatted dictionary containing the response, products, references, contexts, and spans.
+        """
 
-        tool_calls = engine_response.tool_calls
-        product_list = []
-        references_list = []
-        retrieved_contexts = []
+        if isinstance(engine_response.structured_response, dict):
+            references_list = []
+            if isinstance(engine_response.structured_response["references"], list):
+                for ref in engine_response.structured_response["references"]:
+                    references_list.append(f"[{ref['title']}]({ref['url']})")
 
-        for tool_call in tool_calls:
+            retrieved_contexts = []
+            for tool_call in engine_response.tool_calls:
 
-            raw_output = tool_call.tool_output.raw_output
-            product_list += getattr(raw_output, "products", [])
-            references = getattr(raw_output, "references", [])
+                raw_output = tool_call.tool_output.raw_output
+                nodes = getattr(raw_output, "source_nodes", [])
+                retrieved_contexts = [
+                    f"-------\nURL: {node.metadata['url']}\n\n{node.text}\n\n"
+                    for node in nodes
+                ]
 
-            references_list = [
-                f"[{ref.title}]({SETTINGS.website_url}{ref.filepath})"
-                for ref in references
-            ]
+            response_json = {
+                "response": engine_response.structured_response["response"],
+                "products": engine_response.structured_response["products"],
+                "references": references_list,
+                "contexts": retrieved_contexts,
+                "spans": EXPORTER.spans,
+            }
 
-            nodes = getattr(raw_output, "source_nodes", [])
-            retrieved_contexts = [
-                f"-------\nURL: {SETTINGS.website_url + node.metadata['filepath']}\n\n{node.text}\n\n"
-                for node in nodes
-            ]
-
-        response_json = {
-            "response": engine_response.response.content.strip(),
-            "products": product_list,
-            "references": references_list,
-            "contexts": retrieved_contexts,
-            "spans": EXPORTER.spans,
-        }
-        EXPORTER.spans = []
+        else:
+            response_json = {
+                "response": "Scusa, non posso elaborare la tua richiesta.\n"
+                + "Prova a formulare una nuova domanda.",
+                "products": ["none"],
+                "references": [],
+                "contexts": [],
+                "spans": [],
+            }
 
         return response_json
 
     def _messages_to_chathistory(
         self, messages: Optional[List[Dict[str, str]]] = None
     ) -> List[ChatMessage]:
+        """Converts a list of message dictionaries into a list of ChatMessage objects for the chat history.
+        Args:
+            messages (Optional[List[Dict[str, str]]]): A list of message dictionaries, where each dictionary has a "question" key for user messages and an "answer" key for assistant messages.
+        Returns:
+            List[ChatMessage]: A list of ChatMessage objects representing the chat history, with alternating user and assistant messages. The assistant messages are processed to remove any reference sections (indicated by "
+        """
 
         chat_history = []
         if messages:
@@ -192,13 +208,19 @@ class Chatbot:
         query_str: str,
         messages: Optional[List[Dict[str, str]]] | None = None,
     ) -> dict:
+        """Generates a response to the user's query by running the discovery agent with the provided query and chat history, and formats the response into a JSON structure.
+        Args:
+            query_str (str): The user's query string.
+            messages (Optional[List[Dict[str, str]]]): A list of message dictionaries representing the chat history. Each dictionary should have a "question" key for user messages and an "answer" key for assistant
+        Returns:
+            dict: A JSON-formatted dictionary containing the response, products, references, contexts, and spans.
+        """
 
         chat_history = self._messages_to_chathistory(messages)
 
         try:
             engine_response = await self.discovery.run(query_str, chat_history)
             response_json = self._get_response_json(engine_response)
-
         except Exception as e:
             response_json = {
                 "response": "Scusa, non posso elaborare la tua richiesta.\n"
@@ -208,8 +230,9 @@ class Chatbot:
                 "contexts": [],
                 "spans": [],
             }
-            LOGGER.error(f"Exception: {e}")
+            LOGGER.warning(f"Exception: {e}")
 
         response_json["products"].append(f"chatbot@{SETTINGS.chatbot_release}")
+        EXPORTER.spans = []
 
         return response_json
