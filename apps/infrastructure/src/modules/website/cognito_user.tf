@@ -152,6 +152,18 @@ resource "aws_cognito_user_pool" "devportal" {
   }
 
   schema {
+    name                     = "preferred_language"
+    attribute_data_type      = "String"
+    developer_only_attribute = false
+    mutable                  = true
+    required                 = false
+    string_attribute_constraints {
+      min_length = 1
+      max_length = 20
+    }
+  }
+
+  schema {
     name                     = "user_preferences"
     attribute_data_type      = "String"
     developer_only_attribute = false

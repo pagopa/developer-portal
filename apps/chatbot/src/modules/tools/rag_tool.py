@@ -40,7 +40,7 @@ def get_query_engine_tool(
     embed_model = embed_model if embed_model else get_embed_model()
 
     base_retriever = index.as_retriever(
-        similarity_top_k=12,
+        similarity_top_k=SETTINGS.similarity_topk,
         embed_model=embed_model,
     )
     retriever = AutoMergingRetriever(

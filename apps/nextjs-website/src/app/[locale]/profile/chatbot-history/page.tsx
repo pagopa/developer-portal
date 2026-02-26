@@ -7,7 +7,7 @@ import ChatbotHistoryLayout from '@/components/organisms/ChatbotHistoryLayout/Ch
 import {
   flushChatQueriesFromLocalStorage,
   useChatbot,
-} from '@/helpers/chatbot.helper';
+} from '@/helpers/chatbot.helpers';
 import { useUser } from '@/helpers/user.helper';
 import { isChatbotActive } from '@/config';
 import Spinner from '@/components/atoms/Spinner/Spinner';

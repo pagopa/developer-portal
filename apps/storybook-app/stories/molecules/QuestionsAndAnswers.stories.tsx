@@ -1,6 +1,5 @@
 import { Meta, StoryObj } from '@storybook/nextjs';
 import QuestionsAndAnswers from 'nextjs-website/src/components/molecules/QuestionsAndAnswers/QuestionsAndAnswers';
-import { nextIntlContextDecorator } from '../next-intl-context.helper';
 import { mockTextBlock } from '../mock-content.helper';
 
 const meta: Meta<typeof QuestionsAndAnswers> = {
@@ -11,7 +10,6 @@ const meta: Meta<typeof QuestionsAndAnswers> = {
 export default meta;
 
 export const Showcase: StoryObj<typeof QuestionsAndAnswers> = {
-  decorators: [nextIntlContextDecorator],
   args: {
     items: [
       {
@@ -72,7 +70,6 @@ export const Showcase: StoryObj<typeof QuestionsAndAnswers> = {
 };
 
 export const FewQuestionsShowcase: StoryObj<typeof QuestionsAndAnswers> = {
-  decorators: [nextIntlContextDecorator],
   args: {
     items: [
       {
