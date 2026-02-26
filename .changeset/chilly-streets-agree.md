@@ -2,4 +2,4 @@
 "chatbot-evaluate": patch
 ---
 
-Removed script folder from Dockerfile
+Remove script folder from Dockerfile
