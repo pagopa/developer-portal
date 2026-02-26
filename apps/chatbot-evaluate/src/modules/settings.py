@@ -12,6 +12,7 @@ CWF = Path(__file__)
 ROOT = CWF.parent.parent.parent.absolute().__str__()
 PROMPTS = yaml.safe_load(open(os.path.join(ROOT, "config", "prompts.yaml"), "r"))
 AWS_SESSION = boto3.Session()
+AWS_SSM_CLIENT = AWS_SESSION.client("ssm")
 
 
 def get_ssm_parameter(name: str | None, default: str | None = None) -> str | None:
@@ -23,15 +24,12 @@ def get_ssm_parameter(name: str | None, default: str | None = None) -> str | Non
     :return: The value of the requested parameter.
     """
 
-    ssm_client = AWS_SESSION.client("ssm")
-    LOGGER.info(f"get_ssm_parameter {name}...")
-
     if name is None:
         name = "none-params-in-ssm"
     try:
-        response = ssm_client.get_parameter(Name=name, WithDecryption=True)
+        response = AWS_SSM_CLIENT.get_parameter(Name=name, WithDecryption=True)
         value = response["Parameter"]["Value"]
-    except ssm_client.exceptions.ParameterNotFound:
+    except AWS_SSM_CLIENT.exceptions.ParameterNotFound:
         LOGGER.warning(
             f"Parameter {name} not found in SSM, returning default: {default}"
         )
@@ -50,15 +48,6 @@ class ChatbotSettings(BaseSettings):
         name=os.getenv("CHB_AWS_SSM_GOOGLE_API_KEY"),
         default=os.getenv("CHB_AWS_GOOGLE_API_KEY"),
     )
-    langfuse_host: str = os.getenv("CHB_LANGFUSE_HOST")
-    langfuse_public_key: str = get_ssm_parameter(
-        os.getenv("CHB_AWS_SSM_LANGFUSE_PUBLIC_KEY"),
-        os.getenv("LANGFUSE_INIT_PROJECT_PUBLIC_KEY"),
-    )
-    langfuse_secret_key: str = get_ssm_parameter(
-        os.getenv("CHB_AWS_SSM_LANGFUSE_SECRET_KEY"),
-        os.getenv("LANGFUSE_INIT_PROJECT_SECRET_KEY"),
-    )
     log_level: str = os.getenv("LOG_LEVEL", "info")
 
     # models settings
@@ -73,6 +62,14 @@ class ChatbotSettings(BaseSettings):
 
     # prompts
     condense_prompt_str: str = PROMPTS["condense_prompt_str"]
+
+    # sqs
+    aws_sqs_queue_monitor_name: str = os.getenv(
+        "CHB_AWS_SQS_QUEUE_MONITOR_NAME", "chatbot-monitor"
+    )
+    aws_sqs_queue_evaluate_name: str = os.getenv(
+        "CHB_AWS_SQS_QUEUE_EVALUATE_NAME", "chatbot-evaluate"
+    )
 
 
 SETTINGS = ChatbotSettings()

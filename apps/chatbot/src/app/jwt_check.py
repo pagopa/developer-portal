@@ -6,7 +6,7 @@ from fastapi import HTTPException
 from src.modules.logger import get_logger
 from src.modules.settings import SETTINGS
 
-LOGGER = get_logger(__name__)
+LOGGER = get_logger(__name__, level=SETTINGS.log_level)
 
 
 def get_jwks():
