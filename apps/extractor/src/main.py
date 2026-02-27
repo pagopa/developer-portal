@@ -14,7 +14,7 @@ from src.modules.settings import SETTINGS
 from src.modules.models import get_llm
 from src.modules.extractor import process_folder
 
-LOGGER = get_logger(__name__)
+LOGGER = get_logger(__name__, level=SETTINGS.log_level)
 
 
 def validate_folders() -> bool:
@@ -40,7 +40,8 @@ def main() -> int:
     try:
         if not SETTINGS.google_api_key:
             LOGGER.error(
-                "Google API key not found. Set EXT_AWS_GOOGLE_API_KEY environment variable."
+                "Google API key not found. Set CHB_AWS_GOOGLE_API_KEY or "
+                "CHB_AWS_SSM_GOOGLE_API_KEY environment variable."
             )
             return 1
         if not validate_folders():

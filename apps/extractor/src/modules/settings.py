@@ -25,10 +25,7 @@ def get_ssm_parameter(name: str | None, default: str) -> str:
     :return: The value of the requested parameter.
     """
 
-    if AWS_SSM_CLIENT is None:
-        LOGGER.debug(f"AWS SSM client not available, using default for {name}")
-        return default
-    
+
     if name is None:
         name = "none-params-in-ssm"
     try:
