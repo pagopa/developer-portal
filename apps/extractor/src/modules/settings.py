@@ -6,7 +6,7 @@ from pydantic_settings import BaseSettings
 
 from src.modules.logger import get_logger
 
-LOGGER = get_logger(__name__)
+LOGGER = get_logger(__name__, os.getenv("LOG_LEVEL", "info"))
 
 # Get root directory and load config files
 CWF = Path(__file__)
