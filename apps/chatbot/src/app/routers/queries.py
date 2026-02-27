@@ -52,7 +52,7 @@ async def query_creation(
     answer_json = await chatbot.chat_generate(
         query_str=query_str,
         messages=messages,
-        knowledge_base=query.knowledge_base,
+        # knowledge_base=query.knowledge_base,
     )
     answer = get_final_response(
         response_str=answer_json.get("response", ""),

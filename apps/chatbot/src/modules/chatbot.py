@@ -150,10 +150,8 @@ class Chatbot:
         self,
         query_str: str,
         messages: Optional[List[Dict[str, str]]] | None = None,
-        knowledge_base: Optional[str] = None,
+        # knowledge_base: Optional[str] = None,
     ) -> dict:
-
-        # TODO: implement knowledge base
 
         agent = get_agent(
             llm=self.model,
