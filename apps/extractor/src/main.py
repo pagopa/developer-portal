@@ -14,7 +14,7 @@ from src.modules.settings import SETTINGS
 from src.modules.models import get_llm
 from src.modules.extractor import process_folder
 
-LOGGER = get_logger(__name__)
+LOGGER = get_logger(__name__, level=SETTINGS.log_level)
 
 
 def validate_folders() -> bool:

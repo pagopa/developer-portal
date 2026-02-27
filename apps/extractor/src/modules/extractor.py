@@ -8,7 +8,7 @@ from src.modules.schemas import InputDocument, CleanedDocument
 from src.modules.file_handler import load_json_files, save_cleaned_document
 from src.modules.settings import SETTINGS
 
-LOGGER = get_logger(__name__)
+LOGGER = get_logger(__name__, level=SETTINGS.log_level)
 
 
 def extract_document(
@@ -81,7 +81,7 @@ def process_folder(input_folder: str, output_folder: str, llm: LLM) -> dict:
         "total": 0,
         "succeeded": 0,
         "failed": 0,
-        "skipped": 0,
+
     }
 
     try:
