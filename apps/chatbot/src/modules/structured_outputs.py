@@ -22,10 +22,8 @@ class Question(BaseModel):
     label: str = Field(
         ..., description="A label or short text describing the follow-up question."
     )
-    question: str = Field(
-        ..., description="Follow-up question to present to the user."
-    )
-    knowledge_base: str = Field(
+    question: str = Field(..., description="Follow-up question to present to the user.")
+    knowledgeBase: str = Field(
         ..., description="knowledge base tag: `devportal` or `cittadino`"
     )
 

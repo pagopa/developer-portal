@@ -160,9 +160,7 @@ class Chatbot:
                 "products": engine_response.structured_response["products"],
                 "references": references_list,
                 "contexts": retrieved_contexts,
-                "follow_up_questions": engine_response.structured_response[
-                    "follow_up_questions"
-                ],
+                "chips": engine_response.structured_response["follow_up_questions"],
                 "spans": EXPORTER.spans,
             }
 
@@ -173,7 +171,7 @@ class Chatbot:
                 "products": ["none"],
                 "references": [],
                 "contexts": [],
-                "follow_up_questions": [],
+                "chips": [],
                 "spans": [],
             }
 
@@ -240,7 +238,7 @@ class Chatbot:
                 "products": ["none"],
                 "references": [],
                 "contexts": [],
-                "follow_up_questions": [],
+                "chips": [],
                 "spans": [],
             }
             LOGGER.warning(f"Exception: {e}")
