@@ -2,7 +2,7 @@ from llama_index.core.llms.llm import LLM
 from src.modules.logger import get_logger
 from src.modules.settings import SETTINGS
 
-LOGGER = get_logger(__name__)
+LOGGER = get_logger(__name__, SETTINGS.log_level)
 
 
 def get_llm(
@@ -34,7 +34,7 @@ def get_llm(
     if provider == "google":
         if not SETTINGS.google_api_key:
             raise ValueError(
-                "Google API key is required. Set EXT_AWS_GOOGLE_API_KEY environment variable."
+                "Google API key is required. Set CHB_AWS_SSM_GOOGLE_API_KEY or CHB_AWS_GOOGLE_API_KEY environment variable."
             )
         from llama_index.llms.google_genai import GoogleGenAI
 

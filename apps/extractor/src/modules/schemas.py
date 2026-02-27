@@ -42,11 +42,4 @@ class CleanedDocument(BaseModel):
 
     def to_dict(self) -> dict:
         """Convert the model to a dictionary for JSON serialization."""
-        return {
-            "title": self.title,
-            "text": self.text,
-            "language": self.language,
-            "lastmod": self.lastmod,
-            "url": self.url,
-            "keywords": self.keywords,
-        }
+        return self.model_dump()

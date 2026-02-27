@@ -6,8 +6,9 @@ from pydantic import ValidationError
 
 from src.modules.logger import get_logger
 from src.modules.schemas import InputDocument, CleanedDocument
+from src.settings import SETTINGS
 
-LOGGER = get_logger(__name__)
+LOGGER = get_logger(__name__, log_level=SETTINGS.LOG_LEVEL)
 
 
 def load_json_files(input_folder: str) -> List[Tuple[str, InputDocument]]:
