@@ -52,6 +52,8 @@ export const QueryWithChips: StoryObj<typeof Chat> = {
         sessionId: 'sessionID',
         question: mockText(12),
         queriedAt: '2024-07-24T17:14:07.129Z',
+        answer: mockText(50),
+        createdAt: '2024-07-24T17:14:07.129Z',
         chips: [
           {
             label: 'Documentazione API',

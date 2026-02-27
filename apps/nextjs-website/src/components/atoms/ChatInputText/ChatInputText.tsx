@@ -13,7 +13,8 @@ import { ChangeEvent, FormEvent, KeyboardEvent, useState } from 'react';
 const MESSAGE_MAX_CHARS = 800;
 
 type ChatInputTextProps = {
-  onSubmit: (message: string) => null;
+  // eslint-disable-next-line functional/no-return-void
+  onSubmit: (message: string) => void;
   sendDisabled?: boolean;
 };
 
