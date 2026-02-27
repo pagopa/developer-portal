@@ -2,4 +2,4 @@
 "parser": minor
 ---
 
-Hotfix parser tests
+Fix parser tests
