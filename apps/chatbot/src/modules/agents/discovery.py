@@ -22,7 +22,16 @@ def get_discovery_agent(
     tools: List[Union[BaseTool, Callable]] | None = None,
     llm: LLM | None = None,
 ) -> ReActAgent:
-    """Creates a ReActAgent with a QueryEngineTool and an identity tool.
+    """Create and configure a ReActAgent instance.
+
+    Args:
+        name: Optional name for the agent. If not provided, ``DEFAULT_NAME`` is used.
+        description: Optional description of the agent's role. If not provided,
+            ``DEFAULT_DESCRIPTION`` is used.
+        tools: Optional list of tools (``BaseTool`` instances or callables) that
+            the agent can use. If ``None``, the agent is created without tools.
+        llm: Optional LLM to use for the agent. If not provided, a default LLM
+            is created using the current settings.
     Returns:
         ReActAgent: The configured ReActAgent instance.
     """

@@ -29,16 +29,12 @@ REDIS_KVSTORE = RedisKVStore(
 REDIS_DOCSTORE = RedisDocumentStore(redis_kvstore=REDIS_KVSTORE)
 REDIS_INDEX_STORE = RedisIndexStore(redis_kvstore=REDIS_KVSTORE)
 
-LlamaIndexSettings.llm = get_llm()
-LlamaIndexSettings.embed_model = get_embed_model()
-LlamaIndexSettings.chunk_size = SETTINGS.chunk_size
-LlamaIndexSettings.chunk_overlap = SETTINGS.chunk_overlap
-
 
 def get_redis_schema(index_id: str) -> IndexSchema:
     """Defines the schema for the Redis vector store index.
+
     Args:
-        index_id (str | None): Optional identifier for the index. If not provided, it defaults to the value in SETTINGS.index_id.
+        index_id (str): Identifier for the index used to construct the Redis schema.
     Returns:
         IndexSchema: The schema definition for the Redis vector store index.
     """
@@ -73,6 +69,11 @@ def load_index_redis(index_id: str) -> VectorStoreIndex:
     Returns:
         VectorStoreIndex: The loaded vector store index.
     """
+
+    LlamaIndexSettings.llm = get_llm()
+    LlamaIndexSettings.embed_model = get_embed_model()
+    LlamaIndexSettings.chunk_size = SETTINGS.chunk_size
+    LlamaIndexSettings.chunk_overlap = SETTINGS.chunk_overlap
 
     try:
         redis_vector_store = RedisVectorStore(
