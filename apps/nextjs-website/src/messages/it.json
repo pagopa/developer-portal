@@ -75,7 +75,12 @@
         "sector": "Settore",
         "products": "Prodotti di interesse",
         "email": "Indirizzo email",
-        "password": "Password"
+        "password": "Password",
+        "commsPreferredLanguage": "Lingua preferita per le comunicazioni"
+      },
+      "commsPreferredLanguages": {
+        "it": "Italiano",
+        "en": "Inglese"
       }
     },
     "changePassword": {
@@ -677,6 +682,12 @@
       "serviceDown": "Il chatbot al momento non è disponibile. Riprovare più tardi.",
       "queryFailed": "Il chatbot ha avuto problemi nel formulare la risposta. Riprova."
     },
-    "thereAreNoMessages": "Non ci sono messaggi in questa sessione"
+    "thereAreNoMessages": "Non ci sono messaggi in questa sessione",
+    "chip": {
+      "ariaLabel": "Rispondi con: {question}"
+    },
+    "responseEnhancements": {
+      "choseChipsOrWriteMessage": "Per approfondire l’argomento, __seleziona un’azione__ oppure __scrivi un nuovo messaggio__."
+    }
   }
 }

@@ -1,5 +1,11 @@
 # active-campaign-client
 
+## 0.7.0
+
+### Minor Changes
+
+- 36f320c: Add custom field for preferred language in user model and tests
+
 ## 0.6.0
 
 ### Minor Changes

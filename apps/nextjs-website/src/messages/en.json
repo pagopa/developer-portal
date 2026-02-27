@@ -75,7 +75,12 @@
         "sector": "Sector",
         "products": "Products of interest",
         "email": "Email address",
-        "password": "Password"
+        "password": "Password",
+        "commsPreferredLanguage": "Preferred language for communications"
+      },
+      "commsPreferredLanguages": {
+        "it": "Italian",
+        "en": "English"
       }
     },
     "changePassword": {
@@ -677,6 +682,12 @@
       "serviceDown": "The chatbot is currently unavailable. Please try again later.",
       "queryFailed": "The chatbot had trouble formulating the answer. Please try again."
     },
-    "thereAreNoMessages": "There are no messages in this session"
+    "thereAreNoMessages": "There are no messages in this session",
+    "chip": {
+      "ariaLabel": "Respond with: {question}"
+    },
+    "responseEnhancements": {
+      "choseChipsOrWriteMessage": "To explore the topic further, __select an action__ or __write a new message__."
+    }
   }
 }
