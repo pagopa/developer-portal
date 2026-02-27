@@ -44,5 +44,5 @@ class DiscoveryOutput(BaseModel):
     )
     references: List[Reference] = Field(
         default=[],
-        description="list where each element reports the title and the filepaths of the relative source node.",
+        description="list where each element reports the title and the url of the relative source node.",
     )
