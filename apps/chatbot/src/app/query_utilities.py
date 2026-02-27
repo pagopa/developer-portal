@@ -41,6 +41,9 @@ def prepare_body_to_return(
         chips=answer_json.get("chips", []),
     )
 
+    # TODO: remove this debug line
+    bodyToReturn.chips = ["debug chip 01", "debug chip 02", "debug chip 03"]
+
     return bodyToReturn
 
 
