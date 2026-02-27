@@ -37,8 +37,9 @@ LlamaIndexSettings.chunk_overlap = SETTINGS.chunk_overlap
 
 def get_redis_schema(index_id: str) -> IndexSchema:
     """Defines the schema for the Redis vector store index.
+
     Args:
-        index_id (str | None): Optional identifier for the index. If not provided, it defaults to the value in SETTINGS.index_id.
+        index_id (str): Identifier for the index used to construct the Redis schema.
     Returns:
         IndexSchema: The schema definition for the Redis vector store index.
     """
