@@ -80,7 +80,7 @@ const postConfirmationConfirmSignUpMessage = (
         } ${firstName},</mj-text>
         <mj-spacer height="36px" />
         <mj-text mj-class="text" font-size="18px">${translations.text}</mj-text>
-        <mj-button align="left" background-color="#0073E6" href="${`https://${domain}/auth/login`}" font-size="16px" font-weight="700">
+        <mj-button align="left" background-color="#0073E6" href="${`https://${domain}/${locale}/auth/login`}" font-size="16px" font-weight="700">
           ${translations.goToLogin}
         </mj-button>
         <mj-spacer height="48px" />
