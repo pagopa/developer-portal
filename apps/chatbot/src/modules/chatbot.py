@@ -158,10 +158,13 @@ class Chatbot:
 
                 raw_output = tool_call.tool_output.raw_output
                 nodes = getattr(raw_output, "source_nodes", [])
-                retrieved_contexts = [
-                    f"-------\nURL: {node.metadata['url']}\n\n{node.text}\n\n"
-                    for node in nodes
-                ]
+                if nodes:
+                    retrieved_contexts.extend(
+                        [
+                            f"-------\nURL: {node.metadata['url']}\n\n{node.text}\n\n"
+                            for node in nodes
+                        ]
+                    )
 
             response_json = {
                 "response": engine_response.structured_response["response"],
