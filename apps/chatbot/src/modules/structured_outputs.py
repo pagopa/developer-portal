@@ -15,6 +15,19 @@ class Reference(BaseModel):
     url: str
 
 
+class Question(BaseModel):
+    """a follow-up question to give to the user to use in order to clarify its intent and
+    narrow down the search space of the RAG tools."""
+
+    label: str = Field(
+        ..., description="A label or a short text for the follow-up question"
+    )
+    question: str = Field(..., description="follow-up question to return to the user")
+    knowledge_base: str = Field(
+        ..., description="knowledge base tag: `devportal` or `cittadino`"
+    )
+
+
 class RAGOutput(BaseModel):
     """A structured output for a RAG query."""
 
@@ -32,6 +45,16 @@ class RAGOutput(BaseModel):
     )
 
 
+class FollowUpQuestionsOutput(BaseModel):
+    """A structured output for follow-up questions."""
+
+    follow_up_questions: List[Question] = Field(
+        description="Follow-up questions about Developer or Citizen documentation.",
+        min_length=2,
+        max_length=10,
+    )
+
+
 class DiscoveryOutput(BaseModel):
     """A structured output for a RAG query."""
 
@@ -45,4 +68,8 @@ class DiscoveryOutput(BaseModel):
     references: List[Reference] = Field(
         default=[],
         description="list where each element reports the title and the url of the relative source node.",
+    )
+    follow_up_questions: List[Question] = Field(
+        default=[],
+        description="Follow-up questions about Developer or Citizen documentation.",
     )

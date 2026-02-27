@@ -27,8 +27,8 @@ from src.modules.telemetry import DictSpanExporter
 from src.modules.vector_index import load_index_redis
 from src.modules.documents import get_product_list
 from src.modules.models import get_llm, get_embed_model
-from src.modules.tools.rag_tool import get_query_engine_tool
-from src.modules.agents.discovery import get_discovery_agent
+from src.modules.tools import get_query_engine_tool, follow_up_questions_tool
+from src.modules.agents import get_discovery_agent
 from src.modules.settings import SETTINGS
 
 
@@ -109,6 +109,9 @@ class Chatbot:
                         text_qa_template=self.qa_prompt_tmpl,
                         refine_template=self.ref_prompt_tmpl,
                     ),
+                    follow_up_questions_tool(
+                        name="FollowUpQuestionsTool",
+                    ),
                 ],
             )
         except Exception as e:
@@ -158,16 +161,22 @@ class Chatbot:
 
                 raw_output = tool_call.tool_output.raw_output
                 nodes = getattr(raw_output, "source_nodes", [])
-                retrieved_contexts = [
-                    f"-------\nURL: {node.metadata['url']}\n\n{node.text}\n\n"
-                    for node in nodes
-                ]
+                if nodes:
+                    retrieved_contexts.extend(
+                        [
+                            f"-------\nURL: {node.metadata['url']}\n\n{node.text}\n\n"
+                            for node in nodes
+                        ]
+                    )
 
             response_json = {
                 "response": engine_response.structured_response["response"],
                 "products": engine_response.structured_response["products"],
                 "references": references_list,
                 "contexts": retrieved_contexts,
+                "follow_up_questions": engine_response.structured_response[
+                    "follow_up_questions"
+                ],
                 "spans": EXPORTER.spans,
             }
 
@@ -178,6 +187,7 @@ class Chatbot:
                 "products": ["none"],
                 "references": [],
                 "contexts": [],
+                "follow_up_questions": [],
                 "spans": [],
             }
 
@@ -244,6 +254,7 @@ class Chatbot:
                 "products": ["none"],
                 "references": [],
                 "contexts": [],
+                "follow_up_questions": [],
                 "spans": [],
             }
             LOGGER.warning(f"Exception: {e}")
