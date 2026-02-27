@@ -21,6 +21,18 @@ on:
         description: 'Parser Vector Index Name (optional, overrides secret)'
         required: false
         type: string
+      depth:
+        description: 'Maximum recursion depth for crawling links (optional)'
+        required: false
+        type: string
+      valid_domain_variants:
+        description: 'JSON array of allowed subdomain tokens (optional, e.g. ["sub1","sub2"])'
+        required: false
+        type: string
+      public_parser_request_timeout_ms:
+        description: 'Request timeout in milliseconds (optional, default: 10000)'
+        required: false
+        type: string
 
 permissions:
   id-token: write
@@ -51,3 +63,7 @@ jobs:
         with:
           urls: ${{ inputs.urls }}
           parser_vector_index_name: ${{ inputs.parser_vector_index_name || secrets.PARSER_VECTOR_INDEX_NAME }}
+          depth: ${{ inputs.depth }}
+          valid_domain_variants: ${{ inputs.valid_domain_variants }}
+          public_parser_request_timeout_ms: ${{ inputs.public_parser_request_timeout_ms }}
+

@@ -1,5 +1,4 @@
 FROM public.ecr.aws/lambda/python:3.12
-ARG DEBIAN_FRONTEND=noninteractive
 
 ENV PYTHONPATH=$LAMBDA_TASK_ROOT
 
@@ -9,11 +8,7 @@ RUN dnf install -y atk cups-libs gtk3 libXcomposite alsa-lib \
   xorg-x11-xauth dbus-glib dbus-glib-devel nss mesa-libgbm jq unzip less
 
 COPY ./docker/chrome-installer.sh ./chrome-installer.sh
-RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && \
-  unzip awscliv2.zip && \
-  ./aws/install && \
-  rm awscliv2.zip && \
-  chmod +x ./chrome-installer.sh && \
+RUN chmod +x ./chrome-installer.sh && \
   ./chrome-installer.sh && \
   rm ./chrome-installer.sh
 
@@ -21,16 +16,22 @@ RUN pip install --upgrade pip \
   && pip install poetry
 
 WORKDIR $LAMBDA_TASK_ROOT
+
 COPY pyproject.toml $LAMBDA_TASK_ROOT
 COPY poetry.lock $LAMBDA_TASK_ROOT
+
 RUN poetry config virtualenvs.create false
 RUN poetry install --with test
 
-COPY ./pyproject.toml ${LAMBDA_TASK_ROOT}/
-COPY ./poetry.lock ${LAMBDA_TASK_ROOT}/
 COPY ./src ${LAMBDA_TASK_ROOT}/src
 COPY ./scripts ${LAMBDA_TASK_ROOT}/scripts
 COPY ./config ${LAMBDA_TASK_ROOT}/config
 COPY ./docker/files ${LAMBDA_TASK_ROOT}/files
+
+RUN echo "appuser:x:1000:1000::/home/appuser:/bin/sh" >> /etc/passwd \
+  && mkdir -p /home/appuser \
+  && chown -R 1000:1000 /home/appuser ${LAMBDA_TASK_ROOT}
+
+USER appuser
 
 CMD ["src.lambda_refresh_index.lambda_handler"]

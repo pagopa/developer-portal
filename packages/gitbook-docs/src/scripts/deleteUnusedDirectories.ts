@@ -90,10 +90,15 @@ async function fetchAllDirNamesFromStrapi(): Promise<{ dirNames: string[] }> {
 // Main function
 async function main() {
   try {
+    if (!S3_BUCKET_NAME) {
+      // eslint-disable-next-line functional/no-throw-statements
+      throw new Error('S3_BUCKET_NAME environment variable is not defined');
+    }
+
     const strapiDirNames = await fetchAllDirNamesFromStrapi();
     const s3DirNamesContent = await downloadS3File(
       getLocalizedPath(S3_DIRNAMES_JSON_PATH, LOCALE),
-      S3_BUCKET_NAME!,
+      S3_BUCKET_NAME,
       getS3Client()
     ).catch((error) => {
       console.log(error);
@@ -105,11 +110,12 @@ async function main() {
     const directoriesToDelete: string[] = s3DirNames.dirNames.filter(
       (dirName) => !setDirNames.has(dirName)
     );
+    console.log(`Directories to delete: ${directoriesToDelete.join(', ')}`);
     await Promise.all(
       directoriesToDelete.map((dirName) =>
         deleteS3Directory(
-          path.join(S3_PATH_TO_GITBOOK_DOCS, dirName),
-          S3_BUCKET_NAME!,
+          getLocalizedPath(path.join(S3_PATH_TO_GITBOOK_DOCS, dirName), LOCALE),
+          S3_BUCKET_NAME,
           getS3Client()
         )
       )
@@ -117,7 +123,7 @@ async function main() {
     await putS3File(
       strapiDirNames,
       getLocalizedPath(S3_DIRNAMES_JSON_PATH, LOCALE),
-      S3_BUCKET_NAME!,
+      S3_BUCKET_NAME,
       getS3Client()
     );
   } catch (error) {

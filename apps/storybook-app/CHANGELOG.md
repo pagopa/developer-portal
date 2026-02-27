@@ -1,5 +1,16 @@
 # storybook-app
 
+## 2.0.0
+
+### Major Changes
+
+- 35554ae: Add mock navigation proxy and update ChatbotHistoryNavigationMenu stories for locale support and refactor Storybook stories to remove nextIntlContextDecorator and add locale support in preview
+
+### Patch Changes
+
+- 35554ae: Add authProviderDecorator to Chat and ChatbotLayout stories
+- 35554ae: Removed dependencies to mui italia, update theme to use plain mui to be compatible with next 15
+
 ## 1.2.0
 
 ### Minor Changes

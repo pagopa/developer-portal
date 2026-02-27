@@ -6,15 +6,28 @@ inputs:
     description: 'URLs to parse (comma-separated)'
     required: true
   parser_vector_index_name:
-    description: 'Parser Vector Index Name'
+    description: 'Parser Vector Index Name (CHB_INDEX_ID)'
     required: true
+  depth:
+    description: 'Maximum recursion depth for crawling links (optional)'
+    required: false
+  valid_domain_variants:
+    description: 'JSON array of allowed subdomain tokens (optional, e.g. ["sub1","sub2"])'
+    required: false
+  public_parser_request_timeout_ms:
+    description: 'Request timeout in milliseconds (optional, default: 10000)'
+    required: false
 
 runs:
   using: 'composite'
   steps:
     - name: Run Parser for each URL
+      # env vars docs: https://github.com/pagopa/developer-portal/blob/main/apps/parser/README.md#environment-variables
       env:
-        PARSER_VECTOR_INDEX_NAME: ${{ inputs.parser_vector_index_name }}
+        CHB_INDEX_ID: ${{ inputs.parser_vector_index_name }}
+        DEPTH: ${{ inputs.depth }}
+        VALID_DOMAIN_VARIANTS: ${{ inputs.valid_domain_variants }}
+        PUBLIC_PARSER_REQUEST_TIMEOUT_MS: ${{ inputs.public_parser_request_timeout_ms }}
       working-directory: apps/parser
       shell: bash
       run: |
@@ -34,7 +47,7 @@ runs:
               continue
             fi
             echo "=== Parsing: $url ==="
-            if PARSER_VECTOR_INDEX_NAME="${PARSER_VECTOR_INDEX_NAME}" URL="$url" npx tsx src/main.ts; then
+            if URL="$url" npx tsx src/main.ts; then
               echo "=== Completed: $url ==="
             else
               echo "=== FAILED: $url ==="

@@ -3,7 +3,6 @@ import ChatbotHistoryDetailLayout from 'nextjs-website/src/components/organisms/
 import { chatbotChatSession } from '../fixtures/chatbotFixtures';
 import React from 'react';
 import { mockText } from '../mock-content.helper';
-import { nextIntlContextDecorator } from '../next-intl-context.helper';
 
 const meta: Meta<typeof ChatbotHistoryDetailLayout> = {
   title: 'Organisms/ChatbotHistoryDetailLayout',
@@ -33,5 +32,5 @@ export const Showcase: StoryObj<typeof ChatbotHistoryDetailLayout> = {
       return null;
     },
   },
-  decorators: [decorator, nextIntlContextDecorator],
+  decorators: [decorator],
 };
