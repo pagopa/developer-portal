@@ -16,7 +16,7 @@ AWS_SESSION = boto3.Session()
 AWS_SSM_CLIENT = AWS_SESSION.client("ssm")
 
 
-def get_ssm_parameter(name: str | None, default: str) -> str:
+def get_ssm_parameter(name: str | None, default: str | None = None) -> str | None:
     """
     Retrieves a specific value from AWS Systems Manager's Parameter Store.
 
@@ -28,7 +28,7 @@ def get_ssm_parameter(name: str | None, default: str) -> str:
     if AWS_SSM_CLIENT is None:
         LOGGER.debug(f"AWS SSM client not available, using default for {name}")
         return default
-    
+
     if name is None:
         name = "none-params-in-ssm"
     try:

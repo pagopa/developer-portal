@@ -38,11 +38,6 @@ def validate_folders() -> bool:
 def main() -> int:
     LOGGER.info("Extractor Application Starting...")
     try:
-        if not SETTINGS.google_api_key:
-            LOGGER.error(
-                "Google API key not found. Set EXT_AWS_GOOGLE_API_KEY environment variable."
-            )
-            return 1
         if not validate_folders():
             LOGGER.error("Folder validation failed")
             return 1
