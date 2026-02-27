@@ -27,7 +27,7 @@ async def generate_questions(query_str: str) -> DiscoveryOutput:
         "Answer: [your answer here (In the same language as the user's question)]"
     )
 
-    response = sllm.complete(prompt)
+    response = await sllm.acomplete(prompt)
 
     return DiscoveryOutput(follow_up_questions=response.raw.follow_up_questions)
 
