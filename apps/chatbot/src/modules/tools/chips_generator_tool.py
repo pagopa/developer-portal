@@ -23,8 +23,7 @@ async def generate_questions(query_str: str) -> DiscoveryOutput:
         f"Given the CittadinoRAGTool description:\n{CITTADINO_RAG_TOOL_DESCRIPTION}\n\n"
         "Generate a list of questions from user perspective (i.e. 'how do I ...', 'how can I ...', 'what does the service ...') that help him to retrieve "
         "more information from the developer or citizen portal documentation.\n"
-        "The current language of the user is: (user's language).\n"
-        "Answer: [your answer here (In the same language as the user's question)]"
+        "Answer: [your answer here (In the same language as the user query)]"
     )
 
     response = await sllm.acomplete(prompt)
