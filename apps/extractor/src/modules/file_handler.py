@@ -6,8 +6,9 @@ from pydantic import ValidationError
 
 from src.modules.logger import get_logger
 from src.modules.schemas import InputDocument, CleanedDocument
+from src.settings import SETTINGS
 
-LOGGER = get_logger(__name__)
+LOGGER = get_logger(__name__, log_level=SETTINGS.LOG_LEVEL)
 
 
 def load_json_files(input_folder: str) -> List[Tuple[str, InputDocument]]:
@@ -21,7 +22,7 @@ def load_json_files(input_folder: str) -> List[Tuple[str, InputDocument]]:
     LOGGER.info(f"Found {len(json_files)} JSON files in {input_folder}")
     for json_file in json_files:
         try:
-            with open(json_file, "r", encoding="utf-8") as f:
+            with open(json_file, "r", encoding="utf-8", errors="replace") as f:
                 data = json.load(f)
             doc = InputDocument(**data)
             if not doc.bodyText or doc.bodyText.strip() == "":
@@ -34,6 +35,8 @@ def load_json_files(input_folder: str) -> List[Tuple[str, InputDocument]]:
             LOGGER.error(f"Validation error in {json_file.name}: {e}")
         except json.JSONDecodeError as e:
             LOGGER.error(f"JSON decode error in {json_file.name}: {e}")
+        except UnicodeDecodeError as e:
+            LOGGER.error(f"Encoding error in {json_file.name}: {e}")
         except Exception as e:
             LOGGER.error(f"Unexpected error loading {json_file.name}: {e}")
     LOGGER.info(f"Successfully loaded {len(documents)} documents")
@@ -50,8 +53,10 @@ def save_cleaned_document(
         raise IOError(f"Failed to create output folder {output_folder}: {e}")
     output_file = output_path / filename
     try:
-        with open(output_file, "w", encoding="utf-8") as f:
+        with open(output_file, "w", encoding="utf-8", errors="replace") as f:
             json.dump(doc.to_dict(), f, indent=2, ensure_ascii=False)
         LOGGER.debug(f"Saved: {filename}")
+    except UnicodeEncodeError as e:
+        raise IOError(f"Encoding error writing file {output_file}: {e}")
     except Exception as e:
         raise IOError(f"Failed to write file {output_file}: {e}")

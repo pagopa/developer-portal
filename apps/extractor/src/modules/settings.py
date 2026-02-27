@@ -6,7 +6,7 @@ from pydantic_settings import BaseSettings
 
 from src.modules.logger import get_logger
 
-LOGGER = get_logger(__name__)
+LOGGER = get_logger(__name__, os.getenv("LOG_LEVEL", "info"))
 
 # Get root directory and load config files
 CWF = Path(__file__)
@@ -62,7 +62,7 @@ class ExtractorSettings(BaseSettings):
 
     # LLM Model Configuration
     model_id: str = os.getenv("CHB_MODEL_ID", "gemini-2.5-flash-lite")
-    temperature: float = float(os.getenv("CHB_MODEL_TEMPERATURE", "0."))
+    temperature: float = float(os.getenv("CHB_MODEL_TEMPERATURE", "0.0"))
     max_tokens: int = int(os.getenv("CHB_MODEL_MAXTOKENS", "65535"))
     provider: str = os.getenv("CHB_PROVIDER", "google")
 
@@ -73,6 +73,11 @@ class ExtractorSettings(BaseSettings):
 
 # Singleton instance
 SETTINGS = ExtractorSettings()
+
+if SETTINGS.input_folder is None:
+    raise ValueError("EXT_INPUT_FOLDER environment variable is required but not set")
+if SETTINGS.output_folder is None:
+    raise ValueError("EXT_OUTPUT_FOLDER environment variable is required but not set")
 
 LOGGER.info("Extractor settings loaded successfully")
 LOGGER.info(f"Input folder: {SETTINGS.input_folder}")

@@ -32,7 +32,7 @@ class CleanedDocument(BaseModel):
         ...,
         description="The language of the page content as a standard language code (e.g., 'en' for English, 'it' for Italian, etc.)",
     )
-    lastmod: str = Field(
+    lastMod: str = Field(
         ..., description="The last modified date of the page in ISO 8601 format"
     )
     url: str = Field(..., description="The URL of the page")
@@ -42,11 +42,4 @@ class CleanedDocument(BaseModel):
 
     def to_dict(self) -> dict:
         """Convert the model to a dictionary for JSON serialization."""
-        return {
-            "title": self.title,
-            "text": self.text,
-            "language": self.language,
-            "lastmod": self.lastmod,
-            "url": self.url,
-            "keywords": self.keywords,
-        }
+        return self.model_dump()

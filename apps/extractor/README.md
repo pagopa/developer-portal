@@ -33,25 +33,27 @@ This project uses [Poetry](https://python-poetry.org/) for dependency management
    ```bash
    # AWS Configuration
    AWS_DEFAULT_REGION=eu-south-1
-   AWS_ENDPOINT_URL=http://localhost:5000
    
-   # Google API Key
-   CHB_AWS_GOOGLE_API_KEY=your_google_api_key_here
+   # Required
+   EXT_INPUT_FOLDER=input_folder
+   EXT_OUTPUT_FOLDER=output_folder
    
    # LLM Configuration (optional, with defaults)
    CHB_MODEL_ID=gemini-2.5-flash-lite
-   CHB_MODEL_TEMPERATURE=0.
+   CHB_MODEL_TEMPERATURE=0.0
    CHB_MODEL_MAXTOKENS=65535
-   CHB_PROVIDER=google
-   
-   # I/O Folders
-   EXT_INPUT_FOLDER=./input
-   EXT_OUTPUT_FOLDER=./output
+   CHB_PROVIDER=google # allowed: google, mock
+
+   # Optional (either of the two needs to be specified if provider is not mock)
+   CHB_AWS_GOOGLE_API_KEY=google_api_key
+   CHB_AWS_SSM_GOOGLE_API_KEY=/local/google_api_key
    ```
-   
+
    **Note:** For local testing, set `CHB_AWS_GOOGLE_API_KEY` directly. In production, the app uses AWS SSM Parameter Store via `CHB_AWS_SSM_GOOGLE_API_KEY`.
 
 ## Usage
+
+The files to process need to be in the directory specified in the environment variable EXT_INPUT_FOLDER.
 
 ### Running
 

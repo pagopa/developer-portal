@@ -2,7 +2,7 @@ from llama_index.core.llms.llm import LLM
 from src.modules.logger import get_logger
 from src.modules.settings import SETTINGS
 
-LOGGER = get_logger(__name__)
+LOGGER = get_logger(__name__, SETTINGS.log_level)
 
 
 def get_llm(
@@ -29,12 +29,12 @@ def get_llm(
     """
     provider = provider or SETTINGS.provider
     model_id = model_id or SETTINGS.model_id
-    temperature = temperature or SETTINGS.temperature
-    max_tokens = max_tokens or SETTINGS.max_tokens
+    temperature = temperature if temperature is not None else SETTINGS.temperature
+    max_tokens = max_tokens if max_tokens is not None else SETTINGS.max_tokens
     if provider == "google":
         if not SETTINGS.google_api_key:
             raise ValueError(
-                "Google API key is required. Set EXT_AWS_GOOGLE_API_KEY environment variable."
+                "Google API key is required. Set CHB_AWS_SSM_GOOGLE_API_KEY or CHB_AWS_GOOGLE_API_KEY environment variable."
             )
         from llama_index.llms.google_genai import GoogleGenAI
 
