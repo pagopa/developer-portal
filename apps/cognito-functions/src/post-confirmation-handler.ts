@@ -12,6 +12,7 @@ import { makePostConfirmationConfirmSignUpEmail } from './templates/post-confirm
 import { sanitize } from './utils/sanitize';
 import { EMAIL_TRANSLATIONS } from './templates/translations';
 import { PostConfirmationTriggerEvent } from 'aws-lambda/trigger/cognito-user-pool-trigger/post-confirmation';
+import { SUPPORTED_LOCALES } from './i18n/locales';
 
 const makeSesEmailParameters = (
   to: string,
@@ -52,8 +53,11 @@ export const makeHandler =
     event: PostConfirmationTriggerEvent
   ): Promise<PostConfirmationTriggerEvent> => {
     const { email, given_name } = event.request.userAttributes;
-    const locale =
-      event.request.userAttributes['custom:preferred_language'] || 'it';
+    const localeAttribute =
+      event.request.userAttributes['custom:preferred_language'];
+    const locale = SUPPORTED_LOCALES.includes(localeAttribute)
+      ? localeAttribute
+      : 'it'; // Defaults to 'it'
     if (email && event.triggerSource === 'PostConfirmation_ConfirmSignUp') {
       const subject =
         EMAIL_TRANSLATIONS.postConfirmation[

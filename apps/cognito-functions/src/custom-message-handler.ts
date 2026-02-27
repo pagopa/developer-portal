@@ -7,6 +7,7 @@ import { makeConfirmationUpdateEmailAddress } from './templates/confirmation-upd
 import { EMAIL_TRANSLATIONS } from './templates/translations';
 
 import { sanitize } from './utils/sanitize';
+import { SUPPORTED_LOCALES } from './i18n/locales';
 
 export const CustomMessageEnv = t.type({
   domain: t.string,
@@ -19,9 +20,11 @@ export const makeHandler =
     const cognitoUserStatus =
       event.request.userAttributes['cognito:user_status'];
     const eventTrigger = event.triggerSource;
-    const localeAttributes =
+    const localeAttribute =
       event.request.userAttributes['custom:preferred_language'];
-    const locale = localeAttributes ? localeAttributes : 'it'; // Default to 'it'
+    const locale = SUPPORTED_LOCALES.includes(localeAttribute)
+      ? localeAttribute
+      : 'it'; // Defaults to 'it'
 
     if (
       eventTrigger === 'CustomMessage_SignUp' ||
@@ -35,7 +38,9 @@ export const makeHandler =
         return event;
       }
       const { codeParameter } = event.request;
-      const href = `https://${env.domain}/auth/confirmation?username=${sanitize(
+      const href = `https://${
+        env.domain
+      }/${locale}/auth/confirmation?username=${sanitize(
         username
       )}&code=${sanitize(codeParameter)}`;
       const emailMessage = makeConfirmationEmail(href, env.domain, locale);
@@ -49,9 +54,9 @@ export const makeHandler =
       const { codeParameter } = event.request;
       const href = `https://${
         env.domain
-      }/auth/change-password?username=${sanitize(username)}&code=${sanitize(
-        codeParameter
-      )}`;
+      }/${locale}/auth/change-password?username=${sanitize(
+        username
+      )}&code=${sanitize(codeParameter)}`;
       const emailMessage = makeConfirmationForgotPasswordEmail(
         href,
         env.domain,
@@ -69,9 +74,9 @@ export const makeHandler =
       const { codeParameter } = event.request;
       const href = `https://${
         env.domain
-      }/auth/email-confirmation?username=${sanitize(username)}&code=${sanitize(
-        codeParameter
-      )}`;
+      }/${locale}/auth/email-confirmation?username=${sanitize(
+        username
+      )}&code=${sanitize(codeParameter)}`;
       const emailMessage = makeConfirmationUpdateEmailAddress(
         href,
         env.domain,
