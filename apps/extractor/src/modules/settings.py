@@ -72,6 +72,11 @@ class ExtractorSettings(BaseSettings):
 # Singleton instance
 SETTINGS = ExtractorSettings()
 
+if SETTINGS.input_folder is None:
+    raise ValueError("EXT_INPUT_FOLDER environment variable is required but not set")
+if SETTINGS.output_folder is None:
+    raise ValueError("EXT_OUTPUT_FOLDER environment variable is required but not set")
+
 LOGGER.info("Extractor settings loaded successfully")
 LOGGER.info(f"Input folder: {SETTINGS.input_folder}")
 LOGGER.info(f"Output folder: {SETTINGS.output_folder}")
