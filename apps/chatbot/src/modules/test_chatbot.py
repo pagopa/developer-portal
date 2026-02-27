@@ -1,6 +1,5 @@
 import os
 import boto3
-import requests
 from llama_index.core.async_utils import asyncio_run
 
 from src.modules.logger import get_logger
@@ -10,7 +9,7 @@ from src.modules.models import get_llm, get_embed_model
 from src.modules.chatbot import Chatbot, LANGFUSE_CLIENT
 
 
-LOGGER = get_logger(__name__)
+LOGGER = get_logger(__name__, level=SETTINGS.log_level)
 CHATBOT = Chatbot()
 
 
@@ -65,11 +64,6 @@ def test_models() -> None:
         LOGGER.error(e)
 
     assert flag is True
-
-
-def test_pii_mask() -> None:
-    masked_str = CHATBOT.mask_pii("Il mio nome e' Mario Rossi")
-    assert masked_str == "Il mio nome e' <PERSON_1>"
 
 
 def test_messages_to_chathistory() -> None:

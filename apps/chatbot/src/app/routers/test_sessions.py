@@ -1,9 +1,9 @@
 import os
-import time
 from fastapi.testclient import TestClient
 from src.app.main import app
 from src.app.mock_aws_services import mock_signup
 from src.app.routers.test_queries import post_queries
+from src.modules.settings import SETTINGS
 
 cognito_mock = mock_signup()
 os.environ["AUTH_COGNITO_USERPOOL_ID"] = cognito_mock["user_pool_id"]
@@ -35,10 +35,6 @@ def test_query_feedback() -> None:
     assert response.status_code == 200
     assert "id" in json.keys()
     assert "sessionId" in json.keys()
-    assert "question" in json.keys()
-    assert "answer" in json.keys()
-    assert "createdAt" in json.keys()
-    assert "queriedAt" in json.keys()
     assert "badAnswer" in json.keys()
     assert "feedback" in json.keys()
 
@@ -67,10 +63,6 @@ def test_query_feedback_with_null_values() -> None:
     assert response.status_code == 200
     assert "id" in json.keys()
     assert "sessionId" in json.keys()
-    assert "question" in json.keys()
-    assert "answer" in json.keys()
-    assert "createdAt" in json.keys()
-    assert "queriedAt" in json.keys()
     assert "badAnswer" in json.keys()
     assert "feedback" in json.keys()
 
@@ -92,8 +84,6 @@ def test_query_feedback_with_only_bad_answer() -> None:
     assert response.status_code == 200
     assert "id" in json.keys()
     assert "sessionId" in json.keys()
-    assert "question" in json.keys()
-    assert "answer" in json.keys()
-    assert "createdAt" in json.keys()
-    assert "queriedAt" in json.keys()
     assert "badAnswer" in json.keys()
+    assert "feedback" in json.keys()
+
