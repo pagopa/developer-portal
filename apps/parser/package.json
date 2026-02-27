@@ -7,7 +7,7 @@
     "compile": "tsc --project tsconfig.json",
     "build": "npm run clean && tsc --project tsconfig.build.json",
     "parse": "npm run build && node dist/main.js",
-    "test": "npm run build && jest -i"
+    "test": "npm run build && jest -i --silent"
   },
   "dependencies": {
     "node-fetch": "^3.3.2",
