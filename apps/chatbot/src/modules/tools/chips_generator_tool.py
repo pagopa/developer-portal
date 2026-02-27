@@ -21,7 +21,7 @@ async def generate_questions(query_str: str) -> DiscoveryOutput:
     prompt = (
         f"given the user query: {query_str}\n\nGiven the DevPortalRAGTool description:\n{DEVPORTAL_RAG_TOOL_DESCRIPTION}\n\n"
         f"Given the CittadinoRAGTool description:\n{CITTADINO_RAG_TOOL_DESCRIPTION}\n\n"
-        "Generate a list of questions from user prospective (i.e. 'how do I ...', 'how can I ...', 'what does the service ...') that help him to retrieve "
+        "Generate a list of questions from user perspective (i.e. 'how do I ...', 'how can I ...', 'what does the service ...') that help him to retrieve "
         "more information from the developer or citizen portal documentation.\n"
         "The current language of the user is: (user's language).\n"
         "Answer: [your answer here (In the same language as the user's question)]"
@@ -39,8 +39,9 @@ def follow_up_questions_tool(name: str) -> FunctionTool:
         async_fn=generate_questions,
         name=name,
         description=(
-            "Use this tool as your last one and ONLY when you used BOTH the DevPortalRAGTool and the CittadinoRAGTool.\n"
-            "This tool has the aim to generate follow-up questions for the user from its prospective."
-            "This tool helps narrow down the user's persona."
+            "Use this tool ONLY WHEN YOU CALLED BOTH THE DevPortalRAGTool and the CittadinoRAGTool.\n"
+            "This tool generates follow-up questions for the user perspective.\n"
+            "In this way the user can choose a question to enter in detail in one of the documentations holded by DevPortalRAGTool and the CittadinoRAGTool.\n"
+            "If you do not call this tool, do not generate any follow-up questions.\n"
         ),
     )
