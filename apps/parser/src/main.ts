@@ -168,12 +168,13 @@ async function main(): Promise<void> {
     console.log(
       `Parsing complete! Parsed ${allParsedPages.size} pages. Data saved to ${env.outputDirectory}`,
     );
-    if (pagesFromCrawlSize !== undefined) {
-      if (allParsedPages.size - pagesFromCrawlSize < toParse.length) {
-        console.warn(
-          `Warning: Only parsed ${allParsedPages.size - pagesFromCrawlSize} out of ${toParse.length} URLs from sitemap.`,
-        );
-      }
+    if (
+      pagesFromCrawlSize !== undefined &&
+      allParsedPages.size - pagesFromCrawlSize < toParse.length
+    ) {
+      console.warn(
+        `Warning: Only parsed ${allParsedPages.size - pagesFromCrawlSize} out of ${toParse.length} URLs from sitemap.`,
+      );
     }
   } catch (error) {
     handleError(error);
