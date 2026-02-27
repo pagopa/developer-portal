@@ -16,13 +16,15 @@ class Reference(BaseModel):
 
 
 class Question(BaseModel):
-    """a follow-up question to give to the user to use in order to clarify its intent and
-    narrow down the search space of the RAG tools."""
+    """A follow-up question presented to the user to clarify their intent and
+    narrow the search space of the RAG tools."""
 
     label: str = Field(
-        ..., description="A label or a short text for the follow-up question"
+        ..., description="A label or short text describing the follow-up question."
     )
-    question: str = Field(..., description="follow-up question to return to the user")
+    question: str = Field(
+        ..., description="Follow-up question to present to the user."
+    )
     knowledge_base: str = Field(
         ..., description="knowledge base tag: `devportal` or `cittadino`"
     )
