@@ -26,6 +26,7 @@ content_cleaning_prompt: |
   - Do NOT summarize or shorten the main content
   - Do NOT add information or links that weren't in the original text
   - Do NOT translate the content
+  - If any input field is empty or missing, keep it that way in the output without adding placeholders or assumptions
   - Focus on clarity and readability while preserving completeness
   
   Provide the cleaned and formatted content in markdown format.
