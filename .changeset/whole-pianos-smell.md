@@ -1,1 +1,1 @@
-Github workflow with parser action
+GitHub workflow with parser action
