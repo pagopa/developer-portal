@@ -5,10 +5,10 @@ from src.modules.tools.rag_tool import (
     DEVPORTAL_RAG_TOOL_DESCRIPTION,
     CITTADINO_RAG_TOOL_DESCRIPTION,
 )
-from src.modules.structured_outputs import FollowUpQuestionsOutput, DiscoveryOutput
+from src.modules.structured_outputs import FollowUpQuestionsOutput
 
 
-async def generate_questions(query_str: str) -> DiscoveryOutput:
+async def generate_questions(query_str: str) -> FollowUpQuestionsOutput:
     """
     Use this tool when a user's query is ambiguous and could apply to both
     technical developers (DevPortal) and end-users (CittadinoRAGTool).
@@ -28,7 +28,7 @@ async def generate_questions(query_str: str) -> DiscoveryOutput:
 
     response = await sllm.acomplete(prompt)
 
-    return DiscoveryOutput(follow_up_questions=response.raw.follow_up_questions)
+    return response
 
 
 def follow_up_questions_tool(name: str) -> FunctionTool:
