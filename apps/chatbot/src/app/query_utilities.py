@@ -42,7 +42,18 @@ def prepare_body_to_return(
     )
 
     # TODO: remove this debug line
-    bodyToReturn.chips = ["debug chip 01", "debug chip 02", "debug chip 03"]
+    bodyToReturn.chips = [
+        {
+            "label": "Integrazione API",
+            "question": "Approfondisci Integrazione API... generata dall'LLM",
+            "knowledgeBase": "developerportal",
+        },
+        {
+            "label": "Storico pagamenti",
+            "question": "Approfondisci Storico pagamenti",
+            "knowledgeBase": "kbcittadino",
+        },
+    ]
 
     return bodyToReturn
 
