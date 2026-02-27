@@ -13,6 +13,8 @@ This package provides a TypeScript CLI tool for recursively crawling a website, 
 
 ## Getting Started
 
+Either move to the parser app directory with `cd apps/parser` or run all following commands appending the option `-w parser`.
+
 1. **Install dependencies:**
 	```bash
 	npm install

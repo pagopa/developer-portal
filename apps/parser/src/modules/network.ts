@@ -1,8 +1,6 @@
-import { REQUEST_TIMEOUT_MS } from "../main";
-
 export async function assertReachable(
   url: string,
-  timeoutMs: number = REQUEST_TIMEOUT_MS,
+  timeoutMs: number,
 ): Promise<void> {
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
