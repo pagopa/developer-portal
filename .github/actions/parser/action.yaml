@@ -1,0 +1,66 @@
+name: 'Parser'
+description: 'Run parser for each URL'
+
+inputs:
+  urls:
+    description: 'URLs to parse (comma-separated)'
+    required: true
+  parser_vector_index_name:
+    description: 'Parser Vector Index Name (CHB_INDEX_ID)'
+    required: true
+  depth:
+    description: 'Maximum recursion depth for crawling links (optional)'
+    required: false
+  valid_domain_variants:
+    description: 'JSON array of allowed subdomain tokens (optional, e.g. ["sub1","sub2"])'
+    required: false
+  public_parser_request_timeout_ms:
+    description: 'Request timeout in milliseconds (optional, default: 10000)'
+    required: false
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Run Parser for each URL
+      # env vars docs: https://github.com/pagopa/developer-portal/blob/main/apps/parser/README.md#environment-variables
+      env:
+        CHB_INDEX_ID: ${{ inputs.parser_vector_index_name }}
+        DEPTH: ${{ inputs.depth }}
+        VALID_DOMAIN_VARIANTS: ${{ inputs.valid_domain_variants }}
+        PUBLIC_PARSER_REQUEST_TIMEOUT_MS: ${{ inputs.public_parser_request_timeout_ms }}
+      working-directory: apps/parser
+      shell: bash
+      run: |
+        # Split comma-separated URLs and loop sequentially
+        failed_urls=()
+        IFS=',' read -ra url_array <<< "${{ inputs.urls }}"
+        for url in "${url_array[@]}"; do
+          url="$(echo "$url" | xargs)"  # trim whitespace
+          if [ -n "$url" ]; then
+            # Basic validation: require http/https and disallow dangerous shell metacharacters
+            if ! [[ "$url" =~ ^https?:// ]]; then
+              echo "Skipping invalid URL (must start with http:// or https://): $url"
+              continue
+            fi
+            if echo "$url" | grep -Eq '[\"\\`$&;|><(){}'\'']'; then
+              echo "Skipping URL containing disallowed characters: $url"
+              continue
+            fi
+            echo "=== Parsing: $url ==="
+            if URL="$url" npx tsx src/main.ts; then
+              echo "=== Completed: $url ==="
+            else
+              echo "=== FAILED: $url ==="
+              failed_urls+=("$url")
+            fi
+            echo ""
+          fi
+        done
+
+        if [ ${#failed_urls[@]} -gt 0 ]; then
+          echo "::error::The following URLs failed to parse:"
+          for url in "${failed_urls[@]}"; do
+            echo "  - $url"
+          done
+          exit 1
+        fi
