@@ -87,7 +87,7 @@ async function main(): Promise<void> {
     );
     console.log("Crawling complete. Checking sitemap for unparsed URLs...");
     let sitemapUrls: string[] = [];
-    let pagesFromCrawlSize: number | undefined = undefined;
+    let pagesFromCrawlSize: number | undefined;
     try {
       const sitemapUrl = getSitemapUrl(env.baseUrl);
       let sitemapXml = "";
