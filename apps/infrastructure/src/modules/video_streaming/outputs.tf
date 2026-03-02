@@ -35,3 +35,13 @@ output "athena_results_bucket_name" {
   description = "The name of the S3 bucket where Athena query results are stored."
   value       = aws_s3_bucket.athena_results.id
 }
+
+output "webinar_metrics_lambda_arn" {
+  description = "The ARN of the webinar metrics Lambda function."
+  value       = aws_lambda_function.webinar_metrics.arn
+}
+
+output "webinar_metrics_lambda_name" {
+  description = "The name of the webinar metrics Lambda function."
+  value       = aws_lambda_function.webinar_metrics.function_name
+}
