@@ -1,29 +1,31 @@
 import { parseMjmlToHtml } from './mjmlParser';
-
-const TRANSLATIONS = {
-  previewText: 'Password dimenticata',
-  title: 'Password dimenticata',
-  text: 'Ci risulta che tu abbia richiesto di impostare una nuova password per PagoPA DevPortal. Se è così, usa il bottone qui sotto per procedere. ',
-  setNewPassword: 'Imposta nuova password',
-  companyLegalDetails:
-    'PagoPA S.p.A. - Società per azioni con socio unico capitale sociale di euro 1,000,000 i.v.Sede legale in Roma, Piazza Colonna 370, CAP 00187Sede operativa in Roma, Via Sardegna 38, CAP 00187N. di iscrizione a Registro Imprese di Roma, CF e P.IVA 15376371009',
-  wrongRecipient:
-    'Ricevi questa e-mail perché hai creato un account su PagoPA DevPortal.<br>Non sei tu? Ignora o cancella questa e-mail.',
-  buttonFallbackText: 'Il bottone non funziona? Puoi usare il seguente link:',
-};
+import { EMAIL_TRANSLATIONS } from './translations';
 
 export const makeConfirmationForgotPasswordEmail = (
   confirmationLink: string,
-  domain: string
-): string => parseMjmlToHtml(confirmationMessage(confirmationLink, domain));
+  domain: string,
+  locale = 'it'
+): string =>
+  parseMjmlToHtml(confirmationMessage(confirmationLink, domain, locale));
 
 const confirmationMessage = (
   confirmationLink: string,
-  domain: string
-): string => `
+  domain: string,
+  locale: string
+): string => {
+  const translations =
+    EMAIL_TRANSLATIONS.confirmationForgotPassword[
+      locale as keyof typeof EMAIL_TRANSLATIONS.confirmationForgotPassword
+    ] || EMAIL_TRANSLATIONS.confirmationForgotPassword.it;
+  const commonTranslations =
+    EMAIL_TRANSLATIONS.common[
+      locale as keyof typeof EMAIL_TRANSLATIONS.common
+    ] || EMAIL_TRANSLATIONS.common.it;
+
+  return `
 <mjml>
   <mj-head>
-    <mj-preview>${TRANSLATIONS.previewText}</mj-preview>
+    <mj-preview>${translations.previewText}</mj-preview>
     <mj-font name="Titillium Web" href="https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,400;0,700;1,400&display=swap" />
     <mj-style>
       .section {
@@ -67,21 +69,22 @@ const confirmationMessage = (
         <mj-image align="left" src="https://${domain}/images/logo-pago-pa.png" alt="PagoPA" width="114px" height="33px" />
       </mj-column>
       <mj-column width="100%">
-        <mj-text mj-class="title" align="left" color="#17324D" font-size="32px">${TRANSLATIONS.title}</mj-text>
+        <mj-text mj-class="title" align="left" color="#17324D" font-size="32px">${translations.title}</mj-text>
       </mj-column>
       <mj-column css-class="container" width="100%" padding-top="22px">
-        <mj-text mj-class="text" font-size="18px">${TRANSLATIONS.text}</mj-text>
+        <mj-text mj-class="text" font-size="18px">${translations.text}</mj-text>
         <mj-button align="left" background-color="#0073E6" href="${confirmationLink}" font-size="16px" font-weight="700">
-          ${TRANSLATIONS.setNewPassword}
+          ${translations.setNewPassword}
         </mj-button>
-        <mj-text mj-class="text link" font-size="14px">${TRANSLATIONS.buttonFallbackText}<br><a href="${confirmationLink}">${confirmationLink}</a></mj-text>
+        <mj-text mj-class="text link" font-size="14px">${translations.buttonFallbackText}<br><a href="${confirmationLink}">${confirmationLink}</a></mj-text>
         <mj-spacer height="5px" />
         <mj-divider border-width="1px" border-style="solid" border-color="#E3E7EB" />
         <mj-spacer height="5px" />
-        <mj-text mj-class="text" font-size="14px">${TRANSLATIONS.wrongRecipient}</mj-text>
-        <mj-text mj-class="footer-text">${TRANSLATIONS.companyLegalDetails}</mj-text>
+        <mj-text mj-class="text" font-size="14px">${translations.wrongRecipient}</mj-text>
+        <mj-text mj-class="footer-text">${commonTranslations.companyLegalDetails}</mj-text>
       </mj-column>
     </mj-section>
   </mj-body>
 </mjml>
 `;
+};
