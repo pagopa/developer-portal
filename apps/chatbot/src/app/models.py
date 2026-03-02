@@ -28,6 +28,12 @@ class QueryFeedback(BaseModel):
     feedback: Feedback | None = None
 
 
+class Chip(BaseModel):
+    label: str
+    question: str
+    knowledgeBase: str
+
+
 class QueryResponse(BaseModel):
     id: str
     sessionId: str
@@ -37,7 +43,7 @@ class QueryResponse(BaseModel):
     createdAtDate: str
     queriedAt: str
     badAnswer: bool = False
-    chips: List[str] = Field(default_factory=list)
+    chips: List[Chip] = Field(default_factory=list)
 
 
 dynamodb = AWS_SESSION.resource("dynamodb")
