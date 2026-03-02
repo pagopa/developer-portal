@@ -3,11 +3,11 @@ import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
 import { makeBaseProductWithoutLogoProps } from '@/lib/strapi/makeProps/makeProducts';
 import { ApiDataListPages, ApiDataListPageTemplateProps } from './types';
 import { compact } from 'lodash';
-import { StrapiBaseApiData } from '@/lib/strapi/types/apiDataList';
+import { BaseApiData } from '@/lib/apiDataList/types';
 
 function makeApiDataListPageCard(
   locale: string,
-  item: StrapiBaseApiData,
+  item: BaseApiData,
   slug: string
 ) {
   if (!item.attributes.apiRestDetail && !item.attributes.apiSoapDetail) {

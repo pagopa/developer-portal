@@ -8,7 +8,7 @@ import BannerLinks from '@/components/molecules/BannerLinks/BannerLinks';
 import { useTranslations } from 'next-intl';
 import { SEO } from '@/lib/types/seo';
 import { Product } from '@/lib/types/product';
-import { StrapiBaseApiDataList } from '@/lib/strapi/types/apiDataList';
+import { BaseApiDataList } from '@/lib/apiDataList/types';
 import { Tag } from '@/lib/types/tag';
 import { CardProps } from '@/components/molecules/CardsGrid/CardsGrid';
 
@@ -29,7 +29,7 @@ export type ApiDataListPageTemplateProps = {
   readonly updatedAt: string;
   readonly bannerLinks: BannerLinkProps[];
   readonly theme?: Theme;
-  readonly apiData: StrapiBaseApiDataList;
+  readonly apiData: BaseApiDataList;
   readonly seo?: SEO;
 };
 

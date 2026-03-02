@@ -1,9 +1,9 @@
-import { StrapiApiDataList } from '@/lib/strapi/types/apiDataList';
+import { ApiDataList } from '@/lib/apiDataList/types';
 import { ApiDataPageProps } from '@/app/[locale]/[productSlug]/api/[apiDataSlug]/page';
 import { generateBannerLinks } from '@/lib/strapi/__tests__/factories/bannerLink';
 import { mediaJpeg } from '../factories/media';
 
-export const strapiApiDataList: StrapiApiDataList = {
+export const strapiApiDataList: ApiDataList = {
   data: [
     {
       id: 3,
