@@ -1,5 +1,5 @@
-name: Run Parser
-run-name: Run Parser in ${{ inputs.environment }}
+name: Add knowledge base
+run-name: Add knowledge base in ${{ inputs.environment }}
 
 on:
   workflow_dispatch:
@@ -19,7 +19,7 @@ on:
           - prod
       parser_vector_index_name:
         description: 'Parser Vector Index Name (optional, overrides secret)'
-        required: false
+        required: true
         type: string
       depth:
         description: 'Maximum recursion depth for crawling links (optional)'
