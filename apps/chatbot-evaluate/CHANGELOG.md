@@ -1,5 +1,19 @@
 # chatbot-evaluate
 
+## 1.1.0
+
+### Minor Changes
+
+- a49b695: Refactor chatbot, chatbot-evaluate and chatbot-monitor to compress and decompress payload from/to AWS SQS
+
+### Patch Changes
+
+- a49b695: Update loggers in chatbot, chatbot-monitor, chatbot-evaluate, and chatbot-index
+- a49b695: Refactor of chatbot-evaluate to send the score writing to chatbot-monitor
+- f46442d: Remove script folder from Dockerfile
+- a49b695: Move presidio and dynamodb functions from chatbot to chatbot-monitor
+- a49b695: Run dockerfiles as normal user
+
 ## 1.0.5
 
 ### Patch Changes
