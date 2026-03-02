@@ -35,8 +35,10 @@ This project uses [Poetry](https://python-poetry.org/) for dependency management
    AWS_DEFAULT_REGION=eu-south-1
    
    # Required
-   EXT_INPUT_FOLDER=input_folder
-   EXT_OUTPUT_FOLDER=output_folder
+   # When SHOULD_RUN_LOCALLY=true, use local folders (e.g. input_folder/)
+   # When SHOULD_RUN_LOCALLY=false, use S3 URIs (e.g. s3://my-bucket/input/)
+   EXT_INPUT_FOLDER=s3://my-bucket/input/
+   EXT_OUTPUT_FOLDER=s3://my-bucket/output/
    SHOULD_RUN_LOCALLY=false # false to read from and write to s3
    
    # LLM Configuration (optional, with defaults)
