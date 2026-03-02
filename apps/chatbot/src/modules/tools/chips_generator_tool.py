@@ -5,7 +5,7 @@ from src.modules.structured_outputs import FollowUpQuestionsOutput
 
 
 async def generate_questions(
-    query_str: str, rag_outputs: str
+    query_str: str, rag_output_devportal: str, rag_output_cittadino: str
 ) -> FollowUpQuestionsOutput:
     """
     Use this tool when a user's query is ambiguous and could apply to both
@@ -18,7 +18,8 @@ async def generate_questions(
 
     prompt = (
         f"Given the user query: {query_str}\n\n"
-        f"And the following context retrieved from the documentation: {rag_outputs}\n\n"
+        f"Given the following context retrieved from the devportal documentation:\n{rag_output_devportal}\n\n"
+        f"Given the following context retrieved from the cittadino documentation:\n{rag_output_cittadino}\n\n"
         "Generate a list of questions from the user's perspective (e.g., 'how do I ...', 'how can I ...') "
         "that help them get more detailed information based on the provided context.\n"
         "Answer: [your answer here (in the same language as the user query)]"
@@ -36,7 +37,8 @@ def follow_up_questions_tool(name: str) -> FunctionTool:
         name=name,
         description=(
             "Use this tool AFTER the RAG tools have been used to generate follow-up questions.\n"
-            "The 'rag_outputs' parameter should contain the combined observations from the previous tool calls (DevPortalRAGTool and CittadinoRAGTool).\n"
+            "The 'rag_output_devportal' parameter should contain the observations from the previous DevPortalRAGTool calls.\n"
+            "The 'rag_output_cittadino' parameter should contain the observations from the previous CittadinoRAGTool calls.\n"
             "This helps the user explore topics related to the information already retrieved.\n"
             "If you do not call this tool, do not generate any follow-up questions."
         ),
