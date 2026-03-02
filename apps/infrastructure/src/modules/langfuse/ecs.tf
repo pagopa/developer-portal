@@ -40,8 +40,8 @@ resource "aws_ecs_cluster" "langfuse" {
 
 resource "aws_ecs_task_definition" "clickhouse" {
   family                   = "langfuse-clickhouse"
-  cpu                      = 1024
-  memory                   = 4096
+  cpu                      = 2048
+  memory                   = 5120
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
 
