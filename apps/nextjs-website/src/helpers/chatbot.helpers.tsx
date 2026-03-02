@@ -110,7 +110,7 @@ export const useChatbot = (isUserAuthenticated: boolean) => {
       .finally(() => setAreChatbotQueriesLoaded(true));
   }, [isUserAuthenticated]);
 
-  const sendQuery = (queryMessage: string) => {
+  const sendQuery = (queryMessage: string, knowledgeBase?: string) => {
     setIsAwaitingResponse(true);
     const queriedAt = new Date().toISOString();
     const previousQueries = chatQueries;
@@ -121,6 +121,7 @@ export const useChatbot = (isUserAuthenticated: boolean) => {
       queriedAt: queriedAt,
       badAnswer: false,
       answer: null,
+      knowledgeBase: knowledgeBase,
       createdAt: null,
     };
     setHistoryQueries([...historyQueries, newQuery]);
@@ -135,6 +136,7 @@ export const useChatbot = (isUserAuthenticated: boolean) => {
     sendChatbotQuery({
       question: queryMessage,
       queriedAt: queriedAt,
+      knowledgeBase: knowledgeBase,
       history: previousQueries.slice(-chatMaxHistoryMessages),
     })
       .then((response) => {
@@ -142,7 +144,10 @@ export const useChatbot = (isUserAuthenticated: boolean) => {
 
         const newChatQueries = [
           ...chatQueries,
-          { ...response, question: queryMessage },
+          {
+            ...response,
+            question: queryMessage,
+          },
         ];
         setChatQueries(newChatQueries);
         setChatQueriesInLocalStorage(newChatQueries);
