@@ -21,6 +21,7 @@ on:
         description: 'Parser Vector Index Name (optional, overrides secret)'
         required: false
         type: string
+        default: ''
       depth:
         description: 'Maximum recursion depth for crawling links (optional)'
         required: false
