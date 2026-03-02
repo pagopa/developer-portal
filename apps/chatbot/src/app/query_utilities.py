@@ -41,20 +41,6 @@ def prepare_body_to_return(
         chips=answer_json.get("chips", []),
     )
 
-    # TODO: remove this debug line
-    bodyToReturn.chips = [
-        {
-            "label": "Integrazione API",
-            "question": "Approfondisci Integrazione API... generata dall'LLM",
-            "knowledgeBase": "developerportal",
-        },
-        {
-            "label": "Storico pagamenti",
-            "question": "Approfondisci Storico pagamenti",
-            "knowledgeBase": "kbcittadino",
-        },
-    ]
-
     return bodyToReturn
 
 
