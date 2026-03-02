@@ -37,13 +37,25 @@ runs:
         for url in "${url_array[@]}"; do
           url="$(echo "$url" | xargs)"  # trim whitespace
           if [ -n "$url" ]; then
-            # Basic validation: require http/https and disallow dangerous shell metacharacters
+            # Basic validation: require http/https and ensure it is a syntactically valid URL
             if ! [[ "$url" =~ ^https?:// ]]; then
               echo "Skipping invalid URL (must start with http:// or https://): $url"
               continue
             fi
-            if echo "$url" | grep -Eq '[\"\\`$&;|><(){}'\'']'; then
-              echo "Skipping URL containing disallowed characters: $url"
+            # Use Node's URL parser to validate the URL and enforce http/https protocol
+            if ! node - "$url" << 'EOF'
+const input = process.argv[1];
+try {
+  const u = new URL(input);
+  if (!/^https?:$/.test(u.protocol)) {
+    process.exit(1);
+  }
+} catch {
+  process.exit(1);
+}
+EOF
+            then
+              echo "Skipping invalid URL (failed structural validation): $url"
               continue
             fi
             echo "=== Parsing: $url ==="
