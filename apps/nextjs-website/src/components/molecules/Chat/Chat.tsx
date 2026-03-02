@@ -23,7 +23,8 @@ import ChatbotChipsContainer from '@/components/molecules/ChatbotChipsContainer/
 
 type ChatProps = {
   queries: Query[];
-  onSendQuery: (query: string) => null;
+  // eslint-disable-next-line functional/no-return-void
+  onSendQuery: (query: string, knowledgeBase?: string) => void;
   onSendFeedback: (
     hasNegativeFeedback: boolean,
     sessionId: string,
@@ -221,7 +222,7 @@ const Chat = ({
                 chips={chips.map((chip) => ({
                   ...chip,
                   onClick: (query) => {
-                    onSendQuery(query);
+                    onSendQuery(query, chip.knowledgeBase);
                   },
                 }))}
               />
