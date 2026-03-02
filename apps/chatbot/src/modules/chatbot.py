@@ -150,7 +150,6 @@ class Chatbot:
         self,
         query_str: str,
         messages: Optional[List[Dict[str, str]]] | None = None,
-        # knowledge_base: Optional[str] = None,
     ) -> dict:
 
         agent = get_agent(
