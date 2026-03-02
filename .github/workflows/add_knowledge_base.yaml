@@ -19,8 +19,9 @@ on:
           - prod
       parser_vector_index_name:
         description: 'Parser Vector Index Name (optional, overrides secret)'
-        required: true
+        required: false
         type: string
+        default: ''
       depth:
         description: 'Maximum recursion depth for crawling links (optional)'
         required: false
