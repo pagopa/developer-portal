@@ -26,7 +26,7 @@ This project uses [Poetry](https://python-poetry.org/) for dependency management
 
 3. Create environment file:
    ```bash
-   cp .env.default .env
+   cp .env.example .env
    ```
 
 4. Configure environment variables in `.env`:

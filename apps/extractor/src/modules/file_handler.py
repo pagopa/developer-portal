@@ -12,6 +12,14 @@ LOGGER = get_logger(__name__, level=SETTINGS.log_level)
 
 
 def load_json_files(input_folder: str) -> List[Tuple[str, InputDocument]]:
+    """Load JSON files from a local directory and parse them into InputDocument instances.
+
+    Args:
+        input_folder: Path to the directory containing JSON files
+
+    Returns:
+        List of tuples containing (filename, InputDocument)
+    """
     input_path = Path(input_folder)
     if not input_path.exists():
         raise FileNotFoundError(f"Input folder not found: {input_folder}")
@@ -46,6 +54,16 @@ def load_json_files(input_folder: str) -> List[Tuple[str, InputDocument]]:
 def save_cleaned_document(
     output_folder: str, filename: str, doc: CleanedDocument
 ) -> None:
+    """Save a CleanedDocument instance to a JSON file in the specified output folder.
+
+    Args:
+        output_folder: Path to the directory where the JSON file will be saved
+        filename: Name of the JSON file
+        doc: CleanedDocument instance to save
+
+    Raises:
+        IOError: If there is an error writing the file
+    """
     output_path = Path(output_folder)
     try:
         output_path.mkdir(parents=True, exist_ok=True)

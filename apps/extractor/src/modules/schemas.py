@@ -3,6 +3,9 @@ from pydantic import BaseModel, Field
 
 
 class InputDocument(BaseModel):
+    """Represents the raw input document extracted from a web page.
+    This model is used to capture the initial data before any cleaning is applied.
+    """
     url: str = Field(..., description="The URL of the web page")
     title: str = Field(..., description="The title of the web page")
     bodyText: str = Field(
@@ -23,6 +26,9 @@ class InputDocument(BaseModel):
 
 
 class CleanedDocument(BaseModel):
+    """Represents the cleaned and structured document after processing with the LLM.
+    This model is designed to capture the essential information in a structured format, making it easier for downstream applications to consume.
+    """
     title: str = Field(..., description="The title of the page")
     text: str = Field(
         ...,
