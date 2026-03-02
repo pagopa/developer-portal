@@ -1,5 +1,13 @@
 # storybook-app
 
+## 2.1.0
+
+### Minor Changes
+
+- 4bc9c1e: Add ChatbotChipsContainer and its storybook
+- 0651ba3: Add Chatbot chips component and storybook element
+- 22ca48c: Add ChatbotChip functionality and enhance ChatbotChipsContainer layout and add QueryWithChips story to showcase chatbot chip functionality
+
 ## 2.0.0
 
 ### Major Changes
