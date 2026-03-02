@@ -226,7 +226,9 @@ const PersonalData = () => {
                   family_name: items[1].value || user.attributes.family_name,
                   'custom:job_role': items[2].value || '',
                   'custom:company_type':
-                    items[3].value || user.attributes['custom:company_type'],
+                    items[3].value ||
+                    user.attributes['custom:company_type'] ||
+                    '',
                   'custom:preferred_language':
                     items[4]?.value ||
                     user.attributes['custom:preferred_language'],
