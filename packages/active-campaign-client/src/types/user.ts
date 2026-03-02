@@ -7,4 +7,5 @@ export type User = {
   readonly 'custom:survey_accepted'?: string;
   readonly 'custom:company_type': string;
   readonly 'custom:job_role': string;
+  readonly 'custom:preferred_language'?: string;
 };
