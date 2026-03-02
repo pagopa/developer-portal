@@ -62,4 +62,16 @@ jobs:
           depth: ${{ inputs.depth }}
           valid_domain_variants: ${{ inputs.valid_domain_variants }}
           public_parser_request_timeout_ms: ${{ inputs.public_parser_request_timeout_ms }}
-
+  
+  run-extractor:
+    name: Run Extractor Script (manual on ${{ inputs.environment }})
+    needs: run-parser
+    runs-on: ubuntu-22.04
+    environment: ${{ inputs.environment }}
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      
+      - name: Run Extractor
+        uses: ./.github/actions/extractor
