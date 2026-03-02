@@ -1,5 +1,2 @@
----
-"parser": minor
----
-
-Create manual Github action for parser
+<!-- Duplicate changeset removed: parser minor bump and manual GitHub action
+     are already covered by another changeset in this PR. -->
