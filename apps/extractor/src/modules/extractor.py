@@ -5,8 +5,13 @@ from llama_index.core.program import LLMTextCompletionProgram
 
 from src.modules.logger import get_logger
 from src.modules.schemas import InputDocument, CleanedDocument
-from src.modules.file_handler import load_json_files, save_cleaned_document
+
 from src.modules.settings import SETTINGS
+
+if SETTINGS.should_run_locally:
+    from src.modules.file_handler import load_json_files, save_cleaned_document
+else:
+    from src.modules.file_handler_s3 import load_json_files, save_cleaned_document
 
 LOGGER = get_logger(__name__, level=SETTINGS.log_level)
 
@@ -81,7 +86,6 @@ def process_folder(input_folder: str, output_folder: str, llm: LLM) -> dict:
         "total": 0,
         "succeeded": 0,
         "failed": 0,
-
     }
 
     try:

@@ -65,8 +65,12 @@ class ExtractorSettings(BaseSettings):
 
     # Prompts
     content_cleaning_prompt: str = PROMPTS["content_cleaning_prompt"]
+
     # Logging
     log_level: str = os.getenv("LOG_LEVEL", "info")
+
+    # Local run flag
+    should_run_locally: bool = os.getenv("SHOULD_RUN_LOCALLY", "false").lower() == "true"
 
 # Singleton instance
 SETTINGS = ExtractorSettings()
@@ -80,3 +84,4 @@ LOGGER.info("Extractor settings loaded successfully")
 LOGGER.info(f"Input folder: {SETTINGS.input_folder}")
 LOGGER.info(f"Output folder: {SETTINGS.output_folder}")
 LOGGER.info(f"Model: {SETTINGS.model_id}")
+LOGGER.info(f"Local run: {SETTINGS.should_run_locally}")

@@ -37,6 +37,7 @@ This project uses [Poetry](https://python-poetry.org/) for dependency management
    # Required
    EXT_INPUT_FOLDER=input_folder
    EXT_OUTPUT_FOLDER=output_folder
+   SHOULD_RUN_LOCALLY=false # false to read from and write to s3
    
    # LLM Configuration (optional, with defaults)
    CHB_MODEL_ID=gemini-2.5-flash-lite
