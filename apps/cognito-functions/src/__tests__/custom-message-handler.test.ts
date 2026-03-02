@@ -24,6 +24,7 @@ const makeEvent = (): CustomMessageTriggerEvent => ({
       given_name: 'aGivenName',
       family_name: 'aFamilyName',
       email: 'email@email.com',
+      'custom:preferred_language': 'it',
     },
     codeParameter: '{####}',
     linkParameter: '{##aLinkParameter##}',
@@ -44,8 +45,9 @@ describe('Handler', () => {
     const event = makeEvent();
     const { response } = await makeHandler(env)(event);
     const { userAttributes, codeParameter } = event.request;
+    const locale = userAttributes['custom:preferred_language'] || 'it';
     const expected = makeConfirmationEmail(
-      `https://${env.domain}/auth/confirmation?username=${userAttributes['sub']}&code=${codeParameter}`,
+      `https://${env.domain}/${locale}/auth/confirmation?username=${userAttributes['sub']}&code=${codeParameter}`,
       env.domain
     );
     expect(response.emailMessage).toStrictEqual(expected);
@@ -58,8 +60,9 @@ describe('Handler', () => {
     };
     const { response } = await makeHandler(env)(resendCodeEvent);
     const { userAttributes, codeParameter } = resendCodeEvent.request;
+    const locale = userAttributes['custom:preferred_language'] || 'it';
     const expected = makeConfirmationEmail(
-      `https://${env.domain}/auth/confirmation?username=${userAttributes['sub']}&code=${codeParameter}`,
+      `https://${env.domain}/${locale}/auth/confirmation?username=${userAttributes['sub']}&code=${codeParameter}`,
       env.domain
     );
     expect(response.emailMessage).toStrictEqual(expected);
@@ -81,8 +84,9 @@ describe('Handler', () => {
     };
     const { response } = await makeHandler(env)(forgotPasswordEvent);
     const { userAttributes, codeParameter } = forgotPasswordEvent.request;
+    const locale = userAttributes['custom:preferred_language'] || 'it';
     const expected = makeConfirmationForgotPasswordEmail(
-      `https://${env.domain}/auth/change-password?username=${userAttributes['sub']}&code=${codeParameter}`,
+      `https://${env.domain}/${locale}/auth/change-password?username=${userAttributes['sub']}&code=${codeParameter}`,
       env.domain
     );
     expect(response.emailMessage).toStrictEqual(expected);
@@ -125,11 +129,16 @@ describe('Handler', () => {
       ...makeEvent(),
       triggerSource: 'CustomMessage_UpdateUserAttribute',
     };
+    const locale =
+      updateUserAttributeEvent.request.userAttributes[
+        'custom:preferred_language'
+      ];
     const { response } = await makeHandler(env)(updateUserAttributeEvent);
     const { userAttributes, codeParameter } = updateUserAttributeEvent.request;
     const expected = makeConfirmationUpdateEmailAddress(
-      `https://${env.domain}/auth/email-confirmation?username=${userAttributes['sub']}&code=${codeParameter}`,
-      env.domain
+      `https://${env.domain}/${locale}/auth/email-confirmation?username=${userAttributes['sub']}&code=${codeParameter}`,
+      env.domain,
+      locale
     );
     expect(response.emailMessage).toStrictEqual(expected);
   });
