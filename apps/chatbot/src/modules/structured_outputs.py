@@ -48,7 +48,7 @@ class RAGOutput(BaseModel):
 class FollowUpQuestionsOutput(BaseModel):
     """A structured output for follow-up questions."""
 
-    follow_up_questions: List[Question] = Field(
+    follow_up_questions: List[FollowUpQuestion] = Field(
         description="Follow-up questions about Developer or Citizen documentation.",
         min_length=2,
         max_length=10,
