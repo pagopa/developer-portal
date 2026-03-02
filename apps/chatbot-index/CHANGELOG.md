@@ -1,5 +1,13 @@
 # chatbot-index
 
+## 2.4.1
+
+### Patch Changes
+
+- a49b695: Update loggers in chatbot, chatbot-monitor, chatbot-evaluate, and chatbot-index
+- a49b695: Move presidio and dynamodb functions from chatbot to chatbot-monitor
+- a49b695: Run dockerfiles as normal user
+
 ## 2.4.0
 
 ### Minor Changes
