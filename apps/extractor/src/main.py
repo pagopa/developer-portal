@@ -18,12 +18,27 @@ LOGGER = get_logger(__name__, level=SETTINGS.log_level)
 
 
 def validate_folders() -> bool:
-    # Check if using S3 paths
-    if SETTINGS.input_folder.startswith("s3://") and SETTINGS.output_folder.startswith(
+    """
+    Validate input and output folders based on the configured execution mode.
+
+    When running locally (SETTINGS.should_run_locally is True), perform filesystem
+    checks using pathlib. When running against a remote backend (e.g. S3),
+    delegate validation to the corresponding I/O handler selected elsewhere.
+    """
+    # When not running locally, assume remote storage (e.g., S3) and defer
+    # validation to the remote I/O implementation used in modules.extractor.
+    if not getattr(SETTINGS, "should_run_locally", True):
+        return True
+
+    # In local mode, S3-style paths are almost certainly a misconfiguration.
+    if SETTINGS.input_folder.startswith("s3://") or SETTINGS.output_folder.startswith(
         "s3://"
     ):
-        # S3 validation will happen during actual operations
-        return True
+        LOGGER.error(
+            "S3-style paths provided while SETTINGS.should_run_locally is True. "
+            "Please either disable local mode or use local filesystem paths."
+        )
+        return False
 
     # Local path validation
     input_path = Path(SETTINGS.input_folder)

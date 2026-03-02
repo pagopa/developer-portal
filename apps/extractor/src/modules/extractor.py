@@ -30,15 +30,24 @@ def extract_document(
     Returns:
         CleanedDocument if successful, None if parsing fails
     """
+
+    def _escape_braces(value) -> str:
+        """
+        Ensure that any literal braces in the value are escaped so that
+        str.format does not treat them as format placeholders.
+        """
+        text = "" if value is None else str(value)
+        return text.replace("{", "{{").replace("}", "}}")
+
     try:
         # Construct the prompt with document data
         prompt = prompt_template.format(
-            title=input_doc.title,
-            url=input_doc.url,
-            body_text=input_doc.bodyText or "(empty)",
-            language=input_doc.lang,
-            last_updated=input_doc.lastModified,
-            keywords=input_doc.keywords or "(none)",
+            title=_escape_braces(input_doc.title),
+            url=_escape_braces(input_doc.url),
+            body_text=_escape_braces(input_doc.bodyText or "(empty)"),
+            language=_escape_braces(input_doc.lang),
+            last_updated=_escape_braces(input_doc.lastModified),
+            keywords=_escape_braces(input_doc.keywords or "(none)"),
         )
 
         # Use LlamaIndex's structured prediction with Pydantic model
