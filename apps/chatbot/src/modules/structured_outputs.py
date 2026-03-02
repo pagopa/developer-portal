@@ -69,7 +69,7 @@ class DiscoveryOutput(BaseModel):
         default=[],
         description="list where each element reports the title and the url of the relative source node.",
     )
-    follow_up_questions: List[Question] = Field(
+    follow_up_questions: List[FollowUpQuestion] = Field(
         default=[],
         description="Follow-up questions about Developer or Citizen documentation.",
     )
