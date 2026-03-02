@@ -20,9 +20,11 @@ def get_ssm_parameter(name: str | None, default: str | None = None) -> str | Non
     """
     Retrieves a specific value from AWS Systems Manager's Parameter Store.
 
-    :param name: The name of the parameter to retrieve.
-    :param default: The default value to return if the parameter is not found.
-    :return: The value of the requested parameter.
+    Args:
+        name: The name of the parameter to retrieve.
+        default: The default value to return if the parameter is not found.
+    Returns:
+        The value of the requested parameter, or the default value if the parameter is not found or if there is an error accessing SSM.
     """
 
     if name is None:
@@ -76,8 +78,3 @@ if SETTINGS.input_folder is None:
     raise ValueError("EXT_INPUT_FOLDER environment variable is required but not set")
 if SETTINGS.output_folder is None:
     raise ValueError("EXT_OUTPUT_FOLDER environment variable is required but not set")
-
-LOGGER.info("Extractor settings loaded successfully")
-LOGGER.info(f"Input folder: {SETTINGS.input_folder}")
-LOGGER.info(f"Output folder: {SETTINGS.output_folder}")
-LOGGER.info(f"Model: {SETTINGS.model_id}")
