@@ -15,7 +15,7 @@ class Reference(BaseModel):
     url: str
 
 
-class Question(BaseModel):
+class FollowUpQuestion(BaseModel):
     """A follow-up question presented to the user to clarify their intent and
     narrow the search space of the RAG tools."""
 
