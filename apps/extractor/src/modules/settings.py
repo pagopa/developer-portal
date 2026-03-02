@@ -2,7 +2,8 @@ import boto3
 import os
 import yaml
 from pathlib import Path
-from pydantic_settings import BaseSettings
+from pydantic import Field
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 from src.modules.logger import get_logger
 
@@ -49,9 +50,11 @@ def get_ssm_parameter(name: str | None, default: str | None = None) -> str | Non
 class ExtractorSettings(BaseSettings):
     """Settings for the extractor application."""
 
+    model_config = SettingsConfigDict(env_prefix="")
+
     # I/O Configuration
-    input_folder: str = os.getenv("EXT_INPUT_FOLDER")
-    output_folder: str = os.getenv("EXT_OUTPUT_FOLDER")
+    input_folder: str = Field(alias="EXT_INPUT_FOLDER")
+    output_folder: str = Field(alias="EXT_OUTPUT_FOLDER")
 
     # Google API Configuration
     google_api_key: str = get_ssm_parameter(
@@ -76,8 +79,3 @@ class ExtractorSettings(BaseSettings):
 
 # Singleton instance
 SETTINGS = ExtractorSettings()
-
-if SETTINGS.input_folder is None:
-    raise ValueError("EXT_INPUT_FOLDER environment variable is required but not set")
-if SETTINGS.output_folder is None:
-    raise ValueError("EXT_OUTPUT_FOLDER environment variable is required but not set")
