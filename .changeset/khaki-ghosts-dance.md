@@ -1,0 +1,5 @@
+---
+"extractor": patch
+---
+
+Extractor pipeline
