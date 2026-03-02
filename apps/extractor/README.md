@@ -92,7 +92,7 @@ Output JSON files will have this structured format:
   "title": "Page Title",
   "text": "# Cleaned Content\n\nFormatted as markdown...",
   "language": "it",
-  "lastmod": "2026-02-10T12:41:22.000Z",
+  "lastMod": "2026-02-10T12:41:22.000Z",
   "url": "https://example.com/page",
   "keywords": "keyword1, keyword2"
 }
