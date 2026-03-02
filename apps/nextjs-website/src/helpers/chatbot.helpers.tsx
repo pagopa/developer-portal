@@ -7,7 +7,7 @@ import {
   getChatbotQueries,
   deleteChatbotSession,
 } from '@/lib/chatbotApi';
-import { PaginatedSessions, Query } from '@/lib/chatbot/queries';
+import { ChatbotChip, PaginatedSessions, Query } from '@/lib/chatbot/queries';
 import { chatMaxHistoryMessages } from '@/config';
 
 const HISTORY_PAGE_SIZE = 10;
@@ -68,6 +68,21 @@ function setFeedbackByQueryId(
   });
 }
 
+export function getCurrentChipsFromQueries(
+  queries: Query[]
+): readonly ChatbotChip[] {
+  if (queries.length === 0) {
+    return [];
+  }
+
+  const lastQuery = queries[queries.length - 1];
+  if (!lastQuery.answer || !lastQuery.chips) {
+    return [];
+  }
+
+  return lastQuery.chips;
+}
+
 export const useChatbot = (isUserAuthenticated: boolean) => {
   const [areChatbotQueriesLoaded, setAreChatbotQueriesLoaded] = useState(false);
   const [isSessionLoaded, setIsSessionLoaded] = useState(false);
@@ -95,7 +110,7 @@ export const useChatbot = (isUserAuthenticated: boolean) => {
       .finally(() => setAreChatbotQueriesLoaded(true));
   }, [isUserAuthenticated]);
 
-  const sendQuery = (queryMessage: string) => {
+  const sendQuery = (queryMessage: string, knowledgeBase?: string) => {
     setIsAwaitingResponse(true);
     const queriedAt = new Date().toISOString();
     const previousQueries = chatQueries;
@@ -106,6 +121,7 @@ export const useChatbot = (isUserAuthenticated: boolean) => {
       queriedAt: queriedAt,
       badAnswer: false,
       answer: null,
+      knowledgeBase: knowledgeBase,
       createdAt: null,
     };
     setHistoryQueries([...historyQueries, newQuery]);
@@ -120,6 +136,7 @@ export const useChatbot = (isUserAuthenticated: boolean) => {
     sendChatbotQuery({
       question: queryMessage,
       queriedAt: queriedAt,
+      knowledgeBase: knowledgeBase,
       history: previousQueries.slice(-chatMaxHistoryMessages),
     })
       .then((response) => {
@@ -127,7 +144,10 @@ export const useChatbot = (isUserAuthenticated: boolean) => {
 
         const newChatQueries = [
           ...chatQueries,
-          { ...response, question: queryMessage },
+          {
+            ...response,
+            question: queryMessage,
+          },
         ];
         setChatQueries(newChatQueries);
         setChatQueriesInLocalStorage(newChatQueries);

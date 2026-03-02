@@ -3,7 +3,7 @@
 import { useUser } from '@/helpers/user.helper';
 import { FC, PropsWithChildren } from 'react';
 import ChatbotLayout from '@/components/organisms/ChatbotLayout/ChatbotLayout';
-import { useChatbot } from '@/helpers/chatbot.helper';
+import { useChatbot } from '@/helpers/chatbot.helpers';
 import { isFeedbackFormEnabled } from '@/config';
 
 type ChatbotProviderProps = {

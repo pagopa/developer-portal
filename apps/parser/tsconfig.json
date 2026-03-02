@@ -1,0 +1,16 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "target": "es2021",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "lib": ["es2022", "dom"],
+    "esModuleInterop": true,
+    "strict": true,
+    "noEmit": true,
+    "resolveJsonModule": true,
+    "types": ["node", "jest"],
+    "forceConsistentCasingInFileNames": true
+  },
+  "include": ["src", "tests"]
+}
