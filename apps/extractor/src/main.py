@@ -18,6 +18,14 @@ LOGGER = get_logger(__name__, level=SETTINGS.log_level)
 
 
 def validate_folders() -> bool:
+    # Check if using S3 paths
+    if SETTINGS.input_folder.startswith("s3://") and SETTINGS.output_folder.startswith(
+        "s3://"
+    ):
+        # S3 validation will happen during actual operations
+        return True
+
+    # Local path validation
     input_path = Path(SETTINGS.input_folder)
     if not input_path.exists():
         LOGGER.error(f"Input folder does not exist: {SETTINGS.input_folder}")
