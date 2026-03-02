@@ -102,7 +102,7 @@ def build_index_redis(
         dynamic (bool): Flag indicating whether to include dynamic documents in the index
         api (bool): Flag indicating whether to include API documentation in the index
         structured (bool): Flag indicating whether to include structured documents in the index
-        clean_redis (bool): Flag indicating whether to clean the Redis database before building the index
+        clean_redis (bool): Flag indicating whether to clean the WHOLE Redis database with ALL the vector indexes and documents before building the new index. If False, it will only delete the existing index with the same index_id and its associated documents.
     Returns:
         VectorStoreIndex: The newly created vector store index.
     """
@@ -210,7 +210,7 @@ class LlamaVectorIndex:
             dynamic (bool): Flag indicating whether to include dynamic documents in the index
             api (bool): Flag indicating whether to include API documentation in the index
             structured (bool): Flag indicating whether to include structured documents in the index
-            clean_redis (bool): Flag indicating whether to clean the Redis database before building the index
+            clean_redis (bool): Flag indicating whether to clean the WHOLE Redis database with ALL the vector indexes and documents before building the new index. If False, it will only delete the existing index with the same index_id and its associated documents.
         Returns:
             VectorStoreIndex: The newly created vector store index.
         """
