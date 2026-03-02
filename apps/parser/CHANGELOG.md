@@ -1,5 +1,15 @@
 # parser
 
+## 1.0.0
+
+### Major Changes
+
+- fdd5148: Add script to perform parsing to parser app. Store parsed information locally. Sanitize urls in filesystem compatible format to use as file names.
+
+### Minor Changes
+
+- b0e24b9: Fix parser tests
+
 ## 0.2.0
 
 ### Minor Changes
