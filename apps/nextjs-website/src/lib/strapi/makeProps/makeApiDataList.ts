@@ -3,13 +3,12 @@ import { ApiDataPageProps } from '@/app/[locale]/[productSlug]/api/[apiDataSlug]
 import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
 import { makeBaseProductWithoutLogoProps } from '@/lib/strapi/makeProps/makeProducts';
 import { makeApiSoapUrlList } from '@/lib/strapi/makeProps/makeApiSoapUrlList';
-import { StrapiApiDataList } from '@/lib/strapi/types/apiDataList';
+import { ApiDataList } from '@/lib/apiDataList/types';
 import { compact } from 'lodash';
-import { RootEntity } from '@/lib/strapi/types/rootEntity';
 
 export async function makeApiDataListProps(
   locale: string,
-  strapiApiDataList: RootEntity<StrapiApiDataList>
+  strapiApiDataList: ApiDataList
 ): Promise<ReadonlyArray<ApiDataPageProps>> {
   const list = compact(
     await Promise.all(

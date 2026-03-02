@@ -1,16 +1,20 @@
 import { strapiApiDataListPages } from '@/lib/strapi/__tests__/fixtures/apiDataListPages';
-import { StrapiApiDataListPages } from '@/lib/strapi/types/apiDataListPages';
+import {
+  ApiDataListPage,
+  ApiDataListPages,
+} from '@/lib/apiDataListPages/types';
+import { wrapAsRootEntity } from '@/lib/strapi/__tests__/strapiEntityWrappers';
 
-export function minimalApiDataListPages(): StrapiApiDataListPages {
-  const page = strapiApiDataListPages[0];
-  return [
+export function minimalApiDataListPages(): ApiDataListPages {
+  const page = strapiApiDataListPages.data[0];
+  return wrapAsRootEntity<readonly ApiDataListPage[]>([
     {
       ...page,
       title: 'Minimal API List Page',
       description: undefined,
       seo: undefined,
       bannerLinks: [],
-      api_data: [
+      apiData: [
         {
           id: 1,
           title: 'Minimal API',
@@ -26,27 +30,27 @@ export function minimalApiDataListPages(): StrapiApiDataListPages {
         },
       ],
     },
-  ];
+  ]);
 }
 
-export function apiDataListPageWithEmptyApiData(): StrapiApiDataListPages {
-  const page = strapiApiDataListPages[0];
-  return [
+export function apiDataListPageWithEmptyApiData(): ApiDataListPages {
+  const page = strapiApiDataListPages.data[0];
+  return wrapAsRootEntity<readonly ApiDataListPage[]>([
     {
       ...page,
       title: 'Empty API List Page',
-      api_data: [],
+      apiData: [],
     },
-  ];
+  ]);
 }
 
-export function apiDataListPageWithMixedApiTypes(): StrapiApiDataListPages {
-  const page = strapiApiDataListPages[0];
-  return [
+export function apiDataListPageWithMixedApiTypes(): ApiDataListPages {
+  const page = strapiApiDataListPages.data[0];
+  return wrapAsRootEntity<readonly ApiDataListPage[]>([
     {
       ...page,
       title: 'Mixed API Types Page',
-      api_data: [
+      apiData: [
         // Valid REST API
         {
           id: 1,
@@ -89,26 +93,26 @@ export function apiDataListPageWithMixedApiTypes(): StrapiApiDataListPages {
         },
       ],
     },
-  ];
+  ]);
 }
 
-export function apiDataListPageWithoutDescription(): StrapiApiDataListPages {
-  const page = strapiApiDataListPages[0];
-  return [
+export function apiDataListPageWithoutDescription(): ApiDataListPages {
+  const page = strapiApiDataListPages.data[0];
+  return wrapAsRootEntity<readonly ApiDataListPage[]>([
     {
       ...page,
       description: undefined,
     },
-  ];
+  ]);
 }
 
-export function apiDataListPageWithInvalidApiData(): StrapiApiDataListPages {
-  const page = strapiApiDataListPages[0];
-  return [
+export function apiDataListPageWithInvalidApiData(): ApiDataListPages {
+  const page = strapiApiDataListPages.data[0];
+  return wrapAsRootEntity<readonly ApiDataListPage[]>([
     {
       ...page,
       title: 'Invalid API Data Page',
-      api_data: [
+      apiData: [
         {
           id: 1,
           bannerLinks: [],
@@ -135,19 +139,19 @@ export function apiDataListPageWithInvalidApiData(): StrapiApiDataListPages {
         },
       ],
     },
-  ];
+  ]);
 }
 
-export function multipleApiDataListPages(): StrapiApiDataListPages {
-  const page = strapiApiDataListPages[0];
-  return [
+export function multipleApiDataListPages(): ApiDataListPages {
+  const page = strapiApiDataListPages.data[0];
+  return wrapAsRootEntity<readonly ApiDataListPage[]>([
     page,
     {
       ...page,
       id: 2,
       title: 'Second API List Page',
       description: 'Another API list page',
-      api_data: [
+      apiData: [
         {
           id: 10,
           bannerLinks: [],
@@ -163,19 +167,19 @@ export function multipleApiDataListPages(): StrapiApiDataListPages {
         },
       ],
     },
-  ];
+  ]);
 }
 
-export function emptyApiDataListPages(): StrapiApiDataListPages {
-  return [];
+export function emptyApiDataListPages(): ApiDataListPages {
+  return wrapAsRootEntity<readonly ApiDataListPage[]>([]);
 }
 
-export function apiDataListPageWithBothRestAndSoap(): StrapiApiDataListPages {
-  const page = strapiApiDataListPages[0];
-  return [
+export function apiDataListPageWithBothRestAndSoap(): ApiDataListPages {
+  const page = strapiApiDataListPages.data[0];
+  return wrapAsRootEntity<readonly ApiDataListPage[]>([
     {
       ...page,
-      api_data: [
+      apiData: [
         {
           id: 1,
           bannerLinks: [],
@@ -195,5 +199,5 @@ export function apiDataListPageWithBothRestAndSoap(): StrapiApiDataListPages {
         },
       ],
     },
-  ];
+  ]);
 }

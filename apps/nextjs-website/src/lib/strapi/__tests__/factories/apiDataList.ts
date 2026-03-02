@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { strapiApiDataList } from '@/lib/strapi/__tests__/fixtures/apiDataList';
-import { StrapiApiDataList } from '@/lib/strapi/types/apiDataList';
+import { ApiData } from '@/lib/apiDataList/types';
 
 export function minimalApiDataList() {
-  const apiData = strapiApiDataList[0];
+  const apiData = strapiApiDataList.data[0];
   return [
     {
       ...apiData,
@@ -39,32 +39,32 @@ export function minimalApiDataList() {
       },
       apiSoapDetail: undefined,
     },
-  ] as StrapiApiDataList;
+  ] as readonly ApiData[];
 }
 
 export function apiDataWithoutBannerLinks() {
-  const apiData = strapiApiDataList[0];
+  const apiData = strapiApiDataList.data[0];
   return [
     {
       ...apiData,
       bannerLinks: [],
     },
-  ] as StrapiApiDataList;
+  ] as readonly ApiData[];
 }
 
 export function apiDataWithMissingProduct() {
-  const apiData = strapiApiDataList[0];
+  const apiData = strapiApiDataList.data[0];
   return [
     {
       ...apiData,
       title: 'API Data Without Product',
       product: undefined,
     },
-  ] as StrapiApiDataList;
+  ] as readonly ApiData[];
 }
 
 export function apiDataWithoutApiDetails() {
-  const apiData = strapiApiDataList[0];
+  const apiData = strapiApiDataList.data[0];
   return [
     {
       ...apiData,
@@ -72,11 +72,11 @@ export function apiDataWithoutApiDetails() {
       apiRestDetail: undefined,
       apiSoapDetail: undefined,
     },
-  ] as StrapiApiDataList;
+  ] as readonly ApiData[];
 }
 
 export function apiDataWithInvalidRestApiDetails() {
-  const apiData = strapiApiDataList[0];
+  const apiData = strapiApiDataList.data[0];
   return [
     {
       ...apiData,
@@ -87,11 +87,11 @@ export function apiDataWithInvalidRestApiDetails() {
       },
       apiSoapDetail: undefined,
     },
-  ] as StrapiApiDataList;
+  ] as readonly ApiData[];
 }
 
 export function apiDatalistWithItemMissingSlug() {
-  const apiData = strapiApiDataList[0];
+  const apiData = strapiApiDataList.data[0];
   return [
     {
       ...apiData,
@@ -103,12 +103,12 @@ export function apiDatalistWithItemMissingSlug() {
         dirName: 'soap-dir',
       },
     },
-  ] as StrapiApiDataList;
+  ] as readonly ApiData[];
 }
 
 export function mixedApiDataValidAndInvalid() {
-  const validRestApi = strapiApiDataList[0];
-  const validSoapApi = strapiApiDataList[1];
+  const validRestApi = strapiApiDataList.data[0];
+  const validSoapApi = strapiApiDataList.data[1];
   const invalidApi = apiDataWithoutApiDetails()[0];
   const invalidProductApi = apiDataWithMissingProduct()[0];
 
@@ -133,11 +133,11 @@ export function mixedApiDataValidAndInvalid() {
         ],
       },
     },
-  ] as StrapiApiDataList;
+  ] as readonly ApiData[];
 }
 
 export function apiDataWithoutProductBannerLinks() {
-  const apiData = strapiApiDataList[0];
+  const apiData = strapiApiDataList.data[0];
   return [
     {
       ...apiData,
@@ -159,18 +159,18 @@ export function apiDataWithoutProductBannerLinks() {
         bannerLinks: [],
       },
     },
-  ] as StrapiApiDataList;
+  ] as readonly ApiData[];
 }
 
 export function apiDataWithCorruptedProduct() {
-  const apiData = strapiApiDataList[0];
+  const apiData = strapiApiDataList.data[0];
   return [
     {
       ...apiData,
       title: 'API Data With Corrupted Product',
       product: undefined as any,
     },
-  ] as StrapiApiDataList;
+  ] as readonly ApiData[];
 }
 
 export function allInvalidApiData() {
@@ -178,21 +178,21 @@ export function allInvalidApiData() {
     apiDataWithoutApiDetails()[0],
     apiDataWithMissingProduct()[0],
     apiDataWithCorruptedProduct()[0],
-  ] as StrapiApiDataList;
+  ] as readonly ApiData[];
 }
 
 export function soapApiDataOnly() {
-  const soapApi = strapiApiDataList[1];
-  return [soapApi] as StrapiApiDataList;
+  const soapApi = strapiApiDataList.data[1];
+  return [soapApi] as readonly ApiData[];
 }
 
 export function restApiDataOnly() {
-  const restApi = strapiApiDataList[0];
-  return [restApi] as StrapiApiDataList;
+  const restApi = strapiApiDataList.data[0];
+  return [restApi] as readonly ApiData[];
 }
 
 export function restApiDataWithMultipleSpecs() {
-  const restApi = strapiApiDataList[0];
+  const restApi = strapiApiDataList.data[0];
   return [
     {
       ...restApi,
@@ -214,5 +214,5 @@ export function restApiDataWithMultipleSpecs() {
         ],
       },
     },
-  ] as StrapiApiDataList;
+  ] as readonly ApiData[];
 }

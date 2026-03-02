@@ -2,7 +2,7 @@ import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
 import * as qs from 'qs';
 import { StrapiProducts } from '@/lib/strapi/types/product';
 import { StrapiTutorials } from '@/lib/strapi/types/tutorial';
-import { StrapiApiDataList } from '@/lib/strapi/types/apiDataList';
+import { ApiDataList } from '@/lib/apiDataList/types';
 import { pipe } from 'fp-ts/lib/function';
 import * as E from 'fp-ts/lib/Either';
 import { makeBuildConfig } from '@/BuildConfig';
@@ -95,7 +95,7 @@ const fetchProductTutorialsReader = (productSlug: string) =>
   });
 
 const fetchProductApiDataReader = (productSlug: string) =>
-  makeCollectionFetcher<StrapiApiDataList>('apis-data', productSlug, {
+  makeCollectionFetcher<ApiDataList>('apis-data', productSlug, {
     fields: ['updatedAt'],
     populate: {
       apiRestDetail: { fields: ['slug'] },

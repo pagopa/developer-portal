@@ -1,13 +1,28 @@
-import {
-  StrapiApiDataListPages as ApiDataListPages,
-  StrapiApiDataListPage as ApiDataListPage,
-  StrapiApiDataListPageWithoutProduct as ApiDataListPageWithoutProduct,
-} from '@/lib/strapi/types/apiDataListPages';
+import { StrapiBaseProductWithRelations } from '@/lib/strapi/types/product';
+import { StrapiBannerLink } from '@/lib/strapi/types/bannerLink';
+import { StrapiSeo } from '@/lib/strapi/types/seo';
+import { ApiData } from '@/lib/apiDataList/types';
 import { ApiDataListPageTemplateProps } from '@/components/templates/ApiDataListTemplate/ApiDataListTemplate';
+import { RootEntity } from '@/lib/strapi/types/rootEntity';
 
-export type {
-  ApiDataListPages,
-  ApiDataListPage,
-  ApiDataListPageWithoutProduct,
-  ApiDataListPageTemplateProps,
+export type ApiDataListPage = {
+  readonly id: number;
+  readonly title: string;
+  readonly description?: string;
+  readonly product: StrapiBaseProductWithRelations;
+  readonly updatedAt: string;
+  readonly apiData: readonly ApiData[];
+  readonly bannerLinks: readonly StrapiBannerLink[];
+  readonly seo?: StrapiSeo;
+  readonly enableFilters?: boolean;
 };
+
+export type ApiDataListPageWithoutProduct = {
+  readonly id: number;
+  readonly updatedAt: string;
+  readonly apiData: readonly Pick<ApiData, 'apiRestDetail' | 'apiSoapDetail'>[];
+};
+
+export type ApiDataListPages = RootEntity<readonly ApiDataListPage[]>;
+
+export type { ApiDataListPageTemplateProps };

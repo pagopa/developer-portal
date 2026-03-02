@@ -2,14 +2,13 @@
 import { ApiDataListPageTemplateProps } from '@/components/templates/ApiDataListTemplate/ApiDataListTemplate';
 import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
 import { makeBaseProductWithoutLogoProps } from '@/lib/strapi/makeProps/makeProducts';
-import { StrapiApiDataListPages } from '@/lib/strapi/types/apiDataListPages';
+import { ApiDataListPages } from '@/lib/apiDataListPages/types';
 import { compact } from 'lodash';
-import { StrapiBaseApiData } from '../types/apiDataList';
-import { RootEntity } from '@/lib/strapi/types/rootEntity';
+import { BaseApiData } from '@/lib/apiDataList/types';
 
 function makeApiDataListPageCard(
   locale: string,
-  item: StrapiBaseApiData,
+  item: BaseApiData,
   slug: string
 ) {
   if (!item.apiRestDetail && !item.apiSoapDetail) {
@@ -43,7 +42,7 @@ function makeApiDataListPageCard(
 
 export function makeApiDataListPagesProps(
   locale: string,
-  strapiApiDataListPages: RootEntity<StrapiApiDataListPages>
+  strapiApiDataListPages: ApiDataListPages
 ): ReadonlyArray<ApiDataListPageTemplateProps> {
   return compact(
     strapiApiDataListPages.data.map((attributes) => {
@@ -69,14 +68,14 @@ export function makeApiDataListPagesProps(
           },
           product,
           apiDetailSlugs: compact(
-            attributes.api_data.map((attributes) =>
+            attributes.apiData.map((attributes) =>
               attributes.apiRestDetail
                 ? attributes.apiRestDetail.slug
                 : attributes.apiSoapDetail?.slug
             )
           ),
           cards: compact(
-            attributes.api_data.map((item) =>
+            attributes.apiData.map((item) =>
               makeApiDataListPageCard(locale, item, slug)
             )
           ),
@@ -85,7 +84,7 @@ export function makeApiDataListPagesProps(
           updatedAt: attributes.updatedAt,
           enableFilters: attributes.enableFilters,
           tags: product.tags,
-        };
+        } satisfies ApiDataListPageTemplateProps;
       } catch (error) {
         // eslint-disable-next-line functional/no-expression-statements
         console.error(

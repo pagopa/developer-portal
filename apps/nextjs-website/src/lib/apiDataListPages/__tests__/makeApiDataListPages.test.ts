@@ -1,4 +1,4 @@
-import { makeApiDataListPagesProps } from '@/lib/strapi/makeProps/makeApiDataListPages';
+import { mapApiDataListPages } from '@/lib/apiDataListPages/mapper';
 import _ from 'lodash';
 import {
   strapiApiDataListPages,
@@ -16,7 +16,7 @@ import {
 } from '@/lib/strapi/__tests__/factories/apiDataListPages';
 import { spyOnConsoleError } from '@/lib/strapi/__tests__/spyOnConsole';
 
-describe('makeApiDataListPagesProps', () => {
+describe('mapApiDataListPages', () => {
   beforeEach(() => {
     spyOnConsoleError.mockClear();
   });
@@ -26,7 +26,7 @@ describe('makeApiDataListPagesProps', () => {
   });
 
   it('should transform strapi api data list pages to api data list page template props', () => {
-    const result = makeApiDataListPagesProps(
+    const result = mapApiDataListPages(
       'it',
       _.cloneDeep({ data: strapiApiDataListPages })
     );
@@ -35,7 +35,7 @@ describe('makeApiDataListPagesProps', () => {
   });
 
   it('should handle minimal data with missing optional fields', () => {
-    const result = makeApiDataListPagesProps(
+    const result = mapApiDataListPages(
       'it',
       _.cloneDeep({ data: minimalApiDataListPages() })
     );
@@ -47,29 +47,26 @@ describe('makeApiDataListPagesProps', () => {
     expect(firstElement.cards).toHaveLength(1);
     expect(firstElement.cards[0].title).toBe('Minimal API');
     expect(firstElement.cards[0].icon).toBe('');
-    expect(firstElement.api_data).toBeDefined();
+    expect(firstElement.apiData).toBeDefined();
   });
 
   it('should handle empty data array', () => {
-    const result = makeApiDataListPagesProps('it', {
-      data: emptyApiDataListPages(),
-    });
+    const result = mapApiDataListPages('it', emptyApiDataListPages());
     expect(result).toHaveLength(0);
   });
 
   it('should handle page with empty api data', () => {
-    const result = makeApiDataListPagesProps('it', {
-      data: apiDataListPageWithEmptyApiData(),
-    });
+    const result = mapApiDataListPages('it', apiDataListPageWithEmptyApiData());
     expect(result).toHaveLength(1);
     expect(result[0].cards).toHaveLength(0);
     expect(result[0].apiDetailSlugs).toHaveLength(0);
   });
 
   it('should handle mixed API types and filter invalid ones', () => {
-    const result = makeApiDataListPagesProps('it', {
-      data: apiDataListPageWithMixedApiTypes(),
-    });
+    const result = mapApiDataListPages(
+      'it',
+      apiDataListPageWithMixedApiTypes()
+    );
     expect(result).toHaveLength(1);
     const firstElement = result[0];
     expect(firstElement.cards).toHaveLength(2);
@@ -79,17 +76,19 @@ describe('makeApiDataListPagesProps', () => {
   });
 
   it('should handle page without description', () => {
-    const result = makeApiDataListPagesProps('it', {
-      data: apiDataListPageWithoutDescription(),
-    });
+    const result = mapApiDataListPages(
+      'it',
+      apiDataListPageWithoutDescription()
+    );
     expect(result).toHaveLength(1);
     expect(result[0].hero.subtitle).toBe('');
   });
 
   it('should filter out invalid API data', () => {
-    const result = makeApiDataListPagesProps('it', {
-      data: apiDataListPageWithInvalidApiData(),
-    });
+    const result = mapApiDataListPages(
+      'it',
+      apiDataListPageWithInvalidApiData()
+    );
     expect(result).toHaveLength(1);
     const firstElement = result[0];
     expect(firstElement.cards).toHaveLength(0);
@@ -102,18 +101,14 @@ describe('makeApiDataListPagesProps', () => {
   });
 
   it('should handle multiple pages', () => {
-    const result = makeApiDataListPagesProps('it', {
-      data: multipleApiDataListPages(),
-    });
+    const result = mapApiDataListPages('it', multipleApiDataListPages());
     expect(result).toHaveLength(2);
     expect(result[0].hero.title).toBe('SEND API Documentation');
     expect(result[1].hero.title).toBe('Second API List Page');
   });
 
   it('should correctly set hero properties', () => {
-    const result = makeApiDataListPagesProps('it', {
-      data: strapiApiDataListPages,
-    });
+    const result = mapApiDataListPages('it', strapiApiDataListPages);
     expect(result[0].hero).toEqual({
       title: 'SEND API Documentation',
       subtitle: 'Complete documentation for SEND APIs',
@@ -121,9 +116,7 @@ describe('makeApiDataListPagesProps', () => {
   });
 
   it('should correctly identify REST API type', () => {
-    const result = makeApiDataListPagesProps('it', {
-      data: strapiApiDataListPages,
-    });
+    const result = mapApiDataListPages('it', strapiApiDataListPages);
     const restCard = result[0].cards.find(
       (card) => card.labels?.[0].label === 'REST'
     );
@@ -133,9 +126,7 @@ describe('makeApiDataListPagesProps', () => {
   });
 
   it('should correctly identify SOAP API type', () => {
-    const result = makeApiDataListPagesProps('it', {
-      data: strapiApiDataListPages,
-    });
+    const result = mapApiDataListPages('it', strapiApiDataListPages);
     const soapCard = result[0].cards.find(
       (card) => card.labels?.[0].label === 'SOAP'
     );
@@ -145,9 +136,7 @@ describe('makeApiDataListPagesProps', () => {
   });
 
   it('should correctly map banner links', () => {
-    const result = makeApiDataListPagesProps('it', {
-      data: strapiApiDataListPages,
-    });
+    const result = mapApiDataListPages('it', strapiApiDataListPages);
     const firstElement = result[0];
     expect(firstElement.bannerLinks).toHaveLength(2);
     expect(firstElement.bannerLinks[0]).toHaveProperty('title');
@@ -155,9 +144,7 @@ describe('makeApiDataListPagesProps', () => {
   });
 
   it('should correctly map SEO properties', () => {
-    const result = makeApiDataListPagesProps('it', {
-      data: strapiApiDataListPages,
-    });
+    const result = mapApiDataListPages('it', strapiApiDataListPages);
     expect(result[0].seo).toEqual({
       metaTitle: 'SEND API Documentation',
       metaDescription: 'Complete documentation for SEND APIs',
@@ -165,16 +152,15 @@ describe('makeApiDataListPagesProps', () => {
   });
 
   it('should correctly map updatedAt', () => {
-    const result = makeApiDataListPagesProps('it', {
-      data: strapiApiDataListPages,
-    });
+    const result = mapApiDataListPages('it', strapiApiDataListPages);
     expect(result[0].updatedAt).toBe('2024-01-02T00:00:00.000Z');
   });
 
   it('should filter cards without title or tags', () => {
-    const result = makeApiDataListPagesProps('it', {
-      data: apiDataListPageWithInvalidApiData(),
-    });
+    const result = mapApiDataListPages(
+      'it',
+      apiDataListPageWithInvalidApiData()
+    );
     expect(result[0].cards).toHaveLength(0);
     expect(spyOnConsoleError).toHaveBeenCalledWith(
       expect.stringContaining(
@@ -184,16 +170,12 @@ describe('makeApiDataListPagesProps', () => {
   });
 
   it('should handle API data with missing icon', () => {
-    const result = makeApiDataListPagesProps('it', {
-      data: minimalApiDataListPages(),
-    });
-    expect(result[0].cards[0].icon).toBe('');
+    const result = mapApiDataListPages('it', minimalApiDataListPages());
+    expect(result[0].cards[0].icon).toBe(undefined);
   });
 
   it('should correctly generate href for cards', () => {
-    const result = makeApiDataListPagesProps('it', {
-      data: strapiApiDataListPages,
-    });
+    const result = mapApiDataListPages('it', strapiApiDataListPages);
     const firstElement = result[0];
     expect(firstElement.cards).toHaveLength(2);
     expect(firstElement.cards[0].href).toBe('/it/send/api/send-main');
@@ -201,9 +183,10 @@ describe('makeApiDataListPagesProps', () => {
   });
 
   it('should prioritize REST slug over SOAP slug in apiDetailSlugs', () => {
-    const result = makeApiDataListPagesProps('it', {
-      data: apiDataListPageWithBothRestAndSoap(),
-    });
+    const result = mapApiDataListPages(
+      'it',
+      apiDataListPageWithBothRestAndSoap()
+    );
     expect(result[0].apiDetailSlugs).toEqual(['rest-slug']);
   });
 });

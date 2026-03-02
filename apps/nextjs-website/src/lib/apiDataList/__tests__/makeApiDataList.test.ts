@@ -1,5 +1,5 @@
-import { makeApiDataListProps } from '@/lib/strapi/makeProps/makeApiDataList';
-import { StrapiApiDataList } from '@/lib/strapi/types/apiDataList';
+import { mapApiDataList } from '@/lib/apiDataList/mapper';
+import { ApiDataList } from '@/lib/apiDataList/types';
 import _ from 'lodash';
 import {
   strapiApiDataList,
@@ -30,7 +30,7 @@ jest.mock('@/lib/strapi/makeProps/makeApiSoapUrlList', () => ({
     ]),
 }));
 
-describe('makeApiDataListProps', () => {
+describe('mapApiDataList', () => {
   beforeEach(() => {
     spyOnConsoleError.mockClear();
   });
@@ -40,20 +40,14 @@ describe('makeApiDataListProps', () => {
   });
 
   it('should transform strapi api data list to api data page props', async () => {
-    const result = await makeApiDataListProps(
-      'it',
-      _.cloneDeep({ data: strapiApiDataList })
-    );
+    const result = await mapApiDataList('it', _.cloneDeep(strapiApiDataList));
     expect(result).toHaveLength(2);
     expect(result[0]).toMatchObject(expectedApiDataPageProps[0]);
     expect(result[1]).toMatchObject(expectedApiDataPageProps[1]);
   });
 
   it('should handle minimal data with missing optional fields', async () => {
-    const result = await makeApiDataListProps(
-      'it',
-      _.cloneDeep({ data: minimalApiDataList() })
-    );
+    const result = await mapApiDataList('it', minimalApiDataList());
     expect(result).toHaveLength(1);
     const firstElement = result[0];
     expect(firstElement.title).toBe('Minimal API Data');
@@ -64,15 +58,15 @@ describe('makeApiDataListProps', () => {
   });
 
   it('should handle empty data array', async () => {
-    const emptyData: StrapiApiDataList = [];
-    const result = await makeApiDataListProps('it', { data: [...emptyData] });
+    const emptyData: ApiDataList = {
+      data: [],
+    };
+    const result = await mapApiDataList('it', emptyData);
     expect(result).toHaveLength(0);
   });
 
   it('should use product banner links when api data banner links are empty', async () => {
-    const result = await makeApiDataListProps('it', {
-      data: apiDataWithoutBannerLinks(),
-    });
+    const result = await mapApiDataList('it', apiDataWithoutBannerLinks());
     const firstElement = result[0];
     expect(firstElement.bannerLinks).toBeDefined();
     expect(firstElement.bannerLinks).toHaveLength(1);
@@ -80,16 +74,15 @@ describe('makeApiDataListProps', () => {
   });
 
   it('should filter out api data without rest or soap details', async () => {
-    const result = await makeApiDataListProps('it', {
-      data: apiDataWithoutApiDetails(),
-    });
+    const result = await mapApiDataList('it', apiDataWithoutApiDetails());
     expect(result).toHaveLength(0);
   });
 
   it('should filter out api data with rest api details with invalid data', async () => {
-    const result = await makeApiDataListProps('it', {
-      data: apiDataWithInvalidRestApiDetails(),
-    });
+    const result = await mapApiDataList(
+      'it',
+      apiDataWithInvalidRestApiDetails()
+    );
     expect(result).toHaveLength(0);
     expect(spyOnConsoleError).toHaveBeenCalledWith(
       expect.stringContaining(
@@ -99,9 +92,7 @@ describe('makeApiDataListProps', () => {
   });
 
   it('should filter out api data with soap api details without slug', async () => {
-    const result = await makeApiDataListProps('it', {
-      data: apiDatalistWithItemMissingSlug(),
-    });
+    const result = await mapApiDataList('it', apiDatalistWithItemMissingSlug());
     expect(result).toHaveLength(0);
     expect(spyOnConsoleError).toHaveBeenCalledWith(
       expect.stringContaining(
@@ -111,9 +102,7 @@ describe('makeApiDataListProps', () => {
   });
 
   it('should handle mixed valid and invalid api data', async () => {
-    const result = await makeApiDataListProps('it', {
-      data: mixedApiDataValidAndInvalid(),
-    });
+    const result = await mapApiDataList('it', mixedApiDataValidAndInvalid());
 
     // Should return only the 3 valid api data items, filtering out invalid ones
     expect(result).toHaveLength(3);
@@ -124,24 +113,21 @@ describe('makeApiDataListProps', () => {
   });
 
   it('should handle api data without banner links and without product banner links', async () => {
-    const result = await makeApiDataListProps('it', {
-      data: apiDataWithoutProductBannerLinks(),
-    });
+    const result = await mapApiDataList(
+      'it',
+      apiDataWithoutProductBannerLinks()
+    );
     expect(result[0].bannerLinks).toEqual([]);
   });
 
   it('should return empty array when all api data are invalid', async () => {
-    const result = await makeApiDataListProps('it', {
-      data: [...allInvalidApiData()],
-    });
+    const result = await mapApiDataList('it', allInvalidApiData());
     expect(result).toHaveLength(0);
     expect(spyOnConsoleError).toHaveBeenCalled();
   });
 
   it('should correctly identify REST API type', async () => {
-    const result = await makeApiDataListProps('it', {
-      data: restApiDataOnly(),
-    });
+    const result = await mapApiDataList('it', restApiDataOnly());
     const firstElement = result[0];
     expect(firstElement.apiType).toBe('rest');
     expect(firstElement.restApiSpecUrls).toHaveLength(1);
@@ -150,9 +136,7 @@ describe('makeApiDataListProps', () => {
   });
 
   it('should correctly identify SOAP API type', async () => {
-    const result = await makeApiDataListProps('it', {
-      data: soapApiDataOnly(),
-    });
+    const result = await mapApiDataList('it', soapApiDataOnly());
     const firstElement = result[0];
     expect(firstElement.apiType).toBe('soap');
     expect(firstElement.restApiSpecUrls).toEqual([]);
@@ -163,9 +147,7 @@ describe('makeApiDataListProps', () => {
   });
 
   it('should prioritize api data banner links over product banner links', async () => {
-    const result = await makeApiDataListProps('it', {
-      data: strapiApiDataList,
-    });
+    const result = await mapApiDataList('it', strapiApiDataList);
     const firstElement = result[0];
     expect(firstElement.bannerLinks).toHaveLength(2);
     expect(firstElement.bannerLinks?.[0].title).toBe('Banner Link 1');
@@ -173,24 +155,18 @@ describe('makeApiDataListProps', () => {
   });
 
   it('should handle api data with product that has undefined banner links', async () => {
-    const result = await makeApiDataListProps('it', {
-      data: minimalApiDataList(),
-    });
+    const result = await mapApiDataList('it', minimalApiDataList());
     expect(result[0].bannerLinks).toBeUndefined();
   });
 
   it('should set correct specUrlsName from title', async () => {
-    const result = await makeApiDataListProps('it', {
-      data: strapiApiDataList,
-    });
+    const result = await mapApiDataList('it', strapiApiDataList);
     expect(result[0].specUrlsName).toBe('SEND Main');
     expect(result[1].specUrlsName).toBe('Documentazione SOAP');
   });
 
   it('should handle REST API with multiple spec URLs', async () => {
-    const result = await makeApiDataListProps('it', {
-      data: restApiDataWithMultipleSpecs(),
-    });
+    const result = await mapApiDataList('it', restApiDataWithMultipleSpecs());
     const firstElement = result[0];
     expect(firstElement.restApiSpecUrls).toHaveLength(2);
     expect(firstElement.restApiSpecUrls[0].name).toBe('API 1');
@@ -198,18 +174,14 @@ describe('makeApiDataListProps', () => {
   });
 
   it('should handle SOAP API and call makeApiSoapUrlList', async () => {
-    const result = await makeApiDataListProps('it', {
-      data: soapApiDataOnly(),
-    });
+    const result = await mapApiDataList('it', soapApiDataOnly());
     expect(result[0].apiSoapUrlList).toEqual([
       { name: 'test.wsdl', url: 'https://example.com/test.wsdl' },
     ]);
   });
 
   it('should handle api data with missing product gracefully', async () => {
-    const result = await makeApiDataListProps('it', {
-      data: apiDataWithMissingProduct(),
-    });
+    const result = await mapApiDataList('it', apiDataWithMissingProduct());
     // Should filter out items with missing product since makeBaseProductWithoutLogoProps would fail
     expect(result).toHaveLength(0);
     expect(spyOnConsoleError).toHaveBeenCalledWith(

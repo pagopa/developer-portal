@@ -1,12 +1,8 @@
 import { StrapiBannerLink } from '@/lib/strapi/types/bannerLink';
 import { StrapiMedia } from '@/lib/strapi/types/media';
-import { StrapiApiDataListPageWithoutProduct } from '@/lib/strapi/types/apiDataListPages';
+import { ApiDataListPageWithoutProduct } from '@/lib/apiDataListPages/types';
 import { Paginated } from '@/lib/strapi/types/paginated';
 import { StrapiTag } from '@/lib/strapi/types/tag';
-
-type Id = {
-  readonly id: number;
-};
 
 export type StrapiBaseProduct = {
   readonly name: string;
@@ -27,7 +23,7 @@ export type StrapiBaseProductWithoutBannerLinks = StrapiBaseProduct & {
 export type StrapiProductRelations = {
   readonly overview?: number;
   readonly quickstart_guide?: number;
-  readonly api_data_list_page?: StrapiApiDataListPageWithoutProduct;
+  readonly api_data_list_page?: ApiDataListPageWithoutProduct;
   readonly tutorial_list_page?: number;
   readonly guide_list_page?: number;
   readonly release_note?: number;
