@@ -1,3 +1,5 @@
+import fetch from "node-fetch";
+
 export async function assertReachable(
   url: string,
   timeoutMs: number,
@@ -37,9 +39,4 @@ export async function assertReachable(
 
 function isCloudflareChallenge(html: string): boolean {
   return /cloudflare|just a moment|verify you are human/i.test(html);
-}
-
-async function fetch(input: any, init?: any): Promise<any> {
-  const { default: nodeFetch } = await import("node-fetch-commonjs");
-  return nodeFetch(input, init);
 }
