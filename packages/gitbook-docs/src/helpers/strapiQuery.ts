@@ -242,12 +242,12 @@ export function getSolutionsQueryString(
     ...solutionsQueryParams,
     ...(dirNames && dirNames.length > 0
       ? {
-        filters: {
-          dirName: {
-            $in: dirNames,
+          filters: {
+            dirName: {
+              $in: dirNames,
+            },
           },
-        },
-      }
+        }
       : {}),
   };
   return qs.stringify(params);
@@ -262,12 +262,12 @@ export function getReleaseNotesQueryString(
     ...releaseNotesQueryParams,
     ...(dirNames && dirNames.length > 0
       ? {
-        filters: {
-          dirName: {
-            $in: dirNames,
+          filters: {
+            dirName: {
+              $in: dirNames,
+            },
           },
-        },
-      }
+        }
       : {}),
   };
   return qs.stringify(params);
