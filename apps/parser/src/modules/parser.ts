@@ -140,7 +140,7 @@ export async function exploreAndParsePages(
   return parsedPages;
 }
 
-async function generatePageParsedMetadata(
+export async function generatePageParsedMetadata(
   browser: Browser,
   url: string,
   baseScope: string,
