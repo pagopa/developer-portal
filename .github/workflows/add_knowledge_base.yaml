@@ -34,6 +34,7 @@ on:
         description: 'Request timeout in milliseconds (optional, default: 10000)'
         required: false
         type: string
+        default: '10000'
 
 permissions:
   contents: read
