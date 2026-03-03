@@ -12,7 +12,7 @@ import PageBackgroundWrapper from '@/components/atoms/PageBackgroundWrapper/Page
 import { SignInOpts } from '@aws-amplify/auth/lib/types';
 import AuthStatus from '@/components/organisms/Auth/AuthStatus';
 import Spinner from '@/components/atoms/Spinner/Spinner';
-import { canRedirectToUrl } from '@/helpers/auth.helpers';
+import { canRedirectToUrl } from '@/helpers/navigation.helpers';
 
 const LoginContent = () => {
   const router = useRouter();
