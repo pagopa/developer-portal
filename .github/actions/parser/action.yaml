@@ -23,19 +23,38 @@ inputs:
 runs:
   using: 'composite'
   steps:
+    - name: Setup Node.JS
+      uses: ./.github/actions/setup-node
+
+    - name: Cache npm dependencies
+      id: cache-npm
+      uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684
+      with:
+        path: ~/.npm
+        key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-npm-
+
+    - name: Install dependencies
+      shell: bash
+      run: |
+        echo "::group::Install dependencies"
+        npm config set cache ~/.npm
+        npm ci
+        echo "::endgroup::"
+
+    - name: Compile packages
+      shell: bash
+      run: |
+        echo "::group::Compile packages"
+        npm run compile
+        echo "::endgroup::"
+
     - name: Configure AWS Credentials
       uses: ./.github/actions/configure-aws-credentials
       with:
         aws_region: eu-south-1
         role_to_assume: ${{ inputs.deploy_iam_role }}
-    
-    - name: Setup Node.js
-      uses: ./.github/actions/setup-node
-    
-    - name: Install dependencies
-      working-directory: apps/parser
-      shell: bash
-      run: npm ci --audit=false --fund=false
 
     - name: Run Parser for each URL
       # env vars docs: https://github.com/pagopa/developer-portal/blob/main/apps/parser/README.md#environment-variables
