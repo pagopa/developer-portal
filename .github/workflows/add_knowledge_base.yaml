@@ -39,8 +39,8 @@ permissions:
   contents: read
 
 jobs:
-  run-parser:
-    name: Run Parser Script (manual on ${{ inputs.environment }})
+  run-parser-and-extractor:
+    name: Run Parser and Extractor (manual on ${{ inputs.environment }})
     runs-on: ubuntu-22.04
     environment: ${{ inputs.environment }}
     
@@ -64,15 +64,5 @@ jobs:
           valid_domain_variants: ${{ inputs.valid_domain_variants }}
           public_parser_request_timeout_ms: ${{ inputs.public_parser_request_timeout_ms }}
   
-  run-extractor:
-    name: Run Extractor Script (manual on ${{ inputs.environment }})
-    needs: run-parser
-    runs-on: ubuntu-22.04
-    environment: ${{ inputs.environment }}
-    
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      
       - name: Run Extractor
         uses: ./.github/actions/extractor
