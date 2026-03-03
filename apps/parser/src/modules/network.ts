@@ -14,6 +14,9 @@ export async function assertReachable(
       signal: controller.signal,
     });
     const text = await res.text();
+    console.log('============ Response Text Start ============');
+    console.log(text);
+    console.log('============ Response Text End ============');
     if (isCloudflareChallenge(text)) {
       console.warn(
         "Cloudflare protection detected, skipping reachability check.",
