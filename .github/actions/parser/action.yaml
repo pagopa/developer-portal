@@ -52,6 +52,12 @@ runs:
         npm run compile
         echo "::endgroup::"
 
+    - name: Configure AWS Credentials
+      uses: ./.github/actions/configure-aws-credentials
+      with:
+        aws_region: eu-south-1
+        role_to_assume: ${{ inputs.deploy_iam_role }}
+
     - name: Run Parser for each URL
       # env vars docs: https://github.com/pagopa/developer-portal/blob/main/apps/parser/README.md#environment-variables
       env:

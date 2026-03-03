@@ -47,6 +47,15 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Print out variables
+        run: |
+          echo "test ${{ vars.CHATBOT_LAMBDA_NAME }}"
+          echo "URLs: ${{ inputs.urls }}"
+          echo "Environment: ${{ inputs.environment }}"
+          echo "Depth: ${{ inputs.depth }}"
+          echo "Valid Domain Variants: ${{ inputs.valid_domain_variants }}"
+          echo "Public Parser Request Timeout (ms): ${{ inputs.public_parser_request_timeout_ms }}"
       
       - name: Run Parser for each URL
         uses: ./.github/actions/parser
