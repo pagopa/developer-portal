@@ -1,2 +1,5 @@
-<!-- Duplicate changeset removed: parser minor bump and manual GitHub action
-     are already covered by another changeset in this PR. -->
+---
+"parser": minor
+---
+
+Apply a minor version bump to the parser package and update related GitHub actions.

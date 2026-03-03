@@ -27,10 +27,13 @@ runs:
         CHB_INDEX_ID: ${{ inputs.parser_vector_index_name }}
         DEPTH: ${{ inputs.depth }}
         VALID_DOMAIN_VARIANTS: ${{ inputs.valid_domain_variants }}
-        PUBLIC_PARSER_REQUEST_TIMEOUT_MS: ${{ inputs.public_parser_request_timeout_ms }}
       working-directory: apps/parser
       shell: bash
       run: |
+        # Conditionally export PUBLIC_PARSER_REQUEST_TIMEOUT_MS only when provided
+        if [ -n "${{ inputs.public_parser_request_timeout_ms }}" ]; then
+          export PUBLIC_PARSER_REQUEST_TIMEOUT_MS="${{ inputs.public_parser_request_timeout_ms }}"
+        fi
         # Split comma-separated URLs and loop sequentially
         failed_urls=()
         IFS=',' read -ra url_array <<< "${{ inputs.urls }}"
