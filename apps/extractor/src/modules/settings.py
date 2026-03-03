@@ -28,7 +28,6 @@ def get_ssm_parameter(name: str | None, default: str | None = None) -> str | Non
         The value of the requested parameter, or the default value if the parameter is not found or if there is an error accessing SSM.
     """
 
-
     if name is None:
         name = "none-params-in-ssm"
     try:
@@ -36,12 +35,12 @@ def get_ssm_parameter(name: str | None, default: str | None = None) -> str | Non
         value = response["Parameter"]["Value"]
     except AWS_SSM_CLIENT.exceptions.ParameterNotFound:
         LOGGER.warning(
-            f"Parameter {name} not found in SSM, returning default"
+            f"Parameter {name} not found in SSM, returning default: {default}"
         )
         return default
     except Exception as e:
         LOGGER.warning(
-            f"Error accessing AWS SSM ({str(e)}), returning default"
+            f"Error accessing AWS SSM ({str(e)}), returning default: {default}"
         )
         return default
     return value
