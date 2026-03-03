@@ -33,14 +33,23 @@ This project uses [Poetry](https://python-poetry.org/) for dependency management
    ```bash
    # AWS Configuration
    AWS_DEFAULT_REGION=eu-south-1
-   
-   # Required
-   # When SHOULD_RUN_LOCALLY=true, use local folders (e.g. input_folder/)
-   # When SHOULD_RUN_LOCALLY=false, use S3 URIs (e.g. s3://my-bucket/input/)
-   EXT_INPUT_FOLDER=s3://my-bucket/input/
-   EXT_OUTPUT_FOLDER=s3://my-bucket/output/
+
    SHOULD_RUN_LOCALLY=false # false to read from and write to s3
-   
+   LOG_LEVEL=info # optional, set to info by default
+
+   # Input and output folder:
+   #
+   # Derive the input folder automatically from the
+   # same URL and index variables used by the parser. The extractor will read
+   # from: {CHB_INDEX_ID}/parser/<sanitized(URL)>  (local)
+   #     or s3://{S3_BUCKET_NAME}/{CHB_INDEX_ID}/parser/<sanitized(URL)>/  (S3)
+   # and write to: {CHB_INDEX_ID}/extractor/<sanitized(URL)>  (local)
+   #     or s3://{S3_BUCKET_NAME}/{CHB_INDEX_ID}/extractor/<sanitized(URL)>/  (S3)
+   URL=https://example.com          # same URL as passed to the parser
+   CHB_INDEX_ID=my-index            # same index as passed to the parser
+   S3_BUCKET_NAME=my-bucket         # required for S3 mode
+
+
    # LLM Configuration (optional, with defaults)
    CHB_MODEL_ID=gemini-2.5-flash-lite
    CHB_MODEL_TEMPERATURE=0.0
@@ -56,7 +65,14 @@ This project uses [Poetry](https://python-poetry.org/) for dependency management
 
 ## Usage
 
-The files to process need to be in the directory specified in the environment variable EXT_INPUT_FOLDER.
+The files to process must be in the input folder. This folder is resolved in
+the following way:
+
+- **Derived from `URL` + `CHB_INDEX_ID`**,
+   the path is computed with the same algorithm the parser uses for its output
+   directory, so both apps stay in sync automatically:
+   - Local: `{CHB_INDEX_ID}/parser/<sanitized(URL)>`
+   - S3: `s3://{S3_BUCKET_NAME}/{CHB_INDEX_ID}/parser/<sanitized(URL)>/`
 
 ### Running
 

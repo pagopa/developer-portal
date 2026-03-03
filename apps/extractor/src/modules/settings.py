@@ -2,10 +2,12 @@ import boto3
 import os
 import yaml
 from pathlib import Path
-from pydantic import Field
+from typing import Optional
+from pydantic import Field, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 from src.modules.logger import get_logger
+from src.helpers.url_handling import compute_app_folder
 
 LOGGER = get_logger(__name__, os.getenv("LOG_LEVEL", "info"))
 
@@ -51,9 +53,19 @@ class ExtractorSettings(BaseSettings):
 
     model_config = SettingsConfigDict(env_prefix="")
 
-    # I/O Configuration
-    input_folder: str = Field(alias="EXT_INPUT_FOLDER")
-    output_folder: str = Field(alias="EXT_OUTPUT_FOLDER")
+    # URL and index settings used to derive input_folder and output_folder
+    url: str = Field(alias="URL")
+    chb_index_id: str = Field(alias="CHB_INDEX_ID")
+    s3_bucket_name: Optional[str] = Field(default=None, alias="S3_BUCKET_NAME")
+
+    # Local run flag
+    should_run_locally: bool = (
+        os.getenv("SHOULD_RUN_LOCALLY", "false").lower() == "true"
+    )
+
+    # I/O Configuration – computed in resolve_folders() after env vars are loaded
+    input_folder: Optional[str] = None
+    output_folder: Optional[str] = None
 
     # Google API Configuration
     google_api_key: str = get_ssm_parameter(
@@ -73,8 +85,31 @@ class ExtractorSettings(BaseSettings):
     # Logging
     log_level: str = os.getenv("LOG_LEVEL", "info")
 
-    # Local run flag
-    should_run_locally: bool = os.getenv("SHOULD_RUN_LOCALLY", "false").lower() == "true"
+    @model_validator(mode="after")
+    def resolve_folders(self) -> "ExtractorSettings":
+        """Compute input_folder and output_folder from URL + CHB_INDEX_ID.
+
+        Called after all fields are populated with real values so that
+        :func:`compute_app_folder` receives strings, not FieldInfo descriptors.
+        """
+        self.input_folder = compute_app_folder(
+            url=self.url,
+            index_id=self.chb_index_id,
+            s3_bucket=self.s3_bucket_name,
+            is_local=self.should_run_locally,
+            app_name="parser",
+        )
+        self.output_folder = compute_app_folder(
+            url=self.url,
+            index_id=self.chb_index_id,
+            s3_bucket=self.s3_bucket_name,
+            is_local=self.should_run_locally,
+            app_name="extractor",
+        )
+        LOGGER.info("Input  folder: %s", self.input_folder)
+        LOGGER.info("Output folder: %s", self.output_folder)
+        return self
+
 
 # Singleton instance
 SETTINGS = ExtractorSettings()
