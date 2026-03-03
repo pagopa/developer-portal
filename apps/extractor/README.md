@@ -38,7 +38,7 @@ This project uses [Poetry](https://python-poetry.org/) for dependency management
    EXT_INPUT_FOLDER=input_folder
    EXT_OUTPUT_FOLDER=output_folder
    
-   # Optional (with defaults)
+   # LLM Configuration (optional, with defaults)
    CHB_MODEL_ID=gemini-2.5-flash-lite
    CHB_MODEL_TEMPERATURE=0.0
    CHB_MODEL_MAXTOKENS=65535
@@ -47,6 +47,9 @@ This project uses [Poetry](https://python-poetry.org/) for dependency management
    # Optional (either of the two needs to be specified if provider is not mock)
    CHB_AWS_GOOGLE_API_KEY=google_api_key
    CHB_AWS_SSM_GOOGLE_API_KEY=/local/google_api_key
+
+   # Logging (optional, default: info)
+   LOG_LEVEL=info
    ```
 
    **Note:** For local testing, set `CHB_AWS_GOOGLE_API_KEY` directly. In production, the app uses AWS SSM Parameter Store via `CHB_AWS_SSM_GOOGLE_API_KEY`.
@@ -58,7 +61,10 @@ The files to process need to be in the directory specified in the environment va
 ### Running
 
 ```bash
-poetry run python -m extractor
+set -a
+source .env
+set +a
+PYTHONPATH=. poetry run python src/main.py
 ```
 
 ### Input Format

@@ -31,12 +31,13 @@ on:
         required: false
         type: string
       public_parser_request_timeout_ms:
-        description: 'Request timeout in milliseconds (optional, default: 10000)'
+        description: 'Request timeout in milliseconds (optional, default: 20000)'
         required: false
         type: string
-        default: '10000'
+        default: '20000'
 
 permissions:
+  id-token: write
   contents: read
 
 jobs:
@@ -58,6 +59,6 @@ jobs:
           depth: ${{ inputs.depth }}
           valid_domain_variants: ${{ inputs.valid_domain_variants }}
           public_parser_request_timeout_ms: ${{ inputs.public_parser_request_timeout_ms }}
-  
+
       - name: Run Extractor
         uses: ./.github/actions/extractor
