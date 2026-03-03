@@ -62,3 +62,9 @@ jobs:
 
       - name: Run Extractor
         uses: ./.github/actions/extractor
+        with:
+          deploy_iam_role: ${{ secrets.DEPLOY_IAM_ROLE }}
+          chb_aws_google_api_key: ${{ secrets.CHB_AWS_GOOGLE_API_KEY }}
+          urls: ${{ inputs.urls }}
+          parser_vector_index_name: ${{ inputs.parser_vector_index_name || secrets.PARSER_VECTOR_INDEX_NAME }}
+          environment: ${{ inputs.environment }}
