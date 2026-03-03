@@ -77,10 +77,10 @@ jobs:
       - name: Chatbot Vector Index
         uses: ./.github/actions/chatbot
         with:
-          api: ${{ github.event.inputs.api && 'true' || 'false'}}
+          api: ${{ github.event.inputs.api }}
           chatbot_lambda_name: ${{ vars.CHATBOT_LAMBDA_NAME }}
-          clean_redis: ${{ github.event.inputs.clean_redis && 'true' || 'false' }}
-          dynamic: ${{ github.event.inputs.dynamic && 'true' || 'false' }}
+          clean_redis: ${{ github.event.inputs.clean_redis }}
+          dynamic: ${{ github.event.inputs.dynamic }}
           index_id: ${{ github.event.inputs.index_id }}
-          static: ${{ github.event.inputs.static && 'true' || 'false' }}
-          structured: ${{ github.event.inputs.structured && 'true' || 'false' }}
+          static: ${{ github.event.inputs.static }}
+          structured: ${{ github.event.inputs.structured }}
