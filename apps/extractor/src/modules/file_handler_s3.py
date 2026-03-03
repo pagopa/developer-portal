@@ -9,9 +9,10 @@ from pydantic import ValidationError
 
 from src.modules.logger import get_logger
 from src.modules.schemas import InputDocument, CleanedDocument
-from src.modules.settings import SETTINGS
+from src.modules.settings import SETTINGS, AWS_SESSION
 
 LOGGER = get_logger(__name__, level=SETTINGS.log_level)
+AWS_S3_CLIENT = AWS_SESSION.client("s3")
 
 
 def parse_s3_path(s3_path: str) -> Tuple[str, str]:
@@ -47,12 +48,11 @@ def load_json_files(input_folder: str) -> List[Tuple[str, InputDocument]]:
     except ValueError as e:
         raise ValueError(f"Invalid S3 input folder: {e}")
 
-    s3_client = boto3.client("s3")
     documents: List[Tuple[str, InputDocument]] = []
 
     try:
         # List all objects with the given prefix
-        paginator = s3_client.get_paginator("list_objects_v2")
+        paginator = AWS_S3_CLIENT.get_paginator("list_objects_v2")
         pages = paginator.paginate(Bucket=bucket, Prefix=key_prefix)
 
         json_files = []
@@ -71,7 +71,7 @@ def load_json_files(input_folder: str) -> List[Tuple[str, InputDocument]]:
             filename = key.split("/")[-1]  # Extract filename from key
             try:
                 # Download file content from S3
-                response = s3_client.get_object(Bucket=bucket, Key=key)
+                response = AWS_S3_CLIENT.get_object(Bucket=bucket, Key=key)
                 content = response["Body"].read().decode("utf-8", errors="replace")
                 data = json.loads(content)
 
@@ -130,7 +130,6 @@ def save_cleaned_document(
         key_prefix += "/"
 
     key = f"{key_prefix}{filename}"
-    s3_client = boto3.client("s3")
 
     try:
         # Convert document to JSON string
@@ -144,7 +143,7 @@ def save_cleaned_document(
             tmp_file_path = tmp_file.name
 
         try:
-            s3_client.upload_file(
+            AWS_S3_CLIENT.upload_file(
                 tmp_file_path,
                 bucket,
                 key,

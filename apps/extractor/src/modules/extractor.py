@@ -31,10 +31,16 @@ def extract_document(
         CleanedDocument if successful, None if parsing fails
     """
 
-    def _escape_braces(value) -> str:
+    def _escape_braces(value: Optional[str]) -> str:
         """
         Ensure that any literal braces in the value are escaped so that
         str.format does not treat them as format placeholders.
+
+        Args:
+            value: The string value to escape
+
+        Returns:
+            The input string with literal braces escaped, or an empty string if the input is None.
         """
         text = "" if value is None else str(value)
         return text.replace("{", "{{").replace("}", "}}")
