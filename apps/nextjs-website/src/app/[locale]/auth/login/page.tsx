@@ -12,6 +12,7 @@ import PageBackgroundWrapper from '@/components/atoms/PageBackgroundWrapper/Page
 import { SignInOpts } from '@aws-amplify/auth/lib/types';
 import AuthStatus from '@/components/organisms/Auth/AuthStatus';
 import Spinner from '@/components/atoms/Spinner/Spinner';
+import { canRedirectToUrl } from '@/helpers/auth.helpers';
 
 const LoginContent = () => {
   const router = useRouter();
@@ -60,8 +61,12 @@ const LoginContent = () => {
     async (code: string) => {
       await Auth.sendCustomChallengeAnswer(user, code);
 
-      const redirect = searchParams.get('redirect');
-      router.replace(redirect ? atob(redirect) : '/');
+      const redirect = atob(searchParams.get('redirect') || '');
+      if (canRedirectToUrl(redirect)) {
+        router.replace(redirect);
+      } else {
+        router.replace('/');
+      }
     },
     [router, searchParams, user]
   );
