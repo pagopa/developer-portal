@@ -67,9 +67,4 @@ runs:
       run: |
         cd apps/chatbot-index
         export CHB_INDEX_ID=${{ inputs.index_id }}
-        echo "include_static=${{ inputs.static }}"
-        echo "include_dynamic=${{ inputs.dynamic }}"
-        echo "include_api=${{ inputs.api }}"
-        echo "include_structured=${{ inputs.structured }}"
-        echo "clean_redis=${{ inputs.clean_redis }}"
         PYTHONPATH=. poetry run python src/modules/create_vector_index.py ${{ inputs.static == 'true' && ' --static' || '' }} ${{ inputs.dynamic == 'true' && ' --dynamic' || '' }} ${{ inputs.api == 'true' && ' --api' || '' }} ${{ inputs.structured == 'true' && ' --structured' || '' }} ${{ inputs.clean_redis == 'true' && ' --clean-redis' || '' }}
