@@ -1,5 +1,0 @@
----
-"extractor": patch
----
-
-Extractor pipeline
