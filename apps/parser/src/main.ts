@@ -7,27 +7,13 @@ import {
   exploreAndParsePages,
   generatePageParsedMetadata,
 } from "./modules/parser";
-import {
-  exploreAndParsePages,
-  generatePageParsedMetadata,
-} from "./modules/parser";
 import { ParsedNode, ParsedMetadata } from "./modules/types";
 import {
   RemoveAnchorsFromUrl,
   buildVisitKey,
   isWithinScope,
 } from "./helpers/url-handling";
-import {
-  RemoveAnchorsFromUrl,
-  buildVisitKey,
-  isWithinScope,
-} from "./helpers/url-handling";
 import { assertReachable } from "./modules/network";
-import {
-  fetchRemoteXml,
-  getSitemapUrl,
-  parseSitemapXml,
-} from "./modules/sitemap-parser";
 import {
   fetchRemoteXml,
   getSitemapUrl,
