@@ -59,6 +59,9 @@ This project uses [Poetry](https://python-poetry.org/) for dependency management
    # Optional (either of the two needs to be specified if provider is not mock)
    CHB_AWS_GOOGLE_API_KEY=google_api_key
    CHB_AWS_SSM_GOOGLE_API_KEY=/local/google_api_key
+
+   # Logging (optional, default: info)
+   LOG_LEVEL=info
    ```
 
    **Note:** For local testing, set `CHB_AWS_GOOGLE_API_KEY` directly. In production, the app uses AWS SSM Parameter Store via `CHB_AWS_SSM_GOOGLE_API_KEY`.
@@ -77,6 +80,10 @@ the following way:
 ### Running
 
 ```bash
+set -a
+source .env
+set +a
+PYTHONPATH=. poetry run python src/main.py
 set -a
 source .env
 set +a
