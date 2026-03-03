@@ -144,6 +144,82 @@ const apisDataQueryParams = {
   ...STRAPI_DEFAULT_PAGINATION,
 };
 
+const guideListPagesPopulate = {
+  populate: {
+    product: {
+      ...productRelationsPopulate,
+    },
+    guidesByCategory: {
+      populate: {
+        guides: {
+          populate: ['mobileImage', 'image', 'listItems'],
+        },
+      },
+    },
+    bannerLinks: {
+      populate: ['*'],
+    },
+    seo: {
+      populate: '*',
+    },
+  },
+};
+
+const guideListPagesQueryParams = {
+  ...guideListPagesPopulate,
+  ...STRAPI_DEFAULT_PAGINATION,
+};
+
+const solutionListPagePopulate = {
+  populate: {
+    solutions: {
+      populate: [
+        'bannerLinks',
+        'products.logo',
+        'icon',
+        'stats',
+        'steps',
+        'steps.products',
+        'webinars',
+        'webinars.coverImage',
+        'caseHistories',
+        'caseHistories.case_histories',
+        'caseHistories.case_histories.image',
+      ],
+    },
+    caseHistories: {
+      populate: ['case_histories', 'case_histories.image'],
+    },
+    features: {
+      populate: ['items.icon'],
+    },
+    seo: {
+      populate: '*',
+    },
+  },
+};
+
+const solutionListPageQueryParams = {
+  ...solutionListPagePopulate,
+  ...STRAPI_DEFAULT_PAGINATION,
+};
+
+export function getGuideListPagesQueryString(locale?: string): string {
+  const params = {
+    locale: locale || 'it',
+    ...guideListPagesQueryParams,
+  };
+  return qs.stringify(params);
+}
+
+export function getSolutionListPageQueryString(locale?: string): string {
+  const params = {
+    locale: locale || 'it',
+    ...solutionListPageQueryParams,
+  };
+  return qs.stringify(params);
+}
+
 /**
  * Generate query strings with optional dirName filtering.
  *
@@ -166,12 +242,12 @@ export function getSolutionsQueryString(
     ...solutionsQueryParams,
     ...(dirNames && dirNames.length > 0
       ? {
-          filters: {
-            dirName: {
-              $in: dirNames,
-            },
+        filters: {
+          dirName: {
+            $in: dirNames,
           },
-        }
+        },
+      }
       : {}),
   };
   return qs.stringify(params);
@@ -186,12 +262,12 @@ export function getReleaseNotesQueryString(
     ...releaseNotesQueryParams,
     ...(dirNames && dirNames.length > 0
       ? {
-          filters: {
-            dirName: {
-              $in: dirNames,
-            },
+        filters: {
+          dirName: {
+            $in: dirNames,
           },
-        }
+        },
+      }
       : {}),
   };
   return qs.stringify(params);
