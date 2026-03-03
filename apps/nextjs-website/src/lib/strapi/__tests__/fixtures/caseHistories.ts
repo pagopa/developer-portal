@@ -1,36 +1,43 @@
-import { StrapiCaseHistory } from '@/lib/strapi/types/caseHistories';
+import { StrapiCaseHistories } from '@/lib/strapi/types/caseHistories';
 import { mediaJpeg } from '@/lib/strapi/__tests__/factories/media';
 import { product } from '@/lib/strapi/__tests__/fixtures/product';
 import { CaseHistoryPageTemplateProps } from '@/components/templates/CaseHistoryTemplate/CaseHistoryPageTemplate';
-import { Paginated } from '@/lib/strapi/types/paginated';
 
-export const strapiCaseHistories: Paginated<StrapiCaseHistory> = {
+export const strapiCaseHistories: StrapiCaseHistories = {
   data: [
     {
       id: 1,
-      slug: 'case-history-title',
-      title: 'Case History Title',
-      description: 'Case history description',
-      publishedAt: '2024-01-01T00:00:00.000Z',
-      updatedAt: '2024-01-02T00:00:00.000Z',
-      image: mediaJpeg(),
-      products: [
-        {
-          ...product,
-          logo: mediaJpeg(),
+      attributes: {
+        slug: 'case-history-title',
+        title: 'Case History Title',
+        description: 'Case history description',
+        publishedAt: '2024-01-01T00:00:00.000Z',
+        updatedAt: '2024-01-02T00:00:00.000Z',
+        image: { data: mediaJpeg() },
+        products: {
+          data: [
+            {
+              attributes: {
+                ...product,
+                logo: {
+                  data: mediaJpeg(),
+                },
+              },
+            },
+          ],
         },
-      ],
-      parts: [
-        {
-          __component: 'parts.code-block',
-          code: 'console.log("Hello World");',
-          language: 'javascript',
-          showLineNumbers: true,
+        parts: [
+          {
+            __component: 'parts.code-block',
+            code: 'console.log("Hello World");',
+            language: 'javascript',
+            showLineNumbers: true,
+          },
+        ],
+        seo: {
+          metaTitle: 'SEO Title',
+          metaDescription: 'SEO Description',
         },
-      ],
-      seo: {
-        metaTitle: 'SEO Title',
-        metaDescription: 'SEO Description',
       },
     },
   ],
@@ -49,12 +56,12 @@ export const caseHistoriesPageTemplateProps: CaseHistoryPageTemplateProps = {
   title: 'Case History Title',
   description: 'Case history description',
   updatedAt: '2024-01-02T00:00:00.000Z',
-  image: mediaJpeg(),
+  image: mediaJpeg().attributes,
   products: [
     {
       name: product.name,
       slug: product.slug,
-      logo: mediaJpeg(),
+      logo: mediaJpeg().attributes,
     },
   ],
   parts: [

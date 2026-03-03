@@ -5,17 +5,20 @@ import { StrapiCaseHistories } from '@/lib/strapi/types/caseHistories';
 const makeStrapiCaseHistoriesPopulate = () =>
   qs.stringify({
     populate: {
-      image: {
-        populate: '*',
-      },
+      image: 'image',
       parts: {
-        populate: '*',
+        populate: [
+          'responseCode',
+          'requestCode',
+          'requestAttributes',
+          'backgroundImage',
+        ],
       },
       products: {
         populate: ['logo'],
       },
       seo: {
-        populate: '*',
+        populate: '*,metaImage,metaSocial.image',
       },
     },
   });

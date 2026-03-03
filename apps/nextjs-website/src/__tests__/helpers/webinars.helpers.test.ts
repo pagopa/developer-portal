@@ -22,7 +22,7 @@ const testWebinar: Webinar = {
     },
     {
       type: 'image',
-      image: mediaRasterJson,
+      image: mediaRasterJson as any,
       children: [
         {
           type: 'text',

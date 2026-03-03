@@ -7,19 +7,21 @@ import { RelatedLinksProps } from '@/components/atoms/RelatedLinks/RelatedLinks'
 import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
 import { StrapiTutorials } from '@/lib/strapi/types/tutorial';
 import { compact } from 'lodash';
+import { makeTagProps } from '@/lib/strapi/makeProps/makeTags';
 
 export type TutorialProps = Tutorial & {
   readonly productSlug: string;
   readonly relatedLinks?: RelatedLinksProps;
   readonly bannerLinks?: readonly BannerLinkProps[];
 };
+
 export function makeTutorialsProps(
+  locale: string,
   strapiTutorials: StrapiTutorials,
   markdownContentDict: Record<string, string>
 ): readonly TutorialProps[] {
   return compact(
-    strapiTutorials.data.map((attributes) => {
-      // Controllo esistenza campi obbligatori minimi
+    strapiTutorials.data.map(({ attributes }) => {
       if (!attributes.slug || !attributes.title) {
         console.error(
           `Error while processing Tutorial: missing title or slug. Title: ${attributes.title} | Slug: ${attributes.slug}. Skipping...`
@@ -27,8 +29,7 @@ export function makeTutorialsProps(
         return null;
       }
 
-      // Controllo esistenza product
-      if (!attributes.product?.slug) {
+      if (!attributes.product.data.attributes.slug) {
         console.error(
           `Error while processing Tutorial with title "${attributes.title}": missing product slug. Skipping...`
         );
@@ -37,47 +38,38 @@ export function makeTutorialsProps(
 
       try {
         return {
-          image: attributes.image
+          image: attributes.image.data
             ? {
-                url: attributes.image.url,
-                alternativeText: attributes.image.alternativeText || '',
+                url: attributes.image.data.attributes.url,
+                alternativeText:
+                  attributes.image.data.attributes.alternativeText || '',
               }
             : undefined,
-
           title: attributes.title,
-
           publishedAt: attributes.publishedAt
             ? new Date(attributes.publishedAt)
             : undefined,
-
           name: attributes.title,
-
-          path: `/${attributes.product.slug}/tutorials/${attributes.slug}`,
-
+          path: `/${locale}/${attributes.product.data.attributes.slug}/tutorials/${attributes.slug}`,
           parts: compact(
-            attributes.parts?.map((part) =>
+            attributes.parts.map((part) =>
               makePartProps(part, markdownContentDict)
-            ) || []
+            )
           ),
-
-          productSlug: attributes.product.slug,
-
+          productSlug: attributes.product.data.attributes.slug,
           description: attributes.description || '',
-
-          icon: attributes.icon || undefined,
-
+          icon: attributes.icon.data?.attributes || undefined,
           relatedLinks: attributes.relatedLinks,
-
           bannerLinks:
             attributes.bannerLinks && attributes.bannerLinks.length > 0
-              ? attributes.bannerLinks.map(makeBannerLinkProps)
-              : attributes.product.bannerLinks?.map(makeBannerLinkProps),
-
+              ? attributes.bannerLinks?.map(makeBannerLinkProps)
+              : attributes.product.data?.attributes.bannerLinks?.map(
+                  makeBannerLinkProps
+                ),
           seo: attributes.seo,
-
-          tags: attributes.tags?.map((tag) => tag) || [],
-
+          tags: attributes.tags.data?.map(makeTagProps) || [],
           updatedAt: attributes.updatedAt,
+          redirectPath: attributes.redirectPath,
         } satisfies TutorialProps;
       } catch (error) {
         console.error(

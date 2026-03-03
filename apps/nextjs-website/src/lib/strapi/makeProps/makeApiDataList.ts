@@ -5,16 +5,19 @@ import { makeBaseProductWithoutLogoProps } from '@/lib/strapi/makeProps/makeProd
 import { makeApiSoapUrlList } from '@/lib/strapi/makeProps/makeApiSoapUrlList';
 import { StrapiApiDataList } from '@/lib/strapi/types/apiDataList';
 import { compact } from 'lodash';
-import { RootEntity } from '@/lib/strapi/types/rootEntity';
 
 export async function makeApiDataListProps(
-  strapiApiDataList: RootEntity<StrapiApiDataList>
+  locale: string,
+  strapiApiDataList: StrapiApiDataList
 ): Promise<ReadonlyArray<ApiDataPageProps>> {
   const list = compact(
     await Promise.all(
       strapiApiDataList.data
-        .filter((apiPage) => apiPage.apiRestDetail || apiPage.apiSoapDetail)
-        .map(async (attributes) => {
+        .filter(
+          (apiPage) =>
+            apiPage.attributes.apiRestDetail || apiPage.attributes.apiSoapDetail
+        )
+        .map(async ({ attributes }) => {
           if (!attributes.apiRestDetail && !attributes.apiSoapDetail) {
             console.error(
               `Error while processing API Data with title "${attributes.title}": missing API details. Skipping...`
@@ -25,14 +28,14 @@ export async function makeApiDataListProps(
             attributes.apiRestDetail?.slug ||
             attributes.apiSoapDetail?.slug ||
             '';
-          if (!apiDataSlug || apiDataSlug.length === 0) {
+          if (!apiDataSlug) {
             console.error(
               `Error while processing API Data with title "${attributes.title}": missing API slug. Skipping...`
             );
             return null;
           }
 
-          if (!attributes.product) {
+          if (!attributes.product.data) {
             console.error(
               `Error while processing API Data with title "${attributes.title}": missing product data. Skipping...`
             );
@@ -41,7 +44,10 @@ export async function makeApiDataListProps(
 
           // eslint-disable-next-line functional/no-try-statements
           try {
-            const product = makeBaseProductWithoutLogoProps(attributes.product);
+            const product = makeBaseProductWithoutLogoProps(
+              locale,
+              attributes.product.data
+            );
             return {
               ...attributes,
               product,
@@ -57,12 +63,17 @@ export async function makeApiDataListProps(
               apiSoapUrl: attributes.apiSoapDetail?.repositoryUrl,
               specUrlsName: attributes.title,
               apiSoapUrlList: attributes.apiSoapDetail
-                ? await makeApiSoapUrlList(attributes.apiSoapDetail.dirName)
+                ? await makeApiSoapUrlList(
+                    locale,
+                    attributes.apiSoapDetail.dirName
+                  )
                 : [],
               bannerLinks:
                 attributes.bannerLinks.length > 0
                   ? attributes.bannerLinks.map(makeBannerLinkProps)
-                  : attributes.product.bannerLinks?.map(makeBannerLinkProps),
+                  : attributes.product.data.attributes.bannerLinks?.map(
+                      makeBannerLinkProps
+                    ),
               seo: attributes.seo,
             } satisfies ApiDataPageProps;
           } catch (error) {

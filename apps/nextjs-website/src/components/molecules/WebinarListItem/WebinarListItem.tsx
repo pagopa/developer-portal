@@ -1,17 +1,19 @@
 import { Box, Grid, Stack, Typography } from '@mui/material';
+import { webinarDateOptions } from '@/config';
 import Image from 'next/image';
 import LinkButton from '@/components/atoms/LinkButton/LinkButton';
 import React from 'react';
 import { Webinar } from '@/lib/types/webinar';
-import { useTranslations } from 'next-intl';
-import { defaultLocale, dateOptions } from '@/config';
+import { useTranslations, useFormatter } from 'next-intl';
 
 type WebinarListItemProps = {
+  locale: string;
   webinar: Webinar;
 };
 
-const WebinarListItem = ({ webinar }: WebinarListItemProps) => {
+const WebinarListItem = ({ locale, webinar }: WebinarListItemProps) => {
   const t = useTranslations();
+  const format = useFormatter();
 
   return (
     <Grid
@@ -44,17 +46,14 @@ const WebinarListItem = ({ webinar }: WebinarListItemProps) => {
           fontWeight={400}
           my={2}
         >
-          {new Date(webinar.startDateTime).toLocaleDateString(
-            defaultLocale,
-            dateOptions
-          )}
+          {format.dateTime(new Date(webinar.startDateTime), webinarDateOptions)}
         </Typography>
       )}
       <Stack justifyContent='space-between' flexGrow={1}>
         <Typography variant='h6'>{webinar.title}</Typography>
         <Box mt={2} color='primary.main'>
           <LinkButton
-            href={`/webinars/${webinar.slug}`}
+            href={`/${locale}/webinars/${webinar.slug}`}
             label={t('webinar.goToWebinar')}
           />
         </Box>

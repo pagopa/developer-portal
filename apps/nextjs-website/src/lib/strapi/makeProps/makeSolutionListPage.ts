@@ -2,20 +2,22 @@
 import { SolutionListTemplateProps } from '@/components/templates/SolutionListTemplate/SolutionListTemplate';
 import { StrapiSolutionListPage } from '@/lib/strapi/types/solutionListPage';
 import { compact } from 'lodash';
-import { RootEntity } from '@/lib/strapi/types/rootEntity';
 
 export function makeSolutionListPageProps(
-  strapiSolutionsList: RootEntity<StrapiSolutionListPage>
+  locale: string,
+  strapiSolutionsList: StrapiSolutionListPage
 ): SolutionListTemplateProps {
-  const strapiSolutionsListData = strapiSolutionsList.data;
+  const {
+    data: { attributes },
+  } = strapiSolutionsList;
   return {
     ...strapiSolutionsList,
     hero: {
-      title: strapiSolutionsListData.title,
-      subtitle: strapiSolutionsListData.description,
+      title: attributes.title,
+      subtitle: attributes.description,
     },
     solutions: compact(
-      strapiSolutionsListData.solutions.map((attributes) => {
+      attributes.solutions.data.map(({ attributes }) => {
         if (!attributes.slug) {
           console.error(
             `Error while processing Solution with title "${attributes.title}": missing slug. Skipping...`
@@ -26,45 +28,43 @@ export function makeSolutionListPageProps(
         return {
           name: attributes.title,
           description: attributes.description,
-          logo: attributes.icon,
+          logo: attributes.icon.data.attributes,
           slug: `solutions/${attributes.slug}`,
-          labels: attributes.products.map((products) => ({
-            label: products.shortName,
-            path: `/${products.slug}`,
+          labels: attributes.products.data.map((products) => ({
+            label: products.attributes.shortName,
+            path: `/${locale}/${products.attributes.slug}`,
           })),
         };
       })
     ),
-    successStories: strapiSolutionsListData.caseHistories && {
-      title: strapiSolutionsListData.caseHistories.title,
-      subtitle: strapiSolutionsListData.caseHistories.description,
+    successStories: attributes.caseHistories && {
+      title: attributes.caseHistories.title,
+      subtitle: attributes.caseHistories.description,
       stories: compact(
-        strapiSolutionsListData.caseHistories.case_histories.map(
-          (caseHistory) => {
-            if (!caseHistory.slug) {
-              console.error(
-                `Error while processing CaseHistory with title "${caseHistory.title}": missing slug. Skipping...`
-              );
-              return null;
-            }
-
-            return {
-              title: caseHistory.title,
-              path: `case-histories/${caseHistory.slug}`,
-              image: caseHistory.image,
-            };
+        attributes.caseHistories.case_histories.data.map((caseHistory) => {
+          if (!caseHistory.attributes.slug) {
+            console.error(
+              `Error while processing CaseHistory with title "${caseHistory.attributes.title}": missing slug. Skipping...`
+            );
+            return null;
           }
-        )
+
+          return {
+            title: caseHistory.attributes.title,
+            path: `/${locale}/case-histories/${caseHistory.attributes.slug}`,
+            image: caseHistory.attributes.image?.data?.attributes,
+          };
+        })
       ),
     },
-    features: strapiSolutionsListData.features && {
-      title: strapiSolutionsListData.features.title,
-      items: strapiSolutionsListData.features.items.map((item) => ({
+    features: attributes.features && {
+      title: attributes.features.title,
+      items: attributes.features.items.map((item) => ({
         title: item.title ?? '',
         content: item.content,
-        iconUrl: item.icon.url,
+        iconUrl: item.icon.data.attributes.url,
       })),
     },
-    seo: strapiSolutionsListData.seo,
+    seo: attributes.seo,
   };
 }

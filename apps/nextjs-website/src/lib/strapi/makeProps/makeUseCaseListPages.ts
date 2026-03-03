@@ -2,16 +2,18 @@
 import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
 import { makeBaseProductWithoutLogoProps } from './makeProducts';
 import { compact } from 'lodash';
+import { makeTagProps } from '@/lib/strapi/makeProps/makeTags';
 import { StrapiUseCaseListPages } from '@/lib/strapi/types/useCaseListPage';
 import { UseCase } from '@/lib/types/useCaseData';
 import { UseCasesPageProps } from '@/app/[locale]/[productSlug]/use-cases/page';
 
 export function makeUseCaseListPagesProps(
+  locale: string,
   strapiUseCaseList: StrapiUseCaseListPages
 ): readonly UseCasesPageProps[] {
   return compact(
-    strapiUseCaseList.data.map((attributes) => {
-      const slug = attributes.product?.slug;
+    strapiUseCaseList.data.map(({ attributes }) => {
+      const slug = attributes.product.data?.attributes.slug;
       if (!slug) {
         // eslint-disable-next-line functional/no-expression-statements
         console.error(
@@ -21,8 +23,8 @@ export function makeUseCaseListPagesProps(
       }
 
       const useCases: readonly UseCase[] = compact(
-        attributes.useCases.map((useCaseAttributes) => {
-          const slug = useCaseAttributes.product?.slug;
+        attributes.useCases.data.map(({ attributes: useCaseAttributes }) => {
+          const slug = useCaseAttributes.product?.data?.attributes?.slug;
           if (!slug) {
             console.error(
               `Error while processing UseCase with title "${useCaseAttributes.title}": missing product slug. Skipping...`
@@ -41,14 +43,14 @@ export function makeUseCaseListPagesProps(
           try {
             return {
               name: useCaseAttributes.title,
-              path: `/${slug}/use-cases/${useCaseAttributes.slug}`,
+              path: `/${locale}/${slug}/use-cases/${useCaseAttributes.slug}`,
               title: useCaseAttributes.title,
               publishedAt: useCaseAttributes.publishedAt
                 ? new Date(useCaseAttributes.publishedAt)
                 : undefined,
               showInOverview: false,
-              coverImage: useCaseAttributes.coverImage,
-              tags: useCaseAttributes.tags?.map((tag) => tag) || [],
+              coverImage: useCaseAttributes.coverImage.data?.attributes,
+              tags: useCaseAttributes.tags.data?.map(makeTagProps) || [],
             } satisfies UseCase;
           } catch (error) {
             // eslint-disable-next-line functional/no-expression-statements
@@ -63,8 +65,11 @@ export function makeUseCaseListPagesProps(
       );
 
       return {
-        path: `/${attributes.product.slug}/use-cases`,
-        product: makeBaseProductWithoutLogoProps(attributes.product),
+        path: `/${locale}/${attributes.product.data.attributes.slug}/use-cases`,
+        product: makeBaseProductWithoutLogoProps(
+          locale,
+          attributes.product.data
+        ),
         abstract: {
           title: attributes.title,
           description: attributes.description,
@@ -76,8 +81,8 @@ export function makeUseCaseListPagesProps(
             ? attributes.bannerLinks.map((bannerLink) =>
                 makeBannerLinkProps(bannerLink)
               )
-            : attributes.product.bannerLinks?.map((bannerLink) =>
-                makeBannerLinkProps(bannerLink)
+            : attributes.product.data.attributes.bannerLinks?.map(
+                (bannerLink) => makeBannerLinkProps(bannerLink)
               ),
         enableFilters: attributes.enableFilters,
       } satisfies UseCasesPageProps;

@@ -6,42 +6,48 @@ import { generateBannerLinks } from '@/lib/strapi/__tests__/factories/bannerLink
 export const strapiTutorials: StrapiTutorials = {
   data: [
     {
-      description: '',
-      icon: mediaJpeg(),
-      tags: [],
-      title: 'Tutorial Title',
-      slug: 'tutorial-title',
-      publishedAt: '2024-01-01T00:00:00.000Z',
-      createdAt: '2024-01-01T00:00:00.000Z',
-      image: mediaJpeg(),
-      locale: 'en-US',
-      product: {
-        ...product,
-        bannerLinks: generateBannerLinks(1),
-      },
-      parts: [
-        {
-          __component: 'parts.code-block',
-          code: 'console.log("Hello World");',
-          language: 'javascript',
-          showLineNumbers: true,
+      attributes: {
+        description: '',
+        icon: { data: mediaJpeg() },
+        tags: { data: [] },
+        title: 'Tutorial Title',
+        slug: 'tutorial-title',
+        publishedAt: '2024-01-01T00:00:00.000Z',
+        createdAt: '2024-01-01T00:00:00.000Z',
+        image: { data: mediaJpeg() },
+        locale: 'en-US',
+        product: {
+          data: {
+            attributes: {
+              ...product,
+              bannerLinks: generateBannerLinks(1),
+            },
+          },
         },
-      ],
-      bannerLinks: generateBannerLinks(1),
-      relatedLinks: {
-        title: 'Related Links',
-        links: [
+        parts: [
           {
-            text: 'Link 1',
-            href: '/link-1',
+            __component: 'parts.code-block',
+            code: 'console.log("Hello World");',
+            language: 'javascript',
+            showLineNumbers: true,
           },
         ],
+        bannerLinks: generateBannerLinks(1),
+        relatedLinks: {
+          title: 'Related Links',
+          links: [
+            {
+              text: 'Link 1',
+              href: '/link-1',
+            },
+          ],
+        },
+        seo: {
+          metaTitle: 'SEO Title',
+          metaDescription: 'SEO Description',
+        },
+        updatedAt: '2024-01-02T00:00:00.000Z',
       },
-      seo: {
-        metaTitle: 'SEO Title',
-        metaDescription: 'SEO Description',
-      },
-      updatedAt: '2024-01-02T00:00:00.000Z',
     },
   ],
   meta: {

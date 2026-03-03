@@ -17,7 +17,7 @@ const makeStrapiQuickStartGuidesPopulate = () =>
         populate: ['icon'],
       },
       seo: {
-        populate: '*',
+        populate: '*,metaImage,metaSocial.image',
       },
     },
   });

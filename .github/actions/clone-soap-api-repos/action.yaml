@@ -11,6 +11,10 @@ inputs:
   strapi-api-token:
     description: Strapi API token
     required: true
+  locale:
+    description: 'Locale to sync to (e.g. "it"). Leave empty for root.'
+    required: false
+    default: ''
 
 runs:
   using: "composite"
@@ -33,6 +37,7 @@ runs:
         OUTPUT_DIR: __soap_tmp_output__
         STRAPI_ENDPOINT: ${{ inputs.strapi-endpoint }}
         STRAPI_API_TOKEN: ${{ inputs.strapi-api-token }}
+        LOCALE: ${{ inputs.locale }}
       run: |
         echo "Running generate-soap-api-repositories-list..."
         npm run generate-soap-api-repositories-list -w soap-api-data

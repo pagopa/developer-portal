@@ -121,7 +121,9 @@ describe('parseContent', () => {
         config
       )
     ).toStrictEqual([
-      new Markdoc.Tag('Paragraph', {}, ['pre middle', ' ', ' post']),
+      new Markdoc.Tag('Paragraph', {}, ['pre']),
+      new Markdoc.Tag('Paragraph', {}, ['middle']),
+      new Markdoc.Tag('Paragraph', {}, ['post']),
     ]);
   });
 
@@ -132,9 +134,11 @@ describe('parseContent', () => {
         config
       )
     ).toStrictEqual([
-      new Markdoc.Tag('Paragraph', {}, ['pre This is a test']),
+      new Markdoc.Tag('Paragraph', {}, ['pre']),
+      new Markdoc.Tag('Paragraph', {}, ['This is a test']),
       new Markdoc.Tag('Paragraph', {}, ['test test']),
-      new Markdoc.Tag('Paragraph', {}, ['test', ' ', ' post']),
+      new Markdoc.Tag('Paragraph', {}, ['test']),
+      new Markdoc.Tag('Paragraph', {}, ['post']),
     ]);
   });
 
@@ -274,6 +278,69 @@ describe('parseContent', () => {
       new Markdoc.Tag('Heading', { level: 2, id: 'ideare-un-servizio' }, [
         '🧑‍💻Ideare un servizio',
       ]),
+    ]);
+  });
+
+  it('should parse content-ref and convert to links', () => {
+    expect(
+      parseContent(
+        `{% content-ref url="/en/pootm/guides/night-guide/1.3/what-is-sign-with-io" %}
+        [what-is-sign-with-io.md](/en/pootm/guides/night-guide/1.3/what-is-sign-with-io)
+        {% endcontent-ref %}`,
+        config
+      )
+    ).toStrictEqual([
+      new Markdoc.Tag(
+        'PageLink',
+        { url: '/en/pootm/guides/night-guide/1.3/what-is-sign-with-io' },
+        ['what-is-sign-with-io.md']
+      ),
+    ]);
+  });
+
+  it('should parse content-ref that opens and closes in a single line and convert to a link', () => {
+    expect(
+      parseContent(
+        '{% content-ref url="/en/pootm/guides/night-guide/1.3/what-is-sign-with-io" %} [what-is-sign-with-io.md](/en/pootm/guides/night-guide/1.3/what-is-sign-with-io) {% endcontent-ref %}',
+        config
+      )
+    ).toStrictEqual([
+      new Markdoc.Tag(
+        'PageLink',
+        { url: '/en/pootm/guides/night-guide/1.3/what-is-sign-with-io' },
+        ['what-is-sign-with-io.md']
+      ),
+    ]);
+  });
+
+  it('should parse multiple content-ref that opens and closes in a single line and convert to a link', () => {
+    expect(
+      parseContent(
+        `{% content-ref url="/en/pootm/guides/night-guide/1.3/the-signature-process/prepare-the-documents" %} [prepare-the-documents](/en/pootm/guides/night-guide/1.3/the-signature-process/prepare-the-documents) {% endcontent-ref %}
+        {% content-ref url="/en/pootm/guides/night-guide/1.3/request-a-signature" %} [request-a-signature](/en/pootm/guides/night-guide/1.3/request-a-signature) {% endcontent-ref %}
+        {% content-ref url="verify-the-status-of-a-signature.md" %} [verify-the-status-of-a-signature.md](verify-the-status-of-a-signature.md) {% endcontent-ref %}`,
+        config
+      )
+    ).toStrictEqual([
+      new Markdoc.Tag(
+        'PageLink',
+        {
+          url: '/en/pootm/guides/night-guide/1.3/the-signature-process/prepare-the-documents',
+        },
+        ['prepare-the-documents']
+      ),
+      new Markdoc.Tag(
+        'PageLink',
+        { url: '/en/pootm/guides/night-guide/1.3/request-a-signature' },
+        ['request-a-signature']
+      ),
+      new Markdoc.Tag(
+        'PageLink',
+        {
+          url: 'verify-the-status-of-a-signature.md',
+        },
+        ['verify-the-status-of-a-signature.md']
+      ),
     ]);
   });
 

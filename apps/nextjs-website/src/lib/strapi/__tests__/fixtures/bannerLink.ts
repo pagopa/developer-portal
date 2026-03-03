@@ -17,7 +17,9 @@ export const strapiBannerLink: StrapiBannerLink = {
     },
   ],
   theme: 'light',
-  icon: mediaJpeg(),
+  icon: {
+    data: mediaJpeg(),
+  },
 };
 
 export const expectedBannerLinkProps: BannerLinkProps = {

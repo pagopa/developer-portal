@@ -7,14 +7,18 @@ export function useCasesWithAnItemMissingSlug(): StrapiUseCases {
     ...strapiUseCases,
     data: [
       {
-        ...strapiUseCases.data[0],
-        title: 'UseCase Without Slug',
-        slug: undefined as any,
+        attributes: {
+          ...strapiUseCases.data[0].attributes,
+          title: 'UseCase Without Slug',
+          slug: undefined as any,
+        },
       },
       {
-        ...strapiUseCases.data[0],
-        title: 'Valid UseCase',
-        slug: 'valid-use-case',
+        attributes: {
+          ...strapiUseCases.data[0].attributes,
+          title: 'Valid UseCase',
+          slug: 'valid-use-case',
+        },
       },
     ],
   };
@@ -25,23 +29,35 @@ export function useCasesWithAnItemMissingProductSlug(): StrapiUseCases {
     ...strapiUseCases,
     data: [
       {
-        ...strapiUseCases.data[0],
-        title: 'UseCase Without Product Slug',
-        slug: 'use-case-without-product-slug',
-        product: {
-          ...strapiUseCases.data[0].product!,
-          name: 'Product Without Slug',
-          slug: undefined as any,
+        attributes: {
+          ...strapiUseCases.data[0].attributes,
+          title: 'UseCase Without Product Slug',
+          slug: 'use-case-without-product-slug',
+          product: {
+            data: {
+              attributes: {
+                ...strapiUseCases.data[0].attributes.product.data.attributes,
+                name: 'Product Without Slug',
+                slug: undefined as any,
+              },
+            },
+          },
         },
       },
       {
-        ...strapiUseCases.data[0],
-        title: 'Valid UseCase',
-        slug: 'valid-use-case',
-        product: {
-          ...strapiUseCases.data[0].product!,
-          name: 'Valid Product',
-          slug: 'valid-product',
+        attributes: {
+          ...strapiUseCases.data[0].attributes,
+          title: 'Valid UseCase',
+          slug: 'valid-use-case',
+          product: {
+            data: {
+              attributes: {
+                ...strapiUseCases.data[0].attributes.product.data.attributes,
+                name: 'Valid Product',
+                slug: 'valid-product',
+              },
+            },
+          },
         },
       },
     ],
@@ -54,17 +70,19 @@ export function minimalDataUseCases() {
     ...strapiUseCases,
     data: [
       {
-        ...strapiUseCase,
-        title: 'Minimal Data UseCase',
-        subtitle: 'Minimal Data UseCase Subtitle',
-        slug: 'minimal-data-use-case',
-        publishedAt: '2023-01-01T00:00:00Z',
-        locale: 'en-US',
-        parts: [],
-        relatedLinks: undefined,
-        seo: undefined,
-        coverImage: undefined,
-        headerImage: undefined,
+        attributes: {
+          ...strapiUseCase.attributes,
+          title: 'Minimal Data UseCase',
+          subtitle: 'Minimal Data UseCase Subtitle',
+          slug: 'minimal-data-use-case',
+          publishedAt: '2023-01-01T00:00:00Z',
+          locale: 'en-US',
+          parts: [],
+          relatedLinks: undefined,
+          seo: undefined,
+          coverImage: { data: undefined },
+          headerImage: { data: undefined },
+        },
       },
     ],
   } satisfies StrapiUseCases;
@@ -73,14 +91,16 @@ export function minimalDataUseCases() {
 export function useCasesWithItemMissingData() {
   const strapiUseCase = strapiUseCases.data[0];
   return {
-    ...strapiUseCases,
+    strapiUseCases,
     data: [
       {
-        ...strapiUseCase,
-        title: undefined,
-        slug: undefined,
-        publishedAt: undefined,
-        locale: undefined,
+        attributes: {
+          ...strapiUseCase.attributes,
+          title: undefined,
+          slug: undefined,
+          publishedAt: undefined,
+          locale: undefined,
+        },
       },
     ],
   };
@@ -93,7 +113,10 @@ export function useCasesWithItemMissingMandatoryData() {
     data: [
       {
         ...useCase,
-        product: undefined,
+        attributes: {
+          ...useCase.attributes,
+          product: { data: undefined },
+        },
       },
     ],
   };

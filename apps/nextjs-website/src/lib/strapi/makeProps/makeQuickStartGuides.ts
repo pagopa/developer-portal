@@ -17,18 +17,19 @@ function makeStepFromQuickstartGuideItems(
   item: StrapiQuickStartGuideItem
 ): Step {
   return {
-    anchor: item.anchor,
-    title: item.title,
-    parts: compact(item.parts.map((part) => makePartProps(part))),
+    anchor: item.attributes.anchor,
+    title: item.attributes.title,
+    parts: compact(item.attributes.parts.map((part) => makePartProps(part))),
   };
 }
 
 export function makeQuickStartGuidesProps(
+  locale: string,
   strapiQuickStarts: StrapiQuickStartGuides
 ): QuickStartGuidesPageProps {
   return compact(
     strapiQuickStarts.data.map((quickStart) => {
-      if (!quickStart.product?.slug) {
+      if (!quickStart.attributes.product.data?.attributes.slug) {
         console.error(
           `Error while processing QuickStartGuide with id ${quickStart.id}: missing product slug. Skipping...`
         );
@@ -38,21 +39,28 @@ export function makeQuickStartGuidesProps(
       try {
         return {
           abstract: {
-            title: quickStart.title,
-            description: quickStart.description,
+            title: quickStart.attributes.title,
+            description: quickStart.attributes.description,
           },
-          updatedAt: quickStart.updatedAt,
-          defaultStepAnchor: quickStart.quickstartGuideItems[0].anchor,
-          product: makeBaseProductWithoutLogoProps(quickStart.product),
-          steps: quickStart.quickstartGuideItems.map((item) =>
+          updatedAt: quickStart.attributes.updatedAt,
+          defaultStepAnchor:
+            quickStart.attributes.quickstartGuideItems.data[0].attributes
+              .anchor,
+          product: makeBaseProductWithoutLogoProps(
+            locale,
+            quickStart.attributes.product.data
+          ),
+          steps: quickStart.attributes.quickstartGuideItems.data.map((item) =>
             makeStepFromQuickstartGuideItems(item)
           ),
-          path: `/${quickStart.product.slug}/quick-start`,
+          path: `/${locale}/${quickStart.attributes.product.data.attributes.slug}/quick-start`,
           bannerLinks:
-            quickStart.bannerLinks.length > 0
-              ? quickStart.bannerLinks.map(makeBannerLinkProps)
-              : quickStart.product.bannerLinks?.map(makeBannerLinkProps),
-          seo: quickStart.seo,
+            quickStart.attributes.bannerLinks.length > 0
+              ? quickStart.attributes.bannerLinks.map(makeBannerLinkProps)
+              : quickStart.attributes.product.data.attributes.bannerLinks?.map(
+                  makeBannerLinkProps
+                ),
+          seo: quickStart.attributes.seo,
         } satisfies QuickStartGuidePageProps;
       } catch (error) {
         console.error(

@@ -10,10 +10,18 @@ const makeUrlToGuideItem = (
   url: 'source-url',
   subPath: 'sub',
   guide: {
-    title: 'Guide title',
-    slug: 'guide-slug',
-    product: {
-      slug: 'product-slug',
+    data: {
+      attributes: {
+        title: 'Guide title',
+        slug: 'guide-slug',
+        product: {
+          data: {
+            attributes: {
+              slug: 'product-slug',
+            },
+          },
+        },
+      },
     },
   },
   ...overrides,
@@ -22,25 +30,41 @@ const makeUrlToGuideItem = (
 export const urlReplaceMapSingle = (
   overrides?: Partial<StrapiUrlToGuide>
 ): StrapiUrlReplaceMap => ({
-  urlToGuide: [makeUrlToGuideItem(overrides)],
+  data: {
+    attributes: {
+      urlToGuide: [makeUrlToGuideItem(overrides)],
+    },
+  },
 });
 
 export const urlReplaceMapMultiple = (): StrapiUrlReplaceMap => ({
-  urlToGuide: [
-    makeUrlToGuideItem({ id: 1, url: 'a', subPath: undefined }),
-    makeUrlToGuideItem({
-      id: 2,
-      url: 'b',
-      subPath: 'x',
-      guide: {
-        title: 'T',
-        slug: 's-2',
-        product: { slug: 'p-2' },
-      },
-    }),
-  ],
+  data: {
+    attributes: {
+      urlToGuide: [
+        makeUrlToGuideItem({ id: 1, url: 'a', subPath: undefined }),
+        makeUrlToGuideItem({
+          id: 2,
+          url: 'b',
+          subPath: 'x',
+          guide: {
+            data: {
+              attributes: {
+                title: 'T',
+                slug: 's-2',
+                product: { data: { attributes: { slug: 'p-2' } } },
+              },
+            },
+          },
+        }),
+      ],
+    },
+  },
 });
 
 export const urlReplaceMapWithUndefinedGuide = (): StrapiUrlReplaceMap => ({
-  urlToGuide: [makeUrlToGuideItem({ guide: undefined })],
+  data: {
+    attributes: {
+      urlToGuide: [makeUrlToGuideItem({ guide: { data: undefined } })],
+    },
+  },
 });

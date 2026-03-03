@@ -12,6 +12,7 @@ CWF = Path(__file__)
 ROOT = CWF.parent.parent.parent.absolute().__str__()
 PARAMS = yaml.safe_load(open(os.path.join(ROOT, "config", "params.yaml"), "r"))
 AWS_SESSION = boto3.Session()
+AWS_SSM_CLIENT = AWS_SESSION.client("ssm")
 
 
 def get_ssm_parameter(name: str | None, default: str | None = None) -> str | None:
@@ -23,15 +24,12 @@ def get_ssm_parameter(name: str | None, default: str | None = None) -> str | Non
     :return: The value of the requested parameter.
     """
 
-    ssm_client = AWS_SESSION.client("ssm")
-    LOGGER.info(f"get_ssm_parameter {name}...")
-
     if name is None:
         name = "none-params-in-ssm"
     try:
-        response = ssm_client.get_parameter(Name=name, WithDecryption=True)
+        response = AWS_SSM_CLIENT.get_parameter(Name=name, WithDecryption=True)
         value = response["Parameter"]["Value"]
-    except ssm_client.exceptions.ParameterNotFound:
+    except AWS_SSM_CLIENT.exceptions.ParameterNotFound:
         LOGGER.warning(
             f"Parameter {name} not found in SSM, returning default: {default}"
         )
@@ -74,6 +72,9 @@ class ChatbotSettings(BaseSettings):
     # urls
     redis_url: str = os.getenv("CHB_REDIS_URL")
     website_url: str = os.getenv("CHB_WEBSITE_URL")
+
+    # other
+    language_code: str = os.getenv("CHB_LANGUAGE_CODE_STATIC_FILES", "it")
 
 
 SETTINGS = ChatbotSettings()

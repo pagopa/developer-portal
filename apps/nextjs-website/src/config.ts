@@ -137,3 +137,44 @@ export const signUpAdvantages = [
 
 export const SITE_HEADER_HEIGHT = 48;
 export const PRODUCT_HEADER_HEIGHT = 77;
+
+export const webinarDateOptions = {
+  day: '2-digit',
+  month: '2-digit',
+  year: 'numeric',
+} as const;
+
+export const longDateOptions = {
+  day: '2-digit',
+  month: 'long',
+  year: 'numeric',
+} as const;
+
+export const timeSlotDateOptions = {
+  day: '2-digit',
+  month: 'long',
+  year: 'numeric',
+  hour: 'numeric',
+  minute: 'numeric',
+} as const;
+
+export const timeSlotTimeOptions = {
+  hour: 'numeric',
+  minute: 'numeric',
+} as const;
+
+export const chatTimeOptions = {
+  timeStyle: 'short',
+  hourCycle: 'h23',
+} as const;
+
+export const chatbotListDateOptions = {
+  day: 'numeric',
+  month: 'numeric',
+  year: 'numeric',
+} as const;
+
+export const chatbotHeaderDateOptions = {
+  month: 'long',
+  year: 'numeric',
+} as const;

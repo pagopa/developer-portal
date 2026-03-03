@@ -16,8 +16,9 @@ const makeStrapiTutorialListPagePopulate = () =>
         populate: ['icon'],
       },
       seo: {
-        populate: '*',
+        populate: '*,metaImage,metaSocial.image',
       },
+      enableFilters: true,
     },
   });
 

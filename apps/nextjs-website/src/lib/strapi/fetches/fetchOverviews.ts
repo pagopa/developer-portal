@@ -6,9 +6,7 @@ import { StrapiOverviews } from '@/lib/strapi/types/overviews';
 const makeStrapiOverviewsPopulate = () =>
   qs.stringify({
     populate: {
-      backgroundImage: {
-        populate: '*',
-      },
+      backgroundImage: '*',
       product: {
         ...productRelationsPopulate,
       },
@@ -28,7 +26,7 @@ const makeStrapiOverviewsPopulate = () =>
         populate: ['useCases.coverImage', 'useCases.product'],
       },
       seo: {
-        populate: '*',
+        populate: '*,metaImage,metaSocial.image',
       },
       postIntegration: {
         populate: [

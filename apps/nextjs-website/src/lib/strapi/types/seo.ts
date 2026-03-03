@@ -18,7 +18,9 @@ export type StrapiSeo = Partial<{
   readonly metaRobots: string;
   readonly metaViewport: string;
   readonly canonicalURL: string;
-  readonly metaImage?: Partial<StrapiMedia>;
+  readonly metaImage: {
+    readonly data?: Partial<StrapiMedia>;
+  };
   readonly metaSocial: ReadonlyArray<SeoMediaSocial>;
   readonly structuredData: unknown;
 }>;

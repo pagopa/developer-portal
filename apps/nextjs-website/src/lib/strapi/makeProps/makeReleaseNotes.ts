@@ -7,11 +7,12 @@ import { StrapiReleaseNotes } from '@/lib/strapi/types/releaseNotes';
 import { compact } from 'lodash';
 
 export function makeReleaseNotesProps(
+  locale: string,
   strapiReleaseNotes: StrapiReleaseNotes
 ): ReadonlyArray<ReleaseNotePageProps> {
   return compact(
-    strapiReleaseNotes.data.map((attributes) => {
-      if (!attributes.product?.slug) {
+    strapiReleaseNotes.data.map(({ attributes }) => {
+      if (!attributes.product.data?.attributes.slug) {
         console.error(
           `Error while processing ReleaseNote with title "${attributes.title}": missing product slug. Skipping...`
         );
@@ -23,11 +24,16 @@ export function makeReleaseNotesProps(
           bannerLinks:
             attributes.bannerLinks.length > 0
               ? attributes.bannerLinks.map(makeBannerLinkProps)
-              : attributes.product?.bannerLinks?.map(makeBannerLinkProps),
+              : attributes.product.data?.attributes.bannerLinks?.map(
+                  makeBannerLinkProps
+                ),
           dirName: attributes.dirName,
           landingFile: attributes.landingFile,
-          path: `/${attributes.product?.slug}/release-note`,
-          product: makeBaseProductWithoutLogoProps(attributes.product),
+          path: `/${locale}/${attributes.product.data?.attributes.slug}/release-note`,
+          product: makeBaseProductWithoutLogoProps(
+            locale,
+            attributes.product.data
+          ),
           seo: attributes.seo,
           title: attributes.title,
         };

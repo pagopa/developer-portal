@@ -6,16 +6,22 @@ import { Paginated } from './paginated';
 
 export type StrapiGuideListPage = {
   readonly id: number;
-  readonly title: string;
-  readonly description: string;
-  readonly product?: StrapiBaseProductWithRelations;
-  readonly guidesByCategory: ReadonlyArray<{
-    readonly category: string;
-    readonly guides: ReadonlyArray<StrapiBaseGuide>;
-  }>;
-  readonly bannerLinks: ReadonlyArray<StrapiBannerLink>;
-  readonly seo?: StrapiSeo;
-  readonly updatedAt: string;
+  readonly attributes: {
+    readonly title: string;
+    readonly description: string;
+    readonly product: {
+      readonly data?: StrapiBaseProductWithRelations;
+    };
+    readonly guidesByCategory: ReadonlyArray<{
+      readonly category: string;
+      readonly guides: {
+        readonly data: ReadonlyArray<StrapiBaseGuide>;
+      };
+    }>;
+    readonly bannerLinks: ReadonlyArray<StrapiBannerLink>;
+    readonly seo?: StrapiSeo;
+    readonly updatedAt: string;
+  };
 };
 
 export type StrapiGuideListPages = Paginated<StrapiGuideListPage>;

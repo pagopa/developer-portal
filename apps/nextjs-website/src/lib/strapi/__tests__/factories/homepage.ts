@@ -3,48 +3,78 @@ import { StrapiHomepage } from '@/lib/strapi/types/homepage';
 
 export function minimalDataHomepage() {
   return {
-    updatedAt: new Date().toISOString(),
-    comingsoonDocumentation: {
-      title: 'Minimal Documentation',
-      links: [],
-    },
-    heroSlider: [
-      {
-        title: 'Minimal Hero',
-        backgroundImage: undefined,
+    data: {
+      attributes: {
+        updatedAt: Date.now().toString(),
+        comingsoonDocumentation: {
+          title: 'Minimal Documentation',
+          links: [],
+        },
+        heroSlider: [
+          {
+            title: 'Minimal Hero',
+            backgroundImage: { data: undefined },
+          },
+        ],
+        newsShowcase: undefined,
+        ecosystem: undefined,
+        webinars: { data: [] },
+        seo: undefined,
       },
-    ],
-    newsShowcase: undefined,
-    ecosystem: undefined,
-    webinars: [],
-    seo: undefined,
+    },
   } satisfies StrapiHomepage;
 }
 
 export function homepageWithoutNewsShowcase() {
   return {
     ...strapiHomepage,
-    newsShowcase: undefined,
+    data: {
+      ...strapiHomepage.data,
+      attributes: {
+        ...strapiHomepage.data.attributes,
+        newsShowcase: undefined,
+      },
+    },
   } satisfies StrapiHomepage;
 }
 
 export function homepageWithoutEcosystem() {
   return {
     ...strapiHomepage,
-    ecosystem: undefined,
+    data: {
+      ...strapiHomepage.data,
+      attributes: {
+        ...strapiHomepage.data.attributes,
+        ecosystem: undefined,
+      },
+    },
   } satisfies StrapiHomepage;
 }
 
 export function homepageWithoutWebinars() {
   return {
     ...strapiHomepage,
-    webinars: [],
+    data: {
+      ...strapiHomepage.data,
+      attributes: {
+        ...strapiHomepage.data.attributes,
+        webinars: {
+          data: [],
+        },
+      },
+    },
   } satisfies StrapiHomepage;
 }
 
 export function homepageWithoutSeo() {
   return {
     ...strapiHomepage,
-    seo: undefined,
+    data: {
+      ...strapiHomepage.data,
+      attributes: {
+        ...strapiHomepage.data.attributes,
+        seo: undefined,
+      },
+    },
   } satisfies StrapiHomepage;
 }

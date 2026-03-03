@@ -8,12 +8,13 @@ import { compact } from 'lodash';
 import { UseCase } from '../../types/useCaseData';
 
 export function makeOverviewsProps(
+  locale: string,
   strapiOverviews: StrapiOverviews
 ): ReadonlyArray<OverviewPageProps> {
   return compact(
-    strapiOverviews.data.map((attributes) => {
-      const productData = attributes.product;
-      if (!productData.slug) {
+    strapiOverviews.data.map(({ attributes }) => {
+      const productData = attributes.product.data;
+      if (!productData.attributes.slug) {
         console.error(
           `Error while processing Overview with title "${attributes.title}": missing product slug. Skipping...`
         );
@@ -23,11 +24,15 @@ export function makeOverviewsProps(
       try {
         return {
           updatedAt: attributes.updatedAt,
-          path: `/${attributes.product?.slug}/overview`,
-          product: makeBaseProductWithoutLogoProps(attributes.product),
+          path: `/${locale}/${attributes.product.data?.attributes.slug}/overview`,
+          product: makeBaseProductWithoutLogoProps(
+            locale,
+            attributes.product.data
+          ),
           hero: {
-            backgroundImage: attributes.backgroundImage.url,
-            altText: attributes.backgroundImage.alternativeText || '',
+            backgroundImage: attributes.backgroundImage.data.attributes.url,
+            altText:
+              attributes.backgroundImage.data.attributes.alternativeText || '',
             title: attributes.title,
             subtitle: attributes.subtitle,
           },
@@ -36,7 +41,7 @@ export function makeOverviewsProps(
             subtitle: attributes.features.subtitle,
             items:
               attributes.features.items.map((item) => ({
-                iconUrl: item.icon?.url,
+                iconUrl: item.icon.data?.attributes.url,
                 content: item.content,
                 title: item.title || '',
               })) || [],
@@ -54,7 +59,7 @@ export function makeOverviewsProps(
                 text: item.description,
                 href: item.path,
                 useSrc: true,
-                iconName: item.icon.url,
+                iconName: item.icon.data.attributes.url,
               })) || [],
           },
           tutorials: attributes.tutorialSection && {
@@ -63,31 +68,36 @@ export function makeOverviewsProps(
             showCardsLayout: attributes.tutorialSection.showCardsLayout,
             list:
               compact(
-                attributes.tutorialSection.tutorials.map((tutorial) => {
-                  if (!tutorial.slug) {
-                    console.error('tutorial slug is missing:', tutorial.title);
+                attributes.tutorialSection.tutorials.data.map((tutorial) => {
+                  if (!tutorial.attributes.slug) {
+                    console.error(
+                      'tutorial slug is missing:',
+                      tutorial.attributes.title
+                    );
                     return null;
                   }
 
-                  if (!tutorial.product?.slug) {
+                  if (!tutorial.attributes.product.data.attributes.slug) {
                     console.error(
                       "tutorial's product slug is missing:",
-                      tutorial.title
+                      tutorial.attributes.title
                     );
                     return null;
                   }
                   return {
-                    icon: tutorial.icon,
-                    description: tutorial.description,
+                    updatedAt: tutorial.attributes.updatedAt,
+                    icon: tutorial.attributes.icon.data?.attributes,
+                    description: tutorial.attributes.description,
                     showInOverview: true,
-                    updatedAt: tutorial.updatedAt,
-                    image: tutorial.image && {
-                      url: tutorial.image.url,
-                      alternativeText: tutorial.image.alternativeText || '',
+                    image: tutorial.attributes.image.data && {
+                      url: tutorial.attributes.image.data.attributes.url,
+                      alternativeText:
+                        tutorial.attributes.image.data.attributes
+                          .alternativeText || '',
                     },
-                    title: tutorial.title,
+                    title: tutorial.attributes.title,
                     name: 'shared.moreInfo',
-                    path: `/${tutorial.product.slug}/tutorials/${tutorial.slug}`,
+                    path: `/${locale}/${tutorial.attributes.product.data.attributes.slug}/tutorials/${tutorial.attributes.slug}`,
                   };
                 })
               ) || [],
@@ -97,32 +107,38 @@ export function makeOverviewsProps(
             description: attributes.useCaseSection.description,
             list:
               compact(
-                attributes.useCaseSection.useCases.map((useCase) => {
-                  if (!useCase.slug) {
-                    console.error('use case slug is missing:', useCase.title);
+                attributes.useCaseSection.useCases.data.map((useCase) => {
+                  if (!useCase.attributes.slug) {
+                    console.error(
+                      'use case slug is missing:',
+                      useCase.attributes.title
+                    );
                     return null;
                   }
 
-                  if (!useCase.product.slug) {
+                  if (!useCase.attributes.product.data.attributes.slug) {
                     console.error(
                       "use case's product slug is missing:",
-                      useCase.title
+                      useCase.attributes.title
                     );
                     return null;
                   }
 
                   return {
                     publishedAt:
-                      (useCase.publishedAt && new Date(useCase.publishedAt)) ||
+                      (useCase.attributes.publishedAt &&
+                        new Date(useCase.attributes.publishedAt)) ||
                       undefined,
                     showInOverview: true,
-                    coverImage: useCase.coverImage && {
-                      url: useCase.coverImage.url,
-                      alternativeText: useCase.coverImage.alternativeText || '',
+                    coverImage: useCase.attributes.coverImage.data && {
+                      url: useCase.attributes.coverImage.data.attributes.url,
+                      alternativeText:
+                        useCase.attributes.coverImage.data.attributes
+                          .alternativeText || '',
                     },
-                    title: useCase.title,
+                    title: useCase.attributes.title,
                     name: 'shared.moreInfo',
-                    path: `/${useCase.product.slug}/use-cases/${useCase.slug}`,
+                    path: `/${locale}/${useCase.attributes.product.data.attributes.slug}/use-cases/${useCase.attributes.slug}`,
                   } satisfies UseCase;
                 })
               ) || [],
@@ -137,19 +153,20 @@ export function makeOverviewsProps(
                 target: attributes.whatsNew.link.target,
               },
             }),
-            items: attributes.whatsNew.items.map((item) => ({
-              comingSoon: item.comingSoon,
-              title: item.title,
-              publishedAt: new Date(item.publishedAt),
-              label: item.label,
+            items: attributes.whatsNew.items.data.map((item) => ({
+              comingSoon: item.attributes.comingSoon,
+              title: item.attributes.title,
+              publishedAt: new Date(item.attributes.publishedAt),
+              label: item.attributes.label,
               link: {
-                text: item.link.text,
-                url: item.link.href,
-                target: item.link.target,
+                text: item.attributes.link.text,
+                url: item.attributes.link.href,
+                target: item.attributes.link.target,
               },
-              image: item.image && {
-                url: item.image.url,
-                alternativeText: item.image.alternativeText || '',
+              image: item.attributes.image?.data && {
+                url: item.attributes.image.data.attributes.url,
+                alternativeText:
+                  item.attributes.image.data.attributes.alternativeText || '',
               },
             })),
           },
@@ -169,8 +186,8 @@ export function makeOverviewsProps(
                   title: 'guideListPage.cardSection.listItemsTitle',
                   translate: false,
                 },
-                imagePath: document.image.url,
-                mobileImagePath: document.mobileImage.url,
+                imagePath: document.image.data.attributes.url,
+                mobileImagePath: document.mobileImage.data.attributes.url,
                 link: {
                   label: document.linkText,
                   href: document.linkHref,
@@ -178,27 +195,30 @@ export function makeOverviewsProps(
                 },
               })),
               ...compact(
-                attributes.postIntegration.guides.map((guide) => {
-                  if (!guide.slug) {
+                attributes.postIntegration.guides.data.map((guide) => {
+                  if (!guide.attributes.slug) {
                     console.error(
                       "post-integration guide's product slug is missing:",
-                      guide
+                      guide.attributes
                     );
                     return null;
                   }
 
                   return {
-                    title: guide.title,
+                    title: guide.attributes.title,
                     description: {
-                      listItems: guide.listItems.map((item) => item.text),
+                      listItems: guide.attributes.listItems.map(
+                        (item) => item.text
+                      ),
                       title: 'guideListPage.cardSection.listItemsTitle',
                       translate: false,
                     },
-                    imagePath: guide.image.url,
-                    mobileImagePath: guide.mobileImage.url,
+                    imagePath: guide.attributes.image.data.attributes.url,
+                    mobileImagePath:
+                      guide.attributes.mobileImage.data.attributes.url,
                     link: {
                       label: 'shared.goToGuide',
-                      href: `guides/${guide.slug}`,
+                      href: `guides/${guide.attributes.slug}`,
                       translate: true,
                     },
                   };
@@ -217,12 +237,14 @@ export function makeOverviewsProps(
           bannerLinks:
             attributes.bannerLinks.length > 0
               ? attributes.bannerLinks.map(makeBannerLinkProps)
-              : attributes.product?.bannerLinks?.map(makeBannerLinkProps),
+              : attributes.product.data?.attributes.bannerLinks?.map(
+                  makeBannerLinkProps
+                ),
           seo: attributes.seo,
         } satisfies OverviewPageProps;
       } catch (error) {
         console.error(
-          `Error processing Overview for product: "${productData.name}":`,
+          `Error processing Overview for product: "${productData.attributes.name}":`,
           error
         );
         return null;

@@ -6,7 +6,7 @@ export function makeBannerLinkProps(
 ): BannerLinkProps {
   return {
     content: strapiBannerLink.content || undefined,
-    icon: strapiBannerLink.icon,
+    icon: strapiBannerLink.icon.data.attributes,
     theme: strapiBannerLink.theme || 'dark',
     title: strapiBannerLink.title || '',
   };

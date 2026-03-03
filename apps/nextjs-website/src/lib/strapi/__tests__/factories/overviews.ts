@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { StrapiOverview, StrapiOverviews } from '@/lib/strapi/types/overviews';
+import { StrapiOverviews } from '@/lib/strapi/types/overviews';
 import { strapiOverviews } from '@/lib/strapi/__tests__/fixtures/overviews';
 
 export function minimalDataSingleOverview(): StrapiOverviews {
@@ -8,14 +8,17 @@ export function minimalDataSingleOverview(): StrapiOverviews {
     data: [
       {
         ...strapiOverviews.data[0],
-        features: undefined,
-        startInfoSection: undefined,
-        tutorialSection: undefined,
-        whatsNew: undefined,
-        postIntegration: undefined,
-        relatedLinks: undefined,
-        seo: undefined,
-      } as StrapiOverview,
+        attributes: {
+          ...strapiOverviews.data[0].attributes,
+          features: undefined,
+          startInfoSection: undefined,
+          tutorialSection: undefined,
+          whatsNew: undefined,
+          postIntegration: undefined,
+          relatedLinks: undefined,
+          seo: undefined,
+        },
+      },
     ],
   };
 }
@@ -26,9 +29,17 @@ export function overviewsWithItemWithEmptyProductSlug() {
     data: [
       {
         ...strapiOverviews.data[0],
-        product: {
-          ...strapiOverviews.data[0]?.product,
-          slug: '',
+        attributes: {
+          ...strapiOverviews.data[0].attributes,
+          product: {
+            data: {
+              ...strapiOverviews.data[0].attributes.product.data,
+              attributes: {
+                ...strapiOverviews.data[0].attributes.product.data.attributes,
+                slug: '',
+              },
+            },
+          },
         },
       },
     ],
@@ -41,9 +52,17 @@ export function overviewsWithItemMissingProductSlug() {
     data: [
       {
         ...strapiOverviews.data[0],
-        product: {
-          ...strapiOverviews.data[0]?.product,
-          slug: undefined as any,
+        attributes: {
+          ...strapiOverviews.data[0].attributes,
+          product: {
+            data: {
+              ...strapiOverviews.data[0].attributes.product.data,
+              attributes: {
+                ...strapiOverviews.data[0].attributes.product.data.attributes,
+                slug: undefined as any,
+              },
+            },
+          },
         },
       },
     ],
@@ -56,18 +75,35 @@ export function overviewsWithItemMissingTutorialProductSlug() {
     data: [
       {
         ...strapiOverviews.data[0],
-        tutorialSection: {
-          ...strapiOverviews.data[0]?.tutorialSection,
-          tutorials: [
-            {
-              ...strapiOverviews.data[0]?.tutorialSection.tutorials[0],
-              product: {
-                ...strapiOverviews.data[0]?.tutorialSection.tutorials[0]
-                  .product,
-                slug: undefined as any,
-              },
+        attributes: {
+          ...strapiOverviews.data[0].attributes,
+          tutorialSection: {
+            ...strapiOverviews.data[0].attributes.tutorialSection,
+            tutorials: {
+              data: [
+                {
+                  ...strapiOverviews.data[0].attributes.tutorialSection
+                    .tutorials.data[0],
+                  attributes: {
+                    ...strapiOverviews.data[0].attributes.tutorialSection
+                      .tutorials.data[0].attributes,
+                    product: {
+                      data: {
+                        ...strapiOverviews.data[0].attributes.tutorialSection
+                          .tutorials.data[0].attributes.product.data,
+                        attributes: {
+                          ...strapiOverviews.data[0].attributes.tutorialSection
+                            .tutorials.data[0].attributes.product.data
+                            .attributes,
+                          slug: undefined as any,
+                        },
+                      },
+                    },
+                  },
+                },
+              ],
             },
-          ],
+          },
         },
       },
     ],
@@ -80,14 +116,24 @@ export function overviewsWithItemMissingTutorialSlug() {
     data: [
       {
         ...strapiOverviews.data[0],
-        tutorialSection: {
-          ...strapiOverviews.data[0]?.tutorialSection,
-          tutorials: [
-            {
-              ...strapiOverviews.data[0]?.tutorialSection.tutorials[0],
-              slug: undefined as any,
+        attributes: {
+          ...strapiOverviews.data[0].attributes,
+          tutorialSection: {
+            ...strapiOverviews.data[0].attributes.tutorialSection,
+            tutorials: {
+              data: [
+                {
+                  ...strapiOverviews.data[0].attributes.tutorialSection
+                    .tutorials.data[0],
+                  attributes: {
+                    ...strapiOverviews.data[0].attributes.tutorialSection
+                      .tutorials.data[0].attributes,
+                    slug: undefined as any,
+                  },
+                },
+              ],
             },
-          ],
+          },
         },
       },
     ],
@@ -100,14 +146,24 @@ export function overviewsWithItemWithEmptyGuideProductSlug() {
     data: [
       {
         ...strapiOverviews.data[0],
-        postIntegration: {
-          ...strapiOverviews.data[0]?.postIntegration,
-          guides: [
-            {
-              ...strapiOverviews.data[0]?.postIntegration.guides[0],
-              slug: '',
+        attributes: {
+          ...strapiOverviews.data[0].attributes,
+          postIntegration: {
+            ...strapiOverviews.data[0].attributes.postIntegration,
+            guides: {
+              data: [
+                {
+                  ...strapiOverviews.data[0].attributes.postIntegration.guides
+                    .data[0],
+                  attributes: {
+                    ...strapiOverviews.data[0].attributes.postIntegration.guides
+                      .data[0].attributes,
+                    slug: '',
+                  },
+                },
+              ],
             },
-          ],
+          },
         },
       },
     ],
@@ -120,14 +176,24 @@ export function overviewsWithItemMissingGuideProductSlug() {
     data: [
       {
         ...strapiOverviews.data[0],
-        postIntegration: {
-          ...strapiOverviews.data[0]?.postIntegration,
-          guides: [
-            {
-              ...strapiOverviews.data[0]?.postIntegration.guides[0],
-              slug: undefined as any,
+        attributes: {
+          ...strapiOverviews.data[0].attributes,
+          postIntegration: {
+            ...strapiOverviews.data[0].attributes.postIntegration,
+            guides: {
+              data: [
+                {
+                  ...strapiOverviews.data[0].attributes.postIntegration.guides
+                    .data[0],
+                  attributes: {
+                    ...strapiOverviews.data[0].attributes.postIntegration.guides
+                      .data[0].attributes,
+                    slug: undefined as any,
+                  },
+                },
+              ],
             },
-          ],
+          },
         },
       },
     ],

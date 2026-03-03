@@ -1,21 +1,25 @@
 export const mediaVectorJson = {
-  id: 59,
-  name: 'Home.svg',
-  alternativeText: null,
-  caption: null,
-  width: 48,
-  height: 48,
-  formats: null,
-  hash: 'Home_9ca652379e',
-  ext: '.svg',
-  mime: 'image/svg+xml',
-  size: 0.18,
-  url: 'http://localhost:1337/uploads/Home_9ca652379e.svg',
-  previewUrl: null,
-  provider: 'strapi-provider-upload-custom',
-  provider_metadata: null,
-  createdAt: '2024-06-27T15:29:30.479Z',
-  updatedAt: '2024-08-21T13:27:05.052Z',
+  data: {
+    id: 59,
+    attributes: {
+      name: 'Home.svg',
+      alternativeText: null,
+      caption: null,
+      width: 48,
+      height: 48,
+      formats: null,
+      hash: 'Home_9ca652379e',
+      ext: '.svg',
+      mime: 'image/svg+xml',
+      size: 0.18,
+      url: 'http://localhost:1337/uploads/Home_9ca652379e.svg',
+      previewUrl: null,
+      provider: 'strapi-provider-upload-custom',
+      provider_metadata: null,
+      createdAt: '2024-06-27T15:29:30.479Z',
+      updatedAt: '2024-08-21T13:27:05.052Z',
+    },
+  },
 };
 
 export const mediaRasterAttributesJson = {
@@ -87,6 +91,8 @@ export const mediaRasterAttributesJson = {
 };
 
 export const mediaRasterJson = {
-  id: 100,
-  ...mediaRasterAttributesJson,
+  data: {
+    id: 100,
+    attributes: mediaRasterAttributesJson,
+  },
 };

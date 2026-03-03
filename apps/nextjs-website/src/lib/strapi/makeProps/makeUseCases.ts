@@ -5,6 +5,7 @@ import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
 import { RelatedLinksProps } from '@/components/atoms/RelatedLinks/RelatedLinks';
 import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
 import { compact } from 'lodash';
+import { makeTagProps } from '@/lib/strapi/makeProps/makeTags';
 import { StrapiUseCases } from '@/lib/strapi/types/useCase';
 import { UseCase } from '@/lib/types/useCaseData';
 
@@ -15,11 +16,12 @@ export type UseCaseProps = UseCase & {
 };
 
 export function makeUseCasesProps(
+  locale: string,
   strapiUseCases: StrapiUseCases,
   markdownContentDict: Record<string, string>
 ): readonly UseCaseProps[] {
   return compact(
-    strapiUseCases.data.map((attributes) => {
+    strapiUseCases.data.map(({ attributes }) => {
       if (!attributes.slug || !attributes.title) {
         console.error(
           `Error while processing UseCase: missing title or slug. Title: ${attributes.title} | Slug: ${attributes.slug}. Skipping...`
@@ -27,7 +29,7 @@ export function makeUseCasesProps(
         return null;
       }
 
-      if (!attributes.product.slug) {
+      if (!attributes.product.data.attributes.slug) {
         console.error(
           `Error while processing UseCase with title "${attributes.title}": missing product slug. Skipping...`
         );
@@ -36,16 +38,18 @@ export function makeUseCasesProps(
 
       try {
         return {
-          coverImage: attributes.coverImage
+          coverImage: attributes.coverImage.data
             ? {
-                url: attributes.coverImage.url,
-                alternativeText: attributes.coverImage.alternativeText || '',
+                url: attributes.coverImage.data.attributes.url,
+                alternativeText:
+                  attributes.coverImage.data.attributes.alternativeText || '',
               }
             : undefined,
-          headerImage: attributes.headerImage
+          headerImage: attributes.headerImage?.data
             ? {
-                url: attributes.headerImage.url,
-                alternativeText: attributes.headerImage.alternativeText || '',
+                url: attributes.headerImage.data.attributes.url,
+                alternativeText:
+                  attributes.headerImage.data.attributes.alternativeText || '',
               }
             : undefined,
           title: attributes.title,
@@ -53,21 +57,23 @@ export function makeUseCasesProps(
             ? new Date(attributes.publishedAt)
             : undefined,
           name: attributes.title,
-          path: `/${attributes.product.slug}/use-cases/${attributes.slug}`,
+          path: `/${locale}/${attributes.product.data.attributes.slug}/use-cases/${attributes.slug}`,
           parts: compact(
             attributes.parts.map((part) =>
               makePartProps(part, markdownContentDict)
             )
           ),
-          productSlug: attributes.product.slug,
+          productSlug: attributes.product.data.attributes.slug,
           relatedLinks: attributes.relatedLinks,
           bannerLinks:
             attributes.bannerLinks && attributes.bannerLinks.length > 0
               ? attributes.bannerLinks?.map(makeBannerLinkProps)
-              : attributes.product?.bannerLinks?.map(makeBannerLinkProps),
+              : attributes.product.data?.attributes.bannerLinks?.map(
+                  makeBannerLinkProps
+                ),
           seo: attributes.seo,
           subtitle: attributes.subtitle,
-          tags: attributes.tags?.map((tag) => tag) || [],
+          tags: attributes.tags.data?.map(makeTagProps) || [],
           updatedAt: attributes.updatedAt,
         } satisfies UseCaseProps;
       } catch (error) {

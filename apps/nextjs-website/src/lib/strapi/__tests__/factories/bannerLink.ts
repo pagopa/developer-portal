@@ -5,7 +5,7 @@ import { strapiBannerLink } from '../fixtures/bannerLink';
 const defaultBannerLink = {
   id: 1,
   content: undefined,
-  icon: mediaJpeg(),
+  icon: { data: mediaJpeg() },
   theme: 'light',
   title: 'Default Banner Link',
 } satisfies StrapiBannerLink;
@@ -30,15 +30,19 @@ export function minimalBannerLink(): StrapiBannerLink {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     theme: undefined as any,
     icon: {
-      name: 'minimal-icon.svg',
-      alternativeText: 'Minimal Icon',
-      caption: undefined,
-      width: 24,
-      height: 24,
-      ext: '.svg',
-      mime: 'image/svg+xml',
-      size: 0.5,
-      url: 'https://example.com/minimal-icon.svg',
+      data: {
+        attributes: {
+          name: 'minimal-icon.svg',
+          alternativeText: 'Minimal Icon',
+          caption: undefined,
+          width: 24,
+          height: 24,
+          ext: '.svg',
+          mime: 'image/svg+xml',
+          size: 0.5,
+          url: 'https://example.com/minimal-icon.svg',
+        },
+      },
     },
   };
 }

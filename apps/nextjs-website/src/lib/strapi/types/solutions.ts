@@ -13,7 +13,9 @@ import { StrapiCaseHistoriesComponent } from '@/lib/strapi/types/caseHistoriesCo
 export type StrapiStep = {
   readonly title: string;
   readonly content: BlocksContent;
-  readonly products: readonly StrapiBaseProduct[];
+  readonly products: {
+    readonly data: readonly StrapiBaseProduct[];
+  };
 };
 
 export type StrapiStat = {
@@ -22,46 +24,64 @@ export type StrapiStat = {
 };
 
 export type StrapiBaseSolution = {
-  readonly slug: string;
-  readonly icon: StrapiMedia;
-  readonly kickerTitle: string;
-  readonly title: string;
-  readonly description?: string;
-  readonly dirName: string;
-  readonly landingUseCaseFile: string;
+  readonly attributes: {
+    readonly slug: string;
+    readonly icon: {
+      readonly data: StrapiMedia;
+    };
+    readonly kickerTitle: string;
+    readonly title: string;
+    readonly description?: string;
+    readonly dirName: string;
+    readonly landingUseCaseFile: string;
+  };
 };
 
 export type StrapiBaseSolutionWithProducts = {
-  readonly slug: string;
-  readonly icon: StrapiMedia;
-  readonly kickerTitle: string;
-  readonly title: string;
-  readonly description?: string;
-  readonly dirName: string;
-  readonly landingUseCaseFile: string;
-  readonly products: readonly StrapiBaseProductWithoutBannerLinks[];
+  readonly attributes: {
+    readonly slug: string;
+    readonly icon: {
+      readonly data: StrapiMedia;
+    };
+    readonly kickerTitle: string;
+    readonly title: string;
+    readonly description?: string;
+    readonly dirName: string;
+    readonly landingUseCaseFile: string;
+    readonly products: {
+      readonly data: readonly StrapiBaseProductWithoutBannerLinks[];
+    };
+  };
 };
 
 export type StrapiSolution = {
   readonly id: number;
-  readonly slug: string;
-  readonly icon: StrapiMedia;
-  readonly kickerTitle: string;
-  readonly title: string;
-  readonly description?: string;
-  readonly dirName: string;
-  readonly landingUseCaseFile: string;
-  readonly publishedAt: string;
-  readonly updatedAt: string;
-  readonly introductionToSteps?: string;
-  readonly steps: readonly StrapiStep[];
-  readonly stats: readonly StrapiStat[];
-  readonly statsSource?: string;
-  readonly bannerLinks: readonly StrapiBannerLink[];
-  readonly webinars: readonly StrapiWebinar[];
-  readonly products: readonly StrapiBaseProductWithoutBannerLinks[];
-  readonly caseHistories?: StrapiCaseHistoriesComponent;
-  readonly seo?: StrapiSeo;
+  readonly attributes: {
+    readonly slug: string;
+    readonly icon: {
+      readonly data: StrapiMedia;
+    };
+    readonly kickerTitle: string;
+    readonly title: string;
+    readonly description?: string;
+    readonly dirName: string;
+    readonly landingUseCaseFile: string;
+    readonly publishedAt: string;
+    readonly updatedAt: string;
+    readonly introductionToSteps?: string;
+    readonly steps: readonly StrapiStep[];
+    readonly stats: readonly StrapiStat[];
+    readonly statsSource?: string;
+    readonly bannerLinks: readonly StrapiBannerLink[];
+    readonly webinars: {
+      readonly data: readonly StrapiWebinar[];
+    };
+    readonly products: {
+      readonly data: readonly StrapiBaseProductWithoutBannerLinks[];
+    };
+    readonly caseHistories?: StrapiCaseHistoriesComponent;
+    readonly seo?: StrapiSeo;
+  };
 };
 
 export type StrapiSolutions = Paginated<StrapiSolution>;

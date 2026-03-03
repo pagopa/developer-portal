@@ -10,21 +10,12 @@ const makeStrapiUseCasesPopulate = () =>
         populate: ['icon'],
       },
       coverImage: {
-        populate: '*',
+        populate: ['image'],
       },
       headerImage: {
-        populate: '*',
+        populate: ['image'],
       },
-      parts: {
-        on: {
-          'parts.html': { populate: '*' },
-          'parts.alert': { populate: '*' },
-          'parts.ck-editor': { populate: '*' },
-          'parts.code-block': { populate: '*' },
-          'parts.embed-html': { populate: '*' },
-          'parts.markdown': { populate: '*' },
-        },
-      },
+      parts: '*',
       product: {
         ...productRelationsPopulate,
       },
@@ -32,7 +23,7 @@ const makeStrapiUseCasesPopulate = () =>
         populate: ['links'],
       },
       seo: {
-        populate: '*',
+        populate: '*,metaImage,metaSocial.image',
       },
       tags: {
         populate: '*',

@@ -6,41 +6,47 @@ import { mediaJpeg } from '@/lib/strapi/__tests__/factories/media';
 export const strapiProducts: StrapiProducts = {
   data: [
     {
-      isVisible: true,
-      tags: [],
-      name: 'Test Product',
-      slug: 'test-product',
-      shortName: 'TP',
-      description: 'Test product description',
-      logo: mediaJpeg(),
-      bannerLinks: generateBannerLinks(2),
-      overview: 1,
-      quickstart_guide: 1,
-      api_data_list_page: {
-        id: 1,
-        api_data: [
-          {
-            apiRestDetail: {
-              slug: 'api-detail',
-              specUrls: [],
+      attributes: {
+        isVisible: true,
+        tags: { data: [] },
+        name: 'Test Product',
+        slug: 'test-product',
+        shortName: 'TP',
+        description: 'Test product description',
+        logo: {
+          data: mediaJpeg(),
+        },
+        bannerLinks: generateBannerLinks(2),
+        overview: { data: { id: 1 } },
+        quickstart_guide: { data: { id: 1 } },
+        api_data_list_page: {
+          data: {
+            id: 1,
+            attributes: {
+              updatedAt: '2026-01-01T00:00:00.000Z',
+              apiData: {
+                data: [
+                  {
+                    attributes: {
+                      apiRestDetail: {
+                        slug: 'api-detail',
+                        specUrls: [],
+                      },
+                    },
+                  },
+                ],
+              },
             },
           },
-        ],
+        },
+        guide_list_page: { data: { id: 1 } },
+        tutorial_list_page: { data: { id: 1 } },
+        release_note: { data: { id: 1 } },
+        use_case_list_page: { data: { id: 1 } },
       },
-      guide_list_page: 1,
-      tutorial_list_page: 1,
-      release_note: 1,
-      use_case_list_page: 1,
     },
   ],
-  meta: {
-    pagination: {
-      page: 1,
-      pageSize: 25,
-      pageCount: 1,
-      total: 1,
-    },
-  },
+  meta: { pagination: { page: 1, pageSize: 25, pageCount: 1, total: 1 } },
 };
 
 export const expectedProduct: Product = {
@@ -93,7 +99,7 @@ export const expectedProduct: Product = {
     },
   ],
   hasApiDataListPage: true,
-  apiDataListPageUrl: '/test-product/api/api-detail',
+  apiDataListPageUrl: '/it/test-product/api/api-detail',
   hasTutorialListPage: true,
   hasGuideListPage: true,
   hasOverviewPage: true,

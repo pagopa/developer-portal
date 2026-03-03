@@ -5,44 +5,53 @@ import { makeBaseProductWithoutLogoProps } from '@/lib/strapi/makeProps/makeProd
 import { StrapiApiDataListPages } from '@/lib/strapi/types/apiDataListPages';
 import { compact } from 'lodash';
 import { StrapiBaseApiData } from '../types/apiDataList';
-import { RootEntity } from '@/lib/strapi/types/rootEntity';
 
-function makeApiDataListPageCard(item: StrapiBaseApiData, slug: string) {
-  if (!item.apiRestDetail && !item.apiSoapDetail) {
+function makeApiDataListPageCard(
+  locale: string,
+  item: StrapiBaseApiData,
+  slug: string
+) {
+  if (!item.attributes.apiRestDetail && !item.attributes.apiSoapDetail) {
     console.error(
-      `Error while processing API Data with title "${item.title}": missing API details. Skipping...`
+      `Error while processing API Data with title "${item.attributes.title}": missing API details. Skipping...`
     );
     return null;
   }
 
-  if (!item.apiRestDetail?.slug && !item.apiSoapDetail?.slug) {
+  if (
+    !item.attributes.apiRestDetail?.slug &&
+    !item.attributes.apiSoapDetail?.slug
+  ) {
     console.error(`
-      Error while processing API Data with title "${item.title}": missing API slug. Skipping...`);
+      Error while processing API Data with title "${item.attributes.title}": missing API slug. Skipping...`);
     return null;
   }
 
   return {
     labels: [
       {
-        label: item.apiSoapDetail ? 'SOAP' : 'REST',
+        label: item.attributes.apiSoapDetail ? 'SOAP' : 'REST',
       },
     ].filter((label) => !!label.label),
-    title: item?.title,
-    text: item?.description || '',
-    icon: item?.icon?.url || '',
-    href: `/${slug}/api/${
-      item.apiRestDetail ? item.apiRestDetail?.slug : item.apiSoapDetail?.slug
+    title: item?.attributes?.title,
+    text: item?.attributes?.description || '',
+    icon: item?.attributes?.icon?.data?.attributes.url || undefined,
+    href: `/${locale}/${slug}/api/${
+      item.attributes.apiRestDetail
+        ? item.attributes.apiRestDetail?.slug
+        : item.attributes.apiSoapDetail?.slug
     }`,
-    tags: item.tags?.map((tag) => tag) || [],
+    tags: item.attributes.tags.data?.map((tag) => tag.attributes) || [],
   };
 }
 
 export function makeApiDataListPagesProps(
-  strapiApiDataListPages: RootEntity<StrapiApiDataListPages>
+  locale: string,
+  strapiApiDataListPages: StrapiApiDataListPages
 ): ReadonlyArray<ApiDataListPageTemplateProps> {
   return compact(
-    strapiApiDataListPages.data.map((attributes) => {
-      const slug = attributes.product?.slug;
+    strapiApiDataListPages.data.map(({ attributes }) => {
+      const slug = attributes.product.data?.attributes.slug;
       if (!slug) {
         console.error(
           `Error while processing API Data List Page with title "${attributes.title}": missing product slug. Skipping...`
@@ -52,7 +61,10 @@ export function makeApiDataListPagesProps(
 
       // eslint-disable-next-line functional/no-try-statements
       try {
-        const product = makeBaseProductWithoutLogoProps(attributes.product);
+        const product = makeBaseProductWithoutLogoProps(
+          locale,
+          attributes.product.data
+        );
         return {
           ...attributes,
           hero: {
@@ -61,15 +73,15 @@ export function makeApiDataListPagesProps(
           },
           product,
           apiDetailSlugs: compact(
-            attributes.api_data.map((attributes) =>
+            attributes.apiData.data.map(({ attributes }) =>
               attributes.apiRestDetail
                 ? attributes.apiRestDetail.slug
                 : attributes.apiSoapDetail?.slug
             )
           ),
           cards: compact(
-            attributes.api_data.map((item) =>
-              makeApiDataListPageCard(item, slug)
+            attributes.apiData.data.map((item) =>
+              makeApiDataListPageCard(locale, item, slug)
             )
           ),
           bannerLinks: attributes.bannerLinks.map(makeBannerLinkProps),
@@ -77,7 +89,7 @@ export function makeApiDataListPagesProps(
           updatedAt: attributes.updatedAt,
           enableFilters: attributes.enableFilters,
           tags: product.tags,
-        };
+        } as unknown as ApiDataListPageTemplateProps;
       } catch (error) {
         // eslint-disable-next-line functional/no-expression-statements
         console.error(

@@ -29,7 +29,7 @@ export type ApiDataListPageTemplateProps = {
   readonly updatedAt: string;
   readonly bannerLinks: BannerLinkProps[];
   readonly theme?: Theme;
-  readonly api_data: StrapiApiDataList;
+  readonly apiData: StrapiApiDataList;
   readonly seo?: SEO;
 };
 

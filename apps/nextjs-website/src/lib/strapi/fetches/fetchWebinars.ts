@@ -5,10 +5,10 @@ import { StrapiWebinars } from '@/lib/strapi/types/webinars';
 export const webinarPopulate = {
   populate: {
     coverImage: {
-      populate: '*',
+      populate: ['image'],
     },
     playerCoverImage: {
-      populate: '*',
+      populate: ['image'],
     },
     webinarSpeakers: {
       populate: ['avatar'],
@@ -19,7 +19,7 @@ export const webinarPopulate = {
     relatedResources: {
       populate: {
         resources: {
-          populate: '*',
+          populate: ['image'],
         },
         downloadableDocuments: {
           populate: '*',
@@ -27,12 +27,12 @@ export const webinarPopulate = {
       },
     },
     seo: {
-      populate: '*',
+      populate: '*,metaImage,metaSocial.image',
     },
     questionsAndAnswers: '*',
     webinarCategory: { populate: ['icon'] },
     headerImage: {
-      populate: '*',
+      populate: ['image'],
     },
   },
 };

@@ -45,7 +45,9 @@ type HtmlPart = {
 };
 
 type QuotePart = {
-  readonly backgroundImage: StrapiMedia;
+  readonly backgroundImage: {
+    readonly data?: StrapiMedia;
+  };
   readonly text: string;
   readonly __component: 'parts.quote';
 };

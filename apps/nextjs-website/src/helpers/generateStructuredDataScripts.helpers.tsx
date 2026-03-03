@@ -20,7 +20,7 @@ export function generateStructuredDataScripts(props: {
     name: seo?.metaTitle,
     description: seo?.metaDescription,
     url: seo?.canonicalURL,
-    media: seo?.metaImage,
+    media: seo?.metaImage?.data?.attributes,
   };
   const allThings: Thing[] = [
     makeBreadcrumbList(allBreadcrumbsItems) as Thing,

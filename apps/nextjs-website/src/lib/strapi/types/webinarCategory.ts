@@ -3,8 +3,10 @@ import { Paginated } from '@/lib/strapi/types/paginated';
 
 export type StrapiWebinarCategory = {
   readonly id: number;
-  readonly name: string;
-  readonly icon: StrapiMedia;
+  readonly attributes: {
+    readonly name: string;
+    readonly icon: { readonly data: StrapiMedia };
+  };
 };
 
 export type StrapiWebinarCategories = Paginated<StrapiWebinarCategory>;
