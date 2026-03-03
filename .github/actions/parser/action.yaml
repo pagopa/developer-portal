@@ -1,0 +1,62 @@
+name: 'Parser'
+description: 'Run parser for each URL'
+
+inputs:
+  urls:
+    description: 'URLs to parse (comma-separated)'
+    required: true
+  parser_vector_index_name:
+    description: 'Parser Vector Index Name (CHB_INDEX_ID)'
+    required: true
+  depth:
+    description: 'Maximum recursion depth for crawling links (optional)'
+    required: false
+  valid_domain_variants:
+    description: 'JSON array of allowed subdomain tokens (optional, e.g. ["sub1","sub2"])'
+    required: false
+  public_parser_request_timeout_ms:
+    description: 'Request timeout in milliseconds (optional, default: 10000)'
+    required: false
+  deploy_iam_role:
+    description: 'IAM role to assume'
+    required: true
+
+runs:
+  using: 'composite'
+
+  steps:
+    - name: Configure AWS Credentials
+      uses: ./.github/actions/configure-aws-credentials
+      with:
+        aws_region: eu-south-1
+        role_to_assume: ${{ inputs.deploy_iam_role }}
+    
+    - name: Setup Node.js
+      uses: ./.github/actions/setup-node
+    
+    - name: Install dependencies
+      working-directory: apps/parser
+      shell: bash
+      run: npm ci --audit=false --fund=false
+
+    - name: Run Parser for each URL
+      # env vars docs: https://github.com/pagopa/developer-portal/blob/main/apps/parser/README.md#environment-variables
+      env:
+        CHB_INDEX_ID: ${{ inputs.parser_vector_index_name }}
+        DEPTH: ${{ inputs.depth }}
+        VALID_DOMAIN_VARIANTS: ${{ inputs.valid_domain_variants }}
+        PUBLIC_PARSER_REQUEST_TIMEOUT_MS: ${{ inputs.public_parser_request_timeout_ms }}
+      working-directory: apps/parser
+      shell: bash
+      run: |
+        # Split comma-separated URLs and loop sequentially
+        IFS=',' read -ra url_array <<< "${{ inputs.urls }}"
+        for url in "${url_array[@]}"; do
+          url="$(echo "$url" | xargs)"  # trim whitespace
+          echo "=== Parsing: $url ==="
+          if URL="$url" npm run parse -w parser; then
+            echo "=== Completed: $url ==="
+          else
+            echo "=== FAILED: $url ==="
+          fi
+        done
