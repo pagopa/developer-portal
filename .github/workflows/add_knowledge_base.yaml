@@ -53,6 +53,7 @@ jobs:
       - name: Run Parser for each URL
         uses: ./.github/actions/parser
         with:
+          environment: ${{ inputs.environment }}
           deploy_iam_role: ${{ secrets.DEPLOY_IAM_ROLE }}
           urls: ${{ inputs.urls }}
           parser_vector_index_name: ${{ inputs.parser_vector_index_name || secrets.PARSER_VECTOR_INDEX_NAME }}
