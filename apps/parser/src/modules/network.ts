@@ -14,9 +14,6 @@ export async function assertReachable(
       signal: controller.signal,
     });
     const text = await res.text();
-    console.log('============ Response Text Start ============');
-    console.log(text);
-    console.log('============ Response Text End ============');
     if (isCloudflareChallenge(text)) {
       console.warn(
         "Cloudflare protection detected, skipping reachability check.",
@@ -27,6 +24,8 @@ export async function assertReachable(
       throw new Error(`Status ${res.status}`);
     }
   } catch (error) {
+    console.log('====== Printing out errors from assertReachable ======');
+    console.error(error);
     if ((error as Error).name === "AbortError") {
       throw new Error(`Target ${url} is unreachable: request timed out`);
     }
