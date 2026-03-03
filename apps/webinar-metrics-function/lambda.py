@@ -38,7 +38,7 @@ def get_ivs_stream_stats(start_dt: datetime, end_dt: datetime) -> list[dict[str,
 
         for session in response.get('streamSessions', []):
             s_start = session['startTime']
-            if start_dt <= s_start:
+            if start_dt <= s_start <= end_dt:
                 stream_id = session['streamId']
                 s_end = session.get('endTime', datetime.now(timezone.utc))
                 
@@ -152,8 +152,14 @@ def run_athena_query(start_date: str, end_date: str) -> list[dict[str, Any]]:
 
 
 def lambda_handler(event: dict[str, Any], context: Any) -> dict[str, Any]:
-    from_date = event.get('from_date')
-    to_date = event.get('to_date')
+    # Support both direct invocation and API Gateway proxy events
+    if 'body' in event and isinstance(event.get('body'), str):
+        body = json.loads(event['body'])
+    else:
+        body = event
+
+    from_date = body.get('from_date')
+    to_date = body.get('to_date')
 
     if not from_date or not to_date:
         return {

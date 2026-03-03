@@ -46,3 +46,10 @@ variable "webinar_metrics_channel_key" {
   type        = string
   default     = null
 }
+
+variable "webinar_metrics_stage_name" {
+  description = "The api webinar metrics stage name."
+  type        = string
+  default     = "v1"
+  
+}
