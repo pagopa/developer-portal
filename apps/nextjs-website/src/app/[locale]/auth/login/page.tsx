@@ -7,7 +7,7 @@ import { Auth } from 'aws-amplify';
 import { LoginSteps } from '@/lib/types/loginSteps';
 import { LoginFunction } from '@/lib/types/loginFunction';
 import ConfirmSignUp from '@/components/organisms/Auth/ConfirmSignUp';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import PageBackgroundWrapper from '@/components/atoms/PageBackgroundWrapper/PageBackgroundWrapper';
 import { SignInOpts } from '@aws-amplify/auth/lib/types';
 import AuthStatus from '@/components/organisms/Auth/AuthStatus';
@@ -16,6 +16,7 @@ import { canRedirectToUrl } from '@/helpers/navigation.helpers';
 
 const LoginContent = () => {
   const router = useRouter();
+  const { locale } = useParams<{ locale: string }>();
   const [logInStep, setLogInStep] = useState(LoginSteps.LOG_IN);
   const [user, setUser] = useState(null);
   const [loginData, setLoginData] = useState({ username: '', password: '' });
@@ -65,10 +66,10 @@ const LoginContent = () => {
       if (canRedirectToUrl(redirect)) {
         router.replace(redirect);
       } else {
-        router.replace('/');
+        router.replace(`/${locale}`);
       }
     },
-    [router, searchParams, user]
+    [locale, router, searchParams, user]
   );
 
   const onBackStep = () => {
