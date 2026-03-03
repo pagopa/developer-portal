@@ -17,65 +17,46 @@ inputs:
   public_parser_request_timeout_ms:
     description: 'Request timeout in milliseconds (optional, default: 10000)'
     required: false
+  deploy_iam_role:
+    description: 'IAM role to assume'
+    required: true
 
 runs:
   using: 'composite'
+
   steps:
+    - name: Configure AWS Credentials
+      uses: ./.github/actions/configure-aws-credentials
+      with:
+        aws_region: eu-south-1
+        role_to_assume: ${{ inputs.deploy_iam_role }}
+    
+    - name: Setup Node.js
+      uses: ./.github/actions/setup-node
+    
+    - name: Install dependencies
+      working-directory: apps/parser
+      shell: bash
+      run: npm ci --audit=false --fund=false
+
     - name: Run Parser for each URL
       # env vars docs: https://github.com/pagopa/developer-portal/blob/main/apps/parser/README.md#environment-variables
       env:
         CHB_INDEX_ID: ${{ inputs.parser_vector_index_name }}
         DEPTH: ${{ inputs.depth }}
         VALID_DOMAIN_VARIANTS: ${{ inputs.valid_domain_variants }}
+        PUBLIC_PARSER_REQUEST_TIMEOUT_MS: ${{ inputs.public_parser_request_timeout_ms }}
       working-directory: apps/parser
       shell: bash
       run: |
-        # Conditionally export PUBLIC_PARSER_REQUEST_TIMEOUT_MS only when provided
-        if [ -n "${{ inputs.public_parser_request_timeout_ms }}" ]; then
-          export PUBLIC_PARSER_REQUEST_TIMEOUT_MS="${{ inputs.public_parser_request_timeout_ms }}"
-        fi
         # Split comma-separated URLs and loop sequentially
-        failed_urls=()
         IFS=',' read -ra url_array <<< "${{ inputs.urls }}"
         for url in "${url_array[@]}"; do
           url="$(echo "$url" | xargs)"  # trim whitespace
-          if [ -n "$url" ]; then
-            # Basic validation: require http/https and ensure it is a syntactically valid URL
-            if ! [[ "$url" =~ ^https?:// ]]; then
-              echo "Skipping invalid URL (must start with http:// or https://): $url"
-              continue
-            fi
-            # Use Node's URL parser to validate the URL and enforce http/https protocol
-            if ! node - "$url" << 'EOF'
-const input = process.argv[1];
-try {
-  const u = new URL(input);
-  if (!/^https?:$/.test(u.protocol)) {
-    process.exit(1);
-  }
-} catch {
-  process.exit(1);
-}
-EOF
-            then
-              echo "Skipping invalid URL (failed structural validation): $url"
-              continue
-            fi
-            echo "=== Parsing: $url ==="
-            if URL="$url" npx tsx src/main.ts; then
-              echo "=== Completed: $url ==="
-            else
-              echo "=== FAILED: $url ==="
-              failed_urls+=("$url")
-            fi
-            echo ""
+          echo "=== Parsing: $url ==="
+          if URL="$url" npm run parse -w parser; then
+            echo "=== Completed: $url ==="
+          else
+            echo "=== FAILED: $url ==="
           fi
         done
-
-        if [ ${#failed_urls[@]} -gt 0 ]; then
-          echo "::error::The following URLs failed to parse:"
-          for url in "${failed_urls[@]}"; do
-            echo "  - $url"
-          done
-          exit 1
-        fi
