@@ -34,7 +34,7 @@ This project uses [Poetry](https://python-poetry.org/) for dependency management
    # AWS Configuration
    AWS_DEFAULT_REGION=eu-south-1
 
-   SHOULD_RUN_LOCALLY=false # false to read from and write to s3
+   SHOULD_RUN_LOCALLY=false # optional, set to false by default. false is to read from and write to s3
    LOG_LEVEL=info # optional, set to info by default
 
    # Input and output folder:
