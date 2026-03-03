@@ -31,9 +31,10 @@ on:
         required: false
         type: string
       public_parser_request_timeout_ms:
-        description: 'Request timeout in milliseconds (optional, default: 10000)'
+        description: 'Request timeout in milliseconds (optional, default: 20000)'
         required: false
         type: string
+        default: '20000'
 
 permissions:
   id-token: write
