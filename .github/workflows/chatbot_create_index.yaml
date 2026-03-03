@@ -20,7 +20,7 @@ on:
         required: true
         default: true
       clean_redis:
-        description: 'Clean Redis vector index before creating a new one'
+        description: 'Clean all Redis vector indexes before creating a new one'
         type: boolean
         required: true
         default: false
