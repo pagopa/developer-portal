@@ -1,6 +1,5 @@
 name: 'Parser'
 description: 'Run parser for each URL'
-
 inputs:
   urls:
     description: 'URLs to parse (comma-separated)'
@@ -23,7 +22,6 @@ inputs:
 
 runs:
   using: 'composite'
-
   steps:
     - name: Configure AWS Credentials
       uses: ./.github/actions/configure-aws-credentials
