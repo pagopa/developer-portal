@@ -18,7 +18,7 @@ on:
         required: true
         type: string
       vector_index_name:
-        description: 'Parser Vector Index Name'
+        description: 'Vector Index Name'
         required: true
         type: choice
         default: cittadino-index
