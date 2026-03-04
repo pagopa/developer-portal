@@ -90,7 +90,9 @@ class Chatbot:
                     description=CITTADINO_RAG_TOOL_DESCRIPTION,
                     text_qa_template=self.qa_prompt_tmpl,
                     refine_template=self.ref_prompt_tmpl,
-                ),
+                )
+            )
+            tools.append(
                 follow_up_questions_tool(
                     name="FollowUpQuestionsTool",
                 ),
