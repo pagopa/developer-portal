@@ -115,6 +115,8 @@ def sanitize_messages(
     for item in history:
         message = item.model_dump()
         message["question"] = nh3.clean(item.question)
+        if item.answer is not None:
+            message["answer"] = nh3.clean(item.answer)
         messages.append(message)
     return messages
 
