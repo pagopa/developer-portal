@@ -90,7 +90,9 @@ class Chatbot:
                     description=CITTADINO_RAG_TOOL_DESCRIPTION,
                     text_qa_template=self.qa_prompt_tmpl,
                     refine_template=self.ref_prompt_tmpl,
-                ),
+                )
+            )
+            tools.append(
                 follow_up_questions_tool(
                     name="FollowUpQuestionsTool",
                 ),
@@ -218,16 +220,21 @@ class Chatbot:
         self,
         query_str: str,
         messages: Optional[List[Dict[str, str]]] | None = None,
+        knowledge_base: str | None = None,
     ) -> dict:
         """Generates a response to the user's query by running the discovery agent with the provided query and chat history, and formats the response into a JSON structure.
         Args:
             query_str (str): The user's query string.
-            messages (Optional[List[Dict[str, str]]]): A list of message dictionaries representing the chat history. Each dictionary should have a "question" key for user messages and an "answer" key for assistant
+            messages (Optional[List[Dict[str, str]]]): A list of message dictionaries representing the chat history. Each dictionary should have a "question" key for user messages and an "answer" key for assistant messages.
+            knowledge_base (str | None): An optional knowledge base string to provide additional context for the query.
         Returns:
             dict: A JSON-formatted dictionary containing the response, products, references, contexts, and spans.
         """
 
         chat_history = self._messages_to_chathistory(messages)
+
+        if knowledge_base:
+            query_str = query_str + f" | Knowledge Base: {knowledge_base}"
 
         try:
             engine_response = await self.discovery.run(query_str, chat_history)
