@@ -1,5 +1,5 @@
 import { Browser, Page } from "puppeteer";
-import { ParsedNode, ParsedMetadata } from "./types";
+import { ParsedNode, ParsedMetadata, ParserConfig } from "./types";
 import {
   RemoveAnchorsFromUrl,
   isWithinScope,
@@ -19,7 +19,7 @@ export async function exploreAndParsePages(
   parsedPages: Map<string, ParsedMetadata>,
   scheduledPages: Set<string>,
   baseScope: string,
-  parserConfig : { [key: string]: any },
+  parserConfig: ParserConfig,
 ): Promise<Map<string, ParsedMetadata>> {
   const visitKey = buildVisitKey(node.url);
   scheduledPages.delete(visitKey);
@@ -136,7 +136,7 @@ export async function generatePageParsedMetadata(
   browser: Browser,
   url: string,
   baseScope: string,
-  parserConfig: { [key: string]: any },
+  parserConfig: ParserConfig,
 ): Promise<ParsedMetadata | null> {
   let page: Page | undefined;
   try {
