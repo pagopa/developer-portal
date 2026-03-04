@@ -11,7 +11,8 @@ export function isExternalLink(currentHost: string, href: string): boolean {
     const urlHost = url.host.toLowerCase();
 
     const isSameHost =
-      urlHostname === normalizedCurrentHost || urlHost === normalizedCurrentHost;
+      urlHostname === normalizedCurrentHost ||
+      urlHost === normalizedCurrentHost;
 
     return !isSameHost;
   } catch {
