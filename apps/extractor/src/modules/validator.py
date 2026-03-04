@@ -31,8 +31,12 @@ def calculate_similarity(generated: str, source: str) -> float:
    Returns 0.0 if the similarity cannot be computed (e.g., one or both inputs are empty
    or only contain tokens that are removed during vectorization).
 
-   :generated: the content of the generated file.
-   :source: the content of the source file.
+   Args:
+        generated (str): The generated text.
+        source (str): The source text.
+
+    Returns:
+        float: The cosine similarity between the two texts.
    """
     if not generated or not generated.strip():
         LOGGER.error("Generated text is empty; similarity cannot be computed. Returning 0.0.")
