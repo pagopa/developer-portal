@@ -38,7 +38,7 @@ class CleanedDocument(BaseModel):
         ...,
         description="The language of the page content as a standard language code (e.g., 'en' for English, 'it' for Italian, etc.)",
     )
-    lastMod: str = Field(
+    lastmod: str = Field(
         ..., description="The last modified date of the page in ISO 8601 format"
     )
     url: str = Field(..., description="The URL of the page")

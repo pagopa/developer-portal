@@ -24,7 +24,7 @@ services:
   postgres:
     image: postgres:17.2-alpine
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 3s
       timeout: 3s
       retries: 10
@@ -35,7 +35,7 @@ services:
   redis:
     image: redis/redis-stack:7.2.0-v13
     healthcheck:
-      test: [ "CMD", "redis-cli", "ping" ]
+      test: ["CMD", "redis-cli", "ping"]
       interval: 3s
       timeout: 10s
       retries: 10
@@ -51,7 +51,12 @@ services:
     volumes:
       - redis_data_test:/data
       - ./files/redis-data/redis-dump.rdb:/seed/dump.rdb:ro
-    command: [ "sh", "-c", "if [ -f /seed/dump.rdb ]; then cp -a /seed/dump.rdb /data/dump.rdb && chown redis:redis /data/dump.rdb 2>/dev/null || chown 1000:1000 /data/dump.rdb || true; fi" ]
+    command:
+      [
+        "sh",
+        "-c",
+        "if [ -f /seed/dump.rdb ]; then cp -a /seed/dump.rdb /data/dump.rdb && chown redis:redis /data/dump.rdb 2>/dev/null || chown 1000:1000 /data/dump.rdb || true; fi",
+      ]
     restart: "no"
 
   redis-fix-perms:
@@ -63,7 +68,12 @@ services:
     depends_on:
       redis-seed:
         condition: service_completed_successfully
-    command: [ "sh", "-c", "chown -R redis:redis /data 2>/dev/null || chown -R 1000:1000 /data || true" ]
+    command:
+      [
+        "sh",
+        "-c",
+        "chown -R redis:redis /data 2>/dev/null || chown -R 1000:1000 /data || true",
+      ]
     restart: "no"
 
   motoserver:
@@ -116,7 +126,7 @@ services:
       MINIO_ROOT_USER: minio
       MINIO_ROOT_PASSWORD: miniosecret
     healthcheck:
-      test: [ "CMD", "mc", "ready", "local" ]
+      test: ["CMD", "mc", "ready", "local"]
       interval: 1s
       timeout: 5s
       retries: 5
@@ -125,7 +135,7 @@ services:
   valkey:
     image: valkey/valkey:8.1.4-alpine3.22
     healthcheck:
-      test: [ "CMD", "valkey-cli", "ping" ]
+      test: ["CMD", "valkey-cli", "ping"]
       interval: 3s
       timeout: 10s
       retries: 10

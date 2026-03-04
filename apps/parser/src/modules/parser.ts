@@ -148,9 +148,15 @@ export async function generatePageParsedMetadata(
   let page: Page | undefined;
   try {
     page = await browser.newPage();
-    await page.goto(url, {
+    const redirect_url = await page.goto(url, {
       ...PAGE_NAVIGATION_OPTIONS,
     });
+    const normalizeUrl = (u: string) => u.replace(/\/+$/, "");
+    if (redirect_url && normalizeUrl(redirect_url.url()) !== normalizeUrl(url)) {
+      console.warn(
+        `URL redirect after navigation: from ${url} to ${redirect_url?.url()}`,
+      );
+    }
     await expandInteractiveSections(page);
     const rawMetadata = await page.evaluate(extractDocumentMetadata);
     const snapshot = serializeMetadata(rawMetadata);

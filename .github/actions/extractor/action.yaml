@@ -1,22 +1,21 @@
----
-name: extractor
-description: Run Extractor
+name: Extractor
+description: Run Extractor for each URL
 
 inputs:
+  chb_aws_google_api_key:
+    description: 'Google API Key for AI Studio'
+    required: true
+  deploy_iam_role:
+    description: 'IAM role to assume'
+    required: true
   environment:
     description: 'The environment used as target (dev, uat, prod)'
     required: true
   urls:
     description: 'URLs to extract (comma-separated)'
     required: true
-  parser_vector_index_name:
-    description: 'Parser Vector Index Name (CHB_INDEX_ID)'
-    required: true
-  deploy_iam_role:
-    description: 'IAM role to assume'
-    required: true
-  chb_aws_google_api_key:
-    description: 'Google API Key for AI Studio'
+  vector_index_name:
+    description: 'Vector Index Name (CHB_INDEX_ID)'
     required: true
 
 runs:

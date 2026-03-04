@@ -44,6 +44,9 @@ RUN python ./scripts/nltk_download.py
 RUN groupadd -r appuser && useradd -r -g appuser -u 1000 appuser
 RUN chown -R appuser:appuser /app
 
+RUN mkdir -p /home/appuser/.local /home/appuser/.jupyter /home/appuser/.cache && \
+  chown -R appuser:appuser /home/appuser
+
 USER appuser
 
 ENTRYPOINT ["bash", "./scripts/entrypoint.sh"]

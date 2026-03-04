@@ -68,13 +68,15 @@ services:
     build:
       context: ../../chatbot-index
       dockerfile: ../chatbot-index/docker/create_index.local.Dockerfile
-    command: poetry run python ../chatbot-index/src/modules/create_vector_index.py
+    command: /app/scripts/run.create.index.sh
     env_file: ../../chatbot-index/.env.local
     volumes:
       - ./files/.aws:/home/appuser/.aws
-      - ../../nextjs-website/out:/app/build-devp/out
+      - ./files/s3:/app/files/s3
     depends_on:
       redis:
+        condition: service_started
+      motoserver:
         condition: service_started
 
   # monitor service emulates the AWS Lambda function that listen the SQS queue
@@ -111,9 +113,9 @@ services:
 
   redis:
     image: redis/redis-stack:7.2.0-v13
-    # ports:
-    #   - "6379:6379"
-    #   - "8001:8001"
+    ports:
+      - "6379:6379"
+      - "8001:8001"
     healthcheck:
       test: [ "CMD", "redis-cli", "ping" ]
       interval: 3s
