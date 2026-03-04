@@ -1,5 +1,3 @@
-from typing import Optional
-
 from llama_index.core.llms.llm import LLM
 from llama_index.core.program import LLMTextCompletionProgram
 
@@ -18,7 +16,7 @@ LOGGER = get_logger(__name__, level=SETTINGS.log_level)
 
 def extract_document(
     input_doc: InputDocument, llm: LLM, prompt_template: str
-) -> Optional[CleanedDocument]:
+) -> CleanedDocument | None:
     """
     Parses a single document using the LLM to clean and structure the content.
 
@@ -31,7 +29,7 @@ def extract_document(
         CleanedDocument if successful, None if parsing fails
     """
 
-    def _escape_braces(value: Optional[str]) -> str:
+    def _escape_braces(value: str | None = None) -> str:
         """
         Ensure that any literal braces in the value are escaped so that
         str.format does not treat them as format placeholders.
@@ -49,10 +47,10 @@ def extract_document(
         # Construct the prompt with document data
         prompt = prompt_template.format(
             title=_escape_braces(input_doc.title),
-            url=_escape_braces(input_doc.url),
+            url=input_doc.url,
             body_text=_escape_braces(input_doc.bodyText or "(empty)"),
-            language=_escape_braces(input_doc.lang),
-            last_updated=_escape_braces(input_doc.lastModified),
+            language=input_doc.lang,
+            last_updated=input_doc.lastModified,
             keywords=_escape_braces(input_doc.keywords or "(none)"),
         )
 

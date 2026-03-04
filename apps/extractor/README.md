@@ -21,6 +21,8 @@ This project uses [Poetry](https://python-poetry.org/) for dependency management
 
 2. Install dependencies:
    ```bash
+   conda create -n extractor python=3.12 -y
+   conda activate extractor
    poetry install
    ```
 
@@ -79,11 +81,12 @@ the following way:
 
 ### Running
 
+If not already in the virtual environment,
 ```bash
-set -a
-source .env
-set +a
-PYTHONPATH=. poetry run python src/main.py
+   conda activate extractor
+   ```
+then
+```bash
 set -a
 source .env
 set +a
