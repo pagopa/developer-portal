@@ -28,7 +28,7 @@ from src.modules.vector_index import load_index_redis
 from src.modules.documents import get_product_list
 from src.modules.models import get_llm, get_embed_model
 from src.modules.tools.rag_tool import get_query_engine_tool
-from src.modules.agent import get_agent
+from src.modules.agents.discovery import get_discovery_agent
 from src.modules.settings import SETTINGS
 
 
@@ -79,38 +79,39 @@ class Chatbot:
         self.embed_model = get_embed_model()
         self.qa_prompt_tmpl, self.ref_prompt_tmpl = self._get_prompt_templates()
 
+        tools = []
         try:
             devportal_index = load_index_redis(index_id=SETTINGS.devportal_index_id)
+            tools.append(
+                get_query_engine_tool(
+                    index=devportal_index,
+                    name="DevPortalRAGTool",
+                    description=DEVPORTAL_RAG_TOOL_DESCRIPTION,
+                    text_qa_template=self.qa_prompt_tmpl,
+                    refine_template=self.ref_prompt_tmpl,
+                )
+            )
         except Exception as e:
             LOGGER.error(f"Failed to load DevPortal index: {e}")
             raise
 
         try:
             cittadino_index = load_index_redis(index_id=SETTINGS.cittadino_index_id)
+            tools.append(
+                get_query_engine_tool(
+                    index=cittadino_index,
+                    name="CittadinoRAGTool",
+                    description=CITTADINO_RAG_TOOL_DESCRIPTION,
+                    text_qa_template=self.qa_prompt_tmpl,
+                    refine_template=self.ref_prompt_tmpl,
+                )
+            )
         except Exception as e:
             LOGGER.error(f"Failed to load Cittadino index: {e}")
             raise
 
         try:
-            self.discovery = get_agent(
-                name="DiscoveryAgent",
-                tools=[
-                    get_query_engine_tool(
-                        index=devportal_index,
-                        name="DevPortalRAGTool",
-                        description=DEVPORTAL_RAG_TOOL_DESCRIPTION,
-                        text_qa_template=self.qa_prompt_tmpl,
-                        refine_template=self.ref_prompt_tmpl,
-                    ),
-                    get_query_engine_tool(
-                        index=cittadino_index,
-                        name="CittadinoRAGTool",
-                        description=CITTADINO_RAG_TOOL_DESCRIPTION,
-                        text_qa_template=self.qa_prompt_tmpl,
-                        refine_template=self.ref_prompt_tmpl,
-                    ),
-                ],
-            )
+            self.discovery = get_discovery_agent(name="DiscoveryAgent", tools=tools)
         except Exception as e:
             LOGGER.error(f"Failed to initialize Discovery Agent: {e}")
             raise
