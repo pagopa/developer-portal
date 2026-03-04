@@ -223,7 +223,8 @@ class Chatbot:
         """Generates a response to the user's query by running the discovery agent with the provided query and chat history, and formats the response into a JSON structure.
         Args:
             query_str (str): The user's query string.
-            messages (Optional[List[Dict[str, str]]]): A list of message dictionaries representing the chat history. Each dictionary should have a "question" key for user messages and an "answer" key for assistant
+            messages (Optional[List[Dict[str, str]]]): A list of message dictionaries representing the chat history. Each dictionary should have a "question" key for user messages and an "answer" key for assistant messages.
+            knowledge_base (str | None): An optional knowledge base string to provide additional context for the query.
         Returns:
             dict: A JSON-formatted dictionary containing the response, products, references, contexts, and spans.
         """
