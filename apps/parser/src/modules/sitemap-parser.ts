@@ -3,7 +3,8 @@ import { parseStringPromise } from "xml2js";
 import http from "node:http";
 import https from "node:https";
 import { SitemapXml } from "./types";
-import { REQUEST_TIMEOUT_MS } from "../main";
+
+const DEFAULT_REQUEST_TIMEOUT_MS = 10_000;
 
 export function getSitemapUrl(baseUrl: string): string {
   const envUrl = process.env.SITEMAP_URL?.trim();
@@ -24,6 +25,7 @@ export function getSitemapUrl(baseUrl: string): string {
 export async function fetchRemoteXml(
   url: string,
   redirectLimit = 5,
+  timeoutMs = DEFAULT_REQUEST_TIMEOUT_MS,
 ): Promise<string> {
   let currentUrl = url;
   let remainingRedirects = redirectLimit;
@@ -64,7 +66,7 @@ export async function fetchRemoteXml(
           response.on("end", () => resolve({ data: fullData }));
         });
         request.on("error", (error) => reject(error));
-        request.setTimeout(REQUEST_TIMEOUT_MS, () => {
+        request.setTimeout(timeoutMs, () => {
           request.destroy();
           reject(
             new Error(`Sitemap error: Timeout while fetching ${currentUrl}`),
