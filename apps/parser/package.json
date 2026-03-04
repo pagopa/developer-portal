@@ -10,7 +10,7 @@
     "test": "npm run build && jest -i --silent"
   },
   "dependencies": {
-    "node-fetch": "^3.3.2",
+    "node-fetch": "2.7.0",
     "puppeteer": "^24.37.1",
     "puppeteer-extra": "^3.3.6",
     "puppeteer-extra-plugin-stealth": "^2.11.2",
