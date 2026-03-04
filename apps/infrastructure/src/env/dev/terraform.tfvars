@@ -42,3 +42,11 @@ create_chatbot            = true
 ac_integration_is_enabled = true
 docs_redirect_is_enabled  = false
 
+chatbot_ecs_monitoring = {
+  cpu           = 512
+  memory        = 1024
+  image_uri     = "ghcr.io/langfuse/langfuse:sha-9375250"
+  port          = 3000
+  desired_count = 0
+}
+
