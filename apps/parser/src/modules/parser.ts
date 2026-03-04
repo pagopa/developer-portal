@@ -87,7 +87,7 @@ export async function generatePageParsedMetadata(
   browser: Browser,
   url: string,
   baseScope: string,
-  parserConfig: { [key: string]: any },
+  parserConfig: ParserConfig,
 ): Promise<{ metadata: ParsedMetadata | null; anchors: string[] }> {
   const page = await browser.newPage();
   try {
