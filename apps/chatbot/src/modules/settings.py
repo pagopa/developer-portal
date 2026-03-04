@@ -133,7 +133,6 @@ class ChatbotSettings(BaseSettings):
     chunk_size: int = PARAMS["vector_index"]["chunk_size"]
     devportal_index_id: str = os.getenv("CHB_DEVP_INDEX_ID", "devportal-index")
     cittadino_index_id: str = os.getenv("CHB_CITTADINO_INDEX_ID", "cittadino-index")
-    presidio_config: dict = PARAMS["config_presidio"]
     bucket_static_content: str = os.getenv(
         "CHB_AWS_S3_BUCKET_NAME_STATIC_CONTENT", "devportal-d-website-static-content"
     )
