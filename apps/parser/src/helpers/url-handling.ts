@@ -133,7 +133,11 @@ export function isWithinScope(
     const urlObj = new URL(url);
     const scopeObj = new URL(baseScope);
     const pathname = urlObj.pathname.toLowerCase();
-    if (FILE_EXTENSION_REGEX.test(pathname) && !pathname.endsWith(".html")) {
+    if (
+      FILE_EXTENSION_REGEX.test(pathname) &&
+      !pathname.endsWith(".html") &&
+      !pathname.endsWith(".xml")
+    ) {
       return false;
     }
     const urlDomain = urlObj.hostname.replace("www.", "");
