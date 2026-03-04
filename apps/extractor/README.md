@@ -34,8 +34,9 @@ This project uses [Poetry](https://python-poetry.org/) for dependency management
    # AWS Configuration
    AWS_DEFAULT_REGION=eu-south-1
 
+   # Run type configuration
+   SHOULD_DELETE_FILES_AND_EXIT=false # optional, set to false by default. true is to delete the output directory and exit
    SHOULD_RUN_LOCALLY=false # optional, set to false by default. false is to read from and write to s3
-   LOG_LEVEL=info # optional, set to info by default
 
    # Input and output folder:
    #
@@ -48,7 +49,6 @@ This project uses [Poetry](https://python-poetry.org/) for dependency management
    URL=https://example.com          # same URL as passed to the parser
    CHB_INDEX_ID=my-index            # same index as passed to the parser
    S3_BUCKET_NAME=my-bucket         # required for S3 mode
-
 
    # LLM Configuration (optional, with defaults)
    CHB_MODEL_ID=gemini-2.5-flash-lite

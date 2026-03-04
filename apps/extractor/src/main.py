@@ -49,6 +49,24 @@ def validate_folders() -> bool:
         LOGGER.error(f"Input path is not a directory: {SETTINGS.input_folder}")
         return False
     output_path = Path(SETTINGS.output_folder)
+    if getattr(SETTINGS, "should_delete_files_and_exit", True):
+        LOGGER.info("Output folder will be deleted and application will exit due to SETTINGS.should_delete_files_and_exit=True")
+        try:
+            if output_path.exists():
+                for item in output_path.iterdir():
+                    if item.is_file():
+                        item.unlink()
+                    elif item.is_dir():
+                        import shutil
+
+                        shutil.rmtree(item)
+                LOGGER.info(f"Deleted existing output folder: {SETTINGS.output_folder}")
+            else:
+                LOGGER.info(f"Output folder does not exist, no deletion needed: {SETTINGS.output_folder}")
+        except Exception as e:
+            LOGGER.error(f"Error deleting output folder: {e}")
+            return False
+        return True
     try:
         output_path.mkdir(parents=True, exist_ok=True)
         LOGGER.info(f"Output folder ready: {SETTINGS.output_folder}")

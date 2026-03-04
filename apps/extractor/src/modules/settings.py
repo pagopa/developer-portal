@@ -63,6 +63,11 @@ class ExtractorSettings(BaseSettings):
         os.getenv("SHOULD_RUN_LOCALLY", "false").lower() == "true"
     )
 
+    # Delete and exit flag
+    should_delete_files_and_exit: bool = (
+        os.getenv("SHOULD_DELETE_FILES_AND_EXIT", "false").lower() == "true"
+    )
+
     # I/O Configuration – computed in resolve_folders() after env vars are loaded
     input_folder: Optional[str] = None
     output_folder: Optional[str] = None
