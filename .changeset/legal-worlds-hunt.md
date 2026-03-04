@@ -1,5 +1,5 @@
 ---
-"parser": minor
+"parser": patch
 ---
 
 Resolve redundant page navigation
