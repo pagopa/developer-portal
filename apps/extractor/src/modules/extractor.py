@@ -99,12 +99,14 @@ def process_folder(input_folder: str, output_folder: str, llm: LLM) -> dict:
         "total": 0,
         "succeeded": 0,
         "failed": 0,
+        "skipped": 0,
     }
 
     try:
         # Load all documents from input folder
-        documents = load_json_files(input_folder)
+        documents, skipped = load_json_files(input_folder)
         stats["total"] = len(documents)
+        stats["skipped"] = skipped
 
         if stats["total"] == 0:
             LOGGER.warning("No documents found to process")
@@ -145,9 +147,10 @@ def process_folder(input_folder: str, output_folder: str, llm: LLM) -> dict:
         # Log final summary
         LOGGER.info("=" * 80)
         LOGGER.info("Folder processing complete")
-        LOGGER.info(f"Total files: {stats['total']}")
+        LOGGER.info(f"Total files: {stats['total']+stats['skipped']}")
         LOGGER.info(f"Succeeded: {stats['succeeded']}")
         LOGGER.info(f"Failed: {stats['failed']}")
+        LOGGER.info(f"Skipped (empty bodyText): {stats['skipped']}")
         LOGGER.info("=" * 80)
 
     except Exception as e:

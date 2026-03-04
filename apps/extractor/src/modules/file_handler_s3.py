@@ -34,14 +34,14 @@ def parse_s3_path(s3_path: str) -> Tuple[str, str]:
     return bucket, key_prefix
 
 
-def load_json_files(input_folder: str) -> List[Tuple[str, InputDocument]]:
+def load_json_files(input_folder: str) -> Tuple[List[Tuple[str, InputDocument]], int]:
     """Load JSON files from S3 bucket.
 
     Args:
         input_folder: S3 path in format s3://bucket/key/prefix
 
     Returns:
-        List of tuples containing (filename, InputDocument)
+        Tuple containing a list of tuples (filename, InputDocument) and the number of skipped files
     """
     try:
         bucket, key_prefix = parse_s3_path(input_folder)
@@ -49,6 +49,7 @@ def load_json_files(input_folder: str) -> List[Tuple[str, InputDocument]]:
         raise ValueError(f"Invalid S3 input folder: {e}")
 
     documents: List[Tuple[str, InputDocument]] = []
+    skipped = 0
 
     try:
         # List all objects with the given prefix
@@ -77,8 +78,10 @@ def load_json_files(input_folder: str) -> List[Tuple[str, InputDocument]]:
                 doc = InputDocument(**data)
                 if not doc.bodyText or doc.bodyText.strip() == "":
                     LOGGER.warning(
-                        f"File '{filename}' has empty bodyText. Will process with title and metadata only."
+                        f"File of url '{doc.url}' has empty bodyText. Will skip it."
                     )
+                    skipped += 1
+                    continue
                 documents.append((filename, doc))
                 LOGGER.debug(f"Loaded: {filename}")
             except ValidationError as e:
@@ -106,7 +109,7 @@ def load_json_files(input_folder: str) -> List[Tuple[str, InputDocument]]:
         raise IOError(f"Failed to list S3 objects in s3://{bucket}/{key_prefix}: {e}")
 
     LOGGER.info(f"Successfully loaded {len(documents)} documents")
-    return documents
+    return documents, skipped
 
 
 def save_cleaned_document(
