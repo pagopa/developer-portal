@@ -25,6 +25,7 @@ output "video_streaming" {
   value = {
     s3_recording_bucket_name = module.video_streaming.s3_recording_bucket_name
     ivs_channel_details      = module.video_streaming.ivs_channel_details
+    api_gateway_invoke_url   = module.video_streaming.webinar_metrics_api_url
   }
 
   description = "Outputs from the video streaming module."

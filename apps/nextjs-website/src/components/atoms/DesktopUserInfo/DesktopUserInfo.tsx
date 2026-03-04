@@ -17,7 +17,7 @@ import { useUser } from '@/helpers/user.helper';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import { useRouter, usePathname } from 'next/navigation';
-import { flushChatQueriesFromLocalStorage } from '@/helpers/chatbot.helper';
+import { flushChatQueriesFromLocalStorage } from '@/helpers/chatbot.helpers';
 
 const DesktopUserInfo: FC<{ locale: string }> = ({ locale }) => {
   const t = useTranslations();

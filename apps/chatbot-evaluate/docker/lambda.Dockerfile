@@ -17,7 +17,6 @@ RUN poetry config virtualenvs.create false
 RUN poetry install
 
 COPY ./src ${LAMBDA_TASK_ROOT}/src
-COPY ./scripts ${LAMBDA_TASK_ROOT}/scripts
 COPY ./config ${LAMBDA_TASK_ROOT}/config
 
 RUN echo "appuser:x:1000:1000::/home/appuser:/bin/sh" >> /etc/passwd \
