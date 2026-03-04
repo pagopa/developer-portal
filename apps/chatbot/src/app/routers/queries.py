@@ -9,7 +9,7 @@ from fastapi import APIRouter, Header, HTTPException
 from typing import List, Annotated
 
 from src.app.sqs_init import sqs_queue_monitor
-from src.app.models import Query, tables
+from src.app.models import Query, QueryFromThePast, tables
 from src.app.sessions import (
     current_user_id,
     find_or_create_session,
@@ -106,7 +106,9 @@ def get_final_response(response_str: str, references: List[str]) -> str:
     return response_str
 
 
-def sanitize_messages(history):
+def sanitize_messages(
+    history: List[QueryFromThePast] | None,
+) -> List[Dict[str, Any]] | None:
     if not history:
         return None
     messages = []

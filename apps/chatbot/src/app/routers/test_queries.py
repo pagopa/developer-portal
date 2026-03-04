@@ -45,7 +45,6 @@ def test_post_queries() -> None:
 
     json = response.json()
 
-    print(response.json())
     assert response.status_code == 200
     assert "id" in json.keys()
     assert "sessionId" in json.keys()
