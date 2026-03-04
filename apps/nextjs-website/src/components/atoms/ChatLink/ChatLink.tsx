@@ -7,7 +7,8 @@ import { OpenInNew } from '@mui/icons-material';
 
 const ChatLink = ({ title, href, children }: LinkProps<ReactNode>) => {
   const { palette } = useTheme();
-  const currentHost = typeof window !== 'undefined' ? window.location.host : '';
+  // const currentHost = typeof window !== 'undefined' ? window.location.host : '';
+  const currentHost = 'dev.developer.pagopa.it';
   const external = isExternalLink(currentHost, href);
   return (
     <Link
