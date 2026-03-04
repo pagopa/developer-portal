@@ -16,7 +16,7 @@ def has_rendered_markdown(text_string):
     :return: True if the content contains rendered Markdown elements, False otherwise.
     """
     html_output = markdown.markdown(text_string)
-    html_tag_matches = r'<(h[1-6]|ul|ol|li|strong|em|a|code|blockquote|pre)>'
+    html_tag_matches = r'<(h[1-6]|p|ul|ol|li|strong|em|a|code|blockquote|pre)\b[^>]*>'
 
     check = bool(re.search(html_tag_matches, html_output))
 
