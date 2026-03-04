@@ -16,12 +16,21 @@ LOGGER = get_logger(__name__, level=SETTINGS.log_level)
 
 
 def verify_session_ownership(session_id: str, user_id: str) -> None:
-    session = tables["sessions"].get_item(
-        Key={
-            "id": session_id,
-            "userId": user_id,
-        }
-    )
+    try:
+        session = tables["sessions"].get_item(
+            Key={
+                "id": session_id,
+                "userId": user_id,
+            }
+        )
+    except (BotoCoreError, ClientError) as e:
+        LOGGER.error(
+            f"[verify_session_ownership] sessionId: {session_id}, userId: {user_id}, error: {e}"
+        )
+        raise HTTPException(
+            status_code=422,
+            detail=f"[verify_session_ownership] sessionId: {session_id}, userId: {user_id}, error: {e}",
+        )
     if "Item" not in session:
         raise HTTPException(
             status_code=404,
@@ -69,6 +78,21 @@ async def session_delete(
     body = {
         "id": id,
     }
+    # Delete queries first to avoid orphaned items if session deletion succeeds
+    # but query deletion fails (session still exists, so client can safely retry)
+    try:
+        dbResponse_queries = tables["queries"].query(
+            KeyConditionExpression=Key("sessionId").eq(id)
+        )
+        # TODO: use batch writer
+        # with tables["sessions"].batch_writer() as batch:
+        for query in dbResponse_queries["Items"]:
+            tables["queries"].delete_item(Key={"id": query["id"], "sessionId": id})
+    except (BotoCoreError, ClientError) as e:
+        raise HTTPException(
+            status_code=422, detail=f"[sessions_delete] userId: {userId}, error: {e}"
+        )
+
     try:
         tables["sessions"].delete_item(
             Key={
@@ -87,19 +111,6 @@ async def session_delete(
             status_code=422, detail=f"[sessions_delete] userId: {userId}, error: {e}"
         )
     except BotoCoreError as e:
-        raise HTTPException(
-            status_code=422, detail=f"[sessions_delete] userId: {userId}, error: {e}"
-        )
-
-    try:
-        dbResponse_queries = tables["queries"].query(
-            KeyConditionExpression=Key("sessionId").eq(id)
-        )
-        # TODO: use batch writer
-        # with tables["sessions"].batch_writer() as batch:
-        for query in dbResponse_queries["Items"]:
-            tables["queries"].delete_item(Key={"id": query["id"], "sessionId": id})
-    except (BotoCoreError, ClientError) as e:
         raise HTTPException(
             status_code=422, detail=f"[sessions_delete] userId: {userId}, error: {e}"
         )
