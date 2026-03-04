@@ -5,6 +5,7 @@ import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
 import { RelatedLinksProps } from '@/components/atoms/RelatedLinks/RelatedLinks';
 import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
 import { compact } from 'lodash';
+import { makeTagProps } from '@/lib/strapi/makeProps/makeTags';
 import { StrapiUseCases } from '@/lib/strapi/types/useCase';
 import { UseCase } from '@/lib/types/useCaseData';
 
@@ -72,7 +73,7 @@ export function makeUseCasesProps(
                 ),
           seo: attributes.seo,
           subtitle: attributes.subtitle,
-          tags: attributes.tags.data?.map((tag) => tag.attributes) || [],
+          tags: attributes.tags.data?.map(makeTagProps) || [],
           updatedAt: attributes.updatedAt,
         } satisfies UseCaseProps;
       } catch (error) {

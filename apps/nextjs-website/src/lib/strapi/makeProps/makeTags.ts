@@ -8,6 +8,6 @@ export function makeTagsProps(strapiTags: StrapiTags): ReadonlyArray<Tag> {
 export function makeTagProps(tag: StrapiTag): Tag {
   return {
     name: tag.attributes.name,
-    icon: tag.attributes.icon,
+    icon: tag.attributes.icon?.data?.attributes as any,
   };
 }

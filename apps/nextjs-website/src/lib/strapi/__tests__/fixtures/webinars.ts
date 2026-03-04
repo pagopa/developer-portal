@@ -191,12 +191,8 @@ export const webinarProps = {
   tag: {
     name: 'Category 1',
     icon: {
-      data: {
-        attributes: {
-          ...mediaJpeg().attributes,
-          name: 'example.jpg',
-        },
-      },
+      ...mediaJpeg().attributes,
+      name: 'example.jpg',
     },
   },
   headerImage: {

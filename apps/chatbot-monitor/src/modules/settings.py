@@ -6,11 +6,13 @@ from pydantic_settings import BaseSettings
 
 from src.modules.logger import get_logger
 
-LOGGER = get_logger(__name__)
+LOGGER = get_logger(__name__, level=os.getenv("LOG_LEVEL", "info"))
 CWF = Path(__file__)
 ROOT = CWF.parent.parent.parent.absolute().__str__()
 PARAMS = yaml.safe_load(open(os.path.join(ROOT, "config", "params.yaml"), "r"))
 AWS_SESSION = boto3.Session()
+AWS_SSM_CLIENT = AWS_SESSION.client("ssm")
+
 
 def get_ssm_parameter(name: str | None, default: str | None = None) -> str | None:
     """
@@ -21,15 +23,12 @@ def get_ssm_parameter(name: str | None, default: str | None = None) -> str | Non
     :return: The value of the requested parameter.
     """
 
-    ssm_client = AWS_SESSION.client("ssm")
-    LOGGER.info(f"get_ssm_parameter {name}...")
-
     if name is None:
         name = "none-params-in-ssm"
     try:
-        response = ssm_client.get_parameter(Name=name, WithDecryption=True)
+        response = AWS_SSM_CLIENT.get_parameter(Name=name, WithDecryption=True)
         value = response["Parameter"]["Value"]
-    except ssm_client.exceptions.ParameterNotFound:
+    except AWS_SSM_CLIENT.exceptions.ParameterNotFound:
         LOGGER.warning(
             f"Parameter {name} not found in SSM, returning default: {default}"
         )
@@ -52,6 +51,16 @@ class ChatbotSettings(BaseSettings):
         os.getenv("LANGFUSE_INIT_PROJECT_SECRET_KEY"),
     )
     presidio_config: dict = PARAMS["config_presidio"]
+    query_table_prefix: str = os.getenv("CHB_QUERY_TABLE_PREFIX", "chatbot")
+    log_level: str = os.getenv("LOG_LEVEL", "info")
+
+    # sqs
+    aws_sqs_queue_monitor_name: str = os.getenv(
+        "CHB_AWS_SQS_QUEUE_MONITOR_NAME", "chatbot-monitor"
+    )
+    aws_sqs_queue_evaluate_name: str = os.getenv(
+        "CHB_AWS_SQS_QUEUE_EVALUATE_NAME", "chatbot-evaluate"
+    )
 
 
 SETTINGS = ChatbotSettings()

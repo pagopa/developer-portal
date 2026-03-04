@@ -5,6 +5,7 @@ import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
 import { makeBaseProductWithoutLogoProps } from './makeProducts';
 import { StrapiTutorialListPages } from '@/lib/strapi/types/tutorialsListPage';
 import { compact } from 'lodash';
+import { makeTagProps } from '@/lib/strapi/makeProps/makeTags';
 
 export function makeTutorialListPagesProps(
   locale: string,
@@ -50,9 +51,7 @@ export function makeTutorialListPagesProps(
                 : undefined,
               showInOverview: false,
               image: tutorialAttributes.image.data?.attributes,
-              tags:
-                tutorialAttributes.tags?.data?.map((tag) => tag.attributes) ||
-                [],
+              tags: tutorialAttributes.tags?.data?.map(makeTagProps) || [],
             } satisfies Tutorial;
           } catch (error) {
             // eslint-disable-next-line functional/no-expression-statements

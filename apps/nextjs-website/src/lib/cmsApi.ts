@@ -233,7 +233,8 @@ export const getStrapiReleaseNotes = async (
   const strapiReleaseNotes = await fetchReleaseNotes(locale);
   return strapiReleaseNotes.data.find(
     (strapiReleaseNote) =>
-      strapiReleaseNote.attributes.product.data?.attributes.slug === productSlug
+      strapiReleaseNote.attributes?.product?.data?.attributes?.slug ===
+      productSlug
   );
 };
 

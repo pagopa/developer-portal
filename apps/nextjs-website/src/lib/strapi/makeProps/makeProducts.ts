@@ -8,6 +8,7 @@ import {
   StrapiProducts,
 } from '@/lib/strapi/types/product';
 import { compact } from 'lodash';
+import { makeTagProps } from '@/lib/strapi/makeProps/makeTags';
 
 export function makeProductsProps(
   locale: string,
@@ -101,6 +102,6 @@ export function makeBaseProductWithoutLogoProps(
     name: product.attributes.name,
     shortName: product.attributes.shortName,
     slug: product.attributes.slug,
-    tags: product.attributes.tags?.data?.map((tag) => tag.attributes) || [],
+    tags: product.attributes.tags?.data?.map(makeTagProps) || [],
   } satisfies Product;
 }

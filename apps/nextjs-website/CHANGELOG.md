@@ -1,5 +1,24 @@
 # nextjs-website
 
+## 16.2.0
+
+### Minor Changes
+
+- 4bc9c1e: Add ChatbotChipsContainer and its storybook
+- 27a843f: Enhance chatbot query payload to include knowledgeBase property and update related functions
+- 0651ba3: Add Chatbot chips component and storybook element
+- 22ca48c: Add ChatbotChip functionality and enhance ChatbotChipsContainer layout and add QueryWithChips story to showcase chatbot chip functionality
+
+## 16.1.1
+
+### Patch Changes
+
+- 0b75588: Fix sitemap when hompage is missing in some locale
+- 94a7407: Removed cache from S3 metadata helper
+- c190736: Add locale support to WebinarListItem for dynamic link generation and Add locale to authentication link in Chatobot's guest message
+- Updated dependencies [700e934]
+  - gitbook-docs@1.8.2
+
 ## 16.1.0
 
 ### Minor Changes

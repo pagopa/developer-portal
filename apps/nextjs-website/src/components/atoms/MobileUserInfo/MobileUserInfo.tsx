@@ -8,7 +8,7 @@ import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import { useParams, usePathname, useRouter } from 'next/navigation';
 import { MobileSiteHeaderStyledTreeItem } from '@/components/molecules/MobileSiteHeader/MobileSiteHeader';
-import { flushChatQueriesFromLocalStorage } from '@/helpers/chatbot.helper';
+import { flushChatQueriesFromLocalStorage } from '@/helpers/chatbot.helpers';
 
 type MobileUserInfoProps = {
   // eslint-disable-next-line functional/no-return-void
