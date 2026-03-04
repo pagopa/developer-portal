@@ -2,4 +2,4 @@
 "chatbot": patch
 ---
 
-refactor discovery orchestrator
+Refactor discovery orchestrator
