@@ -1,9 +1,9 @@
+import os
 import json
 import tempfile
 from typing import List, Tuple
 from urllib.parse import urlparse
 
-import boto3
 from botocore.exceptions import ClientError
 from pydantic import ValidationError
 
@@ -61,14 +61,13 @@ def load_json_files(input_folder: str) -> List[Tuple[str, InputDocument]]:
                 continue
             for obj in page["Contents"]:
                 key = obj["Key"]
-                # Only include .json files and skip directories
-                if key.endswith(".json") and not key.endswith("/"):
+                if key.endswith(".json"):
                     json_files.append(key)
 
         LOGGER.info(f"Found {len(json_files)} JSON files in s3://{bucket}/{key_prefix}")
 
         for key in json_files:
-            filename = key.split("/")[-1]  # Extract filename from key
+            filename = os.path.basename(key)
             try:
                 # Download file content from S3
                 response = AWS_S3_CLIENT.get_object(Bucket=bucket, Key=key)
