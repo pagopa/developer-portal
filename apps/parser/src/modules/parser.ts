@@ -8,21 +8,9 @@ import {
 import { expandInteractiveSections } from "./dom-actions";
 import { persistSnapshot } from "./output";
 import {
-  OUTPUT_DIRECTORY,
-  MAX_DEPTH,
-  VALID_DOMAIN_VARIANTS,
-  BASE_HOST_TOKEN,
-  REQUEST_TIMEOUT_MS,
-} from "../main";
-import {
   extractDocumentMetadata,
   serializeMetadata,
 } from "../helpers/metadata-handling";
-
-const PAGE_NAVIGATION_OPTIONS = {
-  waitUntil: "networkidle2" as const,
-  timeout: REQUEST_TIMEOUT_MS,
-};
 
 export async function exploreAndParsePages(
   browser: Browser,
@@ -31,20 +19,22 @@ export async function exploreAndParsePages(
   parsedPages: Map<string, ParsedMetadata>,
   scheduledPages: Set<string>,
   baseScope: string,
+  parserConfig : { [key: string]: any },
 ): Promise<Map<string, ParsedMetadata>> {
   const visitKey = buildVisitKey(node.url);
   scheduledPages.delete(visitKey);
-  if (parsedPages.has(visitKey) || (MAX_DEPTH !== null && depth > MAX_DEPTH)) {
+  if (parsedPages.has(visitKey) || (parserConfig.MAX_DEPTH !== null && depth > parserConfig.MAX_DEPTH)) {
     return parsedPages;
   }
   const normalizedUrl = RemoveAnchorsFromUrl(node.url);
-  if (!isWithinScope(normalizedUrl, baseScope, VALID_DOMAIN_VARIANTS)) {
+  if (!isWithinScope(normalizedUrl, baseScope, parserConfig.VALID_DOMAIN_VARIANTS)) {
     return parsedPages;
   }
   const metadata = await generatePageParsedMetadata(
     browser,
     node.url,
     baseScope,
+    parserConfig,
   );
   if (!metadata) return parsedPages;
   parsedPages.set(visitKey, metadata);
@@ -53,7 +43,8 @@ export async function exploreAndParsePages(
   try {
     page = await browser.newPage();
     await page.goto(node.url, {
-      ...PAGE_NAVIGATION_OPTIONS,
+      waitUntil: "networkidle2" as const,
+      timeout: parserConfig.REQUEST_TIMEOUT_MS,
     });
     await expandInteractiveSections(page);
     anchors = (await page.evaluate((allowedToken: string) => {
@@ -90,7 +81,7 @@ export async function exploreAndParsePages(
         }
       }
       return Array.from(unique);
-    }, BASE_HOST_TOKEN)) as string[];
+    }, parserConfig.BASE_HOST_TOKEN)) as string[];
   } catch (error) {
     console.warn(`Failed to extract anchors from ${node.url}`, error);
   } finally {
@@ -104,10 +95,10 @@ export async function exploreAndParsePages(
     if (parsedPages.has(visitCandidate) || scheduledPages.has(visitCandidate))
       continue;
     const lowerNormalized = normalized.toLowerCase();
-    if (BASE_HOST_TOKEN && !lowerNormalized.includes(BASE_HOST_TOKEN)) {
+    if (parserConfig.BASE_HOST_TOKEN && !lowerNormalized.includes(parserConfig.BASE_HOST_TOKEN)) {
       continue;
     }
-    if (!isWithinScope(normalized, baseScope, VALID_DOMAIN_VARIANTS)) {
+    if (!isWithinScope(normalized, baseScope, parserConfig.VALID_DOMAIN_VARIANTS)) {
       continue;
     }
     scheduledPages.add(visitCandidate);
@@ -123,7 +114,7 @@ export async function exploreAndParsePages(
       parsedPages.size
     }/${totalKnown} (${((parsedPages.size / totalKnown) * 100).toFixed(2)}%)`,
   );
-  if (!node.children || (MAX_DEPTH !== null && depth >= MAX_DEPTH)) {
+  if (!node.children || (parserConfig.MAX_DEPTH !== null && depth >= parserConfig.MAX_DEPTH)) {
     return parsedPages;
   }
   for (const child of node.children) {
@@ -134,6 +125,7 @@ export async function exploreAndParsePages(
       parsedPages,
       scheduledPages,
       baseScope,
+      parserConfig,
     );
     parsedPages = new Map([...parsedPages, ...newParsedPages]);
   }
@@ -144,12 +136,14 @@ export async function generatePageParsedMetadata(
   browser: Browser,
   url: string,
   baseScope: string,
+  parserConfig: { [key: string]: any },
 ): Promise<ParsedMetadata | null> {
   let page: Page | undefined;
   try {
     page = await browser.newPage();
     const redirect_url = await page.goto(url, {
-      ...PAGE_NAVIGATION_OPTIONS,
+      waitUntil: "networkidle2" as const,
+      timeout: parserConfig.REQUEST_TIMEOUT_MS,
     });
     const normalizeUrl = (u: string) => u.replace(/\/+$/, "");
     if (redirect_url && normalizeUrl(redirect_url.url()) !== normalizeUrl(url)) {
@@ -160,7 +154,7 @@ export async function generatePageParsedMetadata(
     await expandInteractiveSections(page);
     const rawMetadata = await page.evaluate(extractDocumentMetadata);
     const snapshot = serializeMetadata(rawMetadata);
-    await persistSnapshot(snapshot, baseScope, OUTPUT_DIRECTORY);
+    await persistSnapshot(snapshot, baseScope, parserConfig.OUTPUT_DIRECTORY);
     return snapshot;
   } catch (error) {
     console.error(`Error while parsing ${url}:`, (error as Error).message);

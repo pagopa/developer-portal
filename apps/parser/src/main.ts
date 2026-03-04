@@ -25,13 +25,15 @@ puppeteer.use(StealthPlugin());
 const env = resolveEnv();
 const parsedPages = new Map<string, ParsedMetadata>();
 const scheduledPages = new Set<string>();
-export const OUTPUT_DIRECTORY = env.outputDirectory;
-export const MAX_DEPTH = env.maxDepth;
-export const REQUEST_TIMEOUT_MS = env.requestTimeoutMs;
-export const BASE_HOST_TOKEN = new URL(env.baseUrl).hostname
-  .replace("www.", "")
-  .toLowerCase();
-export const VALID_DOMAIN_VARIANTS = env.validDomainVariants || [];
+const VALID_DOMAIN_VARIANTS = env.validDomainVariants || [];
+const PARSER_CONFIG = {
+  OUTPUT_DIRECTORY: env.outputDirectory,
+  MAX_DEPTH: env.maxDepth,
+  VALID_DOMAIN_VARIANTS: env.validDomainVariants || [],
+  BASE_HOST_TOKEN: new URL(env.baseUrl).hostname.replace("www.", "").toLowerCase(),
+  REQUEST_TIMEOUT_MS: env.requestTimeoutMs,
+};
+export const BASE_HOST_TOKEN = new URL(env.baseUrl).hostname.replace("www.", "").toLowerCase();
 export const SHOULD_CREATE_FILES_LOCALLY = env.shouldCreateFilesLocally;
 export const S3_BUCKET_NAME = env.S3BucketName;
 
@@ -39,9 +41,9 @@ let BASE_URL = env.baseUrl;
 
 async function main(): Promise<void> {
   try {
-    await assertReachable(env.baseUrl, REQUEST_TIMEOUT_MS);
+    await assertReachable(env.baseUrl, PARSER_CONFIG.REQUEST_TIMEOUT_MS);
     if (SHOULD_CREATE_FILES_LOCALLY) {
-      ensureDirectory(env.outputDirectory);
+      ensureDirectory(PARSER_CONFIG.OUTPUT_DIRECTORY);
     }
     const browser = await puppeteer.launch({ headless: true });
     let finalUrl = env.baseUrl;
@@ -50,7 +52,7 @@ async function main(): Promise<void> {
       page = await browser.newPage();
       const response = await page.goto(env.baseUrl, {
         waitUntil: "networkidle2",
-        timeout: REQUEST_TIMEOUT_MS,
+        timeout: PARSER_CONFIG.REQUEST_TIMEOUT_MS,
       });
       if (response) {
         finalUrl = response.url();
@@ -84,6 +86,7 @@ async function main(): Promise<void> {
       parsedPages,
       scheduledPages,
       BASE_SCOPE,
+      PARSER_CONFIG,
     );
     console.log("Crawling complete. Checking sitemap for unparsed URLs...");
     let sitemapUrls: string[] = [];
@@ -98,7 +101,7 @@ async function main(): Promise<void> {
         throw new Error("Sitemap URL out of scope");
       }
       try {
-        sitemapXml = await fetchRemoteXml(sitemapUrl, 5, REQUEST_TIMEOUT_MS);
+        sitemapXml = await fetchRemoteXml(sitemapUrl, 5, PARSER_CONFIG.REQUEST_TIMEOUT_MS);
       } catch (err) {
         console.warn(
           `Sitemap warning: Failed to fetch ${sitemapUrl}: ${
@@ -143,6 +146,7 @@ async function main(): Promise<void> {
             browser,
             url,
             BASE_SCOPE,
+            PARSER_CONFIG,
           );
           if (!metadata) continue;
           allParsedPages.set(buildVisitKey(url), metadata);
