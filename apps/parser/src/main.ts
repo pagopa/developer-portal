@@ -32,13 +32,17 @@ export const BASE_HOST_TOKEN = new URL(env.baseUrl).hostname
   .replace("www.", "")
   .toLowerCase();
 export const VALID_DOMAIN_VARIANTS = env.validDomainVariants || [];
+export const SHOULD_CREATE_FILES_LOCALLY = env.shouldCreateFilesLocally;
+export const S3_BUCKET_NAME = env.S3BucketName;
 
 let BASE_URL = env.baseUrl;
 
 async function main(): Promise<void> {
   try {
     await assertReachable(env.baseUrl, REQUEST_TIMEOUT_MS);
-    ensureDirectory(env.outputDirectory);
+    if (SHOULD_CREATE_FILES_LOCALLY) {
+      ensureDirectory(env.outputDirectory);
+    }
     const browser = await puppeteer.launch({ headless: true });
     let finalUrl = env.baseUrl;
     let page;
@@ -83,6 +87,7 @@ async function main(): Promise<void> {
     );
     console.log("Crawling complete. Checking sitemap for unparsed URLs...");
     let sitemapUrls: string[] = [];
+    let pagesFromCrawlSize: number | undefined;
     try {
       const sitemapUrl = getSitemapUrl(env.baseUrl);
       let sitemapXml = "";
@@ -93,7 +98,7 @@ async function main(): Promise<void> {
         throw new Error("Sitemap URL out of scope");
       }
       try {
-        sitemapXml = await fetchRemoteXml(sitemapUrl);
+        sitemapXml = await fetchRemoteXml(sitemapUrl, 5, REQUEST_TIMEOUT_MS);
       } catch (err) {
         console.warn(
           `Sitemap warning: Failed to fetch ${sitemapUrl}: ${
@@ -131,7 +136,7 @@ async function main(): Promise<void> {
           env.baseUrl,
         )} not seen in crawl...`,
       );
-      const pagesFromCrawlSize = allParsedPages.size;
+      pagesFromCrawlSize = allParsedPages.size;
       for (const url of toParse) {
         try {
           const metadata = await generatePageParsedMetadata(
@@ -163,6 +168,14 @@ async function main(): Promise<void> {
     console.log(
       `Parsing complete! Parsed ${allParsedPages.size} pages. Data saved to ${env.outputDirectory}`,
     );
+    if (
+      pagesFromCrawlSize !== undefined &&
+      allParsedPages.size - pagesFromCrawlSize < toParse.length
+    ) {
+      console.warn(
+        `Warning: Only parsed ${allParsedPages.size - pagesFromCrawlSize} out of ${toParse.length} URLs from sitemap.`,
+      );
+    }
   } catch (error) {
     handleError(error);
   }
