@@ -18,10 +18,15 @@ const ChatLink = ({ title, href, children }: LinkProps<ReactNode>) => {
       fontWeight={'600'}
       target={external ? '_blank' : undefined}
       rel={external ? 'noreferrer' : undefined}
+      aria-label={
+        external ? `${title || href} (opens in a new tab)` : undefined
+      }
     >
       {children}
       {external && (
         <OpenInNew
+          aria-hidden='true'
+          focusable={false}
           sx={{ ml: 0.5, fontSize: 'inherit', verticalAlign: 'middle' }}
         />
       )}
