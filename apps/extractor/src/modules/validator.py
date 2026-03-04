@@ -12,11 +12,13 @@ def has_rendered_markdown(text_string: str) -> bool:
     """
     Verify if the extracted content contains rendered Markdown elements, indicating successful formatting.
 
-    :param text_string: the content of the extracted file to check for rendered Markdown elements.
-    :return: True if the content contains rendered Markdown elements, False otherwise.
+    Args:
+        text_string (str): the content of the extracted file to check for rendered Markdown elements.
+    Returns:
+        bool: True if the content contains rendered Markdown elements, False otherwise.
     """
     html_output = markdown.markdown(text_string)
-    html_tag_matches = r'<(h[1-6]|p|ul|ol|li|strong|em|a|code|blockquote|pre)\b[^>]*>'
+    html_tag_matches = r'<(h[1-6]|ul|ol|li|strong|em|a|code|blockquote|pre)\b[^>]*>'
 
     check = bool(re.search(html_tag_matches, html_output))
 

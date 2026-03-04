@@ -69,7 +69,7 @@ def extract_document(
         response = program()
 
         # Validate that we got a CleanedDocument
-        if isinstance(response, CleanedDocument) and validate_extracted_text(response.text,input_body):
+        if isinstance(response, CleanedDocument) and validate_extracted_text(response.text,input_body, SETTINGS.similarity_threshold):
             LOGGER.debug(f"Successfully parsed document: {input_doc.title[:50]}...")
             return response
         else:
