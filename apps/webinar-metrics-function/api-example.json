@@ -1,0 +1,14 @@
+{
+  "data": [
+    {
+      "id": "string",
+      "slug": "string",
+      "creation_time": "string (ISO8601)",
+      "duration": "integer (seconds)",
+      "stats": {
+        "live_plays": "integer",
+        "ondemand_plays": "integer"
+      }
+    }
+  ]
+}
