@@ -98,7 +98,7 @@ async function main(): Promise<void> {
         throw new Error("Sitemap URL out of scope");
       }
       try {
-        sitemapXml = await fetchRemoteXml(sitemapUrl);
+        sitemapXml = await fetchRemoteXml(sitemapUrl, 5, REQUEST_TIMEOUT_MS);
       } catch (err) {
         console.warn(
           `Sitemap warning: Failed to fetch ${sitemapUrl}: ${
