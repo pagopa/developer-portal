@@ -11,6 +11,10 @@ inputs:
   environment:
     description: 'The environment used as target (dev, uat, prod)'
     required: true
+  similarity_threshold:
+    description: 'Similarity threshold for output validation (optional, default: 0.8)'
+    required: false
+    default: '0.8'
   urls:
     description: 'URLs to extract (comma-separated)'
     required: true
@@ -64,6 +68,7 @@ runs:
         CHB_AWS_GOOGLE_API_KEY: ${{ inputs.chb_aws_google_api_key }}
         CHB_INDEX_ID: ${{ inputs.parser_vector_index_name }}
         S3_BUCKET_NAME: devportal-${{ env.ENV_SHORT }}-website-static-content
+        SIMILARITY_THRESHOLD: ${{ inputs.similarity_threshold }}
       shell: bash
       run: |
         # Split comma-separated URLs and loop sequentially
