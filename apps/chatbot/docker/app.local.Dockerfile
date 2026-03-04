@@ -46,4 +46,5 @@ RUN chown -R appuser:appuser /app
 
 USER appuser
 
-CMD ["hypercorn", "-b", "0.0.0.0:8080", "--reload", "src.app.main:app"]
+ENTRYPOINT ["bash", "./scripts/entrypoint.sh"]
+CMD ["bash", "./scripts/run.local.sh"]

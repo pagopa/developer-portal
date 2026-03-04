@@ -44,5 +44,5 @@ RUN chown -R appuser:appuser /app
 
 USER appuser
 
-ENTRYPOINT ["./scripts/entrypoint.test.sh"]
-CMD ["./scripts/run.test.sh"]
+ENTRYPOINT ["bash", "./scripts/entrypoint.test.sh"]
+CMD ["bash", "./scripts/run.test.sh"]
