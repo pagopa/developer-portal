@@ -62,11 +62,17 @@ const LoginContent = () => {
     async (code: string) => {
       await Auth.sendCustomChallengeAnswer(user, code);
 
-      const redirect = atob(searchParams.get('redirect') || '');
-      if (canRedirectToUrl(redirect)) {
-        router.replace(redirect);
-      } else {
-        router.replace(`/${locale}`);
+      // eslint-disable-next-line functional/no-let
+      let redirectPath;
+      // eslint-disable-next-line functional/no-try-statements
+      try {
+        redirectPath = atob(searchParams.get('redirect') || '');
+      } finally {
+        if (redirectPath && canRedirectToUrl(redirectPath)) {
+          router.replace(redirectPath);
+        } else {
+          router.replace(`/${locale}`);
+        }
       }
     },
     [locale, router, searchParams, user]
