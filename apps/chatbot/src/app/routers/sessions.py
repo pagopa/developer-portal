@@ -15,6 +15,20 @@ router = APIRouter()
 LOGGER = get_logger(__name__, level=SETTINGS.log_level)
 
 
+def verify_session_ownership(session_id: str, user_id: str) -> None:
+    session = tables["sessions"].get_item(
+        Key={
+            "id": session_id,
+            "userId": user_id,
+        }
+    )
+    if "Item" not in session:
+        raise HTTPException(
+            status_code=404,
+            detail=f"Session {session_id} not found for userId: {user_id}",
+        )
+
+
 # retrieve sessions of current user
 @router.get("/sessions")
 async def sessions_fetching(
@@ -56,6 +70,19 @@ async def session_delete(
         "id": id,
     }
     try:
+        response = tables["sessions"].delete_item(
+            Key={
+                "userId": userId,
+                "id": id,
+            },
+            ReturnValues="ALL_OLD",
+        )
+        if "Attributes" not in response:
+            raise HTTPException(
+                status_code=404,
+                detail=f"Session {id} not found for userId: {userId}",
+            )
+
         dbResponse_queries = tables["queries"].query(
             KeyConditionExpression=Key("sessionId").eq(id)
         )
@@ -63,13 +90,6 @@ async def session_delete(
         # with tables["sessions"].batch_writer() as batch:
         for query in dbResponse_queries["Items"]:
             tables["queries"].delete_item(Key={"id": query["id"], "sessionId": id})
-
-        tables["sessions"].delete_item(
-            Key={
-                "id": id,
-                "userId": userId,
-            }
-        )
 
     except (BotoCoreError, ClientError) as e:
         raise HTTPException(
@@ -86,6 +106,8 @@ async def query_feedback(
     query: QueryFeedback,
     authorization: Annotated[str | None, Header()] = None,
 ):
+    userId = current_user_id(authorization)
+    verify_session_ownership(sessionId, userId)
 
     feedback = None
     if query.feedback:
