@@ -1,0 +1,3161 @@
+{
+  "data": {
+    "id": 2,
+    "attributes": {
+      "title": "Le soluzioni PagoPA: una nuova esperienza di servizi pubblici",
+      "description": "Scopri le soluzioni, guide pratiche realizzate per supportarti nella trasformazione digitale dei tuoi servizi attraverso l’utilizzo integrato delle piattaforme PagoPA.",
+      "createdAt": "2024-07-18T10:54:39.135Z",
+      "updatedAt": "2025-11-19T17:31:33.177Z",
+      "publishedAt": "2024-07-18T10:54:41.784Z",
+      "locale": "it",
+      "solutions": {
+        "data": [
+          {
+            "id": 4,
+            "attributes": {
+              "slug": "multe-per-violazioni-al-codice-della-strada",
+              "kickerTitle": "Soluzioni PagoPA",
+              "title": "Multe per violazioni al Codice della Strada",
+              "description": "La soluzione dedicata all’ottimizzazione dei processi \nlegati all’intero ciclo di vita del servizio multe, dall'emissione del preavviso fino all'invio dell'eventuale contravvenzione.",
+              "dirName": "scNN4VxWXwMhu89WVAmZ",
+              "landingUseCaseFile": "README.md",
+              "createdAt": "2024-07-08T14:19:41.415Z",
+              "updatedAt": "2025-09-04T12:25:24.670Z",
+              "publishedAt": "2024-07-08T14:19:48.391Z",
+              "locale": "it",
+              "introductionToSteps": "In questa guida trovi i consigli utili per erogare in maniera virtuosa il servizio di sanzioni per violazione al Codice della strada, con approfondimenti sulla gestione delle diverse fasi.",
+              "statsSource": null,
+              "bannerLinks": [
+                {
+                  "id": 93,
+                  "title": "Vantaggi per il cittadino",
+                  "content": [
+                    {
+                      "type": "list",
+                      "format": "unordered",
+                      "children": [
+                        {
+                          "type": "list-item",
+                          "children": [
+                            {
+                              "bold": true,
+                              "text": "Le comunicazioni in tempo reale",
+                              "type": "text"
+                            },
+                            {
+                              "text": " consentono al cittadino di agire con tempestività sul pagamento di sanzioni",
+                              "type": "text"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "list-item",
+                          "children": [
+                            {
+                              "bold": true,
+                              "text": "La scadenza sugli avvisi di pagamento",
+                              "type": "text"
+                            },
+                            {
+                              "text": " riduce la possibilità di incorrere in sanzioni aggiuntive",
+                              "type": "text"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ],
+                  "theme": "dark",
+                  "icon": {
+                    "data": {
+                      "id": 262,
+                      "attributes": {
+                        "name": "PersonOutline.svg",
+                        "alternativeText": null,
+                        "caption": null,
+                        "width": 60,
+                        "height": 60,
+                        "formats": null,
+                        "hash": "Person_Outline_7a6ccfe88c",
+                        "ext": ".svg",
+                        "mime": "image/svg+xml",
+                        "size": 0.55,
+                        "url": "https://cdn.dev.developer.pagopa.it/Person_Outline_7a6ccfe88c.svg",
+                        "previewUrl": null,
+                        "provider": "aws-s3",
+                        "provider_metadata": null,
+                        "createdAt": "2024-07-08T13:57:19.065Z",
+                        "updatedAt": "2024-10-17T13:27:44.293Z",
+                        "isUrlSigned": true
+                      }
+                    }
+                  }
+                },
+                {
+                  "id": 94,
+                  "title": "Vantaggi per l’ente",
+                  "content": [
+                    {
+                      "type": "list",
+                      "format": "unordered",
+                      "children": [
+                        {
+                          "type": "list-item",
+                          "children": [
+                            {
+                              "text": "I processi automatizzati e sicuri consentono ",
+                              "type": "text"
+                            },
+                            {
+                              "bold": true,
+                              "text": "di ridurre i tempi e i costi",
+                              "type": "text"
+                            },
+                            {
+                              "text": " per della notifica e la consegna della contravvenzione",
+                              "type": "text"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "list-item",
+                          "children": [
+                            {
+                              "text": "La gestione tramite canali digitali porta a ",
+                              "type": "text"
+                            },
+                            {
+                              "bold": true,
+                              "text": "velocizzare i tempi di riscossione",
+                              "type": "text"
+                            },
+                            {
+                              "text": " delle multe",
+                              "type": "text"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ],
+                  "theme": "light",
+                  "icon": {
+                    "data": {
+                      "id": 275,
+                      "attributes": {
+                        "name": "Business.svg",
+                        "alternativeText": null,
+                        "caption": null,
+                        "width": 60,
+                        "height": 60,
+                        "formats": null,
+                        "hash": "Business_e436baf431",
+                        "ext": ".svg",
+                        "mime": "image/svg+xml",
+                        "size": 0.47,
+                        "url": "https://cdn.dev.developer.pagopa.it/Business_e436baf431.svg",
+                        "previewUrl": null,
+                        "provider": "aws-s3",
+                        "provider_metadata": null,
+                        "createdAt": "2024-07-08T13:58:37.809Z",
+                        "updatedAt": "2024-10-17T13:27:46.493Z",
+                        "isUrlSigned": true
+                      }
+                    }
+                  }
+                }
+              ],
+              "products": {
+                "data": [
+                  {
+                    "id": 40,
+                    "attributes": {
+                      "name": "IO, l’app dei servizi pubblici",
+                      "description": "Raccogli tutti i servizi digitali del tuo ente in un’unica piattaforma e interagisci in modo semplice e sicuro con i cittadini.",
+                      "slug": "app-io",
+                      "createdAt": "2024-04-09T15:23:29.012Z",
+                      "updatedAt": "2025-06-06T17:53:42.130Z",
+                      "publishedAt": "2024-04-10T09:49:28.943Z",
+                      "locale": "it",
+                      "shortName": "App IO",
+                      "isVisible": true,
+                      "logo": {
+                        "data": {
+                          "id": 247,
+                          "attributes": {
+                            "name": "appIo.svg",
+                            "alternativeText": null,
+                            "caption": null,
+                            "width": 60,
+                            "height": 61,
+                            "formats": null,
+                            "hash": "app_Io_107fb95dac",
+                            "ext": ".svg",
+                            "mime": "image/svg+xml",
+                            "size": 1.9,
+                            "url": "https://cdn.dev.developer.pagopa.it/app_Io_107fb95dac.svg",
+                            "previewUrl": null,
+                            "provider": "aws-s3",
+                            "provider_metadata": null,
+                            "createdAt": "2024-04-09T15:23:23.226Z",
+                            "updatedAt": "2024-10-17T13:27:41.599Z",
+                            "isUrlSigned": true
+                          }
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "id": 41,
+                    "attributes": {
+                      "name": "Piattaforma pagoPA",
+                      "description": "Gestisci gli incassi in modo centralizzato e con immediata riconciliazione delle posizioni debitorie.",
+                      "slug": "pago-pa",
+                      "createdAt": "2024-04-10T09:53:46.429Z",
+                      "updatedAt": "2025-11-10T09:19:07.395Z",
+                      "publishedAt": "2024-04-10T09:53:47.542Z",
+                      "locale": "it",
+                      "shortName": "pagoPA",
+                      "isVisible": true,
+                      "logo": {
+                        "data": {
+                          "id": 249,
+                          "attributes": {
+                            "name": "pagoPa.svg",
+                            "alternativeText": null,
+                            "caption": null,
+                            "width": 60,
+                            "height": 61,
+                            "formats": null,
+                            "hash": "pago_Pa_f3515b8397",
+                            "ext": ".svg",
+                            "mime": "image/svg+xml",
+                            "size": 2.28,
+                            "url": "https://cdn.dev.developer.pagopa.it/pago_Pa_f3515b8397.svg",
+                            "previewUrl": null,
+                            "provider": "aws-s3",
+                            "provider_metadata": null,
+                            "createdAt": "2024-04-10T09:53:43.883Z",
+                            "updatedAt": "2024-10-17T13:27:41.739Z",
+                            "isUrlSigned": true
+                          }
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "id": 42,
+                    "attributes": {
+                      "name": "SEND - Servizio Notifiche Digitali",
+                      "description": "Invia comunicazioni a valore legale con un processo di notificazione gestito interamente dalla piattaforma.",
+                      "slug": "send",
+                      "createdAt": "2024-04-10T09:54:19.309Z",
+                      "updatedAt": "2025-10-17T21:07:11.277Z",
+                      "publishedAt": "2024-04-10T09:54:20.623Z",
+                      "locale": "it",
+                      "shortName": "SEND",
+                      "isVisible": true,
+                      "logo": {
+                        "data": {
+                          "id": 250,
+                          "attributes": {
+                            "name": "send.svg",
+                            "alternativeText": null,
+                            "caption": null,
+                            "width": 60,
+                            "height": 61,
+                            "formats": null,
+                            "hash": "send_2d0274ac42",
+                            "ext": ".svg",
+                            "mime": "image/svg+xml",
+                            "size": 1.56,
+                            "url": "https://cdn.dev.developer.pagopa.it/send_2d0274ac42.svg",
+                            "previewUrl": null,
+                            "provider": "aws-s3",
+                            "provider_metadata": null,
+                            "createdAt": "2024-04-10T09:54:16.699Z",
+                            "updatedAt": "2024-10-17T13:27:41.819Z",
+                            "isUrlSigned": true
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
+              },
+              "icon": {
+                "data": {
+                  "id": 272,
+                  "attributes": {
+                    "name": "DirectionsCar.svg",
+                    "alternativeText": null,
+                    "caption": null,
+                    "width": 48,
+                    "height": 48,
+                    "formats": null,
+                    "hash": "Directions_Car_000d7d07b4",
+                    "ext": ".svg",
+                    "mime": "image/svg+xml",
+                    "size": 0.56,
+                    "url": "https://cdn.dev.developer.pagopa.it/Directions_Car_000d7d07b4.svg",
+                    "previewUrl": null,
+                    "provider": "aws-s3",
+                    "provider_metadata": null,
+                    "createdAt": "2024-07-08T14:14:27.025Z",
+                    "updatedAt": "2024-10-17T13:27:45.693Z",
+                    "isUrlSigned": true
+                  }
+                }
+              },
+              "stats": [
+                {
+                  "id": 9,
+                  "title": "+50%",
+                  "description": "dei verbali viene pagato entro 5 giorni"
+                },
+                {
+                  "id": 10,
+                  "title": "15%",
+                  "description": "dei quali vengono pagati entro 1 giorno"
+                },
+                {
+                  "id": 11,
+                  "title": "2 mesi",
+                  "description": "di riduzione effettiva  dei tempi di incasso"
+                }
+              ],
+              "steps": [
+                {
+                  "id": 8,
+                  "title": "01",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "children": [
+                        {
+                          "bold": true,
+                          "text": "Violazione commessa",
+                          "type": "text"
+                        },
+                        {
+                          "text": " dal cittadino e generazione dell’avviso pagoPA",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ],
+                  "products": {
+                    "data": [
+                      {
+                        "id": 41,
+                        "attributes": {
+                          "name": "Piattaforma pagoPA",
+                          "description": "Gestisci gli incassi in modo centralizzato e con immediata riconciliazione delle posizioni debitorie.",
+                          "slug": "pago-pa",
+                          "createdAt": "2024-04-10T09:53:46.429Z",
+                          "updatedAt": "2025-11-10T09:19:07.395Z",
+                          "publishedAt": "2024-04-10T09:53:47.542Z",
+                          "locale": "it",
+                          "shortName": "pagoPA",
+                          "isVisible": true
+                        }
+                      }
+                    ]
+                  }
+                },
+                {
+                  "id": 9,
+                  "title": "02",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "children": [
+                        {
+                          "text": "Emissione e pagamento del ",
+                          "type": "text"
+                        },
+                        {
+                          "bold": true,
+                          "text": "preavviso di accertamento ",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ],
+                  "products": {
+                    "data": [
+                      {
+                        "id": 40,
+                        "attributes": {
+                          "name": "IO, l’app dei servizi pubblici",
+                          "description": "Raccogli tutti i servizi digitali del tuo ente in un’unica piattaforma e interagisci in modo semplice e sicuro con i cittadini.",
+                          "slug": "app-io",
+                          "createdAt": "2024-04-09T15:23:29.012Z",
+                          "updatedAt": "2025-06-06T17:53:42.130Z",
+                          "publishedAt": "2024-04-10T09:49:28.943Z",
+                          "locale": "it",
+                          "shortName": "App IO",
+                          "isVisible": true
+                        }
+                      },
+                      {
+                        "id": 41,
+                        "attributes": {
+                          "name": "Piattaforma pagoPA",
+                          "description": "Gestisci gli incassi in modo centralizzato e con immediata riconciliazione delle posizioni debitorie.",
+                          "slug": "pago-pa",
+                          "createdAt": "2024-04-10T09:53:46.429Z",
+                          "updatedAt": "2025-11-10T09:19:07.395Z",
+                          "publishedAt": "2024-04-10T09:53:47.542Z",
+                          "locale": "it",
+                          "shortName": "pagoPA",
+                          "isVisible": true
+                        }
+                      }
+                    ]
+                  }
+                },
+                {
+                  "id": 10,
+                  "title": "03",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "children": [
+                        {
+                          "text": "Emissione, consegna e pagamento del ",
+                          "type": "text"
+                        },
+                        {
+                          "bold": true,
+                          "text": "verbale di contestazione ",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ],
+                  "products": {
+                    "data": [
+                      {
+                        "id": 40,
+                        "attributes": {
+                          "name": "IO, l’app dei servizi pubblici",
+                          "description": "Raccogli tutti i servizi digitali del tuo ente in un’unica piattaforma e interagisci in modo semplice e sicuro con i cittadini.",
+                          "slug": "app-io",
+                          "createdAt": "2024-04-09T15:23:29.012Z",
+                          "updatedAt": "2025-06-06T17:53:42.130Z",
+                          "publishedAt": "2024-04-10T09:49:28.943Z",
+                          "locale": "it",
+                          "shortName": "App IO",
+                          "isVisible": true
+                        }
+                      },
+                      {
+                        "id": 41,
+                        "attributes": {
+                          "name": "Piattaforma pagoPA",
+                          "description": "Gestisci gli incassi in modo centralizzato e con immediata riconciliazione delle posizioni debitorie.",
+                          "slug": "pago-pa",
+                          "createdAt": "2024-04-10T09:53:46.429Z",
+                          "updatedAt": "2025-11-10T09:19:07.395Z",
+                          "publishedAt": "2024-04-10T09:53:47.542Z",
+                          "locale": "it",
+                          "shortName": "pagoPA",
+                          "isVisible": true
+                        }
+                      },
+                      {
+                        "id": 42,
+                        "attributes": {
+                          "name": "SEND - Servizio Notifiche Digitali",
+                          "description": "Invia comunicazioni a valore legale con un processo di notificazione gestito interamente dalla piattaforma.",
+                          "slug": "send",
+                          "createdAt": "2024-04-10T09:54:19.309Z",
+                          "updatedAt": "2025-10-17T21:07:11.277Z",
+                          "publishedAt": "2024-04-10T09:54:20.623Z",
+                          "locale": "it",
+                          "shortName": "SEND",
+                          "isVisible": true
+                        }
+                      }
+                    ]
+                  }
+                }
+              ],
+              "webinars": {
+                "data": [
+                  {
+                    "id": 11,
+                    "attributes": {
+                      "title": "PagoPA LAB - Approfondiamo la gestione integrata del servizio multe da pagoPA e IO a SEND",
+                      "slug": "PagoPA-multe",
+                      "playerSrc": "https://vimeo.com/event/4135276/embed",
+                      "startDatetime": "2024-03-20T10:00:00.000Z",
+                      "endDatetime": "2024-03-20T11:00:00.000Z",
+                      "isVisibleInList": true,
+                      "subscribeParagraphLabel": null,
+                      "description": "Come gestire al meglio le sanzioni per violazione del Codice della strada attraverso un approccio digitale, integrato e multi-piattaforma a beneficio del Comune e del cittadino.",
+                      "createdAt": "2024-05-30T13:39:14.539Z",
+                      "updatedAt": "2024-07-09T13:34:54.419Z",
+                      "publishedAt": "2024-07-09T13:34:54.412Z",
+                      "locale": "it",
+                      "bodyContent": [
+                        {
+                          "type": "heading",
+                          "level": 5,
+                          "children": [
+                            {
+                              "text": "Gestione integrata del servizio multe da pagoPA e IO a SEND",
+                              "type": "text"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "paragraph",
+                          "children": [
+                            {
+                              "text": "Come semplificare ed efficientare la gestione delle multe con PagoPA?",
+                              "type": "text"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "paragraph",
+                          "children": [
+                            {
+                              "text": "In questo appuntamento saranno illustrati tutti i passaggi utili per la costruzione di un servizio pienamente digitale ed efficiente attraverso l’utilizzo sinergico di pagoPA, IO e SEND. Il webinar ha l’obiettivo infatti di fornire tutti i chiarimenti e gli strumenti utili per una corretta e virtuosa gestione digitale del servizio multe attraverso l’utilizzo integrato delle piattaforme di PagoPA.",
+                              "type": "text"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "image",
+                          "image": {
+                            "ext": ".jpg",
+                            "url": "https://cdn.developer.pagopa.it/webinar_cover_pago_pa_multe_c7a830ba53.jpg",
+                            "hash": "webinar_cover_pago_pa_multe_c7a830ba53",
+                            "mime": "image/jpeg",
+                            "name": "webinar-cover-pago-pa-multe.jpg",
+                            "size": 30.94,
+                            "width": 728,
+                            "height": 416,
+                            "caption": null,
+                            "formats": {
+                              "small": {
+                                "ext": ".jpg",
+                                "url": "https://cdn.developer.pagopa.it/small_webinar_cover_pago_pa_multe_c7a830ba53.jpg",
+                                "hash": "small_webinar_cover_pago_pa_multe_c7a830ba53",
+                                "mime": "image/jpeg",
+                                "name": "small_webinar-cover-pago-pa-multe.jpg",
+                                "path": null,
+                                "size": 17.55,
+                                "width": 500,
+                                "height": 286,
+                                "isUrlSigned": true,
+                                "sizeInBytes": 17551
+                              },
+                              "thumbnail": {
+                                "ext": ".jpg",
+                                "url": "https://cdn.developer.pagopa.it/thumbnail_webinar_cover_pago_pa_multe_c7a830ba53.jpg",
+                                "hash": "thumbnail_webinar_cover_pago_pa_multe_c7a830ba53",
+                                "mime": "image/jpeg",
+                                "name": "thumbnail_webinar-cover-pago-pa-multe.jpg",
+                                "path": null,
+                                "size": 5.95,
+                                "width": 245,
+                                "height": 140,
+                                "isUrlSigned": true,
+                                "sizeInBytes": 5952
+                              }
+                            },
+                            "provider": "aws-s3",
+                            "createdAt": "2024-05-30T13:27:44.949Z",
+                            "updatedAt": "2024-05-30T13:27:44.949Z",
+                            "previewUrl": null,
+                            "alternativeText": "webinar-cover-pago-pa-multe.jpg",
+                            "provider_metadata": null
+                          },
+                          "children": [
+                            {
+                              "text": "",
+                              "type": "text"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "paragraph",
+                          "children": [
+                            {
+                              "text": "La riscossione delle sanzioni previste dal Codice della strada è uno dei servizi più diffusi che i Comuni si trovano a dover gestire. L'utilizzo integrato di pagoPA, IO e SEND può rappresentare per le Amministrazioni un fattore chiave per efficientare tutti i processi legati al loro intero ciclo di vita, dall'emissione del preavviso fino all'invio dell'eventuale contravvenzione. Durante l’incontro verranno analizzate tutte le fasi atte all'emissione e riscossione di una multa, rappresentando anche best practice e vantaggi derivanti da un utilizzo consapevole e sinergico delle piattaforma PagoPA. Lo scopo ultimo è di fornire ai Comuni gli strumenti utili per beneficiare appieno di tutti i vantaggi legati alla gestione digitale del servizio.",
+                              "type": "text"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "paragraph",
+                          "children": [
+                            {
+                              "text": "",
+                              "type": "text"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "paragraph",
+                          "children": [
+                            {
+                              "text": "",
+                              "type": "text"
+                            }
+                          ]
+                        }
+                      ],
+                      "coverImage": {
+                        "data": {
+                          "id": 274,
+                          "attributes": {
+                            "name": "webinar-cover-pago-pa-multe.jpg",
+                            "alternativeText": null,
+                            "caption": null,
+                            "width": 728,
+                            "height": 416,
+                            "formats": {
+                              "small": {
+                                "ext": ".jpg",
+                                "url": "https://cdn.dev.developer.pagopa.it/small_webinar_cover_pago_pa_multe_c7a830ba53.jpg",
+                                "hash": "small_webinar_cover_pago_pa_multe_c7a830ba53",
+                                "mime": "image/jpeg",
+                                "name": "small_webinar-cover-pago-pa-multe.jpg",
+                                "path": null,
+                                "size": 17.55,
+                                "width": 500,
+                                "height": 286,
+                                "sizeInBytes": 17551,
+                                "isUrlSigned": true
+                              },
+                              "thumbnail": {
+                                "ext": ".jpg",
+                                "url": "https://cdn.dev.developer.pagopa.it/thumbnail_webinar_cover_pago_pa_multe_c7a830ba53.jpg",
+                                "hash": "thumbnail_webinar_cover_pago_pa_multe_c7a830ba53",
+                                "mime": "image/jpeg",
+                                "name": "thumbnail_webinar-cover-pago-pa-multe.jpg",
+                                "path": null,
+                                "size": 5.95,
+                                "width": 245,
+                                "height": 140,
+                                "sizeInBytes": 5952,
+                                "isUrlSigned": true
+                              }
+                            },
+                            "hash": "webinar_cover_pago_pa_multe_c7a830ba53",
+                            "ext": ".jpg",
+                            "mime": "image/jpeg",
+                            "size": 30.94,
+                            "url": "https://cdn.dev.developer.pagopa.it/webinar_cover_pago_pa_multe_c7a830ba53.jpg",
+                            "previewUrl": null,
+                            "provider": "aws-s3",
+                            "provider_metadata": null,
+                            "createdAt": "2024-05-30T13:27:44.949Z",
+                            "updatedAt": "2024-10-17T13:27:46.393Z",
+                            "isUrlSigned": true
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
+              },
+              "caseHistories": null
+            }
+          },
+          {
+            "id": 5,
+            "attributes": {
+              "slug": "riscossione-della-tari",
+              "kickerTitle": "Soluzioni PagoPA",
+              "title": "Riscossione della TARI",
+              "description": "La soluzione dedicata alle buone pratiche per gestire al meglio la riscossione della Tassa sui rifiuti (TARI), tramite un approccio automatizzato e integrato che garantisca una maggiore efficienza in termini di tempi e costi.",
+              "dirName": "U87eExwlc3gfSLL6SQpJ",
+              "landingUseCaseFile": "README.md",
+              "createdAt": "2024-07-08T14:00:18.421Z",
+              "updatedAt": "2024-10-04T12:52:11.717Z",
+              "publishedAt": "2024-07-24T10:37:19.369Z",
+              "locale": "it",
+              "introductionToSteps": "Esplora i passaggi e i consigli utili per erogare il servizio di riscossione Tassa sui rifiuti (TARI), attraverso un approccio digitale, integrato e multi-piattaforma",
+              "statsSource": null,
+              "bannerLinks": [
+                {
+                  "id": 95,
+                  "title": "Vantaggi per il cittadino",
+                  "content": [
+                    {
+                      "type": "list",
+                      "format": "unordered",
+                      "children": [
+                        {
+                          "type": "list-item",
+                          "children": [
+                            {
+                              "bold": true,
+                              "text": "Ricezione in un unico punto",
+                              "type": "text"
+                            },
+                            {
+                              "text": " delle comunicazioni riguardanti la TARI, su uno o più immobili, da parte dei diversi Comuni interessati.",
+                              "type": "text"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "list-item",
+                          "children": [
+                            {
+                              "bold": true,
+                              "text": "Comunicazioni in tempo reale ",
+                              "type": "text"
+                            },
+                            {
+                              "text": "consentono al cittadino di avere il controllo sugli importi dovuti e ",
+                              "type": "text"
+                            },
+                            {
+                              "bold": true,
+                              "text": "pagare in pochi passaggi ",
+                              "type": "text"
+                            },
+                            {
+                              "text": "direttamente su IO.",
+                              "type": "text"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ],
+                  "theme": "dark",
+                  "icon": {
+                    "data": {
+                      "id": 262,
+                      "attributes": {
+                        "name": "PersonOutline.svg",
+                        "alternativeText": null,
+                        "caption": null,
+                        "width": 60,
+                        "height": 60,
+                        "formats": null,
+                        "hash": "Person_Outline_7a6ccfe88c",
+                        "ext": ".svg",
+                        "mime": "image/svg+xml",
+                        "size": 0.55,
+                        "url": "https://cdn.dev.developer.pagopa.it/Person_Outline_7a6ccfe88c.svg",
+                        "previewUrl": null,
+                        "provider": "aws-s3",
+                        "provider_metadata": null,
+                        "createdAt": "2024-07-08T13:57:19.065Z",
+                        "updatedAt": "2024-10-17T13:27:44.293Z",
+                        "isUrlSigned": true
+                      }
+                    }
+                  }
+                },
+                {
+                  "id": 96,
+                  "title": "Vantaggi per l’ente",
+                  "content": [
+                    {
+                      "type": "list",
+                      "format": "unordered",
+                      "children": [
+                        {
+                          "type": "list-item",
+                          "children": [
+                            {
+                              "bold": true,
+                              "text": "Riduzione delle spese",
+                              "type": "text"
+                            },
+                            {
+                              "text": " associate alla stampa di documenti, come bollette o comunicazioni, e alla loro spedizione ai contribuenti.",
+                              "type": "text"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "list-item",
+                          "children": [
+                            {
+                              "bold": true,
+                              "text": "Gestione semplificata",
+                              "type": "text"
+                            },
+                            {
+                              "text": " dell’intero ciclo di vita del servizio",
+                              "type": "text"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ],
+                  "theme": "light",
+                  "icon": {
+                    "data": {
+                      "id": 275,
+                      "attributes": {
+                        "name": "Business.svg",
+                        "alternativeText": null,
+                        "caption": null,
+                        "width": 60,
+                        "height": 60,
+                        "formats": null,
+                        "hash": "Business_e436baf431",
+                        "ext": ".svg",
+                        "mime": "image/svg+xml",
+                        "size": 0.47,
+                        "url": "https://cdn.dev.developer.pagopa.it/Business_e436baf431.svg",
+                        "previewUrl": null,
+                        "provider": "aws-s3",
+                        "provider_metadata": null,
+                        "createdAt": "2024-07-08T13:58:37.809Z",
+                        "updatedAt": "2024-10-17T13:27:46.493Z",
+                        "isUrlSigned": true
+                      }
+                    }
+                  }
+                }
+              ],
+              "products": {
+                "data": [
+                  {
+                    "id": 40,
+                    "attributes": {
+                      "name": "IO, l’app dei servizi pubblici",
+                      "description": "Raccogli tutti i servizi digitali del tuo ente in un’unica piattaforma e interagisci in modo semplice e sicuro con i cittadini.",
+                      "slug": "app-io",
+                      "createdAt": "2024-04-09T15:23:29.012Z",
+                      "updatedAt": "2025-06-06T17:53:42.130Z",
+                      "publishedAt": "2024-04-10T09:49:28.943Z",
+                      "locale": "it",
+                      "shortName": "App IO",
+                      "isVisible": true,
+                      "logo": {
+                        "data": {
+                          "id": 247,
+                          "attributes": {
+                            "name": "appIo.svg",
+                            "alternativeText": null,
+                            "caption": null,
+                            "width": 60,
+                            "height": 61,
+                            "formats": null,
+                            "hash": "app_Io_107fb95dac",
+                            "ext": ".svg",
+                            "mime": "image/svg+xml",
+                            "size": 1.9,
+                            "url": "https://cdn.dev.developer.pagopa.it/app_Io_107fb95dac.svg",
+                            "previewUrl": null,
+                            "provider": "aws-s3",
+                            "provider_metadata": null,
+                            "createdAt": "2024-04-09T15:23:23.226Z",
+                            "updatedAt": "2024-10-17T13:27:41.599Z",
+                            "isUrlSigned": true
+                          }
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "id": 41,
+                    "attributes": {
+                      "name": "Piattaforma pagoPA",
+                      "description": "Gestisci gli incassi in modo centralizzato e con immediata riconciliazione delle posizioni debitorie.",
+                      "slug": "pago-pa",
+                      "createdAt": "2024-04-10T09:53:46.429Z",
+                      "updatedAt": "2025-11-10T09:19:07.395Z",
+                      "publishedAt": "2024-04-10T09:53:47.542Z",
+                      "locale": "it",
+                      "shortName": "pagoPA",
+                      "isVisible": true,
+                      "logo": {
+                        "data": {
+                          "id": 249,
+                          "attributes": {
+                            "name": "pagoPa.svg",
+                            "alternativeText": null,
+                            "caption": null,
+                            "width": 60,
+                            "height": 61,
+                            "formats": null,
+                            "hash": "pago_Pa_f3515b8397",
+                            "ext": ".svg",
+                            "mime": "image/svg+xml",
+                            "size": 2.28,
+                            "url": "https://cdn.dev.developer.pagopa.it/pago_Pa_f3515b8397.svg",
+                            "previewUrl": null,
+                            "provider": "aws-s3",
+                            "provider_metadata": null,
+                            "createdAt": "2024-04-10T09:53:43.883Z",
+                            "updatedAt": "2024-10-17T13:27:41.739Z",
+                            "isUrlSigned": true
+                          }
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "id": 42,
+                    "attributes": {
+                      "name": "SEND - Servizio Notifiche Digitali",
+                      "description": "Invia comunicazioni a valore legale con un processo di notificazione gestito interamente dalla piattaforma.",
+                      "slug": "send",
+                      "createdAt": "2024-04-10T09:54:19.309Z",
+                      "updatedAt": "2025-10-17T21:07:11.277Z",
+                      "publishedAt": "2024-04-10T09:54:20.623Z",
+                      "locale": "it",
+                      "shortName": "SEND",
+                      "isVisible": true,
+                      "logo": {
+                        "data": {
+                          "id": 250,
+                          "attributes": {
+                            "name": "send.svg",
+                            "alternativeText": null,
+                            "caption": null,
+                            "width": 60,
+                            "height": 61,
+                            "formats": null,
+                            "hash": "send_2d0274ac42",
+                            "ext": ".svg",
+                            "mime": "image/svg+xml",
+                            "size": 1.56,
+                            "url": "https://cdn.dev.developer.pagopa.it/send_2d0274ac42.svg",
+                            "previewUrl": null,
+                            "provider": "aws-s3",
+                            "provider_metadata": null,
+                            "createdAt": "2024-04-10T09:54:16.699Z",
+                            "updatedAt": "2024-10-17T13:27:41.819Z",
+                            "isUrlSigned": true
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
+              },
+              "icon": {
+                "data": {
+                  "id": 263,
+                  "attributes": {
+                    "name": "Home.svg",
+                    "alternativeText": null,
+                    "caption": null,
+                    "width": 48,
+                    "height": 48,
+                    "formats": null,
+                    "hash": "Home_d0560b2eab",
+                    "ext": ".svg",
+                    "mime": "image/svg+xml",
+                    "size": 0.18,
+                    "url": "https://cdn.dev.developer.pagopa.it/Home_d0560b2eab.svg",
+                    "previewUrl": null,
+                    "provider": "aws-s3",
+                    "provider_metadata": null,
+                    "createdAt": "2024-07-08T14:01:51.779Z",
+                    "updatedAt": "2024-10-17T13:27:44.393Z",
+                    "isUrlSigned": true
+                  }
+                }
+              },
+              "stats": [
+                {
+                  "id": 12,
+                  "title": "73%",
+                  "description": "dei cittadini ha optato per l'avviso digitale"
+                },
+                {
+                  "id": 13,
+                  "title": "20-25%",
+                  "description": "incremento delle entrate"
+                },
+                {
+                  "id": 14,
+                  "title": "2FTE",
+                  "description": "recuperati e allocati su nuove attività"
+                }
+              ],
+              "steps": [
+                {
+                  "id": 11,
+                  "title": "01",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "children": [
+                        {
+                          "text": "Comunicazione al cittadino residente per effettuare",
+                          "type": "text"
+                        },
+                        {
+                          "bold": true,
+                          "text": " la dichiarazione di occupazione",
+                          "type": "text"
+                        },
+                        {
+                          "text": " di un immobile ai fini TARI.",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ],
+                  "products": {
+                    "data": [
+                      {
+                        "id": 40,
+                        "attributes": {
+                          "name": "IO, l’app dei servizi pubblici",
+                          "description": "Raccogli tutti i servizi digitali del tuo ente in un’unica piattaforma e interagisci in modo semplice e sicuro con i cittadini.",
+                          "slug": "app-io",
+                          "createdAt": "2024-04-09T15:23:29.012Z",
+                          "updatedAt": "2025-06-06T17:53:42.130Z",
+                          "publishedAt": "2024-04-10T09:49:28.943Z",
+                          "locale": "it",
+                          "shortName": "App IO",
+                          "isVisible": true
+                        }
+                      }
+                    ]
+                  }
+                },
+                {
+                  "id": 12,
+                  "title": "02",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "children": [
+                        {
+                          "text": "Calcolo degli importi dovuti e ",
+                          "type": "text"
+                        },
+                        {
+                          "bold": true,
+                          "text": "creazione della posizione debitoria",
+                          "type": "text"
+                        },
+                        {
+                          "text": " attraverso piattaforma pagoPA.",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ],
+                  "products": {
+                    "data": [
+                      {
+                        "id": 41,
+                        "attributes": {
+                          "name": "Piattaforma pagoPA",
+                          "description": "Gestisci gli incassi in modo centralizzato e con immediata riconciliazione delle posizioni debitorie.",
+                          "slug": "pago-pa",
+                          "createdAt": "2024-04-10T09:53:46.429Z",
+                          "updatedAt": "2025-11-10T09:19:07.395Z",
+                          "publishedAt": "2024-04-10T09:53:47.542Z",
+                          "locale": "it",
+                          "shortName": "pagoPA",
+                          "isVisible": true
+                        }
+                      },
+                      {
+                        "id": 40,
+                        "attributes": {
+                          "name": "IO, l’app dei servizi pubblici",
+                          "description": "Raccogli tutti i servizi digitali del tuo ente in un’unica piattaforma e interagisci in modo semplice e sicuro con i cittadini.",
+                          "slug": "app-io",
+                          "createdAt": "2024-04-09T15:23:29.012Z",
+                          "updatedAt": "2025-06-06T17:53:42.130Z",
+                          "publishedAt": "2024-04-10T09:49:28.943Z",
+                          "locale": "it",
+                          "shortName": "App IO",
+                          "isVisible": true
+                        }
+                      }
+                    ]
+                  }
+                },
+                {
+                  "id": 13,
+                  "title": "03",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "children": [
+                        {
+                          "bold": true,
+                          "text": "Emissione della rata unica",
+                          "type": "text"
+                        },
+                        {
+                          "text": " verso il cittadino. Se si opta per il pagamento rateale, emissione della singole rate.",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ],
+                  "products": {
+                    "data": [
+                      {
+                        "id": 40,
+                        "attributes": {
+                          "name": "IO, l’app dei servizi pubblici",
+                          "description": "Raccogli tutti i servizi digitali del tuo ente in un’unica piattaforma e interagisci in modo semplice e sicuro con i cittadini.",
+                          "slug": "app-io",
+                          "createdAt": "2024-04-09T15:23:29.012Z",
+                          "updatedAt": "2025-06-06T17:53:42.130Z",
+                          "publishedAt": "2024-04-10T09:49:28.943Z",
+                          "locale": "it",
+                          "shortName": "App IO",
+                          "isVisible": true
+                        }
+                      },
+                      {
+                        "id": 41,
+                        "attributes": {
+                          "name": "Piattaforma pagoPA",
+                          "description": "Gestisci gli incassi in modo centralizzato e con immediata riconciliazione delle posizioni debitorie.",
+                          "slug": "pago-pa",
+                          "createdAt": "2024-04-10T09:53:46.429Z",
+                          "updatedAt": "2025-11-10T09:19:07.395Z",
+                          "publishedAt": "2024-04-10T09:53:47.542Z",
+                          "locale": "it",
+                          "shortName": "pagoPA",
+                          "isVisible": true
+                        }
+                      },
+                      {
+                        "id": 42,
+                        "attributes": {
+                          "name": "SEND - Servizio Notifiche Digitali",
+                          "description": "Invia comunicazioni a valore legale con un processo di notificazione gestito interamente dalla piattaforma.",
+                          "slug": "send",
+                          "createdAt": "2024-04-10T09:54:19.309Z",
+                          "updatedAt": "2025-10-17T21:07:11.277Z",
+                          "publishedAt": "2024-04-10T09:54:20.623Z",
+                          "locale": "it",
+                          "shortName": "SEND",
+                          "isVisible": true
+                        }
+                      }
+                    ]
+                  }
+                }
+              ],
+              "webinars": {
+                "data": [
+                  {
+                    "id": 18,
+                    "attributes": {
+                      "title": "PagoPA LAB - Approfondiamo la gestione integrata del servizio TARI da pagoPA e IO a SEND",
+                      "slug": "PagoPALab-tari",
+                      "playerSrc": "https://vimeo.com/event/4173771/embed",
+                      "startDatetime": "2024-04-23T09:00:00.000Z",
+                      "endDatetime": "2024-04-23T10:00:00.000Z",
+                      "isVisibleInList": true,
+                      "subscribeParagraphLabel": null,
+                      "description": "Come gestire al meglio il servizio TARI attraverso un approccio digitale, integrato e multi-piattaforma a beneficio del Comune e del cittadino.",
+                      "createdAt": "2024-05-30T13:40:59.358Z",
+                      "updatedAt": "2025-05-23T08:05:13.339Z",
+                      "publishedAt": "2024-07-09T13:34:42.566Z",
+                      "locale": "it",
+                      "bodyContent": [
+                        {
+                          "type": "heading",
+                          "level": 5,
+                          "children": [
+                            {
+                              "text": "Gestione integrata del servizio TARI da pagoPA e IO a SEND",
+                              "type": "text"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "paragraph",
+                          "children": [
+                            {
+                              "text": "Gestire la riscossione della TARI con un processo totalmente digitale permette alle Amministrazioni di avere una maggiore efficienza in termini di tempi e costi. Quali sono le buone pratiche per implementare al meglio un approccio automatizzato e integrato per ottenere questi vantaggi? Nel secondo appuntamento di PagoPA LAB saranno delineate tutte le fasi di una virtuosa gestione del servizio TARI, attraverso l'utilizzo sinergico di app IO, pagoPA e SEND.",
+                              "type": "text"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "image",
+                          "image": {
+                            "ext": ".png",
+                            "url": "https://cdn.developer.pagopa.it/webinar_cover_pagopalab_tari_f5361ee499.png",
+                            "hash": "webinar_cover_pagopalab_tari_f5361ee499",
+                            "mime": "image/png",
+                            "name": "webinar-cover-pagopalab-tari.png",
+                            "size": 63.46,
+                            "width": 728,
+                            "height": 416,
+                            "caption": null,
+                            "formats": {
+                              "small": {
+                                "ext": ".png",
+                                "url": "https://cdn.developer.pagopa.it/small_webinar_cover_pagopalab_tari_f5361ee499.png",
+                                "hash": "small_webinar_cover_pagopalab_tari_f5361ee499",
+                                "mime": "image/png",
+                                "name": "small_webinar-cover-pagopalab-tari.png",
+                                "path": null,
+                                "size": 156.17,
+                                "width": 500,
+                                "height": 286,
+                                "isUrlSigned": true,
+                                "sizeInBytes": 156166
+                              },
+                              "thumbnail": {
+                                "ext": ".png",
+                                "url": "https://cdn.developer.pagopa.it/thumbnail_webinar_cover_pagopalab_tari_f5361ee499.png",
+                                "hash": "thumbnail_webinar_cover_pagopalab_tari_f5361ee499",
+                                "mime": "image/png",
+                                "name": "thumbnail_webinar-cover-pagopalab-tari.png",
+                                "path": null,
+                                "size": 42.35,
+                                "width": 245,
+                                "height": 140,
+                                "isUrlSigned": true,
+                                "sizeInBytes": 42354
+                              }
+                            },
+                            "provider": "aws-s3",
+                            "createdAt": "2024-05-30T13:27:45.224Z",
+                            "updatedAt": "2024-05-30T13:27:45.224Z",
+                            "previewUrl": null,
+                            "alternativeText": "webinar-cover-pagopalab-tari.png",
+                            "provider_metadata": null
+                          },
+                          "children": [
+                            {
+                              "text": "",
+                              "type": "text"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "paragraph",
+                          "children": [
+                            {
+                              "text": "La TARI è un tributo che tutti i Comuni si trovano a riscuotere ogni anno. Gestire l'erogazione di questo servizio con un processo totalmente digitale permette alle Amministrazioni di avere una maggiore efficienza in termini di tempi e costi. Nel secondo appuntamento di PagoPA LAB saranno delineate tutte le fasi relative alla riscossione della TARI, dall'emissione del ruolo fino all'invio dell'atto di ingiunzione in caso di mancato pagamento nei termini. Durante l'incontro saranno rappresentate anche le buone pratiche e i vantaggi derivanti da un utilizzo integrato e sinergico di app IO, pagoPA e SEND, con lo scopo di fornire ai Comuni gli strumenti utili per beneficiare appieno della gestione digitale del servizio.",
+                              "type": "text"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "paragraph",
+                          "children": [
+                            {
+                              "text": "",
+                              "type": "text"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "paragraph",
+                          "children": [
+                            {
+                              "text": "",
+                              "type": "text"
+                            }
+                          ]
+                        }
+                      ],
+                      "coverImage": {
+                        "data": {
+                          "id": 283,
+                          "attributes": {
+                            "name": "webinar-cover-pagopalab-tari.png",
+                            "alternativeText": null,
+                            "caption": null,
+                            "width": 728,
+                            "height": 416,
+                            "formats": {
+                              "small": {
+                                "ext": ".png",
+                                "url": "https://cdn.dev.developer.pagopa.it/small_webinar_cover_pagopalab_tari_f5361ee499.png",
+                                "hash": "small_webinar_cover_pagopalab_tari_f5361ee499",
+                                "mime": "image/png",
+                                "name": "small_webinar-cover-pagopalab-tari.png",
+                                "path": null,
+                                "size": 156.17,
+                                "width": 500,
+                                "height": 286,
+                                "sizeInBytes": 156166,
+                                "isUrlSigned": true
+                              },
+                              "thumbnail": {
+                                "ext": ".png",
+                                "url": "https://cdn.dev.developer.pagopa.it/thumbnail_webinar_cover_pagopalab_tari_f5361ee499.png",
+                                "hash": "thumbnail_webinar_cover_pagopalab_tari_f5361ee499",
+                                "mime": "image/png",
+                                "name": "thumbnail_webinar-cover-pagopalab-tari.png",
+                                "path": null,
+                                "size": 42.35,
+                                "width": 245,
+                                "height": 140,
+                                "sizeInBytes": 42354,
+                                "isUrlSigned": true
+                              }
+                            },
+                            "hash": "webinar_cover_pagopalab_tari_f5361ee499",
+                            "ext": ".png",
+                            "mime": "image/png",
+                            "size": 63.46,
+                            "url": "https://cdn.dev.developer.pagopa.it/webinar_cover_pagopalab_tari_f5361ee499.png",
+                            "previewUrl": null,
+                            "provider": "aws-s3",
+                            "provider_metadata": null,
+                            "createdAt": "2024-05-30T13:27:45.224Z",
+                            "updatedAt": "2024-10-17T13:27:48.706Z",
+                            "isUrlSigned": true
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
+              },
+              "caseHistories": {
+                "id": 6,
+                "title": "Storie di successo",
+                "description": "Le testimonianze di come gli enti hanno dato forma a servizi efficienti e accessibili, ottimizzando i processi grazie all’integrazione con le piattaforme PagoPA.",
+                "case_histories": {
+                  "data": [
+                    {
+                      "id": 4,
+                      "attributes": {
+                        "slug": "tari-cagliari",
+                        "title": "Il processo di riscossione della TARI del Comune di Cagliari",
+                        "description": "Il racconto dell'esperienza del Comune di Cagliari, uno dei primi Comuni d'Italia a integrare SEND per gestire le notifiche a valore legale relative agli accertamenti Tari.",
+                        "createdAt": "2024-07-23T11:58:44.538Z",
+                        "updatedAt": "2025-09-25T14:51:09.982Z",
+                        "publishedAt": "2024-07-26T10:57:44.908Z",
+                        "locale": "it",
+                        "image": {
+                          "data": {
+                            "id": 278,
+                            "attributes": {
+                              "name": "thumbnail_tari_71964937e2.png",
+                              "alternativeText": null,
+                              "caption": null,
+                              "width": 364,
+                              "height": 208,
+                              "formats": {
+                                "thumbnail": {
+                                  "ext": ".png",
+                                  "url": "https://cdn.dev.developer.pagopa.it/thumbnail_thumbnail_tari_71964937e2_d7fda64636.png",
+                                  "hash": "thumbnail_thumbnail_tari_71964937e2_d7fda64636",
+                                  "mime": "image/png",
+                                  "name": "thumbnail_thumbnail_tari_71964937e2.png",
+                                  "path": null,
+                                  "size": 12.24,
+                                  "width": 245,
+                                  "height": 140,
+                                  "sizeInBytes": 12236,
+                                  "isUrlSigned": true
+                                }
+                              },
+                              "hash": "thumbnail_tari_71964937e2_d7fda64636",
+                              "ext": ".png",
+                              "mime": "image/png",
+                              "size": 16.7,
+                              "url": "https://cdn.dev.developer.pagopa.it/thumbnail_tari_71964937e2_d7fda64636.png",
+                              "previewUrl": null,
+                              "provider": "aws-s3",
+                              "provider_metadata": null,
+                              "createdAt": "2024-07-23T11:57:02.818Z",
+                              "updatedAt": "2024-10-17T13:27:47.216Z",
+                              "isUrlSigned": true
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "id": 6,
+            "attributes": {
+              "slug": "asili-nido",
+              "kickerTitle": "Soluzioni PagoPA",
+              "title": "Asilo Nido",
+              "description": "La soluzione dedicata all’ottimizzazione dei processi di gestione del servizio Asilo Nido dall’apertura delle iscrizioni all’eventuale consegna del sollecito",
+              "dirName": "kuZZdU1aI5xDKKhl0Df2",
+              "landingUseCaseFile": "README.md",
+              "createdAt": "2024-09-19T12:02:33.235Z",
+              "updatedAt": "2025-09-29T17:54:54.169Z",
+              "publishedAt": "2024-09-20T09:18:11.134Z",
+              "locale": "it",
+              "introductionToSteps": "Esplora i passaggi e i consigli utili per erogare il servizio Asili Nido, attraverso un approccio digitale, integrato e multi-piattaforma",
+              "statsSource": null,
+              "bannerLinks": [
+                {
+                  "id": 97,
+                  "title": "Vantaggi per il cittadino",
+                  "content": [
+                    {
+                      "type": "list",
+                      "format": "unordered",
+                      "children": [
+                        {
+                          "type": "list-item",
+                          "children": [
+                            {
+                              "text": "Attraverso i messaggi su IO si è aggiornati in tempo reale sull’apertura delle iscrizioni al Nido ",
+                              "type": "text"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "list-item",
+                          "children": [
+                            {
+                              "text": "Tramite IO e pagoPA è possibile monitorare il proprio posto in graduatoria e gestire in maniera semplice e tempestiva l'iscrizione",
+                              "type": "text"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "list-item",
+                          "children": [
+                            {
+                              "text": "Pagando direttamente in app è possibile ottenere subito le ricevute di pagamento, utili anche ai fini di eventuali agevolazioni o sgravi fiscali ",
+                              "type": "text"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ],
+                  "theme": "light",
+                  "icon": {
+                    "data": {
+                      "id": 262,
+                      "attributes": {
+                        "name": "PersonOutline.svg",
+                        "alternativeText": null,
+                        "caption": null,
+                        "width": 60,
+                        "height": 60,
+                        "formats": null,
+                        "hash": "Person_Outline_7a6ccfe88c",
+                        "ext": ".svg",
+                        "mime": "image/svg+xml",
+                        "size": 0.55,
+                        "url": "https://cdn.dev.developer.pagopa.it/Person_Outline_7a6ccfe88c.svg",
+                        "previewUrl": null,
+                        "provider": "aws-s3",
+                        "provider_metadata": null,
+                        "createdAt": "2024-07-08T13:57:19.065Z",
+                        "updatedAt": "2024-10-17T13:27:44.293Z",
+                        "isUrlSigned": true
+                      }
+                    }
+                  }
+                },
+                {
+                  "id": 98,
+                  "title": "Vantaggi per l’ente",
+                  "content": [
+                    {
+                      "type": "list",
+                      "format": "unordered",
+                      "children": [
+                        {
+                          "type": "list-item",
+                          "children": [
+                            {
+                              "text": "L'Automatizzazione del processo di conferma/rinuncia del posto in graduatoria rende quest’ultimo più efficiente",
+                              "type": "text"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "list-item",
+                          "children": [
+                            {
+                              "text": "Inviando i messaggi su IO, l’Ente riesce a ridurre le tempistiche di conferma/rinuncia al posto",
+                              "type": "text"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ],
+                  "theme": "light",
+                  "icon": {
+                    "data": {
+                      "id": 275,
+                      "attributes": {
+                        "name": "Business.svg",
+                        "alternativeText": null,
+                        "caption": null,
+                        "width": 60,
+                        "height": 60,
+                        "formats": null,
+                        "hash": "Business_e436baf431",
+                        "ext": ".svg",
+                        "mime": "image/svg+xml",
+                        "size": 0.47,
+                        "url": "https://cdn.dev.developer.pagopa.it/Business_e436baf431.svg",
+                        "previewUrl": null,
+                        "provider": "aws-s3",
+                        "provider_metadata": null,
+                        "createdAt": "2024-07-08T13:58:37.809Z",
+                        "updatedAt": "2024-10-17T13:27:46.493Z",
+                        "isUrlSigned": true
+                      }
+                    }
+                  }
+                }
+              ],
+              "products": {
+                "data": [
+                  {
+                    "id": 40,
+                    "attributes": {
+                      "name": "IO, l’app dei servizi pubblici",
+                      "description": "Raccogli tutti i servizi digitali del tuo ente in un’unica piattaforma e interagisci in modo semplice e sicuro con i cittadini.",
+                      "slug": "app-io",
+                      "createdAt": "2024-04-09T15:23:29.012Z",
+                      "updatedAt": "2025-06-06T17:53:42.130Z",
+                      "publishedAt": "2024-04-10T09:49:28.943Z",
+                      "locale": "it",
+                      "shortName": "App IO",
+                      "isVisible": true,
+                      "logo": {
+                        "data": {
+                          "id": 247,
+                          "attributes": {
+                            "name": "appIo.svg",
+                            "alternativeText": null,
+                            "caption": null,
+                            "width": 60,
+                            "height": 61,
+                            "formats": null,
+                            "hash": "app_Io_107fb95dac",
+                            "ext": ".svg",
+                            "mime": "image/svg+xml",
+                            "size": 1.9,
+                            "url": "https://cdn.dev.developer.pagopa.it/app_Io_107fb95dac.svg",
+                            "previewUrl": null,
+                            "provider": "aws-s3",
+                            "provider_metadata": null,
+                            "createdAt": "2024-04-09T15:23:23.226Z",
+                            "updatedAt": "2024-10-17T13:27:41.599Z",
+                            "isUrlSigned": true
+                          }
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "id": 41,
+                    "attributes": {
+                      "name": "Piattaforma pagoPA",
+                      "description": "Gestisci gli incassi in modo centralizzato e con immediata riconciliazione delle posizioni debitorie.",
+                      "slug": "pago-pa",
+                      "createdAt": "2024-04-10T09:53:46.429Z",
+                      "updatedAt": "2025-11-10T09:19:07.395Z",
+                      "publishedAt": "2024-04-10T09:53:47.542Z",
+                      "locale": "it",
+                      "shortName": "pagoPA",
+                      "isVisible": true,
+                      "logo": {
+                        "data": {
+                          "id": 249,
+                          "attributes": {
+                            "name": "pagoPa.svg",
+                            "alternativeText": null,
+                            "caption": null,
+                            "width": 60,
+                            "height": 61,
+                            "formats": null,
+                            "hash": "pago_Pa_f3515b8397",
+                            "ext": ".svg",
+                            "mime": "image/svg+xml",
+                            "size": 2.28,
+                            "url": "https://cdn.dev.developer.pagopa.it/pago_Pa_f3515b8397.svg",
+                            "previewUrl": null,
+                            "provider": "aws-s3",
+                            "provider_metadata": null,
+                            "createdAt": "2024-04-10T09:53:43.883Z",
+                            "updatedAt": "2024-10-17T13:27:41.739Z",
+                            "isUrlSigned": true
+                          }
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "id": 42,
+                    "attributes": {
+                      "name": "SEND - Servizio Notifiche Digitali",
+                      "description": "Invia comunicazioni a valore legale con un processo di notificazione gestito interamente dalla piattaforma.",
+                      "slug": "send",
+                      "createdAt": "2024-04-10T09:54:19.309Z",
+                      "updatedAt": "2025-10-17T21:07:11.277Z",
+                      "publishedAt": "2024-04-10T09:54:20.623Z",
+                      "locale": "it",
+                      "shortName": "SEND",
+                      "isVisible": true,
+                      "logo": {
+                        "data": {
+                          "id": 250,
+                          "attributes": {
+                            "name": "send.svg",
+                            "alternativeText": null,
+                            "caption": null,
+                            "width": 60,
+                            "height": 61,
+                            "formats": null,
+                            "hash": "send_2d0274ac42",
+                            "ext": ".svg",
+                            "mime": "image/svg+xml",
+                            "size": 1.56,
+                            "url": "https://cdn.dev.developer.pagopa.it/send_2d0274ac42.svg",
+                            "previewUrl": null,
+                            "provider": "aws-s3",
+                            "provider_metadata": null,
+                            "createdAt": "2024-04-10T09:54:16.699Z",
+                            "updatedAt": "2024-10-17T13:27:41.819Z",
+                            "isUrlSigned": true
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
+              },
+              "icon": {
+                "data": {
+                  "id": 387,
+                  "attributes": {
+                    "name": "home.svg",
+                    "alternativeText": null,
+                    "caption": null,
+                    "width": 51,
+                    "height": 53,
+                    "formats": null,
+                    "hash": "home_6758c4ce6f",
+                    "ext": ".svg",
+                    "mime": "image/svg+xml",
+                    "size": 0.39,
+                    "url": "https://cdn.dev.developer.pagopa.it/home_6758c4ce6f.svg",
+                    "previewUrl": null,
+                    "provider": "aws-s3",
+                    "provider_metadata": null,
+                    "createdAt": "2024-09-06T12:32:58.825Z",
+                    "updatedAt": "2024-11-11T14:26:03.282Z",
+                    "isUrlSigned": true
+                  }
+                }
+              },
+              "stats": [
+                {
+                  "id": 15,
+                  "title": "61%",
+                  "description": "degli utenti ha confermato o rinunciato al posto in app nell’arco di 3 giorni"
+                },
+                {
+                  "id": 16,
+                  "title": "86%",
+                  "description": "degli utenti ha confermato la propria scelta lo stesso giorno di ricezione del messaggio"
+                }
+              ],
+              "steps": [
+                {
+                  "id": 14,
+                  "title": "01",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "children": [
+                        {
+                          "text": "L’Ente comunica ai cittadini interessati l’",
+                          "type": "text"
+                        },
+                        {
+                          "bold": true,
+                          "text": "apertura delle iscrizioni",
+                          "type": "text"
+                        },
+                        {
+                          "text": " agli Asili Nido del Comune",
+                          "type": "text"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "paragraph",
+                      "children": [
+                        {
+                          "text": "",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ],
+                  "products": {
+                    "data": [
+                      {
+                        "id": 40,
+                        "attributes": {
+                          "name": "IO, l’app dei servizi pubblici",
+                          "description": "Raccogli tutti i servizi digitali del tuo ente in un’unica piattaforma e interagisci in modo semplice e sicuro con i cittadini.",
+                          "slug": "app-io",
+                          "createdAt": "2024-04-09T15:23:29.012Z",
+                          "updatedAt": "2025-06-06T17:53:42.130Z",
+                          "publishedAt": "2024-04-10T09:49:28.943Z",
+                          "locale": "it",
+                          "shortName": "App IO",
+                          "isVisible": true
+                        }
+                      }
+                    ]
+                  }
+                },
+                {
+                  "id": 15,
+                  "title": "02",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "children": [
+                        {
+                          "text": "L’Ente comunica al cittadino la ",
+                          "type": "text"
+                        },
+                        {
+                          "bold": true,
+                          "text": "pubblicazione delle graduatorie",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ],
+                  "products": {
+                    "data": [
+                      {
+                        "id": 40,
+                        "attributes": {
+                          "name": "IO, l’app dei servizi pubblici",
+                          "description": "Raccogli tutti i servizi digitali del tuo ente in un’unica piattaforma e interagisci in modo semplice e sicuro con i cittadini.",
+                          "slug": "app-io",
+                          "createdAt": "2024-04-09T15:23:29.012Z",
+                          "updatedAt": "2025-06-06T17:53:42.130Z",
+                          "publishedAt": "2024-04-10T09:49:28.943Z",
+                          "locale": "it",
+                          "shortName": "App IO",
+                          "isVisible": true
+                        }
+                      }
+                    ]
+                  }
+                },
+                {
+                  "id": 16,
+                  "title": "03",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "children": [
+                        {
+                          "text": "L’Ente calcola l’",
+                          "type": "text"
+                        },
+                        {
+                          "bold": true,
+                          "text": "importo della retta ",
+                          "type": "text"
+                        },
+                        {
+                          "text": "e genera la posizione debitoria da inviare all’utente",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ],
+                  "products": {
+                    "data": [
+                      {
+                        "id": 40,
+                        "attributes": {
+                          "name": "IO, l’app dei servizi pubblici",
+                          "description": "Raccogli tutti i servizi digitali del tuo ente in un’unica piattaforma e interagisci in modo semplice e sicuro con i cittadini.",
+                          "slug": "app-io",
+                          "createdAt": "2024-04-09T15:23:29.012Z",
+                          "updatedAt": "2025-06-06T17:53:42.130Z",
+                          "publishedAt": "2024-04-10T09:49:28.943Z",
+                          "locale": "it",
+                          "shortName": "App IO",
+                          "isVisible": true
+                        }
+                      },
+                      {
+                        "id": 41,
+                        "attributes": {
+                          "name": "Piattaforma pagoPA",
+                          "description": "Gestisci gli incassi in modo centralizzato e con immediata riconciliazione delle posizioni debitorie.",
+                          "slug": "pago-pa",
+                          "createdAt": "2024-04-10T09:53:46.429Z",
+                          "updatedAt": "2025-11-10T09:19:07.395Z",
+                          "publishedAt": "2024-04-10T09:53:47.542Z",
+                          "locale": "it",
+                          "shortName": "pagoPA",
+                          "isVisible": true
+                        }
+                      }
+                    ]
+                  }
+                },
+                {
+                  "id": 17,
+                  "title": "04",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "children": [
+                        {
+                          "text": "In caso di mancato pagamento della retta entro i termini, l’Ente crea una posizione debitoria per il ",
+                          "type": "text"
+                        },
+                        {
+                          "bold": true,
+                          "text": "sollecito",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ],
+                  "products": {
+                    "data": [
+                      {
+                        "id": 40,
+                        "attributes": {
+                          "name": "IO, l’app dei servizi pubblici",
+                          "description": "Raccogli tutti i servizi digitali del tuo ente in un’unica piattaforma e interagisci in modo semplice e sicuro con i cittadini.",
+                          "slug": "app-io",
+                          "createdAt": "2024-04-09T15:23:29.012Z",
+                          "updatedAt": "2025-06-06T17:53:42.130Z",
+                          "publishedAt": "2024-04-10T09:49:28.943Z",
+                          "locale": "it",
+                          "shortName": "App IO",
+                          "isVisible": true
+                        }
+                      },
+                      {
+                        "id": 41,
+                        "attributes": {
+                          "name": "Piattaforma pagoPA",
+                          "description": "Gestisci gli incassi in modo centralizzato e con immediata riconciliazione delle posizioni debitorie.",
+                          "slug": "pago-pa",
+                          "createdAt": "2024-04-10T09:53:46.429Z",
+                          "updatedAt": "2025-11-10T09:19:07.395Z",
+                          "publishedAt": "2024-04-10T09:53:47.542Z",
+                          "locale": "it",
+                          "shortName": "pagoPA",
+                          "isVisible": true
+                        }
+                      },
+                      {
+                        "id": 42,
+                        "attributes": {
+                          "name": "SEND - Servizio Notifiche Digitali",
+                          "description": "Invia comunicazioni a valore legale con un processo di notificazione gestito interamente dalla piattaforma.",
+                          "slug": "send",
+                          "createdAt": "2024-04-10T09:54:19.309Z",
+                          "updatedAt": "2025-10-17T21:07:11.277Z",
+                          "publishedAt": "2024-04-10T09:54:20.623Z",
+                          "locale": "it",
+                          "shortName": "SEND",
+                          "isVisible": true
+                        }
+                      }
+                    ]
+                  }
+                }
+              ],
+              "webinars": {
+                "data": [
+                  {
+                    "id": 15,
+                    "attributes": {
+                      "title": "PagoPA LAB - Approfondiamo la gestione integrata del servizio Asilo Nido attraverso le piattaforme di PagoPA",
+                      "slug": "PagoPALAB-nidi",
+                      "playerSrc": "https://vimeo.com/event/4371472/embed",
+                      "startDatetime": "2024-06-25T08:30:00.000Z",
+                      "endDatetime": "2024-06-25T09:30:00.000Z",
+                      "isVisibleInList": true,
+                      "subscribeParagraphLabel": null,
+                      "description": "Come gestire al meglio il servizio Asilo Nido attraverso un approccio digitale, integrato e multi-piattaforma a beneficio del Comune e del cittadino.",
+                      "createdAt": "2024-06-06T14:24:47.589Z",
+                      "updatedAt": "2025-05-23T08:05:05.105Z",
+                      "publishedAt": "2024-06-11T12:43:24.659Z",
+                      "locale": "it",
+                      "bodyContent": [
+                        {
+                          "type": "heading",
+                          "level": 5,
+                          "children": [
+                            {
+                              "text": "Gestione integrata del servizio Asilo Nido attraverso le piattaforme di PagoPA",
+                              "type": "text"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "paragraph",
+                          "children": [
+                            {
+                              "text": "Questo terzo appuntamento di PagoPA LAB ha l'obiettivo di illustrare come gestire in maniera efficace e veloce il servizio Asilo Nido. Durante l'incontro saranno descritte tutte le fasi di una gestione virtuosa del servizio, assieme alle buone pratiche di utilizzo sinergico delle piattaforme di PagoPA",
+                              "type": "text"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "image",
+                          "image": {
+                            "ext": ".jpg",
+                            "url": "https://cdn.developer.pagopa.it/webinar_pagopalab_asilonido_96c0dd5d3a.jpg",
+                            "hash": "webinar_pagopalab_asilonido_96c0dd5d3a",
+                            "mime": "image/jpeg",
+                            "name": "webinar-pagopalab-asilonido.jpg",
+                            "size": 33.4,
+                            "width": 728,
+                            "height": 416,
+                            "caption": null,
+                            "formats": {
+                              "small": {
+                                "ext": ".jpg",
+                                "url": "https://cdn.developer.pagopa.it/small_webinar_pagopalab_asilonido_96c0dd5d3a.jpg",
+                                "hash": "small_webinar_pagopalab_asilonido_96c0dd5d3a",
+                                "mime": "image/jpeg",
+                                "name": "small_webinar-pagopalab-asilonido.jpg",
+                                "path": null,
+                                "size": 18.97,
+                                "width": 500,
+                                "height": 286,
+                                "isUrlSigned": true,
+                                "sizeInBytes": 18973
+                              },
+                              "thumbnail": {
+                                "ext": ".jpg",
+                                "url": "https://cdn.developer.pagopa.it/thumbnail_webinar_pagopalab_asilonido_96c0dd5d3a.jpg",
+                                "hash": "thumbnail_webinar_pagopalab_asilonido_96c0dd5d3a",
+                                "mime": "image/jpeg",
+                                "name": "thumbnail_webinar-pagopalab-asilonido.jpg",
+                                "path": null,
+                                "size": 6.55,
+                                "width": 245,
+                                "height": 140,
+                                "isUrlSigned": true,
+                                "sizeInBytes": 6552
+                              }
+                            },
+                            "provider": "aws-s3",
+                            "createdAt": "2024-06-10T14:14:22.065Z",
+                            "updatedAt": "2024-06-10T14:14:42.202Z",
+                            "previewUrl": null,
+                            "alternativeText": "webinar-pagopalab-asilonido.jpg",
+                            "provider_metadata": null
+                          },
+                          "children": [
+                            {
+                              "text": "",
+                              "type": "text"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "paragraph",
+                          "children": [
+                            {
+                              "text": "La fruizione del servizio Asilo Nido si articola in diversi passaggi per il cittadino. Gestire questo precesso in maniera totalmente digitale consente alle Amministrazione di beneficiare di una maggiore efficienza in termini di tempi e costi, offrendo al contempo una migliore esperienza all'utenza. Durante il terzo appuntamento di PagoPA LAB saranno delineate tutte le fasi di erogazione di questo servizio, assieme alle buone pratiche e ai vantaggi dell'utilizzo integrato e sinergico delle piattafome di PagoPA.  ",
+                              "type": "text"
+                            }
+                          ]
+                        }
+                      ],
+                      "coverImage": {
+                        "data": {
+                          "id": 271,
+                          "attributes": {
+                            "name": "webinar-pagopalab-asilonido.jpg",
+                            "alternativeText": null,
+                            "caption": null,
+                            "width": 728,
+                            "height": 416,
+                            "formats": {
+                              "small": {
+                                "ext": ".jpg",
+                                "url": "https://cdn.dev.developer.pagopa.it/small_webinar_pagopalab_asilonido_96c0dd5d3a.jpg",
+                                "hash": "small_webinar_pagopalab_asilonido_96c0dd5d3a",
+                                "mime": "image/jpeg",
+                                "name": "small_webinar-pagopalab-asilonido.jpg",
+                                "path": null,
+                                "size": 18.97,
+                                "width": 500,
+                                "height": 286,
+                                "sizeInBytes": 18973,
+                                "isUrlSigned": true
+                              },
+                              "thumbnail": {
+                                "ext": ".jpg",
+                                "url": "https://cdn.dev.developer.pagopa.it/thumbnail_webinar_pagopalab_asilonido_96c0dd5d3a.jpg",
+                                "hash": "thumbnail_webinar_pagopalab_asilonido_96c0dd5d3a",
+                                "mime": "image/jpeg",
+                                "name": "thumbnail_webinar-pagopalab-asilonido.jpg",
+                                "path": null,
+                                "size": 6.55,
+                                "width": 245,
+                                "height": 140,
+                                "sizeInBytes": 6552,
+                                "isUrlSigned": true
+                              }
+                            },
+                            "hash": "webinar_pagopalab_asilonido_96c0dd5d3a",
+                            "ext": ".jpg",
+                            "mime": "image/jpeg",
+                            "size": 33.4,
+                            "url": "https://cdn.dev.developer.pagopa.it/webinar_pagopalab_asilonido_96c0dd5d3a.jpg",
+                            "previewUrl": null,
+                            "provider": "aws-s3",
+                            "provider_metadata": null,
+                            "createdAt": "2024-06-10T14:14:22.065Z",
+                            "updatedAt": "2024-10-17T13:27:45.593Z",
+                            "isUrlSigned": true
+                          }
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "id": 21,
+                    "attributes": {
+                      "title": "Test webinar always live",
+                      "slug": "always-live",
+                      "playerSrc": "https://23eaa6e50e97.eu-central-1.playback.live-video.net/api/video/v1/eu-central-1.039804388894.channel.5CsyUCnE771r.m3u8",
+                      "startDatetime": "2023-11-27T15:46:00.000Z",
+                      "endDatetime": "2026-10-13T14:35:00.000Z",
+                      "isVisibleInList": true,
+                      "subscribeParagraphLabel": null,
+                      "description": "This webinar exists only for test purposes",
+                      "createdAt": "2024-11-25T16:55:48.233Z",
+                      "updatedAt": "2025-11-13T11:41:16.059Z",
+                      "publishedAt": "2024-11-25T16:55:52.359Z",
+                      "locale": "it",
+                      "bodyContent": [
+                        {
+                          "type": "paragraph",
+                          "children": [
+                            {
+                              "text": "Per semplificare l’utilizzo della piattaforma PDND Interoperabilità, saranno introdotte nuove misure volte a facilitare l’applicazione delle best practice nella verifica dei voucher erogati dalla PDND, nonché nell’uso delle relative audience.",
+                              "type": "text"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "image",
+                          "image": {
+                            "ext": ".png",
+                            "url": "https://cdn.dev.developer.pagopa.it/Webinar_Token_PDND_a52e8c96fe.png",
+                            "hash": "Webinar_Token_PDND_a52e8c96fe",
+                            "mime": "image/png",
+                            "name": "Webinar_Token PDND.png",
+                            "size": 131.7,
+                            "width": 1456,
+                            "height": 832,
+                            "caption": null,
+                            "formats": {
+                              "large": {
+                                "ext": ".png",
+                                "url": "https://cdn.dev.developer.pagopa.it/large_Webinar_Token_PDND_a52e8c96fe.png",
+                                "hash": "large_Webinar_Token_PDND_a52e8c96fe",
+                                "mime": "image/png",
+                                "name": "large_Webinar_Token PDND.png",
+                                "path": null,
+                                "size": 96,
+                                "width": 1000,
+                                "height": 571,
+                                "isUrlSigned": true,
+                                "sizeInBytes": 96003
+                              },
+                              "small": {
+                                "ext": ".png",
+                                "url": "https://cdn.dev.developer.pagopa.it/small_Webinar_Token_PDND_a52e8c96fe.png",
+                                "hash": "small_Webinar_Token_PDND_a52e8c96fe",
+                                "mime": "image/png",
+                                "name": "small_Webinar_Token PDND.png",
+                                "path": null,
+                                "size": 29.71,
+                                "width": 500,
+                                "height": 286,
+                                "isUrlSigned": true,
+                                "sizeInBytes": 29706
+                              },
+                              "medium": {
+                                "ext": ".png",
+                                "url": "https://cdn.dev.developer.pagopa.it/medium_Webinar_Token_PDND_a52e8c96fe.png",
+                                "hash": "medium_Webinar_Token_PDND_a52e8c96fe",
+                                "mime": "image/png",
+                                "name": "medium_Webinar_Token PDND.png",
+                                "path": null,
+                                "size": 58.08,
+                                "width": 750,
+                                "height": 429,
+                                "isUrlSigned": true,
+                                "sizeInBytes": 58082
+                              },
+                              "thumbnail": {
+                                "ext": ".png",
+                                "url": "https://cdn.dev.developer.pagopa.it/thumbnail_Webinar_Token_PDND_a52e8c96fe.png",
+                                "hash": "thumbnail_Webinar_Token_PDND_a52e8c96fe",
+                                "mime": "image/png",
+                                "name": "thumbnail_Webinar_Token PDND.png",
+                                "path": null,
+                                "size": 10.07,
+                                "width": 245,
+                                "height": 140,
+                                "isUrlSigned": true,
+                                "sizeInBytes": 10068
+                              }
+                            },
+                            "provider": "aws-s3",
+                            "createdAt": "2025-05-08T08:10:00.320Z",
+                            "updatedAt": "2025-05-09T10:45:34.807Z",
+                            "previewUrl": null,
+                            "alternativeText": "Webinar_Token PDND.png",
+                            "provider_metadata": null
+                          },
+                          "children": [
+                            {
+                              "text": "",
+                              "type": "text"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "paragraph",
+                          "children": [
+                            {
+                              "text": "Approfondiremo:",
+                              "type": "text"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "list",
+                          "format": "unordered",
+                          "children": [
+                            {
+                              "type": "list-item",
+                              "children": [
+                                {
+                                  "text": "come un fruitore richiede ed ottiene un voucher e quali sono i claim accettati",
+                                  "type": "text"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "list-item",
+                              "children": [
+                                {
+                                  "text": "cosa contiene un voucher PDND",
+                                  "type": "text"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "list-item",
+                              "children": [
+                                {
+                                  "text": "quali sono i nuovi claim introdotti e le best practice per le verifiche\n\n",
+                                  "type": "text"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ],
+                      "coverImage": {
+                        "data": {
+                          "id": 404,
+                          "attributes": {
+                            "name": "webinar_fdr_55581dcff9.png",
+                            "alternativeText": null,
+                            "caption": null,
+                            "width": 728,
+                            "height": 416,
+                            "formats": {
+                              "small": {
+                                "ext": ".png",
+                                "url": "https://cdn.dev.developer.pagopa.it/small_webinar_fdr_55581dcff9_e3c106e63d.png",
+                                "hash": "small_webinar_fdr_55581dcff9_e3c106e63d",
+                                "mime": "image/png",
+                                "name": "small_webinar_fdr_55581dcff9.png",
+                                "path": null,
+                                "size": 39.8,
+                                "width": 500,
+                                "height": 286,
+                                "sizeInBytes": 39795,
+                                "isUrlSigned": true
+                              },
+                              "thumbnail": {
+                                "ext": ".png",
+                                "url": "https://cdn.dev.developer.pagopa.it/thumbnail_webinar_fdr_55581dcff9_e3c106e63d.png",
+                                "hash": "thumbnail_webinar_fdr_55581dcff9_e3c106e63d",
+                                "mime": "image/png",
+                                "name": "thumbnail_webinar_fdr_55581dcff9.png",
+                                "path": null,
+                                "size": 14.56,
+                                "width": 245,
+                                "height": 140,
+                                "sizeInBytes": 14562,
+                                "isUrlSigned": true
+                              }
+                            },
+                            "hash": "webinar_fdr_55581dcff9_e3c106e63d",
+                            "ext": ".png",
+                            "mime": "image/png",
+                            "size": 32.64,
+                            "url": "https://cdn.dev.developer.pagopa.it/webinar_fdr_55581dcff9_e3c106e63d.png",
+                            "previewUrl": null,
+                            "provider": "aws-s3",
+                            "provider_metadata": null,
+                            "createdAt": "2024-10-02T09:00:37.576Z",
+                            "updatedAt": "2024-10-17T13:28:17.847Z",
+                            "isUrlSigned": true
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
+              },
+              "caseHistories": {
+                "id": 34,
+                "title": "Test di successo",
+                "description": "Questa storia serve per un test",
+                "case_histories": {
+                  "data": [
+                    {
+                      "id": 34,
+                      "attributes": {
+                        "slug": "test-di-successo",
+                        "title": "Servizi di test",
+                        "description": "Questa pagina riporta un case di successo di test per le opportune verifiche.",
+                        "createdAt": "2025-09-25T15:18:41.515Z",
+                        "updatedAt": "2025-09-25T16:00:41.641Z",
+                        "publishedAt": "2025-09-25T15:18:49.780Z",
+                        "locale": "it",
+                        "image": {
+                          "data": null
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "id": 7,
+            "attributes": {
+              "slug": "mensa-e-trasporto-scolastico",
+              "kickerTitle": "Soluzioni PagoPA",
+              "title": "Mensa e Trasporto Scolastico",
+              "description": "La soluzione dedicata all’ottimizzazione dei processi di gestione dei servizi di Mensa e Trasporto Scolastico dall’apertura delle iscrizioni all’eventuale consegna del sollecito",
+              "dirName": "oJizXoxms4ttYsLBgRh1",
+              "landingUseCaseFile": "README.md",
+              "createdAt": "2024-10-31T08:35:49.752Z",
+              "updatedAt": "2024-11-12T09:59:02.937Z",
+              "publishedAt": "2024-11-11T14:04:54.867Z",
+              "locale": "it",
+              "introductionToSteps": "Esplora i passaggi e i consigli utili per erogare i servizi scolastici mensa e trasporto attraverso un approccio digitale, integrato e multi-piattaforma",
+              "statsSource": null,
+              "bannerLinks": [
+                {
+                  "id": 106,
+                  "title": "Vantaggi per il cittadino",
+                  "content": [
+                    {
+                      "type": "list",
+                      "format": "unordered",
+                      "children": [
+                        {
+                          "type": "list-item",
+                          "children": [
+                            {
+                              "text": "Attraverso i messaggi su IO si è aggiornati in tempo reale sullo stato delle iscrizioni ",
+                              "type": "text"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "list-item",
+                          "children": [
+                            {
+                              "text": "Pagando direttamente in app è possibile ottenere subito le ricevute di pagamento, utili anche ai fini di eventuali agevolazioni o sgravi fiscali",
+                              "type": "text"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ],
+                  "theme": "light",
+                  "icon": {
+                    "data": {
+                      "id": 262,
+                      "attributes": {
+                        "name": "PersonOutline.svg",
+                        "alternativeText": null,
+                        "caption": null,
+                        "width": 60,
+                        "height": 60,
+                        "formats": null,
+                        "hash": "Person_Outline_7a6ccfe88c",
+                        "ext": ".svg",
+                        "mime": "image/svg+xml",
+                        "size": 0.55,
+                        "url": "https://cdn.dev.developer.pagopa.it/Person_Outline_7a6ccfe88c.svg",
+                        "previewUrl": null,
+                        "provider": "aws-s3",
+                        "provider_metadata": null,
+                        "createdAt": "2024-07-08T13:57:19.065Z",
+                        "updatedAt": "2024-10-17T13:27:44.293Z",
+                        "isUrlSigned": true
+                      }
+                    }
+                  }
+                },
+                {
+                  "id": 107,
+                  "title": "Vantaggi per l’ente",
+                  "content": [
+                    {
+                      "type": "list",
+                      "format": "unordered",
+                      "children": [
+                        {
+                          "type": "list-item",
+                          "children": [
+                            {
+                              "text": "L'automatizzazione del processo di conferma/rinuncia del posto in graduatoria rende quest’ultimo più efficiente",
+                              "type": "text"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "list-item",
+                          "children": [
+                            {
+                              "text": "Inviando i messaggi su IO, l’Ente riesce a ridurre le tempistiche di conferma/rinuncia al posto",
+                              "type": "text"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ],
+                  "theme": "light",
+                  "icon": {
+                    "data": {
+                      "id": 275,
+                      "attributes": {
+                        "name": "Business.svg",
+                        "alternativeText": null,
+                        "caption": null,
+                        "width": 60,
+                        "height": 60,
+                        "formats": null,
+                        "hash": "Business_e436baf431",
+                        "ext": ".svg",
+                        "mime": "image/svg+xml",
+                        "size": 0.47,
+                        "url": "https://cdn.dev.developer.pagopa.it/Business_e436baf431.svg",
+                        "previewUrl": null,
+                        "provider": "aws-s3",
+                        "provider_metadata": null,
+                        "createdAt": "2024-07-08T13:58:37.809Z",
+                        "updatedAt": "2024-10-17T13:27:46.493Z",
+                        "isUrlSigned": true
+                      }
+                    }
+                  }
+                }
+              ],
+              "products": {
+                "data": [
+                  {
+                    "id": 40,
+                    "attributes": {
+                      "name": "IO, l’app dei servizi pubblici",
+                      "description": "Raccogli tutti i servizi digitali del tuo ente in un’unica piattaforma e interagisci in modo semplice e sicuro con i cittadini.",
+                      "slug": "app-io",
+                      "createdAt": "2024-04-09T15:23:29.012Z",
+                      "updatedAt": "2025-06-06T17:53:42.130Z",
+                      "publishedAt": "2024-04-10T09:49:28.943Z",
+                      "locale": "it",
+                      "shortName": "App IO",
+                      "isVisible": true,
+                      "logo": {
+                        "data": {
+                          "id": 247,
+                          "attributes": {
+                            "name": "appIo.svg",
+                            "alternativeText": null,
+                            "caption": null,
+                            "width": 60,
+                            "height": 61,
+                            "formats": null,
+                            "hash": "app_Io_107fb95dac",
+                            "ext": ".svg",
+                            "mime": "image/svg+xml",
+                            "size": 1.9,
+                            "url": "https://cdn.dev.developer.pagopa.it/app_Io_107fb95dac.svg",
+                            "previewUrl": null,
+                            "provider": "aws-s3",
+                            "provider_metadata": null,
+                            "createdAt": "2024-04-09T15:23:23.226Z",
+                            "updatedAt": "2024-10-17T13:27:41.599Z",
+                            "isUrlSigned": true
+                          }
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "id": 41,
+                    "attributes": {
+                      "name": "Piattaforma pagoPA",
+                      "description": "Gestisci gli incassi in modo centralizzato e con immediata riconciliazione delle posizioni debitorie.",
+                      "slug": "pago-pa",
+                      "createdAt": "2024-04-10T09:53:46.429Z",
+                      "updatedAt": "2025-11-10T09:19:07.395Z",
+                      "publishedAt": "2024-04-10T09:53:47.542Z",
+                      "locale": "it",
+                      "shortName": "pagoPA",
+                      "isVisible": true,
+                      "logo": {
+                        "data": {
+                          "id": 249,
+                          "attributes": {
+                            "name": "pagoPa.svg",
+                            "alternativeText": null,
+                            "caption": null,
+                            "width": 60,
+                            "height": 61,
+                            "formats": null,
+                            "hash": "pago_Pa_f3515b8397",
+                            "ext": ".svg",
+                            "mime": "image/svg+xml",
+                            "size": 2.28,
+                            "url": "https://cdn.dev.developer.pagopa.it/pago_Pa_f3515b8397.svg",
+                            "previewUrl": null,
+                            "provider": "aws-s3",
+                            "provider_metadata": null,
+                            "createdAt": "2024-04-10T09:53:43.883Z",
+                            "updatedAt": "2024-10-17T13:27:41.739Z",
+                            "isUrlSigned": true
+                          }
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "id": 42,
+                    "attributes": {
+                      "name": "SEND - Servizio Notifiche Digitali",
+                      "description": "Invia comunicazioni a valore legale con un processo di notificazione gestito interamente dalla piattaforma.",
+                      "slug": "send",
+                      "createdAt": "2024-04-10T09:54:19.309Z",
+                      "updatedAt": "2025-10-17T21:07:11.277Z",
+                      "publishedAt": "2024-04-10T09:54:20.623Z",
+                      "locale": "it",
+                      "shortName": "SEND",
+                      "isVisible": true,
+                      "logo": {
+                        "data": {
+                          "id": 250,
+                          "attributes": {
+                            "name": "send.svg",
+                            "alternativeText": null,
+                            "caption": null,
+                            "width": 60,
+                            "height": 61,
+                            "formats": null,
+                            "hash": "send_2d0274ac42",
+                            "ext": ".svg",
+                            "mime": "image/svg+xml",
+                            "size": 1.56,
+                            "url": "https://cdn.dev.developer.pagopa.it/send_2d0274ac42.svg",
+                            "previewUrl": null,
+                            "provider": "aws-s3",
+                            "provider_metadata": null,
+                            "createdAt": "2024-04-10T09:54:16.699Z",
+                            "updatedAt": "2024-10-17T13:27:41.819Z",
+                            "isUrlSigned": true
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
+              },
+              "icon": {
+                "data": {
+                  "id": 387,
+                  "attributes": {
+                    "name": "home.svg",
+                    "alternativeText": null,
+                    "caption": null,
+                    "width": 51,
+                    "height": 53,
+                    "formats": null,
+                    "hash": "home_6758c4ce6f",
+                    "ext": ".svg",
+                    "mime": "image/svg+xml",
+                    "size": 0.39,
+                    "url": "https://cdn.dev.developer.pagopa.it/home_6758c4ce6f.svg",
+                    "previewUrl": null,
+                    "provider": "aws-s3",
+                    "provider_metadata": null,
+                    "createdAt": "2024-09-06T12:32:58.825Z",
+                    "updatedAt": "2024-11-11T14:26:03.282Z",
+                    "isUrlSigned": true
+                  }
+                }
+              },
+              "stats": [],
+              "steps": [
+                {
+                  "id": 18,
+                  "title": "01",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "children": [
+                        {
+                          "text": "L'Ente identifica le persone interessate dallo specifico servizio e le ",
+                          "type": "text"
+                        },
+                        {
+                          "bold": true,
+                          "text": "invita a compilare l'iscrizione",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ],
+                  "products": {
+                    "data": [
+                      {
+                        "id": 41,
+                        "attributes": {
+                          "name": "Piattaforma pagoPA",
+                          "description": "Gestisci gli incassi in modo centralizzato e con immediata riconciliazione delle posizioni debitorie.",
+                          "slug": "pago-pa",
+                          "createdAt": "2024-04-10T09:53:46.429Z",
+                          "updatedAt": "2025-11-10T09:19:07.395Z",
+                          "publishedAt": "2024-04-10T09:53:47.542Z",
+                          "locale": "it",
+                          "shortName": "pagoPA",
+                          "isVisible": true
+                        }
+                      },
+                      {
+                        "id": 42,
+                        "attributes": {
+                          "name": "SEND - Servizio Notifiche Digitali",
+                          "description": "Invia comunicazioni a valore legale con un processo di notificazione gestito interamente dalla piattaforma.",
+                          "slug": "send",
+                          "createdAt": "2024-04-10T09:54:19.309Z",
+                          "updatedAt": "2025-10-17T21:07:11.277Z",
+                          "publishedAt": "2024-04-10T09:54:20.623Z",
+                          "locale": "it",
+                          "shortName": "SEND",
+                          "isVisible": true
+                        }
+                      }
+                    ]
+                  }
+                },
+                {
+                  "id": 20,
+                  "title": "02",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "children": [
+                        {
+                          "text": "L’Ente ",
+                          "type": "text"
+                        },
+                        {
+                          "bold": true,
+                          "text": "calcola l’importo della retta e genera la posizione debitoria",
+                          "type": "text"
+                        },
+                        {
+                          "text": " da inviare all’utente",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ],
+                  "products": {
+                    "data": [
+                      {
+                        "id": 41,
+                        "attributes": {
+                          "name": "Piattaforma pagoPA",
+                          "description": "Gestisci gli incassi in modo centralizzato e con immediata riconciliazione delle posizioni debitorie.",
+                          "slug": "pago-pa",
+                          "createdAt": "2024-04-10T09:53:46.429Z",
+                          "updatedAt": "2025-11-10T09:19:07.395Z",
+                          "publishedAt": "2024-04-10T09:53:47.542Z",
+                          "locale": "it",
+                          "shortName": "pagoPA",
+                          "isVisible": true
+                        }
+                      },
+                      {
+                        "id": 40,
+                        "attributes": {
+                          "name": "IO, l’app dei servizi pubblici",
+                          "description": "Raccogli tutti i servizi digitali del tuo ente in un’unica piattaforma e interagisci in modo semplice e sicuro con i cittadini.",
+                          "slug": "app-io",
+                          "createdAt": "2024-04-09T15:23:29.012Z",
+                          "updatedAt": "2025-06-06T17:53:42.130Z",
+                          "publishedAt": "2024-04-10T09:49:28.943Z",
+                          "locale": "it",
+                          "shortName": "App IO",
+                          "isVisible": true
+                        }
+                      }
+                    ]
+                  }
+                },
+                {
+                  "id": 19,
+                  "title": "03",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "children": [
+                        {
+                          "text": "L’Ente informa il cittadino che è disponibile sul portale dell’ente l’",
+                          "type": "text"
+                        },
+                        {
+                          "bold": true,
+                          "text": "attestazione ai fini fiscali ",
+                          "type": "text"
+                        },
+                        {
+                          "text": "delle spese effettuate.",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ],
+                  "products": {
+                    "data": [
+                      {
+                        "id": 40,
+                        "attributes": {
+                          "name": "IO, l’app dei servizi pubblici",
+                          "description": "Raccogli tutti i servizi digitali del tuo ente in un’unica piattaforma e interagisci in modo semplice e sicuro con i cittadini.",
+                          "slug": "app-io",
+                          "createdAt": "2024-04-09T15:23:29.012Z",
+                          "updatedAt": "2025-06-06T17:53:42.130Z",
+                          "publishedAt": "2024-04-10T09:49:28.943Z",
+                          "locale": "it",
+                          "shortName": "App IO",
+                          "isVisible": true
+                        }
+                      }
+                    ]
+                  }
+                },
+                {
+                  "id": 21,
+                  "title": "04",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "children": [
+                        {
+                          "text": "In caso di mancato pagamento della retta entro i termini, l’Ente ",
+                          "type": "text"
+                        },
+                        {
+                          "bold": true,
+                          "text": "crea una posizione debitoria per il sollecito",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ],
+                  "products": {
+                    "data": [
+                      {
+                        "id": 41,
+                        "attributes": {
+                          "name": "Piattaforma pagoPA",
+                          "description": "Gestisci gli incassi in modo centralizzato e con immediata riconciliazione delle posizioni debitorie.",
+                          "slug": "pago-pa",
+                          "createdAt": "2024-04-10T09:53:46.429Z",
+                          "updatedAt": "2025-11-10T09:19:07.395Z",
+                          "publishedAt": "2024-04-10T09:53:47.542Z",
+                          "locale": "it",
+                          "shortName": "pagoPA",
+                          "isVisible": true
+                        }
+                      },
+                      {
+                        "id": 40,
+                        "attributes": {
+                          "name": "IO, l’app dei servizi pubblici",
+                          "description": "Raccogli tutti i servizi digitali del tuo ente in un’unica piattaforma e interagisci in modo semplice e sicuro con i cittadini.",
+                          "slug": "app-io",
+                          "createdAt": "2024-04-09T15:23:29.012Z",
+                          "updatedAt": "2025-06-06T17:53:42.130Z",
+                          "publishedAt": "2024-04-10T09:49:28.943Z",
+                          "locale": "it",
+                          "shortName": "App IO",
+                          "isVisible": true
+                        }
+                      },
+                      {
+                        "id": 42,
+                        "attributes": {
+                          "name": "SEND - Servizio Notifiche Digitali",
+                          "description": "Invia comunicazioni a valore legale con un processo di notificazione gestito interamente dalla piattaforma.",
+                          "slug": "send",
+                          "createdAt": "2024-04-10T09:54:19.309Z",
+                          "updatedAt": "2025-10-17T21:07:11.277Z",
+                          "publishedAt": "2024-04-10T09:54:20.623Z",
+                          "locale": "it",
+                          "shortName": "SEND",
+                          "isVisible": true
+                        }
+                      }
+                    ]
+                  }
+                }
+              ],
+              "webinars": {
+                "data": [
+                  {
+                    "id": 20,
+                    "attributes": {
+                      "title": "PagoPA LAB - Approfondiamo la gestione integrata dei servizi Mensa e Trasporto Scolastico attraverso le piattaforme di PagoPA",
+                      "slug": "PagoPALAB-servizi-scolastici",
+                      "playerSrc": "https://vimeo.com/event/4552934/embed",
+                      "startDatetime": "2024-09-26T09:00:00.000Z",
+                      "endDatetime": "2024-09-26T10:00:00.000Z",
+                      "isVisibleInList": true,
+                      "subscribeParagraphLabel": null,
+                      "description": "Come gestire al meglio i servizi di Mensa e Trasporto Scolastico attraverso un approccio digitale, integrato e multi-piattaforma a beneficio del Comune e del cittadino.",
+                      "createdAt": "2024-09-09T08:44:06.146Z",
+                      "updatedAt": "2025-02-24T14:15:47.413Z",
+                      "publishedAt": "2024-09-12T09:17:58.281Z",
+                      "locale": "it",
+                      "bodyContent": [
+                        {
+                          "type": "paragraph",
+                          "children": [
+                            {
+                              "text": "A pochi giorni dall'inizio dell'anno scolastico, il quarto appuntamento di PagoPA LAB illustrerà come gestire in maniera efficace e veloce due tra i servizi scolastici più diffusi: la Mensa e il Trasporto Scolastico. Durante l'incontro saranno descritte tutte le fasi di una gestione virtuosa di questi servizi, assieme alle buone pratiche di utilizzo sinergico delle piattaforme di PagoPA.",
+                              "type": "text"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "image",
+                          "image": {
+                            "ext": ".jpg",
+                            "url": "https://cdn.developer.pagopa.it/pagopalab_mensa_d521dd2f5d.jpg",
+                            "hash": "pagopalab_mensa_d521dd2f5d",
+                            "mime": "image/jpeg",
+                            "name": "pagopalab_mensa.jpg",
+                            "size": 219.48,
+                            "width": 728,
+                            "height": 416,
+                            "caption": null,
+                            "formats": {
+                              "small": {
+                                "ext": ".jpg",
+                                "url": "https://cdn.developer.pagopa.it/small_pagopalab_mensa_d521dd2f5d.jpg",
+                                "hash": "small_pagopalab_mensa_d521dd2f5d",
+                                "mime": "image/jpeg",
+                                "name": "small_pagopalab_mensa.jpg",
+                                "path": null,
+                                "size": 22.66,
+                                "width": 500,
+                                "height": 286,
+                                "isUrlSigned": true,
+                                "sizeInBytes": 22655
+                              },
+                              "thumbnail": {
+                                "ext": ".jpg",
+                                "url": "https://cdn.developer.pagopa.it/thumbnail_pagopalab_mensa_d521dd2f5d.jpg",
+                                "hash": "thumbnail_pagopalab_mensa_d521dd2f5d",
+                                "mime": "image/jpeg",
+                                "name": "thumbnail_pagopalab_mensa.jpg",
+                                "path": null,
+                                "size": 7.77,
+                                "width": 245,
+                                "height": 140,
+                                "isUrlSigned": true,
+                                "sizeInBytes": 7772
+                              }
+                            },
+                            "provider": "aws-s3",
+                            "createdAt": "2024-09-12T08:40:20.526Z",
+                            "updatedAt": "2024-09-12T08:40:20.526Z",
+                            "previewUrl": null,
+                            "alternativeText": "pagopalab_mensa.jpg",
+                            "provider_metadata": null
+                          },
+                          "children": [
+                            {
+                              "text": "",
+                              "type": "text"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "paragraph",
+                          "children": [
+                            {
+                              "text": "La gestione dei servizi di Mensa e Trasporto Scolastico si articola in diversi passaggi che, se gestiti in maniera  digitale e integrata, consentono alle Amministrazione di beneficiare di una maggiore efficienza in termini di tempi e costi, offrendo al contempo una migliore esperienza all'utenza. Durante il quarto appuntamento di PagoPA LAB saranno delineate tutte le fasi di erogazione di questi servizi, assieme alle buone pratiche e ai vantaggi dell'utilizzo integrato e sinergico delle piattafome di PagoPA.  ",
+                              "type": "text"
+                            }
+                          ]
+                        }
+                      ],
+                      "coverImage": {
+                        "data": {
+                          "id": 325,
+                          "attributes": {
+                            "name": "pagopalab_mensa.jpg",
+                            "alternativeText": null,
+                            "caption": null,
+                            "width": 728,
+                            "height": 416,
+                            "formats": {
+                              "small": {
+                                "ext": ".jpg",
+                                "url": "https://cdn.dev.developer.pagopa.it/small_pagopalab_mensa_d521dd2f5d.jpg",
+                                "hash": "small_pagopalab_mensa_d521dd2f5d",
+                                "mime": "image/jpeg",
+                                "name": "small_pagopalab_mensa.jpg",
+                                "path": null,
+                                "size": 22.66,
+                                "width": 500,
+                                "height": 286,
+                                "sizeInBytes": 22655,
+                                "isUrlSigned": true
+                              },
+                              "thumbnail": {
+                                "ext": ".jpg",
+                                "url": "https://cdn.dev.developer.pagopa.it/thumbnail_pagopalab_mensa_d521dd2f5d.jpg",
+                                "hash": "thumbnail_pagopalab_mensa_d521dd2f5d",
+                                "mime": "image/jpeg",
+                                "name": "thumbnail_pagopalab_mensa.jpg",
+                                "path": null,
+                                "size": 7.77,
+                                "width": 245,
+                                "height": 140,
+                                "sizeInBytes": 7772,
+                                "isUrlSigned": true
+                              }
+                            },
+                            "hash": "pagopalab_mensa_d521dd2f5d",
+                            "ext": ".jpg",
+                            "mime": "image/jpeg",
+                            "size": 219.48,
+                            "url": "https://cdn.dev.developer.pagopa.it/pagopalab_mensa_d521dd2f5d.jpg",
+                            "previewUrl": null,
+                            "provider": "aws-s3",
+                            "provider_metadata": null,
+                            "createdAt": "2024-09-12T08:40:20.526Z",
+                            "updatedAt": "2024-10-17T13:28:02.798Z",
+                            "isUrlSigned": true
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
+              },
+              "caseHistories": {
+                "id": 8,
+                "title": "Storie di successo",
+                "description": "Le testimonianze di come gli enti hanno dato forma a servizi efficienti e accessibili, ottimizzando i processi grazie all’integrazione con le piattaforme PagoPA.",
+                "case_histories": {
+                  "data": [
+                    {
+                      "id": 5,
+                      "attributes": {
+                        "slug": "servizi-scolastici-valsamoggia",
+                        "title": "Servizi Scolastici, il progetto del Comune di Valsamoggia ",
+                        "description": "L'esperienza del Comune di Valsamoggia, nato dalla fusione di 5 comuni, che ha attivato su app IO i pagamenti per i servizi scolastici e gli avvisi per i servizi scolastici per i suoi tre istituti comprensivi con 25 scuole",
+                        "createdAt": "2024-10-31T08:47:17.031Z",
+                        "updatedAt": "2025-09-25T15:10:50.424Z",
+                        "publishedAt": "2024-11-12T12:39:27.634Z",
+                        "locale": "it",
+                        "image": {
+                          "data": {
+                            "id": 409,
+                            "attributes": {
+                              "name": "thumbnail_servizi_scolastici_valsamoggia_fef5daac99.jpg",
+                              "alternativeText": null,
+                              "caption": null,
+                              "width": 245,
+                              "height": 140,
+                              "formats": null,
+                              "hash": "thumbnail_servizi_scolastici_valsamoggia_fef5daac99_abb5ddcbc4",
+                              "ext": ".jpg",
+                              "mime": "image/jpeg",
+                              "size": 4.21,
+                              "url": "https://cdn.dev.developer.pagopa.it/thumbnail_servizi_scolastici_valsamoggia_fef5daac99_abb5ddcbc4.jpg",
+                              "previewUrl": null,
+                              "provider": "aws-s3",
+                              "provider_metadata": null,
+                              "createdAt": "2024-11-12T12:38:43.912Z",
+                              "updatedAt": "2024-11-12T12:38:43.912Z",
+                              "isUrlSigned": true
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        ]
+      },
+      "caseHistories": {
+        "id": 7,
+        "title": "Storie di successo",
+        "description": "Le testimonianze di come gli enti hanno dato forma a servizi efficienti e accessibili, ottimizzando i processi grazie all’integrazione con le piattaforme PagoPA.",
+        "case_histories": {
+          "data": [
+            {
+              "id": 4,
+              "attributes": {
+                "slug": "tari-cagliari",
+                "title": "Il processo di riscossione della TARI del Comune di Cagliari",
+                "description": "Il racconto dell'esperienza del Comune di Cagliari, uno dei primi Comuni d'Italia a integrare SEND per gestire le notifiche a valore legale relative agli accertamenti Tari.",
+                "createdAt": "2024-07-23T11:58:44.538Z",
+                "updatedAt": "2025-09-25T14:51:09.982Z",
+                "publishedAt": "2024-07-26T10:57:44.908Z",
+                "locale": "it",
+                "image": {
+                  "data": {
+                    "id": 278,
+                    "attributes": {
+                      "name": "thumbnail_tari_71964937e2.png",
+                      "alternativeText": null,
+                      "caption": null,
+                      "width": 364,
+                      "height": 208,
+                      "formats": {
+                        "thumbnail": {
+                          "ext": ".png",
+                          "url": "https://cdn.dev.developer.pagopa.it/thumbnail_thumbnail_tari_71964937e2_d7fda64636.png",
+                          "hash": "thumbnail_thumbnail_tari_71964937e2_d7fda64636",
+                          "mime": "image/png",
+                          "name": "thumbnail_thumbnail_tari_71964937e2.png",
+                          "path": null,
+                          "size": 12.24,
+                          "width": 245,
+                          "height": 140,
+                          "sizeInBytes": 12236,
+                          "isUrlSigned": true
+                        }
+                      },
+                      "hash": "thumbnail_tari_71964937e2_d7fda64636",
+                      "ext": ".png",
+                      "mime": "image/png",
+                      "size": 16.7,
+                      "url": "https://cdn.dev.developer.pagopa.it/thumbnail_tari_71964937e2_d7fda64636.png",
+                      "previewUrl": null,
+                      "provider": "aws-s3",
+                      "provider_metadata": null,
+                      "createdAt": "2024-07-23T11:57:02.818Z",
+                      "updatedAt": "2024-10-17T13:27:47.216Z",
+                      "isUrlSigned": true
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "id": 34,
+              "attributes": {
+                "slug": "test-di-successo",
+                "title": "Servizi di test",
+                "description": "Questa pagina riporta un case di successo di test per le opportune verifiche.",
+                "createdAt": "2025-09-25T15:18:41.515Z",
+                "updatedAt": "2025-09-25T16:00:41.641Z",
+                "publishedAt": "2025-09-25T15:18:49.780Z",
+                "locale": "it",
+                "image": {
+                  "data": null
+                }
+              }
+            }
+          ]
+        }
+      },
+      "features": {
+        "id": 11,
+        "title": "I benefici della trasformazione digitale dei servizi",
+        "subtitle": null,
+        "items": [
+          {
+            "id": 99,
+            "title": "Comunicazione tempestiva e trasparente",
+            "content": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "text": "I cittadini hanno un accesso più diretto e immediato alle informazioni importanti e ai servizi che possono utilizzare",
+                    "type": "text"
+                  }
+                ]
+              }
+            ],
+            "theme": "light",
+            "icon": {
+              "data": {
+                "id": 259,
+                "attributes": {
+                  "name": "MarkEmailRead.svg",
+                  "alternativeText": null,
+                  "caption": null,
+                  "width": 60,
+                  "height": 60,
+                  "formats": null,
+                  "hash": "Mark_Email_Read_c0313114e3",
+                  "ext": ".svg",
+                  "mime": "image/svg+xml",
+                  "size": 0.43,
+                  "url": "https://cdn.dev.developer.pagopa.it/Mark_Email_Read_c0313114e3.svg",
+                  "previewUrl": null,
+                  "provider": "aws-s3",
+                  "provider_metadata": null,
+                  "createdAt": "2024-07-08T13:33:11.258Z",
+                  "updatedAt": "2024-10-17T13:27:43.993Z",
+                  "isUrlSigned": true
+                }
+              }
+            }
+          },
+          {
+            "id": 100,
+            "title": "Processi di erogazione ottimizzati",
+            "content": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "text": "L'automazione dei processi e la digitalizzazione dei servizi portano una riduzione dei costi operativi associati alle procedure manuali",
+                    "type": "text"
+                  }
+                ]
+              }
+            ],
+            "theme": "light",
+            "icon": {
+              "data": {
+                "id": 260,
+                "attributes": {
+                  "name": "ChangeCircle.svg",
+                  "alternativeText": null,
+                  "caption": null,
+                  "width": 60,
+                  "height": 60,
+                  "formats": null,
+                  "hash": "Change_Circle_117e58323b",
+                  "ext": ".svg",
+                  "mime": "image/svg+xml",
+                  "size": 0.71,
+                  "url": "https://cdn.dev.developer.pagopa.it/Change_Circle_117e58323b.svg",
+                  "previewUrl": null,
+                  "provider": "aws-s3",
+                  "provider_metadata": null,
+                  "createdAt": "2024-07-08T13:34:17.599Z",
+                  "updatedAt": "2024-10-17T13:27:44.097Z",
+                  "isUrlSigned": true
+                }
+              }
+            }
+          },
+          {
+            "id": 101,
+            "title": "Riduzione dei tempi  di incasso",
+            "content": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "text": "I pagamenti vengono elaborati in tempo reale, sono sempre tracciabili e possono essere facilmente aggiorati nel tempo.",
+                    "type": "text"
+                  }
+                ]
+              }
+            ],
+            "theme": "light",
+            "icon": {
+              "data": {
+                "id": 261,
+                "attributes": {
+                  "name": "Timer.svg",
+                  "alternativeText": null,
+                  "caption": null,
+                  "width": 60,
+                  "height": 60,
+                  "formats": null,
+                  "hash": "Timer_10aa3faf5c",
+                  "ext": ".svg",
+                  "mime": "image/svg+xml",
+                  "size": 0.54,
+                  "url": "https://cdn.dev.developer.pagopa.it/Timer_10aa3faf5c.svg",
+                  "previewUrl": null,
+                  "provider": "aws-s3",
+                  "provider_metadata": null,
+                  "createdAt": "2024-07-08T13:35:04.161Z",
+                  "updatedAt": "2024-10-17T13:27:44.193Z",
+                  "isUrlSigned": true
+                }
+              }
+            }
+          }
+        ]
+      },
+      "seo": null
+    }
+  },
+  "meta": {}
+}

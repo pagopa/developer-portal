@@ -5,6 +5,8 @@ export type EnvConfig = {
   readonly maxDepth: number | null;
   readonly validDomainVariants?: string[];
   readonly requestTimeoutMs: number;
+  readonly shouldCreateFilesLocally: boolean;
+  readonly S3BucketName?: string;
 };
 
 export type SanitizeOptions = {
@@ -25,4 +27,9 @@ export type ParsedMetadata = {
 export type ParsedNode = {
   readonly url: string;
   children?: ParsedNode[];
+};
+
+export type SitemapXml = {
+  readonly urlset?: { readonly url?: readonly string[] };
+  readonly sitemapindex?: { readonly sitemap?: readonly string[] };
 };

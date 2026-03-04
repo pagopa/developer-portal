@@ -1,0 +1,3906 @@
+{
+  "data": [
+    {
+      "id": 85,
+      "attributes": {
+        "title": "NnGVerf52DRacWYFzrxv",
+        "slug": "asdfasdfasdfasdfad",
+        "createdAt": "2026-01-16T08:56:00.510Z",
+        "updatedAt": "2026-01-16T08:56:46.657Z",
+        "publishedAt": "2026-01-16T08:56:46.645Z",
+        "locale": "it",
+        "image": {
+          "data": {
+            "id": 434,
+            "attributes": {
+              "name": "mensa_bg.png",
+              "alternativeText": null,
+              "caption": null,
+              "width": 1156,
+              "height": 580,
+              "formats": {
+                "large": {
+                  "ext": ".png",
+                  "url": "https://cdn.dev.developer.pagopa.it/large_mensa_bg_821b0500c7.png",
+                  "hash": "large_mensa_bg_821b0500c7",
+                  "mime": "image/png",
+                  "name": "large_mensa_bg.png",
+                  "path": null,
+                  "size": 80.37,
+                  "width": 1000,
+                  "height": 502,
+                  "sizeInBytes": 80374,
+                  "isUrlSigned": true
+                },
+                "small": {
+                  "ext": ".png",
+                  "url": "https://cdn.dev.developer.pagopa.it/small_mensa_bg_821b0500c7.png",
+                  "hash": "small_mensa_bg_821b0500c7",
+                  "mime": "image/png",
+                  "name": "small_mensa_bg.png",
+                  "path": null,
+                  "size": 25.51,
+                  "width": 500,
+                  "height": 251,
+                  "sizeInBytes": 25513,
+                  "isUrlSigned": true
+                },
+                "medium": {
+                  "ext": ".png",
+                  "url": "https://cdn.dev.developer.pagopa.it/medium_mensa_bg_821b0500c7.png",
+                  "hash": "medium_mensa_bg_821b0500c7",
+                  "mime": "image/png",
+                  "name": "medium_mensa_bg.png",
+                  "path": null,
+                  "size": 49.68,
+                  "width": 750,
+                  "height": 376,
+                  "sizeInBytes": 49683,
+                  "isUrlSigned": true
+                },
+                "thumbnail": {
+                  "ext": ".png",
+                  "url": "https://cdn.dev.developer.pagopa.it/thumbnail_mensa_bg_821b0500c7.png",
+                  "hash": "thumbnail_mensa_bg_821b0500c7",
+                  "mime": "image/png",
+                  "name": "thumbnail_mensa_bg.png",
+                  "path": null,
+                  "size": 9.31,
+                  "width": 245,
+                  "height": 123,
+                  "sizeInBytes": 9306,
+                  "isUrlSigned": true
+                }
+              },
+              "hash": "mensa_bg_821b0500c7",
+              "ext": ".png",
+              "mime": "image/png",
+              "size": 66.86,
+              "url": "https://cdn.dev.developer.pagopa.it/mensa_bg_821b0500c7.png",
+              "previewUrl": null,
+              "provider": "aws-s3",
+              "provider_metadata": null,
+              "createdAt": "2025-02-24T14:15:40.739Z",
+              "updatedAt": "2025-02-24T14:15:40.739Z",
+              "related": [
+                {
+                  "__type": "common.resource",
+                  "id": 34,
+                  "title": "Guida pratica",
+                  "subtitle": "Multe per violazioni al Codice della Strada",
+                  "description": [
+                    {
+                      "type": "paragraph",
+                      "children": [
+                        {
+                          "text": "adsv ad vadsv ads vasd vasd vasd vasd vaav s",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ],
+                  "linkText": "Vai alla guida",
+                  "linkHref": "/solutions/multe-per-violazioni-al-codice-della-strada"
+                },
+                {
+                  "__type": "common.resource",
+                  "id": 36,
+                  "title": "Prova 2",
+                  "subtitle": "Prova 2 ",
+                  "description": [
+                    {
+                      "type": "paragraph",
+                      "children": [
+                        {
+                          "text": "Prova prova Prova prova Prova prova Prova prova Prova prova Prova prova Prova prova ",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ],
+                  "linkText": "aaa",
+                  "linkHref": "#"
+                },
+                {
+                  "__type": "common.resource",
+                  "id": 7,
+                  "title": "Vai alla soluzione",
+                  "subtitle": null,
+                  "description": [
+                    {
+                      "type": "paragraph",
+                      "children": [
+                        {
+                          "text": "Esplora i passaggi e i consigli utili per erogare i servizi scolastici mensa e trasporto attraverso un approccio digitale, integrato e multi-piattaforma",
+                          "type": "text"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "paragraph",
+                      "children": [
+                        {
+                          "text": "",
+                          "type": "text"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "paragraph",
+                      "children": [
+                        {
+                          "text": "",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ],
+                  "linkText": "Vai al dettaglio",
+                  "linkHref": "https://developer.pagopa.it/solutions/mensa-e-trasporto-scolastico"
+                },
+                {
+                  "__type": "api::guide.guide",
+                  "id": 85,
+                  "title": "NnGVerf52DRacWYFzrxv",
+                  "slug": "asdfasdfasdfasdfad",
+                  "createdAt": "2026-01-16T08:56:00.510Z",
+                  "updatedAt": "2026-01-16T08:56:46.657Z",
+                  "publishedAt": "2026-01-16T08:56:46.645Z",
+                  "locale": "it"
+                },
+                {
+                  "__type": "api::guide.guide",
+                  "id": 85,
+                  "title": "NnGVerf52DRacWYFzrxv",
+                  "slug": "asdfasdfasdfasdfad",
+                  "createdAt": "2026-01-16T08:56:00.510Z",
+                  "updatedAt": "2026-01-16T08:56:46.657Z",
+                  "publishedAt": "2026-01-16T08:56:46.645Z",
+                  "locale": "it"
+                },
+                {
+                  "__type": "api::guide.guide",
+                  "id": 78,
+                  "title": "Guida notturna per autostoppisti",
+                  "slug": "guida-notturna",
+                  "createdAt": "2025-11-19T17:01:19.262Z",
+                  "updatedAt": "2026-01-16T16:38:55.066Z",
+                  "publishedAt": "2026-01-08T14:16:08.962Z",
+                  "locale": "it"
+                },
+                {
+                  "__type": "api::guide.guide",
+                  "id": 78,
+                  "title": "Guida notturna per autostoppisti",
+                  "slug": "guida-notturna",
+                  "createdAt": "2025-11-19T17:01:19.262Z",
+                  "updatedAt": "2026-01-16T16:38:55.066Z",
+                  "publishedAt": "2026-01-08T14:16:08.962Z",
+                  "locale": "it"
+                }
+              ],
+              "isUrlSigned": true
+            }
+          }
+        },
+        "mobileImage": {
+          "data": {
+            "id": 434,
+            "attributes": {
+              "name": "mensa_bg.png",
+              "alternativeText": null,
+              "caption": null,
+              "width": 1156,
+              "height": 580,
+              "formats": {
+                "large": {
+                  "ext": ".png",
+                  "url": "https://cdn.dev.developer.pagopa.it/large_mensa_bg_821b0500c7.png",
+                  "hash": "large_mensa_bg_821b0500c7",
+                  "mime": "image/png",
+                  "name": "large_mensa_bg.png",
+                  "path": null,
+                  "size": 80.37,
+                  "width": 1000,
+                  "height": 502,
+                  "sizeInBytes": 80374,
+                  "isUrlSigned": true
+                },
+                "small": {
+                  "ext": ".png",
+                  "url": "https://cdn.dev.developer.pagopa.it/small_mensa_bg_821b0500c7.png",
+                  "hash": "small_mensa_bg_821b0500c7",
+                  "mime": "image/png",
+                  "name": "small_mensa_bg.png",
+                  "path": null,
+                  "size": 25.51,
+                  "width": 500,
+                  "height": 251,
+                  "sizeInBytes": 25513,
+                  "isUrlSigned": true
+                },
+                "medium": {
+                  "ext": ".png",
+                  "url": "https://cdn.dev.developer.pagopa.it/medium_mensa_bg_821b0500c7.png",
+                  "hash": "medium_mensa_bg_821b0500c7",
+                  "mime": "image/png",
+                  "name": "medium_mensa_bg.png",
+                  "path": null,
+                  "size": 49.68,
+                  "width": 750,
+                  "height": 376,
+                  "sizeInBytes": 49683,
+                  "isUrlSigned": true
+                },
+                "thumbnail": {
+                  "ext": ".png",
+                  "url": "https://cdn.dev.developer.pagopa.it/thumbnail_mensa_bg_821b0500c7.png",
+                  "hash": "thumbnail_mensa_bg_821b0500c7",
+                  "mime": "image/png",
+                  "name": "thumbnail_mensa_bg.png",
+                  "path": null,
+                  "size": 9.31,
+                  "width": 245,
+                  "height": 123,
+                  "sizeInBytes": 9306,
+                  "isUrlSigned": true
+                }
+              },
+              "hash": "mensa_bg_821b0500c7",
+              "ext": ".png",
+              "mime": "image/png",
+              "size": 66.86,
+              "url": "https://cdn.dev.developer.pagopa.it/mensa_bg_821b0500c7.png",
+              "previewUrl": null,
+              "provider": "aws-s3",
+              "provider_metadata": null,
+              "createdAt": "2025-02-24T14:15:40.739Z",
+              "updatedAt": "2025-02-24T14:15:40.739Z",
+              "related": [
+                {
+                  "__type": "common.resource",
+                  "id": 34,
+                  "title": "Guida pratica",
+                  "subtitle": "Multe per violazioni al Codice della Strada",
+                  "description": [
+                    {
+                      "type": "paragraph",
+                      "children": [
+                        {
+                          "text": "adsv ad vadsv ads vasd vasd vasd vasd vaav s",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ],
+                  "linkText": "Vai alla guida",
+                  "linkHref": "/solutions/multe-per-violazioni-al-codice-della-strada"
+                },
+                {
+                  "__type": "common.resource",
+                  "id": 36,
+                  "title": "Prova 2",
+                  "subtitle": "Prova 2 ",
+                  "description": [
+                    {
+                      "type": "paragraph",
+                      "children": [
+                        {
+                          "text": "Prova prova Prova prova Prova prova Prova prova Prova prova Prova prova Prova prova ",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ],
+                  "linkText": "aaa",
+                  "linkHref": "#"
+                },
+                {
+                  "__type": "common.resource",
+                  "id": 7,
+                  "title": "Vai alla soluzione",
+                  "subtitle": null,
+                  "description": [
+                    {
+                      "type": "paragraph",
+                      "children": [
+                        {
+                          "text": "Esplora i passaggi e i consigli utili per erogare i servizi scolastici mensa e trasporto attraverso un approccio digitale, integrato e multi-piattaforma",
+                          "type": "text"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "paragraph",
+                      "children": [
+                        {
+                          "text": "",
+                          "type": "text"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "paragraph",
+                      "children": [
+                        {
+                          "text": "",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ],
+                  "linkText": "Vai al dettaglio",
+                  "linkHref": "https://developer.pagopa.it/solutions/mensa-e-trasporto-scolastico"
+                },
+                {
+                  "__type": "api::guide.guide",
+                  "id": 85,
+                  "title": "NnGVerf52DRacWYFzrxv",
+                  "slug": "asdfasdfasdfasdfad",
+                  "createdAt": "2026-01-16T08:56:00.510Z",
+                  "updatedAt": "2026-01-16T08:56:46.657Z",
+                  "publishedAt": "2026-01-16T08:56:46.645Z",
+                  "locale": "it"
+                },
+                {
+                  "__type": "api::guide.guide",
+                  "id": 85,
+                  "title": "NnGVerf52DRacWYFzrxv",
+                  "slug": "asdfasdfasdfasdfad",
+                  "createdAt": "2026-01-16T08:56:00.510Z",
+                  "updatedAt": "2026-01-16T08:56:46.657Z",
+                  "publishedAt": "2026-01-16T08:56:46.645Z",
+                  "locale": "it"
+                },
+                {
+                  "__type": "api::guide.guide",
+                  "id": 78,
+                  "title": "Guida notturna per autostoppisti",
+                  "slug": "guida-notturna",
+                  "createdAt": "2025-11-19T17:01:19.262Z",
+                  "updatedAt": "2026-01-16T16:38:55.066Z",
+                  "publishedAt": "2026-01-08T14:16:08.962Z",
+                  "locale": "it"
+                },
+                {
+                  "__type": "api::guide.guide",
+                  "id": 78,
+                  "title": "Guida notturna per autostoppisti",
+                  "slug": "guida-notturna",
+                  "createdAt": "2025-11-19T17:01:19.262Z",
+                  "updatedAt": "2026-01-16T16:38:55.066Z",
+                  "publishedAt": "2026-01-08T14:16:08.962Z",
+                  "locale": "it"
+                }
+              ],
+              "isUrlSigned": true
+            }
+          }
+        },
+        "listItems": [
+          {
+            "id": 333,
+            "text": "asadasdasdas"
+          }
+        ],
+        "versions": [
+          {
+            "id": 260,
+            "main": true,
+            "version": "old",
+            "dirName": "NnGVerf52DRacWYFzrxv"
+          }
+        ],
+        "bannerLinks": [],
+        "seo": null,
+        "product": {
+          "data": {
+            "id": 68,
+            "attributes": {
+              "name": "Prodotto delle nostre menti contorte",
+              "description": "descrizione cervellotica: il prodotto delle nostre menti contorte serve solo per fare dei test del meccanismo di sync",
+              "slug": "pdnmc",
+              "createdAt": "2025-11-14T15:47:43.475Z",
+              "updatedAt": "2026-02-03T14:11:10.733Z",
+              "publishedAt": "2025-12-17T14:50:12.401Z",
+              "locale": "it",
+              "shortName": "pdnmc",
+              "isVisible": true,
+              "logo": {
+                "data": {
+                  "id": 500,
+                  "attributes": {
+                    "name": "techmeet.svg",
+                    "alternativeText": null,
+                    "caption": null,
+                    "width": 32,
+                    "height": 32,
+                    "formats": null,
+                    "hash": "techmeet_adbb66de0a",
+                    "ext": ".svg",
+                    "mime": "image/svg+xml",
+                    "size": 1.98,
+                    "url": "https://cdn.dev.developer.pagopa.it/techmeet_adbb66de0a.svg",
+                    "previewUrl": null,
+                    "provider": "aws-s3",
+                    "provider_metadata": null,
+                    "createdAt": "2025-05-23T08:14:31.510Z",
+                    "updatedAt": "2025-12-11T08:07:45.341Z",
+                    "isUrlSigned": true
+                  }
+                }
+              },
+              "bannerLinks": [],
+              "overview": {
+                "data": {
+                  "id": 36,
+                  "attributes": {
+                    "title": "Titolo overview cervellotica",
+                    "subtitle": "Sottotitolo",
+                    "createdAt": "2025-11-14T15:50:45.140Z",
+                    "updatedAt": "2026-01-16T10:49:58.638Z",
+                    "publishedAt": "2025-12-17T14:50:08.409Z",
+                    "locale": "it"
+                  }
+                }
+              },
+              "quickstart_guide": {
+                "data": {
+                  "id": 34,
+                  "attributes": {
+                    "title": "Quick start cervellotica",
+                    "description": "desc",
+                    "createdAt": "2025-11-14T16:22:58.248Z",
+                    "updatedAt": "2025-12-17T14:51:08.903Z",
+                    "publishedAt": "2025-12-17T14:51:08.890Z",
+                    "locale": "it"
+                  }
+                }
+              },
+              "release_note": {
+                "data": null
+              },
+              "api_data_list_page": {
+                "data": {
+                  "id": 36,
+                  "attributes": {
+                    "title": "Lista API incomprensibili",
+                    "description": null,
+                    "createdAt": "2025-11-14T16:37:33.615Z",
+                    "updatedAt": "2026-01-30T17:18:14.092Z",
+                    "publishedAt": "2026-01-07T13:49:25.223Z",
+                    "locale": "it",
+                    "enableFilters": true,
+                    "apiData": {
+                      "data": [
+                        {
+                          "id": 43,
+                          "attributes": {
+                            "title": "API folle",
+                            "description": null,
+                            "createdAt": "2025-11-14T16:38:34.599Z",
+                            "updatedAt": "2026-01-07T13:49:28.236Z",
+                            "publishedAt": "2026-01-07T13:49:28.228Z",
+                            "locale": "it",
+                            "apiRestDetail": {
+                              "id": 48,
+                              "slug": "api-folle"
+                            }
+                          }
+                        },
+                        {
+                          "id": 44,
+                          "attributes": {
+                            "title": "Api follemente",
+                            "description": null,
+                            "createdAt": "2025-11-14T16:40:51.830Z",
+                            "updatedAt": "2026-01-07T13:49:35.800Z",
+                            "publishedAt": "2026-01-07T13:49:35.792Z",
+                            "locale": "it",
+                            "apiRestDetail": {
+                              "id": 53,
+                              "slug": "api-follemente"
+                            }
+                          }
+                        },
+                        {
+                          "id": 18,
+                          "attributes": {
+                            "title": "Documentazione SOAP",
+                            "description": "Consulta tutti gli schemi XSD e WSDL che seguono le diverse release SANP",
+                            "createdAt": "2024-07-16T12:07:27.383Z",
+                            "updatedAt": "2026-01-29T14:51:28.575Z",
+                            "publishedAt": "2026-01-29T14:51:28.565Z",
+                            "locale": "it",
+                            "apiRestDetail": null
+                          }
+                        },
+                        {
+                          "id": 45,
+                          "attributes": {
+                            "title": "QDEV-2602_API Test Rapidoc",
+                            "description": "Pagina per test su DEV-2602 \"L'utente può visualizzare la pagina del dettaglio API vedendo la nuova interfaccia\"",
+                            "createdAt": "2026-01-30T17:17:43.697Z",
+                            "updatedAt": "2026-01-30T18:12:41.240Z",
+                            "publishedAt": "2026-01-30T17:17:50.086Z",
+                            "locale": "it",
+                            "apiRestDetail": {
+                              "id": 55,
+                              "slug": "qdev2602-api-test"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              },
+              "guide_list_page": {
+                "data": {
+                  "id": 36,
+                  "attributes": {
+                    "title": "Pagina di lista delle guide cervellotiche",
+                    "description": "Descrizione della pagina di lista delle guide cervellotiche",
+                    "createdAt": "2025-11-14T16:04:45.619Z",
+                    "updatedAt": "2026-02-03T08:46:51.176Z",
+                    "publishedAt": "2026-01-14T16:22:45.135Z",
+                    "locale": "it"
+                  }
+                }
+              },
+              "tutorial_list_page": {
+                "data": null
+              },
+              "use_case_list_page": {
+                "data": null
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": 24,
+      "attributes": {
+        "title": "Kit di comunicazione",
+        "slug": "kit-comunicazione",
+        "createdAt": "2024-09-06T09:10:44.112Z",
+        "updatedAt": "2026-01-19T09:48:03.483Z",
+        "publishedAt": "2026-01-19T09:48:03.475Z",
+        "locale": "it",
+        "image": {
+          "data": {
+            "id": 321,
+            "attributes": {
+              "name": "kit-di-comunicazione.png",
+              "alternativeText": null,
+              "caption": null,
+              "width": 1156,
+              "height": 580,
+              "formats": {
+                "large": {
+                  "ext": ".png",
+                  "url": "https://cdn.dev.developer.pagopa.it/large_kit_di_comunicazione_e80656c01e.png",
+                  "hash": "large_kit_di_comunicazione_e80656c01e",
+                  "mime": "image/png",
+                  "name": "large_kit-di-comunicazione.png",
+                  "path": null,
+                  "size": 70.45,
+                  "width": 1000,
+                  "height": 502,
+                  "sizeInBytes": 70451,
+                  "isUrlSigned": true
+                },
+                "small": {
+                  "ext": ".png",
+                  "url": "https://cdn.dev.developer.pagopa.it/small_kit_di_comunicazione_e80656c01e.png",
+                  "hash": "small_kit_di_comunicazione_e80656c01e",
+                  "mime": "image/png",
+                  "name": "small_kit-di-comunicazione.png",
+                  "path": null,
+                  "size": 21.52,
+                  "width": 500,
+                  "height": 251,
+                  "sizeInBytes": 21524,
+                  "isUrlSigned": true
+                },
+                "medium": {
+                  "ext": ".png",
+                  "url": "https://cdn.dev.developer.pagopa.it/medium_kit_di_comunicazione_e80656c01e.png",
+                  "hash": "medium_kit_di_comunicazione_e80656c01e",
+                  "mime": "image/png",
+                  "name": "medium_kit-di-comunicazione.png",
+                  "path": null,
+                  "size": 43.21,
+                  "width": 750,
+                  "height": 376,
+                  "sizeInBytes": 43210,
+                  "isUrlSigned": true
+                },
+                "thumbnail": {
+                  "ext": ".png",
+                  "url": "https://cdn.dev.developer.pagopa.it/thumbnail_kit_di_comunicazione_e80656c01e.png",
+                  "hash": "thumbnail_kit_di_comunicazione_e80656c01e",
+                  "mime": "image/png",
+                  "name": "thumbnail_kit-di-comunicazione.png",
+                  "path": null,
+                  "size": 7.79,
+                  "width": 245,
+                  "height": 123,
+                  "sizeInBytes": 7793,
+                  "isUrlSigned": true
+                }
+              },
+              "hash": "kit_di_comunicazione_e80656c01e",
+              "ext": ".png",
+              "mime": "image/png",
+              "size": 62.7,
+              "url": "https://cdn.dev.developer.pagopa.it/kit_di_comunicazione_e80656c01e.png",
+              "previewUrl": null,
+              "provider": "aws-s3",
+              "provider_metadata": null,
+              "createdAt": "2024-09-04T08:48:09.890Z",
+              "updatedAt": "2024-10-17T13:28:01.030Z",
+              "related": [
+                {
+                  "__type": "api::guide.guide",
+                  "id": 24,
+                  "title": "Kit di comunicazione",
+                  "slug": "kit-comunicazione",
+                  "createdAt": "2024-09-06T09:10:44.112Z",
+                  "updatedAt": "2026-01-19T09:48:03.483Z",
+                  "publishedAt": "2026-01-19T09:48:03.475Z",
+                  "locale": "it"
+                },
+                {
+                  "__type": "api::guide.guide",
+                  "id": 24,
+                  "title": "Kit di comunicazione",
+                  "slug": "kit-comunicazione",
+                  "createdAt": "2024-09-06T09:10:44.112Z",
+                  "updatedAt": "2026-01-19T09:48:03.483Z",
+                  "publishedAt": "2026-01-19T09:48:03.475Z",
+                  "locale": "it"
+                }
+              ],
+              "isUrlSigned": true
+            }
+          }
+        },
+        "mobileImage": {
+          "data": {
+            "id": 321,
+            "attributes": {
+              "name": "kit-di-comunicazione.png",
+              "alternativeText": null,
+              "caption": null,
+              "width": 1156,
+              "height": 580,
+              "formats": {
+                "large": {
+                  "ext": ".png",
+                  "url": "https://cdn.dev.developer.pagopa.it/large_kit_di_comunicazione_e80656c01e.png",
+                  "hash": "large_kit_di_comunicazione_e80656c01e",
+                  "mime": "image/png",
+                  "name": "large_kit-di-comunicazione.png",
+                  "path": null,
+                  "size": 70.45,
+                  "width": 1000,
+                  "height": 502,
+                  "sizeInBytes": 70451,
+                  "isUrlSigned": true
+                },
+                "small": {
+                  "ext": ".png",
+                  "url": "https://cdn.dev.developer.pagopa.it/small_kit_di_comunicazione_e80656c01e.png",
+                  "hash": "small_kit_di_comunicazione_e80656c01e",
+                  "mime": "image/png",
+                  "name": "small_kit-di-comunicazione.png",
+                  "path": null,
+                  "size": 21.52,
+                  "width": 500,
+                  "height": 251,
+                  "sizeInBytes": 21524,
+                  "isUrlSigned": true
+                },
+                "medium": {
+                  "ext": ".png",
+                  "url": "https://cdn.dev.developer.pagopa.it/medium_kit_di_comunicazione_e80656c01e.png",
+                  "hash": "medium_kit_di_comunicazione_e80656c01e",
+                  "mime": "image/png",
+                  "name": "medium_kit-di-comunicazione.png",
+                  "path": null,
+                  "size": 43.21,
+                  "width": 750,
+                  "height": 376,
+                  "sizeInBytes": 43210,
+                  "isUrlSigned": true
+                },
+                "thumbnail": {
+                  "ext": ".png",
+                  "url": "https://cdn.dev.developer.pagopa.it/thumbnail_kit_di_comunicazione_e80656c01e.png",
+                  "hash": "thumbnail_kit_di_comunicazione_e80656c01e",
+                  "mime": "image/png",
+                  "name": "thumbnail_kit-di-comunicazione.png",
+                  "path": null,
+                  "size": 7.79,
+                  "width": 245,
+                  "height": 123,
+                  "sizeInBytes": 7793,
+                  "isUrlSigned": true
+                }
+              },
+              "hash": "kit_di_comunicazione_e80656c01e",
+              "ext": ".png",
+              "mime": "image/png",
+              "size": 62.7,
+              "url": "https://cdn.dev.developer.pagopa.it/kit_di_comunicazione_e80656c01e.png",
+              "previewUrl": null,
+              "provider": "aws-s3",
+              "provider_metadata": null,
+              "createdAt": "2024-09-04T08:48:09.890Z",
+              "updatedAt": "2024-10-17T13:28:01.030Z",
+              "related": [
+                {
+                  "__type": "api::guide.guide",
+                  "id": 24,
+                  "title": "Kit di comunicazione",
+                  "slug": "kit-comunicazione",
+                  "createdAt": "2024-09-06T09:10:44.112Z",
+                  "updatedAt": "2026-01-19T09:48:03.483Z",
+                  "publishedAt": "2026-01-19T09:48:03.475Z",
+                  "locale": "it"
+                },
+                {
+                  "__type": "api::guide.guide",
+                  "id": 24,
+                  "title": "Kit di comunicazione",
+                  "slug": "kit-comunicazione",
+                  "createdAt": "2024-09-06T09:10:44.112Z",
+                  "updatedAt": "2026-01-19T09:48:03.483Z",
+                  "publishedAt": "2026-01-19T09:48:03.475Z",
+                  "locale": "it"
+                }
+              ],
+              "isUrlSigned": true
+            }
+          }
+        },
+        "listItems": [
+          {
+            "id": 86,
+            "text": "Crea una campagna di sensibilizzazione"
+          },
+          {
+            "id": 87,
+            "text": "Usa i modelli grafici, copy e social"
+          },
+          {
+            "id": 88,
+            "text": "Leggi i suggerimenti per una comunicazione efficace"
+          },
+          {
+            "id": 89,
+            "text": "Raccontaci la tua esperienza"
+          }
+        ],
+        "versions": [
+          {
+            "id": 55,
+            "main": true,
+            "version": "v1.0",
+            "dirName": "SpNLdqKSqoCvaOneGN7K"
+          }
+        ],
+        "bannerLinks": [],
+        "seo": null,
+        "product": {
+          "data": {
+            "id": 68,
+            "attributes": {
+              "name": "Prodotto delle nostre menti contorte",
+              "description": "descrizione cervellotica: il prodotto delle nostre menti contorte serve solo per fare dei test del meccanismo di sync",
+              "slug": "pdnmc",
+              "createdAt": "2025-11-14T15:47:43.475Z",
+              "updatedAt": "2026-02-03T14:11:10.733Z",
+              "publishedAt": "2025-12-17T14:50:12.401Z",
+              "locale": "it",
+              "shortName": "pdnmc",
+              "isVisible": true,
+              "logo": {
+                "data": {
+                  "id": 500,
+                  "attributes": {
+                    "name": "techmeet.svg",
+                    "alternativeText": null,
+                    "caption": null,
+                    "width": 32,
+                    "height": 32,
+                    "formats": null,
+                    "hash": "techmeet_adbb66de0a",
+                    "ext": ".svg",
+                    "mime": "image/svg+xml",
+                    "size": 1.98,
+                    "url": "https://cdn.dev.developer.pagopa.it/techmeet_adbb66de0a.svg",
+                    "previewUrl": null,
+                    "provider": "aws-s3",
+                    "provider_metadata": null,
+                    "createdAt": "2025-05-23T08:14:31.510Z",
+                    "updatedAt": "2025-12-11T08:07:45.341Z",
+                    "isUrlSigned": true
+                  }
+                }
+              },
+              "bannerLinks": [],
+              "overview": {
+                "data": {
+                  "id": 36,
+                  "attributes": {
+                    "title": "Titolo overview cervellotica",
+                    "subtitle": "Sottotitolo",
+                    "createdAt": "2025-11-14T15:50:45.140Z",
+                    "updatedAt": "2026-01-16T10:49:58.638Z",
+                    "publishedAt": "2025-12-17T14:50:08.409Z",
+                    "locale": "it"
+                  }
+                }
+              },
+              "quickstart_guide": {
+                "data": {
+                  "id": 34,
+                  "attributes": {
+                    "title": "Quick start cervellotica",
+                    "description": "desc",
+                    "createdAt": "2025-11-14T16:22:58.248Z",
+                    "updatedAt": "2025-12-17T14:51:08.903Z",
+                    "publishedAt": "2025-12-17T14:51:08.890Z",
+                    "locale": "it"
+                  }
+                }
+              },
+              "release_note": {
+                "data": null
+              },
+              "api_data_list_page": {
+                "data": {
+                  "id": 36,
+                  "attributes": {
+                    "title": "Lista API incomprensibili",
+                    "description": null,
+                    "createdAt": "2025-11-14T16:37:33.615Z",
+                    "updatedAt": "2026-01-30T17:18:14.092Z",
+                    "publishedAt": "2026-01-07T13:49:25.223Z",
+                    "locale": "it",
+                    "enableFilters": true,
+                    "apiData": {
+                      "data": [
+                        {
+                          "id": 43,
+                          "attributes": {
+                            "title": "API folle",
+                            "description": null,
+                            "createdAt": "2025-11-14T16:38:34.599Z",
+                            "updatedAt": "2026-01-07T13:49:28.236Z",
+                            "publishedAt": "2026-01-07T13:49:28.228Z",
+                            "locale": "it",
+                            "apiRestDetail": {
+                              "id": 48,
+                              "slug": "api-folle"
+                            }
+                          }
+                        },
+                        {
+                          "id": 44,
+                          "attributes": {
+                            "title": "Api follemente",
+                            "description": null,
+                            "createdAt": "2025-11-14T16:40:51.830Z",
+                            "updatedAt": "2026-01-07T13:49:35.800Z",
+                            "publishedAt": "2026-01-07T13:49:35.792Z",
+                            "locale": "it",
+                            "apiRestDetail": {
+                              "id": 53,
+                              "slug": "api-follemente"
+                            }
+                          }
+                        },
+                        {
+                          "id": 18,
+                          "attributes": {
+                            "title": "Documentazione SOAP",
+                            "description": "Consulta tutti gli schemi XSD e WSDL che seguono le diverse release SANP",
+                            "createdAt": "2024-07-16T12:07:27.383Z",
+                            "updatedAt": "2026-01-29T14:51:28.575Z",
+                            "publishedAt": "2026-01-29T14:51:28.565Z",
+                            "locale": "it",
+                            "apiRestDetail": null
+                          }
+                        },
+                        {
+                          "id": 45,
+                          "attributes": {
+                            "title": "QDEV-2602_API Test Rapidoc",
+                            "description": "Pagina per test su DEV-2602 \"L'utente può visualizzare la pagina del dettaglio API vedendo la nuova interfaccia\"",
+                            "createdAt": "2026-01-30T17:17:43.697Z",
+                            "updatedAt": "2026-01-30T18:12:41.240Z",
+                            "publishedAt": "2026-01-30T17:17:50.086Z",
+                            "locale": "it",
+                            "apiRestDetail": {
+                              "id": 55,
+                              "slug": "qdev2602-api-test"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              },
+              "guide_list_page": {
+                "data": {
+                  "id": 36,
+                  "attributes": {
+                    "title": "Pagina di lista delle guide cervellotiche",
+                    "description": "Descrizione della pagina di lista delle guide cervellotiche",
+                    "createdAt": "2025-11-14T16:04:45.619Z",
+                    "updatedAt": "2026-02-03T08:46:51.176Z",
+                    "publishedAt": "2026-01-14T16:22:45.135Z",
+                    "locale": "it"
+                  }
+                }
+              },
+              "tutorial_list_page": {
+                "data": null
+              },
+              "use_case_list_page": {
+                "data": null
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": 87,
+      "attributes": {
+        "title": "Guida per vedere se il chatbot funziona",
+        "slug": "guidaperchatbot",
+        "createdAt": "2026-01-19T11:32:00.941Z",
+        "updatedAt": "2026-02-04T11:08:14.419Z",
+        "publishedAt": "2026-01-19T11:32:23.933Z",
+        "locale": "it",
+        "image": {
+          "data": {
+            "id": 501,
+            "attributes": {
+              "name": "vo9vm1fcqrp71.jpg",
+              "alternativeText": null,
+              "caption": null,
+              "width": 1920,
+              "height": 1080,
+              "formats": {
+                "large": {
+                  "ext": ".jpg",
+                  "url": "https://cdn.dev.developer.pagopa.it/large_vo9vm1fcqrp71_de42a46947.jpg",
+                  "hash": "large_vo9vm1fcqrp71_de42a46947",
+                  "mime": "image/jpeg",
+                  "name": "large_vo9vm1fcqrp71.jpg",
+                  "path": null,
+                  "size": 60.03,
+                  "width": 1000,
+                  "height": 563,
+                  "sizeInBytes": 60027,
+                  "isUrlSigned": true
+                },
+                "small": {
+                  "ext": ".jpg",
+                  "url": "https://cdn.dev.developer.pagopa.it/small_vo9vm1fcqrp71_de42a46947.jpg",
+                  "hash": "small_vo9vm1fcqrp71_de42a46947",
+                  "mime": "image/jpeg",
+                  "name": "small_vo9vm1fcqrp71.jpg",
+                  "path": null,
+                  "size": 18.62,
+                  "width": 500,
+                  "height": 281,
+                  "sizeInBytes": 18619,
+                  "isUrlSigned": true
+                },
+                "medium": {
+                  "ext": ".jpg",
+                  "url": "https://cdn.dev.developer.pagopa.it/medium_vo9vm1fcqrp71_de42a46947.jpg",
+                  "hash": "medium_vo9vm1fcqrp71_de42a46947",
+                  "mime": "image/jpeg",
+                  "name": "medium_vo9vm1fcqrp71.jpg",
+                  "path": null,
+                  "size": 36.01,
+                  "width": 750,
+                  "height": 422,
+                  "sizeInBytes": 36007,
+                  "isUrlSigned": true
+                },
+                "thumbnail": {
+                  "ext": ".jpg",
+                  "url": "https://cdn.dev.developer.pagopa.it/thumbnail_vo9vm1fcqrp71_de42a46947.jpg",
+                  "hash": "thumbnail_vo9vm1fcqrp71_de42a46947",
+                  "mime": "image/jpeg",
+                  "name": "thumbnail_vo9vm1fcqrp71.jpg",
+                  "path": null,
+                  "size": 6.06,
+                  "width": 245,
+                  "height": 138,
+                  "sizeInBytes": 6057,
+                  "isUrlSigned": true
+                }
+              },
+              "hash": "vo9vm1fcqrp71_de42a46947",
+              "ext": ".jpg",
+              "mime": "image/jpeg",
+              "size": 3303.76,
+              "url": "https://cdn.dev.developer.pagopa.it/vo9vm1fcqrp71_de42a46947.jpg",
+              "previewUrl": null,
+              "provider": "aws-s3",
+              "provider_metadata": null,
+              "createdAt": "2025-11-06T13:30:10.075Z",
+              "updatedAt": "2026-01-20T10:34:46.337Z",
+              "related": [
+                {
+                  "__type": "api::guide.guide",
+                  "id": 87,
+                  "title": "Guida per vedere se il chatbot funziona",
+                  "slug": "guidaperchatbot",
+                  "createdAt": "2026-01-19T11:32:00.941Z",
+                  "updatedAt": "2026-02-04T11:08:14.419Z",
+                  "publishedAt": "2026-01-19T11:32:23.933Z",
+                  "locale": "it"
+                },
+                {
+                  "__type": "api::guide.guide",
+                  "id": 87,
+                  "title": "Guida per vedere se il chatbot funziona",
+                  "slug": "guidaperchatbot",
+                  "createdAt": "2026-01-19T11:32:00.941Z",
+                  "updatedAt": "2026-02-04T11:08:14.419Z",
+                  "publishedAt": "2026-01-19T11:32:23.933Z",
+                  "locale": "it"
+                },
+                {
+                  "__type": "api::webinar.webinar",
+                  "id": 21,
+                  "title": "Test webinar always live",
+                  "slug": "always-live",
+                  "playerSrc": "https://23eaa6e50e97.eu-central-1.playback.live-video.net/api/video/v1/eu-central-1.039804388894.channel.5CsyUCnE771r.m3u8",
+                  "startDatetime": "2020-11-27T17:18:00.000Z",
+                  "endDatetime": "2040-12-31T17:20:00.000Z",
+                  "isVisibleInList": true,
+                  "subscribeParagraphLabel": null,
+                  "description": "This webinar exists only for test purposes",
+                  "createdAt": "2024-11-25T16:55:48.233Z",
+                  "updatedAt": "2025-12-04T11:19:17.254Z",
+                  "publishedAt": "2024-11-25T16:55:52.359Z",
+                  "locale": "it",
+                  "bodyContent": [
+                    {
+                      "type": "paragraph",
+                      "children": [
+                        {
+                          "text": "Per semplificare l’utilizzo della piattaforma PDND Interoperabilità, saranno introdotte nuove misure volte a facilitare l’applicazione delle best practice nella verifica dei voucher erogati dalla PDND, nonché nell’uso delle relative audience.",
+                          "type": "text"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "image",
+                      "image": {
+                        "ext": ".png",
+                        "url": "https://cdn.dev.developer.pagopa.it/Webinar_Token_PDND_a52e8c96fe.png",
+                        "hash": "Webinar_Token_PDND_a52e8c96fe",
+                        "mime": "image/png",
+                        "name": "Webinar_Token PDND.png",
+                        "size": 131.7,
+                        "width": 1456,
+                        "height": 832,
+                        "caption": null,
+                        "formats": {
+                          "large": {
+                            "ext": ".png",
+                            "url": "https://cdn.dev.developer.pagopa.it/large_Webinar_Token_PDND_a52e8c96fe.png",
+                            "hash": "large_Webinar_Token_PDND_a52e8c96fe",
+                            "mime": "image/png",
+                            "name": "large_Webinar_Token PDND.png",
+                            "path": null,
+                            "size": 96,
+                            "width": 1000,
+                            "height": 571,
+                            "isUrlSigned": true,
+                            "sizeInBytes": 96003
+                          },
+                          "small": {
+                            "ext": ".png",
+                            "url": "https://cdn.dev.developer.pagopa.it/small_Webinar_Token_PDND_a52e8c96fe.png",
+                            "hash": "small_Webinar_Token_PDND_a52e8c96fe",
+                            "mime": "image/png",
+                            "name": "small_Webinar_Token PDND.png",
+                            "path": null,
+                            "size": 29.71,
+                            "width": 500,
+                            "height": 286,
+                            "isUrlSigned": true,
+                            "sizeInBytes": 29706
+                          },
+                          "medium": {
+                            "ext": ".png",
+                            "url": "https://cdn.dev.developer.pagopa.it/medium_Webinar_Token_PDND_a52e8c96fe.png",
+                            "hash": "medium_Webinar_Token_PDND_a52e8c96fe",
+                            "mime": "image/png",
+                            "name": "medium_Webinar_Token PDND.png",
+                            "path": null,
+                            "size": 58.08,
+                            "width": 750,
+                            "height": 429,
+                            "isUrlSigned": true,
+                            "sizeInBytes": 58082
+                          },
+                          "thumbnail": {
+                            "ext": ".png",
+                            "url": "https://cdn.dev.developer.pagopa.it/thumbnail_Webinar_Token_PDND_a52e8c96fe.png",
+                            "hash": "thumbnail_Webinar_Token_PDND_a52e8c96fe",
+                            "mime": "image/png",
+                            "name": "thumbnail_Webinar_Token PDND.png",
+                            "path": null,
+                            "size": 10.07,
+                            "width": 245,
+                            "height": 140,
+                            "isUrlSigned": true,
+                            "sizeInBytes": 10068
+                          }
+                        },
+                        "provider": "aws-s3",
+                        "createdAt": "2025-05-08T08:10:00.320Z",
+                        "updatedAt": "2025-05-09T10:45:34.807Z",
+                        "previewUrl": null,
+                        "alternativeText": "Webinar_Token PDND.png",
+                        "provider_metadata": null
+                      },
+                      "children": [
+                        {
+                          "text": "",
+                          "type": "text"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "paragraph",
+                      "children": [
+                        {
+                          "text": "Approfondiremo:",
+                          "type": "text"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "list",
+                      "format": "unordered",
+                      "children": [
+                        {
+                          "type": "list-item",
+                          "children": [
+                            {
+                              "text": "come un fruitore richiede ed ottiene un voucher e quali sono i claim accettati",
+                              "type": "text"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "list-item",
+                          "children": [
+                            {
+                              "text": "cosa contiene un voucher PDND",
+                              "type": "text"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "list-item",
+                          "children": [
+                            {
+                              "text": "quali sono i nuovi claim introdotti e le best practice per le verifiche\n\n",
+                              "type": "text"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ],
+                  "videoOnDemandStartAt": null
+                }
+              ],
+              "isUrlSigned": true
+            }
+          }
+        },
+        "mobileImage": {
+          "data": {
+            "id": 501,
+            "attributes": {
+              "name": "vo9vm1fcqrp71.jpg",
+              "alternativeText": null,
+              "caption": null,
+              "width": 1920,
+              "height": 1080,
+              "formats": {
+                "large": {
+                  "ext": ".jpg",
+                  "url": "https://cdn.dev.developer.pagopa.it/large_vo9vm1fcqrp71_de42a46947.jpg",
+                  "hash": "large_vo9vm1fcqrp71_de42a46947",
+                  "mime": "image/jpeg",
+                  "name": "large_vo9vm1fcqrp71.jpg",
+                  "path": null,
+                  "size": 60.03,
+                  "width": 1000,
+                  "height": 563,
+                  "sizeInBytes": 60027,
+                  "isUrlSigned": true
+                },
+                "small": {
+                  "ext": ".jpg",
+                  "url": "https://cdn.dev.developer.pagopa.it/small_vo9vm1fcqrp71_de42a46947.jpg",
+                  "hash": "small_vo9vm1fcqrp71_de42a46947",
+                  "mime": "image/jpeg",
+                  "name": "small_vo9vm1fcqrp71.jpg",
+                  "path": null,
+                  "size": 18.62,
+                  "width": 500,
+                  "height": 281,
+                  "sizeInBytes": 18619,
+                  "isUrlSigned": true
+                },
+                "medium": {
+                  "ext": ".jpg",
+                  "url": "https://cdn.dev.developer.pagopa.it/medium_vo9vm1fcqrp71_de42a46947.jpg",
+                  "hash": "medium_vo9vm1fcqrp71_de42a46947",
+                  "mime": "image/jpeg",
+                  "name": "medium_vo9vm1fcqrp71.jpg",
+                  "path": null,
+                  "size": 36.01,
+                  "width": 750,
+                  "height": 422,
+                  "sizeInBytes": 36007,
+                  "isUrlSigned": true
+                },
+                "thumbnail": {
+                  "ext": ".jpg",
+                  "url": "https://cdn.dev.developer.pagopa.it/thumbnail_vo9vm1fcqrp71_de42a46947.jpg",
+                  "hash": "thumbnail_vo9vm1fcqrp71_de42a46947",
+                  "mime": "image/jpeg",
+                  "name": "thumbnail_vo9vm1fcqrp71.jpg",
+                  "path": null,
+                  "size": 6.06,
+                  "width": 245,
+                  "height": 138,
+                  "sizeInBytes": 6057,
+                  "isUrlSigned": true
+                }
+              },
+              "hash": "vo9vm1fcqrp71_de42a46947",
+              "ext": ".jpg",
+              "mime": "image/jpeg",
+              "size": 3303.76,
+              "url": "https://cdn.dev.developer.pagopa.it/vo9vm1fcqrp71_de42a46947.jpg",
+              "previewUrl": null,
+              "provider": "aws-s3",
+              "provider_metadata": null,
+              "createdAt": "2025-11-06T13:30:10.075Z",
+              "updatedAt": "2026-01-20T10:34:46.337Z",
+              "related": [
+                {
+                  "__type": "api::guide.guide",
+                  "id": 87,
+                  "title": "Guida per vedere se il chatbot funziona",
+                  "slug": "guidaperchatbot",
+                  "createdAt": "2026-01-19T11:32:00.941Z",
+                  "updatedAt": "2026-02-04T11:08:14.419Z",
+                  "publishedAt": "2026-01-19T11:32:23.933Z",
+                  "locale": "it"
+                },
+                {
+                  "__type": "api::guide.guide",
+                  "id": 87,
+                  "title": "Guida per vedere se il chatbot funziona",
+                  "slug": "guidaperchatbot",
+                  "createdAt": "2026-01-19T11:32:00.941Z",
+                  "updatedAt": "2026-02-04T11:08:14.419Z",
+                  "publishedAt": "2026-01-19T11:32:23.933Z",
+                  "locale": "it"
+                },
+                {
+                  "__type": "api::webinar.webinar",
+                  "id": 21,
+                  "title": "Test webinar always live",
+                  "slug": "always-live",
+                  "playerSrc": "https://23eaa6e50e97.eu-central-1.playback.live-video.net/api/video/v1/eu-central-1.039804388894.channel.5CsyUCnE771r.m3u8",
+                  "startDatetime": "2020-11-27T17:18:00.000Z",
+                  "endDatetime": "2040-12-31T17:20:00.000Z",
+                  "isVisibleInList": true,
+                  "subscribeParagraphLabel": null,
+                  "description": "This webinar exists only for test purposes",
+                  "createdAt": "2024-11-25T16:55:48.233Z",
+                  "updatedAt": "2025-12-04T11:19:17.254Z",
+                  "publishedAt": "2024-11-25T16:55:52.359Z",
+                  "locale": "it",
+                  "bodyContent": [
+                    {
+                      "type": "paragraph",
+                      "children": [
+                        {
+                          "text": "Per semplificare l’utilizzo della piattaforma PDND Interoperabilità, saranno introdotte nuove misure volte a facilitare l’applicazione delle best practice nella verifica dei voucher erogati dalla PDND, nonché nell’uso delle relative audience.",
+                          "type": "text"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "image",
+                      "image": {
+                        "ext": ".png",
+                        "url": "https://cdn.dev.developer.pagopa.it/Webinar_Token_PDND_a52e8c96fe.png",
+                        "hash": "Webinar_Token_PDND_a52e8c96fe",
+                        "mime": "image/png",
+                        "name": "Webinar_Token PDND.png",
+                        "size": 131.7,
+                        "width": 1456,
+                        "height": 832,
+                        "caption": null,
+                        "formats": {
+                          "large": {
+                            "ext": ".png",
+                            "url": "https://cdn.dev.developer.pagopa.it/large_Webinar_Token_PDND_a52e8c96fe.png",
+                            "hash": "large_Webinar_Token_PDND_a52e8c96fe",
+                            "mime": "image/png",
+                            "name": "large_Webinar_Token PDND.png",
+                            "path": null,
+                            "size": 96,
+                            "width": 1000,
+                            "height": 571,
+                            "isUrlSigned": true,
+                            "sizeInBytes": 96003
+                          },
+                          "small": {
+                            "ext": ".png",
+                            "url": "https://cdn.dev.developer.pagopa.it/small_Webinar_Token_PDND_a52e8c96fe.png",
+                            "hash": "small_Webinar_Token_PDND_a52e8c96fe",
+                            "mime": "image/png",
+                            "name": "small_Webinar_Token PDND.png",
+                            "path": null,
+                            "size": 29.71,
+                            "width": 500,
+                            "height": 286,
+                            "isUrlSigned": true,
+                            "sizeInBytes": 29706
+                          },
+                          "medium": {
+                            "ext": ".png",
+                            "url": "https://cdn.dev.developer.pagopa.it/medium_Webinar_Token_PDND_a52e8c96fe.png",
+                            "hash": "medium_Webinar_Token_PDND_a52e8c96fe",
+                            "mime": "image/png",
+                            "name": "medium_Webinar_Token PDND.png",
+                            "path": null,
+                            "size": 58.08,
+                            "width": 750,
+                            "height": 429,
+                            "isUrlSigned": true,
+                            "sizeInBytes": 58082
+                          },
+                          "thumbnail": {
+                            "ext": ".png",
+                            "url": "https://cdn.dev.developer.pagopa.it/thumbnail_Webinar_Token_PDND_a52e8c96fe.png",
+                            "hash": "thumbnail_Webinar_Token_PDND_a52e8c96fe",
+                            "mime": "image/png",
+                            "name": "thumbnail_Webinar_Token PDND.png",
+                            "path": null,
+                            "size": 10.07,
+                            "width": 245,
+                            "height": 140,
+                            "isUrlSigned": true,
+                            "sizeInBytes": 10068
+                          }
+                        },
+                        "provider": "aws-s3",
+                        "createdAt": "2025-05-08T08:10:00.320Z",
+                        "updatedAt": "2025-05-09T10:45:34.807Z",
+                        "previewUrl": null,
+                        "alternativeText": "Webinar_Token PDND.png",
+                        "provider_metadata": null
+                      },
+                      "children": [
+                        {
+                          "text": "",
+                          "type": "text"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "paragraph",
+                      "children": [
+                        {
+                          "text": "Approfondiremo:",
+                          "type": "text"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "list",
+                      "format": "unordered",
+                      "children": [
+                        {
+                          "type": "list-item",
+                          "children": [
+                            {
+                              "text": "come un fruitore richiede ed ottiene un voucher e quali sono i claim accettati",
+                              "type": "text"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "list-item",
+                          "children": [
+                            {
+                              "text": "cosa contiene un voucher PDND",
+                              "type": "text"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "list-item",
+                          "children": [
+                            {
+                              "text": "quali sono i nuovi claim introdotti e le best practice per le verifiche\n\n",
+                              "type": "text"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ],
+                  "videoOnDemandStartAt": null
+                }
+              ],
+              "isUrlSigned": true
+            }
+          }
+        },
+        "listItems": [
+          {
+            "id": 335,
+            "text": "Vediamo se funziona"
+          }
+        ],
+        "versions": [
+          {
+            "id": 263,
+            "main": false,
+            "version": "1.0",
+            "dirName": "3hGetm2vpYnuGhDIAEAc"
+          },
+          {
+            "id": 266,
+            "main": true,
+            "version": "2.0",
+            "dirName": "4jkhk4pzaGP9Kvuj7orz"
+          }
+        ],
+        "bannerLinks": [],
+        "seo": null,
+        "product": {
+          "data": {
+            "id": 68,
+            "attributes": {
+              "name": "Prodotto delle nostre menti contorte",
+              "description": "descrizione cervellotica: il prodotto delle nostre menti contorte serve solo per fare dei test del meccanismo di sync",
+              "slug": "pdnmc",
+              "createdAt": "2025-11-14T15:47:43.475Z",
+              "updatedAt": "2026-02-03T14:11:10.733Z",
+              "publishedAt": "2025-12-17T14:50:12.401Z",
+              "locale": "it",
+              "shortName": "pdnmc",
+              "isVisible": true,
+              "logo": {
+                "data": {
+                  "id": 500,
+                  "attributes": {
+                    "name": "techmeet.svg",
+                    "alternativeText": null,
+                    "caption": null,
+                    "width": 32,
+                    "height": 32,
+                    "formats": null,
+                    "hash": "techmeet_adbb66de0a",
+                    "ext": ".svg",
+                    "mime": "image/svg+xml",
+                    "size": 1.98,
+                    "url": "https://cdn.dev.developer.pagopa.it/techmeet_adbb66de0a.svg",
+                    "previewUrl": null,
+                    "provider": "aws-s3",
+                    "provider_metadata": null,
+                    "createdAt": "2025-05-23T08:14:31.510Z",
+                    "updatedAt": "2025-12-11T08:07:45.341Z",
+                    "isUrlSigned": true
+                  }
+                }
+              },
+              "bannerLinks": [],
+              "overview": {
+                "data": {
+                  "id": 36,
+                  "attributes": {
+                    "title": "Titolo overview cervellotica",
+                    "subtitle": "Sottotitolo",
+                    "createdAt": "2025-11-14T15:50:45.140Z",
+                    "updatedAt": "2026-01-16T10:49:58.638Z",
+                    "publishedAt": "2025-12-17T14:50:08.409Z",
+                    "locale": "it"
+                  }
+                }
+              },
+              "quickstart_guide": {
+                "data": {
+                  "id": 34,
+                  "attributes": {
+                    "title": "Quick start cervellotica",
+                    "description": "desc",
+                    "createdAt": "2025-11-14T16:22:58.248Z",
+                    "updatedAt": "2025-12-17T14:51:08.903Z",
+                    "publishedAt": "2025-12-17T14:51:08.890Z",
+                    "locale": "it"
+                  }
+                }
+              },
+              "release_note": {
+                "data": null
+              },
+              "api_data_list_page": {
+                "data": {
+                  "id": 36,
+                  "attributes": {
+                    "title": "Lista API incomprensibili",
+                    "description": null,
+                    "createdAt": "2025-11-14T16:37:33.615Z",
+                    "updatedAt": "2026-01-30T17:18:14.092Z",
+                    "publishedAt": "2026-01-07T13:49:25.223Z",
+                    "locale": "it",
+                    "enableFilters": true,
+                    "apiData": {
+                      "data": [
+                        {
+                          "id": 43,
+                          "attributes": {
+                            "title": "API folle",
+                            "description": null,
+                            "createdAt": "2025-11-14T16:38:34.599Z",
+                            "updatedAt": "2026-01-07T13:49:28.236Z",
+                            "publishedAt": "2026-01-07T13:49:28.228Z",
+                            "locale": "it",
+                            "apiRestDetail": {
+                              "id": 48,
+                              "slug": "api-folle"
+                            }
+                          }
+                        },
+                        {
+                          "id": 44,
+                          "attributes": {
+                            "title": "Api follemente",
+                            "description": null,
+                            "createdAt": "2025-11-14T16:40:51.830Z",
+                            "updatedAt": "2026-01-07T13:49:35.800Z",
+                            "publishedAt": "2026-01-07T13:49:35.792Z",
+                            "locale": "it",
+                            "apiRestDetail": {
+                              "id": 53,
+                              "slug": "api-follemente"
+                            }
+                          }
+                        },
+                        {
+                          "id": 18,
+                          "attributes": {
+                            "title": "Documentazione SOAP",
+                            "description": "Consulta tutti gli schemi XSD e WSDL che seguono le diverse release SANP",
+                            "createdAt": "2024-07-16T12:07:27.383Z",
+                            "updatedAt": "2026-01-29T14:51:28.575Z",
+                            "publishedAt": "2026-01-29T14:51:28.565Z",
+                            "locale": "it",
+                            "apiRestDetail": null
+                          }
+                        },
+                        {
+                          "id": 45,
+                          "attributes": {
+                            "title": "QDEV-2602_API Test Rapidoc",
+                            "description": "Pagina per test su DEV-2602 \"L'utente può visualizzare la pagina del dettaglio API vedendo la nuova interfaccia\"",
+                            "createdAt": "2026-01-30T17:17:43.697Z",
+                            "updatedAt": "2026-01-30T18:12:41.240Z",
+                            "publishedAt": "2026-01-30T17:17:50.086Z",
+                            "locale": "it",
+                            "apiRestDetail": {
+                              "id": 55,
+                              "slug": "qdev2602-api-test"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              },
+              "guide_list_page": {
+                "data": {
+                  "id": 36,
+                  "attributes": {
+                    "title": "Pagina di lista delle guide cervellotiche",
+                    "description": "Descrizione della pagina di lista delle guide cervellotiche",
+                    "createdAt": "2025-11-14T16:04:45.619Z",
+                    "updatedAt": "2026-02-03T08:46:51.176Z",
+                    "publishedAt": "2026-01-14T16:22:45.135Z",
+                    "locale": "it"
+                  }
+                }
+              },
+              "tutorial_list_page": {
+                "data": null
+              },
+              "use_case_list_page": {
+                "data": null
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": 78,
+      "attributes": {
+        "title": "Guida notturna per autostoppisti",
+        "slug": "guida-notturna",
+        "createdAt": "2025-11-19T17:01:19.262Z",
+        "updatedAt": "2026-01-16T16:38:55.066Z",
+        "publishedAt": "2026-01-08T14:16:08.962Z",
+        "locale": "it",
+        "image": {
+          "data": {
+            "id": 434,
+            "attributes": {
+              "name": "mensa_bg.png",
+              "alternativeText": null,
+              "caption": null,
+              "width": 1156,
+              "height": 580,
+              "formats": {
+                "large": {
+                  "ext": ".png",
+                  "url": "https://cdn.dev.developer.pagopa.it/large_mensa_bg_821b0500c7.png",
+                  "hash": "large_mensa_bg_821b0500c7",
+                  "mime": "image/png",
+                  "name": "large_mensa_bg.png",
+                  "path": null,
+                  "size": 80.37,
+                  "width": 1000,
+                  "height": 502,
+                  "sizeInBytes": 80374,
+                  "isUrlSigned": true
+                },
+                "small": {
+                  "ext": ".png",
+                  "url": "https://cdn.dev.developer.pagopa.it/small_mensa_bg_821b0500c7.png",
+                  "hash": "small_mensa_bg_821b0500c7",
+                  "mime": "image/png",
+                  "name": "small_mensa_bg.png",
+                  "path": null,
+                  "size": 25.51,
+                  "width": 500,
+                  "height": 251,
+                  "sizeInBytes": 25513,
+                  "isUrlSigned": true
+                },
+                "medium": {
+                  "ext": ".png",
+                  "url": "https://cdn.dev.developer.pagopa.it/medium_mensa_bg_821b0500c7.png",
+                  "hash": "medium_mensa_bg_821b0500c7",
+                  "mime": "image/png",
+                  "name": "medium_mensa_bg.png",
+                  "path": null,
+                  "size": 49.68,
+                  "width": 750,
+                  "height": 376,
+                  "sizeInBytes": 49683,
+                  "isUrlSigned": true
+                },
+                "thumbnail": {
+                  "ext": ".png",
+                  "url": "https://cdn.dev.developer.pagopa.it/thumbnail_mensa_bg_821b0500c7.png",
+                  "hash": "thumbnail_mensa_bg_821b0500c7",
+                  "mime": "image/png",
+                  "name": "thumbnail_mensa_bg.png",
+                  "path": null,
+                  "size": 9.31,
+                  "width": 245,
+                  "height": 123,
+                  "sizeInBytes": 9306,
+                  "isUrlSigned": true
+                }
+              },
+              "hash": "mensa_bg_821b0500c7",
+              "ext": ".png",
+              "mime": "image/png",
+              "size": 66.86,
+              "url": "https://cdn.dev.developer.pagopa.it/mensa_bg_821b0500c7.png",
+              "previewUrl": null,
+              "provider": "aws-s3",
+              "provider_metadata": null,
+              "createdAt": "2025-02-24T14:15:40.739Z",
+              "updatedAt": "2025-02-24T14:15:40.739Z",
+              "related": [
+                {
+                  "__type": "common.resource",
+                  "id": 34,
+                  "title": "Guida pratica",
+                  "subtitle": "Multe per violazioni al Codice della Strada",
+                  "description": [
+                    {
+                      "type": "paragraph",
+                      "children": [
+                        {
+                          "text": "adsv ad vadsv ads vasd vasd vasd vasd vaav s",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ],
+                  "linkText": "Vai alla guida",
+                  "linkHref": "/solutions/multe-per-violazioni-al-codice-della-strada"
+                },
+                {
+                  "__type": "common.resource",
+                  "id": 36,
+                  "title": "Prova 2",
+                  "subtitle": "Prova 2 ",
+                  "description": [
+                    {
+                      "type": "paragraph",
+                      "children": [
+                        {
+                          "text": "Prova prova Prova prova Prova prova Prova prova Prova prova Prova prova Prova prova ",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ],
+                  "linkText": "aaa",
+                  "linkHref": "#"
+                },
+                {
+                  "__type": "common.resource",
+                  "id": 7,
+                  "title": "Vai alla soluzione",
+                  "subtitle": null,
+                  "description": [
+                    {
+                      "type": "paragraph",
+                      "children": [
+                        {
+                          "text": "Esplora i passaggi e i consigli utili per erogare i servizi scolastici mensa e trasporto attraverso un approccio digitale, integrato e multi-piattaforma",
+                          "type": "text"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "paragraph",
+                      "children": [
+                        {
+                          "text": "",
+                          "type": "text"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "paragraph",
+                      "children": [
+                        {
+                          "text": "",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ],
+                  "linkText": "Vai al dettaglio",
+                  "linkHref": "https://developer.pagopa.it/solutions/mensa-e-trasporto-scolastico"
+                },
+                {
+                  "__type": "api::guide.guide",
+                  "id": 85,
+                  "title": "NnGVerf52DRacWYFzrxv",
+                  "slug": "asdfasdfasdfasdfad",
+                  "createdAt": "2026-01-16T08:56:00.510Z",
+                  "updatedAt": "2026-01-16T08:56:46.657Z",
+                  "publishedAt": "2026-01-16T08:56:46.645Z",
+                  "locale": "it"
+                },
+                {
+                  "__type": "api::guide.guide",
+                  "id": 85,
+                  "title": "NnGVerf52DRacWYFzrxv",
+                  "slug": "asdfasdfasdfasdfad",
+                  "createdAt": "2026-01-16T08:56:00.510Z",
+                  "updatedAt": "2026-01-16T08:56:46.657Z",
+                  "publishedAt": "2026-01-16T08:56:46.645Z",
+                  "locale": "it"
+                },
+                {
+                  "__type": "api::guide.guide",
+                  "id": 78,
+                  "title": "Guida notturna per autostoppisti",
+                  "slug": "guida-notturna",
+                  "createdAt": "2025-11-19T17:01:19.262Z",
+                  "updatedAt": "2026-01-16T16:38:55.066Z",
+                  "publishedAt": "2026-01-08T14:16:08.962Z",
+                  "locale": "it"
+                },
+                {
+                  "__type": "api::guide.guide",
+                  "id": 78,
+                  "title": "Guida notturna per autostoppisti",
+                  "slug": "guida-notturna",
+                  "createdAt": "2025-11-19T17:01:19.262Z",
+                  "updatedAt": "2026-01-16T16:38:55.066Z",
+                  "publishedAt": "2026-01-08T14:16:08.962Z",
+                  "locale": "it"
+                }
+              ],
+              "isUrlSigned": true
+            }
+          }
+        },
+        "mobileImage": {
+          "data": {
+            "id": 434,
+            "attributes": {
+              "name": "mensa_bg.png",
+              "alternativeText": null,
+              "caption": null,
+              "width": 1156,
+              "height": 580,
+              "formats": {
+                "large": {
+                  "ext": ".png",
+                  "url": "https://cdn.dev.developer.pagopa.it/large_mensa_bg_821b0500c7.png",
+                  "hash": "large_mensa_bg_821b0500c7",
+                  "mime": "image/png",
+                  "name": "large_mensa_bg.png",
+                  "path": null,
+                  "size": 80.37,
+                  "width": 1000,
+                  "height": 502,
+                  "sizeInBytes": 80374,
+                  "isUrlSigned": true
+                },
+                "small": {
+                  "ext": ".png",
+                  "url": "https://cdn.dev.developer.pagopa.it/small_mensa_bg_821b0500c7.png",
+                  "hash": "small_mensa_bg_821b0500c7",
+                  "mime": "image/png",
+                  "name": "small_mensa_bg.png",
+                  "path": null,
+                  "size": 25.51,
+                  "width": 500,
+                  "height": 251,
+                  "sizeInBytes": 25513,
+                  "isUrlSigned": true
+                },
+                "medium": {
+                  "ext": ".png",
+                  "url": "https://cdn.dev.developer.pagopa.it/medium_mensa_bg_821b0500c7.png",
+                  "hash": "medium_mensa_bg_821b0500c7",
+                  "mime": "image/png",
+                  "name": "medium_mensa_bg.png",
+                  "path": null,
+                  "size": 49.68,
+                  "width": 750,
+                  "height": 376,
+                  "sizeInBytes": 49683,
+                  "isUrlSigned": true
+                },
+                "thumbnail": {
+                  "ext": ".png",
+                  "url": "https://cdn.dev.developer.pagopa.it/thumbnail_mensa_bg_821b0500c7.png",
+                  "hash": "thumbnail_mensa_bg_821b0500c7",
+                  "mime": "image/png",
+                  "name": "thumbnail_mensa_bg.png",
+                  "path": null,
+                  "size": 9.31,
+                  "width": 245,
+                  "height": 123,
+                  "sizeInBytes": 9306,
+                  "isUrlSigned": true
+                }
+              },
+              "hash": "mensa_bg_821b0500c7",
+              "ext": ".png",
+              "mime": "image/png",
+              "size": 66.86,
+              "url": "https://cdn.dev.developer.pagopa.it/mensa_bg_821b0500c7.png",
+              "previewUrl": null,
+              "provider": "aws-s3",
+              "provider_metadata": null,
+              "createdAt": "2025-02-24T14:15:40.739Z",
+              "updatedAt": "2025-02-24T14:15:40.739Z",
+              "related": [
+                {
+                  "__type": "common.resource",
+                  "id": 34,
+                  "title": "Guida pratica",
+                  "subtitle": "Multe per violazioni al Codice della Strada",
+                  "description": [
+                    {
+                      "type": "paragraph",
+                      "children": [
+                        {
+                          "text": "adsv ad vadsv ads vasd vasd vasd vasd vaav s",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ],
+                  "linkText": "Vai alla guida",
+                  "linkHref": "/solutions/multe-per-violazioni-al-codice-della-strada"
+                },
+                {
+                  "__type": "common.resource",
+                  "id": 36,
+                  "title": "Prova 2",
+                  "subtitle": "Prova 2 ",
+                  "description": [
+                    {
+                      "type": "paragraph",
+                      "children": [
+                        {
+                          "text": "Prova prova Prova prova Prova prova Prova prova Prova prova Prova prova Prova prova ",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ],
+                  "linkText": "aaa",
+                  "linkHref": "#"
+                },
+                {
+                  "__type": "common.resource",
+                  "id": 7,
+                  "title": "Vai alla soluzione",
+                  "subtitle": null,
+                  "description": [
+                    {
+                      "type": "paragraph",
+                      "children": [
+                        {
+                          "text": "Esplora i passaggi e i consigli utili per erogare i servizi scolastici mensa e trasporto attraverso un approccio digitale, integrato e multi-piattaforma",
+                          "type": "text"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "paragraph",
+                      "children": [
+                        {
+                          "text": "",
+                          "type": "text"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "paragraph",
+                      "children": [
+                        {
+                          "text": "",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ],
+                  "linkText": "Vai al dettaglio",
+                  "linkHref": "https://developer.pagopa.it/solutions/mensa-e-trasporto-scolastico"
+                },
+                {
+                  "__type": "api::guide.guide",
+                  "id": 85,
+                  "title": "NnGVerf52DRacWYFzrxv",
+                  "slug": "asdfasdfasdfasdfad",
+                  "createdAt": "2026-01-16T08:56:00.510Z",
+                  "updatedAt": "2026-01-16T08:56:46.657Z",
+                  "publishedAt": "2026-01-16T08:56:46.645Z",
+                  "locale": "it"
+                },
+                {
+                  "__type": "api::guide.guide",
+                  "id": 85,
+                  "title": "NnGVerf52DRacWYFzrxv",
+                  "slug": "asdfasdfasdfasdfad",
+                  "createdAt": "2026-01-16T08:56:00.510Z",
+                  "updatedAt": "2026-01-16T08:56:46.657Z",
+                  "publishedAt": "2026-01-16T08:56:46.645Z",
+                  "locale": "it"
+                },
+                {
+                  "__type": "api::guide.guide",
+                  "id": 78,
+                  "title": "Guida notturna per autostoppisti",
+                  "slug": "guida-notturna",
+                  "createdAt": "2025-11-19T17:01:19.262Z",
+                  "updatedAt": "2026-01-16T16:38:55.066Z",
+                  "publishedAt": "2026-01-08T14:16:08.962Z",
+                  "locale": "it"
+                },
+                {
+                  "__type": "api::guide.guide",
+                  "id": 78,
+                  "title": "Guida notturna per autostoppisti",
+                  "slug": "guida-notturna",
+                  "createdAt": "2025-11-19T17:01:19.262Z",
+                  "updatedAt": "2026-01-16T16:38:55.066Z",
+                  "publishedAt": "2026-01-08T14:16:08.962Z",
+                  "locale": "it"
+                }
+              ],
+              "isUrlSigned": true
+            }
+          }
+        },
+        "listItems": [
+          {
+            "id": 324,
+            "text": "guida"
+          },
+          {
+            "id": 325,
+            "text": "alla "
+          },
+          {
+            "id": 326,
+            "text": "cieca"
+          }
+        ],
+        "versions": [
+          {
+            "id": 259,
+            "main": false,
+            "version": "3",
+            "dirName": "mU2qgiLV1G3m9z1VjAOc"
+          },
+          {
+            "id": 253,
+            "main": false,
+            "version": "2.5",
+            "dirName": "3FyVXetkmOApT9WPTwPN"
+          },
+          {
+            "id": 262,
+            "main": true,
+            "version": "4",
+            "dirName": "u6YdY319vyFX9MIvnKBa"
+          }
+        ],
+        "bannerLinks": [],
+        "seo": null,
+        "product": {
+          "data": {
+            "id": 68,
+            "attributes": {
+              "name": "Prodotto delle nostre menti contorte",
+              "description": "descrizione cervellotica: il prodotto delle nostre menti contorte serve solo per fare dei test del meccanismo di sync",
+              "slug": "pdnmc",
+              "createdAt": "2025-11-14T15:47:43.475Z",
+              "updatedAt": "2026-02-03T14:11:10.733Z",
+              "publishedAt": "2025-12-17T14:50:12.401Z",
+              "locale": "it",
+              "shortName": "pdnmc",
+              "isVisible": true,
+              "logo": {
+                "data": {
+                  "id": 500,
+                  "attributes": {
+                    "name": "techmeet.svg",
+                    "alternativeText": null,
+                    "caption": null,
+                    "width": 32,
+                    "height": 32,
+                    "formats": null,
+                    "hash": "techmeet_adbb66de0a",
+                    "ext": ".svg",
+                    "mime": "image/svg+xml",
+                    "size": 1.98,
+                    "url": "https://cdn.dev.developer.pagopa.it/techmeet_adbb66de0a.svg",
+                    "previewUrl": null,
+                    "provider": "aws-s3",
+                    "provider_metadata": null,
+                    "createdAt": "2025-05-23T08:14:31.510Z",
+                    "updatedAt": "2025-12-11T08:07:45.341Z",
+                    "isUrlSigned": true
+                  }
+                }
+              },
+              "bannerLinks": [],
+              "overview": {
+                "data": {
+                  "id": 36,
+                  "attributes": {
+                    "title": "Titolo overview cervellotica",
+                    "subtitle": "Sottotitolo",
+                    "createdAt": "2025-11-14T15:50:45.140Z",
+                    "updatedAt": "2026-01-16T10:49:58.638Z",
+                    "publishedAt": "2025-12-17T14:50:08.409Z",
+                    "locale": "it"
+                  }
+                }
+              },
+              "quickstart_guide": {
+                "data": {
+                  "id": 34,
+                  "attributes": {
+                    "title": "Quick start cervellotica",
+                    "description": "desc",
+                    "createdAt": "2025-11-14T16:22:58.248Z",
+                    "updatedAt": "2025-12-17T14:51:08.903Z",
+                    "publishedAt": "2025-12-17T14:51:08.890Z",
+                    "locale": "it"
+                  }
+                }
+              },
+              "release_note": {
+                "data": null
+              },
+              "api_data_list_page": {
+                "data": {
+                  "id": 36,
+                  "attributes": {
+                    "title": "Lista API incomprensibili",
+                    "description": null,
+                    "createdAt": "2025-11-14T16:37:33.615Z",
+                    "updatedAt": "2026-01-30T17:18:14.092Z",
+                    "publishedAt": "2026-01-07T13:49:25.223Z",
+                    "locale": "it",
+                    "enableFilters": true,
+                    "apiData": {
+                      "data": [
+                        {
+                          "id": 43,
+                          "attributes": {
+                            "title": "API folle",
+                            "description": null,
+                            "createdAt": "2025-11-14T16:38:34.599Z",
+                            "updatedAt": "2026-01-07T13:49:28.236Z",
+                            "publishedAt": "2026-01-07T13:49:28.228Z",
+                            "locale": "it",
+                            "apiRestDetail": {
+                              "id": 48,
+                              "slug": "api-folle"
+                            }
+                          }
+                        },
+                        {
+                          "id": 44,
+                          "attributes": {
+                            "title": "Api follemente",
+                            "description": null,
+                            "createdAt": "2025-11-14T16:40:51.830Z",
+                            "updatedAt": "2026-01-07T13:49:35.800Z",
+                            "publishedAt": "2026-01-07T13:49:35.792Z",
+                            "locale": "it",
+                            "apiRestDetail": {
+                              "id": 53,
+                              "slug": "api-follemente"
+                            }
+                          }
+                        },
+                        {
+                          "id": 18,
+                          "attributes": {
+                            "title": "Documentazione SOAP",
+                            "description": "Consulta tutti gli schemi XSD e WSDL che seguono le diverse release SANP",
+                            "createdAt": "2024-07-16T12:07:27.383Z",
+                            "updatedAt": "2026-01-29T14:51:28.575Z",
+                            "publishedAt": "2026-01-29T14:51:28.565Z",
+                            "locale": "it",
+                            "apiRestDetail": null
+                          }
+                        },
+                        {
+                          "id": 45,
+                          "attributes": {
+                            "title": "QDEV-2602_API Test Rapidoc",
+                            "description": "Pagina per test su DEV-2602 \"L'utente può visualizzare la pagina del dettaglio API vedendo la nuova interfaccia\"",
+                            "createdAt": "2026-01-30T17:17:43.697Z",
+                            "updatedAt": "2026-01-30T18:12:41.240Z",
+                            "publishedAt": "2026-01-30T17:17:50.086Z",
+                            "locale": "it",
+                            "apiRestDetail": {
+                              "id": 55,
+                              "slug": "qdev2602-api-test"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              },
+              "guide_list_page": {
+                "data": {
+                  "id": 36,
+                  "attributes": {
+                    "title": "Pagina di lista delle guide cervellotiche",
+                    "description": "Descrizione della pagina di lista delle guide cervellotiche",
+                    "createdAt": "2025-11-14T16:04:45.619Z",
+                    "updatedAt": "2026-02-03T08:46:51.176Z",
+                    "publishedAt": "2026-01-14T16:22:45.135Z",
+                    "locale": "it"
+                  }
+                }
+              },
+              "tutorial_list_page": {
+                "data": null
+              },
+              "use_case_list_page": {
+                "data": null
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": 74,
+      "attributes": {
+        "title": "Testfolder",
+        "slug": "testfolder",
+        "createdAt": "2025-10-29T16:02:18.252Z",
+        "updatedAt": "2026-01-15T12:01:24.812Z",
+        "publishedAt": "2026-01-15T12:01:24.803Z",
+        "locale": "it",
+        "image": {
+          "data": {
+            "id": 422,
+            "attributes": {
+              "name": "webinar_iban.png",
+              "alternativeText": null,
+              "caption": null,
+              "width": 364,
+              "height": 208,
+              "formats": {
+                "thumbnail": {
+                  "ext": ".png",
+                  "url": "https://cdn.dev.developer.pagopa.it/thumbnail_webinar_iban_dd0a039f90.png",
+                  "hash": "thumbnail_webinar_iban_dd0a039f90",
+                  "mime": "image/png",
+                  "name": "thumbnail_webinar_iban.png",
+                  "path": null,
+                  "size": 15.28,
+                  "width": 245,
+                  "height": 140,
+                  "sizeInBytes": 15283,
+                  "isUrlSigned": true
+                }
+              },
+              "hash": "webinar_iban_dd0a039f90",
+              "ext": ".png",
+              "mime": "image/png",
+              "size": 15.56,
+              "url": "https://cdn.dev.developer.pagopa.it/webinar_iban_dd0a039f90.png",
+              "previewUrl": null,
+              "provider": "aws-s3",
+              "provider_metadata": null,
+              "createdAt": "2024-12-03T14:10:47.423Z",
+              "updatedAt": "2025-10-29T16:02:09.643Z",
+              "related": [
+                {
+                  "__type": "api::webinar.webinar",
+                  "id": 36,
+                  "title": "test-202412161545",
+                  "slug": "test-202412161545",
+                  "playerSrc": "https://player.vimeo.com/video/4739165",
+                  "startDatetime": "2024-12-16T14:45:00.000Z",
+                  "endDatetime": "2024-12-16T14:50:00.000Z",
+                  "isVisibleInList": true,
+                  "subscribeParagraphLabel": null,
+                  "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum",
+                  "createdAt": "2024-12-16T13:33:36.696Z",
+                  "updatedAt": "2024-12-16T13:33:40.433Z",
+                  "publishedAt": "2024-12-16T13:33:40.422Z",
+                  "locale": "it",
+                  "bodyContent": null,
+                  "videoOnDemandStartAt": null
+                },
+                {
+                  "__type": "api::webinar.webinar",
+                  "id": 42,
+                  "title": "test-202412161715",
+                  "slug": "test-202412161715",
+                  "playerSrc": "https://player.vimeo.com/video/4739165",
+                  "startDatetime": "2024-12-16T16:15:00.000Z",
+                  "endDatetime": "2024-12-16T16:20:00.000Z",
+                  "isVisibleInList": true,
+                  "subscribeParagraphLabel": null,
+                  "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum",
+                  "createdAt": "2024-12-16T13:39:01.410Z",
+                  "updatedAt": "2024-12-16T13:41:26.012Z",
+                  "publishedAt": "2024-12-16T13:41:25.990Z",
+                  "locale": "it",
+                  "bodyContent": null,
+                  "videoOnDemandStartAt": null
+                },
+                {
+                  "__type": "common.card-props",
+                  "id": 34,
+                  "title": "Test",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "children": [
+                        {
+                          "text": "Scopri le novità, i miglioramenti e le modifiche alle funzionalità per IO, l’app dei servizi pubblici Scopri le novità, i miglioramenti e le modifiche alle funzionalità per IO, l’app dei servizi pubblici",
+                          "type": "text"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "paragraph",
+                      "children": [
+                        {
+                          "text": "",
+                          "type": "text"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "paragraph",
+                      "children": [
+                        {
+                          "text": "",
+                          "type": "text"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "paragraph",
+                      "children": [
+                        {
+                          "text": "",
+                          "type": "text"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "paragraph",
+                      "children": [
+                        {
+                          "text": "",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ],
+                  "linkText": "link",
+                  "linkHref": "#"
+                },
+                {
+                  "__type": "common.card-props",
+                  "id": 34,
+                  "title": "Test",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "children": [
+                        {
+                          "text": "Scopri le novità, i miglioramenti e le modifiche alle funzionalità per IO, l’app dei servizi pubblici Scopri le novità, i miglioramenti e le modifiche alle funzionalità per IO, l’app dei servizi pubblici",
+                          "type": "text"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "paragraph",
+                      "children": [
+                        {
+                          "text": "",
+                          "type": "text"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "paragraph",
+                      "children": [
+                        {
+                          "text": "",
+                          "type": "text"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "paragraph",
+                      "children": [
+                        {
+                          "text": "",
+                          "type": "text"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "paragraph",
+                      "children": [
+                        {
+                          "text": "",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ],
+                  "linkText": "link",
+                  "linkHref": "#"
+                },
+                {
+                  "__type": "api::webinar.webinar",
+                  "id": 49,
+                  "title": "Test webinar always future",
+                  "slug": "always-future",
+                  "playerSrc": "https://23eaa6e50e97.eu-central-1.playback.live-video.net/api/video/v1/eu-central-1.039804388894.channel.5CsyUCnE771r.m3u8",
+                  "startDatetime": "2030-01-08T08:00:00.000Z",
+                  "endDatetime": "2040-05-01T22:00:00.000Z",
+                  "isVisibleInList": true,
+                  "subscribeParagraphLabel": null,
+                  "description": "Test webinar",
+                  "createdAt": "2025-01-08T09:46:47.666Z",
+                  "updatedAt": "2025-11-28T09:43:22.769Z",
+                  "publishedAt": "2025-01-08T09:46:50.588Z",
+                  "locale": "it",
+                  "bodyContent": [
+                    {
+                      "type": "paragraph",
+                      "children": [
+                        {
+                          "text": "La nuova funzionalità di “Genera Avvisi Pagamento” mette a disposizione degli Enti e dei Partner Tecnologici delle nuove API per generare l’avviso di pagamento pagoPA in formato pdf.",
+                          "type": "text"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "paragraph",
+                      "children": [
+                        {
+                          "text": "IMG",
+                          "type": "text"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "paragraph",
+                      "children": [
+                        {
+                          "text": "L'utilizzo della funzionalità consente all'Ente di semplificare notevolmente il processo di gestione della posizione debitoria delegando a PagoPA il ciclo di vita della generazione dell'avviso tramite una semplice integrazione.",
+                          "type": "text"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "paragraph",
+                      "children": [
+                        {
+                          "text": "Sono previste diverse possibilità di generare l’avviso pdf, sia in modalità sincrona, ad esempio per poche generazioni, che in modalità massiva asincrona, nel caso di generazione di molti avvisi.",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ],
+                  "videoOnDemandStartAt": null
+                },
+                {
+                  "__type": "api::webinar.webinar",
+                  "id": 34,
+                  "title": "test-202412161515",
+                  "slug": "test-202412161515",
+                  "playerSrc": "https://player.vimeo.com/video/4739165",
+                  "startDatetime": "2024-12-16T14:15:00.000Z",
+                  "endDatetime": "2024-12-16T14:20:00.000Z",
+                  "isVisibleInList": true,
+                  "subscribeParagraphLabel": null,
+                  "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum",
+                  "createdAt": "2024-12-16T13:29:49.431Z",
+                  "updatedAt": "2024-12-16T13:31:20.576Z",
+                  "publishedAt": "2024-12-16T13:29:52.790Z",
+                  "locale": "it",
+                  "bodyContent": null,
+                  "videoOnDemandStartAt": null
+                },
+                {
+                  "__type": "api::webinar.webinar",
+                  "id": 37,
+                  "title": "test-202412161600",
+                  "slug": "test-202412161600",
+                  "playerSrc": "https://player.vimeo.com/video/4739165",
+                  "startDatetime": "2024-12-16T15:00:00.000Z",
+                  "endDatetime": "2024-12-16T15:05:00.000Z",
+                  "isVisibleInList": true,
+                  "subscribeParagraphLabel": null,
+                  "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum",
+                  "createdAt": "2024-12-16T13:34:51.781Z",
+                  "updatedAt": "2024-12-16T13:41:20.480Z",
+                  "publishedAt": "2024-12-16T13:41:20.470Z",
+                  "locale": "it",
+                  "bodyContent": null,
+                  "videoOnDemandStartAt": null
+                },
+                {
+                  "__type": "api::webinar.webinar",
+                  "id": 43,
+                  "title": "test-202412161730",
+                  "slug": "test-202412161730",
+                  "playerSrc": "https://player.vimeo.com/video/4739165",
+                  "startDatetime": "2024-12-16T16:30:00.000Z",
+                  "endDatetime": "2024-12-16T16:35:00.000Z",
+                  "isVisibleInList": true,
+                  "subscribeParagraphLabel": null,
+                  "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum",
+                  "createdAt": "2024-12-16T13:39:53.812Z",
+                  "updatedAt": "2025-05-23T08:04:47.633Z",
+                  "publishedAt": "2024-12-16T13:39:55.359Z",
+                  "locale": "it",
+                  "bodyContent": null,
+                  "videoOnDemandStartAt": null
+                },
+                {
+                  "__type": "api::webinar.webinar",
+                  "id": 39,
+                  "title": "test-202412161630",
+                  "slug": "test-202412161630",
+                  "playerSrc": "https://player.vimeo.com/video/4739165",
+                  "startDatetime": "2024-12-16T15:30:00.000Z",
+                  "endDatetime": "2024-12-16T15:35:00.000Z",
+                  "isVisibleInList": true,
+                  "subscribeParagraphLabel": null,
+                  "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum",
+                  "createdAt": "2024-12-16T13:36:59.024Z",
+                  "updatedAt": "2024-12-16T13:37:03.318Z",
+                  "publishedAt": "2024-12-16T13:37:03.304Z",
+                  "locale": "it",
+                  "bodyContent": null,
+                  "videoOnDemandStartAt": null
+                },
+                {
+                  "__type": "api::webinar.webinar",
+                  "id": 38,
+                  "title": "test-202412161615",
+                  "slug": "test-202412161615",
+                  "playerSrc": "https://player.vimeo.com/video/4739165",
+                  "startDatetime": "2024-12-16T15:15:00.000Z",
+                  "endDatetime": "2024-12-16T15:20:00.000Z",
+                  "isVisibleInList": true,
+                  "subscribeParagraphLabel": null,
+                  "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum",
+                  "createdAt": "2024-12-16T13:36:10.176Z",
+                  "updatedAt": "2025-05-23T08:06:16.176Z",
+                  "publishedAt": "2024-12-16T13:36:12.519Z",
+                  "locale": "it",
+                  "bodyContent": null,
+                  "videoOnDemandStartAt": null
+                },
+                {
+                  "__type": "api::webinar.webinar",
+                  "id": 40,
+                  "title": "test-202412161645",
+                  "slug": "test-202412161645",
+                  "playerSrc": "https://player.vimeo.com/video/4739165",
+                  "startDatetime": "2024-12-16T15:45:00.000Z",
+                  "endDatetime": "2024-12-16T15:50:00.000Z",
+                  "isVisibleInList": true,
+                  "subscribeParagraphLabel": null,
+                  "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum",
+                  "createdAt": "2024-12-16T13:37:40.717Z",
+                  "updatedAt": "2024-12-16T13:37:42.516Z",
+                  "publishedAt": "2024-12-16T13:37:42.505Z",
+                  "locale": "it",
+                  "bodyContent": null,
+                  "videoOnDemandStartAt": null
+                },
+                {
+                  "__type": "api::webinar.webinar",
+                  "id": 41,
+                  "title": "test-202412161700",
+                  "slug": "test-202412161700",
+                  "playerSrc": "https://player.vimeo.com/video/4739165",
+                  "startDatetime": "2024-12-16T16:00:00.000Z",
+                  "endDatetime": "2024-12-16T16:05:00.000Z",
+                  "isVisibleInList": true,
+                  "subscribeParagraphLabel": null,
+                  "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum",
+                  "createdAt": "2024-12-16T13:38:16.440Z",
+                  "updatedAt": "2024-12-16T13:38:18.322Z",
+                  "publishedAt": "2024-12-16T13:38:18.309Z",
+                  "locale": "it",
+                  "bodyContent": null,
+                  "videoOnDemandStartAt": null
+                },
+                {
+                  "__type": "api::webinar.webinar",
+                  "id": 68,
+                  "title": "Test 20250716",
+                  "slug": "test-202507160951",
+                  "playerSrc": "https://video.dev.dveloper.pagopa.it/ivs/v1/039804388894/5CsyUCnE771r/2025/11/28/10/31/lQ7E1xnYVN9P/media/hls/master.m3u8",
+                  "startDatetime": "2025-07-17T07:00:00.000Z",
+                  "endDatetime": "2025-07-17T08:00:00.000Z",
+                  "isVisibleInList": true,
+                  "subscribeParagraphLabel": null,
+                  "description": "Test 20250716 description",
+                  "createdAt": "2025-07-16T07:52:09.833Z",
+                  "updatedAt": "2026-01-02T13:33:59.027Z",
+                  "publishedAt": "2025-07-16T07:52:30.577Z",
+                  "locale": "it",
+                  "bodyContent": null,
+                  "videoOnDemandStartAt": null
+                },
+                {
+                  "__type": "api::webinar.webinar",
+                  "id": 33,
+                  "title": "test-202412161500",
+                  "slug": "test-202412161500",
+                  "playerSrc": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+                  "startDatetime": "2024-12-16T14:00:00.000Z",
+                  "endDatetime": "2024-12-16T14:05:00.000Z",
+                  "isVisibleInList": true,
+                  "subscribeParagraphLabel": null,
+                  "description": "test-202412161500  ",
+                  "createdAt": "2024-12-16T13:27:05.909Z",
+                  "updatedAt": "2025-10-22T15:13:15.720Z",
+                  "publishedAt": "2024-12-16T13:27:12.306Z",
+                  "locale": "it",
+                  "bodyContent": null,
+                  "videoOnDemandStartAt": null
+                },
+                {
+                  "__type": "api::webinar.webinar",
+                  "id": 72,
+                  "title": "Test Stream Webinar",
+                  "slug": "test-stream-webinar",
+                  "playerSrc": "https://video.dev.developer.pagopa.it/ivs/v1/039804388894/5CsyUCnE771r/2025/11/3/15/36/8171X9HZnyjX/media/hls/master.m3u8",
+                  "startDatetime": "2025-11-03T15:30:00.000Z",
+                  "endDatetime": "2025-11-03T15:45:00.000Z",
+                  "isVisibleInList": false,
+                  "subscribeParagraphLabel": null,
+                  "description": "Video recording test 2025-11-03T16:44:10.178Z -  src: https://video.dev.developer.pagopa.it/ivs/v1/039804388894/5CsyUCnE771r/2025/11/3/15/36/8171X9HZnyjX/media/hls/master.m3u8",
+                  "createdAt": "2025-11-03T15:32:39.496Z",
+                  "updatedAt": "2025-11-12T11:05:30.697Z",
+                  "publishedAt": "2025-11-03T15:32:43.410Z",
+                  "locale": "it",
+                  "bodyContent": null,
+                  "videoOnDemandStartAt": null
+                },
+                {
+                  "__type": "api::webinar.webinar",
+                  "id": 35,
+                  "title": "test-202412161530",
+                  "slug": "test-202412161530",
+                  "playerSrc": "https://player.vimeo.com/video/4739165",
+                  "startDatetime": "2024-12-16T14:30:00.000Z",
+                  "endDatetime": "2024-12-16T14:35:00.000Z",
+                  "isVisibleInList": true,
+                  "subscribeParagraphLabel": null,
+                  "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum",
+                  "createdAt": "2024-12-16T13:31:25.700Z",
+                  "updatedAt": "2024-12-16T13:33:50.049Z",
+                  "publishedAt": "2024-12-16T13:33:50.031Z",
+                  "locale": "it",
+                  "bodyContent": null,
+                  "videoOnDemandStartAt": null
+                },
+                {
+                  "__type": "common.resource",
+                  "id": 35,
+                  "title": "Prova!",
+                  "subtitle": "prova",
+                  "description": [
+                    {
+                      "type": "paragraph",
+                      "children": [
+                        {
+                          "text": "prova provaprova provaprova provaprova provaprova provaprova provaprova provaprova provaprova provaprova provaprova provaprova provaprova provaprova prova",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ],
+                  "linkText": "prova",
+                  "linkHref": "#"
+                },
+                {
+                  "__type": "api::guide.guide",
+                  "id": 74,
+                  "title": "Testfolder",
+                  "slug": "testfolder",
+                  "createdAt": "2025-10-29T16:02:18.252Z",
+                  "updatedAt": "2026-01-15T12:01:24.812Z",
+                  "publishedAt": "2026-01-15T12:01:24.803Z",
+                  "locale": "it"
+                },
+                {
+                  "__type": "api::guide.guide",
+                  "id": 74,
+                  "title": "Testfolder",
+                  "slug": "testfolder",
+                  "createdAt": "2025-10-29T16:02:18.252Z",
+                  "updatedAt": "2026-01-15T12:01:24.812Z",
+                  "publishedAt": "2026-01-15T12:01:24.803Z",
+                  "locale": "it"
+                }
+              ],
+              "isUrlSigned": true
+            }
+          }
+        },
+        "mobileImage": {
+          "data": {
+            "id": 422,
+            "attributes": {
+              "name": "webinar_iban.png",
+              "alternativeText": null,
+              "caption": null,
+              "width": 364,
+              "height": 208,
+              "formats": {
+                "thumbnail": {
+                  "ext": ".png",
+                  "url": "https://cdn.dev.developer.pagopa.it/thumbnail_webinar_iban_dd0a039f90.png",
+                  "hash": "thumbnail_webinar_iban_dd0a039f90",
+                  "mime": "image/png",
+                  "name": "thumbnail_webinar_iban.png",
+                  "path": null,
+                  "size": 15.28,
+                  "width": 245,
+                  "height": 140,
+                  "sizeInBytes": 15283,
+                  "isUrlSigned": true
+                }
+              },
+              "hash": "webinar_iban_dd0a039f90",
+              "ext": ".png",
+              "mime": "image/png",
+              "size": 15.56,
+              "url": "https://cdn.dev.developer.pagopa.it/webinar_iban_dd0a039f90.png",
+              "previewUrl": null,
+              "provider": "aws-s3",
+              "provider_metadata": null,
+              "createdAt": "2024-12-03T14:10:47.423Z",
+              "updatedAt": "2025-10-29T16:02:09.643Z",
+              "related": [
+                {
+                  "__type": "api::webinar.webinar",
+                  "id": 36,
+                  "title": "test-202412161545",
+                  "slug": "test-202412161545",
+                  "playerSrc": "https://player.vimeo.com/video/4739165",
+                  "startDatetime": "2024-12-16T14:45:00.000Z",
+                  "endDatetime": "2024-12-16T14:50:00.000Z",
+                  "isVisibleInList": true,
+                  "subscribeParagraphLabel": null,
+                  "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum",
+                  "createdAt": "2024-12-16T13:33:36.696Z",
+                  "updatedAt": "2024-12-16T13:33:40.433Z",
+                  "publishedAt": "2024-12-16T13:33:40.422Z",
+                  "locale": "it",
+                  "bodyContent": null,
+                  "videoOnDemandStartAt": null
+                },
+                {
+                  "__type": "api::webinar.webinar",
+                  "id": 42,
+                  "title": "test-202412161715",
+                  "slug": "test-202412161715",
+                  "playerSrc": "https://player.vimeo.com/video/4739165",
+                  "startDatetime": "2024-12-16T16:15:00.000Z",
+                  "endDatetime": "2024-12-16T16:20:00.000Z",
+                  "isVisibleInList": true,
+                  "subscribeParagraphLabel": null,
+                  "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum",
+                  "createdAt": "2024-12-16T13:39:01.410Z",
+                  "updatedAt": "2024-12-16T13:41:26.012Z",
+                  "publishedAt": "2024-12-16T13:41:25.990Z",
+                  "locale": "it",
+                  "bodyContent": null,
+                  "videoOnDemandStartAt": null
+                },
+                {
+                  "__type": "common.card-props",
+                  "id": 34,
+                  "title": "Test",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "children": [
+                        {
+                          "text": "Scopri le novità, i miglioramenti e le modifiche alle funzionalità per IO, l’app dei servizi pubblici Scopri le novità, i miglioramenti e le modifiche alle funzionalità per IO, l’app dei servizi pubblici",
+                          "type": "text"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "paragraph",
+                      "children": [
+                        {
+                          "text": "",
+                          "type": "text"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "paragraph",
+                      "children": [
+                        {
+                          "text": "",
+                          "type": "text"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "paragraph",
+                      "children": [
+                        {
+                          "text": "",
+                          "type": "text"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "paragraph",
+                      "children": [
+                        {
+                          "text": "",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ],
+                  "linkText": "link",
+                  "linkHref": "#"
+                },
+                {
+                  "__type": "common.card-props",
+                  "id": 34,
+                  "title": "Test",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "children": [
+                        {
+                          "text": "Scopri le novità, i miglioramenti e le modifiche alle funzionalità per IO, l’app dei servizi pubblici Scopri le novità, i miglioramenti e le modifiche alle funzionalità per IO, l’app dei servizi pubblici",
+                          "type": "text"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "paragraph",
+                      "children": [
+                        {
+                          "text": "",
+                          "type": "text"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "paragraph",
+                      "children": [
+                        {
+                          "text": "",
+                          "type": "text"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "paragraph",
+                      "children": [
+                        {
+                          "text": "",
+                          "type": "text"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "paragraph",
+                      "children": [
+                        {
+                          "text": "",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ],
+                  "linkText": "link",
+                  "linkHref": "#"
+                },
+                {
+                  "__type": "api::webinar.webinar",
+                  "id": 49,
+                  "title": "Test webinar always future",
+                  "slug": "always-future",
+                  "playerSrc": "https://23eaa6e50e97.eu-central-1.playback.live-video.net/api/video/v1/eu-central-1.039804388894.channel.5CsyUCnE771r.m3u8",
+                  "startDatetime": "2030-01-08T08:00:00.000Z",
+                  "endDatetime": "2040-05-01T22:00:00.000Z",
+                  "isVisibleInList": true,
+                  "subscribeParagraphLabel": null,
+                  "description": "Test webinar",
+                  "createdAt": "2025-01-08T09:46:47.666Z",
+                  "updatedAt": "2025-11-28T09:43:22.769Z",
+                  "publishedAt": "2025-01-08T09:46:50.588Z",
+                  "locale": "it",
+                  "bodyContent": [
+                    {
+                      "type": "paragraph",
+                      "children": [
+                        {
+                          "text": "La nuova funzionalità di “Genera Avvisi Pagamento” mette a disposizione degli Enti e dei Partner Tecnologici delle nuove API per generare l’avviso di pagamento pagoPA in formato pdf.",
+                          "type": "text"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "paragraph",
+                      "children": [
+                        {
+                          "text": "IMG",
+                          "type": "text"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "paragraph",
+                      "children": [
+                        {
+                          "text": "L'utilizzo della funzionalità consente all'Ente di semplificare notevolmente il processo di gestione della posizione debitoria delegando a PagoPA il ciclo di vita della generazione dell'avviso tramite una semplice integrazione.",
+                          "type": "text"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "paragraph",
+                      "children": [
+                        {
+                          "text": "Sono previste diverse possibilità di generare l’avviso pdf, sia in modalità sincrona, ad esempio per poche generazioni, che in modalità massiva asincrona, nel caso di generazione di molti avvisi.",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ],
+                  "videoOnDemandStartAt": null
+                },
+                {
+                  "__type": "api::webinar.webinar",
+                  "id": 34,
+                  "title": "test-202412161515",
+                  "slug": "test-202412161515",
+                  "playerSrc": "https://player.vimeo.com/video/4739165",
+                  "startDatetime": "2024-12-16T14:15:00.000Z",
+                  "endDatetime": "2024-12-16T14:20:00.000Z",
+                  "isVisibleInList": true,
+                  "subscribeParagraphLabel": null,
+                  "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum",
+                  "createdAt": "2024-12-16T13:29:49.431Z",
+                  "updatedAt": "2024-12-16T13:31:20.576Z",
+                  "publishedAt": "2024-12-16T13:29:52.790Z",
+                  "locale": "it",
+                  "bodyContent": null,
+                  "videoOnDemandStartAt": null
+                },
+                {
+                  "__type": "api::webinar.webinar",
+                  "id": 37,
+                  "title": "test-202412161600",
+                  "slug": "test-202412161600",
+                  "playerSrc": "https://player.vimeo.com/video/4739165",
+                  "startDatetime": "2024-12-16T15:00:00.000Z",
+                  "endDatetime": "2024-12-16T15:05:00.000Z",
+                  "isVisibleInList": true,
+                  "subscribeParagraphLabel": null,
+                  "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum",
+                  "createdAt": "2024-12-16T13:34:51.781Z",
+                  "updatedAt": "2024-12-16T13:41:20.480Z",
+                  "publishedAt": "2024-12-16T13:41:20.470Z",
+                  "locale": "it",
+                  "bodyContent": null,
+                  "videoOnDemandStartAt": null
+                },
+                {
+                  "__type": "api::webinar.webinar",
+                  "id": 43,
+                  "title": "test-202412161730",
+                  "slug": "test-202412161730",
+                  "playerSrc": "https://player.vimeo.com/video/4739165",
+                  "startDatetime": "2024-12-16T16:30:00.000Z",
+                  "endDatetime": "2024-12-16T16:35:00.000Z",
+                  "isVisibleInList": true,
+                  "subscribeParagraphLabel": null,
+                  "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum",
+                  "createdAt": "2024-12-16T13:39:53.812Z",
+                  "updatedAt": "2025-05-23T08:04:47.633Z",
+                  "publishedAt": "2024-12-16T13:39:55.359Z",
+                  "locale": "it",
+                  "bodyContent": null,
+                  "videoOnDemandStartAt": null
+                },
+                {
+                  "__type": "api::webinar.webinar",
+                  "id": 39,
+                  "title": "test-202412161630",
+                  "slug": "test-202412161630",
+                  "playerSrc": "https://player.vimeo.com/video/4739165",
+                  "startDatetime": "2024-12-16T15:30:00.000Z",
+                  "endDatetime": "2024-12-16T15:35:00.000Z",
+                  "isVisibleInList": true,
+                  "subscribeParagraphLabel": null,
+                  "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum",
+                  "createdAt": "2024-12-16T13:36:59.024Z",
+                  "updatedAt": "2024-12-16T13:37:03.318Z",
+                  "publishedAt": "2024-12-16T13:37:03.304Z",
+                  "locale": "it",
+                  "bodyContent": null,
+                  "videoOnDemandStartAt": null
+                },
+                {
+                  "__type": "api::webinar.webinar",
+                  "id": 38,
+                  "title": "test-202412161615",
+                  "slug": "test-202412161615",
+                  "playerSrc": "https://player.vimeo.com/video/4739165",
+                  "startDatetime": "2024-12-16T15:15:00.000Z",
+                  "endDatetime": "2024-12-16T15:20:00.000Z",
+                  "isVisibleInList": true,
+                  "subscribeParagraphLabel": null,
+                  "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum",
+                  "createdAt": "2024-12-16T13:36:10.176Z",
+                  "updatedAt": "2025-05-23T08:06:16.176Z",
+                  "publishedAt": "2024-12-16T13:36:12.519Z",
+                  "locale": "it",
+                  "bodyContent": null,
+                  "videoOnDemandStartAt": null
+                },
+                {
+                  "__type": "api::webinar.webinar",
+                  "id": 40,
+                  "title": "test-202412161645",
+                  "slug": "test-202412161645",
+                  "playerSrc": "https://player.vimeo.com/video/4739165",
+                  "startDatetime": "2024-12-16T15:45:00.000Z",
+                  "endDatetime": "2024-12-16T15:50:00.000Z",
+                  "isVisibleInList": true,
+                  "subscribeParagraphLabel": null,
+                  "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum",
+                  "createdAt": "2024-12-16T13:37:40.717Z",
+                  "updatedAt": "2024-12-16T13:37:42.516Z",
+                  "publishedAt": "2024-12-16T13:37:42.505Z",
+                  "locale": "it",
+                  "bodyContent": null,
+                  "videoOnDemandStartAt": null
+                },
+                {
+                  "__type": "api::webinar.webinar",
+                  "id": 41,
+                  "title": "test-202412161700",
+                  "slug": "test-202412161700",
+                  "playerSrc": "https://player.vimeo.com/video/4739165",
+                  "startDatetime": "2024-12-16T16:00:00.000Z",
+                  "endDatetime": "2024-12-16T16:05:00.000Z",
+                  "isVisibleInList": true,
+                  "subscribeParagraphLabel": null,
+                  "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum",
+                  "createdAt": "2024-12-16T13:38:16.440Z",
+                  "updatedAt": "2024-12-16T13:38:18.322Z",
+                  "publishedAt": "2024-12-16T13:38:18.309Z",
+                  "locale": "it",
+                  "bodyContent": null,
+                  "videoOnDemandStartAt": null
+                },
+                {
+                  "__type": "api::webinar.webinar",
+                  "id": 68,
+                  "title": "Test 20250716",
+                  "slug": "test-202507160951",
+                  "playerSrc": "https://video.dev.dveloper.pagopa.it/ivs/v1/039804388894/5CsyUCnE771r/2025/11/28/10/31/lQ7E1xnYVN9P/media/hls/master.m3u8",
+                  "startDatetime": "2025-07-17T07:00:00.000Z",
+                  "endDatetime": "2025-07-17T08:00:00.000Z",
+                  "isVisibleInList": true,
+                  "subscribeParagraphLabel": null,
+                  "description": "Test 20250716 description",
+                  "createdAt": "2025-07-16T07:52:09.833Z",
+                  "updatedAt": "2026-01-02T13:33:59.027Z",
+                  "publishedAt": "2025-07-16T07:52:30.577Z",
+                  "locale": "it",
+                  "bodyContent": null,
+                  "videoOnDemandStartAt": null
+                },
+                {
+                  "__type": "api::webinar.webinar",
+                  "id": 33,
+                  "title": "test-202412161500",
+                  "slug": "test-202412161500",
+                  "playerSrc": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+                  "startDatetime": "2024-12-16T14:00:00.000Z",
+                  "endDatetime": "2024-12-16T14:05:00.000Z",
+                  "isVisibleInList": true,
+                  "subscribeParagraphLabel": null,
+                  "description": "test-202412161500  ",
+                  "createdAt": "2024-12-16T13:27:05.909Z",
+                  "updatedAt": "2025-10-22T15:13:15.720Z",
+                  "publishedAt": "2024-12-16T13:27:12.306Z",
+                  "locale": "it",
+                  "bodyContent": null,
+                  "videoOnDemandStartAt": null
+                },
+                {
+                  "__type": "api::webinar.webinar",
+                  "id": 72,
+                  "title": "Test Stream Webinar",
+                  "slug": "test-stream-webinar",
+                  "playerSrc": "https://video.dev.developer.pagopa.it/ivs/v1/039804388894/5CsyUCnE771r/2025/11/3/15/36/8171X9HZnyjX/media/hls/master.m3u8",
+                  "startDatetime": "2025-11-03T15:30:00.000Z",
+                  "endDatetime": "2025-11-03T15:45:00.000Z",
+                  "isVisibleInList": false,
+                  "subscribeParagraphLabel": null,
+                  "description": "Video recording test 2025-11-03T16:44:10.178Z -  src: https://video.dev.developer.pagopa.it/ivs/v1/039804388894/5CsyUCnE771r/2025/11/3/15/36/8171X9HZnyjX/media/hls/master.m3u8",
+                  "createdAt": "2025-11-03T15:32:39.496Z",
+                  "updatedAt": "2025-11-12T11:05:30.697Z",
+                  "publishedAt": "2025-11-03T15:32:43.410Z",
+                  "locale": "it",
+                  "bodyContent": null,
+                  "videoOnDemandStartAt": null
+                },
+                {
+                  "__type": "api::webinar.webinar",
+                  "id": 35,
+                  "title": "test-202412161530",
+                  "slug": "test-202412161530",
+                  "playerSrc": "https://player.vimeo.com/video/4739165",
+                  "startDatetime": "2024-12-16T14:30:00.000Z",
+                  "endDatetime": "2024-12-16T14:35:00.000Z",
+                  "isVisibleInList": true,
+                  "subscribeParagraphLabel": null,
+                  "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum",
+                  "createdAt": "2024-12-16T13:31:25.700Z",
+                  "updatedAt": "2024-12-16T13:33:50.049Z",
+                  "publishedAt": "2024-12-16T13:33:50.031Z",
+                  "locale": "it",
+                  "bodyContent": null,
+                  "videoOnDemandStartAt": null
+                },
+                {
+                  "__type": "common.resource",
+                  "id": 35,
+                  "title": "Prova!",
+                  "subtitle": "prova",
+                  "description": [
+                    {
+                      "type": "paragraph",
+                      "children": [
+                        {
+                          "text": "prova provaprova provaprova provaprova provaprova provaprova provaprova provaprova provaprova provaprova provaprova provaprova provaprova provaprova prova",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ],
+                  "linkText": "prova",
+                  "linkHref": "#"
+                },
+                {
+                  "__type": "api::guide.guide",
+                  "id": 74,
+                  "title": "Testfolder",
+                  "slug": "testfolder",
+                  "createdAt": "2025-10-29T16:02:18.252Z",
+                  "updatedAt": "2026-01-15T12:01:24.812Z",
+                  "publishedAt": "2026-01-15T12:01:24.803Z",
+                  "locale": "it"
+                },
+                {
+                  "__type": "api::guide.guide",
+                  "id": 74,
+                  "title": "Testfolder",
+                  "slug": "testfolder",
+                  "createdAt": "2025-10-29T16:02:18.252Z",
+                  "updatedAt": "2026-01-15T12:01:24.812Z",
+                  "publishedAt": "2026-01-15T12:01:24.803Z",
+                  "locale": "it"
+                }
+              ],
+              "isUrlSigned": true
+            }
+          }
+        },
+        "listItems": [
+          {
+            "id": 214,
+            "text": "a"
+          },
+          {
+            "id": 215,
+            "text": "b"
+          },
+          {
+            "id": 216,
+            "text": "c"
+          }
+        ],
+        "versions": [
+          {
+            "id": 182,
+            "main": true,
+            "version": "1.0",
+            "dirName": "7IUU7kdDC1nwPxZmd2m3"
+          }
+        ],
+        "bannerLinks": [],
+        "seo": null,
+        "product": {
+          "data": {
+            "id": 39,
+            "attributes": {
+              "name": "Firma con IO",
+              "description": "Richiedi la Firma Elettronica Certificata su contratti e documenti. Le cittadine e i cittadini possono firmare direttamente sull’app IO.",
+              "slug": "firma-con-io",
+              "createdAt": "2024-04-10T09:52:36.575Z",
+              "updatedAt": "2026-02-03T14:07:41.524Z",
+              "publishedAt": "2026-01-12T11:33:55.301Z",
+              "locale": "it",
+              "shortName": "Firma con IO",
+              "isVisible": true,
+              "logo": {
+                "data": {
+                  "id": 381,
+                  "attributes": {
+                    "name": "appIo.svg",
+                    "alternativeText": null,
+                    "caption": null,
+                    "width": 60,
+                    "height": 61,
+                    "formats": null,
+                    "hash": "app_Io_1f61d5cf74",
+                    "ext": ".svg",
+                    "mime": "image/svg+xml",
+                    "size": 1.9,
+                    "url": "https://cdn.dev.developer.pagopa.it/app_Io_1f61d5cf74.svg",
+                    "previewUrl": null,
+                    "provider": "aws-s3",
+                    "provider_metadata": null,
+                    "createdAt": "2024-09-06T12:11:24.580Z",
+                    "updatedAt": "2024-10-17T13:28:13.193Z",
+                    "isUrlSigned": true
+                  }
+                }
+              },
+              "bannerLinks": [
+                {
+                  "id": 86,
+                  "title": "Serve aiuto durante l’integrazione?",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "children": [
+                        {
+                          "text": "Scrivi un’e-mail in cui descrivi il tuo problema o dubbio all’indirizzo ",
+                          "type": "text"
+                        },
+                        {
+                          "url": "mailto:firmaconio-tech@pagopa.it",
+                          "type": "link",
+                          "children": [
+                            {
+                              "text": "firmaconio-tech@pagopa.it",
+                              "type": "text"
+                            }
+                          ]
+                        },
+                        {
+                          "text": "",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ],
+                  "theme": "light",
+                  "icon": {
+                    "data": {
+                      "id": 345,
+                      "attributes": {
+                        "name": "livehelp.svg",
+                        "alternativeText": null,
+                        "caption": null,
+                        "width": 24,
+                        "height": 24,
+                        "formats": null,
+                        "hash": "livehelp_80640e1f9c",
+                        "ext": ".svg",
+                        "mime": "image/svg+xml",
+                        "size": 0.45,
+                        "url": "https://cdn.dev.developer.pagopa.it/livehelp_80640e1f9c.svg",
+                        "previewUrl": null,
+                        "provider": "aws-s3",
+                        "provider_metadata": null,
+                        "createdAt": "2024-09-27T07:53:11.914Z",
+                        "updatedAt": "2024-10-17T13:28:07.933Z",
+                        "isUrlSigned": true
+                      }
+                    }
+                  }
+                },
+                {
+                  "id": 87,
+                  "title": "Assistenza continua",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "children": [
+                        {
+                          "text": "Per problemi o dubbi dopo l’integrazione, scrivici all’indirizzo ",
+                          "type": "text"
+                        },
+                        {
+                          "url": "mailto:enti-firmaconio@assistenza.pagopa.it",
+                          "type": "link",
+                          "children": [
+                            {
+                              "text": "enti-firmaconio@assistenza.pagopa.it",
+                              "type": "text"
+                            }
+                          ]
+                        },
+                        {
+                          "text": "",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ],
+                  "theme": "light",
+                  "icon": {
+                    "data": {
+                      "id": 256,
+                      "attributes": {
+                        "name": "headset_78d50d9321_5bd20d1a6b.svg",
+                        "alternativeText": null,
+                        "caption": null,
+                        "width": 24,
+                        "height": 24,
+                        "formats": null,
+                        "hash": "headset_78d50d9321_5bd20d1a6b_6d5b8d3ee1",
+                        "ext": ".svg",
+                        "mime": "image/svg+xml",
+                        "size": 0.31,
+                        "url": "https://cdn.dev.developer.pagopa.it/headset_78d50d9321_5bd20d1a6b_6d5b8d3ee1.svg",
+                        "previewUrl": null,
+                        "provider": "aws-s3",
+                        "provider_metadata": null,
+                        "createdAt": "2024-09-25T13:00:33.814Z",
+                        "updatedAt": "2025-12-11T08:19:40.408Z",
+                        "isUrlSigned": true
+                      }
+                    }
+                  }
+                }
+              ],
+              "overview": {
+                "data": {
+                  "id": 8,
+                  "attributes": {
+                    "title": "Richiedi la firma di contratti e documenti",
+                    "subtitle": "Con Firma con IO puoi inviare alle cittadine e ai cittadini documenti e contratti e richiedere loro di firmarli digitalmente in modo facile, veloce e sicuro.\n",
+                    "createdAt": "2024-09-17T12:08:59.473Z",
+                    "updatedAt": "2026-02-03T14:17:20.599Z",
+                    "publishedAt": "2026-01-12T11:34:02.907Z",
+                    "locale": "it"
+                  }
+                }
+              },
+              "quickstart_guide": {
+                "data": null
+              },
+              "release_note": {
+                "data": {
+                  "id": 39,
+                  "attributes": {
+                    "title": "test_release_note",
+                    "dirName": "JzXl8H23oVGyUzZoVWiY",
+                    "landingFile": "README.md",
+                    "createdAt": "2026-02-03T16:36:40.128Z",
+                    "updatedAt": "2026-02-05T10:57:35.387Z",
+                    "publishedAt": "2026-02-05T10:57:35.376Z",
+                    "locale": "it"
+                  }
+                }
+              },
+              "api_data_list_page": {
+                "data": null
+              },
+              "guide_list_page": {
+                "data": {
+                  "id": 34,
+                  "attributes": {
+                    "title": "Firma con IO guide list page",
+                    "description": "Io prova",
+                    "createdAt": "2025-10-07T09:40:35.789Z",
+                    "updatedAt": "2026-01-15T12:02:52.199Z",
+                    "publishedAt": "2026-01-15T12:02:52.192Z",
+                    "locale": "it"
+                  }
+                }
+              },
+              "tutorial_list_page": {
+                "data": null
+              },
+              "use_case_list_page": {
+                "data": null
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": 80,
+      "attributes": {
+        "title": "prova",
+        "slug": "prova",
+        "createdAt": "2026-01-08T08:40:00.241Z",
+        "updatedAt": "2026-01-16T08:33:29.050Z",
+        "publishedAt": "2026-01-15T12:01:47.423Z",
+        "locale": "it",
+        "image": {
+          "data": {
+            "id": 502,
+            "attributes": {
+              "name": "1920x1080-full-hd-nature-sunny-clouds-7fetljf7qyco7qsq.jpg",
+              "alternativeText": null,
+              "caption": null,
+              "width": 1920,
+              "height": 1080,
+              "formats": {
+                "large": {
+                  "ext": ".jpg",
+                  "url": "https://cdn.dev.developer.pagopa.it/large_1920x1080_full_hd_nature_sunny_clouds_7fetljf7qyco7qsq_e590fcf30a.jpg",
+                  "hash": "large_1920x1080_full_hd_nature_sunny_clouds_7fetljf7qyco7qsq_e590fcf30a",
+                  "mime": "image/jpeg",
+                  "name": "large_1920x1080-full-hd-nature-sunny-clouds-7fetljf7qyco7qsq.jpg",
+                  "path": null,
+                  "size": 126.62,
+                  "width": 1000,
+                  "height": 563,
+                  "sizeInBytes": 126622,
+                  "isUrlSigned": true
+                },
+                "small": {
+                  "ext": ".jpg",
+                  "url": "https://cdn.dev.developer.pagopa.it/small_1920x1080_full_hd_nature_sunny_clouds_7fetljf7qyco7qsq_e590fcf30a.jpg",
+                  "hash": "small_1920x1080_full_hd_nature_sunny_clouds_7fetljf7qyco7qsq_e590fcf30a",
+                  "mime": "image/jpeg",
+                  "name": "small_1920x1080-full-hd-nature-sunny-clouds-7fetljf7qyco7qsq.jpg",
+                  "path": null,
+                  "size": 32.97,
+                  "width": 500,
+                  "height": 281,
+                  "sizeInBytes": 32968,
+                  "isUrlSigned": true
+                },
+                "medium": {
+                  "ext": ".jpg",
+                  "url": "https://cdn.dev.developer.pagopa.it/medium_1920x1080_full_hd_nature_sunny_clouds_7fetljf7qyco7qsq_e590fcf30a.jpg",
+                  "hash": "medium_1920x1080_full_hd_nature_sunny_clouds_7fetljf7qyco7qsq_e590fcf30a",
+                  "mime": "image/jpeg",
+                  "name": "medium_1920x1080-full-hd-nature-sunny-clouds-7fetljf7qyco7qsq.jpg",
+                  "path": null,
+                  "size": 72.59,
+                  "width": 750,
+                  "height": 422,
+                  "sizeInBytes": 72587,
+                  "isUrlSigned": true
+                },
+                "thumbnail": {
+                  "ext": ".jpg",
+                  "url": "https://cdn.dev.developer.pagopa.it/thumbnail_1920x1080_full_hd_nature_sunny_clouds_7fetljf7qyco7qsq_e590fcf30a.jpg",
+                  "hash": "thumbnail_1920x1080_full_hd_nature_sunny_clouds_7fetljf7qyco7qsq_e590fcf30a",
+                  "mime": "image/jpeg",
+                  "name": "thumbnail_1920x1080-full-hd-nature-sunny-clouds-7fetljf7qyco7qsq.jpg",
+                  "path": null,
+                  "size": 8.86,
+                  "width": 245,
+                  "height": 138,
+                  "sizeInBytes": 8858,
+                  "isUrlSigned": true
+                }
+              },
+              "hash": "1920x1080_full_hd_nature_sunny_clouds_7fetljf7qyco7qsq_e590fcf30a",
+              "ext": ".jpg",
+              "mime": "image/jpeg",
+              "size": 405.38,
+              "url": "https://cdn.dev.developer.pagopa.it/1920x1080_full_hd_nature_sunny_clouds_7fetljf7qyco7qsq_e590fcf30a.jpg",
+              "previewUrl": null,
+              "provider": "aws-s3",
+              "provider_metadata": null,
+              "createdAt": "2025-11-06T13:30:57.069Z",
+              "updatedAt": "2025-11-06T13:30:57.069Z",
+              "related": [
+                {
+                  "__type": "api::guide.guide",
+                  "id": 80,
+                  "title": "prova",
+                  "slug": "prova",
+                  "createdAt": "2026-01-08T08:40:00.241Z",
+                  "updatedAt": "2026-01-16T08:33:29.050Z",
+                  "publishedAt": "2026-01-15T12:01:47.423Z",
+                  "locale": "it"
+                },
+                {
+                  "__type": "api::webinar.webinar",
+                  "id": 70,
+                  "title": "Test 202507171220",
+                  "slug": "tes-202507171220",
+                  "playerSrc": "https://video.dev.developer.pagopa.it/ivs/v1/039804388894/5CsyUCnE771r/2025/10/22/9/30/nuove-api-io/master.m3u8",
+                  "startDatetime": "2025-07-21T22:00:00.000Z",
+                  "endDatetime": "2025-07-21T23:00:00.000Z",
+                  "isVisibleInList": true,
+                  "subscribeParagraphLabel": null,
+                  "description": "Test 202507171220 description with a new content again and again e tanti saluti buongiorno 18 luglio 17:35",
+                  "createdAt": "2025-07-17T10:21:45.039Z",
+                  "updatedAt": "2025-11-06T13:31:01.691Z",
+                  "publishedAt": "2025-07-17T10:22:19.372Z",
+                  "locale": "it",
+                  "bodyContent": null,
+                  "videoOnDemandStartAt": null
+                },
+                {
+                  "__type": "api::guide.guide",
+                  "id": 80,
+                  "title": "prova",
+                  "slug": "prova",
+                  "createdAt": "2026-01-08T08:40:00.241Z",
+                  "updatedAt": "2026-01-16T08:33:29.050Z",
+                  "publishedAt": "2026-01-15T12:01:47.423Z",
+                  "locale": "it"
+                }
+              ],
+              "isUrlSigned": true
+            }
+          }
+        },
+        "mobileImage": {
+          "data": {
+            "id": 502,
+            "attributes": {
+              "name": "1920x1080-full-hd-nature-sunny-clouds-7fetljf7qyco7qsq.jpg",
+              "alternativeText": null,
+              "caption": null,
+              "width": 1920,
+              "height": 1080,
+              "formats": {
+                "large": {
+                  "ext": ".jpg",
+                  "url": "https://cdn.dev.developer.pagopa.it/large_1920x1080_full_hd_nature_sunny_clouds_7fetljf7qyco7qsq_e590fcf30a.jpg",
+                  "hash": "large_1920x1080_full_hd_nature_sunny_clouds_7fetljf7qyco7qsq_e590fcf30a",
+                  "mime": "image/jpeg",
+                  "name": "large_1920x1080-full-hd-nature-sunny-clouds-7fetljf7qyco7qsq.jpg",
+                  "path": null,
+                  "size": 126.62,
+                  "width": 1000,
+                  "height": 563,
+                  "sizeInBytes": 126622,
+                  "isUrlSigned": true
+                },
+                "small": {
+                  "ext": ".jpg",
+                  "url": "https://cdn.dev.developer.pagopa.it/small_1920x1080_full_hd_nature_sunny_clouds_7fetljf7qyco7qsq_e590fcf30a.jpg",
+                  "hash": "small_1920x1080_full_hd_nature_sunny_clouds_7fetljf7qyco7qsq_e590fcf30a",
+                  "mime": "image/jpeg",
+                  "name": "small_1920x1080-full-hd-nature-sunny-clouds-7fetljf7qyco7qsq.jpg",
+                  "path": null,
+                  "size": 32.97,
+                  "width": 500,
+                  "height": 281,
+                  "sizeInBytes": 32968,
+                  "isUrlSigned": true
+                },
+                "medium": {
+                  "ext": ".jpg",
+                  "url": "https://cdn.dev.developer.pagopa.it/medium_1920x1080_full_hd_nature_sunny_clouds_7fetljf7qyco7qsq_e590fcf30a.jpg",
+                  "hash": "medium_1920x1080_full_hd_nature_sunny_clouds_7fetljf7qyco7qsq_e590fcf30a",
+                  "mime": "image/jpeg",
+                  "name": "medium_1920x1080-full-hd-nature-sunny-clouds-7fetljf7qyco7qsq.jpg",
+                  "path": null,
+                  "size": 72.59,
+                  "width": 750,
+                  "height": 422,
+                  "sizeInBytes": 72587,
+                  "isUrlSigned": true
+                },
+                "thumbnail": {
+                  "ext": ".jpg",
+                  "url": "https://cdn.dev.developer.pagopa.it/thumbnail_1920x1080_full_hd_nature_sunny_clouds_7fetljf7qyco7qsq_e590fcf30a.jpg",
+                  "hash": "thumbnail_1920x1080_full_hd_nature_sunny_clouds_7fetljf7qyco7qsq_e590fcf30a",
+                  "mime": "image/jpeg",
+                  "name": "thumbnail_1920x1080-full-hd-nature-sunny-clouds-7fetljf7qyco7qsq.jpg",
+                  "path": null,
+                  "size": 8.86,
+                  "width": 245,
+                  "height": 138,
+                  "sizeInBytes": 8858,
+                  "isUrlSigned": true
+                }
+              },
+              "hash": "1920x1080_full_hd_nature_sunny_clouds_7fetljf7qyco7qsq_e590fcf30a",
+              "ext": ".jpg",
+              "mime": "image/jpeg",
+              "size": 405.38,
+              "url": "https://cdn.dev.developer.pagopa.it/1920x1080_full_hd_nature_sunny_clouds_7fetljf7qyco7qsq_e590fcf30a.jpg",
+              "previewUrl": null,
+              "provider": "aws-s3",
+              "provider_metadata": null,
+              "createdAt": "2025-11-06T13:30:57.069Z",
+              "updatedAt": "2025-11-06T13:30:57.069Z",
+              "related": [
+                {
+                  "__type": "api::guide.guide",
+                  "id": 80,
+                  "title": "prova",
+                  "slug": "prova",
+                  "createdAt": "2026-01-08T08:40:00.241Z",
+                  "updatedAt": "2026-01-16T08:33:29.050Z",
+                  "publishedAt": "2026-01-15T12:01:47.423Z",
+                  "locale": "it"
+                },
+                {
+                  "__type": "api::webinar.webinar",
+                  "id": 70,
+                  "title": "Test 202507171220",
+                  "slug": "tes-202507171220",
+                  "playerSrc": "https://video.dev.developer.pagopa.it/ivs/v1/039804388894/5CsyUCnE771r/2025/10/22/9/30/nuove-api-io/master.m3u8",
+                  "startDatetime": "2025-07-21T22:00:00.000Z",
+                  "endDatetime": "2025-07-21T23:00:00.000Z",
+                  "isVisibleInList": true,
+                  "subscribeParagraphLabel": null,
+                  "description": "Test 202507171220 description with a new content again and again e tanti saluti buongiorno 18 luglio 17:35",
+                  "createdAt": "2025-07-17T10:21:45.039Z",
+                  "updatedAt": "2025-11-06T13:31:01.691Z",
+                  "publishedAt": "2025-07-17T10:22:19.372Z",
+                  "locale": "it",
+                  "bodyContent": null,
+                  "videoOnDemandStartAt": null
+                },
+                {
+                  "__type": "api::guide.guide",
+                  "id": 80,
+                  "title": "prova",
+                  "slug": "prova",
+                  "createdAt": "2026-01-08T08:40:00.241Z",
+                  "updatedAt": "2026-01-16T08:33:29.050Z",
+                  "publishedAt": "2026-01-15T12:01:47.423Z",
+                  "locale": "it"
+                }
+              ],
+              "isUrlSigned": true
+            }
+          }
+        },
+        "listItems": [
+          {
+            "id": 328,
+            "text": "asd"
+          }
+        ],
+        "versions": [
+          {
+            "id": 258,
+            "main": true,
+            "version": "2",
+            "dirName": "lBilmEcN90PbMrjKX1ww"
+          },
+          {
+            "id": 249,
+            "main": false,
+            "version": "1",
+            "dirName": "PmBz3R5ejc6lLp80K94Z"
+          }
+        ],
+        "bannerLinks": [],
+        "seo": null,
+        "product": {
+          "data": {
+            "id": 68,
+            "attributes": {
+              "name": "Prodotto delle nostre menti contorte",
+              "description": "descrizione cervellotica: il prodotto delle nostre menti contorte serve solo per fare dei test del meccanismo di sync",
+              "slug": "pdnmc",
+              "createdAt": "2025-11-14T15:47:43.475Z",
+              "updatedAt": "2026-02-03T14:11:10.733Z",
+              "publishedAt": "2025-12-17T14:50:12.401Z",
+              "locale": "it",
+              "shortName": "pdnmc",
+              "isVisible": true,
+              "logo": {
+                "data": {
+                  "id": 500,
+                  "attributes": {
+                    "name": "techmeet.svg",
+                    "alternativeText": null,
+                    "caption": null,
+                    "width": 32,
+                    "height": 32,
+                    "formats": null,
+                    "hash": "techmeet_adbb66de0a",
+                    "ext": ".svg",
+                    "mime": "image/svg+xml",
+                    "size": 1.98,
+                    "url": "https://cdn.dev.developer.pagopa.it/techmeet_adbb66de0a.svg",
+                    "previewUrl": null,
+                    "provider": "aws-s3",
+                    "provider_metadata": null,
+                    "createdAt": "2025-05-23T08:14:31.510Z",
+                    "updatedAt": "2025-12-11T08:07:45.341Z",
+                    "isUrlSigned": true
+                  }
+                }
+              },
+              "bannerLinks": [],
+              "overview": {
+                "data": {
+                  "id": 36,
+                  "attributes": {
+                    "title": "Titolo overview cervellotica",
+                    "subtitle": "Sottotitolo",
+                    "createdAt": "2025-11-14T15:50:45.140Z",
+                    "updatedAt": "2026-01-16T10:49:58.638Z",
+                    "publishedAt": "2025-12-17T14:50:08.409Z",
+                    "locale": "it"
+                  }
+                }
+              },
+              "quickstart_guide": {
+                "data": {
+                  "id": 34,
+                  "attributes": {
+                    "title": "Quick start cervellotica",
+                    "description": "desc",
+                    "createdAt": "2025-11-14T16:22:58.248Z",
+                    "updatedAt": "2025-12-17T14:51:08.903Z",
+                    "publishedAt": "2025-12-17T14:51:08.890Z",
+                    "locale": "it"
+                  }
+                }
+              },
+              "release_note": {
+                "data": null
+              },
+              "api_data_list_page": {
+                "data": {
+                  "id": 36,
+                  "attributes": {
+                    "title": "Lista API incomprensibili",
+                    "description": null,
+                    "createdAt": "2025-11-14T16:37:33.615Z",
+                    "updatedAt": "2026-01-30T17:18:14.092Z",
+                    "publishedAt": "2026-01-07T13:49:25.223Z",
+                    "locale": "it",
+                    "enableFilters": true,
+                    "apiData": {
+                      "data": [
+                        {
+                          "id": 43,
+                          "attributes": {
+                            "title": "API folle",
+                            "description": null,
+                            "createdAt": "2025-11-14T16:38:34.599Z",
+                            "updatedAt": "2026-01-07T13:49:28.236Z",
+                            "publishedAt": "2026-01-07T13:49:28.228Z",
+                            "locale": "it",
+                            "apiRestDetail": {
+                              "id": 48,
+                              "slug": "api-folle"
+                            }
+                          }
+                        },
+                        {
+                          "id": 44,
+                          "attributes": {
+                            "title": "Api follemente",
+                            "description": null,
+                            "createdAt": "2025-11-14T16:40:51.830Z",
+                            "updatedAt": "2026-01-07T13:49:35.800Z",
+                            "publishedAt": "2026-01-07T13:49:35.792Z",
+                            "locale": "it",
+                            "apiRestDetail": {
+                              "id": 53,
+                              "slug": "api-follemente"
+                            }
+                          }
+                        },
+                        {
+                          "id": 18,
+                          "attributes": {
+                            "title": "Documentazione SOAP",
+                            "description": "Consulta tutti gli schemi XSD e WSDL che seguono le diverse release SANP",
+                            "createdAt": "2024-07-16T12:07:27.383Z",
+                            "updatedAt": "2026-01-29T14:51:28.575Z",
+                            "publishedAt": "2026-01-29T14:51:28.565Z",
+                            "locale": "it",
+                            "apiRestDetail": null
+                          }
+                        },
+                        {
+                          "id": 45,
+                          "attributes": {
+                            "title": "QDEV-2602_API Test Rapidoc",
+                            "description": "Pagina per test su DEV-2602 \"L'utente può visualizzare la pagina del dettaglio API vedendo la nuova interfaccia\"",
+                            "createdAt": "2026-01-30T17:17:43.697Z",
+                            "updatedAt": "2026-01-30T18:12:41.240Z",
+                            "publishedAt": "2026-01-30T17:17:50.086Z",
+                            "locale": "it",
+                            "apiRestDetail": {
+                              "id": 55,
+                              "slug": "qdev2602-api-test"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              },
+              "guide_list_page": {
+                "data": {
+                  "id": 36,
+                  "attributes": {
+                    "title": "Pagina di lista delle guide cervellotiche",
+                    "description": "Descrizione della pagina di lista delle guide cervellotiche",
+                    "createdAt": "2025-11-14T16:04:45.619Z",
+                    "updatedAt": "2026-02-03T08:46:51.176Z",
+                    "publishedAt": "2026-01-14T16:22:45.135Z",
+                    "locale": "it"
+                  }
+                }
+              },
+              "tutorial_list_page": {
+                "data": null
+              },
+              "use_case_list_page": {
+                "data": null
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "meta": {
+    "pagination": {
+      "page": 1,
+      "pageSize": 250,
+      "pageCount": 1,
+      "total": 6
+    }
+  }
+}
