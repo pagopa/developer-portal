@@ -1,0 +1,81 @@
+---
+name: extractor
+description: Run Extractor
+
+inputs:
+  environment:
+    description: 'The environment used as target (dev, uat, prod)'
+    required: true
+  urls:
+    description: 'URLs to extract (comma-separated)'
+    required: true
+  parser_vector_index_name:
+    description: 'Parser Vector Index Name (CHB_INDEX_ID)'
+    required: true
+  deploy_iam_role:
+    description: 'IAM role to assume'
+    required: true
+  chb_aws_google_api_key:
+    description: 'Google API Key for AI Studio'
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Setup Environment Variables
+      shell: bash
+      run: |
+        echo "::group::Setup Environment Variables"
+        # Calculate ENV_SHORT
+        if [[ "${{ inputs.environment }}" == "dev" ]]; then
+          echo "ENV_SHORT=d" >> $GITHUB_ENV
+        elif [[ "${{ inputs.environment }}" == "uat" ]]; then
+          echo "ENV_SHORT=u" >> $GITHUB_ENV
+        elif [[ "${{ inputs.environment }}" == "prod" ]]; then
+          echo "ENV_SHORT=p" >> $GITHUB_ENV
+        fi
+        echo "::endgroup::"
+
+    - name: Setup Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+
+    - name: Install poetry with pip
+      shell: bash
+      run: |
+        pip install poetry
+
+    - name: Install python libraries
+      shell: bash
+      run: |
+        cd apps/extractor
+        poetry config virtualenvs.create false
+        poetry install --only main --no-interaction
+
+    - name: Configure AWS Credentials
+      uses: ./.github/actions/configure-aws-credentials
+      with:
+        aws_region: eu-south-1
+        role_to_assume: ${{ inputs.deploy_iam_role }}
+
+    - name: Run Extractor
+      env:
+        AWS_DEFAULT_REGION: eu-south-1
+        CHB_AWS_GOOGLE_API_KEY: ${{ inputs.chb_aws_google_api_key }}
+        CHB_INDEX_ID: ${{ inputs.parser_vector_index_name }}
+        S3_BUCKET_NAME: devportal-${{ env.ENV_SHORT }}-website-static-content
+      shell: bash
+      run: |
+        # Split comma-separated URLs and loop sequentially
+        cd apps/extractor
+        IFS=',' read -ra url_array <<< "${{ inputs.urls }}"
+        for url in "${url_array[@]}"; do
+          url="$(echo "$url" | xargs)"  # trim whitespace
+          echo "=== Running extractor on: $url ==="
+          if URL="$url" PYTHONPATH=. poetry run python src/main.py; then
+            echo "=== Completed: $url ==="
+          else
+            echo "=== FAILED: $url ==="
+          fi
+        done
