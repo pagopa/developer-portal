@@ -1,0 +1,262 @@
+{
+  "data": [
+    {
+      "id": 36,
+      "attributes": {
+        "slug": "soluzione-notturna",
+        "kickerTitle": "inutile",
+        "title": "TItolo della soluzione notturna",
+        "description": null,
+        "dirName": "U87eExwlc3gfSLL6SQpJ",
+        "landingUseCaseFile": "README.md",
+        "createdAt": "2025-11-19T17:23:47.949Z",
+        "updatedAt": "2026-01-08T16:20:58.735Z",
+        "publishedAt": "2026-01-08T16:20:58.726Z",
+        "locale": "it",
+        "introductionToSteps": null,
+        "statsSource": null,
+        "icon": {
+          "data": {
+            "id": 499,
+            "attributes": {
+              "name": "focus.svg",
+              "alternativeText": null,
+              "caption": null,
+              "width": 32,
+              "height": 32,
+              "formats": null,
+              "hash": "focus_982aa6841d",
+              "ext": ".svg",
+              "mime": "image/svg+xml",
+              "size": 1.52,
+              "url": "https://cdn.dev.developer.pagopa.it/focus_982aa6841d.svg",
+              "previewUrl": null,
+              "provider": "aws-s3",
+              "provider_metadata": null,
+              "createdAt": "2025-05-23T08:01:57.622Z",
+              "updatedAt": "2025-11-14T15:52:40.153Z",
+              "isUrlSigned": true
+            }
+          }
+        },
+        "stats": [],
+        "steps": [],
+        "seo": null,
+        "products": {
+          "data": [
+            {
+              "id": 68,
+              "attributes": {
+                "name": "Prodotto delle nostre menti contorte",
+                "description": "descrizione cervellotica: il prodotto delle nostre menti contorte serve solo per fare dei test del meccanismo di sync",
+                "slug": "pdnmc",
+                "createdAt": "2025-11-14T15:47:43.475Z",
+                "updatedAt": "2026-02-03T14:11:10.733Z",
+                "publishedAt": "2025-12-17T14:50:12.401Z",
+                "locale": "it",
+                "shortName": "pdnmc",
+                "isVisible": true,
+                "logo": {
+                  "data": {
+                    "id": 500,
+                    "attributes": {
+                      "name": "techmeet.svg",
+                      "alternativeText": null,
+                      "caption": null,
+                      "width": 32,
+                      "height": 32,
+                      "formats": null,
+                      "hash": "techmeet_adbb66de0a",
+                      "ext": ".svg",
+                      "mime": "image/svg+xml",
+                      "size": 1.98,
+                      "url": "https://cdn.dev.developer.pagopa.it/techmeet_adbb66de0a.svg",
+                      "previewUrl": null,
+                      "provider": "aws-s3",
+                      "provider_metadata": null,
+                      "createdAt": "2025-05-23T08:14:31.510Z",
+                      "updatedAt": "2025-12-11T08:07:45.341Z",
+                      "isUrlSigned": true
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "bannerLinks": [],
+        "webinars": {
+          "data": [
+            {
+              "id": 32,
+              "attributes": {
+                "title": "test-2024-12-16-1415",
+                "slug": "test-2024-12-16-1415",
+                "playerSrc": "https://vimeo.com/event/4153381/embed",
+                "startDatetime": "2024-12-16T13:15:00.000Z",
+                "endDatetime": "2024-12-16T13:25:00.000Z",
+                "isVisibleInList": true,
+                "subscribeParagraphLabel": null,
+                "description": "test-2024-12-16-1415",
+                "createdAt": "2024-12-16T11:24:38.187Z",
+                "updatedAt": "2025-05-23T08:14:49.386Z",
+                "publishedAt": "2024-12-16T13:24:39.498Z",
+                "locale": "it",
+                "bodyContent": null,
+                "videoOnDemandStartAt": null,
+                "coverImage": {
+                  "data": {
+                    "id": 423,
+                    "attributes": {
+                      "name": "pagopalab_servizi_sanitari.png",
+                      "alternativeText": null,
+                      "caption": null,
+                      "width": 728,
+                      "height": 416,
+                      "formats": {
+                        "small": {
+                          "ext": ".png",
+                          "url": "https://cdn.dev.developer.pagopa.it/small_Mask_group_53073e6610.png",
+                          "hash": "small_Mask_group_53073e6610",
+                          "mime": "image/png",
+                          "name": "small_Mask group.png",
+                          "path": null,
+                          "size": 167.51,
+                          "width": 500,
+                          "height": 286,
+                          "sizeInBytes": 167505,
+                          "isUrlSigned": true
+                        },
+                        "thumbnail": {
+                          "ext": ".png",
+                          "url": "https://cdn.dev.developer.pagopa.it/thumbnail_Mask_group_53073e6610.png",
+                          "hash": "thumbnail_Mask_group_53073e6610",
+                          "mime": "image/png",
+                          "name": "thumbnail_Mask group.png",
+                          "path": null,
+                          "size": 47.58,
+                          "width": 245,
+                          "height": 140,
+                          "sizeInBytes": 47580,
+                          "isUrlSigned": true
+                        }
+                      },
+                      "hash": "Mask_group_53073e6610",
+                      "ext": ".png",
+                      "mime": "image/png",
+                      "size": 243.86,
+                      "url": "https://cdn.dev.developer.pagopa.it/Mask_group_53073e6610.png",
+                      "previewUrl": null,
+                      "provider": "aws-s3",
+                      "provider_metadata": null,
+                      "createdAt": "2024-12-04T14:03:24.749Z",
+                      "updatedAt": "2025-09-25T15:17:58.125Z",
+                      "isUrlSigned": true
+                    }
+                  }
+                },
+                "webinarSpeakers": {
+                  "data": []
+                },
+                "relatedLinks": null,
+                "relatedResources": {
+                  "id": 7,
+                  "title": "Risorse utili",
+                  "resources": [],
+                  "downloadableDocuments": {
+                    "data": [
+                      {
+                        "id": 433,
+                        "attributes": {
+                          "name": "2025_02_18_SEND_Webinar_operatori_RADD-1.pdf",
+                          "alternativeText": null,
+                          "caption": null,
+                          "width": null,
+                          "height": null,
+                          "formats": null,
+                          "hash": "2025_02_18_SEND_Webinar_operatori_RADD_1_a49b5e84e2",
+                          "ext": ".pdf",
+                          "mime": "application/pdf",
+                          "size": 2380.35,
+                          "url": "https://cdn.dev.developer.pagopa.it/2025_02_18_SEND_Webinar_operatori_RADD_1_a49b5e84e2.pdf",
+                          "previewUrl": null,
+                          "provider": "aws-s3",
+                          "provider_metadata": null,
+                          "createdAt": "2025-02-14T09:32:49.621Z",
+                          "updatedAt": "2025-07-01T12:49:09.819Z",
+                          "related": [
+                            {
+                              "__type": "webinar.related-resources",
+                              "id": 7,
+                              "title": "Risorse utili"
+                            },
+                            {
+                              "__type": "webinar.related-resources",
+                              "id": 35,
+                              "title": "prova"
+                            }
+                          ],
+                          "isUrlSigned": true
+                        }
+                      }
+                    ]
+                  }
+                },
+                "seo": null,
+                "questionsAndAnswers": [],
+                "webinarCategory": {
+                  "data": {
+                    "id": 4,
+                    "attributes": {
+                      "name": "Techmeet",
+                      "createdAt": "2025-05-23T08:14:35.234Z",
+                      "updatedAt": "2025-05-23T08:14:35.963Z",
+                      "publishedAt": "2025-05-23T08:14:35.959Z",
+                      "locale": "it",
+                      "icon": {
+                        "data": {
+                          "id": 500,
+                          "attributes": {
+                            "name": "techmeet.svg",
+                            "alternativeText": null,
+                            "caption": null,
+                            "width": 32,
+                            "height": 32,
+                            "formats": null,
+                            "hash": "techmeet_adbb66de0a",
+                            "ext": ".svg",
+                            "mime": "image/svg+xml",
+                            "size": 1.98,
+                            "url": "https://cdn.dev.developer.pagopa.it/techmeet_adbb66de0a.svg",
+                            "previewUrl": null,
+                            "provider": "aws-s3",
+                            "provider_metadata": null,
+                            "createdAt": "2025-05-23T08:14:31.510Z",
+                            "updatedAt": "2025-12-11T08:07:45.341Z",
+                            "isUrlSigned": true
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "headerImage": {
+                  "data": null
+                }
+              }
+            }
+          ]
+        },
+        "caseHistories": null
+      }
+    }
+  ],
+  "meta": {
+    "pagination": {
+      "page": 1,
+      "pageSize": 250,
+      "pageCount": 1,
+      "total": 1
+    }
+  }
+}

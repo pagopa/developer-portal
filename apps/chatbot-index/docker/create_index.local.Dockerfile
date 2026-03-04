@@ -13,6 +13,10 @@ RUN apt-get update && \
   unzip \
   jq
 
+RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && \
+  unzip awscliv2.zip && \
+  ./aws/install
+
 COPY ./docker/chrome-installer.sh ./chrome-installer.sh
 RUN chmod +x ./chrome-installer.sh && \
   ./chrome-installer.sh && \
@@ -24,10 +28,15 @@ RUN pip install --upgrade pip \
 WORKDIR $LAMBDA_TASK_ROOT
 COPY pyproject.toml $LAMBDA_TASK_ROOT
 COPY poetry.lock $LAMBDA_TASK_ROOT
+COPY ./src ${LAMBDA_TASK_ROOT}/src
+COPY ./config ${LAMBDA_TASK_ROOT}/config
+COPY ./scripts ${LAMBDA_TASK_ROOT}/scripts
 RUN poetry config virtualenvs.create false
 RUN poetry install --only main
 
 RUN groupadd -r appuser && useradd -r -g appuser -u 1000 appuser
 RUN chown -R appuser:appuser $LAMBDA_TASK_ROOT
+
+RUN mkdir -p /home/appuser/.cache && chown -R appuser:appuser /home/appuser/.cache
 
 USER appuser
