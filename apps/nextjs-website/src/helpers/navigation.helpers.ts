@@ -25,7 +25,9 @@ export function canRedirectToUrl(path: string): boolean {
     if (path === '/') return true;
 
     // Allow paths that start with a supported locale exactly (e.g., /en/...)
-    return SUPPORTED_LOCALES.some((l) => path.startsWith(`/${l.langCode}/`));
+    return SUPPORTED_LOCALES.some((l) =>
+      normalizedPath.startsWith(`/${l.langCode}/`)
+    );
   } catch {
     return false;
   }
