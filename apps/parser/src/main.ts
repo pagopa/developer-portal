@@ -7,7 +7,7 @@ import {
   exploreAndParsePages,
   generatePageParsedMetadata,
 } from "./modules/parser";
-import { ParsedNode, ParsedMetadata } from "./modules/types";
+import { ParsedNode, ParsedMetadata, ParserConfig } from "./modules/types";
 import {
   RemoveAnchorsFromUrl,
   buildVisitKey,
@@ -26,7 +26,7 @@ const env = resolveEnv();
 const parsedPages = new Map<string, ParsedMetadata>();
 const scheduledPages = new Set<string>();
 const VALID_DOMAIN_VARIANTS = env.validDomainVariants || [];
-const PARSER_CONFIG = {
+const PARSER_CONFIG: ParserConfig = {
   OUTPUT_DIRECTORY: env.outputDirectory,
   MAX_DEPTH: env.maxDepth,
   VALID_DOMAIN_VARIANTS: env.validDomainVariants || [],
