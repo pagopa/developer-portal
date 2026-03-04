@@ -2,6 +2,9 @@ name: 'Parser'
 description: 'Run parser for each URL'
 
 inputs:
+  environment:
+    description: 'The environment used as target (dev, uat, prod)'
+    required: true
   urls:
     description: 'URLs to parse (comma-separated)'
     required: true
@@ -25,6 +28,20 @@ runs:
   using: 'composite'
 
   steps:
+    - name: Setup Environment Variables
+      shell: bash
+      run: |
+        echo "::group::Setup Environment Variables"
+        # Calculate ENV_SHORT
+        if [[ "${{ inputs.environment }}" == "dev" ]]; then
+          echo "ENV_SHORT=d" >> $GITHUB_ENV
+        elif [[ "${{ inputs.environment }}" == "uat" ]]; then
+          echo "ENV_SHORT=u" >> $GITHUB_ENV
+        elif [[ "${{ inputs.environment }}" == "prod" ]]; then
+          echo "ENV_SHORT=p" >> $GITHUB_ENV
+        fi
+        echo "::endgroup::"
+
     - name: Setup Node.JS
       uses: ./.github/actions/setup-node
 
@@ -69,6 +86,7 @@ runs:
         DEPTH: ${{ inputs.depth }}
         VALID_DOMAIN_VARIANTS: ${{ inputs.valid_domain_variants }}
         PUBLIC_PARSER_REQUEST_TIMEOUT_MS: ${{ inputs.public_parser_request_timeout_ms }}
+        S3_BUCKET_NAME: devportal-${{ env.ENV_SHORT }}-website-static-content
       working-directory: apps/parser
       shell: bash
       run: |
