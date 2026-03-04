@@ -1,7 +1,7 @@
 import { strapiApiDataListPages } from '@/lib/strapi/__tests__/fixtures/apiDataListPages';
-import { StrapiApiDataListPages } from '@/lib/strapi/types/apiDataListPages';
+import { ApiDataListPages } from '@/lib/apiDataListPages/types';
 
-export function minimalApiDataListPages(): StrapiApiDataListPages {
+export function minimalApiDataListPages(): ApiDataListPages {
   const page = strapiApiDataListPages.data[0];
   return {
     data: [
@@ -37,7 +37,7 @@ export function minimalApiDataListPages(): StrapiApiDataListPages {
   };
 }
 
-export function apiDataListPageWithEmptyApiData(): StrapiApiDataListPages {
+export function apiDataListPageWithEmptyApiData(): ApiDataListPages {
   const page = strapiApiDataListPages.data[0];
   return {
     data: [
@@ -55,7 +55,7 @@ export function apiDataListPageWithEmptyApiData(): StrapiApiDataListPages {
   };
 }
 
-export function apiDataListPageWithMixedApiTypes(): StrapiApiDataListPages {
+export function apiDataListPageWithMixedApiTypes(): ApiDataListPages {
   const page = strapiApiDataListPages.data[0];
   return {
     data: [
@@ -117,7 +117,7 @@ export function apiDataListPageWithMixedApiTypes(): StrapiApiDataListPages {
   };
 }
 
-export function apiDataListPageWithoutDescription(): StrapiApiDataListPages {
+export function apiDataListPageWithoutDescription(): ApiDataListPages {
   const page = strapiApiDataListPages.data[0];
   return {
     data: [
@@ -132,7 +132,7 @@ export function apiDataListPageWithoutDescription(): StrapiApiDataListPages {
   };
 }
 
-export function apiDataListPageWithInvalidApiData(): StrapiApiDataListPages {
+export function apiDataListPageWithInvalidApiData(): ApiDataListPages {
   const page = strapiApiDataListPages.data[0];
   return {
     data: [
@@ -179,7 +179,7 @@ export function apiDataListPageWithInvalidApiData(): StrapiApiDataListPages {
   };
 }
 
-export function multipleApiDataListPages(): StrapiApiDataListPages {
+export function multipleApiDataListPages(): ApiDataListPages {
   const page = strapiApiDataListPages.data[0];
   return {
     data: [
@@ -215,13 +215,13 @@ export function multipleApiDataListPages(): StrapiApiDataListPages {
   };
 }
 
-export function emptyApiDataListPages(): StrapiApiDataListPages {
+export function emptyApiDataListPages(): ApiDataListPages {
   return {
     data: [],
   };
 }
 
-export function apiDataListPageWithBothRestAndSoap(): StrapiApiDataListPages {
+export function apiDataListPageWithBothRestAndSoap(): ApiDataListPages {
   const page = strapiApiDataListPages.data[0];
   return {
     data: [

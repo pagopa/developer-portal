@@ -2,17 +2,18 @@ import { StrapiMedia } from '@/lib/strapi/types/media';
 import { StrapiBaseProductWithRelations } from '@/lib/strapi/types/product';
 import { StrapiBannerLink } from '@/lib/strapi/types/bannerLink';
 import { StrapiSeo } from '@/lib/strapi/types/seo';
-import { StrapiComponent } from './strapiComponent';
-import { StrapiTag } from './tag';
+import { StrapiComponent } from '@/lib/strapi/types/strapiComponent';
+import { StrapiTag } from '@/lib/strapi/types/tag';
+import { ApiDataPageProps } from '@/app/[locale]/[productSlug]/api/[apiDataSlug]/page';
 
-type StrapiUrl = {
+type Url = {
   readonly id: number;
   readonly name?: string;
   readonly url: string;
   readonly hideTryIt: boolean;
 };
 
-export type StrapiBaseApiData = {
+export type BaseApiData = {
   readonly id: number;
   readonly attributes: {
     readonly title: string;
@@ -22,7 +23,7 @@ export type StrapiBaseApiData = {
     };
     readonly apiRestDetail?: {
       readonly slug: string;
-      readonly specUrls: readonly StrapiUrl[];
+      readonly specUrls: readonly Url[];
     };
     readonly apiSoapDetail?: {
       readonly slug: string;
@@ -33,8 +34,8 @@ export type StrapiBaseApiData = {
   };
 };
 
-export type StrapiApiData = StrapiBaseApiData & {
-  readonly attributes: StrapiBaseApiData['attributes'] & {
+export type ApiData = BaseApiData & {
+  readonly attributes: BaseApiData['attributes'] & {
     readonly product: {
       readonly data?: StrapiBaseProductWithRelations;
     };
@@ -43,7 +44,7 @@ export type StrapiApiData = StrapiBaseApiData & {
   };
 };
 
-export type StrapiBaseApiDataList = StrapiComponent<
-  readonly StrapiBaseApiData[]
->;
-export type StrapiApiDataList = StrapiComponent<readonly StrapiApiData[]>;
+export type BaseApiDataList = StrapiComponent<readonly BaseApiData[]>;
+export type ApiDataList = StrapiComponent<readonly ApiData[]>;
+
+export type { ApiDataPageProps };

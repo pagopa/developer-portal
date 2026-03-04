@@ -1,7 +1,7 @@
 import { StrapiBannerLink } from '@/lib/strapi/types/bannerLink';
 import { StrapiMedia } from '@/lib/strapi/types/media';
 import { StrapiComponent } from '@/lib/strapi/types/strapiComponent';
-import { StrapiApiDataListPageWithoutProduct } from '@/lib/strapi/types/apiDataListPages';
+import { ApiDataListPageWithoutProduct } from '@/lib/apiDataListPages/types';
 import { Paginated } from '@/lib/strapi/types/paginated';
 import { StrapiTag } from '@/lib/strapi/types/tag';
 
@@ -37,7 +37,7 @@ export type StrapiProductRelations = {
   readonly overview: StrapiComponent<Id | undefined>;
   readonly quickstart_guide: StrapiComponent<Id | undefined>;
   readonly api_data_list_page: StrapiComponent<
-    StrapiApiDataListPageWithoutProduct | undefined
+    ApiDataListPageWithoutProduct | undefined
   >;
   readonly tutorial_list_page: StrapiComponent<Id | undefined>;
   readonly guide_list_page: StrapiComponent<Id | undefined>;

@@ -1,14 +1,13 @@
 /* eslint-disable functional/no-expression-statements */
-import { ApiDataListPageTemplateProps } from '@/components/templates/ApiDataListTemplate/ApiDataListTemplate';
 import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
 import { makeBaseProductWithoutLogoProps } from '@/lib/strapi/makeProps/makeProducts';
-import { StrapiApiDataListPages } from '@/lib/strapi/types/apiDataListPages';
+import { ApiDataListPages, ApiDataListPageTemplateProps } from './types';
 import { compact } from 'lodash';
-import { StrapiBaseApiData } from '../types/apiDataList';
+import { BaseApiData } from '@/lib/apiDataList/types';
 
 function makeApiDataListPageCard(
   locale: string,
-  item: StrapiBaseApiData,
+  item: BaseApiData,
   slug: string
 ) {
   if (!item.attributes.apiRestDetail && !item.attributes.apiSoapDetail) {
@@ -45,9 +44,9 @@ function makeApiDataListPageCard(
   };
 }
 
-export function makeApiDataListPagesProps(
+export function mapApiDataListPages(
   locale: string,
-  strapiApiDataListPages: StrapiApiDataListPages
+  strapiApiDataListPages: ApiDataListPages
 ): ReadonlyArray<ApiDataListPageTemplateProps> {
   return compact(
     strapiApiDataListPages.data.map(({ attributes }) => {

@@ -1,7 +1,9 @@
 import qs from 'qs';
 import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
 import { productRelationsPopulate } from '@/lib/strapi/fetches/fetchProducts';
-import { StrapiApiDataList } from '@/lib/strapi/types/apiDataList';
+import { ApiDataList } from './types';
+
+import { buildEnv } from '@/lib/buildEnv';
 
 const makeStrapiApiDataListPopulate = () =>
   qs.stringify({
@@ -25,9 +27,8 @@ const makeStrapiApiDataListPopulate = () =>
     },
   });
 
-// This endpoint does not respect the naming convention but we keep it
-// for backward compatibility with the already existing content in Strapi's production instance
-export const fetchApiDataList = fetchFromStrapi<StrapiApiDataList>(
-  'apis-data',
-  makeStrapiApiDataListPopulate()
-);
+export const fetchApiDataList = (locale: string) =>
+  fetchFromStrapi<ApiDataList>('apis-data', makeStrapiApiDataListPopulate())(
+    locale,
+    buildEnv
+  );

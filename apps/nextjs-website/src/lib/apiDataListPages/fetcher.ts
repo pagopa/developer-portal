@@ -1,7 +1,8 @@
 import * as qs from 'qs';
 import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
 import { productRelationsPopulate } from '@/lib/strapi/fetches/fetchProducts';
-import { StrapiApiDataListPages } from '@/lib/strapi/types/apiDataListPages';
+import { ApiDataListPages } from './types';
+import { buildEnv } from '@/lib/buildEnv';
 
 const makeStrapiApiDataListPagePopulate = () =>
   qs.stringify({
@@ -32,7 +33,8 @@ const makeStrapiApiDataListPagePopulate = () =>
     },
   });
 
-export const fetchApiDataListPages = fetchFromStrapi<StrapiApiDataListPages>(
-  'api-data-list-pages',
-  makeStrapiApiDataListPagePopulate()
-);
+export const fetchApiDataListPages = (locale: string) =>
+  fetchFromStrapi<ApiDataListPages>(
+    'api-data-list-pages',
+    makeStrapiApiDataListPagePopulate()
+  )(locale, buildEnv);

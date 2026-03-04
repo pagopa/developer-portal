@@ -1,4 +1,4 @@
-import { getApiData } from '@/lib/api';
+import { ApiDataListRepository } from '@/lib/apiDataList';
 import ProductLayout, {
   ProductLayoutProps,
 } from '@/components/organisms/ProductLayout/ProductLayout';
@@ -41,7 +41,14 @@ export const generateMetadata = async (
 ): Promise<Metadata> => {
   const params = await props.params;
   const resolvedParent = await parent;
-  const ApiDataProps = await getApiData(params.locale, params.apiDataSlug);
+  const ApiDataProps = await ApiDataListRepository.getBySlug(
+    params.locale,
+    params.apiDataSlug
+  );
+  if (!ApiDataProps) {
+    // eslint-disable-next-line functional/no-throw-statements
+    throw new Error('Failed to fetch data');
+  }
 
   if (ApiDataProps?.seo) {
     return makeMetadataFromStrapi(ApiDataProps.seo);
@@ -59,7 +66,14 @@ export const generateMetadata = async (
 
 const ApiDataPage = async (props: ApiDataParams) => {
   const params = await props.params;
-  const apiDataProps = await getApiData(params.locale, params.apiDataSlug);
+  const apiDataProps = await ApiDataListRepository.getBySlug(
+    params.locale,
+    params.apiDataSlug
+  );
+  if (!apiDataProps) {
+    // eslint-disable-next-line functional/no-throw-statements
+    throw new Error('Failed to fetch data');
+  }
 
   const structuredData = generateStructuredDataScripts({
     breadcrumbsItems: [
