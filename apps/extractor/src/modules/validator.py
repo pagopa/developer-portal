@@ -8,7 +8,7 @@ from src.modules.settings import SETTINGS
 
 LOGGER = get_logger(__name__, level=SETTINGS.log_level)
 
-def has_rendered_markdown(text_string):
+def has_rendered_markdown(text_string: str) -> bool:
     """
     Verify if the extracted content contains rendered Markdown elements, indicating successful formatting.
 
@@ -24,7 +24,8 @@ def has_rendered_markdown(text_string):
         LOGGER.error("Markdown rendering failed, text is not properly formatted.")
     return check
 
-def calculate_similarity(generated: str, source: str):
+#todo : consider switching to Ragas to calculate the similarity
+def calculate_similarity(generated: str, source: str) -> float:
     """
    Calculate cosine similarity between two text strings using TF-IDF vectors.
    Returns 0.0 if the similarity cannot be computed (e.g., one or both inputs are empty
