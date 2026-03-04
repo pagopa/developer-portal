@@ -14,7 +14,9 @@ LOGGER = get_logger(__name__, os.getenv("LOG_LEVEL", "info"))
 # Get root directory and load config files
 CWF = Path(__file__)
 ROOT = CWF.parent.parent.parent.absolute().__str__()
-PROMPTS = yaml.safe_load(open(os.path.join(ROOT, "config", "prompts.yaml"), "r"))
+PROMPTS = yaml.safe_load(
+    Path(ROOT, "config", "prompts.yaml").read_text(encoding="utf-8")
+)
 AWS_SESSION = boto3.Session()
 AWS_SSM_CLIENT = AWS_SESSION.client("ssm")
 
