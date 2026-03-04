@@ -218,6 +218,7 @@ class Chatbot:
         self,
         query_str: str,
         messages: Optional[List[Dict[str, str]]] | None = None,
+        knowledge_base: str | None = None,
     ) -> dict:
         """Generates a response to the user's query by running the discovery agent with the provided query and chat history, and formats the response into a JSON structure.
         Args:
@@ -228,6 +229,9 @@ class Chatbot:
         """
 
         chat_history = self._messages_to_chathistory(messages)
+
+        if knowledge_base:
+            query_str = query_str + f" | Knowledge Base: {knowledge_base}"
 
         try:
             engine_response = await self.discovery.run(query_str, chat_history)
