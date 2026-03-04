@@ -11,7 +11,7 @@ inputs:
   environment:
     description: 'The environment used as target (dev, uat, prod)'
     required: true
-  public_parser_request_timeout_ms:
+  request_timeout_ms:
     description: 'Request timeout in milliseconds (optional, default: 10000)'
     required: false
   urls:
@@ -84,7 +84,7 @@ runs:
       env:
         CHB_INDEX_ID: ${{ inputs.parser_vector_index_name }}
         DEPTH: ${{ inputs.depth }}
-        PUBLIC_PARSER_REQUEST_TIMEOUT_MS: ${{ inputs.public_parser_request_timeout_ms }}
+        PUBLIC_PARSER_REQUEST_TIMEOUT_MS: ${{ inputs.request_timeout_ms }}
         S3_BUCKET_NAME: devportal-${{ env.ENV_SHORT }}-website-static-content
         VALID_DOMAIN_VARIANTS: ${{ inputs.valid_domain_variants }}
       working-directory: apps/parser
