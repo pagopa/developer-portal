@@ -59,7 +59,7 @@ permissions:
 
 jobs:
   run-parser:
-    name: Run Parser Script (manual on ${{ inputs.environment }})
+    name: Add knowledge base (manual on ${{ inputs.environment }})
     runs-on: ubuntu-24.04
     environment: ${{ inputs.environment }}
     
