@@ -1,4 +1,4 @@
-import { isExternalLink } from '../../helpers/navigation.helpers';
+import { isExternalLink } from '@/helpers/navigation.helpers';
 
 describe('isExternalLink', () => {
   const currentHost = 'example.com';
