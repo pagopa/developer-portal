@@ -3,6 +3,7 @@ export function isExternalLink(currentHost: string, href: string): boolean {
     return false;
   }
 
+  // eslint-disable-next-line functional/no-try-statements
   try {
     const url = new URL(href);
     const normalizedCurrentHost = currentHost.toLowerCase();
