@@ -36,15 +36,8 @@ Either move to the parser app directory with `cd apps/parser` or run all followi
 
 To provide configuration, use a '.env' file (see .env.default for reference).
 
-Create a `.env` file in the `apps/parser` directory with content like:
+Create a `.env` file in the `apps/parser` directory with content like the `.env.default` file.
 
-```
-URL='https://example.com'
-CHB_INDEX_ID='name_of_your_choice'
-# DEPTH=2  # Optional, defaults to null
-# VALID_DOMAIN_VARIANTS='["subdomain1", "subdomain2"]' # Optional, defaults to []
-# PUBLIC_PARSER_REQUEST_TIMEOUT_MS=30000 # Optional, defaults to 10000
-```
 
 ### 2. Run the Parser
 
@@ -67,6 +60,11 @@ Set the following environment variables to control the parser’s behavior:
 	- Domains like `subdomain3.example.com` will be skipped unless `subdomain3` is listed.
 	- This variable controls which subdomains are included in the parsing scope, helping to avoid crawling unrelated or unwanted subdomains.
 - **`PUBLIC_PARSER_REQUEST_TIMEOUT_MS`** (optional, default: 10000): This variable controls how long (in milliseconds) the parser will wait for a request to complete before timing out and terminating the operation.
+- **`SHOULD_CREATE_FILES_LOCALLY`** (optional, default: false, boolean): Whether to save parsed data in JSON format in a local directory. Set to `"true"` to enable local file storage.
+- **`S3_BUCKET_NAME`** (required): The name of the AWS S3 bucket where parsed metadata will be stored.
+- **`S3_ACCESS_KEY_ID`** (optional): AWS access key ID for S3 authentication. Required if S3 credentials are not provided by another method (e.g., IAM role).
+- **`S3_SECRET_ACCESS_KEY`** (optional): AWS secret access key for S3 authentication. Required if S3 credentials are not provided by another method.
+- **`NEXT_PUBLIC_COGNITO_REGION`** (optional): AWS region for S3 operations (e.g., `"us-east-1"`, `"eu-west-1"`). Used to configure the S3 client region.
 ---
 
 ## Output Structure
