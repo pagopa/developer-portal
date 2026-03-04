@@ -31,7 +31,7 @@
   "name": "developer-portal",
   "overrides": {
     "next": {
-      "ajv": "^8.18.0"
+      "ajv": "^8.17.1"
     },
     "eslint": {
       "ajv": "^8.18.0"
@@ -43,7 +43,7 @@
       "ajv": "^8.18.0"
     },
     "@eslint/eslintrc": {
-      "ajv": "^8.18.0"
+      "ajv": "^6.12.4"
     },
     "@types/react": "19.2.7",
     "@types/react-dom": "19.2.3"
