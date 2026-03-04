@@ -1,6 +1,5 @@
----
-name: extractor
-description: Run Extractor
+name: Extractor
+description: Run Extractor for each URL
 
 inputs:
   chb_aws_google_api_key:

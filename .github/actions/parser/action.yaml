@@ -1,5 +1,5 @@
-name: 'Parser'
-description: 'Run parser for each URL'
+name: Parser
+description: Run parser for each URL
 
 inputs:
   deploy_iam_role:
