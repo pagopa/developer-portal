@@ -63,7 +63,7 @@ const Feature = (props: FeatureProps) => {
           </Typography>
         )}
       </Grid>
-      <Grid item mt={8}>
+      <Grid item mt={8} sx={{ marginX: 'auto' }}>
         <Grid container justifyContent='center'>
           {items.map((item, index) => (
             <Grid

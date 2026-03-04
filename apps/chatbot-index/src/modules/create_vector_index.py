@@ -40,6 +40,13 @@ if __name__ == "__main__":
     )
     args = parser.parse_args()
 
+    LOGGER.info("Creating vector index with the following options:")
+    LOGGER.info(f"- Include static documents: {args.static}")
+    LOGGER.info(f"- Include dynamic documents: {args.dynamic}")
+    LOGGER.info(f"- Include API documents: {args.api}")
+    LOGGER.info(f"- Include structured documents: {args.structured}")
+    LOGGER.info(f"- Clean Redis before building index: {args.clean_redis}")
+
     has_unstructured_source = args.static or args.dynamic or args.api
     if args.structured and has_unstructured_source:
         parser.error(
