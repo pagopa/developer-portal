@@ -6,7 +6,13 @@ readme = "README.md"
 version = "0.1.0"
 
 [tool.poetry.dependencies]
+boto3 = "^1.42.54"
+llama-index = "^0.14.15"
+llama-index-embeddings-google-genai = "^0.3.2"
+llama-index-llms-google-genai = "^0.8.7"
+pydantic-settings = "^2.13.1"
 python = ">=3.12,<3.14"
+pyyaml = "^6.0.3"
 
 [tool.poetry.group.test.dependencies]
 pytest = "^8.3.5"
