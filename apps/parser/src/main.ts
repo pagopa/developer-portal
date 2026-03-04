@@ -142,7 +142,7 @@ async function main(): Promise<void> {
       pagesFromCrawlSize = allParsedPages.size;
       for (const url of toParse) {
         try {
-          const metadata = await generatePageParsedMetadata(
+          const { metadata, anchors } = await generatePageParsedMetadata(
             browser,
             url,
             BASE_SCOPE,
