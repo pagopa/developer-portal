@@ -1,27 +1,27 @@
-name: 'Parser'
-description: 'Run parser for each URL'
+name: Parser
+description: Run parser for each URL
 
 inputs:
-  environment:
-    description: 'The environment used as target (dev, uat, prod)'
-    required: true
-  urls:
-    description: 'URLs to parse (comma-separated)'
-    required: true
-  parser_vector_index_name:
-    description: 'Parser Vector Index Name (CHB_INDEX_ID)'
+  deploy_iam_role:
+    description: 'IAM role to assume'
     required: true
   depth:
     description: 'Maximum recursion depth for crawling links (optional)'
     required: false
+  environment:
+    description: 'The environment used as target (dev, uat, prod)'
+    required: true
+  request_timeout_ms:
+    description: 'Request timeout in milliseconds (optional, default: 10000)'
+    required: false
+  urls:
+    description: 'URLs to parse (comma-separated)'
+    required: true
   valid_domain_variants:
     description: 'JSON array of allowed subdomain tokens (optional, e.g. ["sub1","sub2"])'
     required: false
-  public_parser_request_timeout_ms:
-    description: 'Request timeout in milliseconds (optional, default: 10000)'
-    required: false
-  deploy_iam_role:
-    description: 'IAM role to assume'
+  vector_index_name:
+    description: 'Vector Index Name (CHB_INDEX_ID)'
     required: true
 
 runs:
@@ -84,9 +84,9 @@ runs:
       env:
         CHB_INDEX_ID: ${{ inputs.parser_vector_index_name }}
         DEPTH: ${{ inputs.depth }}
-        VALID_DOMAIN_VARIANTS: ${{ inputs.valid_domain_variants }}
-        PUBLIC_PARSER_REQUEST_TIMEOUT_MS: ${{ inputs.public_parser_request_timeout_ms }}
+        PUBLIC_PARSER_REQUEST_TIMEOUT_MS: ${{ inputs.request_timeout_ms }}
         S3_BUCKET_NAME: devportal-${{ env.ENV_SHORT }}-website-static-content
+        VALID_DOMAIN_VARIANTS: ${{ inputs.valid_domain_variants }}
       working-directory: apps/parser
       shell: bash
       run: |
