@@ -21,7 +21,7 @@ DEVPORTAL_RAG_TOOL_DESCRIPTION = (
 )
 CITTADINO_RAG_TOOL_DESCRIPTION = (
     "Use this tool for all queries related to the end-user (citizen) experience of Italian digital platforms. "
-    "This tool contains comprehensive information on the PagoPA products: SEND (Notifiche Digitali), the App IO, and the PagoPA payment ecosystem from a user's perspective. "
+    "This tool contains comprehensive information on the PagoPA products: 'send', 'app-io', and the 'pagopa-payment' ecosystem from a user's perspective. "
     "Consult this tool for questions about receiving digital notifications, using the App IO interface, paying taxes or fines as a citizen, "
     "troubleshooting payment receipts, and general help center inquiries (FAQ). "
     "DO NOT use this for technical integration or API queries. "
