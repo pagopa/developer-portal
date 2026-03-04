@@ -66,7 +66,7 @@ runs:
       env:
         AWS_DEFAULT_REGION: eu-south-1
         CHB_AWS_GOOGLE_API_KEY: ${{ inputs.chb_aws_google_api_key }}
-        CHB_INDEX_ID: ${{ inputs.parser_vector_index_name }}
+        CHB_INDEX_ID: ${{ inputs.vector_index_name }}
         S3_BUCKET_NAME: devportal-${{ env.ENV_SHORT }}-website-static-content
         SIMILARITY_THRESHOLD: ${{ inputs.similarity_threshold }}
       shell: bash

@@ -82,7 +82,7 @@ runs:
     - name: Run Parser for each URL
       # env vars docs: https://github.com/pagopa/developer-portal/blob/main/apps/parser/README.md#environment-variables
       env:
-        CHB_INDEX_ID: ${{ inputs.parser_vector_index_name }}
+        CHB_INDEX_ID: ${{ inputs.vector_index_name }}
         DEPTH: ${{ inputs.depth }}
         PUBLIC_PARSER_REQUEST_TIMEOUT_MS: ${{ inputs.request_timeout_ms }}
         S3_BUCKET_NAME: devportal-${{ env.ENV_SHORT }}-website-static-content
