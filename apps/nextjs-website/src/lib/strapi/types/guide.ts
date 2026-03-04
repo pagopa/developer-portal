@@ -2,7 +2,7 @@ import { StrapiMedia } from '@/lib/strapi/types/media';
 import { StrapiSeo } from '@/lib/strapi/types/seo';
 import { StrapiBannerLink } from '@/lib/strapi/types/bannerLink';
 import { Paginated } from '@/lib/strapi/types/paginated';
-import { StrapiBaseProductWithRelations } from '@/lib/strapi/types/product';
+import { StrapiBaseProductWithRelations } from '@/lib/product/types';
 
 type StrapiGuideVersion = {
   readonly main: boolean;

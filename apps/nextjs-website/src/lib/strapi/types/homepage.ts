@@ -3,7 +3,7 @@ import { StrapiRelatedLinks } from '@/lib/strapi/types/link';
 import { StrapiMedia } from '@/lib/strapi/types/media';
 import { StrapiLink } from '@/lib/strapi/types/link';
 import { StrapiWebinar } from '@/lib/strapi/types/webinars';
-import { StrapiProduct } from '@/lib/strapi/types/product';
+import { StrapiProduct } from '@/lib/product/types';
 import { StrapiSeo } from '@/lib/strapi/types/seo';
 import { StrapiBaseSolution } from '@/lib/strapi/types/solutions';
 import { StrapiNewsShowcase } from '@/lib/strapi/types/newsShowcase';

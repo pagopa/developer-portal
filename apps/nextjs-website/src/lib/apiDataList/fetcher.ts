@@ -1,6 +1,6 @@
 import qs from 'qs';
 import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
-import { productRelationsPopulate } from '@/lib/strapi/fetches/fetchProducts';
+import { productRelationsPopulate } from '@/lib/product/fetcher';
 import { ApiDataList } from './types';
 
 import { buildEnv } from '@/lib/buildEnv';

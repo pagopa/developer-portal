@@ -1,4 +1,4 @@
-import { Product } from '@/lib/types/product';
+import { Product } from '@/lib/product/types';
 import { MenuDropdownProp } from '@/editorialComponents/Header/components/MenuDropdown';
 import { Theme } from '@/editorialComponents/types/components';
 

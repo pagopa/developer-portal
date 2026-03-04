@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import { Product } from '@/lib/types/product';
+import { Product } from '@/lib/product/types';
 import { Part } from '@/lib/types/part';
 import PartRenderer from '@/components/molecules/PartRenderer/PartRenderer';
 import { useTranslations } from 'next-intl';

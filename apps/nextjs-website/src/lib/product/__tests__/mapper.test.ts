@@ -2,13 +2,13 @@ import {
   makeProductsProps,
   makeProductProps,
   makeBaseProductWithoutLogoProps,
-} from '@/lib/strapi/makeProps/makeProducts';
-import { StrapiProducts } from '@/lib/strapi/types/product';
+} from '@/lib/product/mapper';
+import { StrapiProducts } from '@/lib/product/types';
 import _ from 'lodash';
 import {
   strapiProducts,
   expectedProduct,
-} from '@/lib/strapi/__tests__/fixtures/products';
+} from '@/lib/product/__tests__/fixtures/products';
 import {
   minimalProduct,
   productWithMultipleApiData,
@@ -19,7 +19,7 @@ import {
   productWithMissingAttributes,
   productsWithAnItemWithEmptySlug,
   productsWithAnItemMissingSlug,
-} from '@/lib/strapi/__tests__/factories/products';
+} from '@/lib/product/__tests__/factories/products';
 import { spyOnConsoleError } from '@/lib/strapi/__tests__/spyOnConsole';
 
 describe('makeProductsProps', () => {

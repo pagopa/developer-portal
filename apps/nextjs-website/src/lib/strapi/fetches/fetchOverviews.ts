@@ -1,6 +1,6 @@
 import * as qs from 'qs';
 import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
-import { productRelationsPopulate } from './fetchProducts';
+import { productRelationsPopulate } from '@/lib/product/fetcher';
 import { StrapiOverviews } from '@/lib/strapi/types/overviews';
 
 const makeStrapiOverviewsPopulate = () =>

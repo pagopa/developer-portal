@@ -2,7 +2,7 @@ import ProductLayout, {
   ProductLayoutProps,
 } from '@/components/organisms/ProductLayout/ProductLayout';
 import { getGuidePage } from '@/lib/api';
-import { Product } from '@/lib/types/product';
+import { Product } from '@/lib/product/types';
 import React from 'react';
 import { ParseContentConfig } from 'gitbook-docs/parseContent';
 import { Metadata } from 'next';
