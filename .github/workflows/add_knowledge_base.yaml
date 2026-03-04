@@ -88,3 +88,15 @@ jobs:
           environment: ${{ inputs.environment }}
           urls: ${{ inputs.urls }}
           vector_index_name: ${{ inputs.vector_index_name }}
+
+      - name: Create index
+        if: ${{ inputs.run_vector_index }}
+        uses: ./.github/actions/chatbot
+        with:
+          api: 'false'
+          chatbot_lambda_name: ${{ vars.CHATBOT_LAMBDA_NAME }}
+          clean_redis: 'false'
+          dynamic: 'false'
+          index_id: ${{ inputs.vector_index_name }}
+          static: 'false'
+          structured: 'true'
