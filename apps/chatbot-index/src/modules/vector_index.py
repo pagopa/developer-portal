@@ -27,6 +27,8 @@ from src.modules.documents import (
     get_api_docs,
     get_static_docs,
     get_dynamic_docs,
+    get_structured_docs,
+    EXTRACTOR_FOLDER,
 )
 from src.modules.models import get_llm, get_embed_model
 from src.modules.settings import SETTINGS
@@ -434,6 +436,45 @@ class LlamaVectorIndex:
                 self._delete_docs(index, dynamic_doc_ids_to_remove)
             except Exception as e:
                 LOGGER.error(f"Error deleting Dynamic Documents: {e}")
+
+    def refresh_index_structured_docs(
+        self,
+        index: VectorStoreIndex,
+        website_folder: str | None = None,
+    ) -> None:
+        """
+        Refreshes the vector index by updating and deleting documents as specified.
+
+        Args:
+            index (VectorStoreIndex): The vector store index instance.
+            website_folder (str | None): The folder path in the S3 bucket where the structured documents are stored.
+                                         If None, it will consider all structured documents in the bucket.
+        Returns:
+            None
+        """
+
+        structured_docs_to_update = get_structured_docs(
+            SETTINGS.index_id, SETTINGS.bucket_static_content, website_folder
+        )
+        doc_ids = [doc.id_ for doc in structured_docs_to_update]
+        ref_doc_info = index.storage_context.docstore.get_all_ref_doc_info()
+        ref_doc_ids = list(ref_doc_info.keys())
+
+        structured_doc_ids_to_remove = []
+        for ref_doc_id in ref_doc_ids:
+            if website_folder in ref_doc_id and ref_doc_id not in doc_ids:
+                structured_doc_ids_to_remove.append(ref_doc_id)
+
+        if structured_docs_to_update:
+            try:
+                self._update_docs(index, structured_docs_to_update)
+            except Exception as e:
+                LOGGER.error(f"Error updating Structured Documents: {e}")
+        if structured_doc_ids_to_remove:
+            try:
+                self._delete_docs(index, structured_doc_ids_to_remove)
+            except Exception as e:
+                LOGGER.error(f"Error deleting Structured Documents: {e}")
 
     def remove_docs_in_folder(self, index: VectorStoreIndex, folder_name: str) -> None:
         """
