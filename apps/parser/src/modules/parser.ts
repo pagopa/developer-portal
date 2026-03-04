@@ -1,4 +1,4 @@
-import { Browser, Page } from "puppeteer";
+import { Browser } from "puppeteer";
 import { ParsedNode, ParsedMetadata } from "./types";
 import {
   RemoveAnchorsFromUrl,
@@ -30,7 +30,7 @@ export async function exploreAndParsePages(
   if (!isWithinScope(normalizedUrl, baseScope, parserConfig.VALID_DOMAIN_VARIANTS)) {
     return parsedPages;
   }
-  const metadata = await generatePageParsedMetadata(
+  const { metadata, anchors } = await generatePageParsedMetadata(
     browser,
     node.url,
     baseScope,
@@ -38,55 +38,6 @@ export async function exploreAndParsePages(
   );
   if (!metadata) return parsedPages;
   parsedPages.set(visitKey, metadata);
-  let page;
-  let anchors: string[] = [];
-  try {
-    page = await browser.newPage();
-    await page.goto(node.url, {
-      waitUntil: "networkidle2" as const,
-      timeout: parserConfig.REQUEST_TIMEOUT_MS,
-    });
-    await expandInteractiveSections(page);
-    anchors = (await page.evaluate((allowedToken: string) => {
-      const anchors = Array.from(document.querySelectorAll("a[href]"));
-      const iframeSources = Array.from(
-        document.querySelectorAll("iframe[src]"),
-      );
-      const unique = new Set<string>();
-      for (const anchor of anchors) {
-        const href = (anchor as HTMLAnchorElement).href;
-        if (!href || !href.startsWith("http")) continue;
-        try {
-          const target = new URL(href, window.location.href);
-          const normalizedHref = target.href.toLowerCase();
-          if (allowedToken && !normalizedHref.includes(allowedToken)) continue;
-          if (target.href === window.location.href) continue;
-          unique.add(target.href);
-        } catch (error) {
-          console.warn(`Failed to parse anchor href: ${href}`, error);
-        }
-      }
-      for (const frame of iframeSources) {
-        const src = (frame as HTMLIFrameElement).src;
-        if (!src || !src.startsWith("http")) {
-          continue;
-        }
-        try {
-          const target = new URL(src, window.location.href);
-          const normalizedSrc = target.href.toLowerCase();
-          if (allowedToken && !normalizedSrc.includes(allowedToken)) continue;
-          unique.add(target.href);
-        } catch (error) {
-          console.warn(`Failed to parse iframe src: ${src}`, error);
-        }
-      }
-      return Array.from(unique);
-    }, parserConfig.BASE_HOST_TOKEN)) as string[];
-  } catch (error) {
-    console.warn(`Failed to extract anchors from ${node.url}`, error);
-  } finally {
-    if (page) await page.close();
-  }
   const nextChildren: ParsedNode[] = [];
   let newLinksCount = 0;
   for (const href of anchors) {
@@ -137,10 +88,9 @@ export async function generatePageParsedMetadata(
   url: string,
   baseScope: string,
   parserConfig: { [key: string]: any },
-): Promise<ParsedMetadata | null> {
-  let page: Page | undefined;
+): Promise<{ metadata: ParsedMetadata | null; anchors: string[] }> {
+  const page = await browser.newPage();
   try {
-    page = await browser.newPage();
     const redirect_url = await page.goto(url, {
       waitUntil: "networkidle2" as const,
       timeout: parserConfig.REQUEST_TIMEOUT_MS,
@@ -155,13 +105,51 @@ export async function generatePageParsedMetadata(
     const rawMetadata = await page.evaluate(extractDocumentMetadata);
     const snapshot = serializeMetadata(rawMetadata);
     await persistSnapshot(snapshot, baseScope, parserConfig.OUTPUT_DIRECTORY);
-    return snapshot;
+    let anchors: string[] = [];
+    try {
+      anchors = (await page.evaluate((allowedToken: string) => {
+        const anchors = Array.from(document.querySelectorAll("a[href]"));
+        const iframeSources = Array.from(
+          document.querySelectorAll("iframe[src]"),
+        );
+        const unique = new Set<string>();
+        for (const anchor of anchors) {
+          const href = (anchor as HTMLAnchorElement).href;
+          if (!href || !href.startsWith("http")) continue;
+          try {
+            const target = new URL(href, window.location.href);
+            const normalizedHref = target.href.toLowerCase();
+            if (allowedToken && !normalizedHref.includes(allowedToken)) continue;
+            if (target.href === window.location.href) continue;
+            unique.add(target.href);
+          } catch (error) {
+            console.warn(`Failed to parse anchor href: ${href}`, error);
+          }
+        }
+        for (const frame of iframeSources) {
+          const src = (frame as HTMLIFrameElement).src;
+          if (!src || !src.startsWith("http")) {
+            continue;
+          }
+          try {
+            const target = new URL(src, window.location.href);
+            const normalizedSrc = target.href.toLowerCase();
+            if (allowedToken && !normalizedSrc.includes(allowedToken)) continue;
+            unique.add(target.href);
+          } catch (error) {
+            console.warn(`Failed to parse iframe src: ${src}`, error);
+          }
+        }
+        return Array.from(unique);
+      }, parserConfig.BASE_HOST_TOKEN)) as string[];
+    } catch (error) {
+      console.warn(`Failed to extract anchors from ${url}`, error);
+    }
+    return { metadata: snapshot, anchors: anchors };
   } catch (error) {
     console.error(`Error while parsing ${url}:`, (error as Error).message);
-    return null;
+    return { metadata: null, anchors: [] };
   } finally {
-    if (page) {
-      await page.close();
-    }
+    await page.close();
   }
 }
