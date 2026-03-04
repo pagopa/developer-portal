@@ -70,19 +70,28 @@ async def session_delete(
         "id": id,
     }
     try:
-        response = tables["sessions"].delete_item(
+        tables["sessions"].delete_item(
             Key={
                 "userId": userId,
                 "id": id,
             },
-            ReturnValues="ALL_OLD",
+            ConditionExpression="attribute_exists(userId)",
         )
-        if "Attributes" not in response:
+    except ClientError as e:
+        if e.response["Error"]["Code"] == "ConditionalCheckFailedException":
             raise HTTPException(
                 status_code=404,
                 detail=f"Session {id} not found for userId: {userId}",
             )
+        raise HTTPException(
+            status_code=422, detail=f"[sessions_delete] userId: {userId}, error: {e}"
+        )
+    except BotoCoreError as e:
+        raise HTTPException(
+            status_code=422, detail=f"[sessions_delete] userId: {userId}, error: {e}"
+        )
 
+    try:
         dbResponse_queries = tables["queries"].query(
             KeyConditionExpression=Key("sessionId").eq(id)
         )
@@ -90,7 +99,6 @@ async def session_delete(
         # with tables["sessions"].batch_writer() as batch:
         for query in dbResponse_queries["Items"]:
             tables["queries"].delete_item(Key={"id": query["id"], "sessionId": id})
-
     except (BotoCoreError, ClientError) as e:
         raise HTTPException(
             status_code=422, detail=f"[sessions_delete] userId: {userId}, error: {e}"
