@@ -75,6 +75,9 @@ class ExtractorSettings(BaseSettings):
         default=os.getenv("CHB_AWS_GOOGLE_API_KEY"),
     )
 
+    # Cosine similarity threshold for validating LLM output against source content
+    similarity_threshold: float = float(os.getenv("SIMILARITY_THRESHOLD", "0.8"))
+
     # LLM Model Configuration
     model_id: str = os.getenv("CHB_MODEL_ID", "gemini-2.5-flash-lite")
     temperature: float = float(os.getenv("CHB_MODEL_TEMPERATURE", "0.0"))

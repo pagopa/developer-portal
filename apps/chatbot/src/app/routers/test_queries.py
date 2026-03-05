@@ -11,6 +11,7 @@ client = TestClient(app)
 query_payload = {
     "question": "come ti chiami?",
     "queriedAt": "2024-11-11",
+    "knowledge_base": "devportal",
 }
 
 query_payload_history = {

@@ -2,14 +2,18 @@ import datetime
 import nh3
 import json
 import secrets
-from typing import Dict, Any
+
 from botocore.exceptions import BotoCoreError, ClientError
 from boto3.dynamodb.conditions import Key
 from fastapi import APIRouter, Header, HTTPException
-from typing import List, Annotated
+from typing import Annotated
 
+<<<<<<< HEAD
 from src.app.sqs_init import sqs_queue_monitor
 from src.app.models import Query, QueryFromThePast, tables
+=======
+from src.app.models import Query, tables
+>>>>>>> main
 from src.app.sessions import (
     current_user_id,
     find_or_create_session,
@@ -17,6 +21,13 @@ from src.app.sessions import (
     hash_func,
     last_session_id,
     get_user_session,
+)
+from src.app.query_utilities import (
+    get_final_response,
+    can_evaluate,
+    prepare_body_to_return,
+    prepare_body_to_save,
+    create_monitor_trace,
 )
 from src.app.chatbot_init import chatbot
 
@@ -28,6 +39,7 @@ LOGGER = get_logger(__name__, level=SETTINGS.log_level)
 router = APIRouter()
 
 
+<<<<<<< HEAD
 def can_evaluate() -> bool:
     """
     Decide whether to evaluate the query or not.
@@ -188,6 +200,8 @@ def create_monitor_trace(trace_data: dict, should_evaluate: bool) -> None:
         )
 
 
+=======
+>>>>>>> main
 @router.post("/queries")
 async def query_creation(
     query: Query,
@@ -206,16 +220,18 @@ async def query_creation(
     answer_json = await chatbot.chat_generate(
         query_str=query_str,
         messages=messages,
+        knowledge_base=query.knowledge_base,
     )
     answer = get_final_response(
-        response_str=answer_json["response"],
-        references=answer_json["references"],
+        response_str=answer_json.get("response", ""),
+        references=answer_json.get("references", []),
     )
 
     bodyToReturn = prepare_body_to_return(
         query=query,
         session=session,
         answer=answer,
+        answer_json=answer_json,
         trace_id=trace_id,
         now=now,
     )
@@ -223,6 +239,7 @@ async def query_creation(
     bodyToSave = prepare_body_to_save(
         bodyToReturn=bodyToReturn,
         query=query,
+        answer=answer,
         answer_json=answer_json,
         now=now,
     )
