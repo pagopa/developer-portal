@@ -75,7 +75,7 @@ const SignUpForm = ({
   );
 
   const validateForm = useCallback(() => {
-    const { username, confirmPassword, firstName, lastName, password } =
+    const { username, confirmPassword, firstName, lastName, password, role } =
       userData;
 
     const nameError = validateName(firstName);
@@ -83,6 +83,7 @@ const SignUpForm = ({
     const emailError = validateEmail(username);
     const passwordError = validatePassword(password);
     const confirmPasswordError = password !== confirmPassword;
+    const roleError = validateName(role);
 
     // eslint-disable-next-line functional/no-let
     let errors = {};
@@ -110,6 +111,13 @@ const SignUpForm = ({
       };
     }
 
+    if (roleError) {
+      errors = {
+        ...errors,
+        role: t(`shared.${roleError}`),
+      };
+    }
+
     setFieldErrors(errors);
 
     return (
@@ -117,7 +125,8 @@ const SignUpForm = ({
       !surnameError &&
       !emailError &&
       !passwordError &&
-      !confirmPasswordError
+      !confirmPasswordError &&
+      !roleError
     );
   }, [userData, t]);
 
