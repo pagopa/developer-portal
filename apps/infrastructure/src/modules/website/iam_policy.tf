@@ -64,7 +64,7 @@ resource "aws_iam_policy" "deploy_website" {
         Effect = "Allow"
         Resource = [
           "arn:aws:lambda:${var.aws_region}:${data.aws_caller_identity.current.account_id}:function:ac-${var.environment}-*",
-          "arn:aws:lambda:${var.aws_region}:${data.aws_caller_identity.current.account_id}:function:cognito-*",
+          "arn:aws:lambda:${var.aws_region}:${data.aws_caller_identity.current.account_id}:function:cognito_*",
         ]
       },
       {
