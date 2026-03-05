@@ -1,0 +1,47 @@
+---
+name: refresh-structured-docs-vector-index
+description: Refresh Structured Docs for Chatbot LLamaindex Vector Index
+
+inputs:
+  aws_region:
+    description: 'The AWS region selected'
+    required: false
+    default: 'eu-south-1'
+  chatbot_lambda_name:
+    description: the name of the chatbot lambda function
+    required: true
+    default: ''
+  urls_to_update:
+    description: 'List of URLs to Update (comma-separated)'
+    required: true
+  urls_to_remove:
+    description: 'List of URLs to Remove (comma-separated)'
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Setup Python
+      uses: kishaningithub/setup-python-amazon-linux@282d998c8f2c4678ac4f872e4dc3b7d167b59fa7  # v1
+      with:
+        python-version: '3.12'
+
+    - name: Install poetry with pip
+      shell: bash
+      run: |
+        pip install poetry
+
+    - name: Install python libraries
+      shell: bash
+      run: |
+        cd apps/chatbot-index
+        poetry config virtualenvs.create false
+        poetry install --only main --no-interaction
+
+    - name: Refresh API Docs in Vector Index
+      shell: bash
+      run: |
+        cd apps/chatbot-index
+        RAW_URLS_TO_UPDATE="${{ github.event.inputs.urls_to_update }}"
+        RAW_URLS_TO_REMOVE="${{ github.event.inputs.urls_to_remove }}"
+        PYTHONPATH=. poetry run python src/modules/refresh_api_docs.py --update-url-list $(echo $RAW_URLS_TO_UPDATE | tr ',' ' ') --remove-url-list $(echo $RAW_URLS_TO_REMOVE | tr ',' ' ')
