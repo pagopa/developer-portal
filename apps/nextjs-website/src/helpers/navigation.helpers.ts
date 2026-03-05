@@ -22,7 +22,7 @@ export function canRedirectToUrl(path: string): boolean {
     }
 
     // Allow exact root path
-    if (path === '/') return true;
+    if (normalizedPath === '/') return true;
 
     // Allow paths that start with a supported locale exactly (e.g., /en/...)
     return SUPPORTED_LOCALES.some(
