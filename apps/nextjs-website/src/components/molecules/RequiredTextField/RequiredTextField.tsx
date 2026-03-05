@@ -20,12 +20,20 @@ const RequiredTextField: FC<RequiredTextFieldProps> = ({
   helperText,
   customValidators,
   type = 'text',
+  error,
   ...rest
 }) => {
   const [isDirty, setIsDirty] = useState(false);
   const [isValid, setIsValid] = useState(false);
   const [errorText, setErrorText] = useState(helperText);
+  console.log('Helper text', helperText, 'Error text', errorText);
   const { palette } = useTheme();
+
+  useEffect(() => {
+    if (helperText) {
+      setErrorText(helperText);
+    }
+  }, [helperText]);
 
   const validateField = useCallback(() => {
     if (!value || value?.trim().length === 0) {
@@ -66,8 +74,8 @@ const RequiredTextField: FC<RequiredTextFieldProps> = ({
         backgroundColor: palette.background.paper,
         width: '100%',
       }}
-      error={isDirty && !isValid}
-      helperText={isDirty && !isValid && errorText}
+      error={isDirty && (!isValid || error)}
+      helperText={isDirty && (!isValid || error) && errorText}
       {...rest}
     />
   );
