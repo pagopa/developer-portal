@@ -22,6 +22,7 @@ async def generate_questions(
         f"Given the following context retrieved from the cittadino documentation:\n{rag_output_cittadino}\n\n"
         "Generate a list of questions from the user's perspective (e.g., 'how do I ...', 'how can I ...') "
         "that help them get more detailed information based on the provided context.\n"
+        "The questions should be specific and relevant to the information retrieved from both sources, and should help the user explore topics related to the information already retrieved.\n"
         "Answer: [your answer here (in the same language as the user query)]"
     )
 
