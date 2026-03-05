@@ -8,9 +8,20 @@ from hypercorn.asyncio import serve
 from starlette.middleware.cors import CORSMiddleware
 
 from src.app.routers import queries, sessions
-from src.modules.settings import SETTINGS
+from src.modules import SETTINGS
 
-logging.basicConfig(level=logging.INFO)
+LOG_LEVEL_MAP = {
+    "debug": logging.DEBUG,
+    "info": logging.INFO,
+    "warning": logging.WARNING,
+    "error": logging.ERROR,
+    "critical": logging.CRITICAL,
+}
+
+logging.basicConfig(
+    level=LOG_LEVEL_MAP.get(SETTINGS.log_level, logging.INFO),
+    format="%(levelname)s [%(name)s] [%(funcName)s]: %(message)s",
+)
 
 
 app = FastAPI()

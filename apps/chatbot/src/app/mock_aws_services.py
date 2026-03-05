@@ -1,15 +1,15 @@
-from src.modules.logger import get_logger
-from src.modules.settings import SETTINGS, AWS_SESSION
+import logging
 
-LOGGER = get_logger(__name__, level=SETTINGS.log_level)
+from src.modules import SETTINGS, AWS_SESSION
+
+LOGGER = logging.getLogger(__name__)
 
 COGNITO_USERNAME = "test_user"
 COGNITO_PASSWORD = "TestPassword123!"
 
 
 client_cognito = AWS_SESSION.client(
-    "cognito-idp",
-    region_name=SETTINGS.aws_cognito_region
+    "cognito-idp", region_name=SETTINGS.aws_cognito_region
 )
 
 

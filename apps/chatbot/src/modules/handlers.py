@@ -40,11 +40,12 @@ except ImportError:
         "Please install llama-index to use the Langfuse llama-index integration: 'pip install llama-index'"
     )
 
+import logging
+
 from src.modules.settings import SETTINGS
-from src.modules.logger import get_logger
 
 
-LOGGER = get_logger(__name__, level=SETTINGS.log_level)
+LOGGER = logging.getLogger(__name__)
 MODEL_ID = os.getenv("CHB_MODEL_ID")
 EMBED_MODEL_ID = os.getenv("CHB_EMBED_MODEL_ID")
 RERANKER_ID = os.getenv("CHB_RERANKER_ID")

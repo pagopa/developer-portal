@@ -4,11 +4,12 @@ from google.genai import types
 from llama_index.core.llms.llm import LLM
 from llama_index.core.base.embeddings.base import BaseEmbedding
 
-from src.modules.logger import get_logger
+import logging
+
 from src.modules.settings import SETTINGS
 
 
-LOGGER = get_logger(__name__, level=SETTINGS.log_level)
+LOGGER = logging.getLogger(__name__)
 
 
 def get_llm(

@@ -3,34 +3,36 @@ import nh3
 import json
 import secrets
 
-from botocore.exceptions import BotoCoreError, ClientError
-from boto3.dynamodb.conditions import Key
 from fastapi import APIRouter, Header, HTTPException
 from typing import Annotated
 
-from src.app.models import Query, tables
+from src.app.schemas import Query
+from src.app.database import tables, Key, BotoCoreError, ClientError
+from src.app.auth import current_user_id
 from src.app.sessions import (
-    current_user_id,
     find_or_create_session,
     session_salt,
     hash_func,
     last_session_id,
     get_user_session,
 )
-from src.app.query_utilities import (
+from src.app.response_builder import (
     get_final_response,
-    can_evaluate,
     prepare_body_to_return,
     prepare_body_to_save,
+)
+from src.app.monitoring import (
+    can_evaluate,
     create_monitor_trace,
 )
-from src.app.chatbot_init import chatbot
+from src.app import chatbot
 
-from src.modules.logger import get_logger
-from src.modules.settings import SETTINGS
+import logging
+
+from src.modules import SETTINGS
 from src.modules.codec import compress_payload
 
-LOGGER = get_logger(__name__, level=SETTINGS.log_level)
+LOGGER = logging.getLogger(__name__)
 router = APIRouter()
 
 

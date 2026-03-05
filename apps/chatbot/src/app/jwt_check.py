@@ -2,11 +2,12 @@ import requests
 from jose import jwk, jwt
 from jose import exceptions as jwt_exceptions
 from jose.utils import base64url_decode
-from fastapi import HTTPException
-from src.modules.logger import get_logger
-from src.modules.settings import SETTINGS
+import logging
 
-LOGGER = get_logger(__name__, level=SETTINGS.log_level)
+from fastapi import HTTPException
+from src.modules import SETTINGS
+
+LOGGER = logging.getLogger(__name__)
 
 
 def get_jwks():

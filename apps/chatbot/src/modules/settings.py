@@ -1,4 +1,5 @@
 import boto3
+import logging
 import os
 import re
 import json
@@ -6,9 +7,7 @@ import yaml
 from pathlib import Path
 from pydantic_settings import BaseSettings
 
-from src.modules.logger import get_logger
-
-LOGGER = get_logger(__name__, level=os.getenv("LOG_LEVEL", "info"))
+LOGGER = logging.getLogger(__name__)
 CWF = Path(__file__)
 ROOT = CWF.parent.parent.parent.absolute().__str__()
 PARAMS = yaml.safe_load(open(os.path.join(ROOT, "config", "params.yaml"), "r"))

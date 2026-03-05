@@ -22,7 +22,8 @@ from openinference.instrumentation.llama_index import LlamaIndexInstrumentor
 from opentelemetry.sdk.trace import TracerProvider
 from opentelemetry.sdk.trace.export import SimpleSpanProcessor
 
-from src.modules.logger import get_logger
+import logging
+
 from src.modules.telemetry import DictSpanExporter
 from src.modules.vector_index import load_index_redis
 from src.modules.models import get_llm, get_embed_model
@@ -36,7 +37,7 @@ from src.modules.agents import get_discovery_agent
 from src.modules.settings import SETTINGS
 
 
-LOGGER = get_logger(__name__, level=SETTINGS.log_level)
+LOGGER = logging.getLogger(__name__)
 RESPONSE_TYPE = Union[
     Response,
     StreamingResponse,

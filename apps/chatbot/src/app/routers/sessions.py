@@ -1,18 +1,19 @@
-from botocore.exceptions import BotoCoreError, ClientError
-from boto3.dynamodb.conditions import Key
 from decimal import Decimal
 from fastapi import APIRouter, Header, HTTPException
 from typing import Annotated
 
-from src.app.models import QueryFeedback, tables
-from src.app.sessions import current_user_id, add_langfuse_score_query
+from src.app.schemas import QueryFeedback
+from src.app.database import tables, Key, BotoCoreError, ClientError
+from src.app.auth import current_user_id
+from src.app.scoring import add_langfuse_score_query
 
-from src.modules.logger import get_logger
-from src.modules.settings import SETTINGS
+import logging
+
+from src.modules import SETTINGS
 
 router = APIRouter()
 
-LOGGER = get_logger(__name__, level=SETTINGS.log_level)
+LOGGER = logging.getLogger(__name__)
 
 
 # retrieve sessions of current user

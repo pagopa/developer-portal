@@ -1,38 +1,14 @@
 import datetime
 import hashlib
 import uuid
-import json
+import logging
 
-from boto3.dynamodb.conditions import Key
-from botocore.exceptions import BotoCoreError, ClientError
 from fastapi import HTTPException
 
-from src.modules.logger import get_logger
-from src.modules.settings import SETTINGS
-from src.modules.codec import compress_payload
-from src.app.sqs_init import sqs_queue_monitor
-from src.app.models import QueryFeedback, tables
-from src.app.jwt_check import verify_jwt
+from src.modules import SETTINGS
+from src.app.database import tables, Key, BotoCoreError, ClientError
 
-
-LOGGER = get_logger(__name__, level=SETTINGS.log_level)
-
-
-def current_user_id(authorization: str | None = None) -> str:
-    if authorization is None:
-        LOGGER.error("[current_user_id] Authorization header is missing, exit with 401")
-        raise HTTPException(status_code=401, detail="Unauthorized")
-    else:
-        token = authorization.split(" ")[1]
-        decoded = verify_jwt(token)
-        if decoded is False:
-            LOGGER.error("[current_user_id] decoded is false, exit with 401")
-            raise HTTPException(status_code=401, detail="Unauthorized")
-        else:
-            if "cognito:username" in decoded:
-                return decoded["cognito:username"]
-            else:
-                return decoded["username"]
+LOGGER = logging.getLogger(__name__)
 
 
 def find_or_create_session(userId: str, now: datetime.datetime) -> dict | None:
@@ -132,77 +108,3 @@ def get_user_session(userId: str, sessionId: str) -> dict | None:
     dbResponse = tables["sessions"].get_item(Key={"userId": userId, "id": sessionId})
     item = dbResponse.get("Item")
     return item if item else None
-
-
-def add_langfuse_score_query(
-    query_id: str, query_feedback: QueryFeedback, query_for_database: dict
-) -> None:
-
-    if query_feedback.badAnswer is not None:
-        bad_answer = -1 if query_feedback.badAnswer else 0
-        comment = (
-            query_feedback.feedback.user_comment if query_feedback.feedback else None
-        )
-        payload = {
-            "operation": "add_scores",
-            "data": compress_payload(
-                {
-                    "trace_id": query_id,
-                    "name": "user-feedback",
-                    "score": bad_answer,
-                    "comment": comment,
-                    "data_type": "NUMERIC",
-                    "query_for_database": query_for_database,
-                }
-            ),
-        }
-        sqs_queue_monitor.send_message(
-            MessageBody=json.dumps(payload),
-            MessageGroupId=query_id,
-        )
-
-    if (
-        query_feedback.feedback
-        and query_feedback.feedback.user_response_relevancy is not None
-    ):
-
-        payload = {
-            "operation": "add_scores",
-            "data": compress_payload(
-                {
-                    "trace_id": query_id,
-                    "name": "user-response-relevancy",
-                    "score": float(query_feedback.feedback.user_response_relevancy),
-                    "comment": None,
-                    "data_type": "NUMERIC",
-                    "query_for_database": query_for_database,
-                }
-            ),
-        }
-        sqs_queue_monitor.send_message(
-            MessageBody=json.dumps(payload),
-            MessageGroupId=query_id,
-        )
-
-    if (
-        query_feedback.feedback
-        and query_feedback.feedback.user_faithfullness is not None
-    ):
-
-        payload = {
-            "operation": "add_scores",
-            "data": compress_payload(
-                {
-                    "trace_id": query_id,
-                    "name": "user-faithfullness",
-                    "score": float(query_feedback.feedback.user_faithfullness),
-                    "comment": None,
-                    "data_type": "NUMERIC",
-                    "query_for_database": query_for_database,
-                }
-            ),
-        }
-        sqs_queue_monitor.send_message(
-            MessageBody=json.dumps(payload),
-            MessageGroupId=query_id,
-        )

@@ -3,10 +3,10 @@ import gzip
 import base64
 from typing import Any, Dict
 
-from src.modules.logger import get_logger
+import logging
 
 
-LOGGER = get_logger(__name__)
+LOGGER = logging.getLogger(__name__)
 
 
 def safe_json_load(value):

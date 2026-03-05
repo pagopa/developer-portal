@@ -13,12 +13,13 @@ from redis import Redis
 import redis.asyncio as aredis
 from redisvl.schema import IndexSchema
 
-from src.modules.logger import get_logger
+import logging
+
 from src.modules.settings import SETTINGS
 from src.modules.models import get_llm, get_embed_model
 
 
-LOGGER = get_logger(__name__, level=SETTINGS.log_level)
+LOGGER = logging.getLogger(__name__)
 REDIS_CLIENT = Redis.from_url(SETTINGS.redis_url, socket_timeout=10)
 REDIS_ASYNC_CLIENT = aredis.Redis.from_pool(
     aredis.ConnectionPool.from_url(SETTINGS.redis_url)

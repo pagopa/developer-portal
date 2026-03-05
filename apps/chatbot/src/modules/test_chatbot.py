@@ -1,15 +1,15 @@
+import logging
 import os
 import boto3
 from llama_index.core.async_utils import asyncio_run
 
-from src.modules.logger import get_logger
 from src.modules.settings import SETTINGS
 from src.modules.vector_index import REDIS_CLIENT
 from src.modules.models import get_llm, get_embed_model
 from src.modules.chatbot import Chatbot, LANGFUSE_CLIENT
 
 
-LOGGER = get_logger(__name__, level=SETTINGS.log_level)
+LOGGER = logging.getLogger(__name__)
 CHATBOT = Chatbot()
 
 

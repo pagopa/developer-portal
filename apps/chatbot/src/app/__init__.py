@@ -1,10 +1,17 @@
+import logging
+
 from botocore.exceptions import ClientError
 
-from src.modules.logger import get_logger
 from src.modules.settings import AWS_SESSION, SETTINGS
+from src.modules.chatbot import Chatbot
 
-LOGGER = get_logger(__name__, level=SETTINGS.log_level)
+LOGGER = logging.getLogger(__name__)
 
+# Chatbot singleton (moved from chatbot_init.py)
+LOGGER.info("Initializing chatbot...")
+chatbot = Chatbot()
+
+# SQS queue (moved from sqs_init.py)
 sqs_queue_monitor = None
 
 try:

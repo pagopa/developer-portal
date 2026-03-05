@@ -1,7 +1,6 @@
 from decimal import Decimal
 from pydantic import BaseModel, Field
 from typing import List
-from src.modules.settings import AWS_SESSION, SETTINGS
 
 
 class QueryFromThePast(BaseModel):
@@ -44,12 +43,3 @@ class QueryResponse(BaseModel):
     queriedAt: str
     badAnswer: bool = False
     chips: List[Chip] = Field(default_factory=list)
-
-
-dynamodb = AWS_SESSION.resource("dynamodb")
-
-tables = {
-    "queries": dynamodb.Table(f"{SETTINGS.query_table_prefix}-queries"),
-    "sessions": dynamodb.Table(f"{SETTINGS.query_table_prefix}-sessions"),
-    "salts": dynamodb.Table(f"{SETTINGS.query_table_prefix}-salts"),
-}
