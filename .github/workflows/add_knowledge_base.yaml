@@ -44,7 +44,7 @@ on:
         type: boolean
         default: true
       run_vector_index:
-        description: 'Whether to update the vector index (optional, default: true)'
+        description: 'Whether to create the vector index (optional, default: true)'
         required: false
         type: boolean
         default: true
@@ -58,14 +58,18 @@ permissions:
   contents: read
 
 jobs:
-  run-parser:
+  manage-structured-data:
     name: Add knowledge base (manual on ${{ inputs.environment }})
-    runs-on: ubuntu-24.04
+    runs-on: codebuild-${{ inputs.environment }}-github-runner-${{ github.run_id }}-${{ github.run_attempt }}
     environment: ${{ inputs.environment }}
-    
+
+    concurrency:
+      group: ${{ github.workflow }}-${{ inputs.environment }}
+      cancel-in-progress: false
+
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
       
       - name: Run Parser for each URL
         if: ${{ inputs.run_parser }}
@@ -90,8 +94,28 @@ jobs:
           urls: ${{ inputs.urls }}
           vector_index_name: ${{ inputs.vector_index_name }}
 
+  manage-index:
+    name: Manage knowledge base index (manual on ${{ inputs.environment }})
+    runs-on: codebuild-${{ inputs.environment }}-github-runner-${{ github.run_id }}-${{ github.run_attempt }}
+    environment: ${{ inputs.environment }}
+    needs: manage-structured-data
+    if: ${{ inputs.run_vector_index }}
+
+    concurrency:
+      group: ${{ github.workflow }}-${{ inputs.environment }}
+      cancel-in-progress: false
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502
+        with:
+          role-to-assume: ${{ secrets.IAM_ROLE_CHATBOT_REINDEX }}
+          aws-region: eu-south-1
+
       - name: Create index
-        if: ${{ inputs.run_vector_index }}
         uses: ./.github/actions/chatbot
         with:
           api: 'false'
