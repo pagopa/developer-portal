@@ -26,7 +26,7 @@ export function canRedirectToUrl(path: string): boolean {
       return false;
     }
 
-    // Allow exact root path, but only without query or hash to preserve behavior
+    // Allow exact root path, but only without query or hash
     if (canonicalPath === '/' && !hasSearchOrHash) return true;
 
     // Allow paths that start with a supported locale exactly (e.g., /en/...)
