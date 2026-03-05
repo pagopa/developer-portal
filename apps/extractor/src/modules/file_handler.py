@@ -11,14 +11,14 @@ from src.modules.settings import SETTINGS
 LOGGER = get_logger(__name__, level=SETTINGS.log_level)
 
 
-def load_json_files(input_folder: str) -> List[Tuple[str, InputDocument]]:
+def load_json_files(input_folder: str) -> Tuple[List[Tuple[str, InputDocument]], int]:
     """Load JSON files from a local directory and parse them into InputDocument instances.
 
     Args:
         input_folder: Path to the directory containing JSON files
 
     Returns:
-        List of tuples containing (filename, InputDocument)
+        Tuple containing a list of tuples (filename, InputDocument) and the number of skipped files
     """
     input_path = Path(input_folder)
     if not input_path.exists():
@@ -26,6 +26,7 @@ def load_json_files(input_folder: str) -> List[Tuple[str, InputDocument]]:
     if not input_path.is_dir():
         raise NotADirectoryError(f"Path is not a directory: {input_folder}")
     documents: List[Tuple[str, InputDocument]] = []
+    skipped = 0
     json_files = list(input_path.glob("*.json"))
     LOGGER.info(f"Found {len(json_files)} JSON files in {input_folder}")
     for json_file in json_files:
@@ -35,8 +36,10 @@ def load_json_files(input_folder: str) -> List[Tuple[str, InputDocument]]:
             doc = InputDocument(**data)
             if not doc.bodyText or doc.bodyText.strip() == "":
                 LOGGER.warning(
-                    f"File '{json_file.name}' has empty bodyText. Will process with title and metadata only."
+                    f"File of url '{doc.url}' has empty bodyText. Will skip it."
                 )
+                skipped += 1
+                continue
             documents.append((json_file.name, doc))
             LOGGER.debug(f"Loaded: {json_file.name}")
         except ValidationError as e:
@@ -48,7 +51,7 @@ def load_json_files(input_folder: str) -> List[Tuple[str, InputDocument]]:
         except Exception as e:
             LOGGER.error(f"Unexpected error loading {json_file.name}: {e}")
     LOGGER.info(f"Successfully loaded {len(documents)} documents")
-    return documents
+    return documents, skipped
 
 
 def save_cleaned_document(
