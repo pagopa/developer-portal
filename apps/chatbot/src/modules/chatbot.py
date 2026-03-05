@@ -146,6 +146,11 @@ class Chatbot:
                     references_list.append(f"[{ref['title']}]({ref['url']})")
 
             retrieved_contexts = []
+
+            LOGGER.info(
+                f">>>>>> Num of called tools: {len(engine_response.tool_calls)}"
+            )
+
             for tool_call in engine_response.tool_calls:
 
                 raw_output = tool_call.tool_output.raw_output
@@ -158,12 +163,18 @@ class Chatbot:
                         ]
                     )
 
+            chips = (
+                engine_response.structured_response["follow_up_questions"]
+                if len(engine_response.tool_calls) == 3
+                else []
+            )
+
             response_json = {
                 "response": engine_response.structured_response["response"],
                 "products": engine_response.structured_response["products"],
                 "references": references_list,
                 "contexts": retrieved_contexts,
-                "chips": engine_response.structured_response["follow_up_questions"],
+                "chips": chips,
                 "spans": EXPORTER.spans,
             }
 
@@ -253,5 +264,7 @@ class Chatbot:
 
         response_json["products"].append(f"chatbot@{SETTINGS.chatbot_release}")
         EXPORTER.spans = []
+
+        LOGGER.info(f">>>>>> Chips: {response_json['chips']}")
 
         return response_json
