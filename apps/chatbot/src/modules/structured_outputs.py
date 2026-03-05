@@ -31,7 +31,9 @@ class FollowUpQuestion(BaseModel):
 class RAGOutput(BaseModel):
     """A structured output for a RAG query."""
 
-    response: str = Field(..., description="The generated answer to the user's query.")
+    response: str = Field(
+        ..., description="The generated answer to the user's query in Markdown format."
+    )
     products: List[str] = Field(
         ...,
         description=(
@@ -58,7 +60,9 @@ class FollowUpQuestionsOutput(BaseModel):
 class DiscoveryOutput(BaseModel):
     """A structured output for a RAG query."""
 
-    response: str = Field(..., description="The generated answer to the user's query.")
+    response: str = Field(
+        ..., description="The generated answer to the user's query in Markdown format."
+    )
     products: List[str] = Field(
         default=[],
         description=(
