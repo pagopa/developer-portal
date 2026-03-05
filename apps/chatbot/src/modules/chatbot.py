@@ -147,10 +147,6 @@ class Chatbot:
 
             retrieved_contexts = []
 
-            LOGGER.info(
-                f">>>>>> Num of called tools: {len(engine_response.tool_calls)}"
-            )
-
             for tool_call in engine_response.tool_calls:
 
                 raw_output = tool_call.tool_output.raw_output
@@ -264,7 +260,5 @@ class Chatbot:
 
         response_json["products"].append(f"chatbot@{SETTINGS.chatbot_release}")
         EXPORTER.spans = []
-
-        LOGGER.info(f">>>>>> Chips: {response_json['chips']}")
 
         return response_json
