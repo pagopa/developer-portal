@@ -3,21 +3,15 @@ import { NextRequest, NextResponse } from 'next/server';
 import { amplifyConfig, defaultLocale } from '@/config';
 import { SUPPORTED_LOCALES } from '@/locales';
 
-const guestPaths = [
-  '/auth/login',
-  '/auth/sign-up',
-  '/auth/password-reset',
-  '/auth/expired-code',
-  '/auth/account-activated',
-  '/auth/change-password',
-];
+const guestPath = '/auth/';
 
 // This middleware redirects URLs without locale prefixes to include the default locale,
 // maintaining backwards compatibility with legacy indexed URLs and CMS' resources URLs
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
+  const defaultLangCode = defaultLocale.split('-')[0];
 
-  if (guestPaths.some((path) => pathname.includes(path))) {
+  if (pathname.includes(guestPath)) {
     const clientId = amplifyConfig.Auth.userPoolWebClientId;
     const lastAuthUserCookie = request.cookies.get(
       `CognitoIdentityServiceProvider.${clientId}.LastAuthUser`
@@ -27,7 +21,9 @@ export function middleware(request: NextRequest) {
       const locale = SUPPORTED_LOCALES.find((loc) =>
         request.url.includes(`/${loc.langCode}/`)
       )?.langCode;
-      return NextResponse.redirect(new URL(`/${locale ?? ''}`, request.url));
+      return NextResponse.redirect(
+        new URL(`/${locale ?? `/${defaultLangCode}`}`, request.url)
+      );
     }
   }
 
@@ -39,7 +35,6 @@ export function middleware(request: NextRequest) {
 
   if (pathnameHasLocale) return;
 
-  const defaultLangCode = defaultLocale.split('-')[0];
   console.info(
     `Rewriting path ${pathname} to include default locale '${defaultLangCode}'`
   );
