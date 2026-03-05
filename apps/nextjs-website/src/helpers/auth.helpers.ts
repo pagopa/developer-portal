@@ -5,8 +5,18 @@ export const passwordMatcher =
 
 export const emailMatcher = /^[a-z0-9-._+]+@([a-z0-9-]+\.)+[a-z]{2,4}$/;
 
-export const validateField = (value: string): string | null =>
-  !value || value.trim().length === 0 ? 'requiredFieldError' : null;
+export const validateField = (value: string): string | null => {
+  const trimmedValue = value.trim();
+  if (trimmedValue.length === 0) {
+    return 'requiredFieldError';
+  }
+
+  if (trimmedValue.length > 100) {
+    return 'maxLengthFieldError';
+  }
+
+  return null;
+};
 
 export const validateName = (value: string): string | null => {
   const isNotValid = validateField(value);

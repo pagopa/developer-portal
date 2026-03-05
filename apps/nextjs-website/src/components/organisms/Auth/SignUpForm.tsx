@@ -1,7 +1,6 @@
 'use client';
 import {
   validateEmail,
-  validateField,
   validateName,
   validatePassword,
 } from '@/helpers/auth.helpers';
@@ -82,7 +81,6 @@ const SignUpForm = ({
     const nameError = validateName(firstName);
     const surnameError = validateName(lastName);
     const emailError = validateEmail(username);
-    const emailEmptyError = validateField(username);
     const passwordError = validatePassword(password);
     const confirmPasswordError = password !== confirmPassword;
 
@@ -90,17 +88,15 @@ const SignUpForm = ({
     let errors = {};
 
     if (nameError) {
-      errors = { ...errors, name: t('shared.nameFieldError') };
+      errors = { ...errors, name: t(`shared.${nameError}`) };
     }
 
     if (surnameError) {
-      errors = { ...errors, surname: t('shared.surnameFieldError') };
+      errors = { ...errors, surname: t(`shared.${surnameError}`) };
     }
 
-    if (emailEmptyError) {
-      errors = { ...errors, email: t('shared.requiredFieldError') };
-    } else if (emailError) {
-      errors = { ...errors, email: t('shared.' + emailError) };
+    if (emailError) {
+      errors = { ...errors, email: t(`shared.${emailError}`) };
     }
 
     if (passwordError) {
