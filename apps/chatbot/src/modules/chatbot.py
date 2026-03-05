@@ -29,6 +29,9 @@ from src.modules.models import get_llm, get_embed_model
 from src.modules.tools import (
     get_query_engine_tool,
     follow_up_questions_tool,
+    DEVPORTAL_TOOL_NAME,
+    CITTADINO_TOOL_NAME,
+    CHIPS_TOOL_NAME,
     DEVPORTAL_RAG_TOOL_DESCRIPTION,
     CITTADINO_RAG_TOOL_DESCRIPTION,
 )
@@ -71,7 +74,7 @@ class Chatbot:
             tools.append(
                 get_query_engine_tool(
                     index=devportal_index,
-                    name="DevPortalRAGTool",
+                    name=DEVPORTAL_TOOL_NAME,
                     description=DEVPORTAL_RAG_TOOL_DESCRIPTION,
                     text_qa_template=self.qa_prompt_tmpl,
                     refine_template=self.ref_prompt_tmpl,
@@ -83,20 +86,16 @@ class Chatbot:
 
         try:
             cittadino_index = load_index_redis(index_id=SETTINGS.cittadino_index_id)
-            tools.append(
+            tools += [
                 get_query_engine_tool(
                     index=cittadino_index,
-                    name="CittadinoRAGTool",
+                    name=CITTADINO_TOOL_NAME,
                     description=CITTADINO_RAG_TOOL_DESCRIPTION,
                     text_qa_template=self.qa_prompt_tmpl,
                     refine_template=self.ref_prompt_tmpl,
-                )
-            )
-            tools.append(
-                follow_up_questions_tool(
-                    name="FollowUpQuestionsTool",
                 ),
-            )
+                follow_up_questions_tool(name=CHIPS_TOOL_NAME),
+            ]
         except Exception as e:
             LOGGER.error(f"Failed to load Cittadino index: {e}")
             raise
@@ -145,13 +144,16 @@ class Chatbot:
                 for ref in engine_response.structured_response["references"]:
                     references_list.append(f"[{ref['title']}]({ref['url']})")
 
+            follow_up_tool_called = False
             retrieved_contexts = []
-
             for tool_call in engine_response.tool_calls:
 
                 raw_output = tool_call.tool_output.raw_output
                 nodes = getattr(raw_output, "source_nodes", [])
-                if nodes:
+                if (
+                    tool_call.tool_name in [DEVPORTAL_TOOL_NAME, CITTADINO_TOOL_NAME]
+                    and nodes
+                ):
                     retrieved_contexts.extend(
                         [
                             f"-------\nURL: {node.metadata['url']}\n\n{node.text}\n\n"
@@ -159,9 +161,12 @@ class Chatbot:
                         ]
                     )
 
+                if tool_call.tool_name == CHIPS_TOOL_NAME:
+                    follow_up_tool_called = True
+
             chips = (
                 engine_response.structured_response["follow_up_questions"]
-                if len(engine_response.tool_calls) >= 2
+                if follow_up_tool_called
                 else []
             )
 
@@ -244,7 +249,10 @@ class Chatbot:
             query_str = query_str + f" | Knowledge Base: {knowledge_base}"
 
         try:
-            engine_response = await self.discovery.run(query_str, chat_history)
+            engine_response = await self.discovery.run(
+                user_msg=query_str,
+                chat_history=chat_history,
+            )
             response_json = self._get_response_json(engine_response)
         except Exception as e:
             response_json = {
@@ -260,5 +268,7 @@ class Chatbot:
 
         response_json["products"].append(f"chatbot@{SETTINGS.chatbot_release}")
         EXPORTER.spans = []
+
+        self.discovery.reset()
 
         return response_json

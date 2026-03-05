@@ -10,6 +10,9 @@ from src.modules.models import get_llm, get_embed_model
 from src.modules.structured_outputs import RAGOutput
 from src.modules.documents import get_product_list
 
+
+DEVPORTAL_TOOL_NAME = "DevPortalRAGTool"
+CITTADINO_TOOL_NAME = "CittadinoRAGTool"
 DEVPORTAL_PRODUCTS = get_product_list() + ["api", "webinars"]
 DEVPORTAL_RAG_TOOL_DESCRIPTION = (
     f"Use this tool for all technical, architectural, and integration-related queries regarding PagoPA Developer Portal products: {DEVPORTAL_PRODUCTS}. "

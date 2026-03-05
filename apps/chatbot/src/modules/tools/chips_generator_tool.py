@@ -4,6 +4,9 @@ from src.modules.models import get_llm
 from src.modules.structured_outputs import FollowUpQuestionsOutput, DiscoveryOutput
 
 
+CHIPS_TOOL_NAME = "FollowUpQuestionsTool"
+
+
 async def generate_questions(
     query_str: str, rag_output_devportal: str, rag_output_cittadino: str
 ) -> DiscoveryOutput:
@@ -27,11 +30,15 @@ async def generate_questions(
     )
 
     response = await sllm.acomplete(prompt)
-    return DiscoveryOutput(follow_up_questions=response.raw.follow_up_questions)
+    if response.raw is None:
+        return FollowUpQuestionsOutput(follow_up_questions=[])
+    return response.raw
 
 
-def follow_up_questions_tool(name: str) -> FunctionTool:
+def follow_up_questions_tool(name: str | None = None) -> FunctionTool:
     """A tool to generate follow-up questions for the user."""
+
+    name = name if name else CHIPS_TOOL_NAME
 
     return FunctionTool.from_defaults(
         async_fn=generate_questions,
