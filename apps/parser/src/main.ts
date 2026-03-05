@@ -45,7 +45,10 @@ async function main(): Promise<void> {
     if (SHOULD_CREATE_FILES_LOCALLY) {
       ensureDirectory(PARSER_CONFIG.OUTPUT_DIRECTORY);
     }
-    const browser = await puppeteer.launch({ headless: true });
+    const browser = await puppeteer.launch({
+      headless: true,
+      args: ['--no-sandbox', '--disable-setuid-sandbox']
+    });
     let finalUrl = env.baseUrl;
     let page;
     try {
