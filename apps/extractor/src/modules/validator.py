@@ -28,7 +28,6 @@ def has_rendered_markdown(text_string: str) -> bool:
     return check
 
 
-# todo : consider switching to Ragas to calculate the similarity
 def _normalize_text_windowed(text: str, window_size: int = 3) -> str:
     """
     Collapses tokens that have appeared within the last `window_size` positions.
@@ -58,7 +57,7 @@ def _normalize_text_windowed(text: str, window_size: int = 3) -> str:
 
     return " ".join(cleaned)
 
-
+# todo : consider switching to Ragas to calculate the similarity
 def calculate_similarity(generated: str, source: str) -> float:
     """
     Calculate cosine similarity between two text strings using TF-IDF vectors.
