@@ -69,7 +69,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
       
       - name: Run Parser for each URL
         if: ${{ inputs.run_parser }}
@@ -94,8 +94,6 @@ jobs:
           urls: ${{ inputs.urls }}
           vector_index_name: ${{ inputs.vector_index_name }}
 
-      - name: Checkout
-        uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502
