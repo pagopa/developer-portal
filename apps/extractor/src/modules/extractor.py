@@ -6,6 +6,8 @@ from src.modules.schemas import InputDocument, CleanedDocument
 
 from src.modules.settings import SETTINGS
 
+from src.modules.validator import validate_extracted_text
+
 if SETTINGS.should_run_locally:
     from src.modules.file_handler import load_json_files, save_cleaned_document
 else:
@@ -44,11 +46,12 @@ def extract_document(
         return text.replace("{", "{{").replace("}", "}}")
 
     try:
+        input_body = _escape_braces(input_doc.bodyText or "(empty)")
         # Construct the prompt with document data
         prompt = prompt_template.format(
             title=_escape_braces(input_doc.title),
             url=input_doc.url,
-            body_text=_escape_braces(input_doc.bodyText or "(empty)"),
+            body_text=input_body,
             language=input_doc.lang,
             last_updated=input_doc.lastModified,
             keywords=_escape_braces(input_doc.keywords or "(none)"),
@@ -66,7 +69,7 @@ def extract_document(
         response = program()
 
         # Validate that we got a CleanedDocument
-        if isinstance(response, CleanedDocument):
+        if isinstance(response, CleanedDocument) and validate_extracted_text(response.text,input_body, SETTINGS.similarity_threshold):
             LOGGER.debug(f"Successfully parsed document: {input_doc.title[:50]}...")
             return response
         else:
