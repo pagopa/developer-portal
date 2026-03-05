@@ -14,13 +14,12 @@ def has_rendered_markdown(text_string: str) -> bool:
     Verify if the extracted content contains rendered Markdown elements, indicating successful formatting.
 
     Args:
-        text_string (str): The content of the extracted file to check for rendered Markdown elements.
-
+        text_string (str): the content of the extracted file to check for rendered Markdown elements.
     Returns:
         bool: True if the content contains rendered Markdown elements, False otherwise.
     """
     html_output = markdown.markdown(text_string)
-    html_tag_matches = r"<(h[1-6]|ul|ol|li|strong|em|a|code|blockquote|pre)\b[^>]*>"
+    html_tag_matches = r'<(h[1-6]|ul|ol|li|strong|em|a|code|blockquote|pre)\b[^>]*>'
 
     check = bool(re.search(html_tag_matches, html_output))
 
@@ -66,7 +65,13 @@ def calculate_similarity(generated: str, source: str) -> float:
     Returns 0.0 if the similarity cannot be computed (e.g., one or both inputs are empty
     or only contain tokens that are removed during vectorization).
 
-    """
+   Args:
+        generated (str): The generated text.
+        source (str): The source text.
+
+    Returns:
+        float: The cosine similarity between the two texts.
+   """
     if not generated or not generated.strip():
         LOGGER.error(
             "Generated text is empty; similarity cannot be computed. Returning 0.0."

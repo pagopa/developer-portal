@@ -21,6 +21,8 @@ export const ChatBotMessage: StoryObj<typeof ChatHistoryMessage> = {
         
       Rif:  
       [PagoPA DevPortal | Overview delle componenti](https://developer.pagopa.it/pago-pa/guides/sanp/specifiche-attuative-del-nodo-dei-pagamenti-spc/funzionamento-generale/overview-delle-componenti)
+      [Internal link](#)
+      [External Link](https://www.wikipedia.org/)
     `,
     timestamp: '2024-07-24T17:14:07.129Z',
     sender: 'Discovery',
