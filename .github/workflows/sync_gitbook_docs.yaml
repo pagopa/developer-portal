@@ -45,7 +45,7 @@ on:
         default: ''
       locale:
         description: 'Locale to sync to (e.g. it). Leave empty for root.'
-        type: string
+        type: choice
         required: false
         default: ''
         options:
