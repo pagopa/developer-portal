@@ -11,6 +11,9 @@ _SCHEME_AND_WWW_RE = re.compile(r"^(https?://)?(www\.)?")
 _ILLEGAL_CHARS_RE = re.compile(r'[/\?<>\\:\*\|"]')
 _CONTROL_CHARS_RE = re.compile(r"[\x00-\x1f\x80-\x9f]")
 _RESERVED_RE = re.compile(r"^\.+$")
+_WINDOWS_RESERVED_RE = re.compile(
+    r"^(con|prn|aux|nul|com[0-9]|lpt[0-9])$", re.IGNORECASE
+)
 _WINDOWS_TRAILING_RE = re.compile(r"[\. ]+$")
 _LEADING_DASHES_RE = re.compile(r"^[-_]+")
 
@@ -39,6 +42,7 @@ def sanitize_url_as_directory_name(url: str, replacement: str = "-") -> str:
     result = _ILLEGAL_CHARS_RE.sub(replacement, result)
     result = _CONTROL_CHARS_RE.sub(replacement, result)
     result = _RESERVED_RE.sub(replacement, result)
+    result = _WINDOWS_RESERVED_RE.sub(replacement, result)
     result = _WINDOWS_TRAILING_RE.sub(replacement, result)
     result = result.strip()
     if not result:
@@ -48,7 +52,7 @@ def sanitize_url_as_directory_name(url: str, replacement: str = "-") -> str:
 
 def compute_app_folder(
     url: str,
-    index_id: str | None,
+    index_id: str,
     s3_bucket: str | None,
     is_local: bool,
     app_name: str,
@@ -76,9 +80,7 @@ def compute_app_folder(
         ValueError: When *is_local* is ``False`` and *s3_bucket* is not set.
     """
     safe_base = sanitize_url_as_directory_name(url)
-    relative_path = "/".join(
-        [index_id, app_name, safe_base]
-    )
+    relative_path = "/".join([index_id, app_name, safe_base])
     if not is_local:
         if not s3_bucket:
             raise ValueError(

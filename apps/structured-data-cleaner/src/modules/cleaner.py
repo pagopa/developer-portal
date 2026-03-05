@@ -1,5 +1,3 @@
-import boto3
-
 from pathlib import Path
 from typing import Tuple
 from urllib.parse import urlparse
@@ -24,7 +22,7 @@ def remove_s3_folder(output_folder: str) -> None:
         output_folder: S3 path in format s3://bucket/key/prefix
 
     Raises:
-        IOError: If there is an error deleting objects from S3.
+        ValueError: If there is an error deleting objects from S3.
     """
     LOGGER.info(f"Attempting to delete S3 folder: {output_folder}")
     try:
@@ -68,11 +66,11 @@ def remove_s3_folder(output_folder: str) -> None:
         )
 
     except ClientError as e:
-        raise IOError(f"Error deleting objects from S3 folder {output_folder}: {e}")
+        raise IOError(
+            f"Error deleting objects from S3 folder {output_folder}: {e}"
+        ) from e
     except IOError:
         raise
-    except Exception as e:
-        raise IOError(f"An unexpected error occurred: {e}")
 
 
 def remove_local_folder(output_folder: str) -> None:

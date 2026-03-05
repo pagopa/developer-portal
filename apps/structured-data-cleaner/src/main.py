@@ -47,7 +47,6 @@ def clean_url(
             remove_local_folder(folder)
         else:
             remove_s3_folder(folder)
-        # LOGGER.info("Successfully removed %s folder: %s", app_name, folder)
 
 
 def main() -> int:

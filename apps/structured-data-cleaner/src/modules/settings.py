@@ -17,7 +17,7 @@ class StructuredDataCleanerSettings(BaseSettings):
     # from attempting JSON decoding (which it does automatically for `list` fields).
     urls_raw: str = Field(alias="URLS", exclude=True)
     # Parsed list of URLs – populated by the model validator below.
-    urls: list[str] = Field(default=[], alias="__URLS_COMPUTED__")
+    urls: list[str] = Field(default_factory=list, alias="__URLS_COMPUTED__")
     # Vector index name
     chb_index_id: str = Field(alias="CHB_INDEX_ID")
     # Optional S3 bucket name (required if *should_run_locally* is ``False``)
