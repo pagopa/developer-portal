@@ -57,6 +57,7 @@ This project uses [Poetry](https://python-poetry.org/) for dependency management
 
 ### Running
 
+Run from the apps/structured-data-cleaner folder.
 If not already in the virtual environment,
 ```bash
    conda activate structured-data-cleaner
