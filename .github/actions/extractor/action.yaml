@@ -1,22 +1,25 @@
----
-name: extractor
-description: Run Extractor
+name: Extractor
+description: Run Extractor for each URL
 
 inputs:
-  environment:
-    description: 'The environment used as target (dev, uat, prod)'
-    required: true
-  urls:
-    description: 'URLs to extract (comma-separated)'
-    required: true
-  parser_vector_index_name:
-    description: 'Parser Vector Index Name (CHB_INDEX_ID)'
+  chb_aws_google_api_key:
+    description: 'Google API Key for AI Studio'
     required: true
   deploy_iam_role:
     description: 'IAM role to assume'
     required: true
-  chb_aws_google_api_key:
-    description: 'Google API Key for AI Studio'
+  environment:
+    description: 'The environment used as target (dev, uat, prod)'
+    required: true
+  similarity_threshold:
+    description: 'Similarity threshold for output validation (optional, default: 0.8)'
+    required: false
+    default: '0.8'
+  urls:
+    description: 'URLs to extract (comma-separated)'
+    required: true
+  vector_index_name:
+    description: 'Vector Index Name (CHB_INDEX_ID)'
     required: true
 
 runs:
@@ -63,8 +66,9 @@ runs:
       env:
         AWS_DEFAULT_REGION: eu-south-1
         CHB_AWS_GOOGLE_API_KEY: ${{ inputs.chb_aws_google_api_key }}
-        CHB_INDEX_ID: ${{ inputs.parser_vector_index_name }}
+        CHB_INDEX_ID: ${{ inputs.vector_index_name }}
         S3_BUCKET_NAME: devportal-${{ env.ENV_SHORT }}-website-static-content
+        SIMILARITY_THRESHOLD: ${{ inputs.similarity_threshold }}
       shell: bash
       run: |
         # Split comma-separated URLs and loop sequentially

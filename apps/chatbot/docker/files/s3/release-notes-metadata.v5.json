@@ -1,0 +1,37 @@
+[
+  {
+    "path": "/prodotto-strapii/release-note/2025/01-luglio-2025",
+    "dirName": "ZfEot5IvH1XjEms6QJKs",
+    "contentS3Path": "devportal-docs/docs/ZfEot5IvH1XjEms6QJKs/2025/01-luglio-2025.md",
+    "menuS3Path": "devportal-docs/docs/ZfEot5IvH1XjEms6QJKs/SUMMARY.md",
+    "title": "01 Luglio 2025"
+  },
+  {
+    "path": "/prodotto-strapii/release-note/2025/04-agosto-2025",
+    "dirName": "ZfEot5IvH1XjEms6QJKs",
+    "contentS3Path": "devportal-docs/docs/ZfEot5IvH1XjEms6QJKs/2025/04-agosto-2025.md",
+    "menuS3Path": "devportal-docs/docs/ZfEot5IvH1XjEms6QJKs/SUMMARY.md",
+    "title": "04 Agosto 2025"
+  },
+  {
+    "path": "/prodotto-strapii/release-note/2025/30-giugno-2025",
+    "dirName": "ZfEot5IvH1XjEms6QJKs",
+    "contentS3Path": "devportal-docs/docs/ZfEot5IvH1XjEms6QJKs/2025/30-giugno-2025.md",
+    "menuS3Path": "devportal-docs/docs/ZfEot5IvH1XjEms6QJKs/SUMMARY.md",
+    "title": "30 Giugno 2025"
+  },
+  {
+    "path": "/prodotto-strapii/release-note/2025",
+    "dirName": "ZfEot5IvH1XjEms6QJKs",
+    "contentS3Path": "devportal-docs/docs/ZfEot5IvH1XjEms6QJKs/2025/README.md",
+    "menuS3Path": "devportal-docs/docs/ZfEot5IvH1XjEms6QJKs/SUMMARY.md",
+    "title": "2025"
+  },
+  {
+    "path": "/prodotto-strapii/release-note",
+    "dirName": "ZfEot5IvH1XjEms6QJKs",
+    "contentS3Path": "devportal-docs/docs/ZfEot5IvH1XjEms6QJKs/README.md",
+    "menuS3Path": "devportal-docs/docs/ZfEot5IvH1XjEms6QJKs/SUMMARY.md",
+    "title": "Ultime release notes"
+  }
+]
