@@ -323,6 +323,7 @@
     "company": "Entity or Company Type",
     "role": "Role",
     "requiredFieldError": "This field cannot be empty",
+    "nameFieldError": "Use only letters and numbers, without special characters (except spaces, underscores, hyphens and apostrophes) and with a maximum of 50 characters",
     "emailFieldError": "Enter a valid email address. Use only lowercase letters and do not use special characters",
     "emailAlreadyTaken": "An account already exists for this email address",
     "goToGuide": "Go to guide",

@@ -2,6 +2,7 @@
 import {
   validateEmail,
   validateField,
+  validateName,
   validatePassword,
 } from '@/helpers/auth.helpers';
 import { SignUpUserData } from '@/lib/types/sign-up';
@@ -78,8 +79,8 @@ const SignUpForm = ({
     const { username, confirmPassword, firstName, lastName, password } =
       userData;
 
-    const nameError = validateField(firstName);
-    const surnameError = validateField(lastName);
+    const nameError = validateName(firstName);
+    const surnameError = validateName(lastName);
     const emailError = validateEmail(username);
     const emailEmptyError = validateField(username);
     const passwordError = validatePassword(password);
@@ -89,11 +90,11 @@ const SignUpForm = ({
     let errors = {};
 
     if (nameError) {
-      errors = { ...errors, name: t('shared.requiredFieldError') };
+      errors = { ...errors, name: t('shared.nameFieldError') };
     }
 
     if (surnameError) {
-      errors = { ...errors, surname: t('shared.requiredFieldError') };
+      errors = { ...errors, surname: t('shared.surnameFieldError') };
     }
 
     if (emailEmptyError) {
