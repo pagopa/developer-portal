@@ -1,6 +1,7 @@
 'use client';
 import {
   validateEmail,
+  validateField,
   validateName,
   validatePassword,
 } from '@/helpers/auth.helpers';
@@ -41,6 +42,7 @@ interface SignUpFieldsError {
   email: string;
   password: string;
   confirmPassword: string;
+  role: string;
 }
 
 const SignUpForm = ({
@@ -78,8 +80,8 @@ const SignUpForm = ({
     const { username, confirmPassword, firstName, lastName, password, role } =
       userData;
 
-    const nameError = validateName(firstName);
-    const surnameError = validateName(lastName);
+    const nameError = validateField(firstName) || validateName(firstName);
+    const surnameError = validateField(lastName) || validateName(lastName);
     const emailError = validateEmail(username);
     const passwordError = validatePassword(password);
     const confirmPasswordError = password !== confirmPassword;
@@ -306,6 +308,8 @@ const SignUpForm = ({
                   value={role}
                   variant='outlined'
                   onChange={handleInputChange}
+                  error={!!fieldErrors.role}
+                  helperText={fieldErrors.role}
                 />
               </Stack>
               <Grid container>

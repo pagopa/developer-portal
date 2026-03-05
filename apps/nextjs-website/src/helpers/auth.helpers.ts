@@ -19,12 +19,12 @@ export const validateField = (value: string): string | null => {
 };
 
 export const validateName = (value: string): string | null => {
-  const isNotValid = validateField(value);
-  if (isNotValid) {
-    return isNotValid;
-  }
+  const trimmedValue = value.trim();
+  if (trimmedValue.length === 0) return null;
 
-  return !/^(?=.{1,50}$)[A-Za-z0-9]+(?:[ _'-]?[A-Za-z0-9]+)*$/.test(value)
+  return !/^(?=.{0,50}$)[A-Za-z0-9]+(?:[ _'-]?[A-Za-z0-9]+)*$/.test(
+    trimmedValue
+  )
     ? 'nameFieldError'
     : null;
 };
