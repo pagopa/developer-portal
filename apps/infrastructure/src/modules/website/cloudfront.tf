@@ -18,16 +18,19 @@ resource "aws_cloudfront_response_headers_policy" "websites" {
   name    = "websites"
   comment = "Response custom headers for public static website"
 
-  dynamic "custom_headers_config" {
-    for_each = length(var.cdn_custom_headers) > 0 ? ["dummy"] : []
-    content {
-      dynamic "items" {
-        for_each = var.cdn_custom_headers
-        content {
-          header   = items.value.header
-          override = items.value.override
-          value    = items.value.value
-        }
+  custom_headers_config {
+    items {
+      header   = "Server"
+      override = true
+      value    = "None"
+    }
+
+    dynamic "items" {
+      for_each = var.cdn_custom_headers
+      content {
+        header   = items.value.header
+        override = items.value.override
+        value    = items.value.value
       }
     }
   }
@@ -55,6 +58,14 @@ resource "aws_cloudfront_function" "website_viewer_request_handler" {
 resource "aws_cloudfront_response_headers_policy" "static_content_cors" {
   name    = "cors-policy"
   comment = "Cors policy for static contents"
+
+  custom_headers_config {
+    items {
+      header   = "Server"
+      override = true
+      value    = "None"
+    }
+  }
 
   cors_config {
     access_control_allow_credentials = false
