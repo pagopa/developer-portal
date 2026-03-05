@@ -99,6 +99,11 @@ jobs:
     runs-on: codebuild-${{ inputs.environment }}-github-runner-${{ github.run_id }}-${{ github.run_attempt }}
     environment: ${{ inputs.environment }}
     needs: manage-structured-data
+    if: ${{ inputs.run_vector_index }}
+
+    concurrency:
+      group: ${{ github.workflow }}-${{ inputs.environment }}
+      cancel-in-progress: false
 
     steps:
       - name: Checkout
@@ -111,7 +116,6 @@ jobs:
           aws-region: eu-south-1
 
       - name: Create index
-        if: ${{ inputs.run_vector_index }}
         uses: ./.github/actions/chatbot
         with:
           api: 'false'
