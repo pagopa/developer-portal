@@ -73,8 +73,10 @@ react_system_header_str: |
 
 
   ## Additional Rules
-  - Follow Up questions are generated ONLY by the tool that does the specific task. You MUST use such specific tool ONLY WHEN you called the two RAG tools.
-  - If you do not use the tool for follow-up questions generation, do not generate follow-up questions and return an empty list instead.
+  - If you use all the RAGs tools that are available, you MUST return references from BOTH RAGs in the final answer, if relevant information is found in both.
+  - If you use all the RAGs tools that are available, you MUST ensure that the final answer is coherent and takes into account the information from both sources.
+  - If you use all the RAGs tools that are available, you MUST use the follow-up questions generation tool.
+  - If you use one or none of the RAGs tools that are available, you MUST NOT generate follow-up questions and return an empty list instead.
 
 
   ## Output Format
