@@ -16,20 +16,30 @@ export function canRedirectToUrl(path: string): boolean {
     const DUMMY_BASE = 'http://safe-dummy.local';
     const parsedUrl = new URL(normalizedPath, DUMMY_BASE);
 
+    const canonicalPath = parsedUrl.pathname;
+    const hasSearchOrHash =
+      (parsedUrl.search && parsedUrl.search.length > 0) ||
+      (parsedUrl.hash && parsedUrl.hash.length > 0);
+
     // Verify the origin hasn't changed (prevents sneaky scheme/host injections)
     if (parsedUrl.origin !== DUMMY_BASE) {
       return false;
     }
 
-    // Allow exact root path
-    if (normalizedPath === '/') return true;
+    // Allow exact root path, but only without query or hash to preserve behavior
+    if (canonicalPath === '/' && !hasSearchOrHash) return true;
 
     // Allow paths that start with a supported locale exactly (e.g., /en/...)
-    return SUPPORTED_LOCALES.some(
-      (l) =>
-        normalizedPath === `/${l.langCode}` ||
-        normalizedPath.startsWith(`/${l.langCode}/`)
-    );
+    return SUPPORTED_LOCALES.some((l) => {
+      const localeBase = `/${l.langCode}`;
+      // Bare locale path (e.g., /en) is allowed only without query/hash
+      if (canonicalPath === localeBase && !hasSearchOrHash) {
+        return true;
+      }
+
+      // Locale-prefixed subpaths (e.g., /en/..., /en/page?x=1) are allowed
+      return canonicalPath.startsWith(`${localeBase}/`);
+    });
   } catch {
     return false;
   }
