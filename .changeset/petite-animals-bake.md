@@ -2,4 +2,4 @@
 "nextjs-website": patch
 ---
 
-Add redirect validation for login flow and helper function
+Add navigation helper function to check validity and safety of redirect path and add it to the login flow
