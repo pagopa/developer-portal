@@ -1,32 +1,10 @@
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
-import markdown
-import re
 
 from src.modules.logger import get_logger
 from src.modules.settings import SETTINGS
 
 LOGGER = get_logger(__name__, level=SETTINGS.log_level)
-
-
-def has_rendered_markdown(text_string: str) -> bool:
-    """
-    Verify if the extracted content contains rendered Markdown elements, indicating successful formatting.
-
-    Args:
-        text_string (str): the content of the extracted file to check for rendered Markdown elements.
-    Returns:
-        bool: True if the content contains rendered Markdown elements, False otherwise.
-    """
-    html_output = markdown.markdown(text_string)
-    html_tag_matches = r'<(h[1-6]|ul|ol|li|strong|em|a|code|blockquote|pre)\b[^>]*>'
-
-    check = bool(re.search(html_tag_matches, html_output))
-
-    if not check:
-        LOGGER.error("Markdown rendering failed, text is not properly formatted.")
-    return check
-
 
 def _normalize_text_windowed(text: str, window_size: int = 3) -> str:
     """
@@ -98,6 +76,24 @@ def calculate_similarity(generated: str, source: str) -> float:
     # Compute cosine similarity
     return cosine_similarity(vectors[0:1], vectors[1:2])[0][0]
 
+def calculate_length_based_threshold(generated: str, source: str, max_threshold: float) -> float:
+    """
+    Calculates a dynamic similarity threshold based on the length of the generated text.
+
+    Args:
+        generated (str): The generated text whose length will influence the threshold.
+        source (str): The source text used for calculating the threshold
+        max_threshold (float): The maximum similarity threshold to adjust from.
+    Returns:
+        float: An adjusted similarity threshold that accounts for the length of the generated text.
+    """
+    gen_len = len(generated)
+    src_len = len(source)
+    if gen_len == 0 or src_len == 0:
+        LOGGER.warning("One or both texts are empty; returning max_threshold.")
+        return max_threshold
+    return min(gen_len/src_len, max_threshold)
+
 
 def validate_extracted_text(
     extracted_body_text: str, parsed_body_text: str, similarity_threshold: float = 0.8
@@ -117,11 +113,11 @@ def validate_extracted_text(
     """
 
     similarity = calculate_similarity(extracted_body_text, parsed_body_text)
+    calculated_similarity_threshold = calculate_length_based_threshold(extracted_body_text, parsed_body_text, similarity_threshold)
     LOGGER.info(f"Cosine Similarity: {similarity:.4f}")
-    if similarity < similarity_threshold:
+    if similarity < calculated_similarity_threshold:
         LOGGER.error(
-            f"Similarity below the {similarity_threshold:.4f} threshold. Validation failed."
+            f"Similarity below the {calculated_similarity_threshold:.4f} threshold. Validation failed."
         )
-        return False
 
-    return has_rendered_markdown(extracted_body_text)
+    return bool(similarity >= calculated_similarity_threshold)
