@@ -67,12 +67,13 @@ const LoginContent = () => {
       // eslint-disable-next-line functional/no-try-statements
       try {
         redirectPath = atob(searchParams.get('redirect') || '');
-      } finally {
-        if (redirectPath && canRedirectToUrl(redirectPath)) {
-          router.replace(redirectPath);
-        } else {
-          router.replace(`/${locale}`);
-        }
+      } catch {
+        redirectPath = undefined;
+      }
+      if (redirectPath && canRedirectToUrl(redirectPath)) {
+        router.replace(redirectPath);
+      } else {
+        router.replace(`/${locale}`);
       }
     },
     [locale, router, searchParams, user]
