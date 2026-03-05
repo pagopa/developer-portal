@@ -4,6 +4,9 @@ _SCHEME_AND_WWW_RE = re.compile(r"^(https?://)?(www\.)?")
 _ILLEGAL_CHARS_RE = re.compile(r'[/\?<>\\:\*\|"]')
 _CONTROL_CHARS_RE = re.compile(r"[\x00-\x1f\x80-\x9f]")
 _RESERVED_RE = re.compile(r"^\.+$")
+_WINDOWS_RESERVED_RE = re.compile(
+    r"^(con|prn|aux|nul|com[0-9]|lpt[0-9])$", re.IGNORECASE
+)
 _WINDOWS_TRAILING_RE = re.compile(r"[\. ]+$")
 _LEADING_DASHES_RE = re.compile(r"^[-_]+")
 
@@ -32,8 +35,9 @@ def sanitize_url_as_directory_name(url: str, replacement: str = "-") -> str:
     result = _ILLEGAL_CHARS_RE.sub(replacement, result)
     result = _CONTROL_CHARS_RE.sub(replacement, result)
     result = _RESERVED_RE.sub(replacement, result)
+    result = _WINDOWS_RESERVED_RE.sub(replacement, result)
     result = _WINDOWS_TRAILING_RE.sub(replacement, result)
     result = result.strip()
     if not result:
         return replacement
-    return _LEADING_DASHES_RE.sub("", result) or result
+    return _LEADING_DASHES_RE.sub("", result) or replacement

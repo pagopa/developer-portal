@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import List, Dict
+from typing import List
 
 from llama_index.core import Settings as LlamaIndexSettings
 from llama_index.core import (
@@ -17,7 +17,6 @@ from llama_index.vector_stores.redis import RedisVectorStore
 from redis import Redis
 import redis.asyncio as aredis
 from redisvl.schema import IndexSchema
-from tqdm import tqdm
 
 from src.modules.logger import get_logger
 from src.modules.documents import (
@@ -28,7 +27,6 @@ from src.modules.documents import (
     get_static_docs,
     get_dynamic_docs,
     get_structured_docs,
-    EXTRACTOR_FOLDER,
 )
 from src.modules.models import get_llm, get_embed_model
 from src.modules.settings import SETTINGS
@@ -143,12 +141,10 @@ def build_index_redis(
     )
     storage_context.docstore.add_documents(nodes)
 
-    LOGGER.info(f"Creating vector index: {SETTINGS.index_id} ...")
+    LOGGER.info(f"Creating vector index: {index_id} ...")
     index = VectorStoreIndex(nodes, storage_context=storage_context)
-    index.set_index_id(SETTINGS.index_id)
-    LOGGER.info(
-        f"{SETTINGS.index_id} has been created successfully and stored in Redis."
-    )
+    index.set_index_id(index_id)
+    LOGGER.info(f"{index_id} has been created successfully and stored in Redis.")
 
     return index
 
@@ -442,15 +438,14 @@ class LlamaVectorIndex:
     def refresh_index_structured_docs(
         self,
         index: VectorStoreIndex,
-        website_folder: str | None = None,
+        website_folder: str,
     ) -> None:
         """
         Refreshes the vector index by updating and deleting documents as specified.
 
         Args:
             index (VectorStoreIndex): The vector store index instance.
-            website_folder (str | None): The folder path in the S3 bucket where the structured documents are stored.
-                                         If None, it will consider all structured documents in the bucket.
+            website_folder (str): The folder path in the S3 bucket where the structured documents are stored.
         Returns:
             None
         """
