@@ -44,10 +44,13 @@ on:
         required: false
         default: ''
       locale:
-        description: 'Locale to sync to (e.g. "it"). Leave empty for root.'
+        description: 'Locale to sync to (e.g. it). Leave empty for root.'
         type: string
         required: false
         default: ''
+        options:
+          - it
+          - en
 
 
   schedule:
