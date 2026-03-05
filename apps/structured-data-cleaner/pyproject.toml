@@ -1,0 +1,10 @@
+[tool.poetry]
+description = "Structured Data Cleaner service for structured data directories removal"
+name = "structured-data-cleaner"
+package-mode = false
+readme = "README.md"
+version = "0.1.0"
+
+[tool.poetry.dependencies]
+pydantic-settings = "^2.13.1"
+python = ">=3.12,<3.14"
