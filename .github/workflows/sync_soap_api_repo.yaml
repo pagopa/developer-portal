@@ -19,6 +19,7 @@ on:
         required: false
         default: ''
         options:
+          - '' # TODO: remove once locale merged in prod and root locale is no more needed
           - it
           - en
 
