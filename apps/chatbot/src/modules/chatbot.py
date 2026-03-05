@@ -161,7 +161,7 @@ class Chatbot:
 
             chips = (
                 engine_response.structured_response["follow_up_questions"]
-                if len(engine_response.tool_calls) == 3
+                if len(engine_response.tool_calls) >= 2
                 else []
             )
 
