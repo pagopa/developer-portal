@@ -269,6 +269,4 @@ class Chatbot:
         response_json["products"].append(f"chatbot@{SETTINGS.chatbot_release}")
         EXPORTER.spans = []
 
-        self.discovery.reset()
-
         return response_json
