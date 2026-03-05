@@ -75,10 +75,6 @@ runs:
         aws_region: eu-south-1
         role_to_assume: ${{ inputs.deploy_iam_role }}
 
-    - name: Enable unprivileged user namespaces
-      shell: bash
-      run: sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
-
     - name: Run Parser for each URL
       # env vars docs: https://github.com/pagopa/developer-portal/blob/main/apps/parser/README.md#environment-variables
       env:
