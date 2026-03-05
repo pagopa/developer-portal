@@ -18,6 +18,9 @@ on:
         type: string
         required: false
         default: ''
+        options:
+          - it
+          - en
 
 # Permissions needed for AWS OIDC authentication
 permissions:
