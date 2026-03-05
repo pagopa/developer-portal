@@ -7,14 +7,16 @@ import { Auth } from 'aws-amplify';
 import { LoginSteps } from '@/lib/types/loginSteps';
 import { LoginFunction } from '@/lib/types/loginFunction';
 import ConfirmSignUp from '@/components/organisms/Auth/ConfirmSignUp';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import PageBackgroundWrapper from '@/components/atoms/PageBackgroundWrapper/PageBackgroundWrapper';
 import { SignInOpts } from '@aws-amplify/auth/lib/types';
 import AuthStatus from '@/components/organisms/Auth/AuthStatus';
 import Spinner from '@/components/atoms/Spinner/Spinner';
+import { canRedirectToUrl } from '@/helpers/navigation.helpers';
 
 const LoginContent = () => {
   const router = useRouter();
+  const { locale } = useParams<{ locale: string }>();
   const [logInStep, setLogInStep] = useState(LoginSteps.LOG_IN);
   const [user, setUser] = useState(null);
   const [loginData, setLoginData] = useState({ username: '', password: '' });
@@ -60,10 +62,21 @@ const LoginContent = () => {
     async (code: string) => {
       await Auth.sendCustomChallengeAnswer(user, code);
 
-      const redirect = searchParams.get('redirect');
-      router.replace(redirect ? atob(redirect) : '/');
+      // eslint-disable-next-line functional/no-let
+      let redirectPath;
+      // eslint-disable-next-line functional/no-try-statements
+      try {
+        redirectPath = atob(searchParams.get('redirect') || '');
+      } catch {
+        redirectPath = undefined;
+      }
+      if (redirectPath && canRedirectToUrl(redirectPath)) {
+        router.replace(redirectPath);
+      } else {
+        router.replace(`/${locale}`);
+      }
     },
-    [router, searchParams, user]
+    [locale, router, searchParams, user]
   );
 
   const onBackStep = () => {
