@@ -4,6 +4,9 @@ from src.modules.models import get_llm
 from src.modules.structured_outputs import FollowUpQuestionsOutput
 
 
+FOLLOWUP_TOOL_NAME = "FollowUpQuestionsTool"
+
+
 async def generate_questions(
     query_str: str, rag_output_devportal: str, rag_output_cittadino: str
 ) -> FollowUpQuestionsOutput:
@@ -30,8 +33,10 @@ async def generate_questions(
     return response.raw
 
 
-def follow_up_questions_tool(name: str) -> FunctionTool:
+def follow_up_questions_tool(name: str | None = None) -> FunctionTool:
     """A tool to generate follow-up questions for the user."""
+
+    name = name if name else FOLLOWUP_TOOL_NAME
 
     return FunctionTool.from_defaults(
         async_fn=generate_questions,

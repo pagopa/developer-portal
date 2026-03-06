@@ -102,7 +102,7 @@ class Chatbot:
             raise
 
         try:
-            self.discovery = get_discovery_agent(name="DiscoveryAgent", tools=tools)
+            self.discovery = get_discovery_agent(tools=tools)
         except Exception as e:
             LOGGER.error(f"Failed to initialize Discovery Agent: {e}")
             raise
