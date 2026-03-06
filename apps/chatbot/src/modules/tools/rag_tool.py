@@ -10,7 +10,8 @@ from src.modules.settings import SETTINGS
 from src.modules.models import get_llm, get_embed_model
 from src.modules.structured_outputs import RAGOutput
 
-
+DEVPORTAL_TOOL_NAME = "DevPortalRAGTool"
+CITTADINO_TOOL_NAME = "CittadinoRAGTool"
 DEVPORTAL_RAG_TOOL_DESCRIPTION = (
     f"Use this tool for all technical, architectural, and integration-related queries regarding PagoPA Developer Portal products: {DEVPORTAL_PRODUCTS}.\n"
     "Use this tool when the user is an IT professional or a developer seeking to integrate or manage the PagoPA Developer Portal products.\n"
