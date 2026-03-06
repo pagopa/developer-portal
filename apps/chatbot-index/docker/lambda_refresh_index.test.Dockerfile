@@ -1,4 +1,4 @@
-FROM public.ecr.aws/lambda/python:3.12
+FROM public.ecr.aws/lambda/python:3.12@sha256:70739d82cddc070a22f74c6591bb805153ce7a074a2202557a4b6f7cb1e823ff
 
 ENV PYTHONPATH=$LAMBDA_TASK_ROOT
 
