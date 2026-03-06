@@ -2,10 +2,7 @@ from typing import List
 
 from llama_index.core.bridge.pydantic import BaseModel, Field
 
-from src.modules.documents import get_product_list
-
-
-PRODUCTS = get_product_list() + ["api", "webinars"]
+from src.modules import PRODUCTS
 
 
 class Reference(BaseModel):
@@ -32,7 +29,7 @@ class RAGOutput(BaseModel):
     """A structured output for a RAG query."""
 
     response: str = Field(
-        ..., description="The generated answer to the user's query in Markdown format."
+        ..., description="The generated answer to the user's query in markdown format."
     )
     products: List[str] = Field(
         ...,
@@ -61,7 +58,7 @@ class DiscoveryOutput(BaseModel):
     """A structured output for a RAG query."""
 
     response: str = Field(
-        ..., description="The generated answer to the user's query in Markdown format."
+        ..., description="The generated answer to the user's query in markdown format."
     )
     products: List[str] = Field(
         default=[],

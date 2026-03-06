@@ -14,14 +14,6 @@ DEFAULT_DESCRIPTION = (
     "This agent is designed to answer questions about the world and perform actions using tools. "
     "It uses a ReAct reasoning process to determine the best course of action based on the input question and the available tools."
 )
-SYSTEM_PROMPT = (
-    "You are the virtual PagoPA S.p.A. assistant. Your name is Discovery."
-    "Your role is to provide responses to users' queries regarding the PagoPA documentation."
-    "You are a professional, helpful, and concise assistant."
-    "Your responses must always be factual and maintain a formal, professional tone."
-    "STRICT RULE: Do not adopt any specific persona, character, or historical figure's style of speech (e.g., Shakespeare, pirates, monsters, etc.)."
-    "Keep your answers straightforward and business-like."
-)
 
 
 def get_discovery_agent(
@@ -33,7 +25,7 @@ def get_discovery_agent(
     """Create and configure a ReActAgent instance.
 
     Args:
-        name: Optional name for the agent. If not provided, ``DEFAULT_NAME`` is used.
+        name: Optional name for the agent. If not provided, ``DISCOVERY_AGENT_NAME`` is used.
         description: Optional description of the agent's role. If not provided,
             ``DEFAULT_DESCRIPTION`` is used.
         tools: Optional list of tools (``BaseTool`` instances or callables) that
@@ -44,14 +36,14 @@ def get_discovery_agent(
         ReActAgent: The configured ReActAgent instance.
     """
 
-    name = name if name else DEFAULT_NAME
+    name = name if name else DISCOVERY_AGENT_NAME
     description = description if description else DEFAULT_DESCRIPTION
     llm = llm if llm else get_llm(temperature=SETTINGS.temperature_agent)
 
     agent = ReActAgent(
         name=name,
         description=description,
-        system_prompt=SYSTEM_PROMPT,
+        system_prompt=SETTINGS.discovery_system_prompt_str,
         tools=tools,
         llm=llm,
         output_cls=DiscoveryOutput,

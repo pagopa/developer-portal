@@ -101,7 +101,10 @@ class Chatbot:
             raise
 
         try:
-            self.discovery = get_discovery_agent(name=DISCOVERY_AGENT_NAME, tools=tools)
+            self.discovery = get_discovery_agent(
+                name=DISCOVERY_AGENT_NAME,
+                tools=tools,
+            )
         except Exception as e:
             LOGGER.error(f"Failed to initialize Discovery Agent: {e}")
             raise
@@ -144,10 +147,8 @@ class Chatbot:
                 for ref in engine_response.structured_response["references"]:
                     references_list.append(f"[{ref['title']}]({ref['url']})")
 
-            follow_up_tool_called = False
             retrieved_contexts = []
             for tool_call in engine_response.tool_calls:
-
                 raw_output = tool_call.tool_output.raw_output
                 nodes = getattr(raw_output, "source_nodes", [])
                 if (
@@ -161,12 +162,9 @@ class Chatbot:
                         ]
                     )
 
-                if tool_call.tool_name == CHIPS_TOOL_NAME:
-                    follow_up_tool_called = True
-
             chips = (
                 engine_response.structured_response["follow_up_questions"]
-                if follow_up_tool_called
+                if len(engine_response.tool_calls) == 3
                 else []
             )
 

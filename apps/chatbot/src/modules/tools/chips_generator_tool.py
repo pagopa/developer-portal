@@ -30,8 +30,6 @@ async def generate_questions(
     )
 
     response = await sllm.acomplete(prompt)
-    if response.raw is None:
-        return FollowUpQuestionsOutput(follow_up_questions=[])
     return response.raw
 
 
