@@ -47,7 +47,7 @@ def sanitize_url_as_directory_name(url: str, replacement: str = "-") -> str:
     result = result.strip()
     if not result:
         return replacement
-    return _LEADING_DASHES_RE.sub("", result) or result
+    return _LEADING_DASHES_RE.sub("", result) or replacement
 
 
 def compute_app_folder(

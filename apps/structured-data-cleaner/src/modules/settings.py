@@ -37,8 +37,10 @@ class StructuredDataCleanerSettings(BaseSettings):
 
     @model_validator(mode="after")
     def parse_urls(self) -> "StructuredDataCleanerSettings":
-        """Split the comma-separated URLS env var into a list of stripped URL strings."""
-        self.urls = [u.strip() for u in self.urls_raw.split(",") if u.strip()]
+        """Split the comma-separated URLS env var into a list of unique stripped URL strings."""
+        parsed = [u.strip() for u in self.urls_raw.split(",") if u.strip()]
+        seen: set[str] = set()
+        self.urls = [u for u in parsed if not (u in seen or seen.add(u))]
         return self
 
 
