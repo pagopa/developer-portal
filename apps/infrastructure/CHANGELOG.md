@@ -1,5 +1,16 @@
 # infrastructure
 
+## 9.0.0
+
+### Major Changes
+
+- 9546f7b: Fix iam policy deploy website to allow deploy cognito functions too.
+- 6d0c7d9: Lambda function and api gateway rest api to query ivs metrics
+
+### Minor Changes
+
+- d0b8a1c: Github action to deploy cognito functions
+
 ## 8.3.0
 
 ### Minor Changes
