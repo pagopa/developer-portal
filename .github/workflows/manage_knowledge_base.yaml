@@ -14,11 +14,11 @@ on:
           - uat
           - prod
       urls_to_add:
-        description: 'Websites to add or update (comma-separated)'
+        description: 'Websites to add or update (list of urls, comma-separated)'
         required: true
         type: string
       urls_to_remove:
-        description: 'Websites to remove from the knowledge base (comma-separated)'
+        description: 'Websites to remove from the knowledge base (list of urls, comma-separated)'
         required: true
         type: string
       vector_index_mode:
@@ -82,6 +82,33 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
+
+      - name: Combine URLs into a single string
+        id: combine_urls
+        run: |
+          # Fetch the inputs
+          ADD_URLS="${{ inputs.urls_to_add }}"
+          REMOVE_URLS="${{ inputs.urls_to_remove }}"
+
+          if [ -n "$ADD_URLS" ] && [ -n "$REMOVE_URLS" ]; then
+            COMBINED="$ADD_URLS,$REMOVE_URLS"
+          elif [ -n "$ADD_URLS" ]; then
+            COMBINED="$ADD_URLS"
+          else
+            COMBINED="$REMOVE_URLS"
+          fi
+
+          echo "ALL_URLS=$COMBINED" >> $GITHUB_ENV
+
+      - name: Run Cleaner for each URL
+        uses: ./.github/actions/structured-data-cleaner
+        with:
+          deploy_iam_role: ${{ secrets.DEPLOY_IAM_ROLE }}
+          environment: ${{ inputs.environment }}
+          remove_from_extractor_folder: ${{ inputs.run_extractor }}
+          remove_from_parser_folder: ${{ inputs.run_parser }}
+          urls: ${{ env.ALL_URLS }}
+          vector_index_name: ${{ inputs.vector_index_name }}
       
       - name: Run Parser for each URL
         if: ${{ inputs.run_parser }}
