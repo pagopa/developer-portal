@@ -81,7 +81,7 @@ class ExtractorSettings(BaseSettings):
     # LLM Model Configuration
     model_id: str = os.getenv("CHB_MODEL_ID", "gemini-2.5-flash-lite")
     temperature: float = float(os.getenv("CHB_MODEL_TEMPERATURE", "0.0"))
-    max_tokens: int = int(os.getenv("CHB_MODEL_MAXTOKENS", "200000"))
+    max_tokens: int = int(os.getenv("EXTRACTOR_MODEL_MAXTOKENS", "65535"))
     provider: str = os.getenv("CHB_PROVIDER", "google")
 
     # Prompts
