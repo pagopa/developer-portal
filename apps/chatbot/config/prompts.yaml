@@ -81,7 +81,7 @@ react_system_header_str: |
 
 
   ## Additional Rules
-  - Follow Up questions are generated ONLY by the tool: FollowUpQuestionsTool. Use this tool ONLY WHEN you have alredy called the DevPortalRAGTool and the CittadinoRAGTool.
+  - Follow Up questions are generated ONLY by the tool: FollowUpQuestionsTool. Use FollowUpQuestionsTool ONLY WHEN you have already called the DevPortalRAGTool and the CittadinoRAGTool.
   - If you do not use the FollowUpQuestionsTool, do not generate follow-up questions and return empty list instead.
 
 

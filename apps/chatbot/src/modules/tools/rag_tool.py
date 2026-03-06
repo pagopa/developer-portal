@@ -5,25 +5,27 @@ from llama_index.core.retrievers import AutoMergingRetriever
 from llama_index.core.query_engine import RetrieverQueryEngine
 from llama_index.core.tools import QueryEngineTool
 
+from src.modules import PRODUCTS
 from src.modules.settings import SETTINGS
 from src.modules.models import get_llm, get_embed_model
 from src.modules.structured_outputs import RAGOutput
-from src.modules import PRODUCTS
 
 
+DEVPORTAL_TOOL_NAME = "DevPortalRAGTool"
+CITTADINO_TOOL_NAME = "CittadinoRAGTool"
 DEVPORTAL_RAG_TOOL_DESCRIPTION = (
-    f"Use this tool for all technical, architectural, and integration-related queries regarding PagoPA Developer Portal products: {PRODUCTS}. "
-    "Use this tool when the user is an IT professional or a developer seeking to integrate or manage the PagoPA Developer Portal products. "
-    "It contains API specifications, authentication methods, SDKs, technical onboarding for institutions, and backend configuration. "
-    "DO NOT use this for general 'how to use' questions from citizens. "
+    f"Use this tool for all technical, architectural, and integration-related queries regarding PagoPA Developer Portal products: {PRODUCTS}.\n"
+    "Use this tool when the user is an IT professional or a developer seeking to integrate or manage the PagoPA Developer Portal products.\n"
+    "It contains API specifications, authentication methods, SDKs, technical onboarding for institutions, and backend configuration.\n"
+    "DO NOT use this for general 'how to use' questions from citizens.\n"
     "Use this tool for API specifications, SDKs, technical onboarding processes for institutions (Ente Creditore) and PSPs, "
-    "authentication methods (API Keys), environment configurations (checkout, eCommerce), and technical troubleshooting for developers. "
+    "authentication methods (API Keys), environment configurations (checkout, eCommerce), and technical troubleshooting for developers."
 )
 CITTADINO_RAG_TOOL_DESCRIPTION = (
     "Use this tool for all queries related to the end-user (citizen) experience of Italian digital platforms. "
-    "This tool contains comprehensive information on the PagoPA products: 'send', 'app-io', and the 'pagopa-payment' ecosystem from a user's perspective. "
+    "This tool contains comprehensive information on the PagoPA products: 'send', 'app-io', and the 'pagopa-payment' ecosystem from a user's perspective.\n"
     "Consult this tool for questions about receiving digital notifications, using the App IO interface, paying taxes or fines as a citizen, "
-    "troubleshooting payment receipts, and general help center inquiries (FAQ). "
+    "troubleshooting payment receipts, and general help center inquiries (FAQ).\n"
     "DO NOT use this for technical integration or API queries. "
 )
 
