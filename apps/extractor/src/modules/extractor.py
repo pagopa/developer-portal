@@ -115,9 +115,11 @@ def process_folder(input_folder: str, output_folder: str, llm: LLM) -> dict:
             LOGGER.warning("No documents found to process")
             return stats
 
+        index = 0
         # Process each document sequentially
         for filename, input_doc in documents:
-            LOGGER.info(f"Processing: {filename}")
+            index+=1
+            LOGGER.info(f"Processing: {filename}: {index}/{stats['total']}")
 
             try:
                 # Extract document with LLM

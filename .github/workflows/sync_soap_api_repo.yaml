@@ -14,10 +14,14 @@ on:
           - uat
           - prod
       locale:
-        description: 'Locale to sync to (e.g. "it"). Leave empty for root.'
-        type: string
+        description: 'Locale to sync to (e.g. it). Leave empty for root.'
+        type: choice
         required: false
         default: ''
+        options:
+          - '' # TODO: remove once locale merged in prod and root locale is no more needed
+          - it
+          - en
 
 # Permissions needed for AWS OIDC authentication
 permissions:
