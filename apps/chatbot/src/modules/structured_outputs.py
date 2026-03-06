@@ -2,10 +2,7 @@ from typing import List
 
 from llama_index.core.bridge.pydantic import BaseModel, Field
 
-from src.modules.documents import get_product_list
-
-
-PRODUCTS = get_product_list() + ["api", "webinars"]
+from src.modules import DEVPORTAL_PRODUCTS
 
 
 class Reference(BaseModel):
@@ -38,7 +35,7 @@ class RAGOutput(BaseModel):
         ...,
         description=(
             "A list of products. The list contains one or more of the PagoPA products: "
-            f"{PRODUCTS}"
+            f"{DEVPORTAL_PRODUCTS}"
         ),
     )
     references: List[Reference] = Field(

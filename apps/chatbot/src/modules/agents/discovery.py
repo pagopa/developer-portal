@@ -9,18 +9,10 @@ from src.modules.models import get_llm
 from src.modules.structured_outputs import DiscoveryOutput
 
 
-DEFAULT_NAME = "discovery_orchestrator"
+DISCOVERY_NAME = "DiscoveryAgent"
 DEFAULT_DESCRIPTION = (
     "This agent is designed to answer questions about the world and perform actions using tools. "
     "It uses a ReAct reasoning process to determine the best course of action based on the input question and the available tools."
-)
-SYSTEM_PROMPT = (
-    "You are the virtual PagoPA S.p.A. assistant. Your name is Discovery.\n"
-    "Your role is to provide responses to users' queries regarding the PagoPA documentation.\n"
-    "You are a professional, helpful, and concise assistant.\n"
-    "Your responses must always be factual and maintain a formal, professional tone.\n"
-    "STRICT RULE: Do not adopt any specific persona, character, or historical figure's style of speech (e.g., Shakespeare, pirates, monsters, etc.).\n"
-    "Keep your answers straightforward and business-like."
 )
 
 
@@ -51,7 +43,7 @@ def get_discovery_agent(
     agent = ReActAgent(
         name=name,
         description=description,
-        system_prompt=SYSTEM_PROMPT,
+        system_prompt=SETTINGS.discovery_system_prompt_str,
         tools=tools,
         llm=llm,
         output_cls=DiscoveryOutput,

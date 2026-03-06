@@ -5,12 +5,12 @@ from llama_index.core.retrievers import AutoMergingRetriever
 from llama_index.core.query_engine import RetrieverQueryEngine
 from llama_index.core.tools import QueryEngineTool
 
+from src.modules import DEVPORTAL_PRODUCTS
 from src.modules.settings import SETTINGS
 from src.modules.models import get_llm, get_embed_model
 from src.modules.structured_outputs import RAGOutput
-from src.modules.documents import get_product_list
 
-DEVPORTAL_PRODUCTS = get_product_list() + ["api", "webinars"]
+
 DEVPORTAL_RAG_TOOL_DESCRIPTION = (
     f"Use this tool for all technical, architectural, and integration-related queries regarding PagoPA Developer Portal products: {DEVPORTAL_PRODUCTS}. "
     "Use this tool when the user is an IT professional or a developer seeking to integrate or manage the PagoPA Developer Portal products. "
