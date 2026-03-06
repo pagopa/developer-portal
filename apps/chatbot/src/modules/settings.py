@@ -11,8 +11,12 @@ from src.modules.logger import get_logger
 LOGGER = get_logger(__name__, level=os.getenv("LOG_LEVEL", "info"))
 CWF = Path(__file__)
 ROOT = CWF.parent.parent.parent.absolute().__str__()
-PARAMS = yaml.safe_load(open(os.path.join(ROOT, "config", "params.yaml"), "r"))
-PROMPTS = yaml.safe_load(open(os.path.join(ROOT, "config", "prompts.yaml"), "r"))
+PARAMS = yaml.safe_load(
+    Path(os.path.join(ROOT, "config", "params.yaml")).read_text(encoding="utf-8")
+)
+PROMPTS = yaml.safe_load(
+    Path(os.path.join(ROOT, "config", "prompts.yaml")).read_text(encoding="utf-8")
+)
 CHANGELOG_PATH = os.path.join(ROOT, "CHANGELOG.md")
 AWS_SESSION = boto3.Session()
 AWS_SSM_CLIENT = AWS_SESSION.client("ssm")
@@ -138,6 +142,7 @@ class ChatbotSettings(BaseSettings):
     )
 
     # prompts
+    discovery_system_prompt_str: str = PROMPTS["discovery_system_prompt_str"]
     qa_prompt_str: str = PROMPTS["qa_prompt_str"]
     react_system_str: str = PROMPTS["react_system_header_str"]
     refine_prompt_str: str = PROMPTS["refine_prompt_str"]
