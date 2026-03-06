@@ -6,18 +6,19 @@ const nameMatcher = /^(?=.{1,50}$)[A-Za-z0-9]+(?:[ _'-]?[A-Za-z0-9]+)*$/;
 export const makeHandler =
   (signUpAllowedEmailDomains: ReadonlyArray<string>) =>
   async (event: PreSignUpTriggerEvent): Promise<PreSignUpTriggerEvent> => {
-    const email = event.request.userAttributes['email'].toLowerCase().trim();
+    const email = event.request.userAttributes['email']?.toLowerCase().trim();
+
+    if (!email || !emailMatcher.test(email)) {
+      // eslint-disable-next-line functional/no-throw-statements
+      throw new Error('Invalid email format');
+    }
+
     const domain = email.split('@')[1];
 
     // Check if the domain is allowed
     if (!signUpAllowedEmailDomains.includes(domain)) {
       // eslint-disable-next-line functional/no-throw-statements
       throw new Error('Invalid email domain');
-    }
-
-    if (!email || !emailMatcher.test(email)) {
-      // eslint-disable-next-line functional/no-throw-statements
-      throw new Error('Invalid email format');
     }
 
     const givenName = event.request.userAttributes['given_name'];

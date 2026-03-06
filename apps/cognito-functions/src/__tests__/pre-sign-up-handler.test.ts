@@ -2,7 +2,7 @@ import { PreSignUpTriggerEvent } from 'aws-lambda';
 import { makeHandler } from '../pre-sign-up-handler';
 
 const makeEvent = (
-  attributes: Record<string, string>
+  attributes: Record<string, string | undefined>
 ): PreSignUpTriggerEvent => ({
   version: 'aVersion',
   region: 'eu-south-1',
@@ -13,13 +13,15 @@ const makeEvent = (
     clientId: 'aClientId',
   },
   request: {
-    userAttributes: {
-      email: 'user@example.com',
-      given_name: 'John',
-      family_name: 'Doe',
-      'custom:job_role': 'Developer',
-      ...attributes,
-    },
+    userAttributes: Object.fromEntries(
+      Object.entries({
+        email: 'user@example.com',
+        given_name: 'John',
+        family_name: 'Doe',
+        'custom:job_role': 'Developer',
+        ...attributes,
+      }).filter(([, v]) => v !== undefined)
+    ) as Record<string, string>,
     validationData: {},
   },
   response: {
@@ -74,5 +76,26 @@ describe('PreSignUp Handler', () => {
     const event = makeEvent({ 'custom:job_role': 'Software Engineer' });
     const result = await handler(event);
     expect(result).toBe(event);
+  });
+
+  it('should throw Invalid email format (not TypeError) when email is absent', async () => {
+    const event = makeEvent({ email: undefined });
+    await expect(handler(event)).rejects.toThrow('Invalid email format');
+    await expect(handler(event)).rejects.not.toThrow(TypeError);
+  });
+
+  it('should throw Invalid email format when email is empty string', async () => {
+    const event = makeEvent({ email: '' });
+    await expect(handler(event)).rejects.toThrow('Invalid email format');
+  });
+
+  it('should throw Invalid given name when given_name is absent', async () => {
+    const event = makeEvent({ given_name: undefined });
+    await expect(handler(event)).rejects.toThrow('Invalid given name');
+  });
+
+  it('should throw Invalid family name when family_name is absent', async () => {
+    const event = makeEvent({ family_name: undefined });
+    await expect(handler(event)).rejects.toThrow('Invalid family name');
   });
 });
