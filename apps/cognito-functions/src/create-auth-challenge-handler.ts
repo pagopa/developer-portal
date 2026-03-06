@@ -66,16 +66,17 @@ export const makeHandler =
       const { email } = event.request.userAttributes;
       const verificationCode = env.generateVerificationCode();
       const subject = `Codice di verifica PagoPA DevPortal: ${verificationCode}`;
+      const emailBody = await makeOtpMessageEmail(
+        verificationCode,
+        env.config.domain,
+        OTP_DURATION_MINUTES
+      );
       const sendEmailCommand = new SendEmailCommand(
         makeSesEmailParameters(
           email,
           env.config.fromEmailAddress,
           subject,
-          makeOtpMessageEmail(
-            verificationCode,
-            env.config.domain,
-            OTP_DURATION_MINUTES
-          )
+          emailBody
         )
       );
 

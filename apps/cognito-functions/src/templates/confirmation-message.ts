@@ -5,7 +5,8 @@ export const makeConfirmationEmail = (
   confirmationLink: string,
   domain: string,
   locale = 'it'
-) => parseMjmlToHtml(confirmationMessage(confirmationLink, domain, locale));
+): Promise<string> =>
+  parseMjmlToHtml(confirmationMessage(confirmationLink, domain, locale));
 
 const confirmationMessage = (
   confirmationLink: string,

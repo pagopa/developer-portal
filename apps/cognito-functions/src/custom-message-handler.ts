@@ -43,7 +43,11 @@ export const makeHandler =
       }/${locale}/auth/confirmation?username=${sanitize(
         username
       )}&code=${sanitize(codeParameter)}`;
-      const emailMessage = makeConfirmationEmail(href, env.domain, locale);
+      const emailMessage = await makeConfirmationEmail(
+        href,
+        env.domain,
+        locale
+      );
       const emailSubject =
         EMAIL_TRANSLATIONS.confirmation[
           locale as keyof typeof EMAIL_TRANSLATIONS.confirmation
@@ -57,7 +61,7 @@ export const makeHandler =
       }/${locale}/auth/change-password?username=${sanitize(
         username
       )}&code=${sanitize(codeParameter)}`;
-      const emailMessage = makeConfirmationForgotPasswordEmail(
+      const emailMessage = await makeConfirmationForgotPasswordEmail(
         href,
         env.domain,
         locale
@@ -77,7 +81,7 @@ export const makeHandler =
       }/${locale}/auth/email-confirmation?username=${sanitize(
         username
       )}&code=${sanitize(codeParameter)}`;
-      const emailMessage = makeConfirmationUpdateEmailAddress(
+      const emailMessage = await makeConfirmationUpdateEmailAddress(
         href,
         env.domain,
         locale

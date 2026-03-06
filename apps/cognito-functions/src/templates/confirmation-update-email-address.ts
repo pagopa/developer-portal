@@ -5,7 +5,7 @@ export const makeConfirmationUpdateEmailAddress = (
   confirmationLink: string,
   domain: string,
   locale = 'it'
-) =>
+): Promise<string> =>
   parseMjmlToHtml(updateEmailAddressMessage(confirmationLink, domain, locale));
 
 const updateEmailAddressMessage = (

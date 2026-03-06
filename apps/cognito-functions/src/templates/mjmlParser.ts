@@ -1,8 +1,8 @@
 import mjml2html from 'mjml';
-import { minify, Options } from 'html-minifier';
+import { minify, MinifierOptions } from 'html-minifier-next';
 import { pipe } from 'fp-ts/function';
 
-const defaultMinificationOptions = {
+const defaultMinificationOptions: MinifierOptions = {
   collapseWhitespace: true,
   minifyCSS: true,
   caseSensitive: true,
@@ -11,6 +11,6 @@ const defaultMinificationOptions = {
 
 export const parseMjmlToHtml = (
   mjml: string,
-  minificationOptions: Options = defaultMinificationOptions
-): string =>
+  minificationOptions: MinifierOptions = defaultMinificationOptions
+): Promise<string> =>
   pipe(mjml2html(mjml), ({ html }) => minify(html, minificationOptions));

@@ -5,7 +5,7 @@ export const makePostConfirmationConfirmSignUpEmail = (
   firstName: string,
   domain: string,
   locale = 'it'
-): string =>
+): Promise<string> =>
   parseMjmlToHtml(
     postConfirmationConfirmSignUpMessage(firstName, domain, locale)
   );

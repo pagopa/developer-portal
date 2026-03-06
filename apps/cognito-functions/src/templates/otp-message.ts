@@ -17,7 +17,8 @@ export const makeOtpMessageEmail = (
   otp: string,
   domain: string,
   codeDurationMinutes: number
-): string => parseMjmlToHtml(otpMessage(otp, domain, codeDurationMinutes));
+): Promise<string> =>
+  parseMjmlToHtml(otpMessage(otp, domain, codeDurationMinutes));
 
 const otpMessage = (
   otp: string,

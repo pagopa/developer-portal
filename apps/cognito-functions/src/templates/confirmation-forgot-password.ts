@@ -5,7 +5,7 @@ export const makeConfirmationForgotPasswordEmail = (
   confirmationLink: string,
   domain: string,
   locale = 'it'
-): string =>
+): Promise<string> =>
   parseMjmlToHtml(confirmationMessage(confirmationLink, domain, locale));
 
 const confirmationMessage = (

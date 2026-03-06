@@ -64,17 +64,13 @@ export const makeHandler =
           locale as keyof typeof EMAIL_TRANSLATIONS.postConfirmation
         ]?.subject || EMAIL_TRANSLATIONS.postConfirmation.it.subject;
 
+      const body = await makePostConfirmationConfirmSignUpEmail(
+        sanitize(given_name),
+        config.domain,
+        locale
+      );
       const sendEmail = pipe(
-        makeSesEmailParameters(
-          email,
-          config.fromEmailAddress,
-          subject,
-          makePostConfirmationConfirmSignUpEmail(
-            sanitize(given_name),
-            config.domain,
-            locale
-          )
-        ),
+        makeSesEmailParameters(email, config.fromEmailAddress, subject, body),
         (sendEmailCommandInput) => new SendEmailCommand(sendEmailCommandInput),
         (sendEmailCommand) =>
           TE.tryCatch(() => ses.send(sendEmailCommand), E.toError),
