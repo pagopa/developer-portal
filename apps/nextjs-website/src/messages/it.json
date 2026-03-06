@@ -481,7 +481,8 @@
   },
   "footer": {
     "companyLink": {
-      "ariaLabel": "Link: vai al sito di PagoPA S.p.A."
+      "ariaLabel": "Link: vai al sito di PagoPA S.p.A.",
+      "href": "https://www.pagopa.it/"
     },
     "languages": {
       "it": "Italiano"
@@ -491,28 +492,47 @@
       "links": {
         "accessibility": {
           "ariaLabel": "Vai al link: Accessibilità",
+          "href": "https://form.agid.gov.it/view/5de36b80-97b7-11f0-b1d3-cb68959f3505",
           "label": "Accessibilità"
         }
       },
-      "title": "Seguici su"
+      "title": "Seguici su",
+      "socialLinks": {
+        "linkedin": {
+          "href": "https://www.linkedin.com/company/pagopa/"
+        },
+        "twitter": {
+          "href": "https://twitter.com/pagopa"
+        },
+        "instagram": {
+          "href": "https://www.instagram.com/pagopaspa/"
+        },
+        "medium": {
+          "href": "https://medium.com/pagopa-spa"
+        }
+      }
     },
     "aboutUs": {
       "title": "",
       "links": {
         "whoWeAre": {
           "ariaLabel": "Vai al link: Chi siamo",
+          "href": "https://www.pagopa.it/it/societa/chi-siamo",
           "label": "Chi siamo"
         },
         "pnrr": {
           "ariaLabel": "Vai al link: PNRR",
+          "href": "https://www.pagopa.it/it/opportunita/pnrr/progetti/",
           "label": "PNRR"
         },
         "media": {
           "ariaLabel": "Vai al link: Media",
+          "href": "https://www.pagopa.it/it/media",
           "label": "Media"
         },
         "workWithUs": {
           "ariaLabel": "Vai al link: Lavora con noi",
+          "href": "https://www.pagopa.it/it/lavora-con-noi",
           "label": "Lavora con noi"
         }
       }
@@ -530,14 +550,17 @@
         },
         "societaTrasparente": {
           "ariaLabel": "Vai al link: Società trasparente",
+          "href": "https://pagopa.portaleamministrazionetrasparente.it/",
           "label": "Società trasparente"
         },
         "disclosurePolicy": {
           "ariaLabel": "Vai al link: Responsible Disclosure Policy",
+          "href": "https://www.pagopa.it/it/responsible-disclosure-policy/",
           "label": "Responsible Disclosure Policy"
         },
         "model231": {
           "ariaLabel": "Vai al link: Modello 231",
+          "href": "https://pagopa.portaleamministrazionetrasparente.it/pagina746_altri-contenuti.html",
           "label": "Modello 231"
         }
       }
@@ -547,26 +570,32 @@
       "links": {
         "appIO": {
           "ariaLabel": "Vai al link: App IO",
+          "href": "https://www.pagopa.it/it/prodotti-e-servizi/app-io",
           "label": "App IO"
         },
         "pagoPA": {
           "ariaLabel": "Vai al link: Piattaforma pagoPA",
+          "href": "https://www.pagopa.it/it/prodotti-e-servizi/piattaforma-pagopa",
           "label": "Piattaforma pagoPA"
         },
         "pari": {
           "ariaLabel": "Vai al link: PARI",
+          "href": "https://www.pagopa.it/prodotti-e-servizi/pari/",
           "label": "PARI"
         },
         "checkIBAN": {
           "ariaLabel": "Vai al link: Check IBAN",
+          "href": "https://www.pagopa.it/it/prodotti-e-servizi/check-iban",
           "label": "Check IBAN"
         },
         "send": {
           "ariaLabel": "Vai al link: SEND - Servizio Notifiche Digitali",
+          "href": "https://www.pagopa.it/it/prodotti-e-servizi/send-notifiche-digitali/",
           "label": "SEND - Servizio Notifiche Digitali"
         },
         "pdnd": {
           "ariaLabel": "Vai al link: Piattaforma Digitale Nazionale Dati - Interoperabilità",
+          "href": "https://www.pagopa.it/it/prodotti-e-servizi/piattaforma-digitale-nazionale-dati/",
           "label": "Piattaforma Digitale Nazionale Dati - Interoperabilità"
         }
       }
