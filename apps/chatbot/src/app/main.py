@@ -1,14 +1,17 @@
 import json
 import logging
+import time
 import mangum
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from hypercorn.config import Config
 from hypercorn.asyncio import serve
 from starlette.middleware.cors import CORSMiddleware
 
 from src.app.routers import queries, sessions
 from src.modules import SETTINGS
+
+LOGGER = logging.getLogger(__name__)
 
 LOG_LEVEL_MAP = {
     "debug": logging.DEBUG,
@@ -23,6 +26,10 @@ logging.basicConfig(
     format="%(levelname)s [%(name)s] [%(funcName)s]: %(message)s",
 )
 
+# Silence noisy third-party loggers
+for _noisy in ("botocore", "boto3", "urllib3", "s3transfer", "asyncio"):
+    logging.getLogger(_noisy).setLevel(logging.WARNING)
+
 
 app = FastAPI()
 app.add_middleware(
@@ -34,6 +41,21 @@ app.add_middleware(
 )
 app.include_router(queries.router)
 app.include_router(sessions.router)
+
+
+@app.middleware("http")
+async def log_requests(request: Request, call_next):
+    start = time.time()
+    response = await call_next(request)
+    duration_ms = (time.time() - start) * 1000
+    LOGGER.info(
+        "%s %s -> %s (%.0fms)",
+        request.method,
+        request.url.path,
+        response.status_code,
+        duration_ms,
+    )
+    return response
 
 
 @app.get("/healthz")
