@@ -48,7 +48,7 @@ const CaseHistoryPageTemplate = ({
       return {
         title: product.name,
         text: product.description,
-        href: `/${product.slug}/overview`,
+        href: `/${locale}/${product.slug}/overview`,
         logoUrl: product.logo?.url,
       };
     })
@@ -102,7 +102,6 @@ const CaseHistoryPageTemplate = ({
           backgroundColor={palette.background.paper}
           title={t('caseHistory.productShowcaseLabel')}
           cards={cards}
-          locale={locale}
         />
       )}
     </>
