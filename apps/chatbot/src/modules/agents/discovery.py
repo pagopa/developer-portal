@@ -9,7 +9,7 @@ from src.modules.models import get_llm
 from src.modules.structured_outputs import DiscoveryOutput
 
 
-DISCOVERY_NAME = "DiscoveryAgent"
+DISCOVERY_AGENT_NAME = "DiscoveryAgent"
 DEFAULT_DESCRIPTION = (
     "This agent is designed to answer questions about the world and perform actions using tools. "
     "It uses a ReAct reasoning process to determine the best course of action based on the input question and the available tools."
@@ -25,7 +25,7 @@ def get_discovery_agent(
     """Create and configure a ReActAgent instance.
 
     Args:
-        name: Optional name for the agent. If not provided, ``DEFAULT_NAME`` is used.
+        name: Optional name for the agent. If not provided, ``DISCOVERY_AGENT_NAME`` is used.
         description: Optional description of the agent's role. If not provided,
             ``DEFAULT_DESCRIPTION`` is used.
         tools: Optional list of tools (``BaseTool`` instances or callables) that
@@ -36,7 +36,7 @@ def get_discovery_agent(
         ReActAgent: The configured ReActAgent instance.
     """
 
-    name = name if name else DEFAULT_NAME
+    name = name if name else DISCOVERY_AGENT_NAME
     description = description if description else DEFAULT_DESCRIPTION
     llm = llm if llm else get_llm(temperature=SETTINGS.temperature_agent)
 
