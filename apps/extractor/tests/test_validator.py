@@ -1,46 +1,8 @@
 import pytest
 from src.modules.validator import (
-    has_rendered_markdown,
     calculate_similarity,
     validate_extracted_text,
 )
-
-# ---------------------------------------------------------------------------
-# has_rendered_markdown
-# ---------------------------------------------------------------------------
-
-
-class TestHasRenderedMarkdown:
-    def test_heading_is_detected(self):
-        assert has_rendered_markdown("# Hello World") is True
-
-    def test_bold_is_detected(self):
-        assert has_rendered_markdown("This is **bold** text") is True
-
-    def test_italic_is_detected(self):
-        assert has_rendered_markdown("This is *italic* text") is True
-
-    def test_unordered_list_is_detected(self):
-        assert has_rendered_markdown("- item one\n- item two") is True
-
-    def test_ordered_list_is_detected(self):
-        assert has_rendered_markdown("1. first\n2. second") is True
-
-    def test_inline_code_is_detected(self):
-        assert has_rendered_markdown("Use `print()` to output text") is True
-
-    def test_blockquote_is_detected(self):
-        assert has_rendered_markdown("> This is a quote") is True
-
-    def test_link_is_detected(self):
-        assert has_rendered_markdown("[click here](https://example.com)") is True
-
-    def test_plain_text_returns_false(self):
-        assert has_rendered_markdown("Just plain text with no markdown syntax") is False
-
-    def test_empty_string_returns_false(self):
-        assert has_rendered_markdown("") is False
-
 
 # ---------------------------------------------------------------------------
 # calculate_similarity
@@ -81,7 +43,6 @@ class TestCalculateSimilarity:
 # validate_extracted_text
 # ---------------------------------------------------------------------------
 
-MARKDOWN_TEXT = "# Title\n\nThis is **important** content with a `code snippet`.\n\n- item one\n- item two"
 NON_MARKDOWN_TEXT = "Title This is important content with a code snippet. item one item two"
 PLAIN_TEXT = "This is just plain prose without any markdown syntax at all"
 
@@ -92,29 +53,22 @@ REAL_BODY_TEXT_GIBBERISH = "Ciao, come possiamo aiutarti?\n\n #Ricevi le tue com
 REAL_EXTRACTED_BODY_TEXT = "Ciao, come possiamo aiutarti?\n\nRicevi le tue comunicazioni a valore legale su IO!\n\nAttiva il servizio SEND - Notifiche digitali su IO per ricevere e pagare le tue notifiche SEND comodamente in app.\n\n[Attiva SEND su IO]\n\n## I più letti\n\n### Cos’è SEND e come funziona\n\nSEND - Servizio Notifiche Digitali è una piattaforma che digitalizza e semplifica la gestione delle notifiche.\n\n### Aggiungere e modificare i recapiti\n\nSe inserisci e mantieni aggiornati i tuoi recapiti, riceverai le notifiche SEND in digitale ed eviterai ritardi o problemi.\n\n### Ho domande sul contenuto della notifica\n\nSe hai ricevuto da SEND una comunicazione a valore legale e hai domande sul suo contenuto, contatta l’ente che l’ha inviata.\n\n## Esplora tutti gli argomenti\n\n### Configurazione e utilizzo\n\nCos’è SEND e come funziona, cosa serve per accedere, come aggiungere i recapiti.\n\n### Notifiche SEND\n\nA chi rivolgerti se hai domande sul contenuto della notifica e molto altro.\n\n### Modalità di pagamento e ricevute\n\nCome pagare una notifica SEND, dove trovare le ricevute, come mai l'importo può variare.\n\n### Deleghe\n\nCome delegare qualcuno a visualizzare e gestire le proprie notifiche.\n\n## Cerchi assistenza su un altro prodotto?\n\n* Pagamenti pagoPA\n* IO - L'app dei servizi pubblici\n\nNon hai trovato la risposta che cercavi?\n\nScrivici su SEND\n\nAccedi alla piattaforma per scriverci e ricevere assistenza personalizzata\n\nCittadini\n\nAccedi come persona fisica, libero professionista o ditta individuale\n\n[Accedi a SEND]"
 
 class TestValidateExtractedText:
-    def test_high_similarity_with_markdown_returns_true(self):
-        # Extracted and source are identical → similarity = 1.0, markdown present
-        assert validate_extracted_text(MARKDOWN_TEXT, MARKDOWN_TEXT) is True
+    def test_high_similarity_returns_true(self):
+        # Extracted and source are identical → similarity = 1.0
+        assert validate_extracted_text(PLAIN_TEXT, PLAIN_TEXT) is True
 
     def test_low_similarity_returns_false(self):
         source = "completely unrelated topic about cooking recipes pasta"
         assert (
-            validate_extracted_text(MARKDOWN_TEXT, source, similarity_threshold=0.8)
+            validate_extracted_text(PLAIN_TEXT, source, similarity_threshold=0.8)
             is False
         )
 
-    def test_high_similarity_without_markdown_returns_false(self):
-        assert validate_extracted_text(PLAIN_TEXT, PLAIN_TEXT) is False
-
-    def test_high_similarity_without_and_without_markdown_returns_true(self):
-        assert validate_extracted_text(MARKDOWN_TEXT, NON_MARKDOWN_TEXT) is True
-
     def test_custom_threshold_respected(self):
-        # With a very low threshold even moderate similarity passes the check,
-        # but markdown must still be present.
-        slightly_different = MARKDOWN_TEXT + "\n\nExtra sentence here."
+        # With a very low threshold even moderate similarity passes the check
+        slightly_different = PLAIN_TEXT + "\n\nExtra sentence here."
         result = validate_extracted_text(
-            slightly_different, MARKDOWN_TEXT, similarity_threshold=0.1
+            slightly_different, PLAIN_TEXT, similarity_threshold=0.1
         )
         assert result is True
 
@@ -122,7 +76,7 @@ class TestValidateExtractedText:
         source = "completely different topic about cooking and recipes"
         # Force similarity below threshold
         assert (
-            validate_extracted_text(MARKDOWN_TEXT, source, similarity_threshold=0.99)
+            validate_extracted_text(PLAIN_TEXT, source, similarity_threshold=0.99)
             is False
         )
 
