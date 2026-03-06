@@ -323,6 +323,8 @@
     "company": "Tipologia Ente o Azienda",
     "role": "Ruolo",
     "requiredFieldError": "Questo campo non può essere vuoto",
+    "maxLengthFieldError": "Il numero massimo consentito è 100 caratteri",
+    "nameFieldError": "Utilizza soltanto lettere e numeri, senza caratteri speciali (eccetto spazi, underscore, trattini e apostrofi) e con un massimo di 50 caratteri",
     "emailFieldError": "Inserisci un indirizzo email valido. Utilizza soltanto lettere minuscole e non utilizzare caratteri speciali",
     "emailAlreadyTaken": "Esiste già un account per questo indirizzo email",
     "goToGuide": "Vai alla guida",
