@@ -102,6 +102,7 @@ const CaseHistoryPageTemplate = ({
           backgroundColor={palette.background.paper}
           title={t('caseHistory.productShowcaseLabel')}
           cards={cards}
+          locale={locale}
         />
       )}
     </>

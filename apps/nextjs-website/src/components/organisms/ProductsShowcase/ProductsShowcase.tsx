@@ -18,6 +18,7 @@ export type ProductsShowcaseProps = {
     xs: boolean | GridSize;
     md: boolean | GridSize;
   };
+  locale?: string;
 };
 
 const ProductsShowcase = ({
@@ -26,6 +27,7 @@ const ProductsShowcase = ({
   backgroundColor,
   cards,
   cardSize,
+  locale,
 }: ProductsShowcaseProps) => {
   const theme = useTheme();
   return (
@@ -42,7 +44,7 @@ const ProductsShowcase = ({
         cards={cards.map((card) => ({
           title: card.title,
           text: card.text,
-          href: card.href,
+          href: locale ? `/${locale}${card.href}` : card.href,
           icon: card.logoUrl,
           useSrc: true,
         }))}
