@@ -6,7 +6,7 @@ const nameMatcher = /^(?=.{1,50}$)[A-Za-z0-9]+(?:[ _'-]?[A-Za-z0-9]+)*$/;
 export const makeHandler =
   (signUpAllowedEmailDomains: ReadonlyArray<string>) =>
   async (event: PreSignUpTriggerEvent): Promise<PreSignUpTriggerEvent> => {
-    const email = event.request.userAttributes['email'];
+    const email = event.request.userAttributes['email'].toLowerCase().trim();
     const domain = email.split('@')[1];
 
     // Check if the domain is allowed
