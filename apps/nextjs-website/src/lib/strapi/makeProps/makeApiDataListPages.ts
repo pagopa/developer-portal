@@ -89,7 +89,7 @@ export function makeApiDataListPagesProps(
           updatedAt: attributes.updatedAt,
           enableFilters: attributes.enableFilters,
           tags: product.tags,
-        };
+        } as unknown as ApiDataListPageTemplateProps;
       } catch (error) {
         // eslint-disable-next-line functional/no-expression-statements
         console.error(

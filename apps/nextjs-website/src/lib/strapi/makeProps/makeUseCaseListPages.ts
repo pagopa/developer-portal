@@ -2,6 +2,7 @@
 import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
 import { makeBaseProductWithoutLogoProps } from './makeProducts';
 import { compact } from 'lodash';
+import { makeTagProps } from '@/lib/strapi/makeProps/makeTags';
 import { StrapiUseCaseListPages } from '@/lib/strapi/types/useCaseListPage';
 import { UseCase } from '@/lib/types/useCaseData';
 import { UseCasesPageProps } from '@/app/[locale]/[productSlug]/use-cases/page';
@@ -49,8 +50,7 @@ export function makeUseCaseListPagesProps(
                 : undefined,
               showInOverview: false,
               coverImage: useCaseAttributes.coverImage.data?.attributes,
-              tags:
-                useCaseAttributes.tags.data?.map((tag) => tag.attributes) || [],
+              tags: useCaseAttributes.tags.data?.map(makeTagProps) || [],
             } satisfies UseCase;
           } catch (error) {
             // eslint-disable-next-line functional/no-expression-statements

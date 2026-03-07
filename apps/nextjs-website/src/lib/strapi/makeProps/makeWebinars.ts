@@ -2,6 +2,7 @@
 import { Webinar } from '../../types/webinar';
 import { StrapiWebinar, StrapiWebinars } from '@/lib/strapi/types/webinars';
 import { compact } from 'lodash';
+import { makeWebinarCategoryProps } from '@/lib/strapi/makeProps/makeWebinarCategories';
 
 export type WebinarsProps = readonly Webinar[];
 
@@ -59,7 +60,11 @@ export const makeWebinarProps = (
       subscribeCtaLabel: strapiWebinar.attributes.subscribeParagraphLabel,
       imagePath: strapiWebinar.attributes.coverImage.data.attributes.url,
       seo: strapiWebinar.attributes.seo,
-      tag: strapiWebinar.attributes.webinarCategory?.data?.attributes,
+      tag: strapiWebinar.attributes.webinarCategory?.data
+        ? makeWebinarCategoryProps(
+            strapiWebinar.attributes.webinarCategory.data
+          )
+        : undefined,
       headerImage: strapiWebinar.attributes.headerImage?.data?.attributes,
       updatedAt: strapiWebinar.attributes.updatedAt,
     } satisfies Webinar;

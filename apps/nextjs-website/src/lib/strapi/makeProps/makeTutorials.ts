@@ -7,6 +7,7 @@ import { RelatedLinksProps } from '@/components/atoms/RelatedLinks/RelatedLinks'
 import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
 import { StrapiTutorials } from '@/lib/strapi/types/tutorial';
 import { compact } from 'lodash';
+import { makeTagProps } from '@/lib/strapi/makeProps/makeTags';
 
 export type TutorialProps = Tutorial & {
   readonly productSlug: string;
@@ -66,7 +67,7 @@ export function makeTutorialsProps(
                   makeBannerLinkProps
                 ),
           seo: attributes.seo,
-          tags: attributes.tags.data?.map((tag) => tag.attributes) || [],
+          tags: attributes.tags.data?.map(makeTagProps) || [],
           updatedAt: attributes.updatedAt,
           redirectPath: attributes.redirectPath,
         } satisfies TutorialProps;
