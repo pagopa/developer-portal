@@ -6,6 +6,9 @@ locals {
     evaluate = {
       repository_name = "evaluate"
     }
+    monitor = {
+      repository_name = "chatbot-monitor"
+    }
     chatbotindex = {
       repository_name = "chatbot-index"
     }
