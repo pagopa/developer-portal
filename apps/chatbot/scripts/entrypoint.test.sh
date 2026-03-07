@@ -13,5 +13,4 @@ echo '-=-=-=-= init AWS local services'
 ./scripts/dynamodb-init.sh > /dev/null 2>&1
 ./scripts/sqs-init.sh > /dev/null 2>&1
 
-# Execute the CMD from Dockerfile or docker-compose
 exec "$@"
