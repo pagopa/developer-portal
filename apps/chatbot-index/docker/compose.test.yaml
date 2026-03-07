@@ -18,7 +18,7 @@ services:
         condition: service_started
 
   redis:
-    image: redis/redis-stack:7.2.0-v13
+    image: redis/redis-stack:7.2.0-v13@sha256:2b000b938e407d14acafa9b7affd4c5a94ceeec572b25b15dcef0d3a6c064d7e
     healthcheck:
       test: [ "CMD", "redis-cli", "ping" ]
       interval: 3s
@@ -31,7 +31,7 @@ services:
         condition: service_completed_successfully
 
   redis-seed:
-    image: alpine:3.18
+    image: alpine:3.18@sha256:de0eb0b3f2a47ba1eb89389859a9bd88b28e82f5826b6969ad604979713c2d4f
     user: root
     volumes:
       - redis_data:/data
@@ -41,7 +41,7 @@ services:
 
   redis-fix-perms:
     # one-shot: ensure /data owned by redis user before redis starts
-    image: redis/redis-stack:7.2.0-v13
+    image: redis/redis-stack:7.2.0-v13@sha256:2b000b938e407d14acafa9b7affd4c5a94ceeec572b25b15dcef0d3a6c064d7e
     user: root
     volumes:
       - redis_data:/data
@@ -52,7 +52,7 @@ services:
     restart: "no"
     
   motoserver:
-    image: motoserver/moto:5.1.21
+    image: motoserver/moto:5.1.21@sha256:93ad54da7badce7f9c13e5e6439c93564c764663c42872d2c39f718aa484047a
     env_file: ../.env.test
 
 volumes:
