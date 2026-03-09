@@ -24,7 +24,6 @@ on:
         default: cittadino-index
         options:
           - cittadino-index
-          - prova-noemi-index
       depth:
         description: 'Maximum recursion depth for crawling links (optional)'
         required: false
