@@ -2,4 +2,4 @@
 "extractor": patch
 ---
 
-Change max_tokens variable name
+Rename all extractor-specific LLM parameters with EXTRACTOR_ prefix
