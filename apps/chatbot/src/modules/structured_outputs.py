@@ -29,13 +29,12 @@ class RAGOutput(BaseModel):
     """A structured output for a RAG query."""
 
     response: str = Field(
-        ..., description="The generated answer to the user's query in markdown format."
+        ..., description="The generated answer to the user's query in Markdown format."
     )
     products: List[str] = Field(
         ...,
         description=(
-            "A list of products. The list contains one or more of the PagoPA products: "
-            f"{PRODUCTS}"
+            f"A list of products. The list contains one or more of the PagoPA products: {PRODUCTS}"
         ),
     )
     references: List[Reference] = Field(
@@ -58,12 +57,12 @@ class DiscoveryOutput(BaseModel):
     """A structured output for a RAG query."""
 
     response: str = Field(
-        ..., description="The generated answer to the user's query in markdown format."
+        ..., description="The generated answer to the user's query in Markdown format."
     )
     products: List[str] = Field(
         default=[],
         description=(
-            "A list of products. The list contains one or more of the PagoPA products."
+            f"A list of products. The list contains one or more of the PagoPA products: {PRODUCTS}."
         ),
     )
     references: List[Reference] = Field(
