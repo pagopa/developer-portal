@@ -30,7 +30,11 @@ async def generate_questions(
     )
 
     response = await sllm.acomplete(prompt)
-    return response.raw
+    raw = response.raw
+    if raw is None:
+        # Fallback to a valid, but empty, structured output when parsing fails
+        raw = FollowUpQuestionsOutput(questions=[])
+    return raw
 
 
 def follow_up_questions_tool(name: str | None = None) -> FunctionTool:
