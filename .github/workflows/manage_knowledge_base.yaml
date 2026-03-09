@@ -29,6 +29,7 @@ on:
         options:
           - update
           - create
+          - none
       vector_index_name:
         description: 'Vector Index Name'
         required: true
@@ -52,11 +53,6 @@ on:
         default: true
       run_extractor:
         description: 'Whether to run the extractor (optional, default: true)'
-        required: false
-        type: boolean
-        default: true
-      run_vector_index:
-        description: 'Whether to create the vector index (optional, default: true)'
         required: false
         type: boolean
         default: true
@@ -138,7 +134,7 @@ jobs:
     runs-on: codebuild-${{ inputs.environment }}-github-runner-${{ github.run_id }}-${{ github.run_attempt }}
     environment: ${{ inputs.environment }}
     needs: manage-structured-data
-    if: ${{ inputs.run_vector_index }}
+    if: ${{ inputs.vector_index_mode != 'none' }}
 
     concurrency:
       group: ${{ github.workflow }}-${{ inputs.environment }}
