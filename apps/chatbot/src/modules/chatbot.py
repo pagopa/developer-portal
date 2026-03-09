@@ -70,6 +70,7 @@ class Chatbot:
         self.qa_prompt_tmpl, self.ref_prompt_tmpl = self._get_prompt_templates()
 
         tools = []
+        self.tool_names = []
         try:
             devportal_index = load_index_redis(index_id=SETTINGS.devportal_index_id)
             tools.append(
@@ -81,6 +82,7 @@ class Chatbot:
                     refine_template=self.ref_prompt_tmpl,
                 )
             )
+            self.tool_names.append(DEVPORTAL_TOOL_NAME)
         except Exception as e:
             LOGGER.error(f"Failed to load DevPortal index: {e}")
             raise
@@ -97,6 +99,7 @@ class Chatbot:
                 ),
                 follow_up_questions_tool(name=CHIPS_TOOL_NAME),
             ]
+            self.tool_names += [CITTADINO_TOOL_NAME, CHIPS_TOOL_NAME]
         except Exception as e:
             LOGGER.error(f"Failed to load Cittadino index: {e}")
             raise
@@ -151,6 +154,7 @@ class Chatbot:
                     references_list.append(f"[{ref['title']}]({ref['url']})")
 
             retrieved_contexts = []
+            used_tools = [False] * self.num_tools
             for tool_call in engine_response.tool_calls:
                 raw_output = tool_call.tool_output.raw_output
                 nodes = getattr(raw_output, "source_nodes", [])
@@ -165,11 +169,15 @@ class Chatbot:
                         ]
                     )
 
-            chips = (
-                engine_response.structured_response["follow_up_questions"]
-                if len(engine_response.tool_calls) == self.num_tools
-                else []
-            )
+                tool_index = self.tool_names.index(tool_call.tool_name)
+                used_tools[tool_index] = True
+
+            if engine_response.structured_response["follow_up_questions"] and all(
+                used_tools
+            ):
+                chips = engine_response.structured_response["follow_up_questions"]
+            else:
+                chips = []
 
             response_json = {
                 "response": engine_response.structured_response["response"],
