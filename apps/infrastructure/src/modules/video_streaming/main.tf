@@ -643,7 +643,7 @@ resource "aws_ssm_parameter" "strapi_api_key" {
 
 # WARN: This Lambda function is deployed with GitHub Actions, so it is not automatically deployed by Terraform. 
 # The code package is a placeholder that needs to be updated with the actual code and deployment process in GitHub Actions.
-resource "archive_file" "ivs_function" {
+data "archive_file" "ivs_function" {
   type        = "zip"
   source_file = "${path.root}/../../ivs-functions/src/index.ts"
   output_path = "${path.root}/../../ivs-functions/out/ivs-functions.zip"
@@ -657,8 +657,8 @@ resource "aws_lambda_function" "ivs_video_processing_function" {
   runtime = "nodejs22.x"
 
   # Point to the placeholder code package
-  filename         = archive_file.ivs_function.output_path
-  source_code_hash = filebase64sha256(archive_file.ivs_function.output_path)
+  filename         = data.archive_file.ivs_function.output_path
+  source_code_hash = data.archive_file.ivs_function.output_base64sha256
 
   timeout       = 30
   memory_size   = 512
@@ -678,8 +678,6 @@ resource "aws_lambda_function" "ivs_video_processing_function" {
       source_code_hash,
     ]
   }
-
-  depends_on = [archive_file.ivs_function]
 
   tags = {
     Name = local.ivs_video_processing_lambda_name

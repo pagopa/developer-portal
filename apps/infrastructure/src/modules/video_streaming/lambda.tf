@@ -1,13 +1,12 @@
 ## Lambda function for webinar metrics ##
 
 locals {
-  webinar_metrics_lambda_name   = "${var.project_name}-webinar-metrics"
-  webinar_metrics_lambda_source = "${path.root}/../../webinar-metrics-function/lambda.py"
+  webinar_metrics_lambda_name = "${var.project_name}-webinar-metrics"
 }
 
 data "archive_file" "webinar_metrics" {
   type        = "zip"
-  source_file = local.webinar_metrics_lambda_source
+  source_file = "${path.root}/../../webinar-metrics-function/lambda.py"
   output_path = "${path.root}/../../webinar-metrics-function/out/webinar-metrics.zip"
 }
 
