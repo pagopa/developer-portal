@@ -1,5 +1,6 @@
 from typing import Union, Tuple, Optional, List, Dict
 
+from workflows import Context
 from llama_index.core import PromptTemplate
 from llama_index.core.llms import ChatMessage, MessageRole
 from llama_index.core.base.response.schema import (
@@ -249,9 +250,12 @@ class Chatbot:
             query_str = query_str + f" | Knowledge Base: {knowledge_base}"
 
         try:
+            ctx = Context.from_dict(self.discovery, {})
             engine_response = await self.discovery.run(
                 user_msg=query_str,
                 chat_history=chat_history,
+                ctx=ctx,
+                early_stopping_method="generate",
             )
             response_json = self._get_response_json(engine_response)
         except Exception as e:
