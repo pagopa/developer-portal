@@ -1,5 +1,19 @@
 # parser
 
+## 1.1.0
+
+### Minor Changes
+
+- 9cf7286: Resolve circular dependencies
+- 787e240: Fix sitemap-parsing test error
+- aeda3ad: Add sitemap parsing functions to parser app
+
+### Patch Changes
+
+- dc13f43: Fix puppeteer setup and update add_knowledge_base workflow
+- ddf2929: Resolve redundant page navigation
+- 213b564: Add functionality to save parsed JSON files in an S3 bucket, to be specified as environment variable
+
 ## 1.0.0
 
 ### Major Changes
