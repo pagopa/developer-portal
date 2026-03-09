@@ -671,7 +671,6 @@ resource "aws_lambda_function" "ivs_video_processing_function" {
 
   lifecycle {
     ignore_changes = [
-      filename,
       source_code_hash,
     ]
   }
