@@ -100,6 +100,8 @@ class Chatbot:
             LOGGER.error(f"Failed to load Cittadino index: {e}")
             raise
 
+        self.num_tools = len(tools)
+
         try:
             self.discovery = get_discovery_agent(
                 name=DISCOVERY_AGENT_NAME,
@@ -164,7 +166,7 @@ class Chatbot:
 
             chips = (
                 engine_response.structured_response["follow_up_questions"]
-                if len(engine_response.tool_calls) == 3
+                if len(engine_response.tool_calls) == self.num_tools
                 else []
             )
 

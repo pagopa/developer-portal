@@ -5,9 +5,9 @@ from llama_index.core.retrievers import AutoMergingRetriever
 from llama_index.core.query_engine import RetrieverQueryEngine
 from llama_index.core.tools import QueryEngineTool
 
-from src.modules import PRODUCTS
 from src.modules.settings import SETTINGS
 from src.modules.models import get_llm, get_embed_model
+from src.modules.structured_outputs import PRODUCTS
 from src.modules.structured_outputs import RAGOutput
 
 

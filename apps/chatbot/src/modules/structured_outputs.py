@@ -2,7 +2,9 @@ from typing import List
 
 from llama_index.core.bridge.pydantic import BaseModel, Field
 
-from src.modules import PRODUCTS
+from src.modules.documents import get_product_list
+
+PRODUCTS = get_product_list() + ["api", "webinars"]
 
 
 class Reference(BaseModel):
