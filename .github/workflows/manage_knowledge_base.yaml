@@ -15,7 +15,7 @@ on:
           - prod
       urls_to_add:
         description: 'Websites to add or update (list of urls, comma-separated)'
-        required: true
+        required: false
         type: string
       urls_to_remove:
         description: 'Websites to remove from the knowledge base (list of urls, comma-separated)'
