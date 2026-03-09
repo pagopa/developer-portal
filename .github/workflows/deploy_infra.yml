@@ -34,7 +34,7 @@ permissions:
 jobs:
   deploy:
     name: Terraform apply (manual on ${{ inputs.environment }})
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     continue-on-error: false
     environment: ${{ inputs.environment }}
 
@@ -47,15 +47,6 @@ jobs:
         uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
         with:
           submodules: recursive
-
-      - name: Setup Node.JS
-        uses: ./.github/actions/setup-node
-
-      - name: Install dependencies
-        run: npm ci --audit=false --fund=false
-
-      - name: Compile Cloudfront Functions
-        run: npm run compile -w cloudfront-functions
 
       - name: Pull & update submodules recursively
         run: git submodule update --init --recursive
