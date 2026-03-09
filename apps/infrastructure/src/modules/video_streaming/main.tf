@@ -645,6 +645,15 @@ locals {
   filename = "${path.root}/../../ivs-functions/out/ivs-functions.zip"
 }
 
+
+# WARN: This Lambda function is deployed with GitHub Actions, so it is not automatically deployed by Terraform. 
+# The code package is a placeholder that needs to be updated with the actual code and deployment process in GitHub Actions.
+data "archive_file" "ivs_function" {
+  type        = "zip"
+  source_file = "${path.root}/../../ivs-functions/src/index.ts"
+  output_path = "${path.root}/../../ivs-functions/out/ivs-functions.zip"
+}
+
 resource "aws_lambda_function" "ivs_video_processing_function" {
   function_name = local.ivs_video_processing_lambda_name
   description   = "Lambda function that processes IVS video recordings when they become available."
