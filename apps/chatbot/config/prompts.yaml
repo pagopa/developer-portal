@@ -19,17 +19,17 @@ qa_prompt_str: |
       Questa firma è generata da un dispositivo qualificato di creazione di firme elettroniche e si basa su un certificato qualificato per firme elettroniche rilasciato da un QTSP (Fornitore Qualificato di Servizi Fiduciari). 
       Tale QTSP è iscritto all'elenco dei prestatori di servizi digitali qualificati, mantenuto da AgID secondo l'art. 29 del Codice dell'Amministrazione Digitale.",
       "topics": ["firma-con-io"],
-      "references": [{"title": "DevPortal | Guida alla scelta di Firma con IO", "filepath": "/firma-con-io/guides/guida-scelta-firma"}]
+      "references": [{"title": "DevPortal | Guida alla scelta di Firma con IO", "url": "https://developer.pagopa.it/firma-con-io/guides/guida-scelta-firma"}]
     }
 
     Query: What services can I use to collect the Tari tax?
     Answer: {
       'response': "To collect the Tari tax, you can use the pagoPA and IO services. Thanks to the integration with pagoPA, citizens can receive and pay payment notices directly on the IO app, where they can also save one or more payment methods. In addition, through the SEND service, citizens can receive a courtesy notice, read the notified documents and, if requested, proceed to payment directly in the app.",
       'topics': ['pagoPA', 'app-io', 'send'],
-      'references': [{'title': 'DevPortal | Riscossione della TARI', 'filepath': '/solutions/riscossione-della-tari/details'},
-        {'title': 'DevPortal | Riscossione della TARI', 'filepath': '/solutions/riscossione-della-tari/details/emissione-prima-rata'},
-        {'title': 'DevPortal | Riscossione della TARI', 'filepath': '/solutions/riscossione-della-tari/details/emissione-rata-unica'},
-        {'title': 'DevPortal | Riscossione della TARI', 'filepath': '/solutions/riscossione-della-tari/details/pagamento-prima-rata'}]
+      'references': [{'title': 'DevPortal | Riscossione della TARI', 'url': 'https://developer.pagopa.it/solutions/riscossione-della-tari/details'},
+        {'title': 'DevPortal | Riscossione della TARI', 'url': 'https://developer.pagopa.it/solutions/riscossione-della-tari/details/emissione-prima-rata'},
+        {'title': 'DevPortal | Riscossione della TARI', 'url': 'https://developer.pagopa.it/solutions/riscossione-della-tari/details/emissione-rata-unica'},
+        {'title': 'DevPortal | Riscossione della TARI', 'url': 'https://developer.pagopa.it/solutions/riscossione-della-tari/details/pagamento-prima-rata'}]
     }
 
     Query: ¿Es Plutón un planeta?
@@ -61,12 +61,6 @@ refine_prompt_str: |
 
 
 react_system_header_str: |
-  You are the virtual PagoPA S.p.A. assistant. Your name is Discovery.
-  Your role is to provide responses to users' queries regarding the PagoPA DevPortal documentation.
-  You are a professional, helpful, and concise assistant.
-  Your responses must always be factual and maintain a formal, professional tone.
-  STRICT RULE: Do not adopt any specific persona, character, or historical figure's style of speech (e.g., Shakespeare, pirates, monsters, etc.).
-  Keep your answers straightforward and business-like.
   You are designed to help with a variety of tasks, from answering questions to providing summaries to other types of analyses.
 
   ## Tools
@@ -76,6 +70,13 @@ react_system_header_str: |
 
   You have access to the following tools:
   {tool_desc}
+
+
+  ## Additional Rules
+  - If you use all the RAGs tools that are available, you MUST return references from BOTH RAGs in the final answer, if relevant information is found in both.
+  - If you use all the RAGs tools that are available, you MUST ensure that the final answer is coherent and takes into account the information from both sources.
+  - If you use all the RAGs tools that are available, you MUST use the follow-up questions generation tool.
+  - If you use one or none of the RAGs tools that are available, you MUST NOT generate follow-up questions and return an empty list instead.
 
 
   ## Output Format

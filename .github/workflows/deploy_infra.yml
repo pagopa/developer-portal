@@ -57,12 +57,6 @@ jobs:
       - name: Compile Cloudfront Functions
         run: npm run compile -w cloudfront-functions
 
-      - name: Build Cognito Functions
-        run: npm run build -w cognito-functions
-
-      - name: Build IVS Functions
-        run: npm run build -w ivs-functions
-      
       - name: Pull & update submodules recursively
         run: git submodule update --init --recursive
 
