@@ -45,10 +45,10 @@ def follow_up_questions_tool(name: str | None = None) -> FunctionTool:
         async_fn=generate_questions,
         name=name,
         description=(
-            "Use this tool AFTER the RAG tools have been used to generate follow-up questions.\n"
+            "Tool to generate follow-up questions for the user."
+            "The 'query_str' parameter should contain the original user query.\n"
             "The 'rag_output_devportal' parameter should contain the observations from the previous DevPortalRAGTool calls.\n"
             "The 'rag_output_cittadino' parameter should contain the observations from the previous CittadinoRAGTool calls.\n"
             "This helps the user explore topics related to the information already retrieved.\n"
-            "If you do not call this tool, do not generate any follow-up questions."
         ),
     )
