@@ -17,7 +17,7 @@ class StructuredDataCleanerSettings(BaseSettings):
     # from attempting JSON decoding (which it does automatically for `list` fields).
     urls_raw: str = Field(alias="URLS", exclude=True)
     # Parsed list of URLs – populated by the model validator below.
-    urls: list[str] = Field(default_factory=list, alias="__URLS_COMPUTED__")
+    urls: list[str] = Field(default_factory=list, exclude=True)
     # Vector index name
     chb_index_id: str = Field(alias="CHB_INDEX_ID")
     # Optional S3 bucket name (required if *should_run_locally* is ``False``)
@@ -41,6 +41,15 @@ class StructuredDataCleanerSettings(BaseSettings):
         parsed = [u.strip() for u in self.urls_raw.split(",") if u.strip()]
         seen: set[str] = set()
         self.urls = [u for u in parsed if not (u in seen or seen.add(u))]
+        return self
+
+    @model_validator(mode="after")
+    def validate_s3_config(self) -> "StructuredDataCleanerSettings":
+        """Validate that S3_BUCKET_NAME is set if SHOULD_RUN_LOCALLY is False."""
+        if not self.should_run_locally and not self.s3_bucket_name:
+            raise ValueError(
+                "S3_BUCKET_NAME is required when SHOULD_RUN_LOCALLY is False"
+            )
         return self
 
 

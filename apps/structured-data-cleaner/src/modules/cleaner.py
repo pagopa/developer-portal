@@ -8,7 +8,10 @@ from src.modules.settings import SETTINGS, AWS_SESSION
 from botocore.exceptions import ClientError
 
 LOGGER = get_logger(__name__, level=SETTINGS.log_level)
-AWS_S3_CLIENT = AWS_SESSION.client("s3")
+
+
+def _get_s3_client():
+    return AWS_SESSION.client("s3")
 
 
 def remove_s3_folder(output_folder: str) -> None:
@@ -24,7 +27,8 @@ def remove_s3_folder(output_folder: str) -> None:
     Raises:
         ValueError: If there is an error deleting objects from S3.
     """
-    LOGGER.info(f"Attempting to delete S3 folder: {output_folder}")
+    s3_client = _get_s3_client()
+    LOGGER.info("Attempting to delete S3 folder: %s", output_folder)
     try:
         bucket, key_prefix = parse_s3_path(output_folder)
     except ValueError as e:
@@ -34,7 +38,7 @@ def remove_s3_folder(output_folder: str) -> None:
         key_prefix += "/"
 
     try:
-        paginator = AWS_S3_CLIENT.get_paginator("list_objects_v2")
+        paginator = s3_client.get_paginator("list_objects_v2")
         pages = paginator.paginate(Bucket=bucket, Prefix=key_prefix)
 
         total_deleted = 0
@@ -44,33 +48,31 @@ def remove_s3_folder(output_folder: str) -> None:
                 continue
             found_any = True
             objects_to_delete = [{"Key": obj["Key"]} for obj in page["Contents"]]
-            delete_response = AWS_S3_CLIENT.delete_objects(
+            delete_response = s3_client.delete_objects(
                 Bucket=bucket, Delete={"Objects": objects_to_delete}
             )
             if "Errors" in delete_response:
                 for error in delete_response["Errors"]:
                     LOGGER.error(
-                        f"Error deleting object {error['Key']} from S3: {error['Message']}"
+                        "Error deleting object %s from S3: %s", error["Key"], error["Message"]
                     )
                 raise IOError(f"Failed to delete some objects from {output_folder}")
             total_deleted += len(objects_to_delete)
 
         if not found_any:
             LOGGER.info(
-                f"S3 folder is already empty or does not exist: {output_folder}"
+                "S3 folder is already empty or does not exist: %s", output_folder
             )
             return
 
         LOGGER.info(
-            f"Successfully deleted {total_deleted} objects from S3 folder: {output_folder}"
+            "Successfully deleted %d objects from S3 folder: %s", total_deleted, output_folder
         )
 
     except ClientError as e:
         raise IOError(
-            f"Error deleting objects from S3 folder {output_folder}: {e}"
+            "Error deleting objects from S3 folder %s: %s", output_folder, e
         ) from e
-    except IOError:
-        raise
 
 
 def remove_local_folder(output_folder: str) -> None:
@@ -86,13 +88,13 @@ def remove_local_folder(output_folder: str) -> None:
 
     output_path = Path(output_folder)
     if not output_path.exists():
-        LOGGER.info(f"Local folder does not exist, skipping: {output_folder}")
+        LOGGER.info("Local folder does not exist, skipping: %s", output_folder)
         return
     try:
         shutil.rmtree(output_path)
-        LOGGER.info(f"Deleted folder: {output_folder}")
+        LOGGER.info("Deleted folder: %s", output_folder)
     except Exception as e:
-        raise IOError(f"Error deleting folder {output_folder}: {e}")
+        raise IOError("Error deleting folder %s: %s", output_folder, e)
 
 
 def parse_s3_path(s3_path: str) -> Tuple[str, str]:
@@ -107,7 +109,7 @@ def parse_s3_path(s3_path: str) -> Tuple[str, str]:
     parsed = urlparse(s3_path)
     if parsed.scheme != "s3":
         raise ValueError(
-            f"Invalid S3 path: {s3_path}. Expected format: s3://bucket/key/prefix"
+            "Invalid S3 path: %s. Expected format: s3://bucket/key/prefix", s3_path
         )
     bucket = parsed.netloc
     key_prefix = parsed.path.lstrip("/")
