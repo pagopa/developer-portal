@@ -2,4 +2,4 @@
 "structured-data-cleaner": minor
 ---
 
-Add app with versioning and logger
+Add core directory removal functionality

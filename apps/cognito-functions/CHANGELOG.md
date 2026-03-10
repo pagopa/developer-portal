@@ -1,5 +1,11 @@
 # cognito-functions
 
+## 1.1.1
+
+### Patch Changes
+
+- 5ba5b5b: Fix post-confirmation-handler tests by adding preferred_language support
+
 ## 1.1.0
 
 ### Minor Changes
