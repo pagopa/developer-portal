@@ -36,7 +36,6 @@ export const ProfileDataCardItem = (
   infoCardItem: ProfileDataCardItemProps & ProfileDataCardItemEditingProps
 ) => {
   const t = useTranslations();
-  console.log('Error', infoCardItem.id, infoCardItem.error);
 
   if (infoCardItem.editing) {
     return (
