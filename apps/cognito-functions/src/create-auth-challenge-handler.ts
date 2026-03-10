@@ -12,6 +12,7 @@ import * as T from 'fp-ts/Task';
 import * as E from 'fp-ts/Either';
 import { makeOtpMessageEmail } from './templates/otp-message';
 import { SUPPORTED_LOCALES } from './i18n/locales';
+import { EMAIL_TRANSLATIONS } from './templates/translations';
 
 export const generateVerificationCode = (): string =>
   Array.from({ length: 6 }, () => crypto.randomInt(0, 9)).join('');
@@ -71,7 +72,10 @@ export const makeHandler =
     if (session.length === 2) {
       const { email } = event.request.userAttributes;
       const verificationCode = env.generateVerificationCode();
-      const subject = `Codice di verifica PagoPA DevPortal: ${verificationCode}`;
+      const subjectTemplate =
+        EMAIL_TRANSLATIONS.otp[locale as keyof typeof EMAIL_TRANSLATIONS.otp]
+          ?.subject || EMAIL_TRANSLATIONS.otp.it.subject;
+      const subject = subjectTemplate.replace('{{code}}', verificationCode);
       const sendEmailCommand = new SendEmailCommand(
         makeSesEmailParameters(
           email,
