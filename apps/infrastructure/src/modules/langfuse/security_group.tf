@@ -97,6 +97,8 @@ resource "aws_security_group" "langfuse_web" {
   }
 }
 
+
+# TODO: the for_each fails when aws_security_group.lb.id is a string, known only after apply. How can be sloved?
 resource "aws_security_group_rule" "langfuse_web_lambda_ingress" {
   for_each = { for id in [aws_security_group.lb.id, var.lambda_security_group_id] : id => id if id != null }
 
@@ -107,6 +109,7 @@ resource "aws_security_group_rule" "langfuse_web_lambda_ingress" {
   security_group_id        = aws_security_group.langfuse_web.id
   source_security_group_id = each.value
   description              = "Allow lambda monitor access to langfuse-web"
+
 }
 
 resource "aws_security_group" "clickhouse" {
