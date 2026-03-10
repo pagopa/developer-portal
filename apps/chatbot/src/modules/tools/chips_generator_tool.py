@@ -49,6 +49,6 @@ def follow_up_questions_tool(name: str | None = None) -> FunctionTool:
             "The 'query_str' parameter should contain the original user query.\n"
             "The 'rag_output_devportal' parameter should contain the observations from the previous DevPortalRAGTool calls.\n"
             "The 'rag_output_cittadino' parameter should contain the observations from the previous CittadinoRAGTool calls.\n"
-            "This helps the user explore topics related to the information already retrieved.\n"
+            "This helps the user explore topics related to the information already retrieved."
         ),
     )
