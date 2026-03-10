@@ -1,6 +1,6 @@
 import Markdoc, { Schema } from '@markdoc/markdoc';
 
-export const inlineCodePipePlaceholder = '__MARKDOC_INLINE_CODE_PIPE__';
+export const inlineCodePipePlaceholder = ' | ';
 
 export type StyledTextProps = {
   readonly style: 'strong' | 'italic' | 'code' | 'strikethrough';
