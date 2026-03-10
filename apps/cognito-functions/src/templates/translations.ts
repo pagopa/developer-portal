@@ -121,8 +121,8 @@ export const EMAIL_TRANSLATIONS = {
   otp: {
     it: {
       subject: 'Codice di verifica PagoPA DevPortal: {{code}}',
-      previewText: 'Verifica la tua identita',
-      title: 'Verifica la tua identita',
+      previewText: 'Verifica la tua identità',
+      title: 'Verifica la tua identità',
       text: 'Usa questo codice OTP per accedere a PagoPA DevPortal:',
       codeDuration: (minutes: number) =>
         `Questo codice scadrà tra ${minutes} minuti.`,
