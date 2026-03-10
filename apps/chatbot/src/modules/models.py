@@ -44,6 +44,7 @@ def get_llm(
             model=model_id,
             temperature=temperature,
             max_tokens=max_tokens,
+            max_retries=SETTINGS.max_retries,
             api_key=SETTINGS.google_api_key,
         )
         LOGGER.info(f"{model_id} LLM loaded successfully from Google!")
