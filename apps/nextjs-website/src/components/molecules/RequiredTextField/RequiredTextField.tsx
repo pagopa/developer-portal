@@ -73,8 +73,8 @@ const RequiredTextField: FC<RequiredTextFieldProps> = ({
         backgroundColor: palette.background.paper,
         width: '100%',
       }}
-      error={isDirty && (!isValid || error)}
-      helperText={isDirty && (!isValid || error) && errorText}
+      error={Boolean(error) || (isDirty && !isValid)}
+      helperText={(Boolean(error) || (isDirty && !isValid)) && errorText}
       {...rest}
     />
   );
