@@ -24,7 +24,6 @@ export const ProfileDataCard = ({
   onValue,
 }: ProfileDataCardProps) => {
   const t = useTranslations('profile');
-  const tShared = useTranslations('shared');
 
   const [dataSectionItems, setDataSectionItems] = useState([...items]);
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -67,22 +66,6 @@ export const ProfileDataCard = ({
         sx={{ marginLeft: '1rem' }}
         onClick={() => {
           if (isButtonDisabled) return;
-
-          const newErrors: Record<string, string> = {};
-          dataSectionItems.forEach((item) => {
-            if (item.id === 'name' || item.id === 'surname') {
-              const errorKey = validateName(item.value || '');
-              if (errorKey) {
-                // eslint-disable-next-line functional/immutable-data
-                newErrors[item.id] = tShared(errorKey);
-              }
-            }
-          });
-
-          if (Object.keys(newErrors).length > 0) {
-            setErrors(newErrors);
-            return;
-          }
 
           setErrors({});
           setEditing(false);
