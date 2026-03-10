@@ -7,12 +7,13 @@ import { Authenticator } from '@aws-amplify/ui-react';
 import { FC, PropsWithChildren } from 'react';
 
 if (typeof window !== 'undefined') {
+  const domain = baseUrl.replace(/^https?:\/\//, '').split(':')[0];
   Amplify.configure({
     ...amplifyConfig,
     Auth: {
       ...amplifyConfig.Auth,
       cookieStorage: {
-        domain: baseUrl.replace(/^https?:\/\//, ''),
+        domain: domain,
         path: '/',
         expires: authCookieValidityInDays,
         secure: window.location.protocol === 'https:',
