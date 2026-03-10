@@ -17,6 +17,7 @@ export type StrapiBaseTutorial = {
   readonly product?: StrapiBaseProductWithBannerLinks;
   readonly icon?: StrapiMedia;
   readonly description?: string;
+  readonly redirectPath?: string;
 };
 
 export type StrapiTutorial = StrapiBaseTutorial & {

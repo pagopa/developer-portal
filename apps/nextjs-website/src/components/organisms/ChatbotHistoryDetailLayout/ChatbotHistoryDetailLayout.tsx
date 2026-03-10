@@ -2,7 +2,7 @@ import ChatbotHistoryNavigationMenu, {
   SessionNavigationData,
 } from '@/components/atoms/ChatbotHistoryNavigationMenu/ChatbotHistoryNavigationMenu';
 import ChatbotHistoryMessages from '@/components/molecules/ChatbotHistoryMessages/ChatbotHistoryMessages';
-import { defaultLocale } from '@/config';
+import { longDateOptions } from '@/config';
 import { Query } from '@/lib/chatbot/queries';
 import { Delete } from '@mui/icons-material';
 import {
@@ -17,22 +17,8 @@ import {
   Typography,
 } from '@mui/material';
 import { isEmpty } from 'fp-ts/lib/Array';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useFormatter } from 'next-intl';
 import React, { useState } from 'react';
-
-type DateFormatOptions = {
-  locale?: string;
-  options?: Intl.DateTimeFormatOptions;
-};
-
-const DEFAULT_DATE_FORMAT = {
-  locale: defaultLocale,
-  options: {
-    day: '2-digit',
-    month: 'long',
-    year: 'numeric',
-  },
-} satisfies DateFormatOptions;
 
 type ChatbotHistoryDetailLayoutProps = {
   queries: Query[];
@@ -51,6 +37,7 @@ const ChatbotHistoryDetailLayout = ({
 }: ChatbotHistoryDetailLayoutProps) => {
   const [open, setOpen] = useState(false);
   const t = useTranslations();
+  const format = useFormatter();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -67,10 +54,7 @@ const ChatbotHistoryDetailLayout = ({
   }
 
   const firstQuery = queries[0];
-  const date = new Intl.DateTimeFormat(
-    DEFAULT_DATE_FORMAT.locale,
-    DEFAULT_DATE_FORMAT.options
-  ).format(new Date(firstQuery.queriedAt));
+  const date = format.dateTime(new Date(firstQuery.queriedAt), longDateOptions);
 
   return (
     <Stack direction='column' spacing={2}>

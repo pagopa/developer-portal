@@ -24,6 +24,7 @@ export const strapiOverviews = {
         quickstart_guide: 2,
         api_data_list_page: {
           id: 3,
+          updatedAt: '2026-01-01T00:00:00.000Z',
           api_data: [
             {
               apiRestDetail: {
@@ -208,10 +209,10 @@ export const strapiOverviews = {
 } satisfies StrapiOverviews;
 
 export const overviewPageProps: OverviewPageProps = {
-  path: '/pago-pa/overview',
+  path: '/it/pago-pa/overview',
   updatedAt: '2023-01-01T00:00:00.000Z',
   product: {
-    apiDataListPageUrl: '/pago-pa/api/api-rest',
+    apiDataListPageUrl: '/it/pago-pa/api/api-rest',
     isVisible: true,
     name: 'Piattaforma pagoPA',
     slug: 'pago-pa',
@@ -304,7 +305,7 @@ export const overviewPageProps: OverviewPageProps = {
         description: 'test description',
         title: 'Tutorial 1',
         name: 'shared.moreInfo',
-        path: '/test-product/tutorials/tutorial-1',
+        path: '/it/test-product/tutorials/tutorial-1',
       },
     ],
   },
@@ -320,7 +321,7 @@ export const overviewPageProps: OverviewPageProps = {
         },
         title: 'Use Case 1',
         name: 'shared.moreInfo',
-        path: '/test-product/use-cases/use-case-1',
+        path: '/it/test-product/use-cases/use-case-1',
         publishedAt: new Date('2023-01-01T00:00:00.000Z'),
       },
     ],

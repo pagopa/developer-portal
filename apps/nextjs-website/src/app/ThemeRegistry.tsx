@@ -8,10 +8,7 @@ import {
   createTheme,
   ThemeProvider,
   alpha,
-  Theme,
-  Palette,
   PaletteColorOptions,
-  PaletteColor,
 } from '@mui/material';
 import type { Options } from '@emotion/cache';
 import { CSSProperties } from 'react';
@@ -32,8 +29,6 @@ const mainTypeface = 'var(--font-titillium-web), sans-serif';
 const monospacedTypeface = '"Roboto Mono", monospace'; // Fallback as DM Mono is not loaded
 
 // --- Constants ---
-const responsiveBreakpoint = 'sm';
-const ringWidth = '4px';
 const focusWidth = '2px';
 const focusBorderRadius = '8px';
 const focusOffset = '4px';
@@ -184,7 +179,7 @@ const shadowValues = {
     0.05
   )}, 0px 6px 30px 5px ${alpha(shadowColor, 0.1)}`,
 };
-// eslint-disable-next-line
+// eslint-disable-next-line functional/immutable-data, @typescript-eslint/no-explicit-any
 const shadowsArray = Array(25).fill('none') as any;
 
 const foundation = {

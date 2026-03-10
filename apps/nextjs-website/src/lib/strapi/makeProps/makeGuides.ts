@@ -7,6 +7,7 @@ import { StrapiGuides } from '@/lib/strapi/types/guide';
 import { compact } from 'lodash';
 
 export function makeGuidesProps(
+  locale: string,
   strapiGuides: StrapiGuides
 ): readonly GuideDefinition[] {
   return compact(
@@ -26,7 +27,10 @@ export function makeGuidesProps(
       }
 
       try {
-        const product = makeBaseProductWithoutLogoProps(attributes.product);
+        const product = makeBaseProductWithoutLogoProps(
+          locale,
+          attributes.product
+        );
         return {
           product,
           guide: {

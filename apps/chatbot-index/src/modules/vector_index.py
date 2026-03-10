@@ -37,28 +37,6 @@ REDIS_CLIENT = Redis.from_url(SETTINGS.redis_url, socket_timeout=10)
 REDIS_ASYNC_CLIENT = aredis.Redis.from_pool(
     aredis.ConnectionPool.from_url(SETTINGS.redis_url)
 )
-REDIS_SCHEMA = IndexSchema.from_dict(
-    {
-        "index": {
-            "name": f"{SETTINGS.index_id}",
-            "prefix": f"{SETTINGS.index_id}/vector",
-        },
-        "fields": [
-            {"name": "id", "type": "tag", "attrs": {"sortable": False}},
-            {"name": "doc_id", "type": "tag", "attrs": {"sortable": False}},
-            {"name": "text", "type": "text", "attrs": {"weight": 1.0}},
-            {
-                "name": "vector",
-                "type": "vector",
-                "attrs": {
-                    "dims": SETTINGS.embed_dim,
-                    "algorithm": "flat",
-                    "distance_metric": "cosine",
-                },
-            },
-        ],
-    }
-)
 REDIS_KVSTORE = RedisKVStore(
     redis_client=REDIS_CLIENT, async_redis_client=REDIS_ASYNC_CLIENT
 )
@@ -74,28 +52,86 @@ LlamaIndexSettings.node_parser = SentenceSplitter(
 )
 
 
-def build_index_redis(clean_redis: bool = True) -> VectorStoreIndex:
+def get_redis_schema(index_id: str | None = None) -> IndexSchema:
+    """Defines the schema for the Redis vector store index.
+    Args:
+        index_id (str | None): Optional identifier for the index. If not provided, it defaults to the value in SETTINGS.index_id.
+    Returns:
+        IndexSchema: The schema definition for the Redis vector store index.
+    """
+
+    index_id = index_id if index_id else SETTINGS.index_id
+
+    return IndexSchema.from_dict(
+        {
+            "index": {
+                "name": f"{index_id}",
+                "prefix": f"{index_id}/vector",
+            },
+            "fields": [
+                {"name": "id", "type": "tag", "attrs": {"sortable": False}},
+                {"name": "doc_id", "type": "tag", "attrs": {"sortable": False}},
+                {"name": "text", "type": "text", "attrs": {"weight": 1.0}},
+                {
+                    "name": "vector",
+                    "type": "vector",
+                    "attrs": {
+                        "dims": SETTINGS.embed_dim,
+                        "algorithm": "flat",
+                        "distance_metric": "cosine",
+                    },
+                },
+            ],
+        }
+    )
+
+
+def build_index_redis(
+    index_id: str,
+    static: bool,
+    dynamic: bool,
+    api: bool,
+    structured: bool,
+    clean_redis: bool = True,
+) -> VectorStoreIndex:
     """
     Builds a new vector index and stores it in Redis.
     Args:
-        clean_redis (bool): Flag indicating whether to clean the Redis database before building the index
+        index_id (str): The identifier for the index to be created.
+        static (bool): Flag indicating whether to include static documents in the index
+        dynamic (bool): Flag indicating whether to include dynamic documents in the index
+        api (bool): Flag indicating whether to include API documentation in the index
+        structured (bool): Flag indicating whether to include structured documents in the index
+        clean_redis (bool): Flag indicating whether to clean the WHOLE Redis database with ALL the vector indexes and documents before building the new index.
+                            If False, it will only delete the existing index with the same index_id and its associated documents.
     Returns:
         VectorStoreIndex: The newly created vector store index.
     """
 
     if clean_redis:
-        for key in tqdm(REDIS_CLIENT.scan_iter(), total=REDIS_CLIENT.dbsize()):
+        for key in REDIS_CLIENT.scan_iter():
             REDIS_CLIENT.delete(key)
-        LOGGER.info("Redis is now empty.")
+        LOGGER.info("Redis database has been fully cleaned successfully.")
+    else:
+        try:
+            index = load_index_redis(index_id)
+            REDIS_CLIENT.ft(index_id).dropindex(delete_documents=True)
 
-    documents = get_documents()
+        except Exception as exc:
+            LOGGER.warning(
+                "Skipping Redis cleanup for index '%s' because it could not be loaded: %s",
+                index_id,
+                exc,
+            )
+
+    documents = get_documents(index_id, static, dynamic, api, structured)
 
     nodes = LlamaIndexSettings.node_parser.get_nodes_from_documents(documents)
 
     redis_vector_store = RedisVectorStore(
         redis_client=REDIS_CLIENT,
         overwrite=True,
-        schema=REDIS_SCHEMA,
+        schema=get_redis_schema(index_id),
     )
 
     storage_context = StorageContext.from_defaults(
@@ -115,18 +151,20 @@ def build_index_redis(clean_redis: bool = True) -> VectorStoreIndex:
     return index
 
 
-def load_index_redis() -> VectorStoreIndex:
+def load_index_redis(index_id: str | None = None) -> VectorStoreIndex:
     """
     Loads an existing vector index from Redis using the provided llm and embed_model.
     Returns:
         VectorStoreIndex: The loaded vector store index.
     """
 
+    index_id = index_id if index_id else SETTINGS.index_id
+
     try:
         redis_vector_store = RedisVectorStore(
             redis_client=REDIS_CLIENT,
             overwrite=False,
-            schema=REDIS_SCHEMA,
+            schema=get_redis_schema(index_id),
         )
 
         LOGGER.info("Loading vector index from Redis...")
@@ -137,16 +175,16 @@ def load_index_redis() -> VectorStoreIndex:
         )
 
         index = load_index_from_storage(
-            storage_context=storage_context, index_id=SETTINGS.index_id
+            storage_context=storage_context, index_id=index_id
         )
-        LOGGER.info(f"Loaded index {SETTINGS.index_id} from Redis successfully.")
+        LOGGER.info(f"Loaded index {index_id} from Redis successfully.")
         return index
 
     except Exception as e:
         raise ValueError(f"Error loading index from Redis: {e}")
 
 
-class DiscoveryVectorIndex:
+class LlamaVectorIndex:
     def __init__(self):
         self.index_id = SETTINGS.index_id
 
@@ -159,9 +197,28 @@ class DiscoveryVectorIndex:
             )
         return index
 
-    def create_index(self) -> VectorStoreIndex:
-        """Creates a new vector index and stores it in Redis."""
-        index = build_index_redis()
+    def create_index(
+        self,
+        static: bool,
+        dynamic: bool,
+        api: bool,
+        structured: bool,
+        clean_redis: bool,
+    ) -> VectorStoreIndex:
+        """Creates a new vector index and stores it in Redis.
+        Args:
+            static (bool): Flag indicating whether to include static documents in the index
+            dynamic (bool): Flag indicating whether to include dynamic documents in the index
+            api (bool): Flag indicating whether to include API documentation in the index
+            structured (bool): Flag indicating whether to include structured documents in the index
+            clean_redis (bool): Flag indicating whether to clean the WHOLE Redis database with ALL the vector indexes and documents before building the new index.
+                                If False, it will only delete the existing index with the same index_id and its associated documents.
+        Returns:
+            VectorStoreIndex: The newly created vector store index.
+        """
+        index = build_index_redis(
+            self.index_id, static, dynamic, api, structured, clean_redis
+        )
         return index
 
     def _update_docs(
@@ -342,16 +399,14 @@ class DiscoveryVectorIndex:
         ]
 
         dynamic_metadata = get_dynamic_metadata(static_metadata)
-        dynamic_doc_ids = [
-            item.url.replace(SETTINGS.website_url, "") for item in dynamic_metadata
-        ]
+        dynamic_doc_ids = [item.url for item in dynamic_metadata]
 
         dynamic_docs_to_update = []
         dynamic_doc_ids_to_remove = []
 
         LOGGER.info("Refreshing vector index with dynamic docs...")
         for item in dynamic_metadata:
-            doc_id = item.url.replace(SETTINGS.website_url, "")
+            doc_id = item.url
             lastmod = item.lastmod
 
             if doc_id in ref_doc_ids:

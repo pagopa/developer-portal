@@ -24,6 +24,7 @@ function makeStepFromQuickstartGuideItems(
 }
 
 export function makeQuickStartGuidesProps(
+  locale: string,
   strapiQuickStarts: StrapiQuickStartGuides
 ): QuickStartGuidesPageProps {
   return compact(
@@ -43,11 +44,11 @@ export function makeQuickStartGuidesProps(
           },
           updatedAt: quickStart.updatedAt,
           defaultStepAnchor: quickStart.quickstartGuideItems[0].anchor,
-          product: makeBaseProductWithoutLogoProps(quickStart.product),
+          product: makeBaseProductWithoutLogoProps(locale, quickStart.product),
           steps: quickStart.quickstartGuideItems.map((item) =>
             makeStepFromQuickstartGuideItems(item)
           ),
-          path: `/${quickStart.product.slug}/quick-start`,
+          path: `/${locale}/${quickStart.product.slug}/quick-start`,
           bannerLinks:
             quickStart.bannerLinks.length > 0
               ? quickStart.bannerLinks.map(makeBannerLinkProps)

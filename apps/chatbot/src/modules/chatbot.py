@@ -1,10 +1,7 @@
-import copy
-import time
-from typing import Union, Tuple, Optional, List, Any, Dict
+from typing import Union, Tuple, Optional, List, Dict
 
-from langfuse import Langfuse
 from llama_index.core import PromptTemplate
-from llama_index.core.llms import ChatMessage, MessageRole, TextBlock
+from llama_index.core.llms import ChatMessage, MessageRole
 from llama_index.core.base.response.schema import (
     Response,
     StreamingResponse,
@@ -20,23 +17,29 @@ from llama_index.core.agent.workflow import (
     AgentSetup,
 )
 from llama_index.core.tools.types import ToolOutput
-from llama_index.core.schema import QueryBundle
-from langfuse.llama_index import LlamaIndexInstrumentor
+
+from openinference.instrumentation.llama_index import LlamaIndexInstrumentor
+from opentelemetry.sdk.trace import TracerProvider
+from opentelemetry.sdk.trace.export import SimpleSpanProcessor
 
 from src.modules.logger import get_logger
+from src.modules.telemetry import DictSpanExporter
+from src.modules.vector_index import load_index_redis
 from src.modules.models import get_llm, get_embed_model
-from src.modules.agent import get_agent
-from src.modules.handlers import EventHandler
-from src.modules.presidio import PresidioPII
+from src.modules.tools import (
+    get_query_engine_tool,
+    follow_up_questions_tool,
+    DEVPORTAL_TOOL_NAME,
+    CITTADINO_TOOL_NAME,
+    CHIPS_TOOL_NAME,
+    DEVPORTAL_RAG_TOOL_DESCRIPTION,
+    CITTADINO_RAG_TOOL_DESCRIPTION,
+)
+from src.modules.agents import get_discovery_agent, DISCOVERY_AGENT_NAME
 from src.modules.settings import SETTINGS
 
 
-LOGGER = get_logger(__name__)
-LANGFUSE_CLIENT = Langfuse(
-    public_key=SETTINGS.langfuse_public_key,
-    secret_key=SETTINGS.langfuse_secret_key,
-    host=SETTINGS.langfuse_host,
-)
+LOGGER = get_logger(__name__, level=SETTINGS.log_level)
 RESPONSE_TYPE = Union[
     Response,
     StreamingResponse,
@@ -51,33 +54,62 @@ RESPONSE_TYPE = Union[
     ToolOutput,
 ]
 
+TRACE_PROVIDER = TracerProvider()
+EXPORTER = DictSpanExporter()
+TRACE_PROVIDER.add_span_processor(SimpleSpanProcessor(EXPORTER))
+LlamaIndexInstrumentor().instrument(tracer_provider=TRACE_PROVIDER)
+
 
 class Chatbot:
     def __init__(
         self,
     ):
-        start_time = time.time()
-        self.pii = PresidioPII(config=SETTINGS.presidio_config)
-        end_time_presidio = time.time() - start_time
-        LOGGER.info(
-            f">>>>>>>>>>> Presidio initialized in {end_time_presidio:.3f} secs. <<<<<<<<<<"
-        )
         self.model = get_llm()
         self.embed_model = get_embed_model()
         self.qa_prompt_tmpl, self.ref_prompt_tmpl = self._get_prompt_templates()
-        self.instrumentor = LlamaIndexInstrumentor(
-            public_key=SETTINGS.langfuse_public_key,
-            secret_key=SETTINGS.langfuse_secret_key,
-            host=SETTINGS.langfuse_host,
-            mask=self._mask_trace,
-        )
-        self.instrumentor._event_handler = EventHandler(langfuse_client=LANGFUSE_CLIENT)
-        end_time = time.time() - start_time
-        LOGGER.info(f">>>>>>> Chatbot initialized in {end_time:.3f} secs. <<<<<<<")
+
+        tools = []
+        try:
+            devportal_index = load_index_redis(index_id=SETTINGS.devportal_index_id)
+            tools.append(
+                get_query_engine_tool(
+                    index=devportal_index,
+                    name=DEVPORTAL_TOOL_NAME,
+                    description=DEVPORTAL_RAG_TOOL_DESCRIPTION,
+                    text_qa_template=self.qa_prompt_tmpl,
+                    refine_template=self.ref_prompt_tmpl,
+                )
+            )
+        except Exception as e:
+            LOGGER.error(f"Failed to load DevPortal index: {e}")
+            raise
+
+        try:
+            cittadino_index = load_index_redis(index_id=SETTINGS.cittadino_index_id)
+            tools += [
+                get_query_engine_tool(
+                    index=cittadino_index,
+                    name=CITTADINO_TOOL_NAME,
+                    description=CITTADINO_RAG_TOOL_DESCRIPTION,
+                    text_qa_template=self.qa_prompt_tmpl,
+                    refine_template=self.ref_prompt_tmpl,
+                ),
+                follow_up_questions_tool(name=CHIPS_TOOL_NAME),
+            ]
+        except Exception as e:
+            LOGGER.error(f"Failed to load Cittadino index: {e}")
+            raise
+
+        try:
+            self.discovery = get_discovery_agent(name=DISCOVERY_AGENT_NAME, tools=tools)
+        except Exception as e:
+            LOGGER.error(f"Failed to initialize Discovery Agent: {e}")
+            raise
 
     def _get_prompt_templates(
         self,
     ) -> Tuple[PromptTemplate, PromptTemplate]:
+        """Initializes the prompt templates for question-answering and refining responses."""
 
         qa_prompt_tmpl = PromptTemplate(
             SETTINGS.qa_prompt_str,
@@ -99,53 +131,76 @@ class Chatbot:
         return qa_prompt_tmpl, ref_prompt_tmpl
 
     def _get_response_json(self, engine_response: RESPONSE_TYPE) -> dict:
+        """Extracts the relevant information from the engine response and formats it into a JSON structure.
+        Args:
+            engine_response (RESPONSE_TYPE): The response object returned by the discovery agent, which may contain a structured response with the answer, products, references, and contexts.
+        Returns:
+            dict: A JSON-formatted dictionary containing the response, products, references, contexts, and spans.
+        """
 
-        tool_calls = engine_response.tool_calls
-        product_list = []
-        references_list = []
-        retrieved_contexts = []
+        if isinstance(engine_response.structured_response, dict):
+            references_list = []
+            if isinstance(engine_response.structured_response["references"], list):
+                for ref in engine_response.structured_response["references"]:
+                    references_list.append(f"[{ref['title']}]({ref['url']})")
 
-        for tool_call in tool_calls:
+            follow_up_tool_called = False
+            retrieved_contexts = []
+            for tool_call in engine_response.tool_calls:
 
-            raw_output = tool_call.tool_output.raw_output
-            product_list += getattr(raw_output, "products", [])
-            references = getattr(raw_output, "references", [])
+                raw_output = tool_call.tool_output.raw_output
+                nodes = getattr(raw_output, "source_nodes", [])
+                if (
+                    tool_call.tool_name in [DEVPORTAL_TOOL_NAME, CITTADINO_TOOL_NAME]
+                    and nodes
+                ):
+                    retrieved_contexts.extend(
+                        [
+                            f"-------\nURL: {node.metadata['url']}\n\n{node.text}\n\n"
+                            for node in nodes
+                        ]
+                    )
 
-            references_list = [
-                f"[{ref.title}]({SETTINGS.website_url}{ref.filepath})"
-                for ref in references
-            ]
+                if tool_call.tool_name == CHIPS_TOOL_NAME:
+                    follow_up_tool_called = True
 
-            nodes = getattr(raw_output, "source_nodes", [])
-            retrieved_contexts = [
-                f"-------\nURL: {SETTINGS.website_url + node.metadata['filepath']}\n\n{node.text}\n\n"
-                for node in nodes
-            ]
+            chips = (
+                engine_response.structured_response["follow_up_questions"]
+                if follow_up_tool_called
+                else []
+            )
 
-        response_json = {
-            "response": engine_response.response.content.strip(),
-            "products": product_list,
-            "references": references_list,
-            "contexts": retrieved_contexts,
-        }
+            response_json = {
+                "response": engine_response.structured_response["response"],
+                "products": engine_response.structured_response["products"],
+                "references": references_list,
+                "contexts": retrieved_contexts,
+                "chips": chips,
+                "spans": EXPORTER.spans,
+            }
+
+        else:
+            response_json = {
+                "response": "Scusa, non posso elaborare la tua richiesta.\n"
+                + "Prova a formulare una nuova domanda.",
+                "products": ["none"],
+                "references": [],
+                "contexts": [],
+                "chips": [],
+                "spans": [],
+            }
 
         return response_json
-
-    def mask_pii(self, message: str) -> str:
-        try:
-            split_message = message.split("Rif:")
-            message = self.pii.mask_pii(split_message[0])
-            if len(split_message) > 1:
-                message += "Rif:" + split_message[1]
-
-        except Exception as e:
-            LOGGER.debug(f"Exception: {e}")
-
-        return message
 
     def _messages_to_chathistory(
         self, messages: Optional[List[Dict[str, str]]] = None
     ) -> List[ChatMessage]:
+        """Converts a list of message dictionaries into a list of ChatMessage objects for the chat history.
+        Args:
+            messages (Optional[List[Dict[str, str]]]): A list of message dictionaries, where each dictionary has a "question" key for user messages and an "answer" key for assistant messages.
+        Returns:
+            List[ChatMessage]: A list of ChatMessage objects representing the chat history, with alternating user and assistant messages. The assistant messages are processed to remove any reference sections (indicated by "
+        """
 
         chat_history = []
         if messages:
@@ -173,113 +228,45 @@ class Chatbot:
 
         return chat_history
 
-    def _mask_trace(self, data: Any) -> Any:
-        """
-        Masks PII by manually rebuilding objects to avoid broken __deepcopy__ methods.
-        Handles circular references by tracking visited object IDs.
-        """
-
-        try:
-            if isinstance(data, str):
-                return self.mask_pii(data)
-            if isinstance(data, (int, float, bool)) or data is None:
-                return data
-
-            if isinstance(data, QueryBundle):
-                data.query_str = self.mask_pii(data.query_str)
-                return data
-
-            if isinstance(data, dict):
-                return {k: self._mask_trace(v) for k, v in data.items()}
-
-            if isinstance(data, list):
-                return [self._mask_trace(item) for item in data]
-
-            if isinstance(data, tuple):
-                return tuple(self._mask_trace(item) for item in data)
-
-            if isinstance(data, (AgentInput, AgentSetup)):
-                new_obj = copy.deepcopy(data)
-                return self._mask_trace(new_obj.input)
-
-            if isinstance(data, AgentOutput):
-                return self._mask_trace(data.response)
-
-            if isinstance(data, ToolCallResult):
-                if data.tool_kwargs:
-                    data.tool_kwargs["input"] = self.mask_pii(data.tool_kwargs["input"])
-
-                data.tool_output.content = self.mask_pii(data.tool_output.content)
-
-                if isinstance(data.tool_output.raw_output, PydanticResponse):
-                    data.tool_output.raw_output.response.response = self.mask_pii(
-                        data.tool_output.raw_output.response.response
-                    )
-                if isinstance(data.tool_output.raw_output, str):
-                    data.tool_output.raw_output = self.mask_pii(
-                        data.tool_output.raw_output
-                    )
-                return data
-
-            if isinstance(data, ChatMessage):
-                new_obj = copy.deepcopy(data)
-                for block in new_obj.blocks:
-                    if isinstance(block, TextBlock):
-                        block.text = self.mask_pii(block.text)
-
-                return new_obj
-
-        except Exception as e:
-            LOGGER.error(f"Manual masking for {type(data).__name__} failed: {e}")
-
-        return data
-
     async def chat_generate(
         self,
         query_str: str,
-        trace_id: str,
-        session_id: str | None = None,
-        user_id: str | None = None,
         messages: Optional[List[Dict[str, str]]] | None = None,
+        knowledge_base: str | None = None,
     ) -> dict:
-
-        start_time = time.time()
-        agent = get_agent(
-            llm=self.model,
-            embed_model=self.embed_model,
-            text_qa_template=self.qa_prompt_tmpl,
-            refine_template=self.ref_prompt_tmpl,
-        )
-        LOGGER.info(
-            f">>>>>>> Agent initialized in {time.time() - start_time:.3f} secs. <<<<<<<<"
-        )
+        """Generates a response to the user's query by running the discovery agent with the provided query and chat history, and formats the response into a JSON structure.
+        Args:
+            query_str (str): The user's query string.
+            messages (Optional[List[Dict[str, str]]]): A list of message dictionaries representing the chat history. Each dictionary should have a "question" key for user messages and an "answer" key for assistant messages.
+            knowledge_base (str | None): An optional knowledge base string to provide additional context for the query.
+        Returns:
+            dict: A JSON-formatted dictionary containing the response, products, references, contexts, and spans.
+        """
 
         chat_history = self._messages_to_chathistory(messages)
-        LOGGER.info(f"Langfuse trace id: {trace_id}")
 
-        with self.instrumentor.observe(
-            trace_id=trace_id, session_id=session_id, user_id=user_id
-        ) as trace:
-            try:
-                engine_response = await agent.run(query_str, chat_history)
-                response_json = self._get_response_json(engine_response)
+        if knowledge_base:
+            query_str = query_str + f" | Knowledge Base: {knowledge_base}"
 
-            except Exception as e:
-                response_json = {
-                    "response": "Scusa, non posso elaborare la tua richiesta.\n"
-                    + "Prova a formulare una nuova domanda.",
-                    "products": ["none"],
-                    "references": [],
-                    "contexts": [],
-                }
-                LOGGER.error(f"Exception: {e}")
-
-            trace.update(
-                output=response_json["response"],
-                metadata={"contexts": response_json["contexts"]},
-                tags=response_json["products"],
+        try:
+            engine_response = await self.discovery.run(
+                user_msg=query_str,
+                chat_history=chat_history,
             )
-            trace.score(name="user-feedback", value=0, data_type="NUMERIC")
-        
-        self.instrumentor.flush()
+            response_json = self._get_response_json(engine_response)
+        except Exception as e:
+            response_json = {
+                "response": "Scusa, non posso elaborare la tua richiesta.\n"
+                + "Prova a formulare una nuova domanda.",
+                "products": ["none"],
+                "references": [],
+                "contexts": [],
+                "chips": [],
+                "spans": [],
+            }
+            LOGGER.warning(f"Exception: {e}")
+
+        response_json["products"].append(f"chatbot@{SETTINGS.chatbot_release}")
+        EXPORTER.spans = []
+
         return response_json

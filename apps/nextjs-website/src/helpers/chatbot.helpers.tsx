@@ -1,0 +1,224 @@
+'use client';
+import { useEffect, useState } from 'react';
+import {
+  sendChatbotQuery,
+  sendChatbotFeedback,
+  getChatbotSessionsHistory,
+  getChatbotQueries,
+  deleteChatbotSession,
+} from '@/lib/chatbotApi';
+import { ChatbotChip, PaginatedSessions, Query } from '@/lib/chatbot/queries';
+import { chatMaxHistoryMessages } from '@/config';
+
+const HISTORY_PAGE_SIZE = 10;
+const EXPIRE_CHAT_DATE_LOCAL_STORAGE_KEY = 'expireChatDate';
+const CHAT_QUERIES_LOCAL_STORAGE_KEY = 'chatQueries';
+
+export type ChatbotErrorsType =
+  | 'serviceDown'
+  | 'queryFailed'
+  | 'feedbackFailed';
+
+function getExpireChatDateFromLocalStorage() {
+  const queriesDate = localStorage.getItem(EXPIRE_CHAT_DATE_LOCAL_STORAGE_KEY);
+  return queriesDate ? new Date(queriesDate) : null;
+}
+
+function getChatQueriesFromLocalStorage(): Query[] {
+  const currentDate = new Date();
+  const expireChatDate = getExpireChatDateFromLocalStorage();
+  const queriesStringify = localStorage.getItem(CHAT_QUERIES_LOCAL_STORAGE_KEY);
+  if (!expireChatDate || !queriesStringify || currentDate > expireChatDate) {
+    flushChatQueriesFromLocalStorage();
+    return [];
+  }
+
+  return JSON.parse(queriesStringify);
+}
+
+function setChatQueriesInLocalStorage(queries: Query[]) {
+  if (!getExpireChatDateFromLocalStorage()) {
+    const expireDate = new Date();
+    expireDate.setHours(0, 0, 0, 0);
+    expireDate.setDate(new Date().getDate() + 1);
+    localStorage.setItem(
+      EXPIRE_CHAT_DATE_LOCAL_STORAGE_KEY,
+      expireDate.toISOString()
+    );
+  }
+  const queriesStringify = JSON.stringify(queries);
+  localStorage.setItem(CHAT_QUERIES_LOCAL_STORAGE_KEY, queriesStringify);
+}
+
+export function flushChatQueriesFromLocalStorage() {
+  localStorage.removeItem(EXPIRE_CHAT_DATE_LOCAL_STORAGE_KEY);
+  localStorage.removeItem(CHAT_QUERIES_LOCAL_STORAGE_KEY);
+}
+
+function setFeedbackByQueryId(
+  queries: Query[],
+  queryId: string,
+  hasNegativeFeedback: boolean
+) {
+  return queries.map((query) => {
+    if (query.id === queryId) {
+      return { ...query, badAnswer: hasNegativeFeedback };
+    }
+    return query;
+  });
+}
+
+export function getCurrentChipsFromQueries(
+  queries: Query[]
+): readonly ChatbotChip[] {
+  if (queries.length === 0) {
+    return [];
+  }
+
+  const lastQuery = queries[queries.length - 1];
+  if (!lastQuery.answer || !lastQuery.chips) {
+    return [];
+  }
+
+  return lastQuery.chips;
+}
+
+export const useChatbot = (isUserAuthenticated: boolean) => {
+  const [areChatbotQueriesLoaded, setAreChatbotQueriesLoaded] = useState(false);
+  const [isSessionLoaded, setIsSessionLoaded] = useState(false);
+  const [isAwaitingResponse, setIsAwaitingResponse] = useState(false);
+  const [chatQueries, setChatQueries] = useState<Query[]>([]);
+  const [historyQueries, setHistoryQueries] = useState<Query[]>([]);
+  const [paginatedSessionsLoading, setPaginatedSessionsLoading] =
+    useState(true);
+  const [paginatedSessions, setPaginatedSessions] =
+    useState<PaginatedSessions | null>(null);
+  const [chatbotError, setChatbotError] = useState<ChatbotErrorsType | null>(
+    null
+  );
+
+  useEffect(() => {
+    if (!isUserAuthenticated) {
+      return;
+    }
+
+    getChatbotQueries()
+      .then((response) => {
+        setChatQueries(getChatQueriesFromLocalStorage());
+        setHistoryQueries(response);
+      })
+      .finally(() => setAreChatbotQueriesLoaded(true));
+  }, [isUserAuthenticated]);
+
+  const sendQuery = (queryMessage: string, knowledgeBase?: string) => {
+    setIsAwaitingResponse(true);
+    const queriedAt = new Date().toISOString();
+    const previousQueries = chatQueries;
+    const newQuery = {
+      id: '0',
+      sessionId: '0',
+      question: queryMessage,
+      queriedAt: queriedAt,
+      badAnswer: false,
+      answer: null,
+      knowledgeBase: knowledgeBase,
+      createdAt: null,
+    };
+    setHistoryQueries([...historyQueries, newQuery]);
+
+    const newChatQueries = [
+      ...previousQueries,
+      { ...newQuery, question: queryMessage },
+    ];
+    setChatQueries(newChatQueries);
+    setChatQueriesInLocalStorage(newChatQueries);
+
+    sendChatbotQuery({
+      question: queryMessage,
+      queriedAt: queriedAt,
+      knowledgeBase: knowledgeBase,
+      history: previousQueries.slice(-chatMaxHistoryMessages),
+    })
+      .then((response) => {
+        setIsAwaitingResponse(false);
+
+        const newChatQueries = [
+          ...chatQueries,
+          {
+            ...response,
+            question: queryMessage,
+          },
+        ];
+        setChatQueries(newChatQueries);
+        setChatQueriesInLocalStorage(newChatQueries);
+
+        setHistoryQueries([...historyQueries, response]);
+        setChatbotError(null);
+      })
+      .catch(() => {
+        setIsAwaitingResponse(false);
+        setChatbotError('queryFailed');
+      });
+    return null;
+  };
+
+  const sendFeedback = (
+    hasNegativeFeedback: boolean,
+    sessionId: string,
+    queryId: string,
+    user_response_relevancy: number | null,
+    user_faithfullness: number | null,
+    user_comment: string
+  ) => {
+    sendChatbotFeedback(
+      hasNegativeFeedback,
+      sessionId,
+      queryId,
+      user_response_relevancy,
+      user_faithfullness,
+      user_comment
+    );
+    const updatedChatQueries = setFeedbackByQueryId(
+      chatQueries,
+      queryId,
+      hasNegativeFeedback
+    );
+    setChatQueries(updatedChatQueries);
+    setChatQueriesInLocalStorage(updatedChatQueries);
+
+    const updatedHistoryQueries = setFeedbackByQueryId(
+      historyQueries,
+      queryId,
+      hasNegativeFeedback
+    );
+    setHistoryQueries(updatedHistoryQueries);
+    return null;
+  };
+
+  const getSessionsByPage = (page: number) => {
+    getChatbotSessionsHistory(page, HISTORY_PAGE_SIZE)
+      .then((response) => setPaginatedSessions(response))
+      .finally(() => setPaginatedSessionsLoading(false));
+
+    return null;
+  };
+
+  const getSession = (sessionId: string) => getChatbotQueries(sessionId);
+
+  return {
+    areChatbotQueriesLoaded,
+    isAwaitingResponse,
+    isSessionLoaded,
+    historyQueries,
+    setIsSessionLoaded,
+    chatQueries,
+    sendQuery,
+    sendFeedback,
+    paginatedSessions,
+    getSessionsByPage,
+    getSession,
+    paginatedSessionsLoading,
+    deleteChatbotSession,
+    chatbotError,
+  };
+};

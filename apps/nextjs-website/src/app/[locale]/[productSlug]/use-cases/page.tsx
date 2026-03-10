@@ -35,10 +35,11 @@ export async function generateMetadata(
   props: ProductParams,
   parent: ResolvingMetadata
 ): Promise<Metadata> {
-  const params = await props.params;
+  const { locale, productSlug } = await props.params;
   const resolvedParent = await parent;
   const { product, abstract, path, seo } = await getUseCaseListPageProps(
-    params.productSlug
+    locale,
+    productSlug
   );
 
   if (seo) {
@@ -55,17 +56,16 @@ export async function generateMetadata(
 }
 
 const UseCasesPage = async (props: ProductParams) => {
-  const params = await props.params;
-  const { productSlug } = params;
+  const { locale, productSlug } = await props.params;
   const { abstract, bannerLinks, path, useCases, seo, product, enableFilters } =
-    await getUseCaseListPageProps(productSlug);
+    await getUseCaseListPageProps(locale, productSlug);
 
   const structuredData = generateStructuredDataScripts({
     breadcrumbsItems: [
-      productToBreadcrumb(params.locale, product),
+      productToBreadcrumb(locale, product),
       {
         name: seo?.metaTitle || abstract?.title,
-        item: breadcrumbItemByProduct(params.locale, product, ['use-cases']),
+        item: breadcrumbItemByProduct(locale, product, ['use-cases']),
       },
     ],
     seo: seo,

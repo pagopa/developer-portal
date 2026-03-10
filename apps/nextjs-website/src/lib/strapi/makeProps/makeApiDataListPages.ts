@@ -7,7 +7,11 @@ import { compact } from 'lodash';
 import { StrapiBaseApiData } from '../types/apiDataList';
 import { RootEntity } from '@/lib/strapi/types/rootEntity';
 
-function makeApiDataListPageCard(item: StrapiBaseApiData, slug: string) {
+function makeApiDataListPageCard(
+  locale: string,
+  item: StrapiBaseApiData,
+  slug: string
+) {
   if (!item.apiRestDetail && !item.apiSoapDetail) {
     console.error(
       `Error while processing API Data with title "${item.title}": missing API details. Skipping...`
@@ -30,7 +34,7 @@ function makeApiDataListPageCard(item: StrapiBaseApiData, slug: string) {
     title: item?.title,
     text: item?.description || '',
     icon: item?.icon?.url || '',
-    href: `/${slug}/api/${
+    href: `/${locale}/${slug}/api/${
       item.apiRestDetail ? item.apiRestDetail?.slug : item.apiSoapDetail?.slug
     }`,
     tags: item.tags?.map((tag) => tag) || [],
@@ -38,6 +42,7 @@ function makeApiDataListPageCard(item: StrapiBaseApiData, slug: string) {
 }
 
 export function makeApiDataListPagesProps(
+  locale: string,
   strapiApiDataListPages: RootEntity<StrapiApiDataListPages>
 ): ReadonlyArray<ApiDataListPageTemplateProps> {
   return compact(
@@ -52,7 +57,10 @@ export function makeApiDataListPagesProps(
 
       // eslint-disable-next-line functional/no-try-statements
       try {
-        const product = makeBaseProductWithoutLogoProps(attributes.product);
+        const product = makeBaseProductWithoutLogoProps(
+          locale,
+          attributes.product
+        );
         return {
           ...attributes,
           hero: {
@@ -69,7 +77,7 @@ export function makeApiDataListPagesProps(
           ),
           cards: compact(
             attributes.api_data.map((item) =>
-              makeApiDataListPageCard(item, slug)
+              makeApiDataListPageCard(locale, item, slug)
             )
           ),
           bannerLinks: attributes.bannerLinks.map(makeBannerLinkProps),

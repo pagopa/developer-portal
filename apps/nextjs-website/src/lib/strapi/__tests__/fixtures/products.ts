@@ -18,6 +18,7 @@ export const strapiProducts: StrapiProducts = {
       quickstart_guide: 1,
       api_data_list_page: {
         id: 1,
+        updatedAt: '2026-01-01T00:00:00.000Z',
         api_data: [
           {
             apiRestDetail: {
@@ -93,7 +94,7 @@ export const expectedProduct: Product = {
     },
   ],
   hasApiDataListPage: true,
-  apiDataListPageUrl: '/test-product/api/api-detail',
+  apiDataListPageUrl: '/it/test-product/api/api-detail',
   hasTutorialListPage: true,
   hasGuideListPage: true,
   hasOverviewPage: true,

@@ -62,6 +62,14 @@ const fileR = {
   regex: /({% file src="[^"]+" %}(?!.*{% \/file %}))/gis,
   replace: '$1\n{% /file %}',
 };
+const addNewLineAfterCloseTag = {
+  regex: new RegExp(`%}(?!\n)`, 'g'),
+  replace: '%}\n',
+};
+const addNewLineBeforeOpenTag = {
+  regex: new RegExp(`(?!\n){%`, 'g'),
+  replace: '\n{%',
+};
 
 const preservePipesInInlineCode = (markdown: string): string => {
   let cursor = 0;
@@ -147,6 +155,8 @@ export const parseAst = (markdown: string) => {
   // In this way many RegExp can be removed
   const markdoc = preservePipesInInlineCode(markdown)
     .replaceAll('{% end', '\n{% /')
+    .replaceAll(addNewLineAfterCloseTag.regex, addNewLineAfterCloseTag.replace)
+    .replaceAll(addNewLineBeforeOpenTag.regex, addNewLineBeforeOpenTag.replace)
     .replaceAll(imgR.regex, imgR.replace)
     .replaceAll(figureR.regex, figureR.replace)
     .replaceAll(figcaptionR.regex, figcaptionR.replace)

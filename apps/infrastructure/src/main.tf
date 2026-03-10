@@ -263,6 +263,11 @@ module "video_streaming" {
   route53_zone_id    = module.core.hosted_zone_id
   environment        = var.environment
   strapi_api_url     = "https://${keys(var.dns_domain_name_cms)[0]}"
+  # Right now only one channel is supported for metrics, so we can directly reference it here. 
+  # In the future, if more channels are added and we want to use them for metrics, we can change this to a list of ARNs or similar.
+  webinar_metrics_channel_key = "channell-01"
+  github_repository           = var.github_repository
+
 }
 
 module "langfuse" {

@@ -183,10 +183,11 @@ export const parseS3GuidePage = async (props: {
   readonly guidePath: string;
   readonly guidesMetadata: readonly JsonMetadata[];
   readonly products: readonly Product[];
+  readonly locale: string;
 }) => {
-  const { guideProps, guidePath, guidesMetadata, products } = props;
+  const { guideProps, guidePath, guidesMetadata, products, locale } = props;
 
-  const baseGuidePath = `/${guideProps.product.slug}/guides/${guideProps.guide.slug}`;
+  const baseGuidePath = `/${locale}/${guideProps.product.slug}/guides/${guideProps.guide.slug}`;
   const guidePageMetadata = guidesMetadata.find(
     (data) => data.path === guidePath
   );
@@ -219,13 +220,14 @@ export const parseS3GuidePage = async (props: {
   }
 
   const isIndex = path.parse(guidePageMetadata.contentS3Path).name === 'README';
+  const assetsPrefix = `${staticContentsUrl}/${locale}/${s3DocsPath}/${guidePageMetadata.dirName}`;
   const source = {
     pathPrefix: version.main
       ? baseGuidePath
       : `${baseGuidePath}/${version.version}`,
     version,
-    assetsPrefix: `${staticContentsUrl}/${s3DocsPath}/${guidePageMetadata.dirName}`,
-    dirPath: `${s3DocsPath}/${guidePageMetadata.dirName}`,
+    assetsPrefix,
+    dirPath: `${locale}/${s3DocsPath}/${guidePageMetadata.dirName}`,
     spaceId: guidePageMetadata.dirName,
   };
 
@@ -266,7 +268,7 @@ export const parseS3GuidePage = async (props: {
     bodyConfig: {
       isPageIndex: isIndex,
       pagePath: guidePath,
-      assetsPrefix: `${staticContentsUrl}/${s3DocsPath}/${guidePageMetadata.dirName}`,
+      assetsPrefix,
       gitBookPagesWithTitle: guidesMetadata,
       spaceToPrefix: guidesMetadata.map((metadata) => ({
         spaceId: metadata.dirName,

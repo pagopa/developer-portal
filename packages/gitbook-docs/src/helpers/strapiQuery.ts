@@ -229,8 +229,12 @@ export const solutionListPageQueryString = qs.stringify(
  * (Strapi docs confirm filtering limitations on dynamic zones and media fields, but don't
  * explicitly document repeatable component filtering behavior)
  */
-export function getSolutionsQueryString(dirNames?: readonly string[]): string {
+export function getSolutionsQueryString(
+  locale?: string,
+  dirNames?: readonly string[]
+): string {
   const params = {
+    locale: locale || 'it',
     ...solutionsQueryParams,
     ...(dirNames && dirNames.length > 0
       ? {
@@ -246,9 +250,11 @@ export function getSolutionsQueryString(dirNames?: readonly string[]): string {
 }
 
 export function getReleaseNotesQueryString(
+  locale?: string,
   dirNames?: readonly string[]
 ): string {
   const params = {
+    locale: locale || 'it',
     ...releaseNotesQueryParams,
     ...(dirNames && dirNames.length > 0
       ? {
@@ -259,6 +265,30 @@ export function getReleaseNotesQueryString(
           },
         }
       : {}),
+  };
+  return qs.stringify(params);
+}
+
+export function getGuidesQueryString(locale?: string): string {
+  const params = {
+    locale: locale || 'it',
+    ...guidesQueryParams,
+  };
+  return qs.stringify(params);
+}
+
+export function getProductsQueryString(locale?: string): string {
+  const params = {
+    locale: locale || 'it',
+    ...productsQueryParams,
+  };
+  return qs.stringify(params);
+}
+
+export function getApisDataQueryString(locale?: string): string {
+  const params = {
+    locale: locale || 'it',
+    ...apisDataQueryParams,
   };
   return qs.stringify(params);
 }

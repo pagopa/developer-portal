@@ -1,7 +1,6 @@
 import { Decorator, Meta, StoryObj } from '@storybook/nextjs';
 import ChatHistoryMessage from 'nextjs-website/src/components/atoms/ChatHistoryMessage/ChatHistoryMessage';
 import React from 'react';
-import { nextIntlContextDecorator } from '../next-intl-context.helper';
 import { mockText } from '../mock-content.helper';
 
 const meta: Meta<typeof ChatHistoryMessage> = {
@@ -22,12 +21,14 @@ export const ChatBotMessage: StoryObj<typeof ChatHistoryMessage> = {
         
       Rif:  
       [PagoPA DevPortal | Overview delle componenti](https://developer.pagopa.it/pago-pa/guides/sanp/specifiche-attuative-del-nodo-dei-pagamenti-spc/funzionamento-generale/overview-delle-componenti)
+      [Internal link](#)
+      [External Link](https://www.wikipedia.org/)
     `,
     timestamp: '2024-07-24T17:14:07.129Z',
     sender: 'Discovery',
     isQuestion: false,
   },
-  decorators: [decorator, nextIntlContextDecorator],
+  decorators: [decorator],
 };
 
 export const UserMessage: StoryObj<typeof ChatHistoryMessage> = {
@@ -37,5 +38,5 @@ export const UserMessage: StoryObj<typeof ChatHistoryMessage> = {
     sender: 'John Doe',
     isQuestion: true,
   },
-  decorators: [decorator, nextIntlContextDecorator],
+  decorators: [decorator],
 };

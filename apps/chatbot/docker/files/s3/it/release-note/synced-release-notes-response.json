@@ -1,0 +1,129 @@
+{
+  "data": [
+    {
+      "id": 37,
+      "attributes": {
+        "title": "QDEV-3207_RN2",
+        "dirName": "ZfEot5IvH1XjEms6QJKs",
+        "landingFile": "README.md",
+        "createdAt": "2025-12-16T17:45:36.955Z",
+        "updatedAt": "2026-01-13T14:01:21.843Z",
+        "publishedAt": "2026-01-13T14:01:21.836Z",
+        "locale": "it",
+        "bannerLinks": [],
+        "product": {
+          "data": {
+            "id": 68,
+            "attributes": {
+              "name": "Prodotto delle nostre menti contorte",
+              "description": "descrizione cervellotica: il prodotto delle nostre menti contorte serve solo per fare dei test del meccanismo di sync",
+              "slug": "pdnmc",
+              "createdAt": "2025-11-14T15:47:43.475Z",
+              "updatedAt": "2025-12-17T14:53:41.336Z",
+              "publishedAt": "2025-12-17T14:50:12.401Z",
+              "locale": "it",
+              "shortName": "pdnmc",
+              "isVisible": true,
+              "logo": {
+                "data": {
+                  "id": 500,
+                  "attributes": {
+                    "name": "techmeet.svg",
+                    "alternativeText": null,
+                    "caption": null,
+                    "width": 32,
+                    "height": 32,
+                    "formats": null,
+                    "hash": "techmeet_adbb66de0a",
+                    "ext": ".svg",
+                    "mime": "image/svg+xml",
+                    "size": 1.98,
+                    "url": "https://cdn.dev.developer.pagopa.it/techmeet_adbb66de0a.svg",
+                    "previewUrl": null,
+                    "provider": "aws-s3",
+                    "provider_metadata": null,
+                    "createdAt": "2025-05-23T08:14:31.510Z",
+                    "updatedAt": "2025-12-11T08:07:45.341Z",
+                    "isUrlSigned": true
+                  }
+                }
+              },
+              "bannerLinks": [],
+              "overview": {
+                "data": {
+                  "id": 36,
+                  "attributes": {
+                    "title": "Titolo overview cervellotica",
+                    "subtitle": "Sottotitolo",
+                    "createdAt": "2025-11-14T15:50:45.140Z",
+                    "updatedAt": "2026-01-16T10:49:58.638Z",
+                    "publishedAt": "2025-12-17T14:50:08.409Z",
+                    "locale": "it"
+                  }
+                }
+              },
+              "quickstart_guide": {
+                "data": {
+                  "id": 34,
+                  "attributes": {
+                    "title": "Quick start cervellotica",
+                    "description": "desc",
+                    "createdAt": "2025-11-14T16:22:58.248Z",
+                    "updatedAt": "2025-12-17T14:51:08.903Z",
+                    "publishedAt": "2025-12-17T14:51:08.890Z",
+                    "locale": "it"
+                  }
+                }
+              },
+              "release_note": {
+                "data": {
+                  "id": 37,
+                  "attributes": {
+                    "title": "QDEV-3207_RN2",
+                    "dirName": "ZfEot5IvH1XjEms6QJKs",
+                    "landingFile": "README.md",
+                    "createdAt": "2025-12-16T17:45:36.955Z",
+                    "updatedAt": "2026-01-13T14:01:21.843Z",
+                    "publishedAt": "2026-01-13T14:01:21.836Z",
+                    "locale": "it"
+                  }
+                }
+              },
+              "api_data_list_page": {
+                "data": null
+              },
+              "guide_list_page": {
+                "data": {
+                  "id": 36,
+                  "attributes": {
+                    "title": "Pagina di lista delle guide cervellotiche",
+                    "description": "Descrizione della pagina di lista delle guide cervellotiche",
+                    "createdAt": "2025-11-14T16:04:45.619Z",
+                    "updatedAt": "2026-01-19T09:48:23.539Z",
+                    "publishedAt": "2026-01-14T16:22:45.135Z",
+                    "locale": "it"
+                  }
+                }
+              },
+              "tutorial_list_page": {
+                "data": null
+              },
+              "use_case_list_page": {
+                "data": null
+              }
+            }
+          }
+        },
+        "seo": null
+      }
+    }
+  ],
+  "meta": {
+    "pagination": {
+      "page": 1,
+      "pageSize": 250,
+      "pageCount": 1,
+      "total": 1
+    }
+  }
+}

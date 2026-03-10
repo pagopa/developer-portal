@@ -10,12 +10,18 @@ import {
 import { compact } from 'lodash';
 
 export function makeProductsProps(
+  locale: string,
   strapiProducts: StrapiProducts
 ): ReadonlyArray<Product> {
-  return compact(strapiProducts.data.map(makeProductProps));
+  return compact(
+    strapiProducts.data.map((product) => makeProductProps(locale, product))
+  );
 }
 
-export function makeProductProps(product: StrapiProduct): Product | null {
+export function makeProductProps(
+  locale: string,
+  product: StrapiProduct
+): Product | null {
   if (!product) {
     console.error('Invalid product data:', product);
     return null;
@@ -30,7 +36,7 @@ export function makeProductProps(product: StrapiProduct): Product | null {
   // eslint-disable-next-line functional/no-try-statements
   try {
     return {
-      ...makeBaseProductWithoutLogoProps(product),
+      ...makeBaseProductWithoutLogoProps(locale, product),
       description: product.description,
       logo: product.logo,
     };
@@ -45,6 +51,7 @@ export function makeProductProps(product: StrapiProduct): Product | null {
 }
 
 function getApiDataListPageUrl(
+  locale: string,
   product: StrapiBaseProductWithRelations
 ): string | undefined {
   const apiDataList = product.api_data_list_page;
@@ -59,13 +66,14 @@ function getApiDataListPageUrl(
     apiDataList.api_data.length === 1 &&
     apiData.apiRestDetail?.slug
   ) {
-    return `/${productSlug}/api/${apiData.apiRestDetail.slug}`;
+    return `/${locale}/${productSlug}/api/${apiData.apiRestDetail.slug}`;
   }
 
-  return `/${productSlug}/api`;
+  return `/${locale}/${productSlug}/api`;
 }
 
 export function makeBaseProductWithoutLogoProps(
+  locale: string,
   product: StrapiBaseProductWithRelations
 ): Product {
   if (!product.slug) {
@@ -75,7 +83,7 @@ export function makeBaseProductWithoutLogoProps(
   }
 
   return {
-    apiDataListPageUrl: getApiDataListPageUrl(product),
+    apiDataListPageUrl: getApiDataListPageUrl(locale, product),
     bannerLinks: product.bannerLinks?.map(makeBannerLinkProps) || [],
     isVisible: product.isVisible,
     hasApiDataListPage: !!(

@@ -1,20 +1,8 @@
 import { Stack, Typography, useTheme } from '@mui/material';
-import { defaultLocale } from '@/config';
 import IconWrapper from '@/components/atoms/IconWrapper/IconWrapper';
+import { chatTimeOptions } from '@/config';
 import { parseChatMessage } from '@/helpers/chatMessageParser.helper';
-
-type DateFormatOptions = {
-  locale?: string;
-  options?: Intl.DateTimeFormatOptions;
-};
-
-const DEFAULT_DATE_FORMAT = {
-  locale: defaultLocale,
-  options: {
-    timeStyle: 'short',
-    hourCycle: 'h23',
-  },
-} satisfies DateFormatOptions;
+import { useFormatter } from 'next-intl';
 
 type ChatMessageProps = {
   text: string;
@@ -30,16 +18,13 @@ const ChatHistoryMessage = ({
   sender,
 }: ChatMessageProps) => {
   const { palette } = useTheme();
+  const format = useFormatter();
   const textColor = palette.text.primary;
   const parsedChatMessage = isQuestion ? text : parseChatMessage(text);
   const iconSize = 28;
 
   const timeLabel =
-    timestamp &&
-    new Intl.DateTimeFormat(
-      DEFAULT_DATE_FORMAT.locale,
-      DEFAULT_DATE_FORMAT.options
-    ).format(new Date(timestamp));
+    timestamp && format.dateTime(new Date(timestamp), chatTimeOptions);
 
   return (
     <Stack direction='column' width='100%' spacing={1}>
