@@ -26,7 +26,6 @@ const RequiredTextField: FC<RequiredTextFieldProps> = ({
   const [isDirty, setIsDirty] = useState(false);
   const [isValid, setIsValid] = useState(false);
   const [errorText, setErrorText] = useState(helperText);
-  console.log('Helper text', helperText, 'Error text', errorText);
   const { palette } = useTheme();
 
   useEffect(() => {
