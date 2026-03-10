@@ -1,5 +1,35 @@
 # chatbot-index
 
+## 2.5.0
+
+### Minor Changes
+
+- 83d45a8: Create index now also considers structured data
+
+### Patch Changes
+
+- 83d45a8: Upgrade installation packages
+- f293978: Fix safe yaml load
+
+## 2.4.1
+
+### Patch Changes
+
+- a49b695: Update loggers in chatbot, chatbot-monitor, chatbot-evaluate, and chatbot-index
+- a49b695: Move presidio and dynamodb functions from chatbot to chatbot-monitor
+- a49b695: Run dockerfiles as normal user
+
+## 2.4.0
+
+### Minor Changes
+
+- 2bc17a7: Add language code 'it' in the s3 paths
+- 4c96727: Fix deploy chatbot action continue on error
+
+### Patch Changes
+
+- ae2f4bc: Fix unconsideration of English pages as dynamics ones
+
 ## 2.3.0
 
 ### Minor Changes

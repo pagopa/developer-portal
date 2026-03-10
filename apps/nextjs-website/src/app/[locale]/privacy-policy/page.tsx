@@ -7,11 +7,11 @@ import ContentWrapper from '@/components/atoms/ContentWrapper/ContentWrapper';
 export async function generateMetadata(props: {
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
-  const params = await props.params;
+  const { locale } = await props.params;
   return makeMetadata({
     title: 'Privacy Policy',
-    url: `${baseUrl}/${params.locale}/privacy-policy`,
-    locale: 'it_IT',
+    url: `${baseUrl}/${locale}/privacy-policy`,
+    langCode: locale,
   });
 }
 

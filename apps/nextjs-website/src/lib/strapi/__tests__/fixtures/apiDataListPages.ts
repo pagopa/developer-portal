@@ -30,6 +30,7 @@ export const strapiApiDataListPages = {
                 data: {
                   id: 1,
                   attributes: {
+                    updatedAt: '2026-01-01T00:00:00.000Z',
                     apiData: {
                       data: [],
                     },
@@ -125,14 +126,14 @@ export const expectedApiDataListPageProps: ReadonlyArray<ApiDataListPageTemplate
           title: 'SEND Main API',
           text: 'Main SEND API for delivery notifications',
           icon: 'https://example.com/example.jpg',
-          href: '/send/api/send-main',
+          href: '/it/send/api/send-main',
           labels: [{ label: 'REST' }],
         },
         {
           title: 'SEND SOAP API',
           text: 'SOAP API for legacy integrations',
           icon: 'https://example.com/soap-icon.svg',
-          href: '/send/api/send-soap',
+          href: '/it/send/api/send-soap',
           labels: [{ label: 'SOAP' }],
         },
       ],

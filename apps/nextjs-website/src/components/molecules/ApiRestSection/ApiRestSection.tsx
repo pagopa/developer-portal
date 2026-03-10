@@ -55,7 +55,7 @@ const ApiRestSection = ({
   specURLs,
   specURLsName,
 }: ApiRestPageProps) => {
-  const { palette } = useTheme();
+  const { palette, spacing } = useTheme();
 
   const [selectedItemURL, setSelectedItemURL] = useState(specURLs[0].url);
 
@@ -105,11 +105,19 @@ const ApiRestSection = ({
         <Stack
           sx={styles.selectContainer}
           direction='row'
-          justifyContent='flex-end'
+          justifyContent='flex-start'
           alignContent='center'
+          marginLeft={spacing(2.125)}
         >
           <StyledFormControl size='medium'>
-            <InputLabel id='select-api-label'>{specURLsName}</InputLabel>
+            <InputLabel
+              id='select-api-label'
+              sx={{
+                color: `${palette.primary.main} !important`,
+              }}
+            >
+              {specURLsName}
+            </InputLabel>
             <Select
               labelId='select-api-label'
               value={selectedItemURL}

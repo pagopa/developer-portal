@@ -1,7 +1,6 @@
 import { Decorator, Meta, StoryObj } from '@storybook/nextjs';
 import ChatbotHistoryList from '../../../nextjs-website/src/components/molecules/ChatbotHistoryList/ChatbotHistoryList';
 import React from 'react';
-import { nextIntlContextDecorator } from '../next-intl-context.helper';
 import { sessionsList } from '../fixtures/chatbotFixtures';
 
 const meta: Meta<typeof ChatbotHistoryList> = {
@@ -19,5 +18,5 @@ export const Showcase: StoryObj<typeof ChatbotHistoryList> = {
   args: {
     sessionsList: sessionsList,
   },
-  decorators: [decorator, nextIntlContextDecorator],
+  decorators: [decorator],
 };

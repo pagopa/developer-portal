@@ -133,7 +133,7 @@ const GuideMenuItems = ({
           e.currentTarget.classList.add('custom-mui-focused');
           const cleanHref = href.split('#')[0];
           const parts = cleanHref.split('/').filter(Boolean);
-          const apiPath = `/${locale}/api/${parts.join('/')}`;
+          const apiPath = `/routes/${parts.join('/')}`;
           fetch(apiPath, { headers: { Accept: 'application/json' } })
             .then((res) => (res.ok ? res.json() : undefined))
             .then((data) => {

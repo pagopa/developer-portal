@@ -40,3 +40,20 @@ variable "strapi_api_url" {
   description = "The URL of the Strapi API."
   type        = string
 }
+
+variable "webinar_metrics_channel_key" {
+  description = "The key from ivs_channels to use for the webinar metrics Lambda. If null, IVS_CHANNEL_ARN is not set and the Lambda uses its default."
+  type        = string
+  default     = null
+}
+
+variable "webinar_metrics_stage_name" {
+  description = "The api webinar metrics stage name."
+  type        = string
+  default     = "v1"
+}
+
+variable "github_repository" {
+  description = "The GitHub repository (e.g., org/repo) allowed to assume the deploy role via OIDC."
+  type        = string
+}

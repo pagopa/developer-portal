@@ -31,5 +31,5 @@ export const strapiUrlReplaceMapFixture: StrapiUrlReplaceMap = {
 };
 
 export const expectedUrlReplaceMapFixture = {
-  'getting-started': '/firma-con-io/guides/getting-started/step-2',
+  'getting-started': '/it/firma-con-io/guides/getting-started/step-2',
 };

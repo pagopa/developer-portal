@@ -23,6 +23,7 @@ export const strapiProducts: StrapiProducts = {
           data: {
             id: 1,
             attributes: {
+              updatedAt: '2026-01-01T00:00:00.000Z',
               apiData: {
                 data: [
                   {
@@ -98,7 +99,7 @@ export const expectedProduct: Product = {
     },
   ],
   hasApiDataListPage: true,
-  apiDataListPageUrl: '/test-product/api/api-detail',
+  apiDataListPageUrl: '/it/test-product/api/api-detail',
   hasTutorialListPage: true,
   hasGuideListPage: true,
   hasOverviewPage: true,

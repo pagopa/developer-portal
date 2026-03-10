@@ -23,7 +23,9 @@ export async function getResponseFromStrapi(url: string) {
 
 // In case of an error, the error will be thrown
 async function fetchFromStrapiResponse(url: string) {
-  console.log('Fetching solutions from Strapi...');
+  // get first segment of the url to log what we are fetching
+  const firstSegment = url.split('/')[0];
+  console.log(`Fetching ${firstSegment} from Strapi...`);
   const strapiEndpoint = process.env.STRAPI_ENDPOINT;
   const strapiApiToken = process.env.STRAPI_API_TOKEN;
 
@@ -32,7 +34,7 @@ async function fetchFromStrapiResponse(url: string) {
     throw new Error('Missing Strapi configuration in environment variables');
   }
 
-  // Using pagination with a large page size to fetch all solutions in one request
+  // Using pagination with a large page size to fetch all ${firstSegment} in one request
   const response = await fetch(`${strapiEndpoint}/${url}`, {
     headers: {
       Authorization: `Bearer ${strapiApiToken}`,
@@ -41,7 +43,7 @@ async function fetchFromStrapiResponse(url: string) {
 
   if (!response.ok) {
     throw new Error(
-      `Failed to fetch solutions: ${response.status} ${response.statusText}`
+      `Failed to fetch ${firstSegment}: ${response.status} ${response.statusText}`
     );
   }
 

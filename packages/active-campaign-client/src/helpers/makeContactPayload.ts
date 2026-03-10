@@ -1,3 +1,4 @@
+import { customFieldIds } from '../config';
 import { ContactPayload } from '../types/contactPayload';
 import { User } from '../types/user';
 
@@ -10,21 +11,25 @@ export function makeContactPayload(user: User): ContactPayload {
       phone: `cognito:${user.username}`,
       fieldValues: [
         {
-          field: '2',
+          field: customFieldIds.companyType,
           value: user['custom:company_type'],
         },
         {
-          field: '1',
+          field: customFieldIds.jobRole,
           value: user['custom:job_role'],
         },
         {
-          field: '3', // id 3 in prod env (field id '4' in dev)
+          field: customFieldIds.mailingListAccepted,
           value:
             user['custom:mailinglist_accepted'] === 'true' ? 'TRUE' : 'FALSE',
         },
         {
-          field: '4', // id 4 in prod env (field id '5' in dev)
+          field: customFieldIds.surveyAccepted,
           value: user['custom:survey_accepted'] === 'true' ? 'TRUE' : 'FALSE',
+        },
+        {
+          field: customFieldIds.preferredLanguage,
+          value: user['custom:preferred_language'] || 'it',
         },
       ],
     },

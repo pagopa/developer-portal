@@ -2,7 +2,7 @@ import { Decorator, Meta, StoryObj } from '@storybook/nextjs';
 import ChatbotLayout from 'nextjs-website/src/components/organisms/ChatbotLayout/ChatbotLayout';
 import React from 'react';
 import { mockText } from '../mock-content.helper';
-import { nextIntlContextDecorator } from '../next-intl-context.helper';
+import { authProviderDecorator } from '../auth-provider.helper';
 
 const meta: Meta<typeof ChatbotLayout> = {
   title: 'Organisms/ChatbotLayout',
@@ -34,7 +34,7 @@ export const NewChatSession: StoryObj<typeof ChatbotLayout> = {
       return null;
     },
   },
-  decorators: [decorator, nextIntlContextDecorator],
+  decorators: [decorator, authProviderDecorator],
 };
 
 export const ChatSessionWithMessages: StoryObj<typeof ChatbotLayout> = {
@@ -60,7 +60,56 @@ export const ChatSessionWithMessages: StoryObj<typeof ChatbotLayout> = {
     },
     isAwaitingResponse: true,
   },
-  decorators: [decorator, nextIntlContextDecorator],
+  decorators: [decorator, authProviderDecorator],
+};
+
+export const ChatSessionWithChips: StoryObj<typeof ChatbotLayout> = {
+  args: {
+    areChatbotQueriesLoaded: true,
+    queries: [
+      {
+        sessionId: 'sessionID',
+        question: mockText(5),
+        queriedAt: '2024-07-24T17:14:07.129Z',
+        answer: mockText(10),
+        createdAt: '2024-07-24T17:14:07.129Z',
+      },
+      {
+        sessionId: 'sessionID',
+        question: mockText(50),
+        queriedAt: '2024-07-24T17:14:07.129Z',
+        answer: mockText(10),
+        createdAt: '2024-07-24T17:14:07.129Z',
+        chips: [
+          {
+            label: 'Documentazione API',
+            question: 'Mostrami la documentazione API',
+            knowledgeBase: 'api-docs',
+          },
+          {
+            label: "Calcolare l'importo dovuto",
+            question: "Come posso calcolare l'importo dovuto?",
+            knowledgeBase: 'payment-calculation',
+          },
+          {
+            label: 'Verificare la regolarità dei pagamenti',
+            question: 'Come posso verificare la regolarità dei pagamenti?',
+            knowledgeBase: 'payment-verification',
+          },
+          {
+            label: 'Ottenere un rimborso',
+            question: 'Come posso ottenere un rimborso?',
+            knowledgeBase: 'refund',
+          },
+        ],
+      },
+    ],
+    onSendQuery: (query: string) => {
+      console.log(query);
+      return null;
+    },
+  },
+  decorators: [decorator, authProviderDecorator],
 };
 
 export const LoadingChatSession: StoryObj<typeof ChatbotLayout> = {
@@ -72,5 +121,5 @@ export const LoadingChatSession: StoryObj<typeof ChatbotLayout> = {
       return null;
     },
   },
-  decorators: [decorator, nextIntlContextDecorator],
+  decorators: [decorator, authProviderDecorator],
 };

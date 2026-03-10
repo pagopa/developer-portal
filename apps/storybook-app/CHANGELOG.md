@@ -1,5 +1,24 @@
 # storybook-app
 
+## 2.1.0
+
+### Minor Changes
+
+- 4bc9c1e: Add ChatbotChipsContainer and its storybook
+- 0651ba3: Add Chatbot chips component and storybook element
+- 22ca48c: Add ChatbotChip functionality and enhance ChatbotChipsContainer layout and add QueryWithChips story to showcase chatbot chip functionality
+
+## 2.0.0
+
+### Major Changes
+
+- 35554ae: Add mock navigation proxy and update ChatbotHistoryNavigationMenu stories for locale support and refactor Storybook stories to remove nextIntlContextDecorator and add locale support in preview
+
+### Patch Changes
+
+- 35554ae: Add authProviderDecorator to Chat and ChatbotLayout stories
+- 35554ae: Removed dependencies to mui italia, update theme to use plain mui to be compatible with next 15
+
 ## 1.2.0
 
 ### Minor Changes
