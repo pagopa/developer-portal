@@ -23,7 +23,7 @@ DEVPORTAL_RAG_TOOL_DESCRIPTION = (
     "authentication methods (API Keys), environment configurations (checkout, eCommerce), and technical troubleshooting for developers."
 )
 CITTADINO_RAG_TOOL_DESCRIPTION = (
-    "RAG tool designed to retrieve information about end-users (citizens) with queries related to the use of Italian digital platforms, specifically those involving the PagoPA ecosystem. "
+    "RAG tool designed to retrieve information useful for end-users (citizens) with queries related to the use of Italian digital platforms, specifically those involving the PagoPA ecosystem. "
     "Use this tool for all queries related to the end-user (citizen) experience of Italian digital platforms. "
     "This tool contains comprehensive information on the PagoPA products: 'send', 'app-io', and the 'pagopa-payment' ecosystem from a user's perspective.\n"
     "Consult this tool for questions about receiving digital notifications, using the App IO interface, paying taxes or fines as a citizen, "
