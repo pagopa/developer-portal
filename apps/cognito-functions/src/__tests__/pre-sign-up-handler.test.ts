@@ -2,7 +2,7 @@ import { PreSignUpTriggerEvent } from 'aws-lambda';
 import { makeHandler } from '../pre-sign-up-handler';
 
 const makeEvent = (
-  attributes: Record<string, string | undefined>
+  attributes: Partial<Record<string, string | undefined>> = {}
 ): PreSignUpTriggerEvent => ({
   version: 'aVersion',
   region: 'eu-south-1',
@@ -64,6 +64,11 @@ describe('PreSignUp Handler', () => {
 
   it('should throw error for invalid family name', async () => {
     const event = makeEvent({ family_name: 'Invalid#Name' });
+    await expect(handler(event)).rejects.toThrow('Invalid family name');
+  });
+
+  it('should throw error for empty family name', async () => {
+    const event = makeEvent({ family_name: '   ' });
     await expect(handler(event)).rejects.toThrow('Invalid family name');
   });
 
