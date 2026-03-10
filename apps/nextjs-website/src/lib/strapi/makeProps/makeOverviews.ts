@@ -25,10 +25,7 @@ export function makeOverviewsProps(
         return {
           updatedAt: attributes.updatedAt,
           path: `/${locale}/${attributes.product?.slug}/overview`,
-          product: makeBaseProductWithoutLogoProps(
-            locale,
-            attributes.product
-          ),
+          product: makeBaseProductWithoutLogoProps(locale, attributes.product),
           hero: {
             backgroundImage: attributes.backgroundImage.url,
             altText: attributes.backgroundImage.alternativeText || '',

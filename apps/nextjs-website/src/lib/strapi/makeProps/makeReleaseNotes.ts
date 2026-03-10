@@ -28,10 +28,7 @@ export function makeReleaseNotesProps(
           dirName: attributes.dirName,
           landingFile: attributes.landingFile,
           path: `/${locale}/${attributes.product?.slug}/release-note`,
-          product: makeBaseProductWithoutLogoProps(
-            locale,
-            attributes.product
-          ),
+          product: makeBaseProductWithoutLogoProps(locale, attributes.product),
           seo: attributes.seo,
           title: attributes.title,
         };
