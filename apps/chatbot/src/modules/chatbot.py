@@ -82,7 +82,7 @@ class Chatbot:
                     refine_template=self.ref_prompt_tmpl,
                 )
             )
-            self.tool_names.append(DEVPORTAL_TOOL_NAME)
+            self.tool_names += [DEVPORTAL_TOOL_NAME]
         except Exception as e:
             LOGGER.error(f"Failed to load DevPortal index: {e}")
             raise
