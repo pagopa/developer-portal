@@ -11,6 +11,7 @@ import * as TE from 'fp-ts/TaskEither';
 import * as T from 'fp-ts/Task';
 import * as E from 'fp-ts/Either';
 import { makeOtpMessageEmail } from './templates/otp-message';
+import { SUPPORTED_LOCALES } from './i18n/locales';
 
 export const generateVerificationCode = (): string =>
   Array.from({ length: 6 }, () => crypto.randomInt(0, 9)).join('');
@@ -59,6 +60,11 @@ export const makeHandler =
     event: CreateAuthChallengeTriggerEvent
   ): Promise<CreateAuthChallengeTriggerEvent> => {
     const { session } = event.request;
+    const localeAttribute =
+      event.request.userAttributes['custom:preferred_language'];
+    const locale = SUPPORTED_LOCALES.includes(localeAttribute)
+      ? localeAttribute
+      : 'it'; // Defaults to 'it'
 
     // only called once after SRP_A and PASSWORD_VERIFIER challenges. Hence
     // session.length == 2
@@ -74,7 +80,8 @@ export const makeHandler =
           makeOtpMessageEmail(
             verificationCode,
             env.config.domain,
-            OTP_DURATION_MINUTES
+            OTP_DURATION_MINUTES,
+            locale
           )
         )
       );
