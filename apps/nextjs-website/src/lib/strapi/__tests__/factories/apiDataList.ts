@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { strapiApiDataList } from '@/lib/strapi/__tests__/fixtures/apiDataList';
-import { StrapiApiDataList } from '@/lib/strapi/types/apiDataList';
+import { ApiDataList } from '@/lib/apiDataList/types';
 
 export function minimalApiDataList() {
   const apiData = strapiApiDataList.data[0];
@@ -39,7 +39,7 @@ export function minimalApiDataList() {
         },
       },
     ],
-  } satisfies StrapiApiDataList;
+  } satisfies ApiDataList;
 }
 
 export function apiDataWithoutBannerLinks() {
@@ -55,7 +55,7 @@ export function apiDataWithoutBannerLinks() {
         },
       },
     ],
-  } satisfies StrapiApiDataList;
+  } satisfies ApiDataList;
 }
 
 export function apiDataWithMissingProduct() {
@@ -74,7 +74,7 @@ export function apiDataWithMissingProduct() {
         },
       },
     ],
-  } satisfies StrapiApiDataList;
+  } satisfies ApiDataList;
 }
 
 export function apiDataWithoutApiDetails() {
@@ -92,7 +92,7 @@ export function apiDataWithoutApiDetails() {
         },
       },
     ],
-  } satisfies StrapiApiDataList;
+  } satisfies ApiDataList;
 }
 
 export function apiDataWithInvalidRestApiDetails() {
@@ -113,7 +113,7 @@ export function apiDataWithInvalidRestApiDetails() {
         },
       },
     ],
-  } satisfies StrapiApiDataList;
+  } satisfies ApiDataList;
 }
 
 export function apiDatalistWithItemMissingSlug() {
@@ -135,7 +135,7 @@ export function apiDatalistWithItemMissingSlug() {
         },
       },
     ],
-  } satisfies StrapiApiDataList;
+  } satisfies ApiDataList;
 }
 
 export function mixedApiDataValidAndInvalid() {
@@ -171,7 +171,7 @@ export function mixedApiDataValidAndInvalid() {
         },
       },
     ],
-  } satisfies StrapiApiDataList;
+  } satisfies ApiDataList;
 }
 
 export function apiDataWithoutProductBannerLinks() {
@@ -196,7 +196,7 @@ export function apiDataWithoutProductBannerLinks() {
         },
       },
     ],
-  } satisfies StrapiApiDataList;
+  } satisfies ApiDataList;
 }
 
 export function apiDataWithCorruptedProduct() {
@@ -237,7 +237,7 @@ export function soapApiDataOnly() {
   return {
     ...strapiApiDataList,
     data: [soapApi],
-  } satisfies StrapiApiDataList;
+  } satisfies ApiDataList;
 }
 
 export function restApiDataOnly() {
@@ -245,7 +245,7 @@ export function restApiDataOnly() {
   return {
     ...strapiApiDataList,
     data: [restApi],
-  } satisfies StrapiApiDataList;
+  } satisfies ApiDataList;
 }
 
 export function restApiDataWithMultipleSpecs() {
@@ -277,5 +277,5 @@ export function restApiDataWithMultipleSpecs() {
         },
       },
     ],
-  } satisfies StrapiApiDataList;
+  } satisfies ApiDataList;
 }

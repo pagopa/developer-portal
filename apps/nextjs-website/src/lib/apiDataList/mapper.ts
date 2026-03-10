@@ -1,14 +1,13 @@
 /* eslint-disable functional/no-expression-statements */
-import { ApiDataPageProps } from '@/app/[locale]/[productSlug]/api/[apiDataSlug]/page';
 import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
 import { makeBaseProductWithoutLogoProps } from '@/lib/strapi/makeProps/makeProducts';
 import { makeApiSoapUrlList } from '@/lib/strapi/makeProps/makeApiSoapUrlList';
-import { StrapiApiDataList } from '@/lib/strapi/types/apiDataList';
 import { compact } from 'lodash';
+import { ApiDataList, ApiDataPageProps } from './types';
 
-export async function makeApiDataListProps(
+export async function mapApiDataList(
   locale: string,
-  strapiApiDataList: StrapiApiDataList
+  strapiApiDataList: ApiDataList
 ): Promise<ReadonlyArray<ApiDataPageProps>> {
   const list = compact(
     await Promise.all(
