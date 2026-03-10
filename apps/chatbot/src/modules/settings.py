@@ -123,7 +123,6 @@ class ChatbotSettings(BaseSettings):
         os.getenv("CHB_EMBED_RETRY_MIN_SECONDS", "1")
     )
     embed_task: str = "RETRIEVAL_QUERY"
-    max_retries: int = int(os.getenv("CHB_MODEL_MAX_RETRIES", "10"))
     max_tokens: int = int(os.getenv("CHB_MODEL_MAXTOKENS", "2048"))
     model_id: str = os.getenv("CHB_MODEL_ID", "gemini-3.1-flash-lite-preview")
     provider: str = os.getenv("CHB_PROVIDER", "google")
