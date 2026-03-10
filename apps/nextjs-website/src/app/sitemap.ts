@@ -393,7 +393,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         const tutorialRoutes = tutorialsData.data
           .filter((tutorial) => tutorial.slug)
           .map((tutorial) => ({
-            url: `${localizedUrlPrefix}/${productSlug}/tutorials/${tutorial.attributes.slug}`,
+            url: `${localizedUrlPrefix}/${productSlug}/tutorials/${tutorial.slug}`,
             lastModified: new Date(tutorial.updatedAt || Date.now()),
             changeFrequency: 'weekly' as const,
             priority: 0.6,
@@ -468,7 +468,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const flatSitemap = allLocalesSitemaps.flat();
 
   // Deduplicate URLs - keep the entry with the most recent lastModified date
-  const deduplicatedSitemap = Array.from(
+  return Array.from(
     flatSitemap.reduce((map, entry) => {
       const existing = map.get(entry.url);
       if (
@@ -481,6 +481,4 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       return map;
     }, new Map<string, MetadataRoute.Sitemap[number]>())
   ).map(([, entry]) => entry);
-
-  return deduplicatedSitemap;
 }

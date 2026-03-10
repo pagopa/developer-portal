@@ -89,7 +89,7 @@ describe('makeHomepageProps', () => {
       'it',
       _.cloneDeep({ data: strapiHomepage })
     );
-    expect(result.ecosystem?.products).toEqual([
+    expect(result.ecosystem?.tabContents[0]?.items).toEqual([
       {
         title: 'Product 1',
         text: 'Product 1 description',
@@ -98,7 +98,7 @@ describe('makeHomepageProps', () => {
         useSrc: true,
       },
     ]);
-    expect(result.ecosystem?.solutions).toEqual([
+    expect(result.ecosystem?.tabContents[1]?.items).toEqual([
       {
         title: 'Solution 1',
         text: 'Solution 1 description',
