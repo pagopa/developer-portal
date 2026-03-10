@@ -22,7 +22,7 @@ export function middleware(request: NextRequest) {
         request.url.includes(`/${loc.langCode}/`)
       )?.langCode;
       return NextResponse.redirect(
-        new URL(`/${locale ?? `/${defaultLangCode}`}`, request.url)
+        new URL(`/${locale ?? defaultLangCode}`, request.url)
       );
     }
   }
