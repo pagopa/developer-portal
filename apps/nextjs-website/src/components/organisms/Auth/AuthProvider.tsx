@@ -2,7 +2,7 @@
 
 import { Amplify } from 'aws-amplify';
 
-import { amplifyConfig } from '@/config';
+import { amplifyConfig, authCookieValidityInDays, baseUrl } from '@/config';
 import { Authenticator } from '@aws-amplify/ui-react';
 import { FC, PropsWithChildren } from 'react';
 
@@ -12,9 +12,9 @@ if (typeof window !== 'undefined') {
     Auth: {
       ...amplifyConfig.Auth,
       cookieStorage: {
-        domain: window.location.hostname,
+        domain: baseUrl.replace(/^https?:\/\//, ''),
         path: '/',
-        expires: 365,
+        expires: authCookieValidityInDays,
         secure: window.location.protocol === 'https:',
       },
     },
