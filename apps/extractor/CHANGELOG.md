@@ -1,5 +1,11 @@
 # extractor
 
+## 1.0.1
+
+### Patch Changes
+
+- 2d46549: Rename all extractor-specific LLM parameters with EXTRACTOR\_ prefix
+
 ## 1.0.0
 
 ### Major Changes
