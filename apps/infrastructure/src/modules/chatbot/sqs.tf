@@ -19,7 +19,7 @@ resource "aws_sqs_queue" "chatbot_queue" {
   content_based_deduplication = true
   deduplication_scope         = "messageGroup"
   fifo_throughput_limit       = "perMessageGroupId"
-  visibility_timeout_seconds = 120
+  visibility_timeout_seconds  = 120
 
   redrive_policy = jsonencode({
     deadLetterTargetArn = aws_sqs_queue.chatbot_dlq[each.key].arn
