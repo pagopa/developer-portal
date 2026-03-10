@@ -35,7 +35,6 @@ def get_discovery_agent(
         ReActAgent: The configured ReActAgent instance.
     """
 
-    name = name if name else DISCOVERY_AGENT_NAME
     description = description if description else DEFAULT_DESCRIPTION
     llm = llm if llm else get_llm(temperature=SETTINGS.temperature_agent)
 
