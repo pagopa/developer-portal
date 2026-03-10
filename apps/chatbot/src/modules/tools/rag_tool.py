@@ -14,7 +14,7 @@ from src.modules.structured_outputs import RAGOutput
 DEVPORTAL_TOOL_NAME = "DevPortalRAGTool"
 CITTADINO_TOOL_NAME = "CittadinoRAGTool"
 DEVPORTAL_RAG_TOOL_DESCRIPTION = (
-    "RAG tool designed to retrieve IT professionals and developers with technical, architectural, and integration-related information regarding the PagoPA Developer Portal products. "
+    "RAG tool designed to benefit IT professionals and developers by retrieving technical, architectural, and integration-related information regarding the PagoPA Developer Portal products. "
     f"Use this tool for all technical, architectural, and integration-related queries regarding PagoPA Developer Portal products: {PRODUCTS}.\n"
     "Use this tool when the user is an IT professional or a developer seeking to integrate or manage the PagoPA Developer Portal products.\n"
     "It contains API specifications, authentication methods, SDKs, technical onboarding for institutions, and backend configuration.\n"
