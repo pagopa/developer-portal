@@ -17,7 +17,6 @@ DEFAULT_DESCRIPTION = (
 
 
 def get_discovery_agent(
-    name: str | None = None,
     description: str | None = None,
     tools: List[Union[BaseTool, Callable]] | None = None,
     llm: LLM | None = None,
@@ -41,7 +40,7 @@ def get_discovery_agent(
     llm = llm if llm else get_llm(temperature=SETTINGS.temperature_agent)
 
     agent = ReActAgent(
-        name=name,
+        name=DISCOVERY_AGENT_NAME,
         description=description,
         system_prompt=SETTINGS.discovery_system_prompt_str,
         tools=tools,

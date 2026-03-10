@@ -36,7 +36,7 @@ from src.modules.tools import (
     DEVPORTAL_RAG_TOOL_DESCRIPTION,
     CITTADINO_RAG_TOOL_DESCRIPTION,
 )
-from src.modules.agents import get_discovery_agent, DISCOVERY_AGENT_NAME
+from src.modules.agents import get_discovery_agent
 from src.modules.settings import SETTINGS
 
 
@@ -107,10 +107,7 @@ class Chatbot:
         self.num_tools = len(tools)
 
         try:
-            self.discovery = get_discovery_agent(
-                name=DISCOVERY_AGENT_NAME,
-                tools=tools,
-            )
+            self.discovery = get_discovery_agent(tools=tools)
         except Exception as e:
             LOGGER.error(f"Failed to initialize Discovery Agent: {e}")
             raise
