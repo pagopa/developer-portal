@@ -45,7 +45,7 @@ def follow_up_questions_tool(name: str | None = None) -> FunctionTool:
         async_fn=generate_questions,
         name=name,
         description=(
-            "Tool to generate follow-up questions for the user."
+            "Tool to generate follow-up questions for the user.\n"
             "The 'query_str' parameter should contain the original user query.\n"
             "The 'rag_output_devportal' parameter should contain the observations from the previous DevPortalRAGTool calls.\n"
             "The 'rag_output_cittadino' parameter should contain the observations from the previous CittadinoRAGTool calls.\n"
