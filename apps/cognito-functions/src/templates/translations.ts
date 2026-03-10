@@ -129,8 +129,6 @@ export const EMAIL_TRANSLATIONS = {
       whyThisMessage:
         'Ricevi questo messaggio in quanto abbiamo rilevato una richiesta di login su PagoPA DevPortal da questo indirizzo email registrato. \n' +
         'Non sei tu? Ignora o cancella questa e-mail',
-      companyLegalDetails:
-        'PagoPA S.p.A. - Societa per azioni con socio unico capitale sociale di euro 1,000,000 i.v.Sede legale in Roma, Piazza Colonna 370, CAP 00187Sede operativa in Roma, Via Sardegna 38, CAP 00187N. di iscrizione a Registro Imprese di Roma, CF e P.IVA 15376371009',
     },
     en: {
       subject: 'PagoPA DevPortal verification code: {{code}}',
@@ -142,8 +140,6 @@ export const EMAIL_TRANSLATIONS = {
       whyThisMessage:
         'You are receiving this message because we detected a login request to PagoPA DevPortal from this registered email address. \n' +
         'Not you? Ignore or delete this email.',
-      companyLegalDetails:
-        'PagoPA S.p.A. - Joint-stock company with sole shareholder share capital of euro 1,000,000 fully paid. Registered office in Rome, Piazza Colonna 370, ZIP 00187 Operational headquarters in Rome, Via Sardegna 38, ZIP 00187 Registration number in the Rome Company Register, Tax Code and VAT number 15376371009',
     },
   },
 };

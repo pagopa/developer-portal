@@ -18,6 +18,10 @@ const otpMessage = (
   const translations =
     EMAIL_TRANSLATIONS.otp[locale as keyof typeof EMAIL_TRANSLATIONS.otp] ||
     EMAIL_TRANSLATIONS.otp.it;
+  const commonTranslations =
+    EMAIL_TRANSLATIONS.common[
+      locale as keyof typeof EMAIL_TRANSLATIONS.common
+    ] || EMAIL_TRANSLATIONS.common.it;
 
   return `
 <mjml>
@@ -84,7 +88,7 @@ const otpMessage = (
         <mj-divider border-width="1px" border-style="solid" border-color="#E3E7EB" />
         <mj-spacer height="5px" />
         <mj-text mj-class="footer-text">${
-          translations.companyLegalDetails
+          commonTranslations.companyLegalDetails
         }</mj-text>
       </mj-column>
     </mj-section>
