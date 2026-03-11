@@ -140,7 +140,6 @@ const ConfirmLogin = ({
                 email={email}
                 isLoginCTA={true}
                 resendCode={resendCode}
-                setSubmitting={setSubmitting}
                 text={confirmLogin('checkJunkMail')}
               />
             )}
