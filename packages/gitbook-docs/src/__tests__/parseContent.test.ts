@@ -299,7 +299,7 @@ describe('parseContent', () => {
     ]);
   });
 
-  it('should convert emoji shortcuts in Markdoc tag attributes', () => {
+  it('should convert emoji shortcuts in Markdoc tag content', () => {
     const markdown = '{% hint style="info" %}\n:sos:\n{% endhint %}';
     const result = parseContent(markdown, config);
     expect(result).toStrictEqual([
