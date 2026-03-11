@@ -3,7 +3,12 @@ import React, { useCallback, useEffect, Suspense } from 'react';
 import { useState } from 'react';
 import SubscribeButton from '../../atoms/SubscribeButton/SubscribeButton';
 import { useTranslations } from 'next-intl';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import {
+  useParams,
+  usePathname,
+  useRouter,
+  useSearchParams,
+} from 'next/navigation';
 import { WebinarState } from '@/helpers/webinar.helpers';
 import { subscribeToWebinar, unsubscribeToWebinar } from '@/lib/webinarApi';
 import { useUser } from '@/helpers/user.helper';
@@ -31,6 +36,7 @@ const SubscribeToWebinarContent = ({
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const { locale } = useParams<{ locale: string }>();
   const action = searchParams.get('action');
   const isSubscribeAction = action === 'subscribe';
 
@@ -56,9 +62,9 @@ const SubscribeToWebinarContent = ({
     subscribeToWebinar(webinarSlug, username)
       .then(() => {
         reloadUser().then(() => setIsLoading(false));
-        if (!pathname.includes(`/webinars/${webinarSlug}`)) {
+        if (!pathname.includes(`/${locale}/webinars/${webinarSlug}`)) {
           // eslint-disable-next-line functional/immutable-data
-          router.push(`/webinars/${webinarSlug}`);
+          router.push(`/${locale}/webinars/${webinarSlug}`);
         }
       })
       .catch((error) => {
@@ -74,12 +80,13 @@ const SubscribeToWebinarContent = ({
     pathname,
     reloadUser,
     router,
+    locale,
   ]);
 
   const onSubscribeWithoutUser = () => {
     setIsLoading(true);
-    const finalPath = !pathname.includes(`/webinars/${webinarSlug}`)
-      ? `/webinars/${webinarSlug}?action=subscribe`
+    const finalPath = !pathname.includes(`/${locale}/webinars/${webinarSlug}`)
+      ? `/${locale}/webinars/${webinarSlug}?action=subscribe`
       : `${pathname}?action=subscribe`;
 
     // eslint-disable-next-line functional/immutable-data

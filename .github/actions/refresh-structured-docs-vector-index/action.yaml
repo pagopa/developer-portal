@@ -46,3 +46,4 @@ runs:
       run: |
         cd apps/chatbot-index
         PYTHONPATH=. poetry run python src/modules/refresh_structured_docs.py --update-url-list $(echo $RAW_URLS_TO_UPDATE | tr ',' ' ') --remove-url-list $(echo $RAW_URLS_TO_REMOVE | tr ',' ' ')
+        
