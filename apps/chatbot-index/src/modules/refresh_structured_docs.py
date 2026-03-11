@@ -36,8 +36,9 @@ if __name__ == "__main__":
 
             url_s3_folder = sanitize_url_as_directory_name(url)
             LOGGER.info(
-                f"Refreshing vector index with structured docs in {PATH, url_s3_folder} ..."
+                f"Refreshing vector index with structured docs in {os.path.join(PATH, url_s3_folder)} ..."
             )
+
             VECTOR_INDEX.refresh_index_structured_docs(index, url_s3_folder)
 
     if args.remove_url_list:
