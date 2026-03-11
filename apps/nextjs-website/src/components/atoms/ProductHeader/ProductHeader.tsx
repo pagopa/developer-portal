@@ -1,6 +1,6 @@
 'use client';
 import { productToMenuItems } from '@/helpers/productHeader.helper';
-import { Product } from '@/lib/types/product';
+import { Product } from '@/lib/product/types';
 import { Box, useTheme } from '@mui/material';
 import { Header } from '@/editorialComponents/Header';
 import React, { FC } from 'react';
