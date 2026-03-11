@@ -8,6 +8,19 @@ resource "aws_cloudfront_function" "redirect_viewer_request_handler" {
   code    = var.cloudfront_function_code
 }
 
+resource "aws_cloudfront_response_headers_policy" "redirect" {
+  name    = "redirect-response-headers-policy"
+  comment = "Response headers policy for redirect distribution"
+
+  custom_headers_config {
+    items {
+      header   = "Server"
+      override = true
+      value    = "None"
+    }
+  }
+}
+
 resource "aws_cloudfront_distribution" "redirect" {
 
   origin {
@@ -34,8 +47,9 @@ resource "aws_cloudfront_distribution" "redirect" {
     cached_methods   = ["GET", "HEAD"]
     target_origin_id = "hosting.gitbook.io"
 
-    cache_policy_id          = "4135ea2d-6df8-44a3-9df3-4b5a84be39ad" # Managed-CachingDisabled
-    origin_request_policy_id = "216adef6-5c7f-47e4-b989-5492eafa07d3" # Managed-AllViewer
+    cache_policy_id            = "4135ea2d-6df8-44a3-9df3-4b5a84be39ad" # Managed-CachingDisabled
+    origin_request_policy_id   = "216adef6-5c7f-47e4-b989-5492eafa07d3" # Managed-AllViewer
+    response_headers_policy_id = aws_cloudfront_response_headers_policy.redirect.id
 
     viewer_protocol_policy = "redirect-to-https"
     min_ttl                = 0 # min time for objects to live in the distribution cache

@@ -1,5 +1,11 @@
 # cognito-functions
 
+## 1.1.2
+
+### Patch Changes
+
+- 973ca7b: Add locale support to otp-message and create-auth-challenge-handler and add English translation strings
+
 ## 1.1.1
 
 ### Patch Changes
