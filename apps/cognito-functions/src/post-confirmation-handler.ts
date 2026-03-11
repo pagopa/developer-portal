@@ -64,7 +64,9 @@ export const makeHandler =
         EMAIL_TRANSLATIONS.postConfirmation[
           locale as keyof typeof EMAIL_TRANSLATIONS.postConfirmation
         ]?.subject ||
-        EMAIL_TRANSLATIONS.postConfirmation[DEFAULT_LOCALE].subject;
+        EMAIL_TRANSLATIONS.postConfirmation[
+          DEFAULT_LOCALE as keyof typeof EMAIL_TRANSLATIONS.postConfirmation
+        ].subject;
 
       const body = makePostConfirmationConfirmSignUpEmail(
         given_name,
