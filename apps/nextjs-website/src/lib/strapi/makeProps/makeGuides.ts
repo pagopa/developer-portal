@@ -2,7 +2,7 @@
 /* eslint-disable functional/no-expression-statements */
 import { GuideDefinition } from '@/helpers/makeDocs.helpers';
 import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
-import { makeBaseProductWithoutLogoProps } from './makeProducts';
+import { makeBaseProductWithoutLogoProps } from '@/lib/product/mapper';
 import { StrapiGuides } from '@/lib/strapi/types/guide';
 import { compact } from 'lodash';
 

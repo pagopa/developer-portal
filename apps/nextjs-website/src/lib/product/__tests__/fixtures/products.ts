@@ -1,5 +1,5 @@
-import { StrapiProducts } from '@/lib/strapi/types/product';
-import { Product } from '@/lib/types/product';
+import { StrapiProducts } from '@/lib/product/types';
+import { Product } from '@/lib/product/types';
 import { generateBannerLinks } from '@/lib/strapi/__tests__/factories/bannerLink';
 import { mediaJpeg } from '@/lib/strapi/__tests__/factories/media';
 

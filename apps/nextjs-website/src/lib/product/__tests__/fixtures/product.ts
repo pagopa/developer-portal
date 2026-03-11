@@ -1,6 +1,6 @@
-import { mediaVectorJson } from './media';
+import { mediaVectorJson } from '@/lib/strapi/__tests__/fixtures/media';
 import { bannerLinksJson } from '@/lib/strapi/__tests__/fixtures/bannerLinksJson';
-import { Product } from '@/lib/types/product';
+import { Product } from '@/lib/product/types';
 
 export const productJson = {
   id: 8,

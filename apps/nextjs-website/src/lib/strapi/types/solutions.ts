@@ -2,7 +2,7 @@ import { StrapiMedia } from '@/lib/strapi/types/media';
 import {
   StrapiBaseProduct,
   StrapiBaseProductWithoutBannerLinks,
-} from '@/lib/strapi/types/product';
+} from '@/lib/product/types';
 import { StrapiBannerLink } from '@/lib/strapi/types/bannerLink';
 import { StrapiSeo } from '@/lib/strapi/types/seo';
 import { Paginated } from '@/lib/strapi/types/paginated';

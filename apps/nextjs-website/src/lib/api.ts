@@ -1,5 +1,5 @@
 import { ApiDataListPagesRepository } from '@/lib/apiDataListPages';
-import { Product } from './types/product';
+import { Product } from '@/lib/product/types';
 import { Webinar } from '@/lib/types/webinar';
 import {
   getCaseHistoriesProps,

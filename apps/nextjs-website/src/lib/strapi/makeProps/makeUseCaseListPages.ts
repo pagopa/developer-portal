@@ -1,6 +1,6 @@
 /* eslint-disable functional/no-expression-statements */
 import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
-import { makeBaseProductWithoutLogoProps } from './makeProducts';
+import { makeBaseProductWithoutLogoProps } from '@/lib/product/mapper';
 import { compact } from 'lodash';
 import { StrapiUseCaseListPages } from '@/lib/strapi/types/useCaseListPage';
 import { UseCase } from '@/lib/types/useCaseData';

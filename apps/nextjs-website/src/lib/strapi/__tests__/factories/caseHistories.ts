@@ -1,7 +1,7 @@
 import { mediaJpeg } from '@/lib/strapi/__tests__/factories/media';
 import { strapiCaseHistories } from '@/lib/strapi/__tests__/fixtures/caseHistories';
 import { StrapiCaseHistories } from '@/lib/strapi/types/caseHistories';
-import { StrapiBaseProductWithoutBannerLinks } from '@/lib/strapi/types/product';
+import { StrapiBaseProductWithoutBannerLinks } from '@/lib/product/types';
 
 export function minimalDataCaseHistories() {
   const strapiCaseHistory = strapiCaseHistories.data[0];

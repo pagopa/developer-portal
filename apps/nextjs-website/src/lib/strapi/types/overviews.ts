@@ -7,7 +7,7 @@ import { BlocksContent } from '@strapi/blocks-react-renderer';
 import { StrapiSeo } from '@/lib/strapi/types/seo';
 import { Paginated } from '@/lib/strapi/types/paginated';
 import { StrapiBaseTutorial } from '@/lib/strapi/types/tutorial';
-import { StrapiProduct } from '@/lib/strapi/types/product';
+import { StrapiProduct } from '@/lib/product/types';
 import { StrapiBaseUseCase } from './useCase';
 
 export type StrapiStartInfo = {

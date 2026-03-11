@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { strapiProducts } from '@/lib/strapi/__tests__/fixtures/products';
-import { StrapiProduct } from '@/lib/strapi/types/product';
+import { strapiProducts } from '@/lib/product/__tests__/fixtures/products';
+import { StrapiProduct } from '@/lib/product/types';
 
 export function minimalProduct(): readonly StrapiProduct[] {
   const strapiProduct = strapiProducts.data[0];

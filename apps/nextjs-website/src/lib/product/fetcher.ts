@@ -1,6 +1,6 @@
 import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
 import qs from 'qs';
-import { StrapiProducts } from '@/lib/strapi/types/product';
+import { StrapiProducts } from './types';
 
 // TODO: divide this populate in more specific ones for query optimization
 export const productRelationsPopulate = {
