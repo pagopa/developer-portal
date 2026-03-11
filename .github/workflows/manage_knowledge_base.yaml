@@ -66,8 +66,8 @@ permissions:
   contents: read
 
 jobs:
-  manage-structured-data:
-    name: Add knowledge base (manual on ${{ inputs.environment }})
+  prepare-structured-data:
+    name: Prepare structured data (manual on ${{ inputs.environment }})
     runs-on: codebuild-${{ inputs.environment }}-github-runner-${{ github.run_id }}-${{ github.run_attempt }}
     environment: ${{ inputs.environment }}
 
@@ -129,11 +129,11 @@ jobs:
           urls: ${{ inputs.urls_to_add }}
           vector_index_name: ${{ inputs.vector_index_name }}
 
-  manage-index:
+  manage-knowledge-base-index:
     name: Manage knowledge base index (manual on ${{ inputs.environment }})
     runs-on: codebuild-${{ inputs.environment }}-github-runner-${{ github.run_id }}-${{ github.run_attempt }}
     environment: ${{ inputs.environment }}
-    needs: manage-structured-data
+    needs: prepare-structured-data
     if: ${{ inputs.vector_index_mode != 'none' }}
 
     concurrency:
@@ -169,4 +169,3 @@ jobs:
           chatbot_lambda_name: ${{ vars.CHATBOT_LAMBDA_NAME }}
           urls_to_update: ${{ inputs.urls_to_add }}
           urls_to_remove: ${{ inputs.urls_to_remove }}
-
