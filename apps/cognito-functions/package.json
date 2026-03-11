@@ -3,9 +3,11 @@
   "version": "1.1.1",
   "private": true,
   "scripts": {
-    "clean": "rimraf dist/ out/",
-    "precompile": "npm run clean",
+    "clean": "rimraf dist/ out/ src/templates/generated/",
+    "generate:templates": "node scripts/generate-email-templates.js",
+    "precompile": "npm run clean && npm run generate:templates",
     "compile": "tsc",
+    "prebuild": "npm run generate:templates",
     "build": "node esbuild.config.mjs",
     "postbuild": "cd out && zip -r cognito-functions.zip .",
     "lint": "eslint src",
@@ -16,12 +18,13 @@
     "@eslint/js": "^9.34.0",
     "@types/aws-lambda": "^8.10.152",
     "@types/jest": "^29.0.0",
-    "@types/mjml": "^4.7.4",
     "esbuild": "^0.25.9",
     "eslint": "^9.34.0",
     "eslint-config-custom": "*",
+    "html-minifier-next": "^5.1.7",
     "jest": "^29.7.0",
     "jest-mock-extended": "^3.0.7",
+    "mjml": "^4.15.3",
     "rimraf": "^6.1.2",
     "ts-jest": "^29.4.6",
     "ts-node": "^10.9.2",
@@ -30,8 +33,6 @@
   "dependencies": {
     "@aws-sdk/client-ses": "^3.441.0",
     "fp-ts": "^2.16.11",
-    "html-minifier-next": "^5.1.7",
-    "io-ts": "^2.2.22",
-    "mjml": "^4.15.3"
+    "io-ts": "^2.2.22"
   }
 }

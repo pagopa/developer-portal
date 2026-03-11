@@ -72,7 +72,7 @@ export const makeHandler =
     if (session.length === 2) {
       const { email } = event.request.userAttributes;
       const verificationCode = env.generateVerificationCode();
-      const emailBody = await makeOtpMessageEmail(
+      const emailBody = makeOtpMessageEmail(
         verificationCode,
         env.config.domain,
         OTP_DURATION_MINUTES,

@@ -9,7 +9,6 @@ import * as T from 'fp-ts/Task';
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import { makePostConfirmationConfirmSignUpEmail } from './templates/post-confirmation-confirm-sign-up-message';
-import { sanitize } from './utils/sanitize';
 import { EMAIL_TRANSLATIONS } from './templates/translations';
 import { PostConfirmationTriggerEvent } from 'aws-lambda/trigger/cognito-user-pool-trigger/post-confirmation';
 import { SUPPORTED_LOCALES } from './i18n/locales';
@@ -64,8 +63,8 @@ export const makeHandler =
           locale as keyof typeof EMAIL_TRANSLATIONS.postConfirmation
         ]?.subject || EMAIL_TRANSLATIONS.postConfirmation.it.subject;
 
-      const body = await makePostConfirmationConfirmSignUpEmail(
-        sanitize(given_name),
+      const body = makePostConfirmationConfirmSignUpEmail(
+        given_name,
         config.domain,
         locale
       );
