@@ -441,7 +441,7 @@ class LlamaVectorIndex:
         website_folder: str,
     ) -> None:
         """
-        Refreshes the vector index by updating and deleting documents as specified.
+        Refreshes the vector index for a single website URL folder. Fetches the current structured documents from S3 for `website_folder`, updates existing documents, and removes any stale ones no longer present in S3.
 
         Args:
             index (VectorStoreIndex): The vector store index instance.
