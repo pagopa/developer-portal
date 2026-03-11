@@ -55,3 +55,8 @@ output "webinar_metrics_api_key_id" {
   description = "The ID of the API key for the webinar metrics API. Retrieve the value with: aws apigateway get-api-key --api-key <id> --include-value"
   value       = aws_api_gateway_api_key.webinar_metrics.id
 }
+
+output "deploy_lambda_role_arn" {
+  description = "The ARN of the IAM role used by GitHub Actions to deploy the IVS video processing Lambda."
+  value       = aws_iam_role.deploy_lambda.arn
+}
