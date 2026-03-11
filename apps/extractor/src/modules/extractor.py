@@ -16,7 +16,7 @@ else:
 
 LOGGER = get_logger(__name__, level=SETTINGS.log_level)
 TOKEN_BUDGET_DIVISOR = (
-    9  # Heuristic divisor to convert max_tokens to char budget for body text
+    9  # Heuristic divisor to scale down max_tokens to a per-chunk token budget for body text
 )
 
 
@@ -52,12 +52,27 @@ def _estimate_tokens(text: str, llm: LLM) -> int:
     """
     if hasattr(llm, "get_num_tokens"):
         try:
-            return llm.get_num_tokens(text)
+            raw_tokens = llm.get_num_tokens(text)
+            try:
+                tokens = int(raw_tokens)
+            except (TypeError, ValueError):
+                LOGGER.info(
+                    "Provider-native token estimation returned a non-integer value %r; "
+                    "falling back to heuristic",
+                    raw_tokens,
+                )
+            else:
+                if tokens > 0:
+                    return tokens
+                LOGGER.info(
+                    "Provider-native token estimation returned non-positive value %r; "
+                    "falling back to heuristic",
+                    tokens,
+                )
         except Exception:
             LOGGER.info(
                 "Provider-native token estimation failed, falling back to heuristic"
             )
-            pass
     return max(1, len(text) // 4)
 
 
@@ -157,19 +172,23 @@ def extract_document(
     Returns:
         CleanedDocument if successful, None if parsing fails
     """
-    token_budget = SETTINGS.max_tokens // TOKEN_BUDGET_DIVISOR
+    token_budget = max(1, SETTINGS.max_tokens // TOKEN_BUDGET_DIVISOR)
     input_body = _escape_braces(input_doc.bodyText or "(empty)")
 
-    # Build the full prompt once to measure its size.
-    full_prompt = prompt_template.format(
+    # Estimate prompt size without formatting the full body into the template.
+    # First, compute the token overhead of the template and non-body fields by
+    # formatting with an empty body. Then add the token count of the body alone.
+    overhead_prompt = prompt_template.format(
         title=_escape_braces(input_doc.title),
         url=input_doc.url,
-        body_text=input_body,
+        body_text="",
         language=input_doc.lang,
         last_updated=input_doc.lastModified,
         keywords=_escape_braces(input_doc.keywords or "(none)"),
     )
-    prompt_tokens = _estimate_tokens(full_prompt, llm)
+    overhead_tokens = _estimate_tokens(overhead_prompt, llm)
+    body_tokens = _estimate_tokens(input_body, llm)
+    prompt_tokens = overhead_tokens + body_tokens
 
     # ── Single-slice fast path ─────────────────────────────────────────────
     if prompt_tokens <= token_budget:

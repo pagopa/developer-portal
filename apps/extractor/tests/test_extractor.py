@@ -23,13 +23,20 @@ from src.modules.schemas import CleanedDocument, InputDocument
 # ---------------------------------------------------------------------------
 
 
-def _make_llm(num_tokens_fn=None) -> MagicMock:
-    """Return a mock LLM.  Optionally attach get_num_tokens."""
-    llm = MagicMock()
+def _make_llm(num_tokens_fn=None) -> object:
+    """Return a dummy LLM-like object. Optionally attach get_num_tokens."""
+
+    class _DummyLLM:
+        """Minimal stand-in for an LLM used in tests."""
+
+        pass
+
+    llm = _DummyLLM()
     if num_tokens_fn is not None:
+        # When provided, expose get_num_tokens so code under test can use it.
         llm.get_num_tokens = num_tokens_fn
-    else:
-        del llm.get_num_tokens  # ensure hasattr() returns False
+    # If num_tokens_fn is None, we intentionally do not define get_num_tokens
+    # so that hasattr(llm, "get_num_tokens") returns False.
     return llm
 
 
@@ -265,12 +272,12 @@ class TestExtractDocumentSingleSlice:
 class TestExtractDocumentMultiSlice:
     """Tests where the full prompt exceeds the token budget, triggering slicing."""
 
-    # Force multi-slice by setting max_tokens=4 (budget=1 token).
-    # _estimate_tokens on any non-trivial prompt returns >> 1 via the heuristic.
+    # Force multi-slice by setting a very small max_tokens so the effective
+    # token budget is smaller than any realistic prompt.
 
     def _mock_settings(self):
         mock = MagicMock()
-        mock.max_tokens = 4  # budget = 1 token → always > any real prompt
+        mock.max_tokens = 4  # Tiny budget so any realistic prompt will exceed it.
         mock.similarity_threshold = 0.8
         return mock
 
