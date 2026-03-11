@@ -54,6 +54,7 @@ const ConfirmLogin = ({
       } else if (e.name === 'NotAuthorizedException') {
         setErrors((prev) => ({ ...prev, codeError: true }));
       }
+      setSubmitting(false);
     });
   }, [onConfirmLogin, code]);
 
