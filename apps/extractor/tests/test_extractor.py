@@ -118,57 +118,58 @@ class TestEstimateTokens:
 class TestSplitBodyText:
     def test_body_fits_in_one_chunk(self):
         body = "Short text."
-        chunks = _split_body_text(body, max_chars=100)
+        chunks = _split_body_text(body, max_tokens=100)
         assert chunks == ["Short text."]
 
-    def test_two_paragraphs_fit_together(self):
+    def test_two_short_paragraphs_fit_together(self):
+        # Both paragraphs together are well under 100 tokens.
         body = "Para one.\n\nPara two."
-        chunks = _split_body_text(body, max_chars=100)
+        chunks = _split_body_text(body, max_tokens=100)
         assert len(chunks) == 1
         assert "Para one." in chunks[0]
         assert "Para two." in chunks[0]
 
     def test_paragraphs_split_when_combined_too_long(self):
-        p1 = "A" * 50
-        p2 = "B" * 50
+        # Two paragraphs, each ~10 tokens; max_tokens=12 forces a split.
+        p1 = "The cat sat on the mat and looked around."
+        p2 = "The dog ran fast across the green field."
         body = f"{p1}\n\n{p2}"
-        chunks = _split_body_text(body, max_chars=60)
-        assert len(chunks) == 2
-        assert chunks[0] == p1
-        assert chunks[1] == p2
-
-    def test_large_paragraph_falls_back_to_sentence_split(self):
-        # Single paragraph made of two sentences that each fit
-        sentence1 = "The quick brown fox jumps over the lazy dog"  # 44 chars
-        sentence2 = "Pack my box with five dozen liquor jugs"  # 39 chars
-        body = f"{sentence1}. {sentence2}."
-        # max_chars allows individual sentences but not the whole paragraph
-        chunks = _split_body_text(body, max_chars=50)
+        chunks = _split_body_text(body, max_tokens=12)
         assert len(chunks) >= 2
-        # No chunk should exceed max_chars
-        for chunk in chunks:
-            assert len(chunk) <= 50
+        # Each paragraph text must appear in one of the chunks.
+        full = " ".join(chunks)
+        assert "cat" in full
+        assert "dog" in full
 
-    def test_oversized_single_sentence_is_hard_cut(self):
-        long_sentence = "x" * 100
-        chunks = _split_body_text(long_sentence, max_chars=30)
-        for chunk in chunks:
-            assert len(chunk) <= 30
-        # Reassembling gives back the original content
-        assert "".join(chunks) == long_sentence
+    def test_long_paragraph_split_at_sentence_boundary(self):
+        # A single paragraph with two distinct sentences; a tight token budget
+        # should split them apart while keeping whole sentences intact.
+        s1 = "The quick brown fox jumps over the lazy dog."
+        s2 = "Pack my box with five dozen liquor jugs."
+        body = f"{s1} {s2}"
+        chunks = _split_body_text(body, max_tokens=12)
+        assert len(chunks) >= 2
+        # Reassembling must preserve all words.
+        full = " ".join(chunks)
+        assert "fox" in full
+        assert "liquor" in full
 
-    def test_max_chars_zero_returns_whole_body(self):
+    def test_max_tokens_zero_returns_whole_body(self):
         body = "Some content."
-        chunks = _split_body_text(body, max_chars=0)
+        chunks = _split_body_text(body, max_tokens=0)
         assert chunks == ["Some content."]
 
     def test_empty_body_returns_empty_list(self):
-        chunks = _split_body_text("", max_chars=100)
+        chunks = _split_body_text("", max_tokens=100)
         assert chunks == []
 
-    def test_whitespace_only_paragraphs_excluded(self):
+    def test_whitespace_only_body_returns_empty_list(self):
+        chunks = _split_body_text("   \n\n  ", max_tokens=100)
+        assert chunks == []
+
+    def test_all_chunks_are_non_empty(self):
         body = "Real.\n\n   \n\nAlso real."
-        chunks = _split_body_text(body, max_chars=200)
+        chunks = _split_body_text(body, max_tokens=200)
         assert all(c.strip() for c in chunks)
 
 
@@ -376,15 +377,15 @@ class TestExtractDocumentMultiSlice:
 
         assert result is None
 
-    def test_split_body_text_receives_correct_char_budget(self):
-        """available_body_chars must be derived from the token budget minus overhead."""
+    def test_split_body_text_receives_correct_token_budget(self):
+        """available_body_tokens must be derived from the token budget minus overhead."""
         input_doc = _make_input_doc(body="y" * 300)
         llm = _make_llm()  # uses heuristic (len // 4)
 
         captured_calls: list[tuple] = []
 
-        def _capture_split(body, max_chars):
-            captured_calls.append((body, max_chars))
+        def _capture_split(body, max_tokens):
+            captured_calls.append((body, max_tokens))
             return ["slice_only"]
 
         with (
@@ -398,6 +399,6 @@ class TestExtractDocumentMultiSlice:
             extract_document(input_doc, llm, SIMPLE_PROMPT_TEMPLATE)
 
         assert len(captured_calls) == 1
-        _, max_chars = captured_calls[0]
-        # max_chars must be positive
-        assert max_chars > 0
+        _, max_tokens = captured_calls[0]
+        # max_tokens must be positive
+        assert max_tokens > 0

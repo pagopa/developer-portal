@@ -1,4 +1,5 @@
 from llama_index.core.llms.llm import LLM
+from llama_index.core.node_parser import SentenceSplitter
 from llama_index.core.program import LLMTextCompletionProgram
 
 from src.modules.logger import get_logger
@@ -14,6 +15,9 @@ else:
     from src.modules.file_handler_s3 import load_json_files, save_cleaned_document
 
 LOGGER = get_logger(__name__, level=SETTINGS.log_level)
+TOKEN_BUDGET_DIVISOR = (
+    9  # Heuristic divisor to convert max_tokens to char budget for body text
+)
 
 
 def _escape_braces(value: str | None = None) -> str:
@@ -57,97 +61,38 @@ def _estimate_tokens(text: str, llm: LLM) -> int:
     return max(1, len(text) // 4)
 
 
-def _split_body_text(body: str, max_chars: int) -> list[str]:
+def _split_body_text(body: str, max_tokens: int) -> list[str]:
     """
-    Splits body into chunks that are each at most max_chars characters.
+    Splits *body* into chunks whose token count does not exceed *max_tokens*.
 
-    Strategy (in order of preference):
-
-    1. Split on double-newlines (paragraph boundaries).
-    2. If a paragraph still exceeds max_chars, split further on sentence
-       boundaries (``". "`` sequences).
-    3. Hard-cut any remaining oversized segment at max_chars.
+    Delegates to :class:`llama_index.core.node_parser.SentenceSplitter`, which
+    honours paragraph and sentence boundaries before falling back to token-level
+    splitting.  ``paragraph_separator`` is set to ``"\\n\\n"`` so that
+    double-newline boundaries are respected (the LlamaIndex default is
+    ``"\\n\\n\\n"``).
 
     Args:
         body: The body text to split.
-        max_chars: Maximum number of characters per chunk.
+        max_tokens: Maximum number of tokens per chunk.
 
     Returns:
         A list of non-empty text chunks.
     """
-    if max_chars <= 0:
-        # Safety valve: return the whole body as a single chunk.
-        return [body] if body.strip() else []
-
-    def _hard_split(text: str, max_chars: int) -> list[str]:
-        """Splits text into fixed-size chunks of max_chars characters, without regard to word boundaries.
-
-        Args:
-            text: The text to split.
-            max_chars: The maximum number of characters per chunk.
-
-        Returns:
-            A list of text chunks, each at most max_chars characters long.
-        """
-        return [text[i : i + max_chars] for i in range(0, len(text), max_chars)]
-
-    def _sentence_split(text: str, max_chars: int) -> list[str]:
-        """Splits text into chunks based on sentence boundaries ('. '), ensuring each chunk is at most max_chars characters.
-        If a single sentence exceeds max_chars, it will be hard-split.
-
-        Args:
-            text: The text to split.
-            max_chars: The maximum number of characters per chunk.
-
-        Returns:
-            A list of text chunks, each at most max_chars characters long.
-        """
-        chunks: list[str] = []
-        current = ""
-        for sentence in text.split(". "):
-            candidate = (
-                (current + ". " + sentence).lstrip(". ") if current else sentence
-            )
-            if len(candidate) <= max_chars:
-                current = candidate
-            else:
-                if current:
-                    chunks.append(current)
-                if len(sentence) > max_chars:
-                    chunks.extend(_hard_split(sentence, max_chars))
-                    current = ""
-                else:
-                    current = sentence
-        if current:
-            chunks.append(current)
-        return chunks
-
-    chunks: list[str] = []
-    current = ""
-    for para in body.split("\n\n"):
-        sep = "\n\n" if current else ""
-        candidate = current + sep + para
-        if len(candidate) <= max_chars:
-            current = candidate
-        else:
-            if current:
-                chunks.append(current)
-                current = ""
-            if len(para) > max_chars:
-                chunks.extend(_sentence_split(para, max_chars))
-            else:
-                current = para
-    if current:
-        chunks.append(current)
-
-    return [c for c in chunks if c.strip()]
+    if not body.strip():
+        return []
+    if max_tokens <= 0:
+        # Safety valve: budget exhausted by fixed overhead alone.
+        return [body]
+    splitter = SentenceSplitter(
+        chunk_size=max_tokens,
+        chunk_overlap=0,
+        paragraph_separator="\n\n",
+    )
+    return [c for c in splitter.split_text(body) if c.strip()]
 
 
 def _extract_slice(
-    slice_body: str,
-    input_doc: InputDocument,
-    llm: LLM,
-    prompt_template: str
+    slice_body: str, input_doc: InputDocument, llm: LLM, prompt_template: str
 ) -> CleanedDocument | None:
     """
     Runs the LLM extraction program for a single body-text slice.
@@ -199,7 +144,7 @@ def extract_document(
     """
     Parses a single document using the LLM to clean and structure the content.
 
-    If the assembled prompt exceeds ``SETTINGS.max_tokens // 4`` tokens the
+    If the assembled prompt exceeds ``SETTINGS.max_tokens // TOKEN_BUDGET_DIVISOR`` tokens the
     body text is automatically divided into slices.  Each slice is extracted
     independently with the full prompt template and the resulting ``text``
     fields are space-joined into a single ``CleanedDocument``.
@@ -212,7 +157,7 @@ def extract_document(
     Returns:
         CleanedDocument if successful, None if parsing fails
     """
-    token_budget = SETTINGS.max_tokens // 10
+    token_budget = SETTINGS.max_tokens // TOKEN_BUDGET_DIVISOR
     input_body = _escape_braces(input_doc.bodyText or "(empty)")
 
     # Build the full prompt once to measure its size.
@@ -263,10 +208,9 @@ def extract_document(
     )
     fixed_token_overhead = _estimate_tokens(overhead_prompt, llm)
     available_body_tokens = max(1, token_budget - fixed_token_overhead)
-    available_body_chars = available_body_tokens * 4  # ~4 chars per token
 
     raw_body = input_doc.bodyText or "(empty)"
-    slices = _split_body_text(raw_body, available_body_chars)
+    slices = _split_body_text(raw_body, available_body_tokens)
 
     LOGGER.info(
         f"Prompt too long ({prompt_tokens} tokens > budget {token_budget}): "
@@ -310,9 +254,7 @@ def extract_document(
         LOGGER.error(f"Validation failed for merged document: {input_doc.url}")
         return None
 
-    LOGGER.debug(
-        f"Successfully parsed document (multi-slice): {input_doc.url}..."
-    )
+    LOGGER.debug(f"Successfully parsed document (multi-slice): {input_doc.url}...")
     return merged_doc
 
 
