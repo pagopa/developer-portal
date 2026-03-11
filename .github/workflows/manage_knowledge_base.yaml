@@ -163,13 +163,10 @@ jobs:
           structured: 'true'
 
       - name: Update index
-        shell: bash
         if: ${{ inputs.vector_index_mode == 'update' }}
+        uses: ./.github/actions/refresh-structured-docs-vector-index
         with:
           chatbot_lambda_name: ${{ vars.CHATBOT_LAMBDA_NAME }}
           urls_to_update: ${{ inputs.urls_to_add }}
           urls_to_remove: ${{ inputs.urls_to_remove }}
-          #TODO add the action
-        run: |
-            echo "Updating vector index ${{ inputs.vector_index_name }} with new data. This may take a while..."
-            # Call the update script with the appropriate parameters
+
