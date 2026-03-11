@@ -45,3 +45,4 @@ runs:
         RAW_URLS_TO_UPDATE="${{ github.event.inputs.urls_to_update }}"
         RAW_URLS_TO_REMOVE="${{ github.event.inputs.urls_to_remove }}"
         PYTHONPATH=. poetry run python src/modules/refresh_structured_docs.py --update-url-list $(echo $RAW_URLS_TO_UPDATE | tr ',' ' ') --remove-url-list $(echo $RAW_URLS_TO_REMOVE | tr ',' ' ')
+        
