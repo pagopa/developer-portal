@@ -24,7 +24,6 @@ def get_discovery_agent(
     """Create and configure a ReActAgent instance.
 
     Args:
-        name: Optional name for the agent. If not provided, ``DISCOVERY_AGENT_NAME`` is used.
         description: Optional description of the agent's role. If not provided,
             ``DEFAULT_DESCRIPTION`` is used.
         tools: Optional list of tools (``BaseTool`` instances or callables) that
