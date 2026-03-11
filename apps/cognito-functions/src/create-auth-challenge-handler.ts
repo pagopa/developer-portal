@@ -81,10 +81,7 @@ export const makeHandler =
       );
       const subjectTemplate =
         EMAIL_TRANSLATIONS.otp[locale as keyof typeof EMAIL_TRANSLATIONS.otp]
-          ?.subject ||
-        EMAIL_TRANSLATIONS.otp[
-          DEFAULT_LOCALE as keyof typeof EMAIL_TRANSLATIONS.otp
-        ].subject;
+          ?.subject || EMAIL_TRANSLATIONS.otp[DEFAULT_LOCALE].subject;
       const subject = subjectTemplate.replace('{{code}}', verificationCode);
       const sendEmailCommand = new SendEmailCommand(
         makeSesEmailParameters(
