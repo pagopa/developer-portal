@@ -40,7 +40,7 @@ runs:
 
     - name: Refresh Structured Docs in Vector Index
       shell: bash
-      with:
+      env:
         RAW_URLS_TO_UPDATE: ${{ inputs.urls_to_update }}
         RAW_URLS_TO_REMOVE: ${{ inputs.urls_to_remove }}
       run: |
