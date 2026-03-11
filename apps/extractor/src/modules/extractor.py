@@ -215,7 +215,7 @@ def extract_document(
             return None
 
     # ── Multi-slice path ───────────────────────────────────────────────────
-    # Measure the fixed overhead (prompt without body) so we know the char
+    # Measure the fixed overhead (prompt without body) so we know the token
     # budget available for each body slice.
     overhead_prompt = prompt_template.format(
         title=_escape_braces(input_doc.title),
