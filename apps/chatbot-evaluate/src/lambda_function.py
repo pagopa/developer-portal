@@ -84,8 +84,6 @@ def lambda_handler(event, context):
                 )
         return results, trace_id
 
-    results = []
-
     # extract unique records
     records = event.get("Records", [])
     unique_records = []
