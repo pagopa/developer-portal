@@ -1,4 +1,5 @@
 import { EMAIL_TRANSLATIONS } from './translations';
+import { DEFAULT_LOCALE } from '../i18n/locales';
 
 export const EMAIL_TEMPLATE_PLACEHOLDERS = {
   codeDuration: '%%CODE_DURATION%%',
@@ -8,8 +9,6 @@ export const EMAIL_TEMPLATE_PLACEHOLDERS = {
   loginUrl: '%%LOGIN_URL%%',
   otp: '%%OTP%%',
 } as const;
-
-const defaultLocale = 'it';
 
 const topSpacerSection = `
     <mj-section padding="0">
@@ -23,7 +22,7 @@ const resolveTranslations = <T extends Record<string, unknown>>(
   locale: string
 ): T[keyof T] =>
   translationsByLocale[locale as keyof T] ||
-  translationsByLocale[defaultLocale as keyof T];
+  translationsByLocale[DEFAULT_LOCALE as keyof T];
 
 export const buildConfirmationMjml = (locale: string): string => {
   const translations = resolveTranslations(

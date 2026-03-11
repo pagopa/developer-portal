@@ -8,6 +8,7 @@ import { EMAIL_TRANSLATIONS } from './templates/translations';
 
 import { sanitize } from './utils/sanitize';
 import { SUPPORTED_LOCALES } from './i18n/locales';
+import { DEFAULT_LOCALE } from './i18n/locales';
 
 export const CustomMessageEnv = t.type({
   domain: t.string,
@@ -24,7 +25,7 @@ export const makeHandler =
       event.request.userAttributes['custom:preferred_language'];
     const locale = SUPPORTED_LOCALES.includes(localeAttribute)
       ? localeAttribute
-      : 'it'; // Defaults to 'it'
+      : DEFAULT_LOCALE;
 
     if (
       eventTrigger === 'CustomMessage_SignUp' ||

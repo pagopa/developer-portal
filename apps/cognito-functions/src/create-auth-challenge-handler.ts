@@ -13,6 +13,7 @@ import * as E from 'fp-ts/Either';
 import { makeOtpMessageEmail } from './templates/otp-message';
 import { SUPPORTED_LOCALES } from './i18n/locales';
 import { EMAIL_TRANSLATIONS } from './templates/translations';
+import { DEFAULT_LOCALE } from './i18n/locales';
 
 export const generateVerificationCode = (): string =>
   Array.from({ length: 6 }, () => crypto.randomInt(0, 9)).join('');
@@ -65,7 +66,7 @@ export const makeHandler =
       event.request.userAttributes['custom:preferred_language'];
     const locale = SUPPORTED_LOCALES.includes(localeAttribute)
       ? localeAttribute
-      : 'it'; // Defaults to 'it'
+      : DEFAULT_LOCALE;
 
     // only called once after SRP_A and PASSWORD_VERIFIER challenges. Hence
     // session.length == 2
