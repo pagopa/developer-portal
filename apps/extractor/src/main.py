@@ -65,6 +65,7 @@ def main() -> int:
             LOGGER.error("Folder validation failed")
             return 1
         LOGGER.info(f"Initializing LLM: {SETTINGS.model_id}")
+        LOGGER.info(f"MAX_TOKENS: {SETTINGS.max_tokens}")
         llm = get_llm()
         stats = process_folder(
             input_folder=SETTINGS.input_folder,

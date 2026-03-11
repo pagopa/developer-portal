@@ -11,6 +11,8 @@ import * as TE from 'fp-ts/TaskEither';
 import * as T from 'fp-ts/Task';
 import * as E from 'fp-ts/Either';
 import { makeOtpMessageEmail } from './templates/otp-message';
+import { SUPPORTED_LOCALES } from './i18n/locales';
+import { EMAIL_TRANSLATIONS } from './templates/translations';
 
 export const generateVerificationCode = (): string =>
   Array.from({ length: 6 }, () => crypto.randomInt(0, 9)).join('');
@@ -59,13 +61,21 @@ export const makeHandler =
     event: CreateAuthChallengeTriggerEvent
   ): Promise<CreateAuthChallengeTriggerEvent> => {
     const { session } = event.request;
+    const localeAttribute =
+      event.request.userAttributes['custom:preferred_language'];
+    const locale = SUPPORTED_LOCALES.includes(localeAttribute)
+      ? localeAttribute
+      : 'it'; // Defaults to 'it'
 
     // only called once after SRP_A and PASSWORD_VERIFIER challenges. Hence
     // session.length == 2
     if (session.length === 2) {
       const { email } = event.request.userAttributes;
       const verificationCode = env.generateVerificationCode();
-      const subject = `Codice di verifica PagoPA DevPortal: ${verificationCode}`;
+      const subjectTemplate =
+        EMAIL_TRANSLATIONS.otp[locale as keyof typeof EMAIL_TRANSLATIONS.otp]
+          ?.subject || EMAIL_TRANSLATIONS.otp.it.subject;
+      const subject = subjectTemplate.replace('{{code}}', verificationCode);
       const sendEmailCommand = new SendEmailCommand(
         makeSesEmailParameters(
           email,
@@ -74,7 +84,8 @@ export const makeHandler =
           makeOtpMessageEmail(
             verificationCode,
             env.config.domain,
-            OTP_DURATION_MINUTES
+            OTP_DURATION_MINUTES,
+            locale
           )
         )
       );
