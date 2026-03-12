@@ -54,7 +54,6 @@ const ConfirmLogin = ({
       } else if (e.name === 'NotAuthorizedException') {
         setErrors((prev) => ({ ...prev, codeError: true }));
       }
-      setSubmitting(false);
     });
   }, [onConfirmLogin, code]);
 
@@ -140,6 +139,7 @@ const ConfirmLogin = ({
                 email={email}
                 isLoginCTA={true}
                 resendCode={resendCode}
+                setSubmitting={setSubmitting}
                 text={confirmLogin('checkJunkMail')}
               />
             )}

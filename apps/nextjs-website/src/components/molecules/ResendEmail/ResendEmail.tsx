@@ -3,7 +3,7 @@ import { useTranslations } from 'next-intl';
 import { LoaderPhase } from '@/lib/types/loader';
 import DoneIcon from '@mui/icons-material/Done';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
-import { useCallback, useState } from 'react';
+import { Dispatch, SetStateAction, useCallback, useState } from 'react';
 import { Auth } from 'aws-amplify';
 import { resetResendEmailAfterMs } from '@/config';
 
@@ -11,12 +11,14 @@ type ResendEmailProps = {
   text: string;
   email: string;
   isLoginCTA?: boolean;
+  setSubmitting?: Dispatch<SetStateAction<boolean>>;
   resendCode?: () => Promise<boolean>;
 };
 
 const ResendEmail = ({
   text,
   email,
+  setSubmitting,
   isLoginCTA = false,
   resendCode,
 }: ResendEmailProps) => {
@@ -40,12 +42,15 @@ const ResendEmail = ({
 
     if (result) {
       setLoader(LoaderPhase.SUCCESS);
+      if (setSubmitting) {
+        setSubmitting(false);
+      }
     }
 
     setTimeout(() => {
       setLoader(undefined);
     }, resetResendEmailAfterMs);
-  }, [email, isLoginCTA, resendCode]);
+  }, [email, isLoginCTA, resendCode, setSubmitting]);
 
   const buildLoader = () => {
     switch (loader) {
