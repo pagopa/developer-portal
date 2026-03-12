@@ -3,14 +3,14 @@ name: refresh-structured-docs-vector-index
 description: Refresh Structured Docs for Chatbot LLamaindex Vector Index
 
 inputs:
-  aws_region:
-    description: 'The AWS region selected'
-    required: false
-    default: 'eu-south-1'
-  chatbot_lambda_name:
-    description: the name of the chatbot lambda function
-    required: true
-    default: ''
+  # aws_region:
+  #   description: 'The AWS region selected'
+  #   required: false
+  #   default: 'eu-south-1'
+  # chatbot_lambda_name:
+  #   description: the name of the chatbot lambda function
+  #   required: true
+  #   default: ''
   index_id:
     description: the id of the vector index to update
     required: true
