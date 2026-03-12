@@ -12,7 +12,7 @@ from src.modules.extractor import (
     _escape_braces,
     _estimate_tokens,
     _split_body_text,
-    _extract_slice,
+    _extract_document,
     extract_document,
 )
 from src.modules.schemas import CleanedDocument, InputDocument
@@ -181,7 +181,7 @@ class TestSplitBodyText:
 
 
 # ---------------------------------------------------------------------------
-# _extract_slice
+# _extract_document
 # ---------------------------------------------------------------------------
 
 
@@ -203,7 +203,7 @@ class TestExtractSlice:
             "src.modules.extractor.LLMTextCompletionProgram",
             program_cls,
         ):
-            result = _extract_slice(
+            result = _extract_document(
                 "body text", _make_input_doc(), llm, SIMPLE_PROMPT_TEMPLATE
             )
 
@@ -216,7 +216,7 @@ class TestExtractSlice:
         mock_cls.from_defaults.return_value = mock_program
 
         with patch("src.modules.extractor.LLMTextCompletionProgram", mock_cls):
-            result = _extract_slice(
+            result = _extract_document(
                 "body", _make_input_doc(), llm, SIMPLE_PROMPT_TEMPLATE
             )
 
@@ -244,7 +244,7 @@ class TestExtractDocumentSingleSlice:
 
         with (
             patch("src.modules.extractor.SETTINGS", self._mock_settings()),
-            patch("src.modules.extractor._extract_slice", return_value=doc),
+            patch("src.modules.extractor._extract_document", return_value=doc),
             patch("src.modules.extractor.validate_extracted_text", return_value=True),
         ):
             result = extract_document(input_doc, llm, SIMPLE_PROMPT_TEMPLATE)
@@ -257,7 +257,7 @@ class TestExtractDocumentSingleSlice:
 
         with (
             patch("src.modules.extractor.SETTINGS", self._mock_settings()),
-            patch("src.modules.extractor._extract_slice", return_value=None),
+            patch("src.modules.extractor._extract_document", return_value=None),
         ):
             result = extract_document(input_doc, llm, SIMPLE_PROMPT_TEMPLATE)
 
@@ -299,7 +299,7 @@ class TestExtractDocumentMultiSlice:
                 return_value=["slice1", "slice2", "slice3"],
             ),
             patch(
-                "src.modules.extractor._extract_slice",
+                "src.modules.extractor._extract_document",
                 side_effect=lambda **kw: next(slice_iter),
             ),
             patch("src.modules.extractor.validate_extracted_text", return_value=True),
@@ -335,7 +335,7 @@ class TestExtractDocumentMultiSlice:
                 return_value=["s1", "s2", "s3"],
             ),
             patch(
-                "src.modules.extractor._extract_slice",
+                "src.modules.extractor._extract_document",
                 side_effect=_slice_side_effect,
             ),
             patch("src.modules.extractor.validate_extracted_text", return_value=True),
@@ -355,7 +355,7 @@ class TestExtractDocumentMultiSlice:
                 "src.modules.extractor._split_body_text",
                 return_value=["s1", "s2"],
             ),
-            patch("src.modules.extractor._extract_slice", return_value=None),
+            patch("src.modules.extractor._extract_document", return_value=None),
         ):
             result = extract_document(input_doc, llm, SIMPLE_PROMPT_TEMPLATE)
 
@@ -375,7 +375,7 @@ class TestExtractDocumentMultiSlice:
                 return_value=["s1", "s2"],
             ),
             patch(
-                "src.modules.extractor._extract_slice",
+                "src.modules.extractor._extract_document",
                 side_effect=lambda **kw: next(slice_iter),
             ),
             patch("src.modules.extractor.validate_extracted_text", return_value=False),
@@ -399,7 +399,7 @@ class TestExtractDocumentMultiSlice:
             patch("src.modules.extractor.SETTINGS", self._mock_settings()),
             patch("src.modules.extractor._split_body_text", side_effect=_capture_split),
             patch(
-                "src.modules.extractor._extract_slice", return_value=_make_cleaned_doc()
+                "src.modules.extractor._extract_document", return_value=_make_cleaned_doc()
             ),
             patch("src.modules.extractor.validate_extracted_text", return_value=True),
         ):

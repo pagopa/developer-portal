@@ -15,9 +15,7 @@ else:
     from src.modules.file_handler_s3 import load_json_files, save_cleaned_document
 
 LOGGER = get_logger(__name__, level=SETTINGS.log_level)
-TOKEN_BUDGET_DIVISOR = (
-    9  # Heuristic divisor to scale down max_tokens to a per-chunk token budget for body text
-)
+TOKEN_BUDGET_DIVISOR = 9  # Heuristic divisor to scale down max_tokens to a per-chunk token budget for body text
 
 
 def _escape_braces(value: str | None = None) -> str:
@@ -106,7 +104,7 @@ def _split_body_text(body: str, max_tokens: int) -> list[str]:
     return [c for c in splitter.split_text(body) if c.strip()]
 
 
-def _extract_slice(
+def _extract_document(
     slice_body: str, input_doc: InputDocument, llm: LLM, prompt_template: str
 ) -> CleanedDocument | None:
     """
@@ -194,7 +192,7 @@ def extract_document(
     if prompt_tokens <= token_budget:
         try:
 
-            result = _extract_slice(
+            result = _extract_document(
                 slice_body=input_body,
                 input_doc=input_doc,
                 llm=llm,
@@ -240,7 +238,7 @@ def extract_document(
     for i, slice_text in enumerate(slices):
         escaped_slice = _escape_braces(slice_text)
         LOGGER.debug(f"  Processing slice {i + 1}/{len(slices)} ...")
-        slice_result = _extract_slice(
+        slice_result = _extract_document(
             slice_body=escaped_slice,
             input_doc=input_doc,
             llm=llm,
