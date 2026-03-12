@@ -2,4 +2,4 @@
 "nextjs-website": patch
 ---
 
-Fix submit button behaviour not resetting after an error in `ConfirmLogin` component
+Add instruction to request a new OTP code if there is an error during code validation.
