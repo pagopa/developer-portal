@@ -77,7 +77,12 @@ const CtaSlide = ({
               href={cta.link.href}
               color={'negative'}
               variant={cta.variant || 'contained'}
-              sx={{ mb: 6 }}
+              sx={{
+                mb: 6,
+                '&:hover': {
+                  backgroundColor: `${palette.grey[300]} !important`,
+                },
+              }}
               target={cta.link.target ?? '_self'}
             >
               {cta.link.text}
