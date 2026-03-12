@@ -1,37 +1,46 @@
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
-import markdown
-import re
 
 from src.modules.logger import get_logger
 from src.modules.settings import SETTINGS
 
 LOGGER = get_logger(__name__, level=SETTINGS.log_level)
 
-def has_rendered_markdown(text_string: str) -> bool:
+def _normalize_text_windowed(text: str, window_size: int = 3) -> str:
     """
-    Verify if the extracted content contains rendered Markdown elements, indicating successful formatting.
+    Collapses tokens that have appeared within the last `window_size` positions.
+    Catches: "Home | Home", "Accedi . Accedi", etc.
 
     Args:
-        text_string (str): the content of the extracted file to check for rendered Markdown elements.
+        text: The input text to normalize.
+        window_size: The number of previous tokens to check for duplicates.
+
     Returns:
-        bool: True if the content contains rendered Markdown elements, False otherwise.
+        A normalized string with recent duplicate tokens removed.
+
+    Example:
+        Input: "Home | Home | Home"
+        Output: "Home |"
     """
-    html_output = markdown.markdown(text_string)
-    html_tag_matches = r'<(h[1-6]|ul|ol|li|strong|em|a|code|blockquote|pre)\b[^>]*>'
+    tokens = text.split()
+    cleaned: list[str] = []
 
-    check = bool(re.search(html_tag_matches, html_output))
+    for token in tokens:
+        lowered_token = token.lower()
+        # Look back at the last few words added to the 'cleaned' list
+        recent_context = [t.lower() for t in cleaned[-window_size:]]
 
-    if not check:
-        LOGGER.error("Markdown rendering failed, text is not properly formatted.")
-    return check
+        if lowered_token not in recent_context:
+            cleaned.append(token)
 
-#todo : consider switching to Ragas to calculate the similarity
+    return " ".join(cleaned)
+
+# todo : consider switching to Ragas to calculate the similarity
 def calculate_similarity(generated: str, source: str) -> float:
     """
-   Calculate cosine similarity between two text strings using TF-IDF vectors.
-   Returns 0.0 if the similarity cannot be computed (e.g., one or both inputs are empty
-   or only contain tokens that are removed during vectorization).
+    Calculate cosine similarity between two text strings using TF-IDF vectors.
+    Returns 0.0 if the similarity cannot be computed (e.g., one or both inputs are empty
+    or only contain tokens that are removed during vectorization).
 
    Args:
         generated (str): The generated text.
@@ -41,24 +50,54 @@ def calculate_similarity(generated: str, source: str) -> float:
         float: The cosine similarity between the two texts.
    """
     if not generated or not generated.strip():
-        LOGGER.error("Generated text is empty; similarity cannot be computed. Returning 0.0.")
+        LOGGER.error(
+            "Generated text is empty; similarity cannot be computed. Returning 0.0."
+        )
         return 0.0
     if not source or not source.strip():
-        LOGGER.error("Source text is empty; similarity cannot be computed. Returning 0.0.")
+        LOGGER.error(
+            "Source text is empty; similarity cannot be computed. Returning 0.0."
+        )
         return 0.0
+    # Collapse repeated tokens to avoid scraping artifacts skewing TF-IDF
+    generated = _normalize_text_windowed(generated)
+    source = _normalize_text_windowed(source)
     # Vectorize the sentences
-    vectorizer = TfidfVectorizer()
+    vectorizer = TfidfVectorizer(use_idf=False)
     try:
         vectors = vectorizer.fit_transform([generated, source])
     except ValueError as e:
         # This typically occurs when the vocabulary is empty, e.g., all tokens are stop-words.
-        LOGGER.error(f"Failed to compute TF-IDF vectors (empty vocabulary): {e}. Returning 0.0 similarity.")
+        LOGGER.error(
+            f"Failed to compute TF-IDF vectors (empty vocabulary): {e}. Returning 0.0 similarity."
+        )
         return 0.0
 
     # Compute cosine similarity
     return cosine_similarity(vectors[0:1], vectors[1:2])[0][0]
 
-def validate_extracted_text(extracted_body_text: str, parsed_body_text: str, similarity_threshold: float = 0.8) -> bool:
+def calculate_length_based_threshold(generated: str, source: str, max_threshold: float) -> float:
+    """
+    Calculates a dynamic similarity threshold based on the length of the generated text.
+
+    Args:
+        generated (str): The generated text whose length will influence the threshold.
+        source (str): The source text used for calculating the threshold
+        max_threshold (float): The maximum similarity threshold to adjust from.
+    Returns:
+        float: An adjusted similarity threshold that accounts for the length of the generated text.
+    """
+    gen_len = len(generated)
+    src_len = len(source)
+    if gen_len == 0 or src_len == 0:
+        LOGGER.warning("One or both texts are empty; returning max_threshold.")
+        return max_threshold
+    return min(gen_len/src_len, max_threshold)
+
+
+def validate_extracted_text(
+    extracted_body_text: str, parsed_body_text: str, similarity_threshold: float = 0.8
+) -> bool:
     """
     Validates the body text extracted against the body text parsed, checking:
     1. The cosine similarity between the extracted content and the parsed content is above a specified threshold.
@@ -74,9 +113,11 @@ def validate_extracted_text(extracted_body_text: str, parsed_body_text: str, sim
     """
 
     similarity = calculate_similarity(extracted_body_text, parsed_body_text)
+    calculated_similarity_threshold = calculate_length_based_threshold(extracted_body_text, parsed_body_text, similarity_threshold)
     LOGGER.info(f"Cosine Similarity: {similarity:.4f}")
-    if similarity < similarity_threshold:
-        LOGGER.error(f"Similarity below the {similarity_threshold:.4f} threshold. Validation failed.")
-        return False
+    if similarity < calculated_similarity_threshold:
+        LOGGER.error(
+            f"Similarity below the {calculated_similarity_threshold:.4f} threshold. Validation failed."
+        )
 
-    return has_rendered_markdown(extracted_body_text)
+    return bool(similarity >= calculated_similarity_threshold)
