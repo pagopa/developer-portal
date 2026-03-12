@@ -166,7 +166,6 @@ jobs:
         if: ${{ inputs.vector_index_mode == 'update' }}
         uses: ./.github/actions/refresh-structured-docs-vector-index
         with:
-          chatbot_lambda_name: ${{ vars.CHATBOT_LAMBDA_NAME }}
           index_id: ${{ inputs.vector_index_name }}
           urls_to_update: ${{ inputs.urls_to_add }}
           urls_to_remove: ${{ inputs.urls_to_remove }}
