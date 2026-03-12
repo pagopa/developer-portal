@@ -56,7 +56,7 @@ const ApiRestSection = ({
   specURLsName,
 }: ApiRestPageProps) => {
   const { palette, spacing } = useTheme();
-  const locale = useParams<{ locale: string }>().locale;
+  const { locale } = useParams<{ locale: string }>();
 
   const [selectedItemURL, setSelectedItemURL] = useState(specURLs[0].url);
 
