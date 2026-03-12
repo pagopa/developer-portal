@@ -1,5 +1,5 @@
 ---
-"nextjs-website": patch
+"nextjs-website": minor
 ---
 
-Add support for class modifier label for links in chatbot message parser
+Add class modifiers support to chat links and update styles
