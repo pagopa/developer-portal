@@ -1,0 +1,20 @@
+---
+name: structured-data-cleaner
+
+services:
+  main:
+    build:
+      context: ..
+      dockerfile: docker/app.local.Dockerfile
+    command: /app/scripts/run.main.sh
+    env_file: ../.env
+    volumes:
+      - ./files/.aws:/home/appuser/.aws
+      - ./files/s3:/app/files/s3
+    depends_on:
+      motoserver:
+        condition: service_started
+  motoserver:
+    image: motoserver/moto:5.1.21
+    env_file: ../.env
+
