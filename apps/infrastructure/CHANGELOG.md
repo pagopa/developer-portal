@@ -1,5 +1,23 @@
 # infrastructure
 
+## 9.1.0
+
+### Minor Changes
+
+- 54b0b3c: Overwrite cloufront Server http header for all distribution
+
+## 9.0.0
+
+### Major Changes
+
+- 9546f7b: Fix iam policy deploy website to allow deploy cognito functions too.
+- 6d0c7d9: Lambda function and api gateway rest api to query ivs metrics
+
+### Minor Changes
+
+- 7b2f733: Removed cloudfront function build. From now on we'll just go with java script
+- d0b8a1c: Github action to deploy cognito functions
+
 ## 8.3.0
 
 ### Minor Changes

@@ -37,7 +37,6 @@ This project uses [Poetry](https://python-poetry.org/) for dependency management
    AWS_DEFAULT_REGION=eu-south-1
 
    SHOULD_RUN_LOCALLY=false # optional, set to false by default. false is to read from and write to s3
-   LOG_LEVEL=info # optional, set to info by default
 
    # Input and output folder:
    #
@@ -53,10 +52,10 @@ This project uses [Poetry](https://python-poetry.org/) for dependency management
 
 
    # LLM Configuration (optional, with defaults)
-   CHB_MODEL_ID=gemini-2.5-flash-lite
-   CHB_MODEL_TEMPERATURE=0.0
-   CHB_MODEL_MAXTOKENS=65535
-   CHB_PROVIDER=google # allowed: google, mock
+   EXTRACTOR_MODEL_ID=gemini-2.5-flash-lite
+   EXTRACTOR_MODEL_TEMPERATURE=0.0
+   EXTRACTOR_MODEL_MAXTOKENS=65535
+   EXTRACTOR_PROVIDER=google # allowed: google, mock
 
    # Optional (either of the two needs to be specified if provider is not mock)
    CHB_AWS_GOOGLE_API_KEY=google_api_key
