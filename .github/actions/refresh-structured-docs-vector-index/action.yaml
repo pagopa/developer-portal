@@ -11,6 +11,9 @@ inputs:
     description: the name of the chatbot lambda function
     required: true
     default: ''
+  index_id:
+    description: the id of the vector index to update
+    required: true
   urls_to_update:
     description: 'List of URLs to Update (comma-separated)'
     required: true
@@ -41,6 +44,7 @@ runs:
     - name: Refresh Structured Docs in Vector Index
       shell: bash
       env:
+        CHB_INDEX_ID: ${{ inputs.index_id }}
         RAW_URLS_TO_UPDATE: ${{ inputs.urls_to_update }}
         RAW_URLS_TO_REMOVE: ${{ inputs.urls_to_remove }}
       run: |
