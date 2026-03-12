@@ -17,7 +17,7 @@ module "lambda_sync" {
     AC_PREFERRED_LANGUAGE_FIELD_ID   = var.environment == "dev" ? "6" : "5"
   }
 
-  runtime       = "nodejs20.x"
+  runtime       = "nodejs22.x"
   architectures = ["x86_64"]
 
   handler                                 = "index.sqsQueue"

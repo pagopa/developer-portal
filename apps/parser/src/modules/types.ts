@@ -29,6 +29,14 @@ export type ParsedNode = {
   children?: ParsedNode[];
 };
 
+export type ParserConfig = {
+  readonly OUTPUT_DIRECTORY: string;
+  readonly MAX_DEPTH: number | null;
+  readonly VALID_DOMAIN_VARIANTS: string[];
+  readonly BASE_HOST_TOKEN: string;
+  readonly REQUEST_TIMEOUT_MS: number;
+};
+
 export type SitemapXml = {
   readonly urlset?: { readonly url?: readonly string[] };
   readonly sitemapindex?: { readonly sitemap?: readonly string[] };

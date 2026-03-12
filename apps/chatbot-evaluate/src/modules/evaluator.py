@@ -5,7 +5,7 @@ import logging
 from llama_index.core.llms.llm import BaseLLM
 from llama_index.core.embeddings import BaseEmbedding
 
-from ragas import SingleTurnSample, EvaluationDataset, evaluate
+from ragas import SingleTurnSample, EvaluationDataset, aevaluate
 from ragas.llms import LlamaIndexLLMWrapper
 from ragas.embeddings.base import LlamaIndexEmbeddingsWrapper
 from ragas.metrics import (
@@ -13,6 +13,7 @@ from ragas.metrics import (
     ResponseRelevancy,
     LLMContextPrecisionWithoutReference,
 )
+from ragas.run_config import RunConfig
 
 from src.modules.settings import SETTINGS
 
@@ -36,7 +37,7 @@ class Evaluator:
         self.context_precision = LLMContextPrecisionWithoutReference(llm=self.llm)
         self.faithfulness = Faithfulness(llm=self.llm)
 
-    def evaluate(
+    async def aevaluate(
         self, query_str: str, response_str: str, retrieved_contexts: List[str]
     ) -> dict:
 
@@ -56,7 +57,7 @@ class Evaluator:
 
         else:
 
-            result = evaluate(
+            result = await aevaluate(
                 dataset=dataset,
                 metrics=[
                     self.response_relevancy,
@@ -64,6 +65,10 @@ class Evaluator:
                     self.faithfulness,
                 ],
                 show_progress=False,
+                run_config=RunConfig(
+                    max_workers=SETTINGS.max_workers,
+                    max_retries=SETTINGS.max_retries,
+                ),
             )
             scores = result.scores[0]
             scores["context_precision"] = scores.pop(

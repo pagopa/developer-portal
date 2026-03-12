@@ -157,7 +157,7 @@ const SolutionTemplate = ({
           cards={products.map((product) => ({
             title: product.name,
             text: product.description || '',
-            href: `/${product.slug}/overview`,
+            href: `/${locale}/${product.slug}/overview`,
             logoUrl: product.logo?.url || '',
           }))}
         />
