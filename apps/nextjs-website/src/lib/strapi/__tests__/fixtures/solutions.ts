@@ -231,7 +231,7 @@ export const expectedSolutionTemplateProps: SolutionTemplateProps = {
     stories: [
       {
         title: 'Case History 1',
-        path: '/case-histories/case-history-1',
+        path: '/it/case-histories/case-history-1',
         image: {
           url: 'https://example.com/example.jpg',
           alternativeText: 'Example Image',
