@@ -79,8 +79,8 @@ const CtaSlide = ({
               variant={cta.variant || 'contained'}
               sx={{
                 mb: 6,
-                '&:hover': {
-                  backgroundColor: `${palette.background.paper} !important`,
+                '&.MuiButton-containedNegative:hover': {
+                  backgroundColor: `${palette.background.paper}`,
                 },
               }}
               target={cta.link.target ?? '_self'}
