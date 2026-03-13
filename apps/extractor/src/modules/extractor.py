@@ -5,7 +5,7 @@ from llama_index.core.program import LLMTextCompletionProgram
 from src.modules.logger import get_logger
 from src.modules.schemas import InputDocument, CleanedDocument
 
-from src.modules.settings import SETTINGS
+from src.modules.settings import SETTINGS, TOKEN_BUDGET_DIVISOR
 
 from src.modules.validator import validate_extracted_text
 
@@ -15,7 +15,6 @@ else:
     from src.modules.file_handler_s3 import load_json_files, save_cleaned_document
 
 LOGGER = get_logger(__name__, level=SETTINGS.log_level)
-TOKEN_BUDGET_DIVISOR = 9  # Heuristic divisor to scale down max_tokens to a per-chunk token budget for body text
 
 
 def _escape_braces(value: str | None = None) -> str:
