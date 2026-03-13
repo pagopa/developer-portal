@@ -1,5 +1,11 @@
 # chatbot-evaluate
 
+## 1.1.1
+
+### Patch Changes
+
+- ca30fea: Update ragas version to make asynchronous evaluations
+
 ## 1.1.0
 
 ### Minor Changes

@@ -24,8 +24,8 @@ on:
           - dynamic
           - add missing static
 
-  schedule:
-    - cron: '0 22 * * *'  # Run daily at 10:00 PM UTC (11:00 PM CEST) to refresh the index in prod
+  # schedule:
+  #  - cron: '0 22 * * *'  # Run daily at 10:00 PM UTC (11:00 PM CEST) to refresh the index in prod
 
 permissions:
   id-token: write
@@ -56,18 +56,26 @@ jobs:
       - name: Refresh API Docs Vector Index
         if: github.event.inputs.action_type == 'api'
         uses: ./.github/actions/refresh-api-docs-vector-index
+        with:
+          index_id: ${{ vars.CHB_INDEX_ID }}
 
       - name: Refresh Dynamic Docs Vector Index
         if: github.event.inputs.action_type == 'dynamic'
         uses: ./.github/actions/refresh-dynamic-docs-vector-index
+        with:
+          index_id: ${{ vars.CHB_INDEX_ID }}
 
       - name: Add Missing Static Docs in Vector Index
         if: github.event.inputs.action_type == 'add missing static'
         uses: ./.github/actions/add-missing-static-docs-vector-index
+        with:
+          index_id: ${{ vars.CHB_INDEX_ID }}
 
       - name: Refresh All Docs Vector Index
         if: github.event.inputs.action_type == 'all'
         uses: ./.github/actions/refresh-all-docs-vector-index
+        with:
+          index_id: ${{ vars.CHB_INDEX_ID }}
 
   scheduled_refresh:
     name: Chatbot Refresh All Docs Vector Index (scheduled on prod)
@@ -93,3 +101,4 @@ jobs:
         uses: ./.github/actions/refresh-all-docs-vector-index
         with:
           chatbot_lambda_name: ${{ vars.CHATBOT_LAMBDA_NAME }}
+          index_id: ${{ vars.CHB_INDEX_ID }}
