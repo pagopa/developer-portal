@@ -14,7 +14,7 @@ import {
 } from '@mui/material';
 import { Product } from '@/lib/types/product';
 import { getStyles } from '@/components/molecules/ApiRestSection/ApiRestSection.styles';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import Spinner from '@/components/atoms/Spinner/Spinner';
 import dynamic from 'next/dynamic';
 
@@ -56,6 +56,7 @@ const ApiRestSection = ({
   specURLsName,
 }: ApiRestPageProps) => {
   const { palette, spacing } = useTheme();
+  const { locale } = useParams<{ locale: string }>();
 
   const [selectedItemURL, setSelectedItemURL] = useState(specURLs[0].url);
 
@@ -82,7 +83,9 @@ const ApiRestSection = ({
     if (specURLsName && spec?.name) {
       // update the url with the spec query param
       router.replace(
-        `/${product.slug}/api/${apiSlug}?spec=${encodeURIComponent(spec.name)}`
+        `/${locale}/${product.slug}/api/${apiSlug}?spec=${encodeURIComponent(
+          spec.name
+        )}`
       );
     }
   };

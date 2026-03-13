@@ -1,5 +1,11 @@
 # chatbot
 
+## 10.0.1
+
+### Patch Changes
+
+- a9cd989: Fix flow generation for smart-chips
+
 ## 10.0.0
 
 ### Major Changes
