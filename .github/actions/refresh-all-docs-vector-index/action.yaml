@@ -11,6 +11,9 @@ inputs:
     description: the name of the chatbot lambda function
     required: true
     default: ''
+  index_id:
+    description: the vector index ID to refresh
+    required: true
 
 runs:
   using: "composite"
@@ -40,6 +43,8 @@ runs:
 
     - name: Refresh All Docs in Vector Index
       shell: bash
+      env:
+        CHB_INDEX_ID: ${{ inputs.index_id }}
       run: |
         cd apps/chatbot-index
         PYTHONPATH=. poetry run python src/modules/refresh_dynamic_docs.py
