@@ -25,7 +25,7 @@ locals {
     CHB_QUERY_TABLE_PREFIX                = local.prefix
     CHB_REDIS_URL                         = "redis://${module.nlb.dns_name}:${var.ecs_redis.port}"
     CHB_RERANKER_ID                       = var.models.reranker
-    CHB_USE_PRESIDIO                      = var.models.user_multi_rag ? "True" : "False"
+    CHB_USE_PRESIDIO                      = "True"
     CHB_USE_MULTIRAG                      = var.models.use_multi_rag ? "True" : "False"
     CHB_WEBSITE_URL                       = "https://${var.dns_domain_name}"
     CHB_AWS_S3_BUCKET_NAME_STATIC_CONTENT = var.s3_bucket_name_static_content
