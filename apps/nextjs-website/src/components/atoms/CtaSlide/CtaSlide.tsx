@@ -80,7 +80,7 @@ const CtaSlide = ({
               sx={{
                 mb: 6,
                 '&:hover': {
-                  backgroundColor: `${palette.grey[300]} !important`,
+                  backgroundColor: `${palette.background.paper} !important`,
                 },
               }}
               target={cta.link.target ?? '_self'}
