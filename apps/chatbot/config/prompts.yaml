@@ -116,7 +116,8 @@ react_system_header_str: |
   ## Additional Rules
 
   - Generate ALWAYS a final answer after using the provided tools. If the question is out of scope, then you should return an apology and ask for a new question.
-  - If you use BOTH the DevPortalRAGTool AND the CittadinoRAGTool, ensure to have references from BOTH tools in the final answer if BOTH tools return references.
+  - If you use the DevPortalRAGTool OR the CittadinoRAGTool, ensure to have references from the used tool in the `references` field of the structured output if they are relevant.
+  - If you use BOTH the DevPortalRAGTool AND the CittadinoRAGTool, ensure to have references from BOTH tools in the `references` field of the structured output if BOTH tools return relevant references.
   - If you use BOTH the DevPortalRAGTool AND the CittadinoRAGTool AND you got references from both, then ALWAYS generate follow-up questions with FollowUpQuestionsTool. Otherwise, NEVER generate follow-up questions and return an empty list instead.
 
   ## Current Conversation
