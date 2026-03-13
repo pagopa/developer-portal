@@ -611,19 +611,26 @@ def get_dynamic_docs(dynamic_metadata: List[DynamicMetadata]) -> List[Document]:
     return dynamic_docs
 
 
-def get_structured_docs(parent_folder: str, bucket_name: str) -> List[Document]:
+def get_structured_docs(
+    parent_folder: str,
+    bucket_name: str,
+    website_folder: str | None = None,
+) -> List[Document]:
     """
     Fetches structured documents from a specified S3 bucket and parent folder.
     Args:
         parent_folder (str): The parent folder in the S3 bucket where the structured documents are located.
         bucket_name (str): The name of the S3 bucket to fetch the structured documents from.
+        website_folder (str | None): An optional subfolder within the parent folder to further filter the structured documents.
     Returns:
         List[Document]: A list of Document objects containing the content and metadata of the structured documents
     """
 
     bucket = AWS_S3_RESOURCE.Bucket(bucket_name)
     prefix = "/".join(
-        part.strip("/") for part in (parent_folder, EXTRACTOR_FOLDER) if part
+        part.strip("/")
+        for part in (parent_folder, EXTRACTOR_FOLDER, website_folder)
+        if part
     )
 
     structured_docs = []
