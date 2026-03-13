@@ -1,6 +1,5 @@
 import datetime
 import nh3
-import json
 import secrets
 
 from botocore.exceptions import BotoCoreError, ClientError
@@ -18,17 +17,17 @@ from src.app.sessions import (
     get_user_session,
 )
 from src.app.query_utilities import (
-    get_final_response,
     can_evaluate,
+    get_final_response,
     prepare_body_to_return,
     prepare_body_to_save,
     create_monitor_trace,
+    sanitize_messages,
 )
 from src.app.chatbot_init import chatbot
 
 from src.modules.logger import get_logger
 from src.modules.settings import SETTINGS
-from src.modules.codec import compress_payload
 
 LOGGER = get_logger(__name__, level=SETTINGS.log_level)
 router = APIRouter()
@@ -47,7 +46,7 @@ async def query_creation(
     salt = session_salt(session["id"])
     query_str = nh3.clean(query.question)
     user_id = hash_func(userId, salt)
-    messages = [item.model_dump() for item in query.history] if query.history else None
+    messages = sanitize_messages(query.history)
 
     answer_json = await chatbot.chat_generate(
         query_str=query_str,

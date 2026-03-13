@@ -1,5 +1,11 @@
 # chatbot-index
 
+## 2.6.0
+
+### Minor Changes
+
+- 167d2ce: Add refresh structured documents function
+
 ## 2.5.0
 
 ### Minor Changes
