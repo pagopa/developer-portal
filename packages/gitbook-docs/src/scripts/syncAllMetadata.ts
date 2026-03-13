@@ -63,8 +63,6 @@ const GENERATE_URL_METADATA = process.env.GENERATE_URL_METADATA !== 'false';
 // TODO: rename
 const GENERATE_METADATA = process.env.GENERATE_SITEMAP_METADATA !== 'false';
 const SAVE_STRAPI_RESPONSES = process.env.SAVE_STRAPI_RESPONSES !== 'false';
-const GENERATE_ROOT_METADATA_FILE =
-  process.env.GENERATE_ROOT_METADATA_FILE !== 'false';
 
 // Optional filter to sync only specific directories
 // Format: comma-separated list of dirNames (e.g., "dir1,dir2,dir3")
@@ -629,7 +627,6 @@ async function main() {
     console.log(`Generate URL metadata: ${GENERATE_URL_METADATA}`);
     console.log(`Generate metadata: ${GENERATE_METADATA}`);
     console.log(`Save Strapi responses: ${SAVE_STRAPI_RESPONSES}`);
-    console.log(`Generate root metadata file: ${GENERATE_ROOT_METADATA_FILE}`);
     console.log(`Using locale: ${LOCALE}`);
     if (DIR_NAMES_FILTER) {
       console.log(
@@ -809,22 +806,6 @@ async function main() {
 
       await Promise.all(promises);
       console.log(`Saved ${filteredGuidesMetadata.length} guide items to S3`);
-
-      if (GENERATE_ROOT_METADATA_FILE) {
-        const allGuidesMetadata = await processGuidesMetadata(
-          guidesMetadataInfo
-        );
-        await putS3File(
-          allGuidesMetadata.flat(),
-          getLocalizedPath(S3_GUIDE_METADATA_JSON_PATH, LOCALE),
-          S3_BUCKET_NAME!,
-          getS3Client()
-        );
-
-        console.log(
-          `Saved ${allGuidesMetadata.length} guide items to guides-metadata root file in S3`
-        );
-      }
     }
 
     // Process and save solutions metadata
@@ -868,22 +849,6 @@ async function main() {
       console.log(
         `Saved ${filteredSolutionsMetadata.length} solution items to S3`
       );
-
-      if (GENERATE_ROOT_METADATA_FILE) {
-        const solutionsMetadata = await processSolutionsMetadata(
-          strapiData.solutions
-        );
-        await putS3File(
-          solutionsMetadata.flat(),
-          getLocalizedPath(S3_SOLUTIONS_METADATA_JSON_PATH, LOCALE),
-          S3_BUCKET_NAME!,
-          getS3Client()
-        );
-
-        console.log(
-          `Saved ${solutionsMetadata.length} solution items in solutions-metadata root file to S3`
-        );
-      }
     }
 
     // Process and save release notes metadata
@@ -930,22 +895,6 @@ async function main() {
       console.log(
         `Saved ${filteredReleaseNotesMetadata.length} release note items to S3`
       );
-
-      if (GENERATE_ROOT_METADATA_FILE) {
-        const releaseNotesMetadata = await processReleaseNotesMetadata(
-          strapiData.releaseNotes
-        );
-        await putS3File(
-          releaseNotesMetadata.flat(),
-          getLocalizedPath(S3_RELEASE_NOTES_METADATA_JSON_PATH, LOCALE),
-          S3_BUCKET_NAME!,
-          getS3Client()
-        );
-
-        console.log(
-          `Saved ${releaseNotesMetadata.length} release notes items in release-notes-metadata root file to S3`
-        );
-      }
     }
 
     console.log('Metadata sync completed successfully!');
