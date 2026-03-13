@@ -100,7 +100,7 @@ describe('makeSolutionsProps', () => {
       'Valid Case History'
     );
     expect(result[0].successStories?.stories[0].path).toBe(
-      '/case-histories/valid-case-history'
+      '/it/case-histories/valid-case-history'
     );
     expect(spyOnConsoleError).toHaveBeenCalledWith(
       'Error while processing CaseHistory with title "Case History Without Slug": missing slug. Skipping...'

@@ -58,7 +58,7 @@ export function makeSolutionsProps(
 
                   return {
                     title: caseHistory.attributes.title,
-                    path: `/case-histories/${caseHistory.attributes.slug}`,
+                    path: `/${locale}/case-histories/${caseHistory.attributes.slug}`,
                     image: caseHistory.attributes.image?.data?.attributes,
                   };
                 }

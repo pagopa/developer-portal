@@ -159,7 +159,7 @@ def get_final_response(response_str: str, references: List[str]) -> str:
     if len(unique_references) > 0:
         response_str += "\n\nRif:"
         for ref in unique_references:
-            response_str += "\n" + ref
+            response_str += "\n" + ref + " {% .display-block %}"
 
     return response_str
 

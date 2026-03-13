@@ -87,22 +87,23 @@ class Chatbot:
             LOGGER.error(f"Failed to load DevPortal index: {e}")
             raise
 
-        try:
-            cittadino_index = load_index_redis(index_id=SETTINGS.cittadino_index_id)
-            tools += [
-                get_query_engine_tool(
-                    index=cittadino_index,
-                    name=CITTADINO_TOOL_NAME,
-                    description=CITTADINO_RAG_TOOL_DESCRIPTION,
-                    text_qa_template=self.qa_prompt_tmpl,
-                    refine_template=self.ref_prompt_tmpl,
-                ),
-                follow_up_questions_tool(name=CHIPS_TOOL_NAME),
-            ]
-            self.tool_names += [CITTADINO_TOOL_NAME, CHIPS_TOOL_NAME]
-        except Exception as e:
-            LOGGER.error(f"Failed to load Cittadino index: {e}")
-            raise
+        if SETTINGS.use_multirag:
+            try:
+                cittadino_index = load_index_redis(index_id=SETTINGS.cittadino_index_id)
+                tools += [
+                    get_query_engine_tool(
+                        index=cittadino_index,
+                        name=CITTADINO_TOOL_NAME,
+                        description=CITTADINO_RAG_TOOL_DESCRIPTION,
+                        text_qa_template=self.qa_prompt_tmpl,
+                        refine_template=self.ref_prompt_tmpl,
+                    ),
+                    follow_up_questions_tool(name=CHIPS_TOOL_NAME),
+                ]
+                self.tool_names += [CITTADINO_TOOL_NAME, CHIPS_TOOL_NAME]
+            except Exception as e:
+                LOGGER.error(f"Failed to load Cittadino index: {e}")
+                raise
 
         self.num_tools = len(tools)
 
@@ -169,8 +170,10 @@ class Chatbot:
                 tool_index = self.tool_names.index(tool_call.tool_name)
                 used_tools[tool_index] = True
 
-            if engine_response.structured_response["follow_up_questions"] and all(
-                used_tools
+            if (
+                SETTINGS.use_multirag
+                and engine_response.structured_response["follow_up_questions"]
+                and all(used_tools)
             ):
                 chips = engine_response.structured_response["follow_up_questions"]
             else:
