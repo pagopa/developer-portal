@@ -142,7 +142,7 @@ class ChatbotSettings(BaseSettings):
     )
 
     # multi-rag settings
-    use_multirag: bool = os.getenv("CHB_USE_MULTIRAG", "True").lower() == "true"
+    use_multirag: bool = os.getenv("CHB_USE_MULTIRAG", "False").lower() == "true"
 
     # prompts
     discovery_system_prompt_str: str = PROMPTS["discovery_system_prompt_str"]
