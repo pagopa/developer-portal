@@ -46,3 +46,7 @@ create_chatbot            = true
 ac_integration_is_enabled = true
 docs_redirect_is_enabled  = false
 
+chatbot_models = {
+  use_multi_rag = true
+}
+
