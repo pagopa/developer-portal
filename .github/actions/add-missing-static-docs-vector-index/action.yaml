@@ -34,6 +34,8 @@ runs:
 
     - name: Add Missing Static Docs in Vector Index
       shell: bash
+      env:
+        CHB_INDEX_ID: discovery-index # Change this to devportal-index when multi-rag is used
       run: |
         cd apps/chatbot-index
         PYTHONPATH=. poetry run python src/modules/add_missing_static_docs.py
