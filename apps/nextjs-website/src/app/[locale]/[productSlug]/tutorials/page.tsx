@@ -1,4 +1,4 @@
-import { Product } from '@/lib/types/product';
+import { Product } from '@/lib/product/types';
 import { Metadata, ResolvingMetadata } from 'next';
 import { getTutorialListPageProps } from '@/lib/api';
 import { Abstract } from '@/editorialComponents/Abstract/Abstract';

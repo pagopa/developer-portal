@@ -1,12 +1,12 @@
 /* eslint-disable functional/no-expression-statements */
 /* eslint-disable functional/no-throw-statements */
-import { Product } from '@/lib/types/product';
+import { Product } from './types';
 import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
 import {
   StrapiBaseProductWithRelations,
   StrapiProduct,
   StrapiProducts,
-} from '@/lib/strapi/types/product';
+} from './types';
 import { compact } from 'lodash';
 import { makeTagProps } from '@/lib/strapi/makeProps/makeTags';
 

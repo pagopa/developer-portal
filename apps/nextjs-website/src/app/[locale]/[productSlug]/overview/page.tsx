@@ -4,7 +4,7 @@ import { Metadata, ResolvingMetadata } from 'next';
 import ProductLayout, {
   ProductLayoutProps,
 } from '@/components/organisms/ProductLayout/ProductLayout';
-import { Product } from '@/lib/types/product';
+import { Product } from '@/lib/product/types';
 import { Tutorial } from '@/lib/types/tutorialData';
 import StartInfo from '@/components/organisms/StartInfo/StartInfo';
 import RelatedLinks from '@/components/atoms/RelatedLinks/RelatedLinks';

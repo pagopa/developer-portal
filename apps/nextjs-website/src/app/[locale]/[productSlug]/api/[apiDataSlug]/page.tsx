@@ -2,7 +2,7 @@ import { ApiDataListRepository } from '@/lib/apiDataList';
 import ProductLayout, {
   ProductLayoutProps,
 } from '@/components/organisms/ProductLayout/ProductLayout';
-import { Product } from '@/lib/types/product';
+import { Product } from '@/lib/product/types';
 import { Metadata, ResolvingMetadata } from 'next';
 import {
   makeMetadata,

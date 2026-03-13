@@ -5,7 +5,7 @@ import {
   region,
   s3DocsPath,
 } from '@/config';
-import { Product } from '@/lib/types/product';
+import { Product } from '@/lib/product/types';
 import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
 import { SEO } from '@/lib/types/seo';
 import {

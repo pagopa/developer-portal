@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import { Product } from '@/lib/types/product';
+import { Product } from '@/lib/product/types';
 import { useTranslations } from 'next-intl';
 import ProductsShowcase from '@/components/organisms/ProductsShowcase/ProductsShowcase';
 import ProductBreadcrumbs from '@/components/atoms/ProductBreadcrumbs/ProductBreadcrumbs';

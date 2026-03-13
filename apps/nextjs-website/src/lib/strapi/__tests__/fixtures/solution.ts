@@ -1,5 +1,5 @@
 import { mediaVectorJson } from '@/lib/strapi/__tests__/fixtures/media';
-import { productsJson } from '@/lib/strapi/__tests__/fixtures/product';
+import { productsJson } from '@/lib/product/__tests__/fixtures/product';
 
 export const baseSolutionJson = {
   id: 1,
