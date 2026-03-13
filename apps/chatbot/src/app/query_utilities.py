@@ -1,10 +1,12 @@
 import datetime
 import json
-from typing import List
+import nh3
+
+from typing import Any, Dict, List
 from boto3.dynamodb.conditions import Key
 
 from src.app.sqs_init import sqs_queue_monitor
-from src.app.models import Query, QueryResponse, tables
+from src.app.models import Query, QueryFromThePast, QueryResponse, tables
 from src.modules.logger import get_logger
 from src.modules.settings import SETTINGS
 from src.modules.codec import compress_payload
@@ -160,3 +162,18 @@ def get_final_response(response_str: str, references: List[str]) -> str:
             response_str += "\n" + ref + " {% .display-block %}"
 
     return response_str
+
+
+def sanitize_messages(
+    history: List[QueryFromThePast] | None,
+) -> List[Dict[str, Any]] | None:
+    if not history:
+        return None
+    messages = []
+    for item in history:
+        message = item.model_dump()
+        message["question"] = nh3.clean(item.question)
+        if item.answer is not None:
+            message["answer"] = nh3.clean(item.answer)
+        messages.append(message)
+    return messages
