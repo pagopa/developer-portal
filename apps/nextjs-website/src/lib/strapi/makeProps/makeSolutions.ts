@@ -53,10 +53,9 @@ export function makeSolutionsProps(
                   );
                   return null;
                 }
-
                 return {
                   title: caseHistory.title,
-                  path: `/case-histories/${caseHistory.slug}`,
+                  path: `/${locale}/case-histories/${caseHistory.attributes.slug}`,
                   image: caseHistory.image,
                 };
               })
