@@ -24,7 +24,6 @@ on:
           - dynamic
           - add missing static
 
-  schedule:
   # schedule:
   #  - cron: '0 22 * * *'  # Run daily at 10:00 PM UTC (11:00 PM CEST) to refresh the index in prod
 
