@@ -12,6 +12,18 @@ services:
       - ./files/.aws:/home/appuser/.aws
       - ./files/s3:/app/files/s3
     depends_on:
+      s3-init:
+        condition: service_completed_successfully
+  s3-init:
+    build:
+      context: ..
+      dockerfile: docker/app.local.Dockerfile
+    command: /app/scripts/s3-init.sh
+    env_file: ../.env
+    volumes:
+      - ./files/.aws:/home/appuser/.aws
+      - ./files/s3:/app/files/s3
+    depends_on:
       motoserver:
         condition: service_started
   motoserver:
