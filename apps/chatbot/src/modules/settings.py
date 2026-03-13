@@ -141,10 +141,17 @@ class ChatbotSettings(BaseSettings):
         "CHB_AWS_S3_BUCKET_NAME_STATIC_CONTENT", "devportal-d-website-static-content"
     )
 
+    # multi-rag settings
+    use_multirag: bool = os.getenv("CHB_USE_MULTIRAG", "True").lower() == "true"
+
     # prompts
     discovery_system_prompt_str: str = PROMPTS["discovery_system_prompt_str"]
     qa_prompt_str: str = PROMPTS["qa_prompt_str"]
-    react_system_str: str = PROMPTS["react_system_header_str"]
+    react_system_str: str = (
+        PROMPTS["react_system_header_with_multirag_str"]
+        if os.getenv("CHB_USE_MULTIRAG", "True").lower() == "true"
+        else PROMPTS["react_system_header_no_multirag_str"]
+    )
     refine_prompt_str: str = PROMPTS["refine_prompt_str"]
 
     # urls
