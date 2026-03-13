@@ -1,5 +1,11 @@
 # nextjs-website
 
+## 16.3.1
+
+### Patch Changes
+
+- 4ba0d2e: Fix: update case history path to include locale and update api data page select to incude locale
+
 ## 16.3.0
 
 ### Minor Changes
