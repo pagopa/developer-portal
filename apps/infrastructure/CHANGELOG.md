@@ -1,5 +1,12 @@
 # infrastructure
 
+## 9.2.0
+
+### Minor Changes
+
+- a8321ba: New env variable for chatbot-api chb-use-multirag
+- 2c47a12: Lambda evaluate new env variables ragas max workers and max retries
+
 ## 9.1.0
 
 ### Minor Changes
