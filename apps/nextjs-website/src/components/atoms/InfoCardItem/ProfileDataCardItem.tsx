@@ -20,6 +20,7 @@ export type ProfileDataCardItemProps = {
   valueFallback?: ReactNode;
   editable: boolean;
   required: boolean;
+  error?: string;
 } & (
   | { type: 'select'; values: { title: string; value: string }[] }
   | { type: 'text' }
@@ -43,7 +44,7 @@ export const ProfileDataCardItem = (
           {infoCardItem.type === 'text' ? (
             infoCardItem.required ? (
               <RequiredTextField
-                inputProps={{ maxlength: 100 }}
+                inputProps={{ maxLength: 100 }}
                 InputProps={{
                   sx: {
                     '& input': {
@@ -58,11 +59,13 @@ export const ProfileDataCardItem = (
                     infoCardItem.onValue(value);
                   }
                 }}
-                helperText={t('shared.requiredFieldError')}
+                {...(infoCardItem.error
+                  ? { error: true, helperText: infoCardItem.error }
+                  : { helperText: t('shared.requiredFieldError') })}
               />
             ) : (
               <TextField
-                inputProps={{ maxlength: 100 }}
+                inputProps={{ maxLength: 100 }}
                 InputProps={{
                   sx: {
                     '& input': {
@@ -81,6 +84,8 @@ export const ProfileDataCardItem = (
                 value={infoCardItem.value}
                 label={infoCardItem.title}
                 size='small'
+                error={!!infoCardItem.error}
+                helperText={infoCardItem.error}
               />
             )
           ) : (
