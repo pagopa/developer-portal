@@ -1,18 +1,18 @@
-resource "aws_cloudwatch_log_group" "lambda_evaluate_logs" {
-  name              = "/aws/lambda/${aws_lambda_function.chatbot_evaluate_lambda.function_name}"
+resource "aws_cloudwatch_log_group" "lambda_monitor_logs" {
+  name              = "/aws/lambda/${aws_lambda_function.chatbot_monitor_lambda.function_name}"
   retention_in_days = 14
 }
 
-resource "aws_iam_role" "lambda_evaluate_role" {
-  name                  = "${local.prefix}-evaluate-lambda"
+resource "aws_iam_role" "lambda_monitor_role" {
+  name                  = "${local.prefix}-monitor-lambda"
   force_detach_policies = true
   assume_role_policy    = data.aws_iam_policy_document.lambda_assume_role.json
 }
 
 
-resource "aws_iam_role_policy" "lambda_evaluate_policy" {
-  name = "${local.prefix}-evaluate-lambda"
-  role = aws_iam_role.lambda_evaluate_role.id
+resource "aws_iam_role_policy" "lambda_monitor_policy" {
+  name = "${local.prefix}-monitor-lambda"
+  role = aws_iam_role.lambda_monitor_role.id
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -63,18 +63,17 @@ resource "aws_iam_role_policy" "lambda_evaluate_policy" {
           "sqs:ReceiveMessage",
           "sqs:DeleteMessage",
           "sqs:GetQueueAttributes",
+          "sqs:SendMessage"
         ]
-        Resource = aws_sqs_queue.chatbot_queue["evaluate"].arn
+        Resource = aws_sqs_queue.chatbot_queue["monitor"].arn
       },
       {
         Effect = "Allow"
         Action = [
           "sqs:SendMessage",
-          "sqs:GetQueueUrl",
+          "sqs:GetQueueUrl"
         ]
-        Resource = [
-          aws_sqs_queue.chatbot_queue["monitor"].arn,
-        ]
+        Resource = aws_sqs_queue.chatbot_queue["evaluate"].arn
       },
       {
         Effect = "Allow"
@@ -85,38 +84,53 @@ resource "aws_iam_role_policy" "lambda_evaluate_policy" {
         ]
         Resource = "*"
       },
+      {
+        Effect = "Allow"
+        Action = [
+          "dynamodb:GetItem",
+          "dynamodb:PutItem",
+          "dynamodb:Query",
+          "dynamodb:BatchGetItem",
+          "dynamodb:BatchWriteItem",
+          "dynamodb:UpdateItem",
+        ]
+        Resource = [
+          module.dynamodb_chatbot_sessions.dynamodb_table_arn,
+          "${module.dynamodb_chatbot_sessions.dynamodb_table_arn}/index/*",
+          module.dynamodb_chatbot_queries.dynamodb_table_arn,
+          "${module.dynamodb_chatbot_queries.dynamodb_table_arn}/index/*",
+          module.dynamodb_chatbot_salts.dynamodb_table_arn,
+          "${module.dynamodb_chatbot_salts.dynamodb_table_arn}/index/*"
+        ]
+      }
     ]
   })
 }
 
 locals {
-  chatbot_evaluate_lambda_name = "${local.prefix}-evaluate-lambda"
+  chatbot_monitor_lambda_name = "${local.prefix}-monitor-lambda"
 }
 
-resource "aws_lambda_function" "chatbot_evaluate_lambda" {
-  function_name = local.chatbot_evaluate_lambda_name
-  description   = "Lambda responsible injecting messages into langfuse"
+resource "aws_lambda_function" "chatbot_monitor_lambda" {
+  function_name = local.chatbot_monitor_lambda_name
+  description   = "Lambda responsible for monitoring chatbot interactions"
 
-  image_uri    = "${module.ecr["evaluate"].repository_url}:latest"
+  image_uri    = "${module.ecr["monitor"].repository_url}:laest"
   package_type = "Image"
 
-  timeout       = 600 # 10 minutes
-  memory_size   = 848
+  timeout       = 120 # two minutes, as some interactions might take longer to process
+  memory_size   = 2048
   architectures = ["x86_64"]
-  role          = aws_iam_role.lambda_evaluate_role.arn
+  role          = aws_iam_role.lambda_monitor_role.arn
 
   environment {
     variables = {
-      ENVIRONMENT                     = var.environment
-      CHB_MODEL_TEMPERATURE           = 0
-      CHB_MODEL_MAXTOKENS             = 2048
-      CHB_AWS_SSM_GOOGLE_API_KEY      = module.google_api_key_ssm_parameter.ssm_parameter_name
-      CHB_AWS_SQS_QUEUE_MONITOR_NAME  = aws_sqs_queue.chatbot_queue["monitor"].name
+      CHB_AWS_SSM_LANGFUSE_PUBLIC_KEY = module.langfuse_public_key.ssm_parameter_name
+      CHB_AWS_SSM_LANGFUSE_SECRET_KEY = module.langfuse_secret_key.ssm_parameter_name
+      CHB_LANGFUSE_HOST               = try(module.langfuse[0].service_discovery_endpoint, "https://${local.priv_monitoring_host}")
       CHB_AWS_SQS_QUEUE_EVALUATE_NAME = aws_sqs_queue.chatbot_queue["evaluate"].name
-      CHB_EMBED_BATCH_SIZE            = 100
-      CHB_EMBEDDING_DIM               = 768
-      CHB_EMBED_MODEL_ID              = var.models.embeddings
-      CHB_PROVIDER                    = var.models.provider
+      CHB_AWS_SQS_QUEUE_MONITOR_NAME  = aws_sqs_queue.chatbot_queue["monitor"].name
+      CHB_QUERY_TABLE_PREFIX          = local.prefix
       LOG_LEVEL                       = "INFO"
       RAGAS_DO_NOT_TRACK              = "True"
     }
@@ -136,13 +150,13 @@ resource "aws_lambda_function" "chatbot_evaluate_lambda" {
   depends_on = [module.ecr]
 
   tags = {
-    Name = local.chatbot_evaluate_lambda_name
+    Name = local.chatbot_monitor_lambda_name
   }
 }
 
-resource "aws_lambda_event_source_mapping" "evaluate_lambda_sqs" {
-  event_source_arn = aws_sqs_queue.chatbot_queue["evaluate"].arn
-  function_name    = aws_lambda_function.chatbot_evaluate_lambda.arn
+resource "aws_lambda_event_source_mapping" "monitor_lambda_sqs" {
+  event_source_arn = aws_sqs_queue.chatbot_queue["monitor"].arn
+  function_name    = aws_lambda_function.chatbot_monitor_lambda.arn
   enabled          = true
   batch_size       = 5
   #maximum_batching_window_in_seconds = 60
@@ -150,8 +164,8 @@ resource "aws_lambda_event_source_mapping" "evaluate_lambda_sqs" {
 
 
 # Event invoke configuration for retries
-resource "aws_lambda_function_event_invoke_config" "lambda_evaluate" {
-  function_name = aws_lambda_function.chatbot_evaluate_lambda.function_name
+resource "aws_lambda_function_event_invoke_config" "lambda_monitor" {
+  function_name = aws_lambda_function.chatbot_monitor_lambda.function_name
 
   maximum_event_age_in_seconds = 60
   maximum_retry_attempts       = 1
@@ -159,13 +173,12 @@ resource "aws_lambda_function_event_invoke_config" "lambda_evaluate" {
   /*
   destination_config {
     on_failure {
-      destination = aws_sqs_queue.chatbot_dlq["evaluate"].arn
+      destination = aws_sqs_queue.chatbot_dlq["monitor"].arn
     }
 
     on_success {
-      destination = aws_sqs_queue.chatbot_dlq["evaluate"].arn
+      destination = aws_sqs_queue.chatbot_dlq["monitor"].arn
     }
   }
   */
 }
-
