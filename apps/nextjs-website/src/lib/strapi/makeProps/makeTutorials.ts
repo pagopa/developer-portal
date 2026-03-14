@@ -20,7 +20,7 @@ export function makeTutorialsProps(
   markdownContentDict: Record<string, string>
 ): readonly TutorialProps[] {
   return compact(
-    strapiTutorials.data.map(({ attributes }) => {
+    strapiTutorials.data.map((attributes) => {
       if (!attributes.slug || !attributes.title) {
         console.error(
           `Error while processing Tutorial: missing title or slug. Title: ${attributes.title} | Slug: ${attributes.slug}. Skipping...`
@@ -28,7 +28,7 @@ export function makeTutorialsProps(
         return null;
       }
 
-      if (!attributes.product.data.attributes.slug) {
+      if (!attributes.product?.slug) {
         console.error(
           `Error while processing Tutorial with title "${attributes.title}": missing product slug. Skipping...`
         );
@@ -37,11 +37,10 @@ export function makeTutorialsProps(
 
       try {
         return {
-          image: attributes.image.data
+          image: attributes.image
             ? {
-                url: attributes.image.data.attributes.url,
-                alternativeText:
-                  attributes.image.data.attributes.alternativeText || '',
+                url: attributes.image.url,
+                alternativeText: attributes.image.alternativeText || '',
               }
             : undefined,
           title: attributes.title,
@@ -49,24 +48,23 @@ export function makeTutorialsProps(
             ? new Date(attributes.publishedAt)
             : undefined,
           name: attributes.title,
-          path: `/${locale}/${attributes.product.data.attributes.slug}/tutorials/${attributes.slug}`,
+          path: `/${locale}/${attributes.product.slug}/tutorials/${attributes.slug}`,
           parts: compact(
-            attributes.parts.map((part) =>
+            attributes.parts?.map((part) =>
               makePartProps(part, markdownContentDict)
-            )
+            ) || []
           ),
-          productSlug: attributes.product.data.attributes.slug,
+          productSlug: attributes.product.slug,
           description: attributes.description || '',
-          icon: attributes.icon.data?.attributes || undefined,
+          icon: attributes.icon || undefined,
           relatedLinks: attributes.relatedLinks,
           bannerLinks:
             attributes.bannerLinks && attributes.bannerLinks.length > 0
-              ? attributes.bannerLinks?.map(makeBannerLinkProps)
-              : attributes.product.data?.attributes.bannerLinks?.map(
-                  makeBannerLinkProps
-                ),
+              ? attributes.bannerLinks.map(makeBannerLinkProps)
+              : attributes.product.bannerLinks?.map(makeBannerLinkProps),
+
           seo: attributes.seo,
-          tags: attributes.tags.data?.map((tag) => tag.attributes) || [],
+          tags: attributes.tags?.map((tag) => tag) || [],
           updatedAt: attributes.updatedAt,
           redirectPath: attributes.redirectPath,
         } satisfies TutorialProps;

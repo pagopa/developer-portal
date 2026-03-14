@@ -6,15 +6,15 @@ import { StrapiTutorials } from '@/lib/strapi/types/tutorial';
 const makeStrapiTutorialsPopulate = () =>
   qs.stringify({
     populate: {
+      image: {
+        populate: '*',
+      },
+      parts: {
+        populate: '*',
+      },
       relatedLinks: {
         populate: ['links'],
       },
-      description: '*',
-      icon: { populate: ['icon'] },
-      image: {
-        populate: ['image'],
-      },
-      parts: '*',
       product: {
         ...productRelationsPopulate,
       },
@@ -22,7 +22,7 @@ const makeStrapiTutorialsPopulate = () =>
         populate: ['icon'],
       },
       seo: {
-        populate: '*,metaImage,metaSocial.image',
+        populate: '*',
       },
       tags: {
         populate: '*',

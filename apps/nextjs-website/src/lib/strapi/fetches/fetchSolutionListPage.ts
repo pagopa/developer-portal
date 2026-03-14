@@ -1,6 +1,7 @@
 import * as qs from 'qs';
 import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
 import { StrapiSolutionListPage } from '../types/solutionListPage';
+import { RootEntity } from '@/lib/strapi/types/rootEntity';
 
 const makeStrapiSolutionListPagePopulate = () =>
   qs.stringify({
@@ -11,7 +12,6 @@ const makeStrapiSolutionListPagePopulate = () =>
           'bannerLinks.icon',
           'products.logo',
           'icon',
-          'icon.name',
           'stats',
           'steps',
           'steps.products',
@@ -29,12 +29,11 @@ const makeStrapiSolutionListPagePopulate = () =>
         populate: ['items.icon'],
       },
       seo: {
-        populate: '*,metaImage,metaSocial.image',
+        populate: '*',
       },
     },
   });
 
-export const fetchSolutionListPage = fetchFromStrapi<StrapiSolutionListPage>(
-  'solution-list-page',
-  makeStrapiSolutionListPagePopulate()
-);
+export const fetchSolutionListPage = fetchFromStrapi<
+  RootEntity<StrapiSolutionListPage>
+>('solution-list-page', makeStrapiSolutionListPagePopulate());

@@ -16,7 +16,7 @@ const makeStrapiGuideListPopulate = () =>
         populate: ['icon'],
       },
       seo: {
-        populate: '*,metaImage,metaSocial.image',
+        populate: '*',
       },
     },
   });

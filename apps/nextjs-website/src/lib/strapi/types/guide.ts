@@ -11,30 +11,20 @@ type StrapiGuideVersion = {
 };
 
 export type StrapiBaseGuide = {
-  readonly attributes: {
-    readonly title: string;
-    readonly slug: string;
-    readonly image: {
-      readonly data: StrapiMedia;
-    };
-    readonly mobileImage: {
-      readonly data: StrapiMedia;
-    };
-    readonly listItems: ReadonlyArray<{
-      readonly text: string;
-    }>;
-  };
+  readonly title: string;
+  readonly slug: string;
+  readonly image: StrapiMedia;
+  readonly mobileImage: StrapiMedia;
+  readonly listItems: ReadonlyArray<{
+    readonly text: string;
+  }>;
 };
 
 export type StrapiGuide = StrapiBaseGuide & {
-  readonly attributes: {
-    readonly versions: ReadonlyArray<StrapiGuideVersion>;
-    readonly product: {
-      readonly data?: StrapiBaseProductWithRelations;
-    };
-    readonly bannerLinks: ReadonlyArray<StrapiBannerLink>;
-    readonly seo?: StrapiSeo;
-  };
+  readonly versions: ReadonlyArray<StrapiGuideVersion>;
+  readonly product?: StrapiBaseProductWithRelations;
+  readonly bannerLinks: ReadonlyArray<StrapiBannerLink>;
+  readonly seo?: StrapiSeo;
 };
 
 export type StrapiGuides = Paginated<StrapiGuide>;
