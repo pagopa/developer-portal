@@ -5,16 +5,19 @@ import { Link, useTheme } from '@mui/material';
 import { isExternalLink } from '@/helpers/navigation.helpers';
 import { OpenInNew } from '@mui/icons-material';
 
-const ChatLink = ({ title, href, children }: LinkProps<ReactNode>) => {
+type ChatLinkProps = LinkProps<ReactNode> & { readonly className?: string };
+
+const ChatLink = ({ title, href, children, className }: ChatLinkProps) => {
   const { palette } = useTheme();
   const currentHost = typeof window !== 'undefined' ? window.location.host : '';
   const external = isExternalLink(currentHost, href);
   return (
     <Link
+      className={className}
       href={href}
       title={title}
       color={palette.primary.main}
-      display={'block'}
+      display={'inline-flex'}
       fontWeight={'600'}
       target={external ? '_blank' : undefined}
       rel={external ? 'noreferrer' : undefined}
