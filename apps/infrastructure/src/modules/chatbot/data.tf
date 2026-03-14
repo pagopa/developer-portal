@@ -138,36 +138,48 @@ data "aws_iam_policy_document" "deploy_github" {
 resource "aws_iam_policy" "deploy_chatbot" {
   name        = "DeployChatbot"
   description = "Policy to allow to deploy the chatbot"
+  policy      = data.aws_iam_policy_document.deploy_chatbot.json
+}
 
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Action = [
-          "lambda:*",
-          "ecr:GetAuthorizationToken",
-          "ecr:CompleteLayerUpload",
-          "ecr:GetAuthorizationToken",
-          "ecr:UploadLayerPart",
-          "ecr:InitiateLayerUpload",
-          "ecr:BatchCheckLayerAvailability",
-          "ecr:PutImage",
-          "ecr:BatchGetImage",
-          "ecr:GetRepositoryPolicy",
-          "ecr:SetRepositoryPolicy"
-        ]
-        Effect   = "Allow"
-        Resource = "*"
-      },
-      {
-        Action = [
-          "iam:PassRole"
-        ]
-        Effect   = "Allow"
-        Resource = "*"
-      }
+data "aws_iam_policy_document" "deploy_chatbot" {
+  # ECR GetAuthorizationToken is a global action and cannot be scoped
+  statement {
+    sid       = "ECRGetAuthorizationToken"
+    effect    = "Allow"
+    actions   = ["ecr:GetAuthorizationToken"]
+    resources = ["*"]
+  }
+
+  # ECR push permissions scoped to chatbot repositories
+  statement {
+    sid    = "ECRPushImages"
+    effect = "Allow"
+    actions = [
+      "ecr:BatchCheckLayerAvailability",
+      "ecr:BatchGetImage",
+      "ecr:CompleteLayerUpload",
+      "ecr:InitiateLayerUpload",
+      "ecr:PutImage",
+      "ecr:UploadLayerPart",
     ]
-  })
+    resources = [for repo in local.ecr_repos : "arn:aws:ecr:${var.aws_region}:${data.aws_caller_identity.current.account_id}:repository/${repo.repository_name}"]
+  }
+
+  # Lambda update permissions scoped to chatbot functions
+  statement {
+    sid    = "LambdaUpdateFunctionCode"
+    effect = "Allow"
+    actions = [
+      "lambda:GetFunction",
+      "lambda:UpdateFunctionCode",
+    ]
+    resources = [
+      "arn:aws:lambda:${var.aws_region}:${data.aws_caller_identity.current.account_id}:function:${local.prefix}-api-lambda",
+      "arn:aws:lambda:${var.aws_region}:${data.aws_caller_identity.current.account_id}:function:${local.prefix}-evaluate-lambda",
+      "arn:aws:lambda:${var.aws_region}:${data.aws_caller_identity.current.account_id}:function:${local.prefix}-index-lambda",
+      "arn:aws:lambda:${var.aws_region}:${data.aws_caller_identity.current.account_id}:function:${local.prefix}-monitor-lambda",
+    ]
+  }
 }
 
 data "aws_iam_policy_document" "ecs_monitoring_ssm_policy" {
