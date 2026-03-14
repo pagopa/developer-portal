@@ -274,7 +274,7 @@
       "checkJunkMail": "Didn't receive any email? Check junk mail or",
       "continue": "Continue",
       "resendEmail": "Resend email",
-      "invalidCode": "The entered code is incorrect",
+      "invalidCode": "The entered code is incorrect, you need to request a new code to proceed further.",
       "emptyCode": "The code is mandatory"
     },
     "accountActivated": {
