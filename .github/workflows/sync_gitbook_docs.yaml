@@ -55,8 +55,7 @@ on:
 
 
   schedule:
-    # - cron: '0 23 * * *'  # Run daily at midnight UTC
-    - cron: '0 8 * * *'  # Run daily at 8:00 AM UTC (9:00 AM in Italy) TODO: restore '0 23 * * *' after testing
+    - cron: '0 23 * * *'  # Run daily at midnight UTC
 
 permissions:
   id-token: write
