@@ -13,6 +13,14 @@ on:
           - dev
           - uat
           - prod
+      locale:
+        description: 'Locale to sync to (e.g. it)'
+        type: choice
+        required: false
+        default: it
+        options:
+          - it
+          - en
       metadata_type:
         description: 'Type of metadata to generate'
         type: choice
@@ -23,6 +31,11 @@ on:
           - guides
           - solutions
           - release_notes
+      dir_names_filter:
+        description: 'Comma-separated list of dirNames to sync (leave empty to sync all)'
+        type: string
+        required: false
+        default: ''
       incremental_mode:
         description: 'Run sync in incremental mode by checking only file size'
         type: boolean
@@ -33,26 +46,6 @@ on:
         type: boolean
         required: true
         default: false
-      generate_root_metadata_file:
-        description: 'Generate root metadata file alongside folder-specific ones'
-        type: boolean
-        required: true
-        default: true
-      dir_names_filter:
-        description: 'Comma-separated list of dirNames to sync (leave empty to sync all)'
-        type: string
-        required: false
-        default: ''
-      locale:
-        description: 'Locale to sync to (e.g. it). Leave empty for root.'
-        type: choice
-        required: false
-        default: ''
-        options:
-          - '' # TODO: remove once locale merged in prod and root locale is no more needed
-          - it
-          - en
-
 
   schedule:
     # - cron: '0 23 * * *'  # Run daily at midnight UTC
@@ -89,7 +82,6 @@ jobs:
           opennext_cloudfront_distribution_id: ${{ vars.OPENNEXT_CLOUDFRONT_DISTRIBUTION_ID }}
           invalidate_opennext_cache: ${{ inputs.invalidate_opennext_cache }}
           incremental_mode: ${{ inputs.incremental_mode }}
-          generate_root_metadata_file: ${{ inputs.generate_root_metadata_file }}
           metadata_type: ${{ inputs.metadata_type }}
           strapi_endpoint: ${{ vars.STRAPI_ENDPOINT }}
           documentation_path: ${{ vars.DOCUMENTATION_PATH || '../../devportal-docs/docs' }}
@@ -128,7 +120,6 @@ jobs:
           opennext_cloudfront_distribution_id: ${{ vars.OPENNEXT_CLOUDFRONT_DISTRIBUTION_ID }}
           invalidate_opennext_cache: false
           incremental_mode: true
-          generate_root_metadata_file: true
           metadata_type: 'all'
           strapi_endpoint: ${{ vars.STRAPI_ENDPOINT }}
           documentation_path: ${{ vars.DOCUMENTATION_PATH || '../../devportal-docs/docs' }}
@@ -167,7 +158,6 @@ jobs:
           opennext_cloudfront_distribution_id: ${{ vars.OPENNEXT_CLOUDFRONT_DISTRIBUTION_ID }}
           invalidate_opennext_cache: false
           incremental_mode: true
-          generate_root_metadata_file: true
           metadata_type: 'all'
           strapi_endpoint: ${{ vars.STRAPI_ENDPOINT }}
           documentation_path: ${{ vars.DOCUMENTATION_PATH || '../../devportal-docs/docs' }}
