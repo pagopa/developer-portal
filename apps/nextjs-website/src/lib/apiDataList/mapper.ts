@@ -12,31 +12,26 @@ export async function mapApiDataList(
   const list = compact(
     await Promise.all(
       strapiApiDataList.data
-        .filter(
-          (apiPage) =>
-            apiPage.attributes.apiRestDetail || apiPage.attributes.apiSoapDetail
-        )
-        .map(async ({ attributes }) => {
-          if (!attributes.apiRestDetail && !attributes.apiSoapDetail) {
+        .filter((apiPage) => apiPage.apiRestDetail || apiPage.apiSoapDetail)
+        .map(async (apiPage) => {
+          if (!apiPage.apiRestDetail && !apiPage.apiSoapDetail) {
             console.error(
-              `Error while processing API Data with title "${attributes.title}": missing API details. Skipping...`
+              `Error while processing API Data with title "${apiPage.title}": missing API details. Skipping...`
             );
             return null;
           }
           const apiDataSlug =
-            attributes.apiRestDetail?.slug ||
-            attributes.apiSoapDetail?.slug ||
-            '';
+            apiPage.apiRestDetail?.slug || apiPage.apiSoapDetail?.slug || '';
           if (!apiDataSlug) {
             console.error(
-              `Error while processing API Data with title "${attributes.title}": missing API slug. Skipping...`
+              `Error while processing API Data with title "${apiPage.title}": missing API slug. Skipping...`
             );
             return null;
           }
 
-          if (!attributes.product.data) {
+          if (!apiPage.product) {
             console.error(
-              `Error while processing API Data with title "${attributes.title}": missing product data. Skipping...`
+              `Error while processing API Data with title "${apiPage.title}": missing product data. Skipping...`
             );
             return null;
           }
@@ -45,39 +40,37 @@ export async function mapApiDataList(
           try {
             const product = makeBaseProductWithoutLogoProps(
               locale,
-              attributes.product.data
+              apiPage.product
             );
             return {
-              ...attributes,
+              ...apiPage,
               product,
-              apiType: attributes.apiRestDetail ? 'rest' : 'soap',
+              apiType: apiPage.apiRestDetail ? 'rest' : 'soap',
               apiDataSlug: apiDataSlug,
-              restApiSpecUrls: attributes.apiRestDetail
+              restApiSpecUrls: apiPage.apiRestDetail
                 ? [
-                    ...attributes.apiRestDetail.specUrls.map((spec) => ({
+                    ...apiPage.apiRestDetail.specUrls.map((spec) => ({
                       ...spec,
                     })),
                   ]
                 : [],
-              apiSoapUrl: attributes.apiSoapDetail?.repositoryUrl,
-              specUrlsName: attributes.title,
-              apiSoapUrlList: attributes.apiSoapDetail
+              apiSoapUrl: apiPage.apiSoapDetail?.repositoryUrl,
+              specUrlsName: apiPage.title,
+              apiSoapUrlList: apiPage.apiSoapDetail
                 ? await makeApiSoapUrlList(
                     locale,
-                    attributes.apiSoapDetail.dirName
+                    apiPage.apiSoapDetail.dirName
                   )
                 : [],
               bannerLinks:
-                attributes.bannerLinks.length > 0
-                  ? attributes.bannerLinks.map(makeBannerLinkProps)
-                  : attributes.product.data.attributes.bannerLinks?.map(
-                      makeBannerLinkProps
-                    ),
-              seo: attributes.seo,
+                apiPage.bannerLinks.length > 0
+                  ? apiPage.bannerLinks.map(makeBannerLinkProps)
+                  : apiPage.product.bannerLinks?.map(makeBannerLinkProps),
+              seo: apiPage.seo,
             } satisfies ApiDataPageProps;
           } catch (error) {
             console.error(
-              `Error while processing API Data with title "${attributes.title}":`,
+              `Error while processing API Data with title "${apiPage.title}":`,
               error,
               'Skipping...'
             );

@@ -1,5 +1,4 @@
 import { spyOnConsoleError } from '@/lib/strapi/__tests__/spyOnConsole';
-import _ from 'lodash';
 import { makeUseCasesProps } from '../makeProps/makeUseCases';
 import { strapiUseCases } from './fixtures/useCases';
 import { StrapiUseCases } from '../types/useCase';
@@ -19,7 +18,7 @@ describe('makeUseCasesProps', () => {
   });
 
   it('should transform strapi use cases to use cases props', () => {
-    const result = makeUseCasesProps('it', _.cloneDeep(strapiUseCases), {});
+    const result = makeUseCasesProps('it', strapiUseCases, {});
     expect(result).toHaveLength(1);
     expect(result[0]).toMatchObject({
       coverImage: {

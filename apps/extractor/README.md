@@ -21,6 +21,8 @@ This project uses [Poetry](https://python-poetry.org/) for dependency management
 
 2. Install dependencies:
    ```bash
+   conda create -n extractor python=3.12 -y
+   conda activate extractor
    poetry install
    ```
 
@@ -33,16 +35,27 @@ This project uses [Poetry](https://python-poetry.org/) for dependency management
    ```bash
    # AWS Configuration
    AWS_DEFAULT_REGION=eu-south-1
-   
-   # Required
-   EXT_INPUT_FOLDER=input_folder
-   EXT_OUTPUT_FOLDER=output_folder
-   
+
+   SHOULD_RUN_LOCALLY=false # optional, set to false by default. false is to read from and write to s3
+
+   # Input and output folder:
+   #
+   # Derive the input folder automatically from the
+   # same URL and index variables used by the parser. The extractor will read
+   # from: {CHB_INDEX_ID}/parser/<sanitized(URL)>  (local)
+   #     or s3://{S3_BUCKET_NAME}/{CHB_INDEX_ID}/parser/<sanitized(URL)>/  (S3)
+   # and write to: {CHB_INDEX_ID}/extractor/<sanitized(URL)>  (local)
+   #     or s3://{S3_BUCKET_NAME}/{CHB_INDEX_ID}/extractor/<sanitized(URL)>/  (S3)
+   URL=https://example.com          # same URL as passed to the parser
+   CHB_INDEX_ID=my-index            # same index as passed to the parser
+   S3_BUCKET_NAME=my-bucket         # required for S3 mode
+
+
    # LLM Configuration (optional, with defaults)
-   CHB_MODEL_ID=gemini-2.5-flash-lite
-   CHB_MODEL_TEMPERATURE=0.0
-   CHB_MODEL_MAXTOKENS=65535
-   CHB_PROVIDER=google # allowed: google, mock
+   EXTRACTOR_MODEL_ID=gemini-2.5-flash-lite
+   EXTRACTOR_MODEL_TEMPERATURE=0.0
+   EXTRACTOR_MODEL_MAXTOKENS=65535
+   EXTRACTOR_PROVIDER=google # allowed: google, mock
 
    # Optional (either of the two needs to be specified if provider is not mock)
    CHB_AWS_GOOGLE_API_KEY=google_api_key
@@ -56,10 +69,22 @@ This project uses [Poetry](https://python-poetry.org/) for dependency management
 
 ## Usage
 
-The files to process need to be in the directory specified in the environment variable EXT_INPUT_FOLDER.
+The files to process must be in the input folder. This folder is resolved in
+the following way:
+
+- **Derived from `URL` + `CHB_INDEX_ID`**,
+   the path is computed with the same algorithm the parser uses for its output
+   directory, so both apps stay in sync automatically:
+   - Local: `{CHB_INDEX_ID}/parser/<sanitized(URL)>`
+   - S3: `s3://{S3_BUCKET_NAME}/{CHB_INDEX_ID}/parser/<sanitized(URL)>/`
 
 ### Running
 
+If not already in the virtual environment,
+```bash
+   conda activate extractor
+   ```
+then
 ```bash
 set -a
 source .env

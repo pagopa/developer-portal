@@ -7,7 +7,7 @@ import {
   exploreAndParsePages,
   generatePageParsedMetadata,
 } from "./modules/parser";
-import { ParsedNode, ParsedMetadata } from "./modules/types";
+import { ParsedNode, ParsedMetadata, ParserConfig } from "./modules/types";
 import {
   RemoveAnchorsFromUrl,
   buildVisitKey,
@@ -25,28 +25,37 @@ puppeteer.use(StealthPlugin());
 const env = resolveEnv();
 const parsedPages = new Map<string, ParsedMetadata>();
 const scheduledPages = new Set<string>();
-export const OUTPUT_DIRECTORY = env.outputDirectory;
-export const MAX_DEPTH = env.maxDepth;
-export const REQUEST_TIMEOUT_MS = env.requestTimeoutMs;
-export const BASE_HOST_TOKEN = new URL(env.baseUrl).hostname
-  .replace("www.", "")
-  .toLowerCase();
-export const VALID_DOMAIN_VARIANTS = env.validDomainVariants || [];
+const VALID_DOMAIN_VARIANTS = env.validDomainVariants || [];
+const PARSER_CONFIG: ParserConfig = {
+  OUTPUT_DIRECTORY: env.outputDirectory,
+  MAX_DEPTH: env.maxDepth,
+  VALID_DOMAIN_VARIANTS: env.validDomainVariants || [],
+  BASE_HOST_TOKEN: new URL(env.baseUrl).hostname.replace("www.", "").toLowerCase(),
+  REQUEST_TIMEOUT_MS: env.requestTimeoutMs,
+};
+export const BASE_HOST_TOKEN = new URL(env.baseUrl).hostname.replace("www.", "").toLowerCase();
+export const SHOULD_CREATE_FILES_LOCALLY = env.shouldCreateFilesLocally;
+export const S3_BUCKET_NAME = env.S3BucketName;
 
 let BASE_URL = env.baseUrl;
 
 async function main(): Promise<void> {
   try {
-    await assertReachable(env.baseUrl, REQUEST_TIMEOUT_MS);
-    ensureDirectory(env.outputDirectory);
-    const browser = await puppeteer.launch({ headless: true });
+    await assertReachable(env.baseUrl, PARSER_CONFIG.REQUEST_TIMEOUT_MS);
+    if (SHOULD_CREATE_FILES_LOCALLY) {
+      ensureDirectory(PARSER_CONFIG.OUTPUT_DIRECTORY);
+    }
+    const browser = await puppeteer.launch({
+      headless: true,
+      args: ['--no-sandbox', '--disable-setuid-sandbox'],
+    });
     let finalUrl = env.baseUrl;
     let page;
     try {
       page = await browser.newPage();
       const response = await page.goto(env.baseUrl, {
         waitUntil: "networkidle2",
-        timeout: REQUEST_TIMEOUT_MS,
+        timeout: PARSER_CONFIG.REQUEST_TIMEOUT_MS,
       });
       if (response) {
         finalUrl = response.url();
@@ -80,9 +89,11 @@ async function main(): Promise<void> {
       parsedPages,
       scheduledPages,
       BASE_SCOPE,
+      PARSER_CONFIG,
     );
     console.log("Crawling complete. Checking sitemap for unparsed URLs...");
     let sitemapUrls: string[] = [];
+    let pagesFromCrawlSize: number | undefined;
     try {
       const sitemapUrl = getSitemapUrl(env.baseUrl);
       let sitemapXml = "";
@@ -93,7 +104,7 @@ async function main(): Promise<void> {
         throw new Error("Sitemap URL out of scope");
       }
       try {
-        sitemapXml = await fetchRemoteXml(sitemapUrl);
+        sitemapXml = await fetchRemoteXml(sitemapUrl, 5, PARSER_CONFIG.REQUEST_TIMEOUT_MS);
       } catch (err) {
         console.warn(
           `Sitemap warning: Failed to fetch ${sitemapUrl}: ${
@@ -131,13 +142,14 @@ async function main(): Promise<void> {
           env.baseUrl,
         )} not seen in crawl...`,
       );
-      const pagesFromCrawlSize = allParsedPages.size;
+      pagesFromCrawlSize = allParsedPages.size;
       for (const url of toParse) {
         try {
-          const metadata = await generatePageParsedMetadata(
+          const { metadata, anchors } = await generatePageParsedMetadata(
             browser,
             url,
             BASE_SCOPE,
+            PARSER_CONFIG,
           );
           if (!metadata) continue;
           allParsedPages.set(buildVisitKey(url), metadata);
@@ -163,6 +175,14 @@ async function main(): Promise<void> {
     console.log(
       `Parsing complete! Parsed ${allParsedPages.size} pages. Data saved to ${env.outputDirectory}`,
     );
+    if (
+      pagesFromCrawlSize !== undefined &&
+      allParsedPages.size - pagesFromCrawlSize < toParse.length
+    ) {
+      console.warn(
+        `Warning: Only parsed ${allParsedPages.size - pagesFromCrawlSize} out of ${toParse.length} URLs from sitemap.`,
+      );
+    }
   } catch (error) {
     handleError(error);
   }

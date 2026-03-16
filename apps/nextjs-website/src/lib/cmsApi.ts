@@ -89,11 +89,11 @@ export const getTagsProps = async (locale: string) => {
 export const getTutorialsProps = async (locale: string) => {
   const strapiTutorials = await fetchTutorials(locale, buildEnv);
   const tutorialsWithMarkdown = strapiTutorials.data.filter((tutorial) => {
-    const parts = tutorial?.attributes?.parts ?? [];
+    const parts = tutorial?.parts ?? [];
     return parts.some((part) => part?.__component === 'parts.markdown');
   });
   const allMarkdownParts = tutorialsWithMarkdown.flatMap((tutorial) =>
-    (tutorial?.attributes?.parts ?? []).filter(
+    (tutorial?.parts ?? []).filter(
       (part) => part?.__component === 'parts.markdown'
     )
   );
@@ -232,9 +232,7 @@ export const getStrapiReleaseNotes = async (
 ) => {
   const strapiReleaseNotes = await fetchReleaseNotes(locale);
   return strapiReleaseNotes.data.find(
-    (strapiReleaseNote) =>
-      strapiReleaseNote.attributes?.product?.data?.attributes?.slug ===
-      productSlug
+    (strapiReleaseNote) => strapiReleaseNote.product?.slug === productSlug
   );
 };
 
@@ -265,7 +263,7 @@ export const getReleaseNotesProps = async (locale: string) => {
 export const getUseCasesProps = async (locale: string) => {
   const strapiUseCases = await fetchUseCases(locale, buildEnv);
   const allMarkdownParts = strapiUseCases.data.flatMap((useCase) =>
-    (useCase?.attributes?.parts ?? []).filter(isMarkDownPart)
+    (useCase?.parts ?? []).filter(isMarkDownPart)
   );
   const contentPromises = allMarkdownParts.map(async (part) => {
     const { dirName, pathToFile } = part;

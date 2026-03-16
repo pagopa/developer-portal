@@ -3,108 +3,86 @@ import { ApiDataListPageTemplateProps } from '@/components/templates/ApiDataList
 import { generateBannerLinks } from '@/lib/strapi/__tests__/factories/bannerLink';
 import { mediaJpeg } from '../factories/media';
 
-export const strapiApiDataListPages = {
+export const strapiApiDataListPages: ApiDataListPages = {
   data: [
     {
       id: 1,
-      attributes: {
-        title: 'SEND API Documentation',
-        description: 'Complete documentation for SEND APIs',
-        seo: {
-          metaTitle: 'SEND API Documentation',
-          metaDescription: 'Complete documentation for SEND APIs',
-        },
-        bannerLinks: generateBannerLinks(2),
-        updatedAt: '2024-01-02T00:00:00.000Z',
-        product: {
-          data: {
-            attributes: {
-              isVisible: true,
-              name: 'SEND',
-              slug: 'send',
-              shortName: 'SEND',
-              bannerLinks: generateBannerLinks(1),
-              overview: { data: { id: 1 } },
-              quickstart_guide: { data: { id: 1 } },
-              api_data_list_page: {
-                data: {
-                  id: 1,
-                  attributes: {
-                    updatedAt: '2026-01-01T00:00:00.000Z',
-                    apiData: {
-                      data: [],
-                    },
-                  },
-                },
-              },
-              guide_list_page: { data: { id: 1 } },
-              tutorial_list_page: { data: { id: 1 } },
-              release_note: { data: { id: 1 } },
-              use_case_list_page: { data: { id: 1 } },
-              tags: { data: [] },
-            },
-          },
-        },
-        apiData: {
-          data: [
-            {
-              id: 1,
-              attributes: {
-                title: 'SEND Main API',
-                description: 'Main SEND API for delivery notifications',
-                icon: {
-                  data: mediaJpeg(),
-                },
-                apiRestDetail: {
-                  slug: 'send-main',
-                  specUrls: [
-                    {
-                      id: 1,
-                      url: 'https://example.com/api.yaml',
-                      name: 'Main API',
-                      hideTryIt: false,
-                    },
-                  ],
-                },
-                apiSoapDetail: undefined,
-                tags: { data: undefined },
-              },
-            },
-            {
-              id: 2,
-              attributes: {
-                title: 'SEND SOAP API',
-                description: 'SOAP API for legacy integrations',
-                icon: {
-                  data: {
-                    attributes: {
-                      name: 'soap-icon.svg',
-                      alternativeText: 'SOAP Icon',
-                      caption: undefined,
-                      width: 48,
-                      height: 48,
-                      ext: '.svg',
-                      mime: 'image/svg+xml',
-                      size: 0.5,
-                      url: 'https://example.com/soap-icon.svg',
-                    },
-                  },
-                },
-                apiRestDetail: undefined,
-                apiSoapDetail: {
-                  slug: 'send-soap',
-                  repositoryUrl: 'https://github.com/pagopa/send-soap',
-                  dirName: 'send-soap',
-                },
-                tags: { data: undefined },
-              },
-            },
-          ],
-        },
+      title: 'SEND API Documentation',
+      description: 'Complete documentation for SEND APIs',
+      seo: {
+        metaTitle: 'SEND API Documentation',
+        metaDescription: 'Complete documentation for SEND APIs',
       },
+      bannerLinks: generateBannerLinks(2),
+      updatedAt: '2024-01-02T00:00:00.000Z',
+      product: {
+        isVisible: true,
+        name: 'SEND',
+        slug: 'send',
+        shortName: 'SEND',
+        bannerLinks: generateBannerLinks(1),
+        overview: 1,
+        quickstart_guide: 1,
+        api_data_list_page: {
+          id: 1,
+          updatedAt: '2026-01-01T00:00:00.000Z',
+          apiData: [],
+        },
+        guide_list_page: 1,
+        tutorial_list_page: 1,
+        release_note: 1,
+        use_case_list_page: 1,
+        tags: [],
+      },
+      apiData: [
+        {
+          id: 1,
+          bannerLinks: [],
+          title: 'SEND Main API',
+          description: 'Main SEND API for delivery notifications',
+          icon: mediaJpeg(),
+          apiRestDetail: {
+            slug: 'send-main',
+            specUrls: [
+              {
+                id: 1,
+                url: 'https://example.com/api.yaml',
+                name: 'Main API',
+                hideTryIt: false,
+              },
+            ],
+          },
+          apiSoapDetail: undefined,
+          tags: undefined,
+        },
+        {
+          id: 2,
+          bannerLinks: [],
+          title: 'SEND SOAP API',
+          description: 'SOAP API for legacy integrations',
+          icon: {
+            name: 'soap-icon.svg',
+            alternativeText: 'SOAP Icon',
+            caption: undefined,
+            width: 48,
+            height: 48,
+            ext: '.svg',
+            mime: 'image/svg+xml',
+            size: 0.5,
+            url: 'https://example.com/soap-icon.svg',
+          },
+          apiRestDetail: undefined,
+          apiSoapDetail: {
+            slug: 'send-soap',
+            repositoryUrl: 'https://github.com/pagopa/send-soap',
+            dirName: 'send-soap',
+          },
+          tags: undefined,
+        },
+      ],
     },
   ],
-} satisfies ApiDataListPages;
+};
 
 export const expectedApiDataListPageProps: ReadonlyArray<ApiDataListPageTemplateProps> =
   [
@@ -143,8 +121,6 @@ export const expectedApiDataListPageProps: ReadonlyArray<ApiDataListPageTemplate
         metaDescription: 'Complete documentation for SEND APIs',
       },
       updatedAt: '2024-01-02T00:00:00.000Z',
-      apiData: {
-        data: expect.any(Array),
-      },
+      apiData: expect.any(Array),
     },
   ];

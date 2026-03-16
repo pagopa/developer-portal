@@ -12,6 +12,8 @@ llama-index-embeddings-google-genai = "^0.3.2"
 llama-index-llms-google-genai = "^0.8.7"
 pydantic-settings = "^2.13.1"
 python = ">=3.12,<3.14"
+scikit-learn = "^1.8.0"
+markdown = "^3.10.2"
 pyyaml = "^6.0.3"
 
 [tool.poetry.group.test.dependencies]
@@ -20,6 +22,10 @@ pytest = "^8.3.5"
 [tool.poetry.group.dev.dependencies]
 jupyter = "^1.1.1"
 jupyterlab = "^4.4.10"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
 
 [build-system]
 build-backend = "poetry.core.masonry.api"

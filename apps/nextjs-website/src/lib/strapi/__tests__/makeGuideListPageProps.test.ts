@@ -14,6 +14,7 @@ import {
   guideListPagesWithItemsMissingSlug,
 } from '@/lib/strapi/__tests__/factories/guideListPages';
 import { spyOnConsoleError } from '@/lib/strapi/__tests__/spyOnConsole';
+import { wrapAsPaginatedRootEntity } from './strapiEntityWrappers';
 
 describe('makeGuideListPageProps', () => {
   beforeEach(() => {
@@ -36,8 +37,9 @@ describe('makeGuideListPageProps', () => {
   });
 
   it('should return a single element array of type GuideListPageProps with only one guide', () => {
-    const guideListWithMissingSlugsData =
-      guideListPagesWithItemsMissingSlug() as unknown as StrapiGuideListPages;
+    const guideListWithMissingSlugsData = wrapAsPaginatedRootEntity(
+      guideListPagesWithItemsMissingSlug()
+    ) as unknown as StrapiGuideListPages;
     const result = makeGuideListPagesProps('it', guideListWithMissingSlugsData);
     expect(result).toHaveLength(1);
     expect(result[0]).toEqual({
@@ -54,8 +56,9 @@ describe('makeGuideListPageProps', () => {
   });
 
   it('should return a single element array of type GuideListPageProps with guides without images', () => {
-    const guideListWithMissingImagesData =
-      guideListPagesWithItemsMissingImages() as unknown as StrapiGuideListPages;
+    const guideListWithMissingImagesData = wrapAsPaginatedRootEntity(
+      guideListPagesWithItemsMissingImages()
+    ) as unknown as StrapiGuideListPages;
     const result = makeGuideListPagesProps(
       'it',
       guideListWithMissingImagesData

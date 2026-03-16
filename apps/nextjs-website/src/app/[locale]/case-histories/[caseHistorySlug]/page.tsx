@@ -11,7 +11,6 @@ import {
   convertSeoToStructuredDataArticle,
   getItemFromPaths,
 } from '@/helpers/structuredData.helpers';
-import { SUPPORTED_LOCALES } from '@/locales';
 
 type Params = {
   locale: string;

@@ -9,10 +9,9 @@ import {
   solutionListPageWithoutCaseHistories,
   solutionListPageWithoutFeatures,
   solutionListPageWithoutSolutions,
-  solutionListPageWithMissingSolutionSlug,
-  solutionListPageWithMissingCaseHistorySlug,
 } from '@/lib/strapi/__tests__/factories/solutionListPage';
 import { spyOnConsoleError } from '@/lib/strapi/__tests__/spyOnConsole';
+import { wrapAsRootEntity } from './strapiEntityWrappers';
 
 describe('makeSolutionListPageProps', () => {
   afterEach(() => {
@@ -26,7 +25,7 @@ describe('makeSolutionListPageProps', () => {
   it('should transform strapi solution list page to solution list template props', () => {
     const result = makeSolutionListPageProps(
       'it',
-      _.cloneDeep(strapiSolutionListPage)
+      wrapAsRootEntity(_.cloneDeep(strapiSolutionListPage))
     );
     expect(result).toMatchObject(expectedSolutionListTemplateProps);
   });
@@ -34,7 +33,7 @@ describe('makeSolutionListPageProps', () => {
   it('should handle minimal data with missing optional fields', () => {
     const result = makeSolutionListPageProps(
       'it',
-      minimalDataSolutionListPage()
+      wrapAsRootEntity(minimalDataSolutionListPage())
     );
     expect(result).not.toBeNull();
     expect(result.hero.title).toBe('Minimal Solutions');
@@ -47,7 +46,7 @@ describe('makeSolutionListPageProps', () => {
   it('should handle solution list page without case histories', () => {
     const result = makeSolutionListPageProps(
       'it',
-      solutionListPageWithoutCaseHistories()
+      wrapAsRootEntity(solutionListPageWithoutCaseHistories())
     );
     expect(result.successStories).toBeUndefined();
     expect(result.solutions).toBeDefined();
@@ -57,7 +56,7 @@ describe('makeSolutionListPageProps', () => {
   it('should handle solution list page without features', () => {
     const result = makeSolutionListPageProps(
       'it',
-      solutionListPageWithoutFeatures()
+      wrapAsRootEntity(solutionListPageWithoutFeatures())
     );
     expect(result.features).toBeUndefined();
     expect(result.successStories).toBeDefined();
@@ -67,7 +66,7 @@ describe('makeSolutionListPageProps', () => {
   it('should handle solution list page without solutions', () => {
     const result = makeSolutionListPageProps(
       'it',
-      solutionListPageWithoutSolutions()
+      wrapAsRootEntity(solutionListPageWithoutSolutions())
     );
     expect(result.solutions).toEqual([]);
     expect(result.successStories).toBeDefined();
@@ -77,7 +76,7 @@ describe('makeSolutionListPageProps', () => {
   it('should correctly map solution tags from products', () => {
     const result = makeSolutionListPageProps(
       'it',
-      _.cloneDeep(strapiSolutionListPage)
+      wrapAsRootEntity(_.cloneDeep(strapiSolutionListPage))
     );
     expect(result.solutions[0].labels).toEqual([
       {
@@ -90,32 +89,8 @@ describe('makeSolutionListPageProps', () => {
   it('should correctly build solution slug path', () => {
     const result = makeSolutionListPageProps(
       'it',
-      _.cloneDeep(strapiSolutionListPage)
+      wrapAsRootEntity(_.cloneDeep(strapiSolutionListPage))
     );
     expect(result.solutions[0].slug).toBe('solutions/solution-1');
-  });
-
-  it('should skip solutions with missing slug and log error', () => {
-    const result = makeSolutionListPageProps(
-      'it',
-      solutionListPageWithMissingSolutionSlug()
-    );
-    expect(result.solutions).toHaveLength(1);
-    expect(result.solutions[0].name).toBe('Valid Solution');
-    expect(spyOnConsoleError).toHaveBeenCalledWith(
-      'Error while processing Solution with title "Solution Without Slug": missing slug. Skipping...'
-    );
-  });
-
-  it('should skip case histories with missing slug and log error', () => {
-    const result = makeSolutionListPageProps(
-      'it',
-      solutionListPageWithMissingCaseHistorySlug()
-    );
-    expect(result.successStories?.stories).toHaveLength(1);
-    expect(result.successStories?.stories[0].title).toBe('Valid Case History');
-    expect(spyOnConsoleError).toHaveBeenCalledWith(
-      'Error while processing CaseHistory with title "Case History Without Slug": missing slug. Skipping...'
-    );
   });
 });

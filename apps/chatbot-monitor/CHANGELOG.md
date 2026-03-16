@@ -1,5 +1,11 @@
 # chatbot-monitor
 
+## 3.0.1
+
+### Patch Changes
+
+- f293978: Fix safe yaml load
+
 ## 3.0.0
 
 ### Major Changes

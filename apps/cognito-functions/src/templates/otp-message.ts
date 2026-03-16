@@ -1,32 +1,32 @@
 import { parseMjmlToHtml } from './mjmlParser';
-
-const TRANSLATIONS = {
-  previewText: 'Verifica la tua identità',
-  title: 'Verifica la tua identità',
-  text: 'Usa questo codice OTP per accedere a PagoPA DevPortal:',
-  codeDuration: (minutes: number) =>
-    `Questo codice scadrà tra ${minutes} minuti.`,
-  whyThisMessage:
-    'Ricevi questo messaggio in quanto abbiamo rilevato una richiesta di login su PagoPA DevPortal da questo indirizzo email registrato. \n' +
-    'Non sei tu? Ignora o cancella questa e-mail',
-  companyLegalDetails:
-    'PagoPA S.p.A. - Società per azioni con socio unico capitale sociale di euro 1,000,000 i.v.Sede legale in Roma, Piazza Colonna 370, CAP 00187Sede operativa in Roma, Via Sardegna 38, CAP 00187N. di iscrizione a Registro Imprese di Roma, CF e P.IVA 15376371009',
-};
+import { EMAIL_TRANSLATIONS } from './translations';
 
 export const makeOtpMessageEmail = (
   otp: string,
   domain: string,
-  codeDurationMinutes: number
-): string => parseMjmlToHtml(otpMessage(otp, domain, codeDurationMinutes));
+  codeDurationMinutes: number,
+  locale = 'it'
+): string =>
+  parseMjmlToHtml(otpMessage(otp, domain, codeDurationMinutes, locale));
 
 const otpMessage = (
   otp: string,
   domain: string,
-  codeDurationMinutes: number
-): string => `
+  codeDurationMinutes: number,
+  locale: string
+): string => {
+  const translations =
+    EMAIL_TRANSLATIONS.otp[locale as keyof typeof EMAIL_TRANSLATIONS.otp] ||
+    EMAIL_TRANSLATIONS.otp.it;
+  const commonTranslations =
+    EMAIL_TRANSLATIONS.common[
+      locale as keyof typeof EMAIL_TRANSLATIONS.common
+    ] || EMAIL_TRANSLATIONS.common.it;
+
+  return `
 <mjml>
   <mj-head>
-    <mj-preview>${TRANSLATIONS.previewText}</mj-preview>
+    <mj-preview>${translations.previewText}</mj-preview>
     <mj-font name="Titillium Web" href="https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,400;0,700;1,400&display=swap" />
     <mj-style>
       .section {
@@ -71,27 +71,28 @@ const otpMessage = (
       </mj-column>
       <mj-column width="100%">
         <mj-text mj-class="title" align="left" color="#17324D" font-size="32px">${
-          TRANSLATIONS.title
+          translations.title
         }</mj-text>
       </mj-column>
       <mj-column css-class="container" width="100%" padding-top="22px">
-        <mj-text mj-class="text" font-size="18px">${TRANSLATIONS.text}</mj-text>
+        <mj-text mj-class="text" font-size="18px">${translations.text}</mj-text>
         <mj-text align="left" font-size="28px"><strong>${otp}</strong></mj-text>
         <mj-spacer height="5px" />
-        <mj-text mj-class="text" font-size="14px">${TRANSLATIONS.codeDuration(
+        <mj-text mj-class="text" font-size="14px">${translations.codeDuration(
           codeDurationMinutes
         )}</mj-text>
         <mj-spacer height="5px" />
         <mj-text mj-class="text" font-size="14px" line-height='18px' color='#5C6F82'>${
-          TRANSLATIONS.whyThisMessage
+          translations.whyThisMessage
         }</mj-text>
         <mj-divider border-width="1px" border-style="solid" border-color="#E3E7EB" />
         <mj-spacer height="5px" />
         <mj-text mj-class="footer-text">${
-          TRANSLATIONS.companyLegalDetails
+          commonTranslations.companyLegalDetails
         }</mj-text>
       </mj-column>
     </mj-section>
   </mj-body>
 </mjml>
 `;
+};

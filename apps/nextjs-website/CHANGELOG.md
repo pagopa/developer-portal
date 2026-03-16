@@ -1,5 +1,27 @@
 # nextjs-website
 
+## 16.3.1
+
+### Patch Changes
+
+- 4ba0d2e: Fix: update case history path to include locale and update api data page select to incude locale
+
+## 16.3.0
+
+### Minor Changes
+
+- 4b8502f: Make external links in ChatLink component recognisable
+- e5c16f8: Update footer and add localization for en links
+
+### Patch Changes
+
+- dbd5492: Fix webinar subscription redirect to include locale in URL
+- 27e0205: Fix product cards' link without locale in solutions and case histories
+- c1e7565: Add navigation helper function to check validity and safety of redirect path and add it to the login flow
+- 6832c57: Fix unexpected undefined value company_type in user profile
+- 0c2dc85: Fix alignment of Feature component items
+- 6912c61: Manage error for missing locale using formatted error page instead of deafault nextpage
+
 ## 16.2.0
 
 ### Minor Changes

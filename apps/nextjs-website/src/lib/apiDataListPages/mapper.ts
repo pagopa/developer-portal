@@ -10,37 +10,32 @@ function makeApiDataListPageCard(
   item: BaseApiData,
   slug: string
 ) {
-  if (!item.attributes.apiRestDetail && !item.attributes.apiSoapDetail) {
+  if (!item.apiRestDetail && !item.apiSoapDetail) {
     console.error(
-      `Error while processing API Data with title "${item.attributes.title}": missing API details. Skipping...`
+      `Error while processing API Data with title "${item.title}": missing API details. Skipping...`
     );
     return null;
   }
 
-  if (
-    !item.attributes.apiRestDetail?.slug &&
-    !item.attributes.apiSoapDetail?.slug
-  ) {
+  if (!item.apiRestDetail?.slug && !item.apiSoapDetail?.slug) {
     console.error(`
-      Error while processing API Data with title "${item.attributes.title}": missing API slug. Skipping...`);
+      Error while processing API Data with title "${item.title}": missing API slug. Skipping...`);
     return null;
   }
 
   return {
     labels: [
       {
-        label: item.attributes.apiSoapDetail ? 'SOAP' : 'REST',
+        label: item.apiSoapDetail ? 'SOAP' : 'REST',
       },
     ].filter((label) => !!label.label),
-    title: item?.attributes?.title,
-    text: item?.attributes?.description || '',
-    icon: item?.attributes?.icon?.data?.attributes.url || undefined,
+    title: item?.title,
+    text: item?.description || '',
+    icon: item?.icon?.url || undefined,
     href: `/${locale}/${slug}/api/${
-      item.attributes.apiRestDetail
-        ? item.attributes.apiRestDetail?.slug
-        : item.attributes.apiSoapDetail?.slug
+      item.apiRestDetail ? item.apiRestDetail?.slug : item.apiSoapDetail?.slug
     }`,
-    tags: item.attributes.tags.data?.map((tag) => tag.attributes) || [],
+    tags: item.tags || [],
   };
 }
 
@@ -49,11 +44,11 @@ export function mapApiDataListPages(
   strapiApiDataListPages: ApiDataListPages
 ): ReadonlyArray<ApiDataListPageTemplateProps> {
   return compact(
-    strapiApiDataListPages.data.map(({ attributes }) => {
-      const slug = attributes.product.data?.attributes.slug;
+    strapiApiDataListPages.data.map((apiPage) => {
+      const slug = apiPage.product.slug;
       if (!slug) {
         console.error(
-          `Error while processing API Data List Page with title "${attributes.title}": missing product slug. Skipping...`
+          `Error while processing API Data List Page with title "${apiPage.title}": missing product slug. Skipping...`
         );
         return null;
       }
@@ -62,37 +57,37 @@ export function mapApiDataListPages(
       try {
         const product = makeBaseProductWithoutLogoProps(
           locale,
-          attributes.product.data
+          apiPage.product
         );
         return {
-          ...attributes,
+          ...apiPage,
           hero: {
-            title: attributes.title,
-            subtitle: attributes.description || '',
+            title: apiPage.title,
+            subtitle: apiPage.description || '',
           },
           product,
           apiDetailSlugs: compact(
-            attributes.apiData.data.map(({ attributes }) =>
-              attributes.apiRestDetail
-                ? attributes.apiRestDetail.slug
-                : attributes.apiSoapDetail?.slug
+            apiPage.apiData.map((item) =>
+              item.apiRestDetail
+                ? item.apiRestDetail.slug
+                : item.apiSoapDetail?.slug
             )
           ),
           cards: compact(
-            attributes.apiData.data.map((item) =>
+            apiPage.apiData.map((item) =>
               makeApiDataListPageCard(locale, item, slug)
             )
           ),
-          bannerLinks: attributes.bannerLinks.map(makeBannerLinkProps),
-          seo: attributes.seo,
-          updatedAt: attributes.updatedAt,
-          enableFilters: attributes.enableFilters,
+          bannerLinks: apiPage.bannerLinks.map(makeBannerLinkProps),
+          seo: apiPage.seo,
+          updatedAt: apiPage.updatedAt,
+          enableFilters: apiPage.enableFilters,
           tags: product.tags,
         } as unknown as ApiDataListPageTemplateProps;
       } catch (error) {
         // eslint-disable-next-line functional/no-expression-statements
         console.error(
-          `Error while processing API Data List Page with title "${attributes.title}":`,
+          `Error while processing API Data List Page with title "${apiPage.title}":`,
           error,
           'Skipping...'
         );

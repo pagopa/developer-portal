@@ -1,5 +1,5 @@
 import { mapApiDataListPages } from '@/lib/apiDataListPages/mapper';
-import _ from 'lodash';
+import { cloneDeep } from 'lodash';
 import {
   strapiApiDataListPages,
   expectedApiDataListPageProps,
@@ -26,10 +26,7 @@ describe('mapApiDataListPages', () => {
   });
 
   it('should transform strapi api data list pages to api data list page template props', () => {
-    const result = mapApiDataListPages(
-      'it',
-      _.cloneDeep(strapiApiDataListPages)
-    );
+    const result = mapApiDataListPages('it', cloneDeep(strapiApiDataListPages));
     expect(result).toHaveLength(1);
     expect(result[0]).toMatchObject(expectedApiDataListPageProps[0]);
   });
@@ -37,7 +34,7 @@ describe('mapApiDataListPages', () => {
   it('should handle minimal data with missing optional fields', () => {
     const result = mapApiDataListPages(
       'it',
-      _.cloneDeep(minimalApiDataListPages())
+      cloneDeep(minimalApiDataListPages())
     );
     expect(result).toHaveLength(1);
     const firstElement = result[0];

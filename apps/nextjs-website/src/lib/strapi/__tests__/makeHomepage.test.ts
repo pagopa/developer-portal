@@ -11,15 +11,23 @@ import {
   homepageWithoutWebinars,
   homepageWithoutSeo,
 } from '@/lib/strapi/__tests__/factories/homepage';
+import { wrapAsRootEntity } from '@/lib/strapi/__tests__/strapiEntityWrappers';
+import { StrapiHomepage } from '@/lib/strapi/types/homepage';
 
 describe('makeHomepageProps', () => {
   it('should transform strapi homepage to homepage props', () => {
-    const result = makeHomepageProps('it', _.cloneDeep(strapiHomepage));
+    const result = makeHomepageProps(
+      'it',
+      wrapAsRootEntity<StrapiHomepage>(_.cloneDeep(strapiHomepage))
+    );
     expect(result).toMatchObject(expectedHomepageProps);
   });
 
   it('should handle minimal data with missing optional fields', () => {
-    const result = makeHomepageProps('it', minimalDataHomepage());
+    const result = makeHomepageProps(
+      'it',
+      wrapAsRootEntity<StrapiHomepage>(minimalDataHomepage())
+    );
     expect(result.comingsoonDocumentation.title).toBe('Minimal Documentation');
     expect(result.comingsoonDocumentation.links).toEqual([]);
     expect(result.hero).toHaveLength(1);
@@ -32,35 +40,50 @@ describe('makeHomepageProps', () => {
   });
 
   it('should handle homepage without news showcase', () => {
-    const result = makeHomepageProps('it', homepageWithoutNewsShowcase());
+    const result = makeHomepageProps(
+      'it',
+      wrapAsRootEntity<StrapiHomepage>(homepageWithoutNewsShowcase())
+    );
     expect(result.newsShowcase).toBeUndefined();
     expect(result.ecosystem).toBeDefined();
     expect(result.webinars).toBeDefined();
   });
 
   it('should handle homepage without ecosystem', () => {
-    const result = makeHomepageProps('it', homepageWithoutEcosystem());
+    const result = makeHomepageProps(
+      'it',
+      wrapAsRootEntity<StrapiHomepage>(homepageWithoutEcosystem())
+    );
     expect(result.ecosystem).toBeUndefined();
     expect(result.newsShowcase).toBeDefined();
     expect(result.webinars).toBeDefined();
   });
 
   it('should handle homepage without webinars', () => {
-    const result = makeHomepageProps('it', homepageWithoutWebinars());
+    const result = makeHomepageProps(
+      'it',
+      wrapAsRootEntity<StrapiHomepage>(homepageWithoutWebinars())
+    );
     expect(result.webinars).toEqual([]);
     expect(result.newsShowcase).toBeDefined();
     expect(result.ecosystem).toBeDefined();
   });
 
   it('should handle homepage without seo', () => {
-    const result = makeHomepageProps('it', homepageWithoutSeo());
+    const result = makeHomepageProps(
+      'it',
+      wrapAsRootEntity<StrapiHomepage>(homepageWithoutSeo())
+    );
     expect(result.seo).toBeUndefined();
     expect(result.newsShowcase).toBeDefined();
     expect(result.ecosystem).toBeDefined();
   });
 
   it('should correctly map hero slider background images', () => {
-    const result = makeHomepageProps('it', _.cloneDeep(strapiHomepage));
+    const result = makeHomepageProps(
+      'it',
+      wrapAsRootEntity<StrapiHomepage>(_.cloneDeep(strapiHomepage))
+    );
     expect(result.hero[0].backgroundImage).toEqual({
       url: 'https://example.com/example.jpg',
       alternativeText: 'Example Image',
@@ -75,7 +98,10 @@ describe('makeHomepageProps', () => {
   });
 
   it('should correctly map ecosystem products and solutions', () => {
-    const result = makeHomepageProps('it', _.cloneDeep(strapiHomepage));
+    const result = makeHomepageProps(
+      'it',
+      wrapAsRootEntity<StrapiHomepage>(_.cloneDeep(strapiHomepage))
+    );
     expect(result.ecosystem?.tabContents[0]?.items).toEqual([
       {
         title: 'Product 1',
@@ -97,7 +123,10 @@ describe('makeHomepageProps', () => {
   });
 
   it('should correctly transform news showcase items', () => {
-    const result = makeHomepageProps('it', _.cloneDeep(strapiHomepage));
+    const result = makeHomepageProps(
+      'it',
+      wrapAsRootEntity<StrapiHomepage>(_.cloneDeep(strapiHomepage))
+    );
     expect(result.newsShowcase?.items).toHaveLength(3);
     expect(result.newsShowcase?.items[0]).toMatchObject({
       title:

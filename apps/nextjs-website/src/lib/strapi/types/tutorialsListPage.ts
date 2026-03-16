@@ -6,17 +6,13 @@ import { StrapiBaseProductWithRelations } from '@/lib/strapi/types/product';
 
 export type StrapiTutorialsListPage = {
   readonly id: number;
-  readonly attributes: {
-    readonly bannerLinks: readonly StrapiBannerLink[];
-    readonly description: string;
-    readonly product: {
-      readonly data?: StrapiBaseProductWithRelations;
-    };
-    readonly title: string;
-    readonly tutorials: { readonly data: readonly StrapiBaseTutorial[] };
-    readonly seo?: StrapiSeo;
-    readonly enableFilters?: boolean;
-  };
+  readonly bannerLinks: readonly StrapiBannerLink[];
+  readonly description: string;
+  readonly product?: StrapiBaseProductWithRelations;
+  readonly title: string;
+  readonly tutorials: readonly StrapiBaseTutorial[];
+  readonly seo?: StrapiSeo;
+  readonly enableFilters?: boolean;
 };
 
 export type StrapiTutorialListPages = Paginated<StrapiTutorialsListPage>;
