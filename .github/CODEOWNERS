@@ -1,26 +1,26 @@
 # Default owners
-* @pagopa/devportal-maintain @MarcoPonchia @marcobottaro @tommaso1 @MarBert
+* @pagopa/devportal-maintain @MarcoPonchia @marcobottaro @Sebastiano-Bertolin @MarBert
 
 # Website
-apps/nextjs-website/ @MarcoPonchia @marcobottaro @tommaso1 @MarBert
+apps/nextjs-website/ @MarcoPonchia @marcobottaro @Sebastiano-Bertolin @MarBert
 
 # Email templates
-apps/cognito-functions/src/templates/ @MarcoPonchia @marcobottaro @tommaso1 @MarBert
+apps/cognito-functions/src/templates/ @MarcoPonchia @marcobottaro @Sebastiano-Bertolin @MarBert
 
 # Storybook
-apps/storybook-app/ @MarcoPonchia @marcobottaro @tommaso1 @MarBert
+apps/storybook-app/ @MarcoPonchia @marcobottaro @Sebastiano-Bertolin @MarBert
 
 # GitBook docs
-packages/gitbook-docs/ @MarcoPonchia @marcobottaro @tommaso1 @MarBert
+packages/gitbook-docs/ @MarcoPonchia @marcobottaro @Sebastiano-Bertolin @MarBert
 
 # Active Campaign Client
-packages/active-campaign-client/ @MarcoPonchia @marcobottaro @tommaso1 @MarBert
+packages/active-campaign-client/ @MarcoPonchia @marcobottaro @Sebastiano-Bertolin @MarBert
 
 # IVS Functions
-packages/ivs-functions/ @MarcoPonchia @marcobottaro @tommaso1 @MarBert
+packages/ivs-functions/ @MarcoPonchia @marcobottaro @Sebastiano-Bertolin @MarBert
 
 # Lint rules
-**/.eslintrc.json @pagopa/devportal-maintain @MarcoPonchia @marcobottaro @tommaso1 @MarBert
+**/.eslintrc.json @pagopa/devportal-maintain @MarcoPonchia @marcobottaro @Sebastiano-Bertolin @MarBert
 
 .changeset/README.md @pagopa/devportal-maintain
 .changeset/config.json @pagopa/devportal-maintain
@@ -29,6 +29,6 @@ packages/ivs-functions/ @MarcoPonchia @marcobottaro @tommaso1 @MarBert
 .changeset/*
 
 # Required to merge Push next releases PR
-package-lock.json @pagopa/devportal-maintain @MarcoPonchia @marcobottaro @tommaso1 @MarBert
-**/package.json @pagopa/devportal-maintain @MarcoPonchia @marcobottaro @tommaso1 @MarBert
-**/CHANGELOG.md @pagopa/devportal-maintain @MarcoPonchia @marcobottaro @tommaso1 @MarBert
+package-lock.json @pagopa/devportal-maintain @MarcoPonchia @marcobottaro @Sebastiano-Bertolin @MarBert
+**/package.json @pagopa/devportal-maintain @MarcoPonchia @marcobottaro @Sebastiano-Bertolin @MarBert
+**/CHANGELOG.md @pagopa/devportal-maintain @MarcoPonchia @marcobottaro @Sebastiano-Bertolin @MarBert
