@@ -2,13 +2,14 @@ FROM python:3.12.4-slim-bullseye
 ARG DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && \
-  apt-get install -y \
+  apt-get install -y --no-install-recommends \
   gcc \
   curl \
   wget \
   jq \
   zip \
-  less
+  less && \
+  rm -rf /var/lib/apt/lists/*
 
 ENV PYTHONPATH=/app
 ENV PIP_ROOT_USER_ACTION=ignore

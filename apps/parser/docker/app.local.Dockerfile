@@ -30,9 +30,11 @@ WORKDIR /app/apps/parser
 
 # Copy only the parser's package.json for a standalone install (no workspace needed)
 COPY apps/parser/package.json ./
+# Copy root lockfile to ensure reproducible dependency installation
+COPY package-lock.json ./
 
 # Install dependencies without running lifecycle scripts (husky etc.)
-RUN npm install --ignore-scripts
+RUN npm ci --ignore-scripts
 
 # Copy root tsconfig.json to the path expected by apps/parser/tsconfig.json's "extends": "../../tsconfig.json"
 COPY tsconfig.json /app/tsconfig.json
