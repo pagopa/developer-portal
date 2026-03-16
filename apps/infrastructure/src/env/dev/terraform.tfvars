@@ -15,6 +15,10 @@ cdn_custom_headers = [
     header   = "X-Robots-Tag"
     override = true
     value    = "noindex"
+    }, {
+    header   = "Server"
+    override = true
+    value    = "None"
   }
 ]
 
@@ -48,5 +52,14 @@ chatbot_ecs_monitoring = {
   image_uri     = "ghcr.io/langfuse/langfuse:sha-9375250"
   port          = 3000
   desired_count = 0
+
+}
+
+chatbot_models = {
+  provider      = "google"
+  generation    = "gemini-2.5-flash-lite"
+  embeddings    = "gemini-embedding-001"
+  reranker      = "semantic-ranker-default-004"
+  use_multi_rag = true
 }
 

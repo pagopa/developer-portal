@@ -1,5 +1,30 @@
 # chatbot
 
+## 10.0.1
+
+### Patch Changes
+
+- a9cd989: Fix flow generation for smart-chips
+
+## 10.0.0
+
+### Major Changes
+
+- d314976: Add smart-chip tool to the orchestrator to return follow-up questions to the API
+- fcf14eb: New query engine tool regarding the cittadino documentation in Discovery.
+
+### Minor Changes
+
+- b125ab1: Manage knowledge base and chips fields in query creation
+
+### Patch Changes
+
+- 0454916: Refactor discovery orchestrator
+- 83d45a8: Docker compose can create different indexes on Redis.
+- 7b9cc56: Add knowledge base to the user query
+- f293978: Fix safe yaml load
+- a0a3d1b: Fix chatbot chips knowledge base: at least one chip per knowledge base
+
 ## 9.0.0
 
 ### Major Changes

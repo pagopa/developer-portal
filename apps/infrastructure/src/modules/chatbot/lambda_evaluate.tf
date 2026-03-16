@@ -119,6 +119,10 @@ resource "aws_lambda_function" "chatbot_evaluate_lambda" {
       CHB_MODEL_ID                    = var.models.generation
       CHB_PROVIDER                    = var.models.provider
       LOG_LEVEL                       = "INFO"
+      CHB_AWS_SSM_LANGFUSE_PUBLIC_KEY = module.langfuse_public_key.ssm_parameter_name
+      CHB_AWS_SSM_LANGFUSE_SECRET_KEY = module.langfuse_secret_key.ssm_parameter_name
+      RAGAS_MAX_RETRIES               = 3
+      RAGAS_MAX_WORKERS               = 2
       RAGAS_DO_NOT_TRACK              = "True"
     }
   }

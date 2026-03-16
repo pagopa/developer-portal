@@ -19,7 +19,7 @@ PROMPTS = yaml.safe_load(
 )
 AWS_SESSION = boto3.Session()
 AWS_SSM_CLIENT = AWS_SESSION.client("ssm")
-
+TOKEN_BUDGET_DIVISOR = 9  # This is an heuristic, setting it to a smaller value results in MAX_TOKEN errors. As there is no universal way to predict the token count of the response of an arbitrary LLM, this scales down max_tokens to a per-chunk token budget for body text
 
 def get_ssm_parameter(name: str | None, default: str | None = None) -> str | None:
     """
@@ -79,10 +79,10 @@ class ExtractorSettings(BaseSettings):
     similarity_threshold: float = float(os.getenv("SIMILARITY_THRESHOLD", "0.8"))
 
     # LLM Model Configuration
-    model_id: str = os.getenv("CHB_MODEL_ID", "gemini-2.5-flash-lite")
-    temperature: float = float(os.getenv("CHB_MODEL_TEMPERATURE", "0.0"))
-    max_tokens: int = int(os.getenv("CHB_MODEL_MAXTOKENS", "200000"))
-    provider: str = os.getenv("CHB_PROVIDER", "google")
+    model_id: str = os.getenv("EXTRACTOR_MODEL_ID", "gemini-2.5-flash-lite")
+    temperature: float = float(os.getenv("EXTRACTOR_MODEL_TEMPERATURE", "0.0"))
+    max_tokens: int = int(os.getenv("EXTRACTOR_MODEL_MAXTOKENS", "65535"))
+    provider: str = os.getenv("EXTRACTOR_PROVIDER", "google")
 
     # Prompts
     content_cleaning_prompt: str = PROMPTS["content_cleaning_prompt"]
