@@ -28,7 +28,7 @@ services:
     environment:
       - S3_BUCKET_NAME=${S3_BUCKET_NAME}
       - CHB_INDEX_ID=${CHB_INDEX_ID}
-      - URLS=${PARSER_URLS}
+      - URLS=${URLS}
       - AWS_ACCESS_KEY_ID=dummy
       - AWS_SECRET_ACCESS_KEY=dummy
       - AWS_ENDPOINT_URL=${AWS_ENDPOINT_URL}

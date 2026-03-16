@@ -155,7 +155,7 @@ docker compose --project-directory . -f docker/compose.yaml run parser
 ```
 
 Parser-specific settings (`DEPTH`, `VALID_DOMAIN_VARIANTS`, etc.) are read from `apps/parser/.env`.
-The shared variables `PARSER_URLS`, `CHB_INDEX_ID`, and `S3_BUCKET_NAME` are injected from
+The shared variables `URLS`, `CHB_INDEX_ID`, and `S3_BUCKET_NAME` are injected from
 `apps/structured-data-cleaner/.env`.
 
 #### extractor only
