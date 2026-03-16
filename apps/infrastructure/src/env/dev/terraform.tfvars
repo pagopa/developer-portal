@@ -46,3 +46,11 @@ create_chatbot            = true
 ac_integration_is_enabled = true
 docs_redirect_is_enabled  = false
 
+chatbot_models = {
+  provider      = "google"
+  generation    = "gemini-2.5-flash-lite"
+  embeddings    = "gemini-embedding-001"
+  reranker      = "semantic-ranker-default-004"
+  use_multi_rag = true
+}
+

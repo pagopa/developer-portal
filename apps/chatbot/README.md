@@ -93,7 +93,13 @@ Sucessively, run:
 If you want to run only a subset of tests, enter into the container bash:
 
 ```bash
-docker compose -f docker/compose.test.yaml run bash
+docker compose -f docker/compose.test.yaml run api bash
+```
+
+To use your IDE debug (we've tested on [Antigravity](https://antigravity.google/)), check the script
+
+```bash
+./docker/docker-compose-run-debug.sh
 ```
 
 Initialize AWS services:
