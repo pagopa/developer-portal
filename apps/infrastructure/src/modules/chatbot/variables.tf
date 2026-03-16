@@ -159,10 +159,11 @@ variable "waf_block_requests_to_queries_evaluation_window_sec" {
 
 variable "models" {
   type = object({
-    provider   = string
-    generation = string
-    embeddings = string
-    reranker   = string
+    provider      = string
+    generation    = string
+    embeddings    = string
+    reranker      = string
+    use_multi_rag = bool
   })
 
   description = "The models used by the AI chatbot"

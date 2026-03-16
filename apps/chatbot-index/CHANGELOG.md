@@ -1,5 +1,22 @@
 # chatbot-index
 
+## 2.6.0
+
+### Minor Changes
+
+- 167d2ce: Add refresh structured documents function
+
+## 2.5.0
+
+### Minor Changes
+
+- 83d45a8: Create index now also considers structured data
+
+### Patch Changes
+
+- 83d45a8: Upgrade installation packages
+- f293978: Fix safe yaml load
+
 ## 2.4.1
 
 ### Patch Changes
