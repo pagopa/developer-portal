@@ -189,7 +189,7 @@
 | <a name="input_ecs_redis"></a> [ecs\_redis](#input\_ecs\_redis) | Redis configuration for the AI chatbot | <pre>object({<br/>    cpu       = number<br/>    memory    = number<br/>    image_uri = string<br/>    port      = number<br/>  })</pre> | n/a | yes |
 | <a name="input_environment"></a> [environment](#input\_environment) | Environment | `string` | n/a | yes |
 | <a name="input_github_repository"></a> [github\_repository](#input\_github\_repository) | The repository where the IaC workflows will run | `string` | n/a | yes |
-| <a name="input_models"></a> [models](#input\_models) | The models used by the AI chatbot | <pre>object({<br/>    provider   = string<br/>    generation = string<br/>    embeddings = string<br/>    reranker   = string<br/>  })</pre> | n/a | yes |
+| <a name="input_models"></a> [models](#input\_models) | The models used by the AI chatbot | <pre>object({<br/>    provider      = string<br/>    generation    = string<br/>    embeddings    = string<br/>    reranker      = string<br/>    use_multi_rag = bool<br/>  })</pre> | n/a | yes |
 | <a name="input_s3_bucket_name_static_content"></a> [s3\_bucket\_name\_static\_content](#input\_s3\_bucket\_name\_static\_content) | The name of the S3 bucket for static content | `string` | n/a | yes |
 | <a name="input_security_groups"></a> [security\_groups](#input\_security\_groups) | The security groups used to deploy the resources | `map(string)` | n/a | yes |
 | <a name="input_vpc"></a> [vpc](#input\_vpc) | The VPC used to deploy the resources | <pre>object({<br/>    id                         = string<br/>    cidr_block                 = string<br/>    public_subnets             = list(string)<br/>    database_subnets           = list(string)<br/>    private_subnets            = list(string)<br/>    elasticache_subnets        = list(string)<br/>    database_subnet_group_name = string<br/>  })</pre> | n/a | yes |
@@ -206,6 +206,9 @@
 
 | Name | Description |
 |------|-------------|
+| <a name="output_cognito_master_user_password_param_arn"></a> [cognito\_master\_user\_password\_param\_arn](#output\_cognito\_master\_user\_password\_param\_arn) | ARN of the SSM parameter storing the chatbot Cognito master user password |
+| <a name="output_cognito_user_pool_endpoint"></a> [cognito\_user\_pool\_endpoint](#output\_cognito\_user\_pool\_endpoint) | Endpoint of the Cognito user pool used for chatbot authentication |
+| <a name="output_cognito_user_pool_id"></a> [cognito\_user\_pool\_id](#output\_cognito\_user\_pool\_id) | ID of the Cognito user pool used for chatbot authentication |
 | <a name="output_lambda_env_variables"></a> [lambda\_env\_variables](#output\_lambda\_env\_variables) | Environment variables of the Lambda Function |
 | <a name="output_lambda_function_arn"></a> [lambda\_function\_arn](#output\_lambda\_function\_arn) | The ARN of the Lambda Function |
 | <a name="output_lambda_function_name"></a> [lambda\_function\_name](#output\_lambda\_function\_name) | The name of the Lambda Function |
