@@ -44,4 +44,5 @@ RUN chown -R appuser:appuser /app
 
 USER appuser
 
-CMD ["fastapi", "dev", "src/app/main.py", "--port", "8080", "--host", "0.0.0.0", "--loop", "asyncio"]
+ENTRYPOINT ["bash", "./scripts/entrypoint.test.sh"]
+CMD ["bash", "./scripts/run.test.sh"]
