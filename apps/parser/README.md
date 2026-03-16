@@ -80,6 +80,17 @@ Each visited page is saved as a JSON file:
 
 ---
 
+## Running with a mocked S3 bucket (Docker)
+
+The parser can be run against a local [Moto](https://docs.getmoto.org/) mock S3 server as part
+of the full pipeline, or in isolation. Both modes are orchestrated from the
+`apps/structured-data-cleaner` package, which owns the Docker Compose setup.
+
+See [`apps/structured-data-cleaner/README.md`](../structured-data-cleaner/README.md) for full
+instructions on:
+- Running the complete pipeline (`parser → extractor → structured-data-cleaner`)
+- Running the parser in isolation against mock S3
+
 ## Testing
 
 Run tests with:

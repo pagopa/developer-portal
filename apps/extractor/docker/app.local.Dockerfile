@@ -30,6 +30,7 @@ RUN poetry install
 
 COPY ./src ./src
 COPY ./scripts ./scripts
+COPY ./config ./config
 
 RUN chmod +x /app/scripts/*.sh
 

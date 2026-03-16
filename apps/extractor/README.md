@@ -131,6 +131,17 @@ The `content_cleaning_prompt` template instructs the LLM to:
 - Preserve all main content without truncation
 - Maintain the original language
 
+### Running with a mocked S3 bucket (Docker)
+
+The extractor can be run against a local [Moto](https://docs.getmoto.org/) mock S3 server as part
+of the full pipeline, or in isolation. Both modes are orchestrated from the
+`apps/structured-data-cleaner` package, which owns the Docker Compose setup.
+
+See [`apps/structured-data-cleaner/README.md`](../structured-data-cleaner/README.md) for full
+instructions on:
+- Running the complete pipeline (`parser → extractor → structured-data-cleaner`)
+- Running the extractor in isolation against mock S3
+
 ### Development
 
 Install development dependencies:

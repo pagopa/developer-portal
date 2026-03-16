@@ -2,31 +2,65 @@
 name: structured-data-cleaner
 
 services:
-  main:
-    build:
-      context: ..
-      dockerfile: docker/app.local.Dockerfile
-    command: /app/scripts/run.main.sh
-    env_file: ../.env
-    volumes:
-      - ./files/.aws:/home/appuser/.aws
-      - ./files/s3:/app/files/s3
-    depends_on:
-      s3-init:
-        condition: service_completed_successfully
+  motoserver:
+    image: motoserver/moto:5.1.21
+    env_file: .env
+
   s3-init:
     build:
-      context: ..
+      context: .
       dockerfile: docker/app.local.Dockerfile
     command: /app/scripts/s3-init.sh
-    env_file: ../.env
+    env_file: .env
     volumes:
-      - ./files/.aws:/home/appuser/.aws
-      - ./files/s3:/app/files/s3
+      - ./docker/files/.aws:/home/appuser/.aws
+      - ./docker/files/s3:/app/files/s3
     depends_on:
       motoserver:
         condition: service_started
-  motoserver:
-    image: motoserver/moto:5.1.21
-    env_file: ../.env
 
+  parser:
+    build:
+      context: ../../
+      dockerfile: apps/parser/docker/app.local.Dockerfile
+    command: /app/apps/parser/scripts/run.pipeline.sh
+    env_file: ../parser/.env
+    environment:
+      - S3_BUCKET_NAME=${S3_BUCKET_NAME}
+      - CHB_INDEX_ID=${CHB_INDEX_ID}
+      - URLS=${PARSER_URLS}
+      - AWS_ACCESS_KEY_ID=dummy
+      - AWS_SECRET_ACCESS_KEY=dummy
+      - AWS_ENDPOINT_URL=${AWS_ENDPOINT_URL}
+    depends_on:
+      s3-init:
+        condition: service_completed_successfully
+
+  extractor:
+    build:
+      context: ../extractor
+      dockerfile: docker/app.local.Dockerfile
+    command: /app/scripts/run.pipeline.sh
+    env_file: ../extractor/.env
+    environment:
+      - S3_BUCKET_NAME=${S3_BUCKET_NAME}
+      - CHB_INDEX_ID=${CHB_INDEX_ID}
+      - URLS=${URLS}
+      - AWS_ACCESS_KEY_ID=dummy
+      - AWS_SECRET_ACCESS_KEY=dummy
+      - AWS_ENDPOINT_URL=${AWS_ENDPOINT_URL}
+    depends_on:
+      s3-init:
+        condition: service_completed_successfully
+
+  structured-data-cleaner:
+    build:
+      context: .
+      dockerfile: docker/app.local.Dockerfile
+    command: python src/main.py
+    env_file: .env
+    volumes:
+      - ./docker/files/.aws:/home/appuser/.aws
+    depends_on:
+      s3-init:
+        condition: service_completed_successfully
