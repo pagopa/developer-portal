@@ -116,6 +116,7 @@ resource "aws_lambda_function" "chatbot_evaluate_lambda" {
       CHB_EMBED_BATCH_SIZE            = 100
       CHB_EMBEDDING_DIM               = 768
       CHB_EMBED_MODEL_ID              = var.models.embeddings
+      CHB_MODEL_ID                    = var.models.generation
       CHB_PROVIDER                    = var.models.provider
       LOG_LEVEL                       = "INFO"
       CHB_AWS_SSM_LANGFUSE_PUBLIC_KEY = module.langfuse_public_key.ssm_parameter_name
