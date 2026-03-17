@@ -1,5 +1,42 @@
 # chatbot
 
+## 10.1.0
+
+### Minor Changes
+
+- 4e48cd2: Add multi-rag activation flag using environmental variable
+
+### Patch Changes
+
+- 8a9dd11: Add attribute list extension to references in final response
+- b97a1fa: Fix session actions security
+- b97a1fa: Add the `sanitize_messages` function to clean user questions and answers in query histories using `nh3`, preventing HTML/script injection and ensuring safe message handling
+
+## 10.0.1
+
+### Patch Changes
+
+- a9cd989: Fix flow generation for smart-chips
+
+## 10.0.0
+
+### Major Changes
+
+- d314976: Add smart-chip tool to the orchestrator to return follow-up questions to the API
+- fcf14eb: New query engine tool regarding the cittadino documentation in Discovery.
+
+### Minor Changes
+
+- b125ab1: Manage knowledge base and chips fields in query creation
+
+### Patch Changes
+
+- 0454916: Refactor discovery orchestrator
+- 83d45a8: Docker compose can create different indexes on Redis.
+- 7b9cc56: Add knowledge base to the user query
+- f293978: Fix safe yaml load
+- a0a3d1b: Fix chatbot chips knowledge base: at least one chip per knowledge base
+
 ## 9.0.0
 
 ### Major Changes
