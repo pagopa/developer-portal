@@ -4,7 +4,6 @@ import { getUserWebinarSubscriptions } from '@/lib/webinarApi';
 import { WebinarSubscription } from '@/lib/webinars/webinarSubscriptions';
 import { useAuthenticator } from '@aws-amplify/ui-react';
 import { Auth, Hub } from 'aws-amplify';
-import { redirect } from 'next/navigation';
 import { useCallback, useState, useEffect } from 'react';
 
 export const useUser = () => {
@@ -143,15 +142,4 @@ export const useUser = () => {
     isUserLoggedIn,
     userFullName,
   };
-};
-
-// We need a middleware to check if the user is authenticated and redirect to the home page if so
-export const useAuthenticatedUserRedirect = () => {
-  const { authStatus } = useAuthenticator((context) => [context.authStatus]);
-
-  if (authStatus === 'authenticated') {
-    redirect('/');
-  }
-
-  return authStatus !== 'unauthenticated';
 };
