@@ -1,5 +1,6 @@
 from typing import Union, Tuple, Optional, List, Dict
 
+from workflows import Context
 from llama_index.core import PromptTemplate
 from llama_index.core.llms import ChatMessage, MessageRole
 from llama_index.core.base.response.schema import (
@@ -35,7 +36,7 @@ from src.modules.tools import (
     DEVPORTAL_RAG_TOOL_DESCRIPTION,
     CITTADINO_RAG_TOOL_DESCRIPTION,
 )
-from src.modules.agents import get_discovery_agent, DISCOVERY_AGENT_NAME
+from src.modules.agents import get_discovery_agent
 from src.modules.settings import SETTINGS
 
 
@@ -69,6 +70,7 @@ class Chatbot:
         self.qa_prompt_tmpl, self.ref_prompt_tmpl = self._get_prompt_templates()
 
         tools = []
+        self.tool_names = []
         try:
             devportal_index = load_index_redis(index_id=SETTINGS.devportal_index_id)
             tools.append(
@@ -80,28 +82,33 @@ class Chatbot:
                     refine_template=self.ref_prompt_tmpl,
                 )
             )
+            self.tool_names += [DEVPORTAL_TOOL_NAME]
         except Exception as e:
             LOGGER.error(f"Failed to load DevPortal index: {e}")
             raise
 
-        try:
-            cittadino_index = load_index_redis(index_id=SETTINGS.cittadino_index_id)
-            tools += [
-                get_query_engine_tool(
-                    index=cittadino_index,
-                    name=CITTADINO_TOOL_NAME,
-                    description=CITTADINO_RAG_TOOL_DESCRIPTION,
-                    text_qa_template=self.qa_prompt_tmpl,
-                    refine_template=self.ref_prompt_tmpl,
-                ),
-                follow_up_questions_tool(name=CHIPS_TOOL_NAME),
-            ]
-        except Exception as e:
-            LOGGER.error(f"Failed to load Cittadino index: {e}")
-            raise
+        if SETTINGS.use_multirag:
+            try:
+                cittadino_index = load_index_redis(index_id=SETTINGS.cittadino_index_id)
+                tools += [
+                    get_query_engine_tool(
+                        index=cittadino_index,
+                        name=CITTADINO_TOOL_NAME,
+                        description=CITTADINO_RAG_TOOL_DESCRIPTION,
+                        text_qa_template=self.qa_prompt_tmpl,
+                        refine_template=self.ref_prompt_tmpl,
+                    ),
+                    follow_up_questions_tool(name=CHIPS_TOOL_NAME),
+                ]
+                self.tool_names += [CITTADINO_TOOL_NAME, CHIPS_TOOL_NAME]
+            except Exception as e:
+                LOGGER.error(f"Failed to load Cittadino index: {e}")
+                raise
+
+        self.num_tools = len(tools)
 
         try:
-            self.discovery = get_discovery_agent(name=DISCOVERY_AGENT_NAME, tools=tools)
+            self.discovery = get_discovery_agent(tools=tools)
         except Exception as e:
             LOGGER.error(f"Failed to initialize Discovery Agent: {e}")
             raise
@@ -144,10 +151,9 @@ class Chatbot:
                 for ref in engine_response.structured_response["references"]:
                     references_list.append(f"[{ref['title']}]({ref['url']})")
 
-            follow_up_tool_called = False
             retrieved_contexts = []
+            used_tools = [False] * self.num_tools
             for tool_call in engine_response.tool_calls:
-
                 raw_output = tool_call.tool_output.raw_output
                 nodes = getattr(raw_output, "source_nodes", [])
                 if (
@@ -161,14 +167,17 @@ class Chatbot:
                         ]
                     )
 
-                if tool_call.tool_name == CHIPS_TOOL_NAME:
-                    follow_up_tool_called = True
+                tool_index = self.tool_names.index(tool_call.tool_name)
+                used_tools[tool_index] = True
 
-            chips = (
-                engine_response.structured_response["follow_up_questions"]
-                if follow_up_tool_called
-                else []
-            )
+            if (
+                SETTINGS.use_multirag
+                and engine_response.structured_response["follow_up_questions"]
+                and all(used_tools)
+            ):
+                chips = engine_response.structured_response["follow_up_questions"]
+            else:
+                chips = []
 
             response_json = {
                 "response": engine_response.structured_response["response"],
@@ -249,9 +258,12 @@ class Chatbot:
             query_str = query_str + f" | Knowledge Base: {knowledge_base}"
 
         try:
+            ctx = Context.from_dict(self.discovery, {})
             engine_response = await self.discovery.run(
                 user_msg=query_str,
                 chat_history=chat_history,
+                ctx=ctx,
+                early_stopping_method="generate",
             )
             response_json = self._get_response_json(engine_response)
         except Exception as e:

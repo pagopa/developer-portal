@@ -274,7 +274,7 @@
       "checkJunkMail": "Didn't receive any email? Check junk mail or",
       "continue": "Continue",
       "resendEmail": "Resend email",
-      "invalidCode": "The entered code is incorrect",
+      "invalidCode": "The entered code is incorrect, you need to request a new code to proceed further.",
       "emptyCode": "The code is mandatory"
     },
     "accountActivated": {
@@ -483,7 +483,8 @@
   },
   "footer": {
     "companyLink": {
-      "ariaLabel": "Link: go to PagoPA S.p.A. website"
+      "ariaLabel": "Link: go to PagoPA S.p.A. website",
+      "href": "https://www.pagopa.it/en/homepage/"
     },
     "languages": {
       "it": "Italian"
@@ -493,28 +494,47 @@
       "links": {
         "accessibility": {
           "ariaLabel": "Go to link: Accessibility",
+          "href": "https://form.agid.gov.it/view/5de36b80-97b7-11f0-b1d3-cb68959f3505",
           "label": "Accessibility"
         }
       },
-      "title": "Follow us on"
+      "title": "Follow us on",
+      "socialLinks": {
+        "linkedin": {
+          "href": "https://www.linkedin.com/company/pagopa/"
+        },
+        "twitter": {
+          "href": "https://twitter.com/pagopa"
+        },
+        "instagram": {
+          "href": "https://www.instagram.com/pagopaspa/"
+        },
+        "medium": {
+          "href": "https://medium.com/pagopa-spa"
+        }
+      }
     },
     "aboutUs": {
       "title": "",
       "links": {
         "whoWeAre": {
-          "ariaLabel": "Go to link: Who we are",
-          "label": "Who we are"
+          "ariaLabel": "Go to link: About us",
+          "href": "https://www.pagopa.it/en/company/about-us/",
+          "label": "About us"
         },
         "pnrr": {
           "ariaLabel": "Go to link: PNRR",
+          "href": "https://www.pagopa.it/en/opportunities/nrp/projects/",
           "label": "PNRR"
         },
         "media": {
           "ariaLabel": "Go to link: Media",
+          "href": "https://www.pagopa.it/it/media",
           "label": "Media"
         },
         "workWithUs": {
           "ariaLabel": "Go to link: Work with us",
+          "href": "https://www.pagopa.it/it/lavora-con-noi",
           "label": "Work with us"
         }
       }
@@ -532,14 +552,17 @@
         },
         "societaTrasparente": {
           "ariaLabel": "Go to link: Transparent Company",
+          "href": "https://pagopa.portaleamministrazionetrasparente.it/",
           "label": "Transparent Company"
         },
         "disclosurePolicy": {
           "ariaLabel": "Go to link: Responsible Disclosure Policy",
+          "href": "https://www.pagopa.it/it/responsible-disclosure-policy/",
           "label": "Responsible Disclosure Policy"
         },
         "model231": {
           "ariaLabel": "Go to link: Model 231",
+          "href": "https://pagopa.portaleamministrazionetrasparente.it/pagina746_altri-contenuti.html",
           "label": "Model 231"
         }
       }
@@ -549,26 +572,32 @@
       "links": {
         "appIO": {
           "ariaLabel": "Go to link: App IO",
+          "href": "https://www.pagopa.it/en/products-and-services/io-app/",
           "label": "App IO"
         },
         "pagoPA": {
           "ariaLabel": "Go to link: pagoPA Platform",
+          "href": "https://www.pagopa.it/en/products-and-services/pagopa-platform/",
           "label": "pagoPA Platform"
         },
         "pari": {
           "ariaLabel": "Go to link: PARI",
+          "href": "https://www.pagopa.it/en/products-and-services/pari-platform/",
           "label": "PARI"
         },
         "checkIBAN": {
           "ariaLabel": "Go to link: Check IBAN",
+          "href": "https://www.pagopa.it/en/products-and-services/check-iban-product/",
           "label": "Check IBAN"
         },
         "send": {
           "ariaLabel": "Go to link: SEND - Digital Notification Service",
+          "href": "https://www.pagopa.it/en/products-and-services/send-digital-notifications/",
           "label": "SEND - Digital Notification Service"
         },
         "pdnd": {
           "ariaLabel": "Go to link: National Digital Data Platform - Interoperability",
+          "href": "https://www.pagopa.it/it/prodotti-e-servizi/piattaforma-digitale-nazionale-dati/",
           "label": "National Digital Data Platform - Interoperability"
         }
       }
