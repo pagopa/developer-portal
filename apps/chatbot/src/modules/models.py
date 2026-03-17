@@ -1,5 +1,10 @@
-import os
-from google.genai import types
+from google.genai.types import (
+    EmbedContentConfig,
+    GenerateContentConfig,
+    HarmCategory,
+    HarmBlockThreshold,
+    SafetySetting,
+)
 
 from llama_index.core.llms.llm import LLM
 from llama_index.core.base.embeddings.base import BaseEmbedding
@@ -9,6 +14,24 @@ from src.modules.settings import SETTINGS
 
 
 LOGGER = get_logger(__name__, level=SETTINGS.log_level)
+SAFETY_SETTINGS = [
+    SafetySetting(
+        category=HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
+        threshold=HarmBlockThreshold.BLOCK_LOW_AND_ABOVE,
+    ),
+    SafetySetting(
+        category=HarmCategory.HARM_CATEGORY_HARASSMENT,
+        threshold=HarmBlockThreshold.BLOCK_LOW_AND_ABOVE,
+    ),
+    SafetySetting(
+        category=HarmCategory.HARM_CATEGORY_HATE_SPEECH,
+        threshold=HarmBlockThreshold.BLOCK_LOW_AND_ABOVE,
+    ),
+    SafetySetting(
+        category=HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
+        threshold=HarmBlockThreshold.BLOCK_LOW_AND_ABOVE,
+    ),
+]
 
 
 def get_llm(
@@ -45,6 +68,9 @@ def get_llm(
             temperature=temperature,
             max_tokens=max_tokens,
             api_key=SETTINGS.google_api_key,
+            generation_config=GenerateContentConfig(
+                safety_settings=SAFETY_SETTINGS,
+            ),
         )
         LOGGER.info(f"{model_id} LLM loaded successfully from Google!")
 
@@ -101,7 +127,7 @@ def get_embed_model(
             embed_batch_size=embed_batch_size,
             retries=retries,
             retry_min_seconds=retry_min_seconds,
-            embedding_config=types.EmbedContentConfig(
+            embedding_config=EmbedContentConfig(
                 output_dimensionality=embed_dim,
                 task_type=task_type,
             ),

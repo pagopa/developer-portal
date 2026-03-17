@@ -6,8 +6,8 @@ locals {
 
 data "archive_file" "webinar_metrics" {
   type        = "zip"
-  source_file = "${path.root}/../../webinar-metrics-function/lambda.py"
-  output_path = "${path.root}/../../webinar-metrics-function/out/webinar-metrics.zip"
+  source_file = "${path.root}/../../webinar-metrics-functions/lambda.py"
+  output_path = "${path.root}/../../webinar-metrics-functions/out/webinar-metrics.zip"
 }
 
 resource "aws_cloudwatch_log_group" "webinar_metrics_logs" {
