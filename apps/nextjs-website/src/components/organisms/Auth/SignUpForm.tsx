@@ -80,8 +80,8 @@ const SignUpForm = ({
     const { username, confirmPassword, firstName, lastName, password, role } =
       userData;
 
-    const nameError = validateField(firstName) || validateName(firstName);
-    const surnameError = validateField(lastName) || validateName(lastName);
+    const nameError = validateName(firstName) || validateField(firstName);
+    const surnameError = validateName(lastName) || validateField(lastName);
     const emailError = validateEmail(username);
     const passwordError = validatePassword(password);
     const confirmPasswordError = password !== confirmPassword;
