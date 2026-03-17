@@ -10,7 +10,9 @@ from src.modules.logger import get_logger
 LOGGER = get_logger(__name__)
 CWF = Path(__file__)
 ROOT = CWF.parent.parent.parent.absolute().__str__()
-PARAMS = yaml.safe_load(open(os.path.join(ROOT, "config", "params.yaml"), "r"))
+PARAMS = yaml.safe_load(
+    Path(os.path.join(ROOT, "config", "params.yaml")).read_text(encoding="utf-8")
+)
 AWS_SESSION = boto3.Session()
 AWS_SSM_CLIENT = AWS_SESSION.client("ssm")
 
@@ -64,7 +66,7 @@ class ChatbotSettings(BaseSettings):
     # vector index and docs params
     chunk_overlap: int = PARAMS["vector_index"]["chunk_overlap"]
     chunk_size: int = PARAMS["vector_index"]["chunk_size"]
-    index_id: str = PARAMS["vector_index"]["index_id"]
+    index_id: str = os.getenv("CHB_INDEX_ID", "devportal-index")
     bucket_static_content: str = os.getenv(
         "CHB_AWS_S3_BUCKET_NAME_STATIC_CONTENT", "devportal-d-website-static-content"
     )

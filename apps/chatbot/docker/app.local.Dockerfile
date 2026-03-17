@@ -44,6 +44,10 @@ RUN python ./scripts/nltk_download.py
 RUN groupadd -r appuser && useradd -r -g appuser -u 1000 appuser
 RUN chown -R appuser:appuser /app
 
+RUN mkdir -p /home/appuser/.local /home/appuser/.jupyter /home/appuser/.cache && \
+  chown -R appuser:appuser /home/appuser
+
 USER appuser
 
-CMD ["hypercorn", "-b", "0.0.0.0:8080", "--reload", "src.app.main:app"]
+ENTRYPOINT ["bash", "./scripts/entrypoint.sh"]
+CMD ["bash", "./scripts/run.local.sh"]
