@@ -1,4 +1,3 @@
-from pathlib import Path
 from typing import Tuple
 from urllib.parse import urlparse
 
@@ -54,7 +53,9 @@ def remove_s3_folder(output_folder: str) -> None:
             if "Errors" in delete_response:
                 for error in delete_response["Errors"]:
                     LOGGER.error(
-                        "Error deleting object %s from S3: %s", error["Key"], error["Message"]
+                        "Error deleting object %s from S3: %s",
+                        error["Key"],
+                        error["Message"],
                     )
                 raise IOError(f"Failed to delete some objects from {output_folder}")
             total_deleted += len(objects_to_delete)
@@ -66,35 +67,15 @@ def remove_s3_folder(output_folder: str) -> None:
             return
 
         LOGGER.info(
-            "Successfully deleted %d objects from S3 folder: %s", total_deleted, output_folder
+            "Successfully deleted %d objects from S3 folder: %s",
+            total_deleted,
+            output_folder,
         )
 
     except ClientError as e:
         raise IOError(
             "Error deleting objects from S3 folder %s: %s", output_folder, e
         ) from e
-
-
-def remove_local_folder(output_folder: str) -> None:
-    """Delete the specified folder and all of its contents.
-
-    Args:
-        output_folder: Path to the directory to delete entirely.
-
-    Raises:
-        IOError: If there is an error deleting the folder.
-    """
-    import shutil
-
-    output_path = Path(output_folder)
-    if not output_path.exists():
-        LOGGER.info("Local folder does not exist, skipping: %s", output_folder)
-        return
-    try:
-        shutil.rmtree(output_path)
-        LOGGER.info("Deleted folder: %s", output_folder)
-    except Exception as e:
-        raise IOError("Error deleting folder %s: %s", output_folder, e)
 
 
 def parse_s3_path(s3_path: str) -> Tuple[str, str]:
