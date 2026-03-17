@@ -1,3 +1,4 @@
+from google.oauth2 import service_account
 from google.genai.types import (
     EmbedContentConfig,
     GenerateContentConfig,
@@ -8,30 +9,17 @@ from google.genai.types import (
 
 from llama_index.core.llms.llm import LLM
 from llama_index.core.base.embeddings.base import BaseEmbedding
+from llama_index.llms.google_genai.base import VertexAIConfig
 
 from src.modules.logger import get_logger
 from src.modules.settings import SETTINGS
 
 
 LOGGER = get_logger(__name__, level=SETTINGS.log_level)
-SAFETY_SETTINGS = [
-    SafetySetting(
-        category=HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
-        threshold=HarmBlockThreshold.BLOCK_LOW_AND_ABOVE,
-    ),
-    SafetySetting(
-        category=HarmCategory.HARM_CATEGORY_HARASSMENT,
-        threshold=HarmBlockThreshold.BLOCK_LOW_AND_ABOVE,
-    ),
-    SafetySetting(
-        category=HarmCategory.HARM_CATEGORY_HATE_SPEECH,
-        threshold=HarmBlockThreshold.BLOCK_LOW_AND_ABOVE,
-    ),
-    SafetySetting(
-        category=HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
-        threshold=HarmBlockThreshold.BLOCK_LOW_AND_ABOVE,
-    ),
-]
+VERTEXAI_CREDENTIALS = service_account.Credentials.from_service_account_info(
+    SETTINGS.google_service_account,
+    scopes=["https://www.googleapis.com/auth/cloud-platform"],
+)
 
 
 def get_llm(
@@ -63,13 +51,36 @@ def get_llm(
     if provider == "google":
         from llama_index.llms.google_genai import GoogleGenAI
 
+        safety_settings = [
+            SafetySetting(
+                category=HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
+                threshold=HarmBlockThreshold.BLOCK_LOW_AND_ABOVE,
+            ),
+            SafetySetting(
+                category=HarmCategory.HARM_CATEGORY_HARASSMENT,
+                threshold=HarmBlockThreshold.BLOCK_LOW_AND_ABOVE,
+            ),
+            SafetySetting(
+                category=HarmCategory.HARM_CATEGORY_HATE_SPEECH,
+                threshold=HarmBlockThreshold.BLOCK_LOW_AND_ABOVE,
+            ),
+            SafetySetting(
+                category=HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
+                threshold=HarmBlockThreshold.BLOCK_LOW_AND_ABOVE,
+            ),
+        ]
+
         llm = GoogleGenAI(
             model=model_id,
             temperature=temperature,
             max_tokens=max_tokens,
-            api_key=SETTINGS.google_api_key,
             generation_config=GenerateContentConfig(
-                safety_settings=SAFETY_SETTINGS,
+                safety_settings=safety_settings,
+            ),
+            vertexai_config=VertexAIConfig(
+                credentials=VERTEXAI_CREDENTIALS,
+                location=SETTINGS.vertexai_location,
+                project=VERTEXAI_CREDENTIALS.project_id,
             ),
         )
         LOGGER.info(f"{model_id} LLM loaded successfully from Google!")
@@ -123,13 +134,17 @@ def get_embed_model(
 
         embed_model = GoogleGenAIEmbedding(
             model_name=model_id,
-            api_key=SETTINGS.google_api_key,
             embed_batch_size=embed_batch_size,
             retries=retries,
             retry_min_seconds=retry_min_seconds,
             embedding_config=EmbedContentConfig(
                 output_dimensionality=embed_dim,
                 task_type=task_type,
+            ),
+            vertexai_config=VertexAIConfig(
+                credentials=VERTEXAI_CREDENTIALS,
+                location=SETTINGS.vertexai_location,
+                project=VERTEXAI_CREDENTIALS.project_id,
             ),
         )
         LOGGER.info(f"{model_id} embedding model loaded successfully from Google!")
