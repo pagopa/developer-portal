@@ -274,7 +274,7 @@
       "checkJunkMail": "Non hai ricevuto alcuna email? Controlla la posta indesiderata oppure",
       "continue": "Continua",
       "resendEmail": "Reinvia email",
-      "invalidCode": "Il codice inserito non è corretto",
+      "invalidCode": "Il codice inserito non è corretto, è necessario richiedere l'invio di un nuovo codice per proseguire.",
       "emptyCode": "Il codice è obbligatorio"
     },
     "accountActivated": {
