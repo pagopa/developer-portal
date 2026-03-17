@@ -178,3 +178,7 @@ export const chatbotHeaderDateOptions = {
   month: 'long',
   year: 'numeric',
 } as const;
+
+export const authCookieValidityInDays = parseInt(
+  process.env.NEXT_PUBLIC_AUTH_COOKIE_VALIDITY_IN_DAYS || '60'
+);
