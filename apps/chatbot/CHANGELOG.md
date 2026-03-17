@@ -1,5 +1,17 @@
 # chatbot
 
+## 10.1.0
+
+### Minor Changes
+
+- 4e48cd2: Add multi-rag activation flag using environmental variable
+
+### Patch Changes
+
+- 8a9dd11: Add attribute list extension to references in final response
+- b97a1fa: Fix session actions security
+- b97a1fa: Add the `sanitize_messages` function to clean user questions and answers in query histories using `nh3`, preventing HTML/script injection and ensuring safe message handling
+
 ## 10.0.1
 
 ### Patch Changes
