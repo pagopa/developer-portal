@@ -1,5 +1,16 @@
 # infrastructure
 
+## 10.0.0
+
+### Major Changes
+
+- ec4f8bd: Infrastructure to store webinars view metrics in S3
+
+### Minor Changes
+
+- a8321ba: New env variable for chatbot-api chb-use-multirag
+- 2c47a12: Lambda evaluate new env variables ragas max workers and max retries
+
 ## 9.1.0
 
 ### Minor Changes
