@@ -60,3 +60,8 @@ output "deploy_lambda_role_arn" {
   description = "The ARN of the IAM role used by GitHub Actions to deploy the IVS video processing Lambda."
   value       = aws_iam_role.deploy_lambda.arn
 }
+
+output "ingest_metrics_endpoint" {
+  value       = aws_lambda_function_url.ingest_url.function_url
+  description = "Function url to post metrics for to viewer count."
+}
