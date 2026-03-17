@@ -28,7 +28,7 @@ describe('mapApiDataListPages', () => {
   it('should transform strapi api data list pages to api data list page template props', () => {
     const result = mapApiDataListPages(
       'it',
-      _.cloneDeep({ data: strapiApiDataListPages })
+      _.cloneDeep(strapiApiDataListPages)
     );
     expect(result).toHaveLength(1);
     expect(result[0]).toMatchObject(expectedApiDataListPageProps[0]);
@@ -37,7 +37,7 @@ describe('mapApiDataListPages', () => {
   it('should handle minimal data with missing optional fields', () => {
     const result = mapApiDataListPages(
       'it',
-      _.cloneDeep({ data: minimalApiDataListPages() })
+      _.cloneDeep(minimalApiDataListPages())
     );
     expect(result).toHaveLength(1);
     const firstElement = result[0];
@@ -46,7 +46,7 @@ describe('mapApiDataListPages', () => {
     expect(firstElement.seo).toBeUndefined();
     expect(firstElement.cards).toHaveLength(1);
     expect(firstElement.cards[0].title).toBe('Minimal API');
-    expect(firstElement.cards[0].icon).toBe('');
+    expect(firstElement.cards[0].icon).toBe(undefined);
     expect(firstElement.apiData).toBeDefined();
   });
 

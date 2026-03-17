@@ -25,7 +25,7 @@ export const strapiOverviews = {
         api_data_list_page: {
           id: 3,
           updatedAt: '2026-01-01T00:00:00.000Z',
-          api_data: [
+          apiData: [
             {
               apiRestDetail: {
                 slug: 'api-rest',

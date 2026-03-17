@@ -19,7 +19,7 @@ export const strapiProducts: StrapiProducts = {
       api_data_list_page: {
         id: 1,
         updatedAt: '2026-01-01T00:00:00.000Z',
-        api_data: [
+        apiData: [
           {
             apiRestDetail: {
               slug: 'api-detail',

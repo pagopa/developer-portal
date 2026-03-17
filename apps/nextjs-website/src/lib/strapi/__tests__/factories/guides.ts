@@ -22,7 +22,6 @@ export function guideListWithMissingProductSlug() {
       ...guide,
       product: {
         ...guide.product,
-        ...guide.product,
         slug: undefined as any,
       },
     })),
