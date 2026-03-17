@@ -2,46 +2,55 @@ import Token from 'markdown-it/lib/token';
 import { convertEmojiToUnicode } from '../convertEmojiToUnicode';
 
 const CODE_TOKENS = ['code_inline', 'fence', 'code_block'];
+const EMOJI_PATTERN = /:([a-z0-9_]+):/g;
+type TokenAttribute = Readonly<
+  Record<string, unknown> & { readonly value?: unknown }
+>;
+
+const replaceEmoji = (value: string): string =>
+  value.replaceAll(EMOJI_PATTERN, convertEmojiToUnicode);
+
+const cloneToken = (token: Token): Token =>
+  Object.assign(new Token(token.type, token.tag, token.nesting), token);
+
+const mapTokenAttributes = (
+  attributes: ReadonlyArray<TokenAttribute>
+): ReadonlyArray<TokenAttribute> =>
+  attributes.map((attr) =>
+    typeof attr.value === 'string'
+      ? {
+          ...attr,
+          value: replaceEmoji(attr.value),
+        }
+      : attr
+  );
 
 export const processEmojiTokens = (
   tokens: ReadonlyArray<Token>
 ): ReadonlyArray<Token> => {
-  // eslint-disable-next-line functional/no-expression-statements
-  tokens.forEach((token) => {
-    if (token.type === 'text') {
-      // eslint-disable-next-line functional/immutable-data, functional/no-expression-statements
-      token.content = token.content.replaceAll(
-        /:([a-z0-9_]+):/g,
-        convertEmojiToUnicode
-      );
-    }
+  return tokens.map((token) => {
+    const attributes = Array.isArray(token.meta?.attributes)
+      ? mapTokenAttributes(
+          token.meta.attributes as ReadonlyArray<TokenAttribute>
+        )
+      : token.meta?.attributes;
 
-    // eslint-disable-next-line functional/no-expression-statements
-    if (
-      token.meta &&
-      token.meta.attributes &&
-      Array.isArray(token.meta.attributes)
-    ) {
-      // eslint-disable-next-line functional/no-expression-statements
-      token.meta.attributes.forEach((attr: any) => {
-        if (typeof attr.value === 'string') {
-          // eslint-disable-next-line functional/immutable-data, functional/no-expression-statements
-          attr.value = attr.value.replaceAll(
-            /:([a-z0-9_]+):/g,
-            convertEmojiToUnicode
-          );
-        }
-      });
-    }
-
-    if (
-      !CODE_TOKENS.includes(token.type) &&
-      token.children &&
-      token.children.length > 0
-    ) {
-      // eslint-disable-next-line functional/no-expression-statements
-      processEmojiTokens(token.children);
-    }
+    return Object.assign(cloneToken(token), {
+      content:
+        token.type === 'text' ? replaceEmoji(token.content) : token.content,
+      meta:
+        attributes === undefined
+          ? token.meta
+          : {
+              ...token.meta,
+              attributes,
+            },
+      children:
+        !CODE_TOKENS.includes(token.type) &&
+        token.children &&
+        token.children.length > 0
+          ? processEmojiTokens(token.children)
+          : token.children,
+    });
   });
-  return tokens;
 };
