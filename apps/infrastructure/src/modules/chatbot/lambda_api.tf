@@ -12,6 +12,7 @@ locals {
     CHB_ENGINE_SIMILARITY_TOPK         = "5"
     CHB_GOOGLE_PROJECT_ID              = module.google_project_id_ssm_parameter.ssm_parameter_name
     CHB_GOOGLE_API_KEY                 = "/chatbot/google_api_key"
+    CHB_GOOGLE_VERTEX_API_KEY          = "/chatbot/google_vertex_api_key"
     CHB_MODEL_ID                       = var.models.generation
     CHB_MODEL_MAXTOKENS                = 2048
     CHB_MODEL_TEMPERATURE              = "0.3"
@@ -125,6 +126,17 @@ module "google_api_key_ssm_parameter" {
   secure_type          = true
   ignore_value_changes = true
 }
+
+module "google_vertex_api_key_ssm_parameter" {
+  source = "git::https://github.com/terraform-aws-modules/terraform-aws-ssm-parameter.git?ref=77d2c139784197febbc8f8e18a33d23eb4736879" # v1.1.0
+
+  name                 = "/chatbot/google_vertex_api_key"
+  value                = "Set the Google Gemini Vertex API Key in the AWS console"
+  type                 = "SecureString"
+  secure_type          = true
+  ignore_value_changes = true
+}
+
 
 module "google_project_id_ssm_parameter" {
   source = "git::https://github.com/terraform-aws-modules/terraform-aws-ssm-parameter.git?ref=77d2c139784197febbc8f8e18a33d23eb4736879" # v1.1.0
