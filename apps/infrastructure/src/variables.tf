@@ -183,10 +183,10 @@ variable "chatbot_models" {
 
   default = {
 
-    provider   = "google"
-    generation = "gemini-3.1-flash-lite-preview"
-    embeddings = "gemini-embedding-001"
-    reranker   = "semantic-ranker-default-004"
+    provider      = "google"
+    generation    = "gemini-3.1-flash-lite-preview"
+    embeddings    = "gemini-embedding-001"
+    reranker      = "semantic-ranker-default-004"
     use_multi_rag = false
 
   }
