@@ -1,5 +1,11 @@
 # gitbook-docs
 
+## 2.0.0
+
+### Major Changes
+
+- aa66fe8: Remove root metadata generation flag
+
 ## 1.8.2
 
 ### Patch Changes

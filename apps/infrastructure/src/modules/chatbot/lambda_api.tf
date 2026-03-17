@@ -26,6 +26,7 @@ locals {
     CHB_REDIS_URL                         = "redis://${module.nlb.dns_name}:${var.ecs_redis.port}"
     CHB_RERANKER_ID                       = var.models.reranker
     CHB_USE_PRESIDIO                      = "True"
+    CHB_USE_MULTIRAG                      = var.models.use_multi_rag ? "True" : "False"
     CHB_WEBSITE_URL                       = "https://${var.dns_domain_name}"
     CHB_AWS_S3_BUCKET_NAME_STATIC_CONTENT = var.s3_bucket_name_static_content
     CORS_DOMAINS                          = var.environment == "dev" ? jsonencode(["https://www.${var.dns_domain_name}", "https://${var.dns_domain_name}", "http://localhost:3000"]) : jsonencode(["https://www.${var.dns_domain_name}", "https://${var.dns_domain_name}"])

@@ -19,7 +19,7 @@ PROMPTS = yaml.safe_load(
 )
 AWS_SESSION = boto3.Session()
 AWS_SSM_CLIENT = AWS_SESSION.client("ssm")
-
+TOKEN_BUDGET_DIVISOR = 9  # This is an heuristic, setting it to a smaller value results in MAX_TOKEN errors. As there is no universal way to predict the token count of the response of an arbitrary LLM, this scales down max_tokens to a per-chunk token budget for body text
 
 def get_ssm_parameter(name: str | None, default: str | None = None) -> str | None:
     """
