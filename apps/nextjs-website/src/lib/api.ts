@@ -45,10 +45,11 @@ async function manageUndefinedAndAddProducts<T>(
 }
 
 export async function getMarkdownContent(
+  locale: string,
   dirName: string,
   pathToFile: string
 ): Promise<string> {
-  const pathToMarkdownFile = `${s3DocsPath}/${dirName}/${pathToFile}`;
+  const pathToMarkdownFile = `${locale}/${s3DocsPath}/${dirName}/${pathToFile}`;
   const output = await downloadFileAsText(pathToMarkdownFile);
   return output || '';
 }
