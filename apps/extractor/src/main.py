@@ -7,7 +7,6 @@ and structure the content into markdown format.
 """
 
 import sys
-from pathlib import Path
 
 from src.modules.logger import get_logger
 from src.modules.settings import SETTINGS
