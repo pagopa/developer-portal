@@ -5,6 +5,11 @@ services:
   motoserver:
     image: motoserver/moto:5.1.21
     env_file: .env
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/moto-api/"]
+      interval: 2s
+      timeout: 5s
+      retries: 10
 
   s3-init:
     build:
@@ -17,7 +22,7 @@ services:
       - ./docker/files/s3:/app/files/s3
     depends_on:
       motoserver:
-        condition: service_started
+        condition: service_healthy
 
   parser:
     build:

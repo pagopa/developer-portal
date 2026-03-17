@@ -92,7 +92,7 @@ motoserver → s3-init → parser (×N URLs) → extractor (×N URLs) → struct
 | `s3-init` | Creates the S3 bucket and copies sample files |
 | `parser` | For each URL in `URLS`: crawls the URL and writes parsed JSON to `s3://<S3_BUCKET_NAME>/<CHB_INDEX_ID>/parser/<url>/` |
 | `extractor` | For each URL in `URLS`: reads parser output and writes extracted JSON to `s3://<S3_BUCKET_NAME>/<CHB_INDEX_ID>/extractor/<url>/` |
-| `structured-data-cleaner` | Removes the parser and extractor S3 folders for all `URLS` |
+| `main` | Removes the parser and extractor S3 folders for all `URLS` |
 
 Each service waits for the previous one to exit successfully before starting.
 Parser and extractor each run a pipeline script (`scripts/run.pipeline.sh`) that iterates over
@@ -124,16 +124,10 @@ cd apps/structured-data-cleaner
 docker compose --project-directory . -f docker/compose.yaml -f docker/compose.pipeline.yaml up
 ```
 
-To follow logs for all services at once:
-
-```bash
-docker compose --project-directory . -f docker/compose.yaml up
-```
-
 To rebuild images after code changes:
 
 ```bash
-docker compose --project-directory . -f docker/compose.yaml up --build
+docker compose --project-directory . -f docker/compose.yaml -f docker/compose.pipeline.yaml up --build
 ```
 ### Running only one of the apps with a mocked S3 bucket (Docker)
 

@@ -19,8 +19,7 @@ RUN apt-get update && \
   libxfixes3 \
   libxrandr2 \
   libxss1 \
-  xdg-utils \
-  && rm -rf /var/lib/apt/lists/*
+  xdg-utils
 
 # Tell Puppeteer to skip bundled Chromium download and use the system one
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
@@ -30,11 +29,9 @@ WORKDIR /app/apps/parser
 
 # Copy only the parser's package.json for a standalone install (no workspace needed)
 COPY apps/parser/package.json ./
-# Copy root lockfile to ensure reproducible dependency installation
-COPY package-lock.json ./
 
 # Install dependencies without running lifecycle scripts (husky etc.)
-RUN npm ci --ignore-scripts
+RUN npm install --ignore-scripts
 
 # Copy root tsconfig.json to the path expected by apps/parser/tsconfig.json's "extends": "../../tsconfig.json"
 COPY tsconfig.json /app/tsconfig.json
