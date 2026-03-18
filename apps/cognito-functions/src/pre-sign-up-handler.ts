@@ -1,6 +1,6 @@
 import { PreSignUpTriggerEvent } from 'aws-lambda';
 
-const emailMatcher = /^[a-z0-9-._+]+@([a-z0-9-]+\.)+[a-z]{2,4}$/;
+const emailMatcher = /^[a-z0-9._%+-]+@[a-z0-9-]+(\.[a-z0-9-]+)*\.[a-z]{2,63}$/i;
 const nameMatcher = /^(?=.{1,50}$)[A-Za-z0-9]+(?:[ _'-]?[A-Za-z0-9]+)*$/;
 
 export const makeHandler =
