@@ -1,5 +1,6 @@
 import boto3
 import os
+import json
 import yaml
 from pathlib import Path
 from typing import Optional
@@ -20,6 +21,7 @@ PROMPTS = yaml.safe_load(
 AWS_SESSION = boto3.Session()
 AWS_SSM_CLIENT = AWS_SESSION.client("ssm")
 TOKEN_BUDGET_DIVISOR = 9  # This is an heuristic, setting it to a smaller value results in MAX_TOKEN errors. As there is no universal way to predict the token count of the response of an arbitrary LLM, this scales down max_tokens to a per-chunk token budget for body text
+
 
 def get_ssm_parameter(name: str | None, default: str | None = None) -> str | None:
     """
@@ -50,6 +52,16 @@ def get_ssm_parameter(name: str | None, default: str | None = None) -> str | Non
     return value
 
 
+GOOGLE_SERVICE_ACCOUNT = get_ssm_parameter(
+    os.getenv("CHB_AWS_SSM_GOOGLE_SERVICE_ACCOUNT")
+)
+if GOOGLE_SERVICE_ACCOUNT is None:
+    with open(os.path.join(ROOT, ".google_service_account.json"), "r") as file:
+        GOOGLE_JSON_ACCOUNT_INFO = json.load(file)
+else:
+    GOOGLE_JSON_ACCOUNT_INFO = json.loads(GOOGLE_SERVICE_ACCOUNT)
+
+
 class ExtractorSettings(BaseSettings):
     """Settings for the extractor application."""
 
@@ -69,11 +81,8 @@ class ExtractorSettings(BaseSettings):
     input_folder: Optional[str] = None
     output_folder: Optional[str] = None
 
-    # Google API Configuration
-    google_api_key: str = get_ssm_parameter(
-        name=os.getenv("CHB_AWS_SSM_GOOGLE_API_KEY"),
-        default=os.getenv("CHB_AWS_GOOGLE_API_KEY"),
-    )
+    # Google Configuration
+    google_service_account: dict = GOOGLE_JSON_ACCOUNT_INFO
 
     # Cosine similarity threshold for validating LLM output against source content
     similarity_threshold: float = float(os.getenv("SIMILARITY_THRESHOLD", "0.8"))
@@ -83,6 +92,7 @@ class ExtractorSettings(BaseSettings):
     temperature: float = float(os.getenv("EXTRACTOR_MODEL_TEMPERATURE", "0.0"))
     max_tokens: int = int(os.getenv("EXTRACTOR_MODEL_MAXTOKENS", "65535"))
     provider: str = os.getenv("EXTRACTOR_PROVIDER", "google")
+    vertexai_location: str = os.getenv("EXTRACTOR_VERTEXAI_LOCATION", "europe-west8")
 
     # Prompts
     content_cleaning_prompt: str = PROMPTS["content_cleaning_prompt"]
