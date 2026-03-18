@@ -9,7 +9,7 @@ import { isProduction } from '@/config';
 import {
   validateMaxLenght,
   validateRequired,
-  validateName,
+  validateNameFormat,
 } from '@/helpers/auth.helpers';
 import { Box, Button, Card, Divider, Stack, Typography } from '@mui/material';
 
@@ -80,7 +80,7 @@ export const ProfileDataCard = ({
               item.id === 'role'
             ) {
               const errorKey =
-                validateName(item.value || '') ||
+                validateNameFormat(item.value || '') ||
                 validateMaxLenght(item.value || '') ||
                 (item.id !== 'role' && validateRequired(item.value || ''));
               if (errorKey) {

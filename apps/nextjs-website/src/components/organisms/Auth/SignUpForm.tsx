@@ -3,7 +3,7 @@ import {
   validateEmail,
   validateMaxLenght,
   validateRequired,
-  validateName,
+  validateNameFormat,
   validatePassword,
 } from '@/helpers/auth.helpers';
 import { SignUpUserData } from '@/lib/types/sign-up';
@@ -84,15 +84,15 @@ const SignUpForm = ({
     const nameError =
       validateRequired(firstName) ||
       validateMaxLenght(firstName) ||
-      validateName(firstName);
+      validateNameFormat(firstName);
     const surnameError =
       validateRequired(lastName) ||
       validateMaxLenght(lastName) ||
-      validateName(lastName);
+      validateNameFormat(lastName);
     const emailError = validateEmail(username);
     const passwordError = validatePassword(password);
     const confirmPasswordError = password !== confirmPassword;
-    const roleError = validateMaxLenght(role) || validateName(role);
+    const roleError = validateMaxLenght(role) || validateNameFormat(role);
 
     // eslint-disable-next-line functional/no-let
     let errors = {};

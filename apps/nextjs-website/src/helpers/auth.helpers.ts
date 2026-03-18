@@ -14,8 +14,9 @@ export const validateRequired = (value: string): string | null => {
   return value.trim().length === 0 ? 'requiredFieldError' : null;
 };
 
-export const validateName = (value: string): string | null => {
+export const validateNameFormat = (value: string): string | null => {
   const trimmedValue = value.trim();
+  if (trimmedValue.length === 0) return null;
 
   return !/^[A-Za-z0-9]+(?:[ _'-]?[A-Za-z0-9]+)*$/.test(trimmedValue)
     ? 'nameFieldError'
