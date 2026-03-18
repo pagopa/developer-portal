@@ -63,6 +63,10 @@ class ChatbotSettings(BaseSettings):
     # prompts
     condense_prompt_str: str = PROMPTS["condense_prompt_str"]
 
+    # ragas settings
+    max_retries: int = int(os.getenv("RAGAS_MAX_RETRIES", "3"))
+    max_workers: int = int(os.getenv("RAGAS_MAX_WORKERS", "2"))
+
     # sqs
     aws_sqs_queue_monitor_name: str = os.getenv(
         "CHB_AWS_SQS_QUEUE_MONITOR_NAME", "chatbot-monitor"

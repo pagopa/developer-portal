@@ -19,6 +19,13 @@ resource "aws_cloudfront_response_headers_policy" "redirect" {
       value    = "None"
     }
   }
+
+  security_headers_config {
+    frame_options {
+      frame_option = "SAMEORIGIN"
+      override     = true
+    }
+  }
 }
 
 resource "aws_cloudfront_distribution" "redirect" {

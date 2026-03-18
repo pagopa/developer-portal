@@ -40,10 +40,6 @@ inputs:
     description: 'Run sync in incremental mode by checking only file size'
     required: false
     default: 'true'
-  generate_root_metadata_file:
-    description: 'Generate root metadata file alongside folder-specific ones'
-    required: false
-    default: 'true'
   metadata_type:
     description: 'Type of metadata to generate (all, guides, solutions, release_notes)'
     required: false
@@ -163,7 +159,6 @@ runs:
         S3_PATH_TO_GITBOOK_DOCS: ${{ inputs.s3_path_to_gitbook_docs }}
         NEXT_PUBLIC_COGNITO_REGION: ${{ inputs.next_public_cognito_region }}
         FETCH_FROM_STRAPI: ${{ inputs.fetch_from_strapi }}
-        GENERATE_ROOT_METADATA_FILE: ${{ inputs.generate_root_metadata_file == 'true' && 'true' || 'false' }}
         GENERATE_URL_METADATA: 'true'
         GENERATE_SITEMAP_METADATA: 'true'
         SAVE_STRAPI_RESPONSES: 'true'
