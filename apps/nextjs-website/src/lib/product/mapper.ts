@@ -9,16 +9,16 @@ import {
 } from './types';
 import { compact } from 'lodash';
 
-export function makeProductsProps(
+export function mapProductsProps(
   locale: string,
   strapiProducts: StrapiProducts
 ): ReadonlyArray<Product> {
   return compact(
-    strapiProducts.data.map((product) => makeProductProps(locale, product))
+    strapiProducts.data.map((product) => mapProductProps(locale, product))
   );
 }
 
-export function makeProductProps(
+export function mapProductProps(
   locale: string,
   product: StrapiProduct
 ): Product | null {
