@@ -12,6 +12,7 @@ import {
 import { ButtonNaked } from '@/components/atoms/ButtonNaked/ButtonNaked';
 import { useTranslations } from 'next-intl';
 import { ReactNode } from 'react';
+import { MAX_INPUT_LENGTH } from '@/helpers/auth.helpers';
 
 export type ProfileDataCardItemProps = {
   id: string;
@@ -44,7 +45,7 @@ export const ProfileDataCardItem = (
           {infoCardItem.type === 'text' ? (
             infoCardItem.required ? (
               <RequiredTextField
-                inputProps={{ maxLength: 100 }}
+                inputProps={{ maxLength: MAX_INPUT_LENGTH }}
                 InputProps={{
                   sx: {
                     '& input': {
@@ -65,7 +66,7 @@ export const ProfileDataCardItem = (
               />
             ) : (
               <TextField
-                inputProps={{ maxLength: 100 }}
+                inputProps={{ maxLength: MAX_INPUT_LENGTH }}
                 InputProps={{
                   sx: {
                     '& input': {
