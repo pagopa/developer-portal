@@ -17,7 +17,7 @@ This folder contains the code and the API that are deployed in an AWS lambda fun
 If you wish to use Gemini models, you need to:
 
 - create a project in Google Cloud Platform
-- create google service account and store them into the file `.google_service_account.json`
+- create google service account and store it into the file `.google_service_account.json`
 - ensure that you can use [VertexAI](https://cloud.google.com/vertex-ai?hl=en) and [Discovery Engine](https://docs.cloud.google.com/generative-ai-app-builder/docs/reference/rest)
 
 ## Docker
