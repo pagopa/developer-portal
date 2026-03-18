@@ -5,39 +5,36 @@ import { ApiDataListPages, ApiDataListPageTemplateProps } from './types';
 import { compact } from 'lodash';
 import { BaseApiData } from '@/lib/apiDataList/types';
 
-function makeApiDataListPageCard(
-  locale: string,
-  item: BaseApiData,
-  slug: string
-) {
-  if (!item.apiRestDetail && !item.apiSoapDetail) {
-    console.error(
-      `Error while processing API Data with title "${item.title}": missing API details. Skipping...`
-    );
-    return null;
-  }
+const mapApiDataListPageCard =
+  (locale: string, slug: string) => (item: BaseApiData) => {
+    if (!item.apiRestDetail && !item.apiSoapDetail) {
+      console.error(
+        `Error while processing API Data with title "${item.title}": missing API details. Skipping...`
+      );
+      return null;
+    }
 
-  if (!item.apiRestDetail?.slug && !item.apiSoapDetail?.slug) {
-    console.error(`
+    if (!item.apiRestDetail?.slug && !item.apiSoapDetail?.slug) {
+      console.error(`
       Error while processing API Data with title "${item.title}": missing API slug. Skipping...`);
-    return null;
-  }
+      return null;
+    }
 
-  return {
-    labels: [
-      {
-        label: item.apiSoapDetail ? 'SOAP' : 'REST',
-      },
-    ].filter((label) => !!label.label),
-    title: item?.title,
-    text: item?.description || '',
-    icon: item?.icon?.url || undefined,
-    href: `/${locale}/${slug}/api/${
-      item.apiRestDetail ? item.apiRestDetail?.slug : item.apiSoapDetail?.slug
-    }`,
-    tags: item.tags || [],
+    return {
+      labels: [
+        {
+          label: item.apiSoapDetail ? 'SOAP' : 'REST',
+        },
+      ].filter((label) => !!label.label),
+      title: item?.title,
+      text: item?.description || '',
+      icon: item?.icon?.url || undefined,
+      href: `/${locale}/${slug}/api/${
+        item.apiRestDetail ? item.apiRestDetail?.slug : item.apiSoapDetail?.slug
+      }`,
+      tags: item.tags || [],
+    };
   };
-}
 
 export function mapApiDataListPages(
   locale: string,
@@ -74,9 +71,7 @@ export function mapApiDataListPages(
             )
           ),
           cards: compact(
-            apiPage.apiData.map((item) =>
-              makeApiDataListPageCard(locale, item, slug)
-            )
+            apiPage.apiData.map(mapApiDataListPageCard(locale, slug))
           ),
           bannerLinks: apiPage.bannerLinks.map(makeBannerLinkProps),
           seo: apiPage.seo,
