@@ -2,8 +2,7 @@
 
 This folder contains all the details to build a multi-agentic system (a system composed of multiple collaborating AI agents), named **Discovery**, with RAG (Retrieval-Augmented Generation, which enhances responses by retrieving relevant information from external sources) using the documentation provided in [`PagoPA Developer Portal`](https://developer.pagopa.it/).
 
-This chatbot uses [Google](https://ai.google.dev/) as provider; specifically, it uses an LLM and an Embedder models of the [Gemini](https://ai.google.dev/gemini-api/docs/models) family.
-Even though the provider is Google, we stored its Gemini API key in the AWS SSM parameter store.
+This chatbot uses [Google](https://ai.google.dev/) as provider; specifically, it uses an LLM and an Embedder models of the [Gemini](https://ai.google.dev/gemini-api/docs/models) family via Google Cloud's Vertex AI, authenticated with a Google Cloud service account (see the **Gemini** section below for setup details).
 
 The multi agentic system and the Retrieval-Augmented Generation (RAG) tools are implemented using [llama-index](https://docs.llamaindex.ai/en/stable/).
 
