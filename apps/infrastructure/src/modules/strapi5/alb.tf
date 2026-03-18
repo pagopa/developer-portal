@@ -29,7 +29,7 @@ module "cms_load_balancer" {
       }
 
       rules = {
-        # Allow requests with Origin header matching the developer portal domain
+        # Allow requests to /api/* with Origin matching the developer portal
         cors_allow_origin = {
           priority = 100
 
@@ -38,15 +38,22 @@ module "cms_load_balancer" {
             target_group_key = "cms-target-group-v5"
           }]
 
-          conditions = [{
-            http_header = {
-              http_header_name = "Origin"
-              values           = ["https://${var.dns_domain_name}"]
+          conditions = [
+            {
+              path_pattern = {
+                values = ["/api/*"]
+              }
+            },
+            {
+              http_header = {
+                http_header_name = "Origin"
+                values           = ["https://${var.dns_domain_name}"]
+              }
             }
-          }]
+          ]
         }
 
-        # Block requests with any other Origin header
+        # Block requests to /api/* with any other Origin header
         cors_block_other_origins = {
           priority = 200
 
@@ -57,12 +64,19 @@ module "cms_load_balancer" {
             message_body = "Forbidden - CORS policy violation"
           }]
 
-          conditions = [{
-            http_header = {
-              http_header_name = "Origin"
-              values           = ["*"]
+          conditions = [
+            {
+              path_pattern = {
+                values = ["/api/*"]
+              }
+            },
+            {
+              http_header = {
+                http_header_name = "Origin"
+                values           = ["*"]
+              }
             }
-          }]
+          ]
         }
       }
     }
