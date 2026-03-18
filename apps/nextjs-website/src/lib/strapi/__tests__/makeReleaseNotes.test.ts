@@ -1,6 +1,4 @@
 import { makeReleaseNotesProps } from '@/lib/strapi/makeProps/makeReleaseNotes';
-import { StrapiReleaseNotes } from '@/lib/strapi/types/releaseNotes';
-import _ from 'lodash';
 import {
   strapiReleaseNotes,
   expectedReleaseNotePageProps,
@@ -12,6 +10,7 @@ import {
   releaseNotesWithMissingProductSlug,
 } from '@/lib/strapi/__tests__/factories/releaseNotes';
 import { spyOnConsoleError } from '@/lib/strapi/__tests__/spyOnConsole';
+import { wrapAsPaginatedRootEntity } from '@/lib/strapi/__tests__/strapiEntityWrappers';
 
 describe('makeReleaseNotesProps', () => {
   afterEach(() => {
@@ -23,16 +22,13 @@ describe('makeReleaseNotesProps', () => {
   });
 
   it('should transform strapi release notes to release note page props', () => {
-    const result = makeReleaseNotesProps('it', _.cloneDeep(strapiReleaseNotes));
+    const result = makeReleaseNotesProps('it', strapiReleaseNotes);
     expect(result).toHaveLength(1);
     expect(result[0]).toMatchObject(expectedReleaseNotePageProps);
   });
 
   it('should handle minimal data with missing optional fields', () => {
-    const result = makeReleaseNotesProps(
-      'it',
-      _.cloneDeep(minimalDataReleaseNotes())
-    );
+    const result = makeReleaseNotesProps('it', minimalDataReleaseNotes());
     expect(result).toHaveLength(1);
     expect(result[0].title).toBe('Minimal Release Notes');
     expect(result[0].dirName).toBe('minimal-release-notes');
@@ -42,18 +38,7 @@ describe('makeReleaseNotesProps', () => {
   });
 
   it('should handle empty data array', () => {
-    const emptyData: StrapiReleaseNotes = {
-      data: [],
-      meta: {
-        pagination: {
-          page: 1,
-          pageSize: 25,
-          pageCount: 0,
-          total: 0,
-        },
-      },
-    };
-    const result = makeReleaseNotesProps('it', emptyData);
+    const result = makeReleaseNotesProps('it', wrapAsPaginatedRootEntity([]));
     expect(result).toHaveLength(0);
   });
 
@@ -76,12 +61,12 @@ describe('makeReleaseNotesProps', () => {
   });
 
   it('should correctly generate path from product slug', () => {
-    const result = makeReleaseNotesProps('it', _.cloneDeep(strapiReleaseNotes));
+    const result = makeReleaseNotesProps('it', strapiReleaseNotes);
     expect(result[0].path).toBe('/it/test-product/release-note');
   });
 
   it('should prioritize release note banner links over product banner links', () => {
-    const result = makeReleaseNotesProps('it', _.cloneDeep(strapiReleaseNotes));
+    const result = makeReleaseNotesProps('it', strapiReleaseNotes);
     expect(result[0].bannerLinks).toHaveLength(2);
     expect(result[0].bannerLinks?.[0].title).toBe('Banner Link 1');
     expect(result[0].bannerLinks?.[1].title).toBe('Banner Link 2');

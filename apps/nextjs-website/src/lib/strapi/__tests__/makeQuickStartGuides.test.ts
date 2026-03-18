@@ -6,7 +6,6 @@ import {
   quickStartGuidesWithMissingProductSlug,
 } from './factories/quickStartGuides';
 import { spyOnConsoleError } from './spyOnConsole';
-import { cloneDeep } from 'lodash';
 
 describe('makeQuickStartGuidesProps', () => {
   beforeEach(() => {
@@ -18,10 +17,7 @@ describe('makeQuickStartGuidesProps', () => {
   });
 
   it('should transform strapi quick start guides to page props', () => {
-    const result = makeQuickStartGuidesProps(
-      'it',
-      cloneDeep(strapiQuickStartGuides)
-    );
+    const result = makeQuickStartGuidesProps('it', strapiQuickStartGuides);
     expect(result).toHaveLength(1);
     const firstElement = result[0];
     expect(firstElement.abstract?.title).toBe('Quick Start Guide Title');

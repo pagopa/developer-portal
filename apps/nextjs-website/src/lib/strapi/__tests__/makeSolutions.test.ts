@@ -1,6 +1,4 @@
 import { makeSolutionsProps } from '@/lib/strapi/makeProps/makeSolutions';
-import { StrapiSolutions } from '@/lib/strapi/types/solutions';
-import _ from 'lodash';
 import {
   strapiSolutions,
   expectedSolutionTemplateProps,
@@ -13,6 +11,7 @@ import {
   solutionsWithItemMissingCaseHistorySlug,
 } from '@/lib/strapi/__tests__/factories/solutions';
 import { spyOnConsoleError } from '@/lib/strapi/__tests__/spyOnConsole';
+import { wrapAsPaginatedRootEntity } from '@/lib/strapi/__tests__/strapiEntityWrappers';
 
 describe('makeSolutionsProps', () => {
   afterEach(() => {
@@ -24,16 +23,13 @@ describe('makeSolutionsProps', () => {
   });
 
   it('should transform strapi solutions to solution props', () => {
-    const result = makeSolutionsProps('it', _.cloneDeep(strapiSolutions));
+    const result = makeSolutionsProps('it', strapiSolutions);
     expect(result).toHaveLength(1);
     expect(result[0]).toMatchObject(expectedSolutionTemplateProps);
   });
 
   it('should handle minimal data with missing optional fields', () => {
-    const result = makeSolutionsProps(
-      'it',
-      _.cloneDeep(minimalDataSolutions())
-    );
+    const result = makeSolutionsProps('it', minimalDataSolutions());
     expect(result).toHaveLength(1);
     const firstElement = result[0];
     expect(firstElement.description).toBeUndefined();
@@ -48,18 +44,7 @@ describe('makeSolutionsProps', () => {
   });
 
   it('should handle empty data array', () => {
-    const emptyData: StrapiSolutions = {
-      data: [],
-      meta: {
-        pagination: {
-          page: 1,
-          pageSize: 25,
-          pageCount: 0,
-          total: 0,
-        },
-      },
-    };
-    const result = makeSolutionsProps('it', emptyData);
+    const result = makeSolutionsProps('it', wrapAsPaginatedRootEntity([]));
     expect(result).toHaveLength(0);
   });
 

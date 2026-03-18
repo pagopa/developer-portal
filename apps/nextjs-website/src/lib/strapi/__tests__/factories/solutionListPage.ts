@@ -1,36 +1,37 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { strapiSolutionListPage } from '@/lib/strapi/__tests__/fixtures/solutionListPage';
+import { wrapAsRootEntity } from '@/lib/strapi/__tests__/strapiEntityWrappers';
 
 export function minimalDataSolutionListPage() {
-  return {
+  return wrapAsRootEntity({
     title: 'Minimal Solutions',
     description: 'Minimal solutions page',
     solutions: [],
     caseHistories: undefined,
     features: undefined,
     seo: undefined,
-  };
+  });
 }
 
 export function solutionListPageWithoutCaseHistories() {
-  return {
+  return wrapAsRootEntity({
     ...strapiSolutionListPage,
     caseHistories: undefined,
-  };
+  });
 }
 
 export function solutionListPageWithoutFeatures() {
-  return {
+  return wrapAsRootEntity({
     ...strapiSolutionListPage,
     features: undefined,
-  };
+  });
 }
 
 export function solutionListPageWithoutSolutions() {
-  return {
+  return wrapAsRootEntity({
     ...strapiSolutionListPage,
     solutions: [],
-  };
+  });
 }
 
 export function solutionListPageWithMissingSolutionSlug() {

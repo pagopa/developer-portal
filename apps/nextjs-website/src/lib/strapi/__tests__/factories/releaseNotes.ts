@@ -1,71 +1,63 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { strapiReleaseNotes } from '@/lib/strapi/__tests__/fixtures/releaseNotes';
-import { StrapiReleaseNotes } from '@/lib/strapi/types/releaseNotes';
+import {
+  StrapiReleaseNote,
+  StrapiReleaseNotes,
+} from '@/lib/strapi/types/releaseNotes';
+import { wrapAsPaginatedRootEntity } from '@/lib/strapi/__tests__/strapiEntityWrappers';
 
-export function minimalDataReleaseNotes() {
+export function minimalDataReleaseNotes(): StrapiReleaseNotes {
   const strapiReleaseNote = strapiReleaseNotes.data[0];
-  return {
-    ...strapiReleaseNotes,
-    data: [
-      {
-        ...strapiReleaseNote,
-        title: 'Minimal Release Notes',
-        dirName: 'minimal-release-notes',
-        landingFile: 'minimal.md',
-        bannerLinks: [],
-        seo: undefined,
-        product: {
-          ...strapiReleaseNote.product!,
-          bannerLinks: undefined,
-        },
+  return wrapAsPaginatedRootEntity([
+    {
+      ...strapiReleaseNote,
+      title: 'Minimal Release Notes',
+      dirName: 'minimal-release-notes',
+      landingFile: 'minimal.md',
+      bannerLinks: [],
+      seo: undefined,
+      product: {
+        ...strapiReleaseNote.product!,
+        bannerLinks: undefined,
       },
-    ],
-  } satisfies StrapiReleaseNotes;
+    } as StrapiReleaseNote,
+  ]);
 }
 
-export function releaseNotesWithoutBannerLinks() {
+export function releaseNotesWithoutBannerLinks(): StrapiReleaseNotes {
   const strapiReleaseNote = strapiReleaseNotes.data[0];
-  return {
-    ...strapiReleaseNotes,
-    data: [
-      {
-        ...strapiReleaseNote,
-        bannerLinks: [],
-      },
-    ],
-  } satisfies StrapiReleaseNotes;
+  return wrapAsPaginatedRootEntity([
+    {
+      ...strapiReleaseNote,
+      bannerLinks: [],
+    } as StrapiReleaseNote,
+  ]);
 }
 
-export function releaseNotesWithoutProductBannerLinks() {
+export function releaseNotesWithoutProductBannerLinks(): StrapiReleaseNotes {
   const strapiReleaseNote = strapiReleaseNotes.data[0];
-  return {
-    ...strapiReleaseNotes,
-    data: [
-      {
-        ...strapiReleaseNote,
+  return wrapAsPaginatedRootEntity([
+    {
+      ...strapiReleaseNote,
+      bannerLinks: [],
+      product: {
+        ...strapiReleaseNote.product!,
         bannerLinks: [],
-        product: {
-          ...strapiReleaseNote.product!,
-          bannerLinks: [],
-        },
       },
-    ],
-  } satisfies StrapiReleaseNotes;
+    } as StrapiReleaseNote,
+  ]);
 }
 
-export function releaseNotesWithMissingProductSlug() {
+export function releaseNotesWithMissingProductSlug(): StrapiReleaseNotes {
   const strapiReleaseNote = strapiReleaseNotes.data[0];
-  return {
-    ...strapiReleaseNotes,
-    data: [
-      {
-        ...strapiReleaseNote,
-        title: 'Release Note Without Product Slug',
-        product: {
-          ...strapiReleaseNote.product!,
-          slug: undefined as any,
-        },
+  return wrapAsPaginatedRootEntity([
+    {
+      ...strapiReleaseNote,
+      title: 'Release Note Without Product Slug',
+      product: {
+        ...strapiReleaseNote.product!,
+        slug: undefined as any,
       },
-    ],
-  } satisfies StrapiReleaseNotes;
+    } as StrapiReleaseNote,
+  ]);
 }

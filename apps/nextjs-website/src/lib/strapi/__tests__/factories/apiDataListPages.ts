@@ -1,9 +1,10 @@
 import { strapiApiDataListPages } from '@/lib/strapi/__tests__/fixtures/apiDataListPages';
 import { StrapiApiDataListPages } from '@/lib/strapi/types/apiDataListPages';
+import { wrapAsRootEntity } from '@/lib/strapi/__tests__/strapiEntityWrappers';
 
-export function minimalApiDataListPages(): StrapiApiDataListPages {
-  const page = strapiApiDataListPages[0];
-  return [
+export function minimalApiDataListPages() {
+  const page = strapiApiDataListPages.data[0];
+  return wrapAsRootEntity<StrapiApiDataListPages>([
     {
       ...page,
       title: 'Minimal API List Page',
@@ -26,23 +27,23 @@ export function minimalApiDataListPages(): StrapiApiDataListPages {
         },
       ],
     },
-  ];
+  ]);
 }
 
-export function apiDataListPageWithEmptyApiData(): StrapiApiDataListPages {
-  const page = strapiApiDataListPages[0];
-  return [
+export function apiDataListPageWithEmptyApiData() {
+  const page = strapiApiDataListPages.data[0];
+  return wrapAsRootEntity<StrapiApiDataListPages>([
     {
       ...page,
       title: 'Empty API List Page',
       api_data: [],
     },
-  ];
+  ]);
 }
 
-export function apiDataListPageWithMixedApiTypes(): StrapiApiDataListPages {
-  const page = strapiApiDataListPages[0];
-  return [
+export function apiDataListPageWithMixedApiTypes() {
+  const page = strapiApiDataListPages.data[0];
+  return wrapAsRootEntity<StrapiApiDataListPages>([
     {
       ...page,
       title: 'Mixed API Types Page',
@@ -89,22 +90,22 @@ export function apiDataListPageWithMixedApiTypes(): StrapiApiDataListPages {
         },
       ],
     },
-  ];
+  ]);
 }
 
-export function apiDataListPageWithoutDescription(): StrapiApiDataListPages {
-  const page = strapiApiDataListPages[0];
-  return [
+export function apiDataListPageWithoutDescription() {
+  const page = strapiApiDataListPages.data[0];
+  return wrapAsRootEntity<StrapiApiDataListPages>([
     {
       ...page,
       description: undefined,
     },
-  ];
+  ]);
 }
 
-export function apiDataListPageWithInvalidApiData(): StrapiApiDataListPages {
-  const page = strapiApiDataListPages[0];
-  return [
+export function apiDataListPageWithInvalidApiData() {
+  const page = strapiApiDataListPages.data[0];
+  return wrapAsRootEntity<StrapiApiDataListPages>([
     {
       ...page,
       title: 'Invalid API Data Page',
@@ -135,12 +136,12 @@ export function apiDataListPageWithInvalidApiData(): StrapiApiDataListPages {
         },
       ],
     },
-  ];
+  ]);
 }
 
-export function multipleApiDataListPages(): StrapiApiDataListPages {
-  const page = strapiApiDataListPages[0];
-  return [
+export function multipleApiDataListPages() {
+  const page = strapiApiDataListPages.data[0];
+  return wrapAsRootEntity<StrapiApiDataListPages>([
     page,
     {
       ...page,
@@ -163,16 +164,16 @@ export function multipleApiDataListPages(): StrapiApiDataListPages {
         },
       ],
     },
-  ];
+  ]);
 }
 
-export function emptyApiDataListPages(): StrapiApiDataListPages {
-  return [];
+export function emptyApiDataListPages() {
+  return wrapAsRootEntity<StrapiApiDataListPages>([]);
 }
 
-export function apiDataListPageWithBothRestAndSoap(): StrapiApiDataListPages {
-  const page = strapiApiDataListPages[0];
-  return [
+export function apiDataListPageWithBothRestAndSoap() {
+  const page = strapiApiDataListPages.data[0];
+  return wrapAsRootEntity<StrapiApiDataListPages>([
     {
       ...page,
       api_data: [
@@ -195,5 +196,5 @@ export function apiDataListPageWithBothRestAndSoap(): StrapiApiDataListPages {
         },
       ],
     },
-  ];
+  ]);
 }

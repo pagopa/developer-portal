@@ -1,12 +1,11 @@
 import { makeTutorialsProps } from '@/lib/strapi/makeProps/makeTutorials';
-import { StrapiTutorials } from '@/lib/strapi/types/tutorial';
 import {
   minimalDataTutorials,
   tutorialsWithAnItemMissingSlug,
   tutorialsWithAnItemMissingProductSlug,
 } from '@/lib/strapi/__tests__/factories/tutorials';
 import { spyOnConsoleError } from '@/lib/strapi/__tests__/spyOnConsole';
-import _ from 'lodash';
+import { wrapAsPaginatedRootEntity } from '@/lib/strapi/__tests__/strapiEntityWrappers';
 import { strapiTutorials } from './fixtures/tutorials';
 
 describe('makeTutorialsProps', () => {
@@ -19,7 +18,7 @@ describe('makeTutorialsProps', () => {
   });
 
   it('should transform strapi tutorials to tutorials props', () => {
-    const result = makeTutorialsProps('it', _.cloneDeep(strapiTutorials), {});
+    const result = makeTutorialsProps('it', strapiTutorials, {});
     expect(result).toHaveLength(1);
     expect(result[0]).toMatchObject({
       image: {
@@ -81,18 +80,7 @@ describe('makeTutorialsProps', () => {
   });
 
   it('should handle empty data array', () => {
-    const emptyData: StrapiTutorials = {
-      data: [],
-      meta: {
-        pagination: {
-          page: 1,
-          pageSize: 25,
-          pageCount: 0,
-          total: 0,
-        },
-      },
-    };
-    const result = makeTutorialsProps('it', emptyData, {});
+    const result = makeTutorialsProps('it', wrapAsPaginatedRootEntity([]), {});
     expect(result).toHaveLength(0);
   });
 

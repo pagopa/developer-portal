@@ -1,7 +1,7 @@
-import { StrapiUrlReplaceMap } from '@/lib/strapi/types/urlReplaceMap';
 import { productJson } from './product';
+import { wrapAsRootEntity } from '@/lib/strapi/__tests__/strapiEntityWrappers';
 
-export const strapiUrlReplaceMapFixture: StrapiUrlReplaceMap = {
+export const strapiUrlReplaceMapFixture = wrapAsRootEntity({
   urlToGuide: [
     {
       id: 1,
@@ -16,7 +16,7 @@ export const strapiUrlReplaceMapFixture: StrapiUrlReplaceMap = {
       },
     },
   ],
-};
+});
 
 export const expectedUrlReplaceMapFixture = {
   'getting-started': '/it/firma-con-io/guides/getting-started/step-2',

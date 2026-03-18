@@ -1,10 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { strapiApiDataList } from '@/lib/strapi/__tests__/fixtures/apiDataList';
 import { StrapiApiDataList } from '@/lib/strapi/types/apiDataList';
+import { wrapAsRootEntity } from '@/lib/strapi/__tests__/strapiEntityWrappers';
 
 export function minimalApiDataList() {
-  const apiData = strapiApiDataList[0];
-  return [
+  const apiData = strapiApiDataList.data[0];
+  return wrapAsRootEntity<StrapiApiDataList>([
     {
       ...apiData,
       title: 'Minimal API Data',
@@ -39,45 +40,45 @@ export function minimalApiDataList() {
       },
       apiSoapDetail: undefined,
     },
-  ] as StrapiApiDataList;
+  ] as StrapiApiDataList);
 }
 
 export function apiDataWithoutBannerLinks() {
-  const apiData = strapiApiDataList[0];
-  return [
+  const apiData = strapiApiDataList.data[0];
+  return wrapAsRootEntity<StrapiApiDataList>([
     {
       ...apiData,
       bannerLinks: [],
     },
-  ] as StrapiApiDataList;
+  ] as StrapiApiDataList);
 }
 
 export function apiDataWithMissingProduct() {
-  const apiData = strapiApiDataList[0];
-  return [
+  const apiData = strapiApiDataList.data[0];
+  return wrapAsRootEntity<StrapiApiDataList>([
     {
       ...apiData,
       title: 'API Data Without Product',
       product: undefined,
     },
-  ] as StrapiApiDataList;
+  ] as StrapiApiDataList);
 }
 
 export function apiDataWithoutApiDetails() {
-  const apiData = strapiApiDataList[0];
-  return [
+  const apiData = strapiApiDataList.data[0];
+  return wrapAsRootEntity<StrapiApiDataList>([
     {
       ...apiData,
       title: 'API Data Without API Details',
       apiRestDetail: undefined,
       apiSoapDetail: undefined,
     },
-  ] as StrapiApiDataList;
+  ] as StrapiApiDataList);
 }
 
 export function apiDataWithInvalidRestApiDetails() {
-  const apiData = strapiApiDataList[0];
-  return [
+  const apiData = strapiApiDataList.data[0];
+  return wrapAsRootEntity<StrapiApiDataList>([
     {
       ...apiData,
       title: 'API Data Without API Details',
@@ -87,12 +88,12 @@ export function apiDataWithInvalidRestApiDetails() {
       },
       apiSoapDetail: undefined,
     },
-  ] as StrapiApiDataList;
+  ] as StrapiApiDataList);
 }
 
 export function apiDatalistWithItemMissingSlug() {
-  const apiData = strapiApiDataList[0];
-  return [
+  const apiData = strapiApiDataList.data[0];
+  return wrapAsRootEntity<StrapiApiDataList>([
     {
       ...apiData,
       title: 'API Data Without API Details',
@@ -103,16 +104,16 @@ export function apiDatalistWithItemMissingSlug() {
         dirName: 'soap-dir',
       },
     },
-  ] as StrapiApiDataList;
+  ] as StrapiApiDataList);
 }
 
 export function mixedApiDataValidAndInvalid() {
-  const validRestApi = strapiApiDataList[0];
-  const validSoapApi = strapiApiDataList[1];
-  const invalidApi = apiDataWithoutApiDetails()[0];
-  const invalidProductApi = apiDataWithMissingProduct()[0];
+  const validRestApi = strapiApiDataList.data[0];
+  const validSoapApi = strapiApiDataList.data[1];
+  const invalidApi = apiDataWithoutApiDetails().data[0];
+  const invalidProductApi = apiDataWithMissingProduct().data[0];
 
-  return [
+  return wrapAsRootEntity<StrapiApiDataList>([
     validRestApi,
     invalidApi,
     validSoapApi,
@@ -133,12 +134,12 @@ export function mixedApiDataValidAndInvalid() {
         ],
       },
     },
-  ] as StrapiApiDataList;
+  ] as StrapiApiDataList);
 }
 
 export function apiDataWithoutProductBannerLinks() {
-  const apiData = strapiApiDataList[0];
-  return [
+  const apiData = strapiApiDataList.data[0];
+  return wrapAsRootEntity<StrapiApiDataList>([
     {
       ...apiData,
       bannerLinks: [],
@@ -159,41 +160,41 @@ export function apiDataWithoutProductBannerLinks() {
         bannerLinks: [],
       },
     },
-  ] as StrapiApiDataList;
+  ] as StrapiApiDataList);
 }
 
 export function apiDataWithCorruptedProduct() {
-  const apiData = strapiApiDataList[0];
-  return [
+  const apiData = strapiApiDataList.data[0];
+  return wrapAsRootEntity<StrapiApiDataList>([
     {
       ...apiData,
       title: 'API Data With Corrupted Product',
       product: undefined as any,
     },
-  ] as StrapiApiDataList;
+  ] as StrapiApiDataList);
 }
 
 export function allInvalidApiData() {
-  return [
-    apiDataWithoutApiDetails()[0],
-    apiDataWithMissingProduct()[0],
-    apiDataWithCorruptedProduct()[0],
-  ] as StrapiApiDataList;
+  return wrapAsRootEntity<StrapiApiDataList>([
+    apiDataWithoutApiDetails().data[0],
+    apiDataWithMissingProduct().data[0],
+    apiDataWithCorruptedProduct().data[0],
+  ] as StrapiApiDataList);
 }
 
 export function soapApiDataOnly() {
-  const soapApi = strapiApiDataList[1];
-  return [soapApi] as StrapiApiDataList;
+  const soapApi = strapiApiDataList.data[1];
+  return wrapAsRootEntity<StrapiApiDataList>([soapApi] as StrapiApiDataList);
 }
 
 export function restApiDataOnly() {
-  const restApi = strapiApiDataList[0];
-  return [restApi] as StrapiApiDataList;
+  const restApi = strapiApiDataList.data[0];
+  return wrapAsRootEntity<StrapiApiDataList>([restApi] as StrapiApiDataList);
 }
 
 export function restApiDataWithMultipleSpecs() {
-  const restApi = strapiApiDataList[0];
-  return [
+  const restApi = strapiApiDataList.data[0];
+  return wrapAsRootEntity<StrapiApiDataList>([
     {
       ...restApi,
       apiRestDetail: {
@@ -214,5 +215,5 @@ export function restApiDataWithMultipleSpecs() {
         ],
       },
     },
-  ] as StrapiApiDataList;
+  ] as StrapiApiDataList);
 }

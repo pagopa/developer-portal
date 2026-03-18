@@ -9,10 +9,7 @@ import {
 
 describe('makeUseCaseListPagesProps', () => {
   it('should transform strapi use case list pages to use cases page props', () => {
-    const result = makeUseCaseListPagesProps(
-      'it',
-      _.cloneDeep(strapiUseCaseListPages)
-    );
+    const result = makeUseCaseListPagesProps('it', strapiUseCaseListPages);
     expect(result).toHaveLength(1);
     const page = result[0];
     expect(page.abstract?.title).toBe('Use Cases');

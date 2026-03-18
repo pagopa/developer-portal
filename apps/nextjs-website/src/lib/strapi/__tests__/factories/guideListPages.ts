@@ -1,37 +1,41 @@
 import { strapiGuideListPagesData } from '@/lib/strapi/__tests__/fixtures/guideListPages';
 import { StrapiGuideListPages } from '@/lib/strapi/types/guideListPage';
+import { wrapAsPaginatedRootEntity } from '@/lib/strapi/__tests__/strapiEntityWrappers';
 
-export function guideListPagesWithItemsMissingSlug() {
-  return strapiGuideListPagesData.data.map((guides) => ({
-    ...guides,
-    guidesByCategory: guides.guidesByCategory.map((guidePerCategory) => ({
-      ...guidePerCategory,
-      guides: guidePerCategory.guides.map((guide) => ({
-        ...guide,
-        slug: undefined as any,
+export function guideListPagesWithItemsMissingSlug(): StrapiGuideListPages {
+  return wrapAsPaginatedRootEntity(
+    strapiGuideListPagesData.data.map((guides) => ({
+      ...guides,
+      guidesByCategory: guides.guidesByCategory.map((guidePerCategory) => ({
+        ...guidePerCategory,
+        guides: guidePerCategory.guides.map((guide) => ({
+          ...guide,
+          slug: undefined as any,
+        })),
       })),
-    })),
-  }));
+    }))
+  );
 }
 
-export function guideListPagesWithItemsMissingImages() {
-  return strapiGuideListPagesData.data.map((guides) => ({
-    ...guides,
-    guidesByCategory: guides.guidesByCategory.map((guidePerCategory) => ({
-      ...guidePerCategory,
-      guides: guidePerCategory.guides.map((guide) => ({
-        ...guide,
-        image: undefined as any,
-        mobileImage: undefined as any,
+export function guideListPagesWithItemsMissingImages(): StrapiGuideListPages {
+  return wrapAsPaginatedRootEntity(
+    strapiGuideListPagesData.data.map((guides) => ({
+      ...guides,
+      guidesByCategory: guides.guidesByCategory.map((guidePerCategory) => ({
+        ...guidePerCategory,
+        guides: guidePerCategory.guides.map((guide) => ({
+          ...guide,
+          image: undefined as any,
+          mobileImage: undefined as any,
+        })),
       })),
-    })),
-  }));
+    }))
+  );
 }
 
-export function guideListPagesWithItemsMissingListItem() {
-  return {
-    ...strapiGuideListPagesData,
-    data: strapiGuideListPagesData.data.map((guides) => ({
+export function guideListPagesWithItemsMissingListItem(): StrapiGuideListPages {
+  return wrapAsPaginatedRootEntity(
+    strapiGuideListPagesData.data.map((guides) => ({
       ...guides,
       guidesByCategory: guides.guidesByCategory.map((guidePerCategory) => ({
         ...guidePerCategory,
@@ -43,30 +47,28 @@ export function guideListPagesWithItemsMissingListItem() {
           },
         ],
       })),
-    })),
-  };
+    }))
+  );
 }
 
-export function guideListPagesWithItemsWithWrongDataType() {
-  return {
-    ...strapiGuideListPagesData,
-    data: strapiGuideListPagesData.data.map((guides) => ({
+export function guideListPagesWithItemsWithWrongDataType(): StrapiGuideListPages {
+  return wrapAsPaginatedRootEntity(
+    strapiGuideListPagesData.data.map((guides) => ({
       ...guides,
-      title: 12345, // Wrong data type: it should be a string
-      description: 67890, // Wrong data type: it should be a string
-    })),
-  };
+      title: 12345 as any, // Wrong data type: it should be a string
+      description: 67890 as any, // Wrong data type: it should be a string
+    }))
+  );
 }
 
-export function guideListPagesWithItemMissingProductSlug() {
-  return {
-    ...strapiGuideListPagesData,
-    data: strapiGuideListPagesData.data.map((guides) => ({
+export function guideListPagesWithItemMissingProductSlug(): StrapiGuideListPages {
+  return wrapAsPaginatedRootEntity(
+    strapiGuideListPagesData.data.map((guides) => ({
       ...guides,
       product: {
         ...guides.product,
         slug: undefined as any,
       },
-    })),
-  } as StrapiGuideListPages;
+    }))
+  );
 }

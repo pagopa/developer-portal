@@ -1,8 +1,7 @@
 import { spyOnConsoleError } from '@/lib/strapi/__tests__/spyOnConsole';
-import _ from 'lodash';
+import { wrapAsPaginatedRootEntity } from '@/lib/strapi/__tests__/strapiEntityWrappers';
 import { makeUseCasesProps } from '../makeProps/makeUseCases';
 import { strapiUseCases } from './fixtures/useCases';
-import { StrapiUseCases } from '../types/useCase';
 import {
   minimalDataUseCases,
   useCasesWithAnItemMissingProductSlug,
@@ -88,18 +87,7 @@ describe('makeUseCasesProps', () => {
   });
 
   it('should handle empty data array', () => {
-    const emptyData: StrapiUseCases = {
-      data: [],
-      meta: {
-        pagination: {
-          page: 1,
-          pageSize: 25,
-          pageCount: 0,
-          total: 0,
-        },
-      },
-    };
-    const result = makeUseCasesProps('it', emptyData, {});
+    const result = makeUseCasesProps('it', wrapAsPaginatedRootEntity([]), {});
     expect(result).toHaveLength(0);
   });
 

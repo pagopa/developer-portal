@@ -35,17 +35,7 @@ describe('makeGuideListPageProps', () => {
   });
 
   it('should return a single element array of type GuideListPageProps with only one guide', () => {
-    const guideListWithMissingSlugsData = {
-      data: [...guideListPagesWithItemsMissingSlug()],
-      meta: {
-        pagination: {
-          page: 1,
-          pageSize: 1,
-          pageCount: 1,
-          total: 1,
-        },
-      },
-    };
+    const guideListWithMissingSlugsData = guideListPagesWithItemsMissingSlug();
     const result = makeGuideListPagesProps('it', guideListWithMissingSlugsData);
     expect(result).toHaveLength(1);
     expect(result[0]).toEqual({
@@ -62,17 +52,8 @@ describe('makeGuideListPageProps', () => {
   });
 
   it('should return a single element array of type GuideListPageProps with guides without images', () => {
-    const guideListWithMissingImagesData = {
-      data: [...guideListPagesWithItemsMissingImages()],
-      meta: {
-        pagination: {
-          page: 1,
-          pageSize: 1,
-          pageCount: 1,
-          total: 1,
-        },
-      },
-    };
+    const guideListWithMissingImagesData =
+      guideListPagesWithItemsMissingImages();
     const result = makeGuideListPagesProps(
       'it',
       guideListWithMissingImagesData

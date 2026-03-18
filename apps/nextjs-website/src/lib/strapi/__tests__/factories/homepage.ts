@@ -1,8 +1,9 @@
 import { strapiHomepage } from '@/lib/strapi/__tests__/fixtures/homepage';
 import { StrapiHomepage } from '@/lib/strapi/types/homepage';
+import { wrapAsRootEntity } from '@/lib/strapi/__tests__/strapiEntityWrappers';
 
 export function minimalDataHomepage() {
-  return {
+  return wrapAsRootEntity({
     updatedAt: new Date().toISOString(),
     comingsoonDocumentation: {
       title: 'Minimal Documentation',
@@ -18,33 +19,33 @@ export function minimalDataHomepage() {
     ecosystem: undefined,
     webinars: [],
     seo: undefined,
-  } satisfies StrapiHomepage;
+  } satisfies StrapiHomepage);
 }
 
 export function homepageWithoutNewsShowcase() {
-  return {
+  return wrapAsRootEntity({
     ...strapiHomepage,
     newsShowcase: undefined,
-  } satisfies StrapiHomepage;
+  } satisfies StrapiHomepage);
 }
 
 export function homepageWithoutEcosystem() {
-  return {
+  return wrapAsRootEntity({
     ...strapiHomepage,
     ecosystem: undefined,
-  } satisfies StrapiHomepage;
+  } satisfies StrapiHomepage);
 }
 
 export function homepageWithoutWebinars() {
-  return {
+  return wrapAsRootEntity({
     ...strapiHomepage,
     webinars: [],
-  } satisfies StrapiHomepage;
+  } satisfies StrapiHomepage);
 }
 
 export function homepageWithoutSeo() {
-  return {
+  return wrapAsRootEntity({
     ...strapiHomepage,
     seo: undefined,
-  } satisfies StrapiHomepage;
+  } satisfies StrapiHomepage);
 }

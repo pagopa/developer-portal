@@ -1,10 +1,8 @@
 import { makeOverviewsProps } from '@/lib/strapi/makeProps/makeOverviews';
-import { StrapiOverviews } from '@/lib/strapi/types/overviews';
 import {
   overviewPageProps,
   strapiOverviews,
 } from '@/lib/strapi/__tests__/fixtures/overviews';
-import _ from 'lodash';
 import {
   minimalDataSingleOverview,
   overviewsWithItemWithEmptyGuideProductSlug,
@@ -14,6 +12,7 @@ import {
   overviewsWithItemMissingGuideProductSlug,
 } from '@/lib/strapi/__tests__/factories/overviews';
 import { spyOnConsoleError } from './spyOnConsole';
+import { wrapAsPaginatedRootEntity } from '@/lib/strapi/__tests__/strapiEntityWrappers';
 
 describe('makeOverviewsProps', () => {
   beforeEach(() => {
@@ -25,17 +24,14 @@ describe('makeOverviewsProps', () => {
   });
 
   it('should transform strapi overviews to overview page props', () => {
-    const result = makeOverviewsProps('it', _.cloneDeep(strapiOverviews));
+    const result = makeOverviewsProps('it', strapiOverviews);
 
     expect(result).toHaveLength(1);
     expect(result[0]).toEqual(overviewPageProps);
   });
 
   it('should handle minimal data with null optional fields', () => {
-    const result = makeOverviewsProps(
-      'it',
-      _.cloneDeep(minimalDataSingleOverview())
-    );
+    const result = makeOverviewsProps('it', minimalDataSingleOverview());
 
     expect(result).toHaveLength(1);
     const firseElement = result[0];
@@ -49,19 +45,7 @@ describe('makeOverviewsProps', () => {
   });
 
   it('should handle empty data array', () => {
-    const emptyData: StrapiOverviews = {
-      data: [],
-      meta: {
-        pagination: {
-          page: 1,
-          pageSize: 25,
-          pageCount: 0,
-          total: 0,
-        },
-      },
-    };
-
-    const result = makeOverviewsProps('it', emptyData);
+    const result = makeOverviewsProps('it', wrapAsPaginatedRootEntity([]));
 
     expect(result).toHaveLength(0);
   });

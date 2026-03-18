@@ -1,5 +1,4 @@
 import { makeTutorialListPagesProps } from '@/lib/strapi/makeProps/makeTutorialListPages';
-import _ from 'lodash';
 import { strapiTutorialListPages } from './fixtures/tutorialListPage';
 import {
   minimalTutorialListPages,
@@ -9,10 +8,7 @@ import {
 
 describe('makeTutorialListPagesProps', () => {
   it('should transform strapi tutorial list pages to tutorials page props', () => {
-    const result = makeTutorialListPagesProps(
-      'it',
-      _.cloneDeep(strapiTutorialListPages)
-    );
+    const result = makeTutorialListPagesProps('it', strapiTutorialListPages);
     expect(result).toHaveLength(1);
     const page = result[0];
     expect(page.abstract?.title).toBe('Tutorials');
@@ -48,10 +44,7 @@ describe('makeTutorialListPagesProps', () => {
   });
 
   it('should handle tutorial list pages with banner links', () => {
-    const result = makeTutorialListPagesProps(
-      'it',
-      _.cloneDeep(strapiTutorialListPages)
-    );
+    const result = makeTutorialListPagesProps('it', strapiTutorialListPages);
     expect(result).toHaveLength(1);
     const firstElement = result[0];
     expect(firstElement.bannerLinks).toBeDefined();

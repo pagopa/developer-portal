@@ -1,10 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { strapiProducts } from '@/lib/strapi/__tests__/fixtures/products';
-import { StrapiProduct } from '@/lib/strapi/types/product';
+import { StrapiProducts } from '@/lib/strapi/types/product';
+import { wrapAsPaginatedRootEntity } from '@/lib/strapi/__tests__/strapiEntityWrappers';
 
-export function minimalProduct(): readonly StrapiProduct[] {
+export function minimalProduct(): StrapiProducts {
   const strapiProduct = strapiProducts.data[0];
-  return [
+  return wrapAsPaginatedRootEntity([
     {
       ...strapiProduct,
       name: 'Minimal Product',
@@ -21,34 +22,34 @@ export function minimalProduct(): readonly StrapiProduct[] {
       release_note: undefined,
       use_case_list_page: undefined,
     },
-  ];
+  ]);
 }
 
-export function productsWithAnItemWithEmptySlug(): readonly StrapiProduct[] {
+export function productsWithAnItemWithEmptySlug(): StrapiProducts {
   const strapiProduct = strapiProducts.data[0];
-  return [
+  return wrapAsPaginatedRootEntity([
     {
       ...strapiProduct,
       name: 'Product Without Slug',
       slug: '',
     },
-  ];
+  ]);
 }
 
-export function productsWithAnItemMissingSlug(): readonly StrapiProduct[] {
+export function productsWithAnItemMissingSlug(): StrapiProducts {
   const strapiProduct = strapiProducts.data[0];
-  return [
+  return wrapAsPaginatedRootEntity([
     {
       ...strapiProduct,
       name: 'Product Without Slug',
       slug: undefined as any,
     },
-  ];
+  ]);
 }
 
-export function productWithMultipleApiData(): readonly StrapiProduct[] {
+export function productWithMultipleApiData(): StrapiProducts {
   const strapiProduct = strapiProducts.data[0];
-  return [
+  return wrapAsPaginatedRootEntity([
     {
       ...strapiProduct,
       api_data_list_page: {
@@ -70,12 +71,12 @@ export function productWithMultipleApiData(): readonly StrapiProduct[] {
         ],
       },
     },
-  ];
+  ]);
 }
 
-export function productWithEmptyApiData(): readonly StrapiProduct[] {
+export function productWithEmptyApiData(): StrapiProducts {
   const strapiProduct = strapiProducts.data[0];
-  return [
+  return wrapAsPaginatedRootEntity([
     {
       ...strapiProduct,
       api_data_list_page: {
@@ -84,24 +85,24 @@ export function productWithEmptyApiData(): readonly StrapiProduct[] {
         api_data: [],
       },
     },
-  ];
+  ]);
 }
 
-export function productWithCorruptedData(): readonly StrapiProduct[] {
+export function productWithCorruptedData(): StrapiProducts {
   const strapiProduct = strapiProducts.data[0];
-  return [
+  return wrapAsPaginatedRootEntity([
     {
       ...strapiProduct,
       api_data_list_page: 'corrupted api data' as any,
       name: 'Corrupted Product',
     },
-  ];
+  ]);
 }
 
-export function mixedValidAndInvalidProducts(): readonly StrapiProduct[] {
+export function mixedValidAndInvalidProducts(): StrapiProducts {
   const validProduct = strapiProducts.data[0];
-  const invalidProduct = productsWithAnItemMissingSlug()[0];
-  return [
+  const invalidProduct = productsWithAnItemMissingSlug().data[0];
+  return wrapAsPaginatedRootEntity([
     validProduct,
     invalidProduct,
     {
@@ -109,9 +110,12 @@ export function mixedValidAndInvalidProducts(): readonly StrapiProduct[] {
       name: 'Another Valid Product',
       slug: 'another-valid-product',
     },
-  ];
+  ]);
 }
 
-export function allInvalidProducts(): readonly StrapiProduct[] {
-  return [productsWithAnItemMissingSlug()[0], productWithCorruptedData()[0]];
+export function allInvalidProducts(): StrapiProducts {
+  return wrapAsPaginatedRootEntity([
+    productsWithAnItemMissingSlug().data[0],
+    productWithCorruptedData().data[0],
+  ]);
 }
