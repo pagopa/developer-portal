@@ -13,6 +13,14 @@ The LLM observability is done using [Langfuse](https://langfuse.com/) deployed o
 
 This folder contains the code and the API that are deployed in an AWS lambda function called **AWS lambda API**, read below for furher information.
 
+## Gemini
+
+If you wish to use Gemini models, you need to:
+
+- create a project in Google Cloud Platform
+- create google service accont and store them into the file `.google_service_account.json`
+- ensure that you can use [VertexAI](https://cloud.google.com/vertex-ai?hl=en) and [Discovery Engine](https://docs.cloud.google.com/generative-ai-app-builder/docs/reference/rest)
+
 ## Docker
 
 The Docker Compose is set to emulate the deployed application in AWS using [Motoserver](https://docs.getmoto.org/en/latest/). The infrastructure uses multiple AWS lambdas:

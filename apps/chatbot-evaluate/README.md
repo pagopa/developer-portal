@@ -19,6 +19,14 @@ These scores are then sent back to the monitor service to be stored in Langfuse.
 - **Ragas**: For RAG evaluation metrics.
 - **Google Generative AI**: Used as the evaluation provider.
 
+## Gemini
+
+If you wish to use Gemini models, you need to:
+
+- create a project in Google Cloud Platform
+- create google service accont and store them into the file `.google_service_account.json`
+- ensure that you can use [VertexAI](https://cloud.google.com/vertex-ai?hl=en)
+
 ## Environment Variables
 
 Create a `.env.local` file inside this folder and store the necessary environment variables.
