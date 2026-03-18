@@ -6,6 +6,7 @@ This application processes JSON files from a web scraper, using an LLM to clean
 and structure the content into markdown format.
 """
 
+import asyncio
 import sys
 from pathlib import Path
 
@@ -58,7 +59,7 @@ def validate_folders() -> bool:
     return True
 
 
-def main() -> int:
+async def main() -> int:
     LOGGER.info("Extractor Application Starting...")
     try:
         if not validate_folders():
@@ -67,7 +68,7 @@ def main() -> int:
         LOGGER.info(f"Initializing LLM: {SETTINGS.model_id}")
         LOGGER.info(f"MAX_TOKENS: {SETTINGS.max_tokens}")
         llm = get_llm()
-        stats = process_folder(
+        stats = await process_folder(
             input_folder=SETTINGS.input_folder,
             output_folder=SETTINGS.output_folder,
             llm=llm,
@@ -89,5 +90,5 @@ def main() -> int:
 
 
 if __name__ == "__main__":
-    exit_code = main()
+    exit_code = asyncio.run(main())
     sys.exit(exit_code)

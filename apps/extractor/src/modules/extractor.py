@@ -1,3 +1,5 @@
+import asyncio
+
 from llama_index.core.llms.llm import LLM
 from llama_index.core.node_parser import SentenceSplitter
 from llama_index.core.program import LLMTextCompletionProgram
@@ -103,7 +105,7 @@ def _split_body_text(body: str, max_tokens: int) -> list[str]:
     return [c for c in splitter.split_text(body) if c.strip()]
 
 
-def _extract_document(
+async def _extract_document(
     slice_body: str, input_doc: InputDocument, llm: LLM, prompt_template: str
 ) -> CleanedDocument | None:
     """
@@ -134,7 +136,7 @@ def _extract_document(
             llm=llm,
             verbose=False,
         )
-        response = program()
+        response = await program.acall()
         if isinstance(response, CleanedDocument):
             return response
         LOGGER.warning(
@@ -150,7 +152,7 @@ def _extract_document(
     return None
 
 
-def extract_document(
+async def extract_document(
     input_doc: InputDocument, llm: LLM, prompt_template: str
 ) -> CleanedDocument | None:
     """
@@ -191,7 +193,7 @@ def extract_document(
     if prompt_tokens <= token_budget:
         try:
 
-            result = _extract_document(
+            result = await _extract_document(
                 slice_body=input_body,
                 input_doc=input_doc,
                 llm=llm,
@@ -233,16 +235,23 @@ def extract_document(
         f"splitting '{input_doc.url}' into {len(slices)} slice(s)"
     )
 
-    results: list[CleanedDocument] = []
-    for i, slice_text in enumerate(slices):
-        escaped_slice = _escape_braces(slice_text)
-        LOGGER.debug(f"  Processing slice {i + 1}/{len(slices)} ...")
-        slice_result = _extract_document(
-            slice_body=escaped_slice,
+    LOGGER.debug(f"  Launching {len(slices)} slice(s) concurrently ...")
+    tasks = [
+        _extract_document(
+            slice_body=_escape_braces(s),
             input_doc=input_doc,
             llm=llm,
             prompt_template=prompt_template,
         )
+        for s in slices
+    ]
+    slice_results = await asyncio.gather(*tasks, return_exceptions=True)
+
+    results: list[CleanedDocument] = []
+    for i, slice_result in enumerate(slice_results):
+        if isinstance(slice_result, BaseException):
+            LOGGER.warning(f"  Slice {i + 1}/{len(slices)} raised an exception – skipping: {slice_result}")
+            continue
         if slice_result is None:
             LOGGER.warning(f"  Slice {i + 1}/{len(slices)} failed – skipping")
             continue
@@ -274,7 +283,7 @@ def extract_document(
     return merged_doc
 
 
-def process_folder(input_folder: str, output_folder: str, llm: LLM) -> dict:
+async def process_folder(input_folder: str, output_folder: str, llm: LLM) -> dict:
     """
     Orchestrates the entire folder processing workflow.
 
@@ -316,7 +325,7 @@ def process_folder(input_folder: str, output_folder: str, llm: LLM) -> dict:
 
             try:
                 # Extract document with LLM
-                cleaned_doc = extract_document(
+                cleaned_doc = await extract_document(
                     input_doc=input_doc,
                     llm=llm,
                     prompt_template=SETTINGS.content_cleaning_prompt,

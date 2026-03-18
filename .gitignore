@@ -426,6 +426,8 @@ apps/chatbot-index/.env
 
 /results
 
+!apps/structured-data-cleaner/.env.example
+chb
 # terraform
 apps/infrastructure/src/builds
 
