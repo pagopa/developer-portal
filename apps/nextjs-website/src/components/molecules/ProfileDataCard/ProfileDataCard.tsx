@@ -6,7 +6,11 @@ import {
   ProfileDataCardItemProps,
 } from '@/components/atoms/InfoCardItem/ProfileDataCardItem';
 import { isProduction } from '@/config';
-import { validateField, validateName } from '@/helpers/auth.helpers';
+import {
+  validateMaxLenght,
+  validateRequired,
+  validateName,
+} from '@/helpers/auth.helpers';
 import { Box, Button, Card, Divider, Stack, Typography } from '@mui/material';
 
 import { useTranslations } from 'next-intl';
@@ -77,7 +81,8 @@ export const ProfileDataCard = ({
             ) {
               const errorKey =
                 validateName(item.value || '') ||
-                validateField(item.value || '');
+                validateMaxLenght(item.value || '') ||
+                (item.id !== 'role' && validateRequired(item.value || ''));
               if (errorKey) {
                 // eslint-disable-next-line functional/immutable-data
                 newErrors[item.id] = tShared(errorKey);

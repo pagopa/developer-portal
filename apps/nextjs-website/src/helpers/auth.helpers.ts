@@ -6,32 +6,24 @@ export const emailMatcher =
   /^[a-z0-9._%+-]+@[a-z0-9-]+(\.[a-z0-9-]+)*\.[a-z]{2,63}$/i;
 export const MAX_INPUT_LENGTH = 100;
 
-export const validateField = (value: string): string | null => {
-  const trimmedValue = value.trim();
-  if (trimmedValue.length === 0) {
-    return 'requiredFieldError';
-  }
+export const validateMaxLenght = (value: string): string | null => {
+  return value.trim().length > MAX_INPUT_LENGTH ? 'maxLengthFieldError' : null;
+};
 
-  if (trimmedValue.length > MAX_INPUT_LENGTH) {
-    return 'maxLengthFieldError';
-  }
-
-  return null;
+export const validateRequired = (value: string): string | null => {
+  return value.trim().length === 0 ? 'requiredFieldError' : null;
 };
 
 export const validateName = (value: string): string | null => {
   const trimmedValue = value.trim();
-  if (trimmedValue.length === 0) return null;
 
-  return !/^(?=.{0,50}$)[A-Za-z0-9]+(?:[ _'-]?[A-Za-z0-9]+)*$/.test(
-    trimmedValue
-  )
+  return !/^[A-Za-z0-9]+(?:[ _'-]?[A-Za-z0-9]+)*$/.test(trimmedValue)
     ? 'nameFieldError'
     : null;
 };
 
 export const validateEmail = (value: string): string | null => {
-  const isNotValid = validateField(value);
+  const isNotValid = validateRequired(value) || validateMaxLenght(value);
   if (isNotValid) {
     return isNotValid;
   }
@@ -40,7 +32,7 @@ export const validateEmail = (value: string): string | null => {
 };
 
 export const validatePassword = (value: string): string | null => {
-  const isNotValid = validateField(value);
+  const isNotValid = validateRequired(value) || validateMaxLenght(value);
   if (isNotValid) {
     return isNotValid;
   }

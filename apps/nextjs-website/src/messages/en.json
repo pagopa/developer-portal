@@ -324,7 +324,7 @@
     "role": "Role",
     "requiredFieldError": "This field cannot be empty",
     "maxLengthFieldError": "The maximum allowed is 100 characters",
-    "nameFieldError": "Use only letters and numbers, without special characters (except spaces, underscores, hyphens and apostrophes) and with a maximum of 50 characters",
+    "nameFieldError": "Use only letters and numbers, without special characters (except spaces, underscores, hyphens and apostrophes)",
     "emailFieldError": "Enter a valid email address. Use only lowercase letters and do not use special characters",
     "emailAlreadyTaken": "An account already exists for this email address",
     "goToGuide": "Go to guide",

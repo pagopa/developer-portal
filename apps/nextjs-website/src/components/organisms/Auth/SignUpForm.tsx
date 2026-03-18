@@ -1,7 +1,8 @@
 'use client';
 import {
   validateEmail,
-  validateField,
+  validateMaxLenght,
+  validateRequired,
   validateName,
   validatePassword,
 } from '@/helpers/auth.helpers';
@@ -80,12 +81,18 @@ const SignUpForm = ({
     const { username, confirmPassword, firstName, lastName, password, role } =
       userData;
 
-    const nameError = validateName(firstName) || validateField(firstName);
-    const surnameError = validateName(lastName) || validateField(lastName);
+    const nameError =
+      validateRequired(firstName) ||
+      validateMaxLenght(firstName) ||
+      validateName(firstName);
+    const surnameError =
+      validateRequired(lastName) ||
+      validateMaxLenght(lastName) ||
+      validateName(lastName);
     const emailError = validateEmail(username);
     const passwordError = validatePassword(password);
     const confirmPasswordError = password !== confirmPassword;
-    const roleError = validateName(role);
+    const roleError = validateMaxLenght(role) || validateName(role);
 
     // eslint-disable-next-line functional/no-let
     let errors = {};
