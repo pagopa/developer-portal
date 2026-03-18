@@ -1,6 +1,6 @@
 import {
-  makeProductsProps,
-  makeProductProps,
+  mapProductsProps,
+  mapProductProps,
   makeBaseProductWithoutLogoProps,
 } from '@/lib/product/mapper';
 import { StrapiProducts } from '@/lib/product/types';
@@ -27,13 +27,13 @@ describe('makeProductsProps', () => {
   });
 
   it('should transform strapi products to product props', () => {
-    const result = makeProductsProps('it', _.cloneDeep(strapiProducts));
+    const result = mapProductsProps('it', _.cloneDeep(strapiProducts));
     expect(result).toHaveLength(1);
     expect(result[0]).toMatchObject(expectedProduct);
   });
 
   it('should handle minimal product data', () => {
-    const result = makeProductsProps(
+    const result = mapProductsProps(
       'it',
       _.cloneDeep({
         data: [...minimalProduct()],
@@ -66,12 +66,12 @@ describe('makeProductsProps', () => {
       data: [],
       meta: { pagination: { page: 1, pageSize: 25, pageCount: 1, total: 0 } },
     };
-    const result = makeProductsProps('it', emptyData);
+    const result = mapProductsProps('it', emptyData);
     expect(result).toHaveLength(0);
   });
 
   it('should skip products without slug and log error', () => {
-    const result = makeProductsProps('it', {
+    const result = mapProductsProps('it', {
       data: [...productsWithAnItemMissingSlug()],
       meta: {
         pagination: {
@@ -89,7 +89,7 @@ describe('makeProductsProps', () => {
   });
 
   it('should handle products with multiple API data (returns general API URL)', () => {
-    const result = makeProductsProps('it', {
+    const result = mapProductsProps('it', {
       data: [...productWithMultipleApiData()],
       meta: {
         pagination: {
@@ -105,7 +105,7 @@ describe('makeProductsProps', () => {
   });
 
   it('should handle products with empty API data', () => {
-    const result = makeProductsProps('it', {
+    const result = mapProductsProps('it', {
       data: [...productWithEmptyApiData()],
       meta: {
         pagination: {
@@ -121,7 +121,7 @@ describe('makeProductsProps', () => {
   });
 
   it('should handle corrupted data with try/catch and log error', () => {
-    const result = makeProductsProps('it', {
+    const result = mapProductsProps('it', {
       data: [...productWithCorruptedData()],
       meta: {
         pagination: {
@@ -142,7 +142,7 @@ describe('makeProductsProps', () => {
   });
 
   it('should handle mixed valid and invalid products', () => {
-    const result = makeProductsProps('it', {
+    const result = mapProductsProps('it', {
       data: [...mixedValidAndInvalidProducts()],
       meta: {
         pagination: {
@@ -163,7 +163,7 @@ describe('makeProductsProps', () => {
   });
 
   it('should return empty array when all products are invalid', () => {
-    const result = makeProductsProps('it', {
+    const result = mapProductsProps('it', {
       data: [...allInvalidProducts()],
       meta: {
         pagination: {
@@ -190,12 +190,12 @@ describe('makeProductProps', () => {
   });
 
   it('should transform single strapi product to product props', () => {
-    const result = makeProductProps('it', strapiProducts.data[0]);
+    const result = mapProductProps('it', strapiProducts.data[0]);
     expect(result).toMatchObject(expectedProduct);
   });
 
   it('should return null for product without slug', () => {
-    const result = makeProductProps('it', productsWithAnItemMissingSlug()[0]);
+    const result = mapProductProps('it', productsWithAnItemMissingSlug()[0]);
     expect(result).toBeNull();
     expect(spyOnConsoleError).toHaveBeenCalledWith(
       'Error while processing Product: missing title or slug. Title: Product Without Slug | Slug: undefined. Skipping...'
@@ -203,7 +203,7 @@ describe('makeProductProps', () => {
   });
 
   it('should return null and log error for corrupted product', () => {
-    const result = makeProductProps('it', productWithCorruptedData()[0]);
+    const result = mapProductProps('it', productWithCorruptedData()[0]);
     expect(result).toBeNull();
     expect(spyOnConsoleError).toHaveBeenCalledTimes(1);
   });

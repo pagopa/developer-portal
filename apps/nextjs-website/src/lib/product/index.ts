@@ -1,5 +1,5 @@
 import { fetchProducts } from './fetcher';
-import { makeProductsProps } from './mapper';
+import { mapProductsProps } from './mapper';
 import { Product } from './types';
 import { buildEnv } from '@/lib/buildEnv';
 
@@ -9,7 +9,7 @@ export const ProductRepository = {
    */
   getAll: async (locale: string): Promise<ReadonlyArray<Product>> => {
     const strapiProducts = await fetchProducts(locale, buildEnv);
-    const products = makeProductsProps(locale, strapiProducts);
+    const products = mapProductsProps(locale, strapiProducts);
     return [...products].sort((productA, productB) =>
       productA.name.localeCompare(productB.name)
     );

@@ -1,9 +1,27 @@
 /* eslint-disable functional/no-expression-statements */
 import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
 import { makeBaseProductWithoutLogoProps } from '@/lib/product/mapper';
-import { makeApiSoapUrlList } from '@/lib/strapi/makeProps/makeApiSoapUrlList';
 import { compact } from 'lodash';
 import { ApiDataList, ApiDataPageProps } from './types';
+import { getSoapApiMetadata } from '@/helpers/s3Metadata.helpers';
+import { staticContentsUrl } from '@/config';
+
+export async function getApiSoapContentUrls(
+  locale: string,
+  apiDirName: string
+) {
+  const soapApiMetadata = await getSoapApiMetadata(locale).then((metadata) =>
+    metadata.find((item) => item.dirName === apiDirName)
+  );
+  if (!soapApiMetadata) {
+    // eslint-disable-next-line functional/no-throw-statements
+    throw new Error(`No metadata found for API directory: ${apiDirName}`);
+  }
+
+  return soapApiMetadata.contentS3Paths.map(
+    (url) => `${staticContentsUrl}/${locale}/soap-api/${url}`
+  );
+}
 
 export async function mapApiDataList(
   locale: string,
@@ -57,7 +75,7 @@ export async function mapApiDataList(
               apiSoapUrl: apiPage.apiSoapDetail?.repositoryUrl,
               specUrlsName: apiPage.title,
               apiSoapUrlList: apiPage.apiSoapDetail
-                ? await makeApiSoapUrlList(
+                ? await getApiSoapContentUrls(
                     locale,
                     apiPage.apiSoapDetail.dirName
                   )
