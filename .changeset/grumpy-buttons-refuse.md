@@ -2,4 +2,4 @@
 "infrastructure": minor
 ---
 
-Cloudfront security headers to prevent clickjacking
+CloudFront security headers to prevent clickjacking
