@@ -35,7 +35,7 @@ module "cms_load_balancer" {
 
           actions = [{
             type             = "forward"
-            target_group_key = "cms-target-group"
+            target_group_key = "cms-target-group-v5"
           }]
 
           conditions = [{
@@ -65,7 +65,6 @@ module "cms_load_balancer" {
           }]
         }
       }
-
     }
   }
 
