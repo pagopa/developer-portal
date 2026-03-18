@@ -35,7 +35,7 @@ Create a `.env.local` file inside this folder and store the necessary environmen
 cp .env.example .env.local
 ```
 
-Note: Ensure you have the necessary Google API keys and AWS credentials configured.
+Note: Ensure you have the necessary Google Cloud service account credentials for Vertex AI and AWS credentials configured.
 
 ## Virtual Environment
 
