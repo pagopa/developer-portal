@@ -1,5 +1,6 @@
 ---
 "chatbot-evaluate": patch
+"chatbot-index": patch
 "chatbot": patch
 "extractor": patch
 ---
