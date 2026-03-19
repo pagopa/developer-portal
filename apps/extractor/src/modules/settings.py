@@ -24,7 +24,6 @@ TOKEN_BUDGET_DIVISOR = 9  # This is an heuristic, setting it to a smaller value 
 GOOGLE_SERVICE_ACCOUNT = os.getenv("GOOGLE_SERVICE_ACCOUNT")
 
 
-LOGGER.info(f">>>>>>>>> GOOGLE_SERVICE_ACCOUNT: {GOOGLE_SERVICE_ACCOUNT}")
 LOGGER.info(f">>>>>>>>> Type str: {isinstance(GOOGLE_SERVICE_ACCOUNT, str)}")
 LOGGER.info(f">>>>>>>>> Type dict: {isinstance(GOOGLE_SERVICE_ACCOUNT, dict)}")
 
