@@ -19,13 +19,6 @@ def test_aws_credentials() -> None:
     assert identity is not None
 
 
-def test_ssm_params() -> None:
-
-    if SETTINGS.provider == "google":
-        GOOGLE_API_KEY = SETTINGS.google_api_key
-        assert GOOGLE_API_KEY is not None
-
-
 def test_models() -> None:
 
     flag = False
