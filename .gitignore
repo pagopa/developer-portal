@@ -423,6 +423,10 @@ apps/chatbot-monitor/.env
 apps/chatbot-index/*.ipynb
 apps/chatbot-index/.env
 !apps/chatbot-index/.env.example
+apps/chatbot-index/.google_service_account.json
+
+# extractor
+apps/extractor/.google_service_account.json
 
 /results
 
