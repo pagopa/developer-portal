@@ -22,7 +22,7 @@ import {
 import { spyOnConsoleError } from '@/lib/strapi/__tests__/spyOnConsole';
 
 // Mock the makeApiSoapUrlList function
-jest.mock('@/lib/apiDataList/mapper', () => ({
+jest.mock('@/lib/apiDataList/helpers', () => ({
   getApiSoapContentUrls: jest
     .fn()
     .mockResolvedValue([
