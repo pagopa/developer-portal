@@ -5,7 +5,6 @@ import { ParsedMetadata } from "./types";
 import { sanitizeUrlAsFilename } from "../helpers/url-handling";
 import {
   BASE_HOST_TOKEN,
-  SHOULD_CREATE_FILES_LOCALLY,
   S3_BUCKET_NAME,
 } from "../main";
 import { makeS3Client, putS3File } from "../helpers/s3bucket-helper";
@@ -28,9 +27,6 @@ export async function persistSnapshot(
   });
   if (finalName.replace("www.", "") === BASE_HOST_TOKEN) {
     finalName = "index";
-  }
-  if (SHOULD_CREATE_FILES_LOCALLY) {
-    return await saveMetadata(outputDirectory, `${finalName}.json`, snapshot);
   }
   console.log(`Saving ${finalName}.json to S3 bucket...`);
   console.log(`Snapshot URL: ${snapshot.url}`);
