@@ -22,6 +22,13 @@ AWS_SESSION = boto3.Session()
 AWS_SSM_CLIENT = AWS_SESSION.client("ssm")
 TOKEN_BUDGET_DIVISOR = 9  # This is an heuristic, setting it to a smaller value results in MAX_TOKEN errors. As there is no universal way to predict the token count of the response of an arbitrary LLM, this scales down max_tokens to a per-chunk token budget for body text
 GOOGLE_SERVICE_ACCOUNT = os.getenv("GOOGLE_SERVICE_ACCOUNT")
+
+
+LOGGER.info(f">>>>>>>>> GOOGLE_SERVICE_ACCOUNT: {GOOGLE_SERVICE_ACCOUNT}")
+LOGGER.info(f">>>>>>>>> Type str: {isinstance(GOOGLE_SERVICE_ACCOUNT, str)}")
+LOGGER.info(f">>>>>>>>> Type dict: {isinstance(GOOGLE_SERVICE_ACCOUNT, dict)}")
+
+
 if GOOGLE_SERVICE_ACCOUNT is None:
     with open(os.path.join(ROOT, ".google_service_account.json"), "r") as file:
         GOOGLE_JSON_ACCOUNT_INFO = json.load(file)
