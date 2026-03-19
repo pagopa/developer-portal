@@ -65,7 +65,7 @@ runs:
     - name: Run Extractor
       env:
         AWS_DEFAULT_REGION: eu-south-1
-        GOOGLE_SERVICE_ACCOUNT: $ {{ inputs.google_service_account }}
+        GOOGLE_SERVICE_ACCOUNT: ${{ inputs.google_service_account }}
         CHB_INDEX_ID: ${{ inputs.vector_index_name }}
         S3_BUCKET_NAME: devportal-${{ env.ENV_SHORT }}-website-static-content
         SIMILARITY_THRESHOLD: ${{ inputs.similarity_threshold }}
