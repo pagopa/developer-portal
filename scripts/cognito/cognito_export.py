@@ -48,12 +48,14 @@ def export_unconfirmed_users(user_pool_id, region):
                         ])
                         count += 1
 
-        print(f"Done! Created '{OUTPUT_FILE}' with {count} users.")
+    print(f"Done! Created '{OUTPUT_FILE}' with {count} users.")
 
     except client.exceptions.ResourceNotFoundException:
-        print(f"Error: The User Pool ID '{user_pool_id}' was not found in {region}.")
+    print(f"Error: The User Pool ID '{user_pool_id}' was not found in {region}.")
+    sys.exit(1)
     except Exception as e:
-        print(f"An unexpected error occurred: {e}")
+    print(f"An unexpected error occurred: {e}")
+    sys.exit(1)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Export unconfirmed Cognito users within a specific date range to CSV.")
