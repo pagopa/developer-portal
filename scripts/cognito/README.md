@@ -58,3 +58,9 @@ The script generates a CSV file in the same directory with the following columns
 - Status
 
 Filename format: unconfirmed_<user_pool_id>_<YYYYMMDD>.csv
+
+Note: This CSV contains email addresses and other potentially sensitive data. Handle it securely, avoid committing it to version control, and consider adding an ignore rule such as:
+
+```gitignore
+unconfirmed_*.csv
+```
