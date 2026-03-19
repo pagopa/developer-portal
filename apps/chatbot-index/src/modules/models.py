@@ -1,13 +1,19 @@
-from google.genai import types
+from google.oauth2 import service_account
+from google.genai.types import EmbedContentConfig
 
 from llama_index.core.llms.llm import LLM
 from llama_index.core.base.embeddings.base import BaseEmbedding
+from llama_index.llms.google_genai.base import VertexAIConfig
 
 from src.modules.logger import get_logger
 from src.modules.settings import SETTINGS
 
 
 LOGGER = get_logger(__name__)
+VERTEXAI_CREDENTIALS = service_account.Credentials.from_service_account_info(
+    SETTINGS.google_service_account,
+    scopes=["https://www.googleapis.com/auth/cloud-platform"],
+)
 
 
 def get_llm(
@@ -43,7 +49,11 @@ def get_llm(
             model=model_id,
             temperature=temperature,
             max_tokens=max_tokens,
-            api_key=SETTINGS.google_api_key,
+            vertexai_config=VertexAIConfig(
+                credentials=VERTEXAI_CREDENTIALS,
+                location=SETTINGS.vertexai_location,
+                project=VERTEXAI_CREDENTIALS.project_id,
+            ),
         )
         LOGGER.info(f"{model_id} LLM loaded successfully from Google!")
 
@@ -96,13 +106,17 @@ def get_embed_model(
 
         embed_model = GoogleGenAIEmbedding(
             model_name=model_id,
-            api_key=SETTINGS.google_api_key,
             embed_batch_size=embed_batch_size,
             retries=retries,
             retry_min_seconds=retry_min_seconds,
-            embedding_config=types.EmbedContentConfig(
+            embedding_config=EmbedContentConfig(
                 output_dimensionality=embed_dim,
                 task_type=task_type,
+            ),
+            vertexai_config=VertexAIConfig(
+                credentials=VERTEXAI_CREDENTIALS,
+                location=SETTINGS.vertexai_location,
+                project=VERTEXAI_CREDENTIALS.project_id,
             ),
         )
         LOGGER.info(f"{model_id} embedding model loaded successfully from Google!")
