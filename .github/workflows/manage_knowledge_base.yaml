@@ -122,7 +122,6 @@ jobs:
         if: ${{ inputs.run_extractor }}
         uses: ./.github/actions/extractor
         with:
-          chb_aws_google_api_key: ${{ secrets.CHB_AWS_GOOGLE_API_KEY }}
           deploy_iam_role: ${{ secrets.DEPLOY_IAM_ROLE }}
           environment: ${{ inputs.environment }}
           similarity_threshold: '0.8'

@@ -2,9 +2,6 @@ name: Extractor
 description: Run Extractor for each URL
 
 inputs:
-  chb_aws_google_api_key:
-    description: 'Google API Key for AI Studio'
-    required: true
   deploy_iam_role:
     description: 'IAM role to assume'
     required: true
@@ -65,7 +62,7 @@ runs:
     - name: Run Extractor
       env:
         AWS_DEFAULT_REGION: eu-south-1
-        CHB_AWS_GOOGLE_API_KEY: ${{ inputs.chb_aws_google_api_key }}
+        CHB_AWS_SSM_GOOGLE_SERVICE_ACCOUNT: /chatbot/google_service_account
         CHB_INDEX_ID: ${{ inputs.vector_index_name }}
         S3_BUCKET_NAME: devportal-${{ env.ENV_SHORT }}-website-static-content
         SIMILARITY_THRESHOLD: ${{ inputs.similarity_threshold }}
