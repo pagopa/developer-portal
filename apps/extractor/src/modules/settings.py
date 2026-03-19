@@ -21,6 +21,12 @@ PROMPTS = yaml.safe_load(
 AWS_SESSION = boto3.Session()
 AWS_SSM_CLIENT = AWS_SESSION.client("ssm")
 TOKEN_BUDGET_DIVISOR = 9  # This is an heuristic, setting it to a smaller value results in MAX_TOKEN errors. As there is no universal way to predict the token count of the response of an arbitrary LLM, this scales down max_tokens to a per-chunk token budget for body text
+GOOGLE_SERVICE_ACCOUNT = os.getenv("GOOGLE_SERVICE_ACCOUNT")
+if GOOGLE_SERVICE_ACCOUNT is None:
+    with open(os.path.join(ROOT, ".google_service_account.json"), "r") as file:
+        GOOGLE_JSON_ACCOUNT_INFO = json.load(file)
+else:
+    GOOGLE_JSON_ACCOUNT_INFO = json.loads(GOOGLE_SERVICE_ACCOUNT)
 
 
 def get_ssm_parameter(name: str | None, default: str | None = None) -> str | None:
@@ -50,14 +56,6 @@ def get_ssm_parameter(name: str | None, default: str | None = None) -> str | Non
         )
         return default
     return value
-
-
-GOOGLE_SERVICE_ACCOUNT = get_ssm_parameter(os.getenv("GOOGLE_SERVICE_ACCOUNT"))
-if GOOGLE_SERVICE_ACCOUNT is None:
-    with open(os.path.join(ROOT, ".google_service_account.json"), "r") as file:
-        GOOGLE_JSON_ACCOUNT_INFO = json.load(file)
-else:
-    GOOGLE_JSON_ACCOUNT_INFO = json.loads(GOOGLE_SERVICE_ACCOUNT)
 
 
 class ExtractorSettings(BaseSettings):
