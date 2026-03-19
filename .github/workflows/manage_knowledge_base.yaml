@@ -70,6 +70,7 @@ jobs:
     name: Prepare structured data (manual on ${{ inputs.environment }})
     runs-on: codebuild-${{ inputs.environment }}-github-runner-${{ github.run_id }}-${{ github.run_attempt }}
     environment: ${{ inputs.environment }}
+    continue-on-error: false
 
     concurrency:
       group: ${{ github.workflow }}-${{ inputs.environment }}
