@@ -54,37 +54,23 @@ def compute_app_folder(
     url: str,
     index_id: str,
     s3_bucket: str | None,
-    is_local: bool,
     app_name: str,
 ) -> str:
     """Computes the app folder path from a base URL.
 
     Mirrors how the parser's ``generateOutputDirectoryPath`` builds its output
     directory so that the extractor automatically reads from the parser's
-    output location and writes to the correct folder:
-
-    * Local:  ``{index_id}/{app_name}/{safe_base}``
-    * S3:     ``s3://{s3_bucket}/{index_id}/{app_name}/{safe_base}/``
+    output location and writes to the correct folder: ``s3://{s3_bucket}/{index_id}/{app_name}/{safe_base}/``
 
     Args:
         url: The base URL that was scraped.
         index_id: Value of ``CHB_INDEX_ID``.
-        s3_bucket: S3 bucket name, required when *is_local* is ``False``.
-        is_local: Whether the extractor is running against the local filesystem.
+        s3_bucket: S3 bucket name
         app_name: The name of the application (e.g., "extractor" or "parser").
 
     Returns:
         The computed input folder path.
-
-    Raises:
-        ValueError: When *is_local* is ``False`` and *s3_bucket* is not set.
     """
     safe_base = sanitize_url_as_directory_name(url)
     relative_path = "/".join([index_id, app_name, safe_base])
-    if not is_local:
-        if not s3_bucket:
-            raise ValueError(
-                "S3_BUCKET_NAME is required when SHOULD_RUN_LOCALLY is False "
-            )
-        return f"s3://{s3_bucket}/{relative_path}/"
-    return relative_path
+    return f"s3://{s3_bucket}/{relative_path}/"
