@@ -13,7 +13,7 @@ CSV Export: Saves results to a CSV file named with the User Pool ID and current 
 Pagination Support: Uses Boto3 paginators to handle large user pools without hitting API limits.
 
 ## Prerequisites
-Python 3.7+
+Python 3.9+
 
 AWS CLI configured with appropriate permissions.
 
