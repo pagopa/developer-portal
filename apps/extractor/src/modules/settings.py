@@ -52,9 +52,7 @@ def get_ssm_parameter(name: str | None, default: str | None = None) -> str | Non
     return value
 
 
-GOOGLE_SERVICE_ACCOUNT = get_ssm_parameter(
-    os.getenv("CHB_AWS_SSM_GOOGLE_SERVICE_ACCOUNT")
-)
+GOOGLE_SERVICE_ACCOUNT = get_ssm_parameter(os.getenv("GOOGLE_SERVICE_ACCOUNT"))
 if GOOGLE_SERVICE_ACCOUNT is None:
     with open(os.path.join(ROOT, ".google_service_account.json"), "r") as file:
         GOOGLE_JSON_ACCOUNT_INFO = json.load(file)

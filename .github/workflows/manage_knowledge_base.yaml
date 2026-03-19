@@ -124,6 +124,7 @@ jobs:
         with:
           deploy_iam_role: ${{ secrets.DEPLOY_IAM_ROLE }}
           environment: ${{ inputs.environment }}
+          google_service_account: ${{ secrets.GOOGLE_SERVICE_ACCOUNT }}
           similarity_threshold: '0.8'
           urls: ${{ inputs.urls_to_add }}
           vector_index_name: ${{ inputs.vector_index_name }}

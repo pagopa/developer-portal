@@ -8,6 +8,9 @@ inputs:
   environment:
     description: 'The environment used as target (dev, uat, prod)'
     required: true
+  google_service_account:
+    description: 'Google Service Account JSON key (base64-encoded)'
+    required: true
   similarity_threshold:
     description: 'Similarity threshold for output validation (optional, default: 0.8)'
     required: false
@@ -62,7 +65,7 @@ runs:
     - name: Run Extractor
       env:
         AWS_DEFAULT_REGION: eu-south-1
-        CHB_AWS_SSM_GOOGLE_SERVICE_ACCOUNT: /chatbot/google_service_account
+        GOOGLE_SERVICE_ACCOUNT: $ {{ inputs.google_service_account }}
         CHB_INDEX_ID: ${{ inputs.vector_index_name }}
         S3_BUCKET_NAME: devportal-${{ env.ENV_SHORT }}-website-static-content
         SIMILARITY_THRESHOLD: ${{ inputs.similarity_threshold }}
