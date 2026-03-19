@@ -11,7 +11,6 @@ locals {
     CHB_ENGINE_USE_STREAMING           = "False"
     CHB_ENGINE_SIMILARITY_TOPK         = "5"
     CHB_GOOGLE_PROJECT_ID              = module.google_project_id_ssm_parameter.ssm_parameter_name
-    CHB_GOOGLE_API_KEY                 = "/chatbot/google_api_key"
     CHB_MODEL_ID                       = var.models.generation
     CHB_MODEL_MAXTOKENS                = 2048
     CHB_MODEL_TEMPERATURE              = "0.3"
@@ -24,6 +23,7 @@ locals {
     CHB_RERANKER_ID                       = var.models.reranker
     CHB_USE_PRESIDIO                      = "True"
     CHB_USE_MULTIRAG                      = var.models.use_multi_rag ? "True" : "False"
+    CHB_VERTEXAI_LOCATION                 = "europe-west8"
     CHB_WEBSITE_URL                       = "https://${var.dns_domain_name}"
     CHB_AWS_S3_BUCKET_NAME_STATIC_CONTENT = var.s3_bucket_name_static_content
     CORS_DOMAINS                          = var.environment == "dev" ? jsonencode(["https://www.${var.dns_domain_name}", "https://${var.dns_domain_name}", "http://localhost:3000"]) : jsonencode(["https://www.${var.dns_domain_name}", "https://${var.dns_domain_name}"])
