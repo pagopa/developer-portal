@@ -3,7 +3,7 @@ import { makePartProps } from '@/lib/strapi/makeProps/makePart';
 import { StrapiCaseHistories } from '@/lib/strapi/types/caseHistories';
 import { compact } from 'lodash';
 
-export function makeCaseHistoriesProps(
+export function mapCaseHistoriesProps(
   strapiCaseHistories: StrapiCaseHistories
 ): ReadonlyArray<CaseHistoryPageTemplateProps> {
   return strapiCaseHistories.data.map((attributes) => ({

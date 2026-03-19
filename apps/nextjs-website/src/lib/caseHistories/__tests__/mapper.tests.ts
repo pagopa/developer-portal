@@ -10,7 +10,7 @@ import {
   caseHistoriesWithMultipleProducts,
   caseHistoriesWithoutImage,
 } from '@/lib/strapi/__tests__/factories/caseHistories';
-import { mediaJpeg } from '../../shared/factories/media';
+import { mediaJpeg } from './factories/media';
 
 describe('makeCaseHistoriesProps', () => {
   it('should transform strapi case histories to case history props', () => {

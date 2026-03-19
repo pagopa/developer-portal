@@ -1,6 +1,6 @@
 import { StrapiHomepage } from '@/lib/strapi/types/homepage';
 import { HomepageProps } from '@/app/[locale]/page';
-import { mediaJpeg } from '@/lib/strapi/__tests__/factories/media';
+import { mediaJpeg } from '@/lib/shared/factories/media';
 import { newsShowcase } from '@/lib/strapi/__tests__/fixtures/newsShowcase';
 
 const fixedDateIsoString = new Date('2024-01-01T00:00:00.000Z').toISOString();

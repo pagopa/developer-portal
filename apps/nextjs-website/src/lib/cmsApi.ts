@@ -7,8 +7,8 @@ import { fetchTutorials } from './strapi/fetches/fetchTutorials';
 import { makeTutorialsProps } from './strapi/makeProps/makeTutorials';
 import { fetchQuickStartGuides } from './strapi/fetches/fetchQuickStartGuides';
 import { makeQuickStartGuidesProps } from './strapi/makeProps/makeQuickStartGuides';
-import { makeCaseHistoriesProps } from './strapi/makeProps/makeCaseHistories';
-import { fetchCaseHistories } from './strapi/fetches/fetchCaseHistories';
+import { mapCaseHistoriesProps } from './caseHistories/mapper';
+import { fetchCaseHistories } from './caseHistories/fetcher';
 import { makeSolutionsProps } from './strapi/makeProps/makeSolutions';
 import { makeSolutionListPageProps } from './strapi/makeProps/makeSolutionListPage';
 import { fetchSolutionListPage } from './strapi/fetches/fetchSolutionListPage';
@@ -124,7 +124,7 @@ export const getUrlReplaceMapProps = async (locale: string) => {
 
 export const getCaseHistoriesProps = async (locale: string) => {
   const strapiCaseHistories = await fetchCaseHistories(locale, buildEnv);
-  return makeCaseHistoriesProps(strapiCaseHistories);
+  return mapCaseHistoriesProps(strapiCaseHistories);
 };
 
 export const getSolutionsProps = async (locale: string) => {
