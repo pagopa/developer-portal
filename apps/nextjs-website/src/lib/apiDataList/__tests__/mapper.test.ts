@@ -22,8 +22,8 @@ import {
 import { spyOnConsoleError } from '@/lib/strapi/__tests__/spyOnConsole';
 
 // Mock the makeApiSoapUrlList function
-jest.mock('@/lib/strapi/makeProps/makeApiSoapUrlList', () => ({
-  makeApiSoapUrlList: jest
+jest.mock('@/lib/apiDataList/mapper', () => ({
+  getApiSoapContentUrls: jest
     .fn()
     .mockResolvedValue([
       { name: 'test.wsdl', url: 'https://example.com/test.wsdl' },
