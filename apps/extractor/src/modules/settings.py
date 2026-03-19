@@ -60,11 +60,6 @@ class ExtractorSettings(BaseSettings):
     chb_index_id: str = Field(alias="CHB_INDEX_ID")
     s3_bucket_name: Optional[str] = Field(default=None, alias="S3_BUCKET_NAME")
 
-    # Local run flag
-    should_run_locally: bool = (
-        os.getenv("SHOULD_RUN_LOCALLY", "false").lower() == "true"
-    )
-
     # I/O Configuration – computed in resolve_folders() after env vars are loaded
     input_folder: Optional[str] = None
     output_folder: Optional[str] = None
@@ -101,14 +96,12 @@ class ExtractorSettings(BaseSettings):
             url=self.url,
             index_id=self.chb_index_id,
             s3_bucket=self.s3_bucket_name,
-            is_local=self.should_run_locally,
             app_name="parser",
         )
         self.output_folder = compute_app_folder(
             url=self.url,
             index_id=self.chb_index_id,
             s3_bucket=self.s3_bucket_name,
-            is_local=self.should_run_locally,
             app_name="extractor",
         )
         LOGGER.info("Input  folder: %s", self.input_folder)

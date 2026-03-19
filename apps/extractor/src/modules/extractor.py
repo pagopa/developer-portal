@@ -9,10 +9,7 @@ from src.modules.settings import SETTINGS, TOKEN_BUDGET_DIVISOR
 
 from src.modules.validator import validate_extracted_text
 
-if SETTINGS.should_run_locally:
-    from src.modules.file_handler import load_json_files, save_cleaned_document
-else:
-    from src.modules.file_handler_s3 import load_json_files, save_cleaned_document
+from src.modules.file_handler_s3 import load_json_files, save_cleaned_document
 
 LOGGER = get_logger(__name__, level=SETTINGS.log_level)
 
