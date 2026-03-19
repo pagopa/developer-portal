@@ -25,8 +25,8 @@ GOOGLE_SERVICE_ACCOUNT = os.getenv("GOOGLE_SERVICE_ACCOUNT")
 
 
 LOGGER.info(f">>>>>>>>> Type str: {isinstance(GOOGLE_SERVICE_ACCOUNT, str)}")
-LOGGER.info(f">>>>>>>>> Type dict: {isinstance(GOOGLE_SERVICE_ACCOUNT, dict)}")
-
+LOGGER.info(f">>>>>>>>> length str: {len(GOOGLE_SERVICE_ACCOUNT)}")
+LOGGER.info(f">>>>>>>>> content: {GOOGLE_SERVICE_ACCOUNT[:25]}")
 
 if GOOGLE_SERVICE_ACCOUNT is None:
     with open(os.path.join(ROOT, ".google_service_account.json"), "r") as file:
