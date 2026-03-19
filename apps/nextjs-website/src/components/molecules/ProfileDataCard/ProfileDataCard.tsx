@@ -77,12 +77,12 @@ export const ProfileDataCard = ({
             if (
               item.id === 'name' ||
               item.id === 'surname' ||
-              item.id === 'role'
+              item.id === 'job_role'
             ) {
               const errorKey =
                 validateNameFormat(item.value || '') ||
                 validateMaxLenght(item.value || '') ||
-                (item.id !== 'role' && validateRequired(item.value || ''));
+                (item.id !== 'job_role' && validateRequired(item.value || ''));
               if (errorKey) {
                 // eslint-disable-next-line functional/immutable-data
                 newErrors[item.id] = tShared(errorKey);
@@ -143,7 +143,7 @@ export const ProfileDataCard = ({
               if (
                 item.id === 'name' ||
                 item.id === 'surname' ||
-                item.id === 'role'
+                item.id === 'job_role'
               ) {
                 const newErrors = { ...errors };
                 // eslint-disable-next-line functional/immutable-data
