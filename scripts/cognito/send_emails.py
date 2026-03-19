@@ -8,7 +8,7 @@ from botocore.exceptions import ClientError
 
 AWS_REGION = "eu-south-1"
 SENDER = "noreply@dev.developer.pagopa.it"
-SUBJECT = "Conferma la tua e-mail - PagoPA DevPortal"
+SUBJECT = "Verifica la tua e-mail - PagoPA DevPortal"
 CHARSET = "UTF-8"
 
 CSV_FILE = "unconfirmed_eu-south-1_8DFWF1fRa_20260319.csv"
@@ -27,7 +27,8 @@ def build_html_body(template: str, username: str, code: str) -> str:
 
 
 def generate_code() -> str:
-    return str(random.randint(100000, 999999))
+    #return str(random.randint(100000, 999999))
+    return "142670"
 
 
 def send_email(ses_client, recipient: str, html_body: str) -> dict:
