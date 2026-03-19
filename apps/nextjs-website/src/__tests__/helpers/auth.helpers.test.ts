@@ -36,6 +36,13 @@ describe('validateNameFormat', () => {
   it('returns null if the name uses supported separators', () => {
     expect(validateNameFormat(" John Doe-O'Neil ")).toBe(null);
   });
+
+  it('returns null if the name contains accented and extended latin letters', () => {
+    expect(validateNameFormat('José María')).toBe(null);
+    expect(validateNameFormat('Dvořák')).toBe(null);
+    expect(validateNameFormat('Guðmundsdóttir')).toBe(null);
+    expect(validateNameFormat('Łukasz 2')).toBe(null);
+  });
 });
 
 describe('validateEmail', () => {

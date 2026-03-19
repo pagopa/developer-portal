@@ -18,7 +18,9 @@ export const validateNameFormat = (value: string): string | null => {
   const trimmedValue = value.trim();
   if (trimmedValue.length === 0) return null;
 
-  return !/^[A-Za-z0-9]+(?:[ _'-]?[A-Za-z0-9]+)*$/.test(trimmedValue)
+  return !/^[\p{L}\p{M}\p{N}]+(?:[ _'-]?[\p{L}\p{M}\p{N}]+)*$/u.test(
+    trimmedValue
+  )
     ? 'nameFieldError'
     : null;
 };
