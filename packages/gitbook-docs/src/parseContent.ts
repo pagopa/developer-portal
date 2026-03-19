@@ -28,9 +28,9 @@ import { table } from './markdoc/schema/table';
 import { pageLink } from './markdoc/schema/pageLink';
 import { processHtmlTokens } from './markdoc/tokenProcessor';
 import { PageTitlePath } from './parseDoc';
-import { convertEmojiToUnicode } from './convertEmojiToUnicode';
 import { step, stepper } from './markdoc/schema/stepper';
 import { inlineCodePipePlaceholder } from './markdoc/schema/styledText';
+import { processEmojiTokens } from './markdoc/emojiProcessor';
 
 export type ParseContentConfig = {
   readonly assetsPrefix: string;
@@ -162,8 +162,7 @@ export const parseAst = (markdown: string) => {
     .replaceAll(figcaptionR.regex, figcaptionR.replace)
     .replaceAll(markR.regex, markR.replace)
     .replaceAll(summaryR.regex, summaryR.replace)
-    .replaceAll('{% @figma/embed', '{% figma-embed')
-    .replaceAll(/:([a-z0-9_]+):/g, convertEmojiToUnicode);
+    .replaceAll('{% @figma/embed', '{% figma-embed');
 
   const updatedMarkdoc = markdoc
     .split('{% file')
@@ -186,7 +185,9 @@ export const parseAst = (markdown: string) => {
   const tokenizer = new Markdoc.Tokenizer({ html: true });
   // Given the html_block token parse its content and tokenize it. An html token
   // <div> is translated as a Markdoc tag with the name 'htmldiv'.
-  const tokens = processHtmlTokens(tokenizer.tokenize(parsedMarkdoc));
+  const tokens = processEmojiTokens(
+    processHtmlTokens(tokenizer.tokenize(parsedMarkdoc))
+  );
   return Markdoc.parse([...tokens]);
 };
 
