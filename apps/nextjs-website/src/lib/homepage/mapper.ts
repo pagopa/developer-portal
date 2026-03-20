@@ -1,12 +1,11 @@
 import { compact } from 'lodash';
 import { HomepageProps } from '@/app/[locale]/page';
 import { makeWebinarProps } from '@/lib/strapi/makeProps/makeWebinars';
-import { RootEntity } from '@/lib/strapi/types/rootEntity';
 import { StrapiHomepage } from './types';
 
 export const mapHomepageProps = (
   locale: string,
-  strapiHomepage: RootEntity<StrapiHomepage>
+  strapiHomepage: StrapiHomepage
 ): HomepageProps => ({
   updatedAt: strapiHomepage.data.updatedAt,
   comingsoonDocumentation: strapiHomepage.data.comingsoonDocumentation,

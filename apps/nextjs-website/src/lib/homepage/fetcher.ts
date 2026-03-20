@@ -1,7 +1,6 @@
 import qs from 'qs';
 import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
 import { webinarPopulate } from '@/lib/strapi/fetches/fetchWebinars';
-import { RootEntity } from '@/lib/strapi/types/rootEntity';
 import { StrapiHomepage } from './types';
 
 export const homepagePopulate = {
@@ -37,7 +36,7 @@ export const homepagePopulate = {
 
 const makeHomepagePopulate = () => qs.stringify(homepagePopulate);
 
-export const fetchHomepage = fetchFromStrapi<RootEntity<StrapiHomepage>>(
+export const fetchHomepage = fetchFromStrapi<StrapiHomepage>(
   'homepage',
   makeHomepagePopulate()
 );

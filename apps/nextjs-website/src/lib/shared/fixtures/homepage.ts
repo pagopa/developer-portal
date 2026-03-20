@@ -1,11 +1,11 @@
 import { HomepageProps } from '@/app/[locale]/page';
-import { StrapiHomepage } from '@/lib/homepage/types';
+import { Homepage } from '@/lib/homepage/types';
 import { mediaJpeg } from '@/lib/shared/factories/media';
 import { newsShowcase } from '@/lib/strapi/__tests__/fixtures/newsShowcase';
 
 const fixedDateIsoString = new Date('2024-01-01T00:00:00.000Z').toISOString();
 
-export const strapiHomepage: StrapiHomepage = {
+export const strapiHomepage: Homepage = {
   updatedAt: fixedDateIsoString,
   comingsoonDocumentation: {
     title: 'Coming Soon Documentation',
