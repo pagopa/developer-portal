@@ -110,6 +110,7 @@ resource "aws_lambda_function" "chatbot_evaluate_lambda" {
       ENVIRONMENT                     = var.environment
       CHB_MODEL_TEMPERATURE           = 0
       CHB_MODEL_MAXTOKENS             = 2048
+    CHB_AWS_SSM_GOOGLE_SERVICE_ACCOUNT = module.google_service_account_ssm_parameter.ssm_parameter_name
       CHB_AWS_SQS_QUEUE_MONITOR_NAME  = aws_sqs_queue.chatbot_queue["monitor"].name
       CHB_AWS_SQS_QUEUE_EVALUATE_NAME = aws_sqs_queue.chatbot_queue["evaluate"].name
       CHB_EMBED_BATCH_SIZE            = 100
