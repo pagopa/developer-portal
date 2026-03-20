@@ -6,10 +6,7 @@ This application removes existing folders, related to an input URL, that contain
 import sys
 from src.modules.logger import get_logger
 from src.modules.settings import SETTINGS
-from src.modules.cleaner import (
-    remove_local_folder,
-    remove_s3_folder,
-)
+from src.modules.cleaner import remove_s3_folder
 from src.helpers.url_handling import compute_app_folder
 
 LOGGER = get_logger(__name__, level=SETTINGS.log_level)
@@ -21,9 +18,6 @@ def clean_url(
     remove_extractor: bool = SETTINGS.should_remove_extractor_folder,
 ) -> None:
     """Remove the parser and extractor folders for *url*.
-
-    Delegates to the S3 or local cleaner depending on
-    ``SETTINGS.should_run_locally``.
 
     Args:
         url: The base URL whose derived folders should be deleted.
@@ -39,14 +33,10 @@ def clean_url(
             url=url,
             index_id=SETTINGS.chb_index_id,
             s3_bucket=SETTINGS.s3_bucket_name,
-            is_local=SETTINGS.should_run_locally,
             app_name=app_name,
         )
         LOGGER.info("Removing %s folder: %s", app_name, folder)
-        if SETTINGS.should_run_locally:
-            remove_local_folder(folder)
-        else:
-            remove_s3_folder(folder)
+        remove_s3_folder(folder)
 
 
 def main() -> int:
