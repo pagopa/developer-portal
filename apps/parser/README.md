@@ -64,7 +64,7 @@ Set the following environment variables to control the parser’s behavior:
 - **`S3_BUCKET_NAME`** (required): The name of the AWS S3 bucket where parsed metadata will be stored.
 - **`S3_ACCESS_KEY_ID`** (optional): AWS access key ID for S3 authentication. Required if S3 credentials are not provided by another method (e.g., IAM role).
 - **`S3_SECRET_ACCESS_KEY`** (optional): AWS secret access key for S3 authentication. Required if S3 credentials are not provided by another method.
-- **`NEXT_PUBLIC_COGNITO_REGION`** (optional): AWS region for S3 operations (e.g., `"us-east-1"`, `"eu-west-1"`). Used to configure the S3 client region.
+- **`NEXT_PUBLIC_COGNITO_REGION`** (required, default `"us-east-1"`): AWS region for S3 operations. Used to configure the S3 client region.
 ---
 
 ## Output Structure

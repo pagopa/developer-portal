@@ -35,13 +35,13 @@ This project uses [Poetry](https://python-poetry.org/) for dependency management
 4. Configure environment variables in `.env`:
    ```bash
     # AWS Configuration
-    AWS_DEFAULT_REGION=eu-south-1
+    AWS_DEFAULT_REGION=us-east-1
     # Comma-separated list of URLs to clean (e.g. "https://example.com,https://www.other.com")
     URLS="https://example.com,https://www.other.com"
     # Vector index name
-    CHB_INDEX_ID="your_index_id"
+    CHB_INDEX_ID="index_id"
     # Optional S3 bucket name (required if *should_run_locally* is ``False``)
-    S3_BUCKET_NAME="your_s3_bucket_name"
+    S3_BUCKET_NAME="s3_bucket_name"
 
     # Flags for app folder removal
     SHOULD_REMOVE_PARSER_FOLDER=true
@@ -105,7 +105,7 @@ every URL listed will be parsed, extracted, and then cleaned:
 
 ```bash
 URLS="https://example.com,https://www.other.com"
-CHB_INDEX_ID="your_index_id"
+CHB_INDEX_ID="index_id"
 S3_BUCKET_NAME="your_s3_bucket_name"
 ```
 
