@@ -15,7 +15,7 @@ This project uses [Poetry](https://python-poetry.org/) for dependency management
 
 ### Installation
 
-1. Navigate to the project directory:
+1. Navigate to the application directory:
    ```bash
    cd apps/structured-data-cleaner
    ```
@@ -40,15 +40,12 @@ This project uses [Poetry](https://python-poetry.org/) for dependency management
     URLS="https://example.com,https://www.other.com"
     # Vector index name
     CHB_INDEX_ID="index_id"
-    # Optional S3 bucket name (required if *should_run_locally* is ``False``)
+    # Required S3 bucket name
     S3_BUCKET_NAME="s3_bucket_name"
 
     # Flags for app folder removal
     SHOULD_REMOVE_PARSER_FOLDER=true
     SHOULD_REMOVE_EXTRACTOR_FOLDER=true
-
-    # Optional local run flag (defaults to false)
-    SHOULD_RUN_LOCALLY=false
 
     # Optional log level configuration (defaults to "info")
     LOG_LEVEL=info
