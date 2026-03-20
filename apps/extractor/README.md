@@ -36,16 +36,12 @@ This project uses [Poetry](https://python-poetry.org/) for dependency management
    # AWS Configuration
    AWS_DEFAULT_REGION=eu-south-1
 
-   SHOULD_RUN_LOCALLY=false # optional, set to false by default. false is to read from and write to s3
-
    # Input and output folder:
    #
    # Derive the input folder automatically from the
    # same URL and index variables used by the parser. The extractor will read
-   # from: {CHB_INDEX_ID}/parser/<sanitized(URL)>  (local)
-   #     or s3://{S3_BUCKET_NAME}/{CHB_INDEX_ID}/parser/<sanitized(URL)>/  (S3)
-   # and write to: {CHB_INDEX_ID}/extractor/<sanitized(URL)>  (local)
-   #     or s3://{S3_BUCKET_NAME}/{CHB_INDEX_ID}/extractor/<sanitized(URL)>/  (S3)
+   # from: s3://{S3_BUCKET_NAME}/{CHB_INDEX_ID}/parser/<sanitized(URL)>/  (S3)
+   # and write to: s3://{S3_BUCKET_NAME}/{CHB_INDEX_ID}/extractor/<sanitized(URL)>/  (S3)
    URL=https://example.com          # same URL as passed to the parser
    CHB_INDEX_ID=my-index            # same index as passed to the parser
    S3_BUCKET_NAME=my-bucket         # required for S3 mode
@@ -78,9 +74,7 @@ the following way:
 
 - **Derived from `URL` + `CHB_INDEX_ID`**,
    the path is computed with the same algorithm the parser uses for its output
-   directory, so both apps stay in sync automatically:
-   - Local: `{CHB_INDEX_ID}/parser/<sanitized(URL)>`
-   - S3: `s3://{S3_BUCKET_NAME}/{CHB_INDEX_ID}/parser/<sanitized(URL)>/`
+   directory, so both apps stay in sync automatically: `s3://{S3_BUCKET_NAME}/{CHB_INDEX_ID}/parser/<sanitized(URL)>/`
 
 ### Running
 
@@ -134,6 +128,17 @@ The `content_cleaning_prompt` template instructs the LLM to:
 - Format output as clean markdown
 - Preserve all main content without truncation
 - Maintain the original language
+
+### Running with a mocked S3 bucket (Docker)
+
+The extractor can be run against a local [Moto](https://docs.getmoto.org/) mock S3 server as part
+of the full pipeline, or in isolation. Both modes are orchestrated from the
+`apps/structured-data-cleaner` package, which owns the Docker Compose setup.
+
+See [`apps/structured-data-cleaner/README.md`](../structured-data-cleaner/README.md) for full
+instructions on:
+- Running the complete pipeline (`parser → extractor → structured-data-cleaner`)
+- Running the extractor in isolation against mock S3
 
 ### Development
 
