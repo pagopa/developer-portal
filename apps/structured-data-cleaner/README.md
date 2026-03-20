@@ -15,7 +15,7 @@ This project uses [Poetry](https://python-poetry.org/) for dependency management
 
 ### Installation
 
-1. Navigate to the project directory:
+1. Navigate to the application directory:
    ```bash
    cd apps/structured-data-cleaner
    ```
