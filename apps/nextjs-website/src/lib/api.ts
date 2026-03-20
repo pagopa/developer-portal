@@ -1,10 +1,10 @@
 import { ApiDataListPagesRepository } from '@/lib/apiDataListPages';
 import { CaseHistoriesRepository } from '@/lib/caseHistories';
+import { GuideListPagesRepository } from '@/lib/guideListPages';
+import { GuidesRepository } from '@/lib/guides';
 import { Product } from '@/lib/product/types';
 import { Webinar } from '@/lib/types/webinar';
 import {
-  getGuideListPagesProps,
-  getGuidePageProps,
   getOverviewsProps,
   getProductsProps,
   getQuickStartGuidesProps,
@@ -58,14 +58,15 @@ export async function getGuidePage(
   productSlug: string
 ) {
   // Fetch data in parallel instead of sequential
-  const [products, guideProps] = await Promise.all([
+  const [products, guideResult] = await Promise.all([
     getProducts(locale),
-    getGuidePageProps(
-      guidePaths.length > 0 ? guidePaths[0] : '',
+    GuidesRepository.getByProductAndSlug(
       locale,
-      productSlug
+      productSlug,
+      guidePaths.length > 0 ? guidePaths[0] : ''
     ),
   ]);
+  const guideProps = manageUndefined(guideResult);
 
   // Path construction
   const guidePath = [
@@ -96,9 +97,7 @@ export async function getGuidePage(
 
 export async function getGuideListPages(locale: string, productSlug?: string) {
   const props = manageUndefined(
-    (await getGuideListPagesProps(locale)).find(
-      ({ product }) => product.slug === productSlug
-    )
+    await GuideListPagesRepository.getByProductSlug(locale, productSlug || '')
   );
   return manageUndefinedAndAddProducts(locale, props);
 }

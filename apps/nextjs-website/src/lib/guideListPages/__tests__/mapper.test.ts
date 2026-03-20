@@ -1,20 +1,20 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { makeGuideListPagesProps } from '@/lib/strapi/makeProps/makeGuideListPages';
+import { mapGuideListPages } from '@/lib/guideListPages/mapper';
 import {
   guideListPagesProps,
   strapiEmptyGuideListPagesData,
   strapiGuideListPagesData,
-} from '@/lib/strapi/__tests__/fixtures/guideListPages';
+} from '@/lib/shared/fixtures/guideListPages';
 import {
   guideListPagesWithItemMissingProductSlug,
   guideListPagesWithItemsMissingListItem,
   guideListPagesWithItemsWithWrongDataType,
   guideListPagesWithItemsMissingImages,
   guideListPagesWithItemsMissingSlug,
-} from '@/lib/strapi/__tests__/factories/guideListPages';
+} from '@/lib/shared/factories/guideListPages';
 import { spyOnConsoleError } from '@/lib/strapi/__tests__/spyOnConsole';
 
-describe('makeGuideListPageProps', () => {
+describe('mapGuideListPages', () => {
   beforeEach(() => {
     spyOnConsoleError.mockClear();
   });
@@ -24,12 +24,12 @@ describe('makeGuideListPageProps', () => {
   });
 
   it('should return an empty array when no guides are provided', () => {
-    const result = makeGuideListPagesProps('it', strapiEmptyGuideListPagesData);
+    const result = mapGuideListPages('it', strapiEmptyGuideListPagesData);
     expect(result).toEqual([]);
   });
 
   it('should return an array with a single element with the guides for the PagoPA product', () => {
-    const result = makeGuideListPagesProps('it', strapiGuideListPagesData);
+    const result = mapGuideListPages('it', strapiGuideListPagesData);
     expect(result).toHaveLength(1);
     expect(result).toEqual(guideListPagesProps);
   });
@@ -46,7 +46,7 @@ describe('makeGuideListPageProps', () => {
         },
       },
     };
-    const result = makeGuideListPagesProps('it', guideListWithMissingSlugsData);
+    const result = mapGuideListPages('it', guideListWithMissingSlugsData);
     expect(result).toHaveLength(1);
     expect(result[0]).toEqual({
       ...guideListPagesProps[0],
@@ -73,10 +73,7 @@ describe('makeGuideListPageProps', () => {
         },
       },
     };
-    const result = makeGuideListPagesProps(
-      'it',
-      guideListWithMissingImagesData
-    );
+    const result = mapGuideListPages('it', guideListWithMissingImagesData);
     expect(result).toHaveLength(1);
     expect(result[0]).toEqual({
       ...guideListPagesProps[0],
@@ -93,7 +90,7 @@ describe('makeGuideListPageProps', () => {
 
   it('should return a single element array of type GuideListPageProps with only one guide', () => {
     const guideListWithInvalidData = guideListPagesWithItemsMissingListItem();
-    const result = makeGuideListPagesProps('it', guideListWithInvalidData);
+    const result = mapGuideListPages('it', guideListWithInvalidData);
     expect(result).toHaveLength(1);
     expect(result[0].guidesSections).toHaveLength(2);
     expect(result[0].guidesSections?.[0].guides).toHaveLength(1);
@@ -104,7 +101,7 @@ describe('makeGuideListPageProps', () => {
     const guideListWithNumbers =
       guideListPagesWithItemsWithWrongDataType() as any;
 
-    const result = makeGuideListPagesProps('it', guideListWithNumbers);
+    const result = mapGuideListPages('it', guideListWithNumbers);
     expect(result).toHaveLength(1);
     expect(result[0].abstract).toEqual({
       title: 12345,
@@ -113,7 +110,7 @@ describe('makeGuideListPageProps', () => {
   });
 
   it('should return an empty array if all guide list pages have missing product slugs', () => {
-    const result = makeGuideListPagesProps(
+    const result = mapGuideListPages(
       'it',
       guideListPagesWithItemMissingProductSlug()
     );

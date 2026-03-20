@@ -12,8 +12,6 @@ import { makeSolutionListPageProps } from './strapi/makeProps/makeSolutionListPa
 import { fetchSolutionListPage } from './strapi/fetches/fetchSolutionListPage';
 
 import { ProductRepository } from '@/lib/product';
-import { makeGuideListPagesProps } from './strapi/makeProps/makeGuideListPages';
-import { makeGuidesProps } from './strapi/makeProps/makeGuides';
 import { fetchOverviews } from '@/lib/strapi/fetches/fetchOverviews';
 import { makeOverviewsProps } from '@/lib/strapi/makeProps/makeOverviews';
 import { fetchTutorialListPages } from './strapi/fetches/fetchTutorialListPages';
@@ -34,7 +32,6 @@ import {
   fetchResponseFromCDN,
   JsonMetadata,
 } from '@/helpers/s3Metadata.helpers';
-import { StrapiGuides } from '@/lib/strapi/types/guide';
 import { fetchUseCases } from '@/lib/strapi/fetches/fetchUseCases';
 import { makeUseCasesProps } from '@/lib/strapi/makeProps/makeUseCases';
 import { fetchUseCaseListPages } from '@/lib/strapi/fetches/fetchUseCaseListPages';
@@ -43,12 +40,11 @@ import { fetchTags } from '@/lib/strapi/fetches/fetchTags';
 import { makeTagsProps } from '@/lib/strapi/makeProps/makeTags';
 import { isMarkDownPart, MarkDownPart } from '@/lib/strapi/types/part';
 import { getMarkdownContent } from '@/lib/api';
-import { fetchGuideListPages } from './strapi/fetches/fetchGuideListPages';
 import {
-  getSyncedGuidesResponseJsonFile,
   getSyncedSolutionsResponseJsonFile,
   getSyncedReleaseNotesResponseJsonFile,
 } from 'gitbook-docs/syncedResponses';
+import { GuidesRepository } from '@/lib/guides';
 import { StrapiSolutions } from './strapi/types/solutions';
 import { StrapiReleaseNotes } from './strapi/types/releaseNotes';
 
@@ -137,49 +133,21 @@ export const getOverviewsProps = async (locale: string) => {
   return makeOverviewsProps(locale, strapiOverviews);
 };
 
-export const getGuideListPagesProps = async (locale: string) => {
-  const strapiGuideList = await fetchGuideListPages(locale, buildEnv);
-  return strapiGuideList
-    ? makeGuideListPagesProps(locale, strapiGuideList)
-    : [];
-};
-
 export const getGuideProps = async (
   guidePaths: ReadonlyArray<string>,
   locale: string,
   productSlug: string
 ) => {
-  const guide = await getGuidePageProps(guidePaths[0], locale, productSlug);
-  return await makeGuideS3({ guideDefinition: guide, locale, guidePaths });
-};
-
-export const getGuidesProps = async (locale: string) => {
-  const strapiGuides = (await fetchResponseFromCDN(
-    `${locale}/${getSyncedGuidesResponseJsonFile}`
-  )) as StrapiGuides | undefined;
-  return strapiGuides ? makeGuidesProps(locale, strapiGuides) : [];
-};
-
-export const getGuidePageProps = async (
-  guideSlug: string,
-  locale: string,
-  productSlug: string
-) => {
-  const strapiGuides = (await fetchResponseFromCDN(
-    `${locale}/${getSyncedGuidesResponseJsonFile}`
-  )) as StrapiGuides | undefined;
-  // eslint-disable-next-line functional/no-expression-statements
-  const guides = strapiGuides ? makeGuidesProps(locale, strapiGuides) : [];
-  const guide = guides.filter(
-    (g) => g.guide.slug === guideSlug && g.product.slug === productSlug
-  )[0];
-
+  const guide = await GuidesRepository.getByProductAndSlug(
+    locale,
+    productSlug,
+    guidePaths[0]
+  );
   if (!guide) {
     // eslint-disable-next-line functional/no-throw-statements
     throw new Error('Failed to fetch guide data');
   }
-
-  return guide;
+  return await makeGuideS3({ guideDefinition: guide, locale, guidePaths });
 };
 
 export const getSolutionProps = async (

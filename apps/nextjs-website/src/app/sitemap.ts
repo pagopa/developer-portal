@@ -6,8 +6,8 @@ import {
   getSolutionsProps,
   getWebinarsProps,
   getReleaseNotesProps,
-  getGuidesProps,
 } from '@/lib/cmsApi';
+import { GuidesRepository } from '@/lib/guides';
 import { baseUrl } from '@/config';
 import {
   getGuidesMetadata,
@@ -165,7 +165,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       // These are stored in S3 and retrieved via legacy helpers.
       // We keep them ensuring no missing legacy content.
       const guidesMetadata = await getGuidesMetadata(localeCode);
-      const guides = await getGuidesProps(localeCode);
+      const guides = await GuidesRepository.getAll(localeCode);
       const guidesDirNames = Array.from(
         new Set(
           guides

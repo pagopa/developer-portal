@@ -73,7 +73,7 @@ export const strapiGuideData = {
                 type: 'paragraph',
                 children: [
                   {
-                    text: 'Apri un ticket utilizzando l’apposita funzione all’interno della tua ',
+                    text: 'Apri un ticket utilizzando l\u2019apposita funzione all\u2019interno della tua ',
                     type: 'text',
                   },
                   {
@@ -106,7 +106,7 @@ export const strapiGuideData = {
                 type: 'paragraph',
                 children: [
                   {
-                    text: 'Per chiarimenti sulle specifiche d’implementazione, come SACI e SANP, puoi aprire una segnalazione su ',
+                    text: 'Per chiarimenti sulle specifiche d\u2019implementazione, come SACI e SANP, puoi aprire una segnalazione su ',
                     type: 'text',
                   },
                   {

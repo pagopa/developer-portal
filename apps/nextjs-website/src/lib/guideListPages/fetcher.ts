@@ -1,7 +1,8 @@
 import * as qs from 'qs';
 import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
 import { productRelationsPopulate } from '@/lib/product/fetcher';
-import { StrapiGuideListPages } from '@/lib/strapi/types/guideListPage';
+import { StrapiGuideListPages } from './types';
+import { buildEnv } from '@/lib/buildEnv';
 
 const makeStrapiGuideListPopulate = () =>
   qs.stringify({
@@ -21,7 +22,8 @@ const makeStrapiGuideListPopulate = () =>
     },
   });
 
-export const fetchGuideListPages = fetchFromStrapi<StrapiGuideListPages>(
-  'guide-list-pages',
-  makeStrapiGuideListPopulate()
-);
+export const fetchGuideListPages = (locale: string) =>
+  fetchFromStrapi<StrapiGuideListPages>(
+    'guide-list-pages',
+    makeStrapiGuideListPopulate()
+  )(locale, buildEnv);

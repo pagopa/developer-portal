@@ -38,7 +38,7 @@ export const strapiGuideListPagesData = {
                 type: 'paragraph',
                 children: [
                   {
-                    text: 'Apri un ticket utilizzando l’apposita funzione all’interno della tua ',
+                    text: 'Apri un ticket utilizzando l\u2019apposita funzione all\u2019interno della tua ',
                     type: 'text',
                   },
                   {
@@ -79,7 +79,7 @@ export const strapiGuideListPagesData = {
                 type: 'paragraph',
                 children: [
                   {
-                    text: 'Per chiarimenti sulle specifiche d’implementazione, come SACI e SANP, puoi aprire una segnalazione su ',
+                    text: 'Per chiarimenti sulle specifiche d\u2019implementazione, come SACI e SANP, puoi aprire una segnalazione su ',
                     type: 'text',
                   },
                   {
@@ -224,13 +224,13 @@ export const strapiGuideListPagesData = {
               listItems: [
                 { text: 'Conosci, usa e gestisci il prodotto pagoPA' },
                 {
-                  text: 'Esplora i principali casi d’uso per PSP ed Enti Creditori',
+                  text: 'Esplora i principali casi d\u2019uso per PSP ed Enti Creditori',
                 },
                 {
-                  text: 'Scopri come un Ente Creditore può aderire e integrarsi in pagoPA',
+                  text: 'Scopri come un Ente Creditore pu\u00f2 aderire e integrarsi in pagoPA',
                 },
                 {
-                  text: 'Scopri come un PSP può aderire e integrarsi in pagoPA',
+                  text: 'Scopri come un PSP pu\u00f2 aderire e integrarsi in pagoPA',
                 },
               ],
               image: {
@@ -352,9 +352,9 @@ export const guideListPagesProps = [
               title: 'guideListPage.cardSection.listItemsTitle',
               listItems: [
                 'Conosci, usa e gestisci il prodotto pagoPA',
-                'Esplora i principali casi d’uso per PSP ed Enti Creditori',
-                'Scopri come un Ente Creditore può aderire e integrarsi in pagoPA',
-                'Scopri come un PSP può aderire e integrarsi in pagoPA',
+                'Esplora i principali casi d\u2019uso per PSP ed Enti Creditori',
+                'Scopri come un Ente Creditore pu\u00f2 aderire e integrarsi in pagoPA',
+                'Scopri come un PSP pu\u00f2 aderire e integrarsi in pagoPA',
               ],
               translate: true,
             },

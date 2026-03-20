@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { StrapiGuides } from '@/lib/strapi/types/guide';
-import { strapiGuideData } from '../fixtures/guides';
+import { strapiGuideData } from '@/lib/shared/fixtures/guides';
 
 export function guideListWithItemsWithEmptyProductSlug() {
   return {

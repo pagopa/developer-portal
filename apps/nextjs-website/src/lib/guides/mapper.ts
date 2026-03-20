@@ -1,12 +1,11 @@
 /* eslint-disable functional/no-try-statements */
 /* eslint-disable functional/no-expression-statements */
-import { GuideDefinition } from '@/helpers/makeDocs.helpers';
 import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
 import { makeBaseProductWithoutLogoProps } from '@/lib/product/mapper';
-import { StrapiGuides } from '@/lib/strapi/types/guide';
 import { compact } from 'lodash';
+import { StrapiGuides, GuideDefinition } from './types';
 
-export function makeGuidesProps(
+export function mapGuides(
   locale: string,
   strapiGuides: StrapiGuides
 ): readonly GuideDefinition[] {
