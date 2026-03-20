@@ -48,7 +48,7 @@ def get_llm(
     elif provider == "mock":
         from llama_index.core.llms import MockLLM
 
-        llm = MockLLM(max_tokens=max_tokens)
+        llm = MockLLM(max_tokens=5)
         LOGGER.info("Mock LLM loaded successfully!")
     else:
         raise AssertionError(
