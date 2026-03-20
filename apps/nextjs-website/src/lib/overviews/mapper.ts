@@ -5,11 +5,11 @@ import { OverviewPageProps } from '@/app/[locale]/[productSlug]/overview/page';
 import { makeBaseProductWithoutLogoProps } from '@/lib/product/mapper';
 import { mapBannerLinkProps } from '@/lib/shared/bannerLink/mapper';
 import { UseCase } from '@/lib/types/useCaseData';
-import { Overviews } from './types';
+import { StrapiOverviews } from './types';
 
 export function mapOverviewsProps(
   locale: string,
-  strapiOverviews: Overviews
+  strapiOverviews: StrapiOverviews
 ): ReadonlyArray<OverviewPageProps> {
   return compact(
     strapiOverviews.data.map((attributes) => {

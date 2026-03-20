@@ -1,7 +1,7 @@
 import qs from 'qs';
 import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
 import { productRelationsPopulate } from '@/lib/product/fetcher';
-import { Overviews } from './types';
+import { StrapiOverviews } from './types';
 
 export const overviewsPopulate = {
   populate: {
@@ -51,7 +51,7 @@ export const overviewsPopulate = {
 
 const makeOverviewsPopulate = () => qs.stringify(overviewsPopulate);
 
-export const fetchOverviews = fetchFromStrapi<Overviews>(
+export const fetchOverviews = fetchFromStrapi<StrapiOverviews>(
   'overviews',
   makeOverviewsPopulate()
 );

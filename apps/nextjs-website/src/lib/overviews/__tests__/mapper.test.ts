@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import { mapOverviewsProps } from '@/lib/overviews/mapper';
-import { Overviews } from '@/lib/overviews/types';
+import { StrapiOverviews } from '@/lib/overviews/types';
 import {
   overviewPageProps,
   strapiOverviews,
@@ -50,7 +50,7 @@ describe('mapOverviewsProps', () => {
   });
 
   it('should handle empty data array', () => {
-    const emptyData: Overviews = {
+    const emptyData: StrapiOverviews = {
       data: [],
       meta: {
         pagination: {

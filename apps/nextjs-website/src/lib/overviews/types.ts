@@ -10,40 +10,40 @@ import { StrapiBaseTutorial } from '@/lib/strapi/types/tutorial';
 import { StrapiBaseUseCase } from '@/lib/strapi/types/useCase';
 import { StrapiProduct } from '@/lib/product/types';
 
-export type StartInfo = {
+export type StrapiStartInfo = {
   readonly icon: StrapiMedia;
   readonly title: string;
   readonly description: string;
   readonly path: string;
 };
 
-export type StartInfoSection = {
+export type StrapiStartInfoSection = {
   readonly title: string;
   readonly bottomLabel?: string;
   readonly bottomLink?: StrapiLink;
-  readonly items: readonly StartInfo[];
+  readonly items: readonly StrapiStartInfo[];
 };
 
-export type Feature = {
+export type StrapiFeature = {
   readonly title: string;
   readonly subtitle?: string;
   readonly items: ReadonlyArray<StrapiBannerLink>;
 };
 
-export type TutorialSection = {
+export type StrapiTutorialSection = {
   readonly title: string;
   readonly description: string;
   readonly tutorials: readonly StrapiBaseTutorial[];
   readonly showCardsLayout: boolean;
 };
 
-export type UseCaseSection = {
+export type StrapiUseCaseSection = {
   readonly title: string;
   readonly description: string;
   readonly useCases: readonly StrapiBaseUseCase[];
 };
 
-export type Card = {
+export type StrapiCard = {
   readonly title: string;
   readonly content: BlocksContent;
   readonly linkText: string;
@@ -52,23 +52,23 @@ export type Card = {
   readonly mobileImage: StrapiMedia;
 };
 
-export type ServiceModel = {
+export type StrapiServiceModel = {
   readonly title: string;
   readonly description: string;
   readonly href: string;
 };
 
-export type PostIntegration = {
+export type StrapiPostIntegration = {
   readonly title: string;
   readonly description: string;
   readonly link?: StrapiLink;
   readonly guidesTitle?: string;
-  readonly documents: readonly Card[];
+  readonly documents: readonly StrapiCard[];
   readonly guides: readonly StrapiBaseGuide[];
-  readonly serviceModels: readonly ServiceModel[];
+  readonly serviceModels: readonly StrapiServiceModel[];
 };
 
-export type Overview = {
+export type StrapiOverview = {
   readonly id: number;
   readonly title: string;
   readonly createdAt: string;
@@ -76,11 +76,11 @@ export type Overview = {
   readonly publishedAt: string;
   readonly subtitle: string;
   readonly backgroundImage: StrapiMedia;
-  readonly features?: Feature;
-  readonly startInfoSection?: StartInfoSection;
-  readonly tutorialSection?: TutorialSection;
-  readonly useCaseSection?: UseCaseSection;
-  readonly postIntegration?: PostIntegration;
+  readonly features?: StrapiFeature;
+  readonly startInfoSection?: StrapiStartInfoSection;
+  readonly tutorialSection?: StrapiTutorialSection;
+  readonly useCaseSection?: StrapiUseCaseSection;
+  readonly postIntegration?: StrapiPostIntegration;
   readonly relatedLinks?: StrapiRelatedLinks;
   readonly product: StrapiProduct;
   readonly bannerLinks: readonly StrapiBannerLink[];
@@ -88,4 +88,4 @@ export type Overview = {
   readonly whatsNew?: StrapiNewsShowcase;
 };
 
-export type Overviews = Paginated<Overview>;
+export type StrapiOverviews = Paginated<StrapiOverview>;

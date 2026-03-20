@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Overview, Overviews } from '@/lib/overviews/types';
+import { StrapiOverview, StrapiOverviews } from '@/lib/overviews/types';
 import { strapiOverviews } from '@/lib/shared/fixtures/overviews';
 
-export function minimalDataSingleOverview(): Overviews {
+export function minimalDataSingleOverview(): StrapiOverviews {
   return {
     ...strapiOverviews,
     data: [
@@ -15,12 +15,12 @@ export function minimalDataSingleOverview(): Overviews {
         postIntegration: undefined,
         relatedLinks: undefined,
         seo: undefined,
-      } as Overview,
+      } as StrapiOverview,
     ],
   };
 }
 
-export function overviewsWithItemWithEmptyProductSlug(): Overviews {
+export function overviewsWithItemWithEmptyProductSlug(): StrapiOverviews {
   return {
     ...strapiOverviews,
     data: [
@@ -35,7 +35,7 @@ export function overviewsWithItemWithEmptyProductSlug(): Overviews {
   };
 }
 
-export function overviewsWithItemMissingProductSlug(): Overviews {
+export function overviewsWithItemMissingProductSlug(): StrapiOverviews {
   return {
     ...strapiOverviews,
     data: [
@@ -50,7 +50,7 @@ export function overviewsWithItemMissingProductSlug(): Overviews {
   };
 }
 
-export function overviewsWithItemMissingTutorialProductSlug(): Overviews {
+export function overviewsWithItemMissingTutorialProductSlug(): StrapiOverviews {
   return {
     ...strapiOverviews,
     data: [
@@ -74,7 +74,7 @@ export function overviewsWithItemMissingTutorialProductSlug(): Overviews {
   };
 }
 
-export function overviewsWithItemMissingTutorialSlug(): Overviews {
+export function overviewsWithItemMissingTutorialSlug(): StrapiOverviews {
   return {
     ...strapiOverviews,
     data: [
@@ -94,7 +94,7 @@ export function overviewsWithItemMissingTutorialSlug(): Overviews {
   };
 }
 
-export function overviewsWithItemWithEmptyGuideProductSlug(): Overviews {
+export function overviewsWithItemWithEmptyGuideProductSlug(): StrapiOverviews {
   return {
     ...strapiOverviews,
     data: [
@@ -114,7 +114,7 @@ export function overviewsWithItemWithEmptyGuideProductSlug(): Overviews {
   };
 }
 
-export function overviewsWithItemMissingGuideProductSlug(): Overviews {
+export function overviewsWithItemMissingGuideProductSlug(): StrapiOverviews {
   return {
     ...strapiOverviews,
     data: [
