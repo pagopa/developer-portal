@@ -1,5 +1,4 @@
 from google.oauth2 import service_account
-from google.genai.types import EmbedContentConfig
 from functools import lru_cache
 
 from llama_index.core.llms.llm import LLM
@@ -114,6 +113,7 @@ def get_embed_model(
     retry_min_seconds = retry_min_seconds or SETTINGS.embed_retry_min_seconds
 
     if provider == "google":
+        from google.genai.types import EmbedContentConfig
         from llama_index.embeddings.google_genai import GoogleGenAIEmbedding
 
         vertexai_credentials = get_vertexai_credentials()
