@@ -462,6 +462,13 @@ resource "aws_cloudfront_response_headers_policy" "cors_policy" {
     }
   }
 
+  security_headers_config {
+    frame_options {
+      frame_option = "SAMEORIGIN"
+      override     = true
+    }
+  }
+
   cors_config {
     access_control_allow_credentials = false
 
