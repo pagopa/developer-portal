@@ -20,13 +20,7 @@ export function makeS3Client(): S3Client {
   const S3_SECRET_ACCESS_KEY = process.env.S3_SECRET_ACCESS_KEY;
   const S3_BUCKET_NAME = process.env.S3_BUCKET_NAME;
 
-  const region = process.env.AWS_DEFAULT_REGION ?? "us-east-1";
-
-  console.log("Creating S3 client with the following configuration:");
-  console.log(`Region: ${region}`);
-  console.log(`Region aws_region: ${process.env.AWS_REGION}`);
-
-
+  const region = process.env.AWS_REGION ?? "us-east-1";
   const endpointUrl = process.env.AWS_ENDPOINT_URL;
   const credentials: S3Credentials | undefined =
     !!S3_ACCESS_KEY_ID && !!S3_SECRET_ACCESS_KEY
