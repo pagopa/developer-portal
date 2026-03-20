@@ -1,11 +1,4 @@
 from google.oauth2 import service_account
-from google.genai.types import (
-    EmbedContentConfig,
-    GenerateContentConfig,
-    HarmCategory,
-    HarmBlockThreshold,
-    SafetySetting,
-)
 from functools import lru_cache
 
 from llama_index.core.llms.llm import LLM
@@ -60,6 +53,12 @@ def get_llm(
     max_tokens = max_tokens or SETTINGS.max_tokens
 
     if provider == "google":
+        from google.genai.types import (
+            GenerateContentConfig,
+            HarmCategory,
+            HarmBlockThreshold,
+            SafetySetting,
+        )
         from llama_index.llms.google_genai import GoogleGenAI
 
         safety_settings = [
@@ -141,6 +140,7 @@ def get_embed_model(
     retry_min_seconds = retry_min_seconds or SETTINGS.embed_retry_min_seconds
 
     if provider == "google":
+        from google.genai.types import EmbedContentConfig
         from llama_index.embeddings.google_genai import GoogleGenAIEmbedding
 
         vertexai_credentials = get_vertexai_credentials()
