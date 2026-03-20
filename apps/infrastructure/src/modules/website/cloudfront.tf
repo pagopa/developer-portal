@@ -40,6 +40,10 @@ resource "aws_cloudfront_response_headers_policy" "websites" {
       content_security_policy = format("script-src %s; style-src %s; object-src %s; form-action %s; font-src %s; connect-src %s; img-src %s; frame-src %s", local.script_src, local.style_src, local.object_src, local.form_action, local.font_src, local.connect_src, local.img_src, local.frame_src)
       override                = true
     }
+    frame_options {
+      frame_option = "SAMEORIGIN"
+      override     = true
+    }
   }
 }
 
@@ -64,6 +68,13 @@ resource "aws_cloudfront_response_headers_policy" "static_content_cors" {
       header   = "Server"
       override = true
       value    = "None"
+    }
+  }
+
+  security_headers_config {
+    frame_options {
+      frame_option = "SAMEORIGIN"
+      override     = true
     }
   }
 
