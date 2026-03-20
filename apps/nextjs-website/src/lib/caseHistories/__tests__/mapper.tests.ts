@@ -1,15 +1,15 @@
 import { mapCaseHistoriesProps } from '@/lib/caseHistories/mapper';
-import { StrapiCaseHistories } from '@/lib/strapi/types/caseHistories';
+import { CaseHistories } from '@/lib/caseHistories/types';
 import _ from 'lodash';
 import {
   caseHistoriesPageTemplateProps,
   strapiCaseHistories,
-} from '@/lib/strapi/__tests__/fixtures/caseHistories';
+} from '@/lib/shared/fixtures/caseHistories';
 import {
   minimalDataCaseHistories,
   caseHistoriesWithMultipleProducts,
   caseHistoriesWithoutImage,
-} from '@/lib/strapi/__tests__/factories/caseHistories';
+} from '@/lib/shared/factories/caseHistories';
 import { mediaJpeg } from '@/lib/shared/factories/media';
 
 describe('makeCaseHistoriesProps', () => {
@@ -34,7 +34,7 @@ describe('makeCaseHistoriesProps', () => {
   });
 
   it('should handle empty data array', () => {
-    const emptyData: StrapiCaseHistories = {
+    const emptyData: CaseHistories = {
       data: [],
       meta: {
         pagination: {

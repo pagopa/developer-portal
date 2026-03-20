@@ -20,4 +20,10 @@ export type CaseHistory = BaseCaseHistory & {
   readonly seo?: StrapiSeo;
 };
 
+export type CaseHistoriesComponent = {
+  readonly title: string;
+  readonly description?: string;
+  readonly case_histories: readonly BaseCaseHistory[];
+};
+
 export type CaseHistories = Paginated<CaseHistory>;
