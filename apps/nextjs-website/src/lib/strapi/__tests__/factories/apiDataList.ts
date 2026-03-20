@@ -40,7 +40,7 @@ export function minimalApiDataList() {
       },
       apiSoapDetail: undefined,
     },
-  ] as StrapiApiDataList);
+  ] satisfies StrapiApiDataList);
 }
 
 export function apiDataWithoutBannerLinks() {
@@ -50,7 +50,7 @@ export function apiDataWithoutBannerLinks() {
       ...apiData,
       bannerLinks: [],
     },
-  ] as StrapiApiDataList);
+  ] satisfies StrapiApiDataList);
 }
 
 export function apiDataWithMissingProduct() {
@@ -61,7 +61,7 @@ export function apiDataWithMissingProduct() {
       title: 'API Data Without Product',
       product: undefined,
     },
-  ] as StrapiApiDataList);
+  ] satisfies StrapiApiDataList);
 }
 
 export function apiDataWithoutApiDetails() {
@@ -73,7 +73,7 @@ export function apiDataWithoutApiDetails() {
       apiRestDetail: undefined,
       apiSoapDetail: undefined,
     },
-  ] as StrapiApiDataList);
+  ] satisfies StrapiApiDataList);
 }
 
 export function apiDataWithInvalidRestApiDetails() {
@@ -88,7 +88,7 @@ export function apiDataWithInvalidRestApiDetails() {
       },
       apiSoapDetail: undefined,
     },
-  ] as StrapiApiDataList);
+  ] satisfies StrapiApiDataList);
 }
 
 export function apiDatalistWithItemMissingSlug() {
@@ -104,7 +104,7 @@ export function apiDatalistWithItemMissingSlug() {
         dirName: 'soap-dir',
       },
     },
-  ] as StrapiApiDataList);
+  ] satisfies StrapiApiDataList);
 }
 
 export function mixedApiDataValidAndInvalid() {
@@ -134,7 +134,7 @@ export function mixedApiDataValidAndInvalid() {
         ],
       },
     },
-  ] as StrapiApiDataList);
+  ] satisfies StrapiApiDataList);
 }
 
 export function apiDataWithoutProductBannerLinks() {
@@ -160,7 +160,7 @@ export function apiDataWithoutProductBannerLinks() {
         bannerLinks: [],
       },
     },
-  ] as StrapiApiDataList);
+  ] satisfies StrapiApiDataList);
 }
 
 export function apiDataWithCorruptedProduct() {
@@ -171,7 +171,7 @@ export function apiDataWithCorruptedProduct() {
       title: 'API Data With Corrupted Product',
       product: undefined as any,
     },
-  ] as StrapiApiDataList);
+  ] satisfies StrapiApiDataList);
 }
 
 export function allInvalidApiData() {
@@ -179,17 +179,21 @@ export function allInvalidApiData() {
     apiDataWithoutApiDetails().data[0],
     apiDataWithMissingProduct().data[0],
     apiDataWithCorruptedProduct().data[0],
-  ] as StrapiApiDataList);
+  ] satisfies StrapiApiDataList);
 }
 
 export function soapApiDataOnly() {
   const soapApi = strapiApiDataList.data[1];
-  return wrapAsRootEntity<StrapiApiDataList>([soapApi] as StrapiApiDataList);
+  return wrapAsRootEntity<StrapiApiDataList>([
+    soapApi,
+  ] satisfies StrapiApiDataList);
 }
 
 export function restApiDataOnly() {
   const restApi = strapiApiDataList.data[0];
-  return wrapAsRootEntity<StrapiApiDataList>([restApi] as StrapiApiDataList);
+  return wrapAsRootEntity<StrapiApiDataList>([
+    restApi,
+  ] satisfies StrapiApiDataList);
 }
 
 export function restApiDataWithMultipleSpecs() {
@@ -215,5 +219,5 @@ export function restApiDataWithMultipleSpecs() {
         ],
       },
     },
-  ] as StrapiApiDataList);
+  ] satisfies StrapiApiDataList);
 }

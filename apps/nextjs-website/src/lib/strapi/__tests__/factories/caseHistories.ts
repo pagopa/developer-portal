@@ -18,7 +18,7 @@ export function minimalDataCaseHistories() {
       parts: [],
       seo: undefined,
     },
-  ]) as StrapiCaseHistories;
+  ]) satisfies StrapiCaseHistories;
 }
 
 export function caseHistoriesWithMissingData() {
@@ -60,9 +60,9 @@ export function caseHistoriesWithMultipleProducts() {
       products: [
         ...strapiCaseHistory.products,
         secondProduct,
-      ] as readonly StrapiBaseProductWithoutBannerLinks[],
+      ] satisfies readonly StrapiBaseProductWithoutBannerLinks[],
     },
-  ]) as StrapiCaseHistories;
+  ]) satisfies StrapiCaseHistories;
 }
 
 export function caseHistoriesWithoutImage() {
@@ -72,5 +72,5 @@ export function caseHistoriesWithoutImage() {
       ...strapiCaseHistory,
       image: undefined,
     },
-  ]) as StrapiCaseHistories;
+  ]) satisfies StrapiCaseHistories;
 }
