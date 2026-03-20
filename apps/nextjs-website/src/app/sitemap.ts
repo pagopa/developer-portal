@@ -2,7 +2,6 @@
 /* eslint-disable functional/no-try-statements */
 import type { MetadataRoute } from 'next';
 import {
-  getHomepageProps,
   getSolutionsProps,
   getWebinarsProps,
   getReleaseNotesProps,
@@ -27,6 +26,7 @@ import { SUPPORTED_LOCALES } from '@/locales';
 import { compact, isEmpty } from 'lodash';
 import { HomepageProps } from '@/app/[locale]/page';
 import { CaseHistoriesRepository } from '@/lib/caseHistories';
+import { HomepageRepository } from '../lib/homepage';
 
 export const dynamic = 'force-dynamic';
 
@@ -65,7 +65,7 @@ type SitemapApiData = {
 
 async function getHomepage(localeCode: string): Promise<HomepageProps | null> {
   try {
-    return await getHomepageProps(localeCode);
+    return await HomepageRepository.get(localeCode);
   } catch (error) {
     console.error('Failed to fetch homepage data for sitemap:', error);
     return null;

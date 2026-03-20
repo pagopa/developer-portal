@@ -1,5 +1,5 @@
-import { strapiHomepage } from '@/lib/strapi/__tests__/fixtures/homepage';
-import { StrapiHomepage } from '@/lib/strapi/types/homepage';
+import { strapiHomepage } from '@/lib/shared/fixtures/homepage';
+import { StrapiHomepage } from '@/lib/homepage/types';
 
 export function minimalDataHomepage() {
   return {

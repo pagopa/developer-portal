@@ -1,5 +1,5 @@
-import { StrapiHomepage } from '@/lib/strapi/types/homepage';
 import { HomepageProps } from '@/app/[locale]/page';
+import { StrapiHomepage } from '@/lib/homepage/types';
 import { mediaJpeg } from '@/lib/shared/factories/media';
 import { newsShowcase } from '@/lib/strapi/__tests__/fixtures/newsShowcase';
 

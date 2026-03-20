@@ -1,6 +1,4 @@
 import { buildEnv } from '@/lib/buildEnv';
-import { makeHomepageProps } from './strapi/makeProps/makeHomepage';
-import { fetchHomepage } from '@/lib/strapi/fetches/fetchHomepage';
 import { makeWebinarsProps } from './strapi/makeProps/makeWebinars';
 import { fetchWebinars } from './strapi/fetches/fetchWebinars';
 import { fetchTutorials } from './strapi/fetches/fetchTutorials';
@@ -47,11 +45,6 @@ import {
 import { GuidesRepository } from '@/lib/guides';
 import { StrapiSolutions } from './strapi/types/solutions';
 import { StrapiReleaseNotes } from './strapi/types/releaseNotes';
-
-export const getHomepageProps = async (locale: string) => {
-  const strapiHomepage = await fetchHomepage(locale, buildEnv);
-  return makeHomepageProps(locale, strapiHomepage);
-};
 
 export const getWebinarsProps = async (locale: string) => {
   const strapiWebinars = await fetchWebinars(locale, buildEnv);
