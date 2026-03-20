@@ -1,49 +1,49 @@
+import { BlocksContent } from '@strapi/blocks-react-renderer';
 import { StrapiBaseGuide } from '@/lib/strapi/types/guide';
+import { StrapiBannerLink } from '@/lib/strapi/types/bannerLink';
 import { StrapiLink, StrapiRelatedLinks } from '@/lib/strapi/types/link';
 import { StrapiMedia } from '@/lib/strapi/types/media';
-import { StrapiBannerLink } from '@/lib/strapi/types/bannerLink';
 import { StrapiNewsShowcase } from '@/lib/strapi/types/newsShowcase';
-import { BlocksContent } from '@strapi/blocks-react-renderer';
-import { StrapiSeo } from '@/lib/strapi/types/seo';
 import { Paginated } from '@/lib/strapi/types/paginated';
+import { StrapiSeo } from '@/lib/strapi/types/seo';
 import { StrapiBaseTutorial } from '@/lib/strapi/types/tutorial';
+import { StrapiBaseUseCase } from '@/lib/strapi/types/useCase';
 import { StrapiProduct } from '@/lib/product/types';
-import { StrapiBaseUseCase } from './useCase';
 
-export type StrapiStartInfo = {
+export type StartInfo = {
   readonly icon: StrapiMedia;
   readonly title: string;
   readonly description: string;
   readonly path: string;
 };
 
-export type StrapiStartInfoSection = {
+export type StartInfoSection = {
   readonly title: string;
   readonly bottomLabel?: string;
   readonly bottomLink?: StrapiLink;
-  readonly items: readonly StrapiStartInfo[];
+  readonly items: readonly StartInfo[];
 };
 
-export type StrapiFeature = {
+export type Feature = {
   readonly title: string;
   readonly subtitle?: string;
   readonly items: ReadonlyArray<StrapiBannerLink>;
 };
 
-export type StrapiTutorialSection = {
+export type TutorialSection = {
   readonly title: string;
   readonly description: string;
   readonly tutorials: readonly StrapiBaseTutorial[];
   readonly showCardsLayout: boolean;
 };
 
-export type StrapiUseCaseSection = {
+export type UseCaseSection = {
   readonly title: string;
   readonly description: string;
   readonly useCases: readonly StrapiBaseUseCase[];
 };
 
-export type StrapiCardProps = {
+export type Card = {
   readonly title: string;
   readonly content: BlocksContent;
   readonly linkText: string;
@@ -52,23 +52,23 @@ export type StrapiCardProps = {
   readonly mobileImage: StrapiMedia;
 };
 
-export type StrapiServiceModel = {
+export type ServiceModel = {
   readonly title: string;
   readonly description: string;
   readonly href: string;
 };
 
-export type StrapiPostIntegration = {
+export type PostIntegration = {
   readonly title: string;
   readonly description: string;
   readonly link?: StrapiLink;
   readonly guidesTitle?: string;
-  readonly documents: readonly StrapiCardProps[];
+  readonly documents: readonly Card[];
   readonly guides: readonly StrapiBaseGuide[];
-  readonly serviceModels: readonly StrapiServiceModel[];
+  readonly serviceModels: readonly ServiceModel[];
 };
 
-export type StrapiOverview = {
+export type Overview = {
   readonly id: number;
   readonly title: string;
   readonly createdAt: string;
@@ -76,11 +76,11 @@ export type StrapiOverview = {
   readonly publishedAt: string;
   readonly subtitle: string;
   readonly backgroundImage: StrapiMedia;
-  readonly features?: StrapiFeature;
-  readonly startInfoSection?: StrapiStartInfoSection;
-  readonly tutorialSection?: StrapiTutorialSection;
-  readonly useCaseSection?: StrapiUseCaseSection;
-  readonly postIntegration?: StrapiPostIntegration;
+  readonly features?: Feature;
+  readonly startInfoSection?: StartInfoSection;
+  readonly tutorialSection?: TutorialSection;
+  readonly useCaseSection?: UseCaseSection;
+  readonly postIntegration?: PostIntegration;
   readonly relatedLinks?: StrapiRelatedLinks;
   readonly product: StrapiProduct;
   readonly bannerLinks: readonly StrapiBannerLink[];
@@ -88,4 +88,4 @@ export type StrapiOverview = {
   readonly whatsNew?: StrapiNewsShowcase;
 };
 
-export type StrapiOverviews = Paginated<StrapiOverview>;
+export type Overviews = Paginated<Overview>;

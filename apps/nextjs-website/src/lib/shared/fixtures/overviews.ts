@@ -1,8 +1,8 @@
-import { StrapiOverviews } from '@/lib/strapi/types/overviews';
+import { OverviewPageProps } from '@/app/[locale]/[productSlug]/overview/page';
 import { product } from '@/lib/product/__tests__/fixtures/product';
 import { mediaJpeg } from '@/lib/shared/factories/media';
 import { generateBannerLinks } from '@/lib/strapi/__tests__/factories/bannerLink';
-import { OverviewPageProps } from '@/app/[locale]/[productSlug]/overview/page';
+import { Overviews } from '@/lib/overviews/types';
 
 export const dateNow = new Date();
 
@@ -206,7 +206,7 @@ export const strapiOverviews = {
       total: 1,
     },
   },
-} satisfies StrapiOverviews;
+} satisfies Overviews;
 
 export const overviewPageProps: OverviewPageProps = {
   path: '/it/pago-pa/overview',

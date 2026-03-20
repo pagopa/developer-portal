@@ -10,8 +10,6 @@ import { makeSolutionListPageProps } from './strapi/makeProps/makeSolutionListPa
 import { fetchSolutionListPage } from './strapi/fetches/fetchSolutionListPage';
 
 import { ProductRepository } from '@/lib/product';
-import { fetchOverviews } from '@/lib/strapi/fetches/fetchOverviews';
-import { makeOverviewsProps } from '@/lib/strapi/makeProps/makeOverviews';
 import { fetchTutorialListPages } from './strapi/fetches/fetchTutorialListPages';
 import { makeTutorialListPagesProps } from './strapi/makeProps/makeTutorialListPages';
 
@@ -119,11 +117,6 @@ export const getSolutionsProps = async (locale: string) => {
 export const getSolutionListPageProps = async (locale: string) => {
   const strapiSolutionListPage = await fetchSolutionListPage(locale, buildEnv);
   return makeSolutionListPageProps(locale, strapiSolutionListPage);
-};
-
-export const getOverviewsProps = async (locale: string) => {
-  const strapiOverviews = await fetchOverviews(locale, buildEnv);
-  return makeOverviewsProps(locale, strapiOverviews);
 };
 
 export const getGuideProps = async (

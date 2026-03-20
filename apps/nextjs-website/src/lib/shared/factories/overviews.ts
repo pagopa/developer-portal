@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { StrapiOverview, StrapiOverviews } from '@/lib/strapi/types/overviews';
-import { strapiOverviews } from '@/lib/strapi/__tests__/fixtures/overviews';
+import { Overview, Overviews } from '@/lib/overviews/types';
+import { strapiOverviews } from '@/lib/shared/fixtures/overviews';
 
-export function minimalDataSingleOverview(): StrapiOverviews {
+export function minimalDataSingleOverview(): Overviews {
   return {
     ...strapiOverviews,
     data: [
@@ -15,12 +15,12 @@ export function minimalDataSingleOverview(): StrapiOverviews {
         postIntegration: undefined,
         relatedLinks: undefined,
         seo: undefined,
-      } as StrapiOverview,
+      } as Overview,
     ],
   };
 }
 
-export function overviewsWithItemWithEmptyProductSlug() {
+export function overviewsWithItemWithEmptyProductSlug(): Overviews {
   return {
     ...strapiOverviews,
     data: [
@@ -35,7 +35,7 @@ export function overviewsWithItemWithEmptyProductSlug() {
   };
 }
 
-export function overviewsWithItemMissingProductSlug() {
+export function overviewsWithItemMissingProductSlug(): Overviews {
   return {
     ...strapiOverviews,
     data: [
@@ -50,7 +50,7 @@ export function overviewsWithItemMissingProductSlug() {
   };
 }
 
-export function overviewsWithItemMissingTutorialProductSlug() {
+export function overviewsWithItemMissingTutorialProductSlug(): Overviews {
   return {
     ...strapiOverviews,
     data: [
@@ -60,10 +60,10 @@ export function overviewsWithItemMissingTutorialProductSlug() {
           ...strapiOverviews.data[0]?.tutorialSection,
           tutorials: [
             {
-              ...strapiOverviews.data[0]?.tutorialSection.tutorials[0],
+              ...strapiOverviews.data[0]?.tutorialSection?.tutorials[0],
               product: {
-                ...strapiOverviews.data[0]?.tutorialSection.tutorials[0]
-                  .product,
+                ...strapiOverviews.data[0]?.tutorialSection?.tutorials[0]
+                  ?.product,
                 slug: undefined as any,
               },
             },
@@ -74,7 +74,7 @@ export function overviewsWithItemMissingTutorialProductSlug() {
   };
 }
 
-export function overviewsWithItemMissingTutorialSlug() {
+export function overviewsWithItemMissingTutorialSlug(): Overviews {
   return {
     ...strapiOverviews,
     data: [
@@ -84,7 +84,7 @@ export function overviewsWithItemMissingTutorialSlug() {
           ...strapiOverviews.data[0]?.tutorialSection,
           tutorials: [
             {
-              ...strapiOverviews.data[0]?.tutorialSection.tutorials[0],
+              ...strapiOverviews.data[0]?.tutorialSection?.tutorials[0],
               slug: undefined as any,
             },
           ],
@@ -94,7 +94,7 @@ export function overviewsWithItemMissingTutorialSlug() {
   };
 }
 
-export function overviewsWithItemWithEmptyGuideProductSlug() {
+export function overviewsWithItemWithEmptyGuideProductSlug(): Overviews {
   return {
     ...strapiOverviews,
     data: [
@@ -104,7 +104,7 @@ export function overviewsWithItemWithEmptyGuideProductSlug() {
           ...strapiOverviews.data[0]?.postIntegration,
           guides: [
             {
-              ...strapiOverviews.data[0]?.postIntegration.guides[0],
+              ...strapiOverviews.data[0]?.postIntegration?.guides[0],
               slug: '',
             },
           ],
@@ -114,7 +114,7 @@ export function overviewsWithItemWithEmptyGuideProductSlug() {
   };
 }
 
-export function overviewsWithItemMissingGuideProductSlug() {
+export function overviewsWithItemMissingGuideProductSlug(): Overviews {
   return {
     ...strapiOverviews,
     data: [
@@ -124,7 +124,7 @@ export function overviewsWithItemMissingGuideProductSlug() {
           ...strapiOverviews.data[0]?.postIntegration,
           guides: [
             {
-              ...strapiOverviews.data[0]?.postIntegration.guides[0],
+              ...strapiOverviews.data[0]?.postIntegration?.guides[0],
               slug: undefined as any,
             },
           ],

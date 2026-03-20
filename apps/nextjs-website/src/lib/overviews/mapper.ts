@@ -1,15 +1,15 @@
 /* eslint-disable functional/no-try-statements */
 /* eslint-disable functional/no-expression-statements */
-import { OverviewPageProps } from '@/app/[locale]/[productSlug]/overview/page';
-import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
-import { makeBaseProductWithoutLogoProps } from '@/lib/product/mapper';
-import { StrapiOverviews } from '@/lib/strapi/types/overviews';
 import { compact } from 'lodash';
-import { UseCase } from '../../types/useCaseData';
+import { OverviewPageProps } from '@/app/[locale]/[productSlug]/overview/page';
+import { makeBaseProductWithoutLogoProps } from '@/lib/product/mapper';
+import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
+import { UseCase } from '@/lib/types/useCaseData';
+import { Overviews } from './types';
 
-export function makeOverviewsProps(
+export function mapOverviewsProps(
   locale: string,
-  strapiOverviews: StrapiOverviews
+  strapiOverviews: Overviews
 ): ReadonlyArray<OverviewPageProps> {
   return compact(
     strapiOverviews.data.map((attributes) => {
@@ -24,7 +24,7 @@ export function makeOverviewsProps(
       try {
         return {
           updatedAt: attributes.updatedAt,
-          path: `/${locale}/${attributes.product?.slug}/overview`,
+          path: `/${locale}/${attributes.product.slug}/overview`,
           product: makeBaseProductWithoutLogoProps(locale, attributes.product),
           hero: {
             backgroundImage: attributes.backgroundImage.url,
@@ -77,6 +77,7 @@ export function makeOverviewsProps(
                     );
                     return null;
                   }
+
                   return {
                     icon: tutorial.icon,
                     description: tutorial.description,
@@ -218,7 +219,7 @@ export function makeOverviewsProps(
           bannerLinks:
             attributes.bannerLinks.length > 0
               ? attributes.bannerLinks.map(makeBannerLinkProps)
-              : attributes.product?.bannerLinks?.map(makeBannerLinkProps),
+              : attributes.product.bannerLinks?.map(makeBannerLinkProps),
           seo: attributes.seo,
         } satisfies OverviewPageProps;
       } catch (error) {
