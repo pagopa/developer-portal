@@ -1,5 +1,5 @@
 /* eslint-disable functional/no-expression-statements */
-import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
+import { mapBannerLinkProps } from '@/lib/shared/bannerLink/mapper';
 import { makeBaseProductWithoutLogoProps } from '@/lib/product/mapper';
 import { compact } from 'lodash';
 import { StrapiUseCaseListPages } from '@/lib/strapi/types/useCaseListPage';
@@ -75,10 +75,10 @@ export function makeUseCaseListPagesProps(
         bannerLinks:
           attributes.bannerLinks.length > 0
             ? attributes.bannerLinks.map((bannerLink) =>
-                makeBannerLinkProps(bannerLink)
+                mapBannerLinkProps(bannerLink)
               )
             : attributes.product.bannerLinks?.map((bannerLink) =>
-                makeBannerLinkProps(bannerLink)
+                mapBannerLinkProps(bannerLink)
               ),
         enableFilters: attributes.enableFilters,
       } satisfies UseCasesPageProps;

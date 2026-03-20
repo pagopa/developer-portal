@@ -3,7 +3,7 @@
 import { makePartProps } from '@/lib/strapi/makeProps/makePart';
 import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
 import { RelatedLinksProps } from '@/components/atoms/RelatedLinks/RelatedLinks';
-import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
+import { mapBannerLinkProps } from '@/lib/shared/bannerLink/mapper';
 import { compact } from 'lodash';
 import { StrapiUseCases } from '@/lib/strapi/types/useCase';
 import { UseCase } from '@/lib/types/useCaseData';
@@ -64,8 +64,8 @@ export function makeUseCasesProps(
           relatedLinks: attributes.relatedLinks,
           bannerLinks:
             attributes.bannerLinks && attributes.bannerLinks.length > 0
-              ? attributes.bannerLinks?.map(makeBannerLinkProps)
-              : attributes.product?.bannerLinks?.map(makeBannerLinkProps),
+              ? attributes.bannerLinks?.map(mapBannerLinkProps)
+              : attributes.product?.bannerLinks?.map(mapBannerLinkProps),
           seo: attributes.seo,
           subtitle: attributes.subtitle,
           tags: attributes.tags?.map((tag) => tag) || [],

@@ -1,5 +1,5 @@
 import { StrapiBaseProductWithRelations } from '@/lib/product/types';
-import { StrapiBannerLink } from '@/lib/strapi/types/bannerLink';
+import { StrapiBannerLink } from '@/lib/shared/bannerLink/types';
 import { StrapiSeo } from '@/lib/strapi/types/seo';
 import { Paginated } from '@/lib/strapi/types/paginated';
 import { StrapiPart } from '@/lib/strapi/types/part';

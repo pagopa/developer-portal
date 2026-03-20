@@ -3,7 +3,7 @@
 import { compact } from 'lodash';
 import { OverviewPageProps } from '@/app/[locale]/[productSlug]/overview/page';
 import { makeBaseProductWithoutLogoProps } from '@/lib/product/mapper';
-import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
+import { mapBannerLinkProps } from '@/lib/shared/bannerLink/mapper';
 import { UseCase } from '@/lib/types/useCaseData';
 import { Overviews } from './types';
 
@@ -218,8 +218,8 @@ export function mapOverviewsProps(
           },
           bannerLinks:
             attributes.bannerLinks.length > 0
-              ? attributes.bannerLinks.map(makeBannerLinkProps)
-              : attributes.product.bannerLinks?.map(makeBannerLinkProps),
+              ? attributes.bannerLinks.map(mapBannerLinkProps)
+              : attributes.product.bannerLinks?.map(mapBannerLinkProps),
           seo: attributes.seo,
         } satisfies OverviewPageProps;
       } catch (error) {

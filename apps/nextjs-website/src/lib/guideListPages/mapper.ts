@@ -1,7 +1,7 @@
 /* eslint-disable functional/no-expression-statements */
 /* eslint-disable functional/no-try-statements */
 import { GuidesSectionProps } from '@/components/molecules/GuidesSection/GuidesSection';
-import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
+import { mapBannerLinkProps } from '@/lib/shared/bannerLink/mapper';
 import { makeBaseProductWithoutLogoProps } from '@/lib/product/mapper';
 import { GuideCardProps } from '@/components/molecules/GuideCard/GuideCard';
 import { StrapiBaseGuide } from '@/lib/strapi/types/guide';
@@ -44,8 +44,8 @@ export function mapGuideListPages(
           guidesSections: [...guidesSections],
           bannerLinks:
             attributes.bannerLinks.length > 0
-              ? attributes.bannerLinks.map(makeBannerLinkProps)
-              : productData.bannerLinks?.map(makeBannerLinkProps),
+              ? attributes.bannerLinks.map(mapBannerLinkProps)
+              : productData.bannerLinks?.map(mapBannerLinkProps),
           seo: attributes.seo,
           updatedAt: attributes.updatedAt,
         } satisfies GuideListPageProps;

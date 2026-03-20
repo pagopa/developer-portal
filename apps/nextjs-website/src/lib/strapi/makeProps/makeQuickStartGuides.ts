@@ -3,7 +3,7 @@
 import { QuickStartGuidePageProps } from '@/app/[locale]/[productSlug]/quick-start/page';
 import { Step } from '@/lib/types/step';
 import { makePartProps } from '@/lib/strapi/makeProps/makePart';
-import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
+import { mapBannerLinkProps } from '@/lib/shared/bannerLink/mapper';
 import { makeBaseProductWithoutLogoProps } from '@/lib/product/mapper';
 import {
   StrapiQuickStartGuideItem,
@@ -51,8 +51,8 @@ export function makeQuickStartGuidesProps(
           path: `/${locale}/${quickStart.product.slug}/quick-start`,
           bannerLinks:
             quickStart.bannerLinks.length > 0
-              ? quickStart.bannerLinks.map(makeBannerLinkProps)
-              : quickStart.product.bannerLinks?.map(makeBannerLinkProps),
+              ? quickStart.bannerLinks.map(mapBannerLinkProps)
+              : quickStart.product.bannerLinks?.map(mapBannerLinkProps),
           seo: quickStart.seo,
         } satisfies QuickStartGuidePageProps;
       } catch (error) {

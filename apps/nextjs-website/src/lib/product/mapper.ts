@@ -1,7 +1,7 @@
 /* eslint-disable functional/no-expression-statements */
 /* eslint-disable functional/no-throw-statements */
 import { Product } from './types';
-import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
+import { mapBannerLinkProps } from '@/lib/shared/bannerLink/mapper';
 import {
   StrapiBaseProductWithRelations,
   StrapiProduct,
@@ -84,7 +84,7 @@ export function makeBaseProductWithoutLogoProps(
 
   return {
     apiDataListPageUrl: getApiDataListPageUrl(locale, product),
-    bannerLinks: product.bannerLinks?.map(makeBannerLinkProps) || [],
+    bannerLinks: product.bannerLinks?.map(mapBannerLinkProps) || [],
     isVisible: product.isVisible,
     hasApiDataListPage: !!(
       product.api_data_list_page &&

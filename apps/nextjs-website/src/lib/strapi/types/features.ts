@@ -1,4 +1,4 @@
-import { StrapiBannerLink } from '@/lib/strapi/types/bannerLink';
+import { StrapiBannerLink } from '@/lib/shared/bannerLink/types';
 
 export type StrapiFeatures = {
   readonly title: string;

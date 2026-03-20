@@ -1,4 +1,4 @@
-import { generateBannerLinks } from '@/lib/strapi/__tests__/factories/bannerLink';
+import { generateBannerLinks } from '@/lib/shared/factories/bannerLink';
 import { mediaJpeg } from '@/lib/shared/factories/media';
 import { StrapiUseCaseListPages } from '@/lib/strapi/types/useCaseListPage';
 

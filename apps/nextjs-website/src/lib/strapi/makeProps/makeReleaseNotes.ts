@@ -1,6 +1,6 @@
 /* eslint-disable functional/no-try-statements */
 /* eslint-disable functional/no-expression-statements */
-import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
+import { mapBannerLinkProps } from '@/lib/shared/bannerLink/mapper';
 import { makeBaseProductWithoutLogoProps } from '@/lib/product/mapper';
 import { ReleaseNotePageProps } from '@/app/[locale]/[productSlug]/release-note/[[...releaseNoteSubPathSlugs]]/page';
 import { StrapiReleaseNotes } from '@/lib/strapi/types/releaseNotes';
@@ -23,8 +23,8 @@ export function makeReleaseNotesProps(
         return {
           bannerLinks:
             attributes.bannerLinks.length > 0
-              ? attributes.bannerLinks.map(makeBannerLinkProps)
-              : attributes.product?.bannerLinks?.map(makeBannerLinkProps),
+              ? attributes.bannerLinks.map(mapBannerLinkProps)
+              : attributes.product?.bannerLinks?.map(mapBannerLinkProps),
           dirName: attributes.dirName,
           landingFile: attributes.landingFile,
           path: `/${locale}/${attributes.product?.slug}/release-note`,

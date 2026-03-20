@@ -1,6 +1,6 @@
 import { ApiDataListPages } from '@/lib/apiDataListPages/types';
 import { ApiDataListPageTemplateProps } from '@/components/templates/ApiDataListTemplate/ApiDataListTemplate';
-import { generateBannerLinks } from '@/lib/strapi/__tests__/factories/bannerLink';
+import { generateBannerLinks } from '@/lib/shared/factories/bannerLink';
 import { mediaJpeg } from '../../../shared/factories/media';
 
 export const strapiApiDataListPages: ApiDataListPages = {
