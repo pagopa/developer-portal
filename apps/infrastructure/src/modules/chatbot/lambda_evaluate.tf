@@ -107,23 +107,24 @@ resource "aws_lambda_function" "chatbot_evaluate_lambda" {
 
   environment {
     variables = {
-      ENVIRONMENT                     = var.environment
-      CHB_MODEL_TEMPERATURE           = 0
-      CHB_MODEL_MAXTOKENS             = 2048
-      CHB_AWS_SSM_GOOGLE_API_KEY      = module.google_api_key_ssm_parameter.ssm_parameter_name
-      CHB_AWS_SQS_QUEUE_MONITOR_NAME  = aws_sqs_queue.chatbot_queue["monitor"].name
-      CHB_AWS_SQS_QUEUE_EVALUATE_NAME = aws_sqs_queue.chatbot_queue["evaluate"].name
-      CHB_EMBED_BATCH_SIZE            = 100
-      CHB_EMBEDDING_DIM               = 768
-      CHB_EMBED_MODEL_ID              = var.models.embeddings
-      CHB_MODEL_ID                    = var.models.generation
-      CHB_PROVIDER                    = var.models.provider
-      LOG_LEVEL                       = "INFO"
-      CHB_AWS_SSM_LANGFUSE_PUBLIC_KEY = module.langfuse_public_key.ssm_parameter_name
-      CHB_AWS_SSM_LANGFUSE_SECRET_KEY = module.langfuse_secret_key.ssm_parameter_name
-      RAGAS_MAX_RETRIES               = 3
-      RAGAS_MAX_WORKERS               = 2
-      RAGAS_DO_NOT_TRACK              = "True"
+      ENVIRONMENT                        = var.environment
+      CHB_MODEL_TEMPERATURE              = 0
+      CHB_MODEL_MAXTOKENS                = 2048
+      CHB_AWS_SSM_GOOGLE_SERVICE_ACCOUNT = module.google_service_account_ssm_parameter.ssm_parameter_name
+      CHB_AWS_SQS_QUEUE_MONITOR_NAME     = aws_sqs_queue.chatbot_queue["monitor"].name
+      CHB_AWS_SQS_QUEUE_EVALUATE_NAME    = aws_sqs_queue.chatbot_queue["evaluate"].name
+      CHB_EMBED_BATCH_SIZE               = 100
+      CHB_EMBEDDING_DIM                  = 768
+      CHB_EMBED_MODEL_ID                 = var.models.embeddings
+      CHB_MODEL_ID                       = var.models.generation
+      CHB_PROVIDER                       = var.models.provider
+      LOG_LEVEL                          = "INFO"
+      CHB_AWS_SSM_LANGFUSE_PUBLIC_KEY    = module.langfuse_public_key.ssm_parameter_name
+      CHB_AWS_SSM_LANGFUSE_SECRET_KEY    = module.langfuse_secret_key.ssm_parameter_name
+      CHB_VERTEXAI_LOCATION              = "europe-west8"
+      RAGAS_MAX_RETRIES                  = 3
+      RAGAS_MAX_WORKERS                  = 2
+      RAGAS_DO_NOT_TRACK                 = "True"
     }
   }
 
