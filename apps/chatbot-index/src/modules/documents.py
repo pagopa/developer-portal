@@ -225,8 +225,8 @@ def get_product_list(file_path: str | None = None) -> List[str]:
         ), f"Expected product data to be a list, got {type(products)}"
         for product in products:
             try:
-                if product["attributes"]["isVisible"]:
-                    product_list.append(product["attributes"]["slug"])
+                if product["isVisible"]:
+                    product_list.append(product["slug"])
             except KeyError as e:
                 LOGGER.error(f"Error extracting product slug: {e}")
         LOGGER.info(f"Found {len(product_list)} products: {product_list}.")
