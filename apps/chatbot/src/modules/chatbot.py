@@ -28,8 +28,10 @@ from src.modules.telemetry import DictSpanExporter
 from src.modules.vector_index import load_index_redis
 from src.modules.models import get_llm, get_embed_model
 from src.modules.tools import (
+    identity_tool,
     get_query_engine_tool,
     follow_up_questions_tool,
+    IDENTITY_TOOL_NAME,
     DEVPORTAL_TOOL_NAME,
     CITTADINO_TOOL_NAME,
     CHIPS_TOOL_NAME,
@@ -69,8 +71,8 @@ class Chatbot:
         self.embed_model = get_embed_model()
         self.qa_prompt_tmpl, self.ref_prompt_tmpl = self._get_prompt_templates()
 
-        tools = []
-        self.tool_names = []
+        tools = [identity_tool()]
+        self.tool_names = [IDENTITY_TOOL_NAME]
         try:
             devportal_index = load_index_redis(index_id=SETTINGS.devportal_index_id)
             tools.append(
