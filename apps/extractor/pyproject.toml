@@ -18,6 +18,7 @@ pyyaml = "^6.0.3"
 
 [tool.poetry.group.test.dependencies]
 pytest = "^8.3.5"
+pytest-asyncio = "^0.25"
 
 [tool.poetry.group.dev.dependencies]
 jupyter = "^1.1.1"
@@ -26,6 +27,7 @@ jupyterlab = "^4.4.10"
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 pythonpath = ["."]
+asyncio_mode = "auto"
 
 [build-system]
 build-backend = "poetry.core.masonry.api"

@@ -12,17 +12,19 @@ from src.modules.logger import get_logger
 from src.modules.settings import SETTINGS
 from src.modules.models import get_llm
 from src.modules.extractor import process_folder
+from llama_index.core.async_utils import asyncio_run
+
 
 LOGGER = get_logger(__name__, level=SETTINGS.log_level)
 
 
-def main() -> int:
+async def main() -> int:
     LOGGER.info("Extractor Application Starting...")
     try:
         LOGGER.info(f"Initializing LLM: {SETTINGS.model_id}")
         LOGGER.info(f"MAX_TOKENS: {SETTINGS.max_tokens}")
         llm = get_llm()
-        stats = process_folder(
+        stats = await process_folder(
             input_folder=SETTINGS.input_folder,
             output_folder=SETTINGS.output_folder,
             llm=llm,
@@ -44,5 +46,5 @@ def main() -> int:
 
 
 if __name__ == "__main__":
-    exit_code = main()
+    exit_code = asyncio_run(main())
     sys.exit(exit_code)
