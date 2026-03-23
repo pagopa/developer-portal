@@ -175,7 +175,7 @@ class Chatbot:
             if (
                 SETTINGS.use_multirag
                 and engine_response.structured_response["follow_up_questions"]
-                and all(used_tools)
+                and all(used_tools[1:])
             ):
                 chips = engine_response.structured_response["follow_up_questions"]
             else:
