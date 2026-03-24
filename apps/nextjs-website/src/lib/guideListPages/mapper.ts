@@ -1,12 +1,13 @@
 /* eslint-disable functional/no-expression-statements */
 /* eslint-disable functional/no-try-statements */
+import { GuideListPageProps } from '@/app/[locale]/[productSlug]/guides/page';
 import { GuidesSectionProps } from '@/components/molecules/GuidesSection/GuidesSection';
 import { mapBannerLinkProps } from '@/lib/bannerLink/mapper';
 import { makeBaseProductWithoutLogoProps } from '@/lib/products/mapper';
 import { GuideCardProps } from '@/components/molecules/GuideCard/GuideCard';
-import { StrapiBaseGuide } from '@/lib/strapi/types/guide';
+import { StrapiBaseGuide } from '@/lib/guides/types';
 import { compact } from 'lodash';
-import { StrapiGuideListPages, GuideListPageProps } from './types';
+import { StrapiGuideListPages } from './types';
 
 export function mapGuideListPages(
   locale: string,
