@@ -1,21 +1,18 @@
 /* eslint-disable functional/no-try-statements */
 /* eslint-disable functional/no-expression-statements */
 import { QuickStartGuidePageProps } from '@/app/[locale]/[productSlug]/quick-start/page';
-import { Step } from '@/lib/types/step';
-import { makePartProps } from '@/lib/strapi/makeProps/makePart';
 import { mapBannerLinkProps } from '@/lib/bannerLink/mapper';
 import { makeBaseProductWithoutLogoProps } from '@/lib/product/mapper';
+import { makePartProps } from '@/lib/strapi/makeProps/makePart';
+import { Step } from '@/lib/types/step';
+import { compact } from 'lodash';
 import {
   StrapiQuickStartGuideItem,
   StrapiQuickStartGuides,
-} from '@/lib/strapi/types/quickStartGuides';
-import { compact } from 'lodash';
+  QuickStartGuides,
+} from './types';
 
-export type QuickStartGuidesPageProps = readonly QuickStartGuidePageProps[];
-
-function makeStepFromQuickstartGuideItems(
-  item: StrapiQuickStartGuideItem
-): Step {
+function mapStepFromQuickStartGuideItem(item: StrapiQuickStartGuideItem): Step {
   return {
     anchor: item.anchor,
     title: item.title,
@@ -23,12 +20,12 @@ function makeStepFromQuickstartGuideItems(
   };
 }
 
-export function makeQuickStartGuidesProps(
+export function mapQuickStartGuidesProps(
   locale: string,
-  strapiQuickStarts: StrapiQuickStartGuides
-): QuickStartGuidesPageProps {
+  strapiQuickStartGuides: StrapiQuickStartGuides
+): QuickStartGuides {
   return compact(
-    strapiQuickStarts.data.map((quickStart) => {
+    strapiQuickStartGuides.data.map((quickStart) => {
       if (!quickStart.product?.slug) {
         console.error(
           `Error while processing QuickStartGuide with id ${quickStart.id}: missing product slug. Skipping...`
@@ -46,7 +43,7 @@ export function makeQuickStartGuidesProps(
           defaultStepAnchor: quickStart.quickstartGuideItems[0].anchor,
           product: makeBaseProductWithoutLogoProps(locale, quickStart.product),
           steps: quickStart.quickstartGuideItems.map((item) =>
-            makeStepFromQuickstartGuideItems(item)
+            mapStepFromQuickStartGuideItem(item)
           ),
           path: `/${locale}/${quickStart.product.slug}/quick-start`,
           bannerLinks:

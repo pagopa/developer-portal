@@ -1,8 +1,9 @@
-import { StrapiBaseProductWithRelations } from '@/lib/product/types';
+import { QuickStartGuidePageProps } from '@/app/[locale]/[productSlug]/quick-start/page';
 import { StrapiBannerLink } from '@/lib/bannerLink/types';
-import { StrapiSeo } from '@/lib/strapi/types/seo';
+import { StrapiBaseProductWithRelations } from '@/lib/product/types';
 import { Paginated } from '@/lib/strapi/types/paginated';
 import { StrapiPart } from '@/lib/strapi/types/part';
+import { StrapiSeo } from '@/lib/strapi/types/seo';
 
 export type StrapiQuickStartGuideItem = {
   readonly id: number;
@@ -24,3 +25,5 @@ export type StrapiQuickStartGuide = {
 };
 
 export type StrapiQuickStartGuides = Paginated<StrapiQuickStartGuide>;
+
+export type QuickStartGuides = readonly QuickStartGuidePageProps[];

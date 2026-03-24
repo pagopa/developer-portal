@@ -3,10 +3,10 @@ import { CaseHistoriesRepository } from '@/lib/caseHistories';
 import { GuideListPagesRepository } from '@/lib/guideListPages';
 import { GuidesRepository } from '@/lib/guides';
 import { Product } from '@/lib/product/types';
+import { QuickStartGuidesRepository } from '@/lib/quickStartGuides';
 import { Webinar } from '@/lib/types/webinar';
 import {
   getProductsProps,
-  getQuickStartGuidesProps,
   getReleaseNoteProps,
   getSolutionListPageProps,
   getSolutionProps,
@@ -116,9 +116,7 @@ export async function getProducts(locale: string): Promise<readonly Product[]> {
 
 export async function getQuickStartGuide(locale: string, productSlug?: string) {
   const props = manageUndefined(
-    (await getQuickStartGuidesProps(locale)).find(
-      ({ product }) => product.slug === productSlug
-    )
+    await QuickStartGuidesRepository.getByProductSlug(locale, productSlug || '')
   );
   return manageUndefinedAndAddProducts(locale, props);
 }

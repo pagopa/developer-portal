@@ -1,14 +1,14 @@
-import { makeQuickStartGuidesProps } from '@/lib/strapi/makeProps/makeQuickStartGuides';
-import { strapiQuickStartGuides } from './fixtures/quickStartGuides';
+import { mapQuickStartGuidesProps } from '@/lib/quickStartGuides/mapper';
 import {
-  minimalQuickStartGuides,
   emptyQuickStartGuides,
+  minimalQuickStartGuides,
   quickStartGuidesWithMissingProductSlug,
-} from './factories/quickStartGuides';
-import { spyOnConsoleError } from './spyOnConsole';
+} from '@/lib/__tests__/factories/quickStartGuides';
+import { strapiQuickStartGuides } from '@/lib/__tests__/fixtures/quickStartGuides';
+import { spyOnConsoleError } from '@/lib/strapi/__tests__/spyOnConsole';
 import { cloneDeep } from 'lodash';
 
-describe('makeQuickStartGuidesProps', () => {
+describe('mapQuickStartGuidesProps', () => {
   beforeEach(() => {
     spyOnConsoleError.mockClear();
   });
@@ -18,7 +18,7 @@ describe('makeQuickStartGuidesProps', () => {
   });
 
   it('should transform strapi quick start guides to page props', () => {
-    const result = makeQuickStartGuidesProps(
+    const result = mapQuickStartGuidesProps(
       'it',
       cloneDeep(strapiQuickStartGuides)
     );
@@ -37,7 +37,7 @@ describe('makeQuickStartGuidesProps', () => {
   });
 
   it('should handle minimal quick start guides', () => {
-    const result = makeQuickStartGuidesProps('it', minimalQuickStartGuides());
+    const result = mapQuickStartGuidesProps('it', minimalQuickStartGuides());
     expect(result).toHaveLength(1);
     const firstElement = result[0];
     expect(firstElement.abstract?.title).toBe('Minimal Quick Start');
@@ -49,12 +49,12 @@ describe('makeQuickStartGuidesProps', () => {
   });
 
   it('should handle empty quick start guides', () => {
-    const result = makeQuickStartGuidesProps('it', emptyQuickStartGuides());
+    const result = mapQuickStartGuidesProps('it', emptyQuickStartGuides());
     expect(result).toHaveLength(0);
   });
 
   it('should handle quick start guides with missing product slug', () => {
-    const result = makeQuickStartGuidesProps(
+    const result = mapQuickStartGuidesProps(
       'it',
       quickStartGuidesWithMissingProductSlug()
     );
