@@ -1,6 +1,6 @@
+import { GuideListPageProps } from '@/app/[locale]/[productSlug]/guides/page';
 import { fetchGuideListPages } from './fetcher';
 import { mapGuideListPages } from './mapper';
-import { GuideListPageProps } from './types';
 
 export const GuideListPagesRepository = {
   getAll: async (
