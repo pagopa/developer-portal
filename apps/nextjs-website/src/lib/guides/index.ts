@@ -1,6 +1,6 @@
+import { GuideDefinition } from '@/helpers/makeDocs.helpers';
 import { fetchGuides } from './fetcher';
 import { mapGuides } from './mapper';
-import { GuideDefinition } from './types';
 
 export const GuidesRepository = {
   getAll: async (locale: string): Promise<ReadonlyArray<GuideDefinition>> => {
