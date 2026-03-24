@@ -3,7 +3,7 @@
 import { QuickStartGuidePageProps } from '@/app/[locale]/[productSlug]/quick-start/page';
 import { mapBannerLinkProps } from '@/lib/bannerLink/mapper';
 import { makeBaseProductWithoutLogoProps } from '@/lib/product/mapper';
-import { makePartProps } from '@/lib/strapi/makeProps/makePart';
+import { mapPartProps } from '@/lib/parts/mapper';
 import { Step } from '@/lib/types/step';
 import { compact } from 'lodash';
 import {
@@ -16,7 +16,7 @@ function mapStepFromQuickStartGuideItem(item: StrapiQuickStartGuideItem): Step {
   return {
     anchor: item.anchor,
     title: item.title,
-    parts: compact(item.parts.map((part) => makePartProps(part))),
+    parts: compact(item.parts.map((part) => mapPartProps(part))),
   };
 }
 

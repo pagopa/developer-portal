@@ -1,8 +1,8 @@
 import { Part } from '@/lib/types/part';
 import { parseCkEditorContent } from '@/helpers/parseCkEditorContent.helpers';
-import { StrapiPart } from '@/lib/strapi/types/part';
+import { StrapiPart } from '@/lib/parts/types';
 
-export function makePartProps(
+export function mapPartProps(
   strapiPart: StrapiPart,
   markdownContentDict?: Record<string, string>
 ): Part | null {

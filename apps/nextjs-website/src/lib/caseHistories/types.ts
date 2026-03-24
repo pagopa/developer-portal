@@ -2,7 +2,7 @@ import { StrapiMedia } from '@/lib/strapi/types/media';
 import { StrapiBaseProductWithoutBannerLinks } from '@/lib/product/types';
 import { StrapiSeo } from '@/lib/strapi/types/seo';
 import { Paginated } from '@/lib/strapi/types/paginated';
-import { StrapiPart } from '@/lib/strapi/types/part';
+import { StrapiPart } from '@/lib/parts/types';
 
 export type BaseCaseHistory = {
   readonly id: number;

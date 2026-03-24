@@ -32,7 +32,7 @@ import { fetchUseCaseListPages } from '@/lib/strapi/fetches/fetchUseCaseListPage
 import { makeUseCaseListPagesProps } from '@/lib/strapi/makeProps/makeUseCaseListPages';
 import { fetchTags } from '@/lib/strapi/fetches/fetchTags';
 import { makeTagsProps } from '@/lib/strapi/makeProps/makeTags';
-import { isMarkDownPart, MarkDownPart } from '@/lib/strapi/types/part';
+import { isMarkDownPart, MarkDownPart } from '@/lib/parts/types';
 import { getMarkdownContent } from '@/lib/api';
 import {
   getSyncedSolutionsResponseJsonFile,

@@ -1,4 +1,4 @@
-import { StrapiPart } from '@/lib/strapi/types/part';
+import { StrapiPart } from '@/lib/parts/types';
 
 export const alertPart: StrapiPart = {
   __component: 'parts.alert',

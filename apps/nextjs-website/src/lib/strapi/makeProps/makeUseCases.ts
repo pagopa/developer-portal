@@ -1,6 +1,6 @@
 /* eslint-disable functional/no-expression-statements */
 /* eslint-disable functional/no-try-statements */
-import { makePartProps } from '@/lib/strapi/makeProps/makePart';
+import { mapPartProps } from '@/lib/parts/mapper';
 import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
 import { RelatedLinksProps } from '@/components/atoms/RelatedLinks/RelatedLinks';
 import { mapBannerLinkProps } from '@/lib/bannerLink/mapper';
@@ -57,7 +57,7 @@ export function makeUseCasesProps(
           path: `/${locale}/${attributes.product.slug}/use-cases/${attributes.slug}`,
           parts: compact(
             attributes.parts.map((part) =>
-              makePartProps(part, markdownContentDict)
+              mapPartProps(part, markdownContentDict)
             )
           ),
           productSlug: attributes.product.slug,
