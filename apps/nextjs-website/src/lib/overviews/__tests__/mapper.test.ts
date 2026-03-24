@@ -4,7 +4,7 @@ import { StrapiOverviews } from '@/lib/overviews/types';
 import {
   overviewPageProps,
   strapiOverviews,
-} from '@/lib/shared/fixtures/overviews';
+} from '@/lib/__tests__/fixtures/overviews';
 import {
   minimalDataSingleOverview,
   overviewsWithItemMissingGuideProductSlug,
@@ -13,7 +13,7 @@ import {
   overviewsWithItemMissingTutorialSlug,
   overviewsWithItemWithEmptyGuideProductSlug,
   overviewsWithItemWithEmptyProductSlug,
-} from '@/lib/shared/factories/overviews';
+} from '@/lib/__tests__/factories/overviews';
 import { spyOnConsoleError } from '@/lib/strapi/__tests__/spyOnConsole';
 
 describe('mapOverviewsProps', () => {

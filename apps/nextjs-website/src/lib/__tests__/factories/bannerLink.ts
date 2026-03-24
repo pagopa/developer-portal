@@ -1,5 +1,5 @@
-import { StrapiBannerLink } from '@/lib/shared/bannerLink/types';
-import { mediaJpeg } from '@/lib/shared/factories/media';
+import { StrapiBannerLink } from '@/lib/bannerLink/types';
+import { mediaJpeg } from '@/lib/__tests__/factories/media';
 import { strapiBannerLink } from '../fixtures/bannerLink';
 
 const defaultBannerLink = {

@@ -1,15 +1,15 @@
-import { mapBannerLinkProps } from '@/lib/shared/bannerLink/mapper';
+import { mapBannerLinkProps } from '@/lib/bannerLink/mapper';
 import {
   strapiBannerLink,
   expectedBannerLinkProps,
-} from '@/lib/shared/fixtures/bannerLink';
+} from '@/lib/__tests__/fixtures/bannerLink';
 import {
   minimalBannerLink,
   bannerLinkWithDarkTheme,
   bannerLinkWithUndefinedContent,
   bannerLinkWithEmptyTitle,
   bannerLinkWithUndefinedTitle,
-} from '@/lib/shared/factories/bannerLink';
+} from '@/lib/__tests__/factories/bannerLink';
 import _ from 'lodash';
 
 describe('makeBannerLinkProps', () => {

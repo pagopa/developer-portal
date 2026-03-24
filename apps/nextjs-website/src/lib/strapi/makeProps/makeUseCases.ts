@@ -3,7 +3,7 @@
 import { makePartProps } from '@/lib/strapi/makeProps/makePart';
 import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
 import { RelatedLinksProps } from '@/components/atoms/RelatedLinks/RelatedLinks';
-import { mapBannerLinkProps } from '@/lib/shared/bannerLink/mapper';
+import { mapBannerLinkProps } from '@/lib/bannerLink/mapper';
 import { compact } from 'lodash';
 import { StrapiUseCases } from '@/lib/strapi/types/useCase';
 import { UseCase } from '@/lib/types/useCaseData';

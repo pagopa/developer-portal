@@ -1,7 +1,7 @@
 import { Media } from '@/lib/types/media';
 import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
 import { Tag } from '@/lib/types/tag';
-import { StrapiBannerLink } from '@/lib/shared/bannerLink/types';
+import { StrapiBannerLink } from '@/lib/bannerLink/types';
 import { StrapiMedia } from '@/lib/strapi/types/media';
 import { ApiDataListPageWithoutProduct } from '@/lib/apiDataListPages/types';
 import { Paginated } from '@/lib/strapi/types/paginated';

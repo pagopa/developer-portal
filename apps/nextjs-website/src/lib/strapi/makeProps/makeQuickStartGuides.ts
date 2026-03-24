@@ -3,7 +3,7 @@
 import { QuickStartGuidePageProps } from '@/app/[locale]/[productSlug]/quick-start/page';
 import { Step } from '@/lib/types/step';
 import { makePartProps } from '@/lib/strapi/makeProps/makePart';
-import { mapBannerLinkProps } from '@/lib/shared/bannerLink/mapper';
+import { mapBannerLinkProps } from '@/lib/bannerLink/mapper';
 import { makeBaseProductWithoutLogoProps } from '@/lib/product/mapper';
 import {
   StrapiQuickStartGuideItem,

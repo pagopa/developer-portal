@@ -1,6 +1,6 @@
 /* eslint-disable functional/no-try-statements */
 /* eslint-disable functional/no-expression-statements */
-import { mapBannerLinkProps } from '@/lib/shared/bannerLink/mapper';
+import { mapBannerLinkProps } from '@/lib/bannerLink/mapper';
 import { makeBaseProductWithoutLogoProps } from '@/lib/product/mapper';
 import { ReleaseNotePageProps } from '@/app/[locale]/[productSlug]/release-note/[[...releaseNoteSubPathSlugs]]/page';
 import { StrapiReleaseNotes } from '@/lib/strapi/types/releaseNotes';

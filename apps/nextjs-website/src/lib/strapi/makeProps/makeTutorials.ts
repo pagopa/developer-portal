@@ -4,7 +4,7 @@ import { Tutorial } from '@/lib/types/tutorialData';
 import { makePartProps } from '@/lib/strapi/makeProps/makePart';
 import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
 import { RelatedLinksProps } from '@/components/atoms/RelatedLinks/RelatedLinks';
-import { mapBannerLinkProps } from '@/lib/shared/bannerLink/mapper';
+import { mapBannerLinkProps } from '@/lib/bannerLink/mapper';
 import { StrapiTutorials } from '@/lib/strapi/types/tutorial';
 import { compact } from 'lodash';
 

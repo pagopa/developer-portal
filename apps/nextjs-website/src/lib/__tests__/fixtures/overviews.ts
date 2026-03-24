@@ -1,7 +1,7 @@
 import { OverviewPageProps } from '@/app/[locale]/[productSlug]/overview/page';
 import { product } from '@/lib/product/__tests__/fixtures/product';
-import { mediaJpeg } from '@/lib/shared/factories/media';
-import { generateBannerLinks } from '@/lib/shared/factories/bannerLink';
+import { mediaJpeg } from '@/lib/__tests__/factories/media';
+import { generateBannerLinks } from '@/lib/__tests__/factories/bannerLink';
 import { StrapiOverviews } from '@/lib/overviews/types';
 
 export const dateNow = new Date();

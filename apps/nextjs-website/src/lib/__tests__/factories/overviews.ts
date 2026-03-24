@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { StrapiOverview, StrapiOverviews } from '@/lib/overviews/types';
-import { strapiOverviews } from '@/lib/shared/fixtures/overviews';
+import { strapiOverviews } from '@/lib/__tests__/fixtures/overviews';
 
 export function minimalDataSingleOverview(): StrapiOverviews {
   return {

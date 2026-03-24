@@ -5,8 +5,8 @@ import {
   StrapiBaseProductWithRelations,
   StrapiProduct,
 } from '@/lib/product/types';
-import { mediaJpeg } from '@/lib/shared/factories/media';
-import { generateBannerLinks } from '@/lib/shared/factories/bannerLink';
+import { mediaJpeg } from '@/lib/__tests__/factories/media';
+import { generateBannerLinks } from '@/lib/__tests__/factories/bannerLink';
 
 export function baseProduct(): StrapiBaseProduct {
   return {

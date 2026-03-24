@@ -3,7 +3,7 @@
 import { compact } from 'lodash';
 import { OverviewPageProps } from '@/app/[locale]/[productSlug]/overview/page';
 import { makeBaseProductWithoutLogoProps } from '@/lib/product/mapper';
-import { mapBannerLinkProps } from '@/lib/shared/bannerLink/mapper';
+import { mapBannerLinkProps } from '@/lib/bannerLink/mapper';
 import { UseCase } from '@/lib/types/useCaseData';
 import { StrapiOverviews } from './types';
 

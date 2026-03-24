@@ -1,7 +1,7 @@
 import { StrapiProducts } from '@/lib/product/types';
 import { Product } from '@/lib/product/types';
-import { generateBannerLinks } from '@/lib/shared/factories/bannerLink';
-import { mediaJpeg } from '@/lib/shared/factories/media';
+import { generateBannerLinks } from '@/lib/__tests__/factories/bannerLink';
+import { mediaJpeg } from '@/lib/__tests__/factories/media';
 
 export const strapiProducts: StrapiProducts = {
   data: [

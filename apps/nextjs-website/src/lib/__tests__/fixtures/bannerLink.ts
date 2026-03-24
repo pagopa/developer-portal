@@ -1,4 +1,4 @@
-import { StrapiBannerLink } from '@/lib/shared/bannerLink/types';
+import { StrapiBannerLink } from '@/lib/bannerLink/types';
 import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
 import { mediaJpeg } from '../factories/media';
 

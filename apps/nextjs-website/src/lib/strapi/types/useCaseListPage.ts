@@ -1,4 +1,4 @@
-import { StrapiBannerLink } from '@/lib/shared/bannerLink/types';
+import { StrapiBannerLink } from '@/lib/bannerLink/types';
 import { StrapiSeo } from '@/lib/strapi/types/seo';
 import { Paginated } from '@/lib/strapi/types/paginated';
 import { StrapiBaseProductWithRelations } from '@/lib/product/types';
