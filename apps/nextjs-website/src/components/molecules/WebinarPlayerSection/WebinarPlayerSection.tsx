@@ -87,7 +87,7 @@ const WebinarPlayerSection = ({
 
   const videoOnDemandStartAt =
     typeof webinar.videoOnDemandStartAt === 'number' &&
-      webinar.videoOnDemandStartAt > 0
+    webinar.videoOnDemandStartAt > 0
       ? webinar.videoOnDemandStartAt
       : undefined;
   return (
@@ -117,7 +117,7 @@ const WebinarPlayerSection = ({
                 controls={true}
                 playsInline={true}
                 // TODO: Only a POC restore the following line when we have the correct player src before merge
-                // src={webinar.playerSrc} 
+                // src={webinar.playerSrc}
                 src={
                   'https://video.developer.pagopa.it/ivs/v1/195239627635/4mteQowcWw6S/2026/3/20/9/55/2YvJHL6iQ7Ls/media/hls/master.m3u8'
                 }

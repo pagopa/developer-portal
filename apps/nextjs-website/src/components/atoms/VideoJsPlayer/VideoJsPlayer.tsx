@@ -167,9 +167,7 @@ const VideoJsPlayer = (props: PlayerProps) => {
       return;
     }
     const videoOnDemandStartAt =
-      typeof resolvedStartAt === 'number'
-        ? resolvedStartAt
-        : 0;
+      typeof resolvedStartAt === 'number' ? resolvedStartAt : 0;
 
     if (videoOnDemandStartAt <= 0) {
       return;
