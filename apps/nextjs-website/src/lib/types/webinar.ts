@@ -52,4 +52,10 @@ export type Webinar = {
   readonly tag?: Tag;
   readonly headerImage?: Media;
   readonly updatedAt: string;
+  readonly chapters?: readonly {
+    readonly title: string;
+    readonly startTime: string;
+    readonly endTime: string;
+  }[];
+  readonly webvttContent?: string;
 };

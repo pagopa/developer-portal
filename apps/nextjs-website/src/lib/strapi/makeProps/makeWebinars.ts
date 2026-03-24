@@ -1,9 +1,45 @@
+/* eslint-disable functional/immutable-data */
 /* eslint-disable functional/no-expression-statements */
 import { Webinar } from '../../types/webinar';
 import { StrapiWebinar, StrapiWebinars } from '@/lib/strapi/types/webinars';
 import { compact } from 'lodash';
 
 export type WebinarsProps = readonly Webinar[];
+
+function generateVTTContent(chapters: Webinar['chapters']): string {
+  if (!chapters || chapters.length === 0) {
+    return '';
+  }
+
+  const vttLines = ['WEBVTT\n'];
+  chapters.forEach((chapter, index) => {
+    const cueIndex = index + 1;
+    vttLines.push(`${cueIndex}`);
+    vttLines.push(`${chapter.startTime} --> ${chapter.endTime}`);
+    vttLines.push(`${chapter.title}\n`);
+  });
+
+  return vttLines.join('\n');
+}
+
+// TODO: only a POC, relative fields must be added to strapi and remove this mock before merge
+const MOCK_CHAPTERS = [
+  {
+    startTime: '00:00:00.000',
+    endTime: '00:12:15.000',
+    title: 'Introduzione',
+  },
+  {
+    startTime: '00:12:15.000',
+    endTime: '00:25:30.000',
+    title: 'Panoramica generale',
+  },
+  {
+    startTime: '00:25:30.000',
+    endTime: '00:40:45.000',
+    title: 'Dimostrazione',
+  },
+];
 
 export const makeWebinarProps = (
   strapiWebinar: StrapiWebinar
@@ -22,34 +58,34 @@ export const makeWebinarProps = (
       speakers:
         strapiWebinar.attributes.webinarSpeakers.data.length > 0
           ? strapiWebinar.attributes.webinarSpeakers.data.map((speaker) => ({
-              ...speaker.attributes,
-              avatar: speaker.attributes.avatar?.data?.attributes,
-            }))
+            ...speaker.attributes,
+            avatar: speaker.attributes.avatar?.data?.attributes,
+          }))
           : undefined,
       questionsAndAnswers: strapiWebinar.attributes.questionsAndAnswers?.length
         ? strapiWebinar.attributes.questionsAndAnswers
         : undefined,
       relatedResources: strapiWebinar.attributes.relatedResources
         ? {
-            title: strapiWebinar.attributes.relatedResources.title,
-            resources: (
-              strapiWebinar.attributes.relatedResources.resources || []
-            ).map((resource) => ({
-              ...resource,
-              subtitle: resource.subtitle,
-              description: resource.description,
-              image: resource.image?.data?.attributes,
-            })),
-            downloadableDocuments: (
-              strapiWebinar.attributes.relatedResources.downloadableDocuments
-                ?.data || []
-            ).map(({ attributes }) => ({
-              title: attributes.caption || attributes.name,
-              downloadLink: attributes.url,
-              size: attributes.size,
-              extension: attributes.ext.replace('.', '').toUpperCase(),
-            })),
-          }
+          title: strapiWebinar.attributes.relatedResources.title,
+          resources: (
+            strapiWebinar.attributes.relatedResources.resources || []
+          ).map((resource) => ({
+            ...resource,
+            subtitle: resource.subtitle,
+            description: resource.description,
+            image: resource.image?.data?.attributes,
+          })),
+          downloadableDocuments: (
+            strapiWebinar.attributes.relatedResources.downloadableDocuments
+              ?.data || []
+          ).map(({ attributes }) => ({
+            title: attributes.caption || attributes.name,
+            downloadLink: attributes.url,
+            size: attributes.size,
+            extension: attributes.ext.replace('.', '').toUpperCase(),
+          })),
+        }
         : undefined,
       startDateTime: strapiWebinar.attributes.startDatetime,
       endDateTime: strapiWebinar.attributes.endDatetime,
@@ -62,6 +98,8 @@ export const makeWebinarProps = (
       tag: strapiWebinar.attributes.webinarCategory?.data?.attributes,
       headerImage: strapiWebinar.attributes.headerImage?.data?.attributes,
       updatedAt: strapiWebinar.attributes.updatedAt,
+      chapters: MOCK_CHAPTERS,
+      webvttContent: generateVTTContent(MOCK_CHAPTERS),
     } satisfies Webinar;
   } catch (error) {
     // eslint-disable-next-line functional/no-expression-statements

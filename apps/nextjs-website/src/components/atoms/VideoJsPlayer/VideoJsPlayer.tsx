@@ -22,16 +22,54 @@ interface PlayerProps {
   poster?: string;
   reloadToken?: number;
   videoOnDemandStartAt?: number;
+  startAtChapterIndex?: number;
+  chapters?: {
+    title: string;
+    startTime: string;
+    endTime: string;
+  }[];
+  webvttContent?: string;
 }
+
+/** Convert a WebVTT timestamp (HH:MM:SS.mmm or MM:SS.mmm) to seconds */
+const parseVttTime = (time: string): number => {
+  const parts = time.split(':');
+  if (parts.length === 3) {
+    return (
+      parseInt(parts[0], 10) * 3600 +
+      parseInt(parts[1], 10) * 60 +
+      parseFloat(parts[2])
+    );
+  }
+  if (parts.length === 2) {
+    return parseInt(parts[0], 10) * 60 + parseFloat(parts[1]);
+  }
+  return parseFloat(parts[0]);
+};
 
 const TECH_ORDER_AMAZON_IVS = ['AmazonIVS'];
 
 const VideoJsPlayer = (props: PlayerProps) => {
+  const resolvedStartAt = (() => {
+    if (
+      typeof props.startAtChapterIndex === 'number' &&
+      props.chapters &&
+      props.chapters.length > 0
+    ) {
+      const chapter = props.chapters[props.startAtChapterIndex - 1];
+      if (chapter) {
+        return parseVttTime(chapter.startTime);
+      }
+    }
+    return props.videoOnDemandStartAt;
+  })();
+
   const videoEl = useRef<HTMLVideoElement>(null);
   const playerRef = useRef<
     // @ts-expect-error TS2322: Type 'undefined' is not assignable to type 'Player & VideoJSIVSTech & VideoJSQualityPlugin'.
     videojs.Player & VideoJSIVSTech & VideoJSQualityPlugin
   >(undefined);
+  const vttBlobUrlRef = useRef<string | null>(null);
 
   useEffect(() => {
     registerIVSTech(videojs, {
@@ -56,15 +94,49 @@ const VideoJsPlayer = (props: PlayerProps) => {
     //  eslint-disable-next-line functional/immutable-data
     playerRef.current = player;
 
+    console.log('props.webvttContent:', props.webvttContent);
+    if (props.webvttContent) {
+      console.log('Adding chapters track with content:', props.webvttContent);
+      // Create VTT blob and add chapters track
+      const blob = new Blob([props.webvttContent], { type: 'text/vtt' });
+      const blobUrl = URL.createObjectURL(blob);
+      // eslint-disable-next-line functional/immutable-data
+      vttBlobUrlRef.current = blobUrl;
+
+      player.addRemoteTextTrack(
+        {
+          kind: 'chapters',
+          src: blobUrl,
+          srclang: 'en',
+          label: 'Chapters',
+          default: true,
+        },
+        false
+      );
+    }
+
     return () => {
       playerRef.current?.dispose();
       // eslint-disable-next-line functional/immutable-data
       playerRef.current = undefined;
+
+      // Clean up blob URL
+      if (vttBlobUrlRef.current) {
+        URL.revokeObjectURL(vttBlobUrlRef.current);
+        // eslint-disable-next-line functional/immutable-data
+        vttBlobUrlRef.current = null;
+      }
     };
 
     // NOTE: Autoplay is correctly set on initialization only, it should not be a dependency here
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props.controls, props.playsInline]);
+  }, [props.controls, props.playsInline, props.webvttContent]);
+
+  useEffect(() => {
+    if (!playerRef.current) {
+      return;
+    }
+  }, [props.chapters, props.webvttContent]);
 
   useEffect(() => {
     if (!playerRef.current) {
@@ -77,7 +149,7 @@ const VideoJsPlayer = (props: PlayerProps) => {
     playerRef.current.src(props.src);
     playerRef.current.poster(props.poster || '');
 
-    if (props.autoplay && !props.videoOnDemandStartAt) {
+    if (props.autoplay && !resolvedStartAt) {
       playerRef.current.play().catch(() => undefined);
     }
   }, [
@@ -87,7 +159,7 @@ const VideoJsPlayer = (props: PlayerProps) => {
     props.poster,
     props.reloadToken,
     props.src,
-    props.videoOnDemandStartAt,
+    resolvedStartAt,
   ]);
 
   useEffect(() => {
@@ -95,8 +167,8 @@ const VideoJsPlayer = (props: PlayerProps) => {
       return;
     }
     const videoOnDemandStartAt =
-      typeof props.videoOnDemandStartAt === 'number'
-        ? props.videoOnDemandStartAt
+      typeof resolvedStartAt === 'number'
+        ? resolvedStartAt
         : 0;
 
     if (videoOnDemandStartAt <= 0) {
@@ -163,7 +235,7 @@ const VideoJsPlayer = (props: PlayerProps) => {
       player.off('durationchange', onDurationChange);
       player.off('play', onPlay);
     };
-  }, [props.reloadToken, props.src, props.videoOnDemandStartAt]);
+  }, [props.reloadToken, props.src, resolvedStartAt]);
 
   return (
     <Box sx={{ position: 'relative', paddingBottom: '56.25%' }}>

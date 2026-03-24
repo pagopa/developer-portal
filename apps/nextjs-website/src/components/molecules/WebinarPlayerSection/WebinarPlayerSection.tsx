@@ -7,10 +7,10 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import VimeoPlayer from '@/components/atoms/VimeoPlayer/VimeoPlayer';
 import { WebinarQuestionsForm } from '@/components/organisms/WebinarQuestionsForm/WebinarQuestionsForm';
 import { WebinarState } from '@/helpers/webinar.helpers';
 import { useMemo, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import ForumIcon from '@mui/icons-material/Forum';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
@@ -35,6 +35,10 @@ const WebinarPlayerSection = ({
   reloadPlayerToken = 0,
   isPlayerVisible = true,
 }: WebinarPlayerSectionProps) => {
+  const searchParams = useSearchParams();
+  const chapterParam = searchParams.get('chapter');
+  const startAtChapterIndex =
+    chapterParam !== null ? parseInt(chapterParam, 10) : undefined;
   const t = useTranslations('webinar');
   const { palette } = useTheme();
   const [isQuestionFormExpanded, setIsQuestionFormExpanded] = useState(false);
@@ -83,7 +87,7 @@ const WebinarPlayerSection = ({
 
   const videoOnDemandStartAt =
     typeof webinar.videoOnDemandStartAt === 'number' &&
-    webinar.videoOnDemandStartAt > 0
+      webinar.videoOnDemandStartAt > 0
       ? webinar.videoOnDemandStartAt
       : undefined;
   return (
@@ -112,10 +116,17 @@ const WebinarPlayerSection = ({
                 autoplay={isLiveStreamAvailable}
                 controls={true}
                 playsInline={true}
-                src={webinar.playerSrc}
+                // TODO: Only a POC restore the following line when we have the correct player src before merge
+                // src={webinar.playerSrc} 
+                src={
+                  'https://video.developer.pagopa.it/ivs/v1/195239627635/4mteQowcWw6S/2026/3/20/9/55/2YvJHL6iQ7Ls/media/hls/master.m3u8'
+                }
                 poster={webinar.playerCoverImageUrl}
                 reloadToken={reloadPlayerToken}
                 videoOnDemandStartAt={videoOnDemandStartAt}
+                startAtChapterIndex={startAtChapterIndex}
+                chapters={webinar.chapters ? [...webinar.chapters] : undefined}
+                webvttContent={webinar.webvttContent}
               />
             </Box>
             {isQuestionFormAvailable ? (
