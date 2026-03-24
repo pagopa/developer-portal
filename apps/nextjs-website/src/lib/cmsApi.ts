@@ -7,7 +7,7 @@ import { makeSolutionsProps } from './strapi/makeProps/makeSolutions';
 import { makeSolutionListPageProps } from './strapi/makeProps/makeSolutionListPage';
 import { fetchSolutionListPage } from './strapi/fetches/fetchSolutionListPage';
 
-import { ProductRepository } from '@/lib/product';
+import { ProductRepository } from '@/lib/products';
 import { fetchTutorialListPages } from './strapi/fetches/fetchTutorialListPages';
 import { makeTutorialListPagesProps } from './strapi/makeProps/makeTutorialListPages';
 

@@ -1,6 +1,6 @@
 import { CaseHistory } from '@/lib/caseHistories/types';
 import { mediaJpeg } from '@/lib/__tests__/factories/media';
-import { product } from '@/lib/product/__tests__/fixtures/product';
+import { product } from '@/lib/products/__tests__/fixtures/product';
 import { CaseHistoryPageTemplateProps } from '@/components/templates/CaseHistoryTemplate/CaseHistoryPageTemplate';
 import { Paginated } from '@/lib/strapi/types/paginated';
 

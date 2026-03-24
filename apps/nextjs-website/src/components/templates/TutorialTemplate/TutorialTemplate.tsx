@@ -7,7 +7,7 @@ import RelatedLinks, {
   RelatedLinksProps,
 } from '@/components/atoms/RelatedLinks/RelatedLinks';
 import ProductLayout from '@/components/organisms/ProductLayout/ProductLayout';
-import { Product } from '@/lib/product/types';
+import { Product } from '@/lib/products/types';
 import PartRenderer from '@/components/molecules/PartRenderer/PartRenderer';
 import { Part } from '@/lib/types/part';
 import PartRendererMenu from '@/components/molecules/PartRendererMenu/PartRendererMenu';

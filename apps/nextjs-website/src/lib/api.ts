@@ -2,7 +2,7 @@ import { ApiDataListPagesRepository } from '@/lib/apiDataListPages';
 import { CaseHistoriesRepository } from '@/lib/caseHistories';
 import { GuideListPagesRepository } from '@/lib/guideListPages';
 import { GuidesRepository } from '@/lib/guides';
-import { Product } from '@/lib/product/types';
+import { Product } from '@/lib/products/types';
 import { QuickStartGuidesRepository } from '@/lib/quickStartGuides';
 import { Webinar } from '@/lib/types/webinar';
 import {

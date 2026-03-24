@@ -2,7 +2,7 @@
 /* eslint-disable functional/no-expression-statements */
 import { compact } from 'lodash';
 import { OverviewPageProps } from '@/app/[locale]/[productSlug]/overview/page';
-import { makeBaseProductWithoutLogoProps } from '@/lib/product/mapper';
+import { makeBaseProductWithoutLogoProps } from '@/lib/products/mapper';
 import { mapBannerLinkProps } from '@/lib/bannerLink/mapper';
 import { UseCase } from '@/lib/types/useCaseData';
 import { StrapiOverviews } from './types';

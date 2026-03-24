@@ -1,6 +1,6 @@
 /* eslint-disable functional/no-expression-statements */
 import { mapBannerLinkProps } from '@/lib/bannerLink/mapper';
-import { makeBaseProductWithoutLogoProps } from '@/lib/product/mapper';
+import { makeBaseProductWithoutLogoProps } from '@/lib/products/mapper';
 import { ApiDataListPages, ApiDataListPageTemplateProps } from './types';
 import { compact } from 'lodash';
 import { BaseApiData } from '@/lib/apiDataList/types';

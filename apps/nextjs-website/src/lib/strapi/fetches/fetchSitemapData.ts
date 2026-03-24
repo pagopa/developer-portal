@@ -1,6 +1,6 @@
 import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
 import * as qs from 'qs';
-import { StrapiProducts } from '@/lib/product/types';
+import { StrapiProducts } from '@/lib/products/types';
 import { StrapiTutorials } from '@/lib/strapi/types/tutorial';
 import { ApiDataList } from '@/lib/apiDataList/types';
 import { pipe } from 'fp-ts/lib/function';

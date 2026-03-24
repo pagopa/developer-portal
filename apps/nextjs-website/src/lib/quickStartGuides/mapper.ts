@@ -2,7 +2,7 @@
 /* eslint-disable functional/no-expression-statements */
 import { QuickStartGuidePageProps } from '@/app/[locale]/[productSlug]/quick-start/page';
 import { mapBannerLinkProps } from '@/lib/bannerLink/mapper';
-import { makeBaseProductWithoutLogoProps } from '@/lib/product/mapper';
+import { makeBaseProductWithoutLogoProps } from '@/lib/products/mapper';
 import { mapPartProps } from '@/lib/parts/mapper';
 import { Step } from '@/lib/types/step';
 import { compact } from 'lodash';

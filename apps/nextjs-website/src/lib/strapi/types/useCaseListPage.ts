@@ -1,7 +1,7 @@
 import { StrapiBannerLink } from '@/lib/bannerLink/types';
 import { StrapiSeo } from '@/lib/strapi/types/seo';
 import { Paginated } from '@/lib/strapi/types/paginated';
-import { StrapiBaseProductWithRelations } from '@/lib/product/types';
+import { StrapiBaseProductWithRelations } from '@/lib/products/types';
 import { StrapiBaseUseCase } from './useCase';
 
 export type StrapiUseCaseListPage = {

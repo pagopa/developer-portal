@@ -1,6 +1,6 @@
 import { QuickStartGuidePageProps } from '@/app/[locale]/[productSlug]/quick-start/page';
 import { StrapiBannerLink } from '@/lib/bannerLink/types';
-import { StrapiBaseProductWithRelations } from '@/lib/product/types';
+import { StrapiBaseProductWithRelations } from '@/lib/products/types';
 import { Paginated } from '@/lib/strapi/types/paginated';
 import { StrapiPart } from '@/lib/parts/types';
 import { StrapiSeo } from '@/lib/strapi/types/seo';

@@ -2,7 +2,7 @@
 /* eslint-disable functional/no-try-statements */
 import { GuidesSectionProps } from '@/components/molecules/GuidesSection/GuidesSection';
 import { mapBannerLinkProps } from '@/lib/bannerLink/mapper';
-import { makeBaseProductWithoutLogoProps } from '@/lib/product/mapper';
+import { makeBaseProductWithoutLogoProps } from '@/lib/products/mapper';
 import { GuideCardProps } from '@/components/molecules/GuideCard/GuideCard';
 import { StrapiBaseGuide } from '@/lib/strapi/types/guide';
 import { compact } from 'lodash';

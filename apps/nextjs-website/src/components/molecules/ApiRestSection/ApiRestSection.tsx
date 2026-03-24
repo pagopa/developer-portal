@@ -12,7 +12,7 @@ import {
   styled,
   useTheme,
 } from '@mui/material';
-import { Product } from '@/lib/product/types';
+import { Product } from '@/lib/products/types';
 import { getStyles } from '@/components/molecules/ApiRestSection/ApiRestSection.styles';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import Spinner from '@/components/atoms/Spinner/Spinner';

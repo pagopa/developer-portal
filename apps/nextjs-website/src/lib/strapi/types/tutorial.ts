@@ -1,5 +1,5 @@
 import { StrapiMedia } from '@/lib/strapi/types/media';
-import { StrapiBaseProductWithBannerLinks } from '@/lib/product/types';
+import { StrapiBaseProductWithBannerLinks } from '@/lib/products/types';
 import { StrapiBannerLink } from '@/lib/bannerLink/types';
 import { StrapiRelatedLinks } from '@/lib/strapi/types/link';
 import { StrapiSeo } from '@/lib/strapi/types/seo';

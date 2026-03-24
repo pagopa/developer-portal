@@ -1,6 +1,6 @@
 'use client';
 import ProductHeader from '@/components/atoms/ProductHeader/ProductHeader';
-import { Product } from '@/lib/product/types';
+import { Product } from '@/lib/products/types';
 import React, { ReactNode, FC } from 'react';
 import BannerLinks from '@/components/molecules/BannerLinks/BannerLinks';
 import ProductBreadcrumbs from '@/components/atoms/ProductBreadcrumbs/ProductBreadcrumbs';

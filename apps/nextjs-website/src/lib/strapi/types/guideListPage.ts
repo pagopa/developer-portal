@@ -1,7 +1,7 @@
 import { StrapiBaseGuide } from '@/lib/strapi/types/guide';
 import { StrapiSeo } from '@/lib/strapi/types/seo';
 import { StrapiBannerLink } from '@/lib/bannerLink/types';
-import { StrapiBaseProductWithRelations } from '@/lib/product/types';
+import { StrapiBaseProductWithRelations } from '@/lib/products/types';
 import { Paginated } from './paginated';
 
 export type StrapiGuideListPage = {

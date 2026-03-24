@@ -1,5 +1,5 @@
 import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
-import { productRelationsPopulate } from '@/lib/product/fetcher';
+import { productRelationsPopulate } from '@/lib/products/fetcher';
 import qs from 'qs';
 import { StrapiQuickStartGuides } from './types';
 

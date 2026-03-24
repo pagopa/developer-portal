@@ -4,7 +4,7 @@ import {
   StrapiBaseProductWithoutBannerLinks,
   StrapiBaseProductWithRelations,
   StrapiProduct,
-} from '@/lib/product/types';
+} from '@/lib/products/types';
 import { mediaJpeg } from '@/lib/__tests__/factories/media';
 import { generateBannerLinks } from '@/lib/__tests__/factories/bannerLink';
 
