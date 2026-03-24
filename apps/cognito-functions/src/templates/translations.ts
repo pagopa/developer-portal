@@ -4,7 +4,7 @@ export const EMAIL_TRANSLATIONS = {
       subject: 'Verifica la tua e-mail per PagoPA DevPortal',
       previewText: 'Confermarci la validità di questa e-mail',
       title: 'L’ultimo passo per attivare la tua utenza su PagoPA DevPortal',
-      text: 'Ciao,<br><br><br>a causa di un problema tecnico non è stato possibile completare il processo, cliccando su questo link potrai completare la tua iscrizione<br>Grazie per aver creato un account sul nostro DevPortal!<br><br>Non ti resta che confermarci la validità di questa e-mail.',
+      text: 'Ciao,<br><br><br>a causa di un problema tecnico non è stato possibile completare il processo. Cliccando sul bottone o sul link potrai ora completare correttamente la tua iscrizione.<br><br>Grazie per aver creato un account sul nostro DevPortal!<br><br>Non ti resta che confermarci la validità di questa e-mail.',
       emailVerification: 'Verifica e-mail',
       wrongRecipient:
         'Ricevi questa e-mail perché hai creato un account su PagoPA DevPortal.<br>Non sei tu? Ignora o cancella questa e-mail.',
