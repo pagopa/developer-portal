@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { strapiSolutionListPage } from '@/lib/__tests__/fixtures/solutionListPage';
+import { StrapiSolutionListPage } from '../../solutionListPage/types';
 
-export function minimalDataSolutionListPage() {
+export function minimalDataSolutionListPage(): StrapiSolutionListPage {
   return {
     title: 'Minimal Solutions',
     description: 'Minimal solutions page',
@@ -12,34 +13,34 @@ export function minimalDataSolutionListPage() {
   };
 }
 
-export function solutionListPageWithoutCaseHistories() {
+export function solutionListPageWithoutCaseHistories(): StrapiSolutionListPage {
   return {
     ...strapiSolutionListPage,
     caseHistories: undefined,
   };
 }
 
-export function solutionListPageWithoutFeatures() {
+export function solutionListPageWithoutFeatures(): StrapiSolutionListPage {
   return {
     ...strapiSolutionListPage,
     features: undefined,
   };
 }
 
-export function solutionListPageWithoutSolutions() {
+export function solutionListPageWithoutSolutions(): StrapiSolutionListPage {
   return {
     ...strapiSolutionListPage,
     solutions: [],
   };
 }
 
-export function solutionListPageWithMissingSolutionSlug(): any {
+export function solutionListPageWithMissingSolutionSlug(): StrapiSolutionListPage {
   return {
     ...strapiSolutionListPage,
     solutions: [
       {
         ...strapiSolutionListPage.solutions[0],
-        slug: undefined,
+        slug: undefined as unknown as string,
         title: 'Solution Without Slug',
       },
       {
@@ -50,7 +51,7 @@ export function solutionListPageWithMissingSolutionSlug(): any {
   };
 }
 
-export function solutionListPageWithMissingCaseHistorySlug(): any {
+export function solutionListPageWithMissingCaseHistorySlug(): StrapiSolutionListPage {
   return {
     ...strapiSolutionListPage,
     caseHistories: {
@@ -59,7 +60,7 @@ export function solutionListPageWithMissingCaseHistorySlug(): any {
         {
           ...strapiSolutionListPage.caseHistories?.case_histories[0],
           id: 1,
-          slug: undefined,
+          slug: undefined as unknown as string,
           title: 'Case History Without Slug',
         },
         {
