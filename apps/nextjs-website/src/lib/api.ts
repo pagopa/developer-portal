@@ -4,11 +4,11 @@ import { GuideListPagesRepository } from '@/lib/guideListPages';
 import { GuidesRepository } from '@/lib/guides';
 import { Product } from '@/lib/products/types';
 import { QuickStartGuidesRepository } from '@/lib/quickStartGuides';
+import { SolutionListPageRepository } from '@/lib/solutionListPage';
 import { Webinar } from '@/lib/types/webinar';
 import {
   getProductsProps,
   getReleaseNoteProps,
-  getSolutionListPageProps,
   getSolutionProps,
   getSolutionsProps,
   getStrapiReleaseNotes,
@@ -258,7 +258,7 @@ export async function getSolution(locale: string, solutionSlug?: string) {
 }
 
 export async function getSolutionListPage(locale: string) {
-  const solutionListPageProps = await getSolutionListPageProps(locale);
+  const solutionListPageProps = await SolutionListPageRepository.get(locale);
   return manageUndefined(solutionListPageProps);
 }
 

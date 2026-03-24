@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { strapiSolutionListPage } from '@/lib/strapi/__tests__/fixtures/solutionListPage';
+import { strapiSolutionListPage } from '@/lib/__tests__/fixtures/solutionListPage';
 
 export function minimalDataSolutionListPage() {
   return {
@@ -33,7 +33,7 @@ export function solutionListPageWithoutSolutions() {
   };
 }
 
-export function solutionListPageWithMissingSolutionSlug() {
+export function solutionListPageWithMissingSolutionSlug(): any {
   return {
     ...strapiSolutionListPage,
     solutions: [
@@ -50,7 +50,7 @@ export function solutionListPageWithMissingSolutionSlug() {
   };
 }
 
-export function solutionListPageWithMissingCaseHistorySlug() {
+export function solutionListPageWithMissingCaseHistorySlug(): any {
   return {
     ...strapiSolutionListPage,
     caseHistories: {

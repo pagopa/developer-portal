@@ -1,18 +1,20 @@
-import { makeSolutionListPageProps } from '@/lib/strapi/makeProps/makeSolutionListPage';
-import _ from 'lodash';
+import { mapSolutionListPageProps } from '@/lib/solutionListPage/mapper';
 import {
-  strapiSolutionListPage,
   expectedSolutionListTemplateProps,
-} from '@/lib/strapi/__tests__/fixtures/solutionListPage';
+  strapiSolutionListPage,
+} from '@/lib/__tests__/fixtures/solutionListPage';
 import {
   minimalDataSolutionListPage,
+  solutionListPageWithMissingCaseHistorySlug,
+  solutionListPageWithMissingSolutionSlug,
   solutionListPageWithoutCaseHistories,
   solutionListPageWithoutFeatures,
   solutionListPageWithoutSolutions,
-} from '@/lib/strapi/__tests__/factories/solutionListPage';
+} from '@/lib/__tests__/factories/solutionListPage';
 import { spyOnConsoleError } from '@/lib/strapi/__tests__/spyOnConsole';
+import { cloneDeep } from 'lodash';
 
-describe('makeSolutionListPageProps', () => {
+describe('mapSolutionListPageProps', () => {
   afterEach(() => {
     spyOnConsoleError.mockClear();
   });
@@ -22,17 +24,19 @@ describe('makeSolutionListPageProps', () => {
   });
 
   it('should transform strapi solution list page to solution list template props', () => {
-    const result = makeSolutionListPageProps(
+    const result = mapSolutionListPageProps(
       'it',
-      _.cloneDeep({ data: strapiSolutionListPage })
+      cloneDeep({ data: strapiSolutionListPage })
     );
+
     expect(result).toMatchObject(expectedSolutionListTemplateProps);
   });
 
   it('should handle minimal data with missing optional fields', () => {
-    const result = makeSolutionListPageProps('it', {
+    const result = mapSolutionListPageProps('it', {
       data: minimalDataSolutionListPage(),
     });
+
     expect(result).not.toBeNull();
     expect(result.hero.title).toBe('Minimal Solutions');
     expect(result.solutions).toEqual([]);
@@ -42,37 +46,65 @@ describe('makeSolutionListPageProps', () => {
   });
 
   it('should handle solution list page without case histories', () => {
-    const result = makeSolutionListPageProps('it', {
+    const result = mapSolutionListPageProps('it', {
       data: solutionListPageWithoutCaseHistories(),
     });
+
     expect(result.successStories).toBeUndefined();
     expect(result.solutions).toBeDefined();
     expect(result.features).toBeDefined();
   });
 
   it('should handle solution list page without features', () => {
-    const result = makeSolutionListPageProps('it', {
+    const result = mapSolutionListPageProps('it', {
       data: solutionListPageWithoutFeatures(),
     });
+
     expect(result.features).toBeUndefined();
     expect(result.successStories).toBeDefined();
     expect(result.solutions).toBeDefined();
   });
 
   it('should handle solution list page without solutions', () => {
-    const result = makeSolutionListPageProps('it', {
+    const result = mapSolutionListPageProps('it', {
       data: solutionListPageWithoutSolutions(),
     });
+
     expect(result.solutions).toEqual([]);
     expect(result.successStories).toBeDefined();
     expect(result.features).toBeDefined();
   });
 
-  it('should correctly map solution tags from products', () => {
-    const result = makeSolutionListPageProps(
-      'it',
-      _.cloneDeep({ data: strapiSolutionListPage })
+  it('should skip solutions with missing slug', () => {
+    const result = mapSolutionListPageProps('it', {
+      data: solutionListPageWithMissingSolutionSlug(),
+    });
+
+    expect(result.solutions).toHaveLength(1);
+    expect(result.solutions[0].name).toBe('Valid Solution');
+    expect(spyOnConsoleError).toHaveBeenCalledWith(
+      'Error while processing Solution with title "Solution Without Slug": missing slug. Skipping...'
     );
+  });
+
+  it('should skip case histories with missing slug', () => {
+    const result = mapSolutionListPageProps('it', {
+      data: solutionListPageWithMissingCaseHistorySlug(),
+    });
+
+    expect(result.successStories?.stories).toHaveLength(1);
+    expect(result.successStories?.stories[0].title).toBe('Valid Case History');
+    expect(spyOnConsoleError).toHaveBeenCalledWith(
+      'Error while processing CaseHistory with title "Case History Without Slug": missing slug. Skipping...'
+    );
+  });
+
+  it('should correctly map solution tags from products', () => {
+    const result = mapSolutionListPageProps(
+      'it',
+      cloneDeep({ data: strapiSolutionListPage })
+    );
+
     expect(result.solutions[0].labels).toEqual([
       {
         label: 'P1',
@@ -82,10 +114,11 @@ describe('makeSolutionListPageProps', () => {
   });
 
   it('should correctly build solution slug path', () => {
-    const result = makeSolutionListPageProps(
+    const result = mapSolutionListPageProps(
       'it',
-      _.cloneDeep({ data: strapiSolutionListPage })
+      cloneDeep({ data: strapiSolutionListPage })
     );
+
     expect(result.solutions[0].slug).toBe('solutions/solution-1');
   });
 });
