@@ -1,10 +1,7 @@
 /* eslint-disable functional/no-expression-statements */
 /* eslint-disable functional/no-try-statements */
 import type { MetadataRoute } from 'next';
-import {
-  getWebinarsProps,
-  getReleaseNotesProps,
-} from '@/lib/cmsApi';
+import { getWebinarsProps, getReleaseNotesProps } from '@/lib/cmsApi';
 import { GuidesRepository } from '@/lib/guides';
 import { SolutionRepository } from '@/lib/solutions';
 import { baseUrl } from '@/config';

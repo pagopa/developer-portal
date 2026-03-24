@@ -81,7 +81,10 @@ describe('mapSolutionsProps', () => {
   });
 
   it('should skip solutions with missing slug and log error', () => {
-    const result = mapSolutionsProps('it', solutionsWithItemMissingSolutionSlug());
+    const result = mapSolutionsProps(
+      'it',
+      solutionsWithItemMissingSolutionSlug()
+    );
 
     expect(result).toHaveLength(1);
     expect(result[0].title).toBe('Valid Solution');

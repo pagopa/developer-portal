@@ -1,6 +1,4 @@
-import {
-  fetchResponseFromCDN,
-} from '@/helpers/s3Metadata.helpers';
+import { fetchResponseFromCDN } from '@/helpers/s3Metadata.helpers';
 import { getSyncedSolutionsResponseJsonFile } from 'gitbook-docs/syncedResponses';
 import { StrapiSolutions } from './types';
 
