@@ -3,9 +3,9 @@ import { makeWebinarsProps } from './strapi/makeProps/makeWebinars';
 import { fetchWebinars } from './strapi/fetches/fetchWebinars';
 import { fetchTutorials } from './strapi/fetches/fetchTutorials';
 import { makeTutorialsProps } from './strapi/makeProps/makeTutorials';
-import { makeSolutionsProps } from './strapi/makeProps/makeSolutions';
 
 import { ProductRepository } from '@/lib/products';
+import { SolutionRepository } from '@/lib/solutions';
 import { fetchTutorialListPages } from './strapi/fetches/fetchTutorialListPages';
 import { makeTutorialListPagesProps } from './strapi/makeProps/makeTutorialListPages';
 
@@ -32,12 +32,8 @@ import { fetchTags } from '@/lib/strapi/fetches/fetchTags';
 import { makeTagsProps } from '@/lib/strapi/makeProps/makeTags';
 import { isMarkDownPart, MarkDownPart } from '@/lib/parts/types';
 import { getMarkdownContent } from '@/lib/api';
-import {
-  getSyncedSolutionsResponseJsonFile,
-  getSyncedReleaseNotesResponseJsonFile,
-} from 'gitbook-docs/syncedResponses';
+import { getSyncedReleaseNotesResponseJsonFile } from 'gitbook-docs/syncedResponses';
 import { GuidesRepository } from '@/lib/guides';
-import { StrapiSolutions } from './strapi/types/solutions';
 import { StrapiReleaseNotes } from './strapi/types/releaseNotes';
 
 export const getWebinarsProps = async (locale: string) => {
@@ -98,13 +94,6 @@ export const getUrlReplaceMapProps = async (locale: string) => {
   return makeUrlReplaceMap(locale, strapiUrlReplaceMap);
 };
 
-export const getSolutionsProps = async (locale: string) => {
-  const strapiSolutions = (await fetchResponseFromCDN(
-    `${locale}/${getSyncedSolutionsResponseJsonFile}`
-  )) as StrapiSolutions | undefined;
-  return strapiSolutions ? makeSolutionsProps(locale, strapiSolutions) : [];
-};
-
 export const getGuideProps = async (
   guidePaths: ReadonlyArray<string>,
   locale: string,
@@ -127,15 +116,7 @@ export const getSolutionProps = async (
   locale: string,
   jsonMetadata?: JsonMetadata
 ) => {
-  const strapiSolutions = (await fetchResponseFromCDN(
-    `${locale}/${getSyncedSolutionsResponseJsonFile}`
-  )) as StrapiSolutions | undefined;
-  if (!strapiSolutions) {
-    // eslint-disable-next-line functional/no-throw-statements
-    throw new Error('Failed to fetch solution data');
-  }
-  const solutions = makeSolutionsProps(locale, strapiSolutions);
-  const solution = solutions.find((s) => s.slug === solutionsSlug);
+  const solution = await SolutionRepository.getBySlug(locale, solutionsSlug);
   if (!solution) {
     // eslint-disable-next-line functional/no-throw-statements
     throw new Error(`No solution found matching slug "${solutionsSlug}"`);

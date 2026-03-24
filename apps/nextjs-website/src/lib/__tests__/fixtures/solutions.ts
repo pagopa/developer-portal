@@ -1,7 +1,7 @@
-import { StrapiSolutions } from '@/lib/strapi/types/solutions';
-import { mediaJpeg } from '@/lib/__tests__/factories/media';
-import { generateBannerLinks } from '@/lib/__tests__/factories/bannerLink';
 import { SolutionTemplateProps } from '@/components/templates/SolutionTemplate/SolutionTemplate';
+import { generateBannerLinks } from '@/lib/__tests__/factories/bannerLink';
+import { mediaJpeg } from '@/lib/__tests__/factories/media';
+import { StrapiSolutions } from '@/lib/solutions/types';
 
 const fixedDateIsoString = new Date('2024-01-01T00:00:00.000Z').toISOString();
 

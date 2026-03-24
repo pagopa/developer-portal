@@ -1,20 +1,21 @@
-import { makeSolutionsProps } from '@/lib/strapi/makeProps/makeSolutions';
-import { StrapiSolutions } from '@/lib/strapi/types/solutions';
-import _ from 'lodash';
+import { SolutionTemplateProps } from '@/components/templates/SolutionTemplate/SolutionTemplate';
 import {
-  strapiSolutions,
   expectedSolutionTemplateProps,
-} from '@/lib/strapi/__tests__/fixtures/solutions';
+  strapiSolutions,
+} from '@/lib/__tests__/fixtures/solutions';
 import {
   minimalDataSolutions,
+  solutionsWithItemMissingCaseHistorySlug,
+  solutionsWithItemMissingSolutionSlug,
   solutionsWithItemWithoutCaseHistories,
   solutionsWithItemWithoutWebinars,
-  solutionsWithItemMissingSolutionSlug,
-  solutionsWithItemMissingCaseHistorySlug,
-} from '@/lib/strapi/__tests__/factories/solutions';
+} from '@/lib/__tests__/factories/solutions';
 import { spyOnConsoleError } from '@/lib/strapi/__tests__/spyOnConsole';
+import { mapSolutionsProps } from '@/lib/solutions/mapper';
+import { StrapiSolutions } from '@/lib/solutions/types';
+import { cloneDeep } from 'lodash';
 
-describe('makeSolutionsProps', () => {
+describe('mapSolutionsProps', () => {
   afterEach(() => {
     spyOnConsoleError.mockClear();
   });
@@ -24,18 +25,17 @@ describe('makeSolutionsProps', () => {
   });
 
   it('should transform strapi solutions to solution props', () => {
-    const result = makeSolutionsProps('it', _.cloneDeep(strapiSolutions));
+    const result = mapSolutionsProps('it', cloneDeep(strapiSolutions));
+
     expect(result).toHaveLength(1);
     expect(result[0]).toMatchObject(expectedSolutionTemplateProps);
   });
 
   it('should handle minimal data with missing optional fields', () => {
-    const result = makeSolutionsProps(
-      'it',
-      _.cloneDeep(minimalDataSolutions())
-    );
+    const result = mapSolutionsProps('it', cloneDeep(minimalDataSolutions()));
+    const firstElement = result[0] as SolutionTemplateProps;
+
     expect(result).toHaveLength(1);
-    const firstElement = result[0];
     expect(firstElement.description).toBeUndefined();
     expect(firstElement.introductionToSteps).toBeUndefined();
     expect(firstElement.steps).toEqual([]);
@@ -59,28 +59,30 @@ describe('makeSolutionsProps', () => {
         },
       },
     };
-    const result = makeSolutionsProps('it', emptyData);
+
+    const result = mapSolutionsProps('it', emptyData);
+
     expect(result).toHaveLength(0);
   });
 
   it('should handle solutions without case histories', () => {
-    const result = makeSolutionsProps(
+    const result = mapSolutionsProps(
       'it',
       solutionsWithItemWithoutCaseHistories()
     );
+
     expect(result[0].successStories).toBeUndefined();
   });
 
   it('should handle solutions without webinars', () => {
-    const result = makeSolutionsProps('it', solutionsWithItemWithoutWebinars());
+    const result = mapSolutionsProps('it', solutionsWithItemWithoutWebinars());
+
     expect(result[0].webinars).toEqual([]);
   });
 
   it('should skip solutions with missing slug and log error', () => {
-    const result = makeSolutionsProps(
-      'it',
-      solutionsWithItemMissingSolutionSlug()
-    );
+    const result = mapSolutionsProps('it', solutionsWithItemMissingSolutionSlug());
+
     expect(result).toHaveLength(1);
     expect(result[0].title).toBe('Valid Solution');
     expect(result[0].solutionSlug).toBe('valid-solution');
@@ -90,10 +92,11 @@ describe('makeSolutionsProps', () => {
   });
 
   it('should skip case histories with missing slug and log error', () => {
-    const result = makeSolutionsProps(
+    const result = mapSolutionsProps(
       'it',
       solutionsWithItemMissingCaseHistorySlug()
     );
+
     expect(result).toHaveLength(1);
     expect(result[0].successStories?.stories).toHaveLength(1);
     expect(result[0].successStories?.stories[0].title).toBe(

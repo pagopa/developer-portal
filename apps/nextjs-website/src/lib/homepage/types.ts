@@ -5,7 +5,7 @@ import { StrapiLink } from '@/lib/strapi/types/link';
 import { StrapiWebinar } from '@/lib/strapi/types/webinars';
 import { StrapiProduct } from '@/lib/products/types';
 import { StrapiSeo } from '@/lib/strapi/types/seo';
-import { StrapiBaseSolution } from '@/lib/strapi/types/solutions';
+import { StrapiBaseSolution } from '@/lib/solutions/types';
 import { StrapiNewsShowcase } from '@/lib/strapi/types/newsShowcase';
 import { RootEntity } from '@/lib/strapi/types/rootEntity';
 

@@ -1,7 +1,7 @@
 import { CaseHistoriesComponent } from '@/lib/caseHistories/types';
+import { StrapiBaseSolutionWithProducts } from '@/lib/solutions/types';
 import { StrapiFeatures } from '@/lib/strapi/types/features';
 import { StrapiSeo } from '@/lib/strapi/types/seo';
-import { StrapiBaseSolutionWithProducts } from '@/lib/strapi/types/solutions';
 
 export type StrapiSolutionListPage = {
   readonly title: string;

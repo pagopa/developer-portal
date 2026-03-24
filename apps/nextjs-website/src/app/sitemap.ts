@@ -2,11 +2,11 @@
 /* eslint-disable functional/no-try-statements */
 import type { MetadataRoute } from 'next';
 import {
-  getSolutionsProps,
   getWebinarsProps,
   getReleaseNotesProps,
 } from '@/lib/cmsApi';
 import { GuidesRepository } from '@/lib/guides';
+import { SolutionRepository } from '@/lib/solutions';
 import { baseUrl } from '@/config';
 import {
   getGuidesMetadata,
@@ -91,7 +91,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
       const caseHistories = await CaseHistoriesRepository.getAll(localeCode);
       const webinars = await getWebinarsProps(localeCode);
-      const solutions = await getSolutionsProps(localeCode);
+      const solutions = await SolutionRepository.getAll(localeCode);
 
       // Base static routes
       const baseRoutes = [
