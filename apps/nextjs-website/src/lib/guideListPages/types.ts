@@ -1,4 +1,21 @@
-import { GuideListPageProps } from '@/app/[locale]/[productSlug]/guides/page';
+import { StrapiBaseGuide } from '@/lib/guides/types';
+import { StrapiSeo } from '@/lib/strapi/types/seo';
+import { StrapiBannerLink } from '@/lib/strapi/types/bannerLink';
+import { StrapiBaseProductWithRelations } from '@/lib/product/types';
+import { Paginated } from '../strapi/types/paginated';
 
-export type { StrapiGuideListPages } from '@/lib/strapi/types/guideListPage';
-export type { GuideListPageProps };
+export type StrapiGuideListPage = {
+  readonly id: number;
+  readonly title: string;
+  readonly description: string;
+  readonly product?: StrapiBaseProductWithRelations;
+  readonly guidesByCategory: ReadonlyArray<{
+    readonly category: string;
+    readonly guides: ReadonlyArray<StrapiBaseGuide>;
+  }>;
+  readonly bannerLinks: ReadonlyArray<StrapiBannerLink>;
+  readonly seo?: StrapiSeo;
+  readonly updatedAt: string;
+};
+
+export type StrapiGuideListPages = Paginated<StrapiGuideListPage>;

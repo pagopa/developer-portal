@@ -1,4 +1,4 @@
-import { StrapiBaseGuide } from '@/lib/strapi/types/guide';
+import type { StrapiBaseGuide } from '@/lib/guides/types';
 import { StrapiLink, StrapiRelatedLinks } from '@/lib/strapi/types/link';
 import { StrapiMedia } from '@/lib/strapi/types/media';
 import { StrapiBannerLink } from '@/lib/strapi/types/bannerLink';

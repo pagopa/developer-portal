@@ -3,7 +3,8 @@
 import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
 import { makeBaseProductWithoutLogoProps } from '@/lib/product/mapper';
 import { compact } from 'lodash';
-import { StrapiGuides, GuideDefinition } from './types';
+import type { StrapiGuides } from './types';
+import { GuideDefinition } from '../../helpers/makeDocs.helpers';
 
 export function mapGuides(
   locale: string,
