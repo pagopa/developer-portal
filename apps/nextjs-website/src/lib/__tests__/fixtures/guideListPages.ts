@@ -1,4 +1,4 @@
-import { StrapiGuideListPages } from '@/lib/strapi/types/guideListPage';
+import { StrapiGuideListPages } from '@/lib/guideListPages/types';
 import { GuideListPageProps } from '@/app/[locale]/[productSlug]/guides/page';
 import { product } from '@/lib/products/__tests__/fixtures/product';
 

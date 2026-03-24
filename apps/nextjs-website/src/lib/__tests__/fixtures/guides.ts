@@ -1,4 +1,4 @@
-import { StrapiGuides } from '@/lib/strapi/types/guide';
+import { StrapiGuides } from '@/lib/guides/types';
 import { GuideDefinition } from '@/helpers/makeDocs.helpers';
 import { product } from '@/lib/products/__tests__/fixtures/product';
 
