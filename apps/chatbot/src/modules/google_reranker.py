@@ -18,37 +18,47 @@ from src.modules.settings import SETTINGS
 
 
 GOOGLE_CREDENTIALS = service_account.Credentials.from_service_account_info(
-    SETTINGS.google_service_account
+    SETTINGS.google_service_account,
+    scopes=["https://www.googleapis.com/auth/cloud-platform"],
 )
 
 
 dispatcher = get_dispatcher(__name__)
 
 
-class Models(str, Enum):
-    SEMANTIC_RERANK_512_003 = "semantic-ranker-512-003"
+DEFAULT_MODEL = "semantic-ranker-default-004"
+DEFAULT_LOCATION = "global"
+DEFAULT_RANKING_CONFIG = "default_ranking_config"
 
 
 class GoogleRerank(BaseNodePostprocessor):
     top_n: int = Field(default=2, description="Top N nodes to return.")
-    rerank_model_name: str = Field(
-        default=Models.SEMANTIC_RERANK_512_003.value,
-        description="The modelId of the VertexAI model to use.",
+    model_id: str = Field(
+        default=DEFAULT_MODEL,
+        description="The ranking model to use.",
+    )
+    location: str = Field(
+        default=DEFAULT_LOCATION,
+        description="Google Cloud location for the ranking config.",
+    )
+    ranking_config: str = Field(
+        default=DEFAULT_RANKING_CONFIG,
+        description="Name of the ranking config resource.",
     )
     _client: discoveryengine.RankServiceClient = PrivateAttr()
-    _ranking_config: str = PrivateAttr()
 
     def __init__(
         self,
         top_n: int = 2,
-        rerank_model_name: str = Models.SEMANTIC_RERANK_512_003.value,
+        model_id: str = DEFAULT_MODEL,
         client: Optional[discoveryengine.RankServiceClient] = None,
-        ranking_config: Optional[Any] = "default_ranking_config",
+        ranking_config: Optional[Any] = DEFAULT_RANKING_CONFIG,
+        location: Optional[str] = DEFAULT_LOCATION,
         **kwargs: Any,
     ):
         super().__init__(**kwargs)
         self.top_n = top_n
-        self.rerank_model_name = rerank_model_name
+        self.model_id = model_id
 
         if client:
             self._client = client
@@ -57,10 +67,9 @@ class GoogleRerank(BaseNodePostprocessor):
                 credentials=GOOGLE_CREDENTIALS
             )
 
-        self._ranking_config = self._client.ranking_config_path(
-            project=SETTINGS.google_service_account["project_id"],
-            location="global",
-            ranking_config=ranking_config,
+        self._ranking_config = (
+            f"projects/{GOOGLE_CREDENTIALS.project_id}/locations/{location}"
+            f"/rankingConfigs/{ranking_config}"
         )
 
     @classmethod
@@ -78,7 +87,7 @@ class GoogleRerank(BaseNodePostprocessor):
                     query=query_bundle,
                     nodes=nodes,
                     top_n=self.top_n,
-                    model_name=self.rerank_model_name,
+                    model_name=self.model_id,
                 )
             )
 
@@ -91,7 +100,7 @@ class GoogleRerank(BaseNodePostprocessor):
             CBEventType.RERANKING,
             payload={
                 EventPayload.NODES: nodes,
-                EventPayload.MODEL_NAME: self.rerank_model_name,
+                EventPayload.MODEL_NAME: self.model_id,
                 EventPayload.QUERY_STR: query_bundle.query_str,
                 EventPayload.TOP_K: self.top_n,
             },
@@ -104,7 +113,6 @@ class GoogleRerank(BaseNodePostprocessor):
                     discoveryengine.RankingRecord(
                         id=str(index),
                         content=node.node.get_content(metadata_mode=MetadataMode.EMBED),
-                        # score=node.score
                     ),
                 )
             # change top_n if the number of nodes is less than top_n
@@ -114,7 +122,7 @@ class GoogleRerank(BaseNodePostprocessor):
             try:
                 request = discoveryengine.RankRequest(
                     ranking_config=self._ranking_config,
-                    model=self.rerank_model_name,
+                    model=self.model_id,
                     top_n=self.top_n,
                     query=query_bundle.query_str,
                     records=text_sources,

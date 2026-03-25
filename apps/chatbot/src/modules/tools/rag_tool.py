@@ -74,7 +74,8 @@ def get_query_engine_tool(
 
         reranker = GoogleRerank(
             top_n=SETTINGS.similarity_topk,
-            rerank_model_name=SETTINGS.reranker_id,
+            model_id=SETTINGS.reranker_id,
+            location=SETTINGS.vertexai_location,
         )
         node_postprocessors = [reranker]
     elif SETTINGS.provider == "mock":
