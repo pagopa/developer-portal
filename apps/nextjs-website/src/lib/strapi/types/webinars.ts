@@ -4,6 +4,7 @@ import { StrapiRelatedLinks } from '@/lib/strapi/types/link';
 import { StrapiSeo } from '@/lib/strapi/types/seo';
 import { StrapiWebinarCategory } from '@/lib/strapi/types/webinarCategory';
 import { Paginated } from '@/lib/strapi/types/paginated';
+import { Chapter } from '@/lib/types/webinar';
 
 type StrapiWebinarSpeaker = {
   readonly id: number;
@@ -62,6 +63,7 @@ export type StrapiWebinar = {
     readonly webinarCategory: { readonly data?: StrapiWebinarCategory };
     readonly headerImage: { readonly data?: StrapiMedia };
     readonly updatedAt: string;
+    readonly chapters?: readonly Chapter[];
   };
 };
 
