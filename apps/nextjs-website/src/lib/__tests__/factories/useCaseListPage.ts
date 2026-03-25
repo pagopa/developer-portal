@@ -1,5 +1,5 @@
-import { StrapiUseCaseListPages } from '@/lib/strapi/types/useCaseListPage';
-import { strapiTutorialListPages } from '@/lib/__tests__/fixtures/tutorialListPage';
+import { StrapiUseCaseListPages } from '@/lib/useCaseListPage/types';
+import { strapiUseCaseListPages } from '@/lib/__tests__/fixtures/useCaseListPage';
 
 export function minimalUseCaseListPages(): StrapiUseCaseListPages {
   return {
@@ -10,7 +10,8 @@ export function minimalUseCaseListPages(): StrapiUseCaseListPages {
         description: '',
         bannerLinks: [],
         product: {
-          ...strapiTutorialListPages.data[0].product!,
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          ...strapiUseCaseListPages.data[0].product!,
           bannerLinks: [],
         },
         useCases: [],
@@ -37,7 +38,8 @@ export function useCaseListPagesWithItemMissingBannerLinks(): StrapiUseCaseListP
         title: 'No Banner Tutorials',
         description: 'No banner links',
         bannerLinks: [],
-        product: minimalUseCaseListPages().data[0].product,
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        product: minimalUseCaseListPages().data[0]!.product,
         useCases: [],
         seo: undefined,
         enableFilters: true,

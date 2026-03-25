@@ -8,12 +8,12 @@ import { SolutionRepository } from '@/lib/solutions';
 import { SolutionListPageRepository } from '@/lib/solutionListPage';
 import { TutorialRepository } from '@/lib/tutorials';
 import { TutorialListPageRepository } from '@/lib/tutorialListPage';
+import { UseCasesRepository } from '@/lib/useCases';
+import { UseCaseListPageRepository } from '@/lib/useCaseListPage';
 import { Webinar } from '@/lib/types/webinar';
 import {
   getReleaseNoteProps,
   getStrapiReleaseNotes,
-  getUseCaseListPagesProps,
-  getUseCasesProps,
   getWebinarsProps,
 } from './cmsApi';
 import { parseS3GuidePage } from '@/helpers/parseS3Doc.helpers';
@@ -308,7 +308,7 @@ export async function getUseCase(
   const product = await getProduct(locale, productSlug);
 
   const props = manageUndefined(
-    (await getUseCasesProps(locale)).find(({ path }) => path === useCasePath)
+    await UseCasesRepository.getByPath(locale, useCasePath)
   );
   return {
     ...props,
@@ -320,10 +320,10 @@ export async function getUseCaseListPageProps(
   locale: string,
   productSlug?: string
 ) {
-  const useCaseListPages = await getUseCaseListPagesProps(locale);
-  const props =
-    useCaseListPages.find(({ product }) => product.slug === productSlug) ||
-    null;
+  const props = await UseCaseListPageRepository.getByProductSlug(
+    locale,
+    productSlug || ''
+  );
 
   return manageUndefinedAndAddProducts(locale, props);
 }

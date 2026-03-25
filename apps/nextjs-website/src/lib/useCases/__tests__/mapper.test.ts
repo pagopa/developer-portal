@@ -1,15 +1,15 @@
-import { spyOnConsoleError } from '@/lib/strapi/__tests__/spyOnConsole';
-import _ from 'lodash';
-import { makeUseCasesProps } from '../makeProps/makeUseCases';
-import { strapiUseCases } from './fixtures/useCases';
-import { StrapiUseCases } from '../types/useCase';
+import { mapUseCasesProps } from '@/lib/useCases/mapper';
+import { StrapiUseCases } from '@/lib/useCases/types';
 import {
   minimalDataUseCases,
   useCasesWithAnItemMissingProductSlug,
   useCasesWithAnItemMissingSlug,
-} from './factories/useCases';
+} from '@/lib/__tests__/factories/useCases';
+import { strapiUseCases } from '@/lib/__tests__/fixtures/useCases';
+import { spyOnConsoleError } from '@/lib/strapi/__tests__/spyOnConsole';
+import _ from 'lodash';
 
-describe('makeUseCasesProps', () => {
+describe('mapUseCasesProps', () => {
   afterEach(() => {
     spyOnConsoleError.mockClear();
   });
@@ -19,7 +19,8 @@ describe('makeUseCasesProps', () => {
   });
 
   it('should transform strapi use cases to use cases props', () => {
-    const result = makeUseCasesProps('it', strapiUseCases, {});
+    const result = mapUseCasesProps('it', _.cloneDeep(strapiUseCases), {});
+
     expect(result).toHaveLength(1);
     expect(result[0]).toMatchObject({
       coverImage: {
@@ -71,9 +72,10 @@ describe('makeUseCasesProps', () => {
   });
 
   it('should handle minimal data with missing optional fields', () => {
-    const result = makeUseCasesProps('it', minimalDataUseCases(), {});
-    expect(result).toHaveLength(1);
+    const result = mapUseCasesProps('it', minimalDataUseCases(), {});
     const firstElement = result[0];
+
+    expect(result).toHaveLength(1);
     expect(firstElement.title).toBe('Minimal Data UseCase');
     expect(firstElement.subtitle).toBe('Minimal Data UseCase Subtitle');
     expect(firstElement.productSlug).toBe('pago-pa');
@@ -99,34 +101,34 @@ describe('makeUseCasesProps', () => {
         },
       },
     };
-    const result = makeUseCasesProps('it', emptyData, {});
+
+    const result = mapUseCasesProps('it', emptyData, {});
+
     expect(result).toHaveLength(0);
   });
 
   it('should skip use cases with missing use case slug and log error', () => {
-    const result = makeUseCasesProps('it', useCasesWithAnItemMissingSlug(), {});
+    const result = mapUseCasesProps('it', useCasesWithAnItemMissingSlug(), {});
+
     expect(result).toHaveLength(1);
-    const firstElement = result[0];
-    expect(firstElement.title).toBe('Valid UseCase');
-    expect(firstElement.path).toBe('/it/pago-pa/use-cases/valid-use-case');
+    expect(result[0].title).toBe('Valid UseCase');
+    expect(result[0].path).toBe('/it/pago-pa/use-cases/valid-use-case');
     expect(spyOnConsoleError).toHaveBeenCalledWith(
       'Error while processing UseCase: missing title or slug. Title: UseCase Without Slug | Slug: undefined. Skipping...'
     );
   });
 
   it('should skip use cases with missing product slug and log error', () => {
-    const result = makeUseCasesProps(
+    const result = mapUseCasesProps(
       'it',
       useCasesWithAnItemMissingProductSlug(),
       {}
     );
+
     expect(result).toHaveLength(1);
-    const firstElement = result[0];
-    expect(firstElement.title).toBe('Valid UseCase');
-    expect(firstElement.productSlug).toBe('valid-product');
-    expect(firstElement.path).toBe(
-      '/it/valid-product/use-cases/valid-use-case'
-    );
+    expect(result[0].title).toBe('Valid UseCase');
+    expect(result[0].productSlug).toBe('valid-product');
+    expect(result[0].path).toBe('/it/valid-product/use-cases/valid-use-case');
     expect(spyOnConsoleError).toHaveBeenCalledWith(
       'Error while processing UseCase with title "UseCase Without Product Slug": missing product slug. Skipping...'
     );

@@ -1,20 +1,11 @@
 /* eslint-disable functional/no-expression-statements */
 /* eslint-disable functional/no-try-statements */
 import { mapPartProps } from '@/lib/parts/mapper';
-import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
-import { RelatedLinksProps } from '@/components/atoms/RelatedLinks/RelatedLinks';
 import { mapBannerLinkProps } from '@/lib/bannerLink/mapper';
 import { compact } from 'lodash';
-import { StrapiUseCases } from '@/lib/strapi/types/useCase';
-import { UseCase } from '@/lib/types/useCaseData';
+import { StrapiUseCases, UseCaseProps } from './types';
 
-export type UseCaseProps = UseCase & {
-  readonly productSlug: string;
-  readonly relatedLinks?: RelatedLinksProps;
-  readonly bannerLinks?: readonly BannerLinkProps[];
-};
-
-export function makeUseCasesProps(
+export function mapUseCasesProps(
   locale: string,
   strapiUseCases: StrapiUseCases,
   markdownContentDict: Record<string, string>
@@ -64,8 +55,8 @@ export function makeUseCasesProps(
           relatedLinks: attributes.relatedLinks,
           bannerLinks:
             attributes.bannerLinks && attributes.bannerLinks.length > 0
-              ? attributes.bannerLinks?.map(mapBannerLinkProps)
-              : attributes.product?.bannerLinks?.map(mapBannerLinkProps),
+              ? attributes.bannerLinks.map(mapBannerLinkProps)
+              : attributes.product.bannerLinks?.map(mapBannerLinkProps),
           seo: attributes.seo,
           subtitle: attributes.subtitle,
           tags: attributes.tags?.map((tag) => tag) || [],

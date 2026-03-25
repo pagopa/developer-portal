@@ -15,14 +15,8 @@ import {
   fetchResponseFromCDN,
   JsonMetadata,
 } from '@/helpers/s3Metadata.helpers';
-import { fetchUseCases } from '@/lib/strapi/fetches/fetchUseCases';
-import { makeUseCasesProps } from '@/lib/strapi/makeProps/makeUseCases';
-import { fetchUseCaseListPages } from '@/lib/strapi/fetches/fetchUseCaseListPages';
-import { makeUseCaseListPagesProps } from '@/lib/strapi/makeProps/makeUseCaseListPages';
 import { fetchTags } from '@/lib/strapi/fetches/fetchTags';
 import { makeTagsProps } from '@/lib/strapi/makeProps/makeTags';
-import { isMarkDownPart } from '@/lib/parts/types';
-import { getMarkdownContent } from '@/lib/api';
 import { getSyncedReleaseNotesResponseJsonFile } from 'gitbook-docs/syncedResponses';
 import { GuidesRepository } from '@/lib/guides';
 import { StrapiReleaseNotes } from './strapi/types/releaseNotes';
@@ -110,25 +104,4 @@ export const getReleaseNoteProps = async (
 export const getReleaseNotesProps = async (locale: string) => {
   const strapiReleaseNotes = await fetchReleaseNotes(locale);
   return makeReleaseNotesProps(locale, strapiReleaseNotes);
-};
-
-export const getUseCasesProps = async (locale: string) => {
-  const strapiUseCases = await fetchUseCases(locale, buildEnv);
-  const allMarkdownParts = strapiUseCases.data.flatMap((useCase) =>
-    (useCase?.parts ?? []).filter(isMarkDownPart)
-  );
-  const contentPromises = allMarkdownParts.map(async (part) => {
-    const { dirName, pathToFile } = part;
-    const key = `${dirName}/${pathToFile}`;
-    const content = await getMarkdownContent(dirName, pathToFile);
-    return [key, content];
-  });
-  const resolvedContentPairs = await Promise.all(contentPromises);
-  const markdownContentDict = Object.fromEntries(resolvedContentPairs);
-  return makeUseCasesProps(locale, strapiUseCases, markdownContentDict);
-};
-
-export const getUseCaseListPagesProps = async (locale: string) => {
-  const strapiUseCasesListPages = await fetchUseCaseListPages(locale, buildEnv);
-  return makeUseCaseListPagesProps(locale, strapiUseCasesListPages);
 };

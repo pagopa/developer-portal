@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { strapiUseCases } from '@/lib/strapi/__tests__/fixtures/useCases';
-import { StrapiUseCases } from '@/lib/strapi/types/useCase';
+import { strapiUseCases } from '@/lib/__tests__/fixtures/useCases';
+import { StrapiUseCases } from '@/lib/useCases/types';
 
 export function useCasesWithAnItemMissingSlug(): StrapiUseCases {
   return {
@@ -48,8 +48,10 @@ export function useCasesWithAnItemMissingProductSlug(): StrapiUseCases {
   };
 }
 
+
 export function minimalDataUseCases() {
   const strapiUseCase = strapiUseCases.data[0];
+
   return {
     ...strapiUseCases,
     data: [
@@ -72,6 +74,7 @@ export function minimalDataUseCases() {
 
 export function useCasesWithItemMissingData() {
   const strapiUseCase = strapiUseCases.data[0];
+
   return {
     ...strapiUseCases,
     data: [
@@ -88,6 +91,7 @@ export function useCasesWithItemMissingData() {
 
 export function useCasesWithItemMissingMandatoryData() {
   const useCase = useCasesWithItemMissingData().data[0];
+
   return {
     ...strapiUseCases,
     data: [

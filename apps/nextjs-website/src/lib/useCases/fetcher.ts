@@ -1,7 +1,7 @@
-import * as qs from 'qs';
+import qs from 'qs';
 import { productRelationsPopulate } from '@/lib/products/fetcher';
 import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
-import { StrapiUseCases } from '../types/useCase';
+import { StrapiUseCases } from './types';
 
 const makeStrapiUseCasesPopulate = () =>
   qs.stringify({
