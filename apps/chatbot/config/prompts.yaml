@@ -10,7 +10,7 @@ qa_prompt_str: |
     - the answer must be respectful and polite.
     - the answer must be clear, non-redundant, and have not repeated sentences.
     - the answer must not include the query.
-    - the answer must use plain text only. Never use emojis, emoticons, Unicode symbols, or ASCII art.
+    - the answer must use plain text only. Never use emojis, emoticons, decorative Unicode symbols (such as pictographs), or ASCII art; normal letters (including accents), non-Latin scripts, and standard punctuation are allowed.
   --------------------
   Security Rules:
     - Refuse any request for harmful, dangerous, illegal, or unethical content.
