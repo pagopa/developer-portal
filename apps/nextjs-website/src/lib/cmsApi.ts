@@ -4,8 +4,6 @@ import { fetchWebinars } from './strapi/fetches/fetchWebinars';
 import { fetchTutorials } from './strapi/fetches/fetchTutorials';
 import { makeTutorialsProps } from './strapi/makeProps/makeTutorials';
 
-import { ProductRepository } from '@/lib/products';
-import { SolutionRepository } from '@/lib/solutions';
 import { fetchTutorialListPages } from './strapi/fetches/fetchTutorialListPages';
 import { makeTutorialListPagesProps } from './strapi/makeProps/makeTutorialListPages';
 
@@ -14,7 +12,6 @@ import { makeUrlReplaceMap } from './strapi/makeProps/makeUrlReplaceMap';
 import { makeReleaseNotesProps } from '@/lib/strapi/makeProps/makeReleaseNotes';
 import {
   makeGuide as makeGuideS3,
-  makeSolution as makeSolutionS3,
   makeReleaseNote as makeReleaseNoteS3,
 } from '@/helpers/makeS3Docs.helpers';
 
@@ -39,11 +36,6 @@ import { StrapiReleaseNotes } from './strapi/types/releaseNotes';
 export const getWebinarsProps = async (locale: string) => {
   const strapiWebinars = await fetchWebinars(locale, buildEnv);
   return makeWebinarsProps(strapiWebinars);
-};
-
-export const getProductsProps = async (locale: string) => {
-  const products = await ProductRepository.getAll(locale);
-  return [...products];
 };
 
 export const getWebinarCategoriesProps = async (locale: string) => {
@@ -109,19 +101,6 @@ export const getGuideProps = async (
     throw new Error('Failed to fetch guide data');
   }
   return await makeGuideS3({ guideDefinition: guide, locale, guidePaths });
-};
-
-export const getSolutionProps = async (
-  solutionsSlug: string,
-  locale: string,
-  jsonMetadata?: JsonMetadata
-) => {
-  const solution = await SolutionRepository.getBySlug(locale, solutionsSlug);
-  if (!solution) {
-    // eslint-disable-next-line functional/no-throw-statements
-    throw new Error(`No solution found matching slug "${solutionsSlug}"`);
-  }
-  return await makeSolutionS3(solution, locale, jsonMetadata);
 };
 
 const fetchReleaseNotes = async (locale: string) => {

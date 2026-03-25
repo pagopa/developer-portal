@@ -8,9 +8,7 @@ import { SolutionRepository } from '@/lib/solutions';
 import { SolutionListPageRepository } from '@/lib/solutionListPage';
 import { Webinar } from '@/lib/types/webinar';
 import {
-  getProductsProps,
   getReleaseNoteProps,
-  getSolutionProps,
   getStrapiReleaseNotes,
   getTutorialListPagesProps,
   getTutorialsProps,
@@ -27,6 +25,8 @@ import {
 } from '@/helpers/s3Metadata.helpers';
 import { s3DocsPath } from '@/config';
 import { OverviewsRepository } from './overviews';
+import { ProductRepository } from './products';
+import { makeSolution } from '../helpers/makeS3Docs.helpers';
 
 function manageUndefined<T>(props: undefined | null | T) {
   if (!props) {
@@ -111,7 +111,7 @@ export async function getOverview(locale: string, productSlug?: string) {
 }
 
 export async function getProducts(locale: string): Promise<readonly Product[]> {
-  return await getProductsProps(locale);
+  return await ProductRepository.getAll(locale);
 }
 
 export async function getQuickStartGuide(locale: string, productSlug?: string) {
@@ -190,7 +190,7 @@ export async function getApiDataParams(locale: string) {
 }
 
 export async function getProduct(locale: string, productSlug: string) {
-  const props = (await getProductsProps(locale)).find(
+  const props = (await ProductRepository.getAll(locale)).find(
     (product) => product.slug === productSlug
   );
   return props;
@@ -279,8 +279,15 @@ export async function getSolutionDetail(
     solutionData.dirName
   );
 
-  return await getSolutionProps(
-    solutionSlug,
+  const solution = await SolutionRepository.getBySlug(solutionSlug, locale);
+
+  if (!solution) {
+    // eslint-disable-next-line functional/no-throw-statements
+    throw new Error(`No solution found matching slug "${solutionSlug}"`);
+  }
+
+  return makeSolution(
+    solution,
     locale,
     solutionsMetadata.find(
       ({ path }) =>
