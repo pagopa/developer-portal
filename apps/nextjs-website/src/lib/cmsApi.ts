@@ -11,7 +11,6 @@ import { makeSolutionsProps } from './strapi/makeProps/makeSolutions';
 import { makeSolutionListPageProps } from './strapi/makeProps/makeSolutionListPage';
 import { fetchSolutionListPage } from './strapi/fetches/fetchSolutionListPage';
 
-import { ProductRepository } from '@/lib/product';
 import { makeGuideListPagesProps } from './strapi/makeProps/makeGuideListPages';
 import { makeGuidesProps } from './strapi/makeProps/makeGuides';
 import { fetchOverviews } from '@/lib/strapi/fetches/fetchOverviews';
@@ -60,11 +59,6 @@ export const getHomepageProps = async (locale: string) => {
 export const getWebinarsProps = async (locale: string) => {
   const strapiWebinars = await fetchWebinars(locale, buildEnv);
   return makeWebinarsProps(strapiWebinars);
-};
-
-export const getProductsProps = async (locale: string) => {
-  const products = await ProductRepository.getAll(locale);
-  return [...products];
 };
 
 export const getWebinarCategoriesProps = async (locale: string) => {
