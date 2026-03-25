@@ -1,6 +1,4 @@
 import { buildEnv } from '@/lib/buildEnv';
-import { makeWebinarsProps } from './strapi/makeProps/makeWebinars';
-import { fetchWebinars } from './strapi/fetches/fetchWebinars';
 import { fetchUrlReplaceMap } from './strapi/fetches/fetchUrlReplaceMap';
 import { makeUrlReplaceMap } from './strapi/makeProps/makeUrlReplaceMap';
 import { makeReleaseNotesProps } from '@/lib/strapi/makeProps/makeReleaseNotes';
@@ -9,8 +7,6 @@ import {
   makeReleaseNote as makeReleaseNoteS3,
 } from '@/helpers/makeS3Docs.helpers';
 
-import { fetchWebinarCategories } from '@/lib/strapi/fetches/fetchWebinarCategories';
-import { makeWebinarCategoriesProps } from '@/lib/strapi/makeProps/makeWebinarCategories';
 import {
   fetchResponseFromCDN,
   JsonMetadata,
@@ -20,19 +16,6 @@ import { makeTagsProps } from '@/lib/strapi/makeProps/makeTags';
 import { getSyncedReleaseNotesResponseJsonFile } from 'gitbook-docs/syncedResponses';
 import { GuidesRepository } from '@/lib/guides';
 import { StrapiReleaseNotes } from './strapi/types/releaseNotes';
-
-export const getWebinarsProps = async (locale: string) => {
-  const strapiWebinars = await fetchWebinars(locale, buildEnv);
-  return makeWebinarsProps(strapiWebinars);
-};
-
-export const getWebinarCategoriesProps = async (locale: string) => {
-  const strapiWebinarCategories = await fetchWebinarCategories(
-    locale,
-    buildEnv
-  );
-  return makeWebinarCategoriesProps(strapiWebinarCategories);
-};
 
 export const getTagsProps = async (locale: string) => {
   const strapiTags = await fetchTags(locale, buildEnv);

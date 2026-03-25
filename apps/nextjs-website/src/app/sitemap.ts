@@ -1,7 +1,8 @@
 /* eslint-disable functional/no-expression-statements */
 /* eslint-disable functional/no-try-statements */
 import type { MetadataRoute } from 'next';
-import { getWebinarsProps, getReleaseNotesProps } from '@/lib/cmsApi';
+import { getReleaseNotesProps } from '@/lib/cmsApi';
+import { getWebinars } from '@/lib/api';
 import { GuidesRepository } from '@/lib/guides';
 import { SolutionRepository } from '@/lib/solutions';
 import { baseUrl } from '@/config';
@@ -87,7 +88,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       }
 
       const caseHistories = await CaseHistoriesRepository.getAll(localeCode);
-      const webinars = await getWebinarsProps(localeCode);
+      const webinars = await getWebinars(localeCode);
       const solutions = await SolutionRepository.getAll(localeCode);
 
       // Base static routes

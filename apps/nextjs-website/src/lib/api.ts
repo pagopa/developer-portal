@@ -10,12 +10,10 @@ import { TutorialRepository } from '@/lib/tutorials';
 import { TutorialListPageRepository } from '@/lib/tutorialListPage';
 import { UseCasesRepository } from '@/lib/useCases';
 import { UseCaseListPageRepository } from '@/lib/useCaseListPage';
+import { WebinarsRepository } from '@/lib/webinars';
+import { WebinarCategoriesRepository } from '@/lib/webinarCategories';
 import { Webinar } from '@/lib/types/webinar';
-import {
-  getReleaseNoteProps,
-  getStrapiReleaseNotes,
-  getWebinarsProps,
-} from './cmsApi';
+import { getReleaseNoteProps, getStrapiReleaseNotes } from './cmsApi';
 import { parseS3GuidePage } from '@/helpers/parseS3Doc.helpers';
 import {
   downloadFileAsText,
@@ -153,7 +151,7 @@ export async function getTutorialListPageProps(
 export async function getVisibleInListWebinars(
   locale: string
 ): Promise<readonly Webinar[]> {
-  return (await getWebinarsProps(locale)).filter(
+  return (await WebinarsRepository.getAll(locale)).filter(
     (webinar) => webinar.isVisibleInList
   );
 }
@@ -163,9 +161,17 @@ export async function getWebinar(
   webinarSlug?: string
 ): Promise<Webinar> {
   const props = manageUndefined(
-    (await getWebinarsProps(locale)).find(({ slug }) => slug === webinarSlug)
+    await WebinarsRepository.getBySlug(locale, webinarSlug || '')
   );
   return props;
+}
+
+export async function getWebinars(locale: string): Promise<readonly Webinar[]> {
+  return WebinarsRepository.getAll(locale);
+}
+
+export async function getWebinarCategories(locale: string) {
+  return WebinarCategoriesRepository.getAll(locale);
 }
 
 export async function getCaseHistory(locale: string, caseHistorySlug?: string) {

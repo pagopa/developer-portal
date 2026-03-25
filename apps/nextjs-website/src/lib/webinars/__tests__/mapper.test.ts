@@ -1,10 +1,13 @@
-import { makeWebinarsProps } from '@/lib/strapi/makeProps/makeWebinars';
-import { StrapiWebinars } from '@/lib/strapi/types/webinars';
+import { mapWebinarsProps } from '@/lib/webinars/mapper';
+import { StrapiWebinars } from '@/lib/webinars/types';
 import _ from 'lodash';
-import { strapiWebinars, webinarProps } from './fixtures/webinars';
+import {
+  strapiWebinars,
+  webinarProps,
+} from '@/lib/__tests__/fixtures/webinars';
 import { spyOnConsoleError } from '@/lib/strapi/__tests__/spyOnConsole';
 
-describe('makeWebinarsProps', () => {
+describe('mapWebinarsProps', () => {
   afterEach(() => {
     spyOnConsoleError.mockClear();
   });
@@ -14,7 +17,8 @@ describe('makeWebinarsProps', () => {
   });
 
   it('should transform strapi webinars to webinars props', () => {
-    const result = makeWebinarsProps(_.cloneDeep(strapiWebinars));
+    const result = mapWebinarsProps(_.cloneDeep(strapiWebinars));
+
     expect(result).toHaveLength(1);
     expect(result[0]).toMatchObject(webinarProps);
   });
@@ -31,7 +35,9 @@ describe('makeWebinarsProps', () => {
         },
       },
     };
-    const result = makeWebinarsProps(emptyData);
+
+    const result = mapWebinarsProps(emptyData);
+
     expect(result).toHaveLength(0);
   });
 
@@ -40,8 +46,8 @@ describe('makeWebinarsProps', () => {
       data: [
         {
           ...strapiWebinars.data[0],
-          title: undefined as any,
-          slug: undefined as any,
+          title: undefined as unknown as string,
+          slug: undefined as unknown as string,
         },
       ],
       meta: {
@@ -54,7 +60,7 @@ describe('makeWebinarsProps', () => {
       },
     };
 
-    const result = makeWebinarsProps(corruptedData);
+    const result = mapWebinarsProps(corruptedData);
 
     expect(result).toHaveLength(0);
     expect(spyOnConsoleError).toHaveBeenCalledWith(
