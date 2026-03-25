@@ -53,15 +53,19 @@ This project uses [Poetry](https://python-poetry.org/) for dependency management
    EXTRACTOR_MODEL_MAXTOKENS=65535
    EXTRACTOR_PROVIDER=google # allowed: google, mock
 
-   # Optional (either of the two needs to be specified if provider is not mock)
-   CHB_AWS_GOOGLE_API_KEY=google_api_key
-   CHB_AWS_SSM_GOOGLE_API_KEY=/local/google_api_key
 
    # Logging (optional, default: info)
    LOG_LEVEL=info
    ```
 
-   **Note:** For local testing, set `CHB_AWS_GOOGLE_API_KEY` directly. In production, the app uses AWS SSM Parameter Store via `CHB_AWS_SSM_GOOGLE_API_KEY`.
+## Gemini
+
+If you wish to use Gemini models, you need to:
+
+- create a project in Google Cloud Platform
+- create google service account and store it into the file `.google_service_account.json`
+- ensure that you can use [VertexAI](https://cloud.google.com/vertex-ai?hl=en) and [Discovery Engine](https://docs.cloud.google.com/generative-ai-app-builder/docs/reference/rest)
+
 
 ## Usage
 
