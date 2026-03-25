@@ -7,10 +7,10 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import VimeoPlayer from '@/components/atoms/VimeoPlayer/VimeoPlayer';
 import { WebinarQuestionsForm } from '@/components/organisms/WebinarQuestionsForm/WebinarQuestionsForm';
 import { WebinarState } from '@/helpers/webinar.helpers';
 import { useMemo, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import ForumIcon from '@mui/icons-material/Forum';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
@@ -35,6 +35,8 @@ const WebinarPlayerSection = ({
   reloadPlayerToken = 0,
   isPlayerVisible = true,
 }: WebinarPlayerSectionProps) => {
+  const searchParams = useSearchParams();
+  const chapterParam = searchParams.get('chapter');
   const t = useTranslations('webinar');
   const { palette } = useTheme();
   const [isQuestionFormExpanded, setIsQuestionFormExpanded] = useState(false);
@@ -116,6 +118,9 @@ const WebinarPlayerSection = ({
                 poster={webinar.playerCoverImageUrl}
                 reloadToken={reloadPlayerToken}
                 videoOnDemandStartAt={videoOnDemandStartAt}
+                startAtChapterSlug={chapterParam || undefined}
+                chapters={webinar.chapters ? [...webinar.chapters] : undefined}
+                webvttContent={webinar.webvttContent}
               />
             </Box>
             {isQuestionFormAvailable ? (
