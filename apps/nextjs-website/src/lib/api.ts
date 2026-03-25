@@ -6,7 +6,6 @@ import { Product } from '@/lib/products/types';
 import { QuickStartGuidesRepository } from '@/lib/quickStartGuides';
 import { Webinar } from '@/lib/types/webinar';
 import {
-  getProductsProps,
   getReleaseNoteProps,
   getSolutionListPageProps,
   getSolutionProps,
@@ -27,6 +26,7 @@ import {
 } from '@/helpers/s3Metadata.helpers';
 import { s3DocsPath } from '@/config';
 import { OverviewsRepository } from './overviews';
+import { ProductRepository } from './products';
 
 function manageUndefined<T>(props: undefined | null | T) {
   if (!props) {
@@ -111,7 +111,7 @@ export async function getOverview(locale: string, productSlug?: string) {
 }
 
 export async function getProducts(locale: string): Promise<readonly Product[]> {
-  return await getProductsProps(locale);
+  return await ProductRepository.getAll(locale);
 }
 
 export async function getQuickStartGuide(locale: string, productSlug?: string) {
@@ -190,7 +190,7 @@ export async function getApiDataParams(locale: string) {
 }
 
 export async function getProduct(locale: string, productSlug: string) {
-  const props = (await getProductsProps(locale)).find(
+  const props = (await ProductRepository.getAll(locale)).find(
     (product) => product.slug === productSlug
   );
   return props;
