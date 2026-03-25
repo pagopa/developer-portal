@@ -29,6 +29,7 @@ export function useCasesWithAnItemMissingProductSlug(): StrapiUseCases {
         title: 'UseCase Without Product Slug',
         slug: 'use-case-without-product-slug',
         product: {
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           ...strapiUseCases.data[0].product!,
           name: 'Product Without Slug',
           slug: undefined as any,
@@ -39,6 +40,7 @@ export function useCasesWithAnItemMissingProductSlug(): StrapiUseCases {
         title: 'Valid UseCase',
         slug: 'valid-use-case',
         product: {
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           ...strapiUseCases.data[0].product!,
           name: 'Valid Product',
           slug: 'valid-product',
@@ -47,7 +49,6 @@ export function useCasesWithAnItemMissingProductSlug(): StrapiUseCases {
     ],
   };
 }
-
 
 export function minimalDataUseCases() {
   const strapiUseCase = strapiUseCases.data[0];
