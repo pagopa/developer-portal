@@ -53,7 +53,9 @@ export function makePartProps(
         return {
           component: 'markdown',
           content: '',
-          assetsPrefix: `${staticContentsUrl}/${locale}/${s3DocsPath}/${strapiPart.dirName}`,
+          assetsPrefix: `${staticContentsUrl}/${locale || 'it'}/${s3DocsPath}/${
+            strapiPart.dirName
+          }`,
         };
       // eslint-disable-next-line no-case-declarations
       const content =
@@ -61,7 +63,9 @@ export function makePartProps(
       return {
         component: 'markdown',
         content: content ? content : '',
-        assetsPrefix: `${staticContentsUrl}/${locale}/${s3DocsPath}/${strapiPart.dirName}`,
+        assetsPrefix: `${staticContentsUrl}/${locale || 'it'}/${s3DocsPath}/${
+          strapiPart.dirName
+        }`,
       };
     case 'parts.ck-editor':
       // eslint-disable-next-line no-case-declarations
