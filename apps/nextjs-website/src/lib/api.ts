@@ -6,7 +6,6 @@ import {
   getGuideListPagesProps,
   getGuidePageProps,
   getOverviewsProps,
-  getProductsProps,
   getQuickStartGuidesProps,
   getReleaseNoteProps,
   getSolutionListPageProps,
@@ -27,6 +26,7 @@ import {
   getSolutionsMetadata,
 } from '@/helpers/s3Metadata.helpers';
 import { s3DocsPath } from '@/config';
+import { ProductRepository } from './product';
 
 function manageUndefined<T>(props: undefined | null | T) {
   if (!props) {
@@ -112,7 +112,7 @@ export async function getOverview(locale: string, productSlug?: string) {
 }
 
 export async function getProducts(locale: string): Promise<readonly Product[]> {
-  return await getProductsProps(locale);
+  return await ProductRepository.getAll(locale);
 }
 
 export async function getQuickStartGuide(locale: string, productSlug?: string) {
@@ -193,7 +193,7 @@ export async function getApiDataParams(locale: string) {
 }
 
 export async function getProduct(locale: string, productSlug: string) {
-  const props = (await getProductsProps(locale)).find(
+  const props = (await ProductRepository.getAll(locale)).find(
     (product) => product.slug === productSlug
   );
   return props;
