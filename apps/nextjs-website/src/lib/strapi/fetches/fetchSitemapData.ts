@@ -1,7 +1,7 @@
 import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
 import * as qs from 'qs';
 import { StrapiProducts } from '@/lib/products/types';
-import { StrapiTutorials } from '@/lib/strapi/types/tutorial';
+import { StrapiTutorials } from '@/lib/tutorials/types';
 import { ApiDataList } from '@/lib/apiDataList/types';
 import { pipe } from 'fp-ts/lib/function';
 import * as E from 'fp-ts/lib/Either';

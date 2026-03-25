@@ -1,5 +1,5 @@
-import { StrapiTutorialListPages } from '@/lib/strapi/types/tutorialsListPage';
-import { strapiTutorialListPages } from '../fixtures/tutorialListPage';
+import { StrapiTutorialListPages } from '@/lib/tutorialListPage/types';
+import { strapiTutorialListPages } from '@/lib/__tests__/fixtures/tutorialListPage';
 
 export function minimalTutorialListPages(): StrapiTutorialListPages {
   return {
@@ -10,6 +10,7 @@ export function minimalTutorialListPages(): StrapiTutorialListPages {
         description: '',
         bannerLinks: [],
         product: {
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           ...strapiTutorialListPages.data[0].product!,
           bannerLinks: [],
         },
@@ -36,6 +37,7 @@ export function tutorialListPagesWithItemMissingBannerLinks(): StrapiTutorialLis
         title: 'No Banner Tutorials',
         description: 'No banner links',
         bannerLinks: [],
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         product: minimalTutorialListPages().data[0]!.product,
         tutorials: [],
         seo: undefined,

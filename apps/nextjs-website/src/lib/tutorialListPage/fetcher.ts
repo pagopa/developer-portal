@@ -1,7 +1,7 @@
 import * as qs from 'qs';
 import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
 import { productRelationsPopulate } from '@/lib/products/fetcher';
-import { StrapiTutorialListPages } from '@/lib/strapi/types/tutorialsListPage';
+import { StrapiTutorialListPages } from '@/lib/tutorialListPage/types';
 
 const makeStrapiTutorialListPagePopulate = () =>
   qs.stringify({

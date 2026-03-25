@@ -1,6 +1,6 @@
-import { StrapiTutorialListPages } from '@/lib/strapi/types/tutorialsListPage';
 import { generateBannerLinks } from '@/lib/__tests__/factories/bannerLink';
-import { mediaJpeg } from '../../../__tests__/factories/media';
+import { mediaJpeg } from '@/lib/__tests__/factories/media';
+import { StrapiTutorialListPages } from '@/lib/tutorialListPage/types';
 
 const fixedDateIsoString = new Date('2025-01-01T00:00:00.000Z').toISOString();
 

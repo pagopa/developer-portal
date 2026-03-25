@@ -1,20 +1,11 @@
 /* eslint-disable functional/no-expression-statements */
 /* eslint-disable functional/no-try-statements */
-import { Tutorial } from '@/lib/types/tutorialData';
 import { mapPartProps } from '@/lib/parts/mapper';
-import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
-import { RelatedLinksProps } from '@/components/atoms/RelatedLinks/RelatedLinks';
 import { mapBannerLinkProps } from '@/lib/bannerLink/mapper';
-import { StrapiTutorials } from '@/lib/strapi/types/tutorial';
 import { compact } from 'lodash';
+import { StrapiTutorials, TutorialProps } from './types';
 
-export type TutorialProps = Tutorial & {
-  readonly productSlug: string;
-  readonly relatedLinks?: RelatedLinksProps;
-  readonly bannerLinks?: readonly BannerLinkProps[];
-};
-
-export function makeTutorialsProps(
+export function mapTutorialsProps(
   locale: string,
   strapiTutorials: StrapiTutorials,
   markdownContentDict: Record<string, string>
@@ -62,7 +53,6 @@ export function makeTutorialsProps(
             attributes.bannerLinks && attributes.bannerLinks.length > 0
               ? attributes.bannerLinks.map(mapBannerLinkProps)
               : attributes.product.bannerLinks?.map(mapBannerLinkProps),
-
           seo: attributes.seo,
           tags: attributes.tags?.map((tag) => tag) || [],
           updatedAt: attributes.updatedAt,

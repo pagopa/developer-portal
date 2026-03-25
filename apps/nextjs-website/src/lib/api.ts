@@ -6,14 +6,14 @@ import { Product } from '@/lib/products/types';
 import { QuickStartGuidesRepository } from '@/lib/quickStartGuides';
 import { SolutionRepository } from '@/lib/solutions';
 import { SolutionListPageRepository } from '@/lib/solutionListPage';
+import { TutorialRepository } from '@/lib/tutorials';
+import { TutorialListPageRepository } from '@/lib/tutorialListPage';
 import { Webinar } from '@/lib/types/webinar';
 import {
   getProductsProps,
   getReleaseNoteProps,
   getSolutionProps,
   getStrapiReleaseNotes,
-  getTutorialListPagesProps,
-  getTutorialsProps,
   getUseCaseListPagesProps,
   getUseCasesProps,
   getWebinarsProps,
@@ -132,7 +132,7 @@ export async function getTutorial(
   const product = await getProduct(locale, productSlug);
 
   const props = manageUndefined(
-    (await getTutorialsProps(locale)).find(({ path }) => path === tutorialPath)
+    await TutorialRepository.getByPath(locale, tutorialPath)
   );
   return {
     ...props,
@@ -145,8 +145,8 @@ export async function getTutorialListPageProps(
   productSlug?: string
 ) {
   const tutorialListPages = manageUndefined(
-    await getTutorialListPagesProps(locale)
-  ).find(({ product }) => product.slug === productSlug);
+    await TutorialListPageRepository.getByProductSlug(locale, productSlug || '')
+  );
   return manageUndefinedAndAddProducts(locale, tutorialListPages);
 }
 

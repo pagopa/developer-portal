@@ -1,15 +1,15 @@
-import { makeTutorialsProps } from '@/lib/strapi/makeProps/makeTutorials';
-import { StrapiTutorials } from '@/lib/strapi/types/tutorial';
+import { mapTutorialsProps } from '@/lib/tutorials/mapper';
+import { StrapiTutorials } from '@/lib/tutorials/types';
 import {
   minimalDataTutorials,
-  tutorialsWithAnItemMissingSlug,
   tutorialsWithAnItemMissingProductSlug,
-} from '@/lib/strapi/__tests__/factories/tutorials';
+  tutorialsWithAnItemMissingSlug,
+} from '@/lib/__tests__/factories/tutorials';
+import { strapiTutorials } from '@/lib/__tests__/fixtures/tutorials';
 import { spyOnConsoleError } from '@/lib/strapi/__tests__/spyOnConsole';
 import _ from 'lodash';
-import { strapiTutorials } from './fixtures/tutorials';
 
-describe('makeTutorialsProps', () => {
+describe('mapTutorialsProps', () => {
   afterEach(() => {
     spyOnConsoleError.mockClear();
   });
@@ -19,7 +19,8 @@ describe('makeTutorialsProps', () => {
   });
 
   it('should transform strapi tutorials to tutorials props', () => {
-    const result = makeTutorialsProps('it', _.cloneDeep(strapiTutorials), {});
+    const result = mapTutorialsProps('it', _.cloneDeep(strapiTutorials), {});
+
     expect(result).toHaveLength(1);
     expect(result[0]).toMatchObject({
       image: {
@@ -66,9 +67,10 @@ describe('makeTutorialsProps', () => {
   });
 
   it('should handle minimal data with missing optional fields', () => {
-    const result = makeTutorialsProps('it', minimalDataTutorials(), {});
-    expect(result).toHaveLength(1);
+    const result = mapTutorialsProps('it', minimalDataTutorials(), {});
     const firstElement = result[0];
+
+    expect(result).toHaveLength(1);
     expect(firstElement.title).toBe('Minimal Data Tutorial');
     expect(firstElement.productSlug).toBe('pago-pa');
     expect(firstElement.path).toBe(
@@ -92,38 +94,38 @@ describe('makeTutorialsProps', () => {
         },
       },
     };
-    const result = makeTutorialsProps('it', emptyData, {});
+
+    const result = mapTutorialsProps('it', emptyData, {});
+
     expect(result).toHaveLength(0);
   });
 
   it('should skip tutorials with missing tutorial slug and log error', () => {
-    const result = makeTutorialsProps(
+    const result = mapTutorialsProps(
       'it',
       tutorialsWithAnItemMissingSlug(),
       {}
     );
+
     expect(result).toHaveLength(1);
-    const firstElement = result[0];
-    expect(firstElement.title).toBe('Valid Tutorial');
-    expect(firstElement.path).toBe('/it/pago-pa/tutorials/valid-tutorial');
+    expect(result[0].title).toBe('Valid Tutorial');
+    expect(result[0].path).toBe('/it/pago-pa/tutorials/valid-tutorial');
     expect(spyOnConsoleError).toHaveBeenCalledWith(
       'Error while processing Tutorial: missing title or slug. Title: Tutorial Without Slug | Slug: undefined. Skipping...'
     );
   });
 
   it('should skip tutorials with missing product slug and log error', () => {
-    const result = makeTutorialsProps(
+    const result = mapTutorialsProps(
       'it',
       tutorialsWithAnItemMissingProductSlug(),
       {}
     );
+
     expect(result).toHaveLength(1);
-    const firstElement = result[0];
-    expect(firstElement.title).toBe('Valid Tutorial');
-    expect(firstElement.productSlug).toBe('valid-product');
-    expect(firstElement.path).toBe(
-      '/it/valid-product/tutorials/valid-tutorial'
-    );
+    expect(result[0].title).toBe('Valid Tutorial');
+    expect(result[0].productSlug).toBe('valid-product');
+    expect(result[0].path).toBe('/it/valid-product/tutorials/valid-tutorial');
     expect(spyOnConsoleError).toHaveBeenCalledWith(
       'Error while processing Tutorial with title "Tutorial Without Product Slug": missing product slug. Skipping...'
     );

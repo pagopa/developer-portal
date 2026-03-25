@@ -1,11 +1,14 @@
-import { StrapiMedia } from '@/lib/strapi/types/media';
-import { StrapiBaseProductWithBannerLinks } from '@/lib/products/types';
+import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
+import { RelatedLinksProps } from '@/components/atoms/RelatedLinks/RelatedLinks';
 import { StrapiBannerLink } from '@/lib/bannerLink/types';
-import { StrapiRelatedLinks } from '@/lib/strapi/types/link';
-import { StrapiSeo } from '@/lib/strapi/types/seo';
-import { Paginated } from '@/lib/strapi/types/paginated';
 import { StrapiPart } from '@/lib/parts/types';
+import { StrapiBaseProductWithBannerLinks } from '@/lib/products/types';
+import { Paginated } from '@/lib/strapi/types/paginated';
+import { StrapiRelatedLinks } from '@/lib/strapi/types/link';
+import { StrapiMedia } from '@/lib/strapi/types/media';
+import { StrapiSeo } from '@/lib/strapi/types/seo';
 import { StrapiTag } from '@/lib/strapi/types/tag';
+import { Tutorial } from '@/lib/types/tutorialData';
 
 export type StrapiBaseTutorial = {
   readonly updatedAt: string;
@@ -31,3 +34,9 @@ export type StrapiTutorial = StrapiBaseTutorial & {
 };
 
 export type StrapiTutorials = Paginated<StrapiTutorial>;
+
+export type TutorialProps = Tutorial & {
+  readonly productSlug: string;
+  readonly relatedLinks?: RelatedLinksProps;
+  readonly bannerLinks?: readonly BannerLinkProps[];
+};

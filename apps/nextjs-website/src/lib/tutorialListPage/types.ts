@@ -1,4 +1,4 @@
-import { StrapiBaseTutorial } from '@/lib/strapi/types/tutorial';
+import { StrapiBaseTutorial } from '@/lib/tutorials/types';
 import { StrapiBannerLink } from '@/lib/bannerLink/types';
 import { StrapiSeo } from '@/lib/strapi/types/seo';
 import { Paginated } from '@/lib/strapi/types/paginated';

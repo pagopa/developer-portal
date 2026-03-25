@@ -1,13 +1,9 @@
 import { buildEnv } from '@/lib/buildEnv';
 import { makeWebinarsProps } from './strapi/makeProps/makeWebinars';
 import { fetchWebinars } from './strapi/fetches/fetchWebinars';
-import { fetchTutorials } from './strapi/fetches/fetchTutorials';
-import { makeTutorialsProps } from './strapi/makeProps/makeTutorials';
 
 import { ProductRepository } from '@/lib/products';
 import { SolutionRepository } from '@/lib/solutions';
-import { fetchTutorialListPages } from './strapi/fetches/fetchTutorialListPages';
-import { makeTutorialListPagesProps } from './strapi/makeProps/makeTutorialListPages';
 
 import { fetchUrlReplaceMap } from './strapi/fetches/fetchUrlReplaceMap';
 import { makeUrlReplaceMap } from './strapi/makeProps/makeUrlReplaceMap';
@@ -30,7 +26,7 @@ import { fetchUseCaseListPages } from '@/lib/strapi/fetches/fetchUseCaseListPage
 import { makeUseCaseListPagesProps } from '@/lib/strapi/makeProps/makeUseCaseListPages';
 import { fetchTags } from '@/lib/strapi/fetches/fetchTags';
 import { makeTagsProps } from '@/lib/strapi/makeProps/makeTags';
-import { isMarkDownPart, MarkDownPart } from '@/lib/parts/types';
+import { isMarkDownPart } from '@/lib/parts/types';
 import { getMarkdownContent } from '@/lib/api';
 import { getSyncedReleaseNotesResponseJsonFile } from 'gitbook-docs/syncedResponses';
 import { GuidesRepository } from '@/lib/guides';
@@ -57,36 +53,6 @@ export const getWebinarCategoriesProps = async (locale: string) => {
 export const getTagsProps = async (locale: string) => {
   const strapiTags = await fetchTags(locale, buildEnv);
   return makeTagsProps(strapiTags);
-};
-
-export const getTutorialsProps = async (locale: string) => {
-  const strapiTutorials = await fetchTutorials(locale, buildEnv);
-  const tutorialsWithMarkdown = strapiTutorials.data.filter((tutorial) => {
-    const parts = tutorial?.parts ?? [];
-    return parts.some((part) => part?.__component === 'parts.markdown');
-  });
-  const allMarkdownParts = tutorialsWithMarkdown.flatMap((tutorial) =>
-    (tutorial?.parts ?? []).filter(
-      (part) => part?.__component === 'parts.markdown'
-    )
-  );
-  const contentPromises = allMarkdownParts.map(async (part) => {
-    const { dirName, pathToFile } = part as MarkDownPart;
-    const key = `${dirName}/${pathToFile}`;
-    const content = await getMarkdownContent(dirName, pathToFile);
-    return [key, content];
-  });
-  const resolvedContentPairs = await Promise.all(contentPromises);
-  const markdownContentDict = Object.fromEntries(resolvedContentPairs);
-  return makeTutorialsProps(locale, strapiTutorials, markdownContentDict);
-};
-
-export const getTutorialListPagesProps = async (locale: string) => {
-  const strapiTutorialListPages = await fetchTutorialListPages(
-    locale,
-    buildEnv
-  );
-  return makeTutorialListPagesProps(locale, strapiTutorialListPages);
 };
 
 export const getUrlReplaceMapProps = async (locale: string) => {

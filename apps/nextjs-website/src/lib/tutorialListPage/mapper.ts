@@ -1,12 +1,12 @@
 /* eslint-disable functional/no-expression-statements */
 import { TutorialsPageProps } from '@/app/[locale]/[productSlug]/tutorials/page';
-import { Tutorial } from '@/lib/types/tutorialData';
 import { mapBannerLinkProps } from '@/lib/bannerLink/mapper';
 import { makeBaseProductWithoutLogoProps } from '@/lib/products/mapper';
-import { StrapiTutorialListPages } from '@/lib/strapi/types/tutorialsListPage';
+import { Tutorial } from '@/lib/types/tutorialData';
 import { compact } from 'lodash';
+import { StrapiTutorialListPages } from './types';
 
-export function makeTutorialListPagesProps(
+export function mapTutorialListPageProps(
   locale: string,
   strapiTutorialList: StrapiTutorialListPages
 ): readonly TutorialsPageProps[] {
@@ -14,7 +14,6 @@ export function makeTutorialListPagesProps(
     strapiTutorialList.data.map((attributes) => {
       const slug = attributes.product?.slug;
       if (!slug) {
-        // eslint-disable-next-line functional/no-expression-statements
         console.error(
           `Error while processing TutorialListPage ${attributes.title}: missing product slug. Skipping...`
         );
@@ -23,8 +22,8 @@ export function makeTutorialListPagesProps(
 
       const tutorials: readonly Tutorial[] = compact(
         attributes.tutorials.map((tutorialAttributes) => {
-          const slug = tutorialAttributes.product?.slug;
-          if (!slug) {
+          const tutorialProductSlug = tutorialAttributes.product?.slug;
+          if (!tutorialProductSlug) {
             console.error(
               `Error while processing Tutorial with title "${tutorialAttributes.title}": missing product slug. Skipping...`
             );
@@ -43,7 +42,7 @@ export function makeTutorialListPagesProps(
             return {
               updatedAt: tutorialAttributes.updatedAt,
               name: tutorialAttributes.title,
-              path: `/${locale}/${slug}/tutorials/${tutorialAttributes.slug}`,
+              path: `/${locale}/${tutorialProductSlug}/tutorials/${tutorialAttributes.slug}`,
               title: tutorialAttributes.title,
               publishedAt: tutorialAttributes.publishedAt
                 ? new Date(tutorialAttributes.publishedAt)
@@ -53,7 +52,6 @@ export function makeTutorialListPagesProps(
               tags: tutorialAttributes.tags?.map((tag) => tag) || [],
             } satisfies Tutorial;
           } catch (error) {
-            // eslint-disable-next-line functional/no-expression-statements
             console.error(
               `Error while processing Tutorial with title ${tutorialAttributes.title}:`,
               error,
@@ -63,6 +61,7 @@ export function makeTutorialListPagesProps(
           }
         })
       );
+
       const updatedAt =
         attributes.tutorials.length > 0
           ? attributes.tutorials.reduce((latest, current) => {
@@ -73,7 +72,7 @@ export function makeTutorialListPagesProps(
           : '';
 
       return {
-        updatedAt: updatedAt,
+        updatedAt,
         name: attributes.title,
         path: `/${locale}/${attributes.product.slug}/tutorials`,
         product: makeBaseProductWithoutLogoProps(locale, attributes.product),
@@ -82,16 +81,12 @@ export function makeTutorialListPagesProps(
           description: attributes.description,
         },
         seo: attributes.seo,
-        tutorials: tutorials,
+        tutorials,
         enableFilters: attributes.enableFilters,
         bannerLinks:
           attributes.bannerLinks.length > 0
-            ? attributes.bannerLinks.map((bannerLink) =>
-                mapBannerLinkProps(bannerLink)
-              )
-            : attributes.product.bannerLinks?.map((bannerLink) =>
-                mapBannerLinkProps(bannerLink)
-              ),
+            ? attributes.bannerLinks.map(mapBannerLinkProps)
+            : attributes.product.bannerLinks?.map(mapBannerLinkProps),
       };
     })
   );

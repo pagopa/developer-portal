@@ -1,18 +1,19 @@
-import { makeTutorialListPagesProps } from '@/lib/strapi/makeProps/makeTutorialListPages';
-import _ from 'lodash';
-import { strapiTutorialListPages } from './fixtures/tutorialListPage';
+import { mapTutorialListPageProps } from '@/lib/tutorialListPage/mapper';
 import {
+  emptyTutorialListPages,
   minimalTutorialListPages,
   tutorialListPagesWithItemMissingBannerLinks,
-  emptyTutorialListPages,
-} from './factories/tutorialListPage';
+} from '@/lib/__tests__/factories/tutorialListPage';
+import { strapiTutorialListPages } from '@/lib/__tests__/fixtures/tutorialListPage';
+import _ from 'lodash';
 
-describe('makeTutorialListPagesProps', () => {
+describe('mapTutorialListPageProps', () => {
   it('should transform strapi tutorial list pages to tutorials page props', () => {
-    const result = makeTutorialListPagesProps(
+    const result = mapTutorialListPageProps(
       'it',
       _.cloneDeep(strapiTutorialListPages)
     );
+
     expect(result).toHaveLength(1);
     const page = result[0];
     expect(page.abstract?.title).toBe('Tutorials');
@@ -22,16 +23,18 @@ describe('makeTutorialListPagesProps', () => {
       metaDescription: 'Tutorials SEO Description',
     });
     expect(page.tutorials).toHaveLength(1);
-    const firstElement = page.tutorials[0];
-    expect(firstElement.title).toBe('Tutorial 1');
-    expect(firstElement.path).toBe('/it/product-1/tutorials/tutorial-1');
-    expect(firstElement.image?.url).toBe('https://example.com/example.jpg');
+    expect(page.tutorials[0].title).toBe('Tutorial 1');
+    expect(page.tutorials[0].path).toBe('/it/product-1/tutorials/tutorial-1');
+    expect(page.tutorials[0].image?.url).toBe(
+      'https://example.com/example.jpg'
+    );
   });
 
   it('should handle minimal tutorial list pages', () => {
-    const result = makeTutorialListPagesProps('it', minimalTutorialListPages());
-    expect(result).toHaveLength(1);
+    const result = mapTutorialListPageProps('it', minimalTutorialListPages());
     const page = result[0];
+
+    expect(result).toHaveLength(1);
     expect(page.abstract?.title).toBe('Minimal Tutorials');
     expect(page.tutorials).toEqual([]);
     expect(page.seo).toBeUndefined();
@@ -39,29 +42,31 @@ describe('makeTutorialListPagesProps', () => {
   });
 
   it('should handle tutorial list pages without banner links', () => {
-    const result = makeTutorialListPagesProps(
+    const result = mapTutorialListPageProps(
       'it',
       tutorialListPagesWithItemMissingBannerLinks()
     );
+
     expect(result).toHaveLength(1);
     expect(result[0].bannerLinks).toEqual([]);
   });
 
   it('should handle tutorial list pages with banner links', () => {
-    const result = makeTutorialListPagesProps(
+    const result = mapTutorialListPageProps(
       'it',
       _.cloneDeep(strapiTutorialListPages)
     );
+
     expect(result).toHaveLength(1);
-    const firstElement = result[0];
-    expect(firstElement.bannerLinks).toBeDefined();
-    expect(firstElement.bannerLinks?.length).toBeGreaterThan(0);
-    expect(firstElement.bannerLinks?.[0]).toHaveProperty('title');
-    expect(firstElement.bannerLinks?.[0]).toHaveProperty('icon');
+    expect(result[0].bannerLinks).toBeDefined();
+    expect(result[0].bannerLinks?.length).toBeGreaterThan(0);
+    expect(result[0].bannerLinks?.[0]).toHaveProperty('title');
+    expect(result[0].bannerLinks?.[0]).toHaveProperty('icon');
   });
 
   it('should handle empty tutorial list pages', () => {
-    const result = makeTutorialListPagesProps('it', emptyTutorialListPages());
+    const result = mapTutorialListPageProps('it', emptyTutorialListPages());
+
     expect(result).toHaveLength(0);
   });
 });

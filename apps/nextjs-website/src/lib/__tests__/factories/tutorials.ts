@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { strapiTutorials } from '@/lib/strapi/__tests__/fixtures/tutorials';
-import { StrapiTutorials } from '@/lib/strapi/types/tutorial';
+import { strapiTutorials } from '@/lib/__tests__/fixtures/tutorials';
+import { StrapiTutorials } from '@/lib/tutorials/types';
 
 export function tutorialsWithAnItemMissingSlug(): StrapiTutorials {
   return {
@@ -50,6 +50,7 @@ export function tutorialsWithAnItemMissingProductSlug(): StrapiTutorials {
 
 export function minimalDataTutorials() {
   const strapiTutorial = strapiTutorials.data[0];
+
   return {
     ...strapiTutorials,
     data: [
@@ -70,6 +71,7 @@ export function minimalDataTutorials() {
 
 export function tutorialsWithItemMissingData() {
   const strapiTutorial = strapiTutorials.data[0];
+
   return {
     data: [
       {
@@ -85,6 +87,7 @@ export function tutorialsWithItemMissingData() {
 
 export function tutorialsWithItemMissingMandatoryData() {
   const strapiTutorial = tutorialsWithItemMissingData().data[0];
+
   return {
     ...strapiTutorials,
     ...[
