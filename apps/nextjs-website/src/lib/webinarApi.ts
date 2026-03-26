@@ -4,7 +4,7 @@
 import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
-import { makeBrowserEnv } from '@/BrowserEnv';
+import { makeBrowserEnv } from '@/browserEnv';
 import {
   InsertWebinarQuestion,
   WebinarQuestionUpdate,
@@ -12,7 +12,7 @@ import {
   listWebinarQuestions,
   updateWebinarQuestion as _updateWebinarQuestion,
 } from './webinars/webinarQuestions';
-import { makeBrowserConfig, publicEnv } from '@/BrowserConfig';
+import { makeBrowserConfig, publicEnv } from '@/browserConfig';
 import {
   deleteWebinarSubscription,
   insertWebinarSubscription,
