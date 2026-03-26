@@ -219,7 +219,7 @@ def get_product_list(file_path: str | None = None) -> List[str]:
     s3_content = read_file_from_s3(file_path)
     product_list = []
     if s3_content:
-        products = safe_json_load(s3_content)
+        products = safe_json_load(s3_content)["data"]
         assert isinstance(
             products, list
         ), f"Expected product data to be a list, got {type(products)}"
@@ -403,14 +403,14 @@ def get_api_docs() -> List[Document]:
         list: The llama-index Documents list.
     """
 
-    api_data = get_apidata()
+    api_data = get_apidata()["data"]
     docs = []
     for data in tqdm.tqdm(api_data, total=len(api_data), desc="Getting API docs"):
-        title = data["attributes"]["title"]
-        product_slug = data["attributes"]["product"]["data"]["attributes"]["slug"]
-        if data["attributes"]["apiRestDetail"] is not None:
-            api_slug = data["attributes"]["apiRestDetail"]["slug"]
-            for spec_urls in data["attributes"]["apiRestDetail"]["specUrls"]:
+        title = data["title"]
+        product_slug = data["product"]["slug"]
+        if data["apiRestDetail"] is not None:
+            api_slug = data["apiRestDetail"]["slug"]
+            for spec_urls in data["apiRestDetail"]["specUrls"]:
                 api_txt = read_api_url(spec_urls["url"].strip())
                 api_url = os.path.join(
                     SETTINGS.website_url, product_slug, "api", api_slug

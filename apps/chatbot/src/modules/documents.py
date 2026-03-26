@@ -1,6 +1,6 @@
-import json
 from typing import List
 
+from src.modules.codec import safe_json_load
 from src.modules.logger import get_logger
 from src.modules.settings import SETTINGS, AWS_SESSION
 
@@ -50,14 +50,17 @@ def get_product_list(file_path: str | None = None) -> List[str]:
     s3_content = read_file_from_s3(file_path)
     product_list = []
     if s3_content:
-        products = json.loads(s3_content)
+        products = safe_json_load(s3_content)["data"]
+        assert isinstance(
+            products, list
+        ), f"Expected product data to be a list, got {type(products)}"
         for product in products:
             try:
-                if product["attributes"]["isVisible"]:
-                    product_list.append(product["attributes"]["slug"])
+                if product["isVisible"]:
+                    product_list.append(product["slug"])
             except KeyError as e:
                 LOGGER.error(f"Error extracting product slug: {e}")
         LOGGER.info(f"Found {len(product_list)} products: {product_list}.")
     else:
-        LOGGER.warning("Product data content is empty.")
+        raise ValueError("Product data content is empty.")
     return product_list
