@@ -190,12 +190,12 @@ export async function fetchMetadataFromCDN<T>(
   return await requestPromise;
 }
 
-const S3_GUIDES_METADATA_JSON_PATH = 'guides-metadata.v5.json';
-const S3_SOLUTIONS_METADATA_JSON_PATH = 'solutions-metadata.v5.json';
-const S3_RELEASE_NOTES_METADATA_JSON_PATH = 'release-notes-metadata.v5.json';
+const S3_GUIDES_METADATA_JSON_PATH = 'guides-metadata.json';
+const S3_SOLUTIONS_METADATA_JSON_PATH = 'solutions-metadata.json';
+const S3_RELEASE_NOTES_METADATA_JSON_PATH = 'release-notes-metadata.json';
 const S3_PATH_TO_GITBOOK_DOCS =
   process.env.S3_PATH_TO_GITBOOK_DOCS || 'devportal-docs/docs';
-const S3_METADATA_JSON_PATH = 'metadata.v5.json';
+const S3_METADATA_JSON_PATH = 'metadata.json';
 const S3_SOAP_API_METADATA_JSON_PATH =
   process.env.S3_SOAP_API_METADATA_JSON_PATH ||
   'soap-api/soap-api-metadata.json';
