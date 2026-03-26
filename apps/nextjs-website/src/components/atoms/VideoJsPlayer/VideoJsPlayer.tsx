@@ -28,6 +28,10 @@ interface PlayerProps {
   webvttContent?: string;
 }
 
+const HOURS_PART_INDEX = 0;
+const MINUTES_PART_INDEX = 1;
+const SECONDS_PART_INDEX = 2;
+
 /** Convert a WebVTT timestamp (HH:MM:SS.mmm or MM:SS.mmm) to seconds */
 const parseVttTime = (time: string): number | undefined => {
   const parts = time.split(':');
@@ -35,13 +39,15 @@ const parseVttTime = (time: string): number | undefined => {
   let result: number;
   if (parts.length === 3) {
     result =
-      parseInt(parts[0], 10) * 3600 +
-      parseInt(parts[1], 10) * 60 +
-      parseFloat(parts[2]);
+      parseInt(parts[HOURS_PART_INDEX], 10) * 3600 +
+      parseInt(parts[MINUTES_PART_INDEX], 10) * 60 +
+      parseFloat(parts[SECONDS_PART_INDEX]);
   } else if (parts.length === 2) {
-    result = parseInt(parts[0], 10) * 60 + parseFloat(parts[1]);
+    result =
+      parseInt(parts[HOURS_PART_INDEX], 10) * 60 +
+      parseFloat(parts[MINUTES_PART_INDEX]);
   } else {
-    result = parseFloat(parts[0]);
+    result = parseFloat(parts[HOURS_PART_INDEX]);
   }
   return Number.isFinite(result) ? result : undefined;
 };
