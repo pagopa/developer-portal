@@ -1,7 +1,7 @@
 from llama_index.core.tools import FunctionTool
 
 from src.modules.models import get_llm
-from src.modules.structured_outputs import FollowUpQuestionsOutput, DiscoveryOutput
+from src.modules.structured_outputs import FollowUpQuestionsOutput
 
 
 CHIPS_TOOL_NAME = "FollowUpQuestionsTool"
@@ -9,7 +9,7 @@ CHIPS_TOOL_NAME = "FollowUpQuestionsTool"
 
 async def generate_questions(
     query_str: str, rag_output_devportal: str, rag_output_cittadino: str
-) -> DiscoveryOutput:
+) -> FollowUpQuestionsOutput:
     """
     Use this tool when a user's query is ambiguous and could apply to both
     technical developers (DevPortal) and end-users (CittadinoRAGTool).
@@ -17,7 +17,7 @@ async def generate_questions(
     """
 
     if not rag_output_devportal or not rag_output_cittadino:
-        return FollowUpQuestionsOutput(questions=[])
+        return FollowUpQuestionsOutput(follow_up_questions=[])
 
     llm = get_llm()
     sllm = llm.as_structured_llm(output_cls=FollowUpQuestionsOutput)
@@ -36,7 +36,7 @@ async def generate_questions(
     response = await sllm.acomplete(prompt)
     raw_response = response.raw
     if raw_response is None:
-        raw_response = FollowUpQuestionsOutput(questions=[])
+        raw_response = FollowUpQuestionsOutput(follow_up_questions=[])
     return raw_response
 
 
