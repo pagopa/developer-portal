@@ -16,6 +16,9 @@ async def generate_questions(
     It returns two specific questions to help the user choose the right path.
     """
 
+    if not rag_output_devportal or not rag_output_cittadino:
+        return FollowUpQuestionsOutput(questions=[])
+
     llm = get_llm()
     sllm = llm.as_structured_llm(output_cls=FollowUpQuestionsOutput)
 
@@ -46,6 +49,9 @@ def follow_up_questions_tool(name: str | None = None) -> FunctionTool:
         name=name,
         description=(
             "Tool to generate follow-up questions for the user.\n"
+            "You MUST call this tool ONLY after you have already called BOTH "
+            "DevPortalRAGTool AND CittadinoRAGTool and received relevant references from both. "
+            "NEVER call this tool if you have only used one RAG tool or if either tool returned no relevant references.\n"
             "The 'query_str' parameter should contain the original user query.\n"
             "The 'rag_output_devportal' parameter should contain the observations from the previous DevPortalRAGTool calls.\n"
             "The 'rag_output_cittadino' parameter should contain the observations from the previous CittadinoRAGTool calls.\n"
