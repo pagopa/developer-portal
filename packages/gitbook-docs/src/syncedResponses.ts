@@ -1,14 +1,14 @@
-export const getSyncedGuidesResponseJsonPath = () =>
+export const getSyncedGuidesResponseJsonFile = () =>
   'synced-guides-response.v5.json';
 
-export const getSyncedSolutionsResponseJsonPath = () =>
+export const getSyncedSolutionsResponseJsonFile = () =>
   'synced-solutions-response.v5.json';
 
-export const getSyncedReleaseNotesResponseJsonPath = () =>
+export const getSyncedReleaseNotesResponseJsonFile = () =>
   'synced-release-notes-response.v5.json';
 
-export const getSyncedProductsResponseJsonPath = () =>
+export const getSyncedProductsResponseJsonFile = () =>
   'synced-products-response.v5.json';
 
-export const getSyncedApisDataResponseJsonPath = () =>
+export const getSyncedApisDataResponseJsonFile = () =>
   'synced-apis-data-response.v5.json';
