@@ -13,6 +13,7 @@ import { Box } from '@mui/material';
 import { amazonIvsVersion } from '@/config';
 import '@/styles/videojs-custom.css';
 import { useTranslations } from 'next-intl';
+import { Chapter } from '@/lib/types/webinar';
 
 interface PlayerProps {
   autoplay: boolean;
@@ -23,32 +24,30 @@ interface PlayerProps {
   reloadToken?: number;
   videoOnDemandStartAt?: number;
   startAtChapterSlug?: string;
-  chapters?: {
-    slug: string;
-    title: string;
-    startTime: string;
-    endTime: string;
-  }[];
+  chapters?: readonly Chapter[];
   webvttContent?: string;
 }
 
 /** Convert a WebVTT timestamp (HH:MM:SS.mmm or MM:SS.mmm) to seconds */
-const parseVttTime = (time: string): number => {
+const parseVttTime = (time: string): number | undefined => {
   const parts = time.split(':');
+  // eslint-disable-next-line functional/no-let
+  let result: number;
   if (parts.length === 3) {
-    return (
+    result =
       parseInt(parts[0], 10) * 3600 +
       parseInt(parts[1], 10) * 60 +
-      parseFloat(parts[2])
-    );
+      parseFloat(parts[2]);
+  } else if (parts.length === 2) {
+    result = parseInt(parts[0], 10) * 60 + parseFloat(parts[1]);
+  } else {
+    result = parseFloat(parts[0]);
   }
-  if (parts.length === 2) {
-    return parseInt(parts[0], 10) * 60 + parseFloat(parts[1]);
-  }
-  return parseFloat(parts[0]);
+  return Number.isFinite(result) ? result : undefined;
 };
 
 const TECH_ORDER_AMAZON_IVS = ['AmazonIVS'];
+const PLAYBACK_RATES = [0.5, 1, 1.25, 1.5, 2];
 
 const VideoJsPlayer = (props: PlayerProps) => {
   const t = useTranslations('webinar');
@@ -91,6 +90,8 @@ const VideoJsPlayer = (props: PlayerProps) => {
       autoplay: props.autoplay,
       controls: props.controls,
       playsinline: props.playsInline,
+      playbackRates: PLAYBACK_RATES,
+      inactivityTimeout: 0,
       // @ts-expect-error TS2322: Type 'undefined' is not assignable to type 'Player & VideoJSIVSTech & VideoJSQualityPlugin'.
     }) as videojs.Player & VideoJSIVSTech & VideoJSQualityPlugin;
 
@@ -137,12 +138,6 @@ const VideoJsPlayer = (props: PlayerProps) => {
     if (!playerRef.current) {
       return;
     }
-  }, [props.chapters, props.webvttContent]);
-
-  useEffect(() => {
-    if (!playerRef.current) {
-      return;
-    }
 
     playerRef.current.autoplay(props.autoplay);
     playerRef.current.controls(props.controls);
@@ -167,8 +162,9 @@ const VideoJsPlayer = (props: PlayerProps) => {
     if (!playerRef.current) {
       return;
     }
-    const videoOnDemandStartAt =
-      typeof resolvedStartAt === 'number' ? resolvedStartAt : 0;
+    const videoOnDemandStartAt = Number.isFinite(resolvedStartAt)
+      ? (resolvedStartAt as number)
+      : 0;
 
     if (videoOnDemandStartAt <= 0) {
       return;

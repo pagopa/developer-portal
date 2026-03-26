@@ -119,7 +119,7 @@ const WebinarPlayerSection = ({
                 reloadToken={reloadPlayerToken}
                 videoOnDemandStartAt={videoOnDemandStartAt}
                 startAtChapterSlug={chapterParam || undefined}
-                chapters={webinar.chapters ? [...webinar.chapters] : undefined}
+                chapters={webinar.chapters}
                 webvttContent={webinar.webvttContent}
               />
             </Box>

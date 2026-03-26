@@ -79,7 +79,6 @@ export const makeWebinarProps = (
       tag: strapiWebinar.attributes.webinarCategory?.data?.attributes,
       headerImage: strapiWebinar.attributes.headerImage?.data?.attributes,
       updatedAt: strapiWebinar.attributes.updatedAt,
-      chapters: strapiWebinar.attributes.chapters,
       webvttContent: generateVTTContent(strapiWebinar.attributes.chapters),
     } satisfies Webinar;
   } catch (error) {
