@@ -50,10 +50,16 @@ def get_product_list(file_path: str | None = None) -> List[str]:
     s3_content = read_file_from_s3(file_path)
     product_list = []
     if s3_content:
-        products = safe_json_load(s3_content)["data"]
-        assert isinstance(
-            products, list
-        ), f"Expected product data to be a list, got {type(products)}"
+        parsed = safe_json_load(s3_content)
+        if not isinstance(parsed, dict):
+            raise TypeError(
+                f"Expected product data to be a JSON object with a 'data' field, got {type(parsed)}"
+            )
+        products = parsed.get("data")
+        if not isinstance(products, list):
+            raise TypeError(
+                f"Expected 'data' field to be a list, got {type(products)}"
+            )
         for product in products:
             try:
                 if product["isVisible"]:
