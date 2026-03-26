@@ -116,7 +116,7 @@ export const getTutorialsProps = async (locale: string) => {
   const contentPromises = allMarkdownParts.map(async (part) => {
     const { dirName, pathToFile } = part as MarkDownPart;
     const key = `${dirName}/${pathToFile}`;
-    const content = await getMarkdownContent(dirName, pathToFile);
+    const content = await getMarkdownContent(dirName, pathToFile, locale);
     return [key, content];
   });
   const resolvedContentPairs = await Promise.all(contentPromises);
@@ -295,7 +295,7 @@ export const getUseCasesProps = async (locale: string) => {
   const contentPromises = allMarkdownParts.map(async (part) => {
     const { dirName, pathToFile } = part;
     const key = `${dirName}/${pathToFile}`;
-    const content = await getMarkdownContent(dirName, pathToFile);
+    const content = await getMarkdownContent(dirName, pathToFile, locale);
     return [key, content];
   });
   const resolvedContentPairs = await Promise.all(contentPromises);
