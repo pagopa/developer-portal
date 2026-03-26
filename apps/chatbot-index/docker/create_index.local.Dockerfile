@@ -31,6 +31,8 @@ COPY poetry.lock $LAMBDA_TASK_ROOT
 COPY ./src ${LAMBDA_TASK_ROOT}/src
 COPY ./config ${LAMBDA_TASK_ROOT}/config
 COPY ./scripts ${LAMBDA_TASK_ROOT}/scripts
+COPY ./.google_service_account.json ${LAMBDA_TASK_ROOT}/.google_service_account.json
+
 RUN poetry config virtualenvs.create false
 RUN poetry install --only main
 

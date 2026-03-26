@@ -100,11 +100,6 @@ class ChatbotSettings(BaseSettings):
         if os.getenv("ENVIRONMENT", "local") in ["test", "local"]
         else os.getenv("AUTH_COGNITO_USERPOOL_ID")
     )
-    google_api_key: str = get_ssm_parameter(
-        name=os.getenv("CHB_AWS_SSM_GOOGLE_API_KEY"),
-        default=os.getenv("CHB_AWS_GOOGLE_API_KEY"),
-    )
-    google_service_account: dict = GOOGLE_JSON_ACCOUNT_INFO
     cors_domains: str = os.getenv("CORS_DOMAINS", '["*"]')
     log_level: str = os.getenv("LOG_LEVEL", "info")
     max_daily_evaluations: int = int(os.getenv("CHB_MAX_DAILY_EVALUATIONS", "200"))
@@ -113,8 +108,7 @@ class ChatbotSettings(BaseSettings):
         os.getenv("CHB_SESSION_MAX_DURATION_DAYS", "1")
     )
 
-    # RAG settings
-    chatbot_release: str = extract_latest_version() or "---"
+    # vertex ai settings
     embed_batch_size: int = int(os.getenv("CHB_EMBED_BATCH_SIZE", "100"))
     embed_dim: int = int(os.getenv("CHB_EMBEDDING_DIM", "768"))
     embed_model_id: str = os.getenv("CHB_EMBED_MODEL_ID", "gemini-embedding-001")
@@ -122,10 +116,15 @@ class ChatbotSettings(BaseSettings):
     embed_retry_min_seconds: float = float(
         os.getenv("CHB_EMBED_RETRY_MIN_SECONDS", "1")
     )
-    embed_task: str = "RETRIEVAL_QUERY"
+    google_service_account: dict = GOOGLE_JSON_ACCOUNT_INFO
     max_tokens: int = int(os.getenv("CHB_MODEL_MAXTOKENS", "2048"))
-    model_id: str = os.getenv("CHB_MODEL_ID", "gemini-3.1-flash-lite-preview")
+    model_id: str = os.getenv("CHB_MODEL_ID", "gemini-2.5-flash-lite")
     provider: str = os.getenv("CHB_PROVIDER", "google")
+    vertexai_location: str = os.getenv("CHB_VERTEXAI_LOCATION", "europe-west8")
+
+    # RAG settings
+    chatbot_release: str = extract_latest_version() or "---"
+    embed_task: str = "RETRIEVAL_QUERY"
     reranker_id: str = os.getenv("CHB_RERANKER_ID", "semantic-ranker-default-004")
     similarity_topk: int = int(os.getenv("CHB_ENGINE_SIMILARITY_TOPK", "5"))
     temperature_agent: float = 0.5
@@ -141,10 +140,17 @@ class ChatbotSettings(BaseSettings):
         "CHB_AWS_S3_BUCKET_NAME_STATIC_CONTENT", "devportal-d-website-static-content"
     )
 
+    # multi-rag settings
+    use_multirag: bool = os.getenv("CHB_USE_MULTIRAG", "False").lower() == "true"
+
     # prompts
     discovery_system_prompt_str: str = PROMPTS["discovery_system_prompt_str"]
     qa_prompt_str: str = PROMPTS["qa_prompt_str"]
-    react_system_str: str = PROMPTS["react_system_header_str"]
+    react_system_str: str = (
+        PROMPTS["react_system_header_with_multirag_str"]
+        if os.getenv("CHB_USE_MULTIRAG", "True").lower() == "true"
+        else PROMPTS["react_system_header_no_multirag_str"]
+    )
     refine_prompt_str: str = PROMPTS["refine_prompt_str"]
 
     # urls
