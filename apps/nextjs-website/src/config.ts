@@ -182,3 +182,5 @@ export const chatbotHeaderDateOptions = {
 export const authCookieValidityInDays = parseInt(
   process.env.NEXT_PUBLIC_AUTH_COOKIE_VALIDITY_IN_DAYS || '60'
 );
+
+export const loggedInCookieName = 'isLoggedIn';
