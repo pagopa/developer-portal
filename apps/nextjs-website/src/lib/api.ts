@@ -45,6 +45,7 @@ async function manageUndefinedAndAddProducts<T>(
 }
 
 export async function getMarkdownContent(
+  locale: string,
   dirName: string,
   pathToFile: string,
   locale: string

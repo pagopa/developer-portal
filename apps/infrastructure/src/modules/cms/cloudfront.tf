@@ -9,6 +9,13 @@ resource "aws_cloudfront_response_headers_policy" "cms_media_library" {
       value    = "None"
     }
   }
+
+  security_headers_config {
+    frame_options {
+      frame_option = "SAMEORIGIN"
+      override     = true
+    }
+  }
 }
 
 ## CDN to Media Library for CMS Strapi

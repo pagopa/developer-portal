@@ -1,6 +1,6 @@
 /* eslint-disable functional/no-expression-statements */
 import { NextRequest, NextResponse } from 'next/server';
-import { amplifyConfig, defaultLocale } from '@/config';
+import { defaultLocale, loggedInCookieName } from '@/config';
 import { SUPPORTED_LOCALES } from '@/locales';
 
 const guestPath = '/auth/';
@@ -12,12 +12,9 @@ export function middleware(request: NextRequest) {
   const defaultLangCode = defaultLocale.split('-')[0];
 
   if (pathname.includes(guestPath)) {
-    const clientId = amplifyConfig.Auth.userPoolWebClientId;
-    const lastAuthUserCookie = request.cookies.get(
-      `CognitoIdentityServiceProvider.${clientId}.LastAuthUser`
-    );
+    const isLoggedIn = request.cookies.get(loggedInCookieName);
 
-    if (lastAuthUserCookie) {
+    if (isLoggedIn) {
       const locale = SUPPORTED_LOCALES.find((loc) =>
         request.url.includes(`/${loc.langCode}/`)
       )?.langCode;

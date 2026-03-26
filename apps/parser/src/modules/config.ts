@@ -23,10 +23,8 @@ export function resolveEnv(): EnvConfig {
       `${DEFAULT_REQUEST_TIMEOUT_MS}`,
     10,
   );
-  const shouldCreateFilesLocally =
-    process.env.SHOULD_CREATE_FILES_LOCALLY === "true";
   const S3BucketName = process.env.S3_BUCKET_NAME?.trim();
-  if (!S3BucketName && !shouldCreateFilesLocally) {
+  if (!S3BucketName) {
     throw new Error(
       "Missing required S3 Bucket Name.",
     );
@@ -62,7 +60,6 @@ export function resolveEnv(): EnvConfig {
     maxDepth,
     requestTimeoutMs,
     validDomainVariants: parsedValidDomainVariants,
-    shouldCreateFilesLocally,
     S3BucketName,
   };
 }
