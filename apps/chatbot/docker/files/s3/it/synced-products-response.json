@@ -1,0 +1,30 @@
+[
+  {
+    "id": 39,
+    "attributes": {
+      "name": "Firma con IO",
+      "description": "Richiedi la Firma Elettronica Certificata su contratti e documenti. Le cittadine e i cittadini possono firmare direttamente sull’app IO.",
+      "slug": "firma-con-io",
+      "createdAt": "2024-04-10T09:52:36.575Z",
+      "updatedAt": "2026-02-03T14:07:41.524Z",
+      "publishedAt": "2026-01-12T11:33:55.301Z",
+      "locale": "it",
+      "shortName": "Firma con IO",
+      "isVisible": true
+    }
+  },
+  {
+    "id": 68,
+    "attributes": {
+      "name": "Prodotto delle nostre menti contorte",
+      "description": "descrizione cervellotica: il prodotto delle nostre menti contorte serve solo per fare dei test del meccanismo di sync",
+      "slug": "pdnmc",
+      "createdAt": "2025-11-14T15:47:43.475Z",
+      "updatedAt": "2026-02-03T14:11:10.733Z",
+      "publishedAt": "2025-12-17T14:50:12.401Z",
+      "locale": "it",
+      "shortName": "pdnmc",
+      "isVisible": true
+    }
+  }
+]

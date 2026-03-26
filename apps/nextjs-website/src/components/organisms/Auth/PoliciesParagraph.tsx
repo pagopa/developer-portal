@@ -2,8 +2,10 @@
 import { Typography, useTheme } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
+import { useParams } from 'next/navigation';
 
 const PoliciesParagraph = () => {
+  const { locale } = useParams<{ locale: string }>();
   const signUp = useTranslations('auth.signUp');
   const { palette } = useTheme();
 
@@ -14,7 +16,7 @@ const PoliciesParagraph = () => {
           <Typography
             component={Link}
             fontSize={16}
-            href='/terms-of-service'
+            href={`/${locale}/terms-of-service`}
             variant='caption-semibold'
             color={palette.primary.main}
           >
@@ -25,7 +27,7 @@ const PoliciesParagraph = () => {
           <Typography
             component={Link}
             fontSize={16}
-            href='/privacy-policy'
+            href={`/${locale}/privacy-policy`}
             variant='caption-semibold'
             color={palette.primary.main}
           >

@@ -3,8 +3,13 @@ import Wrapper from '@/__tests__/components/Wrapper';
 import SignUpForm from '../SignUpForm';
 
 import labels from '@/messages/it.json';
+import { useParams } from 'next/navigation';
 
 const actionRegex = RegExp(labels.auth.signUp.action, 'i');
+
+jest.mock('next/navigation', () => ({
+  useParams: jest.fn(),
+}));
 
 function getPasswordInputs(inputs: HTMLElement[]) {
   const filtered = inputs.filter(
@@ -55,6 +60,7 @@ function getInputs() {
 describe('SignUpForm', () => {
   const mockOnSignUp = jest.fn();
   const mockUserAlreadyExist = false;
+  jest.mocked(useParams).mockReturnValue({ locale: 'it' });
 
   beforeEach(() => {
     jest.clearAllMocks();

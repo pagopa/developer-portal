@@ -1,0 +1,106 @@
+name: Deploy Lambda Monitor
+run-name: Deploy Lambda Monitor to ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.environment || 'dev' }}
+
+on:
+  push:
+    branches:
+      - "main"
+    paths:
+      - 'apps/chatbot-monitor/**'
+      - '.github/workflows/deploy_lambda_monitor.yaml'
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Choose environment'
+        type: choice
+        required: true
+        default: dev
+        options:
+          - dev
+          - uat
+          - prod
+jobs:
+  setup:
+    runs-on: ubuntu-24.04
+    outputs:
+      matrix: ${{ steps.setmatrix.outputs.matrix }}
+    
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Set Dynamic Env Matrix
+        id: setmatrix
+        run: |
+          echo "github.ref ${{ github.ref }}"
+          echo "event name ${{ github.event_name }}"
+          
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            matrixStringifiedObject="{\"include\":[{\"environment\":\"${{ github.event.inputs.environment }}\"}]}"
+          else
+            matrixStringifiedObject="{\"include\":[{\"environment\":\"dev\"}]}"
+          fi
+
+          echo "matrix=$matrixStringifiedObject" >> $GITHUB_OUTPUT
+    
+  deploy:
+    name: Deploy lambda monitor ${{ matrix.environment }}
+    if: ${{ needs.setup.outputs.matrix != '' }}
+    runs-on: ubuntu-24.04
+    needs: [ setup ]
+    
+    strategy:
+      matrix: ${{ fromJson(needs.setup.outputs.matrix) }}
+
+    continue-on-error: false
+    environment: ${{ matrix.environment }}
+    env:
+      ENV_SHORT: ${{ fromJSON('{"dev":"d","uat":"u","prod":"p"}')[matrix.environment] }}
+    
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3df4ab11eba7bda6032a0b82a6bb43b11571feac # v4.0.0
+
+      - name: Configure AWS Credentials
+        uses: ./.github/actions/configure-aws-credentials
+        with:
+          aws_region: ${{ env.AWS_REGION || 'eu-south-1' }}
+          role_to_assume: ${{ secrets.IAM_ROLE_DEPLOY_CHATBOT }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@062b18b96a7aff071d4dc91bc00c4c1a7945b076 # v2.0.1
+
+      - name: Build Push and Tag
+        # Enabling the "continue on error" option allows for a manual rollback
+        # to be performed in case of any issues. Without this option, the step
+        # will fail if the image already exists in the Elastic Container
+        # Registry (ECR). However, by activating this option, the deployment
+        # process will proceed to the next steps even if the ECR image already
+        # exists
+        continue-on-error: false
+        uses: docker/build-push-action@4a13e500e55cf31b7a5d59a38ab2040ab0f42f56 # v5.1.0
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: chatbot-monitor
+          IMAGE_TAG: ${{ github.sha }}
+        with:
+            context: apps/chatbot-monitor
+            file: apps/chatbot-monitor/docker/lambda_monitor.Dockerfile
+            push: true
+            tags: ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}
+            provenance: false
+
+      - name: AWS set lambda function image
+        env:
+            LAMBDA_NAME: chatbot-${{ matrix.environment }}-monitor-lambda
+            ECR_REPOSITORY: chatbot-monitor
+        run: |
+            aws lambda update-function-code \
+            --function-name ${{ env.LAMBDA_NAME }} \
+            --image-uri ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ github.sha }}

@@ -6,7 +6,6 @@ from llama_index.core.llms import ChatMessage, MessageRole
 from src.modules.logger import get_logger
 from src.modules.models import get_llm, get_embed_model
 from src.modules.evaluator import Evaluator
-from src.modules.monitor import add_langfuse_score
 from src.modules.settings import SETTINGS
 
 
@@ -52,9 +51,8 @@ class Judge:
 
         return chat_history
 
-    def evaluate(
+    async def aevaluate(
         self,
-        trace_id: str,
         query_str: str,
         response_str: str,
         retrieved_contexts: List[str],
@@ -66,20 +64,13 @@ class Judge:
             condense_prompt = self.condense_prompt_str.format(
                 chat_history=chat_history, query_str=query_str
             )
-            condense_query_response = asyncio_run(self.llm.acomplete(condense_prompt))
+            condense_query_response = await self.llm.acomplete(condense_prompt)
             query_str = condense_query_response.text.strip()
 
-        scores = self.evaluator.evaluate(
+        scores = await self.evaluator.aevaluate(
             query_str=query_str,
             response_str=response_str,
             retrieved_contexts=retrieved_contexts,
         )
-        for key, value in scores.items():
-            add_langfuse_score(
-                trace_id=trace_id,
-                name=key,
-                value=value,
-                data_type="NUMERIC",
-            )
 
         return scores

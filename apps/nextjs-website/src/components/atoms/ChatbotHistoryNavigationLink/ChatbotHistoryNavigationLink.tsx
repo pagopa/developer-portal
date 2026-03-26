@@ -1,5 +1,6 @@
 import { Link as MuiLink, useTheme } from '@mui/material';
 import Link from 'next/link';
+import { useParams } from 'next/navigation';
 
 type ChatbotHistoryNavigationLinkProps = {
   sessionId: string;
@@ -10,6 +11,7 @@ const ChatbotHistoryNavigationLink = ({
   sessionId,
   sessionTitle,
 }: ChatbotHistoryNavigationLinkProps) => {
+  const locale = useParams<{ locale: string }>().locale;
   const { palette, typography } = useTheme();
   const textColor = palette.text.secondary;
 
@@ -24,7 +26,7 @@ const ChatbotHistoryNavigationLink = ({
       noWrap
       sx={{ cursor: 'pointer', textDecoration: 'none' }}
       component={Link}
-      href={`/profile/chatbot-history/${sessionId}`}
+      href={`/${locale}/profile/chatbot-history/${sessionId}`}
     >
       {sessionTitle}
     </MuiLink>

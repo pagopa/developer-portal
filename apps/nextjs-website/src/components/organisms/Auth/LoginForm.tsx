@@ -28,7 +28,12 @@ import {
   useEffect,
   useState,
 } from 'react';
-import { validateEmail, validateField } from '@/helpers/auth.helpers';
+import {
+  validateEmail,
+  validateMaxLenght,
+  validateRequired,
+} from '@/helpers/auth.helpers';
+import { useParams } from 'next/navigation';
 
 interface LoginFormProps {
   onLogin: LoginFunction;
@@ -46,6 +51,7 @@ const LoginForm = ({
   noAccount = false,
   submitting = false,
 }: LoginFormProps) => {
+  const { locale } = useParams<{ locale: string }>();
   const signUp = useTranslations('auth.signUp');
   const login = useTranslations('auth.login');
   const shared = useTranslations('shared');
@@ -90,7 +96,9 @@ const LoginForm = ({
 
   const validateForm = useCallback(() => {
     const emailError = validateEmail(formData.username);
-    const passwordError = validateField(formData.password);
+    const passwordError =
+      validateRequired(formData.password) ||
+      validateMaxLenght(formData.password);
 
     setFieldErrors({
       email: emailError ? shared(emailError) : null,
@@ -236,7 +244,7 @@ const LoginForm = ({
               >
                 <Typography
                   component={Link}
-                  href='/auth/password-reset'
+                  href={`/${locale}/auth/password-reset`}
                   fontSize={16}
                   variant='caption-semibold'
                   color={palette.primary.main}
@@ -257,7 +265,7 @@ const LoginForm = ({
                 </Typography>
                 <Typography
                   component={Link}
-                  href='/auth/sign-up'
+                  href={`/${locale}/auth/sign-up`}
                   fontSize={16}
                   variant='caption-semibold'
                   color={palette.primary.main}

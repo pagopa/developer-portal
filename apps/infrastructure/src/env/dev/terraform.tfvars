@@ -15,6 +15,10 @@ cdn_custom_headers = [
     header   = "X-Robots-Tag"
     override = true
     value    = "noindex"
+    }, {
+    header   = "Server"
+    override = true
+    value    = "None"
   }
 ]
 
@@ -24,7 +28,7 @@ use_custom_certificate = true
 
 cms_app_image_tag = "2f58049234766894fdfbd4a1d2ae1ccc74c37503"
 
-strapi_v5_image_tag = "e584ff5"
+strapi_v5_image_tag = "361cd936ff7ad44b960c1667d847f7ee615290c6"
 
 # CMS Strapi DNS
 dns_domain_name_cms = {
@@ -41,4 +45,12 @@ rds_cms_scaling_configuration = {
 create_chatbot            = true
 ac_integration_is_enabled = true
 docs_redirect_is_enabled  = false
+
+chatbot_models = {
+  provider      = "google"
+  generation    = "gemini-2.5-flash-lite"
+  embeddings    = "gemini-embedding-001"
+  reranker      = "semantic-ranker-default-004"
+  use_multi_rag = true
+}
 

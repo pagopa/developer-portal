@@ -36,18 +36,3 @@ resource "aws_secretsmanager_secret_version" "clickhouse_password" {
   secret_id     = aws_secretsmanager_secret.clickhouse_password.id
   secret_string = random_password.clickhouse_password.result
 }
-
-# resource "random_password" "grafana_admin_password" {
-#   length           = 16
-#   special          = true
-#   override_special = "!#$%&*()-_=+[]{}<>:?"
-# }
-#
-# resource "aws_secretsmanager_secret" "grafana_admin_password" {
-#   name_prefix = "grafana_admin_password"
-# }
-#
-# resource "aws_secretsmanager_secret_version" "grafana_admin_password" {
-#   secret_id     = aws_secretsmanager_secret.grafana_admin_password.id
-#   secret_string = random_password.grafana_admin_password.result
-# }

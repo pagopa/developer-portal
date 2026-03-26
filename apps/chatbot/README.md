@@ -1,142 +1,128 @@
-# PagoPA Chatbot
+# PagoPA Chatbot - Discovery
 
-This folder contains all the details to build a RAG using the documentation provided in [`PagoPA Developer Portal`](https://developer.pagopa.it/).
+This folder contains all the details to build a multi-agentic system (a system composed of multiple collaborating AI agents), named **Discovery**, with RAG (Retrieval-Augmented Generation, which enhances responses by retrieving relevant information from external sources) using the documentation provided in [`PagoPA Developer Portal`](https://developer.pagopa.it/).
 
-This chatbot uses [Google](https://ai.google.dev/) or [AWS Bedrock](https://aws.amazon.com/bedrock/) as provider.
-Even though the provider is the Google one, we stored its API key in AWS. So, be sure to have installed [aws-cli](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) and stored your credential in `~/.aws/credentials`.
+This chatbot uses [Google](https://ai.google.dev/) as provider; specifically, it uses an LLM and an Embedder models of the [Gemini](https://ai.google.dev/gemini-api/docs/models) family via Google Cloud's Vertex AI, authenticated with a Google Cloud service account (see the **Gemini** section below for setup details).
 
-The Retrieval-Augmented Generation (RAG) was implemented using [llama-index](https://docs.llamaindex.ai/en/stable/). All the parameters and prompts used are stored in `config`.
+The multi agentic system and the Retrieval-Augmented Generation (RAG) tools are implemented using [llama-index](https://docs.llamaindex.ai/en/stable/).
 
-The monitoring is done using [Langfuse](https://langfuse.com/) deployed on AWS.
+> **Note:** The environmental variables, parameters, and prompts referenced in `src/modules/settings.py` pertain to the Python backend service. If you are working with the TypeScript codebase, settings are managed via environment files (e.g., `.env.local`) and TypeScript configuration files.
 
-## Environment Variables
+The LLM observability is done using [Langfuse](https://langfuse.com/) deployed on AWS.
 
-Create a `.env` file inside this folder and store the environment variables listed in `.env.example`.
+This folder contains the code and the API that are deployed in an AWS lambda function called **AWS lambda API**, read below for furher information.
 
-cp .env.example .env
+## Gemini
 
-Note that the envirables inside `.env` file should be pointing to the AWS infrastructure.s
+If you wish to use Gemini models, you need to:
 
-## Virtual environment
-
-Before creating your virtual environment, install [Miniconda](https://docs.anaconda.com/miniconda/#quick-command-line-install) and [Poetry](https://python-poetry.org/docs/main#installation) on your device.
-
-Once you are ready, create your virtual conda environment:
-
-    conda create -n chatbot python=3.12 -y
-    conda activate chatbot
-
-In the end, install the requirements:
-
-    poetry install
-
-## Set python path
-
-The working directory is `/developer-portal/apps/chatbot`. So, to set the `PYTHONPATH` to the such path, simply do:
-
-    export PYTHONPATH=$PWD
-
-In this way, `PYTHONPATH` points to where the Python packages and modules are, not where your checkouts are.
-
-## Knowledge index vector database
-
-In order to create the vector index, do:
-
-    python src/modules/create_vector_index.py --params config/params.yaml
-
-This script:
-
-- gets the URLs that are present in the Developer Portal from the `sitemap.xml`,
-- reads the static documents (i.e. guides) from `.md` files stored in AWS S3,
-- reads the dynamic documents (i.e. webinars) opening a chrome browser,
-- splits the fetched documents into chucks,
-- creates the vector index,
-- stores the vector index in Redis.
-
-Check out the `params` in order to store your vector index accordingly.
-
-## Test
-
-### Chatbot module
-
-In order to test the chatbot and its APIs, run:
-
-    pytest
-
-### API
-
-The working directory is `apps/chatbot`.
-
-In order to run all API test, just launch
-
-```
-./docker/docker-compose-run-tests.sh
-```
-
-If you want to run only a subset of tests, enter into the container bash
-
-```
-docker compose -f docker/compose.test.yaml -p chatbot-test run bash
-```
-
-Initialize dynamodb and redis (these are the first two steps of `./scripts/run.test.sh`):
-
-```
-./scripts/dynamodb-init-test.sh
-poetry run python src/modules/create_vector_index.py
-```
-
-then launch a test, ex
-
-```
-poetry run pytest src/app/routers/test_sessions.py::test_query_feedback
-```
-
-When you're done, shut down all the containers with
-
-```
-./docker/docker-compose-down-tests.sh
-```
+- create a project in Google Cloud Platform
+- create google service account and store it into the file `.google_service_account.json`
+- ensure that you can use [VertexAI](https://cloud.google.com/vertex-ai?hl=en) and [Discovery Engine](https://docs.cloud.google.com/generative-ai-app-builder/docs/reference/rest)
 
 ## Docker
+
+The Docker Compose is set to emulate the deployed application in AWS using [Motoserver](https://docs.getmoto.org/en/latest/). The infrastructure uses multiple AWS lambdas:
+
+- **AWS lambda API**: receives the user's question and returns the generated answer. Moreover, it sends a payload to a **AWS SQS Monitor**.
+- [**AWS lambda Monitor**](../chatbot-monitor/README.md): retrieves the payload from **AWS SQS Monitor** placed by **AWS lambda API** and creates a trace in Langfuse and stores in DynamoDB the chat history. Subsequently sends a payload to **AWS SQS Evaluate** to generate the scores for such trace.
+- [**AWS lambda Evaluate**](../chatbot-evaluate/README.md): retrieves the payload from **AWS SQS Evaluate** put by **AWS lambda Monitor** and calculates the answer-relevancy, the context precision, and the faithfulness between user's question, the generated answer, and the retrieved context. Subsequently, it sends back a payload to the **AWS SQS Monitor** which will be retrieved by the **AWS lambda Monitor** and writes the scores to the relative Langfuse trace.
+
+![Architecture-flow-diagram](./images/flow-diagram.png)
+
+Moreover, there is a fourth AWS lambda, the [**AWS lambda Refresh Index**](../chatbot-index/README.md), which is triggered when a file in **AWS S3** is added, updated, or removed. It refreshes the vector index by scraping the documentation and updating the Redis store.
+
+### Getting started
 
 In order to run the chatbot locally for the first time, you need to:
 
 - install [Docker Compose](https://docs.docker.com/compose/install/),
-- create local files running:
+- create local files and fill it in with your environment variables:
 
-```
+```bash
 cp .env.example .env.local
-cp .google_service_account.json.example .google_service_account.json
 ```
 
-  and fill it in with your environment variables
+Remember to do the same for the other services: `chatbot-monitor`, `chatbot-evaluate`, and `chatbot-index`. Moreover, in order that the front-end is connected to the chatbot, create a `.env` file in the [nextjs-website](../nextjs-website) folder and set there `NEXT_PUBLIC_CHATBOT_HOST=http://localhost:8080` (check out the [README.md](../../README.md) in the root).
 
-- run the following bash scripts:
+- if you want to use Google as provider, `PROVIDER=google`, you need to create a Google service account (see this [page](https://docs.cloud.google.com/iam/docs/keys-create-delete)), export it into a JSON file, and stored in this folder as `.google_service_account.json`. Otherwise set the provider as `PROVIDER=mock`.
 
-```
+- Build the Docker compose:
+
+```bash
 ./docker/docker-compose-build-api.sh
-./docker/docker-compose-run-create_index.sh
 ```
-
-In this way, the docker images are built and the vector index is stored in Redis.
 
 Now you can start the API running:
 
-```
+```bash
 ./docker/docker-compose-up-api.sh
 ```
 
-Note that the `docker/compose.yaml` needs `.env.local` file with the correct environment variables.
+Note that there is the docker compose service `redis-seed` that load in Redis a small vector-index stored in `./docker/files/redis-data/redis-dump.rdb`. If you want to create a vector index of yours, check out the docker compose service `create-index`, store your files accordingly and run:
 
-Every time you update the frontend documents, you should to reindex with
-
-```
+```bash
 ./docker/docker-compose-run-create_index.sh
+```
+
+If you want to visualize all the logs that belong to such flow, run:
+
+```bash
+./docker/docker-compose-logs-flow.sh
 ```
 
 In the end, if you need to work with `jupyter-lab` and test yourself the chatbot components, you can run:
 
-```
+```bash
 ./docker/docker-compose-run-jupyter.sh
+```
+
+When you're done, shut down all the containers with:
+
+```bash
+./docker/docker-compose-down-api.sh
+```
+
+### Test
+
+Build the Docker Compose for the tests with:
+
+```bash
+./docker/docker-compose-build-tests.sh
+```
+
+Sucessively, run:
+
+```bash
+./docker/docker-compose-run-tests.sh
+```
+
+If you want to run only a subset of tests, enter into the container bash:
+
+```bash
+docker compose -f docker/compose.test.yaml run api bash
+```
+
+To use your IDE debug (we've tested on [Antigravity](https://antigravity.google/)), check the script
+
+```bash
+./docker/docker-compose-run-debug.sh
+```
+
+Initialize AWS services:
+
+```bash
+./scripts/run.test.sh
+```
+
+To launch a test, for example:
+
+```bash
+pytest src/app/routers/test_sessions.py::test_query_feedback
+```
+
+When you're done, shut down all the containers with:
+
+```bash
+./docker/docker-compose-down-tests.sh
 ```

@@ -1,0 +1,65 @@
+import { getWebinar } from '@/lib/api';
+import {
+  makeMetadata,
+  makeMetadataFromStrapi,
+} from '@/helpers/metadata.helpers';
+import { Metadata } from 'next';
+import { baseUrl } from '@/config';
+import { getItemFromPaths } from '@/helpers/structuredData.helpers';
+import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
+import WebinarDetailTemplate from '@/components/templates/WebinarDetailTemplate/WebinarDetailTemplate';
+import { Suspense } from 'react';
+import Spinner from '@/components/atoms/Spinner/Spinner';
+
+type Params = {
+  locale: string;
+  webinarSlug: string;
+};
+
+export async function generateMetadata(props: {
+  params: Promise<Params>;
+}): Promise<Metadata> {
+  const { locale, webinarSlug } = await props.params;
+  const webinar = await getWebinar(locale, webinarSlug);
+
+  if (webinar.seo) {
+    return makeMetadataFromStrapi(webinar.seo);
+  }
+
+  return makeMetadata({
+    title: webinar.title,
+    url: `${baseUrl}/${locale}/webinars/${webinar.slug}`,
+    langCode: locale,
+    image: webinar.imagePath,
+  });
+}
+
+const Page = async (props: { params: Promise<Params> }) => {
+  const { locale, webinarSlug } = await props.params;
+  const webinar = await getWebinar(locale, webinarSlug);
+
+  const structuredData = generateStructuredDataScripts({
+    breadcrumbsItems: [
+      {
+        name: 'Webinars',
+        item: getItemFromPaths(locale, ['webinars']),
+      },
+      {
+        name: webinar.seo?.metaTitle,
+        item: getItemFromPaths(locale, ['webinars', webinar.slug]),
+      },
+    ],
+    seo: webinar.seo,
+  });
+
+  return (
+    <>
+      {structuredData}
+      <Suspense fallback={<Spinner />}>
+        <WebinarDetailTemplate webinar={webinar} />
+      </Suspense>
+    </>
+  );
+};
+
+export default Page;

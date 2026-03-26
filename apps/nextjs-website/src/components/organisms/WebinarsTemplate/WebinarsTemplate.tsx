@@ -20,11 +20,13 @@ import { SITE_HEADER_HEIGHT } from '@/config';
 const CHECK_WEBINARS_INTERVAL_MS = 60 * 1000;
 
 type WebinarsTemplateProps = {
+  locale: string;
   webinars: readonly Webinar[];
   categories: readonly Tag[];
 };
 
 const WebinarsTemplateContent = ({
+  locale,
   webinars,
   categories,
 }: WebinarsTemplateProps) => {
@@ -36,14 +38,14 @@ const WebinarsTemplateContent = ({
   const webinarsListPageSEO = {
     metaTitle: t('webinars.title'),
     metaDescription: t('webinars.subtitle'),
-    canonicalURL: `${baseUrl}/webinars`,
+    canonicalURL: `${baseUrl}/${locale}/webinars`,
   };
 
   const structuredData = generateStructuredDataScripts({
     breadcrumbsItems: [
       {
         name: webinarsListPageSEO.metaTitle,
-        item: getItemFromPaths(['webinars']),
+        item: getItemFromPaths(locale, ['webinars']),
       },
     ],
     seo: webinarsListPageSEO,
@@ -68,7 +70,7 @@ const WebinarsTemplateContent = ({
     },
     href: {
       label: t('webinar.goToWebinar'),
-      link: `/webinars/${webinar.slug}`,
+      link: `/${locale}/webinars/${webinar.slug}`,
     },
     img: {
       alt: webinar.title,

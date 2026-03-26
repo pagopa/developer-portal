@@ -9,20 +9,23 @@ import { useScrollUp } from './useScrollUp';
 import { SITE_HEADER_HEIGHT } from '@/config';
 
 type ProductHeaderProps = {
+  locale: string;
   product: Product;
   path: string;
 };
 
-const ProductHeader: FC<ProductHeaderProps> = ({ product, path }) => {
+const ProductHeader: FC<ProductHeaderProps> = ({ locale, product, path }) => {
   const { palette } = useTheme();
   const t = useTranslations();
   const scrollUp = useScrollUp();
   const themeVariant = palette.mode;
 
-  const menu = productToMenuItems(product, path, themeVariant).map((item) => ({
-    ...item,
-    label: t(item.label),
-  }));
+  const menu = productToMenuItems(locale, product, path, themeVariant).map(
+    (item) => ({
+      ...item,
+      label: t(item.label),
+    })
+  );
   return (
     <Box
       sx={{
@@ -36,7 +39,7 @@ const ProductHeader: FC<ProductHeaderProps> = ({ product, path }) => {
       <Header
         menu={menu}
         product={{
-          href: `/${product.slug}/overview`,
+          href: `/${locale}/${product.slug}/overview`,
           name: product.name,
         }}
         theme={themeVariant}

@@ -3,7 +3,7 @@ import { DevPortalUser } from '@/lib/types/auth';
 import { Box, Typography, useTheme } from '@mui/material';
 import { ButtonNaked } from '@/components/atoms/ButtonNaked/ButtonNaked';
 import { useTranslations } from 'next-intl';
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { useCallback, useState } from 'react';
 import { Auth } from 'aws-amplify';
 
@@ -12,6 +12,7 @@ type DeleteSectionProps = {
 };
 
 const DeleteSection = ({ user }: DeleteSectionProps) => {
+  const { locale } = useParams<{ locale: string }>();
   const router = useRouter();
   const t = useTranslations('profile');
   const sharedTranslate = useTranslations('shared');
@@ -26,7 +27,7 @@ const DeleteSection = ({ user }: DeleteSectionProps) => {
       await Auth.deleteUser()
         .then(() => {
           // eslint-disable-next-line functional/immutable-data
-          router.push('/');
+          router.push(`/${locale}`);
           setDeleting(false);
         })
         .catch(() => {
@@ -34,7 +35,7 @@ const DeleteSection = ({ user }: DeleteSectionProps) => {
         });
     }
     return null;
-  }, [user, router]);
+  }, [user, router, locale]);
 
   return (
     <Box display={'flex'} flexDirection={'column'} maxWidth={'900px'}>

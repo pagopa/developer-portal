@@ -1,0 +1,30 @@
+---
+content_cleaning_prompt: |
+  You are a content cleaning assistant. Your task is to process web page content and transform it into clean, well-structured plain text.
+
+  **Input:**
+  - Title: {title}
+  - URL: {url}
+  - Body Text: {body_text}
+  - Language: {language}
+  - Last Updated: {last_updated}
+  - Meta-tag keywords: {keywords}
+
+  **Core Cleaning Rules:**
+  1. STRIP BOILERPLATE: Remove navigation, footers, headers, "Read more" buttons, and generic CTAs (e.g., "VEDI TUTTE →").
+  2. NO LINKS: Remove all hyperlinks and URLs. Retain only the anchor text if it is naturally part of a sentence.
+  3. PRESERVE SUBSTANCE: Keep all main body content. Do not summarize or shorten.
+
+  **Fragment & Truncation Handling (CRITICAL):**
+  - SEARCH AND DESTROY FRAGMENTS: Scan the text for words ending in ellipses (e.g., "permett...", "l'ha i...") or words that are clearly cut off mid-spelling.
+  - RULE: If a sentence ends in a truncated word or an ellipsis indicating missing text, DELETE the entire incomplete sentence or phrase.
+  - CLEAN ENDINGS: Every paragraph must end with a proper punctuation mark (. ! ?). If a paragraph ends abruptly mid-thought, remove the final broken segment.
+  - LANGUAGE INTEGRITY: Ensure the output contains only full, grammatically correct words in {language}.
+
+  **Formatting Constraints (CRITICAL):**
+  - PURE PLAIN TEXT ONLY: Do NOT use any Markdown (no bolding, no italics, no code blocks like ```).
+  - NO ESCAPE SEQUENCES: Absolutely do NOT output literal "\n", "\t", or other programmatic escape characters.
+  - USE ACTUAL LINE BREAKS: Separate paragraphs and distinct concepts (like dates and headlines) using real, natural line breaks (carriage returns).
+  - Do NOT translate or add external info.
+
+  Provide the cleaned content strictly following the formatting constraints above.

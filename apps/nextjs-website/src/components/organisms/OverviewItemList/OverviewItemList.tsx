@@ -14,6 +14,7 @@ type OverviewItemListProps = {
   ctaLabelKey: string;
   itemPath: Path;
   items: NewsShowcaseItemProps[];
+  backgroundVariant?: 'white' | 'lightGrey';
 };
 
 const OverviewItemList = ({
@@ -23,6 +24,7 @@ const OverviewItemList = ({
   ctaLabelKey,
   items,
   itemPath,
+  backgroundVariant,
 }: OverviewItemListProps) => {
   const t = useTranslations();
 
@@ -42,6 +44,7 @@ const OverviewItemList = ({
           text: t(item.link.text),
         },
       }))}
+      backgroundVariant={backgroundVariant}
     />
   );
 };

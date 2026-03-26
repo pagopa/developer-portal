@@ -1,5 +1,55 @@
 # infrastructure
 
+## 10.0.0
+
+### Major Changes
+
+- ec4f8bd: Infrastructure to store webinars view metrics in S3
+
+### Minor Changes
+
+- a8321ba: New env variable for chatbot-api chb-use-multirag
+- 2c47a12: Lambda evaluate new env variables ragas max workers and max retries
+
+## 9.1.0
+
+### Minor Changes
+
+- 54b0b3c: Overwrite cloufront Server http header for all distribution
+
+## 9.0.0
+
+### Major Changes
+
+- 9546f7b: Fix iam policy deploy website to allow deploy cognito functions too.
+- 6d0c7d9: Lambda function and api gateway rest api to query ivs metrics
+
+### Minor Changes
+
+- 7b2f733: Removed cloudfront function build. From now on we'll just go with java script
+- d0b8a1c: Github action to deploy cognito functions
+
+## 8.3.0
+
+### Minor Changes
+
+- 0a34321: Lambda active campaigns update environment variables
+
+## 8.2.0
+
+### Minor Changes
+
+- 2081c9b: Cleanup resources poc option 4 webinars metrics
+- 3a2b89f: Add "preferred_language" custom field to cognito_user schemas
+
+## 8.1.0
+
+### Minor Changes
+
+- cbff12b: Add Langfuse web v3
+- cbff12b: Add RDS instance for Langfuse
+- fe78f6a: Fix strapi v5 ecs task role iam policy
+
 ## 8.0.0
 
 ### Major Changes

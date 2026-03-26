@@ -1,6 +1,6 @@
 /* eslint-disable functional/no-try-statements */
 /* eslint-disable functional/no-expression-statements */
-import { QuickStartGuidePageProps } from '@/app/[productSlug]/quick-start/page';
+import { QuickStartGuidePageProps } from '@/app/[locale]/[productSlug]/quick-start/page';
 import { Step } from '@/lib/types/step';
 import { makePartProps } from '@/lib/strapi/makeProps/makePart';
 import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
@@ -24,6 +24,7 @@ function makeStepFromQuickstartGuideItems(
 }
 
 export function makeQuickStartGuidesProps(
+  locale: string,
   strapiQuickStarts: StrapiQuickStartGuides
 ): QuickStartGuidesPageProps {
   return compact(
@@ -43,11 +44,11 @@ export function makeQuickStartGuidesProps(
           },
           updatedAt: quickStart.updatedAt,
           defaultStepAnchor: quickStart.quickstartGuideItems[0].anchor,
-          product: makeBaseProductWithoutLogoProps(quickStart.product),
+          product: makeBaseProductWithoutLogoProps(locale, quickStart.product),
           steps: quickStart.quickstartGuideItems.map((item) =>
             makeStepFromQuickstartGuideItems(item)
           ),
-          path: `/${quickStart.product.slug}/quick-start`,
+          path: `/${locale}/${quickStart.product.slug}/quick-start`,
           bannerLinks:
             quickStart.bannerLinks.length > 0
               ? quickStart.bannerLinks.map(makeBannerLinkProps)

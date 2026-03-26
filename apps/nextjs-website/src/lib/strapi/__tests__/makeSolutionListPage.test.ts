@@ -23,13 +23,14 @@ describe('makeSolutionListPageProps', () => {
 
   it('should transform strapi solution list page to solution list template props', () => {
     const result = makeSolutionListPageProps(
+      'it',
       _.cloneDeep({ data: strapiSolutionListPage })
     );
     expect(result).toMatchObject(expectedSolutionListTemplateProps);
   });
 
   it('should handle minimal data with missing optional fields', () => {
-    const result = makeSolutionListPageProps({
+    const result = makeSolutionListPageProps('it', {
       data: minimalDataSolutionListPage(),
     });
     expect(result).not.toBeNull();
@@ -41,7 +42,7 @@ describe('makeSolutionListPageProps', () => {
   });
 
   it('should handle solution list page without case histories', () => {
-    const result = makeSolutionListPageProps({
+    const result = makeSolutionListPageProps('it', {
       data: solutionListPageWithoutCaseHistories(),
     });
     expect(result.successStories).toBeUndefined();
@@ -50,7 +51,7 @@ describe('makeSolutionListPageProps', () => {
   });
 
   it('should handle solution list page without features', () => {
-    const result = makeSolutionListPageProps({
+    const result = makeSolutionListPageProps('it', {
       data: solutionListPageWithoutFeatures(),
     });
     expect(result.features).toBeUndefined();
@@ -59,7 +60,7 @@ describe('makeSolutionListPageProps', () => {
   });
 
   it('should handle solution list page without solutions', () => {
-    const result = makeSolutionListPageProps({
+    const result = makeSolutionListPageProps('it', {
       data: solutionListPageWithoutSolutions(),
     });
     expect(result.solutions).toEqual([]);
@@ -69,18 +70,20 @@ describe('makeSolutionListPageProps', () => {
 
   it('should correctly map solution tags from products', () => {
     const result = makeSolutionListPageProps(
+      'it',
       _.cloneDeep({ data: strapiSolutionListPage })
     );
     expect(result.solutions[0].labels).toEqual([
       {
         label: 'P1',
-        path: '/product-1',
+        path: '/it/product-1',
       },
     ]);
   });
 
   it('should correctly build solution slug path', () => {
     const result = makeSolutionListPageProps(
+      'it',
       _.cloneDeep({ data: strapiSolutionListPage })
     );
     expect(result.solutions[0].slug).toBe('solutions/solution-1');

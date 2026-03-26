@@ -1,23 +1,10 @@
 import { Box, Stack, Typography, useTheme } from '@mui/material';
-import { defaultLocale } from '@/config';
+import { chatTimeOptions } from '@/config';
 import IconWrapper from '@/components/atoms/IconWrapper/IconWrapper';
 import ChatbotFeedbackButton from '@/components/atoms/ChatbotFeedbackButton/ChatbotFeedbackButton';
 import CopyToClipboard from '@/components/atoms/CopyToClipboard/CopyToClipboard';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useFormatter } from 'next-intl';
 import { parseChatMessage } from '@/helpers/chatMessageParser.helper';
-
-type DateFormatOptions = {
-  locale?: string;
-  options?: Intl.DateTimeFormatOptions;
-};
-
-const DEFAULT_DATE_FORMAT = {
-  locale: defaultLocale,
-  options: {
-    timeStyle: 'short',
-    hourCycle: 'h23',
-  },
-} satisfies DateFormatOptions;
 
 export type Message = {
   id: string;
@@ -44,6 +31,7 @@ const ChatMessage = ({
   mustFillFeedbackForm,
 }: ChatMessageProps) => {
   const t = useTranslations();
+  const format = useFormatter();
   const { palette } = useTheme();
   const bgColor = isQuestion ? palette.grey[200] : 'transparent';
   const textColor = palette.text.primary;
@@ -51,11 +39,7 @@ const ChatMessage = ({
   const parsedChatMessage = isQuestion ? text : parseChatMessage(text);
 
   const timeLabel =
-    timestamp &&
-    new Intl.DateTimeFormat(
-      DEFAULT_DATE_FORMAT.locale,
-      DEFAULT_DATE_FORMAT.options
-    ).format(new Date(timestamp));
+    timestamp && format.dateTime(new Date(timestamp), chatTimeOptions);
 
   const iconSize = 40;
   const marginLeftMessage = 20;

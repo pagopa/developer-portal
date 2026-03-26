@@ -5,6 +5,7 @@ import { compact } from 'lodash';
 import { RootEntity } from '@/lib/strapi/types/rootEntity';
 
 export function makeSolutionListPageProps(
+  locale: string,
   strapiSolutionsList: RootEntity<StrapiSolutionListPage>
 ): SolutionListTemplateProps {
   const strapiSolutionsListData = strapiSolutionsList.data;
@@ -30,7 +31,7 @@ export function makeSolutionListPageProps(
           slug: `solutions/${attributes.slug}`,
           labels: attributes.products.map((products) => ({
             label: products.shortName,
-            path: `/${products.slug}`,
+            path: `/${locale}/${products.slug}`,
           })),
         };
       })
@@ -50,7 +51,7 @@ export function makeSolutionListPageProps(
 
             return {
               title: caseHistory.title,
-              path: `case-histories/${caseHistory.slug}`,
+              path: `/${locale}/case-histories/${caseHistory.slug}`,
               image: caseHistory.image,
             };
           }

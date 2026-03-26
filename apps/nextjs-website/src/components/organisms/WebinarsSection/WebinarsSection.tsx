@@ -9,7 +9,7 @@ import {
 import { maxPastWebinarsInHome } from '@/config';
 
 type WebinarsSectionProps = {
-  webinars: Webinar[];
+  webinars: readonly Webinar[];
 };
 
 const WebinarsSection = ({ webinars }: WebinarsSectionProps) => {

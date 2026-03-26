@@ -4,9 +4,10 @@ import { makeBaseProductWithoutLogoProps } from './makeProducts';
 import { compact } from 'lodash';
 import { StrapiUseCaseListPages } from '@/lib/strapi/types/useCaseListPage';
 import { UseCase } from '@/lib/types/useCaseData';
-import { UseCasesPageProps } from '@/app/[productSlug]/use-cases/page';
+import { UseCasesPageProps } from '@/app/[locale]/[productSlug]/use-cases/page';
 
 export function makeUseCaseListPagesProps(
+  locale: string,
   strapiUseCaseList: StrapiUseCaseListPages
 ): readonly UseCasesPageProps[] {
   return compact(
@@ -41,7 +42,7 @@ export function makeUseCaseListPagesProps(
           try {
             return {
               name: useCaseAttributes.title,
-              path: `/${slug}/use-cases/${useCaseAttributes.slug}`,
+              path: `/${locale}/${slug}/use-cases/${useCaseAttributes.slug}`,
               title: useCaseAttributes.title,
               publishedAt: useCaseAttributes.publishedAt
                 ? new Date(useCaseAttributes.publishedAt)
@@ -63,9 +64,8 @@ export function makeUseCaseListPagesProps(
       );
 
       return {
-        name: attributes.title,
-        path: `/${attributes.product.slug}/use-cases`,
-        product: makeBaseProductWithoutLogoProps(attributes.product),
+        path: `/${locale}/${attributes.product.slug}/use-cases`,
+        product: makeBaseProductWithoutLogoProps(locale, attributes.product),
         abstract: {
           title: attributes.title,
           description: attributes.description,
@@ -81,7 +81,7 @@ export function makeUseCaseListPagesProps(
                 makeBannerLinkProps(bannerLink)
               ),
         enableFilters: attributes.enableFilters,
-      };
+      } satisfies UseCasesPageProps;
     })
   );
 }

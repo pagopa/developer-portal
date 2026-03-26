@@ -15,6 +15,7 @@ import {
 import { validateEmail } from '@/helpers/auth.helpers';
 import { Dispatch, SetStateAction, useCallback, useState } from 'react';
 import { useTranslations } from 'next-intl';
+import { useParams } from 'next/navigation';
 
 interface ResetPasswordFormProps {
   email: string;
@@ -27,6 +28,7 @@ const ResetPasswordForm = ({
   setEmail,
   handleResetPassword,
 }: ResetPasswordFormProps) => {
+  const { locale } = useParams<{ locale: string }>();
   const resetPassword = useTranslations('auth.resetPassword');
   const shared = useTranslations('shared');
   const [submitting, setSubmitting] = useState(false);
@@ -122,7 +124,7 @@ const ResetPasswordForm = ({
             >
               <Link
                 variant='body2'
-                href='/auth/login'
+                href={`/${locale}/auth/login`}
                 sx={{ fontWeight: 600, cursor: 'pointer' }}
               >
                 {resetPassword('goToLogin')}

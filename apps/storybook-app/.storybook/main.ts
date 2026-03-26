@@ -30,10 +30,31 @@ const config: StorybookConfig = {
         if (!config.resolve?.alias) {
             config.resolve!.alias = {};
         }
-        config.resolve!.alias['@'] = path.resolve(__dirname, '../../nextjs-website/src');
+        (config.resolve!.alias as Record<string, string>)['@'] = path.resolve(__dirname, '../../nextjs-website/src');
         config.plugins!.push(new Dotenv({
             path: path.resolve(__dirname, '../../nextjs-website/.env'),
         }));
+
+        // Ensure single instances of Emotion and MUI packages so that
+        // React contexts (e.g. ThemeContext used by useMediaQuery) are shared
+        // between the Storybook decorators and the Next.js components.
+        const emotionReact = path.dirname(require.resolve('@emotion/react/package.json'));
+        const emotionStyled = path.dirname(require.resolve('@emotion/styled/package.json'));
+        const muiMaterial = path.dirname(require.resolve('@mui/material/package.json'));
+        const muiSystem = path.dirname(require.resolve('@mui/system/package.json'));
+        const muiStyledEngine = path.dirname(require.resolve('@mui/styled-engine/package.json'));
+
+        if (config.resolve) {
+          config.resolve.alias = {
+            ...config.resolve.alias,
+            'next/navigation': require.resolve('./nextNavigationProxy.ts'),
+            '@emotion/react': emotionReact,
+            '@emotion/styled': emotionStyled,
+            '@mui/material': muiMaterial,
+            '@mui/system': muiSystem,
+            '@mui/styled-engine': muiStyledEngine,
+          };
+        }
         return config;
     },
 };

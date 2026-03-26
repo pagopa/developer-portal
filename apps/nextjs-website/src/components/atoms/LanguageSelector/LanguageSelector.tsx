@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { Button, Menu, MenuItem } from '@mui/material';
 import { Language } from '@mui/icons-material';
+import { Locale } from '@/locales';
 
 export type LanguageSelectorProps = {
-  readonly locales: ReadonlyArray<{ code: string; label: string }>;
+  readonly locales: ReadonlyArray<Locale>;
   readonly currentLocale: string;
 };
 
@@ -23,12 +24,13 @@ const LanguageSelector = ({
   };
 
   const currentLocaleLabel =
-    locales.find((locale) => locale.code === currentLocale)?.label ||
+    locales.find((locale) => locale.langCode === currentLocale)?.label ||
     currentLocale.toUpperCase();
 
   return (
     <>
       <Button
+        disabled={locales.length <= 1}
         onClick={handleClick}
         startIcon={<Language />}
         sx={{
@@ -53,12 +55,12 @@ const LanguageSelector = ({
       >
         {locales.map((locale) => (
           <MenuItem
-            key={locale.code}
-            selected={locale.code === currentLocale}
+            key={locale.langCode}
+            selected={locale.langCode === currentLocale}
             disableRipple
           >
             <a
-              href={`/${locale.code}`}
+              href={`/${locale.langCode}`}
               style={{ textDecoration: 'none', color: 'inherit' }}
             >
               {locale.label}

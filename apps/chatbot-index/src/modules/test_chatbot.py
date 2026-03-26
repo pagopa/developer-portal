@@ -1,8 +1,3 @@
-import os
-import boto3
-import requests
-from llama_index.core.async_utils import asyncio_run
-
 from src.modules.logger import get_logger
 from src.modules.settings import SETTINGS, AWS_SESSION
 from src.modules.vector_index import REDIS_CLIENT
@@ -27,7 +22,7 @@ def test_aws_credentials() -> None:
 def test_ssm_params() -> None:
 
     if SETTINGS.provider == "google":
-        assert SETTINGS.google_api_key is not None
+        assert SETTINGS.google_service_account is not None
 
     assert SETTINGS.index_id is not None
 

@@ -1,16 +1,15 @@
 import os
 import boto3
-import requests
 from llama_index.core.async_utils import asyncio_run
 
 from src.modules.logger import get_logger
 from src.modules.settings import SETTINGS
 from src.modules.vector_index import REDIS_CLIENT
 from src.modules.models import get_llm, get_embed_model
-from src.modules.chatbot import Chatbot, LANGFUSE_CLIENT
+from src.modules.chatbot import Chatbot
 
 
-LOGGER = get_logger(__name__)
+LOGGER = get_logger(__name__, level=SETTINGS.log_level)
 CHATBOT = Chatbot()
 
 
@@ -33,10 +32,9 @@ def test_aws_credentials() -> None:
 def test_ssm_params() -> None:
 
     if SETTINGS.provider == "google":
-        assert SETTINGS.google_api_key is not None
         assert SETTINGS.google_service_account is not None
 
-    assert SETTINGS.index_id is not None
+    assert SETTINGS.devportal_index_id is not None
 
 
 def test_connection_redis() -> None:
@@ -50,10 +48,6 @@ def test_connection_redis() -> None:
     assert flag is True
 
 
-def test_connection_langfuse():
-    assert LANGFUSE_CLIENT.auth_check() is True
-
-
 def test_models() -> None:
 
     flag = False
@@ -65,11 +59,6 @@ def test_models() -> None:
         LOGGER.error(e)
 
     assert flag is True
-
-
-def test_pii_mask() -> None:
-    masked_str = CHATBOT.mask_pii("Il mio nome e' Mario Rossi")
-    assert masked_str == "Il mio nome e' <PERSON_1>"
 
 
 def test_messages_to_chathistory() -> None:
@@ -95,18 +84,13 @@ def test_chat_generation() -> None:
         response_json = asyncio_run(
             CHATBOT.chat_generate(
                 query_str=query_str,
-                trace_id="abcde",
-                user_id="user-test",
-                session_id="session-test",
+                messages=[],
             )
         )
         response_json = asyncio_run(
             CHATBOT.chat_generate(
                 query_str="sai dirmi di più?",
-                trace_id="fghik",
                 messages=[{"question": query_str, "answer": response_json["response"]}],
-                user_id="user-test",
-                session_id="session-test",
             )
         )
 

@@ -1,5 +1,5 @@
 /* eslint-disable functional/no-expression-statements */
-import { ApiDataPageProps } from '@/app/[productSlug]/api/[apiDataSlug]/page';
+import { ApiDataPageProps } from '@/app/[locale]/[productSlug]/api/[apiDataSlug]/page';
 import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
 import { makeBaseProductWithoutLogoProps } from '@/lib/strapi/makeProps/makeProducts';
 import { makeApiSoapUrlList } from '@/lib/strapi/makeProps/makeApiSoapUrlList';
@@ -8,6 +8,7 @@ import { compact } from 'lodash';
 import { RootEntity } from '@/lib/strapi/types/rootEntity';
 
 export async function makeApiDataListProps(
+  locale: string,
   strapiApiDataList: RootEntity<StrapiApiDataList>
 ): Promise<ReadonlyArray<ApiDataPageProps>> {
   const list = compact(
@@ -41,7 +42,10 @@ export async function makeApiDataListProps(
 
           // eslint-disable-next-line functional/no-try-statements
           try {
-            const product = makeBaseProductWithoutLogoProps(attributes.product);
+            const product = makeBaseProductWithoutLogoProps(
+              locale,
+              attributes.product
+            );
             return {
               ...attributes,
               product,
@@ -57,7 +61,10 @@ export async function makeApiDataListProps(
               apiSoapUrl: attributes.apiSoapDetail?.repositoryUrl,
               specUrlsName: attributes.title,
               apiSoapUrlList: attributes.apiSoapDetail
-                ? await makeApiSoapUrlList(attributes.apiSoapDetail.dirName)
+                ? await makeApiSoapUrlList(
+                    locale,
+                    attributes.apiSoapDetail.dirName
+                  )
                 : [],
               bannerLinks:
                 attributes.bannerLinks.length > 0

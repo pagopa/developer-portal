@@ -15,6 +15,7 @@ import { ChangeEvent, useCallback, useState } from 'react';
 import { validatePassword } from '@/helpers/auth.helpers';
 import { useTranslations } from 'next-intl';
 import { PasswordTextField } from './PasswordTextField';
+import { useParams } from 'next/navigation';
 
 interface ChangePasswordFormProps {
   submitting?: boolean;
@@ -31,6 +32,7 @@ const ChangePasswordForm = ({
   submitting = false,
   onSubmit,
 }: ChangePasswordFormProps) => {
+  const { locale } = useParams<{ locale: string }>();
   const login = useTranslations('auth.login');
   const resetPassword = useTranslations('auth.resetPassword');
   const signUp = useTranslations('auth.signUp');
@@ -147,7 +149,7 @@ const ChangePasswordForm = ({
               <Typography
                 component={Link}
                 fontSize={16}
-                href='/auth/login'
+                href={`/${locale}/auth/login`}
                 variant='caption-semibold'
                 color={palette.primary.main}
               >

@@ -20,6 +20,7 @@ export type StrapiApiDataListPage = {
 
 export type StrapiApiDataListPageWithoutProduct = {
   readonly id: number;
+  readonly updatedAt: string;
   readonly api_data: readonly Pick<
     StrapiApiData,
     'apiRestDetail' | 'apiSoapDetail'

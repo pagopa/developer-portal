@@ -28,9 +28,9 @@ import { table } from './markdoc/schema/table';
 import { pageLink } from './markdoc/schema/pageLink';
 import { processHtmlTokens } from './markdoc/tokenProcessor';
 import { PageTitlePath } from './parseDoc';
-import { convertEmojiToUnicode } from './convertEmojiToUnicode';
 import { step, stepper } from './markdoc/schema/stepper';
 import { inlineCodePipePlaceholder } from './markdoc/schema/styledText';
+import { processEmojiTokens } from './markdoc/emojiProcessor';
 
 export type ParseContentConfig = {
   readonly assetsPrefix: string;
@@ -61,6 +61,14 @@ const summaryR = pairedHtmlTag('summary');
 const fileR = {
   regex: /({% file src="[^"]+" %}(?!.*{% \/file %}))/gis,
   replace: '$1\n{% /file %}',
+};
+const addNewLineAfterCloseTag = {
+  regex: new RegExp(`%}(?!\n)`, 'g'),
+  replace: '%}\n',
+};
+const addNewLineBeforeOpenTag = {
+  regex: new RegExp(`(?!\n){%`, 'g'),
+  replace: '\n{%',
 };
 
 const preservePipesInInlineCode = (markdown: string): string => {
@@ -147,13 +155,14 @@ export const parseAst = (markdown: string) => {
   // In this way many RegExp can be removed
   const markdoc = preservePipesInInlineCode(markdown)
     .replaceAll('{% end', '\n{% /')
+    .replaceAll(addNewLineAfterCloseTag.regex, addNewLineAfterCloseTag.replace)
+    .replaceAll(addNewLineBeforeOpenTag.regex, addNewLineBeforeOpenTag.replace)
     .replaceAll(imgR.regex, imgR.replace)
     .replaceAll(figureR.regex, figureR.replace)
     .replaceAll(figcaptionR.regex, figcaptionR.replace)
     .replaceAll(markR.regex, markR.replace)
     .replaceAll(summaryR.regex, summaryR.replace)
-    .replaceAll('{% @figma/embed', '{% figma-embed')
-    .replaceAll(/:([a-z0-9_]+):/g, convertEmojiToUnicode);
+    .replaceAll('{% @figma/embed', '{% figma-embed');
 
   const updatedMarkdoc = markdoc
     .split('{% file')
@@ -176,7 +185,9 @@ export const parseAst = (markdown: string) => {
   const tokenizer = new Markdoc.Tokenizer({ html: true });
   // Given the html_block token parse its content and tokenize it. An html token
   // <div> is translated as a Markdoc tag with the name 'htmldiv'.
-  const tokens = processHtmlTokens(tokenizer.tokenize(parsedMarkdoc));
+  const tokens = processEmojiTokens(
+    processHtmlTokens(tokenizer.tokenize(parsedMarkdoc))
+  );
   return Markdoc.parse([...tokens]);
 };
 

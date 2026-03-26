@@ -1,0 +1,20 @@
+{
+  "data": [
+    {
+      "id": 5,
+      "documentId": "mqbhlf4qb503txag4d951nz6",
+      "name": "Prodotto su Strapi 5",
+      "slug": "prodotto-strapii",
+      "shortName": "prod strapi 5",
+      "description": "Questo prodotto è su strapi 5",
+      "isVisible": true,
+      "createdAt": "2026-01-13T14:25:31.891Z",
+      "updatedAt": "2026-01-14T11:56:22.444Z",
+      "publishedAt": "2026-01-14T11:56:22.574Z",
+      "locale": "it"
+    }
+  ],
+  "meta": {
+    "pagination": { "page": 1, "pageSize": 100, "pageCount": 1, "total": 1 }
+  }
+}

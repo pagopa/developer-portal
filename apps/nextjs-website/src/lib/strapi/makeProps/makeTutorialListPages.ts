@@ -1,5 +1,5 @@
 /* eslint-disable functional/no-expression-statements */
-import { TutorialsPageProps } from '@/app/[productSlug]/tutorials/page';
+import { TutorialsPageProps } from '@/app/[locale]/[productSlug]/tutorials/page';
 import { Tutorial } from '@/lib/types/tutorialData';
 import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
 import { makeBaseProductWithoutLogoProps } from './makeProducts';
@@ -7,6 +7,7 @@ import { StrapiTutorialListPages } from '@/lib/strapi/types/tutorialsListPage';
 import { compact } from 'lodash';
 
 export function makeTutorialListPagesProps(
+  locale: string,
   strapiTutorialList: StrapiTutorialListPages
 ): readonly TutorialsPageProps[] {
   return compact(
@@ -42,7 +43,7 @@ export function makeTutorialListPagesProps(
             return {
               updatedAt: tutorialAttributes.updatedAt,
               name: tutorialAttributes.title,
-              path: `/${slug}/tutorials/${tutorialAttributes.slug}`,
+              path: `/${locale}/${slug}/tutorials/${tutorialAttributes.slug}`,
               title: tutorialAttributes.title,
               publishedAt: tutorialAttributes.publishedAt
                 ? new Date(tutorialAttributes.publishedAt)
@@ -74,8 +75,8 @@ export function makeTutorialListPagesProps(
       return {
         updatedAt: updatedAt,
         name: attributes.title,
-        path: `/${attributes.product.slug}/tutorials`,
-        product: makeBaseProductWithoutLogoProps(attributes.product),
+        path: `/${locale}/${attributes.product.slug}/tutorials`,
+        product: makeBaseProductWithoutLogoProps(locale, attributes.product),
         abstract: {
           title: attributes.title,
           description: attributes.description,

@@ -1,6 +1,6 @@
 /* eslint-disable functional/no-expression-statements */
 /* eslint-disable functional/no-try-statements */
-import { GuideListPageProps } from '@/app/[productSlug]/guides/page';
+import { GuideListPageProps } from '@/app/[locale]/[productSlug]/guides/page';
 import { GuidesSectionProps } from '@/components/molecules/GuidesSection/GuidesSection';
 import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
 import { makeBaseProductWithoutLogoProps } from './makeProducts';
@@ -10,6 +10,7 @@ import { compact } from 'lodash';
 import { StrapiGuideListPages } from '@/lib/strapi/types/guideListPage';
 
 export function makeGuideListPagesProps(
+  locale: string,
   strapiGuideListPages: StrapiGuideListPages
 ): readonly GuideListPageProps[] {
   return compact(
@@ -23,17 +24,19 @@ export function makeGuideListPagesProps(
       }
 
       try {
-        const product = makeBaseProductWithoutLogoProps(productData);
+        const product = makeBaseProductWithoutLogoProps(locale, productData);
         const guidesSections: readonly GuidesSectionProps[] = [
           ...attributes.guidesByCategory.map(({ category, guides }) => ({
             title: category,
             guides: compact(
-              guides.map((guide) => makeGuideCardProps(guide, product.slug))
+              guides.map((guide) =>
+                makeGuideCardProps(locale, guide, product.slug)
+              )
             ),
           })),
         ];
         return {
-          path: `/${productData.slug}/guides`,
+          path: `/${locale}/${productData.slug}/guides`,
           product,
           abstract: {
             title: attributes.title,
@@ -60,6 +63,7 @@ export function makeGuideListPagesProps(
 }
 
 function makeGuideCardProps(
+  locale: string,
   guide: StrapiBaseGuide,
   productSlug: string
 ): GuideCardProps | null {
@@ -80,7 +84,7 @@ function makeGuideCardProps(
       mobileImagePath: guide.mobileImage?.url,
       link: {
         label: 'guideListPage.cardSection.linkLabel',
-        href: `/${productSlug}/guides/${guide.slug}`,
+        href: `/${locale}/${productSlug}/guides/${guide.slug}`,
         translate: true,
       },
     } satisfies GuideCardProps;

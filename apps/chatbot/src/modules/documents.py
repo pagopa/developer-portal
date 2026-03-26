@@ -5,9 +5,9 @@ from src.modules.logger import get_logger
 from src.modules.settings import SETTINGS, AWS_SESSION
 
 
-LOGGER = get_logger(__name__)
+LOGGER = get_logger(__name__, level=SETTINGS.log_level)
 AWS_S3_CLIENT = AWS_SESSION.client("s3")
-PRODUCTS_S3_FILEPATH = "synced-products-response.json"
+PRODUCTS_S3_FILEPATH = f"{SETTINGS.language_code}/synced-products-response.json"
 
 
 def read_file_from_s3(

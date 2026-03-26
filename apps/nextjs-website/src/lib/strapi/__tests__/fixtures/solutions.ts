@@ -207,7 +207,7 @@ export const expectedSolutionTemplateProps: SolutionTemplateProps = {
     stories: [
       {
         title: 'Case History 1',
-        path: '/case-histories/case-history-1',
+        path: '/it/case-histories/case-history-1',
         image: {
           url: 'https://example.com/example.jpg',
           alternativeText: 'Example Image',
@@ -220,6 +220,6 @@ export const expectedSolutionTemplateProps: SolutionTemplateProps = {
     metaDescription: 'SEO Description',
   },
   solutionSlug: 'solution-title',
-  path: '/solutions/solution-title/details',
+  path: '/it/solutions/solution-title/details',
   updatedAt: '2024-01-01T00:00:00.000Z',
 };

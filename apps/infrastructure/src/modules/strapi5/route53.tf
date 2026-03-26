@@ -46,7 +46,7 @@ module "cms_dns_records" {
 // This Route53 record will point at the Strapi Media Library CDN
 resource "aws_route53_record" "strapi_media_library" {
   zone_id = var.hosted_zone_id
-  name    = format("mediav5.%s", var.dns_domain_name)
+  name    = format("cdnv5.%s", var.dns_domain_name)
   type    = "A"
 
   alias {

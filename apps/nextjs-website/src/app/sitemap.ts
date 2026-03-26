@@ -1,255 +1,484 @@
+/* eslint-disable functional/no-expression-statements */
+/* eslint-disable functional/no-try-statements */
 import type { MetadataRoute } from 'next';
-import { getApiDataParams } from '@/lib/api';
 import {
-  getGuideListPagesProps,
   getCaseHistoriesProps,
-  getProductsProps,
-  getTutorialsProps,
-  getWebinarsProps,
-  getSolutionsProps,
-  getQuickStartGuidesProps,
   getHomepageProps,
-  getOverviewsProps,
-  getTutorialListPagesProps,
+  getSolutionsProps,
+  getWebinarsProps,
+  getReleaseNotesProps,
+  getGuidesProps,
 } from '@/lib/cmsApi';
 import { baseUrl } from '@/config';
 import {
   getGuidesMetadata,
   getReleaseNotesMetadata,
-  getSolutionsMetadata,
+  getSolutionsMetadataByDirNames,
+  getReleaseNotesMetadataByDirNames,
+  getGuidesMetadataByDirNames,
   JsonMetadata,
 } from '@/helpers/s3Metadata.helpers';
-import { OverviewPageProps } from '@/app/[productSlug]/overview/page';
-import { TutorialsPageProps } from '@/app/[productSlug]/tutorials/page';
+import {
+  fetchProductSlugs,
+  fetchProductSinglePages,
+  fetchProductTutorials,
+  fetchProductApiData,
+} from '@/lib/strapi/fetches/fetchSitemapData';
+import { SUPPORTED_LOCALES } from '@/locales';
+import { compact, isEmpty } from 'lodash';
+import { HomepageProps } from '@/app/[locale]/page';
 
 export const dynamic = 'force-dynamic';
 
-function getProductsPagesProps(
-  productSlugs: readonly string[],
-  overviewProps: readonly OverviewPageProps[],
-  tutorialListPages: readonly TutorialsPageProps[]
-) {
-  return productSlugs.map((productSlug) => {
-    const overview = overviewProps.find(
-      (overviewData) => overviewData.product?.slug === productSlug
-    );
-    const tutorialList = tutorialListPages.find(
-      ({ product }) => product.slug === productSlug
-    );
-    return { overview, tutorialList };
-  });
+type SitemapProductRelation = {
+  readonly data?: {
+    readonly attributes: {
+      readonly slug?: string;
+      readonly updatedAt: string;
+    };
+  };
+};
+
+type SitemapApiDataRelation = {
+  readonly data?: {
+    readonly attributes: {
+      readonly updatedAt: string;
+    };
+  };
+};
+
+type SitemapProductRelations = {
+  readonly overview?: SitemapProductRelation;
+  readonly quickstart_guide?: SitemapProductRelation;
+  readonly tutorial_list_page?: SitemapProductRelation;
+  readonly guide_list_page?: SitemapProductRelation;
+  readonly api_data_list_page?: SitemapApiDataRelation;
+};
+
+type SitemapApiData = {
+  readonly attributes: {
+    readonly updatedAt: string;
+    readonly apiRestDetail?: { readonly slug: string };
+    readonly apiSoapDetail?: { readonly slug: string };
+  };
+};
+
+async function getHomepage(localeCode: string): Promise<HomepageProps | null> {
+  try {
+    return await getHomepageProps(localeCode);
+  } catch (error) {
+    console.error('Failed to fetch homepage data for sitemap:', error);
+    return null;
+  }
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  // Get dynamic paths
-  const quickStartParams = await getQuickStartGuidesProps();
-  const apiDataParams = await getApiDataParams();
-  const guideListPages = await getGuideListPagesProps();
-  const caseHistories = await getCaseHistoriesProps();
-  const productSlugs = (await getProductsProps())
-    .filter((product) => product.isVisible)
-    .map((product) => product.slug);
+  const allLocalesSitemaps = await Promise.all(
+    SUPPORTED_LOCALES.map(async (locale) => {
+      const localeCode = locale.langCode;
+      const localizedUrlPrefix = `${baseUrl}/${localeCode}`;
 
-  // Fetch metadata from S3
-  const guidesMetadata = await getGuidesMetadata();
-  const solutionsMetadata = await getSolutionsMetadata();
-  const releaseNotesMetadata = await getReleaseNotesMetadata();
-  const overviews = await getOverviewsProps();
-  const tutorialListPages = await getTutorialListPagesProps();
-  const productPages = getProductsPagesProps(
-    productSlugs,
-    overviews,
-    tutorialListPages
-  );
-  const homePage = await getHomepageProps();
-  // Base routes
-  const routes = [
-    {
-      url: baseUrl,
-      lastModified: new Date(homePage.updatedAt),
-      changeFrequency: 'daily' as const,
-      priority: 1,
-    },
-    {
-      url: `${baseUrl}/privacy-policy`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly' as const,
-      priority: 0.3,
-    },
-    {
-      url: `${baseUrl}/terms-of-service`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly' as const,
-      priority: 0.3,
-    },
-  ];
+      // --------------------------------------------------------------------------------
+      // 1. Fetch Global / Static Pages
+      // --------------------------------------------------------------------------------
 
-  const quickStartRoutes = quickStartParams.map((quickStart) => ({
-    url: `${baseUrl}/${quickStart.product.slug}/quick-start`,
-    lastModified: new Date(quickStart.updatedAt || Date.now()),
-    changeFrequency: 'weekly' as const,
-    priority: 0.8,
-  }));
+      // NOTE: if homepage data is not available, we return an empty sitemap for this locale.
+      const homePage = await getHomepage(localeCode);
 
-  // Case histories
-  const caseHistoryRoutes = caseHistories.map(({ slug, updatedAt }) => ({
-    url: `${baseUrl}/case-histories/${slug}`,
-    lastModified: new Date(updatedAt || Date.now()),
-    changeFrequency: 'weekly' as const,
-    priority: 0.7,
-  }));
+      if (!homePage) {
+        return [] as MetadataRoute.Sitemap;
+      }
 
-  // Product routes
-  const productRoutes = productSlugs.flatMap((productSlug) => {
-    const routes = productPages.find((productPage) => {
-      return (
-        productPage.overview?.product.slug === productSlug ||
-        productPage.tutorialList?.product.slug === productSlug
-      );
-    });
-    const hasTutorials = routes?.tutorialList !== undefined;
-    const returnArray = [];
-    if (routes?.overview)
-      // eslint-disable-next-line functional/immutable-data,functional/no-expression-statements
-      returnArray.push({
-        url: `${baseUrl}/${productSlug}/overview`,
-        lastModified: new Date(routes?.overview?.updatedAt || Date.now()),
-        changeFrequency: 'weekly' as const,
-        priority: 0.8,
-      });
-    if (hasTutorials)
-      // eslint-disable-next-line functional/immutable-data,functional/no-expression-statements
-      returnArray.push({
-        url: `${baseUrl}/${productSlug}/tutorials`,
-        lastModified: new Date(routes?.tutorialList?.updatedAt || Date.now()),
+      const caseHistories = await getCaseHistoriesProps(localeCode);
+      const webinars = await getWebinarsProps(localeCode);
+      const solutions = await getSolutionsProps(localeCode);
+
+      // Base static routes
+      const baseRoutes = [
+        {
+          url: localizedUrlPrefix,
+          lastModified: new Date(homePage.updatedAt),
+          changeFrequency: 'daily' as const,
+          priority: 1,
+        },
+        {
+          url: `${localizedUrlPrefix}/privacy-policy`,
+          lastModified: new Date(), // Standard static page
+          changeFrequency: 'monthly' as const,
+          priority: 0.3,
+        },
+        {
+          url: `${localizedUrlPrefix}/terms-of-service`,
+          lastModified: new Date(), // Standard static page
+          changeFrequency: 'monthly' as const,
+          priority: 0.3,
+        },
+      ];
+
+      // Case History routes (Global collection)
+      const caseHistoryRoutes = caseHistories.map(({ slug, updatedAt }) => ({
+        url: `${localizedUrlPrefix}/case-histories/${slug}`,
+        lastModified: new Date(updatedAt || Date.now()),
         changeFrequency: 'weekly' as const,
         priority: 0.7,
+      }));
+
+      // Webinar routes (Global collection)
+      const webinarRoutes = webinars.map((webinar) => ({
+        url: `${localizedUrlPrefix}/webinars/${webinar.slug}`,
+        lastModified: new Date(webinar.updatedAt || Date.now()),
+        changeFrequency: 'weekly' as const,
+        priority: 0.6,
+      }));
+
+      // Solution routes (Global collection)
+      const solutionRoutes = solutions.map((solution) => ({
+        url: `${localizedUrlPrefix}/solutions/${solution.slug}`,
+        lastModified: new Date(solution.updatedAt || Date.now()),
+        changeFrequency: 'weekly' as const,
+        priority: 0.6,
+      }));
+
+      // Solution Details routes
+      const solutionsDetailRoutes = solutions.map((solution) => ({
+        url: `${localizedUrlPrefix}/solutions/${solution.slug}/details`,
+        lastModified: new Date(solution.updatedAt || Date.now()),
+        changeFrequency: 'weekly' as const,
+        priority: 0.6,
+      }));
+
+      // Helper to find latest update in a collection
+      const getLastUpdate = (
+        items: ReadonlyArray<{ readonly updatedAt?: string }>
+      ) =>
+        items.length <= 0
+          ? ''
+          : items.reduce((latest, current) => {
+              const latestDate = new Date(latest.updatedAt || '');
+              const currentDate = new Date(current.updatedAt || '');
+              return currentDate > latestDate ? current : latest;
+            }).updatedAt;
+
+      // --------------------------------------------------------------------------------
+      // 2. Fetch S3 Metadata (Guides, Solutions, Release Notes)
+      // --------------------------------------------------------------------------------
+      // These are stored in S3 and retrieved via legacy helpers.
+      // We keep them ensuring no missing legacy content.
+      const guidesMetadata = await getGuidesMetadata(localeCode);
+      const guides = await getGuidesProps(localeCode);
+      const guidesDirNames = Array.from(
+        new Set(
+          guides
+            .flatMap((guide) =>
+              guide.versions.map((version) => version.dirName)
+            )
+            .filter((dirName): dirName is string => Boolean(dirName))
+        )
+      );
+      const guidesMetadataByDirNames = await getGuidesMetadataByDirNames(
+        localeCode,
+        guidesDirNames
+      );
+
+      // Merge legacy and new metadata
+      const allGuidesMetadata = [
+        ...guidesMetadata,
+        ...guidesMetadataByDirNames,
+      ];
+
+      // Remove duplicates
+      const uniqueGuidesMetadata = Array.from(
+        new Map(allGuidesMetadata.map((guide) => [guide.path, guide])).values()
+      );
+
+      const solutionDirNames = Array.from(
+        new Set(
+          solutions
+            .map((solution) => solution.dirName)
+            .filter((dirName): dirName is string => Boolean(dirName))
+        )
+      );
+      const solutionsMetadata = await getSolutionsMetadataByDirNames(
+        localeCode,
+        solutionDirNames
+      );
+
+      const sectionRoutes = compact([
+        !isEmpty(solutions) && {
+          url: `${localizedUrlPrefix}/solutions`,
+          lastModified: new Date(getLastUpdate(solutions) || Date.now()),
+          changeFrequency: 'weekly' as const,
+          priority: 0.8,
+        },
+        !isEmpty(webinars) && {
+          url: `${localizedUrlPrefix}/webinars`,
+          lastModified: new Date(getLastUpdate(webinars) || Date.now()),
+          changeFrequency: 'weekly' as const,
+          priority: 0.8,
+        },
+      ]);
+
+      // Release Notes fetching with error handling
+      // eslint-disable-next-line functional/no-let
+      let releaseNotesMetadata: readonly JsonMetadata[] = [];
+      // eslint-disable-next-line functional/no-let
+      let releaseNotes: readonly { readonly dirName: string | null }[] = [];
+
+      try {
+        releaseNotesMetadata = await getReleaseNotesMetadata(localeCode);
+        releaseNotes = await getReleaseNotesProps(localeCode);
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.warn(
+          `Failed to fetch release notes for locale ${localeCode}:`,
+          error
+        );
+      }
+
+      const releaseNotesDirNames = Array.from(
+        new Set(
+          releaseNotes
+            .map((releaseNote) => releaseNote.dirName)
+            .filter((dirName): dirName is string => Boolean(dirName))
+        )
+      );
+
+      const releaseNotesMetadataByDirNames =
+        await getReleaseNotesMetadataByDirNames(
+          localeCode,
+          releaseNotesDirNames
+        );
+
+      // Merge legacy and new metadata to ensure no missing content
+      // Prioritize distributed metadata if duplicates exist (though they shouldn't)
+      const allReleaseNotesMetadata = [
+        ...releaseNotesMetadata,
+        ...releaseNotesMetadataByDirNames,
+      ];
+
+      // Remove duplicates based on path
+      const uniqueReleaseNotesMetadata = Array.from(
+        new Map(
+          allReleaseNotesMetadata.map((releaseNote) => [
+            releaseNote.path,
+            releaseNote,
+          ])
+        ).values()
+      );
+
+      const s3GuideRoutes = uniqueGuidesMetadata.map((guide: JsonMetadata) => {
+        const guidePath = guide.path.startsWith(`/${localeCode}`)
+          ? guide.path
+          : `/${localeCode}${guide.path}`;
+        return {
+          url: `${baseUrl}${guidePath}`,
+          lastModified: new Date(guide.lastModified || Date.now()),
+          changeFrequency: 'weekly' as const,
+          priority: 0.6,
+        };
       });
-    return returnArray;
-  });
 
-  // API routes
-  const apiRoutes = apiDataParams.map(
-    ({ productSlug, apiDataSlug, updatedAt }) => ({
-      url: `${baseUrl}/${productSlug}/api/${apiDataSlug}`,
-      lastModified: new Date(updatedAt || Date.now()),
-      changeFrequency: 'weekly' as const,
-      priority: 0.6,
+      const s3SolutionRoutes = solutionsMetadata.map(
+        (solution: JsonMetadata) => {
+          const solutionPath = solution.path.startsWith(`/${localeCode}`)
+            ? solution.path
+            : `/${localeCode}${solution.path}`;
+          return {
+            url: `${baseUrl}${solutionPath}`,
+            lastModified: new Date(solution.lastModified || Date.now()),
+            changeFrequency: 'weekly' as const,
+            priority: 0.6,
+          };
+        }
+      );
+
+      const s3ReleaseNoteRoutes = uniqueReleaseNotesMetadata.map(
+        (releaseNote: JsonMetadata) => {
+          const notePath = releaseNote.path.startsWith(`/${localeCode}`)
+            ? releaseNote.path
+            : `/${localeCode}${releaseNote.path}`;
+          return {
+            url: `${baseUrl}${notePath}`,
+            lastModified: new Date(releaseNote.lastModified || Date.now()),
+            changeFrequency: 'weekly' as const,
+            priority: 0.6,
+          };
+        }
+      );
+
+      // --------------------------------------------------------------------------------
+      // 3. Fetch Product Routes (Iterative Strategy)
+      // --------------------------------------------------------------------------------
+      // First, fetch all product slugs.
+      const productsResult = await fetchProductSlugs(localeCode);
+      const productItems = productsResult.data;
+
+      // Then iterate and fetch details for each product.
+      // This avoids massive payload transfers and allows for granular optimization.
+      const productRoutesPromises = productItems.map(async (productItem) => {
+        const { slug: productSlug } = productItem;
+
+        // A. Fetch Single Pages linked to this Product (Overview, QuickStart, Lists)
+        // ------------------------------------------------------------------------
+        const singlePagesData = await fetchProductSinglePages(
+          localeCode,
+          productSlug
+        );
+        const relations = singlePagesData
+          .data[0] as unknown as SitemapProductRelations;
+
+        const overviewRoute = relations?.overview?.data
+          ? [
+              {
+                url: `${localizedUrlPrefix}/${productSlug}/overview`,
+                lastModified: new Date(
+                  relations.overview.data.attributes.updatedAt || Date.now()
+                ),
+                changeFrequency: 'weekly' as const,
+                priority: 0.8,
+              },
+            ]
+          : [];
+
+        const quickStartRoute = relations?.quickstart_guide?.data
+          ? [
+              {
+                url: `${localizedUrlPrefix}/${productSlug}/quick-start`,
+                lastModified: new Date(
+                  relations.quickstart_guide.data.attributes.updatedAt ||
+                    Date.now()
+                ),
+                changeFrequency: 'weekly' as const,
+                priority: 0.8,
+              },
+            ]
+          : [];
+
+        const tutorialListRoute = relations?.tutorial_list_page?.data
+          ? [
+              {
+                url: `${localizedUrlPrefix}/${productSlug}/tutorials`,
+                lastModified: new Date(
+                  relations.tutorial_list_page.data.attributes.updatedAt ||
+                    Date.now()
+                ),
+                changeFrequency: 'weekly' as const,
+                priority: 0.7,
+              },
+            ]
+          : [];
+
+        const guideListRoute = relations?.guide_list_page?.data
+          ? [
+              {
+                url: `${localizedUrlPrefix}/${productSlug}/guides`,
+                lastModified: new Date(
+                  relations.guide_list_page.data.attributes.updatedAt ||
+                    Date.now()
+                ),
+                changeFrequency: 'weekly' as const,
+                priority: 0.6,
+              },
+            ]
+          : [];
+
+        // B. Fetch Collections linked to this Product (Tutorials, APIs)
+        // ------------------------------------------------------------------------
+
+        // Tutorials (Individual Pages)
+        const tutorialsData = await fetchProductTutorials(
+          localeCode,
+          productSlug
+        );
+        const tutorialRoutes = tutorialsData.data
+          .filter((tutorial) => tutorial.slug)
+          .map((tutorial) => ({
+            url: `${localizedUrlPrefix}/${productSlug}/tutorials/${tutorial.slug}`,
+            lastModified: new Date(tutorial.updatedAt || Date.now()),
+            changeFrequency: 'weekly' as const,
+            priority: 0.6,
+          }));
+
+        // API Data (Individual Pages)
+        const apisData = await fetchProductApiData(localeCode, productSlug);
+        const apiRoutes = (
+          apisData as unknown as readonly SitemapApiData[]
+        ).flatMap((api) => {
+          const apiSlug =
+            api.attributes.apiRestDetail?.slug ||
+            api.attributes.apiSoapDetail?.slug;
+          return apiSlug
+            ? [
+                {
+                  url: `${localizedUrlPrefix}/${productSlug}/api/${apiSlug}`,
+                  lastModified: new Date(
+                    api.attributes.updatedAt || Date.now()
+                  ),
+                  changeFrequency: 'weekly' as const,
+                  priority: 0.6,
+                },
+              ]
+            : [];
+        });
+
+        const apiListRoute = relations?.api_data_list_page?.data
+          ? [
+              {
+                url: `${localizedUrlPrefix}/${productSlug}/api`,
+                lastModified: new Date(
+                  relations.api_data_list_page.data.attributes.updatedAt ||
+                    Date.now()
+                ),
+                changeFrequency: 'weekly' as const,
+                priority: 0.6,
+              },
+            ]
+          : [];
+
+        return [
+          ...overviewRoute,
+          ...quickStartRoute,
+          ...tutorialListRoute,
+          ...guideListRoute,
+          ...apiListRoute,
+          ...tutorialRoutes,
+          ...apiRoutes,
+        ];
+      });
+
+      const allProductRoutes = (
+        await Promise.all(productRoutesPromises)
+      ).flat();
+
+      return [
+        ...baseRoutes,
+        ...sectionRoutes,
+        ...caseHistoryRoutes,
+        ...webinarRoutes,
+        ...solutionRoutes,
+        ...solutionsDetailRoutes,
+        ...s3GuideRoutes,
+        ...s3SolutionRoutes,
+        ...s3ReleaseNoteRoutes,
+        ...allProductRoutes,
+      ];
     })
   );
 
-  // Guide list pages
-  const guideListPagesRoutes = guideListPages.map((guide) => ({
-    url: `${baseUrl}/${guide.product.slug}/guides`,
-    lastModified: new Date(guide.updatedAt || Date.now()),
-    changeFrequency: 'weekly' as const,
-    priority: 0.6,
-  }));
+  const flatSitemap = allLocalesSitemaps.flat();
 
-  const tutorials = await getTutorialsProps();
-  const tutorialRoutes = tutorials.map((tutorial) => ({
-    url: `${baseUrl}${tutorial.path}`,
-    lastModified: new Date(tutorial.updatedAt || Date.now()),
-    changeFrequency: 'weekly' as const,
-    priority: 0.6,
-  }));
-
-  const webinars = await getWebinarsProps();
-  const webinarRoutes = webinars.map((webinar) => ({
-    url: `${baseUrl}/webinars/${webinar.slug}`,
-    lastModified: new Date(webinar.updatedAt || Date.now()),
-    changeFrequency: 'weekly' as const,
-    priority: 0.6,
-  }));
-
-  const solutions = await getSolutionsProps();
-  const solutionRoutes = solutions.map((solution) => ({
-    url: `${baseUrl}/solutions/${solution.slug}`,
-    lastModified: new Date(solution.updatedAt || Date.now()),
-    changeFrequency: 'weekly' as const,
-    priority: 0.6,
-  }));
-
-  const solutionsDetailRoutes = solutions.map((solution) => ({
-    url: `${baseUrl}/solutions/${solution.slug}/details`,
-    lastModified: new Date(solution.updatedAt || Date.now()),
-    changeFrequency: 'weekly' as const,
-    priority: 0.6,
-  }));
-
-  const lastSolutionUpdatedAt =
-    solutions.length <= 0
-      ? ''
-      : solutions.reduce((latest, current) => {
-          const latestDate = new Date(latest.updatedAt || '');
-          const currentDate = new Date(current.updatedAt || '');
-          return currentDate > latestDate ? current : latest;
-        }).updatedAt;
-  const lastWebinarUpdatedAt =
-    webinars.length <= 0
-      ? ''
-      : webinars.reduce((latest, current) => {
-          const latestDate = new Date(latest.updatedAt || '');
-          const currentDate = new Date(current.updatedAt || '');
-          return currentDate > latestDate ? current : latest;
-        }).updatedAt;
-
-  // Add main section routes
-  const sectionRoutes = [
-    {
-      url: `${baseUrl}/solutions`,
-      lastModified: new Date(lastSolutionUpdatedAt || Date.now()),
-      changeFrequency: 'weekly' as const,
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/webinars`,
-      lastModified: new Date(lastWebinarUpdatedAt || Date.now()),
-      changeFrequency: 'weekly' as const,
-      priority: 0.8,
-    },
-  ];
-
-  // Generate routes for guides from S3 metadata
-  const s3GuideRoutes = guidesMetadata.map((guide: JsonMetadata) => ({
-    url: `${baseUrl}${guide.path}`,
-    lastModified: new Date(guide.lastModified || Date.now()),
-    changeFrequency: 'weekly' as const,
-    priority: 0.6,
-  }));
-
-  // Generate routes for solutions from S3 metadata
-  const s3SolutionRoutes = solutionsMetadata.map((solution: JsonMetadata) => ({
-    url: `${baseUrl}${solution.path}`,
-    lastModified: new Date(solution.lastModified || Date.now()),
-    changeFrequency: 'weekly' as const,
-    priority: 0.6,
-  }));
-
-  // Generate routes for release notes from S3 metadata
-  const s3ReleaseNoteRoutes = releaseNotesMetadata.map(
-    (releaseNote: JsonMetadata) => ({
-      url: `${baseUrl}${releaseNote.path}`,
-      lastModified: new Date(releaseNote.lastModified || Date.now()),
-      changeFrequency: 'weekly' as const,
-      priority: 0.6,
-    })
-  );
-
-  return [
-    ...routes,
-    ...quickStartRoutes,
-    ...caseHistoryRoutes,
-    ...productRoutes,
-    ...apiRoutes,
-    ...guideListPagesRoutes,
-    ...tutorialRoutes,
-    ...webinarRoutes,
-    ...solutionRoutes,
-    ...solutionsDetailRoutes,
-    ...sectionRoutes,
-    ...s3GuideRoutes,
-    ...s3SolutionRoutes,
-    ...s3ReleaseNoteRoutes,
-  ];
+  // Deduplicate URLs - keep the entry with the most recent lastModified date
+  return Array.from(
+    flatSitemap.reduce((map, entry) => {
+      const existing = map.get(entry.url);
+      if (
+        !existing ||
+        new Date(entry.lastModified || Date.now()) >
+          new Date(existing.lastModified || Date.now())
+      ) {
+        map.set(entry.url, entry);
+      }
+      return map;
+    }, new Map<string, MetadataRoute.Sitemap[number]>())
+  ).map(([, entry]) => entry);
 }

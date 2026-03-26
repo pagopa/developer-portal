@@ -4,19 +4,20 @@ import { Product } from '@/lib/types/product';
 export type BreadcrumbItem = { readonly name?: string; readonly item?: string };
 
 export function productPageToBreadcrumbs(
+  locale: string,
   product: Product,
   breadcrumbSegments?: readonly BreadcrumbSegment[]
 ): readonly BreadcrumbSegment[] {
   return [
     {
       name: 'breadcrumbs.home',
-      path: '/',
+      path: `/${locale}`,
       translate: true,
     },
     {
       name: product.name,
       path: product.hasOverviewPage
-        ? `${
+        ? `/${locale}${
             product.slug.startsWith('/') ? product.slug : `/${product.slug}` // TODO: remove this control when validation will be added to Strapi
           }/overview`
         : '',
@@ -26,18 +27,19 @@ export function productPageToBreadcrumbs(
 }
 
 export function pageToBreadcrumbs(
+  locale: string,
   pagePath: string,
   paths?: readonly BreadcrumbSegment[]
 ): readonly BreadcrumbSegment[] {
   return [
     {
       name: 'breadcrumbs.home',
-      path: '/',
+      path: `/${locale}`,
       translate: true,
     },
     {
       name: `breadcrumbs.${pagePath}`,
-      path: `/${pagePath}`,
+      path: `/${locale}/${pagePath}`,
       translate: true,
     },
     ...(paths || []),

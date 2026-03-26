@@ -36,6 +36,31 @@ output "athena_results_bucket_name" {
   value       = aws_s3_bucket.athena_results.id
 }
 
+output "webinar_metrics_lambda_arn" {
+  description = "The ARN of the webinar metrics Lambda function."
+  value       = aws_lambda_function.webinar_metrics.arn
+}
+
+output "webinar_metrics_lambda_name" {
+  description = "The name of the webinar metrics Lambda function."
+  value       = aws_lambda_function.webinar_metrics.function_name
+}
+
+output "webinar_metrics_api_url" {
+  description = "The invoke URL of the webinar metrics API Gateway."
+  value       = "${aws_api_gateway_stage.webinar_metrics.invoke_url}/metrics"
+}
+
+output "webinar_metrics_api_key_id" {
+  description = "The ID of the API key for the webinar metrics API. Retrieve the value with: aws apigateway get-api-key --api-key <id> --include-value"
+  value       = aws_api_gateway_api_key.webinar_metrics.id
+}
+
+output "deploy_lambda_role_arn" {
+  description = "The ARN of the IAM role used by GitHub Actions to deploy the IVS video processing Lambda."
+  value       = aws_iam_role.deploy_lambda.arn
+}
+
 output "ingest_metrics_endpoint" {
   value       = aws_lambda_function_url.ingest_url.function_url
   description = "Function url to post metrics for to viewer count."

@@ -13,12 +13,13 @@ const MobileLanguageSelector = ({
   const { palette } = useTheme();
 
   const currentLocaleLabel =
-    locales.find((locale) => locale.code === currentLocale)?.label ||
+    locales.find((locale) => locale.langCode === currentLocale)?.label ||
     currentLocale.toUpperCase();
 
   return (
     <>
       <MobileSiteHeaderStyledTreeItem
+        disabled={locales.length <= 1}
         itemId={'siteHeader.languageMenu'}
         label={
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -46,12 +47,12 @@ const MobileLanguageSelector = ({
           </Box>
         }
       >
-        {locales.map(({ code, label }) => (
+        {locales.map(({ langCode, label }) => (
           <MuiLink
-            key={code}
+            key={langCode}
             variant='body1'
             component={Link}
-            href={`/${code}`}
+            href={`/${langCode}`}
             style={{
               color: palette.primary.dark,
               display: 'block',

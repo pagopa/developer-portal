@@ -1,6 +1,6 @@
 /* eslint-disable functional/no-try-statements */
 /* eslint-disable functional/no-expression-statements */
-import { OverviewPageProps } from '@/app/[productSlug]/overview/page';
+import { OverviewPageProps } from '@/app/[locale]/[productSlug]/overview/page';
 import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
 import { makeBaseProductWithoutLogoProps } from './makeProducts';
 import { StrapiOverviews } from '@/lib/strapi/types/overviews';
@@ -8,6 +8,7 @@ import { compact } from 'lodash';
 import { UseCase } from '../../types/useCaseData';
 
 export function makeOverviewsProps(
+  locale: string,
   strapiOverviews: StrapiOverviews
 ): ReadonlyArray<OverviewPageProps> {
   return compact(
@@ -23,8 +24,8 @@ export function makeOverviewsProps(
       try {
         return {
           updatedAt: attributes.updatedAt,
-          path: `/${attributes.product?.slug}/overview`,
-          product: makeBaseProductWithoutLogoProps(attributes.product),
+          path: `/${locale}/${attributes.product?.slug}/overview`,
+          product: makeBaseProductWithoutLogoProps(locale, attributes.product),
           hero: {
             backgroundImage: attributes.backgroundImage.url,
             altText: attributes.backgroundImage.alternativeText || '',
@@ -87,7 +88,7 @@ export function makeOverviewsProps(
                     },
                     title: tutorial.title,
                     name: 'shared.moreInfo',
-                    path: `/${tutorial.product.slug}/tutorials/${tutorial.slug}`,
+                    path: `/${locale}/${tutorial.product.slug}/tutorials/${tutorial.slug}`,
                   };
                 })
               ) || [],
@@ -122,7 +123,7 @@ export function makeOverviewsProps(
                     },
                     title: useCase.title,
                     name: 'shared.moreInfo',
-                    path: `/${useCase.product.slug}/use-cases/${useCase.slug}`,
+                    path: `/${locale}/${useCase.product.slug}/use-cases/${useCase.slug}`,
                   } satisfies UseCase;
                 })
               ) || [],

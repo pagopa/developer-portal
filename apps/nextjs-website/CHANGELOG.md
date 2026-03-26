@@ -1,5 +1,116 @@
 # nextjs-website
 
+## 16.3.1
+
+### Patch Changes
+
+- 4ba0d2e: Fix: update case history path to include locale and update api data page select to incude locale
+
+## 16.3.0
+
+### Minor Changes
+
+- 4b8502f: Make external links in ChatLink component recognisable
+- e5c16f8: Update footer and add localization for en links
+
+### Patch Changes
+
+- dbd5492: Fix webinar subscription redirect to include locale in URL
+- 27e0205: Fix product cards' link without locale in solutions and case histories
+- c1e7565: Add navigation helper function to check validity and safety of redirect path and add it to the login flow
+- 6832c57: Fix unexpected undefined value company_type in user profile
+- 0c2dc85: Fix alignment of Feature component items
+- 6912c61: Manage error for missing locale using formatted error page instead of deafault nextpage
+
+## 16.2.0
+
+### Minor Changes
+
+- 4bc9c1e: Add ChatbotChipsContainer and its storybook
+- 27a843f: Enhance chatbot query payload to include knowledgeBase property and update related functions
+- 0651ba3: Add Chatbot chips component and storybook element
+- 22ca48c: Add ChatbotChip functionality and enhance ChatbotChipsContainer layout and add QueryWithChips story to showcase chatbot chip functionality
+
+## 16.1.1
+
+### Patch Changes
+
+- 0b75588: Fix sitemap when hompage is missing in some locale
+- 94a7407: Removed cache from S3 metadata helper
+- c190736: Add locale support to WebinarListItem for dynamic link generation and Add locale to authentication link in Chatobot's guest message
+- Updated dependencies [700e934]
+  - gitbook-docs@1.8.2
+
+## 16.1.0
+
+### Minor Changes
+
+- 19a0ecf: Implement redirect on product overview page and tutorial list page if the tutorial has redirectPath set
+- 32dd008: Add custom field "preferred_language" in cognito user schemas
+- 69af2c9: Add preferred language support during user signup
+- dc06a71: Fix overview internal links
+
+### Patch Changes
+
+- c3c5642: Fix headers style for RapiDoc, remove blue separator lines
+- 19a0ecf: Add redirect to redirectPath if a user lands on a tutorial page with redirectPath set
+- Updated dependencies [0d4e746]
+- Updated dependencies [88feabd]
+  - gitbook-docs@1.8.1
+
+## 16.0.0
+
+### Major Changes
+
+- 8514938: Add locale route parameter, add support for locale in all app pages and layout component
+
+### Minor Changes
+
+- 8514938: Remove english from supported locales and add disabled state for the language selection menu if the supported locales are less than 2
+- d9c5d62: Add locale support to fetchFromStrapi
+- d9c5d62: Add locale support to fetches from CDN for synced responses and metadata
+- 8324e09: Update synced strapi response getter
+- d9c5d62: Add checks to conditionally show links for solutions and webinars sections in site header menu
+- 8514938: Fix mobile header menu spacing
+- fff30f6: Hide empty overview's subsections and add logic to alternate background colors of overview's subsections
+
+### Patch Changes
+
+- 2526507: Refactor metadata caching to use generic types and improve locale support
+- 8514938: Remove i18n featureflag
+- a562781: Fix sitemap and metadata fetching to include locale support
+- 9269763: Fix chip colors, fix api selector style
+- 4cd556e: Fix links with missing locale and change prop names from 'currentLocale' to 'locale' for consistency
+- c94fff9: Fix API link in product header menu
+- 7af09fb: Implement combined guide and release notes metadata retrieval from CDN and S3 for comprehensive sitemap generation.
+- bd66bcb: Update release notes folder structure
+- aa122b5: Add check to conditionally add webinars and solutions links and add link generation for api list page
+- c9b5bc9: Fix Rapidoc rendering issue by optimizing ApiViewer loading
+- 2498f08: Add missin slash in login href
+- d9c5d62: Refactor all instances of Date to use the i18n translated format helper.
+- d9c5d62: Add support to i18n to the sitemap
+- d9c5d62: Optimise component rendering and improve code soundness by using readonly props
+- af5166e: Remove empty array validation from release notes and solutions because they can be empty
+- d9c5d62: Add English locale to DEV and UAT environments
+- 5995b29: Fix issue with rounded menu items and focused first option
+- Updated dependencies [d9c5d62]
+- Updated dependencies [8324e09]
+  - gitbook-docs@1.8.0
+
+## 15.1.0
+
+### Minor Changes
+
+- 1a9b19a: Update Guide, Solutions and Release-notes fetchFromCdn to use multiple metadata files
+- c14fd1d: Add download button to API pages
+
+### Patch Changes
+
+- a05102e: Generate solution sitemap routes by reading per-solution `metadata.json` files from S3 instead of relying on a single aggregated file.
+- c9b0ceb: Optimize sitemap generation by fetching products first and using partial data to reduce load
+- Updated dependencies [a50ce75]
+  - gitbook-docs@1.7.4
+
 ## 15.0.0
 
 ### Major Changes

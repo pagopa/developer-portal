@@ -1,5 +1,52 @@
 # chatbot-index
 
+## 2.6.0
+
+### Minor Changes
+
+- 167d2ce: Add refresh structured documents function
+
+## 2.5.0
+
+### Minor Changes
+
+- 83d45a8: Create index now also considers structured data
+
+### Patch Changes
+
+- 83d45a8: Upgrade installation packages
+- f293978: Fix safe yaml load
+
+## 2.4.1
+
+### Patch Changes
+
+- a49b695: Update loggers in chatbot, chatbot-monitor, chatbot-evaluate, and chatbot-index
+- a49b695: Move presidio and dynamodb functions from chatbot to chatbot-monitor
+- a49b695: Run dockerfiles as normal user
+
+## 2.4.0
+
+### Minor Changes
+
+- 2bc17a7: Add language code 'it' in the s3 paths
+- 4c96727: Fix deploy chatbot action continue on error
+
+### Patch Changes
+
+- ae2f4bc: Fix unconsideration of English pages as dynamics ones
+
+## 2.3.0
+
+### Minor Changes
+
+- d4def7d: Add script to add missing folders to the vector index
+
+### Patch Changes
+
+- 9fa183e: Fix to consider only docIDs that belong to static docs when adding missing folders md files to vector index
+- da6c4d9: The refresh of the API and Dynamic docs is handled indipendently on a github workflow and not anymore in the lambda function
+
 ## 2.2.0
 
 ### Minor Changes

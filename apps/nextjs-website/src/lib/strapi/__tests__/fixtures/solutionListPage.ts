@@ -76,7 +76,7 @@ export const expectedSolutionListTemplateProps: SolutionListTemplateProps = {
       labels: [
         {
           label: 'P1',
-          path: '/product-1',
+          path: '/it/product-1',
         },
       ],
     },
@@ -87,7 +87,7 @@ export const expectedSolutionListTemplateProps: SolutionListTemplateProps = {
     stories: [
       {
         title: 'Case History 1',
-        path: 'case-histories/case-history-1',
+        path: '/it/case-histories/case-history-1',
         image: {
           url: 'https://example.com/example.jpg',
           alternativeText: 'Example Image',

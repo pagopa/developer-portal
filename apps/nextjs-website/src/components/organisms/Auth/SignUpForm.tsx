@@ -1,7 +1,9 @@
 'use client';
 import {
   validateEmail,
-  validateField,
+  validateMaxLenght,
+  validateRequired,
+  validateNameFormat,
   validatePassword,
 } from '@/helpers/auth.helpers';
 import { SignUpUserData } from '@/lib/types/sign-up';
@@ -26,18 +28,7 @@ import { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import { PasswordTextField } from './PasswordTextField';
 import PoliciesParagraph from './PoliciesParagraph';
 import { companyRoles } from '@/config';
-
-const defaults = {
-  username: '',
-  password: '',
-  firstName: '',
-  lastName: '',
-  mailinglistAccepted: false,
-  surveyAccepted: false,
-  role: '',
-  company: '',
-  confirmPassword: '',
-};
+import { useParams } from 'next/navigation';
 
 interface SignUpFormProps {
   // eslint-disable-next-line functional/no-return-void
@@ -52,6 +43,7 @@ interface SignUpFieldsError {
   email: string;
   password: string;
   confirmPassword: string;
+  role: string;
 }
 
 const SignUpForm = ({
@@ -59,43 +51,62 @@ const SignUpForm = ({
   userAlreadyExist,
   submitting = false,
 }: SignUpFormProps) => {
+  const { locale } = useParams<{ locale: string }>();
   const t = useTranslations();
   const { palette } = useTheme();
   const boldInputSx = {
     '& .MuiInputBase-input': { fontWeight: 600 },
     '& .MuiSelect-select': { fontWeight: 600 },
   };
-  const [userData, setUserData] = useState<SignUpUserData>(defaults);
+  const defaultUserDataAttributes: SignUpUserData = {
+    username: '',
+    password: '',
+    firstName: '',
+    lastName: '',
+    mailinglistAccepted: false,
+    surveyAccepted: false,
+    role: '',
+    company: '',
+    confirmPassword: '',
+    preferredLanguage: locale,
+  };
+  const [userData, setUserData] = useState<SignUpUserData>(
+    defaultUserDataAttributes
+  );
   const [fieldErrors, setFieldErrors] = useState<Partial<SignUpFieldsError>>(
     {}
   );
 
   const validateForm = useCallback(() => {
-    const { username, confirmPassword, firstName, lastName, password } =
+    const { username, confirmPassword, firstName, lastName, password, role } =
       userData;
 
-    const nameError = validateField(firstName);
-    const surnameError = validateField(lastName);
+    const nameError =
+      validateRequired(firstName) ||
+      validateMaxLenght(firstName) ||
+      validateNameFormat(firstName);
+    const surnameError =
+      validateRequired(lastName) ||
+      validateMaxLenght(lastName) ||
+      validateNameFormat(lastName);
     const emailError = validateEmail(username);
-    const emailEmptyError = validateField(username);
     const passwordError = validatePassword(password);
     const confirmPasswordError = password !== confirmPassword;
+    const roleError = validateMaxLenght(role) || validateNameFormat(role);
 
     // eslint-disable-next-line functional/no-let
     let errors = {};
 
     if (nameError) {
-      errors = { ...errors, name: t('shared.requiredFieldError') };
+      errors = { ...errors, name: t(`shared.${nameError}`) };
     }
 
     if (surnameError) {
-      errors = { ...errors, surname: t('shared.requiredFieldError') };
+      errors = { ...errors, surname: t(`shared.${surnameError}`) };
     }
 
-    if (emailEmptyError) {
-      errors = { ...errors, email: t('shared.requiredFieldError') };
-    } else if (emailError) {
-      errors = { ...errors, email: t('shared.' + emailError) };
+    if (emailError) {
+      errors = { ...errors, email: t(`shared.${emailError}`) };
     }
 
     if (passwordError) {
@@ -109,6 +120,13 @@ const SignUpForm = ({
       };
     }
 
+    if (roleError) {
+      errors = {
+        ...errors,
+        role: t(`shared.${roleError}`),
+      };
+    }
+
     setFieldErrors(errors);
 
     return (
@@ -116,7 +134,8 @@ const SignUpForm = ({
       !surnameError &&
       !emailError &&
       !passwordError &&
-      !confirmPasswordError
+      !confirmPasswordError &&
+      !roleError
     );
   }, [userData, t]);
 
@@ -296,6 +315,8 @@ const SignUpForm = ({
                   value={role}
                   variant='outlined'
                   onChange={handleInputChange}
+                  error={!!fieldErrors.role}
+                  helperText={fieldErrors.role}
                 />
               </Stack>
               <Grid container>
@@ -356,7 +377,7 @@ const SignUpForm = ({
               <Typography
                 component={Link}
                 fontSize={16}
-                href='/auth/login'
+                href={`/${locale}/auth/login`}
                 variant='caption-semibold'
                 color={palette.primary.main}
               >
