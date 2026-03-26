@@ -1,24 +1,25 @@
-import { makeUrlReplaceMap } from '../makeProps/makeUrlReplaceMap';
+import { mapUrlReplaceMap } from '@/lib/urlReplaceMap/mapper';
 import {
-  strapiUrlReplaceMapFixture,
   expectedUrlReplaceMapFixture,
-} from './fixtures/urlReplaceMap';
+  strapiUrlReplaceMapFixture,
+} from '@/lib/__tests__/fixtures/urlReplaceMap';
 import {
-  urlReplaceMapSingle,
   urlReplaceMapMultiple,
-} from './factories/urlReplaceMap';
+  urlReplaceMapSingle,
+} from '@/lib/__tests__/factories/urlReplaceMap';
 
-describe('makeUrlReplaceMap', () => {
+describe('mapUrlReplaceMap', () => {
   it('should map a single entry with subPath', () => {
-    const urlReplaceMap = makeUrlReplaceMap('it', {
+    const urlReplaceMap = mapUrlReplaceMap('it', {
       data: strapiUrlReplaceMapFixture,
     });
+
     expect(urlReplaceMap).toEqual(expectedUrlReplaceMapFixture);
   });
 
   it('should map a single entry without subPath', () => {
     const data = urlReplaceMapSingle({ subPath: undefined });
-    const urlReplaceMap = makeUrlReplaceMap('it', { data: data });
+    const urlReplaceMap = mapUrlReplaceMap('it', { data });
 
     expect(urlReplaceMap).toEqual({
       'source-url': '/it/product-slug/guides/guide-slug',
@@ -27,7 +28,7 @@ describe('makeUrlReplaceMap', () => {
 
   it('should map multiple entries', () => {
     const data = urlReplaceMapMultiple();
-    const urlReplaceMap = makeUrlReplaceMap('it', { data: data });
+    const urlReplaceMap = mapUrlReplaceMap('it', { data });
 
     expect(urlReplaceMap).toEqual({
       a: '/it/product-slug/guides/guide-slug',

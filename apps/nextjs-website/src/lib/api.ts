@@ -12,6 +12,8 @@ import { UseCasesRepository } from '@/lib/useCases';
 import { UseCaseListPageRepository } from '@/lib/useCaseListPage';
 import { WebinarsRepository } from '@/lib/webinars';
 import { WebinarCategoriesRepository } from '@/lib/webinarCategories';
+import { TagsRepository } from '@/lib/tags';
+import { UrlReplaceMapRepository } from '@/lib/urlReplaceMap';
 import { Webinar } from '@/lib/types/webinar';
 import { getReleaseNoteProps, getStrapiReleaseNotes } from './cmsApi';
 import { parseS3GuidePage } from '@/helpers/parseS3Doc.helpers';
@@ -172,6 +174,14 @@ export async function getWebinars(locale: string): Promise<readonly Webinar[]> {
 
 export async function getWebinarCategories(locale: string) {
   return WebinarCategoriesRepository.getAll(locale);
+}
+
+export async function getTags(locale: string) {
+  return TagsRepository.getAll(locale);
+}
+
+export async function getUrlReplaceMap(locale: string) {
+  return UrlReplaceMapRepository.get(locale);
 }
 
 export async function getCaseHistory(locale: string, caseHistorySlug?: string) {

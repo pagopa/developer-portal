@@ -1,6 +1,4 @@
 import { buildEnv } from '@/lib/buildEnv';
-import { fetchUrlReplaceMap } from './strapi/fetches/fetchUrlReplaceMap';
-import { makeUrlReplaceMap } from './strapi/makeProps/makeUrlReplaceMap';
 import { makeReleaseNotesProps } from '@/lib/strapi/makeProps/makeReleaseNotes';
 import {
   makeGuide as makeGuideS3,
@@ -11,21 +9,9 @@ import {
   fetchResponseFromCDN,
   JsonMetadata,
 } from '@/helpers/s3Metadata.helpers';
-import { fetchTags } from '@/lib/strapi/fetches/fetchTags';
-import { makeTagsProps } from '@/lib/strapi/makeProps/makeTags';
 import { getSyncedReleaseNotesResponseJsonFile } from 'gitbook-docs/syncedResponses';
 import { GuidesRepository } from '@/lib/guides';
 import { StrapiReleaseNotes } from './strapi/types/releaseNotes';
-
-export const getTagsProps = async (locale: string) => {
-  const strapiTags = await fetchTags(locale, buildEnv);
-  return makeTagsProps(strapiTags);
-};
-
-export const getUrlReplaceMapProps = async (locale: string) => {
-  const strapiUrlReplaceMap = await fetchUrlReplaceMap(locale, buildEnv);
-  return makeUrlReplaceMap(locale, strapiUrlReplaceMap);
-};
 
 export const getGuideProps = async (
   guidePaths: ReadonlyArray<string>,
