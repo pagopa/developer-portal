@@ -119,7 +119,7 @@ export const strapiGuideListPagesData = {
         api_data_list_page: {
           id: 45,
           updatedAt: '2026-01-01T00:00:00.000Z',
-          apiData: [
+          api_data: [
             {
               apiRestDetail: undefined,
               apiSoapDetail: undefined,

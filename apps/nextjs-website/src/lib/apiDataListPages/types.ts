@@ -20,7 +20,10 @@ export type ApiDataListPage = {
 export type ApiDataListPageWithoutProduct = {
   readonly id: number;
   readonly updatedAt: string;
-  readonly apiData: readonly Pick<ApiData, 'apiRestDetail' | 'apiSoapDetail'>[];
+  readonly api_data: readonly Pick<
+    ApiData,
+    'apiRestDetail' | 'apiSoapDetail'
+  >[];
 };
 
 export type ApiDataListPages = RootEntity<readonly ApiDataListPage[]>;
