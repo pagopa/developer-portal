@@ -23,6 +23,11 @@ const makeMarkdownContentDict = async (
 };
 
 export const UseCasesRepository = {
+  /**
+   * Returns all Use Cases
+   * @param locale The locale used to get the Use Cases.
+   * @returns An array of Use Cases with all their fields.
+   */
   getAll: async (locale: string): Promise<readonly UseCaseProps[]> => {
     const strapiUseCases = await fetchUseCases(locale, buildEnv);
     const markdownParts = strapiUseCases.data.flatMap((useCase) =>
@@ -32,7 +37,12 @@ export const UseCasesRepository = {
 
     return mapUseCasesProps(locale, strapiUseCases, markdownContentDict);
   },
-
+  /**
+   * Returns a Use Case by its path
+   * @param locale The locale used to get the Use Cases.
+   * @param path The path of the Use Case to retrieve.
+   * @returns The matching Use Case, or `undefined` if no entry is found.
+   */
   getByPath: async (
     locale: string,
     path: string
