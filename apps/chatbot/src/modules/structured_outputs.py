@@ -49,8 +49,8 @@ class FollowUpQuestionsOutput(BaseModel):
     """A structured output for follow-up questions."""
 
     follow_up_questions: List[FollowUpQuestion] = Field(
+        default=[],
         description="Follow-up questions about Developer or Citizen documentation.",
-        min_length=2,
         max_length=10,
     )
 
