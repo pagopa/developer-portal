@@ -4,6 +4,7 @@ import { StrapiWebinars } from '@/lib/strapi/types/webinars';
 
 export const webinarPopulate = {
   populate: {
+    chapters: '*',
     coverImage: {
       populate: '*',
     },

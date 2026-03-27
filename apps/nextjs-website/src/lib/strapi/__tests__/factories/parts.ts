@@ -53,6 +53,14 @@ export function minimalQuotePart(): StrapiPart {
   };
 }
 
+export function minimalMarkdownPart(): StrapiPart {
+  return {
+    __component: 'parts.markdown',
+    dirName: 'some-dir',
+    pathToFile: 'index.md',
+  };
+}
+
 export function minimalCkEditorPart(): StrapiPart {
   return {
     __component: 'parts.ck-editor',

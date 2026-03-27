@@ -1,5 +1,11 @@
 # infrastructure
 
+## 10.1.0
+
+### Minor Changes
+
+- 3259512: CloudFront security headers to prevent clickjacking
+
 ## 10.0.0
 
 ### Major Changes

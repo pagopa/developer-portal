@@ -51,7 +51,7 @@ export function makeTutorialsProps(
           path: `/${locale}/${attributes.product.slug}/tutorials/${attributes.slug}`,
           parts: compact(
             attributes.parts?.map((part) =>
-              makePartProps(part, markdownContentDict)
+              makePartProps(part, markdownContentDict, locale)
             ) || []
           ),
           productSlug: attributes.product.slug,
