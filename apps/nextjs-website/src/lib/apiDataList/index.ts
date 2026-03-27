@@ -16,25 +16,6 @@ export const ApiDataListRepository = {
     return mapApiDataList(locale, rawData);
   },
   /**
-   * Returns API Data settings for a given product and API Data slug.
-   * @param locale The locale used to get the API Data collection.
-   * @param productSlug The slug of the product to filter API Data by.
-   * @param apiDataSlug The slug of the API Data to retrieve.
-   * @returns The matching API Data entry, or `undefined` if no entry is found.
-   */
-  getByProductAndSlug: async (
-    locale: string,
-    productSlug: string,
-    apiDataSlug: string
-  ): Promise<ApiDataPageProps | undefined> => {
-    const all = await ApiDataListRepository.getAll(locale);
-    return all.find(
-      (apiData) =>
-        apiData.product?.slug === productSlug &&
-        apiData.apiDataSlug === apiDataSlug
-    );
-  },
-  /**
    * Returns API Data by looking up just the slug.
    * @param locale The locale used to get the API Data collection.
    * @param apiDataSlug The slug of the API Data to retrieve.
