@@ -6,7 +6,7 @@ import { ApiDataList, ApiDataPageProps } from './types';
 import { getSoapApiMetadata } from '@/helpers/s3Metadata.helpers';
 import { staticContentsUrl } from '@/config';
 
-export async function getApiSoapContentUrls(
+async function getApiSoapContentUrls(
   locale: string,
   apiDirName: string
 ) {
