@@ -1,5 +1,11 @@
 # cognito-functions
 
+## 1.2.0
+
+### Minor Changes
+
+- a83ce16: Enhance pre-sign-up handler with field validation for email, given name, family name, and role
+
 ## 1.1.2
 
 ### Patch Changes
