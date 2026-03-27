@@ -7,13 +7,13 @@ import { buildEnv } from '@/lib/buildEnv';
 const makeStrapiApiDataListPagePopulate = () =>
   qs.stringify({
     populate: {
-      apiData: {
+      api_data: {
         populate: {
           apiRestDetail: {
-            populate: ['slug', 'specUrls'],
+            populate: '*',
           },
           apiSoapDetail: {
-            populate: ['slug', 'repositoryUrl', 'dirName'],
+            populate: '*',
           },
           icon: { populate: '*' },
           product: { populate: 'logo' },
@@ -27,9 +27,8 @@ const makeStrapiApiDataListPagePopulate = () =>
         populate: ['icon'],
       },
       seo: {
-        populate: '*,metaImage,metaSocial.image',
+        populate: '*',
       },
-      enableFilters: true,
     },
   });
 

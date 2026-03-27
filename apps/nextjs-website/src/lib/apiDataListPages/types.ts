@@ -11,7 +11,7 @@ export type ApiDataListPage = {
   readonly description?: string;
   readonly product: StrapiBaseProductWithRelations;
   readonly updatedAt: string;
-  readonly apiData: readonly ApiData[];
+  readonly api_data: readonly ApiData[];
   readonly bannerLinks: readonly StrapiBannerLink[];
   readonly seo?: StrapiSeo;
   readonly enableFilters?: boolean;

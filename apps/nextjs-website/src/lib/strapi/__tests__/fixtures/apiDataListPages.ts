@@ -34,7 +34,7 @@ export const strapiApiDataListPages: ApiDataListPages = {
         use_case_list_page: 1,
         tags: [],
       },
-      apiData: [
+      api_data: [
         {
           id: 1,
           bannerLinks: [],

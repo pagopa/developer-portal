@@ -64,14 +64,14 @@ export function mapApiDataListPages(
           },
           product,
           apiDetailSlugs: compact(
-            apiPage.apiData.map((item) =>
+            apiPage.api_data.map((item) =>
               item.apiRestDetail
                 ? item.apiRestDetail.slug
                 : item.apiSoapDetail?.slug
             )
           ),
           cards: compact(
-            apiPage.apiData.map(mapApiDataListPageCard(locale, slug))
+            apiPage.api_data.map(mapApiDataListPageCard(locale, slug))
           ),
           bannerLinks: apiPage.bannerLinks.map(mapBannerLinkProps),
           seo: apiPage.seo,

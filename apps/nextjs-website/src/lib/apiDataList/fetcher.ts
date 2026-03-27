@@ -9,10 +9,10 @@ const makeStrapiApiDataListPopulate = () =>
   qs.stringify({
     populate: {
       apiRestDetail: {
-        populate: ['slug', 'specUrls'],
+        populate: ['specUrls'],
       },
       apiSoapDetail: {
-        populate: ['slug', 'repositoryUrl', 'dirName'],
+        populate: '*',
       },
       icon: { populate: '*' },
       product: {
@@ -22,7 +22,7 @@ const makeStrapiApiDataListPopulate = () =>
         populate: ['icon'],
       },
       seo: {
-        populate: '*,metaImage,metaSocial.image',
+        populate: '*',
       },
     },
   });

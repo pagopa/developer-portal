@@ -17,7 +17,6 @@ export const ApiDataListPagesRepository = {
     }
     return mapApiDataListPages(locale, rawData);
   },
-
   /**
    * Returns API Data List Page settings for a given product
    * @param locale The locale used to get the API Data List Page collection.

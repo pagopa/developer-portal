@@ -14,7 +14,7 @@ export function minimalApiDataListPages(): ApiDataListPages {
       description: undefined,
       seo: undefined,
       bannerLinks: [],
-      apiData: [
+      api_data: [
         {
           id: 1,
           title: 'Minimal API',
@@ -39,7 +39,7 @@ export function apiDataListPageWithEmptyApiData(): ApiDataListPages {
     {
       ...page,
       title: 'Empty API List Page',
-      apiData: [],
+      api_data: [],
     },
   ]);
 }
@@ -50,7 +50,7 @@ export function apiDataListPageWithMixedApiTypes(): ApiDataListPages {
     {
       ...page,
       title: 'Mixed API Types Page',
-      apiData: [
+      api_data: [
         // Valid REST API
         {
           id: 1,
@@ -112,7 +112,7 @@ export function apiDataListPageWithInvalidApiData(): ApiDataListPages {
     {
       ...page,
       title: 'Invalid API Data Page',
-      apiData: [
+      api_data: [
         {
           id: 1,
           bannerLinks: [],
@@ -151,7 +151,7 @@ export function multipleApiDataListPages(): ApiDataListPages {
       id: 2,
       title: 'Second API List Page',
       description: 'Another API list page',
-      apiData: [
+      api_data: [
         {
           id: 10,
           bannerLinks: [],
@@ -179,7 +179,7 @@ export function apiDataListPageWithBothRestAndSoap(): ApiDataListPages {
   return wrapAsRootEntity<readonly ApiDataListPage[]>([
     {
       ...page,
-      apiData: [
+      api_data: [
         {
           id: 1,
           bannerLinks: [],
