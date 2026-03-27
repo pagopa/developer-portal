@@ -1,5 +1,17 @@
 # extractor
 
+## 1.2.0
+
+### Minor Changes
+
+- 8e394d9: Add dockerization
+
+### Patch Changes
+
+- 8e394d9: Remove obsolete option to run locally without docker.
+- 6a1a271: Migrated the Gemini models initialization from the standard Google AI Studio API to Vertex AI.
+- 6a1a271: Make LLM calls async
+
 ## 1.1.0
 
 ### Minor Changes
