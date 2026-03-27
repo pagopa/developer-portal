@@ -77,7 +77,7 @@ export const makeWebinarProps = (
       tag: strapiWebinar.webinarCategory,
       headerImage: strapiWebinar.headerImage,
       updatedAt: strapiWebinar.updatedAt,
-      webvttContent: generateVTTContent(strapiWebinar.attributes.chapters),
+      webvttContent: generateVTTContent(strapiWebinar.chapters),
     } satisfies Webinar;
   } catch (error) {
     // eslint-disable-next-line functional/no-expression-statements
