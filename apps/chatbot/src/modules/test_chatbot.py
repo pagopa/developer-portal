@@ -99,3 +99,47 @@ def test_chat_generation() -> None:
         response_json = {}
 
     assert response_json != {}
+
+
+def test_async_safe_google_rerank() -> None:
+    from unittest.mock import Mock, patch
+    from llama_index.core.schema import NodeWithScore, TextNode, QueryBundle
+    from src.modules.google_reranker import AsyncSafeGoogleRerank
+
+    credentials = Mock()
+    credentials.project_id = "test-project"
+
+    try:
+        reranker = AsyncSafeGoogleRerank(
+            top_n=2,
+            model="test-model",
+            project_id="test-project",
+            location="global",
+            credentials=credentials,
+        )
+    except Exception as e:
+        assert False, f"Failed to instantiate: {e}"
+
+    async def mock_rank(*args, **kwargs):
+        mock_response = Mock()
+        mock_response.records = []
+        return mock_response
+
+    async def test_call():
+        nodes = [NodeWithScore(node=TextNode(text="hello"), score=1.0)]
+        query_bundle = QueryBundle(query_str="hi")
+
+        with patch(
+            "google.cloud.discoveryengine_v1.RankServiceAsyncClient"
+        ) as MockClient:
+            mock_instance = MockClient.return_value
+            mock_instance.rank.side_effect = mock_rank
+
+            results = await reranker._apostprocess_nodes(nodes, query_bundle)
+            return results
+
+    try:
+        results = asyncio_run(test_call())
+        assert isinstance(results, list)
+    except Exception as e:
+        assert False, f"Call inside loop failed with: {type(e).__name__}: {e}"
