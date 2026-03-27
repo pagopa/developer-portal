@@ -18,6 +18,11 @@ on:
           - dev
           - uat
           - prod
+      invalidate_opennext_cache:
+        description: 'Invalidate opennext CloudFront cache'
+        type: boolean
+        required: true
+        default: true
 jobs:
   setup:
     runs-on: ubuntu-24.04
@@ -182,6 +187,7 @@ jobs:
           alias_name: production
       
       - name: Invalidate CloudFront cache
+        if: ${{ inputs.invalidate_opennext_cache }}
         run: |
           aws cloudfront create-invalidation \
             --distribution-id ${{ vars.OPENNEXT_CLOUDFRONT_DISTRIBUTION_ID }} \
