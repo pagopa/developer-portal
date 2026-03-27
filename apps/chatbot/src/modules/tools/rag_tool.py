@@ -70,13 +70,22 @@ def get_query_engine_tool(
     )
 
     if SETTINGS.provider == "google":
-        from src.modules.google_reranker import GoogleRerank
+        from google.oauth2 import service_account
+        from src.modules.google_reranker import AsyncSafeGoogleRerank
 
-        reranker = GoogleRerank(
+        credentials = service_account.Credentials.from_service_account_info(
+            SETTINGS.google_service_account,
+            scopes=["https://www.googleapis.com/auth/cloud-platform"],
+        )
+
+        reranker = AsyncSafeGoogleRerank(
             top_n=SETTINGS.similarity_topk,
-            model_id=SETTINGS.reranker_id,
+            model=SETTINGS.reranker_id,
+            credentials=credentials,
+            project_id=credentials.project_id,
             location=SETTINGS.vertexai_location,
         )
+
         node_postprocessors = [reranker]
     elif SETTINGS.provider == "mock":
         node_postprocessors = None

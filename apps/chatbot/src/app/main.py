@@ -36,6 +36,7 @@ if __name__ == "__main__":
     config = Config()
     config.bind = ["0.0.0.0:8080"]
     config.loglevel = SETTINGS.log_level
-    import asyncio
 
-    asyncio.run(serve(app, config))
+    from llama_index.core.async_utils import asyncio_run
+
+    asyncio_run(serve(app, config))
