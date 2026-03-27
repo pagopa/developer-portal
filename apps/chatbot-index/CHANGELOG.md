@@ -1,5 +1,11 @@
 # chatbot-index
 
+## 2.6.1
+
+### Patch Changes
+
+- 6a1a271: Migrated the Gemini models initialization from the standard Google AI Studio API to Vertex AI.
+
 ## 2.6.0
 
 ### Minor Changes

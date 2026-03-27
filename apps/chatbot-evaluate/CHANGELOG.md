@@ -1,5 +1,11 @@
 # chatbot-evaluate
 
+## 1.1.2
+
+### Patch Changes
+
+- 6a1a271: Migrated the Gemini models initialization from the standard Google AI Studio API to Vertex AI.
+
 ## 1.1.1
 
 ### Patch Changes
