@@ -30,6 +30,8 @@ async def generate_questions(
         "On the contrary, if both the retrieved contexts are relevant, you must generate a list of questions from the user's perspective (e.g., 'how do I ...', 'how can I ...') "
         "that help them get more detailed information based on the provided context.\n"
         "The questions should be specific and relevant to the information retrieved from both sources, and should help the user explore topics related to the information already retrieved.\n"
+        "All the `label` and `question` in the `follow_up_questions` of the structured output MUST be unique.\n"
+        "All the `label` and `question` in the `follow_up_questions` of the structured output MUST be in the same language as the user's question.\n"
         "Answer: [your answer here (in the same language as the user query)]"
     )
 
