@@ -97,22 +97,22 @@ No requirements.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_cache_node_type"></a> [cache\_node\_type](#input\_cache\_node\_type) | Node type for Langfuse Cache/Queue(ElastiCache) | `string` | `"cache.t4g.micro"` | no |
+| <a name="input_cognito_user_pool_endpoint"></a> [cognito\_user\_pool\_endpoint](#input\_cognito\_user\_pool\_endpoint) | Existing Cognito user pool endpoint to reuse instead of creating a dedicated one | `string` | `null` | no |
+| <a name="input_cognito_user_pool_id"></a> [cognito\_user\_pool\_id](#input\_cognito\_user\_pool\_id) | Existing Cognito user pool ID to reuse instead of creating a dedicated one | `string` | `null` | no |
 | <a name="input_custom_domain_id"></a> [custom\_domain\_id](#input\_custom\_domain\_id) | Route53 Hosted Zone ID for custom domain | `string` | n/a | yes |
 | <a name="input_custom_domain_name"></a> [custom\_domain\_name](#input\_custom\_domain\_name) | Langfuse and Grafana custom domain name. If you set example.com, the domain will be langfuse.example.com and grafana.example.com | `string` | n/a | yes |
+| <a name="input_database_max_capacity"></a> [database\_max\_capacity](#input\_database\_max\_capacity) | Maximum capacity for Langfuse DB Aurora Serverless v2 | `number` | `10` | no |
+| <a name="input_database_min_capacity"></a> [database\_min\_capacity](#input\_database\_min\_capacity) | Minimum capacity for Langfuse DB Aurora Serverless v2 | `number` | `0.5` | no |
+| <a name="input_database_user"></a> [database\_user](#input\_database\_user) | Database user for Langfuse Aurora Serverless v2 | `string` | `"langfuse"` | no |
 | <a name="input_environment"></a> [environment](#input\_environment) | Environment | `string` | n/a | yes |
+| <a name="input_force_delete"></a> [force\_delete](#input\_force\_delete) | Whether to force delete resources | `bool` | `false` | no |
+| <a name="input_master_user_password_param_arn"></a> [master\_user\_password\_param\_arn](#input\_master\_user\_password\_param\_arn) | ARN of the SSM parameter containing the Cognito master user password when reusing an existing user pool | `string` | `null` | no |
+| <a name="input_module"></a> [module](#input\_module) | Prefix for resources | `string` | `"langfuse"` | no |
 | <a name="input_private_subnet_ids"></a> [private\_subnet\_ids](#input\_private\_subnet\_ids) | Private subnet IDs on which to deploy Langfuse worker / Clickhouse / Aurora Serverless v2 / ElastiCache | `list(string)` | n/a | yes |
 | <a name="input_public_subnet_ids"></a> [public\_subnet\_ids](#input\_public\_subnet\_ids) | Public subnet IDs used to expose Langfuse through the load balancer | `list(string)` | n/a | yes |
 | <a name="input_region"></a> [region](#input\_region) | AWS region on which to deploy | `string` | n/a | yes |
 | <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | VPC ID for Your Langfuse Environment | `string` | n/a | yes |
-| <a name="input_cache_node_type"></a> [cache\_node\_type](#input\_cache\_node\_type) | Node type for Langfuse Cache/Queue(ElastiCache) | `string` | `"cache.t4g.micro"` | no |
-| <a name="input_cognito_user_pool_endpoint"></a> [cognito\_user\_pool\_endpoint](#input\_cognito\_user\_pool\_endpoint) | Existing Cognito user pool endpoint to reuse instead of creating a dedicated one | `string` | `null` | no |
-| <a name="input_cognito_user_pool_id"></a> [cognito\_user\_pool\_id](#input\_cognito\_user\_pool\_id) | Existing Cognito user pool ID to reuse instead of creating a dedicated one | `string` | `null` | no |
-| <a name="input_database_max_capacity"></a> [database\_max\_capacity](#input\_database\_max\_capacity) | Maximum capacity for Langfuse DB Aurora Serverless v2 | `number` | `10` | no |
-| <a name="input_database_min_capacity"></a> [database\_min\_capacity](#input\_database\_min\_capacity) | Minimum capacity for Langfuse DB Aurora Serverless v2 | `number` | `0.5` | no |
-| <a name="input_database_user"></a> [database\_user](#input\_database\_user) | Database user for Langfuse Aurora Serverless v2 | `string` | `"langfuse"` | no |
-| <a name="input_force_delete"></a> [force\_delete](#input\_force\_delete) | Whether to force delete resources | `bool` | `false` | no |
-| <a name="input_master_user_password_param_arn"></a> [master\_user\_password\_param\_arn](#input\_master\_user\_password\_param\_arn) | ARN of the SSM parameter containing the Cognito master user password when reusing an existing user pool | `string` | `null` | no |
-| <a name="input_module"></a> [module](#input\_module) | Prefix for resources | `string` | `"langfuse"` | no |
 | <a name="input_web_desire_count"></a> [web\_desire\_count](#input\_web\_desire\_count) | Desired count for Langfuse Web | `number` | `1` | no |
 | <a name="input_worker_desire_count"></a> [worker\_desire\_count](#input\_worker\_desire\_count) | Desired count for Langfuse Worker(s) | `number` | `1` | no |
 

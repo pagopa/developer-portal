@@ -114,23 +114,23 @@
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_aws_region"></a> [aws\_region](#input\_aws\_region) | AWS region to create resources. Default Milan | `string` | `"eu-south-1"` | no |
+| <a name="input_cdn_custom_headers"></a> [cdn\_custom\_headers](#input\_cdn\_custom\_headers) | n/a | <pre>list(object(<br/>    {<br/>      header   = string<br/>      override = bool<br/>      value    = string<br/>    }<br/>  ))</pre> | `[]` | no |
+| <a name="input_create_chatbot"></a> [create\_chatbot](#input\_create\_chatbot) | Defines if chatbot should be created | `bool` | `false` | no |
+| <a name="input_dns_delegate_records"></a> [dns\_delegate\_records](#input\_dns\_delegate\_records) | DNS delegate records | `map(any)` | `{}` | no |
 | <a name="input_dns_domain_name"></a> [dns\_domain\_name](#input\_dns\_domain\_name) | DNS domain for the Developer Portal product | `string` | n/a | yes |
 | <a name="input_environment"></a> [environment](#input\_environment) | Environment | `string` | n/a | yes |
 | <a name="input_environment_information"></a> [environment\_information](#input\_environment\_information) | Values which are used to generate resource names and location short names. They are all mandatory except for domain, which should not be used only in the case of a resource used by multiple domains. | <pre>object({<br/>    prefix          = string<br/>    env_short       = string<br/>    location        = string<br/>    domain          = optional(string)<br/>    app_name        = string<br/>    instance_number = string<br/>    region          = string<br/>  })</pre> | n/a | yes |
 | <a name="input_github_repository"></a> [github\_repository](#input\_github\_repository) | The repository where the IaC workflows will run | `string` | n/a | yes |
 | <a name="input_hosted_zone_id"></a> [hosted\_zone\_id](#input\_hosted\_zone\_id) | The ID of the hosted zone to create the public DNS records in | `string` | n/a | yes |
-| <a name="input_next_cms_interlan_alb_dns_name"></a> [next\_cms\_interlan\_alb\_dns\_name](#input\_next\_cms\_interlan\_alb\_dns\_name) | The DNS name of the internal ALB for the CMS | `string` | n/a | yes |
-| <a name="input_nextjs_version"></a> [nextjs\_version](#input\_nextjs\_version) | The version of Next.js to use | `string` | n/a | yes |
-| <a name="input_ses_domain_identity_arn"></a> [ses\_domain\_identity\_arn](#input\_ses\_domain\_identity\_arn) | The ARN of the SES domain identity | `string` | n/a | yes |
-| <a name="input_aws_region"></a> [aws\_region](#input\_aws\_region) | AWS region to create resources. Default Milan | `string` | `"eu-south-1"` | no |
-| <a name="input_cdn_custom_headers"></a> [cdn\_custom\_headers](#input\_cdn\_custom\_headers) | n/a | <pre>list(object(<br/>    {<br/>      header   = string<br/>      override = bool<br/>      value    = string<br/>    }<br/>  ))</pre> | `[]` | no |
-| <a name="input_create_chatbot"></a> [create\_chatbot](#input\_create\_chatbot) | Defines if chatbot should be created | `bool` | `false` | no |
-| <a name="input_dns_delegate_records"></a> [dns\_delegate\_records](#input\_dns\_delegate\_records) | DNS delegate records | `map(any)` | `{}` | no |
 | <a name="input_log_retention_days"></a> [log\_retention\_days](#input\_log\_retention\_days) | The number of days logs should be retained. Default is 90 days. | `number` | `90` | no |
 | <a name="input_mfa_code_duration_in_minutes"></a> [mfa\_code\_duration\_in\_minutes](#input\_mfa\_code\_duration\_in\_minutes) | The duration for which the MFA code is valid in minutes | `number` | `15` | no |
+| <a name="input_next_cms_interlan_alb_dns_name"></a> [next\_cms\_interlan\_alb\_dns\_name](#input\_next\_cms\_interlan\_alb\_dns\_name) | The DNS name of the internal ALB for the CMS | `string` | n/a | yes |
 | <a name="input_next_public_feedback_form_enabled"></a> [next\_public\_feedback\_form\_enabled](#input\_next\_public\_feedback\_form\_enabled) | Defines if the feedback form should be enabled | `bool` | `false` | no |
 | <a name="input_next_public_soap_api_page_active"></a> [next\_public\_soap\_api\_page\_active](#input\_next\_public\_soap\_api\_page\_active) | Defines if the SOAP API page should be active | `bool` | `false` | no |
+| <a name="input_nextjs_version"></a> [nextjs\_version](#input\_nextjs\_version) | The version of Next.js to use | `string` | n/a | yes |
 | <a name="input_publish_cloudfront_functions"></a> [publish\_cloudfront\_functions](#input\_publish\_cloudfront\_functions) | Defines if cloudfront functions should be published | `bool` | `false` | no |
+| <a name="input_ses_domain_identity_arn"></a> [ses\_domain\_identity\_arn](#input\_ses\_domain\_identity\_arn) | The ARN of the SES domain identity | `string` | n/a | yes |
 | <a name="input_signup_allowed_email_domains"></a> [signup\_allowed\_email\_domains](#input\_signup\_allowed\_email\_domains) | List of allowed email domains for signup | `list(string)` | <pre>[<br/>  "pagopa.it",<br/>  "uqido.com",<br/>  "aizoongroup.com",<br/>  "dgsspa.com"<br/>]</pre> | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | <pre>{<br/>  "CreatedBy": "Terraform"<br/>}</pre> | no |
 | <a name="input_use_custom_certificate"></a> [use\_custom\_certificate](#input\_use\_custom\_certificate) | Enable CDN https support with a custom certificate instead using the default one | `bool` | `true` | no |

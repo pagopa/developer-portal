@@ -181,7 +181,9 @@
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_api_gateway"></a> [api\_gateway](#input\_api\_gateway) | n/a | <pre>object({<br/>    integration_timeout_sec = optional(number, 60)<br/>  })</pre> | <pre>{<br/>  "integration_timeout_sec": 60<br/>}</pre> | no |
 | <a name="input_aws_chatbot_region"></a> [aws\_chatbot\_region](#input\_aws\_chatbot\_region) | AWS region to create AI chatbot's resources | `string` | n/a | yes |
+| <a name="input_aws_region"></a> [aws\_region](#input\_aws\_region) | AWS region to create resources. Default Milan | `string` | `"eu-south-1"` | no |
 | <a name="input_cognito_user_pool"></a> [cognito\_user\_pool](#input\_cognito\_user\_pool) | The cognito user pool used to authenticate api calls | <pre>object({<br/>    id        = string<br/>    arn       = string<br/>    domain    = string<br/>    region    = string<br/>    client_id = string<br/>    endpoint  = string<br/>  })</pre> | n/a | yes |
 | <a name="input_dns_chatbot_hosted_zone"></a> [dns\_chatbot\_hosted\_zone](#input\_dns\_chatbot\_hosted\_zone) | The name of the chatbot hosted zone | <pre>object({<br/>    name = string<br/>    id   = string<br/>  })</pre> | n/a | yes |
 | <a name="input_dns_domain_name"></a> [dns\_domain\_name](#input\_dns\_domain\_name) | DNS domain for the Developer Portal product | `string` | n/a | yes |
@@ -190,13 +192,11 @@
 | <a name="input_environment"></a> [environment](#input\_environment) | Environment | `string` | n/a | yes |
 | <a name="input_github_repository"></a> [github\_repository](#input\_github\_repository) | The repository where the IaC workflows will run | `string` | n/a | yes |
 | <a name="input_models"></a> [models](#input\_models) | The models used by the AI chatbot | <pre>object({<br/>    provider      = string<br/>    generation    = string<br/>    embeddings    = string<br/>    reranker      = string<br/>    use_multi_rag = bool<br/>  })</pre> | n/a | yes |
+| <a name="input_module"></a> [module](#input\_module) | Prefix for resources | `string` | `"chatbot"` | no |
 | <a name="input_s3_bucket_name_static_content"></a> [s3\_bucket\_name\_static\_content](#input\_s3\_bucket\_name\_static\_content) | The name of the S3 bucket for static content | `string` | n/a | yes |
 | <a name="input_security_groups"></a> [security\_groups](#input\_security\_groups) | The security groups used to deploy the resources | `map(string)` | n/a | yes |
-| <a name="input_vpc"></a> [vpc](#input\_vpc) | The VPC used to deploy the resources | <pre>object({<br/>    id                         = string<br/>    cidr_block                 = string<br/>    public_subnets             = list(string)<br/>    database_subnets           = list(string)<br/>    private_subnets            = list(string)<br/>    elasticache_subnets        = list(string)<br/>    database_subnet_group_name = string<br/>  })</pre> | n/a | yes |
-| <a name="input_api_gateway"></a> [api\_gateway](#input\_api\_gateway) | n/a | <pre>object({<br/>    integration_timeout_sec = optional(number, 60)<br/>  })</pre> | <pre>{<br/>  "integration_timeout_sec": 60<br/>}</pre> | no |
-| <a name="input_aws_region"></a> [aws\_region](#input\_aws\_region) | AWS region to create resources. Default Milan | `string` | `"eu-south-1"` | no |
-| <a name="input_module"></a> [module](#input\_module) | Prefix for resources | `string` | `"chatbot"` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | <pre>{<br/>  "CostCenter": "BD110 - PORTALS E TOOLS",<br/>  "CreatedBy": "Terraform",<br/>  "ManagementTeam": "team_cloudgaap_ai",<br/>  "Owner": "CloudGaaP-AI",<br/>  "Wbs": "BD110 - PORTALS E TOOLS"<br/>}</pre> | no |
+| <a name="input_vpc"></a> [vpc](#input\_vpc) | The VPC used to deploy the resources | <pre>object({<br/>    id                         = string<br/>    cidr_block                 = string<br/>    public_subnets             = list(string)<br/>    database_subnets           = list(string)<br/>    private_subnets            = list(string)<br/>    elasticache_subnets        = list(string)<br/>    database_subnet_group_name = string<br/>  })</pre> | n/a | yes |
 | <a name="input_waf_block_requests_to_queries_evaluation_window_sec"></a> [waf\_block\_requests\_to\_queries\_evaluation\_window\_sec](#input\_waf\_block\_requests\_to\_queries\_evaluation\_window\_sec) | n/a | `number` | `60` | no |
 | <a name="input_waf_block_requests_to_queries_limit"></a> [waf\_block\_requests\_to\_queries\_limit](#input\_waf\_block\_requests\_to\_queries\_limit) | n/a | `number` | `100` | no |
 | <a name="input_waf_ip_rate_limit_evaluation_window_sec"></a> [waf\_ip\_rate\_limit\_evaluation\_window\_sec](#input\_waf\_ip\_rate\_limit\_evaluation\_window\_sec) | n/a | `number` | `60` | no |
