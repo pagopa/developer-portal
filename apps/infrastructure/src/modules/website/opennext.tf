@@ -76,7 +76,7 @@ module "opennext" {
       S3_SOAP_API_METADATA_JSON_PATH              = "soap-api/soap-api-metadata.json"
       ALLOW_CRAWLER                               = var.environment == "prod" ? "true" : "false"
       WEBINAR_HEARTBIT_URL                        = var.webinar_heartbit_url
-      WEBINAR_HEARTBIT_INTERVAL_IN_SECONDS        = "60"
+      WEBINAR_HEARTBIT_INTERVAL_IN_SECONDS        = var.webinar_heartbit_interval_in_seconds
     }
   }
 
