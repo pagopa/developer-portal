@@ -1,4 +1,4 @@
-import { strapiApiDataListPages } from '@/lib/__tests__/fixtures/apiDataListPages';
+import { strapiApiDataListPages } from '@/lib/apiDataListPages/__tests__/fixtures';
 import {
   ApiDataListPage,
   ApiDataListPages,
@@ -116,11 +116,11 @@ export function apiDataListPageWithInvalidApiData(): ApiDataListPages {
         {
           id: 1,
           bannerLinks: [],
-          title: undefined as any,
+          title: undefined as unknown as string,
           description: 'API without title',
           icon: undefined,
           apiRestDetail: {
-            slug: undefined as any,
+            slug: undefined as unknown as string,
             specUrls: [],
           },
           apiSoapDetail: undefined,
