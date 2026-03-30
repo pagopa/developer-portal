@@ -1,4 +1,4 @@
-import { SignUpUserData } from '@/lib/types/sign-up';
+import { SignUpUserData } from '@/lib/types/signUp';
 
 export const passwordMatcher =
   /(?=(.*[0-9]))(?=.*[!@#$%^&*()\\[\]{}\-_+=~`|:;"'<>,./?])(?=.*[a-z])(?=(.*[A-Z]))(?=(.*)).{8,}/;
