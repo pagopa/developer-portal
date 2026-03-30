@@ -1,5 +1,5 @@
 import { StrapiUseCaseListPages } from '@/lib/useCaseListPage/types';
-import { strapiUseCaseListPages } from '@/lib/__tests__/fixtures/useCaseListPage';
+import { strapiUseCaseListPages } from '@/lib/useCaseListPage/__tests__/fixtures';
 
 export function minimalUseCaseListPages(): StrapiUseCaseListPages {
   return {

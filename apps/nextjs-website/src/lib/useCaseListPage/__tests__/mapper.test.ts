@@ -3,8 +3,8 @@ import {
   emptyUseCaseListPages,
   minimalUseCaseListPages,
   useCaseListPagesWithItemMissingBannerLinks,
-} from '@/lib/__tests__/factories/useCaseListPage';
-import { strapiUseCaseListPages } from '@/lib/__tests__/fixtures/useCaseListPage';
+} from '@/lib/useCaseListPage/__tests__/factories';
+import { strapiUseCaseListPages } from '@/lib/useCaseListPage/__tests__/fixtures';
 import _ from 'lodash';
 
 describe('mapUseCaseListPageProps', () => {
