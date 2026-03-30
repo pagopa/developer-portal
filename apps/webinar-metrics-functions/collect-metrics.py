@@ -12,6 +12,10 @@ DELIVERY_STREAM_NAME = os.environ['DELIVERY_STREAM_NAME']
 def lambda_handler(event, context):
     try:
 
+        # Parse the incoming JSON body
+        body_str = event.get('body', '{}')
+        data = json.loads(body_str)
+
         # Encrypt userId if it exists (simple example using SHA256)
         if 'userId' in data:
             user_id_str = str(data['userId'])
@@ -29,10 +33,6 @@ def lambda_handler(event, context):
         # Generate a UTC Timestamp (ISO 8601 format)
         # Using 'Z' suffix to denote Zulu/UTC time
         timestamp = datetime.now(timezone.utc).isoformat().replace('+00:00', 'Z')
-
-        # Parse the incoming JSON body
-        body_str = event.get('body', '{}')
-        data = json.loads(body_str)
 
         # Enrich the data with our new fields
         data['clientIp'] = client_ip
@@ -59,8 +59,8 @@ def lambda_handler(event, context):
         }
         
     except Exception as e:
-        print(f"Error: {str(e)}")
+        logging.error(f"Error: {str(e)}")
         return {
             "statusCode": 500, 
-            "body": json.dumps({"error": "Internal Processing Error"})
+            "body": json.dumps({"error": str(e)})
         }
