@@ -1,0 +1,154 @@
+# CMS Infrastructure Diagram
+# Developer Portal - CMS Module (Strapi on ECS Fargate) (prod)
+
+vars: {
+  d2-config: {
+    layout-engine: elk
+    sketch: true
+  }
+}
+
+direction: right
+
+title: {
+  label: Developer Portal - CMS (Strapi) Infrastructure (prod)
+  near: top-center
+  shape: text
+  style.font-size: 28
+  style.bold: true
+}
+
+users: CMS Users\n(Admins) {
+  icon: https://icons.terrastruct.com/essentials%2F359-users.svg
+  shape: image
+}
+
+website_server: Website\nLambda Server\n(OpenNext) {
+  icon: https://icons.terrastruct.com/aws%2FCompute%2FAWS-Lambda.svg
+  shape: image
+  style.opacity: 0.6
+}
+
+# DNS Layer
+route53: Route 53 {
+  icon: https://icons.terrastruct.com/aws%2FNetworking%20&%20Content%20Delivery%2FAmazon-Route-53.svg
+  shape: image
+}
+
+# VPC
+vpc: VPC (10.0.0.0/16) {
+  style.fill: "#f0f8ff"
+
+  # Public Subnets
+  public: Public Subnets\n(10.0.101-103.0/24) {
+    style.fill: "#e8f5e9"
+
+    alb_public: ALB\n(Public - CMS) {
+      icon: https://icons.terrastruct.com/aws%2FNetworking%20&%20Content%20Delivery%2FElastic-Load-Balancing.svg
+      shape: image
+    }
+
+    nat: NAT Gateway {
+      icon: https://icons.terrastruct.com/aws%2FNetworking%20&%20Content%20Delivery%2FAmazon-VPC_NAT-Gateway_light-bg.svg
+      shape: image
+    }
+  }
+
+  # Private Subnets
+  private: Private Subnets\n(10.0.1-3.0/24) {
+    style.fill: "#fff3e0"
+
+    alb_internal: ALB\n(Internal - CMS\nPort 8080) {
+      icon: https://icons.terrastruct.com/aws%2FNetworking%20&%20Content%20Delivery%2FElastic-Load-Balancing.svg
+      shape: image
+    }
+
+    ecs_cluster: ECS Cluster {
+      icon: https://icons.terrastruct.com/aws%2FCompute%2FAmazon-Elastic-Container-Service.svg
+      shape: image
+    }
+
+    ecs_service: ECS Service\n(Strapi CMS)\nFargate\n(min 2, max 10) {
+      icon: https://icons.terrastruct.com/aws%2FCompute%2FAWS-Fargate.svg
+      shape: image
+    }
+
+    vpc_endpoints: VPC Endpoints\n(ECR API, S3,\nSSM Messages) {
+      icon: https://icons.terrastruct.com/aws%2FNetworking%20&%20Content%20Delivery%2FAmazon-VPC_Endpoints_light-bg.svg
+      shape: image
+    }
+  }
+
+  # Database Subnets
+  database: Database Subnets\n(10.0.201-203.0/24) {
+    style.fill: "#fce4ec"
+
+    rds: RDS Aurora\nPostgreSQL 14\n(Serverless v2) {
+      icon: https://icons.terrastruct.com/aws%2FDatabase%2FAmazon-Aurora.svg
+      shape: image
+    }
+  }
+}
+
+# CDN for Media Library
+cloudfront_media: CloudFront\n(Media Library CDN) {
+  icon: https://icons.terrastruct.com/aws%2FNetworking%20&%20Content%20Delivery%2FAmazon-CloudFront.svg
+  shape: image
+}
+
+# Storage
+s3_media: S3\n(CMS Media Library) {
+  icon: https://icons.terrastruct.com/aws%2FStorage%2FAmazon-Simple-Storage-Service-S3.svg
+  shape: image
+}
+
+# Container Registry
+ecr: ECR\n(Strapi Image\nIMMUTABLE tags) {
+  icon: https://icons.terrastruct.com/aws%2FCompute%2FAmazon-EC2-Container-Registry.svg
+  shape: image
+}
+
+# Secrets/Config
+ssm: SSM Parameter Store\n(DB Password, JWT,\nApp Keys, API Tokens,\nGoogle OAuth) {
+  icon: https://icons.terrastruct.com/aws%2FManagement%20&%20Governance%2FAWS-Systems-Manager_Parameter-Store.svg
+  shape: image
+}
+
+# Monitoring
+cloudwatch: CloudWatch\n(Logs) {
+  icon: https://icons.terrastruct.com/aws%2FManagement%20&%20Governance%2FAmazon-CloudWatch.svg
+  shape: image
+}
+
+# Internal DNS
+dns_internal: Route 53\n(internal.developer.pagopa.it)\nPrivate Zone {
+  icon: https://icons.terrastruct.com/aws%2FNetworking%20&%20Content%20Delivery%2FAmazon-Route-53.svg
+  shape: image
+}
+
+# --- Connections ---
+
+users -> route53: HTTPS
+route53 -> vpc.public.alb_public: cms.developer.pagopa.it
+route53 -> cloudfront_media: cdn.developer.pagopa.it
+
+vpc.public.alb_public -> vpc.private.ecs_service: Port 1337
+vpc.private.alb_internal -> vpc.private.ecs_service: Port 1337
+
+vpc.private.ecs_cluster -> vpc.private.ecs_service: Manages
+
+vpc.private.ecs_service -> vpc.database.rds: PostgreSQL\n(Port 5432)
+vpc.private.ecs_service -> s3_media: Upload media
+vpc.private.ecs_service -> ssm: Read secrets
+vpc.private.ecs_service -> cloudwatch: Logs
+vpc.private.ecs_service -> vpc.private.vpc_endpoints: Pull images\n& SSM
+
+vpc.private.vpc_endpoints -> ecr: ECR API
+
+cloudfront_media -> s3_media: Origin (OAI)
+
+website_server -> vpc.private.alb_internal: Fetch CMS content\n(Port 8080)
+
+vpc.private.ecs_service -> vpc.public.nat: Outbound traffic\n(GitHub API, etc.)
+
+dns_internal -> vpc.private.alb_internal: cms.internal.developer.pagopa.it
