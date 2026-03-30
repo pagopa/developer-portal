@@ -1,6 +1,3 @@
-from google.oauth2 import service_account
-from functools import lru_cache
-
 from llama_index.core.llms.llm import LLM
 from llama_index.core.base.embeddings.base import BaseEmbedding
 from llama_index.llms.google_genai.base import VertexAIConfig
@@ -10,20 +7,6 @@ from src.modules.settings import SETTINGS
 
 
 LOGGER = get_logger(__name__, level=SETTINGS.log_level)
-
-
-@lru_cache()
-def get_vertexai_credentials() -> service_account.Credentials:
-    """
-    Returns the Vertex AI credentials loaded from the service account information in the settings.
-    The credentials are cached to avoid redundant loading and improve performance.
-    Returns:
-        service_account.Credentials: The Vertex AI credentials loaded from the service account information.
-    """
-    return service_account.Credentials.from_service_account_info(
-        SETTINGS.google_service_account,
-        scopes=["https://www.googleapis.com/auth/cloud-platform"],
-    )
 
 
 def get_llm(
@@ -79,7 +62,6 @@ def get_llm(
                 threshold=HarmBlockThreshold.BLOCK_LOW_AND_ABOVE,
             ),
         ]
-        vertexai_credentials = get_vertexai_credentials()
         llm = GoogleGenAI(
             model=model_id,
             temperature=temperature,
@@ -88,12 +70,14 @@ def get_llm(
                 safety_settings=safety_settings,
             ),
             vertexai_config=VertexAIConfig(
-                credentials=vertexai_credentials,
+                credentials=SETTINGS.vertexai_credentials,
+                project=SETTINGS.vertexai_credentials.project_id,
                 location=SETTINGS.vertexai_location,
-                project=vertexai_credentials.project_id,
             ),
         )
-        LOGGER.info(f"{model_id} LLM loaded successfully from Google!")
+        LOGGER.info(
+            f"{model_id} LLM loaded successfully from Vertex AI at location: {SETTINGS.vertexai_location}"
+        )
 
     elif provider == "mock":
         from llama_index.core.llms import MockLLM
@@ -143,7 +127,6 @@ def get_embed_model(
         from google.genai.types import EmbedContentConfig
         from llama_index.embeddings.google_genai import GoogleGenAIEmbedding
 
-        vertexai_credentials = get_vertexai_credentials()
         embed_model = GoogleGenAIEmbedding(
             model_name=model_id,
             embed_batch_size=embed_batch_size,
@@ -154,12 +137,14 @@ def get_embed_model(
                 task_type=task_type,
             ),
             vertexai_config=VertexAIConfig(
-                credentials=vertexai_credentials,
+                credentials=SETTINGS.vertexai_credentials,
+                project=SETTINGS.vertexai_credentials.project_id,
                 location=SETTINGS.vertexai_location,
-                project=vertexai_credentials.project_id,
             ),
         )
-        LOGGER.info(f"{model_id} embedding model loaded successfully from Google!")
+        LOGGER.info(
+            f"{model_id} embedding model loaded successfully from Vertex AI at location: {SETTINGS.vertexai_location}!"
+        )
 
     elif provider == "mock":
         from llama_index.core import MockEmbedding
