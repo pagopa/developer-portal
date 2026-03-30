@@ -6,7 +6,7 @@ import {
   StrapiBaseProductWithRelations,
   StrapiProduct,
   StrapiProducts,
-} from './types';
+} from './strapiTypes';
 import { compact } from 'lodash';
 
 export function mapProductsProps(

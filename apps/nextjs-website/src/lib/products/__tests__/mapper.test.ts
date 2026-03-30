@@ -3,7 +3,7 @@ import {
   mapProductProps,
   makeBaseProductWithoutLogoProps,
 } from '@/lib/products/mapper';
-import { StrapiProducts } from '@/lib/products/types';
+import { StrapiProducts } from '@/lib/products/strapiTypes';
 import _ from 'lodash';
 import {
   strapiProducts,

@@ -2,7 +2,7 @@ import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
 import { RelatedLinksProps } from '@/components/atoms/RelatedLinks/RelatedLinks';
 import { StrapiBannerLink } from '@/lib/bannerLink/types';
 import { StrapiPart } from '@/lib/parts/types';
-import { StrapiBaseProductWithBannerLinks } from '@/lib/products/types';
+import { StrapiBaseProductWithBannerLinks } from '@/lib/products/strapiTypes';
 import { Paginated } from '@/lib/strapi/types/paginated';
 import { StrapiRelatedLinks } from '@/lib/strapi/types/link';
 import { StrapiMedia } from '@/lib/media/strapiTypes';

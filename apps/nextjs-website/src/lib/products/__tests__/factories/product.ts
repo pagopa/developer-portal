@@ -4,7 +4,7 @@ import {
   StrapiBaseProductWithoutBannerLinks,
   StrapiBaseProductWithRelations,
   StrapiProduct,
-} from '@/lib/products/types';
+} from '@/lib/products/strapiTypes';
 import { mediaJpeg } from '@/lib/__tests__/factories/media';
 import { generateBannerLinks } from '@/lib/__tests__/factories/bannerLink';
 
@@ -152,10 +152,10 @@ export function productWithAllRelations(): StrapiProduct {
 export function productWithMissingMandatoryFields(): Partial<StrapiProduct> {
   return {
     isVisible: true,
-    name: undefined as any,
+    name: undefined as unknown as string,
     tags: [],
-    shortName: undefined as any,
-    slug: undefined as any,
+    shortName: undefined as unknown as string,
+    slug: undefined as unknown as string,
     bannerLinks: [],
     description: 'Product with missing mandatory fields',
     logo: mediaJpeg(),

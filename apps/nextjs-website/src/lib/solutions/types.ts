@@ -3,7 +3,7 @@ import { CaseHistoriesComponent } from '@/lib/caseHistories/types';
 import {
   StrapiBaseProduct,
   StrapiBaseProductWithoutBannerLinks,
-} from '@/lib/products/types';
+} from '@/lib/products/strapiTypes';
 import { Paginated } from '@/lib/strapi/types/paginated';
 import { StrapiMedia } from '@/lib/media/strapiTypes';
 import { StrapiSeo } from '@/lib/seo/strapiTypes';

@@ -8,7 +8,7 @@ import { Paginated } from '@/lib/strapi/types/paginated';
 import { StrapiSeo } from '@/lib/seo/strapiTypes';
 import { StrapiBaseTutorial } from '@/lib/tutorials/strapiTypes';
 import { StrapiBaseUseCase } from '@/lib/useCases/strapiTypes';
-import { StrapiProduct } from '@/lib/products/types';
+import { StrapiProduct } from '@/lib/products/strapiTypes';
 
 export type StrapiStartInfo = {
   readonly icon: StrapiMedia;

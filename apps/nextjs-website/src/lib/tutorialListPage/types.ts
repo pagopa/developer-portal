@@ -2,7 +2,7 @@ import { StrapiBaseTutorial } from '@/lib/tutorials/strapiTypes';
 import { StrapiBannerLink } from '@/lib/bannerLink/types';
 import { StrapiSeo } from '@/lib/seo/strapiTypes';
 import { Paginated } from '@/lib/strapi/types/paginated';
-import { StrapiBaseProductWithRelations } from '@/lib/products/types';
+import { StrapiBaseProductWithRelations } from '@/lib/products/strapiTypes';
 
 export type StrapiTutorialsListPage = {
   readonly id: number;
