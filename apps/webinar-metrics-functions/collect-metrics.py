@@ -21,7 +21,6 @@ def lambda_handler(event, context):
             user_id_str = str(data['userId'])
             encrypted_user_id = hashlib.sha256(user_id_str.encode('utf-8')).hexdigest()
             data['userId'] = encrypted_user_id
-            enriched_data_str = json.dumps(data) + '\n'
         else:
             raise ValueError("userId is required in the incoming data.")
 
