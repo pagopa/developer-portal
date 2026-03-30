@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { StrapiQuickStartGuides } from '@/lib/quickStartGuides/strapiTypes';
-import { strapiQuickStartGuides } from '@/lib/__tests__/fixtures/quickStartGuides';
+import { strapiQuickStartGuides } from '@/lib/quickStartGuides/__tests__/fixtures';
 import { minimalAlertPart } from '@/lib/parts/__tests__/factories';
 
 export function minimalQuickStartGuides(): StrapiQuickStartGuides {
