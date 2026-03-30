@@ -4,7 +4,7 @@ import _ from 'lodash';
 import {
   strapiWebinars,
   webinarProps,
-} from '@/lib/__tests__/fixtures/webinars';
+} from '@/lib/webinars/__tests__/fixtures';
 import { spyOnConsoleError } from '@/lib/__tests__/spyOnConsole';
 
 describe('mapWebinarsProps', () => {

@@ -2,7 +2,7 @@ import {
   mapWebinarCategoriesProps,
   mapWebinarCategoryProps,
 } from '@/lib/webinarCategories/mapper';
-import { strapiWebinarCategories } from '@/lib/__tests__/fixtures/webinarCategories';
+import { strapiWebinarCategories } from '@/lib/webinarCategories/__tests__/fixtures';
 import { StrapiWebinarCategory } from '@/lib/webinarCategories/strapiTypes';
 import { mediaJpeg } from '@/lib/__tests__/factories/media';
 import { StrapiMedia } from '@/lib/media/strapiTypes';
