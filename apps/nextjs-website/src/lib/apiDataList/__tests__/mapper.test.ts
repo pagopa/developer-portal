@@ -4,7 +4,7 @@ import _ from 'lodash';
 import {
   strapiApiDataList,
   expectedApiDataPageProps,
-} from '@/lib/apiDataList/__tests__/fixtures/apiDataList';
+} from '@/lib/apiDataList/__tests__/fixtures';
 import {
   minimalApiDataList,
   apiDataWithoutBannerLinks,
@@ -18,7 +18,7 @@ import {
   restApiDataWithMultipleSpecs,
   apiDataWithInvalidRestApiDetails,
   apiDatalistWithItemMissingSlug,
-} from '@/lib/apiDataList/__tests__/factories/apiDataList';
+} from '@/lib/apiDataList/__tests__/factories';
 import { spyOnConsoleError } from '@/lib/__tests__/spyOnConsole';
 
 // Mock the makeApiSoapUrlList function
