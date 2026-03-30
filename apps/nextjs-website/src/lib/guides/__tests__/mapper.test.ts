@@ -2,12 +2,12 @@ import {
   guideProps,
   strapiEmptyGuideData,
   strapiGuideData,
-} from '@/lib/__tests__/fixtures/guides';
+} from '@/lib/guides/__tests__/fixtures';
 import { mapGuides } from '@/lib/guides/mapper';
 import {
   guideListWithItemsWithEmptyProductSlug,
   guideListWithMissingProductSlug,
-} from '@/lib/__tests__/factories/guides';
+} from '@/lib/guides/__tests__/factories';
 import { spyOnConsoleError } from '@/lib/__tests__/spyOnConsole';
 
 describe('mapGuides', () => {
