@@ -36,6 +36,10 @@ inputs:
     description: 'Invalidate OpenNext CloudFront cache'
     required: false
     default: 'false'
+  invalidate_opennext_bucket_cache:
+    description: 'Invalidate opennext CloudFront bucket cache'
+    required: false
+    default: 'true'
   incremental_mode:
     description: 'Run sync in incremental mode by checking only file size'
     required: false
@@ -305,6 +309,7 @@ runs:
         echo "::endgroup::"
 
     - name: Invalidate CloudFront asset bucket cache
+      if: ${{ inputs.invalidate_opennext_bucket_cache == 'true' }}
       shell: bash
       run: |
         echo "::group::Invalidate CloudFront asset bucket cache"
@@ -314,7 +319,7 @@ runs:
         echo "::endgroup::"
 
     - name: Invalidate OpenNext CloudFront cache
-      if: inputs.invalidate_opennext_cache == 'true'
+      if: ${{ inputs.invalidate_opennext_cache == 'true' }}
       shell: bash
       run: |
         echo "::group::Invalidate OpenNext CloudFront cache"
