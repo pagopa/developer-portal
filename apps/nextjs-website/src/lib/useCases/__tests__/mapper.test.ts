@@ -6,7 +6,7 @@ import {
   useCasesWithAnItemMissingSlug,
 } from '@/lib/__tests__/factories/useCases';
 import { strapiUseCases } from '@/lib/__tests__/fixtures/useCases';
-import { spyOnConsoleError } from '@/lib/strapi/__tests__/spyOnConsole';
+import { spyOnConsoleError } from '@/lib/__tests__/spyOnConsole';
 import _ from 'lodash';
 
 describe('mapUseCasesProps', () => {

@@ -6,7 +6,7 @@ import {
   tutorialsWithAnItemMissingSlug,
 } from '@/lib/__tests__/factories/tutorials';
 import { strapiTutorials } from '@/lib/__tests__/fixtures/tutorials';
-import { spyOnConsoleError } from '@/lib/strapi/__tests__/spyOnConsole';
+import { spyOnConsoleError } from '@/lib/__tests__/spyOnConsole';
 import _ from 'lodash';
 
 describe('mapTutorialsProps', () => {

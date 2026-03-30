@@ -1,9 +1,9 @@
-import { strapiApiDataListPages } from '@/lib/strapi/__tests__/fixtures/apiDataListPages';
+import { strapiApiDataListPages } from '@/lib/__tests__/fixtures/apiDataListPages';
 import {
   ApiDataListPage,
   ApiDataListPages,
 } from '@/lib/apiDataListPages/types';
-import { wrapAsRootEntity } from '@/lib/strapi/__tests__/strapiEntityWrappers';
+import { wrapAsRootEntity } from '@/lib/__tests__/strapiEntityWrappers';
 
 export function minimalApiDataListPages(): ApiDataListPages {
   const page = strapiApiDataListPages.data[0];

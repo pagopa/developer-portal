@@ -3,7 +3,7 @@ import {
   getPastWebinarsFrom,
 } from '@/helpers/webinars.helpers';
 import { Webinar } from '@/lib/types/webinar';
-import { mediaRasterJson } from '@/lib/strapi/__tests__/fixtures/media';
+import { mediaRasterJson } from '@/lib/__tests__/fixtures/media';
 
 const testWebinar: Webinar = {
   title: 'Test Webinar',

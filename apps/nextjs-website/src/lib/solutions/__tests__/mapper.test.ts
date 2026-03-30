@@ -10,7 +10,7 @@ import {
   solutionsWithItemWithoutCaseHistories,
   solutionsWithItemWithoutWebinars,
 } from '@/lib/__tests__/factories/solutions';
-import { spyOnConsoleError } from '@/lib/strapi/__tests__/spyOnConsole';
+import { spyOnConsoleError } from '@/lib/__tests__/spyOnConsole';
 import { mapSolutionsProps } from '@/lib/solutions/mapper';
 import { StrapiSolutions } from '@/lib/solutions/types';
 import { cloneDeep } from 'lodash';

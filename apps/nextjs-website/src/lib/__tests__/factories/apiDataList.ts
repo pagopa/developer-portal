@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { strapiApiDataList } from '@/lib/strapi/__tests__/fixtures/apiDataList';
+import { strapiApiDataList } from '@/lib/__tests__/fixtures/apiDataList';
 import { ApiData } from '@/lib/apiDataList/types';
-import { wrapAsRootEntity } from '@/lib/strapi/__tests__/strapiEntityWrappers';
+import { wrapAsRootEntity } from '@/lib/__tests__/strapiEntityWrappers';
 
 export function minimalApiDataList() {
   const apiData = strapiApiDataList.data[0];

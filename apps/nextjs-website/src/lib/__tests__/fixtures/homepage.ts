@@ -1,7 +1,7 @@
 import { HomepageProps } from '@/app/[locale]/page';
 import { Homepage } from '@/lib/homepage/types';
 import { mediaJpeg } from '@/lib/__tests__/factories/media';
-import { newsShowcase } from '@/lib/strapi/__tests__/fixtures/newsShowcase';
+import { newsShowcase } from '@/lib/__tests__/fixtures/newsShowcase';
 
 const fixedDateIsoString = new Date('2024-01-01T00:00:00.000Z').toISOString();
 

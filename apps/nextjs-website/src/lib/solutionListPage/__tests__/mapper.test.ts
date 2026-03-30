@@ -11,7 +11,7 @@ import {
   solutionListPageWithoutFeatures,
   solutionListPageWithoutSolutions,
 } from '@/lib/__tests__/factories/solutionListPage';
-import { spyOnConsoleError } from '@/lib/strapi/__tests__/spyOnConsole';
+import { spyOnConsoleError } from '@/lib/__tests__/spyOnConsole';
 import { cloneDeep } from 'lodash';
 
 describe('mapSolutionListPageProps', () => {

@@ -1,4 +1,4 @@
-import { mediaVectorJson } from '@/lib/strapi/__tests__/fixtures/media';
+import { mediaVectorJson } from '@/lib/__tests__/fixtures/media';
 import { productsJson } from '@/lib/products/__tests__/fixtures/product';
 
 export const baseSolutionJson = {

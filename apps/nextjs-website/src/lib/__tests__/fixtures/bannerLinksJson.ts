@@ -1,4 +1,4 @@
-import { mediaVectorJson } from '@/lib/strapi/__tests__/fixtures/media';
+import { mediaVectorJson } from '@/lib/__tests__/fixtures/media';
 
 const firstItem = {
   id: 2,

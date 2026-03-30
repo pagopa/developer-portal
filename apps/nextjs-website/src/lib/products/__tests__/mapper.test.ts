@@ -19,7 +19,7 @@ import {
   productsWithAnItemWithEmptySlug,
   productsWithAnItemMissingSlug,
 } from '@/lib/products/__tests__/factories/products';
-import { spyOnConsoleError } from '@/lib/strapi/__tests__/spyOnConsole';
+import { spyOnConsoleError } from '@/lib/__tests__/spyOnConsole';
 
 describe('makeProductsProps', () => {
   afterEach(() => {

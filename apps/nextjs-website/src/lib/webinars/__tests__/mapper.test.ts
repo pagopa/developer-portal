@@ -5,7 +5,7 @@ import {
   strapiWebinars,
   webinarProps,
 } from '@/lib/__tests__/fixtures/webinars';
-import { spyOnConsoleError } from '@/lib/strapi/__tests__/spyOnConsole';
+import { spyOnConsoleError } from '@/lib/__tests__/spyOnConsole';
 
 describe('mapWebinarsProps', () => {
   afterEach(() => {

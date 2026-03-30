@@ -14,7 +14,7 @@ import {
   overviewsWithItemWithEmptyGuideProductSlug,
   overviewsWithItemWithEmptyProductSlug,
 } from '@/lib/__tests__/factories/overviews';
-import { spyOnConsoleError } from '@/lib/strapi/__tests__/spyOnConsole';
+import { spyOnConsoleError } from '@/lib/__tests__/spyOnConsole';
 
 describe('mapOverviewsProps', () => {
   beforeEach(() => {
