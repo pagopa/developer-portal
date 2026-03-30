@@ -2,14 +2,14 @@ import { SolutionTemplateProps } from '@/components/templates/SolutionTemplate/S
 import {
   expectedSolutionTemplateProps,
   strapiSolutions,
-} from '@/lib/__tests__/fixtures/solutions';
+} from '@/lib/solutions/__tests__/fixtures';
 import {
   minimalDataSolutions,
   solutionsWithItemMissingCaseHistorySlug,
   solutionsWithItemMissingSolutionSlug,
   solutionsWithItemWithoutCaseHistories,
   solutionsWithItemWithoutWebinars,
-} from '@/lib/__tests__/factories/solutions';
+} from '@/lib/solutions/__tests__/factories';
 import { spyOnConsoleError } from '@/lib/__tests__/spyOnConsole';
 import { mapSolutionsProps } from '@/lib/solutions/mapper';
 import { StrapiSolutions } from '@/lib/solutions/types';
