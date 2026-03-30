@@ -89,3 +89,39 @@ resource "aws_lambda_permission" "apigw_webinar_metrics" {
   principal     = "apigateway.amazonaws.com"
   source_arn    = "${aws_api_gateway_rest_api.webinar_metrics.execution_arn}/*/*"
 }
+
+## API Gateway HTTP API for ingest lambda ##
+
+resource "aws_apigatewayv2_api" "ingest" {
+  name          = "${var.project_name}-ingest-api"
+  protocol_type = "HTTP"
+  description   = "HTTP API for heartbeat ingest Lambda"
+}
+
+resource "aws_apigatewayv2_integration" "ingest_lambda" {
+  api_id                 = aws_apigatewayv2_api.ingest.id
+  integration_type       = "AWS_PROXY"
+  integration_uri        = aws_lambda_function.ingest_lambda.invoke_arn
+  integration_method     = "POST"
+  payload_format_version = "2.0"
+}
+
+resource "aws_apigatewayv2_route" "ingest" {
+  api_id    = aws_apigatewayv2_api.ingest.id
+  route_key = "POST /ingest"
+  target    = "integrations/${aws_apigatewayv2_integration.ingest_lambda.id}"
+}
+
+resource "aws_apigatewayv2_stage" "ingest" {
+  api_id      = aws_apigatewayv2_api.ingest.id
+  name        = "$default"
+  auto_deploy = true
+}
+
+resource "aws_lambda_permission" "apigw_ingest" {
+  statement_id  = "AllowAPIGatewayHTTPInvoke"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.ingest_lambda.function_name
+  principal     = "apigateway.amazonaws.com"
+  source_arn    = "${aws_apigatewayv2_api.ingest.execution_arn}/*/*"
+}

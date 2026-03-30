@@ -61,7 +61,7 @@ output "deploy_lambda_role_arn" {
   value       = aws_iam_role.deploy_lambda.arn
 }
 
-output "ingest_metrics_endpoint" {
-  value       = aws_lambda_function_url.ingest_url.function_url
-  description = "Function url to post metrics for to viewer count."
+output "ingest_api_endpoint" {
+  description = "The domain of the HTTP API for the ingest Lambda."
+  value       = aws_apigatewayv2_api.ingest.api_endpoint
 }
