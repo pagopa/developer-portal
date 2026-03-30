@@ -1,5 +1,5 @@
 import { SolutionListTemplateProps } from '@/components/templates/SolutionListTemplate/SolutionListTemplate';
-import { generateBannerLinks } from '@/lib/__tests__/factories/bannerLink';
+import { generateBannerLinks } from '@/lib/bannerLink/__tests__/factories';
 import { mediaJpeg } from '@/lib/__tests__/factories/media';
 import { StrapiSolutionListPage } from '@/lib/solutionListPage/types';
 

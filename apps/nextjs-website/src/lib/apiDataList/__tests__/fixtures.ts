@@ -1,6 +1,6 @@
 import { ApiDataList } from '@/lib/apiDataList/types';
 import { ApiDataPageProps } from '@/app/[locale]/[productSlug]/api/[apiDataSlug]/page';
-import { generateBannerLinks } from '@/lib/__tests__/factories/bannerLink';
+import { generateBannerLinks } from '@/lib/bannerLink/__tests__/factories';
 import { mediaJpeg } from '@/lib/__tests__/factories/media';
 
 export const strapiApiDataList: ApiDataList = {

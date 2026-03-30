@@ -1,6 +1,6 @@
 import { StrapiBannerLink } from '@/lib/bannerLink/types';
 import { mediaJpeg } from '@/lib/__tests__/factories/media';
-import { strapiBannerLink } from '../fixtures/bannerLink';
+import { strapiBannerLink } from '@/lib/bannerLink/__tests__/fixtures';
 
 const defaultBannerLink = {
   id: 1,

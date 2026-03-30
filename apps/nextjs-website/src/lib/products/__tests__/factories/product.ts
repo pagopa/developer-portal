@@ -6,7 +6,7 @@ import {
   StrapiProduct,
 } from '@/lib/products/strapiTypes';
 import { mediaJpeg } from '@/lib/__tests__/factories/media';
-import { generateBannerLinks } from '@/lib/__tests__/factories/bannerLink';
+import { generateBannerLinks } from '@/lib/bannerLink/__tests__/factories';
 
 export function baseProduct(): StrapiBaseProduct {
   return {
