@@ -2,7 +2,7 @@ import { QuickStartGuidePageProps } from '@/app/[locale]/[productSlug]/quick-sta
 import { StrapiBannerLink } from '@/lib/bannerLink/types';
 import { StrapiBaseProductWithRelations } from '@/lib/products/strapiTypes';
 import { Paginated } from '@/lib/strapi/types/paginated';
-import { StrapiPart } from '@/lib/parts/types';
+import { StrapiPart } from '@/lib/parts/strapiTypes';
 import { StrapiSeo } from '@/lib/seo/strapiTypes';
 
 export type StrapiQuickStartGuideItem = {

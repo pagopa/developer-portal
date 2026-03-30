@@ -1,5 +1,5 @@
 import { buildEnv } from '@/lib/buildEnv';
-import { isMarkDownPart } from '@/lib/parts/types';
+import { isMarkDownPart } from '@/lib/parts/strapiTypes';
 import { getMarkdownContentDict } from '@/helpers/s3Metadata.helpers';
 import { fetchUseCases } from './fetcher';
 import { mapUseCasesProps } from './mapper';

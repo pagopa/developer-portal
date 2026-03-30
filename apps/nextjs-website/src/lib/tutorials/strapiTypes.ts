@@ -1,7 +1,7 @@
 import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
 import { RelatedLinksProps } from '@/components/atoms/RelatedLinks/RelatedLinks';
 import { StrapiBannerLink } from '@/lib/bannerLink/types';
-import { StrapiPart } from '@/lib/parts/types';
+import { StrapiPart } from '@/lib/parts/strapiTypes';
 import { StrapiBaseProductWithBannerLinks } from '@/lib/products/strapiTypes';
 import { Paginated } from '@/lib/strapi/types/paginated';
 import { StrapiRelatedLinks } from '@/lib/strapi/types/link';

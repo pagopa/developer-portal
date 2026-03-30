@@ -1,5 +1,5 @@
 import { Path } from '@/lib/paths/types';
-import { Part } from '@/lib/types/part';
+import { Part } from '@/lib/parts/types';
 import { SEO } from '@/lib/seo/types';
 import { Tag } from '@/lib/tags/types';
 import { Media } from '@/lib/media/types';

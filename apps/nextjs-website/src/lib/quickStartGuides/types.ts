@@ -1,4 +1,4 @@
-import { Part } from '@/lib/types/part';
+import { Part } from '@/lib/parts/types';
 
 export type Step = {
   readonly title: string;

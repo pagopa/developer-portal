@@ -1,6 +1,6 @@
-import { Part } from '@/lib/types/part';
+import { Part } from '@/lib/parts/types';
 import { parseCkEditorContent } from '@/helpers/parseCkEditorContent.helpers';
-import { StrapiPart } from '@/lib/parts/types';
+import { StrapiPart } from '@/lib/parts/strapiTypes';
 
 export function mapPartProps(
   strapiPart: StrapiPart,

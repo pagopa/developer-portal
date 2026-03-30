@@ -1,4 +1,4 @@
-import { isMarkDownPart } from '@/lib/parts/types';
+import { isMarkDownPart } from '@/lib/parts/strapiTypes';
 import { getMarkdownContentDict } from '@/helpers/s3Metadata.helpers';
 import { fetchProductTutorialsReader, fetchTutorials } from './fetcher';
 import { mapTutorialsProps } from './mapper';

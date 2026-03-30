@@ -1,4 +1,4 @@
-import { StrapiPart } from '@/lib/parts/types';
+import { StrapiPart } from '@/lib/parts/strapiTypes';
 
 export function minimalAlertPart(): StrapiPart {
   return {
