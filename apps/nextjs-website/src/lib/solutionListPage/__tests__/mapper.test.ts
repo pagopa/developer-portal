@@ -2,7 +2,7 @@ import { mapSolutionListPageProps } from '@/lib/solutionListPage/mapper';
 import {
   expectedSolutionListTemplateProps,
   strapiSolutionListPage,
-} from '@/lib/__tests__/fixtures/solutionListPage';
+} from '@/lib/solutionListPage/__tests__/fixtures';
 import {
   minimalDataSolutionListPage,
   solutionListPageWithMissingCaseHistorySlug,

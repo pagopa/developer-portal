@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { strapiSolutionListPage } from '@/lib/__tests__/fixtures/solutionListPage';
-import { StrapiSolutionListPage } from '../../solutionListPage/types';
+import { strapiSolutionListPage } from '@/lib/solutionListPage/__tests__/fixtures';
+import { StrapiSolutionListPage } from '../types';
 
 export function minimalDataSolutionListPage(): StrapiSolutionListPage {
   return {
