@@ -23,7 +23,7 @@ import {
   makeMetadata,
   makeMetadataFromStrapi,
 } from '@/helpers/metadata.helpers';
-import { BreadcrumbSegment } from '@/lib/types/path';
+import { BreadcrumbSegment } from '@/lib/paths/types';
 import { baseUrl } from '@/config';
 import PageNotFound from '@/app/[locale]/not-found';
 

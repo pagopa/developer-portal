@@ -3,7 +3,7 @@ import GuideMenu from '@/components/atoms/GuideMenu/GuideMenu';
 import ProductBreadcrumbs from '@/components/atoms/ProductBreadcrumbs/ProductBreadcrumbs';
 import { FragmentProvider } from '@/components/organisms/FragmentProvider/FragmentProvider';
 import GuideInPageMenu from '@/components/organisms/GuideInPageMenu/GuideInPageMenu';
-import { BreadcrumbSegment } from '@/lib/types/path';
+import { BreadcrumbSegment } from '@/lib/paths/types';
 import { Box, Stack } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import { PRODUCT_HEADER_HEIGHT, SITE_HEADER_HEIGHT } from '@/config';

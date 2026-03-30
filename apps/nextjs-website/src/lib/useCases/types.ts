@@ -1,4 +1,4 @@
-import { Path } from '@/lib/types/path';
+import { Path } from '@/lib/paths/types';
 import { Part } from '@/lib/types/part';
 import { SEO } from '@/lib/seo/types';
 import { Tag } from '@/lib/tags/types';

@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { Tutorial } from '@/lib/tutorials/types';
-import { Path } from '@/lib/types/path';
+import { Path } from '@/lib/paths/types';
 import NewsShowcase from '@/components/organisms/NewsShowcase/NewsShowcase';
 import { useTranslations } from 'next-intl';
 
