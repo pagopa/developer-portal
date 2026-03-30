@@ -865,11 +865,6 @@ resource "aws_lambda_function" "ingest_lambda" {
   depends_on = [aws_cloudwatch_log_group.ingest_lambda_logs]
 }
 
-resource "aws_lambda_function_url" "ingest_url" {
-  function_name      = aws_lambda_function.ingest_lambda.function_name
-  authorization_type = "NONE"
-}
-
 # Lambda needs permission to put directly to Firehose
 resource "aws_iam_role_policy" "lambda_firehose_policy" {
   name = "lambda_firehose_direct_put"
