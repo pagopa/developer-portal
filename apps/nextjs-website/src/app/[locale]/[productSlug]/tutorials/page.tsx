@@ -7,7 +7,7 @@ import ProductLayout, {
 } from '@/components/organisms/ProductLayout/ProductLayout';
 import { Tutorial } from '@/lib/tutorials/types';
 import React from 'react';
-import { ProductParams } from '@/lib/products/types';
+import type { ProductParams } from '@/lib/products/types';
 import {
   makeMetadata,
   makeMetadataFromStrapi,
