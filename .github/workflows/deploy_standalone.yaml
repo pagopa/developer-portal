@@ -18,8 +18,8 @@ on:
           - dev
           - uat
           - prod
-      invalidate_opennext_cache:
-        description: 'Invalidate opennext CloudFront bucket cache'
+      invalidate_cloudfront_asset_bucket_cache:
+        description: 'Invalidate CloudFront asset bucket cache'
         type: boolean
         required: true
         default: false
@@ -193,7 +193,7 @@ jobs:
             --paths "/*"
 
       - name: Invalidate CloudFront asset bucket cache
-        if: ${{ github.event_name == 'workflow_dispatch' && inputs.invalidate_opennext_cache }}
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.invalidate_cloudfront_asset_bucket_cache }}
         run: |
           aws cloudfront create-invalidation \
             --distribution-id ${{ vars.ASSET_BUCKET_CLOUDFRONT_DISTRIBUTION_ID }} \
