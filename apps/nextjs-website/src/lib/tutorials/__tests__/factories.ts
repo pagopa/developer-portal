@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { strapiTutorials } from '@/lib/__tests__/fixtures/tutorials';
+import { strapiTutorials } from '@/lib/tutorials/__tests__/fixtures';
 import { StrapiTutorials } from '@/lib/tutorials/strapiTypes';
 
 export function tutorialsWithAnItemMissingSlug(): StrapiTutorials {
@@ -29,6 +29,7 @@ export function tutorialsWithAnItemMissingProductSlug(): StrapiTutorials {
         title: 'Tutorial Without Product Slug',
         slug: 'tutorial-without-product-slug',
         product: {
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           ...strapiTutorials.data[0].product!,
           name: 'Product Without Slug',
           slug: undefined as any,
@@ -39,6 +40,7 @@ export function tutorialsWithAnItemMissingProductSlug(): StrapiTutorials {
         title: 'Valid Tutorial',
         slug: 'valid-tutorial',
         product: {
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           ...strapiTutorials.data[0].product!,
           name: 'Valid Product',
           slug: 'valid-product',

@@ -4,8 +4,8 @@ import {
   minimalDataTutorials,
   tutorialsWithAnItemMissingProductSlug,
   tutorialsWithAnItemMissingSlug,
-} from '@/lib/__tests__/factories/tutorials';
-import { strapiTutorials } from '@/lib/__tests__/fixtures/tutorials';
+} from '@/lib/tutorials/__tests__/factories';
+import { strapiTutorials } from '@/lib/tutorials/__tests__/fixtures';
 import { spyOnConsoleError } from '@/lib/__tests__/spyOnConsole';
 import _ from 'lodash';
 
