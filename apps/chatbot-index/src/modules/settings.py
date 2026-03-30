@@ -5,6 +5,8 @@ import yaml
 from pathlib import Path
 from pydantic_settings import BaseSettings
 
+from google.oauth2 import service_account
+
 from src.modules.logger import get_logger
 
 
@@ -45,8 +47,14 @@ GOOGLE_SERVICE_ACCOUNT = get_ssm_parameter(
     os.getenv("CHB_AWS_SSM_GOOGLE_SERVICE_ACCOUNT")
 )
 if GOOGLE_SERVICE_ACCOUNT is None:
-    with open(os.path.join(ROOT, ".google_service_account.json"), "r") as file:
-        GOOGLE_JSON_ACCOUNT_INFO = json.load(file)
+    if os.path.exists(os.path.join(ROOT, ".google_service_account.json")):
+        with open(os.path.join(ROOT, ".google_service_account.json"), "r") as file:
+            GOOGLE_JSON_ACCOUNT_INFO = json.load(file)
+    else:
+        GOOGLE_JSON_ACCOUNT_INFO = None
+        LOGGER.warning(
+            "Google service account information not found in SSM or local file. Vertex AI credentials will not be available."
+        )
 else:
     GOOGLE_JSON_ACCOUNT_INFO = json.loads(GOOGLE_SERVICE_ACCOUNT)
 
@@ -65,6 +73,16 @@ class ChatbotSettings(BaseSettings):
     embed_task_docs: str = "RETRIEVAL_DOCUMENT"
     google_service_account: dict = GOOGLE_JSON_ACCOUNT_INFO
     vertexai_location: str = os.getenv("CHB_VERTEXAI_LOCATION", "europe-west8")
+
+    @property
+    def vertexai_credentials(self):
+        if GOOGLE_JSON_ACCOUNT_INFO:
+            return service_account.Credentials.from_service_account_info(
+                GOOGLE_JSON_ACCOUNT_INFO,
+                scopes=["https://www.googleapis.com/auth/cloud-platform"],
+            )
+        else:
+            return None
 
     # RAG settings
     max_tokens: int = int(os.getenv("CHB_MODEL_MAXTOKENS", "2048"))

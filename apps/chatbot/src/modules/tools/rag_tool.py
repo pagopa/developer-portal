@@ -70,19 +70,13 @@ def get_query_engine_tool(
     )
 
     if SETTINGS.provider == "google":
-        from google.oauth2 import service_account
         from src.modules.google_reranker import AsyncSafeGoogleRerank
-
-        credentials = service_account.Credentials.from_service_account_info(
-            SETTINGS.google_service_account,
-            scopes=["https://www.googleapis.com/auth/cloud-platform"],
-        )
 
         reranker = AsyncSafeGoogleRerank(
             top_n=SETTINGS.similarity_topk,
             model=SETTINGS.reranker_id,
-            credentials=credentials,
-            project_id=credentials.project_id,
+            credentials=SETTINGS.vertexai_credentials,
+            project_id=SETTINGS.vertexai_credentials.project_id,
             location=SETTINGS.vertexai_location,
         )
 
