@@ -141,13 +141,13 @@ variable "vpc" {
   description = "The VPC used to deploy the lambda functions in. Configure this only when you want the lambda to access private resources contained in the VPC."
 }
 
-variable "webinar_heartbit_url" {
+variable "webinar_heartbeat_url" {
   type        = string
-  description = "The URL of the webinar heartbit endpoint"
+  description = "The URL of the webinar heartbeat endpoint"
 }
 
-variable "webinar_heartbit_interval_in_seconds" {
+variable "webinar_heartbeat_interval_in_seconds" {
   type        = number
-  description = "The interval in seconds for the webinar heartbit"
+  description = "The interval in seconds for the webinar heartbeat"
   default     = 60
 }
