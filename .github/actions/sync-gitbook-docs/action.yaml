@@ -36,8 +36,8 @@ inputs:
     description: 'Invalidate OpenNext CloudFront cache'
     required: false
     default: 'false'
-  invalidate_opennext_bucket_cache:
-    description: 'Invalidate opennext CloudFront bucket cache'
+  invalidate_cloudfront_asset_bucket_cache:
+    description: 'Invalidate CloudFront asset bucket cache'
     required: false
     default: 'true'
   incremental_mode:
@@ -309,7 +309,7 @@ runs:
         echo "::endgroup::"
 
     - name: Invalidate CloudFront asset bucket cache
-      if: ${{ inputs.invalidate_opennext_bucket_cache == 'true' }}
+      if: ${{ inputs.invalidate_cloudfront_asset_bucket_cache == 'true' }}
       shell: bash
       run: |
         echo "::group::Invalidate CloudFront asset bucket cache"
