@@ -1,6 +1,6 @@
 import { ParseContentConfig } from 'gitbook-docs/parseContent';
 import { Product } from '@/lib/products/types';
-import { SEO } from './seo';
+import { SEO } from '../seo/types';
 
 export type GitBookContentData = {
   readonly bodyConfig: ParseContentConfig;

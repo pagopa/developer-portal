@@ -1,4 +1,4 @@
-import { StrapiNewsShowcase } from '../../strapi/types/newsShowcase';
+import { StrapiNewsShowcase } from '../../newsShowcase/types';
 import { mediaJpeg } from '../factories/media';
 
 export const newsShowcase = {

@@ -4,7 +4,7 @@ import React from 'react';
 import { Path } from '@/lib/types/path';
 import NewsShowcase from '@/components/organisms/NewsShowcase/NewsShowcase';
 import { useTranslations } from 'next-intl';
-import { UseCase } from '@/lib/types/useCaseData';
+import { UseCase } from '@/lib/useCases/types';
 
 type UseCasesOverviewProps = {
   title?: string;

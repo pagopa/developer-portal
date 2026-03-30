@@ -5,7 +5,7 @@ import ProductLayout, {
   ProductLayoutProps,
 } from '@/components/organisms/ProductLayout/ProductLayout';
 import { Product } from '@/lib/products/types';
-import { Tutorial } from '@/lib/types/tutorialData';
+import { Tutorial } from '@/lib/tutorials/types';
 import StartInfo from '@/components/organisms/StartInfo/StartInfo';
 import RelatedLinks from '@/components/atoms/RelatedLinks/RelatedLinks';
 import Feature from '@/editorialComponents/Feature/Feature';
@@ -17,7 +17,7 @@ import {
   makeMetadata,
   makeMetadataFromStrapi,
 } from '@/helpers/metadata.helpers';
-import { SEO } from '@/lib/types/seo';
+import { SEO } from '@/lib/seo/types';
 import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
 import {
   convertSeoToStructuredDataArticle,
@@ -26,7 +26,7 @@ import {
 import NewsShowcase, {
   NewsShowcaseProps,
 } from '@/components/organisms/NewsShowcase/NewsShowcase';
-import { UseCase } from '@/lib/types/useCaseData';
+import { UseCase } from '@/lib/useCases/types';
 import TutorialsSectionPreviewCardsLayout from '@/components/organisms/TutorialsSectionPreviewCardsLayout/TutorialsSectionPreviewCardsLayout';
 import OverviewItemList from '@/components/organisms/OverviewItemList/OverviewItemList';
 const MAX_NUM_TUTORIALS_IN_OVERVIEW = 3;

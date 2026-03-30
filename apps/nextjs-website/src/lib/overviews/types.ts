@@ -2,12 +2,12 @@ import { BlocksContent } from '@strapi/blocks-react-renderer';
 import { StrapiBannerLink } from '@/lib/bannerLink/types';
 import type { StrapiBaseGuide } from '@/lib/guides/types';
 import { StrapiLink, StrapiRelatedLinks } from '@/lib/strapi/types/link';
-import { StrapiMedia } from '@/lib/strapi/types/media';
-import { StrapiNewsShowcase } from '@/lib/strapi/types/newsShowcase';
+import { StrapiMedia } from '@/lib/media/strapiTypes';
+import { StrapiNewsShowcase } from '@/lib/newsShowcase/types';
 import { Paginated } from '@/lib/strapi/types/paginated';
-import { StrapiSeo } from '@/lib/strapi/types/seo';
-import { StrapiBaseTutorial } from '@/lib/tutorials/types';
-import { StrapiBaseUseCase } from '@/lib/useCases/types';
+import { StrapiSeo } from '@/lib/seo/strapiTypes';
+import { StrapiBaseTutorial } from '@/lib/tutorials/strapiTypes';
+import { StrapiBaseUseCase } from '@/lib/useCases/strapiTypes';
 import { StrapiProduct } from '@/lib/products/types';
 
 export type StrapiStartInfo = {

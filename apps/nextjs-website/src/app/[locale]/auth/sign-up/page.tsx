@@ -2,11 +2,11 @@
 import CheckItem from '@/components/molecules/CheckItem/CheckItem';
 import ConfirmSignUp from '@/components/organisms/Auth/ConfirmSignUp';
 import SignUpForm from '@/components/organisms/Auth/SignUpForm';
-import { SignUpSteps } from '@/lib/types/signUpSteps';
+import { SignUpSteps } from '@/lib/auth/types/signUpSteps';
 import { Box, Grid, Typography, useMediaQuery } from '@mui/material';
 import { Auth } from 'aws-amplify';
 import { useSearchParams } from 'next/navigation';
-import { SignUpUserData } from '@/lib/types/signUp';
+import { SignUpUserData } from '@/lib/auth/types/signUp';
 import { useTranslations } from 'next-intl';
 import { generateSignUpData } from '@/helpers/auth.helpers';
 import { useAuthenticatedUserRedirect } from '@/helpers/user.helper';

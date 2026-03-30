@@ -3,7 +3,7 @@ import { isMarkDownPart } from '@/lib/parts/types';
 import { getMarkdownContentDict } from '@/helpers/s3Metadata.helpers';
 import { fetchUseCases } from './fetcher';
 import { mapUseCasesProps } from './mapper';
-import { UseCaseProps } from './types';
+import { UseCaseProps } from './strapiTypes';
 
 export const UseCasesRepository = {
   /**

@@ -2,7 +2,7 @@ import {
   getFutureWebinarsFrom,
   getPastWebinarsFrom,
 } from '@/helpers/webinars.helpers';
-import { Webinar } from '@/lib/types/webinar';
+import { Webinar } from '@/lib/webinars/types';
 import { mediaRasterJson } from '@/lib/__tests__/fixtures/media';
 
 const testWebinar: Webinar = {

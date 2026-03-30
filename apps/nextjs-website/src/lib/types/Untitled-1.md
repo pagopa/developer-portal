@@ -1,0 +1,15 @@
+
+- auth
+  - loader
+  - loginFunction
+  - loginSteps
+  - signUp
+  - signUpSteps
+  - resetPasswordSteps
+  - sendResetPasswordSteps
+- page
+- path
+- product
+  - productParams
+- webinars
+  - speaker?

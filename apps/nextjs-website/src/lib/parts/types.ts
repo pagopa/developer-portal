@@ -1,5 +1,5 @@
 import { BlocksContent } from '@strapi/blocks-react-renderer';
-import { StrapiMedia } from '@/lib/strapi/types/media';
+import { StrapiMedia } from '@/lib/media/strapiTypes';
 
 type AlertPart = {
   readonly text?: string;

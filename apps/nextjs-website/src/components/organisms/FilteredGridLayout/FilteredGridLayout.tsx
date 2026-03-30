@@ -1,6 +1,6 @@
 'use client';
 
-import { Tag } from '@/lib/types/tag';
+import { Tag } from '@/lib/tags/types';
 import Newsroom, {
   INewsroomItem,
 } from '@/editorialComponents/Newsroom/Newsroom';

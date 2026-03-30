@@ -1,4 +1,4 @@
-import { DevPortalUser, UserPreferences } from '@/lib/types/auth';
+import { DevPortalUser, UserPreferences } from '@/lib/auth/types/auth';
 
 export const MAX_USER_PREFERENCES_LENGTH = 2048;
 

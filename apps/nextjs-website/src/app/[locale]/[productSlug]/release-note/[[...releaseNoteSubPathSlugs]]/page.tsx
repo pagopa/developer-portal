@@ -2,7 +2,7 @@ import ProductLayout, {
   ProductLayoutProps,
 } from '@/components/organisms/ProductLayout/ProductLayout';
 import { Product } from '@/lib/products/types';
-import { SEO } from '@/lib/types/seo';
+import { SEO } from '@/lib/seo/types';
 import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
 import {
   convertSeoToStructuredDataArticle,

@@ -11,7 +11,7 @@ import VideoLibraryIcon from '@mui/icons-material/VideoLibrary';
 import CloseIcon from '@mui/icons-material/Close';
 import EastIcon from '@mui/icons-material/East';
 import Link from 'next/link';
-import { Webinar } from '@/lib/types/webinar';
+import { Webinar } from '@/lib/webinars/types';
 import { useTranslations } from 'next-intl';
 import { sortBy } from 'lodash';
 

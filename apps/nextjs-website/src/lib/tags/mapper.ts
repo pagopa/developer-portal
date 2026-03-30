@@ -1,5 +1,5 @@
-import { Tag } from '@/lib/types/tag';
-import { StrapiTag, StrapiTags } from './types';
+import { Tag } from '@/lib/tags/types';
+import { StrapiTag, StrapiTags } from './strapiTypes';
 
 export function mapTagsProps(strapiTags: StrapiTags): ReadonlyArray<Tag> {
   return strapiTags.data.map(mapTagProps);

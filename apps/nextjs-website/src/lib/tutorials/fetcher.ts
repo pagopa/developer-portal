@@ -3,7 +3,7 @@ import { buildEnv } from '@/lib/buildEnv';
 import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
 import { fetchCollectionFromStrapi } from '@/lib/strapi/fetchFromStrapi.helpers';
 import { productRelationsPopulate } from '@/lib/products/fetcher';
-import { StrapiTutorials } from './types';
+import { StrapiTutorials } from './strapiTypes';
 
 const makeStrapiTutorialsPopulate = () =>
   qs.stringify({

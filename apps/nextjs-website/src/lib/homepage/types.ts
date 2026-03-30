@@ -1,12 +1,12 @@
 import { BlocksContent } from '@strapi/blocks-react-renderer';
 import { StrapiRelatedLinks } from '@/lib/strapi/types/link';
-import { StrapiMedia } from '@/lib/strapi/types/media';
+import { StrapiMedia } from '@/lib/media/strapiTypes';
 import { StrapiLink } from '@/lib/strapi/types/link';
-import { StrapiWebinar } from '@/lib/webinars/types';
+import { StrapiWebinar } from '@/lib/webinars/strapiTypes';
 import { StrapiProduct } from '@/lib/products/types';
-import { StrapiSeo } from '@/lib/strapi/types/seo';
+import { StrapiSeo } from '@/lib/seo/strapiTypes';
 import { StrapiBaseSolution } from '@/lib/solutions/types';
-import { StrapiNewsShowcase } from '@/lib/strapi/types/newsShowcase';
+import { StrapiNewsShowcase } from '@/lib/newsShowcase/types';
 import { RootEntity } from '@/lib/strapi/types/rootEntity';
 
 type CallToAction = {

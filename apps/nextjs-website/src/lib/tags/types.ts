@@ -1,9 +1,6 @@
-import { StrapiMedia } from '@/lib/strapi/types/media';
-import { Paginated } from '@/lib/strapi/types/paginated';
+import { Media } from '@/lib/media/types';
 
-export type StrapiTag = {
+export type Tag = {
   readonly name: string;
-  readonly icon: StrapiMedia;
+  readonly icon: Media;
 };
-
-export type StrapiTags = Paginated<StrapiTag>;

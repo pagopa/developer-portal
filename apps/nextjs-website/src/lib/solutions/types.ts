@@ -5,9 +5,9 @@ import {
   StrapiBaseProductWithoutBannerLinks,
 } from '@/lib/products/types';
 import { Paginated } from '@/lib/strapi/types/paginated';
-import { StrapiMedia } from '@/lib/strapi/types/media';
-import { StrapiSeo } from '@/lib/strapi/types/seo';
-import { StrapiWebinar } from '@/lib/webinars/types';
+import { StrapiMedia } from '@/lib/media/strapiTypes';
+import { StrapiSeo } from '@/lib/seo/strapiTypes';
+import { StrapiWebinar } from '@/lib/webinars/strapiTypes';
 import { BlocksContent } from '@strapi/blocks-react-renderer';
 
 export type StrapiStep = {

@@ -3,7 +3,7 @@ import React, { useEffect, useState, Suspense } from 'react';
 import Hero from '@/editorialComponents/Hero/Hero';
 import { useTranslations } from 'next-intl';
 import { Box, useTheme } from '@mui/material';
-import { Webinar } from '@/lib/types/webinar';
+import { Webinar } from '@/lib/webinars/types';
 import {
   getFutureWebinarsFrom,
   getPastWebinarsFrom,
@@ -14,7 +14,7 @@ import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataS
 import { getItemFromPaths } from '@/helpers/structuredData.helpers';
 import Spinner from '@/components/atoms/Spinner/Spinner';
 import { FilteredGridLayout } from '@/components/organisms/FilteredGridLayout/FilteredGridLayout';
-import { Tag } from '@/lib/types/tag';
+import { Tag } from '@/lib/tags/types';
 import { SITE_HEADER_HEIGHT } from '@/config';
 
 const CHECK_WEBINARS_INTERVAL_MS = 60 * 1000;

@@ -1,10 +1,6 @@
-import { StrapiMedia } from '@/lib/strapi/types/media';
-import { Paginated } from '@/lib/strapi/types/paginated';
+import { Media } from '@/lib/media/types';
 
-export type StrapiWebinarCategory = {
-  readonly id: number;
+export type WebinarCategory = {
   readonly name: string;
-  readonly icon: StrapiMedia;
+  readonly icon: Media;
 };
-
-export type StrapiWebinarCategories = Paginated<StrapiWebinarCategory>;

@@ -1,7 +1,7 @@
 'use client';
 import SpeakerPreview from '@/components/molecules/SpeakerPreview/SpeakerPreview';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
-import { Speaker } from '@/lib/types/speaker';
+import { Speaker } from '@/lib/webinars/types';
 import { Box, Grid, Typography } from '@mui/material';
 import { useTranslations } from 'next-intl';
 

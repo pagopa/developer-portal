@@ -16,7 +16,7 @@ import {
   productPageToBreadcrumbs,
 } from '@/helpers/breadcrumbs.helpers';
 import { compact } from 'lodash';
-import { GitBookContentData } from '@/lib/types/gitBookContent';
+import { GitBookContentData } from '@/lib/gitBookContent/types';
 import { useParams } from 'next/navigation';
 
 export type GitBookTemplateProps = {

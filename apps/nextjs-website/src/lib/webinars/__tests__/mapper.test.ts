@@ -1,5 +1,5 @@
 import { mapWebinarsProps } from '@/lib/webinars/mapper';
-import { StrapiWebinars } from '@/lib/webinars/types';
+import { StrapiWebinars } from '@/lib/webinars/strapiTypes';
 import _ from 'lodash';
 import {
   strapiWebinars,

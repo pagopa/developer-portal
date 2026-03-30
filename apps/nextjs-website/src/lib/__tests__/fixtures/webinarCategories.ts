@@ -1,4 +1,4 @@
-import { StrapiWebinarCategories } from '@/lib/webinarCategories/types';
+import { StrapiWebinarCategories } from '@/lib/webinarCategories/strapiTypes';
 import { mediaJpeg } from '@/lib/__tests__/factories/media';
 
 export const strapiWebinarCategories: StrapiWebinarCategories = {

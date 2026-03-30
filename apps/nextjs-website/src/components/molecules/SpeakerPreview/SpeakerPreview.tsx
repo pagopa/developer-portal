@@ -1,5 +1,5 @@
 'use client';
-import { Speaker } from '@/lib/types/speaker';
+import { Speaker } from '@/lib/webinars/types';
 import { PersonOutline } from '@mui/icons-material';
 import { Box, Typography, useTheme } from '@mui/material';
 import Image from 'next/image';

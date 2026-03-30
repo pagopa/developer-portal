@@ -1,7 +1,7 @@
 import { Box, Button, useTheme } from '@mui/material';
 import IconWrapper from '@/components/atoms/IconWrapper/IconWrapper';
 import React from 'react';
-import { Media } from '@/lib/types/media';
+import { Media } from '@/lib/media/types';
 
 type FilterButtonProps = {
   // eslint-disable-next-line functional/no-return-void

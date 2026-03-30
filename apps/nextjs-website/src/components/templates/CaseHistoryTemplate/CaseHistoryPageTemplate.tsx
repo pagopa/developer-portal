@@ -11,8 +11,8 @@ import ProductBreadcrumbs from '@/components/atoms/ProductBreadcrumbs/ProductBre
 import { pageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
 import { Box, Typography, useTheme } from '@mui/material';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
-import { Media } from '@/lib/types/media';
-import { SEO } from '@/lib/types/seo';
+import { Media } from '@/lib/media/types';
+import { SEO } from '@/lib/seo/types';
 import { useParams } from 'next/navigation';
 
 export type CaseHistoryPageTemplateProps = {

@@ -1,6 +1,6 @@
 import { StrapiBaseProductWithRelations } from '@/lib/products/types';
 import { StrapiBannerLink } from '@/lib/bannerLink/types';
-import { StrapiSeo } from '@/lib/strapi/types/seo';
+import { StrapiSeo } from '@/lib/seo/strapiTypes';
 import { ApiData } from '@/lib/apiDataList/types';
 import { ApiDataListPageTemplateProps } from '@/components/templates/ApiDataListTemplate/ApiDataListTemplate';
 import { RootEntity } from '@/lib/strapi/types/rootEntity';

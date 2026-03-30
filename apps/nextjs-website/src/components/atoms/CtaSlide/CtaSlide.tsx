@@ -1,5 +1,5 @@
 'use client';
-import { Media } from '@/lib/types/media';
+import { Media } from '@/lib/media/types';
 import { Box, Stack, Typography, useTheme } from '@mui/material';
 import { ButtonNaked } from '@/components/atoms/ButtonNaked/ButtonNaked';
 import { BlocksContent } from '@strapi/blocks-react-renderer';

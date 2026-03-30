@@ -15,7 +15,7 @@ import { WebinarCategoriesRepository } from '@/lib/webinarCategories';
 import { TagsRepository } from '@/lib/tags';
 import { UrlReplaceMapRepository } from '@/lib/urlReplaceMap';
 import { ReleaseNotesRepository } from '@/lib/releaseNotes';
-import { Webinar } from '@/lib/types/webinar';
+import { Webinar } from '@/lib/webinars/types';
 import { parseS3GuidePage } from '@/helpers/parseS3Doc.helpers';
 import {
   getGuidesMetadata,

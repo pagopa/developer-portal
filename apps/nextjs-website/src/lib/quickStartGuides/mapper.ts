@@ -4,13 +4,13 @@ import { QuickStartGuidePageProps } from '@/app/[locale]/[productSlug]/quick-sta
 import { mapBannerLinkProps } from '@/lib/bannerLink/mapper';
 import { makeBaseProductWithoutLogoProps } from '@/lib/products/mapper';
 import { mapPartProps } from '@/lib/parts/mapper';
-import { Step } from '@/lib/types/step';
+import { Step } from '@/lib/quickStartGuides/types';
 import { compact } from 'lodash';
 import {
   StrapiQuickStartGuideItem,
   StrapiQuickStartGuides,
   QuickStartGuides,
-} from './types';
+} from './strapiTypes';
 
 function mapStepFromQuickStartGuideItem(item: StrapiQuickStartGuideItem): Step {
   return {

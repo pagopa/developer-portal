@@ -1,5 +1,5 @@
 import { mapUseCasesProps } from '@/lib/useCases/mapper';
-import { StrapiUseCases } from '@/lib/useCases/types';
+import { StrapiUseCases } from '@/lib/useCases/strapiTypes';
 import {
   minimalDataUseCases,
   useCasesWithAnItemMissingProductSlug,

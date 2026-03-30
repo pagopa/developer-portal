@@ -7,7 +7,7 @@ import {
   StructuredDataBreadcrumbList,
   StructuredDataWebPage,
 } from './structuredData.helpers';
-import { SEO } from '@/lib/types/seo';
+import { SEO } from '@/lib/seo/types';
 
 export function generateStructuredDataScripts(props: {
   breadcrumbsItems?: StructuredDataBreadcrumbList;

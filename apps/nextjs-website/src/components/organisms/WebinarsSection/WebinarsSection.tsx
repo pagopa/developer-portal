@@ -1,5 +1,5 @@
 'use client';
-import { Webinar } from '@/lib/types/webinar';
+import { Webinar } from '@/lib/webinars/types';
 import FutureWebinarsShowcase from '../FutureWebinarsShowcase/FutureWebinarsShowcase';
 import PastWebinarsShowcase from '../PastWebinarsShowcase/PastWebinarsShowcase';
 import {

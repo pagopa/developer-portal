@@ -3,9 +3,9 @@ import {
   mapWebinarCategoryProps,
 } from '@/lib/webinarCategories/mapper';
 import { strapiWebinarCategories } from '@/lib/__tests__/fixtures/webinarCategories';
-import { StrapiWebinarCategory } from '@/lib/webinarCategories/types';
+import { StrapiWebinarCategory } from '@/lib/webinarCategories/strapiTypes';
 import { mediaJpeg } from '@/lib/__tests__/factories/media';
-import { StrapiMedia } from '@/lib/strapi/types/media';
+import { StrapiMedia } from '@/lib/media/strapiTypes';
 
 describe('mapWebinarCategoriesProps', () => {
   it('should transform strapi webinar categories to WebinarCategory array', () => {

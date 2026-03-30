@@ -1,6 +1,6 @@
 'use client';
 import React, { ReactNode } from 'react';
-import { Step } from '@/lib/types/step';
+import { Step } from '@/lib/quickStartGuides/types';
 import { Box, useTheme } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { Part } from '@/lib/types/part';

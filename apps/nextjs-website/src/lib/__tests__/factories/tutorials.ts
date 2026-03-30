@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { strapiTutorials } from '@/lib/__tests__/fixtures/tutorials';
-import { StrapiTutorials } from '@/lib/tutorials/types';
+import { StrapiTutorials } from '@/lib/tutorials/strapiTypes';
 
 export function tutorialsWithAnItemMissingSlug(): StrapiTutorials {
   return {

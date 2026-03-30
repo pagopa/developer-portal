@@ -1,5 +1,5 @@
 import ConfirmationModal from '@/components/atoms/ConfirmationModal/ConfirmationModal';
-import { DevPortalUser } from '@/lib/types/auth';
+import { DevPortalUser } from '@/lib/auth/types/auth';
 import { Box, Typography, useTheme } from '@mui/material';
 import { ButtonNaked } from '@/components/atoms/ButtonNaked/ButtonNaked';
 import { useTranslations } from 'next-intl';

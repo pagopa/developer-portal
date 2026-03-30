@@ -6,7 +6,7 @@ import { Product } from '@/lib/products/types';
 import { parseDoc } from 'gitbook-docs/parseDoc';
 import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
 import { SolutionTemplateProps } from '@/components/templates/SolutionTemplate/SolutionTemplate';
-import { SEO } from '@/lib/types/seo';
+import { SEO } from '@/lib/seo/types';
 import { ReleaseNotePageProps } from '@/app/[locale]/[productSlug]/release-note/[[...releaseNoteSubPathSlugs]]/page';
 
 export type TutorialsDefinition = {

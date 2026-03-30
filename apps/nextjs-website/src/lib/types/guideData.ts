@@ -2,7 +2,7 @@ import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
 import { Path } from '@/lib/types/path';
 import { DocPage } from 'gitbook-docs/parseDoc';
 import { Product } from '@/lib/products/types';
-import { SEO } from './seo';
+import { SEO } from '../seo/types';
 import { ParseContentConfig } from 'gitbook-docs/parseContent';
 
 export type Guide = {

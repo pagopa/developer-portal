@@ -2,7 +2,7 @@ import { isMarkDownPart } from '@/lib/parts/types';
 import { getMarkdownContentDict } from '@/helpers/s3Metadata.helpers';
 import { fetchProductTutorialsReader, fetchTutorials } from './fetcher';
 import { mapTutorialsProps } from './mapper';
-import { TutorialProps } from './types';
+import { TutorialProps } from './strapiTypes';
 
 export const TutorialRepository = {
   /**
