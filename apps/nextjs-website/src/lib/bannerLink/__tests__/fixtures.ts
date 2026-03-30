@@ -1,6 +1,6 @@
 import { StrapiBannerLink } from '@/lib/bannerLink/types';
 import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
-import { mediaJpeg } from '@/lib/__tests__/factories/media';
+import { mediaJpeg } from '@/lib/media/__tests__/factories';
 
 export const strapiBannerLink: StrapiBannerLink = {
   id: 1,

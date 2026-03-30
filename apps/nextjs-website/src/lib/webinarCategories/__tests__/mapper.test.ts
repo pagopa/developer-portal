@@ -4,7 +4,7 @@ import {
 } from '@/lib/webinarCategories/mapper';
 import { strapiWebinarCategories } from '@/lib/webinarCategories/__tests__/fixtures';
 import { StrapiWebinarCategory } from '@/lib/webinarCategories/strapiTypes';
-import { mediaJpeg } from '@/lib/__tests__/factories/media';
+import { mediaJpeg } from '@/lib/media/__tests__/factories';
 import { StrapiMedia } from '@/lib/media/strapiTypes';
 
 describe('mapWebinarCategoriesProps', () => {

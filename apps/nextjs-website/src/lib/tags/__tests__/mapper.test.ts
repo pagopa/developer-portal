@@ -1,6 +1,6 @@
 import { mapTagProps, mapTagsProps } from '@/lib/tags/mapper';
-import { strapiTags } from '@/lib/__tests__/fixtures/tags';
-import { mediaJpeg } from '@/lib/__tests__/factories/media';
+import { strapiTags } from '@/lib/tags/__tests__/fixtures';
+import { mediaJpeg } from '@/lib/media/__tests__/factories';
 
 describe('mapTagsProps', () => {
   it('should transform strapi tags to Tag array', () => {

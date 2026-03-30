@@ -1,4 +1,4 @@
-import { mediaJpeg } from '@/lib/__tests__/factories/media';
+import { mediaJpeg } from '@/lib/media/__tests__/factories';
 import { StrapiTags } from '@/lib/tags/strapiTypes';
 
 export const strapiTags: StrapiTags = {

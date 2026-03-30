@@ -1,4 +1,4 @@
-import { mediaVectorJson } from '@/lib/__tests__/fixtures/media';
+import { mediaVectorJson } from '@/lib/media/__tests__/fixtures';
 import { Product } from '@/lib/products/types';
 
 const firstItem = {
