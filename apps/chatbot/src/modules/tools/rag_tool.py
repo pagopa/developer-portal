@@ -70,12 +70,16 @@ def get_query_engine_tool(
     )
 
     if SETTINGS.provider == "google":
-        from src.modules.google_reranker import GoogleRerank
+        from src.modules.google_reranker import AsyncSafeGoogleRerank
 
-        reranker = GoogleRerank(
+        reranker = AsyncSafeGoogleRerank(
             top_n=SETTINGS.similarity_topk,
-            rerank_model_name=SETTINGS.reranker_id,
+            model=SETTINGS.reranker_id,
+            credentials=SETTINGS.vertexai_credentials,
+            project_id=SETTINGS.vertexai_credentials.project_id,
+            location=SETTINGS.vertexai_location,
         )
+
         node_postprocessors = [reranker]
     elif SETTINGS.provider == "mock":
         node_postprocessors = None
