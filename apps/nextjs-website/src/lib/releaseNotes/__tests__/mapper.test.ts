@@ -4,13 +4,13 @@ import { StrapiReleaseNotes } from '@/lib/releaseNotes/types';
 import {
   strapiReleaseNotes,
   expectedReleaseNotePageProps,
-} from '@/lib/__tests__/fixtures/releaseNotes';
+} from '@/lib/releaseNotes/__tests__/fixtures';
 import {
   minimalDataReleaseNotes,
   releaseNotesWithoutBannerLinks,
   releaseNotesWithoutProductBannerLinks,
   releaseNotesWithMissingProductSlug,
-} from '@/lib/__tests__/factories/releaseNotes';
+} from '@/lib/releaseNotes/__tests__/factories';
 
 describe('mapReleaseNotesProps', () => {
   const consoleErrorSpy = jest

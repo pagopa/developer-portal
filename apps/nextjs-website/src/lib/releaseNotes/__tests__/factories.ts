@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { strapiReleaseNotes } from '@/lib/__tests__/fixtures/releaseNotes';
+import { strapiReleaseNotes } from '@/lib/releaseNotes/__tests__/fixtures';
 import { StrapiReleaseNotes } from '@/lib/releaseNotes/types';
 
 export function minimalDataReleaseNotes() {
