@@ -1,5 +1,5 @@
 /* eslint-disable functional/no-expression-statements */
-import { DevPortalUser } from '@/lib/auth/types/auth';
+import { DevPortalUser } from '@/lib/auth/user/types';
 import { getUserWebinarSubscriptions } from '@/lib/webinarApi';
 import { WebinarSubscription } from '@/lib/webinars/webinarSubscriptions';
 import { useAuthenticator } from '@aws-amplify/ui-react';

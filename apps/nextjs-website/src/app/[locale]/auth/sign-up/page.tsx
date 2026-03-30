@@ -2,17 +2,21 @@
 import CheckItem from '@/components/molecules/CheckItem/CheckItem';
 import ConfirmSignUp from '@/components/organisms/Auth/ConfirmSignUp';
 import SignUpForm from '@/components/organisms/Auth/SignUpForm';
-import { SignUpSteps } from '@/lib/auth/types/signUpSteps';
 import { Box, Grid, Typography, useMediaQuery } from '@mui/material';
 import { Auth } from 'aws-amplify';
 import { useSearchParams } from 'next/navigation';
-import { SignUpUserData } from '@/lib/auth/types/signUp';
+import { SignUpUserData } from '@/lib/auth/user/types';
 import { useTranslations } from 'next-intl';
 import { generateSignUpData } from '@/helpers/auth.helpers';
 import { useAuthenticatedUserRedirect } from '@/helpers/user.helper';
 import { useState, Suspense } from 'react';
 import { signUpAdvantages } from '@/config';
 import Spinner from '@/components/atoms/Spinner/Spinner';
+
+enum SignUpSteps {
+  SIGN_UP = 'SIGN_UP',
+  CONFIRM_SIGN_UP = 'CONFIRM_SIGN_UP',
+}
 
 const SignUpContent = () => {
   const loading = useAuthenticatedUserRedirect();
