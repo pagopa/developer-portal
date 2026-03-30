@@ -1,5 +1,5 @@
 import { StrapiTutorialListPages } from '@/lib/tutorialListPage/types';
-import { strapiTutorialListPages } from '@/lib/__tests__/fixtures/tutorialListPage';
+import { strapiTutorialListPages } from '@/lib/tutorialListPage/__tests__/fixtures';
 
 export function minimalTutorialListPages(): StrapiTutorialListPages {
   return {
