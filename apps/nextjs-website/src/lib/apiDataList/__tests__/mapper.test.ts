@@ -4,7 +4,7 @@ import _ from 'lodash';
 import {
   strapiApiDataList,
   expectedApiDataPageProps,
-} from '@/lib/strapi/__tests__/fixtures/apiDataList';
+} from '@/lib/__tests__/fixtures/apiDataList';
 import {
   minimalApiDataList,
   apiDataWithoutBannerLinks,
