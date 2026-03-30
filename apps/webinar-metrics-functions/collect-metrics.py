@@ -23,8 +23,8 @@ def lambda_handler(event, context):
             data['userId'] = encrypted_user_id
             enriched_data_str = json.dumps(data) + '\n'
         else:
-            logging.error("userId not found in the incoming data. Skipping encryption.")
-            raise ValueError("userId is required for encryption but was not found in the incoming data.")
+            logging.error("userId not found in the incoming data.")
+            raise ValueError("userId is required in the incoming data.")
 
         # Get the Client IP from the Request Context
         # Function URLs use the 'http' key inside 'requestContext'
