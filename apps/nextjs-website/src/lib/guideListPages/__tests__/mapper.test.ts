@@ -4,14 +4,14 @@ import {
   guideListPagesProps,
   strapiEmptyGuideListPagesData,
   strapiGuideListPagesData,
-} from '@/lib/__tests__/fixtures/guideListPages';
+} from '@/lib/guideListPages/__tests__/fixtures';
 import {
   guideListPagesWithItemMissingProductSlug,
   guideListPagesWithItemsMissingListItem,
   guideListPagesWithItemsWithWrongDataType,
   guideListPagesWithItemsMissingImages,
   guideListPagesWithItemsMissingSlug,
-} from '@/lib/__tests__/factories/guideListPages';
+} from '@/lib/guideListPages/__tests__/factories';
 import { spyOnConsoleError } from '@/lib/__tests__/spyOnConsole';
 
 describe('mapGuideListPages', () => {

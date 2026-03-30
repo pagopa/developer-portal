@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { strapiGuideListPagesData } from '@/lib/__tests__/fixtures/guideListPages';
+import { strapiGuideListPagesData } from '@/lib/guideListPages/__tests__/fixtures';
 import { StrapiGuideListPages } from '@/lib/guideListPages/types';
 
 export function guideListPagesWithItemsMissingSlug() {
