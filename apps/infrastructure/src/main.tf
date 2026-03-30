@@ -129,7 +129,7 @@ module "website" {
 
   next_public_soap_api_page_active = true
 
-  webinar_heartbit_url = module.video_streaming.webinar_metrics_channel_ingest_endpoint
+  webinar_heartbit_url = module.video_streaming.ingest_metrics_endpoint
 
 }
 
