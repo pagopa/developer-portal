@@ -4,8 +4,8 @@ import {
   minimalDataUseCases,
   useCasesWithAnItemMissingProductSlug,
   useCasesWithAnItemMissingSlug,
-} from '@/lib/__tests__/factories/useCases';
-import { strapiUseCases } from '@/lib/__tests__/fixtures/useCases';
+} from '@/lib/useCases/__tests__/factories';
+import { strapiUseCases } from '@/lib/useCases/__tests__/fixtures';
 import { spyOnConsoleError } from '@/lib/__tests__/spyOnConsole';
 import _ from 'lodash';
 
