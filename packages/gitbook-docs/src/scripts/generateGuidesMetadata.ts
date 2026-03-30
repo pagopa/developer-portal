@@ -55,14 +55,14 @@ async function convertGuideToMetadataItems(
   strapiGuides: StrapiGuide[]
 ): Promise<MetadataItem[]> {
   const guideInfoList: MetadataInfo[] = strapiGuides
-    .filter((guide) => !!guide.attributes.product?.data?.attributes?.slug)
+    .filter((guide) => !!guide.product?.slug)
     .flatMap((guide) =>
-      guide.attributes.versions.map((version) => ({
+      guide.versions.map((version) => ({
         versionName: version.version,
         isMainVersion: version.main,
         dirName: version.dirName,
-        slug: guide.attributes.slug,
-        productSlug: `${guide.attributes.product?.data?.attributes?.slug}`,
+        slug: guide.slug,
+        productSlug: `${guide.product?.slug}`,
       }))
     );
 

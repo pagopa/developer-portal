@@ -30,9 +30,11 @@ import {
 import { DOCUMENTATION_PATH } from '../helpers/documentationParsing.helper';
 import {
   StrapiApiData,
+  StrapiApiDataResponse,
   StrapiGuide,
   StrapiGuidesResponse,
   StrapiProduct,
+  StrapiProductsResponse,
   StrapiReleaseNote,
   StrapiReleaseNotesResponse,
   StrapiSolution,
@@ -105,6 +107,8 @@ interface StrapiData {
   guidesRawResponse?: StrapiGuidesResponse;
   solutionsRawResponse?: StrapiSolutionsResponse;
   releaseNotesRawResponse?: StrapiReleaseNotesResponse;
+  productsRawResponse?: StrapiProductsResponse;
+  apisDataRawResponse?: StrapiApiDataResponse;
 }
 
 interface UrlParsingItem {
@@ -196,6 +200,8 @@ async function fetchAllStrapiData(locale?: string): Promise<StrapiData> {
     guidesRawResponse: guidesResult.responseJson,
     solutionsRawResponse: solutionsResult.responseJson,
     releaseNotesRawResponse: releaseNotesResult.responseJson,
+    productsRawResponse: productsResult.responseJson,
+    apisDataRawResponse: apisDataResult.responseJson,
   };
 }
 
@@ -290,14 +296,14 @@ async function getMarkdownFilesRecursively(dir: string): Promise<string[]> {
 
 function mapGuidesToMetadataInfo(guides: StrapiGuide[]): MetadataInfo[] {
   return guides
-    .filter((guide) => !!guide.attributes.product?.data?.attributes?.slug)
+    .filter((guide) => !!guide.product?.slug)
     .flatMap((guide) =>
-      guide.attributes.versions.map((version) => ({
+      guide.versions.map((version) => ({
         versionName: version.version,
         isMainVersion: version.main,
         dirName: version.dirName,
-        slug: guide.attributes.slug,
-        productSlug: `${guide.attributes.product?.data?.attributes?.slug}`,
+        slug: guide.slug,
+        productSlug: `${guide.product?.slug}`,
         metadataType: MetadataType.Guide,
       }))
     );
@@ -388,9 +394,7 @@ function getMainVersionsDirNames(guides: StrapiGuide[]): {
   return {
     dirNames: compact(
       guides.flatMap((guide) =>
-        guide.attributes.versions.map(
-          (version) => version.main && version.dirName
-        )
+        guide.versions.map((version) => version.main && version.dirName)
       )
     ),
   };
@@ -400,7 +404,7 @@ function getSolutionsDirNames(solutions: StrapiSolution[]): {
   dirNames: string[];
 } {
   return {
-    dirNames: compact(solutions.map((solution) => solution.attributes.dirName)),
+    dirNames: compact(solutions.map((solution) => solution.dirName)),
   };
 }
 
@@ -408,9 +412,7 @@ function getReleaseNotesDirNames(releaseNotes: StrapiReleaseNote[]): {
   dirNames: string[];
 } {
   return {
-    dirNames: compact(
-      releaseNotes.map((releaseNote) => releaseNote.attributes.dirName)
-    ),
+    dirNames: compact(releaseNotes.map((releaseNote) => releaseNote.dirName)),
   };
 }
 
@@ -421,7 +423,7 @@ async function processSolutionsMetadata(
   const items: MetadataItem[][] = [];
 
   for (const solution of solutions) {
-    const dirName = solution.attributes.dirName;
+    const dirName = solution.dirName;
     if (!dirName) continue;
 
     const itemList: MetadataItem[] = [];
@@ -456,9 +458,9 @@ async function processSolutionsMetadata(
       if (menuS3Path && content) {
         const path = generateUrlPath({
           filePath,
-          slug: solution.attributes.slug,
+          slug: solution.slug,
           metadataType: MetadataType.Solution,
-          landingFile: solution.attributes.landingUseCaseFile,
+          landingFile: solution.landingUseCaseFile,
           locale: LOCALE,
         });
 
@@ -484,7 +486,7 @@ async function processReleaseNotesMetadata(
   const items: MetadataItem[][] = [];
 
   for (const releaseNote of releaseNotes) {
-    const dirName = releaseNote.attributes.dirName;
+    const dirName = releaseNote.dirName;
     if (!dirName) continue;
 
     const itemList: MetadataItem[] = [];
@@ -515,16 +517,15 @@ async function processReleaseNotesMetadata(
 
       const content = await fs.promises.readFile(filePath, 'utf8');
       const title = extractTitleFromMarkdown(content);
-      const productSlug =
-        releaseNote.attributes.product?.data?.attributes?.slug;
+      const productSlug = releaseNote.product?.slug;
 
       if (dirName && menuS3Path && content && productSlug) {
         const path = generateUrlPath({
           filePath,
-          slug: releaseNote.attributes.slug,
+          slug: releaseNote.slug,
           productSlug: productSlug,
           metadataType: MetadataType.ReleaseNote,
-          landingFile: releaseNote.attributes.landingFile,
+          landingFile: releaseNote.landingFile,
           locale: LOCALE,
         });
 
@@ -548,41 +549,39 @@ async function generateUrlParsingMetadata(
   data: StrapiData
 ): Promise<UrlParsingItem[]> {
   const guideInfoList: MetadataInfo[] = data.guides
-    .filter((guide) => !!guide.attributes.product?.data?.attributes?.slug)
+    .filter((guide) => !!guide.product?.slug)
     .flatMap((guide) =>
-      guide.attributes.versions.map((version) => ({
+      guide.versions.map((version) => ({
         versionName: version.version,
         isMainVersion: version.main,
         dirName: version.dirName,
-        slug: guide.attributes.slug,
-        productSlug: `${guide.attributes.product?.data?.attributes?.slug}`,
+        slug: guide.slug,
+        productSlug: `${guide.product?.slug}`,
         metadataType: MetadataType.Guide,
       }))
     );
 
   const solutionInfoList: MetadataInfo[] = data.solutions
-    .filter((solution) => !!solution.attributes.dirName)
+    .filter((solution) => !!solution.dirName)
     .map((solution) => ({
       versionName: '',
       isMainVersion: true,
-      dirName: solution.attributes.dirName,
-      slug: solution.attributes.slug,
+      dirName: solution.dirName,
+      slug: solution.slug,
       productSlug: '',
       metadataType: MetadataType.Solution,
     }));
 
   const releaseNoteInfoList: MetadataInfo[] = data.releaseNotes
     .filter(
-      (releaseNote) =>
-        !!releaseNote.attributes.dirName &&
-        !!releaseNote.attributes.product?.data?.attributes?.slug
+      (releaseNote) => !!releaseNote.dirName && !!releaseNote.product?.slug
     )
     .map((releaseNote) => ({
       versionName: '',
       isMainVersion: true,
-      dirName: releaseNote.attributes.dirName,
-      slug: releaseNote.attributes.slug,
-      productSlug: `${releaseNote.attributes.product?.data?.attributes?.slug}`,
+      dirName: releaseNote.dirName,
+      slug: releaseNote.slug,
+      productSlug: `${releaseNote.product?.slug}`,
       metadataType: MetadataType.ReleaseNote,
     }));
 
@@ -647,13 +646,13 @@ async function main() {
     if (SAVE_STRAPI_RESPONSES) {
       console.log('Saving Strapi products, APIs data, and sitemap...');
       await putS3File(
-        strapiData.products,
+        strapiData.productsRawResponse,
         getLocalizedPath(getSyncedProductsResponseJsonFile, LOCALE),
         S3_BUCKET_NAME!,
         getS3Client()
       );
       await putS3File(
-        strapiData.apisData,
+        strapiData.apisDataRawResponse,
         getLocalizedPath(getSyncedApisDataResponseJsonFile, LOCALE),
         S3_BUCKET_NAME!,
         getS3Client()
@@ -815,8 +814,7 @@ async function main() {
       const filteredSolutionsMetadata = await processSolutionsMetadata(
         strapiData.solutions.filter(
           (version) =>
-            !DIR_NAMES_FILTER ||
-            DIR_NAMES_FILTER.includes(version.attributes.dirName)
+            !DIR_NAMES_FILTER || DIR_NAMES_FILTER.includes(version.dirName)
         )
       );
       const promises = compact(filteredSolutionsMetadata).map(
@@ -857,8 +855,7 @@ async function main() {
       const filteredReleaseNotesMetadata = await processReleaseNotesMetadata(
         strapiData.releaseNotes.filter(
           (version) =>
-            !DIR_NAMES_FILTER ||
-            DIR_NAMES_FILTER.includes(version.attributes.dirName)
+            !DIR_NAMES_FILTER || DIR_NAMES_FILTER.includes(version.dirName)
         )
       );
 
