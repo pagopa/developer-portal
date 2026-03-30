@@ -7,7 +7,7 @@ import {
   embedHtmlPart,
   quotePart,
   ckEditorPart,
-} from '@/lib/__tests__/fixtures/parts';
+} from '@/lib/parts/__tests__/fixtures';
 import {
   minimalAlertPart,
   minimalApiTesterPart,
@@ -16,7 +16,7 @@ import {
   minimalEmbedHtmlPart,
   minimalQuotePart,
   minimalCkEditorPart,
-} from '@/lib/__tests__/factories/parts';
+} from '@/lib/parts/__tests__/factories';
 
 describe('makePartProps', () => {
   it('should transform alert part', () => {
