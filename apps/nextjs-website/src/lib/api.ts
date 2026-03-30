@@ -18,12 +18,10 @@ import { ReleaseNotesRepository } from '@/lib/releaseNotes';
 import { Webinar } from '@/lib/types/webinar';
 import { parseS3GuidePage } from '@/helpers/parseS3Doc.helpers';
 import {
-  downloadFileAsText,
   getGuidesMetadata,
   getReleaseNotesMetadata,
   getSolutionsMetadata,
 } from '@/helpers/s3Metadata.helpers';
-import { s3DocsPath } from '@/config';
 import { OverviewsRepository } from './overviews';
 import { ProductRepository } from './products';
 import { makeReleaseNote, makeSolution } from '../helpers/makeS3Docs.helpers';
@@ -41,15 +39,6 @@ async function manageUndefinedAndAddProducts<T>(
   props: undefined | null | T
 ) {
   return { ...manageUndefined(props), products: await getProducts(locale) };
-}
-
-export async function getMarkdownContent(
-  dirName: string,
-  pathToFile: string
-): Promise<string> {
-  const pathToMarkdownFile = `${s3DocsPath}/${dirName}/${pathToFile}`;
-  const output = await downloadFileAsText(pathToMarkdownFile);
-  return output || '';
 }
 
 export async function getGuidePage(

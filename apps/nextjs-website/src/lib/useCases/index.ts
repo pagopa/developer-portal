@@ -1,26 +1,9 @@
 import { buildEnv } from '@/lib/buildEnv';
-import { getMarkdownContent } from '@/lib/api';
 import { isMarkDownPart } from '@/lib/parts/types';
+import { getMarkdownContentDict } from '@/helpers/s3Metadata.helpers';
 import { fetchUseCases } from './fetcher';
 import { mapUseCasesProps } from './mapper';
 import { UseCaseProps } from './types';
-
-const makeMarkdownContentDict = async (
-  markdownParts: ReadonlyArray<{
-    readonly dirName: string;
-    readonly pathToFile: string;
-  }>
-) => {
-  const resolvedContentPairs = await Promise.all(
-    markdownParts.map(async ({ dirName, pathToFile }) => {
-      const key = `${dirName}/${pathToFile}`;
-      const content = await getMarkdownContent(dirName, pathToFile);
-      return [key, content] as const;
-    })
-  );
-
-  return Object.fromEntries(resolvedContentPairs);
-};
 
 export const UseCasesRepository = {
   /**
@@ -33,7 +16,10 @@ export const UseCasesRepository = {
     const markdownParts = strapiUseCases.data.flatMap((useCase) =>
       (useCase?.parts ?? []).filter(isMarkDownPart)
     );
-    const markdownContentDict = await makeMarkdownContentDict(markdownParts);
+    const markdownContentDict = await getMarkdownContentDict(
+      locale,
+      markdownParts
+    );
 
     return mapUseCasesProps(locale, strapiUseCases, markdownContentDict);
   },

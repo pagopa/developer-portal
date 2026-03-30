@@ -334,3 +334,22 @@ export const getSoapApiMetadata = async (locale: string) => {
 
   return metadata || [];
 };
+
+export const getMarkdownContentDict = async (
+  locale: string,
+  markdownParts: ReadonlyArray<{
+    readonly dirName: string;
+    readonly pathToFile: string;
+  }>
+) => {
+  const resolvedContentPairs = await Promise.all(
+    markdownParts.map(async ({ dirName, pathToFile }) => {
+      const key = `${dirName}/${pathToFile}`;
+      const pathToMarkdownFile = `${locale}/${s3DocsPath}/${dirName}/${pathToFile}`;
+      const content = (await downloadFileAsText(pathToMarkdownFile)) || '';
+      return [key, content] as const;
+    })
+  );
+
+  return Object.fromEntries(resolvedContentPairs);
+};
