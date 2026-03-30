@@ -1,4 +1,4 @@
-import { GuideDefinition } from '@/helpers/makeDocs.helpers';
+import { Guide } from './types';
 import { fetchGuides } from './fetcher';
 import { mapGuides } from './mapper';
 
@@ -8,7 +8,7 @@ export const GuidesRepository = {
    * @param locale The locale used to get the Guides collection.
    * @returns An array of Guides with all their fields, sorted by product name.
    */
-  getAll: async (locale: string): Promise<ReadonlyArray<GuideDefinition>> => {
+  getAll: async (locale: string): Promise<ReadonlyArray<Guide>> => {
     const rawData = await fetchGuides(locale);
     if (!rawData) {
       return [];
@@ -24,7 +24,7 @@ export const GuidesRepository = {
   getBySlug: async (
     locale: string,
     guideSlug: string
-  ): Promise<GuideDefinition | undefined> => {
+  ): Promise<Guide | undefined> => {
     const all = await GuidesRepository.getAll(locale);
     return all.find((guide) => guide.guide.slug === guideSlug);
   },
@@ -39,7 +39,7 @@ export const GuidesRepository = {
     locale: string,
     productSlug: string,
     guideSlug: string
-  ): Promise<GuideDefinition | undefined> => {
+  ): Promise<Guide | undefined> => {
     const all = await GuidesRepository.getAll(locale);
     return all.find(
       (guide) =>

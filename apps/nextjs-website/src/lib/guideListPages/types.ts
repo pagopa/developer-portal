@@ -1,4 +1,4 @@
-import { StrapiBaseGuide } from '@/lib/guides/types';
+import { StrapiBaseGuide } from '@/lib/guides/strapiTypes';
 import { StrapiSeo } from '@/lib/seo/strapiTypes';
 import { StrapiBannerLink } from '@/lib/bannerLink/types';
 import { StrapiBaseProductWithRelations } from '@/lib/products/strapiTypes';

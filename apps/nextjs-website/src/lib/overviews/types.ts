@@ -1,6 +1,6 @@
 import { BlocksContent } from '@strapi/blocks-react-renderer';
 import { StrapiBannerLink } from '@/lib/bannerLink/types';
-import type { StrapiBaseGuide } from '@/lib/guides/types';
+import type { StrapiBaseGuide } from '@/lib/guides/strapiTypes';
 import { StrapiLink, StrapiRelatedLinks } from '@/lib/strapi/types/link';
 import { StrapiMedia } from '@/lib/media/strapiTypes';
 import { StrapiNewsShowcase } from '@/lib/newsShowcase/types';

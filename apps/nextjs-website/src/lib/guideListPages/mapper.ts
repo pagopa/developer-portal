@@ -5,7 +5,7 @@ import { GuidesSectionProps } from '@/components/molecules/GuidesSection/GuidesS
 import { mapBannerLinkProps } from '@/lib/bannerLink/mapper';
 import { makeBaseProductWithoutLogoProps } from '@/lib/products/mapper';
 import { GuideCardProps } from '@/components/molecules/GuideCard/GuideCard';
-import { StrapiBaseGuide } from '@/lib/guides/types';
+import { StrapiBaseGuide } from '@/lib/guides/strapiTypes';
 import { compact } from 'lodash';
 import { StrapiGuideListPages } from './types';
 

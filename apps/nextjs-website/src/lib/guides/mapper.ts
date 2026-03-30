@@ -3,13 +3,13 @@
 import { mapBannerLinkProps } from '@/lib/bannerLink/mapper';
 import { makeBaseProductWithoutLogoProps } from '@/lib/products/mapper';
 import { compact } from 'lodash';
-import type { StrapiGuides } from './types';
-import { GuideDefinition } from '../../helpers/makeDocs.helpers';
+import type { StrapiGuides } from './strapiTypes';
+import { Guide } from './types';
 
 export function mapGuides(
   locale: string,
   strapiGuides: StrapiGuides
-): readonly GuideDefinition[] {
+): readonly Guide[] {
   return compact(
     strapiGuides.data.map((guide) => {
       if (!guide.slug || !guide.title) {

@@ -6,35 +6,13 @@ import { Product } from '@/lib/products/types';
 import { parseDoc } from 'gitbook-docs/parseDoc';
 import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
 import { SolutionTemplateProps } from '@/components/templates/SolutionTemplate/SolutionTemplate';
-import { SEO } from '@/lib/seo/types';
 import { ReleaseNotePageProps } from '@/app/[locale]/[productSlug]/release-note/[[...releaseNoteSubPathSlugs]]/page';
+import { Guide } from '@/lib/guides/types';
 
 export type TutorialsDefinition = {
   readonly product: Product;
   readonly dirName: string;
   readonly bannerLinks: readonly BannerLinkProps[];
-};
-
-export type GuideDefinition = {
-  readonly product: Product;
-  readonly guide: {
-    readonly name: string;
-    readonly slug?: string;
-    readonly path?: string;
-  };
-  readonly versions: ReadonlyArray<{
-    readonly main?: boolean;
-    readonly version: string;
-    readonly dirName: string;
-  }>;
-  readonly bannerLinks: readonly BannerLinkProps[];
-  readonly seo?: SEO;
-  readonly source?: {
-    readonly pathPrefix: string;
-    readonly assetsPrefix: string;
-    readonly dirPath: string;
-    readonly spaceId: string;
-  };
 };
 
 const parseDocOrThrow = flow(
@@ -72,12 +50,7 @@ export const makeTutorials = ({
   );
 };
 
-export const makeGuide = ({
-  product,
-  guide,
-  versions,
-  bannerLinks,
-}: GuideDefinition) => {
+export const makeGuide = ({ product, guide, versions, bannerLinks }: Guide) => {
   const guidePath = `/${product.slug}/guides/${guide.slug}`;
   return pipe(
     versions,

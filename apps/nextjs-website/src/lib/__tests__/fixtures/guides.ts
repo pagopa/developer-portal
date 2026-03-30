@@ -1,5 +1,5 @@
-import { StrapiGuides } from '@/lib/guides/types';
-import { GuideDefinition } from '@/helpers/makeDocs.helpers';
+import { StrapiGuides } from '@/lib/guides/strapiTypes';
+import { Guide } from '@/lib/guides/types';
 import { product } from '@/lib/products/__tests__/fixtures/product';
 
 export const strapiEmptyGuideData = {
@@ -211,4 +211,4 @@ export const guideProps = [
     ],
     bannerLinks: product.bannerLinks,
   },
-] satisfies readonly GuideDefinition[];
+] satisfies readonly Guide[];

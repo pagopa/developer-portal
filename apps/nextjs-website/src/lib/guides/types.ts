@@ -1,30 +1,25 @@
-import type { StrapiMedia } from '@/lib/media/strapiTypes';
-import type { StrapiSeo } from '@/lib/seo/strapiTypes';
-import { StrapiBannerLink } from '@/lib/bannerLink/types';
-import type { Paginated } from '@/lib/strapi/types/paginated';
-import type { StrapiBaseProductWithRelations } from '@/lib/products/strapiTypes';
+import { Product } from '@/lib/products/types';
+import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
+import { SEO } from '@/lib/seo/types';
 
-type StrapiGuideVersion = {
-  readonly main: boolean;
-  readonly dirName: string;
-  readonly version: string;
-};
-
-export type StrapiBaseGuide = {
-  readonly title: string;
-  readonly slug: string;
-  readonly image: StrapiMedia;
-  readonly mobileImage: StrapiMedia;
-  readonly listItems: ReadonlyArray<{
-    readonly text: string;
+export type Guide = {
+  readonly product: Product;
+  readonly guide: {
+    readonly name: string;
+    readonly slug?: string;
+    readonly path?: string;
+  };
+  readonly versions: ReadonlyArray<{
+    readonly main?: boolean;
+    readonly version: string;
+    readonly dirName: string;
   }>;
+  readonly bannerLinks: readonly BannerLinkProps[];
+  readonly seo?: SEO;
+  readonly source?: {
+    readonly pathPrefix: string;
+    readonly assetsPrefix: string;
+    readonly dirPath: string;
+    readonly spaceId: string;
+  };
 };
-
-export type StrapiGuide = StrapiBaseGuide & {
-  readonly versions: ReadonlyArray<StrapiGuideVersion>;
-  readonly product?: StrapiBaseProductWithRelations;
-  readonly bannerLinks: ReadonlyArray<StrapiBannerLink>;
-  readonly seo?: StrapiSeo;
-};
-
-export type StrapiGuides = Paginated<StrapiGuide>;
