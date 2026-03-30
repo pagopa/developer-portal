@@ -9,7 +9,7 @@ import { Box } from '@mui/material';
 import ProductLayout, {
   ProductLayoutProps,
 } from '@/components/organisms/ProductLayout/ProductLayout';
-import { ProductParams } from '@/lib/types/productParams';
+import { ProductParams } from '@/lib/products/types';
 import { Metadata, ResolvingMetadata } from 'next';
 import {
   makeMetadata,

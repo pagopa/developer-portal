@@ -20,3 +20,10 @@ export type Product = {
   readonly slug: string;
   readonly tags?: readonly Tag[];
 };
+
+export type ProductParams = {
+  readonly params: Promise<{
+    readonly locale: string;
+    readonly productSlug: string;
+  }>;
+};

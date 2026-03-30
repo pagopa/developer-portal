@@ -7,7 +7,7 @@ import { getQuickStartGuide } from '@/lib/api';
 import React from 'react';
 import QuickStartGuideStepper from '@/components/molecules/QuickStartGuideStepper/QuickStartGuideStepper';
 import { Step } from '@/lib/quickStartGuides/types';
-import { ProductParams } from '@/lib/types/productParams';
+import { ProductParams } from '@/lib/products/types';
 import { Metadata, ResolvingMetadata } from 'next';
 import {
   makeMetadata,

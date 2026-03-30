@@ -12,7 +12,7 @@ import Feature from '@/editorialComponents/Feature/Feature';
 import { FeatureItem } from '@/editorialComponents/Feature/FeatureStackItem';
 import { GuideCardProps } from '@/components/molecules/GuideCard/GuideCard';
 import PostIntegration from '@/components/organisms/PostIntegration/PostIntegration';
-import { ProductParams } from '@/lib/types/productParams';
+import { ProductParams } from '@/lib/products/types';
 import {
   makeMetadata,
   makeMetadataFromStrapi,
