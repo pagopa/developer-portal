@@ -288,6 +288,8 @@
 | <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | <pre>{<br/>  "CreatedBy": "Terraform"<br/>}</pre> | no |
 | <a name="input_use_custom_certificate"></a> [use\_custom\_certificate](#input\_use\_custom\_certificate) | Enable CDN https support with a custom certificate instead using the default one | `bool` | `true` | no |
 | <a name="input_vpc"></a> [vpc](#input\_vpc) | The VPC used to deploy the lambda functions in. Configure this only when you want the lambda to access private resources contained in the VPC. | <pre>object({<br/>    id              = string<br/>    private_subnets = list(string)<br/>  })</pre> | `null` | no |
+| <a name="input_webinar_heartbeat_interval_in_seconds"></a> [webinar\_heartbeat\_interval\_in\_seconds](#input\_webinar\_heartbeat\_interval\_in\_seconds) | The interval in seconds for the webinar heartbeat | `number` | `60` | no |
+| <a name="input_webinar_heartbeat_url"></a> [webinar\_heartbeat\_url](#input\_webinar\_heartbeat\_url) | The URL of the webinar heartbeat endpoint | `string` | n/a | yes |
 | <a name="input_website_is_standalone"></a> [website\_is\_standalone](#input\_website\_is\_standalone) | If true, the website will be deployed in standalone mode (Amplify), otherwise static deployment is used (S3 + Cloudfront) | `bool` | `false` | no |
 
 ## Outputs
