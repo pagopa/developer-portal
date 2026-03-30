@@ -4,12 +4,12 @@ import _ from 'lodash';
 import {
   caseHistoriesPageTemplateProps,
   strapiCaseHistories,
-} from '@/lib/__tests__/fixtures/caseHistories';
+} from '@/lib/caseHistories/__tests__/fixtures';
 import {
   minimalDataCaseHistories,
   caseHistoriesWithMultipleProducts,
   caseHistoriesWithoutImage,
-} from '@/lib/__tests__/factories/caseHistories';
+} from '@/lib/caseHistories/__tests__/factories';
 import { mediaJpeg } from '@/lib/__tests__/factories/media';
 
 describe('makeCaseHistoriesProps', () => {

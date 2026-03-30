@@ -1,5 +1,5 @@
 import { mediaJpeg } from '@/lib/__tests__/factories/media';
-import { strapiCaseHistories } from '@/lib/__tests__/fixtures/caseHistories';
+import { strapiCaseHistories } from '@/lib/caseHistories/__tests__/fixtures';
 import { CaseHistories } from '@/lib/caseHistories/types';
 import { StrapiBaseProductWithoutBannerLinks } from '@/lib/products/strapiTypes';
 
