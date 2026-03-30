@@ -39,6 +39,7 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
     isPlayerVisible,
     livePlayerReloadToken,
     isLiveStreamAvailable,
+    setIsVideoPlaying,
   } = useWebinar();
   const showHeaderImage =
     webinarState === WebinarState.future && webinar.headerImage;
@@ -153,6 +154,7 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
             reloadPlayerToken={livePlayerReloadToken}
             isLiveStreamAvailable={isLiveStreamAvailable}
             isPlayerVisible={isPlayerVisible}
+            setIsVideoPlaying={setIsVideoPlaying}
           ></WebinarPlayerSection>
         )}
       {webinar.subscribeCtaLabel && (

@@ -26,6 +26,7 @@ type WebinarPlayerSectionProps = {
   isLiveStreamAvailable?: boolean;
   reloadPlayerToken?: number;
   isPlayerVisible?: boolean;
+  setIsVideoPlaying?: (isPlaying: boolean) => null;
 };
 const WebinarPlayerSection = ({
   webinar,
@@ -34,6 +35,7 @@ const WebinarPlayerSection = ({
   isLiveStreamAvailable = false,
   reloadPlayerToken = 0,
   isPlayerVisible = true,
+  setIsVideoPlaying,
 }: WebinarPlayerSectionProps) => {
   const searchParams = useSearchParams();
   const chapterParam = searchParams.get('chapter');
@@ -121,6 +123,7 @@ const WebinarPlayerSection = ({
                 startAtChapterSlug={chapterParam || undefined}
                 chapters={webinar.chapters}
                 webvttContent={webinar.webvttContent}
+                setIsVideoPlaying={setIsVideoPlaying}
               />
             </Box>
             {isQuestionFormAvailable ? (

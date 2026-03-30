@@ -26,6 +26,7 @@ interface PlayerProps {
   startAtChapterSlug?: string;
   chapters?: readonly Chapter[];
   webvttContent?: string;
+  setIsVideoPlaying?: (isPlaying: boolean) => null;
 }
 
 const HOURS_PART_INDEX = 0;
@@ -238,6 +239,27 @@ const VideoJsPlayer = (props: PlayerProps) => {
       player.off('play', onPlay);
     };
   }, [props.reloadToken, props.src, resolvedStartAt]);
+
+  useEffect(() => {
+    const player = playerRef.current;
+    if (!player || !props.setIsVideoPlaying) {
+      return;
+    }
+
+    const onPlay = () => props.setIsVideoPlaying?.(true);
+    const onPause = () => props.setIsVideoPlaying?.(false);
+    const onEnded = () => props.setIsVideoPlaying?.(false);
+
+    player.on('play', onPlay);
+    player.on('pause', onPause);
+    player.on('ended', onEnded);
+
+    return () => {
+      player.off('play', onPlay);
+      player.off('pause', onPause);
+      player.off('ended', onEnded);
+    };
+  }, [props.setIsVideoPlaying]);
 
   return (
     <Box sx={{ position: 'relative', paddingBottom: '56.25%' }}>

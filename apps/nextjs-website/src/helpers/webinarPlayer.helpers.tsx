@@ -22,18 +22,11 @@ export const useWebinar = () => {
   const [webinarState, setWebinarState] = useState<WebinarState>(
     WebinarState.unknown
   );
-  const [isVideoPlaying, setIsVideoPlaying] = useState<boolean>(false);
   const [isQuestionFormEnabled, setIsQuestionFormEnabled] =
     useState<boolean>(false);
   const [isPlayerVisible, setIsPlayerVisible] = useState<boolean>(false);
   const [isLiveStreamAvailable, setIsLiveStreamAvailable] = useState(false);
   const [livePlayerReloadToken, setLivePlayerReloadToken] = useState(0);
-
-  const onSetIsVideoPlaying = useCallback((isPlaying: boolean) => {
-    console.log(`onSetIsVideoPlaying called with isPlaying: ${isPlaying}`); // Debug lo
-    setIsVideoPlaying(isPlaying);
-    return null;
-  }, []);
 
   const setWebinar = (nextWebinar: Webinar | null) => {
     const hasChanged = nextWebinar?.slug !== webinar?.slug;
@@ -175,27 +168,16 @@ export const useWebinar = () => {
   ]);
 
   useEffect(() => {
-    if (!webinar || !isVideoPlaying) return;
+    setInterval(() => {
+      if (!webinar) return;
 
-    // Send heartbeat immediately
-    const sendHeartbeat = async () => {
-      await sendWebinarHeartbeat({
-        webinarSlug: webinar.slug,
+      sendWebinarHeartbeat({
+        webinarSlug: webinar?.slug || '',
         isLive: webinarState === WebinarState.live,
         action: 'playing',
       });
-    };
-
-    // Call immediately
-    sendHeartbeat();
-
-    // Then set up interval for subsequent calls
-    const heartbeatIntervalId = setInterval(() => {
-      sendHeartbeat();
     }, webinarHeartbeatIntervalInSeconds * 1000);
-
-    return () => clearInterval(heartbeatIntervalId);
-  }, [webinar, isVideoPlaying, webinarState]);
+  }, [webinar]);
 
   return {
     webinarState,
@@ -204,6 +186,5 @@ export const useWebinar = () => {
     isPlayerVisible,
     isLiveStreamAvailable,
     livePlayerReloadToken,
-    setIsVideoPlaying: onSetIsVideoPlaying,
   };
 };
