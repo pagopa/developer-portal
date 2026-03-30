@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { strapiApiDataList } from '@/lib/__tests__/fixtures/apiDataList';
+import { strapiApiDataList } from '@/lib/apiDataList/__tests__/fixtures/apiDataList';
 import { ApiData } from '@/lib/apiDataList/types';
 import { wrapAsRootEntity } from '@/lib/__tests__/strapiEntityWrappers';
 
