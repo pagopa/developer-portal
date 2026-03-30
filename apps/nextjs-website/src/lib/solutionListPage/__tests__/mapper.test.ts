@@ -10,7 +10,7 @@ import {
   solutionListPageWithoutCaseHistories,
   solutionListPageWithoutFeatures,
   solutionListPageWithoutSolutions,
-} from '@/lib/__tests__/factories/solutionListPage';
+} from '@/lib/solutionListPage/__tests__/factories';
 import { spyOnConsoleError } from '@/lib/__tests__/spyOnConsole';
 import { cloneDeep } from 'lodash';
 
