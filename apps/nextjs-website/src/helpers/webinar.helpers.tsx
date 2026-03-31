@@ -30,11 +30,6 @@ export const useWebinar = () => {
   const [livePlayerReloadToken, setLivePlayerReloadToken] = useState(0);
   const lastHeartbeatSentTime = useRef<Date | null>(null);
 
-  const onSetIsVideoPlaying = useCallback((isPlaying: boolean) => {
-    setIsVideoPlaying(isPlaying);
-    return null;
-  }, []);
-
   const setWebinar = (nextWebinar: Webinar | null) => {
     const hasChanged = nextWebinar?.slug !== webinar?.slug;
     setWebinarData(nextWebinar);
@@ -214,6 +209,6 @@ export const useWebinar = () => {
     isPlayerVisible,
     isLiveStreamAvailable,
     livePlayerReloadToken,
-    setIsVideoPlaying: onSetIsVideoPlaying,
+    setIsVideoPlaying,
   };
 };

@@ -26,7 +26,8 @@ type WebinarPlayerSectionProps = {
   isLiveStreamAvailable?: boolean;
   reloadPlayerToken?: number;
   isPlayerVisible?: boolean;
-  setIsVideoPlaying?: (isPlaying: boolean) => null;
+  // eslint-disable-next-line functional/no-return-void
+  setIsVideoPlaying?: (isPlaying: boolean) => void;
 };
 const WebinarPlayerSection = ({
   webinar,
