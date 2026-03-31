@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Webinar } from '@/lib/types/webinar';
 import { webinarHeartbeatIntervalInSeconds } from '@/config';
 import { sendWebinarHeartbeat } from '@/lib/webinarApi';
@@ -28,6 +28,7 @@ export const useWebinar = () => {
   const [isPlayerVisible, setIsPlayerVisible] = useState<boolean>(false);
   const [isLiveStreamAvailable, setIsLiveStreamAvailable] = useState(false);
   const [livePlayerReloadToken, setLivePlayerReloadToken] = useState(0);
+  const lastHeartbeatSentTime = useRef<Date | null>(null);
 
   const onSetIsVideoPlaying = useCallback((isPlaying: boolean) => {
     console.log(`onSetIsVideoPlaying called with isPlaying: ${isPlaying}`); // Debug lo
@@ -179,6 +180,16 @@ export const useWebinar = () => {
 
     // Send heartbeat immediately
     const sendHeartbeat = async () => {
+      const now = new Date();
+      if (
+        !!lastHeartbeatSentTime.current &&
+        (now.getTime() - lastHeartbeatSentTime.current?.getTime()) / 1000 <
+          webinarHeartbeatIntervalInSeconds
+      ) {
+        return;
+      }
+      // eslint-disable-next-line functional/immutable-data
+      lastHeartbeatSentTime.current = now;
       await sendWebinarHeartbeat({
         webinarSlug: webinar.slug,
         isLive: webinarState === WebinarState.live,
