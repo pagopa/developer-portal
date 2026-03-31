@@ -96,6 +96,22 @@ resource "aws_apigatewayv2_api" "ingest" {
   name          = "${var.project_name}-ingest-api"
   protocol_type = "HTTP"
   description   = "HTTP API for heartbeat ingest Lambda"
+
+  cors_configuration {
+    allow_origins = [
+      "http://localhost:3000",
+    ]
+    allow_methods = ["POST", "GET", "OPTIONS"]
+    allow_headers = [
+      "Content-Type",
+      "Authorization",
+      "X-Amz-Date",
+      "X-Api-Key",
+      "X-Amz-Security-Token"
+    ]
+    expose_headers = ["Content-Length", "Content-Type"]
+    max_age        = 300
+  }
 }
 
 resource "aws_apigatewayv2_integration" "ingest_lambda" {
