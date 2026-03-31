@@ -98,9 +98,10 @@ resource "aws_apigatewayv2_api" "ingest" {
   description   = "HTTP API for heartbeat ingest Lambda"
 
   cors_configuration {
-    allow_origins = [
+    allow_origins = compact([
       "http://localhost:3000",
-    ]
+      var.custom_domain_name != null ? "https://${var.custom_domain_name}" : "",
+    ])
     allow_methods = ["POST", "GET", "OPTIONS"]
     allow_headers = [
       "Content-Type",

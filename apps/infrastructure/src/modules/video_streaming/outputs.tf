@@ -63,5 +63,5 @@ output "deploy_lambda_role_arn" {
 
 output "ingest_api_endpoint" {
   description = "The domain of the HTTP API for the ingest Lambda."
-  value       = aws_apigatewayv2_stage.ingest.invoke_url
+  value       = "https://${var.custom_domain_name}/ingest"
 }

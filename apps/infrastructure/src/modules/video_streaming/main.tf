@@ -390,6 +390,19 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
     origin_access_control_id = aws_cloudfront_origin_access_control.video_oac.id
   }
 
+  # API Gateway HTTP API origin for the ingest endpoint
+  origin {
+    domain_name = replace(aws_apigatewayv2_api.ingest.api_endpoint, "https://", "")
+    origin_id   = "APIGW-${var.project_name}-ingest"
+
+    custom_origin_config {
+      http_port              = 80
+      https_port             = 443
+      origin_protocol_policy = "https-only"
+      origin_ssl_protocols   = ["TLSv1.2"]
+    }
+  }
+
   enabled         = true
   is_ipv6_enabled = true
   comment         = "CDN for IVS video recordings"
@@ -400,6 +413,20 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
     include_cookies = false
     bucket          = aws_s3_bucket.cloudfront_logs.bucket_domain_name
     prefix          = "cloudfront/"
+  }
+
+  # Cache behavior for the ingest API endpoint
+  ordered_cache_behavior {
+    path_pattern     = "/ingest"
+    allowed_methods  = ["GET", "HEAD", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"]
+    cached_methods   = ["GET", "HEAD"]
+    target_origin_id = "APIGW-${var.project_name}-ingest"
+
+    cache_policy_id          = data.aws_cloudfront_cache_policy.caching_disabled.id
+    origin_request_policy_id = data.aws_cloudfront_origin_request_policy.all_viewer_except_host_header.id
+
+    viewer_protocol_policy = "https-only"
+    compress               = true
   }
 
   default_cache_behavior {
@@ -443,6 +470,15 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
   tags = {
     Name = "${var.project_name} video streaming distribution"
   }
+}
+
+# AWS Managed Cache Policies
+data "aws_cloudfront_cache_policy" "caching_disabled" {
+  name = "Managed-CachingDisabled"
+}
+
+data "aws_cloudfront_origin_request_policy" "all_viewer_except_host_header" {
+  name = "Managed-AllViewerExceptHostHeader"
 }
 
 data "aws_route53_zone" "selected" {
