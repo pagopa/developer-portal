@@ -826,6 +826,28 @@ resource "aws_iam_role_policy" "lambda_kinesis_policy" {
   })
 }
 
+resource "aws_cloudwatch_log_group" "ingest_lambda_logs" {
+  name              = "/aws/lambda/${var.project_name}-heartbeat-ingest"
+  retention_in_days = 14
+}
+
+resource "aws_iam_role_policy" "lambda_logging_policy" {
+  name = "heartbeat_lambda_logging"
+  role = aws_iam_role.lambda_role.id
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Action = [
+        "logs:CreateLogGroup",
+        "logs:CreateLogStream",
+        "logs:PutLogEvents"
+      ]
+      Effect   = "Allow"
+      Resource = "${aws_cloudwatch_log_group.ingest_lambda_logs.arn}:*"
+    }]
+  })
+}
+
 resource "aws_lambda_function" "ingest_lambda" {
   filename         = data.archive_file.ingest_lambda_function.output_path
   function_name    = "${var.project_name}-heartbeat-ingest"
@@ -839,6 +861,8 @@ resource "aws_lambda_function" "ingest_lambda" {
       DELIVERY_STREAM_NAME = aws_kinesis_firehose_delivery_stream.s3_delivery.name
     }
   }
+
+  depends_on = [aws_cloudwatch_log_group.ingest_lambda_logs]
 }
 
 resource "aws_lambda_function_url" "ingest_url" {
