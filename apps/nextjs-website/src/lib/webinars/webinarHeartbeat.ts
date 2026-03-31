@@ -68,13 +68,10 @@ export const postWebinarHeartbeat = (params: WebinarHeartbeatParams) =>
           )
         ),
         TE.chain((response) => {
-          const acceptedStatusCode = 200;
-          if (response.status === acceptedStatusCode) {
+          if (response.ok) {
             return TE.tryCatch(() => response.json(), E.toError);
           } else {
-            return TE.left(
-              makeErrorByMessage(`${response.status} != ${acceptedStatusCode}`)
-            );
+            return TE.left(makeErrorByMessage(`${response.status}`));
           }
         }),
         TE.map((json) => json as unknown),
