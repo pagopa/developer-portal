@@ -106,10 +106,24 @@ resource "aws_apigatewayv2_integration" "ingest_lambda" {
   payload_format_version = "2.0"
 }
 
+resource "aws_apigatewayv2_authorizer" "ingest_cognito" {
+  api_id           = aws_apigatewayv2_api.ingest.id
+  authorizer_type  = "JWT"
+  identity_sources = ["$request.header.Authorization"]
+  name             = "${var.project_name}-ingest-cognito-authorizer"
+
+  jwt_configuration {
+    audience = [var.cognito_user_pool_client_id]
+    issuer   = "https://${var.cognito_user_pool_endpoint}"
+  }
+}
+
 resource "aws_apigatewayv2_route" "ingest" {
-  api_id    = aws_apigatewayv2_api.ingest.id
-  route_key = "POST /ingest"
-  target    = "integrations/${aws_apigatewayv2_integration.ingest_lambda.id}"
+  api_id             = aws_apigatewayv2_api.ingest.id
+  route_key          = "POST /ingest"
+  target             = "integrations/${aws_apigatewayv2_integration.ingest_lambda.id}"
+  authorization_type = "JWT"
+  authorizer_id      = aws_apigatewayv2_authorizer.ingest_cognito.id
 }
 
 resource "aws_apigatewayv2_stage" "ingest" {

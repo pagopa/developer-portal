@@ -121,3 +121,233 @@ removed {
     destroy = false
   }
 }
+
+# ============================================================================
+# Cognito resources moved from module.website to module.auth
+# ============================================================================
+
+# Cognito User Pool
+moved {
+  from = module.website.aws_cognito_user_pool.devportal
+  to   = module.auth.aws_cognito_user_pool.devportal
+}
+
+# Cognito User Pool Client
+moved {
+  from = module.website.aws_cognito_user_pool_client.devportal_website
+  to   = module.auth.aws_cognito_user_pool_client.devportal_website
+}
+
+# Cognito User Pool Domain
+moved {
+  from = module.website.aws_cognito_user_pool_domain.devportal
+  to   = module.auth.aws_cognito_user_pool_domain.devportal
+}
+
+# Cognito User Group
+moved {
+  from = module.website.aws_cognito_user_group.hosts
+  to   = module.auth.aws_cognito_user_group.hosts
+}
+
+# Cognito Identity Pool
+moved {
+  from = module.website.aws_cognito_identity_pool.devportal
+  to   = module.auth.aws_cognito_identity_pool.devportal
+}
+
+# Cognito Identity Pool Roles Attachment
+moved {
+  from = module.website.aws_cognito_identity_pool_roles_attachment.main
+  to   = module.auth.aws_cognito_identity_pool_roles_attachment.main
+}
+
+# IAM Roles for authenticated users
+moved {
+  from = module.website.aws_iam_role.devportal_authenticated_user
+  to   = module.auth.aws_iam_role.devportal_authenticated_user
+}
+
+moved {
+  from = module.website.aws_iam_role.devportal_authenticated_host_user
+  to   = module.auth.aws_iam_role.devportal_authenticated_host_user
+}
+
+# ACM Certificate for auth domain
+moved {
+  from = module.website.aws_acm_certificate.auth
+  to   = module.auth.aws_acm_certificate.auth
+}
+
+# Route53 record for Cognito UI domain
+moved {
+  from = module.website.aws_route53_record.devportal_cognito_A
+  to   = module.auth.aws_route53_record.devportal_cognito_A
+}
+
+# Cognito Lambda functions
+moved {
+  from = module.website.module.cognito_custom_message_function
+  to   = module.auth.module.cognito_custom_message_function
+}
+
+moved {
+  from = module.website.module.cognito_post_confirmation_function
+  to   = module.auth.module.cognito_post_confirmation_function
+}
+
+moved {
+  from = module.website.module.cognito_define_auth_challenge_function
+  to   = module.auth.module.cognito_define_auth_challenge_function
+}
+
+moved {
+  from = module.website.module.cognito_create_auth_challenge_function
+  to   = module.auth.module.cognito_create_auth_challenge_function
+}
+
+moved {
+  from = module.website.module.cognito_verify_auth_challenge_function
+  to   = module.auth.module.cognito_verify_auth_challenge_function
+}
+
+moved {
+  from = module.website.module.cognito_pre_sign_up_function
+  to   = module.auth.module.cognito_pre_sign_up_function
+}
+
+# Cognito CloudWatch alarms
+moved {
+  from = module.website.module.cognito_user_pool_sign_up_throttles_alarm
+  to   = module.auth.module.cognito_user_pool_sign_up_throttles_alarm
+}
+
+moved {
+  from = module.website.module.cognito_user_pool_sign_in_throttles_alarm
+  to   = module.auth.module.cognito_user_pool_sign_in_throttles_alarm
+}
+
+moved {
+  from = module.website.module.cognito_user_pool_token_refresh_throttles_alarm
+  to   = module.auth.module.cognito_user_pool_token_refresh_throttles_alarm
+}
+
+moved {
+  from = module.website.module.cognito_custom_message_lambda_errors_alarm
+  to   = module.auth.module.cognito_custom_message_lambda_errors_alarm
+}
+
+moved {
+  from = module.website.module.cognito_custom_message_lambda_throttles_alarm
+  to   = module.auth.module.cognito_custom_message_lambda_throttles_alarm
+}
+
+moved {
+  from = module.website.module.cognito_custom_message_lambda_duration_alarm
+  to   = module.auth.module.cognito_custom_message_lambda_duration_alarm
+}
+
+moved {
+  from = module.website.module.cognito_custom_message_lambda_concurrent_executions_alarm
+  to   = module.auth.module.cognito_custom_message_lambda_concurrent_executions_alarm
+}
+
+moved {
+  from = module.website.module.cognito_post_confirmation_lambda_errors_alarm
+  to   = module.auth.module.cognito_post_confirmation_lambda_errors_alarm
+}
+
+moved {
+  from = module.website.module.cognito_post_confirmation_lambda_throttles_alarm
+  to   = module.auth.module.cognito_post_confirmation_lambda_throttles_alarm
+}
+
+moved {
+  from = module.website.module.cognito_post_confirmation_lambda_duration_alarm
+  to   = module.auth.module.cognito_post_confirmation_lambda_duration_alarm
+}
+
+moved {
+  from = module.website.module.cognito_post_confirmation_lambda_concurrent_executions_alarm
+  to   = module.auth.module.cognito_post_confirmation_lambda_concurrent_executions_alarm
+}
+
+moved {
+  from = module.website.module.cognito_define_auth_challenge_lambda_errors_alarm
+  to   = module.auth.module.cognito_define_auth_challenge_lambda_errors_alarm
+}
+
+moved {
+  from = module.website.module.cognito_define_auth_challenge_lambda_throttles_alarm
+  to   = module.auth.module.cognito_define_auth_challenge_lambda_throttles_alarm
+}
+
+moved {
+  from = module.website.module.cognito_define_auth_challenge_lambda_duration_alarm
+  to   = module.auth.module.cognito_define_auth_challenge_lambda_duration_alarm
+}
+
+moved {
+  from = module.website.module.cognito_define_auth_challenge_lambda_concurrent_executions_alarm
+  to   = module.auth.module.cognito_define_auth_challenge_lambda_concurrent_executions_alarm
+}
+
+moved {
+  from = module.website.module.cognito_create_auth_challenge_lambda_errors_alarm
+  to   = module.auth.module.cognito_create_auth_challenge_lambda_errors_alarm
+}
+
+moved {
+  from = module.website.module.cognito_create_auth_challenge_lambda_throttles_alarm
+  to   = module.auth.module.cognito_create_auth_challenge_lambda_throttles_alarm
+}
+
+moved {
+  from = module.website.module.cognito_create_auth_challenge_lambda_duration_alarm
+  to   = module.auth.module.cognito_create_auth_challenge_lambda_duration_alarm
+}
+
+moved {
+  from = module.website.module.cognito_create_auth_challenge_lambda_concurrent_executions_alarm
+  to   = module.auth.module.cognito_create_auth_challenge_lambda_concurrent_executions_alarm
+}
+
+moved {
+  from = module.website.module.cognito_verify_auth_challenge_lambda_errors_alarm
+  to   = module.auth.module.cognito_verify_auth_challenge_lambda_errors_alarm
+}
+
+moved {
+  from = module.website.module.cognito_verify_auth_challenge_lambda_throttles_alarm
+  to   = module.auth.module.cognito_verify_auth_challenge_lambda_throttles_alarm
+}
+
+moved {
+  from = module.website.module.cognito_verify_auth_challenge_lambda_duration_alarm
+  to   = module.auth.module.cognito_verify_auth_challenge_lambda_duration_alarm
+}
+
+moved {
+  from = module.website.module.cognito_verify_auth_challenge_lambda_concurrent_executions_alarm
+  to   = module.auth.module.cognito_verify_auth_challenge_lambda_concurrent_executions_alarm
+}
+
+moved {
+  from = module.website.module.cognito_pre_sign_up_lambda_concurrent_executions_alarm
+  to   = module.auth.module.cognito_pre_sign_up_lambda_concurrent_executions_alarm
+}
+
+moved {
+  from = module.website.aws_route53_record.certificate["auth.dev.developer.pagopa.it"]
+  to   = module.auth.aws_route53_record.auth_certificate["auth.dev.developer.pagopa.it"]
+}
+
+moved {
+  from = module.website.aws_sns_topic_subscription.cognito_alarms
+  to   = module.auth.aws_sns_topic_subscription.cognito_alarms
+}
+
+moved {
+  from = module.website.aws_sns_topic.cognito_alarms
+  to   = module.auth.aws_sns_topic.cognito_alarms
+}

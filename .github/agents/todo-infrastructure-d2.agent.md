@@ -23,6 +23,7 @@ The infrastrucutre is based on AWS and includes the following components:
 - AWS SQS
 - AWS Route 53
 - AWS Elsticache
+- AWS Cognito
 
 ## Key files and folders
 - `apps/infrastructure/src/**/*.tf`: This folder contains the Terraform files that define the infrastructure components and their configurations.
@@ -31,9 +32,9 @@ The infrastrucutre is based on AWS and includes the following components:
 
 ## Workflow
 1. Read the Terraform files in the `apps/infrastructure/src/` folder to understand the infrastructure components and their relationships.
-2. Identify the key components and their interactions based on the Terraform configurations: key components are website, cms, chatbot, webinars, active campaigns. 
+2. Identify the key components and their interactions based on the Terraform configurations: key components are website, cms, chatbot, webinars, active campaigns, auth. 
 2. Create D2 diagrams that visually represent the infrastructure based on the information gathered from the Terraform files. The diagrams should include the components listed above and their interactions.
-3. Save the generated D2 diagrams in the `apps/infrastructure/diagrams/` folder with appropriate names that reflect the content of the diagrams (e.g., `website.d2`, `cms.d2`, `chatbot.d2`).
+3. Save the generated D2 diagrams in the `apps/infrastructure/diagrams/` folder with appropriate names that reflect the content of the diagrams (e.g., `website.d2`, `cms.d2`, `chatbot.d2`, `auth.d2`).
 
 ## Rules
 - Ensure that the diagrams are clear and accurately represent the infrastructure components and their interactions.

@@ -50,10 +50,10 @@ module "opennext" {
       NEXT_PUBLIC_CHATBOT_ACTIVE                  = var.create_chatbot ? "true" : "false"
       NEXT_PUBLIC_CHATBOT_HOST                    = var.create_chatbot ? "https://api.chatbot.${var.dns_domain_name}" : ""
       NEXT_PUBLIC_CHAT_MAX_HISTORY_MESSAGES       = "5"
-      NEXT_PUBLIC_COGNITO_IDENTITY_POOL_ID        = aws_cognito_identity_pool.devportal.id
+      NEXT_PUBLIC_COGNITO_IDENTITY_POOL_ID        = var.cognito_identity_pool_id
       NEXT_PUBLIC_COGNITO_REGION                  = var.aws_region
-      NEXT_PUBLIC_COGNITO_USER_POOL_ID            = aws_cognito_user_pool.devportal.id
-      NEXT_PUBLIC_COGNITO_USER_POOL_WEB_CLIENT_ID = aws_cognito_user_pool_client.devportal_website.id
+      NEXT_PUBLIC_COGNITO_USER_POOL_ID            = var.cognito_user_pool_id
+      NEXT_PUBLIC_COGNITO_USER_POOL_WEB_CLIENT_ID = var.cognito_user_pool_client_id
       NEXT_PUBLIC_ENVIRONMENT                     = var.environment
       NEXT_PUBLIC_I18N_ACTIVE_LANGUAGES           = "false"
       NEXT_PUBLIC_ORGANIZATION_SOCIAL_LINKS       = "https://x.com/PagoPA,https://www.instagram.com/pagopaspa/,https://www.linkedin.com/company/pagopa/,https://medium.com/pagopa-spa"
