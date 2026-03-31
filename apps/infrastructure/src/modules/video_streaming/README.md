@@ -168,6 +168,7 @@ No modules.
 | [aws_api_gateway_usage_plan.webinar_metrics](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_usage_plan) | resource |
 | [aws_api_gateway_usage_plan_key.webinar_metrics](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_usage_plan_key) | resource |
 | [aws_apigatewayv2_api.ingest](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/apigatewayv2_api) | resource |
+| [aws_apigatewayv2_authorizer.ingest_cognito](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/apigatewayv2_authorizer) | resource |
 | [aws_apigatewayv2_integration.ingest_lambda](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/apigatewayv2_integration) | resource |
 | [aws_apigatewayv2_route.ingest](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/apigatewayv2_route) | resource |
 | [aws_apigatewayv2_stage.ingest](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/apigatewayv2_stage) | resource |
@@ -246,6 +247,8 @@ No modules.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_aws_region"></a> [aws\_region](#input\_aws\_region) | The AWS region to deploy resources in. | `string` | `"eu-central-1"` | no |
+| <a name="input_cognito_user_pool_client_id"></a> [cognito\_user\_pool\_client\_id](#input\_cognito\_user\_pool\_client\_id) | The Cognito User Pool Client ID used as audience for the JWT authorizer | `string` | n/a | yes |
+| <a name="input_cognito_user_pool_endpoint"></a> [cognito\_user\_pool\_endpoint](#input\_cognito\_user\_pool\_endpoint) | The endpoint of the Cognito User Pool for JWT authorization (e.g. cognito-idp.eu-south-1.amazonaws.com/eu-south-1\_XXXXX) | `string` | n/a | yes |
 | <a name="input_custom_domain_name"></a> [custom\_domain\_name](#input\_custom\_domain\_name) | The custom domain name (e.g., video.example.com) to assign to the CloudFront distribution. | `string` | `null` | no |
 | <a name="input_environment"></a> [environment](#input\_environment) | Environment | `string` | n/a | yes |
 | <a name="input_github_repository"></a> [github\_repository](#input\_github\_repository) | The GitHub repository (e.g., org/repo) allowed to assume the deploy role via OIDC. | `string` | n/a | yes |
