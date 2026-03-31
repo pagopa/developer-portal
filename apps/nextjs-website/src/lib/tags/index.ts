@@ -1,5 +1,5 @@
 import { buildEnv } from '@/lib/buildEnv';
-import { Tag } from '@/lib/tags/types';
+import type { Tag } from '@/lib/tags/types';
 import { fetchTags } from './fetcher';
 import { mapTagsProps } from './mapper';
 

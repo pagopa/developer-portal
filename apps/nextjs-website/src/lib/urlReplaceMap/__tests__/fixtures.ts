@@ -1,5 +1,5 @@
 import { productJson } from '@/lib/products/__tests__/fixtures/product';
-import { StrapiUrlReplaceMap } from '@/lib/urlReplaceMap/types';
+import type { StrapiUrlReplaceMap } from '@/lib/urlReplaceMap/types';
 
 export const strapiUrlReplaceMapFixture: StrapiUrlReplaceMap = {
   urlToGuide: [

@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Path } from '@/lib/paths/types';
+import type { Path } from '@/lib/paths/types';
 import NewsShowcase, {
   NewsShowcaseItemProps,
 } from '@/components/organisms/NewsShowcase/NewsShowcase';

@@ -19,8 +19,8 @@ import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataS
 import { websiteWithContext } from '@/helpers/structuredData.helpers';
 import { CardsGridProps } from '@/components/molecules/CardsGrid/CardsGrid';
 import { CtaSlideProps } from '@/components/atoms/CtaSlide/CtaSlide';
-import { Webinar } from '@/lib/webinars/types';
-import { SEO } from '@/lib/seo/types';
+import type { Webinar } from '@/lib/webinars/types';
+import type { SEO } from '@/lib/seo/types';
 import WebinarHeaderBanner from '@/components/atoms/WebinarHeaderBanner/WebinarHeaderBanner';
 import WebinarsSection from '@/components/organisms/WebinarsSection/WebinarsSection';
 import { HomepageRepository } from '../../lib/homepage';

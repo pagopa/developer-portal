@@ -1,4 +1,4 @@
-import { StrapiMedia } from '@/lib/media/strapiTypes';
+import type { StrapiMedia } from '@/lib/media/strapiTypes';
 import { BlocksContent } from '@strapi/blocks-react-renderer';
 
 export type StrapiBannerLink = {

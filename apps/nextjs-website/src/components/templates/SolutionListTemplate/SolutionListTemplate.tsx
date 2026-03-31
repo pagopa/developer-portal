@@ -4,8 +4,8 @@ import SolutionsShowcase from '@/components/organisms/SolutionsShowcase/Solution
 import Feature from '@/editorialComponents/Feature/Feature';
 import { FeatureItem } from '@/editorialComponents/Feature/FeatureStackItem';
 import Hero from '@/editorialComponents/Hero/Hero';
-import { Media } from '@/lib/media/types';
-import { SEO } from '@/lib/seo/types';
+import type { Media } from '@/lib/media/types';
+import type { SEO } from '@/lib/seo/types';
 import { useTranslations } from 'next-intl';
 
 export type SolutionListTemplateProps = {

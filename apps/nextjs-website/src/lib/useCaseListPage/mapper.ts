@@ -2,7 +2,7 @@
 import { UseCasesPageProps } from '@/app/[locale]/[productSlug]/use-cases/page';
 import { mapBannerLinkProps } from '@/lib/bannerLink/mapper';
 import { makeBaseProductWithoutLogoProps } from '@/lib/products/mapper';
-import { UseCase } from '@/lib/useCases/types';
+import type { UseCase } from '@/lib/useCases/types';
 import { compact } from 'lodash';
 import { StrapiUseCaseListPages } from './types';
 

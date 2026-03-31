@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 import { Product } from '@/lib/products/types';
-import { Part } from '@/lib/parts/types';
+import type { Part } from '@/lib/parts/types';
 import PartRenderer from '@/components/molecules/PartRenderer/PartRenderer';
 import { useTranslations } from 'next-intl';
 import ProductsShowcase, {
@@ -11,8 +11,8 @@ import ProductBreadcrumbs from '@/components/atoms/ProductBreadcrumbs/ProductBre
 import { pageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
 import { Box, Typography, useTheme } from '@mui/material';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
-import { Media } from '@/lib/media/types';
-import { SEO } from '@/lib/seo/types';
+import type { Media } from '@/lib/media/types';
+import type { SEO } from '@/lib/seo/types';
 import { useParams } from 'next/navigation';
 
 export type CaseHistoryPageTemplateProps = {

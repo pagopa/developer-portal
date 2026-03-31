@@ -1,5 +1,5 @@
 import { mapTutorialsProps } from '@/lib/tutorials/mapper';
-import { StrapiTutorials } from '@/lib/tutorials/strapiTypes';
+import type { StrapiTutorials } from '@/lib/tutorials/strapiTypes';
 import {
   minimalDataTutorials,
   tutorialsWithAnItemMissingProductSlug,

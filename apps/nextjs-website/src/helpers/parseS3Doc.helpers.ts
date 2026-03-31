@@ -6,7 +6,7 @@ import {
 import * as path from 'path';
 import { Readable } from 'stream';
 import Markdoc, { Node } from '@markdoc/markdoc';
-import { Guide } from '@/lib/guides/types';
+import type { Guide } from '@/lib/guides/types';
 import { staticContentsUrl, s3DocsPath } from '@/config';
 import { Product } from '@/lib/products/types';
 import { downloadFileAsText, JsonMetadata } from './s3Metadata.helpers';

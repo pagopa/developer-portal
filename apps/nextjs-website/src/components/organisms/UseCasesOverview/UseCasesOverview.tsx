@@ -1,10 +1,10 @@
 'use client';
 
 import React from 'react';
-import { Path } from '@/lib/paths/types';
+import type { Path } from '@/lib/paths/types';
 import NewsShowcase from '@/components/organisms/NewsShowcase/NewsShowcase';
 import { useTranslations } from 'next-intl';
-import { UseCase } from '@/lib/useCases/types';
+import type { UseCase } from '@/lib/useCases/types';
 
 type UseCasesOverviewProps = {
   title?: string;

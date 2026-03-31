@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { strapiSolutions } from '@/lib/solutions/__tests__/fixtures';
-import { StrapiSolutions } from '@/lib/solutions/types';
+import type { StrapiSolutions } from '@/lib/solutions/types';
 
 export function minimalDataSolutions() {
   const strapiSolution = strapiSolutions.data[0];

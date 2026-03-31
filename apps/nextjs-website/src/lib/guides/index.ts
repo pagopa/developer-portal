@@ -1,4 +1,4 @@
-import { Guide } from './types';
+import type { Guide } from './types';
 import { fetchGuides } from './fetcher';
 import { mapGuides } from './mapper';
 

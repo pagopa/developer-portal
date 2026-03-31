@@ -6,14 +6,14 @@ import ProductLayout, {
 import { getQuickStartGuide } from '@/lib/api';
 import React from 'react';
 import QuickStartGuideStepper from '@/components/molecules/QuickStartGuideStepper/QuickStartGuideStepper';
-import { Step } from '@/lib/quickStartGuides/types';
+import type { Step } from '@/lib/quickStartGuides/types';
 import type { ProductParams } from '@/lib/products/types';
 import { Metadata, ResolvingMetadata } from 'next';
 import {
   makeMetadata,
   makeMetadataFromStrapi,
 } from '@/helpers/metadata.helpers';
-import { SEO } from '@/lib/seo/types';
+import type { SEO } from '@/lib/seo/types';
 import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
 import {
   breadcrumbItemByProduct,

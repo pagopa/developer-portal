@@ -4,7 +4,7 @@ import { mapBannerLinkProps } from '@/lib/bannerLink/mapper';
 import { makeBaseProductWithoutLogoProps } from '@/lib/products/mapper';
 import { compact } from 'lodash';
 import type { StrapiGuides } from './strapiTypes';
-import { Guide } from './types';
+import type { Guide } from './types';
 
 export function mapGuides(
   locale: string,

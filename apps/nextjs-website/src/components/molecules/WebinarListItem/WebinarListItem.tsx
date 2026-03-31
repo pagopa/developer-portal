@@ -3,7 +3,7 @@ import { webinarDateOptions } from '@/config';
 import Image from 'next/image';
 import LinkButton from '@/components/atoms/LinkButton/LinkButton';
 import React from 'react';
-import { Webinar } from '@/lib/webinars/types';
+import type { Webinar } from '@/lib/webinars/types';
 import { useTranslations, useFormatter } from 'next-intl';
 
 type WebinarListItemProps = {

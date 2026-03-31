@@ -1,14 +1,14 @@
-import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
-import { RelatedLinksProps } from '@/components/atoms/RelatedLinks/RelatedLinks';
-import { StrapiBannerLink } from '@/lib/bannerLink/types';
-import { StrapiPart } from '@/lib/parts/strapiTypes';
-import { StrapiBaseProductWithBannerLinks } from '@/lib/products/strapiTypes';
-import { Paginated } from '@/lib/strapi/types/paginated';
-import { StrapiRelatedLinks } from '@/lib/strapi/types/link';
-import { StrapiMedia } from '@/lib/media/strapiTypes';
-import { StrapiSeo } from '@/lib/seo/strapiTypes';
-import { StrapiTag } from '@/lib/tags/strapiTypes';
-import { Tutorial } from '@/lib/tutorials/types';
+import type { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
+import type { RelatedLinksProps } from '@/components/atoms/RelatedLinks/RelatedLinks';
+import type { StrapiBannerLink } from '@/lib/bannerLink/types';
+import type { StrapiPart } from '@/lib/parts/strapiTypes';
+import type { StrapiBaseProductWithBannerLinks } from '@/lib/products/strapiTypes';
+import type { Paginated } from '@/lib/strapi/types/paginated';
+import type { StrapiRelatedLinks } from '@/lib/strapi/types/link';
+import type { StrapiMedia } from '@/lib/media/strapiTypes';
+import type { StrapiSeo } from '@/lib/seo/strapiTypes';
+import type { StrapiTag } from '@/lib/tags/strapiTypes';
+import type { Tutorial } from '@/lib/tutorials/types';
 
 export type StrapiBaseTutorial = {
   readonly updatedAt: string;

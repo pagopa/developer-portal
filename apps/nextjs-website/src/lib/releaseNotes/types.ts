@@ -1,7 +1,7 @@
-import { StrapiBaseProductWithRelations } from '@/lib/products/strapiTypes';
-import { StrapiBannerLink } from '@/lib/bannerLink/types';
-import { StrapiSeo } from '@/lib/seo/strapiTypes';
-import { Paginated } from '@/lib/strapi/types/paginated';
+import type { StrapiBaseProductWithRelations } from '@/lib/products/strapiTypes';
+import type { StrapiBannerLink } from '@/lib/bannerLink/types';
+import type { StrapiSeo } from '@/lib/seo/strapiTypes';
+import type { Paginated } from '@/lib/strapi/types/paginated';
 
 export type StrapiReleaseNote = {
   readonly id: number;

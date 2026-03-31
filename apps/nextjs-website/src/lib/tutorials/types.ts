@@ -1,8 +1,8 @@
-import { Path } from '@/lib/paths/types';
-import { Part } from '@/lib/parts/types';
-import { SEO } from '@/lib/seo/types';
-import { Tag } from '@/lib/tags/types';
-import { Media } from '@/lib/media/types';
+import type { Path } from '@/lib/paths/types';
+import type { Part } from '@/lib/parts/types';
+import type { SEO } from '@/lib/seo/types';
+import type { Tag } from '@/lib/tags/types';
+import type { Media } from '@/lib/media/types';
 
 export type Tutorial = {
   readonly showInOverview?: boolean;

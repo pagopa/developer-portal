@@ -1,6 +1,6 @@
-import { Media } from '@/lib/media/types';
-import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
-import { Tag } from '@/lib/tags/types';
+import type { Media } from '@/lib/media/types';
+import type { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
+import type { Tag } from '@/lib/tags/types';
 
 export type Product = {
   readonly apiDataListPageUrl?: string;

@@ -5,14 +5,14 @@ import { Abstract } from '@/editorialComponents/Abstract/Abstract';
 import ProductLayout, {
   ProductLayoutProps,
 } from '@/components/organisms/ProductLayout/ProductLayout';
-import { Tutorial } from '@/lib/tutorials/types';
+import type { Tutorial } from '@/lib/tutorials/types';
 import React from 'react';
 import type { ProductParams } from '@/lib/products/types';
 import {
   makeMetadata,
   makeMetadataFromStrapi,
 } from '@/helpers/metadata.helpers';
-import { SEO } from '@/lib/seo/types';
+import type { SEO } from '@/lib/seo/types';
 import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
 import {
   breadcrumbItemByProduct,

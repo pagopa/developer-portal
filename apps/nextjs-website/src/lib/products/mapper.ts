@@ -1,8 +1,8 @@
 /* eslint-disable functional/no-expression-statements */
 /* eslint-disable functional/no-throw-statements */
-import { Product } from './types';
+import type { Product } from './types';
 import { mapBannerLinkProps } from '@/lib/bannerLink/mapper';
-import {
+import type {
   StrapiBaseProductWithRelations,
   StrapiProduct,
   StrapiProducts,

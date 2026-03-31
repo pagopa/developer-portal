@@ -1,6 +1,6 @@
 import { Stack } from '@mui/material';
 import FilterButton from '@/components/atoms/FilterButton/FilterButton';
-import { Media } from '@/lib/media/types';
+import type { Media } from '@/lib/media/types';
 
 type DesktopFilterSelectorProps = {
   selectedFilter: number;

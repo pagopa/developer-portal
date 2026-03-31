@@ -1,5 +1,5 @@
 import { StrapiLink } from '@/lib/strapi/types/link';
-import { StrapiMedia } from '@/lib/media/strapiTypes';
+import type { StrapiMedia } from '@/lib/media/strapiTypes';
 
 type StrapiNewsItem = {
   readonly comingSoon: boolean;

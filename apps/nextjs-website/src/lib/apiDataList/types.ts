@@ -1,8 +1,8 @@
-import { StrapiMedia } from '@/lib/media/strapiTypes';
-import { StrapiBaseProductWithRelations } from '@/lib/products/strapiTypes';
+import type { StrapiMedia } from '@/lib/media/strapiTypes';
+import type { StrapiBaseProductWithRelations } from '@/lib/products/strapiTypes';
 import { StrapiBannerLink } from '@/lib/bannerLink/types';
-import { StrapiSeo } from '@/lib/seo/strapiTypes';
-import { StrapiTag } from '@/lib/tags/strapiTypes';
+import type { StrapiSeo } from '@/lib/seo/strapiTypes';
+import type { StrapiTag } from '@/lib/tags/strapiTypes';
 import { ApiDataPageProps } from '@/app/[locale]/[productSlug]/api/[apiDataSlug]/page';
 import { RootEntity } from '@/lib/strapi/types/rootEntity';
 

@@ -2,7 +2,7 @@ import ProductLayout, {
   ProductLayoutProps,
 } from '@/components/organisms/ProductLayout/ProductLayout';
 import { Product } from '@/lib/products/types';
-import { SEO } from '@/lib/seo/types';
+import type { SEO } from '@/lib/seo/types';
 import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
 import {
   convertSeoToStructuredDataArticle,
@@ -23,7 +23,7 @@ import {
   makeMetadata,
   makeMetadataFromStrapi,
 } from '@/helpers/metadata.helpers';
-import { BreadcrumbSegment } from '@/lib/paths/types';
+import type { BreadcrumbSegment } from '@/lib/paths/types';
 import { baseUrl } from '@/config';
 import PageNotFound from '@/app/[locale]/not-found';
 

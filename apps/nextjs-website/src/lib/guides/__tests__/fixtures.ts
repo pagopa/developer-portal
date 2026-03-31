@@ -1,5 +1,5 @@
-import { StrapiGuides } from '@/lib/guides/strapiTypes';
-import { Guide } from '@/lib/guides/types';
+import type { StrapiGuides } from '@/lib/guides/strapiTypes';
+import type { Guide } from '@/lib/guides/types';
 import { product } from '@/lib/products/__tests__/fixtures/product';
 
 export const strapiEmptyGuideData = {

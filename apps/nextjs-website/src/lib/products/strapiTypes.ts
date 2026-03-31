@@ -1,8 +1,8 @@
-import { StrapiBannerLink } from '@/lib/bannerLink/types';
-import { StrapiMedia } from '@/lib/media/strapiTypes';
-import { ApiDataListPageWithoutProduct } from '@/lib/apiDataListPages/types';
-import { Paginated } from '@/lib/strapi/types/paginated';
-import { StrapiTag } from '@/lib/tags/strapiTypes';
+import type { StrapiBannerLink } from '@/lib/bannerLink/types';
+import type { StrapiMedia } from '@/lib/media/strapiTypes';
+import type { ApiDataListPageWithoutProduct } from '@/lib/apiDataListPages/types';
+import type { Paginated } from '@/lib/strapi/types/paginated';
+import type { StrapiTag } from '@/lib/tags/strapiTypes';
 
 export type StrapiBaseProduct = {
   readonly name: string;

@@ -1,6 +1,6 @@
 import type { StrapiMedia } from '@/lib/media/strapiTypes';
 import type { StrapiSeo } from '@/lib/seo/strapiTypes';
-import { StrapiBannerLink } from '@/lib/bannerLink/types';
+import type { StrapiBannerLink } from '@/lib/bannerLink/types';
 import type { Paginated } from '@/lib/strapi/types/paginated';
 import type { StrapiBaseProductWithRelations } from '@/lib/products/strapiTypes';
 

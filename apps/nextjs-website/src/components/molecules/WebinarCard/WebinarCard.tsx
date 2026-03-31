@@ -1,5 +1,5 @@
 'use client';
-import { Webinar } from '@/lib/webinars/types';
+import type { Webinar } from '@/lib/webinars/types';
 import React, { useEffect, useMemo, useState } from 'react';
 import {
   Box,

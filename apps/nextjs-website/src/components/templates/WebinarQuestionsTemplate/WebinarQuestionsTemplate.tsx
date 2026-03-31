@@ -1,7 +1,7 @@
 'use client';
 import SummaryInformation from '@/components/atoms/SummaryInformation/SummaryInformation';
 import { Box, Grid } from '@mui/material';
-import { Webinar } from '@/lib/webinars/types';
+import type { Webinar } from '@/lib/webinars/types';
 import { useWebinar } from '@/helpers/webinar.helpers';
 import { useEffect, useState } from 'react';
 import { getWebinarQuestionList } from '@/lib/webinarApi';

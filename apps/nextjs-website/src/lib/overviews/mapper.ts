@@ -4,7 +4,7 @@ import { compact } from 'lodash';
 import { OverviewPageProps } from '@/app/[locale]/[productSlug]/overview/page';
 import { makeBaseProductWithoutLogoProps } from '@/lib/products/mapper';
 import { mapBannerLinkProps } from '@/lib/bannerLink/mapper';
-import { UseCase } from '@/lib/useCases/types';
+import type { UseCase } from '@/lib/useCases/types';
 import { StrapiOverviews } from './types';
 
 export function mapOverviewsProps(

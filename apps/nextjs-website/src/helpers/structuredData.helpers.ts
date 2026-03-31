@@ -1,10 +1,10 @@
 import { ApiDataPageProps } from '@/app/[locale]/[productSlug]/api/[apiDataSlug]/page';
 import { QuickStartGuidePageProps } from '@/app/[locale]/[productSlug]/quick-start/page';
 import { baseUrl, organizationInfo, websiteName } from '@/config';
-import { Media } from '@/lib/media/types';
+import type { Media } from '@/lib/media/types';
 import { Product } from '@/lib/products/types';
-import { SEO } from '@/lib/seo/types';
-import { Webinar } from '@/lib/webinars/types';
+import type { SEO } from '@/lib/seo/types';
+import type { Webinar } from '@/lib/webinars/types';
 import {
   Article,
   BreadcrumbList,

@@ -1,6 +1,6 @@
-import { Product } from '@/lib/products/types';
-import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
-import { SEO } from '@/lib/seo/types';
+import type { Product } from '@/lib/products/types';
+import type { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
+import type { SEO } from '@/lib/seo/types';
 
 export type Guide = {
   readonly product: Product;

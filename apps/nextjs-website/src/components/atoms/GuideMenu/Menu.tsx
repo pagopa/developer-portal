@@ -13,7 +13,7 @@ import GuideVersionSelector, {
   type GuideVersionSelectorProps,
 } from './GuideVersionSelector';
 import { Typography } from '@mui/material';
-import { GitBookContentData } from '@/lib/gitBookContent/types';
+import type { GitBookContentData } from '@/lib/gitBookContent/types';
 import { useParams } from 'next/navigation';
 
 const StyledTreeItem = styled(TreeItem)(({ theme }) => ({

@@ -1,4 +1,4 @@
-import { StrapiQuickStartGuides } from '@/lib/quickStartGuides/strapiTypes';
+import type { StrapiQuickStartGuides } from '@/lib/quickStartGuides/strapiTypes';
 import { alertPart, codeBlockPart } from '@/lib/parts/__tests__/fixtures';
 
 export const strapiQuickStartGuides: StrapiQuickStartGuides = {

@@ -6,7 +6,7 @@ import SpeakerList from '@/components/organisms/SpeakerList/SpeakerList';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
 import { Alert, Box, Snackbar, useTheme } from '@mui/material';
 import SubscribeToWebinar from '@/components/molecules/SubscribeToWebinar/SubscribeToWebinar';
-import { Webinar } from '@/lib/webinars/types';
+import type { Webinar } from '@/lib/webinars/types';
 import { useUser } from '@/helpers/user.helper';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslations } from 'next-intl';

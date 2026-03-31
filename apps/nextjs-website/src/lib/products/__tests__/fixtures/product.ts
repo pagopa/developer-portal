@@ -1,5 +1,5 @@
 import { mediaVectorJson } from '@/lib/media/__tests__/fixtures';
-import { Product } from '@/lib/products/types';
+import type { Product } from '@/lib/products/types';
 
 const firstItem = {
   id: 2,

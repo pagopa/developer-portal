@@ -1,14 +1,14 @@
-import { BlocksContent } from '@strapi/blocks-react-renderer';
-import { StrapiBannerLink } from '@/lib/bannerLink/types';
+import type { BlocksContent } from '@strapi/blocks-react-renderer';
+import type { StrapiBannerLink } from '@/lib/bannerLink/types';
 import type { StrapiBaseGuide } from '@/lib/guides/strapiTypes';
-import { StrapiLink, StrapiRelatedLinks } from '@/lib/strapi/types/link';
-import { StrapiMedia } from '@/lib/media/strapiTypes';
-import { StrapiNewsShowcase } from '@/lib/newsShowcase/types';
-import { Paginated } from '@/lib/strapi/types/paginated';
-import { StrapiSeo } from '@/lib/seo/strapiTypes';
-import { StrapiBaseTutorial } from '@/lib/tutorials/strapiTypes';
-import { StrapiBaseUseCase } from '@/lib/useCases/strapiTypes';
-import { StrapiProduct } from '@/lib/products/strapiTypes';
+import type { StrapiLink, StrapiRelatedLinks } from '@/lib/strapi/types/link';
+import type { StrapiMedia } from '@/lib/media/strapiTypes';
+import type { StrapiNewsShowcase } from '@/lib/newsShowcase/types';
+import type { Paginated } from '@/lib/strapi/types/paginated';
+import type { StrapiSeo } from '@/lib/seo/strapiTypes';
+import type { StrapiBaseTutorial } from '@/lib/tutorials/strapiTypes';
+import type { StrapiBaseUseCase } from '@/lib/useCases/strapiTypes';
+import type { StrapiProduct } from '@/lib/products/strapiTypes';
 
 export type StrapiStartInfo = {
   readonly icon: StrapiMedia;

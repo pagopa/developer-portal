@@ -1,4 +1,4 @@
-import { Media } from '@/lib/media/types';
+import type { Media } from '@/lib/media/types';
 
 export type Tag = {
   readonly name: string;

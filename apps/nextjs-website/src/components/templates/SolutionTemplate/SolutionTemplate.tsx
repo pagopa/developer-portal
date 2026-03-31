@@ -6,7 +6,7 @@ import ProductsShowcase from '@/components/organisms/ProductsShowcase/ProductsSh
 import ProductBreadcrumbs from '@/components/atoms/ProductBreadcrumbs/ProductBreadcrumbs';
 import { pageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
 import { Box, useTheme } from '@mui/material';
-import { Webinar } from '@/lib/webinars/types';
+import type { Webinar } from '@/lib/webinars/types';
 import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
 import SolutionPreviewCard from '@/components/molecules/SolutionPreviewCard/SolutionsPreviewCard';
 import BannerLinks from '@/components/molecules/BannerLinks/BannerLinks';
@@ -14,9 +14,9 @@ import FutureWebinarsShowcase from '@/components/organisms/FutureWebinarsShowcas
 import Stats from '@/components/atoms/Stats/Stats';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
 import { BlocksContent } from '@strapi/blocks-react-renderer';
-import { Media } from '@/lib/media/types';
+import type { Media } from '@/lib/media/types';
 import NewsShowcase from '@/components/organisms/NewsShowcase/NewsShowcase';
-import { SEO } from '@/lib/seo/types';
+import type { SEO } from '@/lib/seo/types';
 import { isNonEmpty } from 'fp-ts/lib/Array';
 import { useParams } from 'next/navigation';
 

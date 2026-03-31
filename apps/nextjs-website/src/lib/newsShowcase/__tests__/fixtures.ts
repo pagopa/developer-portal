@@ -1,4 +1,4 @@
-import { StrapiNewsShowcase } from '../types';
+import type { StrapiNewsShowcase } from '@/lib/newsShowcase/types';
 import { mediaJpeg } from '../../media/__tests__/factories';
 
 export const newsShowcase = {

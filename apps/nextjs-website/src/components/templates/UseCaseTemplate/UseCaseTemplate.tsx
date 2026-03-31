@@ -9,7 +9,7 @@ import RelatedLinks, {
 import ProductLayout from '@/components/organisms/ProductLayout/ProductLayout';
 import { Product } from '@/lib/products/types';
 import PartRenderer from '@/components/molecules/PartRenderer/PartRenderer';
-import { Part } from '@/lib/parts/types';
+import type { Part } from '@/lib/parts/types';
 import { ReactNode } from 'react';
 import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
 import EContainer from '../../../editorialComponents/EContainer/EContainer';

@@ -5,7 +5,7 @@ import SignUpForm from '@/components/organisms/Auth/SignUpForm';
 import { Box, Grid, Typography, useMediaQuery } from '@mui/material';
 import { Auth } from 'aws-amplify';
 import { useSearchParams } from 'next/navigation';
-import { SignUpUserData } from '@/lib/auth/user/types';
+import type { SignUpUserData } from '@/lib/auth/user/types';
 import { useTranslations } from 'next-intl';
 import { generateSignUpData } from '@/helpers/auth.helpers';
 import { useAuthenticatedUserRedirect } from '@/helpers/user.helper';

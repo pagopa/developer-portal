@@ -3,7 +3,7 @@
 import { mapPartProps } from '@/lib/parts/mapper';
 import { mapBannerLinkProps } from '@/lib/bannerLink/mapper';
 import { compact } from 'lodash';
-import { StrapiTutorials, TutorialProps } from './strapiTypes';
+import type { StrapiTutorials, TutorialProps } from './strapiTypes';
 
 export function mapTutorialsProps(
   locale: string,

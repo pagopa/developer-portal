@@ -4,9 +4,9 @@ import { QuickStartGuidePageProps } from '@/app/[locale]/[productSlug]/quick-sta
 import { mapBannerLinkProps } from '@/lib/bannerLink/mapper';
 import { makeBaseProductWithoutLogoProps } from '@/lib/products/mapper';
 import { mapPartProps } from '@/lib/parts/mapper';
-import { Step } from '@/lib/quickStartGuides/types';
+import type { Step } from '@/lib/quickStartGuides/types';
 import { compact } from 'lodash';
-import {
+import type {
   StrapiQuickStartGuideItem,
   StrapiQuickStartGuides,
   QuickStartGuides,
