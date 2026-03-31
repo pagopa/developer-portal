@@ -1,0 +1,158 @@
+# Auth Infrastructure Diagram
+# Developer Portal - Auth Module (prod)
+
+vars: {
+  d2-config: {
+    layout-engine: elk
+    sketch: true
+  }
+}
+
+direction: right
+
+title: {
+  label: Developer Portal - Auth Infrastructure (prod)
+  near: top-center
+  shape: text
+  style.font-size: 28
+  style.bold: true
+}
+
+users: Users {
+  icon: https://icons.terrastruct.com/essentials%2F359-users.svg
+  shape: image
+}
+
+# DNS Layer
+route53: Route 53 {
+  icon: https://icons.terrastruct.com/aws%2FNetworking%20&%20Content%20Delivery%2FAmazon-Route-53.svg
+  shape: image
+}
+
+# Cognito
+cognito: {
+  label: Amazon Cognito
+
+  user_pool: Cognito\nUser Pool\n(devportalpool) {
+    icon: https://icons.terrastruct.com/aws%2FSecurity%2C%20Identity%2C%20&%20Compliance%2FAmazon-Cognito.svg
+    shape: image
+  }
+
+  user_pool_client: User Pool Client\n(devportal-website-client)\nOAuth: code flow\nSRP + Custom Auth {
+    icon: https://icons.terrastruct.com/aws%2FSecurity%2C%20Identity%2C%20&%20Compliance%2FAmazon-Cognito.svg
+    shape: image
+  }
+
+  identity_pool: Cognito\nIdentity Pool\n(devportal-identity) {
+    icon: https://icons.terrastruct.com/aws%2FSecurity%2C%20Identity%2C%20&%20Compliance%2FAmazon-Cognito.svg
+    shape: image
+  }
+
+  user_group_hosts: Cognito\nUser Group\n(hosts) {
+    icon: https://icons.terrastruct.com/aws%2FSecurity%2C%20Identity%2C%20&%20Compliance%2FAmazon-Cognito.svg
+    shape: image
+  }
+}
+
+# Cognito Lambda Triggers
+cognito_lambdas: {
+  label: Cognito Lambda Triggers (Node.js 22)
+
+  custom_message: Lambda\n(Custom Message)\nEmail verification {
+    icon: https://icons.terrastruct.com/aws%2FCompute%2FAWS-Lambda.svg
+    shape: image
+  }
+
+  post_confirmation: Lambda\n(Post Confirmation)\nWelcome email {
+    icon: https://icons.terrastruct.com/aws%2FCompute%2FAWS-Lambda.svg
+    shape: image
+  }
+
+  define_auth: Lambda\n(Define Auth\nChallenge) {
+    icon: https://icons.terrastruct.com/aws%2FCompute%2FAWS-Lambda.svg
+    shape: image
+  }
+
+  create_auth: Lambda\n(Create Auth\nChallenge)\nSend OTP {
+    icon: https://icons.terrastruct.com/aws%2FCompute%2FAWS-Lambda.svg
+    shape: image
+  }
+
+  verify_auth: Lambda\n(Verify Auth\nChallenge) {
+    icon: https://icons.terrastruct.com/aws%2FCompute%2FAWS-Lambda.svg
+    shape: image
+  }
+
+  pre_sign_up: Lambda\n(Pre Sign Up)\n(dev only) {
+    icon: https://icons.terrastruct.com/aws%2FCompute%2FAWS-Lambda.svg
+    shape: image
+    style.opacity: 0.5
+  }
+}
+
+# Email
+ses: SES\n(Email Service)\nnoreply@developer.pagopa.it {
+  icon: https://icons.terrastruct.com/aws%2FCustomer%20Engagement%2FAmazon-Simple-Email-Service-SES.svg
+  shape: image
+}
+
+# Monitoring
+monitoring: {
+  label: Monitoring
+
+  cloudwatch: CloudWatch\n(Cognito Metrics) {
+    icon: https://icons.terrastruct.com/aws%2FManagement%20&%20Governance%2FAmazon-CloudWatch.svg
+    shape: image
+  }
+
+  sns: SNS\n(Cognito Alarms) {
+    icon: https://icons.terrastruct.com/aws%2FApplication%20Integration%2FAmazon-Simple-Notification-Service-SNS.svg
+    shape: image
+  }
+}
+
+# Consumers (external modules)
+consumers: {
+  label: Consumers (External Modules)
+  style.opacity: 0.6
+
+  website: Website Module\n(OpenNext) {
+    icon: https://icons.terrastruct.com/aws%2FNetworking%20&%20Content%20Delivery%2FAmazon-CloudFront.svg
+    shape: image
+  }
+
+  video_streaming: Video Streaming\nModule\n(Ingest API) {
+    icon: https://icons.terrastruct.com/aws%2FMobile%2FAmazon-API-Gateway.svg
+    shape: image
+  }
+}
+
+# --- Connections ---
+
+# User authentication flow
+users -> route53: HTTPS
+route53 -> cognito.user_pool: auth.developer.pagopa.it\n(Custom domain\nvia CloudFront)
+
+cognito.user_pool_client -> cognito.user_pool: Attached
+cognito.identity_pool -> cognito.user_pool: Federation\n(Cognito Identity Provider)
+cognito.user_group_hosts -> cognito.user_pool: User group
+
+# Lambda triggers
+cognito.user_pool -> cognito_lambdas.custom_message: Trigger
+cognito.user_pool -> cognito_lambdas.post_confirmation: Trigger
+cognito.user_pool -> cognito_lambdas.define_auth: Trigger
+cognito.user_pool -> cognito_lambdas.create_auth: Trigger
+cognito.user_pool -> cognito_lambdas.verify_auth: Trigger
+cognito.user_pool -> cognito_lambdas.pre_sign_up: Trigger\n(dev only)
+
+# Email sending
+cognito_lambdas.post_confirmation -> ses: Send welcome email
+cognito_lambdas.create_auth -> ses: Send OTP email
+
+# Monitoring
+monitoring.cloudwatch -> monitoring.sns: Alarm notifications\n(SignUp/SignIn throttles,\nLambda errors,\nconcurrent executions)
+
+# Outputs consumed by other modules
+cognito.user_pool -> consumers.website: User Pool ID\nClient ID\nEndpoint
+cognito.identity_pool -> consumers.website: Identity Pool ID
+cognito.user_pool -> consumers.video_streaming: User Pool Endpoint\nClient ID\n(JWT Authorizer)
