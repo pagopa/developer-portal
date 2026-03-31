@@ -31,7 +31,6 @@ export const useWebinar = () => {
   const lastHeartbeatSentTime = useRef<Date | null>(null);
 
   const onSetIsVideoPlaying = useCallback((isPlaying: boolean) => {
-    console.log(`onSetIsVideoPlaying called with isPlaying: ${isPlaying}`); // Debug lo
     setIsVideoPlaying(isPlaying);
     return null;
   }, []);
