@@ -57,7 +57,7 @@ on:
 
 permissions:
   id-token: write
-  contents: read
+  contents: write
 
 jobs:
   manual_sync_gitbook_docs:
