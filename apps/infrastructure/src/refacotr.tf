@@ -351,3 +351,8 @@ moved {
   from = module.website.aws_sns_topic.cognito_alarms
   to   = module.auth.aws_sns_topic.cognito_alarms
 }
+
+moved {
+  from = module.video_streaming.aws_cloudfront_distribution.s3_distribution
+  to   = module.video_streaming.aws_cloudfront_distribution.vod
+}

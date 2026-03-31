@@ -10,7 +10,7 @@ output "ivs_channel_details" {
       arn                      = channel.arn
       ingest_endpoint          = "rtmps://${channel.ingest_endpoint}:443/app/"
       playback_url             = channel.playback_url
-      distribution_domain_name = aws_cloudfront_distribution.s3_distribution.domain_name
+      distribution_domain_name = aws_cloudfront_distribution.vod.domain_name
     }
   }
 

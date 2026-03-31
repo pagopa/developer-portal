@@ -78,7 +78,7 @@ resource "aws_s3_bucket_policy" "cloudfront_logs_policy" {
         Resource = "${aws_s3_bucket.cloudfront_logs.arn}/*",
         Condition = {
           StringEquals = {
-            "AWS:SourceArn" = aws_cloudfront_distribution.s3_distribution.arn
+            "AWS:SourceArn" = aws_cloudfront_distribution.vod.arn
           }
         }
       },
@@ -92,7 +92,7 @@ resource "aws_s3_bucket_policy" "cloudfront_logs_policy" {
         Resource = aws_s3_bucket.cloudfront_logs.arn,
         Condition = {
           StringEquals = {
-            "AWS:SourceArn" = aws_cloudfront_distribution.s3_distribution.arn
+            "AWS:SourceArn" = aws_cloudfront_distribution.vod.arn
           }
         }
       }
@@ -383,7 +383,7 @@ resource "aws_cloudfront_origin_access_control" "video_oac" {
   signing_protocol                  = "sigv4"
 }
 
-resource "aws_cloudfront_distribution" "s3_distribution" {
+resource "aws_cloudfront_distribution" "vod" {
   origin {
     domain_name              = aws_s3_bucket.ivs_recordings.bucket_regional_domain_name
     origin_id                = "S3-${var.project_name}-ivs-recordings"
@@ -540,7 +540,7 @@ resource "aws_s3_bucket_policy" "allow_cloudfront_oac" {
         Condition = {
           StringEquals = {
             # This condition is crucial: it restricts access to ONLY this specific CloudFront distribution
-            "AWS:SourceArn" = aws_cloudfront_distribution.s3_distribution.arn
+            "AWS:SourceArn" = aws_cloudfront_distribution.vod.arn
           }
         }
       }
@@ -604,8 +604,8 @@ resource "aws_route53_record" "cdn_alias_record" {
   type    = "A"
 
   alias {
-    name                   = aws_cloudfront_distribution.s3_distribution.domain_name
-    zone_id                = aws_cloudfront_distribution.s3_distribution.hosted_zone_id
+    name                   = aws_cloudfront_distribution.vod.domain_name
+    zone_id                = aws_cloudfront_distribution.vod.hosted_zone_id
     evaluate_target_health = false
   }
 }
