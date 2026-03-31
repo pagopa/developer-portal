@@ -2,4 +2,4 @@
 "nextjs-website": minor
 ---
 
-Mange CustomMessagesMap single type from Strapi
+Manage CustomMessagesMap single type from Strapi
