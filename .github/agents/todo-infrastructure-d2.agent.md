@@ -38,8 +38,8 @@ The infrastrucutre is based on AWS and includes the following components:
 
 ## Rules
 - Ensure that the diagrams are clear and accurately represent the infrastructure components and their interactions.
-- Do not consider iam roles and policies for the diagrams, focus on the main components and their interactions.
+- Do not consider iam roles and policies, acm certificates, ssm parameters and secrets for the diagrams, focus on the main components and their interactions.
 - If you encounter any ambiguities or uncertainties while reading the Terraform files, make reasonable assumptions based on common practices and patterns in AWS infrastructure design.
-- In d2 diagrams for any aws component try to use the official AWS icons to represent the components visually. This will help in better understanding and recognition of the components in the diagrams. Icons are available in the D2 documentation at this link: https://icons.terrastruct.com/-
+- In d2 diagrams for any aws component try to use the official AWS icons to represent the components visually. This will help in better understanding and recognition of the components in the diagrams. Icons are available in the D2 documentation at this link: https://icons.terrastruct.com/
 - In D2 diagrams, use the layout engine ELK.
 - In D2 diagrams, use Sketch renderer.
