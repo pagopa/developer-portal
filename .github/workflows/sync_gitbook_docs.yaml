@@ -50,7 +50,7 @@ on:
         description: 'Invalidate CloudFront asset bucket cache'
         type: boolean
         required: true
-        default: false
+        default: true
 
   schedule:
     - cron: '0 23 * * *'  # Run daily at midnight UTC
