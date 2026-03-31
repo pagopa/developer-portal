@@ -49,6 +49,7 @@ const GitBookTemplate = ({
   hasInPageMenu = true,
   hasProductHeader = true,
   versionName,
+  guideTranslationDisclaimer,
 }: GitBookTemplateProps) => {
   const t = useTranslations();
   const locale = useParams<{ locale: string }>().locale;
@@ -207,6 +208,7 @@ const GitBookTemplate = ({
             distanceFromTop={menuDistanceFromTop}
             onGuideNavigate={updateContent}
             hasProductHeader={hasProductHeader}
+            guideTranslationDisclaimer={guideTranslationDisclaimer}
           />
         )}
         <Stack

@@ -20,8 +20,11 @@ import {
   productToBreadcrumb,
 } from '@/helpers/structuredData.helpers';
 import PageNotFound from '@/app/[locale]/not-found';
+import { BlocksContent } from '@strapi/blocks-react-renderer';
 
 export const dynamic = 'force-dynamic';
+
+const GUIDES_TRANSLATION_DISCLAIMER_MESSAGE_KEY = 'guidesTranslationDisclaimer';
 
 type Params = {
   locale: string;
@@ -46,6 +49,7 @@ export type ProductGuidePageProps = {
   menu: string;
   body: string;
   bodyConfig: ParseContentConfig;
+  guideTranslationDisclaimer?: BlocksContent;
 } & ProductLayoutProps;
 
 export async function generateMetadata(props: {
@@ -94,6 +98,7 @@ const Page = async ({ params }: { params: Promise<Params> }) => {
   if (!guidePageProps) {
     return <PageNotFound />;
   }
+
   const {
     product,
     page,
@@ -118,6 +123,9 @@ const Page = async ({ params }: { params: Promise<Params> }) => {
       ...bodyConfig,
       urlReplaces: urlReplaceMap,
     },
+    guideTranslationDisclaimer: version.showGuidesTranslationDisclaimer
+      ? customMessagesMap.get(GUIDES_TRANSLATION_DISCLAIMER_MESSAGE_KEY)
+      : undefined,
   };
 
   const structuredData = generateStructuredDataScripts({

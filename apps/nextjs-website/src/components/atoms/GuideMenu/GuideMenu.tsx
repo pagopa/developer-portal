@@ -25,11 +25,13 @@ import { useScrollUp } from '../ProductHeader/useScrollUp';
 import GuideMenuItems, { type GuideMenuItemsProps } from './Menu';
 import { useTranslations } from 'next-intl';
 import { PRODUCT_HEADER_HEIGHT, SITE_HEADER_HEIGHT } from '@/config';
+import { BlocksContent } from '@strapi/blocks-react-renderer';
 
 type GuideMenuProps = GuideMenuItemsProps & {
   distanceFromTop?: number;
   hasHeader: boolean;
   hasProductHeader?: boolean;
+  guideTranslationDisclaimer?: BlocksContent;
 };
 
 const GuideMenu = (menuProps: GuideMenuProps) => {
@@ -119,6 +121,7 @@ const GuideMenu = (menuProps: GuideMenuProps) => {
       currentPath={currentPath}
       expanded={expanded}
       containerRef={menuContainerRef}
+      guideTranslationDisclaimer={menuProps.guideTranslationDisclaimer}
     />
   );
 
