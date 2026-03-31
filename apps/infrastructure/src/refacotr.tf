@@ -343,6 +343,16 @@ moved {
 }
 
 moved {
+  from = module.website.aws_route53_record.certificate["auth.uat.developer.pagopa.it"]
+  to   = module.auth.aws_route53_record.auth_certificate["auth.uat.developer.pagopa.it"]
+}
+
+moved {
+  from = module.website.aws_route53_record.certificate["auth.developer.pagopa.it"]
+  to   = module.auth.aws_route53_record.auth_certificate["auth.developer.pagopa.it"]
+}
+
+moved {
   from = module.website.aws_sns_topic_subscription.cognito_alarms
   to   = module.auth.aws_sns_topic_subscription.cognito_alarms
 }
