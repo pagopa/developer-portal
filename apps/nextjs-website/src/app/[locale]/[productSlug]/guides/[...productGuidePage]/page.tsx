@@ -1,7 +1,7 @@
 import ProductLayout, {
   ProductLayoutProps,
 } from '@/components/organisms/ProductLayout/ProductLayout';
-import { getGuidePage } from '@/lib/api';
+import { getCustomMessagesMapProps, getGuidePage } from '@/lib/api';
 import { Product } from '@/lib/types/product';
 import React from 'react';
 import { ParseContentConfig } from 'gitbook-docs/parseContent';
@@ -85,9 +85,10 @@ export async function generateMetadata(props: {
 
 const Page = async ({ params }: { params: Promise<Params> }) => {
   const { locale, productSlug, productGuidePage } = await params;
-  const [guidePageProps, urlReplaceMap] = await Promise.all([
+  const [guidePageProps, urlReplaceMap, customMessagesMap] = await Promise.all([
     getGuidePage(productGuidePage ?? [''], locale, productSlug),
     getUrlReplaceMapProps(locale),
+    getCustomMessagesMapProps(locale),
   ]);
 
   if (!guidePageProps) {
