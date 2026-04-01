@@ -71,6 +71,8 @@ jobs:
     steps:
       - name: Checkout current repository
         uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.environment == 'dev' && 'main' || format('nextjs-website@latest-deployed-in-{0}', inputs.environment) }}
 
       - name: Sync GitBook Docs
         uses: ./.github/actions/sync-gitbook-docs
@@ -111,6 +113,9 @@ jobs:
     steps:
       - name: Checkout current repository
         uses: actions/checkout@v4
+        with:
+          ref: 'nextjs-website@latest-deployed-in-prod'
+
 
       - name: Sync GitBook Docs using 'it' locale
         uses: ./.github/actions/sync-gitbook-docs
@@ -150,6 +155,8 @@ jobs:
     steps:
       - name: Checkout current repository
         uses: actions/checkout@v4
+        with:
+          ref: 'nextjs-website@latest-deployed-in-prod'
 
       - name: Sync GitBook Docs using 'en' locale
         uses: ./.github/actions/sync-gitbook-docs
