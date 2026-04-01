@@ -26,6 +26,7 @@ export type GuideDefinition = {
     readonly main?: boolean;
     readonly version: string;
     readonly dirName: string;
+    readonly showGuidesTranslationDisclaimer?: boolean;
   }>;
   readonly bannerLinks: readonly BannerLinkProps[];
   readonly seo?: SEO;

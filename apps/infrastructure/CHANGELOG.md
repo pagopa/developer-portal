@@ -1,5 +1,11 @@
 # infrastructure
 
+## 10.2.0
+
+### Minor Changes
+
+- c46ac66: Open next new env variable the client needs to send webinar metrics.
+
 ## 10.1.0
 
 ### Minor Changes
