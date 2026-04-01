@@ -2,17 +2,25 @@ import type {
   CustomMessage,
   CustomMessagesMap,
 } from '@/lib/strapi/types/customMessagesMap';
-import { CustomMessages } from '@/lib/types/customMessages';
-import { BlocksContent } from '@strapi/blocks-react-renderer';
+import type { CustomMessages } from '@/lib/types/customMessages';
+import type { BlocksContent } from '@strapi/blocks-react-renderer';
 
 export function makeCustomMessagesMap(
   customMessagesMap: CustomMessagesMap
 ): CustomMessages {
-  const customMessagesMapEntries =
-    customMessagesMap.data.attributes.customMessages.map(
-      (customMessage: CustomMessage) =>
-        [customMessage.key, customMessage.value] as const
+  if (!customMessagesMap.data || !customMessagesMap.data.attributes) {
+    // eslint-disable-next-line functional/no-expression-statements
+    console.error(
+      `Error while processing Custom Messages Map: missing data or attributes. Returning an empty map...`
     );
+    return new Map<string, BlocksContent>();
+  }
+  const customMessages = customMessagesMap.data.attributes.customMessages ?? [];
+
+  const customMessagesMapEntries = customMessages.map(
+    (customMessage: CustomMessage) =>
+      [customMessage.key, customMessage.value] as const
+  );
 
   return new Map<string, BlocksContent>(customMessagesMapEntries);
 }
