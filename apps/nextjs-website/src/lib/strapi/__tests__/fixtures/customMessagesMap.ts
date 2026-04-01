@@ -28,18 +28,16 @@ const guideAlertMessage: BlocksContent = [
 
 export const strapiCustomMessagesMap: CustomMessagesMap = {
   data: {
-    attributes: {
-      customMessages: [
-        {
-          key: 'guides.translationDisclaimer',
-          value: translationDisclaimerMessage,
-        },
-        {
-          key: 'guides.goLiveAlert',
-          value: guideAlertMessage,
-        },
-      ],
-    },
+    customMessages: [
+      {
+        key: 'guides.translationDisclaimer',
+        value: translationDisclaimerMessage,
+      },
+      {
+        key: 'guides.goLiveAlert',
+        value: guideAlertMessage,
+      },
+    ],
   },
 };
 
