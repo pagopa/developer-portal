@@ -100,7 +100,7 @@ resource "aws_apigatewayv2_api" "ingest" {
   cors_configuration {
     allow_origins = compact([
       "http://localhost:3000",
-      var.custom_domain_name != null ? "https://${var.custom_domain_name}" : "",
+      "https://${data.aws_route53_zone.selected.name}",
     ])
     allow_methods = ["POST", "GET", "OPTIONS"]
     allow_headers = [

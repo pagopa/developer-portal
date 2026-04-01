@@ -422,8 +422,9 @@ resource "aws_cloudfront_distribution" "vod" {
     cached_methods   = ["GET", "HEAD"]
     target_origin_id = "APIGW-${var.project_name}-ingest"
 
-    cache_policy_id          = data.aws_cloudfront_cache_policy.caching_disabled.id
-    origin_request_policy_id = data.aws_cloudfront_origin_request_policy.all_viewer_except_host_header.id
+    cache_policy_id            = data.aws_cloudfront_cache_policy.caching_disabled.id
+    origin_request_policy_id   = data.aws_cloudfront_origin_request_policy.all_viewer_except_host_header.id
+    response_headers_policy_id = aws_cloudfront_response_headers_policy.ingest_cors_policy.id
 
     viewer_protocol_policy = "https-only"
     compress               = true
@@ -523,6 +524,39 @@ resource "aws_cloudfront_response_headers_policy" "cors_policy" {
     }
 
     origin_override = true
+  }
+}
+
+resource "aws_cloudfront_response_headers_policy" "ingest_cors_policy" {
+  name    = "cors-policy-ingest-api"
+  comment = "CORS policy for the ingest API endpoint."
+
+  cors_config {
+    access_control_allow_credentials = false
+
+    access_control_allow_headers {
+      items = [
+        "Authorization",
+        "Content-Type",
+        "X-Amz-Date",
+        "X-Api-Key",
+        "X-Amz-Security-Token"
+      ]
+    }
+
+    access_control_allow_methods {
+      items = ["GET", "POST", "OPTIONS"]
+    }
+
+    access_control_allow_origins {
+      items = compact([
+        "http://localhost:3000",
+        "https://${data.aws_route53_zone.selected.name}",
+      ])
+    }
+
+    access_control_max_age_sec = 300
+    origin_override            = true
   }
 }
 
