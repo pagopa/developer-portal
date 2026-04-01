@@ -1,5 +1,12 @@
 # chatbot
 
+## 10.1.2
+
+### Patch Changes
+
+- 8faf184: Refactor Vertex AI credential handling to use centralized settings and improve error logging for missing credentials
+- 8faf184: Add the use of Google Rerank by LlamaIndex
+
 ## 10.1.1
 
 ### Patch Changes
