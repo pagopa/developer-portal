@@ -1,5 +1,11 @@
 # chatbot-evaluate
 
+## 1.1.3
+
+### Patch Changes
+
+- 8faf184: Refactor Vertex AI credential handling to use centralized settings and improve error logging for missing credentials
+
 ## 1.1.2
 
 ### Patch Changes
