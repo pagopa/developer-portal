@@ -18,6 +18,12 @@ import {
   insertWebinarSubscription,
   listUserWebinarSubscriptions,
 } from './webinars/webinarSubscriptions';
+import {
+  makeWebinarHeartbeatEnvConfig,
+  postWebinarHeartbeat,
+  WebinarHeartbeatParams,
+} from './webinars/webinarHeartbeat';
+import { webinarHeartbeatUrl } from '@/config';
 
 // a BrowserEnv instance ready to be used
 const browserEnv = pipe(
@@ -41,6 +47,18 @@ const makePromiseFromTE = <E, A>(input: TE.TaskEither<E, A>) =>
 
 export const sendWebinarQuestion = (question: InsertWebinarQuestion) =>
   pipe(insertWebinarQuestion(question)(browserEnv), makePromiseFromTE)();
+
+const getWebinarHeartbeatEnv = () =>
+  pipe(
+    makeWebinarHeartbeatEnvConfig(webinarHeartbeatUrl),
+    E.getOrElseW((error) => {
+      // eslint-disable-next-line functional/no-throw-statements
+      throw new Error(`Failed to create WebinarHeartbeatEnv: ${error}`);
+    })
+  );
+
+export const sendWebinarHeartbeat = (params: WebinarHeartbeatParams) =>
+  postWebinarHeartbeat(params)(getWebinarHeartbeatEnv());
 
 export const getWebinarQuestionList = (webinarId: string) =>
   pipe(listWebinarQuestions(webinarId)(browserEnv), makePromiseFromTE)();
