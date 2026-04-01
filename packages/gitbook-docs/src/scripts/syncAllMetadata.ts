@@ -158,6 +158,12 @@ async function fetchAllStrapiData(locale?: string): Promise<StrapiData> {
     );
   }
 
+  console.log(`api/guides?${getGuidesQueryString(locale)}`);
+  console.log(`api/solutions/?${getSolutionsQueryString(locale)}`);
+  console.log(`api/release-notes/?${getReleaseNotesQueryString(locale)}`);
+  console.log(`api/products?${getProductsQueryString(locale)}`);
+  console.log(`api/apis-data?${getApisDataQueryString(locale)}`);
+
   const [
     guidesResult,
     solutionsResult,
