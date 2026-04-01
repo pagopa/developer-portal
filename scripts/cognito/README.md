@@ -50,7 +50,7 @@ Help
 python cognito_export.py --help
 ```
 Output
-The script generates a CSV file in the same directory with the following columns:
+The script generates a CSV file in the current working directory with the following columns:
 
 - Username
 - Email
