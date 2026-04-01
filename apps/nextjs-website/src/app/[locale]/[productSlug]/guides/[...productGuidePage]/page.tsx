@@ -92,7 +92,12 @@ const Page = async ({ params }: { params: Promise<Params> }) => {
   const [guidePageProps, urlReplaceMap, customMessagesMap] = await Promise.all([
     getGuidePage(productGuidePage ?? [''], locale, productSlug),
     getUrlReplaceMapProps(locale),
-    getCustomMessagesMapProps(locale),
+    getCustomMessagesMapProps(locale).catch((error: Error) => {
+      console.warn(
+        `Failed to fetch custom messages:\n${error.message}\n${error.stack}`
+      );
+      return new Map(); // Fallback to empty map if fetching custom messages fails
+    }),
   ]);
 
   if (!guidePageProps) {
