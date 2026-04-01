@@ -250,6 +250,7 @@ export const parseS3GuidePage = async (props: {
       path: version.main
         ? baseGuidePath
         : `${baseGuidePath}/${version.version}`,
+      showGuidesTranslationDisclaimer: version.showGuidesTranslationDisclaimer,
     },
     versions: versions.map(({ main = false, version }) => ({
       main,
