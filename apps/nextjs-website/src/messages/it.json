@@ -120,6 +120,7 @@
   },
   "webinar": {
     "liveWebinar": "Webinar in corso",
+    "chapters": "Capitoli",
     "subscriptionError": "Limite di iscrizioni raggiunto",
     "genericSubscriptionError": "Qualcosa è andato storto, riprova più tardi",
     "goToWebinar": "Vai al webinar",
@@ -323,6 +324,8 @@
     "company": "Tipologia Ente o Azienda",
     "role": "Ruolo",
     "requiredFieldError": "Questo campo non può essere vuoto",
+    "maxLengthFieldError": "Il numero massimo consentito è 100 caratteri",
+    "nameFieldError": "Utilizza soltanto lettere e numeri, senza caratteri speciali (eccetto spazi, underscore, trattini e apostrofi)",
     "emailFieldError": "Inserisci un indirizzo email valido. Utilizza soltanto lettere minuscole e non utilizzare caratteri speciali",
     "emailAlreadyTaken": "Esiste già un account per questo indirizzo email",
     "goToGuide": "Vai alla guida",

@@ -1,9 +1,26 @@
+/* eslint-disable functional/immutable-data */
 /* eslint-disable functional/no-expression-statements */
 import { Webinar } from '../../types/webinar';
 import { StrapiWebinar, StrapiWebinars } from '@/lib/strapi/types/webinars';
 import { compact } from 'lodash';
 
 export type WebinarsProps = readonly Webinar[];
+
+function generateVTTContent(chapters: Webinar['chapters']): string {
+  if (!chapters || chapters.length === 0) {
+    return '';
+  }
+
+  const vttLines = ['WEBVTT\n'];
+  chapters.forEach((chapter, index) => {
+    const cueIndex = index + 1;
+    vttLines.push(`${cueIndex}`);
+    vttLines.push(`${chapter.startTime} --> ${chapter.endTime}`);
+    vttLines.push(`${chapter.title}\n`);
+  });
+
+  return vttLines.join('\n');
+}
 
 export const makeWebinarProps = (
   strapiWebinar: StrapiWebinar
@@ -62,6 +79,7 @@ export const makeWebinarProps = (
       tag: strapiWebinar.attributes.webinarCategory?.data?.attributes,
       headerImage: strapiWebinar.attributes.headerImage?.data?.attributes,
       updatedAt: strapiWebinar.attributes.updatedAt,
+      webvttContent: generateVTTContent(strapiWebinar.attributes.chapters),
     } satisfies Webinar;
   } catch (error) {
     // eslint-disable-next-line functional/no-expression-statements

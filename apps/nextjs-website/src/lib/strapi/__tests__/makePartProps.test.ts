@@ -7,6 +7,7 @@ import {
   embedHtmlPart,
   quotePart,
   ckEditorPart,
+  markdownPart,
 } from '@/lib/strapi/__tests__/fixtures/parts';
 import {
   minimalAlertPart,
@@ -16,7 +17,13 @@ import {
   minimalEmbedHtmlPart,
   minimalQuotePart,
   minimalCkEditorPart,
+  minimalMarkdownPart,
 } from '@/lib/strapi/__tests__/factories/parts';
+
+jest.mock('@/config', () => ({
+  staticContentsUrl: 'https://static-contents.test.developer.pagopa.it',
+  s3DocsPath: 'devportal-docs/docs',
+}));
 
 describe('makePartProps', () => {
   it('should transform alert part', () => {
@@ -105,6 +112,59 @@ describe('makePartProps', () => {
     expect(result).toHaveProperty('component', 'ckEditor');
     expect(result).toHaveProperty('content');
     expect(result).toHaveProperty('menuItems');
+  });
+
+  describe('parts.markdown', () => {
+    const dict = { 'my-guide/README.md': '# Hello' };
+
+    it('should resolve content from markdownContentDict and build assetsPrefix with explicit locale', () => {
+      const result = makePartProps(markdownPart, dict, 'en');
+      expect(result).toMatchObject({
+        component: 'markdown',
+        content: '# Hello',
+        assetsPrefix:
+          'https://static-contents.test.developer.pagopa.it/en/devportal-docs/docs/my-guide',
+      });
+    });
+
+    it('should return empty content when key is missing from markdownContentDict', () => {
+      const result = makePartProps(markdownPart, {}, 'en');
+      expect(result).toMatchObject({
+        component: 'markdown',
+        content: '',
+        assetsPrefix:
+          'https://static-contents.test.developer.pagopa.it/en/devportal-docs/docs/my-guide',
+      });
+    });
+
+    it('should default locale to "it" when no locale is provided', () => {
+      const result = makePartProps(markdownPart, dict);
+      expect(result).toMatchObject({
+        component: 'markdown',
+        assetsPrefix:
+          'https://static-contents.test.developer.pagopa.it/it/devportal-docs/docs/my-guide',
+      });
+    });
+
+    it('should return empty content and correct assetsPrefix when markdownContentDict is omitted', () => {
+      const result = makePartProps(markdownPart, undefined, 'en');
+      expect(result).toMatchObject({
+        component: 'markdown',
+        content: '',
+        assetsPrefix:
+          'https://static-contents.test.developer.pagopa.it/en/devportal-docs/docs/my-guide',
+      });
+    });
+
+    it('should handle minimal markdown part (from factory)', () => {
+      const result = makePartProps(minimalMarkdownPart(), dict, 'it');
+      expect(result).toHaveProperty('component', 'markdown');
+      expect(result).toHaveProperty('content', '');
+      expect(result).toHaveProperty(
+        'assetsPrefix',
+        'https://static-contents.test.developer.pagopa.it/it/devportal-docs/docs/some-dir'
+      );
+    });
   });
 
   it('should return null for unknown part type', () => {

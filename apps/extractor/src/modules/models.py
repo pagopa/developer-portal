@@ -32,23 +32,34 @@ def get_llm(
     temperature = temperature if temperature is not None else SETTINGS.temperature
     max_tokens = max_tokens if max_tokens is not None else SETTINGS.max_tokens
     if provider == "google":
-        if not SETTINGS.google_api_key:
+        if not SETTINGS.google_service_account:
             raise ValueError(
-                "Google API key is required. Set CHB_AWS_SSM_GOOGLE_API_KEY or CHB_AWS_GOOGLE_API_KEY environment variable."
+                "Google Service Account is required. Set CHB_AWS_SSM_GOOGLE_SERVICE_ACCOUNT environment variable or be sure to have the file `.google_service_account.json`."
             )
+        from google.oauth2 import service_account
         from llama_index.llms.google_genai import GoogleGenAI
+        from llama_index.llms.google_genai.base import VertexAIConfig
+
+        vertexai_credentials = service_account.Credentials.from_service_account_info(
+            SETTINGS.google_service_account,
+            scopes=["https://www.googleapis.com/auth/cloud-platform"],
+        )
 
         llm = GoogleGenAI(
             model=model_id,
             temperature=temperature,
             max_tokens=max_tokens,
-            api_key=SETTINGS.google_api_key,
+            vertexai_config=VertexAIConfig(
+                credentials=vertexai_credentials,
+                project=vertexai_credentials.project_id,
+                location=SETTINGS.vertexai_location,
+            ),
         )
         LOGGER.info(f"{model_id} LLM loaded successfully from Google!")
     elif provider == "mock":
         from llama_index.core.llms import MockLLM
 
-        llm = MockLLM(max_tokens=max_tokens)
+        llm = MockLLM(max_tokens=5)
         LOGGER.info("Mock LLM loaded successfully!")
     else:
         raise AssertionError(
