@@ -1,6 +1,6 @@
 import { StrapiOverviews } from '@/lib/strapi/types/overviews';
 import { product } from '@/lib/product/__tests__/fixtures/product';
-import { mediaJpeg } from '@/lib/strapi/__tests__/factories/media';
+import { mediaJpeg } from '@/lib/shared/factories/media';
 import { generateBannerLinks } from '@/lib/strapi/__tests__/factories/bannerLink';
 import { OverviewPageProps } from '@/app/[locale]/[productSlug]/overview/page';
 

@@ -1,6 +1,6 @@
-import { mediaJpeg } from '@/lib/strapi/__tests__/factories/media';
-import { strapiCaseHistories } from '@/lib/strapi/__tests__/fixtures/caseHistories';
-import { StrapiCaseHistories } from '@/lib/strapi/types/caseHistories';
+import { mediaJpeg } from '@/lib/shared/factories/media';
+import { strapiCaseHistories } from '@/lib/shared/fixtures/caseHistories';
+import { CaseHistories } from '@/lib/caseHistories/types';
 import { StrapiBaseProductWithoutBannerLinks } from '@/lib/product/types';
 
 export function minimalDataCaseHistories() {
@@ -20,7 +20,7 @@ export function minimalDataCaseHistories() {
         seo: undefined,
       },
     ],
-  } satisfies StrapiCaseHistories;
+  } satisfies CaseHistories;
 }
 
 export function caseHistoriesWithMissingData() {
@@ -73,7 +73,7 @@ export function caseHistoriesWithMultipleProducts() {
         ] as readonly StrapiBaseProductWithoutBannerLinks[],
       },
     ],
-  } satisfies StrapiCaseHistories;
+  } satisfies CaseHistories;
 }
 
 export function caseHistoriesWithoutImage() {
@@ -86,5 +86,5 @@ export function caseHistoriesWithoutImage() {
         image: undefined,
       },
     ],
-  } satisfies StrapiCaseHistories;
+  } satisfies CaseHistories;
 }

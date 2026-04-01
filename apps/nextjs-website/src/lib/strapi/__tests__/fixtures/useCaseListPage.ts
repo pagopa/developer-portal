@@ -1,5 +1,5 @@
 import { generateBannerLinks } from '@/lib/strapi/__tests__/factories/bannerLink';
-import { mediaJpeg } from '@/lib/strapi/__tests__/factories/media';
+import { mediaJpeg } from '@/lib/shared/factories/media';
 import { StrapiUseCaseListPages } from '@/lib/strapi/types/useCaseListPage';
 
 const fixedDateIsoString = new Date('2025-01-01T00:00:00.000Z').toISOString();

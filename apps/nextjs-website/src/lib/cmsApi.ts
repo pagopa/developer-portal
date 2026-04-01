@@ -7,8 +7,6 @@ import { fetchTutorials } from './strapi/fetches/fetchTutorials';
 import { makeTutorialsProps } from './strapi/makeProps/makeTutorials';
 import { fetchQuickStartGuides } from './strapi/fetches/fetchQuickStartGuides';
 import { makeQuickStartGuidesProps } from './strapi/makeProps/makeQuickStartGuides';
-import { makeCaseHistoriesProps } from './strapi/makeProps/makeCaseHistories';
-import { fetchCaseHistories } from './strapi/fetches/fetchCaseHistories';
 import { makeSolutionsProps } from './strapi/makeProps/makeSolutions';
 import { makeSolutionListPageProps } from './strapi/makeProps/makeSolutionListPage';
 import { fetchSolutionListPage } from './strapi/fetches/fetchSolutionListPage';
@@ -114,11 +112,6 @@ export const getQuickStartGuidesProps = async (locale: string) => {
 export const getUrlReplaceMapProps = async (locale: string) => {
   const strapiUrlReplaceMap = await fetchUrlReplaceMap(locale, buildEnv);
   return makeUrlReplaceMap(locale, strapiUrlReplaceMap);
-};
-
-export const getCaseHistoriesProps = async (locale: string) => {
-  const strapiCaseHistories = await fetchCaseHistories(locale, buildEnv);
-  return makeCaseHistoriesProps(strapiCaseHistories);
 };
 
 export const getSolutionsProps = async (locale: string) => {

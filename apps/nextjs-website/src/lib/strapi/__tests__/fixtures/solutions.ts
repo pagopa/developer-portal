@@ -1,5 +1,5 @@
 import { StrapiSolutions } from '@/lib/strapi/types/solutions';
-import { mediaJpeg } from '@/lib/strapi/__tests__/factories/media';
+import { mediaJpeg } from '@/lib/shared/factories/media';
 import { generateBannerLinks } from '@/lib/strapi/__tests__/factories/bannerLink';
 import { SolutionTemplateProps } from '@/components/templates/SolutionTemplate/SolutionTemplate';
 

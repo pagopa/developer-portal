@@ -8,7 +8,7 @@ import { StrapiSeo } from '@/lib/strapi/types/seo';
 import { Paginated } from '@/lib/strapi/types/paginated';
 import { StrapiWebinar } from '@/lib/strapi/types/webinars';
 import { BlocksContent } from '@strapi/blocks-react-renderer';
-import { StrapiCaseHistoriesComponent } from '@/lib/strapi/types/caseHistoriesComponent';
+import { CaseHistoriesComponent } from '@/lib/caseHistories/types';
 
 export type StrapiStep = {
   readonly title: string;
@@ -60,7 +60,7 @@ export type StrapiSolution = {
   readonly bannerLinks: readonly StrapiBannerLink[];
   readonly webinars: readonly StrapiWebinar[];
   readonly products: readonly StrapiBaseProductWithoutBannerLinks[];
-  readonly caseHistories?: StrapiCaseHistoriesComponent;
+  readonly caseHistories?: CaseHistoriesComponent;
   readonly seo?: StrapiSeo;
 };
 

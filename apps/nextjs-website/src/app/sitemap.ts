@@ -2,7 +2,6 @@
 /* eslint-disable functional/no-try-statements */
 import type { MetadataRoute } from 'next';
 import {
-  getCaseHistoriesProps,
   getHomepageProps,
   getSolutionsProps,
   getWebinarsProps,
@@ -27,6 +26,7 @@ import {
 import { SUPPORTED_LOCALES } from '@/locales';
 import { compact, isEmpty } from 'lodash';
 import { HomepageProps } from '@/app/[locale]/page';
+import { CaseHistoriesRepository } from '@/lib/caseHistories';
 
 export const dynamic = 'force-dynamic';
 
@@ -89,7 +89,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         return [] as MetadataRoute.Sitemap;
       }
 
-      const caseHistories = await getCaseHistoriesProps(localeCode);
+      const caseHistories = await CaseHistoriesRepository.getAll(localeCode);
       const webinars = await getWebinarsProps(localeCode);
       const solutions = await getSolutionsProps(localeCode);
 

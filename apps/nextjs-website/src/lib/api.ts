@@ -1,8 +1,8 @@
 import { ApiDataListPagesRepository } from '@/lib/apiDataListPages';
+import { CaseHistoriesRepository } from '@/lib/caseHistories';
 import { Product } from '@/lib/product/types';
 import { Webinar } from '@/lib/types/webinar';
 import {
-  getCaseHistoriesProps,
   getGuideListPagesProps,
   getGuidePageProps,
   getOverviewsProps,
@@ -173,7 +173,7 @@ export async function getWebinar(
 
 export async function getCaseHistory(locale: string, caseHistorySlug?: string) {
   return manageUndefined(
-    (await getCaseHistoriesProps(locale)).find(
+    (await CaseHistoriesRepository.getAll(locale)).find(
       ({ slug }: { readonly slug: string }) => slug === caseHistorySlug
     )
   );

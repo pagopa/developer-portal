@@ -1,4 +1,4 @@
-import { mediaJpeg } from '@/lib/strapi/__tests__/factories/media';
+import { mediaJpeg } from '@/lib/shared/factories/media';
 import { product } from '@/lib/product/__tests__/fixtures/product';
 import { generateBannerLinks } from '@/lib/strapi/__tests__/factories/bannerLink';
 import { StrapiUseCases } from '../../types/useCase';

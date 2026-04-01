@@ -1,10 +1,10 @@
-import { StrapiCaseHistory } from '@/lib/strapi/types/caseHistories';
-import { mediaJpeg } from '@/lib/strapi/__tests__/factories/media';
+import { CaseHistory } from '@/lib/caseHistories/types';
+import { mediaJpeg } from '@/lib/shared/factories/media';
 import { product } from '@/lib/product/__tests__/fixtures/product';
 import { CaseHistoryPageTemplateProps } from '@/components/templates/CaseHistoryTemplate/CaseHistoryPageTemplate';
 import { Paginated } from '@/lib/strapi/types/paginated';
 
-export const strapiCaseHistories: Paginated<StrapiCaseHistory> = {
+export const strapiCaseHistories: Paginated<CaseHistory> = {
   data: [
     {
       id: 1,
