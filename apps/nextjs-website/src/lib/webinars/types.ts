@@ -1,7 +1,7 @@
 import { BlocksContent } from '@strapi/blocks-react-renderer';
-import { SEO } from '../seo/types';
-import { Media } from '@/lib/media/types';
-import { Tag } from '@/lib/tags/types';
+import type { SEO } from '../seo/types';
+import type { Media } from '@/lib/media/types';
+import type { Tag } from '@/lib/tags/types';
 
 export type QuestionsAndAnswer = {
   readonly question: string;

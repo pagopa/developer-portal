@@ -1,5 +1,5 @@
 import { buildEnv } from '@/lib/buildEnv';
-import { Webinar } from '@/lib/webinars/types';
+import type { Webinar } from '@/lib/webinars/types';
 import { fetchWebinars } from './fetcher';
 import { mapWebinarsProps } from './mapper';
 

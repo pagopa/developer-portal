@@ -1,7 +1,7 @@
 import { mediaJpeg } from '@/lib/media/__tests__/factories';
 import { product } from '@/lib/products/__tests__/fixtures/product';
 import { generateBannerLinks } from '@/lib/bannerLink/__tests__/factories';
-import { StrapiUseCases } from '@/lib/useCases/strapiTypes';
+import type { StrapiUseCases } from '@/lib/useCases/strapiTypes';
 
 export const strapiUseCases: StrapiUseCases = {
   data: [

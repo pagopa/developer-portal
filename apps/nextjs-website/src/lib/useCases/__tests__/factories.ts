@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { strapiUseCases } from '@/lib/useCases/__tests__/fixtures';
-import { StrapiUseCases } from '@/lib/useCases/strapiTypes';
+import type { StrapiUseCases } from '@/lib/useCases/strapiTypes';
 
 export function useCasesWithAnItemMissingSlug(): StrapiUseCases {
   return {

@@ -1,5 +1,5 @@
-import { Webinar } from '@/lib/webinars/types';
-import { StrapiWebinars } from '@/lib/webinars/strapiTypes';
+import type { Webinar } from '@/lib/webinars/types';
+import type { StrapiWebinars } from '@/lib/webinars/strapiTypes';
 import { mediaJpeg } from '@/lib/media/__tests__/factories';
 
 export const webinarSpeaker = {
