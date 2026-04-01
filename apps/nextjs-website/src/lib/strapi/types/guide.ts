@@ -8,6 +8,7 @@ type StrapiGuideVersion = {
   readonly main: boolean;
   readonly dirName: string;
   readonly version: string;
+  readonly showGuidesTranslationDisclaimer?: boolean;
 };
 
 export type StrapiBaseGuide = {
