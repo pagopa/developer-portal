@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import type { CustomMessagesMap } from '@/lib/strapi/types/customMessagesMap';
+import type { CustomMessagesMap } from '@/lib/customMessagesMap/strapiTypes';
 import {
   duplicateTranslationDisclaimerMessage,
   strapiCustomMessagesMap,
-} from '../fixtures/customMessagesMap';
+} from './fixtures';
 
 export function emptyCustomMessagesMap(): CustomMessagesMap {
   return {

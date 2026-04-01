@@ -1,6 +1,6 @@
 import qs from 'qs';
 import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
-import { CustomMessagesMap } from '@/lib/strapi/types/customMessagesMap';
+import type { CustomMessagesMap } from '@/lib/customMessagesMap/strapiTypes';
 
 const makeCustomMessagesMapPopulate = () =>
   qs.stringify({

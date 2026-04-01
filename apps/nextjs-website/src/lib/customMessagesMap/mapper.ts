@@ -1,11 +1,11 @@
 import type {
   CustomMessage,
   CustomMessagesMap,
-} from '@/lib/strapi/types/customMessagesMap';
-import type { CustomMessages } from '@/lib/types/customMessages';
+} from '@/lib/customMessagesMap/strapiTypes';
+import type { CustomMessages } from '@/lib/customMessagesMap/types';
 import type { BlocksContent } from '@strapi/blocks-react-renderer';
 
-export function makeCustomMessagesMap(
+export function mapCustomMessagesMap(
   customMessagesMap: CustomMessagesMap
 ): CustomMessages {
   if (!customMessagesMap.data) {

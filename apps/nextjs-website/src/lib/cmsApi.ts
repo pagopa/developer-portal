@@ -60,8 +60,6 @@ import {
 } from 'gitbook-docs/syncedResponses';
 import { StrapiSolutions } from './strapi/types/solutions';
 import { StrapiReleaseNotes } from './strapi/types/releaseNotes';
-import { fetchCustomMessagesMap } from '@/lib/strapi/fetches/fetchCustomMessagesMap';
-import { makeCustomMessagesMap } from '@/lib/strapi/makeProps/makeCustomMessagesMap';
 
 // a BuildEnv instance ready to be used
 const buildEnv = pipe(
@@ -306,12 +304,4 @@ export const getUseCasesProps = async (locale: string) => {
 export const getUseCaseListPagesProps = async (locale: string) => {
   const strapiUseCasesListPages = await fetchUseCaseListPages(locale, buildEnv);
   return makeUseCaseListPagesProps(locale, strapiUseCasesListPages);
-};
-
-export const getCustomMessagesMap = async (locale: string) => {
-  const strapiCustomMessagesMap = await fetchCustomMessagesMap(
-    locale,
-    buildEnv
-  );
-  return makeCustomMessagesMap(strapiCustomMessagesMap);
 };

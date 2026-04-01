@@ -1,5 +1,5 @@
-import type { CustomMessagesMap } from '@/lib/strapi/types/customMessagesMap';
-import type { CustomMessages } from '@/lib/types/customMessages';
+import type { CustomMessagesMap } from '@/lib/customMessagesMap/strapiTypes';
+import type { CustomMessages } from '@/lib/customMessagesMap/types';
 import type { BlocksContent } from '@strapi/blocks-react-renderer';
 
 const translationDisclaimerMessage: BlocksContent = [
