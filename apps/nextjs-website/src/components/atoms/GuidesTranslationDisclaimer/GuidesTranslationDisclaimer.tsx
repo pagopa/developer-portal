@@ -10,7 +10,7 @@ export const GuidesTranslationDisclaimer: FC<
   GuidesTranslationDisclaimerProps
 > = ({ content }) => {
   const { palette } = useTheme();
-  const textColor = palette.primary.contrastText;
+  const textColor = palette.text.primary;
 
   return (
     <Box
@@ -19,7 +19,7 @@ export const GuidesTranslationDisclaimer: FC<
         justifyContent: 'space-between',
       }}
     >
-      <Alert severity={'warning'} variant={'outlined'} sx={{ marginBottom: 2 }}>
+      <Alert severity={'info'} variant={'outlined'} sx={{ marginBottom: 2 }}>
         <BlocksRenderer
           content={content}
           blocks={{
