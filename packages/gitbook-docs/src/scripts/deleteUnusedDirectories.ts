@@ -71,7 +71,7 @@ async function fetchAllDirNamesFromStrapi(): Promise<{ dirNames: string[] }> {
   );
 
   const guidesDirNames = guidesResult.data
-    .map((guide) => guide.versions.map((version) => version.dirName).flat())
+    .map((guide) => guide.versions.map((version) => version.dirName))
     .flat();
 
   const solutionsDirNames = solutionsResult.data.map((solution) => {

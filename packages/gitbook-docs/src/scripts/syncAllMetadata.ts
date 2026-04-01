@@ -644,7 +644,7 @@ async function main() {
     };
 
     if (SAVE_STRAPI_RESPONSES) {
-      console.log('Saving Strapi products, APIs data, and sitemap...');
+      console.log('Saving Strapi products and APIs data responses to S3...');
       await putS3File(
         strapiData.productsRawResponse,
         getLocalizedPath(getSyncedProductsResponseJsonFile, LOCALE),
