@@ -50,7 +50,7 @@ async function convertSolutionToMetadataItems(
 ): Promise<MetadataItem[]> {
   const items: MetadataItem[] = [];
   for (const solution of strapiSolutions) {
-    const dirName = solution.attributes.dirName;
+    const dirName = solution.dirName;
     const solutionFiles = (
       await listS3Files(
         `${S3_PATH_TO_GITBOOK_DOCS}/${dirName}`,
@@ -79,8 +79,8 @@ async function convertSolutionToMetadataItems(
       if (dirName && menuPath && content) {
         const path = generateUrlPath(
           filePath,
-          solution.attributes.slug,
-          solution.attributes.landingUseCaseFile,
+          solution.slug,
+          solution.landingUseCaseFile,
           LOCALE
         );
         items.push({
