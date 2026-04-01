@@ -7,43 +7,24 @@ and structure the content into markdown format.
 """
 
 import sys
-from pathlib import Path
 
 from src.modules.logger import get_logger
 from src.modules.settings import SETTINGS
 from src.modules.models import get_llm
 from src.modules.extractor import process_folder
+from llama_index.core.async_utils import asyncio_run
+
 
 LOGGER = get_logger(__name__, level=SETTINGS.log_level)
 
 
-def validate_folders() -> bool:
-    input_path = Path(SETTINGS.input_folder)
-    if not input_path.exists():
-        LOGGER.error(f"Input folder does not exist: {SETTINGS.input_folder}")
-        return False
-    if not input_path.is_dir():
-        LOGGER.error(f"Input path is not a directory: {SETTINGS.input_folder}")
-        return False
-    output_path = Path(SETTINGS.output_folder)
-    try:
-        output_path.mkdir(parents=True, exist_ok=True)
-        LOGGER.info(f"Output folder ready: {SETTINGS.output_folder}")
-    except Exception as e:
-        LOGGER.error(f"Cannot create output folder: {e}")
-        return False
-    return True
-
-
-def main() -> int:
+async def main() -> int:
     LOGGER.info("Extractor Application Starting...")
     try:
-        if not validate_folders():
-            LOGGER.error("Folder validation failed")
-            return 1
         LOGGER.info(f"Initializing LLM: {SETTINGS.model_id}")
+        LOGGER.info(f"MAX_TOKENS: {SETTINGS.max_tokens}")
         llm = get_llm()
-        stats = process_folder(
+        stats = await process_folder(
             input_folder=SETTINGS.input_folder,
             output_folder=SETTINGS.output_folder,
             llm=llm,
@@ -65,5 +46,5 @@ def main() -> int:
 
 
 if __name__ == "__main__":
-    exit_code = main()
+    exit_code = asyncio_run(main())
     sys.exit(exit_code)

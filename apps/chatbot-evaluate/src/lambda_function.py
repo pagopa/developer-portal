@@ -5,6 +5,8 @@ from src.modules.logger import get_logger
 from src.modules.codec import compress_payload
 from src.modules.sqs import get_sqs_monitor_queue
 
+from llama_index.core.async_utils import asyncio_run
+
 
 LOGGER = get_logger(__name__)
 JUDGE = Judge()
@@ -59,7 +61,29 @@ SQS_MONITOR = get_sqs_monitor_queue()
 def lambda_handler(event, context):
     LOGGER.debug(f"event: {event}")
 
-    results = []
+    async def process_records(records):
+        results = []
+        for record in records:
+            body = record.get("body", "{}")
+            body = json.loads(body)
+            trace_id = body.get("trace_id", "")
+            scores = await JUDGE.aevaluate(  # <-- Call the new async method
+                query_str=body.get("query_str", ""),
+                response_str=body.get("response_str", ""),
+                retrieved_contexts=body.get("retrieved_contexts", []),
+                messages=body.get("messages", None),
+            )
+            for k, v in scores.items():
+                results.append(
+                    {
+                        "trace_id": trace_id,
+                        "name": k,
+                        "score": v,
+                        "comment": None,
+                        "data_type": "NUMERIC",
+                    }
+                )
+        return results, trace_id
 
     # extract unique records
     records = event.get("Records", [])
@@ -67,28 +91,7 @@ def lambda_handler(event, context):
     for record in records:
         if record not in unique_records:
             unique_records.append(record)
-    for record in unique_records:
-        body = record.get("body", "{}")
-        body = json.loads(body)
-        trace_id = body.get("trace_id", "")
-
-        scores = JUDGE.evaluate(
-            query_str=body.get("query_str", ""),
-            response_str=body.get("response_str", ""),
-            retrieved_contexts=body.get("retrieved_contexts", []),
-            messages=body.get("messages", None),
-        )
-
-        for k, v in scores.items():
-            results.append(
-                {
-                    "trace_id": trace_id,
-                    "name": k,
-                    "score": v,
-                    "comment": None,
-                    "data_type": "NUMERIC",
-                }
-            )
+    results, trace_id = asyncio_run(process_records(unique_records))
 
     payload_to_monitor = json.dumps(
         {

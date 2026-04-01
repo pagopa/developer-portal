@@ -14,10 +14,13 @@ on:
           - uat
           - prod
       locale:
-        description: 'Locale to sync to (e.g. "it"). Leave empty for root.'
-        type: string
+        description: 'Locale to sync to (e.g. it)'
+        type: choice
         required: false
-        default: ''
+        default: it
+        options:
+          - it
+          - en
 
 # Permissions needed for AWS OIDC authentication
 permissions:

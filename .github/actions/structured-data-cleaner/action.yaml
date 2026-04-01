@@ -1,0 +1,75 @@
+name: Cleaner
+description: Cleans up structured data from S3 bucket
+
+inputs:
+  deploy_iam_role:
+    description: 'IAM Role to assume for deployment (stored in GitHub Secrets)'
+    required: true
+  environment:
+    description: 'The environment used as target (dev, uat, prod)'
+    required: true
+  remove_from_extractor_folder:
+    description: 'Whether to remove the page from the extractor folder (optional, default: true)'
+    required: true
+  remove_from_parser_folder:
+    description: 'Whether to remove the page from the parser folder (optional, default: true)'
+    required: true
+  urls:
+    description: 'Pages to remove (list of urls,comma-separated)'
+    required: true
+  vector_index_name:
+    description: 'Vector Index Name (CHB_INDEX_ID)'
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Setup Environment Variables
+      shell: bash
+      run: |
+        echo "::group::Setup Environment Variables"
+        # Calculate ENV_SHORT
+        if [[ "${{ inputs.environment }}" == "dev" ]]; then
+          echo "ENV_SHORT=d" >> $GITHUB_ENV
+        elif [[ "${{ inputs.environment }}" == "uat" ]]; then
+          echo "ENV_SHORT=u" >> $GITHUB_ENV
+        elif [[ "${{ inputs.environment }}" == "prod" ]]; then
+          echo "ENV_SHORT=p" >> $GITHUB_ENV
+        fi
+        echo "::endgroup::"
+
+    - name: Setup Python
+      uses: kishaningithub/setup-python-amazon-linux@282d998c8f2c4678ac4f872e4dc3b7d167b59fa7  # v1
+      with:
+        python-version: '3.12'
+
+    - name: Install poetry with pip
+      shell: bash
+      run: |
+        pip install poetry
+
+    - name: Install python libraries
+      shell: bash
+      run: |
+        cd apps/extractor
+        poetry config virtualenvs.create false
+        poetry install --only main --no-interaction
+
+    - name: Configure AWS Credentials
+      uses: ./.github/actions/configure-aws-credentials
+      with:
+        aws_region: eu-south-1
+        role_to_assume: ${{ inputs.deploy_iam_role }}
+
+    - name: Run Cleaner
+      env:
+        AWS_DEFAULT_REGION: eu-south-1
+        CHB_INDEX_ID: ${{ inputs.vector_index_name }}
+        S3_BUCKET_NAME: devportal-${{ env.ENV_SHORT }}-website-static-content
+        SHOULD_REMOVE_EXTRACTOR_FOLDER: ${{ inputs.remove_from_extractor_folder }}
+        SHOULD_REMOVE_PARSER_FOLDER: ${{ inputs.remove_from_parser_folder }}
+        URLS: ${{ inputs.urls }}
+      shell: bash
+      run: |
+        cd apps/structured-data-cleaner
+        PYTHONPATH=. poetry run python src/main.py

@@ -27,6 +27,7 @@ module "cognito_custom_message_function" {
   create_package                          = false
   local_existing_package                  = local.cognito_lambda_functions_artifact_path
   hash_extra                              = local.package_json.version
+  ignore_source_code_hash                 = true
   create_current_version_allowed_triggers = false
   cloudwatch_logs_retention_in_days       = var.log_retention_days
 
@@ -52,6 +53,7 @@ module "cognito_post_confirmation_function" {
   create_package                          = false
   local_existing_package                  = local.cognito_lambda_functions_artifact_path
   hash_extra                              = local.package_json.version
+  ignore_source_code_hash                 = true
   create_current_version_allowed_triggers = false
   cloudwatch_logs_retention_in_days       = var.log_retention_days
 
@@ -86,6 +88,7 @@ module "cognito_define_auth_challenge_function" {
   create_package                          = false
   local_existing_package                  = local.cognito_lambda_functions_artifact_path
   hash_extra                              = local.package_json.version
+  ignore_source_code_hash                 = true
   create_current_version_allowed_triggers = false
   cloudwatch_logs_retention_in_days       = var.log_retention_days
 
@@ -111,6 +114,7 @@ module "cognito_create_auth_challenge_function" {
   create_package                          = false
   local_existing_package                  = local.cognito_lambda_functions_artifact_path
   hash_extra                              = local.package_json.version
+  ignore_source_code_hash                 = true
   create_current_version_allowed_triggers = false
   cloudwatch_logs_retention_in_days       = var.log_retention_days
 
@@ -145,6 +149,7 @@ module "cognito_verify_auth_challenge_function" {
   create_package                          = false
   local_existing_package                  = local.cognito_lambda_functions_artifact_path
   hash_extra                              = local.package_json.version
+  ignore_source_code_hash                 = true
   create_current_version_allowed_triggers = false
   cloudwatch_logs_retention_in_days       = var.log_retention_days
 
@@ -171,6 +176,7 @@ module "cognito_pre_sign_up_function" {
   create_package                          = false
   local_existing_package                  = local.cognito_lambda_functions_artifact_path
   hash_extra                              = local.package_json.version
+  ignore_source_code_hash                 = true
   create_current_version_allowed_triggers = false
   cloudwatch_logs_retention_in_days       = var.log_retention_days
 

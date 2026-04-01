@@ -6,13 +6,19 @@ import yaml
 from pathlib import Path
 from pydantic_settings import BaseSettings
 
+from google.oauth2 import service_account
+
 from src.modules.logger import get_logger
 
 LOGGER = get_logger(__name__, level=os.getenv("LOG_LEVEL", "info"))
 CWF = Path(__file__)
 ROOT = CWF.parent.parent.parent.absolute().__str__()
-PARAMS = yaml.safe_load(open(os.path.join(ROOT, "config", "params.yaml"), "r"))
-PROMPTS = yaml.safe_load(open(os.path.join(ROOT, "config", "prompts.yaml"), "r"))
+PARAMS = yaml.safe_load(
+    Path(os.path.join(ROOT, "config", "params.yaml")).read_text(encoding="utf-8")
+)
+PROMPTS = yaml.safe_load(
+    Path(os.path.join(ROOT, "config", "prompts.yaml")).read_text(encoding="utf-8")
+)
 CHANGELOG_PATH = os.path.join(ROOT, "CHANGELOG.md")
 AWS_SESSION = boto3.Session()
 AWS_SSM_CLIENT = AWS_SESSION.client("ssm")
@@ -69,8 +75,14 @@ GOOGLE_SERVICE_ACCOUNT = get_ssm_parameter(
     os.getenv("CHB_AWS_SSM_GOOGLE_SERVICE_ACCOUNT")
 )
 if GOOGLE_SERVICE_ACCOUNT is None:
-    with open(os.path.join(ROOT, ".google_service_account.json"), "r") as file:
-        GOOGLE_JSON_ACCOUNT_INFO = json.load(file)
+    if os.path.exists(os.path.join(ROOT, ".google_service_account.json")):
+        with open(os.path.join(ROOT, ".google_service_account.json"), "r") as file:
+            GOOGLE_JSON_ACCOUNT_INFO = json.load(file)
+    else:
+        GOOGLE_JSON_ACCOUNT_INFO = None
+        LOGGER.warning(
+            "Google service account information not found in SSM or local file. Vertex AI credentials will not be available."
+        )
 else:
     GOOGLE_JSON_ACCOUNT_INFO = json.loads(GOOGLE_SERVICE_ACCOUNT)
 
@@ -96,11 +108,6 @@ class ChatbotSettings(BaseSettings):
         if os.getenv("ENVIRONMENT", "local") in ["test", "local"]
         else os.getenv("AUTH_COGNITO_USERPOOL_ID")
     )
-    google_api_key: str = get_ssm_parameter(
-        name=os.getenv("CHB_AWS_SSM_GOOGLE_API_KEY"),
-        default=os.getenv("CHB_AWS_GOOGLE_API_KEY"),
-    )
-    google_service_account: dict = GOOGLE_JSON_ACCOUNT_INFO
     cors_domains: str = os.getenv("CORS_DOMAINS", '["*"]')
     log_level: str = os.getenv("LOG_LEVEL", "info")
     max_daily_evaluations: int = int(os.getenv("CHB_MAX_DAILY_EVALUATIONS", "200"))
@@ -109,8 +116,7 @@ class ChatbotSettings(BaseSettings):
         os.getenv("CHB_SESSION_MAX_DURATION_DAYS", "1")
     )
 
-    # RAG settings
-    chatbot_release: str = extract_latest_version() or "---"
+    # vertex ai settings
     embed_batch_size: int = int(os.getenv("CHB_EMBED_BATCH_SIZE", "100"))
     embed_dim: int = int(os.getenv("CHB_EMBEDDING_DIM", "768"))
     embed_model_id: str = os.getenv("CHB_EMBED_MODEL_ID", "gemini-embedding-001")
@@ -118,10 +124,24 @@ class ChatbotSettings(BaseSettings):
     embed_retry_min_seconds: float = float(
         os.getenv("CHB_EMBED_RETRY_MIN_SECONDS", "1")
     )
-    embed_task: str = "RETRIEVAL_QUERY"
     max_tokens: int = int(os.getenv("CHB_MODEL_MAXTOKENS", "2048"))
     model_id: str = os.getenv("CHB_MODEL_ID", "gemini-2.5-flash-lite")
     provider: str = os.getenv("CHB_PROVIDER", "google")
+    vertexai_location: str = os.getenv("CHB_VERTEXAI_LOCATION", "europe-west8")
+
+    @property
+    def vertexai_credentials(self):
+        if GOOGLE_JSON_ACCOUNT_INFO:
+            return service_account.Credentials.from_service_account_info(
+                GOOGLE_JSON_ACCOUNT_INFO,
+                scopes=["https://www.googleapis.com/auth/cloud-platform"],
+            )
+        else:
+            return None
+
+    # RAG settings
+    chatbot_release: str = extract_latest_version() or "---"
+    embed_task: str = "RETRIEVAL_QUERY"
     reranker_id: str = os.getenv("CHB_RERANKER_ID", "semantic-ranker-default-004")
     similarity_topk: int = int(os.getenv("CHB_ENGINE_SIMILARITY_TOPK", "5"))
     temperature_agent: float = 0.5
@@ -131,14 +151,23 @@ class ChatbotSettings(BaseSettings):
     # vector index and docs params
     chunk_overlap: int = PARAMS["vector_index"]["chunk_overlap"]
     chunk_size: int = PARAMS["vector_index"]["chunk_size"]
-    index_id: str = os.getenv("CHB_INDEX_ID", "devportal-index")
+    devportal_index_id: str = os.getenv("CHB_DEVP_INDEX_ID", "devportal-index")
+    cittadino_index_id: str = os.getenv("CHB_CITTADINO_INDEX_ID", "cittadino-index")
     bucket_static_content: str = os.getenv(
         "CHB_AWS_S3_BUCKET_NAME_STATIC_CONTENT", "devportal-d-website-static-content"
     )
 
+    # multi-rag settings
+    use_multirag: bool = os.getenv("CHB_USE_MULTIRAG", "False").lower() == "true"
+
     # prompts
+    discovery_system_prompt_str: str = PROMPTS["discovery_system_prompt_str"]
     qa_prompt_str: str = PROMPTS["qa_prompt_str"]
-    react_system_str: str = PROMPTS["react_system_header_str"]
+    react_system_str: str = (
+        PROMPTS["react_system_header_with_multirag_str"]
+        if os.getenv("CHB_USE_MULTIRAG", "True").lower() == "true"
+        else PROMPTS["react_system_header_no_multirag_str"]
+    )
     refine_prompt_str: str = PROMPTS["refine_prompt_str"]
 
     # urls

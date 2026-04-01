@@ -60,6 +60,8 @@ import {
 } from 'gitbook-docs/syncedResponses';
 import { StrapiSolutions } from './strapi/types/solutions';
 import { StrapiReleaseNotes } from './strapi/types/releaseNotes';
+import { fetchCustomMessagesMap } from '@/lib/strapi/fetches/fetchCustomMessagesMap';
+import { makeCustomMessagesMap } from '@/lib/strapi/makeProps/makeCustomMessagesMap';
 
 // a BuildEnv instance ready to be used
 const buildEnv = pipe(
@@ -116,7 +118,7 @@ export const getTutorialsProps = async (locale: string) => {
   const contentPromises = allMarkdownParts.map(async (part) => {
     const { dirName, pathToFile } = part as MarkDownPart;
     const key = `${dirName}/${pathToFile}`;
-    const content = await getMarkdownContent(dirName, pathToFile);
+    const content = await getMarkdownContent(locale, dirName, pathToFile);
     return [key, content];
   });
   const resolvedContentPairs = await Promise.all(contentPromises);
@@ -295,7 +297,7 @@ export const getUseCasesProps = async (locale: string) => {
   const contentPromises = allMarkdownParts.map(async (part) => {
     const { dirName, pathToFile } = part;
     const key = `${dirName}/${pathToFile}`;
-    const content = await getMarkdownContent(dirName, pathToFile);
+    const content = await getMarkdownContent(locale, dirName, pathToFile);
     return [key, content];
   });
   const resolvedContentPairs = await Promise.all(contentPromises);
@@ -306,4 +308,12 @@ export const getUseCasesProps = async (locale: string) => {
 export const getUseCaseListPagesProps = async (locale: string) => {
   const strapiUseCasesListPages = await fetchUseCaseListPages(locale, buildEnv);
   return makeUseCaseListPagesProps(locale, strapiUseCasesListPages);
+};
+
+export const getCustomMessagesMap = async (locale: string) => {
+  const strapiCustomMessagesMap = await fetchCustomMessagesMap(
+    locale,
+    buildEnv
+  );
+  return makeCustomMessagesMap(strapiCustomMessagesMap);
 };

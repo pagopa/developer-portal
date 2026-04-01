@@ -864,7 +864,7 @@ version = "1.8.20"
 description = "An implementation of the Debug Adapter Protocol for Python"
 optional = false
 python-versions = ">=3.8"
-groups = ["dev"]
+groups = ["dev", "test"]
 files = [
     {file = "debugpy-1.8.20-cp310-cp310-macosx_15_0_x86_64.whl", hash = "sha256:157e96ffb7f80b3ad36d808646198c90acb46fdcfd8bb1999838f0b6f2b59c64"},
     {file = "debugpy-1.8.20-cp310-cp310-manylinux_2_34_x86_64.whl", hash = "sha256:c1178ae571aff42e61801a38b007af504ec8e05fde1c5c12e5a7efef21009642"},
@@ -2632,6 +2632,22 @@ files = [
 [package.dependencies]
 llama-index-core = ">=0.14.5,<0.15"
 openai = ">=1.108.1,<3"
+
+[[package]]
+name = "llama-index-postprocessor-google-rerank"
+version = "0.1.0"
+description = "llama-index postprocessor google rerank integration"
+optional = false
+python-versions = "<4.0,>=3.10"
+groups = ["main"]
+files = [
+    {file = "llama_index_postprocessor_google_rerank-0.1.0-py3-none-any.whl", hash = "sha256:51cb5af09476ceb36b68015b07cef5a266011e5eefbd1b679a50fd17f7955cbe"},
+    {file = "llama_index_postprocessor_google_rerank-0.1.0.tar.gz", hash = "sha256:8b4170c8c7f272fbea6b1181479ab1d73f598d9e06d6bbc6706bad1bed7e027c"},
+]
+
+[package.dependencies]
+google-cloud-discoveryengine = ">=0.13.0"
+llama-index-core = ">=0.13.0,<0.15"
 
 [[package]]
 name = "llama-index-readers-file"
@@ -6159,4 +6175,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.12,<3.14"
-content-hash = "267ed1f66e43512567d82b13858cd7b136ef0a6274df50d2a4205465e7cde6f2"
+content-hash = "c46c54ee6fbe3841374f618aacc7c80468a8f9b2a32e34f804dfefe5d5654e2a"

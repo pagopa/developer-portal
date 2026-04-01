@@ -1,5 +1,58 @@
 # nextjs-website
 
+## 16.5.0
+
+### Minor Changes
+
+- 8596eb7: Add heartbeat monitoring post and update max question chars
+- badb94d: Manage CustomMessagesMap single type from Strapi
+
+### Patch Changes
+
+- 01d84ab: Improve null safety for coming soon documentation links in home page
+
+## 16.4.0
+
+### Minor Changes
+
+- bac3db7: Add validateName to validate fields like name, surname and role during registrations and profile update, update validateField to check for maximum length, update sign up form to implement the new validation logic, add validation logic for name, surname and role in ProfileDataCard, update RequiredTextField to show helper text when the field is in error state and fix typo in input prop from maxlength to maxLength
+- 1c4434b: Add redirect to homepage in middleware for authenticated user navigating to auth pages
+- 5d2e6cf: Add speed control, chapters and VTT content support to webinar types and props
+
+### Patch Changes
+
+- 22fb1b5: Fix assets src by refactoring MarkdownPart to use server side generated assetsPrefix prop for asset URLs
+- 51fa641: Add instruction to request a new OTP code if there is an error during code validation.
+- 1ff5032: Fix tutorial markdown fetching by including locale in getMarkdownContent calls
+- 94143d6: Revert to using localStorage to store Amplify auth tokens and user data, and create a custom `isLoggedIn` cookie to enable rerouting for authenticated users.
+- 9aec8ce: Fix hover background color for CtaSlide buttons
+- Updated dependencies [6d30d53]
+- Updated dependencies [a487eeb]
+- Updated dependencies [a9f0ff5]
+  - gitbook-docs@2.1.0
+
+## 16.3.1
+
+### Patch Changes
+
+- 4ba0d2e: Fix: update case history path to include locale and update api data page select to incude locale
+
+## 16.3.0
+
+### Minor Changes
+
+- 4b8502f: Make external links in ChatLink component recognisable
+- e5c16f8: Update footer and add localization for en links
+
+### Patch Changes
+
+- dbd5492: Fix webinar subscription redirect to include locale in URL
+- 27e0205: Fix product cards' link without locale in solutions and case histories
+- c1e7565: Add navigation helper function to check validity and safety of redirect path and add it to the login flow
+- 6832c57: Fix unexpected undefined value company_type in user profile
+- 0c2dc85: Fix alignment of Feature component items
+- 6912c61: Manage error for missing locale using formatted error page instead of deafault nextpage
+
 ## 16.2.0
 
 ### Minor Changes

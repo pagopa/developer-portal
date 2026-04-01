@@ -1,5 +1,23 @@
 # cognito-functions
 
+## 1.2.0
+
+### Minor Changes
+
+- a83ce16: Enhance pre-sign-up handler with field validation for email, given name, family name, and role
+
+## 1.1.2
+
+### Patch Changes
+
+- 973ca7b: Add locale support to otp-message and create-auth-challenge-handler and add English translation strings
+
+## 1.1.1
+
+### Patch Changes
+
+- 5ba5b5b: Fix post-confirmation-handler tests by adding preferred_language support
+
 ## 1.1.0
 
 ### Minor Changes

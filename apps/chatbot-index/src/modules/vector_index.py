@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import List, Dict
+from typing import List
 
 from llama_index.core import Settings as LlamaIndexSettings
 from llama_index.core import (
@@ -17,7 +17,6 @@ from llama_index.vector_stores.redis import RedisVectorStore
 from redis import Redis
 import redis.asyncio as aredis
 from redisvl.schema import IndexSchema
-from tqdm import tqdm
 
 from src.modules.logger import get_logger
 from src.modules.documents import (
@@ -27,6 +26,7 @@ from src.modules.documents import (
     get_api_docs,
     get_static_docs,
     get_dynamic_docs,
+    get_structured_docs,
 )
 from src.modules.models import get_llm, get_embed_model
 from src.modules.settings import SETTINGS
@@ -102,7 +102,8 @@ def build_index_redis(
         dynamic (bool): Flag indicating whether to include dynamic documents in the index
         api (bool): Flag indicating whether to include API documentation in the index
         structured (bool): Flag indicating whether to include structured documents in the index
-        clean_redis (bool): Flag indicating whether to clean the WHOLE Redis database with ALL the vector indexes and documents before building the new index. If False, it will only delete the existing index with the same index_id and its associated documents.
+        clean_redis (bool): Flag indicating whether to clean the WHOLE Redis database with ALL the vector indexes and documents before building the new index.
+                            If False, it will only delete the existing index with the same index_id and its associated documents.
     Returns:
         VectorStoreIndex: The newly created vector store index.
     """
@@ -140,12 +141,10 @@ def build_index_redis(
     )
     storage_context.docstore.add_documents(nodes)
 
-    LOGGER.info(f"Creating vector index: {SETTINGS.index_id} ...")
+    LOGGER.info(f"Creating vector index: {index_id} ...")
     index = VectorStoreIndex(nodes, storage_context=storage_context)
-    index.set_index_id(SETTINGS.index_id)
-    LOGGER.info(
-        f"{SETTINGS.index_id} has been created successfully and stored in Redis."
-    )
+    index.set_index_id(index_id)
+    LOGGER.info(f"{index_id} has been created successfully and stored in Redis.")
 
     return index
 
@@ -210,7 +209,8 @@ class LlamaVectorIndex:
             dynamic (bool): Flag indicating whether to include dynamic documents in the index
             api (bool): Flag indicating whether to include API documentation in the index
             structured (bool): Flag indicating whether to include structured documents in the index
-            clean_redis (bool): Flag indicating whether to clean the WHOLE Redis database with ALL the vector indexes and documents before building the new index. If False, it will only delete the existing index with the same index_id and its associated documents.
+            clean_redis (bool): Flag indicating whether to clean the WHOLE Redis database with ALL the vector indexes and documents before building the new index.
+                                If False, it will only delete the existing index with the same index_id and its associated documents.
         Returns:
             VectorStoreIndex: The newly created vector store index.
         """
@@ -434,6 +434,44 @@ class LlamaVectorIndex:
                 self._delete_docs(index, dynamic_doc_ids_to_remove)
             except Exception as e:
                 LOGGER.error(f"Error deleting Dynamic Documents: {e}")
+
+    def refresh_index_structured_docs(
+        self,
+        index: VectorStoreIndex,
+        website_folder: str,
+    ) -> None:
+        """
+        Refreshes the vector index for a single website URL folder. Fetches the current structured documents from S3 for `website_folder`, updates existing documents, and removes any stale ones no longer present in S3.
+
+        Args:
+            index (VectorStoreIndex): The vector store index instance.
+            website_folder (str): The folder path in the S3 bucket where the structured documents are stored.
+        Returns:
+            None
+        """
+
+        structured_docs_to_update = get_structured_docs(
+            SETTINGS.index_id, SETTINGS.bucket_static_content, website_folder
+        )
+        doc_ids = [doc.id_ for doc in structured_docs_to_update]
+        ref_doc_info = index.storage_context.docstore.get_all_ref_doc_info()
+        ref_doc_ids = list(ref_doc_info.keys())
+
+        structured_doc_ids_to_remove = []
+        for ref_doc_id in ref_doc_ids:
+            if website_folder in ref_doc_id and ref_doc_id not in doc_ids:
+                structured_doc_ids_to_remove.append(ref_doc_id)
+
+        if structured_docs_to_update:
+            try:
+                self._update_docs(index, structured_docs_to_update)
+            except Exception as e:
+                LOGGER.error(f"Error updating Structured Documents: {e}")
+        if structured_doc_ids_to_remove:
+            try:
+                self._delete_docs(index, structured_doc_ids_to_remove)
+            except Exception as e:
+                LOGGER.error(f"Error deleting Structured Documents: {e}")
 
     def remove_docs_in_folder(self, index: VectorStoreIndex, folder_name: str) -> None:
         """

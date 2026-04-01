@@ -129,6 +129,7 @@ module "website" {
 
   next_public_soap_api_page_active = true
 
+  webinar_heartbeat_url = module.video_streaming.ingest_metrics_endpoint
 
 }
 
@@ -266,6 +267,7 @@ module "video_streaming" {
   # Right now only one channel is supported for metrics, so we can directly reference it here. 
   # In the future, if more channels are added and we want to use them for metrics, we can change this to a list of ARNs or similar.
   webinar_metrics_channel_key = "channell-01"
+  github_repository           = var.github_repository
 
 }
 
