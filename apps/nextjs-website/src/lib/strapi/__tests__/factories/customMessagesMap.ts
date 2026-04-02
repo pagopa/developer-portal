@@ -8,9 +8,7 @@ import {
 export function emptyCustomMessagesMap(): CustomMessagesMap {
   return {
     data: {
-      attributes: {
-        customMessages: [],
-      },
+      customMessages: [],
     },
   };
 }
@@ -23,18 +21,14 @@ export function customMessagesMapWithoutData(): CustomMessagesMap {
 
 export function customMessagesMapWithoutAttributes(): CustomMessagesMap {
   return {
-    data: {
-      attributes: undefined as any,
-    },
+    data: undefined as any,
   };
 }
 
 export function customMessagesMapWithoutCustomMessages(): CustomMessagesMap {
   return {
     data: {
-      attributes: {
-        customMessages: undefined as any,
-      },
+      customMessages: undefined as any,
     },
   };
 }
@@ -42,15 +36,13 @@ export function customMessagesMapWithoutCustomMessages(): CustomMessagesMap {
 export function customMessagesMapWithDuplicateKeys(): CustomMessagesMap {
   return {
     data: {
-      attributes: {
-        customMessages: [
-          ...strapiCustomMessagesMap.data.attributes.customMessages,
-          {
-            key: 'guides.translationDisclaimer',
-            value: duplicateTranslationDisclaimerMessage,
-          },
-        ],
-      },
+      customMessages: [
+        ...strapiCustomMessagesMap.data.customMessages,
+        {
+          key: 'guides.translationDisclaimer',
+          value: duplicateTranslationDisclaimerMessage,
+        },
+      ],
     },
   };
 }
