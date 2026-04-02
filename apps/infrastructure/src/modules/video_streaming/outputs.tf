@@ -10,7 +10,7 @@ output "ivs_channel_details" {
       arn                      = channel.arn
       ingest_endpoint          = "rtmps://${channel.ingest_endpoint}:443/app/"
       playback_url             = channel.playback_url
-      distribution_domain_name = aws_cloudfront_distribution.s3_distribution.domain_name
+      distribution_domain_name = aws_cloudfront_distribution.vod.domain_name
     }
   }
 
@@ -61,7 +61,7 @@ output "deploy_lambda_role_arn" {
   value       = aws_iam_role.deploy_lambda.arn
 }
 
-output "ingest_metrics_endpoint" {
-  value       = aws_lambda_function_url.ingest_url.function_url
-  description = "Function url to post metrics for to viewer count."
+output "ingest_api_endpoint" {
+  description = "The domain of the HTTP API for the ingest Lambda."
+  value       = "https://${var.custom_domain_name}/ingest"
 }
