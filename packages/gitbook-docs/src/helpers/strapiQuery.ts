@@ -51,27 +51,36 @@ const guidesQueryParams = {
 const releaseNotesPopulate = {
   populate: {
     bannerLinks: {
-      populate: ['*'],
-    },
-    product: {
-      populate: [
-        'logo',
-        'bannerLinks',
-        'overview',
-        'quickstart_guide',
-        'release_note',
-        'api_data_list_page',
-        'api_data_list_page.api_data',
-        'api_data_list_page.api_data.apiRestDetail',
-        'api_data_list_page.api_data.apiRestDetail.specUrls',
-        'api_data_list_page.api_data.apiSoapDetail',
-        'guide_list_page',
-        'tutorial_list_page',
-        'use_case_list_page',
-      ],
+      populate: '*',
     },
     seo: {
       populate: '*',
+    },
+    product: {
+      populate: {
+        logo: true,
+        bannerLinks: true,
+        overview: true,
+        quickstart_guide: true,
+        release_note: true,
+        guide_list_page: true,
+        tutorial_list_page: true,
+        use_case_list_page: true,
+        api_data_list_page: {
+          populate: {
+            api_data: {
+              populate: {
+                apiSoapDetail: true,
+                apiRestDetail: {
+                  populate: {
+                    specUrls: true,
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
     },
   },
 };
@@ -101,13 +110,19 @@ const solutionsPopulate = {
       populate: '*',
     },
     bannerLinks: {
-      populate: ['*'],
+      populate: '*',
     },
     webinars: {
       ...webinarPopulate,
     },
     caseHistories: {
-      populate: ['case_histories', 'case_histories.image'],
+      populate: {
+        case_histories: {
+          populate: {
+            image: true,
+          },
+        },
+      },
     },
   },
 };
