@@ -27,7 +27,7 @@ output "video_streaming" {
     ivs_channel_details        = module.video_streaming.ivs_channel_details
     api_gateway_invoke_url     = module.video_streaming.webinar_metrics_api_url
     deploy_lambda_iam_role_arn = module.video_streaming.deploy_lambda_role_arn
-    ingest_metrics_endpoint    = module.video_streaming.ingest_metrics_endpoint
+    ingest_api_endpoint        = module.video_streaming.ingest_api_endpoint
   }
 
   description = "Outputs from the video streaming module."
