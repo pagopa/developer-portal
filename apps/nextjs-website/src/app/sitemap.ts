@@ -389,7 +389,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         // API Data (Individual Pages)
         const apisData = await fetchProductApiData(localeCode, productSlug);
         const apiRoutes = (
-          apisData as unknown as readonly SitemapApiData[]
+          apisData.data as unknown as readonly SitemapApiData[]
         ).flatMap((api) => {
           const apiSlug = api.apiRestDetail?.slug || api.apiSoapDetail?.slug;
           return apiSlug
