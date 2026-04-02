@@ -78,7 +78,7 @@ resource "aws_s3_bucket_policy" "cloudfront_logs_policy" {
         Resource = "${aws_s3_bucket.cloudfront_logs.arn}/*",
         Condition = {
           StringEquals = {
-            "AWS:SourceArn" = aws_cloudfront_distribution.s3_distribution.arn
+            "AWS:SourceArn" = aws_cloudfront_distribution.vod.arn
           }
         }
       },
@@ -92,7 +92,7 @@ resource "aws_s3_bucket_policy" "cloudfront_logs_policy" {
         Resource = aws_s3_bucket.cloudfront_logs.arn,
         Condition = {
           StringEquals = {
-            "AWS:SourceArn" = aws_cloudfront_distribution.s3_distribution.arn
+            "AWS:SourceArn" = aws_cloudfront_distribution.vod.arn
           }
         }
       }
@@ -383,11 +383,24 @@ resource "aws_cloudfront_origin_access_control" "video_oac" {
   signing_protocol                  = "sigv4"
 }
 
-resource "aws_cloudfront_distribution" "s3_distribution" {
+resource "aws_cloudfront_distribution" "vod" {
   origin {
     domain_name              = aws_s3_bucket.ivs_recordings.bucket_regional_domain_name
     origin_id                = "S3-${var.project_name}-ivs-recordings"
     origin_access_control_id = aws_cloudfront_origin_access_control.video_oac.id
+  }
+
+  # API Gateway HTTP API origin for the ingest endpoint
+  origin {
+    domain_name = replace(aws_apigatewayv2_api.ingest.api_endpoint, "https://", "")
+    origin_id   = "APIGW-${var.project_name}-ingest"
+
+    custom_origin_config {
+      http_port              = 80
+      https_port             = 443
+      origin_protocol_policy = "https-only"
+      origin_ssl_protocols   = ["TLSv1.2"]
+    }
   }
 
   enabled         = true
@@ -400,6 +413,21 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
     include_cookies = false
     bucket          = aws_s3_bucket.cloudfront_logs.bucket_domain_name
     prefix          = "cloudfront/"
+  }
+
+  # Cache behavior for the ingest API endpoint
+  ordered_cache_behavior {
+    path_pattern     = "/ingest"
+    allowed_methods  = ["GET", "HEAD", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"]
+    cached_methods   = ["GET", "HEAD"]
+    target_origin_id = "APIGW-${var.project_name}-ingest"
+
+    cache_policy_id            = data.aws_cloudfront_cache_policy.caching_disabled.id
+    origin_request_policy_id   = data.aws_cloudfront_origin_request_policy.all_viewer_except_host_header.id
+    response_headers_policy_id = aws_cloudfront_response_headers_policy.ingest_cors_policy.id
+
+    viewer_protocol_policy = "https-only"
+    compress               = true
   }
 
   default_cache_behavior {
@@ -443,6 +471,15 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
   tags = {
     Name = "${var.project_name} video streaming distribution"
   }
+}
+
+# AWS Managed Cache Policies
+data "aws_cloudfront_cache_policy" "caching_disabled" {
+  name = "Managed-CachingDisabled"
+}
+
+data "aws_cloudfront_origin_request_policy" "all_viewer_except_host_header" {
+  name = "Managed-AllViewerExceptHostHeader"
 }
 
 data "aws_route53_zone" "selected" {
@@ -490,6 +527,39 @@ resource "aws_cloudfront_response_headers_policy" "cors_policy" {
   }
 }
 
+resource "aws_cloudfront_response_headers_policy" "ingest_cors_policy" {
+  name    = "cors-policy-ingest-api"
+  comment = "CORS policy for the ingest API endpoint."
+
+  cors_config {
+    access_control_allow_credentials = false
+
+    access_control_allow_headers {
+      items = [
+        "Authorization",
+        "Content-Type",
+        "X-Amz-Date",
+        "X-Api-Key",
+        "X-Amz-Security-Token"
+      ]
+    }
+
+    access_control_allow_methods {
+      items = ["GET", "POST", "OPTIONS"]
+    }
+
+    access_control_allow_origins {
+      items = compact([
+        "http://localhost:3000",
+        "https://${data.aws_route53_zone.selected.name}",
+      ])
+    }
+
+    access_control_max_age_sec = 300
+    origin_override            = true
+  }
+}
+
 # Policy that allows CloudFront (via OAC) to read from the bucket
 resource "aws_s3_bucket_policy" "allow_cloudfront_oac" {
   bucket = aws_s3_bucket.ivs_recordings.id
@@ -504,7 +574,7 @@ resource "aws_s3_bucket_policy" "allow_cloudfront_oac" {
         Condition = {
           StringEquals = {
             # This condition is crucial: it restricts access to ONLY this specific CloudFront distribution
-            "AWS:SourceArn" = aws_cloudfront_distribution.s3_distribution.arn
+            "AWS:SourceArn" = aws_cloudfront_distribution.vod.arn
           }
         }
       }
@@ -568,8 +638,8 @@ resource "aws_route53_record" "cdn_alias_record" {
   type    = "A"
 
   alias {
-    name                   = aws_cloudfront_distribution.s3_distribution.domain_name
-    zone_id                = aws_cloudfront_distribution.s3_distribution.hosted_zone_id
+    name                   = aws_cloudfront_distribution.vod.domain_name
+    zone_id                = aws_cloudfront_distribution.vod.hosted_zone_id
     evaluate_target_health = false
   }
 }
@@ -863,11 +933,6 @@ resource "aws_lambda_function" "ingest_lambda" {
   }
 
   depends_on = [aws_cloudwatch_log_group.ingest_lambda_logs]
-}
-
-resource "aws_lambda_function_url" "ingest_url" {
-  function_name      = aws_lambda_function.ingest_lambda.function_name
-  authorization_type = "NONE"
 }
 
 # Lambda needs permission to put directly to Firehose
