@@ -4,6 +4,7 @@ import {
   getApiDataListPagesProps,
   getApiDataProps,
   getCaseHistoriesProps,
+  getCustomMessagesMap,
   getGuideListPagesProps,
   getGuidePageProps,
   getOverviewsProps,
@@ -338,4 +339,9 @@ export async function getUseCaseListPageProps(
     null;
 
   return manageUndefinedAndAddProducts(locale, props);
+}
+
+export async function getCustomMessagesMapProps(locale: string) {
+  const strapiCustomMessagesMap = await getCustomMessagesMap(locale);
+  return manageUndefined(strapiCustomMessagesMap);
 }

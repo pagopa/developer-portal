@@ -64,49 +64,11 @@ compute: {
   }
 }
 
-# Auth Layer
-auth: {
-  label: Authentication
-
-  cognito_pool: Cognito\nUser Pool {
-    icon: https://icons.terrastruct.com/aws%2FSecurity%2C%20Identity%2C%20&%20Compliance%2FAmazon-Cognito.svg
-    shape: image
-  }
-
-  cognito_identity: Cognito\nIdentity Pool {
-    icon: https://icons.terrastruct.com/aws%2FSecurity%2C%20Identity%2C%20&%20Compliance%2FAmazon-Cognito.svg
-    shape: image
-  }
-}
-
-# Cognito Lambda Triggers
-cognito_lambdas: {
-  label: Cognito Lambda Triggers
-
-  custom_message: Lambda\n(Custom Message) {
-    icon: https://icons.terrastruct.com/aws%2FCompute%2FAWS-Lambda.svg
-    shape: image
-  }
-
-  post_confirmation: Lambda\n(Post Confirmation) {
-    icon: https://icons.terrastruct.com/aws%2FCompute%2FAWS-Lambda.svg
-    shape: image
-  }
-
-  define_auth: Lambda\n(Define Auth\nChallenge) {
-    icon: https://icons.terrastruct.com/aws%2FCompute%2FAWS-Lambda.svg
-    shape: image
-  }
-
-  create_auth: Lambda\n(Create Auth\nChallenge) {
-    icon: https://icons.terrastruct.com/aws%2FCompute%2FAWS-Lambda.svg
-    shape: image
-  }
-
-  verify_auth: Lambda\n(Verify Auth\nChallenge) {
-    icon: https://icons.terrastruct.com/aws%2FCompute%2FAWS-Lambda.svg
-    shape: image
-  }
+# Auth (external module)
+auth: Auth Module\n(Cognito) {
+  icon: https://icons.terrastruct.com/aws%2FSecurity%2C%20Identity%2C%20&%20Compliance%2FAmazon-Cognito.svg
+  shape: image
+  style.opacity: 0.6
 }
 
 # Storage Layer
@@ -144,15 +106,9 @@ dynamodb: {
   }
 }
 
-# Email
-ses: SES\n(Email) {
-  icon: https://icons.terrastruct.com/aws%2FCustomer%20Engagement%2FAmazon-Simple-Email-Service-SES.svg
-  shape: image
-}
-
 # SSM Parameters
 ssm: SSM\nParameter Store\n(Secrets & Config) {
-  icon: https://icons.terrastruct.com/aws%2FManagement%20&%20Governance%2FAWS-Systems-Manager_Parameter-Store.svg
+  icon: https://icons.terrastruct.com/aws%2FManagement%20&%20Governance%2FAWS-Systems-Manager_Parameter-Store_light-bg.svg
   shape: image
 }
 
@@ -183,7 +139,6 @@ cms_alb: CMS Internal ALB\n(Strapi API\nPort 8080) {
 users -> route53: HTTPS
 route53 -> cdn.cloudfront_website: developer.pagopa.it
 route53 -> cdn.cloudfront_static: static-contents.developer.pagopa.it
-route53 -> auth.cognito_pool: auth.developer.pagopa.it
 
 cdn.cloudfront_website -> compute.lambda_server: Origin
 cdn.cloudfront_website -> storage.s3_assets: Static Assets
@@ -194,16 +149,7 @@ cdn.cloudfront_static -> storage.s3_static: Origin (OAI)
 compute.lambda_server -> storage.s3_static: Read docs/guides
 compute.lambda_server -> cms_alb: Fetch CMS content\n(port 8080)
 compute.lambda_server -> ssm: Read config\n(STRAPI_API_TOKEN etc.)
+compute.lambda_server -> auth: Cognito config\n(User Pool ID, Client ID,\nIdentity Pool ID)
 compute.lambda_initializer -> compute.lambda_server: Initialize
-
-auth.cognito_pool -> cognito_lambdas.custom_message: Trigger
-auth.cognito_pool -> cognito_lambdas.post_confirmation: Trigger
-auth.cognito_pool -> cognito_lambdas.define_auth: Trigger
-auth.cognito_pool -> cognito_lambdas.create_auth: Trigger
-auth.cognito_pool -> cognito_lambdas.verify_auth: Trigger
-auth.cognito_identity -> auth.cognito_pool: Federation
-
-cognito_lambdas.post_confirmation -> ses: Send welcome email
-cognito_lambdas.create_auth -> ses: Send OTP email
 
 monitoring.cloudwatch -> monitoring.sns: Alarm

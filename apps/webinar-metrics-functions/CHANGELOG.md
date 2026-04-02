@@ -1,5 +1,12 @@
 # webinar-metrics-functions
 
+## 1.1.0
+
+### Minor Changes
+
+- ed33da8: - Update lambda function collect-metrics to encrypt the userId with sha256 algoritm
+  - Fix iam policy lambda function hearth beat metrics.
+
 ## 1.0.0
 
 ### Major Changes
