@@ -11,8 +11,8 @@ export function makeTutorialListPagesProps(
   strapiTutorialList: StrapiTutorialListPages
 ): readonly TutorialsPageProps[] {
   return compact(
-    strapiTutorialList.data.map(({ attributes }) => {
-      const slug = attributes.product.data?.attributes.slug;
+    strapiTutorialList.data.map((attributes) => {
+      const slug = attributes.product?.slug;
       if (!slug) {
         // eslint-disable-next-line functional/no-expression-statements
         console.error(
@@ -22,8 +22,8 @@ export function makeTutorialListPagesProps(
       }
 
       const tutorials: readonly Tutorial[] = compact(
-        attributes.tutorials.data.map(({ attributes: tutorialAttributes }) => {
-          const slug = tutorialAttributes.product?.data?.attributes?.slug;
+        attributes.tutorials.map((tutorialAttributes) => {
+          const slug = tutorialAttributes.product?.slug;
           if (!slug) {
             console.error(
               `Error while processing Tutorial with title "${tutorialAttributes.title}": missing product slug. Skipping...`
@@ -49,10 +49,8 @@ export function makeTutorialListPagesProps(
                 ? new Date(tutorialAttributes.publishedAt)
                 : undefined,
               showInOverview: false,
-              image: tutorialAttributes.image.data?.attributes,
-              tags:
-                tutorialAttributes.tags?.data?.map((tag) => tag.attributes) ||
-                [],
+              image: tutorialAttributes.image,
+              tags: tutorialAttributes.tags?.map((tag) => tag) || [],
             } satisfies Tutorial;
           } catch (error) {
             // eslint-disable-next-line functional/no-expression-statements
@@ -66,22 +64,19 @@ export function makeTutorialListPagesProps(
         })
       );
       const updatedAt =
-        attributes.tutorials.data.length > 0
-          ? attributes.tutorials.data.reduce((latest, current) => {
-              const latestDate = new Date(latest.attributes.updatedAt);
-              const currentDate = new Date(current.attributes.updatedAt);
+        attributes.tutorials.length > 0
+          ? attributes.tutorials.reduce((latest, current) => {
+              const latestDate = new Date(latest.updatedAt);
+              const currentDate = new Date(current.updatedAt);
               return currentDate > latestDate ? current : latest;
-            }).attributes.updatedAt
+            }).updatedAt
           : '';
 
       return {
         updatedAt: updatedAt,
         name: attributes.title,
-        path: `/${locale}/${attributes.product.data.attributes.slug}/tutorials`,
-        product: makeBaseProductWithoutLogoProps(
-          locale,
-          attributes.product.data
-        ),
+        path: `/${locale}/${attributes.product.slug}/tutorials`,
+        product: makeBaseProductWithoutLogoProps(locale, attributes.product),
         abstract: {
           title: attributes.title,
           description: attributes.description,
@@ -94,8 +89,8 @@ export function makeTutorialListPagesProps(
             ? attributes.bannerLinks.map((bannerLink) =>
                 makeBannerLinkProps(bannerLink)
               )
-            : attributes.product.data.attributes.bannerLinks?.map(
-                (bannerLink) => makeBannerLinkProps(bannerLink)
+            : attributes.product.bannerLinks?.map((bannerLink) =>
+                makeBannerLinkProps(bannerLink)
               ),
       };
     })
