@@ -11,11 +11,11 @@ logger = logging.getLogger()
 logger.setLevel("INFO")
 
 # --- Configuration ---
-DATABASE = os.environ.get('ATHENA_DATABASE', 'devportal_p_cloudfront_logs')
-OUTPUT_S3_BUCKET = os.environ.get('ATHENA_RESULTS_BUCKET', 'devportal-p-athena-results-c797de01')
+DATABASE = os.environ.get('ATHENA_DATABASE', 'webinar_heartbeats')
+OUTPUT_S3_BUCKET = os.environ.get('ATHENA_RESULTS_BUCKET')
 OUTPUT_S3_PREFIX = 'athena-results'
 REGION = os.environ.get('AWS_REGION', 'eu-central-1')
-IVS_CHANNEL_ARN = os.environ.get('IVS_CHANNEL_ARN', 'arn:aws:ivs:eu-central-1:195239627635:channel/4mteQowcWw6S')
+IVS_CHANNEL_ARN = os.environ.get('IVS_CHANNEL_ARN')
 
 # Clients
 athena = boto3.client('athena', region_name=REGION)

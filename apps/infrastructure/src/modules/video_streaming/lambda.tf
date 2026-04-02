@@ -33,8 +33,8 @@ resource "aws_lambda_function" "webinar_metrics" {
   environment {
     variables = merge(
       {
-        ATHENA_DATABASE       = aws_athena_database.cloudfront_logs.name
-        ATHENA_RESULTS_BUCKET = aws_s3_bucket.athena_results.id
+        ATHENA_DATABASE       = aws_athena_database.webinar_heartbeats.name
+        ATHENA_RESULTS_BUCKET = aws_s3_bucket.athena_results.bucket
       },
       var.webinar_metrics_channel_key != null ? {
         IVS_CHANNEL_ARN = aws_ivs_channel.channels[var.webinar_metrics_channel_key].arn
