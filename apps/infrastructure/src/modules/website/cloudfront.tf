@@ -73,7 +73,7 @@ resource "aws_cloudfront_response_headers_policy" "static_content_cors" {
 
   security_headers_config {
     content_security_policy {
-      content_security_policy = "frame-ancestors 'self' https://${var.dns_domain_name}"
+      content_security_policy = "frame-ancestors 'self' https://${var.dns_domain_name} https://www.${var.dns_domain_name}"
       override                = true
     }
   }
