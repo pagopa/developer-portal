@@ -7,8 +7,6 @@ export type CustomMessage = {
 
 export type CustomMessagesMap = {
   readonly data: {
-    readonly attributes: {
-      readonly customMessages: readonly CustomMessage[];
-    };
+    readonly customMessages: readonly CustomMessage[];
   };
 };

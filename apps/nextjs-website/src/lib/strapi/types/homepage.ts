@@ -19,36 +19,24 @@ type StrapiHeroSlide = {
   readonly subheadColor?: 'contrastText' | 'main' | 'light' | 'dark';
   readonly callToAction?: StrapiCallToAction;
   readonly titleColor?: 'contrastText' | 'main' | 'light' | 'dark';
-  readonly backgroundImage: {
-    readonly data?: StrapiMedia;
-  };
+  readonly backgroundImage?: StrapiMedia;
 };
 
 type StrapiEcosystem = {
   readonly title?: string;
   readonly productsTabName: string;
-  readonly products: {
-    readonly data: readonly StrapiProduct[];
-  };
+  readonly products: readonly StrapiProduct[];
   readonly solutionsTabName: string;
-  readonly solutions: {
-    readonly data: readonly StrapiBaseSolution[];
-  };
+  readonly solutions: readonly StrapiBaseSolution[];
   readonly solutionsCta?: StrapiCallToAction;
 };
 
 export type StrapiHomepage = {
-  readonly data: {
-    readonly attributes: {
-      readonly updatedAt: string;
-      readonly comingsoonDocumentation: StrapiRelatedLinks;
-      readonly heroSlider: readonly StrapiHeroSlide[];
-      readonly newsShowcase?: StrapiNewsShowcase;
-      readonly ecosystem?: StrapiEcosystem;
-      readonly webinars: {
-        readonly data: readonly StrapiWebinar[];
-      };
-      readonly seo?: StrapiSeo;
-    };
-  };
+  readonly comingsoonDocumentation: StrapiRelatedLinks;
+  readonly heroSlider: readonly StrapiHeroSlide[];
+  readonly newsShowcase?: StrapiNewsShowcase;
+  readonly ecosystem?: StrapiEcosystem;
+  readonly webinars: readonly StrapiWebinar[];
+  readonly seo?: StrapiSeo;
+  readonly updatedAt: string;
 };

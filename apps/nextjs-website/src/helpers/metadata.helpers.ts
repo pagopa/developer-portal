@@ -73,7 +73,7 @@ export const makeMetadataFromStrapi = (seo: SEO): Metadata => {
     title: seo.metaTitle,
     description: seo.metaDescription,
     url: seo.canonicalURL,
-    image: seo.metaImage?.data?.attributes?.url,
+    image: seo.metaImage?.url,
   });
 
   const metadata: Metadata = {
