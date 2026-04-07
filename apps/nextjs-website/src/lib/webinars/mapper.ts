@@ -1,11 +1,9 @@
 /* eslint-disable functional/no-expression-statements */
-import { Webinar } from '../../types/webinar';
-import { StrapiWebinar, StrapiWebinars } from '@/lib/strapi/types/webinars';
+import { Webinar } from '@/lib/types/webinar';
 import { compact } from 'lodash';
+import { StrapiWebinar, StrapiWebinars } from './types';
 
-export type WebinarsProps = readonly Webinar[];
-
-export const makeWebinarProps = (
+export const mapWebinarProps = (
   strapiWebinar: StrapiWebinar
 ): Webinar | null => {
   if (!strapiWebinar.slug || !strapiWebinar.title) {
@@ -62,7 +60,6 @@ export const makeWebinarProps = (
       updatedAt: strapiWebinar.updatedAt,
     } satisfies Webinar;
   } catch (error) {
-    // eslint-disable-next-line functional/no-expression-statements
     console.error(
       `Error while processing Webinar with title ${strapiWebinar.title}:`,
       error,
@@ -72,10 +69,10 @@ export const makeWebinarProps = (
   }
 };
 
-export function makeWebinarsProps(
+export function mapWebinarsProps(
   strapiWebinars: StrapiWebinars
-): WebinarsProps {
-  return compact([
-    ...strapiWebinars.data.map((webinar) => makeWebinarProps(webinar)),
-  ]);
+): readonly Webinar[] {
+  return compact(
+    strapiWebinars.data.map((webinar) => mapWebinarProps(webinar))
+  );
 }

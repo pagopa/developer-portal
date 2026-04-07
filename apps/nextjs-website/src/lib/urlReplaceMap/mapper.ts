@@ -1,9 +1,7 @@
-import { StrapiUrlReplaceMap } from '@/lib/strapi/types/urlReplaceMap';
 import { RootEntity } from '@/lib/strapi/types/rootEntity';
+import { StrapiUrlReplaceMap, UrlReplaceMap } from './types';
 
-export type UrlReplaceMap = Record<string, string>;
-
-export function makeUrlReplaceMap(
+export function mapUrlReplaceMap(
   locale: string,
   strapiUrlReplacemap: RootEntity<StrapiUrlReplaceMap>
 ): UrlReplaceMap {

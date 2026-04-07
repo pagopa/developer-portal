@@ -1,6 +1,6 @@
 import qs from 'qs';
 import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
-import { StrapiWebinarCategories } from '@/lib/strapi/types/webinarCategory';
+import { StrapiWebinarCategories } from './types';
 
 const makeStrapiWebinarCategoriesPopulate = () =>
   qs.stringify({

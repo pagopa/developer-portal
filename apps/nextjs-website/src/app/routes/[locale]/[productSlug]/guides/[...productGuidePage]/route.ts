@@ -1,5 +1,5 @@
 import { getGuidePage } from '@/lib/api';
-import { getUrlReplaceMapProps } from '@/lib/cmsApi';
+import { getUrlReplaceMap } from '@/lib/api';
 import { GitBookContentData } from '@/lib/types/gitBookContent';
 
 export async function GET(
@@ -20,7 +20,7 @@ export async function GET(
   try {
     const [guideData, urlReplaceMap] = await Promise.all([
       getGuidePage(guideSegments, locale, productSlug),
-      getUrlReplaceMapProps(locale),
+      getUrlReplaceMap(locale),
     ]);
 
     if (!guideData) {

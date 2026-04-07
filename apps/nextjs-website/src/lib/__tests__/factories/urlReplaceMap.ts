@@ -1,7 +1,7 @@
 import {
   StrapiUrlReplaceMap,
   StrapiUrlToGuide,
-} from '@/lib/strapi/types/urlReplaceMap';
+} from '@/lib/urlReplaceMap/types';
 
 const makeUrlToGuideItem = (
   overrides?: Partial<StrapiUrlToGuide>

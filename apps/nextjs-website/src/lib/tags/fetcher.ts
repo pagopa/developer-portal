@@ -1,6 +1,6 @@
 import qs from 'qs';
 import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
-import { StrapiTags } from '@/lib/strapi/types/tag';
+import { StrapiTags } from './types';
 
 const makeStrapiTagsPopulate = () =>
   qs.stringify({

@@ -2,7 +2,7 @@ import { BlocksContent } from '@strapi/blocks-react-renderer';
 import { StrapiRelatedLinks } from '@/lib/strapi/types/link';
 import { StrapiMedia } from '@/lib/strapi/types/media';
 import { StrapiLink } from '@/lib/strapi/types/link';
-import { StrapiWebinar } from '@/lib/strapi/types/webinars';
+import { StrapiWebinar } from '@/lib/webinars/types';
 import { StrapiProduct } from '@/lib/products/types';
 import { StrapiSeo } from '@/lib/strapi/types/seo';
 import { StrapiBaseSolution } from '@/lib/solutions/types';
