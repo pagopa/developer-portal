@@ -80,14 +80,18 @@ export const recordingEndedS3EventHandler = async (event: S3Event) => {
     }
     const webinar = strapiWebinarsResponse.data[0];
 
-    await fetchFromStrapiResponse(strapiEnv, `api/webinars/${webinar.id}`, {
-      method: 'PUT',
-      body: {
-        data: {
-          playerSrc: `${newPlayerSrc}?cs_uri_query=${webinar.attributes.slug}`,
+    await fetchFromStrapiResponse(
+      strapiEnv,
+      `api/webinars/${webinar.documentId}`,
+      {
+        method: 'PUT',
+        body: {
+          data: {
+            playerSrc: `${newPlayerSrc}?cs_uri_query=${webinar.slug}`,
+          },
         },
-      },
-    });
+      }
+    );
 
     return event;
   } catch (error) {
