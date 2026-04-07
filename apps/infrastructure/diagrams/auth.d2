@@ -121,8 +121,18 @@ consumers: {
     shape: image
   }
 
+  chatbot: Chatbot Module\n(API Gateway) {
+    icon: https://icons.terrastruct.com/aws%2FMobile%2FAmazon-API-Gateway.svg
+    shape: image
+  }
+
   video_streaming: Video Streaming\nModule\n(Ingest API) {
     icon: https://icons.terrastruct.com/aws%2FMobile%2FAmazon-API-Gateway.svg
+    shape: image
+  }
+
+  active_campaign: Active Campaign\nModule {
+    icon: https://icons.terrastruct.com/aws%2FCompute%2FAWS-Lambda.svg
     shape: image
   }
 }
@@ -155,4 +165,6 @@ monitoring.cloudwatch -> monitoring.sns: Alarm notifications\n(SignUp/SignIn thr
 # Outputs consumed by other modules
 cognito.user_pool -> consumers.website: User Pool ID\nClient ID\nEndpoint
 cognito.identity_pool -> consumers.website: Identity Pool ID
+cognito.user_pool -> consumers.chatbot: User Pool ARN\n(Cognito Authorizer)
 cognito.user_pool -> consumers.video_streaming: User Pool Endpoint\nClient ID\n(JWT Authorizer)
+cognito.user_pool -> consumers.active_campaign: User Pool ID\n(Read user data)
