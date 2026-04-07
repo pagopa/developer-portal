@@ -33,35 +33,6 @@ resource "aws_s3_object" "robots_txt" {
   etag         = filemd5("${path.module}/robots.txt")
 }
 
-
-# S3 bucket for CloudFront access logs
-resource "aws_s3_bucket" "cloudfront_logs" {
-  bucket = "${var.project_name}-cloudfront-logs-${random_id.suffix.hex}"
-}
-
-resource "aws_s3_bucket_public_access_block" "cloudfront_logs_pac" {
-  bucket = aws_s3_bucket.cloudfront_logs.id
-
-  block_public_acls       = true
-  block_public_policy     = true
-  ignore_public_acls      = true
-  restrict_public_buckets = true
-}
-
-resource "aws_s3_bucket_ownership_controls" "cloudfront_logs_oc" {
-  bucket = aws_s3_bucket.cloudfront_logs.id
-  rule {
-    object_ownership = "BucketOwnerPreferred"
-  }
-}
-
-resource "aws_s3_bucket_acl" "cloudfront_logs_acl" {
-  bucket = aws_s3_bucket.cloudfront_logs.id
-  acl    = "private"
-
-  depends_on = [aws_s3_bucket_ownership_controls.cloudfront_logs_oc]
-}
-
 # S3 bucket for Athena query results
 resource "aws_s3_bucket" "athena_results" {
   bucket = "${var.project_name}-athena-results-${random_id.suffix.hex}"
@@ -199,13 +170,6 @@ resource "aws_cloudfront_distribution" "vod" {
   is_ipv6_enabled = true
   comment         = "CDN for IVS video recordings"
   #default_root_object = "index.html" # Optional, good practice
-
-  # Enable access logging
-  logging_config {
-    include_cookies = false
-    bucket          = aws_s3_bucket.cloudfront_logs.bucket_domain_name
-    prefix          = "cloudfront/"
-  }
 
   # Cache behavior for the ingest API endpoint
   ordered_cache_behavior {

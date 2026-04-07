@@ -9,6 +9,7 @@ WITH QualifiedClients AS (
       year = '2026'
       and month = '04'
       and day = '01'
+      and islive = false
     GROUP BY 
         webinarid, 
         userid
