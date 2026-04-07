@@ -1,6 +1,6 @@
 import qs from 'qs';
 import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
-import { webinarPopulate } from '@/lib/strapi/fetches/fetchWebinars';
+import { webinarPopulate } from '@/lib/webinars/fetcher';
 import { StrapiHomepage } from './types';
 
 export const homepagePopulate = {

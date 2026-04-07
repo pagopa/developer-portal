@@ -1,7 +1,7 @@
 import { pipe } from 'fp-ts/lib/function';
 import * as E from 'fp-ts/lib/Either';
-import { makeBuildConfig } from '@/BuildConfig';
-import { makeBuildEnv } from '@/BuildEnv';
+import { makeBuildConfig } from '@/buildConfig';
+import { makeBuildEnv } from '@/buildEnv';
 import { secrets } from '@/config';
 
 // a BuildEnv instance ready to be used

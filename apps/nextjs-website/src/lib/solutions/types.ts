@@ -7,7 +7,7 @@ import {
 import { Paginated } from '@/lib/strapi/types/paginated';
 import { StrapiMedia } from '@/lib/strapi/types/media';
 import { StrapiSeo } from '@/lib/strapi/types/seo';
-import { StrapiWebinar } from '@/lib/strapi/types/webinars';
+import { StrapiWebinar } from '@/lib/webinars/types';
 import { BlocksContent } from '@strapi/blocks-react-renderer';
 
 export type StrapiStep = {

@@ -1,5 +1,5 @@
-import { BuildConfig } from '@/BuildConfig';
-import { StrapiEnv } from '@/lib/strapi/StrapiEnv';
+import { BuildConfig } from '@/buildConfig';
+import { StrapiEnv } from '@/lib/strapi/strapiEnv';
 
 // BuildEnv
 export type BuildEnv = {

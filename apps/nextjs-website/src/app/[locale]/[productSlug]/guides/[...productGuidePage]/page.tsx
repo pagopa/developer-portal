@@ -12,7 +12,7 @@ import {
 } from '@/helpers/metadata.helpers';
 import GitBookTemplate from '@/components/templates/GitBookTemplate/GitBookTemplate';
 import { productPageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
-import { getUrlReplaceMapProps } from '@/lib/cmsApi';
+import { getUrlReplaceMap } from '@/lib/api';
 import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
 import {
   breadcrumbItemByProduct,
@@ -87,7 +87,7 @@ const Page = async ({ params }: { params: Promise<Params> }) => {
   const { locale, productSlug, productGuidePage } = await params;
   const [guidePageProps, urlReplaceMap] = await Promise.all([
     getGuidePage(productGuidePage ?? [''], locale, productSlug),
-    getUrlReplaceMapProps(locale),
+    getUrlReplaceMap(locale),
   ]);
 
   if (!guidePageProps) {

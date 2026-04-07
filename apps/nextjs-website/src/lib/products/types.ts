@@ -5,7 +5,7 @@ import { StrapiBannerLink } from '@/lib/bannerLink/types';
 import { StrapiMedia } from '@/lib/strapi/types/media';
 import { ApiDataListPageWithoutProduct } from '@/lib/apiDataListPages/types';
 import { Paginated } from '@/lib/strapi/types/paginated';
-import { StrapiTag } from '@/lib/strapi/types/tag';
+import { StrapiTag } from '@/lib/tags/types';
 
 export type StrapiBaseProduct = {
   readonly name: string;

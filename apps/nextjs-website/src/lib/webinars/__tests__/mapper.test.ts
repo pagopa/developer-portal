@@ -1,0 +1,70 @@
+import { mapWebinarsProps } from '@/lib/webinars/mapper';
+import { StrapiWebinars } from '@/lib/webinars/types';
+import _ from 'lodash';
+import {
+  strapiWebinars,
+  webinarProps,
+} from '@/lib/__tests__/fixtures/webinars';
+import { spyOnConsoleError } from '@/lib/strapi/__tests__/spyOnConsole';
+
+describe('mapWebinarsProps', () => {
+  afterEach(() => {
+    spyOnConsoleError.mockClear();
+  });
+
+  afterAll(() => {
+    spyOnConsoleError.mockRestore();
+  });
+
+  it('should transform strapi webinars to webinars props', () => {
+    const result = mapWebinarsProps(_.cloneDeep(strapiWebinars));
+
+    expect(result).toHaveLength(1);
+    expect(result[0]).toMatchObject(webinarProps);
+  });
+
+  it('should handle empty data array', () => {
+    const emptyData: StrapiWebinars = {
+      data: [],
+      meta: {
+        pagination: {
+          page: 1,
+          pageSize: 25,
+          pageCount: 0,
+          total: 0,
+        },
+      },
+    };
+
+    const result = mapWebinarsProps(emptyData);
+
+    expect(result).toHaveLength(0);
+  });
+
+  it('should handle corrupted data with try/catch and log error', () => {
+    const corruptedData: StrapiWebinars = {
+      data: [
+        {
+          ...strapiWebinars.data[0],
+          title: undefined as unknown as string,
+          slug: undefined as unknown as string,
+        },
+      ],
+      meta: {
+        pagination: {
+          page: 1,
+          pageSize: 25,
+          pageCount: 1,
+          total: 1,
+        },
+      },
+    };
+
+    const result = mapWebinarsProps(corruptedData);
+
+    expect(result).toHaveLength(0);
+    expect(spyOnConsoleError).toHaveBeenCalledWith(
+      'Error while processing Webinar: missing title or slug. Title: undefined | Slug: undefined. Skipping...'
+    );
+  });
+});

@@ -6,8 +6,8 @@ import { StrapiMedia } from '@/lib/strapi/types/media';
 import { StrapiNewsShowcase } from '@/lib/strapi/types/newsShowcase';
 import { Paginated } from '@/lib/strapi/types/paginated';
 import { StrapiSeo } from '@/lib/strapi/types/seo';
-import { StrapiBaseTutorial } from '@/lib/strapi/types/tutorial';
-import { StrapiBaseUseCase } from '@/lib/strapi/types/useCase';
+import { StrapiBaseTutorial } from '@/lib/tutorials/types';
+import { StrapiBaseUseCase } from '@/lib/useCases/types';
 import { StrapiProduct } from '@/lib/products/types';
 
 export type StrapiStartInfo = {
