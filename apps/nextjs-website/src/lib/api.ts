@@ -14,8 +14,8 @@ import { WebinarsRepository } from '@/lib/webinars';
 import { WebinarCategoriesRepository } from '@/lib/webinarCategories';
 import { TagsRepository } from '@/lib/tags';
 import { UrlReplaceMapRepository } from '@/lib/urlReplaceMap';
+import { ReleaseNotesRepository } from '@/lib/releaseNotes';
 import { Webinar } from '@/lib/types/webinar';
-import { getReleaseNoteProps, getStrapiReleaseNotes } from './cmsApi';
 import { parseS3GuidePage } from '@/helpers/parseS3Doc.helpers';
 import {
   downloadFileAsText,
@@ -26,7 +26,7 @@ import {
 import { s3DocsPath } from '@/config';
 import { OverviewsRepository } from './overviews';
 import { ProductRepository } from './products';
-import { makeSolution } from '../helpers/makeS3Docs.helpers';
+import { makeReleaseNote, makeSolution } from '../helpers/makeS3Docs.helpers';
 
 function manageUndefined<T>(props: undefined | null | T) {
   if (!props) {
@@ -184,6 +184,10 @@ export async function getUrlReplaceMap(locale: string) {
   return UrlReplaceMapRepository.get(locale);
 }
 
+export async function getReleaseNotes(locale: string) {
+  return ReleaseNotesRepository.getAll(locale);
+}
+
 export async function getCaseHistory(locale: string, caseHistorySlug?: string) {
   return manageUndefined(
     (await CaseHistoriesRepository.getAll(locale)).find(
@@ -222,7 +226,10 @@ export async function getReleaseNote(
     '/'
   )}`;
 
-  const releaseNote = await getStrapiReleaseNotes(locale, productSlug);
+  const releaseNote = await ReleaseNotesRepository.getByProductSlug(
+    locale,
+    productSlug
+  );
   if (!releaseNote) {
     // eslint-disable-next-line functional/no-throw-statements
     throw new Error('Failed to fetch release notes data');
@@ -233,9 +240,9 @@ export async function getReleaseNote(
     releaseNote.dirName
   );
 
-  const releaseNoteProps = await getReleaseNoteProps(
+  const releaseNoteProps = await makeReleaseNote(
+    releaseNote,
     locale,
-    productSlug,
     releaseNotesMetadata.find(({ path }) => path === releaseNotesPath)
   );
 
