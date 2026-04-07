@@ -13,7 +13,7 @@ import {
   multipleApiDataListPages,
   emptyApiDataListPages,
   apiDataListPageWithBothRestAndSoap,
-} from '@/lib/strapi/__tests__/factories/apiDataListPages';
+} from '@/lib/__tests__/factories/apiDataListPages';
 import { spyOnConsoleError } from '@/lib/strapi/__tests__/spyOnConsole';
 
 describe('mapApiDataListPages', () => {

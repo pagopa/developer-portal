@@ -1,5 +1,5 @@
-import { StrapiBaseProductWithRelations } from '@/lib/strapi/types/product';
-import { StrapiBannerLink } from '@/lib/strapi/types/bannerLink';
+import { StrapiBaseProductWithRelations } from '@/lib/products/types';
+import { StrapiBannerLink } from '@/lib/bannerLink/types';
 import { StrapiSeo } from '@/lib/strapi/types/seo';
 import { ApiData } from '@/lib/apiDataList/types';
 import { ApiDataListPageTemplateProps } from '@/components/templates/ApiDataListTemplate/ApiDataListTemplate';

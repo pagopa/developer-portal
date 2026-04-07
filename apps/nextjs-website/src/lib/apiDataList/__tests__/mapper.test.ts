@@ -18,12 +18,12 @@ import {
   restApiDataWithMultipleSpecs,
   apiDataWithInvalidRestApiDetails,
   apiDatalistWithItemMissingSlug,
-} from '@/lib/strapi/__tests__/factories/apiDataList';
+} from '@/lib/__tests__/factories/apiDataList';
 import { spyOnConsoleError } from '@/lib/strapi/__tests__/spyOnConsole';
 
 // Mock the makeApiSoapUrlList function
-jest.mock('@/lib/strapi/makeProps/makeApiSoapUrlList', () => ({
-  makeApiSoapUrlList: jest
+jest.mock('@/lib/apiDataList/helpers', () => ({
+  getApiSoapContentUrls: jest
     .fn()
     .mockResolvedValue([
       { name: 'test.wsdl', url: 'https://example.com/test.wsdl' },

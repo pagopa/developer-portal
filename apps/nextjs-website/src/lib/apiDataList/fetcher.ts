@@ -1,9 +1,9 @@
 import qs from 'qs';
 import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
-import { productRelationsPopulate } from '@/lib/strapi/fetches/fetchProducts';
-import { ApiDataList } from './types';
-
+import { productRelationsPopulate } from '@/lib/products/fetcher';
+import { fetchCollectionFromStrapi } from '@/lib/strapi/fetchFromStrapi.helpers';
 import { buildEnv } from '@/lib/buildEnv';
+import { ApiDataList } from './types';
 
 const makeStrapiApiDataListPopulate = () =>
   qs.stringify({
@@ -32,3 +32,15 @@ export const fetchApiDataList = (locale: string) =>
     locale,
     buildEnv
   );
+
+export const fetchProductApiDataReader = (
+  locale: string,
+  productSlug: string
+) =>
+  fetchCollectionFromStrapi<ApiDataList>('apis-data', productSlug, {
+    fields: ['updatedAt'],
+    populate: {
+      apiRestDetail: { fields: ['slug'] },
+      apiSoapDetail: { fields: ['slug'] },
+    },
+  })(locale, buildEnv);

@@ -1,27 +1,9 @@
 /* eslint-disable functional/no-expression-statements */
-import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
-import { makeBaseProductWithoutLogoProps } from '@/lib/strapi/makeProps/makeProducts';
+import { mapBannerLinkProps } from '@/lib/bannerLink/mapper';
+import { makeBaseProductWithoutLogoProps } from '@/lib/products/mapper';
 import { compact } from 'lodash';
 import { ApiDataList, ApiDataPageProps } from './types';
-import { getSoapApiMetadata } from '@/helpers/s3Metadata.helpers';
-import { staticContentsUrl } from '@/config';
-
-async function getApiSoapContentUrls(
-  locale: string,
-  apiDirName: string
-) {
-  const soapApiMetadata = await getSoapApiMetadata(locale).then((metadata) =>
-    metadata.find((item) => item.dirName === apiDirName)
-  );
-  if (!soapApiMetadata) {
-    // eslint-disable-next-line functional/no-throw-statements
-    throw new Error(`No metadata found for API directory: ${apiDirName}`);
-  }
-
-  return soapApiMetadata.contentS3Paths.map(
-    (url) => `${staticContentsUrl}/${locale}/soap-api/${url}`
-  );
-}
+import { getApiSoapContentUrls } from './helpers';
 
 export async function mapApiDataList(
   locale: string,
@@ -82,8 +64,8 @@ export async function mapApiDataList(
                 : [],
               bannerLinks:
                 apiPage.bannerLinks.length > 0
-                  ? apiPage.bannerLinks.map(makeBannerLinkProps)
-                  : apiPage.product.bannerLinks?.map(makeBannerLinkProps),
+                  ? apiPage.bannerLinks.map(mapBannerLinkProps)
+                  : apiPage.product.bannerLinks?.map(mapBannerLinkProps),
               seo: apiPage.seo,
             } satisfies ApiDataPageProps;
           } catch (error) {
