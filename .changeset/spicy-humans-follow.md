@@ -2,4 +2,4 @@
 "ivs-functions": major
 ---
 
-Refactor Strapi v5 webinars API to use documentId
+Refactor the Strapi v5 webinars API call to use documentId
