@@ -7,36 +7,39 @@ import { StrapiProduct } from '@/lib/product/types';
 import { StrapiSeo } from '@/lib/strapi/types/seo';
 import { StrapiBaseSolution } from '@/lib/strapi/types/solutions';
 import { StrapiNewsShowcase } from '@/lib/strapi/types/newsShowcase';
+import { RootEntity } from '@/lib/strapi/types/rootEntity';
 
-type StrapiCallToAction = {
+type CallToAction = {
   readonly link: StrapiLink;
   readonly variant?: 'text' | 'contained' | 'outlined';
 };
 
-type StrapiHeroSlide = {
+type HeroSlide = {
   readonly title: string;
   readonly subhead?: BlocksContent;
   readonly subheadColor?: 'contrastText' | 'main' | 'light' | 'dark';
-  readonly callToAction?: StrapiCallToAction;
+  readonly callToAction?: CallToAction;
   readonly titleColor?: 'contrastText' | 'main' | 'light' | 'dark';
   readonly backgroundImage?: StrapiMedia;
 };
 
-type StrapiEcosystem = {
+type Ecosystem = {
   readonly title?: string;
   readonly productsTabName: string;
   readonly products: readonly StrapiProduct[];
   readonly solutionsTabName: string;
   readonly solutions: readonly StrapiBaseSolution[];
-  readonly solutionsCta?: StrapiCallToAction;
+  readonly solutionsCta?: CallToAction;
 };
 
-export type StrapiHomepage = {
+export type Homepage = {
   readonly comingsoonDocumentation: StrapiRelatedLinks;
-  readonly heroSlider: readonly StrapiHeroSlide[];
+  readonly heroSlider: readonly HeroSlide[];
   readonly newsShowcase?: StrapiNewsShowcase;
-  readonly ecosystem?: StrapiEcosystem;
+  readonly ecosystem?: Ecosystem;
   readonly webinars: readonly StrapiWebinar[];
   readonly seo?: StrapiSeo;
   readonly updatedAt: string;
 };
+
+export type StrapiHomepage = RootEntity<Homepage>;

@@ -1,12 +1,11 @@
-import { StrapiHomepage } from '@/lib/strapi/types/homepage';
-import { makeWebinarProps } from '@/lib/strapi/makeProps/makeWebinars';
-import { HomepageProps } from '@/app/[locale]/page';
 import { compact } from 'lodash';
-import { RootEntity } from '@/lib/strapi/types/rootEntity';
+import { HomepageProps } from '@/app/[locale]/page';
+import { makeWebinarProps } from '@/lib/strapi/makeProps/makeWebinars';
+import { StrapiHomepage } from './types';
 
-export const makeHomepageProps = (
+export const mapHomepageProps = (
   locale: string,
-  strapiHomepage: RootEntity<StrapiHomepage>
+  strapiHomepage: StrapiHomepage
 ): HomepageProps => ({
   updatedAt: strapiHomepage.data.updatedAt,
   comingsoonDocumentation: strapiHomepage.data.comingsoonDocumentation,
@@ -74,7 +73,7 @@ export const makeHomepageProps = (
       ],
     },
   }),
-  seo: strapiHomepage.data?.seo,
+  seo: strapiHomepage.data.seo,
   webinars: compact(
     strapiHomepage.data.webinars.map((webinar) => makeWebinarProps(webinar))
   ),

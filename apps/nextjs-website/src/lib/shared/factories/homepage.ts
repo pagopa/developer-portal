@@ -1,5 +1,5 @@
-import { strapiHomepage } from '@/lib/strapi/__tests__/fixtures/homepage';
-import { StrapiHomepage } from '@/lib/strapi/types/homepage';
+import { strapiHomepage } from '@/lib/shared/fixtures/homepage';
+import { Homepage } from '@/lib/homepage/types';
 
 export function minimalDataHomepage() {
   return {
@@ -18,33 +18,33 @@ export function minimalDataHomepage() {
     ecosystem: undefined,
     webinars: [],
     seo: undefined,
-  } satisfies StrapiHomepage;
+  } satisfies Homepage;
 }
 
 export function homepageWithoutNewsShowcase() {
   return {
     ...strapiHomepage,
     newsShowcase: undefined,
-  } satisfies StrapiHomepage;
+  } satisfies Homepage;
 }
 
 export function homepageWithoutEcosystem() {
   return {
     ...strapiHomepage,
     ecosystem: undefined,
-  } satisfies StrapiHomepage;
+  } satisfies Homepage;
 }
 
 export function homepageWithoutWebinars() {
   return {
     ...strapiHomepage,
     webinars: [],
-  } satisfies StrapiHomepage;
+  } satisfies Homepage;
 }
 
 export function homepageWithoutSeo() {
   return {
     ...strapiHomepage,
     seo: undefined,
-  } satisfies StrapiHomepage;
+  } satisfies Homepage;
 }
