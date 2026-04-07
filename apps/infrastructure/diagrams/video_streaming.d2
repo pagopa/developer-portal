@@ -97,11 +97,6 @@ s3: {
     shape: image
   }
 
-  cf_logs: S3\n(CloudFront\nAccess Logs) {
-    icon: https://icons.terrastruct.com/aws%2FStorage%2FAmazon-Simple-Storage-Service-S3.svg
-    shape: image
-  }
-
   heartbeat: S3\n(Heartbeat\nStorage) {
     icon: https://icons.terrastruct.com/aws%2FStorage%2FAmazon-Simple-Storage-Service-S3.svg
     shape: image
@@ -123,7 +118,7 @@ firehose: Kinesis\nFirehose\n(Direct Put) {
 analytics: {
   label: Analytics (Athena)
 
-  athena_db: Athena Database\n(CloudFront Logs) {
+  athena_db: Athena Database\n(webinar_analytics) {
     icon: https://icons.terrastruct.com/aws%2FAnalytics%2FAmazon-Athena.svg
     shape: image
   }
@@ -171,7 +166,6 @@ users -> route53: HTTPS
 route53 -> cloudfront: video.developer.pagopa.it
 
 cloudfront -> s3.recordings: Origin (OAC\nsigv4 signing)\nDefault behavior
-cloudfront -> s3.cf_logs: Access logs
 cloudfront -> apigw.ingest: /ingest path\n(ordered cache behavior\nCachingDisabled)
 
 # Video processing
@@ -182,7 +176,7 @@ lambdas.video_processing -> ssm: Read Strapi\nAPI key
 # Metrics API
 apigw.metrics -> lambdas.metrics: Invoke
 lambdas.metrics -> ivs: Get stream\nmetrics (IVS API)
-lambdas.metrics -> analytics.athena_workgroup: Query CF logs
+lambdas.metrics -> analytics.athena_workgroup: Query webinar\nheartbeat data
 lambdas.metrics -> s3.athena_results: Results bucket
 
 # Heartbeat / viewer tracking (via CloudFront + API Gateway)
@@ -193,8 +187,7 @@ lambdas.ingest -> firehose: Forward events
 firehose -> s3.heartbeat: Batch delivery\n(extended_s3)
 
 # Analytics
-s3.cf_logs -> analytics.athena_db: External table
-s3.heartbeat -> analytics.athena_db: Query events
+s3.heartbeat -> analytics.athena_db: External table\n(webinar_heartbeats)
 analytics.athena_workgroup -> s3.athena_results: Store results
 
 # Monitoring

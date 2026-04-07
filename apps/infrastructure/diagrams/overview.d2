@@ -45,6 +45,21 @@ ses: SES\n(Email Service) {
   shape: image
 }
 
+# Auth Module (separate from Website)
+auth: Auth {
+  style.fill: "#fce4ec"
+
+  cognito: Cognito\n(User & Identity Pool) {
+    icon: https://icons.terrastruct.com/aws%2FSecurity%2C%20Identity%2C%20&%20Compliance%2FAmazon-Cognito.svg
+    shape: image
+  }
+
+  cognito_lambdas: Lambda Triggers\n(Custom Auth Flow) {
+    icon: https://icons.terrastruct.com/aws%2FCompute%2FAWS-Lambda.svg
+    shape: image
+  }
+}
+
 # Website Module
 website: Website {
   style.fill: "#e3f2fd"
@@ -71,11 +86,6 @@ website: Website {
 
   s3_assets: S3\n(OpenNext Assets) {
     icon: https://icons.terrastruct.com/aws%2FStorage%2FAmazon-Simple-Storage-Service-S3.svg
-    shape: image
-  }
-
-  cognito: Cognito\n(User & Identity Pool) {
-    icon: https://icons.terrastruct.com/aws%2FSecurity%2C%20Identity%2C%20&%20Compliance%2FAmazon-Cognito.svg
     shape: image
   }
 
@@ -310,6 +320,11 @@ route53 -> website.cloudfront_static: static-contents.developer.pagopa.it
 route53 -> vpc.cms.alb_public: cms.developer.pagopa.it
 route53 -> vpc.chatbot.waf: api.chatbot.developer.pagopa.it
 route53 -> video.cloudfront_video: video.developer.pagopa.it
+route53 -> auth.cognito: auth.developer.pagopa.it
+
+# Auth module
+auth.cognito -> auth.cognito_lambdas: Lambda triggers
+auth.cognito_lambdas -> ses: Verification &\nOTP emails
 
 # Website internals
 website.cloudfront -> website.lambda: Origin
@@ -317,7 +332,7 @@ website.cloudfront -> website.s3_assets: Static assets
 website.cloudfront_static -> website.s3: Origin
 website.lambda -> vpc.cms.alb_internal: Fetch content\n(Internal ALB, port 8080)
 website.lambda -> website.s3: Read docs/guides
-website.cognito -> ses: Verification emails
+website.lambda -> auth.cognito: Cognito config\n(User Pool ID, Client ID)
 
 # CMS internals
 vpc.cms.alb_public -> vpc.cms.ecs_strapi: Port 1337
@@ -328,7 +343,7 @@ vpc.cms.cloudfront_media -> vpc.cms.s3_media: Origin (OAI)
 
 # Chatbot internals
 vpc.chatbot.waf -> vpc.chatbot.apigw
-vpc.chatbot.apigw -> website.cognito: Authorize
+vpc.chatbot.apigw -> auth.cognito: Authorize\n(COGNITO_USER_POOLS)
 vpc.chatbot.apigw -> vpc.chatbot.lambda_api: Invoke (AWS_PROXY)
 vpc.chatbot.lambda_api -> vpc.chatbot.nlb: Redis\n(Port 6379)
 vpc.chatbot.nlb -> vpc.chatbot.redis
@@ -348,12 +363,13 @@ vpc.chatbot.lambda_index -> vpc.chatbot.nlb: Update index\n(Redis)
 vpc.chatbot.lambda_index -> google: Embeddings
 
 # Active Campaign flow
-website.cognito -> ac.eventbridge_rule: User events\n(via CloudTrail)
+auth.cognito -> ac.eventbridge_rule: User events\n(via CloudTrail)
 website.dynamodb_subscriptions -> ac.eventbridge_pipe: DDB Stream\n(Subscriptions)
 ac.eventbridge_rule -> ac.sqs_ac: Send message
 ac.eventbridge_pipe -> ac.sqs_ac: Transform & send
 ac.sqs_ac -> ac.lambda_sync: Trigger
 ac.lambda_sync -> ac_external: Sync contacts
+ac.lambda_sync -> auth.cognito: Read user data
 
 # Video Streaming
 video.ivs -> video.s3_recordings: Auto-record
@@ -362,6 +378,10 @@ video.s3_recordings -> video.lambda_video: S3 Event\n(recording-ended.json)
 video.lambda_video -> vpc.cms.ecs_strapi: Update webinar\nrecording URL
 video.apigw_metrics -> video.lambda_metrics: Invoke
 video.lambda_metrics -> video.ivs: Get stream metrics
+
+# Heartbeat flow (users -> CloudFront -> API Gateway -> Lambda -> Firehose)
+users -> video.cloudfront_video: POST /ingest\n(Heartbeat)
+video.cloudfront_video -> auth.cognito: JWT validation\n(via API Gateway)
 
 # Monitoring
 website.lambda -> cloudwatch: Logs
