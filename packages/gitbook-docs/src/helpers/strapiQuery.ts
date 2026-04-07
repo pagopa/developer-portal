@@ -26,7 +26,39 @@ const productRelationsPopulate = {
 };
 
 const webinarPopulate = {
-  populate: '*',
+  populate: {
+    chapters: '*',
+    coverImage: {
+      populate: '*',
+    },
+    playerCoverImage: {
+      populate: '*',
+    },
+    webinarSpeakers: {
+      populate: ['avatar'],
+    },
+    relatedLinks: {
+      populate: ['links'],
+    },
+    relatedResources: {
+      populate: {
+        resources: {
+          populate: '*',
+        },
+        downloadableDocuments: {
+          populate: '*',
+        },
+      },
+    },
+    seo: {
+      populate: '*',
+    },
+    questionsAndAnswers: '*',
+    webinarCategory: { populate: ['icon'] },
+    headerImage: {
+      populate: '*',
+    },
+  },
 };
 
 const guidesPopulate = {
