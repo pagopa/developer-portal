@@ -23,7 +23,7 @@ output "athena_database_name" {
 
 output "athena_workgroup_name" {
   description = "The name of the Athena workgroup for running queries."
-  value       = aws_athena_workgroup.webinar_db.name
+  value       = aws_athena_workgroup.webinar_analytics.name
 }
 
 output "athena_results_bucket_name" {

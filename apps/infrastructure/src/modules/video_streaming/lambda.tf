@@ -33,7 +33,7 @@ resource "aws_lambda_function" "webinar_metrics" {
   environment {
     variables = merge(
       {
-        ATHENA_DATABASE       = aws_athena_database.webinar_heartbeats.name
+        ATHENA_DATABASE       = aws_athena_database.webinar_db.name
         ATHENA_RESULTS_BUCKET = aws_s3_bucket.athena_results.bucket
       },
       var.webinar_metrics_channel_key != null ? {
