@@ -1,5 +1,5 @@
 import { getReleaseNote } from '@/lib/api';
-import { getUrlReplaceMapProps } from '@/lib/cmsApi';
+import { getUrlReplaceMap } from '@/lib/api';
 import { GitBookContentData } from '@/lib/types/gitBookContent';
 
 export async function GET(
@@ -32,7 +32,7 @@ export async function GET(
         );
       }
 
-      return getUrlReplaceMapProps(locale).then((urlReplaceMap) => {
+      return getUrlReplaceMap(locale).then((urlReplaceMap) => {
         const { page, product, seo, source, title, bodyConfig } =
           releaseNoteProps;
 
