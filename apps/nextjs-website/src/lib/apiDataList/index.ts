@@ -1,10 +1,12 @@
-import { fetchApiDataList } from './fetcher';
+import { fetchApiDataList, fetchProductApiDataReader } from './fetcher';
 import { mapApiDataList } from './mapper';
 import { ApiDataPageProps } from './types';
 
 export const ApiDataListRepository = {
   /**
    * Returns all API Data pre-transformed and ready for UI
+   * @param locale The locale used to get the API Data collection.
+   * @returns An array of API Data entries with all their fields, ready for UI consumption.
    */
   getAll: async (locale: string): Promise<ReadonlyArray<ApiDataPageProps>> => {
     const rawData = await fetchApiDataList(locale);
@@ -13,9 +15,12 @@ export const ApiDataListRepository = {
     }
     return mapApiDataList(locale, rawData);
   },
-
   /**
-   * Returns API Data settings for a given product
+   * Returns API Data settings for a given product and API Data slug.
+   * @param locale The locale used to get the API Data collection.
+   * @param productSlug The slug of the product to filter API Data by.
+   * @param apiDataSlug The slug of the API Data to retrieve.
+   * @returns The matching API Data entry, or `undefined` if no entry is found.
    */
   getByProductAndSlug: async (
     locale: string,
@@ -29,9 +34,11 @@ export const ApiDataListRepository = {
         apiData.apiDataSlug === apiDataSlug
     );
   },
-
   /**
    * Returns API Data by looking up just the slug.
+   * @param locale The locale used to get the API Data collection.
+   * @param apiDataSlug The slug of the API Data to retrieve.
+   * @returns The matching API Data entry, or `undefined` if no entry is found.
    */
   getBySlug: async (
     locale: string,
@@ -40,4 +47,13 @@ export const ApiDataListRepository = {
     const all = await ApiDataListRepository.getAll(locale);
     return all.find((apiData) => apiData.apiDataSlug === apiDataSlug);
   },
+  /**
+   * Fetches API Data entries for a specific product.
+   * Only retrieves 'updatedAt' and the slug from either 'apiRestDetail' or 'apiSoapDetail'.
+   * @param locale The locale used to get the API Data collection.
+   * @param productSlug The slug of the product to filter API Data by.
+   * @returns An array of API Data entries related to the specified product.
+   */
+  getProductApiData: async (locale: string, productSlug: string) =>
+    fetchProductApiDataReader(locale, productSlug),
 };

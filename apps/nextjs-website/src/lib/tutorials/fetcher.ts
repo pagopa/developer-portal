@@ -1,6 +1,8 @@
 import qs from 'qs';
-import { productRelationsPopulate } from '@/lib/products/fetcher';
+import { buildEnv } from '@/lib/buildEnv';
 import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
+import { fetchCollectionFromStrapi } from '@/lib/strapi/fetchFromStrapi.helpers';
+import { productRelationsPopulate } from '@/lib/products/fetcher';
 import { StrapiTutorials } from './types';
 
 const makeStrapiTutorialsPopulate = () =>
@@ -30,7 +32,16 @@ const makeStrapiTutorialsPopulate = () =>
     },
   });
 
-export const fetchTutorials = fetchFromStrapi<StrapiTutorials>(
-  'tutorials',
-  makeStrapiTutorialsPopulate()
-);
+export const fetchTutorials = (locale: string) =>
+  fetchFromStrapi<StrapiTutorials>('tutorials', makeStrapiTutorialsPopulate())(
+    locale,
+    buildEnv
+  );
+
+export const fetchProductTutorialsReader = (
+  locale: string,
+  productSlug: string
+) =>
+  fetchCollectionFromStrapi<StrapiTutorials>('tutorials', productSlug, {
+    fields: ['slug', 'updatedAt'],
+  })(locale, buildEnv);

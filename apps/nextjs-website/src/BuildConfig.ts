@@ -1,5 +1,5 @@
 import * as E from 'fp-ts/lib/Either';
-import { StrapiConfig } from '@/lib/strapi/StrapiConfig';
+import { StrapiConfig } from '@/lib/strapi/strapiConfig';
 
 export type BuildConfig = {
   readonly FETCH_FROM_STRAPI: boolean;
