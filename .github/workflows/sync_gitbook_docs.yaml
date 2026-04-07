@@ -72,7 +72,7 @@ jobs:
       - name: Checkout current repository
         uses: actions/checkout@v4
         with:
-          ref: ${{ inputs.environment == 'dev' && 'main' || format('nextjs-website@latest-deployed-in-{0}', inputs.environment) }}
+          ref: ${{ inputs.environment == 'dev' && github.ref || format('nextjs-website@latest-deployed-in-{0}', inputs.environment) }}
 
       - name: Sync GitBook Docs
         uses: ./.github/actions/sync-gitbook-docs
