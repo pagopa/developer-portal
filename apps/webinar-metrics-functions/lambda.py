@@ -19,7 +19,6 @@ REGION = os.environ.get('AWS_REGION', 'eu-central-1')
 
 # Clients
 athena = boto3.client('athena', region_name=REGION)
-cw = boto3.client('cloudwatch', region_name=REGION)
 
 
 def _build_partition_filter(start_date: str, end_date: str) -> str:
