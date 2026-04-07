@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { strapiReleaseNotes } from '@/lib/strapi/__tests__/fixtures/releaseNotes';
-import { StrapiReleaseNotes } from '@/lib/strapi/types/releaseNotes';
+import { strapiReleaseNotes } from '@/lib/__tests__/fixtures/releaseNotes';
+import { StrapiReleaseNotes } from '@/lib/releaseNotes/types';
 
 export function minimalDataReleaseNotes() {
   const strapiReleaseNote = strapiReleaseNotes.data[0];
@@ -15,6 +15,7 @@ export function minimalDataReleaseNotes() {
         bannerLinks: [],
         seo: undefined,
         product: {
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           ...strapiReleaseNote.product!,
           bannerLinks: undefined,
         },
@@ -45,6 +46,7 @@ export function releaseNotesWithoutProductBannerLinks() {
         ...strapiReleaseNote,
         bannerLinks: [],
         product: {
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           ...strapiReleaseNote.product!,
           bannerLinks: [],
         },
@@ -62,6 +64,7 @@ export function releaseNotesWithMissingProductSlug() {
         ...strapiReleaseNote,
         title: 'Release Note Without Product Slug',
         product: {
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           ...strapiReleaseNote.product!,
           slug: undefined as any,
         },

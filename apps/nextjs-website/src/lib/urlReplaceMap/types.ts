@@ -1,4 +1,4 @@
-type Guide = {
+export type Guide = {
   readonly title: string;
   readonly slug: string;
   readonly product: {
@@ -16,3 +16,5 @@ export type StrapiUrlToGuide = {
 export type StrapiUrlReplaceMap = {
   readonly urlToGuide: readonly StrapiUrlToGuide[];
 };
+
+export type UrlReplaceMap = Record<string, string>;

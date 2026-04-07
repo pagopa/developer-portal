@@ -2,7 +2,7 @@ import { StrapiMedia } from '@/lib/strapi/types/media';
 import { StrapiBaseProductWithRelations } from '@/lib/products/types';
 import { StrapiBannerLink } from '@/lib/bannerLink/types';
 import { StrapiSeo } from '@/lib/strapi/types/seo';
-import { StrapiTag } from '@/lib/strapi/types/tag';
+import { StrapiTag } from '@/lib/tags/types';
 import { ApiDataPageProps } from '@/app/[locale]/[productSlug]/api/[apiDataSlug]/page';
 import { RootEntity } from '@/lib/strapi/types/rootEntity';
 

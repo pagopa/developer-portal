@@ -7,7 +7,7 @@ import { Paginated } from '@/lib/strapi/types/paginated';
 import { StrapiRelatedLinks } from '@/lib/strapi/types/link';
 import { StrapiMedia } from '@/lib/strapi/types/media';
 import { StrapiSeo } from '@/lib/strapi/types/seo';
-import { StrapiTag } from '@/lib/strapi/types/tag';
+import { StrapiTag } from '@/lib/tags/types';
 import { UseCase } from '@/lib/types/useCaseData';
 
 export type StrapiBaseUseCase = {
