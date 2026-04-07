@@ -2,4 +2,4 @@
 "nextjs-website": patch
 ---
 
-Refactor: implement tutorials and tutorial list page API layer as repositories
+Refactor: implement useCases and useCaseListPage API layer as repositories
