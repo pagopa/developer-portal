@@ -5,7 +5,6 @@ import { GuidesRepository } from '@/lib/guides';
 import { Product } from '@/lib/product/types';
 import { Webinar } from '@/lib/types/webinar';
 import {
-  getOverviewsProps,
   getQuickStartGuidesProps,
   getReleaseNoteProps,
   getSolutionListPageProps,
@@ -26,6 +25,7 @@ import {
   getSolutionsMetadata,
 } from '@/helpers/s3Metadata.helpers';
 import { s3DocsPath } from '@/config';
+import { OverviewsRepository } from './overviews';
 import { ProductRepository } from './product';
 
 function manageUndefined<T>(props: undefined | null | T) {
@@ -104,7 +104,7 @@ export async function getGuideListPages(locale: string, productSlug?: string) {
 
 export async function getOverview(locale: string, productSlug?: string) {
   return manageUndefined(
-    (await getOverviewsProps(locale)).find(
+    (await OverviewsRepository.getAll(locale)).find(
       (overviewData) => overviewData.product.slug === productSlug
     )
   );

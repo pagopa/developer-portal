@@ -4,7 +4,7 @@ import { Tutorial } from '@/lib/types/tutorialData';
 import { makePartProps } from '@/lib/strapi/makeProps/makePart';
 import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
 import { RelatedLinksProps } from '@/components/atoms/RelatedLinks/RelatedLinks';
-import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
+import { mapBannerLinkProps } from '@/lib/shared/bannerLink/mapper';
 import { StrapiTutorials } from '@/lib/strapi/types/tutorial';
 import { compact } from 'lodash';
 
@@ -60,8 +60,8 @@ export function makeTutorialsProps(
           relatedLinks: attributes.relatedLinks,
           bannerLinks:
             attributes.bannerLinks && attributes.bannerLinks.length > 0
-              ? attributes.bannerLinks.map(makeBannerLinkProps)
-              : attributes.product.bannerLinks?.map(makeBannerLinkProps),
+              ? attributes.bannerLinks.map(mapBannerLinkProps)
+              : attributes.product.bannerLinks?.map(mapBannerLinkProps),
 
           seo: attributes.seo,
           tags: attributes.tags?.map((tag) => tag) || [],

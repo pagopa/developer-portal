@@ -1,5 +1,5 @@
 /* eslint-disable functional/no-expression-statements */
-import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
+import { mapBannerLinkProps } from '@/lib/shared/bannerLink/mapper';
 import { makeBaseProductWithoutLogoProps } from '@/lib/product/mapper';
 import { ApiDataListPages, ApiDataListPageTemplateProps } from './types';
 import { compact } from 'lodash';
@@ -73,7 +73,7 @@ export function mapApiDataListPages(
           cards: compact(
             apiPage.apiData.map(mapApiDataListPageCard(locale, slug))
           ),
-          bannerLinks: apiPage.bannerLinks.map(makeBannerLinkProps),
+          bannerLinks: apiPage.bannerLinks.map(mapBannerLinkProps),
           seo: apiPage.seo,
           updatedAt: apiPage.updatedAt,
           enableFilters: apiPage.enableFilters,

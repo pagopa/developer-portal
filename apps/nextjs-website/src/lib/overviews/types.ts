@@ -1,14 +1,14 @@
+import { BlocksContent } from '@strapi/blocks-react-renderer';
+import { StrapiBannerLink } from '@/lib/shared/bannerLink/types';
 import type { StrapiBaseGuide } from '@/lib/guides/types';
 import { StrapiLink, StrapiRelatedLinks } from '@/lib/strapi/types/link';
 import { StrapiMedia } from '@/lib/strapi/types/media';
-import { StrapiBannerLink } from '@/lib/strapi/types/bannerLink';
 import { StrapiNewsShowcase } from '@/lib/strapi/types/newsShowcase';
-import { BlocksContent } from '@strapi/blocks-react-renderer';
-import { StrapiSeo } from '@/lib/strapi/types/seo';
 import { Paginated } from '@/lib/strapi/types/paginated';
+import { StrapiSeo } from '@/lib/strapi/types/seo';
 import { StrapiBaseTutorial } from '@/lib/strapi/types/tutorial';
+import { StrapiBaseUseCase } from '@/lib/strapi/types/useCase';
 import { StrapiProduct } from '@/lib/product/types';
-import { StrapiBaseUseCase } from './useCase';
 
 export type StrapiStartInfo = {
   readonly icon: StrapiMedia;
@@ -43,7 +43,7 @@ export type StrapiUseCaseSection = {
   readonly useCases: readonly StrapiBaseUseCase[];
 };
 
-export type StrapiCardProps = {
+export type StrapiCard = {
   readonly title: string;
   readonly content: BlocksContent;
   readonly linkText: string;
@@ -63,7 +63,7 @@ export type StrapiPostIntegration = {
   readonly description: string;
   readonly link?: StrapiLink;
   readonly guidesTitle?: string;
-  readonly documents: readonly StrapiCardProps[];
+  readonly documents: readonly StrapiCard[];
   readonly guides: readonly StrapiBaseGuide[];
   readonly serviceModels: readonly StrapiServiceModel[];
 };
