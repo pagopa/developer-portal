@@ -1,16 +1,3 @@
-output "cognito_user_pool" {
-  value = {
-    id        = aws_cognito_user_pool.devportal.id
-    arn       = aws_cognito_user_pool.devportal.arn
-    domain    = aws_cognito_user_pool_domain.devportal.domain
-    region    = var.aws_region
-    client_id = aws_cognito_user_pool_client.devportal_website.id
-    endpoint  = aws_cognito_user_pool.devportal.endpoint
-  }
-
-  sensitive = true
-}
-
 output "webinar_subscriptions_ddb" {
   value = {
     name       = module.dynamodb_webinar_subscriptions.dynamodb_table_id

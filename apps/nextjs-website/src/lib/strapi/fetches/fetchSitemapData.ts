@@ -8,6 +8,7 @@ import * as E from 'fp-ts/lib/Either';
 import { makeBuildConfig } from '@/BuildConfig';
 import { makeBuildEnv } from '@/BuildEnv';
 import { secrets } from '@/config';
+import { Paginated } from '@/lib/strapi/types/paginated';
 
 // --------------------------------------------------------------------------------
 // Environment Initialization
@@ -95,13 +96,17 @@ const fetchProductTutorialsReader = (productSlug: string) =>
   });
 
 const fetchProductApiDataReader = (productSlug: string) =>
-  makeCollectionFetcher<StrapiApiDataList>('apis-data', productSlug, {
-    fields: ['updatedAt'],
-    populate: {
-      apiRestDetail: { fields: ['slug'] },
-      apiSoapDetail: { fields: ['slug'] },
-    },
-  });
+  makeCollectionFetcher<Paginated<StrapiApiDataList>>(
+    'apis-data',
+    productSlug,
+    {
+      fields: ['updatedAt'],
+      populate: {
+        apiRestDetail: { fields: ['slug'] },
+        apiSoapDetail: { fields: ['slug'] },
+      },
+    }
+  );
 
 // --------------------------------------------------------------------------------
 // Exported Async Fetchers

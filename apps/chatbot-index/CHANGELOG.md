@@ -1,5 +1,11 @@
 # chatbot-index
 
+## 2.6.2
+
+### Patch Changes
+
+- 8faf184: Refactor Vertex AI credential handling to use centralized settings and improve error logging for missing credentials
+
 ## 2.6.1
 
 ### Patch Changes

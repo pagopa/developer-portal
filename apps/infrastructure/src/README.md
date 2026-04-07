@@ -96,13 +96,13 @@
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_active_campaign"></a> [active\_campaign](#module\_active\_campaign) | ./modules/active_campaign | n/a |
+| <a name="module_auth"></a> [auth](#module\_auth) | ./modules/auth | n/a |
 | <a name="module_chatbot"></a> [chatbot](#module\_chatbot) | ./modules/chatbot | n/a |
 | <a name="module_cicd"></a> [cicd](#module\_cicd) | ./modules/cicd | n/a |
 | <a name="module_cms"></a> [cms](#module\_cms) | ./modules/cms | n/a |
 | <a name="module_core"></a> [core](#module\_core) | ./modules/core | n/a |
 | <a name="module_docs_redirect"></a> [docs\_redirect](#module\_docs\_redirect) | ./modules/docs_redirect | n/a |
 | <a name="module_identity"></a> [identity](#module\_identity) | ./identity | n/a |
-| <a name="module_langfuse"></a> [langfuse](#module\_langfuse) | ./modules/langfuse | n/a |
 | <a name="module_strapi_v5"></a> [strapi\_v5](#module\_strapi\_v5) | ./modules/strapi5 | n/a |
 | <a name="module_video_streaming"></a> [video\_streaming](#module\_video\_streaming) | ./modules/video_streaming | n/a |
 | <a name="module_website"></a> [website](#module\_website) | ./modules/website | n/a |

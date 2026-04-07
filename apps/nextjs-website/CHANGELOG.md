@@ -1,5 +1,16 @@
 # nextjs-website
 
+## 16.5.0
+
+### Minor Changes
+
+- 8596eb7: Add heartbeat monitoring post and update max question chars
+- badb94d: Manage CustomMessagesMap single type from Strapi
+
+### Patch Changes
+
+- 01d84ab: Improve null safety for coming soon documentation links in home page
+
 ## 16.4.0
 
 ### Minor Changes
