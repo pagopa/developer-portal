@@ -281,22 +281,16 @@ export async function getSolutionDetail(
   locale: string,
   solutionSubPathSlugs: readonly string[]
 ) {
-  const solutionData = await getSolution(locale, solutionSlug);
-  if (!solutionData) {
-    // eslint-disable-next-line functional/no-throw-statements
-    throw new Error('Failed to fetch solution data');
-  }
-  const solutionsMetadata = await getSolutionsMetadata(
-    locale,
-    solutionData.dirName
-  );
-
-  const solution = await SolutionRepository.getBySlug(solutionSlug, locale);
-
+  const solution = await getSolution(locale, solutionSlug);
   if (!solution) {
     // eslint-disable-next-line functional/no-throw-statements
     throw new Error(`No solution found matching slug "${solutionSlug}"`);
   }
+
+  const solutionsMetadata = await getSolutionsMetadata(
+    locale,
+    solution.dirName
+  );
 
   return makeSolution(
     solution,
