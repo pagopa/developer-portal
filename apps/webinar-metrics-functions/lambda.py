@@ -161,7 +161,7 @@ def lambda_handler(event: dict[str, Any], context: Any) -> dict[str, Any]:
 
     athena_results = run_athena_query(start_date_str, end_date_str, islive=islive, min_count=int(min_count))
 
-    # Build lookup: try to match Athena results to IVS streams by stream_id in root_path
+    # Build the response payload from Athena webinar heartbeat aggregates.
     data = []
 
     for row in athena_results:
