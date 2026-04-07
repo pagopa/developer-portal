@@ -1,35 +1,36 @@
 /* eslint-disable functional/no-expression-statements */
 /* eslint-disable functional/no-try-statements */
 import { SolutionTemplateProps } from '@/components/templates/SolutionTemplate/SolutionTemplate';
-import { StrapiSolutions } from '@/lib/strapi/types/solutions';
 import { makeWebinarProps } from '@/lib/strapi/makeProps/makeWebinars';
 import { compact } from 'lodash';
+import { StrapiSolutions } from './types';
 
-export function makeSolutionsProps(
+export function mapSolutionsProps(
   locale: string,
   strapiSolutions: StrapiSolutions
 ): ReadonlyArray<SolutionTemplateProps> {
   return compact(
-    strapiSolutions?.data.map((attributes) => {
+    strapiSolutions.data.map((attributes) => {
       if (!attributes.slug || !attributes.title) {
         console.error(
           `Error while processing Solution: missing title or slug. Title: ${attributes.title} | Slug: ${attributes.slug}. Skipping...`
         );
         return null;
       }
+
       try {
         return {
           ...attributes,
-          stats: [...(attributes.stats || [])], // Aggiunto fallback array vuoto
+          stats: [...(attributes.stats || [])],
           steps: attributes.steps?.map((step) => ({
             ...step,
             products: step.products?.map((product) => ({
               ...product,
             })),
           })),
-          products: attributes.products?.map((attributes) => ({
-            ...attributes,
-            logo: attributes.logo,
+          products: attributes.products?.map((product) => ({
+            ...product,
+            logo: product.logo,
           })),
           icon: attributes.icon,
           webinars: compact(
@@ -53,6 +54,7 @@ export function makeSolutionsProps(
                   );
                   return null;
                 }
+
                 return {
                   title: caseHistory.title,
                   path: `/${locale}/case-histories/${caseHistory.slug}`,

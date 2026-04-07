@@ -1,9 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { strapiSolutions } from '@/lib/strapi/__tests__/fixtures/solutions';
-import { StrapiSolutions } from '@/lib/strapi/types/solutions';
+import { strapiSolutions } from '@/lib/__tests__/fixtures/solutions';
+import { StrapiSolutions } from '@/lib/solutions/types';
 
 export function minimalDataSolutions() {
   const strapiSolution = strapiSolutions.data[0];
+
   return {
     ...strapiSolutions,
     data: [
@@ -25,6 +26,7 @@ export function minimalDataSolutions() {
 
 export function solutionsWithItemMissingData() {
   const strapiSolution = strapiSolutions.data[0];
+
   return {
     ...strapiSolutions,
     data: [
@@ -40,6 +42,7 @@ export function solutionsWithItemMissingData() {
 
 export function solutionWithItemMissingMandatoryData() {
   const strapiSolution = solutionsWithItemMissingData().data[0];
+
   return {
     ...strapiSolutions,
     data: [
@@ -53,6 +56,7 @@ export function solutionWithItemMissingMandatoryData() {
 
 export function solutionsWithItemWithoutCaseHistories() {
   const strapiSolution = strapiSolutions.data[0];
+
   return {
     ...strapiSolutions,
     data: [
@@ -66,6 +70,7 @@ export function solutionsWithItemWithoutCaseHistories() {
 
 export function solutionsWithItemWithoutWebinars() {
   const strapiSolution = strapiSolutions.data[0];
+
   return {
     ...strapiSolutions,
     data: [
@@ -79,6 +84,7 @@ export function solutionsWithItemWithoutWebinars() {
 
 export function solutionsWithItemMissingSolutionSlug() {
   const strapiSolution = strapiSolutions.data[0];
+
   return {
     ...strapiSolutions,
     data: [
@@ -98,6 +104,7 @@ export function solutionsWithItemMissingSolutionSlug() {
 
 export function solutionsWithItemMissingCaseHistorySlug(): StrapiSolutions {
   const strapiSolution = strapiSolutions.data[0];
+
   return {
     ...strapiSolutions,
     data: [
@@ -110,23 +117,23 @@ export function solutionsWithItemMissingCaseHistorySlug(): StrapiSolutions {
           description: 'Our success stories',
           case_histories: [
             {
-              ...strapiSolution?.caseHistories?.case_histories[0],
+              ...strapiSolution.caseHistories?.case_histories[0],
               id: 1,
               title: 'Case History Without Slug',
               slug: undefined as any,
               image: {
-                ...strapiSolution?.caseHistories?.case_histories[0].image,
+                ...strapiSolution.caseHistories?.case_histories[0].image,
                 url: '/test-image.png',
                 name: 'Test Image',
               },
             },
             {
-              ...strapiSolution?.caseHistories?.case_histories[0],
+              ...strapiSolution.caseHistories?.case_histories[0],
               id: 2,
               title: 'Valid Case History',
               slug: 'valid-case-history',
               image: {
-                ...strapiSolution?.caseHistories?.case_histories[0].image,
+                ...strapiSolution.caseHistories?.case_histories[0].image,
                 url: '/valid-image.png',
                 name: 'Valid Image',
               },

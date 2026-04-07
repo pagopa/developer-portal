@@ -4,12 +4,11 @@ import { GuideListPagesRepository } from '@/lib/guideListPages';
 import { GuidesRepository } from '@/lib/guides';
 import { Product } from '@/lib/products/types';
 import { QuickStartGuidesRepository } from '@/lib/quickStartGuides';
+import { SolutionRepository } from '@/lib/solutions';
+import { SolutionListPageRepository } from '@/lib/solutionListPage';
 import { Webinar } from '@/lib/types/webinar';
 import {
   getReleaseNoteProps,
-  getSolutionListPageProps,
-  getSolutionProps,
-  getSolutionsProps,
   getStrapiReleaseNotes,
   getTutorialListPagesProps,
   getTutorialsProps,
@@ -27,6 +26,7 @@ import {
 import { s3DocsPath } from '@/config';
 import { OverviewsRepository } from './overviews';
 import { ProductRepository } from './products';
+import { makeSolution } from '../helpers/makeS3Docs.helpers';
 
 function manageUndefined<T>(props: undefined | null | T) {
   if (!props) {
@@ -252,13 +252,15 @@ export async function getReleaseNote(
 
 export async function getSolution(locale: string, solutionSlug?: string) {
   const props = manageUndefined(
-    (await getSolutionsProps(locale)).find(({ slug }) => slug === solutionSlug)
+    solutionSlug
+      ? await SolutionRepository.getBySlug(locale, solutionSlug)
+      : undefined
   );
   return props;
 }
 
 export async function getSolutionListPage(locale: string) {
-  const solutionListPageProps = await getSolutionListPageProps(locale);
+  const solutionListPageProps = await SolutionListPageRepository.get(locale);
   return manageUndefined(solutionListPageProps);
 }
 
@@ -277,8 +279,15 @@ export async function getSolutionDetail(
     solutionData.dirName
   );
 
-  return await getSolutionProps(
-    solutionSlug,
+  const solution = await SolutionRepository.getBySlug(solutionSlug, locale);
+
+  if (!solution) {
+    // eslint-disable-next-line functional/no-throw-statements
+    throw new Error(`No solution found matching slug "${solutionSlug}"`);
+  }
+
+  return makeSolution(
+    solution,
     locale,
     solutionsMetadata.find(
       ({ path }) =>

@@ -3,9 +3,6 @@ import { makeWebinarsProps } from './strapi/makeProps/makeWebinars';
 import { fetchWebinars } from './strapi/fetches/fetchWebinars';
 import { fetchTutorials } from './strapi/fetches/fetchTutorials';
 import { makeTutorialsProps } from './strapi/makeProps/makeTutorials';
-import { makeSolutionsProps } from './strapi/makeProps/makeSolutions';
-import { makeSolutionListPageProps } from './strapi/makeProps/makeSolutionListPage';
-import { fetchSolutionListPage } from './strapi/fetches/fetchSolutionListPage';
 
 import { fetchTutorialListPages } from './strapi/fetches/fetchTutorialListPages';
 import { makeTutorialListPagesProps } from './strapi/makeProps/makeTutorialListPages';
@@ -15,7 +12,6 @@ import { makeUrlReplaceMap } from './strapi/makeProps/makeUrlReplaceMap';
 import { makeReleaseNotesProps } from '@/lib/strapi/makeProps/makeReleaseNotes';
 import {
   makeGuide as makeGuideS3,
-  makeSolution as makeSolutionS3,
   makeReleaseNote as makeReleaseNoteS3,
 } from '@/helpers/makeS3Docs.helpers';
 
@@ -33,12 +29,8 @@ import { fetchTags } from '@/lib/strapi/fetches/fetchTags';
 import { makeTagsProps } from '@/lib/strapi/makeProps/makeTags';
 import { isMarkDownPart, MarkDownPart } from '@/lib/parts/types';
 import { getMarkdownContent } from '@/lib/api';
-import {
-  getSyncedSolutionsResponseJsonFile,
-  getSyncedReleaseNotesResponseJsonFile,
-} from 'gitbook-docs/syncedResponses';
+import { getSyncedReleaseNotesResponseJsonFile } from 'gitbook-docs/syncedResponses';
 import { GuidesRepository } from '@/lib/guides';
-import { StrapiSolutions } from './strapi/types/solutions';
 import { StrapiReleaseNotes } from './strapi/types/releaseNotes';
 
 export const getWebinarsProps = async (locale: string) => {
@@ -94,18 +86,6 @@ export const getUrlReplaceMapProps = async (locale: string) => {
   return makeUrlReplaceMap(locale, strapiUrlReplaceMap);
 };
 
-export const getSolutionsProps = async (locale: string) => {
-  const strapiSolutions = (await fetchResponseFromCDN(
-    `${locale}/${getSyncedSolutionsResponseJsonFile}`
-  )) as StrapiSolutions | undefined;
-  return strapiSolutions ? makeSolutionsProps(locale, strapiSolutions) : [];
-};
-
-export const getSolutionListPageProps = async (locale: string) => {
-  const strapiSolutionListPage = await fetchSolutionListPage(locale, buildEnv);
-  return makeSolutionListPageProps(locale, strapiSolutionListPage);
-};
-
 export const getGuideProps = async (
   guidePaths: ReadonlyArray<string>,
   locale: string,
@@ -121,27 +101,6 @@ export const getGuideProps = async (
     throw new Error('Failed to fetch guide data');
   }
   return await makeGuideS3({ guideDefinition: guide, locale, guidePaths });
-};
-
-export const getSolutionProps = async (
-  solutionsSlug: string,
-  locale: string,
-  jsonMetadata?: JsonMetadata
-) => {
-  const strapiSolutions = (await fetchResponseFromCDN(
-    `${locale}/${getSyncedSolutionsResponseJsonFile}`
-  )) as StrapiSolutions | undefined;
-  if (!strapiSolutions) {
-    // eslint-disable-next-line functional/no-throw-statements
-    throw new Error('Failed to fetch solution data');
-  }
-  const solutions = makeSolutionsProps(locale, strapiSolutions);
-  const solution = solutions.find((s) => s.slug === solutionsSlug);
-  if (!solution) {
-    // eslint-disable-next-line functional/no-throw-statements
-    throw new Error(`No solution found matching slug "${solutionsSlug}"`);
-  }
-  return await makeSolutionS3(solution, locale, jsonMetadata);
 };
 
 const fetchReleaseNotes = async (locale: string) => {

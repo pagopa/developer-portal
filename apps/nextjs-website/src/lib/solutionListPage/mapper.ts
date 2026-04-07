@@ -1,14 +1,15 @@
 /* eslint-disable functional/no-expression-statements */
 import { SolutionListTemplateProps } from '@/components/templates/SolutionListTemplate/SolutionListTemplate';
-import { StrapiSolutionListPage } from '@/lib/strapi/types/solutionListPage';
-import { compact } from 'lodash';
 import { RootEntity } from '@/lib/strapi/types/rootEntity';
+import { compact } from 'lodash';
+import { StrapiSolutionListPage } from './types';
 
-export function makeSolutionListPageProps(
+export function mapSolutionListPageProps(
   locale: string,
   strapiSolutionsList: RootEntity<StrapiSolutionListPage>
 ): SolutionListTemplateProps {
   const strapiSolutionsListData = strapiSolutionsList.data;
+
   return {
     ...strapiSolutionsList,
     hero: {
