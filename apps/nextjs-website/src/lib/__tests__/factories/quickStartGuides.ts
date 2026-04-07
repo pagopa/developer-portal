@@ -58,6 +58,7 @@ export function quickStartGuidesWithMissingProductSlug(): StrapiQuickStartGuides
         return {
           ...quickStart,
           product: {
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             ...quickStart.product!,
             slug: undefined as any,
           },

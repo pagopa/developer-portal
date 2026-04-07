@@ -1,7 +1,7 @@
 /* eslint-disable functional/no-expression-statements */
 /* eslint-disable functional/no-try-statements */
 import { SolutionTemplateProps } from '@/components/templates/SolutionTemplate/SolutionTemplate';
-import { makeWebinarProps } from '@/lib/strapi/makeProps/makeWebinars';
+import { mapWebinarProps } from '@/lib/webinars/mapper';
 import { compact } from 'lodash';
 import { StrapiSolutions } from './types';
 
@@ -34,7 +34,7 @@ export function mapSolutionsProps(
           })),
           icon: attributes.icon,
           webinars: compact(
-            attributes.webinars?.map((webinar) => makeWebinarProps(webinar))
+            attributes.webinars?.map((webinar) => mapWebinarProps(webinar))
           ),
           bannerLinks: attributes.bannerLinks?.map((bannerLink) => ({
             ...bannerLink,

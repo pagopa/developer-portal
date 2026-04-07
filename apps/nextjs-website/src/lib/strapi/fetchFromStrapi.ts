@@ -1,7 +1,7 @@
 import { pipe } from 'fp-ts/lib/function';
 import * as E from 'fp-ts/lib/Either';
 import * as TE from 'fp-ts/lib/TaskEither';
-import { StrapiEnv } from '@/lib/strapi/StrapiEnv';
+import { StrapiEnv } from '@/lib/strapi/strapiEnv';
 import { makeError } from '@/lib/makeError';
 
 export const fetchFromStrapi =
