@@ -17,10 +17,10 @@ import { SUPPORTED_LOCALES } from '@/locales';
 import { compact, isEmpty } from 'lodash';
 import { HomepageProps } from '@/app/[locale]/page';
 import { CaseHistoriesRepository } from '@/lib/caseHistories';
-import { HomepageRepository } from '@/lib/homepage';
-import { ProductRepository } from '@/lib/products';
-import { TutorialRepository } from '@/lib/tutorials';
-import { ApiDataListRepository } from '@/lib/apiDataList';
+import { HomepageRepository } from '../lib/homepage';
+import { ProductRepository } from '../lib/products';
+import { TutorialRepository } from '../lib/tutorials';
+import { ApiDataListRepository } from '../lib/apiDataList';
 
 export const dynamic = 'force-dynamic';
 
@@ -47,14 +47,6 @@ type SitemapProductRelations = {
   readonly tutorial_list_page?: SitemapProductRelation;
   readonly guide_list_page?: SitemapProductRelation;
   readonly api_data_list_page?: SitemapApiDataRelation;
-};
-
-type SitemapApiData = {
-  readonly attributes: {
-    readonly updatedAt: string;
-    readonly apiRestDetail?: { readonly slug: string };
-    readonly apiSoapDetail?: { readonly slug: string };
-  };
 };
 
 async function getHomepage(localeCode: string): Promise<HomepageProps | null> {
@@ -400,19 +392,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
           localeCode,
           productSlug
         );
-        const apiRoutes = (
-          apisData as unknown as readonly SitemapApiData[]
-        ).flatMap((api) => {
-          const apiSlug =
-            api.attributes.apiRestDetail?.slug ||
-            api.attributes.apiSoapDetail?.slug;
+        const apiRoutes = apisData.data.flatMap((api) => {
+          const apiSlug = api.apiRestDetail?.slug || api.apiSoapDetail?.slug;
           return apiSlug
             ? [
                 {
                   url: `${localizedUrlPrefix}/${productSlug}/api/${apiSlug}`,
-                  lastModified: new Date(
-                    api.attributes.updatedAt || Date.now()
-                  ),
+                  lastModified: new Date(api.updatedAt || Date.now()),
                   changeFrequency: 'weekly' as const,
                   priority: 0.6,
                 },

@@ -1,4 +1,4 @@
-import { fetchApiDataList, fetchProductApiDataReader } from './fetcher';
+import { fetchApiDataList, fetchProductApiData } from './fetcher';
 import { mapApiDataList } from './mapper';
 import { ApiDataPageProps } from './types';
 
@@ -36,5 +36,5 @@ export const ApiDataListRepository = {
    * @returns An array of API Data entries related to the specified product.
    */
   getProductApiData: async (locale: string, productSlug: string) =>
-    fetchProductApiDataReader(locale, productSlug),
+    fetchProductApiData(locale, productSlug),
 };

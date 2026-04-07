@@ -3,7 +3,7 @@ import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
 import { productRelationsPopulate } from '@/lib/products/fetcher';
 import { fetchCollectionFromStrapi } from '@/lib/strapi/fetchFromStrapi.helpers';
 import { buildEnv } from '@/lib/buildEnv';
-import { ApiDataList } from './types';
+import { ApiDataList, SitemapApiData as ProductApiData } from './types';
 
 const makeStrapiApiDataListPopulate = () =>
   qs.stringify({
@@ -33,11 +33,8 @@ export const fetchApiDataList = (locale: string) =>
     buildEnv
   );
 
-export const fetchProductApiDataReader = (
-  locale: string,
-  productSlug: string
-) =>
-  fetchCollectionFromStrapi<ApiDataList>('apis-data', productSlug, {
+export const fetchProductApiData = (locale: string, productSlug: string) =>
+  fetchCollectionFromStrapi<ProductApiData>('apis-data', productSlug, {
     fields: ['updatedAt'],
     populate: {
       apiRestDetail: { fields: ['slug'] },

@@ -38,5 +38,12 @@ export type ApiData = BaseApiData & {
 
 export type BaseApiDataList = RootEntity<readonly BaseApiData[]>;
 export type ApiDataList = RootEntity<readonly ApiData[]>;
+export type SitemapApiData = RootEntity<
+  ReadonlyArray<{
+    readonly apiRestDetail?: { readonly slug: string };
+    readonly apiSoapDetail?: { readonly slug: string };
+    readonly updatedAt?: string;
+  }>
+>;
 
 export type { ApiDataPageProps };
