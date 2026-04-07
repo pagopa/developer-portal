@@ -11,7 +11,7 @@ logger = logging.getLogger()
 logger.setLevel("INFO")
 
 # --- Configuration ---
-DATABASE = os.environ.get('ATHENA_DATABASE', 'webinar_heartbeats')
+DATABASE = os.environ.get('ATHENA_DATABASE', 'webinar_analytics')
 OUTPUT_S3_BUCKET = os.environ.get('ATHENA_RESULTS_BUCKET')
 OUTPUT_S3_PREFIX = 'athena-results'
 REGION = os.environ.get('AWS_REGION', 'eu-central-1')
