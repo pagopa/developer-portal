@@ -17,10 +17,10 @@ import { SUPPORTED_LOCALES } from '@/locales';
 import { compact, isEmpty } from 'lodash';
 import { HomepageProps } from '@/app/[locale]/page';
 import { CaseHistoriesRepository } from '@/lib/caseHistories';
-import { HomepageRepository } from '../lib/homepage';
-import { ProductRepository } from '../lib/products';
-import { TutorialRepository } from '../lib/tutorials';
-import { ApiDataListRepository } from '../lib/apiDataList';
+import { HomepageRepository } from '@/lib/homepage';
+import { ProductRepository } from '@/lib/products';
+import { TutorialRepository } from '@/lib/tutorials';
+import { ApiDataListRepository } from '@/lib/apiDataList';
 
 export const dynamic = 'force-dynamic';
 
