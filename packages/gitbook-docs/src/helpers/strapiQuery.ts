@@ -58,27 +58,33 @@ const releaseNotesPopulate = {
     },
     product: {
       populate: {
-        logo: true,
-        bannerLinks: true,
-        overview: true,
-        quickstart_guide: true,
-        release_note: true,
-        guide_list_page: true,
-        tutorial_list_page: true,
-        use_case_list_page: true,
+        logo: { populate: '*' },
+        bannerLinks: {
+          populate: ['icon'],
+        },
+        overview: {
+          populate: '*',
+        },
+        quickstart_guide: {
+          populate: '*',
+        },
+        release_note: {
+          populate: '*',
+        },
         api_data_list_page: {
-          populate: {
-            api_data: {
-              populate: {
-                apiSoapDetail: true,
-                apiRestDetail: {
-                  populate: {
-                    specUrls: true,
-                  },
-                },
-              },
-            },
-          },
+          populate: '*',
+        },
+        guide_list_page: {
+          populate: '*',
+        },
+        tutorial_list_page: {
+          populate: '*',
+        },
+        use_case_list_page: {
+          populate: '*',
+        },
+        tags: {
+          populate: ['icon'],
         },
       },
     },
