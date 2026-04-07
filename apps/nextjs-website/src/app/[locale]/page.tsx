@@ -23,7 +23,7 @@ import type { Webinar } from '@/lib/webinars/types';
 import type { SEO } from '@/lib/seo/types';
 import WebinarHeaderBanner from '@/components/atoms/WebinarHeaderBanner/WebinarHeaderBanner';
 import WebinarsSection from '@/components/organisms/WebinarsSection/WebinarsSection';
-import { HomepageRepository } from '../../lib/homepage';
+import { HomepageRepository } from '@/lib/homepage';
 
 type EcosystemCtaProps = {
   readonly variant?: 'text' | 'contained' | 'outlined';
