@@ -183,10 +183,20 @@ def lambda_handler(event: dict[str, Any], context: Any) -> dict[str, Any]:
 if __name__ == '__main__':
     import argparse
 
+    def _parse_optional_bool(value: str) -> bool:
+        value_normalized = value.strip().lower()
+        if value_normalized in ('true', '1', 'yes', 'y', 'on'):
+            return True
+        if value_normalized in ('false', '0', 'no', 'n', 'off'):
+            return False
+        raise argparse.ArgumentTypeError(
+            "Expected a boolean value for --islive: true/false, 1/0, yes/no, on/off"
+        )
+
     parser = argparse.ArgumentParser(description='Webinar metrics Lambda')
     parser.add_argument('--from-date', required=True, help='Start date (ISO8601)')
     parser.add_argument('--to-date', required=True, help='End date (ISO8601)')
-    parser.add_argument('--islive', type=bool, default=None, help='Filter by live status (optional)')
+    parser.add_argument('--islive', type=_parse_optional_bool, default=None, help='Filter by live status (optional)')
     parser.add_argument('--min-count', type=int, default=5, help='Minimum heartbeat count threshold (default: 5)')
     args = parser.parse_args()
 
