@@ -1,5 +1,5 @@
 import { BreadcrumbSegment } from '@/lib/types/path';
-import { Product } from '@/lib/product/types';
+import { Product } from '@/lib/products/types';
 
 export type BreadcrumbItem = { readonly name?: string; readonly item?: string };
 

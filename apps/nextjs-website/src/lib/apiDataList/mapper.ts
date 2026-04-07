@@ -1,6 +1,6 @@
 /* eslint-disable functional/no-expression-statements */
-import { makeBannerLinkProps } from '@/lib/strapi/makeProps/makeBannerLink';
-import { makeBaseProductWithoutLogoProps } from '@/lib/product/mapper';
+import { mapBannerLinkProps } from '@/lib/bannerLink/mapper';
+import { makeBaseProductWithoutLogoProps } from '@/lib/products/mapper';
 import { compact } from 'lodash';
 import { ApiDataList, ApiDataPageProps } from './types';
 import { getApiSoapContentUrls } from './helpers';
@@ -64,8 +64,8 @@ export async function mapApiDataList(
                 : [],
               bannerLinks:
                 apiPage.bannerLinks.length > 0
-                  ? apiPage.bannerLinks.map(makeBannerLinkProps)
-                  : apiPage.product.bannerLinks?.map(makeBannerLinkProps),
+                  ? apiPage.bannerLinks.map(mapBannerLinkProps)
+                  : apiPage.product.bannerLinks?.map(mapBannerLinkProps),
               seo: apiPage.seo,
             } satisfies ApiDataPageProps;
           } catch (error) {

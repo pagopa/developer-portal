@@ -1,5 +1,5 @@
 import { ParseContentConfig } from 'gitbook-docs/parseContent';
-import { Product } from '@/lib/product/types';
+import { Product } from '@/lib/products/types';
 import { SEO } from './seo';
 
 export type GitBookContentData = {

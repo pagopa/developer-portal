@@ -1,7 +1,7 @@
 import ProductLayout, {
   ProductLayoutProps,
 } from '@/components/organisms/ProductLayout/ProductLayout';
-import { Product } from '@/lib/product/types';
+import { Product } from '@/lib/products/types';
 import { SEO } from '@/lib/types/seo';
 import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
 import {
@@ -9,7 +9,7 @@ import {
   productToBreadcrumb,
 } from '@/helpers/structuredData.helpers';
 import { getReleaseNote } from '@/lib/api';
-import { getUrlReplaceMapProps } from '@/lib/cmsApi';
+import { getUrlReplaceMap } from '@/lib/api';
 import {
   BreadcrumbItem,
   gitBookPageToBreadcrumbs,
@@ -87,7 +87,7 @@ const ReleaseNotePage = async ({
     ['release-note', ...(releaseNoteSubPathSlugs || [])]
   );
 
-  const urlReplaceMap = await getUrlReplaceMapProps(locale);
+  const urlReplaceMap = await getUrlReplaceMap(locale);
 
   if (!releaseNoteProps) {
     return <PageNotFound />;

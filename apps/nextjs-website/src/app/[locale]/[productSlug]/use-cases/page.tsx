@@ -1,4 +1,4 @@
-import { Product } from '@/lib/product/types';
+import { Product } from '@/lib/products/types';
 import { Metadata, ResolvingMetadata } from 'next';
 import { Abstract } from '@/editorialComponents/Abstract/Abstract';
 import ProductLayout, {
