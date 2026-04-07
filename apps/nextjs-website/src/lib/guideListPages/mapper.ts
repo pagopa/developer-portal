@@ -2,8 +2,8 @@
 /* eslint-disable functional/no-try-statements */
 import { GuideListPageProps } from '@/app/[locale]/[productSlug]/guides/page';
 import { GuidesSectionProps } from '@/components/molecules/GuidesSection/GuidesSection';
-import { mapBannerLinkProps } from '@/lib/shared/bannerLink/mapper';
-import { makeBaseProductWithoutLogoProps } from '@/lib/product/mapper';
+import { mapBannerLinkProps } from '@/lib/bannerLink/mapper';
+import { makeBaseProductWithoutLogoProps } from '@/lib/products/mapper';
 import { GuideCardProps } from '@/components/molecules/GuideCard/GuideCard';
 import { StrapiBaseGuide } from '@/lib/guides/types';
 import { compact } from 'lodash';

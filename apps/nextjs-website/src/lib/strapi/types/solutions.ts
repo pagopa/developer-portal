@@ -2,8 +2,8 @@ import { StrapiMedia } from '@/lib/strapi/types/media';
 import {
   StrapiBaseProduct,
   StrapiBaseProductWithoutBannerLinks,
-} from '@/lib/product/types';
-import { StrapiBannerLink } from '@/lib/shared/bannerLink/types';
+} from '@/lib/products/types';
+import { StrapiBannerLink } from '@/lib/bannerLink/types';
 import { StrapiSeo } from '@/lib/strapi/types/seo';
 import { Paginated } from '@/lib/strapi/types/paginated';
 import { StrapiWebinar } from '@/lib/strapi/types/webinars';

@@ -1,8 +1,8 @@
 /* eslint-disable functional/no-expression-statements */
 import { TutorialsPageProps } from '@/app/[locale]/[productSlug]/tutorials/page';
 import { Tutorial } from '@/lib/types/tutorialData';
-import { mapBannerLinkProps } from '@/lib/shared/bannerLink/mapper';
-import { makeBaseProductWithoutLogoProps } from '@/lib/product/mapper';
+import { mapBannerLinkProps } from '@/lib/bannerLink/mapper';
+import { makeBaseProductWithoutLogoProps } from '@/lib/products/mapper';
 import { StrapiTutorialListPages } from '@/lib/strapi/types/tutorialsListPage';
 import { compact } from 'lodash';
 

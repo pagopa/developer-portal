@@ -2,7 +2,7 @@ import { ApiDataPageProps } from '@/app/[locale]/[productSlug]/api/[apiDataSlug]
 import { QuickStartGuidePageProps } from '@/app/[locale]/[productSlug]/quick-start/page';
 import { baseUrl, organizationInfo, websiteName } from '@/config';
 import { Media } from '@/lib/types/media';
-import { Product } from '@/lib/product/types';
+import { Product } from '@/lib/products/types';
 import { SEO } from '@/lib/types/seo';
 import { Webinar } from '@/lib/types/webinar';
 import {

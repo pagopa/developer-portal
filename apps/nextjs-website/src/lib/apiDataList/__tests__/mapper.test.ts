@@ -18,7 +18,7 @@ import {
   restApiDataWithMultipleSpecs,
   apiDataWithInvalidRestApiDetails,
   apiDatalistWithItemMissingSlug,
-} from '@/lib/shared/factories/apiDataList';
+} from '@/lib/__tests__/factories/apiDataList';
 import { spyOnConsoleError } from '@/lib/strapi/__tests__/spyOnConsole';
 
 // Mock the makeApiSoapUrlList function

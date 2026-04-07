@@ -1,5 +1,5 @@
 import { BlocksContent } from '@strapi/blocks-react-renderer';
-import { StrapiBannerLink } from '@/lib/shared/bannerLink/types';
+import { StrapiBannerLink } from '@/lib/bannerLink/types';
 import type { StrapiBaseGuide } from '@/lib/guides/types';
 import { StrapiLink, StrapiRelatedLinks } from '@/lib/strapi/types/link';
 import { StrapiMedia } from '@/lib/strapi/types/media';
@@ -8,7 +8,7 @@ import { Paginated } from '@/lib/strapi/types/paginated';
 import { StrapiSeo } from '@/lib/strapi/types/seo';
 import { StrapiBaseTutorial } from '@/lib/strapi/types/tutorial';
 import { StrapiBaseUseCase } from '@/lib/strapi/types/useCase';
-import { StrapiProduct } from '@/lib/product/types';
+import { StrapiProduct } from '@/lib/products/types';
 
 export type StrapiStartInfo = {
   readonly icon: StrapiMedia;

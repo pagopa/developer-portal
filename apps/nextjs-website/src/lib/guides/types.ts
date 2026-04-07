@@ -1,8 +1,8 @@
 import type { StrapiMedia } from '@/lib/strapi/types/media';
 import type { StrapiSeo } from '@/lib/strapi/types/seo';
-import { StrapiBannerLink } from '@/lib/shared/bannerLink/types';
+import { StrapiBannerLink } from '@/lib/bannerLink/types';
 import type { Paginated } from '@/lib/strapi/types/paginated';
-import type { StrapiBaseProductWithRelations } from '@/lib/product/types';
+import type { StrapiBaseProductWithRelations } from '@/lib/products/types';
 
 type StrapiGuideVersion = {
   readonly main: boolean;

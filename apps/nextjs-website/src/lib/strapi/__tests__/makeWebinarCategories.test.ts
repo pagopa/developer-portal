@@ -4,7 +4,7 @@ import {
 } from '@/lib/strapi/makeProps/makeWebinarCategories';
 import { strapiWebinarCategories } from './fixtures/webinarCategory';
 import { StrapiWebinarCategory } from '../types/webinarCategory';
-import { mediaJpeg } from '../../shared/factories/media';
+import { mediaJpeg } from '../../__tests__/factories/media';
 
 describe('makeWebinarCategoriesProps', () => {
   it('should transform strapi webinar categories to WebinarCategory array', () => {

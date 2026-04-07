@@ -1,4 +1,4 @@
-import { Product } from '@/lib/product/types';
+import { Product } from '@/lib/products/types';
 import { getGuideListPages } from '@/lib/api';
 import {
   GuidesSection,

@@ -1,5 +1,5 @@
 import { StrapiWebinarCategories } from '@/lib/strapi/types/webinarCategory';
-import { mediaJpeg } from '../../../shared/factories/media';
+import { mediaJpeg } from '../../../__tests__/factories/media';
 
 export const strapiWebinarCategories: StrapiWebinarCategories = {
   data: [

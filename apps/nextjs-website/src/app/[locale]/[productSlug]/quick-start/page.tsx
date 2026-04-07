@@ -1,4 +1,4 @@
-import { Product } from '@/lib/product/types';
+import { Product } from '@/lib/products/types';
 import { Abstract } from '@/editorialComponents/Abstract/Abstract';
 import ProductLayout, {
   ProductLayoutProps,

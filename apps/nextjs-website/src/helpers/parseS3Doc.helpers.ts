@@ -8,7 +8,7 @@ import { Readable } from 'stream';
 import Markdoc, { Node } from '@markdoc/markdoc';
 import { GuideDefinition } from './makeDocs.helpers';
 import { staticContentsUrl, s3DocsPath } from '@/config';
-import { Product } from '@/lib/product/types';
+import { Product } from '@/lib/products/types';
 import { downloadFileAsText, JsonMetadata } from './s3Metadata.helpers';
 
 export type DocSource<T> = T & {

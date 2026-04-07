@@ -2,10 +2,10 @@ import { ApiDataListPagesRepository } from '@/lib/apiDataListPages';
 import { CaseHistoriesRepository } from '@/lib/caseHistories';
 import { GuideListPagesRepository } from '@/lib/guideListPages';
 import { GuidesRepository } from '@/lib/guides';
-import { Product } from '@/lib/product/types';
+import { Product } from '@/lib/products/types';
+import { QuickStartGuidesRepository } from '@/lib/quickStartGuides';
 import { Webinar } from '@/lib/types/webinar';
 import {
-  getQuickStartGuidesProps,
   getReleaseNoteProps,
   getSolutionListPageProps,
   getSolutionProps,
@@ -26,7 +26,7 @@ import {
 } from '@/helpers/s3Metadata.helpers';
 import { s3DocsPath } from '@/config';
 import { OverviewsRepository } from './overviews';
-import { ProductRepository } from './product';
+import { ProductRepository } from './products';
 
 function manageUndefined<T>(props: undefined | null | T) {
   if (!props) {
@@ -116,9 +116,7 @@ export async function getProducts(locale: string): Promise<readonly Product[]> {
 
 export async function getQuickStartGuide(locale: string, productSlug?: string) {
   const props = manageUndefined(
-    (await getQuickStartGuidesProps(locale)).find(
-      ({ product }) => product.slug === productSlug
-    )
+    await QuickStartGuidesRepository.getByProductSlug(locale, productSlug || '')
   );
   return manageUndefinedAndAddProducts(locale, props);
 }

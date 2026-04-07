@@ -1,6 +1,6 @@
 'use client';
 import HomepageButton from '@/components/molecules/HomepageButton/HomepageButton';
-import { Product } from '@/lib/product/types';
+import { Product } from '@/lib/products/types';
 import { Box, Divider, Stack, useTheme } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import React, { ForwardedRef, forwardRef, useMemo } from 'react';

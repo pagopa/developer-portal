@@ -3,14 +3,14 @@ import _ from 'lodash';
 import {
   strapiHomepage,
   expectedHomepageProps,
-} from '@/lib/shared/fixtures/homepage';
+} from '@/lib/__tests__/fixtures/homepage';
 import {
   minimalDataHomepage,
   homepageWithoutNewsShowcase,
   homepageWithoutEcosystem,
   homepageWithoutWebinars,
   homepageWithoutSeo,
-} from '@/lib/shared/factories/homepage';
+} from '@/lib/__tests__/factories/homepage';
 
 describe('mapHomepageProps', () => {
   it('should transform strapi homepage to homepage props', () => {

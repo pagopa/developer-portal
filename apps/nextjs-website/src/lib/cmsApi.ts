@@ -3,8 +3,6 @@ import { makeWebinarsProps } from './strapi/makeProps/makeWebinars';
 import { fetchWebinars } from './strapi/fetches/fetchWebinars';
 import { fetchTutorials } from './strapi/fetches/fetchTutorials';
 import { makeTutorialsProps } from './strapi/makeProps/makeTutorials';
-import { fetchQuickStartGuides } from './strapi/fetches/fetchQuickStartGuides';
-import { makeQuickStartGuidesProps } from './strapi/makeProps/makeQuickStartGuides';
 import { makeSolutionsProps } from './strapi/makeProps/makeSolutions';
 import { makeSolutionListPageProps } from './strapi/makeProps/makeSolutionListPage';
 import { fetchSolutionListPage } from './strapi/fetches/fetchSolutionListPage';
@@ -33,7 +31,7 @@ import { fetchUseCaseListPages } from '@/lib/strapi/fetches/fetchUseCaseListPage
 import { makeUseCaseListPagesProps } from '@/lib/strapi/makeProps/makeUseCaseListPages';
 import { fetchTags } from '@/lib/strapi/fetches/fetchTags';
 import { makeTagsProps } from '@/lib/strapi/makeProps/makeTags';
-import { isMarkDownPart, MarkDownPart } from '@/lib/strapi/types/part';
+import { isMarkDownPart, MarkDownPart } from '@/lib/parts/types';
 import { getMarkdownContent } from '@/lib/api';
 import {
   getSyncedSolutionsResponseJsonFile,
@@ -89,11 +87,6 @@ export const getTutorialListPagesProps = async (locale: string) => {
     buildEnv
   );
   return makeTutorialListPagesProps(locale, strapiTutorialListPages);
-};
-
-export const getQuickStartGuidesProps = async (locale: string) => {
-  const strapiQuickStartGuides = await fetchQuickStartGuides(locale, buildEnv);
-  return makeQuickStartGuidesProps(locale, strapiQuickStartGuides);
 };
 
 export const getUrlReplaceMapProps = async (locale: string) => {

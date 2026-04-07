@@ -1,10 +1,10 @@
 /* eslint-disable functional/no-expression-statements */
 /* eslint-disable functional/no-try-statements */
 import { Tutorial } from '@/lib/types/tutorialData';
-import { makePartProps } from '@/lib/strapi/makeProps/makePart';
+import { mapPartProps } from '@/lib/parts/mapper';
 import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
 import { RelatedLinksProps } from '@/components/atoms/RelatedLinks/RelatedLinks';
-import { mapBannerLinkProps } from '@/lib/shared/bannerLink/mapper';
+import { mapBannerLinkProps } from '@/lib/bannerLink/mapper';
 import { StrapiTutorials } from '@/lib/strapi/types/tutorial';
 import { compact } from 'lodash';
 
@@ -51,7 +51,7 @@ export function makeTutorialsProps(
           path: `/${locale}/${attributes.product.slug}/tutorials/${attributes.slug}`,
           parts: compact(
             attributes.parts?.map((part) =>
-              makePartProps(part, markdownContentDict)
+              mapPartProps(part, markdownContentDict)
             ) || []
           ),
           productSlug: attributes.product.slug,
