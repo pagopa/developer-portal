@@ -8,14 +8,14 @@ import type { BlocksContent } from '@strapi/blocks-react-renderer';
 export function makeCustomMessagesMap(
   customMessagesMap: CustomMessagesMap
 ): CustomMessages {
-  if (!customMessagesMap.data || !customMessagesMap.data.attributes) {
+  if (!customMessagesMap.data) {
     // eslint-disable-next-line functional/no-expression-statements
     console.error(
       `Error while processing Custom Messages Map: missing data or attributes. Returning an empty map...`
     );
     return new Map<string, BlocksContent>();
   }
-  const customMessages = customMessagesMap.data.attributes.customMessages ?? [];
+  const customMessages = customMessagesMap.data.customMessages ?? [];
 
   const customMessagesMapEntries = customMessages.map(
     (customMessage: CustomMessage) =>
