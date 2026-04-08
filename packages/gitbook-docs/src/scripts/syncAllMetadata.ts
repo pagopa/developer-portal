@@ -158,9 +158,13 @@ async function fetchAllStrapiData(locale?: string): Promise<StrapiData> {
     );
   }
 
-  console.log(`api/guides?${getGuidesQueryString(locale)}`);
-  console.log(`api/solutions/?${getSolutionsQueryString(locale)}`);
-  console.log(`api/release-notes/?${getReleaseNotesQueryString(locale)}`);
+  console.log(`api/guides?${getGuidesQueryString(locale, DIR_NAMES_FILTER)}`);
+  console.log(
+    `api/solutions/?${getSolutionsQueryString(locale, DIR_NAMES_FILTER)}`
+  );
+  console.log(
+    `api/release-notes/?${getReleaseNotesQueryString(locale, DIR_NAMES_FILTER)}`
+  );
   console.log(`api/products?${getProductsQueryString(locale)}`);
   console.log(`api/apis-data?${getApisDataQueryString(locale)}`);
 
@@ -174,14 +178,19 @@ async function fetchAllStrapiData(locale?: string): Promise<StrapiData> {
     // Guides with full populate
     // NOTE: Cannot filter by versions.dirName server-side due to Strapi v4 component array limitation
     // Client-side filtering will be applied later in processGuidesMetadata
-    fetchFromStrapi<StrapiGuide>(`api/guides?${getGuidesQueryString(locale)}`),
+    fetchFromStrapi<StrapiGuide>(
+      `api/guides?${getGuidesQueryString(locale, DIR_NAMES_FILTER)}`
+    ),
     // Solutions with dirName filter (if provided)
     fetchFromStrapi<StrapiSolution>(
-      `api/solutions/?${getSolutionsQueryString(locale)}`
+      `api/solutions/?${getSolutionsQueryString(locale, DIR_NAMES_FILTER)}`
     ),
     // Release notes with dirName filter (if provided)
     fetchFromStrapi<StrapiReleaseNote>(
-      `api/release-notes/?${getReleaseNotesQueryString(locale)}`
+      `api/release-notes/?${getReleaseNotesQueryString(
+        locale,
+        DIR_NAMES_FILTER
+      )}`
     ),
     // Products
     fetchFromStrapi<StrapiProduct>(

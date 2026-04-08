@@ -290,10 +290,24 @@ export function getReleaseNotesQueryString(
   return qs.stringify(params);
 }
 
-export function getGuidesQueryString(locale?: string): string {
+export function getGuidesQueryString(
+  locale?: string,
+  dirNames?: readonly string[]
+): string {
   const params = {
     locale: locale || 'it',
     ...guidesQueryParams,
+    ...(dirNames && dirNames.length > 0
+      ? {
+          filters: {
+            versions: {
+              dirName: {
+                $in: dirNames,
+              },
+            },
+          },
+        }
+      : {}),
   };
   return qs.stringify(params);
 }
