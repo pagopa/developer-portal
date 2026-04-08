@@ -95,10 +95,18 @@ The package uses Jest with `ts-jest`. Existing tests cover:
 Run:
 
 ```sh
-npm test -w cognito-functions
+npm run test -w cognito-functions
 ```
 
 ## Deployment artifact
+
+With the dedicated GitHub workflow **Deploy Cognito Lambda Functions**
+
+Or manually by building the package by running:
+
+```sh
+npm run build -w cognito-functions
+```
 
 The build produces:
 
@@ -106,4 +114,4 @@ The build produces:
 apps/cognito-functions/out/cognito-functions.zip
 ```
 
-Infrastructure code can then point multiple Cognito triggers at different exported handlers inside the same bundle.
+The artifact can be uploaded direcly to AWS Lambda service via ZIP upload.
