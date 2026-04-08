@@ -63,6 +63,7 @@ export function mapApiDataListPages(
             subtitle: apiPage.description || '',
           },
           product,
+          apiData: apiPage.api_data,
           apiDetailSlugs: compact(
             apiPage.api_data.map((item) =>
               item.apiRestDetail

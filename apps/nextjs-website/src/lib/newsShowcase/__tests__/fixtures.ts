@@ -1,5 +1,5 @@
 import type { StrapiNewsShowcase } from '@/lib/newsShowcase/types';
-import { mediaJpeg } from '../../media/__tests__/factories';
+import { mediaJpeg } from '@/lib/media/__tests__/factories';
 
 export const newsShowcase = {
   title: "Cosa c'è di nuovo",
