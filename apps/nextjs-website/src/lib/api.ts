@@ -4,7 +4,6 @@ import {
   getApiDataListPagesProps,
   getApiDataProps,
   getCaseHistoriesProps,
-  getCustomMessagesMap,
   getGuideListPagesProps,
   getGuidePageProps,
   getOverviewsProps,
@@ -29,6 +28,7 @@ import {
   getSolutionsMetadata,
 } from '@/helpers/s3Metadata.helpers';
 import { s3DocsPath } from '@/config';
+import { CustomMessagesMapRepository } from './customMessagesMap';
 
 function manageUndefined<T>(props: undefined | null | T) {
   if (!props) {
@@ -342,6 +342,6 @@ export async function getUseCaseListPageProps(
 }
 
 export async function getCustomMessagesMapProps(locale: string) {
-  const strapiCustomMessagesMap = await getCustomMessagesMap(locale);
-  return manageUndefined(strapiCustomMessagesMap);
+  const customMessages = await CustomMessagesMapRepository.get(locale);
+  return manageUndefined(customMessages);
 }

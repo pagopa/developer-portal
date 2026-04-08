@@ -4,14 +4,14 @@ import {
   customMessagesMapWithoutAttributes,
   customMessagesMapWithoutCustomMessages,
   customMessagesMapWithoutData,
-} from '@/lib/strapi/__tests__/factories/customMessagesMap';
+} from '@/lib/customMessagesMap/__tests__/factories';
 import {
   duplicateTranslationDisclaimerMessage,
   expectedCustomMessagesMap,
   strapiCustomMessagesMap,
-} from '@/lib/strapi/__tests__/fixtures/customMessagesMap';
+} from '@/lib/customMessagesMap/__tests__/fixtures';
 import { spyOnConsoleError } from '@/lib/strapi/__tests__/spyOnConsole';
-import { makeCustomMessagesMap } from '@/lib/strapi/makeProps/makeCustomMessagesMap';
+import { mapCustomMessagesMap } from '@/lib/customMessagesMap/mapper';
 import _ from 'lodash';
 
 describe('makeCustomMessagesMap', () => {
@@ -24,20 +24,20 @@ describe('makeCustomMessagesMap', () => {
   });
 
   it('should transform strapi custom messages to a custom messages map', () => {
-    const result = makeCustomMessagesMap(_.cloneDeep(strapiCustomMessagesMap));
+    const result = mapCustomMessagesMap(_.cloneDeep(strapiCustomMessagesMap));
 
     expect(result).toEqual(expectedCustomMessagesMap);
   });
 
   it('should return an empty map when custom messages are empty', () => {
-    const result = makeCustomMessagesMap(emptyCustomMessagesMap());
+    const result = mapCustomMessagesMap(emptyCustomMessagesMap());
 
     expect(result).toEqual(new Map());
     expect(spyOnConsoleError).not.toHaveBeenCalled();
   });
 
   it('should return an empty map when data is missing', () => {
-    const result = makeCustomMessagesMap(customMessagesMapWithoutData());
+    const result = mapCustomMessagesMap(customMessagesMapWithoutData());
 
     expect(result).toEqual(new Map());
     expect(spyOnConsoleError).toHaveBeenCalledWith(
@@ -48,7 +48,7 @@ describe('makeCustomMessagesMap', () => {
   });
 
   it('should return an empty map when attributes are missing', () => {
-    const result = makeCustomMessagesMap(customMessagesMapWithoutAttributes());
+    const result = mapCustomMessagesMap(customMessagesMapWithoutAttributes());
 
     expect(result).toEqual(new Map());
     expect(spyOnConsoleError).toHaveBeenCalledWith(
@@ -59,7 +59,7 @@ describe('makeCustomMessagesMap', () => {
   });
 
   it('should return an empty map when customMessages is undefined', () => {
-    const result = makeCustomMessagesMap(
+    const result = mapCustomMessagesMap(
       customMessagesMapWithoutCustomMessages()
     );
 
@@ -68,7 +68,7 @@ describe('makeCustomMessagesMap', () => {
   });
 
   it('should keep the last value when duplicate keys are present', () => {
-    const result = makeCustomMessagesMap(customMessagesMapWithDuplicateKeys());
+    const result = mapCustomMessagesMap(customMessagesMapWithDuplicateKeys());
 
     expect(result.size).toBe(2);
     expect(result.get('guides.translationDisclaimer')).toEqual(
