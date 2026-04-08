@@ -1,7 +1,7 @@
-import { StrapiProducts } from '@/lib/products/types';
-import { Product } from '@/lib/products/types';
-import { generateBannerLinks } from '@/lib/__tests__/factories/bannerLink';
-import { mediaJpeg } from '@/lib/__tests__/factories/media';
+import type { StrapiProducts } from '@/lib/products/strapiTypes';
+import type { Product } from '@/lib/products/types';
+import { generateBannerLinks } from '@/lib/bannerLink/__tests__/factories';
+import { mediaJpeg } from '@/lib/media/__tests__/factories';
 
 export const strapiProducts: StrapiProducts = {
   data: [
@@ -19,7 +19,7 @@ export const strapiProducts: StrapiProducts = {
       api_data_list_page: {
         id: 1,
         updatedAt: '2026-01-01T00:00:00.000Z',
-        apiData: [
+        api_data: [
           {
             apiRestDetail: {
               slug: 'api-detail',

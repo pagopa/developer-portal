@@ -1,12 +1,12 @@
-import {
+import type {
   StrapiBaseProduct,
   StrapiBaseProductWithBannerLinks,
   StrapiBaseProductWithoutBannerLinks,
   StrapiBaseProductWithRelations,
   StrapiProduct,
-} from '@/lib/products/types';
-import { mediaJpeg } from '@/lib/__tests__/factories/media';
-import { generateBannerLinks } from '@/lib/__tests__/factories/bannerLink';
+} from '@/lib/products/strapiTypes';
+import { mediaJpeg } from '@/lib/media/__tests__/factories';
+import { generateBannerLinks } from '@/lib/bannerLink/__tests__/factories';
 
 export function baseProduct(): StrapiBaseProduct {
   return {
@@ -126,7 +126,7 @@ export function productWithAllRelations(): StrapiProduct {
     api_data_list_page: {
       id: 10,
       updatedAt: '2026-01-01T00:00:00.000Z',
-      apiData: [
+      api_data: [
         {
           apiRestDetail: {
             slug: 'test-api',
@@ -152,10 +152,10 @@ export function productWithAllRelations(): StrapiProduct {
 export function productWithMissingMandatoryFields(): Partial<StrapiProduct> {
   return {
     isVisible: true,
-    name: undefined as any,
+    name: undefined as unknown as string,
     tags: [],
-    shortName: undefined as any,
-    slug: undefined as any,
+    shortName: undefined as unknown as string,
+    slug: undefined as unknown as string,
     bannerLinks: [],
     description: 'Product with missing mandatory fields',
     logo: mediaJpeg(),

@@ -4,13 +4,13 @@ import _ from 'lodash';
 import {
   caseHistoriesPageTemplateProps,
   strapiCaseHistories,
-} from '@/lib/__tests__/fixtures/caseHistories';
+} from '@/lib/caseHistories/__tests__/fixtures';
 import {
   minimalDataCaseHistories,
   caseHistoriesWithMultipleProducts,
   caseHistoriesWithoutImage,
-} from '@/lib/__tests__/factories/caseHistories';
-import { mediaJpeg } from '@/lib/__tests__/factories/media';
+} from '@/lib/caseHistories/__tests__/factories';
+import { mediaJpeg } from '@/lib/media/__tests__/factories';
 
 describe('makeCaseHistoriesProps', () => {
   it('should transform strapi case histories to case history props', () => {

@@ -1,6 +1,6 @@
 import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
 import qs from 'qs';
-import { StrapiProducts } from './types';
+import type { StrapiProducts } from './strapiTypes';
 import { buildEnv } from '../buildEnv';
 
 // TODO: divide this populate in more specific ones for query optimization

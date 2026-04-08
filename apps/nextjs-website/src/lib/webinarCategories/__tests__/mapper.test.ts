@@ -2,10 +2,10 @@ import {
   mapWebinarCategoriesProps,
   mapWebinarCategoryProps,
 } from '@/lib/webinarCategories/mapper';
-import { strapiWebinarCategories } from '@/lib/__tests__/fixtures/webinarCategories';
-import { StrapiWebinarCategory } from '@/lib/webinarCategories/types';
-import { mediaJpeg } from '@/lib/__tests__/factories/media';
-import { StrapiMedia } from '@/lib/strapi/types/media';
+import { strapiWebinarCategories } from '@/lib/webinarCategories/__tests__/fixtures';
+import type { StrapiWebinarCategory } from '@/lib/webinarCategories/strapiTypes';
+import { mediaJpeg } from '@/lib/media/__tests__/factories';
+import type { StrapiMedia } from '@/lib/media/strapiTypes';
 
 describe('mapWebinarCategoriesProps', () => {
   it('should transform strapi webinar categories to WebinarCategory array', () => {

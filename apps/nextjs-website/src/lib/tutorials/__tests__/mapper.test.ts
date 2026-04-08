@@ -1,12 +1,12 @@
 import { mapTutorialsProps } from '@/lib/tutorials/mapper';
-import { StrapiTutorials } from '@/lib/tutorials/types';
+import type { StrapiTutorials } from '@/lib/tutorials/strapiTypes';
 import {
   minimalDataTutorials,
   tutorialsWithAnItemMissingProductSlug,
   tutorialsWithAnItemMissingSlug,
-} from '@/lib/__tests__/factories/tutorials';
-import { strapiTutorials } from '@/lib/__tests__/fixtures/tutorials';
-import { spyOnConsoleError } from '@/lib/strapi/__tests__/spyOnConsole';
+} from '@/lib/tutorials/__tests__/factories';
+import { strapiTutorials } from '@/lib/tutorials/__tests__/fixtures';
+import { spyOnConsoleError } from '@/lib/__tests__/spyOnConsole';
 import _ from 'lodash';
 
 describe('mapTutorialsProps', () => {

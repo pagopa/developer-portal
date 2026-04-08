@@ -5,18 +5,18 @@ import ProductLayout, {
   ProductLayoutProps,
 } from '@/components/organisms/ProductLayout/ProductLayout';
 import React from 'react';
-import { ProductParams } from '@/lib/types/productParams';
+import type { ProductParams } from '@/lib/products/types';
 import {
   makeMetadata,
   makeMetadataFromStrapi,
 } from '@/helpers/metadata.helpers';
-import { SEO } from '@/lib/types/seo';
+import type { SEO } from '@/lib/seo/types';
 import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
 import {
   breadcrumbItemByProduct,
   productToBreadcrumb,
 } from '@/helpers/structuredData.helpers';
-import { UseCase } from '@/lib/types/useCaseData';
+import type { UseCase } from '@/lib/useCases/types';
 import { getUseCaseListPageProps } from '@/lib/api';
 import { FilteredGridLayout } from '@/components/organisms/FilteredGridLayout/FilteredGridLayout';
 

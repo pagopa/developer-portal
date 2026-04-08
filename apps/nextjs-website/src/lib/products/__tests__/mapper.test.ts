@@ -3,7 +3,7 @@ import {
   mapProductProps,
   makeBaseProductWithoutLogoProps,
 } from '@/lib/products/mapper';
-import { StrapiProducts } from '@/lib/products/types';
+import type { StrapiProducts } from '@/lib/products/strapiTypes';
 import _ from 'lodash';
 import {
   strapiProducts,
@@ -19,7 +19,7 @@ import {
   productsWithAnItemWithEmptySlug,
   productsWithAnItemMissingSlug,
 } from '@/lib/products/__tests__/factories/products';
-import { spyOnConsoleError } from '@/lib/strapi/__tests__/spyOnConsole';
+import { spyOnConsoleError } from '@/lib/__tests__/spyOnConsole';
 
 describe('makeProductsProps', () => {
   afterEach(() => {

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { strapiProducts } from '@/lib/products/__tests__/fixtures/products';
-import { StrapiProduct } from '@/lib/products/types';
+import type { StrapiProduct } from '@/lib/products/strapiTypes';
 
 export function minimalProduct(): readonly StrapiProduct[] {
   const strapiProduct = strapiProducts.data[0];
@@ -54,7 +54,7 @@ export function productWithMultipleApiData(): readonly StrapiProduct[] {
       api_data_list_page: {
         id: 1,
         updatedAt: '2026-01-01T00:00:00.000Z',
-        apiData: [
+        api_data: [
           {
             apiRestDetail: {
               slug: 'api-detail-1',
@@ -81,7 +81,7 @@ export function productWithEmptyApiData(): readonly StrapiProduct[] {
       api_data_list_page: {
         id: 1,
         updatedAt: '2026-01-01T00:00:00.000Z',
-        apiData: [],
+        api_data: [],
       },
     },
   ];

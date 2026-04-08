@@ -1,5 +1,5 @@
 'use client';
-import { Part } from '@/lib/types/part';
+import type { Part } from '@/lib/parts/types';
 import React, { ReactNode, isValidElement } from 'react';
 
 import { Box, Typography, useTheme } from '@mui/material';

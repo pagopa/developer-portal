@@ -1,7 +1,7 @@
 /* eslint-disable functional/no-expression-statements */
-import { Webinar } from '@/lib/types/webinar';
+import type { Webinar } from '@/lib/webinars/types';
 import { compact } from 'lodash';
-import { StrapiWebinar, StrapiWebinars } from './types';
+import type { StrapiWebinar, StrapiWebinars } from './strapiTypes';
 
 export const mapWebinarProps = (
   strapiWebinar: StrapiWebinar

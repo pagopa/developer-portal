@@ -4,7 +4,7 @@ import {
   validateField,
   validatePassword,
 } from '@/helpers/auth.helpers';
-import { SignUpUserData } from '@/lib/types/sign-up';
+import type { SignUpUserData } from '@/lib/auth/user/types';
 import {
   Box,
   Button,

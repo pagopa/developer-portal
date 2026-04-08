@@ -8,9 +8,8 @@ import {
   makeMetadata,
   makeMetadataFromStrapi,
 } from '@/helpers/metadata.helpers';
-import { ApiDataParams } from '@/lib/types/apiDataParams';
 import PageNotFound from '@/app/[locale]/not-found';
-import { SEO } from '@/lib/types/seo';
+import type { SEO } from '@/lib/seo/types';
 import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
 import {
   breadcrumbItemByProduct,
@@ -18,6 +17,14 @@ import {
   productToBreadcrumb,
 } from '@/helpers/structuredData.helpers';
 import ApiSection from '@/components/molecules/ApiSection/ApiSection';
+
+type ApiDataParams = {
+  readonly params: Promise<{
+    readonly locale: string;
+    readonly productSlug: string;
+    readonly apiDataSlug: string;
+  }>;
+};
 
 export type ApiDataPageProps = {
   readonly title?: string;

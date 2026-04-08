@@ -1,8 +1,8 @@
-import { StrapiBaseGuide } from '@/lib/guides/types';
-import { StrapiSeo } from '@/lib/strapi/types/seo';
-import { StrapiBannerLink } from '@/lib/bannerLink/types';
-import { StrapiBaseProductWithRelations } from '@/lib/products/types';
-import { Paginated } from '../strapi/types/paginated';
+import type { StrapiBaseGuide } from '@/lib/guides/strapiTypes';
+import type { StrapiSeo } from '@/lib/seo/strapiTypes';
+import type { StrapiBannerLink } from '@/lib/bannerLink/types';
+import type { StrapiBaseProductWithRelations } from '@/lib/products/strapiTypes';
+import type { Paginated } from '@/lib/strapi/types/paginated';
 
 export type StrapiGuideListPage = {
   readonly id: number;

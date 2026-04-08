@@ -49,14 +49,6 @@ type SitemapProductRelations = {
   readonly api_data_list_page?: SitemapApiDataRelation;
 };
 
-type SitemapApiData = {
-  readonly attributes: {
-    readonly updatedAt: string;
-    readonly apiRestDetail?: { readonly slug: string };
-    readonly apiSoapDetail?: { readonly slug: string };
-  };
-};
-
 async function getHomepage(localeCode: string): Promise<HomepageProps | null> {
   try {
     return await HomepageRepository.get(localeCode);
@@ -400,19 +392,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
           localeCode,
           productSlug
         );
-        const apiRoutes = (
-          apisData as unknown as readonly SitemapApiData[]
-        ).flatMap((api) => {
-          const apiSlug =
-            api.attributes.apiRestDetail?.slug ||
-            api.attributes.apiSoapDetail?.slug;
+        const apiRoutes = apisData.data.flatMap((api) => {
+          const apiSlug = api.apiRestDetail?.slug || api.apiSoapDetail?.slug;
           return apiSlug
             ? [
                 {
                   url: `${localizedUrlPrefix}/${productSlug}/api/${apiSlug}`,
-                  lastModified: new Date(
-                    api.attributes.updatedAt || Date.now()
-                  ),
+                  lastModified: new Date(api.updatedAt || Date.now()),
                   changeFrequency: 'weekly' as const,
                   priority: 0.6,
                 },

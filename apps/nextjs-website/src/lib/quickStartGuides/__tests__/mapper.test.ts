@@ -3,9 +3,9 @@ import {
   emptyQuickStartGuides,
   minimalQuickStartGuides,
   quickStartGuidesWithMissingProductSlug,
-} from '@/lib/__tests__/factories/quickStartGuides';
-import { strapiQuickStartGuides } from '@/lib/__tests__/fixtures/quickStartGuides';
-import { spyOnConsoleError } from '@/lib/strapi/__tests__/spyOnConsole';
+} from '@/lib/quickStartGuides/__tests__/factories';
+import { strapiQuickStartGuides } from '@/lib/quickStartGuides/__tests__/fixtures';
+import { spyOnConsoleError } from '@/lib/__tests__/spyOnConsole';
 import { cloneDeep } from 'lodash';
 
 describe('mapQuickStartGuidesProps', () => {

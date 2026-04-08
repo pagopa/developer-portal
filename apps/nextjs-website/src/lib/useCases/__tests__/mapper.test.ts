@@ -1,12 +1,12 @@
 import { mapUseCasesProps } from '@/lib/useCases/mapper';
-import { StrapiUseCases } from '@/lib/useCases/types';
+import type { StrapiUseCases } from '@/lib/useCases/strapiTypes';
 import {
   minimalDataUseCases,
   useCasesWithAnItemMissingProductSlug,
   useCasesWithAnItemMissingSlug,
-} from '@/lib/__tests__/factories/useCases';
-import { strapiUseCases } from '@/lib/__tests__/fixtures/useCases';
-import { spyOnConsoleError } from '@/lib/strapi/__tests__/spyOnConsole';
+} from '@/lib/useCases/__tests__/factories';
+import { strapiUseCases } from '@/lib/useCases/__tests__/fixtures';
+import { spyOnConsoleError } from '@/lib/__tests__/spyOnConsole';
 import _ from 'lodash';
 
 describe('mapUseCasesProps', () => {

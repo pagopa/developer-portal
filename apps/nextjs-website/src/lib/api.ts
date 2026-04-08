@@ -15,15 +15,13 @@ import { WebinarCategoriesRepository } from '@/lib/webinarCategories';
 import { TagsRepository } from '@/lib/tags';
 import { UrlReplaceMapRepository } from '@/lib/urlReplaceMap';
 import { ReleaseNotesRepository } from '@/lib/releaseNotes';
-import { Webinar } from '@/lib/types/webinar';
+import type { Webinar } from '@/lib/webinars/types';
 import { parseS3GuidePage } from '@/helpers/parseS3Doc.helpers';
 import {
-  downloadFileAsText,
   getGuidesMetadata,
   getReleaseNotesMetadata,
   getSolutionsMetadata,
 } from '@/helpers/s3Metadata.helpers';
-import { s3DocsPath } from '@/config';
 import { OverviewsRepository } from './overviews';
 import { ProductRepository } from './products';
 import { makeReleaseNote, makeSolution } from '../helpers/makeS3Docs.helpers';
@@ -41,15 +39,6 @@ async function manageUndefinedAndAddProducts<T>(
   props: undefined | null | T
 ) {
   return { ...manageUndefined(props), products: await getProducts(locale) };
-}
-
-export async function getMarkdownContent(
-  dirName: string,
-  pathToFile: string
-): Promise<string> {
-  const pathToMarkdownFile = `${s3DocsPath}/${dirName}/${pathToFile}`;
-  const output = await downloadFileAsText(pathToMarkdownFile);
-  return output || '';
 }
 
 export async function getGuidePage(
@@ -292,22 +281,16 @@ export async function getSolutionDetail(
   locale: string,
   solutionSubPathSlugs: readonly string[]
 ) {
-  const solutionData = await getSolution(locale, solutionSlug);
-  if (!solutionData) {
-    // eslint-disable-next-line functional/no-throw-statements
-    throw new Error('Failed to fetch solution data');
-  }
-  const solutionsMetadata = await getSolutionsMetadata(
-    locale,
-    solutionData.dirName
-  );
-
-  const solution = await SolutionRepository.getBySlug(solutionSlug, locale);
-
+  const solution = await getSolution(locale, solutionSlug);
   if (!solution) {
     // eslint-disable-next-line functional/no-throw-statements
     throw new Error(`No solution found matching slug "${solutionSlug}"`);
   }
+
+  const solutionsMetadata = await getSolutionsMetadata(
+    locale,
+    solution.dirName
+  );
 
   return makeSolution(
     solution,

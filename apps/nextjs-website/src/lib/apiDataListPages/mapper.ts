@@ -63,15 +63,16 @@ export function mapApiDataListPages(
             subtitle: apiPage.description || '',
           },
           product,
+          apiData: apiPage.api_data,
           apiDetailSlugs: compact(
-            apiPage.apiData.map((item) =>
+            apiPage.api_data.map((item) =>
               item.apiRestDetail
                 ? item.apiRestDetail.slug
                 : item.apiSoapDetail?.slug
             )
           ),
           cards: compact(
-            apiPage.apiData.map(mapApiDataListPageCard(locale, slug))
+            apiPage.api_data.map(mapApiDataListPageCard(locale, slug))
           ),
           bannerLinks: apiPage.bannerLinks.map(mapBannerLinkProps),
           seo: apiPage.seo,

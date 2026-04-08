@@ -1,6 +1,6 @@
 import { getGuidePage } from '@/lib/api';
 import { getUrlReplaceMap } from '@/lib/api';
-import { GitBookContentData } from '@/lib/types/gitBookContent';
+import type { GitBookContentData } from '@/lib/gitBookContent/types';
 
 export async function GET(
   request: Request,

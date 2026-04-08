@@ -1,13 +1,13 @@
 import { BlocksContent } from '@strapi/blocks-react-renderer';
 import { StrapiRelatedLinks } from '@/lib/strapi/types/link';
-import { StrapiMedia } from '@/lib/strapi/types/media';
-import { StrapiLink } from '@/lib/strapi/types/link';
-import { StrapiWebinar } from '@/lib/webinars/types';
-import { StrapiProduct } from '@/lib/products/types';
-import { StrapiSeo } from '@/lib/strapi/types/seo';
-import { StrapiBaseSolution } from '@/lib/solutions/types';
-import { StrapiNewsShowcase } from '@/lib/strapi/types/newsShowcase';
-import { RootEntity } from '@/lib/strapi/types/rootEntity';
+import type { StrapiMedia } from '@/lib/media/strapiTypes';
+import type { StrapiLink } from '@/lib/strapi/types/link';
+import type { StrapiWebinar } from '@/lib/webinars/strapiTypes';
+import type { StrapiProduct } from '@/lib/products/strapiTypes';
+import type { StrapiSeo } from '@/lib/seo/strapiTypes';
+import type { StrapiBaseSolution } from '@/lib/solutions/types';
+import type { StrapiNewsShowcase } from '@/lib/newsShowcase/types';
+import type { RootEntity } from '@/lib/strapi/types/rootEntity';
 
 type CallToAction = {
   readonly link: StrapiLink;

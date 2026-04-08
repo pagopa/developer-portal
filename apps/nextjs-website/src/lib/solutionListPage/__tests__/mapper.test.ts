@@ -2,7 +2,7 @@ import { mapSolutionListPageProps } from '@/lib/solutionListPage/mapper';
 import {
   expectedSolutionListTemplateProps,
   strapiSolutionListPage,
-} from '@/lib/__tests__/fixtures/solutionListPage';
+} from '@/lib/solutionListPage/__tests__/fixtures';
 import {
   minimalDataSolutionListPage,
   solutionListPageWithMissingCaseHistorySlug,
@@ -10,8 +10,8 @@ import {
   solutionListPageWithoutCaseHistories,
   solutionListPageWithoutFeatures,
   solutionListPageWithoutSolutions,
-} from '@/lib/__tests__/factories/solutionListPage';
-import { spyOnConsoleError } from '@/lib/strapi/__tests__/spyOnConsole';
+} from '@/lib/solutionListPage/__tests__/factories';
+import { spyOnConsoleError } from '@/lib/__tests__/spyOnConsole';
 import { cloneDeep } from 'lodash';
 
 describe('mapSolutionListPageProps', () => {

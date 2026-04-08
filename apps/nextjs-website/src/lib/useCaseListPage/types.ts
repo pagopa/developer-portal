@@ -1,8 +1,8 @@
-import { StrapiBaseUseCase } from '@/lib/useCases/types';
-import { StrapiBannerLink } from '@/lib/bannerLink/types';
-import { StrapiSeo } from '@/lib/strapi/types/seo';
-import { Paginated } from '@/lib/strapi/types/paginated';
-import { StrapiBaseProductWithRelations } from '@/lib/products/types';
+import type { StrapiBaseUseCase } from '@/lib/useCases/strapiTypes';
+import type { StrapiBannerLink } from '@/lib/bannerLink/types';
+import type { StrapiSeo } from '@/lib/seo/strapiTypes';
+import type { Paginated } from '@/lib/strapi/types/paginated';
+import type { StrapiBaseProductWithRelations } from '@/lib/products/strapiTypes';
 
 export type StrapiUseCaseListPage = {
   readonly id: number;

@@ -3,8 +3,8 @@ import {
   emptyTutorialListPages,
   minimalTutorialListPages,
   tutorialListPagesWithItemMissingBannerLinks,
-} from '@/lib/__tests__/factories/tutorialListPage';
-import { strapiTutorialListPages } from '@/lib/__tests__/fixtures/tutorialListPage';
+} from '@/lib/tutorialListPage/__tests__/factories';
+import { strapiTutorialListPages } from '@/lib/tutorialListPage/__tests__/fixtures';
 import _ from 'lodash';
 
 describe('mapTutorialListPageProps', () => {

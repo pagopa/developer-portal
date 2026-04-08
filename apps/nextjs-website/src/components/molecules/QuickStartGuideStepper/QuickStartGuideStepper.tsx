@@ -1,9 +1,9 @@
 'use client';
 import React, { ReactNode } from 'react';
-import { Step } from '@/lib/types/step';
+import type { Step } from '@/lib/quickStartGuides/types';
 import { Box, useTheme } from '@mui/material';
 import Typography from '@mui/material/Typography';
-import { Part } from '@/lib/types/part';
+import type { Part } from '@/lib/parts/types';
 import PartRenderer from '@/components/molecules/PartRenderer/PartRenderer';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
 import TabSwitcherProvider, {

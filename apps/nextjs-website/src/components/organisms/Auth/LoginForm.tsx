@@ -1,4 +1,4 @@
-import { LoginFunction } from '@/lib/types/loginFunction';
+import { LoginFunction } from '@/lib/auth/loginFunction';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import {
   Box,

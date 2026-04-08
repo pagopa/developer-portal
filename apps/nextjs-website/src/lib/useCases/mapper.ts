@@ -3,7 +3,7 @@
 import { mapPartProps } from '@/lib/parts/mapper';
 import { mapBannerLinkProps } from '@/lib/bannerLink/mapper';
 import { compact } from 'lodash';
-import { StrapiUseCases, UseCaseProps } from './types';
+import type { StrapiUseCases, UseCaseProps } from './strapiTypes';
 
 export function mapUseCasesProps(
   locale: string,

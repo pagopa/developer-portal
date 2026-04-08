@@ -3,7 +3,7 @@ import _ from 'lodash';
 import {
   strapiApiDataListPages,
   expectedApiDataListPageProps,
-} from '@/lib/strapi/__tests__/fixtures/apiDataListPages';
+} from '@/lib/apiDataListPages/__tests__/fixtures';
 import {
   minimalApiDataListPages,
   apiDataListPageWithEmptyApiData,
@@ -13,8 +13,8 @@ import {
   multipleApiDataListPages,
   emptyApiDataListPages,
   apiDataListPageWithBothRestAndSoap,
-} from '@/lib/__tests__/factories/apiDataListPages';
-import { spyOnConsoleError } from '@/lib/strapi/__tests__/spyOnConsole';
+} from '@/lib/apiDataListPages/__tests__/factories';
+import { spyOnConsoleError } from '@/lib/__tests__/spyOnConsole';
 
 describe('mapApiDataListPages', () => {
   beforeEach(() => {

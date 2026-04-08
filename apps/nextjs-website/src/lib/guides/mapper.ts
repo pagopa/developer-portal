@@ -3,50 +3,47 @@
 import { mapBannerLinkProps } from '@/lib/bannerLink/mapper';
 import { makeBaseProductWithoutLogoProps } from '@/lib/products/mapper';
 import { compact } from 'lodash';
-import type { StrapiGuides } from './types';
-import { GuideDefinition } from '../../helpers/makeDocs.helpers';
+import type { StrapiGuides } from './strapiTypes';
+import type { Guide } from './types';
 
 export function mapGuides(
   locale: string,
   strapiGuides: StrapiGuides
-): readonly GuideDefinition[] {
+): readonly Guide[] {
   return compact(
-    strapiGuides.data.map((attributes) => {
-      if (!attributes.slug || !attributes.title) {
+    strapiGuides.data.map((guide) => {
+      if (!guide.slug || !guide.title) {
         console.error(
-          `Error while processing Guide: missing title or slug. Title: ${attributes.title} | Slug: ${attributes.slug}. Skipping...`
+          `Error while processing Guide: missing title or slug. Title: ${guide.title} | Slug: ${guide.slug}. Skipping...`
         );
         return null;
       }
 
-      if (!attributes.product?.slug) {
+      if (!guide.product?.slug) {
         console.error(
-          `Error while processing Guide with name "${attributes.title}": missing the product slug. Skipping...`
+          `Error while processing Guide with name "${guide.title}": missing the product slug. Skipping...`
         );
         return null;
       }
 
       try {
-        const product = makeBaseProductWithoutLogoProps(
-          locale,
-          attributes.product
-        );
+        const product = makeBaseProductWithoutLogoProps(locale, guide.product);
         return {
           product,
           guide: {
-            name: attributes.title,
-            slug: attributes.slug,
+            name: guide.title,
+            slug: guide.slug,
           },
-          versions: attributes.versions,
+          versions: guide.versions,
           bannerLinks:
-            attributes.bannerLinks.length > 0
-              ? attributes.bannerLinks.map(mapBannerLinkProps)
-              : attributes.product.bannerLinks?.map(mapBannerLinkProps) || [],
-          seo: attributes.seo,
+            guide.bannerLinks.length > 0
+              ? guide.bannerLinks.map(mapBannerLinkProps)
+              : guide.product.bannerLinks?.map(mapBannerLinkProps) || [],
+          seo: guide.seo,
         };
       } catch (error) {
         console.error(
-          `Error while processing guide with slug "${attributes.slug}":`,
+          `Error while processing guide with slug "${guide.slug}":`,
           error,
           'Skipping...'
         );

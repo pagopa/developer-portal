@@ -6,7 +6,7 @@ import {
 import * as path from 'path';
 import { Readable } from 'stream';
 import Markdoc, { Node } from '@markdoc/markdoc';
-import { GuideDefinition } from './makeDocs.helpers';
+import type { Guide } from '@/lib/guides/types';
 import { staticContentsUrl, s3DocsPath } from '@/config';
 import { Product } from '@/lib/products/types';
 import { downloadFileAsText, JsonMetadata } from './s3Metadata.helpers';
@@ -179,7 +179,7 @@ export const parseS3Doc = async <T>(
 };
 
 export const parseS3GuidePage = async (props: {
-  readonly guideProps: GuideDefinition;
+  readonly guideProps: Guide;
   readonly guidePath: string;
   readonly guidesMetadata: readonly JsonMetadata[];
   readonly products: readonly Product[];

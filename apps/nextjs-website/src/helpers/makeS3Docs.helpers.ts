@@ -7,7 +7,7 @@ import {
 } from '@/config';
 import { Product } from '@/lib/products/types';
 import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
-import { SEO } from '@/lib/types/seo';
+import type { SEO } from '@/lib/seo/types';
 import {
   DocPage,
   DocSource,

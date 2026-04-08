@@ -2,7 +2,7 @@
 import { TutorialsPageProps } from '@/app/[locale]/[productSlug]/tutorials/page';
 import { mapBannerLinkProps } from '@/lib/bannerLink/mapper';
 import { makeBaseProductWithoutLogoProps } from '@/lib/products/mapper';
-import { Tutorial } from '@/lib/types/tutorialData';
+import type { Tutorial } from '@/lib/tutorials/types';
 import { compact } from 'lodash';
 import { StrapiTutorialListPages } from './types';
 

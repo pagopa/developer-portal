@@ -1,11 +1,11 @@
 import { mapWebinarsProps } from '@/lib/webinars/mapper';
-import { StrapiWebinars } from '@/lib/webinars/types';
+import type { StrapiWebinars } from '@/lib/webinars/strapiTypes';
 import _ from 'lodash';
 import {
   strapiWebinars,
   webinarProps,
-} from '@/lib/__tests__/fixtures/webinars';
-import { spyOnConsoleError } from '@/lib/strapi/__tests__/spyOnConsole';
+} from '@/lib/webinars/__tests__/fixtures';
+import { spyOnConsoleError } from '@/lib/__tests__/spyOnConsole';
 
 describe('mapWebinarsProps', () => {
   afterEach(() => {

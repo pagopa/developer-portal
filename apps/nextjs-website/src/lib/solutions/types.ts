@@ -1,14 +1,14 @@
-import { StrapiBannerLink } from '@/lib/bannerLink/types';
-import { CaseHistoriesComponent } from '@/lib/caseHistories/types';
-import {
+import type { StrapiBannerLink } from '@/lib/bannerLink/types';
+import type { CaseHistoriesComponent } from '@/lib/caseHistories/types';
+import type {
   StrapiBaseProduct,
   StrapiBaseProductWithoutBannerLinks,
-} from '@/lib/products/types';
-import { Paginated } from '@/lib/strapi/types/paginated';
-import { StrapiMedia } from '@/lib/strapi/types/media';
-import { StrapiSeo } from '@/lib/strapi/types/seo';
-import { StrapiWebinar } from '@/lib/webinars/types';
-import { BlocksContent } from '@strapi/blocks-react-renderer';
+} from '@/lib/products/strapiTypes';
+import type { Paginated } from '@/lib/strapi/types/paginated';
+import type { StrapiMedia } from '@/lib/media/strapiTypes';
+import type { StrapiSeo } from '@/lib/seo/strapiTypes';
+import type { StrapiWebinar } from '@/lib/webinars/strapiTypes';
+import type { BlocksContent } from '@strapi/blocks-react-renderer';
 
 export type StrapiStep = {
   readonly title: string;

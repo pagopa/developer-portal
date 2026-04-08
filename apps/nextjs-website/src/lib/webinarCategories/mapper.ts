@@ -1,5 +1,8 @@
-import { StrapiWebinarCategories, StrapiWebinarCategory } from './types';
-import { WebinarCategory } from '@/lib/types/webinarCategory';
+import type {
+  StrapiWebinarCategories,
+  StrapiWebinarCategory,
+} from './strapiTypes';
+import type { WebinarCategory } from './types';
 
 export function mapWebinarCategoriesProps(
   strapiWebinarCategories: StrapiWebinarCategories

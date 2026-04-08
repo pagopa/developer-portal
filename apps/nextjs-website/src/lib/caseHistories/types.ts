@@ -1,8 +1,8 @@
-import { StrapiMedia } from '@/lib/strapi/types/media';
-import { StrapiBaseProductWithoutBannerLinks } from '@/lib/products/types';
-import { StrapiSeo } from '@/lib/strapi/types/seo';
-import { Paginated } from '@/lib/strapi/types/paginated';
-import { StrapiPart } from '@/lib/parts/types';
+import type { StrapiMedia } from '@/lib/media/strapiTypes';
+import type { StrapiBaseProductWithoutBannerLinks } from '@/lib/products/strapiTypes';
+import type { StrapiSeo } from '@/lib/seo/strapiTypes';
+import type { Paginated } from '@/lib/strapi/types/paginated';
+import type { StrapiPart } from '@/lib/parts/strapiTypes';
 
 export type BaseCaseHistory = {
   readonly id: number;

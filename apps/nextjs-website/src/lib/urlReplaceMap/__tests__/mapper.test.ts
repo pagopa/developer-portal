@@ -2,11 +2,11 @@ import { mapUrlReplaceMap } from '@/lib/urlReplaceMap/mapper';
 import {
   expectedUrlReplaceMapFixture,
   strapiUrlReplaceMapFixture,
-} from '@/lib/__tests__/fixtures/urlReplaceMap';
+} from '@/lib/urlReplaceMap/__tests__/fixtures';
 import {
   urlReplaceMapMultiple,
   urlReplaceMapSingle,
-} from '@/lib/__tests__/factories/urlReplaceMap';
+} from '@/lib/urlReplaceMap/__tests__/factories';
 
 describe('mapUrlReplaceMap', () => {
   it('should map a single entry with subPath', () => {
