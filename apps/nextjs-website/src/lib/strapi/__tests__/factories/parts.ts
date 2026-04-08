@@ -49,7 +49,15 @@ export function minimalQuotePart(): StrapiPart {
   return {
     __component: 'parts.quote',
     text: '',
-    backgroundImage: {},
+    backgroundImage: { name: '', ext: '', mime: '', size: 0, url: '' },
+  };
+}
+
+export function minimalMarkdownPart(): StrapiPart {
+  return {
+    __component: 'parts.markdown',
+    dirName: 'some-dir',
+    pathToFile: 'index.md',
   };
 }
 

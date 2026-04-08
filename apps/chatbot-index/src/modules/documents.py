@@ -219,14 +219,22 @@ def get_product_list(file_path: str | None = None) -> List[str]:
     s3_content = read_file_from_s3(file_path)
     product_list = []
     if s3_content:
-        products = safe_json_load(s3_content)
-        assert isinstance(
-            products, list
-        ), f"Expected product data to be a list, got {type(products)}"
+        parsed = safe_json_load(s3_content)
+        if not isinstance(parsed, dict):
+            raise ValueError(
+                f"Invalid product data format: expected a JSON object, got {type(parsed)}"
+            )
+        if "data" not in parsed:
+            raise ValueError("Invalid product data format: missing 'data' field")
+        products = parsed["data"]
+        if not isinstance(products, list):
+            raise ValueError(
+                f"Expected product data to be a list, got {type(products)}"
+            )
         for product in products:
             try:
-                if product["attributes"]["isVisible"]:
-                    product_list.append(product["attributes"]["slug"])
+                if product["isVisible"]:
+                    product_list.append(product["slug"])
             except KeyError as e:
                 LOGGER.error(f"Error extracting product slug: {e}")
         LOGGER.info(f"Found {len(product_list)} products: {product_list}.")
@@ -403,14 +411,14 @@ def get_api_docs() -> List[Document]:
         list: The llama-index Documents list.
     """
 
-    api_data = get_apidata()
+    api_data = get_apidata()["data"]
     docs = []
     for data in tqdm.tqdm(api_data, total=len(api_data), desc="Getting API docs"):
-        title = data["attributes"]["title"]
-        product_slug = data["attributes"]["product"]["data"]["attributes"]["slug"]
-        if data["attributes"]["apiRestDetail"] is not None:
-            api_slug = data["attributes"]["apiRestDetail"]["slug"]
-            for spec_urls in data["attributes"]["apiRestDetail"]["specUrls"]:
+        title = data["title"]
+        product_slug = data["product"]["slug"]
+        if data["apiRestDetail"] is not None:
+            api_slug = data["apiRestDetail"]["slug"]
+            for spec_urls in data["apiRestDetail"]["specUrls"]:
                 api_txt = read_api_url(spec_urls["url"].strip())
                 api_url = os.path.join(
                     SETTINGS.website_url, product_slug, "api", api_slug
@@ -611,19 +619,26 @@ def get_dynamic_docs(dynamic_metadata: List[DynamicMetadata]) -> List[Document]:
     return dynamic_docs
 
 
-def get_structured_docs(parent_folder: str, bucket_name: str) -> List[Document]:
+def get_structured_docs(
+    parent_folder: str,
+    bucket_name: str,
+    website_folder: str | None = None,
+) -> List[Document]:
     """
     Fetches structured documents from a specified S3 bucket and parent folder.
     Args:
         parent_folder (str): The parent folder in the S3 bucket where the structured documents are located.
         bucket_name (str): The name of the S3 bucket to fetch the structured documents from.
+        website_folder (str | None): An optional subfolder within the parent folder to further filter the structured documents.
     Returns:
         List[Document]: A list of Document objects containing the content and metadata of the structured documents
     """
 
     bucket = AWS_S3_RESOURCE.Bucket(bucket_name)
     prefix = "/".join(
-        part.strip("/") for part in (parent_folder, EXTRACTOR_FOLDER) if part
+        part.strip("/")
+        for part in (parent_folder, EXTRACTOR_FOLDER, website_folder)
+        if part
     )
 
     structured_docs = []

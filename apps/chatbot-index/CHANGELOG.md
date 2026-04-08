@@ -1,5 +1,23 @@
 # chatbot-index
 
+## 2.6.2
+
+### Patch Changes
+
+- 8faf184: Refactor Vertex AI credential handling to use centralized settings and improve error logging for missing credentials
+
+## 2.6.1
+
+### Patch Changes
+
+- 6a1a271: Migrated the Gemini models initialization from the standard Google AI Studio API to Vertex AI.
+
+## 2.6.0
+
+### Minor Changes
+
+- 167d2ce: Add refresh structured documents function
+
 ## 2.5.0
 
 ### Minor Changes

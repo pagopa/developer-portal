@@ -30,9 +30,11 @@ import {
 import { DOCUMENTATION_PATH } from '../helpers/documentationParsing.helper';
 import {
   StrapiApiData,
+  StrapiApiDataResponse,
   StrapiGuide,
   StrapiGuidesResponse,
   StrapiProduct,
+  StrapiProductsResponse,
   StrapiReleaseNote,
   StrapiReleaseNotesResponse,
   StrapiSolution,
@@ -63,8 +65,6 @@ const GENERATE_URL_METADATA = process.env.GENERATE_URL_METADATA !== 'false';
 // TODO: rename
 const GENERATE_METADATA = process.env.GENERATE_SITEMAP_METADATA !== 'false';
 const SAVE_STRAPI_RESPONSES = process.env.SAVE_STRAPI_RESPONSES !== 'false';
-const GENERATE_ROOT_METADATA_FILE =
-  process.env.GENERATE_ROOT_METADATA_FILE !== 'false';
 
 // Optional filter to sync only specific directories
 // Format: comma-separated list of dirNames (e.g., "dir1,dir2,dir3")
@@ -107,6 +107,8 @@ interface StrapiData {
   guidesRawResponse?: StrapiGuidesResponse;
   solutionsRawResponse?: StrapiSolutionsResponse;
   releaseNotesRawResponse?: StrapiReleaseNotesResponse;
+  productsRawResponse?: StrapiProductsResponse;
+  apisDataRawResponse?: StrapiApiDataResponse;
 }
 
 interface UrlParsingItem {
@@ -156,6 +158,12 @@ async function fetchAllStrapiData(locale?: string): Promise<StrapiData> {
     );
   }
 
+  console.log(`api/guides?${getGuidesQueryString(locale)}`);
+  console.log(`api/solutions/?${getSolutionsQueryString(locale)}`);
+  console.log(`api/release-notes/?${getReleaseNotesQueryString(locale)}`);
+  console.log(`api/products?${getProductsQueryString(locale)}`);
+  console.log(`api/apis-data?${getApisDataQueryString(locale)}`);
+
   const [
     guidesResult,
     solutionsResult,
@@ -198,6 +206,8 @@ async function fetchAllStrapiData(locale?: string): Promise<StrapiData> {
     guidesRawResponse: guidesResult.responseJson,
     solutionsRawResponse: solutionsResult.responseJson,
     releaseNotesRawResponse: releaseNotesResult.responseJson,
+    productsRawResponse: productsResult.responseJson,
+    apisDataRawResponse: apisDataResult.responseJson,
   };
 }
 
@@ -292,14 +302,14 @@ async function getMarkdownFilesRecursively(dir: string): Promise<string[]> {
 
 function mapGuidesToMetadataInfo(guides: StrapiGuide[]): MetadataInfo[] {
   return guides
-    .filter((guide) => !!guide.attributes.product?.data?.attributes?.slug)
+    .filter((guide) => !!guide.product?.slug)
     .flatMap((guide) =>
-      guide.attributes.versions.map((version) => ({
+      guide.versions.map((version) => ({
         versionName: version.version,
         isMainVersion: version.main,
         dirName: version.dirName,
-        slug: guide.attributes.slug,
-        productSlug: `${guide.attributes.product?.data?.attributes?.slug}`,
+        slug: guide.slug,
+        productSlug: `${guide.product?.slug}`,
         metadataType: MetadataType.Guide,
       }))
     );
@@ -390,9 +400,7 @@ function getMainVersionsDirNames(guides: StrapiGuide[]): {
   return {
     dirNames: compact(
       guides.flatMap((guide) =>
-        guide.attributes.versions.map(
-          (version) => version.main && version.dirName
-        )
+        guide.versions.map((version) => version.main && version.dirName)
       )
     ),
   };
@@ -402,7 +410,7 @@ function getSolutionsDirNames(solutions: StrapiSolution[]): {
   dirNames: string[];
 } {
   return {
-    dirNames: compact(solutions.map((solution) => solution.attributes.dirName)),
+    dirNames: compact(solutions.map((solution) => solution.dirName)),
   };
 }
 
@@ -410,9 +418,7 @@ function getReleaseNotesDirNames(releaseNotes: StrapiReleaseNote[]): {
   dirNames: string[];
 } {
   return {
-    dirNames: compact(
-      releaseNotes.map((releaseNote) => releaseNote.attributes.dirName)
-    ),
+    dirNames: compact(releaseNotes.map((releaseNote) => releaseNote.dirName)),
   };
 }
 
@@ -423,7 +429,7 @@ async function processSolutionsMetadata(
   const items: MetadataItem[][] = [];
 
   for (const solution of solutions) {
-    const dirName = solution.attributes.dirName;
+    const dirName = solution.dirName;
     if (!dirName) continue;
 
     const itemList: MetadataItem[] = [];
@@ -458,9 +464,9 @@ async function processSolutionsMetadata(
       if (menuS3Path && content) {
         const path = generateUrlPath({
           filePath,
-          slug: solution.attributes.slug,
+          slug: solution.slug,
           metadataType: MetadataType.Solution,
-          landingFile: solution.attributes.landingUseCaseFile,
+          landingFile: solution.landingUseCaseFile,
           locale: LOCALE,
         });
 
@@ -486,7 +492,7 @@ async function processReleaseNotesMetadata(
   const items: MetadataItem[][] = [];
 
   for (const releaseNote of releaseNotes) {
-    const dirName = releaseNote.attributes.dirName;
+    const dirName = releaseNote.dirName;
     if (!dirName) continue;
 
     const itemList: MetadataItem[] = [];
@@ -517,16 +523,15 @@ async function processReleaseNotesMetadata(
 
       const content = await fs.promises.readFile(filePath, 'utf8');
       const title = extractTitleFromMarkdown(content);
-      const productSlug =
-        releaseNote.attributes.product?.data?.attributes?.slug;
+      const productSlug = releaseNote.product?.slug;
 
       if (dirName && menuS3Path && content && productSlug) {
         const path = generateUrlPath({
           filePath,
-          slug: releaseNote.attributes.slug,
+          slug: releaseNote.slug,
           productSlug: productSlug,
           metadataType: MetadataType.ReleaseNote,
-          landingFile: releaseNote.attributes.landingFile,
+          landingFile: releaseNote.landingFile,
           locale: LOCALE,
         });
 
@@ -550,41 +555,39 @@ async function generateUrlParsingMetadata(
   data: StrapiData
 ): Promise<UrlParsingItem[]> {
   const guideInfoList: MetadataInfo[] = data.guides
-    .filter((guide) => !!guide.attributes.product?.data?.attributes?.slug)
+    .filter((guide) => !!guide.product?.slug)
     .flatMap((guide) =>
-      guide.attributes.versions.map((version) => ({
+      guide.versions.map((version) => ({
         versionName: version.version,
         isMainVersion: version.main,
         dirName: version.dirName,
-        slug: guide.attributes.slug,
-        productSlug: `${guide.attributes.product?.data?.attributes?.slug}`,
+        slug: guide.slug,
+        productSlug: `${guide.product?.slug}`,
         metadataType: MetadataType.Guide,
       }))
     );
 
   const solutionInfoList: MetadataInfo[] = data.solutions
-    .filter((solution) => !!solution.attributes.dirName)
+    .filter((solution) => !!solution.dirName)
     .map((solution) => ({
       versionName: '',
       isMainVersion: true,
-      dirName: solution.attributes.dirName,
-      slug: solution.attributes.slug,
+      dirName: solution.dirName,
+      slug: solution.slug,
       productSlug: '',
       metadataType: MetadataType.Solution,
     }));
 
   const releaseNoteInfoList: MetadataInfo[] = data.releaseNotes
     .filter(
-      (releaseNote) =>
-        !!releaseNote.attributes.dirName &&
-        !!releaseNote.attributes.product?.data?.attributes?.slug
+      (releaseNote) => !!releaseNote.dirName && !!releaseNote.product?.slug
     )
     .map((releaseNote) => ({
       versionName: '',
       isMainVersion: true,
-      dirName: releaseNote.attributes.dirName,
-      slug: releaseNote.attributes.slug,
-      productSlug: `${releaseNote.attributes.product?.data?.attributes?.slug}`,
+      dirName: releaseNote.dirName,
+      slug: releaseNote.slug,
+      productSlug: `${releaseNote.product?.slug}`,
       metadataType: MetadataType.ReleaseNote,
     }));
 
@@ -629,7 +632,6 @@ async function main() {
     console.log(`Generate URL metadata: ${GENERATE_URL_METADATA}`);
     console.log(`Generate metadata: ${GENERATE_METADATA}`);
     console.log(`Save Strapi responses: ${SAVE_STRAPI_RESPONSES}`);
-    console.log(`Generate root metadata file: ${GENERATE_ROOT_METADATA_FILE}`);
     console.log(`Using locale: ${LOCALE}`);
     if (DIR_NAMES_FILTER) {
       console.log(
@@ -648,15 +650,15 @@ async function main() {
     };
 
     if (SAVE_STRAPI_RESPONSES) {
-      console.log('Saving Strapi products, APIs data, and sitemap...');
+      console.log('Saving Strapi products and APIs data responses to S3...');
       await putS3File(
-        strapiData.products,
+        strapiData.productsRawResponse,
         getLocalizedPath(getSyncedProductsResponseJsonFile, LOCALE),
         S3_BUCKET_NAME!,
         getS3Client()
       );
       await putS3File(
-        strapiData.apisData,
+        strapiData.apisDataRawResponse,
         getLocalizedPath(getSyncedApisDataResponseJsonFile, LOCALE),
         S3_BUCKET_NAME!,
         getS3Client()
@@ -809,22 +811,6 @@ async function main() {
 
       await Promise.all(promises);
       console.log(`Saved ${filteredGuidesMetadata.length} guide items to S3`);
-
-      if (GENERATE_ROOT_METADATA_FILE) {
-        const allGuidesMetadata = await processGuidesMetadata(
-          guidesMetadataInfo
-        );
-        await putS3File(
-          allGuidesMetadata.flat(),
-          getLocalizedPath(S3_GUIDE_METADATA_JSON_PATH, LOCALE),
-          S3_BUCKET_NAME!,
-          getS3Client()
-        );
-
-        console.log(
-          `Saved ${allGuidesMetadata.length} guide items to guides-metadata root file in S3`
-        );
-      }
     }
 
     // Process and save solutions metadata
@@ -834,8 +820,7 @@ async function main() {
       const filteredSolutionsMetadata = await processSolutionsMetadata(
         strapiData.solutions.filter(
           (version) =>
-            !DIR_NAMES_FILTER ||
-            DIR_NAMES_FILTER.includes(version.attributes.dirName)
+            !DIR_NAMES_FILTER || DIR_NAMES_FILTER.includes(version.dirName)
         )
       );
       const promises = compact(filteredSolutionsMetadata).map(
@@ -868,22 +853,6 @@ async function main() {
       console.log(
         `Saved ${filteredSolutionsMetadata.length} solution items to S3`
       );
-
-      if (GENERATE_ROOT_METADATA_FILE) {
-        const solutionsMetadata = await processSolutionsMetadata(
-          strapiData.solutions
-        );
-        await putS3File(
-          solutionsMetadata.flat(),
-          getLocalizedPath(S3_SOLUTIONS_METADATA_JSON_PATH, LOCALE),
-          S3_BUCKET_NAME!,
-          getS3Client()
-        );
-
-        console.log(
-          `Saved ${solutionsMetadata.length} solution items in solutions-metadata root file to S3`
-        );
-      }
     }
 
     // Process and save release notes metadata
@@ -892,8 +861,7 @@ async function main() {
       const filteredReleaseNotesMetadata = await processReleaseNotesMetadata(
         strapiData.releaseNotes.filter(
           (version) =>
-            !DIR_NAMES_FILTER ||
-            DIR_NAMES_FILTER.includes(version.attributes.dirName)
+            !DIR_NAMES_FILTER || DIR_NAMES_FILTER.includes(version.dirName)
         )
       );
 
@@ -930,22 +898,6 @@ async function main() {
       console.log(
         `Saved ${filteredReleaseNotesMetadata.length} release note items to S3`
       );
-
-      if (GENERATE_ROOT_METADATA_FILE) {
-        const releaseNotesMetadata = await processReleaseNotesMetadata(
-          strapiData.releaseNotes
-        );
-        await putS3File(
-          releaseNotesMetadata.flat(),
-          getLocalizedPath(S3_RELEASE_NOTES_METADATA_JSON_PATH, LOCALE),
-          S3_BUCKET_NAME!,
-          getS3Client()
-        );
-
-        console.log(
-          `Saved ${releaseNotesMetadata.length} release notes items in release-notes-metadata root file to S3`
-        );
-      }
     }
 
     console.log('Metadata sync completed successfully!');

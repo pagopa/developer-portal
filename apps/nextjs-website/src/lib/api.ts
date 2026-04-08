@@ -28,6 +28,7 @@ import {
   getSolutionsMetadata,
 } from '@/helpers/s3Metadata.helpers';
 import { s3DocsPath } from '@/config';
+import { CustomMessagesMapRepository } from './customMessagesMap';
 
 function manageUndefined<T>(props: undefined | null | T) {
   if (!props) {
@@ -45,10 +46,11 @@ async function manageUndefinedAndAddProducts<T>(
 }
 
 export async function getMarkdownContent(
+  locale: string,
   dirName: string,
   pathToFile: string
 ): Promise<string> {
-  const pathToMarkdownFile = `${s3DocsPath}/${dirName}/${pathToFile}`;
+  const pathToMarkdownFile = `${locale}/${s3DocsPath}/${dirName}/${pathToFile}`;
   const output = await downloadFileAsText(pathToMarkdownFile);
   return output || '';
 }
@@ -234,7 +236,7 @@ export async function getReleaseNote(
 
   const releaseNotesMetadata = await getReleaseNotesMetadata(
     locale,
-    releaseNote.attributes.dirName
+    releaseNote.dirName
   );
 
   const releaseNoteProps = await getReleaseNoteProps(
@@ -337,4 +339,9 @@ export async function getUseCaseListPageProps(
     null;
 
   return manageUndefinedAndAddProducts(locale, props);
+}
+
+export async function getCustomMessagesMapProps(locale: string) {
+  const customMessages = await CustomMessagesMapRepository.get(locale);
+  return manageUndefined(customMessages);
 }

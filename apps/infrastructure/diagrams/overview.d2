@@ -1,0 +1,389 @@
+# Overview Infrastructure Diagram
+# Developer Portal - High-Level Architecture (prod)
+
+vars: {
+  d2-config: {
+    layout-engine: elk
+    sketch: true
+  }
+}
+
+direction: right
+
+title: {
+  label: Developer Portal - Infrastructure Overview (prod)
+  near: top-center
+  shape: text
+  style.font-size: 28
+  style.bold: true
+}
+
+users: Users {
+  icon: https://icons.terrastruct.com/essentials%2F359-users.svg
+  shape: image
+}
+
+admins: CMS\nAdmins {
+  icon: https://icons.terrastruct.com/essentials%2F359-users.svg
+  shape: image
+}
+
+broadcaster: Broadcaster\n(Streamer) {
+  icon: https://icons.terrastruct.com/essentials%2F359-users.svg
+  shape: image
+}
+
+# DNS
+route53: Route 53\n(developer.pagopa.it) {
+  icon: https://icons.terrastruct.com/aws%2FNetworking%20&%20Content%20Delivery%2FAmazon-Route-53.svg
+  shape: image
+}
+
+# SES
+ses: SES\n(Email Service) {
+  icon: https://icons.terrastruct.com/aws%2FCustomer%20Engagement%2FAmazon-Simple-Email-Service-SES.svg
+  shape: image
+}
+
+# Auth Module (separate from Website)
+auth: Auth {
+  style.fill: "#fce4ec"
+
+  cognito: Cognito\n(User & Identity Pool) {
+    icon: https://icons.terrastruct.com/aws%2FSecurity%2C%20Identity%2C%20&%20Compliance%2FAmazon-Cognito.svg
+    shape: image
+  }
+
+  cognito_lambdas: Lambda Triggers\n(Custom Auth Flow) {
+    icon: https://icons.terrastruct.com/aws%2FCompute%2FAWS-Lambda.svg
+    shape: image
+  }
+}
+
+# Website Module
+website: Website {
+  style.fill: "#e3f2fd"
+
+  cloudfront: CloudFront\n(Website CDN) {
+    icon: https://icons.terrastruct.com/aws%2FNetworking%20&%20Content%20Delivery%2FAmazon-CloudFront.svg
+    shape: image
+  }
+
+  cloudfront_static: CloudFront\n(Static Contents) {
+    icon: https://icons.terrastruct.com/aws%2FNetworking%20&%20Content%20Delivery%2FAmazon-CloudFront.svg
+    shape: image
+  }
+
+  lambda: Lambda\n(OpenNext Server) {
+    icon: https://icons.terrastruct.com/aws%2FCompute%2FAWS-Lambda.svg
+    shape: image
+  }
+
+  s3: S3\n(Static Content) {
+    icon: https://icons.terrastruct.com/aws%2FStorage%2FAmazon-Simple-Storage-Service-S3.svg
+    shape: image
+  }
+
+  s3_assets: S3\n(OpenNext Assets) {
+    icon: https://icons.terrastruct.com/aws%2FStorage%2FAmazon-Simple-Storage-Service-S3.svg
+    shape: image
+  }
+
+  dynamodb_questions: DynamoDB\n(Webinar Questions) {
+    icon: https://icons.terrastruct.com/aws%2FDatabase%2FAmazon-DynamoDB.svg
+    shape: image
+  }
+
+  dynamodb_subscriptions: DynamoDB\n(Webinar Subscriptions) {
+    icon: https://icons.terrastruct.com/aws%2FDatabase%2FAmazon-DynamoDB.svg
+    shape: image
+  }
+}
+
+# CMS Module
+vpc: VPC (10.0.0.0/16) {
+  style.fill: "#f3e5f5"
+
+  cms: CMS (Strapi) {
+    style.fill: "#e1bee7"
+
+    ecs_strapi: ECS Fargate\n(Strapi) {
+      icon: https://icons.terrastruct.com/aws%2FCompute%2FAWS-Fargate.svg
+      shape: image
+    }
+
+    alb_public: ALB\n(Public) {
+      icon: https://icons.terrastruct.com/aws%2FNetworking%20&%20Content%20Delivery%2FElastic-Load-Balancing.svg
+      shape: image
+    }
+
+    alb_internal: ALB\n(Internal) {
+      icon: https://icons.terrastruct.com/aws%2FNetworking%20&%20Content%20Delivery%2FElastic-Load-Balancing.svg
+      shape: image
+    }
+
+    rds_cms: RDS Aurora\nPostgreSQL\n(Serverless v2) {
+      icon: https://icons.terrastruct.com/aws%2FDatabase%2FAmazon-Aurora.svg
+      shape: image
+    }
+
+    s3_media: S3\n(Media Library) {
+      icon: https://icons.terrastruct.com/aws%2FStorage%2FAmazon-Simple-Storage-Service-S3.svg
+      shape: image
+    }
+
+    cloudfront_media: CloudFront\n(Media CDN) {
+      icon: https://icons.terrastruct.com/aws%2FNetworking%20&%20Content%20Delivery%2FAmazon-CloudFront.svg
+      shape: image
+    }
+
+    ecr: ECR\n(Strapi Image) {
+      icon: https://icons.terrastruct.com/aws%2FCompute%2FAmazon-EC2-Container-Registry.svg
+      shape: image
+    }
+  }
+
+  # Chatbot Module
+  chatbot: Chatbot {
+    style.fill: "#c8e6c9"
+
+    apigw: API Gateway\n(REST) {
+      icon: https://icons.terrastruct.com/aws%2FMobile%2FAmazon-API-Gateway.svg
+      shape: image
+    }
+
+    waf: WAF v2\n(Rate Limiting\n& Bot Control) {
+      icon: https://icons.terrastruct.com/aws%2FSecurity%2C%20Identity%2C%20&%20Compliance%2FAWS-WAF.svg
+      shape: image
+    }
+
+    lambda_api: Lambda\n(Chatbot API) {
+      icon: https://icons.terrastruct.com/aws%2FCompute%2FAWS-Lambda.svg
+      shape: image
+    }
+
+    lambda_index: Lambda\n(Index) {
+      icon: https://icons.terrastruct.com/aws%2FCompute%2FAWS-Lambda.svg
+      shape: image
+    }
+
+    lambda_evaluate: Lambda\n(Evaluate) {
+      icon: https://icons.terrastruct.com/aws%2FCompute%2FAWS-Lambda.svg
+      shape: image
+    }
+
+    redis: ECS Fargate\n(Redis Stack) {
+      icon: https://icons.terrastruct.com/aws%2FCompute%2FAWS-Fargate.svg
+      shape: image
+    }
+
+    nlb: NLB\n(Internal - Redis) {
+      icon: https://icons.terrastruct.com/aws%2FNetworking%20&%20Content%20Delivery%2FElastic-Load-Balancing.svg
+      shape: image
+    }
+
+    langfuse: ECS Fargate\n(Langfuse) {
+      icon: https://icons.terrastruct.com/aws%2FCompute%2FAWS-Fargate.svg
+      shape: image
+    }
+
+    dynamodb_chatbot: DynamoDB\n(Queries/Sessions/Salts) {
+      icon: https://icons.terrastruct.com/aws%2FDatabase%2FAmazon-DynamoDB.svg
+      shape: image
+    }
+
+    sqs: SQS FIFO\n(Evaluate) {
+      icon: https://icons.terrastruct.com/aws%2FApplication%20Integration%2FAmazon-Simple-Queue-Service-SQS.svg
+      shape: image
+    }
+
+    rds_langfuse: RDS Aurora\nPostgreSQL\n(Langfuse DB) {
+      icon: https://icons.terrastruct.com/aws%2FDatabase%2FAmazon-Aurora.svg
+      shape: image
+    }
+
+    s3_kb: S3\n(Knowledge Base\n& LlamaIndex) {
+      icon: https://icons.terrastruct.com/aws%2FStorage%2FAmazon-Simple-Storage-Service-S3.svg
+      shape: image
+    }
+
+    efs: EFS\n(Redis Storage) {
+      icon: https://icons.terrastruct.com/aws%2FStorage%2FAmazon-Elastic-File-System_EFS.svg
+      shape: image
+    }
+  }
+}
+
+# Active Campaign
+ac: Active Campaign Integration {
+  style.fill: "#fff9c4"
+
+  eventbridge_rule: EventBridge\nRule\n(Cognito Events) {
+    icon: https://icons.terrastruct.com/aws%2FApplication%20Integration%2FAmazon-EventBridge.svg
+    shape: image
+  }
+
+  eventbridge_pipe: EventBridge\nPipe\n(DDB → SQS) {
+    icon: https://icons.terrastruct.com/aws%2FApplication%20Integration%2FAmazon-EventBridge.svg
+    shape: image
+  }
+
+  sqs_ac: SQS FIFO\n(Events) {
+    icon: https://icons.terrastruct.com/aws%2FApplication%20Integration%2FAmazon-Simple-Queue-Service-SQS.svg
+    shape: image
+  }
+
+  lambda_sync: Lambda\n(Sync) {
+    icon: https://icons.terrastruct.com/aws%2FCompute%2FAWS-Lambda.svg
+    shape: image
+  }
+
+  lambda_resync: Lambda\n(Resync) {
+    icon: https://icons.terrastruct.com/aws%2FCompute%2FAWS-Lambda.svg
+    shape: image
+  }
+}
+
+# Video Streaming
+video: Video Streaming (eu-central-1) {
+  style.fill: "#ffccbc"
+
+  ivs: Amazon IVS\n(Interactive Video) {
+    icon: https://icons.terrastruct.com/aws%2FMedia%20Services%2FAmazon-Elastic-Transcoder.svg
+    shape: image
+  }
+
+  cloudfront_video: CloudFront\n(Video CDN) {
+    icon: https://icons.terrastruct.com/aws%2FNetworking%20&%20Content%20Delivery%2FAmazon-CloudFront.svg
+    shape: image
+  }
+
+  s3_recordings: S3\n(Recordings) {
+    icon: https://icons.terrastruct.com/aws%2FStorage%2FAmazon-Simple-Storage-Service-S3.svg
+    shape: image
+  }
+
+  lambda_video: Lambda\n(Video Processing) {
+    icon: https://icons.terrastruct.com/aws%2FCompute%2FAWS-Lambda.svg
+    shape: image
+  }
+
+  lambda_metrics: Lambda\n(Webinar Metrics) {
+    icon: https://icons.terrastruct.com/aws%2FCompute%2FAWS-Lambda.svg
+    shape: image
+  }
+
+  apigw_metrics: API Gateway\n(Metrics API) {
+    icon: https://icons.terrastruct.com/aws%2FMobile%2FAmazon-API-Gateway.svg
+    shape: image
+  }
+
+  firehose: Kinesis\nFirehose {
+    icon: https://icons.terrastruct.com/aws%2FAnalytics%2FAmazon-Kinesis-Data-Firehose.svg
+    shape: image
+  }
+
+  athena: Athena\n(Log Analytics) {
+    icon: https://icons.terrastruct.com/aws%2FAnalytics%2FAmazon-Athena.svg
+    shape: image
+  }
+}
+
+# External Services
+google: Google Gemini\n(AI Models) {
+  icon: https://icons.terrastruct.com/essentials%2F112-server.svg
+  shape: image
+  style.opacity: 0.6
+}
+
+ac_external: Active Campaign\n(External API) {
+  icon: https://icons.terrastruct.com/essentials%2F112-server.svg
+  shape: image
+  style.opacity: 0.6
+}
+
+# Monitoring
+cloudwatch: CloudWatch {
+  icon: https://icons.terrastruct.com/aws%2FManagement%20&%20Governance%2FAmazon-CloudWatch.svg
+  shape: image
+}
+
+# --- Connections ---
+
+# User flows
+users -> route53: HTTPS
+admins -> route53: HTTPS
+broadcaster -> video.ivs: RTMP Stream
+
+route53 -> website.cloudfront: developer.pagopa.it
+route53 -> website.cloudfront_static: static-contents.developer.pagopa.it
+route53 -> vpc.cms.alb_public: cms.developer.pagopa.it
+route53 -> vpc.chatbot.waf: api.chatbot.developer.pagopa.it
+route53 -> video.cloudfront_video: video.developer.pagopa.it
+route53 -> auth.cognito: auth.developer.pagopa.it
+
+# Auth module
+auth.cognito -> auth.cognito_lambdas: Lambda triggers
+auth.cognito_lambdas -> ses: Verification &\nOTP emails
+
+# Website internals
+website.cloudfront -> website.lambda: Origin
+website.cloudfront -> website.s3_assets: Static assets
+website.cloudfront_static -> website.s3: Origin
+website.lambda -> vpc.cms.alb_internal: Fetch content\n(Internal ALB, port 8080)
+website.lambda -> website.s3: Read docs/guides
+website.lambda -> auth.cognito: Cognito config\n(User Pool ID, Client ID)
+
+# CMS internals
+vpc.cms.alb_public -> vpc.cms.ecs_strapi: Port 1337
+vpc.cms.alb_internal -> vpc.cms.ecs_strapi: Port 1337
+vpc.cms.ecs_strapi -> vpc.cms.rds_cms: PostgreSQL
+vpc.cms.ecs_strapi -> vpc.cms.s3_media: Upload media
+vpc.cms.cloudfront_media -> vpc.cms.s3_media: Origin (OAI)
+
+# Chatbot internals
+vpc.chatbot.waf -> vpc.chatbot.apigw
+vpc.chatbot.apigw -> auth.cognito: Authorize\n(COGNITO_USER_POOLS)
+vpc.chatbot.apigw -> vpc.chatbot.lambda_api: Invoke (AWS_PROXY)
+vpc.chatbot.lambda_api -> vpc.chatbot.nlb: Redis\n(Port 6379)
+vpc.chatbot.nlb -> vpc.chatbot.redis
+vpc.chatbot.lambda_api -> vpc.chatbot.dynamodb_chatbot: Read/Write
+vpc.chatbot.lambda_api -> vpc.chatbot.s3_kb: Read/Write
+vpc.chatbot.lambda_api -> vpc.chatbot.sqs: Send evaluate msgs
+vpc.chatbot.lambda_api -> vpc.chatbot.langfuse: Traces\n(Internal ALB)
+vpc.chatbot.lambda_api -> google: AI Generation
+vpc.chatbot.sqs -> vpc.chatbot.lambda_evaluate: Trigger
+vpc.chatbot.lambda_evaluate -> vpc.chatbot.langfuse: Evaluate traces
+vpc.chatbot.langfuse -> vpc.chatbot.rds_langfuse: PostgreSQL
+vpc.chatbot.redis -> vpc.chatbot.efs: Persistent storage
+
+# Index Lambda triggered by S3
+website.s3 -> vpc.chatbot.lambda_index: S3 Event (.md files)
+vpc.chatbot.lambda_index -> vpc.chatbot.nlb: Update index\n(Redis)
+vpc.chatbot.lambda_index -> google: Embeddings
+
+# Active Campaign flow
+auth.cognito -> ac.eventbridge_rule: User events\n(via CloudTrail)
+website.dynamodb_subscriptions -> ac.eventbridge_pipe: DDB Stream\n(Subscriptions)
+ac.eventbridge_rule -> ac.sqs_ac: Send message
+ac.eventbridge_pipe -> ac.sqs_ac: Transform & send
+ac.sqs_ac -> ac.lambda_sync: Trigger
+ac.lambda_sync -> ac_external: Sync contacts
+ac.lambda_sync -> auth.cognito: Read user data
+
+# Video Streaming
+video.ivs -> video.s3_recordings: Auto-record
+video.cloudfront_video -> video.s3_recordings: Origin (OAC)
+video.s3_recordings -> video.lambda_video: S3 Event\n(recording-ended.json)
+video.lambda_video -> vpc.cms.ecs_strapi: Update webinar\nrecording URL
+video.apigw_metrics -> video.lambda_metrics: Invoke
+video.lambda_metrics -> video.ivs: Get stream metrics
+
+# Heartbeat flow (users -> CloudFront -> API Gateway -> Lambda -> Firehose)
+users -> video.cloudfront_video: POST /ingest\n(Heartbeat)
+video.cloudfront_video -> auth.cognito: JWT validation\n(via API Gateway)
+
+# Monitoring
+website.lambda -> cloudwatch: Logs
+vpc.chatbot.lambda_api -> cloudwatch: Logs
+vpc.cms.ecs_strapi -> cloudwatch: Logs

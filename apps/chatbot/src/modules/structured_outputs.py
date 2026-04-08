@@ -4,7 +4,6 @@ from llama_index.core.bridge.pydantic import BaseModel, Field
 
 from src.modules.documents import get_product_list
 
-
 PRODUCTS = get_product_list() + ["api", "webinars"]
 
 
@@ -37,8 +36,7 @@ class RAGOutput(BaseModel):
     products: List[str] = Field(
         ...,
         description=(
-            "A list of products. The list contains one or more of the PagoPA products: "
-            f"{PRODUCTS}"
+            f"A list of products. The list contains one or more of the PagoPA products: {PRODUCTS}"
         ),
     )
     references: List[Reference] = Field(
@@ -51,8 +49,8 @@ class FollowUpQuestionsOutput(BaseModel):
     """A structured output for follow-up questions."""
 
     follow_up_questions: List[FollowUpQuestion] = Field(
+        default=[],
         description="Follow-up questions about Developer or Citizen documentation.",
-        min_length=2,
         max_length=10,
     )
 
@@ -66,7 +64,7 @@ class DiscoveryOutput(BaseModel):
     products: List[str] = Field(
         default=[],
         description=(
-            "A list of products. The list contains one or more of the PagoPA products."
+            f"A list of products. The list contains one or more of the PagoPA products: {PRODUCTS}."
         ),
     )
     references: List[Reference] = Field(

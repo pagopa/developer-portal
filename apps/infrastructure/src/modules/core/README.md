@@ -5,13 +5,13 @@
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 5.33.0 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 6.28.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 5.33.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 6.28.0 |
 
 ## Modules
 
@@ -45,7 +45,7 @@
 | <a name="input_dns_delegate_records"></a> [dns\_delegate\_records](#input\_dns\_delegate\_records) | DNS delegate records | `map(any)` | `{}` | no |
 | <a name="input_dns_domain_name"></a> [dns\_domain\_name](#input\_dns\_domain\_name) | DNS domain for the Developer Portal product | `string` | n/a | yes |
 | <a name="input_environment"></a> [environment](#input\_environment) | Environment | `string` | n/a | yes |
-| <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | <pre>{<br>  "CreatedBy": "Terraform"<br>}</pre> | no |
+| <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | <pre>{<br/>  "CreatedBy": "Terraform"<br/>}</pre> | no |
 
 ## Outputs
 

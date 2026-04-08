@@ -1,5 +1,15 @@
 # parser
 
+## 1.2.0
+
+### Minor Changes
+
+- 8e394d9: Add dockerization
+
+### Patch Changes
+
+- 8e394d9: Remove obsolete option to run locally without docker.
+
 ## 1.1.0
 
 ### Minor Changes

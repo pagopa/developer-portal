@@ -85,6 +85,20 @@ module "core" {
   ac_integration_is_enabled = var.ac_integration_is_enabled
 }
 
+module "auth" {
+  source = "./modules/auth"
+
+  providers = {
+    aws           = aws
+    aws.us-east-1 = aws.us-east-1
+  }
+
+  environment             = var.environment
+  dns_domain_name         = var.dns_domain_name
+  hosted_zone_id          = module.core.hosted_zone_id
+  ses_domain_identity_arn = module.core.ses_domain_identity_arn
+}
+
 module "website" {
   source = "./modules/website"
 
@@ -103,7 +117,12 @@ module "website" {
   dns_delegate_records         = var.dns_delegate_records
   use_custom_certificate       = var.use_custom_certificate
   hosted_zone_id               = module.core.hosted_zone_id
-  ses_domain_identity_arn      = module.core.ses_domain_identity_arn
+
+  cognito_user_pool_id                    = module.auth.cognito_user_pool.id
+  cognito_user_pool_client_id             = module.auth.cognito_user_pool.client_id
+  cognito_identity_pool_id                = module.auth.cognito_identity_pool_id
+  cognito_authenticated_user_role_id      = module.auth.authenticated_user_role_id
+  cognito_authenticated_host_user_role_id = module.auth.authenticated_host_user_role_id
 
   website_is_standalone = var.website_is_standalone
   nextjs_version        = "13.4.19"
@@ -129,6 +148,7 @@ module "website" {
 
   next_public_soap_api_page_active = true
 
+  webinar_heartbeat_url = module.video_streaming.ingest_api_endpoint
 
 }
 
@@ -176,7 +196,7 @@ module "chatbot" {
 
   s3_bucket_name_static_content = module.website.website_standalone_bucket.name
   dns_chatbot_hosted_zone       = module.core.dns_chatbot_hosted_zone
-  cognito_user_pool             = module.website.cognito_user_pool
+  cognito_user_pool             = module.auth.cognito_user_pool
   vpc                           = module.cms.vpc
   security_groups               = module.cms.security_groups
   dns_domain_name               = var.dns_domain_name
@@ -225,7 +245,7 @@ module "active_campaign" {
   environment = var.environment
   tags        = var.tags
 
-  cognito_user_pool         = module.website.cognito_user_pool
+  cognito_user_pool         = module.auth.cognito_user_pool
   webinar_subscriptions_ddb = module.website.webinar_subscriptions_ddb
 }
 
@@ -268,27 +288,10 @@ module "video_streaming" {
   webinar_metrics_channel_key = "channell-01"
   github_repository           = var.github_repository
 
+  cognito_user_pool_endpoint  = module.auth.cognito_user_pool.endpoint
+  cognito_user_pool_client_id = module.auth.cognito_user_pool.client_id
+
 }
-
-module "langfuse" {
-  source = "./modules/langfuse"
-
-  count = var.environment == "dev" ? 1 : 0
-
-  environment        = var.environment
-  region             = var.aws_region
-  vpc_id             = module.cms.vpc.id
-  private_subnet_ids = module.cms.vpc.private_subnets
-  public_subnet_ids  = module.cms.vpc.public_subnets
-  custom_domain_id   = module.core.hosted_zone_id
-  custom_domain_name = var.dns_domain_name
-
-  # Use the Cognito User Pool created by the Chatbot module
-  cognito_user_pool_id           = module.chatbot[0].cognito_user_pool_id
-  cognito_user_pool_endpoint     = module.chatbot[0].cognito_user_pool_endpoint
-  master_user_password_param_arn = module.chatbot[0].cognito_master_user_password_param_arn
-}
-
 
 # strapi-v5  for testing purposes only
 module "strapi_v5" {
