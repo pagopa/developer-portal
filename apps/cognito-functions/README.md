@@ -66,7 +66,7 @@ Typical workflow:
 1. Update handler or template code.
 2. Run `npm run test -w cognito-functions`.
 3. Run `npm run build -w cognito-functions`.
-4. Use `out/cognito-functions.zip` as the deployment artifact.
+4. The build script should create the artifact `out/cognito-functions.zip`.
 
 If you are only changing email templates, `npm run generate:templates -w cognito-functions` is enough to validate the precompilation step.
 
