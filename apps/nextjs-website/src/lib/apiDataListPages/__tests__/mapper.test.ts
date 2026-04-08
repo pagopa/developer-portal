@@ -46,7 +46,7 @@ describe('mapApiDataListPages', () => {
     expect(firstElement.seo).toBeUndefined();
     expect(firstElement.cards).toHaveLength(1);
     expect(firstElement.cards[0].title).toBe('Minimal API');
-    expect(firstElement.cards[0].icon).toBe(undefined);
+    expect(firstElement.cards[0].icon).toBe('');
     expect(firstElement.apiData).toBeDefined();
   });
 

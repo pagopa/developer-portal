@@ -126,12 +126,13 @@ const Home = async ({ params }: { params: Promise<{ locale: string }> }) => {
         )}
         {ecosystem && <Ecosystem {...ecosystem} />}
         {webinars.length > 0 && <WebinarsSection webinars={webinars} />}
-        {comingsoonDocumentation.links.length > 0 && (
-          <RelatedLinks
-            title={comingsoonDocumentation.title}
-            links={comingsoonDocumentation.links}
-          />
-        )}
+        {comingsoonDocumentation?.links &&
+          comingsoonDocumentation.links.length > 0 && (
+            <RelatedLinks
+              title={comingsoonDocumentation.title}
+              links={comingsoonDocumentation.links}
+            />
+          )}
       </ContentWrapper>
     </>
   );

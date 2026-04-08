@@ -8,6 +8,13 @@ export type QuestionsAndAnswer = {
   readonly answer: BlocksContent;
 };
 
+export type Chapter = {
+  readonly slug: string;
+  readonly title: string;
+  readonly startTime: string;
+  readonly endTime: string;
+};
+
 export type Webinar = {
   readonly description: string;
   readonly bodyContent?: BlocksContent;
@@ -51,6 +58,8 @@ export type Webinar = {
   readonly tag?: Tag;
   readonly headerImage?: Media;
   readonly updatedAt: string;
+  readonly chapters?: readonly Chapter[];
+  readonly webvttContent?: string;
 };
 
 export type Speaker = {

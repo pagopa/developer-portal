@@ -1,7 +1,7 @@
 import * as qs from 'qs';
 import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
 import { productRelationsPopulate } from '@/lib/products/fetcher';
-import { ApiDataListPages } from './types';
+import type { ApiDataListPages } from './types';
 import { buildEnv } from '@/lib/buildEnv';
 
 const makeStrapiApiDataListPagePopulate = () =>

@@ -61,6 +61,12 @@ export const quotePart: StrapiPart = {
   },
 };
 
+export const markdownPart: StrapiPart = {
+  __component: 'parts.markdown',
+  dirName: 'my-guide',
+  pathToFile: 'README.md',
+};
+
 export const ckEditorPart: StrapiPart = {
   __component: 'parts.ck-editor',
   content: '<p>CKEditor content</p>',

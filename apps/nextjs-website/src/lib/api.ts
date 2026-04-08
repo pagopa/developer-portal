@@ -25,6 +25,7 @@ import {
 import { OverviewsRepository } from './overviews';
 import { ProductRepository } from './products';
 import { makeReleaseNote, makeSolution } from '../helpers/makeS3Docs.helpers';
+import { CustomMessagesMapRepository } from './customMessagesMap';
 
 function manageUndefined<T>(props: undefined | null | T) {
   if (!props) {
@@ -332,4 +333,9 @@ export async function getUseCaseListPageProps(
   );
 
   return manageUndefinedAndAddProducts(locale, props);
+}
+
+export async function getCustomMessagesMapProps(locale: string) {
+  const customMessages = await CustomMessagesMapRepository.get(locale);
+  return manageUndefined(customMessages);
 }

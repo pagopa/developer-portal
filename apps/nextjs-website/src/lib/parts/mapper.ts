@@ -1,10 +1,12 @@
 import type { Part } from '@/lib/parts/types';
 import { parseCkEditorContent } from '@/helpers/parseCkEditorContent.helpers';
 import type { StrapiPart } from '@/lib/parts/strapiTypes';
+import { s3DocsPath, staticContentsUrl } from '@/config';
 
 export function mapPartProps(
   strapiPart: StrapiPart,
-  markdownContentDict?: Record<string, string>
+  markdownContentDict?: Record<string, string>,
+  locale?: string
 ): Part | null {
   switch (strapiPart.__component) {
     case 'parts.alert':
@@ -51,7 +53,9 @@ export function mapPartProps(
         return {
           component: 'markdown',
           content: '',
-          dirName: '',
+          assetsPrefix: `${staticContentsUrl}/${locale || 'it'}/${s3DocsPath}/${
+            strapiPart.dirName
+          }`,
         };
       // eslint-disable-next-line no-case-declarations
       const content =
@@ -59,7 +63,9 @@ export function mapPartProps(
       return {
         component: 'markdown',
         content: content ? content : '',
-        dirName: strapiPart.dirName,
+        assetsPrefix: `${staticContentsUrl}/${locale || 'it'}/${s3DocsPath}/${
+          strapiPart.dirName
+        }`,
       };
     case 'parts.ck-editor':
       // eslint-disable-next-line no-case-declarations

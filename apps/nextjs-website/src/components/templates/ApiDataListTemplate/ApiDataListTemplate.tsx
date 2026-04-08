@@ -7,8 +7,8 @@ import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
 import BannerLinks from '@/components/molecules/BannerLinks/BannerLinks';
 import { useTranslations } from 'next-intl';
 import type { SEO } from '@/lib/seo/types';
-import { Product } from '@/lib/products/types';
-import { BaseApiDataList } from '@/lib/apiDataList/types';
+import type { Product } from '@/lib/products/types';
+import type { BaseApiDataList } from '@/lib/apiDataList/types';
 import type { Tag } from '@/lib/tags/types';
 import { CardProps } from '@/components/molecules/CardsGrid/CardsGrid';
 

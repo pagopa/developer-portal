@@ -26,7 +26,39 @@ const productRelationsPopulate = {
 };
 
 const webinarPopulate = {
-  populate: '*',
+  populate: {
+    chapters: '*',
+    coverImage: {
+      populate: '*',
+    },
+    playerCoverImage: {
+      populate: '*',
+    },
+    webinarSpeakers: {
+      populate: ['avatar'],
+    },
+    relatedLinks: {
+      populate: ['links'],
+    },
+    relatedResources: {
+      populate: {
+        resources: {
+          populate: '*',
+        },
+        downloadableDocuments: {
+          populate: '*',
+        },
+      },
+    },
+    seo: {
+      populate: '*',
+    },
+    questionsAndAnswers: '*',
+    webinarCategory: { populate: ['icon'] },
+    headerImage: {
+      populate: '*',
+    },
+  },
 };
 
 const guidesPopulate = {
@@ -51,27 +83,42 @@ const guidesQueryParams = {
 const releaseNotesPopulate = {
   populate: {
     bannerLinks: {
-      populate: ['*'],
-    },
-    product: {
-      populate: [
-        'logo',
-        'bannerLinks',
-        'overview',
-        'quickstart_guide',
-        'release_note',
-        'api_data_list_page',
-        'api_data_list_page.api_data',
-        'api_data_list_page.api_data.apiRestDetail',
-        'api_data_list_page.api_data.apiRestDetail.specUrls',
-        'api_data_list_page.api_data.apiSoapDetail',
-        'guide_list_page',
-        'tutorial_list_page',
-        'use_case_list_page',
-      ],
+      populate: '*',
     },
     seo: {
       populate: '*',
+    },
+    product: {
+      populate: {
+        logo: { populate: '*' },
+        bannerLinks: {
+          populate: ['icon'],
+        },
+        overview: {
+          populate: '*',
+        },
+        quickstart_guide: {
+          populate: '*',
+        },
+        release_note: {
+          populate: '*',
+        },
+        api_data_list_page: {
+          populate: '*',
+        },
+        guide_list_page: {
+          populate: '*',
+        },
+        tutorial_list_page: {
+          populate: '*',
+        },
+        use_case_list_page: {
+          populate: '*',
+        },
+        tags: {
+          populate: ['icon'],
+        },
+      },
     },
   },
 };
@@ -101,13 +148,19 @@ const solutionsPopulate = {
       populate: '*',
     },
     bannerLinks: {
-      populate: ['*'],
+      populate: '*',
     },
     webinars: {
       ...webinarPopulate,
     },
     caseHistories: {
-      populate: ['case_histories', 'case_histories.image'],
+      populate: {
+        case_histories: {
+          populate: {
+            image: true,
+          },
+        },
+      },
     },
   },
 };

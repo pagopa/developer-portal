@@ -1,4 +1,3 @@
-/* eslint-disable functional/no-try-statements */
 'use client';
 
 import { useEffect, useRef } from 'react';
@@ -13,6 +12,8 @@ import videojs from 'video.js';
 import { Box } from '@mui/material';
 import { amazonIvsVersion } from '@/config';
 import '@/styles/videojs-custom.css';
+import { useTranslations } from 'next-intl';
+import { Chapter } from '@/lib/webinars/types';
 
 interface PlayerProps {
   autoplay: boolean;
@@ -22,16 +23,64 @@ interface PlayerProps {
   poster?: string;
   reloadToken?: number;
   videoOnDemandStartAt?: number;
+  startAtChapterSlug?: string;
+  chapters?: readonly Chapter[];
+  webvttContent?: string;
+  // eslint-disable-next-line functional/no-return-void
+  setIsVideoPlaying?: (isPlaying: boolean) => void;
 }
 
+const HOURS_PART_INDEX = 0;
+const MINUTES_PART_INDEX = 1;
+const SECONDS_PART_INDEX = 2;
+
+/** Convert a WebVTT timestamp (HH:MM:SS.mmm or MM:SS.mmm) to seconds */
+const parseVttTime = (time: string): number | undefined => {
+  const parts = time.split(':');
+  // eslint-disable-next-line functional/no-let
+  let result: number;
+  if (parts.length === 3) {
+    result =
+      parseInt(parts[HOURS_PART_INDEX], 10) * 3600 +
+      parseInt(parts[MINUTES_PART_INDEX], 10) * 60 +
+      parseFloat(parts[SECONDS_PART_INDEX]);
+  } else if (parts.length === 2) {
+    result =
+      parseInt(parts[HOURS_PART_INDEX], 10) * 60 +
+      parseFloat(parts[MINUTES_PART_INDEX]);
+  } else {
+    result = parseFloat(parts[HOURS_PART_INDEX]);
+  }
+  return Number.isFinite(result) ? result : undefined;
+};
+
 const TECH_ORDER_AMAZON_IVS = ['AmazonIVS'];
+const PLAYBACK_RATES = [0.5, 1, 1.25, 1.5, 2];
 
 const VideoJsPlayer = (props: PlayerProps) => {
+  const t = useTranslations('webinar');
+  const resolvedStartAt = (() => {
+    if (
+      props.startAtChapterSlug &&
+      props.chapters &&
+      props.chapters.length > 0
+    ) {
+      const chapter = props.chapters.find(
+        (ch) => ch.slug === props.startAtChapterSlug
+      );
+      if (chapter) {
+        return parseVttTime(chapter.startTime);
+      }
+    }
+    return props.videoOnDemandStartAt;
+  })();
+
   const videoEl = useRef<HTMLVideoElement>(null);
   const playerRef = useRef<
     // @ts-expect-error TS2322: Type 'undefined' is not assignable to type 'Player & VideoJSIVSTech & VideoJSQualityPlugin'.
     videojs.Player & VideoJSIVSTech & VideoJSQualityPlugin
   >(undefined);
+  const vttBlobUrlRef = useRef<string | null>(null);
 
   useEffect(() => {
     registerIVSTech(videojs, {
@@ -49,6 +98,8 @@ const VideoJsPlayer = (props: PlayerProps) => {
       autoplay: props.autoplay,
       controls: props.controls,
       playsinline: props.playsInline,
+      playbackRates: PLAYBACK_RATES,
+      inactivityTimeout: 0,
       // @ts-expect-error TS2322: Type 'undefined' is not assignable to type 'Player & VideoJSIVSTech & VideoJSQualityPlugin'.
     }) as videojs.Player & VideoJSIVSTech & VideoJSQualityPlugin;
 
@@ -56,15 +107,40 @@ const VideoJsPlayer = (props: PlayerProps) => {
     //  eslint-disable-next-line functional/immutable-data
     playerRef.current = player;
 
+    if (props.webvttContent) {
+      // Create VTT blob and add chapters track
+      const blob = new Blob([props.webvttContent], { type: 'text/vtt' });
+      const blobUrl = URL.createObjectURL(blob);
+      // eslint-disable-next-line functional/immutable-data
+      vttBlobUrlRef.current = blobUrl;
+
+      player.addRemoteTextTrack(
+        {
+          kind: 'chapters',
+          src: blobUrl,
+          label: t('chapters'),
+          default: true,
+        },
+        false
+      );
+    }
+
     return () => {
       playerRef.current?.dispose();
       // eslint-disable-next-line functional/immutable-data
       playerRef.current = undefined;
+
+      // Clean up blob URL
+      if (vttBlobUrlRef.current) {
+        URL.revokeObjectURL(vttBlobUrlRef.current);
+        // eslint-disable-next-line functional/immutable-data
+        vttBlobUrlRef.current = null;
+      }
     };
 
     // NOTE: Autoplay is correctly set on initialization only, it should not be a dependency here
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props.controls, props.playsInline]);
+  }, [props.controls, props.playsInline, props.webvttContent]);
 
   useEffect(() => {
     if (!playerRef.current) {
@@ -77,7 +153,7 @@ const VideoJsPlayer = (props: PlayerProps) => {
     playerRef.current.src(props.src);
     playerRef.current.poster(props.poster || '');
 
-    if (props.autoplay && !props.videoOnDemandStartAt) {
+    if (props.autoplay && !resolvedStartAt) {
       playerRef.current.play().catch(() => undefined);
     }
   }, [
@@ -87,17 +163,16 @@ const VideoJsPlayer = (props: PlayerProps) => {
     props.poster,
     props.reloadToken,
     props.src,
-    props.videoOnDemandStartAt,
+    resolvedStartAt,
   ]);
 
   useEffect(() => {
     if (!playerRef.current) {
       return;
     }
-    const videoOnDemandStartAt =
-      typeof props.videoOnDemandStartAt === 'number'
-        ? props.videoOnDemandStartAt
-        : 0;
+    const videoOnDemandStartAt = Number.isFinite(resolvedStartAt)
+      ? (resolvedStartAt as number)
+      : 0;
 
     if (videoOnDemandStartAt <= 0) {
       return;
@@ -115,6 +190,7 @@ const VideoJsPlayer = (props: PlayerProps) => {
       const duration = player.duration();
 
       if (duration > 0) {
+        // eslint-disable-next-line functional/no-try-statements
         try {
           player.currentTime(seekTo);
           // We don't set hasSought = true here for 'loadedmetadata' etc.
@@ -163,7 +239,29 @@ const VideoJsPlayer = (props: PlayerProps) => {
       player.off('durationchange', onDurationChange);
       player.off('play', onPlay);
     };
-  }, [props.reloadToken, props.src, props.videoOnDemandStartAt]);
+  }, [props.reloadToken, props.src, resolvedStartAt]);
+
+  const setIsVideoPlaying = props.setIsVideoPlaying;
+  useEffect(() => {
+    const player = playerRef.current;
+    if (!player || !setIsVideoPlaying) {
+      return;
+    }
+
+    const onPlay = () => setIsVideoPlaying?.(true);
+    const onPause = () => setIsVideoPlaying?.(false);
+    const onEnded = () => setIsVideoPlaying?.(false);
+
+    player.on('play', onPlay);
+    player.on('pause', onPause);
+    player.on('ended', onEnded);
+
+    return () => {
+      player.off('play', onPlay);
+      player.off('pause', onPause);
+      player.off('ended', onEnded);
+    };
+  }, [setIsVideoPlaying]);
 
   return (
     <Box sx={{ position: 'relative', paddingBottom: '56.25%' }}>

@@ -1,6 +1,7 @@
 import { ParseContentConfig } from 'gitbook-docs/parseContent';
 import { Product } from '@/lib/products/types';
 import { SEO } from '@/lib/seo/types';
+import { BlocksContent } from '@strapi/blocks-react-renderer';
 
 export type GitBookContentData = {
   readonly bodyConfig: ParseContentConfig;
@@ -31,4 +32,5 @@ export type GitBookContentData = {
     readonly name: string;
     readonly path: string;
   }[];
+  readonly guideTranslationDisclaimer?: BlocksContent;
 };

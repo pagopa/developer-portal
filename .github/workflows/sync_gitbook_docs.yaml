@@ -13,6 +13,14 @@ on:
           - dev
           - uat
           - prod
+      locale:
+        description: 'Locale to sync to (e.g. it)'
+        type: choice
+        required: false
+        default: it
+        options:
+          - it
+          - en
       metadata_type:
         description: 'Type of metadata to generate'
         type: choice
@@ -23,6 +31,11 @@ on:
           - guides
           - solutions
           - release_notes
+      dir_names_filter:
+        description: 'Comma-separated list of dirNames to sync (leave empty to sync all)'
+        type: string
+        required: false
+        default: ''
       incremental_mode:
         description: 'Run sync in incremental mode by checking only file size'
         type: boolean
@@ -33,30 +46,14 @@ on:
         type: boolean
         required: true
         default: false
-      generate_root_metadata_file:
-        description: 'Generate root metadata file alongside folder-specific ones'
+      invalidate_cloudfront_asset_bucket_cache:
+        description: 'Invalidate CloudFront asset bucket cache'
         type: boolean
         required: true
         default: true
-      dir_names_filter:
-        description: 'Comma-separated list of dirNames to sync (leave empty to sync all)'
-        type: string
-        required: false
-        default: ''
-      locale:
-        description: 'Locale to sync to (e.g. it). Leave empty for root.'
-        type: choice
-        required: false
-        default: ''
-        options:
-          - '' # TODO: remove once locale merged in prod and root locale is no more needed
-          - it
-          - en
-
 
   schedule:
-    # - cron: '0 23 * * *'  # Run daily at midnight UTC
-    - cron: '0 8 * * *'  # Run daily at 8:00 AM UTC (9:00 AM in Italy) TODO: restore '0 23 * * *' after testing
+    - cron: '0 23 * * *'  # Run daily at midnight UTC
 
 permissions:
   id-token: write
@@ -74,6 +71,8 @@ jobs:
     steps:
       - name: Checkout current repository
         uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.environment == 'dev' && github.ref || format('nextjs-website@latest-deployed-in-{0}', inputs.environment) }}
 
       - name: Sync GitBook Docs
         uses: ./.github/actions/sync-gitbook-docs
@@ -88,8 +87,8 @@ jobs:
           asset_bucket_cloudfront_distribution_id: ${{ vars.ASSET_BUCKET_CLOUDFRONT_DISTRIBUTION_ID }}
           opennext_cloudfront_distribution_id: ${{ vars.OPENNEXT_CLOUDFRONT_DISTRIBUTION_ID }}
           invalidate_opennext_cache: ${{ inputs.invalidate_opennext_cache }}
+          invalidate_cloudfront_asset_bucket_cache: ${{ inputs.invalidate_cloudfront_asset_bucket_cache }}
           incremental_mode: ${{ inputs.incremental_mode }}
-          generate_root_metadata_file: ${{ inputs.generate_root_metadata_file }}
           metadata_type: ${{ inputs.metadata_type }}
           strapi_endpoint: ${{ vars.STRAPI_ENDPOINT }}
           documentation_path: ${{ vars.DOCUMENTATION_PATH || '../../devportal-docs/docs' }}
@@ -114,6 +113,9 @@ jobs:
     steps:
       - name: Checkout current repository
         uses: actions/checkout@v4
+        with:
+          ref: 'nextjs-website@latest-deployed-in-prod'
+
 
       - name: Sync GitBook Docs using 'it' locale
         uses: ./.github/actions/sync-gitbook-docs
@@ -127,8 +129,8 @@ jobs:
           asset_bucket_cloudfront_distribution_id: ${{ vars.ASSET_BUCKET_CLOUDFRONT_DISTRIBUTION_ID }}
           opennext_cloudfront_distribution_id: ${{ vars.OPENNEXT_CLOUDFRONT_DISTRIBUTION_ID }}
           invalidate_opennext_cache: false
+          invalidate_cloudfront_asset_bucket_cache: true
           incremental_mode: true
-          generate_root_metadata_file: true
           metadata_type: 'all'
           strapi_endpoint: ${{ vars.STRAPI_ENDPOINT }}
           documentation_path: ${{ vars.DOCUMENTATION_PATH || '../../devportal-docs/docs' }}
@@ -153,6 +155,8 @@ jobs:
     steps:
       - name: Checkout current repository
         uses: actions/checkout@v4
+        with:
+          ref: 'nextjs-website@latest-deployed-in-prod'
 
       - name: Sync GitBook Docs using 'en' locale
         uses: ./.github/actions/sync-gitbook-docs
@@ -166,8 +170,8 @@ jobs:
           asset_bucket_cloudfront_distribution_id: ${{ vars.ASSET_BUCKET_CLOUDFRONT_DISTRIBUTION_ID }}
           opennext_cloudfront_distribution_id: ${{ vars.OPENNEXT_CLOUDFRONT_DISTRIBUTION_ID }}
           invalidate_opennext_cache: false
+          invalidate_cloudfront_asset_bucket_cache: true
           incremental_mode: true
-          generate_root_metadata_file: true
           metadata_type: 'all'
           strapi_endpoint: ${{ vars.STRAPI_ENDPOINT }}
           documentation_path: ${{ vars.DOCUMENTATION_PATH || '../../devportal-docs/docs' }}

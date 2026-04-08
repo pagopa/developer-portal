@@ -120,6 +120,7 @@
   },
   "webinar": {
     "liveWebinar": "Live Webinar",
+    "chapters": "Chapters",
     "subscriptionError": "Registration limit reached",
     "genericSubscriptionError": "Something went wrong, please try again later",
     "goToWebinar": "Go to webinar",
@@ -274,7 +275,7 @@
       "checkJunkMail": "Didn't receive any email? Check junk mail or",
       "continue": "Continue",
       "resendEmail": "Resend email",
-      "invalidCode": "The entered code is incorrect",
+      "invalidCode": "The entered code is incorrect, you need to request a new code to proceed further.",
       "emptyCode": "The code is mandatory"
     },
     "accountActivated": {
@@ -323,6 +324,8 @@
     "company": "Entity or Company Type",
     "role": "Role",
     "requiredFieldError": "This field cannot be empty",
+    "maxLengthFieldError": "The maximum allowed is 100 characters",
+    "nameFieldError": "Use only letters and numbers, without special characters (except spaces, underscores, hyphens and apostrophes)",
     "emailFieldError": "Enter a valid email address. Use only lowercase letters and do not use special characters",
     "emailAlreadyTaken": "An account already exists for this email address",
     "goToGuide": "Go to guide",

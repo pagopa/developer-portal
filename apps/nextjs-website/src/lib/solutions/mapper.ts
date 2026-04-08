@@ -17,7 +17,6 @@ export function mapSolutionsProps(
         );
         return null;
       }
-
       try {
         return {
           ...attributes,
@@ -54,7 +53,6 @@ export function mapSolutionsProps(
                   );
                   return null;
                 }
-
                 return {
                   title: caseHistory.title,
                   path: `/${locale}/case-histories/${caseHistory.slug}`,

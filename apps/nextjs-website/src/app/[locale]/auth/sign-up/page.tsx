@@ -8,7 +8,6 @@ import { useSearchParams } from 'next/navigation';
 import type { SignUpUserData } from '@/lib/auth/user/types';
 import { useTranslations } from 'next-intl';
 import { generateSignUpData } from '@/helpers/auth.helpers';
-import { useAuthenticatedUserRedirect } from '@/helpers/user.helper';
 import { useState, Suspense } from 'react';
 import { signUpAdvantages } from '@/config';
 import Spinner from '@/components/atoms/Spinner/Spinner';
@@ -19,8 +18,6 @@ enum SignUpSteps {
 }
 
 const SignUpContent = () => {
-  const loading = useAuthenticatedUserRedirect();
-
   const params = useSearchParams();
   const isSmallScreen = useMediaQuery('(max-width: 1000px)');
   const signUp = useTranslations('auth.signUp');
@@ -51,8 +48,6 @@ const SignUpContent = () => {
         setSubmitting(false);
       });
   };
-
-  if (loading) return null;
 
   return (
     <>

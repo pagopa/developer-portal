@@ -1,5 +1,22 @@
 # gitbook-docs
 
+## 2.1.0
+
+### Minor Changes
+
+- 6d30d53: Update emoji parsing for markdoc
+
+### Patch Changes
+
+- a487eeb: Fix default pipeline character
+- a9f0ff5: Add tests and a small backward-compatible fix for url parsing
+
+## 2.0.0
+
+### Major Changes
+
+- aa66fe8: Remove root metadata generation flag
+
 ## 1.8.2
 
 ### Patch Changes

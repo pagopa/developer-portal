@@ -1,5 +1,36 @@
 # nextjs-website
 
+## 16.5.0
+
+### Minor Changes
+
+- 8596eb7: Add heartbeat monitoring post and update max question chars
+- badb94d: Manage CustomMessagesMap single type from Strapi
+
+### Patch Changes
+
+- 01d84ab: Improve null safety for coming soon documentation links in home page
+
+## 16.4.0
+
+### Minor Changes
+
+- bac3db7: Add validateName to validate fields like name, surname and role during registrations and profile update, update validateField to check for maximum length, update sign up form to implement the new validation logic, add validation logic for name, surname and role in ProfileDataCard, update RequiredTextField to show helper text when the field is in error state and fix typo in input prop from maxlength to maxLength
+- 1c4434b: Add redirect to homepage in middleware for authenticated user navigating to auth pages
+- 5d2e6cf: Add speed control, chapters and VTT content support to webinar types and props
+
+### Patch Changes
+
+- 22fb1b5: Fix assets src by refactoring MarkdownPart to use server side generated assetsPrefix prop for asset URLs
+- 51fa641: Add instruction to request a new OTP code if there is an error during code validation.
+- 1ff5032: Fix tutorial markdown fetching by including locale in getMarkdownContent calls
+- 94143d6: Revert to using localStorage to store Amplify auth tokens and user data, and create a custom `isLoggedIn` cookie to enable rerouting for authenticated users.
+- 9aec8ce: Fix hover background color for CtaSlide buttons
+- Updated dependencies [6d30d53]
+- Updated dependencies [a487eeb]
+- Updated dependencies [a9f0ff5]
+  - gitbook-docs@2.1.0
+
 ## 16.3.1
 
 ### Patch Changes
