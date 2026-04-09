@@ -168,7 +168,7 @@ def lambda_handler(event: dict[str, Any], context: Any) -> dict[str, Any]:
         if row['webinarid']:
             data.append({
                 'id': row['webinarid'],
-                'islive': islive if islive is not None else '',
+                'islive': islive if islive is not None else 'undefined',
                 'stats': {
                     'unique_viewers': row.get('count_distinct_userid', 0)
                 }
