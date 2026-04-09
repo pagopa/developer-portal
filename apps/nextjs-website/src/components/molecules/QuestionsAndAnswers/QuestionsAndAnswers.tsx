@@ -11,7 +11,7 @@ import {
 } from '@mui/material';
 import { Compress, Expand, ExpandMore } from '@mui/icons-material';
 import { useTranslations } from 'next-intl';
-import { QuestionsAndAnswer } from '@/lib/types/webinar';
+import type { QuestionsAndAnswer } from '@/lib/webinars/types';
 import BlocksRendererClient from '../BlocksRendererClient/BlocksRendererClient';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
 

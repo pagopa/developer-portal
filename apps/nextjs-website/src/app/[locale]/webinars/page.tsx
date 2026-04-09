@@ -1,8 +1,8 @@
 import { getVisibleInListWebinars } from '@/lib/api';
+import { getWebinarCategories } from '@/lib/api';
 import { makeMetadata } from '@/helpers/metadata.helpers';
 import { Metadata } from 'next';
 import { baseUrl } from '@/config';
-import { getWebinarCategoriesProps } from '@/lib/cmsApi';
 import WebinarsTemplate from '@/components/organisms/WebinarsTemplate/WebinarsTemplate';
 import { Suspense } from 'react';
 import Spinner from '@/components/atoms/Spinner/Spinner';
@@ -24,7 +24,7 @@ export async function generateMetadata(props: {
 const Webinars = async (props: { params: Promise<{ locale: string }> }) => {
   const { locale } = await props.params;
   const webinars = await getVisibleInListWebinars(locale);
-  const categories = await getWebinarCategoriesProps(locale);
+  const categories = await getWebinarCategories(locale);
 
   return (
     <Suspense fallback={<Spinner />}>
