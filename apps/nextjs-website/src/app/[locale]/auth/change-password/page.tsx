@@ -2,7 +2,7 @@
 import { Grid } from '@mui/material';
 import PasswordChangedCard from '@/components/organisms/Auth/PasswordChangedCard';
 import ChangePasswordForm from '@/components/organisms/Auth/ChangePasswordForm';
-import { ResetPasswordSteps } from '@/lib/types/resetPasswordSteps';
+import { ResetPasswordSteps } from '@/lib/auth/resetPasswordSteps';
 import { useCallback, useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Auth } from 'aws-amplify';

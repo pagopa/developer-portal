@@ -1,8 +1,8 @@
 import ProductLayout, {
   ProductLayoutProps,
 } from '@/components/organisms/ProductLayout/ProductLayout';
+import { Product } from '@/lib/products/types';
 import { getCustomMessagesMapProps, getGuidePage } from '@/lib/api';
-import { Product } from '@/lib/types/product';
 import React from 'react';
 import { ParseContentConfig } from 'gitbook-docs/parseContent';
 import { Metadata } from 'next';
@@ -12,7 +12,7 @@ import {
 } from '@/helpers/metadata.helpers';
 import GitBookTemplate from '@/components/templates/GitBookTemplate/GitBookTemplate';
 import { productPageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
-import { getUrlReplaceMapProps } from '@/lib/cmsApi';
+import { getUrlReplaceMap } from '@/lib/api';
 import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
 import {
   breadcrumbItemByProduct,
@@ -91,7 +91,7 @@ const Page = async ({ params }: { params: Promise<Params> }) => {
   const { locale, productSlug, productGuidePage } = await params;
   const [guidePageProps, urlReplaceMap, customMessagesMap] = await Promise.all([
     getGuidePage(productGuidePage ?? [''], locale, productSlug),
-    getUrlReplaceMapProps(locale),
+    getUrlReplaceMap(locale),
     getCustomMessagesMapProps(locale).catch((error: Error) => {
       console.warn(
         `Failed to fetch custom messages:\n${error.message}\n${error.stack}`

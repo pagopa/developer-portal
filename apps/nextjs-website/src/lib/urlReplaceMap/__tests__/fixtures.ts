@@ -1,0 +1,23 @@
+import { productJson } from '@/lib/products/__tests__/fixtures/product';
+import type { StrapiUrlReplaceMap } from '@/lib/urlReplaceMap/types';
+
+export const strapiUrlReplaceMapFixture: StrapiUrlReplaceMap = {
+  urlToGuide: [
+    {
+      id: 1,
+      url: 'getting-started',
+      subPath: 'step-2',
+      guide: {
+        title: 'Getting started',
+        slug: 'getting-started',
+        product: {
+          slug: productJson.slug,
+        },
+      },
+    },
+  ],
+};
+
+export const expectedUrlReplaceMapFixture = {
+  'getting-started': '/it/firma-con-io/guides/getting-started/step-2',
+};

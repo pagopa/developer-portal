@@ -13,7 +13,7 @@ import React, { useState } from 'react';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MobileFilterButton from '@/components/atoms/MobileFilterButton/MobileFilterButton';
 import { useTranslations } from 'next-intl';
-import { Media } from '@/lib/types/media';
+import type { Media } from '@/lib/media/types';
 
 type MobileFilterSelectorProps = {
   selectedFilter: number;

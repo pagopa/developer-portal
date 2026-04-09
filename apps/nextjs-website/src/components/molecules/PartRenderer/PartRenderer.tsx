@@ -1,5 +1,5 @@
 'use client';
-import { Part } from '@/lib/types/part';
+import type { Part } from '@/lib/parts/types';
 import React, { ReactNode } from 'react';
 import TypographyPart from '@/components/atoms/TypographyPart/TypographyPart';
 import InnerHtmlLazyLoadedPart from '@/components/atoms/InnerHtmlLazyLoadedPart/InnerHtmlLazyLoadedPart';

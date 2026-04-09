@@ -10,9 +10,9 @@ import {
   expectedCustomMessagesMap,
   strapiCustomMessagesMap,
 } from '@/lib/customMessagesMap/__tests__/fixtures';
-import { spyOnConsoleError } from '@/lib/strapi/__tests__/spyOnConsole';
 import { mapCustomMessagesMap } from '@/lib/customMessagesMap/mapper';
-import _ from 'lodash';
+import { spyOnConsoleError } from '@/lib/__tests__/spyOnConsole';
+import { cloneDeep } from 'lodash';
 
 describe('makeCustomMessagesMap', () => {
   beforeEach(() => {
@@ -24,7 +24,7 @@ describe('makeCustomMessagesMap', () => {
   });
 
   it('should transform strapi custom messages to a custom messages map', () => {
-    const result = mapCustomMessagesMap(_.cloneDeep(strapiCustomMessagesMap));
+    const result = mapCustomMessagesMap(cloneDeep(strapiCustomMessagesMap));
 
     expect(result).toEqual(expectedCustomMessagesMap);
   });
