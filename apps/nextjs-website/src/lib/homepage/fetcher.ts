@@ -28,9 +28,9 @@ export const homepagePopulate = {
         },
       },
     },
-  },
-  seo: {
-    populate: '*',
+    seo: {
+      populate: '*',
+    },
   },
 };
 
