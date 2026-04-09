@@ -171,7 +171,7 @@ describe('mapApiDataListPages', () => {
 
   it('should handle API data with missing icon', () => {
     const result = mapApiDataListPages('it', minimalApiDataListPages());
-    expect(result[0].cards[0].icon).toBe(undefined);
+    expect(result[0].cards[0].icon).toBe('');
   });
 
   it('should correctly generate href for cards', () => {

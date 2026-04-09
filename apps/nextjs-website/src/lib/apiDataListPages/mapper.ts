@@ -28,7 +28,7 @@ const mapApiDataListPageCard =
       ].filter((label) => !!label.label),
       title: item?.title,
       text: item?.description || '',
-      icon: item?.icon?.url || undefined,
+      icon: item?.icon?.url || '',
       href: `/${locale}/${slug}/api/${
         item.apiRestDetail ? item.apiRestDetail?.slug : item.apiSoapDetail?.slug
       }`,
