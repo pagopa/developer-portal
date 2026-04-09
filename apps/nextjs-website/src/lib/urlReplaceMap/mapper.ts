@@ -6,11 +6,16 @@ export function mapUrlReplaceMap(
   strapiUrlReplacemap: RootEntity<StrapiUrlReplaceMap>
 ): UrlReplaceMap {
   return strapiUrlReplacemap.data.urlToGuide.reduce((map, obj) => {
+    const productSlug = obj.guide?.product?.slug;
+    const guideSlug = obj.guide?.slug;
+    if (!productSlug || !guideSlug) {
+      return map;
+    }
     return {
       ...map,
-      [obj.url]: `/${locale}/${obj.guide?.product.slug}/guides/${
-        obj.guide?.slug
-      }${obj.subPath ? `/${obj.subPath}` : ''}`,
+      [obj.url]: `/${locale}/${productSlug}/guides/${guideSlug}${
+        obj.subPath ? `/${obj.subPath}` : ''
+      }`,
     };
   }, {} as UrlReplaceMap);
 }
