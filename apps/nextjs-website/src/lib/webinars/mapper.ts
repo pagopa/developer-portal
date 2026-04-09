@@ -1,7 +1,24 @@
+/* eslint-disable functional/immutable-data */
 /* eslint-disable functional/no-expression-statements */
 import type { Webinar } from '@/lib/webinars/types';
 import { compact } from 'lodash';
 import type { StrapiWebinar, StrapiWebinars } from './strapiTypes';
+
+function generateVTTContent(chapters: Webinar['chapters']): string {
+  if (!chapters || chapters.length === 0) {
+    return '';
+  }
+
+  const vttLines = ['WEBVTT\n'];
+  chapters.forEach((chapter, index) => {
+    const cueIndex = index + 1;
+    vttLines.push(`${cueIndex}`);
+    vttLines.push(`${chapter.startTime} --> ${chapter.endTime}`);
+    vttLines.push(`${chapter.title}\n`);
+  });
+
+  return vttLines.join('\n');
+}
 
 export const mapWebinarProps = (
   strapiWebinar: StrapiWebinar
@@ -58,6 +75,7 @@ export const mapWebinarProps = (
       tag: strapiWebinar.webinarCategory,
       headerImage: strapiWebinar.headerImage,
       updatedAt: strapiWebinar.updatedAt,
+      webvttContent: generateVTTContent(strapiWebinar.chapters),
     } satisfies Webinar;
   } catch (error) {
     console.error(

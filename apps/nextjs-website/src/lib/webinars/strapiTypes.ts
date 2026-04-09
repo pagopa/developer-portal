@@ -4,6 +4,7 @@ import type { StrapiRelatedLinks } from '@/lib/strapi/types/link';
 import type { StrapiSeo } from '@/lib/seo/strapiTypes';
 import type { StrapiWebinarCategory } from '@/lib/webinarCategories/strapiTypes';
 import type { Paginated } from '@/lib/strapi/types/paginated';
+import type { Chapter } from './types';
 
 type StrapiWebinarSpeaker = {
   readonly id: number;
@@ -57,6 +58,7 @@ export type StrapiWebinar = {
   readonly webinarCategory?: StrapiWebinarCategory;
   readonly headerImage?: StrapiMedia;
   readonly updatedAt: string;
+  readonly chapters?: readonly Chapter[];
 };
 
 export type StrapiWebinars = Paginated<StrapiWebinar>;
