@@ -17,6 +17,7 @@ import {
   productToBreadcrumb,
 } from '@/helpers/structuredData.helpers';
 import ApiSection from '@/components/molecules/ApiSection/ApiSection';
+import { notFound } from 'next/navigation';
 
 type ApiDataParams = {
   readonly params: Promise<{
@@ -48,13 +49,14 @@ export const generateMetadata = async (
 ): Promise<Metadata> => {
   const params = await props.params;
   const resolvedParent = await parent;
-  const ApiDataProps = await ApiDataListRepository.getBySlug(
-    params.locale,
-    params.apiDataSlug
-  );
+  // const ApiDataProps = await ApiDataListRepository.getBySlug(
+  //   params.locale,
+  //   params.apiDataSlug
+  // );
+  const ApiDataProps = undefined as unknown as ApiDataPageProps;
   if (!ApiDataProps) {
-    // eslint-disable-next-line functional/no-throw-statements
-    throw new Error('Failed to fetch data');
+    console.error(`Failed to fetch API data for slug: ${params.apiDataSlug}`);
+    notFound();
   }
 
   if (ApiDataProps?.seo) {
