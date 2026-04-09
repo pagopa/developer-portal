@@ -12,9 +12,9 @@ export function wrapAsPaginatedRootEntity<T>(
     data: entities,
     meta: {
       pagination: {
-        page: 1,
+        page: 0,
         pageSize: entities.length,
-        pageCount: 1,
+        pageCount: 0,
         total: entities.length,
       },
     },

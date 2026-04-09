@@ -1,129 +1,131 @@
 import { HomepageProps } from '@/app/[locale]/page';
-import { Homepage } from '@/lib/homepage/types';
+import { StrapiHomepage } from '@/lib/homepage/types';
 import { mediaJpeg } from '@/lib/media/__tests__/factories';
 import { newsShowcase } from '@/lib/newsShowcase/__tests__/fixtures';
 
 const fixedDateIsoString = new Date('2024-01-01T00:00:00.000Z').toISOString();
 
-export const strapiHomepage: Homepage = {
-  updatedAt: fixedDateIsoString,
-  comingsoonDocumentation: {
-    title: 'Coming Soon Documentation',
-    links: [
-      {
-        text: 'Documentation Link',
-        href: '/docs',
-      },
-    ],
-  },
-  heroSlider: [
-    {
-      title: 'Hero Title',
-      subhead: [
+export const strapiHomepage: StrapiHomepage = {
+  data: {
+    updatedAt: fixedDateIsoString,
+    comingsoonDocumentation: {
+      title: 'Coming Soon Documentation',
+      links: [
         {
-          type: 'paragraph',
-          children: [{ type: 'text', text: 'Hero subhead content' }],
+          text: 'Documentation Link',
+          href: '/docs',
         },
       ],
-      subheadColor: 'main',
-      titleColor: 'contrastText',
-      callToAction: {
-        link: {
-          text: 'Get Started',
-          href: '/get-started',
-        },
-        variant: 'contained',
-      },
-      backgroundImage: mediaJpeg(),
     },
-  ],
-  newsShowcase: {
-    ...newsShowcase,
-    items: newsShowcase.items.map((item) => ({
-      ...item,
-      publishedAt: fixedDateIsoString,
-      link: item.link
-        ? {
-            ...item.link,
-            target: item.link.target || undefined,
-          }
-        : item.link,
-      title: item.title,
-      comingSoon: item.comingSoon,
-      label: item.label,
-      image: item.image,
-    })),
-  },
-  ecosystem: {
-    title: 'Our Ecosystem',
-    productsTabName: 'Products',
-    products: [
+    heroSlider: [
       {
-        isVisible: true,
-        tags: [],
-        name: 'Product 1',
-        shortName: 'P1',
-        slug: 'product-1',
-        description: 'Product 1 description',
-        logo: mediaJpeg(),
-        bannerLinks: [],
-        overview: 1,
-        quickstart_guide: 1,
-        api_data_list_page: undefined,
-        tutorial_list_page: 1,
-        guide_list_page: 1,
-        release_note: 1,
-        use_case_list_page: 1,
-      },
-    ],
-    solutionsTabName: 'Solutions',
-    solutions: [
-      {
-        slug: 'solution-1',
-        icon: mediaJpeg(),
-        kickerTitle: 'Solution Kicker',
-        title: 'Solution 1',
-        description: 'Solution 1 description',
-        dirName: 'solution-1-dir',
-        landingUseCaseFile: 'use-case.md',
-      },
-    ],
-    solutionsCta: {
-      link: {
-        text: 'View All Solutions',
-        href: '/solutions',
-      },
-      variant: 'outlined',
-    },
-  },
-  webinars: [
-    {
-      id: 1,
-      title: 'Webinar Title',
-      slug: 'webinar-title',
-      description: 'Webinar Description',
-      playerSrc: 'https://example.com/player',
-      isVisibleInList: true,
-      publishedAt: fixedDateIsoString,
-      updatedAt: fixedDateIsoString,
-      coverImage: mediaJpeg(),
-      relatedLinks: {
-        title: 'Related Links',
-        links: [
+        title: 'Hero Title',
+        subhead: [
           {
-            text: 'Link 1',
-            href: '/link-1',
+            type: 'paragraph',
+            children: [{ type: 'text', text: 'Hero subhead content' }],
           },
         ],
+        subheadColor: 'main',
+        titleColor: 'contrastText',
+        callToAction: {
+          link: {
+            text: 'Get Started',
+            href: '/get-started',
+          },
+          variant: 'contained',
+        },
+        backgroundImage: mediaJpeg(),
       },
-      webinarSpeakers: [],
-      webinarCategory: undefined,
-      headerImage: undefined,
+    ],
+    newsShowcase: {
+      ...newsShowcase,
+      items: newsShowcase.items.map((item) => ({
+        ...item,
+        publishedAt: fixedDateIsoString,
+        link: item.link
+          ? {
+              ...item.link,
+              target: item.link.target || undefined,
+            }
+          : item.link,
+        title: item.title,
+        comingSoon: item.comingSoon,
+        label: item.label,
+        image: item.image,
+      })),
     },
-  ],
-  seo: {
-    metaTitle: 'Homepage SEO Title',
-    metaDescription: 'Homepage SEO Description',
+    ecosystem: {
+      title: 'Our Ecosystem',
+      productsTabName: 'Products',
+      products: [
+        {
+          isVisible: true,
+          tags: [],
+          name: 'Product 1',
+          shortName: 'P1',
+          slug: 'product-1',
+          description: 'Product 1 description',
+          logo: mediaJpeg(),
+          bannerLinks: [],
+          overview: 1,
+          quickstart_guide: 1,
+          api_data_list_page: undefined,
+          tutorial_list_page: 1,
+          guide_list_page: 1,
+          release_note: 1,
+          use_case_list_page: 1,
+        },
+      ],
+      solutionsTabName: 'Solutions',
+      solutions: [
+        {
+          slug: 'solution-1',
+          icon: mediaJpeg(),
+          kickerTitle: 'Solution Kicker',
+          title: 'Solution 1',
+          description: 'Solution 1 description',
+          dirName: 'solution-1-dir',
+          landingUseCaseFile: 'use-case.md',
+        },
+      ],
+      solutionsCta: {
+        link: {
+          text: 'View All Solutions',
+          href: '/solutions',
+        },
+        variant: 'outlined',
+      },
+    },
+    webinars: [
+      {
+        id: 1,
+        title: 'Webinar Title',
+        slug: 'webinar-title',
+        description: 'Webinar Description',
+        playerSrc: 'https://example.com/player',
+        isVisibleInList: true,
+        publishedAt: fixedDateIsoString,
+        updatedAt: fixedDateIsoString,
+        coverImage: mediaJpeg(),
+        relatedLinks: {
+          title: 'Related Links',
+          links: [
+            {
+              text: 'Link 1',
+              href: '/link-1',
+            },
+          ],
+        },
+        webinarSpeakers: [],
+        webinarCategory: undefined,
+        headerImage: undefined,
+      },
+    ],
+    seo: {
+      metaTitle: 'Homepage SEO Title',
+      metaDescription: 'Homepage SEO Description',
+    },
   },
 };
 
