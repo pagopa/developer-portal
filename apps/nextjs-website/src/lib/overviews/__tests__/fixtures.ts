@@ -1,5 +1,5 @@
 import { OverviewPageProps } from '@/app/[locale]/[productSlug]/overview/page';
-import { product } from '@/lib/products/__tests__/fixtures/product';
+import { product } from '@/lib/products/__tests__/fixtures';
 import { mediaJpeg } from '@/lib/media/__tests__/factories';
 import { generateBannerLinks } from '@/lib/bannerLink/__tests__/factories';
 import { StrapiOverviews } from '@/lib/overviews/types';

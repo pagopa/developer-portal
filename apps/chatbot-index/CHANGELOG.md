@@ -1,5 +1,11 @@
 # chatbot-index
 
+## 2.6.3
+
+### Patch Changes
+
+- 631cdf9: API and Prodcuts are read correctly after they are being created by Strapi v5
+
 ## 2.6.2
 
 ### Patch Changes
