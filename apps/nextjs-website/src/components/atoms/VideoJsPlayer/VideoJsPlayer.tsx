@@ -13,7 +13,7 @@ import { Box } from '@mui/material';
 import { amazonIvsVersion } from '@/config';
 import '@/styles/videojs-custom.css';
 import { useTranslations } from 'next-intl';
-import { Chapter } from '@/lib/types/webinar';
+import { Chapter } from '@/lib/webinars/types';
 
 interface PlayerProps {
   autoplay: boolean;
@@ -26,6 +26,8 @@ interface PlayerProps {
   startAtChapterSlug?: string;
   chapters?: readonly Chapter[];
   webvttContent?: string;
+  // eslint-disable-next-line functional/no-return-void
+  setIsVideoPlaying?: (isPlaying: boolean) => void;
 }
 
 const HOURS_PART_INDEX = 0;
@@ -238,6 +240,28 @@ const VideoJsPlayer = (props: PlayerProps) => {
       player.off('play', onPlay);
     };
   }, [props.reloadToken, props.src, resolvedStartAt]);
+
+  const setIsVideoPlaying = props.setIsVideoPlaying;
+  useEffect(() => {
+    const player = playerRef.current;
+    if (!player || !setIsVideoPlaying) {
+      return;
+    }
+
+    const onPlay = () => setIsVideoPlaying?.(true);
+    const onPause = () => setIsVideoPlaying?.(false);
+    const onEnded = () => setIsVideoPlaying?.(false);
+
+    player.on('play', onPlay);
+    player.on('pause', onPause);
+    player.on('ended', onEnded);
+
+    return () => {
+      player.off('play', onPlay);
+      player.off('pause', onPause);
+      player.off('ended', onEnded);
+    };
+  }, [setIsVideoPlaying]);
 
   return (
     <Box sx={{ position: 'relative', paddingBottom: '56.25%' }}>

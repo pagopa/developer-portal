@@ -7,7 +7,7 @@ import {
   StructuredDataBreadcrumbList,
   StructuredDataWebPage,
 } from './structuredData.helpers';
-import { SEO } from '@/lib/types/seo';
+import type { SEO } from '@/lib/seo/types';
 
 export function generateStructuredDataScripts(props: {
   breadcrumbsItems?: StructuredDataBreadcrumbList;
@@ -20,7 +20,7 @@ export function generateStructuredDataScripts(props: {
     name: seo?.metaTitle,
     description: seo?.metaDescription,
     url: seo?.canonicalURL,
-    media: seo?.metaImage?.data?.attributes,
+    media: seo?.metaImage,
   };
   const allThings: Thing[] = [
     makeBreadcrumbList(allBreadcrumbsItems) as Thing,

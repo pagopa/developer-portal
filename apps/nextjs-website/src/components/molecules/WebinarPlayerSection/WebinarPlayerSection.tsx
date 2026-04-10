@@ -1,4 +1,4 @@
-import { Webinar } from '@/lib/types/webinar';
+import type { Webinar } from '@/lib/webinars/types';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
 import {
   Box,
@@ -26,6 +26,8 @@ type WebinarPlayerSectionProps = {
   isLiveStreamAvailable?: boolean;
   reloadPlayerToken?: number;
   isPlayerVisible?: boolean;
+  // eslint-disable-next-line functional/no-return-void
+  setIsVideoPlaying?: (isPlaying: boolean) => void;
 };
 const WebinarPlayerSection = ({
   webinar,
@@ -34,6 +36,7 @@ const WebinarPlayerSection = ({
   isLiveStreamAvailable = false,
   reloadPlayerToken = 0,
   isPlayerVisible = true,
+  setIsVideoPlaying,
 }: WebinarPlayerSectionProps) => {
   const searchParams = useSearchParams();
   const chapterParam = searchParams.get('chapter');
@@ -121,6 +124,7 @@ const WebinarPlayerSection = ({
                 startAtChapterSlug={chapterParam || undefined}
                 chapters={webinar.chapters}
                 webvttContent={webinar.webvttContent}
+                setIsVideoPlaying={setIsVideoPlaying}
               />
             </Box>
             {isQuestionFormAvailable ? (

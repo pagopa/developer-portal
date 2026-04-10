@@ -6,10 +6,10 @@ import {
 import * as path from 'path';
 import { Readable } from 'stream';
 import Markdoc, { Node } from '@markdoc/markdoc';
-import { GuideDefinition } from './makeDocs.helpers';
 import { staticContentsUrl, s3DocsPath } from '@/config';
-import { Product } from '@/lib/types/product';
 import { downloadFileAsText, JsonMetadata } from './s3Metadata.helpers';
+import { Guide } from '@/lib/guides/types';
+import { Product } from '@/lib/products/types';
 
 export type DocSource<T> = T & {
   readonly source: {
@@ -179,7 +179,7 @@ export const parseS3Doc = async <T>(
 };
 
 export const parseS3GuidePage = async (props: {
-  readonly guideProps: GuideDefinition;
+  readonly guideProps: Guide;
   readonly guidePath: string;
   readonly guidesMetadata: readonly JsonMetadata[];
   readonly products: readonly Product[];
@@ -250,6 +250,7 @@ export const parseS3GuidePage = async (props: {
       path: version.main
         ? baseGuidePath
         : `${baseGuidePath}/${version.version}`,
+      showGuidesTranslationDisclaimer: version.showGuidesTranslationDisclaimer,
     },
     versions: versions.map(({ main = false, version }) => ({
       main,

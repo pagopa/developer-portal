@@ -1,5 +1,5 @@
 import { productToMenuItems } from '@/helpers/productHeader.helper';
-import { Product } from '@/lib/types/product';
+import { Product } from '@/lib/products/types';
 
 const product: Product = {
   isVisible: true,

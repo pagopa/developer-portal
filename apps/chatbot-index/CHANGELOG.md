@@ -1,5 +1,17 @@
 # chatbot-index
 
+## 2.6.3
+
+### Patch Changes
+
+- 631cdf9: API and Prodcuts are read correctly after they are being created by Strapi v5
+
+## 2.6.2
+
+### Patch Changes
+
+- 8faf184: Refactor Vertex AI credential handling to use centralized settings and improve error logging for missing credentials
+
 ## 2.6.1
 
 ### Patch Changes

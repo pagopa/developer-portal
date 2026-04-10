@@ -1,5 +1,17 @@
 # gitbook-docs
 
+## 2.2.0
+
+### Minor Changes
+
+- 3954353: Update sync to match Strapi 5 responses and align synced file generation
+
+### Patch Changes
+
+- 32ed4e8: Fix icons for webinar speaker in solution page
+- 31554d2: Fix populate for release notes in synch workflow
+- 555fcd4: Upgrade markdown-it in gitbook-docs
+
 ## 2.1.0
 
 ### Minor Changes
