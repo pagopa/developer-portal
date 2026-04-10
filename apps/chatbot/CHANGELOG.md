@@ -1,5 +1,11 @@
 # chatbot
 
+## 10.1.3
+
+### Patch Changes
+
+- 631cdf9: API and Prodcuts are read correctly after they are being created by Strapi v5
+
 ## 10.1.2
 
 ### Patch Changes
