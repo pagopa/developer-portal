@@ -8,7 +8,7 @@ This is the PagoPA Developer Portal repository. It is a multi-language project:
 
 ## General Conventions
 - **Language**: All code and documentation must be in English.
-- **Formatting**: Run `prettier` for TS/JS and `black` for Python before finishing.
+- **Formatting**: Run `prettier` for TS/JS before finishing.
 - **Safety**: Never hardcode secrets or PagoPA-specific internal credentials.
 
 ## Technology Stack Specifics
