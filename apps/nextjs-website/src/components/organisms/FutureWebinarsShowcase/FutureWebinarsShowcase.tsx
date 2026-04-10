@@ -1,5 +1,5 @@
 'use client';
-import { Webinar } from '@/lib/types/webinar';
+import type { Webinar } from '@/lib/webinars/types';
 import { Alert, Box, Snackbar, Typography, useTheme } from '@mui/material';
 import React, { useState } from 'react';
 import LinkButton from '@/components/atoms/LinkButton/LinkButton';

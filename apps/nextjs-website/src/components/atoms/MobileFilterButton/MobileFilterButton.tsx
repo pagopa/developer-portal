@@ -1,6 +1,6 @@
 import { Box, Button, useTheme } from '@mui/material';
 import IconWrapper from '@/components/atoms/IconWrapper/IconWrapper';
-import { Media } from '@/lib/types/media';
+import type { Media } from '@/lib/media/types';
 import React from 'react';
 
 type MobileFilterButtonProps = {

@@ -88,8 +88,8 @@ resource "aws_iam_role_policy" "webinar_metrics" {
           "s3:ListBucket"
         ]
         Resource = [
-          aws_s3_bucket.cloudfront_logs.arn,
-          "${aws_s3_bucket.cloudfront_logs.arn}/*"
+          aws_s3_bucket.heartbeat_storage.arn,
+          "${aws_s3_bucket.heartbeat_storage.arn}/*",
         ]
       },
       {

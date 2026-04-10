@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Webinar } from '@/lib/types/webinar';
+import type { Webinar } from '@/lib/webinars/types';
 import { webinarHeartbeatIntervalInSeconds } from '@/config';
 import { sendWebinarHeartbeat } from '@/lib/webinarApi';
 

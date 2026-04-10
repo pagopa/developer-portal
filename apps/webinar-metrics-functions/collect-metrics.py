@@ -35,7 +35,7 @@ def lambda_handler(event, context):
         # Enrich the data with our new fields
         data['clientIp'] = client_ip
         data['receivedAt'] = timestamp
-        
+
         # Prepare for Firehose (add newline for Athena/JSON SerDe)
         enriched_data_str = json.dumps(data) + '\n'
 

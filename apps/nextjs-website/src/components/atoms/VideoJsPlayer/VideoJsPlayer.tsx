@@ -13,7 +13,7 @@ import { Box } from '@mui/material';
 import { amazonIvsVersion } from '@/config';
 import '@/styles/videojs-custom.css';
 import { useTranslations } from 'next-intl';
-import { Chapter } from '@/lib/types/webinar';
+import { Chapter } from '@/lib/webinars/types';
 
 interface PlayerProps {
   autoplay: boolean;

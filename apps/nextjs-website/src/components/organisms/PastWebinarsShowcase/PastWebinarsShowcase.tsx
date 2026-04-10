@@ -2,7 +2,7 @@
 import React from 'react';
 import SectionTitle from '@/components/molecules/SectionTitle/SectionTitle';
 import { Box, Grid, Stack, Typography } from '@mui/material';
-import { Webinar } from '@/lib/types/webinar';
+import type { Webinar } from '@/lib/webinars/types';
 import WebinarListItem from '@/components/molecules/WebinarListItem/WebinarListItem';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
 import { useTranslations } from 'next-intl';
