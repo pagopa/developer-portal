@@ -1,6 +1,5 @@
 import qs from 'qs';
 import { fetchFromStrapi } from '@/lib/strapi/fetchFromStrapi';
-import { RootEntity } from '@/lib/strapi/types/rootEntity';
 import { StrapiSolutionListPage } from './types';
 
 const makeStrapiSolutionListPagePopulate = () =>
@@ -34,6 +33,7 @@ const makeStrapiSolutionListPagePopulate = () =>
     },
   });
 
-export const fetchSolutionListPage = fetchFromStrapi<
-  RootEntity<StrapiSolutionListPage>
->('solution-list-page', makeStrapiSolutionListPagePopulate());
+export const fetchSolutionListPage = fetchFromStrapi<StrapiSolutionListPage>(
+  'solution-list-page',
+  makeStrapiSolutionListPagePopulate()
+);
