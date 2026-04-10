@@ -1,5 +1,5 @@
 import { mediaJpeg } from '@/lib/media/__tests__/factories';
-import { product } from '@/lib/products/__tests__/fixtures/product';
+import { product } from '@/lib/products/__tests__/fixtures';
 import { generateBannerLinks } from '@/lib/bannerLink/__tests__/factories';
 import type { StrapiUseCases } from '@/lib/useCases/strapiTypes';
 

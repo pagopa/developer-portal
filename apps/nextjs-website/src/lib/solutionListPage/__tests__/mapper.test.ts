@@ -26,16 +26,17 @@ describe('mapSolutionListPageProps', () => {
   it('should transform strapi solution list page to solution list template props', () => {
     const result = mapSolutionListPageProps(
       'it',
-      cloneDeep({ data: strapiSolutionListPage })
+      cloneDeep(strapiSolutionListPage)
     );
 
     expect(result).toMatchObject(expectedSolutionListTemplateProps);
   });
 
   it('should handle minimal data with missing optional fields', () => {
-    const result = mapSolutionListPageProps('it', {
-      data: minimalDataSolutionListPage(),
-    });
+    const result = mapSolutionListPageProps(
+      'it',
+      minimalDataSolutionListPage()
+    );
 
     expect(result).not.toBeNull();
     expect(result.hero.title).toBe('Minimal Solutions');
@@ -46,9 +47,10 @@ describe('mapSolutionListPageProps', () => {
   });
 
   it('should handle solution list page without case histories', () => {
-    const result = mapSolutionListPageProps('it', {
-      data: solutionListPageWithoutCaseHistories(),
-    });
+    const result = mapSolutionListPageProps(
+      'it',
+      solutionListPageWithoutCaseHistories()
+    );
 
     expect(result.successStories).toBeUndefined();
     expect(result.solutions).toBeDefined();
@@ -56,9 +58,10 @@ describe('mapSolutionListPageProps', () => {
   });
 
   it('should handle solution list page without features', () => {
-    const result = mapSolutionListPageProps('it', {
-      data: solutionListPageWithoutFeatures(),
-    });
+    const result = mapSolutionListPageProps(
+      'it',
+      solutionListPageWithoutFeatures()
+    );
 
     expect(result.features).toBeUndefined();
     expect(result.successStories).toBeDefined();
@@ -66,9 +69,10 @@ describe('mapSolutionListPageProps', () => {
   });
 
   it('should handle solution list page without solutions', () => {
-    const result = mapSolutionListPageProps('it', {
-      data: solutionListPageWithoutSolutions(),
-    });
+    const result = mapSolutionListPageProps(
+      'it',
+      solutionListPageWithoutSolutions()
+    );
 
     expect(result.solutions).toEqual([]);
     expect(result.successStories).toBeDefined();
@@ -76,9 +80,10 @@ describe('mapSolutionListPageProps', () => {
   });
 
   it('should skip solutions with missing slug', () => {
-    const result = mapSolutionListPageProps('it', {
-      data: solutionListPageWithMissingSolutionSlug(),
-    });
+    const result = mapSolutionListPageProps(
+      'it',
+      solutionListPageWithMissingSolutionSlug()
+    );
 
     expect(result.solutions).toHaveLength(1);
     expect(result.solutions[0].name).toBe('Valid Solution');
@@ -88,9 +93,10 @@ describe('mapSolutionListPageProps', () => {
   });
 
   it('should skip case histories with missing slug', () => {
-    const result = mapSolutionListPageProps('it', {
-      data: solutionListPageWithMissingCaseHistorySlug(),
-    });
+    const result = mapSolutionListPageProps(
+      'it',
+      solutionListPageWithMissingCaseHistorySlug()
+    );
 
     expect(result.successStories?.stories).toHaveLength(1);
     expect(result.successStories?.stories[0].title).toBe('Valid Case History');
@@ -102,7 +108,7 @@ describe('mapSolutionListPageProps', () => {
   it('should correctly map solution tags from products', () => {
     const result = mapSolutionListPageProps(
       'it',
-      cloneDeep({ data: strapiSolutionListPage })
+      cloneDeep(strapiSolutionListPage)
     );
 
     expect(result.solutions[0].labels).toEqual([
@@ -116,7 +122,7 @@ describe('mapSolutionListPageProps', () => {
   it('should correctly build solution slug path', () => {
     const result = mapSolutionListPageProps(
       'it',
-      cloneDeep({ data: strapiSolutionListPage })
+      cloneDeep(strapiSolutionListPage)
     );
 
     expect(result.solutions[0].slug).toBe('solutions/solution-1');

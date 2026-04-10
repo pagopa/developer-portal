@@ -1,7 +1,7 @@
-import { productJson } from '@/lib/products/__tests__/fixtures/product';
+import { productJson } from '@/lib/products/__tests__/fixtures';
 import type { StrapiUrlReplaceMap } from '@/lib/urlReplaceMap/types';
 
-export const strapiUrlReplaceMapFixture: StrapiUrlReplaceMap = {
+export const strapiUrlReplaceMap: StrapiUrlReplaceMap = {
   urlToGuide: [
     {
       id: 1,
@@ -18,6 +18,6 @@ export const strapiUrlReplaceMapFixture: StrapiUrlReplaceMap = {
   ],
 };
 
-export const expectedUrlReplaceMapFixture = {
+export const expectedUrlReplaceMap = {
   'getting-started': '/it/firma-con-io/guides/getting-started/step-2',
 };
