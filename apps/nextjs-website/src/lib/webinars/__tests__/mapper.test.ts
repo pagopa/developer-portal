@@ -6,6 +6,8 @@ import {
   webinarProps,
 } from '@/lib/webinars/__tests__/fixtures';
 import { spyOnConsoleError } from '@/lib/__tests__/spyOnConsole';
+import { wrapAsPaginatedRootEntity } from '@/lib/__tests__/strapiEntityWrappers';
+import { webinarsWithoutSlugAndTitle } from './factories';
 
 describe('mapWebinarsProps', () => {
   afterEach(() => {
@@ -24,17 +26,7 @@ describe('mapWebinarsProps', () => {
   });
 
   it('should handle empty data array', () => {
-    const emptyData: StrapiWebinars = {
-      data: [],
-      meta: {
-        pagination: {
-          page: 1,
-          pageSize: 25,
-          pageCount: 0,
-          total: 0,
-        },
-      },
-    };
+    const emptyData: StrapiWebinars = wrapAsPaginatedRootEntity([]);
 
     const result = mapWebinarsProps(emptyData);
 
@@ -42,25 +34,7 @@ describe('mapWebinarsProps', () => {
   });
 
   it('should handle corrupted data with try/catch and log error', () => {
-    const corruptedData: StrapiWebinars = {
-      data: [
-        {
-          ...strapiWebinars.data[0],
-          title: undefined as unknown as string,
-          slug: undefined as unknown as string,
-        },
-      ],
-      meta: {
-        pagination: {
-          page: 1,
-          pageSize: 25,
-          pageCount: 1,
-          total: 1,
-        },
-      },
-    };
-
-    const result = mapWebinarsProps(corruptedData);
+    const result = mapWebinarsProps(webinarsWithoutSlugAndTitle());
 
     expect(result).toHaveLength(0);
     expect(spyOnConsoleError).toHaveBeenCalledWith(

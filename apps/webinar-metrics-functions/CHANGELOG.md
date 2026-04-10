@@ -1,5 +1,11 @@
 # webinar-metrics-functions
 
+## 1.2.0
+
+### Minor Changes
+
+- d6af739: Update lambda function code since the athena query it has to execute changed.
+
 ## 1.1.0
 
 ### Minor Changes

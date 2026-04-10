@@ -1,6 +1,6 @@
 import type { StrapiGuides } from '@/lib/guides/strapiTypes';
 import type { Guide } from '@/lib/guides/types';
-import { product } from '@/lib/products/__tests__/fixtures/product';
+import { product } from '@/lib/products/__tests__/fixtures';
 
 export const strapiEmptyGuideData = {
   data: [],

@@ -1,5 +1,53 @@
 # nextjs-website
 
+## 17.0.0
+
+### Major Changes
+
+- 3954353: Update front-end to work with Strapi 5
+- 3954353: Update populates and makes in order to fetch from strapi 5 (with v4 header)
+
+### Patch Changes
+
+- 428f8e6: Refactor: implement webinars and webinarCategories API layer as repositories
+- 428f8e6: Refactor api layer for api data model
+- 428f8e6: Refactor quickStartGuides API layer to repository pattern
+
+  - move strapi fetch, mapper, types and tests to quickStartGuides dir
+  - move fixture and factories to shared \_\_tests\_\_ folder
+  - move parts to a separate isolated dir in lib/
+
+- 428f8e6: Refactor directory structure to improve consistency and maintainability for product api layer
+- 428f8e6: Refactor: implement tutorials and tutorial list page API layer as repositories
+- 428f8e6: Refactor case-histories API layer
+- 428f8e6: Refactor solutions and solutionListPage API layers to repository pattern
+
+  - move strapi fetch, mapper, types and tests to solutions and solutionListPage repository directories
+  - move fixture and factories to shared \_\_tests\_\_ folder
+
+- 059d952: Add root entity and pagination wrappers in test factories and fixtures refactor product factories and fixtures
+- 428f8e6: Refactor overviews API layer
+- 428f8e6: Refactor: implement useCases and useCaseListPage API layer as repositories
+- 428f8e6: Refactor guides API data layer
+- 428f8e6: Refactor homepage API layer to repository pattern
+
+  - Move fetcher to retrieve guide list pages from Strapi into homepage folder.
+  - Move makeHomepageProp into mapper in homepage folder.
+  - Implement repository pattern for accessing homepage data.
+  - Move tests into homepage folder.
+  - Move factories and fixtures into shared folder.
+  - Refactor types to export StrapiHomepage to include RootEntity wrapper.
+
+- 555fcd4: Update swiper dependency
+- 428f8e6: Refactor: implement tag and urlReplaceMap API layer as repositories
+- 428f8e6: Refactor: implement releaseNotes API layer as repositories
+- 428f8e6: Refactor: Move sitemap data fetching into corresponding entity repositories.
+- Updated dependencies [32ed4e8]
+- Updated dependencies [31554d2]
+- Updated dependencies [555fcd4]
+- Updated dependencies [3954353]
+  - gitbook-docs@2.2.0
+
 ## 16.5.0
 
 ### Minor Changes
