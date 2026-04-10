@@ -1,20 +1,22 @@
 import { mapUrlReplaceMap } from '@/lib/urlReplaceMap/mapper';
 import {
-  expectedUrlReplaceMapFixture,
-  strapiUrlReplaceMapFixture,
+  expectedUrlReplaceMap,
+  strapiUrlReplaceMap,
 } from '@/lib/urlReplaceMap/__tests__/fixtures';
 import {
   urlReplaceMapMultiple,
   urlReplaceMapSingle,
 } from '@/lib/urlReplaceMap/__tests__/factories';
+import { wrapAsRootEntity } from '../../__tests__/strapiEntityWrappers';
 
 describe('mapUrlReplaceMap', () => {
   it('should map a single entry with subPath', () => {
-    const urlReplaceMap = mapUrlReplaceMap('it', {
-      data: strapiUrlReplaceMapFixture,
-    });
+    const urlReplaceMap = mapUrlReplaceMap(
+      'it',
+      wrapAsRootEntity(strapiUrlReplaceMap)
+    );
 
-    expect(urlReplaceMap).toEqual(expectedUrlReplaceMapFixture);
+    expect(urlReplaceMap).toEqual(expectedUrlReplaceMap);
   });
 
   it('should map a single entry without subPath', () => {

@@ -8,7 +8,7 @@ import _ from 'lodash';
 import {
   strapiProducts,
   expectedProduct,
-} from '@/lib/products/__tests__/fixtures/products';
+} from '@/lib/products/__tests__/fixtures';
 import {
   minimalProduct,
   productWithMultipleApiData,
@@ -18,7 +18,7 @@ import {
   allInvalidProducts,
   productsWithAnItemWithEmptySlug,
   productsWithAnItemMissingSlug,
-} from '@/lib/products/__tests__/factories/products';
+} from '@/lib/products/__tests__/factories';
 import { spyOnConsoleError } from '@/lib/__tests__/spyOnConsole';
 
 describe('makeProductsProps', () => {
