@@ -18,11 +18,11 @@ This is the PagoPA Developer Portal repository. It is a multi-language project:
 - Use `npx changeset` for versioning.
 
 ### Python / GenAI
-- Target Python 3.10+.
+- Target Python 3.12 (supported range: `>=3.12,<3.14`).
 - Use type hints for all function signatures.
 - For GenAI prompts, use a clear separation between "System" and "User" instructions.
 
-### Terraform (infra/)
+### Terraform (apps/infrastructure/src)
 - Follow the PagoPA standard modules pattern.
 - Always run `terraform fmt` and `tflint`.
-- Infrastructure is AWS-based. Use tags for cost allocation (Project: DevPortal).
+- Infrastructure is AWS-based. Use tags for cost allocation (CostCenter, Owner, Source, and Environment).
