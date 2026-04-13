@@ -1,8 +1,9 @@
 import { strapiHomepage } from '@/lib/homepage/__tests__/fixtures';
-import type { Homepage } from '@/lib/homepage/types';
+import type { StrapiHomepage } from '@/lib/homepage/types';
+import { wrapAsRootEntity } from '@/lib/__tests__/strapiEntityWrappers';
 
-export function minimalDataHomepage() {
-  return {
+export function minimalDataHomepage(): StrapiHomepage {
+  return wrapAsRootEntity({
     updatedAt: new Date().toISOString(),
     comingsoonDocumentation: {
       title: 'Minimal Documentation',
@@ -18,33 +19,45 @@ export function minimalDataHomepage() {
     ecosystem: undefined,
     webinars: [],
     seo: undefined,
-  } satisfies Homepage;
+  });
 }
 
-export function homepageWithoutNewsShowcase() {
+export function homepageWithoutNewsShowcase(): StrapiHomepage {
   return {
     ...strapiHomepage,
-    newsShowcase: undefined,
-  } satisfies Homepage;
+    data: {
+      ...strapiHomepage.data,
+      newsShowcase: undefined,
+    },
+  };
 }
 
-export function homepageWithoutEcosystem() {
+export function homepageWithoutEcosystem(): StrapiHomepage {
   return {
     ...strapiHomepage,
-    ecosystem: undefined,
-  } satisfies Homepage;
+    data: {
+      ...strapiHomepage.data,
+      ecosystem: undefined,
+    },
+  };
 }
 
-export function homepageWithoutWebinars() {
+export function homepageWithoutWebinars(): StrapiHomepage {
   return {
     ...strapiHomepage,
-    webinars: [],
-  } satisfies Homepage;
+    data: {
+      ...strapiHomepage.data,
+      webinars: [],
+    },
+  };
 }
 
-export function homepageWithoutSeo() {
+export function homepageWithoutSeo(): StrapiHomepage {
   return {
     ...strapiHomepage,
-    seo: undefined,
-  } satisfies Homepage;
+    data: {
+      ...strapiHomepage.data,
+      seo: undefined,
+    },
+  };
 }

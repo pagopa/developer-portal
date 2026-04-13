@@ -1,6 +1,6 @@
 import { generateBannerLinks } from '@/lib/bannerLink/__tests__/factories';
 import { mediaJpeg } from '@/lib/media/__tests__/factories';
-import { product } from '@/lib/products/__tests__/fixtures/product';
+import { product } from '@/lib/products/__tests__/fixtures';
 import { StrapiTutorials } from '@/lib/tutorials/strapiTypes';
 
 export const strapiTutorials: StrapiTutorials = {

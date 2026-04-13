@@ -1,5 +1,17 @@
 # infrastructure
 
+## 11.0.0
+
+### Major Changes
+
+- c76af59: - Refactor: new module auth where we moved the developer portal cognito user pool.
+  - ApiGw http api with cognito auth to expose the webinar ingest url.
+
+### Minor Changes
+
+- 452e439: Fix static-content cloudfront security headers
+- d6af739: Update lambda function code since the athena query it has to execute changed.
+
 ## 10.2.0
 
 ### Minor Changes

@@ -6,52 +6,54 @@ import { generateBannerLinks } from '@/lib/bannerLink/__tests__/factories';
 const fixedDateIsoString = new Date('2025-01-01T00:00:00.000Z').toISOString();
 
 export const strapiSolutionListPage = {
-  title: 'Solutions',
-  description: 'Explore our solutions',
-  solutions: [
-    {
-      slug: 'solution-1',
-      icon: mediaJpeg(),
-      kickerTitle: 'Solution Kicker 1',
-      title: 'Solution 1',
-      description: 'Solution 1 Description',
-      dirName: 'solution-1-dir',
-      landingUseCaseFile: 'use-case-1.md',
-      products: [
+  data: {
+    title: 'Solutions',
+    description: 'Explore our solutions',
+    solutions: [
+      {
+        slug: 'solution-1',
+        icon: mediaJpeg(),
+        kickerTitle: 'Solution Kicker 1',
+        title: 'Solution 1',
+        description: 'Solution 1 Description',
+        dirName: 'solution-1-dir',
+        landingUseCaseFile: 'use-case-1.md',
+        products: [
+          {
+            isVisible: true,
+            name: 'Product 1',
+            shortName: 'P1',
+            slug: 'product-1',
+            description: 'Product 1 description',
+            logo: mediaJpeg(),
+          },
+        ],
+      },
+    ],
+    caseHistories: {
+      title: 'Success Stories',
+      description: 'Our case studies',
+      case_histories: [
         {
-          isVisible: true,
-          name: 'Product 1',
-          shortName: 'P1',
-          slug: 'product-1',
-          description: 'Product 1 description',
-          logo: mediaJpeg(),
+          id: 1,
+          slug: 'case-history-1',
+          title: 'Case History 1',
+          description: 'Case history description',
+          publishedAt: fixedDateIsoString,
+          updatedAt: fixedDateIsoString,
+          image: mediaJpeg(),
         },
       ],
     },
-  ],
-  caseHistories: {
-    title: 'Success Stories',
-    description: 'Our case studies',
-    case_histories: [
-      {
-        id: 1,
-        slug: 'case-history-1',
-        title: 'Case History 1',
-        description: 'Case history description',
-        publishedAt: fixedDateIsoString,
-        updatedAt: fixedDateIsoString,
-        image: mediaJpeg(),
-      },
-    ],
-  },
-  features: {
-    title: 'Features',
-    subtitle: 'Our key features',
-    items: generateBannerLinks(2),
-  },
-  seo: {
-    metaTitle: 'Solutions SEO Title',
-    metaDescription: 'Solutions SEO Description',
+    features: {
+      title: 'Features',
+      subtitle: 'Our key features',
+      items: generateBannerLinks(2),
+    },
+    seo: {
+      metaTitle: 'Solutions SEO Title',
+      metaDescription: 'Solutions SEO Description',
+    },
   },
 } satisfies StrapiSolutionListPage;
 

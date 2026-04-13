@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { strapiTutorials } from '@/lib/tutorials/__tests__/fixtures';
 import { StrapiTutorials } from '@/lib/tutorials/strapiTypes';
+import { wrapAsPaginatedRootEntity } from '../../__tests__/strapiEntityWrappers';
 
 export function tutorialsWithAnItemMissingSlug(): StrapiTutorials {
   return {
@@ -53,50 +54,17 @@ export function tutorialsWithAnItemMissingProductSlug(): StrapiTutorials {
 export function minimalDataTutorials() {
   const strapiTutorial = strapiTutorials.data[0];
 
-  return {
-    ...strapiTutorials,
-    data: [
-      {
-        ...strapiTutorial,
-        title: 'Minimal Data Tutorial',
-        slug: 'minimal-data-tutorial',
-        publishedAt: '2023-01-01T00:00:00Z',
-        locale: 'en-US',
-        parts: [],
-        relatedLinks: undefined,
-        seo: undefined,
-        image: undefined,
-      },
-    ],
-  } satisfies StrapiTutorials;
-}
-
-export function tutorialsWithItemMissingData() {
-  const strapiTutorial = strapiTutorials.data[0];
-
-  return {
-    data: [
-      {
-        ...strapiTutorial,
-        title: undefined,
-        slug: undefined,
-        publishedAt: undefined,
-        locale: undefined,
-      },
-    ],
-  };
-}
-
-export function tutorialsWithItemMissingMandatoryData() {
-  const strapiTutorial = tutorialsWithItemMissingData().data[0];
-
-  return {
-    ...strapiTutorials,
-    ...[
-      {
-        ...strapiTutorial,
-        product: undefined,
-      },
-    ],
-  };
+  return wrapAsPaginatedRootEntity([
+    {
+      ...strapiTutorial,
+      title: 'Minimal Data Tutorial',
+      slug: 'minimal-data-tutorial',
+      publishedAt: '2023-01-01T00:00:00Z',
+      locale: 'en-US',
+      parts: [],
+      relatedLinks: undefined,
+      seo: undefined,
+      image: undefined,
+    },
+  ]) satisfies StrapiTutorials;
 }

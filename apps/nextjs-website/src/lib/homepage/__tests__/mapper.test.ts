@@ -14,15 +14,12 @@ import {
 
 describe('mapHomepageProps', () => {
   it('should transform strapi homepage to homepage props', () => {
-    const result = mapHomepageProps(
-      'it',
-      _.cloneDeep({ data: strapiHomepage })
-    );
+    const result = mapHomepageProps('it', _.cloneDeep(strapiHomepage));
     expect(result).toMatchObject(expectedHomepageProps);
   });
 
   it('should handle minimal data with missing optional fields', () => {
-    const result = mapHomepageProps('it', { data: minimalDataHomepage() });
+    const result = mapHomepageProps('it', minimalDataHomepage());
     expect(result.comingsoonDocumentation.title).toBe('Minimal Documentation');
     expect(result.comingsoonDocumentation.links).toEqual([]);
     expect(result.hero).toHaveLength(1);
@@ -35,42 +32,35 @@ describe('mapHomepageProps', () => {
   });
 
   it('should handle homepage without news showcase', () => {
-    const result = mapHomepageProps('it', {
-      data: homepageWithoutNewsShowcase(),
-    });
+    const result = mapHomepageProps('it', homepageWithoutNewsShowcase());
     expect(result.newsShowcase).toBeUndefined();
     expect(result.ecosystem).toBeDefined();
     expect(result.webinars).toBeDefined();
   });
 
   it('should handle homepage without ecosystem', () => {
-    const result = mapHomepageProps('it', {
-      data: homepageWithoutEcosystem(),
-    });
+    const result = mapHomepageProps('it', homepageWithoutEcosystem());
     expect(result.ecosystem).toBeUndefined();
     expect(result.newsShowcase).toBeDefined();
     expect(result.webinars).toBeDefined();
   });
 
   it('should handle homepage without webinars', () => {
-    const result = mapHomepageProps('it', { data: homepageWithoutWebinars() });
+    const result = mapHomepageProps('it', homepageWithoutWebinars());
     expect(result.webinars).toEqual([]);
     expect(result.newsShowcase).toBeDefined();
     expect(result.ecosystem).toBeDefined();
   });
 
   it('should handle homepage without seo', () => {
-    const result = mapHomepageProps('it', { data: homepageWithoutSeo() });
+    const result = mapHomepageProps('it', homepageWithoutSeo());
     expect(result.seo).toBeUndefined();
     expect(result.newsShowcase).toBeDefined();
     expect(result.ecosystem).toBeDefined();
   });
 
   it('should correctly map hero slider background images', () => {
-    const result = mapHomepageProps(
-      'it',
-      _.cloneDeep({ data: strapiHomepage })
-    );
+    const result = mapHomepageProps('it', _.cloneDeep(strapiHomepage));
     expect(result.hero[0].backgroundImage).toEqual({
       url: 'https://example.com/example.jpg',
       alternativeText: 'Example Image',
@@ -85,10 +75,7 @@ describe('mapHomepageProps', () => {
   });
 
   it('should correctly map ecosystem products and solutions', () => {
-    const result = mapHomepageProps(
-      'it',
-      _.cloneDeep({ data: strapiHomepage })
-    );
+    const result = mapHomepageProps('it', _.cloneDeep(strapiHomepage));
     expect(result.ecosystem?.tabContents[0]?.items).toEqual([
       {
         title: 'Product 1',
@@ -110,10 +97,7 @@ describe('mapHomepageProps', () => {
   });
 
   it('should correctly transform news showcase items', () => {
-    const result = mapHomepageProps(
-      'it',
-      _.cloneDeep({ data: strapiHomepage })
-    );
+    const result = mapHomepageProps('it', _.cloneDeep(strapiHomepage));
     expect(result.newsShowcase?.items).toHaveLength(3);
     expect(result.newsShowcase?.items[0]).toMatchObject({
       title:

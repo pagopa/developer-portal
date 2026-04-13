@@ -1,32 +1,37 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { strapiGuideListPagesData } from '@/lib/guideListPages/__tests__/fixtures';
 import { StrapiGuideListPages } from '@/lib/guideListPages/types';
+import { wrapAsPaginatedRootEntity } from '../../__tests__/strapiEntityWrappers';
 
 export function guideListPagesWithItemsMissingSlug() {
-  return strapiGuideListPagesData.data.map((guides) => ({
-    ...guides,
-    guidesByCategory: guides.guidesByCategory.map((guidePerCategory) => ({
-      ...guidePerCategory,
-      guides: guidePerCategory.guides.map((guide) => ({
-        ...guide,
-        slug: undefined as any,
+  return wrapAsPaginatedRootEntity(
+    strapiGuideListPagesData.data.map((guides) => ({
+      ...guides,
+      guidesByCategory: guides.guidesByCategory.map((guidePerCategory) => ({
+        ...guidePerCategory,
+        guides: guidePerCategory.guides.map((guide) => ({
+          ...guide,
+          slug: undefined as any,
+        })),
       })),
-    })),
-  }));
+    }))
+  );
 }
 
 export function guideListPagesWithItemsMissingImages() {
-  return strapiGuideListPagesData.data.map((guides) => ({
-    ...guides,
-    guidesByCategory: guides.guidesByCategory.map((guidePerCategory) => ({
-      ...guidePerCategory,
-      guides: guidePerCategory.guides.map((guide) => ({
-        ...guide,
-        image: undefined as any,
-        mobileImage: undefined as any,
+  return wrapAsPaginatedRootEntity(
+    strapiGuideListPagesData.data.map((guides) => ({
+      ...guides,
+      guidesByCategory: guides.guidesByCategory.map((guidePerCategory) => ({
+        ...guidePerCategory,
+        guides: guidePerCategory.guides.map((guide) => ({
+          ...guide,
+          image: undefined as any,
+          mobileImage: undefined as any,
+        })),
       })),
-    })),
-  }));
+    }))
+  );
 }
 
 export function guideListPagesWithItemsMissingListItem() {
