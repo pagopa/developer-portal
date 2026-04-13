@@ -299,6 +299,8 @@ module "video_streaming" {
 module "dos68k_chatbotapi" {
   source = "./modules/dos68k_chatbotapi"
 
+  count = var.environment == "dev" ? 1 : 0
+
   environment     = var.environment
   dns_domain_name = var.dns_domain_name
 
@@ -310,6 +312,8 @@ module "dos68k_chatbotapi" {
   security_groups = module.cms.security_groups
 
   ecs_chatbotapi = var.ecs_chatbotapi
+
+  redis_host = var.create_chatbot ? module.chatbot[0].redis_nlb_dns_name : ""
 }
 
 # strapi-v5  for testing purposes only

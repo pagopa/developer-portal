@@ -207,7 +207,7 @@ variable "ecs_chatbotapi" {
   default = {
     cpu       = 1024
     memory    = 2048
-    image_tag = "latest"
+    image_tag = "1.0.0"
   }
 }
 

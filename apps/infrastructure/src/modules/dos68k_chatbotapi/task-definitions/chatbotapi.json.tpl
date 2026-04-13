@@ -21,13 +21,13 @@
       { "name": "EMBED_BATCH_SIZE", "value": "100" },
       { "name": "EMBED_RETRIES", "value": "3" },
       { "name": "EMBED_RETRY_MIN_SECONDS", "value": "1.0" },
-      { "name": "LOG_LEVEL", "value": "10" }
-    ],
-    "secrets": [
-      { "name": "MODEL_API_KEY", "valueFrom": "${model_api_key_arn}" },
+      { "name": "LOG_LEVEL", "value": "10" },
       { "name": "MODEL_ID", "valueFrom": "${model_id_arn}" },
       { "name": "EMBED_MODEL_ID", "valueFrom": "${embed_model_id_arn}" },
       { "name": "REDIS_HOST", "valueFrom": "${redis_host_arn}" }
+    ],
+    "secrets": [
+      { "name": "MODEL_API_KEY", "valueFrom": "${model_api_key_arn}" }
     ],
     "linuxParameters": {
       "initProcessEnabled": true

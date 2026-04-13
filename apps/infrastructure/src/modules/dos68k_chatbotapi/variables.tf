@@ -48,3 +48,8 @@ variable "ecs_chatbotapi" {
     image_tag = "latest"
   }
 }
+
+variable "redis_host" {
+  type        = string
+  description = "The Redis host (NLB DNS name from the chatbot module)"
+}
