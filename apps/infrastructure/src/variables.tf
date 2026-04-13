@@ -193,6 +193,25 @@ variable "chatbot_models" {
 }
 
 ################################################################################
+# dos68k Chatbot API
+################################################################################
+
+variable "ecs_chatbotapi" {
+  type = object({
+    cpu       = optional(number, 1024)
+    memory    = optional(number, 2048)
+    image_tag = optional(string, "latest")
+  })
+  description = "ECS task configuration for the dos68k Chatbot API"
+
+  default = {
+    cpu       = 1024
+    memory    = 2048
+    image_tag = "latest"
+  }
+}
+
+################################################################################
 # Active Campaign integration
 ################################################################################
 variable "ac_integration_is_enabled" {

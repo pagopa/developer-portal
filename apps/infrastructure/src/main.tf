@@ -293,6 +293,25 @@ module "video_streaming" {
 
 }
 
+################################################################################
+# dos68k Chatbot API
+################################################################################
+module "dos68k_chatbotapi" {
+  source = "./modules/dos68k_chatbotapi"
+
+  environment     = var.environment
+  dns_domain_name = var.dns_domain_name
+
+  vpc = {
+    id              = module.cms.vpc.id
+    private_subnets = module.cms.vpc.private_subnets
+  }
+
+  security_groups = module.cms.security_groups
+
+  ecs_chatbotapi = var.ecs_chatbotapi
+}
+
 # strapi-v5  for testing purposes only
 module "strapi_v5" {
   source = "./modules/strapi5"
