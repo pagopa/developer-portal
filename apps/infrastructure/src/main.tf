@@ -313,7 +313,8 @@ module "dos68k_chatbotapi" {
 
   ecs_chatbotapi = var.ecs_chatbotapi
 
-  redis_host = var.create_chatbot ? module.chatbot[0].redis_nlb_dns_name : ""
+  redis_host                  = var.create_chatbot ? module.chatbot[0].redis_nlb_dns_name : ""
+  redis_nlb_security_group_id = var.create_chatbot ? module.chatbot[0].security_groups.redis : ""
 }
 
 # strapi-v5  for testing purposes only

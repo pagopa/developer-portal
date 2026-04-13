@@ -53,9 +53,10 @@ module "iam_role_ecs_task" {
 
   custom_role_policy_arns = [
     "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role",
-    module.iam_policy_ecs_task_ssm.arn
+    module.iam_policy_ecs_task_ssm.arn,
+    module.iam_policy_ecs_task_dynamodb.arn
   ]
-  number_of_custom_role_policy_arns = 2
+  number_of_custom_role_policy_arns = 3
   trusted_role_services = [
     "ecs-tasks.amazonaws.com"
   ]
@@ -80,6 +81,30 @@ data "aws_iam_policy_document" "ecs_task_ssm" {
       "ssmmessages:OpenDataChannel"
     ]
     resources = ["*"]
+  }
+}
+
+module "iam_policy_ecs_task_dynamodb" {
+  source = "git::https://github.com/terraform-aws-modules/terraform-aws-iam.git//modules/iam-policy?ref=f37809108f86d8fbdf17f735df734bf4abe69315" # v5.34.0
+
+  name   = "${local.prefix}-chatbotapi-ecs-task-dynamodb"
+  path   = "/"
+  policy = data.aws_iam_policy_document.ecs_task_dynamodb.json
+}
+
+data "aws_iam_policy_document" "ecs_task_dynamodb" {
+  statement {
+    effect = "Allow"
+    actions = [
+      "dynamodb:GetItem",
+      "dynamodb:PutItem",
+      "dynamodb:UpdateItem",
+      "dynamodb:Query",
+    ]
+    resources = [
+      aws_dynamodb_table.sessions.arn,
+      aws_dynamodb_table.queries.arn
+    ]
   }
 }
 

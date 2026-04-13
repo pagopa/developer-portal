@@ -39,10 +39,10 @@ resource "aws_ecs_task_definition" "chatbotapi" {
       log_group      = module.ecs_log_group.cloudwatch_log_group_name
       frontend_url   = "https://${var.dns_domain_name}"
 
-      model_api_key_arn  = module.ssm_model_api_key.ssm_parameter_arn
-      model_id_arn       = module.ssm_model_id.ssm_parameter_arn
-      embed_model_id_arn = module.ssm_embed_model_id.ssm_parameter_arn
-      redis_host_arn     = module.ssm_redis_host.ssm_parameter_arn
+      model_api_key_arn = module.ssm_model_api_key.ssm_parameter_arn
+      model_id          = module.ssm_model_id.value
+      embed_model_id    = module.ssm_embed_model_id.value
+      redis_host        = module.ssm_redis_host.value
     }
   )
 }
@@ -113,4 +113,16 @@ resource "aws_security_group_rule" "nlb_to_ecs_ingress" {
   protocol                 = "tcp"
   security_group_id        = aws_security_group.ecs_chatbotapi.id
   source_security_group_id = aws_security_group.nlb.id
+}
+
+###############################################################################
+#          Allow this ECS task to reach the Redis NLB on port 6379            #
+###############################################################################
+resource "aws_security_group_rule" "ecs_to_redis_nlb_ingress" {
+  type                     = "ingress"
+  from_port                = var.redis_port
+  to_port                  = var.redis_port
+  protocol                 = "tcp"
+  security_group_id        = var.redis_nlb_security_group_id
+  source_security_group_id = aws_security_group.ecs_chatbotapi.id
 }

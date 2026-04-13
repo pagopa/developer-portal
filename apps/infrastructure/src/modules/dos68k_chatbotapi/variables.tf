@@ -53,3 +53,14 @@ variable "redis_host" {
   type        = string
   description = "The Redis host (NLB DNS name from the chatbot module)"
 }
+
+variable "redis_nlb_security_group_id" {
+  type        = string
+  description = "Security group ID of the Redis NLB to add ingress rule for this module's ECS tasks"
+}
+
+variable "redis_port" {
+  type        = number
+  description = "The Redis port"
+  default     = 6379
+}

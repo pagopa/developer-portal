@@ -22,9 +22,9 @@
       { "name": "EMBED_RETRIES", "value": "3" },
       { "name": "EMBED_RETRY_MIN_SECONDS", "value": "1.0" },
       { "name": "LOG_LEVEL", "value": "10" },
-      { "name": "MODEL_ID", "valueFrom": "${model_id_arn}" },
-      { "name": "EMBED_MODEL_ID", "valueFrom": "${embed_model_id_arn}" },
-      { "name": "REDIS_HOST", "valueFrom": "${redis_host_arn}" }
+      { "name": "MODEL_ID", "value": "${model_id}" },
+      { "name": "EMBED_MODEL_ID", "value": "${embed_model_id}" },
+      { "name": "REDIS_HOST", "value": "${redis_host}" }
     ],
     "secrets": [
       { "name": "MODEL_API_KEY", "valueFrom": "${model_api_key_arn}" }

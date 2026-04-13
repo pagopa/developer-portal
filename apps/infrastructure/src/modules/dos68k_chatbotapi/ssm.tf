@@ -34,6 +34,6 @@ module "ssm_redis_host" {
   source = "git::https://github.com/terraform-aws-modules/terraform-aws-ssm-parameter.git?ref=77d2c139784197febbc8f8e18a33d23eb4736879" # v1.1.0
 
   name  = "/dos68k-chatbotapi/redis_host"
-  value = format("redis:%s", var.redis_host)
+  value = var.redis_host
   type  = "String"
 }
