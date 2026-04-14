@@ -25,4 +25,38 @@ describe('sitePathFromS3Path', () => {
       )
     ).toBe('file');
   });
+  it('should return undefined when the landingFile matches the extracted path', () => {
+    expect(
+      sitePathFromS3Path(
+        'devportal-docs/docs/dirName/subdir/file.md',
+        'dirName',
+        'subdir'
+      )
+    ).toBeUndefined();
+  });
+  it('should return undefined when a nested dirName landingFile matches the extracted path', () => {
+    expect(
+      sitePathFromS3Path(
+        'devportal-docs/docs/dirName/subdir/landing/file.md',
+        'dirName/subdir',
+        'landing'
+      )
+    ).toBeUndefined();
+  });
+  it('should return the directory path for README.md files', () => {
+    expect(
+      sitePathFromS3Path(
+        'devportal-docs/docs/dirName/subdir/README.md',
+        'dirName'
+      )
+    ).toBe('subdir');
+  });
+  it('should return the directory path for README.md files with a nested dirName', () => {
+    expect(
+      sitePathFromS3Path(
+        'devportal-docs/docs/dirName/subdir/nested/README.md',
+        'dirName/subdir'
+      )
+    ).toBe('nested');
+  });
 });
