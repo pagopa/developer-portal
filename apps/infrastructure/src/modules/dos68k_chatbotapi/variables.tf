@@ -64,3 +64,9 @@ variable "redis_port" {
   description = "The Redis port"
   default     = 6379
 }
+
+variable "enable_scheduled_scaling" {
+  type        = bool
+  description = "Enable scheduled autoscaling to scale down to 0 outside working hours (Mon-Fri 09:00-19:00 CET)"
+  default     = false
+}

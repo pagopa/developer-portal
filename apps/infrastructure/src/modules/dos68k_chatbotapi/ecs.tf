@@ -69,7 +69,7 @@ module "ecs_service" {
   ignore_task_definition_changes = false
   enable_autoscaling             = false
   autoscaling_max_capacity       = 1
-  autoscaling_min_capacity       = 1
+  autoscaling_min_capacity       = var.enable_scheduled_scaling ? 0 : 1
 
   security_group_ids = [aws_security_group.ecs_chatbotapi.id]
   subnet_ids         = var.vpc.private_subnets

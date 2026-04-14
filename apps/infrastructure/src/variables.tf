@@ -211,6 +211,12 @@ variable "ecs_chatbotapi" {
   }
 }
 
+variable "ecs_chatbotapi_enable_scheduled_scaling" {
+  type        = bool
+  description = "Enable scheduled autoscaling for dos68k Chatbot API (scale to 0 outside Mon-Fri 09:00-19:00 CET)"
+  default     = false
+}
+
 ################################################################################
 # Active Campaign integration
 ################################################################################
