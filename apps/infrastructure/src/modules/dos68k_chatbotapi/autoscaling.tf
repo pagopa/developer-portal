@@ -21,7 +21,7 @@ resource "aws_appautoscaling_scheduled_action" "scale_up" {
   service_namespace  = aws_appautoscaling_target.ecs[0].service_namespace
   resource_id        = aws_appautoscaling_target.ecs[0].resource_id
   scalable_dimension = aws_appautoscaling_target.ecs[0].scalable_dimension
-  schedule           = "cron(0 8 ? * MON-FRI *)"
+  schedule           = "cron(0 9 ? * MON-FRI *)"
   timezone           = "Europe/Rome"
 
   scalable_target_action {
@@ -38,7 +38,7 @@ resource "aws_appautoscaling_scheduled_action" "scale_down" {
   service_namespace  = aws_appautoscaling_target.ecs[0].service_namespace
   resource_id        = aws_appautoscaling_target.ecs[0].resource_id
   scalable_dimension = aws_appautoscaling_target.ecs[0].scalable_dimension
-  schedule           = "cron(0 18 ? * MON-FRI *)"
+  schedule           = "cron(0 19 ? * MON-FRI *)"
   timezone           = "Europe/Rome"
 
   scalable_target_action {
