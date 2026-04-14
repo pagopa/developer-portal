@@ -7,7 +7,7 @@
 
 import dotenv from 'dotenv';
 import * as fs from 'fs';
-import path, { dirname } from 'path';
+import path from 'path';
 import { MetadataItem } from '../metadataItem';
 import {
   downloadS3File,
