@@ -7,13 +7,20 @@ export function sitePathFromS3Path(
 ): string | undefined {
   const parts = s3Path.split('/');
   const dirNameParts = dirName.split('/');
-  const lastDirNamePart = dirNameParts[dirNameParts.length - 1];
-  const dirNameIndex = parts.findIndex((part) => part === lastDirNamePart);
+  const dirNameIndex = parts.findIndex((_, index) =>
+    dirNameParts.every(
+      (dirNamePart, dirNamePartIndex) =>
+        parts[index + dirNamePartIndex] === dirNamePart
+    )
+  );
   if (dirNameIndex === -1) {
     return;
   }
 
-  const pathParts = parts.slice(dirNameIndex + 1, parts.length - 1); // Skip "devportal-docs/docs/dirName" and remove filename
+  const pathParts = parts.slice(
+    dirNameIndex + dirNameParts.length,
+    parts.length - 1
+  ); // Skip "devportal-docs/docs/dirName" and remove filename
   const lastPart = parts[parts.length - 1];
 
   if (landingFile && pathParts.join('/') === landingFile) {
