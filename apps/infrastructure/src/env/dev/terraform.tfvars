@@ -54,3 +54,5 @@ chatbot_models = {
   use_multi_rag = true
 }
 
+ecs_chatbotapi_enable_scheduled_scaling = true
+
