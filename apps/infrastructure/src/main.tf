@@ -309,8 +309,6 @@ module "dos68k_chatbotapi" {
     private_subnets = module.cms.vpc.private_subnets
   }
 
-  security_groups = module.cms.security_groups
-
   ecs_chatbotapi = var.ecs_chatbotapi
 
   redis_host                  = var.create_chatbot ? module.chatbot[0].redis_nlb_dns_name : ""
