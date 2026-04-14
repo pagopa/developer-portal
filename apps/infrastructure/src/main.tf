@@ -293,6 +293,30 @@ module "video_streaming" {
 
 }
 
+################################################################################
+# dos68k Chatbot API
+################################################################################
+module "dos68k_chatbotapi" {
+  source = "./modules/dos68k_chatbotapi"
+
+  count = var.environment == "dev" ? 1 : 0
+
+  environment     = var.environment
+  dns_domain_name = var.dns_domain_name
+
+  vpc = {
+    id              = module.cms.vpc.id
+    private_subnets = module.cms.vpc.private_subnets
+  }
+
+  ecs_chatbotapi = var.ecs_chatbotapi
+
+  redis_host                  = var.create_chatbot ? module.chatbot[0].redis_nlb_dns_name : ""
+  redis_nlb_security_group_id = var.create_chatbot ? module.chatbot[0].security_groups.redis : ""
+
+  enable_scheduled_scaling = var.ecs_chatbotapi_enable_scheduled_scaling
+}
+
 # strapi-v5  for testing purposes only
 module "strapi_v5" {
   source = "./modules/strapi5"

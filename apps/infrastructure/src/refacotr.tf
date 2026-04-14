@@ -366,3 +366,8 @@ moved {
   from = module.video_streaming.aws_cloudfront_distribution.s3_distribution
   to   = module.video_streaming.aws_cloudfront_distribution.vod
 }
+
+moved {
+  from = module.dos68k_chatbotapi
+  to   = module.dos68k_chatbotapi[0]
+}
