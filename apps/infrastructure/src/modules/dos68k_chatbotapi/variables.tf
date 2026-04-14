@@ -9,13 +9,6 @@ variable "aws_region" {
   default     = "eu-south-1"
 }
 
-variable "tags" {
-  type = map(any)
-  default = {
-    CreatedBy = "Terraform"
-  }
-}
-
 variable "vpc" {
   type = object({
     id              = string
