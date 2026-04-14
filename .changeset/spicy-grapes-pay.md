@@ -2,4 +2,4 @@
 "gitbook-docs": patch
 ---
 
-Fix sitePathFromLocalPath to add support for dirNames referencing nested directories
+Fix sitePathFromS3Path to add support for dirNames referencing nested directories
