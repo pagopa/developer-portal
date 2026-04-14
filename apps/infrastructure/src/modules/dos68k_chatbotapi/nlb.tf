@@ -47,6 +47,10 @@ module "nlb" {
 ###############################################################################
 #                        NLB Security Group                                   #
 ###############################################################################
+data "aws_vpc" "selected" {
+  id = var.vpc.id
+}
+
 resource "aws_security_group" "nlb" {
   name        = "${local.prefix}-chatbotapi-nlb"
   description = "dos68k Chatbot API NLB"
@@ -71,7 +75,7 @@ resource "aws_security_group_rule" "nlb_ingress" {
   from_port         = local.container_port
   to_port           = local.container_port
   protocol          = "tcp"
-  cidr_blocks       = ["0.0.0.0/0"]
+  cidr_blocks       = [data.aws_vpc.selected.cidr_block]
   security_group_id = aws_security_group.nlb.id
   description       = "Allow API Gateway VPC Link traffic"
 }
