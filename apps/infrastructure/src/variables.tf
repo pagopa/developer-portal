@@ -193,6 +193,31 @@ variable "chatbot_models" {
 }
 
 ################################################################################
+# dos68k Chatbot API
+################################################################################
+
+variable "ecs_chatbotapi" {
+  type = object({
+    cpu       = optional(number, 1024)
+    memory    = optional(number, 2048)
+    image_tag = optional(string, "latest")
+  })
+  description = "ECS task configuration for the dos68k Chatbot API"
+
+  default = {
+    cpu       = 1024
+    memory    = 2048
+    image_tag = "1.0.0"
+  }
+}
+
+variable "ecs_chatbotapi_enable_scheduled_scaling" {
+  type        = bool
+  description = "Enable scheduled autoscaling for dos68k Chatbot API (scale to 0 outside Mon-Fri 09:00-19:00 CET)"
+  default     = false
+}
+
+################################################################################
 # Active Campaign integration
 ################################################################################
 variable "ac_integration_is_enabled" {
