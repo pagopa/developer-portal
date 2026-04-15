@@ -48,6 +48,7 @@ import {
   getSolutionsQueryString,
 } from '../helpers/strapiQuery';
 import { compact } from 'lodash';
+import { cons } from 'fp-ts/lib/ReadonlyNonEmptyArray';
 
 // Load environment variables
 dotenv.config();
@@ -342,6 +343,9 @@ async function processGuidesMetadata(
     for (const filePath of guideFiles) {
       const normalizedFilePath = filePath.replace(/\\/g, '/');
       const parts = normalizedFilePath.split('/');
+      console.log(
+        `Processing file: ${filePath} (normalized: ${normalizedFilePath})`
+      );
       if (
         parts.length <= 2 ||
         normalizedFilePath.endsWith('/SUMMARY.md') ||
@@ -363,6 +367,7 @@ async function processGuidesMetadata(
           locale: LOCALE,
           dirName: guideInfo.dirName,
         });
+        console.log(`Generated path for ${filePath}: ${path}`);
 
         const baseItem: MetadataItem = {
           path,
@@ -374,8 +379,14 @@ async function processGuidesMetadata(
         };
 
         guideItems.push(baseItem);
+        console.log(
+          `Added metadata item for ${filePath}: ${JSON.stringify(baseItem)}`
+        );
 
         if (guideInfo.isMainVersion) {
+          console.log(
+            `Guide ${guideInfo.slug} version ${guideInfo.versionName} is main version, adding versionless path metadata item`
+          );
           const versionlessPath = generateUrlPath({
             filePath,
             slug: guideInfo.slug,
