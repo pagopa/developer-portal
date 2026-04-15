@@ -42,8 +42,6 @@ export function generateUrlPath(
   locale?: string
 ): string {
   const restOfPath = sitePathFromLocalPath(filePath, dirName, undefined);
-  console.log(`Rest of path for file ${filePath}: ${restOfPath}`);
-  console.log(`Version name: ${versionName}`);
   switch (metadataType) {
     case MetadataType.Guide:
       return [
