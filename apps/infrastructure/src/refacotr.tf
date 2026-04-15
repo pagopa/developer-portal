@@ -372,7 +372,7 @@ moved {
   to   = module.dos68k_chatbotapi[0]
 }
 
- moved {
-   from = module.video_streaming.aws_s3_bucket_policy.allow_cloudfront_oac
-   to   = module.video_streaming.aws_s3_bucket_policy.allow_access_recordings
- }
+moved {
+  from = module.video_streaming.aws_s3_bucket_policy.allow_cloudfront_oac
+  to   = module.video_streaming.aws_s3_bucket_policy.allow_access_recordings
+}
