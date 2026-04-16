@@ -16,7 +16,6 @@ export const columns: Schema = {
   render: 'Columns',
   children: ['column'],
   transform: (node, config) => {
-    console.log('columns', JSON.stringify(node, null, 2));
     const tags = { ...config.tags, column };
     const children = node.transformChildren({ ...config, tags });
     return new Markdoc.Tag('Columns', {}, children);
@@ -38,4 +37,3 @@ export const column: Schema = {
     return new Markdoc.Tag('Column', attrs, children);
   },
 };
-

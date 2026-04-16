@@ -548,8 +548,8 @@ describe('parseContent', () => {
     expect(
       parseContent(
         '{% code title="i.js" overflow="wrap" lineNumbers="true" %}\n' +
-        code +
-        '{% endcode %}',
+          code +
+          '{% endcode %}',
         config
       )
     ).toStrictEqual([
@@ -741,10 +741,10 @@ describe('parseContent', () => {
     ).toStrictEqual([
       new Markdoc.Tag('Columns', {}, [
         new Markdoc.Tag('Column', { width: '30%' }, [
-          new Markdoc.Tag('Paragraph', {}, ['Content col 1'])
+          new Markdoc.Tag('Paragraph', {}, ['Content col 1']),
         ]),
         new Markdoc.Tag('Column', {}, [
-          new Markdoc.Tag('Paragraph', {}, ['Content col 2'])
+          new Markdoc.Tag('Paragraph', {}, ['Content col 2']),
         ]),
       ]),
     ]);
