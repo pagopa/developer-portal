@@ -65,15 +65,18 @@ export async function getGuidePage(
     'guides',
     ...guidePaths,
   ].join('/');
-  const versionCheck = guidePaths.length > 1 ? guidePaths[1] : null;
-  const guideToFind = guideProps.versions.find((v) => {
-    return versionCheck ? v.version === versionCheck : v.main;
-  });
+  const versionPathSegment = guidePaths.length > 1 ? guidePaths[1] : null;
+  const guideToFind =
+    guideProps.versions.find((v) => {
+      return versionPathSegment ? v.version === versionPathSegment : v.main;
+    }) || guideProps.versions.find((v) => v.main); // Fallback to main version if specific version is not found
+  if (!guideToFind) {
+    // eslint-disable-next-line functional/no-expression-statements
+    console.error(`No guide version found matching path "${guidePath}"`);
+    return undefined;
+  }
 
-  const guidesMetadata = await getGuidesMetadata(
-    locale,
-    guideToFind ? guideToFind.dirName : ''
-  );
+  const guidesMetadata = await getGuidesMetadata(locale, guideToFind.dirName);
   return manageUndefined(
     await parseS3GuidePage({
       guideProps,
