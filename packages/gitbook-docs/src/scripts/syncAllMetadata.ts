@@ -48,7 +48,6 @@ import {
   getSolutionsQueryString,
 } from '../helpers/strapiQuery';
 import { compact } from 'lodash';
-import { cons } from 'fp-ts/lib/ReadonlyNonEmptyArray';
 
 // Load environment variables
 dotenv.config();
