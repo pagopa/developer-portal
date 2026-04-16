@@ -548,8 +548,8 @@ describe('parseContent', () => {
     expect(
       parseContent(
         '{% code title="i.js" overflow="wrap" lineNumbers="true" %}\n' +
-          code +
-          '{% endcode %}',
+        code +
+        '{% endcode %}',
         config
       )
     ).toStrictEqual([
@@ -727,6 +727,24 @@ describe('parseContent', () => {
           'This is a quote.',
           ' ',
           'Another line, same quote',
+        ]),
+      ]),
+    ]);
+  });
+
+  it('should parse columns', () => {
+    expect(
+      parseContent(
+        '{% columns %}\n{% column width="30%" %}\nContent col 1\n{% endcolumn %}\n\n{% column %}\nContent col 2\n{% endcolumn %}\n{% endcolumns %}',
+        config
+      )
+    ).toStrictEqual([
+      new Markdoc.Tag('Columns', {}, [
+        new Markdoc.Tag('Column', { width: '30%' }, [
+          new Markdoc.Tag('Paragraph', {}, ['Content col 1'])
+        ]),
+        new Markdoc.Tag('Column', {}, [
+          new Markdoc.Tag('Paragraph', {}, ['Content col 2'])
         ]),
       ]),
     ]);
