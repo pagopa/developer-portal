@@ -26,7 +26,7 @@ const MISSING_STRAPI_CONFIG_ERROR =
 
 async function fetchFromStrapiResponse(url: string) {
   console.log('Fetching from Strapi...');
-  const strapiEndpoint = process.env.STRAPI_ENDPOINT;
+  const strapiEndpoint = 'https://strapiv4.uat.developer.pagopa.it/';
   const strapiApiToken = process.env.STRAPI_API_TOKEN;
 
   if (!strapiEndpoint || !strapiApiToken) {

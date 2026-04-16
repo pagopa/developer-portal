@@ -42,7 +42,7 @@ export default $config({
           process.env.NEXT_PUBLIC_ORGANIZATION_LOGO,
         NEXT_PUBLIC_WEBSITE_NAME: process.env.NEXT_PUBLIC_WEBSITE_NAME,
         FETCH_FROM_STRAPI: process.env.FETCH_FROM_STRAPI,
-        STRAPI_ENDPOINT: process.env.STRAPI_ENDPOINT,
+        STRAPI_ENDPOINT: 'https://strapiv4.uat.developer.pagopa.it/',
         STRAPI_API_TOKEN: process.env.STRAPI_API_TOKEN,
       },
     };

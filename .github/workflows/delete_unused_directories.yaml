@@ -66,6 +66,6 @@ jobs:
           S3_DIRNAMES_JSON_PATH: ${{ vars.S3_DIRNAMES_JSON_PATH || 'dirNames.json' }}
           S3_PATH_TO_GITBOOK_DOCS: ${{ vars.S3_PATH_TO_GITBOOK_DOCS || 'devportal-docs/docs' }}
           STRAPI_API_TOKEN: ${{ secrets.STRAPI_API_TOKEN }}
-          STRAPI_ENDPOINT: ${{ vars.STRAPI_ENDPOINT }}
+          STRAPI_ENDPOINT: 'https://strapiv4.uat.developer.pagopa.it/'
         run: npm run delete-unused-directories -w gitbook-docs
 

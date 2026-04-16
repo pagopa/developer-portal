@@ -41,7 +41,7 @@ jobs:
         uses: ./.github/actions/clone-soap-api-repos
         with:
           soap-api-directory: ./soap-api
-          strapi-endpoint: ${{ vars.STRAPI_ENDPOINT }}
+          strapi-endpoint: 'https://strapiv4.uat.developer.pagopa.it/'
           strapi-api-token: ${{ secrets.STRAPI_API_TOKEN }}
           locale: ${{ inputs.locale }}
 

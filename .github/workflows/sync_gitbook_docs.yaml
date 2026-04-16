@@ -88,7 +88,7 @@ jobs:
           invalidate_cloudfront_asset_bucket_cache: ${{ inputs.invalidate_cloudfront_asset_bucket_cache }}
           incremental_mode: ${{ inputs.incremental_mode }}
           metadata_type: ${{ inputs.metadata_type }}
-          strapi_endpoint: ${{ vars.STRAPI_ENDPOINT }}
+          strapi_endpoint: 'https://strapiv4.uat.developer.pagopa.it/'
           documentation_path: ${{ vars.DOCUMENTATION_PATH || '../../devportal-docs/docs' }}
           url_parsing_metadata_json_path: ${{ vars.URL_PARSING_METADATA_JSON_PATH || '../../url-parsing-metadata.json' }}
           s3_doc_extraction_bucket_name: ${{ vars.S3_DOC_EXTRACTION_BUCKET_NAME }}
@@ -127,7 +127,7 @@ jobs:
           invalidate_cloudfront_asset_bucket_cache: true
           incremental_mode: true
           metadata_type: 'all'
-          strapi_endpoint: ${{ vars.STRAPI_ENDPOINT }}
+          strapi_endpoint: 'https://strapiv4.uat.developer.pagopa.it/'
           documentation_path: ${{ vars.DOCUMENTATION_PATH || '../../devportal-docs/docs' }}
           url_parsing_metadata_json_path: ${{ vars.URL_PARSING_METADATA_JSON_PATH || '../../url-parsing-metadata.json' }}
           s3_doc_extraction_bucket_name: ${{ vars.S3_DOC_EXTRACTION_BUCKET_NAME }}
@@ -166,7 +166,7 @@ jobs:
           invalidate_cloudfront_asset_bucket_cache: true
           incremental_mode: true
           metadata_type: 'all'
-          strapi_endpoint: ${{ vars.STRAPI_ENDPOINT }}
+          strapi_endpoint: 'https://strapiv4.uat.developer.pagopa.it/'
           documentation_path: ${{ vars.DOCUMENTATION_PATH || '../../devportal-docs/docs' }}
           url_parsing_metadata_json_path: ${{ vars.URL_PARSING_METADATA_JSON_PATH || '../../url-parsing-metadata.json' }}
           s3_doc_extraction_bucket_name: ${{ vars.S3_DOC_EXTRACTION_BUCKET_NAME }}
