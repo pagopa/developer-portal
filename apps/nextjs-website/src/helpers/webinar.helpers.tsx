@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { Webinar } from '@/lib/webinars/types';
 import {
-  webinarHeartbeatEnabled,
+  isWebinarHeartbeatEnabled,
   webinarHeartbeatIntervalInSeconds,
 } from '@/config';
 import { sendWebinarHeartbeat } from '@/lib/webinarApi';
@@ -173,7 +173,7 @@ export const useWebinar = () => {
   ]);
 
   useEffect(() => {
-    if (!webinarHeartbeatEnabled || !webinar || !isVideoPlaying) return;
+    if (!isWebinarHeartbeatEnabled || !webinar || !isVideoPlaying) return;
 
     // Send heartbeat immediately
     const sendHeartbeat = async () => {

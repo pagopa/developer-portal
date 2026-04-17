@@ -50,7 +50,7 @@ export const chatMaxHistoryMessages =
   parseInt(`${process.env.NEXT_PUBLIC_CHAT_MAX_HISTORY_MESSAGES}`) || 10;
 // Array that defines the header level for which to show component in the in-page menu
 export const headingLevelsToShowInMenu = [2, 3];
-export const webinarHeartbeatEnabled =
+export const isWebinarHeartbeatEnabled =
   process.env.NEXT_PUBLIC_WEBINAR_HEARTBEAT_ENABLED === 'true';
 export const webinarHeartbeatUrl =
   process.env.NEXT_PUBLIC_WEBINAR_HEARTBEAT_URL;
