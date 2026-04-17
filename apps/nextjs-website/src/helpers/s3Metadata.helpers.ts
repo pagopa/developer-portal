@@ -204,12 +204,7 @@ const S3_SOAP_API_METADATA_JSON_PATH =
   'soap-api/soap-api-metadata.json';
 
 export const getGuidesMetadata = async (locale: string, dirName: string) => {
-  const fetchFromCdnPath = path.join(
-    locale,
-    S3_PATH_TO_GITBOOK_DOCS,
-    dirName,
-    S3_METADATA_JSON_PATH
-  );
+  const fetchFromCdnPath = buildDirMetadataPath(locale, dirName);
   const metadata = await fetchMetadataFromCDN<JsonMetadata>(fetchFromCdnPath);
 
   return metadata || [];
