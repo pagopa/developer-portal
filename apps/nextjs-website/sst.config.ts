@@ -42,8 +42,8 @@ export default $config({
           process.env.NEXT_PUBLIC_ORGANIZATION_LOGO,
         NEXT_PUBLIC_WEBSITE_NAME: process.env.NEXT_PUBLIC_WEBSITE_NAME,
         FETCH_FROM_STRAPI: process.env.FETCH_FROM_STRAPI,
-        STRAPI_ENDPOINT: process.env.STRAPI_ENDPOINT,
-        STRAPI_API_TOKEN: process.env.STRAPI_API_TOKEN,
+        STRAPI_ENDPOINT: process.env.STRAPIV4_ENDPOINT,
+        STRAPI_API_TOKEN: process.env.STRAPIV4_API_TOKEN,
       },
     };
   },
