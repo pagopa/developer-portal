@@ -1,5 +1,11 @@
 # nextjs-website
 
+## 17.0.1
+
+### Patch Changes
+
+- 5ed61cb: Add Heartbeat feature flag
+
 ## 17.0.0
 
 ### Major Changes
