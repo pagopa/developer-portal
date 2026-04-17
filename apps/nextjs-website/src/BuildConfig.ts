@@ -10,10 +10,10 @@ export const makeBuildConfig = (
 ): E.Either<string, BuildConfig> =>
   (env.FETCH_FROM_STRAPI &&
     env.STRAPI_ENDPOINT &&
-    env.STRAPI_API_TOKEN &&
+    env.STRAPIV4_API_TOKEN &&
     E.right({
       FETCH_FROM_STRAPI: env.FETCH_FROM_STRAPI === 'true',
       STRAPI_ENDPOINT: 'https://strapiv4.uat.developer.pagopa.it/',
-      STRAPI_API_TOKEN: env.STRAPI_API_TOKEN,
+      STRAPI_API_TOKEN: env.STRAPIV4_API_TOKEN,
     })) ||
   E.left('Missing environment variables');

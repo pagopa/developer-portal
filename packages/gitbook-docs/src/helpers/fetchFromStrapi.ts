@@ -27,7 +27,7 @@ async function fetchFromStrapiResponse(url: string) {
   const firstSegment = url.split('/')[0];
   console.log(`Fetching ${firstSegment} from Strapi...`);
   const strapiEndpoint = 'https://strapiv4.uat.deveoper.pagopa.it/,';
-  const strapiApiToken = process.env.STRAPI_API_TOKEN;
+  const strapiApiToken = process.env.STRAPIV4_API_TOKEN;
 
   if (!strapiEndpoint || !strapiApiToken) {
     console.error('Missing Strapi configuration in environment variables');
