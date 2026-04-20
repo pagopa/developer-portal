@@ -375,6 +375,7 @@
             "required": true,
             "schema": {
               "type": "string",
+              "format": "uuid",
               "title": "Session Id"
             }
           },
