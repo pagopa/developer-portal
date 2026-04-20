@@ -1,5 +1,12 @@
 # infrastructure
 
+## 11.1.0
+
+### Minor Changes
+
+- d64e0fa: removes the AWS infrastructure components to test the new version of Strapi 5 whilst retaining the previous version
+- ce75bdb: Poc dos68k chatbot with new infrastructure module.
+
 ## 11.0.0
 
 ### Major Changes
