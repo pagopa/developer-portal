@@ -25,6 +25,7 @@ describe('parseChatMessage', () => {
     expect(link).not.toBeNull();
     expect(link).toHaveClass('display-block');
     expect(container).not.toHaveTextContent('{% .display-block %}');
+    expect(container).toHaveTextContent('Per i cittadini Dopo');
     expect(container).toHaveTextContent('Dopo');
   });
 });
