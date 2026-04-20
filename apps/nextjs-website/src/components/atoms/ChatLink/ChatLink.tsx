@@ -20,7 +20,7 @@ const ChatLink = ({ title, href, children, className }: ChatLinkProps) => {
       display={'inline-flex'}
       fontWeight={'600'}
       target={external ? '_blank' : undefined}
-      rel={external ? 'noreferrer' : undefined}
+      rel={external ? 'noopener noreferrer' : undefined}
       aria-label={
         external ? `${title || href} (opens in a new tab)` : undefined
       }
