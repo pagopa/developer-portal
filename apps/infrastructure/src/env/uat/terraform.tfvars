@@ -47,5 +47,5 @@ chatbot_models = {
   generation    = "gemini-2.5-flash-lite"
   embeddings    = "gemini-embedding-001"
   reranker      = "semantic-ranker-default-004"
-  use_multi_rag = true
+  use_multi_rag = false
 }
