@@ -36,12 +36,12 @@ inputs:
     description: 'Invalidate OpenNext CloudFront cache'
     required: false
     default: 'false'
-  incremental_mode:
-    description: 'Run sync in incremental mode by checking only file size'
+  invalidate_cloudfront_asset_bucket_cache:
+    description: 'Invalidate CloudFront asset bucket cache'
     required: false
     default: 'true'
-  generate_root_metadata_file:
-    description: 'Generate root metadata file alongside folder-specific ones'
+  incremental_mode:
+    description: 'Run sync in incremental mode by checking only file size'
     required: false
     default: 'true'
   metadata_type:
@@ -89,6 +89,10 @@ inputs:
     description: 'S3 Dirnames JSON Path'
     required: false
     default: 'dirNames.json'
+  generate_and_sync_sitemap:
+    description: 'Whether to generate and sync sitemap to S3'
+    required: false
+    default: 'true'
 
 runs:
   using: "composite"
@@ -163,9 +167,8 @@ runs:
         S3_PATH_TO_GITBOOK_DOCS: ${{ inputs.s3_path_to_gitbook_docs }}
         NEXT_PUBLIC_COGNITO_REGION: ${{ inputs.next_public_cognito_region }}
         FETCH_FROM_STRAPI: ${{ inputs.fetch_from_strapi }}
-        GENERATE_ROOT_METADATA_FILE: ${{ inputs.generate_root_metadata_file == 'true' && 'true' || 'false' }}
         GENERATE_URL_METADATA: 'true'
-        GENERATE_SITEMAP_METADATA: 'true'
+        GENERATE_METADATA: 'true'
         SAVE_STRAPI_RESPONSES: 'true'
         METADATA_TYPE: ${{ inputs.metadata_type }}
         DIR_NAMES_FILTER: ${{ inputs.dir_names_filter }}
@@ -300,6 +303,7 @@ runs:
 
     - name: Sync sitemap to S3
       shell: bash
+      if: ${{ inputs.generate_and_sync_sitemap == 'true' }}
       env:
         ENVIRONMENT: ${{ inputs.environment }}
         S3_BUCKET_NAME: devportal-${{ env.ENV_SHORT }}-website-static-content
@@ -310,6 +314,7 @@ runs:
         echo "::endgroup::"
 
     - name: Invalidate CloudFront asset bucket cache
+      if: ${{ inputs.invalidate_cloudfront_asset_bucket_cache == 'true' }}
       shell: bash
       run: |
         echo "::group::Invalidate CloudFront asset bucket cache"
@@ -319,7 +324,7 @@ runs:
         echo "::endgroup::"
 
     - name: Invalidate OpenNext CloudFront cache
-      if: inputs.invalidate_opennext_cache == 'true'
+      if: ${{ inputs.invalidate_opennext_cache == 'true' }}
       shell: bash
       run: |
         echo "::group::Invalidate OpenNext CloudFront cache"

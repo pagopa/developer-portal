@@ -18,6 +18,11 @@ on:
           - dev
           - uat
           - prod
+      invalidate_cloudfront_asset_bucket_cache:
+        description: 'Invalidate CloudFront asset bucket cache'
+        type: boolean
+        required: true
+        default: false
 jobs:
   setup:
     runs-on: ubuntu-24.04
@@ -44,7 +49,7 @@ jobs:
           echo "matrix=$matrixStringifiedObject" >> $GITHUB_OUTPUT
     
   deploy:
-    name: Deploy standalone website ${{ matrix.environment }}
+    name: Deploy Standalone Website to ${{ matrix.environment }}
     if: ${{ needs.setup.outputs.matrix != '' }}
     runs-on: codebuild-${{ matrix.environment }}-github-runner-${{ github.run_id }}-${{ github.run_attempt }}
     needs: [ setup ]
@@ -59,7 +64,7 @@ jobs:
     
     permissions:
       id-token: write
-      contents: read
+      contents: write
 
     steps:
       
@@ -186,3 +191,49 @@ jobs:
           aws cloudfront create-invalidation \
             --distribution-id ${{ vars.OPENNEXT_CLOUDFRONT_DISTRIBUTION_ID }} \
             --paths "/*"
+
+      - name: Invalidate CloudFront asset bucket cache
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.invalidate_cloudfront_asset_bucket_cache }}
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id ${{ vars.ASSET_BUCKET_CLOUDFRONT_DISTRIBUTION_ID }} \
+            --paths "/*"
+
+      - name: Move nextjs-website@latest-deployed-in-${{ matrix.environment }} tag to the commit just deployed
+        shell: bash
+        run: |
+          # Check if the environment is "dev"
+          if [[ "${{ matrix.environment }}" == "dev" ]]; then
+            echo "Error: ${{ matrix.environment }} environment is 'dev'. Skipping tag update."
+            exit 0
+          fi
+
+          # Extract tag from GitHub ref
+          TAG="${{ github.ref_name }}"
+
+          # Ensure we are dealing with a valid front-end tag
+          if [[ ! $TAG =~ ^nextjs-website@[0-9]+(\.[0-9]+)*$ ]]; then
+            echo "Error: '$TAG' is not a valid version tag. Skipping tag update."
+            exit 0
+          fi
+
+          # Get commit hash associated with the tag
+          COMMIT_HASH=$(git rev-list -n 1 $TAG || echo "")
+
+          # Exit if the commit hash is empty
+          if [ -z "$COMMIT_HASH" ]; then
+            echo "Error: No commit found for tag '$TAG'. Skipping tag update."
+            exit 0
+          fi
+
+          # Set up Git
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          # Move the TAG to the commit just deployed
+          git tag -f nextjs-website@latest-deployed-in-${{ matrix.environment }} $COMMIT_HASH
+
+          # Some remote repositories (e.g., GitHub) may not update tags automatically.
+          # Ensure old tag is deleted remotely before pushing the new one
+          git push --delete origin nextjs-website@latest-deployed-in-${{ matrix.environment }} || true
+          git push origin nextjs-website@latest-deployed-in-${{ matrix.environment }} --force

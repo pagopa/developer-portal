@@ -10,7 +10,7 @@ import {
   useTheme,
 } from '@mui/material';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
-import { Product } from '@/lib/types/product';
+import { Product } from '@/lib/products/types';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';

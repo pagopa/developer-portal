@@ -16,4 +16,3 @@ os.environ["CHB_INDEX_ID"] = os.environ.get("CHB_INDEX_ID", "test-index")
 os.environ["CHB_AWS_GOOGLE_API_KEY"] = os.environ.get(
     "CHB_AWS_GOOGLE_API_KEY", "test-google-api-key"
 )
-os.environ["SHOULD_RUN_LOCALLY"] = "true"

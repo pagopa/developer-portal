@@ -9,7 +9,7 @@ import {
 import Link from 'next/link';
 import React from 'react';
 import { useTranslations } from 'next-intl';
-import { BreadcrumbSegment } from '@/lib/types/path';
+import type { BreadcrumbSegment } from '@/lib/paths/types';
 
 type ProductBreadcrumbsProps = {
   breadcrumbs: BreadcrumbSegment[];

@@ -33,75 +33,6 @@ resource "aws_s3_object" "robots_txt" {
   etag         = filemd5("${path.module}/robots.txt")
 }
 
-
-# S3 bucket for CloudFront access logs
-resource "aws_s3_bucket" "cloudfront_logs" {
-  bucket = "${var.project_name}-cloudfront-logs-${random_id.suffix.hex}"
-}
-
-resource "aws_s3_bucket_public_access_block" "cloudfront_logs_pac" {
-  bucket = aws_s3_bucket.cloudfront_logs.id
-
-  block_public_acls       = true
-  block_public_policy     = true
-  ignore_public_acls      = true
-  restrict_public_buckets = true
-}
-
-resource "aws_s3_bucket_ownership_controls" "cloudfront_logs_oc" {
-  bucket = aws_s3_bucket.cloudfront_logs.id
-  rule {
-    object_ownership = "BucketOwnerPreferred"
-  }
-}
-
-resource "aws_s3_bucket_acl" "cloudfront_logs_acl" {
-  bucket = aws_s3_bucket.cloudfront_logs.id
-  acl    = "private"
-
-  depends_on = [aws_s3_bucket_ownership_controls.cloudfront_logs_oc]
-}
-
-# S3 bucket policy to allow CloudFront to write logs
-resource "aws_s3_bucket_policy" "cloudfront_logs_policy" {
-  bucket = aws_s3_bucket.cloudfront_logs.id
-  policy = jsonencode({
-    Version = "2012-10-17",
-    Statement = [
-      {
-        Sid    = "AWSCloudFrontLogDeliveryWrite",
-        Effect = "Allow",
-        Principal = {
-          Service = "cloudfront.amazonaws.com"
-        },
-        Action   = "s3:PutObject",
-        Resource = "${aws_s3_bucket.cloudfront_logs.arn}/*",
-        Condition = {
-          StringEquals = {
-            "AWS:SourceArn" = aws_cloudfront_distribution.s3_distribution.arn
-          }
-        }
-      },
-      {
-        Sid    = "AWSCloudFrontLogDeliveryAclCheck",
-        Effect = "Allow",
-        Principal = {
-          Service = "cloudfront.amazonaws.com"
-        },
-        Action   = "s3:GetBucketAcl",
-        Resource = aws_s3_bucket.cloudfront_logs.arn,
-        Condition = {
-          StringEquals = {
-            "AWS:SourceArn" = aws_cloudfront_distribution.s3_distribution.arn
-          }
-        }
-      }
-    ]
-  })
-
-  depends_on = [aws_s3_bucket_public_access_block.cloudfront_logs_pac]
-}
-
 # S3 bucket for Athena query results
 resource "aws_s3_bucket" "athena_results" {
   bucket = "${var.project_name}-athena-results-${random_id.suffix.hex}"
@@ -134,174 +65,6 @@ resource "aws_s3_bucket_lifecycle_configuration" "athena_results_lifecycle" {
   }
 }
 
-# Athena Database
-resource "aws_athena_database" "cloudfront_logs" {
-  name   = "${replace(var.project_name, "-", "_")}_cloudfront_logs"
-  bucket = aws_s3_bucket.athena_results.id
-}
-
-# Athena Workgroup
-resource "aws_athena_workgroup" "cloudfront_logs" {
-  name = "${var.project_name}-cloudfront-logs"
-
-  configuration {
-    enforce_workgroup_configuration    = true
-    publish_cloudwatch_metrics_enabled = true
-
-    result_configuration {
-      output_location = "s3://${aws_s3_bucket.athena_results.bucket}/query-results/"
-
-      encryption_configuration {
-        encryption_option = "SSE_S3"
-      }
-    }
-  }
-}
-
-# Athena Named Query for creating the CloudFront access logs table
-resource "aws_athena_named_query" "create_cloudfront_logs_table" {
-  name      = "create_cloudfront_logs_table"
-  database  = aws_athena_database.cloudfront_logs.name
-  workgroup = aws_athena_workgroup.cloudfront_logs.id
-  query     = <<-EOQ
-    CREATE EXTERNAL TABLE IF NOT EXISTS cloudfront_logs (
-      log_date DATE,
-      log_time STRING,
-      x_edge_location STRING,
-      sc_bytes BIGINT,
-      c_ip STRING,
-      cs_method STRING,
-      cs_host STRING,
-      cs_uri_stem STRING,
-      sc_status INT,
-      cs_referer STRING,
-      cs_user_agent STRING,
-      cs_uri_query STRING,
-      cs_cookie STRING,
-      x_edge_result_type STRING,
-      x_edge_request_id STRING,
-      x_host_header STRING,
-      cs_protocol STRING,
-      cs_bytes BIGINT,
-      time_taken FLOAT,
-      x_forwarded_for STRING,
-      ssl_protocol STRING,
-      ssl_cipher STRING,
-      x_edge_response_result_type STRING,
-      cs_protocol_version STRING,
-      fle_status STRING,
-      fle_encrypted_fields INT,
-      c_port INT,
-      time_to_first_byte FLOAT,
-      x_edge_detailed_result_type STRING,
-      sc_content_type STRING,
-      sc_content_len BIGINT,
-      sc_range_start BIGINT,
-      sc_range_end BIGINT
-    )
-    ROW FORMAT DELIMITED
-    FIELDS TERMINATED BY '\t'
-    LOCATION 's3://${aws_s3_bucket.cloudfront_logs.bucket}/'
-    TBLPROPERTIES ('skip.header.line.count'='2')
-  EOQ
-
-  description = "Creates the CloudFront access logs table for querying video distribution access logs"
-}
-
-# Athena Named Query for sample queries
-resource "aws_athena_named_query" "sample_cloudfront_queries" {
-  name      = "sample_cloudfront_log_queries"
-  database  = aws_athena_database.cloudfront_logs.name
-  workgroup = aws_athena_workgroup.cloudfront_logs.id
-  query     = <<-EOQ
-    -- Sample queries for CloudFront access logs
-
-    -- 1. Count requests by HTTP status
-    SELECT sc_status, COUNT(*) as count
-    FROM cloudfront_logs
-    GROUP BY sc_status
-    ORDER BY count DESC;
-
-    -- 2. Top 10 most accessed videos
-    SELECT cs_uri_stem, COUNT(*) as access_count
-    FROM cloudfront_logs
-    WHERE cs_uri_stem LIKE '%.m3u8' OR cs_uri_stem LIKE '%.ts'
-    GROUP BY cs_uri_stem
-    ORDER BY access_count DESC
-    LIMIT 10;
-
-    -- 3. Requests by client IP
-    SELECT c_ip, COUNT(*) as request_count
-    FROM cloudfront_logs
-    GROUP BY c_ip
-    ORDER BY request_count DESC
-    LIMIT 20;
-
-    -- 4. Total bytes served by day
-    SELECT 
-      log_date,
-      SUM(sc_bytes) as total_bytes_sent,
-      COUNT(*) as total_requests
-    FROM cloudfront_logs
-    GROUP BY log_date
-    ORDER BY log_date DESC;
-
-    -- 5. Cache hit/miss analysis
-    SELECT 
-      x_edge_result_type,
-      COUNT(*) as count,
-      ROUND(COUNT(*) * 100.0 / SUM(COUNT(*)) OVER(), 2) as percentage
-    FROM cloudfront_logs
-    GROUP BY x_edge_result_type
-    ORDER BY count DESC;
-
-    -- 6. Error requests (4xx and 5xx)
-    SELECT log_date, log_time, c_ip, cs_method, cs_uri_stem, sc_status, x_edge_result_type
-    FROM cloudfront_logs
-    WHERE sc_status >= 400
-    ORDER BY log_date DESC, log_time DESC
-    LIMIT 100;
-
-    -- 7. Average response time by URI
-    SELECT 
-      cs_uri_stem,
-      COUNT(*) as request_count,
-      ROUND(AVG(time_taken), 3) as avg_time_taken,
-      ROUND(AVG(time_to_first_byte), 3) as avg_ttfb
-    FROM cloudfront_logs
-    GROUP BY cs_uri_stem
-    HAVING COUNT(*) > 10
-    ORDER BY avg_time_taken DESC
-    LIMIT 20;
-
-    -- 8. Bandwidth consumption by edge location
-    SELECT 
-      x_edge_location,
-      COUNT(*) as requests,
-      SUM(sc_bytes) as total_bytes
-    FROM cloudfront_logs
-    GROUP BY x_edge_location
-    ORDER BY total_bytes DESC
-    LIMIT 15;
-
-    -- 9. User agents analysis (devices/browsers accessing videos)
-    SELECT 
-      CASE 
-        WHEN cs_user_agent LIKE '%Mobile%' THEN 'Mobile'
-        WHEN cs_user_agent LIKE '%Tablet%' OR cs_user_agent LIKE '%iPad%' THEN 'Tablet'
-        ELSE 'Desktop'
-      END as device_type,
-      COUNT(*) as count
-    FROM cloudfront_logs
-    GROUP BY CASE 
-        WHEN cs_user_agent LIKE '%Mobile%' THEN 'Mobile'
-        WHEN cs_user_agent LIKE '%Tablet%' OR cs_user_agent LIKE '%iPad%' THEN 'Tablet'
-        ELSE 'Desktop'
-      END;
-  EOQ
-
-  description = "Sample queries for analyzing CloudFront access logs"
-}
 
 # A single IAM Role and Policy for IVS to access the S3 Bucket
 resource "aws_iam_role" "ivs_recording_role" {
@@ -383,11 +146,24 @@ resource "aws_cloudfront_origin_access_control" "video_oac" {
   signing_protocol                  = "sigv4"
 }
 
-resource "aws_cloudfront_distribution" "s3_distribution" {
+resource "aws_cloudfront_distribution" "vod" {
   origin {
     domain_name              = aws_s3_bucket.ivs_recordings.bucket_regional_domain_name
     origin_id                = "S3-${var.project_name}-ivs-recordings"
     origin_access_control_id = aws_cloudfront_origin_access_control.video_oac.id
+  }
+
+  # API Gateway HTTP API origin for the ingest endpoint
+  origin {
+    domain_name = replace(aws_apigatewayv2_api.ingest.api_endpoint, "https://", "")
+    origin_id   = "APIGW-${var.project_name}-ingest"
+
+    custom_origin_config {
+      http_port              = 80
+      https_port             = 443
+      origin_protocol_policy = "https-only"
+      origin_ssl_protocols   = ["TLSv1.2"]
+    }
   }
 
   enabled         = true
@@ -395,11 +171,19 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
   comment         = "CDN for IVS video recordings"
   #default_root_object = "index.html" # Optional, good practice
 
-  # Enable access logging
-  logging_config {
-    include_cookies = false
-    bucket          = aws_s3_bucket.cloudfront_logs.bucket_domain_name
-    prefix          = "cloudfront/"
+  # Cache behavior for the ingest API endpoint
+  ordered_cache_behavior {
+    path_pattern     = "/ingest"
+    allowed_methods  = ["GET", "HEAD", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"]
+    cached_methods   = ["GET", "HEAD"]
+    target_origin_id = "APIGW-${var.project_name}-ingest"
+
+    cache_policy_id            = data.aws_cloudfront_cache_policy.caching_disabled.id
+    origin_request_policy_id   = data.aws_cloudfront_origin_request_policy.all_viewer_except_host_header.id
+    response_headers_policy_id = aws_cloudfront_response_headers_policy.ingest_cors_policy.id
+
+    viewer_protocol_policy = "https-only"
+    compress               = true
   }
 
   default_cache_behavior {
@@ -445,6 +229,15 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
   }
 }
 
+# AWS Managed Cache Policies
+data "aws_cloudfront_cache_policy" "caching_disabled" {
+  name = "Managed-CachingDisabled"
+}
+
+data "aws_cloudfront_origin_request_policy" "all_viewer_except_host_header" {
+  name = "Managed-AllViewerExceptHostHeader"
+}
+
 data "aws_route53_zone" "selected" {
   zone_id = var.route53_zone_id
 }
@@ -459,6 +252,13 @@ resource "aws_cloudfront_response_headers_policy" "cors_policy" {
       header   = "Server"
       override = true
       value    = "None"
+    }
+  }
+
+  security_headers_config {
+    frame_options {
+      frame_option = "SAMEORIGIN"
+      override     = true
     }
   }
 
@@ -483,6 +283,39 @@ resource "aws_cloudfront_response_headers_policy" "cors_policy" {
   }
 }
 
+resource "aws_cloudfront_response_headers_policy" "ingest_cors_policy" {
+  name    = "cors-policy-ingest-api"
+  comment = "CORS policy for the ingest API endpoint."
+
+  cors_config {
+    access_control_allow_credentials = false
+
+    access_control_allow_headers {
+      items = [
+        "Authorization",
+        "Content-Type",
+        "X-Amz-Date",
+        "X-Api-Key",
+        "X-Amz-Security-Token"
+      ]
+    }
+
+    access_control_allow_methods {
+      items = ["GET", "POST", "OPTIONS"]
+    }
+
+    access_control_allow_origins {
+      items = compact([
+        "http://localhost:3000",
+        "https://${data.aws_route53_zone.selected.name}",
+      ])
+    }
+
+    access_control_max_age_sec = 300
+    origin_override            = true
+  }
+}
+
 # Policy that allows CloudFront (via OAC) to read from the bucket
 resource "aws_s3_bucket_policy" "allow_cloudfront_oac" {
   bucket = aws_s3_bucket.ivs_recordings.id
@@ -497,7 +330,7 @@ resource "aws_s3_bucket_policy" "allow_cloudfront_oac" {
         Condition = {
           StringEquals = {
             # This condition is crucial: it restricts access to ONLY this specific CloudFront distribution
-            "AWS:SourceArn" = aws_cloudfront_distribution.s3_distribution.arn
+            "AWS:SourceArn" = aws_cloudfront_distribution.vod.arn
           }
         }
       }
@@ -561,8 +394,8 @@ resource "aws_route53_record" "cdn_alias_record" {
   type    = "A"
 
   alias {
-    name                   = aws_cloudfront_distribution.s3_distribution.domain_name
-    zone_id                = aws_cloudfront_distribution.s3_distribution.hosted_zone_id
+    name                   = aws_cloudfront_distribution.vod.domain_name
+    zone_id                = aws_cloudfront_distribution.vod.hosted_zone_id
     evaluate_target_health = false
   }
 }
@@ -713,3 +546,237 @@ resource "aws_s3_bucket_notification" "index_lambda_trigger" {
 
   depends_on = [aws_lambda_permission.allow_s3_invoke_ivs_video_processing_function]
 }
+
+
+
+## POC Hearthbeat API ##
+
+# 1. S3 Bucket for Storage
+resource "aws_s3_bucket" "heartbeat_storage" {
+  bucket = "${var.project_name}-webinar-heartbeats-${random_id.suffix.hex}"
+}
+
+resource "aws_s3_bucket_public_access_block" "heartbeat_storage_pac" {
+  bucket = aws_s3_bucket.heartbeat_storage.id
+
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+}
+
+# 2. Kinesis Firehose 
+resource "aws_kinesis_firehose_delivery_stream" "s3_delivery" {
+  name        = "${var.project_name}-webinar-viewer-count"
+  destination = "extended_s3"
+
+  # No 'kinesis_source_configuration' block means it defaults to DIRECT_PUT
+
+  extended_s3_configuration {
+    role_arn   = aws_iam_role.firehose_role.arn
+    bucket_arn = aws_s3_bucket.heartbeat_storage.arn
+
+    # Prefixing for Athena optimization
+    prefix              = "webinars/year=!{timestamp:yyyy}/month=!{timestamp:MM}/day=!{timestamp:dd}/hour=!{timestamp:HH}/"
+    error_output_prefix = "errors/year=!{timestamp:yyyy}/month=!{timestamp:MM}/day=!{timestamp:dd}/hour=!{timestamp:HH}/!{firehose:error-output-type}/"
+
+    buffering_size     = 5  # MB
+    buffering_interval = 60 # Seconds
+  }
+}
+
+# Firehose Role (To read from Kinesis and write to S3)
+resource "aws_iam_role" "firehose_role" {
+  name = "heartbeat_firehose_role"
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action    = "sts:AssumeRole",
+        Effect    = "Allow",
+        Principal = { Service = "firehose.amazonaws.com" }
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy" "firehose_s3_policy" {
+  role = aws_iam_role.firehose_role.id
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = ["s3:PutObject", "s3:GetBucketLocation"],
+        Effect = "Allow",
+        Resource = [
+          "${aws_s3_bucket.heartbeat_storage.arn}",
+          "${aws_s3_bucket.heartbeat_storage.arn}/*"
+        ]
+      },
+    ]
+  })
+}
+
+# 3. Lambda Function
+
+data "archive_file" "ingest_lambda_function" {
+  type        = "zip"
+  source_file = "${path.root}/../../webinar-metrics-functions/collect-metrics.py"
+  output_path = "${path.root}/../../webinar-metrics-functions/out/collect-metrics.py.zip"
+}
+
+# Lambda Role (To write to Kinesis)
+resource "aws_iam_role" "lambda_role" {
+  name = "heartbeat_lambda_role"
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action    = "sts:AssumeRole",
+        Effect    = "Allow",
+        Principal = { Service = "lambda.amazonaws.com" }
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy" "lambda_kinesis_policy" {
+  role = aws_iam_role.lambda_role.id
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Action   = ["kinesis:PutRecord", "kinesis:PutRecords"]
+      Effect   = "Allow"
+      Resource = aws_kinesis_firehose_delivery_stream.s3_delivery.arn
+    }]
+  })
+}
+
+resource "aws_cloudwatch_log_group" "ingest_lambda_logs" {
+  name              = "/aws/lambda/${var.project_name}-heartbeat-ingest"
+  retention_in_days = 14
+}
+
+resource "aws_iam_role_policy" "lambda_logging_policy" {
+  name = "heartbeat_lambda_logging"
+  role = aws_iam_role.lambda_role.id
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Action = [
+        "logs:CreateLogGroup",
+        "logs:CreateLogStream",
+        "logs:PutLogEvents"
+      ]
+      Effect   = "Allow"
+      Resource = "${aws_cloudwatch_log_group.ingest_lambda_logs.arn}:*"
+    }]
+  })
+}
+
+resource "aws_lambda_function" "ingest_lambda" {
+  filename         = data.archive_file.ingest_lambda_function.output_path
+  function_name    = "${var.project_name}-heartbeat-ingest"
+  role             = aws_iam_role.lambda_role.arn
+  handler          = "collect-metrics.lambda_handler"
+  runtime          = "python3.13"
+  source_code_hash = data.archive_file.ingest_lambda_function.output_base64sha256
+
+  environment {
+    variables = {
+      DELIVERY_STREAM_NAME = aws_kinesis_firehose_delivery_stream.s3_delivery.name
+    }
+  }
+
+  depends_on = [aws_cloudwatch_log_group.ingest_lambda_logs]
+}
+
+# Lambda needs permission to put directly to Firehose
+resource "aws_iam_role_policy" "lambda_firehose_policy" {
+  name = "lambda_firehose_direct_put"
+  role = aws_iam_role.lambda_role.id
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Action   = "firehose:PutRecord"
+      Effect   = "Allow"
+      Resource = aws_kinesis_firehose_delivery_stream.s3_delivery.arn
+    }]
+  })
+}
+
+# Create the Athena Database
+resource "aws_athena_database" "webinar_db" {
+  name   = "webinar_analytics"
+  bucket = aws_s3_bucket.heartbeat_storage.id
+}
+
+# Athena Workgroup
+resource "aws_athena_workgroup" "webinar_analytics" {
+  name = "${var.project_name}-webinar-analytics"
+
+  configuration {
+    enforce_workgroup_configuration    = true
+    publish_cloudwatch_metrics_enabled = true
+
+    result_configuration {
+      output_location = "s3://${aws_s3_bucket.athena_results.bucket}/query-results/"
+
+      encryption_configuration {
+        encryption_option = "SSE_S3"
+      }
+    }
+  }
+}
+
+
+# Athena Named Query for creating the CloudFront access logs table
+resource "aws_athena_named_query" "create_webinar_count_table" {
+  name      = "create_webinar_count_table"
+  database  = aws_athena_database.webinar_db.name
+  workgroup = aws_athena_workgroup.webinar_analytics.id
+  query     = <<-EOQ
+CREATE EXTERNAL TABLE webinar_heartbeats(
+webinarid string, 
+userid string, 
+clientip string, 
+receivedat string,
+isLive boolean,
+action string)
+PARTITIONED BY ( 
+  year string, 
+  month string, 
+  day string, 
+  hour string)
+ROW FORMAT SERDE 
+  'org.openx.data.jsonserde.JsonSerDe' 
+WITH SERDEPROPERTIES ( 
+  'ignore.malformed.json'='true') 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.mapred.TextInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.IgnoreKeyTextOutputFormat'
+LOCATION
+  's3://${aws_s3_bucket.heartbeat_storage.bucket}/'
+TBLPROPERTIES (
+  'projection.day.digits'='2', 
+  'projection.day.range'='1,31', 
+  'projection.day.type'='integer', 
+  'projection.enabled'='true', 
+  'projection.hour.digits'='2', 
+  'projection.hour.range'='0,23', 
+  'projection.hour.type'='integer', 
+  'projection.month.digits'='2', 
+  'projection.month.range'='1,12', 
+  'projection.month.type'='integer', 
+  'projection.year.range'='2025,2050', 
+  'projection.year.type'='integer', 
+  'storage.location.template'='s3://${aws_s3_bucket.heartbeat_storage.bucket}/webinars/year=$${year}/month=$${month}/day=$${day}/hour=$${hour}/', 
+  'transient_lastDdlTime'='1767892143')
+  EOQ
+
+  description = "Creates the Webinar count table for querying video distribution access logs"
+}
+
+
+## enbd POC Hearthbeat API ##

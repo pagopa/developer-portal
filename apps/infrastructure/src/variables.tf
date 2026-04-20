@@ -91,7 +91,7 @@ variable "cms_app_image_tag" {
   type        = string
 }
 
-variable "strapi_v5_image_tag" {
+variable "strapi_v4_image_tag" {
   description = "Docker image tag for the Strapi v5 application"
   type        = string
   default     = null
@@ -174,20 +174,47 @@ variable "chatbot_ecs_monitoring" {
 
 variable "chatbot_models" {
   type = object({
-    provider   = string
-    generation = string
-    embeddings = string
-    reranker   = string
+    provider      = string
+    generation    = string
+    embeddings    = string
+    reranker      = string
+    use_multi_rag = optional(bool, false)
   })
 
   default = {
-    provider   = "google"
-    generation = "gemini-2.5-flash-lite"
-    embeddings = "gemini-embedding-001"
-    reranker   = "semantic-ranker-default-004"
+    provider      = "google"
+    generation    = "gemini-2.5-flash-lite"
+    embeddings    = "gemini-embedding-001"
+    reranker      = "semantic-ranker-default-004"
+    use_multi_rag = false
   }
 
   description = "The models used by the AI chatbot"
+}
+
+################################################################################
+# dos68k Chatbot API
+################################################################################
+
+variable "ecs_chatbotapi" {
+  type = object({
+    cpu       = optional(number, 1024)
+    memory    = optional(number, 2048)
+    image_tag = optional(string, "latest")
+  })
+  description = "ECS task configuration for the dos68k Chatbot API"
+
+  default = {
+    cpu       = 1024
+    memory    = 2048
+    image_tag = "1.0.0"
+  }
+}
+
+variable "ecs_chatbotapi_enable_scheduled_scaling" {
+  type        = bool
+  description = "Enable scheduled autoscaling for dos68k Chatbot API (scale to 0 outside Mon-Fri 09:00-19:00 CET)"
+  default     = false
 }
 
 ################################################################################

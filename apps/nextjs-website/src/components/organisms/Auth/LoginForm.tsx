@@ -1,4 +1,4 @@
-import { LoginFunction } from '@/lib/types/loginFunction';
+import { LoginFunction } from '@/lib/auth/loginFunction';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import {
   Box,
@@ -28,7 +28,11 @@ import {
   useEffect,
   useState,
 } from 'react';
-import { validateEmail, validateField } from '@/helpers/auth.helpers';
+import {
+  validateEmail,
+  validateMaxLenght,
+  validateRequired,
+} from '@/helpers/auth.helpers';
 import { useParams } from 'next/navigation';
 
 interface LoginFormProps {
@@ -92,7 +96,9 @@ const LoginForm = ({
 
   const validateForm = useCallback(() => {
     const emailError = validateEmail(formData.username);
-    const passwordError = validateField(formData.password);
+    const passwordError =
+      validateRequired(formData.password) ||
+      validateMaxLenght(formData.password);
 
     setFieldErrors({
       email: emailError ? shared(emailError) : null,

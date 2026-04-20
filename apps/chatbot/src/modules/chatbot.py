@@ -1,6 +1,5 @@
 from typing import Union, Tuple, Optional, List, Dict
 
-from workflows import Context
 from llama_index.core import PromptTemplate
 from llama_index.core.llms import ChatMessage, MessageRole
 from llama_index.core.base.response.schema import (
@@ -28,8 +27,10 @@ from src.modules.telemetry import DictSpanExporter
 from src.modules.vector_index import load_index_redis
 from src.modules.models import get_llm, get_embed_model
 from src.modules.tools import (
+    identity_tool,
     get_query_engine_tool,
     follow_up_questions_tool,
+    IDENTITY_TOOL_NAME,
     DEVPORTAL_TOOL_NAME,
     CITTADINO_TOOL_NAME,
     CHIPS_TOOL_NAME,
@@ -69,8 +70,8 @@ class Chatbot:
         self.embed_model = get_embed_model()
         self.qa_prompt_tmpl, self.ref_prompt_tmpl = self._get_prompt_templates()
 
-        tools = []
-        self.tool_names = []
+        tools = [identity_tool()]
+        self.tool_names = [IDENTITY_TOOL_NAME]
         try:
             devportal_index = load_index_redis(index_id=SETTINGS.devportal_index_id)
             tools.append(
@@ -87,22 +88,23 @@ class Chatbot:
             LOGGER.error(f"Failed to load DevPortal index: {e}")
             raise
 
-        try:
-            cittadino_index = load_index_redis(index_id=SETTINGS.cittadino_index_id)
-            tools += [
-                get_query_engine_tool(
-                    index=cittadino_index,
-                    name=CITTADINO_TOOL_NAME,
-                    description=CITTADINO_RAG_TOOL_DESCRIPTION,
-                    text_qa_template=self.qa_prompt_tmpl,
-                    refine_template=self.ref_prompt_tmpl,
-                ),
-                follow_up_questions_tool(name=CHIPS_TOOL_NAME),
-            ]
-            self.tool_names += [CITTADINO_TOOL_NAME, CHIPS_TOOL_NAME]
-        except Exception as e:
-            LOGGER.error(f"Failed to load Cittadino index: {e}")
-            raise
+        if SETTINGS.use_multirag:
+            try:
+                cittadino_index = load_index_redis(index_id=SETTINGS.cittadino_index_id)
+                tools += [
+                    get_query_engine_tool(
+                        index=cittadino_index,
+                        name=CITTADINO_TOOL_NAME,
+                        description=CITTADINO_RAG_TOOL_DESCRIPTION,
+                        text_qa_template=self.qa_prompt_tmpl,
+                        refine_template=self.ref_prompt_tmpl,
+                    ),
+                    follow_up_questions_tool(name=CHIPS_TOOL_NAME),
+                ]
+                self.tool_names += [CITTADINO_TOOL_NAME, CHIPS_TOOL_NAME]
+            except Exception as e:
+                LOGGER.error(f"Failed to load Cittadino index: {e}")
+                raise
 
         self.num_tools = len(tools)
 
@@ -169,8 +171,10 @@ class Chatbot:
                 tool_index = self.tool_names.index(tool_call.tool_name)
                 used_tools[tool_index] = True
 
-            if engine_response.structured_response["follow_up_questions"] and all(
-                used_tools
+            if (
+                SETTINGS.use_multirag
+                and engine_response.structured_response["follow_up_questions"]
+                and all(used_tools[1:])
             ):
                 chips = engine_response.structured_response["follow_up_questions"]
             else:
@@ -255,12 +259,9 @@ class Chatbot:
             query_str = query_str + f" | Knowledge Base: {knowledge_base}"
 
         try:
-            ctx = Context.from_dict(self.discovery, {})
             engine_response = await self.discovery.run(
                 user_msg=query_str,
                 chat_history=chat_history,
-                ctx=ctx,
-                early_stopping_method="generate",
             )
             response_json = self._get_response_json(engine_response)
         except Exception as e:

@@ -1,0 +1,271 @@
+# Chatbot Infrastructure Diagram
+# Developer Portal - Chatbot Module (prod)
+
+vars: {
+  d2-config: {
+    layout-engine: elk
+    sketch: true
+  }
+}
+
+direction: right
+
+title: {
+  label: Developer Portal - AI Chatbot Infrastructure (prod)
+  near: top-center
+  shape: text
+  style.font-size: 28
+  style.bold: true
+}
+
+users: Users {
+  icon: https://icons.terrastruct.com/essentials%2F359-users.svg
+  shape: image
+}
+
+# DNS Layer
+route53: Route 53\n(chatbot.developer.pagopa.it) {
+  icon: https://icons.terrastruct.com/aws%2FNetworking%20&%20Content%20Delivery%2FAmazon-Route-53.svg
+  shape: image
+}
+
+# WAF
+waf: WAF v2\n(Rate Limiting,\nIP Rate Limit,\nBot Control) {
+  icon: https://icons.terrastruct.com/aws%2FSecurity%2C%20Identity%2C%20&%20Compliance%2FAWS-WAF.svg
+  shape: image
+}
+
+# API Gateway
+apigw: API Gateway\n(REST - Regional) {
+  icon: https://icons.terrastruct.com/aws%2FMobile%2FAmazon-API-Gateway.svg
+  shape: image
+}
+
+# Cognito (from website module)
+cognito: Cognito\nUser Pool\n(Authorizer) {
+  icon: https://icons.terrastruct.com/aws%2FSecurity%2C%20Identity%2C%20&%20Compliance%2FAmazon-Cognito.svg
+  shape: image
+  style.opacity: 0.6
+}
+
+# VPC
+vpc: VPC (Shared with CMS) {
+  style.fill: "#f0f8ff"
+
+  # Lambda Functions
+  lambdas: Lambda Functions {
+    style.fill: "#e8f5e9"
+
+    lambda_api: Lambda\n(Chatbot API)\n4GB Memory\n3min timeout {
+      icon: https://icons.terrastruct.com/aws%2FCompute%2FAWS-Lambda.svg
+      shape: image
+    }
+
+    lambda_evaluate: Lambda\n(Evaluate)\n848MB Memory\n10min timeout {
+      icon: https://icons.terrastruct.com/aws%2FCompute%2FAWS-Lambda.svg
+      shape: image
+    }
+
+    lambda_index: Lambda\n(Index)\n1GB Memory\n15min timeout {
+      icon: https://icons.terrastruct.com/aws%2FCompute%2FAWS-Lambda.svg
+      shape: image
+    }
+  }
+
+  # ECS Services
+  ecs: ECS Cluster (Fargate) {
+    style.fill: "#fff3e0"
+
+    redis: ECS Service\n(Redis Stack) {
+      icon: https://icons.terrastruct.com/aws%2FCompute%2FAWS-Fargate.svg
+      shape: image
+    }
+
+    langfuse: ECS Service\n(Langfuse\nMonitoring) {
+      icon: https://icons.terrastruct.com/aws%2FCompute%2FAWS-Fargate.svg
+      shape: image
+    }
+  }
+
+  # Load Balancers
+  nlb: NLB\n(Internal - Redis\nPort 6379) {
+    icon: https://icons.terrastruct.com/aws%2FNetworking%20&%20Content%20Delivery%2FElastic-Load-Balancing.svg
+    shape: image
+  }
+
+  alb_monitoring: ALB\n(Public - Langfuse) {
+    icon: https://icons.terrastruct.com/aws%2FNetworking%20&%20Content%20Delivery%2FElastic-Load-Balancing.svg
+    shape: image
+  }
+
+  alb_int_monitoring: ALB\n(Internal - Langfuse) {
+    icon: https://icons.terrastruct.com/aws%2FNetworking%20&%20Content%20Delivery%2FElastic-Load-Balancing.svg
+    shape: image
+  }
+
+  # Database
+  rds: RDS Aurora\nPostgreSQL 14\n(Langfuse DB\nServerless v2) {
+    icon: https://icons.terrastruct.com/aws%2FDatabase%2FAmazon-Aurora.svg
+    shape: image
+  }
+
+  # EFS
+  efs: EFS\n(Redis Persistent\nStorage) {
+    icon: https://icons.terrastruct.com/aws%2FStorage%2FAmazon-Elastic-File-System_EFS.svg
+    shape: image
+  }
+}
+
+# DynamoDB Tables
+dynamodb: {
+  label: DynamoDB Tables
+
+  queries: DynamoDB\n(chatbot-prod-queries)\nTTL enabled {
+    icon: https://icons.terrastruct.com/aws%2FDatabase%2FAmazon-DynamoDB.svg
+    shape: image
+  }
+
+  sessions: DynamoDB\n(chatbot-prod-sessions)\nTTL enabled {
+    icon: https://icons.terrastruct.com/aws%2FDatabase%2FAmazon-DynamoDB.svg
+    shape: image
+  }
+
+  salts: DynamoDB\n(chatbot-prod-salts)\nTTL enabled {
+    icon: https://icons.terrastruct.com/aws%2FDatabase%2FAmazon-DynamoDB.svg
+    shape: image
+  }
+}
+
+# SQS
+sqs: {
+  label: SQS Queues
+
+  evaluate_queue: SQS FIFO\n(Evaluate Queue)\nbatch size: 5 {
+    icon: https://icons.terrastruct.com/aws%2FApplication%20Integration%2FAmazon-Simple-Queue-Service-SQS.svg
+    shape: image
+  }
+
+  evaluate_dlq: SQS FIFO\n(Evaluate DLQ)\nmaxReceiveCount: 2 {
+    icon: https://icons.terrastruct.com/aws%2FApplication%20Integration%2FAmazon-Simple-Queue-Service-SQS.svg
+    shape: image
+  }
+}
+
+# S3 Buckets (eu-west-3)
+s3: {
+  label: S3 Buckets (eu-west-3)
+
+  s3_llamaindex: S3\n(LlamaIndex Store) {
+    icon: https://icons.terrastruct.com/aws%2FStorage%2FAmazon-Simple-Storage-Service-S3.svg
+    shape: image
+  }
+
+  s3_kb: S3\n(Knowledge Base) {
+    icon: https://icons.terrastruct.com/aws%2FStorage%2FAmazon-Simple-Storage-Service-S3.svg
+    shape: image
+  }
+}
+
+# S3 static content (from website module)
+s3_static: S3\n(Website Static\nContent) {
+  icon: https://icons.terrastruct.com/aws%2FStorage%2FAmazon-Simple-Storage-Service-S3.svg
+  shape: image
+  style.opacity: 0.6
+}
+
+# ECR
+ecr: ECR\n(chatbot, chatbotindex,\nevaluate images) {
+  icon: https://icons.terrastruct.com/aws%2FCompute%2FAmazon-EC2-Container-Registry.svg
+  shape: image
+}
+
+# SSM
+ssm: SSM\nParameter Store\n(Google API Key,\nIndex ID, Langfuse Keys) {
+  icon: https://icons.terrastruct.com/aws%2FManagement%20&%20Governance%2FAWS-Systems-Manager_Parameter-Store_light-bg.svg
+  shape: image
+}
+
+# Cognito for Monitoring
+cognito_monitoring: Cognito\nUser Pool\n(Langfuse Auth) {
+  icon: https://icons.terrastruct.com/aws%2FSecurity%2C%20Identity%2C%20&%20Compliance%2FAmazon-Cognito.svg
+  shape: image
+}
+
+# Google AI (external)
+google: Google Gemini\n(AI Models) {
+  icon: https://icons.terrastruct.com/essentials%2F112-server.svg
+  shape: image
+  style.opacity: 0.6
+}
+
+# EventBridge (keep warm)
+eventbridge: EventBridge\n(Keep Warm Rule\nevery 3 min\n6am-11pm) {
+  icon: https://icons.terrastruct.com/aws%2FApplication%20Integration%2FAmazon-EventBridge.svg
+  shape: image
+}
+
+# Monitoring
+cloudwatch: CloudWatch\n(Logs) {
+  icon: https://icons.terrastruct.com/aws%2FManagement%20&%20Governance%2FAmazon-CloudWatch.svg
+  shape: image
+}
+
+# --- Connections ---
+
+# User flow
+users -> route53: HTTPS
+route53 -> waf: api.chatbot.developer.pagopa.it
+route53 -> vpc.alb_monitoring: mon.chatbot.developer.pagopa.it
+waf -> apigw: Protected\n(associated to stage)
+apigw -> cognito: Authorize\n(COGNITO_USER_POOLS)
+apigw -> vpc.lambdas.lambda_api: Invoke (AWS_PROXY)
+
+# Lambda API connections
+vpc.lambdas.lambda_api -> dynamodb.queries: Read/Write
+vpc.lambdas.lambda_api -> dynamodb.sessions: Read/Write
+vpc.lambdas.lambda_api -> dynamodb.salts: Read/Write
+vpc.lambdas.lambda_api -> vpc.nlb: Redis\n(Port 6379)
+vpc.lambdas.lambda_api -> s3.s3_llamaindex: Read/Write
+vpc.lambdas.lambda_api -> s3.s3_kb: Read/Write
+vpc.lambdas.lambda_api -> s3_static: Read static content
+vpc.lambdas.lambda_api -> ssm: Read config
+vpc.lambdas.lambda_api -> sqs.evaluate_queue: Send messages
+vpc.lambdas.lambda_api -> google: AI Generation\n& Embeddings
+vpc.lambdas.lambda_api -> vpc.alb_int_monitoring: Langfuse traces
+
+# Evaluate Lambda
+sqs.evaluate_queue -> vpc.lambdas.lambda_evaluate: Trigger
+sqs.evaluate_queue -> sqs.evaluate_dlq: Failed messages\n(maxReceiveCount: 2)
+vpc.lambdas.lambda_evaluate -> ssm: Read config
+vpc.lambdas.lambda_evaluate -> vpc.alb_int_monitoring: Langfuse evaluate
+vpc.lambdas.lambda_evaluate -> google: AI Evaluation
+
+# Index Lambda
+s3_static -> vpc.lambdas.lambda_index: S3 Event\n(.md files &\ndirNames-to-remove.json)
+vpc.lambdas.lambda_index -> vpc.nlb: Update index\n(Redis Port 6379)
+vpc.lambdas.lambda_index -> s3_static: Read content
+vpc.lambdas.lambda_index -> google: Embeddings
+vpc.lambdas.lambda_index -> ssm: Read Google API Key
+
+# Redis
+vpc.nlb -> vpc.ecs.redis: TCP 6379
+vpc.ecs.redis -> vpc.efs: Persistent storage\n(EFS mount)
+
+# Langfuse Monitoring
+vpc.alb_monitoring -> vpc.ecs.langfuse: Port 3000
+vpc.alb_int_monitoring -> vpc.ecs.langfuse: Port 3000
+vpc.ecs.langfuse -> vpc.rds: PostgreSQL\n(Port 5432)
+vpc.ecs.langfuse -> cognito_monitoring: OAuth (OIDC)
+
+# Keep warm
+eventbridge -> vpc.lambdas.lambda_api: Scheduled invocation\n(GET /healthz)
+
+# ECR
+vpc.lambdas.lambda_api -> ecr: Pull container image
+vpc.lambdas.lambda_evaluate -> ecr: Pull container image
+vpc.lambdas.lambda_index -> ecr: Pull container image
+
+# Monitoring
+vpc.lambdas.lambda_api -> cloudwatch: Logs (14 days)
+vpc.lambdas.lambda_evaluate -> cloudwatch: Logs (14 days)
+vpc.lambdas.lambda_index -> cloudwatch: Logs (14 days)

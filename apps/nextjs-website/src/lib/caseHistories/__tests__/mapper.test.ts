@@ -1,0 +1,67 @@
+import { mapCaseHistoriesProps } from '@/lib/caseHistories/mapper';
+import { CaseHistories } from '@/lib/caseHistories/types';
+import _ from 'lodash';
+import {
+  caseHistoriesPageTemplateProps,
+  strapiCaseHistories,
+} from '@/lib/caseHistories/__tests__/fixtures';
+import {
+  minimalDataCaseHistories,
+  caseHistoriesWithMultipleProducts,
+  caseHistoriesWithoutImage,
+} from '@/lib/caseHistories/__tests__/factories';
+import { mediaJpeg } from '@/lib/media/__tests__/factories';
+
+describe('makeCaseHistoriesProps', () => {
+  it('should transform strapi case histories to case history props', () => {
+    const result = mapCaseHistoriesProps(_.cloneDeep(strapiCaseHistories));
+    expect(result).toHaveLength(1);
+    expect(result[0]).toMatchObject(caseHistoriesPageTemplateProps);
+  });
+
+  it('should handle minimal data with missing optional fields', () => {
+    const result = mapCaseHistoriesProps(
+      _.cloneDeep(minimalDataCaseHistories())
+    );
+    const firstElement = result[0];
+    expect(result).toHaveLength(1);
+    expect(firstElement.description).toBeUndefined();
+    expect(firstElement.image).toBeUndefined();
+    expect(firstElement.seo).toBeUndefined();
+    expect(firstElement.parts).toEqual([]);
+    expect(firstElement.products).toBeDefined();
+    expect(firstElement.updatedAt).toBe('2023-01-02T00:00:00.000Z');
+  });
+
+  it('should handle empty data array', () => {
+    const emptyData: CaseHistories = {
+      data: [],
+      meta: {
+        pagination: {
+          page: 1,
+          pageSize: 25,
+          pageCount: 0,
+          total: 0,
+        },
+      },
+    };
+    const result = mapCaseHistoriesProps(emptyData);
+    expect(result).toHaveLength(0);
+  });
+
+  it('should handle case history with multiple products', () => {
+    const result = mapCaseHistoriesProps(caseHistoriesWithMultipleProducts());
+    const firstElement = result[0];
+    expect(firstElement.products).toHaveLength(2);
+    expect(firstElement.products[1]).toMatchObject({
+      name: 'Second Product',
+      slug: 'second-product',
+      logo: mediaJpeg(),
+    });
+  });
+
+  it('should handle case history without image', () => {
+    const result = mapCaseHistoriesProps(caseHistoriesWithoutImage());
+    expect(result[0].image).toBeUndefined();
+  });
+});

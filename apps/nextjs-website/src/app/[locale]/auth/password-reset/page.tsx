@@ -2,7 +2,7 @@
 
 import { Grid } from '@mui/material';
 import { useCallback, useState } from 'react';
-import { SendResetPasswordSteps } from '@/lib/types/sendResetPasswordSteps';
+import { SendResetPasswordSteps } from '@/lib/auth/sendResetPasswordSteps';
 import { Auth } from 'aws-amplify';
 
 import ResetPasswordForm from '@/components/organisms/Auth/ResetPasswordForm';
