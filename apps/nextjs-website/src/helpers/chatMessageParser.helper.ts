@@ -10,7 +10,7 @@ import React, { ReactNode } from 'react';
 import { PageTitlePath } from '@/helpers/parseS3Doc.helpers';
 
 const markdownLinkWithClassModifiersRegex =
-  /\[([^\]]+)\]\((\S+?)(?:\s+"([^"]*)")?\)\s*((?:\{%\s*\.[a-zA-Z0-9_-]+\s*%\}\s*)+)/g;
+  /\[([^\]]+)\]\((\S+?)(?:\s+"([^"]*)")?\)\s*((?:\{%\s*\.[a-zA-Z0-9_-]+\s*%\})+)/g;
 const linkClassModifierRegex = /\{%\s*\.([a-zA-Z0-9_-]+)\s*%\}/g;
 
 function getTitleFromPage(
