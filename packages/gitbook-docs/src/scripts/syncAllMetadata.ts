@@ -62,7 +62,6 @@ const URL_PARSING_METADATA_JSON_PATH =
 const METADATA_TYPE = (process.env.METADATA_TYPE || 'all').toLowerCase();
 const GENERATE_URL_METADATA = process.env.GENERATE_URL_METADATA !== 'false';
 
-// TODO: rename
 const GENERATE_METADATA = process.env.GENERATE_METADATA !== 'false';
 const SAVE_STRAPI_RESPONSES = process.env.SAVE_STRAPI_RESPONSES !== 'false';
 
