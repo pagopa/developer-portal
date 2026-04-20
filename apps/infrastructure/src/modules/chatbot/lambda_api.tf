@@ -4,6 +4,8 @@ locals {
     CHB_AWS_S3_BUCKET                  = module.s3_bucket_llamaindex.s3_bucket_id
     CHB_AWS_SSM_GOOGLE_SERVICE_ACCOUNT = module.google_service_account_ssm_parameter.ssm_parameter_name
     CHB_AWS_SSM_LLAMAINDEX_INDEX_ID    = module.index_id_ssm_parameter.ssm_parameter_name
+    CHB_DEVP_INDEX_ID                  = "evportal-index"
+    CHB_CITTADINO_INDEX_ID             = "cittadino-index"
     CHB_LLAMAINDEX_INDEX_ID            = module.index_id_ssm_parameter.ssm_parameter_name
     CHB_EMBED_MODEL_ID                 = var.models.embeddings
     CHB_ENGINE_USE_ASYNC               = "False"

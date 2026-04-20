@@ -295,13 +295,6 @@ module "video_streaming" {
 
 }
 
-<<<<<<< HEAD
-# strapi-v5  for testing purposes only
-module "strapi_v5" {
-  source = "./modules/strapi5"
-
-  count = var.environment == "dev" ? 1 : 0
-=======
 ################################################################################
 # Strapi4 temporary instance for migration and testing purposes
 ################################################################################
@@ -310,7 +303,6 @@ module "strapi4" {
   source = "./modules/strapi_migration"
 
   count = var.environment == "uat" ? 1 : 0
->>>>>>> b26e564e643fda5525388571b28aaab33da03809
 
   providers = {
     aws           = aws
