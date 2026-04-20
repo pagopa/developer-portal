@@ -6,10 +6,9 @@ resource "aws_api_gateway_rest_api" "chatbotapi" {
   description = "dos68k Chatbot API Gateway"
 
   body = templatefile("${path.module}/openapi/api-spec.json.tpl", {
-    api_name      = "${local.prefix}-chatbotapi-rest-api"
-    nlb_proxy_uri = "http://${module.nlb.dns_name}:${local.container_port}/{proxy}"
-    nlb_root_uri  = "http://${module.nlb.dns_name}:${local.container_port}/"
-    vpc_link_id   = aws_api_gateway_vpc_link.chatbotapi.id
+    api_name     = "${local.prefix}-chatbotapi-rest-api"
+    nlb_base_uri = "http://${module.nlb.dns_name}:${local.container_port}"
+    vpc_link_id  = aws_api_gateway_vpc_link.chatbotapi.id
   })
 
   endpoint_configuration {
