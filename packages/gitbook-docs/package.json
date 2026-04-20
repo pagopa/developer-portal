@@ -1,6 +1,6 @@
 {
   "name": "gitbook-docs",
-  "version": "2.0.0",
+  "version": "2.2.0",
   "private": true,
   "exports": {
     "./": "./dist/"
@@ -38,13 +38,13 @@
     "fp-ts": "^2.13.1",
     "htmlparser2": "^9.0.0",
     "js-yaml": "^4.1.0",
-    "markdown-it": "^13.0.1"
+    "markdown-it": "^14.1.1"
   },
   "devDependencies": {
     "@types/htmlparser2": "^3.10.3",
     "@types/jest": "^29.5.1",
     "@types/js-yaml": "^4.0.5",
-    "@types/markdown-it": "^12.2.3",
+    "@types/markdown-it": "^14.1.2",
     "eslint": "^8.40.0",
     "eslint-config-custom": "*",
     "jest": "^29.5.0",

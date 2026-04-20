@@ -11,101 +11,82 @@ logger = logging.getLogger()
 logger.setLevel("INFO")
 
 # --- Configuration ---
-DATABASE = os.environ.get('ATHENA_DATABASE', 'devportal_p_cloudfront_logs')
-OUTPUT_S3_BUCKET = os.environ.get('ATHENA_RESULTS_BUCKET', 'devportal-p-athena-results-c797de01')
+DATABASE = os.environ.get('ATHENA_DATABASE', 'webinar_analytics')
+OUTPUT_S3_BUCKET = os.environ.get('ATHENA_RESULTS_BUCKET')
 OUTPUT_S3_PREFIX = 'athena-results'
 REGION = os.environ.get('AWS_REGION', 'eu-central-1')
-IVS_CHANNEL_ARN = os.environ.get('IVS_CHANNEL_ARN', 'arn:aws:ivs:eu-central-1:195239627635:channel/4mteQowcWw6S')
+
 
 # Clients
 athena = boto3.client('athena', region_name=REGION)
-ivs = boto3.client('ivs', region_name=REGION)
-cw = boto3.client('cloudwatch', region_name=REGION)
 
 
-def get_ivs_stream_stats(start_dt: datetime, end_dt: datetime) -> list[dict[str, Any]]:
-    """Fetches stream sessions and CloudWatch metrics for the given date range."""
-    channel_id = IVS_CHANNEL_ARN.split('/')[-1]
-    stats = []
-    next_token = None
+def _build_partition_filter(start_date: str, end_date: str) -> str:
+    """Build a WHERE clause that targets year/month/day partitions for pruning."""
+    s = datetime.strptime(start_date, '%Y-%m-%d')
+    e = datetime.strptime(end_date, '%Y-%m-%d')
+    sy, sm, sd = s.strftime('%Y'), s.strftime('%m'), s.strftime('%d')
+    ey, em, ed = e.strftime('%Y'), e.strftime('%m'), e.strftime('%d')
 
-    while True:
-        args = {'channelArn': IVS_CHANNEL_ARN}
-        if next_token:
-            args['nextToken'] = next_token
-
-        response = ivs.list_stream_sessions(**args)
-
-        for session in response.get('streamSessions', []):
-            s_start = session['startTime']
-            if start_dt <= s_start <= end_dt:
-                stream_id = session['streamId']
-                s_end = session.get('endTime', datetime.now(timezone.utc))
-                
-                duration = int((s_end - s_start).total_seconds())
-
-                # Round start down and end up to the nearest minute for CloudWatch
-                rounded_start = s_start.replace(second=0, microsecond=0)
-                if s_end.second > 0 or s_end.microsecond > 0:
-                    rounded_end = (s_end + timedelta(minutes=1)).replace(second=0, microsecond=0)
-                else:
-                    rounded_end = s_end.replace(second=0, microsecond=0)
-
-                metric_data = cw.get_metric_statistics(
-                    Namespace='AWS/IVS',
-                    MetricName='ConcurrentViews',
-                    Dimensions=[
-                        {'Name': 'Channel', 'Value': channel_id}
-                    ],
-                    StartTime=rounded_start,
-                    EndTime=rounded_end,
-                    Period=60,
-                    Statistics=['Maximum']
-                )
-
-                points = metric_data['Datapoints']
-                peak_views = int(max((p['Maximum'] for p in points), default=0))
-
-                stats.append({
-                    'id': stream_id,
-                    'stream_id': stream_id,
-                    'creation_time': s_start.isoformat(),
-                    'duration': duration,
-                    'live_plays': peak_views,
-                })
-
-        next_token = response.get('nextToken')
-        if not next_token:
-            break
-
-    return stats
-
-
-def run_athena_query(start_date: str, end_date: str) -> list[dict[str, Any]]:
-    """Runs Athena query and returns results as a list of dicts."""
-    query = f"""
-    WITH master_requests AS (
-        SELECT regexp_extract(cs_uri_stem, '^(.*/)[^/]+$', 1) AS root_path, c_ip, cs_uri_query, log_date
-        FROM cloudfront_logs
-        WHERE cs_uri_stem like '%/master.m3u8'
-        AND log_date >= date_parse('{start_date}', '%Y-%m-%d')
-        AND log_date <= date_parse('{end_date}', '%Y-%m-%d')
-    ),
-    segment_requests AS (
-        SELECT regexp_extract(cs_uri_stem, '^(.*/)[^/]+/[^/]+$', 1) AS root_path, c_ip, cs_uri_query, log_date
-        FROM cloudfront_logs
-        WHERE cs_uri_stem like '%/3.ts'
-        AND log_date >= date_parse('{start_date}', '%Y-%m-%d')
-        AND log_date <= date_parse('{end_date}', '%Y-%m-%d')
+    if sy == ey and sm == em:
+        return (
+            f"year = '{sy}' AND month = '{sm}' "
+            f"AND day >= '{sd}' AND day <= '{ed}'"
+        )
+    if sy == ey:
+        return (
+            f"year = '{sy}' AND ("
+            f"(month = '{sm}' AND day >= '{sd}') OR "
+            f"(month > '{sm}' AND month < '{em}') OR "
+            f"(month = '{em}' AND day <= '{ed}')"
+            f")"
+        )
+    return (
+        f"("
+        f"(year = '{sy}' AND month = '{sm}' AND day >= '{sd}') OR "
+        f"(year = '{sy}' AND month > '{sm}') OR "
+        f"(year > '{sy}' AND year < '{ey}') OR "
+        f"(year = '{ey}' AND month < '{em}') OR "
+        f"(year = '{ey}' AND month = '{em}' AND day <= '{ed}')"
+        f")"
     )
-    SELECT m.root_path,
-           regexp_extract(m.cs_uri_query, 'cs_uri_query=([^&]+)', 1) AS webinar_name,
-           count(*) as total_requests
-    FROM master_requests m
-    JOIN segment_requests s ON m.root_path = s.root_path
-    AND m.c_ip = s.c_ip
-    GROUP BY m.root_path, m.cs_uri_query
-    ORDER BY 3 DESC
+
+
+def run_athena_query(
+    start_date: str,
+    end_date: str,
+    islive: bool | None = None,
+    min_count: int = 5,
+) -> list[dict[str, Any]]:
+    """Runs Athena query and returns results as a list of dicts."""
+    partition_filter = _build_partition_filter(start_date, end_date)
+
+    extra_filters = ""
+    if islive is not None:
+        extra_filters = f"\n          AND islive = {'true' if islive else 'false'} AND action = 'playing'"
+
+    query = f"""
+    WITH QualifiedClients AS (
+        SELECT
+            webinarid,
+            userid
+        FROM
+            "webinar_analytics"."webinar_heartbeats"
+        WHERE
+          {partition_filter}{extra_filters}
+        GROUP BY
+            webinarid,
+            userid
+        HAVING
+            COUNT(*) >= {min_count}
+    )
+    SELECT
+        webinarid,
+        COUNT(userid) AS count_distinct_userid
+    FROM
+        QualifiedClients
+    GROUP BY
+        webinarid
     """
 
     exec_resp = athena.start_query_execution(
@@ -125,7 +106,6 @@ def run_athena_query(start_date: str, end_date: str) -> list[dict[str, Any]]:
     if state != 'SUCCEEDED':
         raise Exception(f"Athena query failed with state: {state}")
 
-    # Fetch results via API instead of downloading CSV
     results = []
     next_token = None
     first_page = True
@@ -135,19 +115,17 @@ def run_athena_query(start_date: str, end_date: str) -> list[dict[str, Any]]:
             kwargs['NextToken'] = next_token
         resp = athena.get_query_results(**kwargs)
         rows = resp['ResultSet']['Rows']
-        # Skip header row on first page
         for row in rows[1 if first_page else 0:]:
             data = [col.get('VarCharValue', '') for col in row['Data']]
             results.append({
-                'root_path': data[0],
-                'slug': data[1],
-                'ondemand_plays': int(data[2]) if data[2] else 0,
+                'webinarid': data[0],
+                'count_distinct_userid': int(data[1]) if data[1] else 0,
             })
         first_page = False
         next_token = resp.get('NextToken')
         if not next_token:
             break
-        
+
     return results
 
 
@@ -160,6 +138,8 @@ def lambda_handler(event: dict[str, Any], context: Any) -> dict[str, Any]:
 
     from_date = body.get('from_date')
     to_date = body.get('to_date')
+    islive = body.get('islive')
+    min_count = body.get('min_count', 5)
 
     if not from_date or not to_date:
         return {
@@ -179,38 +159,20 @@ def lambda_handler(event: dict[str, Any], context: Any) -> dict[str, Any]:
     start_date_str = start_dt.strftime('%Y-%m-%d')
     end_date_str = end_dt.strftime('%Y-%m-%d')
 
-    logger.info(f"Fetching IVS stats from {start_dt} to {end_dt}")
+    athena_results = run_athena_query(start_date_str, end_date_str, islive=islive, min_count=int(min_count))
 
-    ivs_stats = get_ivs_stream_stats(start_dt, end_dt)
-    athena_results = run_athena_query(start_date_str, end_date_str)
-
-    # Build lookup: try to match Athena results to IVS streams by stream_id in root_path
+    # Build the response payload from Athena webinar heartbeat aggregates.
     data = []
-    for stream in ivs_stats:
-        slug = ''
-        
-        data.append({
-            'id': stream['id'],
-            'slug': slug,
-            'creation_time': stream['creation_time'],
-            'duration': stream['duration'],
-            'stats': {
-                'live_plays': stream['live_plays'],
-            }
-        })
 
     for row in athena_results:
-        if row['root_path'] or row['slug']:
-            slug = row.get('slug') if row.get('slug', '') != '' else row.get('root_path', '').rstrip('/').split('/')[-1]
+        if row['webinarid']:
             data.append({
-            'id': slug,
-            'slug': slug,
-            'creation_time': 'na',
-            'duration': 'na',
-            'stats': {
-                'ondemand_plays': row.get('ondemand_plays', 0)
-            }
-        })
+                'id': row['webinarid'],
+                'is_live': islive if islive is not None else 'unknown',
+                'stats': {
+                    'unique_viewers': row.get('count_distinct_userid', 0)
+                }
+            })
 
     return {
         'statusCode': 200,
@@ -221,10 +183,27 @@ def lambda_handler(event: dict[str, Any], context: Any) -> dict[str, Any]:
 if __name__ == '__main__':
     import argparse
 
+    def _parse_optional_bool(value: str) -> bool:
+        value_normalized = value.strip().lower()
+        if value_normalized in ('true', '1', 'yes', 'y', 'on'):
+            return True
+        if value_normalized in ('false', '0', 'no', 'n', 'off'):
+            return False
+        raise argparse.ArgumentTypeError(
+            "Expected a boolean value for --islive: true/false, 1/0, yes/no, on/off"
+        )
+
     parser = argparse.ArgumentParser(description='Webinar metrics Lambda')
     parser.add_argument('--from-date', required=True, help='Start date (ISO8601)')
     parser.add_argument('--to-date', required=True, help='End date (ISO8601)')
+    parser.add_argument('--islive', type=_parse_optional_bool, default=None, help='Filter by live status (optional)')
+    parser.add_argument('--min-count', type=int, default=5, help='Minimum heartbeat count threshold (default: 5)')
     args = parser.parse_args()
 
-    result = lambda_handler({'from_date': args.from_date, 'to_date': args.to_date}, None)
+    event = {'from_date': args.from_date, 'to_date': args.to_date}
+    if args.islive is not None:
+        event['islive'] = args.islive
+    event['min_count'] = args.min_count
+
+    result = lambda_handler(event, None)
     print(json.dumps(json.loads(result['body']), indent=2))

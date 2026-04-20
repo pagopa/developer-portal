@@ -1,0 +1,196 @@
+# Video Streaming Infrastructure Diagram
+# Developer Portal - Video Streaming Module (prod)
+
+vars: {
+  d2-config: {
+    layout-engine: elk
+    sketch: true
+  }
+}
+
+direction: right
+
+title: {
+  label: Developer Portal - Video Streaming (Webinars) Infrastructure (prod)
+  near: top-center
+  shape: text
+  style.font-size: 28
+  style.bold: true
+}
+
+users: Users {
+  icon: https://icons.terrastruct.com/essentials%2F359-users.svg
+  shape: image
+}
+
+broadcaster: Broadcaster\n(Streamer) {
+  icon: https://icons.terrastruct.com/essentials%2F359-users.svg
+  shape: image
+}
+
+# DNS
+route53: Route 53 {
+  icon: https://icons.terrastruct.com/aws%2FNetworking%20&%20Content%20Delivery%2FAmazon-Route-53.svg
+  shape: image
+}
+
+# IVS (eu-central-1)
+ivs: Amazon IVS\n(Interactive Video)\neu-central-1 {
+  icon: https://icons.terrastruct.com/aws%2FMedia%20Services%2FAmazon-Elastic-Transcoder.svg
+  shape: image
+}
+
+# CloudFront (video recordings + ingest proxy)
+cloudfront: CloudFront\n(Video Recordings\nCDN with OAC\n+ /ingest proxy) {
+  icon: https://icons.terrastruct.com/aws%2FNetworking%20&%20Content%20Delivery%2FAmazon-CloudFront.svg
+  shape: image
+}
+
+# API Gateways
+apigw: {
+  label: API Gateway
+
+  metrics: API Gateway REST\n(Webinar Metrics\nAPI Key required) {
+    icon: https://icons.terrastruct.com/aws%2FMobile%2FAmazon-API-Gateway.svg
+    shape: image
+  }
+
+  ingest: API Gateway HTTP\n(Ingest API\nJWT Authorizer\nvia Cognito) {
+    icon: https://icons.terrastruct.com/aws%2FMobile%2FAmazon-API-Gateway.svg
+    shape: image
+  }
+}
+
+# Auth (external module)
+cognito: Auth Module\n(Cognito\nUser Pool) {
+  icon: https://icons.terrastruct.com/aws%2FSecurity%2C%20Identity%2C%20&%20Compliance%2FAmazon-Cognito.svg
+  shape: image
+  style.opacity: 0.6
+}
+
+# Lambda Functions
+lambdas: {
+  label: Lambda Functions
+
+  metrics: Lambda\n(Webinar Metrics)\nPython 3.12\ntimeout: 120s {
+    icon: https://icons.terrastruct.com/aws%2FCompute%2FAWS-Lambda.svg
+    shape: image
+  }
+
+  video_processing: Lambda\n(IVS Video Processing)\nNode.js 22\ntimeout: 30s {
+    icon: https://icons.terrastruct.com/aws%2FCompute%2FAWS-Lambda.svg
+    shape: image
+  }
+
+  ingest: Lambda\n(Heartbeat Ingest) {
+    icon: https://icons.terrastruct.com/aws%2FCompute%2FAWS-Lambda.svg
+    shape: image
+  }
+}
+
+# S3 Buckets
+s3: {
+  label: S3 Buckets
+
+  recordings: S3\n(IVS Recordings) {
+    icon: https://icons.terrastruct.com/aws%2FStorage%2FAmazon-Simple-Storage-Service-S3.svg
+    shape: image
+  }
+
+  heartbeat: S3\n(Heartbeat\nStorage) {
+    icon: https://icons.terrastruct.com/aws%2FStorage%2FAmazon-Simple-Storage-Service-S3.svg
+    shape: image
+  }
+
+  athena_results: S3\n(Athena Results)\n30-day lifecycle {
+    icon: https://icons.terrastruct.com/aws%2FStorage%2FAmazon-Simple-Storage-Service-S3.svg
+    shape: image
+  }
+}
+
+# Kinesis Firehose
+firehose: Kinesis\nFirehose\n(Direct Put) {
+  icon: https://icons.terrastruct.com/aws%2FAnalytics%2FAmazon-Kinesis-Data-Firehose.svg
+  shape: image
+}
+
+# Analytics
+analytics: {
+  label: Analytics (Athena)
+
+  athena_db: Athena Database\n(webinar_analytics) {
+    icon: https://icons.terrastruct.com/aws%2FAnalytics%2FAmazon-Athena.svg
+    shape: image
+  }
+
+  athena_workgroup: Athena Workgroup\n(Query Engine) {
+    icon: https://icons.terrastruct.com/aws%2FAnalytics%2FAmazon-Athena.svg
+    shape: image
+  }
+}
+
+# CMS (Strapi)
+strapi: Strapi CMS\n(API) {
+  icon: https://icons.terrastruct.com/essentials%2F112-server.svg
+  shape: image
+  style.opacity: 0.6
+}
+
+# SSM
+ssm: SSM\nParameter Store\n(/ivs/strapi_api_key) {
+  icon: https://icons.terrastruct.com/aws%2FManagement%20&%20Governance%2FAWS-Systems-Manager_Parameter-Store_light-bg.svg
+  shape: image
+}
+
+# Monitoring
+monitoring: {
+  label: Monitoring
+
+  cloudwatch: CloudWatch\n(Anomaly Detection) {
+    icon: https://icons.terrastruct.com/aws%2FManagement%20&%20Governance%2FAmazon-CloudWatch.svg
+    shape: image
+  }
+
+  sns: SNS\n(Alerts) {
+    icon: https://icons.terrastruct.com/aws%2FApplication%20Integration%2FAmazon-Simple-Notification-Service-SNS.svg
+    shape: image
+  }
+}
+
+# --- Connections ---
+
+# Live streaming flow
+broadcaster -> ivs: RTMP Stream
+ivs -> s3.recordings: Auto-record\n(recording config)
+users -> route53: HTTPS
+route53 -> cloudfront: video.developer.pagopa.it
+
+cloudfront -> s3.recordings: Origin (OAC\nsigv4 signing)\nDefault behavior
+cloudfront -> apigw.ingest: /ingest path\n(ordered cache behavior\nCachingDisabled)
+
+# Video processing
+s3.recordings -> lambdas.video_processing: S3 Event\n(recording-ended.json)
+lambdas.video_processing -> strapi: Update webinar\nrecording URL
+lambdas.video_processing -> ssm: Read Strapi\nAPI key
+
+# Metrics API
+apigw.metrics -> lambdas.metrics: Invoke
+lambdas.metrics -> ivs: Get stream\nmetrics (IVS API)
+lambdas.metrics -> analytics.athena_workgroup: Query webinar\nheartbeat data
+lambdas.metrics -> s3.athena_results: Results bucket
+
+# Heartbeat / viewer tracking (via CloudFront + API Gateway)
+users -> cloudfront: POST /ingest\n(Heartbeat + JWT)
+apigw.ingest -> cognito: JWT validation\n(Cognito User Pool)
+apigw.ingest -> lambdas.ingest: Invoke
+lambdas.ingest -> firehose: Forward events
+firehose -> s3.heartbeat: Batch delivery\n(extended_s3)
+
+# Analytics
+s3.heartbeat -> analytics.athena_db: External table\n(webinar_heartbeats)
+analytics.athena_workgroup -> s3.athena_results: Store results
+
+# Monitoring
+monitoring.cloudwatch -> monitoring.sns: Alarm notifications
+lambdas.video_processing -> monitoring.cloudwatch: Errors\n(anomaly detection)
+lambdas.metrics -> monitoring.cloudwatch: Logs

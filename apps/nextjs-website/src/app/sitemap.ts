@@ -1,14 +1,9 @@
 /* eslint-disable functional/no-expression-statements */
 /* eslint-disable functional/no-try-statements */
 import type { MetadataRoute } from 'next';
-import {
-  getCaseHistoriesProps,
-  getHomepageProps,
-  getSolutionsProps,
-  getWebinarsProps,
-  getReleaseNotesProps,
-  getGuidesProps,
-} from '@/lib/cmsApi';
+import { getReleaseNotes, getWebinars } from '@/lib/api';
+import { GuidesRepository } from '@/lib/guides';
+import { SolutionRepository } from '@/lib/solutions';
 import { baseUrl } from '@/config';
 import {
   getGuidesMetadata,
@@ -18,33 +13,24 @@ import {
   getGuidesMetadataByDirNames,
   JsonMetadata,
 } from '@/helpers/s3Metadata.helpers';
-import {
-  fetchProductSlugs,
-  fetchProductSinglePages,
-  fetchProductTutorials,
-  fetchProductApiData,
-} from '@/lib/strapi/fetches/fetchSitemapData';
 import { SUPPORTED_LOCALES } from '@/locales';
 import { compact, isEmpty } from 'lodash';
 import { HomepageProps } from '@/app/[locale]/page';
+import { CaseHistoriesRepository } from '@/lib/caseHistories';
+import { HomepageRepository } from '../lib/homepage';
+import { ProductRepository } from '../lib/products';
+import { TutorialRepository } from '../lib/tutorials';
+import { ApiDataListRepository } from '../lib/apiDataList';
 
 export const dynamic = 'force-dynamic';
 
 type SitemapProductRelation = {
-  readonly data?: {
-    readonly attributes: {
-      readonly slug?: string;
-      readonly updatedAt: string;
-    };
-  };
+  readonly slug?: string;
+  readonly updatedAt: string;
 };
 
 type SitemapApiDataRelation = {
-  readonly data?: {
-    readonly attributes: {
-      readonly updatedAt: string;
-    };
-  };
+  readonly updatedAt: string;
 };
 
 type SitemapProductRelations = {
@@ -55,17 +41,9 @@ type SitemapProductRelations = {
   readonly api_data_list_page?: SitemapApiDataRelation;
 };
 
-type SitemapApiData = {
-  readonly attributes: {
-    readonly updatedAt: string;
-    readonly apiRestDetail?: { readonly slug: string };
-    readonly apiSoapDetail?: { readonly slug: string };
-  };
-};
-
 async function getHomepage(localeCode: string): Promise<HomepageProps | null> {
   try {
-    return await getHomepageProps(localeCode);
+    return await HomepageRepository.get(localeCode);
   } catch (error) {
     console.error('Failed to fetch homepage data for sitemap:', error);
     return null;
@@ -89,9 +67,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         return [] as MetadataRoute.Sitemap;
       }
 
-      const caseHistories = await getCaseHistoriesProps(localeCode);
-      const webinars = await getWebinarsProps(localeCode);
-      const solutions = await getSolutionsProps(localeCode);
+      const caseHistories = await CaseHistoriesRepository.getAll(localeCode);
+      const webinars = await getWebinars(localeCode);
+      const solutions = await SolutionRepository.getAll(localeCode);
 
       // Base static routes
       const baseRoutes = [
@@ -165,7 +143,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       // These are stored in S3 and retrieved via legacy helpers.
       // We keep them ensuring no missing legacy content.
       const guidesMetadata = await getGuidesMetadata(localeCode);
-      const guides = await getGuidesProps(localeCode);
+      const guides = await GuidesRepository.getAll(localeCode);
       const guidesDirNames = Array.from(
         new Set(
           guides
@@ -226,7 +204,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
       try {
         releaseNotesMetadata = await getReleaseNotesMetadata(localeCode);
-        releaseNotes = await getReleaseNotesProps(localeCode);
+        releaseNotes = await getReleaseNotes(localeCode);
       } catch (error) {
         // eslint-disable-next-line no-console
         console.warn(
@@ -310,29 +288,31 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       // 3. Fetch Product Routes (Iterative Strategy)
       // --------------------------------------------------------------------------------
       // First, fetch all product slugs.
-      const productsResult = await fetchProductSlugs(localeCode);
+      const productsResult = await ProductRepository.getProductSlugs(
+        localeCode
+      );
       const productItems = productsResult.data;
 
       // Then iterate and fetch details for each product.
       // This avoids massive payload transfers and allows for granular optimization.
       const productRoutesPromises = productItems.map(async (productItem) => {
-        const { slug: productSlug } = productItem.attributes;
+        const { slug: productSlug } = productItem;
 
         // A. Fetch Single Pages linked to this Product (Overview, QuickStart, Lists)
         // ------------------------------------------------------------------------
-        const singlePagesData = await fetchProductSinglePages(
+        const singlePagesData = await ProductRepository.getProductSinglePages(
           localeCode,
           productSlug
         );
-        const relations = singlePagesData.data[0]
-          ?.attributes as unknown as SitemapProductRelations;
+        const relations = singlePagesData
+          .data[0] as unknown as SitemapProductRelations;
 
-        const overviewRoute = relations?.overview?.data
+        const overviewRoute = relations?.overview
           ? [
               {
                 url: `${localizedUrlPrefix}/${productSlug}/overview`,
                 lastModified: new Date(
-                  relations.overview.data.attributes.updatedAt || Date.now()
+                  relations.overview.updatedAt || Date.now()
                 ),
                 changeFrequency: 'weekly' as const,
                 priority: 0.8,
@@ -340,13 +320,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             ]
           : [];
 
-        const quickStartRoute = relations?.quickstart_guide?.data
+        const quickStartRoute = relations?.quickstart_guide
           ? [
               {
                 url: `${localizedUrlPrefix}/${productSlug}/quick-start`,
                 lastModified: new Date(
-                  relations.quickstart_guide.data.attributes.updatedAt ||
-                    Date.now()
+                  relations.quickstart_guide.updatedAt || Date.now()
                 ),
                 changeFrequency: 'weekly' as const,
                 priority: 0.8,
@@ -354,13 +333,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             ]
           : [];
 
-        const tutorialListRoute = relations?.tutorial_list_page?.data
+        const tutorialListRoute = relations?.tutorial_list_page
           ? [
               {
                 url: `${localizedUrlPrefix}/${productSlug}/tutorials`,
                 lastModified: new Date(
-                  relations.tutorial_list_page.data.attributes.updatedAt ||
-                    Date.now()
+                  relations.tutorial_list_page.updatedAt || Date.now()
                 ),
                 changeFrequency: 'weekly' as const,
                 priority: 0.7,
@@ -368,13 +346,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             ]
           : [];
 
-        const guideListRoute = relations?.guide_list_page?.data
+        const guideListRoute = relations?.guide_list_page
           ? [
               {
                 url: `${localizedUrlPrefix}/${productSlug}/guides`,
                 lastModified: new Date(
-                  relations.guide_list_page.data.attributes.updatedAt ||
-                    Date.now()
+                  relations.guide_list_page.updatedAt || Date.now()
                 ),
                 changeFrequency: 'weekly' as const,
                 priority: 0.6,
@@ -386,34 +363,31 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         // ------------------------------------------------------------------------
 
         // Tutorials (Individual Pages)
-        const tutorialsData = await fetchProductTutorials(
+        const tutorialsData = await TutorialRepository.getProductTutorials(
           localeCode,
           productSlug
         );
         const tutorialRoutes = tutorialsData.data
-          .filter((tutorial) => tutorial.attributes.slug)
+          .filter((tutorial) => tutorial.slug)
           .map((tutorial) => ({
-            url: `${localizedUrlPrefix}/${productSlug}/tutorials/${tutorial.attributes.slug}`,
-            lastModified: new Date(tutorial.attributes.updatedAt || Date.now()),
+            url: `${localizedUrlPrefix}/${productSlug}/tutorials/${tutorial.slug}`,
+            lastModified: new Date(tutorial.updatedAt || Date.now()),
             changeFrequency: 'weekly' as const,
             priority: 0.6,
           }));
 
         // API Data (Individual Pages)
-        const apisData = await fetchProductApiData(localeCode, productSlug);
-        const apiRoutes = (
-          apisData.data as unknown as readonly SitemapApiData[]
-        ).flatMap((api) => {
-          const apiSlug =
-            api.attributes.apiRestDetail?.slug ||
-            api.attributes.apiSoapDetail?.slug;
+        const apisData = await ApiDataListRepository.getProductApiData(
+          localeCode,
+          productSlug
+        );
+        const apiRoutes = apisData.data.flatMap((api) => {
+          const apiSlug = api.apiRestDetail?.slug || api.apiSoapDetail?.slug;
           return apiSlug
             ? [
                 {
                   url: `${localizedUrlPrefix}/${productSlug}/api/${apiSlug}`,
-                  lastModified: new Date(
-                    api.attributes.updatedAt || Date.now()
-                  ),
+                  lastModified: new Date(api.updatedAt || Date.now()),
                   changeFrequency: 'weekly' as const,
                   priority: 0.6,
                 },
@@ -421,13 +395,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             : [];
         });
 
-        const apiListRoute = relations?.api_data_list_page?.data
+        const apiListRoute = relations?.api_data_list_page
           ? [
               {
                 url: `${localizedUrlPrefix}/${productSlug}/api`,
                 lastModified: new Date(
-                  relations.api_data_list_page.data.attributes.updatedAt ||
-                    Date.now()
+                  relations.api_data_list_page.updatedAt || Date.now()
                 ),
                 changeFrequency: 'weekly' as const,
                 priority: 0.6,
@@ -468,7 +441,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const flatSitemap = allLocalesSitemaps.flat();
 
   // Deduplicate URLs - keep the entry with the most recent lastModified date
-  const deduplicatedSitemap = Array.from(
+  return Array.from(
     flatSitemap.reduce((map, entry) => {
       const existing = map.get(entry.url);
       if (
@@ -481,6 +454,4 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       return map;
     }, new Map<string, MetadataRoute.Sitemap[number]>())
   ).map(([, entry]) => entry);
-
-  return deduplicatedSitemap;
 }

@@ -1,5 +1,29 @@
 # chatbot
 
+## 10.1.3
+
+### Patch Changes
+
+- 631cdf9: API and Prodcuts are read correctly after they are being created by Strapi v5
+
+## 10.1.2
+
+### Patch Changes
+
+- 8faf184: Refactor Vertex AI credential handling to use centralized settings and improve error logging for missing credentials
+- 8faf184: Add the use of Google Rerank by LlamaIndex
+
+## 10.1.1
+
+### Patch Changes
+
+- 25b0340: Update smart chips generator to be called only when both tools return relevant information to the user's query
+- 322bd2a: Force plain text and prohibit emojis in final response
+- ec44227: Add safety instrusction in the system prompt and safety filter to the LLMs
+- 6a1a271: Migrated the Gemini models initialization from the standard Google AI Studio API to Vertex AI.
+- ec44227: Add rule to have references only the dedicated field in the structured output and not in the response text
+- 6a1a271: Add identity tool
+
 ## 10.1.0
 
 ### Minor Changes

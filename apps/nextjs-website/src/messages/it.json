@@ -120,6 +120,7 @@
   },
   "webinar": {
     "liveWebinar": "Webinar in corso",
+    "chapters": "Capitoli",
     "subscriptionError": "Limite di iscrizioni raggiunto",
     "genericSubscriptionError": "Qualcosa è andato storto, riprova più tardi",
     "goToWebinar": "Vai al webinar",

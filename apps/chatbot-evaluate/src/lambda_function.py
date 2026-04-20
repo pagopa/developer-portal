@@ -1,10 +1,11 @@
 import json
-import asyncio
 
 from src.modules.judge import Judge
 from src.modules.logger import get_logger
 from src.modules.codec import compress_payload
 from src.modules.sqs import get_sqs_monitor_queue
+
+from llama_index.core.async_utils import asyncio_run
 
 
 LOGGER = get_logger(__name__)
@@ -90,7 +91,7 @@ def lambda_handler(event, context):
     for record in records:
         if record not in unique_records:
             unique_records.append(record)
-    results, trace_id = asyncio.run(process_records(unique_records))
+    results, trace_id = asyncio_run(process_records(unique_records))
 
     payload_to_monitor = json.dumps(
         {
