@@ -49,6 +49,7 @@ async function main() {
   const soapApiDetails = strapiSoapApiDetails.map(
     (entry) => entry.apiSoapDetail
   );
+  console.log('JSON CONTENT: \n', JSON.stringify(soapApiDetails, null, 2));
   await mkdir(outputDir, { recursive: true });
   await writeFile(outputPath, JSON.stringify(soapApiDetails, null, 2));
 
