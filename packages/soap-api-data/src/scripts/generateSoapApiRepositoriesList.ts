@@ -5,13 +5,11 @@ import { resolve } from 'path';
 
 interface StrapiSoapApiDetails {
   readonly id: number;
-  readonly attributes: {
-    readonly apiSoapDetail: {
-      readonly repositoryUrl: string;
-      readonly branch: string;
-      readonly repositoryPath: string;
-      readonly dirName: string;
-    };
+  readonly apiSoapDetail: {
+    readonly repositoryUrl: string;
+    readonly branch: string;
+    readonly repositoryPath: string;
+    readonly dirName: string;
   };
 }
 
@@ -49,7 +47,7 @@ async function main() {
   }
 
   const soapApiDetails = strapiSoapApiDetails.map(
-    (entry) => entry.attributes.apiSoapDetail
+    (entry) => entry.apiSoapDetail
   );
   await mkdir(outputDir, { recursive: true });
   await writeFile(outputPath, JSON.stringify(soapApiDetails, null, 2));
