@@ -22,6 +22,11 @@ async function main() {
 
   // eslint-disable-next-line functional/no-let
   let strapiSoapApiDetails;
+
+  console.log(
+    'Fetching from : ',
+    `/api/apis-data/?[locale]=${locale}&populate[apiSoapDetail][fields][0]=slug&populate[apiSoapDetail][fields][1]=repositoryUrl&populate[apiSoapDetail][fields][2]=dirName&filters[apiSoapDetail][$null]=false`
+  );
   // eslint-disable-next-line functional/no-try-statements
   try {
     const { data } = await fetchFromStrapi<StrapiSoapApiDetails>(
