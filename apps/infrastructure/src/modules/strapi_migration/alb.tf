@@ -25,14 +25,14 @@ module "cms_load_balancer" {
       protocol        = "HTTPS"
       certificate_arn = module.cms_ssl_certificate.acm_certificate_arn
       forward = {
-        target_group_key = "cms-target-group-v5"
+        target_group_key = "cms-target-group-v4"
       }
     }
   }
 
   target_groups = {
-    cms-target-group-v5 = {
-      name        = "cms-target-group-v5"
+    cms-target-group-v4 = {
+      name        = "cms-target-group-v4"
       protocol    = "HTTP"
       port        = var.cms_app_port
       target_type = "ip"
@@ -70,14 +70,14 @@ module "cms_load_balancer_internal" {
       port     = 8080
       protocol = "HTTP"
       forward = {
-        target_group_key = "cms-target-group-internal-v5"
+        target_group_key = "cms-target-group-internal-v4"
       }
     }
   }
 
   target_groups = {
-    cms-target-group-internal-v5 = {
-      name        = "cms-target-group-internal-v5"
+    cms-target-group-internal-v4 = {
+      name        = "cms-target-group-internal-v4"
       protocol    = "HTTP"
       port        = var.cms_app_port
       target_type = "ip"
