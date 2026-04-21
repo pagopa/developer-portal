@@ -51,6 +51,11 @@ on:
         type: boolean
         required: true
         default: true
+      generate_and_sync_sitemap:
+        description: 'Generate and sync the sitemap'
+        type: boolean
+        required: true
+        default: true
 
   schedule:
     - cron: '0 23 * * *'  # Run daily at midnight UTC
@@ -101,6 +106,7 @@ jobs:
           s3_solutions_dirnames_json_path: ${{ vars.S3_SOLUTIONS_DIRNAMES_JSON_PATH || 'solutions-dirNames.json' }}
           s3_release_notes_dirnames_json_path: ${{ vars.S3_RELEASE_NOTES_DIRNAMES_JSON_PATH || 'release-notes-dirNames.json' }}
           s3_dirnames_json_path: ${{ vars.S3_DIRNAMES_JSON_PATH || 'dirNames.json' }}
+          generate_and_sync_sitemap: ${{ inputs.generate_and_sync_sitemap }}
 
   scheduled_sync_gitbook_docs_it:
     name: Sync italian gitbook Docs to S3 (scheduled on prod)

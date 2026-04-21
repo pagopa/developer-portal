@@ -12,8 +12,8 @@ output "vpc" {
 
 output "security_groups" {
   value = {
-    vpc_endpoints = data.aws_security_group.vpc_endpoints.id
-    ecs_tasks     = aws_security_group.ecs_tasks.id
+    #vpc_endpoints = data.aws_security_group.vpc_endpoints.id
+    ecs_tasks = aws_security_group.ecs_tasks.id
   }
 }
 
