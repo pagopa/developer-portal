@@ -182,11 +182,13 @@ variable "chatbot_models" {
   })
 
   default = {
+
     provider      = "google"
-    generation    = "gemini-2.5-flash-lite"
+    generation    = "gemini-3.1-flash-lite-preview"
     embeddings    = "gemini-embedding-001"
     reranker      = "semantic-ranker-default-004"
     use_multi_rag = false
+
   }
 
   description = "The models used by the AI chatbot"

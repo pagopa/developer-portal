@@ -40,8 +40,8 @@ resource "aws_ecs_cluster" "langfuse" {
 
 resource "aws_ecs_task_definition" "clickhouse" {
   family                   = "langfuse-clickhouse"
-  cpu                      = 512
-  memory                   = 4096
+  cpu                      = 2048
+  memory                   = 5120
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
 
@@ -66,8 +66,8 @@ resource "aws_ecs_task_definition" "clickhouse" {
     {
       name      = "clickhouse"
       image     = "${aws_ecr_repository.repositories["clickhouse"].repository_url}:25.8.8.26-alpine"
-      cpu       = 512
-      memory    = 4096
+      cpu       = 2048
+      memory    = 5120
       essential = true
 
       ulimits = [

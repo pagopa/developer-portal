@@ -120,10 +120,15 @@ variable "api_gateway" {
 
 variable "ecs_monitoring" {
   type = object({
-    cpu       = number
-    memory    = number
-    image_uri = string
-    port      = number
+    cpu                      = number
+    memory                   = number
+    image_uri                = string
+    port                     = number
+    desired_count            = optional(number, 1)
+    autoscaling_max_capacity = optional(number, 1)
+    autoscaling_min_capacity = optional(number, 1)
+
+
   })
   description = "Langfuse configuration for the AI chatbot"
 }
@@ -162,4 +167,9 @@ variable "models" {
   })
 
   description = "The models used by the AI chatbot"
+}
+
+variable "hosted_zone_id" {
+  type        = string
+  description = "The Route53 hosted zone ID for custom domain"
 }

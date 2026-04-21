@@ -6,18 +6,7 @@ resource "aws_cloudwatch_log_group" "lambda_evaluate_logs" {
 resource "aws_iam_role" "lambda_evaluate_role" {
   name                  = "${local.prefix}-evaluate-lambda"
   force_detach_policies = true
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Action = "sts:AssumeRole"
-        Effect = "Allow"
-        Principal = {
-          Service = "lambda.amazonaws.com"
-        }
-      }
-    ]
-  })
+  assume_role_policy    = data.aws_iam_policy_document.lambda_assume_role.json
 }
 
 
@@ -63,9 +52,9 @@ resource "aws_iam_role_policy" "lambda_evaluate_policy" {
         Resource = [
           module.langfuse_public_key.ssm_parameter_arn,
           module.langfuse_secret_key.ssm_parameter_arn,
-          module.google_api_key_ssm_parameter.ssm_parameter_arn,
           module.langfuse_public_key.ssm_parameter_arn,
           module.langfuse_secret_key.ssm_parameter_arn,
+          module.google_service_account_ssm_parameter.ssm_parameter_arn,
         ]
       },
       {
@@ -75,15 +64,17 @@ resource "aws_iam_role_policy" "lambda_evaluate_policy" {
           "sqs:DeleteMessage",
           "sqs:GetQueueAttributes",
         ]
-        Resource = aws_sqs_queue.chatbot_evaluate_queue.arn
+        Resource = aws_sqs_queue.chatbot_queue["evaluate"].arn
       },
       {
         Effect = "Allow"
         Action = [
           "sqs:SendMessage",
-
+          "sqs:GetQueueUrl",
         ]
-        Resource = aws_sqs_queue.chatbot_evaluate_queue_dlq.arn
+        Resource = [
+          aws_sqs_queue.chatbot_queue["monitor"].arn,
+        ]
       },
       {
         Effect = "Allow"
@@ -116,17 +107,24 @@ resource "aws_lambda_function" "chatbot_evaluate_lambda" {
 
   environment {
     variables = {
-      CHB_AWS_SSM_LANGFUSE_PUBLIC_KEY = module.langfuse_public_key.ssm_parameter_name
-      CHB_AWS_SSM_LANGFUSE_SECRET_KEY = module.langfuse_secret_key.ssm_parameter_name
-      CHB_LANGFUSE_HOST               = "https://${local.priv_monitoring_host}"
-      CHB_MODEL_TEMPERATURE           = 0
-      CHB_MODEL_MAXTOKENS             = 2048
-      CHB_AWS_SSM_GOOGLE_API_KEY      = module.google_api_key_ssm_parameter.ssm_parameter_name
-      CHB_AWS_SSM_LANGFUSE_PUBLIC_KEY = module.langfuse_public_key.ssm_parameter_name
-      CHB_AWS_SSM_LANGFUSE_SECRET_KEY = module.langfuse_secret_key.ssm_parameter_name
-      RAGAS_MAX_RETRIES               = 3
-      RAGAS_MAX_WORKERS               = 2
-      RAGAS_DO_NOT_TRACK              = "True"
+      ENVIRONMENT                        = var.environment
+      CHB_MODEL_TEMPERATURE              = 0
+      CHB_MODEL_MAXTOKENS                = 2048
+      CHB_AWS_SSM_GOOGLE_SERVICE_ACCOUNT = module.google_service_account_ssm_parameter.ssm_parameter_name
+      CHB_AWS_SQS_QUEUE_MONITOR_NAME     = aws_sqs_queue.chatbot_queue["monitor"].name
+      CHB_AWS_SQS_QUEUE_EVALUATE_NAME    = aws_sqs_queue.chatbot_queue["evaluate"].name
+      CHB_EMBED_BATCH_SIZE               = 100
+      CHB_EMBEDDING_DIM                  = 768
+      CHB_EMBED_MODEL_ID                 = var.models.embeddings
+      CHB_MODEL_ID                       = var.models.generation
+      CHB_PROVIDER                       = var.models.provider
+      LOG_LEVEL                          = "INFO"
+      CHB_AWS_SSM_LANGFUSE_PUBLIC_KEY    = module.langfuse_public_key.ssm_parameter_name
+      CHB_AWS_SSM_LANGFUSE_SECRET_KEY    = module.langfuse_secret_key.ssm_parameter_name
+      CHB_VERTEXAI_LOCATION              = "europe-west8"
+      RAGAS_MAX_RETRIES                  = 3
+      RAGAS_MAX_WORKERS                  = 2
+      RAGAS_DO_NOT_TRACK                 = "True"
     }
   }
 
@@ -149,7 +147,7 @@ resource "aws_lambda_function" "chatbot_evaluate_lambda" {
 }
 
 resource "aws_lambda_event_source_mapping" "evaluate_lambda_sqs" {
-  event_source_arn = aws_sqs_queue.chatbot_evaluate_queue.arn
+  event_source_arn = aws_sqs_queue.chatbot_queue["evaluate"].arn
   function_name    = aws_lambda_function.chatbot_evaluate_lambda.arn
   enabled          = true
   batch_size       = 5
@@ -167,11 +165,11 @@ resource "aws_lambda_function_event_invoke_config" "lambda_evaluate" {
   /*
   destination_config {
     on_failure {
-      destination = aws_sqs_queue.chatbot_evaluate_queue_dlq.arn
+      destination = aws_sqs_queue.chatbot_dlq["evaluate"].arn
     }
 
     on_success {
-      destination = aws_sqs_queue.chatbot_evaluate_queue_dlq.arn
+      destination = aws_sqs_queue.chatbot_dlq["evaluate"].arn
     }
   }
   */

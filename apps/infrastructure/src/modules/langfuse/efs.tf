@@ -1,5 +1,6 @@
 resource "aws_efs_file_system" "clickhouse_data" {
-  creation_token = "${local.prefix}-clickhouse-data"
+  creation_token  = "${local.prefix}-clickhouse-data"
+  throughput_mode = "elastic"
 
   tags = {
     Name = "clickhouse-data"
