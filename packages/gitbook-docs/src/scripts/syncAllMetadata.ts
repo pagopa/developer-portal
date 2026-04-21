@@ -211,6 +211,7 @@ function buildPathFromSegments(segments: Array<string | undefined>): string {
 function generateUrlPath(options: {
   filePath: string;
   slug: string;
+  dirName: string;
   productSlug?: string;
   versionName?: string;
   metadataType?: MetadataType;
@@ -222,6 +223,7 @@ function generateUrlPath(options: {
     slug,
     productSlug,
     versionName,
+    dirName,
     metadataType = MetadataType.Guide,
     landingFile,
     locale,
@@ -238,7 +240,7 @@ function generateUrlPath(options: {
   const s3Path = isAlreadyS3Path
     ? normalizedFilePath
     : localPathToS3Path(filePath);
-  const restOfPath = sitePathFromS3Path(s3Path, landingFile);
+  const restOfPath = sitePathFromS3Path(s3Path, dirName, landingFile);
 
   switch (metadataType) {
     case MetadataType.Guide:
@@ -351,6 +353,7 @@ async function processGuidesMetadata(
           versionName: guideInfo.versionName,
           metadataType: MetadataType.Guide,
           locale: LOCALE,
+          dirName: guideInfo.dirName,
         });
 
         const baseItem: MetadataItem = {
@@ -371,6 +374,7 @@ async function processGuidesMetadata(
             productSlug: guideInfo.productSlug,
             metadataType: MetadataType.Guide,
             locale: LOCALE,
+            dirName: guideInfo.dirName,
           });
 
           guideItems.push({
@@ -460,6 +464,7 @@ async function processSolutionsMetadata(
           metadataType: MetadataType.Solution,
           landingFile: solution.landingUseCaseFile,
           locale: LOCALE,
+          dirName,
         });
 
         itemList.push({
@@ -525,6 +530,7 @@ async function processReleaseNotesMetadata(
           metadataType: MetadataType.ReleaseNote,
           landingFile: releaseNote.landingFile,
           locale: LOCALE,
+          dirName: dirName,
         });
 
         itemList.push({
@@ -604,6 +610,7 @@ async function generateUrlParsingMetadata(
         versionName: info.versionName,
         metadataType: info.metadataType,
         locale: LOCALE,
+        dirName: info.dirName,
       }),
     }));
 
