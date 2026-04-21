@@ -1,5 +1,11 @@
 # infrastructure
 
+## 11.3.0
+
+### Minor Changes
+
+- 8940f72: Update S3 video recording resource base policy to allow the role ContentManager\* to upload files.
+
 ## 11.2.0
 
 ### Minor Changes
