@@ -316,8 +316,8 @@ resource "aws_cloudfront_response_headers_policy" "ingest_cors_policy" {
   }
 }
 
-# Policy that allows CloudFront (via OAC) to read from the bucket
-resource "aws_s3_bucket_policy" "allow_cloudfront_oac" {
+# Policy that allows access to the S3 bucket recordings.
+resource "aws_s3_bucket_policy" "allow_access_recordings" {
   bucket = aws_s3_bucket.ivs_recordings.id
   policy = jsonencode({
     Version = "2012-10-17",
@@ -331,6 +331,19 @@ resource "aws_s3_bucket_policy" "allow_cloudfront_oac" {
           StringEquals = {
             # This condition is crucial: it restricts access to ONLY this specific CloudFront distribution
             "AWS:SourceArn" = aws_cloudfront_distribution.vod.arn
+          }
+        }
+      },
+      {
+        Effect = "Allow",
+        Principal = {
+          AWS = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"
+        },
+        Action   = "s3:PutObject",
+        Resource = "${aws_s3_bucket.ivs_recordings.arn}/*"
+        Condition = {
+          ArnLike = {
+            "aws:PrincipalArn" = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/aws-reserved/sso.amazonaws.com/eu-west-1/AWSReservedSSO_DevPortalContentsManager*"
           }
         }
       }
