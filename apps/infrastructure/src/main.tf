@@ -293,11 +293,14 @@ module "video_streaming" {
 
 }
 
-# strapi-v5  for testing purposes only
-module "strapi_v5" {
-  source = "./modules/strapi5"
+################################################################################
+# Strapi4 temporary instance for migration and testing purposes
+################################################################################
 
-  count = var.environment == "dev" ? 1 : 0
+module "strapi4" {
+  source = "./modules/strapi_migration"
+
+  count = var.environment == "uat" ? 1 : 0
 
   providers = {
     aws           = aws
@@ -309,11 +312,36 @@ module "strapi_v5" {
   tags              = var.tags
 
   dns_domain_name           = var.dns_domain_name
-  dns_domain_name_cms       = "strapiv5.${var.dns_domain_name}"
+  dns_domain_name_cms       = "strapiv4.${var.dns_domain_name}"
   hosted_zone_id            = module.core.hosted_zone_id
   ac_integration_is_enabled = var.ac_integration_is_enabled
   ac_base_url_param         = var.ac_integration_is_enabled ? module.active_campaign[0].base_url_param : null
   ac_api_key_param          = var.ac_integration_is_enabled ? module.active_campaign[0].api_key_param : null
-  cms_app_image_tag         = var.strapi_v5_image_tag
+  cms_app_image_tag         = var.strapi_v4_image_tag
   rds_scaling_configuration = var.rds_cms_scaling_configuration
+}
+
+
+################################################################################
+# dos68k Chatbot API
+################################################################################
+module "dos68k_chatbotapi" {
+  source = "./modules/dos68k_chatbotapi"
+
+  count = var.environment == "dev" ? 1 : 0
+
+  environment     = var.environment
+  dns_domain_name = var.dns_domain_name
+
+  vpc = {
+    id              = module.cms.vpc.id
+    private_subnets = module.cms.vpc.private_subnets
+  }
+
+  ecs_chatbotapi = var.ecs_chatbotapi
+
+  redis_host                  = var.create_chatbot ? module.chatbot[0].redis_nlb_dns_name : ""
+  redis_nlb_security_group_id = var.create_chatbot ? module.chatbot[0].security_groups.redis : ""
+
+  enable_scheduled_scaling = var.ecs_chatbotapi_enable_scheduled_scaling
 }

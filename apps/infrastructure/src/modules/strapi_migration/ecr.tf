@@ -2,7 +2,7 @@
 module "ecr" {
   source = "git::https://github.com/terraform-aws-modules/terraform-aws-ecr.git?ref=9f4b587846551110b0db199ea5599f016570fefe" # v1.6.0
 
-  repository_name                 = "strapi-v5"
+  repository_name                 = "strapi-v4"
   repository_image_scan_on_push   = "true"
   repository_image_tag_mutability = "IMMUTABLE"
   repository_lifecycle_policy = jsonencode({

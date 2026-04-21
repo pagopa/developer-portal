@@ -57,7 +57,7 @@ resource "aws_ecs_task_definition" "cms_task_def" {
 module "cms_ecs_service" {
   source = "git::https://github.com/terraform-aws-modules/terraform-aws-ecs.git//modules/service?ref=378d0cb7e8fde47e8ddf58461ed1974486dbbd5d" # v7.1.0
 
-  name                           = "cms-ecs-v5"
+  name                           = "cms-ecs-v4"
   cluster_arn                    = data.aws_ecs_cluster.cms_ecs_cluster.arn
   desired_count                  = 1
   create_task_definition         = false
@@ -81,16 +81,14 @@ module "cms_ecs_service" {
 
   load_balancer = {
     cms-target-group = {
-      target_group_arn = module.cms_load_balancer.target_groups["cms-target-group-v5"].arn
+      target_group_arn = module.cms_load_balancer.target_groups["cms-target-group-v4"].arn
       container_name   = "cms-docker"
       container_port   = var.cms_app_port
     }
     cms-load-balancer-internal = {
-      target_group_arn = module.cms_load_balancer_internal.target_groups["cms-target-group-internal-v5"].arn
+      target_group_arn = module.cms_load_balancer_internal.target_groups["cms-target-group-internal-v4"].arn
       container_name   = "cms-docker"
       container_port   = var.cms_app_port
     }
   }
-
-
 }
