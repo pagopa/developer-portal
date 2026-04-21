@@ -1,5 +1,12 @@
 # infrastructure
 
+## 11.2.0
+
+### Minor Changes
+
+- 6d58887: Dos68 API Gateway configuration based on openapi.json file instead of Terraform resources and proxies
+- b26e564: Refactor module strapi_migration to create a temporary strapi4 stack as a backup to migrate to strapi v5
+
 ## 11.1.0
 
 ### Minor Changes
