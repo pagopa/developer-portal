@@ -1,5 +1,16 @@
 # nextjs-website
 
+## 17.1.0
+
+### Minor Changes
+
+- 859f652: Add class modifiers support to chat links and update styles
+
+### Patch Changes
+
+- Updated dependencies [3bc622e]
+  - gitbook-docs@2.2.1
+
 ## 17.0.1
 
 ### Patch Changes
