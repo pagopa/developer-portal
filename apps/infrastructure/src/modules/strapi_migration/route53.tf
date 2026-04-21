@@ -5,7 +5,6 @@ locals {
   )
 }
 
-
 resource "aws_route53_record" "certificate" {
   for_each = {
     for dvo in local.domain_validations_options : dvo.domain_name => {
@@ -32,7 +31,7 @@ module "cms_dns_records" {
 
   records = [
     {
-      name = "strapiv5"
+      name = "strapiv4"
       type = "A"
       alias = {
         name                   = module.cms_load_balancer.dns_name

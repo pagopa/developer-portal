@@ -1,5 +1,19 @@
 # infrastructure
 
+## 11.2.0
+
+### Minor Changes
+
+- 6d58887: Dos68 API Gateway configuration based on openapi.json file instead of Terraform resources and proxies
+- b26e564: Refactor module strapi_migration to create a temporary strapi4 stack as a backup to migrate to strapi v5
+
+## 11.1.0
+
+### Minor Changes
+
+- d64e0fa: removes the AWS infrastructure components to test the new version of Strapi 5 whilst retaining the previous version
+- ce75bdb: Poc dos68k chatbot with new infrastructure module.
+
 ## 11.0.0
 
 ### Major Changes

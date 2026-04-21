@@ -1,5 +1,11 @@
 # gitbook-docs
 
+## 2.2.1
+
+### Patch Changes
+
+- 3bc622e: Code cleanup and make sitemap generation optional
+
 ## 2.2.0
 
 ### Minor Changes
