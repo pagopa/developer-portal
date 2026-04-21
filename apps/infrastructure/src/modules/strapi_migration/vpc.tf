@@ -70,7 +70,10 @@ data "aws_vpc_endpoint" "s3" {
 
 */
 
+/*
 data "aws_security_group" "vpc_endpoints" {
   vpc_id = data.aws_vpc.cms.id
   name   = "dev-vpc-endpoints20240827102529812000000001"
 }
+
+*/
