@@ -30,7 +30,7 @@ export const column: Schema = {
   attributes: {
     width: { type: String },
   },
-  children: ['paragraph'],
+  children: ['paragraph', 'list', 'code', 'heading', 'blockquote'],
   transform: (node, config) => {
     const attrs = node.transformAttributes(config);
     const children = node.transformChildren(config);
