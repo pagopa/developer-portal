@@ -1,5 +1,11 @@
 # nextjs-website
 
+## 17.1.1
+
+### Patch Changes
+
+- e2c8fd2: Fix API data fetch in page component
+
 ## 17.1.0
 
 ### Minor Changes
