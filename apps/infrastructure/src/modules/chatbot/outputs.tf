@@ -45,3 +45,8 @@ output "cognito_master_user_password_param_arn" {
   description = "ARN of the SSM parameter storing the chatbot Cognito master user password"
   value       = module.master_user_password.ssm_parameter_arn
 }
+
+output "redis_nlb_dns_name" {
+  description = "DNS name of the internal NLB fronting the Redis ECS service"
+  value       = module.nlb.dns_name
+}

@@ -80,23 +80,6 @@ variable "hosted_zone_id" {
   description = "The ID of the hosted zone to create the public DNS records in"
 }
 
-variable "ses_domain_identity_arn" {
-  type        = string
-  description = "The ARN of the SES domain identity"
-}
-
-variable "mfa_code_duration_in_minutes" {
-  type        = number
-  description = "The duration for which the MFA code is valid in minutes"
-  default     = 15
-}
-
-variable "signup_allowed_email_domains" {
-  type        = list(string)
-  description = "List of allowed email domains for signup"
-  default     = ["pagopa.it", "uqido.com", "aizoongroup.com", "dgsspa.com"]
-}
-
 variable "nextjs_version" {
   type        = string
   description = "The version of Next.js to use"
@@ -139,4 +122,40 @@ variable "vpc" {
   default = null
 
   description = "The VPC used to deploy the lambda functions in. Configure this only when you want the lambda to access private resources contained in the VPC."
+}
+
+variable "webinar_heartbeat_url" {
+  type        = string
+  description = "The URL of the webinar heartbeat endpoint"
+}
+
+variable "webinar_heartbeat_interval_in_seconds" {
+  type        = number
+  description = "The interval in seconds for the webinar heartbeat"
+  default     = 60
+}
+
+variable "cognito_user_pool_id" {
+  type        = string
+  description = "The ID of the Cognito User Pool from the auth module"
+}
+
+variable "cognito_user_pool_client_id" {
+  type        = string
+  description = "The ID of the Cognito User Pool Client from the auth module"
+}
+
+variable "cognito_identity_pool_id" {
+  type        = string
+  description = "The ID of the Cognito Identity Pool from the auth module"
+}
+
+variable "cognito_authenticated_user_role_id" {
+  type        = string
+  description = "The ID of the IAM role for authenticated users from the auth module"
+}
+
+variable "cognito_authenticated_host_user_role_id" {
+  type        = string
+  description = "The ID of the IAM role for authenticated host users from the auth module"
 }

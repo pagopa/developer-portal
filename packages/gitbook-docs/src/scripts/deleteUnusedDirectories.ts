@@ -71,16 +71,14 @@ async function fetchAllDirNamesFromStrapi(): Promise<{ dirNames: string[] }> {
   );
 
   const guidesDirNames = guidesResult.data
-    .map((guide) =>
-      guide.attributes.versions.map((version) => version.dirName).flat()
-    )
+    .map((guide) => guide.versions.map((version) => version.dirName))
     .flat();
 
   const solutionsDirNames = solutionsResult.data.map((solution) => {
-    return solution.attributes.dirName;
+    return solution.dirName;
   });
   const releaseNotesDirNames = releaseNotesResult.data.map((releaseNote) => {
-    return releaseNote.attributes.dirName;
+    return releaseNote.dirName;
   });
   return {
     dirNames: [guidesDirNames, solutionsDirNames, releaseNotesDirNames].flat(),

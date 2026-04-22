@@ -4,7 +4,7 @@
 import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
-import { makeBrowserEnv } from '@/BrowserEnv';
+import { makeBrowserEnv } from '@/browserEnv';
 import {
   InsertWebinarQuestion,
   WebinarQuestionUpdate,
@@ -12,12 +12,18 @@ import {
   listWebinarQuestions,
   updateWebinarQuestion as _updateWebinarQuestion,
 } from './webinars/webinarQuestions';
-import { makeBrowserConfig, publicEnv } from '@/BrowserConfig';
+import { makeBrowserConfig, publicEnv } from '@/browserConfig';
 import {
   deleteWebinarSubscription,
   insertWebinarSubscription,
   listUserWebinarSubscriptions,
 } from './webinars/webinarSubscriptions';
+import {
+  makeWebinarHeartbeatEnvConfig,
+  postWebinarHeartbeat,
+  WebinarHeartbeatParams,
+} from './webinars/webinarHeartbeat';
+import { webinarHeartbeatUrl } from '@/config';
 
 // a BrowserEnv instance ready to be used
 const browserEnv = pipe(
@@ -41,6 +47,18 @@ const makePromiseFromTE = <E, A>(input: TE.TaskEither<E, A>) =>
 
 export const sendWebinarQuestion = (question: InsertWebinarQuestion) =>
   pipe(insertWebinarQuestion(question)(browserEnv), makePromiseFromTE)();
+
+const getWebinarHeartbeatEnv = () =>
+  pipe(
+    makeWebinarHeartbeatEnvConfig(webinarHeartbeatUrl),
+    E.getOrElseW((error) => {
+      // eslint-disable-next-line functional/no-throw-statements
+      throw new Error(`Failed to create WebinarHeartbeatEnv: ${error}`);
+    })
+  );
+
+export const sendWebinarHeartbeat = (params: WebinarHeartbeatParams) =>
+  postWebinarHeartbeat(params)(getWebinarHeartbeatEnv());
 
 export const getWebinarQuestionList = (webinarId: string) =>
   pipe(listWebinarQuestions(webinarId)(browserEnv), makePromiseFromTE)();

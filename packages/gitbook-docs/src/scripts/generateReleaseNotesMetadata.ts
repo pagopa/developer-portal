@@ -34,10 +34,11 @@ const s3Client = makeS3Client();
 function generateUrlPath(
   filePath: string,
   productSlug: string,
+  dirName: string,
   landingFile: string,
   locale?: string
 ): string {
-  const restOfPath = sitePathFromS3Path(filePath, landingFile);
+  const restOfPath = sitePathFromS3Path(filePath, dirName, landingFile);
   if (!restOfPath) {
     return [locale, `/${productSlug}/release-note`].filter(Boolean).join('/');
   } else {
@@ -52,7 +53,7 @@ async function convertReleaseNoteToMetadataItems(
 ): Promise<MetadataItem[]> {
   const items: MetadataItem[] = [];
   for (const releaseNote of strapiReleaseNotes) {
-    const dirName = releaseNote.attributes.dirName;
+    const dirName = releaseNote.dirName;
     const releaseNoteFiles = (
       await listS3Files(
         `${S3_PATH_TO_GITBOOK_DOCS}/${dirName}`,
@@ -78,13 +79,13 @@ async function convertReleaseNoteToMetadataItems(
         s3Client
       );
       const title = extractTitleFromMarkdown(content);
-      const productSlug =
-        releaseNote.attributes.product?.data?.attributes?.slug;
+      const productSlug = releaseNote.product?.slug;
       if (dirName && menuPath && content && productSlug) {
         const path = generateUrlPath(
           filePath,
           productSlug,
-          releaseNote.attributes.landingFile,
+          releaseNote.dirName,
+          releaseNote.landingFile,
           LOCALE
         );
         items.push({

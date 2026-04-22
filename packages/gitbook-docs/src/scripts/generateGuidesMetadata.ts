@@ -35,10 +35,11 @@ function generateUrlPath(
   filePath: string,
   guideSlug: string,
   productSlug: string,
+  dirName: string,
   versionName?: string,
   locale?: string
 ): string {
-  const restOfPath = sitePathFromS3Path(filePath, undefined);
+  const restOfPath = sitePathFromS3Path(filePath, dirName, undefined);
   return [
     locale,
     `/${productSlug}`,
@@ -55,14 +56,14 @@ async function convertGuideToMetadataItems(
   strapiGuides: StrapiGuide[]
 ): Promise<MetadataItem[]> {
   const guideInfoList: MetadataInfo[] = strapiGuides
-    .filter((guide) => !!guide.attributes.product?.data?.attributes?.slug)
+    .filter((guide) => !!guide.product?.slug)
     .flatMap((guide) =>
-      guide.attributes.versions.map((version) => ({
+      guide.versions.map((version) => ({
         versionName: version.version,
         isMainVersion: version.main,
         dirName: version.dirName,
-        slug: guide.attributes.slug,
-        productSlug: `${guide.attributes.product?.data?.attributes?.slug}`,
+        slug: guide.slug,
+        productSlug: `${guide.product?.slug}`,
       }))
     );
 
@@ -98,6 +99,7 @@ async function convertGuideToMetadataItems(
           filePath,
           guideInfo.slug,
           guideInfo.productSlug,
+          guideInfo.dirName,
           guideInfo.versionName,
           LOCALE
         );
@@ -115,6 +117,7 @@ async function convertGuideToMetadataItems(
             filePath,
             guideInfo.slug,
             guideInfo.productSlug,
+            guideInfo.dirName,
             undefined,
             LOCALE
           );

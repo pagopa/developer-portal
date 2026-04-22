@@ -1,5 +1,17 @@
 # chatbot-evaluate
 
+## 1.1.3
+
+### Patch Changes
+
+- 8faf184: Refactor Vertex AI credential handling to use centralized settings and improve error logging for missing credentials
+
+## 1.1.2
+
+### Patch Changes
+
+- 6a1a271: Migrated the Gemini models initialization from the standard Google AI Studio API to Vertex AI.
+
 ## 1.1.1
 
 ### Patch Changes

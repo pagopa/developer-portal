@@ -1,15 +1,32 @@
-import { SignUpUserData } from '@/lib/types/sign-up';
+import type { SignUpUserData } from '@/lib/auth/user/types';
 
 export const passwordMatcher =
   /(?=(.*[0-9]))(?=.*[!@#$%^&*()\\[\]{}\-_+=~`|:;"'<>,./?])(?=.*[a-z])(?=(.*[A-Z]))(?=(.*)).{8,}/;
+export const emailMatcher =
+  /^[a-z0-9._%+-]+@[a-z0-9-]+(\.[a-z0-9-]+)*\.[a-z]{2,63}$/i;
+export const MAX_INPUT_LENGTH = 100;
 
-export const emailMatcher = /^[a-z0-9-._+]+@([a-z0-9-]+\.)+[a-z]{2,4}$/;
+export const validateMaxLenght = (value: string): string | null => {
+  return value.trim().length > MAX_INPUT_LENGTH ? 'maxLengthFieldError' : null;
+};
 
-export const validateField = (value: string): string | null =>
-  !value || value.trim().length === 0 ? 'requiredFieldError' : null;
+export const validateRequired = (value: string): string | null => {
+  return value.trim().length === 0 ? 'requiredFieldError' : null;
+};
+
+export const validateNameFormat = (value: string): string | null => {
+  const trimmedValue = value.trim();
+  if (trimmedValue.length === 0) return null;
+
+  return !/^[\p{L}\p{M}\p{N}]+(?:[ _'-]?[\p{L}\p{M}\p{N}]+)*$/u.test(
+    trimmedValue
+  )
+    ? 'nameFieldError'
+    : null;
+};
 
 export const validateEmail = (value: string): string | null => {
-  const isNotValid = validateField(value);
+  const isNotValid = validateRequired(value) || validateMaxLenght(value);
   if (isNotValid) {
     return isNotValid;
   }
@@ -18,7 +35,7 @@ export const validateEmail = (value: string): string | null => {
 };
 
 export const validatePassword = (value: string): string | null => {
-  const isNotValid = validateField(value);
+  const isNotValid = validateRequired(value) || validateMaxLenght(value);
   if (isNotValid) {
     return isNotValid;
   }

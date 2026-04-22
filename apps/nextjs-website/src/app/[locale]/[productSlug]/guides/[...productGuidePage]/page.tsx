@@ -1,8 +1,8 @@
 import ProductLayout, {
   ProductLayoutProps,
 } from '@/components/organisms/ProductLayout/ProductLayout';
-import { getGuidePage } from '@/lib/api';
-import { Product } from '@/lib/types/product';
+import { Product } from '@/lib/products/types';
+import { getCustomMessagesMapProps, getGuidePage } from '@/lib/api';
 import React from 'react';
 import { ParseContentConfig } from 'gitbook-docs/parseContent';
 import { Metadata } from 'next';
@@ -12,7 +12,7 @@ import {
 } from '@/helpers/metadata.helpers';
 import GitBookTemplate from '@/components/templates/GitBookTemplate/GitBookTemplate';
 import { productPageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
-import { getUrlReplaceMapProps } from '@/lib/cmsApi';
+import { getUrlReplaceMap } from '@/lib/api';
 import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
 import {
   breadcrumbItemByProduct,
@@ -20,8 +20,11 @@ import {
   productToBreadcrumb,
 } from '@/helpers/structuredData.helpers';
 import PageNotFound from '@/app/[locale]/not-found';
+import { BlocksContent } from '@strapi/blocks-react-renderer';
 
 export const dynamic = 'force-dynamic';
+
+const GUIDES_TRANSLATION_DISCLAIMER_MESSAGE_KEY = 'guidesTranslationDisclaimer';
 
 type Params = {
   locale: string;
@@ -46,6 +49,7 @@ export type ProductGuidePageProps = {
   menu: string;
   body: string;
   bodyConfig: ParseContentConfig;
+  guideTranslationDisclaimer?: BlocksContent;
 } & ProductLayoutProps;
 
 export async function generateMetadata(props: {
@@ -85,14 +89,21 @@ export async function generateMetadata(props: {
 
 const Page = async ({ params }: { params: Promise<Params> }) => {
   const { locale, productSlug, productGuidePage } = await params;
-  const [guidePageProps, urlReplaceMap] = await Promise.all([
+  const [guidePageProps, urlReplaceMap, customMessagesMap] = await Promise.all([
     getGuidePage(productGuidePage ?? [''], locale, productSlug),
-    getUrlReplaceMapProps(locale),
+    getUrlReplaceMap(locale),
+    getCustomMessagesMapProps(locale).catch((error: Error) => {
+      console.warn(
+        `Failed to fetch custom messages:\n${error.message}\n${error.stack}`
+      );
+      return new Map(); // Fallback to empty map if fetching custom messages fails
+    }),
   ]);
 
   if (!guidePageProps) {
     return <PageNotFound />;
   }
+
   const {
     product,
     page,
@@ -117,6 +128,9 @@ const Page = async ({ params }: { params: Promise<Params> }) => {
       ...bodyConfig,
       urlReplaces: urlReplaceMap,
     },
+    guideTranslationDisclaimer: version.showGuidesTranslationDisclaimer
+      ? customMessagesMap.get(GUIDES_TRANSLATION_DISCLAIMER_MESSAGE_KEY)
+      : undefined,
   };
 
   const structuredData = generateStructuredDataScripts({

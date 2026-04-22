@@ -32,10 +32,11 @@ const s3Client = makeS3Client();
 function generateUrlPath(
   filePath: string,
   slug: string,
+  dirName: string,
   landingUseCaseFile: string,
   locale?: string
 ): string {
-  const restOfPath = sitePathFromS3Path(filePath, landingUseCaseFile);
+  const restOfPath = sitePathFromS3Path(filePath, dirName, landingUseCaseFile);
   if (!restOfPath) {
     return [locale, `/solutions/${slug}/details`].filter(Boolean).join('/');
   } else {
@@ -50,7 +51,7 @@ async function convertSolutionToMetadataItems(
 ): Promise<MetadataItem[]> {
   const items: MetadataItem[] = [];
   for (const solution of strapiSolutions) {
-    const dirName = solution.attributes.dirName;
+    const dirName = solution.dirName;
     const solutionFiles = (
       await listS3Files(
         `${S3_PATH_TO_GITBOOK_DOCS}/${dirName}`,
@@ -79,8 +80,9 @@ async function convertSolutionToMetadataItems(
       if (dirName && menuPath && content) {
         const path = generateUrlPath(
           filePath,
-          solution.attributes.slug,
-          solution.attributes.landingUseCaseFile,
+          solution.slug,
+          solution.dirName,
+          solution.landingUseCaseFile,
           LOCALE
         );
         items.push({

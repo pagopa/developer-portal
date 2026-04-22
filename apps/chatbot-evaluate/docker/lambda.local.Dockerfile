@@ -18,6 +18,7 @@ RUN poetry install --with dev
 
 COPY ./src ${LAMBDA_TASK_ROOT}/src
 COPY ./config ${LAMBDA_TASK_ROOT}/config
+COPY ./.google_service_account.json ${LAMBDA_TASK_ROOT}/.google_service_account.json
 
 RUN echo "appuser:x:1000:1000::/home/appuser:/bin/sh" >> /etc/passwd \
   && mkdir -p /home/appuser \

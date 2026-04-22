@@ -1,5 +1,49 @@
 # infrastructure
 
+## 11.3.0
+
+### Minor Changes
+
+- 8940f72: Update S3 video recording resource base policy to allow the role ContentManager\* to upload files.
+
+## 11.2.0
+
+### Minor Changes
+
+- 6d58887: Dos68 API Gateway configuration based on openapi.json file instead of Terraform resources and proxies
+- b26e564: Refactor module strapi_migration to create a temporary strapi4 stack as a backup to migrate to strapi v5
+
+## 11.1.0
+
+### Minor Changes
+
+- d64e0fa: removes the AWS infrastructure components to test the new version of Strapi 5 whilst retaining the previous version
+- ce75bdb: Poc dos68k chatbot with new infrastructure module.
+
+## 11.0.0
+
+### Major Changes
+
+- c76af59: - Refactor: new module auth where we moved the developer portal cognito user pool.
+  - ApiGw http api with cognito auth to expose the webinar ingest url.
+
+### Minor Changes
+
+- 452e439: Fix static-content cloudfront security headers
+- d6af739: Update lambda function code since the athena query it has to execute changed.
+
+## 10.2.0
+
+### Minor Changes
+
+- c46ac66: Open next new env variable the client needs to send webinar metrics.
+
+## 10.1.0
+
+### Minor Changes
+
+- 3259512: CloudFront security headers to prevent clickjacking
+
 ## 10.0.0
 
 ### Major Changes

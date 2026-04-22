@@ -6,7 +6,8 @@ fully mocked so no real API calls or environment setup beyond conftest.py is
 required.
 """
 
-from unittest.mock import MagicMock, patch
+import pytest
+from unittest.mock import AsyncMock, MagicMock, patch
 
 from src.modules.extractor import (
     _escape_braces,
@@ -188,13 +189,14 @@ class TestSplitBodyText:
 class TestExtractSlice:
     def _patched_program(self, return_value):
         """Returns (mock_cls, mock_program) where mock_cls.from_defaults() returns
-        mock_program and calling mock_program() returns return_value."""
-        mock_program = MagicMock(return_value=return_value)
+        mock_program and awaiting mock_program.acall() returns return_value."""
+        mock_program = MagicMock()
+        mock_program.acall = AsyncMock(return_value=return_value)
         mock_cls = MagicMock()
         mock_cls.from_defaults.return_value = mock_program
         return mock_cls, mock_program
 
-    def test_returns_cleaned_doc_on_success(self):
+    async def test_returns_cleaned_doc_on_success(self):
         doc = _make_cleaned_doc()
         llm = _make_llm()
         program_cls, _ = self._patched_program(doc)
@@ -203,20 +205,21 @@ class TestExtractSlice:
             "src.modules.extractor.LLMTextCompletionProgram",
             program_cls,
         ):
-            result = _extract_document(
+            result = await _extract_document(
                 "body text", _make_input_doc(), llm, SIMPLE_PROMPT_TEMPLATE
             )
 
         assert result is doc
 
-    def test_returns_none_when_llm_returns_wrong_type(self):
+    async def test_returns_none_when_llm_returns_wrong_type(self):
         llm = _make_llm()
-        mock_program = MagicMock(return_value="not a CleanedDocument")
+        mock_program = MagicMock()
+        mock_program.acall = AsyncMock(return_value="not a CleanedDocument")
         mock_cls = MagicMock()
         mock_cls.from_defaults.return_value = mock_program
 
         with patch("src.modules.extractor.LLMTextCompletionProgram", mock_cls):
-            result = _extract_document(
+            result = await _extract_document(
                 "body", _make_input_doc(), llm, SIMPLE_PROMPT_TEMPLATE
             )
 
@@ -237,29 +240,33 @@ class TestExtractDocumentSingleSlice:
         mock.similarity_threshold = 0.8
         return mock
 
-    def test_happy_path_returns_cleaned_doc(self):
+    async def test_happy_path_returns_cleaned_doc(self):
         doc = _make_cleaned_doc()
         input_doc = _make_input_doc()
         llm = _make_llm()
 
         with (
             patch("src.modules.extractor.SETTINGS", self._mock_settings()),
-            patch("src.modules.extractor._extract_document", return_value=doc),
+            patch(
+                "src.modules.extractor._extract_document", AsyncMock(return_value=doc)
+            ),
             patch("src.modules.extractor.validate_extracted_text", return_value=True),
         ):
-            result = extract_document(input_doc, llm, SIMPLE_PROMPT_TEMPLATE)
+            result = await extract_document(input_doc, llm, SIMPLE_PROMPT_TEMPLATE)
 
         assert result is doc
 
-    def test_returns_none_when_slice_fails(self):
+    async def test_returns_none_when_slice_fails(self):
         input_doc = _make_input_doc()
         llm = _make_llm()
 
         with (
             patch("src.modules.extractor.SETTINGS", self._mock_settings()),
-            patch("src.modules.extractor._extract_document", return_value=None),
+            patch(
+                "src.modules.extractor._extract_document", AsyncMock(return_value=None)
+            ),
         ):
-            result = extract_document(input_doc, llm, SIMPLE_PROMPT_TEMPLATE)
+            result = await extract_document(input_doc, llm, SIMPLE_PROMPT_TEMPLATE)
 
         assert result is None
 
@@ -284,13 +291,11 @@ class TestExtractDocumentMultiSlice:
     def _make_slices(self, texts: list[str]) -> list[CleanedDocument]:
         return [_make_cleaned_doc(t) for t in texts]
 
-    def test_happy_path_concatenates_texts(self):
+    async def test_happy_path_concatenates_texts(self):
         slices = ["First part.", "Second part.", "Third part."]
         docs = self._make_slices(slices)
         input_doc = _make_input_doc(body="x" * 200)
         llm = _make_llm()
-
-        slice_iter = iter(docs)
 
         with (
             patch("src.modules.extractor.SETTINGS", self._mock_settings()),
@@ -300,11 +305,11 @@ class TestExtractDocumentMultiSlice:
             ),
             patch(
                 "src.modules.extractor._extract_document",
-                side_effect=lambda **kw: next(slice_iter),
+                AsyncMock(side_effect=docs),
             ),
             patch("src.modules.extractor.validate_extracted_text", return_value=True),
         ):
-            result = extract_document(input_doc, llm, SIMPLE_PROMPT_TEMPLATE)
+            result = await extract_document(input_doc, llm, SIMPLE_PROMPT_TEMPLATE)
 
         assert result is not None
         assert result.text == "First part. Second part. Third part."
@@ -312,21 +317,12 @@ class TestExtractDocumentMultiSlice:
         assert result.title == docs[0].title
         assert result.url == docs[0].url
 
-    def test_failed_slices_are_skipped(self):
+    async def test_failed_slices_are_skipped(self):
         doc1 = _make_cleaned_doc("Part one.")
         doc3 = _make_cleaned_doc("Part three.")
         # Slice 2 fails (None), slices 1 and 3 succeed
-        side_effects = [doc1, None, doc3]
         input_doc = _make_input_doc(body="x" * 200)
         llm = _make_llm()
-
-        idx = 0
-
-        def _slice_side_effect(**kw):
-            nonlocal idx
-            result = side_effects[idx]
-            idx += 1
-            return result
 
         with (
             patch("src.modules.extractor.SETTINGS", self._mock_settings()),
@@ -336,16 +332,16 @@ class TestExtractDocumentMultiSlice:
             ),
             patch(
                 "src.modules.extractor._extract_document",
-                side_effect=_slice_side_effect,
+                AsyncMock(side_effect=[doc1, None, doc3]),
             ),
             patch("src.modules.extractor.validate_extracted_text", return_value=True),
         ):
-            result = extract_document(input_doc, llm, SIMPLE_PROMPT_TEMPLATE)
+            result = await extract_document(input_doc, llm, SIMPLE_PROMPT_TEMPLATE)
 
         assert result is not None
         assert result.text == "Part one. Part three."
 
-    def test_all_slices_fail_returns_none(self):
+    async def test_all_slices_fail_returns_none(self):
         input_doc = _make_input_doc(body="x" * 200)
         llm = _make_llm()
 
@@ -355,18 +351,18 @@ class TestExtractDocumentMultiSlice:
                 "src.modules.extractor._split_body_text",
                 return_value=["s1", "s2"],
             ),
-            patch("src.modules.extractor._extract_document", return_value=None),
+            patch(
+                "src.modules.extractor._extract_document", AsyncMock(return_value=None)
+            ),
         ):
-            result = extract_document(input_doc, llm, SIMPLE_PROMPT_TEMPLATE)
+            result = await extract_document(input_doc, llm, SIMPLE_PROMPT_TEMPLATE)
 
         assert result is None
 
-    def test_merged_validation_failure_returns_none(self):
+    async def test_merged_validation_failure_returns_none(self):
         slices = self._make_slices(["Part A.", "Part B."])
         input_doc = _make_input_doc(body="x" * 200)
         llm = _make_llm()
-
-        slice_iter = iter(slices)
 
         with (
             patch("src.modules.extractor.SETTINGS", self._mock_settings()),
@@ -376,15 +372,15 @@ class TestExtractDocumentMultiSlice:
             ),
             patch(
                 "src.modules.extractor._extract_document",
-                side_effect=lambda **kw: next(slice_iter),
+                AsyncMock(side_effect=slices),
             ),
             patch("src.modules.extractor.validate_extracted_text", return_value=False),
         ):
-            result = extract_document(input_doc, llm, SIMPLE_PROMPT_TEMPLATE)
+            result = await extract_document(input_doc, llm, SIMPLE_PROMPT_TEMPLATE)
 
         assert result is None
 
-    def test_split_body_text_receives_correct_token_budget(self):
+    async def test_split_body_text_receives_correct_token_budget(self):
         """available_body_tokens must be derived from the token budget minus overhead."""
         input_doc = _make_input_doc(body="y" * 300)
         llm = _make_llm()  # uses heuristic (len // 4)
@@ -399,11 +395,12 @@ class TestExtractDocumentMultiSlice:
             patch("src.modules.extractor.SETTINGS", self._mock_settings()),
             patch("src.modules.extractor._split_body_text", side_effect=_capture_split),
             patch(
-                "src.modules.extractor._extract_document", return_value=_make_cleaned_doc()
+                "src.modules.extractor._extract_document",
+                AsyncMock(return_value=_make_cleaned_doc()),
             ),
             patch("src.modules.extractor.validate_extracted_text", return_value=True),
         ):
-            extract_document(input_doc, llm, SIMPLE_PROMPT_TEMPLATE)
+            await extract_document(input_doc, llm, SIMPLE_PROMPT_TEMPLATE)
 
         assert len(captured_calls) == 1
         _, max_tokens = captured_calls[0]

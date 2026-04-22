@@ -1,33 +1,31 @@
-import { Product } from './types/product';
-import { Webinar } from '@/lib/types/webinar';
-import {
-  getApiDataListPagesProps,
-  getApiDataProps,
-  getCaseHistoriesProps,
-  getGuideListPagesProps,
-  getGuidePageProps,
-  getOverviewsProps,
-  getProductsProps,
-  getQuickStartGuidesProps,
-  getReleaseNoteProps,
-  getSolutionListPageProps,
-  getSolutionProps,
-  getSolutionsProps,
-  getStrapiReleaseNotes,
-  getTutorialListPagesProps,
-  getTutorialsProps,
-  getUseCaseListPagesProps,
-  getUseCasesProps,
-  getWebinarsProps,
-} from './cmsApi';
+import { ApiDataListPagesRepository } from '@/lib/apiDataListPages';
+import { CaseHistoriesRepository } from '@/lib/caseHistories';
+import { GuideListPagesRepository } from '@/lib/guideListPages';
+import { GuidesRepository } from '@/lib/guides';
+import { Product } from '@/lib/products/types';
+import { QuickStartGuidesRepository } from '@/lib/quickStartGuides';
+import { SolutionRepository } from '@/lib/solutions';
+import { SolutionListPageRepository } from '@/lib/solutionListPage';
+import { TutorialRepository } from '@/lib/tutorials';
+import { TutorialListPageRepository } from '@/lib/tutorialListPage';
+import { UseCasesRepository } from '@/lib/useCases';
+import { UseCaseListPageRepository } from '@/lib/useCaseListPage';
+import { WebinarsRepository } from '@/lib/webinars';
+import { WebinarCategoriesRepository } from '@/lib/webinarCategories';
+import { TagsRepository } from '@/lib/tags';
+import { UrlReplaceMapRepository } from '@/lib/urlReplaceMap';
+import { ReleaseNotesRepository } from '@/lib/releaseNotes';
+import type { Webinar } from '@/lib/webinars/types';
 import { parseS3GuidePage } from '@/helpers/parseS3Doc.helpers';
 import {
-  downloadFileAsText,
   getGuidesMetadata,
   getReleaseNotesMetadata,
   getSolutionsMetadata,
 } from '@/helpers/s3Metadata.helpers';
-import { s3DocsPath } from '@/config';
+import { OverviewsRepository } from './overviews';
+import { ProductRepository } from './products';
+import { makeReleaseNote, makeSolution } from '../helpers/makeS3Docs.helpers';
+import { CustomMessagesMapRepository } from './customMessagesMap';
 
 function manageUndefined<T>(props: undefined | null | T) {
   if (!props) {
@@ -44,30 +42,21 @@ async function manageUndefinedAndAddProducts<T>(
   return { ...manageUndefined(props), products: await getProducts(locale) };
 }
 
-export async function getMarkdownContent(
-  locale: string,
-  dirName: string,
-  pathToFile: string
-): Promise<string> {
-  const pathToMarkdownFile = `${locale}/${s3DocsPath}/${dirName}/${pathToFile}`;
-  const output = await downloadFileAsText(pathToMarkdownFile);
-  return output || '';
-}
-
 export async function getGuidePage(
   guidePaths: ReadonlyArray<string>,
   locale: string,
   productSlug: string
 ) {
   // Fetch data in parallel instead of sequential
-  const [products, guideProps] = await Promise.all([
+  const [products, guideResult] = await Promise.all([
     getProducts(locale),
-    getGuidePageProps(
-      guidePaths.length > 0 ? guidePaths[0] : '',
+    GuidesRepository.getByProductAndSlug(
       locale,
-      productSlug
+      productSlug,
+      guidePaths.length > 0 ? guidePaths[0] : ''
     ),
   ]);
+  const guideProps = manageUndefined(guideResult);
 
   // Path construction
   const guidePath = [
@@ -98,30 +87,26 @@ export async function getGuidePage(
 
 export async function getGuideListPages(locale: string, productSlug?: string) {
   const props = manageUndefined(
-    (await getGuideListPagesProps(locale)).find(
-      ({ product }) => product.slug === productSlug
-    )
+    await GuideListPagesRepository.getByProductSlug(locale, productSlug || '')
   );
   return manageUndefinedAndAddProducts(locale, props);
 }
 
 export async function getOverview(locale: string, productSlug?: string) {
   return manageUndefined(
-    (await getOverviewsProps(locale)).find(
+    (await OverviewsRepository.getAll(locale)).find(
       (overviewData) => overviewData.product.slug === productSlug
     )
   );
 }
 
 export async function getProducts(locale: string): Promise<readonly Product[]> {
-  return await getProductsProps(locale);
+  return await ProductRepository.getAll(locale);
 }
 
 export async function getQuickStartGuide(locale: string, productSlug?: string) {
   const props = manageUndefined(
-    (await getQuickStartGuidesProps(locale)).find(
-      ({ product }) => product.slug === productSlug
-    )
+    await QuickStartGuidesRepository.getByProductSlug(locale, productSlug || '')
   );
   return manageUndefinedAndAddProducts(locale, props);
 }
@@ -137,7 +122,7 @@ export async function getTutorial(
   const product = await getProduct(locale, productSlug);
 
   const props = manageUndefined(
-    (await getTutorialsProps(locale)).find(({ path }) => path === tutorialPath)
+    await TutorialRepository.getByPath(locale, tutorialPath)
   );
   return {
     ...props,
@@ -150,15 +135,15 @@ export async function getTutorialListPageProps(
   productSlug?: string
 ) {
   const tutorialListPages = manageUndefined(
-    await getTutorialListPagesProps(locale)
-  ).find(({ product }) => product.slug === productSlug);
+    await TutorialListPageRepository.getByProductSlug(locale, productSlug || '')
+  );
   return manageUndefinedAndAddProducts(locale, tutorialListPages);
 }
 
 export async function getVisibleInListWebinars(
   locale: string
 ): Promise<readonly Webinar[]> {
-  return (await getWebinarsProps(locale)).filter(
+  return (await WebinarsRepository.getAll(locale)).filter(
     (webinar) => webinar.isVisibleInList
   );
 }
@@ -168,21 +153,41 @@ export async function getWebinar(
   webinarSlug?: string
 ): Promise<Webinar> {
   const props = manageUndefined(
-    (await getWebinarsProps(locale)).find(({ slug }) => slug === webinarSlug)
+    await WebinarsRepository.getBySlug(locale, webinarSlug || '')
   );
   return props;
 }
 
+export async function getWebinars(locale: string): Promise<readonly Webinar[]> {
+  return WebinarsRepository.getAll(locale);
+}
+
+export async function getWebinarCategories(locale: string) {
+  return WebinarCategoriesRepository.getAll(locale);
+}
+
+export async function getTags(locale: string) {
+  return TagsRepository.getAll(locale);
+}
+
+export async function getUrlReplaceMap(locale: string) {
+  return UrlReplaceMapRepository.get(locale);
+}
+
+export async function getReleaseNotes(locale: string) {
+  return ReleaseNotesRepository.getAll(locale);
+}
+
 export async function getCaseHistory(locale: string, caseHistorySlug?: string) {
   return manageUndefined(
-    (await getCaseHistoriesProps(locale)).find(
+    (await CaseHistoriesRepository.getAll(locale)).find(
       ({ slug }: { readonly slug: string }) => slug === caseHistorySlug
     )
   );
 }
 
 export async function getApiDataParams(locale: string) {
-  const props = (await getApiDataListPagesProps(locale)).flatMap(
+  const props = (await ApiDataListPagesRepository.getAll(locale)).flatMap(
     (apiDataListPageProps) =>
       apiDataListPageProps.apiDetailSlugs.map((apiDataSlug) => ({
         productSlug: apiDataListPageProps.product.slug,
@@ -194,25 +199,9 @@ export async function getApiDataParams(locale: string) {
   return props || [];
 }
 
-export async function getApiDataListPages(locale: string, productSlug: string) {
-  const props = (await getApiDataListPagesProps(locale)).find(
-    (apiDataListPageProps) => apiDataListPageProps.product.slug === productSlug
-  );
-  return props;
-}
-
 export async function getProduct(locale: string, productSlug: string) {
-  const props = (await getProductsProps(locale)).find(
+  const props = (await ProductRepository.getAll(locale)).find(
     (product) => product.slug === productSlug
-  );
-  return props;
-}
-
-export async function getApiData(locale: string, apiDataSlug: string) {
-  const props = manageUndefined(
-    (await getApiDataProps(locale)).find(
-      (apiData) => apiData.apiDataSlug === apiDataSlug
-    )
   );
   return props;
 }
@@ -227,7 +216,10 @@ export async function getReleaseNote(
     '/'
   )}`;
 
-  const releaseNote = await getStrapiReleaseNotes(locale, productSlug);
+  const releaseNote = await ReleaseNotesRepository.getByProductSlug(
+    locale,
+    productSlug
+  );
   if (!releaseNote) {
     // eslint-disable-next-line functional/no-throw-statements
     throw new Error('Failed to fetch release notes data');
@@ -235,12 +227,12 @@ export async function getReleaseNote(
 
   const releaseNotesMetadata = await getReleaseNotesMetadata(
     locale,
-    releaseNote.attributes.dirName
+    releaseNote.dirName
   );
 
-  const releaseNoteProps = await getReleaseNoteProps(
+  const releaseNoteProps = await makeReleaseNote(
+    releaseNote,
     locale,
-    productSlug,
     releaseNotesMetadata.find(({ path }) => path === releaseNotesPath)
   );
 
@@ -273,13 +265,15 @@ export async function getReleaseNote(
 
 export async function getSolution(locale: string, solutionSlug?: string) {
   const props = manageUndefined(
-    (await getSolutionsProps(locale)).find(({ slug }) => slug === solutionSlug)
+    solutionSlug
+      ? await SolutionRepository.getBySlug(locale, solutionSlug)
+      : undefined
   );
   return props;
 }
 
 export async function getSolutionListPage(locale: string) {
-  const solutionListPageProps = await getSolutionListPageProps(locale);
+  const solutionListPageProps = await SolutionListPageRepository.get(locale);
   return manageUndefined(solutionListPageProps);
 }
 
@@ -288,18 +282,19 @@ export async function getSolutionDetail(
   locale: string,
   solutionSubPathSlugs: readonly string[]
 ) {
-  const solutionData = await getSolution(locale, solutionSlug);
-  if (!solutionData) {
+  const solution = await getSolution(locale, solutionSlug);
+  if (!solution) {
     // eslint-disable-next-line functional/no-throw-statements
-    throw new Error('Failed to fetch solution data');
+    throw new Error(`No solution found matching slug "${solutionSlug}"`);
   }
+
   const solutionsMetadata = await getSolutionsMetadata(
     locale,
-    solutionData.dirName
+    solution.dirName
   );
 
-  return await getSolutionProps(
-    solutionSlug,
+  return makeSolution(
+    solution,
     locale,
     solutionsMetadata.find(
       ({ path }) =>
@@ -320,7 +315,7 @@ export async function getUseCase(
   const product = await getProduct(locale, productSlug);
 
   const props = manageUndefined(
-    (await getUseCasesProps(locale)).find(({ path }) => path === useCasePath)
+    await UseCasesRepository.getByPath(locale, useCasePath)
   );
   return {
     ...props,
@@ -332,10 +327,15 @@ export async function getUseCaseListPageProps(
   locale: string,
   productSlug?: string
 ) {
-  const useCaseListPages = await getUseCaseListPagesProps(locale);
-  const props =
-    useCaseListPages.find(({ product }) => product.slug === productSlug) ||
-    null;
+  const props = await UseCaseListPageRepository.getByProductSlug(
+    locale,
+    productSlug || ''
+  );
 
   return manageUndefinedAndAddProducts(locale, props);
+}
+
+export async function getCustomMessagesMapProps(locale: string) {
+  const customMessages = await CustomMessagesMapRepository.get(locale);
+  return manageUndefined(customMessages);
 }

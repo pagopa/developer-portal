@@ -1,5 +1,34 @@
 # gitbook-docs
 
+## 2.2.1
+
+### Patch Changes
+
+- 3bc622e: Code cleanup and make sitemap generation optional
+
+## 2.2.0
+
+### Minor Changes
+
+- 3954353: Update sync to match Strapi 5 responses and align synced file generation
+
+### Patch Changes
+
+- 32ed4e8: Fix icons for webinar speaker in solution page
+- 31554d2: Fix populate for release notes in synch workflow
+- 555fcd4: Upgrade markdown-it in gitbook-docs
+
+## 2.1.0
+
+### Minor Changes
+
+- 6d30d53: Update emoji parsing for markdoc
+
+### Patch Changes
+
+- a487eeb: Fix default pipeline character
+- a9f0ff5: Add tests and a small backward-compatible fix for url parsing
+
 ## 2.0.0
 
 ### Major Changes
