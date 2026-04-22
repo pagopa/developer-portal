@@ -47,7 +47,8 @@ module "cms_load_balancer" {
             {
               http_header = {
                 http_header_name = "Origin"
-                values           = ["https://${var.dns_domain_name}"]
+                values = ["https://${var.dns_domain_name}",
+                keys(var.dns_domain_name_cms)[0]]
               }
             }
           ]
