@@ -1,5 +1,28 @@
 # nextjs-website
 
+## 17.1.1
+
+### Patch Changes
+
+- e2c8fd2: Fix API data fetch in page component
+
+## 17.1.0
+
+### Minor Changes
+
+- 859f652: Add class modifiers support to chat links and update styles
+
+### Patch Changes
+
+- Updated dependencies [3bc622e]
+  - gitbook-docs@2.2.1
+
+## 17.0.1
+
+### Patch Changes
+
+- 5ed61cb: Add Heartbeat feature flag
+
 ## 17.0.0
 
 ### Major Changes
