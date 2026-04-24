@@ -89,6 +89,10 @@ inputs:
     description: 'S3 Dirnames JSON Path'
     required: false
     default: 'dirNames.json'
+  generate_and_sync_sitemap:
+    description: 'Whether to generate and sync sitemap to S3'
+    required: false
+    default: 'true'
 
 runs:
   using: "composite"
@@ -164,7 +168,7 @@ runs:
         NEXT_PUBLIC_COGNITO_REGION: ${{ inputs.next_public_cognito_region }}
         FETCH_FROM_STRAPI: ${{ inputs.fetch_from_strapi }}
         GENERATE_URL_METADATA: 'true'
-        GENERATE_SITEMAP_METADATA: 'true'
+        GENERATE_METADATA: 'true'
         SAVE_STRAPI_RESPONSES: 'true'
         METADATA_TYPE: ${{ inputs.metadata_type }}
         DIR_NAMES_FILTER: ${{ inputs.dir_names_filter }}
@@ -299,6 +303,7 @@ runs:
 
     - name: Sync sitemap to S3
       shell: bash
+      if: ${{ inputs.generate_and_sync_sitemap == 'true' }}
       env:
         ENVIRONMENT: ${{ inputs.environment }}
         S3_BUCKET_NAME: devportal-${{ env.ENV_SHORT }}-website-static-content

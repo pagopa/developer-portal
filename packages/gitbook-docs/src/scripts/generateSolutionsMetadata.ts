@@ -32,10 +32,11 @@ const s3Client = makeS3Client();
 function generateUrlPath(
   filePath: string,
   slug: string,
+  dirName: string,
   landingUseCaseFile: string,
   locale?: string
 ): string {
-  const restOfPath = sitePathFromS3Path(filePath, landingUseCaseFile);
+  const restOfPath = sitePathFromS3Path(filePath, dirName, landingUseCaseFile);
   if (!restOfPath) {
     return [locale, `/solutions/${slug}/details`].filter(Boolean).join('/');
   } else {
@@ -80,6 +81,7 @@ async function convertSolutionToMetadataItems(
         const path = generateUrlPath(
           filePath,
           solution.slug,
+          solution.dirName,
           solution.landingUseCaseFile,
           LOCALE
         );
