@@ -1,5 +1,18 @@
 # nextjs-website
 
+## 17.2.0
+
+### Minor Changes
+
+- edbcd63: Add columns in gitbook parsing and nextjs components
+
+### Patch Changes
+
+- 954d266: Fix handling of missing guide's version in URL
+- Updated dependencies [edbcd63]
+- Updated dependencies [2720558]
+  - gitbook-docs@2.3.0
+
 ## 17.1.1
 
 ### Patch Changes
