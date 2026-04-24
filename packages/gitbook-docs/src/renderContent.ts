@@ -38,6 +38,7 @@ import {
 } from './markdoc/schema/table';
 import { PageLinkProps } from './markdoc/schema/pageLink';
 import { StepperProps, StepProps } from './markdoc/schema/stepper';
+import { ColumnProps, ColumnsProps } from './markdoc/schema/columns';
 
 export type RenderingComponents<A> = {
   readonly Link: (props: LinkProps<A>) => A;
@@ -73,6 +74,8 @@ export type RenderingComponents<A> = {
   readonly Stepper: (props: StepperProps<A>) => A;
   readonly Step: (props: StepProps<A>) => A;
   readonly Br: () => A;
+  readonly Columns: (props: ColumnsProps<A>) => A;
+  readonly Column: (props: ColumnProps<A>) => A;
 };
 
 export const renderContent = (
