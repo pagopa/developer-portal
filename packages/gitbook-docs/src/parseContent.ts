@@ -31,6 +31,7 @@ import { PageTitlePath } from './parseDoc';
 import { step, stepper } from './markdoc/schema/stepper';
 import { inlineCodePipePlaceholder } from './markdoc/schema/styledText';
 import { processEmojiTokens } from './markdoc/emojiProcessor';
+import { columns, column } from './markdoc/schema/columns';
 
 export type ParseContentConfig = {
   readonly assetsPrefix: string;
@@ -118,6 +119,8 @@ const schema: ConfigType = {
     'figma-embed': embed,
     file,
     tabs,
+    columns: columns,
+    column: column,
     htmldetails: details,
     'content-ref': pageLink,
     htmlp: paragraph,
