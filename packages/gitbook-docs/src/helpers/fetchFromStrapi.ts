@@ -42,9 +42,28 @@ async function fetchFromStrapiResponse(url: string) {
   });
 
   if (!response.ok) {
-    console.error('Error response from Strapi:', await response.json());
+    const rawBody = await response.text();
+    // eslint-disable-next-line functional/no-let
+    let parsedBody: unknown;
+
+    // eslint-disable-next-line functional/no-try-statements
+    try {
+      parsedBody = rawBody ? JSON.parse(rawBody) : undefined;
+    } catch {
+      parsedBody = undefined;
+    }
+
+    console.error('Error response from Strapi', {
+      collectionSegment,
+      status: response.status,
+      statusText: response.statusText,
+      body: parsedBody ?? rawBody,
+    });
+
     throw new Error(
-      `Failed to fetch ${collectionSegment}: ${response.status} ${response.statusText}`
+      `Failed to fetch ${collectionSegment}: ${response.status} ${
+        response.statusText
+      }${rawBody ? ` - ${rawBody}` : ''}`
     );
   }
 
