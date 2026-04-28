@@ -22,10 +22,10 @@ export function middleware(request: NextRequest) {
         new URL(`/${locale ?? defaultLangCode}`, request.url)
       );
       const domain = baseUrl.replace(/^https?:\/\//, '').split(':')[0];
-      response.cookies.set(loggedInCookieName, 'false', {
+      response.cookies.set(loggedInCookieName, '', {
         domain,
         path: '/',
-        maxAge: 0,
+        expires: new Date(0),
       });
       return response;
     }
