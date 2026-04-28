@@ -36,7 +36,6 @@ const ProductLayout: FC<LayoutPropsWithChildren> = ({
   structuredData,
 }) => {
   const { locale } = useParams<{ locale: string }>();
-  const pathWithLocale = `/${locale}${path}`;
   return (
     <Box
       sx={{
@@ -50,11 +49,7 @@ const ProductLayout: FC<LayoutPropsWithChildren> = ({
     >
       {structuredData}
       {product && path && (
-        <ProductHeader
-          locale={locale}
-          product={product}
-          path={pathWithLocale}
-        />
+        <ProductHeader locale={locale} product={product} path={path} />
       )}
       {product && showBreadcrumbs && (
         <EContainer sx={{ paddingTop: 3 }}>
