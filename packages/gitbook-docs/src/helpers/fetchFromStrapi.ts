@@ -24,8 +24,8 @@ export async function getResponseFromStrapi(url: string) {
 // In case of an error, the error will be thrown
 async function fetchFromStrapiResponse(url: string) {
   // get first segment of the url to log what we are fetching
-  const firstSegment = url.split('/')[0];
-  console.log(`Fetching ${firstSegment} from Strapi...`);
+  const collectionSegment = url.split('/')[1];
+  console.log(`Fetching ${collectionSegment} from Strapi...`);
   const strapiEndpoint = process.env.STRAPI_ENDPOINT;
   const strapiApiToken = process.env.STRAPI_API_TOKEN;
 
@@ -34,7 +34,7 @@ async function fetchFromStrapiResponse(url: string) {
     throw new Error('Missing Strapi configuration in environment variables');
   }
 
-  // Using pagination with a large page size to fetch all ${firstSegment} in one request
+  // Using pagination with a large page size to fetch all ${collectionSegment} in one request
   const response = await fetch(`${strapiEndpoint}/${url}`, {
     headers: {
       Authorization: `Bearer ${strapiApiToken}`,
@@ -42,8 +42,28 @@ async function fetchFromStrapiResponse(url: string) {
   });
 
   if (!response.ok) {
+    const rawBody = await response.text();
+    // eslint-disable-next-line functional/no-let
+    let parsedBody: unknown;
+
+    // eslint-disable-next-line functional/no-try-statements
+    try {
+      parsedBody = rawBody ? JSON.parse(rawBody) : undefined;
+    } catch {
+      parsedBody = undefined;
+    }
+
+    console.error('Error response from Strapi', {
+      collectionSegment,
+      status: response.status,
+      statusText: response.statusText,
+      body: parsedBody ?? rawBody,
+    });
+
     throw new Error(
-      `Failed to fetch ${firstSegment}: ${response.status} ${response.statusText}`
+      `Failed to fetch ${collectionSegment}: ${response.status} ${
+        response.statusText
+      }${rawBody ? ` - ${rawBody}` : ''}`
     );
   }
 
