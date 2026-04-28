@@ -19,27 +19,24 @@ export function sitePathFromLocalPath(
     .split(path.sep)
     .join('/')
     .replace(/^(\.\.\/)+/, '');
-  const segments = normalizedRelativePath
+  const segments: readonly string[] = normalizedRelativePath
     .split('/')
     .filter((segment: string) => segment.length > 0);
   const dirNameSegments = dirName.split('/').filter((part) => part.length > 0);
-  const dirNameIndex = dirName
-    .split('/')
-    .findIndex((_, index) =>
-      dirNameSegments.every(
-        (dirNamePart, dirNamePartIndex) =>
-          segments[index + dirNamePartIndex] === dirNamePart
-      )
-    );
+  const dirNameIndex = segments.findIndex((_, index) =>
+    dirNameSegments.every(
+      (dirNamePart, dirNamePartIndex) =>
+        segments[index + dirNamePartIndex] === dirNamePart
+    )
+  );
 
   if (segments.length < 2) {
     return;
   }
 
-  const docSegments = segments.slice(
-    dirNameIndex + dirNameSegments.length,
-    segments.length
-  );
+  const startIndex =
+    dirNameIndex < 0 ? 0 : dirNameIndex + dirNameSegments.length;
+  const docSegments = segments.slice(startIndex, segments.length);
   if (docSegments.length === 0) {
     return;
   }
