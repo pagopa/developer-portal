@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import {
   breadcrumbItemByProduct,
   convertApiToStructuredDataSoftwareApplication,
@@ -449,7 +450,9 @@ schema:
       const bodyMetadata = mockDocument.split('---')[1];
       expect(convertBodyMetadataToStructuredData(bodyMetadata)).toEqual({
         '@context': 'https://schema.org',
-        ...expcetedStructuredDataOfTheMockBody[0],
+        ...(typeof expcetedStructuredDataOfTheMockBody[0] === 'object' && expcetedStructuredDataOfTheMockBody[0] !== null
+          ? expcetedStructuredDataOfTheMockBody[0]
+          : {}),
       });
     });
   });
