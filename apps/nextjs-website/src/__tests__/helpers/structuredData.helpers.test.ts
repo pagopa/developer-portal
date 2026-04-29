@@ -227,7 +227,7 @@ describe('structuredData.helpers', () => {
         } as SEO,
         abstract: { description: 'Abstract Desc', title: 'Abstract Title' },
         steps: [{ title: 'Step 1' }, { title: 'Step 2' }],
-      } as QuickStartGuidePageProps;
+      } as unknown as QuickStartGuidePageProps;
 
       expect(quickStartToStructuredDataHowTo(quickStart)).toEqual({
         '@context': 'https://schema.org',
