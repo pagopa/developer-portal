@@ -285,7 +285,7 @@ describe('structuredData.helpers', () => {
             avatar: { url: 'avatar1.jpg', width: 10, height: 10 },
           },
         ],
-      } as Webinar;
+      } as unknown as Webinar;
 
       expect(convertWebinarToStructuredDataEvent(webinar)).toEqual({
         '@context': 'https://schema.org',
