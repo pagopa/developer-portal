@@ -21,7 +21,9 @@ import {
   WebPage,
   WebSite,
   WithContext,
+  Thing,
 } from 'schema-dts';
+import yaml from 'js-yaml';
 
 export const homeBreadCrumb = { name: websiteName, item: baseUrl };
 
@@ -159,9 +161,9 @@ export function quickStartToStructuredDataHowTo(
 ): WithContext<HowTo> {
   const steps: readonly HowToStep[] = quickStart.steps
     ? quickStart.steps.map((step) => ({
-        '@type': 'HowToStep',
-        text: step.title,
-      }))
+      '@type': 'HowToStep',
+      text: step.title,
+    }))
     : [];
   return makeHowTo({
     name: quickStart.seo?.metaTitle,
@@ -259,4 +261,21 @@ export function convertSeoToStructuredDataArticle(
       }),
     }
   );
+}
+
+export function convertBodyMetadataToStructuredData(
+  bodyMetadata?: string
+): WithContext<Thing> | undefined {
+  if (!bodyMetadata) {
+    return undefined;
+  }
+  try {
+    const metadata = yaml.load(bodyMetadata) as Record<string, unknown>;
+    if (metadata && typeof metadata === 'object' && metadata.schema) {
+      return metadata.schema as WithContext<Thing>;
+    }
+  } catch (error) {
+    console.error('Error parsing bodyMetadata for structured data', error);
+  }
+  return undefined;
 }
