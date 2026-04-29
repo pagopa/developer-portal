@@ -414,6 +414,7 @@ describe('structuredData.helpers', () => {
       // Temporarily mock console.error to avoid noise in test output
       const consoleSpy = jest
         .spyOn(console, 'error')
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
         .mockImplementation(() => {});
       expect(
         convertBodyMetadataToStructuredData('invalid yaml: - -')
