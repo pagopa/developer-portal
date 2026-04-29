@@ -16,6 +16,7 @@ import { getUrlReplaceMap } from '@/lib/api';
 import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
 import {
   breadcrumbItemByProduct,
+  convertBodyMetadataToStructuredData,
   convertSeoToStructuredDataArticle,
   productToBreadcrumb,
 } from '@/helpers/structuredData.helpers';
@@ -133,6 +134,10 @@ const Page = async ({ params }: { params: Promise<Params> }) => {
       : undefined,
   };
 
+  const structuredDataFromBody = convertBodyMetadataToStructuredData(
+    guidePageProps?.page.bodyMetadata
+  );
+
   const structuredData = generateStructuredDataScripts({
     breadcrumbsItems: [
       productToBreadcrumb(locale, productGuidePageProps.product),
@@ -145,7 +150,9 @@ const Page = async ({ params }: { params: Promise<Params> }) => {
       },
     ],
     seo: seo,
-    things: [convertSeoToStructuredDataArticle(seo)],
+    things: structuredDataFromBody
+      ? [structuredDataFromBody]
+      : [convertSeoToStructuredDataArticle(seo)],
   });
 
   const initialBreadcrumbs = [

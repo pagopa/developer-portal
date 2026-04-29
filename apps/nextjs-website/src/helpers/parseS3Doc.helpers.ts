@@ -28,8 +28,35 @@ export type DocPage<T> = T & {
     readonly menu: string;
     readonly body: string;
     readonly isIndex: boolean;
+    readonly bodyMetadata?: string;
   };
 };
+
+const FRONTMATTER_SEPARATOR = '---';
+
+function parseRawBody(rawBody?: string): {
+  readonly body: string;
+  readonly bodyMetadata?: string;
+} {
+  if (!rawBody) {
+    return { body: '', bodyMetadata: undefined };
+  }
+  // should get if present the content contained between the first two occurrences of FRONTMATTER_SEPARATOR as bodyMetadata and the rest as body
+  const first = rawBody.indexOf(FRONTMATTER_SEPARATOR);
+  if (first !== -1) {
+    const second = rawBody.indexOf(FRONTMATTER_SEPARATOR, first + 1);
+    if (second !== -1) {
+      return {
+        body: rawBody.slice(second + FRONTMATTER_SEPARATOR.length),
+        bodyMetadata: rawBody.slice(
+          first + FRONTMATTER_SEPARATOR.length,
+          second
+        ),
+      };
+    }
+  }
+  return { body: rawBody, bodyMetadata: undefined };
+}
 
 const parseText = ({ type, attributes }: Node): string | null =>
   type === 'text' && typeof attributes.content === 'string'
@@ -232,11 +259,13 @@ export const parseS3GuidePage = async (props: {
   };
 
   // Download menu and body files in parallel
-  const [menu, body] = await Promise.all([
+  const [menu, rawBody] = await Promise.all([
     guidePageMetadata &&
       downloadFileAsText(guidePageMetadata.menuS3Path, { cache: 'no-store' }),
     downloadFileAsText(guidePageMetadata.contentS3Path, { cache: 'no-store' }),
   ]);
+
+  const { body, bodyMetadata } = parseRawBody(rawBody);
 
   const result = {
     ...guideProps,
@@ -264,6 +293,7 @@ export const parseS3GuidePage = async (props: {
       title: guidePageMetadata.title || '',
       menu: menu || '',
       body: body || '',
+      bodyMetadata: bodyMetadata,
     },
     products: products,
     bodyConfig: {
