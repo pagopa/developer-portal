@@ -36,6 +36,9 @@ const ProductLayout: FC<LayoutPropsWithChildren> = ({
   structuredData,
 }) => {
   const { locale } = useParams<{ locale: string }>();
+  const normalizedPath = path?.startsWith(`/${locale}`)
+    ? path
+    : `/${locale}${path}`;
   return (
     <Box
       sx={{
@@ -49,7 +52,11 @@ const ProductLayout: FC<LayoutPropsWithChildren> = ({
     >
       {structuredData}
       {product && path && (
-        <ProductHeader locale={locale} product={product} path={path} />
+        <ProductHeader
+          locale={locale}
+          product={product}
+          path={normalizedPath}
+        />
       )}
       {product && showBreadcrumbs && (
         <EContainer sx={{ paddingTop: 3 }}>
