@@ -8,7 +8,7 @@ import { Box, Stack } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import { PRODUCT_HEADER_HEIGHT, SITE_HEADER_HEIGHT } from '@/config';
 import GitBookContent from '@/components/organisms/GitBookContent/GitBookContent';
-import { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useDynamicSeo } from '@/hooks/useDynamicSeo';
 import {
   gitBookPageToBreadcrumbs,
@@ -18,6 +18,7 @@ import {
 import { compact } from 'lodash';
 import type { GitBookContentData } from '@/lib/gitBookContent/types';
 import { useParams } from 'next/navigation';
+import { GuidesTranslationDisclaimer } from '@/components/atoms/GuidesTranslationDisclaimer/GuidesTranslationDisclaimer';
 
 export type GitBookTemplateProps = {
   body: string;
@@ -208,7 +209,6 @@ const GitBookTemplate = ({
             distanceFromTop={menuDistanceFromTop}
             onGuideNavigate={updateContent}
             hasProductHeader={hasProductHeader}
-            guideTranslationDisclaimer={guideTranslationDisclaimer}
           />
         )}
         <Stack
@@ -226,6 +226,9 @@ const GitBookTemplate = ({
           <Box sx={{ paddingX: '40px' }}>
             <ProductBreadcrumbs breadcrumbs={breadcrumbs} />
           </Box>
+          {guideTranslationDisclaimer && (
+            <GuidesTranslationDisclaimer content={guideTranslationDisclaimer} />
+          )}
           <Box sx={{ padding: '0 40px 32px 40px' }}>
             <GitBookContent
               content={content.body}
