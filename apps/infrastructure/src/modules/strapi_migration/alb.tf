@@ -57,7 +57,7 @@ module "cms_load_balancer" {
 module "cms_load_balancer_internal" {
   source = "git::https://github.com/terraform-aws-modules/terraform-aws-alb.git?ref=3e9c6cbaf4c1d858c3bbee6f086f0c8ef17522ab" # v9.6.0
 
-  name                  = "cms-load-balancer-internal-v5"
+  name                  = "cms-load-balancer-internal-v4"
   vpc_id                = data.aws_vpc.cms.id
   subnets               = data.aws_subnets.private.ids
   security_groups       = [aws_security_group.cms_lb.id]
@@ -108,7 +108,7 @@ data "aws_route53_zone" "internal" {
 # DNS record for the internal load balancer
 resource "aws_route53_record" "cms_internal" {
   zone_id = data.aws_route53_zone.internal.zone_id
-  name    = "cmsv5"
+  name    = "cmsv4"
   type    = "A"
   alias {
     name                   = module.cms_load_balancer_internal.dns_name

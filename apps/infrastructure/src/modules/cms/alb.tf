@@ -27,6 +27,54 @@ module "cms_load_balancer" {
       forward = {
         target_group_key = "cms-target-group"
       }
+
+      rules = {
+        # Allow requests to /api/* with Origin matching the developer portal
+        cors_allow_origin = {
+          priority = 100
+
+          actions = [{
+            type             = "forward"
+            target_group_key = "cms-target-group"
+          }]
+
+          conditions = [
+            {
+              http_header = {
+                http_header_name = "Origin"
+                values = ["https://${var.dns_domain_name}",
+                format("https://%s", keys(var.dns_domain_name_cms)[0])]
+              }
+            }
+          ]
+        }
+
+        # Block requests to /api/* with any other Origin header
+        cors_block_other_origins = {
+          priority = 200
+
+          actions = [{
+            type         = "fixed-response"
+            content_type = "text/plain"
+            status_code  = 403
+            message_body = "Forbidden - CORS policy violation"
+          }]
+
+          conditions = [
+            {
+              path_pattern = {
+                values = ["/api/*"]
+              }
+            },
+            {
+              http_header = {
+                http_header_name = "Origin"
+                values           = ["*"]
+              }
+            }
+          ]
+        }
+      }
     }
   }
 
