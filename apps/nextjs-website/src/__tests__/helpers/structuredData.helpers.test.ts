@@ -485,9 +485,15 @@ schema:
       name: "Step </script>"
 `;
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const result = convertBodyMetadataToStructuredData(maliciousMetadata) as any;
-      expect(result.name).toBe('Dangerous &lt;script&gt;alert(1)&lt;/script&gt;');
-      expect(result.description).toContain('Another &lt;img src="x" onerror="alert(1)"&gt; tag');
+      const result = convertBodyMetadataToStructuredData(
+        maliciousMetadata
+      ) as any;
+      expect(result.name).toBe(
+        'Dangerous &lt;script&gt;alert(1)&lt;/script&gt;'
+      );
+      expect(result.description).toContain(
+        'Another &lt;img src="x" onerror="alert(1)"&gt; tag'
+      );
       expect(result.step[0].name).toBe('Step &lt;/script&gt;');
     });
   });
