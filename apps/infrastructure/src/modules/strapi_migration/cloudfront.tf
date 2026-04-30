@@ -4,14 +4,14 @@ module "cloudfront_cms" {
 
   create_origin_access_identity = true
   origin_access_identities = {
-    s3_cms_v5 = "Identity to access S3 bucket"
+    s3_cms_v4 = "Identity to access S3 bucket"
   }
 
   origin = {
     s3_one = {
       domain_name = module.s3_bucket_cms.s3_bucket_bucket_regional_domain_name
       s3_origin_config = {
-        origin_access_identity = "s3_cms_v5"
+        origin_access_identity = "s3_cms_v4"
       }
     }
   }

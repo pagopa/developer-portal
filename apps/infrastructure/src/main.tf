@@ -300,7 +300,7 @@ module "video_streaming" {
 module "strapi4" {
   source = "./modules/strapi_migration"
 
-  count = var.environment == "uat" ? 1 : 0
+  count = var.environment == "prod" ? 1 : 0
 
   providers = {
     aws           = aws

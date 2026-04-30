@@ -30,7 +30,7 @@ data "aws_iam_policy_document" "deploy_github" {
 }
 
 resource "aws_iam_policy" "deploy_cms" {
-  name        = "DeployCmsV5"
+  name        = "DeployCmsV4"
   description = "Policy to allow to deploy the cms"
 
   policy = jsonencode({
@@ -112,9 +112,9 @@ data "aws_iam_policy_document" "ecs_task_execution" {
 }
 
 module "iam_policy_ecs_task_execution" {
-  source = "git::https://github.com/terraform-aws-modules/terraform-aws-iam.git//modules/iam-policy?ref=f37809108f86d8fbdf17f735df734bf4abe69315" # v5.34.0
+  source = "git::https://github.com/terraform-aws-modules/terraform-aws-iam.git//modules/iam-policy?ref=f37809108f86d8fbdf17f735df734bf4abe69315" # v4.34.0
 
-  name   = "CMSTaskExecutionPoliciesV5"
+  name   = "CMSTaskExecutionPoliciesV4"
   path   = "/"
   policy = data.aws_iam_policy_document.ecs_task_execution.json
 }
@@ -153,25 +153,25 @@ data "aws_iam_policy_document" "ecs_task_role_ssm" {
 }
 
 module "iam_policy_ecs_task_role_s3" {
-  source = "git::https://github.com/terraform-aws-modules/terraform-aws-iam.git//modules/iam-policy?ref=f37809108f86d8fbdf17f735df734bf4abe69315" # v5.34.0
+  source = "git::https://github.com/terraform-aws-modules/terraform-aws-iam.git//modules/iam-policy?ref=f37809108f86d8fbdf17f735df734bf4abe69315" # v4.34.0
 
-  name   = "CMSTaskRolePoliciesS3V5"
+  name   = "CMSTaskRolePoliciesS3V4"
   path   = "/"
   policy = data.aws_iam_policy_document.ecs_task_role_s3.json
 }
 
 module "iam_policy_ecs_task_role_ssm" {
-  source = "git::https://github.com/terraform-aws-modules/terraform-aws-iam.git//modules/iam-policy?ref=f37809108f86d8fbdf17f735df734bf4abe69315" # v5.34.0
+  source = "git::https://github.com/terraform-aws-modules/terraform-aws-iam.git//modules/iam-policy?ref=f37809108f86d8fbdf17f735df734bf4abe69315" # v4.34.0
 
-  name   = "CMSTaskRolePoliciesSSMV5"
+  name   = "CMSTaskRolePoliciesSSMV4"
   path   = "/"
   policy = data.aws_iam_policy_document.ecs_task_role_ssm.json
 }
 
 module "iam_policy_cms" {
-  source = "git::https://github.com/terraform-aws-modules/terraform-aws-iam.git//modules/iam-policy?ref=f37809108f86d8fbdf17f735df734bf4abe69315" # v5.34.0
+  source = "git::https://github.com/terraform-aws-modules/terraform-aws-iam.git//modules/iam-policy?ref=f37809108f86d8fbdf17f735df734bf4abe69315" # v4.34.0
 
-  name        = "S3UploadImagesV5"
+  name        = "S3UploadImagesV4"
   path        = "/"
   description = "Policy to allow to manage files in S3 bucket"
 
