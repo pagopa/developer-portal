@@ -21,7 +21,9 @@ import {
   WebPage,
   WebSite,
   WithContext,
+  Thing,
 } from 'schema-dts';
+import yaml from 'js-yaml';
 
 export const homeBreadCrumb = { name: websiteName, item: baseUrl };
 
@@ -259,4 +261,23 @@ export function convertSeoToStructuredDataArticle(
       }),
     }
   );
+}
+
+export function convertBodyMetadataToStructuredData(
+  bodyMetadata?: string
+): WithContext<Thing> | undefined {
+  if (!bodyMetadata) {
+    return undefined;
+  }
+  // eslint-disable-next-line functional/no-try-statements
+  try {
+    const metadata = yaml.load(bodyMetadata) as Record<string, unknown>;
+    if (metadata && typeof metadata === 'object' && metadata.schema) {
+      return metadata.schema as WithContext<Thing>;
+    }
+  } catch (error) {
+    // eslint-disable-next-line functional/no-expression-statements
+    console.error('Error parsing bodyMetadata for structured data', error);
+  }
+  return undefined;
 }
