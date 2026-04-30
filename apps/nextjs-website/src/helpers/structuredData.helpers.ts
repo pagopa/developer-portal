@@ -272,12 +272,12 @@ export function sanitizeStructuredDataStrings(obj: unknown): unknown {
   }
   if (obj !== null && typeof obj === 'object') {
     // eslint-disable-next-line functional/prefer-readonly-type
-    const sanitizedObj: Record<string, unknown> = {};
-    for (const [key, value] of Object.entries(obj)) {
-      // eslint-disable-next-line functional/immutable-data
-      sanitizedObj[key] = sanitizeStructuredDataStrings(value);
-    }
-    return sanitizedObj;
+    return Object.entries(obj).reduce((acc, [key, value]) => {
+      return {
+        ...acc,
+        [key]: sanitizeStructuredDataStrings(value),
+      };
+    }, {});
   }
   return obj;
 }
