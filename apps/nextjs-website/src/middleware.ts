@@ -1,6 +1,6 @@
 /* eslint-disable functional/no-expression-statements */
 import { NextRequest, NextResponse } from 'next/server';
-import { defaultLocale, loggedInCookieName } from '@/config';
+import { baseUrl, defaultLocale, loggedInCookieName } from '@/config';
 import { SUPPORTED_LOCALES } from '@/locales';
 
 const guestPath = '/auth/';
@@ -14,13 +14,20 @@ export function middleware(request: NextRequest) {
   if (pathname.includes(guestPath)) {
     const isLoggedIn = request.cookies.get(loggedInCookieName);
 
-    if (isLoggedIn) {
+    if (isLoggedIn?.value === 'true') {
       const locale = SUPPORTED_LOCALES.find((loc) =>
         request.url.includes(`/${loc.langCode}/`)
       )?.langCode;
-      return NextResponse.redirect(
+      const response = NextResponse.redirect(
         new URL(`/${locale ?? defaultLangCode}`, request.url)
       );
+      const domain = baseUrl.replace(/^https?:\/\//, '').split(':')[0];
+      response.cookies.set(loggedInCookieName, 'false', {
+        domain,
+        path: '/',
+        maxAge: 0,
+      });
+      return response;
     }
   }
 
