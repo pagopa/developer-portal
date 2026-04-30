@@ -40,11 +40,6 @@ module "cms_load_balancer" {
 
           conditions = [
             {
-              path_pattern = {
-                values = ["/api/*"]
-              }
-            },
-            {
               http_header = {
                 http_header_name = "Origin"
                 values = ["https://${var.dns_domain_name}",
