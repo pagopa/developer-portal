@@ -41,21 +41,19 @@ function parseRawBody(rawBody?: string): {
   if (!rawBody) {
     return { body: '', bodyMetadata: undefined };
   }
-  // should get if present the content contained between the first two occurrences of FRONTMATTER_SEPARATOR as bodyMetadata and the rest as body
-  const first = rawBody.indexOf(FRONTMATTER_SEPARATOR);
-  if (first !== -1) {
-    const second = rawBody.indexOf(FRONTMATTER_SEPARATOR, first + 1);
-    if (second !== -1) {
-      return {
-        body: rawBody.slice(second + FRONTMATTER_SEPARATOR.length),
-        bodyMetadata: rawBody.slice(
-          first + FRONTMATTER_SEPARATOR.length,
-          second
-        ),
-      };
-    }
+
+  const frontmatterMatch = rawBody.match(
+    /^(?:\uFEFF\s*)?---[ \t]*\r?\n([\s\S]*?)\r?\n---[ \t]*(?:\r?\n|$)/
+  );
+
+  if (!frontmatterMatch) {
+    return { body: rawBody, bodyMetadata: undefined };
   }
-  return { body: rawBody, bodyMetadata: undefined };
+
+  return {
+    body: rawBody.slice(frontmatterMatch[0].length),
+    bodyMetadata: frontmatterMatch[1],
+  };
 }
 
 const parseText = ({ type, attributes }: Node): string | null =>

@@ -155,7 +155,7 @@ Una volta ottenute le credenziali, occorrerà procedere con l'integrazione tecni
 Dopo aver completato con successo la fase di test e ottenuto la certificazione, sarà possibile concordare con PagoPA la data per il passaggio in produzione e iniziare a operare nel servizio reale.
 `;
 
-export const expcetedStructuredDataOfTheMockBody: ReadonlyArray<
+export const expectedStructuredDataOfTheMockBody: ReadonlyArray<
   Thing | undefined
 > = [
   {
