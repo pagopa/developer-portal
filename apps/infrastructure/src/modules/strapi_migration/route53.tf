@@ -5,6 +5,8 @@ locals {
   )
 }
 
+/* TODO: temporariily commented out the CMS ALB and target group as they are not needed for the Strapi migration, and we want to avoid any potential conflicts with the existing CMS ALB and target group. We will re-enable them once the Strapi migration is complete and we are ready to switch over to the new ALB and target group.
+
 resource "aws_route53_record" "certificate" {
   for_each = {
     for dvo in local.domain_validations_options : dvo.domain_name => {
@@ -21,7 +23,7 @@ resource "aws_route53_record" "certificate" {
   type            = each.value.type
   zone_id         = var.hosted_zone_id
 }
-
+*/
 
 # Add DNS record for CMS Strapi
 module "cms_dns_records" {
