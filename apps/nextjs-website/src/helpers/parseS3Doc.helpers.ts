@@ -32,8 +32,6 @@ export type DocPage<T> = T & {
   };
 };
 
-const FRONTMATTER_SEPARATOR = '---';
-
 function parseRawBody(rawBody?: string): {
   readonly body: string;
   readonly bodyMetadata?: string;
@@ -42,6 +40,8 @@ function parseRawBody(rawBody?: string): {
     return { body: '', bodyMetadata: undefined };
   }
 
+  // Extracts frontmatter enclosed by `---` from the raw document string.
+  // Matches optional BOM, opening `---`, content, and closing `---`.
   const frontmatterMatch = rawBody.match(
     /^(?:\uFEFF\s*)?---[ \t]*\r?\n([\s\S]*?)\r?\n---[ \t]*(?:\r?\n|$)/
   );

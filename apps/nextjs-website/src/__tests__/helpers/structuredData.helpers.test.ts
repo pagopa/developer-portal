@@ -429,6 +429,21 @@ livello: principiante
       expect(convertBodyMetadataToStructuredData(bodyMetadata)).toBeUndefined();
     });
 
+    it('returns undefined if schema property is not an object', () => {
+      const bodyMetadata = `
+schema: "just a string"
+`;
+      expect(convertBodyMetadataToStructuredData(bodyMetadata)).toBeUndefined();
+    });
+
+    it('returns undefined if schema property is missing @context or @type', () => {
+      const bodyMetadata = `
+schema:
+  name: "missing type and context"
+`;
+      expect(convertBodyMetadataToStructuredData(bodyMetadata)).toBeUndefined();
+    });
+
     it('returns schema from bodyMetadata', () => {
       const bodyMetadata = `
 schema:
@@ -455,6 +470,25 @@ schema:
           ? expectedStructuredDataOfTheMockBody[0]
           : {}),
       });
+    });
+
+    it('sanitizes strings to prevent JSON-LD XSS vulnerabilities', () => {
+      const maliciousMetadata = `
+schema:
+  '@context': https://schema.org
+  '@type': HowTo
+  name: "Dangerous <script>alert(1)</script>"
+  description: >-
+    Another <img src="x" onerror="alert(1)"> tag
+  step:
+    - '@type': HowToStep
+      name: "Step </script>"
+`;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const result = convertBodyMetadataToStructuredData(maliciousMetadata) as any;
+      expect(result.name).toBe('Dangerous &lt;script&gt;alert(1)&lt;/script&gt;');
+      expect(result.description).toContain('Another &lt;img src="x" onerror="alert(1)"&gt; tag');
+      expect(result.step[0].name).toBe('Step &lt;/script&gt;');
     });
   });
 });
