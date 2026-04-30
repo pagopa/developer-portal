@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import {
   breadcrumbItemByProduct,
   convertApiToStructuredDataSoftwareApplication,
@@ -23,9 +22,9 @@ import { ApiDataPageProps } from '@/app/[locale]/[productSlug]/api/[apiDataSlug]
 import { QuickStartGuidePageProps } from '@/app/[locale]/[productSlug]/quick-start/page';
 import { SEO } from '@/lib/seo/types';
 import {
+  expectedStructuredDataOfTheMockBody,
   mockDocument,
-  expcetedStructuredDataOfTheMockBody,
-} from '../__mocks__/strcturedDataFromDocumentMock';
+} from '../__mocks__/structuredDataFromDocumentMock';
 
 jest.mock('@/config', () => ({
   baseUrl: 'https://test.base.url',
@@ -451,8 +450,9 @@ schema:
       const bodyMetadata = mockDocument.split('---')[1];
       expect(convertBodyMetadataToStructuredData(bodyMetadata)).toEqual({
         '@context': 'https://schema.org',
-        ...(typeof expcetedStructuredDataOfTheMockBody[0] === 'object' && expcetedStructuredDataOfTheMockBody[0] !== null
-          ? expcetedStructuredDataOfTheMockBody[0]
+        ...(typeof expectedStructuredDataOfTheMockBody[0] === 'object' &&
+        expectedStructuredDataOfTheMockBody[0] !== null
+          ? expectedStructuredDataOfTheMockBody[0]
           : {}),
       });
     });
