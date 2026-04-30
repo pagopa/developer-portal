@@ -19,7 +19,7 @@ jobs:
       pull-requests: write # Optional: if you need to read PR information
     steps:
       - name: Checkout code
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2 
         with:
           # https://github.com/actions/checkout/issues/1471#issuecomment-1771231294
           fetch-tags: 'true'
