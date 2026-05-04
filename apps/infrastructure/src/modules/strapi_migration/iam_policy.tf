@@ -112,7 +112,7 @@ data "aws_iam_policy_document" "ecs_task_execution" {
 }
 
 module "iam_policy_ecs_task_execution" {
-  source = "git::https://github.com/terraform-aws-modules/terraform-aws-iam.git//modules/iam-policy?ref=f37809108f86d8fbdf17f735df734bf4abe69315" # v4.34.0
+  source = "git::https://github.com/terraform-aws-modules/terraform-aws-iam.git//modules/iam-policy?ref=f37809108f86d8fbdf17f735df734bf4abe69315" # v5.34.0
 
   name   = "CMSTaskExecutionPoliciesV4"
   path   = "/"
