@@ -124,15 +124,14 @@ variable "vpc" {
   description = "The VPC used to deploy the lambda functions in. Configure this only when you want the lambda to access private resources contained in the VPC."
 }
 
-variable "webinar_heartbeat_url" {
-  type        = string
-  description = "The URL of the webinar heartbeat endpoint"
-}
-
-variable "webinar_heartbeat_interval_in_seconds" {
-  type        = number
-  description = "The interval in seconds for the webinar heartbeat"
-  default     = 60
+variable "webinar_heartbeat" {
+  type = object({
+    url                 = string
+    interval_in_seconds = number
+    enabled             = bool
+  })
+  description = "Defines if the webinar heartbeat should be enabled"
+  default     = false
 }
 
 variable "cognito_user_pool_id" {

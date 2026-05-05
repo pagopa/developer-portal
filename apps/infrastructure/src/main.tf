@@ -148,7 +148,11 @@ module "website" {
 
   next_public_soap_api_page_active = true
 
-  webinar_heartbeat_url = module.video_streaming.ingest_api_endpoint
+  webinar_heartbeat = {
+    url                 = module.video_streaming.ingest_api_endpoint
+    interval_in_seconds = 60
+    enabled             = var.environment == "prod" ? false : true
+  }
 
 }
 
