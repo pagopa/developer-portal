@@ -131,7 +131,6 @@ variable "webinar_heartbeat" {
     enabled             = bool
   })
   description = "Defines if the webinar heartbeat should be enabled"
-  default     = false
 }
 
 variable "cognito_user_pool_id" {
