@@ -15,8 +15,6 @@ import GuideVersionSelector, {
 import { Typography } from '@mui/material';
 import type { GitBookContentData } from '@/lib/gitBookContent/types';
 import { useParams } from 'next/navigation';
-import { GuidesTranslationDisclaimer } from '@/components/atoms/GuidesTranslationDisclaimer/GuidesTranslationDisclaimer';
-import { BlocksContent } from '@strapi/blocks-react-renderer';
 
 const StyledTreeItem = styled(TreeItem)(({ theme }) => ({
   [`&`]: {
