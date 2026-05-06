@@ -5,6 +5,12 @@ resource "aws_api_gateway_rest_api" "chatbotapi" {
   name        = "${local.prefix}-chatbotapi-rest-api"
   description = "dos68k Chatbot API Gateway"
 
+  body = templatefile("${path.module}/openapi/api-spec.json.tpl", {
+    api_name     = "${local.prefix}-chatbotapi-rest-api"
+    nlb_base_uri = "http://${module.nlb.dns_name}:${local.container_port}"
+    vpc_link_id  = aws_api_gateway_vpc_link.chatbotapi.id
+  })
+
   endpoint_configuration {
     types = ["REGIONAL"]
   }
@@ -19,131 +25,18 @@ resource "aws_api_gateway_vpc_link" "chatbotapi" {
 }
 
 ###############################################################################
-#                        Proxy Resource + Methods                             #
-###############################################################################
-resource "aws_api_gateway_resource" "proxy" {
-  rest_api_id = aws_api_gateway_rest_api.chatbotapi.id
-  parent_id   = aws_api_gateway_rest_api.chatbotapi.root_resource_id
-  path_part   = "{proxy+}"
-}
-
-resource "aws_api_gateway_method" "proxy" {
-  for_each = toset(["GET", "POST", "PUT", "PATCH", "DELETE"])
-
-  rest_api_id      = aws_api_gateway_rest_api.chatbotapi.id
-  resource_id      = aws_api_gateway_resource.proxy.id
-  http_method      = each.value
-  authorization    = "NONE"
-  api_key_required = true
-
-  request_parameters = {
-    "method.request.path.proxy" = true
-  }
-}
-
-resource "aws_api_gateway_method" "proxy_options" {
-  rest_api_id      = aws_api_gateway_rest_api.chatbotapi.id
-  resource_id      = aws_api_gateway_resource.proxy.id
-  http_method      = "OPTIONS"
-  authorization    = "NONE"
-  api_key_required = false
-
-  request_parameters = {
-    "method.request.path.proxy" = true
-  }
-}
-
-###############################################################################
-#                           Integrations                                      #
-###############################################################################
-resource "aws_api_gateway_integration" "proxy" {
-  for_each = aws_api_gateway_method.proxy
-
-  rest_api_id             = aws_api_gateway_rest_api.chatbotapi.id
-  resource_id             = aws_api_gateway_resource.proxy.id
-  http_method             = each.value.http_method
-  type                    = "HTTP_PROXY"
-  integration_http_method = each.value.http_method
-  uri                     = "http://${module.nlb.dns_name}:${local.container_port}/{proxy}"
-  connection_type         = "VPC_LINK"
-  connection_id           = aws_api_gateway_vpc_link.chatbotapi.id
-  timeout_milliseconds    = 29000
-
-  request_parameters = {
-    "integration.request.path.proxy" = "method.request.path.proxy"
-  }
-}
-
-resource "aws_api_gateway_integration" "proxy_options" {
-  rest_api_id             = aws_api_gateway_rest_api.chatbotapi.id
-  resource_id             = aws_api_gateway_resource.proxy.id
-  http_method             = aws_api_gateway_method.proxy_options.http_method
-  type                    = "HTTP_PROXY"
-  integration_http_method = "OPTIONS"
-  uri                     = "http://${module.nlb.dns_name}:${local.container_port}/{proxy}"
-  connection_type         = "VPC_LINK"
-  connection_id           = aws_api_gateway_vpc_link.chatbotapi.id
-  timeout_milliseconds    = 29000
-
-  request_parameters = {
-    "integration.request.path.proxy" = "method.request.path.proxy"
-  }
-}
-
-###############################################################################
-#                     Root Resource Methods                                    #
-###############################################################################
-resource "aws_api_gateway_method" "root" {
-  for_each = toset(["GET", "POST"])
-
-  rest_api_id      = aws_api_gateway_rest_api.chatbotapi.id
-  resource_id      = aws_api_gateway_rest_api.chatbotapi.root_resource_id
-  http_method      = each.value
-  authorization    = "NONE"
-  api_key_required = true
-}
-
-resource "aws_api_gateway_integration" "root" {
-  for_each = aws_api_gateway_method.root
-
-  rest_api_id             = aws_api_gateway_rest_api.chatbotapi.id
-  resource_id             = aws_api_gateway_rest_api.chatbotapi.root_resource_id
-  http_method             = each.value.http_method
-  type                    = "HTTP_PROXY"
-  integration_http_method = each.value.http_method
-  uri                     = "http://${module.nlb.dns_name}:${local.container_port}/"
-  connection_type         = "VPC_LINK"
-  connection_id           = aws_api_gateway_vpc_link.chatbotapi.id
-  timeout_milliseconds    = 29000
-}
-
-###############################################################################
 #                     Deployment + Stage                                      #
 ###############################################################################
 resource "aws_api_gateway_deployment" "chatbotapi" {
   rest_api_id = aws_api_gateway_rest_api.chatbotapi.id
 
   triggers = {
-    redeployment = sha1(jsonencode([
-      aws_api_gateway_resource.proxy.id,
-      aws_api_gateway_method.proxy,
-      aws_api_gateway_integration.proxy,
-      aws_api_gateway_method.proxy_options.id,
-      aws_api_gateway_integration.proxy_options.id,
-      aws_api_gateway_method.root,
-      aws_api_gateway_integration.root,
-    ]))
+    redeployment = sha1(aws_api_gateway_rest_api.chatbotapi.body)
   }
 
   lifecycle {
     create_before_destroy = true
   }
-
-  depends_on = [
-    aws_api_gateway_integration.proxy,
-    aws_api_gateway_integration.proxy_options,
-    aws_api_gateway_integration.root,
-  ]
 }
 
 resource "aws_api_gateway_stage" "chatbotapi" {

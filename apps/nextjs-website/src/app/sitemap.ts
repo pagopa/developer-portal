@@ -6,7 +6,6 @@ import { GuidesRepository } from '@/lib/guides';
 import { SolutionRepository } from '@/lib/solutions';
 import { baseUrl } from '@/config';
 import {
-  getGuidesMetadata,
   getReleaseNotesMetadata,
   getSolutionsMetadataByDirNames,
   getReleaseNotesMetadataByDirNames,
@@ -140,9 +139,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       // --------------------------------------------------------------------------------
       // 2. Fetch S3 Metadata (Guides, Solutions, Release Notes)
       // --------------------------------------------------------------------------------
-      // These are stored in S3 and retrieved via legacy helpers.
-      // We keep them ensuring no missing legacy content.
-      const guidesMetadata = await getGuidesMetadata(localeCode);
       const guides = await GuidesRepository.getAll(localeCode);
       const guidesDirNames = Array.from(
         new Set(
@@ -158,15 +154,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         guidesDirNames
       );
 
-      // Merge legacy and new metadata
-      const allGuidesMetadata = [
-        ...guidesMetadata,
-        ...guidesMetadataByDirNames,
-      ];
-
       // Remove duplicates
       const uniqueGuidesMetadata = Array.from(
-        new Map(allGuidesMetadata.map((guide) => [guide.path, guide])).values()
+        new Map(
+          guidesMetadataByDirNames.map((guide) => [guide.path, guide])
+        ).values()
       );
 
       const solutionDirNames = Array.from(

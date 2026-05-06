@@ -186,6 +186,12 @@ jobs:
           function_name: devportal-${{ env.ENV_SHORT }}-website-opnext-init-lambda-01
           alias_name: production
       
+      - name: Configure AWS Credentials for CloudFront
+        uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502
+        with:
+          role-to-assume: ${{ secrets.DEPLOY_IAM_ROLE }}
+          aws-region: eu-south-1
+
       - name: Invalidate CloudFront cache
         run: |
           aws cloudfront create-invalidation \

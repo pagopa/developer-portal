@@ -34,10 +34,11 @@ const s3Client = makeS3Client();
 function generateUrlPath(
   filePath: string,
   productSlug: string,
+  dirName: string,
   landingFile: string,
   locale?: string
 ): string {
-  const restOfPath = sitePathFromS3Path(filePath, landingFile);
+  const restOfPath = sitePathFromS3Path(filePath, dirName, landingFile);
   if (!restOfPath) {
     return [locale, `/${productSlug}/release-note`].filter(Boolean).join('/');
   } else {
@@ -83,6 +84,7 @@ async function convertReleaseNoteToMetadataItems(
         const path = generateUrlPath(
           filePath,
           productSlug,
+          releaseNote.dirName,
           releaseNote.landingFile,
           LOCALE
         );

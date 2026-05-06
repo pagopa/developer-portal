@@ -49,11 +49,10 @@ export const generateMetadata = async (
 ): Promise<Metadata> => {
   const params = await props.params;
   const resolvedParent = await parent;
-  // const ApiDataProps = await ApiDataListRepository.getBySlug(
-  //   params.locale,
-  //   params.apiDataSlug
-  // );
-  const ApiDataProps = undefined as unknown as ApiDataPageProps;
+  const ApiDataProps = await ApiDataListRepository.getBySlug(
+    params.locale,
+    params.apiDataSlug
+  );
   if (!ApiDataProps) {
     console.error(`Failed to fetch API data for slug: ${params.apiDataSlug}`);
     notFound();

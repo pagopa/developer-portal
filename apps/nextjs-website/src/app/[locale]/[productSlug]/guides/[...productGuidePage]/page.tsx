@@ -66,7 +66,7 @@ export async function generateMetadata(props: {
     return makeMetadataFromStrapi(guidePageProps?.seo);
   }
   return {
-    ...(guidePageProps.version.main ? {} : { robots: 'noindex, follow' }),
+    ...(guidePageProps?.version?.main ? {} : { robots: 'noindex, follow' }),
     ...makeMetadata({
       title: [
         guidePageProps ? guidePageProps.page.title : '',

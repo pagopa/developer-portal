@@ -62,8 +62,7 @@ const URL_PARSING_METADATA_JSON_PATH =
 const METADATA_TYPE = (process.env.METADATA_TYPE || 'all').toLowerCase();
 const GENERATE_URL_METADATA = process.env.GENERATE_URL_METADATA !== 'false';
 
-// TODO: rename
-const GENERATE_METADATA = process.env.GENERATE_SITEMAP_METADATA !== 'false';
+const GENERATE_METADATA = process.env.GENERATE_METADATA !== 'false';
 const SAVE_STRAPI_RESPONSES = process.env.SAVE_STRAPI_RESPONSES !== 'false';
 
 // Optional filter to sync only specific directories
@@ -80,13 +79,6 @@ const S3_MAIN_GUIDE_VERSIONS_DIRNAMES_TO_REMOVE_JSON_PATH =
   'main-guide-versions-dirNames-to-remove.json';
 
 // S3 paths for metadata files
-const S3_GUIDE_METADATA_JSON_PATH =
-  process.env.S3_GUIDE_METADATA_JSON_PATH || 'guides-metadata.json';
-const S3_SOLUTIONS_METADATA_JSON_PATH =
-  process.env.S3_SOLUTIONS_METADATA_JSON_PATH || 'solutions-metadata.json';
-const S3_RELEASE_NOTES_METADATA_JSON_PATH =
-  process.env.S3_RELEASE_NOTES_METADATA_JSON_PATH ||
-  'release-notes-metadata.json';
 const S3_DIRNAME_METADATA_JSON_PATH =
   process.env.S3_DIRNAME_METADATA_JSON_PATH || 'metadata.json';
 const S3_SOLUTIONS_DIRNAMES_JSON_PATH =
@@ -219,6 +211,7 @@ function buildPathFromSegments(segments: Array<string | undefined>): string {
 function generateUrlPath(options: {
   filePath: string;
   slug: string;
+  dirName: string;
   productSlug?: string;
   versionName?: string;
   metadataType?: MetadataType;
@@ -230,6 +223,7 @@ function generateUrlPath(options: {
     slug,
     productSlug,
     versionName,
+    dirName,
     metadataType = MetadataType.Guide,
     landingFile,
     locale,
@@ -246,7 +240,7 @@ function generateUrlPath(options: {
   const s3Path = isAlreadyS3Path
     ? normalizedFilePath
     : localPathToS3Path(filePath);
-  const restOfPath = sitePathFromS3Path(s3Path, landingFile);
+  const restOfPath = sitePathFromS3Path(s3Path, dirName, landingFile);
 
   switch (metadataType) {
     case MetadataType.Guide:
@@ -359,6 +353,7 @@ async function processGuidesMetadata(
           versionName: guideInfo.versionName,
           metadataType: MetadataType.Guide,
           locale: LOCALE,
+          dirName: guideInfo.dirName,
         });
 
         const baseItem: MetadataItem = {
@@ -379,6 +374,7 @@ async function processGuidesMetadata(
             productSlug: guideInfo.productSlug,
             metadataType: MetadataType.Guide,
             locale: LOCALE,
+            dirName: guideInfo.dirName,
           });
 
           guideItems.push({
@@ -468,6 +464,7 @@ async function processSolutionsMetadata(
           metadataType: MetadataType.Solution,
           landingFile: solution.landingUseCaseFile,
           locale: LOCALE,
+          dirName,
         });
 
         itemList.push({
@@ -533,6 +530,7 @@ async function processReleaseNotesMetadata(
           metadataType: MetadataType.ReleaseNote,
           landingFile: releaseNote.landingFile,
           locale: LOCALE,
+          dirName: dirName,
         });
 
         itemList.push({
@@ -612,6 +610,7 @@ async function generateUrlParsingMetadata(
         versionName: info.versionName,
         metadataType: info.metadataType,
         locale: LOCALE,
+        dirName: info.dirName,
       }),
     }));
 

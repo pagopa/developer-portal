@@ -9,6 +9,7 @@ export type LinkProps<A> = {
   readonly href: string;
   readonly children: A;
   readonly title?: string;
+  readonly className?: string;
 };
 
 export const link: Schema = {

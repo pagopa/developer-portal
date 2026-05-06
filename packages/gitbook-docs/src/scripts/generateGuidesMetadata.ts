@@ -35,10 +35,11 @@ function generateUrlPath(
   filePath: string,
   guideSlug: string,
   productSlug: string,
+  dirName: string,
   versionName?: string,
   locale?: string
 ): string {
-  const restOfPath = sitePathFromS3Path(filePath, undefined);
+  const restOfPath = sitePathFromS3Path(filePath, dirName, undefined);
   return [
     locale,
     `/${productSlug}`,
@@ -98,6 +99,7 @@ async function convertGuideToMetadataItems(
           filePath,
           guideInfo.slug,
           guideInfo.productSlug,
+          guideInfo.dirName,
           guideInfo.versionName,
           LOCALE
         );
@@ -115,6 +117,7 @@ async function convertGuideToMetadataItems(
             filePath,
             guideInfo.slug,
             guideInfo.productSlug,
+            guideInfo.dirName,
             undefined,
             LOCALE
           );

@@ -1,5 +1,21 @@
 # gitbook-docs
 
+## 2.3.0
+
+### Minor Changes
+
+- edbcd63: Add columns in gitbook parsing and nextjs components
+
+### Patch Changes
+
+- 2720558: Fix sitePathFromS3Path to add support for dirNames referencing nested directories
+
+## 2.2.1
+
+### Patch Changes
+
+- 3bc622e: Code cleanup and make sitemap generation optional
+
 ## 2.2.0
 
 ### Minor Changes
