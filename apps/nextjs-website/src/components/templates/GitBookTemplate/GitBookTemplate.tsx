@@ -8,7 +8,7 @@ import { Box, Stack } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import { PRODUCT_HEADER_HEIGHT, SITE_HEADER_HEIGHT } from '@/config';
 import GitBookContent from '@/components/organisms/GitBookContent/GitBookContent';
-import React, { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useDynamicSeo } from '@/hooks/useDynamicSeo';
 import {
   gitBookPageToBreadcrumbs,
