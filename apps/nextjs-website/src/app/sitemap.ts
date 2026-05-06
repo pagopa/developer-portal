@@ -248,7 +248,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
           releaseNotesDirNames
         );
 
-      // Merge legacy and distributed metadata, then deduplicate by path
+      // Deduplicate distributed release-notes metadata by path
       const uniqueReleaseNotesMetadata = Array.from(
         new Map(
           releaseNotesMetadataByDirNames.map((releaseNote) => [
