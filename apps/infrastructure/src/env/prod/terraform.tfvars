@@ -57,7 +57,6 @@ chatbot_models = {
 }
 */
 
-
-
-
 docs_redirect_is_enabled = true
+
+strapi_v4_image_tag = "98d394aba2b711f912bad89d9361aec052ad46df"
