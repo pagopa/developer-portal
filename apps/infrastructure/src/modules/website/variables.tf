@@ -130,7 +130,7 @@ variable "webinar_heartbeat" {
     interval_in_seconds = number
     enabled             = bool
   })
-  description = "Defines if the webinar heartbeat should be enabled"
+  description = "Configuration for the webinar heartbeat check, including target URL, execution interval in seconds, and whether the heartbeat is enabled."
 }
 
 variable "cognito_user_pool_id" {
