@@ -53,8 +53,6 @@ resource "aws_iam_role_policy" "lambda_monitor_policy" {
           module.langfuse_public_key.ssm_parameter_arn,
           module.langfuse_secret_key.ssm_parameter_arn,
           module.google_api_key_ssm_parameter.ssm_parameter_arn,
-          module.langfuse_public_key.ssm_parameter_arn,
-          module.langfuse_secret_key.ssm_parameter_arn,
         ]
       },
       {
@@ -63,7 +61,8 @@ resource "aws_iam_role_policy" "lambda_monitor_policy" {
           "sqs:ReceiveMessage",
           "sqs:DeleteMessage",
           "sqs:GetQueueAttributes",
-          "sqs:SendMessage"
+          "sqs:SendMessage",
+          "sqs:ChangeMessageVisibility"
         ]
         Resource = aws_sqs_queue.chatbot_queue["monitor"].arn
       },
@@ -115,7 +114,7 @@ resource "aws_lambda_function" "chatbot_monitor_lambda" {
   function_name = local.chatbot_monitor_lambda_name
   description   = "Lambda responsible for monitoring chatbot interactions"
 
-  image_uri    = "${module.ecr["monitor"].repository_url}:laest"
+  image_uri    = "${module.ecr["monitor"].repository_url}:latest"
   package_type = "Image"
 
   timeout       = 120 # two minutes, as some interactions might take longer to process

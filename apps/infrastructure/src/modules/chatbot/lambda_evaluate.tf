@@ -63,6 +63,7 @@ resource "aws_iam_role_policy" "lambda_evaluate_policy" {
           "sqs:ReceiveMessage",
           "sqs:DeleteMessage",
           "sqs:GetQueueAttributes",
+          "sqs:ChangeMessageVisibility",
         ]
         Resource = aws_sqs_queue.chatbot_queue["evaluate"].arn
       },

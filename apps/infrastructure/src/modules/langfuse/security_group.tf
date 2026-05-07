@@ -98,7 +98,7 @@ resource "aws_security_group" "langfuse_web" {
 }
 
 
-# TODO: the for_each fails when aws_security_group.lb.id is a string, known only after apply. How can be sloved?
+# TODO: for_each fails when aws_security_group.lb.id is only known after apply; this is a known Terraform limitation.
 resource "aws_security_group_rule" "langfuse_web_lambda_ingress" {
   for_each = { for id in [aws_security_group.lb.id, var.lambda_security_group_id] : id => id if id != null }
 
