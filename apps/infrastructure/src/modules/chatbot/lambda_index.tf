@@ -6,18 +6,7 @@ resource "aws_cloudwatch_log_group" "lambda_index_logs" {
 resource "aws_iam_role" "lambda_index_role" {
   name                  = "${local.prefix}-index-lambda"
   force_detach_policies = true
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Action = "sts:AssumeRole"
-        Effect = "Allow"
-        Principal = {
-          Service = "lambda.amazonaws.com"
-        }
-      }
-    ]
-  })
+  assume_role_policy    = data.aws_iam_policy_document.lambda_assume_role.json
 }
 
 resource "aws_iam_role_policy" "lambda_index_policy" {
@@ -60,7 +49,7 @@ resource "aws_iam_role_policy" "lambda_index_policy" {
         ]
         Effect = "Allow"
         Resource = [
-          module.google_api_key_ssm_parameter.ssm_parameter_arn,
+          module.google_service_account_ssm_parameter.ssm_parameter_arn,
         ]
       },
       {

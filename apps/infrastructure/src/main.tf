@@ -204,6 +204,8 @@ module "chatbot" {
   github_repository             = var.github_repository
   ecs_monitoring                = var.chatbot_ecs_monitoring
   models                        = var.chatbot_models
+
+  hosted_zone_id = module.core.hosted_zone_id
 }
 
 module "cicd" {
