@@ -1,8 +1,6 @@
 module "langfuse" {
   source = "../langfuse"
 
-  count = var.environment == "prod" ? 0 : 1
-
   environment        = var.environment
   region             = var.aws_region
   vpc_id             = var.vpc.id

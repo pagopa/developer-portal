@@ -112,6 +112,7 @@ resource "aws_security_group_rule" "langfuse_web_lambda_ingress" {
 
 }
 
+
 resource "aws_security_group" "clickhouse" {
   name   = "${local.prefix}-clickhouse-sg"
   vpc_id = var.vpc_id

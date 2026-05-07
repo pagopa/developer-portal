@@ -392,3 +392,10 @@ moved {
   from = module.video_streaming.aws_s3_bucket_policy.allow_cloudfront_oac
   to   = module.video_streaming.aws_s3_bucket_policy.allow_access_recordings
 }
+
+# Langfuse 5.x.x
+
+moved {
+  from = module.chatbot[0].module.langfuse[0]
+  to   = module.chatbot[0].module.langfuse
+}
