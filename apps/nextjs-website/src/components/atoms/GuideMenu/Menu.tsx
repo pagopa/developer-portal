@@ -15,8 +15,6 @@ import GuideVersionSelector, {
 import { Typography } from '@mui/material';
 import type { GitBookContentData } from '@/lib/gitBookContent/types';
 import { useParams } from 'next/navigation';
-import { GuidesTranslationDisclaimer } from '@/components/atoms/GuidesTranslationDisclaimer/GuidesTranslationDisclaimer';
-import { BlocksContent } from '@strapi/blocks-react-renderer';
 
 const StyledTreeItem = styled(TreeItem)(({ theme }) => ({
   [`&`]: {
@@ -112,7 +110,6 @@ export type GuideMenuItemsProps = Partial<GuideVersionSelectorProps> & {
   linkPrefix: string;
   containerRef?: React.RefObject<HTMLDivElement | null>;
   onGuideNavigate?: (payload: GitBookContentData) => boolean;
-  guideTranslationDisclaimer?: BlocksContent;
 };
 
 const GuideMenuItems = ({
@@ -124,7 +121,6 @@ const GuideMenuItems = ({
   versionName,
   versions,
   onGuideNavigate,
-  guideTranslationDisclaimer,
 }: GuideMenuItemsProps) => {
   const { locale } = useParams<{ locale: string }>();
   const components: RenderingComponents<React.ReactNode> = useMemo(
@@ -217,9 +213,6 @@ const GuideMenuItems = ({
       </Typography>
       {versions && versionName && (
         <GuideVersionSelector versions={versions} versionName={versionName} />
-      )}
-      {guideTranslationDisclaimer && (
-        <GuidesTranslationDisclaimer content={guideTranslationDisclaimer} />
       )}
       <SimpleTreeView
         slots={{
