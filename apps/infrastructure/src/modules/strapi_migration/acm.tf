@@ -18,7 +18,7 @@ module "cms_ssl_certificate" {
 module "strapi_media_library_ssl_certificate" {
   source = "git::https://github.com/terraform-aws-modules/terraform-aws-acm.git?ref=5d113fa07675fc42237907a621b68ac97109043e" # v6.3.0
 
-  domain_name = format("cdnv5.%s", var.dns_domain_name)
+  domain_name = format("cdnv4.%s", var.dns_domain_name)
   zone_id     = var.hosted_zone_id
 
   providers = {

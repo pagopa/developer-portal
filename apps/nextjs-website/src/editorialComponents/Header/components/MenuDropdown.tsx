@@ -99,10 +99,7 @@ export const MenuDropdown = (props: MenuDropdownProp) => {
 
   return (
     <Stack sx={styles.menu} {...menuEventsHandlers}>
-      <Link
-        sx={{ maxHeight: '27px', maxWidth: '130px', ...styles.item }}
-        {...button}
-      >
+      <Link sx={{ maxHeight: '27px', ...styles.item }} {...button}>
         <Typography
           noWrap
           variant='sidenav'

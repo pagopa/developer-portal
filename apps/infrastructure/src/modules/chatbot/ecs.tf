@@ -155,7 +155,7 @@ module "monitoring_ecs_service" {
 
   name                           = "langfuse-ecs"
   cluster_arn                    = module.ecs_cluster.arn
-  desired_count                  = 1
+  desired_count                  = var.ecs_monitoring.desired_count
   create_task_definition         = false
   create_iam_role                = false
   create_task_exec_iam_role      = false
@@ -168,8 +168,8 @@ module "monitoring_ecs_service" {
   task_exec_iam_role_arn         = module.iam_role_ecs_task_execution.iam_role_arn
   ignore_task_definition_changes = false
   enable_autoscaling             = false
-  autoscaling_max_capacity       = 1
-  autoscaling_min_capacity       = 1
+  autoscaling_max_capacity       = var.ecs_monitoring.autoscaling_max_capacity
+  autoscaling_min_capacity       = var.ecs_monitoring.autoscaling_min_capacity
 
   security_group_ids = [aws_security_group.monitoring_ecs.id]
   subnet_ids         = var.vpc.private_subnets
