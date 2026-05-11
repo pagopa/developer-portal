@@ -2,7 +2,7 @@
 module "cms_load_balancer" {
   source = "git::https://github.com/terraform-aws-modules/terraform-aws-alb.git?ref=3e9c6cbaf4c1d858c3bbee6f086f0c8ef17522ab" # v9.6.0
 
-  name                  = "cms-load-balancer-v5"
+  name                  = "cms-load-balancer-v4"
   vpc_id                = data.aws_vpc.cms.id
   subnets               = data.aws_subnets.public.ids
   security_groups       = [aws_security_group.cms_lb.id]

@@ -75,8 +75,9 @@ module "opennext" {
       STATIC_CONTENTS_URL                               = format("https://static-contents.%s", var.dns_domain_name)
       S3_SOAP_API_METADATA_JSON_PATH                    = "soap-api/soap-api-metadata.json"
       ALLOW_CRAWLER                                     = var.environment == "prod" ? "true" : "false"
-      NEXT_PUBLIC_WEBINAR_HEARTBEAT_URL                 = var.webinar_heartbeat_url
-      NEXT_PUBLIC_WEBINAR_HEARTBEAT_INTERVAL_IN_SECONDS = tostring(var.webinar_heartbeat_interval_in_seconds)
+      NEXT_PUBLIC_WEBINAR_HEARTBEAT_URL                 = var.webinar_heartbeat.url
+      NEXT_PUBLIC_WEBINAR_HEARTBEAT_INTERVAL_IN_SECONDS = tostring(var.webinar_heartbeat.interval_in_seconds)
+      NEXT_PUBLIC_WEBINAR_HEARTBEAT_ENABLED             = var.webinar_heartbeat.enabled ? "true" : "false"
     }
   }
 

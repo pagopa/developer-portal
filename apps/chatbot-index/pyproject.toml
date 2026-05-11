@@ -24,7 +24,7 @@ httpx = "^0.28.1"
 pytest = "^8.3.5"
 
 [tool.poetry.group.dev.dependencies]
-jupyter = "^1.1.1"
+jupyter = "1.1.1"
 
 [build-system]
 build-backend = "poetry.core.masonry.api"

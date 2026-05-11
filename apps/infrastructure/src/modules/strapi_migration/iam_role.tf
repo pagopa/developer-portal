@@ -2,7 +2,7 @@
 #                Define IAM Role to use on strapi deploy                      #
 ###############################################################################
 resource "aws_iam_role" "deploy_cms" {
-  name               = "GitHubActionDeployCmsV5"
+  name               = "GitHubActionDeployCmsV4"
   description        = "Role to assume to deploy the cms"
   assume_role_policy = data.aws_iam_policy_document.deploy_github.json
 }
@@ -16,10 +16,10 @@ resource "aws_iam_role_policy_attachment" "deploy_cms" {
 #                  IAM Role used by task execution agent                      #
 ###############################################################################
 module "iam_role_ecs_task_execution" {
-  source = "git::https://github.com/terraform-aws-modules/terraform-aws-iam.git//modules/iam-assumable-role?ref=f37809108f86d8fbdf17f735df734bf4abe69315" # v5.34.0
+  source = "git::https://github.com/terraform-aws-modules/terraform-aws-iam.git//modules/iam-assumable-role?ref=f37809108f86d8fbdf17f735df734bf4abe69315" # v4.34.0
 
   create_role = true
-  role_name   = "ecs-task-execution-role-v5"
+  role_name   = "ecs-task-execution-role-v4"
 
   custom_role_policy_arns = [
     "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy",
@@ -37,10 +37,10 @@ module "iam_role_ecs_task_execution" {
 #                         IAM Role used by strapi                             #
 ###############################################################################
 module "iam_role_task_role" {
-  source = "git::https://github.com/terraform-aws-modules/terraform-aws-iam.git//modules/iam-assumable-role?ref=f37809108f86d8fbdf17f735df734bf4abe69315" # v5.34.0
+  source = "git::https://github.com/terraform-aws-modules/terraform-aws-iam.git//modules/iam-assumable-role?ref=f37809108f86d8fbdf17f735df734bf4abe69315" # v4.34.0
 
   create_role = true
-  role_name   = "ecs-task-role-v5"
+  role_name   = "ecs-task-role-v4"
 
   custom_role_policy_arns = [
     "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role",

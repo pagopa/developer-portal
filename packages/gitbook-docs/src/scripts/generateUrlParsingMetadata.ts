@@ -35,12 +35,13 @@ export type UrlParsingItem = {
 export function generateUrlPath(
   filePath: string,
   slug: string,
+  dirName: string,
   productSlug?: string,
   versionName?: string,
   metadataType: MetadataType = MetadataType.Guide,
   locale?: string
 ): string {
-  const restOfPath = sitePathFromLocalPath(filePath, undefined);
+  const restOfPath = sitePathFromLocalPath(filePath, dirName, undefined);
   switch (metadataType) {
     case MetadataType.Guide:
       return [
@@ -149,6 +150,7 @@ async function convertDocToUrlParsingItems(
         const urlPath = generateUrlPath(
           filePath,
           docInfo.slug,
+          docInfo.dirName,
           docInfo.productSlug,
           docInfo.versionName,
           docInfo.metadataType,

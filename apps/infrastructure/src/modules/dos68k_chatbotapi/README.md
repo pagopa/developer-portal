@@ -67,15 +67,15 @@ No requirements.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_aws_region"></a> [aws\_region](#input\_aws\_region) | AWS region to create resources | `string` | `"eu-south-1"` | no |
 | <a name="input_dns_domain_name"></a> [dns\_domain\_name](#input\_dns\_domain\_name) | DNS domain for the Developer Portal product | `string` | n/a | yes |
+| <a name="input_ecs_chatbotapi"></a> [ecs\_chatbotapi](#input\_ecs\_chatbotapi) | ECS task configuration for the chatbot API | <pre>object({<br/>    cpu       = optional(number, 1024)<br/>    memory    = optional(number, 2048)<br/>    image_tag = optional(string, "latest")<br/>  })</pre> | <pre>{<br/>  "cpu": 1024,<br/>  "image_tag": "latest",<br/>  "memory": 2048<br/>}</pre> | no |
+| <a name="input_enable_scheduled_scaling"></a> [enable\_scheduled\_scaling](#input\_enable\_scheduled\_scaling) | Enable scheduled autoscaling to scale down to 0 outside working hours (Mon-Fri 09:00-19:00 CET) | `bool` | `false` | no |
 | <a name="input_environment"></a> [environment](#input\_environment) | Environment (dev, uat, prod) | `string` | n/a | yes |
 | <a name="input_redis_host"></a> [redis\_host](#input\_redis\_host) | The Redis host (NLB DNS name from the chatbot module) | `string` | n/a | yes |
 | <a name="input_redis_nlb_security_group_id"></a> [redis\_nlb\_security\_group\_id](#input\_redis\_nlb\_security\_group\_id) | Security group ID of the Redis NLB to add ingress rule for this module's ECS tasks | `string` | n/a | yes |
-| <a name="input_vpc"></a> [vpc](#input\_vpc) | The VPC used to deploy the resources | <pre>object({<br/>    id              = string<br/>    private_subnets = list(string)<br/>  })</pre> | n/a | yes |
-| <a name="input_aws_region"></a> [aws\_region](#input\_aws\_region) | AWS region to create resources | `string` | `"eu-south-1"` | no |
-| <a name="input_ecs_chatbotapi"></a> [ecs\_chatbotapi](#input\_ecs\_chatbotapi) | ECS task configuration for the chatbot API | <pre>object({<br/>    cpu       = optional(number, 1024)<br/>    memory    = optional(number, 2048)<br/>    image_tag = optional(string, "latest")<br/>  })</pre> | <pre>{<br/>  "cpu": 1024,<br/>  "image_tag": "latest",<br/>  "memory": 2048<br/>}</pre> | no |
-| <a name="input_enable_scheduled_scaling"></a> [enable\_scheduled\_scaling](#input\_enable\_scheduled\_scaling) | Enable scheduled autoscaling to scale down to 0 outside working hours (Mon-Fri 09:00-19:00 CET) | `bool` | `false` | no |
 | <a name="input_redis_port"></a> [redis\_port](#input\_redis\_port) | The Redis port | `number` | `6379` | no |
+| <a name="input_vpc"></a> [vpc](#input\_vpc) | The VPC used to deploy the resources | <pre>object({<br/>    id              = string<br/>    private_subnets = list(string)<br/>  })</pre> | n/a | yes |
 
 ## Outputs
 

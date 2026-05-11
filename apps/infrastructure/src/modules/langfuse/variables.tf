@@ -56,12 +56,6 @@ variable "cache_node_type" {
   default     = "cache.t4g.micro"
 }
 
-# variable "is_spot_instance" {
-#   description = "Whether to use spot instances for Langfuse Worker(s) / Clickhouse node"
-#   type        = bool
-#   default     = false
-# }
-
 variable "worker_desire_count" {
   description = "Desired count for Langfuse Worker(s)"
   type        = number
@@ -106,6 +100,12 @@ variable "cognito_user_pool_endpoint" {
 
 variable "master_user_password_param_arn" {
   description = "ARN of the SSM parameter containing the Cognito master user password when reusing an existing user pool"
+  type        = string
+  default     = null
+}
+
+variable "lambda_security_group_id" {
+  description = "Security group ID of the lambda monitor to allow access to langfuse-web"
   type        = string
   default     = null
 }
