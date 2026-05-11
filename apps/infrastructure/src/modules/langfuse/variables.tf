@@ -56,12 +56,6 @@ variable "cache_node_type" {
   default     = "cache.t4g.micro"
 }
 
-# variable "is_spot_instance" {
-#   description = "Whether to use spot instances for Langfuse Worker(s) / Clickhouse node"
-#   type        = bool
-#   default     = false
-# }
-
 variable "worker_desire_count" {
   description = "Desired count for Langfuse Worker(s)"
   type        = number

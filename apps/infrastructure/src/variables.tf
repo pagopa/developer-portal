@@ -61,29 +61,6 @@ variable "use_custom_certificate" {
   default     = true
 }
 
-variable "log_retention_days" {
-  type        = number
-  description = "The number of days logs should be retained. Default is 90 days."
-  default     = 90
-}
-
-## CMS Strapi App Port
-variable "cms_app_port" {
-  description = "The standard app port used by CMS Strapi"
-  default     = 1337
-}
-
-## CMS Strapi CPU
-variable "cms_app_cpu" {
-  description = "Fargate instance CPU units to provision (1 vCPU = 1024 CPU units)"
-  default     = "1024" ##### 1 vCPU
-}
-
-## CMS Strapi RAM
-variable "cms_app_memory" {
-  description = "Fargate instance memory to provision (in MiB)"
-  default     = "3072" ##### 3 GB RAM
-}
 
 ## CMS Strapi Image Tag
 variable "cms_app_image_tag" {
@@ -101,7 +78,6 @@ variable "strapi_v4_image_tag" {
 variable "dns_domain_name_cms" {
   description = "DNS domain name of the Developer Portal's CMS"
   type        = map(any)
-  default     = null
 }
 
 # RDS Aurora PostgreSQL Serverless for CMS Strapi

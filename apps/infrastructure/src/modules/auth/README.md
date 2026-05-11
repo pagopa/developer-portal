@@ -1,4 +1,3 @@
-<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
@@ -89,4 +88,3 @@
 | <a name="output_authenticated_user_role_id"></a> [authenticated\_user\_role\_id](#output\_authenticated\_user\_role\_id) | The ID (name) of the IAM role for authenticated users |
 | <a name="output_cognito_identity_pool_id"></a> [cognito\_identity\_pool\_id](#output\_cognito\_identity\_pool\_id) | The ID of the Cognito Identity Pool |
 | <a name="output_cognito_user_pool"></a> [cognito\_user\_pool](#output\_cognito\_user\_pool) | n/a |
-<!-- END_TF_DOCS -->

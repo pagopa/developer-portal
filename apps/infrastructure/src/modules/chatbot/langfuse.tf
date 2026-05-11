@@ -6,8 +6,8 @@ module "langfuse" {
   vpc_id             = var.vpc.id
   private_subnet_ids = var.vpc.private_subnets
   public_subnet_ids  = var.vpc.public_subnets
-  custom_domain_id   = var.hosted_zone_id
-  custom_domain_name = var.dns_domain_name
+  custom_domain_id   = var.dns_chatbot_hosted_zone.id
+  custom_domain_name = "mon.${var.dns_chatbot_hosted_zone.name}"
 
   cognito_user_pool_id           = aws_cognito_user_pool.monitoring.id
   cognito_user_pool_endpoint     = aws_cognito_user_pool.monitoring.endpoint
