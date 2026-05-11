@@ -71,8 +71,10 @@ export function replaceUrl(
   ) {
     return value;
   }
+  // Remove markdown escape backslashes (e.g., \_ -> _)
+  const cleanedValue = value.replace(/\\([_*[\]()#+\-.!|`~])/g, '$1');
   // Clean up the URL by removing mentions, README.md, and .md extensions
-  const splitValue = value
+  const splitValue = cleanedValue
     .replace(' "mention"', '')
     .replace('.md', '')
     .split('/')
