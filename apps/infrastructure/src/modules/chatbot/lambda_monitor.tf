@@ -125,6 +125,7 @@ resource "aws_lambda_function" "chatbot_monitor_lambda" {
   environment {
     variables = {
       CHB_AWS_SSM_LANGFUSE_PUBLIC_KEY = module.langfuse_public_key.ssm_parameter_name
+      /* TODO: langfuse_secret_key should still exist=? */
       CHB_AWS_SSM_LANGFUSE_SECRET_KEY = module.langfuse_secret_key.ssm_parameter_name
       CHB_LANGFUSE_HOST               = module.langfuse.service_discovery_endpoint
       CHB_AWS_SQS_QUEUE_EVALUATE_NAME = aws_sqs_queue.chatbot_queue["evaluate"].name
