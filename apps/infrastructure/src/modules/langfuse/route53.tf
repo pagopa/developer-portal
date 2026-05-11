@@ -1,5 +1,5 @@
 resource "aws_route53_record" "langfuse" {
-  name    = local.langfuse_domain_name
+  name    = var.custom_domain_name
   zone_id = var.custom_domain_id
   type    = "A"
 

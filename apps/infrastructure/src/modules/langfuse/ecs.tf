@@ -301,7 +301,7 @@ resource "aws_ecs_task_definition" "langfuse_web" {
       environment = [
         {
           name  = "NEXTAUTH_URL"
-          value = "https://${local.langfuse_domain_name}"
+          value = "https://${var.custom_domain_name}"
         },
         {
           name  = "HOSTNAME"
