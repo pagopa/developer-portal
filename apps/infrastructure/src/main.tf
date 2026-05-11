@@ -148,7 +148,11 @@ module "website" {
 
   next_public_soap_api_page_active = true
 
-  webinar_heartbeat_url = module.video_streaming.ingest_api_endpoint
+  webinar_heartbeat = {
+    url                 = module.video_streaming.ingest_api_endpoint
+    interval_in_seconds = 60
+    enabled             = var.environment == "prod" ? false : true
+  }
 
 }
 
@@ -204,6 +208,8 @@ module "chatbot" {
   github_repository             = var.github_repository
   ecs_monitoring                = var.chatbot_ecs_monitoring
   models                        = var.chatbot_models
+
+  hosted_zone_id = module.core.hosted_zone_id
 }
 
 module "cicd" {
@@ -300,7 +306,7 @@ module "video_streaming" {
 module "strapi4" {
   source = "./modules/strapi_migration"
 
-  count = var.environment == "uat" ? 1 : 0
+  count = var.environment == "prod" ? 1 : 0
 
   providers = {
     aws           = aws

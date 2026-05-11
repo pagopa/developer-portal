@@ -1,5 +1,21 @@
 # nextjs-website
 
+## 17.2.0
+
+### Minor Changes
+
+- edbcd63: Add columns in gitbook parsing and nextjs components
+
+### Patch Changes
+
+- 954d266: Fix handling of missing guide's version in URL
+- 053488d: Fix path in product header layout
+- 1a2c6e3: Fix redirect when logged in cookie is set
+- 6573a74: Remove guide translation disclaimer from GuideMenu and Menu components; display it in GitBookTemplate
+- Updated dependencies [edbcd63]
+- Updated dependencies [2720558]
+  - gitbook-docs@2.3.0
+
 ## 17.1.1
 
 ### Patch Changes

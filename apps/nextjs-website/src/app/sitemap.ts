@@ -6,10 +6,9 @@ import { GuidesRepository } from '@/lib/guides';
 import { SolutionRepository } from '@/lib/solutions';
 import { baseUrl } from '@/config';
 import {
-  getReleaseNotesMetadata,
-  getSolutionsMetadataByDirNames,
-  getReleaseNotesMetadataByDirNames,
   getGuidesMetadataByDirNames,
+  getReleaseNotesMetadataByDirNames,
+  getSolutionsMetadataByDirNames,
   JsonMetadata,
 } from '@/helpers/s3Metadata.helpers';
 import { SUPPORTED_LOCALES } from '@/locales';
@@ -136,43 +135,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
               return currentDate > latestDate ? current : latest;
             }).updatedAt;
 
-      // --------------------------------------------------------------------------------
-      // 2. Fetch S3 Metadata (Guides, Solutions, Release Notes)
-      // --------------------------------------------------------------------------------
-      const guides = await GuidesRepository.getAll(localeCode);
-      const guidesDirNames = Array.from(
-        new Set(
-          guides
-            .flatMap((guide) =>
-              guide.versions.map((version) => version.dirName)
-            )
-            .filter((dirName): dirName is string => Boolean(dirName))
-        )
-      );
-      const guidesMetadataByDirNames = await getGuidesMetadataByDirNames(
-        localeCode,
-        guidesDirNames
-      );
-
-      // Remove duplicates
-      const uniqueGuidesMetadata = Array.from(
-        new Map(
-          guidesMetadataByDirNames.map((guide) => [guide.path, guide])
-        ).values()
-      );
-
-      const solutionDirNames = Array.from(
-        new Set(
-          solutions
-            .map((solution) => solution.dirName)
-            .filter((dirName): dirName is string => Boolean(dirName))
-        )
-      );
-      const solutionsMetadata = await getSolutionsMetadataByDirNames(
-        localeCode,
-        solutionDirNames
-      );
-
+      // --- Section index routes ---
       const sectionRoutes = compact([
         !isEmpty(solutions) && {
           url: `${localizedUrlPrefix}/solutions`,
@@ -188,14 +151,81 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         },
       ]);
 
-      // Release Notes fetching with error handling
-      // eslint-disable-next-line functional/no-let
-      let releaseNotesMetadata: readonly JsonMetadata[] = [];
+      // --------------------------------------------------------------------------------
+      // 2. Fetch S3 Metadata (Guides, Solutions, Release Notes)
+      // --------------------------------------------------------------------------------
+
+      // --- Guides ---
+      const guides = await GuidesRepository.getAll(localeCode);
+      const guidesDirNames = Array.from(
+        new Set(
+          guides
+            .flatMap((guide) =>
+              guide.versions.map((version) => version.dirName)
+            )
+            .filter((dirName): dirName is string => Boolean(dirName))
+        )
+      );
+      const guidesMetadataByDirNames = await getGuidesMetadataByDirNames(
+        localeCode,
+        guidesDirNames
+      );
+      const uniqueGuidesMetadata = Array.from(
+        new Map(
+          guidesMetadataByDirNames.map((guide) => [guide.path, guide])
+        ).values()
+      );
+      const s3GuideRoutes = uniqueGuidesMetadata.map((guide: JsonMetadata) => {
+        const guidePath = guide.path.startsWith(`/${localeCode}`)
+          ? guide.path
+          : `/${localeCode}${guide.path}`;
+        return {
+          url: `${baseUrl}${guidePath}`,
+          lastModified: new Date(guide.lastModified || Date.now()),
+          changeFrequency: 'weekly' as const,
+          priority: 0.6,
+        };
+      });
+
+      // --- Solutions (S3 metadata) ---
+      const solutionDirNames = Array.from(
+        new Set(
+          solutions
+            .map((solution) => solution.dirName)
+            .filter((dirName): dirName is string => Boolean(dirName))
+        )
+      );
+      const solutionsMetadataByDirNames = await getSolutionsMetadataByDirNames(
+        localeCode,
+        solutionDirNames
+      );
+      const uniqueSolutionsMetadata = Array.from(
+        new Map(
+          solutionsMetadataByDirNames.map((solution) => [
+            solution.path,
+            solution,
+          ])
+        ).values()
+      );
+      const s3SolutionRoutes = uniqueSolutionsMetadata.map(
+        (solution: JsonMetadata) => {
+          const solutionPath = solution.path.startsWith(`/${localeCode}`)
+            ? solution.path
+            : `/${localeCode}${solution.path}`;
+          return {
+            url: `${baseUrl}${solutionPath}`,
+            lastModified: new Date(solution.lastModified || Date.now()),
+            changeFrequency: 'weekly' as const,
+            priority: 0.6,
+          };
+        }
+      );
+
+      // --- Release Notes ---
       // eslint-disable-next-line functional/no-let
       let releaseNotes: readonly { readonly dirName: string | null }[] = [];
 
       try {
-        releaseNotesMetadata = await getReleaseNotesMetadata(localeCode);
         releaseNotes = await getReleaseNotes(localeCode);
       } catch (error) {
         // eslint-disable-next-line no-console
@@ -212,54 +242,20 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             .filter((dirName): dirName is string => Boolean(dirName))
         )
       );
-
       const releaseNotesMetadataByDirNames =
         await getReleaseNotesMetadataByDirNames(
           localeCode,
           releaseNotesDirNames
         );
 
-      // Merge legacy and new metadata to ensure no missing content
-      // Prioritize distributed metadata if duplicates exist (though they shouldn't)
-      const allReleaseNotesMetadata = [
-        ...releaseNotesMetadata,
-        ...releaseNotesMetadataByDirNames,
-      ];
-
-      // Remove duplicates based on path
+      // Deduplicate distributed release-notes metadata by path
       const uniqueReleaseNotesMetadata = Array.from(
         new Map(
-          allReleaseNotesMetadata.map((releaseNote) => [
+          releaseNotesMetadataByDirNames.map((releaseNote) => [
             releaseNote.path,
             releaseNote,
           ])
         ).values()
-      );
-
-      const s3GuideRoutes = uniqueGuidesMetadata.map((guide: JsonMetadata) => {
-        const guidePath = guide.path.startsWith(`/${localeCode}`)
-          ? guide.path
-          : `/${localeCode}${guide.path}`;
-        return {
-          url: `${baseUrl}${guidePath}`,
-          lastModified: new Date(guide.lastModified || Date.now()),
-          changeFrequency: 'weekly' as const,
-          priority: 0.6,
-        };
-      });
-
-      const s3SolutionRoutes = solutionsMetadata.map(
-        (solution: JsonMetadata) => {
-          const solutionPath = solution.path.startsWith(`/${localeCode}`)
-            ? solution.path
-            : `/${localeCode}${solution.path}`;
-          return {
-            url: `${baseUrl}${solutionPath}`,
-            lastModified: new Date(solution.lastModified || Date.now()),
-            changeFrequency: 'weekly' as const,
-            priority: 0.6,
-          };
-        }
       );
 
       const s3ReleaseNoteRoutes = uniqueReleaseNotesMetadata.map(

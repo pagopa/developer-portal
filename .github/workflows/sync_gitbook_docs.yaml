@@ -75,7 +75,7 @@ jobs:
 
     steps:
       - name: Checkout current repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
         with:
           ref: ${{ inputs.environment == 'dev' && github.ref || format('nextjs-website@latest-deployed-in-{0}', inputs.environment) }}
 
@@ -118,7 +118,7 @@ jobs:
 
     steps:
       - name: Checkout current repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
         with:
           ref: 'nextjs-website@latest-deployed-in-prod'
 
@@ -160,7 +160,7 @@ jobs:
 
     steps:
       - name: Checkout current repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
         with:
           ref: 'nextjs-website@latest-deployed-in-prod'
 
