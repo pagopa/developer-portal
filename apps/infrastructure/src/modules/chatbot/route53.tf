@@ -21,11 +21,3 @@ resource "aws_route53_record" "monitoring" {
     evaluate_target_health = true
   }
 }
-
-
-resource "aws_route53_zone" "chatbot_internal" {
-  name = "internal.${var.dns_chatbot_hosted_zone.name}"
-  vpc {
-    vpc_id = var.vpc.id
-  }
-}
