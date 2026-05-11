@@ -34,7 +34,6 @@
 | <a name="module_iam_role_ecs_task_execution"></a> [iam\_role\_ecs\_task\_execution](#module\_iam\_role\_ecs\_task\_execution) | git::https://github.com/terraform-aws-modules/terraform-aws-iam.git//modules/iam-assumable-role | f37809108f86d8fbdf17f735df734bf4abe69315 |
 | <a name="module_index_id_ssm_parameter"></a> [index\_id\_ssm\_parameter](#module\_index\_id\_ssm\_parameter) | git::https://github.com/terraform-aws-modules/terraform-aws-ssm-parameter.git | 77d2c139784197febbc8f8e18a33d23eb4736879 |
 | <a name="module_index_id_ssm_parameter_local"></a> [index\_id\_ssm\_parameter\_local](#module\_index\_id\_ssm\_parameter\_local) | git::https://github.com/terraform-aws-modules/terraform-aws-ssm-parameter.git | 77d2c139784197febbc8f8e18a33d23eb4736879 |
-| <a name="module_internal_ssl_certificate"></a> [internal\_ssl\_certificate](#module\_internal\_ssl\_certificate) | git::https://github.com/terraform-aws-modules/terraform-aws-acm.git | 5d113fa07675fc42237907a621b68ac97109043e |
 | <a name="module_langfuse"></a> [langfuse](#module\_langfuse) | ../langfuse | n/a |
 | <a name="module_langfuse_public_key"></a> [langfuse\_public\_key](#module\_langfuse\_public\_key) | git::https://github.com/terraform-aws-modules/terraform-aws-ssm-parameter.git | 77d2c139784197febbc8f8e18a33d23eb4736879 |
 | <a name="module_langfuse_secret_key"></a> [langfuse\_secret\_key](#module\_langfuse\_secret\_key) | git::https://github.com/terraform-aws-modules/terraform-aws-ssm-parameter.git | 77d2c139784197febbc8f8e18a33d23eb4736879 |
