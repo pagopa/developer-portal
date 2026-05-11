@@ -56,7 +56,7 @@ module "cms_load_balancer" {
           actions = [{
             type         = "fixed-response"
             content_type = "text/plain"
-            status_code  = 403
+            status_code  = "403"
             message_body = "Forbidden - CORS policy violation"
           }]
 
