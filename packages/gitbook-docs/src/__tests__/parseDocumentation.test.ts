@@ -6,6 +6,7 @@ import {
 
 const UrlParsingMetadata = {
   dirName: 'test-hash',
+  spaceId: 'test-hash',
   docs: [
     { path: 'this-is-a-test', url: 'parsed-url' },
     { path: 'parent/parse-this', url: 'parsed-url' },
@@ -24,6 +25,7 @@ const GlobalMetadata = [
   UrlParsingMetadata,
   {
     dirName: 'second-test',
+    spaceId: 'second-test',
     docs: [
       {
         path: 'other-documentation',
@@ -77,6 +79,7 @@ describe('parseUrlsFromMarkdown', () => {
   it.skip('should safely escape regex special characters in the target path during replacement', () => {
     const SpecialCharMetadata = {
       dirName: 'special-test',
+      spaceId: 'special-test',
       docs: [
         {
           path: 'path-with-[brackets] and (parentheses)',
