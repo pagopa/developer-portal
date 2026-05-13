@@ -10,6 +10,7 @@ export const DOCUMENTATION_PATH =
   process.env.DOCUMENTATION_PATH || '../../devportal-docs/docs';
 export type UrlParsingMetadata = {
   dirName: string;
+  spaceId: string;
   docs: {
     path: string;
     url: string;
@@ -122,7 +123,11 @@ export function replaceUrl(
   if (docs.length <= 0) {
     const dirName = value.split('/s/').slice(1)[0]?.split('/')[0];
     const externalDocs = allDocsMetadata.filter(
-      (g) => g.dirName.includes(name) || g.dirName === dirName
+      (g) =>
+        g.spaceId.includes(name) ||
+        g.spaceId === dirName ||
+        g.dirName.includes(name) ||
+        g.dirName === dirName
     );
     if (externalDocs.length > 0) {
       docs.push(...externalDocs[0].docs);
