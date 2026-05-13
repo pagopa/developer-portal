@@ -2,4 +2,4 @@
 "gitbook-docs": minor
 ---
 
-Add spaceId to urlParsing logic. dirName is still in use as a rollback, to prevent any error
+Add spaceId to urlParsing logic. dirName is still used as a fallback to prevent errors
