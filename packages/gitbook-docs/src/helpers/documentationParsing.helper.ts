@@ -124,7 +124,7 @@ export function replaceUrl(
     const dirName = value.split('/s/').slice(1)[0]?.split('/')[0];
     const externalDocs = allDocsMetadata.filter(
       (g) =>
-        g.spaceId.includes(name) ||
+        (g.spaceId?.includes(name) ?? false) ||
         g.spaceId === dirName ||
         g.dirName.includes(name) ||
         g.dirName === dirName
