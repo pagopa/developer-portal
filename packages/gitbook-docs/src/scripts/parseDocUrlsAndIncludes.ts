@@ -41,7 +41,7 @@ async function recursiveParseMarkdownFiles(
           ? guideMetadata
           : metadata.find((data) =>
               fullPath.includes(
-                data.spaceId.length > 0 ? data.spaceId : data.dirName
+                data.spaceId?.length > 0 ? data.spaceId : data.dirName
               )
             )
       );
