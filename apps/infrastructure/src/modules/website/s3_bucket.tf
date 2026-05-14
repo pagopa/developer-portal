@@ -44,3 +44,16 @@ resource "aws_s3_bucket_policy" "website_standalone" {
   bucket = aws_s3_bucket.website_standalone.id
   policy = data.aws_iam_policy_document.website_standalone_iam_policy.json
 }
+
+resource "aws_s3_object" "error_404_page" {
+  bucket       = aws_s3_bucket.website_standalone.id
+  key          = "404.html"
+  content_type = "text/html"
+  content      = <<-EOF
+    <!DOCTYPE html>
+    <html>
+    <head><title>404 Not Found</title></head>
+    <body><h1>404 - Not Found</h1></body>
+    </html>
+  EOF
+}
