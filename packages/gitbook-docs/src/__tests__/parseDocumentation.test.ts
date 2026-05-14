@@ -15,9 +15,13 @@ const UrlParsingMetadata = {
       path: 'guide-with-hashtag/this-will-be-parsed',
       url: 'parsed-url-with-hashtag',
     },
-    { path: 'http://localhost:3000/some-doc', url: 'parsed-localhost' },
+    { path: 'docs/some-doc', url: 'parsed-localhost' },
     { path: 'https://www.external-link.com', url: 'do-not-parse' },
-    { path: 'https://app.gitbook.com', url: 'must-parse-this' },
+    {
+      path: 'path-of-file-from-gitbook/file-from-gitbook.md',
+      url: 'must-parse-this',
+    },
+    { path: 'sample/file-with-same-name.md', url: 'first-parsed-url' },
   ],
 };
 
@@ -40,6 +44,10 @@ const GlobalMetadata = [
       {
         path: '../../devportal-docs/docs/pago-pa/saci/2.0.0/README.md',
         url: '/pago-pa/guides/saci/2.0.0',
+      },
+      {
+        path: '../../devportal-docs/docs/pago-pa/saci/2.0.0/sample/file-with-same-name.md',
+        url: '/pago-pa/guides/saci/2.0.0/url-with-same-name',
       },
     ],
   },
@@ -78,8 +86,9 @@ describe('parseUrlsFromMarkdown', () => {
 
   it('should parse external urls from gitbook', () => {
     const res = parseUrlsFromMarkdown(
-      'this is a test string [gitbook-link](https://app.gitbook.com)',
-      UrlParsingMetadata
+      'this is a test string [gitbook-link](https://app.gitbook.com/s/test-hash/file-from-gitbook.md)',
+      UrlParsingMetadata,
+      GlobalMetadata
     );
     expect(res).toStrictEqual(
       'this is a test string [gitbook-link](must-parse-this)'
@@ -255,6 +264,17 @@ describe('parseUrlsFromMarkdown - GitBook /s/<spaceId> matching', () => {
     );
     expect(res).toStrictEqual(
       'This is a test string [this-is-a-test](/pago-pa/guides/saci/2.0.0)'
+    );
+  });
+
+  it('should parse url referencing another guide spaceId even with a name match', () => {
+    const res = parseUrlsFromMarkdown(
+      'This is a test string [this-is-a-test](https://app.gitbook.com/o/KXYtsf32WSKm6ga638R3/s/E6d6iTzjBzUfzNoZjadZ/file-with-same-name.md)',
+      UrlParsingMetadata,
+      GlobalMetadata
+    );
+    expect(res).toStrictEqual(
+      'This is a test string [this-is-a-test](/pago-pa/guides/saci/2.0.0/url-with-same-name)'
     );
   });
 
