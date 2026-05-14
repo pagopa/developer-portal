@@ -119,7 +119,9 @@ export function replaceUrl(
     doc.path.includes(name)
   );
   // Find guides that contain the extracted name in their path
-  const docs = [perfectMatch.length > 0 ? perfectMatch : nameMatch].flat();
+  const docs = value.includes('app.gitbook')
+    ? []
+    : [perfectMatch.length > 0 ? perfectMatch : nameMatch].flat();
   if (docs.length <= 0) {
     const dirName = value.split('/s/').slice(1)[0]?.split('/')[0];
     const externalDocs = allDocsMetadata.filter(
