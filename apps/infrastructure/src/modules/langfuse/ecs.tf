@@ -228,10 +228,6 @@ resource "aws_ecs_task_definition" "langfuse_worker" {
           value = "6379"
         },
         {
-          name  = "REDIS_AUTH"
-          value = aws_elasticache_replication_group.langfuse_cache.auth_token
-        },
-        {
           name  = "NODE_OPTIONS"
           value = "--max-old-space-size=4096"
         }
@@ -348,11 +344,6 @@ resource "aws_ecs_task_definition" "langfuse_web" {
         {
           name  = "LANGFUSE_S3_EVENT_UPLOAD_PREFIX"
           value = "events/"
-        },
-
-        {
-          name  = "REDIS_AUTH"
-          value = aws_elasticache_replication_group.langfuse_cache.auth_token
         },
         {
           name  = "REDIS_HOST"
