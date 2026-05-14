@@ -559,6 +559,7 @@ async function generateUrlParsingMetadata(
         versionName: version.version,
         isMainVersion: version.main,
         dirName: version.dirName,
+        spaceId: version.spaceId,
         slug: guide.slug,
         productSlug: `${guide.product?.slug}`,
         metadataType: MetadataType.Guide,

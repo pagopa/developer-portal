@@ -34,6 +34,16 @@ const GlobalMetadata = [
     ],
   },
   {
+    dirName: 'pago-pa/saci/2.0.0',
+    spaceId: 'E6d6iTzjBzUfzNoZjadZ',
+    docs: [
+      {
+        path: '../../devportal-docs/docs/pago-pa/saci/2.0.0/README.md',
+        url: '/pago-pa/guides/saci/2.0.0',
+      },
+    ],
+  },
+  {
     dirName: 'missing-spaceId',
     spaceId: '',
     docs: [
@@ -239,12 +249,12 @@ describe('parseUrlsFromMarkdown - GitBook /s/<spaceId> matching', () => {
   ];
   it('should parse url referencing another guide spaceId', () => {
     const res = parseUrlsFromMarkdown(
-      'This is a test string [this-is-a-test](https://app.gitbook.com/s/second-test-spaceId/other-documentation)',
+      'This is a test string [this-is-a-test](https://app.gitbook.com/o/KXYtsf32WSKm6ga638R3/s/E6d6iTzjBzUfzNoZjadZ/)',
       UrlParsingMetadata,
       GlobalMetadata
     );
     expect(res).toStrictEqual(
-      'This is a test string [this-is-a-test](other-documentation-parsed-url)'
+      'This is a test string [this-is-a-test](/pago-pa/guides/saci/2.0.0)'
     );
   });
 
