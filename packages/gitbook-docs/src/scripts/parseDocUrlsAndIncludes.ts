@@ -39,11 +39,7 @@ async function recursiveParseMarkdownFiles(
         fullPath,
         guideMetadata
           ? guideMetadata
-          : metadata.find((data) =>
-              fullPath.includes(
-                data.spaceId?.length > 0 ? data.spaceId : data.dirName
-              )
-            )
+          : metadata.find((data) => fullPath.includes(data.dirName))
       );
     } else if (item.isFile() && fullPath.endsWith('.md')) {
       if (!guideMetadata) return;
