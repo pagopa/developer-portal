@@ -24,12 +24,22 @@ const UrlParsingMetadata = {
 const GlobalMetadata = [
   UrlParsingMetadata,
   {
-    dirName: 'second-test',
-    spaceId: 'second-test',
+    dirName: 'second-test-dirname',
+    spaceId: 'second-test-spaceId',
     docs: [
       {
         path: 'other-documentation',
         url: 'other-documentation-parsed-url',
+      },
+    ],
+  },
+  {
+    dirName: 'missing-spaceId',
+    spaceId: '',
+    docs: [
+      {
+        path: 'missing-spaceId-path',
+        url: 'parsed-missing-spaceId-url',
       },
     ],
   },
@@ -210,14 +220,54 @@ describe('parseUrlsFromMarkdown', () => {
       'This is a test string [this-is-a-test](parsed-url-with-hashtag#ending)'
     );
   });
-  it('should parse url referencing another guide', () => {
+});
+
+describe('parseUrlsFromMarkdown - GitBook /s/<spaceId> matching', () => {
+  const MetadataWithDifferentSpaceId = {
+    dirName: 'legacy-dir-name',
+    spaceId: 'new-space-id',
+    docs: [{ path: 'target-doc', url: 'resolved-target-url' }],
+  };
+
+  const GlobalMetadataWithDifferentSpaceId = [
+    MetadataWithDifferentSpaceId,
+    {
+      dirName: 'fallback-dir',
+      spaceId: 'fallback-space',
+      docs: [{ path: 'fallback-doc', url: 'resolved-fallback-url' }],
+    },
+  ];
+  it('should parse url referencing another guide spaceId', () => {
     const res = parseUrlsFromMarkdown(
-      'This is a test string [this-is-a-test](this-references-another-guide/second-test)',
+      'This is a test string [this-is-a-test](https://app.gitbook.com/s/second-test-spaceId/other-documentation)',
       UrlParsingMetadata,
       GlobalMetadata
     );
     expect(res).toStrictEqual(
       'This is a test string [this-is-a-test](other-documentation-parsed-url)'
+    );
+  });
+
+  it('should parse url referencing another guide dirName when SpaceId is missing', () => {
+    const res = parseUrlsFromMarkdown(
+      'This is a test string [this-is-a-test](https://app.gitbook.com/s/missing-spaceId/missing-spaceId-path)',
+      UrlParsingMetadata,
+      GlobalMetadata
+    );
+    expect(res).toStrictEqual(
+      'This is a test string [this-is-a-test](parsed-missing-spaceId-url)'
+    );
+  });
+
+  it('should not resolve when neither spaceId nor dirName matches known metadata', () => {
+    const res = parseUrlsFromMarkdown(
+      'Go [doc](https://app.gitbook.com/s/unknown-space/unknown-doc)',
+      MetadataWithDifferentSpaceId,
+      GlobalMetadataWithDifferentSpaceId
+    );
+
+    expect(res).toStrictEqual(
+      'Go [doc](https://app.gitbook.com/s/unknown-space/unknown-doc)'
     );
   });
 });
