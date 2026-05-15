@@ -1,0 +1,52 @@
+{
+  "mcpServers": {
+    "sequential-thinking": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-sequential-thinking"
+      ],
+      "type": "stdio"
+    },
+    "server-filesystem": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "."
+      ],
+      "type": "stdio"
+    },
+    "terraform": {
+      "command": "podman",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hashicorp/terraform-mcp-server"
+      ],
+      "type": "stdio"
+    },
+    "mcp-feedback-enhanced": {
+      "command": "uvx",
+      "args": [
+        "mcp-feedback-enhanced@latest"
+      ]
+    },
+    "awslabs.aws-documentation-mcp-server": {
+      "command": "uvx",
+      "args": [
+        "awslabs.aws-documentation-mcp-server@latest"
+      ],
+      "env": {
+        "FASTMCP_LOG_LEVEL": "ERROR",
+        "GRPC_VERBOSITY": "ERROR",
+        "GLOG_minloglevel": "2"
+      }
+    },
+    "aws-knowledge": {
+      "url": "https://knowledge-mcp.global.api.aws",
+      "type": "http"
+    }
+  }
+}
