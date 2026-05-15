@@ -148,6 +148,15 @@ resource "aws_cloudfront_distribution" "static_contents" {
     }
   }
 
+  # S3 returns 403 for missing objects when accessed via OAI (no ListBucket permission).
+  # Map it to 404 so browsers receive the semantically correct response.
+  custom_error_response {
+    error_code            = 403
+    response_code         = 404
+    response_page_path    = "/404.html"
+    error_caching_min_ttl = 0
+  }
+
   restrictions {
     geo_restriction {
       restriction_type = "none"
