@@ -105,6 +105,7 @@ interface StrapiData {
 
 interface UrlParsingItem {
   dirName: string;
+  spaceId: string;
   docs: {
     path: string;
     url: string;
@@ -559,6 +560,7 @@ async function generateUrlParsingMetadata(
         versionName: version.version,
         isMainVersion: version.main,
         dirName: version.dirName,
+        spaceId: version.spaceId,
         slug: guide.slug,
         productSlug: `${guide.product?.slug}`,
         metadataType: MetadataType.Guide,
@@ -616,6 +618,7 @@ async function generateUrlParsingMetadata(
 
     urlParsingItems.push({
       dirName: info.dirName,
+      spaceId: info.spaceId || '',
       docs,
     });
   }
