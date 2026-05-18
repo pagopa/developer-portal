@@ -1,5 +1,16 @@
 # nextjs-website
 
+## 17.2.1
+
+### Patch Changes
+
+- c0d1fa7: Remove fetch and use of release notes and solutions metadata from S3 documents root
+- Updated dependencies [56c2a53]
+- Updated dependencies [56c2a53]
+- Updated dependencies [86c1810]
+- Updated dependencies [c0d1fa7]
+  - gitbook-docs@2.4.0
+
 ## 17.2.0
 
 ### Minor Changes
