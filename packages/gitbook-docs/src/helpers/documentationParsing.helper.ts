@@ -119,7 +119,9 @@ export function replaceUrl(
     doc.path.includes(name)
   );
   // Find guides that contain the extracted name in their path
-  const docs = [perfectMatch.length > 0 ? perfectMatch : nameMatch].flat();
+  const docs = value.includes('app.gitbook')
+    ? []
+    : [perfectMatch.length > 0 ? perfectMatch : nameMatch].flat();
   if (docs.length <= 0) {
     const dirName = value.split('/s/').slice(1)[0]?.split('/')[0];
     const externalDocs = allDocsMetadata.filter(
@@ -139,13 +141,19 @@ export function replaceUrl(
     return docs[0].url + urlEnding || value;
   } else {
     // If multiple matches, try to find more specific match using parent directory
-    const doc = docs
+    const fullPathDoc = docs
       .sort((doc1, doc2) => {
         return doc1.path.length - doc2.path.length;
       })
       .find((guide) =>
         guide.path.includes([urlPartsBeforeName, name].join('/'))
       );
+    const nameDoc = docs
+      .sort((doc1, doc2) => {
+        return doc1.path.length - doc2.path.length;
+      })
+      .find((guide) => guide.path.includes(name));
+    const doc = fullPathDoc ? fullPathDoc : nameDoc;
     return doc ? doc?.url + urlEnding : docs[0].url + urlEnding;
   }
 }
