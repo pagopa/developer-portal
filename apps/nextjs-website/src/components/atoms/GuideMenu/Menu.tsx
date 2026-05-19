@@ -15,6 +15,7 @@ import GuideVersionSelector, {
 import { Typography } from '@mui/material';
 import type { GitBookContentData } from '@/lib/gitBookContent/types';
 import { useParams } from 'next/navigation';
+import { uniqueId } from 'lodash';
 
 const StyledTreeItem = styled(TreeItem)(({ theme }) => ({
   [`&`]: {
@@ -159,11 +160,12 @@ const GuideMenuItems = ({
             {title}
           </Typography>
         );
+        const uniqueItemId = uniqueId(href);
 
         return (
           <StyledTreeItem
-            key={href}
-            itemId={href}
+            key={uniqueItemId}
+            itemId={uniqueItemId}
             label={label}
             disabled={false}
             icon={href.startsWith('http') ? <OpenInNewIcon /> : undefined}
