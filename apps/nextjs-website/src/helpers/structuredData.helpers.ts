@@ -21,7 +21,9 @@ import {
   WebPage,
   WebSite,
   WithContext,
+  Thing,
 } from 'schema-dts';
+import yaml from 'js-yaml';
 
 export const homeBreadCrumb = { name: websiteName, item: baseUrl };
 
@@ -259,4 +261,56 @@ export function convertSeoToStructuredDataArticle(
       }),
     }
   );
+}
+
+export function sanitizeStructuredDataStrings(obj: unknown): unknown {
+  if (typeof obj === 'string') {
+    return obj.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+  if (Array.isArray(obj)) {
+    return obj.map(sanitizeStructuredDataStrings);
+  }
+  if (obj !== null && typeof obj === 'object') {
+    // eslint-disable-next-line functional/prefer-readonly-type
+    return Object.entries(obj).reduce((acc, [key, value]) => {
+      return {
+        ...acc,
+        [key]: sanitizeStructuredDataStrings(value),
+      };
+    }, {});
+  }
+  return obj;
+}
+
+export function convertBodyMetadataToStructuredData(
+  bodyMetadata?: string
+): WithContext<Thing> | undefined {
+  if (!bodyMetadata) {
+    return undefined;
+  }
+  // eslint-disable-next-line functional/no-try-statements
+  try {
+    const metadata = yaml.load(bodyMetadata);
+    if (
+      metadata &&
+      typeof metadata === 'object' &&
+      !Array.isArray(metadata) &&
+      'schema' in metadata
+    ) {
+      const schema = (metadata as Record<string, unknown>).schema;
+      if (
+        schema &&
+        typeof schema === 'object' &&
+        !Array.isArray(schema) &&
+        '@context' in schema &&
+        '@type' in schema
+      ) {
+        return sanitizeStructuredDataStrings(schema) as WithContext<Thing>;
+      }
+    }
+  } catch (error) {
+    // eslint-disable-next-line functional/no-expression-statements
+    console.error('Error parsing bodyMetadata for structured data', error);
+  }
+  return undefined;
 }

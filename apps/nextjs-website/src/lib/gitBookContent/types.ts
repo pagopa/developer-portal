@@ -15,6 +15,7 @@ export type GitBookContentData = {
     readonly title: string;
     readonly menu: string;
     readonly body: string;
+    readonly bodyMetadata?: string;
   };
   readonly product?: Product;
   readonly seo?: SEO;
