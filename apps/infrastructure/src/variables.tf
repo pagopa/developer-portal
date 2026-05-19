@@ -68,12 +68,6 @@ variable "cms_app_image_tag" {
   type        = string
 }
 
-variable "strapi_v4_image_tag" {
-  description = "Docker image tag for the Strapi v5 application"
-  type        = string
-  default     = null
-}
-
 # CMS Strapi DNS
 variable "dns_domain_name_cms" {
   description = "DNS domain name of the Developer Portal's CMS"
@@ -120,8 +114,8 @@ variable "chatbot_ecs_redis" {
   description = "Redis configuration for the AI chatbot"
 
   default = {
-    cpu       = 2048
-    memory    = 4096
+    cpu       = 256
+    memory    = 512
     image_uri = "redis/redis-stack-server@sha256:887cf87cc744e4588ccade336d0dbb943e4e46330f738653ccb3a7a55df2f186"
     port      = 6379
   }
