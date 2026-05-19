@@ -1,5 +1,17 @@
 # gitbook-docs
 
+## 2.4.0
+
+### Minor Changes
+
+- 56c2a53: Add spaceId to urlParsing logic. dirName is still used as a fallback to prevent errors
+
+### Patch Changes
+
+- 56c2a53: Fix parsing for app.gitbook urls
+- 86c1810: Add support for nested folders in URL parsing and add test for sitePathFromLocalPath
+- c0d1fa7: Cleanup: remove unused metadata generation scripts from gitbook-docs package
+
 ## 2.3.0
 
 ### Minor Changes

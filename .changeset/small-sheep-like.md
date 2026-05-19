@@ -1,5 +1,0 @@
----
-"infrastructure": minor
----
-
-Update Langfuse clickhouse EFS from bursting to elastic.
