@@ -61,29 +61,6 @@ variable "use_custom_certificate" {
   default     = true
 }
 
-variable "log_retention_days" {
-  type        = number
-  description = "The number of days logs should be retained. Default is 90 days."
-  default     = 90
-}
-
-## CMS Strapi App Port
-variable "cms_app_port" {
-  description = "The standard app port used by CMS Strapi"
-  default     = 1337
-}
-
-## CMS Strapi CPU
-variable "cms_app_cpu" {
-  description = "Fargate instance CPU units to provision (1 vCPU = 1024 CPU units)"
-  default     = "1024" ##### 1 vCPU
-}
-
-## CMS Strapi RAM
-variable "cms_app_memory" {
-  description = "Fargate instance memory to provision (in MiB)"
-  default     = "3072" ##### 3 GB RAM
-}
 
 ## CMS Strapi Image Tag
 variable "cms_app_image_tag" {
@@ -91,17 +68,10 @@ variable "cms_app_image_tag" {
   type        = string
 }
 
-variable "strapi_v4_image_tag" {
-  description = "Docker image tag for the Strapi v5 application"
-  type        = string
-  default     = null
-}
-
 # CMS Strapi DNS
 variable "dns_domain_name_cms" {
   description = "DNS domain name of the Developer Portal's CMS"
   type        = map(any)
-  default     = null
 }
 
 # RDS Aurora PostgreSQL Serverless for CMS Strapi
@@ -144,8 +114,8 @@ variable "chatbot_ecs_redis" {
   description = "Redis configuration for the AI chatbot"
 
   default = {
-    cpu       = 2048
-    memory    = 4096
+    cpu       = 256
+    memory    = 512
     image_uri = "redis/redis-stack-server@sha256:887cf87cc744e4588ccade336d0dbb943e4e46330f738653ccb3a7a55df2f186"
     port      = 6379
   }
@@ -182,11 +152,13 @@ variable "chatbot_models" {
   })
 
   default = {
+
     provider      = "google"
-    generation    = "gemini-2.5-flash-lite"
+    generation    = "gemini-3.1-flash-lite-preview"
     embeddings    = "gemini-embedding-001"
     reranker      = "semantic-ranker-default-004"
     use_multi_rag = false
+
   }
 
   description = "The models used by the AI chatbot"

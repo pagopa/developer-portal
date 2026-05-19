@@ -26,6 +26,7 @@ const LOCALE = process.env.LOCALE;
 
 export type UrlParsingItem = {
   dirName: string;
+  spaceId: string;
   docs: {
     path: string;
     url: string;
@@ -35,12 +36,13 @@ export type UrlParsingItem = {
 export function generateUrlPath(
   filePath: string,
   slug: string,
+  dirName: string,
   productSlug?: string,
   versionName?: string,
   metadataType: MetadataType = MetadataType.Guide,
   locale?: string
 ): string {
-  const restOfPath = sitePathFromLocalPath(filePath, undefined);
+  const restOfPath = sitePathFromLocalPath(filePath, dirName, undefined);
   switch (metadataType) {
     case MetadataType.Guide:
       return [
@@ -94,6 +96,7 @@ async function convertDocToUrlParsingItems(
         versionName: version.version,
         isMainVersion: version.main,
         dirName: version.dirName,
+        spaceId: version.spaceId || '',
         slug: guide.slug,
         productSlug: `${guide.product?.slug}`,
         metadataType: MetadataType.Guide,
@@ -105,6 +108,7 @@ async function convertDocToUrlParsingItems(
       versionName: '',
       isMainVersion: true,
       dirName: solution.dirName,
+      spaceId: solution.spaceId || '',
       slug: solution.slug,
       productSlug: '',
       metadataType: MetadataType.Solution,
@@ -115,6 +119,7 @@ async function convertDocToUrlParsingItems(
       versionName: '',
       isMainVersion: true,
       dirName: releaseNote.dirName,
+      spaceId: releaseNote.spaceId || '',
       slug: releaseNote.slug,
       productSlug: releaseNote.product?.slug || 'release-notes',
       metadataType: MetadataType.ReleaseNote,
@@ -137,6 +142,7 @@ async function convertDocToUrlParsingItems(
       const docFiles = await getMarkdownFilesRecursively(docDir);
       const item: UrlParsingItem = {
         dirName: docInfo.dirName,
+        spaceId: docInfo.spaceId || '',
         docs: [],
       };
       for (const filePath of docFiles) {
@@ -149,6 +155,7 @@ async function convertDocToUrlParsingItems(
         const urlPath = generateUrlPath(
           filePath,
           docInfo.slug,
+          docInfo.dirName,
           docInfo.productSlug,
           docInfo.versionName,
           docInfo.metadataType,

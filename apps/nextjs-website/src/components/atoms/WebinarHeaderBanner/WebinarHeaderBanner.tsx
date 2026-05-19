@@ -35,7 +35,7 @@ const WebinarHeaderBanner: FC<WebinarHeaderBannerProps> = ({
         endDateTime && new Date(endDateTime).getTime() > new Date().getTime()
     );
   const { slug, title: text, endDateTime } = webinar || {};
-  const [visible, setVisible] = useState(true);
+  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     if (!slug) return;

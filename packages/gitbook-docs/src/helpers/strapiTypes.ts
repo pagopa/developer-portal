@@ -10,6 +10,7 @@ export interface StrapiGuide {
     readonly main: boolean;
     readonly version: string;
     readonly dirName: string;
+    readonly spaceId?: string;
   }[];
 }
 
@@ -21,6 +22,7 @@ export interface StrapiReleaseNote {
     readonly slug: string;
   };
   readonly dirName: string;
+  readonly spaceId?: string;
   readonly landingFile: string;
 }
 
@@ -30,6 +32,7 @@ export interface StrapiSolution {
   readonly title: string;
   readonly landingUseCaseFile: string;
   readonly dirName: string;
+  readonly spaceId?: string;
 }
 
 export interface StrapiProduct {

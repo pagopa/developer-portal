@@ -1,6 +1,3 @@
-# core
-
-<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
@@ -55,4 +52,3 @@
 | <a name="output_hosted_zone_id"></a> [hosted\_zone\_id](#output\_hosted\_zone\_id) | n/a |
 | <a name="output_name_servers_records"></a> [name\_servers\_records](#output\_name\_servers\_records) | n/a |
 | <a name="output_ses_domain_identity_arn"></a> [ses\_domain\_identity\_arn](#output\_ses\_domain\_identity\_arn) | n/a |
-<!-- END_TF_DOCS -->

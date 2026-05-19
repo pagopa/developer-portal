@@ -1,6 +1,3 @@
-# identity
-
-<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 No requirements.
@@ -43,4 +40,3 @@ No modules.
 |------|-------------|
 | <a name="output_terraform_backend_bucket_name"></a> [terraform\_backend\_bucket\_name](#output\_terraform\_backend\_bucket\_name) | n/a |
 | <a name="output_terraform_lock_dynamodb_table"></a> [terraform\_lock\_dynamodb\_table](#output\_terraform\_lock\_dynamodb\_table) | n/a |
-<!-- END_TF_DOCS -->

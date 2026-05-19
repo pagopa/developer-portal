@@ -61,6 +61,11 @@ vpc: VPC (Shared with CMS) {
       shape: image
     }
 
+    lambda_monitor: Lambda\n(Monitor)\n2GB Memory\n2min timeout {
+      icon: https://icons.terrastruct.com/aws%2FCompute%2FAWS-Lambda.svg
+      shape: image
+    }
+
     lambda_evaluate: Lambda\n(Evaluate)\n848MB Memory\n10min timeout {
       icon: https://icons.terrastruct.com/aws%2FCompute%2FAWS-Lambda.svg
       shape: image
@@ -72,16 +77,11 @@ vpc: VPC (Shared with CMS) {
     }
   }
 
-  # ECS Services
-  ecs: ECS Cluster (Fargate) {
+  # ECS Services - Chatbot Redis
+  ecs_chatbot: ECS Cluster (Chatbot) {
     style.fill: "#fff3e0"
 
     redis: ECS Service\n(Redis Stack) {
-      icon: https://icons.terrastruct.com/aws%2FCompute%2FAWS-Fargate.svg
-      shape: image
-    }
-
-    langfuse: ECS Service\n(Langfuse\nMonitoring) {
       icon: https://icons.terrastruct.com/aws%2FCompute%2FAWS-Fargate.svg
       shape: image
     }
@@ -93,25 +93,69 @@ vpc: VPC (Shared with CMS) {
     shape: image
   }
 
+  # EFS for Redis
+  efs_redis: EFS\n(Redis Persistent\nStorage) {
+    icon: https://icons.terrastruct.com/aws%2FStorage%2FAmazon-Elastic-File-System_EFS.svg
+    shape: image
+  }
+}
+
+# Langfuse Module
+langfuse: Langfuse (Monitoring) {
+  style.fill: "#e8f5e9"
+
+  # ECS Services - Langfuse
+  ecs_langfuse: ECS Cluster (Langfuse) {
+    style.fill: "#fff3e0"
+
+    langfuse_web: ECS Service\n(Langfuse Web)\nPort 3000 {
+      icon: https://icons.terrastruct.com/aws%2FCompute%2FAWS-Fargate.svg
+      shape: image
+    }
+
+    langfuse_worker: ECS Service\n(Langfuse Worker)\nPort 3030 {
+      icon: https://icons.terrastruct.com/aws%2FCompute%2FAWS-Fargate.svg
+      shape: image
+    }
+
+    clickhouse: ECS Service\n(ClickHouse)\nPorts 8123, 9000 {
+      icon: https://icons.terrastruct.com/aws%2FCompute%2FAWS-Fargate.svg
+      shape: image
+    }
+  }
+
+  # ALB for Langfuse
   alb_monitoring: ALB\n(Public - Langfuse) {
     icon: https://icons.terrastruct.com/aws%2FNetworking%20&%20Content%20Delivery%2FElastic-Load-Balancing.svg
     shape: image
   }
 
-  alb_int_monitoring: ALB\n(Internal - Langfuse) {
-    icon: https://icons.terrastruct.com/aws%2FNetworking%20&%20Content%20Delivery%2FElastic-Load-Balancing.svg
+  # ElastiCache (Valkey) for Langfuse
+  elasticache: ElastiCache\n(Valkey 8.2)\nPort 6379 {
+    icon: https://icons.terrastruct.com/aws%2FDatabase%2FAmazon-ElastiCache.svg
     shape: image
   }
 
-  # Database
+  # RDS for Langfuse
   rds: RDS Aurora\nPostgreSQL 14\n(Langfuse DB\nServerless v2) {
     icon: https://icons.terrastruct.com/aws%2FDatabase%2FAmazon-Aurora.svg
     shape: image
   }
 
-  # EFS
-  efs: EFS\n(Redis Persistent\nStorage) {
+  # EFS for ClickHouse
+  efs_clickhouse: EFS\n(ClickHouse Data) {
     icon: https://icons.terrastruct.com/aws%2FStorage%2FAmazon-Elastic-File-System_EFS.svg
+    shape: image
+  }
+
+  # S3 Buckets for Langfuse
+  s3_event: S3\n(Langfuse Events) {
+    icon: https://icons.terrastruct.com/aws%2FStorage%2FAmazon-Simple-Storage-Service-S3.svg
+    shape: image
+  }
+
+  s3_blob: S3\n(Langfuse Media) {
+    icon: https://icons.terrastruct.com/aws%2FStorage%2FAmazon-Simple-Storage-Service-S3.svg
     shape: image
   }
 }
@@ -138,7 +182,17 @@ dynamodb: {
 
 # SQS
 sqs: {
-  label: SQS Queues
+  label: SQS Queues (FIFO)
+
+  monitor_queue: SQS FIFO\n(Monitor Queue)\nbatch size: 5 {
+    icon: https://icons.terrastruct.com/aws%2FApplication%20Integration%2FAmazon-Simple-Queue-Service-SQS.svg
+    shape: image
+  }
+
+  monitor_dlq: SQS FIFO\n(Monitor DLQ)\nmaxReceiveCount: 2 {
+    icon: https://icons.terrastruct.com/aws%2FApplication%20Integration%2FAmazon-Simple-Queue-Service-SQS.svg
+    shape: image
+  }
 
   evaluate_queue: SQS FIFO\n(Evaluate Queue)\nbatch size: 5 {
     icon: https://icons.terrastruct.com/aws%2FApplication%20Integration%2FAmazon-Simple-Queue-Service-SQS.svg
@@ -174,7 +228,7 @@ s3_static: S3\n(Website Static\nContent) {
 }
 
 # ECR
-ecr: ECR\n(chatbot, chatbotindex,\nevaluate images) {
+ecr: ECR\n(chatbot, index,\nmonitor, evaluate\nimages) {
   icon: https://icons.terrastruct.com/aws%2FCompute%2FAmazon-EC2-Container-Registry.svg
   shape: image
 }
@@ -215,7 +269,7 @@ cloudwatch: CloudWatch\n(Logs) {
 # User flow
 users -> route53: HTTPS
 route53 -> waf: api.chatbot.developer.pagopa.it
-route53 -> vpc.alb_monitoring: mon.chatbot.developer.pagopa.it
+route53 -> langfuse.alb_monitoring: mon.chatbot.developer.pagopa.it
 waf -> apigw: Protected\n(associated to stage)
 apigw -> cognito: Authorize\n(COGNITO_USER_POOLS)
 apigw -> vpc.lambdas.lambda_api: Invoke (AWS_PROXY)
@@ -229,15 +283,24 @@ vpc.lambdas.lambda_api -> s3.s3_llamaindex: Read/Write
 vpc.lambdas.lambda_api -> s3.s3_kb: Read/Write
 vpc.lambdas.lambda_api -> s3_static: Read static content
 vpc.lambdas.lambda_api -> ssm: Read config
-vpc.lambdas.lambda_api -> sqs.evaluate_queue: Send messages
+vpc.lambdas.lambda_api -> sqs.monitor_queue: Send messages
 vpc.lambdas.lambda_api -> google: AI Generation\n& Embeddings
-vpc.lambdas.lambda_api -> vpc.alb_int_monitoring: Langfuse traces
+
+# Monitor Lambda (new)
+sqs.monitor_queue -> vpc.lambdas.lambda_monitor: Trigger
+sqs.monitor_queue -> sqs.monitor_dlq: Failed messages\n(maxReceiveCount: 2)
+vpc.lambdas.lambda_monitor -> ssm: Read config
+vpc.lambdas.lambda_monitor -> langfuse.ecs_langfuse.langfuse_web: Langfuse traces\n(via Service Discovery)
+vpc.lambdas.lambda_monitor -> sqs.evaluate_queue: Send messages
+vpc.lambdas.lambda_monitor -> dynamodb.queries: Read/Write
+vpc.lambdas.lambda_monitor -> dynamodb.sessions: Read/Write
+vpc.lambdas.lambda_monitor -> dynamodb.salts: Read/Write
 
 # Evaluate Lambda
 sqs.evaluate_queue -> vpc.lambdas.lambda_evaluate: Trigger
 sqs.evaluate_queue -> sqs.evaluate_dlq: Failed messages\n(maxReceiveCount: 2)
 vpc.lambdas.lambda_evaluate -> ssm: Read config
-vpc.lambdas.lambda_evaluate -> vpc.alb_int_monitoring: Langfuse evaluate
+vpc.lambdas.lambda_evaluate -> langfuse.ecs_langfuse.langfuse_web: Langfuse evaluate\n(via Service Discovery)
 vpc.lambdas.lambda_evaluate -> google: AI Evaluation
 
 # Index Lambda
@@ -248,24 +311,36 @@ vpc.lambdas.lambda_index -> google: Embeddings
 vpc.lambdas.lambda_index -> ssm: Read Google API Key
 
 # Redis
-vpc.nlb -> vpc.ecs.redis: TCP 6379
-vpc.ecs.redis -> vpc.efs: Persistent storage\n(EFS mount)
+vpc.nlb -> vpc.ecs_chatbot.redis: TCP 6379
+vpc.ecs_chatbot.redis -> vpc.efs_redis: Persistent storage\n(EFS mount)
 
-# Langfuse Monitoring
-vpc.alb_monitoring -> vpc.ecs.langfuse: Port 3000
-vpc.alb_int_monitoring -> vpc.ecs.langfuse: Port 3000
-vpc.ecs.langfuse -> vpc.rds: PostgreSQL\n(Port 5432)
-vpc.ecs.langfuse -> cognito_monitoring: OAuth (OIDC)
+# Langfuse Services
+langfuse.alb_monitoring -> langfuse.ecs_langfuse.langfuse_web: Port 3000
+langfuse.ecs_langfuse.langfuse_web -> langfuse.rds: PostgreSQL\n(Port 5432)
+langfuse.ecs_langfuse.langfuse_web -> langfuse.ecs_langfuse.clickhouse: HTTP 8123\n(via Service Discovery)
+langfuse.ecs_langfuse.langfuse_web -> langfuse.elasticache: Valkey\n(Port 6379)
+langfuse.ecs_langfuse.langfuse_web -> langfuse.s3_event: Events storage
+langfuse.ecs_langfuse.langfuse_web -> langfuse.s3_blob: Media storage
+langfuse.ecs_langfuse.langfuse_web -> cognito_monitoring: OAuth (OIDC)
+
+langfuse.ecs_langfuse.langfuse_worker -> langfuse.rds: PostgreSQL\n(Port 5432)
+langfuse.ecs_langfuse.langfuse_worker -> langfuse.ecs_langfuse.clickhouse: HTTP 8123\n(via Service Discovery)
+langfuse.ecs_langfuse.langfuse_worker -> langfuse.elasticache: Valkey\n(Port 6379)
+langfuse.ecs_langfuse.langfuse_worker -> langfuse.s3_event: Events storage
+
+langfuse.ecs_langfuse.clickhouse -> langfuse.efs_clickhouse: Persistent storage\n(EFS mount)
 
 # Keep warm
 eventbridge -> vpc.lambdas.lambda_api: Scheduled invocation\n(GET /healthz)
 
 # ECR
 vpc.lambdas.lambda_api -> ecr: Pull container image
+vpc.lambdas.lambda_monitor -> ecr: Pull container image
 vpc.lambdas.lambda_evaluate -> ecr: Pull container image
 vpc.lambdas.lambda_index -> ecr: Pull container image
 
 # Monitoring
 vpc.lambdas.lambda_api -> cloudwatch: Logs (14 days)
+vpc.lambdas.lambda_monitor -> cloudwatch: Logs (14 days)
 vpc.lambdas.lambda_evaluate -> cloudwatch: Logs (14 days)
 vpc.lambdas.lambda_index -> cloudwatch: Logs (14 days)

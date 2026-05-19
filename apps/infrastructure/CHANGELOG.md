@@ -1,5 +1,29 @@
 # infrastructure
 
+## 12.0.0
+
+### Major Changes
+
+- dc2096d: Chatbot lambda monitor
+
+### Minor Changes
+
+- 99862c3: New feature flag NEXT_PUBLIC_WEBINAR_HEARTBEAT_ENABLED to enable webinar heartbeat
+- dc2096d: Scale down langfuse 2 in DEV only
+- b374767: Set cors headers in strapi cms through AWS alb
+- 0bf21a4: Removes AWS resources used to deploy langfuse 2.xx. We migrated recently to langfuse 3.xx
+- dc2096d: New env variable in lambda evaluate and api with location for vertex api. Removed google api keys
+- f27bc04: Cloud front distribution for static content costom error response for 403 error to map it to 404 so browsers receive the semantically correct response.
+- dc2096d: Update clickhouse cpu
+- dc2096d: Update chb_model id value
+- de7726f: Update Terraform state locking to use S3-native locking. The existing DynamoDB `terraform-lock` table remains in place for now and will be removed in a follow-up change.
+- dc2096d: Update Langfuse clickhouse EFS from bursting to elastic.
+- dc2096d: Fix missed iam resource in lambda evaluate and index.
+
+### Patch Changes
+
+- dc2096d: Update clickhouse task definition ram and cpu
+
 ## 11.3.0
 
 ### Minor Changes
