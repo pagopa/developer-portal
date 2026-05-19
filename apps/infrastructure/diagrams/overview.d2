@@ -162,6 +162,11 @@ vpc: VPC (10.0.0.0/16) {
       shape: image
     }
 
+    lambda_monitor: Lambda\n(Monitor) {
+      icon: https://icons.terrastruct.com/aws%2FCompute%2FAWS-Lambda.svg
+      shape: image
+    }
+
     lambda_index: Lambda\n(Index) {
       icon: https://icons.terrastruct.com/aws%2FCompute%2FAWS-Lambda.svg
       shape: image
@@ -182,23 +187,18 @@ vpc: VPC (10.0.0.0/16) {
       shape: image
     }
 
-    langfuse: ECS Fargate\n(Langfuse) {
-      icon: https://icons.terrastruct.com/aws%2FCompute%2FAWS-Fargate.svg
-      shape: image
-    }
-
     dynamodb_chatbot: DynamoDB\n(Queries/Sessions/Salts) {
       icon: https://icons.terrastruct.com/aws%2FDatabase%2FAmazon-DynamoDB.svg
       shape: image
     }
 
-    sqs: SQS FIFO\n(Evaluate) {
+    sqs_monitor: SQS FIFO\n(Monitor) {
       icon: https://icons.terrastruct.com/aws%2FApplication%20Integration%2FAmazon-Simple-Queue-Service-SQS.svg
       shape: image
     }
 
-    rds_langfuse: RDS Aurora\nPostgreSQL\n(Langfuse DB) {
-      icon: https://icons.terrastruct.com/aws%2FDatabase%2FAmazon-Aurora.svg
+    sqs_evaluate: SQS FIFO\n(Evaluate) {
+      icon: https://icons.terrastruct.com/aws%2FApplication%20Integration%2FAmazon-Simple-Queue-Service-SQS.svg
       shape: image
     }
 
@@ -209,6 +209,41 @@ vpc: VPC (10.0.0.0/16) {
 
     efs: EFS\n(Redis Storage) {
       icon: https://icons.terrastruct.com/aws%2FStorage%2FAmazon-Elastic-File-System_EFS.svg
+      shape: image
+    }
+  }
+
+  # Langfuse Module
+  langfuse: Langfuse (Monitoring) {
+    style.fill: "#e1bee7"
+
+    langfuse_web: ECS Fargate\n(Langfuse Web) {
+      icon: https://icons.terrastruct.com/aws%2FCompute%2FAWS-Fargate.svg
+      shape: image
+    }
+
+    langfuse_worker: ECS Fargate\n(Langfuse Worker) {
+      icon: https://icons.terrastruct.com/aws%2FCompute%2FAWS-Fargate.svg
+      shape: image
+    }
+
+    clickhouse: ECS Fargate\n(ClickHouse) {
+      icon: https://icons.terrastruct.com/aws%2FCompute%2FAWS-Fargate.svg
+      shape: image
+    }
+
+    elasticache: ElastiCache\n(Valkey) {
+      icon: https://icons.terrastruct.com/aws%2FDatabase%2FAmazon-ElastiCache.svg
+      shape: image
+    }
+
+    rds_langfuse: RDS Aurora\nPostgreSQL\n(Langfuse DB) {
+      icon: https://icons.terrastruct.com/aws%2FDatabase%2FAmazon-Aurora.svg
+      shape: image
+    }
+
+    alb_langfuse: ALB\n(Langfuse) {
+      icon: https://icons.terrastruct.com/aws%2FNetworking%20&%20Content%20Delivery%2FElastic-Load-Balancing.svg
       shape: image
     }
   }
@@ -319,6 +354,7 @@ route53 -> website.cloudfront: developer.pagopa.it
 route53 -> website.cloudfront_static: static-contents.developer.pagopa.it
 route53 -> vpc.cms.alb_public: cms.developer.pagopa.it
 route53 -> vpc.chatbot.waf: api.chatbot.developer.pagopa.it
+route53 -> vpc.langfuse.alb_langfuse: mon.chatbot.developer.pagopa.it
 route53 -> video.cloudfront_video: video.developer.pagopa.it
 route53 -> auth.cognito: auth.developer.pagopa.it
 
@@ -349,12 +385,27 @@ vpc.chatbot.lambda_api -> vpc.chatbot.nlb: Redis\n(Port 6379)
 vpc.chatbot.nlb -> vpc.chatbot.redis
 vpc.chatbot.lambda_api -> vpc.chatbot.dynamodb_chatbot: Read/Write
 vpc.chatbot.lambda_api -> vpc.chatbot.s3_kb: Read/Write
-vpc.chatbot.lambda_api -> vpc.chatbot.sqs: Send evaluate msgs
-vpc.chatbot.lambda_api -> vpc.chatbot.langfuse: Traces\n(Internal ALB)
+vpc.chatbot.lambda_api -> vpc.chatbot.sqs_monitor: Send monitor msgs
 vpc.chatbot.lambda_api -> google: AI Generation
-vpc.chatbot.sqs -> vpc.chatbot.lambda_evaluate: Trigger
-vpc.chatbot.lambda_evaluate -> vpc.chatbot.langfuse: Evaluate traces
-vpc.chatbot.langfuse -> vpc.chatbot.rds_langfuse: PostgreSQL
+
+# Monitor Lambda flow
+vpc.chatbot.sqs_monitor -> vpc.chatbot.lambda_monitor: Trigger
+vpc.chatbot.lambda_monitor -> vpc.langfuse.langfuse_web: Traces\n(Service Discovery)
+vpc.chatbot.lambda_monitor -> vpc.chatbot.sqs_evaluate: Send evaluate msgs
+
+# Evaluate Lambda flow
+vpc.chatbot.sqs_evaluate -> vpc.chatbot.lambda_evaluate: Trigger
+vpc.chatbot.lambda_evaluate -> vpc.langfuse.langfuse_web: Evaluate traces
+
+# Langfuse internals
+vpc.langfuse.alb_langfuse -> vpc.langfuse.langfuse_web: Port 3000
+vpc.langfuse.langfuse_web -> vpc.langfuse.rds_langfuse: PostgreSQL
+vpc.langfuse.langfuse_web -> vpc.langfuse.clickhouse: HTTP 8123
+vpc.langfuse.langfuse_web -> vpc.langfuse.elasticache: Valkey 6379
+vpc.langfuse.langfuse_worker -> vpc.langfuse.rds_langfuse: PostgreSQL
+vpc.langfuse.langfuse_worker -> vpc.langfuse.clickhouse: HTTP 8123
+vpc.langfuse.langfuse_worker -> vpc.langfuse.elasticache: Valkey 6379
+
 vpc.chatbot.redis -> vpc.chatbot.efs: Persistent storage
 
 # Index Lambda triggered by S3
