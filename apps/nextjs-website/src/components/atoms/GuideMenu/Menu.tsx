@@ -160,7 +160,7 @@ const GuideMenuItems = ({
             {title}
           </Typography>
         );
-        const uniqueItemId = uniqueId(href);
+        const uniqueItemId = useMemo(() => uniqueId(href), [href]);
 
         return (
           <StyledTreeItem
