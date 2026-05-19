@@ -114,8 +114,8 @@ variable "chatbot_ecs_redis" {
   description = "Redis configuration for the AI chatbot"
 
   default = {
-    cpu       = 2048
-    memory    = 4096
+    cpu       = 256
+    memory    = 512
     image_uri = "redis/redis-stack-server@sha256:887cf87cc744e4588ccade336d0dbb943e4e46330f738653ccb3a7a55df2f186"
     port      = 6379
   }
