@@ -32,8 +32,9 @@ resource "aws_rds_cluster" "langfuse_aurora_cluster" {
   }
 
   serverlessv2_scaling_configuration {
-    max_capacity = var.database_max_capacity
-    min_capacity = var.database_min_capacity
+    max_capacity             = var.database_max_capacity
+    min_capacity             = local.is_production ? var.database_min_capacity : 0
+    seconds_until_auto_pause = local.is_production ? null : 300
   }
 }
 
