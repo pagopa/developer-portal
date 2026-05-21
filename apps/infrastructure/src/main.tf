@@ -11,7 +11,7 @@ terraform {
 
     awscc = {
       source  = "hashicorp/awscc"
-      version = "<= 1.10.0"
+      version = "~> 1.84.0"
     }
   }
 }
@@ -25,6 +25,11 @@ provider "aws" {
 
 provider "awscc" {
   region = var.aws_region
+}
+
+provider "awscc" {
+  alias  = "eu-central-1"
+  region = "eu-central-1"
 }
 
 provider "aws" {
@@ -297,6 +302,26 @@ module "video_streaming" {
   cognito_user_pool_endpoint  = module.auth.cognito_user_pool.endpoint
   cognito_user_pool_client_id = module.auth.cognito_user_pool.client_id
 
+}
+
+################################################################################
+# DevOps Agent
+################################################################################
+module "devops_agent" {
+  count  = var.create_devops_agent ? 1 : 0
+  source = "./modules/devops_agent"
+
+  providers = {
+    aws         = aws
+    aws.service = aws
+    awscc       = awscc.eu-central-1
+  }
+
+  agent_space_name = "DevPortalAgentSpace"
+
+  agent_space_description = "Space for DevOps agent of Developer Portal"
+
+  tags = var.tags
 }
 
 ################################################################################

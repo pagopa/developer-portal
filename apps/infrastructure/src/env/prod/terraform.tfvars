@@ -57,3 +57,5 @@ chatbot_models = {
 }
 
 docs_redirect_is_enabled = true
+
+create_devops_agent = true

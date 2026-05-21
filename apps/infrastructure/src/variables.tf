@@ -207,6 +207,15 @@ variable "docs_redirect_is_enabled" {
   default     = false
 }
 
+################################################################################
+# DevOps Agent
+################################################################################
+variable "create_devops_agent" {
+  type        = bool
+  description = "Defines if the DevOps Agent Space should be created"
+  default     = false
+}
+
 variable "website_is_standalone" {
   type        = bool
   description = "If true, the website will be deployed in standalone mode (Amplify), otherwise static deployment is used (S3 + Cloudfront)"
