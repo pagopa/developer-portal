@@ -37,12 +37,12 @@ output "primary_account_association_id" {
 
 output "secondary_account_role_arn" {
   description = "ARN of the Secondary Account Role for Agent Space"
-  value       = var.agent_space_arn != "" ? aws_iam_role.secondary_account[0].arn : null
+  value       = local.create_service_account ? aws_iam_role.secondary_account[0].arn : null
 }
 
 output "secondary_account_association_id" {
   description = "ID of the secondary AWS account association"
-  value       = var.service_account_id != "" && var.agent_space_arn != "" ? awscc_devopsagent_association.secondary_aws_account[0].id : null
+  value       = local.create_service_account ? awscc_devopsagent_association.secondary_aws_account[0].id : null
 }
 
 output "aws_region" {

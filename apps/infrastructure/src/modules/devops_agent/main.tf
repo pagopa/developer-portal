@@ -1,5 +1,10 @@
 # Data source to get current AWS account ID
 data "aws_caller_identity" "current" {}
+data "aws_region" "current" {}
+
+locals {
+  create_service_account = var.agent_space_arn != "" && var.service_account_id != ""
+}
 
 ################################################
 # IAM Roles and Policies for AWS DevOps Agent. #
@@ -120,7 +125,7 @@ resource "aws_iam_role_policy_attachment" "devops_operator_access" {
 
 # Secondary account role — trusted by the Agent Space in the monitoring account
 resource "aws_iam_role" "secondary_account" {
-  count    = var.agent_space_arn != "" ? 1 : 0
+  count    = local.create_service_account ? 1 : 0
   provider = aws.service
 
   name               = "DevOpsAgentRole-SecondaryAccount-TF"
@@ -131,7 +136,7 @@ resource "aws_iam_role" "secondary_account" {
 }
 
 data "aws_iam_policy_document" "secondary_account_trust" {
-  count = var.agent_space_arn != "" ? 1 : 0
+  count = local.create_service_account ? 1 : 0
 
   statement {
     effect = "Allow"
@@ -159,7 +164,7 @@ data "aws_iam_policy_document" "secondary_account_trust" {
 
 # Attach AIDevOpsAgentAccessPolicy managed policy
 resource "aws_iam_role_policy_attachment" "secondary_account_access" {
-  count    = var.agent_space_arn != "" ? 1 : 0
+  count    = local.create_service_account ? 1 : 0
   provider = aws.service
 
   role       = aws_iam_role.secondary_account[0].name
@@ -168,7 +173,7 @@ resource "aws_iam_role_policy_attachment" "secondary_account_access" {
 
 # Inline policy for creating Resource Explorer service-linked role
 data "aws_iam_policy_document" "secondary_account_inline" {
-  count = var.agent_space_arn != "" ? 1 : 0
+  count = local.create_service_account ? 1 : 0
 
   statement {
     sid    = "AllowCreateServiceLinkedRoles"
@@ -185,7 +190,7 @@ data "aws_iam_policy_document" "secondary_account_inline" {
 }
 
 resource "aws_iam_role_policy" "secondary_account_inline" {
-  count    = var.agent_space_arn != "" ? 1 : 0
+  count    = local.create_service_account ? 1 : 0
   provider = aws.service
 
   name   = "AllowCreateServiceLinkedRoles"
@@ -195,7 +200,7 @@ resource "aws_iam_role_policy" "secondary_account_inline" {
 
 # Echo Lambda function — simple example service (matches CDK ServiceStack)
 resource "aws_lambda_function" "echo_service" {
-  count    = var.agent_space_arn != "" ? 1 : 0
+  count    = local.create_service_account ? 1 : 0
   provider = aws.service
 
   function_name = "echo-service-tf"
@@ -214,7 +219,7 @@ resource "aws_lambda_function" "echo_service" {
 }
 
 data "archive_file" "echo_lambda" {
-  count       = var.agent_space_arn != "" ? 1 : 0
+  count       = local.create_service_account ? 1 : 0
   type        = "zip"
   output_path = "${path.module}/echo-service.zip"
 
@@ -242,7 +247,7 @@ JS
 
 # Lambda execution role
 resource "aws_iam_role" "echo_service_role" {
-  count    = var.agent_space_arn != "" ? 1 : 0
+  count    = local.create_service_account ? 1 : 0
   provider = aws.service
 
   name               = "echo-service-tf-role"
@@ -252,7 +257,7 @@ resource "aws_iam_role" "echo_service_role" {
 }
 
 data "aws_iam_policy_document" "lambda_trust" {
-  count = var.agent_space_arn != "" ? 1 : 0
+  count = local.create_service_account ? 1 : 0
 
   statement {
     effect = "Allow"
@@ -267,7 +272,7 @@ data "aws_iam_policy_document" "lambda_trust" {
 }
 
 resource "aws_iam_role_policy_attachment" "echo_service_basic" {
-  count    = var.agent_space_arn != "" ? 1 : 0
+  count    = local.create_service_account ? 1 : 0
   provider = aws.service
 
   role       = aws_iam_role.echo_service_role[0].name
@@ -318,7 +323,6 @@ resource "awscc_devopsagent_association" "primary_aws_account" {
       assumable_role_arn = aws_iam_role.devops_agentspace.arn
       account_id         = data.aws_caller_identity.current.account_id
       account_type       = "monitor"
-      resources          = []
     }
   }
 
@@ -329,7 +333,7 @@ resource "awscc_devopsagent_association" "primary_aws_account" {
 
 # Associate the service account for cross-account monitoring (optional)
 resource "awscc_devopsagent_association" "secondary_aws_account" {
-  count = var.service_account_id != "" && var.agent_space_arn != "" ? 1 : 0
+  count = local.create_service_account ? 1 : 0
 
   agent_space_id = awscc_devopsagent_agent_space.main.id
   service_id     = "aws"
@@ -346,11 +350,6 @@ resource "awscc_devopsagent_association" "secondary_aws_account" {
     awscc_devopsagent_association.primary_aws_account
   ]
 }
-
-
-
-
-
 
 ################################################################################
 # Association: GitHub source (pipeline)

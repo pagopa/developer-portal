@@ -319,6 +319,7 @@ module "devops_agent" {
 
   agent_space_name = "DevPortalAgentSpace"
 
+  agent_space_description = "Space for DevOps agent of Developer Portal"
 
   tags = var.tags
 }
