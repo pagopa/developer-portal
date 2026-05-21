@@ -42,7 +42,7 @@ output "secondary_account_role_arn" {
 
 output "secondary_account_association_id" {
   description = "ID of the secondary AWS account association"
-  value       = var.service_account_id != "" ? awscc_devopsagent_association.secondary_aws_account[0].id : null
+  value       = var.service_account_id != "" && var.agent_space_arn != "" ? awscc_devopsagent_association.secondary_aws_account[0].id : null
 }
 
 output "aws_region" {
