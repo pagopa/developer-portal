@@ -4,13 +4,14 @@
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | ~> 1.14.3 |
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 6.0 |
-| <a name="requirement_awscc"></a> [awscc](#requirement\_awscc) | <= 1.10.0 |
+| <a name="requirement_awscc"></a> [awscc](#requirement\_awscc) | ~> 1.84.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_http"></a> [http](#provider\_http) | 3.5.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 6.45.0 |
+| <a name="provider_http"></a> [http](#provider\_http) | 3.6.0 |
 
 ## Modules
 
@@ -22,6 +23,7 @@
 | <a name="module_cicd"></a> [cicd](#module\_cicd) | ./modules/cicd | n/a |
 | <a name="module_cms"></a> [cms](#module\_cms) | ./modules/cms | n/a |
 | <a name="module_core"></a> [core](#module\_core) | ./modules/core | n/a |
+| <a name="module_devops_agent"></a> [devops\_agent](#module\_devops\_agent) | ./modules/devops_agent | n/a |
 | <a name="module_docs_redirect"></a> [docs\_redirect](#module\_docs\_redirect) | ./modules/docs_redirect | n/a |
 | <a name="module_dos68k_chatbotapi"></a> [dos68k\_chatbotapi](#module\_dos68k\_chatbotapi) | ./modules/dos68k_chatbotapi | n/a |
 | <a name="module_identity"></a> [identity](#module\_identity) | ./identity | n/a |
@@ -32,6 +34,7 @@
 
 | Name | Type |
 |------|------|
+| [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
 | [http_http.docs_redirect_cf_function_code](https://registry.terraform.io/providers/hashicorp/http/latest/docs/data-sources/http) | data source |
 
 ## Inputs
@@ -51,6 +54,7 @@
 | <a name="input_chatbot_ecs_redis"></a> [chatbot\_ecs\_redis](#input\_chatbot\_ecs\_redis) | Redis configuration for the AI chatbot | <pre>object({<br/>    cpu       = optional(number, 2048)<br/>    memory    = optional(number, 4096)<br/>    image_uri = optional(string, "redis/redis-stack-server@sha256:887cf87cc744e4588ccade336d0dbb943e4e46330f738653ccb3a7a55df2f186")<br/>    port      = optional(number, 6379)<br/>  })</pre> | <pre>{<br/>  "cpu": 256,<br/>  "image_uri": "redis/redis-stack-server@sha256:887cf87cc744e4588ccade336d0dbb943e4e46330f738653ccb3a7a55df2f186",<br/>  "memory": 512,<br/>  "port": 6379<br/>}</pre> | no |
 | <a name="input_chatbot_models"></a> [chatbot\_models](#input\_chatbot\_models) | The models used by the AI chatbot | <pre>object({<br/>    provider      = string<br/>    generation    = string<br/>    embeddings    = string<br/>    reranker      = string<br/>    use_multi_rag = optional(bool, false)<br/>  })</pre> | <pre>{<br/>  "embeddings": "gemini-embedding-001",<br/>  "generation": "gemini-3.1-flash-lite-preview",<br/>  "provider": "google",<br/>  "reranker": "semantic-ranker-default-004",<br/>  "use_multi_rag": false<br/>}</pre> | no |
 | <a name="input_create_chatbot"></a> [create\_chatbot](#input\_create\_chatbot) | Defines if chatbot should be created | `bool` | `false` | no |
+| <a name="input_create_devops_agent"></a> [create\_devops\_agent](#input\_create\_devops\_agent) | Defines if the DevOps Agent Space should be created | `bool` | `false` | no |
 | <a name="input_dns_delegate_records"></a> [dns\_delegate\_records](#input\_dns\_delegate\_records) | DNS delegate records | `map(any)` | `{}` | no |
 | <a name="input_docs_redirect_is_enabled"></a> [docs\_redirect\_is\_enabled](#input\_docs\_redirect\_is\_enabled) | Defines if Docs redirect should be enabled | `bool` | `false` | no |
 | <a name="input_ecs_chatbotapi"></a> [ecs\_chatbotapi](#input\_ecs\_chatbotapi) | ECS task configuration for the dos68k Chatbot API | <pre>object({<br/>    cpu       = optional(number, 1024)<br/>    memory    = optional(number, 2048)<br/>    image_tag = optional(string, "latest")<br/>  })</pre> | <pre>{<br/>  "cpu": 1024,<br/>  "image_tag": "1.0.0",<br/>  "memory": 2048<br/>}</pre> | no |
