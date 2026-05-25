@@ -28,8 +28,14 @@ resource "aws_appautoscaling_target" "ecs_services" {
   resource_id        = "service/${aws_ecs_cluster.langfuse.name}/${each.value.service_name}"
   scalable_dimension = "ecs:service:DesiredCount"
   service_namespace  = "ecs"
-}
 
+  lifecycle {
+    ignore_changes = [
+      max_capacity,
+      min_capacity,
+    ]
+  }
+}
 # Scale up Mon-Fri at 09:00 CET
 resource "aws_appautoscaling_scheduled_action" "scale_up" {
   for_each = local.is_production ? {} : local.ecs_services
