@@ -274,8 +274,8 @@ resource "aws_ecs_task_definition" "langfuse_worker" {
 
 resource "aws_ecs_task_definition" "langfuse_web" {
   family                   = "langfuse-web"
-  cpu                      = 2048
-  memory                   = 4096
+  cpu                      = 512
+  memory                   = 1024
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
 
@@ -291,8 +291,8 @@ resource "aws_ecs_task_definition" "langfuse_web" {
     {
       name      = "web"
       image     = "${aws_ecr_repository.repositories["langfuse-web"].repository_url}:3.115"
-      cpu       = 2048
-      memory    = 4096
+      cpu       = 512
+      memory    = 1024
       essential = true
       linuxParameters = {
         initProcessEnabled = true
