@@ -123,15 +123,24 @@ data "aws_iam_policy_document" "ecs_task_role_s3" {
   statement {
     effect = "Allow"
     actions = [
+      "s3:ListBucket"
+    ]
+    resources = [
+      module.s3_bucket_cms.s3_bucket_arn
+    ]
+  }
+
+  statement {
+    effect = "Allow"
+    actions = [
       "s3:DeleteObject",
       "s3:GetObject",
       "s3:GetObjectAttributes",
-      "s3:ListBucket",
       "s3:PutObject",
       "s3:PutObjectAcl"
     ]
     resources = [
-      module.s3_bucket_cms.s3_bucket_arn
+      "${module.s3_bucket_cms.s3_bucket_arn}/*"
     ]
   }
 }

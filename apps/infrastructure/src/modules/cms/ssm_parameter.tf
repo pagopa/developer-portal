@@ -126,6 +126,7 @@ module "secret_cms_google_gsuite_hd" {
   ignore_value_changes = "true"
 }
 
+# TODO: delete this parameters after tests completed.
 module "secret_cms_access_key_id" {
   source = "git::https://github.com/terraform-aws-modules/terraform-aws-ssm-parameter.git?ref=28784d318fcb1d5b632e38a4c1f567dd138fcd83" # v1.1.2
 
