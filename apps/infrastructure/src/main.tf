@@ -183,11 +183,6 @@ module "cms" {
   rds_scaling_configuration = var.rds_cms_scaling_configuration
 }
 
-import {
-  to = module.cms.module.iam_user_cms.aws_iam_user.this[0]
-  id = "strapi"
-}
-
 module "chatbot" {
   count  = var.create_chatbot ? 1 : 0
   source = "./modules/chatbot"

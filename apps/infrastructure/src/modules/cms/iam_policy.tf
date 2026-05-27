@@ -89,8 +89,6 @@ data "aws_iam_policy_document" "ecs_task_execution" {
       module.secret_cms_api_token_salt.ssm_parameter_arn,
       module.secret_cms_transfer_token_salt.ssm_parameter_arn,
       module.secret_cms_jwt_secret.ssm_parameter_arn,
-      module.secret_cms_access_key_id.ssm_parameter_arn,
-      module.secret_cms_access_key_secret.ssm_parameter_arn,
       module.secret_cms_github_pat.ssm_parameter_arn,
       module.secret_cms_google_gsuite_hd.ssm_parameter_arn,
       module.secret_cms_google_oauth_client_id.ssm_parameter_arn,

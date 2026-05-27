@@ -125,20 +125,3 @@ module "secret_cms_google_gsuite_hd" {
   # Ignore changes to value, because the value is updated manually
   ignore_value_changes = "true"
 }
-
-# TODO: delete this parameters after tests completed.
-module "secret_cms_access_key_id" {
-  source = "git::https://github.com/terraform-aws-modules/terraform-aws-ssm-parameter.git?ref=28784d318fcb1d5b632e38a4c1f567dd138fcd83" # v1.1.2
-
-  name        = "/cms/access_key_id"
-  value       = module.iam_user_cms.iam_access_key_id
-  secure_type = true
-}
-
-module "secret_cms_access_key_secret" {
-  source = "git::https://github.com/terraform-aws-modules/terraform-aws-ssm-parameter.git?ref=28784d318fcb1d5b632e38a4c1f567dd138fcd83" # v1.1.2
-
-  name        = "/cms/access_key_secret"
-  value       = module.iam_user_cms.iam_access_key_secret
-  secure_type = true
-}
