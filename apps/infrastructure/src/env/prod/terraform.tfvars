@@ -31,7 +31,7 @@ dns_delegate_records = {
 
 use_custom_certificate = true
 
-cms_app_image_tag = "7127b3bc338e175fd77ad56b2152ad000fa9aae3"
+cms_app_image_tag = "04390d3837042b0817c3fd847cee1c0a85e283f2"
 
 # CMS Strapi DNS
 dns_domain_name_cms = {
