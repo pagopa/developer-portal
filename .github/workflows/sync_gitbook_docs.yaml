@@ -56,6 +56,11 @@ on:
         type: boolean
         required: true
         default: true
+      documentation_branch:
+        description: 'The branch of the documentation repository to sync (optional, default: main)'
+        type: string
+        required: false
+        default: 'main'
 
   schedule:
     - cron: '0 23 * * *'  # Run daily at midnight UTC
@@ -190,3 +195,22 @@ jobs:
           s3_solutions_dirnames_json_path: ${{ vars.S3_SOLUTIONS_DIRNAMES_JSON_PATH || 'solutions-dirNames.json' }}
           s3_release_notes_dirnames_json_path: ${{ vars.S3_RELEASE_NOTES_DIRNAMES_JSON_PATH || 'release-notes-dirNames.json' }}
           s3_dirnames_json_path: ${{ vars.S3_DIRNAMES_JSON_PATH || 'dirNames.json' }}
+
+  trigger_crowdin_sync_workflow:
+    name: Trigger Crowdin source upload in target repository
+    if: github.event_name == 'workflow_dispatch'
+    needs: manual_sync_gitbook_docs
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Trigger Crowdin source upload workflow
+        env:
+          GH_TOKEN: ${{ secrets.PAT_TOKEN }}
+          PATHS_TO_UPLOAD: ${{ inputs.dir_names_filter }}
+          BRANCH: ${{ inputs.documentation_branch }}
+        run: |
+          gh workflow run upload_sources_to_crowdin.yml \
+            --repo pagopa/devportal-docs \
+            --ref $BRANCH \
+            -f paths_to_upload="$PATHS_TO_UPLOAD"
+
