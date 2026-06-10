@@ -211,4 +211,3 @@ jobs:
             --repo pagopa/devportal-docs \
             --ref $BRANCH \
             -f paths_to_upload="$PATHS_TO_UPLOAD"
-
