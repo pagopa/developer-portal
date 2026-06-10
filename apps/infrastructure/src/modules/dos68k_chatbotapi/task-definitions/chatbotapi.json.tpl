@@ -24,7 +24,12 @@
       { "name": "LOG_LEVEL", "value": "10" },
       { "name": "MODEL_ID", "value": "${model_id}" },
       { "name": "EMBED_MODEL_ID", "value": "${embed_model_id}" },
-      { "name": "REDIS_HOST", "value": "${redis_host}" }
+      { "name": "REDIS_HOST", "value": "${redis_host}" }.
+      { "name": "MASK_PII", "value": "false"},
+      { "name": "MASKING_SERVICE_URL, "value": "http://masking:3000"},
+      { "name": "MAX_TOKENS", "value": "1024"},
+      { "name": "SIMILARITY_TOPK", "value": "10"}
+      { "name": "TEMPERATURE_AGENT", "value": "0.0"}
     ],
     "secrets": [
       { "name": "MODEL_API_KEY", "valueFrom": "${model_api_key_arn}" }
