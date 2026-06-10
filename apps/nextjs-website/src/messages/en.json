@@ -42,6 +42,16 @@
         "title": "Survey Consent",
         "unsubscribe": "Revoke consent"
       },
+      "webinar": {
+        "description": "Allow tracking of webinar attendance. If enabled, you will be able to obtain a certificate of participation.",
+        "error": {
+          "subscribe": "There was an error opting into tracking, please try again later or contact technical support.",
+          "unsubscribe": "There was an error revoking tracking consent, please try again later or contact technical support."
+        },
+        "subscribe": "Allow",
+        "title": "Tracking consent",
+        "unsubscribe": "Revoke consent"
+      },
       "privacy": {
         "basicData": "PagoPA collects basic personal data to allow you to create and use your DevPortal account. This data is collected during registration and profile update. PagoPA ensures your data is handled securely and justifies its use according to PagoPA's Privacy Policy. Your basic personal data will be kept as long as you have an active account on PagoPA DevPortal.",
         "title": "Privacy",

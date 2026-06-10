@@ -24,7 +24,7 @@ interface Info {
   isError: boolean;
 }
 
-type SubscribeField = 'mailinglist' | 'survey';
+type SubscribeField = 'mailinglist' | 'survey' | 'webinar';
 
 const Agreements = () => {
   const t = useTranslations();
@@ -39,6 +39,8 @@ const Agreements = () => {
     user?.attributes['custom:mailinglist_accepted'] === 'true';
   const hasAcceptedSurveySubscription =
     user?.attributes['custom:survey_accepted'] === 'true';
+  const hasAcceptedWebinarMonitoringSubscription =
+    user?.attributes['custom:webinar_monitoring_accepted'] === 'true';
 
   const [isSubscriptionButtonDisabled, setIsSubscriptionButtonDisabled] =
     useState(false);
@@ -54,6 +56,11 @@ const Agreements = () => {
           }`,
           'custom:survey_accepted': `${
             field === 'survey' ? true : hasAcceptedSurveySubscription
+          }`,
+          'custom:webinar_monitoring_accepted': `${
+            field === 'webinar'
+              ? true
+              : hasAcceptedWebinarMonitoringSubscription
           }`,
         },
         () => {
@@ -86,6 +93,11 @@ const Agreements = () => {
           }`,
           'custom:survey_accepted': `${
             field === 'survey' ? false : hasAcceptedSurveySubscription
+          }`,
+          'custom:webinar_monitoring_accepted': `${
+            field === 'webinar'
+              ? false
+              : hasAcceptedWebinarMonitoringSubscription
           }`,
         },
         () => {
@@ -170,6 +182,18 @@ const Agreements = () => {
           onUnsubscribe={() => handleUnsubscribe('survey')}
           subscribeLabel={t('profile.agreements.survey.subscribe')}
           unsubscribeLabel={t('profile.agreements.survey.unsubscribe')}
+        ></AgreementItem>
+        <Box sx={{ marginY: '32px' }} />
+        <AgreementItem
+          title={t('profile.agreements.webinar.title')}
+          description={t('profile.agreements.webinar.description')}
+          subscribed={hasAcceptedWebinarMonitoringSubscription}
+          loading={loading}
+          disabled={isSubscriptionButtonDisabled}
+          onSubscribe={() => handleSubscribe('webinar')}
+          onUnsubscribe={() => handleUnsubscribe('webinar')}
+          subscribeLabel={t('profile.agreements.webinar.subscribe')}
+          unsubscribeLabel={t('profile.agreements.webinar.unsubscribe')}
         ></AgreementItem>
         <Divider sx={{ marginY: '32px' }} />
         <Typography
