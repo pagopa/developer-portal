@@ -57,10 +57,10 @@ on:
         required: true
         default: true
       documentation_branch:
-        description: 'The branch of the documentation repository to sync (optional, default: main)'
+        description: 'The branch of the documentation repository to sync (optional, default: docs/from-gitbook)'
         type: string
         required: false
-        default: 'main'
+        default: 'docs/from-gitbook'
 
   schedule:
     - cron: '0 23 * * *'  # Run daily at midnight UTC
