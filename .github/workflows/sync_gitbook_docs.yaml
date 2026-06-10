@@ -204,8 +204,8 @@ jobs:
       - name: Trigger Crowdin source upload workflow
         env:
           GH_TOKEN: ${{ secrets.PAT_TOKEN }}
-          PATHS_TO_UPLOAD: ${{ inputs.dir_names_filter }}
-          BRANCH: ${{ inputs.documentation_branch }}
+          PATHS_TO_UPLOAD: ${{ inputs.dir_names_filter || '' }}
+          BRANCH: ${{ inputs.documentation_branch || 'docs/from-gitbook' }}
         run: |
           gh workflow run upload_sources_to_crowdin.yml \
             --repo pagopa/devportal-docs \
