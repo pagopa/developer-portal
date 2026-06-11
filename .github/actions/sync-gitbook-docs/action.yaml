@@ -93,6 +93,10 @@ inputs:
     description: 'Whether to generate and sync sitemap to S3'
     required: false
     default: 'true'
+  pat_token:
+    description: 'GitHub PAT token with permissions to trigger workflows on the documentation repository'
+    required: false
+    default: ''
 
 runs:
   using: "composite"
@@ -332,3 +336,16 @@ runs:
           --distribution-id ${{ inputs.opennext_cloudfront_distribution_id }} \
           --paths "/*"
         echo "::endgroup::"
+
+    - name: Trigger push documentation workflow
+      if: ${{ inputs.environment == 'prod' && inputs.locale == 'it' }}
+      env:
+        GH_TOKEN: ${{ inputs.pat_token }}
+        PATHS_TO_ADD: ${{ inputs.dir_names_filter || '' }}
+        BRANCH: ${{ inputs.documentation_branch || 'docs/from-gitbook' }}
+      shell: bash
+      run: |
+        gh workflow run push_on_public_repo.yml \
+          --repo pagopa/devportal-docs \
+          --ref $BRANCH \
+          -f paths_to_add="$PATHS_TO_ADD"
