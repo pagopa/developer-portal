@@ -198,6 +198,7 @@ jobs:
 
   trigger_crowdin_sync_workflow:
     name: Trigger Crowdin source upload in target repository
+    if: inputs.environment == 'prod' || github.event_name == 'schedule'
     runs-on: ubuntu-latest
 
     steps:
