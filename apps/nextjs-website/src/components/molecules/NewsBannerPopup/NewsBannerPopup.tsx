@@ -1,5 +1,5 @@
 import { Media } from '@/lib/media/types';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, useTheme } from '@mui/material';
 import Link from 'next/link';
 import Image from 'next/image';
 
@@ -18,24 +18,31 @@ const NewsBannerPopup = ({
   linkLabel,
   linkUrl,
 }: NewsBannerPopupProps) => {
+  const { palette } = useTheme();
   return (
     <Box
       sx={{
-        backgroundColor: '#fff',
-        borderRadius: 3,
-        px: { xs: 3, md: 6 },
-        py: { xs: 4, md: 5 },
+        backgroundColor: palette.grey[50],
+        borderRadius: '19px',
+        mx: '106px',
+        my: '64px',
+        px: { xs: 3, md: '60px' },
+        py: { xs: 4, md: '36px' },
         display: 'flex',
         flexDirection: { xs: 'column', md: 'row' },
         alignItems: { xs: 'flex-start', md: 'center' },
         justifyContent: 'space-between',
-        gap: 4,
-        boxShadow: '0 1px 4px rgba(0,0,0,0.06)',
       }}
     >
-      {/* Left: text content */}
-      <Box sx={{ maxWidth: 420 }}>
-        <Typography variant='h6' fontWeight={700} color='text.primary' mb={1.5}>
+      <Box sx={{ maxWidth: '576px' }}>
+        <Typography
+          variant='h4'
+          fontWeight={700}
+          color='text.primary'
+          fontSize={'32px'}
+          lineHeight={'42px'}
+          letterSpacing={'0'}
+        >
           {title}
         </Typography>
 
