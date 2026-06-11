@@ -190,3 +190,19 @@ jobs:
           s3_solutions_dirnames_json_path: ${{ vars.S3_SOLUTIONS_DIRNAMES_JSON_PATH || 'solutions-dirNames.json' }}
           s3_release_notes_dirnames_json_path: ${{ vars.S3_RELEASE_NOTES_DIRNAMES_JSON_PATH || 'release-notes-dirNames.json' }}
           s3_dirnames_json_path: ${{ vars.S3_DIRNAMES_JSON_PATH || 'dirNames.json' }}
+
+  trigger_push_on_public_repo_workflow:
+    name: Trigger push documentation on target repository workflow
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Trigger push documentation workflow
+        env:
+          GH_TOKEN: ${{ secrets.PAT_TOKEN }}
+          PATHS_TO_ADD: ${{ inputs.dir_names_filter || '' }}
+          BRANCH: ${{ inputs.documentation_branch || 'docs/from-gitbook' }}
+        run: |
+          gh workflow run push_on_public_repo.yml \
+            --repo pagopa/devportal-docs \
+            --ref $BRANCH \
+            -f paths_to_add="$PATHS_TO_ADD"
