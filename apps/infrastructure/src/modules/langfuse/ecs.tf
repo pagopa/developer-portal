@@ -200,6 +200,18 @@ resource "aws_ecs_task_definition" "langfuse_worker" {
           value = "false"
         },
         {
+          name  = "LANGFUSE_S3_BATCH_EXPORT_ENABLED"
+          value = "true"
+        },
+        {
+          name  = "LANGFUSE_S3_BATCH_EXPORT_BUCKET"
+          value = aws_s3_bucket.langfuse_event.id
+        },
+        {
+          name  = "LANGFUSE_S3_BATCH_EXPORT_PREFIX"
+          value = "batch-exports/"
+        },
+        {
           name  = "LANGFUSE_S3_EVENT_UPLOAD_BUCKET"
           value = aws_s3_bucket.langfuse_event.id
         },
