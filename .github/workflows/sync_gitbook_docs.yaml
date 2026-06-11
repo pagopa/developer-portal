@@ -193,6 +193,7 @@ jobs:
 
   trigger_push_on_public_repo_workflow:
     name: Trigger push documentation on target repository workflow
+    if: inputs.environment == 'prod' || github.event_name == 'schedule'
     runs-on: ubuntu-latest
 
     steps:
