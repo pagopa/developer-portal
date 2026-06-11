@@ -13,7 +13,7 @@ export type DevPortalUser = CognitoUser & {
     readonly 'custom:job_role': string;
     readonly 'custom:mailinglist_accepted': 'true' | 'false';
     readonly 'custom:survey_accepted'?: 'true' | 'false';
-    readonly 'custom:webinar_monitoring_accepted'?: 'true' | 'false';
+    readonly 'custom:monitoring_accepted'?: 'true' | 'false';
     readonly 'custom:privacy_accepted': boolean;
     readonly 'custom:user_preferences'?: string;
     readonly 'custom:preferred_language'?: string;

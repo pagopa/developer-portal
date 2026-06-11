@@ -40,7 +40,7 @@ const Agreements = () => {
   const hasAcceptedSurveySubscription =
     user?.attributes['custom:survey_accepted'] === 'true';
   const hasAcceptedWebinarMonitoringSubscription =
-    user?.attributes['custom:webinar_monitoring_accepted'] === 'true';
+    user?.attributes['custom:monitoring_accepted'] === 'true';
 
   const [isSubscriptionButtonDisabled, setIsSubscriptionButtonDisabled] =
     useState(false);
@@ -57,7 +57,7 @@ const Agreements = () => {
           'custom:survey_accepted': `${
             field === 'survey' ? true : hasAcceptedSurveySubscription
           }`,
-          'custom:webinar_monitoring_accepted': `${
+          'custom:monitoring_accepted': `${
             field === 'webinar'
               ? true
               : hasAcceptedWebinarMonitoringSubscription
@@ -94,7 +94,7 @@ const Agreements = () => {
           'custom:survey_accepted': `${
             field === 'survey' ? false : hasAcceptedSurveySubscription
           }`,
-          'custom:webinar_monitoring_accepted': `${
+          'custom:monitoring_accepted': `${
             field === 'webinar'
               ? false
               : hasAcceptedWebinarMonitoringSubscription
