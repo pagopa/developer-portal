@@ -41,6 +41,7 @@ rds_cms_scaling_configuration = {
 }
 
 create_chatbot            = true
+create_dos68k_chatbotapi  = true
 ac_integration_is_enabled = true
 docs_redirect_is_enabled  = false
 
@@ -60,4 +61,3 @@ chatbot_models = {
 }
 
 ecs_chatbotapi_enable_scheduled_scaling = true
-
