@@ -119,6 +119,11 @@
     }
   },
   "webinar": {
+    "certificationBanner" : {
+      "title": "Attestato di partecipazione al Webinar",
+      "description": "Partecipa al webinar e ottieni il tuo attestato di partecipazione. Dopo l'evento, troverai l'attestato nel tuo profilo.",
+      "cta": "Vai al profilo"
+    },
     "liveWebinar": "Webinar in corso",
     "chapters": "Capitoli",
     "subscriptionError": "Limite di iscrizioni raggiunto",

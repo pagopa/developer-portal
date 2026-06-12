@@ -119,6 +119,11 @@
     }
   },
   "webinar": {
+    "certificationBanner" : {
+      "title": "Webinar Certificate of Participation",
+      "description": "Attend the webinar and get your certificate of participation. After the event, you will find the certificate in your profile.",
+      "cta": "Go to profile"
+    },
     "liveWebinar": "Live Webinar",
     "chapters": "Chapters",
     "subscriptionError": "Registration limit reached",
