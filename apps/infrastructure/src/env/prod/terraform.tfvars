@@ -46,6 +46,7 @@ rds_cms_scaling_configuration = {
 }
 
 create_chatbot            = true
+create_dos68k_chatbotapi  = true
 ac_integration_is_enabled = true
 
 chatbot_models = {
