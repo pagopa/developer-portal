@@ -1,6 +1,6 @@
 import { Media } from '@/lib/media/types';
-import { Box, Link as LinkMui, Typography, useTheme } from '@mui/material';
-import Link from 'next/link';
+import { Box, Typography, useTheme } from '@mui/material';
+import Image from 'next/image';
 import React from 'react';
 import { useParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
@@ -74,11 +74,12 @@ const CertificateBanner = ({ image }: CertificateBannerProps) => {
             pr: '60px',
           }}
         >
-          <Box
-            component='img'
+          <Image
             src={image.url}
             alt={image.alternativeText ?? t('title')}
-            sx={{
+            width={404} // Sostituisci con la larghezza intrinseca dell'immagine
+            height={300} // Sostituisci con l'altezza intrinseca dell'immagine
+            style={{
               display: 'block',
               width: '100%',
               maxWidth: '404px',
