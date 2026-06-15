@@ -113,10 +113,10 @@ module "website" {
     aws.us-east-1 = aws.us-east-1
   }
 
-  environment       = var.environment
+  environment        = var.environment
   alerting_topic_arn = module.core.alerting_topic_arn
-  github_repository = var.github_repository
-  tags              = var.tags
+  github_repository  = var.github_repository
+  tags               = var.tags
 
   cdn_custom_headers           = var.cdn_custom_headers
   publish_cloudfront_functions = var.publish_cloudfront_functions
@@ -251,9 +251,9 @@ module "active_campaign" {
   count  = var.ac_integration_is_enabled ? 1 : 0
   source = "./modules/active_campaign"
 
-  environment    = var.environment
+  environment        = var.environment
   alerting_topic_arn = module.core.alerting_topic_arn
-  tags           = var.tags
+  tags               = var.tags
 
   cognito_user_pool         = module.auth.cognito_user_pool
   webinar_subscriptions_ddb = module.website.webinar_subscriptions_ddb
