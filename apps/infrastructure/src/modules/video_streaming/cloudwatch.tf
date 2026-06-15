@@ -9,7 +9,7 @@ resource "aws_cloudwatch_metric_alarm" "lambda_errors" {
   evaluation_periods  = "5"
   threshold_metric_id = "e1"
   alarm_description   = "This metric monitors Lambda function errors using anomaly detection"
-  alarm_actions       = [aws_sns_topic.alerts.arn]
+  alarm_actions       = [var.alerting_topic_arn]
 
   metric_query {
     id          = "m1"
@@ -34,38 +34,3 @@ resource "aws_cloudwatch_metric_alarm" "lambda_errors" {
 }
 
 # SNS Topic for Alarms
-resource "aws_sns_topic" "alerts" {
-  name = "${var.project_name}-cloudwatch-alarms"
-}
-
-resource "aws_sns_topic_subscription" "alerts" {
-  protocol  = "email"
-  endpoint  = format("devportal-alerts+%s@pagopa.it", var.environment)
-  topic_arn = aws_sns_topic.alerts.arn
-}
-
-resource "aws_sns_topic_policy" "alerts" {
-  arn = aws_sns_topic.alerts.arn
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Sid    = "AllowCloudWatchAlarms"
-        Effect = "Allow"
-        Principal = {
-          Service = "cloudwatch.amazonaws.com"
-        }
-        Action   = "sns:Publish"
-        Resource = aws_sns_topic.alerts.arn
-        Condition = {
-          ArnLike = {
-            "aws:SourceArn" = "arn:aws:cloudwatch:${var.aws_region}:${data.aws_caller_identity.current.account_id}:alarm:*"
-          }
-          StringEquals = {
-            "aws:SourceAccount" = data.aws_caller_identity.current.account_id
-          }
-        }
-      }
-    ]
-  })
-}

@@ -36,6 +36,11 @@ variable "environment" {
   description = "Environment"
 }
 
+variable "alerting_topic_arn" {
+  type        = string
+  description = "ARN of the shared SNS topic used for CloudWatch alarm notifications"
+}
+
 variable "strapi_api_url" {
   description = "The URL of the Strapi API."
   type        = string

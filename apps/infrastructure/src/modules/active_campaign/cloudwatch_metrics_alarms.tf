@@ -14,7 +14,7 @@ resource "aws_cloudwatch_metric_alarm" "pipe_failed" {
   }
   alarm_description         = "This metric monitors the webinar subscriptions eventbridge pipe failures"
   insufficient_data_actions = []
-  alarm_actions             = [aws_sns_topic.alerts.arn]
+  alarm_actions             = [var.alerting_topic_arn]
 }
 
 resource "aws_cloudwatch_metric_alarm" "resync_dlq" {
@@ -31,36 +31,5 @@ resource "aws_cloudwatch_metric_alarm" "resync_dlq" {
   }
   alarm_description         = "This metric monitors messages put in the dead letter queue"
   insufficient_data_actions = []
-  alarm_actions             = [aws_sns_topic.alerts.arn]
-}
-
-# SNS Topic for Alarms
-resource "aws_sns_topic" "alerts" {
-  name = "${local.prefix}-cloudwatch-alarms"
-}
-
-resource "aws_sns_topic_policy" "alerts" {
-  arn = aws_sns_topic.alerts.arn
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Sid    = "AllowCloudWatchAlarms"
-        Effect = "Allow"
-        Principal = {
-          Service = "cloudwatch.amazonaws.com"
-        }
-        Action   = "sns:Publish"
-        Resource = aws_sns_topic.alerts.arn
-        Condition = {
-          ArnLike = {
-            "aws:SourceArn" = "arn:aws:cloudwatch:${var.aws_region}:${data.aws_caller_identity.current.account_id}:alarm:*"
-          }
-          StringEquals = {
-            "aws:SourceAccount" = data.aws_caller_identity.current.account_id
-          }
-        }
-      }
-    ]
-  })
+  alarm_actions             = [var.alerting_topic_arn]
 }
