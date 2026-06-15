@@ -2,7 +2,7 @@ import { Meta, StoryObj } from '@storybook/nextjs';
 import CertificateBanner from 'nextjs-website/src/components/molecules/CertificateBanner/CertificateBanner';
 
 const meta: Meta<typeof CertificateBanner> = {
-  title: 'Components/CertificateBanner',
+  title: 'Molecules/CertificateBanner',
   component: CertificateBanner,
 };
 
