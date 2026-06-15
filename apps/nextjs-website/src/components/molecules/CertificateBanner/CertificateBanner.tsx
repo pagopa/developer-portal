@@ -1,4 +1,3 @@
-import { Media } from '@/lib/media/types';
 import { Box, Typography, useTheme } from '@mui/material';
 import Image from 'next/image';
 import React from 'react';
@@ -7,24 +6,22 @@ import { useTranslations } from 'next-intl';
 import LinkButton from '@/components/atoms/LinkButton/LinkButton';
 
 export type CertificateBannerProps = {
-  image?: Media;
+  imagePath?: string;
 };
 
-const CertificateBanner = ({ image }: CertificateBannerProps) => {
+const CertificateBanner = ({ imagePath }: CertificateBannerProps) => {
   const { locale } = useParams<{ locale: string }>();
   const { palette } = useTheme();
   const t = useTranslations('webinar.certificationBanner');
   return (
     <Box
       sx={{
-        maxHeight: { sm: '400px', md: '277px' },
+        width: '100%',
+        height: { sm: '400px', md: '277px' },
         backgroundColor: palette.grey[50],
         borderRadius: '19px',
-        mx: { xs: 2, sm: 4, md: '106px' },
-        my: '64px',
         display: 'flex',
         flexDirection: { xs: 'column', md: 'row' },
-        overflow: 'hidden',
       }}
     >
       <Box
@@ -62,36 +59,18 @@ const CertificateBanner = ({ image }: CertificateBannerProps) => {
         ></LinkButton>
       </Box>
 
-      {image?.url && (
-        <Box
-          sx={{
-            flex: 1,
-            display: { xs: 'none', md: 'flex' },
-            alignItems: 'flex-end',
-            flexShrink: 0,
-            justifyContent: 'flex-end',
-            pt: '36px',
-            pr: '60px',
+      {imagePath && (
+        <Image
+          src={imagePath}
+          alt={t('title')}
+          width={333}
+          height={199}
+          style={{
+            display: 'block',
+            borderRadius: '8px',
+            boxShadow: '0 -4px 15px rgba(0,0,0,0.08)',
           }}
-        >
-          <Image
-            src={image.url}
-            alt={image.alternativeText ?? t('title')}
-            width={404} // Sostituisci con la larghezza intrinseca dell'immagine
-            height={300} // Sostituisci con l'altezza intrinseca dell'immagine
-            style={{
-              display: 'block',
-              width: '100%',
-              maxWidth: '404px',
-              height: 'auto',
-              objectFit: 'cover',
-              borderTopLeftRadius: '8px',
-              borderTopRightRadius: '8px',
-              boxShadow: '0 -4px 15px rgba(0,0,0,0.08)',
-              transform: 'translateY(24px)',
-            }}
-          />
-        </Box>
+        />
       )}
     </Box>
   );
