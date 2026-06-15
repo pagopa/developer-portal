@@ -7,17 +7,26 @@ import LinkButton from '@/components/atoms/LinkButton/LinkButton';
 
 export type CertificateBannerProps = {
   imagePath?: string;
+  isInListPage?: boolean;
 };
 
-const CertificateBanner = ({ imagePath }: CertificateBannerProps) => {
+const CertificateBanner = ({
+  imagePath,
+  isInListPage = false,
+}: CertificateBannerProps) => {
   const { locale } = useParams<{ locale: string }>();
   const { palette } = useTheme();
-  const t = useTranslations('webinar.certificationBanner');
+  const t = useTranslations(
+    isInListPage
+      ? 'webinar.certificationBanner'
+      : 'webinar.detail.certificationBanner'
+  );
   return (
     <Box
       sx={{
         width: '100%',
-        height: { sm: '400px', md: '277px' },
+        height: '100%',
+        maxHeight: { md: '277px' },
         backgroundColor: palette.grey[50],
         borderRadius: '19px',
         display: 'flex',
@@ -26,7 +35,7 @@ const CertificateBanner = ({ imagePath }: CertificateBannerProps) => {
     >
       <Box
         sx={{
-          maxWidth: '576px',
+          maxWidth: { xs: '100%', md: '50%' },
           display: 'flex',
           flexDirection: 'column',
           gap: '24px',
@@ -52,20 +61,23 @@ const CertificateBanner = ({ imagePath }: CertificateBannerProps) => {
         >
           {t('description')}
         </Typography>
-        <LinkButton
-          label={t('cta')}
-          href={`/${locale}/profile`}
-          showArrow={false}
-        ></LinkButton>
+        {!isInListPage && (
+          <LinkButton
+            label={t('cta')}
+            href={`/${locale}/profile`}
+            showArrow={false}
+          ></LinkButton>
+        )}
       </Box>
 
       {imagePath && (
         <Box
           sx={{
-            display: 'flex',
+            display: { xs: 'none', md: 'flex' },
             flex: 1,
             justifyContent: 'flex-end',
             alignItems: 'center',
+            py: '21px',
             pr: '38px',
           }}
         >
