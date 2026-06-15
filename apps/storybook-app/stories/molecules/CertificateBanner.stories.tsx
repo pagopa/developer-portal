@@ -10,8 +10,7 @@ export default meta;
 type Story = StoryObj<typeof CertificateBanner>;
 
 const mockImage = {
-  url: 'https://placehold.co/333x199',
-  alternativeText: 'Attestato di partecipazione',
+  url: '/images/certificato-di-partecipazione-webinar.png',
 };
 
 export const Showcase: Story = {

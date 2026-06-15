@@ -129,14 +129,14 @@
     }
   },
   "webinar": {
-    "detail" : {
-      "certificationBanner" : {
+    "detail": {
+      "certificationBanner": {
         "title": "Attestato di partecipazione al Webinar",
         "description": "Partecipa al webinar e ottieni il tuo attestato di partecipazione. Dopo l'evento, troverai l'attestato nel tuo profilo.",
         "cta": "Vai al profilo"
       }
     },
-    "certificationBanner" : {
+    "certificationBanner": {
       "title": "Attestati di partecipazione disponibili!",
       "description": "Partecipa ai webinar di PagoPA DevPortal e ottieni il tuo attestato di partecipazione. Dopo l’evento, troverai l’attestato nel tuo profilo."
     },

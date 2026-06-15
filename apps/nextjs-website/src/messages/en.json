@@ -129,14 +129,14 @@
     }
   },
   "webinar": {
-    "detail" : {
-      "certificationBanner" : {
+    "detail": {
+      "certificationBanner": {
         "title": "Webinar Participation Certificate",
         "description": "Attend the webinar and get your participation certificate. After the event, you will find the certificate in your profile.",
         "cta": "Go to profile"
       }
     },
-    "certificationBanner" : {
+    "certificationBanner": {
       "title": "Participation certificates available!",
       "description": "Attend PagoPA DevPortal webinars and get your participation certificate. After the event, you will find the certificate in your profile."
     },

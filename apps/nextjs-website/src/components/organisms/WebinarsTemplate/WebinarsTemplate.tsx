@@ -95,7 +95,7 @@ const WebinarsTemplateContent = ({
       {futureWebinars && (
         <FutureWebinarsShowcase webinars={[...futureWebinars]} />
       )}
-      <EContainer sx={{ marginY: '64px' }}>
+      <EContainer containerSx={{ marginY: '64px' }}>
         <CertificateBanner
           imagePath={'/images/certificato-di-partecipazione-webinar.png'}
           isInListPage={true}

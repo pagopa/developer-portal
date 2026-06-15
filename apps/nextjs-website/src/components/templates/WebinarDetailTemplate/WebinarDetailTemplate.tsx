@@ -159,7 +159,7 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
           ></WebinarPlayerSection>
         )}
 
-      <EContainer sx={{ marginTop: '64px' }}>
+      <EContainer containerSx={{ marginTop: '64px' }}>
         <CertificateBanner
           imagePath={'/images/certificato-di-partecipazione-webinar.png'}
         />
