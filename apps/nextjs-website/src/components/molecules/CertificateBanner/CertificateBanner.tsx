@@ -60,17 +60,27 @@ const CertificateBanner = ({ imagePath }: CertificateBannerProps) => {
       </Box>
 
       {imagePath && (
-        <Image
-          src={imagePath}
-          alt={t('title')}
-          width={333}
-          height={199}
-          style={{
-            display: 'block',
-            borderRadius: '8px',
-            boxShadow: '0 -4px 15px rgba(0,0,0,0.08)',
+        <Box
+          sx={{
+            display: 'flex',
+            flex: 1,
+            justifyContent: 'flex-end',
+            alignItems: 'center',
+            pr: '38px',
           }}
-        />
+        >
+          <Image
+            src={imagePath}
+            alt={t('title')}
+            width={333}
+            height={199}
+            style={{
+              display: 'block',
+              borderRadius: '8px',
+              boxShadow: '0 -4px 15px rgba(0,0,0,0.08)',
+            }}
+          />
+        </Box>
       )}
     </Box>
   );
