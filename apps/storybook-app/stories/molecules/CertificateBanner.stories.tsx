@@ -10,12 +10,13 @@ export default meta;
 type Story = StoryObj<typeof CertificateBanner>;
 
 const mockImage = {
-  url: 'https://placehold.co/404x241',
+  url: 'https://placehold.co/333x199',
   alternativeText: 'Attestato di partecipazione',
 };
 
 export const Showcase: Story = {
   args: {
-    image: mockImage,
+    imagePath: mockImage.url,
+    isInListPage: false,
   },
 };
