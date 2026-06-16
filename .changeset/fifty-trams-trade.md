@@ -2,4 +2,4 @@
 "infrastructure": major
 ---
 
-Refactory SNS topics for alerting. Split subscriptions for environments aiming to have one slack channel for prod and one channel for dev and UAT.
+Refactor SNS topics for alerting by centralizing CloudWatch alarm notifications to a shared SNS topic managed by the core infrastructure module.
