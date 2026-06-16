@@ -81,7 +81,7 @@ module "opennext" {
     }
   }
 
-  alarms_actions = [aws_sns_topic.metric_alarm.arn]
+  alarms_actions = [var.alerting_topic_arn]
 
   vpc = var.vpc
 
