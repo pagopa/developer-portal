@@ -146,7 +146,7 @@ resource "aws_cloudwatch_metric_alarm" "lambda_increased_invocations" {
 
   metric_query {
     id          = "e1"
-    expression  = "ANOMALY_DETECTION_BAND(m1, 2)"
+    expression  = "ANOMALY_DETECTION_BAND(m1, 5)"
     label       = "Lambda Invocations (expected)"
     return_data = true
   }
