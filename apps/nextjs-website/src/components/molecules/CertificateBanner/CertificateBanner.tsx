@@ -64,7 +64,7 @@ const CertificateBanner = ({
         {!isInListPage && (
           <LinkButton
             label={t('cta')}
-            href={`/${locale}/profile`}
+            href={`/${locale}/profile/personal-data`} // TODO: update the link to the certification page when it's ready
             showArrow={false}
           ></LinkButton>
         )}
