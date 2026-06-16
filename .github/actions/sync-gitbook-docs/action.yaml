@@ -345,7 +345,7 @@ runs:
         BRANCH: ${{ inputs.documentation_branch || 'docs/from-gitbook' }}
       shell: bash
       run: |
-        gh workflow run push_on_public_repo.yml \
+        gh workflow run push_on_target_repo.yml \
           --repo pagopa/devportal-docs \
           --ref $BRANCH \
           -f paths_to_add="$PATHS_TO_ADD"
