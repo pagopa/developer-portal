@@ -163,6 +163,12 @@
       "goTo": "Collegati alla pagina del webinar all'orario di inizio dell'evento.",
       "refresh": "Collegati a questa pagina all'orario di inizio dell'evento."
     },
+    "subscriptionPopup": {
+      "title": "Ti sei registrato per il webinar.\nFornisci il consenso al monitoraggio.",
+      "text": "Per ottenere il certificato di partecipazione, devi dare il consenso al monitoraggio della visione entro 5 minuti dall’inizio del webinar.\nIl controllo serve solo a verificare che tu stia seguendo il contenuto.",
+      "confirmCta": "Abilita",
+      "cancelCta": "Non ora"
+    },
     "webinarsSection": {
       "description": "",
       "noWebinars": "Stiamo preparando i prossimi eventi, controlla più avanti.",

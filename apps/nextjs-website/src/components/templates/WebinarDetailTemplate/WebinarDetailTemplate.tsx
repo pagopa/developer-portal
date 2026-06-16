@@ -20,6 +20,7 @@ import ProductBreadcrumbs from '@/components/atoms/ProductBreadcrumbs/ProductBre
 import RelatedResources from '@/components/molecules/RelatedResources/RelatedResources';
 import QuestionsAndAnswers from '@/components/molecules/QuestionsAndAnswers/QuestionsAndAnswers';
 import { useParams } from 'next/navigation';
+import ConfirmationModal from '@/components/atoms/ConfirmationModal/ConfirmationModal';
 
 type WebinarDetailTemplateProps = {
   webinar: Webinar;
@@ -30,8 +31,11 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
   const { locale } = useParams<{ locale: string }>();
   const { palette } = useTheme();
   const [error, setError] = useState<string | null>(null);
-  const { user } = useUser();
+  const { user, setUserAttributes } = useUser();
   const [isSubscribed, setIsSubscribed] = useState(false);
+  const [showSubscribePopup, setShowSubscribePopup] = useState(false);
+  const hasAcceptedWebinarMonitoringSubscription =
+    user?.attributes['custom:webinar_accepted'] === 'true';
   const {
     webinarState,
     setWebinar,
@@ -44,6 +48,14 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
   const showHeaderImage =
     webinarState === WebinarState.future && webinar.headerImage;
 
+  useEffect(() => {
+    if (!user) return;
+    if (isSubscribed && !hasAcceptedWebinarMonitoringSubscription)
+      setShowSubscribePopup(isSubscribed);
+    else if (hasAcceptedWebinarMonitoringSubscription) {
+      setShowSubscribePopup(false);
+    }
+  }, [isSubscribed, hasAcceptedWebinarMonitoringSubscription, user]);
   useEffect(() => {
     if (webinar) {
       setWebinar(webinar);
@@ -106,6 +118,33 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
           backgroundSize: 'cover',
         }}
       >
+        <ConfirmationModal
+          title={t('subscriptionPopup.title')}
+          text={t('subscriptionPopup.text')}
+          open={showSubscribePopup}
+          setOpen={() => null}
+          confirmCta={{
+            label: t('subscriptionPopup.confirmCta'),
+            onClick: () => {
+              if (user) {
+                setUserAttributes({
+                  ...user.attributes,
+                  'custom:webinar_accepted': `true`,
+                });
+              }
+              setShowSubscribePopup(false);
+              return null;
+            },
+          }}
+          cancelCta={{
+            label: t('subscriptionPopup.cancelCta'),
+            onClick: () => {
+              setShowSubscribePopup(false);
+              return null;
+            },
+          }}
+        />
+
         <EContainer>
           <ProductBreadcrumbs
             textColor={showHeaderImage ? 'white' : palette.text.primary}

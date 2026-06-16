@@ -163,6 +163,12 @@
       "goTo": "Connect to the webinar page at the event start time.",
       "refresh": "Connect to this page at the event start time."
     },
+    "subscriptionPopup": {
+      "title": "You have registered for the webinar.\nPlease provide your consent to monitoring.",
+      "text": "To obtain the participation certificate, you must consent to viewing monitoring within 5 minutes of the webinar starting.\nThe check is only used to verify that you are following the content.",
+      "confirmCta": "Enable",
+      "cancelCta": "Not now"
+    },
     "webinarsSection": {
       "description": "",
       "noWebinars": "We are preparing upcoming events, check back later.",
