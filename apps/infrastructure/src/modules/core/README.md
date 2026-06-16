@@ -53,6 +53,7 @@
 
 | Name | Description |
 |------|-------------|
+| <a name="output_alerting_email"></a> [alerting\_email](#output\_alerting\_email) | n/a |
 | <a name="output_alerting_topic_arn"></a> [alerting\_topic\_arn](#output\_alerting\_topic\_arn) | n/a |
 | <a name="output_dns_chatbot_hosted_zone"></a> [dns\_chatbot\_hosted\_zone](#output\_dns\_chatbot\_hosted\_zone) | n/a |
 | <a name="output_hosted_zone_id"></a> [hosted\_zone\_id](#output\_hosted\_zone\_id) | n/a |

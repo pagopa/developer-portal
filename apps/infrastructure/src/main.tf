@@ -292,7 +292,7 @@ module "video_streaming" {
   custom_domain_name = "video.${var.dns_domain_name}"
   route53_zone_id    = module.core.hosted_zone_id
   environment        = var.environment
-  alerting_topic_arn = module.core.alerting_topic_arn
+  alerting_email     = module.core.alerting_email
   strapi_api_url     = "https://${keys(var.dns_domain_name_cms)[0]}"
   # Right now only one channel is supported for metrics, so we can directly reference it here. 
   # In the future, if more channels are added and we want to use them for metrics, we can change this to a list of ARNs or similar.

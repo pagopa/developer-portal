@@ -21,3 +21,7 @@ output "dns_chatbot_hosted_zone" {
 output "alerting_topic_arn" {
   value = aws_sns_topic.cloudwatch_alarms.arn
 }
+
+output "alerting_email" {
+  value = aws_ssm_parameter.alerting_email.value
+}

@@ -86,6 +86,9 @@ No modules.
 | [aws_s3_bucket_public_access_block.heartbeat_storage_pac](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_public_access_block) | resource |
 | [aws_s3_bucket_public_access_block.ivs_recordings_pac](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_public_access_block) | resource |
 | [aws_s3_object.robots_txt](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_object) | resource |
+| [aws_sns_topic.alerts](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/sns_topic) | resource |
+| [aws_sns_topic_policy.alerts](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/sns_topic_policy) | resource |
+| [aws_sns_topic_subscription.alerts_email](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/sns_topic_subscription) | resource |
 | [aws_ssm_parameter.strapi_api_key](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssm_parameter) | resource |
 | [random_id.suffix](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/id) | resource |
 | [archive_file.ingest_lambda_function](https://registry.terraform.io/providers/hashicorp/archive/latest/docs/data-sources/file) | data source |
@@ -102,7 +105,7 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_alerting_topic_arn"></a> [alerting\_topic\_arn](#input\_alerting\_topic\_arn) | ARN of the shared SNS topic used for CloudWatch alarm notifications | `string` | n/a | yes |
+| <a name="input_alerting_email"></a> [alerting\_email](#input\_alerting\_email) | Email address used for SNS alarm subscriptions | `string` | n/a | yes |
 | <a name="input_cognito_user_pool_client_id"></a> [cognito\_user\_pool\_client\_id](#input\_cognito\_user\_pool\_client\_id) | The Cognito User Pool Client ID used as audience for the JWT authorizer | `string` | n/a | yes |
 | <a name="input_cognito_user_pool_endpoint"></a> [cognito\_user\_pool\_endpoint](#input\_cognito\_user\_pool\_endpoint) | The endpoint of the Cognito User Pool for JWT authorization (e.g. cognito-idp.eu-south-1.amazonaws.com/eu-south-1\_XXXXX) | `string` | n/a | yes |
 | <a name="input_environment"></a> [environment](#input\_environment) | Environment | `string` | n/a | yes |
