@@ -325,7 +325,7 @@ module "devops_agent" {
 module "dos68k_chatbotapi" {
   source = "./modules/dos68k_chatbotapi"
 
-  count = var.environment == "dev" ? 1 : 0
+  count = var.create_dos68k_chatbotapi ? 1 : 0
 
   environment     = var.environment
   dns_domain_name = var.dns_domain_name
