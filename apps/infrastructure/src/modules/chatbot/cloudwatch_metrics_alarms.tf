@@ -31,36 +31,6 @@ resource "aws_cloudwatch_metric_alarm" "api_gateway_5xx_errors" {
   }
 }
 
-resource "aws_cloudwatch_metric_alarm" "api_gateway_increased_requests" {
-  alarm_name          = "${local.prefix}-api-gateway-increased-requests"
-  comparison_operator = "GreaterThanUpperThreshold"
-  evaluation_periods  = "5"
-  threshold_metric_id = "e1"
-  alarm_description   = "This metric monitors API Gateway for increased request volume using anomaly detection"
-  alarm_actions       = [var.alerting_topic_arn]
-
-  metric_query {
-    id          = "m1"
-    return_data = true
-    metric {
-      metric_name = "Count"
-      namespace   = "AWS/ApiGateway"
-      period      = "60"
-      stat        = "Sum"
-      dimensions = {
-        ApiName = aws_api_gateway_rest_api.api.name
-      }
-    }
-  }
-
-  metric_query {
-    id          = "e1"
-    expression  = "ANOMALY_DETECTION_BAND(m1, 2)"
-    label       = "API Gateway Requests (expected)"
-    return_data = true
-  }
-}
-
 resource "aws_cloudwatch_metric_alarm" "api_gateway_4xx_errors" {
   alarm_name          = "${local.prefix}-api-gateway-4xx-errors"
   comparison_operator = "GreaterThanUpperThreshold"
@@ -187,6 +157,7 @@ resource "aws_cloudwatch_metric_alarm" "dynamodb_read_throttle_queries" {
   alarm_name          = "${local.prefix}-dynamodb-read-throttle-queries"
   comparison_operator = "GreaterThanUpperThreshold"
   evaluation_periods  = "5"
+  treat_missing_data  = "notBreaching"
   threshold_metric_id = "e1"
   alarm_description   = "This metric monitors DynamoDB read throttle events for queries table using anomaly detection"
   alarm_actions       = [var.alerting_topic_arn]
@@ -217,6 +188,7 @@ resource "aws_cloudwatch_metric_alarm" "dynamodb_write_throttle_queries" {
   alarm_name          = "${local.prefix}-dynamodb-write-throttle-queries"
   comparison_operator = "GreaterThanUpperThreshold"
   evaluation_periods  = "5"
+  treat_missing_data  = "notBreaching"
   threshold_metric_id = "e1"
   alarm_description   = "This metric monitors DynamoDB write throttle events for queries table using anomaly detection"
   alarm_actions       = [var.alerting_topic_arn]
@@ -247,6 +219,7 @@ resource "aws_cloudwatch_metric_alarm" "dynamodb_read_throttle_sessions" {
   alarm_name          = "${local.prefix}-dynamodb-read-throttle-sessions"
   comparison_operator = "GreaterThanThreshold"
   evaluation_periods  = "5"
+  treat_missing_data  = "notBreaching"
   metric_name         = "ReadThrottleEvents"
   namespace           = "AWS/DynamoDB"
   period              = "60"
@@ -264,6 +237,7 @@ resource "aws_cloudwatch_metric_alarm" "dynamodb_write_throttle_sessions" {
   alarm_name          = "${local.prefix}-dynamodb-write-throttle-sessions"
   comparison_operator = "GreaterThanThreshold"
   evaluation_periods  = "5"
+  treat_missing_data  = "notBreaching"
   metric_name         = "WriteThrottleEvents"
   namespace           = "AWS/DynamoDB"
   period              = "60"
