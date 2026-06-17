@@ -38,10 +38,10 @@ resource "aws_sns_topic" "alerts" {
   name = "${var.project_name}-cloudwatch-alarms"
 }
 
-resource "aws_sns_topic_subscription" "alerts" {
-  protocol  = "email"
-  endpoint  = format("devportal-alerts+%s@pagopa.it", var.environment)
+resource "aws_sns_topic_subscription" "alerts_email" {
   topic_arn = aws_sns_topic.alerts.arn
+  protocol  = "email"
+  endpoint  = var.alerting_email
 }
 
 resource "aws_sns_topic_policy" "alerts" {

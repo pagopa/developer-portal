@@ -99,6 +99,7 @@ module "auth" {
   }
 
   environment             = var.environment
+  alerting_topic_arn      = module.core.alerting_topic_arn
   dns_domain_name         = var.dns_domain_name
   hosted_zone_id          = module.core.hosted_zone_id
   ses_domain_identity_arn = module.core.ses_domain_identity_arn
@@ -112,9 +113,10 @@ module "website" {
     aws.us-east-1 = aws.us-east-1
   }
 
-  environment       = var.environment
-  github_repository = var.github_repository
-  tags              = var.tags
+  environment        = var.environment
+  alerting_topic_arn = module.core.alerting_topic_arn
+  github_repository  = var.github_repository
+  tags               = var.tags
 
   cdn_custom_headers           = var.cdn_custom_headers
   publish_cloudfront_functions = var.publish_cloudfront_functions
@@ -196,6 +198,7 @@ module "chatbot" {
 
   aws_chatbot_region = var.aws_chatbot_region
   environment        = var.environment
+  alerting_topic_arn = module.core.alerting_topic_arn
   tags               = var.tags
 
   s3_bucket_name_static_content = module.website.website_standalone_bucket.name
@@ -248,8 +251,9 @@ module "active_campaign" {
   count  = var.ac_integration_is_enabled ? 1 : 0
   source = "./modules/active_campaign"
 
-  environment = var.environment
-  tags        = var.tags
+  environment        = var.environment
+  alerting_topic_arn = module.core.alerting_topic_arn
+  tags               = var.tags
 
   cognito_user_pool         = module.auth.cognito_user_pool
   webinar_subscriptions_ddb = module.website.webinar_subscriptions_ddb
@@ -288,6 +292,7 @@ module "video_streaming" {
   custom_domain_name = "video.${var.dns_domain_name}"
   route53_zone_id    = module.core.hosted_zone_id
   environment        = var.environment
+  alerting_email     = module.core.alerting_email
   strapi_api_url     = "https://${keys(var.dns_domain_name_cms)[0]}"
   # Right now only one channel is supported for metrics, so we can directly reference it here. 
   # In the future, if more channels are added and we want to use them for metrics, we can change this to a list of ARNs or similar.
