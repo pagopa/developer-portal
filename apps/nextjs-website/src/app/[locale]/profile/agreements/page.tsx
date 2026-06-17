@@ -39,7 +39,7 @@ const Agreements = () => {
     user?.attributes['custom:mailinglist_accepted'] === 'true';
   const hasAcceptedSurveySubscription =
     user?.attributes['custom:survey_accepted'] === 'true';
-  const hasAcceptedWebinarMonitoringSubscription =
+  const hasAcceptedWebinarSubscription =
     user?.attributes['custom:webinar_accepted'] === 'true';
 
   const [isSubscriptionButtonDisabled, setIsSubscriptionButtonDisabled] =
@@ -52,15 +52,13 @@ const Agreements = () => {
         {
           ...user.attributes,
           'custom:mailinglist_accepted': `${
-            field === 'mailinglist' ? true : hasAcceptedMailingListSubscription
+            field === 'mailinglist' || hasAcceptedMailingListSubscription
           }`,
           'custom:survey_accepted': `${
-            field === 'survey' ? true : hasAcceptedSurveySubscription
+            field === 'survey' || hasAcceptedSurveySubscription
           }`,
           'custom:webinar_accepted': `${
-            field === 'webinar'
-              ? true
-              : hasAcceptedWebinarMonitoringSubscription
+            field === 'webinar' || hasAcceptedWebinarSubscription
           }`,
         },
         () => {
@@ -71,7 +69,11 @@ const Agreements = () => {
           setInfo({
             message: t(
               `profile.agreements.${
-                field === 'mailinglist' ? 'newsletter' : 'survey'
+                field === 'mailinglist'
+                  ? 'newsletter'
+                  : field === 'survey'
+                  ? 'survey'
+                  : 'webinar'
               }.error.subscribe`
             ),
             isError: true,
@@ -89,15 +91,13 @@ const Agreements = () => {
         {
           ...user.attributes,
           'custom:mailinglist_accepted': `${
-            field === 'mailinglist' ? false : hasAcceptedMailingListSubscription
+            field !== 'mailinglist' && hasAcceptedMailingListSubscription
           }`,
           'custom:survey_accepted': `${
-            field === 'survey' ? false : hasAcceptedSurveySubscription
+            field !== 'survey' && hasAcceptedSurveySubscription
           }`,
           'custom:webinar_accepted': `${
-            field === 'webinar'
-              ? false
-              : hasAcceptedWebinarMonitoringSubscription
+            field !== 'webinar' && hasAcceptedWebinarSubscription
           }`,
         },
         () => {
@@ -108,7 +108,11 @@ const Agreements = () => {
           setInfo({
             message: t(
               `profile.agreements.${
-                field === 'mailinglist' ? 'newsletter' : 'survey'
+                field === 'mailinglist'
+                  ? 'newsletter'
+                  : field === 'survey'
+                  ? 'survey'
+                  : 'webinar'
               }.error.unsubscribe`
             ),
             isError: true,
@@ -187,7 +191,7 @@ const Agreements = () => {
         <AgreementItem
           title={t('profile.agreements.webinar.title')}
           description={t('profile.agreements.webinar.description')}
-          subscribed={hasAcceptedWebinarMonitoringSubscription}
+          subscribed={hasAcceptedWebinarSubscription}
           loading={loading}
           disabled={isSubscriptionButtonDisabled}
           onSubscribe={() => handleSubscribe('webinar')}

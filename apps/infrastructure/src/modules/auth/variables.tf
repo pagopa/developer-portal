@@ -9,6 +9,11 @@ variable "environment" {
   description = "Environment"
 }
 
+variable "alerting_topic_arn" {
+  type        = string
+  description = "ARN of the shared SNS topic used for CloudWatch alarm notifications"
+}
+
 variable "dns_domain_name" {
   description = "DNS domain for the Developer Portal product"
   type        = string
