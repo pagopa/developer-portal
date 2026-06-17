@@ -167,7 +167,8 @@
       "title": "Ti sei registrato per il webinar.\nFornisci il consenso al monitoraggio.",
       "text": "Per ottenere il certificato di partecipazione, devi dare il consenso al monitoraggio della visione entro 5 minuti dall’inizio del webinar.\nIl controllo serve solo a verificare che tu stia seguendo il contenuto.",
       "confirmCta": "Abilita",
-      "cancelCta": "Non ora"
+      "cancelCta": "Non ora",
+      "checkboxLabel": "Ricordati la scelta"
     },
     "webinarsSection": {
       "description": "",

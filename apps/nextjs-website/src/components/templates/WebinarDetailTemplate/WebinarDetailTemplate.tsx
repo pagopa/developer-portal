@@ -21,6 +21,8 @@ import RelatedResources from '@/components/molecules/RelatedResources/RelatedRes
 import QuestionsAndAnswers from '@/components/molecules/QuestionsAndAnswers/QuestionsAndAnswers';
 import { useParams } from 'next/navigation';
 import ConfirmationModal from '@/components/atoms/ConfirmationModal/ConfirmationModal';
+import { setCookie, deleteCookie } from 'cookies-next/client';
+import { getCookie } from 'cookies-next';
 
 type WebinarDetailTemplateProps = {
   webinar: Webinar;
@@ -50,7 +52,12 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
 
   useEffect(() => {
     if (!user) return;
-    if (isSubscribed && !hasAcceptedWebinarMonitoringSubscription)
+    const rememberOption = getCookie('remember_choice');
+    if (
+      isSubscribed &&
+      !hasAcceptedWebinarMonitoringSubscription &&
+      !rememberOption
+    )
       setShowSubscribePopup(isSubscribed);
     else if (hasAcceptedWebinarMonitoringSubscription) {
       setShowSubscribePopup(false);
@@ -142,6 +149,18 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
               setShowSubscribePopup(false);
               return null;
             },
+          }}
+          checkboxLabel={t('subscriptionPopup.checkboxLabel')}
+          checked={false}
+          onCheckboxChange={(checked) => {
+            if (checked) {
+              setCookie('remember_choice', 'true', {
+                maxAge: 60 * 60 * 24 * 365,
+              }); // 1 anno
+            } else {
+              deleteCookie('remember_choice');
+            }
+            return null;
           }}
         />
 
