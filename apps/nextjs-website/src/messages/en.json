@@ -190,6 +190,12 @@
       "title": "Explore all webinars",
       "description": "Deepen topics related to integration with our products through the guide and expert advice of PagoPA professionals.",
       "cta": "See all"
+    },
+    "consent_banner": {
+      "title": "Consent required to obtain the certificate",
+      "body": "To receive the participation certificate at the end of the webinar, you must provide consent to attendance monitoring <strong>within the first 5 minutes of the start</strong>.<br></br>Monitoring is used exclusively to verify that the webinar is actually being followed.",
+      "cta_enable": "Enable monitoring",
+      "cta_given": "You have given your consent"
     }
   },
   "webinars": {
