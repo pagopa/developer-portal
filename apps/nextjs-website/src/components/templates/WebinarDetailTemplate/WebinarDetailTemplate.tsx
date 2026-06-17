@@ -8,7 +8,7 @@ import { Alert, Box, Snackbar, useTheme } from '@mui/material';
 import SubscribeToWebinar from '@/components/molecules/SubscribeToWebinar/SubscribeToWebinar';
 import type { Webinar } from '@/lib/webinars/types';
 import { useUser } from '@/helpers/user.helper';
-import { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { snackbarAutoHideDurationMs } from '@/config';
 import WebinarPlayerSection from '@/components/molecules/WebinarPlayerSection/WebinarPlayerSection';
@@ -127,7 +127,12 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
       >
         <ConfirmationModal
           title={t('subscriptionPopup.title')}
-          text={t('subscriptionPopup.text')}
+          text={
+            t.rich('subscriptionPopup.text', {
+              strong: (chunks) => <strong>{chunks}</strong>,
+              br: () => <br></br>,
+            }) as string
+          }
           open={showSubscribePopup}
           setOpen={() => null}
           confirmCta={{
