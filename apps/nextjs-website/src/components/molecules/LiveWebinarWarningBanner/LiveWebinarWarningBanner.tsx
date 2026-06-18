@@ -37,6 +37,9 @@ const LiveWebinarWarningBanner = ({
       severity='warning'
       icon={false}
       sx={{
+        mt: '64px',
+        mb: '32px',
+        width: '100%',
         backgroundColor: palette.primaryAction.selected,
         border: `1px solid ${palette.primaryAction.hover}`,
         borderRadius: 2,

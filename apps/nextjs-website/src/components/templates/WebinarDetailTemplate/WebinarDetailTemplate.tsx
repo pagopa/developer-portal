@@ -20,6 +20,7 @@ import ProductBreadcrumbs from '@/components/atoms/ProductBreadcrumbs/ProductBre
 import RelatedResources from '@/components/molecules/RelatedResources/RelatedResources';
 import QuestionsAndAnswers from '@/components/molecules/QuestionsAndAnswers/QuestionsAndAnswers';
 import { useParams } from 'next/navigation';
+import LiveWebinarWarningBanner from '@/components/molecules/LiveWebinarWarningBanner/LiveWebinarWarningBanner';
 
 type WebinarDetailTemplateProps = {
   webinar: Webinar;
@@ -30,7 +31,7 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
   const { locale } = useParams<{ locale: string }>();
   const { palette } = useTheme();
   const [error, setError] = useState<string | null>(null);
-  const { user } = useUser();
+  const { user, setUserAttributes } = useUser();
   const [isSubscribed, setIsSubscribed] = useState(false);
   const {
     webinarState,
@@ -43,6 +44,8 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
   } = useWebinar();
   const showHeaderImage =
     webinarState === WebinarState.future && webinar.headerImage;
+  const hasAcceptedWebinarMonitoringSubscription =
+    user?.attributes['custom:webinar_accepted'] === 'true';
 
   useEffect(() => {
     if (webinar) {
@@ -144,6 +147,24 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
           )}
         </SummaryInformation>
       </Box>
+      {!hasAcceptedWebinarMonitoringSubscription &&
+        user &&
+        isSubscribed &&
+        ![WebinarState.future, WebinarState.unknown].includes(webinarState) && (
+          <EContainer>
+            <LiveWebinarWarningBanner
+              onEnableConsent={() => {
+                if (user) {
+                  setUserAttributes({
+                    ...user.attributes,
+                    'custom:webinar_accepted': `true`,
+                  });
+                }
+                return null;
+              }}
+            />
+          </EContainer>
+        )}
       {user &&
         isSubscribed &&
         ![WebinarState.future, WebinarState.unknown].includes(webinarState) && (
