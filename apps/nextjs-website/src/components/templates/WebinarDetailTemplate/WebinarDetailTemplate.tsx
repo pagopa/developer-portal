@@ -51,7 +51,7 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
 
   useEffect(() => {
     if (!user) return;
-    const rememberOption = getCookie('remember_choice');
+    const rememberOption = getCookie('consent_monitoring_remember_choice');
     if (
       isSubscribed &&
       !hasAcceptedWebinarMonitoringSubscription &&
@@ -166,11 +166,11 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
           checked={false}
           onCheckboxChange={(checked) => {
             if (checked) {
-              setCookie('remember_choice', 'true', {
+              setCookie('consent_monitoring_remember_choice', 'true', {
                 maxAge: 60 * 60 * 24 * 365,
               });
             } else {
-              deleteCookie('remember_choice');
+              deleteCookie('consent_monitoring_remember_choice');
             }
             return null;
           }}
