@@ -8,7 +8,7 @@ import { Alert, Box, Snackbar, useTheme } from '@mui/material';
 import SubscribeToWebinar from '@/components/molecules/SubscribeToWebinar/SubscribeToWebinar';
 import type { Webinar } from '@/lib/webinars/types';
 import { useUser } from '@/helpers/user.helper';
-import { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { snackbarAutoHideDurationMs } from '@/config';
 import WebinarPlayerSection from '@/components/molecules/WebinarPlayerSection/WebinarPlayerSection';
@@ -20,6 +20,8 @@ import ProductBreadcrumbs from '@/components/atoms/ProductBreadcrumbs/ProductBre
 import RelatedResources from '@/components/molecules/RelatedResources/RelatedResources';
 import QuestionsAndAnswers from '@/components/molecules/QuestionsAndAnswers/QuestionsAndAnswers';
 import { useParams } from 'next/navigation';
+import ConfirmationModal from '@/components/atoms/ConfirmationModal/ConfirmationModal';
+import { setCookie, deleteCookie, getCookie } from 'cookies-next/client';
 import CertificateBanner from '@/components/molecules/CertificateBanner/CertificateBanner';
 
 type WebinarDetailTemplateProps = {
@@ -31,8 +33,11 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
   const { locale } = useParams<{ locale: string }>();
   const { palette } = useTheme();
   const [error, setError] = useState<string | null>(null);
-  const { user } = useUser();
+  const { user, setUserAttributes } = useUser();
   const [isSubscribed, setIsSubscribed] = useState(false);
+  const [showSubscribePopup, setShowSubscribePopup] = useState(false);
+  const hasAcceptedWebinarMonitoringSubscription =
+    user?.attributes['custom:webinar_accepted'] === 'true';
   const {
     webinarState,
     setWebinar,
@@ -45,6 +50,19 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
   const showHeaderImage =
     webinarState === WebinarState.future && webinar.headerImage;
 
+  useEffect(() => {
+    if (!user) return;
+    const rememberOption = getCookie('consent_monitoring_remember_choice');
+    if (
+      isSubscribed &&
+      !hasAcceptedWebinarMonitoringSubscription &&
+      !rememberOption
+    )
+      setShowSubscribePopup(isSubscribed);
+    else if (hasAcceptedWebinarMonitoringSubscription) {
+      setShowSubscribePopup(false);
+    }
+  }, [isSubscribed, hasAcceptedWebinarMonitoringSubscription, user]);
   useEffect(() => {
     if (webinar) {
       setWebinar(webinar);
@@ -107,6 +125,58 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
           backgroundSize: 'cover',
         }}
       >
+        <ConfirmationModal
+          title={t('subscriptionPopup.title')}
+          text={
+            t.rich('subscriptionPopup.text', {
+              strong: (chunks) => <strong>{chunks}</strong>,
+              br: () => <br></br>,
+            }) as string
+          }
+          open={showSubscribePopup}
+          setOpen={() => null}
+          confirmCta={{
+            label: t('subscriptionPopup.confirmCta'),
+            onClick: () => {
+              if (!user) return null;
+              setUserAttributes(
+                {
+                  ...user.attributes,
+                  'custom:webinar_accepted': `true`,
+                },
+                () => {
+                  setShowSubscribePopup(false);
+                  return null;
+                },
+                () => {
+                  setError(t('genericSubscriptionError'));
+                  return null;
+                }
+              );
+              return null;
+            },
+          }}
+          cancelCta={{
+            label: t('subscriptionPopup.cancelCta'),
+            onClick: () => {
+              setShowSubscribePopup(false);
+              return null;
+            },
+          }}
+          checkboxLabel={t('subscriptionPopup.checkboxLabel')}
+          checked={false}
+          onCheckboxChange={(checked) => {
+            if (checked) {
+              setCookie('consent_monitoring_remember_choice', 'true', {
+                maxAge: 60 * 60 * 24 * 365,
+              });
+            } else {
+              deleteCookie('consent_monitoring_remember_choice');
+            }
+            return null;
+          }}
+        />
+
         <EContainer>
           <ProductBreadcrumbs
             textColor={showHeaderImage ? 'white' : palette.text.primary}
