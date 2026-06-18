@@ -50,8 +50,6 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
   } = useWebinar();
   const showHeaderImage =
     webinarState === WebinarState.future && webinar.headerImage;
-  const hasAcceptedWebinarMonitoringSubscription =
-    user?.attributes['custom:webinar_accepted'] === 'true';
 
   useEffect(() => {
     if (!user) return;
