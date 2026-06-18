@@ -14,7 +14,10 @@ import {
 import Link from 'next/link';
 import React, { ReactNode, useState } from 'react';
 import { useUser } from '@/helpers/user.helper';
-import { snackbarAutoHideDurationMs } from '@/config';
+import {
+  isWebinarHeartbeatEnabled,
+  snackbarAutoHideDurationMs,
+} from '@/config';
 import AgreementItem from '@/components/atoms/AgreementItem/AgreementItem';
 import { useParams } from 'next/navigation';
 
@@ -188,17 +191,19 @@ const Agreements = () => {
           unsubscribeLabel={t('profile.agreements.survey.unsubscribe')}
         ></AgreementItem>
         <Box sx={{ marginY: '32px' }} />
-        <AgreementItem
-          title={t('profile.agreements.webinar.title')}
-          description={t('profile.agreements.webinar.description')}
-          subscribed={hasAcceptedWebinarSubscription}
-          loading={loading}
-          disabled={isSubscriptionButtonDisabled}
-          onSubscribe={() => handleSubscribe('webinar')}
-          onUnsubscribe={() => handleUnsubscribe('webinar')}
-          subscribeLabel={t('profile.agreements.webinar.subscribe')}
-          unsubscribeLabel={t('profile.agreements.webinar.unsubscribe')}
-        ></AgreementItem>
+        {isWebinarHeartbeatEnabled && (
+          <AgreementItem
+            title={t('profile.agreements.webinar.title')}
+            description={t('profile.agreements.webinar.description')}
+            subscribed={hasAcceptedWebinarSubscription}
+            loading={loading}
+            disabled={isSubscriptionButtonDisabled}
+            onSubscribe={() => handleSubscribe('webinar')}
+            onUnsubscribe={() => handleUnsubscribe('webinar')}
+            subscribeLabel={t('profile.agreements.webinar.subscribe')}
+            unsubscribeLabel={t('profile.agreements.webinar.unsubscribe')}
+          ></AgreementItem>
+        )}
         <Divider sx={{ marginY: '32px' }} />
         <Typography
           variant='h6'
