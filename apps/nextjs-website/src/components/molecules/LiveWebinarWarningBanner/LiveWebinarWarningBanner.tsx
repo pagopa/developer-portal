@@ -91,7 +91,6 @@ const LiveWebinarWarningBanner = ({
         color={palette.text.primary}
         fontWeight={500}
         fontSize={'14px'}
-        fontStyle={'Regular'}
         mb={2.5}
         ml={'16px'}
       >
