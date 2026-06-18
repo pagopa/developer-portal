@@ -22,6 +22,7 @@ import QuestionsAndAnswers from '@/components/molecules/QuestionsAndAnswers/Ques
 import { useParams } from 'next/navigation';
 import ConfirmationModal from '@/components/atoms/ConfirmationModal/ConfirmationModal';
 import { setCookie, deleteCookie, getCookie } from 'cookies-next/client';
+import CertificateBanner from '@/components/molecules/CertificateBanner/CertificateBanner';
 
 type WebinarDetailTemplateProps = {
   webinar: Webinar;
@@ -227,6 +228,12 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
             setIsVideoPlaying={setIsVideoPlaying}
           ></WebinarPlayerSection>
         )}
+
+      <EContainer containerSx={{ marginTop: '64px' }}>
+        <CertificateBanner
+          imagePath={'/images/certificato-di-partecipazione-webinar.png'}
+        />
+      </EContainer>
       {webinar.subscribeCtaLabel && (
         <SubscribeCta label={webinar.subscribeCtaLabel}>
           {subscribeToWebinarButton}
