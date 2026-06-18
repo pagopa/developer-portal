@@ -2,31 +2,32 @@
 
 # ==============================================
 # Expert Note: Set up your AWS Region and fixed repository names here.
-# Only the tags (SOURCE_TAG and TARGET_TAG) should be provided via command line.
+# ACCOUNT_ID, SOURCE_TAG and TARGET_TAG are provided via command line.
 # ==============================================
 AWS_REGION="eu-south-1"
-ACCOUNT_ID="039804388894"
-ECR_REPO_URL="${ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com"
 
 # --- Base Components (Fixed) ---
 GHCR_BASE_IMAGE="ghcr.io/pagopa/dos68k/chatbot-api" 
 ECR_REPO_PREFIX="dos68k-chatbotapi" 
 
 # --- Input Validation Check ---
-if [ "$#" -ne 2 ]; then
+if [ "$#" -ne 3 ]; then
     echo "======================================================"
     echo "ERROR: Invalid number of arguments."
-    echo "Usage: $0 <SOURCE_TAG> <TARGET_TAG>"
+    echo "Usage: $0 <ACCOUNT_ID> <SOURCE_TAG> <TARGET_TAG>"
     echo ""
-    echo "Example: ./push_image_dynamic.sh pagopa-v2 release-candidate"
-    echo "       (Source=pagopa-v2, Target=release-candidate)"
+    echo "Example: ./push-image.sh 039804388894 pagopa-v2 release-candidate"
+    echo "       (Account=039804388894, Source=pagopa-v2, Target=release-candidate)"
     echo "======================================================"
     exit 1
 fi
 
 # Capture parameters into variables
-SOURCE_TAG=$1 # Example: pagopa-v2 (The tag on the source image)
-TARGET_TAG=$2 # Example: release-candidate (The desired final version in ECR)
+ACCOUNT_ID=$1 # Example: 039804388894 (AWS account ID that owns the ECR registry)
+SOURCE_TAG=$2 # Example: pagopa-v2 (The tag on the source image)
+TARGET_TAG=$3 # Example: release-candidate (The desired final version in ECR)
+
+ECR_REPO_URL="${ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com"
 
 # Construct the full, dynamic image names
 SOURCE_FULL_IMAGE="${GHCR_BASE_IMAGE}:${SOURCE_TAG}"

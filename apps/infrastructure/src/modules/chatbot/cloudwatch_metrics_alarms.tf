@@ -7,7 +7,7 @@ resource "aws_cloudwatch_metric_alarm" "api_gateway_5xx_errors" {
   evaluation_periods  = "5"
   threshold_metric_id = "e1"
   alarm_description   = "This metric monitors API Gateway 5XX errors using anomaly detection"
-  alarm_actions       = [aws_sns_topic.alerts.arn]
+  alarm_actions       = [var.alerting_topic_arn]
 
   metric_query {
     id          = "m1"
@@ -37,7 +37,7 @@ resource "aws_cloudwatch_metric_alarm" "api_gateway_increased_requests" {
   evaluation_periods  = "5"
   threshold_metric_id = "e1"
   alarm_description   = "This metric monitors API Gateway for increased request volume using anomaly detection"
-  alarm_actions       = [aws_sns_topic.alerts.arn]
+  alarm_actions       = [var.alerting_topic_arn]
 
   metric_query {
     id          = "m1"
@@ -67,7 +67,7 @@ resource "aws_cloudwatch_metric_alarm" "api_gateway_4xx_errors" {
   evaluation_periods  = "5"
   threshold_metric_id = "e1"
   alarm_description   = "This metric monitors API Gateway 4XX errors using anomaly detection"
-  alarm_actions       = [aws_sns_topic.alerts.arn]
+  alarm_actions       = [var.alerting_topic_arn]
 
   metric_query {
     id          = "m1"
@@ -98,7 +98,7 @@ resource "aws_cloudwatch_metric_alarm" "lambda_errors" {
   evaluation_periods  = "5"
   threshold_metric_id = "e1"
   alarm_description   = "This metric monitors Lambda function errors using anomaly detection"
-  alarm_actions       = [aws_sns_topic.alerts.arn]
+  alarm_actions       = [var.alerting_topic_arn]
 
   metric_query {
     id          = "m1"
@@ -128,7 +128,7 @@ resource "aws_cloudwatch_metric_alarm" "lambda_increased_invocations" {
   evaluation_periods  = "5"
   threshold_metric_id = "e1"
   alarm_description   = "This metric monitors Lambda function for increased invocations using anomaly detection"
-  alarm_actions       = [aws_sns_topic.alerts.arn]
+  alarm_actions       = [var.alerting_topic_arn]
 
   metric_query {
     id          = "m1"
@@ -158,7 +158,7 @@ resource "aws_cloudwatch_metric_alarm" "lambda_duration" {
   evaluation_periods  = "5"
   threshold_metric_id = "e1"
   alarm_description   = "This metric monitors Lambda function duration using anomaly detection"
-  alarm_actions       = [aws_sns_topic.alerts.arn]
+  alarm_actions       = [var.alerting_topic_arn]
 
   metric_query {
     id          = "m1"
@@ -189,7 +189,7 @@ resource "aws_cloudwatch_metric_alarm" "dynamodb_read_throttle_queries" {
   evaluation_periods  = "5"
   threshold_metric_id = "e1"
   alarm_description   = "This metric monitors DynamoDB read throttle events for queries table using anomaly detection"
-  alarm_actions       = [aws_sns_topic.alerts.arn]
+  alarm_actions       = [var.alerting_topic_arn]
 
   metric_query {
     id          = "m1"
@@ -219,7 +219,7 @@ resource "aws_cloudwatch_metric_alarm" "dynamodb_write_throttle_queries" {
   evaluation_periods  = "5"
   threshold_metric_id = "e1"
   alarm_description   = "This metric monitors DynamoDB write throttle events for queries table using anomaly detection"
-  alarm_actions       = [aws_sns_topic.alerts.arn]
+  alarm_actions       = [var.alerting_topic_arn]
 
   metric_query {
     id          = "m1"
@@ -253,7 +253,7 @@ resource "aws_cloudwatch_metric_alarm" "dynamodb_read_throttle_sessions" {
   statistic           = "Sum"
   threshold           = "10"
   alarm_description   = "This metric monitors DynamoDB read throttle events for sessions table"
-  alarm_actions       = [aws_sns_topic.alerts.arn]
+  alarm_actions       = [var.alerting_topic_arn]
 
   dimensions = {
     TableName = module.dynamodb_chatbot_sessions.dynamodb_table_id
@@ -270,42 +270,11 @@ resource "aws_cloudwatch_metric_alarm" "dynamodb_write_throttle_sessions" {
   statistic           = "Sum"
   threshold           = "10"
   alarm_description   = "This metric monitors DynamoDB write throttle events for sessions table"
-  alarm_actions       = [aws_sns_topic.alerts.arn]
+  alarm_actions       = [var.alerting_topic_arn]
 
   dimensions = {
     TableName = module.dynamodb_chatbot_sessions.dynamodb_table_id
   }
-}
-
-# SNS Topic for Alarms
-resource "aws_sns_topic" "alerts" {
-  name = "${local.prefix}-cloudwatch-alarms"
-}
-
-resource "aws_sns_topic_policy" "alerts" {
-  arn = aws_sns_topic.alerts.arn
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Sid    = "AllowCloudWatchAlarms"
-        Effect = "Allow"
-        Principal = {
-          Service = "cloudwatch.amazonaws.com"
-        }
-        Action   = "sns:Publish"
-        Resource = aws_sns_topic.alerts.arn
-        Condition = {
-          ArnLike = {
-            "aws:SourceArn" = "arn:aws:cloudwatch:${var.aws_region}:${data.aws_caller_identity.current.account_id}:alarm:*"
-          }
-          StringEquals = {
-            "aws:SourceAccount" = data.aws_caller_identity.current.account_id
-          }
-        }
-      }
-    ]
-  })
 }
 
 # lambda evaluate allarm
@@ -315,7 +284,7 @@ resource "aws_cloudwatch_metric_alarm" "lambda_evaluate_errors" {
   evaluation_periods  = "5"
   threshold_metric_id = "e1"
   alarm_description   = "This metric monitors Lambda function errors using anomaly detection"
-  alarm_actions       = [aws_sns_topic.alerts.arn]
+  alarm_actions       = [var.alerting_topic_arn]
 
   metric_query {
     id          = "m1"

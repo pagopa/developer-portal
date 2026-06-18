@@ -189,6 +189,12 @@ variable "ecs_chatbotapi_enable_scheduled_scaling" {
   default     = false
 }
 
+variable "create_dos68k_chatbotapi" {
+  type        = bool
+  description = "Defines if dos68k Chatbot API should be created"
+  default     = false
+}
+
 ################################################################################
 # Active Campaign integration
 ################################################################################

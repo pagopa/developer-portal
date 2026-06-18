@@ -18,7 +18,7 @@ module "cognito_user_pool_sign_up_throttles_alarm" {
   evaluation_periods  = 5
   datapoints_to_alarm = 5
   treat_missing_data  = "notBreaching" # No data in the period is considered as good.
-  alarm_actions       = [aws_sns_topic.cognito_alarms.arn]
+  alarm_actions       = [var.alerting_topic_arn]
 
   dimensions = {
     UserPool       = aws_cognito_user_pool.devportal.id
@@ -44,7 +44,7 @@ module "cognito_user_pool_sign_in_throttles_alarm" {
   evaluation_periods  = 5
   datapoints_to_alarm = 5
   treat_missing_data  = "notBreaching" # No data in the period is considered as good.
-  alarm_actions       = [aws_sns_topic.cognito_alarms.arn]
+  alarm_actions       = [var.alerting_topic_arn]
 
   dimensions = {
     UserPool       = aws_cognito_user_pool.devportal.id
@@ -70,7 +70,7 @@ module "cognito_user_pool_token_refresh_throttles_alarm" {
   evaluation_periods  = 5
   datapoints_to_alarm = 5
   treat_missing_data  = "notBreaching" # No data in the period is considered as good.
-  alarm_actions       = [aws_sns_topic.cognito_alarms.arn]
+  alarm_actions       = [var.alerting_topic_arn]
 
   dimensions = {
     UserPool       = aws_cognito_user_pool.devportal.id
@@ -97,7 +97,7 @@ module "cognito_custom_message_lambda_errors_alarm" {
   evaluation_periods  = 3
   datapoints_to_alarm = 3
   treat_missing_data  = "notBreaching" # No data in the period is considered as good.
-  alarm_actions       = [aws_sns_topic.cognito_alarms.arn]
+  alarm_actions       = [var.alerting_topic_arn]
 
   dimensions = {
     FunctionName = module.cognito_custom_message_function.lambda_function_name
@@ -121,7 +121,7 @@ module "cognito_custom_message_lambda_throttles_alarm" {
   evaluation_periods  = 5
   datapoints_to_alarm = 5
   treat_missing_data  = "notBreaching" # No data in the period is considered as good.
-  alarm_actions       = [aws_sns_topic.cognito_alarms.arn]
+  alarm_actions       = [var.alerting_topic_arn]
 
   dimensions = {
     FunctionName = module.cognito_custom_message_function.lambda_function_name
@@ -145,7 +145,7 @@ module "cognito_custom_message_lambda_duration_alarm" {
   evaluation_periods  = 15
   datapoints_to_alarm = 15
   treat_missing_data  = "notBreaching" # No data in the period is considered as good.
-  alarm_actions       = [aws_sns_topic.cognito_alarms.arn]
+  alarm_actions       = [var.alerting_topic_arn]
 
   dimensions = {
     FunctionName = module.cognito_custom_message_function.lambda_function_name
@@ -169,7 +169,7 @@ module "cognito_custom_message_lambda_concurrent_executions_alarm" {
   evaluation_periods  = 10
   datapoints_to_alarm = 10
   treat_missing_data  = "notBreaching" # No data in the period is considered as good.
-  alarm_actions       = [aws_sns_topic.cognito_alarms.arn]
+  alarm_actions       = [var.alerting_topic_arn]
 
   dimensions = {
     FunctionName = module.cognito_custom_message_function.lambda_function_name
@@ -193,7 +193,7 @@ module "cognito_post_confirmation_lambda_errors_alarm" {
   evaluation_periods  = 3
   datapoints_to_alarm = 3
   treat_missing_data  = "notBreaching" # No data in the period is considered as good.
-  alarm_actions       = [aws_sns_topic.cognito_alarms.arn]
+  alarm_actions       = [var.alerting_topic_arn]
 
   dimensions = {
     FunctionName = module.cognito_post_confirmation_function.lambda_function_name
@@ -217,7 +217,7 @@ module "cognito_post_confirmation_lambda_throttles_alarm" {
   evaluation_periods  = 5
   datapoints_to_alarm = 5
   treat_missing_data  = "notBreaching" # No data in the period is considered as good.
-  alarm_actions       = [aws_sns_topic.cognito_alarms.arn]
+  alarm_actions       = [var.alerting_topic_arn]
 
   dimensions = {
     FunctionName = module.cognito_post_confirmation_function.lambda_function_name
@@ -241,7 +241,7 @@ module "cognito_post_confirmation_lambda_duration_alarm" {
   evaluation_periods  = 15
   datapoints_to_alarm = 15
   treat_missing_data  = "notBreaching" # No data in the period is considered as good.
-  alarm_actions       = [aws_sns_topic.cognito_alarms.arn]
+  alarm_actions       = [var.alerting_topic_arn]
 
   dimensions = {
     FunctionName = module.cognito_post_confirmation_function.lambda_function_name
@@ -265,7 +265,7 @@ module "cognito_post_confirmation_lambda_concurrent_executions_alarm" {
   evaluation_periods  = 10
   datapoints_to_alarm = 10
   treat_missing_data  = "notBreaching" # No data in the period is considered as good.
-  alarm_actions       = [aws_sns_topic.cognito_alarms.arn]
+  alarm_actions       = [var.alerting_topic_arn]
 
   dimensions = {
     FunctionName = module.cognito_post_confirmation_function.lambda_function_name
@@ -289,7 +289,7 @@ module "cognito_define_auth_challenge_lambda_errors_alarm" {
   evaluation_periods  = 3
   datapoints_to_alarm = 3
   treat_missing_data  = "notBreaching" # No data in the period is considered as good.
-  alarm_actions       = [aws_sns_topic.cognito_alarms.arn]
+  alarm_actions       = [var.alerting_topic_arn]
 
   dimensions = {
     FunctionName = module.cognito_define_auth_challenge_function.lambda_function_name
@@ -313,7 +313,7 @@ module "cognito_define_auth_challenge_lambda_throttles_alarm" {
   evaluation_periods  = 5
   datapoints_to_alarm = 5
   treat_missing_data  = "notBreaching" # No data in the period is considered as good.
-  alarm_actions       = [aws_sns_topic.cognito_alarms.arn]
+  alarm_actions       = [var.alerting_topic_arn]
 
   dimensions = {
     FunctionName = module.cognito_define_auth_challenge_function.lambda_function_name
@@ -337,7 +337,7 @@ module "cognito_define_auth_challenge_lambda_duration_alarm" {
   evaluation_periods  = 15
   datapoints_to_alarm = 15
   treat_missing_data  = "notBreaching" # No data in the period is considered as good.
-  alarm_actions       = [aws_sns_topic.cognito_alarms.arn]
+  alarm_actions       = [var.alerting_topic_arn]
 
   dimensions = {
     FunctionName = module.cognito_define_auth_challenge_function.lambda_function_name
@@ -361,7 +361,7 @@ module "cognito_define_auth_challenge_lambda_concurrent_executions_alarm" {
   evaluation_periods  = 10
   datapoints_to_alarm = 10
   treat_missing_data  = "notBreaching" # No data in the period is considered as good.
-  alarm_actions       = [aws_sns_topic.cognito_alarms.arn]
+  alarm_actions       = [var.alerting_topic_arn]
 
   dimensions = {
     FunctionName = module.cognito_define_auth_challenge_function.lambda_function_name
@@ -385,7 +385,7 @@ module "cognito_create_auth_challenge_lambda_errors_alarm" {
   evaluation_periods  = 3
   datapoints_to_alarm = 3
   treat_missing_data  = "notBreaching" # No data in the period is considered as good.
-  alarm_actions       = [aws_sns_topic.cognito_alarms.arn]
+  alarm_actions       = [var.alerting_topic_arn]
 
   dimensions = {
     FunctionName = module.cognito_create_auth_challenge_function.lambda_function_name
@@ -408,7 +408,7 @@ module "cognito_create_auth_challenge_lambda_throttles_alarm" {
   evaluation_periods  = 5
   datapoints_to_alarm = 5
   treat_missing_data  = "notBreaching" # No data in the period is considered as good.
-  alarm_actions       = [aws_sns_topic.cognito_alarms.arn]
+  alarm_actions       = [var.alerting_topic_arn]
 
   dimensions = {
     FunctionName = module.cognito_create_auth_challenge_function.lambda_function_name
@@ -432,7 +432,7 @@ module "cognito_create_auth_challenge_lambda_duration_alarm" {
   evaluation_periods  = 15
   datapoints_to_alarm = 15
   treat_missing_data  = "notBreaching" # No data in the period is considered as good.
-  alarm_actions       = [aws_sns_topic.cognito_alarms.arn]
+  alarm_actions       = [var.alerting_topic_arn]
 
   dimensions = {
     FunctionName = module.cognito_create_auth_challenge_function.lambda_function_name
@@ -456,7 +456,7 @@ module "cognito_create_auth_challenge_lambda_concurrent_executions_alarm" {
   evaluation_periods  = 10
   datapoints_to_alarm = 10
   treat_missing_data  = "notBreaching" # No data in the period is considered as good.
-  alarm_actions       = [aws_sns_topic.cognito_alarms.arn]
+  alarm_actions       = [var.alerting_topic_arn]
 
   dimensions = {
     FunctionName = module.cognito_create_auth_challenge_function.lambda_function_name
@@ -480,7 +480,7 @@ module "cognito_verify_auth_challenge_lambda_errors_alarm" {
   evaluation_periods  = 3
   datapoints_to_alarm = 3
   treat_missing_data  = "notBreaching" # No data in the period is considered as good.
-  alarm_actions       = [aws_sns_topic.cognito_alarms.arn]
+  alarm_actions       = [var.alerting_topic_arn]
 
   dimensions = {
     FunctionName = module.cognito_verify_auth_challenge_function.lambda_function_name
@@ -504,7 +504,7 @@ module "cognito_verify_auth_challenge_lambda_throttles_alarm" {
   evaluation_periods  = 5
   datapoints_to_alarm = 5
   treat_missing_data  = "notBreaching" # No data in the period is considered as good.
-  alarm_actions       = [aws_sns_topic.cognito_alarms.arn]
+  alarm_actions       = [var.alerting_topic_arn]
 
   dimensions = {
     FunctionName = module.cognito_verify_auth_challenge_function.lambda_function_name
@@ -528,7 +528,7 @@ module "cognito_verify_auth_challenge_lambda_duration_alarm" {
   evaluation_periods  = 15
   datapoints_to_alarm = 15
   treat_missing_data  = "notBreaching" # No data in the period is considered as good.
-  alarm_actions       = [aws_sns_topic.cognito_alarms.arn]
+  alarm_actions       = [var.alerting_topic_arn]
 
   dimensions = {
     FunctionName = module.cognito_verify_auth_challenge_function.lambda_function_name
@@ -552,7 +552,7 @@ module "cognito_verify_auth_challenge_lambda_concurrent_executions_alarm" {
   evaluation_periods  = 10
   datapoints_to_alarm = 10
   treat_missing_data  = "notBreaching" # No data in the period is considered as good.
-  alarm_actions       = [aws_sns_topic.cognito_alarms.arn]
+  alarm_actions       = [var.alerting_topic_arn]
 
   dimensions = {
     FunctionName = module.cognito_verify_auth_challenge_function.lambda_function_name
@@ -577,7 +577,7 @@ module "cognito_pre_sign_up_lambda_concurrent_executions_alarm" {
   evaluation_periods  = 10
   datapoints_to_alarm = 10
   treat_missing_data  = "notBreaching" # No data in the period is considered as good.
-  alarm_actions       = [aws_sns_topic.cognito_alarms.arn]
+  alarm_actions       = [var.alerting_topic_arn]
 
   dimensions = {
     FunctionName = module.cognito_pre_sign_up_function[0].lambda_function_name

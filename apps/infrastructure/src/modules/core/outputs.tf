@@ -17,3 +17,11 @@ output "dns_chatbot_hosted_zone" {
     id   = aws_route53_zone.chatbot[0].zone_id
   } : {}
 }
+
+output "alerting_topic_arn" {
+  value = aws_sns_topic.cloudwatch_alarms.arn
+}
+
+output "alerting_email" {
+  value = aws_ssm_parameter.alerting_email.value
+}
