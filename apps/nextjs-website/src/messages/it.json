@@ -164,7 +164,7 @@
       "refresh": "Collegati a questa pagina all'orario di inizio dell'evento."
     },
     "subscriptionPopup": {
-      "title": "Ti sei registrato per il webinar.\nFornisci il consenso al monitoraggio.",
+      "title": "Ti sei registrato per il webinar. Fornisci il consenso al monitoraggio.",
       "text": "<strong>Per ottenere il certificato di partecipazione</strong>, devi dare il consenso al monitoraggio della visione <strong>entro 5 minuti dall'inizio del webinar</strong>.<br></br> Il controllo serve solo a verificare che tu stia seguendo il contenuto.",
       "confirmCta": "Abilita",
       "cancelCta": "Non ora",

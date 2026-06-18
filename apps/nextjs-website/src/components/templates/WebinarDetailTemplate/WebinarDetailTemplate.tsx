@@ -21,8 +21,7 @@ import RelatedResources from '@/components/molecules/RelatedResources/RelatedRes
 import QuestionsAndAnswers from '@/components/molecules/QuestionsAndAnswers/QuestionsAndAnswers';
 import { useParams } from 'next/navigation';
 import ConfirmationModal from '@/components/atoms/ConfirmationModal/ConfirmationModal';
-import { setCookie, deleteCookie } from 'cookies-next/client';
-import { getCookie } from 'cookies-next';
+import { setCookie, deleteCookie, getCookie } from 'cookies-next/client';
 
 type WebinarDetailTemplateProps = {
   webinar: Webinar;
@@ -138,13 +137,21 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
           confirmCta={{
             label: t('subscriptionPopup.confirmCta'),
             onClick: () => {
-              if (user) {
-                setUserAttributes({
+              if (!user) return null;
+              setUserAttributes(
+                {
                   ...user.attributes,
                   'custom:webinar_accepted': `true`,
-                });
-              }
-              setShowSubscribePopup(false);
+                },
+                () => {
+                  setShowSubscribePopup(false);
+                  return null;
+                },
+                () => {
+                  setError(t('genericSubscriptionError'));
+                  return null;
+                }
+              );
               return null;
             },
           }}
@@ -161,7 +168,7 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
             if (checked) {
               setCookie('remember_choice', 'true', {
                 maxAge: 60 * 60 * 24 * 365,
-              }); // 1 anno
+              });
             } else {
               deleteCookie('remember_choice');
             }

@@ -164,7 +164,7 @@
       "refresh": "Connect to this page at the event start time."
     },
     "subscriptionPopup": {
-      "title": "You have registered for the webinar.\nPlease provide your consent to monitoring.",
+      "title": "You have registered for the webinar. Please provide your consent to monitoring.",
       "text": "<strong>To obtain the participation certificate</strong>, you must consent to viewing monitoring <strong>within 5 minutes of the webinar starting</strong>.<br></br> The check is only used to verify that you are following the content.",
       "confirmCta": "Enable",
       "cancelCta": "Not now",
