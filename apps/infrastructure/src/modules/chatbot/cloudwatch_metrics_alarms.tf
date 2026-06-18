@@ -94,31 +94,20 @@ resource "aws_cloudwatch_metric_alarm" "lambda_errors" {
 
 resource "aws_cloudwatch_metric_alarm" "lambda_increased_invocations" {
   alarm_name          = "${local.prefix}-lambda-increased-invocations"
-  comparison_operator = "GreaterThanUpperThreshold"
+  comparison_operator = "GreaterThanThreshold"
   evaluation_periods  = "5"
-  threshold_metric_id = "e1"
-  alarm_description   = "This metric monitors Lambda function for increased invocations using anomaly detection"
+  datapoints_to_alarm = "3"
+  treat_missing_data  = "notBreaching"
+  metric_name         = "Invocations"
+  namespace           = "AWS/Lambda"
+  period              = "300"
+  statistic           = "Sum"
+  threshold           = "150"
+  alarm_description   = "This metric monitors Lambda function for increased invocations with static threshold"
   alarm_actions       = [var.alerting_topic_arn]
 
-  metric_query {
-    id          = "m1"
-    return_data = true
-    metric {
-      metric_name = "Invocations"
-      namespace   = "AWS/Lambda"
-      period      = "60"
-      stat        = "Sum"
-      dimensions = {
-        FunctionName = aws_lambda_function.chatbot_lambda.function_name
-      }
-    }
-  }
-
-  metric_query {
-    id          = "e1"
-    expression  = "ANOMALY_DETECTION_BAND(m1, 5)"
-    label       = "Lambda Invocations (expected)"
-    return_data = true
+  dimensions = {
+    FunctionName = aws_lambda_function.chatbot_lambda.function_name
   }
 }
 
