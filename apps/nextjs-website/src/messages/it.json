@@ -129,6 +129,17 @@
     }
   },
   "webinar": {
+    "detail": {
+      "certificationBanner": {
+        "title": "Attestato di partecipazione al Webinar",
+        "description": "Partecipa al webinar e ottieni il tuo attestato di partecipazione. Dopo l'evento, troverai l'attestato nel tuo profilo.",
+        "cta": "Vai al profilo"
+      }
+    },
+    "certificationBanner": {
+      "title": "Attestati di partecipazione disponibili!",
+      "description": "Partecipa ai webinar di PagoPA DevPortal e ottieni il tuo attestato di partecipazione. Dopo l’evento, troverai l’attestato nel tuo profilo."
+    },
     "liveWebinar": "Webinar in corso",
     "chapters": "Capitoli",
     "subscriptionError": "Limite di iscrizioni raggiunto",
@@ -162,6 +173,13 @@
       "email": "Il giorno prima dell'evento riceverai una email con i dettagli.",
       "goTo": "Collegati alla pagina del webinar all'orario di inizio dell'evento.",
       "refresh": "Collegati a questa pagina all'orario di inizio dell'evento."
+    },
+    "subscriptionPopup": {
+      "title": "Ti sei registrato per il webinar. Fornisci il consenso al monitoraggio.",
+      "text": "<strong>Per ottenere il certificato di partecipazione</strong>, devi dare il consenso al monitoraggio della visione <strong>entro 5 minuti dall'inizio del webinar</strong>.<br></br> Il controllo serve solo a verificare che tu stia seguendo il contenuto.",
+      "confirmCta": "Abilita",
+      "cancelCta": "Non ora",
+      "checkboxLabel": "Ricordati la scelta"
     },
     "webinarsSection": {
       "description": "",

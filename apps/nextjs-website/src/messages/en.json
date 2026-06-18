@@ -129,6 +129,17 @@
     }
   },
   "webinar": {
+    "detail": {
+      "certificationBanner": {
+        "title": "Webinar Participation Certificate",
+        "description": "Attend the webinar and get your participation certificate. After the event, you will find the certificate in your profile.",
+        "cta": "Go to profile"
+      }
+    },
+    "certificationBanner": {
+      "title": "Participation certificates available!",
+      "description": "Attend PagoPA DevPortal webinars and get your participation certificate. After the event, you will find the certificate in your profile."
+    },
     "liveWebinar": "Live Webinar",
     "chapters": "Chapters",
     "subscriptionError": "Registration limit reached",
@@ -162,6 +173,13 @@
       "email": "The day before the event you will receive an email with details.",
       "goTo": "Connect to the webinar page at the event start time.",
       "refresh": "Connect to this page at the event start time."
+    },
+    "subscriptionPopup": {
+      "title": "You have registered for the webinar. Please provide your consent to monitoring.",
+      "text": "<strong>To obtain the participation certificate</strong>, you must consent to viewing monitoring <strong>within 5 minutes of the webinar starting</strong>.<br></br> The check is only used to verify that you are following the content.",
+      "confirmCta": "Enable",
+      "cancelCta": "Not now",
+      "checkboxLabel": "Remember my choice"
     },
     "webinarsSection": {
       "description": "",
