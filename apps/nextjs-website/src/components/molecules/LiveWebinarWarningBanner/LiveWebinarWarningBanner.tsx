@@ -79,7 +79,6 @@ const LiveWebinarWarningBanner = ({
           sx={{ color: palette.primary.main }}
         />
         <Typography
-          fontStyle={'SemiBold'}
           fontSize={'16px'}
           fontWeight={600}
           color={palette.text.primary}
