@@ -105,10 +105,10 @@ const LiveWebinarWarningBanner = ({
       {!consented ? (
         <Link
           component='button'
+          type='button'
           underline='always'
           onClick={handleEnable}
           fontWeight={600}
-          fontStyle={'SemiBold'}
           fontSize={'14px'}
           sx={{
             color: palette.primary.main,

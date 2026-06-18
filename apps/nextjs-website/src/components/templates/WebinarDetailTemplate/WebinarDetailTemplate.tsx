@@ -154,12 +154,18 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
           <EContainer>
             <LiveWebinarWarningBanner
               onEnableConsent={() => {
-                if (user) {
-                  setUserAttributes({
+                if (!user) return null;
+                setUserAttributes(
+                  {
                     ...user.attributes,
-                    'custom:webinar_accepted': `true`,
-                  });
-                }
+                    'custom:webinar_accepted': 'true',
+                  },
+                  () => null,
+                  () => {
+                    setError(t('genericSubscriptionError'));
+                    return null;
+                  }
+                );
                 return null;
               }}
             />
