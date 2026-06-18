@@ -150,7 +150,7 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
       {!hasAcceptedWebinarMonitoringSubscription &&
         user &&
         isSubscribed &&
-        ![WebinarState.future, WebinarState.unknown].includes(webinarState) && (
+        ![WebinarState.past, WebinarState.unknown].includes(webinarState) && (
           <EContainer>
             <LiveWebinarWarningBanner
               onEnableConsent={() => {
