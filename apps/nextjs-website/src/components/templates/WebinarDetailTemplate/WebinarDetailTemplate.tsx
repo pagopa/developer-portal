@@ -20,6 +20,7 @@ import ProductBreadcrumbs from '@/components/atoms/ProductBreadcrumbs/ProductBre
 import RelatedResources from '@/components/molecules/RelatedResources/RelatedResources';
 import QuestionsAndAnswers from '@/components/molecules/QuestionsAndAnswers/QuestionsAndAnswers';
 import { useParams } from 'next/navigation';
+import CertificateBanner from '@/components/molecules/CertificateBanner/CertificateBanner';
 
 type WebinarDetailTemplateProps = {
   webinar: Webinar;
@@ -157,6 +158,12 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
             setIsVideoPlaying={setIsVideoPlaying}
           ></WebinarPlayerSection>
         )}
+
+      <EContainer containerSx={{ marginTop: '64px' }}>
+        <CertificateBanner
+          imagePath={'/images/certificato-di-partecipazione-webinar.png'}
+        />
+      </EContainer>
       {webinar.subscribeCtaLabel && (
         <SubscribeCta label={webinar.subscribeCtaLabel}>
           {subscribeToWebinarButton}
