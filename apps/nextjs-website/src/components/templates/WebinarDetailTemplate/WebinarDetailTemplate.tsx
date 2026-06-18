@@ -20,6 +20,7 @@ import ProductBreadcrumbs from '@/components/atoms/ProductBreadcrumbs/ProductBre
 import RelatedResources from '@/components/molecules/RelatedResources/RelatedResources';
 import QuestionsAndAnswers from '@/components/molecules/QuestionsAndAnswers/QuestionsAndAnswers';
 import { useParams } from 'next/navigation';
+import LiveWebinarWarningBanner from '@/components/molecules/LiveWebinarWarningBanner/LiveWebinarWarningBanner';
 import ConfirmationModal from '@/components/atoms/ConfirmationModal/ConfirmationModal';
 import { setCookie, deleteCookie, getCookie } from 'cookies-next/client';
 import CertificateBanner from '@/components/molecules/CertificateBanner/CertificateBanner';
@@ -215,6 +216,30 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
           )}
         </SummaryInformation>
       </Box>
+      {!hasAcceptedWebinarMonitoringSubscription &&
+        user &&
+        isSubscribed &&
+        ![WebinarState.past, WebinarState.unknown].includes(webinarState) && (
+          <EContainer>
+            <LiveWebinarWarningBanner
+              onEnableConsent={() => {
+                if (!user) return null;
+                setUserAttributes(
+                  {
+                    ...user.attributes,
+                    'custom:webinar_accepted': 'true',
+                  },
+                  () => null,
+                  () => {
+                    setError(t('genericSubscriptionError'));
+                    return null;
+                  }
+                );
+                return null;
+              }}
+            />
+          </EContainer>
+        )}
       {user &&
         isSubscribed &&
         ![WebinarState.future, WebinarState.unknown].includes(webinarState) && (

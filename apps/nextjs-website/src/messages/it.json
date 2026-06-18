@@ -208,6 +208,12 @@
       "title": "Esplora tutti i webinar",
       "description": "Approfondisci argomenti legati all'integrazione con i nostri prodotti attraverso la guida e i consigli esperti dei professionisti PagoPA.",
       "cta": "Vedi tutti"
+    },
+    "consent_banner": {
+      "title": "Consenso richiesto per ottenere l'attestato",
+      "body": "Per ricevere l'attestato di partecipazione al termine del webinar, è necessario fornire il consenso al monitoraggio della visione <strong>entro i primi 5 minuti dall'inizio</strong>.<br></br>Il monitoraggio serve esclusivamente a verificare che il webinar venga effettivamente seguito.",
+      "cta_enable": "Abilita il monitoraggio",
+      "cta_given": "Hai dato il consenso"
     }
   },
   "webinars": {
