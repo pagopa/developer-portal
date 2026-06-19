@@ -165,27 +165,27 @@ runs:
       run: |
         echo "::group::Validate documentation directories"
         # Guard: fail before any S3 change if a doc directory matching a dirName
-        # (from the filter list or from the bucket dirNames.json) is missing at
-        # least one of README.md or SUMMARY.md.
+        # is missing at least one of README.md or SUMMARY.md.
+        # Candidate dirNames come from the filter list when provided, otherwise
+        # from the bucket dirNames.json.
 
-        # Fetch the published dirNames list from the bucket.
-        if [[ -n "$LOCALE" ]]; then
-          S3_DIRNAMES="s3://devportal-${ENV_SHORT}-website-static-content/${LOCALE}/${S3_DIRNAMES_JSON_PATH}"
-        else
-          S3_DIRNAMES="s3://devportal-${ENV_SHORT}-website-static-content/${S3_DIRNAMES_JSON_PATH}"
-        fi
-        aws s3 cp "$S3_DIRNAMES" bucket-dirNames.json || echo '{"dirNames": []}' > bucket-dirNames.json
-
-        # Collect candidate directories from the bucket dirNames.json...
-        CANDIDATES=$(jq -r '.dirNames[]' bucket-dirNames.json 2>/dev/null | sort -u)
-
-        # ...and from the filter list, when provided.
         if [[ -n "$DIR_NAMES_FILTER" ]]; then
+          # Use the filter list as the candidate directories.
+          CANDIDATES=""
           IFS=',' read -ra FILTER_DIRS <<< "$DIR_NAMES_FILTER"
           for d in "${FILTER_DIRS[@]}"; do
             d=$(echo "$d" | xargs)
             [[ -n "$d" ]] && CANDIDATES=$(printf '%s\n%s\n' "$CANDIDATES" "$d")
           done
+        else
+          # Fetch the published dirNames list from the bucket.
+          if [[ -n "$LOCALE" ]]; then
+            S3_DIRNAMES="s3://devportal-${ENV_SHORT}-website-static-content/${LOCALE}/${S3_DIRNAMES_JSON_PATH}"
+          else
+            S3_DIRNAMES="s3://devportal-${ENV_SHORT}-website-static-content/${S3_DIRNAMES_JSON_PATH}"
+          fi
+          aws s3 cp "$S3_DIRNAMES" bucket-dirNames.json || echo '{"dirNames": []}' > bucket-dirNames.json
+          CANDIDATES=$(jq -r '.dirNames[]' bucket-dirNames.json 2>/dev/null)
         fi
         CANDIDATES=$(echo "$CANDIDATES" | sort -u)
 
