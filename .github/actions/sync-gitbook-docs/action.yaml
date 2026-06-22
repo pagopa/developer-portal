@@ -187,8 +187,12 @@ runs:
           aws s3 cp "$S3_DIRNAMES" bucket-dirNames.json || echo '{"dirNames": []}' > bucket-dirNames.json
           CANDIDATES=$(jq -r '.dirNames[]' bucket-dirNames.json 2>/dev/null)
         fi
-        CANDIDATES=$(echo "$CANDIDATES" | sort -u)
+        CANDIDATES=$(printf '%s\n' "$CANDIDATES" | sed '/^$/d' | sort -u)
 
+        if [[ -z "$CANDIDATES" ]]; then
+          # No published list available => later steps will sync all docs, so validate all top-level docs directories.
+          CANDIDATES=$(find docs -mindepth 1 -maxdepth 1 -type d ! -name '.*' -printf '%f\n' | sort -u)
+        fi
         INVALID_DIRS=()
         while IFS= read -r dir; do
           [[ -z "$dir" ]] && continue
