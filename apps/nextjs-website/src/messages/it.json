@@ -126,6 +126,9 @@
     "chatbot": {
       "title": "Cronologia Chatbot",
       "noSessions": "Nessuna chat trovata"
+    },
+    "certificateList": {
+      "title": "Attestati Webinar"
     }
   },
   "webinar": {

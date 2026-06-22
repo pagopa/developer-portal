@@ -126,6 +126,9 @@
     "chatbot": {
       "title": "Chatbot History",
       "noSessions": "No chats found"
+    },
+    "certificateList": {
+      "title": "Webinar Certifications"
     }
   },
   "webinar": {
