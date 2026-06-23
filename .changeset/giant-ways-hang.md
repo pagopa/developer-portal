@@ -2,4 +2,4 @@
 "infrastructure": minor
 ---
 
-Rafactory cloudwatch alarms too noisy
+Refactor CloudWatch alarms to reduce noise
