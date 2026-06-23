@@ -437,6 +437,15 @@ resource "aws_iam_role" "ivs_video_processing_function" {
   })
 }
 
+resource "aws_sqs_queue" "ivs_video_processing_dlq" {
+  name                      = "${local.ivs_video_processing_lambda_name}-dlq"
+  message_retention_seconds = 1209600 # 14 days
+
+  tags = {
+    Name = "${local.ivs_video_processing_lambda_name}-dlq"
+  }
+}
+
 resource "aws_iam_role_policy" "ivs_video_processing_policy" {
   name = "ivs-video-processing-lambda-policy"
   role = aws_iam_role.ivs_video_processing_function.id
@@ -470,6 +479,11 @@ resource "aws_iam_role_policy" "ivs_video_processing_policy" {
           "${aws_s3_bucket.ivs_recordings.arn}/*",
           aws_s3_bucket.ivs_recordings.arn
         ]
+      },
+      {
+        Action   = ["sqs:SendMessage"]
+        Effect   = "Allow"
+        Resource = aws_sqs_queue.ivs_video_processing_dlq.arn
       }
     ]
   })
@@ -527,11 +541,17 @@ resource "aws_lambda_function" "ivs_video_processing_function" {
     }
   }
 
+  dead_letter_config {
+    target_arn = aws_sqs_queue.ivs_video_processing_dlq.arn
+  }
+
   lifecycle {
     ignore_changes = [
       source_code_hash,
     ]
   }
+
+  depends_on = [aws_cloudwatch_log_group.lambda_index_logs]
 
   tags = {
     Name = local.ivs_video_processing_lambda_name

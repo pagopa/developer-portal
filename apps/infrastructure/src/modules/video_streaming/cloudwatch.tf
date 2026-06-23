@@ -33,6 +33,24 @@ resource "aws_cloudwatch_metric_alarm" "lambda_errors" {
   }
 }
 
+resource "aws_cloudwatch_metric_alarm" "lambda_dlq_messages" {
+  alarm_name          = "${var.project_name}-ivs-video-processing-dlq-messages"
+  comparison_operator = "GreaterThanThreshold"
+  evaluation_periods  = "1"
+  metric_name         = "ApproximateNumberOfMessagesVisible"
+  namespace           = "AWS/SQS"
+  period              = "60"
+  statistic           = "Sum"
+  threshold           = "0"
+  alarm_description   = "Messages in the IVS video processing DLQ indicate unrecoverable Lambda failures"
+  alarm_actions       = [aws_sns_topic.alerts.arn]
+  treat_missing_data  = "notBreaching"
+
+  dimensions = {
+    QueueName = aws_sqs_queue.ivs_video_processing_dlq.name
+  }
+}
+
 # SNS Topic for Alarms
 resource "aws_sns_topic" "alerts" {
   name = "${var.project_name}-cloudwatch-alarms"
