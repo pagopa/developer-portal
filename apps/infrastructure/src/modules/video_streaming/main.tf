@@ -551,8 +551,6 @@ resource "aws_lambda_function" "ivs_video_processing_function" {
     ]
   }
 
-  depends_on = [aws_cloudwatch_log_group.lambda_index_logs]
-
   tags = {
     Name = local.ivs_video_processing_lambda_name
   }
