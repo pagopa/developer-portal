@@ -2,10 +2,14 @@
 
 import React from 'react';
 import { useTranslations } from 'next-intl';
-import { Typography } from '@mui/material';
+import { Typography, useTheme } from '@mui/material';
 import { Stack } from '@mui/system';
+import CardsGrid from '@/components/molecules/CardsGrid/CardsGrid';
+import GenericAlertBanner from '@/components/molecules/GenericAlertBanner/GenericAlertBanner';
+import InfoIcon from '@mui/icons-material/Info';
 
 const CertificateList = () => {
+  const { palette } = useTheme();
   const t = useTranslations();
   return (
     <>
@@ -22,6 +26,38 @@ const CertificateList = () => {
         <Typography variant='h4' sx={{ marginBottom: '40px' }}>
           {t('profile.certificateList.title')}
         </Typography>
+        <CardsGrid
+          cards={[
+            {
+              title:
+                'Esplorando pagoPA: Come generare il pdf di un avviso di pagamento',
+              text: '',
+              useSrc: false,
+            },
+          ]}
+        ></CardsGrid>
+        <GenericAlertBanner
+          canBeHidden={false}
+          title={t('profile.certificateList.warning')}
+          icon={
+            <InfoIcon width={'22px'} sx={{ color: palette.primary.main }} />
+          }
+        >
+          <Typography
+            color={palette.text.primary}
+            fontWeight={400}
+            fontSize={'14px'}
+            mb={2.5}
+            mx={'16px'}
+          >
+            {
+              t.rich('profile.certificateList.body', {
+                strong: (chunks) => <strong>{chunks}</strong>,
+                br: () => <br></br>,
+              }) as string
+            }
+          </Typography>
+        </GenericAlertBanner>
       </Stack>
     </>
   );

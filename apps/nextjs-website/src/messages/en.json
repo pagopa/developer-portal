@@ -128,7 +128,9 @@
       "noSessions": "No chats found"
     },
     "certificateList": {
-      "title": "Webinar Certifications"
+      "title": "Webinar Certifications",
+      "warning": "Why can't I see my certificate?",
+      "body": "Certificates for webinars prior to May 2026 are not available.<br></br><br></br>Please note that to obtain certificates for the new webinars, you must enable tracking in the <strong>Consents and privacy</strong> section and watch at least 80% of the webinar"
     }
   },
   "webinar": {
