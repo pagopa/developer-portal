@@ -1,6 +1,6 @@
 # Lambda Function for SQS FIFO
 module "lambda_sync" {
-  source = "git::github.com/terraform-aws-modules/terraform-aws-lambda.git?ref=9633abb6b6d275d3a28604dbfa755098470420d4" # v6.5.0
+  source = "git::github.com/terraform-aws-modules/terraform-aws-lambda.git?ref=ad35a95a4a17ca3ad1df6bd0296c93b4d92f5228" # v8.8.1
 
   function_name = "${local.prefix}-sync-lambda"
   description   = "Lambda function that syncs Active Campaign"
