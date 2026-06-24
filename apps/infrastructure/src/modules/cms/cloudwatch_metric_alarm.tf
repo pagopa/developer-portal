@@ -66,7 +66,8 @@ module "alb_cms_elb_5xx_alarm" {
   threshold           = 10
   statistic           = "Sum"
   period              = 60
-  evaluation_periods  = 1
+  evaluation_periods  = 5
+  datapoints_to_alarm = 3
   treat_missing_data  = "notBreaching"
   alarm_actions       = [var.alerting_topic_arn]
 
