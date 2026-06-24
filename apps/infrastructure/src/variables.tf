@@ -179,13 +179,19 @@ variable "ecs_chatbotapi" {
   default = {
     cpu       = 1024
     memory    = 2048
-    image_tag = "1.0.0"
+    image_tag = "2.0.0"
   }
 }
 
 variable "ecs_chatbotapi_enable_scheduled_scaling" {
   type        = bool
   description = "Enable scheduled autoscaling for dos68k Chatbot API (scale to 0 outside Mon-Fri 09:00-19:00 CET)"
+  default     = false
+}
+
+variable "create_dos68k_chatbotapi" {
+  type        = bool
+  description = "Defines if dos68k Chatbot API should be created"
   default     = false
 }
 

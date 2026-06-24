@@ -158,6 +158,70 @@ runs:
         aws_region: eu-south-1
         role_to_assume: ${{ inputs.deploy_iam_role }}
 
+    - name: Validate documentation directories
+      shell: bash
+      working-directory: ./devportal-docs
+      env:
+        ENV_SHORT: ${{ env.ENV_SHORT }}
+        S3_DIRNAMES_JSON_PATH: ${{ inputs.s3_dirnames_json_path }}
+        DIR_NAMES_FILTER: ${{ inputs.dir_names_filter }}
+        LOCALE: ${{ inputs.locale }}
+      run: |
+        echo "::group::Validate documentation directories"
+        # Guard: fail before any S3 change if a doc directory matching a dirName
+        # is missing at least one of README.md or SUMMARY.md.
+        # Candidate dirNames come from the filter list when provided, otherwise
+        # from the bucket dirNames.json.
+
+        if [[ -n "$DIR_NAMES_FILTER" ]]; then
+          # Use the filter list as the candidate directories.
+          CANDIDATES=""
+          IFS=',' read -ra FILTER_DIRS <<< "$DIR_NAMES_FILTER"
+          for d in "${FILTER_DIRS[@]}"; do
+            d=$(echo "$d" | xargs)
+            [[ -n "$d" ]] && CANDIDATES=$(printf '%s\n%s\n' "$CANDIDATES" "$d")
+          done
+        else
+          # Fetch the published dirNames list from the bucket.
+          if [[ -n "$LOCALE" ]]; then
+            S3_DIRNAMES="s3://devportal-${ENV_SHORT}-website-static-content/${LOCALE}/${S3_DIRNAMES_JSON_PATH}"
+          else
+            echo "LOCALE is not set. Skipping documentation directories validation."
+            echo "::endgroup::"
+            exit 0
+          fi
+          aws s3 cp "$S3_DIRNAMES" bucket-dirNames.json || echo '{"dirNames": []}' > bucket-dirNames.json
+          CANDIDATES=$(jq -r '.dirNames[]' bucket-dirNames.json 2>/dev/null)
+        fi
+        CANDIDATES=$(printf '%s\n' "$CANDIDATES" | sed '/^$/d' | sort -u)
+
+        if [[ -z "$CANDIDATES" ]]; then
+          # No published list available => later steps will sync all docs, so validate all top-level docs directories.
+          CANDIDATES=$(find docs -mindepth 1 -maxdepth 1 -type d ! -name '.*' -printf '%f\n' | sort -u)
+        fi
+        INVALID_DIRS=()
+        while IFS= read -r dir; do
+          [[ -z "$dir" ]] && continue
+          # Only validate directories that actually exist in the checked-out docs.
+          if [[ -d "docs/$dir" ]]; then
+            if [[ ! -f "docs/$dir/README.md" || ! -f "docs/$dir/SUMMARY.md" ]]; then
+              INVALID_DIRS+=("$dir")
+            fi
+          fi
+        done <<< "$CANDIDATES"
+
+        if [[ ${#INVALID_DIRS[@]} -gt 0 ]]; then
+          echo "::error::Found documentation directories missing README.md or SUMMARY.md:"
+          for dir in "${INVALID_DIRS[@]}"; do
+            echo "::error:: - docs/$dir"
+          done
+          echo "::endgroup::"
+          exit 1
+        fi
+
+        echo "All candidate documentation directories contain both README.md and SUMMARY.md."
+        echo "::endgroup::"
+
     - name: Generate all metadata
       shell: bash
       env:

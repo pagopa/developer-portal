@@ -10,7 +10,6 @@
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 6.45.0 |
 | <a name="provider_http"></a> [http](#provider\_http) | 3.6.0 |
 
 ## Modules
@@ -34,7 +33,6 @@
 
 | Name | Type |
 |------|------|
-| [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
 | [http_http.docs_redirect_cf_function_code](https://registry.terraform.io/providers/hashicorp/http/latest/docs/data-sources/http) | data source |
 
 ## Inputs
@@ -55,9 +53,10 @@
 | <a name="input_chatbot_models"></a> [chatbot\_models](#input\_chatbot\_models) | The models used by the AI chatbot | <pre>object({<br/>    provider      = string<br/>    generation    = string<br/>    embeddings    = string<br/>    reranker      = string<br/>    use_multi_rag = optional(bool, false)<br/>  })</pre> | <pre>{<br/>  "embeddings": "gemini-embedding-001",<br/>  "generation": "gemini-3.1-flash-lite-preview",<br/>  "provider": "google",<br/>  "reranker": "semantic-ranker-default-004",<br/>  "use_multi_rag": false<br/>}</pre> | no |
 | <a name="input_create_chatbot"></a> [create\_chatbot](#input\_create\_chatbot) | Defines if chatbot should be created | `bool` | `false` | no |
 | <a name="input_create_devops_agent"></a> [create\_devops\_agent](#input\_create\_devops\_agent) | Defines if the DevOps Agent Space should be created | `bool` | `false` | no |
+| <a name="input_create_dos68k_chatbotapi"></a> [create\_dos68k\_chatbotapi](#input\_create\_dos68k\_chatbotapi) | Defines if dos68k Chatbot API should be created | `bool` | `false` | no |
 | <a name="input_dns_delegate_records"></a> [dns\_delegate\_records](#input\_dns\_delegate\_records) | DNS delegate records | `map(any)` | `{}` | no |
 | <a name="input_docs_redirect_is_enabled"></a> [docs\_redirect\_is\_enabled](#input\_docs\_redirect\_is\_enabled) | Defines if Docs redirect should be enabled | `bool` | `false` | no |
-| <a name="input_ecs_chatbotapi"></a> [ecs\_chatbotapi](#input\_ecs\_chatbotapi) | ECS task configuration for the dos68k Chatbot API | <pre>object({<br/>    cpu       = optional(number, 1024)<br/>    memory    = optional(number, 2048)<br/>    image_tag = optional(string, "latest")<br/>  })</pre> | <pre>{<br/>  "cpu": 1024,<br/>  "image_tag": "1.0.0",<br/>  "memory": 2048<br/>}</pre> | no |
+| <a name="input_ecs_chatbotapi"></a> [ecs\_chatbotapi](#input\_ecs\_chatbotapi) | ECS task configuration for the dos68k Chatbot API | <pre>object({<br/>    cpu       = optional(number, 1024)<br/>    memory    = optional(number, 2048)<br/>    image_tag = optional(string, "latest")<br/>  })</pre> | <pre>{<br/>  "cpu": 1024,<br/>  "image_tag": "2.0.0",<br/>  "memory": 2048<br/>}</pre> | no |
 | <a name="input_ecs_chatbotapi_enable_scheduled_scaling"></a> [ecs\_chatbotapi\_enable\_scheduled\_scaling](#input\_ecs\_chatbotapi\_enable\_scheduled\_scaling) | Enable scheduled autoscaling for dos68k Chatbot API (scale to 0 outside Mon-Fri 09:00-19:00 CET) | `bool` | `false` | no |
 | <a name="input_github_cms_repository"></a> [github\_cms\_repository](#input\_github\_cms\_repository) | The repository where the CMS workflows will run | `string` | `"pagopa/developer-portal-cms"` | no |
 | <a name="input_publish_cloudfront_functions"></a> [publish\_cloudfront\_functions](#input\_publish\_cloudfront\_functions) | Defines if cloudfront functions should be published | `bool` | `false` | no |
