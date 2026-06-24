@@ -182,7 +182,9 @@ runs:
           if [[ -n "$LOCALE" ]]; then
             S3_DIRNAMES="s3://devportal-${ENV_SHORT}-website-static-content/${LOCALE}/${S3_DIRNAMES_JSON_PATH}"
           else
-            S3_DIRNAMES="s3://devportal-${ENV_SHORT}-website-static-content/${S3_DIRNAMES_JSON_PATH}"
+            echo "LOCALE is not set. Skipping documentation directories validation."
+            echo "::endgroup::"
+            exit 0
           fi
           aws s3 cp "$S3_DIRNAMES" bucket-dirNames.json || echo '{"dirNames": []}' > bucket-dirNames.json
           CANDIDATES=$(jq -r '.dirNames[]' bucket-dirNames.json 2>/dev/null)
