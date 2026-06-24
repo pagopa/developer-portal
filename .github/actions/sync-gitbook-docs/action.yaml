@@ -338,7 +338,7 @@ runs:
         echo "::endgroup::"
 
     - name: Trigger push documentation workflow
-      if: ${{ inputs.environment == 'prod' && inputs.locale == 'it' }}
+      if: ${{ inputs.environment == 'prod' && inputs.locale == 'it' && inputs.pat_token != '' }}
       env:
         GH_TOKEN: ${{ inputs.pat_token }}
         PATHS_TO_ADD: ${{ inputs.dir_names_filter || '' }}
