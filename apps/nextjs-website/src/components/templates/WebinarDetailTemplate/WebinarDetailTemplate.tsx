@@ -10,7 +10,10 @@ import type { Webinar } from '@/lib/webinars/types';
 import { useUser } from '@/helpers/user.helper';
 import React, { useEffect, useMemo, useState } from 'react';
 import { useTranslations } from 'next-intl';
-import { snackbarAutoHideDurationMs } from '@/config';
+import {
+  snackbarAutoHideDurationMs,
+  isWebinarHeartbeatEnabled,
+} from '@/config';
 import WebinarPlayerSection from '@/components/molecules/WebinarPlayerSection/WebinarPlayerSection';
 import { useWebinar, WebinarState } from '@/helpers/webinar.helpers';
 import Typography from '@mui/material/Typography';
@@ -37,8 +40,6 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
   const { user, setUserAttributes } = useUser();
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [showSubscribePopup, setShowSubscribePopup] = useState(false);
-  const hasAcceptedWebinarMonitoringSubscription =
-    user?.attributes['custom:webinar_accepted'] === 'true';
   const {
     webinarState,
     setWebinar,
@@ -50,6 +51,8 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
   } = useWebinar();
   const showHeaderImage =
     webinarState === WebinarState.future && webinar.headerImage;
+  const hasAcceptedWebinarMonitoringSubscription =
+    user?.attributes['custom:webinar_accepted'] === 'true';
 
   useEffect(() => {
     if (!user) return;
@@ -126,57 +129,59 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
           backgroundSize: 'cover',
         }}
       >
-        <ConfirmationModal
-          title={t('subscriptionPopup.title')}
-          text={
-            t.rich('subscriptionPopup.text', {
-              strong: (chunks) => <strong>{chunks}</strong>,
-              br: () => <br></br>,
-            }) as string
-          }
-          open={showSubscribePopup}
-          setOpen={() => null}
-          confirmCta={{
-            label: t('subscriptionPopup.confirmCta'),
-            onClick: () => {
-              if (!user) return null;
-              setUserAttributes(
-                {
-                  ...user.attributes,
-                  'custom:webinar_accepted': `true`,
-                },
-                () => {
-                  setShowSubscribePopup(false);
-                  return null;
-                },
-                () => {
-                  setError(t('genericSubscriptionError'));
-                  return null;
-                }
-              );
-              return null;
-            },
-          }}
-          cancelCta={{
-            label: t('subscriptionPopup.cancelCta'),
-            onClick: () => {
-              setShowSubscribePopup(false);
-              return null;
-            },
-          }}
-          checkboxLabel={t('subscriptionPopup.checkboxLabel')}
-          checked={false}
-          onCheckboxChange={(checked) => {
-            if (checked) {
-              setCookie('consent_monitoring_remember_choice', 'true', {
-                maxAge: 60 * 60 * 24 * 365,
-              });
-            } else {
-              deleteCookie('consent_monitoring_remember_choice');
+        {isWebinarHeartbeatEnabled && (
+          <ConfirmationModal
+            title={t('subscriptionPopup.title')}
+            text={
+              t.rich('subscriptionPopup.text', {
+                strong: (chunks) => <strong>{chunks}</strong>,
+                br: () => <br></br>,
+              }) as string
             }
-            return null;
-          }}
-        />
+            open={showSubscribePopup}
+            setOpen={() => null}
+            confirmCta={{
+              label: t('subscriptionPopup.confirmCta'),
+              onClick: () => {
+                if (!user) return null;
+                setUserAttributes(
+                  {
+                    ...user.attributes,
+                    'custom:webinar_accepted': `true`,
+                  },
+                  () => {
+                    setShowSubscribePopup(false);
+                    return null;
+                  },
+                  () => {
+                    setError(t('genericSubscriptionError'));
+                    return null;
+                  }
+                );
+                return null;
+              },
+            }}
+            cancelCta={{
+              label: t('subscriptionPopup.cancelCta'),
+              onClick: () => {
+                setShowSubscribePopup(false);
+                return null;
+              },
+            }}
+            checkboxLabel={t('subscriptionPopup.checkboxLabel')}
+            checked={false}
+            onCheckboxChange={(checked) => {
+              if (checked) {
+                setCookie('consent_monitoring_remember_choice', 'true', {
+                  maxAge: 60 * 60 * 24 * 365,
+                });
+              } else {
+                deleteCookie('consent_monitoring_remember_choice');
+              }
+              return null;
+            }}
+          />
+        )}
 
         <EContainer>
           <ProductBreadcrumbs
@@ -221,23 +226,25 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
         isSubscribed &&
         ![WebinarState.past, WebinarState.unknown].includes(webinarState) && (
           <EContainer>
-            <LiveWebinarWarningBanner
-              onEnableConsent={() => {
-                if (!user) return null;
-                setUserAttributes(
-                  {
-                    ...user.attributes,
-                    'custom:webinar_accepted': 'true',
-                  },
-                  () => null,
-                  () => {
-                    setError(t('genericSubscriptionError'));
-                    return null;
-                  }
-                );
-                return null;
-              }}
-            />
+            {isWebinarHeartbeatEnabled && (
+              <LiveWebinarWarningBanner
+                onEnableConsent={() => {
+                  if (!user) return null;
+                  setUserAttributes(
+                    {
+                      ...user.attributes,
+                      'custom:webinar_accepted': 'true',
+                    },
+                    () => null,
+                    () => {
+                      setError(t('genericSubscriptionError'));
+                      return null;
+                    }
+                  );
+                  return null;
+                }}
+              />
+            )}
           </EContainer>
         )}
       {user &&
