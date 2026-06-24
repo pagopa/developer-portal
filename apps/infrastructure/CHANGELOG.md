@@ -1,5 +1,25 @@
 # infrastructure
 
+## 13.0.0
+
+### Major Changes
+
+- a4f4ae8: Refactor SNS topics for alerting by centralizing CloudWatch alarm notifications to a shared SNS topic managed by the core infrastructure module.
+- c8eb697: Add new custom field 'webinar_monitoring_accepted' to cognito user
+
+### Minor Changes
+
+- 0d786f6: Configure envarionment variables in langfuse worker to allow traces export and download
+- af1235c: Update ECS task to 512.0 vCPU/1024 MB memory
+- fc59a1f: Scale down all ECS services running langfuse to zero tasks running outside working hours. Services are: web, worker and clickhouse.
+- ee2790c: Refactor CloudWatch alarms to reduce noise
+- 13c7b29: Remove module introduced to create a temporary strapi instance for version 5.xx migration.
+- 8e67d7b: Setup AWS DevOps agent in eu-central-1 to monitor resources and help troubleshooting.
+- ff82a58: Update clickhouse memory assigned quota based on trusted advisor recommendation
+- 7146517: Trusted Advisor via cost optimization hub suggests to right size the ecs redis task used as vector database
+- a0a36f5: Update dos68k chatbot task definition with new image and required environment variables.
+- db1d053: Update dos68k image version and task definition environment variables
+
 ## 12.0.0
 
 ### Major Changes
