@@ -40,7 +40,7 @@ resource "aws_cloudwatch_metric_alarm" "lambda_dlq_messages" {
   metric_name         = "ApproximateNumberOfMessagesVisible"
   namespace           = "AWS/SQS"
   period              = "60"
-  statistic           = "Sum"
+  statistic           = "Maximum"
   threshold           = "0"
   alarm_description   = "Messages in the IVS video processing DLQ indicate unrecoverable Lambda failures"
   alarm_actions       = [aws_sns_topic.alerts.arn]
