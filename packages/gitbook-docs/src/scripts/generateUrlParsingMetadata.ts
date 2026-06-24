@@ -26,6 +26,7 @@ const LOCALE = process.env.LOCALE;
 
 export type UrlParsingItem = {
   dirName: string;
+  spaceId: string;
   docs: {
     path: string;
     url: string;
@@ -35,12 +36,13 @@ export type UrlParsingItem = {
 export function generateUrlPath(
   filePath: string,
   slug: string,
+  dirName: string,
   productSlug?: string,
   versionName?: string,
   metadataType: MetadataType = MetadataType.Guide,
   locale?: string
 ): string {
-  const restOfPath = sitePathFromLocalPath(filePath, undefined);
+  const restOfPath = sitePathFromLocalPath(filePath, dirName, undefined);
   switch (metadataType) {
     case MetadataType.Guide:
       return [
@@ -88,37 +90,38 @@ async function convertDocToUrlParsingItems(
   strapiReleaseNotes: StrapiReleaseNote[]
 ): Promise<UrlParsingItem[]> {
   const guideInfoList: MetadataInfo[] = strapiGuides
-    .filter((guide) => !!guide.attributes.product?.data?.attributes?.slug)
+    .filter((guide) => !!guide.product?.slug)
     .flatMap((guide) =>
-      guide.attributes.versions.map((version) => ({
+      guide.versions.map((version) => ({
         versionName: version.version,
         isMainVersion: version.main,
         dirName: version.dirName,
-        slug: guide.attributes.slug,
-        productSlug: `${guide.attributes.product?.data?.attributes?.slug}`,
+        spaceId: version.spaceId || '',
+        slug: guide.slug,
+        productSlug: `${guide.product?.slug}`,
         metadataType: MetadataType.Guide,
       }))
     );
   const solutionInfoList: MetadataInfo[] = strapiSolutions
-    .filter((solution) => !!solution.attributes.dirName)
+    .filter((solution) => !!solution.dirName)
     .map((solution) => ({
       versionName: '',
       isMainVersion: true,
-      dirName: solution.attributes.dirName,
-      slug: solution.attributes.slug,
+      dirName: solution.dirName,
+      spaceId: solution.spaceId || '',
+      slug: solution.slug,
       productSlug: '',
       metadataType: MetadataType.Solution,
     }));
   const releaseNoteInfoList: MetadataInfo[] = strapiReleaseNotes
-    .filter((releaseNote) => !!releaseNote.attributes.dirName)
+    .filter((releaseNote) => !!releaseNote.dirName)
     .map((releaseNote) => ({
       versionName: '',
       isMainVersion: true,
-      dirName: releaseNote.attributes.dirName,
-      slug: releaseNote.attributes.slug,
-      productSlug:
-        releaseNote.attributes.product?.data?.attributes?.slug ||
-        'release-notes',
+      dirName: releaseNote.dirName,
+      spaceId: releaseNote.spaceId || '',
+      slug: releaseNote.slug,
+      productSlug: releaseNote.product?.slug || 'release-notes',
       metadataType: MetadataType.ReleaseNote,
     }));
 
@@ -139,6 +142,7 @@ async function convertDocToUrlParsingItems(
       const docFiles = await getMarkdownFilesRecursively(docDir);
       const item: UrlParsingItem = {
         dirName: docInfo.dirName,
+        spaceId: docInfo.spaceId || '',
         docs: [],
       };
       for (const filePath of docFiles) {
@@ -151,6 +155,7 @@ async function convertDocToUrlParsingItems(
         const urlPath = generateUrlPath(
           filePath,
           docInfo.slug,
+          docInfo.dirName,
           docInfo.productSlug,
           docInfo.versionName,
           docInfo.metadataType,

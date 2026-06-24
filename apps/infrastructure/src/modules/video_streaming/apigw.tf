@@ -89,3 +89,70 @@ resource "aws_lambda_permission" "apigw_webinar_metrics" {
   principal     = "apigateway.amazonaws.com"
   source_arn    = "${aws_api_gateway_rest_api.webinar_metrics.execution_arn}/*/*"
 }
+
+## API Gateway HTTP API for ingest lambda ##
+
+resource "aws_apigatewayv2_api" "ingest" {
+  name          = "${var.project_name}-ingest-api"
+  protocol_type = "HTTP"
+  description   = "HTTP API for heartbeat ingest Lambda"
+
+  cors_configuration {
+    allow_origins = compact([
+      "http://localhost:3000",
+      "https://${data.aws_route53_zone.selected.name}",
+    ])
+    allow_methods = ["POST", "GET", "OPTIONS"]
+    allow_headers = [
+      "Content-Type",
+      "Authorization",
+      "X-Amz-Date",
+      "X-Api-Key",
+      "X-Amz-Security-Token"
+    ]
+    expose_headers = ["Content-Length", "Content-Type"]
+    max_age        = 300
+  }
+}
+
+resource "aws_apigatewayv2_integration" "ingest_lambda" {
+  api_id                 = aws_apigatewayv2_api.ingest.id
+  integration_type       = "AWS_PROXY"
+  integration_uri        = aws_lambda_function.ingest_lambda.invoke_arn
+  integration_method     = "POST"
+  payload_format_version = "2.0"
+}
+
+resource "aws_apigatewayv2_authorizer" "ingest_cognito" {
+  api_id           = aws_apigatewayv2_api.ingest.id
+  authorizer_type  = "JWT"
+  identity_sources = ["$request.header.Authorization"]
+  name             = "${var.project_name}-ingest-cognito-authorizer"
+
+  jwt_configuration {
+    audience = [var.cognito_user_pool_client_id]
+    issuer   = "https://${var.cognito_user_pool_endpoint}"
+  }
+}
+
+resource "aws_apigatewayv2_route" "ingest" {
+  api_id             = aws_apigatewayv2_api.ingest.id
+  route_key          = "POST /ingest"
+  target             = "integrations/${aws_apigatewayv2_integration.ingest_lambda.id}"
+  authorization_type = "JWT"
+  authorizer_id      = aws_apigatewayv2_authorizer.ingest_cognito.id
+}
+
+resource "aws_apigatewayv2_stage" "ingest" {
+  api_id      = aws_apigatewayv2_api.ingest.id
+  name        = "$default"
+  auto_deploy = true
+}
+
+resource "aws_lambda_permission" "apigw_ingest" {
+  statement_id  = "AllowAPIGatewayHTTPInvoke"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.ingest_lambda.function_name
+  principal     = "apigateway.amazonaws.com"
+  source_arn    = "${aws_apigatewayv2_api.ingest.execution_arn}/*/*"
+}

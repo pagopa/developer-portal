@@ -15,6 +15,10 @@ cdn_custom_headers = [
     header   = "X-Robots-Tag"
     override = true
     value    = "noindex"
+    }, {
+    header   = "Server"
+    override = true
+    value    = "None"
   }
 ]
 
@@ -22,9 +26,7 @@ dns_domain_name = "dev.developer.pagopa.it"
 
 use_custom_certificate = true
 
-cms_app_image_tag = "2f58049234766894fdfbd4a1d2ae1ccc74c37503"
-
-strapi_v5_image_tag = "361cd936ff7ad44b960c1667d847f7ee615290c6"
+cms_app_image_tag = "5e7659d8d91e439e564192b7c1c7a03806d31fb3"
 
 # CMS Strapi DNS
 dns_domain_name_cms = {
@@ -39,6 +41,23 @@ rds_cms_scaling_configuration = {
 }
 
 create_chatbot            = true
+create_dos68k_chatbotapi  = true
 ac_integration_is_enabled = true
 docs_redirect_is_enabled  = false
 
+chatbot_ecs_monitoring = {
+  cpu       = 512
+  memory    = 1024
+  image_uri = "ghcr.io/langfuse/langfuse:sha-9375250"
+  port      = 3000
+}
+
+chatbot_models = {
+  provider      = "google"
+  generation    = "gemini-2.5-flash-lite"
+  embeddings    = "gemini-embedding-001"
+  reranker      = "semantic-ranker-default-004"
+  use_multi_rag = true
+}
+
+ecs_chatbotapi_enable_scheduled_scaling = true

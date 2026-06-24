@@ -3,7 +3,7 @@ import GuideMenu from '@/components/atoms/GuideMenu/GuideMenu';
 import ProductBreadcrumbs from '@/components/atoms/ProductBreadcrumbs/ProductBreadcrumbs';
 import { FragmentProvider } from '@/components/organisms/FragmentProvider/FragmentProvider';
 import GuideInPageMenu from '@/components/organisms/GuideInPageMenu/GuideInPageMenu';
-import { BreadcrumbSegment } from '@/lib/types/path';
+import type { BreadcrumbSegment } from '@/lib/paths/types';
 import { Box, Stack } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import { PRODUCT_HEADER_HEIGHT, SITE_HEADER_HEIGHT } from '@/config';
@@ -16,8 +16,9 @@ import {
   productPageToBreadcrumbs,
 } from '@/helpers/breadcrumbs.helpers';
 import { compact } from 'lodash';
-import { GitBookContentData } from '@/lib/types/gitBookContent';
+import type { GitBookContentData } from '@/lib/gitBookContent/types';
 import { useParams } from 'next/navigation';
+import { GuidesTranslationDisclaimer } from '@/components/atoms/GuidesTranslationDisclaimer/GuidesTranslationDisclaimer';
 
 export type GitBookTemplateProps = {
   body: string;
@@ -49,6 +50,7 @@ const GitBookTemplate = ({
   hasInPageMenu = true,
   hasProductHeader = true,
   versionName,
+  guideTranslationDisclaimer,
 }: GitBookTemplateProps) => {
   const t = useTranslations();
   const locale = useParams<{ locale: string }>().locale;
@@ -224,6 +226,9 @@ const GitBookTemplate = ({
           <Box sx={{ paddingX: '40px' }}>
             <ProductBreadcrumbs breadcrumbs={breadcrumbs} />
           </Box>
+          {guideTranslationDisclaimer && (
+            <GuidesTranslationDisclaimer content={guideTranslationDisclaimer} />
+          )}
           <Box sx={{ padding: '0 40px 32px 40px' }}>
             <GitBookContent
               content={content.body}

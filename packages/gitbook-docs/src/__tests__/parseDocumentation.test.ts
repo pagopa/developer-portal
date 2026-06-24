@@ -6,6 +6,7 @@ import {
 
 const UrlParsingMetadata = {
   dirName: 'test-hash',
+  spaceId: 'test-hash',
   docs: [
     { path: 'this-is-a-test', url: 'parsed-url' },
     { path: 'parent/parse-this', url: 'parsed-url' },
@@ -14,17 +15,49 @@ const UrlParsingMetadata = {
       path: 'guide-with-hashtag/this-will-be-parsed',
       url: 'parsed-url-with-hashtag',
     },
+    { path: 'docs/some-doc', url: 'parsed-localhost' },
+    { path: 'https://www.external-link.com', url: 'do-not-parse' },
+    {
+      path: 'path-of-file-from-gitbook/file-from-gitbook.md',
+      url: 'must-parse-this',
+    },
+    { path: 'sample/file-with-same-name.md', url: 'first-parsed-url' },
   ],
 };
 
 const GlobalMetadata = [
   UrlParsingMetadata,
   {
-    dirName: 'second-test',
+    dirName: 'second-test-dirname',
+    spaceId: 'second-test-spaceId',
     docs: [
       {
         path: 'other-documentation',
         url: 'other-documentation-parsed-url',
+      },
+    ],
+  },
+  {
+    dirName: 'pago-pa/saci/2.0.0',
+    spaceId: 'E6d6iTzjBzUfzNoZjadZ',
+    docs: [
+      {
+        path: '../../devportal-docs/docs/pago-pa/saci/2.0.0/README.md',
+        url: '/pago-pa/guides/saci/2.0.0',
+      },
+      {
+        path: '../../devportal-docs/docs/pago-pa/saci/2.0.0/sample/file-with-same-name.md',
+        url: '/pago-pa/guides/saci/2.0.0/url-with-same-name',
+      },
+    ],
+  },
+  {
+    dirName: 'missing-spaceId',
+    spaceId: '',
+    docs: [
+      {
+        path: 'missing-spaceId-path',
+        url: 'parsed-missing-spaceId-url',
       },
     ],
   },
@@ -38,6 +71,126 @@ describe('parseUrlsFromMarkdown', () => {
     );
     expect(res).toStrictEqual(
       'This is a test string [this-is-a-test](parsed-url)'
+    );
+  });
+
+  it('should not parse url if it is an external link', () => {
+    const res = parseUrlsFromMarkdown(
+      'This is a test string [external-link](https://www.external-link.com)',
+      UrlParsingMetadata
+    );
+    expect(res).toStrictEqual(
+      'This is a test string [external-link](https://www.external-link.com)'
+    );
+  });
+
+  it('should parse external urls from gitbook', () => {
+    const res = parseUrlsFromMarkdown(
+      'this is a test string [gitbook-link](https://app.gitbook.com/s/test-hash/file-from-gitbook.md)',
+      UrlParsingMetadata,
+      GlobalMetadata
+    );
+    expect(res).toStrictEqual(
+      'this is a test string [gitbook-link](must-parse-this)'
+    );
+  });
+
+  it('should simultaneously replace urls in parentheses, double quotes, and single quotes in a single string', () => {
+    const res = parseUrlsFromMarkdown(
+      `Markdown link [test](this-is-a-test.md), HTML double <a href="this-is-a-test.md">link</a>, and HTML single <a href='this-is-a-test.md'>link</a>`,
+      UrlParsingMetadata
+    );
+    expect(res).toStrictEqual(
+      `Markdown link [test](parsed-url), HTML double <a href="parsed-url">link</a>, and HTML single <a href='parsed-url'>link</a>`
+    );
+  });
+
+  it.skip('should safely escape regex special characters in the target path during replacement', () => {
+    const SpecialCharMetadata = {
+      dirName: 'special-test',
+      spaceId: 'special-test',
+      docs: [
+        {
+          path: 'path-with-[brackets] and (parentheses)',
+          url: 'safe-parsed-url',
+        },
+      ],
+    };
+
+    const res = parseUrlsFromMarkdown(
+      'Check out this weird link: [link](path-with-[brackets] and parentheses.md)',
+      SpecialCharMetadata
+    );
+    expect(res).toStrictEqual(
+      'Check out this weird link: [link](safe-parsed-url)'
+    );
+  });
+
+  it('should parse html anchor tags with double quotes', () => {
+    const res = parseUrlsFromMarkdown(
+      'Text <a href="this-is-a-test.md">link</a> text',
+      UrlParsingMetadata
+    );
+    expect(res).toStrictEqual('Text <a href="parsed-url">link</a> text');
+  });
+
+  it('should parse html anchor tags with single quotes', () => {
+    const res = parseUrlsFromMarkdown(
+      "Text <a href='this-is-a-test.md'>link</a> text",
+      UrlParsingMetadata
+    );
+    expect(res).toStrictEqual("Text <a href='parsed-url'>link</a> text");
+  });
+
+  it('should prioritize the correct match based on filePath context', () => {
+    const res = parseUrlsFromMarkdown(
+      'Check [this link](parse-this.md)',
+      UrlParsingMetadata,
+      [],
+      'parent/current-file.md'
+    );
+    expect(res).toStrictEqual('Check [this link](parsed-url)');
+  });
+
+  it('should resolve to the other parent based on filePath context', () => {
+    const res = parseUrlsFromMarkdown(
+      'Check [this link](parse-this.md)',
+      UrlParsingMetadata,
+      [],
+      'other-parent/current-file.md'
+    );
+    expect(res).toStrictEqual('Check [this link](different-parsed-url)');
+  });
+
+  it('should parse localhost links as internal links (allowing processing)', () => {
+    const res = parseUrlsFromMarkdown(
+      'Test [local](http://localhost:3000/some-doc)',
+      UrlParsingMetadata
+    );
+    expect(res).toStrictEqual('Test [local](parsed-localhost)');
+  });
+
+  it('should clean up "mention" suffix and parse correctly', () => {
+    // Il codice fa .replace(' "mention"', '')
+    const res = parseUrlsFromMarkdown(
+      'User [test](this-is-a-test.md "mention")',
+      UrlParsingMetadata
+    );
+    expect(res).toStrictEqual('User [test](parsed-url)');
+  });
+
+  it('should ignore very short filenames (<= 1 char)', () => {
+    const res = parseUrlsFromMarkdown('Check [a](a.md)', UrlParsingMetadata);
+    expect(res).toStrictEqual('Check [a](a.md)');
+  });
+
+  it('should replace all occurrences of the same link', () => {
+    const res = parseUrlsFromMarkdown(
+      '[link](this-is-a-test.md) and again [link](this-is-a-test.md)',
+      UrlParsingMetadata
+    );
+    expect(res).toStrictEqual(
+      '[link](parsed-url) and again [link](parsed-url)'
     );
   });
 
@@ -86,14 +239,65 @@ describe('parseUrlsFromMarkdown', () => {
       'This is a test string [this-is-a-test](parsed-url-with-hashtag#ending)'
     );
   });
-  it('should parse url referencing another guide', () => {
+});
+
+describe('parseUrlsFromMarkdown - GitBook /s/<spaceId> matching', () => {
+  const MetadataWithDifferentSpaceId = {
+    dirName: 'legacy-dir-name',
+    spaceId: 'new-space-id',
+    docs: [{ path: 'target-doc', url: 'resolved-target-url' }],
+  };
+
+  const GlobalMetadataWithDifferentSpaceId = [
+    MetadataWithDifferentSpaceId,
+    {
+      dirName: 'fallback-dir',
+      spaceId: 'fallback-space',
+      docs: [{ path: 'fallback-doc', url: 'resolved-fallback-url' }],
+    },
+  ];
+  it('should parse url referencing another guide spaceId', () => {
     const res = parseUrlsFromMarkdown(
-      'This is a test string [this-is-a-test](this-references-another-guide/second-test)',
+      'This is a test string [this-is-a-test](https://app.gitbook.com/o/KXYtsf32WSKm6ga638R3/s/E6d6iTzjBzUfzNoZjadZ/)',
       UrlParsingMetadata,
       GlobalMetadata
     );
     expect(res).toStrictEqual(
-      'This is a test string [this-is-a-test](other-documentation-parsed-url)'
+      'This is a test string [this-is-a-test](/pago-pa/guides/saci/2.0.0)'
+    );
+  });
+
+  it('should parse url referencing another guide spaceId even with a name match', () => {
+    const res = parseUrlsFromMarkdown(
+      'This is a test string [this-is-a-test](https://app.gitbook.com/o/KXYtsf32WSKm6ga638R3/s/E6d6iTzjBzUfzNoZjadZ/file-with-same-name.md)',
+      UrlParsingMetadata,
+      GlobalMetadata
+    );
+    expect(res).toStrictEqual(
+      'This is a test string [this-is-a-test](/pago-pa/guides/saci/2.0.0/url-with-same-name)'
+    );
+  });
+
+  it('should parse url referencing another guide dirName when SpaceId is missing', () => {
+    const res = parseUrlsFromMarkdown(
+      'This is a test string [this-is-a-test](https://app.gitbook.com/s/missing-spaceId/missing-spaceId-path)',
+      UrlParsingMetadata,
+      GlobalMetadata
+    );
+    expect(res).toStrictEqual(
+      'This is a test string [this-is-a-test](parsed-missing-spaceId-url)'
+    );
+  });
+
+  it('should not resolve when neither spaceId nor dirName matches known metadata', () => {
+    const res = parseUrlsFromMarkdown(
+      'Go [doc](https://app.gitbook.com/s/unknown-space/unknown-doc)',
+      MetadataWithDifferentSpaceId,
+      GlobalMetadataWithDifferentSpaceId
+    );
+
+    expect(res).toStrictEqual(
+      'Go [doc](https://app.gitbook.com/s/unknown-space/unknown-doc)'
     );
   });
 });

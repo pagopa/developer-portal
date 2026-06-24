@@ -271,6 +271,60 @@ describe('parseContent', () => {
     ]);
   });
 
+  it('should not convert emoji shortcuts inside code blocks', () => {
+    const code =
+      '```json\n{\n  "notificationDate": "2024-02-29T16:10:08Z"\n}\n```';
+    const result = parseContent(code, config);
+    expect(result).toStrictEqual([
+      new Markdoc.Tag(
+        'CodeBlock',
+        {
+          lineNumbers: true,
+          language: 'json',
+        },
+        ['{\n  "notificationDate": "2024-02-29T16:10:08Z"\n}\n']
+      ),
+    ]);
+  });
+
+  it('should not convert emoji shortcuts inside inline code', () => {
+    const code = 'Inline `:10:` code';
+    const result = parseContent(code, config);
+    expect(result).toStrictEqual([
+      new Markdoc.Tag('Paragraph', {}, [
+        'Inline ',
+        new Markdoc.Tag('StyledText', { style: 'code' }, [':10:']),
+        ' code',
+      ]),
+    ]);
+  });
+
+  it('should convert emoji shortcuts in Markdoc tag content', () => {
+    const markdown = '{% hint style="info" %}\n:sos:\n{% endhint %}';
+    const result = parseContent(markdown, config);
+    expect(result).toStrictEqual([
+      new Markdoc.Tag('Hint', { style: 'info' }, [
+        new Markdoc.Tag('Paragraph', {}, ['🆘']),
+      ]),
+    ]);
+  });
+
+  it('should convert emoji shortcuts in Markdoc tag titles', () => {
+    const markdown =
+      '{% code title=":sos:" %}\n```javascript\nconsole.log("hi")\n```\n{% endcode %}';
+    const result = parseContent(markdown, config);
+    expect(result).toStrictEqual([
+      new Markdoc.Tag(
+        'CodeBlock',
+        {
+          title: '🆘',
+          language: 'javascript',
+        },
+        ['console.log("hi")\n']
+      ),
+    ]);
+  });
+
   it('should parse emoji in title and convert from name to unicode', () => {
     expect(
       parseContent('## :technologist:Ideare un servizio', config)
@@ -673,6 +727,24 @@ describe('parseContent', () => {
           'This is a quote.',
           ' ',
           'Another line, same quote',
+        ]),
+      ]),
+    ]);
+  });
+
+  it('should parse columns', () => {
+    expect(
+      parseContent(
+        '{% columns %}\n{% column width="30%" %}\nContent col 1\n{% endcolumn %}\n\n{% column %}\nContent col 2\n{% endcolumn %}\n{% endcolumns %}',
+        config
+      )
+    ).toStrictEqual([
+      new Markdoc.Tag('Columns', {}, [
+        new Markdoc.Tag('Column', { width: '30%' }, [
+          new Markdoc.Tag('Paragraph', {}, ['Content col 1']),
+        ]),
+        new Markdoc.Tag('Column', {}, [
+          new Markdoc.Tag('Paragraph', {}, ['Content col 2']),
         ]),
       ]),
     ]);

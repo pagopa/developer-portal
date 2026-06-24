@@ -5,13 +5,11 @@ import { resolve } from 'path';
 
 interface StrapiSoapApiDetails {
   readonly id: number;
-  readonly attributes: {
-    readonly apiSoapDetail: {
-      readonly repositoryUrl: string;
-      readonly branch: string;
-      readonly repositoryPath: string;
-      readonly dirName: string;
-    };
+  readonly apiSoapDetail: {
+    readonly repositoryUrl: string;
+    readonly branch: string;
+    readonly repositoryPath: string;
+    readonly dirName: string;
   };
 }
 
@@ -25,7 +23,7 @@ async function main() {
   // eslint-disable-next-line functional/no-try-statements
   try {
     const { data } = await fetchFromStrapi<StrapiSoapApiDetails>(
-      `api/apis-data/?[locale]=${locale}&populate[apiSoapDetail][populate][0]=slug&populate[apiSoapDetail][populate][1]=repositoryUrl&populate[apiSoapDetail][populate][2]=dirName&filters[apiSoapDetail][$null]=false`
+      `api/apis-data/?[locale]=${locale}&populate[apiSoapDetail]=*&filters[apiSoapDetail][$null]=false`
     );
     strapiSoapApiDetails = data;
   } catch (error) {
@@ -44,8 +42,9 @@ async function main() {
   }
 
   const soapApiDetails = strapiSoapApiDetails.map(
-    (entry) => entry.attributes.apiSoapDetail
+    (entry) => entry.apiSoapDetail
   );
+  console.log('JSON CONTENT: \n', JSON.stringify(soapApiDetails, null, 2));
   await mkdir(outputDir, { recursive: true });
   await writeFile(outputPath, JSON.stringify(soapApiDetails, null, 2));
 

@@ -36,6 +36,11 @@ variable "environment" {
   description = "Environment"
 }
 
+variable "alerting_email" {
+  type        = string
+  description = "Email address used for SNS alarm subscriptions"
+}
+
 variable "strapi_api_url" {
   description = "The URL of the Strapi API."
   type        = string
@@ -51,5 +56,19 @@ variable "webinar_metrics_stage_name" {
   description = "The api webinar metrics stage name."
   type        = string
   default     = "v1"
+}
 
+variable "github_repository" {
+  description = "The GitHub repository (e.g., org/repo) allowed to assume the deploy role via OIDC."
+  type        = string
+}
+
+variable "cognito_user_pool_endpoint" {
+  description = "The endpoint of the Cognito User Pool for JWT authorization (e.g. cognito-idp.eu-south-1.amazonaws.com/eu-south-1_XXXXX)"
+  type        = string
+}
+
+variable "cognito_user_pool_client_id" {
+  description = "The Cognito User Pool Client ID used as audience for the JWT authorizer"
+  type        = string
 }

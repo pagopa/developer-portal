@@ -1,0 +1,158 @@
+# Active Campaign Integration Infrastructure Diagram
+# Developer Portal - Active Campaign Module (prod)
+
+vars: {
+  d2-config: {
+    layout-engine: elk
+    sketch: true
+  }
+}
+
+direction: right
+
+title: {
+  label: Developer Portal - Active Campaign Integration (prod)
+  near: top-center
+  shape: text
+  style.font-size: 28
+  style.bold: true
+}
+
+# External Components (from other modules)
+cognito: Cognito\nUser Pool {
+  icon: https://icons.terrastruct.com/aws%2FSecurity%2C%20Identity%2C%20&%20Compliance%2FAmazon-Cognito.svg
+  shape: image
+  style.opacity: 0.6
+}
+
+dynamodb_webinars: DynamoDB\n(WebinarSubscriptions)\nStream: KEYS_ONLY {
+  icon: https://icons.terrastruct.com/aws%2FDatabase%2FAmazon-DynamoDB.svg
+  shape: image
+  style.opacity: 0.6
+}
+
+# Event Sources
+event_sources: {
+  label: Event Sources
+
+  cloudtrail: CloudTrail\n(Cognito Events:\nUpdateUserAttributes,\nDeleteUser,\nConfirmSignUp) {
+    icon: https://icons.terrastruct.com/aws%2FManagement%20&%20Governance%2FAWS-CloudTrail.svg
+    shape: image
+  }
+
+  ddb_stream: DynamoDB\nStream\n(KEYS_ONLY) {
+    icon: https://icons.terrastruct.com/aws%2FDatabase%2FAmazon-DynamoDB.svg
+    shape: image
+  }
+}
+
+# EventBridge
+eventbridge: {
+  label: EventBridge
+
+  event_rule: EventBridge\nRule\n(Cognito Events) {
+    icon: https://icons.terrastruct.com/aws%2FApplication%20Integration%2FAmazon-EventBridge.svg
+    shape: image
+  }
+
+  pipe: EventBridge\nPipe\n(DDB → SQS\nwith transform) {
+    icon: https://icons.terrastruct.com/aws%2FApplication%20Integration%2FAmazon-EventBridge.svg
+    shape: image
+  }
+}
+
+# SQS Queues
+sqs: {
+  label: SQS Queues
+
+  fifo_queue: SQS FIFO\n(Events)\ndedup: perQueue {
+    icon: https://icons.terrastruct.com/aws%2FApplication%20Integration%2FAmazon-Simple-Queue-Service-SQS.svg
+    shape: image
+  }
+
+  dlq: SQS FIFO\n(DLQ)\nmaxReceiveCount: 1 {
+    icon: https://icons.terrastruct.com/aws%2FApplication%20Integration%2FAmazon-Simple-Queue-Service-SQS.svg
+    shape: image
+  }
+
+  resync_dlq: SQS FIFO\n(Resync DLQ) {
+    icon: https://icons.terrastruct.com/aws%2FApplication%20Integration%2FAmazon-Simple-Queue-Service-SQS.svg
+    shape: image
+  }
+}
+
+# Lambda Functions
+lambdas: {
+  label: Lambda Functions
+
+  sync: Lambda\n(Sync)\nNode.js 22\ntimeout: 30s\nconcurrency: 2 {
+    icon: https://icons.terrastruct.com/aws%2FCompute%2FAWS-Lambda.svg
+    shape: image
+  }
+
+  resync: Lambda\n(Resync)\nNode.js 22\ntimeout: 120s\nretries: 3 {
+    icon: https://icons.terrastruct.com/aws%2FCompute%2FAWS-Lambda.svg
+    shape: image
+  }
+}
+
+# SSM Parameters
+ssm: SSM\nParameter Store\n(/ac/api_key\n/ac/base_url) {
+  icon: https://icons.terrastruct.com/aws%2FManagement%20&%20Governance%2FAWS-Systems-Manager_Parameter-Store_light-bg.svg
+  shape: image
+}
+
+# External Service
+active_campaign: Active Campaign\n(External API) {
+  icon: https://icons.terrastruct.com/essentials%2F112-server.svg
+  shape: image
+  style.opacity: 0.6
+}
+
+# Monitoring
+monitoring: {
+  label: Monitoring
+
+  cloudwatch: CloudWatch\n(Alarms & Logs) {
+    icon: https://icons.terrastruct.com/aws%2FManagement%20&%20Governance%2FAmazon-CloudWatch.svg
+    shape: image
+  }
+
+  sns: SNS\n(Alerts) {
+    icon: https://icons.terrastruct.com/aws%2FApplication%20Integration%2FAmazon-Simple-Notification-Service-SNS.svg
+    shape: image
+  }
+}
+
+# --- Connections ---
+
+# Cognito events flow
+cognito -> event_sources.cloudtrail: User events\n(SignUp, Update,\nDelete)
+event_sources.cloudtrail -> eventbridge.event_rule: CloudTrail events
+eventbridge.event_rule -> sqs.fifo_queue: Send message
+
+# DynamoDB stream flow
+dynamodb_webinars -> event_sources.ddb_stream: Stream changes
+event_sources.ddb_stream -> eventbridge.pipe: Stream records\n(LATEST position)
+eventbridge.pipe -> sqs.fifo_queue: Transform & send\n(extract sub &\nwebinarId)
+
+# Sync Lambda flow
+sqs.fifo_queue -> lambdas.sync: Trigger\n(batch size: 1)
+lambdas.sync -> ssm: Read AC credentials
+lambdas.sync -> cognito: Read user data
+lambdas.sync -> dynamodb_webinars: Read subscriptions
+lambdas.sync -> active_campaign: Sync contacts\n& subscriptions
+
+# DLQ & Resync flow
+sqs.fifo_queue -> sqs.dlq: Failed messages\n(maxReceiveCount: 1)
+sqs.dlq -> lambdas.resync: Trigger\n(batch size: 1)
+lambdas.resync -> ssm: Read AC credentials
+lambdas.resync -> cognito: Read user data
+lambdas.resync -> dynamodb_webinars: Read subscriptions
+lambdas.resync -> active_campaign: Resync contacts
+sqs.dlq -> sqs.resync_dlq: Resync failures\n(maxReceiveCount: 1)
+
+# Monitoring
+monitoring.cloudwatch -> monitoring.sns: Alarm notifications
+sqs.resync_dlq -> monitoring.cloudwatch: Monitor messages
+eventbridge.pipe -> monitoring.cloudwatch: Monitor failures

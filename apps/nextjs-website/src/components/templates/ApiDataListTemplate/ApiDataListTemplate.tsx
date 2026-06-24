@@ -6,10 +6,10 @@ import { Theme } from '@/editorialComponents/types/components';
 import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
 import BannerLinks from '@/components/molecules/BannerLinks/BannerLinks';
 import { useTranslations } from 'next-intl';
-import { SEO } from '@/lib/types/seo';
-import { Product } from '@/lib/types/product';
-import { StrapiBaseApiDataList } from '@/lib/strapi/types/apiDataList';
-import { Tag } from '@/lib/types/tag';
+import type { SEO } from '@/lib/seo/types';
+import type { Product } from '@/lib/products/types';
+import type { BaseApiDataList } from '@/lib/apiDataList/types';
+import type { Tag } from '@/lib/tags/types';
 import { CardProps } from '@/components/molecules/CardsGrid/CardsGrid';
 
 export type ApiDataListPageTemplateProps = {
@@ -29,7 +29,7 @@ export type ApiDataListPageTemplateProps = {
   readonly updatedAt: string;
   readonly bannerLinks: BannerLinkProps[];
   readonly theme?: Theme;
-  readonly apiData: StrapiBaseApiDataList;
+  readonly apiData: BaseApiDataList;
   readonly seo?: SEO;
 };
 

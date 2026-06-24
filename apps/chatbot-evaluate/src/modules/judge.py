@@ -51,7 +51,7 @@ class Judge:
 
         return chat_history
 
-    def evaluate(
+    async def aevaluate(
         self,
         query_str: str,
         response_str: str,
@@ -64,10 +64,10 @@ class Judge:
             condense_prompt = self.condense_prompt_str.format(
                 chat_history=chat_history, query_str=query_str
             )
-            condense_query_response = asyncio_run(self.llm.acomplete(condense_prompt))
+            condense_query_response = await self.llm.acomplete(condense_prompt)
             query_str = condense_query_response.text.strip()
 
-        scores = self.evaluator.evaluate(
+        scores = await self.evaluator.aevaluate(
             query_str=query_str,
             response_str=response_str,
             retrieved_contexts=retrieved_contexts,

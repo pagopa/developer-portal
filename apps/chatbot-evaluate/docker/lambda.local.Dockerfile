@@ -1,4 +1,4 @@
-FROM public.ecr.aws/lambda/python:3.12
+FROM public.ecr.aws/lambda/python:3.12@sha256:2b907880cd2ebc58e8913e939e81627d57307a62e536faf0a8232b74e2557d4a
 
 ENV PYTHONPATH=$LAMBDA_TASK_ROOT
 
@@ -18,6 +18,7 @@ RUN poetry install --with dev
 
 COPY ./src ${LAMBDA_TASK_ROOT}/src
 COPY ./config ${LAMBDA_TASK_ROOT}/config
+COPY ./.google_service_account.json ${LAMBDA_TASK_ROOT}/.google_service_account.json
 
 RUN echo "appuser:x:1000:1000::/home/appuser:/bin/sh" >> /etc/passwd \
   && mkdir -p /home/appuser \

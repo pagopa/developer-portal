@@ -6,7 +6,7 @@ import SpeakerList from '@/components/organisms/SpeakerList/SpeakerList';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
 import { Alert, Box, Snackbar, useTheme } from '@mui/material';
 import SubscribeToWebinar from '@/components/molecules/SubscribeToWebinar/SubscribeToWebinar';
-import { Webinar } from '@/lib/types/webinar';
+import type { Webinar } from '@/lib/webinars/types';
 import { useUser } from '@/helpers/user.helper';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslations } from 'next-intl';
@@ -39,6 +39,7 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
     isPlayerVisible,
     livePlayerReloadToken,
     isLiveStreamAvailable,
+    setIsVideoPlaying,
   } = useWebinar();
   const showHeaderImage =
     webinarState === WebinarState.future && webinar.headerImage;
@@ -153,6 +154,7 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
             reloadPlayerToken={livePlayerReloadToken}
             isLiveStreamAvailable={isLiveStreamAvailable}
             isPlayerVisible={isPlayerVisible}
+            setIsVideoPlaying={setIsVideoPlaying}
           ></WebinarPlayerSection>
         )}
       {webinar.subscribeCtaLabel && (

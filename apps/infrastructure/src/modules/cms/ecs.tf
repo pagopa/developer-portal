@@ -32,8 +32,6 @@ resource "aws_ecs_task_definition" "cms_task_def" {
       api_token_salt             = module.secret_cms_api_token_salt.ssm_parameter_arn
       transfer_token_salt        = module.secret_cms_transfer_token_salt.ssm_parameter_arn
       jwt_secret                 = module.secret_cms_jwt_secret.ssm_parameter_arn
-      access_key_id              = module.secret_cms_access_key_id.ssm_parameter_arn
-      access_key_secret          = module.secret_cms_access_key_secret.ssm_parameter_arn
       bucket_full_url            = module.s3_bucket_cms.s3_bucket_bucket_regional_domain_name
       cdn_url                    = "https://${aws_route53_record.strapi_media_library.name}"
       aws_bucket_endpoint        = "https://s3.${var.aws_region}.amazonaws.com"

@@ -7,6 +7,7 @@ const DOCUMENTATION_ABSOLUTE_PATH = path.resolve(DOCUMENTATION_PATH);
 // Example: docs/0OMsoqOg9GiJ2xusVHMv/suolo-spazi-e-beni-pubblici/segnalazioni-suggerimenti-e-reclami.md -> suolo-spazi-e-beni-pubblici/segnalazioni-suggerimenti-e-reclami
 export function sitePathFromLocalPath(
   filePath: string,
+  dirName: string,
   landingFile?: string
 ): string | undefined {
   const absoluteFilePath = path.resolve(filePath);
@@ -18,15 +19,24 @@ export function sitePathFromLocalPath(
     .split(path.sep)
     .join('/')
     .replace(/^(\.\.\/)+/, '');
-  const segments = normalizedRelativePath
+  const segments: readonly string[] = normalizedRelativePath
     .split('/')
-    .filter((segment) => segment.length > 0);
+    .filter((segment: string) => segment.length > 0);
+  const dirNameSegments = dirName.split('/').filter((part) => part.length > 0);
+  const dirNameIndex = segments.findIndex((_, index) =>
+    dirNameSegments.every(
+      (dirNamePart, dirNamePartIndex) =>
+        segments[index + dirNamePartIndex] === dirNamePart
+    )
+  );
 
   if (segments.length < 2) {
     return;
   }
 
-  const [, ...docSegments] = segments; // drop dirName
+  const startIndex =
+    dirNameIndex < 0 ? 0 : dirNameIndex + dirNameSegments.length;
+  const docSegments = segments.slice(startIndex, segments.length);
   if (docSegments.length === 0) {
     return;
   }

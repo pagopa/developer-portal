@@ -1,5 +1,5 @@
 import { defaultOgTagImage, websiteName } from '@/config';
-import { SEO } from '@/lib/types/seo';
+import type { SEO } from '@/lib/seo/types';
 import { Metadata, ResolvedMetadata } from 'next';
 import { SUPPORTED_LOCALES } from '@/locales';
 
@@ -73,7 +73,7 @@ export const makeMetadataFromStrapi = (seo: SEO): Metadata => {
     title: seo.metaTitle,
     description: seo.metaDescription,
     url: seo.canonicalURL,
-    image: seo.metaImage?.data?.attributes?.url,
+    image: seo.metaImage?.url,
   });
 
   const metadata: Metadata = {

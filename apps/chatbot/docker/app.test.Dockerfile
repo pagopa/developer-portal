@@ -1,4 +1,4 @@
-FROM python:3.12.4-slim-bullseye
+FROM python:3.12.4-slim-bullseye@sha256:26ce493641ad3b1c8a6202117c31340c7bbb2dc126f1aeee8ea3972730a81dc6
 ARG DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && \
@@ -44,4 +44,5 @@ RUN chown -R appuser:appuser /app
 
 USER appuser
 
-CMD ["fastapi", "dev", "src/app/main.py", "--port", "8080", "--host", "0.0.0.0", "--loop", "asyncio"]
+ENTRYPOINT ["bash", "./scripts/entrypoint.test.sh"]
+CMD ["bash", "./scripts/run.test.sh"]

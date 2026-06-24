@@ -1,16 +1,15 @@
-import { getApiData } from '@/lib/api';
+import { ApiDataListRepository } from '@/lib/apiDataList';
 import ProductLayout, {
   ProductLayoutProps,
 } from '@/components/organisms/ProductLayout/ProductLayout';
-import { Product } from '@/lib/types/product';
+import { Product } from '@/lib/products/types';
 import { Metadata, ResolvingMetadata } from 'next';
 import {
   makeMetadata,
   makeMetadataFromStrapi,
 } from '@/helpers/metadata.helpers';
-import { ApiDataParams } from '@/lib/types/apiDataParams';
 import PageNotFound from '@/app/[locale]/not-found';
-import { SEO } from '@/lib/types/seo';
+import type { SEO } from '@/lib/seo/types';
 import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
 import {
   breadcrumbItemByProduct,
@@ -18,6 +17,15 @@ import {
   productToBreadcrumb,
 } from '@/helpers/structuredData.helpers';
 import ApiSection from '@/components/molecules/ApiSection/ApiSection';
+import { notFound } from 'next/navigation';
+
+type ApiDataParams = {
+  readonly params: Promise<{
+    readonly locale: string;
+    readonly productSlug: string;
+    readonly apiDataSlug: string;
+  }>;
+};
 
 export type ApiDataPageProps = {
   readonly title?: string;
@@ -41,7 +49,14 @@ export const generateMetadata = async (
 ): Promise<Metadata> => {
   const params = await props.params;
   const resolvedParent = await parent;
-  const ApiDataProps = await getApiData(params.locale, params.apiDataSlug);
+  const ApiDataProps = await ApiDataListRepository.getBySlug(
+    params.locale,
+    params.apiDataSlug
+  );
+  if (!ApiDataProps) {
+    console.error(`Failed to fetch API data for slug: ${params.apiDataSlug}`);
+    notFound();
+  }
 
   if (ApiDataProps?.seo) {
     return makeMetadataFromStrapi(ApiDataProps.seo);
@@ -59,7 +74,14 @@ export const generateMetadata = async (
 
 const ApiDataPage = async (props: ApiDataParams) => {
   const params = await props.params;
-  const apiDataProps = await getApiData(params.locale, params.apiDataSlug);
+  const apiDataProps = await ApiDataListRepository.getBySlug(
+    params.locale,
+    params.apiDataSlug
+  );
+  if (!apiDataProps) {
+    // eslint-disable-next-line functional/no-throw-statements
+    throw new Error('Failed to fetch data');
+  }
 
   const structuredData = generateStructuredDataScripts({
     breadcrumbsItems: [

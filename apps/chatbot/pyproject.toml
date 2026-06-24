@@ -14,6 +14,7 @@ hypercorn = "^0.18.0"
 llama-index = "^0.14.15"
 llama-index-embeddings-google-genai = "^0.3.2"
 llama-index-llms-google-genai = "^0.8.7"
+llama-index-postprocessor-google-rerank = "^0.1.0"
 llama-index-storage-docstore-redis = "^0.4.1"
 llama-index-storage-index-store-redis = "^0.5.1"
 llama-index-vector-stores-redis = "^0.6.2"
@@ -29,12 +30,13 @@ pyyaml = "^6.0.3"
 toml = "^0.10.2"
 
 [tool.poetry.group.test.dependencies]
+debugpy = "^1.8"
 httpx = "^0.28.1"
 pytest = "^9.0.2"
 
 [tool.poetry.group.dev.dependencies]
-jupyter = "^1.1.1"
-jupyterlab = "^4.5.4"
+jupyter = "1.1.1"
+jupyterlab = "4.5.4"
 
 [build-system]
 build-backend = "poetry.core.masonry.api"

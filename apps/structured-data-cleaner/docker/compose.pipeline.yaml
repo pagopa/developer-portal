@@ -1,0 +1,16 @@
+---
+# Pipeline override – run on top of compose.yaml to execute services sequentially:
+#   docker compose --project-directory . -f docker/compose.yaml -f docker/compose.pipeline.yaml up
+#
+# Services can still be run independently with compose.yaml alone.
+
+services:
+  extractor:
+    depends_on:
+      parser:
+        condition: service_completed_successfully
+
+  structured-data-cleaner:
+    depends_on:
+      extractor:
+        condition: service_completed_successfully

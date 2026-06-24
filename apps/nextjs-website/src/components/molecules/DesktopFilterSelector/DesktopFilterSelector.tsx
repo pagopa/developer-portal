@@ -1,6 +1,6 @@
 import { Stack } from '@mui/material';
 import FilterButton from '@/components/atoms/FilterButton/FilterButton';
-import { Media } from '@/lib/types/media';
+import type { Media } from '@/lib/media/types';
 
 type DesktopFilterSelectorProps = {
   selectedFilter: number;
@@ -8,11 +8,7 @@ type DesktopFilterSelectorProps = {
   setSelectedFilter: (selectedFilter: number) => void;
   selectorFilters: readonly {
     name: string;
-    icon: {
-      data: {
-        attributes: Media;
-      };
-    };
+    icon: Media;
   }[];
 };
 
@@ -47,7 +43,7 @@ const DesktopFilterSelector = ({
           }}
           isSelected={index === selectedFilter}
           label={category.name}
-          icon={category.icon.data.attributes}
+          icon={category.icon}
         ></FilterButton>
       ))}
     </Stack>

@@ -9,6 +9,11 @@ variable "environment" {
   description = "Environment"
 }
 
+variable "alerting_topic_arn" {
+  type        = string
+  description = "ARN of the shared SNS topic used for CloudWatch alarm notifications"
+}
+
 variable "tags" {
   type = map(any)
   default = {
@@ -120,10 +125,15 @@ variable "api_gateway" {
 
 variable "ecs_monitoring" {
   type = object({
-    cpu       = number
-    memory    = number
-    image_uri = string
-    port      = number
+    cpu                      = number
+    memory                   = number
+    image_uri                = string
+    port                     = number
+    desired_count            = optional(number, 1)
+    autoscaling_max_capacity = optional(number, 1)
+    autoscaling_min_capacity = optional(number, 1)
+
+
   })
   description = "Langfuse configuration for the AI chatbot"
 }
@@ -154,11 +164,17 @@ variable "waf_block_requests_to_queries_evaluation_window_sec" {
 
 variable "models" {
   type = object({
-    provider   = string
-    generation = string
-    embeddings = string
-    reranker   = string
+    provider      = string
+    generation    = string
+    embeddings    = string
+    reranker      = string
+    use_multi_rag = bool
   })
 
   description = "The models used by the AI chatbot"
+}
+
+variable "hosted_zone_id" {
+  type        = string
+  description = "The Route53 hosted zone ID for custom domain"
 }

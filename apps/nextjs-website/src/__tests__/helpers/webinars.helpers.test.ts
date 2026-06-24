@@ -2,8 +2,8 @@ import {
   getFutureWebinarsFrom,
   getPastWebinarsFrom,
 } from '@/helpers/webinars.helpers';
-import { Webinar } from '@/lib/types/webinar';
-import { mediaRasterJson } from '@/lib/strapi/__tests__/fixtures/media';
+import { Webinar } from '@/lib/webinars/types';
+import { mediaRasterJson } from '@/lib/media/__tests__/fixtures';
 
 const testWebinar: Webinar = {
   title: 'Test Webinar',
@@ -22,7 +22,7 @@ const testWebinar: Webinar = {
     },
     {
       type: 'image',
-      image: mediaRasterJson.data.attributes,
+      image: mediaRasterJson,
       children: [
         {
           type: 'text',

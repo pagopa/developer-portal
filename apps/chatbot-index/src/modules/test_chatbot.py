@@ -22,7 +22,7 @@ def test_aws_credentials() -> None:
 def test_ssm_params() -> None:
 
     if SETTINGS.provider == "google":
-        assert SETTINGS.google_api_key is not None
+        assert SETTINGS.google_service_account is not None
 
     assert SETTINGS.index_id is not None
 

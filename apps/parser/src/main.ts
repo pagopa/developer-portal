@@ -34,7 +34,6 @@ const PARSER_CONFIG: ParserConfig = {
   REQUEST_TIMEOUT_MS: env.requestTimeoutMs,
 };
 export const BASE_HOST_TOKEN = new URL(env.baseUrl).hostname.replace("www.", "").toLowerCase();
-export const SHOULD_CREATE_FILES_LOCALLY = env.shouldCreateFilesLocally;
 export const S3_BUCKET_NAME = env.S3BucketName;
 
 let BASE_URL = env.baseUrl;
@@ -42,9 +41,6 @@ let BASE_URL = env.baseUrl;
 async function main(): Promise<void> {
   try {
     await assertReachable(env.baseUrl, PARSER_CONFIG.REQUEST_TIMEOUT_MS);
-    if (SHOULD_CREATE_FILES_LOCALLY) {
-      ensureDirectory(PARSER_CONFIG.OUTPUT_DIRECTORY);
-    }
     const browser = await puppeteer.launch({
       headless: true,
       args: ['--no-sandbox', '--disable-setuid-sandbox'],

@@ -12,6 +12,7 @@ import {
 import { ButtonNaked } from '@/components/atoms/ButtonNaked/ButtonNaked';
 import { useTranslations } from 'next-intl';
 import { ReactNode } from 'react';
+import { MAX_INPUT_LENGTH } from '@/helpers/auth.helpers';
 
 export type ProfileDataCardItemProps = {
   id: string;
@@ -20,6 +21,7 @@ export type ProfileDataCardItemProps = {
   valueFallback?: ReactNode;
   editable: boolean;
   required: boolean;
+  error?: string;
 } & (
   | { type: 'select'; values: { title: string; value: string }[] }
   | { type: 'text' }
@@ -43,7 +45,7 @@ export const ProfileDataCardItem = (
           {infoCardItem.type === 'text' ? (
             infoCardItem.required ? (
               <RequiredTextField
-                inputProps={{ maxlength: 100 }}
+                inputProps={{ maxLength: MAX_INPUT_LENGTH }}
                 InputProps={{
                   sx: {
                     '& input': {
@@ -58,11 +60,13 @@ export const ProfileDataCardItem = (
                     infoCardItem.onValue(value);
                   }
                 }}
-                helperText={t('shared.requiredFieldError')}
+                {...(infoCardItem.error
+                  ? { error: true, helperText: infoCardItem.error }
+                  : { helperText: t('shared.requiredFieldError') })}
               />
             ) : (
               <TextField
-                inputProps={{ maxlength: 100 }}
+                inputProps={{ maxLength: MAX_INPUT_LENGTH }}
                 InputProps={{
                   sx: {
                     '& input': {
@@ -81,6 +85,8 @@ export const ProfileDataCardItem = (
                 value={infoCardItem.value}
                 label={infoCardItem.title}
                 size='small'
+                error={!!infoCardItem.error}
+                helperText={infoCardItem.error}
               />
             )
           ) : (

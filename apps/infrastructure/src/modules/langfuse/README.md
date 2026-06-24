@@ -27,6 +27,9 @@ No requirements.
 
 | Name | Type |
 |------|------|
+| [aws_appautoscaling_scheduled_action.scale_down](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/appautoscaling_scheduled_action) | resource |
+| [aws_appautoscaling_scheduled_action.scale_up](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/appautoscaling_scheduled_action) | resource |
+| [aws_appautoscaling_target.ecs_services](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/appautoscaling_target) | resource |
 | [aws_cloudwatch_log_group.clickhouse](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_log_group) | resource |
 | [aws_cloudwatch_log_group.langfuse_cache_engine_log](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_log_group) | resource |
 | [aws_cloudwatch_log_group.langfuse_cache_slow_log](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_log_group) | resource |
@@ -77,6 +80,7 @@ No requirements.
 | [aws_security_group.langfuse_web](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
 | [aws_security_group.langfuse_worker](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
 | [aws_security_group.lb](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
+| [aws_security_group_rule.langfuse_web_lambda_ingress](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_service_discovery_private_dns_namespace.langfuse](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/service_discovery_private_dns_namespace) | resource |
 | [aws_service_discovery_service.clickhouse](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/service_discovery_service) | resource |
 | [aws_service_discovery_service.langfuse-web](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/service_discovery_service) | resource |
@@ -111,6 +115,7 @@ No requirements.
 | <a name="input_database_min_capacity"></a> [database\_min\_capacity](#input\_database\_min\_capacity) | Minimum capacity for Langfuse DB Aurora Serverless v2 | `number` | `0.5` | no |
 | <a name="input_database_user"></a> [database\_user](#input\_database\_user) | Database user for Langfuse Aurora Serverless v2 | `string` | `"langfuse"` | no |
 | <a name="input_force_delete"></a> [force\_delete](#input\_force\_delete) | Whether to force delete resources | `bool` | `false` | no |
+| <a name="input_lambda_security_group_id"></a> [lambda\_security\_group\_id](#input\_lambda\_security\_group\_id) | Security group ID of the lambda monitor to allow access to langfuse-web | `string` | `null` | no |
 | <a name="input_master_user_password_param_arn"></a> [master\_user\_password\_param\_arn](#input\_master\_user\_password\_param\_arn) | ARN of the SSM parameter containing the Cognito master user password when reusing an existing user pool | `string` | `null` | no |
 | <a name="input_module"></a> [module](#input\_module) | Prefix for resources | `string` | `"langfuse"` | no |
 | <a name="input_web_desire_count"></a> [web\_desire\_count](#input\_web\_desire\_count) | Desired count for Langfuse Web | `number` | `1` | no |
@@ -118,4 +123,7 @@ No requirements.
 
 ## Outputs
 
-No outputs.
+| Name | Description |
+|------|-------------|
+| <a name="output_load_balancer"></a> [load\_balancer](#output\_load\_balancer) | The load balancer details |
+| <a name="output_service_discovery_endpoint"></a> [service\_discovery\_endpoint](#output\_service\_discovery\_endpoint) | The private address of the service discovery of langfuse-web |

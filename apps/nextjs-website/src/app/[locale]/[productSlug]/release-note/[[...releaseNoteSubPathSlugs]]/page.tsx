@@ -1,15 +1,15 @@
 import ProductLayout, {
   ProductLayoutProps,
 } from '@/components/organisms/ProductLayout/ProductLayout';
-import { Product } from '@/lib/types/product';
-import { SEO } from '@/lib/types/seo';
+import { Product } from '@/lib/products/types';
+import type { SEO } from '@/lib/seo/types';
 import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
 import {
   convertSeoToStructuredDataArticle,
   productToBreadcrumb,
 } from '@/helpers/structuredData.helpers';
 import { getReleaseNote } from '@/lib/api';
-import { getUrlReplaceMapProps } from '@/lib/cmsApi';
+import { getUrlReplaceMap } from '@/lib/api';
 import {
   BreadcrumbItem,
   gitBookPageToBreadcrumbs,
@@ -23,7 +23,7 @@ import {
   makeMetadata,
   makeMetadataFromStrapi,
 } from '@/helpers/metadata.helpers';
-import { BreadcrumbSegment } from '@/lib/types/path';
+import type { BreadcrumbSegment } from '@/lib/paths/types';
 import { baseUrl } from '@/config';
 import PageNotFound from '@/app/[locale]/not-found';
 
@@ -87,7 +87,7 @@ const ReleaseNotePage = async ({
     ['release-note', ...(releaseNoteSubPathSlugs || [])]
   );
 
-  const urlReplaceMap = await getUrlReplaceMapProps(locale);
+  const urlReplaceMap = await getUrlReplaceMap(locale);
 
   if (!releaseNoteProps) {
     return <PageNotFound />;

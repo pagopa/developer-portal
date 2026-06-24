@@ -1,5 +1,102 @@
 # infrastructure
 
+## 12.0.0
+
+### Major Changes
+
+- dc2096d: Chatbot lambda monitor
+
+### Minor Changes
+
+- 99862c3: New feature flag NEXT_PUBLIC_WEBINAR_HEARTBEAT_ENABLED to enable webinar heartbeat
+- dc2096d: Scale down langfuse 2 in DEV only
+- b374767: Set cors headers in strapi cms through AWS alb
+- 0bf21a4: Removes AWS resources used to deploy langfuse 2.xx. We migrated recently to langfuse 3.xx
+- dc2096d: New env variable in lambda evaluate and api with location for vertex api. Removed google api keys
+- f27bc04: Cloud front distribution for static content costom error response for 403 error to map it to 404 so browsers receive the semantically correct response.
+- dc2096d: Update clickhouse cpu
+- dc2096d: Update chb_model id value
+- de7726f: Update Terraform state locking to use S3-native locking. The existing DynamoDB `terraform-lock` table remains in place for now and will be removed in a follow-up change.
+- dc2096d: Update Langfuse clickhouse EFS from bursting to elastic.
+- dc2096d: Fix missed iam resource in lambda evaluate and index.
+
+### Patch Changes
+
+- dc2096d: Update clickhouse task definition ram and cpu
+
+## 11.3.0
+
+### Minor Changes
+
+- 8940f72: Update S3 video recording resource base policy to allow the role ContentManager\* to upload files.
+
+## 11.2.0
+
+### Minor Changes
+
+- 6d58887: Dos68 API Gateway configuration based on openapi.json file instead of Terraform resources and proxies
+- b26e564: Refactor module strapi_migration to create a temporary strapi4 stack as a backup to migrate to strapi v5
+
+## 11.1.0
+
+### Minor Changes
+
+- d64e0fa: removes the AWS infrastructure components to test the new version of Strapi 5 whilst retaining the previous version
+- ce75bdb: Poc dos68k chatbot with new infrastructure module.
+
+## 11.0.0
+
+### Major Changes
+
+- c76af59: - Refactor: new module auth where we moved the developer portal cognito user pool.
+  - ApiGw http api with cognito auth to expose the webinar ingest url.
+
+### Minor Changes
+
+- 452e439: Fix static-content cloudfront security headers
+- d6af739: Update lambda function code since the athena query it has to execute changed.
+
+## 10.2.0
+
+### Minor Changes
+
+- c46ac66: Open next new env variable the client needs to send webinar metrics.
+
+## 10.1.0
+
+### Minor Changes
+
+- 3259512: CloudFront security headers to prevent clickjacking
+
+## 10.0.0
+
+### Major Changes
+
+- ec4f8bd: Infrastructure to store webinars view metrics in S3
+
+### Minor Changes
+
+- a8321ba: New env variable for chatbot-api chb-use-multirag
+- 2c47a12: Lambda evaluate new env variables ragas max workers and max retries
+
+## 9.1.0
+
+### Minor Changes
+
+- 54b0b3c: Overwrite cloufront Server http header for all distribution
+
+## 9.0.0
+
+### Major Changes
+
+- 9546f7b: Fix iam policy deploy website to allow deploy cognito functions too.
+- 6d0c7d9: Lambda function and api gateway rest api to query ivs metrics
+
+### Minor Changes
+
+- 7b2f733: Removed cloudfront function build. From now on we'll just go with java script
+- d0b8a1c: Github action to deploy cognito functions
+
 ## 8.3.0
 
 ### Minor Changes

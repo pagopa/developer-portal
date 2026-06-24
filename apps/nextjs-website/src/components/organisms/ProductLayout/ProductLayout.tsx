@@ -1,12 +1,12 @@
 'use client';
 import ProductHeader from '@/components/atoms/ProductHeader/ProductHeader';
-import { Product } from '@/lib/types/product';
+import { Product } from '@/lib/products/types';
 import React, { ReactNode, FC } from 'react';
 import BannerLinks from '@/components/molecules/BannerLinks/BannerLinks';
 import ProductBreadcrumbs from '@/components/atoms/ProductBreadcrumbs/ProductBreadcrumbs';
 import { productPageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
 import { BannerLinkProps } from '@/components/atoms/BannerLink/BannerLink';
-import { BreadcrumbSegment } from '@/lib/types/path';
+import type { BreadcrumbSegment } from '@/lib/paths/types';
 import EContainer from '@/editorialComponents/EContainer/EContainer';
 import ContentWrapper from '@/components/atoms/ContentWrapper/ContentWrapper';
 import { Box } from '@mui/material';
@@ -36,7 +36,9 @@ const ProductLayout: FC<LayoutPropsWithChildren> = ({
   structuredData,
 }) => {
   const { locale } = useParams<{ locale: string }>();
-  const pathWithLocale = `/${locale}${path}`;
+  const normalizedPath = path?.startsWith(`/${locale}`)
+    ? path
+    : `/${locale}${path}`;
   return (
     <Box
       sx={{
@@ -53,7 +55,7 @@ const ProductLayout: FC<LayoutPropsWithChildren> = ({
         <ProductHeader
           locale={locale}
           product={product}
-          path={pathWithLocale}
+          path={normalizedPath}
         />
       )}
       {product && showBreadcrumbs && (

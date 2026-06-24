@@ -1,5 +1,62 @@
 # gitbook-docs
 
+## 2.4.0
+
+### Minor Changes
+
+- 56c2a53: Add spaceId to urlParsing logic. dirName is still used as a fallback to prevent errors
+
+### Patch Changes
+
+- 56c2a53: Fix parsing for app.gitbook urls
+- 86c1810: Add support for nested folders in URL parsing and add test for sitePathFromLocalPath
+- c0d1fa7: Cleanup: remove unused metadata generation scripts from gitbook-docs package
+
+## 2.3.0
+
+### Minor Changes
+
+- edbcd63: Add columns in gitbook parsing and nextjs components
+
+### Patch Changes
+
+- 2720558: Fix sitePathFromS3Path to add support for dirNames referencing nested directories
+
+## 2.2.1
+
+### Patch Changes
+
+- 3bc622e: Code cleanup and make sitemap generation optional
+
+## 2.2.0
+
+### Minor Changes
+
+- 3954353: Update sync to match Strapi 5 responses and align synced file generation
+
+### Patch Changes
+
+- 32ed4e8: Fix icons for webinar speaker in solution page
+- 31554d2: Fix populate for release notes in synch workflow
+- 555fcd4: Upgrade markdown-it in gitbook-docs
+
+## 2.1.0
+
+### Minor Changes
+
+- 6d30d53: Update emoji parsing for markdoc
+
+### Patch Changes
+
+- a487eeb: Fix default pipeline character
+- a9f0ff5: Add tests and a small backward-compatible fix for url parsing
+
+## 2.0.0
+
+### Major Changes
+
+- aa66fe8: Remove root metadata generation flag
+
 ## 1.8.2
 
 ### Patch Changes

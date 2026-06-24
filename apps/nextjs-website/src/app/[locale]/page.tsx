@@ -9,7 +9,6 @@ import {
   makeMetadataFromStrapi,
 } from '@/helpers/metadata.helpers';
 import { baseUrl } from '@/config';
-import { getHomepageProps } from '@/lib/cmsApi';
 
 export const dynamic = 'force-dynamic';
 
@@ -20,10 +19,11 @@ import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataS
 import { websiteWithContext } from '@/helpers/structuredData.helpers';
 import { CardsGridProps } from '@/components/molecules/CardsGrid/CardsGrid';
 import { CtaSlideProps } from '@/components/atoms/CtaSlide/CtaSlide';
-import { Webinar } from '@/lib/types/webinar';
-import { SEO } from '@/lib/types/seo';
+import type { Webinar } from '@/lib/webinars/types';
+import type { SEO } from '@/lib/seo/types';
 import WebinarHeaderBanner from '@/components/atoms/WebinarHeaderBanner/WebinarHeaderBanner';
 import WebinarsSection from '@/components/organisms/WebinarsSection/WebinarsSection';
+import { HomepageRepository } from '@/lib/homepage';
 
 type EcosystemCtaProps = {
   readonly variant?: 'text' | 'contained' | 'outlined';
@@ -67,7 +67,7 @@ export async function generateMetadata(props: {
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await props.params;
-  const homepage = await getHomepageProps(locale);
+  const homepage = await HomepageRepository.get(locale);
 
   return homepage.seo
     ? makeMetadataFromStrapi(homepage.seo)
@@ -89,7 +89,7 @@ const Home = async ({ params }: { params: Promise<{ locale: string }> }) => {
     ecosystem,
     comingsoonDocumentation,
     seo,
-  }: HomepageProps = await getHomepageProps(locale);
+  }: HomepageProps = await HomepageRepository.get(locale);
 
   const structuredData = generateStructuredDataScripts({
     seo: seo,
@@ -126,12 +126,13 @@ const Home = async ({ params }: { params: Promise<{ locale: string }> }) => {
         )}
         {ecosystem && <Ecosystem {...ecosystem} />}
         {webinars.length > 0 && <WebinarsSection webinars={webinars} />}
-        {comingsoonDocumentation.links.length > 0 && (
-          <RelatedLinks
-            title={comingsoonDocumentation.title}
-            links={comingsoonDocumentation.links}
-          />
-        )}
+        {comingsoonDocumentation?.links &&
+          comingsoonDocumentation.links.length > 0 && (
+            <RelatedLinks
+              title={comingsoonDocumentation.title}
+              links={comingsoonDocumentation.links}
+            />
+          )}
       </ContentWrapper>
     </>
   );

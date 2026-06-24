@@ -20,7 +20,7 @@ import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import CheckIcon from '@mui/icons-material/Check';
 import { WebinarState } from '@/helpers/webinar.helpers';
 
-const MAX_QUESTION_LENGTH = 240;
+const MAX_QUESTION_LENGTH = 200;
 
 type FormState = 'submitting' | 'submitted' | undefined;
 type WebinarQuestionsFormProps = {

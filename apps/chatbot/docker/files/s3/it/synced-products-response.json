@@ -1,30 +1,103 @@
-[
-  {
-    "id": 39,
-    "attributes": {
+{
+  "data": [
+    {
+      "id": 10,
       "name": "Firma con IO",
-      "description": "Richiedi la Firma Elettronica Certificata su contratti e documenti. Le cittadine e i cittadini possono firmare direttamente sull’app IO.",
       "slug": "firma-con-io",
-      "createdAt": "2024-04-10T09:52:36.575Z",
-      "updatedAt": "2026-02-03T14:07:41.524Z",
-      "publishedAt": "2026-01-12T11:33:55.301Z",
-      "locale": "it",
       "shortName": "Firma con IO",
-      "isVisible": true
-    }
-  },
-  {
-    "id": 68,
-    "attributes": {
-      "name": "Prodotto delle nostre menti contorte",
-      "description": "descrizione cervellotica: il prodotto delle nostre menti contorte serve solo per fare dei test del meccanismo di sync",
-      "slug": "pdnmc",
-      "createdAt": "2025-11-14T15:47:43.475Z",
-      "updatedAt": "2026-02-03T14:11:10.733Z",
-      "publishedAt": "2025-12-17T14:50:12.401Z",
+      "description": "Richiedi la Firma Elettronica Certificata su contratti e documenti. Le cittadine e i cittadini possono firmare direttamente sull’app IO.",
+      "isVisible": true,
+      "createdAt": "2024-04-10T09:52:36.575Z",
+      "updatedAt": "2026-03-16T14:52:05.465Z",
+      "publishedAt": "2024-04-10T09:52:38.360Z",
       "locale": "it",
-      "shortName": "pdnmc",
-      "isVisible": true
+      "documentId": "murwofnwhc3c5y4smngo7d0t"
+    },
+    {
+      "id": 3,
+      "name": "PDND Interoperabilità",
+      "slug": "pdnd-interoperabilita",
+      "shortName": "PDND",
+      "description": "Integra i tuoi servizi tramite PDND Interoperabiltà, la piattaforma che abilita lo scambio di servizi tra gli enti. ",
+      "isVisible": true,
+      "createdAt": "2024-04-17T15:19:07.966Z",
+      "updatedAt": "2026-03-16T14:52:49.435Z",
+      "publishedAt": "2025-01-23T15:13:57.857Z",
+      "locale": "it",
+      "documentId": "f85chg2mu9ii02xpcxj0hica"
+    },
+    {
+      "id": 5,
+      "name": "SEND - Servizio Notifiche Digitali",
+      "slug": "send",
+      "shortName": "SEND",
+      "description": "Invia comunicazioni a valore legale con un processo di notificazione gestito interamente dalla piattaforma.",
+      "isVisible": true,
+      "createdAt": "2024-04-10T09:54:19.309Z",
+      "updatedAt": "2026-03-16T14:53:26.128Z",
+      "publishedAt": "2024-04-10T09:54:20.623Z",
+      "locale": "it",
+      "documentId": "o1e5ka6qil8spka74lrzte4u"
+    },
+    {
+      "id": 6,
+      "name": "Piattaforma pagoPA",
+      "slug": "pago-pa",
+      "shortName": "pagoPA",
+      "description": "Gestisci gli incassi in modo centralizzato e con immediata riconciliazione delle posizioni debitorie.",
+      "isVisible": true,
+      "createdAt": "2024-04-10T09:53:46.429Z",
+      "updatedAt": "2026-03-16T15:00:29.481Z",
+      "publishedAt": "2024-04-10T09:53:47.542Z",
+      "locale": "it",
+      "documentId": "g49f7poimcurqyo8tdj9uqe2"
+    },
+    {
+      "id": 7,
+      "name": "IO, l’app dei servizi pubblici",
+      "slug": "app-io",
+      "shortName": "App IO",
+      "description": "Raccogli tutti i servizi digitali del tuo ente in un’unica piattaforma e interagisci in modo semplice e sicuro con i cittadini.",
+      "isVisible": true,
+      "createdAt": "2024-04-09T15:23:29.012Z",
+      "updatedAt": "2026-03-16T15:00:39.014Z",
+      "publishedAt": "2024-04-10T09:49:28.943Z",
+      "locale": "it",
+      "documentId": "nw4eg3ik3pd8r1xwmg7oemlt"
+    },
+    {
+      "id": 9,
+      "name": "PARI",
+      "slug": "pari",
+      "shortName": "PARI",
+      "description": "Gestisci gli incentivi pubblici in modo semplice e sicuro per cittadini ed esercenti",
+      "isVisible": true,
+      "createdAt": "2025-10-02T12:41:38.471Z",
+      "updatedAt": "2026-03-16T14:51:47.283Z",
+      "publishedAt": "2025-10-02T12:47:44.990Z",
+      "locale": "it",
+      "documentId": "q9clfoq99c9u0azoew8ixy8z"
+    },
+    {
+      "id": 12,
+      "name": "SEPA Request To Pay",
+      "slug": "srtp",
+      "shortName": "SRTP",
+      "description": "La soluzione per digitalizzare end-to-end i pagamenti verso la PA",
+      "isVisible": true,
+      "createdAt": "2025-09-11T10:19:04.290Z",
+      "updatedAt": "2026-03-16T14:53:48.430Z",
+      "publishedAt": "2025-09-11T11:59:56.774Z",
+      "locale": "it",
+      "documentId": "fj5mwkygve2he17x0yheh809"
+    }
+  ],
+  "meta": {
+    "pagination": {
+      "page": 1,
+      "pageSize": 250,
+      "pageCount": 1,
+      "total": 7
     }
   }
-]
+}

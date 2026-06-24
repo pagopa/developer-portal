@@ -2,8 +2,7 @@
 
 This folder contains all the details to build a multi-agentic system (a system composed of multiple collaborating AI agents), named **Discovery**, with RAG (Retrieval-Augmented Generation, which enhances responses by retrieving relevant information from external sources) using the documentation provided in [`PagoPA Developer Portal`](https://developer.pagopa.it/).
 
-This chatbot uses [Google](https://ai.google.dev/) as provider; specifically, it uses an LLM and an Embedder models of the [Gemini](https://ai.google.dev/gemini-api/docs/models) family.
-Even though the provider is Google, we stored its Gemini API key in the AWS SSM parameter store.
+This chatbot uses [Google](https://ai.google.dev/) as provider; specifically, it uses an LLM and an Embedder models of the [Gemini](https://ai.google.dev/gemini-api/docs/models) family via Google Cloud's Vertex AI, authenticated with a Google Cloud service account (see the **Gemini** section below for setup details).
 
 The multi agentic system and the Retrieval-Augmented Generation (RAG) tools are implemented using [llama-index](https://docs.llamaindex.ai/en/stable/).
 
@@ -12,6 +11,14 @@ The multi agentic system and the Retrieval-Augmented Generation (RAG) tools are 
 The LLM observability is done using [Langfuse](https://langfuse.com/) deployed on AWS.
 
 This folder contains the code and the API that are deployed in an AWS lambda function called **AWS lambda API**, read below for furher information.
+
+## Gemini
+
+If you wish to use Gemini models, you need to:
+
+- create a project in Google Cloud Platform
+- create google service account and store it into the file `.google_service_account.json`
+- ensure that you can use [VertexAI](https://cloud.google.com/vertex-ai?hl=en) and [Discovery Engine](https://docs.cloud.google.com/generative-ai-app-builder/docs/reference/rest)
 
 ## Docker
 
@@ -93,7 +100,13 @@ Sucessively, run:
 If you want to run only a subset of tests, enter into the container bash:
 
 ```bash
-docker compose -f docker/compose.test.yaml run bash
+docker compose -f docker/compose.test.yaml run api bash
+```
+
+To use your IDE debug (we've tested on [Antigravity](https://antigravity.google/)), check the script
+
+```bash
+./docker/docker-compose-run-debug.sh
 ```
 
 Initialize AWS services:

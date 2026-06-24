@@ -1,11 +1,16 @@
 import { CircularProgress, Link, Typography, useTheme } from '@mui/material';
 import { useTranslations } from 'next-intl';
-import { LoaderPhase } from '@/lib/types/loader';
 import DoneIcon from '@mui/icons-material/Done';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import { Dispatch, SetStateAction, useCallback, useState } from 'react';
 import { Auth } from 'aws-amplify';
 import { resetResendEmailAfterMs } from '@/config';
+
+enum LoaderPhase {
+  LOADING = 'loading',
+  SUCCESS = 'success',
+  ERROR = 'error',
+}
 
 type ResendEmailProps = {
   text: string;

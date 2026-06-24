@@ -10,7 +10,13 @@ tags = {
   CostCenter  = "BD110 - PORTALS and TOOLS"
 }
 
-cdn_custom_headers = []
+cdn_custom_headers = [
+  {
+    header   = "Server"
+    override = true
+    value    = "None"
+  }
+]
 
 dns_domain_name = "developer.pagopa.it"
 
@@ -25,7 +31,7 @@ dns_delegate_records = {
 
 use_custom_certificate = true
 
-cms_app_image_tag = "7127b3bc338e175fd77ad56b2152ad000fa9aae3"
+cms_app_image_tag = "04390d3837042b0817c3fd847cee1c0a85e283f2"
 
 # CMS Strapi DNS
 dns_domain_name_cms = {
@@ -40,18 +46,17 @@ rds_cms_scaling_configuration = {
 }
 
 create_chatbot            = true
+create_dos68k_chatbotapi  = true
 ac_integration_is_enabled = true
 
-/*
 chatbot_models = {
-  provider   = "google"
-  generation = "gemini-2.0-flash"
-  embeddings = "text-embedding-004"
-  reranker   = "semantic-ranker-512-003"
+  provider      = "google"
+  generation    = "gemini-2.5-flash-lite"
+  embeddings    = "gemini-embedding-001"
+  reranker      = "semantic-ranker-default-004"
+  use_multi_rag = false
 }
-*/
-
-
-
 
 docs_redirect_is_enabled = true
+
+create_devops_agent = true

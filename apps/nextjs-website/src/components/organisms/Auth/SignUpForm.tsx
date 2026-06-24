@@ -1,10 +1,12 @@
 'use client';
 import {
   validateEmail,
-  validateField,
+  validateMaxLenght,
+  validateRequired,
+  validateNameFormat,
   validatePassword,
 } from '@/helpers/auth.helpers';
-import { SignUpUserData } from '@/lib/types/sign-up';
+import type { SignUpUserData } from '@/lib/auth/user/types';
 import {
   Box,
   Button,
@@ -41,6 +43,7 @@ interface SignUpFieldsError {
   email: string;
   password: string;
   confirmPassword: string;
+  role: string;
 }
 
 const SignUpForm = ({
@@ -75,31 +78,35 @@ const SignUpForm = ({
   );
 
   const validateForm = useCallback(() => {
-    const { username, confirmPassword, firstName, lastName, password } =
+    const { username, confirmPassword, firstName, lastName, password, role } =
       userData;
 
-    const nameError = validateField(firstName);
-    const surnameError = validateField(lastName);
+    const nameError =
+      validateRequired(firstName) ||
+      validateMaxLenght(firstName) ||
+      validateNameFormat(firstName);
+    const surnameError =
+      validateRequired(lastName) ||
+      validateMaxLenght(lastName) ||
+      validateNameFormat(lastName);
     const emailError = validateEmail(username);
-    const emailEmptyError = validateField(username);
     const passwordError = validatePassword(password);
     const confirmPasswordError = password !== confirmPassword;
+    const roleError = validateMaxLenght(role) || validateNameFormat(role);
 
     // eslint-disable-next-line functional/no-let
     let errors = {};
 
     if (nameError) {
-      errors = { ...errors, name: t('shared.requiredFieldError') };
+      errors = { ...errors, name: t(`shared.${nameError}`) };
     }
 
     if (surnameError) {
-      errors = { ...errors, surname: t('shared.requiredFieldError') };
+      errors = { ...errors, surname: t(`shared.${surnameError}`) };
     }
 
-    if (emailEmptyError) {
-      errors = { ...errors, email: t('shared.requiredFieldError') };
-    } else if (emailError) {
-      errors = { ...errors, email: t('shared.' + emailError) };
+    if (emailError) {
+      errors = { ...errors, email: t(`shared.${emailError}`) };
     }
 
     if (passwordError) {
@@ -113,6 +120,13 @@ const SignUpForm = ({
       };
     }
 
+    if (roleError) {
+      errors = {
+        ...errors,
+        role: t(`shared.${roleError}`),
+      };
+    }
+
     setFieldErrors(errors);
 
     return (
@@ -120,7 +134,8 @@ const SignUpForm = ({
       !surnameError &&
       !emailError &&
       !passwordError &&
-      !confirmPasswordError
+      !confirmPasswordError &&
+      !roleError
     );
   }, [userData, t]);
 
@@ -300,6 +315,8 @@ const SignUpForm = ({
                   value={role}
                   variant='outlined'
                   onChange={handleInputChange}
+                  error={!!fieldErrors.role}
+                  helperText={fieldErrors.role}
                 />
               </Stack>
               <Grid container>

@@ -137,14 +137,6 @@
         "valueFrom": "${jwt_secret}"
       },
       {
-        "name": "AWS_ACCESS_KEY_ID",
-        "valueFrom": "${access_key_id}"
-      },
-      {
-        "name": "AWS_ACCESS_SECRET",
-        "valueFrom": "${access_key_secret}"
-      },
-      {
         "name": "GITHUB_PERSONAL_ACCESS_TOKEN",
         "valueFrom": "${github_pat}"
       },

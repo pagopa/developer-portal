@@ -1,5 +1,11 @@
 # ivs-functions
 
+## 3.0.0
+
+### Major Changes
+
+- de7c2bb: Refactor the Strapi v5 webinars API call to use documentId
+
 ## 2.0.1
 
 ### Patch Changes

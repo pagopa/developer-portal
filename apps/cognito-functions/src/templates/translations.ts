@@ -118,4 +118,28 @@ export const EMAIL_TRANSLATIONS = {
         'PagoPA S.p.A. - Joint-stock company with sole shareholder share capital of euro 1,000,000 fully paid. Registered office in Rome, Piazza Colonna 370, ZIP 00187 Operational headquarters in Rome, Via Sardegna 38, ZIP 00187 Registration number in the Rome Company Register, Tax Code and VAT number 15376371009',
     },
   },
+  otp: {
+    it: {
+      subject: 'Codice di verifica PagoPA DevPortal: {{code}}',
+      previewText: 'Verifica la tua identità',
+      title: 'Verifica la tua identità',
+      text: 'Usa questo codice OTP per accedere a PagoPA DevPortal:',
+      codeDuration: (minutes: number) =>
+        `Questo codice scadrà tra ${minutes} minuti.`,
+      whyThisMessage:
+        'Ricevi questo messaggio in quanto abbiamo rilevato una richiesta di login su PagoPA DevPortal da questo indirizzo email registrato. \n' +
+        'Non sei tu? Ignora o cancella questa e-mail',
+    },
+    en: {
+      subject: 'PagoPA DevPortal verification code: {{code}}',
+      previewText: 'Verify your identity',
+      title: 'Verify your identity',
+      text: 'Use this OTP code to access PagoPA DevPortal:',
+      codeDuration: (minutes: number) =>
+        `This code will expire in ${minutes} minutes.`,
+      whyThisMessage:
+        'You are receiving this message because we detected a login request to PagoPA DevPortal from this registered email address. \n' +
+        'Not you? Ignore or delete this email.',
+    },
+  },
 };

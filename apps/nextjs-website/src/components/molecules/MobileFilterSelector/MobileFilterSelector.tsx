@@ -13,7 +13,7 @@ import React, { useState } from 'react';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MobileFilterButton from '@/components/atoms/MobileFilterButton/MobileFilterButton';
 import { useTranslations } from 'next-intl';
-import { Media } from '@/lib/types/media';
+import type { Media } from '@/lib/media/types';
 
 type MobileFilterSelectorProps = {
   selectedFilter: number;
@@ -21,11 +21,7 @@ type MobileFilterSelectorProps = {
   setSelectedFilter: (selectedFilter: number) => void;
   selectorFilters: readonly {
     name: string;
-    icon: {
-      data: {
-        attributes: Media;
-      };
-    };
+    icon: Media;
   }[];
 };
 
@@ -96,7 +92,7 @@ const MobileFilterSelector = ({
               }}
               isHeader={true}
               label={selectorFilters[selectedFilter].name}
-              icon={selectorFilters[selectedFilter].icon.data.attributes}
+              icon={selectorFilters[selectedFilter].icon}
             />
           )}
         </AccordionSummary>
@@ -115,7 +111,7 @@ const MobileFilterSelector = ({
                   return;
                 }}
                 label={category.name}
-                icon={category.icon.data.attributes}
+                icon={category.icon}
                 isLast={index == selectorFilters.length - 1}
               />
             ))}

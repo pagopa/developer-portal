@@ -6,6 +6,8 @@
 .vjs-menu-item-text,
 .vjs-volume-tooltip,
 .vjs-time-tooltip,
+.vjs-menu-title,
+.vjs-playback-rate-value,
 .vjs-live-display {
   font-family: var(--font-titillium-web) !important;
 }
@@ -40,6 +42,15 @@
 
 .vjs-theme-custom .vjs-time-control {
   line-height: 54px;
+}
+
+.vjs-playback-rate .vjs-playback-rate-value {
+  line-height: 54px;
+}
+
+.vjs-menu {
+  height: 100px !important;
+  margin-bottom: 4em !important;
 }
 
 /* Play Button */

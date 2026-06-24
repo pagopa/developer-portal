@@ -1,12 +1,11 @@
 import { Typography } from '@mui/material';
 import GitBookContent from '@/components/organisms/GitBookContent/GitBookContent';
-import { s3DocsPath, staticContentsUrl } from '@/config';
 
 export type MarkdownPartProps = {
   readonly content: string;
-  readonly dirName: string;
+  readonly assetsPrefix: string;
 };
-const MarkdownPart = ({ content, dirName }: MarkdownPartProps) => {
+const MarkdownPart = ({ content, assetsPrefix }: MarkdownPartProps) => {
   if (content === null) {
     return <Typography />; // empty placeholder while loading
   }
@@ -17,7 +16,7 @@ const MarkdownPart = ({ content, dirName }: MarkdownPartProps) => {
       config={{
         isPageIndex: false,
         pagePath: '',
-        assetsPrefix: `${staticContentsUrl}/${s3DocsPath}/${dirName}`,
+        assetsPrefix: assetsPrefix,
         urlReplaces: {},
         gitBookPagesWithTitle: [],
         spaceToPrefix: [],

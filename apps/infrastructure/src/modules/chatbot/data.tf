@@ -75,6 +75,19 @@ data "aws_iam_policy_document" "ecs_task_role_ssm" {
   }
 }
 
+data "aws_iam_policy_document" "lambda_assume_role" {
+  statement {
+    effect = "Allow"
+
+    principals {
+      type        = "Service"
+      identifiers = ["lambda.amazonaws.com"]
+    }
+
+    actions = ["sts:AssumeRole"]
+  }
+}
+
 data "aws_iam_policy_document" "apigateway_assume_role" {
   statement {
     effect = "Allow"

@@ -5,7 +5,7 @@ import EContainer from '@/editorialComponents/EContainer/EContainer';
 import CtaCard from '@/components/atoms/CtaCard/CtaCard';
 import IconWrapper from '@/components/atoms/IconWrapper/IconWrapper';
 import { useTranslations } from 'next-intl';
-import { Tag } from '@/lib/types/tag';
+import type { Tag } from '@/lib/tags/types';
 
 export type CardProps = {
   target?: '_blank' | '_self' | '_parent' | '_top';

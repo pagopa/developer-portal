@@ -1,17 +1,17 @@
 import { pipe } from 'fp-ts/lib/function';
 import * as RA from 'fp-ts/lib/ReadonlyArray';
 import * as htmlparser2 from 'htmlparser2';
-import Token from 'markdown-it/lib/token';
+import { LocalToken, type TokenLike } from './localToken';
 
 // return the tag name given the name
 const makeTagName = (name: string): string => `html${name}`;
 
 const makeHtmlParser = () => {
   // eslint-disable-next-line functional/prefer-readonly-type
-  const result: Array<Token> = [];
+  const result: Array<TokenLike> = [];
   const parser = new htmlparser2.Parser({
     onopentag: (name, attrs) => {
-      const token = new Token(`tag_open`, 'html-tag', 1);
+      const token = new LocalToken(`tag_open`, 'html-tag', 1);
       const attributes = Object.entries(attrs).map(([name, value]) => ({
         type: 'attribute',
         name,
@@ -30,7 +30,7 @@ const makeHtmlParser = () => {
     },
     ontext: (content: string) => {
       if (content.trim().length > 0 || content === ' ') {
-        const token = new Token('text', 'text', 0);
+        const token = new LocalToken('text', 'text', 0);
         // eslint-disable-next-line functional/immutable-data, functional/no-expression-statements
         token.content = content;
         // eslint-disable-next-line functional/immutable-data, functional/no-expression-statements
@@ -38,7 +38,7 @@ const makeHtmlParser = () => {
       }
     },
     onclosetag: (name) => {
-      const token = new Token(`tag_close`, 'html-tag', -1);
+      const token = new LocalToken(`tag_close`, 'html-tag', -1);
       // eslint-disable-next-line functional/immutable-data, functional/no-expression-statements
       token.meta = {
         tag: makeTagName(name),
@@ -61,8 +61,8 @@ const makeHtmlParser = () => {
 };
 
 export const processHtmlTokens = (
-  tokens: ReadonlyArray<Token>
-): ReadonlyArray<Token> => {
+  tokens: ReadonlyArray<TokenLike>
+): ReadonlyArray<TokenLike> => {
   const htmlparser = makeHtmlParser();
   return pipe(
     tokens,

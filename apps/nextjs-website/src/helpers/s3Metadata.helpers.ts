@@ -1,7 +1,6 @@
 /* eslint-disable functional/no-let */
 /* eslint-disable functional/no-expression-statements */
 import { s3DocsPath, staticContentsUrl } from '@/config';
-import * as path from 'node:path';
 
 export interface JsonMetadata {
   readonly path: string;
@@ -192,23 +191,14 @@ export async function fetchMetadataFromCDN<T>(
 
 const S3_PATH_TO_GITBOOK_DOCS =
   process.env.S3_PATH_TO_GITBOOK_DOCS || 'devportal-docs/docs';
-const S3_GUIDES_METADATA_JSON_PATH =
-  process.env.S3_GUIDES_METADATA_JSON_PATH || 'guides-metadata.json';
 const S3_METADATA_JSON_PATH =
   process.env.S3_METADATA_JSON_PATH || 'metadata.json';
-const S3_SOLUTIONS_METADATA_JSON_PATH =
-  process.env.S3_SOLUTIONS_METADATA_JSON_PATH || 'solutions-metadata.json';
-const S3_RELEASE_NOTES_METADATA_JSON_PATH =
-  process.env.S3_RELEASE_NOTES_METADATA_JSON_PATH ||
-  'release-notes-metadata.json';
 const S3_SOAP_API_METADATA_JSON_PATH =
   process.env.S3_SOAP_API_METADATA_JSON_PATH ||
   'soap-api/soap-api-metadata.json';
 
-export const getGuidesMetadata = async (locale: string, dirName?: string) => {
-  const fetchFromCdnPath = dirName
-    ? path.join(locale, S3_PATH_TO_GITBOOK_DOCS, dirName, S3_METADATA_JSON_PATH)
-    : `${locale}/${S3_GUIDES_METADATA_JSON_PATH}`;
+export const getGuidesMetadata = async (locale: string, dirName: string) => {
+  const fetchFromCdnPath = buildDirMetadataPath(locale, dirName);
   const metadata = await fetchMetadataFromCDN<JsonMetadata>(fetchFromCdnPath);
 
   return metadata || [];
@@ -286,14 +276,8 @@ export const getSolutionsMetadataByDirNames = async (
   return await batchFetchMetadata(metadataPaths, concurrencyLimit);
 };
 
-export const getSolutionsMetadata = async (
-  locale: string,
-  dirName?: string
-) => {
-  const fetchFromCdnPath = dirName
-    ? path.join(locale, S3_PATH_TO_GITBOOK_DOCS, dirName, S3_METADATA_JSON_PATH)
-    : `${locale}/${S3_SOLUTIONS_METADATA_JSON_PATH}`;
-
+export const getSolutionsMetadata = async (locale: string, dirName: string) => {
+  const fetchFromCdnPath = buildDirMetadataPath(locale, dirName);
   const metadata = await fetchMetadataFromCDN<JsonMetadata>(fetchFromCdnPath);
 
   return metadata || [];
@@ -316,12 +300,9 @@ export const getReleaseNotesMetadataByDirNames = async (
 
 export const getReleaseNotesMetadata = async (
   locale: string,
-  dirName?: string
+  dirName: string
 ) => {
-  const fetchFromCdnPath = dirName
-    ? path.join(locale, S3_PATH_TO_GITBOOK_DOCS, dirName, S3_METADATA_JSON_PATH)
-    : `${locale}/${S3_RELEASE_NOTES_METADATA_JSON_PATH}`;
-
+  const fetchFromCdnPath = buildDirMetadataPath(locale, dirName);
   const metadata = await fetchMetadataFromCDN<JsonMetadata>(fetchFromCdnPath);
 
   return metadata || [];
@@ -333,4 +314,23 @@ export const getSoapApiMetadata = async (locale: string) => {
   );
 
   return metadata || [];
+};
+
+export const getMarkdownContentDict = async (
+  locale: string,
+  markdownParts: ReadonlyArray<{
+    readonly dirName: string;
+    readonly pathToFile: string;
+  }>
+) => {
+  const resolvedContentPairs = await Promise.all(
+    markdownParts.map(async ({ dirName, pathToFile }) => {
+      const key = `${dirName}/${pathToFile}`;
+      const pathToMarkdownFile = `${locale}/${s3DocsPath}/${dirName}/${pathToFile}`;
+      const content = (await downloadFileAsText(pathToMarkdownFile)) || '';
+      return [key, content] as const;
+    })
+  );
+
+  return Object.fromEntries(resolvedContentPairs);
 };

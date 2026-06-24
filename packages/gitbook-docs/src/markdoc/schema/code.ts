@@ -1,5 +1,6 @@
 import Markdoc, { Schema } from '@markdoc/markdoc';
 import { BooleanOrNullAttr } from '../attributes';
+import { inlineCodePipePlaceholder } from './styledText';
 
 export type CodeBlockProps<A> = {
   readonly language?: string;
@@ -19,7 +20,13 @@ export const fence: Schema = {
     return new Markdoc.Tag(
       'CodeBlock',
       { ...node.transformAttributes(config), lineNumbers: true },
-      node.transformChildren(config)
+      node
+        .transformChildren(config)
+        .map((child) =>
+          typeof child === 'string'
+            ? child.replaceAll(inlineCodePipePlaceholder, '|')
+            : child
+        )
     );
   },
 };
@@ -48,7 +55,11 @@ export const code: Schema = {
         ),
         ...fenceAttr,
       },
-      children
+      children?.map((child) =>
+        typeof child === 'string'
+          ? child.replaceAll(inlineCodePipePlaceholder, '|')
+          : child
+      )
     );
   },
 };

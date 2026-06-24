@@ -11,7 +11,7 @@ terraform {
 
     awscc = {
       source  = "hashicorp/awscc"
-      version = "<= 1.10.0"
+      version = "~> 1.84.0"
     }
   }
 }
@@ -25,6 +25,11 @@ provider "aws" {
 
 provider "awscc" {
   region = var.aws_region
+}
+
+provider "awscc" {
+  alias  = "eu-central-1"
+  region = "eu-central-1"
 }
 
 provider "aws" {
@@ -85,6 +90,21 @@ module "core" {
   ac_integration_is_enabled = var.ac_integration_is_enabled
 }
 
+module "auth" {
+  source = "./modules/auth"
+
+  providers = {
+    aws           = aws
+    aws.us-east-1 = aws.us-east-1
+  }
+
+  environment             = var.environment
+  alerting_topic_arn      = module.core.alerting_topic_arn
+  dns_domain_name         = var.dns_domain_name
+  hosted_zone_id          = module.core.hosted_zone_id
+  ses_domain_identity_arn = module.core.ses_domain_identity_arn
+}
+
 module "website" {
   source = "./modules/website"
 
@@ -93,9 +113,10 @@ module "website" {
     aws.us-east-1 = aws.us-east-1
   }
 
-  environment       = var.environment
-  github_repository = var.github_repository
-  tags              = var.tags
+  environment        = var.environment
+  alerting_topic_arn = module.core.alerting_topic_arn
+  github_repository  = var.github_repository
+  tags               = var.tags
 
   cdn_custom_headers           = var.cdn_custom_headers
   publish_cloudfront_functions = var.publish_cloudfront_functions
@@ -103,7 +124,12 @@ module "website" {
   dns_delegate_records         = var.dns_delegate_records
   use_custom_certificate       = var.use_custom_certificate
   hosted_zone_id               = module.core.hosted_zone_id
-  ses_domain_identity_arn      = module.core.ses_domain_identity_arn
+
+  cognito_user_pool_id                    = module.auth.cognito_user_pool.id
+  cognito_user_pool_client_id             = module.auth.cognito_user_pool.client_id
+  cognito_identity_pool_id                = module.auth.cognito_identity_pool_id
+  cognito_authenticated_user_role_id      = module.auth.authenticated_user_role_id
+  cognito_authenticated_host_user_role_id = module.auth.authenticated_host_user_role_id
 
   website_is_standalone = var.website_is_standalone
   nextjs_version        = "13.4.19"
@@ -129,6 +155,11 @@ module "website" {
 
   next_public_soap_api_page_active = true
 
+  webinar_heartbeat = {
+    url                 = module.video_streaming.ingest_api_endpoint
+    interval_in_seconds = 60
+    enabled             = var.environment == "prod" ? false : true
+  }
 
 }
 
@@ -154,11 +185,6 @@ module "cms" {
   rds_scaling_configuration = var.rds_cms_scaling_configuration
 }
 
-import {
-  to = module.cms.module.iam_user_cms.aws_iam_user.this[0]
-  id = "strapi"
-}
-
 module "chatbot" {
   count  = var.create_chatbot ? 1 : 0
   source = "./modules/chatbot"
@@ -172,11 +198,12 @@ module "chatbot" {
 
   aws_chatbot_region = var.aws_chatbot_region
   environment        = var.environment
+  alerting_topic_arn = module.core.alerting_topic_arn
   tags               = var.tags
 
   s3_bucket_name_static_content = module.website.website_standalone_bucket.name
   dns_chatbot_hosted_zone       = module.core.dns_chatbot_hosted_zone
-  cognito_user_pool             = module.website.cognito_user_pool
+  cognito_user_pool             = module.auth.cognito_user_pool
   vpc                           = module.cms.vpc
   security_groups               = module.cms.security_groups
   dns_domain_name               = var.dns_domain_name
@@ -184,6 +211,8 @@ module "chatbot" {
   github_repository             = var.github_repository
   ecs_monitoring                = var.chatbot_ecs_monitoring
   models                        = var.chatbot_models
+
+  hosted_zone_id = module.core.hosted_zone_id
 }
 
 module "cicd" {
@@ -222,10 +251,11 @@ module "active_campaign" {
   count  = var.ac_integration_is_enabled ? 1 : 0
   source = "./modules/active_campaign"
 
-  environment = var.environment
-  tags        = var.tags
+  environment        = var.environment
+  alerting_topic_arn = module.core.alerting_topic_arn
+  tags               = var.tags
 
-  cognito_user_pool         = module.website.cognito_user_pool
+  cognito_user_pool         = module.auth.cognito_user_pool
   webinar_subscriptions_ddb = module.website.webinar_subscriptions_ddb
 }
 
@@ -262,54 +292,58 @@ module "video_streaming" {
   custom_domain_name = "video.${var.dns_domain_name}"
   route53_zone_id    = module.core.hosted_zone_id
   environment        = var.environment
+  alerting_email     = module.core.alerting_email
   strapi_api_url     = "https://${keys(var.dns_domain_name_cms)[0]}"
   # Right now only one channel is supported for metrics, so we can directly reference it here. 
   # In the future, if more channels are added and we want to use them for metrics, we can change this to a list of ARNs or similar.
   webinar_metrics_channel_key = "channell-01"
+  github_repository           = var.github_repository
+
+  cognito_user_pool_endpoint  = module.auth.cognito_user_pool.endpoint
+  cognito_user_pool_client_id = module.auth.cognito_user_pool.client_id
 
 }
 
-module "langfuse" {
-  source = "./modules/langfuse"
-
-  count = var.environment == "dev" ? 1 : 0
-
-  environment        = var.environment
-  region             = var.aws_region
-  vpc_id             = module.cms.vpc.id
-  private_subnet_ids = module.cms.vpc.private_subnets
-  public_subnet_ids  = module.cms.vpc.public_subnets
-  custom_domain_id   = module.core.hosted_zone_id
-  custom_domain_name = var.dns_domain_name
-
-  # Use the Cognito User Pool created by the Chatbot module
-  cognito_user_pool_id           = module.chatbot[0].cognito_user_pool_id
-  cognito_user_pool_endpoint     = module.chatbot[0].cognito_user_pool_endpoint
-  master_user_password_param_arn = module.chatbot[0].cognito_master_user_password_param_arn
-}
-
-
-# strapi-v5  for testing purposes only
-module "strapi_v5" {
-  source = "./modules/strapi5"
-
-  count = var.environment == "dev" ? 1 : 0
+################################################################################
+# DevOps Agent
+################################################################################
+module "devops_agent" {
+  count  = var.create_devops_agent ? 1 : 0
+  source = "./modules/devops_agent"
 
   providers = {
-    aws           = aws
-    aws.us-east-1 = aws.us-east-1
+    aws         = aws
+    aws.service = aws
+    awscc       = awscc.eu-central-1
   }
 
-  environment       = var.environment
-  github_repository = var.github_cms_repository
-  tags              = var.tags
+  agent_space_name = "DevPortalAgentSpace"
 
-  dns_domain_name           = var.dns_domain_name
-  dns_domain_name_cms       = "strapiv5.${var.dns_domain_name}"
-  hosted_zone_id            = module.core.hosted_zone_id
-  ac_integration_is_enabled = var.ac_integration_is_enabled
-  ac_base_url_param         = var.ac_integration_is_enabled ? module.active_campaign[0].base_url_param : null
-  ac_api_key_param          = var.ac_integration_is_enabled ? module.active_campaign[0].api_key_param : null
-  cms_app_image_tag         = var.strapi_v5_image_tag
-  rds_scaling_configuration = var.rds_cms_scaling_configuration
+  agent_space_description = "Space for DevOps agent of Developer Portal"
+
+  tags = var.tags
+}
+
+################################################################################
+# dos68k Chatbot API
+################################################################################
+module "dos68k_chatbotapi" {
+  source = "./modules/dos68k_chatbotapi"
+
+  count = var.create_dos68k_chatbotapi ? 1 : 0
+
+  environment     = var.environment
+  dns_domain_name = var.dns_domain_name
+
+  vpc = {
+    id              = module.cms.vpc.id
+    private_subnets = module.cms.vpc.private_subnets
+  }
+
+  ecs_chatbotapi = var.ecs_chatbotapi
+
+  redis_host                  = var.create_chatbot ? module.chatbot[0].redis_nlb_dns_name : ""
+  redis_nlb_security_group_id = var.create_chatbot ? module.chatbot[0].security_groups.redis : ""
+
+  enable_scheduled_scaling = var.ecs_chatbotapi_enable_scheduled_scaling
 }

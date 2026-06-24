@@ -1,6 +1,6 @@
 import { fromCognitoIdentityPool } from '@aws-sdk/credential-providers';
 import { Auth } from 'aws-amplify';
-import { BrowserConfig } from '@/BrowserConfig';
+import { BrowserConfig } from '@/browserConfig';
 
 // Create a aws credentials provider given a cognito user
 export const makeAwsCredentialsFromCognito = (

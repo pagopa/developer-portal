@@ -9,10 +9,10 @@ import * as T from 'fp-ts/Task';
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
 import { makePostConfirmationConfirmSignUpEmail } from './templates/post-confirmation-confirm-sign-up-message';
-import { sanitize } from './utils/sanitize';
 import { EMAIL_TRANSLATIONS } from './templates/translations';
 import { PostConfirmationTriggerEvent } from 'aws-lambda/trigger/cognito-user-pool-trigger/post-confirmation';
 import { SUPPORTED_LOCALES } from './i18n/locales';
+import { DEFAULT_LOCALE } from './i18n/locales';
 
 const makeSesEmailParameters = (
   to: string,
@@ -57,24 +57,22 @@ export const makeHandler =
       event.request.userAttributes['custom:preferred_language'];
     const locale = SUPPORTED_LOCALES.includes(localeAttribute)
       ? localeAttribute
-      : 'it'; // Defaults to 'it'
+      : DEFAULT_LOCALE;
+
     if (email && event.triggerSource === 'PostConfirmation_ConfirmSignUp') {
       const subject =
         EMAIL_TRANSLATIONS.postConfirmation[
           locale as keyof typeof EMAIL_TRANSLATIONS.postConfirmation
-        ]?.subject || EMAIL_TRANSLATIONS.postConfirmation.it.subject;
+        ]?.subject ||
+        EMAIL_TRANSLATIONS.postConfirmation[DEFAULT_LOCALE].subject;
 
+      const body = makePostConfirmationConfirmSignUpEmail(
+        given_name,
+        config.domain,
+        locale
+      );
       const sendEmail = pipe(
-        makeSesEmailParameters(
-          email,
-          config.fromEmailAddress,
-          subject,
-          makePostConfirmationConfirmSignUpEmail(
-            sanitize(given_name),
-            config.domain,
-            locale
-          )
-        ),
+        makeSesEmailParameters(email, config.fromEmailAddress, subject, body),
         (sendEmailCommandInput) => new SendEmailCommand(sendEmailCommandInput),
         (sendEmailCommand) =>
           TE.tryCatch(() => ses.send(sendEmailCommand), E.toError),

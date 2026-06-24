@@ -11,4 +11,4 @@ echo '-=-=-=-= init AWS local services'
 bash ./scripts/s3-init.sh
 
 echo '-=-=-=-= run Create Index'
-python src/modules/create_vector_index.py --static --clean-redis
+python src/modules/create_vector_index.py --static --api

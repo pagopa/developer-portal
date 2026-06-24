@@ -1,5 +1,5 @@
 'use client';
-import { Tutorial } from '@/lib/types/tutorialData';
+import type { Tutorial } from '@/lib/tutorials/types';
 import { Box, useTheme } from '@mui/material';
 import React from 'react';
 import SectionTitle from '@/components/molecules/SectionTitle/SectionTitle';

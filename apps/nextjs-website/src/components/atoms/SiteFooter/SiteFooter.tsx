@@ -20,22 +20,22 @@ const SiteFooter = () => {
       title: t('followUs.title'),
       socialLinks: [
         {
-          href: 'https://www.linkedin.com/company/pagopa/',
+          href: t('followUs.socialLinks.linkedin.href'),
           icon: 'LinkedIn',
           useSrc: false,
         },
         {
-          href: 'https://twitter.com/pagopa',
+          href: t('followUs.socialLinks.twitter.href'),
           icon: 'Twitter',
           useSrc: false,
         },
         {
-          href: 'https://www.instagram.com/pagopaspa/',
+          href: t('followUs.socialLinks.instagram.href'),
           icon: 'Instagram',
           useSrc: false,
         },
         {
-          href: 'https://medium.com/pagopa-spa',
+          href: t('followUs.socialLinks.medium.href'),
           icon: 'Medium',
           useSrc: false,
         },
@@ -43,7 +43,7 @@ const SiteFooter = () => {
       links: [
         {
           ariaLabel: t('followUs.links.accessibility.ariaLabel'),
-          href: 'https://form.agid.gov.it/view/5de36b80-97b7-11f0-b1d3-cb68959f3505',
+          href: t('followUs.links.accessibility.href'),
           label: t('followUs.links.accessibility.label'),
           linkType: 'external',
         },
@@ -54,25 +54,25 @@ const SiteFooter = () => {
       links: [
         {
           ariaLabel: t('aboutUs.links.whoWeAre.ariaLabel'),
-          href: 'https://www.pagopa.it/it/societa/chi-siamo',
+          href: t('aboutUs.links.whoWeAre.href'),
           label: t('aboutUs.links.whoWeAre.label'),
           linkType: 'external',
         },
         {
           ariaLabel: t('aboutUs.links.pnrr.ariaLabel'),
-          href: 'https://www.pagopa.it/it/opportunita/pnrr/progetti/',
+          href: t('aboutUs.links.pnrr.href'),
           label: t('aboutUs.links.pnrr.label'),
           linkType: 'external',
         },
         {
           ariaLabel: t('aboutUs.links.media.ariaLabel'),
-          href: 'https://www.pagopa.it/it/media',
+          href: t('aboutUs.links.media.href'),
           label: t('aboutUs.links.media.label'),
           linkType: 'external',
         },
         {
           ariaLabel: t('aboutUs.links.workWithUs.ariaLabel'),
-          href: 'https://www.pagopa.it/it/lavora-con-noi',
+          href: t('aboutUs.links.workWithUs.href'),
           label: t('aboutUs.links.workWithUs.label'),
           linkType: 'external',
         },
@@ -95,19 +95,19 @@ const SiteFooter = () => {
         },
         {
           ariaLabel: t('resources.links.societaTrasparente.ariaLabel'),
-          href: 'https://pagopa.portaleamministrazionetrasparente.it/',
+          href: t('resources.links.societaTrasparente.href'),
           label: t('resources.links.societaTrasparente.label'),
           linkType: 'external',
         },
         {
           ariaLabel: t('resources.links.disclosurePolicy.ariaLabel'),
-          href: 'https://www.pagopa.it/it/responsible-disclosure-policy/',
+          href: t('resources.links.disclosurePolicy.href'),
           label: t('resources.links.disclosurePolicy.label'),
           linkType: 'external',
         },
         {
           ariaLabel: t('resources.links.model231.ariaLabel'),
-          href: 'https://pagopa.portaleamministrazionetrasparente.it/pagina746_altri-contenuti.html',
+          href: t('resources.links.model231.href'),
           label: t('resources.links.model231.label'),
           linkType: 'external',
         },
@@ -118,37 +118,37 @@ const SiteFooter = () => {
       links: [
         {
           ariaLabel: t('services.links.appIO.ariaLabel'),
-          href: 'https://www.pagopa.it/it/prodotti-e-servizi/app-io',
+          href: t('services.links.appIO.href'),
           label: t('services.links.appIO.label'),
           linkType: 'external',
         },
         {
           ariaLabel: t('services.links.pagoPA.ariaLabel'),
-          href: 'https://www.pagopa.it/it/prodotti-e-servizi/piattaforma-pagopa',
+          href: t('services.links.pagoPA.href'),
           label: t('services.links.pagoPA.label'),
           linkType: 'external',
         },
         {
           ariaLabel: t('services.links.pari.ariaLabel'),
-          href: 'https://www.pagopa.it/prodotti-e-servizi/pari/',
+          href: t('services.links.pari.href'),
           label: t('services.links.pari.label'),
           linkType: 'external',
         },
         {
           ariaLabel: t('services.links.checkIBAN.ariaLabel'),
-          href: 'https://www.pagopa.it/it/prodotti-e-servizi/check-iban',
+          href: t('services.links.checkIBAN.href'),
           label: t('services.links.checkIBAN.label'),
           linkType: 'external',
         },
         {
           ariaLabel: t('services.links.send.ariaLabel'),
-          href: 'https://www.pagopa.it/it/prodotti-e-servizi/send-notifiche-digitali/',
+          href: t('services.links.send.href'),
           label: t('services.links.send.label'),
           linkType: 'external',
         },
         {
           ariaLabel: t('services.links.pdnd.ariaLabel'),
-          href: 'https://www.pagopa.it/it/prodotti-e-servizi/piattaforma-digitale-nazionale-dati/',
+          href: t('services.links.pdnd.href'),
           label: t('services.links.pdnd.label'),
           linkType: 'external',
         },
@@ -158,7 +158,7 @@ const SiteFooter = () => {
 
   const companyLink = {
     ariaLabel: t('companyLink.ariaLabel'),
-    href: 'https://www.pagopa.it/',
+    href: t('companyLink.href'),
   };
 
   const legalInfo = t.rich('legalInfo', {

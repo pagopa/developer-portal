@@ -6,8 +6,8 @@ locals {
   form_action = "'self'"
   font_src    = "data: 'self' https://privacyportalde-cdn.onetrust.com/privacy-notice-scripts/icons/"
   connect_src = "'self' https://cognito-identity.eu-south-1.amazonaws.com/ https://dynamodb.eu-south-1.amazonaws.com/ https://cognito-idp.eu-south-1.amazonaws.com/ https://raw.githubusercontent.com/pagopa/ https://raw.githubusercontent.com/teamdigitale/ https://*.cookielaw.org https://*.onetrust.com https://www.google-analytics.com https://api.io.italia.it *.google-analytics.com https://pagopa.matomo.cloud/ https://*.${var.dns_domain_name}"
-  img_src     = "data: 'self' https://i.vimeocdn.com/ https://io.italia.it/assets/ https://raw.githubusercontent.com/pagopa/ https://www.pagopa.gov.it/assets/ https://*.cookielaw.org/logos/ recaptcha.net  https://*.googleusercontent.com https://*.dev.developer.pagopa.it https://*.developer.pagopa.it"
-  frame_src   = "https://player.vimeo.com/ https://vimeo.com/ https://demo.arcade.software/ https://www.google.com https://recaptcha.net https://www.youtube.com https://pagopa.applytojob.com https://www.figma.com/ https://codepen.io/"
+  img_src     = "data: 'self' https://io.italia.it/assets/ https://raw.githubusercontent.com/pagopa/ https://www.pagopa.gov.it/assets/ https://*.cookielaw.org/logos/ recaptcha.net  https://*.googleusercontent.com https://*.dev.developer.pagopa.it https://*.developer.pagopa.it"
+  frame_src   = "https://demo.arcade.software/ https://www.google.com https://recaptcha.net https://www.youtube.com https://pagopa.applytojob.com https://www.figma.com/ https://codepen.io/ https://static-contents.${var.dns_domain_name}"
 }
 
 resource "aws_cloudfront_origin_access_identity" "main" {
@@ -18,16 +18,19 @@ resource "aws_cloudfront_response_headers_policy" "websites" {
   name    = "websites"
   comment = "Response custom headers for public static website"
 
-  dynamic "custom_headers_config" {
-    for_each = length(var.cdn_custom_headers) > 0 ? ["dummy"] : []
-    content {
-      dynamic "items" {
-        for_each = var.cdn_custom_headers
-        content {
-          header   = items.value.header
-          override = items.value.override
-          value    = items.value.value
-        }
+  custom_headers_config {
+    items {
+      header   = "Server"
+      override = true
+      value    = "None"
+    }
+
+    dynamic "items" {
+      for_each = var.cdn_custom_headers
+      content {
+        header   = items.value.header
+        override = items.value.override
+        value    = items.value.value
       }
     }
   }
@@ -36,6 +39,10 @@ resource "aws_cloudfront_response_headers_policy" "websites" {
     content_security_policy {
       content_security_policy = format("script-src %s; style-src %s; object-src %s; form-action %s; font-src %s; connect-src %s; img-src %s; frame-src %s", local.script_src, local.style_src, local.object_src, local.form_action, local.font_src, local.connect_src, local.img_src, local.frame_src)
       override                = true
+    }
+    frame_options {
+      frame_option = "SAMEORIGIN"
+      override     = true
     }
   }
 }
@@ -46,7 +53,7 @@ resource "aws_cloudfront_function" "website_viewer_request_handler" {
   runtime = "cloudfront-js-1.0"
   # publish this version only if the env is true
   publish = var.publish_cloudfront_functions
-  code    = file("${path.root}/../../cloudfront-functions/dist/viewer-request-handler.js")
+  code    = file("${path.root}/../../cloudfront-functions/src/viewer-request-handler.js")
 }
 
 
@@ -55,6 +62,21 @@ resource "aws_cloudfront_function" "website_viewer_request_handler" {
 resource "aws_cloudfront_response_headers_policy" "static_content_cors" {
   name    = "cors-policy"
   comment = "Cors policy for static contents"
+
+  custom_headers_config {
+    items {
+      header   = "Server"
+      override = true
+      value    = "None"
+    }
+  }
+
+  security_headers_config {
+    content_security_policy {
+      content_security_policy = "frame-ancestors 'self' https://${var.dns_domain_name} https://www.${var.dns_domain_name}"
+      override                = true
+    }
+  }
 
   cors_config {
     access_control_allow_credentials = false
@@ -124,6 +146,15 @@ resource "aws_cloudfront_distribution" "static_contents" {
       event_type   = "viewer-request"
       function_arn = aws_cloudfront_function.website_viewer_request_handler.arn
     }
+  }
+
+  # S3 returns 403 for missing objects when accessed via OAI (no ListBucket permission).
+  # Map it to 404 so browsers receive the semantically correct response.
+  custom_error_response {
+    error_code            = 403
+    response_code         = 404
+    response_page_path    = "/404.html"
+    error_caching_min_ttl = 0
   }
 
   restrictions {

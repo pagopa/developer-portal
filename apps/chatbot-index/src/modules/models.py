@@ -1,7 +1,6 @@
-from google.genai import types
-
 from llama_index.core.llms.llm import LLM
 from llama_index.core.base.embeddings.base import BaseEmbedding
+from llama_index.llms.google_genai.base import VertexAIConfig
 
 from src.modules.logger import get_logger
 from src.modules.settings import SETTINGS
@@ -43,9 +42,15 @@ def get_llm(
             model=model_id,
             temperature=temperature,
             max_tokens=max_tokens,
-            api_key=SETTINGS.google_api_key,
+            vertexai_config=VertexAIConfig(
+                credentials=SETTINGS.vertexai_credentials,
+                project=SETTINGS.vertexai_credentials.project_id,
+                location=SETTINGS.vertexai_location,
+            ),
         )
-        LOGGER.info(f"{model_id} LLM loaded successfully from Google!")
+        LOGGER.info(
+            f"{model_id} LLM loaded successfully from Vertex AI at location: {SETTINGS.vertexai_location}!"
+        )
 
     elif provider == "mock":
         from llama_index.core.llms import MockLLM
@@ -92,20 +97,27 @@ def get_embed_model(
     retry_min_seconds = retry_min_seconds or SETTINGS.embed_retry_min_seconds
 
     if provider == "google":
+        from google.genai.types import EmbedContentConfig
         from llama_index.embeddings.google_genai import GoogleGenAIEmbedding
 
         embed_model = GoogleGenAIEmbedding(
             model_name=model_id,
-            api_key=SETTINGS.google_api_key,
             embed_batch_size=embed_batch_size,
             retries=retries,
             retry_min_seconds=retry_min_seconds,
-            embedding_config=types.EmbedContentConfig(
+            embedding_config=EmbedContentConfig(
                 output_dimensionality=embed_dim,
                 task_type=task_type,
             ),
+            vertexai_config=VertexAIConfig(
+                credentials=SETTINGS.vertexai_credentials,
+                project=SETTINGS.vertexai_credentials.project_id,
+                location=SETTINGS.vertexai_location,
+            ),
         )
-        LOGGER.info(f"{model_id} embedding model loaded successfully from Google!")
+        LOGGER.info(
+            f"{model_id} embedding model loaded successfully from Vertex AI at location: {SETTINGS.vertexai_location}!"
+        )
 
     elif provider == "mock":
         from llama_index.core import MockEmbedding

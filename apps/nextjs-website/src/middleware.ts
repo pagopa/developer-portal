@@ -1,12 +1,36 @@
 /* eslint-disable functional/no-expression-statements */
 import { NextRequest, NextResponse } from 'next/server';
-import { defaultLocale } from '@/config';
+import { baseUrl, defaultLocale, loggedInCookieName } from '@/config';
 import { SUPPORTED_LOCALES } from '@/locales';
+
+const guestPath = '/auth/';
 
 // This middleware redirects URLs without locale prefixes to include the default locale,
 // maintaining backwards compatibility with legacy indexed URLs and CMS' resources URLs
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
+  const defaultLangCode = defaultLocale.split('-')[0];
+
+  if (pathname.includes(guestPath)) {
+    const isLoggedIn = request.cookies.get(loggedInCookieName);
+
+    if (isLoggedIn?.value === 'true') {
+      const locale = SUPPORTED_LOCALES.find((loc) =>
+        request.url.includes(`/${loc.langCode}/`)
+      )?.langCode;
+      const response = NextResponse.redirect(
+        new URL(`/${locale ?? defaultLangCode}`, request.url)
+      );
+      const domain = baseUrl.replace(/^https?:\/\//, '').split(':')[0];
+      response.cookies.set(loggedInCookieName, 'false', {
+        domain,
+        path: '/',
+        maxAge: 0,
+      });
+      return response;
+    }
+  }
+
   const pathnameHasLocale = SUPPORTED_LOCALES.some(
     (locale) =>
       pathname.startsWith(`/${locale.langCode}/`) ||
@@ -15,7 +39,6 @@ export function middleware(request: NextRequest) {
 
   if (pathnameHasLocale) return;
 
-  const defaultLangCode = defaultLocale.split('-')[0];
   console.info(
     `Rewriting path ${pathname} to include default locale '${defaultLangCode}'`
   );

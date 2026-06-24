@@ -35,8 +35,6 @@ No requirements.
 | [aws_iam_role_policy_attachment.lambda_resync_policy_attach](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_iam_role_policy_attachment.pipes](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_pipes_pipe.dynamodb_to_sqs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/pipes_pipe) | resource |
-| [aws_sns_topic.alerts](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/sns_topic) | resource |
-| [aws_sns_topic_policy.alerts](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/sns_topic_policy) | resource |
 | [aws_sqs_queue.fifo_dlq_queue](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/sqs_queue) | resource |
 | [aws_sqs_queue.fifo_queue](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/sqs_queue) | resource |
 | [aws_sqs_queue.fifo_resync_dlq_queue](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/sqs_queue) | resource |
@@ -46,6 +44,7 @@ No requirements.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_alerting_topic_arn"></a> [alerting\_topic\_arn](#input\_alerting\_topic\_arn) | ARN of the shared SNS topic used for CloudWatch alarm notifications | `string` | n/a | yes |
 | <a name="input_cognito_user_pool"></a> [cognito\_user\_pool](#input\_cognito\_user\_pool) | The cognito user pool used to authenticate api calls | <pre>object({<br/>    id        = string<br/>    arn       = string<br/>    domain    = string<br/>    region    = string<br/>    client_id = string<br/>    endpoint  = string<br/>  })</pre> | n/a | yes |
 | <a name="input_environment"></a> [environment](#input\_environment) | Environment | `string` | n/a | yes |
 | <a name="input_webinar_subscriptions_ddb"></a> [webinar\_subscriptions\_ddb](#input\_webinar\_subscriptions\_ddb) | n/a | <pre>object({<br/>    name       = string<br/>    arn        = string<br/>    stream_arn = string<br/>  })</pre> | n/a | yes |

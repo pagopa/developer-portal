@@ -5,7 +5,7 @@ import { getSolutionDetail } from '@/lib/api';
 import GitBookTemplate from '@/components/templates/GitBookTemplate/GitBookTemplate';
 import { pageToBreadcrumbs } from '@/helpers/breadcrumbs.helpers';
 import { ParseContentConfig } from 'gitbook-docs/parseContent';
-import { getUrlReplaceMapProps } from '@/lib/cmsApi';
+import { getUrlReplaceMap } from '@/lib/api';
 import { SolutionTemplateProps } from '@/components/templates/SolutionTemplate/SolutionTemplate';
 import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
 import { getItemFromPaths } from '@/helpers/structuredData.helpers';
@@ -60,7 +60,7 @@ const Page = async (props: { params: Promise<Params> }) => {
     return <PageNotFound />;
   }
 
-  const urlReplaceMap = await getUrlReplaceMapProps(locale);
+  const urlReplaceMap = await getUrlReplaceMap(locale);
   const solution = solutionDetail;
   const page = solution.page;
   const source = solution.source;

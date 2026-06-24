@@ -13,23 +13,11 @@ resource "aws_iam_role_policy_attachment" "deploy_website" {
 }
 
 ###############################################################################
-#                Define IAM Role to use on Cognito users                      #
+#     DynamoDB policies for Cognito authenticated users (roles from auth)     #
 ###############################################################################
-resource "aws_iam_role" "devportal_authenticated_user" {
-  name               = "DevPortalAuthenticatedUser"
-  description        = "The role assumed by the authenticated devportal users"
-  assume_role_policy = data.aws_iam_policy_document.authenticated_users_policy.json
-}
-
-resource "aws_iam_role" "devportal_authenticated_host_user" {
-  name               = "DevPortalAuthenticatedHostUser"
-  description        = "The role assumed by the authenticated host devportal users"
-  assume_role_policy = data.aws_iam_policy_document.authenticated_users_policy.json
-}
-
 resource "aws_iam_role_policy" "devportal_authenticated_user" {
   name = "DevPortalAuthenticatedUserPolicy"
-  role = aws_iam_role.devportal_authenticated_user.id
+  role = var.cognito_authenticated_user_role_id
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -59,7 +47,7 @@ resource "aws_iam_role_policy" "devportal_authenticated_user" {
 
 resource "aws_iam_role_policy" "devportal_authenticated_host_user" {
   name = "DevPortalAuthenticatedHostUserPolicy"
-  role = aws_iam_role.devportal_authenticated_host_user.id
+  role = var.cognito_authenticated_host_user_role_id
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [

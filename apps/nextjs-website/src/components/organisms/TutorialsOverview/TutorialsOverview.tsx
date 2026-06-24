@@ -1,8 +1,8 @@
 'use client';
 
 import React from 'react';
-import { Tutorial } from '@/lib/types/tutorialData';
-import { Path } from '@/lib/types/path';
+import type { Tutorial } from '@/lib/tutorials/types';
+import type { Path } from '@/lib/paths/types';
 import NewsShowcase from '@/components/organisms/NewsShowcase/NewsShowcase';
 import { useTranslations } from 'next-intl';
 

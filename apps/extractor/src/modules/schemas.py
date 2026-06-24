@@ -24,7 +24,6 @@ class InputDocument(BaseModel):
         ..., description="The last modified date of the page in ISO 8601 format"
     )
 
-
 class CleanedDocument(BaseModel):
     """Represents the cleaned and structured document after processing with the LLM.
     This model is designed to capture the essential information in a structured format, making it easier for downstream applications to consume.
@@ -32,7 +31,7 @@ class CleanedDocument(BaseModel):
     title: str = Field(..., description="The title of the page")
     text: str = Field(
         ...,
-        description="The whole main text content of the page in markdown format, without any truncation. Add newlines, bulletpoints, etc when necessary.",
+        description="The whole main text content of the page. PURE PLAIN TEXT ONLY. Do not use markdown. Do not use line breaks or the \\n escape sequence. Separate all sentences and concepts with a single space.",
     )
     language: str = Field(
         ...,

@@ -14,6 +14,9 @@ const compat = new FlatCompat({
 
 export default defineConfig([
   {
+    ignores: ['src/templates/generated/**'],
+  },
+  {
     extends: compat.extends('custom'),
   },
 ]);

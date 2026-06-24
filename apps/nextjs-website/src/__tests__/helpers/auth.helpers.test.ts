@@ -1,16 +1,47 @@
 import {
   validateEmail,
-  validateField,
+  validateMaxLenght,
+  validateNameFormat,
+  validateRequired,
   validatePassword,
 } from '../../helpers/auth.helpers';
 
-describe('validateField', () => {
+describe('validateRequired', () => {
   it('returns error if the value is empty', () => {
-    expect(validateField('')).toBe('requiredFieldError');
+    expect(validateRequired('')).toBe('requiredFieldError');
   });
 
   it('returns null if the value is not empty', () => {
-    expect(validateField('test')).toBe(null);
+    expect(validateRequired('test')).toBe(null);
+  });
+});
+
+describe('validateMaxLenght', () => {
+  it('returns error if the trimmed value exceeds the max length', () => {
+    expect(validateMaxLenght(` ${'a'.repeat(101)} `)).toBe(
+      'maxLengthFieldError'
+    );
+  });
+
+  it('returns null if the trimmed value is within the max length', () => {
+    expect(validateMaxLenght(` ${'a'.repeat(100)} `)).toBe(null);
+  });
+});
+
+describe('validateNameFormat', () => {
+  it('returns error if the name contains unsupported characters', () => {
+    expect(validateNameFormat('John@Doe')).toBe('nameFieldError');
+  });
+
+  it('returns null if the name uses supported separators', () => {
+    expect(validateNameFormat(" John Doe-O'Neil ")).toBe(null);
+  });
+
+  it('returns null if the name contains accented and extended latin letters', () => {
+    expect(validateNameFormat('José María')).toBe(null);
+    expect(validateNameFormat('Dvořák')).toBe(null);
+    expect(validateNameFormat('Guðmundsdóttir')).toBe(null);
+    expect(validateNameFormat('Łukasz 2')).toBe(null);
   });
 });
 

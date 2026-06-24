@@ -1,5 +1,10 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { Webinar } from '@/lib/types/webinar';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import type { Webinar } from '@/lib/webinars/types';
+import {
+  isWebinarHeartbeatEnabled,
+  webinarHeartbeatIntervalInSeconds,
+} from '@/config';
+import { sendWebinarHeartbeat } from '@/lib/webinarApi';
 
 const COMING_SOON_START_TIME_DELTA_MS = 39 * 30 * 60 * 1000; // 19.5 hours
 const CHECK_WEBINAR_STATUS_INTERVAL_MS = 500;
@@ -20,11 +25,13 @@ export const useWebinar = () => {
   const [webinarState, setWebinarState] = useState<WebinarState>(
     WebinarState.unknown
   );
+  const [isVideoPlaying, setIsVideoPlaying] = useState<boolean>(false);
   const [isQuestionFormEnabled, setIsQuestionFormEnabled] =
     useState<boolean>(false);
   const [isPlayerVisible, setIsPlayerVisible] = useState<boolean>(false);
   const [isLiveStreamAvailable, setIsLiveStreamAvailable] = useState(false);
   const [livePlayerReloadToken, setLivePlayerReloadToken] = useState(0);
+  const lastHeartbeatSentTime = useRef<Date | null>(null);
 
   const setWebinar = (nextWebinar: Webinar | null) => {
     const hasChanged = nextWebinar?.slug !== webinar?.slug;
@@ -165,6 +172,39 @@ export const useWebinar = () => {
     isLiveStreamSource,
   ]);
 
+  useEffect(() => {
+    if (!isWebinarHeartbeatEnabled || !webinar || !isVideoPlaying) return;
+
+    // Send heartbeat immediately
+    const sendHeartbeat = async () => {
+      const now = new Date();
+      if (
+        !!lastHeartbeatSentTime.current &&
+        (now.getTime() - lastHeartbeatSentTime.current?.getTime()) / 1000 <
+          webinarHeartbeatIntervalInSeconds
+      ) {
+        return;
+      }
+      // eslint-disable-next-line functional/immutable-data
+      lastHeartbeatSentTime.current = now;
+      await sendWebinarHeartbeat({
+        webinarSlug: webinar.slug,
+        isLive: webinarState === WebinarState.live,
+        action: 'playing',
+      });
+    };
+
+    // Call immediately
+    sendHeartbeat();
+
+    // Then set up interval for subsequent calls
+    const heartbeatIntervalId = setInterval(() => {
+      sendHeartbeat();
+    }, webinarHeartbeatIntervalInSeconds * 1000);
+
+    return () => clearInterval(heartbeatIntervalId);
+  }, [webinar, isVideoPlaying, webinarState]);
+
   return {
     webinarState,
     setWebinar,
@@ -172,5 +212,6 @@ export const useWebinar = () => {
     isPlayerVisible,
     isLiveStreamAvailable,
     livePlayerReloadToken,
+    setIsVideoPlaying,
   };
 };

@@ -1,0 +1,55 @@
+---
+name: refresh-structured-docs-vector-index
+description: Refresh Structured Docs for Chatbot LLamaindex Vector Index
+
+inputs:
+  index_id:
+    description: the id of the vector index to update
+    required: true
+  urls_to_update:
+    description: 'List of URLs to Update (comma-separated)'
+    required: true
+  urls_to_remove:
+    description: 'List of URLs to Remove (comma-separated)'
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Setup Python
+      uses: kishaningithub/setup-python-amazon-linux@282d998c8f2c4678ac4f872e4dc3b7d167b59fa7  # v1
+      with:
+        python-version: '3.12'
+
+    - name: Install poetry with pip
+      shell: bash
+      run: |
+        pip install poetry
+
+    - name: Install python libraries
+      shell: bash
+      run: |
+        cd apps/chatbot-index
+        poetry config virtualenvs.create false
+        poetry install --only main --no-interaction
+
+    - name: Refresh Structured Docs in Vector Index
+      shell: bash
+      env:
+        CHB_INDEX_ID: ${{ inputs.index_id }}
+        RAW_URLS_TO_UPDATE: ${{ inputs.urls_to_update }}
+        RAW_URLS_TO_REMOVE: ${{ inputs.urls_to_remove }}
+      run: |
+        cd apps/chatbot-index
+        ARGS=""
+  
+        if [ -n "$RAW_URLS_TO_UPDATE" ]; then
+          ARGS="$ARGS --update-url-list $(echo $RAW_URLS_TO_UPDATE | tr ',' ' ')"
+        fi
+        
+        if [ -n "$RAW_URLS_TO_REMOVE" ]; then
+          ARGS="$ARGS --remove-url-list $(echo $RAW_URLS_TO_REMOVE | tr ',' ' ')"
+        fi
+
+        PYTHONPATH=. poetry run python src/modules/refresh_structured_docs.py $ARGS
+

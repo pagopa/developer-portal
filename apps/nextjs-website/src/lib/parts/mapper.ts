@@ -1,0 +1,83 @@
+import type { Part } from '@/lib/parts/types';
+import { parseCkEditorContent } from '@/helpers/parseCkEditorContent.helpers';
+import type { StrapiPart } from '@/lib/parts/strapiTypes';
+import { s3DocsPath, staticContentsUrl } from '@/config';
+
+export function mapPartProps(
+  strapiPart: StrapiPart,
+  markdownContentDict?: Record<string, string>,
+  locale?: string
+): Part | null {
+  switch (strapiPart.__component) {
+    case 'parts.alert':
+      return {
+        component: 'alert',
+        ...strapiPart,
+      };
+    case 'parts.api-tester':
+      return {
+        component: 'apiTester',
+        apiRequest: {
+          ...strapiPart.requestCode,
+          description: strapiPart.requestDescription,
+          attributes: [...strapiPart.requestAttributes],
+        },
+        apiResponse: {
+          ...strapiPart.responseCode,
+          description: strapiPart.responseDescription,
+        },
+      };
+    case 'parts.code-block':
+      return {
+        component: 'codeBlock',
+        ...strapiPart,
+      };
+    case 'parts.html':
+      return {
+        component: 'blockRenderer',
+        ...strapiPart,
+      };
+    case 'parts.embed-html':
+      return {
+        component: 'innerHTMLLazyLoaded',
+        ...strapiPart,
+      };
+    case 'parts.quote':
+      return {
+        component: 'quote',
+        quote: strapiPart.text,
+        backgroundImage: strapiPart.backgroundImage,
+      };
+    case 'parts.markdown':
+      if (!markdownContentDict)
+        return {
+          component: 'markdown',
+          content: '',
+          assetsPrefix: `${staticContentsUrl}/${locale || 'it'}/${s3DocsPath}/${
+            strapiPart.dirName
+          }`,
+        };
+      // eslint-disable-next-line no-case-declarations
+      const content =
+        markdownContentDict[`${strapiPart.dirName}/${strapiPart.pathToFile}`];
+      return {
+        component: 'markdown',
+        content: content ? content : '',
+        assetsPrefix: `${staticContentsUrl}/${locale || 'it'}/${s3DocsPath}/${
+          strapiPart.dirName
+        }`,
+      };
+    case 'parts.ck-editor':
+      // eslint-disable-next-line no-case-declarations
+      const { parsedContent, menuItems } = parseCkEditorContent(
+        strapiPart.content
+      );
+      return {
+        component: 'ckEditor',
+        content: parsedContent,
+        menuItems: [...menuItems],
+      };
+    default:
+      return null;
+  }
+}

@@ -35,6 +35,8 @@ import SwaggerResponse from './components/Swagger/SwaggerResponse';
 import SwaggerDescription from './components/Swagger/SwaggerDescription';
 import Stepper from '@/components/organisms/GitBookContent/components/Stepper';
 import Step from '@/components/organisms/GitBookContent/components/Step';
+import Columns from '@/components/atoms/Columns/Columns';
+import Column from '@/components/atoms/Columns/Column';
 
 type GitBookContentProps = {
   content: string;
@@ -61,6 +63,8 @@ const components: any = {
   List: List,
   Item: Item,
   Tabs: Tabs,
+  Columns: Columns,
+  Column: Column,
   Expandable: Expandable,
   ExpandableSummary: ExpandableSummary,
   ExpandableDetails: ExpandableDetails,

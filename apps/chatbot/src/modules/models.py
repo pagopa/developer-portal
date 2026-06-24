@@ -1,8 +1,6 @@
-import os
-from google.genai import types
-
 from llama_index.core.llms.llm import LLM
 from llama_index.core.base.embeddings.base import BaseEmbedding
+from llama_index.llms.google_genai.base import VertexAIConfig
 
 from src.modules.logger import get_logger
 from src.modules.settings import SETTINGS
@@ -38,15 +36,48 @@ def get_llm(
     max_tokens = max_tokens or SETTINGS.max_tokens
 
     if provider == "google":
+        from google.genai.types import (
+            GenerateContentConfig,
+            HarmCategory,
+            HarmBlockThreshold,
+            SafetySetting,
+        )
         from llama_index.llms.google_genai import GoogleGenAI
 
+        safety_settings = [
+            SafetySetting(
+                category=HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
+                threshold=HarmBlockThreshold.BLOCK_LOW_AND_ABOVE,
+            ),
+            SafetySetting(
+                category=HarmCategory.HARM_CATEGORY_HARASSMENT,
+                threshold=HarmBlockThreshold.BLOCK_LOW_AND_ABOVE,
+            ),
+            SafetySetting(
+                category=HarmCategory.HARM_CATEGORY_HATE_SPEECH,
+                threshold=HarmBlockThreshold.BLOCK_LOW_AND_ABOVE,
+            ),
+            SafetySetting(
+                category=HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
+                threshold=HarmBlockThreshold.BLOCK_LOW_AND_ABOVE,
+            ),
+        ]
         llm = GoogleGenAI(
             model=model_id,
             temperature=temperature,
             max_tokens=max_tokens,
-            api_key=SETTINGS.google_api_key,
+            generation_config=GenerateContentConfig(
+                safety_settings=safety_settings,
+            ),
+            vertexai_config=VertexAIConfig(
+                credentials=SETTINGS.vertexai_credentials,
+                project=SETTINGS.vertexai_credentials.project_id,
+                location=SETTINGS.vertexai_location,
+            ),
         )
-        LOGGER.info(f"{model_id} LLM loaded successfully from Google!")
+        LOGGER.info(
+            f"{model_id} LLM loaded successfully from Vertex AI at location: {SETTINGS.vertexai_location}"
+        )
 
     elif provider == "mock":
         from llama_index.core.llms import MockLLM
@@ -93,20 +124,27 @@ def get_embed_model(
     retry_min_seconds = retry_min_seconds or SETTINGS.embed_retry_min_seconds
 
     if provider == "google":
+        from google.genai.types import EmbedContentConfig
         from llama_index.embeddings.google_genai import GoogleGenAIEmbedding
 
         embed_model = GoogleGenAIEmbedding(
             model_name=model_id,
-            api_key=SETTINGS.google_api_key,
             embed_batch_size=embed_batch_size,
             retries=retries,
             retry_min_seconds=retry_min_seconds,
-            embedding_config=types.EmbedContentConfig(
+            embedding_config=EmbedContentConfig(
                 output_dimensionality=embed_dim,
                 task_type=task_type,
             ),
+            vertexai_config=VertexAIConfig(
+                credentials=SETTINGS.vertexai_credentials,
+                project=SETTINGS.vertexai_credentials.project_id,
+                location=SETTINGS.vertexai_location,
+            ),
         )
-        LOGGER.info(f"{model_id} embedding model loaded successfully from Google!")
+        LOGGER.info(
+            f"{model_id} embedding model loaded successfully from Vertex AI at location: {SETTINGS.vertexai_location}!"
+        )
 
     elif provider == "mock":
         from llama_index.core import MockEmbedding

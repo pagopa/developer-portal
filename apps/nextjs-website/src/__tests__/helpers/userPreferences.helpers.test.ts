@@ -2,7 +2,7 @@ import {
   mergeUserPreferencesToAttributes,
   userPreferencesFromAttributes,
 } from '../../helpers/userPreferences.helpers';
-import { DevPortalUser, UserPreferences } from '@/lib/types/auth';
+import { DevPortalUser, UserPreferences } from '@/lib/auth/user/types';
 
 const existingSlugs = ['webinar-1', 'webinar-2'];
 

@@ -1,4 +1,4 @@
-FROM python:3.12.4-slim-bullseye
+FROM python:3.12.4-slim-bullseye@sha256:26ce493641ad3b1c8a6202117c31340c7bbb2dc126f1aeee8ea3972730a81dc6
 ARG DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && \
@@ -49,4 +49,5 @@ RUN mkdir -p /home/appuser/.local /home/appuser/.jupyter /home/appuser/.cache &&
 
 USER appuser
 
-CMD ["hypercorn", "-b", "0.0.0.0:8080", "--reload", "src.app.main:app"]
+ENTRYPOINT ["bash", "./scripts/entrypoint.sh"]
+CMD ["bash", "./scripts/run.local.sh"]

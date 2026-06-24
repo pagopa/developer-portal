@@ -94,6 +94,102 @@ describe('Handler', () => {
       })
     );
   });
+
+  it('should use English templates when preferred_language is en', async () => {
+    const { env, sesMock, verificationCode } = makeTestEnv();
+    const eventWithLocale: CreateAuthChallengeTriggerEvent = {
+      ...event,
+      request: {
+        ...event.request,
+        userAttributes: {
+          ...event.request.userAttributes,
+          'custom:preferred_language': 'en',
+        },
+      },
+    };
+
+    sesMock.send.mockImplementationOnce(() =>
+      Promise.resolve({
+        MessageId: 'aMessageId',
+      })
+    );
+
+    await makeHandler(env)(eventWithLocale);
+
+    expect(sesMock.send).toHaveBeenCalledWith(
+      expect.objectContaining({
+        input: {
+          Source: env.config.fromEmailAddress,
+          Destination: {
+            ToAddresses: [event.request.userAttributes.email],
+          },
+          Message: {
+            Body: {
+              Html: {
+                Data: makeOtpMessageEmail(
+                  verificationCode,
+                  env.config.domain,
+                  OTP_DURATION_MINUTES,
+                  'en'
+                ),
+              },
+            },
+            Subject: {
+              Data: `PagoPA DevPortal verification code: ${verificationCode}`,
+            },
+          },
+        },
+      })
+    );
+  });
+
+  it('should fall back to Italian templates for unsupported locales', async () => {
+    const { env, sesMock, verificationCode } = makeTestEnv();
+    const eventWithLocale: CreateAuthChallengeTriggerEvent = {
+      ...event,
+      request: {
+        ...event.request,
+        userAttributes: {
+          ...event.request.userAttributes,
+          'custom:preferred_language': 'zz',
+        },
+      },
+    };
+
+    sesMock.send.mockImplementationOnce(() =>
+      Promise.resolve({
+        MessageId: 'aMessageId',
+      })
+    );
+
+    await makeHandler(env)(eventWithLocale);
+
+    expect(sesMock.send).toHaveBeenCalledWith(
+      expect.objectContaining({
+        input: {
+          Source: env.config.fromEmailAddress,
+          Destination: {
+            ToAddresses: [event.request.userAttributes.email],
+          },
+          Message: {
+            Body: {
+              Html: {
+                Data: makeOtpMessageEmail(
+                  verificationCode,
+                  env.config.domain,
+                  OTP_DURATION_MINUTES,
+                  'it'
+                ),
+              },
+            },
+            Subject: {
+              Data: `Codice di verifica PagoPA DevPortal: ${verificationCode}`,
+            },
+          },
+        },
+      })
+    );
+  });
 });
 
 describe('generateVerificationCode', () => {

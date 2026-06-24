@@ -8,6 +8,7 @@ import { EMAIL_TRANSLATIONS } from './templates/translations';
 
 import { sanitize } from './utils/sanitize';
 import { SUPPORTED_LOCALES } from './i18n/locales';
+import { DEFAULT_LOCALE } from './i18n/locales';
 
 export const CustomMessageEnv = t.type({
   domain: t.string,
@@ -24,7 +25,7 @@ export const makeHandler =
       event.request.userAttributes['custom:preferred_language'];
     const locale = SUPPORTED_LOCALES.includes(localeAttribute)
       ? localeAttribute
-      : 'it'; // Defaults to 'it'
+      : DEFAULT_LOCALE;
 
     if (
       eventTrigger === 'CustomMessage_SignUp' ||
@@ -65,7 +66,8 @@ export const makeHandler =
       const emailSubject =
         EMAIL_TRANSLATIONS.confirmationForgotPassword[
           locale as keyof typeof EMAIL_TRANSLATIONS.confirmationForgotPassword
-        ]?.subject || EMAIL_TRANSLATIONS.confirmationForgotPassword.it.subject;
+        ]?.subject ||
+        EMAIL_TRANSLATIONS.confirmationForgotPassword[DEFAULT_LOCALE].subject;
       const response = { ...event.response, emailMessage, emailSubject };
       return { ...event, response };
     } else if (eventTrigger === 'CustomMessage_UpdateUserAttribute') {
@@ -86,7 +88,8 @@ export const makeHandler =
         EMAIL_TRANSLATIONS.confirmationUpdateEmailAddress[
           locale as keyof typeof EMAIL_TRANSLATIONS.confirmationUpdateEmailAddress
         ]?.subject ||
-        EMAIL_TRANSLATIONS.confirmationUpdateEmailAddress.it.subject;
+        EMAIL_TRANSLATIONS.confirmationUpdateEmailAddress[DEFAULT_LOCALE]
+          .subject;
       const response = { ...event.response, emailMessage, emailSubject };
       return { ...event, response };
     } else {

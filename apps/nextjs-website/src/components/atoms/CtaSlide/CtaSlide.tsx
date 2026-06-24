@@ -1,5 +1,5 @@
 'use client';
-import { Media } from '@/lib/types/media';
+import type { Media } from '@/lib/media/types';
 import { Box, Stack, Typography, useTheme } from '@mui/material';
 import { ButtonNaked } from '@/components/atoms/ButtonNaked/ButtonNaked';
 import { BlocksContent } from '@strapi/blocks-react-renderer';
@@ -77,7 +77,12 @@ const CtaSlide = ({
               href={cta.link.href}
               color={'negative'}
               variant={cta.variant || 'contained'}
-              sx={{ mb: 6 }}
+              sx={{
+                mb: 6,
+                '&.MuiButton-containedNegative:hover': {
+                  backgroundColor: `${palette.background.paper}`,
+                },
+              }}
               target={cta.link.target ?? '_self'}
             >
               {cta.link.text}

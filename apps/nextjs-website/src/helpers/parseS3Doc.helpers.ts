@@ -6,10 +6,10 @@ import {
 import * as path from 'path';
 import { Readable } from 'stream';
 import Markdoc, { Node } from '@markdoc/markdoc';
-import { GuideDefinition } from './makeDocs.helpers';
 import { staticContentsUrl, s3DocsPath } from '@/config';
-import { Product } from '@/lib/types/product';
 import { downloadFileAsText, JsonMetadata } from './s3Metadata.helpers';
+import { Guide } from '@/lib/guides/types';
+import { Product } from '@/lib/products/types';
 
 export type DocSource<T> = T & {
   readonly source: {
@@ -28,8 +28,33 @@ export type DocPage<T> = T & {
     readonly menu: string;
     readonly body: string;
     readonly isIndex: boolean;
+    readonly bodyMetadata?: string;
   };
 };
+
+function parseRawBody(rawBody?: string): {
+  readonly body: string;
+  readonly bodyMetadata?: string;
+} {
+  if (!rawBody) {
+    return { body: '', bodyMetadata: undefined };
+  }
+
+  // Extracts frontmatter enclosed by `---` from the raw document string.
+  // Matches optional BOM, opening `---`, content, and closing `---`.
+  const frontmatterMatch = rawBody.match(
+    /^(?:\uFEFF\s*)?---[ \t]*\r?\n([\s\S]*?)\r?\n---[ \t]*(?:\r?\n|$)/
+  );
+
+  if (!frontmatterMatch) {
+    return { body: rawBody, bodyMetadata: undefined };
+  }
+
+  return {
+    body: rawBody.slice(frontmatterMatch[0].length),
+    bodyMetadata: frontmatterMatch[1],
+  };
+}
 
 const parseText = ({ type, attributes }: Node): string | null =>
   type === 'text' && typeof attributes.content === 'string'
@@ -179,7 +204,7 @@ export const parseS3Doc = async <T>(
 };
 
 export const parseS3GuidePage = async (props: {
-  readonly guideProps: GuideDefinition;
+  readonly guideProps: Guide;
   readonly guidePath: string;
   readonly guidesMetadata: readonly JsonMetadata[];
   readonly products: readonly Product[];
@@ -232,11 +257,13 @@ export const parseS3GuidePage = async (props: {
   };
 
   // Download menu and body files in parallel
-  const [menu, body] = await Promise.all([
+  const [menu, rawBody] = await Promise.all([
     guidePageMetadata &&
       downloadFileAsText(guidePageMetadata.menuS3Path, { cache: 'no-store' }),
     downloadFileAsText(guidePageMetadata.contentS3Path, { cache: 'no-store' }),
   ]);
+
+  const { body, bodyMetadata } = parseRawBody(rawBody);
 
   const result = {
     ...guideProps,
@@ -250,6 +277,7 @@ export const parseS3GuidePage = async (props: {
       path: version.main
         ? baseGuidePath
         : `${baseGuidePath}/${version.version}`,
+      showGuidesTranslationDisclaimer: version.showGuidesTranslationDisclaimer,
     },
     versions: versions.map(({ main = false, version }) => ({
       main,
@@ -263,6 +291,7 @@ export const parseS3GuidePage = async (props: {
       title: guidePageMetadata.title || '',
       menu: menu || '',
       body: body || '',
+      bodyMetadata: bodyMetadata,
     },
     products: products,
     bodyConfig: {

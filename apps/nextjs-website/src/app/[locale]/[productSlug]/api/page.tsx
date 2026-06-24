@@ -10,9 +10,8 @@ import {
   makeMetadata,
   makeMetadataFromStrapi,
 } from '@/helpers/metadata.helpers';
-import { getApiDataListPages } from '@/lib/api';
+import { ApiDataListPagesRepository } from '@/lib/apiDataListPages';
 import { Metadata } from 'next';
-import { SUPPORTED_LOCALES } from '@/locales';
 
 type Params = {
   locale: string;
@@ -23,7 +22,10 @@ export async function generateMetadata(props: {
   params: Promise<Params>;
 }): Promise<Metadata> {
   const { locale, productSlug } = await props.params;
-  const apiDataListPage = await getApiDataListPages(locale, productSlug);
+  const apiDataListPage = await ApiDataListPagesRepository.getByProductSlug(
+    locale,
+    productSlug
+  );
 
   if (apiDataListPage?.seo) {
     return makeMetadataFromStrapi(apiDataListPage.seo);
@@ -40,7 +42,8 @@ export async function generateMetadata(props: {
 
 const ApiDataListPage = async (props: { params: Promise<Params> }) => {
   const { locale, productSlug } = await props.params;
-  const apiDataListPageProps = await getApiDataListPages(locale, productSlug);
+  const apiDataListPageProps =
+    await ApiDataListPagesRepository.getByProductSlug(locale, productSlug);
 
   const structuredData = generateStructuredDataScripts({
     breadcrumbsItems: [

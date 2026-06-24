@@ -40,7 +40,7 @@ resource "aws_ecs_cluster" "langfuse" {
 
 resource "aws_ecs_task_definition" "clickhouse" {
   family                   = "langfuse-clickhouse"
-  cpu                      = 512
+  cpu                      = 2048
   memory                   = 4096
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
@@ -66,7 +66,7 @@ resource "aws_ecs_task_definition" "clickhouse" {
     {
       name      = "clickhouse"
       image     = "${aws_ecr_repository.repositories["clickhouse"].repository_url}:25.8.8.26-alpine"
-      cpu       = 512
+      cpu       = 2048
       memory    = 4096
       essential = true
 
@@ -200,6 +200,18 @@ resource "aws_ecs_task_definition" "langfuse_worker" {
           value = "false"
         },
         {
+          name  = "LANGFUSE_S3_BATCH_EXPORT_ENABLED"
+          value = "true"
+        },
+        {
+          name  = "LANGFUSE_S3_BATCH_EXPORT_BUCKET"
+          value = aws_s3_bucket.langfuse_event.id
+        },
+        {
+          name  = "LANGFUSE_S3_BATCH_EXPORT_PREFIX"
+          value = "batch-exports/"
+        },
+        {
           name  = "LANGFUSE_S3_EVENT_UPLOAD_BUCKET"
           value = aws_s3_bucket.langfuse_event.id
         },
@@ -274,8 +286,8 @@ resource "aws_ecs_task_definition" "langfuse_worker" {
 
 resource "aws_ecs_task_definition" "langfuse_web" {
   family                   = "langfuse-web"
-  cpu                      = 2048
-  memory                   = 4096
+  cpu                      = 512
+  memory                   = 1024
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
 
@@ -291,8 +303,8 @@ resource "aws_ecs_task_definition" "langfuse_web" {
     {
       name      = "web"
       image     = "${aws_ecr_repository.repositories["langfuse-web"].repository_url}:3.115"
-      cpu       = 2048
-      memory    = 4096
+      cpu       = 512
+      memory    = 1024
       essential = true
       linuxParameters = {
         initProcessEnabled = true
@@ -301,7 +313,7 @@ resource "aws_ecs_task_definition" "langfuse_web" {
       environment = [
         {
           name  = "NEXTAUTH_URL"
-          value = "https://${local.langfuse_domain_name}"
+          value = "https://${var.custom_domain_name}"
         },
         {
           name  = "HOSTNAME"

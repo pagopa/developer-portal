@@ -1,5 +1,11 @@
 # soap-api-data
 
+## 1.1.1
+
+### Patch Changes
+
+- fb80422: Fix populate for strapi 5 update
+
 ## 1.1.0
 
 ### Minor Changes

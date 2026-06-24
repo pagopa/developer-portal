@@ -20,7 +20,8 @@ export function makeS3Client(): S3Client {
   const S3_SECRET_ACCESS_KEY = process.env.S3_SECRET_ACCESS_KEY;
   const S3_BUCKET_NAME = process.env.S3_BUCKET_NAME;
 
-  const region = process.env.NEXT_PUBLIC_COGNITO_REGION;
+  const region = process.env.AWS_REGION ?? "us-east-1";
+  const endpointUrl = process.env.AWS_ENDPOINT_URL;
   const credentials: S3Credentials | undefined =
     !!S3_ACCESS_KEY_ID && !!S3_SECRET_ACCESS_KEY
       ? {
@@ -38,12 +39,15 @@ export function makeS3Client(): S3Client {
     process.exit(1);
   }
 
-  const s3 =
-    !!region && !!credentials
-      ? new S3Client({ region, credentials })
-      : new S3Client();
+  const baseConfig = {
+    region,
+    ...(credentials ? { credentials } : {}),
+    // When AWS_ENDPOINT_URL is set (e.g. for local Moto mock), route all S3
+    // requests to that endpoint and use path-style addressing.
+    ...(endpointUrl ? { endpoint: endpointUrl, forcePathStyle: true } : {}),
+  };
 
-  return s3;
+  return new S3Client(baseConfig);
 }
 
 

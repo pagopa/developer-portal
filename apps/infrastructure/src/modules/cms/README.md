@@ -25,16 +25,12 @@
 | <a name="module_cms_rds"></a> [cms\_rds](#module\_cms\_rds) | git::https://github.com/terraform-aws-modules/terraform-aws-rds-aurora.git | 7bf5933100eb355b13854232e5d63c62ea7cad35 |
 | <a name="module_cms_ssl_certificate"></a> [cms\_ssl\_certificate](#module\_cms\_ssl\_certificate) | git::https://github.com/terraform-aws-modules/terraform-aws-acm.git | 5d113fa07675fc42237907a621b68ac97109043e |
 | <a name="module_ecr"></a> [ecr](#module\_ecr) | git::https://github.com/terraform-aws-modules/terraform-aws-ecr.git | 9f4b587846551110b0db199ea5599f016570fefe |
-| <a name="module_iam_policy_cms"></a> [iam\_policy\_cms](#module\_iam\_policy\_cms) | git::https://github.com/terraform-aws-modules/terraform-aws-iam.git//modules/iam-policy | f37809108f86d8fbdf17f735df734bf4abe69315 |
 | <a name="module_iam_policy_ecs_task_execution"></a> [iam\_policy\_ecs\_task\_execution](#module\_iam\_policy\_ecs\_task\_execution) | git::https://github.com/terraform-aws-modules/terraform-aws-iam.git//modules/iam-policy | f37809108f86d8fbdf17f735df734bf4abe69315 |
 | <a name="module_iam_policy_ecs_task_role_s3"></a> [iam\_policy\_ecs\_task\_role\_s3](#module\_iam\_policy\_ecs\_task\_role\_s3) | git::https://github.com/terraform-aws-modules/terraform-aws-iam.git//modules/iam-policy | f37809108f86d8fbdf17f735df734bf4abe69315 |
 | <a name="module_iam_policy_ecs_task_role_ssm"></a> [iam\_policy\_ecs\_task\_role\_ssm](#module\_iam\_policy\_ecs\_task\_role\_ssm) | git::https://github.com/terraform-aws-modules/terraform-aws-iam.git//modules/iam-policy | f37809108f86d8fbdf17f735df734bf4abe69315 |
 | <a name="module_iam_role_ecs_task_execution"></a> [iam\_role\_ecs\_task\_execution](#module\_iam\_role\_ecs\_task\_execution) | git::https://github.com/terraform-aws-modules/terraform-aws-iam.git//modules/iam-assumable-role | f37809108f86d8fbdf17f735df734bf4abe69315 |
 | <a name="module_iam_role_task_role"></a> [iam\_role\_task\_role](#module\_iam\_role\_task\_role) | git::https://github.com/terraform-aws-modules/terraform-aws-iam.git//modules/iam-assumable-role | f37809108f86d8fbdf17f735df734bf4abe69315 |
-| <a name="module_iam_user_cms"></a> [iam\_user\_cms](#module\_iam\_user\_cms) | git::https://github.com/terraform-aws-modules/terraform-aws-iam.git//modules/iam-user | f37809108f86d8fbdf17f735df734bf4abe69315 |
 | <a name="module_s3_bucket_cms"></a> [s3\_bucket\_cms](#module\_s3\_bucket\_cms) | git::https://github.com/terraform-aws-modules/terraform-aws-s3-bucket.git | 8eecd4bfe167b3606755a0f8150514e9dcb2bf67 |
-| <a name="module_secret_cms_access_key_id"></a> [secret\_cms\_access\_key\_id](#module\_secret\_cms\_access\_key\_id) | git::https://github.com/terraform-aws-modules/terraform-aws-ssm-parameter.git | 28784d318fcb1d5b632e38a4c1f567dd138fcd83 |
-| <a name="module_secret_cms_access_key_secret"></a> [secret\_cms\_access\_key\_secret](#module\_secret\_cms\_access\_key\_secret) | git::https://github.com/terraform-aws-modules/terraform-aws-ssm-parameter.git | 28784d318fcb1d5b632e38a4c1f567dd138fcd83 |
 | <a name="module_secret_cms_admin_jwt_secret"></a> [secret\_cms\_admin\_jwt\_secret](#module\_secret\_cms\_admin\_jwt\_secret) | git::https://github.com/terraform-aws-modules/terraform-aws-ssm-parameter.git | 28784d318fcb1d5b632e38a4c1f567dd138fcd83 |
 | <a name="module_secret_cms_api_token_salt"></a> [secret\_cms\_api\_token\_salt](#module\_secret\_cms\_api\_token\_salt) | git::https://github.com/terraform-aws-modules/terraform-aws-ssm-parameter.git | 28784d318fcb1d5b632e38a4c1f567dd138fcd83 |
 | <a name="module_secret_cms_app_keys"></a> [secret\_cms\_app\_keys](#module\_secret\_cms\_app\_keys) | git::https://github.com/terraform-aws-modules/terraform-aws-ssm-parameter.git | 28784d318fcb1d5b632e38a4c1f567dd138fcd83 |
@@ -52,6 +48,7 @@
 
 | Name | Type |
 |------|------|
+| [aws_cloudfront_response_headers_policy.cms_media_library](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudfront_response_headers_policy) | resource |
 | [aws_ecs_task_definition.cms_task_def](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecs_task_definition) | resource |
 | [aws_iam_policy.deploy_cms](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
 | [aws_iam_role.deploy_cms](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
