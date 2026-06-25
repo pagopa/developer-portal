@@ -5,6 +5,8 @@ import {
   webinarHeartbeatIntervalInSeconds,
 } from '@/config';
 import { sendWebinarHeartbeat } from '@/lib/webinarApi';
+import { useUser } from '@/helpers/user.helper';
+import { date } from 'fp-ts';
 
 const COMING_SOON_START_TIME_DELTA_MS = 39 * 30 * 60 * 1000; // 19.5 hours
 const CHECK_WEBINAR_STATUS_INTERVAL_MS = 500;
@@ -32,6 +34,7 @@ export const useWebinar = () => {
   const [isLiveStreamAvailable, setIsLiveStreamAvailable] = useState(false);
   const [livePlayerReloadToken, setLivePlayerReloadToken] = useState(0);
   const lastHeartbeatSentTime = useRef<Date | null>(null);
+  const { user } = useUser();
 
   const setWebinar = (nextWebinar: Webinar | null) => {
     const hasChanged = nextWebinar?.slug !== webinar?.slug;
@@ -185,12 +188,20 @@ export const useWebinar = () => {
       ) {
         return;
       }
+
+      const durationMs =
+        new Date(webinar.endDateTime || date.now()).getTime() -
+        new Date(webinar.startDateTime || date.now()).getTime();
+      const durationMinutes = Math.round(durationMs / 60000);
       // eslint-disable-next-line functional/immutable-data
       lastHeartbeatSentTime.current = now;
       await sendWebinarHeartbeat({
         webinarSlug: webinar.slug,
         isLive: webinarState === WebinarState.live,
         action: 'playing',
+        startedAt: webinar.startDateTime,
+        consent: user?.attributes['custom:webinar_accepted'] === 'true',
+        duration: durationMinutes,
       });
     };
 
