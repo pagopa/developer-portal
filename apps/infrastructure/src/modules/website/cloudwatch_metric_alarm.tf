@@ -6,17 +6,16 @@ module "ses_bounce_rate_alarm" {
 
   alarm_name        = "DevPortal | Website | SES | Bounce Rate"
   actions_enabled   = true
-  alarm_description = "Alarm to monitor the bounce rate"
-  metric_name       = "Bounce"
+  alarm_description = "Alarm to monitor the SES reputation bounce rate"
+  metric_name       = "Reputation.BounceRate"
   namespace         = "AWS/SES"
 
   comparison_operator = "GreaterThanOrEqualToThreshold"
   threshold           = "0.05" # 5%
   statistic           = "Average"
-  unit                = "Count"
-  period              = 300 # 5 minutes
+  period              = 3600 # 1 hour
   evaluation_periods  = 1
-  treat_missing_data  = "notBreaching" # No data in the period is considered as good.
+  treat_missing_data  = "ignore"
   alarm_actions       = [var.alerting_topic_arn]
 }
 
@@ -92,11 +91,11 @@ module "cloudfront_5xx_error_rate_alarm" {
   namespace         = "AWS/CloudFront"
 
   comparison_operator = "GreaterThanThreshold"
-  threshold           = 30 # 30%
+  threshold           = 15 # 15%
   statistic           = "Average"
-  period              = 60 # 1 minute
-  evaluation_periods  = 5
-  datapoints_to_alarm = 5
+  period              = 300 # 5 minutes
+  evaluation_periods  = 3
+  datapoints_to_alarm = 2
   treat_missing_data  = "notBreaching" # No data in the period is considered as good.
   alarm_actions       = [var.alerting_topic_arn]
 
@@ -127,6 +126,56 @@ module "cloudfront_origin_latency_alarm" {
 
   dimensions = {
     DistributionId = module.opennext.cloudfront.distribution_id
+    Region         = "Global" # Global because CloudFront is a global service
+  }
+}
+
+## Static contents distribution — 5xx error rate
+module "cloudfront_static_contents_5xx_error_rate_alarm" {
+  source = "git::https://github.com/terraform-aws-modules/terraform-aws-cloudwatch.git//modules/metric-alarm?ref=0b4aa2b9aa19060205965a938de89a7bf0ff477b" # v5.1.0
+
+  alarm_name        = "DevPortal | Website | CloudFront | Static Contents | 5xxErrorRate"
+  actions_enabled   = true
+  alarm_description = "This alarm monitors the percentage of 5xx error responses from the static contents CloudFront distribution"
+  metric_name       = "5xxErrorRate"
+  namespace         = "AWS/CloudFront"
+
+  comparison_operator = "GreaterThanThreshold"
+  threshold           = 15 # 15%
+  statistic           = "Average"
+  period              = 300 # 5 minutes
+  evaluation_periods  = 3
+  datapoints_to_alarm = 2
+  treat_missing_data  = "notBreaching"
+  alarm_actions       = [var.alerting_topic_arn]
+
+  dimensions = {
+    DistributionId = aws_cloudfront_distribution.static_contents.id
+    Region         = "Global" # Global because CloudFront is a global service
+  }
+}
+
+## Static contents distribution — 4xx error rate
+module "cloudfront_static_contents_4xx_error_rate_alarm" {
+  source = "git::https://github.com/terraform-aws-modules/terraform-aws-cloudwatch.git//modules/metric-alarm?ref=0b4aa2b9aa19060205965a938de89a7bf0ff477b" # v5.1.0
+
+  alarm_name        = "DevPortal | Website | CloudFront | Static Contents | 4xxErrorRate"
+  actions_enabled   = true
+  alarm_description = "This alarm monitors the percentage of 4xx error responses from the static contents CloudFront distribution (S3 403s are mapped to 404)"
+  metric_name       = "4xxErrorRate"
+  namespace         = "AWS/CloudFront"
+
+  comparison_operator = "GreaterThanThreshold"
+  threshold           = 10 # 10%
+  statistic           = "Average"
+  period              = 300 # 5 minutes
+  evaluation_periods  = 3
+  datapoints_to_alarm = 2
+  treat_missing_data  = "notBreaching"
+  alarm_actions       = [var.alerting_topic_arn]
+
+  dimensions = {
+    DistributionId = aws_cloudfront_distribution.static_contents.id
     Region         = "Global" # Global because CloudFront is a global service
   }
 }

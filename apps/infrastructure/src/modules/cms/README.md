@@ -15,7 +15,19 @@
 
 | Name | Source | Version |
 |------|--------|---------|
+| <a name="module_alb_cms_elb_5xx_alarm"></a> [alb\_cms\_elb\_5xx\_alarm](#module\_alb\_cms\_elb\_5xx\_alarm) | git::https://github.com/terraform-aws-modules/terraform-aws-cloudwatch.git//modules/metric-alarm | 0b4aa2b9aa19060205965a938de89a7bf0ff477b |
+| <a name="module_alb_cms_healthy_hosts_drop_alarm"></a> [alb\_cms\_healthy\_hosts\_drop\_alarm](#module\_alb\_cms\_healthy\_hosts\_drop\_alarm) | git::https://github.com/terraform-aws-modules/terraform-aws-cloudwatch.git//modules/metric-alarm | 0b4aa2b9aa19060205965a938de89a7bf0ff477b |
+| <a name="module_alb_cms_internal_elb_5xx_alarm"></a> [alb\_cms\_internal\_elb\_5xx\_alarm](#module\_alb\_cms\_internal\_elb\_5xx\_alarm) | git::https://github.com/terraform-aws-modules/terraform-aws-cloudwatch.git//modules/metric-alarm | 0b4aa2b9aa19060205965a938de89a7bf0ff477b |
+| <a name="module_alb_cms_internal_healthy_hosts_drop_alarm"></a> [alb\_cms\_internal\_healthy\_hosts\_drop\_alarm](#module\_alb\_cms\_internal\_healthy\_hosts\_drop\_alarm) | git::https://github.com/terraform-aws-modules/terraform-aws-cloudwatch.git//modules/metric-alarm | 0b4aa2b9aa19060205965a938de89a7bf0ff477b |
+| <a name="module_alb_cms_internal_target_5xx_alarm"></a> [alb\_cms\_internal\_target\_5xx\_alarm](#module\_alb\_cms\_internal\_target\_5xx\_alarm) | git::https://github.com/terraform-aws-modules/terraform-aws-cloudwatch.git//modules/metric-alarm | 0b4aa2b9aa19060205965a938de89a7bf0ff477b |
+| <a name="module_alb_cms_internal_target_response_time_alarm"></a> [alb\_cms\_internal\_target\_response\_time\_alarm](#module\_alb\_cms\_internal\_target\_response\_time\_alarm) | git::https://github.com/terraform-aws-modules/terraform-aws-cloudwatch.git//modules/metric-alarm | 0b4aa2b9aa19060205965a938de89a7bf0ff477b |
+| <a name="module_alb_cms_internal_unhealthy_hosts_alarm"></a> [alb\_cms\_internal\_unhealthy\_hosts\_alarm](#module\_alb\_cms\_internal\_unhealthy\_hosts\_alarm) | git::https://github.com/terraform-aws-modules/terraform-aws-cloudwatch.git//modules/metric-alarm | 0b4aa2b9aa19060205965a938de89a7bf0ff477b |
+| <a name="module_alb_cms_target_5xx_alarm"></a> [alb\_cms\_target\_5xx\_alarm](#module\_alb\_cms\_target\_5xx\_alarm) | git::https://github.com/terraform-aws-modules/terraform-aws-cloudwatch.git//modules/metric-alarm | 0b4aa2b9aa19060205965a938de89a7bf0ff477b |
+| <a name="module_alb_cms_target_response_time_alarm"></a> [alb\_cms\_target\_response\_time\_alarm](#module\_alb\_cms\_target\_response\_time\_alarm) | git::https://github.com/terraform-aws-modules/terraform-aws-cloudwatch.git//modules/metric-alarm | 0b4aa2b9aa19060205965a938de89a7bf0ff477b |
+| <a name="module_alb_cms_unhealthy_hosts_alarm"></a> [alb\_cms\_unhealthy\_hosts\_alarm](#module\_alb\_cms\_unhealthy\_hosts\_alarm) | git::https://github.com/terraform-aws-modules/terraform-aws-cloudwatch.git//modules/metric-alarm | 0b4aa2b9aa19060205965a938de89a7bf0ff477b |
 | <a name="module_cloudfront_cms"></a> [cloudfront\_cms](#module\_cloudfront\_cms) | git::https://github.com/terraform-aws-modules/terraform-aws-cloudfront.git | ed0f1f983f606304e00ad9f48399bd2fe0b79233 |
+| <a name="module_cloudfront_cms_4xx_error_rate_alarm"></a> [cloudfront\_cms\_4xx\_error\_rate\_alarm](#module\_cloudfront\_cms\_4xx\_error\_rate\_alarm) | git::https://github.com/terraform-aws-modules/terraform-aws-cloudwatch.git//modules/metric-alarm | 0b4aa2b9aa19060205965a938de89a7bf0ff477b |
+| <a name="module_cloudfront_cms_5xx_error_rate_alarm"></a> [cloudfront\_cms\_5xx\_error\_rate\_alarm](#module\_cloudfront\_cms\_5xx\_error\_rate\_alarm) | git::https://github.com/terraform-aws-modules/terraform-aws-cloudwatch.git//modules/metric-alarm | 0b4aa2b9aa19060205965a938de89a7bf0ff477b |
 | <a name="module_cms_dns_records"></a> [cms\_dns\_records](#module\_cms\_dns\_records) | git::https://github.com/terraform-aws-modules/terraform-aws-route53.git//modules/records | bc63328714550fd903d2574b263833c9ce1c867e |
 | <a name="module_cms_ecs_cluster"></a> [cms\_ecs\_cluster](#module\_cms\_ecs\_cluster) | git::https://github.com/terraform-aws-modules/terraform-aws-ecs.git//modules/cluster | 8b97783def49997d18a6fcb00dc21ce1edc0f538 |
 | <a name="module_cms_ecs_service"></a> [cms\_ecs\_service](#module\_cms\_ecs\_service) | git::https://github.com/terraform-aws-modules/terraform-aws-ecs.git//modules/service | 378d0cb7e8fde47e8ddf58461ed1974486dbbd5d |
@@ -85,6 +97,7 @@
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_alerting_topic_arn"></a> [alerting\_topic\_arn](#input\_alerting\_topic\_arn) | SNS topic ARN for CloudWatch alarm notifications | `string` | n/a | yes |
 | <a name="input_cms_app_image_tag"></a> [cms\_app\_image\_tag](#input\_cms\_app\_image\_tag) | Docker image tag for the CMS Strapi application | `string` | n/a | yes |
 | <a name="input_dns_domain_name"></a> [dns\_domain\_name](#input\_dns\_domain\_name) | DNS domain for the Developer Portal product | `string` | n/a | yes |
 | <a name="input_environment"></a> [environment](#input\_environment) | Environment | `string` | n/a | yes |

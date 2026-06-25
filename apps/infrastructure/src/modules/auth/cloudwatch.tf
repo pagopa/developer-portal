@@ -426,7 +426,7 @@ module "cognito_create_auth_challenge_lambda_duration_alarm" {
   namespace         = "AWS/Lambda"
 
   comparison_operator = "GreaterThanThreshold"
-  threshold           = 7 # This must be lower than the Lambda function timeout. At the moment is less than the 50% of the timeout
+  threshold           = 900 # Account for SES network latency (~900ms)
   extended_statistic  = "p90"
   period              = 60
   evaluation_periods  = 15
