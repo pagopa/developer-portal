@@ -21,7 +21,7 @@ const CertificatesList = ({ webinars }: CertificatesListProps) => {
   const { webinarSubscriptions } = useUser();
 
   const subscribedWebinars = webinarSubscriptions?.map((webinar) => {
-    return webinar.webinarId;
+    return webinar.certificateCreatedAt && webinar.webinarId;
   });
   const filteredWebinars = webinars.filter((webinar) => {
     return subscribedWebinars?.includes(webinar.slug) ? webinar : null;
