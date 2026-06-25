@@ -84,7 +84,14 @@ export const profileMenuItems: readonly {
   ? [
       ...defaultItems,
       { label: 'chatbot.title', href: '/profile/chatbot-history' },
-      { label: 'certificateList.title', href: '/profile/certificate-list' },
+      ...(isWebinarHeartbeatEnabled
+        ? [
+            {
+              label: 'certificateList.title',
+              href: '/profile/certificate-list',
+            },
+          ]
+        : []),
     ]
   : defaultItems;
 

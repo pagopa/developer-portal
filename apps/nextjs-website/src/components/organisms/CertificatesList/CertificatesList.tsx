@@ -32,7 +32,7 @@ const CertificatesList = ({ webinars }: CertificatesListProps) => {
       title: webinar.title,
       text: '',
       useSrc: false,
-      ctaLabel: 'Scarica attestato',
+      ctaLabel: t('profile.certificateList.cta'),
       endIcon: <DownloadIcon />,
       image: (
         <Box

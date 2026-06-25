@@ -1,5 +1,6 @@
 import React from 'react';
 import CertificatesList from '@/components/organisms/CertificatesList/CertificatesList';
+import { isWebinarHeartbeatEnabled } from '@/config';
 import { getVisibleInListWebinars } from '@/lib/api';
 
 const CertificateListPage = async (props: {
@@ -8,7 +9,9 @@ const CertificateListPage = async (props: {
   const { locale } = await props.params;
   const webinars = await getVisibleInListWebinars(locale);
 
-  return <CertificatesList webinars={webinars} />;
+  return isWebinarHeartbeatEnabled ? (
+    <CertificatesList webinars={webinars} />
+  ) : null;
 };
 
 export default CertificateListPage;
