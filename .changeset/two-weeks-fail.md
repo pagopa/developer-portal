@@ -2,4 +2,4 @@
 "infrastructure": minor
 ---
 
-Set strapi cms desired tasks equal 2 in production only
+Set Strapi CMS desired task count to 2 in production only
