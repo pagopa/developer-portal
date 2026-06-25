@@ -183,6 +183,7 @@ module "cms" {
   ac_base_url_param         = var.ac_integration_is_enabled ? module.active_campaign[0].base_url_param : null
   ac_api_key_param          = var.ac_integration_is_enabled ? module.active_campaign[0].api_key_param : null
   cms_app_image_tag         = var.cms_app_image_tag
+  cms_ecs_desired_count     = var.cms_ecs_desired_count
   rds_scaling_configuration = var.rds_cms_scaling_configuration
 }
 
