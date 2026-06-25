@@ -1,5 +1,15 @@
 # nextjs-website
 
+## 17.3.0
+
+### Minor Changes
+
+- 843dbd2: Generate structured data from document metadata for guides
+
+### Patch Changes
+
+- 9e0dfaf: Fix starting visibility setting for webinar header banner
+
 ## 17.2.1
 
 ### Patch Changes

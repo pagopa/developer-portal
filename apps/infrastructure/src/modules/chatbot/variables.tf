@@ -9,6 +9,11 @@ variable "environment" {
   description = "Environment"
 }
 
+variable "alerting_topic_arn" {
+  type        = string
+  description = "ARN of the shared SNS topic used for CloudWatch alarm notifications"
+}
+
 variable "tags" {
   type = map(any)
   default = {

@@ -36,6 +36,11 @@ variable "environment" {
   description = "Environment"
 }
 
+variable "alerting_email" {
+  type        = string
+  description = "Email address used for SNS alarm subscriptions"
+}
+
 variable "strapi_api_url" {
   description = "The URL of the Strapi API."
   type        = string

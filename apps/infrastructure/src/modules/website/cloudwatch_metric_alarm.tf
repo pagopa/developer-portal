@@ -6,18 +6,17 @@ module "ses_bounce_rate_alarm" {
 
   alarm_name        = "DevPortal | Website | SES | Bounce Rate"
   actions_enabled   = true
-  alarm_description = "Alarm to monitor the bounce rate"
-  metric_name       = "Bounce"
+  alarm_description = "Alarm to monitor the SES reputation bounce rate"
+  metric_name       = "Reputation.BounceRate"
   namespace         = "AWS/SES"
 
   comparison_operator = "GreaterThanOrEqualToThreshold"
   threshold           = "0.05" # 5%
   statistic           = "Average"
-  unit                = "Count"
-  period              = 300 # 5 minutes
+  period              = 3600 # 1 hour
   evaluation_periods  = 1
-  treat_missing_data  = "notBreaching" # No data in the period is considered as good.
-  alarm_actions       = [aws_sns_topic.metric_alarm.arn]
+  treat_missing_data  = "ignore"
+  alarm_actions       = [var.alerting_topic_arn]
 }
 
 ## Reputation complaint rate alarm
@@ -37,7 +36,7 @@ module "ses_reputation_complaint_rate_alarm" {
   period              = 300 # 5 minutes
   evaluation_periods  = 1
   treat_missing_data  = "notBreaching" # No data in the period is considered as good.
-  alarm_actions       = [aws_sns_topic.metric_alarm.arn]
+  alarm_actions       = [var.alerting_topic_arn]
 }
 
 ## Daily sending quota alarm
@@ -56,7 +55,7 @@ module "ses_daily_sending_quota_alarm" {
   unit                = "Count"
   period              = 3600 # 1 hour
   evaluation_periods  = 1
-  alarm_actions       = [aws_sns_topic.metric_alarm.arn]
+  alarm_actions       = [var.alerting_topic_arn]
 }
 
 ## Send rate limit alarm
@@ -76,7 +75,7 @@ module "ses_sending_rate_limit_alarm" {
   period              = 10 # 10 seconds
   evaluation_periods  = 1
   treat_missing_data  = "notBreaching" # No data in the period is considered as good.
-  alarm_actions       = [aws_sns_topic.metric_alarm.arn]
+  alarm_actions       = [var.alerting_topic_arn]
 }
 
 # CloudFront
@@ -92,13 +91,13 @@ module "cloudfront_5xx_error_rate_alarm" {
   namespace         = "AWS/CloudFront"
 
   comparison_operator = "GreaterThanThreshold"
-  threshold           = 30 # 30%
+  threshold           = 15 # 15%
   statistic           = "Average"
-  period              = 60 # 1 minute
-  evaluation_periods  = 5
-  datapoints_to_alarm = 5
+  period              = 300 # 5 minutes
+  evaluation_periods  = 3
+  datapoints_to_alarm = 2
   treat_missing_data  = "notBreaching" # No data in the period is considered as good.
-  alarm_actions       = [aws_sns_topic.metric_alarm.arn]
+  alarm_actions       = [var.alerting_topic_arn]
 
   dimensions = {
     DistributionId = module.opennext.cloudfront.distribution_id
@@ -123,7 +122,7 @@ module "cloudfront_origin_latency_alarm" {
   evaluation_periods  = 5
   datapoints_to_alarm = 5
   treat_missing_data  = "notBreaching" # No data in the period is considered as good.
-  alarm_actions       = [aws_sns_topic.metric_alarm.arn]
+  alarm_actions       = [var.alerting_topic_arn]
 
   dimensions = {
     DistributionId = module.opennext.cloudfront.distribution_id
@@ -150,7 +149,7 @@ module "dynamodb_read_capacity_utilization_alarm" {
   evaluation_periods  = 2
   datapoints_to_alarm = 2
   treat_missing_data  = "notBreaching" # No data in the period is considered as good.
-  alarm_actions       = [aws_sns_topic.metric_alarm.arn]
+  alarm_actions       = [var.alerting_topic_arn]
 }
 
 ## Write capacity utilization
@@ -170,7 +169,7 @@ module "dynamodb_write_capacity_utilization_alarm" {
   evaluation_periods  = 2
   datapoints_to_alarm = 2
   treat_missing_data  = "notBreaching" # No data in the period is considered as good.
-  alarm_actions       = [aws_sns_topic.metric_alarm.arn]
+  alarm_actions       = [var.alerting_topic_arn]
 }
 
 ## Read throttle event
@@ -190,7 +189,7 @@ module "dynamodb_read_throttle_events_webinar_questions_alarm" {
   evaluation_periods  = 5
   datapoints_to_alarm = 5
   treat_missing_data  = "notBreaching" # No data in the period is considered as good.
-  alarm_actions       = [aws_sns_topic.metric_alarm.arn]
+  alarm_actions       = [var.alerting_topic_arn]
 
   dimensions = {
     TableName = module.dynamodb_webinar_questions.dynamodb_table_id
@@ -214,7 +213,7 @@ module "dynamodb_write_throttle_events_webinar_questions_alarm" {
   evaluation_periods  = 5
   datapoints_to_alarm = 5
   treat_missing_data  = "notBreaching" # No data in the period is considered as good.
-  alarm_actions       = [aws_sns_topic.metric_alarm.arn]
+  alarm_actions       = [var.alerting_topic_arn]
 
   dimensions = {
     TableName = module.dynamodb_webinar_questions.dynamodb_table_id
@@ -238,7 +237,7 @@ module "dynamodb_user_errors_alarm" {
   evaluation_periods  = 10
   datapoints_to_alarm = 10
   treat_missing_data  = "notBreaching" # No data in the period is considered as good.
-  alarm_actions       = [aws_sns_topic.metric_alarm.arn]
+  alarm_actions       = [var.alerting_topic_arn]
 }
 
 module "dynamodb_system_errors_webinar_questions_alarm" {
@@ -257,7 +256,7 @@ module "dynamodb_system_errors_webinar_questions_alarm" {
   evaluation_periods  = 15
   datapoints_to_alarm = 15
   treat_missing_data  = "notBreaching" # No data in the period is considered as good.
-  alarm_actions       = [aws_sns_topic.metric_alarm.arn]
+  alarm_actions       = [var.alerting_topic_arn]
 
   dimensions = {
     TableName = module.dynamodb_webinar_questions.dynamodb_table_id
@@ -280,7 +279,7 @@ module "dynamodb_successful_request_latency_put_item_alarm" {
   evaluation_periods  = 10
   datapoints_to_alarm = 10
   treat_missing_data  = "notBreaching" # No data in the period is considered as good.
-  alarm_actions       = [aws_sns_topic.metric_alarm.arn]
+  alarm_actions       = [var.alerting_topic_arn]
 
   dimensions = {
     TableName = module.dynamodb_webinar_questions.dynamodb_table_id
@@ -304,7 +303,7 @@ module "dynamodb_successful_request_latency_query_alarm" {
   evaluation_periods  = 10
   datapoints_to_alarm = 10
   treat_missing_data  = "notBreaching" # No data in the period is considered as good.
-  alarm_actions       = [aws_sns_topic.metric_alarm.arn]
+  alarm_actions       = [var.alerting_topic_arn]
 
   dimensions = {
     TableName = module.dynamodb_webinar_questions.dynamodb_table_id
