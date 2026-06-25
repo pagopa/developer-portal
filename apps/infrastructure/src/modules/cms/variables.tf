@@ -82,6 +82,11 @@ variable "ac_api_key_param" {
 }
 
 
+variable "alerting_topic_arn" {
+  type        = string
+  description = "SNS topic ARN for CloudWatch alarm notifications"
+}
+
 # RDS aurora
 variable "rds_scaling_configuration" {
   type = object({
