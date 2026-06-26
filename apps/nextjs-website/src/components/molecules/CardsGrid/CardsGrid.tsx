@@ -13,6 +13,7 @@ export type CardProps = {
   title: string;
   text: string;
   href?: string;
+  onClick?: () => Promise<void>;
   ctaLabel?: string;
   endIcon?: React.ReactNode;
   ctaStyle?: SxProps;
@@ -57,6 +58,7 @@ const CardsGrid = ({
                 title,
                 text,
                 href,
+                onClick,
                 icon,
                 comingSoon,
                 iconColor,
@@ -87,6 +89,7 @@ const CardsGrid = ({
                         ? ctaLabel
                         : t(comingSoon ? 'comingSoon' : 'moreInfo'),
                       href,
+                      onClick,
                       variant: ctaButtonsVariant,
                       endIcon: endIcon,
                       style: ctaStyle,
