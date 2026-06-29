@@ -80,6 +80,12 @@ variable "database_min_capacity" {
   default     = 0.5
 }
 
+variable "efs_provisioned_throughput_in_mibps" {
+  description = "Provisioned throughput for Langfuse ClickHouse EFS in MiB/s"
+  type        = number
+  default     = 25
+}
+
 variable "force_delete" {
   description = "Whether to force delete resources"
   type        = bool
