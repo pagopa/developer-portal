@@ -281,7 +281,7 @@ resource "aws_cloudwatch_metric_alarm" "lambda_index_dlq_messages" {
   metric_name         = "ApproximateNumberOfMessagesVisible"
   namespace           = "AWS/SQS"
   period              = "60"
-  statistic           = "Sum"
+  statistic           = "Maximum"
   threshold           = "0"
   alarm_description   = "Messages in the chatbot-index DLQ indicate failed Lambda indexing invocations"
   alarm_actions       = [var.alerting_topic_arn]
