@@ -1,4 +1,5 @@
 #!/bin/bash
+umask 077
 
 # --- Configuration ---
 SOURCE_QUEUE_URL="https://sqs.eu-south-1.amazonaws.com/195239627635/ac-prod-resync-events-dlq.fifo"
