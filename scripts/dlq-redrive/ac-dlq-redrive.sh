@@ -4,7 +4,8 @@
 SOURCE_QUEUE_URL="https://sqs.eu-south-1.amazonaws.com/195239627635/ac-prod-resync-events-dlq.fifo"
 TARGET_QUEUE_URL="https://sqs.eu-south-1.amazonaws.com/195239627635/ac-prod-events.fifo"
 OUTPUT_FILE="/tmp/ac-prod-resync-events-dlq.fifo.json"
-RECEIVE_VISIBILITY_TIMEOUT_SECONDS=3600
+RECEIVE_VISIBILITY_TIMEOUT_SECONDS=60
+DEFAULT_MESSAGE_GROUP_ID="dlq-redrive"
 
 # --- Argument Handling ---
 MAX_MESSAGES=""
@@ -87,7 +88,9 @@ echo "==================================================="
 # Array to store the ReceiptHandles of all successfully retrieved messages.
 declare -a RECEIVED_HANDLES=()
 declare -a HANDLES_TO_DELETE=()
-ALL_MESSAGES=()
+declare -a ALL_MESSAGES=()
+declare -a MESSAGE_GROUP_IDS=()
+declare -a MESSAGE_DEDUP_IDS=()
 
 # --- Function Definitions ---
 
@@ -129,6 +132,7 @@ read_messages() {
             --max-number-of-messages "$batch_size" \
             --wait-time-seconds 10 \
             --visibility-timeout "$RECEIVE_VISIBILITY_TIMEOUT_SECONDS" \
+            --message-system-attribute-names All \
             --region eu-south-1)
 
         if [[ $? -ne 0 ]]; then
@@ -146,6 +150,8 @@ read_messages() {
             # Extract data points for storage and replication/deletion
             MESSAGE_BODY=$(jq -r '.Body // empty' <<< "$message_json")
             RECEIPT_HANDLE=$(jq -r '.ReceiptHandle // empty' <<< "$message_json")
+            MESSAGE_GROUP_ID=$(jq -r '.Attributes.MessageGroupId // empty' <<< "$message_json")
+            MESSAGE_DEDUP_ID=$(jq -r '.Attributes.MessageDeduplicationId // empty' <<< "$message_json")
 
             if [[ -z "$MESSAGE_BODY" || -z "$RECEIPT_HANDLE" ]]; then
                 echo "WARNING: Skipping malformed message payload." >&2
@@ -155,6 +161,8 @@ read_messages() {
             # Store necessary data locally
             ALL_MESSAGES+=("$MESSAGE_BODY")
             RECEIVED_HANDLES+=("$RECEIPT_HANDLE")
+            MESSAGE_GROUP_IDS+=("$MESSAGE_GROUP_ID")
+            MESSAGE_DEDUP_IDS+=("$MESSAGE_DEDUP_ID")
             received_count=$((received_count + 1))
             if [[ "$max_to_read" -gt 0 && "$received_count" -ge "$max_to_read" ]]; then
                 has_more=false
@@ -193,18 +201,30 @@ process_messages() {
         for i in "${!ALL_MESSAGES[@]}"; do
             message_body="${ALL_MESSAGES[$i]}"
             receipt_handle="${RECEIVED_HANDLES[$i]}"
+            message_group_id="${MESSAGE_GROUP_IDS[$i]}"
+            message_dedup_id="${MESSAGE_DEDUP_IDS[$i]}"
+
+            if [[ -z "$message_group_id" ]]; then
+                message_group_id="$DEFAULT_MESSAGE_GROUP_ID"
+                echo "WARNING: MessageGroupId missing in source message. Using fallback group id '$message_group_id'." >&2
+            fi
+            if [[ -z "$message_dedup_id" ]]; then
+                message_dedup_id="$(uuidgen)"
+            fi
 
             # Use send-message API call
-            aws sqs send-message \
+            SEND_OUTPUT=$(aws sqs send-message \
                 --queue-url "$TARGET_QUEUE_URL" \
                 --message-body "$message_body" \
-                --region eu-south-1 > /dev/null 2>&1
+                --message-group-id "$message_group_id" \
+                --message-deduplication-id "$message_dedup_id" \
+                --region eu-south-1 2>&1 > /dev/null)
 
             if [[ $? -eq 0 ]]; then
                 SUCCESS_COUNT=$((SUCCESS_COUNT + 1))
                 HANDLES_TO_DELETE+=("$receipt_handle")
             else
-                echo "WARNING: Failed to send message body to target queue. Check permissions." >&2
+                echo "WARNING: Failed to send message body to target queue: $SEND_OUTPUT" >&2
                 FAIL_COUNT=$((FAIL_COUNT + 1))
             fi
         done
