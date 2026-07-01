@@ -240,7 +240,58 @@ resource "aws_cloudwatch_metric_alarm" "dynamodb_write_throttle_sessions" {
   }
 }
 
-# lambda evaluate allarm
+# lambda index errors alarm
+resource "aws_cloudwatch_metric_alarm" "lambda_index_errors" {
+  alarm_name          = "${local.prefix}-index-lambda-errors"
+  comparison_operator = "GreaterThanUpperThreshold"
+  evaluation_periods  = "5"
+  threshold_metric_id = "e1"
+  alarm_description   = "This metric monitors chatbot-index Lambda function errors using anomaly detection"
+  alarm_actions       = [var.alerting_topic_arn]
+
+  metric_query {
+    id          = "m1"
+    return_data = true
+    metric {
+      metric_name = "Errors"
+      namespace   = "AWS/Lambda"
+      period      = "60"
+      stat        = "Sum"
+      dimensions = {
+        FunctionName = aws_lambda_function.chatbot_index_lambda.function_name
+      }
+    }
+  }
+
+  metric_query {
+    id          = "e1"
+    expression  = "ANOMALY_DETECTION_BAND(m1, 2)"
+    label       = "Lambda Errors (expected)"
+    return_data = true
+  }
+}
+
+# lambda index DLQ messages alarm — any message landing in the DLQ means a failed indexing run
+resource "aws_cloudwatch_metric_alarm" "lambda_index_dlq_messages" {
+  alarm_name          = "${local.prefix}-index-lambda-dlq-messages"
+  comparison_operator = "GreaterThanThreshold"
+  evaluation_periods  = "1"
+  datapoints_to_alarm = "1"
+  treat_missing_data  = "notBreaching"
+  metric_name         = "ApproximateNumberOfMessagesVisible"
+  namespace           = "AWS/SQS"
+  period              = "60"
+  statistic           = "Sum"
+  threshold           = "0"
+  alarm_description   = "Messages in the chatbot-index DLQ indicate failed Lambda indexing invocations"
+  alarm_actions       = [var.alerting_topic_arn]
+
+  dimensions = {
+    QueueName = aws_sqs_queue.chatbot_index_dlq.name
+  }
+}
+
+# lambda evaluate alarm
 resource "aws_cloudwatch_metric_alarm" "lambda_evaluate_errors" {
   alarm_name          = "${local.prefix}-evaluate-lambda-errors"
   comparison_operator = "GreaterThanUpperThreshold"
