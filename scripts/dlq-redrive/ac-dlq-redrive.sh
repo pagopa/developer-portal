@@ -134,7 +134,7 @@ read_messages() {
             --wait-time-seconds 10 \
             --visibility-timeout "$RECEIVE_VISIBILITY_TIMEOUT_SECONDS" \
             --message-system-attribute-names All \
-            --region eu-south-1)
+            --region "$AWS_REGION")
 
         if [[ $? -ne 0 ]]; then
             echo "ERROR: Failed to run AWS CLI command. Check credentials, region, and permissions." >&2
