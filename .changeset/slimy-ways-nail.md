@@ -2,4 +2,4 @@
 "infrastructure": minor
 ---
 
-Bash script that helps to redrive sqs message from the dlq ac-prod-resync-events-dlq.fifo.
+Bash script to help redrive SQS messages from the AC resync DLQ.
