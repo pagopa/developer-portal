@@ -1,5 +1,13 @@
 # infrastructure
 
+## 13.1.0
+
+### Minor Changes
+
+- cca2f74: Update clickhouse EFS throughput mode to spare some bread
+- 98a82a6: Update some cloudwatch alarms and create those missed.
+- d9b8772: Set Strapi CMS desired task count to 2 in production only
+
 ## 13.0.0
 
 ### Major Changes
