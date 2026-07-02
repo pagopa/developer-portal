@@ -42,6 +42,16 @@
         "title": "Consenso ai sondaggi",
         "unsubscribe": "Revoca consenso"
       },
+      "webinar": {
+        "description": "Consentimi di monitorare la visione dei webinar. Se attivo, potrai ottenere l'attestato di partecipazione.",
+        "error": {
+          "subscribe": "C'è stato un errore nell'adesione al monitoraggio, riprova più tardi o contatta l'assistenza tecnica.",
+          "unsubscribe": "C'è stato un errore nella revoca del consenso al monitoraggio, riprova più tardi o contatta l'assistenza tecnica."
+        },
+        "subscribe": "Consenti",
+        "title": "Consenso al monitoraggio",
+        "unsubscribe": "Revoca consenso"
+      },
       "privacy": {
         "basicData": "PagoPA raccoglie dati personali di base che ti permettono di creare e utilizzare il tuo account su DevPortal. Questi dati sono raccolti durante la registrazione e l'aggiornamento del tuo profilo. PagoPA garantisce che i tuoi dati vengano gestiti in modo sicuro e ne giustifica l’utilizzo secondo l’informativa Privacy di PagoPA. I tuoi dati personali di base verranno conservati fino a quando avrai un account attivo su PagoPA DevPortal.",
         "title": "Privacy",
@@ -119,6 +129,17 @@
     }
   },
   "webinar": {
+    "detail": {
+      "certificationBanner": {
+        "title": "Attestato di partecipazione al Webinar",
+        "description": "Partecipa al webinar e ottieni il tuo attestato di partecipazione. Dopo l'evento, troverai l'attestato nel tuo profilo.",
+        "cta": "Vai al profilo"
+      }
+    },
+    "certificationBanner": {
+      "title": "Attestati di partecipazione disponibili!",
+      "description": "Partecipa ai webinar di PagoPA DevPortal e ottieni il tuo attestato di partecipazione. Dopo l’evento, troverai l’attestato nel tuo profilo."
+    },
     "liveWebinar": "Webinar in corso",
     "chapters": "Capitoli",
     "subscriptionError": "Limite di iscrizioni raggiunto",
@@ -153,6 +174,13 @@
       "goTo": "Collegati alla pagina del webinar all'orario di inizio dell'evento.",
       "refresh": "Collegati a questa pagina all'orario di inizio dell'evento."
     },
+    "subscriptionPopup": {
+      "title": "Ti sei registrato per il webinar. Fornisci il consenso al monitoraggio.",
+      "text": "<strong>Per ottenere il certificato di partecipazione</strong>, devi dare il consenso al monitoraggio della visione <strong>entro 5 minuti dall'inizio del webinar</strong>.<br></br> Il controllo serve solo a verificare che tu stia seguendo il contenuto.",
+      "confirmCta": "Abilita",
+      "cancelCta": "Non ora",
+      "checkboxLabel": "Ricordati la scelta"
+    },
     "webinarsSection": {
       "description": "",
       "noWebinars": "Stiamo preparando i prossimi eventi, controlla più avanti.",
@@ -180,6 +208,12 @@
       "title": "Esplora tutti i webinar",
       "description": "Approfondisci argomenti legati all'integrazione con i nostri prodotti attraverso la guida e i consigli esperti dei professionisti PagoPA.",
       "cta": "Vedi tutti"
+    },
+    "consent_banner": {
+      "title": "Consenso richiesto per ottenere l'attestato",
+      "body": "Per ricevere l'attestato di partecipazione al termine del webinar, è necessario fornire il consenso al monitoraggio della visione <strong>entro i primi 5 minuti dall'inizio</strong>.<br></br>Il monitoraggio serve esclusivamente a verificare che il webinar venga effettivamente seguito.",
+      "cta_enable": "Abilita il monitoraggio",
+      "cta_given": "Hai dato il consenso"
     }
   },
   "webinars": {

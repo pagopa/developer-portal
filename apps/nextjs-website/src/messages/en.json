@@ -42,6 +42,16 @@
         "title": "Survey Consent",
         "unsubscribe": "Revoke consent"
       },
+      "webinar": {
+        "description": "Allow tracking of webinar attendance. If enabled, you will be able to obtain a certificate of participation.",
+        "error": {
+          "subscribe": "There was an error opting into tracking, please try again later or contact technical support.",
+          "unsubscribe": "There was an error revoking tracking consent, please try again later or contact technical support."
+        },
+        "subscribe": "Allow",
+        "title": "Tracking consent",
+        "unsubscribe": "Revoke consent"
+      },
       "privacy": {
         "basicData": "PagoPA collects basic personal data to allow you to create and use your DevPortal account. This data is collected during registration and profile update. PagoPA ensures your data is handled securely and justifies its use according to PagoPA's Privacy Policy. Your basic personal data will be kept as long as you have an active account on PagoPA DevPortal.",
         "title": "Privacy",
@@ -119,6 +129,17 @@
     }
   },
   "webinar": {
+    "detail": {
+      "certificationBanner": {
+        "title": "Webinar Participation Certificate",
+        "description": "Attend the webinar and get your participation certificate. After the event, you will find the certificate in your profile.",
+        "cta": "Go to profile"
+      }
+    },
+    "certificationBanner": {
+      "title": "Participation certificates available!",
+      "description": "Attend PagoPA DevPortal webinars and get your participation certificate. After the event, you will find the certificate in your profile."
+    },
     "liveWebinar": "Live Webinar",
     "chapters": "Chapters",
     "subscriptionError": "Registration limit reached",
@@ -153,6 +174,13 @@
       "goTo": "Connect to the webinar page at the event start time.",
       "refresh": "Connect to this page at the event start time."
     },
+    "subscriptionPopup": {
+      "title": "You have registered for the webinar. Please provide your consent to monitoring.",
+      "text": "<strong>To obtain the participation certificate</strong>, you must consent to viewing monitoring <strong>within 5 minutes of the webinar starting</strong>.<br></br> The check is only used to verify that you are following the content.",
+      "confirmCta": "Enable",
+      "cancelCta": "Not now",
+      "checkboxLabel": "Remember my choice"
+    },
     "webinarsSection": {
       "description": "",
       "noWebinars": "We are preparing upcoming events, check back later.",
@@ -180,6 +208,12 @@
       "title": "Explore all webinars",
       "description": "Deepen topics related to integration with our products through the guide and expert advice of PagoPA professionals.",
       "cta": "See all"
+    },
+    "consent_banner": {
+      "title": "Consent required to obtain the certificate",
+      "body": "To receive the participation certificate at the end of the webinar, you must provide consent to attendance monitoring <strong>within the first 5 minutes of the start</strong>.<br></br>Monitoring is used exclusively to verify that the webinar is actually being followed.",
+      "cta_enable": "Enable monitoring",
+      "cta_given": "You have given your consent"
     }
   },
   "webinars": {
