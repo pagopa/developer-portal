@@ -401,6 +401,19 @@ runs:
           --paths "/*"
         echo "::endgroup::"
 
+    - name: Trigger Crowdin source upload workflow
+      if: ${{ inputs.environment == 'prod' && inputs.locale == 'it' }}
+      env:
+        GH_TOKEN: ${{ inputs.pat_token }}
+        PATHS_TO_UPLOAD: ${{ inputs.dir_names_filter || '' }}
+        BRANCH: ${{ inputs.documentation_branch || 'docs/from-gitbook' }}
+      shell: bash
+      run: |
+        gh workflow run upload_sources_to_crowdin.yml \
+          --repo pagopa/devportal-docs \
+          --ref $BRANCH \
+          -f paths_to_upload="$PATHS_TO_UPLOAD"
+
     - name: Trigger push documentation workflow
       if: ${{ inputs.environment == 'prod' && inputs.locale == 'it' && inputs.pat_token != '' }}
       env:
