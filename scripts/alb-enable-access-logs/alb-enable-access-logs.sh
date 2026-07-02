@@ -138,12 +138,27 @@ else
   "Version": "2012-10-17",
   "Statement": [
     {
+      "Sid": "AWSLogDeliveryAclCheck",
       "Effect": "Allow",
-      "Principal": {
-        "Service": "logdelivery.elasticloadbalancing.amazonaws.com"
-      },
+      "Principal": { "Service": "logdelivery.elasticloadbalancing.amazonaws.com" },
+      "Action": "s3:GetBucketAcl",
+      "Resource": "arn:aws:s3:::${BUCKET_NAME}"
+    },
+    {
+      "Sid": "AWSLogDeliveryWrite",
+      "Effect": "Allow",
+      "Principal": { "Service": "logdelivery.elasticloadbalancing.amazonaws.com" },
       "Action": "s3:PutObject",
-      "Resource": "arn:aws:s3:::${BUCKET_NAME}/AWSLogs/${ACCOUNT_ID}/*"
+      "Resource": "arn:aws:s3:::${BUCKET_NAME}/AWSLogs/${ACCOUNT_ID}/*",
+      "Condition": {
+        "StringEquals": {
+          "s3:x-amz-acl": "bucket-owner-full-control",
+          "aws:SourceAccount": "${ACCOUNT_ID}"
+        },
+        "ArnEquals": {
+          "aws:SourceArn": "${ALB_ARN}"
+        }
+      }
     }
   ]
 }
