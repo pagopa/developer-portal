@@ -1,5 +1,11 @@
 # infrastructure
 
+## 13.3.0
+
+### Minor Changes
+
+- 0abff4d: Bash scripts to enable ALB access logs and athena table to query them.
+
 ## 13.2.0
 
 ### Minor Changes
