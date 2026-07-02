@@ -138,11 +138,11 @@ TBLPROPERTIES (
 EOF
 
 # Inject dynamic metadata variables into the template SQL file
-sed -i '' "s/__DATABASE_NAME__/${DATABASE_NAME}/g" "$TEMPLATE_FILE"
-sed -i '' "s/__BUCKET_NAME__/${BUCKET_NAME}/g" "$TEMPLATE_FILE"
-sed -i '' "s/__ACCOUNT_ID__/${ACCOUNT_ID}/g" "$TEMPLATE_FILE"
-sed -i '' "s/__REGION__/${REGION}/g" "$TEMPLATE_FILE"
-
+sed -i.bak "s/__DATABASE_NAME__/${DATABASE_NAME}/g" "$TEMPLATE_FILE"
+sed -i.bak "s/__BUCKET_NAME__/${BUCKET_NAME}/g" "$TEMPLATE_FILE"
+sed -i.bak "s/__ACCOUNT_ID__/${ACCOUNT_ID}/g" "$TEMPLATE_FILE"
+sed -i.bak "s/__REGION__/${REGION}/g" "$TEMPLATE_FILE"
+rm -f "${TEMPLATE_FILE}.bak"
 # Extract file stream back into bash variable and destroy raw local temp file
 CREATE_TABLE_SQL=$(cat "$TEMPLATE_FILE")
 rm -f "$TEMPLATE_FILE"
