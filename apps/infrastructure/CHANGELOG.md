@@ -1,5 +1,12 @@
 # infrastructure
 
+## 13.2.0
+
+### Minor Changes
+
+- b1a3a65: Alarms for lambda chatbot index and dead letter queue to collect failing messages
+- 87e7115: Bash script to help redrive SQS messages from the AC resync DLQ.
+
 ## 13.1.0
 
 ### Minor Changes
