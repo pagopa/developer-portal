@@ -47,6 +47,10 @@ run_athena_query() {
         --region "$REGION" \
         --query "QueryExecutionId" --output text)
 
+    local poll_interval_seconds=3
+    local max_wait_seconds=600
+    local waited_seconds=0
+
     while true; do
         local status=$(aws athena get-query-execution --query-execution-id "$exec_id" --region "$REGION" --query "QueryExecution.Status.State" --output text)
         if [ "$status" = "SUCCEEDED" ]; then
@@ -57,7 +61,15 @@ run_athena_query() {
             aws athena get-query-execution --query-execution-id "$exec_id" --region "$REGION" --query "QueryExecution.Status.StateChangeReason" --output text
             exit 1
         fi
-        sleep 3
+
+        if [ "$waited_seconds" -ge "$max_wait_seconds" ]; then
+            echo "Error: Timed out waiting for Athena query to complete ($description). ExecutionId: $exec_id"
+            aws athena stop-query-execution --query-execution-id "$exec_id" --region "$REGION" >/dev/null 2>&1 || true
+            exit 1
+        fi
+
+        sleep "$poll_interval_seconds"
+        waited_seconds=$((waited_seconds + poll_interval_seconds))
     done
 }
 
