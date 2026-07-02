@@ -80,11 +80,13 @@ CREATE EXTERNAL TABLE IF NOT EXISTS __DATABASE_NAME__.alb_access_logs (
     request_processing_time double,
     target_processing_time double,
     response_processing_time double,
-    elb_status_code string,
+    elb_status_code int,
     target_status_code string,
     received_bytes bigint,
     sent_bytes bigint,
-    request string,
+    request_verb string,
+    request_url string,
+    request_proto string,
     user_agent string,
     ssl_cipher string,
     ssl_protocol string,
@@ -96,9 +98,10 @@ CREATE EXTERNAL TABLE IF NOT EXISTS __DATABASE_NAME__.alb_access_logs (
     request_creation_time string,
     actions_executed string,
     redirect_url string,
-    error_reason string,
+    lambda_error_reason string,
     target_port_list string,
     target_status_code_list string,
+    classification string,
     classification_reason string,
     conn_trace_id string
 )
@@ -107,7 +110,8 @@ PARTITIONED BY (
 )
 ROW FORMAT SERDE 'org.apache.hadoop.hive.serde2.RegexSerDe'
 WITH SERDEPROPERTIES (
-    'input.regex' = '([^ ]*) ([^ ]*) ([^ ]*) ([^ ]*):([0-9]*) ([^ ]*)[:-]([0-9]*) ([-.0-9]*) ([-.0-9]*) ([-.0-9]*) (|[-0-9]*) (-|[-0-9]*) ([-0-9]*) ([-0-9]*) "([^ ]*) (.*) (- |[^ ]*)" "([^\\\"]*)" ([A-Z0-9-_]+) ([A-Za-z0-9.-]*) ([^ ]*) "([^\\\"]*)" "([^\\\"]*)" "([^\\\"]*)" ([-.0-9]*) ([^ ]*) "([^\\\"]*)" "([^\\\\s]+)" "([^ ]*)" "([^ ]*)" ?([^ ]*)?.*'
+    'serialization.format' = '1',
+    'input.regex' = '([^ ]*) ([^ ]*) ([^ ]*) ([^ ]*):([0-9]*) ([^ ]*)[:-]([0-9]*) ([-.0-9]*) ([-.0-9]*) ([-.0-9]*) (|[-0-9]*) (-|[-0-9]*) ([-0-9]*) ([-0-9]*) \"([^ ]*) (.*) (- |[^ ]*)\" \"([^\"]*)\" ([A-Z0-9-_]+) ([A-Za-z0-9.-]*) ([^ ]*) \"([^\"]*)\" \"([^\"]*)\" \"([^\"]*)\" ([-.0-9]*) ([^ ]*) \"([^\"]*)\" \"([^\"]*)\" \"([^ ]*)\" \"([^\\s]+?)\" \"([^\\s]+)\" \"([^ ]*)\" \"([^ ]*)\" ?([^ ]*)? ?( .*)?'
 )
 LOCATION 's3://__BUCKET_NAME__/AWSLogs/__ACCOUNT_ID__/elasticloadbalancing/__REGION__/'
 TBLPROPERTIES (
@@ -131,7 +135,11 @@ sed -i '' "s/__REGION__/${REGION}/g" "$TEMPLATE_FILE"
 CREATE_TABLE_SQL=$(cat "$TEMPLATE_FILE")
 rm -f "$TEMPLATE_FILE"
 
-# Step 3: Create the Table with Partition Projection
+# Step 3: Recreate the Table with the expected ALB schema
+DROP_TABLE_SQL="DROP TABLE IF EXISTS ${DATABASE_NAME}.alb_access_logs;"
+run_athena_query "$DROP_TABLE_SQL" "Drop Table 'alb_access_logs' (if exists)"
+
+# Step 4: Create the Table with Partition Projection
 run_athena_query "$CREATE_TABLE_SQL" "Create Table 'alb_access_logs' with Partition Projection"
 
 echo "===================================================="
