@@ -54,7 +54,7 @@ BUCKET_NAME="alb-${ACCOUNT_ID}-logs"
 echo "Target S3 Bucket Name: $BUCKET_NAME"
 
 # Check if the S3 bucket already exists
-if aws s3api head-bucket --bucket "$BUCKET_NAME" --region "$REGION" 2>/dev/null; then
+if aws s3api head-bucket --bucket "$BUCKET_NAME" 2>/dev/null; then
     echo "S3 Bucket '$BUCKET_NAME' already exists."
 else
     echo "S3 Bucket '$BUCKET_NAME' does not exist. Creating it..."
