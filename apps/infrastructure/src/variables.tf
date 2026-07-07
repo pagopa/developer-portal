@@ -68,6 +68,13 @@ variable "cms_app_image_tag" {
   type        = string
 }
 
+## CMS Strapi ECS Desired Count
+variable "cms_ecs_desired_count" {
+  description = "Desired number of running ECS tasks for the CMS Strapi service"
+  type        = number
+  default     = 1
+}
+
 # CMS Strapi DNS
 variable "dns_domain_name_cms" {
   description = "DNS domain name of the Developer Portal's CMS"

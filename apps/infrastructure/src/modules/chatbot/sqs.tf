@@ -2,6 +2,16 @@ locals {
   chatbot_queues = toset(["evaluate", "monitor"])
 }
 
+# Standard (non-FIFO) DLQ for the index lambda — receives failed S3 async invocation payloads
+resource "aws_sqs_queue" "chatbot_index_dlq" {
+  name                      = "${local.prefix}-index-lambda-dlq"
+  message_retention_seconds = 604800 # 7 days
+
+  tags = {
+    Name = "${local.prefix}-index-lambda-dlq"
+  }
+}
+
 resource "aws_sqs_queue" "chatbot_dlq" {
   for_each = local.chatbot_queues
 

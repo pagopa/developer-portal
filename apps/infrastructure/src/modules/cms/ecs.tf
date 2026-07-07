@@ -59,7 +59,7 @@ module "cms_ecs_service" {
 
   name                           = "cms-ecs"
   cluster_arn                    = module.cms_ecs_cluster.arn
-  desired_count                  = 1
+  desired_count                  = var.cms_ecs_desired_count
   create_task_definition         = false
   create_iam_role                = false
   create_task_exec_iam_role      = false

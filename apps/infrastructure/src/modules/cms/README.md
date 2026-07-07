@@ -110,6 +110,7 @@
 | <a name="input_cms_app_cpu"></a> [cms\_app\_cpu](#input\_cms\_app\_cpu) | Fargate instance CPU units to provision (1 vCPU = 1024 CPU units) | `string` | `"1024"` | no |
 | <a name="input_cms_app_memory"></a> [cms\_app\_memory](#input\_cms\_app\_memory) | Fargate instance memory to provision (in MiB) | `string` | `"3072"` | no |
 | <a name="input_cms_app_port"></a> [cms\_app\_port](#input\_cms\_app\_port) | The standard app port used by CMS Strapi | `number` | `1337` | no |
+| <a name="input_cms_ecs_desired_count"></a> [cms\_ecs\_desired\_count](#input\_cms\_ecs\_desired\_count) | Desired number of running ECS tasks for the CMS Strapi service | `number` | `1` | no |
 | <a name="input_dns_domain_name_cms"></a> [dns\_domain\_name\_cms](#input\_dns\_domain\_name\_cms) | DNS domain name of the Developer Portal's CMS | `map(any)` | `null` | no |
 | <a name="input_rds_scaling_configuration"></a> [rds\_scaling\_configuration](#input\_rds\_scaling\_configuration) | Scaling configuration for the RDS Aurora instance | <pre>object({<br/>    min_capacity = number<br/>    max_capacity = number<br/>  })</pre> | <pre>{<br/>  "max_capacity": 1,<br/>  "min_capacity": 0.5<br/>}</pre> | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | <pre>{<br/>  "CreatedBy": "Terraform"<br/>}</pre> | no |
