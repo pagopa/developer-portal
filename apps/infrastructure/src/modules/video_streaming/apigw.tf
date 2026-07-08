@@ -1,17 +1,20 @@
-## API Gateway for webinar metrics ##
+## API Gateway for webinar metrics — eu-south-1 ##
 
 resource "aws_api_gateway_rest_api" "webinar_metrics" {
+  provider    = aws.eu-south-1
   name        = "${var.project_name}-webinar-metrics-api"
   description = "REST API for webinar metrics"
 }
 
 resource "aws_api_gateway_resource" "metrics" {
+  provider    = aws.eu-south-1
   rest_api_id = aws_api_gateway_rest_api.webinar_metrics.id
   parent_id   = aws_api_gateway_rest_api.webinar_metrics.root_resource_id
   path_part   = "metrics"
 }
 
 resource "aws_api_gateway_method" "metrics_post" {
+  provider         = aws.eu-south-1
   rest_api_id      = aws_api_gateway_rest_api.webinar_metrics.id
   resource_id      = aws_api_gateway_resource.metrics.id
   http_method      = "POST"
@@ -20,6 +23,7 @@ resource "aws_api_gateway_method" "metrics_post" {
 }
 
 resource "aws_api_gateway_integration" "metrics_lambda" {
+  provider                = aws.eu-south-1
   rest_api_id             = aws_api_gateway_rest_api.webinar_metrics.id
   resource_id             = aws_api_gateway_resource.metrics.id
   http_method             = aws_api_gateway_method.metrics_post.http_method
@@ -29,6 +33,7 @@ resource "aws_api_gateway_integration" "metrics_lambda" {
 }
 
 resource "aws_api_gateway_deployment" "webinar_metrics" {
+  provider    = aws.eu-south-1
   rest_api_id = aws_api_gateway_rest_api.webinar_metrics.id
 
   depends_on = [aws_api_gateway_integration.metrics_lambda]
@@ -47,18 +52,21 @@ resource "aws_api_gateway_deployment" "webinar_metrics" {
 }
 
 resource "aws_api_gateway_stage" "webinar_metrics" {
+  provider      = aws.eu-south-1
   deployment_id = aws_api_gateway_deployment.webinar_metrics.id
   rest_api_id   = aws_api_gateway_rest_api.webinar_metrics.id
   stage_name    = var.webinar_metrics_stage_name
 }
 
 resource "aws_api_gateway_api_key" "webinar_metrics" {
-  name    = "${var.project_name}-webinar-metrics-key"
-  enabled = true
+  provider = aws.eu-south-1
+  name     = "${var.project_name}-webinar-metrics-key"
+  enabled  = true
 }
 
 resource "aws_api_gateway_usage_plan" "webinar_metrics" {
-  name = "${var.project_name}-webinar-metrics-plan"
+  provider = aws.eu-south-1
+  name     = "${var.project_name}-webinar-metrics-plan"
 
   api_stages {
     api_id = aws_api_gateway_rest_api.webinar_metrics.id
@@ -77,12 +85,14 @@ resource "aws_api_gateway_usage_plan" "webinar_metrics" {
 }
 
 resource "aws_api_gateway_usage_plan_key" "webinar_metrics" {
+  provider      = aws.eu-south-1
   key_id        = aws_api_gateway_api_key.webinar_metrics.id
   key_type      = "API_KEY"
   usage_plan_id = aws_api_gateway_usage_plan.webinar_metrics.id
 }
 
 resource "aws_lambda_permission" "apigw_webinar_metrics" {
+  provider      = aws.eu-south-1
   statement_id  = "AllowAPIGatewayInvoke"
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.webinar_metrics.function_name

@@ -1,0 +1,379 @@
+## Heartbeat Collection Resources — eu-south-1 ##
+#
+# All resources in this file are deployed to eu-south-1 so that heartbeat
+# data is ingested, stored, and queried closer to the Cognito user pool and
+# the front-end origin.  The caller must supply an `aws.eu-south-1` provider alias.
+
+# ---------------------------------------------------------------------------
+# 1. S3 Bucket for heartbeat storage
+# ---------------------------------------------------------------------------
+
+resource "aws_s3_bucket" "heartbeat_storage" {
+  provider = aws.eu-south-1
+  bucket   = "${var.project_name}-webinar-heartbeats-${random_id.suffix.hex}"
+}
+
+resource "aws_s3_bucket_public_access_block" "heartbeat_storage_pac" {
+  provider = aws.eu-south-1
+  bucket   = aws_s3_bucket.heartbeat_storage.id
+
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+}
+
+# ---------------------------------------------------------------------------
+# 2. S3 Bucket for Athena query results
+# ---------------------------------------------------------------------------
+
+resource "aws_s3_bucket" "athena_results" {
+  provider = aws.eu-south-1
+  bucket   = "${var.project_name}-athena-results-${random_id.suffix.hex}"
+}
+
+resource "aws_s3_bucket_public_access_block" "athena_results_pac" {
+  provider = aws.eu-south-1
+  bucket   = aws_s3_bucket.athena_results.id
+
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+}
+
+resource "aws_s3_bucket_lifecycle_configuration" "athena_results_lifecycle" {
+  provider = aws.eu-south-1
+  bucket   = aws_s3_bucket.athena_results.id
+
+  rule {
+    id     = "delete-old-results"
+    status = "Enabled"
+
+    filter {
+      prefix = ""
+    }
+
+    expiration {
+      days = 30
+    }
+  }
+}
+
+# ---------------------------------------------------------------------------
+# 3. Kinesis Data Firehose (direct-put → S3)
+# ---------------------------------------------------------------------------
+
+resource "aws_kinesis_firehose_delivery_stream" "s3_delivery" {
+  provider    = aws.eu-south-1
+  name        = "${var.project_name}-webinar-viewer-count"
+  destination = "extended_s3"
+
+  extended_s3_configuration {
+    role_arn   = aws_iam_role.firehose_role.arn
+    bucket_arn = aws_s3_bucket.heartbeat_storage.arn
+
+    # Dynamic partition keys are extracted by the MetadataExtraction processor below.
+    prefix              = "webinars/webinarid=!{partitionKeyFromQuery:webinarId}/year=!{timestamp:yyyy}/month=!{timestamp:MM}/day=!{timestamp:dd}/"
+    error_output_prefix = "errors/webinarid=!{partitionKeyFromQuery:webinarId}/year=!{timestamp:yyyy}/month=!{timestamp:MM}/day=!{timestamp:dd}/"
+
+    # Dynamic partitioning requires buffering_size >= 64 MB (Firehose buffers per partition).
+    buffering_size     = 64 # MB
+    buffering_interval = 60 # seconds
+
+    dynamic_partitioning_configuration {
+      enabled = true
+    }
+
+    processing_configuration {
+      enabled = true
+
+      # Extract partition key from the JSON payload using JQ.
+      # webinar_id → .webinarId  (camelCase field in the heartbeat JSON)
+      processors {
+        type = "MetadataExtraction"
+
+        parameters {
+          parameter_name  = "JsonParsingEngine"
+          parameter_value = "JQ-1.6"
+        }
+
+        parameters {
+          parameter_name  = "MetadataExtractionQuery"
+          parameter_value = "{webinar_id:.webinarId}"
+        }
+      }
+    }
+  }
+}
+
+resource "aws_iam_role" "firehose_role" {
+  provider = aws.eu-south-1
+  name     = "heartbeat_firehose_role"
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Action    = "sts:AssumeRole"
+      Effect    = "Allow"
+      Principal = { Service = "firehose.amazonaws.com" }
+    }]
+  })
+}
+
+resource "aws_iam_role_policy" "firehose_s3_policy" {
+  provider = aws.eu-south-1
+  role     = aws_iam_role.firehose_role.id
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Action = ["s3:PutObject", "s3:GetBucketLocation"]
+      Effect = "Allow"
+      Resource = [
+        aws_s3_bucket.heartbeat_storage.arn,
+        "${aws_s3_bucket.heartbeat_storage.arn}/*",
+      ]
+    }]
+  })
+}
+
+# ---------------------------------------------------------------------------
+# 3. Ingest Lambda function
+# ---------------------------------------------------------------------------
+
+data "archive_file" "ingest_lambda_function" {
+  type        = "zip"
+  source_file = "${path.root}/../../webinar-metrics-functions/collect-metrics.py"
+  output_path = "${path.root}/../../webinar-metrics-functions/out/collect-metrics.py.zip"
+}
+
+resource "aws_iam_role" "lambda_role" {
+  provider = aws.eu-south-1
+  name     = "heartbeat_lambda_role"
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Action    = "sts:AssumeRole"
+      Effect    = "Allow"
+      Principal = { Service = "lambda.amazonaws.com" }
+    }]
+  })
+}
+
+resource "aws_iam_role_policy" "lambda_kinesis_policy" {
+  provider = aws.eu-south-1
+  role     = aws_iam_role.lambda_role.id
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Action   = ["kinesis:PutRecord", "kinesis:PutRecords"]
+      Effect   = "Allow"
+      Resource = aws_kinesis_firehose_delivery_stream.s3_delivery.arn
+    }]
+  })
+}
+
+resource "aws_cloudwatch_log_group" "ingest_lambda_logs" {
+  provider          = aws.eu-south-1
+  name              = "/aws/lambda/${var.project_name}-heartbeat-ingest"
+  retention_in_days = 14
+}
+
+resource "aws_iam_role_policy" "lambda_logging_policy" {
+  provider = aws.eu-south-1
+  name     = "heartbeat_lambda_logging"
+  role     = aws_iam_role.lambda_role.id
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Action = [
+        "logs:CreateLogGroup",
+        "logs:CreateLogStream",
+        "logs:PutLogEvents",
+      ]
+      Effect   = "Allow"
+      Resource = "${aws_cloudwatch_log_group.ingest_lambda_logs.arn}:*"
+    }]
+  })
+}
+
+resource "aws_iam_role_policy" "lambda_firehose_policy" {
+  provider = aws.eu-south-1
+  name     = "lambda_firehose_direct_put"
+  role     = aws_iam_role.lambda_role.id
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Action   = "firehose:PutRecord"
+      Effect   = "Allow"
+      Resource = aws_kinesis_firehose_delivery_stream.s3_delivery.arn
+    }]
+  })
+}
+
+resource "aws_lambda_function" "ingest_lambda" {
+  provider         = aws.eu-south-1
+  filename         = data.archive_file.ingest_lambda_function.output_path
+  function_name    = "${var.project_name}-heartbeat-ingest"
+  role             = aws_iam_role.lambda_role.arn
+  handler          = "collect-metrics.lambda_handler"
+  runtime          = "python3.13"
+  source_code_hash = data.archive_file.ingest_lambda_function.output_base64sha256
+
+  environment {
+    variables = {
+      DELIVERY_STREAM_NAME = aws_kinesis_firehose_delivery_stream.s3_delivery.name
+    }
+  }
+
+  depends_on = [aws_cloudwatch_log_group.ingest_lambda_logs]
+}
+
+# ---------------------------------------------------------------------------
+# 4. API Gateway HTTP API for ingest
+# ---------------------------------------------------------------------------
+
+resource "aws_apigatewayv2_api" "ingest" {
+  provider      = aws.eu-south-1
+  name          = "${var.project_name}-ingest-api"
+  protocol_type = "HTTP"
+  description   = "HTTP API for heartbeat ingest Lambda"
+
+  cors_configuration {
+    allow_origins = compact([
+      "http://localhost:3000",
+      "https://${data.aws_route53_zone.selected.name}",
+    ])
+    allow_methods = ["POST", "GET", "OPTIONS"]
+    allow_headers = [
+      "Content-Type",
+      "Authorization",
+      "X-Amz-Date",
+      "X-Api-Key",
+      "X-Amz-Security-Token",
+    ]
+    expose_headers = ["Content-Length", "Content-Type"]
+    max_age        = 300
+  }
+}
+
+resource "aws_apigatewayv2_integration" "ingest_lambda" {
+  provider               = aws.eu-south-1
+  api_id                 = aws_apigatewayv2_api.ingest.id
+  integration_type       = "AWS_PROXY"
+  integration_uri        = aws_lambda_function.ingest_lambda.invoke_arn
+  integration_method     = "POST"
+  payload_format_version = "2.0"
+}
+
+resource "aws_apigatewayv2_authorizer" "ingest_cognito" {
+  provider         = aws.eu-south-1
+  api_id           = aws_apigatewayv2_api.ingest.id
+  authorizer_type  = "JWT"
+  identity_sources = ["$request.header.Authorization"]
+  name             = "${var.project_name}-ingest-cognito-authorizer"
+
+  jwt_configuration {
+    audience = [var.cognito_user_pool_client_id]
+    issuer   = "https://${var.cognito_user_pool_endpoint}"
+  }
+}
+
+resource "aws_apigatewayv2_route" "ingest" {
+  provider           = aws.eu-south-1
+  api_id             = aws_apigatewayv2_api.ingest.id
+  route_key          = "POST /ingest"
+  target             = "integrations/${aws_apigatewayv2_integration.ingest_lambda.id}"
+  authorization_type = "JWT"
+  authorizer_id      = aws_apigatewayv2_authorizer.ingest_cognito.id
+}
+
+resource "aws_apigatewayv2_stage" "ingest" {
+  provider    = aws.eu-south-1
+  api_id      = aws_apigatewayv2_api.ingest.id
+  name        = "$default"
+  auto_deploy = true
+}
+
+resource "aws_lambda_permission" "apigw_ingest" {
+  provider      = aws.eu-south-1
+  statement_id  = "AllowAPIGatewayHTTPInvoke"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.ingest_lambda.function_name
+  principal     = "apigateway.amazonaws.com"
+  source_arn    = "${aws_apigatewayv2_api.ingest.execution_arn}/*/*"
+}
+
+# ---------------------------------------------------------------------------
+# 5. Athena Database, Workgroup and Named Query
+# ---------------------------------------------------------------------------
+
+resource "aws_athena_database" "webinar_db" {
+  provider = aws.eu-south-1
+  name     = "webinar_analytics"
+  bucket   = aws_s3_bucket.heartbeat_storage.id
+}
+
+resource "aws_athena_workgroup" "webinar_analytics" {
+  provider = aws.eu-south-1
+  name     = "${var.project_name}-webinar-analytics"
+
+  configuration {
+    enforce_workgroup_configuration    = true
+    publish_cloudwatch_metrics_enabled = true
+
+    result_configuration {
+      output_location = "s3://${aws_s3_bucket.athena_results.bucket}/query-results/"
+
+      encryption_configuration {
+        encryption_option = "SSE_S3"
+      }
+    }
+  }
+}
+
+resource "aws_athena_named_query" "create_webinar_count_table" {
+  provider  = aws.eu-south-1
+  name      = "create_webinar_count_table"
+  database  = aws_athena_database.webinar_db.name
+  workgroup = aws_athena_workgroup.webinar_analytics.id
+  query     = <<-EOQ
+CREATE EXTERNAL TABLE webinar_heartbeats(
+webinarid string, 
+userid string, 
+clientip string, 
+receivedat string,
+isLive boolean,
+action string)
+PARTITIONED BY ( 
+  webinarid string,
+  year string, 
+  month string,
+  day string)
+ROW FORMAT SERDE 
+  'org.openx.data.jsonserde.JsonSerDe' 
+WITH SERDEPROPERTIES ( 
+  'ignore.malformed.json'='true') 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.mapred.TextInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.IgnoreKeyTextOutputFormat'
+LOCATION
+  's3://${aws_s3_bucket.heartbeat_storage.bucket}/'
+TBLPROPERTIES (
+  'projection.day.digits'='2', 
+  'projection.day.range'='1,31', 
+  'projection.day.type'='integer', 
+  'projection.enabled'='true',
+  'projection.webinarid.type'='injected',
+  'projection.year.digits'='4',
+  'projection.year.range'='2025,2050', 
+  'projection.year.type'='integer', 
+  'projection.month.digits'='2', 
+  'projection.month.range'='1,12', 
+  'projection.month.type'='integer', 
+  'storage.location.template'='s3://${aws_s3_bucket.heartbeat_storage.bucket}/webinars/webinarid=$${webinarid}/year=$${year}/month=$${month}/day=$${day}/', 
+  'transient_lastDdlTime'='1767892143')
+  EOQ
+
+  description = "Creates the Webinar count table for querying video distribution access logs"
+}
