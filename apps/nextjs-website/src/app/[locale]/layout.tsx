@@ -125,7 +125,7 @@ export default async function RootLayout({
   return (
     <html lang={locale} className={titilliumWeb.variable}>
       <head>
-        {isProduction && (
+        {/* {isProduction && (
           <Script
             id='matomo-tag-manager'
             key='script-matomo-tag-manager'
@@ -136,7 +136,7 @@ export default async function RootLayout({
             }}
             strategy='lazyOnload'
           />
-        )}
+        )} */}
       </head>
       <ThemeRegistry options={{ key: 'mui' }}>
         <NextIntlContext

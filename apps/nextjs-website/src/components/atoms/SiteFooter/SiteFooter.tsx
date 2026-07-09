@@ -180,7 +180,7 @@ const SiteFooter = () => {
   const { resources, ...rest } = links;
   const resourcesLinks = [
     ...resources.links,
-    ...(isProduction ? [cookiePreferenceLink] : []),
+    // ...(isProduction ? [cookiePreferenceLink] : []),
   ];
 
   const footerLinks = {

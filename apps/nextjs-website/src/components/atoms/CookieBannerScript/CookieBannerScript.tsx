@@ -13,7 +13,7 @@ const CookieBannerScript = ({
   return (
     isProduction && (
       <>
-        <Script
+        {/* <Script
           src={cookieScript}
           type='text/javascript'
           data-domain-script={cookieDomainScript}
@@ -26,7 +26,7 @@ const CookieBannerScript = ({
           dangerouslySetInnerHTML={{
             __html: `function OptanonWrapper() {}`,
           }}
-        />
+        /> */}
       </>
     )
   );
