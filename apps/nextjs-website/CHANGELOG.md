@@ -1,5 +1,11 @@
 # nextjs-website
 
+## 17.4.0
+
+### Minor Changes
+
+- f4c53f5: Refactor SUPPORTED_LOCALES to always include English locale
+
 ## 17.3.0
 
 ### Minor Changes
