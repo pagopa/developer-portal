@@ -15,7 +15,7 @@ export function selectEmbedType(
     return 'youtube';
   }
   if (
-    url.match(/^https:\/\/app\.arcade\.software\/flows\/[A-Za-z0-9]+\/view/)
+    url.match(/^https:\/\/app\.arcade\.software\/(flows|share)\/[A-Za-z0-9_-]+(\/view)?\/?$/)
   ) {
     return 'arcade';
   }
