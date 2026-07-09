@@ -74,9 +74,7 @@ resource "aws_kinesis_firehose_delivery_stream" "s3_delivery" {
     bucket_arn = aws_s3_bucket.heartbeat_storage.arn
 
     # Dynamic partition keys are extracted by the MetadataExtraction processor below.
-    prefix = "webinars/webinarid=!{partitionKeyFromQuery:webinarId}/year=!{timestamp:yyyy}/month=!{timestamp:MM}/day=!{timestamp:dd}/"
-    # error_output_prefix must NOT use partitionKeyFromQuery (failed records may not be parseable)
-    # and MUST contain !{firehose:error-output-type}.
+    prefix              = "webinars/webinarid=!{partitionKeyFromQuery:webinarId}/year=!{timestamp:yyyy}/month=!{timestamp:MM}/day=!{timestamp:dd}/"
     error_output_prefix = "errors/year=!{timestamp:yyyy}/month=!{timestamp:MM}/day=!{timestamp:dd}/!{firehose:error-output-type}/"
 
     # Dynamic partitioning requires buffering_size >= 64 MB (Firehose buffers per partition).
@@ -101,8 +99,10 @@ resource "aws_kinesis_firehose_delivery_stream" "s3_delivery" {
         }
 
         parameters {
-          parameter_name  = "MetadataExtractionQuery"
-          parameter_value = "{webinarId:.webinarId}"
+          parameter_name = "MetadataExtractionQuery"
+          # Extract all partition keys from the JSON payload.
+          # receivedat is expected to be ISO 8601, e.g. "2025-06-15T10:30:00Z"
+          parameter_value = "{webinarId:.webinarId,year:.receivedat[0:4],month:.receivedat[5:7],day:.receivedat[8:10]}"
         }
       }
     }
