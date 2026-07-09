@@ -74,8 +74,10 @@ resource "aws_kinesis_firehose_delivery_stream" "s3_delivery" {
     bucket_arn = aws_s3_bucket.heartbeat_storage.arn
 
     # Dynamic partition keys are extracted by the MetadataExtraction processor below.
-    prefix              = "webinars/webinarid=!{partitionKeyFromQuery:webinarId}/year=!{timestamp:yyyy}/month=!{timestamp:MM}/day=!{timestamp:dd}/"
-    error_output_prefix = "errors/webinarid=!{partitionKeyFromQuery:webinarId}/year=!{timestamp:yyyy}/month=!{timestamp:MM}/day=!{timestamp:dd}/"
+    prefix = "webinars/webinarid=!{partitionKeyFromQuery:webinarId}/year=!{timestamp:yyyy}/month=!{timestamp:MM}/day=!{timestamp:dd}/"
+    # error_output_prefix must NOT use partitionKeyFromQuery (failed records may not be parseable)
+    # and MUST contain !{firehose:error-output-type}.
+    error_output_prefix = "errors/year=!{timestamp:yyyy}/month=!{timestamp:MM}/day=!{timestamp:dd}/!{firehose:error-output-type}/"
 
     # Dynamic partitioning requires buffering_size >= 64 MB (Firehose buffers per partition).
     buffering_size     = 64 # MB
@@ -100,7 +102,7 @@ resource "aws_kinesis_firehose_delivery_stream" "s3_delivery" {
 
         parameters {
           parameter_name  = "MetadataExtractionQuery"
-          parameter_value = "{webinar_id:.webinarId}"
+          parameter_value = "{webinarId:.webinarId}"
         }
       }
     }
@@ -125,14 +127,16 @@ resource "aws_iam_role_policy" "firehose_s3_policy" {
   role     = aws_iam_role.firehose_role.id
   policy = jsonencode({
     Version = "2012-10-17"
-    Statement = [{
-      Action = ["s3:PutObject", "s3:GetBucketLocation"]
-      Effect = "Allow"
-      Resource = [
-        aws_s3_bucket.heartbeat_storage.arn,
-        "${aws_s3_bucket.heartbeat_storage.arn}/*",
-      ]
-    }]
+    Statement = [
+      {
+        Action = ["s3:PutObject", "s3:GetBucketLocation"]
+        Effect = "Allow"
+        Resource = [
+          aws_s3_bucket.heartbeat_storage.arn,
+          "${aws_s3_bucket.heartbeat_storage.arn}/*",
+        ]
+      },
+    ]
   })
 }
 
@@ -336,44 +340,42 @@ resource "aws_athena_named_query" "create_webinar_count_table" {
   name      = "create_webinar_count_table"
   database  = aws_athena_database.webinar_db.name
   workgroup = aws_athena_workgroup.webinar_analytics.id
-  query     = <<-EOQ
+
+  query = <<-EOQ
 CREATE EXTERNAL TABLE webinar_heartbeats(
-webinarid string, 
-userid string, 
-clientip string, 
+userid string,
+clientip string,
 receivedat string,
 isLive boolean,
 action string)
-PARTITIONED BY ( 
+PARTITIONED BY (
   webinarid string,
-  year string, 
+  year string,
   month string,
   day string)
-ROW FORMAT SERDE 
-  'org.openx.data.jsonserde.JsonSerDe' 
-WITH SERDEPROPERTIES ( 
-  'ignore.malformed.json'='true') 
-STORED AS INPUTFORMAT 
-  'org.apache.hadoop.mapred.TextInputFormat' 
-OUTPUTFORMAT 
+ROW FORMAT SERDE
+  'org.openx.data.jsonserde.JsonSerDe'
+WITH SERDEPROPERTIES (
+  'ignore.malformed.json'='true')
+STORED AS INPUTFORMAT
+  'org.apache.hadoop.mapred.TextInputFormat'
+OUTPUTFORMAT
   'org.apache.hadoop.hive.ql.io.IgnoreKeyTextOutputFormat'
 LOCATION
-  's3://${aws_s3_bucket.heartbeat_storage.bucket}/'
-TBLPROPERTIES (
-  'projection.day.digits'='2', 
-  'projection.day.range'='1,31', 
-  'projection.day.type'='integer', 
-  'projection.enabled'='true',
-  'projection.webinarid.type'='injected',
-  'projection.year.digits'='4',
-  'projection.year.range'='2025,2050', 
-  'projection.year.type'='integer', 
-  'projection.month.digits'='2', 
-  'projection.month.range'='1,12', 
-  'projection.month.type'='integer', 
-  'storage.location.template'='s3://${aws_s3_bucket.heartbeat_storage.bucket}/webinars/webinarid=$${webinarid}/year=$${year}/month=$${month}/day=$${day}/', 
-  'transient_lastDdlTime'='1767892143')
+  's3://${aws_s3_bucket.heartbeat_storage.bucket}/webinars/'
   EOQ
 
-  description = "Creates the Webinar count table for querying video distribution access logs"
+  description = "Creates the webinar heartbeats table. After creation register partitions with ALTER TABLE ADD PARTITION or MSCK REPAIR TABLE."
+}
+
+# Convenience query: register all partitions by scanning S3.
+# Use for ad-hoc recovery; for production prefer ALTER TABLE ADD PARTITION per webinar.
+resource "aws_athena_named_query" "repair_webinar_count_table" {
+  provider  = aws.eu-south-1
+  name      = "repair_webinar_count_table"
+  database  = aws_athena_database.webinar_db.name
+  workgroup = aws_athena_workgroup.webinar_analytics.id
+
+  query = "MSCK REPAIR TABLE webinar_heartbeats;"
+
 }

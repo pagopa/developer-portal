@@ -40,6 +40,7 @@ No modules.
 | [aws_apigatewayv2_stage.ingest](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/apigatewayv2_stage) | resource |
 | [aws_athena_database.webinar_db](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/athena_database) | resource |
 | [aws_athena_named_query.create_webinar_count_table](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/athena_named_query) | resource |
+| [aws_athena_named_query.repair_webinar_count_table](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/athena_named_query) | resource |
 | [aws_athena_workgroup.webinar_analytics](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/athena_workgroup) | resource |
 | [aws_cloudfront_distribution.vod](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudfront_distribution) | resource |
 | [aws_cloudfront_origin_access_control.video_oac](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudfront_origin_access_control) | resource |
