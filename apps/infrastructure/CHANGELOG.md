@@ -1,5 +1,12 @@
 # infrastructure
 
+## 13.3.0
+
+### Minor Changes
+
+- 0abff4d: Bash scripts to enable ALB access logs and athena table to query them.
+- 7fc3392: Update max ACU from 3 to 6 for the CMS Aurora RDS cluster.
+
 ## 13.2.0
 
 ### Minor Changes
