@@ -73,8 +73,8 @@ resource "aws_kinesis_firehose_delivery_stream" "s3_delivery" {
     role_arn   = aws_iam_role.firehose_role.arn
     bucket_arn = aws_s3_bucket.heartbeat_storage.arn
 
-    # Dynamic partition keys are extracted by the MetadataExtraction processor below.
-    prefix              = "webinars/webinarid=!{partitionKeyFromQuery:webinarId}/year=!{timestamp:yyyy}/month=!{timestamp:MM}/day=!{timestamp:dd}/"
+    # Dynamic partition keys are all extracted by the MetadataExtraction processor below.
+    prefix              = "webinars/webinarid=!{partitionKeyFromQuery:webinarId}/year=!{partitionKeyFromQuery:year}/month=!{partitionKeyFromQuery:month}/day=!{partitionKeyFromQuery:day}/"
     error_output_prefix = "errors/year=!{timestamp:yyyy}/month=!{timestamp:MM}/day=!{timestamp:dd}/!{firehose:error-output-type}/"
 
     # Dynamic partitioning requires buffering_size >= 64 MB (Firehose buffers per partition).
@@ -100,9 +100,9 @@ resource "aws_kinesis_firehose_delivery_stream" "s3_delivery" {
 
         parameters {
           parameter_name = "MetadataExtractionQuery"
-          # Extract all partition keys from the JSON payload.
-          # receivedat is expected to be ISO 8601, e.g. "2025-06-15T10:30:00Z"
-          parameter_value = "{webinarId:.webinarId,year:.receivedat[0:4],month:.receivedat[5:7],day:.receivedat[8:10]}"
+          # Extract all four partition keys — year/month/day are CET values
+          # added explicitly by the Lambda, so JQ reads them as top-level fields.
+          parameter_value = "{webinarId:.webinarId,year:.year,month:.month,day:.day}"
         }
       }
     }
