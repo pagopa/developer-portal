@@ -16,7 +16,7 @@ export function selectEmbedType(
   }
   if (
     url.match(
-      /^https:\/\/app\.arcade\.software\/(flows|share)\/[A-Za-z0-9_-]+(\/view)?\/?$/
+      /^https:\/\/app\.arcade\.software\/(?:share\/[A-Za-z0-9_-]+|flows\/[A-Za-z0-9_-]+\/view)\/?$/
     )
   ) {
     return 'arcade';
