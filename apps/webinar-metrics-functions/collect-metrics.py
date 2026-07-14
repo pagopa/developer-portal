@@ -19,13 +19,18 @@ def lambda_handler(event, context):
         body_str = event.get('body', '{}')
         data = json.loads(body_str)
 
+        # Normalize webinar identifier from payload.
+        webinar_id = data.get('webinarId') or data.get('webinarid')
+        if webinar_id is None or str(webinar_id).strip() == "":
+            raise ValueError("webinarId is required in the incoming data.")
+
         # Encrypt userId if it exists (simple example using SHA256)
-        if 'userId' in data:
-            user_id_str = str(data['userId'])
-            encrypted_user_id = hashlib.sha256(user_id_str.encode('utf-8')).hexdigest()
-            data['userId'] = encrypted_user_id
-        else:
+        user_id = data.get('userId') or data.get('userid')
+        if user_id is None or str(user_id).strip() == "":
             raise ValueError("userId is required in the incoming data.")
+
+        user_id_str = str(user_id)
+        encrypted_user_id = hashlib.sha256(user_id_str.encode('utf-8')).hexdigest()
 
         # Get the Client IP from the Request Context
         # Function URLs use the 'http' key inside 'requestContext'
@@ -43,15 +48,21 @@ def lambda_handler(event, context):
         month = f"{now_cet.month:02d}"
         day = f"{now_cet.day:02d}"
 
-        # Enrich the data with our new fields
-        data['clientIp'] = client_ip
-        data['receivedAt'] = timestamp
-        data['year'] = year
-        data['month'] = month
-        data['day'] = day
+        # Emit canonical keys aligned with the Iceberg table schema.
+        payload = {
+            "webinarid": str(webinar_id),
+            "userid": encrypted_user_id,
+            "clientip": client_ip,
+            "receivedat": timestamp,
+            "islive": bool(data.get("isLive", data.get("islive", False))),
+            "action": str(data.get("action", "")),
+            "year": year,
+            "month": month,
+            "day": day,
+        }
 
         # Prepare for Firehose (add newline for Athena/JSON SerDe)
-        enriched_data_str = json.dumps(data) + '\n'
+        enriched_data_str = json.dumps(payload) + '\n'
 
         # Send to Firehose
         firehose.put_record(

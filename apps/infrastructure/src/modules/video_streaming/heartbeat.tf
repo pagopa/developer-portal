@@ -4,6 +4,8 @@
 # data is ingested, stored, and queried closer to the Cognito user pool and
 # the front-end origin.  The caller must supply an `aws.eu-south-1` provider alias.
 
+data "aws_partition" "current" {}
+
 # ---------------------------------------------------------------------------
 # 1. S3 Bucket for heartbeat storage
 # ---------------------------------------------------------------------------
@@ -67,44 +69,23 @@ resource "aws_s3_bucket_lifecycle_configuration" "athena_results_lifecycle" {
 resource "aws_kinesis_firehose_delivery_stream" "s3_delivery" {
   provider    = aws.eu-south-1
   name        = "${var.project_name}-webinar-viewer-count"
-  destination = "extended_s3"
+  destination = "iceberg"
 
-  extended_s3_configuration {
-    role_arn   = aws_iam_role.firehose_role.arn
-    bucket_arn = aws_s3_bucket.heartbeat_storage.arn
+  iceberg_configuration {
+    role_arn           = aws_iam_role.firehose_role.arn
+    catalog_arn        = "arn:${data.aws_partition.current.partition}:glue:eu-south-1:${data.aws_caller_identity.current.account_id}:catalog"
+    buffering_size     = 10
+    buffering_interval = 300
 
-    # Dynamic partition keys are all extracted by the MetadataExtraction processor below.
-    prefix              = "webinars/webinarid=!{partitionKeyFromQuery:webinarId}/year=!{partitionKeyFromQuery:year}/month=!{partitionKeyFromQuery:month}/day=!{partitionKeyFromQuery:day}/"
-    error_output_prefix = "errors/year=!{timestamp:yyyy}/month=!{timestamp:MM}/day=!{timestamp:dd}/!{firehose:error-output-type}/"
-
-    # Dynamic partitioning requires buffering_size >= 64 MB (Firehose buffers per partition).
-    buffering_size     = 64 # MB
-    buffering_interval = 60 # seconds
-
-    dynamic_partitioning_configuration {
-      enabled = true
+    s3_configuration {
+      role_arn            = aws_iam_role.firehose_role.arn
+      bucket_arn          = aws_s3_bucket.heartbeat_storage.arn
+      error_output_prefix = "errors/iceberg/!{firehose:error-output-type}/"
     }
 
-    processing_configuration {
-      enabled = true
-
-      # Extract partition key from the JSON payload using JQ.
-      # webinar_id → .webinarId  (camelCase field in the heartbeat JSON)
-      processors {
-        type = "MetadataExtraction"
-
-        parameters {
-          parameter_name  = "JsonParsingEngine"
-          parameter_value = "JQ-1.6"
-        }
-
-        parameters {
-          parameter_name = "MetadataExtractionQuery"
-          # Extract all four partition keys — year/month/day are CET values
-          # added explicitly by the Lambda, so JQ reads them as top-level fields.
-          parameter_value = "{webinarId:.webinarId,year:.year,month:.month,day:.day}"
-        }
-      }
+    destination_table_configuration {
+      database_name = aws_athena_database.webinar_db.name
+      table_name    = aws_glue_catalog_table.webinar_heartbeats_iceberg.name
     }
   }
 }
@@ -129,12 +110,25 @@ resource "aws_iam_role_policy" "firehose_s3_policy" {
     Version = "2012-10-17"
     Statement = [
       {
-        Action = ["s3:PutObject", "s3:GetBucketLocation"]
+        Action = ["s3:PutObject", "s3:GetBucketLocation", "s3:AbortMultipartUpload", "s3:ListBucket", "s3:ListBucketMultipartUploads"]
         Effect = "Allow"
         Resource = [
           aws_s3_bucket.heartbeat_storage.arn,
           "${aws_s3_bucket.heartbeat_storage.arn}/*",
         ]
+      },
+      {
+        Action = [
+          "glue:GetDatabase",
+          "glue:GetDatabases",
+          "glue:GetTable",
+          "glue:GetTables",
+          "glue:GetTableVersion",
+          "glue:GetTableVersions",
+          "glue:UpdateTable",
+        ]
+        Effect   = "Allow"
+        Resource = "*"
       },
     ]
   })
@@ -335,47 +329,120 @@ resource "aws_athena_workgroup" "webinar_analytics" {
   }
 }
 
-resource "aws_athena_named_query" "create_webinar_count_table" {
-  provider  = aws.eu-south-1
-  name      = "create_webinar_count_table"
-  database  = aws_athena_database.webinar_db.name
-  workgroup = aws_athena_workgroup.webinar_analytics.id
+resource "aws_glue_catalog_table" "webinar_heartbeats_iceberg" {
+  provider      = aws.eu-south-1
+  name          = "webinar_heartbeats"
+  database_name = aws_athena_database.webinar_db.name
 
-  query = <<-EOQ
-CREATE EXTERNAL TABLE webinar_heartbeats(
-userid string,
-clientip string,
-receivedat string,
-isLive boolean,
-action string)
-PARTITIONED BY (
-  webinarid string,
-  year string,
-  month string,
-  day string)
-ROW FORMAT SERDE
-  'org.openx.data.jsonserde.JsonSerDe'
-WITH SERDEPROPERTIES (
-  'ignore.malformed.json'='true')
-STORED AS INPUTFORMAT
-  'org.apache.hadoop.mapred.TextInputFormat'
-OUTPUTFORMAT
-  'org.apache.hadoop.hive.ql.io.IgnoreKeyTextOutputFormat'
-LOCATION
-  's3://${aws_s3_bucket.heartbeat_storage.bucket}/webinars/'
-  EOQ
+  table_type = "EXTERNAL_TABLE"
+  parameters = {
+    format = "parquet"
+  }
 
-  description = "Creates the webinar heartbeats table. After creation register partitions with ALTER TABLE ADD PARTITION or MSCK REPAIR TABLE."
-}
+  open_table_format_input {
+    iceberg_input {
+      metadata_operation = "CREATE"
+      version            = 2
 
-# Convenience query: register all partitions by scanning S3.
-# Use for ad-hoc recovery; for production prefer ALTER TABLE ADD PARTITION per webinar.
-resource "aws_athena_named_query" "repair_webinar_count_table" {
-  provider  = aws.eu-south-1
-  name      = "repair_webinar_count_table"
-  database  = aws_athena_database.webinar_db.name
-  workgroup = aws_athena_workgroup.webinar_analytics.id
+      iceberg_table_input {
+        location = "s3://${aws_s3_bucket.heartbeat_storage.bucket}/webinars/"
 
-  query = "MSCK REPAIR TABLE webinar_heartbeats;"
+        schema {
+          schema_id = 0
+          type      = "struct"
 
+          fields {
+            id       = 1
+            name     = "webinarid"
+            required = false
+            type     = "\"string\""
+          }
+
+          fields {
+            id       = 2
+            name     = "userid"
+            required = false
+            type     = "\"string\""
+          }
+
+          fields {
+            id       = 3
+            name     = "clientip"
+            required = false
+            type     = "\"string\""
+          }
+
+          fields {
+            id       = 4
+            name     = "receivedat"
+            required = false
+            type     = "\"string\""
+          }
+
+          fields {
+            id       = 5
+            name     = "islive"
+            required = false
+            type     = "\"boolean\""
+          }
+
+          fields {
+            id       = 6
+            name     = "action"
+            required = false
+            type     = "\"string\""
+          }
+
+          fields {
+            id       = 7
+            name     = "year"
+            required = false
+            type     = "\"string\""
+          }
+
+          fields {
+            id       = 8
+            name     = "month"
+            required = false
+            type     = "\"string\""
+          }
+
+          fields {
+            id       = 9
+            name     = "day"
+            required = false
+            type     = "\"string\""
+          }
+        }
+
+        partition_spec {
+          spec_id = 0
+
+          fields {
+            name      = "webinarid"
+            source_id = 1
+            transform = "identity"
+          }
+
+          fields {
+            name      = "year"
+            source_id = 7
+            transform = "identity"
+          }
+
+          fields {
+            name      = "month"
+            source_id = 8
+            transform = "identity"
+          }
+
+          fields {
+            name      = "day"
+            source_id = 9
+            transform = "identity"
+          }
+        }
+      }
+    }
+  }
 }
