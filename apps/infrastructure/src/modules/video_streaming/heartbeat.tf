@@ -66,6 +66,18 @@ resource "aws_s3_bucket_lifecycle_configuration" "athena_results_lifecycle" {
 # 3. Kinesis Data Firehose (direct-put → S3)
 # ---------------------------------------------------------------------------
 
+resource "aws_cloudwatch_log_group" "firehose_delivery_logs" {
+  provider          = aws.eu-south-1
+  name              = "/aws/kinesisfirehose/${var.project_name}-webinar-viewer-count"
+  retention_in_days = 14
+}
+
+resource "aws_cloudwatch_log_stream" "firehose_delivery_logs" {
+  provider       = aws.eu-south-1
+  name           = "IcebergDelivery"
+  log_group_name = aws_cloudwatch_log_group.firehose_delivery_logs.name
+}
+
 resource "aws_kinesis_firehose_delivery_stream" "s3_delivery" {
   provider    = aws.eu-south-1
   name        = "${var.project_name}-webinar-viewer-count"
@@ -76,6 +88,12 @@ resource "aws_kinesis_firehose_delivery_stream" "s3_delivery" {
     catalog_arn        = "arn:${data.aws_partition.current.partition}:glue:eu-south-1:${data.aws_caller_identity.current.account_id}:catalog"
     buffering_size     = 10
     buffering_interval = 300
+
+    cloudwatch_logging_options {
+      enabled         = true
+      log_group_name  = aws_cloudwatch_log_group.firehose_delivery_logs.name
+      log_stream_name = aws_cloudwatch_log_stream.firehose_delivery_logs.name
+    }
 
     s3_configuration {
       role_arn            = aws_iam_role.firehose_role.arn
@@ -110,7 +128,7 @@ resource "aws_iam_role_policy" "firehose_s3_policy" {
     Version = "2012-10-17"
     Statement = [
       {
-        Action = ["s3:PutObject", "s3:GetBucketLocation", "s3:AbortMultipartUpload", "s3:ListBucket", "s3:ListBucketMultipartUploads"]
+        Action = ["s3:PutObject", "s3:GetObject", "s3:GetBucketLocation", "s3:AbortMultipartUpload", "s3:ListBucket", "s3:ListBucketMultipartUploads"]
         Effect = "Allow"
         Resource = [
           aws_s3_bucket.heartbeat_storage.arn,
@@ -129,6 +147,11 @@ resource "aws_iam_role_policy" "firehose_s3_policy" {
         ]
         Effect   = "Allow"
         Resource = "*"
+      },
+      {
+        Action   = ["logs:PutLogEvents"]
+        Effect   = "Allow"
+        Resource = "${aws_cloudwatch_log_group.firehose_delivery_logs.arn}:log-stream:*"
       },
     ]
   })
@@ -337,6 +360,14 @@ resource "aws_glue_catalog_table" "webinar_heartbeats_iceberg" {
   table_type = "EXTERNAL_TABLE"
   parameters = {
     format = "parquet"
+  }
+
+  # Glue's Iceberg engine writes/updates runtime-managed parameters
+  # (iceberg.table.uuid, iceberg.table.lastUpdatedMs, metadata_hashcode,
+  # previous_metadata_location, write.parquet.compression-codec, ...) every
+  # time Firehose commits a new snapshot. Terraform must not fight over these.
+  lifecycle {
+    ignore_changes = [parameters]
   }
 
   open_table_format_input {
