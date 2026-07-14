@@ -303,7 +303,7 @@ runs:
         aws s3 cp "$S3_DIRNAMES" dirNames.json || echo '{"dirNames": []}' > dirNames.json
         echo "::endgroup::"
 
-    - name: Sync filtered docs folder to S3
+- name: Sync filtered docs folder to S3
       if: inputs.dir_names_filter != ''
       shell: bash
       working-directory: ./devportal-docs
@@ -315,19 +315,24 @@ runs:
         echo "::group::Sync filtered docs folder to S3"
         # Extract unique directory names from downloaded json
         VALID_DIRS=$(cat ../dirNames.json | jq -r '.dirNames[]' | sort | uniq)
-        
+
         IFS=',' read -ra DIRS <<< "$DIR_NAMES_FILTER"
         for dir in "${DIRS[@]}"; do
           dir=$(echo "$dir" | xargs)
           if [[ -n "$dir" ]]; then
             # Check if dir is in VALID_DIRS
             if echo "$VALID_DIRS" | grep -F -q -x "$dir"; then
+              # Only sync directories that actually exist in the checked-out docs.
+              if [[ -d "docs/$dir" ]]; then
                 echo "Syncing directory: $dir"
                 if [[ -n "$LOCALE" ]]; then
                   aws s3 sync "docs/$dir" "s3://devportal-${{ env.ENV_SHORT }}-website-static-content/$LOCALE/devportal-docs/docs/$dir" --delete --exclude "metadata.json" ${{ inputs.incremental_mode == 'true' && ' --size-only' || '' }}
                 else
                   aws s3 sync "docs/$dir" "s3://devportal-${{ env.ENV_SHORT }}-website-static-content/devportal-docs/docs/$dir" --delete --exclude "metadata.json" ${{ inputs.incremental_mode == 'true' && ' --size-only' || '' }}
                 fi
+              else
+                echo "Skipping directory $dir: listed in dirNames.json but not present in checked-out docs."
+              fi
             else
                 echo "Skipping directory $dir as it is not in the published list."
             fi
@@ -358,11 +363,16 @@ runs:
           echo "Syncing registered directories..."
           for dir in $VALID_DIRS; do
             if [[ -n "$dir" ]]; then
-              echo "Syncing directory: $dir"
-              if [[ -n "$LOCALE" ]]; then
-                aws s3 sync "docs/$dir" "s3://devportal-${{ env.ENV_SHORT }}-website-static-content/$LOCALE/devportal-docs/docs/$dir" --delete --exclude "metadata.json" ${{ inputs.incremental_mode == 'true' && ' --size-only' || '' }}
+              # Only sync directories that actually exist in the checked-out docs.
+              if [[ -d "docs/$dir" ]]; then
+                echo "Syncing directory: $dir"
+                if [[ -n "$LOCALE" ]]; then
+                  aws s3 sync "docs/$dir" "s3://devportal-${{ env.ENV_SHORT }}-website-static-content/$LOCALE/devportal-docs/docs/$dir" --delete --exclude "metadata.json" ${{ inputs.incremental_mode == 'true' && ' --size-only' || '' }}
+                else
+                  aws s3 sync "docs/$dir" "s3://devportal-${{ env.ENV_SHORT }}-website-static-content/devportal-docs/docs/$dir" --delete --exclude "metadata.json" ${{ inputs.incremental_mode == 'true' && ' --size-only' || '' }}
+                fi
               else
-                aws s3 sync "docs/$dir" "s3://devportal-${{ env.ENV_SHORT }}-website-static-content/devportal-docs/docs/$dir" --delete --exclude "metadata.json" ${{ inputs.incremental_mode == 'true' && ' --size-only' || '' }}
+                echo "Skipping directory $dir: listed in dirNames.json but not present in checked-out docs."
               fi
             fi
           done
