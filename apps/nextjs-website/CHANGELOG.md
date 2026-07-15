@@ -1,5 +1,12 @@
 # nextjs-website
 
+## 17.4.1
+
+### Patch Changes
+
+- 79c9f3c: Reduce paragraph bottom margin in case histories
+- f528a67: Add Arcade embed support
+
 ## 17.4.0
 
 ### Minor Changes
