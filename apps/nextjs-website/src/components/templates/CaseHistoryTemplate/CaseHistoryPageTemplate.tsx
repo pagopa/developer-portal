@@ -87,7 +87,14 @@ const CaseHistoryPageTemplate = ({
       {parts.map((part: Part, index: number) =>
         part.component !== 'quote' ? (
           <EContainer key={index}>
-            <PartRenderer part={part} paragraphSx={{ marginBottom: '15px' }} />
+            <PartRenderer
+              part={{
+                ...part,
+                ...(part.component === 'blockRenderer' && {
+                  paragraphSx: { marginBottom: '15px' },
+                }),
+              }}
+            />
           </EContainer>
         ) : (
           <Box key={index}>
