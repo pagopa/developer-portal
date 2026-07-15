@@ -4,6 +4,7 @@ import EmbedCodePen from '@/components/molecules/EmbedCodePen/EmbedCodePen';
 import EmbedFigma from '@/components/molecules/EmbedFigma/EmbedFigma';
 import EmbedYouTube from '@/components/molecules/EmbedYouTube/EmbedYouTube';
 import EmbedLink from '@/components/atoms/EmbedLink/EmbedLink';
+import EmbedArcade from '@/components/molecules/EmbedArcade/EmbedArcade';
 import { selectEmbedType } from '@/helpers/embed.helpers';
 
 const Embed = ({ url, children }: EmbedProps<ReactNode>) => {
@@ -16,6 +17,8 @@ const Embed = ({ url, children }: EmbedProps<ReactNode>) => {
       return <EmbedFigma url={url}>{children}</EmbedFigma>;
     case 'youtube':
       return <EmbedYouTube url={url}>{children}</EmbedYouTube>;
+    case 'arcade':
+      return <EmbedArcade url={url}>{children}</EmbedArcade>;
     default:
       return <EmbedLink url={url} />;
   }
