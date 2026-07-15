@@ -27,6 +27,24 @@ describe('selectEmbedType', () => {
     expect(selectEmbedType(url)).toBe('youtube');
   });
 
+  it('returns "arcade" for an Arcade flows URL', () => {
+    const url = 'https://app.arcade.software/flows/1gW7gb7eAeL5fnBfsTDY/view';
+
+    expect(selectEmbedType(url)).toBe('arcade');
+  });
+
+  it('returns "arcade" for an Arcade share URL', () => {
+    const url = 'https://app.arcade.software/share/IHtdEHRJ1yec31yrSIey';
+
+    expect(selectEmbedType(url)).toBe('arcade');
+  });
+
+  it('returns "link" for an invalid Arcade URL', () => {
+    const url = 'https://app.arcade.software/share/IHtdEHRJ1yec31yrSIey/view';
+
+    expect(selectEmbedType(url)).toBe('link');
+  });
+
   it('returns "link" for a URL containing codepen.io or youtube.com outside of the host part', () => {
     const url = 'https://example.com/?qp=codepen.io&other_qp=youtube.com';
 
