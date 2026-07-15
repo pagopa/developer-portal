@@ -10,12 +10,17 @@ import BlocksRendererPart from '@/components/organisms/BlocksRendererPart/Blocks
 import Quote from '@/components/atoms/Quote/Quote';
 import CkEditorPart from '../CkEditorPart/CkEditorPart';
 import MarkdownPart from '@/components/molecules/MarkdownPart/MarkdownPart';
+import { SxProps, Theme } from '@mui/material';
 
 type PartRendererProps = {
   part: Part;
+  paragraphSx?: SxProps<Theme>;
 };
 
-const PartRenderer = ({ part }: PartRendererProps): ReactNode | null => {
+const PartRenderer = ({
+  part,
+  paragraphSx,
+}: PartRendererProps): ReactNode | null => {
   switch (part.component) {
     case 'alert':
       return <AlertPart {...part} />;
@@ -24,7 +29,7 @@ const PartRenderer = ({ part }: PartRendererProps): ReactNode | null => {
     case 'apiTester':
       return <ApiTesterPart {...part} />;
     case 'blockRenderer':
-      return <BlocksRendererPart {...part} />;
+      return <BlocksRendererPart {...part} paragraphSx={paragraphSx} />;
     case 'codeBlock':
       return <CodeBlockPart {...part} />;
     case 'innerHTMLLazyLoaded':
