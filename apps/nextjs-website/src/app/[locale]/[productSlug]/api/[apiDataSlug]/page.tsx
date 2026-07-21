@@ -8,7 +8,6 @@ import {
   makeMetadata,
   makeMetadataFromStrapi,
 } from '@/helpers/metadata.helpers';
-import PageNotFound from '@/app/[locale]/not-found';
 import type { SEO } from '@/lib/seo/types';
 import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
 import {
@@ -54,7 +53,7 @@ export const generateMetadata = async (
     params.apiDataSlug
   );
   if (!ApiDataProps) {
-    console.error(`Failed to fetch API data for slug: ${params.apiDataSlug}`);
+    console.warn(`Failed to fetch API data for slug: ${params.apiDataSlug}`);
     notFound();
   }
 
@@ -79,8 +78,7 @@ const ApiDataPage = async (props: ApiDataParams) => {
     params.apiDataSlug
   );
   if (!apiDataProps) {
-    // eslint-disable-next-line functional/no-throw-statements
-    throw new Error('Failed to fetch data');
+    notFound();
   }
 
   const structuredData = generateStructuredDataScripts({
@@ -125,7 +123,7 @@ const ApiDataPage = async (props: ApiDataParams) => {
       </ProductLayout>
     );
   }
-  return <PageNotFound />;
+  notFound();
 };
 
 export default ApiDataPage;
