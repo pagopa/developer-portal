@@ -97,10 +97,22 @@ export async function getGuidePage(
 }
 
 export async function getGuideListPages(locale: string, productSlug?: string) {
-  const props = manageUndefined(
-    await GuideListPagesRepository.getByProductSlug(locale, productSlug || '')
+  const props = await GuideListPagesRepository.getByProductSlug(
+    locale,
+    productSlug || ''
   );
-  return manageUndefinedAndAddProducts(locale, props);
+
+  if (!props) {
+    // eslint-disable-next-line functional/no-expression-statements
+    console.warn(
+      `Guide list page not found: locale="${locale}", productSlug="${
+        productSlug || ''
+      }"`
+    );
+    return undefined;
+  }
+
+  return { ...props, products: await getProducts(locale) };
 }
 
 export async function getOverview(locale: string, productSlug?: string) {
