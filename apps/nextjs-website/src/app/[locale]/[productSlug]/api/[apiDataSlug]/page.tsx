@@ -53,7 +53,7 @@ export const generateMetadata = async (
     params.apiDataSlug
   );
   if (!ApiDataProps) {
-    console.warn(`Failed to fetch API data for slug: ${params.apiDataSlug}`);
+    console.error(`Failed to fetch API data for slug: ${params.apiDataSlug}`);
     notFound();
   }
 
@@ -78,6 +78,7 @@ const ApiDataPage = async (props: ApiDataParams) => {
     params.apiDataSlug
   );
   if (!apiDataProps) {
+    console.error(`Failed to fetch API data for slug: ${params.apiDataSlug}`);
     notFound();
   }
 

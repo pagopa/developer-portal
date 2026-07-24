@@ -58,7 +58,7 @@ export async function getGuidePage(
   ]);
   if (!guideResult) {
     // eslint-disable-next-line functional/no-expression-statements
-    console.warn(
+    console.error(
       `Guide not found: locale="${locale}", productSlug="${productSlug}", guideSlug="${
         guidePaths[0] || ''
       }"`
@@ -82,7 +82,7 @@ export async function getGuidePage(
     }) || guideProps.versions.find((v) => v.main); // Fallback to main version if specific version is not found
   if (!guideToFind) {
     // eslint-disable-next-line functional/no-expression-statements
-    console.warn(`Guide version not found for path "${guidePath}"`);
+    console.error(`Guide version not found for path "${guidePath}"`);
     return undefined;
   }
 
@@ -104,7 +104,7 @@ export async function getGuideListPages(locale: string, productSlug?: string) {
 
   if (!props) {
     // eslint-disable-next-line functional/no-expression-statements
-    console.warn(
+    console.error(
       `Guide list page not found: locale="${locale}", productSlug="${
         productSlug || ''
       }"`
