@@ -227,19 +227,8 @@ export const parseS3GuidePage = async (props: {
     guidePageMetadata.dirName !== version.dirName
   ) {
     // eslint-disable-next-line functional/no-expression-statements
-    console.error('Missing version or guidePageMetadata for guidePath');
-    // eslint-disable-next-line functional/no-expression-statements
-    console.log(
-      'path',
-      guidePath,
-      'baseGuidePath',
-      baseGuidePath,
-      'Missing version:',
-      version,
-      'or guidePageMetadata',
-      guidePageMetadata,
-      'guidesMetadataLength',
-      guidesMetadata.length
+    console.error(
+      `Guide page not found: locale="${locale}", path="${guidePath}", metadataCount=${guidesMetadata.length}`
     );
     return undefined;
   }

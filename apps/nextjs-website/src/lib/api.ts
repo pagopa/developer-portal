@@ -56,7 +56,17 @@ export async function getGuidePage(
       guidePaths.length > 0 ? guidePaths[0] : ''
     ),
   ]);
-  const guideProps = manageUndefined(guideResult);
+  if (!guideResult) {
+    // eslint-disable-next-line functional/no-expression-statements
+    console.error(
+      `Guide not found: locale="${locale}", productSlug="${productSlug}", guideSlug="${
+        guidePaths[0] || ''
+      }"`
+    );
+    return undefined;
+  }
+
+  const guideProps = guideResult;
 
   // Path construction
   const guidePath = [
@@ -72,27 +82,37 @@ export async function getGuidePage(
     }) || guideProps.versions.find((v) => v.main); // Fallback to main version if specific version is not found
   if (!guideToFind) {
     // eslint-disable-next-line functional/no-expression-statements
-    console.error(`No guide version found matching path "${guidePath}"`);
+    console.error(`Guide version not found for path "${guidePath}"`);
     return undefined;
   }
 
   const guidesMetadata = await getGuidesMetadata(locale, guideToFind.dirName);
-  return manageUndefined(
-    await parseS3GuidePage({
-      guideProps,
-      guidePath,
-      guidesMetadata,
-      products,
-      locale,
-    })
-  );
+  return parseS3GuidePage({
+    guideProps,
+    guidePath,
+    guidesMetadata,
+    products,
+    locale,
+  });
 }
 
 export async function getGuideListPages(locale: string, productSlug?: string) {
-  const props = manageUndefined(
-    await GuideListPagesRepository.getByProductSlug(locale, productSlug || '')
+  const props = await GuideListPagesRepository.getByProductSlug(
+    locale,
+    productSlug || ''
   );
-  return manageUndefinedAndAddProducts(locale, props);
+
+  if (!props) {
+    // eslint-disable-next-line functional/no-expression-statements
+    console.error(
+      `Guide list page not found: locale="${locale}", productSlug="${
+        productSlug || ''
+      }"`
+    );
+    return undefined;
+  }
+
+  return { ...props, products: await getProducts(locale) };
 }
 
 export async function getOverview(locale: string, productSlug?: string) {
