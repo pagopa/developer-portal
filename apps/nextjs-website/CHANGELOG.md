@@ -1,5 +1,11 @@
 # nextjs-website
 
+## 17.4.2
+
+### Patch Changes
+
+- 04454bc: Fix error page status codes
+
 ## 17.4.1
 
 ### Patch Changes
