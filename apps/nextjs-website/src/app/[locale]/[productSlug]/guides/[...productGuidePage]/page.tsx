@@ -20,7 +20,7 @@ import {
   convertSeoToStructuredDataArticle,
   productToBreadcrumb,
 } from '@/helpers/structuredData.helpers';
-import PageNotFound from '@/app/[locale]/not-found';
+import { notFound } from 'next/navigation';
 import { BlocksContent } from '@strapi/blocks-react-renderer';
 
 export const dynamic = 'force-dynamic';
@@ -63,6 +63,10 @@ export async function generateMetadata(props: {
     productSlug
   );
 
+  if (!guidePageProps) {
+    notFound();
+  }
+
   if (guidePageProps?.seo) {
     return makeMetadataFromStrapi(guidePageProps?.seo);
   }
@@ -102,7 +106,7 @@ const Page = async ({ params }: { params: Promise<Params> }) => {
   ]);
 
   if (!guidePageProps) {
-    return <PageNotFound />;
+    notFound();
   }
 
   const {
