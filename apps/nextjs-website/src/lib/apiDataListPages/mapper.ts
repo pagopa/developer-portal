@@ -15,8 +15,9 @@ const mapApiDataListPageCard =
     }
 
     if (!item.apiRestDetail?.slug && !item.apiSoapDetail?.slug) {
-      console.error(`
-      Error while processing API Data with title "${item.title}": missing API slug. Skipping...`);
+      console.error(
+        `Error while processing API Data with title "${item.title}": missing API slug. Skipping...`
+      );
       return null;
     }
 
@@ -42,20 +43,21 @@ export function mapApiDataListPages(
 ): ReadonlyArray<ApiDataListPageTemplateProps> {
   return compact(
     strapiApiDataListPages.data.map((apiPage) => {
-      const slug = apiPage.product.slug;
-      if (!slug) {
+      const productData = apiPage.product;
+
+      if (!productData?.slug) {
         console.error(
-          `Error while processing API Data List Page with title "${apiPage.title}": missing product slug. Skipping...`
+          `Error while processing API Data List Page with title "${apiPage.title}": associated product is missing, unpublished, or has no slug. Skipping...`
         );
         return null;
       }
 
+      const slug = productData.slug;
+
       // eslint-disable-next-line functional/no-try-statements
       try {
-        const product = makeBaseProductWithoutLogoProps(
-          locale,
-          apiPage.product
-        );
+        const product = makeBaseProductWithoutLogoProps(locale, productData);
+
         return {
           ...apiPage,
           hero: {
