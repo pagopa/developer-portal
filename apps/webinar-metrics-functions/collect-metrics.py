@@ -12,6 +12,47 @@ DELIVERY_STREAM_NAME = os.environ['DELIVERY_STREAM_NAME']
 
 CET = ZoneInfo("Europe/Rome")
 
+def _parse_optional_bool(value):
+    if value is None:
+        return None
+    if isinstance(value, bool):
+        return value
+    if isinstance(value, str):
+        normalized = value.strip().lower()
+        if normalized == "":
+            return None
+        if normalized in {"true", "1", "yes"}:
+            return True
+        if normalized in {"false", "0", "no"}:
+            return False
+    if isinstance(value, (int, float)) and not isinstance(value, bool):
+        if value == 1:
+            return True
+        if value == 0:
+            return False
+    raise ValueError("consent must be a boolean value when provided.")
+
+def _parse_optional_number(value):
+    if value is None:
+        return None
+    if isinstance(value, (int, float)) and not isinstance(value, bool):
+        return value
+    if isinstance(value, str):
+        normalized = value.strip()
+        if normalized == "":
+            return None
+        try:
+            return float(normalized)
+        except ValueError as exc:
+            raise ValueError("duration must be a numeric value when provided.") from exc
+    raise ValueError("duration must be a numeric value when provided.")
+
+def _parse_optional_string(value):
+    if value is None:
+        return None
+    normalized = str(value).strip()
+    return normalized if normalized != "" else None
+
 def lambda_handler(event, context):
     try:
 
@@ -56,6 +97,9 @@ def lambda_handler(event, context):
             "receivedat": timestamp,
             "islive": bool(data.get("isLive", data.get("islive", False))),
             "action": str(data.get("action", "")),
+            "startedAt": _parse_optional_string(data.get("startedAt", data.get("startedat"))),
+            "consent": _parse_optional_bool(data.get("consent")),
+            "duration": _parse_optional_number(data.get("duration")),
             "year": year,
             "month": month,
             "day": day,

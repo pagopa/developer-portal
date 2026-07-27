@@ -444,6 +444,27 @@ resource "aws_glue_catalog_table" "webinar_heartbeats_iceberg" {
             required = false
             type     = "\"string\""
           }
+
+          fields {
+            id       = 10
+            name     = "startedAt"
+            required = false
+            type     = "\"string\""
+          }
+
+          fields {
+            id       = 11
+            name     = "consent"
+            required = false
+            type     = "\"boolean\""
+          }
+
+          fields {
+            id       = 12
+            name     = "duration"
+            required = false
+            type     = "\"double\""
+          }
         }
 
         partition_spec {
