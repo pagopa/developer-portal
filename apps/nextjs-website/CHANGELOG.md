@@ -1,5 +1,24 @@
 # nextjs-website
 
+## 17.4.2
+
+### Patch Changes
+
+- 04454bc: Fix error page status codes
+
+## 17.4.1
+
+### Patch Changes
+
+- 79c9f3c: Reduce paragraph bottom margin in case histories
+- f528a67: Add Arcade embed support
+
+## 17.4.0
+
+### Minor Changes
+
+- f4c53f5: Refactor SUPPORTED_LOCALES to always include English locale
+
 ## 17.3.0
 
 ### Minor Changes

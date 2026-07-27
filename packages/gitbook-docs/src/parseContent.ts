@@ -117,6 +117,7 @@ const schema: ConfigType = {
     code,
     embed,
     'figma-embed': embed,
+    'arcade-embed': embed,
     file,
     tabs,
     columns: columns,
@@ -165,7 +166,8 @@ export const parseAst = (markdown: string) => {
     .replaceAll(figcaptionR.regex, figcaptionR.replace)
     .replaceAll(markR.regex, markR.replace)
     .replaceAll(summaryR.regex, summaryR.replace)
-    .replaceAll('{% @figma/embed', '{% figma-embed');
+    .replaceAll('{% @figma/embed', '{% figma-embed')
+    .replaceAll('{% @arcade/embed', '{% arcade-embed');
 
   const updatedMarkdoc = markdoc
     .split('{% file')
