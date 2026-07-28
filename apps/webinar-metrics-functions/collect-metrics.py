@@ -124,6 +124,8 @@ def lambda_handler(event, context):
             "body": json.dumps({
                 "status": "success",
                 "ip_captured": client_ip,
+                "user_id": stored_user_id,
+                "webinar_id": str(webinar_id),
                 "timestamp": timestamp
             })
         }
