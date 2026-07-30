@@ -10,6 +10,7 @@ import {
   productToBreadcrumb,
 } from '@/helpers/structuredData.helpers';
 import UseCaseTemplate from '@/components/templates/UseCaseTemplate/UseCaseTemplate';
+import { notFound } from 'next/navigation';
 
 type Params = {
   locale: string;
@@ -19,22 +20,25 @@ type Params = {
 
 export async function generateMetadata(props: {
   params: Promise<Params>;
-}): Promise<Metadata | undefined> {
+}): Promise<Metadata> {
   const { locale, productSlug, productUseCasePage } = await props.params;
   const useCasePath = productUseCasePage?.join('/');
   const useCaseProps = await getUseCase(locale, productSlug, [useCasePath]);
-  if (useCaseProps) {
-    const { title, path, seo } = useCaseProps;
 
-    if (seo) {
-      return makeMetadataFromStrapi(seo);
-    }
-
-    return makeMetadata({
-      title: [title, useCaseProps.product?.name].filter(Boolean).join(' | '),
-      url: path,
-    });
+  if (!useCaseProps) {
+    notFound();
   }
+
+  const { title, path, seo } = useCaseProps;
+
+  if (seo) {
+    return makeMetadataFromStrapi(seo);
+  }
+
+  return makeMetadata({
+    title: [title, useCaseProps.product?.name].filter(Boolean).join(' | '),
+    url: path,
+  });
 }
 
 const Page = async (props: { params: Promise<Params> }) => {
@@ -44,6 +48,10 @@ const Page = async (props: { params: Promise<Params> }) => {
   const strapiUseCaseProps = await getUseCase(locale, productSlug, [
     useCasePath,
   ]);
+
+  if (!strapiUseCaseProps) {
+    notFound();
+  }
 
   const structuredData = generateStructuredDataScripts({
     breadcrumbsItems: [
@@ -58,6 +66,7 @@ const Page = async (props: { params: Promise<Params> }) => {
     ],
     seo: strapiUseCaseProps.seo,
   });
+
   return (
     <UseCaseTemplate
       bannerLinks={strapiUseCaseProps.bannerLinks}
