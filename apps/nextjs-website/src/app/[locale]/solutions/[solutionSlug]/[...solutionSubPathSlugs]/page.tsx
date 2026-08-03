@@ -9,7 +9,7 @@ import { getUrlReplaceMap } from '@/lib/api';
 import { SolutionTemplateProps } from '@/components/templates/SolutionTemplate/SolutionTemplate';
 import { generateStructuredDataScripts } from '@/helpers/generateStructuredDataScripts.helpers';
 import { getItemFromPaths } from '@/helpers/structuredData.helpers';
-import PageNotFound from '@/app/[locale]/not-found';
+import { notFound } from 'next/navigation';
 
 type SolutionDetailPageTemplateProps = {
   solution: SolutionTemplateProps;
@@ -38,6 +38,10 @@ export async function generateMetadata(props: {
     params?.solutionSubPathSlugs
   );
 
+  if (!solutionDetail) {
+    notFound();
+  }
+
   return makeMetadata({
     title: solutionDetail?.title,
     url: solutionDetail
@@ -57,7 +61,7 @@ const Page = async (props: { params: Promise<Params> }) => {
   );
 
   if (!solutionDetail) {
-    return <PageNotFound />;
+    notFound();
   }
 
   const urlReplaceMap = await getUrlReplaceMap(locale);
