@@ -12,6 +12,7 @@ import {
 } from '@/helpers/metadata.helpers';
 import { ApiDataListPagesRepository } from '@/lib/apiDataListPages';
 import { Metadata } from 'next';
+import { notFound } from 'next/navigation';
 
 type Params = {
   locale: string;
@@ -26,6 +27,14 @@ export async function generateMetadata(props: {
     locale,
     productSlug
   );
+
+  if (!apiDataListPage) {
+    // eslint-disable-next-line functional/no-expression-statements
+    console.error(
+      `API list page not found: locale="${locale}", productSlug="${productSlug}"`
+    );
+    notFound();
+  }
 
   if (apiDataListPage?.seo) {
     return makeMetadataFromStrapi(apiDataListPage.seo);
@@ -44,6 +53,14 @@ const ApiDataListPage = async (props: { params: Promise<Params> }) => {
   const { locale, productSlug } = await props.params;
   const apiDataListPageProps =
     await ApiDataListPagesRepository.getByProductSlug(locale, productSlug);
+
+  if (!apiDataListPageProps) {
+    // eslint-disable-next-line functional/no-expression-statements
+    console.error(
+      `API list page not found: locale="${locale}", productSlug="${productSlug}"`
+    );
+    notFound();
+  }
 
   const structuredData = generateStructuredDataScripts({
     breadcrumbsItems: [

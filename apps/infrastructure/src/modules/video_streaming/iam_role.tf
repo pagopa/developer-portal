@@ -15,6 +15,7 @@ resource "aws_iam_role_policy_attachment" "deploy_lambda" {
 
 
 resource "aws_iam_role" "webinar_metrics" {
+  provider              = aws.eu-south-1
   name                  = "${var.project_name}-webinar-metrics-role"
   force_detach_policies = true
   assume_role_policy = jsonencode({

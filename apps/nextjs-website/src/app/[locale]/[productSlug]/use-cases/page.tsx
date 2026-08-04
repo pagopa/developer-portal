@@ -19,6 +19,7 @@ import {
 import type { UseCase } from '@/lib/useCases/types';
 import { getUseCaseListPageProps } from '@/lib/api';
 import { FilteredGridLayout } from '@/components/organisms/FilteredGridLayout/FilteredGridLayout';
+import { notFound } from 'next/navigation';
 
 export type UseCasesPageProps = {
   readonly product: Product;
@@ -37,10 +38,13 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const { locale, productSlug } = await props.params;
   const resolvedParent = await parent;
-  const { product, abstract, path, seo } = await getUseCaseListPageProps(
-    locale,
-    productSlug
-  );
+  const useCaseListPage = await getUseCaseListPageProps(locale, productSlug);
+
+  if (!useCaseListPage) {
+    notFound();
+  }
+
+  const { product, abstract, path, seo } = useCaseListPage;
 
   if (seo) {
     return makeMetadataFromStrapi(seo);
@@ -57,8 +61,14 @@ export async function generateMetadata(
 
 const UseCasesPage = async (props: ProductParams) => {
   const { locale, productSlug } = await props.params;
+  const useCaseListPage = await getUseCaseListPageProps(locale, productSlug);
+
+  if (!useCaseListPage) {
+    notFound();
+  }
+
   const { abstract, bannerLinks, path, useCases, seo, product, enableFilters } =
-    await getUseCaseListPageProps(locale, productSlug);
+    useCaseListPage;
 
   const structuredData = generateStructuredDataScripts({
     breadcrumbsItems: [
