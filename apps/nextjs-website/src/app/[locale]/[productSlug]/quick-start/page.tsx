@@ -19,6 +19,7 @@ import {
   breadcrumbItemByProduct,
   productToBreadcrumb,
 } from '@/helpers/structuredData.helpers';
+import { notFound } from 'next/navigation';
 
 export type QuickStartGuidePageProps = {
   readonly product: Product;
@@ -38,10 +39,16 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const params = await props.params;
   const resolvedParent = await parent;
-  const { abstract, path, product, seo } = await getQuickStartGuide(
+  const quickStartGuide = await getQuickStartGuide(
     params.locale,
     params.productSlug
   );
+
+  if (!quickStartGuide) {
+    notFound();
+  }
+
+  const { abstract, path, product, seo } = quickStartGuide;
 
   if (seo) {
     return makeMetadataFromStrapi(seo);
@@ -58,6 +65,15 @@ export async function generateMetadata(
 
 const QuickStartGuidesPage = async (props: ProductParams) => {
   const params = await props.params;
+  const quickStartGuide = await getQuickStartGuide(
+    params.locale,
+    params?.productSlug
+  );
+
+  if (!quickStartGuide) {
+    notFound();
+  }
+
   const {
     abstract,
     bannerLinks,
@@ -66,7 +82,7 @@ const QuickStartGuidesPage = async (props: ProductParams) => {
     steps,
     seo,
     product,
-  } = await getQuickStartGuide(params.locale, params?.productSlug);
+  } = quickStartGuide;
 
   const structuredData = generateStructuredDataScripts({
     breadcrumbsItems: [
