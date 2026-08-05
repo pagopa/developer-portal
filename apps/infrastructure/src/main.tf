@@ -50,6 +50,15 @@ provider "aws" {
 }
 
 provider "aws" {
+  alias  = "eu-south-1"
+  region = "eu-south-1"
+
+  default_tags {
+    tags = var.tags
+  }
+}
+
+provider "aws" {
   alias  = "eu-west-3"
   region = var.aws_chatbot_region
 
@@ -280,8 +289,9 @@ module "video_streaming" {
   source = "./modules/video_streaming"
 
   providers = {
-    aws           = aws.eu-central-1
-    aws.us-east-1 = aws.us-east-1 #
+    aws            = aws.eu-central-1
+    aws.us-east-1  = aws.us-east-1
+    aws.eu-south-1 = aws.eu-south-1
   }
 
   project_name = "devportal-${local.env_short[var.environment]}"

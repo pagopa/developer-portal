@@ -14,11 +14,11 @@ resource "aws_elasticache_replication_group" "langfuse_cache" {
   engine                     = "valkey"
   node_type                  = var.cache_node_type
   num_cache_clusters         = 1
-  engine_version             = "8.2"
+  engine_version             = "9.1"
   subnet_group_name          = aws_elasticache_subnet_group.langfuse_cache_subnet_group.name
   security_group_ids         = [aws_security_group.langfuse_cache.id]
   apply_immediately          = true
-  parameter_group_name       = "default.valkey8"
+  parameter_group_name       = "default.valkey9"
   port                       = 6379
   transit_encryption_enabled = true
   transit_encryption_mode    = "preferred"
