@@ -1,5 +1,11 @@
 # nextjs-website
 
+## 17.4.3
+
+### Patch Changes
+
+- 9512f85: Improve HTTP 404 handling for missing resources
+
 ## 17.4.2
 
 ### Patch Changes
