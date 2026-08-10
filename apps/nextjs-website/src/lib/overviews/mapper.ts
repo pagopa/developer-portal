@@ -14,9 +14,10 @@ export function mapOverviewsProps(
   return compact(
     strapiOverviews.data.map((attributes) => {
       const productData = attributes.product;
-      if (!productData.slug) {
+
+      if (!productData?.slug) {
         console.error(
-          `Error while processing Overview with title "${attributes.title}": missing product slug. Skipping...`
+          `Error while processing Overview with title "${attributes.title}": associated product is missing, unpublished, or has no slug. Skipping...`
         );
         return null;
       }
@@ -24,8 +25,8 @@ export function mapOverviewsProps(
       try {
         return {
           updatedAt: attributes.updatedAt,
-          path: `/${locale}/${attributes.product.slug}/overview`,
-          product: makeBaseProductWithoutLogoProps(locale, attributes.product),
+          path: `/${locale}/${productData.slug}/overview`,
+          product: makeBaseProductWithoutLogoProps(locale, productData),
           hero: {
             backgroundImage: attributes.backgroundImage.url,
             altText: attributes.backgroundImage.alternativeText || '',
@@ -72,8 +73,7 @@ export function mapOverviewsProps(
 
                   if (!tutorial.product?.slug) {
                     console.error(
-                      "tutorial's product slug is missing:",
-                      tutorial.title
+                      `Error while processing tutorial with title "${tutorial.title}": associated product is missing, unpublished, or has no slug. Skipping...`
                     );
                     return null;
                   }
@@ -105,10 +105,9 @@ export function mapOverviewsProps(
                     return null;
                   }
 
-                  if (!useCase.product.slug) {
+                  if (!useCase.product?.slug) {
                     console.error(
-                      "use case's product slug is missing:",
-                      useCase.title
+                      `Error while processing use case with title "${useCase.title}": associated product is missing, unpublished, or has no slug. Skipping...`
                     );
                     return null;
                   }
@@ -183,8 +182,7 @@ export function mapOverviewsProps(
                 attributes.postIntegration.guides.map((guide) => {
                   if (!guide.slug) {
                     console.error(
-                      "post-integration guide's product slug is missing:",
-                      guide
+                      `Error while processing post-integration guide with title "${guide.title}": missing slug. Skipping...`
                     );
                     return null;
                   }
@@ -219,7 +217,7 @@ export function mapOverviewsProps(
           bannerLinks:
             attributes.bannerLinks.length > 0
               ? attributes.bannerLinks.map(mapBannerLinkProps)
-              : attributes.product.bannerLinks?.map(mapBannerLinkProps),
+              : productData.bannerLinks?.map(mapBannerLinkProps),
           seo: attributes.seo,
         } satisfies OverviewPageProps;
       } catch (error) {
