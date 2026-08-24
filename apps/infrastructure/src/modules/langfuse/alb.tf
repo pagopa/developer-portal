@@ -8,7 +8,7 @@ module "langfuse_load_balancer" {
   internal                   = false
   create_security_group      = false
   load_balancer_type         = "application"
-  enable_deletion_protection = true
+  enable_deletion_protection = !var.force_delete
 
   listeners = {
     web_http = {
