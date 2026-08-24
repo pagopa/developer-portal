@@ -261,11 +261,13 @@ const WebinarDetailTemplate = ({ webinar }: WebinarDetailTemplateProps) => {
           ></WebinarPlayerSection>
         )}
 
-      <EContainer containerSx={{ marginTop: '64px' }}>
-        <CertificateBanner
-          imagePath={'/images/certificato-di-partecipazione-webinar.png'}
-        />
-      </EContainer>
+      {isWebinarHeartbeatEnabled && (
+        <EContainer containerSx={{ marginTop: '64px' }}>
+          <CertificateBanner
+            imagePath={'/images/certificato-di-partecipazione-webinar.png'}
+          />
+        </EContainer>
+      )}
       {webinar.subscribeCtaLabel && (
         <SubscribeCta label={webinar.subscribeCtaLabel}>
           {subscribeToWebinarButton}

@@ -126,6 +126,12 @@
     "chatbot": {
       "title": "Cronologia Chatbot",
       "noSessions": "Nessuna chat trovata"
+    },
+    "certificateList": {
+      "title": "Attestati Webinar",
+      "warning": "Perchè non vedo il mio attestato?",
+      "cta": "Scarica attestato",
+      "body": "Gli attestati dei webinar prima di maggio 2026 non sono disponibli.<br></br><br></br> Attenzione che per ottenere gli attestati dei nuovo webinar devi attivare il monitoraggio nella sezione <strong>Consensi e privacy</strong> e guardare almeno l’80% del webinar"
     }
   },
   "webinar": {

@@ -22,6 +22,7 @@ export type WebinarSubscription = {
   readonly webinarId: string;
   readonly username: string;
   readonly createdAt: Date;
+  readonly certificateCreatedAt?: Date;
 };
 
 export const insertWebinarSubscription = (

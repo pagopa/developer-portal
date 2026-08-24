@@ -1,17 +1,10 @@
 'use client';
 import React, { useState } from 'react';
-import {
-  Alert,
-  Box,
-  IconButton,
-  Link,
-  Typography,
-  useTheme,
-} from '@mui/material';
+import { Box, Link, Typography, useTheme } from '@mui/material';
 import CheckIcon from '@mui/icons-material/Check';
-import CloseIcon from '@mui/icons-material/Close';
 import ReportProblemIcon from '@mui/icons-material/ReportProblem';
 import { useTranslations } from 'next-intl';
+import GenericAlertBanner from '@/components/molecules/GenericAlertBanner/GenericAlertBanner';
 
 type LiveWebinarWarningBannerProps = {
   onEnableConsent: () => null;
@@ -20,12 +13,9 @@ type LiveWebinarWarningBannerProps = {
 const LiveWebinarWarningBanner = ({
   onEnableConsent,
 }: LiveWebinarWarningBannerProps) => {
-  const [visible, setVisible] = useState(true);
   const [consented, setConsented] = useState(false);
   const t = useTranslations('webinar');
   const { palette } = useTheme();
-
-  if (!visible) return null;
 
   const handleEnable = () => {
     setConsented(true);
@@ -33,60 +23,16 @@ const LiveWebinarWarningBanner = ({
   };
 
   return (
-    <Alert
-      severity='warning'
-      icon={false}
-      sx={{
-        mt: '64px',
-        mb: '32px',
-        width: '100%',
-        backgroundColor: palette.primaryAction.selected,
-        border: `1px solid ${palette.primaryAction.hover}`,
-        borderRadius: 2,
-        '& .MuiAlert-message': {
-          width: '100%',
-          p: 0,
-        },
-        '& .MuiAlert-action': {
-          height: '100%',
-          alignSelf: 'flex-start',
-          p: 0,
-        },
-      }}
-      action={
-        <IconButton
-          aria-label='close'
-          size='small'
-          onClick={() => setVisible(false)}
-          sx={{ color: palette.text.secondary }}
-        >
-          <CloseIcon fontSize='small' />
-        </IconButton>
-      }
-    >
-      <Box
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: 1,
-          mt: '8px',
-          mb: 1,
-          ml: '16px',
-        }}
-      >
+    <GenericAlertBanner
+      canBeHidden={true}
+      icon={
         <ReportProblemIcon
           width={'22px'}
           sx={{ color: palette.primary.main }}
         />
-        <Typography
-          fontSize={'16px'}
-          fontWeight={600}
-          color={palette.text.primary}
-        >
-          {t('consent_banner.title')}
-        </Typography>
-      </Box>
-
+      }
+      title={t('consent_banner.title')}
+    >
       <Typography
         color={palette.text.primary}
         fontWeight={500}
@@ -134,7 +80,7 @@ const LiveWebinarWarningBanner = ({
           <CheckIcon sx={{ fontSize: 16, color: palette.primary.main }} />
         </Box>
       )}
-    </Alert>
+    </GenericAlertBanner>
   );
 };
 
