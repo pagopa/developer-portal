@@ -24,6 +24,7 @@ export type CtaCardProps = {
     readonly target?: '_blank' | '_self' | '_parent' | '_top';
     readonly label: string | ReactNode;
     readonly href?: string;
+    readonly onClick?: () => null | Promise<void>;
     readonly variant?: 'text' | 'contained' | 'outlined';
     readonly endIcon?: ReactNode;
     readonly style?: SxProps;
@@ -116,19 +117,31 @@ const CtaCard = ({
         </StyledCardContent>
       </div>
       <CardActions style={{ bottom: 0 }} sx={cardContentStyle}>
-        {cta && (
-          <Link href={cta.href || '#'} target={cta.target || '_self'}>
+        {cta &&
+          (cta.onClick ? (
             <Button
               disabled={comingSoon}
               variant={cta.variant || 'contained'}
               size='small'
               endIcon={cta.endIcon}
+              onClick={cta.onClick}
               sx={cta.style || {}}
             >
               {cta.label}
             </Button>
-          </Link>
-        )}
+          ) : (
+            <Link href={cta.href || '#'} target={cta.target || '_self'}>
+              <Button
+                disabled={comingSoon}
+                variant={cta.variant || 'contained'}
+                size='small'
+                endIcon={cta.endIcon}
+                sx={cta.style || {}}
+              >
+                {cta.label}
+              </Button>
+            </Link>
+          ))}
       </CardActions>
     </Card>
   );

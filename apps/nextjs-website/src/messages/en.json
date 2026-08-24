@@ -131,7 +131,14 @@
       "title": "Webinar Certifications",
       "warning": "Why can't I see my certificate?",
       "cta": "Download certificate",
-      "body": "Certificates for webinars prior to May 2026 are not available.<br></br><br></br>Please note that to obtain certificates for the new webinars, you must enable tracking in the <strong>Consents and privacy</strong> section and watch at least 80% of the webinar"
+      "body": "Certificates for webinars prior to May 2026 are not available.<br></br><br></br>Please note that to obtain certificates for the new webinars, you must enable tracking in the <strong>Consents and privacy</strong> section and watch at least 80% of the webinar",
+      "certificate": {
+        "title": "CERTIFICATE",
+        "subtitle": "OF PARTICIPATION",
+        "createdAt": "Created at ",
+        "certification": "This certificate attests that:",
+        "attended": "Attended the online webinar via the PagoPa DevPortal"
+      }
     }
   },
   "webinar": {
