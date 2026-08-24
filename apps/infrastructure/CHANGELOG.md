@@ -1,5 +1,12 @@
 # infrastructure
 
+## 13.4.0
+
+### Minor Changes
+
+- d0569fb: Update elastic chache version to 9.1 since we were using a deprecated version
+- f6be60a: Update dos68k docker image version.
+
 ## 13.3.0
 
 ### Minor Changes
