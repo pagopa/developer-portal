@@ -161,7 +161,7 @@ resource "aws_lambda_function" "webinar_certificate" {
 
 resource "aws_apigatewayv2_integration" "webinar_certificate" {
   provider               = aws.eu-south-1
-  api_id                 = aws_apigatewayv2_api.ingest.id
+  api_id                 = aws_apigatewayv2_api.webinar_api.id
   integration_type       = "AWS_PROXY"
   integration_uri        = aws_lambda_function.webinar_certificate.invoke_arn
   integration_method     = "POST"
@@ -170,7 +170,7 @@ resource "aws_apigatewayv2_integration" "webinar_certificate" {
 
 resource "aws_apigatewayv2_route" "webinar_certificate" {
   provider           = aws.eu-south-1
-  api_id             = aws_apigatewayv2_api.ingest.id
+  api_id             = aws_apigatewayv2_api.webinar_api.id
   route_key          = "GET /certificate"
   target             = "integrations/${aws_apigatewayv2_integration.webinar_certificate.id}"
   authorization_type = "JWT"
@@ -183,5 +183,5 @@ resource "aws_lambda_permission" "apigw_webinar_certificate" {
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.webinar_certificate.function_name
   principal     = "apigateway.amazonaws.com"
-  source_arn    = "${aws_apigatewayv2_api.ingest.execution_arn}/*/*"
+  source_arn    = "${aws_apigatewayv2_api.webinar_api.execution_arn}/*/*"
 }

@@ -123,7 +123,7 @@ resource "aws_cloudfront_distribution" "vod" {
 
   # API Gateway HTTP API origin for the ingest endpoint
   origin {
-    domain_name = replace(aws_apigatewayv2_api.ingest.api_endpoint, "https://", "")
+    domain_name = replace(aws_apigatewayv2_api.webinar_api.api_endpoint, "https://", "")
     origin_id   = "APIGW-${var.project_name}-ingest"
 
     custom_origin_config {
