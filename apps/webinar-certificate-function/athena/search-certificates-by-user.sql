@@ -7,8 +7,6 @@ WITH sorted_heartbeats AS (
       PARTITION BY webinarid, userid 
       ORDER BY from_iso8601_timestamp(receivedat)
     ) AS prev_time,
-    
-    -- Pull your duration column here (change to your exact column name)
     duration
   FROM "webinar_heartbeats"
   WHERE userid = '<USER_ID>'
