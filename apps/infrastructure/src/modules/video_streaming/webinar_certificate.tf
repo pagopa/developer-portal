@@ -153,65 +153,28 @@ resource "aws_lambda_function" "webinar_certificate" {
 }
 
 # ---------------------------------------------------------------------------
-# 5. API Gateway HTTP API — GET /certificate (JWT-protected)
+# 5. API Gateway route — GET /certificate (JWT-protected)
+#
+# Reuses the existing `ingest` HTTP API, JWT authorizer and $default stage
+# (defined in heartbeat.tf) instead of provisioning a dedicated API.
 # ---------------------------------------------------------------------------
-
-resource "aws_apigatewayv2_api" "webinar_certificate" {
-  provider      = aws.eu-south-1
-  name          = "${var.project_name}-certificate-api"
-  protocol_type = "HTTP"
-  description   = "HTTP API for webinar certificate eligibility"
-
-  cors_configuration {
-    allow_origins = compact([
-      "http://localhost:3000",
-      "https://${data.aws_route53_zone.selected.name}",
-    ])
-    allow_methods = ["GET", "OPTIONS"]
-    allow_headers = [
-      "Authorization",
-      "Content-Type",
-    ]
-    max_age = 300
-  }
-}
 
 resource "aws_apigatewayv2_integration" "webinar_certificate" {
   provider               = aws.eu-south-1
-  api_id                 = aws_apigatewayv2_api.webinar_certificate.id
+  api_id                 = aws_apigatewayv2_api.ingest.id
   integration_type       = "AWS_PROXY"
   integration_uri        = aws_lambda_function.webinar_certificate.invoke_arn
   integration_method     = "POST"
   payload_format_version = "2.0"
 }
 
-resource "aws_apigatewayv2_authorizer" "webinar_certificate_cognito" {
-  provider         = aws.eu-south-1
-  api_id           = aws_apigatewayv2_api.webinar_certificate.id
-  authorizer_type  = "JWT"
-  identity_sources = ["$request.header.Authorization"]
-  name             = "${var.project_name}-certificate-cognito-authorizer"
-
-  jwt_configuration {
-    audience = [var.cognito_user_pool_client_id]
-    issuer   = "https://${var.cognito_user_pool_endpoint}"
-  }
-}
-
 resource "aws_apigatewayv2_route" "webinar_certificate" {
   provider           = aws.eu-south-1
-  api_id             = aws_apigatewayv2_api.webinar_certificate.id
+  api_id             = aws_apigatewayv2_api.ingest.id
   route_key          = "GET /certificate"
   target             = "integrations/${aws_apigatewayv2_integration.webinar_certificate.id}"
   authorization_type = "JWT"
-  authorizer_id      = aws_apigatewayv2_authorizer.webinar_certificate_cognito.id
-}
-
-resource "aws_apigatewayv2_stage" "webinar_certificate" {
-  provider    = aws.eu-south-1
-  api_id      = aws_apigatewayv2_api.webinar_certificate.id
-  name        = "$default"
-  auto_deploy = true
+  authorizer_id      = aws_apigatewayv2_authorizer.ingest_cognito.id
 }
 
 resource "aws_lambda_permission" "apigw_webinar_certificate" {
@@ -220,5 +183,5 @@ resource "aws_lambda_permission" "apigw_webinar_certificate" {
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.webinar_certificate.function_name
   principal     = "apigateway.amazonaws.com"
-  source_arn    = "${aws_apigatewayv2_api.webinar_certificate.execution_arn}/*/*"
+  source_arn    = "${aws_apigatewayv2_api.ingest.execution_arn}/*/*"
 }
