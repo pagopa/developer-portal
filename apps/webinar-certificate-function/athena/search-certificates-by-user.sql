@@ -10,7 +10,7 @@ WITH sorted_heartbeats AS (
     
     -- Pull your duration column here (change to your exact column name)
     duration
-  FROM "webinar_analytics"."webinar_heartbeats"
+  FROM "webinar_heartbeats"
   WHERE userid = '<USER_ID>'
     AND action = 'playing'
 ),
