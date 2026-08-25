@@ -75,7 +75,7 @@ resource "aws_iam_role_policy" "webinar_certificate" {
           "athena:GetQueryExecution",
           "athena:GetQueryResults",
         ]
-        Resource = aws_athena_workgroup.webinar_analytics.arn
+        Resource = "*"
       },
       {
         Sid    = "GlueRead"
