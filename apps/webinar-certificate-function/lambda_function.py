@@ -65,8 +65,9 @@ def handler(event: dict, context) -> dict:
     """
     Lambda entry point.
 
-    Expected input:
-        { "userId": "<user_id>" }
+    Authentication:
+        Intended for API Gateway HTTP API (payload v2.0) with a JWT authorizer.
+        The user identity is taken from JWT claims.
 
     Returns:
         {
@@ -74,11 +75,18 @@ def handler(event: dict, context) -> dict:
             "body": '["webinar-1", "webinar-2", ...]'
         }
     """
-    user_id = event.get("userId") or event.get("user_id")
+    claims = (
+        event.get("requestContext", {})
+        .get("authorizer", {})
+        .get("jwt", {})
+        .get("claims", {})
+    )
+    user_id = claims.get("sub") or claims.get("cognito:username") or claims.get("username")
     if not user_id:
         return {
-            "statusCode": 400,
-            "body": json.dumps({"error": "Missing required parameter: userId"}),
+            "statusCode": 401,
+            "headers": {"Content-Type": "application/json"},
+            "body": json.dumps({"error": "Unauthorized: missing user identity"}),
         }
 
     athena = boto3.client("athena")
