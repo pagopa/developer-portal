@@ -20,6 +20,10 @@ inputs:
     description: 'Branch of the documentation repository'
     required: false
     default: 'docs/from-gitbook'
+  documentation_repository_token:
+    description: 'GitHub token used to checkout the documentation repository'
+    required: false
+    default: ''
   deploy_iam_role:
     description: 'AWS IAM Role to assume for deployment'
     required: true
@@ -123,6 +127,8 @@ runs:
       with:
         repository: ${{ inputs.documentation_repository }}
         ref: ${{ inputs.documentation_branch }}
+        token: ${{ inputs.documentation_repository_token || github.token }}
+        persist-credentials: false
         path: devportal-docs
 
     - name: Setup Node.JS
