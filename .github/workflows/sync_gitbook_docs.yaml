@@ -87,6 +87,7 @@ jobs:
           dir_names_filter: ${{ inputs.dir_names_filter }}
           documentation_repository: ${{ inputs.locale == 'en' && 'pagopa/devportal-docs-translations' || 'pagopa/devportal-docs' }}
           documentation_branch: ${{ inputs.locale == 'en' && 'main' || 'docs/from-gitbook' }}
+          documentation_repository_token: ${{ secrets.DEVPORTAL_DOCS_TOKEN }}
           deploy_iam_role: ${{ secrets.DEPLOY_IAM_ROLE }}
           strapi_api_token: ${{ secrets.STRAPI_API_TOKEN }}
           asset_bucket_cloudfront_distribution_id: ${{ vars.ASSET_BUCKET_CLOUDFRONT_DISTRIBUTION_ID }}
@@ -131,6 +132,7 @@ jobs:
           locale: 'it'
           documentation_repository: 'pagopa/devportal-docs'
           documentation_branch: 'docs/from-gitbook'
+          documentation_repository_token: ${{ secrets.DEVPORTAL_DOCS_TOKEN }}
           deploy_iam_role: ${{ secrets.DEPLOY_IAM_ROLE }}
           strapi_api_token: ${{ secrets.STRAPI_API_TOKEN }}
           asset_bucket_cloudfront_distribution_id: ${{ vars.ASSET_BUCKET_CLOUDFRONT_DISTRIBUTION_ID }}
@@ -173,6 +175,7 @@ jobs:
           locale: 'en'
           documentation_repository: 'pagopa/devportal-docs-translations'
           documentation_branch: 'main'
+          documentation_repository_token: ${{ secrets.DEVPORTAL_DOCS_TOKEN }}
           deploy_iam_role: ${{ secrets.DEPLOY_IAM_ROLE }}
           strapi_api_token: ${{ secrets.STRAPI_API_TOKEN }}
           asset_bucket_cloudfront_distribution_id: ${{ vars.ASSET_BUCKET_CLOUDFRONT_DISTRIBUTION_ID }}
