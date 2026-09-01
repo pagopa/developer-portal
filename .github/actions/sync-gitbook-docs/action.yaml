@@ -142,14 +142,12 @@ runs:
       run: |
         echo "::group::Install dependencies"
         npm config set cache ~/.npm
-        npm ci
-        echo "::endgroup::"
-
-    - name: Compile packages
-      shell: bash
-      run: |
-        echo "::group::Compile packages"
-        npm run compile
+        # Scoped to the gitbook-docs workspace (+ root): the sync scripts only
+        # need gitbook-docs's own lightweight deps and a plain source-file
+        # import from nextjs-website/src/config (no external deps, no build
+        # required). Installing/compiling the full monorepo here is wasted
+        # work and is the main cause of slow runs.
+        npm ci --workspace=gitbook-docs --include-workspace-root --no-audit --no-fund
         echo "::endgroup::"
 
     - name: Configure AWS Credentials
