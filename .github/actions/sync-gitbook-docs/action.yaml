@@ -128,6 +128,7 @@ runs:
         repository: ${{ inputs.documentation_repository }}
         ref: ${{ inputs.documentation_branch }}
         token: ${{ inputs.documentation_repository_token || github.token }}
+        persist-credentials: false
         path: devportal-docs
 
     - name: Setup Node.JS
