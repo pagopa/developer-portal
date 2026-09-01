@@ -1,5 +1,11 @@
 # infrastructure
 
+## 13.5.0
+
+### Minor Changes
+
+- 2ccf9b5: Set the "delete protection" to main resources: DynamoDB tables, RDS and Aurora databases and Load balancer.
+
 ## 13.4.0
 
 ### Minor Changes
