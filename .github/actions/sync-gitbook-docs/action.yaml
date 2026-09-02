@@ -122,6 +122,14 @@ runs:
         fi
         echo "::endgroup::"
 
+    - name: Check Secret Availability
+      shell: bash
+      run: |
+        if [ -z "${{ inputs.documentation_repository_token }}" ]; then
+          echo "::error::DEVPORTAL_DOCS_TOKEN is missing or empty!"
+          exit 1
+        fi
+
     - name: Checkout documentation repo
       uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
       with:
