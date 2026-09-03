@@ -122,7 +122,7 @@ jobs:
       - name: Checkout current repository
         uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
         with:
-          ref: 'nextjs-website@latest-deployed-in-prod'
+          ref: ${{ github.ref }}
 
 
       - name: Sync GitBook Docs using 'it' locale
@@ -166,7 +166,7 @@ jobs:
       - name: Checkout current repository
         uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
         with:
-          ref: 'nextjs-website@latest-deployed-in-prod'
+          ref: ${{ github.ref }}
 
       - name: Sync GitBook Docs using 'en' locale
         uses: ./.github/actions/sync-gitbook-docs
